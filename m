@@ -1,130 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1215606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 07:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5040606A325
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 07:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=U1e4VmiB
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RmtGv7CJ
 Received: by kanga.kvack.org (Postfix)
-	id 950686B00EF; Sat, 21 Nov 2026 02:32:33 -0500 (EST)
+	id D895A6B00EF; Sat, 21 Nov 2026 02:45:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D9A56B05B0; Sat, 21 Nov 2026 02:32:33 -0500 (EST)
+	id D39B86B05B0; Sat, 21 Nov 2026 02:45:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A25F6B05B1; Sat, 21 Nov 2026 02:32:33 -0500 (EST)
+	id C50086B05B1; Sat, 21 Nov 2026 02:45:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 421ED6B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 02:32:33 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C4F63160382
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:32:32 +0000 (UTC)
-X-FDA: 85458308544.11.2FD293F
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0B76840004
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:32:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=U1e4VmiB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F6806B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 02:45:36 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2BA24C039A
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:45:36 +0000 (UTC)
+X-FDA: 85458341472.06.314C46C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 87CC1180006
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:45:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RmtGv7CJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795246351;
-	b=CrpYIErlBmmzXAU1oRNj1t+vsPRojJ/iz9sW+k2B08SQm4NAYyuY9KMYCfqvhO0MaMC/on
-	aAuaH1oBAF0X0ZeXAdOweV/sgSOtxIgMX5cbOcWWsNik9jO+zsZVxW7Tp6tYR9D++Pnah7
-	jXCGsInvluO5gZeXZnQyvkCwOglQuIY=
+	t=1795247134;
+	b=Ez6pakC3kq2RsDP2fJTZKrfOSq+PF+pTRPc7rIC02IEyEj1GVwneycctUhxB5/7uLiGyZG
+	5pJDqkz0JSeex400GtFI+Rqc/5ZQ5Xq2ez+V+ZZmjeTZLiFuW1AQWpzy8UL7qEOKGr+fe/
+	cmLNw04/kvQiGSOq48+a4CGNxwt/qj8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795246351;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vZXEIX5bRG+X47GzywXngypFAMMr6NGpMI+nKBGpwCc=;
-	b=irLJluLITD8GGRp6f+H9DsIFY+MvTHFXsug5Cjro2Qy2Rv47EHnbVVOAaakl6wPllNSvu4
-	EoHPOMApnxorbqp1Ykhq+hArpuB64xJfevXRfjNTSKTlUpyOqqZjMRK0rf5hIio+B08NVp
-	MRCuV9KcwwIzF4dTzfYXBfiwzU9cu/w=
+	s=arc-20220608; t=1795247134;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WzJaMs2T6e7SVplt6j1n4FowiofI86G0Ejnb7luKxuU=;
+	b=2RdYUtBZNS08chhHvoUwCILOzq1myNI0FUANP9BtLeQV+0wR/BUGD/XB940Xv9OzCgPZJz
+	PmWusrF06hitqw+L6L5NNccKKMSZDtbhBaWa78qO5UbR/8q3NjnqM3+OB2422f2LGVNkqw
+	YtIhe7t1pQcysU535JCc4UyT0e9+s/w=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=U1e4VmiB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2f048476ab9so10441965ad.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:32:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795246350; x=1795851150; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vZXEIX5bRG+X47GzywXngypFAMMr6NGpMI+nKBGpwCc=;
-        b=U1e4VmiB0AYlVSPujTJB+S3aq5HiGNoGYBo7jzcAPRLjOExVPWEcu2UJ8J6KRLeInw
-         EL1T0eNOTnMgETK8bFSahQSnhs41sFWxWCu5jYZ+c+hnHhpvdio4xxblYUUI6LnRo5ut
-         gzOjLDtEemeEERUy07EVB/pTaSEFxeiZxBuX0XdCkfL7imFL/ihcD2G6dxerqPxK+Gfa
-         leDG7aaKNyb5efTDkNHBAd+bQPI9fyu0tvDV+wwohMH/oTvys0zVM/PTDbQK6TVW46KV
-         w91tyz4Z6mTkLuyl+bIoR5z6AicyE5QjKUcNm7aadLmCF7bylrSJp0toSIj5wnu61sVe
-         e8qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795246350; x=1795851150;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vZXEIX5bRG+X47GzywXngypFAMMr6NGpMI+nKBGpwCc=;
-        b=h6nzX1rhaQEGG+VmbPbsuDiPdYuYZtvzgoUIfMTPRz2+DyTsUujttovBBX0lDzIKAY
-         021QEa4T/+nDDYmXMDZiJ9AlpG+LtRWXrlWF3uQVm+tZTJDosJDrYYtTLJEwfbQ02c76
-         p6WiCL965ZKomOayjsKnKIut52TWIEsLSgc1YG03SDJ50ditaYM0oXsYHRDw1YFxOSRG
-         k37bZP0zNODN0DfRgToPkQQwvNWktbhI7CXdjlSCRLHalCzMMDcRWnMxXE6jAj7PHcRx
-         d8WHh2/BktZg6zj60d5lEHShlMGXB4qHc/hqdY687m1ATNVLdQtdPvjcwGyW9+Y0zMGp
-         waNw==
-X-Forwarded-Encrypted: i=1; AL+hErGJVGrFYI0u1qZeH0P7qx6ckiQeBHz+9Harrp6b2/9tZHbXIeIRkbm/UnyHGGw+tnzJ8wm82lm9Og==@kvack.org
-X-Gm-Message-State: APuU4Z/EdARfEMgZflPNW1CXZ/YevnMCJ72MUgn3xDNlVJd5ca4TfRr3
-	qhOBH3Y65TH2ZuX8RJa/KSkvC9xMN1Hs3mvHk6PqaJof4mzSV3nbE0nD
-X-Gm-Gg: AZFdTZfpTFWnWtQ7mK/vKZ3H2WEBQ9Ovc8wB+SjUzFprR7zNtA43pjI7Jut05aSOmIj
-	FxcJ8cZfWfDsD/Xcr7zHgS8l6ONSCGeOqoeJro5fPHE0kogYaleNRIc0GMEbM0As4tbQ7q3q1lJ
-	jPIk4BLIl6+xo9Yy7NJ0j+B+8CPili65fUI5m4w+LCVhuKRy/lOhRZnWgMp7hzTc+SCEmstzX8i
-	ZVl2pvvTrR773E3ELZiVu68eCRbaZrJtygwN2RQ9qcfajnSZF6FSZcCvr6PN+bP34JUbBxCRt22
-	We2Q9ywHDOtN/YemVBXapq5z6hWycbw5stqKHVuWbW1bXzB9T9AhzqIfYyrzoNuTDj1ahxKyLUJ
-	afVwY2Io5d0xHgsYTgXXe1k8T9b7WYAhmaieZYNq7rVgLjGSEoWJ0IyqqfrDXQf5AET+kcZ3DBG
-	5H235bOjET+CgpF5SXffzGx5fClG5XHO81muutOb+cHeyRh/zFGXoOdLzAIlQ/Qekdp3Brac2rk
-	swK6D4rYuWoPmqasD0xue2tES4IwoC/UEvAhw4Y/aomrAR6PaerIXV9KgZoZ2B5H5TTjOO5Dp6v
-	/58XXUT6DqkMXDTRtQiuR+l54mZxdWX5qIxZ+d6DFR6PbA==
-X-Received: by 2002:a17:902:dacc:b0:2ef:d54b:fb64 with SMTP id d9443c01a7336-2f03f16ca9amr57805835ad.47.1795246349410;
-        Fri, 20 Nov 2026 23:32:29 -0800 (PST)
-Received: from osman.mioffice.cn ([43.224.245.178])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0ddf40sm23423465ad.37.2026.11.20.23.32.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 23:32:28 -0800 (PST)
-From: Zhan Xusheng <zhanxusheng1024@gmail.com>
-To: akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org,
-	mhocko@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	penguin-kernel@i-love.sakura.ne.jp,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	chris@chrisdown.name,
-	cui.tao@linux.dev,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	zhanxusheng@xiaomi.com
-Subject: [PATCH v3] mm: memcontrol: don't miss processes whose leader has exited in OOM scans
-Date: Sat, 21 Nov 2026 15:32:22 +0800
-Message-ID: <20261121073222.834282-1-zhanxusheng1024@gmail.com>
-X-Mailer: git-send-email 2.43.0
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: h4bfuzfuzatipdkz4aamd38n6g586yrc
-X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RmtGv7CJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4418360BFB;
+	Sat, 21 Nov 2026 07:45:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27961F000C4;
+	Sat, 21 Nov 2026 07:45:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795247133;
+	bh=WzJaMs2T6e7SVplt6j1n4FowiofI86G0Ejnb7luKxuU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=RmtGv7CJ9anPybwJ4a6mmf/6LE/eUc9wg0gsGyfAIibyWRqqaqEzLUAZUlMJzsQkO
+	 VQxLxyp7dD0fTVwT2ohaGcAqDlhAUHWTd9zqaMSCa8bkMH5YrvWDIpYHvR+9art0fl
+	 ZX5BEzbqFcFzUBiJwtC4Oc4Mji3fbntdNc2u8zF07SjdHukdMMOqH8jre/z4ZUtUi6
+	 irIc1s502lIe1AFk+zKtRrIIM3EobPExY+yf30WFMVdTk6RxlDjy9rvvWIVtBqF8rN
+	 Eqvtv31wb3aQVPeDgHFG7N8A0AVh3SApzi3XODtTK8veDoBJXgC7ZZ3X1jXn/qSxjx
+	 8XBOYHuVM2VaQ==
+Message-ID: <sashiko-outbox-226795@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/3] selftests/mm: fix false-positive KSM fork test
+ by dropping init_global_file_handles()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?WHUgWGluICh2aXZvKQ==?= <xu.xin@linux.dev>
+Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, david@kernel.org, donettom@linux.ibm.com, linux-mm@kvack.org
+In-Reply-To: <20261120074445.41446-1-xu.xin@linux.dev>
+References: <20261120074230.40269-1-xu.xin@linux.dev>
+ <20261120074445.41446-1-xu.xin@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 21 Nov 2026 07:45:32 +0000
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 87CC1180006
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0B76840004
-X-HE-Tag: 1795246350-52238
-X-HE-Meta: U2FsdGVkX1/xCjf0TO1H4GZDa19WNvZoe5YRpFkSnvnksxo0JVZ7/AVNiY6g/7HOmtRLKIXU9+cwAibQ402r10jnMTD/jpPLid2BrXfhREVTkeQHRsse7ss5Fwz7lPUc1o0umxItUNs8GF0mgzb1uDd7PUroyAskkUf+M4yEgRbe1NADdUsOWdwYJ9urbMtWcYYtsWBBZ0ZE/MKTlaSRRnTSxRAUEayK0U41CLmDenl/LgSHsPgGqrRk/Oz1mUbTzXxQJKzr6Pj5LIvQPrsZu7BcmqveEjSvDn/HMXQn9oPT49uxWQkLqq6FGPHuR+kYJY+9s/oc8707+rsoUHg77odIeWbni1lz1V/etdL4w5zD2twWE0Fx0BxeqGPoDr/w/a7TufSlR/2XKsBfihHFn5dDOXAKKNuwcBaqNmloD/dhHNGHFEqCPwGAVuv5Z17DS0gVUO6/QWsSdjMedT9NUjqCnLyrkKvR+ERGRF12dAlB9rygd00QfmDkqeCCRBnjrvA+UzrVHjbmBEAKOZSZkWd6aVdm+nJaHrjfv9DmnUWgM+LwPQJhYIEgMAfnheTO/jutbGb+zPD/j16S9AMIHU1Dn5Wu+jCcB+25wcCMCmLwQlhHhOR8lbsL3/I0WA9nqgaqRtCt3VSLIK3YWoj9eFJ1jO1Vtv66TeAesSIoxPHp5ujzKY2t8E0TQ/RGcK+HtDo1DG85S//aoRfHVoypBXXpPUg1ylaOgqnwKKLQbn30MJLy/bPzIAVI7+Xjw1se2eWbNvMJMl+2VgiPPnV5nc+YTf8LzsETgaf/CvxPUpR/VmZElgp0vmwrJIA4OsVLAzAtwOSFSfVKhNzfxAFe6Y3OhL9MyoEaGwV3UQYdXmV8bcEY4n9fMXRxqJ7vRsGTOEU80IHbiCL4BIjkUKOax1f3myJle1RPs+S+xSJETp1WlOT3B/iH9r2KNo0v1sHRq19Iyk27vL2mmbE+IYJ
- rfLpCqaD
- GZ5C6D8xmNjTJGrWtTm1LteGD7Zb7UsFb2FIgO6lSWRoLoGMIyaaVL3A9iImGIfXqdI6n6FrxoUO75WDf2nAnTtkfIzKzW50jFxPs1JOK2JVTdZxMsGWRSh7DMyaxofjPYySt54bS8Qo8ydmoqvUjLkafHXXDCZfn8CnHZbqRT/f3UtPwP3PH/fq4veygfercodUlGUe/vcJxdcaQQ6CyvDTRgq/engL56s1OTneSB1nqVOb348RSGTDvXm37Ep4Aovfjkr9rn6cVooVj5Lcvd4rsP9c3UT+zPs7LnzT46MnsXqXUZTE6HHbdeADHit40njA5tt5knSYMolCOQpvRD1kauGKU3OSjcN3Mni9F9rMdUCA0yMdsHK13FqMH1LBpznFWR+Q9UbqnlUg1I6HRIqWgWJITpU/N2EwOfdAGtaA4KRj1VZyXoxbEKTkSv4jJ79s4wf4Pfre+cOVPf8tu1GFktqQMYq9uJuEBJ6OSMfAUl4BQi20tnlOz0FMzq7UMB6aBFd0123SzU/Ijk91OIsJN4xwAC4vsgshmU2rkLLybHIYZ+6lAzhOF0+7Mc2TRGvBlKA1/CUJYwucrvG8PyMjXbyzSu5yVsAc1WaP1DASCsk40RrW+OQBCbcRzEoxNCTF3NET4GRE3Qws=
+X-Rspam-User:
+X-Stat-Signature: fetk34o3ekqg4g9cwhqfshspbbn3bo8o
+X-HE-Tag: 1795247134-16853
+X-HE-Meta: U2FsdGVkX1+yPZfXewTb0x5GIk6lvJ9fCVlSS8MBdSAmVYtRtPDnbBaxDo7e3Pw/W+t9Whixb0zPkBEx+JNR0oS9sc90CPcxpR/WVbD8M41xBZcExD2r4Pi8Unf1QY7Y6cG7DNan8MdggztFIWVyyWdSfHSskMMAYVfjxxZQvs/nla+768ybCNXlr7mf7SiTkCKv4iHe2elFkRtqDn+4swmvdwj5QxfbmsOOtmJIjSBo6QpmWKmrYYT/wWTWMjmr0wcvtYkkDT1ibYJMLFpHum1DqW4I5/QPOumNpmhYGjWyhGfbRz+gX2BA98x36+hM9akN8eYq4WXCVd/8S5fwuKr1vU+ddxgBGh5kB6nIlxOCWCQymvB+KkghYMILb80vAfewWRKhsO9GC2rxwS/E8x+VELmcbllPxSYiuKdyvf8BtpH2YgpJL66eNw0rIBeQHwOrvNI+gaBRoGxI26TQd55CGbC8S5WFTrzqiThEke2gSGOssB1n+cHqLmVGCmohGmQontOC1ChLYGEV6BNJx9Edne27xmdLvte22B4AGNQDVFGR4ObNJY8lIfPPz6+RUceJBhxmILLjXkSxX/vp4oPOkmlwzaenB5Ct+AFgfa0R7m5r+4JUj58GugiW9braH0BsKiPndhryBN/JzG5QwXt/MmE0RaBCDt0z3M4JwRJddkC5cnZ0hAI9Y1EBypLk4Vk/ENPucs3hc87Wmdhv+CKaOJxwGNlxpwi13KUCjLdacFsIlm28GQifthvavpmk/thuqjMyZPhGT8Q1AFvnpVy068eQNuffgqqRMz5M2V+QMHD5orwbrcEinjCx0tWQX7mOwFwftCyCFGP0FOzcLmI/peRDKsstNgy2L95RWHNPmYLiEKUZLPzsdgprDqylHlXIxNGLE4cgxlbSC+dmprD+BLdb6B1E6aYfd5DuBDcvx2N1LWzJpPbOrW5aRXKl3YQo9jSyxqoib15CUt1
+ +gEtVVEH
+ xy3+xctBvGq/Fg9pruircKalPiuGlD8zzder9sHVhkOqPWc0T1OEMyDxeJgPl1BooOXMy4jScgWqnGf5uNpdVz24fsLw2s7iJyM6CpFEuz/l2nOO9nmlk+HmW7eiIYkbBihR12YsKEU9kKe2TyXixQEdny8DYClPFc3wCbpUMPZDOS/pCJmm7jXbX0x4FtMbAM/IDrorvMeS3ymTT5zNRakZHhxbHcXjrgqHjXBCcEWwH240Kf/60u2meRlKzSav8Q+UmRuu9TADVV3OdqduAqvUlIxzssBA6ZhS6hJoZ4Lo8Thq+Krrewm6NFNldHgA/EQ2XGhW6g98lnyG95PV2zBBvLbVLRP8Kwvp1HiKvYiMzrtI5waS270ESOSmblnq8tuLRE6yLUwifylq0SvbOi8mdKKzAACwZHGk/hoMdeSGuxQD4tZi+X2rNbg42On1WdUhfx+SL/lfpYtlNZoheyqaSUNldi0JAQBOvjK9KiSuetZU8kDjfONsnwOJaSKKmGafeElatYjHG64S1v1+8Q890IoOu3RfryxvnqdXw1qFUv6vHS8rvkX0TyKE4Elt9FbKwaHizo2zCHvxEUaQ/xffduQT3nEX4yIaC2Xv0MbSTPNPqwU78UlnWJs5f81r+CAgCglevfLMBZKJwW5eyMwHI1PDyyojkztgclksn1GL2a+4nXtcwOg03VjNMlga0yRAD/l/zpEWm4AgpehpCelT3PHFlMQSdhCKgzcxr0QjNEiGgQUVNQrSI3XASwJpSTeK1s/RfcIIe/g91GY44UahCSP4Rc1RS7OQooJx4jPRojlgUOtO+1MslPmM4ftBwBp1qYVUlCQLp0wi28s0B1roz8XeILazd8YcRJUPx+2bYsItkcm4HFeXqTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,132 +92,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] selftests/mm: exit() truncates page count in
+  test_fork_ksm_merging_page_count()
+- [Medium] selftests/mm: ksmd race across fork() in
+  test_fork_ksm_merging_page_count()
+--
 
-mem_cgroup_scan_tasks() walks with CSS_TASK_ITER_PROCS, so it sees only
-thread group leaders, plus a dying leader that still has live threads.
-Moving a process whose leader has exited, by writing its PID to
-cgroup.procs, moves the live threads but leaves the leader behind, as
-cgroup_migrate_add_task() skips exiting tasks.
+commit 320ca42efa1f04c6ac42a52e155a4cd5bc860e0e
+Author: Xu Xin (vivo) <xu.xin@linux.dev>
 
-The destination's OOM killer then cannot see the process.  If it is
-alone there, every attempt ends with "Out of memory and no killable
-processes..." and the charge is retried indefinitely, and
-memory.oom.group kills nothing; otherwise another process is killed in
-its place.  The source's OOM killer still finds the leader, reaches the
-moved threads' mm through find_lock_task_mm(), and kills a process that
-has left the memcg.
+selftests/mm: fix false-positive KSM fork test by dropping init_global_file=
+_handles()
 
-Walk all tasks and let one task of each thread group in the memcg stand
-for it: the first one that is not exiting, the first one that has not
-exited yet once the whole group is exiting, or the leader once every
-thread has exited, so that an OOM victim stays visible until it is gone,
-as the leader does today.  Exiting threads left behind do not count
-while the group has live threads elsewhere.
+This commit removes the init_global_file_handles() call from the child
+process in test_fork_ksm_merging_page_count() so it does not invoke
+ksm_stop() before reading ksm_get_self_merging_pages().
 
-Tested in a VM with memory.max=64M: in each case above the process using
-the memory is now killed, and a process whose exited leader was not
-moved, or whose leader is alive, is killed as before, with and without
-memory.oom.group.
+> diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/te=
+sting/selftests/mm/ksm_functional_tests.c
+> index 135191f99962d..c20982b0aff0e 100644
+> --- a/tools/testing/selftests/mm/ksm_functional_tests.c
+> +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
+> @@ -670,7 +670,6 @@ static void test_fork_ksm_merging_page_count(void)
+> =20
+>  	child_pid =3D fork();
+>  	if (!child_pid) {
+> -		init_global_file_handles();
+>  		exit(ksm_get_self_merging_pages());
 
-Fixes: f168a9a54ec3 ("mm: memcontrol: use CSS_TASK_ITER_PROCS at mem_cgroup_scan_tasks()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
----
-v3:
- - Rebase on "mm: memcontrol: don't lose track of exiting OOM victims"
-   in mm-hotfixes-unstable and keep CSS_TASK_ITER_WITH_DEAD
- - Let the leader stand for the group once every thread has exited, so
-   such a victim stays visible as it does with that patch alone
+[Severity: Medium]
+Does exit(ksm_get_self_merging_pages()) truncate the page count to 0 on
+4 KiB page systems?
 
-Moving the exited leader along with its threads came up on v1, and
-there has been no answer from the cgroup side.  cgroup.kill had the
-same case: da13e0e72a73 ("cgroup: fix cgroup.kill for exited thread
-group leader") walks all threads instead of the leaders, and
-5f4a3f743acc ("cgroup: don't kill migrated processes through their
-exiting threads") then had to keep an exiting thread left behind from
-standing for a process that has moved out.  This patch does the same
-for the memcg scan; the second case is what the live_elsewhere check
-covers.
+test_fork_ksm_merging_page_count() merges a 2 MiB region, which is 512
+(0x200) pages on 4 KiB page systems (or 256 pages on 8 KiB page
+systems).  Because exit() and WEXITSTATUS() only preserve the low 8 bits
+of the exit code, an inherited count of 512 is truncated to 0 and the
+test still falsely passes when fork() fails to reset
+mm->ksm_merging_pages.
 
-Retested on mm-hotfixes-unstable 2ba4d2c9ae3c: the cases in the
-changelog behave as described, and with the reproducer from the review
-of Chris's patch, memory.max=400M, 10 runs, oom_kill is 1 in every run
-with and without this patch.
+Also, does ksm_stop() actually reset an inherited ksm_merging_pages
+counter in the child as described in the commit message?
+unmerge_and_remove_all_rmap_items() only decrements
+rmap_item->mm->ksm_merging_pages when removing rmap_items from
+mm_slot->rmap_list, which is empty in a newly forked child.
 
-v2: https://lore.kernel.org/all/20261027144016.2582880-1-zhanxusheng1024@gmail.com/
-v1: https://lore.kernel.org/all/20261026120248.2188024-1-zhanxusheng1024@gmail.com/
+A later commit in this series, commit "selftests/mm: verify
+ksm_zero_pages is not inherited on fork", converts the exit argument to
+a boolean via !!, but doing exit(!!ksm_get_self_merging_pages()) here is
+needed so this stable-tagged fix works on its own.
 
- mm/memcontrol.c | 44 +++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 41 insertions(+), 3 deletions(-)
+[Severity: Medium]
+Can ksmd race with the child process across fork() and cause a false
+test failure?
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index afbb638e7e1c..3355341666db 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1426,6 +1426,44 @@ static void invalidate_reclaim_iterators(struct mem_cgroup *dead_memcg)
- 						dead_memcg);
- }
- 
-+/*
-+ * Let one task of each thread group in @memcg stand for the group: the
-+ * first one that is not exiting, or, once the whole group is exiting, the
-+ * first one that has not exited yet, so that an OOM victim stays visible.
-+ * The leader is not enough: a group whose leader has exited can be moved
-+ * without it.  Exiting threads left behind in @memcg do not count while the
-+ * group has live threads elsewhere.
-+ */
-+static bool mem_cgroup_scan_skip(struct mem_cgroup *memcg,
-+				 struct task_struct *task)
-+{
-+	struct task_struct *t, *dying = NULL;
-+	bool live_elsewhere = false;
-+
-+	guard(rcu)();
-+	__for_each_thread(task->signal, t) {
-+		bool here;
-+
-+		if (READ_ONCE(t->exit_state))
-+			continue;
-+		here = mem_cgroup_from_task(t) == memcg;
-+		if (!(READ_ONCE(t->flags) & PF_EXITING)) {
-+			if (here)
-+				return t != task;
-+			live_elsewhere = true;
-+		} else if (here && !dying) {
-+			dying = t;
-+		}
-+	}
-+	/*
-+	 * Once every thread has exited, the leader stands for the group until
-+	 * it is gone, as with CSS_TASK_ITER_PROCS.
-+	 */
-+	if (!dying)
-+		return live_elsewhere || !thread_group_leader(task);
-+	return live_elsewhere || dying != task;
-+}
-+
- /**
-  * mem_cgroup_scan_tasks - iterate over tasks of a memory cgroup hierarchy
-  * @memcg: hierarchy root
-@@ -1456,10 +1494,10 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
- 		 * torn down. Keep it visible so oom_evaluate_task() can
- 		 * back off while there's still memory to free.
- 		 */
--		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS |
--				    CSS_TASK_ITER_WITH_DEAD, &it);
-+		css_task_iter_start(&iter->css, CSS_TASK_ITER_WITH_DEAD, &it);
- 		while (!ret && (task = css_task_iter_next(&it))) {
--			ret = fn(task, arg);
-+			if (!mem_cgroup_scan_skip(iter, task))
-+				ret = fn(task, arg);
- 			/* Avoid potential softlockup warning */
- 			cond_resched();
- 		}
+mmap_and_merge_range() leaves ksmd running in KSM_RUN_MERGE mode, and
+ksm_fork() adds the child mm to ksmd's scan list:
 
-base-commit: 2ba4d2c9ae3cfdad96ee925c92b14d7acd886954
--- 
-2.43.0
+Parent                            ksmd
+test_fork_ksm_merging_page_count()
+  mmap_and_merge_range()
+    ksm_start()
+  fork()
+    dup_mmap()
+      ksm_fork()
+        child_mm->ksm_merging_pages =3D 0
+        __ksm_enter(child_mm)
+                                  ksm_do_scan()
+                                    cmp_and_merge_page()
+                                      try_to_merge_with_ksm_page()
+                                      stable_tree_append()
+                                        child_mm->ksm_merging_pages++
+  Child:
+  ksm_get_self_merging_pages()  <-- reads non-zero count
 
+Because the child's forked PTEs already map the merged KSM folio,
+try_to_merge_one_page() succeeds on the first scan pass ("ksm page
+forked") and stable_tree_append() increments
+child_mm->ksm_merging_pages before the child reads
+/proc/self/ksm_merging_pages.  Pausing ksmd by writing 0 (KSM_RUN_STOP)
+to /sys/kernel/mm/ksm/run after mmap_and_merge_range() and before fork()
+would avoid this race without unmerging pages.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120074230.4026=
+9-1-xu.xin@linux.dev?part=3D2
 
