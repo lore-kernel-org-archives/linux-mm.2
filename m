@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E254F606A684
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181FF606BA85
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hCUdNbCW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j4k3SiVx
 Received: by kanga.kvack.org (Postfix)
-	id E6F5A6B05CD; Fri, 20 Nov 2026 19:10:20 -0500 (EST)
+	id 5E4976B05D1; Fri, 20 Nov 2026 19:10:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF9046B05CF; Fri, 20 Nov 2026 19:10:20 -0500 (EST)
+	id 595BB6B05D2; Fri, 20 Nov 2026 19:10:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C72D06B05D1; Fri, 20 Nov 2026 19:10:20 -0500 (EST)
+	id 45C5A6B05D3; Fri, 20 Nov 2026 19:10:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 959916B05CD
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:10:20 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2CF2B14024A
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:10:20 +0000 (UTC)
-X-FDA: 85457194200.14.67E5FC7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8033E1C0002
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:10:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hCUdNbCW;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 226876B05D1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:10:29 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE11C160260
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:10:28 +0000 (UTC)
+X-FDA: 85457194536.06.7902870
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 27D5E40006
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:10:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j4k3SiVx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795219818;
-	b=eyxs9BQ4OpUjpz1ktlgkoRZFGbKuMqUTBJUgPe2p5NgCisIQPxneGFbcbrMcsLpWgpy01t
-	BROrISZ6YLQr9w+6h+2p3EiPN8yPvqCWtX6xtCxz5lQN4uRWN7KyrxVS5545qo5MOe9zre
-	xcCj5bA07FcKa8PKQHBQiTA08Fn7qqU=
+	t=1795219827;
+	b=LGprsZyUULN2NmXmYn5mBWAX2n6G0/u/meRgf2md5WLB4cPHH2YSJ3edJQjiw09f3hrDl7
+	XPgiL/Bu6+CvGK/gi8o1saHcxCNpnefA3KyIi1yjR6BWEoKIYGQs48lrdo5M5a9ie+3ydq
+	qrZYVdpNnRwbK/R6uTZXLubMN1glQLE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795219818;
+	s=arc-20220608; t=1795219827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=keQHOqhbQzKnskPEephNWpQJ2+gEr/C+/pBH6fJD4Uk=;
-	b=CKnYx5KLU0mmn7EmnoaaZ/ZcIi2gXQ7ZsQzunDPMdcnYgnHnE0ZqaJOyo9P4jSthWJcR3p
-	RziqQazJJ4RrBndQGRm61RT9iDVKVcep7QN77GNFGukheJ3SmMWY3BBEzTmlMT23pPiKX7
-	LLAQ0xr+w4IIY0w24It6uvFvHvyAMKo=
+	bh=+Eyq4GxevLOo6CnxBFmFSQzUssMKFYdLLMcgPqVG7IE=;
+	b=8Guuy5QpKO6dc+6tYTwvIBXTT7Col4vHK/0KDTxV8KDf9F9iweNMNg8dNlVig7HBjQhISF
+	G/ZIjzhgTeZGSaPTazri5ernVR/7rzx+HUBxONE4CiFEw705tUrTCa1O5PvMUhaStAzQuK
+	Tk3MWJsS1T0Yiha616w1HjNaO4s9mIk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hCUdNbCW;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j4k3SiVx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 22133623A3;
-	Sat, 21 Nov 2026 00:10:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id EC7FC1F000D2;
-	Sat, 21 Nov 2026 00:10:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 695F34412D;
+	Sat, 21 Nov 2026 00:10:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 7A89B1F000C0;
+	Sat, 21 Nov 2026 00:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795219817;
-	bh=keQHOqhbQzKnskPEephNWpQJ2+gEr/C+/pBH6fJD4Uk=;
+	s=k20260515; t=1795219826;
+	bh=+Eyq4GxevLOo6CnxBFmFSQzUssMKFYdLLMcgPqVG7IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hCUdNbCWHBgRryTU5nu551za3xRW0gezc5OnTNZCeYNqM9wRJ/NsAbAG+VMQ80fFc
-	 uoQohgRLiSlksCc/Z8OXAbokvEzSj2xFDa8SHwHcHhFa9Mn4xhv1Gww7/2oW4JGL/D
-	 I/qlCZrwdXviGnAWdDkBva0/NKmT2NxDqQbqnlGKCmc2i86RdFVhnvMh9gbxbtOdja
-	 oyVx0Mgr/BwtKtQ0XfHqiIFV9uqT7kXGDt1GJ6f5Y1qpPeuWjr4cktfc+tNAvXZLSo
-	 ArIrP3F4dln8owvw8NahPBsy34x8S7IbeE6gBha8FZ0lmJqFEy+A5PAviI8Yv13P4v
-	 viHdX3QpRHJkw==
+	b=j4k3SiVxDcE9xNRlED7134kIVV0tuttt6dCAjAJdcuJdDLCLNbA9NMivdrmSGkgMr
+	 OyNYJAI4aS5nK5BjnSJmKNea24ET+/1PJcRvhRqVRku61xK52x95rnz1mf14yb5Cq3
+	 wzasJkApfZpgAp4UJQVf+77zavqRmbkwXW68Cta8+wbDYMnflh84pGO1NF3AhW3KJ5
+	 bkWL4ZK6uXwvzo38zYKicjnk74z6NK/tPzG/PYLm+025Jhr6sftady81fOpPFq+7OL
+	 9CVbjQr8GKAmoKnxNWjVKohFbByvxeQb52RjUYIixDe3jeMOt2VRMI+DTnvns4+r/E
+	 77iaHcj4oHZ+w==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -82,28 +82,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Paul Moore <paul@paul-moore.com>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v5 19/25] ipc/mqueue: Implement ->set_rootns() fs_context operation
-Date: Sat, 21 Nov 2026 02:08:38 +0200
-Message-ID: <20261121000844.1863324-20-jarkko@kernel.org>
+Subject: [RFC PATCH v5 21/25] bpf: Register rootns LSM hooks
+Date: Sat, 21 Nov 2026 02:08:40 +0200
+Message-ID: <20261121000844.1863324-22-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261121000844.1863324-1-jarkko@kernel.org>
 References: <20261121000844.1863324-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8033E1C0002
 X-Rspam-User:
-X-Stat-Signature: 3c9ua9mx7cnaapcdz5dqwxpwohzcwpju
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795219818-104940
-X-HE-Meta: U2FsdGVkX1/BPUTIVPW34pgkV2XIBGKgDTaUqFZB/rCSUGQBVXluCqy5b9ojTaXS9sQ+vyxF1uEx+eJxLEmoegBfIs4riDC9QDZjmDE6KecLECSW5+Mi7j+AJkU4f9Df8KaQ+LarKtV+8kB0r1x8II6zHzF8J9lUm77DSXHyIVazdF7PAg94zFK7mTpwDtDCl1ljuHulHR+qoCDoMGN+22l7wNAG4oG/NtfH7EZbrBhIC/0S6SUWu+Jtu04AiykNx2Vd4wVKftIgn2l2HMLA5sOhKOGjFHMAUxaAzygXQdaFWUn3VUivE2bbw2dDlp78v7ZAXMdY5NJT8UyuoVMzSqh1cCCX+T+hYPidnjfTKIpbp1YQX9N0aZRocjE+6Cu/NJvzzx6zvc57H/31MhV2Ow+l7BMUoEOYnfSL184uQHitmiCozHjowvkxORXmuqqm4TdExgkb6aEaHX1JBrQi0lQ1FBNWnoSJVee3E/hVjXgXYX+cgSNtfJyqgK7leYbBneWSJAuuXxGO6Z3eZ43QjQX5LVyPtRfRB8vEZds3KyJjw2ELelH4Oo/qi/u1B4TBDUMfojpyP84WlUL3f8c95FWavn/M0OGI9JSXJZ9fH9d2k5QBC6JEXcMS0aTwKMk2YpZKHP7XyMwnBmaEVE2sT/T5+kJgestM/Bbe4noTk9OQ8jfBkDU27jrIfmXninVIRxe2dhI8xewZGm4DZPhYNKNGzVP7CZtfkc7Ox9WjPw+AdEtQkX51oWCRdYzkICm9Ula9z8LGjpA3xIpJAXWSaRirg7ii77Kuo8MgtCNic9Lhrf/+nU/H689HtOukFCIU6mGiqwfmbx3ZphYPu7N61w2Erd5/dc4JxbV61mUPW7hP2Vi9UVZQJn3+Qr/N0yjdNey1zT+xkvVL0EINe+lwPA0r6Cl4t2DuiQSJsBdWkKGdoc2cKAJNyrM4pCCP0LjzfhEs71x6YLKFUhJuIh1
- Ou+NysSw
- BUJMEjLa6jSzAPiLGK5Fc0NE9O0bQoM6WQGLjk7pI6AOZMDG86JSPOIRmj/jPLaPcvzO8HUj64fLnPGRqZMJea0wLkk62NHVIU9c9P3bruJydHs/wBwekmP31rKUNxkOSKhPr5rzqpVFwhiAQoEAwoX1ka5MOUqsRvJMcDB7VH26L+NciOL74kaNdGoGz8ic6zPkpHRSUUyBMxQqDy2LlmBOYmCI4bKz58RFAnbjp0HiinFodk9drKo8eF9EChG0AhaYkrYopfRpkWCr6Hp8sO5hfcsDn+ZnZZUW0xNwG0tEp8ixmOuf98qtGzkT8JRrpFNPBQVTObuaPGkwYFkEdr6fzHdp1yQFyCqkYzQlABlIWo9kPnpkiDiEivy1BcxekU2RPVbZlWSUefSQWvQALhqCYqU+Tqemc07f/+SSZMGsJc/tgce5m/ZxL4Vgbg9g9dqMRhEe/hs0BisEolKVRVyLvgdj4tJU/X5iTIiph2saFkhA=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 27D5E40006
+X-Stat-Signature: gyka5nkstrwtfe4tc1wwouf4hqgqb9py
+X-HE-Tag: 1795219827-848298
+X-HE-Meta: U2FsdGVkX19PaYqJ69MK4pHyigH3/KyT3Do3XbNAwFhZbyl/pnaVo291hZtBGYcqo6uqD6hpBXn136943Y+MUIEvYbTtnIuxrIFiKOHsuIbQzBk6nylGW1PuEbGTQVqrw8F6pBRQPz5qHUxja/P644CkbBcXpgavfWOrIb5hXnBfHBOGDwlrju4fUO9o6hcRlQmbnT1pNDBzEn6h5TYPCgr1n+O1FFtP7bnVUu+rN/RpUqG6zKE11SyMs3VK+GDhcNq/Ds2QIgXOE398gem87KzFV3+Lz6Ym6BCC/reO5lXVUwIcZwfmPUKypIfcXx6yl7//4Ej+Afs7166wBKl60mDYeP7Ak2mhRK/NahkmuiCB/gKG6Zd8PGS0A9pSLnPr3yYUITaKH9iGa1snIH+qu/EjmAy66f6IzTRcRxzf1Hje+8mlX6Ms317IH0mDdp8VhuL1z8cuKAvRSCxJMCwdXm+ITNCVfN87lQ6D+/95nmtHU6KHRxpLrq6SKSsqpYgvkEA25RimaQvsIxrBwCQ5oO6WILb5TEuxRQC9mACyZmh+1PTgLDFrQgbKZVGIfJegHS+61m/3CjY9hnXe9IAqNvfM+tiyXTwHI99c1GffLRobYQOrRxAaGZ5PZx5mNhFsyXhbMRPj6WX5Yh5EyNCiRFbnpUm+TdelYbWsSuho+C6zfxxypwbBxCGDj/W4QD5G/gV0EHbgm9xe1wG+D8AjjKhwjrtHijnuytEFZEVuX2z+bsNpXkOrVTYKjFvy7BaLGJSd0t4MvUjQdkGB2ycS3gojOwdqvPxAuyfku9YujhXBCFYVQYrw2ypB90Y/MpyH0lQN9hSCrbkOndfJOb+hxi8lwzY3w6+0Gg8MCHFuUTh764LFEmNvleM9WvpKdSeVuwcTYmFMc4nqrl45vwT0hVaEPvRk7O8Tenctp97ebxTz2phATKmVgtuiahDpSktRuNrjL2CwsrKx99hUzkc
+ Uh0l7L/w
+ C80DHL8GkYIN5fbYDTpFyIMVCNbZFfo5EWHTyUYL5cBivSdWjIIKZNSJMiLm8u4AZYirUN66qGmmdx1Zsfuz08HLhAkbyVoPx5EnZgPucHAoHHo6ONDYphYRAq6Y0yfcyFFgvkLVpXq53JUx+Km0qxX6Oyi/z41akEC3zBA0LxJU/BXIZjPPBpKU5Dm6OYtYGz8KX+r1fOiOjXY3S2nOLbbZHkLw9QxbqNauc4+tt6ecOWK9VCZfyXXIwwYjweLg7ifyeoyUh0i9NxAuuHmY4G0bb+XBvJB1qlWrAWfdpzvsMoNWJ0FgyLiMnq3CmuTADuUcZlbm4faeGwn9dc5hNjF+/a/9f44gksbDC7qJmK5wytOHQ5qMTPNCV8pTfOberow40VfaXsw76oWZs6XiOwqG8f2pfR/CAgVGobyQoiDHQYU8a1ZPSUe8LigbJG5jP7GJF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,59 +111,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-mqueue_init_fs_context() captures current->nsproxy->ipc_ns and resets
-fc->user_ns to ctx->ipc_ns->user_ns, overriding the user namespace
-delegated by FSCONFIG_SET_ROOTNS and leaving the context bound to the
-caller's IPC namespace.
+BPF LSM programs need sleepable and untrusted hook classifications for
+the new root namespace LSM hooks in order to attach policies to root
+namespace allocation, cloning, signaling, and release.
 
-Wire up mqueue_set_rootns() to switch ctx->ipc_ns to the target root
-namespace's IPC namespace and update fc->user_ns to match.
+Register bpf_lsm_rootns_alloc, bpf_lsm_rootns_clone, and
+bpf_lsm_rootns_kill in sleepable_lsm_hooks, and bpf_lsm_rootns_alloc
+and bpf_lsm_rootns_free in untrusted_lsm_hooks under CONFIG_ROOTNS.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- ipc/mqueue.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ kernel/bpf/bpf_lsm.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index 322c3dd98c44..f94e9b566bd0 100644
---- a/ipc/mqueue.c
-+++ b/ipc/mqueue.c
-@@ -32,6 +32,7 @@
- #include <linux/mutex.h>
- #include <linux/nsproxy.h>
- #include <linux/pid.h>
+diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
+index 468e63dbd922..bbcf1433fdc2 100644
+--- a/kernel/bpf/bpf_lsm.c
++++ b/kernel/bpf/bpf_lsm.c
+@@ -16,6 +16,7 @@
+ #include <linux/btf_ids.h>
+ #include <linux/ima.h>
+ #include <linux/bpf-cgroup.h>
 +#include <linux/rootns.h>
- #include <linux/ipc_namespace.h>
- #include <linux/user_namespace.h>
- #include <linux/slab.h>
-@@ -400,6 +401,17 @@ static struct inode *mqueue_get_inode(struct super_block *sb,
- 	return ERR_PTR(ret);
- }
  
-+static int mqueue_set_rootns(struct fs_context *fc, struct rootns *rootns)
-+{
-+	struct mqueue_fs_context *ctx = fc->fs_private;
-+
-+	put_ipc_ns(ctx->ipc_ns);
-+	ctx->ipc_ns = get_ipc_ns(rootns->ns->ipc_ns);
-+	put_user_ns(fc->user_ns);
-+	fc->user_ns = get_user_ns(ctx->ipc_ns->user_ns);
-+	return 0;
-+}
-+
- static int mqueue_fill_super(struct super_block *sb, struct fs_context *fc)
- {
- 	struct inode *inode;
-@@ -1613,6 +1625,7 @@ static const struct super_operations mqueue_super_ops = {
+ /* For every LSM hook that allows attachment of BPF programs, declare a nop
+  * function where a BPF program can be attached. Notably, we qualify each with
+@@ -404,6 +405,11 @@ BTF_ID(func, bpf_lsm_task_setscheduler)
+ BTF_ID(func, bpf_lsm_userns_create)
+ BTF_ID(func, bpf_lsm_bdev_alloc_security)
+ BTF_ID(func, bpf_lsm_bdev_setintegrity)
++#ifdef CONFIG_ROOTNS
++BTF_ID(func, bpf_lsm_rootns_alloc)
++BTF_ID(func, bpf_lsm_rootns_clone)
++BTF_ID(func, bpf_lsm_rootns_kill)
++#endif /* CONFIG_ROOTNS */
+ BTF_SET_END(sleepable_lsm_hooks)
  
- static const struct fs_context_operations mqueue_fs_context_ops = {
- 	.free		= mqueue_fs_context_free,
-+	.set_rootns	= mqueue_set_rootns,
- 	.get_tree	= mqueue_get_tree,
- };
+ BTF_SET_START(untrusted_lsm_hooks)
+@@ -420,6 +426,10 @@ BTF_ID(func, bpf_lsm_sk_free_security)
+ BTF_ID(func, bpf_lsm_task_free)
+ BTF_ID(func, bpf_lsm_bdev_alloc_security)
+ BTF_ID(func, bpf_lsm_bdev_free_security)
++#ifdef CONFIG_ROOTNS
++BTF_ID(func, bpf_lsm_rootns_alloc)
++BTF_ID(func, bpf_lsm_rootns_free)
++#endif /* CONFIG_ROOTNS */
+ BTF_SET_END(untrusted_lsm_hooks)
  
+ bool bpf_lsm_is_sleepable_hook(u32 btf_id)
 -- 
 2.47.3
 
