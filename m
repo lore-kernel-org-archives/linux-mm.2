@@ -1,131 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D45606A325
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 08:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iNq1gatA
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875B6606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 08:32:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736236B00EF; Sat, 21 Nov 2026 03:18:25 -0500 (EST)
+	id 68CB66B00EF; Sat, 21 Nov 2026 03:32:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E7396B05B0; Sat, 21 Nov 2026 03:18:25 -0500 (EST)
+	id 63DC16B05B0; Sat, 21 Nov 2026 03:32:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D6D56B05B1; Sat, 21 Nov 2026 03:18:25 -0500 (EST)
+	id 553456B05B1; Sat, 21 Nov 2026 03:32:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 26F106B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 03:18:25 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB7A8160385
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:18:22 +0000 (UTC)
-X-FDA: 85458424044.19.D5800B2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 045C640004
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:18:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iNq1gatA;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 272BA6B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 03:32:34 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5EAD5160391
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:32:31 +0000 (UTC)
+X-FDA: 85458459702.27.F4FCE0E
+Received: from cockroach.ash.relay.mailchannels.net (cockroach.ash.relay.mailchannels.net [23.83.222.37])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D45F420005
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:32:28 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of brad@sim.vu designates 23.83.222.37 as permitted sender) smtp.mailfrom=brad@sim.vu;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795249101;
-	b=7DyOXDad59uVb/Qeb/U+j/or+td0UCDjlnw/8RPY+ZKzqhMFO8wMJ6xlYDUUlgaxOpa9lH
-	WQhtjpcXubfygk4XoHSno43ZpaErRgu9jO6HMZDGHDZ1Dr3gpm7Z/M19TmNOYqB4WP2wvu
-	pcljcYn+oG92XGVRG6G05x23nMvYSvo=
+	t=1795249949;
+	b=d7RQa7VzRiBqySRT+NmBlS72e4mgDvNjNbWo9K6odSeMcn9ekRkT6E8W7EEy3WPInH/2ag
+	Q+sC+ZIIA/vOrjqikwo0WxO9jltPVTTS8psH0nCnBvwJfW3VI8sy9jmDOxh26cq630oyhU
+	n8Ekg79ux8NlPVQE9PMImI/7DnJOKII=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795249101;
+	s=arc-20220608; t=1795249949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wCYPhItWmnp0/5nxKzmcWIir9eopxc4FlvC5rliCc3Q=;
-	b=5L1Grp63XgaRkvuUnMiDqyNCM/oFHmjmYlLMtMrnVevIQ5JFfvW2ehzbxkb6+tvFtK3MaJ
-	C+O/9RYb4gT3aRVv1Ks5HEHzNDgozR66PajpbtAZi35dVFKee8+4MHyrfCtxL/NorprVJd
-	+61hwYF2VJqEhyPXTLn2gb8v4ptHbuU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=U3QJzZioSMNb19niLTdHJqpa/pin/cGmv4Gv8E2Edm4=;
+	b=hihKdqP52ge8cN43IpSuZ2kTHETivSbNuBskhXq9r+5w36ZjSIaXcYrp9zrM/aMeId+kWI
+	dibOtAQ4lhkJvu/JdPpaO23O4sVk+OVy9VF2OzCJ5Vt4qwztpVpB+uSQ6ETERO4rjEEJt9
+	ESEzyNo920ULQ0QBWx5TLFHaJbRqmIY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iNq1gatA;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795249100; x=1826785100;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pO0cciCz4qBsH+lwwoCOo6yiJg2x8jY4K93217h6gAw=;
-  b=iNq1gatAPXBkM9tPp5m4PBNdWxCX4Atl6ak4z/0zGIKEIpHAmMRT88gz
-   cmbqusK5RcA0aA2QCK4ThspJ3U83F+rOXZA8OKULtk3Y9n7HGMiUwJISI
-   g+cKCGaVThup1xYlB8vNu6G7WVYRY95RtqiDl/ttVmI4Smdb/2HfXhC/u
-   qIeEveqg8fzFJmlXrtboITOEpCKiY6mhNhg8/N0byicbwKvR3PDD1OttD
-   +nLnEhMDqO0FbVhJeSTcDtnR3FYjEiIvkEDWEkykyAy150KziEXDSs9TV
-   AyBNkYWbdblAvgncLfBAfcR16OLZzAZEiVQuED6sy2sHO5mrXcIStG2Sb
-   A==;
-X-CSE-ConnectionGUID: dw3kzDWyQymRZa7/LO9H9w==
-X-CSE-MsgGUID: DzHkJPt1RWG4gMvqFg84AA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="4016231"
-X-IronPort-AV: E=Sophos;i="6.27,224,1787036400"; 
-   d="scan'208";a="4016231"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2026 00:18:18 -0800
-X-CSE-ConnectionGUID: PWrLIszdQNecO3b3uFVshg==
-X-CSE-MsgGUID: OqtUL30ETRu4ekM85ukBbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,224,1787036400"; 
-   d="scan'208";a="12709521"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa011.fm.intel.com with ESMTP; 21 Nov 2026 00:18:11 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xUgIR-00000001Jln-0CGj;
-	Sat, 21 Nov 2026 08:18:07 +0000
-Date: Sat, 21 Nov 2026 16:17:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	David Hildenbrand <david@kernel.org>,
+	imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of brad@sim.vu designates 23.83.222.37 as permitted sender) smtp.mailfrom=brad@sim.vu;
+	dmarc=none
+X-Sender-Id: instrampxe0y3a|x-authuser|brad@sim.vu
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 078AC600F3;
+	Sat, 21 Nov 2026 08:32:27 +0000 (UTC)
+Received: from cpanel-010-lon.hostingww.com (100-97-173-43.trex-nlb.outbound.svc.cluster.local [100.97.173.43])
+	(Authenticated sender: instrampxe0y3a)
+	by relay.mailchannels.net (Postfix) with ESMTPA id DF451629DE;
+	Sat, 21 Nov 2026 08:32:20 +0000 (UTC)
+X-Sender-Id: instrampxe0y3a|x-authuser|brad@sim.vu
+X-MC-Relay: Neutral
+X-MC-Copy: stored-urls
+X-MailChannels-SenderId: instrampxe0y3a|x-authuser|brad@sim.vu
+X-MailChannels-Auth-Id: instrampxe0y3a
+X-Juvenile-Ruddy: 2530bb0949302cad_1795249946826_3700707252
+X-MC-Loop-Signature: 1795249946826:3590204740
+X-MC-Ingress-Time: 1795249946826
+Received: from cpanel-010-lon.hostingww.com (cpanel-010-lon.hostingww.com
+ [18.130.191.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.97.173.43 (trex/8.0.2);
+	Sat, 21 Nov 2026 08:32:26 +0000
+Received: from 162-195-230-196.lightspeed.wchtks.sbcglobal.net ([162.195.230.196]:35312 helo=epyc.attlocal.net)
+	by cpanel-010-lon.hostingww.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <brad@sim.vu>)
+	id 1xUgWA-00000002cE4-01LZ;
+	Sat, 21 Nov 2026 08:32:18 +0000
+From: Brad Hawthorne <brad@sim.vu>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	David Hildenbrand <david@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Alistair Popple <apopple@nvidia.com>, SJ Park <sj@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH 54/60] mm/migrate: route explicit NUMA migration to
- private nodes
-Message-ID: <202611211538.vaJ4R864-lkp@intel.com>
-References: <20261120-private_nodes_v6-v1-54-74f5f9a115c2@gourry.net>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-mm@kvack.org,
+	Brad Hawthorne <brad@sim.vu>,
+	Hajime Tazaki <thehajime@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/nommu: keep the maple tree in step when mremap() resizes in place
+Date: Sat, 21 Nov 2026 02:31:39 -0600
+Message-ID: <20261121083139.803682-1-brad@sim.vu>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261120-private_nodes_v6-v1-54-74f5f9a115c2@gourry.net>
-X-Stat-Signature: 95k9xztnnfszgr675if5jr38nropspfd
-X-Rspamd-Queue-Id: 045C640004
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+X-AuthUser: brad@sim.vu
 X-Rspam-User:
-X-HE-Tag: 1795249099-745417
-X-HE-Meta: U2FsdGVkX1+k0VFIy365nc20zuLrOUDHbkWEPHGFj0OOmekZ4RxtAhzRFgeB1CJVPQwPkJ3E5U0fWUj4HAnUaWG8oxjOuzj3NQeMcpFUdWNp+wPVUrQPLhK/YOX3Pu5WS5v3ahk4k829q71Ke/gSDJACieTzU1tfTe1VYItBsMnW7xzEB2Aoqxt2WpoQe/Yu403t55BwxEJ9aPmCqZg5KyC1pzzHuztZRFZqclifyfWGnMcZUqLhG9mhS9tlsdnSdUe+aPLTgr4VKCw+y/4sRYU6QlqcX0ZWmDrlUDIY36AkTlJH0VtJbdFTcaKVT7qigi0OoKo1PYa17zBQaKT+3qsIyPvG4FwFchFUNoP0K+i2LeEDWYoFGqQQ6umTXUXfKHM/vefasyYZG1lMdArdan+c7uhwhWWx+A85B991LU3Qnzc7qWUU8mwzqIpW1yY2DeSc+k96SlUJIOcX+brO1IkN+ElazPIsZBA2+jcBRC/0bt1PK1Gb1pyzlT+yh02R2ZkPBLwdSkQFa6uiwLnGtZjXNnmjcMe/uK47kfkBSQzbOeLUSxoACFAR5CT1Ph65idSYcrnaxWPjnKxhfV3I9wwSqybMQxM2xB1bq3ZK1NWzMXu/B1LWtejy3glBbFpcjPst2L/ys6iMmPtQ5ck5H2UJF2t0HG8gQDwfgZwMHK3/LYoT8BTU8PIRkYscCMxC6qYr3gy9TWS0c2KP5aU53dlpPDYxo++pSytigsbObZxk32y5h+JX+swYNcTmVWn/JIt8G5mOQSI7TQTPwDWHMgbhdpiamPTzHJXqUDvuvDwOtdWzavXtklT4SeCei/8lOnuVE0NKzFuMQbi/P1tvmymBfodn7sZK6eK36yXi+dtyiVSW4rIcRblwh2XECc2ND/2camEal6buCph54jJkb4DyXk23Bj00IKYCBlD36d13C2bT7vwu3DZI9mnDQxn+nVHf2x/Xx2M1ElqSwCz
- rvO9/4Lf
- bf9ZFku+wEPfevjLOXs0/gXw/8VLs72ZG0vg2s9ZkyEFV1/Un2GlS+hOStHdhg649Psb0PY3GtAhiwoDpfc59tMmq5oytbDYa8hfb35Pw3kjiN6Z777Mc2lyBuaGQCMdWQmUI7ehJuZI7NQPdxkfwJIyT/ItUBlyW02ge00lQYNfvRlos836KxDsDRoHVdDkzjIt3BANEI2r0szO5RqUJmqdwrg1Ln/KAsb6MzofIRvekWy8eOR/ZCkXvhHzlW1cCPQca1SL6deQcJ0aukESWqGDALajC80OCVbudKBF4hk2wRTVJqOtmxqRzgDGe6VQ5e2gRBoKctGuu8p/LGvs9tJs2Lp4o1ZGkxNDRkDrxU9vELn7gTEdgsx4mJoUS4vYB84gc8YJgUavg0ROIUYr8vE2Bc3mkTOxNv2eKPIrdxPt9CkTTxIqHGgHYFZ47avp/WYyqDTAYdoFjIuu4xMFU9cwZ41Zziv+lKYWx0jm24Ux6ZqB9d+ogk84ei0Ecxu22qZ7Z66vv1f3WKj8xDOXofZqKhgOseFX9GSfFDANArqFkVoh0+wCS6b6zTIzRWkvy2v3xETxuaZpgM46RmE2rC9D7tMHC0+S/RNoi2kUqSglZS3Fge4MnZUyebN4TSpggtIeL3p9XeeoVatTH7XInhPrAENBK5cKnTny55jwAMTpjC3KW1GxFzwQNqPYOafUGrobdqMDBO1AX9e/GMbQQtLpl25b8Equa+F4bo8JVyfQf958=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D45F420005
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: hq1k4s5xhhikyohjitm6pwpnt33y6pc7
+X-HE-Tag: 1795249948-856423
+X-HE-Meta: U2FsdGVkX19/oMQtLPyCqYI0jTBQ25ofayG/quRhRbZUcIx1XsKMouKISEm1pHc3tToERn5WUrJOVKvBYMiMej81PqhOufQoP9xHaBzfC3pT4ZDp2jw+tv4vwGk7HFb4+S7AKom9MwvAbJOuiargK7H5hVqNtavbnI/3GmMtVnpVkdyKC21WZS6tJ7iL+B0++TdMqHsryZw/S4mEByg5BjO91eGG2IE7JPjTXDEo7ZVZkM9M9Me19yjqdpbeZuMdSRKQEJR4YAju2PNsG3v+9sj9mkEhhG6Evs8oRQlGe89AQ1KJEjX3S04Dt0Z/UxIg4aMl5AVjvoo9AgjOG8oonduuAPDf7XHcGfF6w2mPEyvOfRds5IWE1LXAO0CZKv0Negb481lDYL5urgX5f296t0hbnocCqDj4vhQ0p+NzTxGamYCDdMfG8+lOWe0ZO3WoRRqGdWk5VImcMgkIE0npIOzIFW5ttD30eIlNcAcmW83axdhHbZnqlAAvEwHYrhoJyHwLkiZGOmeW4aKqNeLc/ZrXLfOuC8hjymWuzN8J78pGhUnJs9jzewaIAoFdI5flfh/ykwv6e+hmv+ts70H3HzVrvH22B5o5iAcJ43xBpq4IvZmSM/vAF2ukc+sBuO/N5ONsi2nYVNfpbjTaoJeT1yUFGtbEYO+jPiN5vj3cBlGkeZTM1FVM4zFUvUxXxgN+D+5e8FCaxibwkhcigb0nfutslwtU5KelYClLaxKW6zhaFXXpOWUD6NdjOcZF7/yALvHJvf46yDAs7EzSGCYiLYKtuuif65ZTHJzJCnDffTSqloyj9b4yO5mrPC0Y/DkFCy+RL4uvbB4mFRYc985NVMIq4EZnKvt0NrBqJp32Rzxk9G/u5KofH9gquEhgTIL3YqriXzcqpUaknmk+sXyk89/07UAEwp4RVK00GuelJvQRcZiePZ9J0lU6AoScQB+T/SCoiwmT2v+nMWW1b4U
+ 1euTDnuq
+ aA7ryorJZ2t8JBc+cl+CeLvosCko5BNH/BHiRg9vF3fAYds+LqfE+dkwz1wGxv16Exext1jV9pc2a6TlH0GUnziu5nj4H0z8xq8TL2ZxTG4pjuwTzL8YiXcR+Wp13+G8I+EPyJ+zX9RPLOFqOdYyqq+ceUhAQ6FM4ul/q54P3YjTRo6gy1TkfDLXq9GMxDu7GYaIsrpj4JSGxG16UVh9sIGacb+RYXsEdKKtGdfPFVsNu0u9HVoFC866TiHIOPAcTqBu4gU8Px/YGyMmwvdBgn+bm/jbjleQpjSPXuP1VzzfzYo/1VpVR6hazluNQ9xR/8OY7Dzv2LHajSesAd8Dy6Pw1yj9uKA6DcjQa02lEb1i2Z9ZAlL7Z1Uk6yzhRkWvq99ISA+yPFoijPkw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,85 +111,146 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Gregory,
+On !MMU, do_mremap() resizes a VMA by writing vma->vm_end and nothing
+else, so mm->mm_mt keeps the old extent.
 
-kernel test robot noticed the following build errors:
+After a shrink, [new_end, old_end) in the tree still points at the VMA.
+When the VMA is unmapped, delete_vma_from_mm() clears only
+[vm_start, vm_end), so that range survives and points at the freed
+vm_area_struct. Lookups in the range then read freed memory (after the
+munmap(), /proc/self/maps still lists it), and exit_mmap() frees the
+VMA a second time. An unprivileged process is enough:
 
-[auto build test ERROR on 15f114dac9a7bde1796f0e54e22726fd31cfa8a5]
+	long pg = sysconf(_SC_PAGESIZE);
+	char *p = mmap(NULL, 8 * pg, PROT_READ | PROT_WRITE,
+		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Gregory-Price-via-B4-Relay/nodemask-add-node-state-iterators/20261120-130852
-base:   15f114dac9a7bde1796f0e54e22726fd31cfa8a5
-patch link:    https://lore.kernel.org/r/20261120-private_nodes_v6-v1-54-74f5f9a115c2%40gourry.net
-patch subject: [PATCH 54/60] mm/migrate: route explicit NUMA migration to private nodes
-config: arm-jornada720_defconfig (https://download.01.org/0day-ci/archive/20261121/202611211538.vaJ4R864-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 3b14d7c370558b46e5f0c6494a05c492e59bf32c)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261121/202611211538.vaJ4R864-lkp@intel.com/reproduce)
+	mremap(p, 8 * pg, 4 * pg, 0);
+	munmap(p, 4 * pg);
+	_exit(0);
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611211538.vaJ4R864-lkp@intel.com/
+It was first seen on an Adafruit Fruit Jam board (RP2350, Cortex-M33)
+running 7.3.1. There, three rounds of the program's mmap, mremap and
+munmap leave the process's vsize at 2133 KB instead of 64 KB, and the
+next exec faults the kernel, in vm_area_alloc() or __kernel_read()
+under do_mmap(): the double free has corrupted the slab. With this
+patch on the same kernel, 11 of 11 runs keep the vsize at 64 KB and
+the board runs on.
 
-All errors (new ones prefixed by >>):
+On mm-unstable at the base commit below, under QEMU mps2-an385
+(mps2_defconfig plus SLUB_DEBUG_ON), run as uid 65534:
 
->> mm/migrate.c:2254:10: error: call to undeclared function '__folio_alloc_flags'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    2254 |                 return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
-         |                        ^
->> mm/migrate.c:2254:10: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'struct folio *' [-Wint-conversion]
-    2254 |                 return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
-         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    2255 |                                            mtc->alloc_flags);
-         |                                            ~~~~~~~~~~~~~~~~~
-   2 errors generated.
+  BUG vm_area_struct (Not tainted): Object already free
+  Allocated in vm_area_alloc+0x10/0x38 age=0 cpu=0 pid=20
+  Freed in do_munmap+0x2ec/0x2fc age=0 cpu=0 pid=20
+   kmem_cache_free from exit_mmap+0x7c/0x8c
+   exit_mmap from mmput+0x2a/0x74
+   mmput from do_exit+0x1f8/0x520
 
+Clear the range given up on a shrink. Once a shrink clears it, a later
+grow back into the region must store the VMA over its new extent, or
+find_vma() would miss addresses that are mapped; so store it there on a
+grow. Shared and overlay mappings are refused above, so the region is
+this VMA's alone, and the grow is bounded by its size; but the range a
+shrink gave up may since have been mapped again, by a direct mapping of
+device memory at those addresses, so a grow into another mapping fails
+with -ENOMEM. As before, a shrink keeps the region's pages, which is
+what lets a grow back reuse them.
 
-vim +/__folio_alloc_flags +2254 mm/migrate.c
+With this patch the program above exits cleanly, with and without
+DEBUG_VM_MAPLE_TREE (nommu has no tree validation of its own, so that
+adds only the store's warnings). A shrink, grow and partial munmap()
+sequence also passes, and fails with the shrink half alone, which is
+why the grow half is needed.
 
-  2216	
-  2217	struct folio *alloc_migration_target(struct folio *src, unsigned long private)
-  2218	{
-  2219		struct migration_target_control *mtc;
-  2220		gfp_t gfp_mask;
-  2221		unsigned int order = 0;
-  2222		int nid;
-  2223		enum zone_type zidx;
-  2224	
-  2225		mtc = (struct migration_target_control *)private;
-  2226		gfp_mask = mtc->gfp_mask;
-  2227		nid = mtc->nid;
-  2228		if (nid == NUMA_NO_NODE)
-  2229			nid = folio_nid(src);
-  2230	
-  2231		if (folio_test_hugetlb(src)) {
-  2232			struct hstate *h = folio_hstate(src);
-  2233	
-  2234			gfp_mask = htlb_modify_alloc_mask(h, gfp_mask);
-  2235			return alloc_hugetlb_folio_nodemask(h, nid,
-  2236							mtc->nmask, gfp_mask,
-  2237							htlb_allow_alloc_fallback(mtc->reason));
-  2238		}
-  2239	
-  2240		if (folio_test_large(src)) {
-  2241			/*
-  2242			 * clear __GFP_RECLAIM to make the migration callback
-  2243			 * consistent with regular THP allocations.
-  2244			 */
-  2245			gfp_mask &= ~__GFP_RECLAIM;
-  2246			gfp_mask |= GFP_TRANSHUGE;
-  2247			order = folio_order(src);
-  2248		}
-  2249		zidx = folio_zonenum(src);
-  2250		if (is_highmem_idx(zidx) || zidx == ZONE_MOVABLE)
-  2251			gfp_mask |= __GFP_HIGHMEM;
-  2252	
-  2253		if (mtc->alloc_flags)
-> 2254			return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
-  2255						   mtc->alloc_flags);
-  2256		return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
-  2257	}
-  2258	
+524e00b36e8c is where nommu find_vma() started trusting the maple tree;
+the exit_mmap() double free above follows from 8220543df148 ("nommu:
+remove uses of VMA linked list") in the same v6.1 series.
 
+Not changed here: a private file mapping's place in the file's i_mmap
+tree also goes stale on a resize. That predates the maple tree and is
+left to a separate patch.
+
+Sashiko's review of Hajime Tazaki's nommu series found the stale range
+in July, and his fixes and RFC since then cover it [1][2]; review asked
+for a minimal fix-only patch with a Fixes: tag [3]. This is a minimal
+version of that fix.
+
+The consequence was reproduced and this patch drafted with an AI coding
+assistant (Claude, Anthropic): it reviewed mm/nommu.c, wrote the
+reproducer and ran the board and QEMU tests; I checked the result.
+Stable backports need adjusting: 6.6.y and 6.12.y lack
+vma_iter_store_overwrite(), and 6.1.y nommu uses the ma_state API.
+
+Link: https://lore.kernel.org/linux-mm/20260710021028.892645-1-thehajime@gmail.com/ [1]
+Link: https://lore.kernel.org/linux-mm/20260813063401.1786548-2-thehajime@gmail.com/ [2]
+Link: https://lore.kernel.org/linux-mm/an77pELeQdW-sTEi@lucifer/ [3]
+Fixes: 524e00b36e8c ("mm: remove rb tree.")
+Cc: Hajime Tazaki <thehajime@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Brad Hawthorne <brad@sim.vu>
+---
+Hajime, as you asked, here it is as a separate patch with you on Cc.
+Earlier note, and his reply: https://lore.kernel.org/linux-mm/20261120221021.789792-1-brad@sim.vu/
+
+ mm/nommu.c | 34 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
+
+diff --git a/mm/nommu.c b/mm/nommu.c
+index df99495c8..9221cd241 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1575,6 +1575,7 @@ static unsigned long do_mremap(unsigned long addr,
+ 			unsigned long flags, unsigned long new_addr)
+ {
+ 	struct vm_area_struct *vma;
++	unsigned long new_end;
+ 
+ 	/* insanity checks first */
+ 	old_len = PAGE_ALIGN(old_len);
+@@ -1601,8 +1602,37 @@ static unsigned long do_mremap(unsigned long addr,
+ 	if (new_len > vma->vm_region->vm_end - vma->vm_region->vm_start)
+ 		return (unsigned long) -ENOMEM;
+ 
+-	/* all checks complete - do it */
+-	vma->vm_end = vma->vm_start + new_len;
++	/*
++	 * All checks complete - do it.  The maple tree must cover exactly the
++	 * new extent: a range given up but left in the tree still maps to this
++	 * VMA, and once the VMA is unmapped and freed, to freed memory.
++	 */
++	new_end = vma->vm_start + new_len;
++	if (new_len < old_len) {
++		VMA_ITERATOR(vmi, vma->vm_mm, new_end);
++
++		if (vma_iter_clear_gfp(&vmi, new_end, vma->vm_end, GFP_KERNEL))
++			return (unsigned long) -ENOMEM;
++		vma->vm_end = new_end;
++	} else if (new_len > old_len) {
++		VMA_ITERATOR(vmi, vma->vm_mm, vma->vm_start);
++
++		/*
++		 * Shared and overlay mappings were refused above, so the
++		 * region is this VMA's alone and still holds its pages: the
++		 * grow, bounded by the region's size, stays inside it. The
++		 * range a shrink gave up may since have been mapped again,
++		 * though: a direct mapping of device memory can take any
++		 * address.
++		 */
++		if (find_vma_intersection(vma->vm_mm, vma->vm_end, new_end))
++			return (unsigned long) -ENOMEM;
++		vma_iter_config(&vmi, vma->vm_start, new_end);
++		if (vma_iter_prealloc(&vmi, vma))
++			return (unsigned long) -ENOMEM;
++		vma->vm_end = new_end;
++		vma_iter_store_overwrite(&vmi, vma);
++	}
+ 	return vma->vm_start;
+ }
+ 
+
+base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
