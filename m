@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10416606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 08:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E72606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 08:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M6VCOzUx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AJoVAlvT
 Received: by kanga.kvack.org (Postfix)
-	id 2CB146B00EF; Sat, 21 Nov 2026 03:59:08 -0500 (EST)
+	id 4ECE96B05B0; Sat, 21 Nov 2026 03:59:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27A4E6B05B1; Sat, 21 Nov 2026 03:59:08 -0500 (EST)
+	id 4C4866B05B1; Sat, 21 Nov 2026 03:59:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 191476B05B2; Sat, 21 Nov 2026 03:59:08 -0500 (EST)
+	id 3B2CA6B05B3; Sat, 21 Nov 2026 03:59:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF38F6B00EF
+	by kanga.kvack.org (Postfix) with ESMTP id 082826B05B0
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 03:59:07 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5780414039E
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 811C5A7E4B
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:59:07 +0000 (UTC)
-X-FDA: 85458526734.24.156910A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8E0B820003
+X-FDA: 85458526734.05.8067FB2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E783C40006
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:59:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M6VCOzUx;
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AJoVAlvT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795251545;
-	b=bEYktgMUBOEQ4/uOqPlyD7JyPAaEEM+HctMBBHTcSnETrd6P1sHl7rcy/XSdSbl4gJLhFg
-	AspasVcwZJToU1+VrC3Y75uluyJnrg8w7L3szA5XudmNUcl9KZ/QMP8KNsA20e885isB2z
-	JRWTEgl5CybaHn8qHiFVPXvD/BYIcJU=
+	t=1795251546;
+	b=4tJPCzAmgKAzpZMJ8rJ6Eoecq5hXnIDPsk4OkBISUzZxoL7BDh9ENq1g0W7h/CqZ9PPLRz
+	vyYrcR9Wdw1x8u5H+bBZljmquCrvLDjPtfYdCanO/M9PG2J2zn5MyEMXBpxnxGkSb+bFon
+	zYWoDHrQfesC4YgQPkSqrYqaqeZHuAU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795251545;
+	s=arc-20220608; t=1795251546;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4/TDtF5zLzUdykayQx0IjDmobABYk7840SHkgT56FsE=;
-	b=zi/AjsMtvoHhUDbsw0x9V2ZSr1wgS6nuF/w5OExz8sJQaEz2exEzUALf8WHif95cgUK8ya
-	BSLk27tUjPLXPmuQBtlqd36Nxyzwsrq9elR5ejP42CImjCljH5scpwrXJwz9HHxwnRSSvY
-	nq37ko5tDlVg79Xa7zHho98koeH2VkI=
+	bh=5VgRKjLcd5GVmjXCRxYj/EylGAWkqUH1XmlELtVJm6M=;
+	b=Y9fJg7ra8wUcUqVoGLZXp84iUxvztoDtQZJgz1UZfT5ZAFTxt9eFX486L+rK1T0QL0WJ+/
+	P5+RcEBoSsi2+uI4/RCA0ptRu7lWygIloDPu4OntKbIjaFSwA7Kf8MVNpCU0KnjsAX3BES
+	ELEhrTtGp4UbOCIYTYMK+F5CNF0YNsc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M6VCOzUx;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AJoVAlvT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E069C4371F;
-	Sat, 21 Nov 2026 08:59:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B891F000C0;
-	Sat, 21 Nov 2026 08:59:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2E63160E07;
+	Sat, 21 Nov 2026 08:59:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FFA1F000C0;
+	Sat, 21 Nov 2026 08:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795251543;
-	bh=4/TDtF5zLzUdykayQx0IjDmobABYk7840SHkgT56FsE=;
+	s=k20260515; t=1795251544;
+	bh=5VgRKjLcd5GVmjXCRxYj/EylGAWkqUH1XmlELtVJm6M=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M6VCOzUxsYfKrm/ayET3YgfwBRfrqzRVuIARfa5e60fJXdSaX6r4tfwv5cgpAAx5O
-	 73UhXNUP3SN7kxMQLDTS5euRk/kBTlzOd2ZXLKDsrH/3f0BNmMaIGh5etlQROW0Da5
-	 2EjmY4DoxP2djoU4kiJBGTXNqqoH5fUJt/JXfXW5hUqzPzkHE+URHTDvqcv38kmgTY
-	 sJG51mdX+zXJ/evW/qB6RykFkObMVKhydMyMEYkB3MGraB4KqL4v6sQr4dEdmEpWAi
-	 w3uSmft8myq+FeTWZLca74LuN7vpWvxGDKmo5D2p4hGTURV6RrMluZTZ+Nea7bdvNA
-	 svPpPjI291nVA==
-Message-ID: <sashiko-outbox-226848@kernel.org>
+	b=AJoVAlvTfQ4Hq3MYZMpy7l3OgLmfmEQz8Tgz3w9KM9xR0nx3voCGiCBWtX+QeIB/n
+	 ydXEiN4fZ+LYdiCXgphCunwZ2WZhjCZud7Qap/PKXqkVXBB/qkxLIfXY7q8ApkzWeq
+	 45o13vSXjZF4UXEfyGkMDLGhn+DWtqxl7xbtaU/edc++F8NsgZfw1IIPS7eomG4yV2
+	 DNTgnAU1aUgDoks3JvWO90TLyAuvA9UyckQ2/+iKsk/fJ8s1khWACWtIqjKtZPbicY
+	 6ekWVVlIKKMCxzXs56qkk7bZ2uJfz0no8q7S/ssNAJnjsgD5ywKBapV7+xyXRUq9cH
+	 pRo46KMwz5MCA==
+Message-ID: <sashiko-outbox-226850@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+Subject: Re: [PATCH 3/4] mm/mglru: skip cold PUD subtrees during aging
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Baoquan He" <baoquan.he@linux.dev>, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, baohua@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, baolin.wang@linux.alibaba.com, "Baoquan
- He" <hebaoquan@kylinos.cn>
-In-Reply-To: <20261120085806.781225-2-baoquan.he@linux.dev>
+ He" <hebaoquan@kylinos.cn>, "Kairui Song" <ryncsn@gmail.com>
+In-Reply-To: <20261120085806.781225-4-baoquan.he@linux.dev>
 References: <20261120085806.781225-1-baoquan.he@linux.dev>
- <20261120085806.781225-2-baoquan.he@linux.dev>
+ <20261120085806.781225-4-baoquan.he@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 08:59:02 +0000
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+Date: Sat, 21 Nov 2026 08:59:03 +0000
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E783C40006
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 8E0B820003
-X-Stat-Signature: 33qnt1tt1gxochjkpoydb3cytpaa1bkc
-X-HE-Tag: 1795251545-271891
-X-HE-Meta: U2FsdGVkX19fJ5D/eAGdoHBB8h83Ow30jE/tMrcM11QauZnOAJxhZxIoXal+O8Kq7HMpDCEmx8xrCaBMRnjTTdVHlqdALXpzDw0PGlhWt3BsE042XHOUzQurw7+MvN8c+rULnsG5zwHafJ/GAPRee+kIA07FXgMkQ37FXTgOyfeexYm5Y+scspvIHI3WO+E8n/Iqx1IAarBE8u/FH5prAGhiGwmsiLRTcP2ehqMvBu00ugJM7Yl5qtc/qKb7G/aYPI0u9kbF3jvcV2MMXDctZ9g+iklFXe9HWtGjuIUY5LZyFuCaeqHBSBnex38fieufU7lYkqT/zM8Pqw+iuS0IvkbXMdLDn+RE/voZC/eYhiVM91wHiVDuJoWkaMHXLfu0dpdaa0t+EYpYuM1Zf5vushQ1/kqI4QupFIrKUIu7Qd9nNBBWDJYkoUH1KaSkoLqVQb6b+jimhuKUqG8H8ajOKGPyaqOP08hSU55BrWpfZNR5DwnjkUtPVQdJEYHVgFQMt/qZRjX2nWmQOe9R5y+w/xHbzII9oWyQx3MsdOvcauNKMuIzOJzVFHawAH/qKnxSr6Kc7uyGhggL9oLrHuFRs3eG9MLU0sukxcmb9WmUG/Sh/pbfowh5mUbLUWbMEcvKkiP3EmNAt8/mhglOedk3SCGbY/15CLKQgI4UzgBvkWmefYD1cB5NIX2W/HD8F05kRQHmrt+TWQTXU2l0fGh7h9Tx4/3ZmpX4/SiaGDf28rgQm/ZpDmyhIydfl81xdcngyXKtaEY5tCKq/3S9lCV920cDvH9wu+yt5o1FEDDa4WFKzSgiNCPSeGIuDEU/VocIS+HXv4jtQ6auNZZxHwJaRkTXaNstkeBZLlLtua28iRlBoM1PRGkWa6OfdVfLPE0GlkUwfHNn94qen4ralajcJEl7p0hobEFIjBBi4lRqsN/+sTazMR+V4wJFYKwmGLJAry+6oQZtqSHkr4AauBy
- 6jLX9m6M
- 4MWQX3d0RH6njlfZRrXqWY0UxUdjOFcHu0iuIt0tFIowDajWofZKC+CP9c0Eb+PYVn2+TsxFoo6DPGYy1A+OG1lvUzYQ0009/K5MxxlTmXuEkE8LAnb25KhZ353TZ0cMAtTkYvXzbQB/Hzq7pUDauqJuMsy3SXEjThw8lOMv9gs5ypeyw8hOWxVzEWI/2dlCoj/Zail5FQX7oHjjy5Fv6m/J770RLbszW3tTYxuoGQ+FMrjo7MGd23+10DP2lmLJbI3ZayxlSPRAn8mV4SmvIvOxmHMsKFo8SM9wRQTM5Zjfk43ka4vx9LmJA4xt9iFsFBi5EITUFn7JRwmbd1EL47GnLEU9OP5dgR4MFwrRO5pYAqJGECAjkndB0cPlDi4XJr/m7y/DupwNMWxNywarNYrP0JR8qqL3Qqz4hh9x732deDa+UuA0CNDwO2UX2IWwN/fdhSi77afaxrAzao0Sfay24eVEIoRHi4jSH6A/Be/DfDlSBFCRKj9k1KjjK7uh6TNJ6uRYi/zsYTCSyUGKlvr/h25ubIxYNl0dcQ58GhWgwgOJkj72hQU1FmjW1az/nd1rNTPcZGeTGpMlSlQrA/iGEqtq96vTB5K8YA4wpCSSzbQ+Jlf4cqjFPVYiu8XyE9spk3q7bv9JwbjwUS4cbmIYbQPYm6RE220HwWJPURSCHEayh5mPoTvQ015gRZiVdgpBAm681YBEskE93G0CYSIokLNNvCPK7b11BLOxX7IuiucFSaYPZfm/nJcp5FGw5NfJ9c8QrYbuFfGWEABQjK/zkAjw1mVo5QYgGf3tk51D+OOX9yDnEMgIcECEv0fELd6+qz2f2GrDYnd2gGMZwAd2JzA==
+X-Stat-Signature: fhumzajggedrctxbdef68ne5b6ncerit
+X-Rspam-User:
+X-HE-Tag: 1795251545-247962
+X-HE-Meta: U2FsdGVkX199svX4CQK+w+OvvzdBzZo6rK8zIHi1v3MXSsvRxyHuC/k/BlZVNcdss1QUY6PiV1AoIfEHX86/D17lLmVrJgnkvCl4b79E+sswrGpFLprPbLo5rq2gIB3/4DV0uWLmrfZHBdfoYDB/g/5d1TcvtUPvoKfdM9pKmPKHT+USm7svYefDwQ26aX94KibYzyRAwZiMqidO4If2ZyvKiEXE4aRL3lb7psWtaqFXssgH9Yu5RZCkiv/kOsC+h5LJKwJAh5ZOliWC5ufF3sSzSQJm2dP/lkroo+hNPCffjnWliTin/nN5n9yKH5LIAC8u5F/CgqHburePeX3aCmz/Jc+mYix4pUJHysQfO8KlqDoWHwfbW0iX9Xud1iqIlE6X5+J88br6gs1sKQoRpDRQU1LcXh8C9/Kw8nxA18kyIwZa6WNq3Av3VcHLmttSUcksovT36eNBRLvUFsA1k19pmLJ1ut8ny5rz6ahT/hkomzq8i8Ipg04JiKcMLylk+WFIYUrVNcAd/GwZmE6xWnckaI3eBPoOYcn4hcjGKMgJXRoACEdQs3v4kOzFFeUgFfkKeThmAuQyN5MeeTxg9+e7moNCH7ullnm0dusALh+lVPAv1SvuIiWtmHQvW9mXeu3LKteVofK96IGVYrqEIOZNK0+kSuLu2yCBprZYzdhifxF+/PjAkQIEw0HnTnflAswhXkjYDGndP8XFR1aCjqSbxLoc0J9LE11lXjkHQ9J5spMQfEZdvF1f1e/6Va82OLXSf8OqeNStQmksnPbD4YPVAbc/wDFb5vEKd/X2aYM2K+VSA0Fqphpqq3p3UILYt/KvXjUo5+6KhULnhECFd9sAqqAE4z6kv0mn4Vz4HLsGFkRXe1aXx9LPM42teuVzTEdps4adM1unRC2qaY3LOI4VRMroWHGNrOOADXgs421M3Xwzn6qAJa73CQ1tcgOSVV63q9GnUrlc8x6bOIy
+ rEXDS6/V
+ ii5epdz8vQr24aImUUmFhnp+hqn1IGQN6LvhhA5/LNxhkdrVkUQzTcjhWS09YIJ6Q9oK6fHfRdalGOKPxp9Y2SZ+SvdYTQ8K25vX3kJFrMOpCfmOGQ9PaERs0qQCH+ysPxZPn9KsGuq15IIcvHtIgsHhrTAXyor4xNToph5C4GrhjEsg4piI8RGsbY4WDbp94UK+cWtHlRn0jNInYJstnNGRTWnGdNXHFhQxOmqymXW8sYipcQ41H4ZWmwnsiuW2PXgRhOWbXP7a3AkTuQQQIhM2NV4O4YPDtilurw5wxLZOnCNkAQsCG3VMn5zkIpQhaguAqi6+iYjNcbqSrumHSWeHOJMxsSEbjc4C4p/B2v7YvUDUdcXITIaLmGPYOE7VAKD8kPu1Rmjo/qSDt9akIyP/qmS50uTwe3PiHsXixGBDrtYl5cIrmqVOq1ktzhdCrv+v1JTg/M1J+Sf0cPDFHm6oeZ3aGeyZoO4YJlxQO6DTcW/qM+DTsOTzdaIrFdY3x1dUAoXUjKv2gkihF+926P/1k5QPmoyMYJC8DOfG6reyj8SEpH1Klx7MGL017vojReesOkDMS5jLAgsyQmY3YGXATG696aNrSKQn1gsW19mvcKLuq+wWX8Z0mQWeJtguEXNq1fp6YdPRD7hy4s+LGpFFTEwfFcHAK5a6URsGJunMdL6ziKNAvmh9Rqrz1xqArSADCxHZ3BNxDxzWKFGk6XhPz9/LiE5mlGItUy71QeVbGtdZ0SohK4olekKdysSsGHDHnv/o12fBHbN8RYaCXwvEPJHgPgmw2GE6U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,102 +96,110 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm/mglru: inconsistent MM_LEAF_ASSOCIATED accounting across
-  mm_has_notifiers()
+- [Medium] mm/mglru: walk_pmd_range() drops young status of THPs flushed
+  at non-leaf PMD
 --
 
-commit 4f0dadfe0435dfb7f058c5e9c459aef67be5dff2
+commit 807f1bc14298f872f3bf880156eb7f9c34a7f570
 Author: Baoquan He <hebaoquan@kylinos.cn>
 
-mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+mm/mglru: skip cold PUD subtrees during aging
 
-This commit adds MGLRU aging statistics (MM_LEAF_ASSOCIATED,
-MM_WALK_TOTAL, MM_WALK_EMPTY, and MM_LEAF_EMPTY_WALKS) and the
-mm_vmscan_lru_gen_walk tracepoint to track page-table walks that find no
-matching folios in the target lruvec.
+This commit introduces a PUD-level Bloom filter to MGLRU page table aging
+to skip 1 GiB PUD subtrees that had no young pages in the previous
+generation, while updating the filter from the page table walk and rmap
+feedback paths.
 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 6a2ad0cff7951..902f4877fd0cb 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -579,6 +579,10 @@ enum {
->  	MM_LEAF_YOUNG,		/* young leaf entries */
->  	MM_NONLEAF_FOUND,	/* non-leaf entries found in Bloom filters */
->  	MM_NONLEAF_ADDED,	/* non-leaf entries added to Bloom filters */
-> +	MM_LEAF_ASSOCIATED,	/* young leaf entries whose folio is in this lruvec=
- */
-> +	MM_WALK_TOTAL,		/* page-table walks completed */
-> +	MM_WALK_EMPTY,		/* walks that found nothing young for this lruvec */
-> +	MM_LEAF_EMPTY_WALKS,	/* leaf entries scanned during empty walks */
->  	NR_MM_STATS
->  };
-> =20
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index bc7579d47f9b4..36e0946bf2cc4 100644
+> index a4c64a1903912..2cd3f28f74288 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -3584,6 +3584,8 @@ static bool walk_pte_range(pmd_t *pmd, unsigned lon=
+[ ... ]
+> @@ -3626,11 +3637,12 @@ static bool walk_pte_range(pmd_t *pmd, unsigned l=
+ong start, unsigned long end,
+>  	return suitable_to_scan(total, young);
+>  }
+> =20
+> -static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct=
+ vm_area_struct *vma,
+> +static bool walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct=
+ vm_area_struct *vma,
+>  				  struct mm_walk *args, unsigned long *bitmap, unsigned long *first)
+>  {
+>  	int i;
+>  	bool dirty;
+> +	bool young =3D false;
+>  	pmd_t *pmd;
+>  	spinlock_t *ptl;
+>  	struct folio *last =3D NULL;
+> @@ -3644,13 +3656,13 @@ static void walk_pmd_range_locked(pud_t *pud, uns=
+igned long addr, struct vm_area
+>  	if (*first =3D=3D -1) {
+>  		*first =3D addr;
+>  		bitmap_zero(bitmap, MIN_LRU_BATCH);
+> -		return;
+> +		return false;
+>  	}
+> =20
+>  	i =3D addr =3D=3D -1 ? 0 : pmd_index(addr) - pmd_index(*first);
+>  	if (i && i <=3D MIN_LRU_BATCH) {
+>  		__set_bit(i - 1, bitmap);
+> -		return;
+> +		return false;
+>  	}
+[ ... ]
+> @@ -3755,7 +3771,8 @@ static void walk_pmd_range(pud_t *pud, unsigned lon=
 g start, unsigned long end,
->  		if (!folio)
+>  			walk->mm_stats[MM_LEAF_TOTAL]++;
+> =20
+>  			if (pfn !=3D -1)
+> -				walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
+> +				young |=3D walk_pmd_range_locked(pud, addr, vma, args,
+> +							       bitmap, &first);
 >  			continue;
-> =20
-> +		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
-> +
->  		if (folio_test_large(folio)) {
->  			const unsigned int max_nr =3D (end - addr) >> PAGE_SHIFT;
-> =20
-> @@ -3591,6 +3593,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned lon=
-g start, unsigned long end,
->  						   max_nr, FPB_MERGE_YOUNG_DIRTY);
->  			total +=3D nr - 1;
->  			walk->mm_stats[MM_LEAF_TOTAL] +=3D nr - 1;
-> +			walk->mm_stats[MM_LEAF_ASSOCIATED] +=3D nr - 1;
 >  		}
 > =20
->  		if (!test_and_clear_young_ptes_notify(args->vma, addr, cur_pte, nr))
-> @@ -3682,6 +3685,8 @@ static void walk_pmd_range_locked(pud_t *pud, unsig=
-ned long addr, struct vm_area
->  		if (!folio)
->  			goto next;
+> @@ -3777,15 +3794,18 @@ static void walk_pmd_range(pud_t *pud, unsigned l=
+ong start, unsigned long end,
+>  			continue;
 > =20
-> +		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
-> +
->  		if (!pmdp_test_and_clear_young_notify(vma, addr, pmd + i))
->  			goto next;
+>  		walk->mm_stats[MM_NONLEAF_ADDED]++;
+> +		young =3D true;
 > =20
+>  		/* carry over to the next generation */
+>  		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i=
+);
+>  	}
+> =20
+> -	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
+> +	young |=3D walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
 
 [Severity: Medium]
-Does MM_LEAF_ASSOCIATED count all leaf entries belonging to the target
-lruvec (as described in the commit message), or only young leaf entries
-in the target lruvec (as described in the header comments)?
+Can walk_pmd_range() drop the young return value when batched transparent
+huge pages are flushed at a non-leaf PMD?
 
-In walk_pte_range() and walk_pmd_range_locked(), get_pte_pfn() and
-get_pmd_pfn() filter out non-young entries before get_pfn_folio() is
-reached whenever !mm_has_notifiers(vma->vm_mm):
+mm/vmscan.c:walk_pmd_range() {
+    ...
+		if (!walk->force_scan && should_clear_pmd_young() &&
+		    !mm_has_notifiers(args->mm)) {
+			if (!pmd_young(val))
+				continue;
 
-mm/vmscan.c:get_pte_pfn() {
-	...
-	if (!pte_young(pte) && !mm_has_notifiers(vma->vm_mm))
-		return -1;
-	...
+			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
+		}
+    ...
 }
 
-When !mm_has_notifiers(vma->vm_mm), every entry that reaches
-get_pfn_folio(pfn, memcg, pgdat) is already young, so MM_LEAF_ASSOCIATED
-is identical to MM_LEAF_YOUNG (which also only counts young entries after
-get_pfn_folio() verifies the folio belongs to this lruvec), and an mm
-with old folios in the lruvec is still counted as MM_WALK_EMPTY.
-
-Conversely, when mm_has_notifiers(vma->vm_mm) is true (such as KVM
-guests), get_pte_pfn() and get_pmd_pfn() let non-young entries through so
-secondary MMU notifiers can be checked by
-test_and_clear_young_ptes_notify() and pmdp_test_and_clear_young_notify().
-Because MM_LEAF_ASSOCIATED is incremented before those notify calls, it
-counts both old and young entries when mm_has_notifiers(vma->vm_mm) is
-true, giving MM_LEAF_ASSOCIATED and MM_WALK_EMPTY different meanings
-depending on whether the mm has MMU notifiers registered.
+walk_pmd_range_locked() buffers up to 1 + MIN_LRU_BATCH entries in first
+and bitmap across loop iterations, returning false while buffering.  If
+earlier iterations queued PMD-mapped THPs and this non-leaf PMD call lies
+more than MIN_LRU_BATCH entries past first, it flushes those THPs and
+resets first to -1, but its return value is ignored.  If no later PMD in
+the PUD sets young, walk_pmd_range() returns false and walk_pud_range()
+leaves the PUD out of BLOOM_FILTER_PUD, skipping the 1 GiB subtree on the
+next aging pass.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120085806.7812=
-25-1-baoquan.he@linux.dev?part=3D1
+25-1-baoquan.he@linux.dev?part=3D3
 
