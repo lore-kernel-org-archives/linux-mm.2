@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51C8606A685
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2951606A339
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qy+nfG9k
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MCG9Jh12
 Received: by kanga.kvack.org (Postfix)
-	id 2ACBD6B00EF; Fri, 20 Nov 2026 19:09:00 -0500 (EST)
+	id 175046B05B1; Fri, 20 Nov 2026 19:09:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 236926B05B0; Fri, 20 Nov 2026 19:09:00 -0500 (EST)
+	id 125AF6B05B2; Fri, 20 Nov 2026 19:09:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FFA56B05B1; Fri, 20 Nov 2026 19:09:00 -0500 (EST)
+	id F2ECD6B05B3; Fri, 20 Nov 2026 19:09:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF3656B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:08:59 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 432E5160260
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:08:59 +0000 (UTC)
-X-FDA: 85457190798.16.57B972B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C2C466B05B1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:09:03 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 308BFC028A
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:09:03 +0000 (UTC)
+X-FDA: 85457190966.02.0E538C7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 94950C0003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:08:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qy+nfG9k;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9491F20002
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:09:01 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MCG9Jh12;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795219737;
-	b=BvhV69XTkmMTOULv9Y3ZMrTGQMhueyl5DnVgG2pA40sJ1YMm4Serze2tRcbwLO2LJq6bE8
-	9qP09SpVR5cf64gMRV6X/hWB01lgZ7rzXQY1TVv+AzPrtNuins6WdlYNMvfJl3CKAwWYej
-	UjyVIriuCQ4OQ6+0544cN0CELFFDcdY=
+	t=1795219741;
+	b=zgsPOi5gz08B90+ClWoUSihvcKXIjoZo0L0LFvf7/tH79Jdq1mvmrRm1KnC3BD48XX28xH
+	eRUWqMIvvlGy92/iZdDR1Pte1NMf6s/R+YRfclsO8DV4jKCJZPE0SVbiVNFJ7skT92EAYf
+	QMhSsekOSc7eJjmz6qLoSt6AjsDkEVM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795219737;
+	s=arc-20220608; t=1795219741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1uAsKefbzilc6PMu577PfNWiDJqL44RmMPtTEi72U3A=;
-	b=n1GQPzQExfR7Koyd7KPLmcgyZIvzlOt9Pj1aqsZOl/iOxCFCKbCu4m/EeXugtqCxQQCpVq
-	aoi9mTMeiKM1KASigKUP1OqFQAkeRnRinhxBkVKVDtA7lN7Ic1UzOsTgftcILqgb5jR5q/
-	FkYQcuT4kIiE/GfR08WAlfDh5zl/Ud4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HMiFFGmw0v9nxAge20cDn397wiErWOHZ9jOEttk4raU=;
+	b=PrGtibCPN6w3S3txvljF38ar/q0TiccuZEUGB/J5Xw9ZT3k8NV0dEVFC9LGrAy++UYOoQ/
+	aDcvP02FLCpQZsfJB17L0mTqnTyhoTlwnH5uwNKy9eqnd/hpXDs0qbl2CYenwCNwFhCZxo
+	HLVY9yVouWJJvKpjRcNLNLqppr53e90=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qy+nfG9k;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MCG9Jh12;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 11A0861D28;
-	Sat, 21 Nov 2026 00:08:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id F29591F000C0;
-	Sat, 21 Nov 2026 00:08:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 4D23761F22;
+	Sat, 21 Nov 2026 00:09:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 254671F000C0;
+	Sat, 21 Nov 2026 00:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795219735;
-	bh=1uAsKefbzilc6PMu577PfNWiDJqL44RmMPtTEi72U3A=;
-	h=From:To:Cc:Subject:Date;
-	b=Qy+nfG9kndsGCWByIvx1D1qx5JMhbSigttGOpcfYj//YpOKAKVZXZGl+6zNKVzgws
-	 HdcUIlX1NWuRqUuo5jcF3521ZG5+P4mHk+xULIs0qrUb3OHyJRhwF/Spy/ArdB9Feb
-	 EipXNfNxnaQ+062S2zkRQRIxhQ8qddaUeBJ5a2MHpQVXbBQFi915KNLNhpWOhq80Iq
-	 ZabN8IZPjmZKM4qqzAN4jTIXyVIj8vPnp2u2vLY+cm6oyAWuqsmrjCsw3xveIMq5yz
-	 r3yLERHoO/2Zg8UHXnIY+/BZGAZasDl0BUpF2nLfv6GMAvMu9+eYljXdKmTs0Ke4Uv
-	 uj5V45q7TNajw==
+	s=k20260515; t=1795219739;
+	bh=HMiFFGmw0v9nxAge20cDn397wiErWOHZ9jOEttk4raU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MCG9Jh1256gFmx/kJBdpvtrZ3dAFy6JucQNKjq+UEDDHvSfsCjIvK79puHbjOkQ2j
+	 yLwGkP/zWuSJdgoNpsZpPJQqe8beWIamFh64TiVd3IFdL4sWKjuuMoYrsyBe6B9GXr
+	 HxXJuEwWmpevvo9m2YuFz4UqgRwPQqBnef719+RqEXVE7M3RreB4FCdF3wgRro0Wdl
+	 xFVLfcZe1dOF6Xy5OXE79lBtJZxDpFc7EsLy4EZbJz29c5cxL2VpA0CJQeacS31Zdo
+	 G2VE4SZqQrVeumqNyU2QjuDFDNsNiqZXrhWfoS6+GYb0Qq33QmgNO2NoEm+TVjVmxv
+	 f0f7bDxjNsjbg==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -82,27 +82,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Paul Moore <paul@paul-moore.com>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v5 00/25] rootns: fd-bound process closures
-Date: Sat, 21 Nov 2026 02:08:19 +0200
-Message-ID: <20261121000844.1863324-1-jarkko@kernel.org>
+Subject: [RFC PATCH v5 01/25] userns: Factor out idmap validation and commit helpers
+Date: Sat, 21 Nov 2026 02:08:20 +0200
+Message-ID: <20261121000844.1863324-2-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261121000844.1863324-1-jarkko@kernel.org>
+References: <20261121000844.1863324-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 94950C0003
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: mg6cxxwq1z8ahijwf7jsywgo1crwmip1
 X-Rspam-User:
-X-HE-Tag: 1795219737-482198
-X-HE-Meta: U2FsdGVkX18JSrSCzEWlQuGzfF557ionHIrteM9+eFfa0jc/c0s3BR4qjwMJIAJDMqEuGFgZtASBJ/VWaBq0iypvM7qrkSbhhGWW2sMin1N7d5eatGoBmh9mWKkk916AfXoGWarvIqoFGt9AWcqMG4BV22GxxZyhikzFvsZRb5T3KmYZ4xpziHICY0XaA01sMtCMcsC4BiGXq7Yfjvd1TWVYoiv0D4rW4jBigAZ/smAI8C9GBESKGru0zJQA9dl5wAzUqbv66zNRVv5teeofcUH+oDk/toxr44OsqaAnZlBvAg6hcJB0Tjr36Oqoxv9+8IiYZbJt1IxY0l6uFJyhQQYfCnU5p19xkVvkIdYA8yfe3vzJp13XPCtuPJfnZqd4ziCyranDpcYVKOKyFCWeay5eYVaG7RH5xn+YlpgQ77iogpHsEF2aofF7g1U96xytaI0rWov/wxRdCTjz2A18CB20nIUoo6UXKCTz4wvm/08rwDiR1as2XckAwSB9IjKaRCoFSg610y5fM98Zx95l5nOqaJNTior7RPC7fiqU5mPRn/PGtwTwojUVhzGnnTQv8lcM2VjTXOlH/zMH3jGYIrY3kBXgDIv2zktB3mcM0q4MWZIS4tVQk0jkf30c6HEdxvjXRLL0ff5i3XF65gVs1GafXXp8NVeFV5V5fV0lWkqqwdsmpwqH0Jemx2IijIRrdeGF22Zw/yjGbyjd/BTt4m9DEPRxkHoApSg6j7wYwIAM7im+aKxzSM4kjKFtPv0v9QeV2GzEVzJTjdePXrkv1mq5MIXf0Qpm7o4fmenA7/B7fclapAYMBFfpfTlX1TVEPuSG0lTZ36DErFOKHBI2L4QYqbLeG9nSWNfLbyIDcJTeh76OBX8tN0KY2AwKg7pQIW+y4UAI85fWlhCil9utPxuJ9X/3OS6cMZwYZbT0n/3ULvRwCQCyeeXPznS7kvTAjeYZxqLH2Yh0NZKTuRQ
- z6any6KA
- 7aYjQWS5e+1l1mJElGkcG61f+EePXQJV4yIWmHxOZbX21eukqvZDIKM8DXNM51Fzlnvgiq9nb7WvUxz1QeyyrZHXCKT3bdL/L72MZylG2Ch89WTfEY47GFarIK6EzQ5I1n64b+K1emrkkCPrJSEurDOzkvMM6sOYIw92CL1MwK6PpFxnb1oeJCSQKm+A/xigBqHrlSbEo/ku8eeVb0lLx3ngkvN6xQ7WpKR+8sxaSZCLt8kzqxaeKGTHYE+ccdtnb9vhTS9JVe3ycBqmL9DR2dcLgJU+nmF37+O/xy9BfVZi88uvNXUPy93TKFYD4GC1H7tifwSzThHuaScoO1IzHITYpotmN9c2ogBwRFoWrmnnUl3Bu2A/QyJyQueZ6O1T0torpg/xNBwMvGk28Hde2WL9jAMzf0YvBYuQawH1l6XSTO4EPt48QqMOZ86VXOw1wkvLMYG61fk1ZznspWiIOqZ/tPqh5uQFEiXYRYCFfuHaIInCccB0aHctPXw9veGp5Muu3tO6KD0zgbXEUmVCZd2oymUSemCkFP45EB4nRd/+aayRuiOy3/sQ7vsj69F+yUldSqGc1k1pR995JrWxUb6GgVykhR0xPucwFssPCDoQ4RnAZ7j92HHiEXqmSvUyO9dnuRYx44xKWUdfC9A50GJDFoiX3fA5/St7UFcwhMX2FHvKkWK1tJQAs09SfkZfe6g1uWBk6U7VWYRu/BbKvZDHIpLE5vf5vd5Y2gZEpjarYpMVSuKPxzYHDIkF4L6BDqaT8iZzx23fVcxWaEoTjDWbi9541zFKQ1w8PQYKZmg/6wDOTdm3iPQ+gzVNrfoQjHRCgd3VnSiXjNaXAA6FRgybtqJ9VLGj0cukUi4WRNNaLDPxLtpx+iHNwXBkCy5JgVBiXez+80mP3u3Yf5zLO4vm6jU8caiq7oDmpQBVthlsOdBCkrD3MuDpBGv3d5Nhra74rjulfNPKgXlJESgZbP8HIzv9L
- Lncg++fg
- awoxwgVpKGJ/4EhPOxfMnZC8kYbsTlDNHKWuNPhvHO675VuRjhzn5w==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9491F20002
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: scwcfg1kdgqskrg4esf7u81d1idnk385
+X-HE-Tag: 1795219741-233383
+X-HE-Meta: U2FsdGVkX1+OH4cjttl6bwQ8k27t5nbQcLBJLvafubQu3FS/9PRPNfygGKWPUsxRSvVN6SQr6LlEty1hTOjEF4kdNszAwcbvng8NkbJZ1XjFUDfhQUnPkdlcNCt4cyNuMpB6mwU36ibMj9G4YkGQe0tFwUYnBnG3ASfm83iER4TbrOA3LMckgryv/O4DN+4bbl0GCT1ResZTGaDU1wcyQMXHobF2QSqhb/2BAm2yiw5F3Er2qJLCSQMkx0qMu0UREhzv5Jvi3qHtGVmanQZhv4CzhjeGJs9U/OdF0y/Q9EfarPRIZuqYcVirfX6HzV6l1Oab6UkXrGamijSkcQIk4krB+Gl4uyyP4PdH6E38JIf4Am1AvRUDmTLtxF3+9oQmDGtHRZjiy9ER8Tj3QPlbSElCiHMajaWRD3OLUKvYga2IsVtvFdvYSvwf7mZw5qLgIhReU3SkNahsIqFPXmgh050b/ALNC64idP3SrjtsXv6ZnaEYQ03jXmIys9UBNQc+5vbALME7Q+JGOrcLKoPBxuMW/H7CTXaTkcOWKDYb7v3NWxx8p6Aj5xWhMVfTa8CjahNMKHVBgFiNBmf/okM5qeYslrsR7SBhwLvjeS2IcsgKKeiJamWNmaTA9AFvUVJwTqiaimo3NlMv6IBX/9xz5ybo7f+q6HoWIUyHympPsmelXHhYeA/KHJyfibUhvqUKaWdnZlcwK1QyG26darSv0SRYux2qyAxVMpQbrGzSLt2pGVbRoBZJE7U5crs8Z1rrA7CLFyyNsEz7n4KbIQ87Isc5Who5TfG5CI0U4432H1vMK7ulAiEksY1yZ97GEbXTLmk9jBUiQxZxVOfE6m7pl5LiGxQH8tzz5IfPqA9WyzdKMsqlBb8wVXFTol8FpjClXOyjNmoPMrdUfR7LdbUi1Wtc4Q/oij/+nkLNOXrNXLv0qvALDaw6jfIbdMQkHoH3TciO2kH766y21TQe2su
+ MbTtXJ1x
+ yUzylawlAha1qGRIQ1LOZ4WnD1muzP8P/9LCBB0Bfa7O1+AMYdTg+zrarWTHHpgfxsKovfbqgRvjFKbTfAmyd0j9sg8ZWs6tupPO4sAFYWNRnkFzP2Ea0m2Z1PVSa15zSF6zHx+4z3TJ93p4+Axvlq3D5GLEzbDz54NdB8afSfdqlhiHa1VUb3uBn+COQP5TCGBy6oJPlV0cKfrVXRwuaUPajZioK/aUDvzZKkD4llPKNwsK9E/XB7agrO83HF3xF8+4LRRPXO42bvBSmf7CnTEGyk4D3AzzMFdwFn+yz33udLEhHWGiwiXk48LaXES8sEoT1Xj1l7Ycd8I64aWfOh2lTR8X4LZXz0WvVBegkjHmhEH3v55+A68NkgrtS28+/hxUh2pOBWofG9NyKbQcXk9qM0bNzpXYCepnybeLVO9Y538w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,312 +111,229 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-OVERVIEW
-========
+map_write() validates extent ranges, translates parent ID ranges, sorts
+extents, and installs the resulting map inline for procfs text writes,
+preventing non-procfs callers from reusing the same validation and
+commit path.
 
-A rootns is an anonymous-inode control object (not an nsfs namespace
-itself) with separate build and live phases that binds together:
+Extract validate_and_insert_extent(), free_new_idmap(),
+resolve_new_idmap(), and commit_new_idmap() out of map_write() with no
+functional change.
 
-1. A full set of detached namespaces owned by a fresh user namespace.
-2. A dedicated PID namespace for spawning processes into, signaling
-   members, and polling or waiting on PID 1 exit.
-3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) populated
-   directly in its target user namespace before going live, without
-   inheriting host mounts or cloning staged trees, while still allowing
-   new mounts to be attached at runtime.
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ kernel/user_namespace.c | 159 ++++++++++++++++++++--------------------
+ 1 file changed, 80 insertions(+), 79 deletions(-)
 
-Work on this feature started in 2025 from David Howells' container object
-patch set [1], which I turned into a namespace for namespace roots and
-rebuilt around that premise.
-
-While the patch set is manually written, the original motivation came
-from isolating LLM agents. Running untrusted agent workloads made it
-clear that OCI runtimes need to minimize their live configuration
-surface.
-
-Assembling mounts, credentials, and namespaces inside helper processes
-with a half-configured container is what I see as the main challenge,
-and the existential debate around namespaces and container objects is an
-unfocused discussion topic.
-
-[1] https://lore.kernel.org/all/155059610368.17079.2220554006494174417.stgit@warthog.procyon.org.uk/
-
-IMPLEMENTATION
-==============
-
-Standalone fd-based namespace configuration (patches 01-07) decouples
-user and mount namespace setup from live helper tasks. userns_set_idmap()
-atomically configures setgroups policy and UID, GID, and project ID
-mappings on a CLONE_NEWUSER nsfs fd, checking current_cred() so an
-unprivileged creator can delegate the fd via SCM_RIGHTS to a privileged
-mapping daemon. move_mount(..., MOVE_MOUNT_T_MNTNS) operates on any
-non-anonymous mount namespace fd: on an empty mount namespace it installs
-"/" onto the nullfs root once, attaches relative submounts both before
-entry and into live mount namespaces, and supports MOVE_MOUNT_CLONE for
-recursive bind mounts without OPEN_TREE_CLONE.
-
-rootns() allocates a rootns instance backed by a pollable anonymous
-inode fd, creating a fresh owning user namespace and a full set of
-detached namespaces: empty mount (CLONE_EMPTY_MNTNS), PID, UTS, IPC,
-network, cgroup, and time. ioctl(rootnsfd, ROOTNS_GET_NSFD, nstype)
-returns nsfs file descriptors for individual member namespaces when
-standalone namespace operations are needed.
-
-Superblocks are configured directly in the target user namespace via
-fsopen(), FSCONFIG_SET_ROOTNS, and fsmount(), allowing unprivileged
-callers to assemble FS_USERNS_MOUNT filesystems without holding
-CAP_SYS_ADMIN in their own user namespace or entering the target user
-namespace first.
-
-Once "/" is installed, processes are spawned into the rootns via clone3()
-with CLONE_INTO_ROOTNS and struct clone_args.rootns, without mutating the
-caller in place. Pairing CLONE_INTO_ROOTNS with CLONE_VFORK and opening
-the target binary via openat2(..., RESOLVE_IN_ROOT) on the retained "/"
-mount fd allows spawning with execveat() directly into the target root.
-
-The first entrant becomes PID 1; once it exits and
-zap_pid_ns_processes() reaps all members, poll() reports EPOLLHUP and
-ioctl(rootnsfd, ROOTNS_WAIT, &args) returns init's exit status.
-ioctl(rootnsfd, ROOTNS_KILL, sig) walks pid_ns->idr under tasklist_lock
-to signal member thread groups, and dedicated LSM hooks mediate rootns
-allocation, teardown, process entry, and signal delivery.
-
-HOTPLUG
-=======
-
-1. Host creates rootns().
-2. Host sets uid/gid maps with userns_set_idmap().
-3. Host populates "/" with MOVE_MOUNT_T_MNTNS, optionally combined with
-   MOVE_MOUNT_CLONE for bind mounts.
-4. Host spawns PID 1 with clone3(CLONE_INTO_ROOTNS) (optionally passing
-   an AF_UNIX socketpair fd for communication).
-5. PID 1 watches /proc/self/ns/mnt via fanotify(FAN_REPORT_MNT |
-   FAN_MARK_MNTNS, FAN_MNT_ATTACH) or polls /proc/self/mountinfo.
-6. On hotplug, host mounts the filesystem via fsopen()/fsmount() (plus
-   optional MOUNT_ATTR_IDMAP).
-7. Host creates the mountpoint with openat2(RESOLVE_IN_ROOT) + mkdirat()
-   and attaches the mount with MOVE_MOUNT_T_MNTNS.
-8. PID 1 receives FAN_MNT_ATTACH and queries the new mount via
-   statmount().
-
-CHANGES
-=======
-
-v5:
-- Heavy reduction of cc-list. More added by request.
-- Re-slice the patch set into standalone fd-based user and mount
-  namespace configuration (01-07) followed by rootns (08-25), and split
-  proc, ipc/mqueue, and bpf_lsm changes into separate commits.
-- Add userns_set_idmap() system call to atomically configure setgroups
-  and UID, GID, and project ID mappings on CLONE_NEWUSER nsfs fds
-  without /proc/<pid>/*_map, checking current_cred() so unprivileged
-  userns fds can be delegated via SCM_RIGHTS to a privileged mapping
-  daemon (Andy Lutomirski).
-- Add MOVE_MOUNT_CLONE with MOVE_MOUNT_T_MNTNS in move_mount() to
-  recursively bind-clone host mount subtrees into a target mount
-  namespace fd without OPEN_TREE_CLONE.
-- Clarify in overview and uAPI documentation that rootns is an
-  anonymous-inode control object rather than an nsfs namespace.
-- Fix upfront pidns ancestry check in ROOTNS_WAIT, bootstrap -EINVAL
-  preservation in CLONE_INTO_ROOTNS, FSCONFIG_SET_ROOTNS user_ns
-  delegation and fsmount() rootns_bound/seq_origin handling, proc
-  pidns= mount option override check, cross-userns anonymous mount
-  MNT_LOCKED propagation, and selftest wide-arch _IOC_NONE, socket
-  blocking, and cleanup handling (Sashiko).
-- Extend selftests/rootns with userns_set_idmap(), SCM_RIGHTS
-  delegation, MOVE_MOUNT_CLONE, and hotplug mount coverage.
-
-v4:
-- A single syscall API (and shenanigans e.g., in fsconfig).
-- I use a similar API model as I used in SGX driver, as like enclaves,
-  containers are "closures". Instead of /dev/sgx_enclave like device
-  file, anon inode is used.
-- Consolidate rootns_create(), rootns_wait(), and rootns_kill() into a
-  single rootns() system call plus ROOTNS_WAIT and ROOTNS_KILL ioctls,
-  dropping rusage from ROOTNS_WAIT.
-- LSM: lbs_rootns security blob management and security_rootns_alloc(),
-  security_rootns_free(), security_rootns_clone(), and
-  security_rootns_kill() LSM hooks wired into bpf_lsm.
-- Disallow CLONE_VM with CLONE_INTO_ROOTNS across time namespaces, require
-  CAP_SYS_CHROOT, preserve caller umask, reset dumpability on user
-  namespace transitions, and fix ROOTNS_WAIT, FSCONFIG_SET_ROOTNS,
-  fsmount(), and MOVE_MOUNT_T_MNTNS locking and permission checks
-  (Sashiko).
-- Rewrite selftests/rootns in Python. I used similar structure as I've
-  used in selftests/tpm2. This "along the lines" mimics Cells style
-  container manager. Rootns is a quite typical no policy solution and
-  Cells is a managed solution, and they are at the far ends, which can
-  also be witnessed from the patch set sizes.
-
-  The question really is where we want to draw the borderline. I'm
-  neither favoring nor supporting any possible solution because I don't
-  know. I'm just saying where they live as a software stack.
-- Update documentation and architecture syscall tables for rootns().
-
-v3:
-- The patch set size increased predominantly because the coverage of
-  kselftest had to widened to cover the introduced changes.
-- Replace MOVE_MOUNT_T_ROOTNS_ROOT with MOVE_MOUNT_T_MNTNS targeting
-  mnt_ns nsfs fds, and add ioctl(ROOTNS_GET_NSFD) to open member
-  namespace fds (Andy Lutomirski).
-- Allow unprivileged fsopen(), FSCONFIG_SET_ROOTNS, and fsmount() to
-  configure and mount FS_USERNS_MOUNT filesystems directly in the target
-  user namespace without entering it first (Andy Lutomirski).
-- Fix locking, refcounting, credential/dumpability/timens setup,
-  pivot_root() lookup, and cross-userns mount checks across copy_rootns(),
-  CLONE_INTO_ROOTNS, rootns_kill(), FSCONFIG_SET_ROOTNS, and move_mount()
-  (Sashiko).
-- Mark PowerPC rootns syscalls nospu (Sashiko).
-- Update documentation and kselftests.
-
-v2:
-- Drop rootns provenance tracking (rootns_id and rootns_may_setns()) and
-  rely on user_namespace ownership for setns() isolation (Andy
-  Lutomirski).
-- Replace the rootns_enter() system call with clone3(CLONE_INTO_ROOTNS)
-  and struct clone_args.rootns (CLONE_ARGS_SIZE_VER3), allowing
-  CLONE_VM | CLONE_VFORK and compatible per-child clone3() flags (Andy
-  Lutomirski).
-- Drop the spurious task_no_new_privs() check in may_enter_rootns_creds()
-  (Andy Lutomirski).
-- Update documentation, Kconfig, syscall tables, and kselftests for
-  CLONE_INTO_ROOTNS.
-
-VERSIONS
-========
-
-v4: https://lore.kernel.org/linux-fsdevel/20261119224312.1037966-1-jarkko@kernel.org/
-v3: https://lore.kernel.org/linux-fsdevel/20261118193539.240065-1-jarkko@kernel.org/
-v2: https://lore.kernel.org/linux-fsdevel/20261117231352.3816603-1-jarkko@kernel.org/
-v1: https://lore.kernel.org/linux-fsdevel/20261117050841.3289652-1-jarkko@kernel.org/
-
-Cc: linux-api@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-security-module@vger.kernel.org
-Cc: Alexander Mikhalitsyn <alex@amutable.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Andy Lutomirski <luto@amacapital.net>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Neal Gompa <neal@gompa.dev>
-Cc: Paul Moore <paul@paul-moore.com>
-Cc: Serge Hallyn <sergeh@kernel.org>
-Cc: Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-
-Jarkko Sakkinen (25):
-  userns: Factor out idmap validation and commit helpers
-  userns: Add userns_set_idmap() system call
-  arch: Wire up userns_set_idmap() system call
-  mount: Add mnt_ns_get_root()
-  mount: Enforce mount_too_revealing() for foreign mntns
-  mount: Support MOVE_MOUNT_T_MNTNS in move_mount()
-  mount: Support MOVE_MOUNT_CLONE with MOVE_MOUNT_T_MNTNS
-  userns: Factor out install_user_ns_cred()
-  nsfs: Add nsproxy_open_namespace()
-  nsproxy: Pass nsproxy to create_new_namespaces()
-  rootns: Add core infrastructure for root namespaces
-  rootns: Track init lifecycle via copy_process() and pid_namespace
-  rootns: Add rootns() system call
-  rootns: Add ROOTNS_WAIT ioctl
-  rootns: Add ROOTNS_KILL ioctl
-  fork: Support CLONE_INTO_ROOTNS in clone3()
-  fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
-  proc: Implement ->set_rootns() fs_context operation
-  ipc/mqueue: Implement ->set_rootns() fs_context operation
-  security: Add rootns LSM hooks
-  bpf: Register rootns LSM hooks
-  arch: Wire up rootns() system call
-  docs: Document root namespace uAPI
-  selftests/rootns: Add root namespace test suite
-  MAINTAINERS: Add entry for ROOT NAMESPACE
-
- Documentation/userspace-api/index.rst         |    1 +
- .../userspace-api/ioctl/ioctl-number.rst      |    1 +
- Documentation/userspace-api/rootns.rst        |   65 +
- MAINTAINERS                                   |   11 +
- arch/alpha/kernel/syscalls/syscall.tbl        |    2 +
- arch/arm/tools/syscall.tbl                    |    2 +
- arch/arm64/tools/syscall_32.tbl               |    2 +
- arch/m68k/kernel/syscalls/syscall.tbl         |    2 +
- arch/microblaze/kernel/syscalls/syscall.tbl   |    2 +
- arch/mips/kernel/syscalls/syscall_n32.tbl     |    2 +
- arch/mips/kernel/syscalls/syscall_n64.tbl     |    2 +
- arch/mips/kernel/syscalls/syscall_o32.tbl     |    2 +
- arch/parisc/kernel/syscalls/syscall.tbl       |    2 +
- arch/powerpc/kernel/syscalls/syscall.tbl      |    2 +
- arch/s390/kernel/syscalls/syscall.tbl         |    2 +
- arch/sh/kernel/syscalls/syscall.tbl           |    2 +
- arch/sparc/kernel/syscalls/syscall.tbl        |    2 +
- arch/x86/entry/syscalls/syscall_32.tbl        |    2 +
- arch/x86/entry/syscalls/syscall_64.tbl        |    2 +
- arch/xtensa/kernel/syscalls/syscall.tbl       |    2 +
- fs/devpts/inode.c                             |    2 +
- fs/filesystems.c                              |   15 +
- fs/fs_context.c                               |   21 +-
- fs/fsopen.c                                   |  140 +-
- fs/internal.h                                 |    6 +
- fs/namespace.c                                |  348 +++-
- fs/nsfs.c                                     |   64 +
- fs/proc/root.c                                |   22 +
- include/linux/cred.h                          |    4 +-
- include/linux/fs_context.h                    |    6 +
- include/linux/lsm_hook_defs.h                 |    7 +
- include/linux/lsm_hooks.h                     |    3 +
- include/linux/mnt_namespace.h                 |    2 +
- include/linux/nsfs.h                          |    2 +
- include/linux/nsproxy.h                       |    9 +-
- include/linux/pid_namespace.h                 |    4 +
- include/linux/rootns.h                        |   93 +
- include/linux/sched/task.h                    |    8 +
- include/linux/security.h                      |   30 +
- include/linux/syscalls.h                      |    5 +
- include/linux/time_namespace.h                |   13 +
- include/linux/user_namespace.h                |    7 +
- include/uapi/asm-generic/unistd.h             |   10 +-
- include/uapi/linux/mount.h                    |    5 +-
- include/uapi/linux/nsfs.h                     |   53 +
- include/uapi/linux/rootns.h                   |   83 +
- include/uapi/linux/sched.h                    |    5 +
- init/Kconfig                                  |    9 +
- ipc/mqueue.c                                  |   13 +
- kernel/Makefile                               |    2 +
- kernel/bpf/bpf_lsm.c                          |   10 +
- kernel/cred.c                                 |   32 +-
- kernel/fork.c                                 |   95 +-
- kernel/nsproxy.c                              |   41 +-
- kernel/pid_namespace.c                        |    2 +
- kernel/rootns.c                               |  588 ++++++
- kernel/sys_ni.c                               |    4 +
- kernel/user_namespace.c                       |  420 ++++-
- scripts/syscall.tbl                           |    2 +
- security/lsm_init.c                           |    6 +
- security/security.c                           |   86 +
- tools/testing/selftests/Makefile              |    1 +
- tools/testing/selftests/rootns/Makefile       |    5 +
- tools/testing/selftests/rootns/config         |   10 +
- .../testing/selftests/rootns/rootns_cells.py  | 1400 ++++++++++++++
- tools/testing/selftests/rootns/rootns_test.py | 1645 +++++++++++++++++
- tools/testing/selftests/rootns/test_smoke.sh  |   10 +
- 67 files changed, 5286 insertions(+), 172 deletions(-)
- create mode 100644 Documentation/userspace-api/rootns.rst
- create mode 100644 include/linux/rootns.h
- create mode 100644 include/uapi/linux/rootns.h
- create mode 100644 kernel/rootns.c
- create mode 100644 tools/testing/selftests/rootns/Makefile
- create mode 100644 tools/testing/selftests/rootns/config
- create mode 100755 tools/testing/selftests/rootns/rootns_cells.py
- create mode 100755 tools/testing/selftests/rootns/rootns_test.py
- create mode 100755 tools/testing/selftests/rootns/test_smoke.sh
-
---
+diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
+index cd748e1cbace..6b9673dcdc67 100644
+--- a/kernel/user_namespace.c
++++ b/kernel/user_namespace.c
+@@ -938,6 +938,80 @@ static bool verify_root_map(const struct file *file,
+ 	return true;
+ }
+ 
++static int validate_and_insert_extent(struct uid_gid_map *new_map,
++				      struct uid_gid_extent *extent)
++{
++	if ((extent->first == (u32)-1) || (extent->lower_first == (u32)-1))
++		return -EINVAL;
++
++	if ((extent->first + extent->count) <= extent->first)
++		return -EINVAL;
++	if ((extent->lower_first + extent->count) <= extent->lower_first)
++		return -EINVAL;
++
++	if (mappings_overlap(new_map, extent))
++		return -EINVAL;
++
++	if (new_map->nr_extents >= UID_GID_MAP_MAX_EXTENTS)
++		return -EINVAL;
++
++	return uid_gid_map_insert_extent(new_map, extent);
++}
++
++static void free_new_idmap(struct uid_gid_map *new_map)
++{
++	if (new_map->nr_extents > UID_GID_MAP_MAX_BASE_EXTENTS) {
++		kfree(new_map->forward);
++		kfree(new_map->reverse);
++	}
++	memset(new_map, 0, sizeof(*new_map));
++}
++
++static int resolve_new_idmap(struct uid_gid_map *new_map,
++			     struct uid_gid_map *parent_map)
++{
++	unsigned int idx;
++
++	if (new_map->nr_extents == 0)
++		return -EINVAL;
++
++	for (idx = 0; idx < new_map->nr_extents; idx++) {
++		struct uid_gid_extent *e;
++		u32 lower_first;
++
++		if (new_map->nr_extents <= UID_GID_MAP_MAX_BASE_EXTENTS)
++			e = &new_map->extent[idx];
++		else
++			e = &new_map->forward[idx];
++
++		lower_first = map_id_range_down(parent_map,
++						e->lower_first,
++						e->count);
++		if (lower_first == (u32)-1)
++			return -EPERM;
++
++		e->lower_first = lower_first;
++	}
++
++	return uid_gid_map_sort(new_map);
++}
++
++static void commit_new_idmap(struct uid_gid_map *map,
++			     struct uid_gid_map *new_map)
++{
++	if (new_map->nr_extents <= UID_GID_MAP_MAX_BASE_EXTENTS) {
++		memcpy(map->extent, new_map->extent,
++		       new_map->nr_extents * sizeof(new_map->extent[0]));
++	} else {
++		map->forward = new_map->forward;
++		map->reverse = new_map->reverse;
++	}
++	/* Pairs with smp_rmb() in map_id_range_down() / map_id_up(). */
++	smp_wmb();
++	map->nr_extents = new_map->nr_extents;
++	memset(new_map, 0, sizeof(*new_map));
++}
++
+ /*
+  * Parse the decimal u32 at *pos, up to the next whitespace or NUL, and
+  * leave *pos pointing at that character.
+@@ -966,8 +1040,7 @@ static ssize_t map_write(struct file *file, const char __user *buf,
+ {
+ 	struct seq_file *seq = file->private_data;
+ 	struct user_namespace *map_ns = seq->private;
+-	struct uid_gid_map new_map;
+-	unsigned idx;
++	struct uid_gid_map new_map = {};
+ 	struct uid_gid_extent extent;
+ 	char *kbuf, *pos, *next_line;
+ 	ssize_t ret;
+@@ -1002,8 +1075,6 @@ static ssize_t map_write(struct file *file, const char __user *buf,
+ 	 */
+ 	mutex_lock(&userns_state_mutex);
+ 
+-	memset(&new_map, 0, sizeof(struct uid_gid_map));
+-
+ 	ret = -EPERM;
+ 	/* Only allow one successful write to the map */
+ 	if (map->nr_extents != 0)
+@@ -1052,98 +1123,28 @@ static ssize_t map_write(struct file *file, const char __user *buf,
+ 		if (*pos != '\0')
+ 			goto out;
+ 
+-		/* Verify we have been given valid starting values */
+-		if ((extent.first == (u32) -1) ||
+-		    (extent.lower_first == (u32) -1))
+-			goto out;
+-
+-		/* Verify count is not zero and does not cause the
+-		 * extent to wrap
+-		 */
+-		if ((extent.first + extent.count) <= extent.first)
+-			goto out;
+-		if ((extent.lower_first + extent.count) <=
+-		     extent.lower_first)
+-			goto out;
+-
+-		/* Do the ranges in extent overlap any previous extents? */
+-		if (mappings_overlap(&new_map, &extent))
+-			goto out;
+-
+-		if ((new_map.nr_extents + 1) == UID_GID_MAP_MAX_EXTENTS &&
+-		    (next_line != NULL))
+-			goto out;
+-
+-		ret = uid_gid_map_insert_extent(&new_map, &extent);
++		ret = validate_and_insert_extent(&new_map, &extent);
+ 		if (ret < 0)
+ 			goto out;
+ 		ret = -EINVAL;
+ 	}
+-	/* Be very certain the new map actually exists */
++
+ 	if (new_map.nr_extents == 0)
+ 		goto out;
+ 
+ 	ret = -EPERM;
+-	/* Validate the user is allowed to use user id's mapped to. */
+ 	if (!new_idmap_permitted(file, map_ns, cap_setid, &new_map))
+ 		goto out;
+ 
+-	ret = -EPERM;
+-	/* Map the lower ids from the parent user namespace to the
+-	 * kernel global id space.
+-	 */
+-	for (idx = 0; idx < new_map.nr_extents; idx++) {
+-		struct uid_gid_extent *e;
+-		u32 lower_first;
+-
+-		if (new_map.nr_extents <= UID_GID_MAP_MAX_BASE_EXTENTS)
+-			e = &new_map.extent[idx];
+-		else
+-			e = &new_map.forward[idx];
+-
+-		lower_first = map_id_range_down(parent_map,
+-						e->lower_first,
+-						e->count);
+-
+-		/* Fail if we can not map the specified extent to
+-		 * the kernel global id space.
+-		 */
+-		if (lower_first == (u32) -1)
+-			goto out;
+-
+-		e->lower_first = lower_first;
+-	}
+-
+-	/*
+-	 * If we want to use binary search for lookup, this clones the extent
+-	 * array and sorts both copies.
+-	 */
+-	ret = uid_gid_map_sort(&new_map);
++	ret = resolve_new_idmap(&new_map, parent_map);
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	/* Install the map */
+-	if (new_map.nr_extents <= UID_GID_MAP_MAX_BASE_EXTENTS) {
+-		memcpy(map->extent, new_map.extent,
+-		       new_map.nr_extents * sizeof(new_map.extent[0]));
+-	} else {
+-		map->forward = new_map.forward;
+-		map->reverse = new_map.reverse;
+-	}
+-	smp_wmb();
+-	map->nr_extents = new_map.nr_extents;
+-
++	commit_new_idmap(map, &new_map);
+ 	*ppos = count;
+ 	ret = count;
+ out:
+-	if (ret < 0 && new_map.nr_extents > UID_GID_MAP_MAX_BASE_EXTENTS) {
+-		kfree(new_map.forward);
+-		kfree(new_map.reverse);
+-		map->forward = NULL;
+-		map->reverse = NULL;
+-		map->nr_extents = 0;
+-	}
+-
++	free_new_idmap(&new_map);
+ 	mutex_unlock(&userns_state_mutex);
+ 	kfree(kbuf);
+ 	return ret;
+-- 
 2.47.3
 
 
