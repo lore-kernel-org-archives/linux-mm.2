@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC971606A32C
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFF7606A32C
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OIx38B1u
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E6eFWkLN
 Received: by kanga.kvack.org (Postfix)
-	id A4EB66B05B3; Fri, 20 Nov 2026 19:09:11 -0500 (EST)
+	id 6A6A26B05B7; Fri, 20 Nov 2026 19:09:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1486B05B4; Fri, 20 Nov 2026 19:09:11 -0500 (EST)
+	id 62F266B05B8; Fri, 20 Nov 2026 19:09:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89FD86B05B5; Fri, 20 Nov 2026 19:09:11 -0500 (EST)
+	id 4F6DE6B05B9; Fri, 20 Nov 2026 19:09:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AA0E6B05B3
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:09:11 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3690A0270
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:09:10 +0000 (UTC)
-X-FDA: 85457191260.14.5BA473E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0EDECC0009
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:09:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OIx38B1u;
-	spf=pass (imf10.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 199456B05B7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:09:19 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71CE4C028B
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:09:18 +0000 (UTC)
+X-FDA: 85457191596.12.6F641DE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D17B41C0008
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:09:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E6eFWkLN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795219749;
-	b=4wQMraTwnDOCO9GlJSan6OUUwrHuDemxtovTB9VRS+DWtgIU2P/UAonZMtcN9dc72zufZ1
-	Wcdbs5HGGX2ntVDWlF/RNd7PVuAHiYr/vX39yz4C+3ZE8nbGX7naMUHAW2yIyUYoy+tEyn
-	LLFIGpEJ0bYZctz+pK09WLDJSmOKBLo=
+	t=1795219756;
+	b=0c7khpmLUfPEhTG0QF69TcFpWjTzNpTO9wZsP96GWvr5nfyD+P/UWtYtLtsVFK1oW03fUk
+	v3B2Ma8FxufWYJtgQQJzaEYHNGUJ5+ZSvtL8SNs4eFLaJSEjUYm6MSTGQzsw30qTO21lab
+	AcrWZmTgZcfb/6s0LKi1t6LX2fUY1yk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795219749;
+	s=arc-20220608; t=1795219756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xdMFQd5iWnE0etuNgaG+P1V3IRtO+2edlHDd0w1oiXI=;
-	b=oU5EtAJ91ncg3eBMLWrM3RMt3XB7cqFYr92eut3uBnil1XeeaQBxvdW55gd7ELvATIR9sF
-	zPWUJekhemCSWGY/0WSKxP58CyMLey1oXyG24zD937cByuA/kXIbkMLf3n2nAC6ZCW1sAQ
-	cMmheP3g69tx8SGaZXHx8auW+DlxUo4=
+	bh=ltCLnFz06IQQ3SZ4JmjrUpmJ3OSN/eK/CX4oIn1dBP0=;
+	b=2xdLQ8zLp5cJ2kprQwEAmjBdTxG4TEnA2LyInDhaMVnyQyke6j45jv+GFaP9UPRMPh/UHr
+	+40OhMIDj5jQMuMbvkMInKti4QfTcOefM2iTzF5v+eFzZ9BiBU72VWuKE6dxJea93A7vkD
+	3p2TYSlcxcjgEMT2hrGdq1xVRjIwZYk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OIx38B1u;
-	spf=pass (imf10.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E6eFWkLN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id D89BB44219;
-	Sat, 21 Nov 2026 00:09:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 35F191F000C6;
-	Sat, 21 Nov 2026 00:09:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 60C646220B;
+	Sat, 21 Nov 2026 00:09:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 8CF171F00A3D;
+	Sat, 21 Nov 2026 00:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795219747;
-	bh=xdMFQd5iWnE0etuNgaG+P1V3IRtO+2edlHDd0w1oiXI=;
+	s=k20260515; t=1795219756;
+	bh=ltCLnFz06IQQ3SZ4JmjrUpmJ3OSN/eK/CX4oIn1dBP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OIx38B1u3nJnanXh/hKXPskEKfSxQGZ8uO6Ie5n7ZxFtDVKyfnWoZ2ygDZt0krBMn
-	 Eb6WU2mgP3mRzYddEvT/UfzihFtsZQDmPQZM20BNgroAvtd5M8uhQZawsiACv24KkD
-	 m/T7osBk+AjPsA3WKfhe2eW82P7pqjW9AIXjhU4Q8vrhXLr53dri75w9xjL783IGV5
-	 ptVzBO48eq+CcnchCH82rcsmNSeVP5q4CSSrG2HEPzRzWVBRYTMFbdt3cK5QMlHV2K
-	 RgVdRbWc6+ARVMok7ImDzyr4yYRczYlNWV3Z8WmtjZTfnmYmR/tzBrAJqzN6U7dCkx
-	 5O/btILf6z72g==
+	b=E6eFWkLNbxYCdzsPwOHpyhJa3fnhM106kVy1noUevOAjD4VRTNpQprlWqpZx0fk9F
+	 fPF3K1sj4lenh8sHolhHTqIM36IyPEf7cGQaODb5Y53NPblxs29R7VON//kvE2qbEM
+	 wuHini2ovvVt2ou18JLHSOqfANgPURVWLcJYlVH4INaiuK/4LLRT5vgtkoxte5VySt
+	 uv6RrE3r94o1hWJa+cPjqvsAuL9r+veLWGak6PzpxNj1rZ/bjsM88K8eeetMSJh9YM
+	 vLhBUKAbIqBW4k2jHWIO76idMrVIlAHOeHbBjv3v6XSHe54WGSo4QcA1pSR9LfCA3/
+	 sPQCkmMFn0LvQ==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -82,27 +82,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Paul Moore <paul@paul-moore.com>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v5 03/25] arch: Wire up userns_set_idmap() system call
-Date: Sat, 21 Nov 2026 02:08:22 +0200
-Message-ID: <20261121000844.1863324-4-jarkko@kernel.org>
+Subject: [RFC PATCH v5 05/25] mount: Enforce mount_too_revealing() for foreign mntns
+Date: Sat, 21 Nov 2026 02:08:24 +0200
+Message-ID: <20261121000844.1863324-6-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261121000844.1863324-1-jarkko@kernel.org>
 References: <20261121000844.1863324-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
+X-Stat-Signature: kruhypmrao9ykrrfxu6uya614uckzd4e
+X-Rspam-User:
+X-Rspamd-Queue-Id: D17B41C0008
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0EDECC0009
-X-Stat-Signature: bjnufchi9zs1s6g3k5ur5kimp7ptemnx
-X-Rspam-User:
-X-HE-Tag: 1795219748-967727
-X-HE-Meta: U2FsdGVkX1+ruvGg50sQBvbBmBioM2ilB58Hv6VGlnoD903UPKAZ37KFvh+yBAXVrVT47KxuS8hJgfO83lv5CZZ/tWU82xi8z7C3KQTGs17qe8Y2cpuIT6UQCc7MraR7RL/7sV7wIOVGBY7l7OlT3m1+ko1LMcOfhoeuvizF8pJOa1YGi3Vym6vQqzLSeAWg5awoxBJl6H+tJ9oYYjL6zLy8AeyNjLgqOLxy5dT4FJJeKzpvPzcJC7hXomqo32CYlvLmgVw84x8rj7+Kz/ZzGV56RhAj1l06dY5WGihTmGrSW5wr0GweGT52ypmBIH6cHfP/UgbHTzmu6j3UeowQrK74nuN5O9ZyRMUD5CBZbGVMvJVPzMNqrDIYAxK7YkftqQVVQe//vvLP9fzA9tqyKkxY07fDjC/W8m/9reEkuPSC35/yiJl/Z01qgEaIUcDcFiG1Kt+ggh+rvhbPoXf8sKN7O1B/SL4JzAlUbcC3mBVUjZhENqwCuEMk1dwHCGH0qJ0XGPienHZnfJYvLfk2wHOzpw1igQUmlzamO1uRLaAAW2esamEmz1YdPMvuho7PTIBMvP4oisccH3D34B0xyDJ1oK3kgqyFdrqrf9zgpeLIR/nnW456T8E8+krUdbIUTP1/Bqak8B9425cItLNpa0Q58SXPJkwxEK5631IeOn3KJXg+FcVHLfGDTwfDYUd3czA1vnAf4J1ZsZENsLXaOYlMLBX1a9/7/eDrbbeHg3/4bY+ustmUo16CZXrWXD6uin/yeFc0owAQoviAc7bbxel9jrl03Y/qOkMI5BOYWxNDNjiy5zpDFYk03IwDSEUPzIL1H99Y/DW9DHstgT6czlg5qsMpDRb9NjdRF5VZTYltPJBf7yMwiCM2YHJBoaJRdeECGupxV5X32Mal7SIs88c1LTZlcWE/ZLEHDMBi9rOtDugzELDqV59zKqRsou0fyStATonHGfq8Q7yH9Dl
- bdcxkwaa
- FA2/WhquZUcDDy3i85DWx9Bntj+i/Csl1yeno5AYPR8aOg9rzOa2Ia8Je3GFUey5T16aZkV3lVXN93M8o1MHvuI/ZfvNom/DNOEu3fQpB5gZxrCVyGaTTYkVfiybblwl4MggJ6V8KvNIWsN1WUOvQIqG6U0aeMQ/Q0W+rnOO7A83jBmYOgDyN5uG0hQOzm5tDU69pt5I/Rpb0fhaMviS44utEnXQwOhFBKIRe2SyDCPXfYUyjtCPwgDQRHoAGGtMDdPdntHLGNVxmU9VFPqGT0F6nVbOY4X9KxSmGuBAyG95OQKv9oGKOUXkXDzdW05nfQbVXBkzQCiazw5t0/fT5rK36Uvy0RI6dA5EoZ8LYX667ChRpA6S4xY0zTp5C88GnHIZKruCDu8/jDaJW7eXerG3WJNWj7zFFS9rx2vQLyuFKsi8H01XicN9XzYHS9JtW7brH2lEsDUsqx1OZ287XShvPLw==
+X-HE-Tag: 1795219756-339910
+X-HE-Meta: U2FsdGVkX18Xrm6NPMUrLzSEJ8uuMWbOBruOHrYNMPYH8gc1lYqvafNVh1ctzbIWw0szn/Uf7vwyQsOp/7xtLt0NzUeN1giFUmrie/B+ouNHIVeQ7roVAaMtPStiE7gdVednhSnXa1fe8XHxGWt4UH8ooM5vhhWBkHGCjR9xF6p34Qs9Bv1JJOdCdF6HSOUqPS0XxLGDAMzmxWBEVtqC4ZgDMR3qY0EWBCGr2+hrY4rfsvDJ7LtdZ1H7bKXNh3t8NYUzpj6BxJEnU6dEXIBg8UsUJFWbZMkspUfyD4Q20yTtvfn4Jh/y7OCHW3uSsxDH8lJqhZMpTygQo70fC+mW72ftssFtLBD6S+/Q9sM4p76mT0EzmaHACEdXQ+ryBZqoMOlWY3KcZ7RjXzcYiPq8psstQNBcB5o4qQUIemJO8mw/a4bxpSFLDkp0J53QPgvp/PGWUOWtIdIVyy+puvg+emiqiswtWfeo1yfRwM8wK94pUG01eENCGyMbQUFFGNYfxq4eyODdbKpn95no1QTMCZjH/nvfPebxPJlpPCnflb1TUeImquKYd/JhJaln2jETXvEpbgeG8zF3t8tXaTe1KO1pWDj1VkF0QvCoP9VvJWyKnA3hqPhp20/dcfxxsucZTzQ8YNJcS0DU9eG2njFfs3jHUgBZCwwi2Cd8Iz35hbV+hDmtNxBjH7J7phzLwFOmZKZqv9P2gHe5TMwyQhdeTgGs8kc5ajY6H4TGas9jOuoffP5Ye0NQslJDm8cajp5OTTvnqwv0Hy0y5dh+eIXC7SHq6XFTVCo0Iogi4JydvLfmUPoF4d6yN+aUKx69s7R68vvpNdzRf83V3Y7ELsbrmwyzhfqIKel3i6KL6F4FrK2aBABuQkBirdbgIgMtibehSwa80wDhGyDZBjCnjx3Kl3AKPPuXb2vNAbAoGl9itfYKnf+jfl4R0ih/82NEcnWfJfY1bjy8N5hEdxeQnHW
+ l4Wh3PO4
+ l9STlwKMA6jd7pXX48X+Ty5eiogL/d4c+n4ULOexxxY+iTgk2T4L1LayXdLCvE3oqq+iQDRehrL82k3MIksgpOQN+NL3uMh/uZhwuvVX13yaWiQY4p4o9g+ZIf90PDNUMy2l0+91Z+aW1DXrZ0L6oZcglRJIoHpq6LnPCHKBixqEH+QjrV1GzD4j7YgsY5VLIL0yKaLzJOM9Ny6Mwxjgs1tkJzz1wA9kgKPhDIE6ekaxn/OLktDQGGVhXciA77H85ztrE50iiP+juzLzTxqbVFlLggxELfpcszWg6XePy0Yr5awJfNmAj8W1/K5KfFPSDJv7SnFsZtB4GhEBivzf2I0MOxJsiCKZ+vLzUS3PMAQxb65dybY1GH/XmfwcWJT31FaeIWmFkv/zvojyBcux9IwrLSHnTmFCBmOPkMSitnaN1QeKwglj4DKK2lpAbccpeUPwdgra/vxJB/wUGOwqu2w0jJjFs/x2WZm97SYimyecx9Xw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,205 +111,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Expose userns_set_idmap() (473, 583 on Alpha) across all architecture
-system call tables and asm-generic unistd.h.
+mount_too_revealing() skips visibility checks whenever
+current->nsproxy->mnt_ns belongs to init_user_ns, assuming the caller
+holds CAP_SYS_ADMIN in its current mount namespace. That assumption does
+not hold when an unprivileged caller creates mounts for a child user
+namespace while running in init_mnt_ns or another foreign mount
+namespace.
 
+Require CAP_SYS_ADMIN in init_user_ns before bypassing
+mount_too_revealing() for init_mnt_ns, reject chrooted callers lacking
+CAP_SYS_ADMIN in their current mount namespace, and treat existing
+mounts and child overmounts in a foreign mount namespace as locked
+during mnt_already_visible() checks.
+
+Co-developed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
- arch/arm/tools/syscall.tbl                  | 1 +
- arch/arm64/tools/syscall_32.tbl             | 1 +
- arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
- arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
- arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
- arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
- arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
- arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
- arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
- arch/s390/kernel/syscalls/syscall.tbl       | 1 +
- arch/sh/kernel/syscalls/syscall.tbl         | 1 +
- arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
- arch/x86/entry/syscalls/syscall_32.tbl      | 1 +
- arch/x86/entry/syscalls/syscall_64.tbl      | 1 +
- arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
- include/uapi/asm-generic/unistd.h           | 6 +++++-
- scripts/syscall.tbl                         | 1 +
- 18 files changed, 22 insertions(+), 1 deletion(-)
+ fs/namespace.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-index 52e3538cc7df..9384d59a44dc 100644
---- a/arch/alpha/kernel/syscalls/syscall.tbl
-+++ b/arch/alpha/kernel/syscalls/syscall.tbl
-@@ -512,3 +512,4 @@
- 580	common	listns				sys_listns
- 581	common	rseq_slice_yield		sys_rseq_slice_yield
- 582	common	fchroot				sys_fchroot
-+583	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
-index 55717ed32c27..6130366b7681 100644
---- a/arch/arm/tools/syscall.tbl
-+++ b/arch/arm/tools/syscall.tbl
-@@ -487,3 +487,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/arm64/tools/syscall_32.tbl b/arch/arm64/tools/syscall_32.tbl
-index df2d1d82fb3c..3fcc7899fd08 100644
---- a/arch/arm64/tools/syscall_32.tbl
-+++ b/arch/arm64/tools/syscall_32.tbl
-@@ -484,3 +484,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
-index ba7a4d8903d0..5607635bd4bd 100644
---- a/arch/m68k/kernel/syscalls/syscall.tbl
-+++ b/arch/m68k/kernel/syscalls/syscall.tbl
-@@ -472,3 +472,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
-index 76d7cbe2a133..97ee93f42fac 100644
---- a/arch/microblaze/kernel/syscalls/syscall.tbl
-+++ b/arch/microblaze/kernel/syscalls/syscall.tbl
-@@ -478,3 +478,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
-index 9ae88e4eac61..da4ed57a91d3 100644
---- a/arch/mips/kernel/syscalls/syscall_n32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
-@@ -411,3 +411,4 @@
- 470	n32	listns				sys_listns
- 471	n32	rseq_slice_yield		sys_rseq_slice_yield
- 472	n32	fchroot				sys_fchroot
-+473	n32	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-index 83dc93a0712f..5e9839b6b389 100644
---- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-@@ -387,3 +387,4 @@
- 470	n64	listns				sys_listns
- 471	n64	rseq_slice_yield		sys_rseq_slice_yield
- 472	n64	fchroot				sys_fchroot
-+473	n64	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-index 9c62429c9b7b..290c1b61be47 100644
---- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-@@ -460,3 +460,4 @@
- 470	o32	listns				sys_listns
- 471	o32	rseq_slice_yield		sys_rseq_slice_yield
- 472	o32	fchroot				sys_fchroot
-+473	o32	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index 88adc4016cce..fc0fa917eb92 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -471,3 +471,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-index cfbb70039ff0..d12e49022b23 100644
---- a/arch/powerpc/kernel/syscalls/syscall.tbl
-+++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-@@ -563,3 +563,4 @@
- 470	common	listns				sys_listns
- 471	nospu	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-index 1b45e68a217b..dc427811d30d 100644
---- a/arch/s390/kernel/syscalls/syscall.tbl
-+++ b/arch/s390/kernel/syscalls/syscall.tbl
-@@ -399,3 +399,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-index ace068dff0de..e62ac9acc7ad 100644
---- a/arch/sh/kernel/syscalls/syscall.tbl
-+++ b/arch/sh/kernel/syscalls/syscall.tbl
-@@ -476,3 +476,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-index 5b9fe0e8140f..df074bf322c4 100644
---- a/arch/sparc/kernel/syscalls/syscall.tbl
-+++ b/arch/sparc/kernel/syscalls/syscall.tbl
-@@ -518,3 +518,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
-index 2c172ef48dfd..243a3f55834d 100644
---- a/arch/x86/entry/syscalls/syscall_32.tbl
-+++ b/arch/x86/entry/syscalls/syscall_32.tbl
-@@ -478,3 +478,4 @@
- 470	i386	listns			sys_listns
- 471	i386	rseq_slice_yield	sys_rseq_slice_yield
- 472	i386	fchroot			sys_fchroot
-+473	i386	userns_set_idmap	sys_sys_userns_set_idmap
-diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
-index d5b6045b0090..f11700e3af65 100644
---- a/arch/x86/entry/syscalls/syscall_64.tbl
-+++ b/arch/x86/entry/syscalls/syscall_64.tbl
-@@ -397,6 +397,7 @@
- 470	common	listns			sys_listns
- 471	common	rseq_slice_yield	sys_rseq_slice_yield
- 472	common	fchroot			sys_fchroot
-+473	common	userns_set_idmap	sys_sys_userns_set_idmap
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 781380945d78..b2dc84c0d0d6 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -6582,6 +6582,7 @@ static bool mnt_already_visible(struct mnt_namespace *ns,
+ 				const struct super_block *sb,
+ 				int *new_mnt_flags)
+ {
++	bool foreign_ns = !ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN);
+ 	int new_flags = *new_mnt_flags;
+ 	struct mount *mnt;
  
- #
- # Due to a historical design error, certain syscalls are numbered differently
-diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
-index d354bb231796..1d28de95915f 100644
---- a/arch/xtensa/kernel/syscalls/syscall.tbl
-+++ b/arch/xtensa/kernel/syscalls/syscall.tbl
-@@ -443,3 +443,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
-diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-index 5b7e77a7c736..695eac2d356b 100644
---- a/include/uapi/asm-generic/unistd.h
-+++ b/include/uapi/asm-generic/unistd.h
-@@ -867,8 +867,12 @@ __SYSCALL(__NR_rseq_slice_yield, sys_rseq_slice_yield)
- #define __NR_fchroot 472
- __SYSCALL(__NR_fchroot, sys_fchroot)
+@@ -6606,11 +6607,16 @@ static bool mnt_already_visible(struct mnt_namespace *ns,
+ 			continue;
  
-+/* kernel/user_namespace.c */
-+#define __NR_userns_set_idmap 473
-+__SYSCALL(__NR_userns_set_idmap, sys_userns_set_idmap)
+ 		/* A local view of the mount flags */
+-		mnt_flags = mnt->mnt.mnt_flags;
++		mnt_flags = READ_ONCE(mnt->mnt.mnt_flags);
+ 
+ 		/* Don't miss readonly hidden in the superblock flags */
+ 		if (sb_rdonly(mnt->mnt.mnt_sb))
+ 			mnt_flags |= MNT_LOCK_READONLY;
++		if (foreign_ns) {
++			if (mnt_flags & MNT_READONLY)
++				mnt_flags |= MNT_LOCK_READONLY;
++			mnt_flags |= MNT_LOCK_ATIME;
++		}
+ 
+ 		/* Verify the mount flags are equal to or more permissive
+ 		 * than the proposed new mount.
+@@ -6629,7 +6635,7 @@ static bool mnt_already_visible(struct mnt_namespace *ns,
+ 		list_for_each_entry(child, &mnt->mnt_mounts, mnt_child) {
+ 			struct inode *inode = child->mnt_mountpoint->d_inode;
+ 			/* Only worry about locked mounts */
+-			if (!(child->mnt.mnt_flags & MNT_LOCKED))
++			if (!foreign_ns && !(READ_ONCE(child->mnt.mnt_flags) & MNT_LOCKED))
+ 				continue;
+ 			/* Is the directory permanently empty? */
+ 			if (!is_empty_dir_inode(inode))
+@@ -6650,13 +6656,18 @@ static bool mount_too_revealing(const struct super_block *sb, int *new_mnt_flags
+ 	struct mnt_namespace *ns = current->nsproxy->mnt_ns;
+ 	unsigned long s_iflags;
+ 
+-	if (ns->user_ns == &init_user_ns)
+-		return false;
+-
+ 	/* Can this filesystem be too revealing? */
+ 	if (!(sb->s_type->fs_flags & FS_USERNS_MOUNT_RESTRICTED))
+ 		return false;
+ 
++	if (ns->user_ns == &init_user_ns &&
++	    ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN))
++		return false;
 +
- #undef __NR_syscalls
--#define __NR_syscalls 473
-+#define __NR_syscalls 474
- 
- /*
-  * 32 bit systems traditionally used different
-diff --git a/scripts/syscall.tbl b/scripts/syscall.tbl
-index 0ab531605120..0dddd465d1c5 100644
---- a/scripts/syscall.tbl
-+++ b/scripts/syscall.tbl
-@@ -413,3 +413,4 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	userns_set_idmap		sys_sys_userns_set_idmap
++	if (!ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN) &&
++	    current_chrooted())
++		return true;
++
+ 	s_iflags = sb->s_iflags;
+ 	if ((s_iflags & required_iflags) != required_iflags) {
+ 		WARN_ONCE(1, "Expected s_iflags to contain 0x%lx\n",
 -- 
 2.47.3
 
