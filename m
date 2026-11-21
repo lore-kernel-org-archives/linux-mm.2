@@ -1,82 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57F1606A335
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 07:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D45606A325
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 08:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jluIrJtI
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iNq1gatA
 Received: by kanga.kvack.org (Postfix)
-	id C2C496B05B3; Sat, 21 Nov 2026 02:47:02 -0500 (EST)
+	id 736236B00EF; Sat, 21 Nov 2026 03:18:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C03E86B05B4; Sat, 21 Nov 2026 02:47:02 -0500 (EST)
+	id 6E7396B05B0; Sat, 21 Nov 2026 03:18:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1A7C6B05B5; Sat, 21 Nov 2026 02:47:02 -0500 (EST)
+	id 5D6D56B05B1; Sat, 21 Nov 2026 03:18:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 858166B05B3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 02:47:02 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0FE7FA0365
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:47:02 +0000 (UTC)
-X-FDA: 85458345084.12.2751EA6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DE67040004
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:46:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jluIrJtI;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26F106B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 03:18:25 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB7A8160385
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:18:22 +0000 (UTC)
+X-FDA: 85458424044.19.D5800B2
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 045C640004
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:18:19 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iNq1gatA;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795247220;
-	b=HtQ17ehnr6utBiinXwKVXXHGTJg90pzXmtGd9OYjRAhNqN3ZQ9Eki0UvfoWsEZlCx8nY3q
-	u9PtkC5ll2CCLFAb5WamVSnI8REN0jYpzQlNq7/ClCF1dXG01sMHqHYc1/7vlj3QM4pe4p
-	2+ziHTAHFUoLeW8AGoQ6/oRooLtf/6c=
+	t=1795249101;
+	b=7DyOXDad59uVb/Qeb/U+j/or+td0UCDjlnw/8RPY+ZKzqhMFO8wMJ6xlYDUUlgaxOpa9lH
+	WQhtjpcXubfygk4XoHSno43ZpaErRgu9jO6HMZDGHDZ1Dr3gpm7Z/M19TmNOYqB4WP2wvu
+	pcljcYn+oG92XGVRG6G05x23nMvYSvo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795247220;
+	s=arc-20220608; t=1795249101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WUt3ilp/MbYiddXzWat/1cfv3L8ANihyCynGRUpxkj0=;
-	b=h3j0Cm16QG/F6fHVdSMeBEn0Gt3ER+MLDnHrnVRWdiUSIXhGFXE2wDxFpiR9mBMB+SF04M
-	oO0+L+z+K6ejxBLcBzV1jlD1G8VE1D4N+QeGcnB5CiPVrpuFBkfA4/Q73qIfdNyohsVhCk
-	o+gru1k7hJv8caXwXLNSmpXVbGhUai8=
+	bh=wCYPhItWmnp0/5nxKzmcWIir9eopxc4FlvC5rliCc3Q=;
+	b=5L1Grp63XgaRkvuUnMiDqyNCM/oFHmjmYlLMtMrnVevIQ5JFfvW2ehzbxkb6+tvFtK3MaJ
+	C+O/9RYb4gT3aRVv1Ks5HEHzNDgozR66PajpbtAZi35dVFKee8+4MHyrfCtxL/NorprVJd
+	+61hwYF2VJqEhyPXTLn2gb8v4ptHbuU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jluIrJtI;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iNq1gatA;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795247219; x=1826783219;
+  t=1795249100; x=1826785100;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=2Pg1BhUYFt8ZDrzTh0ylBvqkYCJh/9VFw/AThGXyM5I=;
-  b=jluIrJtIQyM0yMIQ6srk5TM4iNVA2D5jyZNF6JoVEgG9zredLPk/LMrt
-   VXhtbUPUJjV7k8I5uH4MO0fT7Bj5kCiWlMsB9pjFchj/TyuliA4kHzBXg
-   FYqOcJ+/faex64a5ey+EVusqbnX3A8WhF+bGzqjTpHiTPyBYr0ENfQb6i
-   bjIacgqVaAmuZKm83WNJtNwxCe8x40IrCoh00xUYx1ygMxQOWDHwLRqHK
-   Beacqv5UNZRnNlLjSg1UEzNKszUWveOkf1bK2EdDYKLZPAR/YJAp1hNk2
-   Rr8+zShVPNpSUh9IJ1zpNX2VImmNSbzq7IggeAYkRQgRj+qZ5W7wwm1um
-   w==;
-X-CSE-ConnectionGUID: PhyFv8d5TaGmM/adFY97SA==
-X-CSE-MsgGUID: b5hWbDXhRC+eHv7lsEjUfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="4119028"
+  bh=pO0cciCz4qBsH+lwwoCOo6yiJg2x8jY4K93217h6gAw=;
+  b=iNq1gatAPXBkM9tPp5m4PBNdWxCX4Atl6ak4z/0zGIKEIpHAmMRT88gz
+   cmbqusK5RcA0aA2QCK4ThspJ3U83F+rOXZA8OKULtk3Y9n7HGMiUwJISI
+   g+cKCGaVThup1xYlB8vNu6G7WVYRY95RtqiDl/ttVmI4Smdb/2HfXhC/u
+   qIeEveqg8fzFJmlXrtboITOEpCKiY6mhNhg8/N0byicbwKvR3PDD1OttD
+   +nLnEhMDqO0FbVhJeSTcDtnR3FYjEiIvkEDWEkykyAy150KziEXDSs9TV
+   AyBNkYWbdblAvgncLfBAfcR16OLZzAZEiVQuED6sy2sHO5mrXcIStG2Sb
+   A==;
+X-CSE-ConnectionGUID: dw3kzDWyQymRZa7/LO9H9w==
+X-CSE-MsgGUID: DzHkJPt1RWG4gMvqFg84AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="4016231"
 X-IronPort-AV: E=Sophos;i="6.27,224,1787036400"; 
-   d="scan'208";a="4119028"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2026 23:46:58 -0800
-X-CSE-ConnectionGUID: /A1rNDpfSRKPQJZ/G5VcoA==
-X-CSE-MsgGUID: rKyVTveQSDmIR0gpKJ/nNg==
+   d="scan'208";a="4016231"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2026 00:18:18 -0800
+X-CSE-ConnectionGUID: PWrLIszdQNecO3b3uFVshg==
+X-CSE-MsgGUID: OqtUL30ETRu4ekM85ukBbQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,224,1787036400"; 
-   d="scan'208";a="10869395"
+   d="scan'208";a="12709521"
 Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 20 Nov 2026 23:46:51 -0800
+  by fmviesa011.fm.intel.com with ESMTP; 21 Nov 2026 00:18:11 -0800
 Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1xUfo7-00000001Jjv-3U8J;
-	Sat, 21 Nov 2026 07:46:47 +0000
-Date: Sat, 21 Nov 2026 15:46:32 +0800
+	id 1xUgIR-00000001Jln-0CGj;
+	Sat, 21 Nov 2026 08:18:07 +0000
+Date: Sat, 21 Nov 2026 16:17:22 +0800
 From: kernel test robot <lkp@intel.com>
 To: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>,
 	Yury Norov <yury.norov@gmail.com>,
@@ -103,29 +103,29 @@ To: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>,
 	Alistair Popple <apopple@nvidia.com>, SJ Park <sj@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Peter Zijlstra <peterz@infradead.org>
-Cc: oe-kbuild-all@lists.linux.dev,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	Linux Memory Management List <linux-mm@kvack.org>
 Subject: Re: [PATCH 54/60] mm/migrate: route explicit NUMA migration to
  private nodes
-Message-ID: <202611211523.63iOZgBX-lkp@intel.com>
+Message-ID: <202611211538.vaJ4R864-lkp@intel.com>
 References: <20261120-private_nodes_v6-v1-54-74f5f9a115c2@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20261120-private_nodes_v6-v1-54-74f5f9a115c2@gourry.net>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DE67040004
+X-Stat-Signature: 95k9xztnnfszgr675if5jr38nropspfd
+X-Rspamd-Queue-Id: 045C640004
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
 X-Rspam-User:
-X-Stat-Signature: c7nk4i9iueiywwjog9amyxyndpbycfns
-X-HE-Tag: 1795247218-828899
-X-HE-Meta: U2FsdGVkX1/cooUqoZY/HpeJsbIYSmXosVU0Aa2b8CVV2shLSv93OLYPXNnNRSD4SvTQpQgrAhAZ2g0r7WSAGRCbhsTq72a6s8SyMj00xXCF1h8TAymwReguvYmXaQyQsJzGl9Jji+papD3gNRH3/ZZU3amXjD/BccmVa480A1luAPmBDQJ9h60JcCaQziOQfXgT8Ux54EI7Ebo/I0hSZ6GWP8EQuX21ZatiMINfOuxXdqIhK3t5CbAZaDcuqIAv+wylSLSBaCBmofbATcVN2i5oemlcPpdxQQNRMz/zCqrtQPlhLAf1eV76fC/UeUC1TdfeaZWdaTlopj9ZSCeOHuWFG95aDDDe8wFFYL9WnJMKzC/4gmLdZRtQgE0MJIlbVwPkgehQrF2D032WngPFwicLf7mAF/yyBSXf4e0FrhAZeBMSLlPXKBKMsrB+OJlBCeBcdy7bKOzg6UR7T9hcBJ2qr81F/Qe0MnUSCUe9g+XpPtAtU3beqeIZ2RoIOptFIqmr6xv7BxFJna5l5sYSdl2f3g+H2TmjwSaETWWVSScnoCyOLAQYFRtzAvuVdP4P1oQbVZLSUxdfh/MtBd/H3M9sIqv/geINVt4EM5REQnhGmdNIrNaYXEqrU1yss1fscTmiBrJjqbMOoGdGTj+c76LY8IfXI0auTr6JAJ+XpbUfA9xnpYcH6jachDw/NUDW8y8wbJ9tp3ut9jJfKEX7TicTYEyJ7cSFM4wT2xmSEq3PcHx28zPFdNCFM5hvZFQO2dmfzaAbooeWAGMv29cCYqfWCPvlqX3XT6s5w8uTOiw0oQwUHExOYZzcRpGnGcozVsg8Li79W8vcNbwr+EnfFJIT1lJ6O3tnLkaSkge+v9yAlvURhlGLIGlUlL7/7Kh4k6JpNZE2XzWvM/dn9f+opjCsDofKOqLmCpQpsuSG9laTqE0JsvZOry0PJSAxMHxLw5Ln+1+3D3E1liu65EK
- wxiwUmJr
- OHh6oKhMTkQpcjXxYNvCfCnWpNYMw8gpvZxvMHftmpGpnbLpKSfb7jYe6ilVLxDbnVKP2AsVa7NV+Jvr5WohCcTszNc2Kqxya91iyss3PSh5xJh7bzofVRaEkyR/FsPfPs2ahGIXt5chNBaSRQxAkRAfh7N6oJqS1q+Oav7EgjY501hytsJU+u6FiKqTeyU3u1Rv4j/fn8VtT5tUCQ/3oKKYUSip8k6JNzbn6SMUTBAHnnOWsuuWPFEjDxFs2SrFQbr/aczLoWTd+hhmqBVJP7vp19V8AhIeVXlP8X4oWW7pVuuCeL28rGbgeFzZLxk6eHni/zQa7nzAcqyzvAweHUdjWx31MHyUNrxvugOB4YwUolV8OpcGvJBl4jD7+EUqLEmh8BqUk8/FIiUS080QTcVPWfErDrjWomHDZLH29Dt2egYS/aOCqo8FAe6d9DcsajNQbb5olkgP+DpWQja0e5g0xLG1LarGhjV6wQTd08yco45eB0ybVYBeEebg1PYVCETwZ1q5REbHtYjCdRZdflRhfD4P/Qw9+//xgTcY3ff8m/6+9MWP58DbrSn8sBeL/EIV0/DFhwmejFituRkwuoX0htCj8CBG4vEpvBM5+69f0XNQhXH3/TJyQott9P+GRPWxt27r/6ZOGi12rB2jzySBvsoDS2uyFo/0MgeTBEsXr2hxZ82wAkEU2qIs5H1z7rDwZQGMOU8u9nix/e2ef3/sWBPMN5aQvRxq5XnymZ/3aVnA=
+X-HE-Tag: 1795249099-745417
+X-HE-Meta: U2FsdGVkX1+k0VFIy365nc20zuLrOUDHbkWEPHGFj0OOmekZ4RxtAhzRFgeB1CJVPQwPkJ3E5U0fWUj4HAnUaWG8oxjOuzj3NQeMcpFUdWNp+wPVUrQPLhK/YOX3Pu5WS5v3ahk4k829q71Ke/gSDJACieTzU1tfTe1VYItBsMnW7xzEB2Aoqxt2WpoQe/Yu403t55BwxEJ9aPmCqZg5KyC1pzzHuztZRFZqclifyfWGnMcZUqLhG9mhS9tlsdnSdUe+aPLTgr4VKCw+y/4sRYU6QlqcX0ZWmDrlUDIY36AkTlJH0VtJbdFTcaKVT7qigi0OoKo1PYa17zBQaKT+3qsIyPvG4FwFchFUNoP0K+i2LeEDWYoFGqQQ6umTXUXfKHM/vefasyYZG1lMdArdan+c7uhwhWWx+A85B991LU3Qnzc7qWUU8mwzqIpW1yY2DeSc+k96SlUJIOcX+brO1IkN+ElazPIsZBA2+jcBRC/0bt1PK1Gb1pyzlT+yh02R2ZkPBLwdSkQFa6uiwLnGtZjXNnmjcMe/uK47kfkBSQzbOeLUSxoACFAR5CT1Ph65idSYcrnaxWPjnKxhfV3I9wwSqybMQxM2xB1bq3ZK1NWzMXu/B1LWtejy3glBbFpcjPst2L/ys6iMmPtQ5ck5H2UJF2t0HG8gQDwfgZwMHK3/LYoT8BTU8PIRkYscCMxC6qYr3gy9TWS0c2KP5aU53dlpPDYxo++pSytigsbObZxk32y5h+JX+swYNcTmVWn/JIt8G5mOQSI7TQTPwDWHMgbhdpiamPTzHJXqUDvuvDwOtdWzavXtklT4SeCei/8lOnuVE0NKzFuMQbi/P1tvmymBfodn7sZK6eK36yXi+dtyiVSW4rIcRblwh2XECc2ND/2camEal6buCph54jJkb4DyXk23Bj00IKYCBlD36d13C2bT7vwu3DZI9mnDQxn+nVHf2x/Xx2M1ElqSwCz
+ rvO9/4Lf
+ bf9ZFku+wEPfevjLOXs0/gXw/8VLs72ZG0vg2s9ZkyEFV1/Un2GlS+hOStHdhg649Psb0PY3GtAhiwoDpfc59tMmq5oytbDYa8hfb35Pw3kjiN6Z777Mc2lyBuaGQCMdWQmUI7ehJuZI7NQPdxkfwJIyT/ItUBlyW02ge00lQYNfvRlos836KxDsDRoHVdDkzjIt3BANEI2r0szO5RqUJmqdwrg1Ln/KAsb6MzofIRvekWy8eOR/ZCkXvhHzlW1cCPQca1SL6deQcJ0aukESWqGDALajC80OCVbudKBF4hk2wRTVJqOtmxqRzgDGe6VQ5e2gRBoKctGuu8p/LGvs9tJs2Lp4o1ZGkxNDRkDrxU9vELn7gTEdgsx4mJoUS4vYB84gc8YJgUavg0ROIUYr8vE2Bc3mkTOxNv2eKPIrdxPt9CkTTxIqHGgHYFZ47avp/WYyqDTAYdoFjIuu4xMFU9cwZ41Zziv+lKYWx0jm24Ux6ZqB9d+ogk84ei0Ecxu22qZ7Z66vv1f3WKj8xDOXofZqKhgOseFX9GSfFDANArqFkVoh0+wCS6b6zTIzRWkvy2v3xETxuaZpgM46RmE2rC9D7tMHC0+S/RNoi2kUqSglZS3Fge4MnZUyebN4TSpggtIeL3p9XeeoVatTH7XInhPrAENBK5cKnTny55jwAMTpjC3KW1GxFzwQNqPYOafUGrobdqMDBO1AX9e/GMbQQtLpl25b8Equa+F4bo8JVyfQf958=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,39 +136,37 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hi Gregory,
 
-kernel test robot noticed the following build warnings:
+kernel test robot noticed the following build errors:
 
-[auto build test WARNING on 15f114dac9a7bde1796f0e54e22726fd31cfa8a5]
+[auto build test ERROR on 15f114dac9a7bde1796f0e54e22726fd31cfa8a5]
 
 url:    https://github.com/intel-lab-lkp/linux/commits/Gregory-Price-via-B4-Relay/nodemask-add-node-state-iterators/20261120-130852
 base:   15f114dac9a7bde1796f0e54e22726fd31cfa8a5
 patch link:    https://lore.kernel.org/r/20261120-private_nodes_v6-v1-54-74f5f9a115c2%40gourry.net
 patch subject: [PATCH 54/60] mm/migrate: route explicit NUMA migration to private nodes
-config: nios2-defconfig (https://download.01.org/0day-ci/archive/20261121/202611211523.63iOZgBX-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261121/202611211523.63iOZgBX-lkp@intel.com/reproduce)
+config: arm-jornada720_defconfig (https://download.01.org/0day-ci/archive/20261121/202611211538.vaJ4R864-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 3b14d7c370558b46e5f0c6494a05c492e59bf32c)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261121/202611211538.vaJ4R864-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611211523.63iOZgBX-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611211538.vaJ4R864-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
-   mm/migrate.c: In function 'alloc_migration_target':
-   mm/migrate.c:2254:24: error: implicit declaration of function '__folio_alloc_flags'; did you mean 'folio_alloc_swap'? [-Werror=implicit-function-declaration]
+>> mm/migrate.c:2254:10: error: call to undeclared function '__folio_alloc_flags'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
     2254 |                 return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
-         |                        ^~~~~~~~~~~~~~~~~~~
-         |                        folio_alloc_swap
->> mm/migrate.c:2254:24: warning: returning 'int' from a function with return type 'struct folio *' makes pointer from integer without a cast [-Wint-conversion]
+         |                        ^
+>> mm/migrate.c:2254:10: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'struct folio *' [-Wint-conversion]
     2254 |                 return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
          |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     2255 |                                            mtc->alloc_flags);
          |                                            ~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
+   2 errors generated.
 
 
-vim +2254 mm/migrate.c
+vim +/__folio_alloc_flags +2254 mm/migrate.c
 
   2216	
   2217	struct folio *alloc_migration_target(struct folio *src, unsigned long private)
