@@ -1,112 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F69F606A33D
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5BC606A33F
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iS5n6k7R
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lev9yW6T
 Received: by kanga.kvack.org (Postfix)
-	id 961226B05B6; Fri, 20 Nov 2026 20:09:20 -0500 (EST)
+	id 2F89D6B05B5; Fri, 20 Nov 2026 20:09:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 911AB6B05B7; Fri, 20 Nov 2026 20:09:20 -0500 (EST)
+	id 2D0626B05B6; Fri, 20 Nov 2026 20:09:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8003F6B05B8; Fri, 20 Nov 2026 20:09:20 -0500 (EST)
+	id 20CBB6B05B7; Fri, 20 Nov 2026 20:09:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5478F6B05B6
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:20 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3C62A02A5
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:19 +0000 (UTC)
-X-FDA: 85457342838.12.B256961
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1ECF2120003
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 028546B05B5
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:18 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76EF2120293
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iS5n6k7R;
+X-FDA: 85457342796.17.A611C5B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4D6CD80005
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:15 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lev9yW6T;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795223358;
-	b=x7p6B9QHYSW34DATVqdUWqKrff00G4dXlhNdckrytZ254t/zAcyU3az/wuUfBtaFlADxLa
-	cZG2MGZywr2s7y2P6xmfBKkVxGnxBmxoy9o+c7tRSYN/UaIsfm/seMU6lICnZ9mu8TFnnp
-	jtEJVz+uFijM5NZoUeKwHrVArvojdpI=
+	t=1795223356;
+	b=iiGopAhOsYSzk8VEieiRqqJl9cRSaFZcsf2zRkDy8AqiZNxUmo4HTeOS5PuUe6jyxZt9V2
+	bKO9SGMxFtkYWQCQ46BoTRn6mjxYqMc7ffHL1LiQ928rKb0oN3q7bYCzc4x/TuNJEU7jiU
+	wpiH7/o7Sou2fzAk8HljrW0MAPCpxWM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795223358;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795223356;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZUQvwLmTlji/bJ0Fu6NxTY+CyxNdQLCUrKCBR4Qtz8g=;
-	b=0Dd2wYeWhplzIzzwvbwb/xik2WUaOxMU6mZAjfpV6BSt11rx9PE1OGEMLYJ0vlGUyc/zDK
-	gOZ6fOOtM5nIObA79cnlT9jAxvlOgBoVAKqWDfSVEIOyqllhby6AnxUg23Yrs3bDjZjSYv
-	SS5fML2YB/qg+OoFS/SXImKDADPOTk4=
+	bh=Dq4uYrhSligK2Yc6yPFlriNqvNi/HgVAWMNzxpJUth0=;
+	b=eD/PzlXv5RaddAY/zE4TROe8S7fuADClXyQ/d5jmKCJFcwcMLY5GEnfgy7zyQkysmBbfA+
+	BReaYRS1nhqmYvpRDDmd5sW490mSzhBfZnJ0d275Dh/MlIGacg++oqJjtU+Y9gPNYSOJ3T
+	7x4pTSs9XdOz6PoGtKMQ6fqzd+ySwbM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iS5n6k7R;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lev9yW6T;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43D09612FF;
-	Sat, 21 Nov 2026 01:09:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10D21F000CA;
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 84E1860F08;
 	Sat, 21 Nov 2026 01:09:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id B4AB11F000C4;
+	Sat, 21 Nov 2026 01:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795223356;
-	bh=ZUQvwLmTlji/bJ0Fu6NxTY+CyxNdQLCUrKCBR4Qtz8g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iS5n6k7RgsLK3C+3X//Rnclg2fGxJ+m4s4+WvjH08tvjB3e6IKKI0QG/dNfUu5Y5L
-	 gGy4rVLMArWJbfdocdDDmgZ646AvUwwwlx3uXAj5xDsIzM076+xy546eg+kG7u0u/K
-	 AhhLqZDFtsNXgXQpqcono3nQcDBiBjBl/B3rC8Bw2OpMTh4u1Dc2LeevIE8NpSKHJh
-	 ch7Cmmcva0wgFbKjfSaZ3JzJExgMhzBaT7T7d8qhR+dQ3APm6ROFJNomXxkee/uZJb
-	 VZ/35DL4NXAMUHJRrv8WHt6bmQHSuArS/Mkz77ez9D903jrgVMzYQ0ae6zdPmVUXLe
-	 yKfIbdEUqEJ/g==
-Message-ID: <sashiko-outbox-226465@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 01/25] mm: Introduce CONFIG_PISA and metadata
- table
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luigi Rizzo" <lrizzo@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Joerg Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin
- Murphy" <robin.murphy@arm.com>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Jens
- Axboe" <axboe@kernel.dk>, "David S . Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Luigi Rizzo" <rizzo.unipi@gmail.com>
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Zi
- Yan" <ziy@nvidia.com>, "Harry Yoo" <harry@kernel.org>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Hao
- Li" <hao.li@linux.dev>, "Matthew Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Jann
- Horn" <jannh@google.com>, "Catalin Marinas" <catalin.marinas@arm.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Danilo
- Krummrich" <dakr@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Simon
- Horman" <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Ilias
- Apalodimas" <ilias.apalodimas@linaro.org>, "Willem de Bruijn" <willemb@google.com>, "Kuniyuki
- Iwashima" <kuniyu@google.com>, "Joshua Washington" <joshwash@google.com>, "Harshitha
- Ramamurthy" <hramamurthy@google.com>, "Alexander Lobakin" <aleksander.lobakin@intel.com>, "Christoph
- Hellwig" <hch@lst.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Dragos Tatulea" <dtatulea@nvidia.com>, "Naman
- Gulati" <namangulati@google.com>, "Pranjal Shrivastava" <praan@google.com>, "Mostafa
- Saleh" <smostafa@google.com>, "Randy Dunlap" <rdunlap@infradead.org>, linux-mm@kvack.org
-In-Reply-To: <20261120010655.467825-2-lrizzo@google.com>
-References: <20261109182533.3594984-1-lrizzo@google.com>
- <20261120010655.467825-1-lrizzo@google.com>
- <20261120010655.467825-2-lrizzo@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 01:09:14 +0000
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+	s=k20260515; t=1795223354;
+	bh=Dq4uYrhSligK2Yc6yPFlriNqvNi/HgVAWMNzxpJUth0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lev9yW6T0RvL4iasvGrmNZTk4lNhOVNmBrF/T7i35at+a3FTHi7tKpepvNL2D7KTB
+	 h0qDHLVue1JtkmyMZAHextD2GwOh4MT4ACttjuSgzOVEgr60lATGlJCU7IgUKx3fkQ
+	 le6QElebQWnly9BHqqJBhk0mfDgCU4zh0d/cQGDUMeLmg4jEkVMHB1zy6d3QAGxqyV
+	 O6YA0FvNSKhchFW6WlOSPRgLScQNvnzgAhLBKc9hq4A9SyGetfcf1watb19WTJdnrH
+	 thztGrMxm54eA2/KEIAK0nkjpjH+bPpf3ylKRyhPpB9EbRccri3kJABFowAFM8KaY2
+	 2lxX87Owry5ng==
+Date: Sat, 21 Nov 2026 03:09:10 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v5 14/25] rootns: Add ROOTNS_WAIT ioctl
+Message-ID: <awDvNgCFnMhOy3Y5@kernel.org>
+References: <20261121000844.1863324-1-jarkko@kernel.org>
+ <20261121000844.1863324-15-jarkko@kernel.org>
+ <awDjC9hcKSRnCPgJ@kernel.org>
+ <awDjQeXjqrhNHoWQ@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awDjQeXjqrhNHoWQ@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4D6CD80005
+X-Stat-Signature: ounqb5kd1dzbqkzs7egfmexwmtywoj6b
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1ECF2120003
-X-Stat-Signature: tw1n3hm6epzzopdx8hfqajww693yt31z
-X-HE-Tag: 1795223357-906504
-X-HE-Meta: U2FsdGVkX186X/LB6rAV1Ec+NaGdzgO+ET8z7gvrk5oYdPGfF8+ssNTmFyh69WKcTqCnaiuTpTooPeeMlM2+FhnIww6csIghnYk2fJf1x3D6J0gCsq4hmwasl3SfaMneed1oYZs8vjiibWpRaRUAyF8eOXNnLzP3+qu6R9hccz8pzLr6dJRuZxpPKGgduDDLgNmxd25XtU/YX6sLTqu8UtHSMBX6QoiRTcwluhASVDpId5zfNPnGGCXWCBH/+j7Z1eXAiZM2PJcIqeRgOxk60k14YE263u3pMihFUBFCK9uA5yMOpljZ7wFz8aryU9PtxbRdpMdih5EGDFTGF/YuS9sWkA4oMRbnRmahdjLSFF9UFr98K2cxt2FAyON3fPWm2Q0+Q3VXebE3CDj6rcQgqUlFqXbzPNy/BFb4jJtMjzqxPa9pSCfuxQbmPu7sS3uV6pqi1vATxkimfcx6BylBbZvjLZag7NaNjhZuaO+8VUNjUt8+aIT8Kc4tZcht0Wh117xvMqfaM5wADnZAqLVUOJc720Q7V+TwcursILc5+BtSNqRIesadtSdgjbIoSAunJYc0QMIH0gP9CmGGP9OfDUp5WTbdbCUJGzdX23OI4kkgyFhdT14tyCJJq4U9ccap3HhcJlGfq9ds9OCUxFh6FlarbWGltuXGtRg6ez9PiQH7i6Fluzh/lqpuI5KsvTfg0CxCe+KPKjq/s6CxgKSbKUUFBZ2v76zM2YaA3v5yelpFLdQsNSeU2CUf6Bt4B0o6t6/awqLDhh7T/ZyQMmiEpOxSootT+J4wALBc1wFN4dP3Za+hsbFJfSHmT2Pbjt6N/p1hs3Y7ywFUPLaUSWlNGVnQIEfHsF93JpgbDTMCPYYBOBKKX1tw99ZVnKjELqgcWgRi4ZrRoSVhDOS06wT4dEi7n8BBjEQGesdgYB+WXRpLCvz1ujHYekTaMI5Dq4Eqkibc7beRl4goq1OfS2T
- bAi8TlFM
- wGkNJND6D1eU57JuJ+rbxtbOKw3arQXBSkZttvFIBdo/JVhBY1D51Xe/734QoKASRSTaxf0dBSNsYVJ8Vqtb8WmOy2kFK4iRKvLLHvvJ6wwD+N7EvW9kX1P4Dpy41BKZgL8iqhxgHg7C6ax7MFr1iYVfASiWsHjQ8wmVlDdxE4A5tNratUk5WijfgyJpw8X8+N1w5rY7J+1jwYM+5S6rXT/vVx8ChegBI1BPE0ixuvXakoHqYlTN9CrAxkoF915o/RiTTo7l6Hy+B35DJZgjbirTcME/ZvK8VjuIJ/2hQKoHC7KjeSqODBtx835PiNQy1CtuB1dGIHWwJorLzNHet5F6LoP9TTexfotSSVmEzKuDjxiErcS6sO25zYdStkRWAIJ5jarrWDZwZi+fGaWjkqua4KsSW4/2TRIqIKFZLdxxl2jS7mVW0/D5ABWwuJD5aiUtnLU1ENlGk9Fi+QXa2V/end2zWvHijXPN6CFxOYXwPd7pAdsdVIHBwHZiX18ARYtOPfOjfydnLnhpUYGwKChl5gOINc0vCNLbEO+3kNwF4kotxdXuVYxytuXy/TN4O6A/9TDuCWIL23aJ1F1Pn/VOFRgN3lYGDleOJd8gPlbTRjnObUeotFxcU0F8OsTjEe5j15AYrTqdLJCg/MfPbmjHFIe+U7kQrQvK1XVgWk5HqETzSxMW+fCIMu2GmfQdO2otaWp6hKIElrzeR3c2ywccT1RckMGap2oARk4zNuKP6kOBsro0vcT8j3hUwx7LY5nK88yIzmE1jJ2rLPXFbxqEv+Hj0HpGTdARq+v3Yn6wEUay/K8ZdmDrySBPssHKBI7F4rEbXt56t+nMo/NkvFX45K/APH7V5xOWvUudnxS7b/okZ7Q+UqcLt6ofgiDHHq6jmAHzRgJ8Yae8QvrN20kI72fNzl5G7co6P926rzHah5AjJhcqTlH1uRw==
+X-Rspam-User:
+X-HE-Tag: 1795223355-712366
+X-HE-Meta: U2FsdGVkX19HIvBf9qTqQF21tDGns8gk/Bm+cAKN9TWhUwfUWoOejUFg+5Xoj76VsDymVofggAjK+suhE5bQRqUNqdxuUMETheiMoDxfbVs92ZHUvGpCkl72nVcYRNdfDCRF3261Ln47FDnoMLSc5F4FMHQeduZ4Qei8YMQMDga73reZK5+jiwRomNHc7ja7NJ1UMfufegIktUm2hgNR6F+kzHC9kMXyCWpM1jSVvAuet7M2rDITTGKpCsbpqTU6YeIrOZzbvjk5Ne7Smusl7VWe5wiLsNMf/G2S9KUVMxukoy+w/ryIpf8mBftqInRYvXP+sxcGyPwPNjUD619dy1YOzfhtD6zRBCNswOiyxn9YEdUBsSUgLFpaUVxIZlVMuUHfGLz3zu5IJSUDFDjLc7sQwyjVAGkufmeSzv5vMx9acRKVRC6l4ZhFNptOzWfpRICslscfmc02jLyh1ZQdy6BpC/muC9qmzId3FB6SIuLaVFM5WfGy5WIcAfZZ7fWHO6IHH9VBl3crAdQulswDjndQMoMQqmlvC/SOMDQc3rQ8ma9yCp0iI8FzTDelKQCdEbWYFZrFApsZc+6aAxH0Lkkp7jCOU/urEcz6plkdy4wpfdtt+4hLBFgjG9v/+xuZPtw8yAen9bRW9zR7KiKNJaqpyuA1uy1Lt+6dudhOVdNvoLyYgTwiQxCuBCX2RqRmGijQlyXvrD82aNSYi9VzpJzEO74iT+ORabPPnkm1daD/OOZTfcBlcujrj2HyZSV2gtsS/GFgDZ+Cvx8XP00jvG5kZRqxvNMfhkaGVuXBbCy3Xa4qrl9/V2C2gMKD64vYrqNXPLBnZ4Hi9lJVX/8bwC74mwo1MzILZG1m/vEkZ08y0WW+GuAdSCgzgQR+1f6RDsjsfdh8qlNY3x/CjY6TYYlLj+F3KLCCllNvSxp7HOPGh/a25R3t16gb2uwNd+n0SSFCm5i1kmO0VgUnKKL
+ USCVgMTs
+ pQF+She+f1u2Q59/zO3qUmu7meOz39IWHW6gGXV4SjonKjj+ykJ/ev+9DEU+ZTMb4vRhJZdjYKzMbixMMerOsRp5VxvAmsq6792FbSxCJmFBxP9fFd/GPRySnRXPflLtOsX0J8lCZCEOVz6HyvZKKtjKeLXQqwQGgU+MEajqBvPTHMxteDnuLNL/RxqwM2+YWSwplwNJ4HceX3Bv+UGxNEXWJEdQjYBh2c0u3I6b2FwJqNOEjKuGAOK0bq53fUjAZjc+4eT+RGnK3QG2wVGgKEl78vtsG/n+xyjkjXb5EAGez8uI+akFzENduUthEgUtW/xR3/xtT1CUk39i1bO55HvPE3bJgg3i0EnSQAOq1s5A1RKklRrBTLVMUkTymZgGESbgg9zVhEut2KFARLMx9L9XWpIAqgSC3rpTHLGaS/wOJfHARQyIw9DU0dLmubENdcBWUgYA6qKrdV/BfVItT6ndhv4DlSL45jPvZby7FgmrnHL8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,227 +106,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [Medium] mm: unmapped KMSAN vmalloc shadow in pisa_pfn2slot and
-  pisa_meta_array
-- [Medium] mm: freeing init_mm page tables in pisa_meta_init() without
-  init_mm.mmap_lock
-- [Low] mm: early pisa_enabled() return in pisa_meta_init() during
-  jump_label_update()
---
+On Sat, Nov 21, 2026 at 02:18:14AM +0200, Jarkko Sakkinen wrote:
+> > Ought to be dropped but seemed too irrelevant detail for the time
+> > being
+> 
+> I mean replaced with a syscall path.
 
-commit e2c1da1898da520bb5d1c1e05212fb580b78c49f
-Author: Luigi Rizzo <lrizzo@google.com>
+Yeah, a lot better overall (less fallible paths).
 
-mm: Introduce CONFIG_PISA and metadata table
++long rootns_waitid(int upid, struct waitid_info *infop, int options,
++                  struct rusage *ru)
+ {
+-       struct pid_namespace *pid_ns = task_active_pid_ns(current);
+-       struct rootns_wait_args args;
++       struct pid_namespace *pid_ns;
++       unsigned int f_flags;
++       struct rootns *rootns;
++       bool nonblock;
++       int status;
++       kuid_t uid;
+        long ret;
 
-This commit adds CONFIG_PISA, the two-level metadata tables
-(pisa_pfn2slot and pisa_meta_array) with on-demand page table management
-and memory hotplug support, and a built-in KUnit test suite.
+-       if (!uarg)
++       if (upid < 0 || ru)
+                return -EINVAL;
+-       if (copy_from_user(&args, uarg, sizeof(args)))
+-               return -EFAULT;
+-       if (args.flags & ~WNOHANG)
++       if (options & ~(WEXITED | WNOHANG | WNOWAIT))
+                return -EINVAL;
++       if (!(options & WEXITED))
++               return -EINVAL;
++
++       CLASS(fd, f)(upid);
++       if (fd_empty(f) || !is_rootns_file(fd_file(f)))
++               return -EBADF;
++
++       f_flags = READ_ONCE(fd_file(f)->f_flags);
++       nonblock = (options & WNOHANG) || (f_flags & O_NONBLOCK);
++       rootns = fd_file(f)->private_data;
++       pid_ns = task_active_pid_ns(current);
++
+        if (!pidns_is_ancestor(rootns->ns->pid_ns_for_children, pid_ns))
+                return -ECHILD;
+        if (READ_ONCE(rootns->state) == ROOTNS_INIT)
+                return -ECHILD;
 
-> diff --git a/mm/pisa-meta.c b/mm/pisa-meta.c
-> new file mode 100644
-> index 0000000000000..734f49320047a
-> --- /dev/null
-> +++ b/mm/pisa-meta.c
-> @@ -0,0 +1,603 @@
+-       if (!(args.flags & WNOHANG)) {
++       if (!nonblock) {
+                ret = wait_event_freezable(rootns->waitq,
+                                           READ_ONCE(rootns->state) == ROOTNS_DEAD ||
+                                           READ_ONCE(rootns->state) == ROOTNS_INIT);
+@@ -154,15 +191,23 @@ static long rootns_wait(struct rootns *rootns, void __user *uarg)
+                if (rootns->state == ROOTNS_INIT)
+                        return -ECHILD;
+                if (rootns->state != ROOTNS_DEAD)
+-                       return 0;
++                       return (options & WNOHANG) ? 0 : -EAGAIN;
+                ret = pid_nr_ns(rootns->init_pid, pid_ns);
+                if (ret <= 0)
+                        return -ECHILD;
+-               args.status = rootns->exit_code;
++               status = rootns->exit_code;
++               uid = rootns->init_uid;
+        }
 
-[ ... ]
+-       if (copy_to_user(uarg, &args, sizeof(args)))
+-               return -EFAULT;
++       if ((status & 0x7f) == 0) {
++               infop->cause = CLD_EXITED;
++               infop->status = status >> 8;
++       } else {
++               infop->cause = (status & 0x80) ? CLD_DUMPED : CLD_KILLED;
++               infop->status = status & 0x7f;
++       }
++       infop->pid = ret;
++       infop->uid = from_kuid_munged(current_user_ns(), uid);
+        return ret;
+ }
 
-> +static int pisa_pfn2slot_init_zero(unsigned long start)
-> +{
-> +	unsigned long end =3D start + PISA_PFN2SLOT_SIZE, addr;
-> +	int ret =3D -ENOMEM;
-> +
-> +	for (addr =3D start; addr < end; addr +=3D PUD_SIZE) {
-> +		pgd_t *pgd =3D pgd_offset_k(addr);
-> +		p4d_t *p4d =3D p4d_alloc(&init_mm, pgd, addr);
-> +		pud_t *pud =3D p4d ? pud_alloc(&init_mm, p4d, addr) : NULL;
-> +
-> +		if (!pud)
-> +			goto undo;
-> +		/* An earlier user of this vmalloc range may have left page tables. */
-> +		if (!pud_none(pudp_get(pud)) && !pud_free_pmd_page(pud, addr)) {
-> +			ret =3D -EBUSY;
-> +			goto undo;
-> +		}
-> +		pud_populate(&init_mm, pud, pisa_zero_pmds);
-> +	}
-> +	return 0;
-
-[ ... ]
-
-> +static void pisa_pfn2slot_free(struct vm_struct *vm)
-> +{
-> +	unsigned long start =3D ALIGN((unsigned long)vm->addr, PUD_SIZE);
-> +	unsigned long end =3D start + PISA_PFN2SLOT_SIZE;
-> +
-> +	for (unsigned long addr =3D start; addr < end; addr +=3D PUD_SIZE) {
-> +		pgd_t *pgd =3D pgd_offset_k(addr);
-> +		p4d_t *p4d =3D pgd_none(pgdp_get(pgd)) ? NULL : p4d_offset(pgd, addr);
-> +		pud_t *pud =3D (!p4d || p4d_none(p4dp_get(p4d))) ? NULL : pud_offset(p=
-4d, addr);
-> +		pmd_t *pmds;
-> +
-> +		if (!pud || pud_none(pudp_get(pud)))
-> +			continue;
-> +		pmds =3D pud_pgtable(pudp_get(pud));
-> +		pud_clear(pud);
-> +		if (pmds =3D=3D pisa_zero_pmds)
-> +			continue;
-> +
-> +		for (unsigned int i =3D 0; i < PTRS_PER_PMD; i++) {
-> +			pte_t *ptes =3D (pte_t *)pmd_page_vaddr(pmdp_get(&pmds[i]));
-> +
-> +			if (ptes =3D=3D pisa_zero_ptes)
-> +				continue;
-> +			for (unsigned int j =3D 0; j < PTRS_PER_PTE; j++) {
-> +				pte_t pte =3D ptep_get(&ptes[j]);
-> +
-> +				if (pte_write(pte))
-> +					__free_page(pte_page(pte));
-> +			}
-> +			pte_free_kernel(&init_mm, ptes);
-> +		}
-> +		pmd_free(&init_mm, pmds);
-> +	}
-> +	free_vm_area(vm);
-> +}
-
-[Severity: Medium]
-Can freeing lower-level init_mm page tables in pisa_pfn2slot_init_zero()
-and pisa_pfn2slot_free() without holding init_mm.mmap_lock cause a
-use-after-free during a concurrent ptdump walk?
-
-ptdump_walk_pgd() walks init_mm page tables under
-mmap_write_lock(&init_mm), and vmalloc paths such as vmap_try_huge_pud()
-take mmap_read_lock(&init_mm) around pud_free_pmd_page().  Because
-pisa_meta_init() runs at runtime without init_mm.mmap_lock, a concurrent
-/sys/kernel/debug/page_tables/kernel read can race with table teardown:
-
-CPU0                                  CPU1
-ptdump_walk_pgd(&init_mm)             pisa_meta_init()
-  mmap_write_lock(&init_mm)             pisa_pfn2slot_init_zero()
-  walk_pud_level()                        pud_free_pmd_page(pud, addr)
-    walk_pmd_level()                        pud_clear(pud)
-                                            free_pte_table()
-                                            pmd_free(&init_mm, pmd_table)
-      walk_pte_level()  <-- use-after-free
-
-The same race applies if pisa_meta_init() fails and pisa_pfn2slot_free()
-frees private PMD and PTE tables via pte_free_kernel() and pmd_free().
-
-[ ... ]
-
-> +	/* Lazily back the PTE page covering this 16-slot chunk of @pisa_meta_a=
-rray. */
-> +	meta =3D &pisa_meta_array[slot];
-> +	ptep =3D pisa_meta_pte((unsigned long)meta);
-> +	if (pte_none(ptep_get(ptep))) {
-> +		unsigned long addr =3D (unsigned long)meta & PAGE_MASK;
-> +
-> +		if (!new_page) {
-> +			/* Allocate outside the lock, this opens a race so retry. */
-> +			spin_unlock_irqrestore(&pisa_slot_lock, flags);
-> +			new_page =3D alloc_pages_node(pfn_to_nid(pfn), gfp, 0);
-> +			if (new_page)
-> +				goto retry;
-> +			return -ENOMEM;
-> +		}
-> +		set_pte_at(&init_mm, addr, ptep, pfn_pte(page_to_pfn(new_page), PAGE_K=
-ERNEL));
-> +		flush_cache_vmap(addr, addr + PAGE_SIZE);
-> +		new_page =3D NULL;
-> +	}
-> +
-> +	memset(meta, 0, sizeof(*meta));
-
-[Severity: Medium]
-Does accessing pisa_meta_array or pisa_pfn2slot fault on unmapped KMSAN
-vmalloc shadow memory when CONFIG_KMSAN=3Dy?
-
-pisa_meta_init() reserves pfn2slot_vm and meta_vm from the vmalloc range
-via get_vm_area(), and pisa_pfn2slot_init_zero(),
-pisa_pfn2slot_populate(), and pisa_meta_ensure_pfn() install page table
-entries directly with pud_populate() and set_pte_at() instead of going
-through vmap_pages_range_noflush() -> kmsan_vmap_pages_range_noflush().
-Because CONFIG_PISA is enabled by default on x86_64 without depending on
-!KMSAN, KMSAN-instrumented accesses such as memset(meta, 0, sizeof(*meta))
-or reads from pisa_pfn2slot translate the vmalloc address into
-KMSAN_VMALLOC_SHADOW_START / KMSAN_VMALLOC_ORIGIN_START, where no shadow
-or origin pages are mapped, causing an unhandled page fault during the
-built-in KUnit test at boot.
-
-[ ... ]
-
-> +/* Reserve @pisa_pfn2slot and @pisa_meta_array and populate page tables.=
- */
-> +int pisa_meta_init(void)
-> +{
-> +	struct vm_struct *pfn2slot_vm, *meta_vm;
-> +	unsigned long meta_size;
-> +	unsigned long *bitmap;
-> +	struct pisa_meta *meta;
-> +	u32 *pfn2slot;
-> +	static int pisa_init_err;
-> +	int ret =3D 0;
-> +
-> +	if (pisa_enabled())
-> +		return 0;
-> +
-> +	mutex_lock(&pisa_meta_mutex);
-> +	if (pisa_init_err) {
-> +		/* A previous init attempt failed. */
-> +		mutex_unlock(&pisa_meta_mutex);
-> +		return pisa_init_err;
-> +	}
-> +	if (pisa_pfn2slot) {
-> +		/* The previous caller completed init while we waited on the mutex. */
-> +		mutex_unlock(&pisa_meta_mutex);
-> +		goto out_enable;
-> +	}
-
-[ ... ]
-
-> +	pr_info("pisa: %lu GB pfn2slot KVA, %u slots (%lu KB meta KVA)\n",
-> +		PISA_PFN2SLOT_SIZE >> 30, pisa_nr_slots, meta_size >> 10);
-> +	mutex_unlock(&pisa_meta_mutex);
-> +out_enable:
-> +	static_branch_enable(&pisa_key);
-> +	return 0;
-
-[Severity: Low]
-Can a concurrent caller of pisa_meta_init() return 0 from the early
-pisa_enabled() check while static_branch_enable(&pisa_key) is still
-patching other jump sites?
-
-jump_label_update() patches jump entries one by one before setting
-key->enabled to 1:
-
-CPU0                                  CPU1
-pisa_meta_init()
-  ...
-  mutex_unlock(&pisa_meta_mutex)
-  static_branch_enable(&pisa_key)
-    jump_label_update()
-      /* patches pisa_meta_init() site */
-                                      pisa_meta_init()
-                                        if (pisa_enabled())
-                                          return 0;
-                                      pisa_meta_ensure_pfn()
-                                        if (!pisa_enabled())
-                                          return -ERANGE;  <-- unpatched si=
-te
-      /* patches pisa_meta_ensure_pfn() site */
-
-Testing static_key_enabled(&pisa_key) for the fast path in
-pisa_meta_init() would wait until jump_label_update() finishes patching
-all call sites before returning early.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120010655.4678=
-25-1-lrizzo@google.com?part=3D1
+Br, Jarkko
 
