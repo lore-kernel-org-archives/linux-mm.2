@@ -1,147 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87E3606A698
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 03:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F3C606A331
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 03:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tvnqaCNa
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kM+xDCsg
 Received: by kanga.kvack.org (Postfix)
-	id 077026B00EF; Fri, 20 Nov 2026 22:24:27 -0500 (EST)
+	id 211596B00EF; Fri, 20 Nov 2026 22:35:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 026D06B05B0; Fri, 20 Nov 2026 22:24:26 -0500 (EST)
+	id 1C28B6B05B0; Fri, 20 Nov 2026 22:35:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E31866B05B1; Fri, 20 Nov 2026 22:24:26 -0500 (EST)
+	id 0B2346B05B1; Fri, 20 Nov 2026 22:35:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B582A6B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:24:26 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 240361C2C48
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 03:24:26 +0000 (UTC)
-X-FDA: 85457683332.22.933897F
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 14AA8C0003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 03:24:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=tvnqaCNa;
-	spf=pass (imf22.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795231464;
-	b=4CLCWI6odGW/KO62j7/T+yfRreqGrewYot3qZG1XhMHZJRRG9rq0smCi7eMvyk5+uu23Bw
-	SRAya6EvGpzjDvDl9PNG5fKnH5IdKi+JmU/dulQk63F3DcA56XMpYSbYCzRot19A5N9Peg
-	Rux9cryW61LFsa6LW1CmKSeB2H8adPI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795231464;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BA7506B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:35:42 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD8F5802F8
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 03:35:41 +0000 (UTC)
+X-FDA: 85457711682.07.2ACC84B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 29BED100005
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 03:35:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kM+xDCsg;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795232140;
+	b=BGwjGIrDB5TiN6KW2jTIlq/OwCYyaSo2SS04E2bre5wKtg1au+6SqJduU8iSca1+Mko185
+	rlEBIiTrKzYFzMmPpc+v1BG1dTtENqs9SeByltL9BXSiUPm+2RQuLHZiVt8ueQCsoRWhdc
+	8x427rxkaSP3ZjeC7B9gREAhxrTN6z4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795232140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RV7X5BTRWXgfZswCWiBQhKwLnqUxEdr1ZOglykX7/tM=;
-	b=7G/Scr/hbIvVk66PBMxHvfnL1iaUKA4BaQ2VqQ8qrpNZ08BS3O+9ARvH6YxgmWHE+6/zLT
-	NDbLm/cEMfwqRc2udJjD34p0aTZ6EMS46TgvV+7iODuXqTWo4zxD+PcieSC4uR/v1Q6tPw
-	UR3pmNulgjkOtbt4bJBj4XcZacRoa4U=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=tvnqaCNa;
-	spf=pass (imf22.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5c1479be604so1117975e87.1
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:24:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795231462; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CNGt7WTrCF2hh3sFr6CZc1I8m4V6BIjjl3tOkUBePSHGq8nZaJEZHmj/FkYo9yXlSh
-         vCtPGIRjHVEIWWMqpy8XeIQ0X8/mSNURVZEndF7aDHdCDQtFdLinruxyElfqvC3cLkyc
-         3NPpz5pFVxD2l1RfSMW3isuczVqkC/nIgvSjwNXFlpoD2e8yujUsZvC+W32fDqmUYkm/
-         rt28x+pt325MUU4CjoM3mxQnc0Sz2WYfdfBP7ExV+C06E3lOKzpzXQ7joBT3eh5/lt0j
-         wbM/2BAOUgbfqFJ24PObXeiBKc5kQYBWmJLwJa2nMcBFWgqo6/gIv+LQzUyXraKnpVG4
-         qH7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RV7X5BTRWXgfZswCWiBQhKwLnqUxEdr1ZOglykX7/tM=;
-        fh=b5LmqrlXjow7nkt/Lz80XuC7qDaEnHuTiS0mKDFfHZs=;
-        b=KL25qUd6UjSnUIHUBIg9qVrRFaFHcEqT8iI9cnXutypnfkOFhK2wWos0KUrk/vU+mz
-         Gpd/90cLkk25XCAPSliapL79XkwyjWoUDbRx1XDK5bQHNBTTd31Dk8gZhFbMW8CNyFkc
-         wezJnxvx/hhON5JJ9akqd+rja3muU91pTyIzQZPP/rc5ncBOfiyZ5aIxbyYvETEAHYz6
-         iT0AxwZkllHiXC8Wv0pJq55aFH0/pBN5APIQslBbYnhgtb30ItKVxqQMMTRSSNWu+Jaj
-         WmG3sJlkJ38JjKpQEQEGVC6N7CKHqtaO6N4qV3Qg0W3xtyP65cn+xVuh7qw/mGG1D+UD
-         +/Vg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795231462; x=1795836262; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RV7X5BTRWXgfZswCWiBQhKwLnqUxEdr1ZOglykX7/tM=;
-        b=tvnqaCNa/H70/Cm55QTnqFnnJa106WWadOV75cCES3Il7fdSFtlMI9tOZ3sjyFED5Z
-         QwbccbGVhfKvbpfr1ccl0GxnJCh2HtGUejklCOjba5I6dG3fA011I9BIjurrL8Aq7ICb
-         t3c+Py53WC836EQWTRxkQz0nIGBHxeAekVU20n9Q0e1J2FOacCCYCwq/UIYoS1t2M4Gy
-         G2UGRBhgheaPbDC0ysj+1WWDYzG0vb0P/RC7V3TXZk6+GJcxHR8ETQPbPqv4JVihAL2W
-         DpW0K6di+KkBYwqX3FrlsgdXGPp4wzvaAt4W8Iyx9wRsXsYy+/gLce5/M6vFSxnVN1zx
-         +Wig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795231462; x=1795836262;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RV7X5BTRWXgfZswCWiBQhKwLnqUxEdr1ZOglykX7/tM=;
-        b=QeALj1vB3MhWSNt6DRzYKeEDXtmaeqyAA2IM5dt5iBIueWhRSeB4Y8QjLVo46/usJO
-         PJuT9Dix7gR63DYSyxSRem4RyAzZ2rzyBo0i/UbOuUBErhZheXzyx0kySyFvQqN+U/dg
-         Syh7wOIDRMIeUwqqO3pYf4MU5OeY/b02fIprR2e33hjz3pwoEjNAuvMYIgUACA7YcScq
-         tUXYI8Gtbu8a1qWkd95Wl87zTuFlujM5aIzpYuDwIugFmZ9h6kLtHxYc5cH3MP1vrjLH
-         YTvJTCqLsOImqnQZ4hxhle2QNp4oS31rS6Yv0DBeF6HTYtZTyqv8/W4c+v8799IdTMiX
-         Z4Bw==
-X-Forwarded-Encrypted: i=1; AL+hErEtcw09BKon3leZzjazhyTC/xpUph0QoSelydZdYn9Q31HDHuiD1X04KzsiKrb+9QqDJOK+o55VJA==@kvack.org
-X-Gm-Message-State: APuU4Z8pSMzDwT/L3+i7ekRZ1aK2Eg23hZVry9oF4w9IBVQ9/AP80FFo
-	ErAx98pMWWeJoPkZeiak99/WM743hRmBzMLRFhjRvLPloIKfhSH7rn2hzbyHE+aHfpdm6Xc+0Ms
-	4IH0/Vcy/Y87HrnVXwDJdCVXrvb1Q5FQ=
-X-Gm-Gg: AZFdTZehW23XAEgBlxZ/wM3hytSRrxFLoz3BcEF9i6RBczvw41v2lqICYgC2X8+EoX3
-	gd/Ojb3AnAN8RTds3eirueksaMK59BE2GmltJCKnzP3pjjhnfXoC+ytuoPXW7eUnaqXCVWDExEM
-	5isya9ckOMrF3tFSaBQqh3PEE/sMYxazLWyncZ7GeRzgzlOlNXoCrEhKKXpw7WtkvIf+Y3ZCUgl
-	X9J56S5OrU7KQiZD1EWZtmL6zO5IjA5CKC39nt+PTyWCuVEoFFDecF2ycIgc5z4xsgZgbTLGD8I
-	q/EEr2E2/wmfY9avMK4rE/dZGKE3P377bDaDUEGvg2A0UNas0LaPnQb/fOkTfaogWAsKA5PSrr2
-	5S1t+Ds8pX6GtQlV+P4rv0H3HXqcnFuMrGAiI
-X-Received: by 2002:a05:6512:1317:b0:5c1:5b02:1828 with SMTP id
- 2adb3069b0e04-5c1bc80edc1mr1548759e87.25.1795231461863; Fri, 20 Nov 2026
- 19:24:21 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
- <20261120041906.5785-9-kanchanapsridhar2026@gmail.com> <CAKEwX=NtUEd7+Q2rW79LtObnjHT5uNFAUKfkRJJN1Wppe4Yc6g@mail.gmail.com>
- <CACpmpoe1SHgWQJaef-Je6x26FKYFAyV5xNs=krbWJQAYbG4rzA@mail.gmail.com>
-In-Reply-To: <CACpmpoe1SHgWQJaef-Je6x26FKYFAyV5xNs=krbWJQAYbG4rzA@mail.gmail.com>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Fri, 20 Nov 2026 19:24:09 -0800
-X-Gm-Features: Aa3M54qz-mmUtI0xhD5IgBpoVa4asynU-5GRKsRyHTIYS3x2jpdGUOZQs8mJfgI
-Message-ID: <CACpmpoeb62e8CbLiaS7vy5kG1dPP9Auvrx8CRYMPFTZtb8r+5A@mail.gmail.com>
-Subject: Re: [PATCH v4 8/8] mm: zswap: Batched zswap_compress() for storing
- large folios in batches.
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=x0wyyb0GDIQasB+NEUF0o6AKWcR3WlqLuusXyeIXgvU=;
+	b=8kLYH540NVXm703X/NHRZi7Qg20kLA3W2+7v1e7AUzF4oEbUyJIfQ9S3dQBB8p1AUQ1w8e
+	iDZZQqy2bzLA6yRoWcjlYdiIZQc5wCLLaYoCrHssVnnDAiD7fsQG2LrwApRHj1+BZI7xF7
+	NQRBjywSPW6KHub9JF+fjB4/jehHUPw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kM+xDCsg;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795232139; x=1826768139;
+  h=date:from:to:cc:subject:message-id;
+  bh=9cMegaJszlaf49pFneG+rnAewjY+7WBWq9r3mE2PAuE=;
+  b=kM+xDCsgm2uaciBpS1tC8pwLwLCJXn4jYELVwcHxcRwWYASEG7KcCarv
+   mur9/iuVXk43Nenb0TIQWCXrml7HpD/fNf0qiPiWjdrnmpTqko9qOV6QJ
+   71Sx0P256D13PJOg7RsuZfppWIFY4SNzg/TO9DqWKZphOZc6wLYCSBLEw
+   jymgCAFdADGIBGLftPXUaDHCJOBJAp/L3BLZo5MBaaEhfqcKetiBz5mlC
+   S7bA5TjsQhfp71Q50nYAnxcxhZTE3TU99hZdaxq9Tkiy9Xc+v931W/uTo
+   +iUMgCEffKFzBJ20Tbyp/0STmtQ0oByGVFs3ot7Eo6/ECsn+7PjkQLBfl
+   w==;
+X-CSE-ConnectionGUID: F/DG8MFjTXatBW+xgjq+/g==
+X-CSE-MsgGUID: 5w+cheIGSSaGq/3erX8Y0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="4032914"
+X-IronPort-AV: E=Sophos;i="6.27,224,1787036400"; 
+   d="scan'208";a="4032914"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2026 19:35:37 -0800
+X-CSE-ConnectionGUID: 8hgLMzGqRz+QK8ZgbUB0LA==
+X-CSE-MsgGUID: YVMPVdB8QQeK5vsh+clW5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,224,1787036400"; 
+   d="scan'208";a="10735600"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 20 Nov 2026 19:35:36 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xUbsz-00000001JQx-0DMi;
+	Sat, 21 Nov 2026 03:35:33 +0000
+Date: Sat, 21 Nov 2026 11:35:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ adcad7f4e6332cff3d6d7165f41584899f598534
+Message-ID: <20261121113517.NfczDB9D-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User:
-X-Rspamd-Queue-Id: 14AA8C0003
-X-Stat-Signature: qgg7nzronabrhkt8mhdksk4irkb6zm5g
+X-Rspamd-Queue-Id: 29BED100005
+X-Stat-Signature: jm3mznxeutua5x8buzh3o9e5nrhpyko6
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795231463-495512
-X-HE-Meta: U2FsdGVkX1+wHrPs25cQoWlnAs0+AqUg5TaNwPqWNs3wt9zENCUk8tvp5gZ2MlMgQJ81y+B9v6JChNMYADPQ7UMqpB/WUWHOa0Mwq7WDk1MOxGU4++SqygfVe3+YUHWrVq+wxF2/1QLzwi138X2YeA+3RWZcl5r8dCQTsRcRRyDroRc3cCFPsgxOz25Ty3bn9HMh6GXALC5rLlKDevBJ2iL1/HnTY9Bnys95qnrMOzSCDpOg1IoTJ+709kpFidVzPUElwOdAA4CIYHahn+7EbjuqyhJkijAWVHV2MU1LEWjTU5NxlMCBErzjaSqMmpmqft68AbJHrj9cMos3VxW+m1d7fRB1lZ3qPcW3mCHxGoPQHA+9aQ2hzxHneIvMmPvZiy+1D3uV67r/NE5UQe+YwV7GFEN9uT37wx/OWjzfQtAFuAQdVooXx0hrDOO8Am7bItVQUusiDHGos1U23E367+Qpe+Bx9VD8bJPpv8YS55Y2WB0cEHUBDMe26GN/2EJyPaa/XdazhvipWudamAI+ZLlfUC6WJ9WkTkYRg9su0ts2t/e7u94hPIOyaBD4gtjytrjl57vGnTc1R0ZdCXefN0ZPaNTOrsIffQ+4y5Yfs6FRbjM/wpv97C0Nsy9Ovy/rdWViuQsV/YORlwhdSOJ3IZjvm3bQUDxNK+cMcZAKAuAWbKY06KUm2C4WQg+utYdwDmRzOsHOs+rapioHsqk0gESfgAO0lXOZ+pMq4PNRKHDHiAtr8et1rJPtsBrAKWNXnhK8bkYBM9n5NuIuPPoxisLx0iPmNNUFIHQUOue/yOqjApMCqgwg4cIL42C2r2RIITAEhYCH2f67T1h9jyjKIYCt5Xp0YYX+COulmRn3ZJTTAnDUrc0MToE3CU2CG/lcJ7FsYlF0X17zMchdHn32kg1cyupvxPPznXARqRxZiD9M3QjJw95x0xhuFPuhmEirJJyOmkurGMpzmABPYzP
- ww5G48KZ
- 8BUBNgwPmjzIeD3PXRv+n7cnj/rP5nwrblH6/mWPu/EQweK9x3A2gzSrL+ywZ/e02mvpk7PtmgZiCLVobemlc3yQyQMO7rwFG6nUStVfEnfV5ZT9QZSaXDPzMY+xt7/0QX/1ihJCFxADO/N77PudiyuhICXmzo9/72GOKbBwHsSlK81pZAoJZK/AyxwcQZ2XIsQli/fBwernEiEKlPdd9Yvipwn4I4rF5tSUuegbNv21BGAPt2ZyilhaDpouKPq8LJlS4ousRDdYHowgc/Y6TlmAsnsm0ea1umx/9sgXFKEh6QfpGt1vG1LEW2IHtC+iMXXNQhHCaI9gq1M6jHcTFKGE0pQKcfkWMBm0ltoPRxTh8Lxl6k5YTDRlEOMJPVYpSP2xhvVCRvoVHbHbFq8Oi4G+zyu0/cfZD+NrxMzgrdLaxA6h3JbZhj96GGsQfPXnfKvG+hymAtPhEWz1BfN0oy8vzR92wSUFZC6tmcMH8lITjaJa9LrwpLtPAvFN9cS/CpH14/A462wqvi0FI0bqgQ4LO+s8MCd97J75aUAcHoTtM2Hx30AxwVvYBEnMV3jcxYFZVVxCVEBNAN4xtKZGzAD8M08y/T+zGvV3A/heXBgFJlOfWuyqkDvhrrlUzWZbHyjjHQmqjZuP0UiFKmN1vjHJOp8y48zCaJ9q2cKuGRuhIwtFOfbFvnNSNCBgBoWR1Px+fvbjsWQtSKVoxTiOsF0KANlYrUuF6XadnFQFNOhgWNV5e9Cp5oth3tg==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795232138-473959
+X-HE-Meta: U2FsdGVkX1/aNJeW8jKEr23coR5dZIz2zCExA1pWv4qBF69Li7mc1+eftMdob8+pjewTgrSwnpEcxXcI9I4IkmLMrdsMZeuWSdVVteUzlymSkWg3i7PsorfKxrv/0xw2I807DGllDsEHmLTosT3VcLhC1yWoSuAKOkubkdjSpqEDkBMJ96Z9h2An/oW4OVRC9/3CdqwjFG09cVo+406youl3H1FWkLxi3dJz1RSb9jBu8wuh8scAy5CXiE/WRF8P6WB0N5KDLspMmIoJZ549EEG0UMgT4Ak/SWjd9PhpCXfwUq6As/BSiqqwERf26MTjSV9fUuQMQK1Ilei13omrvbtl4JN1+IgjTDr6T/fsiLF9OzBMgq5lfEkXFjVI1IBKq9IcfgG+SZDW+pRx8eB+0TMlY3vUGGFtmBslezQYr5TPh367NJb35R3xWd1QCp0ngWq+1aSYRXC25sPPYqhpG7phcdw2F7ls3ACSn6WMckaV1I9kG+oye/BBXO50NiDl8C76W3hgXFBnxnKElhggGC9lz64mK00WV6anasPzDOk/BsJH/zKOJuwc1oncTfBY7dVj+MpM9/TfqGHFsjGGpzF0CDzhbKAtA6bkqqwhyOT78PWhY2qouQDeyFjpia22ymEWceIWSDbp4Eblae21CVzc9otBnrBILqamKL9unANXj7HsMCUpn9lWg0wEUsCuGIntQi2GmK3boF4aCve4EVJuk7g2DidfzR2CP0fw9lsfBSqCgGAhsT01kDpPBk9xN/yi83IEOet0e24R29e4lK1sE7JbgMin6Yum2c528efRnjqcp1DPGREdE4KXO4RE6D27nmdV15Vf85SapgD89ACpNBT1ASSM8owpyP4RQ23VHeI3cmFuxsfYtXutvbprPwDiaomA52fg0AKvIodt9wXahfr8yxQpem+xPOfxQImcWcGIXX911muN3bNlfsDxGAcxPibKtBI3ieGzHPl
+ lFADBplb
+ euF0P8WBEcKj8QFlenXadEO4KqxLEK7BwPSG4hH7XSO3CyFKUf8tPDvY2tGns4VVBFfLecMWV7y7VdMStLYO4lcm5bYDc/PZTuLGd40iydSHONS/ROGLW/0eIDn6q4I6tgyoIfdBGg1z03Hma6+pRMsGCH+EpxUeQg083ZUJDTdo+90+ANvF5jHKR0BmHctgKSKA6uTE9oYD4EYRxn4JbpG6KWeAUa/V2J0WynGHqfYOpVsddwtTMCb74W3zJx431ghniqarWfNK8QwK3jSkQrsdxAZUcY+sTYc15U6nUPBTyfLRPEPgmJrM+Mb1gJnlfs3UXqF5uGCtp8BE5eurq2jVv8aQFk/txSLudkwH/SPrPZ/1Uw4etfxwNiAItqabS1oK+YU+yqCMbWVJ2YQbxhRCihovVDFjtsHDV2su+JaBOdT650LKHSd3xCLtEC67Kpdzhckbvv7uR9WSYDcXEoSDTamJHJsHOUz9U7kozvUopG7LtofL0Ge56qA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,521 +102,585 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, Nov 20, 2026 at 5:17=E2=80=AFPM Kanchana P. Sridhar
-<kanchanapsridhar2026@gmail.com> wrote:
->
-> On Fri, Nov 20, 2026 at 3:55=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wro=
-te:
-> >
-> > On Thu, Nov 19, 2026 at 8:19=E2=80=AFPM Kanchana P. Sridhar
-> > <kanchanapsridhar2026@gmail.com> wrote:
-> > >
-> > > A new batching implementation of zswap_compress() is provided for
-> > > compressors that do and do not support batching. This eliminates code
-> > > duplication and facilitates code maintainability with the introductio=
-n
-> > > of compress batching.
-> > >
-> > > The vectorized implementation of calling the earlier zswap_compress()
-> > > sequentially, one page at a time in zswap_store_pages(), is replaced
-> > > with this new version of zswap_compress() that accepts multiple pages=
- to
-> > > compress as a batch.
-> > >
-> > > When the crypto_acomp is used to set up the per-CPU acomp_ctx
-> > > during CPU onlining, the compressor's batch_size is obtained by calli=
-ng:
-> > >
-> > >   crypto_acomp_batch_size(acomp_ctx->acomp)
-> > >
-> > > This is bounded by ZSWAP_MAX_BATCH_SIZE to limit the memory
-> > > overhead and to reflect the store batch constraint of max # of pages =
-in
-> > > a batch. The clamped batch_size is stored in the per-CPU
-> > > acomp_ctx->comp.compr_batch_size.
-> > >
-> > > As noted in previous commits in this series, ZSWAP_MAX_BATCH_SIZE
-> > > per-CPU compression buffers are available for sequential and batching
-> > > compression algorithms.
-> > >
-> > > Regardless of compression batching, we always process large folios in
-> > > batches of ZSWAP_MAX_BATCH_SIZE.
-> > >
-> > > If the compressor does not support batching, each page in the batch i=
-s
-> > > compressed sequentially. For batching compressors, up to
-> > > acomp_ctx->comp.compr_batch_size pages in the batch are compressed pe=
-r
-> > > call to crypto_acomp_compress(). The first phase of zswap_compress()
-> > > thus only calls crypto_acomp_compress() until all pages in the batch
-> > > have been compressed. When this finishes, the compressed buffers and
-> > > compressed lengths for the batch are available in the
-> > > acomp_ctx->comp.sg_table->sgl scatterlists.
-> > >
-> > > A new zswap_update_entries() then iterates through the (up to)
-> > > ZSWAP_MAX_BATCH_SIZE SG lists in acomp_ctx->comp.sg_table->sgl,
-> > > allocates zsmalloc memory and copies all compressed buffers to
-> > > the compressed pool. All existing functionality on zswap
-> > > writeback_enabled (or not) fallbacks under various error conditions
-> > > denoted by the crypto_acomp_compress() return value [and with this
-> > > commit, also stored in the individual acomp_ctx->comp.sg_table->sgl
-> > > sg->lengths in the crypto_acomp_compress() fast path], is essentially
-> > > preserved.
-> > >
-> > > A significant zswap architectural change is that the batched
-> > > zswap_compress() incorporates Herbert's suggestion for SG lists to
-> > > represent the batch's inputs/outputs to interface with the crypto API
-> > > [1].
-> > >
-> > > The introduction of zswap_update_entries() presents an opportunity to
-> > > optimize the task of storing a batch of compressed buffers. Subsequen=
-t
-> > > patch series will be submitted to optimize this phase by replacing
-> > > zsmalloc with the SLUB allocator to improve zswap_store()/zswap_load(=
-)
-> > > latencies.
-> > >
-> > > The batching framework introduced in this series improves zswap_store=
-()
-> > > latency by a lot.
-> > >
-> > > Performance testing: usemem30 with 100% over-commit:
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> > > Validation was done with mm-unstable as of 11-17-2026 (Baseline: comm=
-it
-> > > 866f761fd414) and with this patch series.
-> > >
-> > > v4 was validated on an Intel Xeon Sapphire Rapids bare-metal instance=
- with
-> > > 48 cores.
-> > >
-> > >  Bare-metal instance specs:
-> > >  --------------------------
-> > >  - 48 physical cores
-> > >  - 190G RAM
-> > >  - 200G SWAP disk partition
-> > >
-> > >  Workload: 30 concurrent usemem processes, each allocates 10G:
-> > >  -------------------------------------------------------------
-> > >  The vm-scalability "usemem" test (unmodified version) was run in a
-> > >  cgroup with memory.high fixed at 150G. There is no swap limit set fo=
-r the
-> > >  cgroup.
-> > >
-> > >  To quantify the performance benefit of zswap compress batching at sc=
-ale,
-> > >  30 usemem processes were run ("usemem30"), each allocating and writi=
-ng 10G of
-> > >  memory, and sleeping for 10 sec before exiting.
-> > >
-> > >   usemem -w -O -b 5 -s 10 -n 30 10g
-> > >   echo 0 > /sys/module/zswap/parameters/shrinker_enabled
-> > >
-> > >  Performance validation methodology:
-> > >  -----------------------------------
-> > >  These settings were used to minimize variation:
-> > >
-> > >  - All cores were fixed to run at 2.4GHz with "performance" scaling g=
-overnor.
-> > >  - Turbo boost was disabled.
-> > >  - CPU power-saving C-states restricted with:
-> > >
-> > >      GRUB_CMDLINE_LINUX_DEFAULT=3D"intel_idle.max_cstate=3D1 processo=
-r.max_cstate=3D1"
-> > >
-> > >  The usemem30 experiments were run with the baseline mm-unstable as o=
-f
-> > >  11-17-2026 (commit 866f761fd414) and with this patch-series.
-> > >
-> > >  After booting into each kernel:
-> > >
-> > >   1) Constrain the cgroup's memory.high to 150G.
-> > >
-> > >   2) Run 2 warm-up iterations of usemem30. Don't use this data for be=
-nchmarking
-> > >      since sys time typically skews higher for initial runs.
-> > >
-> > >   3) Next, run 10 benchmarking iterations of usemem30:
-> > >      - Log these high-level metrics: Sys time and individual usemem t=
-hroughput.
-> > >
-> > >   4) Sys time and Throughput metrics were gathered for three mTHP set=
-tings:
-> > >
-> > >      - 2048kB
-> > >      - 1024kB
-> > >      - 64kB
-> > >
-> > >   5) Benchmark summary data includes Sys time and Throughput componen=
-ts from the
-> > >      10 iterations of usemem30:
-> > >
-> > >      - Total Samples
-> > >      - Mean Value
-> > >      - Std Deviation
-> > >      - CoV (Variance): Coefficient of variation (relative standard
-> > >        deviation) measures spread relative to the mean rather than
-> > >        statistical variance.
-> > >
-> > >  An LLM was used to help generate the benchmarking and data processin=
-g scripts.
-> > >
-> > > usemem30 Benchmarking Summary:
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > >  ---------------------------------------------------
-> > >     Improvement with v4 zswap compress batching
-> > >  ---------------------------------------------------
-> > >   mTHP enabled:       2048kB     1024kB       64kB
-> > >  ---------------------------------------------------
-> > >       Sys time:      -13.87%     -2.64%     -1.72%
-> > >     Throughput:       +3.85%     +0.42%     +1.31%
-> > >  ---------------------------------------------------
-> > >
-> > > Detailed usemem30 benchmarking data:
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > >  1) 2048kB mTHP:
-> > >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > >  ------------------------------------------------------------------
-> > >  2048kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                               (sec)        (sec)
-> > >  ------------------------------------------------------------------
-> > >  [Run 1/10]  Sys Time:    1581.414s    1356.252s
-> > >  [Run 2/10]  Sys Time:    1642.874s    1478.929s
-> > >  [Run 3/10]  Sys Time:    1594.458s    1411.252s
-> > >  [Run 4/10]  Sys Time:    1580.988s    1380.959s
-> > >  [Run 5/10]  Sys Time:    1579.654s    1380.609s
-> > >  [Run 6/10]  Sys Time:    1627.765s    1345.582s
-> > >  [Run 7/10]  Sys Time:    1593.872s    1334.485s
-> > >  [Run 8/10]  Sys Time:    1623.189s    1405.471s
-> > >  [Run 9/10]  Sys Time:    1661.954s    1433.365s
-> > >  [Run 10/10] Sys Time:    1602.098s    1329.813s
-> > >  ------------------------------------------------------------------
-> > >
-> > >  ------------------------------------------------------------------
-> > >  METRIC: System CPU Time (Sys Time) : 2048kB mTHP
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                               (sec)            (sec)
-> > >  ------------------------------------------------------------------
-> > >  Total Samples    :              10               10
-> > >  Mean Value       :        1,608.83         1,385.67
-> > >  Std Deviation    :           28.67            47.47
-> > >  CoV (Variance)   :           1.78%            3.43%
-> > >  ------------------------------------------------------------------
-> > >  METRIC: Per-Process Throughput : 2048kB mTHP
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                              (KB/s)           (KB/s)
-> > >  ------------------------------------------------------------------
-> > >  Total Samples    :             300              300
-> > >  Mean Value       :         292,261          303,508
-> > >  Std Deviation    :          12,946           20,806
-> > >  CoV (Variance)   :           4.42%            6.86%
-> > >  ------------------------------------------------------------------
-> > >
-> > >  2) 1024kB mTHP:
-> > >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > >  ------------------------------------------------------------------
-> > >  1024kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                               (sec)        (sec)
-> > >  ------------------------------------------------------------------
-> > >  [Run 1/10]  Sys Time:    1567.639s    1594.696s
-> > >  [Run 2/10]  Sys Time:    1537.577s    1456.113s
-> > >  [Run 3/10]  Sys Time:    1538.562s    1521.887s
-> > >  [Run 4/10]  Sys Time:    1626.176s    1531.962s
-> > >  [Run 5/10]  Sys Time:    1593.955s    1528.733s
-> > >  [Run 6/10]  Sys Time:    1643.519s    1558.482s
-> > >  [Run 7/10]  Sys Time:    1510.613s    1480.177s
-> > >  [Run 8/10]  Sys Time:    1632.018s    1584.093s
-> > >  [Run 9/10]  Sys Time:    1569.424s    1528.915s
-> > >  [Run 10/10] Sys Time:    1552.747s    1570.451s
-> > >  ------------------------------------------------------------------
-> > >
-> > >  ------------------------------------------------------------------
-> > >  METRIC: System CPU Time (Sys Time) : 1024kB mTHP
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                               (sec)            (sec)
-> > >  ------------------------------------------------------------------
-> > >  Total Samples    :             10                10
-> > >  Mean Value       :       1,577.22          1,535.55
-> > >  Std Deviation    :          45.13             43.79
-> > >  CoV (Variance)   :          2.86%             2.85%
-> > >  ------------------------------------------------------------------
-> > >  METRIC: Per-Process Throughput : 1024kB mTHP
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                              (KB/s)           (KB/s)
-> > >  ------------------------------------------------------------------
-> > >  Total Samples    :            300               300
-> > >  Mean Value       :        289,904           291,114
-> > >  Std Deviation    :         15,385            14,553
-> > >  CoV (Variance)   :          5.31%             5.00%
-> > >  ------------------------------------------------------------------
-> > >
-> > >  3) 64kB mTHP:
-> > >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > >  ------------------------------------------------------------------
-> > >  64kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                               (sec)        (sec)
-> > >  ------------------------------------------------------------------
-> > >  [Run 1/10]  Sys Time:    1914.525s    1878.483s
-> > >  [Run 2/10]  Sys Time:    1869.412s    1863.177s
-> > >  [Run 3/10]  Sys Time:    1944.049s    1863.502s
-> > >  [Run 4/10]  Sys Time:    1942.757s    1900.144s
-> > >  [Run 5/10]  Sys Time:    1866.505s    1887.285s
-> > >  [Run 6/10]  Sys Time:    1877.716s    1861.668s
-> > >  [Run 7/10]  Sys Time:    1861.741s    1868.788s
-> > >  [Run 8/10]  Sys Time:    1904.735s    1816.372s
-> > >  [Run 9/10]  Sys Time:    1891.074s    1850.435s
-> > >  [Run 10/10] Sys Time:    1893.366s    1849.747s
-> > >  ------------------------------------------------------------------
-> > >
-> > >  ------------------------------------------------------------------
-> > >  METRIC: System CPU Time (Sys Time) : 64kB mTHP
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                               (sec)            (sec)
-> > >  ------------------------------------------------------------------
-> > >  Total Samples    :              10               10
-> > >  Mean Value       :        1,896.59         1,863.96
-> > >  Std Deviation    :           29.86            22.96
-> > >  CoV (Variance)   :           1.57%            1.23%
-> > >  ------------------------------------------------------------------
-> > >  METRIC: Per-Process Throughput : 64kB mTHP
-> > >  ------------------------------------------------------------------
-> > >                Baseline mm-unstable   v4 zswap compress batching
-> > >                              (KB/s)           (KB/s)
-> > >  ------------------------------------------------------------------
-> > >  Total Samples    :            300               300
-> > >  Mean Value       :        239,114           242,254
-> > >  Std Deviation    :          9,090             6,419
-> > >  CoV (Variance)   :          3.80%             2.65%
-> > >  ------------------------------------------------------------------
-> >
-> > The numbers look nice, but what's the zswap setup here? What's the
-> > compressor? And how much of the win comes from this patch v.s the last
-> > patch?
-> >
-> > This patch series, and this patch in particular, seem like a lot of
-> > complexity. I'd like to understand better the win before adding all
-> > this complexity to the codebase.
->
-> Hi Nhat,
->
-> ZSTD is the zswap compressor. My apologies for forgetting to mention
-> this in the performance testing section.
->
-> All reclaim and zswap parameters are the defaults in the kernel build
-> (I also configure ZSTD as my default zswap compressor when I build the
-> kernel):
->
-> vm.swappiness =3D 60
-> /sys/module/zswap/parameters/max_pool_percent: 20
-> /sys/module/zswap/parameters/shrinker_enabled: N
->
-> /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled: [always]
-> inherit madvise never
-> /sys/kernel/mm/transparent_hugepage/enabled: [always] madvise never
-> /sys/kernel/mm/transparent_hugepage/defrag: always defer defer+madvise
-> [madvise] never
->
-> I just shared my analysis based on bpftrace data in response to your
-> cover letter comments, to try and explain the wins with zswap store
-> batching alone (patches 6-7) and then with zswap compress batching
-> (patch 8). Please do let me know if you have follow-up
-> questions/comments.
->
-> I will also gather and post usemem30 numbers before/after patch 8.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: adcad7f4e6332cff3d6d7165f41584899f598534  Add linux-next specific files for 20261119
 
-These are the data summaries/details with v4's zswap store batching
-only (patches 6-7), and with zswap compress batching added in patch 8,
-to help us better understand the wins.
+Error/Warning (recently discovered and may have been fixed):
 
-Batch compression of PMD THP with ZSTD yields an additional 6.56% Sys
-time savings and additional 1.12% Throughput improvement over zswap
-store batching.
-As expected, PMD THP demonstrates the most gains overall with
-store+compress batching.
+    https://lore.kernel.org/oe-kbuild-all/20261120075259.lBe4Stwa-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/20261120134933.rRjrKaaL-lkp@intel.com
 
-As mentioned in the cover letter, as other kernel components related
-to mTHP become more efficient, the net realized performance benefit
-can only be better with patch 8 than without.
+    {standard input}:54363: Error: operand out of range (0xffffffff not between 0 and 0x3f) `l.slli r11,r2,-1'
 
-usemem30 ZSTD Benchmarking Summary:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
- ------------------------------------------------------------------
-    Improvement over mm-unstable with v4 zswap store batching only
- ------------------------------------------------------------------
-  mTHP enabled:       2048kB     1024kB       64kB
- ------------------------------------------------------------------
-      Sys time:      -7.31%      +2.86%     -2.05%
-    Throughput:      +2.73%      +0.96%     +2.03%
- ------------------------------------------------------------------
+    https://lore.kernel.org/oe-kbuild/20261120024705.y3mEBTWi-lkp@intel.com
 
- ------------------------------------------------------------------
-    Improvement over mm-unstable with v4 zswap store batching
-                                  and v4 zswap compress batching
- ------------------------------------------------------------------
-  mTHP enabled:       2048kB     1024kB       64kB
- ------------------------------------------------------------------
-      Sys time:      -13.87%     -2.64%     -1.72%
-    Throughput:       +3.85%     +0.42%     +1.31%
- ------------------------------------------------------------------
+    drivers/platform/asus/asus-wmi.c:2513 asus_new_rfkill() warn: '*rfkill' is an error pointer or valid
 
-Detailed usemem30 ZSTD benchmarking data:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Error/Warning ids grouped by kconfigs:
 
- 1) 2048kB mTHP:
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+recent_errors
+|-- arm-randconfig-r2109-20261120
+|   `-- drivers-phy-rockchip-phy-rockchip-inno-usb2.c:Unneeded-variable:ret-Return-on-line
+|-- openrisc-randconfig-r2108-20261120
+|   `-- standard-input:Error:operand-out-of-range-(-not-between-and-)-l.slli-r11-r2
+`-- riscv-randconfig-2200-20261120
+    `-- drivers-platform-asus-asus-wmi.c-asus_new_rfkill()-warn:rfkill-is-an-error-pointer-or-valid
 
- ------------------------------------------------------------------------
- 2048kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
- ------------------------------------------------------------------------
-               Baseline mm-unstable   v4 zswap store   v4 zswap compress
-                              (sec)   batching (sec)   batching (sec)
- ------------------------------------------------------------------------
- [Run 1/10]  Sys Time:    1581.414s       1479.949s       1356.252s
- [Run 2/10]  Sys Time:    1642.874s       1436.926s       1478.929s
- [Run 3/10]  Sys Time:    1594.458s       1502.354s       1411.252s
- [Run 4/10]  Sys Time:    1580.988s       1466.870s       1380.959s
- [Run 5/10]  Sys Time:    1579.654s       1567.244s       1380.609s
- [Run 6/10]  Sys Time:    1627.765s       1471.919s       1345.582s
- [Run 7/10]  Sys Time:    1593.872s       1581.152s       1334.485s
- [Run 8/10]  Sys Time:    1623.189s       1440.385s       1405.471s
- [Run 9/10]  Sys Time:    1661.954s       1485.601s       1433.365s
- [Run 10/10] Sys Time:    1602.098s       1480.110s       1329.813s
- ------------------------------------------------------------------------
+elapsed time: 1323m
 
- ------------------------------------------------------------------------
- METRIC: System CPU Time (Sys Time) : 2048kB mTHP
- ------------------------------------------------------------------------
-               Baseline mm-unstable   v4 zswap store   v4 zswap compress
-                              (sec)   batching (sec)   batching (sec)
- ------------------------------------------------------------------------
- Total Samples    :              10               10                10
- Mean Value       :        1,608.83         1,491.25          1,385.67
- Std Deviation    :           28.67            48.04             47.47
- CoV (Variance)   :           1.78%            3.22%             3.43%
- ------------------------------------------------------------------------
- METRIC: Per-Process Throughput : 2048kB mTHP
- ------------------------------------------------------------------------
-               Baseline mm-unstable    v4 zswap store   v4 zswap compress
-                             (KB/s)   batching (KB/s)   batching (KB/s)
- ------------------------------------------------------------------------
- Total Samples    :             300               300               300
- Mean Value       :         292,261           300,233           303,508
- Std Deviation    :          12,946            14,777            20,806
- CoV (Variance)   :           4.42%             4.92%             6.86%
- ------------------------------------------------------------------------
+configs tested: 543
+configs skipped: 13
 
+tested configs:
+alpha                              allnoconfig    gcc-16.2.0
+alpha                             allyesconfig    gcc-16.2.0
+alpha                                defconfig    gcc-16.2.0
+alpha                 randconfig-2000-20261119    gcc-10.5.0
+alpha                 randconfig-2000-20261120    gcc-15.3.0
+alpha                 randconfig-2001-20261119    gcc-8.5.0
+alpha                 randconfig-2001-20261120    gcc-15.3.0
+alpha                 randconfig-2200-20261119    gcc-12.5.0 smatch
+alpha                 randconfig-2200-20261120    gcc-15.3.0 smatch
+alpha                randconfig-r2103-20261120    gcc-12.5.0 cocci
+alpha                randconfig-r2106-20261120    gcc-16.2.0 cocci
+alpha                randconfig-r2303-20261120    clang-17   sparse
+alpha                randconfig-r2311-20261119    gcc-13.5.0 sparse
+arc                               allmodconfig    clang-24
+arc                                allnoconfig    gcc-16.2.0
+arc                               allyesconfig    clang-24
+arc                           axs103_defconfig    clang-24
+arc                                  defconfig    gcc-16.2.0
+arc                          haps_hs_defconfig    gcc-16.2.0
+arc                      haps_hs_smp_defconfig    gcc-16.2.0
+arc                   randconfig-1000-20261120    clang-17
+arc                   randconfig-1000-20261121    clang-24
+arc                   randconfig-1001-20261120    clang-17
+arc                   randconfig-1001-20261121    clang-24
+arc                   randconfig-2000-20261119    gcc-14.4.0
+arc                   randconfig-2000-20261120    gcc-11.5.0
+arc                   randconfig-2001-20261119    gcc-16.2.0
+arc                   randconfig-2001-20261120    gcc-11.5.0
+arc                   randconfig-2002-20261119    gcc-14.4.0
+arc                   randconfig-2002-20261120    gcc-11.5.0
+arc                   randconfig-2003-20261119    gcc-16.2.0
+arc                   randconfig-2003-20261120    gcc-11.5.0
+arc                   randconfig-2004-20261119    gcc-14.4.0
+arc                   randconfig-2004-20261120    gcc-11.5.0
+arc                   randconfig-2005-20261119    gcc-12.5.0
+arc                   randconfig-2005-20261120    gcc-11.5.0
+arc                   randconfig-2200-20261120    gcc-15.3.0 smatch
+arc                  randconfig-r2101-20261120    gcc-16.2.0 cocci
+arm                                allnoconfig    gcc-16.2.0
+arm                               allyesconfig    clang-24
+arm                          bcm2835_defconfig    clang-24
+arm                           collie_defconfig    gcc-16.2.0
+arm                                  defconfig    gcc-16.2.0
+arm                             hisi_defconfig    gcc-16.2.0
+arm                    milbeaut_m10v_defconfig    gcc-16.2.0
+arm                         neponset_defconfig    gcc-16.2.0
+arm                   randconfig-1000-20261120    clang-17
+arm                   randconfig-1000-20261121    clang-24
+arm                   randconfig-1001-20261120    clang-17
+arm                   randconfig-1001-20261121    clang-24
+arm                   randconfig-1002-20261120    clang-17
+arm                   randconfig-1002-20261121    clang-24
+arm                   randconfig-1003-20261120    clang-17
+arm                   randconfig-1003-20261121    clang-24
+arm                   randconfig-2000-20261119    gcc-16.2.0
+arm                   randconfig-2000-20261120    gcc-8.5.0
+arm                   randconfig-2001-20261119    gcc-8.5.0
+arm                   randconfig-2001-20261120    gcc-8.5.0
+arm                   randconfig-2002-20261119    clang-24
+arm                   randconfig-2002-20261120    gcc-8.5.0
+arm                   randconfig-2200-20261119    clang-24   smatch
+arm                   randconfig-2200-20261120    clang-17   smatch
+arm                  randconfig-r2105-20261120    gcc-16.2.0 cocci
+arm                  randconfig-r2108-20261120    gcc-14.4.0 cocci
+arm                  randconfig-r2305-20261119    gcc-13.5.0 sparse
+arm                  randconfig-r2307-20261120    gcc-15.3.0 sparse
+arm                  randconfig-r2308-20261119    gcc-8.5.0  sparse
+arm                  randconfig-r2310-20261120    gcc-15.3.0 sparse
+arm                        spear13xx_defconfig    gcc-16.2.0
+arm                         spear3xx_defconfig    gcc-16.2.0
+arm                         vexpress_defconfig    gcc-16.2.0
+arm64                             allmodconfig    clang-24
+arm64                              allnoconfig    gcc-16.2.0
+arm64                                defconfig    gcc-16.2.0
+arm64                 randconfig-1000-20261120    clang-18
+arm64                 randconfig-1000-20261121    gcc-8.5.0
+arm64                 randconfig-1001-20261120    clang-18
+arm64                 randconfig-1001-20261121    gcc-8.5.0
+arm64                 randconfig-1002-20261120    clang-18
+arm64                 randconfig-1002-20261121    gcc-8.5.0
+arm64                 randconfig-1003-20261120    clang-18
+arm64                 randconfig-1003-20261121    gcc-8.5.0
+arm64                 randconfig-2000-20261119    gcc-13.5.0
+arm64                 randconfig-2000-20261120    gcc-8.5.0
+arm64                 randconfig-2001-20261119    clang-24
+arm64                 randconfig-2001-20261120    gcc-8.5.0
+arm64                 randconfig-2002-20261119    gcc-8.5.0
+arm64                 randconfig-2002-20261120    gcc-8.5.0
+arm64                 randconfig-2200-20261119    clang-17   smatch
+arm64                randconfig-r2301-20261119    gcc-13.5.0 sparse
+arm64                randconfig-r2309-20261120    gcc-14     sparse
+csky                              allmodconfig    gcc-16.2.0
+csky                               allnoconfig    gcc-16.2.0
+csky                                 defconfig    gcc-16.2.0
+csky                  randconfig-1000-20261120    clang-18
+csky                  randconfig-1000-20261121    gcc-8.5.0
+csky                  randconfig-1001-20261120    clang-18
+csky                  randconfig-1001-20261121    gcc-8.5.0
+csky                  randconfig-2000-20261119    gcc-16.2.0
+csky                  randconfig-2000-20261120    gcc-16.2.0
+csky                  randconfig-2001-20261119    gcc-16.2.0
+csky                  randconfig-2001-20261120    gcc-16.2.0
+csky                  randconfig-2200-20261119    gcc-16.2.0 smatch
+csky                  randconfig-2200-20261120    gcc-15.3.0 smatch
+csky                 randconfig-r2104-20261120    gcc-12.5.0 cocci
+csky                 randconfig-r2300-20261120    clang-24   sparse
+csky                 randconfig-r2305-20261120    clang-24   sparse
+hexagon                           allmodconfig    gcc-16.2.0
+hexagon                            allnoconfig    gcc-16.2.0
+hexagon                              defconfig    gcc-16.2.0
+hexagon               randconfig-1000-20261120    gcc-10.5.0
+hexagon               randconfig-1001-20261120    gcc-10.5.0
+hexagon               randconfig-2000-20261119    clang-17
+hexagon               randconfig-2000-20261120    gcc-16.2.0
+hexagon               randconfig-2001-20261119    clang-24
+hexagon               randconfig-2001-20261120    gcc-16.2.0
+hexagon               randconfig-2200-20261119    clang-17   smatch
+hexagon               randconfig-2200-20261120    clang-17   smatch
+hexagon              randconfig-r2111-20261120    gcc-14.4.0 cocci
+i386                               allnoconfig    gcc-16.2.0
+i386        buildonly-randconfig-1000-20261121    gcc-13
+i386        buildonly-randconfig-1001-20261121    gcc-13
+i386        buildonly-randconfig-1002-20261121    gcc-13
+i386        buildonly-randconfig-1003-20261121    gcc-13
+i386        buildonly-randconfig-1004-20261121    gcc-13
+i386        buildonly-randconfig-1005-20261121    gcc-13
+i386                                 defconfig    gcc-16.2.0
+i386                  randconfig-1000-20261120    clang-22
+i386                  randconfig-1000-20261121    clang-22
+i386                  randconfig-1001-20261120    clang-22
+i386                  randconfig-1001-20261121    clang-22
+i386                  randconfig-1002-20261120    clang-22
+i386                  randconfig-1002-20261121    clang-22
+i386                  randconfig-1003-20261120    clang-22
+i386                  randconfig-1003-20261121    clang-22
+i386                  randconfig-1004-20261120    clang-22
+i386                  randconfig-1004-20261121    clang-22
+i386                  randconfig-1005-20261120    clang-22
+i386                  randconfig-1005-20261121    clang-22
+i386                  randconfig-1006-20261120    clang-22
+i386                  randconfig-1006-20261121    clang-22
+i386                  randconfig-1007-20261120    clang-22
+i386                  randconfig-1007-20261121    gcc-14
+i386                  randconfig-1008-20261120    clang-22
+i386                  randconfig-1008-20261121    gcc-14
+i386                  randconfig-1009-20261120    clang-22
+i386                  randconfig-1009-20261121    gcc-14
+i386                  randconfig-1010-20261120    clang-22
+i386                  randconfig-1010-20261121    gcc-14
+i386                  randconfig-1011-20261120    clang-22
+i386                  randconfig-1011-20261121    gcc-14
+i386                  randconfig-1012-20261120    clang-22
+i386                  randconfig-1012-20261121    gcc-14
+i386                  randconfig-1013-20261120    clang-22
+i386                  randconfig-1013-20261121    gcc-14
+i386                  randconfig-2000-20261119    gcc-14
+i386                  randconfig-2000-20261120    clang-22
+i386                  randconfig-2001-20261119    gcc-14
+i386                  randconfig-2001-20261120    clang-22
+i386                  randconfig-2002-20261119    gcc-14
+i386                  randconfig-2002-20261120    clang-22
+i386                  randconfig-2003-20261119    clang-22
+i386                  randconfig-2003-20261120    clang-22
+i386                  randconfig-2004-20261119    gcc-14
+i386                  randconfig-2004-20261120    clang-22
+i386                  randconfig-2005-20261119    gcc-14
+i386                  randconfig-2005-20261120    clang-22
+i386                  randconfig-2100-20261119    gcc-14     cocci
+i386                  randconfig-2100-20261120    gcc-14     cocci
+i386                  randconfig-2101-20261119    gcc-14     cocci
+i386                  randconfig-2101-20261120    gcc-14     cocci
+i386                  randconfig-2102-20261119    gcc-14     cocci
+i386                  randconfig-2102-20261120    gcc-14     cocci
+i386                  randconfig-2103-20261119    clang-22   cocci
+i386                  randconfig-2103-20261120    gcc-14     cocci
+i386                  randconfig-2104-20261119    clang-22   cocci
+i386                  randconfig-2104-20261120    gcc-14     cocci
+i386                  randconfig-2105-20261119    clang-22   cocci
+i386                  randconfig-2105-20261120    gcc-14     cocci
+i386                  randconfig-2200-20261119    gcc-14     smatch
+i386                  randconfig-2200-20261120    clang-22   smatch
+i386                  randconfig-2300-20261119    gcc-13     sparse
+i386                  randconfig-2300-20261120    clang-22   sparse
+i386                  randconfig-2301-20261119    gcc-14     sparse
+i386                  randconfig-2301-20261120    clang-22   sparse
+i386                  randconfig-2302-20261119    clang-22   sparse
+i386                  randconfig-2302-20261120    clang-22   sparse
+i386                 randconfig-r2307-20261120    gcc-14     sparse
+i386                 randconfig-r2311-20261120    gcc-15.3.0 sparse
+loongarch                         allmodconfig    clang-24
+loongarch                          allnoconfig    gcc-16.2.0
+loongarch                            defconfig    clang-24
+loongarch             randconfig-1000-20261120    gcc-10.5.0
+loongarch             randconfig-1001-20261120    gcc-10.5.0
+loongarch             randconfig-2000-20261119    clang-24
+loongarch             randconfig-2000-20261120    clang-24
+loongarch             randconfig-2001-20261119    gcc-16.2.0
+loongarch             randconfig-2001-20261120    clang-24
+loongarch             randconfig-2200-20261119    clang-24   smatch
+loongarch             randconfig-2200-20261120    clang-18   smatch
+loongarch            randconfig-r2100-20261120    gcc-12.5.0 cocci
+loongarch            randconfig-r2101-20261120    gcc-12.5.0 cocci
+loongarch            randconfig-r2104-20261120    gcc-16.2.0 cocci
+loongarch            randconfig-r2105-20261119    gcc-16.2.0 cocci
+loongarch            randconfig-r2107-20261120    gcc-14.4.0 cocci
+loongarch            randconfig-r2110-20261119    gcc-16.2.0 cocci
+loongarch            randconfig-r2300-20261120    clang-17   sparse
+loongarch            randconfig-r2302-20261120    clang-24   sparse
+loongarch            randconfig-r2303-20261119    gcc-16.2.0 sparse
+loongarch            randconfig-r2303-20261120    clang-24   sparse
+m68k                              allmodconfig    gcc-16.2.0
+m68k                               allnoconfig    gcc-16.2.0
+m68k                              allyesconfig    clang-24
+m68k                        bvme6000_defconfig    gcc-16.2.0
+m68k                                 defconfig    clang-24
+m68k                        m5275evb_defconfig    clang-24
+m68k                         mvme147_defconfig    gcc-16.2.0
+m68k                  randconfig-2000-20261119    gcc-15.3.0
+m68k                  randconfig-2000-20261120    gcc-15.3.0
+m68k                  randconfig-2001-20261119    gcc-8.5.0
+m68k                  randconfig-2001-20261120    gcc-15.3.0
+m68k                  randconfig-2200-20261119    gcc-9.5.0  smatch
+m68k                  randconfig-2200-20261120    gcc-14.4.0 smatch
+m68k                 randconfig-r2106-20261119    gcc-10.5.0 cocci
+m68k                 randconfig-r2301-20261120    clang-17   sparse
+m68k                 randconfig-r2306-20261120    gcc-14     sparse
+m68k                 randconfig-r2310-20261120    gcc-14     sparse
+microblaze                         allnoconfig    gcc-16.2.0
+microblaze                           defconfig    clang-24
+microblaze            randconfig-2000-20261119    gcc-14.4.0
+microblaze            randconfig-2000-20261120    gcc-15.3.0
+microblaze            randconfig-2001-20261119    gcc-12.5.0
+microblaze            randconfig-2001-20261120    gcc-15.3.0
+microblaze            randconfig-2200-20261119    gcc-12.5.0 smatch
+microblaze            randconfig-2200-20261120    gcc-11.5.0 smatch
+microblaze           randconfig-r2103-20261119    gcc-8.5.0  cocci
+microblaze           randconfig-r2305-20261120    clang-17   sparse
+mips                              allmodconfig    gcc-16.2.0
+mips                               allnoconfig    gcc-16.2.0
+mips                              allyesconfig    gcc-16.2.0
+mips                          db1xxx_defconfig    clang-24
+mips                            ip30_defconfig    clang-24
+mips                       loongson1_defconfig    gcc-16.2.0
+mips                  randconfig-2000-20261119    gcc-8.5.0
+mips                  randconfig-2000-20261120    gcc-9.5.0
+mips                  randconfig-2001-20261119    clang-24
+mips                  randconfig-2001-20261120    gcc-9.5.0
+mips                  randconfig-2002-20261119    clang-21
+mips                  randconfig-2002-20261120    gcc-9.5.0
+mips                  randconfig-2200-20261119    clang-24   smatch
+mips                  randconfig-2200-20261120    clang-24   smatch
+mips                 randconfig-r2100-20261120    gcc-16.2.0 cocci
+mips                 randconfig-r2106-20261120    gcc-14.4.0 cocci
+mips                 randconfig-r2301-20261120    clang-24   sparse
+mips                 randconfig-r2310-20261119    gcc-8.5.0  sparse
+nios2                             allmodconfig    clang-20
+nios2                              allnoconfig    clang-24
+nios2                                defconfig    clang-24
+nios2                 randconfig-1000-20261120    gcc-10.5.0
+nios2                 randconfig-1001-20261120    gcc-10.5.0
+nios2                 randconfig-2000-20261119    gcc-8.5.0
+nios2                 randconfig-2000-20261120    clang-24
+nios2                 randconfig-2001-20261119    gcc-11.5.0
+nios2                 randconfig-2001-20261120    clang-24
+nios2                 randconfig-2200-20261119    gcc-11.5.0 smatch
+nios2                 randconfig-2200-20261120    gcc-11.5.0 smatch
+nios2                randconfig-r2102-20261119    gcc-11.5.0 cocci
+nios2                randconfig-r2103-20261120    gcc-16.2.0 cocci
+nios2                randconfig-r2105-20261120    gcc-12.5.0 cocci
+nios2                randconfig-r2110-20261120    gcc-16.2.0 cocci
+openrisc                          allmodconfig    clang-20
+openrisc                           allnoconfig    clang-24
+openrisc                             defconfig    gcc-16.2.0
+openrisc              randconfig-2000-20261119    gcc-16.2.0
+openrisc              randconfig-2000-20261120    gcc-9.5.0
+openrisc              randconfig-2001-20261119    gcc-16.2.0
+openrisc              randconfig-2001-20261120    gcc-9.5.0
+openrisc              randconfig-2002-20261119    gcc-16.2.0
+openrisc              randconfig-2002-20261120    gcc-9.5.0
+openrisc              randconfig-2200-20261119    gcc-16.2.0 smatch
+openrisc              randconfig-2200-20261120    gcc-11.5.0 smatch
+openrisc             randconfig-r2100-20261119    gcc-16.2.0 cocci
+openrisc             randconfig-r2109-20261119    gcc-11.5.0 cocci
+parisc                            allmodconfig    gcc-16.2.0
+parisc                             allnoconfig    clang-24
+parisc                            allyesconfig    clang-17
+parisc                               defconfig    gcc-16.2.0
+parisc                randconfig-1000-20261121    gcc-10.5.0
+parisc                randconfig-1001-20261121    gcc-10.5.0
+parisc                randconfig-2000-20261119    gcc-16.2.0
+parisc                randconfig-2000-20261120    clang-24
+parisc                randconfig-2001-20261119    gcc-10.5.0
+parisc                randconfig-2001-20261120    clang-24
+parisc                randconfig-2200-20261120    gcc-8.5.0  smatch
+parisc               randconfig-r2102-20261120    gcc-16.2.0 cocci
+parisc               randconfig-r2108-20261119    gcc-15.3.0 cocci
+parisc               randconfig-r2111-20261119    gcc-10.5.0 cocci
+parisc64                             defconfig    clang-24
+powerpc                           allmodconfig    gcc-16.2.0
+powerpc                            allnoconfig    clang-24
+powerpc                       bamboo_defconfig    gcc-16.2.0
+powerpc                    bluestone_defconfig    gcc-16.2.0
+powerpc                           g5_defconfig    gcc-16.2.0
+powerpc                    lite5200b_defconfig    gcc-16.2.0
+powerpc                      mpc5200_defconfig    clang-24
+powerpc                  mpc834x_itx_defconfig    gcc-16.2.0
+powerpc                     mvme5100_defconfig    gcc-16.2.0
+powerpc                       pasemi_defconfig    gcc-16.2.0
+powerpc               randconfig-1000-20261121    gcc-10.5.0
+powerpc               randconfig-1001-20261121    gcc-10.5.0
+powerpc               randconfig-2000-20261119    clang-19
+powerpc               randconfig-2000-20261120    clang-24
+powerpc               randconfig-2001-20261119    gcc-8.5.0
+powerpc               randconfig-2001-20261120    clang-24
+powerpc               randconfig-2002-20261119    clang-24
+powerpc               randconfig-2002-20261120    clang-24
+powerpc               randconfig-2200-20261119    gcc-13.5.0 smatch
+powerpc               randconfig-2200-20261120    clang-17   smatch
+powerpc              randconfig-r2304-20261120    clang-17   sparse
+powerpc              randconfig-r2307-20261119    clang-24   sparse
+powerpc                      skiroot_defconfig    clang-24
+powerpc                      tqm8548_defconfig    clang-24
+powerpc                          wii_defconfig    gcc-16.2.0
+powerpc64                         alldefconfig    gcc-16.2.0
+powerpc64             randconfig-1000-20261121    gcc-10.5.0
+powerpc64             randconfig-1001-20261121    gcc-10.5.0
+powerpc64             randconfig-2000-20261119    gcc-10.5.0
+powerpc64             randconfig-2000-20261120    clang-24
+powerpc64             randconfig-2001-20261119    gcc-15.3.0
+powerpc64             randconfig-2001-20261120    clang-24
+powerpc64             randconfig-2002-20261119    gcc-8.5.0
+powerpc64             randconfig-2002-20261120    clang-24
+powerpc64             randconfig-2200-20261119    clang-24   smatch
+powerpc64             randconfig-2200-20261120    gcc-16.2.0 smatch
+powerpc64            randconfig-r2109-20261120    gcc-14.4.0 cocci
+powerpc64            randconfig-r2306-20261119    gcc-13.5.0 sparse
+powerpc64            randconfig-r2309-20261120    gcc-15.3.0 sparse
+riscv                             allmodconfig    clang-24
+riscv                              allnoconfig    clang-24
+riscv                             allyesconfig    clang-24
+riscv                                defconfig    gcc-16.2.0
+riscv                 randconfig-1000-20261121    clang-17
+riscv                 randconfig-1001-20261121    clang-17
+riscv                 randconfig-2000-20261120    clang-24
+riscv                 randconfig-2001-20261120    clang-24
+riscv                 randconfig-2001-20261120    gcc-10.5.0
+riscv                 randconfig-2002-20261120    clang-24
+riscv                 randconfig-2002-20261120    gcc-8.5.0
+riscv                 randconfig-2003-20261120    clang-24
+riscv                 randconfig-2004-20261120    clang-20
+riscv                 randconfig-2004-20261120    clang-24
+riscv                 randconfig-2005-20261120    clang-24
+riscv                 randconfig-2005-20261120    gcc-10.5.0
+riscv                 randconfig-2200-20261120    gcc-8.5.0  smatch
+riscv                randconfig-r2308-20261120    gcc-14     sparse
+s390                              allmodconfig    clang-17
+s390                               allnoconfig    clang-24
+s390                              allyesconfig    gcc-16.2.0
+s390                                 defconfig    gcc-16.2.0
+s390                  randconfig-1000-20261121    clang-17
+s390                  randconfig-1001-20261121    clang-17
+s390                  randconfig-2000-20261119    gcc-8.5.0
+s390                  randconfig-2000-20261120    clang-24
+s390                  randconfig-2000-20261120    gcc-8.5.0
+s390                  randconfig-2001-20261119    clang-24
+s390                  randconfig-2001-20261120    clang-24
+s390                  randconfig-2002-20261119    clang-24
+s390                  randconfig-2002-20261120    clang-24
+s390                  randconfig-2003-20261119    gcc-8.5.0
+s390                  randconfig-2003-20261120    clang-24
+s390                  randconfig-2004-20261119    clang-22
+s390                  randconfig-2004-20261120    clang-24
+s390                  randconfig-2004-20261120    gcc-16.2.0
+s390                  randconfig-2005-20261119    clang-20
+s390                  randconfig-2005-20261120    clang-24
+s390                  randconfig-2200-20261119    clang-24   smatch
+s390                  randconfig-2200-20261120    clang-17   smatch
+sh                                allmodconfig    gcc-16.2.0
+sh                                 allnoconfig    clang-24
+sh                                allyesconfig    clang-17
+sh                                   defconfig    gcc-14
+sh                    randconfig-1000-20261121    clang-17
+sh                    randconfig-1001-20261121    clang-17
+sh                    randconfig-2000-20261119    gcc-14.4.0
+sh                    randconfig-2000-20261120    gcc-11.5.0
+sh                    randconfig-2001-20261119    gcc-16.2.0
+sh                    randconfig-2001-20261120    gcc-11.5.0
+sh                    randconfig-2002-20261119    gcc-14.4.0
+sh                    randconfig-2002-20261120    gcc-11.5.0
+sh                    randconfig-2003-20261119    gcc-16.2.0
+sh                    randconfig-2003-20261120    gcc-11.5.0
+sh                    randconfig-2004-20261119    gcc-14.4.0
+sh                    randconfig-2004-20261120    gcc-11.5.0
+sh                    randconfig-2005-20261119    gcc-12.5.0
+sh                    randconfig-2005-20261120    gcc-11.5.0
+sh                    randconfig-2200-20261119    gcc-16.2.0 smatch
+sh                    randconfig-2200-20261120    gcc-11.5.0 smatch
+sh                   randconfig-r2104-20261119    gcc-14.4.0 cocci
+sh                   randconfig-r2111-20261120    gcc-16.2.0 cocci
+sh                   randconfig-r2302-20261119    gcc-12.5.0 sparse
+sh                   randconfig-r2308-20261120    gcc-15.3.0 sparse
+sh                           rsk7201_defconfig    gcc-16.2.0
+sh                    secureedge5410_defconfig    gcc-16.2.0
+sh                    sh7724_generic_defconfig    gcc-16.2.0
+sh                   sh7785lcr_32bit_defconfig    gcc-16.2.0
+sparc                              allnoconfig    clang-24
+sparc                                defconfig    gcc-16.2.0
+sparc                 randconfig-1000-20261120    clang-24
+sparc                 randconfig-1000-20261121    gcc-14
+sparc                 randconfig-1001-20261120    clang-24
+sparc                 randconfig-1001-20261121    gcc-14
+sparc                 randconfig-2000-20261119    gcc-14.4.0
+sparc                 randconfig-2000-20261120    gcc-8.5.0
+sparc                 randconfig-2001-20261119    gcc-16.2.0
+sparc                 randconfig-2001-20261120    gcc-8.5.0
+sparc                 randconfig-2200-20261119    gcc-8.5.0  smatch
+sparc                 randconfig-2200-20261120    gcc-11.5.0 smatch
+sparc                randconfig-r2101-20261119    gcc-16.2.0 cocci
+sparc                randconfig-r2110-20261120    gcc-14.4.0 cocci
+sparc                randconfig-r2309-20261119    gcc-14.4.0 sparse
+sparc64                           alldefconfig    gcc-16.2.0
+sparc64                           allmodconfig    clang-20
+sparc64                              defconfig    gcc-14
+sparc64               randconfig-1000-20261120    clang-24
+sparc64               randconfig-1000-20261121    gcc-14
+sparc64               randconfig-1001-20261120    clang-24
+sparc64               randconfig-1001-20261121    gcc-14
+sparc64               randconfig-2000-20261119    gcc-8.5.0
+sparc64               randconfig-2000-20261120    gcc-8.5.0
+sparc64               randconfig-2001-20261119    gcc-9.5.0
+sparc64               randconfig-2001-20261120    gcc-8.5.0
+sparc64               randconfig-2200-20261119    gcc-13.5.0 smatch
+sparc64               randconfig-2200-20261120    gcc-14.4.0 smatch
+sparc64              randconfig-r2107-20261119    gcc-8.5.0  cocci
+sparc64              randconfig-r2109-20261120    gcc-16.2.0 cocci
+sparc64              randconfig-r2300-20261119    gcc-13.5.0 sparse
+sparc64              randconfig-r2302-20261120    clang-17   sparse
+um                                allmodconfig    clang-17
+um                                 allnoconfig    clang-24
+um                                allyesconfig    gcc-16.2.0
+um                                   defconfig    gcc-14
+um                              i386_defconfig    gcc-14
+um                              i386_defconfig    gcc-16.2.0
+um                    randconfig-1000-20261120    clang-24
+um                    randconfig-1000-20261121    gcc-14
+um                    randconfig-1001-20261120    clang-24
+um                    randconfig-1001-20261121    gcc-14
+um                    randconfig-2000-20261119    gcc-13
+um                    randconfig-2000-20261120    gcc-8.5.0
+um                    randconfig-2001-20261119    clang-21
+um                    randconfig-2001-20261120    gcc-8.5.0
+um                    randconfig-2200-20261120    clang-24   smatch
+um                   randconfig-r2102-20261120    gcc-12.5.0 cocci
+um                   randconfig-r2108-20261120    gcc-16.2.0 cocci
+um                            x86_64_defconfig    gcc-14
+x86_64                            alldefconfig    gcc-16.2.0
+x86_64                             allnoconfig    clang-24
+x86_64      buildonly-randconfig-1000-20261121    clang-22
+x86_64      buildonly-randconfig-1001-20261121    clang-22
+x86_64      buildonly-randconfig-1002-20261121    clang-22
+x86_64      buildonly-randconfig-1003-20261121    clang-22
+x86_64      buildonly-randconfig-1004-20261121    clang-22
+x86_64      buildonly-randconfig-1005-20261121    clang-22
+x86_64                               defconfig    gcc-14
+x86_64                                   kexec    clang-22
+x86_64                randconfig-1000-20261121    clang-22
+x86_64                randconfig-1001-20261121    clang-22
+x86_64                randconfig-1002-20261121    clang-22
+x86_64                randconfig-1003-20261121    clang-22
+x86_64                randconfig-1004-20261121    clang-22
+x86_64                randconfig-1005-20261121    clang-22
+x86_64                randconfig-1006-20261121    gcc-14
+x86_64                randconfig-1007-20261121    gcc-14
+x86_64                randconfig-1008-20261121    gcc-14
+x86_64                randconfig-1009-20261121    gcc-14
+x86_64                randconfig-1010-20261121    gcc-14
+x86_64                randconfig-1011-20261121    gcc-14
+x86_64                randconfig-2000-20261119    gcc-14
+x86_64                randconfig-2000-20261120    clang-22
+x86_64                randconfig-2001-20261119    clang-22
+x86_64                randconfig-2001-20261120    clang-22
+x86_64                randconfig-2002-20261119    clang-22
+x86_64                randconfig-2002-20261120    clang-22
+x86_64                randconfig-2003-20261119    gcc-14
+x86_64                randconfig-2003-20261120    clang-22
+x86_64                randconfig-2004-20261119    gcc-14
+x86_64                randconfig-2004-20261120    clang-22
+x86_64                randconfig-2005-20261119    clang-22
+x86_64                randconfig-2005-20261120    clang-22
+x86_64                randconfig-2100-20261119    clang-22   cocci
+x86_64                randconfig-2100-20261120    gcc-14     cocci
+x86_64                randconfig-2101-20261119    clang-22   cocci
+x86_64                randconfig-2101-20261120    gcc-14     cocci
+x86_64                randconfig-2102-20261119    clang-22   cocci
+x86_64                randconfig-2102-20261120    gcc-14     cocci
+x86_64                randconfig-2103-20261119    clang-22   cocci
+x86_64                randconfig-2103-20261120    gcc-14     cocci
+x86_64                randconfig-2104-20261119    clang-22   cocci
+x86_64                randconfig-2104-20261120    gcc-14     cocci
+x86_64                randconfig-2105-20261119    clang-22   cocci
+x86_64                randconfig-2105-20261120    gcc-14     cocci
+x86_64                randconfig-2200-20261119    clang-22   smatch
+x86_64                randconfig-2200-20261120    clang-22   smatch
+x86_64                randconfig-2300-20261119    clang-22   sparse
+x86_64                randconfig-2300-20261120    clang-22   sparse
+x86_64                randconfig-2301-20261119    clang-22   sparse
+x86_64                randconfig-2301-20261120    clang-22   sparse
+x86_64                randconfig-2302-20261119    gcc-14     sparse
+x86_64                randconfig-2302-20261120    clang-22   sparse
+x86_64               randconfig-r2304-20261119    gcc-14     sparse
+x86_64               randconfig-r2304-20261120    clang-24   sparse
+x86_64               randconfig-r2311-20261120    gcc-14     sparse
+x86_64                                rhel-9.4    clang-22
+x86_64                                rhel-9.4    gcc-14
+x86_64                            rhel-9.4-bpf    clang-22
+x86_64                            rhel-9.4-bpf    gcc-14
+x86_64                           rhel-9.4-func    clang-22
+x86_64                           rhel-9.4-func    gcc-14
+x86_64                     rhel-9.4-kselftests    clang-22
+x86_64                     rhel-9.4-kselftests    gcc-14
+x86_64                          rhel-9.4-kunit    clang-22
+x86_64                          rhel-9.4-kunit    gcc-14
+x86_64                            rhel-9.4-ltp    clang-22
+x86_64                            rhel-9.4-ltp    gcc-14
+x86_64                           rhel-9.4-rust    clang-22
+x86_64                           rhel-9.4-rust    clang-22
+xtensa                             allnoconfig    clang-24
+xtensa                            allyesconfig    clang-20
+xtensa                   cadence_csp_defconfig    gcc-16.2.0
+xtensa                        common_defconfig    gcc-16.2.0
+xtensa                randconfig-1000-20261120    clang-24
+xtensa                randconfig-1000-20261121    gcc-14
+xtensa                randconfig-1001-20261120    clang-24
+xtensa                randconfig-1001-20261121    gcc-14
+xtensa                randconfig-2000-20261119    gcc-12.5.0
+xtensa                randconfig-2000-20261120    gcc-16.2.0
+xtensa                randconfig-2001-20261119    gcc-8.5.0
+xtensa                randconfig-2001-20261120    gcc-16.2.0
+xtensa                randconfig-2200-20261119    gcc-14.4.0 smatch
+xtensa                randconfig-2200-20261120    gcc-9.5.0  smatch
+xtensa               randconfig-r2107-20261120    gcc-16.2.0 cocci
+xtensa               randconfig-r2306-20261120    gcc-15.3.0 sparse
+xtensa                     xip_kc705_defconfig    gcc-16.2.0
 
- 2) 1024kB mTHP:
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
- ------------------------------------------------------------------------
- 1024kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
- ------------------------------------------------------------------------
-               Baseline mm-unstable   v4 zswap store   v4 zswap compress
-                              (sec)   batching (sec)   batching (sec)
- ------------------------------------------------------------------------
- [Run 1/10]  Sys Time:    1567.639s       1608.238s       1594.696s
- [Run 2/10]  Sys Time:    1537.577s       1608.420s       1456.113s
- [Run 3/10]  Sys Time:    1538.562s       1649.323s       1521.887s
- [Run 4/10]  Sys Time:    1626.176s       1618.451s       1531.962s
- [Run 5/10]  Sys Time:    1593.955s       1550.748s       1528.733s
- [Run 6/10]  Sys Time:    1643.519s       1679.910s       1558.482s
- [Run 7/10]  Sys Time:    1510.613s       1607.291s       1480.177s
- [Run 8/10]  Sys Time:    1632.018s       1636.487s       1584.093s
- [Run 9/10]  Sys Time:    1569.424s       1626.656s       1528.915s
- [Run 10/10] Sys Time:    1552.747s       1638.399s       1570.451s
- ------------------------------------------------------------------------
-
- ------------------------------------------------------------------------
- METRIC: System CPU Time (Sys Time) : 1024kB mTHP
- ------------------------------------------------------------------------
-               Baseline mm-unstable   v4 zswap store   v4 zswap compress
-                              (sec)   batching (sec)   batching (sec)
- ------------------------------------------------------------------------
- Total Samples    :             10                10                10
- Mean Value       :       1,577.22          1,622.39          1,535.55
- Std Deviation    :          45.13             33.79             43.79
- CoV (Variance)   :          2.86%             2.08%             2.85%
- ------------------------------------------------------------------------
- METRIC: Per-Process Throughput : 1024kB mTHP
- ------------------------------------------------------------------------
-               Baseline mm-unstable    v4 zswap store   v4 zswap compress
-                             (KB/s)   batching (KB/s)   batching (KB/s)
- ------------------------------------------------------------------------
- Total Samples    :            300                300               300
- Mean Value       :        289,904            292,673           291,114
- Std Deviation    :         15,385             13,727            14,553
- CoV (Variance)   :          5.31%              4.69%             5.00%
- ------------------------------------------------------------------------
-
-
- 3) 64kB mTHP:
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
- ------------------------------------------------------------------------
- 64kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
- ------------------------------------------------------------------------
-               Baseline mm-unstable   v4 zswap store   v4 zswap compress
-                              (sec)   batching (sec)   batching (sec)
- ------------------------------------------------------------------------
- [Run 1/10]  Sys Time:    1914.525s       1892.620s       1878.483s
- [Run 2/10]  Sys Time:    1869.412s       1845.021s       1863.177s
- [Run 3/10]  Sys Time:    1944.049s       1874.024s       1863.502s
- [Run 4/10]  Sys Time:    1942.757s       1841.728s       1900.144s
- [Run 5/10]  Sys Time:    1866.505s       1819.562s       1887.285s
- [Run 6/10]  Sys Time:    1877.716s       1885.175s       1861.668s
- [Run 7/10]  Sys Time:    1861.741s       1849.232s       1868.788s
- [Run 8/10]  Sys Time:    1904.735s       1861.398s       1816.372s
- [Run 9/10]  Sys Time:    1891.074s       1887.040s       1850.435s
- [Run 10/10] Sys Time:    1893.366s       1821.599s       1849.747s
- ------------------------------------------------------------------------
-
- ------------------------------------------------------------------------
- METRIC: System CPU Time (Sys Time) : 64kB mTHP
- ------------------------------------------------------------------------
-               Baseline mm-unstable   v4 zswap store   v4 zswap compress
-                              (sec)   batching (sec)   batching (sec)
- ------------------------------------------------------------------------
- Total Samples    :              10              10                 10
- Mean Value       :        1,896.59        1,857.74           1,863.96
- Std Deviation    :           29.86           26.58              22.96
- CoV (Variance)   :           1.57%           1.43%              1.23%
- ------------------------------------------------------------------------
- METRIC: Per-Process Throughput : 64kB mTHP
- ------------------------------------------------------------------------
-               Baseline mm-unstable   v4 zswap store   v4 zswap compress
-                             (KB/s)   batching (KB/s)   batching (KB/s)
- ------------------------------------------------------------------------
- Total Samples    :            300                300               300
- Mean Value       :        239,114            243,970           242,254
- Std Deviation    :          9,090              9,971             6,419
- CoV (Variance)   :          3.80%              4.09%             2.65%
- ------------------------------------------------------------------------
-
-Thanks,
-Kanchana
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
