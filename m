@@ -1,102 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D53606A332
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 11:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F970606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 12:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IkROlQ0P
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eo9bpYz2
 Received: by kanga.kvack.org (Postfix)
-	id 986C96B00EF; Sat, 21 Nov 2026 06:47:43 -0500 (EST)
+	id 7D12D6B00EF; Sat, 21 Nov 2026 07:04:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 937996B05B0; Sat, 21 Nov 2026 06:47:43 -0500 (EST)
+	id 734216B05B0; Sat, 21 Nov 2026 07:04:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 800346B05B1; Sat, 21 Nov 2026 06:47:43 -0500 (EST)
+	id 649C36B05B1; Sat, 21 Nov 2026 07:04:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D5516B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 06:47:43 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D6B2312041A
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:47:42 +0000 (UTC)
-X-FDA: 85458951564.08.6A183DB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 337A84000A
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:47:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkROlQ0P;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 365426B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:04:29 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9DCEC0426
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:04:28 +0000 (UTC)
+X-FDA: 85458993816.20.7527A84
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 98A10140003
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:04:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eo9bpYz2;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795261661;
-	b=IbDNRmgbkIq67xxV1fceVJPqDryv2uk+fwS/Fe3X7XpxzD0yC89J3usTcA/prTUDqd9+z8
-	XaHLjDGDoV5roZM/DE1CpYuw0xJF1hGojLJvVXuJjFG8vpE7kR9qVkY9vEV1ySRE+T65Ks
-	OqzYnj2fhRiZRI5U2ZJRwfkqCmtn9g8=
+	t=1795262666;
+	b=KmZf9grusSZ03mObozvPxy46QmO8AX6wY4XpoPgdhtHNdgorFFOH4BBLe3y4l+anqKx31v
+	6Y+ynUD/cEFDkvT4PMjnALStR/fP8p342Nj9xek3PCHis0otvUeJXPibi/Hyln779KSaRp
+	NTfc9+mTuT+ElQ1i4TQ9yL6EMHoB/Y8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795261661;
+	s=arc-20220608; t=1795262666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ALx0sJpj+pkFds0WlOLPKL1r0Eodz+uXw3XkI0BnJQ=;
-	b=6FM9/bRXxlHYM3lSbsZZ7Oltmk5oT6POjLLzbW3vsyWWTJ4AxzvDaeFtVAueiwK7r6LCBB
-	DMybXz3oVD2rr2mu0afKfRDLad39PG61fSPKH1np3B2U+6zEou7fQjrqi15JI3TUPSCGA4
-	qKHlDEj26193ZCVocsMuAGWavG9DXvU=
+	bh=8XwtdwbZYFdmmX1DSJG9P7gRtCoB3o3/Wv87V3JsG8c=;
+	b=4KhEzj5P0xQW1CfGx+FMX8g1MBDEAVXaRa14ql9jz4mop3LQuyTjGHpPQce6pv1XeHXoWM
+	XfHUo63Eu1MCNmt8HqRVj4Idt6ma1NgemgUSzRW7VBqqour6Kd9sg9NcZw+L1odD5hg3P3
+	3xOmrK3wU1ebu2z/5an83D+GydrjI1c=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkROlQ0P;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 20399456EE;
-	Sat, 21 Nov 2026 11:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 7B4521F000C0;
-	Sat, 21 Nov 2026 11:47:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795261660;
-	bh=4ALx0sJpj+pkFds0WlOLPKL1r0Eodz+uXw3XkI0BnJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IkROlQ0Pq+Rut8U64pvIUJTh/oAnChCaeNYg7hBVBuRUnEhRsa7xNq/JRarTXK2K/
-	 1SrKwVoY5oIeDiNoie/5u8U8GgnhTmyy0YX6Ld+DcqlRzwJDYG0Roi6EYh/NSo328Z
-	 gtWd1bE18xVGxRviE+EdpOnXwrmVQ8V4R2Hep+47tEdMGgvQkfsf4DeY503xo0UrGz
-	 +bmeCFDEAe5+Uy7+IO+cUFDQVBzUpeFHqWg93+bOiVNe0hghenDK7O9YRFT43oKEgj
-	 ETQw/sww4Y0GKJuijqz84K+iCyImKpbC8/fpbl33gqZ6lI9qEE90ukgklczuRo0UYy
-	 qfTMs+JqLTQJQ==
-Date: Sat, 21 Nov 2026 13:47:36 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	Alexander Mikhalitsyn <alex@amutable.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
-	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v5 20/25] security: Add rootns LSM hooks
-Message-ID: <awGE2FTQ6kpWEMJh@kernel.org>
-References: <20261121000844.1863324-1-jarkko@kernel.org>
- <20261121000844.1863324-21-jarkko@kernel.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eo9bpYz2;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795262666; x=1826798666;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WKdeB+wr3Nzs08DbegGP73NUWcovwjcle7gER9Hs2oU=;
+  b=eo9bpYz2H98uJUwXsizDJq7sayd07DayKLfVCB2ZCw2dVLF/qBk+9Pqd
+   LH9IxYPCH9/TaCyYtFH97I9FS9D2EqK4wfrsZjodn8I/dN6MwkJnmOf8f
+   htqJ0aaQKA6euguj070GtTERWJv6+SnO+0ky1Bk4r6fMl/TjZpM40RQdb
+   CIK35UMdQViScpYExcZj+JEFgscp20Oxd7P3BpCHLwNeL+xpvz1lnOgLi
+   N3PQZcSEszXNkBEiWIAUB51fcVn0Gs1zuHTnZsKPnJAtNk/yNMH+hFoXV
+   aB/t2bLWOT4wJkN5jQuO2uJEMyur/6R6mjtfuHX6kaFPtxfCzsLi2CEbf
+   Q==;
+X-CSE-ConnectionGUID: g38aszBaTBmDR6JGq0BqiQ==
+X-CSE-MsgGUID: ODxFKIaMSfiT/0P/Hi8HsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="4230890"
+X-IronPort-AV: E=Sophos;i="6.27,224,1787036400"; 
+   d="scan'208";a="4230890"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2026 04:04:18 -0800
+X-CSE-ConnectionGUID: KG/XGnIkSiKaHwllfgg6gA==
+X-CSE-MsgGUID: YCGXuvyeRl+S6jfxEcF6oA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,224,1787036400"; 
+   d="scan'208";a="10806193"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 21 Nov 2026 04:04:05 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xUjp2-00000001K07-37dQ;
+	Sat, 21 Nov 2026 12:04:00 +0000
+Date: Sat, 21 Nov 2026 20:03:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Alistair Popple <apopple@nvidia.com>, SJ Park <sj@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH 54/60] mm/migrate: route explicit NUMA migration to
+ private nodes
+Message-ID: <202611211932.YlkRbmjS-lkp@intel.com>
+References: <20261120-private_nodes_v6-v1-54-74f5f9a115c2@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261121000844.1863324-21-jarkko@kernel.org>
-X-Stat-Signature: os7u7ahaewch5horf3445ch5detbskn1
-X-Rspam-User:
-X-Rspamd-Queue-Id: 337A84000A
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <20261120-private_nodes_v6-v1-54-74f5f9a115c2@gourry.net>
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795261661-350601
-X-HE-Meta: U2FsdGVkX1+2DN0pPN16qG8FuHyW4QiTYvhPN7g1VMTUWlOu/nctwNKQ1EakOl6V4d/uEurcHG9/y8l3YQEbvVXND/awdbkF9F4yRAaVwIU8mKUt+VVwzeaLlHyti1GAiZ5oCskxrvGCVw5jRt6QHPfsWXEfiISfEu+P6YIryJC9DsIeeOhtQgWeZe+w90mH5LXYXINOcImMAVFJ+DqYB2/kZ2NRc5reaFOHIO7PaFNpXEWzpV6KpqyJkjFG4agoEJFRcsra60DlQXPC1ldL7Vu4HHGekfKngWbMPckHJe5swPEoQO+se+fSdApzxbOtmiGsWNw8tOj/hpTgosPNqcs1vvMROupKkuGRLFphGB3VDp99ArNryeU3+DBAm8Dprhbv4vDQvWyiEGK93b7uNtZryANk/4+zKM53qf4Xsydq0MKg8TXDn321fBcQiNlwUt8xhEsYjGAEElxth4ww6mWbSlUOsEF5ZLqyh3ooXO6xBthUEXcjE/oQRVHtYEzDT7iKZll4X/49Gck9Fx5/bhqFXKb1vXbx+LhQLuZR0HDqbyA6ZgokjzE7N05kcv3nEMokcpKZKhKiwhY+JCecGAftpOcFd6NOzCdbHPweUTZzx4gOE1slX3tPSb1LMKYhpfkOrnna7stOIM0CK9UD1GHkFd8gO8l5M8ajJLSxQsz6W5B+HKLR1xh0a3vZpvw+voN9Mtg0e0RAcGpTB93phGj3ZlWgsGHcqxdOp+67m3H0cTtOO96TmCGQiXQC5e+6aWfJ1h8x6DwBO28EiKTi6mx4UkvQj8kcgwckRC+zaQhvcKpzuRWrDjsS71qt+3DdrFzzph9LNs4Wfnpa2+LIRf+B+uyR4nYjkiYMhB6v7QG5IsHvO+YQV+wxfMZ+dMbAO3jXYttrkCJae8U/Ma5mKUqo7OFeILH7IZqdDqW0hmehexE16Ax+URO6+lcbi7aEDhACsUJ5qeVY003nwiw
- 0PblkZsi
- kgdtCg4KdY46bMYT1OR8pq1Hj1CoBRQqufFF/B0q5oiWY/hjG7tOvvT6O5cBK75yr0cZlHVRgscCPCIT6i+cCXqds7qS1XUqu0VzcXIstb9GMr1eG1+AwfOmgRlv8rgtDGDCEBM7e6x1o+63UBCiGWFS+zdbhVWRClcMUQC6ApKUrh0SFrN0RDqB1Nb9n07n09WDFouqL7jjEF+0oy1FEtAywxLuQuBl5mwAjbN6VDjuIgbvdV8PYiSMpSpoPUpXPQAhWh39maVxsZZXpLubrJYw6YyOnQUqKsGYq9BKKyTH1w2UOUbN/K02cJnHIy52ID2Psb8PjWrdTHJgm49r0mzzg4f8ZOBO56KA7415ieBQK4MvPPNWR8TyYOZA0TKE9Szu6L65mzZ91Z1h2MFjAQPHgmvgNQWeR1L8NhzuQ6LAGpadf5vOFQzB6yr7c5t4907nGQ8SHsioyyTjGe00dg3ZkOiZ9e2s6hiDxtnGP7VzuJrg=
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 98A10140003
+X-Stat-Signature: 39g3d3a3ggtc63ajetxijer3k6ns37k4
+X-Rspam-User:
+X-HE-Tag: 1795262665-236643
+X-HE-Meta: U2FsdGVkX1+1XlB0EJBSGSSr0umkQ6Sz3K9Nhy26p7JqwAXNGN7aWvWi+AKGm0e9bGD9oz/xhA+foF504xTE926K0yQAHFqpmu0ETRCKPcWsOeF8ETtJWq8L1FTveBEdSE63YF7zzItujPjSd/3NWDCZyj+h3kwcMKBbUIx5Wn42WMj3cJ+W/qfOZUbv0ZgGmM4pHZWA8pRYXwBuvb9WtpaJM1F5mqHo8ne3WIUm4YkVuF6ZqhcMtwKSZUyYe8lP4nTB1HSRi8vWhgnq3MvhjtAuoZrXEVDFGN2zgtXSX+uRuhlEM05ODRkFUQdmazTWduyJKVwFaVDzu/fpaJjod4hdWr4h+7KtKtURjE/ahyLWfGdBWcHj7hw54Eyt+9z/FdIwp6orSFK+0bhkDyU5fGNlR4mTEDccqdriESn2dQYlEWs05KycE+da+tjHGA1TTjgk0Gg5SURsBAGkvsbdTWRlXY0pe934gU7WTa0PZsx4rq+zk2pI+pU7m7aeB+JoZ9xRnUu8TuYxL+H2U1OwaOtWAy1MRMWbJB3oIy6Dcx5zQHGMhnWR/3K3e7mdMxwue08tJWig+fUhrk8CzZ9+KiyBJsZEefXHkZc6sKN2NORhpJEVGBnhcx+ZVc3Afdo1wLayqwoX5m8OJwdAh1u+IBMN9mwgzhNIFKjHVgnwoVjZj3XuXN9jTZ9S/iVPDxiXOVXX9CBVE0xwvXgLd7aynH+lW6JSckcQlkFaQDO2udWR/K9nwWPTFEvq2IqlQ2+0i0ApfcEPIigj5hRHxa3PZW+QKkm0tiacgX5thCgIZrRrKvjM+t1vJkOPlsdcBz7hVmKfnU9ICUduPXIE2+3olknnEVe3PdvhpKWtfYH1Qd0azW64y6mMs2Rvu7FLFQ6bl1DCwMPflseDdlawO9hYv11/sptf8ER3lgs2ssakpPlCfx28eYAyFDjmtB4Sz0oQqSmrCcCsLN7mZjvKQSB
+ Dr0JXucv
+ 3ug8Lk721XLHdNSb3bJxPQ21GXAtm/qP3aUFY/cWPj0bMLXLXCSIHkvf638Gy5XnItiAdtoRAwemk8eHqUDV3tTNQSMoVD+0Ws+TcZe5yljNvSGCYna/fRNDBrUc3sduftDV98k9PIiMCJVuVE1qzkKFxAvjO2x2IfULPbNKDw0j0mfhQ1DqCaXG/yneo0DOF2iMBjcXrMC5gqbhf242t9AZ0gBNO9MYlGReYatv+i5P3ZujvQyM5Ri7dSiXXpZSFx7N5xeutj2T9vipmysYlwXiLhJyKhh/5Pp/S83bg/rbRMmp0ud+7mVPgNDPxLwvw6LtAV5W6FkUakdh5qDHhI0+id0uo3xHpIx+MBJW/Vbp9iS9jaDl7AgNDXoxymE4jetZsf1kOR834taJoJSuE273orsg8hCxLv3oKK+pBCz2R3/7ojAkwDkl9HoG1WCXWefPtxyms2a+uVttmB2GornOc+EAyRjmLaszbMB+Q0IQCqYVzE47Ve4TvSICLtBSxobS75n1+SLsBRu1ug2g1ib+t8rF7mWdUhHXI3+jlG+YtxYGIWwUNcFOzvuhZvlHIYbJ5JYC5gLusftGnvhRUmrMImUv57AAhzWnwbp9FJ4lf8AAE+tJNv4ztkfNrQuslh2pwXo9qfixR2PykoISPt5vnMCnyVJ/RirDXylLZ41aqxrhRTQG9+2KHgd9aqbuUZa7YO7/gMZzCNZMx23/z9KIhAyWmQ2kck3R1lgPkOBKkRLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,60 +134,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 21, 2026 at 02:08:39AM +0200, Jarkko Sakkinen wrote:
-> Security modules need visibility into root namespace creation, teardown,
-> process entry, and container-wide signal delivery so policies can attach
-> per-rootns security state and mediate operations on rootns file
-> descriptors.
-> 
-> Add lbs_rootns and rootns->security blob management alongside
-> security_rootns_alloc(), security_rootns_free(), security_rootns_clone(),
-> and security_rootns_kill().
-> 
-> Co-developed-by: David Howells <dhowells@redhat.com>
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
->  include/linux/lsm_hook_defs.h |  7 +++
->  include/linux/lsm_hooks.h     |  3 ++
->  include/linux/rootns.h        |  3 ++
->  include/linux/security.h      | 30 ++++++++++++
->  kernel/rootns.c               | 44 +++++++++++++-----
->  security/lsm_init.c           |  6 +++
->  security/security.c           | 86 +++++++++++++++++++++++++++++++++++
->  7 files changed, 167 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-> index 87d9d06710cb..2cb90ddedc14 100644
-> --- a/include/linux/lsm_hook_defs.h
-> +++ b/include/linux/lsm_hook_defs.h
-> @@ -480,3 +480,10 @@ LSM_HOOK(int, 0, bdev_alloc_security, struct block_device *bdev)
->  LSM_HOOK(void, LSM_RET_VOID, bdev_free_security, struct block_device *bdev)
->  LSM_HOOK(int, 0, bdev_setintegrity, struct block_device *bdev,
->  	 enum lsm_integrity_type type, const void *value, size_t size)
-> +
-> +#ifdef CONFIG_ROOTNS
-> +LSM_HOOK(int, 0, rootns_alloc, struct rootns *rootns, unsigned int flags)
-> +LSM_HOOK(void, LSM_RET_VOID, rootns_free, struct rootns *rootns)
-> +LSM_HOOK(int, 0, rootns_clone, struct rootns *rootns)
-> +LSM_HOOK(int, 0, rootns_kill, struct rootns *rootns, int sig)
+Hi Gregory,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 15f114dac9a7bde1796f0e54e22726fd31cfa8a5]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Gregory-Price-via-B4-Relay/nodemask-add-node-state-iterators/20261120-130852
+base:   15f114dac9a7bde1796f0e54e22726fd31cfa8a5
+patch link:    https://lore.kernel.org/r/20261120-private_nodes_v6-v1-54-74f5f9a115c2%40gourry.net
+patch subject: [PATCH 54/60] mm/migrate: route explicit NUMA migration to private nodes
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20261121/202611211932.YlkRbmjS-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261121/202611211932.YlkRbmjS-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611211932.YlkRbmjS-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/migrate.c: In function 'alloc_migration_target':
+>> mm/migrate.c:2254:24: error: implicit declaration of function '__folio_alloc_flags'; did you mean 'folio_alloc_swap'? [-Wimplicit-function-declaration]
+    2254 |                 return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
+         |                        ^~~~~~~~~~~~~~~~~~~
+         |                        folio_alloc_swap
+>> mm/migrate.c:2254:24: error: returning 'int' from a function with return type 'struct folio *' makes pointer from integer without a cast [-Wint-conversion]
+    2254 |                 return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
+         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    2255 |                                            mtc->alloc_flags);
+         |                                            ~~~~~~~~~~~~~~~~~
 
 
-Rootns objects have a security model:
+vim +2254 mm/migrate.c
 
-1. No embryonic state by design. Especially staircase initialization
-   contributes to this property.
-2. Unshare logic is inverted. Right now ROOTNS_SHARE ioctl does not
-   exist right now but it is (obviously) doable.
-3. Dead obvious and transparent LSM hooks. Really hard to get them
-   wrong.
-4. We already know by experience that opaque fd-bound objects with
-   two-phase state machine (build, live) works. It's what make this
-   secure and policy-free implementatiion.
+  2216	
+  2217	struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+  2218	{
+  2219		struct migration_target_control *mtc;
+  2220		gfp_t gfp_mask;
+  2221		unsigned int order = 0;
+  2222		int nid;
+  2223		enum zone_type zidx;
+  2224	
+  2225		mtc = (struct migration_target_control *)private;
+  2226		gfp_mask = mtc->gfp_mask;
+  2227		nid = mtc->nid;
+  2228		if (nid == NUMA_NO_NODE)
+  2229			nid = folio_nid(src);
+  2230	
+  2231		if (folio_test_hugetlb(src)) {
+  2232			struct hstate *h = folio_hstate(src);
+  2233	
+  2234			gfp_mask = htlb_modify_alloc_mask(h, gfp_mask);
+  2235			return alloc_hugetlb_folio_nodemask(h, nid,
+  2236							mtc->nmask, gfp_mask,
+  2237							htlb_allow_alloc_fallback(mtc->reason));
+  2238		}
+  2239	
+  2240		if (folio_test_large(src)) {
+  2241			/*
+  2242			 * clear __GFP_RECLAIM to make the migration callback
+  2243			 * consistent with regular THP allocations.
+  2244			 */
+  2245			gfp_mask &= ~__GFP_RECLAIM;
+  2246			gfp_mask |= GFP_TRANSHUGE;
+  2247			order = folio_order(src);
+  2248		}
+  2249		zidx = folio_zonenum(src);
+  2250		if (is_highmem_idx(zidx) || zidx == ZONE_MOVABLE)
+  2251			gfp_mask |= __GFP_HIGHMEM;
+  2252	
+  2253		if (mtc->alloc_flags)
+> 2254			return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
+  2255						   mtc->alloc_flags);
+  2256		return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
+  2257	}
+  2258	
 
-The choices how to do things with closures used in SGX driver are
-translatable and they are also pretty well reviewed choices, given all
-those years... I would put some weight on this too.
-
-Br, Jarkko
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
