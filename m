@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9304C606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FC0606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ak006B3p
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AM5vyY5c
 Received: by kanga.kvack.org (Postfix)
-	id A7AB66B05B6; Sat, 21 Nov 2026 11:03:32 -0500 (EST)
+	id BB4296B05B8; Sat, 21 Nov 2026 11:03:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A524D6B05B7; Sat, 21 Nov 2026 11:03:32 -0500 (EST)
+	id B8B2C6B05B9; Sat, 21 Nov 2026 11:03:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9418E6B05B8; Sat, 21 Nov 2026 11:03:32 -0500 (EST)
+	id A7A146B05BA; Sat, 21 Nov 2026 11:03:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ED4B6B05B6
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:32 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2A05C0562
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:31 +0000 (UTC)
-X-FDA: 85459596222.03.CFF8342
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A0FB6B05B8
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:38 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DAA41A0550
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:37 +0000 (UTC)
+X-FDA: 85459596474.04.5199E06
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E90B6180002
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ak006B3p;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 138E340008
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AM5vyY5c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795277010;
-	b=20kifr0UowBJOwc9ML3j/kPB5gXXHqgk47+lmXtvZfW1EM3CbTO7+RK/rckprQrSs75ubU
-	Cfdz7odMORqB4C2CXqn34cAH7GJYgYrzhlznxmLviF4BtzVveS2nKSxzOmxolMFPzUq95t
-	MvV+Wh331rhhCmI4S8/FMQCgtiRyRPI=
+	t=1795277016;
+	b=mTS/dzLLKDHgnrOut/JRSEg0FJCKBI2ZvIJcmWi+IxzLEUOQIdCvJCJInWjo2zv3oIpyld
+	eXABoeTPutnPDPAX+U88hO73RKJ9l7Ou2iGtYezbL42DRQNwjWhNLWOCl56SM/SI8bC7Jo
+	F8Qi16NDBNrpX1wGaUAjJQvvBjvz4Pk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795277010;
+	s=arc-20220608; t=1795277016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gBgp43T//fAyhbIagABTzJUOBXpFMWAcovwgcCINvMY=;
-	b=UDQel0TYrkwB31wPACxWoSwn400YErcKUpwx8ecwSDXv1TpJY0+UVeEHJ2N77XUMItYxQ4
-	oUU3OpMRKCnBTZ+rD5KVQKEIBs81qsHuc/XD0w9V5KivDWshrgCBADvY/d0nPcNLb9481q
-	Z2N43tJfhYL0qGc8qMCXfBGB6IIIYLM=
+	bh=fjtW3tWTyT2H196OmI5oHGMlahZwHiXtTvIY2ftsbT4=;
+	b=Y+JtVcoOokV49u5SEo16jta+c888nEtMCXKgw6slFqobz15NZCcNYovJU4m9CvsDgu2HCD
+	wLPHWUr8inF7p/B6NFNaq0tbAlWSAPxOqZ2Pb48BVGC/ZnI09jZzIi4HZd9tEfF6a4M/rU
+	6J5jFVTZ3EeVPu0AvtgnMaVQnxppnks=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ak006B3p;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AM5vyY5c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43A2445A1F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E12B45A68;
+	Sat, 21 Nov 2026 16:03:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7DE1F000C4;
 	Sat, 21 Nov 2026 16:03:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69631F000C6;
-	Sat, 21 Nov 2026 16:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795277009;
-	bh=gBgp43T//fAyhbIagABTzJUOBXpFMWAcovwgcCINvMY=;
+	s=k20260515; t=1795277015;
+	bh=fjtW3tWTyT2H196OmI5oHGMlahZwHiXtTvIY2ftsbT4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ak006B3phr9aYX1dvUEK//5L6VTHWrdhu9WnRwm2fYmRWlUHoS1ePI+w4EvWAekDZ
-	 pfEQvPaBb/8y9ySRdfFXJXiji/6965/4iQuc450ZgdpA4eRPkVIpJprJ9HPjsEWtWC
-	 iBKyW7ogSWyQdjceZD02Gn6MoraSsAVHGzeVB9ko8IneoEbiQBjfigplDV+e5fjG/+
-	 3+zuJ6HN5sRBsHvCed+BsSgeDlCcaPCic5jXJ+VS5HbniaOT+pJQ+d7wuPwCi7toWD
-	 jHXyC9gdXzxbmCxy0knaNiUvWgZ05c1ax1L0TxPQIT4FV20+hcprMuTfgqkvQKAd32
-	 ANfUwy2ENl7TQ==
+	b=AM5vyY5cH1h8CNycg8kMNZ88A5BtN4ZaCO+c8FK8uYi89pGcHUiG+1K6TVsaUJ/r4
+	 5vNhLxRNRqRcMLAyfSLSpHCbR48SqHTMOSwkUzk/UvMcRgpEVXNHqu0Y4L8C+VxUiQ
+	 cUKYsBeiVKPtKMzCurl5U/+sY2ho0AKvFLn2lHK5as4BKL8m/OxsroGYnqZr20v/EP
+	 UnOGMwsamBqTugTZChTFjwKxQ8o/K9mxnfTjLD/uneDFB16IUKeUzpOS2fVWD/lR9D
+	 QO0W4+lGI20OOQDSjkp1Q9tBMeYFMvO71mcYD1C7Y5CpMMRhvw0PgbjWMYHYTZMRPk
+	 EnPBajbz/NLiQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Sat, 21 Nov 2026 16:02:29 +0000
-Subject: [PATCH 3/7] mm/ksm: only interrupt unmerging on a fatal signal
+Date: Sat, 21 Nov 2026 16:02:30 +0000
+Subject: [PATCH 4/7] mm/vma: fix uncharge after failed stack relocation
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261121-some-more-ai-fixes-v1-3-236e925d9b64@kernel.org>
+Message-Id: <20261121-some-more-ai-fixes-v1-4-236e925d9b64@kernel.org>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 In-Reply-To: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -87,26 +87,26 @@ Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>,
  Josef Bacik <josef@toxicpanda.com>, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2738; i=ljs@kernel.org;
- h=from:subject:message-id; bh=QhRySLL1rZVazQ5Q24cttAAXFpF2eDQxUeouxBVErqQ=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2x/fP3tM6svkwPnLRZP8HzoZMqlGCP06fyNO5E9K
- a5H1Sc6dpSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiFb0M/x0a7duW1MstOBZ/
- N8aoe37L8vXVTZ3HODwMii7dfrt5y0FGhnee3bcnXz/C/8F1iR0f1/L62bVdd99mzj7/qtWuaon
- 9Zi4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2955; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=jvGf/uqdCmatWvRece4f6kn/YJqJuQMD/ohnWFCk+Y4=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2zn3pJ7OiDo14erch31uQuPv7HSSc7u3nX56s3o6
+ J3betzlO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRaSYMv5ieN35gtAu9cL/U
+ 8rPWvRuXAuqNnsxS3sJw8Z5N4vczB18zMhzW3qbz97v6SmUds4OzpL2eH5Dtqk3yXzwj4d6vmNu
+ P1rMCAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspam-User:
-X-Rspamd-Queue-Id: E90B6180002
-X-Stat-Signature: oi3mr6a1kff99eseesi4751dm6zmi5ib
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 138E340008
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795277009-597813
-X-HE-Meta: U2FsdGVkX18iZquReBT/Qn4kXGmeSZdF+Z3VaWZzAs69Gz2XFgy5lZHFi280u1XTRxveRoDfl6jpEJGFPXPzL721E6DVy9SqG61+Cdj6ExMpPTJV3+ix5NTA0gT0Ds6Ck1BWHwSuHA1fDKQ3znSen0jEGUjX0IlZyiuWIDaHWFvb21pk5t9BoLlU/9Q+t5Y4fHKinX+61EGdz1lZdVNzuT84IvvGaGC7VjLpT90gtNuycieQMHGiG+ix/6z8wjfUQ4gAWFn5eEX/dfWoXHjzDyJKnlammfKhN6M6rjXHRw1BsdulKA3505wXnv8DndLUBE1m39xfkuKxCLvhzwW5Eb6HaMWYirfZrDITjhTmmzLUqg9/wftg+LuBK58ikpizdlIAskxZXjQutx8G4KHmnyhbgDjzsfX1dlyxLelFOVQyg/FcmfjtBjmpkcUCLA73yAJwq3Q+kTM6UZp1oilDXmt8B1+jWGhWFqUbQXehX2E8OANmYIH7pbAI10W0kcUjiSgRj1jPaUYWlte51w6a2nEfBxFVLqKFi1LQcKKg9WALwSYQ4b/NI8ydAW4IUW9VuSOuCr83xENqmg+j50dSjWPtAD6C29p6lk4vd2i/8Uh1YubkOR2SSqU8/T86HYhoeW4aUY1b/brfsoUzVRTiJZEw9vauUMta6d+7E3Eit7aFxQiZYKzq/Yq0Wadr+tRJaSJOYCvZHz4HEc8wOVkD0h5vD/yr8oncSiukopVdbubWj6b79i+V8LNGCLJV91849F3I5Wg8lqgMpchtTZlbkSxXnuOQcTvUc4Q8HdxuuLx0XN0RRV3AMZ/xENKKzvcx3wE9lHbK+nyj/7Gk90SSZMvKvohdK3KiDXausPXgiNwYcCrEVOdvucdJIerN3zV928GKPzeJQlisX6wd5KwwKbMJo6llZC2ZbEDTWKJN/T6iWYjrkIh0c5GVGRM10lBsnUKrf5CkKicUeYgFKVB
- eYlHfwui
- pFiIrnehfehjvZii5suYZpKXS7+BJhmxZkOD+1HObMX2flnrYxlgL+9OghIK/09zETG/aS8VFRa9yWLX8V7anx6dWMwDmlRHmUassdoZlve0ZhEfeiAMUZ2gg0W8u0iM6KaBBJHmfNHyae8RXWE/kWdmgF49BNveuF+XFeXS2wpOvTv5NiBgTfZ/vcXeuANo0o/XgnQ6M5qyuXTODieaufcFfGjaodfkSnpIjDbmXpDZ/XC9y1XByN2GtSwD4v/V14OlIuic6mmmDo3931RQyJrMzQQVtwvnW6GV8CyhgKGC1JXTci4/12IGvgyON0kOAVVPPVXjZ5A5il67usbfv9C3kuCDXQ7+EFD9dP/CG1iwVP1CKoXAhSXIrGnunYSTYUbP2COylXQ5//ilUn3LmoD76UvXA9S4a3REfakDwf22dTcFqEaHpzC+b/9ygwqgBWQdaHZwh+qqC7T6UtlaCZ4vhjG+LPIyUmsDJ
+X-Rspam-User:
+X-Stat-Signature: zjtcmueed8o648y4ayz1ymq6t4w7o7z9
+X-HE-Tag: 1795277015-114125
+X-HE-Meta: U2FsdGVkX1/QlBFvuyTsnS7wkayEGgzEvsG7ARfdQ+lyiAISA+AovGEAk7G4D74YdCRZO/v3CKDQ2OAQIitNfdaEcqJFCWzMuXSN7lx69IvB5HutQwSj5e0uU56ATnOPPZoGR//viPg4lw3I5ifZ3mCPhaC8CEJtDNvytL1ylduVh7LoQAV8S9tSHuJitkkAFHF2R1kGj+2nIdfayy+V7RpoR6VwOVEe/U3hYpwU/bkiZsN3hQrFDdktAo9hE+L9RCWsZrLjM9X0nRtO5UPg4d7zP3wDn3DH40I9XU7ITZ4qa/WCdcpXUaAjQhPc297NSc2AxmiJLpr6WrqXn/AbVlpMLfbiu8jQz8BFdkwBR7SZAYfuWkPK0YIQCH5HgtW+uyswdAjFpLDzUzJY7OuqN5O/ssuWKtKhn2UBSwShx3o/1QCkhmFmhE8LwKIbQNrnWxZEXsOe9aUjjiZLFrLmPKU9xhJTaEhNv6rYjYP0gMJIR9cP7jtpfFC2HlXtk1e4hVnq5jqeJcC62cu5wCy5Q9B7QZP5RCgiRcpzZcnghGE5c+X+FYz4agaO7G/5ozUG8T87yt1QUZaCnG7gOPJsVbgaj71Widw+3eyDMIkGZvHydN67NOYK0t3HsKUFtzvvBR8CCa78McY226ROeSl8PtzkTdNMmWFklDZNEUHUfPEEdgpd4uF9O9pD9T6nOVOvJDLuxf97RDk0mLJIR/USpmxfs7E/L1kk+sm8HEfnn4n54S7xbQkdobZl17WLxVz934OK2/RGLp+zyD7RfuOKdESWtg2pjgbBvsYl+57ZbGXsb7Y4Nh93VfvTWuQscw7oDNLAHzKDKiElsbnCutmhWRNLcEoEZnDiq7hBg3aGwI58biT+4fZgag0+2fqOkvLhSrOHGquwwXLspKqiUkddmUPkhhBbWQx0xwX+c4+ctX57SxjTjwBv8Ylk1lY2ZcqfbyYAiHoVX6UkUSPTuqa
+ Xb235EX4
+ vi0slHnayPuUug2YbWNnIn3d/lAW+asUaWDe+jHlgzBnIyCTCsTGvT410SgqlXMprhvPRrgfdUqxw/qbreZdtQ1iGmKM/gc26He62JMSc3GaJ2MScWoXMtrNlXKSH/tbQx0Qd7q6ca1yU8j3S/KgKpNQ5N7fltBt5UKOTO+7oyINh/gd2SRg62DQvshgyJ7yOqLnYeEIvyOA9EjKcvPEo4XFedOuvaOwU2n++lNyViyqqKx0CVA5TmPPn7dFFJsoxLDEl9EtDw6Zcpwq1mI+jJ1S6LdZFqGAJxYN4zAHTMeXLo87PYP/uCdJS9UPhoZMFuZpfKXTShUazP7PTX3LeTVJki9yB2k44yVOpc4vd+ZNjyJdLH3wViESIFdveQH+s8ogLkhyzBC08hsqki27wbOyPLf5ELqrq3fiBxEcOsD13LtmaA0iXTRy6o2x4/7Kn45hJ3lljlXrjD1x2yKeZZ80/RDJiH5/JUwRNXgFI3ToAepsppJdocM0pGyexcfFnEE2V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,74 +115,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit d952b79136a6 ("ksm: fix endless loop on oom") added a check for
-pending signals on KSM break, so that a lengthy unmerge could be
-interrupted, with the system call then restarted via -ERESTARTSYS.
+From: Chris Mason <mason@kernel.org>
 
-However, it assumes that the callers can always restart whatever system
-call started it in the first place (the commit message questions whether
-this was wise).
+An execve() that fails to relocate its stack can underflow
+vm_committed_as, and the commit limit of vm.overcommit_memory=2 then no
+longer holds.
 
-Well, it turns out that it was not wise, as this baked in an implicit
-assumption about system call restartability, and it was and is not safe for
-mremap().
+exit_mmap() uncharges vma_pages() of each VMA with VMA_ACCOUNT_BIT, so
+the charge has to match the size of the VMA. relocate_vma_down() expands
+the stack VMA by the relocation distance without a charge, and relies on
+its vma_shrink() to make the two match again. But it returns with the
+VMA still expanded if move_page_tables() can't allocate a page table,
+for example at the memory cgroup limit, or if vma_shrink() fails:
 
-mremap() holds an mmap write lock over the operation, which an -ERESTARTSYS
-drops, meaning that the restart is not in a consistent state.
+    relocate_vma_down()             charged    vma_pages()
+    ===================             =======    ===========
+                                    L          L
+    vma_expand()                    L          L + shift
+    move_page_tables() fails
+      return -ENOMEM
 
-This was made considerably worse with commit d23cb648e365 ("mm/mremap:
-permit mremap() move of multiple VMAs"), which can result in data loss if
-you encounter this issue.
+    exit_mmap()
+      tear_down_vmas()
+      vm_unacct_memory(L + shift)   -shift
 
-Consider an mremap() specifying MREMAP_FIXED | MREMAP_DONTUNMAP of two
-KSM-mergeable VMAs, where a signal becomes pending part way through:
+On x86-64 with 4-level page tables, the distance is up to 16 GiB for a
+64-bit program, and about 128 TiB for a 32-bit one.
 
-    first pass                          restart
-    ==========                          =======
-    unmap tgt1 range
-    copy src1 to tgt1, move page tables
-    unmap tgt2 range
-    break_ksm(src2) = -ERESTARTSYS
-                                        unmap tgt1 range, which now
-                                          holds the data from src1
-                                        copy the now-empty src1 to tgt1
+Fix the issue by giving back the charge of the stack VMA where its
+relocation fails, and excluding the VMA from what exit_mmap() uncharges.
+The argument pages of the dying task are then outside the commit charge
+until exit_mmap() frees them.
 
-This results in the user observing a successful mremap() but with src1's
-data missing.
-
-Without MREMAP_DONTUNMAP, remap_move() would find a gap at the start of the
-range on restart and fail with -EFAULT there instead.
-
-Fix the issue by only breaking out of an unmerge if a fatal signal is
-pending, returning -EINTR when we do. This makes KSM unmerging consistent
-with many other signal checks in mm.
-
-Target commit d23cb648e365 ("mm/mremap: permit mremap() move of multiple
-VMAs") for the fix as this made the issue significantly more impactful.
-
-Reported-by: Chris Mason <mason@kernel.org>
-Fixes: d23cb648e365 ("mm/mremap: permit mremap() move of multiple VMAs")
+Fixes: b6a2fea39318 ("mm: variable length argument support")
 Cc: <stable@vger.kernel.org>
+Signed-off-by: Chris Mason <mason@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/ksm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/vma_exec.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 623a2cdb3924..5d320a200951 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -627,8 +627,8 @@ static int break_ksm_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long en
+diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+index 586c52155942..84b98f1a201d 100644
+--- a/mm/vma_exec.c
++++ b/mm/vma_exec.c
+@@ -45,6 +45,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+ 	struct vm_area_struct *next;
+ 	struct mmu_gather tlb;
+ 	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
++	int err;
  
- 	if (ksm_test_exit(walk->mm))
- 		return 0;
--	if (signal_pending(current))
--		return -ERESTARTSYS;
-+	if (fatal_signal_pending(current))
-+		return -EINTR;
+ 	BUG_ON(new_start > new_end);
  
- 	start_ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
- 	if (!start_ptep)
+@@ -68,8 +69,10 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+ 	 * process cleanup to remove whatever mess we made.
+ 	 */
+ 	pmc.for_stack = true;
+-	if (length != move_page_tables(&pmc))
+-		return -ENOMEM;
++	if (length != move_page_tables(&pmc)) {
++		err = -ENOMEM;
++		goto err_unacct;
++	}
+ 
+ 	tlb_gather_mmu(&tlb, mm);
+ 	next = vma_next(&vmi);
+@@ -93,7 +96,20 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+ 
+ 	vma_prev(&vmi);
+ 	/* Shrink the vma to just the new range */
+-	return vma_shrink(&vmi, vma, new_end);
++	err = vma_shrink(&vmi, vma, new_end);
++	if (err)
++		goto err_unacct;
++
++	return 0;
++
++err_unacct:
++	/*
++	 * The vma now spans more than was charged, so exit_mmap() must not
++	 * derive the uncharge from its size.
++	 */
++	vm_unacct_memory(length >> PAGE_SHIFT);
++	vma_clear_flags(vma, VMA_ACCOUNT_BIT);
++	return err;
+ }
+ 
+ /*
 
 -- 
 2.56.0
