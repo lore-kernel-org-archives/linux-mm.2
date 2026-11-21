@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C55F606A325
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995AE606A6A1
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RjtGTco/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FlmBQKzx
 Received: by kanga.kvack.org (Postfix)
-	id EB7A06B05B9; Fri, 20 Nov 2026 20:09:26 -0500 (EST)
+	id 1BF066B05BB; Fri, 20 Nov 2026 20:09:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E90906B05BA; Fri, 20 Nov 2026 20:09:26 -0500 (EST)
+	id 1719A6B05BC; Fri, 20 Nov 2026 20:09:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7E306B05BB; Fri, 20 Nov 2026 20:09:26 -0500 (EST)
+	id 0AD746B05BD; Fri, 20 Nov 2026 20:09:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AE2C86B05B9
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:26 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3FA6E1602A3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:26 +0000 (UTC)
-X-FDA: 85457343132.10.0F884F2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D81036B05BB
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:29 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62E51140281
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:29 +0000 (UTC)
+X-FDA: 85457343258.02.9FF3FB6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 98BFC4000A
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RjtGTco/";
+	by imf19.hostedemail.com (Postfix) with ESMTP id B216B1A0003
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FlmBQKzx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795223364;
-	b=KI7va79I8vc0AuI6oOZB8Ax7esAtTBa6PFsteg/HYAUQEb7qqhrSTu2V3XU8291ZfX4MGl
-	J/yYIys7sI8vPgVFdiuAANVdrrKB2G1BlppAG54wXCZyZHrz56tgM88t93o+xzqGGSl2BS
-	fG+wxERJ6Cw5M0lGFkKpXDLZ/llFEPM=
+	t=1795223367;
+	b=rZD5XpvaNRtDX0Qel1MWi/+erfMI2PJUpzHzTmaBUXg+wzvAAD17+DDkXaIYW3fvvExdx9
+	d/xoqDXGgftW6AWeuhRafWHyrmuGF9xwIN6qrOXajy6N22mUsR3/gU7dBa53lKaBLxfGpd
+	DJ8+lO9nwJ47z/98bVVAg6jIwVCSPjQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795223364;
+	s=arc-20220608; t=1795223367;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tPfLgI5e8+WcHqrzKo0CxzlPyJ7xfUGHHq4eoVjQBbI=;
-	b=CvAs/jBkL7ufp/5NHTuoYlWP57D8sg7s1S/xjTq62WepnQ8JThjbH/FnQtP1YGBAseDOxa
-	kSo7W1avnTgYy46LVwLg5ngGERZxuodm+9RBko+dA5xdfvZGhjUUfjWy8GCFZ5bnkpdqnb
-	x06ptQfPkb7pX4mr81pqBEfi7Bw6NWY=
+	bh=e/1/PI4CSVbO07v5H41CHpHKGjqmCYFtcgDfhJaVu68=;
+	b=pwayb4NrCibr/hyQO5fipIr9l4e6p84avhV8KzktJCzotVavR2bZG5poQrhoNPMkfr2xIi
+	RJ4otc0Y3RmE0Cc+757DXNX2oiXDFPVcuGovQRmKOd4V5LshGRmqKGv9pqHKwCOB15nqi4
+	v4QFbI73DytLyXdDTMShr7jZ7SppmRM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RjtGTco/";
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FlmBQKzx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6A0E44020;
-	Sat, 21 Nov 2026 01:09:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4B61F000C0;
-	Sat, 21 Nov 2026 01:09:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0ADAD4157A;
+	Sat, 21 Nov 2026 01:09:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D0E1F000D2;
+	Sat, 21 Nov 2026 01:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795223363;
-	bh=tPfLgI5e8+WcHqrzKo0CxzlPyJ7xfUGHHq4eoVjQBbI=;
+	s=k20260515; t=1795223366;
+	bh=e/1/PI4CSVbO07v5H41CHpHKGjqmCYFtcgDfhJaVu68=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RjtGTco/1orT+ZJc8lm5s2HNYsE8pOpby8Az7AhwBK64ZP/lGI4lSZNkRun7scsy3
-	 5w2etVRh+93hUbBIWgeu6tPrPLmAgxK4702Oamb8v5k/iOwZiGWNr205+eLMJLSwcx
-	 jgppDhfINeMb3Nw3mjtTBoQk0niIZ+u17TEUtmXfds3da270l9lJjJAdEeUODcK0k3
-	 AUa9u8C6UFga9mz2wIUZU125roep37xR8j7yTMUL+0HePG+KBiO32KU9behGHZyQ2p
-	 igfrMEIKhsul1+2f86azLCx+aIk1kH5ILDiV/usWoJI6FEPE4OU8RMN9e0B8AQKgFz
-	 /scDT+++R3aug==
-Message-ID: <sashiko-outbox-226468@kernel.org>
+	b=FlmBQKzx2VHQSI5mc9QcsGNrlmpc7DW1V+pZJCckhIplKEHEml5Z4SzUdBbpjtIf2
+	 SO2f1W1jgzPSrgig7WLfT19OMWQBnzaQpzdV30ZKwvUwgKLY8RgPsCR376Fpp0a/sG
+	 a3C069bjyuWMwJrZfpm69q45N6MMZOUfQKhyJLFpi9FsgfyRSOAwn6EkFPwqGaaiVa
+	 krgA1OsVRhTnuKudvkOJ1G8+DJ5BvPPKvMGjjG7s6mFkN8YWV87FregBmKWzdsoh6R
+	 ZX3EwAYwYrK3oTueiLF2jI8ttGHoodj1CYsMd+a+Q5PcgglzJsw9rBGL3xYC+qK8fp
+	 VdkOwh+YDLrJw==
+Message-ID: <sashiko-outbox-226473@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 04/25] mm/page_alloc: Extend alloc_pages() to
- __GFP_PISA and PISA block allocation
+Subject: Re: [RFC PATCH v3 09/25] mm: Add per-CPU block caches to PISA
+ allocators
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luigi Rizzo" <lrizzo@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
  Hildenbrand" <david@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Vlastimil
@@ -88,25 +88,25 @@ Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
  Hellwig" <hch@lst.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Dragos Tatulea" <dtatulea@nvidia.com>, "Naman
  Gulati" <namangulati@google.com>, "Pranjal Shrivastava" <praan@google.com>, "Mostafa
  Saleh" <smostafa@google.com>, "Randy Dunlap" <rdunlap@infradead.org>, linux-mm@kvack.org
-In-Reply-To: <20261120010655.467825-5-lrizzo@google.com>
+In-Reply-To: <20261120010655.467825-10-lrizzo@google.com>
 References: <20261109182533.3594984-1-lrizzo@google.com>
  <20261120010655.467825-1-lrizzo@google.com>
- <20261120010655.467825-5-lrizzo@google.com>
+ <20261120010655.467825-10-lrizzo@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 01:09:20 +0000
-X-Stat-Signature: cjrchnffpki3389m5eobhujb1yznz1kh
-X-Rspam-User:
+Date: Sat, 21 Nov 2026 01:09:24 +0000
+X-Stat-Signature: hpxrzpizt9wxddd63tgon8uk786ky535
+X-Rspamd-Queue-Id: B216B1A0003
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 98BFC4000A
-X-HE-Tag: 1795223364-43197
-X-HE-Meta: U2FsdGVkX18xAKJwzdJ5ec6YgdvqBPMzjyX97MSoFqBGOjsCoXlGjZA928kVjrMoyv+618Z1AJKGjOrHIEicsPMJ0EMHW6kkACOorYhE09EclQdYJH7ngAhb8QXqfrDjHE5RmI2Hm/SO0rwkXNlF1XBP6SILnSx6IAQEi/9DTU6kMhHRi42CIGams0hPEVNO0YS+rorGmLdvYH0hzTsyLdqCd9RakAPrcYx+wEdKtQNM944+nFB0IppAd8QFwctNOJDw8CI6l9JiEBvIEeso0dXNcvJo4Rg6eybCAyymVyx9qdmM2eQdLdnvnJtrmwPG4thFMlNXLfw7eTckwmMfODMscKriHxlat2v94KtXaul3NYPqFMDX8jlhC9Dml9iqJf32rcbD/V7QZCCd7EYWs485+CkUp9elef7U+1YWk0bELFlZzlkcmJd2zsq1vVwlYoLCqezwetCErgI15z4G6sRk88mrXw3AbsWGySP5fSt5RnXY2LRUF1az09J3r/Oy25ZC0OoEI5p7F0XiRf4VrFXY7QHmbs1TvowWB3XUMi0s5D7i8H6QbxE04j5kfjIdU0wqH+ssM6pgiNLPtNXxvzA5VPN0vihVtQ6a6wKNKvwqqtKkUPJMneKDQUIU3smZgPZE8PuD8K0MZjQn8lOk81xNdyrjHlgAerC3F8zVW9cfkwjDNihB6pQk34DhU0bDW7+GfIIp3JHvdgDBQmG9X0NdLGwY9otojGrGplw/aASLwTIziz7gTO4+NnyDmHcndhY3Z4W3zi1coolxv7t7BaE/bhGDeW5yE2wd/MRhk9sPo1Dw8FLk4PrOHQJU0W0GG93e0SY/TTaLKYa6NYU/W5cuosoPf/0v0eqamfzaHoS2kxQdJYDIr+BECf4UvHKPNIqFOi1bmFsdYyBSm6r5TUD0Ac0dsBwZNBnbp96J1hnt6i0BQXEZi3xlCFCRKAes+5AWsN7TEiXkzcgGQ5h
- JJusaf/L
- EjpxmhwvZXfaNoIFVPfYf5ixJJerLb0hVYJEECuV/M/pal4dYs2153icqLL7IQOiuONCB6rwORNM4QlK68kEKgh6bRicJtnLFWLyIBx3G9GKqOCE+9kh7uRmetOJGfuNevabAeIVU9oza513KqV20NDH/V0q5bTW1hM5/QYUsOzEOWY2mGRrHRf5Xdc3xCkNIZz7afuiKTzN7riuQRIa+clkJuDzBWO5rOc01LgvPy60zGQpZX1eTb7xfzfJfQY3gdNDXQZOCUyFtfo31/P585JKvXXnk9hoTcyrMcdGjDYb3qA4lqJ4Bps0GIM5hEXfgrJMOYfxOaqhz0rr6ULhGhnznhc2f+0P3XErq5cxUNUeJElXaC1jlA9RoLBdhEefOqu01tzryPD1TDTt6yl96KV1gCgpUSZgx4wVVDBTqbGC6JJKy3VvXCrTo0Ls/S76Z58tag0rnNsjWrgCiBFJ5kqaSZWeiKqK8hrujl6G4bgEJlGLtGCm9kFGUCGFrRr6CjYtT4w8NMJB4OEcEyxSoyzTuYMSTcFXWkOwkctDdJazXE5S8w5nDTbP43cS3MQfGJ/4wts6JE+K14HwXRTUhv3P1voLywrHBkNSeo/15WdHpwGo6sf/bEGrOx1Kb/lbJ7df+UWtWuelO65lJBnMhV9bqB2Kln7j3a1uVeFzN8e+Nw/kpJQ+l9p8HapZqnAdqOTyv0NiTJ7ozMXcoTp3AWVjQzYx2T42OiCZcKvChU8VMqXenenMzzLMuFSyomeH1G7MX8vbPBkDD2eblCC545TWtNRnns472MWFmYpyzfyWXu4w1zZV9lU06FMAw5te2Qc55e7erz5+4gIEC/IqZvrkpdfBnqeUgoxgZNMsJXUsA2S3IN1xThXhiwpkW59oBoh6bH4WNHYIYtnM7oH5uBunuGrHB338h4DPdFN6i5A/mq/JIvrcjxgvBFA==
+X-Rspamd-Server: rspam02
+X-Rspam-User:
+X-HE-Tag: 1795223367-431624
+X-HE-Meta: U2FsdGVkX1+JR0kgongC+DYKs0AlquAIcoIPJ+1D2xJleeuONhxWPIhoTFa0RBZy3aHFPn/eQPOA26TTxmquxjlp2Este3TAwX0hhXgGkoKjk3vMc58ISYDg872zf8OTvqt93ZzYRq7Ko2A34BYUQyEmB89O4prxxdSlFJjv95/4IVtfmK9rdEzNQUHrY1YCZ41/gBKfJkdACNiHyNduej6N7uowlioBfbd4L/16UeRRBLPB3GgMvEA6/jQURs2Nrq+FjIb2EL9tumKAbEmzlbJdL+cf4wHIvomt5eXAFFOLmk1qgC8jQ2S04FtUpttErvUX0CG0OzYpxd62YOvVUyJlJHrWFUNZKJBHleKHlslG7AjDcI1SHqV6xb3UZLViW5CDT3pcwDuX6q3lq81+9bGJlPmAzS6zMVrtkrlNdrBjBhK81tlDeEpJp5i8TxLrHs0S0FZq7UGS2U9TbFGBwzamkAQDKVDymX0UXE4NED3ZLpiPWlMvoMfDRkfU94NYrdT4EidkkLd/wwPfpUW5HkscCpdGcVz2jtAmH4x7QMqX3v697OsXL+oGaJfJEdvyGaLt32R6xmwPOLEYNsiAtK3fNKjLTjRCnalnfJ20tpsqBhF/pNrcSLiwcsx5K0bDCmoO+PRsIJUc2nAWJyPfHyVQ7wbGr8+ZAgPrG+L9484XcD/5e6slwvb8CiArpQTZblq0ogzM/VGE4/bMNsBD4/CNg+fIEmirC4BmmYkVUTLu7+KdsBJnNek3ImngUQXBHq9kOV4AeQBe2sF5OfsNXA+aFw62g2LhLdWOIq0dEkY7C4gH8h7QmKe3yMSGTKgibK7WreAgJAvlMh/3HZHwIdVKHZcNLK9M4TY6ufsxK9eJaKvhMfRI7PaBEqO2yg2eSkDDxMfQNHJK70JO6lcKN/OFLw5mQVxD8qdy488OD3B61Wsv/mYaQ2IiPY219eNpjuuFnx3fG4eoDSQlHVn
+ iwzT6cVe
+ Lz3uhWI6Nw9kRK9odu5Tfe8dRCPKwvaPrfdrbqg9y0v8kuH2cdzlFiK+K12SFe2VnnCA98vbzdORQKSpOJS7LTNY7I2Y61IwfElvLjq9BUbuRijdWvFJToVlM/D9iL8cLwZQitAHeTDGNDoEcDJkpT4Ljj9gfrYLLHVVJQL6TwAuWhgHH/7rod5dWD9IzQw58Dam5oN53DgvnB1D8nCprzGyj+vJrq4p0DS0GI7WEH7rjiPhr7wbC7w08U0mQ1N9kkplUwCg8pIQdmQmhgMVmc9itLxS4Xb6/WM1qE9RPILwHqV9/yXqNeOfgXaHsADnC0HFGxiJin/e4/eGI6aSyxnGtC/Gf73I1ElljP/NdAXSBMXbEQaNSXxd5QaGgzR2kwxtiQ19uGc/amiSky7iIrBkD+Yfnp1ql8M8VJKtOuDqeCt0eeXNmf2Sj0pas3Eodaep68E6Dh/78LMHTAAr85EpvfKaxqIClFx05dATlAcLlnGp8QM5w0WH881b7cUuAKwMBwHfChWB7US2oG//uh6hH22Z5OgvDm4CWB3En0AOqMQ7lMhu7Ad13FHd1NqvCtUBlZmiNouKjHqzfoKjOdfrYDDKyedKbu46XceAc/2JVMRMRObJoIH0KQUxXKA1BQGEvIPh/ZptrbC3PQuGYe2mMUHD/6j0ycIRVxgwQ6H3BRMQ2ZRtDpqo8wL+VZT/pjXK01FUd0IR5N8bnntNRIeXpymYncJPPOkifKwE4cu+Kd0LdUbImSxT/sGUB5oO9BrUpfj6tYE+Bcks2KYStIKwqhOBqYysRz3m2AxYU0Hn1kykGewh/4my5VKKO88m/nCHd1zcIe5IJYVIeB/7Ny9dVhWHNeG6fK0CCLbtgg3IdseNJLbZXn466itcz7HuUIEMc8MVBxSEK/M0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,102 +116,140 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] mm/pisa: __pisa_page_alloc() propagates __GFP_NOFAIL and
-  __GFP_HIGH to order-9
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] mm: quarantined PISA blocks cached and reused via per-CPU
+  cache
+- [Low] mm: migration race in pisa_pcp_push() strands blocks on remote
+  or dead CPUs
 --
 
-commit a900e3d8d2cb1db57e93b7cd711921f0fe72bca4
+commit 9051b3f49c794994e5d00217ac93ea632ab60aeb
 Author: Luigi Rizzo <lrizzo@google.com>
 
-mm/page_alloc: Extend alloc_pages() to __GFP_PISA and PISA block allocation
+mm: Add per-CPU block caches to PISA allocators
 
-This commit adds PISA block allocation helpers (pisa_alloc_bulk() and
-pisa_alloc()), introduces the __GFP_PISA and __GFP_PISA_RW flags, and hooks
-__alloc_frozen_pages_noprof() and alloc_pages_bulk_noprof() to allocate from
-per-node PISA allocators.
+This commit adds an opt-in per-CPU block cache to PISA allocators, integrat=
+ed
+with the shrinker and CPU hotplug teardown, and enables it for per-node
+order-0 RW and SKB_FRAG_PAGE_ORDER RO allocators.
 
 > diff --git a/mm/pisa-alloc.c b/mm/pisa-alloc.c
-> index 7ba93746f6a89..e7f7ed5dca067 100644
+> index eda12d475c9a7..896709303f258 100644
 > --- a/mm/pisa-alloc.c
 > +++ b/mm/pisa-alloc.c
+[ ... ]
+> @@ -324,13 +326,168 @@ static bool pisa_return_block_locked(struct pisa_a=
+lloc *pa, struct page *block)
+>  	return pisa_place_meta(meta);
+>  }
+[ ... ]
+> +/* Cache @n blocks at refcount 0 on this CPU, @n <=3D PISA_PCP_BATCH. */
+> +static void pisa_pcp_push(struct pisa_alloc *pa, unsigned int n, struct =
+page **blocks)
+> +{
+> +	unsigned int batch =3D pisa_pcp_batch_order(pa);
+> +	unsigned int high =3D max(2U, PISA_PCP_HIGH >> pa->order);
+> +	struct pisa_pcp *pcp;
+> +	unsigned long flags;
+> +
+> +	/* @pcp->lock protects the cache: migrating to another CPU here is harm=
+less. */
+> +	pcp =3D raw_cpu_ptr(pa->pcp);
+> +	spin_lock_irqsave(&pcp->lock, flags);
+> +	for (unsigned int i =3D 0; i < n; i++) {
+> +		if (pcp->count >=3D high) {
+> +			/* Keep the most recently freed, likely still in cache. */
+> +			pisa_free_bulk(pa, batch, pcp->blocks);
+> +			pcp->count -=3D batch;
+> +			memmove(pcp->blocks, pcp->blocks + batch,
+> +				pcp->count * sizeof(*pcp->blocks));
+> +		}
+> +		pcp->blocks[pcp->count++] =3D blocks[i];
+> +	}
+> +	spin_unlock_irqrestore(&pcp->lock, flags);
+> +}
+
+[Severity: Low]
+Can preemption before spin_lock_irqsave() in pisa_pcp_push() strand freed
+blocks on a remote-node or offlined CPU's cache?
+
+Both pisa_pcp_alloc() and __pisa_free_page() check pa->nid =3D=3D numa_mem_=
+id()
+with preemption enabled before calling pisa_pcp_push(), and raw_cpu_ptr() is
+evaluated before spin_lock_irqsave() disables preemption:
+
+CPU0 (node 0)                     CPU1 (node 1)
+__pisa_free_page()
+  pa->nid =3D=3D numa_mem_id()
+  <migrated to CPU1>
+                                  pisa_pcp_push()
+                                    pcp =3D raw_cpu_ptr(pa->pcp)
+                                    spin_lock_irqsave(&pcp->lock, ...)
+                                    pcp->blocks[pcp->count++] =3D ...
+                                    spin_unlock_irqrestore(&pcp->lock, ...)
+
+Similarly, if the task is preempted between raw_cpu_ptr(pa->pcp) and
+spin_lock_irqsave() while CPU0 goes offline and runs pisa_cpu_dead(0), the
+task will repopulate CPU0's cache after it has already been drained.
+
+Because pisa_alloc_bulk() and __pisa_free_page() only access pa->pcp on onl=
+ine
+CPUs where pa->nid =3D=3D numa_mem_id(), blocks pushed onto a remote-node o=
+r dead
+CPU's cache will not be popped or flushed by normal allocations and frees,
+keeping pa->blocks_in_use elevated and preventing the containing PISA page
+from becoming idle until a shrinker scan or coherent DMA allocation drains =
+all
+CPUs.
 
 [ ... ]
+> @@ -911,6 +1130,16 @@ bool __pisa_free_page(struct page *page, unsigned i=
+nt order)
+>  	if (want_init_on_free())
+>  		memset(page_address(page), 0, PAGE_SIZE << pa->order);
+> =20
+> +	/* Pairs with cmpxchg_release() in pisa_enable_pcp(). */
+> +	if (smp_load_acquire(&pa->pcp) && pa->nid =3D=3D numa_mem_id() &&
+> +	    page_to_nid(page) =3D=3D numa_mem_id()) {
+> +		if (pisa_page_can_recycle(page)) {
+> +			pisa_pcp_push(pa, 1, &page);
+> +			return true;
+> +		}
+> +		pisa_pcp_drain_cpu(pa, raw_smp_processor_id());
+> +	}
 
-> +/* Obtain and split a new PISA page on @nid into blocks of @order. */
-> +static struct pisa_meta *pisa_alloc_split_page(unsigned int order, gfp_t=
- gfp, int nid)
-> +{
-> +	bool can_block =3D gfpflags_allow_blocking(gfp), clean;
-> +	unsigned int bpp =3D PISA_BLOCKS(order);
-> +	struct pisa_meta *meta;
-> +	struct page *page;
-> +	int err;
-> +
-> +	/* __GFP_DMA/__GFP_DMA32 were already declined by pisa_alloc_bulk(). */
-> +	meta =3D pisa_reservoir_pop(nid, gfp & ~__GFP_ZERO, &clean);
-> +	if (IS_ERR(meta))
-> +		return meta;
+[Severity: Medium]
+Can blocks belonging to a quarantined PISA page be cached in pa->pcp and
+reallocated instead of draining to retirement?
 
-[ ... ]
+When an IOMMU unmap fails, pisa_quarantine_page() sets _PISA_QUARANTINED in
+meta->flags so that no further blocks are handed out from that PISA page and
+the page is retired once all in-use blocks return.  Here __pisa_free_page()
+relies on pisa_page_can_recycle(page) to avoid pushing quarantined blocks i=
+nto
+pa->pcp:
 
-> +unsigned long pisa_alloc_bulk(struct pisa_alloc *pa, gfp_t gfp,
-> +			      unsigned long nr_pages, struct page **page_array, bool frozen)
-> +{
-> +	unsigned long i =3D 0, n, got;
-> +
-> +	/* Skip any already populated prefix, as alloc_pages_bulk_node() does. =
-*/
-> +	while (i < nr_pages && page_array[i])
-> +		i++;
-> +	if (unlikely(!pa || i =3D=3D nr_pages ||
-> +		     (gfp & (__GFP_DMA | __GFP_DMA32 | __GFP_THISNODE | __GFP_ACCOUNT)=
-)))
-> +		return i;
-> +	gfp =3D current_gfp_context(gfp);
-
-[Severity: High]
-Can pisa_alloc_bulk() forward __GFP_NOFAIL and __GFP_HIGH into the order-9
-PISA page allocation when the allocator and per-node reservoir are empty?
-
-When pisa_alloc_split_page() calls pisa_reservoir_pop(nid, gfp & ~__GFP_ZER=
-O,
-&clean) and the reservoir misses, __pisa_page_alloc() strips only __GFP_COM=
-P,
-__GFP_HIGHMEM, and __GFP_MOVABLE before requesting an order-9 (PISA_ORDER)
-page:
-
-mm/pisa-node.c:__pisa_page_alloc() {
-    ...
-	/*
-	 * Long-lived active pages must be unmovable, lowmem, non-compound, and
-	 * must not dip into emergency reserves or trigger OOM/warnings.
-	 */
-	gfp &=3D ~(__GFP_COMP | __GFP_HIGHMEM | __GFP_MOVABLE);
-	gfp |=3D __GFP_NOWARN | __GFP_NOMEMALLOC | (can_block ? __GFP_RETRY_MAYFAI=
-L : __GFP_NORETRY);
-
-	if (can_block)
-		memflags =3D pisa_memalloc_save(gfp);
-	page =3D alloc_pages_node(nid, gfp, PISA_ORDER);
-    ...
+include/linux/pisa.h:pisa_page_can_recycle() {
+	return !static_branch_unlikely(&pisa_recycle_check_key) ||
+	       __pisa_page_can_recycle(page);
 }
 
-If an order-0 caller passes __GFP_NOFAIL, __alloc_pages_slowpath() will loop
-indefinitely trying to compact a 2MB unmovable block instead of failing so =
-the
-caller can fall back to an order-0 buddy page.  Similarly, if a caller pass=
-es
-GFP_ATOMIC (__GFP_HIGH), alloc_flags_slowpath() grants ALLOC_MIN_RESERVE ev=
-en
-with __GFP_NOMEMALLOC set, allowing an opportunistic 2MB PISA allocation to
-deplete emergency reserves.
+pisa_recycle_check_key is only enabled when pisa.compact or
+pisa.target_usage_percent is non-zero, and pisa_quarantine_page() does not
+enable it.  Under default settings, pisa_page_can_recycle() returns true
+without calling __pisa_page_can_recycle() -> pisa_meta_can_recycle() where
+PISA_QUARANTINED is checked, so freed blocks of a quarantined page are push=
+ed
+into pa->pcp and reallocated to new callers.
 
-Stripping __GFP_NOFAIL and __GFP_HIGH in __pisa_page_alloc() (or declining
-__GFP_NOFAIL in pisa_alloc_bulk()) would avoid both issues.
+Even when pisa_recycle_check_key is enabled, pisa_quarantine_page() does not
+drain per-CPU caches across CPUs, __pisa_free_page() only drains the current
+CPU, and pisa_pcp_alloc() only checks popped blocks for PageHWPoison() with=
+out
+checking whether their PISA page was quarantined while cached.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120010655.4678=
-25-1-lrizzo@google.com?part=3D4
+25-1-lrizzo@google.com?part=3D9
 
