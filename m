@@ -1,106 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC428606A32A
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 14:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE0D606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 14:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pv6YhcGt
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OdfnivgP
 Received: by kanga.kvack.org (Postfix)
-	id F31656B00EF; Sat, 21 Nov 2026 09:17:40 -0500 (EST)
+	id A661D6B00EF; Sat, 21 Nov 2026 09:49:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE29F6B05B0; Sat, 21 Nov 2026 09:17:40 -0500 (EST)
+	id A17236B05B0; Sat, 21 Nov 2026 09:49:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD1B86B05B1; Sat, 21 Nov 2026 09:17:40 -0500 (EST)
+	id 8DE866B05B1; Sat, 21 Nov 2026 09:49:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B8B436B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 09:17:40 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A8331C33FF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 14:17:40 +0000 (UTC)
-X-FDA: 85459329480.10.5D7F098
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A482B4000F
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 14:17:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pv6YhcGt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795270658;
-	b=3ItTknU6TSxvZ+s5SmpIecq7NS0A1j3NQ+7NRR3zqYcXP7XNzMvBrNsNRE2E6sUIFTQ4CP
-	+0M9vTp+xzsVcztpWxhQmGx8cu6ShAuh6FQgD/XEHvk9L1HrWTeds9lpM3LDbRrvSGdz8H
-	rImMZXksOew3X9f5FNPIakvlYUBe4es=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795270658;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 643EA6B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 09:49:58 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD0F31A04ED
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 14:49:57 +0000 (UTC)
+X-FDA: 85459410834.26.735E9C8
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0091C18000E
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 14:49:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=OdfnivgP;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of shicenci@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=shicenci@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795272596;
+	b=FVGMXAjCh53wx/B6zhJLxLvaJ83MiCNovCO3yYbny02xplq8xo3yvA+cLkV+8bgg3yYXGt
+	NdmmXQm+vlV8sfs8TRi2Wi9HV1moz53z/pE5Z2iDmq4cHZ+M9vMOdH4yFdw6B8tuAUVKdc
+	WTO2AoziyOpmamqOAa1XN+nNHLqhYsw=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795272596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sFlfbs6Vr7PfYCSMBHpJ9X6tKrWXkYKKM8XUMpezu9Q=;
-	b=dpvUArtqvsZa8r7kWJb9m/C0eusaEImviHFdbb1lGdb1u7CJIKstvj6lQSMMmO9KRMZO2T
-	ayWw11WVWKcyobjm8ORKm7yqXktYQn7C8WUC/3gnG49domTtYnsUfAmo1DFAJY9iz09hlE
-	8WKjpWOsZW9ZT7btWPfRJuQ6602cP5M=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pv6YhcGt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 821B5417BA;
-	Sat, 21 Nov 2026 14:17:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE35C1F000C6;
-	Sat, 21 Nov 2026 14:17:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795270657;
-	bh=sFlfbs6Vr7PfYCSMBHpJ9X6tKrWXkYKKM8XUMpezu9Q=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=Pv6YhcGtJpVO6kd28ZFcMwlrc8lsqKYza9hNXQKHFQ6N2rbBtcqDEoZGbPLhWVFNg
-	 wIVnjyiJpVrC2NhF8tOLVohtKE615nlWNmmmiaFXzlBwImS0Qd7t+3WHOMgGFBvC3r
-	 GzsUGVFPAj6Yn14fbr1zuN11Wl5mFzFh4mkvL3fWKZ3qf9eX64bcSgXMW5dC/T8VVW
-	 +if4hvG3Yzx/NgkLADbX3NpF4QpUjUSCpnVMgNpw3N5rS9WChOHpiVGyQ7hfTKfHCN
-	 PC51U3nPevE+XKEzkslP1KRGQkrmqBJSFOJGqKPtdiVpQQzcVMIRpDtTesm+55o66V
-	 KA9zrGzh/IEEQ==
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KMleV59mDasfc9ZrDI02cJ4rVcYzhncPH8nN8fIqQw0=;
+	b=IPmTgybDVP8GuBuNkHoo0mbvnegMV07WukdRESKJ6YYh8mCdJlrky6AjPVUJCmH6ti0CSA
+	5wPJY7DBPUBBk61ttW+sR5MYERB2OKe6DElxmhOBdB6c3ASnq77y41mzNTh1OM0CPVzzx8
+	WkTBv5PlY5bT+/6wQkFkS9nbJM+t9JE=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=OdfnivgP;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of shicenci@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=shicenci@gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc751eddf25so1441294a12.3
+        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 06:49:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795272594; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OV2ztUY7eoITGqS/7biV8oAJP2aeyxTlGQGfmMqbVxhPUOAx33iJi8BDXwCi1XuU6v
+         BPIPbqeuITfWh8WI7PrhOi3TsNBOoFpd994sVMb/S5JA36lVQ5jEX1k9zvSNehTROCDQ
+         bwVFdfEqcwGv7P8xxdVzWEgaisL/JH4jxxXNIIuyYNQ3YqD1BRJEqAqfQkshPrQ9olL9
+         4IwdIkqhlNWNJnVStpuZU9UdZiXjXhfIGCdWLmyMGNT1OZbvyGV5TyopL1YX/2sVa/+N
+         4LfjH5fJVXQUqdPFrXBZVSPWJe07kGeXRhRXs6zw1T/yj2ZJHTOdIMJFv58IpQ2SCqmy
+         5K4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=KMleV59mDasfc9ZrDI02cJ4rVcYzhncPH8nN8fIqQw0=;
+        fh=FLEhBHNr/epMJyvkz0ShkaKwi8yaG+7OAqQ7MgUW7R0=;
+        b=DShRUGembw9y3d+Q+7bF7RfQeEoahHCrraJ7+X87Te9ASemsoJ0X2KfUOQy7e1iMOy
+         XvO8afgCzDJcNnPigRqhTagk8pL7hxmhJugn6DtBuga+UbEi9tdI3CDRxhtoLhE3O8SS
+         sVKoObZ3bBYJuc7zIxbhjQO28UPJA/Ovb0vqe+0UOe3sbNtxg19/JKBoyLILuJLTu1li
+         opiWhkxfaJS68zf5mEZP/EQ4UUl6KbVqvzhvblDSEDfi0nmzB+KxbEJqFeHkLVSTI8mB
+         drDQ8e4Ip+MyApnuUJ6gALmhQEVgn5sSSRTxOSKhCXeEvJ/j4tT7qEQnVApofbI4pW2A
+         hPYg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795272594; x=1795877394; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KMleV59mDasfc9ZrDI02cJ4rVcYzhncPH8nN8fIqQw0=;
+        b=OdfnivgPiPY1OnMK5VI46mwg8Rf5lbBgMsuzmn47Sgz0nVxi0NF1qyHJxFydYtCAHe
+         MHkBYY87kakNf+7QT6xR9m0H2hZLBowq1/wZmO6Qbb9zwXInrgZFDOc0yEAneYmjjZvM
+         Z1ayel+oJ+rfpl8eN65rIqtWuMAwTXShJ7Vixtiod3QYF29nFDfZ0FvDpRByjXK3IfoQ
+         GWO0cMJSDfPmwjbFlyqV60n05UtovZcYEfaTFjquk/FqUaquoHHkFgAXX5geJMY+xFom
+         G3bbdA/YDWc4KxuICJF++uQItOwXa8Jjxybc9r0quTHjAo+2K1d3KZN4oR+BYgPsSovf
+         x2pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795272594; x=1795877394;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KMleV59mDasfc9ZrDI02cJ4rVcYzhncPH8nN8fIqQw0=;
+        b=CrkXz5OJSf5YkVm/OhA80ccB1/uo3fhCyqHHZlXzw4hke3UD6kJHgyIIHvdCmLl8Xh
+         VymF8Dzt57vwjVgdhOwkDmpnTR01HQwCBRRIDWrVyI2BkZkmpijfZoV9E54DsFr415+1
+         GlMFIHl1fnmBUjEThPgGos+5G0DRlU84+HST8Jj6ZuAJsJKQ8rdNqcAj0Xcz/uZnEv6n
+         zHtvmw6IDO0eXgqILQhcTzSRivGjWW985f6GqdJl4Dn4WTJgrT2PkhpEfyiDapPmStrw
+         muUSREQCwq8rsEIkp8c1rLYtEugMzhVOidl2LIxxEm4MHwc8WE3Maog7ANLDGKMH2uLy
+         bupQ==
+X-Forwarded-Encrypted: i=1; AL+hErGdmtGv0hZ61XqtC1aqXLBy0ARLpDC+mI4rhNKzWir8XOZHGtZlnQoNIX5DDJqdJ9egCqCMfP8Bag==@kvack.org
+X-Gm-Message-State: APuU4Z/JmyHWBpvY9DZqoWctLElZQECs6bqBg1juPYhsyo4JBqmZqZ/i
+	NUNlt4wtGPRbac4hNk8H+pE5hlxUftlShHTCf9BErj0MK5i+fmXPUa1ZgVX1337k1NRohut/eJL
+	y+lOPmbaHvrvPN8iW2zw/blCYZq7tU0U=
+X-Gm-Gg: AZFdTZerUp+b94tsyGv33wkpUIKnlXM9neL+ZMB3zWeckqf1wIjdohJ+riiAzo6Xm1H
+	oqLTom19B7T+9sRVYk5N07EEPFDSMfFqSUfm1rtC32VJhIJ7Xk0igSVZhSHMtoCM/bGPxk3bvBT
+	ly3lOXMkCrHMvxH28mI07wBhXCerjvxkiyTDF+FJKFtAgM+YtdyrmJxSx8CJ/Xg7UqBug+7AcL0
+	mEIczjhAfXDXbikG+Lcc6AylBhSOv8oHXPgjO6pv2fLsjeVHgHz6Yl+FSQJzWpj77/+/x7lpKmh
+	io4G0uxfnZKLwU5HajhtYTFvXJpVo5EWEbtmbAXJkhYR6Y5pmCkK3QEapzaDOpxdiiWAiFX/9RC
+	wK+er8chA6+FcsOXLgH7nGOI2jpNYj/+FFQIPidg=
+X-Received: by 2002:a05:6a21:6e04:b0:3e8:b7fd:6288 with SMTP id
+ adf61e73a8af0-4014d159070mr6730389637.41.1795272594392; Sat, 21 Nov 2026
+ 06:49:54 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 21 Nov 2026 15:17:31 +0100
-Message-Id: <DN0YBZJNQVW4.2RY9NCR5T33HZ@kernel.org>
-Subject: Re: [PATCH v6 08/12] rust: mm: add abstractions for allocating from
- a `sheaf`
-Cc: "Tamir Duberstein" <tamird@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "Matthew Wilcox" <willy@infradead.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>,
- "Harry Yoo" <harry@kernel.org>, "Hao Li" <hao.li@linux.dev>, "Christoph
- Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
- <20261120-xarray-entry-send-v6-8-1f69d7385f70@kernel.org>
-In-Reply-To: <20261120-xarray-entry-send-v6-8-1f69d7385f70@kernel.org>
+MIME-Version: 1.0
+From: Yi Wen <shicenci@gmail.com>
+Date: Sat, 21 Nov 2026 22:49:43 +0800
+X-Gm-Features: Aa3M54o-c3umdLG_yLVUlZkiDbL2uREfVKI1Y1odDetEyJ0RRT4OIUMRc1PDQa4
+Message-ID: <CAPHJ_V+_=Av8pAM+N+oc4JRmtqBjhcimh3B_pSy_N+5qecm6Mg@mail.gmail.com>
+Subject: [BUG] mm/gup: WARNING: mm/page-writeback.c:2678 at __folio_mark_dirty
+ on v7.4-rc3
+To: David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 6rj75ggfrw1k65jkh9wj6fejnpgpjn8s
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A482B4000F
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: fs5h7t41mj7wh7m56zk1zgbu71gwghzs
-X-HE-Tag: 1795270658-393555
-X-HE-Meta: U2FsdGVkX1+7ebWYrqxUK2+7Bi0eSejIYIai9bXm143V2zSliM+lqoVRXXNeE35PSX4M6UjJCLKweZ8L2dcbWgfzUE5gKQ0xk/9DYZTxb4s6fmDTFllIs22Pw/CdBp5IFXiKjqoByrAKwNJFwypH9KAK3THc0SfP6MrkdUDuB9M/MASFtmBn95NEJrxlWgbLUP9bRvtRPR1TWDJBLG0gR3rsMZCPtpYa7B2z5y8nz3ACf0hz8I3nTUaTYHuXjwngYtT9WPwwcK2PiI6PkC/yon7a/AJ0GzPMXaJHmhSAPGxtnlNfUCu+DaKte1S26Vvxzx3wRD4L6SS9lsiA3vatxmw3CjEdgIf/3v3VhD8JNFF6IdQ44llLSAbwVelhy8cEg7vdka55Ak6oFkzTB6w1Yt3dZw3Nv6B9owXZMzZE5Uo2d5zf0+ZlGfK9RZHXxlDwtZnMblEOc2fLbKeX6ghxF3no9jrNjlPAt027kawO5BCxQ7xpagjUyYsWtk54MN9S38BoZMxTxneV2b21rejvtE89R+QqFR8SFcyWe3EHGg1XdKXmFATijlj1FX4bB9lkVY+3dBQnIO9w7h3eeO5dJTcUmFnE+lYMcf0q7rgnVDJcyckaL/Lg35/4+f3JFc2OzQvHCBHJpoadj7wAuVxazJbKQXrEhI9vUp2qi9lMgPO7DABLhdF2U2sEXWGcx/QWbH5sVvuky3iTOzfiQkskTVTfIAfuvPa5u9ksiXPYjMgWsn8Idc/adTESYgJljvUE0stlSzhAvTQzK8VgpfajVXxXTnqZ2vtGO+QicVa1XsHU1l9aYj0H4iOLl2EkGbIwRRmwngpLj0APOB8UmOm/AXBGkNwnBq6ILWrdn+0pgdzEfJf11dm8TGn3uOfMhZ+6KGmQgXQtRN4ORQciaTYdreYSCfL70GPh8PQlM5k1XZzvEMcZIlKv+r7wHG3NOzyBaO3AiuULo0TvI02CFkO
- TV6SD949
- 048VytQ0DZOTMJfqczLRh2E2qDT5wV5euRroONNLdbQLy33YG8SUj/GIKDpUvSRamzL4mhK127prMFGLI1KJ0B9w4iWdkQ5QX9T7nToHYg73ByuShvuGW7wc24Zka3Cs0bNXEZjsCUbid5LmgxBuf3iZUeUOV0NHkTUClbYjlF/HFTtQ/upbVNNrgrP+ls9VfZ3O87Rrfrl4TtXNkBI9iducVDhrJfK7QgCUNpx8HhCdgYXwkVvmSiwee9d/zFCDxZV76vc2nLhoAQK/Y4e3TfReS4L3O4lvQiEBHKdPUg2EwvIaiJJNFltH1bGu6XnM+nHSDDM2YpGBr6IIV9s9mzgyA1WaCxWyRMOtKQ55NQLRYsDbI9hzTRtjlTtYcP+lZLm3uWf+uaWG2i4X0s1i/yGx3qwj3DWNo5WBAQkW+9+vj7U0QIlkbVKrCa+B17xPv92pxiotZU48kYqZkxM73quhEDx9j8SfU8VtcNfCwr377DVqXlFgSeepnJBTKpC88oopl
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0091C18000E
+X-HE-Tag: 1795272595-669618
+X-HE-Meta: U2FsdGVkX1+GlnKtX6UAaUaOFM9i5LJ6b0xOtmizfHQGNVUn8CAx5TJae5/vh8+xtLOng/2ESZ028G+BPKWWPuqb0Hdqic3JGwwXcmHKChSxkW+zYJJevO9kGSHbs1WWiBQI6PaacxHlCbPchivPiwZXfkNQof5GN4HmhOh/y44PVuTEHKN2tJdD05xrznTSQYRsjT7XV5TeR5xLIUXoRSA5aK/kdi2FNtXbJUHPkOaSIhTc9sf3Qtj2enFJ2qNgCwSJ+FzmSA6WXr/c7Aj8CMbQz2+VLFFP/2RDQ3ptUBCm6vsMcGswCJF8z4hdxG9ZlZ8mdH2czRQ0L5EVJWx0RiR56thDpJJiag2UpAvhkjA1PDS52nL8zBkzmYQ6Un0RxZGXPLWvvRppEhoqNCj6VgxOKywZkhfVZYpjFTx2UhkUdPxt9udDwNmNsJ1RqN+kVL2ZO66NDAhT6N3/BpOYvgtIsONoQE8eP6erMRHZLL4S3JYOWs+GcPfNN9h55CDyAo9vRcAOWhl1Lzq3fm6Deei+qzfdYyBVWcullNnsZpvZQuNedyJlGhH04UimYTwnfETE+5940Jf9LH5BrPtFoh19kWHyqwXZ3z60Hib/OgNy9pyAO+ntczd44z+kuqGBHWFz1QOnfRZ5m/ysrQOsy2o+JKO3jMScxMisGS/m6CCXVIdsMHjs1dbNslznZAt/VeObXxmzFgoezVaJ8Wz+A/LaLaskINeqj+EA08VMYcPKu/Okbr2je/tc6cQoFxB7DNBsfHsrvkM+RvB9Hqk95fSTyyyhxjZzJRVtm+7pNXF+2nKcSrfOxNsZwMAa7S1RIslh5z2tsj5RGz1/cEwxKGBkUU70dONxnDtsUZKKK6g8qxSVwqt83ImA1imtSePa0kC9EAXp2kAultWWv9qZVLq2TeHQ1o4c/8sHtgFJYo5Q3HiTunyIzzvA/U4+lASNw8VBpbWpLmBskRLcamd
+ Cy5EXWOO
+ sgGfPAYQixrw7OrtChhUJZR/FqhDBcwFI0DWJ47sihotaDPthUimpafWbuoX980ccMs72KqCkzn0MOfwlabYUk0jocAWYZU8QGqihnjwwld4wNWHZmCHMPVWPfkM7XUaI2IhwMfMx4QpSRsFx2XKTiBuxRu0F/noc+mQ6OwhkXV+T1gtJGgMVHGL8GlR/91lDsIJdzAiICDH47oHQ2f7xyGoibwtNGkG5KFDSFXT4L47cHG0txVj6gO5fpLyoLu48EF7QtBmBJN7wRUxx5+rfiwU0Z4PbP75C2o7K+VxyDOfl/BjuU2TbcBm4V7aoiIAYU+LmUgmhiz1Eg+Of2hdXloOiJHRNll9KUdWEEgMs4biiIY7AVydyw5mHys8urKGYyM4CNHvXYTjtq3jkFgkj8j4yRrYxt2k7inYHJiQBC1GFAICqVQ4RKU1bZ000rxeZwCnckyYQPNEg7TPBFHSW2KHf62Q0kURDszp7icoMTbzBTuU5IQUUT8dQoxGdxc70oEmMfCNB9Q54ceyNScM6KSUe+8O2GCxEGywIkrBMTGLAlJtGx63UugZcgzzAFJr2De8aECJIaZMVWQD63TRH0iWwBJ7v8t0+csHf8JEyvwBVq1/s3co1/YQr75G0dVWt7ixquz421utmVcInPqS7A3fICh5a6FDG4m1j1/dPQKlF7zOI/FGLBncLOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,40 +135,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri Nov 20, 2026 at 2:10 PM CET, Andreas Hindborg wrote:
-> +/// An owned allocation from a cache sheaf.
-> +///
-> +/// `SBox` is similar to `Box` but is backed by a slab cache allocation =
-obtained
-> +/// through a [`Sheaf`]. It provides owned access to an initialized obje=
-ct and
-> +/// ensures the object is properly freed back to the cache when dropped.
-> +///
-> +/// The contained `T` is initialized when the `SBox` is returned from al=
-loc and
-> +/// dropped when the `SBox` is dropped.
-> +///
-> +/// An `SBox` holds a reference to the [`KMemCache`] it was allocated fr=
-om.
-> +/// Dropping the `SBox` may thus drop the last reference to the cache an=
-d
-> +/// destroy the cache, which may sleep. See the `# Context` section of
-> +/// [`KMemCache`].
-> +///
-> +/// # Invariants
-> +///
-> +/// - `ptr` points to a valid, initialized object of type `T`.
-> +/// - `cache` is the cache from which this object was allocated.
-> +/// - The object remains valid for the lifetime of the `SBox`.
-> +pub struct SBox<T: KMemCacheInit<T>> {
-> +    ptr: NonNull<T>,
-> +    cache: Arc<KMemCache<T>>,
-> +}
+Hi,
 
-I did only notice this patch just now, will take a closer look later on. Bu=
-t
-this all looks like it belongs into the alloc module.
+I am reporting a kernel WARNING triggered by a syzkaller reproducer on
+Linux v7.4-rc3.
 
-Thanks,
-Danilo
+The reproducer triggers a WARNING in ext4_dirty_folio() when
+process_vm_writev() writes to a file-backed mapping.
+
+The call trace shows that the warning occurs during the GUP page
+unpinning and dirtying path:
+
+process_vm_writev()
+  -> process_vm_rw_core()
+    -> unpin_user_pages_dirty_lock()
+      -> folio_mark_dirty()
+        -> ext4_dirty_folio()
+
+A second WARNING is subsequently triggered in __folio_mark_dirty() in
+mm/page-writeback.c.
+
+This appears to be related to the interaction between GUP-based page
+dirtying and filesystem-managed folio metadata. In particular, the GUP
+dirtying path may mark a file-backed folio dirty without ensuring that
+the filesystem-specific metadata required by its dirty_folio()
+implementation remains available.
+
+This may be related to the known issue where GUP-based page dirtying
+does not properly notify the filesystem through page_mkwrite(), as
+well as the interaction between GUP dirtying and
+filemap_release_folio().
+
+Before these warnings, all four ext4 loop devices also report delayed
+block allocation errors and abnormal free block accounting. These
+errors may indicate an additional filesystem inconsistency and are
+included in the console log for further investigation.
+
+Reproducer:
+
+C reproducer: https://pastebin.com/raw/VMwNSqrp
+console output: https://pastebin.com/raw/43Ne65Vu
+kernel config: https://pastebin.com/raw/dG24GcY1
+
+
+Kernel:
+
+HEAD commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+
+Kernel version: Linux v7.4-rc3
+
+Environment: QEMU virtual machine
+
+WARNING 1:
+
+WARNING: fs/ext4/inode.c:4527 at ext4_dirty_folio+0xe3/0x110
+
+Call Trace:
+
+  ext4_dirty_folio+0xe3/0x110
+  folio_mark_dirty+0xb9/0x120
+  unpin_user_pages_dirty_lock+0x588/0x6e0
+  process_vm_rw_core.isra.0+0x7ad/0x960
+  process_vm_rw+0x1c1/0x260
+  __x64_sys_process_vm_writev+0xe3/0x1b0
+  do_syscall_64+0xee/0x4f0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+WARNING 2:
+
+WARNING: mm/page-writeback.c:2678 at __folio_mark_dirty+0x644/0x780
+
+Call Trace:
+
+  __folio_mark_dirty+0x644/0x780
+  block_dirty_folio+0x149/0x1a0
+  folio_mark_dirty+0xb9/0x120
+  unpin_user_pages_dirty_lock+0x588/0x6e0
+  process_vm_rw_core.isra.0+0x7ad/0x960
+  process_vm_rw+0x1c1/0x260
+  __x64_sys_process_vm_writev+0xe3/0x1b0
+  do_syscall_64+0xee/0x4f0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Relevant ext4 messages:
+
+EXT4-fs error (device loopX): ...
+EXT4-fs (loopX): Delayed block allocation failed
+EXT4-fs (loopX): This should not happen!
+EXT4-fs (loopX): Total free blocks count 0
+EXT4-fs (loopX): free_blocks=2415919104
+
+The issue is reproducible on Linux v7.4-rc3.
+
+The full console output and C reproducer are attached.
+
+Best regards
 
