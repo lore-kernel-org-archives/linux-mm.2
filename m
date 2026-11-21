@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6886606A6A1
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C55F606A325
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Oul1Xglb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RjtGTco/
 Received: by kanga.kvack.org (Postfix)
-	id E695A6B05B8; Fri, 20 Nov 2026 20:09:23 -0500 (EST)
+	id EB7A06B05B9; Fri, 20 Nov 2026 20:09:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E42396B05B9; Fri, 20 Nov 2026 20:09:23 -0500 (EST)
+	id E90906B05BA; Fri, 20 Nov 2026 20:09:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D56D26B05BA; Fri, 20 Nov 2026 20:09:23 -0500 (EST)
+	id D7E306B05BB; Fri, 20 Nov 2026 20:09:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF49E6B05B8
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:23 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2B96D802A6
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:23 +0000 (UTC)
-X-FDA: 85457343006.21.8D19C1E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AE2C86B05B9
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:26 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3FA6E1602A3
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:26 +0000 (UTC)
+X-FDA: 85457343132.10.0F884F2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6D0A22000A
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oul1Xglb;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 98BFC4000A
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:24 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RjtGTco/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795223361;
-	b=kAo0x2OXB2JNImSeKwBlvYyG7RphKpT7jDFT8VLSPJXZKD3DIpQUKyxT629FgUv36b2reA
-	TA9fBnZCSpEWJ0qja1T9E0BxJwFUcrOItW+cWf8N9f6DKfPPLxT+p5AMVPSgbnsfDJ0cdW
-	etClyMGnvkZDGLgTaCYVgbLWp9Cf4ro=
+	t=1795223364;
+	b=KI7va79I8vc0AuI6oOZB8Ax7esAtTBa6PFsteg/HYAUQEb7qqhrSTu2V3XU8291ZfX4MGl
+	J/yYIys7sI8vPgVFdiuAANVdrrKB2G1BlppAG54wXCZyZHrz56tgM88t93o+xzqGGSl2BS
+	fG+wxERJ6Cw5M0lGFkKpXDLZ/llFEPM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795223361;
+	s=arc-20220608; t=1795223364;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z7DteKgxXrQDMguNwaVxehpqZO5kSOGQjWE3FoEMrD0=;
-	b=hCUpXlGbyhaYMuAGx9TgsawswGtRCJtUofPhhTWZqY1J1giJ7kG3zsZPap6iXCAj4MC8hO
-	ZR5Y0cueZCVkH+2gPdpMyg8+3Szbn+QkNWEWzmpc3zrkGp7G3k7wcN/zwhJx+RZVbohS8j
-	XLNv/1T4tEMZv3aog6jNroMDwWIp6oQ=
+	bh=tPfLgI5e8+WcHqrzKo0CxzlPyJ7xfUGHHq4eoVjQBbI=;
+	b=CvAs/jBkL7ufp/5NHTuoYlWP57D8sg7s1S/xjTq62WepnQ8JThjbH/FnQtP1YGBAseDOxa
+	kSo7W1avnTgYy46LVwLg5ngGERZxuodm+9RBko+dA5xdfvZGhjUUfjWy8GCFZ5bnkpdqnb
+	x06ptQfPkb7pX4mr81pqBEfi7Bw6NWY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oul1Xglb;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RjtGTco/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20F6140633;
+	by sea.source.kernel.org (Postfix) with ESMTP id E6A0E44020;
+	Sat, 21 Nov 2026 01:09:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4B61F000C0;
 	Sat, 21 Nov 2026 01:09:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7193A1F000C4;
-	Sat, 21 Nov 2026 01:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795223359;
-	bh=z7DteKgxXrQDMguNwaVxehpqZO5kSOGQjWE3FoEMrD0=;
+	s=k20260515; t=1795223363;
+	bh=tPfLgI5e8+WcHqrzKo0CxzlPyJ7xfUGHHq4eoVjQBbI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Oul1Xglb46lPncG0V2W9OaZG6FadIlVwvfoLfotOM3llftN1vzbjXUizOXBB2s7NR
-	 g8jrgT3Ypx4R9nxwsxGXJqhpACiEEvepDhOPyCz1k5k6XoFJRjIPtoX7GAXn9ZzPpu
-	 pPqnH4fm35XgECBHbwksg5Sug5F5xpOQYIWc8610u9ijOla5qsI6oorrRjtYIoUZDS
-	 AWcKicd4jQngjPKCPQ8M9wXVYJWANOP6d9LDv9Io5uv37ur6BML/5pTQPUAWYRS3SF
-	 vowKqmLPuT2pu9dcmPdA89aFGEvXMdUq9XIus+Xi000hX/PHRc7g2DZrwVlHLfbk1b
-	 d5lo/gwkY52sg==
-Message-ID: <sashiko-outbox-226467@kernel.org>
+	b=RjtGTco/1orT+ZJc8lm5s2HNYsE8pOpby8Az7AhwBK64ZP/lGI4lSZNkRun7scsy3
+	 5w2etVRh+93hUbBIWgeu6tPrPLmAgxK4702Oamb8v5k/iOwZiGWNr205+eLMJLSwcx
+	 jgppDhfINeMb3Nw3mjtTBoQk0niIZ+u17TEUtmXfds3da270l9lJjJAdEeUODcK0k3
+	 AUa9u8C6UFga9mz2wIUZU125roep37xR8j7yTMUL+0HePG+KBiO32KU9behGHZyQ2p
+	 igfrMEIKhsul1+2f86azLCx+aIk1kH5ILDiV/usWoJI6FEPE4OU8RMN9e0B8AQKgFz
+	 /scDT+++R3aug==
+Message-ID: <sashiko-outbox-226468@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 03/25] mm: Add per-NUMA-node PISA page reservoir
+Subject: Re: [RFC PATCH v3 04/25] mm/page_alloc: Extend alloc_pages() to
+ __GFP_PISA and PISA block allocation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luigi Rizzo" <lrizzo@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
  Hildenbrand" <david@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Vlastimil
@@ -87,25 +88,25 @@ Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
  Hellwig" <hch@lst.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Dragos Tatulea" <dtatulea@nvidia.com>, "Naman
  Gulati" <namangulati@google.com>, "Pranjal Shrivastava" <praan@google.com>, "Mostafa
  Saleh" <smostafa@google.com>, "Randy Dunlap" <rdunlap@infradead.org>, linux-mm@kvack.org
-In-Reply-To: <20261120010655.467825-4-lrizzo@google.com>
+In-Reply-To: <20261120010655.467825-5-lrizzo@google.com>
 References: <20261109182533.3594984-1-lrizzo@google.com>
  <20261120010655.467825-1-lrizzo@google.com>
- <20261120010655.467825-4-lrizzo@google.com>
+ <20261120010655.467825-5-lrizzo@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 01:09:17 +0000
-X-Stat-Signature: gs7h61cun4dyg5ym8wbjm5snczsymn7x
+Date: Sat, 21 Nov 2026 01:09:20 +0000
+X-Stat-Signature: cjrchnffpki3389m5eobhujb1yznz1kh
 X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6D0A22000A
-X-HE-Tag: 1795223361-426171
-X-HE-Meta: U2FsdGVkX19NKzUA8hkQR9STNPp8Jy6D7HzPdxDrKW2tM16XxqIFSEi9IlOq6Xii1/lCKj3xYGcWUpVK1HHPrTVB3W5vKv58txRfcbnRpGmLcFeoof+LMgQJpFISuq8v7XY1jkxD3VUDxMTgfG9+OQica1XBETIJb9j1b1D5upDyZd99fkMbr+UO3Bw7h9SWXhEUOKb+1CIyDXM/8mhCCsv0det2ArNLcPmWAPcIhQMoSpVnEhrV1Mxqr7lD4t0mIv97P0LcIKRARGFRgrenO08fgT6SM6LtVz31jyCudk0xJYFBVDdsi57sqYbFwNwqj0WKy+NDUj7Cxp6bo/J7da2L3YXuv4dzfzuZp4l1VF22Lm1wKisI3Fko3ERZr4JA7b3uBGuBBA/Ma1h6loW8WCjcB89eB5UijWsWnBqqFkjiHMC3Lg198uOFiwNOuT3HigGg8Q/QGm8dNy+oaMlg0kLQB9c8uwvTrpB/LKCsDkYK9M3u6f9crKyhThN1liK7KGBbIeUn8iPjj5pik5JwjOmQYG4POZRWPX7xXjRQNCReoUJCys5Ngv/g4S1HMo1Z7Q3cSerWYEAGasD3KUqYegyoFeUWsftt5kcJUKUXjRv6pPFEZealWOx+aGcoSZ+GqvrLGtqeWiLjpCwJz9cSDNBXNCYMLcFp60Fd2FcpttSf5WTinanOmBWQb/xdpC7amqY9cG7lw5HHw8T4xNbHdUM6pF1zQu3iJIBUH+ncDVXWJiFBzqlLw0NNgRx9lL2j9nHnvKivxC7EJzex4gD5hrc0VL9IkL9RD41+A2uAYA/4oYEGzMSq9VASngX+s2ljQrF6PynlKfe0sDLGphiGiJcQw/3o68skJ2/VOIJGpajvaXSBeSmi0eiTBwOjvp/clNQ8ujdQNp2j+6ijWWmpeU17FA6RNDgFTBlletRf07F56LYWUGju9HEO1acmmvbWsB+XPBZ4i5JK4WQPRPk
- HxggUR/y
- 0xir1gCYREFSkMUTItLCBLu/3+IUA46aUFGLiUB8zPJIoCiRqpfuBdUp97lGY7MZoGCbC1DKiuWmCvXVZLzi8wbVT0cjFDnFkGnTvQR+kKTRv6HBUmsri8DcKnTaV0fAu2z1AuJhjzXZ3U2ebS0k8dz7L7xPH2ltnuJB1e9zy8pfqTXGo3FH8tQzRcPeujEVHXRoZFbfj3M+HRnZ4XX3wewVwx8f895K90lInUYmm5YZvYrMwJ1+QgraR186LGSUJb6yN9tQyE5iWDv7sABuGSgsfXxAgJMJLr3tktEGhNTBbCDO+BZFqC45ssooYpi+CTyz89J/cOnqrvdA9/+07SrluTJ+EMOa78a2bLu+Ipn4p9wxpuKswTbnHeW99Lf0iRKRQ/wyCd2Dls5HFs36pyrMyTEw5Ii5pjWX2wqfPbJ4GjZ6yv2BcimLhsi82o5MOLWaoxwJsrM1W0rbnYF8D/L3eYh9jROvXWxduIvzDg1du+nW97nBwL+RqCsgwS3wJqZPrMzdPEC9//VC2FykiB15BQ5mhaH7lC2CNLFS9V8duX8DJBF+VpoMltMywEUFuPhPL2ySqHArbNSBzRv3oE2YHFo32YcgBimTGbybFuEWinIVQcQUYo5Ul+o2vmFE+Ra9tjK/tpFwZo2rxRcGFEyoq3GASTLmT9AYGhSYEKWzfGLJAeaUIKz8EOk/fH9MVOtAvaEy+GdXFAMbq/pQ2/7FXCHjDzIbPwyhRLON4ZeAzfUNlLCMhYYo1SyZFA7DEVB/9mS+ZAe0B40AKTBeM8iFy1r2QhzfEh7SJYjMgJT+HQ0khjGr+Xn1mBBM+psn2tWlDi9pb70em19p8TITlFpzKCskySoxhcqFRQhI4hxobUhOKkhIl+LW+c1nRIRq8hb+fWNMWbGp/Ifo=
+X-Rspamd-Queue-Id: 98BFC4000A
+X-HE-Tag: 1795223364-43197
+X-HE-Meta: U2FsdGVkX18xAKJwzdJ5ec6YgdvqBPMzjyX97MSoFqBGOjsCoXlGjZA928kVjrMoyv+618Z1AJKGjOrHIEicsPMJ0EMHW6kkACOorYhE09EclQdYJH7ngAhb8QXqfrDjHE5RmI2Hm/SO0rwkXNlF1XBP6SILnSx6IAQEi/9DTU6kMhHRi42CIGams0hPEVNO0YS+rorGmLdvYH0hzTsyLdqCd9RakAPrcYx+wEdKtQNM944+nFB0IppAd8QFwctNOJDw8CI6l9JiEBvIEeso0dXNcvJo4Rg6eybCAyymVyx9qdmM2eQdLdnvnJtrmwPG4thFMlNXLfw7eTckwmMfODMscKriHxlat2v94KtXaul3NYPqFMDX8jlhC9Dml9iqJf32rcbD/V7QZCCd7EYWs485+CkUp9elef7U+1YWk0bELFlZzlkcmJd2zsq1vVwlYoLCqezwetCErgI15z4G6sRk88mrXw3AbsWGySP5fSt5RnXY2LRUF1az09J3r/Oy25ZC0OoEI5p7F0XiRf4VrFXY7QHmbs1TvowWB3XUMi0s5D7i8H6QbxE04j5kfjIdU0wqH+ssM6pgiNLPtNXxvzA5VPN0vihVtQ6a6wKNKvwqqtKkUPJMneKDQUIU3smZgPZE8PuD8K0MZjQn8lOk81xNdyrjHlgAerC3F8zVW9cfkwjDNihB6pQk34DhU0bDW7+GfIIp3JHvdgDBQmG9X0NdLGwY9otojGrGplw/aASLwTIziz7gTO4+NnyDmHcndhY3Z4W3zi1coolxv7t7BaE/bhGDeW5yE2wd/MRhk9sPo1Dw8FLk4PrOHQJU0W0GG93e0SY/TTaLKYa6NYU/W5cuosoPf/0v0eqamfzaHoS2kxQdJYDIr+BECf4UvHKPNIqFOi1bmFsdYyBSm6r5TUD0Ac0dsBwZNBnbp96J1hnt6i0BQXEZi3xlCFCRKAes+5AWsN7TEiXkzcgGQ5h
+ JJusaf/L
+ EjpxmhwvZXfaNoIFVPfYf5ixJJerLb0hVYJEECuV/M/pal4dYs2153icqLL7IQOiuONCB6rwORNM4QlK68kEKgh6bRicJtnLFWLyIBx3G9GKqOCE+9kh7uRmetOJGfuNevabAeIVU9oza513KqV20NDH/V0q5bTW1hM5/QYUsOzEOWY2mGRrHRf5Xdc3xCkNIZz7afuiKTzN7riuQRIa+clkJuDzBWO5rOc01LgvPy60zGQpZX1eTb7xfzfJfQY3gdNDXQZOCUyFtfo31/P585JKvXXnk9hoTcyrMcdGjDYb3qA4lqJ4Bps0GIM5hEXfgrJMOYfxOaqhz0rr6ULhGhnznhc2f+0P3XErq5cxUNUeJElXaC1jlA9RoLBdhEefOqu01tzryPD1TDTt6yl96KV1gCgpUSZgx4wVVDBTqbGC6JJKy3VvXCrTo0Ls/S76Z58tag0rnNsjWrgCiBFJ5kqaSZWeiKqK8hrujl6G4bgEJlGLtGCm9kFGUCGFrRr6CjYtT4w8NMJB4OEcEyxSoyzTuYMSTcFXWkOwkctDdJazXE5S8w5nDTbP43cS3MQfGJ/4wts6JE+K14HwXRTUhv3P1voLywrHBkNSeo/15WdHpwGo6sf/bEGrOx1Kb/lbJ7df+UWtWuelO65lJBnMhV9bqB2Kln7j3a1uVeFzN8e+Nw/kpJQ+l9p8HapZqnAdqOTyv0NiTJ7ozMXcoTp3AWVjQzYx2T42OiCZcKvChU8VMqXenenMzzLMuFSyomeH1G7MX8vbPBkDD2eblCC545TWtNRnns472MWFmYpyzfyWXu4w1zZV9lU06FMAw5te2Qc55e7erz5+4gIEC/IqZvrkpdfBnqeUgoxgZNMsJXUsA2S3IN1xThXhiwpkW59oBoh6bH4WNHYIYtnM7oH5uBunuGrHB338h4DPdFN6i5A/mq/JIvrcjxgvBFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,143 +118,100 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm: race in pisa_schedule_reservoir_node() skips reservoir
-  trim work
+- [High] mm/pisa: __pisa_page_alloc() propagates __GFP_NOFAIL and
+  __GFP_HIGH to order-9
 --
 
-commit 540432e01d5fdd397e42906780e4e3354270a3d7
+commit a900e3d8d2cb1db57e93b7cd711921f0fe72bca4
 Author: Luigi Rizzo <lrizzo@google.com>
 
-mm: Add per-NUMA-node PISA page reservoir
+mm/page_alloc: Extend alloc_pages() to __GFP_PISA and PISA block allocation
 
-This commit adds a per-NUMA-node reservoir of pre-allocated and zeroed
-PISA pages to satisfy non-blocking allocations, managed by a per-node
-work item and controlled by the pisa.reservoir_max parameter.
+This commit adds PISA block allocation helpers (pisa_alloc_bulk() and
+pisa_alloc()), introduces the __GFP_PISA and __GFP_PISA_RW flags, and hooks
+__alloc_frozen_pages_noprof() and alloc_pages_bulk_noprof() to allocate from
+per-node PISA allocators.
 
-> diff --git a/mm/pisa-node.c b/mm/pisa-node.c
-> index fe9f37deac755..5b9b44186b967 100644
-> --- a/mm/pisa-node.c
-> +++ b/mm/pisa-node.c
+> diff --git a/mm/pisa-alloc.c b/mm/pisa-alloc.c
+> index 7ba93746f6a89..e7f7ed5dca067 100644
+> --- a/mm/pisa-alloc.c
+> +++ b/mm/pisa-alloc.c
 
 [ ... ]
 
-> @@ -53,9 +153,180 @@ static void pisa_release_page_rcu(struct rcu_head *h=
-ead)
-> +/* Refill node @nid's reservoir up to pisa_reservoir_max pre-zeroed PISA=
- pages. */
-> +static void pisa_reservoir_refill_node(struct pisa_node *node, int nid)
+> +/* Obtain and split a new PISA page on @nid into blocks of @order. */
+> +static struct pisa_meta *pisa_alloc_split_page(unsigned int order, gfp_t=
+ gfp, int nid)
 > +{
-> +	while (READ_ONCE(node->nr_pages) < READ_ONCE(pisa_reservoir_max)) {
-> +		struct pisa_meta *meta;
-> +		unsigned long flags;
-> +		bool clean, added;
+> +	bool can_block =3D gfpflags_allow_blocking(gfp), clean;
+> +	unsigned int bpp =3D PISA_BLOCKS(order);
+> +	struct pisa_meta *meta;
+> +	struct page *page;
+> +	int err;
 > +
-> +		meta =3D __pisa_page_alloc(GFP_KERNEL | __GFP_THISNODE, nid, true, &cl=
-ean);
-> +		if (IS_ERR(meta)) {
-> +			pisa_alloc_backoff(node, false);
-> +			break;
-> +		}
-> +
-> +		/* init_on_alloc/init_on_free pages are already zeroed. */
-> +		if (!clean)
-> +			memset(page_address(pisa_meta_to_page(meta)), 0, PISA_SIZE);
-> +
-> +		spin_lock_irqsave(&node->lock, flags);
-> +		/* pisa_reservoir_max may have been lowered while allocating and zeroi=
-ng. */
-> +		added =3D node->nr_pages < READ_ONCE(pisa_reservoir_max);
-> +		if (added) {
-> +			list_add(&meta->list, &node->pages);
-> +			WRITE_ONCE(node->nr_pages, node->nr_pages + 1);
-> +		}
-> +		spin_unlock_irqrestore(&node->lock, flags);
-> +		if (!added) {
-> +			pisa_release_page(meta);
-> +			break;
-> +		}
-> +
-> +		cond_resched();
-> +	}
-> +}
-> +
-> +/* Release PISA pages in @node's reservoir above @max. */
-> +static void pisa_reservoir_trim_node(struct pisa_node *node, unsigned in=
-t max)
-> +{
-> +	while (READ_ONCE(node->nr_pages) > max &&
-> +	       READ_ONCE(node->nr_pages) > READ_ONCE(pisa_reservoir_max)) {
-> +		struct pisa_meta *meta;
-> +		unsigned long flags;
-> +
-> +		spin_lock_irqsave(&node->lock, flags);
-> +		meta =3D list_first_entry_or_null(&node->pages, struct pisa_meta, list=
-);
-> +		if (meta) {
-> +			list_del_init(&meta->list);
-> +			WRITE_ONCE(node->nr_pages, node->nr_pages - 1);
-> +		}
-> +		spin_unlock_irqrestore(&node->lock, flags);
-> +		if (!meta)
-> +			break;
-> +
-> +		pisa_release_page(meta);
-> +		cond_resched();
-> +	}
-> +}
-> +
-> +/* Per-node worker: trim/refill the reservoir, then scrub allocators hom=
-ed on @nid. */
-> +static void pisa_node_work_fn(struct work_struct *work)
-> +{
-> +	struct pisa_node *node =3D container_of(work, struct pisa_node, work);
-> +	int nid =3D node - pisa_nodes;
-> +
-> +	pisa_reservoir_trim_node(node, READ_ONCE(pisa_reservoir_max));
-> +	if (pisa_enabled() && READ_ONCE(pisa_reservoir_max))
-> +		pisa_reservoir_refill_node(node, nid);
-> +}
-> +
-> +/* Queue node @nid's work if its reservoir is below or above the target.=
- */
-> +static void pisa_schedule_reservoir_node(int nid)
-> +{
-> +	struct pisa_node *node =3D &pisa_nodes[nid];
-> +
-> +	if (READ_ONCE(node->nr_pages) !=3D READ_ONCE(pisa_reservoir_max) &&
-> +	    !work_pending(&node->work))
-> +		queue_work_node(nid, system_dfl_wq, &node->work);
-> +}
+> +	/* __GFP_DMA/__GFP_DMA32 were already declined by pisa_alloc_bulk(). */
+> +	meta =3D pisa_reservoir_pop(nid, gfp & ~__GFP_ZERO, &clean);
+> +	if (IS_ERR(meta))
+> +		return meta;
 
-[Severity: Medium]
-Can lowering pisa_reservoir_max race with pisa_reservoir_refill_node() and
-skip queueing the trim work?
+[ ... ]
 
-CPU0 (kworker)                        CPU1
-pisa_node_work_fn()
-  pisa_reservoir_refill_node()
-    /* nr_pages =3D=3D 0, max =3D=3D 16 */
-    spin_lock_irqsave(&node->lock)
-    added =3D node->nr_pages <
-            READ_ONCE(pisa_reservoir_max);
-                                      pisa_reservoir_max_set()
-                                        /* sets pisa_reservoir_max =3D 0 */
-                                        pisa_schedule_reservoir()
-                                          pisa_schedule_reservoir_node()
-                                            READ_ONCE(node->nr_pages) !=3D
-                                            READ_ONCE(pisa_reservoir_max)
-                                            /* 0 !=3D 0 is false: skipped */
-    list_add(&meta->list, &node->pages)
-    WRITE_ONCE(node->nr_pages, 1)
-    spin_unlock_irqrestore(&node->lock)
+> +unsigned long pisa_alloc_bulk(struct pisa_alloc *pa, gfp_t gfp,
+> +			      unsigned long nr_pages, struct page **page_array, bool frozen)
+> +{
+> +	unsigned long i =3D 0, n, got;
+> +
+> +	/* Skip any already populated prefix, as alloc_pages_bulk_node() does. =
+*/
+> +	while (i < nr_pages && page_array[i])
+> +		i++;
+> +	if (unlikely(!pa || i =3D=3D nr_pages ||
+> +		     (gfp & (__GFP_DMA | __GFP_DMA32 | __GFP_THISNODE | __GFP_ACCOUNT)=
+)))
+> +		return i;
+> +	gfp =3D current_gfp_context(gfp);
 
-Because pisa_node_work_fn() only calls pisa_reservoir_trim_node() before
-pisa_reservoir_refill_node(), the worker exits with an extra PISA page left
-in node->pages above pisa_reservoir_max.  When pisa_reservoir_max is set to
-0, pisa_reservoir_pop() bypasses the reservoir altogether, leaving that page
-stranded in node->pages.
+[Severity: High]
+Can pisa_alloc_bulk() forward __GFP_NOFAIL and __GFP_HIGH into the order-9
+PISA page allocation when the allocator and per-node reservoir are empty?
+
+When pisa_alloc_split_page() calls pisa_reservoir_pop(nid, gfp & ~__GFP_ZER=
+O,
+&clean) and the reservoir misses, __pisa_page_alloc() strips only __GFP_COM=
+P,
+__GFP_HIGHMEM, and __GFP_MOVABLE before requesting an order-9 (PISA_ORDER)
+page:
+
+mm/pisa-node.c:__pisa_page_alloc() {
+    ...
+	/*
+	 * Long-lived active pages must be unmovable, lowmem, non-compound, and
+	 * must not dip into emergency reserves or trigger OOM/warnings.
+	 */
+	gfp &=3D ~(__GFP_COMP | __GFP_HIGHMEM | __GFP_MOVABLE);
+	gfp |=3D __GFP_NOWARN | __GFP_NOMEMALLOC | (can_block ? __GFP_RETRY_MAYFAI=
+L : __GFP_NORETRY);
+
+	if (can_block)
+		memflags =3D pisa_memalloc_save(gfp);
+	page =3D alloc_pages_node(nid, gfp, PISA_ORDER);
+    ...
+}
+
+If an order-0 caller passes __GFP_NOFAIL, __alloc_pages_slowpath() will loop
+indefinitely trying to compact a 2MB unmovable block instead of failing so =
+the
+caller can fall back to an order-0 buddy page.  Similarly, if a caller pass=
+es
+GFP_ATOMIC (__GFP_HIGH), alloc_flags_slowpath() grants ALLOC_MIN_RESERVE ev=
+en
+with __GFP_NOMEMALLOC set, allowing an opportunistic 2MB PISA allocation to
+deplete emergency reserves.
+
+Stripping __GFP_NOFAIL and __GFP_HIGH in __pisa_page_alloc() (or declining
+__GFP_NOFAIL in pisa_alloc_bulk()) would avoid both issues.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120010655.4678=
-25-1-lrizzo@google.com?part=3D3
+25-1-lrizzo@google.com?part=3D4
 
