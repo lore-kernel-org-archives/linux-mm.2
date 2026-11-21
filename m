@@ -1,125 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177E4606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 21:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C64606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 21:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Dctnb9CN
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TRMaCqUt
 Received: by kanga.kvack.org (Postfix)
-	id 09C116B05B3; Sat, 21 Nov 2026 16:22:30 -0500 (EST)
+	id DBBED6B05B6; Sat, 21 Nov 2026 16:22:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0738A6B05B5; Sat, 21 Nov 2026 16:22:30 -0500 (EST)
+	id D92DF6B05B8; Sat, 21 Nov 2026 16:22:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA4846B05B6; Sat, 21 Nov 2026 16:22:29 -0500 (EST)
+	id C817F6B05BB; Sat, 21 Nov 2026 16:22:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B75206B05B3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:22:29 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4DFBBC05E3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:22:29 +0000 (UTC)
-X-FDA: 85460400018.11.A1251B9
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 52C4E40006
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:22:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Dctnb9CN;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 907916B05B6
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:22:39 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1790D140278
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:22:39 +0000 (UTC)
+X-FDA: 85460400438.28.E7E87B0
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BB3C2140007
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:22:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=TRMaCqUt;
+	spf=pass (imf26.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf27.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795296147;
-	b=AE6xfTUAAhFzu1EhPlfGN3HMNSCD7TVsna2fgVw8f3acCnCnrHbboNM0xNvKhxmCzcU8Ag
-	ZAtRJUseS2RqJKc/DUifCfDH+LI1nDRywu4yaMCee9s7aFmfw1e7VzAQmHCctg5bJOtEL+
-	b1rndM+TP5DfQLoWF9zgqwOkLirPoD4=
+	t=1795296156;
+	b=KRdx+HyyoTvShDL71R8mxPCQvzbGYBdkpy1h2gF1YCRQuDba2jQnKj0YFIJWDx5E129VFe
+	XeDMdFDru655BzLIICFmsY+qi4jdvXerMKlMq/4ZGgeslF40pOkEB+fUBB99Atf61gi6cy
+	h9awQ40/COwa28Ezt/Tvfu5j3+r/ro4=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795296147;
+	s=arc-20220608; t=1795296156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LhcHhD/8aRKBI15ASV7ocqmrU70ZzMpPTnqr+rqSRik=;
-	b=5zI/qDBjXgfpODu+vqAbiF4Sojgqi9OLaQTewXL1aGgE4d8W9KntQj7nfAHp3Ja3Iikm+t
-	/wBRFvSzgdOaYsDrckJ3v3o8wXUMfFBB+Ig38zcKXh0PxVl2D+xj8HuAJNNub39NL+qPdS
-	oCndd07/Ly9WafiHJUhIxkDn8sXE6ig=
+	bh=QhxZH8BTZF9uyHOWYNwDlYQX01HSpJGN5QAEadM7D00=;
+	b=tFp4smb0D2HiBfhH/1t8InXIjbtz54jF2kijzRP/PS/kM/04RSgmjLVjchcTU2xJreeBkv
+	zfvzcUVupvTh4XEVT+KABgD/dtGHA7Xq8c/0znIWrJbYw6Ea2+jinRBDrsgXuVvWZw77i6
+	RPr9bfnySPrqOxixtOuzNTnqMw+Buo4=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Dctnb9CN;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=TRMaCqUt;
+	spf=pass (imf26.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf27.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5be53e5fce1so1778658e87.1
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 13:22:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795296145; cv=none;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3ae25d9e2fdso20440721fa.0
+        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 13:22:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795296155; cv=none;
         d=google.com; s=arc-20260327;
-        b=IHhAGonM1FCw/0C2pGOMI7exI/u3FBCrWfc+ejsoioFrL7M8QAWWreqqNdyPJ2QNjK
-         lI1PpDgzan4iLjyaJiWkjAXLVZGK9eomjpJlXGourIIzM5NNp7v+JVTSNzj4c8491UzK
-         fUNk7IhmF3axhWlS0z+4sfLTRu5I5xZ8wIDWURySEUfGSzn0Kf5NU909zVmaqi5rPlOB
-         NLEKalGU9Eiqghu84rKri0ka+9kUE8UNQH83uhmoyPGYHEHcJ7wa7xbjEZZzSH+p3QSL
-         7wFN68y/4bCUzVAKMcxgFLYhaQ23H6HeQn7xmxrTQMmPMn1zszrD7m4ITB/afAkIhi07
-         CSFQ==
+        b=JzZGMC/OmA59g8/enKFI7170xBY0u3foT/P6bwCn/vS9z/w/GV54T7vpwf14lXch47
+         LuYo/FVJdwZR4sZKaqsQI1VhBAUf20p6/pFAPvjMYRMQtIj45k6nFKsKgtPNeiyT5uFA
+         ktnbr+41Zts2DwpVVP9NC3m46KbDG8Oy5s0fBwuywPv6DfDZ9CPWGjyG/3oVAuNyEfoW
+         pfUJ6ZWD725OwxmzHhGE3VU8HUY3OW28knrOyGBpqKCAagCcM+v9JHSYeNggQe1ij0jr
+         mj8BfKjlKV2L50x6DkwdfO+ei5zWJnEvhTAp+TK+jz7sgtUMipKl5+zfzdxpoRT5wkHQ
+         xyQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=LhcHhD/8aRKBI15ASV7ocqmrU70ZzMpPTnqr+rqSRik=;
-        fh=2GqGkLCVhJ0eSi1OMyjjoDkFOJBjFYQU3hRzoHmUJHY=;
-        b=hchXpMTz1aXl6dGvMPXUo5kbDV9xSa6Z4Rr5zXHg18rZK+wMgGtKhqOHTOO2vHHSBX
-         w2rvbfHH7xp+6ZTgKlg0rqmjnRgG5fY4TlYXR4ABhM3dG/btM4dYuSl0YQAziNKpAqWV
-         Qyar3d7kIjsCFbTC15JofYGwN0oXh8DF53QkCN+1pUFDSR+rdBrnmvF9hgCEHm3z6cAN
-         5kNrzp0xW3fdGwoeLXo7Lck4r3PkDxydPJUr3FwynsGeCjhYDPO+D6hh+C3w5wYW9c94
-         qGLtUonipXw6Z8FnV27Xl6WIW8vEzh07fPKwKukJeysuU3DH5qYoKwSnoUUUbhy8Amgr
-         v8XQ==;
+        bh=QhxZH8BTZF9uyHOWYNwDlYQX01HSpJGN5QAEadM7D00=;
+        fh=CThFZrbdB52cXIDUPSxJQ/zacP26O4Wh4+xKvKuA5DA=;
+        b=Ci+/XgAeNnQRKFLmvk3Ff6x/W605t3nXcM1+D10lI4gNGH2R0Od8/DXo7DS1e9hALD
+         IyhO1t6UqlPmg58DYSneWkQTdUsotSKo3EHvwL/qJENNMhf6UBobq87mTpkQ9vPUe5oB
+         Lf0z8G4CLPHHyxhEs3jRMsQtPt21PGDFDD/iW9m/vQ+UGVANrFhDlGvvn30ef6Y3WOVm
+         CMTdjoABnab1wMDakgy1x4rnWn8AUVOZCKhaxt4cOYDoY6hIQOpgQ/YOU36vPQKJxSS6
+         wavbQReb6ro6QBo/0zef4V6At9/mj7oTvbDb9LwylyrnLLhUP0cmfsyGnb/KXfP43s25
+         Oa0g==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795296145; x=1795900945; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795296155; x=1795900955; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=LhcHhD/8aRKBI15ASV7ocqmrU70ZzMpPTnqr+rqSRik=;
-        b=Dctnb9CNP4Oc+f8wWMXl67hBnbkJFrGq+zTOEKlcdVFILubRDpkggIcidSea/mkUHu
-         7g0MfFxCKS0fJtibpoAwD7O+XyUVz2cYcLtPyJJiiMJFdOCwknqVNc7vgoPiHW5wtW8j
-         aHuwHo3P/Nx5Bs06nGhkUTPP7uu0062Ac9J9VkrrVh3L4IjK/FqcXc9xWBa00dUVUPrP
-         oKAdZnWKcIJ1rsIPrtLOAlxIwSxEztQZ6UQP2SpG0trukxxMeDWarR04SpyQVqoPNw+s
-         yyF2qCLwBYCgb8UpcqXDhxD7l6183S9Ncb+STj+5ttte365UIlr/3Tj1o++0MZ95+r78
-         hx4g==
+        bh=QhxZH8BTZF9uyHOWYNwDlYQX01HSpJGN5QAEadM7D00=;
+        b=TRMaCqUtbEV2hKahZoD0JuuXRRq4cTDpqD3W6eOV0RFXUXCe6d4ZZtsauAhwfwEzH8
+         uKHbJ8pgNzMXYPsm9VLf9zIJ7r7ogRpWUZcowWf07/NJgWo8BUE69qcLqJKiDg8GVnRm
+         3wWTRPFmd/bm93q4fwtwqv21hcHtWtm2azxB8sVl5DnlN7PhtZClJgd6oRefG/K2+l9t
+         DxmY9oyIcX7TwvZ1tvmwUJPUHd945cCx61GKUzSMleO18cWhpWmnQLc3VfGJ+ArnFpHt
+         B6JMVceh8XBbewwmKGkqrTk/qOzk6T08i/jXkjSru5xx4EChkhIUkIEwDtRIeQFbrgfm
+         61+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795296145; x=1795900945;
+        d=1e100.net; s=20260707; t=1795296155; x=1795900955;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LhcHhD/8aRKBI15ASV7ocqmrU70ZzMpPTnqr+rqSRik=;
-        b=pKMNBiswCN2Pt5bTDUedXKmJOHy3pYy+rkAhtoSc7SKY/PspkooF/11MSX9l5jaKNT
-         HTdcX31LX22P4CidAiYF7RzE5KL+7iwellSrzydZWaawLFOJInd03UVxoxzAbnfrCWF6
-         8DXWTtxSCV3gO2tRtEHjgqeZzL8XQ3U+VWpcIwYl2+FIcM1knQqGUE6Co1/gXf7whlsq
-         72JsqYwdjCHcfVO/mJvQCjh4dRxVrAU3RXsxS9OkwW6wJ5b4FMwEVZTcn+LzfoYdhW7w
-         aOUitGMxL6Ssnb4sL8PPMyJznBHBkwIh5r9DJJ62Wc3+Jzs+kKkn8ABLwXu9RHR88X5F
-         R4ww==
-X-Forwarded-Encrypted: i=1; AL+hErGdSgKxQk5dF2cSfFIVBYbo8Foeo+3W45zBiat1LZCEXilq24K+xeVOcLpa9znnwFFS68sIRLpdCw==@kvack.org
-X-Gm-Message-State: APuU4Z8eJv/IvvbDNcgqATQpThoQv2ZAtx2uCWEOAV+PlZl1IfinFUB8
-	blw9dfX5niAeawjv7Pl6oQ/usCLTE17KA4HDEEER0eU0mgDuga0ZoL3BEdkAcv0ITvIb7kampF3
-	CqcILB++lUrc9j0EmABRQM+dc6XM7bk0=
-X-Gm-Gg: AZFdTZcRjurieqApru6FUI8WmllbOiPdZjjkeS9QvUIfOd6+6N14c6xVA2l7Yu3jndm
-	HqNefyJbaUbSee4fXatizdx7oDh0leZCQFar8F7wDXBONfaRcnyF6AicZ+Gb4FUxKlxrHT/SnHA
-	rlRDAbD1xSwWeND846mf4NMR4v/os5I1s8Rso+Rrl51oUtdax0b9WiqdZmJHtb8Ddx5Uhv5AT5D
-	0Gu/euyovECcX8+YAcwjxvY5yxvtWZwa/GL/tfPW29NfRARpPz6gzQmTz6GTLWtpiW/IIFvKye0
-	QSpyJA2riqjRQhLsNlEWqI+6xwXJvud/IS1GMdU89OL4c9wE8caq1XZCTlfiZgRFE9MsAaiHQ5L
-	bcQxPP7eIX+3TSEWH9CuXH35huLzS1iviyoCZ
-X-Received: by 2002:a05:6512:3a86:b0:5be:590e:ea76 with SMTP id
- 2adb3069b0e04-5c1bc680e86mr2302113e87.6.1795296145205; Sat, 21 Nov 2026
- 13:22:25 -0800 (PST)
+        bh=QhxZH8BTZF9uyHOWYNwDlYQX01HSpJGN5QAEadM7D00=;
+        b=WvQ3SI9T05+NWC1zJMYRtcYatFhNB3XN/5Gt09Kup4LK7INtGJTcZ/2blTpHI386OE
+         6ZusXRSFmM2fx3KneJxyCvgvFg/dLELsulRNaQXL/q9SjEejLOLz5bMlY1DeXCz0nmTH
+         A4AXaEwF4vL1aZpgvivuY+c5RGgXLtHyrrwLB7Ja6OZ5XpOaAiyHCLssNwEWEbK3rkDd
+         pDPn62xZHRe1iyQCoUvLGmPhbz/uHmVKb69+oZzqkDqOBnYiU1tD2EhNhMyiw9fB5ZAw
+         jm9+OymKE21WpEYs1MUDr53ysKEgj0Zecy1PuK35S9cVS2WSwBZXV20DlxHpfZjFOxFw
+         9wCQ==
+X-Forwarded-Encrypted: i=1; AL+hErG07DolnZV4KE6Gin1WCquLZhW52nJXuxsW1+J6omIozSgvxBik5zsXFnMjFctIs3ZcVwbg50muBA==@kvack.org
+X-Gm-Message-State: APuU4Z93HpyVrDEGeu53RXncOtX/K5eHfaarAdaLlFCv4ySnvWA+uqJu
+	nTWW2mTeKYKL6HsHpouogXXms0j5iJcf9LLX9CLkI3XksJOe+ayT9mYATlLTUKGLSrF91RxCTx5
+	oWa3IP7Uu4mf4uHrASvWpqa+DYlk2Ags=
+X-Gm-Gg: AZFdTZc3vj1/Y+thmdtEXQQ+zY8r+/WqpYUeOldoIJcodHgBbFhiX8jWSq2xmEY0zLZ
+	CAVoseMZU7PIKCy3yNS75TN9a4fCmaqNxKRwUy507042pwZ5QdPuH1obRJu3BMY+eXDtzHb/Lov
+	isWrjwUnKRtNz7b7681z7qhsO41RNuzXdA+81DH4p4SAV1jQBXl0PjKx98JAK2PTku7Yv2Mnnza
+	nHfSCKr5t/aNZvQlhpJqugY7gFrcBcwzB+f0qPK3FsG54Q+82g56o0yViEgqr5wPwb1R0EDiR2q
+	M9Z/v7V0vSUoFpNp8Mb1+cTF8AhjSLlajLDpiKq4Dy2nH2bYR6nq8u7zulOPdKjvgc3Wr+wXmNr
+	mC1qzLOvstLWpGNsZyQDlo1WevXlwS9GgQ7weKmUDf8kw+BtAd3x3glF99g==
+X-Received: by 2002:a05:651c:a149:b0:3ac:e4fe:49c with SMTP id
+ 38308e7fff4ca-3ae7fa65ademr21112491fa.21.1795296154982; Sat, 21 Nov 2026
+ 13:22:34 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
- <20261120041906.5785-5-kanchanapsridhar2026@gmail.com> <sashiko-outbox-226634@kernel.org>
-In-Reply-To: <sashiko-outbox-226634@kernel.org>
+ <20261120041906.5785-9-kanchanapsridhar2026@gmail.com> <sashiko-outbox-226638@kernel.org>
+In-Reply-To: <sashiko-outbox-226638@kernel.org>
 From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Sat, 21 Nov 2026 13:22:12 -0800
-X-Gm-Features: Aa3M54rocg5lImMNhqmcaG3bXPnzsrtWItRkXY1bhretNH8NzvJavMtXKNpuBjY
-Message-ID: <CACpmpoc-OJoQ4hcKpF6muY+tf7NcP9ok+fGXQLog3dc1q__njA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/8] crypto: acomp - Add API to get a compression
- algorithm's batch-size.
+Date: Sat, 21 Nov 2026 13:22:21 -0800
+X-Gm-Features: Aa3M54pt8cwuxT6_by5lL_6hdW5GlQGTKVDXQNTvmifS0EhM5bwkQ1ptuPBtKJw
+Message-ID: <CACpmpocYxp38npkHWhbhOyoRAq2KKyvpo6HQRih1VPPDwMvFUw@mail.gmail.com>
+Subject: Re: [PATCH v4 8/8] mm: zswap: Batched zswap_compress() for storing
+ large folios in batches.
 To: sashiko-reviews@lists.linux.dev
 Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, 
 	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
@@ -129,18 +129,18 @@ Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com,
 	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 52C4E40006
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 8xq5ncmpbm39swnnw8e5q3r8qxpynkhy
-X-HE-Tag: 1795296147-530756
-X-HE-Meta: U2FsdGVkX1/lkPMXOz2UYdsdPZP9zF/4fx0dsxPb2n1urltK0DwCrwZ34yduPq/PgwzP+ctejcP1Rev1Exlm15CqANivaJDyh7nIAc5vhvjOz3SBU5rpnu5QGkk3CFI0p/+GDW48ViiQpaqofNMR6e/OfKFqCAY1ZnEn0r1CuIdhQoF4bKKcrWYmWad/7vnpinp1nkCgzKhs4qnoYQi2KreokCuP6XbeU8kPgDMe6AH/FcGI2mil7nhEMazi8l9fCaA3vtVFn59uVedexA50pkG+C/OZr43efLTHX4exzSHxngKyFOvoxinmFnpLnFapQpEcVj8xcRnQAWuSntXZjluJYRHP7OP1RTKYxDDiamhSSUqDWuh5vaK4K1+i+WkGarN1tgdPJcgn+bTDiNi31ReZH558onLZCiNfpxbWJdDPfur5pEQF8eH/9fh64eAZCi1KRgoz/v3AC/1MGHnM5qqAcUZNXluUIH4+byjcD5jAjeJ8lBxSX3V8FzdhhO524VixPdF43I7RfXAmt2P5QhRbPYVeOHwqzYJXuUOp7NCexukqSntr5jqAcHYcPG2MQ+77VQ7TlmXWpNFma+peLCmpHGDsJuN6u37vcl+hKsk5185ZaivciX7GC/z3JJdExeUjVz9snF6r3Rb547rILVHqsmVxlYjX5WHvli/GPnak4UrYJUR8DKALe+cpkBdTXjEsazXVd0M7MFEyTduzM7yykPVAl6MK4Da+/QlZhK1SkSBtbEgHUxOTd/njOGrdfh4Cu6ZfLrEAjc+HmabV4ZoUMM1B1fnRFj3agSDpUrzq6JMCo6QA5P0nFsljogPYILRMgwKgw/U+nilYxPNWfFO8SYO98RTVPNJfGTbU68AmfQ5II44nti66ZLZQie2DRRDui5A6/9bDVGLBFalL3jAnHOjmiGFGrD2VI6HPYJPYZgEQl4MclVyFk+oWx9d7ZkLxJJALOOmf/Afz2xf
- hHzoB2T+
- UGbpUY//kNF9FoQgscl3rOoZRnN6wfLanxYT0A5s6Sxpq6m930Ow+S+OcWiDlkbCMhFIRNx2wkcfmCxFxuDc+gR7sIpo+7XqpMbouEkHpiMl4MzNPkd8v3dknayruz9nbym4GsQaa9phkioD8kCKt+0bBvCHIJtQ6VRTbnZBtkT5UFpxX6Zzr+otIKWwBzWyx9pz6qy7qv0fzxXtN86VUYYoKf3zFP5hiIl+PFAiT7TcHg9hFnAmHko7obLDLkghWx/HjnLTYbWSDMemxbTNxt3DHAjU75uWZ59SLYd9Y6RXDiRtnAWOgCM6IvpZwQWe4fS1kRfFsrAf/YIQZTN25Oz+3rJ6x/xhEnd8vxWE07cjKD0Y0MWCYp/15QIWD/d45BcMwHAtjcI6WaV3OWjsh2T7nM6+4vXXZS/PkUqvg2nxfN9Pk7BWZVtv6GcFUgKRQrBA3HxoULXgBXQzueYuSY93DZBvf7i38sIbg/CM+FUXmlMVpzZfx1ettr8XyHCH6SCLkFpHzFQSLfwD9YupVbsge/7Q2Krq0UyqFh++uKZvmSxvW/stxw6FY7rkPzF9TrthTUhnUMqSqD49GoH+b3eNI8TJamTSyOHqDAsh8/7iLB40QsjBr23WFAQzd2zzbS1LEFD0nLLcnBB8uR4z+Osi44DVZ3+nadlifVEHVflnHTriNXd/ctQ7Ff/JGXIRSWoX3IRTO5CyPc28ggRae0LS/oA==
+X-Rspamd-Queue-Id: BB3C2140007
+X-Stat-Signature: 8grp8k33eunkw388yhac9aa61eckt8bh
+X-Rspam-User:
+X-HE-Tag: 1795296156-225137
+X-HE-Meta: U2FsdGVkX1+t9QQSEWUaoMQ0Sq4R4qWpcWaKlVTcTlrJ8VPuuK929IBFUiI1Ie81n3X7jN1s9mJfcmYgnfBjQ6zKHKS0I6wG6zRNw1EIIhCToQvcg9Vlpeqfg7Zi7BCyQi4pGrlzbl0pCXqeyiaTPi09fm1BG1KhNSGVEw//XVx987KVqT3Tb/RzWGw/MnDxPFT9F1zvvcJ+pz6/2kR4Vw9SCY7hY56STn4lDmHVPZEcNmCXtWTjFqcw0yerlFZt/NhNzn1P6a9TbaLCtAsKtwCh9XptkYp3tuFU6RqyMg6r9Jz4t30H2+smCD5V+rQhAUK7TmaCRgsXBDyuYgnPof3+csxlby5qEabtPhmMkjBO28lNWy8SvnOgsbPnzrqdy8JnB79kY3KxriNB1PMuAF/K+ZFqH6QpcNdoLKjENtHPwRDdMXm0G8ee4WmbLIt+iM4fCR66Ln3JcxNk6k8GL2f7Wufdh7JD2uFjsMuv7Hx57JY/6oaMJNvZCg+JafRcjnTvJ3QXFMz/oYopKF8vO/1hWCcV2AM01+IBJcj2sLAEU5ypdPWuhhk9pPiJcE6Mxlo7v5HkoLiXg9Dnu4K6yMfjHHfB9GtB1P37kELvcyvNPYrlrI6aEBCiUGfDSZeGUPQShJXBaWHryOhEO5ka3J4clZoU2oWU3ZFNuKVFq9huCqryibLGY+hEOTjwzZzLS51qVYoeptg+XT+zenwSgDq077vrhM9KfMhWAit1Fbzc9x6pbxSUxu0AG7Yop0lFRiLDjKVtoWX/+UxuOl5sFkN9igwHMLjiGDgWczv/AJsFcrVlETDinOMnfy5gPcmis2KMj8/bQatH+wpGnHPCya/nvXFLGveyNLSuL8Mbc0hxFDJW+xqEDAAwA4Xnm5IzpRTeE8jnyui7PkvKQ8TJMFHyk8qnmTyysQcZCAXpoBo2Q+upyK8Jiy3/hoVnHldF5/KBT6lLuYcIeZtgMC9
+ T+9XrA6v
+ BzgZPowCB/2JasxYxjT4VrRSGtCzgX6i1SF5gPW4CBnKRw98RhOHL0PFThy6nRyzV8uoY75UQReDF/drqezTYCOBrCkiUZ0fEjZkKG9R0Gp9S/NAM94KFqjsm2K3sGX90JDVt6v/TAywGdm/oSr5CkLhM31vocvVTrR/QRI7Tb/NG+x9Cv7jI/jZAVaq34t0ap6w3gKEnUkL4ev0MVvojWFnmx5fAO92owrSL/dC2YAsgh5PoO3k5CfAVJIP6cOjvuVrFU5YFtIOeDKz+pmE6gSTbpFZ/1EFR8bI+TCDWIIYVaVXT+o9Q500stCAzFiscwbugogJGy59JAoi8FaiEuaU5LUklNy9OL94IRYDmQQedbAtrdqGxa1a/lvyQelj7ZJ1uKeZmSv0+51SaxigKHs/jQxgB11gebVFflRyTAEEmuEhxU5XiQ1mLZ3HrJdCnzWOIpbTEFlIUtnSnRKAESdMrnWzw9t9cRxyuAFoMBmoi0yBiv8rbNY2xsAZ93gH66G8Bh6+oKmAFAfKS1rNlAhO141aLruTa9pSJfyA+7q0iQgR+GZu6z+88rinKtdSfrowyn3ZQzEzDWIGmq9H2I6ONI/+oCw1Dj5TKOUxNslzeCxynH03AIi5xx0cGipalyPHroMLfR6tsZcZ8yC5glqP4U+x6b4kGbwI8uspBh/Xec/+nY/+DmPn0wOVkOI5udCSInTK0P77S/23KBMbFFply0ORA1V5RVdAJR/YWKPD4MG3VSefOLJgV+u4GRGbamfrz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,96 +151,213 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 On Fri, Nov 20, 2026 at 8:20=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] crypto: acomp: crypto_acomp_batch_size() checks async instead
->   of req_seg
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [High] mm: zswap: invalid and unreset dst scatterlist lengths in
+>   zswap_compress()
+> - [High] mm: zswap: unterminated dst scatterlist slice passed in
+>   zswap_compress()
+> - [Medium] mm: zswap: unsigned sg->length check and error accounting in
+>   zswap_compress()
 > --
 >
-> commit 4f8164105102abaa98a8641d32dd35c9cb223ee0
+> commit a77cc3e636d5134b6371aa977bb1025c031583c2
 > Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
 >
-> crypto: acomp - Add API to get a compression algorithm's batch-size.
+> mm: zswap: Batched zswap_compress() for storing large folios in batches.
 >
-> This commit adds a batch_size field to struct acomp_alg and introduces
-> crypto_acomp_batch_size() so callers can query the maximum batch size sup=
-ported
-> by an acomp algorithm.
+> This commit replaces the per-page zswap_compress() call in
+> zswap_store_pages() with a batched zswap_compress() and
+> zswap_update_entries() that compress up to ZSWAP_MAX_BATCH_SIZE pages per
+> batch using a per-CPU scatterlist table mapped to destination buffers.
 >
-> > diff --git a/crypto/acompress.c b/crypto/acompress.c
-> > index ac4dc52668b89..df9e42f519c35 100644
-> > --- a/crypto/acompress.c
-> > +++ b/crypto/acompress.c
-> > @@ -327,6 +327,20 @@ int crypto_acomp_decompress(struct acomp_req *req)
-> >  }
-> >  EXPORT_SYMBOL_GPL(crypto_acomp_decompress);
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index 5e1fb5624ffb8..56354a568bad0 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> [ ... ]
+> > @@ -949,6 +971,26 @@ static int zswap_cpu_comp_prepare(unsigned int cpu=
+, struct hlist_node *node)
+> >               }
+> >       }
 > >
-> > +unsigned int crypto_acomp_batch_size(struct crypto_acomp *tfm)
-> > +{
-> > +     if (acomp_is_async(tfm) &&
-> > +         (crypto_comp_alg_common(tfm)->base.cra_type =3D=3D &crypto_ac=
-omp_type)) {
-> > +             struct acomp_alg *alg =3D crypto_acomp_alg(tfm);
-> > +
-> > +             if (alg && alg->batch_size > 1)
-> > +                     return alg->batch_size;
+> > +     acomp_ctx->comp.sg_table =3D kmalloc(sizeof(*acomp_ctx->comp.sg_t=
+able),
+> > +                                        GFP_KERNEL);
+> > +     if (!acomp_ctx->comp.sg_table) {
+> > +             ret =3D -ENOMEM;
+> > +             goto req_fail;
 > > +     }
 > > +
-> > +     return 1;
-> > +}
-> > +EXPORT_SYMBOL_GPL(crypto_acomp_batch_size);
+> > +     if (sg_alloc_table(acomp_ctx->comp.sg_table, ZSWAP_MAX_BATCH_SIZE=
+,
+> > +                        GFP_KERNEL)) {
+> > +             ret =3D -ENOMEM;
+> > +             goto req_fail;
+> > +     }
+> > +
+> > +     /*
+> > +      * Statically map the per-CPU destination buffers to the per-CPU
+> > +      * SG lists; crucial for performance.
+> > +      */
+> > +     for_each_sg(acomp_ctx->comp.sg_table->sgl, sg, ZSWAP_MAX_BATCH_SI=
+ZE, i)
+> > +             sg_set_buf(sg, acomp_ctx->comp.buffers[i], PAGE_SIZE);
+> > +
+> [ ... ]
+> > @@ -965,88 +1007,179 @@ static int zswap_cpu_comp_prepare(unsigned int =
+cpu, struct hlist_node *node)
+> [ ... ]
+> > +static bool zswap_compress(struct zswap_store_context *zc)
+> > +{
+> > +     u8 nr_batch_pages, batch_start, comp_batch_iter;
+> > +     struct scatterlist *sg, *dst_sg;
+> > +     unsigned int slen;
+> > +     int err;
+> >
+> >       /*
+> > +      * @nr_batch_pages is constrained by the per-CPU comp_ctx's compr=
+essor
+> > +      * batch size and the @zc->nr_pages in this store batch. @slen in=
+dicates
+> > +      * the total source length bytes for @nr_batch_pages.
+> >        */
+> > +     nr_batch_pages =3D min(zc->comp_ctx->compr_batch_size, zc->nr_pag=
+es);
+> >
+> >       /*
+> > +      * Compress the @nr_pages in @folio starting at index @folio_star=
+t
+> > +      * in batches of @nr_batch_pages.
+> >        */
+> > +     for (batch_start =3D 0; batch_start < zc->nr_pages;
+> > +          batch_start +=3D nr_batch_pages) {
+> > +             /*
+> > +              * Clamp the last iteration's batch size if the compresso=
+r's
+> > +              * batch_size does not evenly divide @zc->nr_pages.
+> > +              */
+> > +             nr_batch_pages =3D min(nr_batch_pages, zc->nr_pages - bat=
+ch_start);
+> > +             slen =3D nr_batch_pages * PAGE_SIZE;
+> > +
+> > +             /*
+> > +              * Send @nr_batch_pages to crypto_acomp for compression:
+> > +              *
+> > +              * These pages are in @zc->folio's range of indices in th=
+e
+> > +              * interval:
+> > +              *     [@zc->folio_start + @batch_start,
+> > +              *      @zc->folio_start + @batch_start + @nr_batch_pages=
+).
+> > +              *
+> > +              * The source folio pages in the batch are directly submi=
+tted to
+> > +              * crypto_acomp via acomp_request_set_src_folio().
+> > +              */
+> > +             acomp_request_set_src_folio(zc->comp_ctx->areq.req, zc->f=
+olio,
+> > +                             (zc->folio_start + batch_start) * PAGE_SI=
+ZE,
+> > +                             slen);
+> > +
+> > +             dst_sg =3D zc->comp_ctx->sg_table->sgl + batch_start;
+> > +             dst_sg->length =3D slen;
 >
-> [Severity: Medium]
-> Should crypto_acomp_batch_size() check crypto_acomp_req_seg(tfm) instead =
-of
-> acomp_is_async(tfm)?
+> [Severity: High]
+> Does setting only dst_sg->length =3D slen overrun acomp_ctx->comp.buffers=
+[]
+> and leave dst_sg[1 .. nr_batch_pages - 1].length uninitialized when
+> nr_batch_pages > 1?
 >
-> crypto_acomp_compress() only dispatches segmented requests (where
-> req->unit_size is set) to tfm->compress(req) when crypto_acomp_req_seg(tf=
-m) is
-> true, and otherwise sends them to acomp_do_req_chain(), which rejects
-> multi-segment requests (req->slen > req->unit_size) with -ENOSYS:
+> Each entry in acomp_ctx->comp.sg_table->sgl is mapped to a single
+> PAGE_SIZE buffer in acomp_ctx->comp.buffers[i], and earlier runs overwrit=
+e
+> each entry's sg->length with compressed lengths or negative error codes.
+> When a batching compressor runs with nr_batch_pages > 1, dst_sg[0].length
+> is set to nr_batch_pages * PAGE_SIZE (exceeding its PAGE_SIZE buffer),
+> while dst_sg[1 .. nr_batch_pages - 1].length are not reset to PAGE_SIZE.
+> If the compressor fails when zc->wb_enabled is true without updating
+> dst_sg[1 .. nr_batch_pages - 1].length, any entry still holding a stale
+> compressed length (0 < sg->length < PAGE_SIZE) from a previous call will
+> skip the PAGE_SIZE fallback and cause zswap_update_entries() to store
+> stale data from the previous folio.
+>
+> Each of the nr_batch_pages scatterlist entries in dst_sg needs its length
+> reset to PAGE_SIZE before crypto_acomp_compress().
 
-v3 response:
-As described in response to Sashiko's v2 comments, this is kept simple
-for now and for the only known use-case which is acomp_is_async(tfm).
+Summary:
+=3D=3D=3D=3D=3D=3D=3D=3D
+Batching compressors that result in this code seeing
+zc->nr_batch_pages > 1, need to set the individual SG->lengths in the
+list starting at dst_sg, to contain the result of the respective
+page's compression status in the batch. crypto_acomp_compress() for
+the batch will return a negative error in "err", however, each *page
+in the batch* could have compressed successfully or compressed with an
+error.
 
-v2 response:
-This is a good question. When the patch was initially planned, the
-intended algorithm for batch_size > 1 was async, that too for zswap to
-know how much memory to allocate for batching resources. Plus, we did
-not want to impose strong semantics between batch_size and
-segmentation for synchronous algorithms. The only known usage model
-for batch_size > 1 was for async, hence the gate to prevent unintended
-side effects until we know more about how to evolve this.
+The code in patch 8 is handling this contract correctly, for both
+non-batching compressors like ZSTD and for batching compressors.
 
->
-> crypto/acompress.c:crypto_acomp_compress() {
->     ...
->         if (req->unit_size && acomp_request_issg(req)) {
->                 if (!crypto_acomp_req_seg(tfm))
->                         return acomp_do_req_chain(req, true);
->
->                 return tfm->compress(req);
->         }
->     ...
-> }
->
-> If an asynchronous acomp_alg sets batch_size > 1 without CRYPTO_ALG_REQ_S=
-EG,
-> crypto_acomp_batch_size() returns alg->batch_size and callers such as zsw=
-ap
-> will submit multi-unit requests that fail with -ENOSYS.  Conversely, beca=
-use
-> base.cra_type =3D=3D &crypto_acomp_type already distinguishes struct acom=
-p_alg from
-> struct scomp_alg, requiring acomp_is_async(tfm) forces
-> crypto_acomp_batch_size() to return 1 for a synchronous acomp_alg even wh=
-en it
-> sets CRYPTO_ALG_REQ_SEG and batch_size > 1.
+For a reference implementation of how a batching compressor should
+handle this contract, please see patch 16/26 in [3]:
 
-In addition to the clarifications reiterated above, this is an
-additional v2 7/8 response:
+[3]: https://patchwork.kernel.org/project/linux-mm/cover/20260125033537.334=
+628-1-kanchana.p.sridhar@intel.com/
+
+This is the reference implementation for iaa that correctly handles
+this for batch compression, for instance:
+
++static __always_inline int iaa_comp_submit_acompress_batch(
++ struct iaa_compression_ctx *ctx,
++ struct iaa_req *parent_req,
++ struct iaa_req **reqs,
++ int nr_reqs,
++ unsigned int unit_size)
++{
++ struct sg_page_iter sgiter;
++ struct scatterlist *sg;
++ int i, err, ret =3D 0;
++
++ __sg_page_iter_start(&sgiter, parent_req->src, nr_reqs,
++     parent_req->src->offset/unit_size);
++
++ for (i =3D 0; i < nr_reqs; ++i, ++sgiter.sg_pgoffset) {
++ sg_set_page(reqs[i]->src, sg_page_iter_page(&sgiter), PAGE_SIZE, 0);
++ reqs[i]->slen =3D PAGE_SIZE;
++ }
++
++ /*
++ * Prepare and submit the batch of iaa_reqs to IAA. IAA will process
++ * these compress jobs in parallel.
++ */
++ for_each_sg(parent_req->dst, sg, nr_reqs, i) {
++ sg->length =3D PAGE_SIZE;
++ reqs[i]->dst =3D sg;
++ reqs[i]->dlen =3D PAGE_SIZE;
++
++ err =3D iaa_comp_acompress(ctx, reqs[i]);
++
++ if (likely(err =3D=3D -EINPROGRESS)) {
++ reqs[i]->dst->length =3D -EAGAIN;
++ } else if (unlikely(err)) {
++ reqs[i]->dst->length =3D err;
++ ret =3D -EINVAL;
++ } else {
++ reqs[i]->dst->length =3D reqs[i]->dlen;
++ }
++ }
++
++ return ret;
++}
++
+
+Details:
+=3D=3D=3D=3D=3D=3D=3D=3D
+For additional context, reiterating some of my earlier responses to
+Sashiko's comments.
+
+v2 7/8 response:
 
 Excellent questions. For compressors for which compr_batch_size > 1,
 i.e., zc->nr_batch_pages > 1, that batching algorithm's driver is
@@ -258,11 +375,145 @@ The crypto_acomp algorithms don't use
 zc->comp_ctx->sg_table->sgl->length as inputs, these values are always
 over-written as the output of compression (patch 3 in this series).
 
+>
+> > +
+> > +             /*
+> > +              * The per-CPU @zc->comp_ctx->sg_table scatterlists are s=
+tatically
+> > +              * mapped to the per-CPU dst @buffers at pool creation ti=
+me.
+> > +              * There are ZSWAP_MAX_BATCH_SIZE per-CPU SG lists and ds=
+t
+> > +              * buffers allocated for all compressors.
+> > +              */
+> > +             acomp_request_set_dst_sg(zc->comp_ctx->areq.req, dst_sg, =
+slen);
+>
+> [Severity: High]
+> Isn't dst_sg an unterminated scatterlist slice whenever
+> batch_start + nr_batch_pages < ZSWAP_MAX_BATCH_SIZE?
+>
+> sg_alloc_table() only sets SG_END on sgl[ZSWAP_MAX_BATCH_SIZE - 1], so
+> passing dst_sg as req->dst leaves sg_nents(req->dst) equal to
+> ZSWAP_MAX_BATCH_SIZE - batch_start (4, 3, or 2 instead of nr_batch_pages)=
+.
+> In-tree hardware acomp drivers rely on sg_nents(req->dst):
+> iaa_comp_acompress() falls back to software deflate whenever
+> sg_nents(req->dst) > 1 (affecting all order-0 folios and 3 of every 4
+> pages in a batch), while __qat_bl_sgl_to_bufl() and
+> hisi_acc_sg_buf_map_to_hw_sgl() walk and DMA-map all sg_nents(req->dst)
+> entries up to sgl[3] using their sg->length fields, which can still hold =
+a
+> negative errno such as (unsigned int)-ENOSPC (~4 GiB) left behind by a
+> prior failed batch.
 
+Great analysis, Sashiko. Patch 11/26 in [3] sets up the iaa compressor
+to handle exactly this scenario [4]. Then, you can understand how [4]
+sets up the batching architecture in zswap to work with iaa's
+batching, in [5]:
+
+[4]: https://patchwork.kernel.org/project/linux-mm/patch/20260125033537.334=
+628-12-kanchana.p.sridhar@intel.com/
+[5]: https://patchwork.kernel.org/project/linux-mm/patch/20260125033537.334=
+628-17-kanchana.p.sridhar@intel.com/
+
+Any batching compressor must adapt to work with the new architecture.
+
+zswap with ZSTD already works and demonstrates good performance
+improvements with this architecture.
+
+>
+> > +
+> > +             err =3D crypto_wait_req(crypto_acomp_compress(zc->comp_ct=
+x->areq.req),
+> > +                                   &zc->comp_ctx->areq.wait);
+> > +
+> > +             /*
+> > +              * If a page cannot be compressed into a size smaller tha=
+n
+> > +              * PAGE_SIZE, save the content as is without a compressio=
+n, to
+> > +              * keep the LRU order of writebacks.  If writeback is dis=
+abled,
+> > +              * reject the page since it only adds metadata overhead.
+> > +              * swap_writeout() will put the page back to the active L=
+RU list
+> > +              * in the case.
+> > +              */
+> > +             if (err && !zc->wb_enabled)
+> > +                     goto compress_error;
+> > +
+> > +             /*
+> > +              * For each output SG list in @acomp_ctx->req->sg_table->=
+sgl,
+> > +              * the @sg->length should be set to either the page's com=
+pressed
+> > +              * length (success), or it's negative value compression e=
+rror.
+> > +              */
+> > +             for_each_sg(dst_sg, sg, nr_batch_pages, comp_batch_iter) =
+{
+> > +                     if (((int)sg->length <=3D 0) || (sg->length >=3D =
+PAGE_SIZE)) {
+> > +                             if (!zc->wb_enabled) {
+> > +                                     if (sg->length =3D=3D PAGE_SIZE)
+> > +                                             sg->length =3D -ENOSPC;
+> > +                                     else if (WARN_ON_ONCE(!sg->length=
+ || sg->length > PAGE_SIZE))
+> > +                                             sg->length =3D -EINVAL;
+> > +                                     goto compress_error;
+> > +                             }
+> > +
+> > +                             sg->length =3D PAGE_SIZE;
+> > +                     }
+> > +             }
+> >       }
+> >
+> > +     return zswap_update_entries(zc);
+> >
+> > +compress_error:
+> > +     for_each_sg(dst_sg, sg, nr_batch_pages, comp_batch_iter) {
+> > +             if ((int)sg->length < 0) {
+> > +                     if ((int)sg->length =3D=3D -ENOSPC)
+> > +                             zswap_reject_compress_poor++;
+> > +                     else
+> > +                             zswap_reject_compress_fail++;
+> > +             }
+> > +     }
+> >
+> > +     return false;
+> >  }
+>
+> [Severity: Medium]
+> Won't evaluating sg->length > PAGE_SIZE on an unsigned int trigger
+> WARN_ON_ONCE() whenever sg->length holds a negative error code?
+>
+> Because sg->length is unsigned, a negative error code in sg->length (such
+> as -ENOSPC from a failed page in a batch) satisfies sg->length > PAGE_SIZ=
+E
+> when !zc->wb_enabled, firing a spurious WARN_ON_ONCE() and overwriting th=
+e
+> error code with -EINVAL so compress_error increments
+> zswap_reject_compress_fail instead of zswap_reject_compress_poor.
+
+Yes, I will disambiguate the (sg->length > PAGE_SIZE) check for error
+code vs. a real case of an invalid length in the next rev. Thanks for
+the catch.
+
+> Conversely, if crypto_acomp_compress() returns an early request-level
+> error in err before writing negative error codes into dst_sg->length,
+> jumping to compress_error leaves all sg->length values positive and
+> returns false without incrementing either rejection counter.
+
+This is not expected to happen today for non-batching compressors, as
+explained above. Batching compressors need to follow the architecture
+described in "Summary" above, to correctly handle this. A reference
+implementation for how the iaa batching compressor could handle this
+is also provided in "Summary".
 
 
 >
 > --
 > Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120041906.57=
-85-1-kanchanapsridhar2026@gmail.com?part=3D4
+85-1-kanchanapsridhar2026@gmail.com?part=3D8
 
