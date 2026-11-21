@@ -1,145 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A080B606A333
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 23:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51C8606A685
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YTwdcx88
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qy+nfG9k
 Received: by kanga.kvack.org (Postfix)
-	id C32F66B05B3; Fri, 20 Nov 2026 18:55:19 -0500 (EST)
+	id 2ACBD6B00EF; Fri, 20 Nov 2026 19:09:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE3B76B05B4; Fri, 20 Nov 2026 18:55:19 -0500 (EST)
+	id 236926B05B0; Fri, 20 Nov 2026 19:09:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD49C6B05B5; Fri, 20 Nov 2026 18:55:19 -0500 (EST)
+	id 0FFA56B05B1; Fri, 20 Nov 2026 19:09:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D2AC6B05B3
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:55:19 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14A2BA025C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:55:19 +0000 (UTC)
-X-FDA: 85457156358.02.588240C
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 13E011C0005
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:55:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=YTwdcx88;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795218917;
-	b=aCt+lG3sL7FwELrJnUAwRaIIMAKl6N/DSLZYuuw2joGBaEaKlTMPvyFpdhXCh0W85kvNj/
-	6nPLb05NJjk4nNNzRNQYBZS5oW9bMm4n/cK7+GprzJ0Fz0WbqOqoS4N8yNSV0f0K5nDYeA
-	kqUDnzCnB7vgsVCCt8vkMJ1NMOercGY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795218917;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CF3656B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:08:59 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 432E5160260
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:08:59 +0000 (UTC)
+X-FDA: 85457190798.16.57B972B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 94950C0003
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:08:57 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qy+nfG9k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795219737;
+	b=BvhV69XTkmMTOULv9Y3ZMrTGQMhueyl5DnVgG2pA40sJ1YMm4Serze2tRcbwLO2LJq6bE8
+	9qP09SpVR5cf64gMRV6X/hWB01lgZ7rzXQY1TVv+AzPrtNuins6WdlYNMvfJl3CKAwWYej
+	UjyVIriuCQ4OQ6+0544cN0CELFFDcdY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795219737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YsHal6o5nRWNnSKiS+O4IM67tsy/StPXyCl5eMW8G3Q=;
-	b=vbkFfZuMZvVfBm6RL1Kx51KhHx2HMtSOdnlQN0+J9kecKd9X+k0zj6NF+UQbCB1aqYqzdB
-	3QdMLLyTzgPn/Epyls6kMdBqkpZ5MW0jc9GU9Wk7RvhKD/4Zeata4EjD9jqxfR7Ue3a96p
-	5NTVvP0U2tNypF+h1fYehjxz4IFbPIs=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=YTwdcx88;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4a68190a2a7so1257851f8f.1
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:55:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795218915; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nYOvYqjUZpmaZyBsJ17ae7CETKWnqWJ99TccayaNjaVllp7Cf0uGGazaPwjrICJoCE
-         82c58IH/RULWiIz2Q8BMWozA916y6SStcD65gdHuXoXDpoj5YZg4C3c28+CEAXdD9FpL
-         x+sm6+957fV107pr4hH7PaVO9m8LDNe8Egnpvfk3J1ftgUqYlYkf3etiixBUpnD9U9Ws
-         jX40VKMe70RrDku94W6iGCTE6Z6R5XGbUVWg9ypYsu3nAjJTUJICgq8Ck2aonXCUUtew
-         /QvtgV/DiupfHha4p9ROawALG7yz+iHwIKmvMA1gQHOUaAivHkJhgxT8RaD0Bam1a+sA
-         GNjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YsHal6o5nRWNnSKiS+O4IM67tsy/StPXyCl5eMW8G3Q=;
-        fh=LalmntyuRFL53wgS88/lDp2JIfWLIUjd7WYbR9Dmp28=;
-        b=D+oKSVdUaGiwJSwYa8e/IvgJ9awVWsCvqhFT+2sVbhgOWhzz+FbUuMH6JwdkIlCQ5N
-         23ITYKXYVTNo8APf7Kt8KNw9Rqoc91en6N8rbgg+jYlWjBuyoUe97g90BUttBpAflJBZ
-         Xn+Li/UoVoPdqbnv2jg91pQ5E0yVMcPqQtDUL3AEkjsEe0ZZvvoxE6v3lODa2Y+YYQn0
-         SNMP7prC/hqS68viPkW72QhTlPBfLyJmE5IfcopwxgauEkyEt/YwHCpjBd8yIu08JD/o
-         w5OMOLKRpS9+4P9/MBbB+bqzEKV9NHGaGxkwqFq11tEzphLE42P7IlrE8yaM1ePGqzEv
-         dKrg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795218915; x=1795823715; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YsHal6o5nRWNnSKiS+O4IM67tsy/StPXyCl5eMW8G3Q=;
-        b=YTwdcx88zrtsdWEcexY/OotcaLJeceeR6DMhEUGuLVaaRZpKb2LEOcO3H5mvWWgknt
-         oXroNDFQBZ4KI7Jn65uW7ZwFbrCUfxzM5p1dSaTZun3830LyYZLlwe+b9ynJcM7agF6w
-         Z/N3w42MHF5ZKDgDYLLLbLa+gPuJwp2nd4BUSW9Wtmv41Z83Ze/vkSckOcpgSZQA6DXo
-         XsRQoudqc1ecbIaO6dcHsSiuK1ruo55bX/H1PC2n5fzLoyP9nNbce9SBHgpQ3V3JVdn7
-         LbsnWZjsPpu0wHf0JBWaD3lUvqcYvh0fhmx6ANxr+nvaXj1Be4z9KlJVobLDu5dOi0uI
-         JDhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795218915; x=1795823715;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YsHal6o5nRWNnSKiS+O4IM67tsy/StPXyCl5eMW8G3Q=;
-        b=AxImgm1iBnvONOW4z0FlFbHud6o/dQm+QD51WSIzvk4Fa/tWljqVXwH1OS3+mROdAI
-         /n0hxS4Vj8z/Lglr1j/v2G0FJA8Rq8K3gdW3VF6gH9kiHyycuXpM5DxGgzuunfFZtXWg
-         Lq/yyg10j5gBWfdSjWcFPk0lIFwZ5hcSxMudXD4DOeQtDgQ6xhVyeSsmiH+8dnOVLDta
-         18wGZzkWaOmNamiUKmnTiU39/poiVymOEpf9ngwiJovEPXFdMCMvZOWrWOGxpJZOgPfT
-         WF0OSXqReHtkLoObsaSZEYIkAcbVQfsLU++feiMIB7nVbWGlLEdjrfvSdoE/+ylC/fbW
-         iQCw==
-X-Forwarded-Encrypted: i=1; AL+hErGs9ytCkaU64+vMJ0tZFiWLJSPW25GpdfWGhmBYBY+WcfrzHan40fjuqFZQJYKZa8gEXsfyaqHwbA==@kvack.org
-X-Gm-Message-State: APuU4Z+1SFHL/CTTqmoPWYjJUvo4lZCIaSWpnD59ryVX+p+OHGn21ZOZ
-	XXskxugziSOwJa98CJfGh7cfBUSlWwgeSYpg4L2t79H+aSqOQtNgMHfrPejrXr3/dioOhc8CXNx
-	f08Zfcr6N1TSZLVbAKrheLBjNAtwPg4A=
-X-Gm-Gg: AZFdTZcH1a6gUrA4a6VL+UDy4AI5Tdk0SKph5eLQooJB5/+5ey/CEQP/A+q2X5Hy/yu
-	xtcq0rEB9X+2Vm1fHqDPSumeEfIkgovGUJm75LM6PJozp8CcVLXcgAuVjwGWxMY4BtmrmgjFUK9
-	JPrti2ZcOT/R6zhgS4D9ljh99TuYgvcyUKY8H2QlXH3Z12ATi6nJfNawBtrzoSfpuM6DanGKZap
-	rVemDJ/jexc2YG4+sjiATuWGMu/ev2vNF0hXQsq524tNQMUCTXd7naERbzvbdFh0U9yd6hCxH8a
-	Dg/xuxYUOQRU22Wjm2Z+pKvlY9/OTf16zOR08X5WU5lQZTzOVUKCCTyol85NOlmN8XMAGxRvhdb
-	nVayShyWL3vDEJsYVD/Cwd3upFTELCtkcL+oiCXwKZWhACvzpjP0XHEDYyVWd+rqFRZsm0sFWAm
-	kg2tsM7jLSidJUZv1/2j6eadLfs/AuuwBGERtnBxWQwIOwcmFbZM+6ep4=
-X-Received: by 2002:a05:6000:4381:b0:4a6:ed6f:7a6d with SMTP id
- ffacd0b85a97d-4abb1d93c3emr9288838f8f.28.1795218915387; Fri, 20 Nov 2026
- 15:55:15 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1uAsKefbzilc6PMu577PfNWiDJqL44RmMPtTEi72U3A=;
+	b=n1GQPzQExfR7Koyd7KPLmcgyZIvzlOt9Pj1aqsZOl/iOxCFCKbCu4m/EeXugtqCxQQCpVq
+	aoi9mTMeiKM1KASigKUP1OqFQAkeRnRinhxBkVKVDtA7lN7Ic1UzOsTgftcILqgb5jR5q/
+	FkYQcuT4kIiE/GfR08WAlfDh5zl/Ud4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qy+nfG9k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 11A0861D28;
+	Sat, 21 Nov 2026 00:08:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id F29591F000C0;
+	Sat, 21 Nov 2026 00:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795219735;
+	bh=1uAsKefbzilc6PMu577PfNWiDJqL44RmMPtTEi72U3A=;
+	h=From:To:Cc:Subject:Date;
+	b=Qy+nfG9kndsGCWByIvx1D1qx5JMhbSigttGOpcfYj//YpOKAKVZXZGl+6zNKVzgws
+	 HdcUIlX1NWuRqUuo5jcF3521ZG5+P4mHk+xULIs0qrUb3OHyJRhwF/Spy/ArdB9Feb
+	 EipXNfNxnaQ+062S2zkRQRIxhQ8qddaUeBJ5a2MHpQVXbBQFi915KNLNhpWOhq80Iq
+	 ZabN8IZPjmZKM4qqzAN4jTIXyVIj8vPnp2u2vLY+cm6oyAWuqsmrjCsw3xveIMq5yz
+	 r3yLERHoO/2Zg8UHXnIY+/BZGAZasDl0BUpF2nLfv6GMAvMu9+eYljXdKmTs0Ke4Uv
+	 uj5V45q7TNajw==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	linux-api@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Kees Cook <kees@kernel.org>,
+	Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: [RFC PATCH v5 00/25] rootns: fd-bound process closures
+Date: Sat, 21 Nov 2026 02:08:19 +0200
+Message-ID: <20261121000844.1863324-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com> <20261120041906.5785-9-kanchanapsridhar2026@gmail.com>
-In-Reply-To: <20261120041906.5785-9-kanchanapsridhar2026@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 20 Nov 2026 15:55:04 -0800
-X-Gm-Features: Aa3M54oUDY9bCyxtNFZ-ITKxLcqccLM_og5aWM-IgYq9zskwWDXgegX58dgm7ho
-Message-ID: <CAKEwX=NtUEd7+Q2rW79LtObnjHT5uNFAUKfkRJJN1Wppe4Yc6g@mail.gmail.com>
-Subject: Re: [PATCH v4 8/8] mm: zswap: Batched zswap_compress() for storing
- large folios in batches.
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 13E011C0005
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 94950C0003
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: mg6cxxwq1z8ahijwf7jsywgo1crwmip1
 X-Rspam-User:
-X-Stat-Signature: mbdaeeemyygdzfy3sqsjmkfq4uqqzrxb
-X-HE-Tag: 1795218916-409311
-X-HE-Meta: U2FsdGVkX1/hGK8jeuDqlrn5DhsH4OCAEQGqBPrHi6BEKPXng9gfG1XmWmkQkYjRhWyui+o7nVLhUGe4/Fl5C1lEzAIrNk5V1AW5CGowgEC66CDSizm7lTQmOVgs79LEIQWgOhdvnuf0AdiwLk4MBl0cKUgaPPRUV/8H8uuXVDMD+LbMFk+go2GOm3RZysgCGzXgC5UxnDVOVr7fluFTW/TaJKr42skwAkhJTnw8qlP1d4jTuUFakMaiR9KvnNDj3VhYe7VOJBOILi0v03WjsfDHn8dAwPCOVCAgHzHLwK8nCLXLzd+uDzHoo/hDrnrruGNkR5wz97eh0k8Qgb+aYSbC2O+Swpvlc+xXLo3Mh7TbSpvmTSt9OGncLvRnTfbhj/AcOpHRfhXwV1PnmmcXtRyIOdGVwQUB2VGNOOTaa+Phb/6gCPuurrBCRfIJgBYbKDhNiTk3eWTRovUGlGj6RijxKX4BBcFrvaecufhEEfFjeqy76dwY8gXLI5j7VA5J0YmtPmpLcsRO8B0FHwV96FH8pYhk9LrfsCdxCfwq4Lb/oLbiUzpirquXGxyWdfAAvuqVl8XEKf9+hMR5OoSLpkt7ViY7pfWJdPue/IXl+79bbzzCy4wX7qXYMtXF7S0YCsW30MetQdVPYlxy7ukxulmKIXsfhyWicwJaiL/x9V7UDzVwv/8EhWDz9QPz05LKTMZFoukD3ju8rywce7h9V+Z7D/R21q4V6cBmieqFsqTZm1onLSvZNB8da45q+NVwun/ZEjoKoh0InqVPSRf/Y9O0eCU0SYLN3yNqxjOf/G7A1F4030iNWinXj5xWgkKjVKsdxxwbYwStHLIgX89+/lVOZkIlGlvsR5dJi+MkpGpF86U5H8olu40iTjOtG9g/LSvtW6c2nku8UHY4a/IhazVigq7TqN7q4hYyBnUs/ZvvL0HAnJpbu7ECN01raqdUw/CbwRR+QrLpBH5tzk6
- L/qdIsO0
- AiQJ4liQAgMLoCtsknAiCV1GAqVD0f3lFj7sjzGhPpmcUO81uYaIJ4htnKBDEeFpxVohsFsEcFeKtkZE0vLoju0X8BhHyapzJsWqlU8t2QLm5Z4GAH4iXtVJnJ7Nl9YstGP+5eTiEIyiT+ZLIOrKlvEKViBP1bPXbC4/jW9+dDdyZTU9TG0OLxdt4m2XUYvksoCZK4vAV+WQv+aEjVOcVKHY5aNln9u+lfhrl13rkRjjnAUoapg9kq3far0Y9nVevWZ/AKK+WWvTAxcZCwv+glrTkxH7v3/DfpMfAoLDk8al958CTKfC1VCdvWLca3Q5JKEPh2lVrFk3qn0zMIXMkFDgOT8nPlEDWT0wXSQbXMG0WUZrOldSGgRD/XT2J88dGhYkl7s41fa5+eSS/Vic+d21qgDKqk6qiYmAqr4c81VVq3EjaXCwCPuF7XSUG3T6NXq+2gfnZFqoPjJ1Jlnp1SC6t0Il51dGrW0NzJbmCbHSG9eTpUuIzT8CGDNkLI1OuyHmbITBvuJPaRvqP9A/tHWMK7teO3CMxlynmwt7zW7CjY5y7rvAs9xV74CYvWU4Sq1wlKRl/KyxeTXCpMdmz4GIPvffuMsy/7QYIz700fK2N2OSXfnHTBpJfgSxct5B+LPYyxOGuoQy1/3MiufDtmJmZHpvSY1TrXIysxtHJ5KC5sD/bL2LCyyCz8Q==
+X-HE-Tag: 1795219737-482198
+X-HE-Meta: U2FsdGVkX18JSrSCzEWlQuGzfF557ionHIrteM9+eFfa0jc/c0s3BR4qjwMJIAJDMqEuGFgZtASBJ/VWaBq0iypvM7qrkSbhhGWW2sMin1N7d5eatGoBmh9mWKkk916AfXoGWarvIqoFGt9AWcqMG4BV22GxxZyhikzFvsZRb5T3KmYZ4xpziHICY0XaA01sMtCMcsC4BiGXq7Yfjvd1TWVYoiv0D4rW4jBigAZ/smAI8C9GBESKGru0zJQA9dl5wAzUqbv66zNRVv5teeofcUH+oDk/toxr44OsqaAnZlBvAg6hcJB0Tjr36Oqoxv9+8IiYZbJt1IxY0l6uFJyhQQYfCnU5p19xkVvkIdYA8yfe3vzJp13XPCtuPJfnZqd4ziCyranDpcYVKOKyFCWeay5eYVaG7RH5xn+YlpgQ77iogpHsEF2aofF7g1U96xytaI0rWov/wxRdCTjz2A18CB20nIUoo6UXKCTz4wvm/08rwDiR1as2XckAwSB9IjKaRCoFSg610y5fM98Zx95l5nOqaJNTior7RPC7fiqU5mPRn/PGtwTwojUVhzGnnTQv8lcM2VjTXOlH/zMH3jGYIrY3kBXgDIv2zktB3mcM0q4MWZIS4tVQk0jkf30c6HEdxvjXRLL0ff5i3XF65gVs1GafXXp8NVeFV5V5fV0lWkqqwdsmpwqH0Jemx2IijIRrdeGF22Zw/yjGbyjd/BTt4m9DEPRxkHoApSg6j7wYwIAM7im+aKxzSM4kjKFtPv0v9QeV2GzEVzJTjdePXrkv1mq5MIXf0Qpm7o4fmenA7/B7fclapAYMBFfpfTlX1TVEPuSG0lTZ36DErFOKHBI2L4QYqbLeG9nSWNfLbyIDcJTeh76OBX8tN0KY2AwKg7pQIW+y4UAI85fWlhCil9utPxuJ9X/3OS6cMZwYZbT0n/3ULvRwCQCyeeXPznS7kvTAjeYZxqLH2Yh0NZKTuRQ
+ z6any6KA
+ 7aYjQWS5e+1l1mJElGkcG61f+EePXQJV4yIWmHxOZbX21eukqvZDIKM8DXNM51Fzlnvgiq9nb7WvUxz1QeyyrZHXCKT3bdL/L72MZylG2Ch89WTfEY47GFarIK6EzQ5I1n64b+K1emrkkCPrJSEurDOzkvMM6sOYIw92CL1MwK6PpFxnb1oeJCSQKm+A/xigBqHrlSbEo/ku8eeVb0lLx3ngkvN6xQ7WpKR+8sxaSZCLt8kzqxaeKGTHYE+ccdtnb9vhTS9JVe3ycBqmL9DR2dcLgJU+nmF37+O/xy9BfVZi88uvNXUPy93TKFYD4GC1H7tifwSzThHuaScoO1IzHITYpotmN9c2ogBwRFoWrmnnUl3Bu2A/QyJyQueZ6O1T0torpg/xNBwMvGk28Hde2WL9jAMzf0YvBYuQawH1l6XSTO4EPt48QqMOZ86VXOw1wkvLMYG61fk1ZznspWiIOqZ/tPqh5uQFEiXYRYCFfuHaIInCccB0aHctPXw9veGp5Muu3tO6KD0zgbXEUmVCZd2oymUSemCkFP45EB4nRd/+aayRuiOy3/sQ7vsj69F+yUldSqGc1k1pR995JrWxUb6GgVykhR0xPucwFssPCDoQ4RnAZ7j92HHiEXqmSvUyO9dnuRYx44xKWUdfC9A50GJDFoiX3fA5/St7UFcwhMX2FHvKkWK1tJQAs09SfkZfe6g1uWBk6U7VWYRu/BbKvZDHIpLE5vf5vd5Y2gZEpjarYpMVSuKPxzYHDIkF4L6BDqaT8iZzx23fVcxWaEoTjDWbi9541zFKQ1w8PQYKZmg/6wDOTdm3iPQ+gzVNrfoQjHRCgd3VnSiXjNaXAA6FRgybtqJ9VLGj0cukUi4WRNNaLDPxLtpx+iHNwXBkCy5JgVBiXez+80mP3u3Yf5zLO4vm6jU8caiq7oDmpQBVthlsOdBCkrD3MuDpBGv3d5Nhra74rjulfNPKgXlJESgZbP8HIzv9L
+ Lncg++fg
+ awoxwgVpKGJ/4EhPOxfMnZC8kYbsTlDNHKWuNPhvHO675VuRjhzn5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,300 +111,312 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 8:19=E2=80=AFPM Kanchana P. Sridhar
-<kanchanapsridhar2026@gmail.com> wrote:
->
-> A new batching implementation of zswap_compress() is provided for
-> compressors that do and do not support batching. This eliminates code
-> duplication and facilitates code maintainability with the introduction
-> of compress batching.
->
-> The vectorized implementation of calling the earlier zswap_compress()
-> sequentially, one page at a time in zswap_store_pages(), is replaced
-> with this new version of zswap_compress() that accepts multiple pages to
-> compress as a batch.
->
-> When the crypto_acomp is used to set up the per-CPU acomp_ctx
-> during CPU onlining, the compressor's batch_size is obtained by calling:
->
->   crypto_acomp_batch_size(acomp_ctx->acomp)
->
-> This is bounded by ZSWAP_MAX_BATCH_SIZE to limit the memory
-> overhead and to reflect the store batch constraint of max # of pages in
-> a batch. The clamped batch_size is stored in the per-CPU
-> acomp_ctx->comp.compr_batch_size.
->
-> As noted in previous commits in this series, ZSWAP_MAX_BATCH_SIZE
-> per-CPU compression buffers are available for sequential and batching
-> compression algorithms.
->
-> Regardless of compression batching, we always process large folios in
-> batches of ZSWAP_MAX_BATCH_SIZE.
->
-> If the compressor does not support batching, each page in the batch is
-> compressed sequentially. For batching compressors, up to
-> acomp_ctx->comp.compr_batch_size pages in the batch are compressed per
-> call to crypto_acomp_compress(). The first phase of zswap_compress()
-> thus only calls crypto_acomp_compress() until all pages in the batch
-> have been compressed. When this finishes, the compressed buffers and
-> compressed lengths for the batch are available in the
-> acomp_ctx->comp.sg_table->sgl scatterlists.
->
-> A new zswap_update_entries() then iterates through the (up to)
-> ZSWAP_MAX_BATCH_SIZE SG lists in acomp_ctx->comp.sg_table->sgl,
-> allocates zsmalloc memory and copies all compressed buffers to
-> the compressed pool. All existing functionality on zswap
-> writeback_enabled (or not) fallbacks under various error conditions
-> denoted by the crypto_acomp_compress() return value [and with this
-> commit, also stored in the individual acomp_ctx->comp.sg_table->sgl
-> sg->lengths in the crypto_acomp_compress() fast path], is essentially
-> preserved.
->
-> A significant zswap architectural change is that the batched
-> zswap_compress() incorporates Herbert's suggestion for SG lists to
-> represent the batch's inputs/outputs to interface with the crypto API
-> [1].
->
-> The introduction of zswap_update_entries() presents an opportunity to
-> optimize the task of storing a batch of compressed buffers. Subsequent
-> patch series will be submitted to optimize this phase by replacing
-> zsmalloc with the SLUB allocator to improve zswap_store()/zswap_load()
-> latencies.
->
-> The batching framework introduced in this series improves zswap_store()
-> latency by a lot.
->
-> Performance testing: usemem30 with 100% over-commit:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> Validation was done with mm-unstable as of 11-17-2026 (Baseline: commit
-> 866f761fd414) and with this patch series.
->
-> v4 was validated on an Intel Xeon Sapphire Rapids bare-metal instance wit=
-h
-> 48 cores.
->
->  Bare-metal instance specs:
->  --------------------------
->  - 48 physical cores
->  - 190G RAM
->  - 200G SWAP disk partition
->
->  Workload: 30 concurrent usemem processes, each allocates 10G:
->  -------------------------------------------------------------
->  The vm-scalability "usemem" test (unmodified version) was run in a
->  cgroup with memory.high fixed at 150G. There is no swap limit set for th=
-e
->  cgroup.
->
->  To quantify the performance benefit of zswap compress batching at scale,
->  30 usemem processes were run ("usemem30"), each allocating and writing 1=
-0G of
->  memory, and sleeping for 10 sec before exiting.
->
->   usemem -w -O -b 5 -s 10 -n 30 10g
->   echo 0 > /sys/module/zswap/parameters/shrinker_enabled
->
->  Performance validation methodology:
->  -----------------------------------
->  These settings were used to minimize variation:
->
->  - All cores were fixed to run at 2.4GHz with "performance" scaling gover=
-nor.
->  - Turbo boost was disabled.
->  - CPU power-saving C-states restricted with:
->
->      GRUB_CMDLINE_LINUX_DEFAULT=3D"intel_idle.max_cstate=3D1 processor.ma=
-x_cstate=3D1"
->
->  The usemem30 experiments were run with the baseline mm-unstable as of
->  11-17-2026 (commit 866f761fd414) and with this patch-series.
->
->  After booting into each kernel:
->
->   1) Constrain the cgroup's memory.high to 150G.
->
->   2) Run 2 warm-up iterations of usemem30. Don't use this data for benchm=
-arking
->      since sys time typically skews higher for initial runs.
->
->   3) Next, run 10 benchmarking iterations of usemem30:
->      - Log these high-level metrics: Sys time and individual usemem throu=
-ghput.
->
->   4) Sys time and Throughput metrics were gathered for three mTHP setting=
-s:
->
->      - 2048kB
->      - 1024kB
->      - 64kB
->
->   5) Benchmark summary data includes Sys time and Throughput components f=
-rom the
->      10 iterations of usemem30:
->
->      - Total Samples
->      - Mean Value
->      - Std Deviation
->      - CoV (Variance): Coefficient of variation (relative standard
->        deviation) measures spread relative to the mean rather than
->        statistical variance.
->
->  An LLM was used to help generate the benchmarking and data processing sc=
-ripts.
->
-> usemem30 Benchmarking Summary:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
->
->  ---------------------------------------------------
->     Improvement with v4 zswap compress batching
->  ---------------------------------------------------
->   mTHP enabled:       2048kB     1024kB       64kB
->  ---------------------------------------------------
->       Sys time:      -13.87%     -2.64%     -1.72%
->     Throughput:       +3.85%     +0.42%     +1.31%
->  ---------------------------------------------------
->
-> Detailed usemem30 benchmarking data:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->  1) 2048kB mTHP:
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->  ------------------------------------------------------------------
->  2048kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                               (sec)        (sec)
->  ------------------------------------------------------------------
->  [Run 1/10]  Sys Time:    1581.414s    1356.252s
->  [Run 2/10]  Sys Time:    1642.874s    1478.929s
->  [Run 3/10]  Sys Time:    1594.458s    1411.252s
->  [Run 4/10]  Sys Time:    1580.988s    1380.959s
->  [Run 5/10]  Sys Time:    1579.654s    1380.609s
->  [Run 6/10]  Sys Time:    1627.765s    1345.582s
->  [Run 7/10]  Sys Time:    1593.872s    1334.485s
->  [Run 8/10]  Sys Time:    1623.189s    1405.471s
->  [Run 9/10]  Sys Time:    1661.954s    1433.365s
->  [Run 10/10] Sys Time:    1602.098s    1329.813s
->  ------------------------------------------------------------------
->
->  ------------------------------------------------------------------
->  METRIC: System CPU Time (Sys Time) : 2048kB mTHP
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                               (sec)            (sec)
->  ------------------------------------------------------------------
->  Total Samples    :              10               10
->  Mean Value       :        1,608.83         1,385.67
->  Std Deviation    :           28.67            47.47
->  CoV (Variance)   :           1.78%            3.43%
->  ------------------------------------------------------------------
->  METRIC: Per-Process Throughput : 2048kB mTHP
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                              (KB/s)           (KB/s)
->  ------------------------------------------------------------------
->  Total Samples    :             300              300
->  Mean Value       :         292,261          303,508
->  Std Deviation    :          12,946           20,806
->  CoV (Variance)   :           4.42%            6.86%
->  ------------------------------------------------------------------
->
->  2) 1024kB mTHP:
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->  ------------------------------------------------------------------
->  1024kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                               (sec)        (sec)
->  ------------------------------------------------------------------
->  [Run 1/10]  Sys Time:    1567.639s    1594.696s
->  [Run 2/10]  Sys Time:    1537.577s    1456.113s
->  [Run 3/10]  Sys Time:    1538.562s    1521.887s
->  [Run 4/10]  Sys Time:    1626.176s    1531.962s
->  [Run 5/10]  Sys Time:    1593.955s    1528.733s
->  [Run 6/10]  Sys Time:    1643.519s    1558.482s
->  [Run 7/10]  Sys Time:    1510.613s    1480.177s
->  [Run 8/10]  Sys Time:    1632.018s    1584.093s
->  [Run 9/10]  Sys Time:    1569.424s    1528.915s
->  [Run 10/10] Sys Time:    1552.747s    1570.451s
->  ------------------------------------------------------------------
->
->  ------------------------------------------------------------------
->  METRIC: System CPU Time (Sys Time) : 1024kB mTHP
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                               (sec)            (sec)
->  ------------------------------------------------------------------
->  Total Samples    :             10                10
->  Mean Value       :       1,577.22          1,535.55
->  Std Deviation    :          45.13             43.79
->  CoV (Variance)   :          2.86%             2.85%
->  ------------------------------------------------------------------
->  METRIC: Per-Process Throughput : 1024kB mTHP
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                              (KB/s)           (KB/s)
->  ------------------------------------------------------------------
->  Total Samples    :            300               300
->  Mean Value       :        289,904           291,114
->  Std Deviation    :         15,385            14,553
->  CoV (Variance)   :          5.31%             5.00%
->  ------------------------------------------------------------------
->
->  3) 64kB mTHP:
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->  ------------------------------------------------------------------
->  64kB mTHP usemem30 benchmark suite: 10 runs (Limit: 150G).
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                               (sec)        (sec)
->  ------------------------------------------------------------------
->  [Run 1/10]  Sys Time:    1914.525s    1878.483s
->  [Run 2/10]  Sys Time:    1869.412s    1863.177s
->  [Run 3/10]  Sys Time:    1944.049s    1863.502s
->  [Run 4/10]  Sys Time:    1942.757s    1900.144s
->  [Run 5/10]  Sys Time:    1866.505s    1887.285s
->  [Run 6/10]  Sys Time:    1877.716s    1861.668s
->  [Run 7/10]  Sys Time:    1861.741s    1868.788s
->  [Run 8/10]  Sys Time:    1904.735s    1816.372s
->  [Run 9/10]  Sys Time:    1891.074s    1850.435s
->  [Run 10/10] Sys Time:    1893.366s    1849.747s
->  ------------------------------------------------------------------
->
->  ------------------------------------------------------------------
->  METRIC: System CPU Time (Sys Time) : 64kB mTHP
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                               (sec)            (sec)
->  ------------------------------------------------------------------
->  Total Samples    :              10               10
->  Mean Value       :        1,896.59         1,863.96
->  Std Deviation    :           29.86            22.96
->  CoV (Variance)   :           1.57%            1.23%
->  ------------------------------------------------------------------
->  METRIC: Per-Process Throughput : 64kB mTHP
->  ------------------------------------------------------------------
->                Baseline mm-unstable   v4 zswap compress batching
->                              (KB/s)           (KB/s)
->  ------------------------------------------------------------------
->  Total Samples    :            300               300
->  Mean Value       :        239,114           242,254
->  Std Deviation    :          9,090             6,419
->  CoV (Variance)   :          3.80%             2.65%
->  ------------------------------------------------------------------
+OVERVIEW
+========
 
-The numbers look nice, but what's the zswap setup here? What's the
-compressor? And how much of the win comes from this patch v.s the last
-patch?
+A rootns is an anonymous-inode control object (not an nsfs namespace
+itself) with separate build and live phases that binds together:
 
-This patch series, and this patch in particular, seem like a lot of
-complexity. I'd like to understand better the win before adding all
-this complexity to the codebase.
+1. A full set of detached namespaces owned by a fresh user namespace.
+2. A dedicated PID namespace for spawning processes into, signaling
+   members, and polling or waiting on PID 1 exit.
+3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) populated
+   directly in its target user namespace before going live, without
+   inheriting host mounts or cloning staged trees, while still allowing
+   new mounts to be attached at runtime.
+
+Work on this feature started in 2025 from David Howells' container object
+patch set [1], which I turned into a namespace for namespace roots and
+rebuilt around that premise.
+
+While the patch set is manually written, the original motivation came
+from isolating LLM agents. Running untrusted agent workloads made it
+clear that OCI runtimes need to minimize their live configuration
+surface.
+
+Assembling mounts, credentials, and namespaces inside helper processes
+with a half-configured container is what I see as the main challenge,
+and the existential debate around namespaces and container objects is an
+unfocused discussion topic.
+
+[1] https://lore.kernel.org/all/155059610368.17079.2220554006494174417.stgit@warthog.procyon.org.uk/
+
+IMPLEMENTATION
+==============
+
+Standalone fd-based namespace configuration (patches 01-07) decouples
+user and mount namespace setup from live helper tasks. userns_set_idmap()
+atomically configures setgroups policy and UID, GID, and project ID
+mappings on a CLONE_NEWUSER nsfs fd, checking current_cred() so an
+unprivileged creator can delegate the fd via SCM_RIGHTS to a privileged
+mapping daemon. move_mount(..., MOVE_MOUNT_T_MNTNS) operates on any
+non-anonymous mount namespace fd: on an empty mount namespace it installs
+"/" onto the nullfs root once, attaches relative submounts both before
+entry and into live mount namespaces, and supports MOVE_MOUNT_CLONE for
+recursive bind mounts without OPEN_TREE_CLONE.
+
+rootns() allocates a rootns instance backed by a pollable anonymous
+inode fd, creating a fresh owning user namespace and a full set of
+detached namespaces: empty mount (CLONE_EMPTY_MNTNS), PID, UTS, IPC,
+network, cgroup, and time. ioctl(rootnsfd, ROOTNS_GET_NSFD, nstype)
+returns nsfs file descriptors for individual member namespaces when
+standalone namespace operations are needed.
+
+Superblocks are configured directly in the target user namespace via
+fsopen(), FSCONFIG_SET_ROOTNS, and fsmount(), allowing unprivileged
+callers to assemble FS_USERNS_MOUNT filesystems without holding
+CAP_SYS_ADMIN in their own user namespace or entering the target user
+namespace first.
+
+Once "/" is installed, processes are spawned into the rootns via clone3()
+with CLONE_INTO_ROOTNS and struct clone_args.rootns, without mutating the
+caller in place. Pairing CLONE_INTO_ROOTNS with CLONE_VFORK and opening
+the target binary via openat2(..., RESOLVE_IN_ROOT) on the retained "/"
+mount fd allows spawning with execveat() directly into the target root.
+
+The first entrant becomes PID 1; once it exits and
+zap_pid_ns_processes() reaps all members, poll() reports EPOLLHUP and
+ioctl(rootnsfd, ROOTNS_WAIT, &args) returns init's exit status.
+ioctl(rootnsfd, ROOTNS_KILL, sig) walks pid_ns->idr under tasklist_lock
+to signal member thread groups, and dedicated LSM hooks mediate rootns
+allocation, teardown, process entry, and signal delivery.
+
+HOTPLUG
+=======
+
+1. Host creates rootns().
+2. Host sets uid/gid maps with userns_set_idmap().
+3. Host populates "/" with MOVE_MOUNT_T_MNTNS, optionally combined with
+   MOVE_MOUNT_CLONE for bind mounts.
+4. Host spawns PID 1 with clone3(CLONE_INTO_ROOTNS) (optionally passing
+   an AF_UNIX socketpair fd for communication).
+5. PID 1 watches /proc/self/ns/mnt via fanotify(FAN_REPORT_MNT |
+   FAN_MARK_MNTNS, FAN_MNT_ATTACH) or polls /proc/self/mountinfo.
+6. On hotplug, host mounts the filesystem via fsopen()/fsmount() (plus
+   optional MOUNT_ATTR_IDMAP).
+7. Host creates the mountpoint with openat2(RESOLVE_IN_ROOT) + mkdirat()
+   and attaches the mount with MOVE_MOUNT_T_MNTNS.
+8. PID 1 receives FAN_MNT_ATTACH and queries the new mount via
+   statmount().
+
+CHANGES
+=======
+
+v5:
+- Heavy reduction of cc-list. More added by request.
+- Re-slice the patch set into standalone fd-based user and mount
+  namespace configuration (01-07) followed by rootns (08-25), and split
+  proc, ipc/mqueue, and bpf_lsm changes into separate commits.
+- Add userns_set_idmap() system call to atomically configure setgroups
+  and UID, GID, and project ID mappings on CLONE_NEWUSER nsfs fds
+  without /proc/<pid>/*_map, checking current_cred() so unprivileged
+  userns fds can be delegated via SCM_RIGHTS to a privileged mapping
+  daemon (Andy Lutomirski).
+- Add MOVE_MOUNT_CLONE with MOVE_MOUNT_T_MNTNS in move_mount() to
+  recursively bind-clone host mount subtrees into a target mount
+  namespace fd without OPEN_TREE_CLONE.
+- Clarify in overview and uAPI documentation that rootns is an
+  anonymous-inode control object rather than an nsfs namespace.
+- Fix upfront pidns ancestry check in ROOTNS_WAIT, bootstrap -EINVAL
+  preservation in CLONE_INTO_ROOTNS, FSCONFIG_SET_ROOTNS user_ns
+  delegation and fsmount() rootns_bound/seq_origin handling, proc
+  pidns= mount option override check, cross-userns anonymous mount
+  MNT_LOCKED propagation, and selftest wide-arch _IOC_NONE, socket
+  blocking, and cleanup handling (Sashiko).
+- Extend selftests/rootns with userns_set_idmap(), SCM_RIGHTS
+  delegation, MOVE_MOUNT_CLONE, and hotplug mount coverage.
+
+v4:
+- A single syscall API (and shenanigans e.g., in fsconfig).
+- I use a similar API model as I used in SGX driver, as like enclaves,
+  containers are "closures". Instead of /dev/sgx_enclave like device
+  file, anon inode is used.
+- Consolidate rootns_create(), rootns_wait(), and rootns_kill() into a
+  single rootns() system call plus ROOTNS_WAIT and ROOTNS_KILL ioctls,
+  dropping rusage from ROOTNS_WAIT.
+- LSM: lbs_rootns security blob management and security_rootns_alloc(),
+  security_rootns_free(), security_rootns_clone(), and
+  security_rootns_kill() LSM hooks wired into bpf_lsm.
+- Disallow CLONE_VM with CLONE_INTO_ROOTNS across time namespaces, require
+  CAP_SYS_CHROOT, preserve caller umask, reset dumpability on user
+  namespace transitions, and fix ROOTNS_WAIT, FSCONFIG_SET_ROOTNS,
+  fsmount(), and MOVE_MOUNT_T_MNTNS locking and permission checks
+  (Sashiko).
+- Rewrite selftests/rootns in Python. I used similar structure as I've
+  used in selftests/tpm2. This "along the lines" mimics Cells style
+  container manager. Rootns is a quite typical no policy solution and
+  Cells is a managed solution, and they are at the far ends, which can
+  also be witnessed from the patch set sizes.
+
+  The question really is where we want to draw the borderline. I'm
+  neither favoring nor supporting any possible solution because I don't
+  know. I'm just saying where they live as a software stack.
+- Update documentation and architecture syscall tables for rootns().
+
+v3:
+- The patch set size increased predominantly because the coverage of
+  kselftest had to widened to cover the introduced changes.
+- Replace MOVE_MOUNT_T_ROOTNS_ROOT with MOVE_MOUNT_T_MNTNS targeting
+  mnt_ns nsfs fds, and add ioctl(ROOTNS_GET_NSFD) to open member
+  namespace fds (Andy Lutomirski).
+- Allow unprivileged fsopen(), FSCONFIG_SET_ROOTNS, and fsmount() to
+  configure and mount FS_USERNS_MOUNT filesystems directly in the target
+  user namespace without entering it first (Andy Lutomirski).
+- Fix locking, refcounting, credential/dumpability/timens setup,
+  pivot_root() lookup, and cross-userns mount checks across copy_rootns(),
+  CLONE_INTO_ROOTNS, rootns_kill(), FSCONFIG_SET_ROOTNS, and move_mount()
+  (Sashiko).
+- Mark PowerPC rootns syscalls nospu (Sashiko).
+- Update documentation and kselftests.
+
+v2:
+- Drop rootns provenance tracking (rootns_id and rootns_may_setns()) and
+  rely on user_namespace ownership for setns() isolation (Andy
+  Lutomirski).
+- Replace the rootns_enter() system call with clone3(CLONE_INTO_ROOTNS)
+  and struct clone_args.rootns (CLONE_ARGS_SIZE_VER3), allowing
+  CLONE_VM | CLONE_VFORK and compatible per-child clone3() flags (Andy
+  Lutomirski).
+- Drop the spurious task_no_new_privs() check in may_enter_rootns_creds()
+  (Andy Lutomirski).
+- Update documentation, Kconfig, syscall tables, and kselftests for
+  CLONE_INTO_ROOTNS.
+
+VERSIONS
+========
+
+v4: https://lore.kernel.org/linux-fsdevel/20261119224312.1037966-1-jarkko@kernel.org/
+v3: https://lore.kernel.org/linux-fsdevel/20261118193539.240065-1-jarkko@kernel.org/
+v2: https://lore.kernel.org/linux-fsdevel/20261117231352.3816603-1-jarkko@kernel.org/
+v1: https://lore.kernel.org/linux-fsdevel/20261117050841.3289652-1-jarkko@kernel.org/
+
+Cc: linux-api@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-security-module@vger.kernel.org
+Cc: Alexander Mikhalitsyn <alex@amutable.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Neal Gompa <neal@gompa.dev>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Serge Hallyn <sergeh@kernel.org>
+Cc: Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+
+Jarkko Sakkinen (25):
+  userns: Factor out idmap validation and commit helpers
+  userns: Add userns_set_idmap() system call
+  arch: Wire up userns_set_idmap() system call
+  mount: Add mnt_ns_get_root()
+  mount: Enforce mount_too_revealing() for foreign mntns
+  mount: Support MOVE_MOUNT_T_MNTNS in move_mount()
+  mount: Support MOVE_MOUNT_CLONE with MOVE_MOUNT_T_MNTNS
+  userns: Factor out install_user_ns_cred()
+  nsfs: Add nsproxy_open_namespace()
+  nsproxy: Pass nsproxy to create_new_namespaces()
+  rootns: Add core infrastructure for root namespaces
+  rootns: Track init lifecycle via copy_process() and pid_namespace
+  rootns: Add rootns() system call
+  rootns: Add ROOTNS_WAIT ioctl
+  rootns: Add ROOTNS_KILL ioctl
+  fork: Support CLONE_INTO_ROOTNS in clone3()
+  fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
+  proc: Implement ->set_rootns() fs_context operation
+  ipc/mqueue: Implement ->set_rootns() fs_context operation
+  security: Add rootns LSM hooks
+  bpf: Register rootns LSM hooks
+  arch: Wire up rootns() system call
+  docs: Document root namespace uAPI
+  selftests/rootns: Add root namespace test suite
+  MAINTAINERS: Add entry for ROOT NAMESPACE
+
+ Documentation/userspace-api/index.rst         |    1 +
+ .../userspace-api/ioctl/ioctl-number.rst      |    1 +
+ Documentation/userspace-api/rootns.rst        |   65 +
+ MAINTAINERS                                   |   11 +
+ arch/alpha/kernel/syscalls/syscall.tbl        |    2 +
+ arch/arm/tools/syscall.tbl                    |    2 +
+ arch/arm64/tools/syscall_32.tbl               |    2 +
+ arch/m68k/kernel/syscalls/syscall.tbl         |    2 +
+ arch/microblaze/kernel/syscalls/syscall.tbl   |    2 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl     |    2 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl     |    2 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl     |    2 +
+ arch/parisc/kernel/syscalls/syscall.tbl       |    2 +
+ arch/powerpc/kernel/syscalls/syscall.tbl      |    2 +
+ arch/s390/kernel/syscalls/syscall.tbl         |    2 +
+ arch/sh/kernel/syscalls/syscall.tbl           |    2 +
+ arch/sparc/kernel/syscalls/syscall.tbl        |    2 +
+ arch/x86/entry/syscalls/syscall_32.tbl        |    2 +
+ arch/x86/entry/syscalls/syscall_64.tbl        |    2 +
+ arch/xtensa/kernel/syscalls/syscall.tbl       |    2 +
+ fs/devpts/inode.c                             |    2 +
+ fs/filesystems.c                              |   15 +
+ fs/fs_context.c                               |   21 +-
+ fs/fsopen.c                                   |  140 +-
+ fs/internal.h                                 |    6 +
+ fs/namespace.c                                |  348 +++-
+ fs/nsfs.c                                     |   64 +
+ fs/proc/root.c                                |   22 +
+ include/linux/cred.h                          |    4 +-
+ include/linux/fs_context.h                    |    6 +
+ include/linux/lsm_hook_defs.h                 |    7 +
+ include/linux/lsm_hooks.h                     |    3 +
+ include/linux/mnt_namespace.h                 |    2 +
+ include/linux/nsfs.h                          |    2 +
+ include/linux/nsproxy.h                       |    9 +-
+ include/linux/pid_namespace.h                 |    4 +
+ include/linux/rootns.h                        |   93 +
+ include/linux/sched/task.h                    |    8 +
+ include/linux/security.h                      |   30 +
+ include/linux/syscalls.h                      |    5 +
+ include/linux/time_namespace.h                |   13 +
+ include/linux/user_namespace.h                |    7 +
+ include/uapi/asm-generic/unistd.h             |   10 +-
+ include/uapi/linux/mount.h                    |    5 +-
+ include/uapi/linux/nsfs.h                     |   53 +
+ include/uapi/linux/rootns.h                   |   83 +
+ include/uapi/linux/sched.h                    |    5 +
+ init/Kconfig                                  |    9 +
+ ipc/mqueue.c                                  |   13 +
+ kernel/Makefile                               |    2 +
+ kernel/bpf/bpf_lsm.c                          |   10 +
+ kernel/cred.c                                 |   32 +-
+ kernel/fork.c                                 |   95 +-
+ kernel/nsproxy.c                              |   41 +-
+ kernel/pid_namespace.c                        |    2 +
+ kernel/rootns.c                               |  588 ++++++
+ kernel/sys_ni.c                               |    4 +
+ kernel/user_namespace.c                       |  420 ++++-
+ scripts/syscall.tbl                           |    2 +
+ security/lsm_init.c                           |    6 +
+ security/security.c                           |   86 +
+ tools/testing/selftests/Makefile              |    1 +
+ tools/testing/selftests/rootns/Makefile       |    5 +
+ tools/testing/selftests/rootns/config         |   10 +
+ .../testing/selftests/rootns/rootns_cells.py  | 1400 ++++++++++++++
+ tools/testing/selftests/rootns/rootns_test.py | 1645 +++++++++++++++++
+ tools/testing/selftests/rootns/test_smoke.sh  |   10 +
+ 67 files changed, 5286 insertions(+), 172 deletions(-)
+ create mode 100644 Documentation/userspace-api/rootns.rst
+ create mode 100644 include/linux/rootns.h
+ create mode 100644 include/uapi/linux/rootns.h
+ create mode 100644 kernel/rootns.c
+ create mode 100644 tools/testing/selftests/rootns/Makefile
+ create mode 100644 tools/testing/selftests/rootns/config
+ create mode 100755 tools/testing/selftests/rootns/rootns_cells.py
+ create mode 100755 tools/testing/selftests/rootns/rootns_test.py
+ create mode 100755 tools/testing/selftests/rootns/test_smoke.sh
+
+--
+2.47.3
+
 
