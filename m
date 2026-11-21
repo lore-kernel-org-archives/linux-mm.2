@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31EF9606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9304C606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W+Kgbu0c
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ak006B3p
 Received: by kanga.kvack.org (Postfix)
-	id 412496B05B4; Sat, 21 Nov 2026 11:03:27 -0500 (EST)
+	id A7AB66B05B6; Sat, 21 Nov 2026 11:03:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EA9E6B05B5; Sat, 21 Nov 2026 11:03:27 -0500 (EST)
+	id A524D6B05B7; Sat, 21 Nov 2026 11:03:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B1606B05B6; Sat, 21 Nov 2026 11:03:27 -0500 (EST)
+	id 9418E6B05B8; Sat, 21 Nov 2026 11:03:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DA1C36B05B4
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:26 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46B831C3DB3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:26 +0000 (UTC)
-X-FDA: 85459596012.09.7B755FE
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ED4B6B05B6
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:32 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2A05C0562
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:31 +0000 (UTC)
+X-FDA: 85459596222.03.CFF8342
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 344FF40003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:23 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W+Kgbu0c;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id E90B6180002
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:29 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ak006B3p;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795277004;
-	b=5vdL1bfR59k8v/8s1W7DmYCscXU5PinCMLu7MZxbcal7xGPp0fKlxYODa31BqP0rfTWRWo
-	7xdy/C/Ilk2ThaAbRBS4BXDCFEnMdqARjQQBSu7exFbNJW7e31Ri1FwoISpNQSPuRyGtYc
-	lVjUjQn7jCHgBJZ5mruM3op9DjgY1Pw=
+	t=1795277010;
+	b=20kifr0UowBJOwc9ML3j/kPB5gXXHqgk47+lmXtvZfW1EM3CbTO7+RK/rckprQrSs75ubU
+	Cfdz7odMORqB4C2CXqn34cAH7GJYgYrzhlznxmLviF4BtzVveS2nKSxzOmxolMFPzUq95t
+	MvV+Wh331rhhCmI4S8/FMQCgtiRyRPI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795277004;
+	s=arc-20220608; t=1795277010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LId/pfdNK+kcwrBUkujBAEx5NAsbcSjlaxfY3IRiHMQ=;
-	b=AWtJmZsKBSP08GirjFp2WiHWS4M4P6PQE86zz+lIOIRxUpHa7zhHAm80YY6RcRYTa3eX1I
-	junlV4BVsfQ6Qx5KPDfVVN10Qel6SiNjAyNyn8MbigRo52mnFLZdXeOIc1aeDZRui9Bv7s
-	Ct3n9E6qA3nHK3qd8dQS5v1HJrL1ZYE=
+	bh=gBgp43T//fAyhbIagABTzJUOBXpFMWAcovwgcCINvMY=;
+	b=UDQel0TYrkwB31wPACxWoSwn400YErcKUpwx8ecwSDXv1TpJY0+UVeEHJ2N77XUMItYxQ4
+	oUU3OpMRKCnBTZ+rD5KVQKEIBs81qsHuc/XD0w9V5KivDWshrgCBADvY/d0nPcNLb9481q
+	Z2N43tJfhYL0qGc8qMCXfBGB6IIIYLM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W+Kgbu0c;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ak006B3p;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 454C8459E8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 43A2445A1F;
+	Sat, 21 Nov 2026 16:03:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69631F000C6;
 	Sat, 21 Nov 2026 16:03:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60DA1F000C0;
-	Sat, 21 Nov 2026 16:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795277003;
-	bh=LId/pfdNK+kcwrBUkujBAEx5NAsbcSjlaxfY3IRiHMQ=;
+	s=k20260515; t=1795277009;
+	bh=gBgp43T//fAyhbIagABTzJUOBXpFMWAcovwgcCINvMY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=W+Kgbu0c6J7SGfPQ62/PPeyc4fUL1Z6sm4hDkdNeYNV90392EaD2iD8hCMRfL9q/H
-	 EkjPSGjTuwn6j5ALU6yA2mau7ArCdK+LGHOgFDz4gTkjiQsMqq3MKun2ypLTSSN+hm
-	 7L+fqa6neyZgUoZ3XbM1HEvyFNXkRyoeyWfbELQTTOwb8phr7+nF83wMfj1d2JewLq
-	 RB74X9qZCCq8HDGAJbJet/enCNUSbqw0gEotGLbEc5fSNusnqM48mxWN8Sm3kI8iGQ
-	 WbjWR9KGSl4RGGag1na8PxxH3bT5lSZ0VIdRL6V1IfuQ8aDi2QpVyW3bMyJ6xiatkI
-	 2uQgjwRcmPQGA==
+	b=ak006B3phr9aYX1dvUEK//5L6VTHWrdhu9WnRwm2fYmRWlUHoS1ePI+w4EvWAekDZ
+	 pfEQvPaBb/8y9ySRdfFXJXiji/6965/4iQuc450ZgdpA4eRPkVIpJprJ9HPjsEWtWC
+	 iBKyW7ogSWyQdjceZD02Gn6MoraSsAVHGzeVB9ko8IneoEbiQBjfigplDV+e5fjG/+
+	 3+zuJ6HN5sRBsHvCed+BsSgeDlCcaPCic5jXJ+VS5HbniaOT+pJQ+d7wuPwCi7toWD
+	 jHXyC9gdXzxbmCxy0knaNiUvWgZ05c1ax1L0TxPQIT4FV20+hcprMuTfgqkvQKAd32
+	 ANfUwy2ENl7TQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Sat, 21 Nov 2026 16:02:28 +0000
-Subject: [PATCH 2/7] mm/vma: lock VMAs before taking mm_all_locks_mutex
+Date: Sat, 21 Nov 2026 16:02:29 +0000
+Subject: [PATCH 3/7] mm/ksm: only interrupt unmerging on a fatal signal
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261121-some-more-ai-fixes-v1-2-236e925d9b64@kernel.org>
+Message-Id: <20261121-some-more-ai-fixes-v1-3-236e925d9b64@kernel.org>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 In-Reply-To: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -87,26 +87,26 @@ Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>,
  Josef Bacik <josef@toxicpanda.com>, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4094; i=ljs@kernel.org;
- h=from:subject:message-id; bh=LrpiwotdXkJz5/ABY48wAzoP5uiMEH0O95S+K/32rIg=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2xP/HWsKIUv41ZP+9YPG7MeHpby+H3+0Y7fS5IML
- SQkjq/b3VHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJRBgx/LOb8MhgJ+Ph3QUr
- BNlftZrKc5Y92eNpvezaCp/7PKsKYxczMsx9wiXqmj+37mTH6T7L8vANmrs26z3KkTpWzfDi/G2
- nEgYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2738; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=QhRySLL1rZVazQ5Q24cttAAXFpF2eDQxUeouxBVErqQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2x/fP3tM6svkwPnLRZP8HzoZMqlGCP06fyNO5E9K
+ a5H1Sc6dpSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiFb0M/x0a7duW1MstOBZ/
+ N8aoe37L8vXVTZ3HODwMii7dfrt5y0FGhnee3bcnXz/C/8F1iR0f1/L62bVdd99mzj7/qtWuaon
+ 9Zi4A
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 344FF40003
-X-Stat-Signature: pu41qpmyds8mqnfjhb6t9o1xnf6q3qcs
+X-Rspam-User:
+X-Rspamd-Queue-Id: E90B6180002
+X-Stat-Signature: oi3mr6a1kff99eseesi4751dm6zmi5ib
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795277003-751847
-X-HE-Meta: U2FsdGVkX18shXzFBvywIt7bI05dbZjBH5sHovxA9i53PlS/Wt3nXv/PrmOXDWeb8Koq/kTBTJc65fy/CkBfQu7ZzR0i9nNjy+tE+Nrkwq+1fn0MbLJaNbjczWt2sQkw4i/A1ZOw54pNbzUxxXS0JfyQ698T6losJyyx5wDXIVJPa6rO9Rf0GUrLziNm393FBevHK/Zf5TkU3xTcX3vaD91L5f2ED2HfLuWy/LgJdb65M8QhObaG9k3sNO0WDS7ONr5ME/APuZxjtI/l/hmo+2FICIi2FTZj0ojiSJPp7KquKRlrxAJfNHf1TPDjrd0KI3F4/n7Y8dYHZxpYfeTZglUi4nLSA53dKiSkN4e+js384KM0W3Nvv8pdsx3WU4IfHLgfpS2mdKgaQLW5U7vTeJVssI66KY63LLCwnxq/x/s7ktuA+jUsVSAeaXi0i1STKW9CORA3LwTbzFSp6nQCMtCajd8NJslgFzu41zJN1tYCPnkEEsMexQjbEIZiYG+Io5n0vQxeBZxq1pmsGABpz3CqC/NXgO5pIAxpCzx6QzNr6jam45UJyEKtEWqj4Ym5kFP3Fp+Q1dni3Fk1tqkSRKXa+TezInWI46Ouk3qsn+T1ExlxjfDiy4xoFJRlcrk0OcpGzy74d493NAuihJuQENo0vVOQU/XvotkkCu+Zyq7hr9odfa76oNkMWrN/PQd3+j+LprP0K10QwSR/v3e3xrL5YfLd6D5TsGwNjIlYhWelbMUugZlxdh6HiEXDGfdPlkErJdQwy+PWFUSbyidlTJ1ru1mPvT+RLxIKxukE2CELQ5jUyCjHrz/NLyApYcRCz6J+OqRv+1LrcVmMn2d2AwLIypqqjs2o09JwcK2JBCGFv+M1V3aPNVUporsX+Dlt5dSL5NtOYKd1mIEkPoDFljnpBJKq0rtg301nRgmZ2zw+P1MYvFM/JvjLGYJLccbj2Ektrlbe2eCTqddnvke
- jex8ppY4
- IQh9cwQxTw0q8uszbqbmFY+2FYzfYi0gNdqcbwEzpgNeihWmN8s//rgPtpmbAc4Z7AM2sik2vCUa+Tpe4oAdmlBXtKPJ8x/2KQ01wchFOp/cbzOc+IteO1N1EAXLaKP+xbXLZiiGsfAORDe12wVLr0Y9LK3ZCKPjrC63lERvZ2onf4ESDvcQAC0kEehY+PiKxlwIVCD6fS7x6ozDMMXqafE2R/2UaGU6sgBxlz4BWzufIu5vB8bgEp0XtWmGdlHTOsWh8P5E5XCPrvblzLiJ4/Bg/q1F2f0DOGfwFRAI36g2yfLCGKfdkutJxcx9gkQnyH3DrkXCDx4PwzI9BewKSTlozX9EYiYIbVzu3BGKQpDfK3to+r9QFwkGgRQhyVCcG4t25IgDDeqiiBUHaosQnD9SFigv8hSRvWLawo91njRTSHEu6u4MMczQAKF4WA1es447YW1t6plRoYJK7O5BV9/NjdaYwPcoGIFIewt0bd+NzedwDX+pFqplINLtV2SAD4Oa8X49eya289zI=
+X-HE-Tag: 1795277009-597813
+X-HE-Meta: U2FsdGVkX18iZquReBT/Qn4kXGmeSZdF+Z3VaWZzAs69Gz2XFgy5lZHFi280u1XTRxveRoDfl6jpEJGFPXPzL721E6DVy9SqG61+Cdj6ExMpPTJV3+ix5NTA0gT0Ds6Ck1BWHwSuHA1fDKQ3znSen0jEGUjX0IlZyiuWIDaHWFvb21pk5t9BoLlU/9Q+t5Y4fHKinX+61EGdz1lZdVNzuT84IvvGaGC7VjLpT90gtNuycieQMHGiG+ix/6z8wjfUQ4gAWFn5eEX/dfWoXHjzDyJKnlammfKhN6M6rjXHRw1BsdulKA3505wXnv8DndLUBE1m39xfkuKxCLvhzwW5Eb6HaMWYirfZrDITjhTmmzLUqg9/wftg+LuBK58ikpizdlIAskxZXjQutx8G4KHmnyhbgDjzsfX1dlyxLelFOVQyg/FcmfjtBjmpkcUCLA73yAJwq3Q+kTM6UZp1oilDXmt8B1+jWGhWFqUbQXehX2E8OANmYIH7pbAI10W0kcUjiSgRj1jPaUYWlte51w6a2nEfBxFVLqKFi1LQcKKg9WALwSYQ4b/NI8ydAW4IUW9VuSOuCr83xENqmg+j50dSjWPtAD6C29p6lk4vd2i/8Uh1YubkOR2SSqU8/T86HYhoeW4aUY1b/brfsoUzVRTiJZEw9vauUMta6d+7E3Eit7aFxQiZYKzq/Yq0Wadr+tRJaSJOYCvZHz4HEc8wOVkD0h5vD/yr8oncSiukopVdbubWj6b79i+V8LNGCLJV91849F3I5Wg8lqgMpchtTZlbkSxXnuOQcTvUc4Q8HdxuuLx0XN0RRV3AMZ/xENKKzvcx3wE9lHbK+nyj/7Gk90SSZMvKvohdK3KiDXausPXgiNwYcCrEVOdvucdJIerN3zV928GKPzeJQlisX6wd5KwwKbMJo6llZC2ZbEDTWKJN/T6iWYjrkIh0c5GVGRM10lBsnUKrf5CkKicUeYgFKVB
+ eYlHfwui
+ pFiIrnehfehjvZii5suYZpKXS7+BJhmxZkOD+1HObMX2flnrYxlgL+9OghIK/09zETG/aS8VFRa9yWLX8V7anx6dWMwDmlRHmUassdoZlve0ZhEfeiAMUZ2gg0W8u0iM6KaBBJHmfNHyae8RXWE/kWdmgF49BNveuF+XFeXS2wpOvTv5NiBgTfZ/vcXeuANo0o/XgnQ6M5qyuXTODieaufcFfGjaodfkSnpIjDbmXpDZ/XC9y1XByN2GtSwD4v/V14OlIuic6mmmDo3931RQyJrMzQQVtwvnW6GV8CyhgKGC1JXTci4/12IGvgyON0kOAVVPPVXjZ5A5il67usbfv9C3kuCDXQ7+EFD9dP/CG1iwVP1CKoXAhSXIrGnunYSTYUbP2COylXQ5//ilUn3LmoD76UvXA9S4a3REfakDwf22dTcFqEaHpzC+b/9ygwqgBWQdaHZwh+qqC7T6UtlaCZ4vhjG+LPIyUmsDJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,112 +115,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-If an mmu notifier is registered for an mm while one of its page faults
-sleeps indefinitely under the VMA lock, the registration of mmu
-notifiers for every other mm can hang un-killably.
+Commit d952b79136a6 ("ksm: fix endless loop on oom") added a check for
+pending signals on KSM break, so that a lengthy unmerge could be
+interrupted, with the system call then restarted via -ERESTARTSYS.
 
-mm_all_locks_mutex is shared by all mms, so its holder must not wait for
-something that has no bound.
+However, it assumes that the callers can always restart whatever system
+call started it in the first place (the commit message questions whether
+this was wise).
 
-However, mm_take_all_locks() calls vma_start_write() on each VMA with the
-mutex held, and thus waits for the readers of the VMA.
+Well, it turns out that it was not wise, as this baked in an implicit
+assumption about system call restartability, and it was and is not safe for
+mremap().
 
-Since commit 4ed4379881aa ("mm: handle shared faults under the VMA lock"),
-such a reader can sleep in ->page_mkwrite().
+mremap() holds an mmap write lock over the operation, which an -ERESTARTSYS
+drops, meaning that the restart is not in a consistent state.
 
-Consider fuse_page_mkwrite(), which sleeps until the FUSE server replies to
-a write request:
+This was made considerably worse with commit d23cb648e365 ("mm/mremap:
+permit mremap() move of multiple VMAs"), which can result in data loss if
+you encounter this issue.
 
-    mm A, thread 1          mm A, thread 2         mm B
-    ==============          ==============         ====
-    lock_vma_under_rcu()
-    fuse_page_mkwrite()
-      folio_wait_writeback()
-                            mm_take_all_locks()
-                              mutex_lock()
-                              vma_start_write()
-                                                   mm_take_all_locks()
-                                                     mutex_lock()
+Consider an mremap() specifying MREMAP_FIXED | MREMAP_DONTUNMAP of two
+KSM-mergeable VMAs, where a signal becomes pending part way through:
 
-Fix the issue by locking the VMAs before the mutex is taken.
+    first pass                          restart
+    ==========                          =======
+    unmap tgt1 range
+    copy src1 to tgt1, move page tables
+    unmap tgt2 range
+    break_ksm(src2) = -ERESTARTSYS
+                                        unmap tgt1 range, which now
+                                          holds the data from src1
+                                        copy the now-empty src1 to tgt1
 
-Additionally, make the VMA write lock killable so a fatal signal returns as
-quickly as possible.
+This results in the user observing a successful mremap() but with src1's
+data missing.
 
-Finally, update the comments to reflect the change, dropping the lock
-ordering list which begs for bitrot.
+Without MREMAP_DONTUNMAP, remap_move() would find a gap at the start of the
+range on restart and fail with -EFAULT there instead.
 
-Note that the lock order at the top of mm/rmap.c doesn't appear to be right
-- the hugetlb locks are taken after the VMA write locks. However, this was
-already the case, and can be addressed in a follow-up in any case.
+Fix the issue by only breaking out of an unmerge if a fatal signal is
+pending, returning -EINTR when we do. This makes KSM unmerging consistent
+with many other signal checks in mm.
 
-Target commit 4ed4379881aa ("mm: handle shared faults under the VMA lock")
-as this is where it became possible for VMA lock readers to sleep in
-->page_mkwrite().
+Target commit d23cb648e365 ("mm/mremap: permit mremap() move of multiple
+VMAs") for the fix as this made the issue significantly more impactful.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 4ed4379881aa ("mm: handle shared faults under the VMA lock")
+Fixes: d23cb648e365 ("mm/mremap: permit mremap() move of multiple VMAs")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/vma.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ mm/ksm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/vma.c b/mm/vma.c
-index 09bbcdb4971b..f8cf319ff9cf 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2375,15 +2375,10 @@ static void vm_lock_mapping(struct mm_struct *mm, struct address_space *mapping)
-  * mapping->flags avoid to take the same lock twice, if more than one
-  * vma in this mm is backed by the same anon rmap or address_space.
-  *
-- * We take locks in following order, accordingly to comment at beginning
-- * of mm/rmap.c:
-- *   - all hugetlbfs_i_mmap_rwsem_key locks (aka mapping->i_mmap_rwsem for
-- *     hugetlb mapping);
-- *   - all vmas marked locked
-- *   - all i_mmap_rwsem locks;
-- *   - all anon_vma->rwseml
-- *
-- * We can take all locks within these types randomly because the VM code
-+ * Mark all vmas locked, before taking mm_all_locks_mutex. Then take remaining
-+ * locks in the order mandated by the comment at the top of mm/rmap.c.
-+ *
-+ * We can take locks of the same type in arbitrary order because the VM code
-  * doesn't nest them and we protected from parallel mm_take_all_locks() by
-  * mm_all_locks_mutex.
-  *
-@@ -2400,20 +2395,24 @@ int mm_take_all_locks(struct mm_struct *mm)
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 623a2cdb3924..5d320a200951 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -627,8 +627,8 @@ static int break_ksm_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long en
  
- 	mmap_assert_write_locked(mm);
+ 	if (ksm_test_exit(walk->mm))
+ 		return 0;
+-	if (signal_pending(current))
+-		return -ERESTARTSYS;
++	if (fatal_signal_pending(current))
++		return -EINTR;
  
--	mutex_lock(&mm_all_locks_mutex);
--
- 	/*
--	 * vma_start_write() does not have a complement in mm_drop_all_locks()
--	 * because vma_start_write() is always asymmetrical; it marks a VMA as
-+	 * VMA write locks do not have a complement in mm_drop_all_locks(),
-+	 * because VMA write locking is always asymmetrical; it marks a VMA as
- 	 * being written to until mmap_write_unlock() or mmap_write_downgrade()
- 	 * is reached.
- 	 */
- 	for_each_vma(vmi, vma) {
-+		int err;
-+
- 		if (signal_pending(current))
--			goto out_unlock;
--		vma_start_write(vma);
-+			return -EINTR;
-+		err = vma_start_write_killable(vma);
-+		if (err)
-+			return err;
- 	}
- 
-+	mutex_lock(&mm_all_locks_mutex);
-+
- 	vma_iter_init(&vmi, mm, 0);
- 	for_each_vma(vmi, vma) {
- 		if (signal_pending(current))
+ 	start_ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+ 	if (!start_ptep)
 
 -- 
 2.56.0
