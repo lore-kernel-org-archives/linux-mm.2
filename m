@@ -1,90 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6567F606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 18:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A25606A330
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 19:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dhE2skl8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IXVuogm5
 Received: by kanga.kvack.org (Postfix)
-	id E12196B00EF; Sat, 21 Nov 2026 13:40:15 -0500 (EST)
+	id 28C726B00EF; Sat, 21 Nov 2026 14:11:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC3C16B05B0; Sat, 21 Nov 2026 13:40:15 -0500 (EST)
+	id 23DB46B05B0; Sat, 21 Nov 2026 14:11:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD8F76B05B1; Sat, 21 Nov 2026 13:40:15 -0500 (EST)
+	id 153AF6B05B1; Sat, 21 Nov 2026 14:11:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E1476B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 13:40:15 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E83CCA057D
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 18:40:14 +0000 (UTC)
-X-FDA: 85459991148.12.0AFEB9B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4AAF11A0003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 18:40:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhE2skl8;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E69C56B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 14:11:01 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 790B31601A9
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:11:01 +0000 (UTC)
+X-FDA: 85460068722.22.EA18733
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D7BC8C0005
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:10:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXVuogm5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795286413;
-	b=VhvcfLKw/1Ro1SMgP8KIqTn9kvAxWQ0EQUcnKb2CRQca1hASxTsGi6tK546N5Y76lRGRRR
-	LHs3ZGHT8Sz3AJ/pXK2EB/3FlVSZmKUkyayEsFL1+QI1Tyo6jT5AMLrOmf21YQ5SJOFaAx
-	AteKd2Lp6IcfhH9zKGFlrIor910wri0=
+	t=1795288260;
+	b=2bEwV4ZyD6Mzhc+o/OVggAO5ePbvykU2fMJpcUThiEVkkgdVVtpbBj+13OU98kVisKLA69
+	xovnKntREfws9dMW+M8gUvXkMjJzRNwTN3rgeUgV6/GRWm+39Coswq+JmqPvfJnapRtQGU
+	QYW1j02b/3JSqYY7meC4fQDKapYVlZA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795286413;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795288260;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yODxFoCJLk8oVC8VZOQVwmO8zUsVH8boKtD79A/3Fso=;
-	b=faWybsCGmuBBYBAvB9M0wbmxbD+sHIAMVvCb9CSidXqNxKRw6oOm25VbpzGb2fUMCJ5EM8
-	qjPm3AVzsbVVeZK5X9m/2Qk1Q9yMpDGDMmHHr1UOKrD7Wd5OUr4Ta8tQ18FEc8ObUon7xg
-	WyYpbn7Ml8J5sD3p5BlKfLlEfwTB90M=
+	bh=6ow9Xw7m3YEqTR1MIKUD5mHez4EOB5YhbjcdeDZUw2w=;
+	b=CykWIVruF1GH4V9eLln1sa3dYsa3WkcWNHzTIcK6FiFWd2RY3VAziXWGd76gyRGhnCPpiK
+	b1zKU2IJHitb/Hbhj64TJLLzJC/FVuIJkKxnM96tgwhq1f+k9TOYzjJVkGx0XJPvBr6o5v
+	U9kF2rCy0vwRpg/bb32gfAcTxmebHQA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhE2skl8;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXVuogm5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 38F65439A7;
-	Sat, 21 Nov 2026 18:40:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989991F000C0;
-	Sat, 21 Nov 2026 18:40:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 48C7061188;
+	Sat, 21 Nov 2026 19:10:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 7792F1F000C4;
+	Sat, 21 Nov 2026 19:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795286412;
-	bh=yODxFoCJLk8oVC8VZOQVwmO8zUsVH8boKtD79A/3Fso=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dhE2skl8IQDBPGtT3vL9s3Z1jh+m4swnp+T125amVYjf9oCbSiNx/FttscviAg/Hw
-	 Yykm2uAaCSNK+9ZhScGYGcFmVrGoEp8W6fUZEX+OxqMAzkCJfEAP50i6WOi7a0sjYF
-	 xzac9CEwpvmiUFBWRb9ldqvJ9uZs2vnzjtUUBKAbI37GAvwCX93lsywV5P3pERL9hT
-	 x0xHaq0Yg16h/7JzRD3mMYloEsfgA7VlkLYIlaeDrMtWiZGyvnWu3V8y8yB1OvhqlU
-	 iykACtzC700bCJGhPdeXjzRNHr+h5KnQ27nRiKfBUPvQdYeeQLSJ8GlDcTapvIOHxz
-	 Ka6Zyn4KUhcIQ==
-Message-ID: <sashiko-outbox-227266@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 3/3] NOT_FOR_INCLUSION: selftests/resctrl: Tasks
- keep using removed RMID after fork() reproducer
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Reinette Chatre" <reinette.chatre@intel.com>, kees@kernel.org, mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, bp@alien8.de, tglx@linutronix.de, dave.hansen@linux.intel.com, tony.luck@intel.com, ben.horgan@arm.com, Dave.Martin@arm.com, james.morse@arm.com, babu.moger@amd.com, fustini@kernel.org, jedrzej.wasiukiewicz@intel.com
-Cc: fenghuay@nvidia.com, peternewman@google.com, yu.c.chen@intel.com, x86@kernel.org, linux-mm@kvack.org
-In-Reply-To: <2f95c069a2646af7d5745b14d2c53d0d9d450bc7.1795197419.git.reinette.chatre@intel.com>
-References: <cover.1795197419.git.reinette.chatre@intel.com>
- <2f95c069a2646af7d5745b14d2c53d0d9d450bc7.1795197419.git.reinette.chatre@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 18:40:10 +0000
-X-Stat-Signature: m559znaqjycnfzp44f91nzkm11a9zquh
-X-Rspam-User:
-X-Rspamd-Queue-Id: 4AAF11A0003
-X-Rspamd-Server: rspam10
+	s=k20260515; t=1795288259;
+	bh=6ow9Xw7m3YEqTR1MIKUD5mHez4EOB5YhbjcdeDZUw2w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IXVuogm5AmzeqYVSeKK45LIqxXSnmNzlRQhLbnpp/DOl3f1zkSIUhFKlzo1BKxucA
+	 1n4pOf7fvG2ysLhBqbKKPKQ40fjvD/+RCc89Pn3FC34GLo1meaV7US384hKGg720GL
+	 zTN39Od3nvrftfuqzmttAjhxmZ8OAHYMsFoJsuxQIOYi+5AtHmZDitJISN83yhuvZ7
+	 C5cz36I0m/G+CslC7vHQZc2gDqh5XBIkcVNmnq7grN+CrSxpLQ3EZuD0Seh60RmCEn
+	 xhylOpnoDC/9goxsijv5gq2jv7QI+VO5gaOc0nG2/c6yzMltjLvYmG27yBJusJvW2h
+	 7KyizQv3JeDTw==
+Date: Sat, 21 Nov 2026 21:10:55 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v5 13/25] rootns: Add rootns() system call
+Message-ID: <awHsvz1vdlwsink0@kernel.org>
+References: <20261121000844.1863324-1-jarkko@kernel.org>
+ <20261121000844.1863324-14-jarkko@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261121000844.1863324-14-jarkko@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D7BC8C0005
+X-Stat-Signature: djbop64qscpcmbniednccyyid4j8kex1
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795286413-245352
-X-HE-Meta: U2FsdGVkX1/Manu1vp1RSwWfROlkgOUhOAEYNMAko7dduynFDodY4pgOkStAhxVf6ZcTaXFlbBcBJEMgg7jfPGl4mIrsh1hrC3wO4SLHVuf1tKyKMuo8YDNfI52DITIyv3JoTVe9P+5l5Z3Ewi6dw9iFcGkcJz4nIiPHR0spZcsB62lnHY9otpesVMGXjlpF/kn7ihij2qzPJMc3MghirFuIwbWBQWUH30i3S/x+04ONnUXxtsiVduLYO8vaHT/tzpcDJKhwty9ma4QqVqZ8nBxIVPzTEPObfdZLj6mhKzYfwd0pgF6BtJfc0WBf/y1d5wBkYNys4/QZ6Ryz7rjL4r+HTduNxDwU4rmIbLlCFVoFpF2ggX/Po1MTGxvuNd2vjU9BRxKyudF+X84spFY3oIpquYnAr/mDW1q9H1kwa+m59OPB0aptyummuQSl5IY2Ui1+VV/mY/cbVCevqfpEJD17P/oSzy4WLY0XhTgWpOGf5LWR/hj9Vnhop+ST3dbkzaVuPNjXW47O5o89ngacewMEDZ9sSEAIbm2Ir41S2yS3Vl8NiUKvTZqfEILgo3wCjACRomRz8hwJMWqCoKRWsm7Bud8Mha0M8T+8/88dG5GTNutH200qBgqzXJTwwSGFTYWPDYcFCOHPVM2t2b0dlUxPc/eiUuMT5L9NYi4dbh7HiQe5f7OKcnF4q+ikkv/HcwcRctprN0KL4J9L7kzKgL8GO7sz3acgF3qVjJ6fOo2HXK5LFkLEdWXWB9Ja/HxHHqMXx6XfFm/T0sUXKd6tvzoL3VSxoVzfb46BeVk6uyoLhj1GceYlo9kKMWtKZzEn11k/cHX5HXG78sXWsVs2ly/OHUDmfeUZ+23ixmic9Aib60A+GhxGaXM535inBMJI5LuTXx0tw4MTwNV+iv6AoUY/vUd0rG2Oh4pDUjT7lX0QQ1lkhRqiUHIKH8WBGUqUxXZncb4hRjAdm+ZGgn1
- 1xOcEhl8
- Co7Jn3oN4aga1ziH6nUGM4K7XbPOjaBmV6GSVcbe59pBiIRre8NShNjcUfMeg5bgt4syjb0NCqV6CqMJvpfq88lx/YN6qC8TtIyLZEHQ+520jxXIoZkQo7zlyzyd7+MwzoEyMgDHVLV9Z31R/Ykdqop121wXOBVIFoExhuAkUN0xXB3L7kMehNbiYnoSj7I3nC/d3Hk9lko+ANCJui2QYdZFGvGptzfsm56cqiRKgdRkjIYYoO1mN0z3yzs1wwUe+sebTRMUHT7+x10RKCtGNUICrpGzBA+6wPXQB+kShi017eeQL6OSNwNVmg9bLvsZVY7t3YqQ+CnmBo9NndJGrXHZtdoOqHsre4PGt85SKgoZxE5d6Z4bf5kkZsnJLz1Ba0oTbAdoauHV8olnAXaV2zll1nTbgB3UHXRb/oMaIwps8k70TOU4a6y1dE9FGe3xVQVdx8XekYzznjV6pHngZVNe/iXZiMSVyKWWeeme6AFs2SXVDIJN/Wma12lqxUzFRlyVHK7bMLa+4F97yQQi7jB18acnNMvu3EseVAWUvW37VDL99zPpOcBlhUgOK1mbbeOe5ev8ciZddDHPO/4irGV+oFxVRqJo8Y7FRjBl8rfvQSClc1YRYMMsWp2XoJjU+CDEF8dzw2zlvl+MNQE7Yd46pYae+cG2aA7sxbFlt0WP0M94mHFakeiuS58xPTcYJONNb4Eizx76/deercgDSY/PGlNhdFQJgIrXWGFq6EdBT+/lmgHqd65oHSCHTrwRwuMVliiK583XOygljyBN+UsHnBqRbzMBWOn3ICqiLLjMLLQPtDpCIuqfjZjRI6WNiXKw9ihwrBsV6RaBrD+Wpcr8iFTghli4na7KJRmSXS5q37v4=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795288259-195488
+X-HE-Meta: U2FsdGVkX19C4ZpxI6AHr1DM8EYVNHfI03I3WRbwmNvtATGKi1NEU/K8IeGDRJtdJxGoE4uuvzobbu/iMs9r9Oqq/KTo/O87InYRmXGqGnenNLfhpkgkpWrmsKIhPFBP9vRzVBnR3RenDmbkaqqI8+eK0sHZfmkT03M+RUYMfnYZ9D30Bf1TvEY+HSO+VtoyU1Bt+0bzULTVL/jp/dBPKO0enK753P4Bu1j/bTyMhFqpX/+gJAeHqRufQUn4D/rBECexIMTn+en/4rfpgxTLoQ/+aQUuk/pJ9nyup9ds15h1dUyCqmY9LAbQRiblGviyuGK3itBRQk8WEwbewFQ7RrjQ1ZeHIavMB3MEDl9doAcW5KObq9Z6fnv6WP7d+yplTVY5hCwRkjY56v5CzQd3VqkVWTt72vgQXjdYA6GbU/FDw88jIXP2+QQb0b0ZF9p4S5McyTVqMGZLk2c7vyVmAIbqMla939Cr1+nnqpp+dZmcJXshs4VvwOjrH/IPcP+aunSSgiRxIQq8PfYNmQ3pckf65XactUOUn9VeBN3cVpujsUpI6pMBu357ma0pgpMeTh1VQtKYlK1uhtI0xfBe3LPQ56EgcwK/Vq86hXllU0QhTIEDOgK/ICpoGQ+SUHQ3KvZl/5rCQxdFehJWmak4rI48urI/kXh2rKU0Se/QvgotNH2vc51pwZ6GGfVXocWV5keyyMUfVDz22E+kxGm0QQSSWts9ou/DU+sH0nm3eL4B7vPczOj+MK8URMwB4LubNZkW9pIpRfYc3wSsNG4HVExWykhyv+O/MHV7bzvPssTlGUP3m4LiHNfgRFSSe0CSoZKYIU1G9FtgJh8yCL/pPWvi4pk1kGBTvp7D5j3Z0/bO3yigyGCHZqMZ0oJmPPKlhrFsRwmBLB6aM9OpsEUHGVW0ZyGs0ZfhgVsCMBVO65k8BoAAj5ue2qD7x3CbW3N5pgp+00KmZFhnDsBtOtk
+ y1HdKXGV
+ I4PmAkwV/pCD5Ah4QCgVnR2iwivyvp6lb8KFNTp9zQQZ3JlJowSFEj5Xps1ZMYJ8w5lVyptg+0joL4wLajVwdiM7rC3IrC79/UKkxJ3fPELPLAN1hBaatr14NlM55CJK19+Q3y80bekrrsgZ+B7ZMPMaE+Lq9QFndg0bqkK3FdVljeQ3M4xVeIdnrh+/mqyJMo5Gs5cG8TLzvQ9w90ZtorZJizHppqdehharoEcjcuH7Q/xLs4ftrr7286VFbZDqQ+eyrX6BhKb1JsFDQJQedeZY+hHQg7Lql4x0kPWsU2o4L7o6ndwUiyEQ7jPg+praJ2sWH7lLKgzapfXQDflPLP2XqI4VkfCTT6jizGZmAPPRyna389M/ip/S2fLLBUxLr0v86mK3EuC4YLLjVwNDE80Mm2H2gA6V3crBfyUA/uW5diDUfMWnT1NirB8Ht7aevS6z+reWyG8tvw/e4IL1Nn0YFBl/bkEVmW34kpDBMJgvVaYM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,139 +104,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issues to consider:
-- [Medium] selftests/resctrl: wrong exit status on fail and skip in
-  stray_tasks_repro
-- [Low] selftests/resctrl: stray_tasks_repro.sh not integrated into
-  resctrl_tests
-- [Low] selftests/resctrl: leaked child sleep processes in
-  stray_tasks_repro.sh
-- [Low] selftests/resctrl: locale-dependent ENOSPC match in
-  stray_tasks_repro.sh
---
+On Sat, Nov 21, 2026 at 02:08:32AM +0200, Jarkko Sakkinen wrote:
+> Setting up an isolated namespace environment from a multithreaded
+> manager process currently requires helper processes to call unshare()
+> and pass file descriptors back over sockets.
+> 
+> Add the rootns() system call to allocate a detached rootns instance
+> owning a fresh user namespace alongside dedicated empty mount
+> (CLONE_EMPTY_MNTNS), PID, UTS, IPC, network, cgroup, and time
+> namespaces, and return its control file descriptor. Finalize the nsproxy
+> time namespace and pin active references for the lifetime of the rootns.
+> 
+> Co-developed-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit 607e215a0575d792a89253ec24f065f27a1b6a67
-Author: Jedrzej Wasiukiewicz <jedrzej.wasiukiewicz@intel.com>
+Syscall name is outdated. I'll rename it as container_create(). Does
+not have to be final name, but is a better wip name.
 
-NOT_FOR_INCLUSION: selftests/resctrl: Tasks keep using removed RMID after f=
-ork() reproducer
-
-This commit adds a script to reproduce a race where tasks forked while a
-resctrl monitor group is being removed continue using the removed group's
-RMID.
-
-> diff --git a/tools/testing/selftests/resctrl/stray_tasks_repro.sh b/tools=
-/testing/selftests/resctrl/stray_tasks_repro.sh
-> new file mode 100755
-> index 0000000000000..42f65d7d7bb4d
-> --- /dev/null
-> +++ b/tools/testing/selftests/resctrl/stray_tasks_repro.sh
-
-[ ... ]
-
-> +R=3D/sys/fs/resctrl
-> +C=3D$R/c                      # control group used for the test
-> +M=3D$C/mon_groups/m           # monitor group that gets removed
-> +MF=3D$R/info/L3_MON/mon_features
-
-[Severity: Low]
-Could this test be integrated into the resctrl_tests harness or wired into
-tools/testing/selftests/resctrl/Makefile?  Right now it is not listed in
-TEST_PROGS, so standard kselftest runs will not execute it, and it requires
-/sys/fs/resctrl to be pre-mounted instead of reusing the mount_resctrlfs()
-and feature-check helpers in resctrlfs.c.
-
-> +
-> +[ "$(id -u)" =3D 0 ] || { echo "run as root"; exit 1; }
-> +[ -f $MF ] || { echo "resctrl with monitoring is not mounted at $R"; exi=
-t 1; }
-> +if grep -q llc_occupancy $MF; then
-> +	echo "llc_occupancy is enabled: freed RMIDs can sit in limbo."
-> +	echo "Boot with the kernel parameter rdt=3D!cmt."
-> +	exit 1
-> +fi
-> +[ ! -e $C ] || { echo "$C already exists, remove it first"; exit 1; }
-> +
-> +FORKERS=3D()                  # PIDs of the forker processes
-> +KIDS=3D""                     # PIDs of their children
-> +
-> +# Runs on every exit, including Ctrl-C: stop all test processes and remo=
-ve the
-> +# test groups.
-> +cleanup() {
-> +	trap - EXIT INT TERM
-> +	[ -n "$KIDS" ] || [ ${#FORKERS[@]} -eq 0 ] ||
-> +		KIDS=3D$(pgrep -P "$(IFS=3D,; echo "${FORKERS[*]}")")
-> +	[ ${#FORKERS[@]} -eq 0 ] || kill "${FORKERS[@]}" 2>/dev/null
-> +	[ -z "$KIDS" ] || kill $KIDS 2>/dev/null
-
-[ ... ]
-
-> +# Remember the children for cleanup, then stop the forkers. The children=
- stay.
-> +KIDS=3D$(pgrep -P "$(IFS=3D,; echo "${FORKERS[*]}")")
-> +kill "${FORKERS[@]}" 2>/dev/null
-> +sleep 2                     # let forks that are still in flight finish
-
-[Severity: Low]
-Does capturing KIDS with pgrep before killing FORKERS leak sleep 20 child
-processes?
-
-Because the 8 forker subshells are still forking in a tight loop while
-pgrep scans /proc (and both here and in cleanup() pgrep runs before sending
-SIGTERM to FORKERS), any child spawned after pgrep checks its parent or
-whose fork() is still in flight is missed in KIDS, reparented when FORKERS
-exit, and left running after the script terminates.
-
-> +
-> +# Take every free RMID. Stop on the first error, normally ENOSPC (pool f=
-ull).
-> +n=3D0
-> +while err=3D$(mkdir $C/mon_groups/n$n 2>&1); do n=3D$((n+1)); done
-> +echo "monitor groups created: $n, stopped on: ${err##*: }"
-> +
-> +# Nothing was ever put into n*, so any task listed here is a stray.
-> +strays=3D$(cat $C/mon_groups/n*/tasks 2>/dev/null | wc -l)
-> +echo "tasks in new monitor groups (expect none): $strays"
-> +if [ "$strays" -gt 0 ]; then
-> +	grep -l . $C/mon_groups/n*/tasks        # which group holds them
-> +	echo "RESULT: $strays stray task(s) kept the removed group's RMID"
-> +	exit 0
-> +fi
-> +
-> +case $err in
-> +*"No space left"*)
-> +	echo "RESULT: no stray this run, run again"
-> +	exit 0 ;;
-> +esac
-
-[Severity: Low]
-Does matching $err against "No space left" fail under non-English locales?
-Without LC_ALL=3DC, mkdir prints a localized strerror(ENOSPC) message and t=
-he
-script falls through to the inconclusive result even when the RMID pool was
-exhausted.
-
-> +
-> +# Not ENOSPC: the pool was never full, so the freed RMID was not reused =
-and a
-> +# stray cannot be seen in this run.
-> +echo "RESULT: INCONCLUSIVE, the freed RMID was never reused (${err##*: }=
-)"
-
-[Severity: Medium]
-Should the exit codes follow kselftest conventions?
-
-When stray tasks are found ($strays -gt 0) or the run is inconclusive at
-the end of the script, exiting with 0 makes automated runners treat a
-reproduced bug or an inconclusive run as a pass.  Conversely, the
-prerequisite checks at the top (root, resctrl mounted, and llc_occupancy
-disabled) exit with 1 instead of the kselftest skip code 4 (ksft_skip=3D4).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1795197419.gi=
-t.reinette.chatre@intel.com?part=3D3
+Br, Jarkko
 
