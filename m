@@ -1,100 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B70606A33C
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 13:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9185B606A32A
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 13:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Llrk+tFS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZSqX/PyV
 Received: by kanga.kvack.org (Postfix)
-	id 69DF46B05B3; Sat, 21 Nov 2026 08:12:30 -0500 (EST)
+	id 8CDF96B00EF; Sat, 21 Nov 2026 08:41:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627506B05B4; Sat, 21 Nov 2026 08:12:30 -0500 (EST)
+	id 87F236B05B0; Sat, 21 Nov 2026 08:41:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5159F6B05B7; Sat, 21 Nov 2026 08:12:30 -0500 (EST)
+	id 7957E6B05B1; Sat, 21 Nov 2026 08:41:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2396A6B05B3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:12:30 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A23DA7F97
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 13:12:29 +0000 (UTC)
-X-FDA: 85459165218.24.C8652E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F30F920002
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 13:12:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Llrk+tFS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 50A0F6B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 08:41:06 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B498CC04B8
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 13:41:05 +0000 (UTC)
+X-FDA: 85459237290.11.587E674
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0430D16000E
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 13:41:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZSqX/PyV";
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795266748;
-	b=b/lFB6gYwxMZMmDIHsyltsCbh89MdYrnIAujgq5ROWp3v/mwm67KnE3/5zMREu9QF0oF/a
-	n4JPaVYK0WivF2uzSgBcua9V6M/QDDUpJJju2dB9wo4vJjJZ/E1P6nv0/2ZkknpmWxX2D1
-	LEyqbo1ELMRPAYKmMfa8pT6dlML+hKY=
+	t=1795268464;
+	b=iBHibSmy0xzFPqbNGvT5CbutdHQtnIkjDLG6x0Vus9eXvq9C8sxLi4R80njml3NYO2JwNJ
+	+ndVx6IKAg61udeC9fYznjM0PlsA2iBJmcmB5EEGEKkLcD2YNyv/VyJ4ShSwjvUYRD2gtQ
+	SoJGXxwTr38SCQEeW3kEX0Vi2OjTous=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795266748;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795268464;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aUInXzI86QP6XpSIJdjuc+h3UvYC3aBfWl+Dnv2U0Sg=;
-	b=AJaMZmVMlhZAa768APYbwECAvD7GGqG0NZEmZ0seiLmGix3SXNwAew9gOZSYKtZuADjWeD
-	bRokPqwLMaIYSHSVeEGhHLU5Ka6xQVEsvMICMvBxjnQhbkGCLxDh3IpDg6zzSNwltNOJl1
-	LDpRU/XDb+G154vm6Khm4OYRuF7wrNE=
+	bh=ze1XfukPlqWhXxeWdokIWjjT48DYgRLaaIcyK/o1tvY=;
+	b=ZEHJFEhvZ/VDPm5C28ZnPlhU3chBsb9o7Fbdh7ECVwoqL+ZNSHUm80jGiusu4n7NlzBTY9
+	VDepntvH/pkmW+Fxjaf46khSBhrvwh/l/hLrm0yJ/nkDHnum9IqSLUO/3GQ9TmvAEAi504
+	/3P7m/DRwhTo5pwn/RX2Q+ID3pDqq0E=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Llrk+tFS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZSqX/PyV";
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4007045AA5;
-	Sat, 21 Nov 2026 13:12:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A401F000D0;
-	Sat, 21 Nov 2026 13:12:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C0FB618F4;
+	Sat, 21 Nov 2026 13:41:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442B71F000C4;
+	Sat, 21 Nov 2026 13:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795266747;
-	bh=aUInXzI86QP6XpSIJdjuc+h3UvYC3aBfWl+Dnv2U0Sg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Llrk+tFSr3xP2MdtlmslXpezU3EZ2AF8OK1Crd6dP28Bl297cNs5BAcSQM19zP7Zo
-	 4TryAogzYTq6hIGbrnp/l/E7UxaVThzXQEk0jdBlV6LDcvYItMffMtLoBNm5S0Qe3a
-	 2d5f1Na0MoUjra2Ox4kZJXBK/Q4uaNALX3VnyIcwMdoyItDDT0Wq2tcfdYyMr2EPHG
-	 bTSNc40zg0URZt/BJctkeLdnJRzagrtoPUtXvKMQ6El+FSNIuWkw9JUmt6fOZ/fkur
-	 nTzP95wTOEQepXChR+PDsvf6+Bd1iC0HcRGhohOAEoGClXR0ZSf+6+INMkPWAIW3IE
-	 zhsdbiROBiDMg==
-Message-ID: <sashiko-outbox-227049@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 09/12] rust: mm: sheaf: allow use of C initialized
- static caches
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Tamir Duberstein" <tamird@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?b?QmrDtnJuIFJveSBCYXJvbg==?= <bjorn3_gh@protonmail.com>, "Benno
- Lossin" <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?b?T251ciDDlnprYW4=?= <work@onurozkan.dev>, "Matthew Wilcox" <willy@infradead.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Harry
- Yoo" <harry@kernel.org>, "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org
-In-Reply-To: <20261120-xarray-entry-send-v6-9-1f69d7385f70@kernel.org>
-References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
- <20261120-xarray-entry-send-v6-9-1f69d7385f70@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 13:12:25 +0000
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F30F920002
-X-Stat-Signature: owfn4mdg3guaqan7tcd49j7uyffzd3fs
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+	s=k20260515; t=1795268463;
+	bh=ze1XfukPlqWhXxeWdokIWjjT48DYgRLaaIcyK/o1tvY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZSqX/PyVpC6CU3SbqRR0szuxDgrLoipoK/D/Ig/FHo35MdiG+Ydp5+aj9HmGVa3Gp
+	 H2yER/nX/UTD6DVV5O103kQGVpQuzF4nMslta1M7zMkk5xcWKlsSf/ga/tCH7aQKcb
+	 3VnjmmgwbvqEsvYj+pKAjA+hAIT+RKjbW99SbaShivw6OEIQyyiXSpbcYRip3QaPgH
+	 s+jVOEs76rgL24ZMdObAW0nAsidspJsJtaiDkFWrENsJQGQs4gGUwpk+fPvOTgYa1+
+	 0cVKhp972pjgRkR708MODoEolIhsxwlseMaonESYnR3c7K/00fR3uU58VgCn5J318p
+	 BtUS7JnPLP4wg==
+Date: Sat, 21 Nov 2026 13:40:54 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Puranjay Mohan <puranjay@kernel.org>
+Cc: bpf@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>, kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH bpf v6 2/3] bpf: switch task_vma iterator from mmap_lock
+ to per-VMA locks
+Message-ID: <awGZWsCp6v63H_py@gremlin>
+References: <20260408154539.3832150-1-puranjay@kernel.org>
+ <20260408154539.3832150-3-puranjay@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408154539.3832150-3-puranjay@kernel.org>
 X-Rspam-User:
-X-HE-Tag: 1795266747-898551
-X-HE-Meta: U2FsdGVkX19cT6fErnHLeG6H95tIPVJ+tUvgcntXIg/EHh7gLHdlZMN4jBLT/i9z8MHhDrMQWnWD6YgafGd3Eq4WOIqU07gPDgNFTOVuKACp+E6FkFqkMS9pJPLmXXX8JpJcU/h/9Jisp028KOusE85n1xV6/NupY5/H0JMWF/8GC80rXmDwpafKATniB5i5o9G5cN31LGpBztSQPjTtrfBL1l3rqgbwzIYYlF4rI+HXsuYb1B98yXjOMAPRph8Xn4J0tu3MnQHNSJ5AE0AXaNOVuAEzh6n39+iZMJR5QYjGj7cSuKodDVbFxssW3QIdmvPdJLI6gTJLYb+B29bTdgdBvorYi2XhAUcbXddi0wIyyrDnmsHJ8nExdkJwmVeJy4yi2M9GGbFFnj3JK1Vhym42pucMfm1pfHi1PLqxNF0L1poqD8+gK4ZXAJeLUCGxnH5Obm+YZve9n4lHvOs8Tz5zkY/gJfSGCW6xHV05blQUgSH88RtlEbecvxraLK/k4stqenXXWvatqFbZ/pt8rBW0reGOXKgS7nHkQfQ6arp0aVvGghwvWIotoyYQ3TlmxmgXo88e3J1T8RQYP8sP+tTdh9vzpBAz4vXIKxRWPPZiFGP+VhsKgsnpEknJc+sLtwFAFo0pQmUTfCHFTyPp9oSGAi1V6HPLVxVFVfEPy+I/sL8ocIn4geyNcl4xNx7XuIrhGyYZ6j6dgDNssv5PtJmkkxX4gb2FjbNTQbC/QQJIA0o2HnclRZVBQEsQwKEG6JHNp1X3SW84mVVeWlYALKchFnOKT1A6vGpOfQb0DxMgq4zcopGonN0qlj4xM8H4SWNgeTdAdlvKLL3ft6uP6TzWsacIuinMw/L2q7D5+ybpYtwugULbGRlD0+MmjAemBch1L5WlJ5COakWkGz0h4MIhe3dbv7SrHPO6t8GBz+nL4mTROFhxAw+h10PoBZiQps+DxasK1lXq0Z6gCsI
- Cp07+/Yr
- 4zt7b1qHLOK9+QZhOE9raAdVaRvO22cwJfWkPW7nGQz5uV1GMXsnT0jFLXQUsyKwp8rJq/oF/+yWRC+DqFWtBoOre8bNO9AATJPv6ytKFjG7FJLxAW75G13DIWMG9zOo9SwoB5tqo7Eb9LA6QBIs4KurpsVIdqn1Z6BAT2lVSSk13LA29rr7jMCzB48JnPO//hgFoVmCFvbc55Vrok9mU0hTVngIU4SR1/bzsOxtGvzLLipVq84u9Nbxo0qkFhMGsg8kUok44t2X+VPW8EBfSbfPbBOg6P4P7nN0E/ycx94R26LO6p88vUYpwyRYZvqqGsXkRqG12tucFdyMiPeKWKDo/ZiLrD38ut+TvRvZFQFMdl0UHH/3XIrue8nuiJnb8TLW/70SYFloPReim5ljbFNDT6bjYI7RP7DzAs1uLFRMsLqArHYZP5vPrzMEDNF5EuXZqMvE7rSWVa7m+sqRXPIVB8yvWrfNxMzlJ7qCSdeIxyXTCO7PRv1uslErprlTejeUEM3TfDnrhy2i+sklAGHjUnU/T/8AlvtXOJFRq8ZkGCiR1dGgx0bJgaQKLlr1PQlme0vA66CGDPgrPHZJOVv8BhzLIQoqIPdKqV+BaiEWRa92PsOu0Dos5l2yMgqxpTs5HOSdXyAnJ5hO8nXZ1IuqxaTBRXMInVEPbxNiFWRIhSg/pBwYdUKQ+aJ/QEuk0X3uoO9e+Zijy9NtMP/A/3KDcLAkpx3++1TtwI2ZREs0pqaJ7IsYiDobnyNTnHRYHsMLhITukCAFBToCV45pDROTL4q8K5ViUpPXFDApEus8SMZk2GT1XZQN1XR5Soh4ZAnkn
+X-Rspamd-Queue-Id: 0430D16000E
+X-Stat-Signature: 4cbx5cgz7ghfqcm77ykmps7yz8i4rxm8
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795268463-229608
+X-HE-Meta: U2FsdGVkX1/1scjnK4jWbyKTtiAj5cqPiEzBs1HbeonqxGxSPZ1Aflt/U8UCSfVPomzRnyIVt/u8+Ve91gbHvjLpn1wQfL1lI4rUULyA2gZouDtKCxF9GF4wEyc9xBDrFX7HekknNLE96kHsT4hMqxFEAe4Ue0RVww6JZ4vbEcE4OIev9q++dc/05Tpa7wTYpdTQtSu9eHKMy0MtUZKob+oXdDdomCahJzx4rvKjmoepDBpzJ1Frstajr/dJlJw/oV9jHB+iONzVIzeRJEFSV2VPypgUyqLAIafvBdWchZFMrZ0byiWSsrPVgsFZusAcSQeTSsXWhXnC6+MBRtbLMKFBQk+hmtl6AZaE4D2ukM/e1WvBK29r+Fvx5GODvG7NqmyLFwJePWwGGisKwQlmOW4Enu5Ej3xGEex7zVat5hyEzz+88/iZnWt7q3LzQ1d3dvaoLdeZ20rg/QZ78KK5ocyIopjOMyL0UbzUlJhbuyHi0BZ3sRtv3769bBMW/v77iKUFlQQXlIKMAxc5BXMO3FZ/a2yiEqFCYAopPm7YCMMdn5NApozJSgAvd4d9x9beLknRWgFvkAgsJzowk4qQmx0FN4dvq2VbwYpjYbjU11p34fq+Yv91kSzncox2IyC10iNjxShjUPVR8WvPKdO5rthyCtqToXU/MamLnzRAetCQS1L9eLGVHgawIqpQq0eVevgnVe4hug70jO1ar6wY8mxDkWLBoA1wBwpI5ClOOeED3OXtB+i+ERAff9QfcHr/3Pah3FPQfmQMmHVmL3UBUBLxPvPq87x34LKGeBDEOomXKTlasobil90pGhlGnRBWG5Gt7v8sQaKbTTjHBaprYt9ez1KSi450MDlOsHlf9CgPF/JrC2X2rq/fD+sL6t3s12+7WhaMkLEQFq0cJ3bi8EWGJlwy1vxtaq34C5FO6quWaYkOzAY9g+8uN1ZJM3w1BHmGm04D3zPhqvBvplb
+ 2ja8iYkS
+ kMdxCdlCxEB+6GVYZrRpX0aiYeVVVcAf0Ps6GkUrMaOZlakGUgB9bPfH1l4B3sOlRufzkfsRkdNu7SMI757WMAqL0JUjidWdDhzSt8bw16mwOMU3Vx4fKBDlXhbXz0+larYAZcafdz5u5TOW0OHAmHQ6uMfV6rxYDwVNMsit3N/isGtAQzGBLowQjQ7CzCmcKK/cs65yACtClg/1sLX3pcTQPmbSbNS9Gl1RlkWtFxQ2YNq9oKeifk5M0mzofgB+YA4ivKElEs4tfKw0Gy4crV+Oe6TV86Nbu91JxeqB64phfKjyCsjIVqchUX++zaZS7+e7TP55LhezBXklWOZ1+BeBHKsXscGvowIIfa/Fis9Ly7TEFi+7rS3v2e6RTYBCbsI7OAeWD4F++aRB+XF4HUbfB9YYuBYSZQglTrSmlIRhx8wBGtoX9vvwX52J7OYASQ509JBMTVGvP4RWjZOSvr+KmU0wQVo5Dh5lQdDVn5gM5GlQFASSDT8x1iMpx56wv5UQfGv8chjAINb9/i/UCie1U2uTgQE0j/6hOGbiPXSWMHZz6O0pNIr3cGUnsAO6ZOkut7NGKmdan4zuGk0p9spqrx+7K8lCAMy0PkCWjB0C/bx11HSqgx65hfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,78 +101,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issues to consider:
-- [Low] rust: mm: sheaf: missing #[inline] on small helpers and
-  C-binding wrappers
-- [Low] rust: mm: sheaf: non-vertical crate import formatting
-- [Low] rust: mm: sheaf: SBox erases cache mode, allowing into_ptr() on
-  dynamic caches
-- [Low] rust: mm: sheaf: missing INVARIANT comments and raw pointer in
-  CacheRef::Static
++cc VMA team, Chris [whose AI fix this relates to]
+
+On Wed, Apr 08, 2026 at 08:45:36AM -0700, Puranjay Mohan wrote:
+> The open-coded task_vma iterator holds mmap_lock for the entire duration
+> of iteration, increasing contention on this highly contended lock.
+>
+> Switch to per-VMA locking. Find the next VMA via an RCU-protected maple
+> tree walk and lock it with lock_vma_under_rcu(). lock_next_vma() is not
+> used because its fallback takes mmap_read_lock(), and the iterator must
+> work in non-sleepable contexts.
+
+Hmm :) In future if an API doesn't give you what you need please do ask us
+in mm to offer one that does give you what you need, we don't bite :)
+
+>
+> lock_vma_under_rcu() is a point lookup (mas_walk) that finds the VMA
+> containing a given address but cannot iterate across gaps. An
+> RCU-protected vma_next() walk (mas_find) first locates the next VMA's
+> vm_start to pass to lock_vma_under_rcu().
+>
+> Between the RCU walk and the lock, the VMA may be removed, shrunk, or
+> write-locked. On failure, advance past it using vm_end from the RCU
+> walk. Because the VMA slab is SLAB_TYPESAFE_BY_RCU, vm_end may be
+> stale; fall back to PAGE_SIZE advancement when it does not make forward
+> progress. Concurrent VMA insertions at addresses already passed by the
+> iterator are not detected.
+>
+> CONFIG_PER_VMA_LOCK is required; return -EOPNOTSUPP without it.
+>
+> Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+
+Hi guys,
+
+This is buggy and can result in deadlock. You need to revert it or restrict
+which contexts it can be called in.
+
+I'm a little surprised you didn't cc- or even ping mm or the VMA team here, we
+are always willing to help and it's clearly sub-optimal to write duplicative,
+open-coded VMA traversal in BPF.
+
+Let's be collaborative in future please :)
+
+Anyway, unfortunately it seems that you've rather got yourselves in rather a
+pickle here, as vma_start_read() can call mmdrop() and in x86 that can take a
+pgd_lock in an invalid context.
+
+Consider:
+
+mmdrop()
+  -> __mmdrop()
+    -> mm_free_pgd()
+      -> pgd_free()
+        -> pgd_dtor()
+
+And looking at pgd_dtor():
+
+static void pgd_dtor(pgd_t *pgd)
+{
+	spin_lock(&pgd_lock);
+	pgd_list_del(pgd);
+	spin_unlock(&pgd_lock);
+}
+
+It's just a plain spin_[un]lock() which is invalid in softirq context, which you
+are potentially calling from here.
+
+You can get there from softirq via something like:
+
+pgd_alloc()
+  -> spin_lock(&pgd_lock)
+    <softirq>
+    bpf_iter_task_vma_next()
+      -> vma_start_read()
+        ... etc...
+	< maybe deadlock >
+
+It's not really sensible to alter core mm to accommodate this at this stage, so
+probably the best course is to disallow this code path for softirq context, or
+you could look into patching the x86 code.
+
+Thanks!
+
+> ---
+>  kernel/bpf/task_iter.c | 91 +++++++++++++++++++++++++++++++++---------
+>  1 file changed, 73 insertions(+), 18 deletions(-)
+>
+> diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
+> index c1f5fbe9dc2f..87e87f18913d 100644
+> --- a/kernel/bpf/task_iter.c
+> +++ b/kernel/bpf/task_iter.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/bpf_mem_alloc.h>
+>  #include <linux/btf_ids.h>
+>  #include <linux/mm_types.h>
+> +#include <linux/mmap_lock.h>
+>  #include <linux/sched/mm.h>
+>  #include "mmap_unlock_work.h"
+>
+> @@ -807,8 +808,8 @@ static inline void bpf_iter_mmput_async(struct mm_struct *mm)
+>  struct bpf_iter_task_vma_kern_data {
+>  	struct task_struct *task;
+>  	struct mm_struct *mm;
+> -	struct mmap_unlock_irq_work *work;
+> -	struct vma_iterator vmi;
+> +	struct vm_area_struct *locked_vma;
+> +	u64 next_addr;
+>  };
+>
+>  struct bpf_iter_task_vma {
+> @@ -829,21 +830,19 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
+>  				      struct task_struct *task, u64 addr)
+>  {
+>  	struct bpf_iter_task_vma_kern *kit = (void *)it;
+> -	bool irq_work_busy = false;
+>  	int err;
+>
+>  	BUILD_BUG_ON(sizeof(struct bpf_iter_task_vma_kern) != sizeof(struct bpf_iter_task_vma));
+>  	BUILD_BUG_ON(__alignof__(struct bpf_iter_task_vma_kern) != __alignof__(struct bpf_iter_task_vma));
+>
+> -	/* bpf_iter_mmput_async() needs mmput_async() which requires CONFIG_MMU */
+> -	if (!IS_ENABLED(CONFIG_MMU)) {
+> +	if (!IS_ENABLED(CONFIG_PER_VMA_LOCK)) {
+>  		kit->data = NULL;
+>  		return -EOPNOTSUPP;
+>  	}
+>
+>  	/*
+>  	 * Reject irqs-disabled contexts including NMI. Operations used
+> -	 * by _next() and _destroy() (mmap_read_unlock, bpf_iter_mmput_async)
+> +	 * by _next() and _destroy() (vma_end_read, bpf_iter_mmput_async)
+>  	 * can take spinlocks with IRQs disabled (pi_lock, pool->lock).
+>  	 * Running from NMI or from a tracepoint that fires with those
+>  	 * locks held could deadlock.
+> @@ -886,18 +885,10 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
+>  		goto err_cleanup_iter;
+>  	}
+>
+> -	/* kit->data->work == NULL is valid after bpf_mmap_unlock_get_irq_work */
+> -	irq_work_busy = bpf_mmap_unlock_get_irq_work(&kit->data->work);
+> -	if (irq_work_busy || !mmap_read_trylock(kit->data->mm)) {
+> -		err = -EBUSY;
+> -		goto err_cleanup_mmget;
+> -	}
+> -
+> -	vma_iter_init(&kit->data->vmi, kit->data->mm, addr);
+> +	kit->data->locked_vma = NULL;
+> +	kit->data->next_addr = addr;
+>  	return 0;
+>
+> -err_cleanup_mmget:
+> -	bpf_iter_mmput_async(kit->data->mm);
+>  err_cleanup_iter:
+>  	put_task_struct(kit->data->task);
+>  	bpf_mem_free(&bpf_global_ma, kit->data);
+> @@ -906,13 +897,76 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
+>  	return err;
+>  }
+>
+> +/*
+> + * Find and lock the next VMA at or after data->next_addr.
+> + *
+> + * lock_vma_under_rcu() is a point lookup (mas_walk): it finds the VMA
+> + * containing a given address but cannot iterate. An RCU-protected
+> + * maple tree walk with vma_next() (mas_find) is needed first to locate
+> + * the next VMA's vm_start across any gap.
+> + *
+> + * Between the RCU walk and the lock, the VMA may be removed, shrunk,
+> + * or write-locked. On failure, advance past it using vm_end from the
+> + * RCU walk. SLAB_TYPESAFE_BY_RCU can make vm_end stale, so fall back
+> + * to PAGE_SIZE advancement to guarantee forward progress.
+> + */
+> +static struct vm_area_struct *
+> +bpf_iter_task_vma_find_next(struct bpf_iter_task_vma_kern_data *data)
+> +{
+> +	struct vm_area_struct *vma;
+> +	struct vma_iterator vmi;
+> +	unsigned long start, end;
+> +
+> +retry:
+> +	rcu_read_lock();
+> +	vma_iter_init(&vmi, data->mm, data->next_addr);
+> +	vma = vma_next(&vmi);
+> +	if (!vma) {
+> +		rcu_read_unlock();
+> +		return NULL;
+> +	}
+> +	start = vma->vm_start;
+> +	end = vma->vm_end;
+> +	rcu_read_unlock();
+> +
+> +	vma = lock_vma_under_rcu(data->mm, start);
+> +	if (!vma) {
+> +		if (end <= data->next_addr)
+> +			data->next_addr += PAGE_SIZE;
+> +		else
+> +			data->next_addr = end;
+> +		goto retry;
+> +	}
+> +
+> +	if (unlikely(vma->vm_end <= data->next_addr)) {
+> +		data->next_addr += PAGE_SIZE;
+> +		vma_end_read(vma);
+> +		goto retry;
+> +	}
+> +
+> +	return vma;
+> +}
+> +
+>  __bpf_kfunc struct vm_area_struct *bpf_iter_task_vma_next(struct bpf_iter_task_vma *it)
+>  {
+>  	struct bpf_iter_task_vma_kern *kit = (void *)it;
+> +	struct vm_area_struct *vma;
+>
+>  	if (!kit->data) /* bpf_iter_task_vma_new failed */
+>  		return NULL;
+> -	return vma_next(&kit->data->vmi);
+> +
+> +	if (kit->data->locked_vma) {
+> +		vma_end_read(kit->data->locked_vma);
+> +		kit->data->locked_vma = NULL;
+> +	}
+> +
+> +	vma = bpf_iter_task_vma_find_next(kit->data);
+> +	if (!vma)
+> +		return NULL;
+> +
+> +	kit->data->locked_vma = vma;
+> +	kit->data->next_addr = vma->vm_end;
+> +	return vma;
+>  }
+>
+>  __bpf_kfunc void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it)
+> @@ -920,7 +974,8 @@ __bpf_kfunc void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it)
+>  	struct bpf_iter_task_vma_kern *kit = (void *)it;
+>
+>  	if (kit->data) {
+> -		bpf_mmap_unlock_mm(kit->data->work, kit->data->mm);
+> +		if (kit->data->locked_vma)
+> +			vma_end_read(kit->data->locked_vma);
+>  		put_task_struct(kit->data->task);
+>  		bpf_iter_mmput_async(kit->data->mm);
+>  		bpf_mem_free(&bpf_global_ma, kit->data);
+> --
+> 2.52.0
+>
+>
+
 --
-
-commit c03ff5cdfb00d1a6cfd826320ab8e9750410636a
-Author: Andreas Hindborg <a.hindborg@kernel.org>
-
-rust: mm: sheaf: allow use of C initialized static caches
-
-This commit extends the Rust sheaf abstraction to support C-initialized
-static slab caches alongside reference-counted dynamic caches, adding raw
-pointer conversion helpers for SBox and exporting the underlying C sheaf
-functions.
-
-In rust/kernel/mm/sheaf.rs at line 95 (crate imports):
-
-[Severity: Low]
-Could the crate import block use the kernel vertical import style, placing
-Arc and ArcBorrow on separate lines?
-
-In rust/kernel/mm/sheaf.rs at lines 172, 616, and 717 (KMemCache::sheaf,
-CacheRef, and SBox::static_from_ptr):
-
-[Severity: Low]
-CacheRef documents an # Invariants section requiring CacheRef::Static to
-hold a NonNull pointer to a valid KMemCache<T> with 'static lifetime,
-derived from a &'static KMemCache<T> reference, and CacheRef::as_raw()
-relies on this invariant in its SAFETY comment. However, neither
-KMemCache::sheaf() nor SBox::static_from_ptr() includes an // INVARIANT:
-comment when constructing CacheRef::Static, and SBox::static_from_ptr()
-constructs CacheRef::Static by casting a raw *mut bindings::kmem_cache
-pointer rather than taking a &'static KMemCache<T>. Could both construction
-sites document how the CacheRef invariant holds, and could
-SBox::static_from_ptr() accept &'static KMemCache<T> directly?
-
-In rust/kernel/mm/sheaf.rs at lines 197, 548, 628, 694, and 717
-(KMemCache::from_raw, Sheaf::refill, CacheRef::clone, SBox::into_ptr, and
-SBox::static_from_ptr):
-
-[Severity: Low]
-Could KMemCache::from_raw(), Sheaf::refill(), CacheRef::clone(),
-SBox::into_ptr(), and SBox::static_from_ptr() be marked with #[inline] to
-match the other small helpers and C-binding wrappers in this module and
-enable cross-crate inlining?
-
-In rust/kernel/mm/sheaf.rs at lines 667 and 694 (SBox and SBox::into_ptr):
-
-[Severity: Low]
-Should SBox carry the Static or Dynamic mode parameter A (or encode the
-cache reference type via A) so into_ptr() is only callable on static-cache
-allocations?
-
-Because Sheaf::alloc() erases A into a runtime CacheRef<T> enum inside
-SBox<T>, SBox::into_ptr() is exposed as a safe method on allocations from a
-DynamicSheaf as well. Calling into_ptr() on a dynamic allocation triggers
-the debug_assert!() in builds with CONFIG_RUST_DEBUG_ASSERTIONS=3Dy (which =
-is
-not mentioned in a # Panics doc section and contradicts the doc comment
-saying it leaks a reference), and permanently leaks an
-Arc<KMemCacheHandle<T>> reference in non-debug builds so the underlying
-kmem_cache is never destroyed.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120-xarray-ent=
-ry-send-v6-0-1f69d7385f70@kernel.org?part=3D9
+Cheers, Lorenzo
 
