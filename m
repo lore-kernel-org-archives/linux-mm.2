@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D02A606A32A
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055E4606A32A
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 17:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m9IdaaCN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MfOJU2OB
 Received: by kanga.kvack.org (Postfix)
-	id 0ECDA6B05B1; Sat, 21 Nov 2026 11:53:17 -0500 (EST)
+	id 0ACAA6B00EF; Sat, 21 Nov 2026 12:22:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09D476B05B2; Sat, 21 Nov 2026 11:53:17 -0500 (EST)
+	id 0360F6B05B0; Sat, 21 Nov 2026 12:21:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF7EC6B05B3; Sat, 21 Nov 2026 11:53:16 -0500 (EST)
+	id E402C6B05B1; Sat, 21 Nov 2026 12:21:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B43516B05B1
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:53:16 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 309EAC056F
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:53:16 +0000 (UTC)
-X-FDA: 85459721592.09.519B25A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF5B36B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:21:59 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38B4214058F
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 17:21:59 +0000 (UTC)
+X-FDA: 85459793958.27.50C7CC5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 99C3E100007
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:53:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m9IdaaCN;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 95906100002
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 17:21:57 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MfOJU2OB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795279994;
-	b=z6x5Six0tXeNOwS6B3qVJovt21cCDeN0244S+dbLJFnqONllEL0+8RFemkbnmHeYOg+/4D
-	EbzRIPMUz5l984dD5DOPT9lDKUElE8hK2bZxSYdxEZoD+kypCC6md61zVsfbtTDExmYvq0
-	5Z7ioilZuOCbnNxgHe9wZxMJgyWzTnk=
+	t=1795281717;
+	b=Spu9tYKriZ7s7ZqdV354C0DtMl6Sa+uJetv/ZN/hQI2dduV2Ap2s9pM+Lwr462r41QR1zZ
+	3Evod3mOqlYDXab8jye358xToyjmKXiaLEXiX+yUSD1T9FfXxwcm5ReEvmN/f4SunBYlVx
+	TCbLx3g9n93kvFPWuTayeDDE2G9zxLY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795279994;
+	s=arc-20220608; t=1795281717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aFcqldHucwK+C2tqtdJb8Bb0ObxZeQLB5nFF9Sfrquw=;
-	b=pTv2EtdjdxKhzHg1HjG+pJg4A5Y7wLXEpw0me4nHKVXPhna6HWvec4i1QcMInZU9WeYLzi
-	QitZZc9nSMzFfYE2iv76A+Pang4zSIJNbfhlcB6RkpZM2t74AShKiqdvF+8GQKUpDKXMpC
-	2eY3CAHnYV65VRRA7qDGOcnDwkaq0Os=
+	bh=ohIR6Qw82vrbkY4AEMlZ5OFiQyPze3nGc8ZbxW8VQNk=;
+	b=QxvNrGf8xTm1mQsIaakADusXkrQzRvtAdQUBIs/MVegDOryR4s7YbSggeAc8sXe7XwUUW4
+	8439ybIaloXXOZMBDAkgWwAhSSHx68ttG9uUCsheAs6UwQg5sVeDsfg8ed1YbDb5FOt9KF
+	h2A5Pfj7HK+gnMTL3iVdGDjje7b8hGc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m9IdaaCN;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MfOJU2OB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id DDEE9605E9;
-	Sat, 21 Nov 2026 16:53:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 12B361F000C4;
-	Sat, 21 Nov 2026 16:53:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 13B3760DDF;
+	Sat, 21 Nov 2026 17:21:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 34F461F000C0;
+	Sat, 21 Nov 2026 17:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795279993;
-	bh=aFcqldHucwK+C2tqtdJb8Bb0ObxZeQLB5nFF9Sfrquw=;
+	s=k20260515; t=1795281716;
+	bh=ohIR6Qw82vrbkY4AEMlZ5OFiQyPze3nGc8ZbxW8VQNk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m9IdaaCNfA/FKNo4j7nuRQr5xyo32XlA8RCYY2dKnBSYFcmuaF2aLNbzQL3Ws+kkP
-	 klhDzy0jBMsf66EQCZTW4gvxE19LB1osV4RlDnKF0MtWGjnVgGKkbAm/SosgJcmPqY
-	 fTBxLUMMHvfQmcYekBn8TGnpxZ8VTXormf7BCj2a8bBcyCxS/JgvzniPu5woc86O8t
-	 4uzUAMnWb4MgbFSHmjSrfmIMp1ed2y9RtTUseHWqPprQwuolv1dB1JRZavj76iHM/R
-	 2eS3qc0igRitfQeU9RQaJMi8ey0OnsXlnRwEUPVd4/a42cHQjCDH0xR7EHxsKoWS0p
-	 7xGTJTV5mWKRQ==
-Date: Sat, 21 Nov 2026 18:53:10 +0200
+	b=MfOJU2OB8lw5gSY9BnMmPvchn99+EsG8UzO4ZvAUo1WYMnnEcq9l22P9SFCMIfG97
+	 6g1DB1fPOHkkhNeQyatKx6xx82XIKQq6NmVa7ROmN01aXYxgdXSh+pSXWh7ZQo9nrb
+	 VuEg7DF7+VCLLHrN2rKKof0hdINX2MahCtu7DK97H5v+99TQtkYaYP+EmJrWbSPfZ8
+	 w+WXxHVoDa4iCMOGX0YxSgkypG1gOGZhRWzBQzr6JMwomnHh5KIaqjJJWoMW3McUpJ
+	 apwmVODt2VzXn5CnaPnu7Ie+YskEZN+V3ZYeFSpJHkDC8zS5rqBo7LJqcHZFHJxnLg
+	 NMzrk1GVnTNEg==
+Date: Sat, 21 Nov 2026 19:21:52 +0200
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
@@ -76,29 +76,27 @@ Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
 	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v5 02/25] userns: Add userns_set_idmap() system call
-Message-ID: <awHMdgo7DbzfLXcj@kernel.org>
+Subject: Re: [RFC PATCH v5 25/25] MAINTAINERS: Add entry for ROOT NAMESPACE
+Message-ID: <awHTMNdonDO8IQtF@kernel.org>
 References: <20261121000844.1863324-1-jarkko@kernel.org>
- <20261121000844.1863324-3-jarkko@kernel.org>
- <awHCTNAo9uMakhAH@kernel.org>
- <awHLt1IpLcqxUnDW@kernel.org>
+ <20261121000844.1863324-26-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <awHLt1IpLcqxUnDW@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 99C3E100007
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: gezyjghwm5rygazz544k9hdgj3qejf4s
+In-Reply-To: <20261121000844.1863324-26-jarkko@kernel.org>
 X-Rspam-User:
-X-HE-Tag: 1795279994-442943
-X-HE-Meta: U2FsdGVkX18yAKtI5KEo8SmbyH6vls/9LGhTgXccEU1B75u4BEXd1CQ8TmEeS8WaTPEORZBbi20cMG/0HYgxrCx4wMNKasPm5GGLCtwv5ETulRheCrGjlziFfJIpKzkI7LVs/LlN+4s8hNAr4BLKCRcSfOjr1eqKY4lllihj/z43Y/yeWOCl6zE12J+yFY+Je6D4jNfC72QVuimsNZMLWDxjRwCYT9jHmXLEoBtT5F7FkpGiWg4MruijUkL6Wb+h2urWLJ8o6MegE4mxY4Dff+FHXmnFH0gdT1s6Db1KeC05r6ZuG29KEVZu1YWPw3FJZBMSQN1yrdU41IwJRPgcUg/LlaqnicduDPKWEjXCoBSuQ8Z1G5Ewc+BWtzQ8+QwUMjmpdvkFw7ENMDq7xRvOxvQSV/9ObWllNTBzU3WcDRhK33TVwFhBIomdWVKngJPgWXIQMkfzpI6gDEppglaV4kp4EtLrKRE/1z2wtRAR7kVpkSAeMtusyMIt1iWsli3mnkkee/CeFDYmgs0rK7wt6ieMp7YlhRgP5r0CNZLBadSTCaHHmyGqZW4uq1WYqolVe3He0h7oy+mkWq5Q+txwz3Rgdne6dphWCeQ5TvbnjGe9yDTa9u0nxbQmh2P1mhc5aPc3qcusnk9iwBOpFIvdkRtSvT+6QXZShXDGvC39jGwxeEdbfY66TDmhd+JSqRx0Q00QlA+ZsmJXWZtI/y9X5srpzHqB6CKESX+NgCgrPHJG7/p0YFFd3+3ktek88vgCbfZ/QsIVZfRewqN+EDJMlj23sCwBAB+6LgWmFh8253Mtdr631MHadhD+5E63fEWKsKAf4MYpX/A0IxrTk5+Ytgh1/QhZ34ix+AHkECKPlyBKUw0HJPZR/IktLlr4ioumdQZXSxo7+anwMglpjy96GfkKclhG226RP9iP8u+ZNmvkuUus3ax+4D2Xjdbwi2aPSqzFq3GfdbfM0nU7v+9
- 8D84XxjA
- FlN/d9Dxe29zHXrqYc7KDTvrYedHGZ1OhKZHIows8oyetIiK5fAAeJobsmhkUOaCjly+lmalCgcAGjTUfri51CLqd0VGLanJMMEZYc6qWZLPBF/p+eIIIUk4pZkJMf+OL3OSe8yPXWMHKX8pyEUW1ozyDeOC9xKXnS0LyR0WTxkYxhDuIbzrAGAYXLtlZfYblGQAKUk2kpbvQQXQW+i3ZAbLJTJu/zFsaa5h1Oe2V+pwpTYGBulXplrMJ99K9x07noMYZ1x64+8EHtuEXqRPwWuznawovghXC0tQlA+qrzr7A+AU90jf9nIxcqv87SpeA0aqcnQmQEhZhSmg1nlR4PnXUawshb0Qr8dElmwl5gsDRLg4y6CJKYq0id2ukqmxQRcyezYQjQA/Z6EsitpLUc8wkcFZ2olK0ZBZduvHkxlGkEeCHLte2JFGjhuJMfhfXwiwliqjUbXAOZxBl1x4H7d/nIa/tQrPl24zTlYOCPoY0RumuGCAlUZLBBL/yeUdk73+0
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 95906100002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: tk7rk8ezucxegpgborwcmaxe7u47oh8h
+X-HE-Tag: 1795281717-285131
+X-HE-Meta: U2FsdGVkX18s7lObGEb6RqAQ92Eo5npAgWIrvCJI07GYqUs2OqNMHxd1UX57xXPO/DD5829TpN4TpyCbqqbgDZgOsXMY7jL1rrt7o/qnwxnpc3QR+dssU9nr4damhfTY/5F1/X6T8UyVRb+tdbgo1aV/z6V7ZGy8W6+E6O8NOnPwIkoD2KQmsQ/6WoXOmCHAZ4tEa6BPJsM8EuhHTbAFqlu1Sbbv4xmlCvtOVyYDNKI1BAGQZq4dyoEByw4rz7iHLwdokgF/OxsbqSrc1wHK27Q/xuPSpNxbKHUfJNRbWMrV9T+WJZEAiIEX/P0G8A8kbnR/4gwT3wpMd5TnnG/sQPPnAo3ytGHJNS4o1LPf9cEpli0n0VNRFAzvVBshliWZaMSPh9N78wxHy18ulCvrQtjzJVGccniHtNRBS1Xu0STLY2D/0X065n0Gnw2lWUzHYvELzVTgSy3iRLxGt6WSlcyaEUeas/MATjVyC7OLICIKlxHC126necDA3G3yHwroedygbWZ66PYEtrMKCQGCgkAGNme4njIjmFHUvy4YqdeaxQjn9Yg5SWCleiJnmCEFjpjT/N0hbhi3erQrAGQew6Fc39Jw+PhoCB/ONKHOWYSjZfSkrbW3wxdz8Z0uBpPpDA4hEFeBtQ//cEGvEZyND4FR4uoccI4Kv0DCLpQ2zLLWgSgZo1cjCQXdyILvx07Y9ztR94cxKg4V8UGQHlYGd10zewR/pXh/e/Za01w1IUYWmu20VJGb1BNXEYhhTpP/PCQae0b2JjLDVimqqZdHwDa+0I+4/2FuMMLQyLKx4P7mrTyiNNfDT9EEgdCTsi1fdp5NEmIIQQgaGzjfwFkJRf/zJJADj3lz4CfV20mF6YHal9OWY5xBM0cqohn3s8aaFTScSOsnKzSQ+bWUWob8WRcy+i/sTazMJPuDgsS1yNV9CjvdVFW/O3gNpG0/E+j1G0HkOm9b28AwwLRk7QD
+ 3vbzD3CE
+ wIpU0PMtJW2zjD/fU6z81HdzyIO+OPhPVEKq0rrMztYkFVcInjRHSbfAI6ra9DsmpZ/ZcVFK6pFmcDrXN1q9nB+OxunJfn8+kpVWR98g3H2IT9yMKGSs5gr+ruUemomWILDPPkkbWy8UOufu80fViJsEdpwbvpelkizFQuba7QiApbt61oCTKdxF7vDBdNSgfTFmaV8osEvmm7sWY/weqgr8HuWd87LfIkdWJICs0DYt5uVRikUm7KIyLacMIMKCWpf/ckl7ZeC0EUvAylopcJqwSUXysxNAjg/VBlvOwDD4C4eLiyYTEN46HpIolhptyqHNuP5dkaKyRhBFcNdqFZM44bLzARCxvZXnkxLKEANAEfqQRof/8u28B7ujpnFbDjo468yh/pUh3gEof0pbSgmM2af5qlpoEuniw7YqYrRu8I1iUqmeBLp/xSQyj9KfstUeIX9knbQTUIlhx3RfF/vfu9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,175 +105,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 21, 2026 at 06:50:03PM +0200, Jarkko Sakkinen wrote:
-> On Sat, Nov 21, 2026 at 06:09:53PM +0200, Jarkko Sakkinen wrote:
-> > On Sat, Nov 21, 2026 at 02:08:21AM +0200, Jarkko Sakkinen wrote:
-> > > Configuring UID, GID, and project ID mappings currently requires writing
-> > > formatted text to /proc/<pid>/{uid_map,gid_map,projid_map,setgroups},
-> > > which depends on a live task in /proc and enforces write(2) file-opener
-> > > CAP_SETUID/CAP_SETGID checks that prevent passing an unprivileged userns
-> > > file descriptor over SCM_RIGHTS to a dedicated CAP_SETUID/CAP_SETGID
-> > > mapping helper.
-> > > 
-> > > Add userns_set_idmap() to atomically configure setgroups policy and UID,
-> > > GID, and project ID extents directly on a CLONE_NEWUSER nsfs file
-> > > descriptor. Require CAP_SYS_ADMIN over the target user namespace in
-> > > either the caller's or the file opener's credentials, and check parent
-> > > ID-range capabilities strictly against the caller's credentials.
-> > > 
-> > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > 
-> > I'll remove the flags. I forgot to remove them from final version.
+On Sat, Nov 21, 2026 at 02:08:44AM +0200, Jarkko Sakkinen wrote:
+> Record maintainership and mailing list routing for the root namespace
+> subsystem across its uAPI headers, core implementation, documentation,
+> and selftests.
 > 
-> userns_set_idmap() still has flags-parameter but it is gated:
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> ---
+>  MAINTAINERS | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> 	if (flags & ~USERNS_SETGROUPS_ALLOWED)
-> 		return -EINVAL;
-> 
-> And used as a bitmask:
-> 
-> 	ns->flags = ns->flags & flags;
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 7cbce21ba45a..072be5ec7fd8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -24533,6 +24533,17 @@ F:	include/linux/mfd/rohm-bd96802.h
+>  F:	include/linux/mfd/rohm-generic.h
+>  F:	include/linux/mfd/rohm-shared.h
+>  
+> +ROOT NAMESPACE
 
-SYSCALL_DEFINE4(userns_set_idmap, int, fd,
-                const struct userns_idmap __user *, map,
-                size_t, size, unsigned int, flags)
-{
-        struct uid_gid_map new_uid = {}, new_gid = {}, new_projid = {};
-        struct userns_idmap req = {};
-        struct ns_common *ns_common;
-        struct user_namespace *ns;
-        unsigned long old_flags;
-        struct file *filp;
-        int ret;
+Out-of-date.
 
-        BUILD_BUG_ON(sizeof(struct userns_idmap) != USERNS_IDMAP_SIZE_VER0);
-
-        if (flags & ~USERNS_SETGROUPS_ALLOWED)
-                return -EINVAL;
-
-        CLASS(fd, f)(fd);
-        if (fd_empty(f))
-                return -EBADF;
-
-        filp = fd_file(f);
-        if (!proc_ns_file(filp))
-                return -EINVAL;
-
-        ns_common = get_proc_ns(file_inode(filp));
-        if (ns_common->ns_type != CLONE_NEWUSER)
-                return -EINVAL;
-        ns = to_user_ns(ns_common);
-
-        if (!map || size < USERNS_IDMAP_SIZE_VER0)
-                return -EINVAL;
-        ret = copy_struct_from_user(&req, sizeof(req), map, size);
-        if (ret)
-                return ret;
-        if (req.reserved)
-                return -EINVAL;
-        if (!req.nr_uid_extents != !req.uid_extents ||
-            !req.nr_gid_extents != !req.gid_extents ||
-            !req.nr_projid_extents != !req.projid_extents)
-                return -EINVAL;
-        if (!req.nr_uid_extents && !req.nr_gid_extents &&
-            !req.nr_projid_extents)
-                return -EINVAL;
-        if ((flags & USERNS_SETGROUPS_ALLOWED) && !req.nr_gid_extents)
-                return -EINVAL;
-
-        if (!ns->parent)
-                return -EPERM;
-        if (current_user_ns() != ns && current_user_ns() != ns->parent)
-                return -EPERM;
-
-        if (req.nr_uid_extents || req.nr_gid_extents) {
-                bool file_ok = (filp->f_cred->user_ns == ns ||
-                                filp->f_cred->user_ns == ns->parent) &&
-                               file_ns_capable(filp, ns, CAP_SYS_ADMIN);
-
-                if (!ns_capable(ns, CAP_SYS_ADMIN) && !file_ok)
-                        return -EPERM;
-        }
-
-        if (req.nr_uid_extents) {
-                ret = parse_user_idmap_extents(req.uid_extents,
-                                               req.nr_uid_extents, &new_uid);
-                if (ret < 0)
-                        goto out_free;
-        }
-        if (req.nr_gid_extents) {
-                ret = parse_user_idmap_extents(req.gid_extents,
-                                               req.nr_gid_extents, &new_gid);
-                if (ret < 0)
-                        goto out_free;
-        }
-        if (req.nr_projid_extents) {
-                ret = parse_user_idmap_extents(req.projid_extents,
-                                               req.nr_projid_extents,
-                                               &new_projid);
-                if (ret < 0)
-                        goto out_free;
-        }
-
-        mutex_lock(&userns_state_mutex);
-        old_flags = ns->flags;
-        ret = -EPERM;
-
-        if (req.nr_uid_extents && ns->uid_map.nr_extents != 0)
-                goto out_unlock;
-        if (req.nr_gid_extents && ns->gid_map.nr_extents != 0)
-                goto out_unlock;
-        if (req.nr_projid_extents && ns->projid_map.nr_extents != 0)
-                goto out_unlock;
-
-        if (req.nr_gid_extents) {
-                if ((flags & USERNS_SETGROUPS_ALLOWED) &&
-                    !(ns->flags & USERNS_SETGROUPS_ALLOWED))
-                        goto out_unlock;
-                if (!(flags & USERNS_SETGROUPS_ALLOWED))
-                        ns->flags &= ~USERNS_SETGROUPS_ALLOWED;
-        }
-
-        if (req.nr_uid_extents) {
-                ret = prepare_caller_idmap(ns, CAP_SETUID, &new_uid,
-                                           &ns->parent->uid_map);
-                if (ret < 0)
-                        goto out_restore;
-        }
-        if (req.nr_gid_extents) {
-                ret = prepare_caller_idmap(ns, CAP_SETGID, &new_gid,
-                                           &ns->parent->gid_map);
-                if (ret < 0)
-                        goto out_restore;
-        }
-        if (req.nr_projid_extents) {
-                ret = prepare_caller_idmap(ns, -1, &new_projid,
-                                           &ns->parent->projid_map);
-                if (ret < 0)
-                        goto out_restore;
-        }
-
-        if (req.nr_uid_extents)
-                commit_new_idmap(&ns->uid_map, &new_uid);
-        if (req.nr_gid_extents)
-                commit_new_idmap(&ns->gid_map, &new_gid);
-        if (req.nr_projid_extents)
-                commit_new_idmap(&ns->projid_map, &new_projid);
-
-        mutex_unlock(&userns_state_mutex);
-        return 0;
-
-out_restore:
-        ns->flags = old_flags;
-out_unlock:
-        mutex_unlock(&userns_state_mutex);
-out_free:
-        free_new_idmap(&new_uid);
-        free_new_idmap(&new_gid);
-        free_new_idmap(&new_projid);
-        return ret;
-}
+Not sure if rootns is a great name overall, it just randomly picked WiP
+name. What gets produced are opaque fd-bound containers so maybe even
+calling syscall as container() would not be such a bad idea (unweighted
+and unconsidered idea).
 
 Br, Jarkko
-
 
