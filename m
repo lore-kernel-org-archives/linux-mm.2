@@ -1,69 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD76606A330
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B6B606A685
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rwhelwo5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WY/4DSdZ
 Received: by kanga.kvack.org (Postfix)
-	id 876EC6B05C5; Fri, 20 Nov 2026 20:09:50 -0500 (EST)
+	id 395216B05C8; Fri, 20 Nov 2026 20:09:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 829596B05C6; Fri, 20 Nov 2026 20:09:50 -0500 (EST)
+	id 36D096B05C9; Fri, 20 Nov 2026 20:09:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 717506B05C7; Fri, 20 Nov 2026 20:09:50 -0500 (EST)
+	id 2830F6B05CA; Fri, 20 Nov 2026 20:09:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 441A46B05C5
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:50 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D20F916028E
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:49 +0000 (UTC)
-X-FDA: 85457344098.08.A2ABDE3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E74CD6B05C8
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:56 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85E1814026E
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:56 +0000 (UTC)
+X-FDA: 85457344392.18.0160588
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 44756C0008
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:48 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rwhelwo5;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id EA5292000B
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WY/4DSdZ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795223388;
-	b=iUrAkSBXWD1gUpPUPhb8j+v3Tn9kOVoDfmCNhryfTTl9ZV5sgvU+5eaBueiK7mPRFq2t5H
-	4BEGsYgA2XLlG8p9gTZH0xNv92NkcCGa2rXT7+GvuRJ6Y4yjsHpnDuKSKIvhKKTYsapCqK
-	V/ALahTBfxal/MMEDD9DqdQLXoexdYM=
+	t=1795223395;
+	b=5VlMsN3DAff3Y3xnrOfo/DnF0BAeFzLhzL1yyzL2KdUapF4y+GZgwH3ntgwc/UYrEJF2ag
+	Fikect2wVixrjnql4Or7/Am3knv7d//Ptt/+EUNDqBJ8/K4M5VEqJYunxLgYqdtgh9nmxR
+	I3cN57SUqRVGB2xiN7ahq38GXY1DIKk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795223388;
+	s=arc-20220608; t=1795223395;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A4xbXvQjiv28jWvXO4Vg6i7eBVdh6dE6iUcXF/hgg90=;
-	b=nEUj7X5lJc/h5IrOwElACjTBEfCB2PZwFCUsK7agU/u+U9iENO2SpOFB9EdtVvJZJHgnjP
-	NnG2TeTtDXl21Do+d/EFRm87cmw0XvDPpMDh0hepFjlgYwBqwrPDyyr841bffjgrR+s6Iq
-	zEmMAwboNRPEcl2XzL7DBKsNzuSj6Gg=
+	bh=afGLq+ZMse05M8Dqc4CQXKGm/d7i5Q1YL61V7nB27Lk=;
+	b=OWMZ70LY2Y6PcImOwZzt0jJM9hfU9PT92fnstuwhbANKJptcDW+9Ih5rnQRdszLayFhU46
+	asTy5IGrZpgqD2HfJOx7CwHoPZme27pxiCllfLwodZXkFg40QquvAQPtRGvfR0iCnANOJ5
+	YBSlGQVsWSfs1GDvwdt4tkaN2G4C6JY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rwhelwo5;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WY/4DSdZ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D3ED462058;
-	Sat, 21 Nov 2026 01:09:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B29D1F000C0;
-	Sat, 21 Nov 2026 01:09:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 84BF5612FF;
+	Sat, 21 Nov 2026 01:09:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4DD1F000EF;
+	Sat, 21 Nov 2026 01:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795223387;
-	bh=A4xbXvQjiv28jWvXO4Vg6i7eBVdh6dE6iUcXF/hgg90=;
+	s=k20260515; t=1795223393;
+	bh=afGLq+ZMse05M8Dqc4CQXKGm/d7i5Q1YL61V7nB27Lk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Rwhelwo5NE5JSL8OldNqHpOoZTqMv6XYyp7p8yfoeNLt55sREZNjPLf/bymELZHTd
-	 P0GYokdChuItC2WkVEMZ+jvrSaU8o7oRATUDgDJNusW6V3P7lS0OZFpDsCNw+dzSEg
-	 eCVghnS3Pzwi79Di35dTN3IPT/UqlBiXn1EHwSLZzH4E18s+oDgxP2tDy/SO2SzqAk
-	 8UfG76bSbU5ZMC9d8HnTTTQ8ItcP/FyRvuFZvdY/W/nW9xfYdQqv/FXShcNc4kE6I3
-	 I8D00x7WNEPOJh+cApbECjc2Iuh3V9WRXYl9vdvud1RLK7TJyqdHhs2DPg6Yo9T99J
-	 o++j+63fuS/nw==
-Message-ID: <sashiko-outbox-226483@kernel.org>
+	b=WY/4DSdZ5duLaVdya0oE7sMmY5T+MDho8mn9ASt7wojTMrtthQ93IU8kFVYlEp1CO
+	 KlEFS/Or9UP57/toHF9OEGYjep+kJHrRjUGxKPwk2gXxXgjBoQqbkgJJDKit583ZUX
+	 9h17ZTmZ+BIVm+Y99HDx8MqWdMoD2MHWvkM237G6h/DkHDV+h0KFKoZKp83SyPzsJ5
+	 3+fZrhmwBkQBBs3VjccEEA6c1DR+wlPPvKhYBIwNzQfnHVU1msdKnL9L4Bm/nFhKWD
+	 LSHkyzki7jK4W2qUcBC7GCWImPV+aURGT8IE4qLq5YdPelSfjnKd8zHu12OPNCoRx7
+	 nFjMWTX2Jgvzw==
+Message-ID: <sashiko-outbox-226485@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 19/25] mm, iommu/dma: Support decrypted PISA
- pages
+Subject: Re: [RFC PATCH v3 21/25] mm: Add PISA statistics and debugfs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luigi Rizzo" <lrizzo@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
  Hildenbrand" <david@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Vlastimil
@@ -88,25 +87,25 @@ Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
  Hellwig" <hch@lst.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Dragos Tatulea" <dtatulea@nvidia.com>, "Naman
  Gulati" <namangulati@google.com>, "Pranjal Shrivastava" <praan@google.com>, "Mostafa
  Saleh" <smostafa@google.com>, "Randy Dunlap" <rdunlap@infradead.org>, linux-mm@kvack.org
-In-Reply-To: <20261120010655.467825-20-lrizzo@google.com>
+In-Reply-To: <20261120010655.467825-22-lrizzo@google.com>
 References: <20261109182533.3594984-1-lrizzo@google.com>
  <20261120010655.467825-1-lrizzo@google.com>
- <20261120010655.467825-20-lrizzo@google.com>
+ <20261120010655.467825-22-lrizzo@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 01:09:44 +0000
+Date: Sat, 21 Nov 2026 01:09:51 +0000
+X-Stat-Signature: c7za99w6rmj7qmzxwszx7r98wqm1br4f
 X-Rspam-User:
-X-Rspamd-Queue-Id: 44756C0008
-X-Stat-Signature: xbhc5w7p1ff819c1pkp4w75u4z3dq3zf
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795223388-248746
-X-HE-Meta: U2FsdGVkX1/QeqsDFfBNzOah/zpnLqylk7xuyNoeJgLRFxsuop1P7BQO4D3ClAz4KF6dLYqYmlLdOusauiAdtvb02eO8Y5cP95q9UeQJJQXofnhwH7NNj1/jVl3hZ5TBVsOnn0zCcdGXyl6XHEFrtmTQaE/2IWYl7kOzIdC/4GwoYAakcOrq2zJBpqmH830mStxVnLRdyF62bFzDEJaL99vCQfyjUR38VD7e8hNfyQ62RfUbtAMyFdXu1XqY4P1ChPRQp6/s8Rsq5QahBpH1dSeGRV8DJXW4OlG7hrUJpS90iwxF624hTaLlPbjMyZ0qnAkc3TlK7+tNjarO4kTvUTOJHf6k8pcqjY/WQ42CIiDMtpYUMQc8YfdBFTI6j/yjmTccz7ScMrzxJJM/Ljs7YEnio0tAUrTsibCpxEWyHyZMLbFPgim2EOB+lyXBdPTNiQluSefaKkH/aB1Rm+qNsKDlCBMHvK7l9V9/HZe2Zba8kF3cB+EYLqPwvXiUgvtv3o8yZOVqAmgilxW3Sg9GxuQa0IzahanenzOnf1jb0bnUEmFxfWHQ2VgCDrNGUIVZbyc/Y8QKkY6TBCrJNCQI5EJnFBHO2w/Z+wdhRifPXaKNPeEDEy3+4wQXpKjr/WhdQ0nb9fYHumiDDNqkEIY+FLFOf3tlpkSar9ig+ZTZKSgrT6Ob36JIhofEWu+5vwS3a+kBDB89Wit4ZNR16kUYWGwwp4blQyFcDVBuzn42A42euTqQrBL6DAA7Fpf1LUx4bqbmxvA3b3hqjWkG6MF/lqVlXccDzhjaWEU547fks7LceJ427F3XxqaT/tbe2udr4P8Br19nidO+4q2qj5nnweTmxZA+Nc+5JG5bXh+k9E15g33Qr/z+ZK2GBFxBlsuFhJEzEKqshYALpH3rZ1iB27BMxOWhP55nfwuIkHLGihIxnJEPecGS+M89DLb+FvXCa2RqHqxfQCouUMV203O
- wI2aMOGj
- xxr2wvwSCo5v307lP6SPlH/UmSJRiJo47efAyQQvPPdWfCirm0e0oDIpakQYtgpOYUj++ukHTa+bWFz4+Xj8MG5GCwUeDIrcMxg0j0tyDESNYTjcofgpcN0EWnIX4t1V6dnvv0sVialtVQuwA4GKikE4v2tshl6OQIlFHUabANQcSm//JpQv4kcNIesglEMdZe9g5cAPWbOgNZAH/wSWNRi292o1F2rRk23zeQB3aQbuCqE5LcUIjCUjcPc9F6NIX+9mDhAjuNSc//eGEm7/YaXKVvAFJCaCq3FIAOLGBI6s8VZd/2juUgDP9qmFh9T2RVjUHiYqaEQiF4RrZ5uii7Oz1H8M1eBEGpCJy6AoQDeIUs5ZAuHlm2NoS1K42GVEPhv7TuPIIZv+SzCDPvVAVcrel57KtKVX6ZahflCkH9PzEIfT5CNfoakBSx7SaNBUMnswdmGmqG54Ycg888u8Tyx6OrBeGli62Dd7b8mRBwvyRocrbPL5QoIGFYlXvQMuQ89L2KU6eumUfmbDtCr3w1xHz6se/z46AEJGnhvXor1bmjBGHd+OAxY+6rv//NFGVFH+f2xaR/gx6qpzMHwwtbyNZhMr1ta4QJexW/SExnXMCFzxnEG+CprHf75DGLcb2+OHd7kAE4l6mInwKBTt0TnSW2EWekgPYb6SkYpudLUxLiJNq9ASqwLiYDKF8NfTac7gnMG/Rdh9c6sLV6LeZ+Ii11hr+yck1G52bpdGFyKNqrf+JQJ62r9lpMbckqf9LCleAAdRnU/YalH3jHMYWdgfmCDMG5rOuzhqphbLdNv0S+FnJHtyTPuTIhll8dcX8Sg8l83lZiP8uWmc0c4ozf/nwEcaDuhy9dU7XZ/d5Uhtq5pjiTBSiM8nhKuBXWv+EjgyB
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EA5292000B
+X-HE-Tag: 1795223394-909786
+X-HE-Meta: U2FsdGVkX1/b9iuAKcbr8S1RYzhFH95dw7HmGLkDjm0y6d7nqLoJwjngdOawGIAHxVWFNCVT3RQTRBvcznAWFxkJnL840qo6NH2youNM5sm/xPl8GS0bjfN/O0YfKDk0tRHt5q/DWCqMuW5d8aXTNkjN8Z9HvQApo3/WyJXNPPMFpFJfzjtqZltqlA8N7yLbYVW/ZCcvn85hShTO/rqXZ0gIeyx1pou6Uf/AD0TZ00sXmn5HYr5XQEjK+PU4i/HeCEg20ShowWcCSMUvxMVXOPHRcy8zcUcoU/1sLH7zCQbWjRYmKRfRqUC9kbB2SmUe+Fl9QjjF0IMQEs1uy/Vk6oSsbgFocH1C1qC2AkX5l7qrLkXWDQ+SEJb7a4uUD+p2BSsUSo6M1rWrXsHlLjtZUnaI5PCGk6uYrN9cKFQ3sw61BabCzcHKOd5EIcicA1j2OCNjB0oa4SsNbBNvoP499NhD5ZIcSLpagp1h5V6t7bmGtuMWdaQ6U5bRv4ze09+IqspsR+226MatVUeHv44z2EuO+Fjsg8e4NTgyJH2ADIHzZhEFU8Fsdixmlkuc8t5KUfDKNAaBYlueQoaDN93X294LIny1uutI1I8hO5MLyxvb2ozRMgMJFyiQBbFDGrT7YiqdusOzaXn4BRIc8YpK5vPsVb6wXiUBS8Z6sVhJE/QzMXDVBGqCCgygs2AwRilqE1xfPGODDmyx3cEpoiXHD297fiqWoQXt+ocMJr1fn9mxPQvWuzU5pHkebyDNP0rnxlinpdwbRoH+tMJ/+2GCmoMd/9MXkqi05LIlgaSkzoM3B3e/6913c7XtzGZH3S6unCywA6HV24qsVdYEWndZAq4Vb6nP3ww8XNnpapMdgPaVMdvydLF3lJg2086UkfzIDmOtNZgY9rJSZT5cfjckrT4/yVw8ZgPn4wyC+zqCTWkox94wpVnvfIpTiugVvUTjMpl1ZtpjVQu0AhX6cok
+ d8MvqmlF
+ 56FA4TJxVBFvl9Gg1Dc3EzbvOmhNcozt8hKjIvVluL8TDjkSt63jeAR1pVjk0PK55Dr2AsvmMlSqdvNzP7Mf1QKoxGK+2g/IdPiudzTNHSZIXy4uF+YK7TJN5gTKUcp+AarO4ztpzNDeZRnKg4VthMDNCCOcp5DPCGwMr6OAmhNX6sixA5ggXKLa5CHb9UC4lCg+uF5hRa9HCP9Vl1QXBHjyewRFGqn/HcM7LmNae+kpdVomM285UTgSH/OJlm6Mf0Szfzp842oHrsbsnopvw2QDal/l+iG/ZbYCAfPD02LDIuYQESR6WvljKKMilitYhS0iQcMRPo/OQUX+scve9UviuwitZQnX8FgCS+dqh8trhbpzOZyfIh7wONDLlHRVgGTb2elW3yYD88v+/ID5H1gpmyQHCht2sa7R8dNTlu3wPTwUg+IY84GLYMZ3crAs9PNkUpDlkhv+H+kJ5/QTPbNNIl99oZsiFDxE27MYpSgBxlU+lp/hdBh0dsQ182KCZbUhU3CDR/lT/diAMbBnz8Im94bvsLzvwHWj2Mks4Nca6pUPh1A4uQSorFICM7kcD27/JUjqd1pyC2z1eOiiQGq+3R5P/2z5sT3FfbMUBOmPvd+4IF4K/DgUriuYEbSKCI+tEA9OJqYST0y9WqN+V46DfM48i8sirGv0GebJPs+esQ6pSGhXm4hO0tEqpRs/O0hSpDSBWRvprOAf3jwU9NNW/72U5XAizQCK5gtwrwnGYCZPfm2r6HYGRfAM+YKZQIEsY5ZjbVJpdHIA7+vWf4x8IpV7BCHqas5ZaxGDMJEoIMcj3GEuaEM2cZIMtvvd1JmclO7CRXW6++Paj9ErrQrdRVUrsrq88NvR+lT2B/y8YUvgfXs6l15NKKjEjajQbA9vq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,69 +117,66 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] iommu/dma: iommu_dma_alloc() rejects CoCo allocations before
-  PISA hook
+- [Medium] mm: test_reservoir_and_scrubber() drains all blocks before
+  scrubbing
 --
 
-commit 9188f1b04aac4884c0b7b2222a205db844b8ac89
+commit ccfc0b438a0acbf15484d4c2bbaaca5a2185d2d6
 Author: Luigi Rizzo <lrizzo@google.com>
 
-mm, iommu/dma: Support decrypted PISA pages
+mm: Add PISA statistics and debugfs
 
-This commit adds support for decrypting and re-encrypting 2MB PISA pages in
-Confidential Computing (CoCo) guests so that DMA mappings can bypass
-swiotlb bouncing and user mappings use decrypted PTE protections.
+This commit adds per-allocator, per-node reservoir, user-page migration,
+IOMMU domain, and reclaim statistics for PISA, and exposes them via
+/sys/kernel/debug/pisa/allocs.
 
-> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-> index 45e9432d2a020..5e4d9803645b4 100644
-> --- a/drivers/iommu/dma-iommu.c
-> +++ b/drivers/iommu/dma-iommu.c
-
+> diff --git a/mm/pisa-kunit.c b/mm/pisa-kunit.c
+> index c195fdfdbd9fa..98f06a7f2db7f 100644
+> --- a/mm/pisa-kunit.c
+> +++ b/mm/pisa-kunit.c
 [ ... ]
-
-> @@ -1780,6 +1781,9 @@ int iommu_dma_mmap(struct device *dev, struct vm_ar=
-ea_struct *vma,
->  		pfn =3D vmalloc_to_pfn(cpu_addr);
->  	} else {
->  		pfn =3D page_to_pfn(virt_to_page(cpu_addr));
-> +		/* A decrypted PISA page (CoCo guest) needs a decrypted user mapping t=
-oo. */
-> +		vma->vm_page_prot =3D pisa_pgprot_decrypted(virt_to_page(cpu_addr),
-> +							  vma->vm_page_prot);
+> @@ -711,9 +711,9 @@ static void test_reservoir_and_scrubber(struct kunit =
+*test)
+>  			WRITE_ONCE(pisa_scrub_max, 512);
+>  			pisa_scrub_node(pa->nid);
+>  			KUNIT_EXPECT_EQ(test, meta->nr_dirty, 0U);
+> +			KUNIT_EXPECT_GE(test, pa->stats.block_scrub, 1ULL);
+>  		}
 >  	}
-> =20
->  	return remap_pfn_range(vma, vma->vm_start, pfn + off,
 
 [Severity: Medium]
-Can iommu_dma_alloc() ever allocate a decrypted PISA page in a CoCo guest?
+Will pisa_scrub_node() always skip meta in test_reservoir_and_scrubber()
+when init_on_free is disabled?
 
-When force_dma_unencrypted(dev) is true, dma_alloc_attrs() sets
-__DMA_ATTR_ALLOC_CC_SHARED in attrs before calling iommu_dma_alloc(), and
-__pisa_alloc_map_coherent() accepts that attribute.  However,
-iommu_dma_alloc() still bails out on is_alloc_cc_shared before calling
-pisa_alloc_map_coherent():
+The test allocates a single block p, frees it, and drains pa->pcp before
+calling pisa_scrub_node().  Because every block of meta is now free,
+pisa_place_meta() moves meta onto pa->idle.  However,
+pisa_alloc_scrub_blocks() -> pisa_pick_dirty_meta() only searches
+pa->partial_dirty and pa->partial, leaving pa->idle untouched:
 
-drivers/iommu/dma-iommu.c:iommu_dma_alloc() {
-	...
-	/* Not yet supported */
-	if (is_alloc_cc_shared)
-		return NULL;
+mm/pisa-alloc.c:pisa_pick_dirty_meta() {
+	meta =3D list_first_entry_or_null(&pa->partial_dirty, struct pisa_meta, li=
+st);
+	if (meta)
+		return meta;
 
-	gfp |=3D __GFP_ZERO;
+	list_for_each_entry(meta, &pa->partial, list) {
+		if (meta->nr_dirty)
+			return meta;
+	}
 
-	cpu_addr =3D pisa_alloc_map_coherent(dev, size, handle, gfp, attrs);
-	if (cpu_addr)
-		return cpu_addr;
-	...
+	/* Idle pages are left alone: scrubbing one would restart its idle clock. =
+*/
+	return NULL;
 }
 
-As a result, coherent allocations for IOMMU-backed devices in CoCo guests
-always fail with NULL before reaching PISA, and this new
-pisa_pgprot_decrypted() path in iommu_dma_mmap() is unreachable for them.
-Moving the pisa_alloc_map_coherent() call ahead of the is_alloc_cc_shared
-check would allow PISA to serve those allocations.
+As a result, pisa_alloc_scrub_blocks() clears pa->scrub_demand and returns
+without scrubbing meta, causing both KUNIT_EXPECT_EQ(test, meta->nr_dirty,
+0U) and KUNIT_EXPECT_GE(test, pa->stats.block_scrub, 1ULL) to fail.
+Keeping a second block allocated from meta until after pisa_scrub_node()
+runs would keep meta on pa->partial so the scrubber processes it.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120010655.4678=
-25-1-lrizzo@google.com?part=3D19
+25-1-lrizzo@google.com?part=3D21
 
