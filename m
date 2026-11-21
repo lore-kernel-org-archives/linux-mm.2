@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0767606A32C
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 21:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83848606A32A
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 21:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c+oq892n
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F89/6U0/
 Received: by kanga.kvack.org (Postfix)
-	id AFCC76B05B8; Sat, 21 Nov 2026 16:00:26 -0500 (EST)
+	id EF4B36B05B7; Sat, 21 Nov 2026 16:00:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A85CE6B05BA; Sat, 21 Nov 2026 16:00:26 -0500 (EST)
+	id ECCBE6B05B9; Sat, 21 Nov 2026 16:00:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99AF46B05B9; Sat, 21 Nov 2026 16:00:26 -0500 (EST)
+	id CA8366B05BB; Sat, 21 Nov 2026 16:00:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 619196B05B7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E7486B05B7
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:00:26 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2396C05D6
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:00:25 +0000 (UTC)
-X-FDA: 85460344410.02.814CEC0
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15551A8195
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:00:26 +0000 (UTC)
+X-FDA: 85460344452.18.D4E4B8B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1A597140003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:00:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c+oq892n;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 747E01A0010
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:00:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F89/6U0/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795294824;
-	b=REJs4im8bvATe+VI2u7n89CYqAMWuFY9cIReHNLn5IraIlq9PyPA2q8Q5Yx5ww+oLTnOSc
-	8BsulxxqN9AvU+rm1Aq4Rn+vVRuFoVnkYniEmTYBMkDX1jLUyMdod0OLaLHe2kNJq672bs
-	UIopN+W/pSlixCtyyH+m/1mjG6kQPCc=
+	b=ZYE4u/Y6Q0sMDLu4tVAzWHnhmWhyVEe07SeFUQ1i5gIFn4ZzAIxaQ5aRoHjO2LhpuL4dXh
+	S1rsiag7lU9u6GlFHFE42+oBiSflStNnBaEPaUzrudSVprgLQZonLVmtN9EHiJOBcw5oZA
+	dSppWIG+qOrVbeab1jNV3CtaE7vAtTY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795294824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZoY4hnFbJ5g7c+Vl7aZxcV0uXn6NxmdIonYYm4S4XhY=;
-	b=s90RmBqGuSvzTeOTdYTIVXhZohTratOhG+M6g5+lO3Iya/YqYI7V2/xw4vxWizDqk4rafc
-	X+hfkyxBOdIG1kAQqMNhum3h3SeuAVuoWHEktwN0NMZjZwMGRZplI+XTqT+OAMlygRic86
-	CJd672L/TENCjsqpuFPk1oDNQ6IuhRg=
+	bh=kHhnYqoQe1EhM4f5cyc2l4mme4lRuHhy4MnQ2nEOlUo=;
+	b=HnqymVvuDZ2KOqvJeI7hflip2g2OubrU8VqsiitdjU51+kByJN7U/8b08FUZ9O6IKNf3dm
+	EMaLDFGtJEcsUbnDzOKKKGvjCUfZc3gHKUQvKj7Mzus/BOHkSwROeZyu2QX2QZl8y5Vbzg
+	O6fv3DqZWjGNdchXLw3d71PXQYwk/ro=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c+oq892n;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F89/6U0/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D39161D12;
-	Sat, 21 Nov 2026 21:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2FF1F000CA;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1859A6185C;
+	Sat, 21 Nov 2026 21:00:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D051F000C4;
 	Sat, 21 Nov 2026 21:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795294823;
-	bh=ZoY4hnFbJ5g7c+Vl7aZxcV0uXn6NxmdIonYYm4S4XhY=;
+	bh=kHhnYqoQe1EhM4f5cyc2l4mme4lRuHhy4MnQ2nEOlUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c+oq892ntVWyJ1YEx08mPaE1T7ozX6X9bt8h3AkLHAJZU03txkrSykNiibVGqpnsi
-	 57qRTXoffWcB4LbH3pNbjR6GL5rbP023l7GXOMieGc7ku7xE7fne9df8ML5a2rTPP6
-	 qdXmrAXbATdudDNxVmkgv5UOa08fZTJS2uPXEPI+dIXgaImLVnL56oLK/5xdyjxb4k
-	 weh4L5Oa3/ozcOfCXYpWqvz2ImBcGpo9KaRKLiQyOqwmZ1TLZ35CNfca+vI7MympJj
-	 L7n20JcnENZR2nCI6AUOXPfwwpAA5OzK305gwXUJX88SiyXLO1REQntnvXYu9kv+Tt
-	 13ETmp4NmP1Rg==
+	b=F89/6U0/VXKOgjZVDRORViF9mRu7k4n3LTqm+jm83sP0pwQbo7BZ2/vz13FIvx3O5
+	 oJoNJtg4A2Zs2cgg6KXQdGCHRklDqXHMWAH577gTqGMF9hMEwI0hoZUplMvVcllvPo
+	 3XAQ+j2ihDn0vrrQ+mrXeR1aDU4gN3J26ct3Qy1vz9WtKdvQGlPxAZhbleUnJOuck7
+	 zmXvgqRERANYcpuaYEjyNPpNWhwrBkyws/LTXRg76g2T0iJrbWfQzdwvKQVb4LGECt
+	 3PRSOeIwY+Gzso1Ax+biQNFkVObQf9XuQaMIfSu9TMrZZ7ERNbAtWhUOlopfMF7ugq
+	 qlnZDhiVaGKzQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: [PATCH 06/27] mm/damon/sysfs: add producers/nr_producers file
-Date: Sat, 21 Nov 2026 12:59:50 -0800
-Message-ID: <20261121210013.130397-7-sj@kernel.org>
+Subject: [PATCH 08/27] mm/damon/sysfs: implement report producer type and state files
+Date: Sat, 21 Nov 2026 12:59:52 -0800
+Message-ID: <20261121210013.130397-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261121210013.130397-1-sj@kernel.org>
 References: <20261121210013.130397-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 747E01A0010
 X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Stat-Signature: t8ujze4wnzndx9qmgpnzsqi5wusgx1um
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1A597140003
-X-Stat-Signature: pehityp3a8dtb7p4ai6jqpsi56wtqzm5
-X-HE-Tag: 1795294823-29504
-X-HE-Meta: U2FsdGVkX181cYZFkqf/AtOPd/ybDNytYjiBPHgUSHHKA46roaQVEbddkFK0N85HfD6dzG7rpxMk+8smYBl2rXhwhn3lus0i5RmS7AGW2aue8Msu/EJgZ9feJzOpEKp/dVYnDDagbksW5YnRNeuOvWCSRMM/04u8yhvp0bGwLDZi8btJClwFhx9KczCmzN2m+74zAhuwSTXJ4wU/TEKqrIVl/hQMec3nV2fJR4ToPvoPKit8wzkX3P7T2/ry4erU9/0GNu+qE3+x2bgzfOsln8xQOsDa1XpgulILgkHUgVMZo1eS/y6VIXTv59k4Y+1NjS34MAkibZkE7zwtI/QIkGafM7oIHfYksqDTBkhtSBp+DbdFDH54ZUVnZBcGq539/q8G4fQAvo+aSaTQlQgxO0Debn1NmMveKmZvzP7dAa2/ZkS20uhVEbR1p0JUGGSfsByuykbsYd4jAjfJD2X7otZOJDabuEqgO3w7UJ41AugACQ0U6LisiKF7+mLRNw8qt0i3ww78CPV8E/1Cqv43PWJx/TTBnbpPYlTkkY9bKpK9lSheV0YjBQi4kCvBdEnrQlbs2yAdMxzxpm5/X6tmGVs4mERIvjaTxqxdZKqDCNDGH8cHMTvpoOBOYKAhtw5TBedterF9v2XHVkekeLZ2XLs5ggnfq0BJYBN8K/94eouOnOnYSPyfDXG0D2ZEGrOVekOSyCIvfGXO2Xrm2Z1s5dHcJa1ybDOXdMRAtTzsyeePwj0IhxEXNC09nq7mareUyjsfwC/NTHQT6dysi5nfoiP7tWmTu19ODxTbF1ZR21Jo+1/TjycGFFxWBqHZzwJJuHByO0CmVw8fY6J8BOCLsknzeVSWVF+tWs9Q2Q5HscQjm5ke+7Mo59Szmm78HB0Ru3W5CI5KNZnlhMwcGiy7kOX3fYWUjDwap4jnCbW5TMSubcnctIvARe7+tcVlI1/V2FMrckj/vNp8RrPH4AI
- t5IllEui
- NEFsjYJJo9tJZGEVE4id1oKOhV+Qsj2SWxzrLLcQbG0wwfDRW5p5erggXxEkvyymCaDr351ha1EWLWxZ//kP08+nNxH+YkbqLz2j/VL0mlbyytSmZIkRgHd0NIGL2REOWTIqQwMINCHJJ+dHp8l9g3TSie4tIdSsLClreyJ+q3H0msgpz+003BF7zlr5oistzIMEvsdEfaRt3MbeJdi39Y/vOEAvy4Q20y5qO74xYvOTfmy0/u8xeeHt/RcLgaCMZQsfMKtQ+poqt5Xl7Q5K+feINOfjIXYAvbhi5QB59BLJQ77y0YrdMuUvB67JgrLaR0fQRjCW4tXV7yV/v+F1KcrSJnHtLjpUWxS1kKZc7AEog8EVBc0O/RgExy1VacwjdHKP1a/vkS+V2sDVXENkqcRoYCwpNURQSkmuzsx+KgWVSkg69PvihA4z1mkHB6yk11n0wLx9XdgKIS2jdmhn7G/WYjU1dObBxvWBJ6sm4Zp8qE9MDojGldLlCarp8tfEgQpT/
+X-HE-Tag: 1795294824-105485
+X-HE-Meta: U2FsdGVkX19eRB2ln8RM7Ys1mCVdsLlXZ3sV7WuJG8x911lRlhd9UIPf98RGFAypADYPRr/Qk74KF/8Rb48paF2IpC2nVtrSvBuerA8jPPVRaAyAV6wY83HnfpRyQKODGY5nzi6IQHaFs53PSyUcbzF4KYzynEencXRX/vzOWCk0mOF9HlbtzTKq4JA6un9Y+6+Oq6Q3BmyZy1709QMbl679OL2mIL6h74Ek3mtMaHJP5LuiGn/r8uWr2mNVg72bdRS/8r86kRGju8qtQ7zghlOX39JFbw+aATCD4AGovPntbLlJM8xDpB5FbngocU+ZC7CXdjYHVrdacCkZobI0mb5mes2iVgJhfepVGpuz7K1yfX09bmVivXBAQOwYZ53dvItGPEUj0+VeRgSf0nqNlo3A7D8tKYTrbwS+Pe1x32QydD8SaIjRgZ6e+suSkuCGWQN/RPvr80BtAgMU6Mg7XhukQw3dh7hnco8tISiUPYgn3+2J4sRgDsRZ0oOs5Ep6eqHoKmEAHAb0eGhYCheMPEk5UqxoDJKeqFxEDOZ5c1HbKLWb6+n1OlQvW8/XzyHHwu8cZ6NrF/h2kfvoStIA8sJWPSwlJLClya5Yl22Ni/AH2190ZQGyLr3QtBior5i3TbOPrIuDhxIg9rDxCOQJ8SnvaA30ts5s39sqxbecFBcjw0bJpDyiwIV7oRCLg5qzttn31Df9yEnx+6G85Al0e8Ucpb1rJdYroOavcA71psQ0p2SygJMsx22FRxsHUFF5VTR5qZEiCuQcEGRMUfLiMKiH25AbHKHbHG+5Bg2n4rr6+KCbQUCKbTDG178kX47XhSpO8Y2cm/l+eqWjYiybaz6jod4EZaDFg8bke5G4TroaCbSh2UZWYqTzpGmS0Fyw+L7VSmfiI3It9GgyUQyX4fSLYivyg/9lvCsDSfx8pAZMN9O+GgiTYpPlw+PlAgOCRRukR8TC0uLI5I3jeVe
+ E/YrjI/i
+ fCKBzvG8U2mbxeHiu+hQSJGvRScYkEYRthFRmLSEg6MtlhrTkvmkYQmGyocpN8ZhVM7rN2eRYaXVlG8x+gJoRMh8+iD0wKtE+zz70bXx912FT8ecx/XIdO/c4Gixwm6lgUIvRXABRMs58s6pc6nJyGhb+eL73uxDHSr7HcI+EWBM1UPyJU/LpbASLLC5nzq9xv8xL3uTcjDj4p+awr6/jZnhespVhcJtwKjqpQcmCTicJ9s92S2HRVMDv6g3j6B/23tKBa3QiHlS/1y/ltqZAhnNFKopCfXlm5XEtaa71c9lfyOETc0Rk5ZOdLobh6J6k7AlbFB68T0lekLGcSbvTkkRiReIAW6IcG0iXE/CQ/4rN/xlmbpyu/KOJTvJExSExCr1Tkz17ZKa8zrbappGVh13Jc5bMVyeo8yk9KgFeWnnwLY2QeBF/bg9AdPCGpXxNKVZH4GiDFrmJhNw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,90 +94,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement a new sysfs file, nr_producers, under the producers/
-directory.  The file will be used for generating directories for each
-report producer, in a manner that is similar to the nr_kdamonds file.
+Implement report_type and producer_state files under the report producer
+directory.  The type file receives the type of the reports that the
+producer will generate and submit to DAMON.  The producer_state file
+enables and disables the producer.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ mm/damon/sysfs.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 75701ed662222..d3a7cb170975a 100644
+index 7c6bc30c12125..7cdbe2fedf7d8 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -2983,6 +2983,7 @@ static const struct kobj_type damon_sysfs_kdamonds_ktype = {
+@@ -2983,6 +2983,8 @@ static const struct kobj_type damon_sysfs_kdamonds_ktype = {
  
- struct damon_sysfs_producers {
+ struct damon_sysfs_producer {
  	struct kobject kobj;
-+	int nr;
++	enum damon_report_type report_type;
++	bool enabled;
  };
  
- static struct damon_sysfs_producers *damon_sysfs_producers_alloc(void)
-@@ -2990,12 +2991,62 @@ static struct damon_sysfs_producers *damon_sysfs_producers_alloc(void)
- 	return kzalloc_obj(struct damon_sysfs_producers);
+ static struct damon_sysfs_producer *damon_sysfs_producer_alloc(void)
+@@ -2990,6 +2992,77 @@ static struct damon_sysfs_producer *damon_sysfs_producer_alloc(void)
+ 	return kzalloc_obj(struct damon_sysfs_producer);
  }
  
-+static void damon_sysfs_producers_rm_dirs(
-+		struct damon_sysfs_producers *producers)
-+{
-+	producers->nr = 0;
-+}
++struct damon_sysfs_report_type_name {
++	enum damon_report_type type;
++	char *name;
++};
 +
-+static int damon_sysfs_producers_add_dirs(
-+		struct damon_sysfs_producers *producers, int nr_producers)
-+{
-+	damon_sysfs_producers_rm_dirs(producers);
-+	producers->nr = nr_producers;
-+	return 0;
-+}
++static const struct damon_sysfs_report_type_name
++damon_sysfs_report_type_names[] = {
++};
 +
-+static ssize_t nr_producers_show(struct kobject *kobj,
++static ssize_t report_type_show(struct kobject *kobj,
 +		struct kobj_attribute *attr, char *buf)
 +{
-+	struct damon_sysfs_producers *producers = container_of(kobj,
-+			struct damon_sysfs_producers, kobj);
++	struct damon_sysfs_producer *producer = container_of(kobj,
++			struct damon_sysfs_producer, kobj);
++	int i;
 +
-+	return sysfs_emit(buf, "%d\n", producers->nr);
++	for (i = 0; i < ARRAY_SIZE(damon_sysfs_report_type_names); i++) {
++		const struct damon_sysfs_report_type_name *type_name;
++
++		type_name = &damon_sysfs_report_type_names[i];
++		if (type_name->type == producer->report_type)
++			return sysfs_emit(buf, "%s\n", type_name->name);
++	}
++	return -EINVAL;
 +}
 +
-+static ssize_t nr_producers_store(struct kobject *kobj,
++static ssize_t report_type_store(struct kobject *kobj,
 +		struct kobj_attribute *attr, const char *buf, size_t count)
 +{
-+	struct damon_sysfs_producers *producers;
-+	int nr, err = kstrtoint(buf, 0, &nr);
++	struct damon_sysfs_producer *producer = container_of(kobj,
++			struct damon_sysfs_producer, kobj);
++	ssize_t ret = -EINVAL;
++	int i;
 +
-+	if (err)
-+		return err;
-+	if (nr < 0)
++	for (i = 0; i < ARRAY_SIZE(damon_sysfs_report_type_names); i++) {
++		const struct damon_sysfs_report_type_name *type_name;
++
++		type_name = &damon_sysfs_report_type_names[i];
++		if (sysfs_streq(buf, type_name->name)) {
++			producer->report_type = type_name->type;
++			ret = count;
++			break;
++		}
++	}
++	return ret;
++}
++
++static ssize_t producer_state_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
++{
++	struct damon_sysfs_producer *producer = container_of(kobj,
++			struct damon_sysfs_producer, kobj);
++
++	return sysfs_emit(buf, "%s\n", producer->enabled ? "on" : "off");
++}
++
++static ssize_t producer_state_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_producer *producer = container_of(kobj,
++			struct damon_sysfs_producer, kobj);
++
++	if (sysfs_streq(buf, "on"))
++		producer->enabled = true;
++	else if (sysfs_streq(buf, "off"))
++		producer->enabled = false;
++	else
 +		return -EINVAL;
-+
-+	producers = container_of(kobj, struct damon_sysfs_producers, kobj);
-+
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	err = damon_sysfs_producers_add_dirs(producers, nr);
-+	mutex_unlock(&damon_sysfs_lock);
-+	if (err)
-+		return err;
-+
 +	return count;
 +}
 +
- static void damon_sysfs_producers_release(struct kobject *kobj)
+ static void damon_sysfs_producer_release(struct kobject *kobj)
  {
- 	kfree(container_of(kobj, struct damon_sysfs_producers, kobj));
+ 	struct damon_sysfs_producer *producer = container_of(kobj,
+@@ -2997,7 +3070,14 @@ static void damon_sysfs_producer_release(struct kobject *kobj)
+ 	kfree(producer);
  }
  
-+static struct kobj_attribute damon_sysfs_producers_nr_attr =
-+__ATTR_RW_MODE(nr_producers, 0600);
++static struct kobj_attribute damon_sysfs_producer_report_type_attr =
++		__ATTR_RW_MODE(report_type, 0600);
++static struct kobj_attribute damon_sysfs_producer_producer_state_type_attr =
++		__ATTR_RW_MODE(producer_state, 0600);
 +
- static struct attribute *damon_sysfs_producers_attrs[] = {
-+	&damon_sysfs_producers_nr_attr.attr,
+ static struct attribute *damon_sysfs_producer_attrs[] = {
++	&damon_sysfs_producer_report_type_attr.attr,
++	&damon_sysfs_producer_producer_state_type_attr.attr,
  	NULL,
  };
- ATTRIBUTE_GROUPS(damon_sysfs_producers);
+ ATTRIBUTE_GROUPS(damon_sysfs_producer);
 -- 
 2.47.3
 
