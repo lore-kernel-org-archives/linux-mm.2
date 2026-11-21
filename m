@@ -1,103 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAFA606A685
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9990606A6BA
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 00:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=laXyyUuZ
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=VH80kyob
 Received: by kanga.kvack.org (Postfix)
-	id ECC456B05B0; Fri, 20 Nov 2026 19:18:16 -0500 (EST)
+	id DD2286B00EF; Fri, 20 Nov 2026 19:31:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA34A6B05DA; Fri, 20 Nov 2026 19:18:16 -0500 (EST)
+	id D5BCC6B05B0; Fri, 20 Nov 2026 19:31:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBA056B05DB; Fri, 20 Nov 2026 19:18:16 -0500 (EST)
+	id C24276B05B1; Fri, 20 Nov 2026 19:31:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B82666B05B0
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:18:16 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 503FDC0291
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:18:16 +0000 (UTC)
-X-FDA: 85457214192.12.F2893D7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 917884000D
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:18:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=laXyyUuZ;
-	spf=pass (imf01.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 937A56B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:31:27 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 050431C186B
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:31:26 +0000 (UTC)
+X-FDA: 85457247414.16.6C8392D
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 16BE920002
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 00:31:20 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=embeddedor.com header.s=default header.b=VH80kyob;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of gustavo@embeddedor.com designates 44.202.169.35 as permitted sender) smtp.mailfrom=gustavo@embeddedor.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795220294;
-	b=b26ZlhsSgU/rBG4J7LgJtOR8Q6UnKz0gfq7FuDKKSGtojmtIvufj2wpWZhaGkpKVQIMjOA
-	v0bGTOC1jAiChRWv8leb+95i07gx4F4A1nbqsDYZsZOTPOWbHUvNOPkVAjkv/VE2JFqhtU
-	KgKU5mh4lryo0/7BdHbpqmlHfKjjRm0=
+	t=1795221084;
+	b=gXLxlyMgQC3OhIpMxyeJ9fi+ewxlynJSSUsCNePIIdRIGJ4MeuY+SwRb9kIFp2g7PUDCmS
+	VNgKD2tLWeMhVtMDUVsXjeoNSRgH74nE++F9HGx/gaTvSIQxpakhVssu68blyMjVS/0N39
+	iCHCiR2tTZ5eXjfLovex76uaebb+MOE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795220294;
+	s=arc-20220608; t=1795221084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ffPWhV24l7aV34qwodVY7b49pMX0mUgfsIkMN9/2TPc=;
-	b=uO7DQBMC35v5ezQBypZum/S1dLW2JILm+Rc+uuF0Me5NIc0ieoxYnmhs1/fbwbaK6mvqGf
-	JqQhWYzJI28CHDuW+jefMxwpW1yAIN8K+TsGgW0WKPGsW6BbLteOt/bhhNgcdRhfgbrM20
-	EelpcN9LvB4iPlwPd1ychykydLoMs1A=
+	bh=FEam6Qnluh0uJgwZEDXQ2NkiYj/d9gp2O2xgrw8uq0Y=;
+	b=nnthQsetf22nYQkZTLRR6rWjpiEdKw439ZpEY1+Sz2xg/eaM78Af++fxxouJL/GQa8sB7V
+	ofa82RS9Z2W6ffYeCKOSxxMDDfKduTiVFrx+3aV8bDpH7RUOYOIJTcjM79gDPBJP1dX92v
+	d+xgigzB7EOl2vc0mKxfktINCFCmpiM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=laXyyUuZ;
-	spf=pass (imf01.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id BB03045FFB;
-	Sat, 21 Nov 2026 00:18:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id DE4E51F000C6;
-	Sat, 21 Nov 2026 00:18:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795220293;
-	bh=ffPWhV24l7aV34qwodVY7b49pMX0mUgfsIkMN9/2TPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=laXyyUuZTT0f1BgWfsRs3hbfvkYEWRTNIHzPq4IJ69OLR0lsi9wF7blAtcps3JLYo
-	 dDMN4oi+/CNtoR/45odtOA9HbsLlkq2nyJ5gnGxfOs/7e9fj/YGLaUAjLSUvLULAO3
-	 DsLKgXzm1aOVL7r3Qdc/mhGN/rXlUtbtZh8yjmioYivekgq56W+/8pu/DxQROV1KwC
-	 7FzIy8hIHURS2EBqZ3LWj9/7tZkgq3x7tgXUidMh14L5rba/b96Sy5fyQLj6CEpkyc
-	 TWVmZpBJw7lplo03GrGiIK55vUGWTUVWf9nmwG/aBWWtR5TTxDHbYZpCO8inWg9HhG
-	 VdfRBSXOI0Yaw==
-Date: Sat, 21 Nov 2026 02:18:09 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	Alexander Mikhalitsyn <alex@amutable.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
-	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v5 14/25] rootns: Add ROOTNS_WAIT ioctl
-Message-ID: <awDjQeXjqrhNHoWQ@kernel.org>
-References: <20261121000844.1863324-1-jarkko@kernel.org>
- <20261121000844.1863324-15-jarkko@kernel.org>
- <awDjC9hcKSRnCPgJ@kernel.org>
+	imf31.hostedemail.com;
+	dkim=pass header.d=embeddedor.com header.s=default header.b=VH80kyob;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of gustavo@embeddedor.com designates 44.202.169.35 as permitted sender) smtp.mailfrom=gustavo@embeddedor.com
+Received: from eig-obgw-5001b.ext.cloudfilter.net ([10.0.29.181])
+	by cmsmtp with ESMTPS
+	id UXVsxlVnG4vCDUZ0gxvLHW; Sat, 21 Nov 2026 00:31:18 +0000
+Received: from gator4166.hostgator.com ([108.167.190.91])
+	by cmsmtp with ESMTPS
+	id UZ0fxPlf7xmi7UZ0gxEFkM; Sat, 21 Nov 2026 00:31:18 +0000
+X-Authority-Analysis: v=2.4 cv=KuFN2XWN c=1 sm=1 tr=0 ts=6b00e656
+ a=vY9Mjuda9oMEc2E4Cx1x2A==:117 a=vY9Mjuda9oMEc2E4Cx1x2A==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=7T7KSl7uo7wA:10 a=1XWaLZrsAAAA:8
+ a=Z4Rwk6OoAAAA:8 a=VwQbUJbxAAAA:8 a=5QcsuHF3OdXLyUFx-zQA:9 a=QEXdDO2ut3YA:10
+ a=HkZW87K1Qel5hWWM3VKY:22 a=2aFnImwKRvkU0tJ3nQRT:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:
+	List-Archive; bh=FEam6Qnluh0uJgwZEDXQ2NkiYj/d9gp2O2xgrw8uq0Y=; b=VH80kyob3Cpk
+	omYN+PVzx9okbFA417StJ3HsjNAK8//vGxU8CgShOzuz/PP02n6kX6gaMZKWxxJeMVIzeI6dKBkBy
+	IDSEeaNh4nf3wShBZ4hjtMhjwFwDzljWWwE/q3/p//V+NvUOL5IxvWDoEdWCq0LTNDkT/FAfqHKfk
+	D/oz19tm38pvi0YdX+3kgYldK5NU0+T5LfMQJwwtINigzjYsU/5f2D8GZ5xfDrUzRquhdNUEWrxD+
+	s7m5hjNUW/5NDBOcLQYEDvBCvG3WVYkqmOzb+I71eMJArQ23YbJCdVGJruAB8bGE/qWrvh/LTvEOA
+	4B2SWXj7NvdfBrXVzI2heA==;
+Received: from [1.234.115.197] (port=52580)
+	by gator4166.hostgator.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.100.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1xUZ0e-00000002lsa-00vO;
+	Fri, 20 Nov 2026 18:31:16 -0600
+Message-ID: <7603f730-3607-4c1f-803a-ae501e41b824@embeddedor.com>
+Date: Sat, 21 Nov 2026 09:31:05 +0900
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awDjC9hcKSRnCPgJ@kernel.org>
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 917884000D
-X-Stat-Signature: huem8ubujax8ysj8tmtq7fkjyc6xpcu3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: swap: make swap_header badpages a flexible array
+To: kaleshsingh@google.com, akpm@linux-foundation.org
+Cc: kernel-team@android.com, android-mm@google.com,
+ Kees Cook <kees@kernel.org>, stable@vger.kernel.org,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-mm@kvack.org
+References: <20261120061750.2973004-1-kaleshsingh@google.com>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20261120061750.2973004-1-kaleshsingh@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - kvack.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 1.234.115.197
+X-Source-L: No
+X-Exim-ID: 1xUZ0e-00000002lsa-00vO
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([1.234.115.197]) [1.234.115.197]:52580
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 1
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfI7FJKfxl8DBUzkT+boQm6tdOIOGWGIqYEbO31ENHnmSuB/hLiYUCSRjoRE3YKAIo5roXRzBSM/4oIBfSrxjg07Z5cjefspFC+8PZ3T3YhnPSX4hFgQt
+ 745qlx9h7oMS2drf9pionNsQDDRtUHtGnV9FjsG3wG/evQ1SQ3sIni0ovsXOY6Yqgh/7YrshR6Eu5Pi8K2PAtJQTSRzBZPbnDRo=
 X-Rspam-User:
-X-HE-Tag: 1795220294-460412
-X-HE-Meta: U2FsdGVkX1/Uc8qFE4yapmw9OJd8xeaWzaipHgPIqms7f20gagYO9qc/ESaDPUPr6iFvEJb1kaYiFnWw2+1J0GIAWjmnrE+Gvg/CZeODQXjvJ9TqBhJNs/qb7fwYWc9Mo1uTEQTFM+/MOMsIA6dOuYJKb//oHUu97GTvbmLarnZAWl0DSN1kDwSZvRCqa1omPfCB2EpLj/DC4VvYIw3LKNRV6GYDzkI6J1LHro5rQcHoirayadjafyDtFwSQzCxytxgc+CW2EX55yydRDH8VNb9Lg+JgJzIX1RPdl0aDSWsgHFGPWbuo+6/AylVw+1HIlXSGmdX1aCALLmtqUE5jYBXU7jf9L+K7fft0kodLG3Egob9KSbbTjAgh8Niz/z4SRokTbqBHZQYQM4RzoLgs1YJQOHqM/urcmdEk2ZutN9fU75SQntFfygTdUmbVh6hjVKUoGLOP4i1GSHEgVu3QvZ1f/LGctvZp0TFhpCQ9ac6K1XI2BtPDRKkhQhuBpZVNgETilUtLp4l2PvELdJHJgh5oSvX4v/tmbR6rlxwsL0L2lcM89O5WYosxEKSiS572Oy7WXifRCNZNk77H0wtTpco1R8IaGzSiWQcJAKuQlZeHtFlRpVXv2q0Of0sLfu5Pua8fXRvcH7ilNJ8Dp9kGmExAT2XrmSjq1YvZphcLZdlzvd4AfviNZW26n6eulYVQxIffpDuK31+sr/92RastpVWeAC+kqaZlMmfyS1ZmJvU+sS/NUwImgHZ3GRswZZj0a5pGMTETHADXl8NBv+LCXiNITOZ1cxrM4WbeLswsC68SHblCDPwCk359Jjx5pljzf6khNtTKZXCbgFs41pciMBj41j/FhH87pC3oWokUKtIDKMwkofVCZi8yYSKyyLi+uwEwuC9FfdIZ1TjKpaXFZyQY1GCX6QBlFbMo6KoHwc2OxRBx2CJsvaZHJFMZIWopBvT+Su0v29QWLy5CS27
- ue866Q8C
- oKM44Ri9+7vXB9DrqKo9IMLBqzvaxpg9DnXuc9hM7w9siMoD93Vsfo3ZbuHTV2ddjq3+U3yXzwZ5kagWaBFpWSmD1pywiY2F4ElzhbXEOJ3y7qCGOjw4m1Fs2VGnS8uBa9zkSKJn1QlWZuSbaSKGtTNbk/a4d5n+sT4GtrPcGJUdZwMXqPeulSUnVgKNg6d3uCZZbQRA6rbP13LiGsSxk604DGmpWgIZpDrG+3FxK9HdR7plYu53na5WyzI6IPfVbvi9M9HrTsWB1gwcPoNUqfgpi+l7wyxLpYY1Jwy+hwg3leta1J0y4jJTiedr8it99LsQqtA8H6m2RrAYHfDlL8uVcV2XjqxlOUd5eukf5i4gPTlLfXzm8UnxfZrAKXKr1XKHhPyovZMK5ka9djC8s/MwvR0yjnqReFjBlyTp1kTZvEa4Jtggk4Swb3GrLOXA74bkUqbxWBvsZgNzWfsjitH5I1cZdg7w2ab5HZg7ueU1paHJAdjkOaeWM/GxjeWhnmYs2zTla4oaYn1/ytZPIjIt0pToDfhZ7ifDG
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 16BE920002
+X-Spam-Status: No, score=-15.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: rgbgrfwpyoujdozzedf4zf8oju8bctsy
+X-HE-Tag: 1795221080-187697
+X-HE-Meta: U2FsdGVkX18P67vnOq7GGiYOVhgsa62OnQEOoCc9I2dEGoBChdrwSC+qpfz/7BYw+tJ153Snokj9HImL7g5iBu2hujZPC6u5DJfpbfAGwtFG0YokkUPUzNjExGvv/TtHt578/o5VTLdATasRP0ynt1hNoRTw0EYFWTW8Eoy33Oq5tAum//BKV0KV8Cnt1aiVuf0HjpCqAoZOA6xqbVhe5sWs+TQT4ezZ3TmO+G0/mPFBmaLwzuxXhMdiZFGlPt9ySi0ta9/850MLS50IY74eDSeDLQdbYITOOWvJbFLov5eY0GXhOXH+nQLHY5+CPM/y+8HkCaASUy3aEYQo8V5SLojAD7nn3njk5nsspaEcpTijVnktUCKApddhykn8iy5DIbexlO2DICU+1jN2Qt8E0J0jwT3eyS+gonYYV9Jncg8vINhMYiRO2WgJqVC5uWvAZbpmsTuCFlM1C6FybSJdGFKcogapUp8GPTQO1PIIpe8xPJm5kALi07kLWJt6MLO9UtRB5/EvNiQqR4E4D5vOevPfaxtSSp33bmIKTOc9bv37FZPWGCvIxQ9Px5auZnZygM57G5y9dlw0GRD3FNlZZuySOT+ciHBXrbxcXcIWgIzTuNJL52gfoTlNZSNkbUJCdS9Y2m/jiZ1uxfoR3eOXt64X4Hb7yxnyY486SvZY4nPtxB6pdH8phemuYG3IWexQHqUL9MyhImy4dU6wHUbzKciEA3+cZybbeanPoj94kTjTBQAYhwxggSY8o938Etcadq2/JXDjjPQBBP+Pyirv1Qm9D+fxS4roLz4jcy94P8ioBHyjuKZAJMsL1AWRJlGJsWgDn5XUk4PtaTgu0HDceIhz9ThiqB4kirsZOtBcpNnyHsV6EORaEL1RW63mXH5qdq05STFrsEzJmEvFT9+8NjqT2l2/MR/1mJZDo6Df1d9KhNhsrKrzc6YYwgxX6EDWNutXpr8yPxWCXYhgBcb
+ KT2BGznP
+ Jk/44HyFyXWXA1yz4rE9Je1FRpTAUjjnArggcyQJ3YZCbpIjwpAirbr0xmeIAjWYO9EUKCwNfAqOf6boAklsfnx5IjYVWejrdjJG0WU7DH/P/P6G4usea6hFH7HC0Yg6IPqtFpQyy8nE5/dfIDLfVnIrb2ipx24T+UHN6Qmk6oVksd6VN7SC0gLQDq8SJnPbM8Y+VwTNz2j/RWCUsqPpvYKdvY9+COzwV/aafHk/h5GCBryQY7tsG1BKOjG3q5MTugGWDX91DUw+3tDjYZkbOm28utgj9/Akb3lPl00N8xtdIS7GJ7CQrinPF4ufhogFWA+kUhBwN3xQdcz5cUp+m8kFVdMBpk/OOGQUbrdLsVspJvFsuVQeXUqu7zlHjFmBf/R9CsqYmtC8VkGT157iifA6JRidXLbYL9TBJb9JTwjshuEbo+zgX5dW8qIEQX/iO1eNHrrCbFxgGGGHA5zMahnOIuvyTZ9z6h77Opj7Xg7nCqqsGNsucgarrxO+rCzBfKAENAN7IS9ngl2NvE8hDFnkDXZOk+JNggYGEFuHSLeKuVWgISP2kuHs+/B+mNj5SXO59oA6rliGEVCFGViEPZRopLlZBTHaxn5sRGtu8mxZZ3Wx/g1VnMF2hvE2jRZckd3nwGaTQnmMEn/SSstDG7LbK4BBbsw7FuGIzIzl+DuFRt0o6X63jbmGATCqGP3cJOpgIxs63q5NMHI5K8czZwpqRJkpsSLw8LcBagyJuKDwBi4AIUjG5usupA2/7ylyWrqZe6TMekIHaM4Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,160 +136,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 21, 2026 at 02:17:20AM +0200, Jarkko Sakkinen wrote:
-> On Sat, Nov 21, 2026 at 02:08:33AM +0200, Jarkko Sakkinen wrote:
-> > wait4() and waitid() only allow a parent or subreaper to collect exit
-> > status, so an external manager holding a rootns file descriptor cannot
-> > wait on a rootns init process forked by another process or observe exit
-> > status multiple times across observers.
-> > 
-> > Add the ROOTNS_WAIT ioctl and struct rootns_wait_args to wait freezably
-> > and interruptibly on a rootns file descriptor until its init thread group
-> > exits and report the recorded wait status. Return the init TGID
-> > translated into the caller's active PID namespace, 0 for WNOHANG while
-> > running, or -ECHILD if init was never started or is not visible to the
-> > caller.
-> > 
-> > Co-developed-by: David Howells <dhowells@redhat.com>
-> > Signed-off-by: David Howells <dhowells@redhat.com>
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > ---
-> >  include/uapi/linux/rootns.h | 26 +++++++++++++++++++++
-> >  kernel/rootns.c             | 46 +++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 72 insertions(+)
-> > 
-> > diff --git a/include/uapi/linux/rootns.h b/include/uapi/linux/rootns.h
-> > index bd643bdfb43c..3fd215185398 100644
-> > --- a/include/uapi/linux/rootns.h
-> > +++ b/include/uapi/linux/rootns.h
-> > @@ -8,6 +8,7 @@
-> >  #define _UAPI_LINUX_ROOTNS_H
-> >  
-> >  #include <linux/ioctl.h>
-> > +#include <linux/types.h>
-> >  
-> >  /**
-> >   * enum rootns_flags - Flags for rootns()
-> > @@ -24,6 +25,16 @@ enum rootns_flags {
-> >  	ROOTNS_ALL_FLAGS	= 0x00000003,
-> >  };
-> >  
-> > +/**
-> > + * struct rootns_wait_args - Arguments for %ROOTNS_WAIT
-> > + * @flags: Wait options (0 or %WNOHANG).
-> > + * @status: Output wait status of rootns init in waitpid(2) format.
-> > + */
-> > +struct rootns_wait_args {
-> > +	__u32 flags;
-> > +	__s32 status;
-> > +};
-> > +
-> >  #define ROOTNS_IOCTL_MAGIC	0xB9
-> >  
-> >  /**
-> > @@ -41,4 +52,19 @@ enum rootns_flags {
-> >   */
-> >  #define ROOTNS_GET_NSFD		_IO(ROOTNS_IOCTL_MAGIC, 0x01)
-> >  
-> > +/**
-> > + * DOC: ROOTNS_WAIT
-> > + *
-> > + * ``ioctl(rootnsfd, ROOTNS_WAIT, &args)`` waits interruptibly (unless
-> > + * ``WNOHANG`` is set in ``args.flags``) until ``rootnsfd`` reaches
-> > + * ``ROOTNS_DEAD``, then writes the recorded exit status of ``rootns`` init
-> > + * into ``args.status``.
-> > + *
-> > + * Returns the caller-visible TGID of ``rootns`` init on success, ``0`` if
-> > + * ``WNOHANG`` is set and the ``rootns`` has not terminated, or ``-1`` with
-> > + * ``errno`` set to ``ECHILD`` if init was never started or is not visible in
-> > + * the caller's active PID namespace.
-> > + */
-> > +#define ROOTNS_WAIT		_IOWR(ROOTNS_IOCTL_MAGIC, 0x02, struct rootns_wait_args)
-> > +
-> >  #endif /* _UAPI_LINUX_ROOTNS_H */
-> > diff --git a/kernel/rootns.c b/kernel/rootns.c
-> > index 5d59fc9a591d..cb74ddc8363c 100644
-> > --- a/kernel/rootns.c
-> > +++ b/kernel/rootns.c
-> > @@ -117,6 +117,47 @@ static long rootns_get_nsfd(struct rootns *rootns, unsigned long nstype)
-> >  	return nsproxy_open_namespace(rootns->ns, rootns->user_ns, nstype);
-> >  }
-> >  
-> > +static long rootns_wait(struct rootns *rootns, void __user *uarg)
-> > +{
-> > +	struct pid_namespace *pid_ns = task_active_pid_ns(current);
-> > +	struct rootns_wait_args args;
-> > +	long ret;
-> > +
-> > +	if (!uarg)
-> > +		return -EINVAL;
-> > +	if (copy_from_user(&args, uarg, sizeof(args)))
-> > +		return -EFAULT;
-> > +	if (args.flags & ~WNOHANG)
-> > +		return -EINVAL;
-> > +	if (!pidns_is_ancestor(rootns->ns->pid_ns_for_children, pid_ns))
-> > +		return -ECHILD;
-> > +	if (READ_ONCE(rootns->state) == ROOTNS_INIT)
-> > +		return -ECHILD;
-> > +
-> > +	if (!(args.flags & WNOHANG)) {
-> > +		ret = wait_event_freezable(rootns->waitq,
-> > +					   READ_ONCE(rootns->state) == ROOTNS_DEAD ||
-> > +					   READ_ONCE(rootns->state) == ROOTNS_INIT);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> > +	scoped_guard(spinlock, &rootns->lock) {
-> > +		if (rootns->state == ROOTNS_INIT)
-> > +			return -ECHILD;
-> > +		if (rootns->state != ROOTNS_DEAD)
-> > +			return 0;
-> > +		ret = pid_nr_ns(rootns->init_pid, pid_ns);
-> > +		if (ret <= 0)
-> > +			return -ECHILD;
-> > +		args.status = rootns->exit_code;
-> > +	}
-> > +
-> > +	if (copy_to_user(uarg, &args, sizeof(args)))
-> > +		return -EFAULT;
-> > +	return ret;
-> > +}
-> > +
-> >  static long rootns_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-> >  {
-> >  	struct rootns *rootns = file->private_data;
-> > @@ -124,6 +165,8 @@ static long rootns_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-> >  	switch (cmd) {
-> >  	case ROOTNS_GET_NSFD:
-> >  		return rootns_get_nsfd(rootns, arg);
-> > +	case ROOTNS_WAIT:
-> > +		return rootns_wait(rootns, (void __user *)arg);
-> >  	default:
-> >  		return -ENOIOCTLCMD;
-> >  	}
-> > @@ -134,6 +177,8 @@ static long rootns_compat_ioctl(struct file *file, unsigned int cmd,
-> >  				unsigned long arg)
-> >  {
-> >  	switch (cmd) {
-> > +	case ROOTNS_WAIT:
-> > +		return rootns_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
-> >  	case ROOTNS_GET_NSFD:
-> >  		return rootns_ioctl(file, cmd, arg);
-> >  	default:
-> > @@ -328,3 +373,4 @@ SYSCALL_DEFINE1(rootns, unsigned int, flags)
-> >  
-> >  	return fd;
-> >  }
-> > +
-> > -- 
-> > 2.47.3
-> > 
+
+
+On 11/20/26 15:17, kaleshsingh@google.com wrote:
+> From: Kalesh Singh <kaleshsingh@google.com>
 > 
-> Ought to be dropped but seemed too irrelevant detail for the time
-> being.
+> The swap header declares its list of bad pages as a one-element array,
+> even though the list can fill the rest of the header page. Since the
+> kernel is built with -fstrict-flex-arrays=3, the compiler takes that
+> size literally, so with UBSAN bounds checking, swapon() of a swap area
+> with two or more bad pages reports an out-of-bounds access:
+> 
+>    UBSAN: array-index-out-of-bounds in mm/swapfile.c:3674:26
+>    index 1 is out of range for type '__u32[1]' (aka 'unsigned int[1]')
+> 
+> Kernels that trap on UBSAN reports and panic on oops, such as Android
+> GKI kernels, crash instead.
+> 
+> Declare the list as a flexible array. The layout of the swap header
+> does not change.
+> 
+> Fixes: df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3")
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: stable@vger.kernel.org # 6.6.y, 6.12.y, 6.18.y
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 
-I mean replaced with a syscall path.
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Br, Jarkko
+Thanks
+-Gustavo
+
+> ---
+>   include/linux/swap.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 4f686709d71f..a3a98dc474c3 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -129,7 +129,7 @@ union swap_header {
+>   		unsigned char	sws_uuid[16];
+>   		unsigned char	sws_volume[16];
+>   		__u32		padding[117];
+> -		__u32		badpages[1];
+> +		__u32		badpages[];
+>   	} info;
+>   };
+>   
+> 
+> base-commit: 65e4fd942f72a9dba0e4e257290c4fa1aa756854
+
 
