@@ -1,92 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77B0606A338
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 11:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D058606A32C
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 11:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=etQ7lRRk
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mB0YRm3j
 Received: by kanga.kvack.org (Postfix)
-	id CEA426B05B1; Sat, 21 Nov 2026 06:10:48 -0500 (EST)
+	id 7FA6E6B00EF; Sat, 21 Nov 2026 06:24:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9ACD6B05B2; Sat, 21 Nov 2026 06:10:48 -0500 (EST)
+	id 784056B05B0; Sat, 21 Nov 2026 06:24:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB3236B05B3; Sat, 21 Nov 2026 06:10:48 -0500 (EST)
+	id 64C736B05B1; Sat, 21 Nov 2026 06:24:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B3BD6B05B1
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 06:10:48 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B5C01203DF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:10:46 +0000 (UTC)
-X-FDA: 85458858492.15.506DA97
-Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7503F40007
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:10:44 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 41CEA6B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 06:24:22 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 47D098047E
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:24:21 +0000 (UTC)
+X-FDA: 85458892722.09.14B0396
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A988940007
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:24:19 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=etQ7lRRk;
-	spf=pass (imf11.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mB0YRm3j;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795259445;
-	b=5vsv9JRAlD1JTXLDCAr9OpPRKbcqyp/PyM681nr1Z2RgqgtLfMFqcfLqyRBOObS2ndZ8hK
-	UFeFHbGX4C9JoCGtThBF2o25EDkUN4WLluxGmfOnqDyYEEXvxYnFIyqM/k9ZkxLv+i9qBg
-	tu3rJnA9tKLnLQYy+9I2gfu9KMsEmr0=
+	t=1795260259;
+	b=0NDfAaSHp/SHqlnNd7E/M8pi5VYdxwSheFy0/9GKyDEDN8kydgicby457Wpp+scepP6he8
+	myppyj5tLc3ej7wt9InuSKNZSrjKvwtV12t1KjE8ydWOMK5lEHCufY8QVVVtuzDwlbBthc
+	6igjVt/2Un8Kc1UPV+EbjPEj9PzpKR8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795259445;
+	s=arc-20220608; t=1795260259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YbGsFuHzMPCucKqbbbZkf1QYXb3rREx6Caxd6NEAakw=;
-	b=WL9SCnEOfUuijLgObreZFTY1gBTonUMco3QGW2wi9pUUeOfLHjyJoleVsz96CV3TYxEv80
-	Ux+dzcbrQivzuFW3Vo9DDOuGoEUDpSpgSQ+tlT4SQtL8IWOYHMPiIGaqcqInyKzcP71zwo
-	fozYnv3F+y10H3zKXx1/Q55DA5yk4mo=
+	bh=GHbQtC6gIc0jGnYZ6s00mCvjyoI1Kvae0ypDCzK5JU0=;
+	b=r1ZSNLFCSGRFFH59cFPt4z2DxYn8Lq93uFv3dv/zjhE9mXUqnRFRYRsxkAp0fIlVuSTLs/
+	MU06VnQJB/cl4DCzapC/tOpf+CJnrlem5mEPfMme8gc+iZIT9ohCmtFVAwfuJ7PPWcVdkY
+	0k9sp+JJHfZfPLYL+sOcv0WplkCh2Q0=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=etQ7lRRk;
-	spf=pass (imf11.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lHOuyTOIwmr32upG1vX/kfSW8Fr2iMJ6LuKhLpVCBY8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795259442; v=1; x=1795864242;
- b=etQ7lRRko/Jc7US8ntLfYO2CcqEimKnOy6hVXJS+PrFpThGqxPJ1Z7WcFYZPHFKTUJ3NHoip
- rlonQT1urAaYJYDT86CdCbh961FRNskzQldANqp5tMtVanwkDlXh2MRGi2drvpljvl+kk9ffeUy
- N9q/q3OSTIkuue/kxU3OqKKg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9deb2bf611a5095e;
-	Sat, 21 Nov 2026 11:10:42 +0000
-X-Mizu-Trace-ID: 9deb2bf611a5095e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <57ef6b0f-e9eb-4484-b07f-63c848ffde4e@linux.dev>
-Date: Sat, 21 Nov 2026 19:10:37 +0800
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mB0YRm3j;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id C59F860D36;
+	Sat, 21 Nov 2026 11:24:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id EFF371F000C4;
+	Sat, 21 Nov 2026 11:24:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795260258;
+	bh=GHbQtC6gIc0jGnYZ6s00mCvjyoI1Kvae0ypDCzK5JU0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mB0YRm3jiQg6+dAG4Uh+kh+x0CIpL21NhV92OyKjRc4Nza2T3tFWotVyy2F3LVDkP
+	 TDWkq9Ns3VJKWe9ABDZH8j4zYwrx7d9HbeCjrlBUun5+r7vTyh0N/tLEKFB5z8ICp8
+	 qxYpXHkhVSTOh/LCRPqYeZKg+ZB7e4/9BbBfT5R9OcvwUtzYXz4ilD9CAeuOvXx81g
+	 Dp8xUFM1/TAxBbErZPKEA/4uf/7MxVON2JR7/HEbHbLOa29JUDaZ2np/MQ/wBSCjBn
+	 X1ArG35BUmmZXAPBQRSM66IPm6GHxeW8BlPy0LNZdkeKdtQiZyQ44rkuf+WoHNXFGO
+	 8tMX0FG52frPQ==
+Date: Sat, 21 Nov 2026 13:24:14 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v5 15/25] rootns: Add ROOTNS_KILL ioctl
+Message-ID: <awF_XiObSZVSARoh@kernel.org>
+References: <20261121000844.1863324-1-jarkko@kernel.org>
+ <20261121000844.1863324-16-jarkko@kernel.org>
+ <awDxps7uLbikjV5B@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: shrinker: stop counting when the seq buffer overflows
-To: Xuewen Wang <wangxuewen_ky@163.com>, akpm@linux-foundation.org,
- david@fromorbit.com, roman.gushchin@linux.dev, muchun.song@linux.dev
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Xuewen Wang <wangxuewen@kylinos.cn>
-References: <20261120110538.3256962-1-wangxuewen_ky@163.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261120110538.3256962-1-wangxuewen_ky@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 7503F40007
-X-Stat-Signature: t7a8tmstg9hsnr6gsmkzmrr5bzx81z4j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awDxps7uLbikjV5B@kernel.org>
 X-Rspam-User:
-X-HE-Tag: 1795259444-16926
-X-HE-Meta: U2FsdGVkX1+1V+Oy/aMZ1vM1zu3N5hsMkeU19CR44Ql4Dgk5AvYYovcYxCKlyS3qcSK72uLQJsHltKQHIF9WnNskIViq6SpoCuI/o57EX/Gee+O//mLVhxDDlXUjomUKdu2ha7PbwNivhvYbcoFRrAEa00qwlaXPhTuJU6CLAHWs0xWmp+CFDGUxHzoGqePi8YhyY1qo4ZIphYHxe+qndpWREFINfJCNv2MRkE0d1V2XoRiMo0xe5Ha6py7qhBVgsBeFlAp9dMFdezsMKVR9NO2l25stJntVqVEkS6q2FM3W5WfT9lvWWAK4PtOp9/amQdNMuq1uykUubp9NK0THe535RMe5kJ3jeUYbB+NqUa04PGfvHj6o4mgiESd5VELClvr52JAMiWKplK9dMZi/ESUYDBDyrJvo0HyixvJGaHYidxrpNGxwwojoRwekUouGRb8zloVzw6MFfimMFZg/YhcLErhS0x/drmxxcUkXJsIyknQSARu827Yg/6hpvhJ8Z/Oe+V8KN80ObzDkp/krnc/EVr3uh4JvCNQoXLmh7t3vGETQxMUjrIxDK+e35tt8J1jckqPIotzp+h19XbgsfMcVkj+LoWj+EHfrM0UeqWQOZKQHWFN1ABeq1BJWzcd1tFZcOvGhywlDScMUXlZDL7JDlRfOWkminOn1HgLIZg/walBt5nC6GniA89cO3EcIuVn6ImlFqjMzi0EBmoVy69jKVN8Utso2ar/YzCDHG1oS7JT4dJhOsfiTLcU6MoVjJ1Mwy1hWBFkDpnTwQnf1ZuEhcW1zD/WY7g8cD6mSaQtK/mqG6r3cm+lnUOuWCzc6E2iAuokfXg3NeE4QbZrox7NC8/9ykIr07evUWdW25hBCZTL9dNHXJtYRQQTawRQo1pQhvf674Y6P8yXXR55VoMJIrhHL+OpXGWxFM4J/qnqmDTwPIl4PrdMzei5VZvE+gP0EqABJ1ezjGSZknVJ
- cdrQhsP+
- 3GrgLrYl3IHFmJDF1sY2QP4l8gHf0m7ZI7ZBchytdPsNHmX/82pOrEjuAwoBNND4lcXq2F1rDUGmu4jvQwcrqXrNVy+xsFm6trs33SP+AWujjhPpDUL9HRPTIZ0oCk1djI1psb/ylTvotookQPh2GE76MjriKA1IA4U28kasp1u6LvPIl+Dc/djdKeJiQN8Y+AmW40ReIIIPdOEA/CuazXtiI4T9ftd3Yo2X44uFanvQNFicWqfBuoZTs+AuMTb/WbyIFY7I3JnEOknADwZeWUOz5tZr7FGW0RpmcCVmrx7akJjJNiRDVSIn7FzigcFbvKFEqbwm/OGeMJ92YWCuMmA3KJ2qLeqCTCl4qEbg7BYPzRGloos3BlopOY5gESH8ok1pOgV/YsGYPZnw/szpiG4RjBJLY+VWvwr082Aa2T/7k0R2dqxrX/FAa77/5S98H3dVDcqSstk8gFAIbphl1ia9H4DCxi4gW/tTzgbzBfBhWOmE=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A988940007
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: niqbjewcjxdoxoh4bw74fpyanhcm7mm8
+X-HE-Tag: 1795260259-967214
+X-HE-Meta: U2FsdGVkX19pRQ2Fisi7cjBLcMAdYf5RLc3wItPA7zULM9SsSQxlL2Vso/3icBNaQidYCO2qyhOUYy9CZTCGWKBb7W+F76tzYL2mNtD+yux7qXBl+Qey1M1yVoVoNb6A3dNDkJowJ9r50wnwwLG5I13E49jNOoCKoDFKk9FGxMvqNIRkDpNgfCxLTyeBgnBZHHdmlGhatg4Yx3JIkLdbFV3et5zG3zfwUex7VHudakypNTmnXoOv2H0pZpyn0GLLVPhUuaOCoTmrBB0q9rx+gIjJQa8p7jz56P2ruZeXn0sDgQ1dacIz2PolqAhNyVk1gFnNB9mYUEODBierodKZyIqt2wKrqaB7pVHXHTYLCv8o6MV3BJAC76QnwdvZylDw+0TEeR3HfygKH2WnoImejqV824hPeymYwbC6iMznoej6h9guhoEVNIfEJIPQmX0e4cHH4KYJLczCKSbBlQZ2abvsQY318PSk990HTu1mL3J4JsLoAwcHOMySXEsZf+zgaWSJ9K4hE94Dx1LsARw6fdspfT9TtLi+s9uRg8l+aeLAIe9ehXlGN86dbCUMCOZiS8mQbRzUCxvlyPrheEMghshRGp0X1I+R5exjcgtiIiPquX5iMXkR7hPmk3UU7bCI3MgFkruigVPeTgvWCaQFPKW7LMtazQEjzTSYNfsMAJcBaXcviTzxF9Jw1FSQphCIfymArRBEgCRyDxxDVIlaTvyRBSI3BIfeFkuO8GyY57BI1FOAarHkM1NHLAwM9pdIv381ez9ou0+xp8Cr1OQLTA4nhnAQ+RFrK5ZdIwP9QoIb+XSBaWYAMjgDrIMo80CMS2LiGP9vadHFYrg5kJ+/VTQjwRHfJVCO2trhGCzd+v5uthUtqskZkz6u8QCEvxQMSnlTsgAcymldyECsOxATI5n7vNdm3oYykYx3GyDATX0xP9QOsLWzaP/zzS5YitT3MOQc5QrU4KjzLoBrlzX
+ 5oDgzSuR
+ mQAQKn5eg8LAGPYXCCLMa8GDSCfZXCUTHUB/GRTRqchpq/b+i+jClsBR+Wjb52HOttbkfsirQxearadWPYj2bPovKFbJZJHJ/P75Q2OJIkgVmdMe9oXk9ejX1MnuNahmLpoC+4XpNe5wTP7ysTW/KYlSfrqhDZDogRYAdgiAYR8xUM4V1oiZRZfgoWXTedXWZ7GnwSK0htS0Ndf4t+CNw1q33fSevKyWjXrEQDJaIAUxaL4CSwW2QOfNgr8YqbCz2fZGFj7aAbNDS/4FLpPsrst3fIj6hEMzbr46XD/rxcjSfW8grseymoH/+nddG+sz2M49kJ3AlAdDqTOVCy36iqb1JWwQYMatqA03RvDoig/vXknsu7/8ZiS7VI5+xEGdlV/48cbQ3zjJnchXTnf0VwLXzb7WJmhLIMscO4uqkgnsn6S55zofFAXUftDWA8XFKHxY33fTLS3EyqezLwPqLVoInBtXBg6Ycnqr4fhuPjAb+kJzBxfSfDSUUZajOfLOycnWV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,77 +106,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 11/20/26 7:05 PM, Xuewen Wang wrote:
-> From: Xuewen Wang <wangxuewen@kylinos.cn>
+On Sat, Nov 21, 2026 at 03:19:38AM +0200, Jarkko Sakkinen wrote:
+> On Sat, Nov 21, 2026 at 02:08:34AM +0200, Jarkko Sakkinen wrote:
+> > Signaling every process inside a container from userspace via /proc is
+> > racy against concurrent fork() calls.
+> > 
+> > Add the ROOTNS_KILL ioctl to require an ancestor active PID namespace,
+> > walk the root namespace's PID namespace IDR under tasklist_lock, and
+> > deliver a validated signal once to each thread group including in-flight
+> > forks, aggregating per-process delivery results.
+> > 
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 > 
-> The shrinker debugfs count file uses single_open(), so all memcg rows
-> belong to one seq_file record. When the buffer overflows, seq_file grows
-> it and retries the entire record. Queries for subsequent memcgs in
-> an overflowing pass cannot contribute to the final output.
-> 
-> Stop the traversal once seq_has_overflowed() is true, using the existing
-> mem_cgroup_iter_break() path to release the current memcg reference.
-> Leave the overflow state intact and return zero so seq_file can retry.
-> 
-> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
-> ---
-> In a single-node KVM guest with 1024 cgroups each caching 16 ordinary
-> files on ext4, the 8865-byte output required three show attempts. Count
-> callbacks fell from 3075 to 2472 (19.6%). With probes disabled, six fresh
-> guests per variant each performed 101 full reads. The median of guest
-> medians fell from 128.2 us to 112.2 us (12.4%, about 16 us per read).
-> Small and sparse outputs had unchanged callback counts. Complete output,
-> small reads and seek-to-zero rereads matched; concurrent memcg deletion
-> and signal interruption checks also passed.
-> 
-> The successful pass still traverses the full list. Early exit skips
-> count queries for subsequent memcgs in overflowing passes.
-> 
-> When overflow coincides with a pending signal, the original code can
-> return -EINTR in the current pass. With early exit, seq_file attempts to
-> grow the buffer first. The retry can return -EINTR, or buffer allocation
-> can fail first with -ENOMEM.
+> Will be gone i.e., can do also  pidfd_send_signal(fd, signum, NULL, 0).
 
-Would something like the following work instead?
+Wiring:
 
-  		if (!memcg_aware) {
-  			mem_cgroup_iter_break(NULL, memcg);
-  			break;
-  		}
+        case PIDFD_SELF_THREAD_GROUP:
+                pid = get_task_pid(current, PIDTYPE_TGID);
+                type = PIDTYPE_TGID;
+                break;
+        default: {
+                CLASS(fd, f)(pidfd);
+                if (fd_empty(f))
+                        return -EBADF;
 
-  		if (signal_pending(current)) {
-  			mem_cgroup_iter_break(NULL, memcg);
-  			ret = -EINTR;
-  			break;
-  		}
+                if (is_rootns_file(fd_file(f)))
+                        return rootns_send_signal(fd_file(f), sig, info, flags);
 
-+		if (seq_has_overflowed(m)) {
-+			mem_cgroup_iter_break(NULL, memcg);
-+			break;
-+		}
-  	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
+After this only ROONTS_GET_NSFD remains.
 
-Thanks,
-Qi
-
-> 
->   mm/shrinker_debug.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/shrinker_debug.c b/mm/shrinker_debug.c
-> index cafb566301326..3022d103b0b1e 100644
-> --- a/mm/shrinker_debug.c
-> +++ b/mm/shrinker_debug.c
-> @@ -74,7 +74,7 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
->   			seq_putc(m, '\n');
->   		}
->   
-> -		if (!memcg_aware) {
-> +		if (!memcg_aware || seq_has_overflowed(m)) {
->   			mem_cgroup_iter_break(NULL, memcg);
->   			break;
->   		}
-
+Br, Jarkko
 
