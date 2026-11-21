@@ -1,150 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862F560A2618
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 04:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42D7606A334
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 06:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JKYY5nbD
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cem7dQAN
 Received: by kanga.kvack.org (Postfix)
-	id 6A5B96B05B1; Fri, 20 Nov 2026 23:35:32 -0500 (EST)
+	id 9F25E6B00EF; Sat, 21 Nov 2026 01:54:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67D8F6B05B2; Fri, 20 Nov 2026 23:35:32 -0500 (EST)
+	id 9A2A26B05B0; Sat, 21 Nov 2026 01:54:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5983F6B05B3; Fri, 20 Nov 2026 23:35:32 -0500 (EST)
+	id 894416B05B1; Sat, 21 Nov 2026 01:54:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 24B036B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:35:32 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D768160335
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:35:31 +0000 (UTC)
-X-FDA: 85457862462.17.7C94FA1
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 572321C0004
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:35:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=JKYY5nbD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 53F706B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:54:07 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 247A98036A
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 06:54:06 +0000 (UTC)
+X-FDA: 85458211692.23.FC7C3CF
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 54DD4120009
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 06:54:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=cem7dQAN;
+	spf=pass (imf29.hostedemail.com: domain of thehajime@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795235729;
-	b=ENxri7o04B/ryb/K+3KaU2PW+J5ofaXLgxuGZ55luGmnR/YS43ZNUu4HyrqJRTIBNwsS76
-	F27e00bwTBZq9T8KaQEH7hMNf97VUinqDjhWbd6zgejd/gm3XtC3PfKnzu03Kg1OEw9nF9
-	65An/fXbw+L/mT+9F886Kw9hwvjIb6c=
+	t=1795244044;
+	b=SidUT2782JPWc9e0nJxtdkEcUAL5rlBp0VnBcjBrAV294oF1pzgZAFf/SECNIu7S+qOQqB
+	Re0gUkbxS+BuU61bxTa3YhbCKWUI1hDBP6UXdZYTC95RFp7g17UviWeryYtSqJZdT1YPyW
+	u55tBi2cjSeJo3anMgAW5zzqq0oXXEc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795235729;
+	s=arc-20220608; t=1795244044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9R6zaVIvtgH5jzl+qiEpRbTjV5svwtDU6V7VCAEyGSE=;
-	b=rGtjCqf3bGs+nh/6QPBAIdBDZVh/qFxmchsudPRulxwFe13+LCLdn2Ci3/HzqupYZmNxpf
-	hKhnyFg3czf7I0OKHcqcHfKUy1YDMU+zpWwbtW3FloSL0SfRn+0VmyA/fZG2k5FjTwrPDc
-	iSFpNnmyEvNPtHNIZzthmWgGya+KfkQ=
+	bh=MOcn2a9o95bTTvR/d6VT1xfcJk6ReR/3XyMDIzZArlI=;
+	b=Wgh00OZZvcb8mCvu7L76NHXYYUFBeDNuPm0+IAPFrHSs0z2HGJ2HaGdJc17Mnd6bjLdaUy
+	v0c53l9LL2Omc+46ooxDVjipjeT6spZE2h9CZXsQSR081mdroo09VO39EtWAFeVOCd+zjd
+	eOxxc5gjBWBjXvzjSb6kfL3G9aGxEzo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=JKYY5nbD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4a32576da88so907318f8f.3
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:35:29 -0800 (PST)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=cem7dQAN;
+	spf=pass (imf29.hostedemail.com: domain of thehajime@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1a2761c69fbso3417775c88.0
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:54:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795235728; x=1795840528; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9R6zaVIvtgH5jzl+qiEpRbTjV5svwtDU6V7VCAEyGSE=;
-        b=JKYY5nbDe/RZ9YNKMEEFjt4OWgpPth3qmnM9QfEu1wu0exRM6h/m24LZ8zBX+1gCa6
-         icSMlfaFUd469In18+Q86Yj+SpI73Pv9ukMh46fxSjLwoER9NaOsj34e4nHmVJsb6r8T
-         pub9lm3xzbXVJx2expaTwhr3atw5GQeFJIIiQ6WUibvLEkT/R/b5xTcSAzbP2VT6YoY5
-         vkG3/koAm9zayzIzrxEjqIUhTIQLpFl9tNwUc8Hz8Lg3DCkmTiysBSFIUChILzLJX+BF
-         NU24VhOK/F7/48i11z7EqDq/ojdWrtWQeFnaVCjIrkxgoFgG4FY1t2SQj5rvyRQE35WY
-         m3oQ==
+        d=gmail.com; s=20260707; t=1795244043; x=1795848843; darn=kvack.org;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=MOcn2a9o95bTTvR/d6VT1xfcJk6ReR/3XyMDIzZArlI=;
+        b=cem7dQANE/fN1rR+wDDLW4UOPcr99HA7l//Hel1uxeO0QbV+QybxxqD0p/2fqwCfoq
+         bHajIuFoX2oSGlD3t51/N45k6SaUppcAAqPzl8svJjqq0Ams+Ts6pnMnm+8WO8TcDN1L
+         mjg8Lmo+Zlo5gLo4cfDWLzsmi8TEJmMF0l1Y4Fmw+MLgJOwGgtIvFdT1lO5EfVjdRBfo
+         ySH27Y3anoVqYT9XHzumqEl1I0Ho/Rbm4x49YgwkJcHW/2pw//uDGROwAO5rsvw9+IwL
+         pwR+Pz450Gs/ugS+MBDRaGQZdOy6hsqBYqXciYqce2LSI5l6UGOUwQLSWbwDJ0kjQz85
+         WsfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795235728; x=1795840528;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9R6zaVIvtgH5jzl+qiEpRbTjV5svwtDU6V7VCAEyGSE=;
-        b=AccAN6LhABeJCQNRv4vToraaTEhjAFiLL2UvlvUlijqHbC9W7GBFnYZpdRI5uGx1rY
-         pA2UKyGsZwYvIUQWRWx6UOo/Oa8mViEA5RebaWDca21uYEc9S71W4B+QVd3bnEV8Vnfi
-         CrVHje9GJ1B5/fFARETbxFvZMyzYt5spHA/9bM7+PdDpHZGJmT2THBNQ7zI3eTiuqM7Q
-         9nm2WYCba5r2snL8p0jlzLOrEr4gqky2AQ3pQn5eBOVThF0zptl5ReLT9ceIk2jddvMX
-         D3z/1lVXGXGn9G2d7Qx31+gsfgjAlWbbdgNEAzW5TfvUHkJMjCH36GbQ4jeSK0WY4GmC
-         6tSg==
-X-Forwarded-Encrypted: i=1; AL+hErFh08cE7FywXBih/B4XYAP0U+xVtNnL7mao1Ko3f03KDDE1jKhOjt2F++oE3X4Oo8EeqHlTvaQFkQ==@kvack.org
-X-Gm-Message-State: APuU4Z/oZXrycRRxp8K5WAiYTRAv5b6S69W9FGKrxRfUF2Za6Hcyrtyp
-	7D/kiA3OvmrB1BQr/Ypt3nCQS2g8llFxUcolaFV0bSliOTEK2WzUjNEM
-X-Gm-Gg: AZFdTZfbLmM/tp5XyncK0YMpwbJ0SehqwuutEnuXcTPfop+oJn1PdYBnONt10Z0LHtf
-	QbST1Rr4ibNwyQU5UXp2KCMUfwOnDVZTKWKBnnsHT7NGmPm1pIYCpoNbbxk2MYbG9T/cA+kRpEN
-	XDbWeh1aqkZnj1IgU3eFS/a/DUXibc2vIb2jy1lR7yP12keEwqutAe5+shu7TUdUiejjkQzF3wk
-	Z8oypluMhLMLjxucZCWpS00zp+55j0DJ4ryp3Z6/WKgwZDsshFWYbWOUwpiu1s1zFOLEkjgsnUd
-	Cdwezq9GXP0R6JH5BXJSafgL2EysonNVXHLq2s/j2gDjdeJN9TcCJf05a6fipfQ5IKX1iucq0fJ
-	/O8mMxJqQckh0iD0yrfnPfprxYt/8wcCRT/xNrzgFO+b2BO2r3d+UuWKqbAzXLkCxcFANk/18af
-	mrXk2WvUn9qHuCMlhCBh5oa2KrNNGpEJ93afKLYHXUijI/h1PVeF4S1ZTlXhLMGroAKgMcZMnGy
-	W6L0ZJ4Z0Mr/RwhaSjpgmLhwh+WLs8icQsOEVUcnvPTETuPDz3uECXpUNahz5pUlX3iIh89L3lh
-	OJoSGI5mxWRCCgFTDlkrOjDTe30pnJWBaq98a2pAROYyijx30oMt7QQV9fjyZjzHofEXJkSdhB0
-	zDenX/lVwqERWkN/ZQW/qgWj9P+5hIAGcXjwgDqMMpe1/3cXCPuv6dk9CC1scxwpNuhhYDuF+As
-	YWOwNML7Y32Wk/2mowLd+hbhb2b43Cj22q
-X-Received: by 2002:a05:600c:820d:b0:4bb:7b4d:6396 with SMTP id 5b1f17b1804b1-4bb887e21c6mr111271405e9.3.1795235727586;
-        Fri, 20 Nov 2026 20:35:27 -0800 (PST)
-Received: from localhost.localdomain (dynamic-2a02-3100-aeb0-6801-ad74-bca0-dc5f-7242.310.pool.telefonica.de. [2a02:3100:aeb0:6801:ad74:bca0:dc5f:7242])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb8526cbd0sm214023515e9.0.2026.11.20.20.35.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 20 Nov 2026 20:35:27 -0800 (PST)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Stevens <stevensd@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	Amery Hung <ameryhung@gmail.com>,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-rt-devel@lists.linux.dev,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/3] locking, mm: Add atomic allocator trylocks on RT
-Date: Sat, 21 Nov 2026 05:35:13 +0100
-Message-Id: <20261121043513.20538-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20261020152708.3atPlnSl@linutronix.de>
-References: <20261005070625.8871-1-kmehltretter@gmail.com> <20261020152708.3atPlnSl@linutronix.de>
+        d=1e100.net; s=20260707; t=1795244043; x=1795848843;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=MOcn2a9o95bTTvR/d6VT1xfcJk6ReR/3XyMDIzZArlI=;
+        b=ISXrTYepY8FxtsPyGYaBXJeIIpoYeMY+v1A1cBbkH6yP7QB6Joc1DtlRJDPZ+oj6sX
+         g6BEb2+RodEWFe3ObXG7TjCWu1l8OSRU5xlYpt/Aibp5uZfzDnoMuPsl9ve6OwgTJ9ky
+         w7PcaM+b1/SQ1hUdvDPN9i/sJ7eHH0ettusTbujX/UuqPg2gN6+u/4hrNSUdlynJyCzT
+         3uc7gitoIDBCQNl/GOt4pkgOCVng3KF7drmP75si1bInUOR4X5K7O7MaZQ4/EQJUny85
+         heAZj12YHJjVyAOXCOii52wCt1ddxtAYBKtbP9IygPyuEEdI1nftc+tNMVa8tvMedwTh
+         d6BQ==
+X-Forwarded-Encrypted: i=1; AL+hErG/c7DpHJxupIrCDepv4IEvd66OhxNTnVXdn89gRKZMp4uQUAZp+FqL/UT70WuftpsKxVC+NqbEIw==@kvack.org
+X-Gm-Message-State: APuU4Z/rdvi0kz2xwavnCpXEgpBVlH72mEb2WnMqDWUabEHC8W2c/tNj
+	LR+rbTEHUghv6uDUQ7rY2eeLzzCLnSDs1lqWMB1rQlnT7+1zAgP351z+
+X-Gm-Gg: AZFdTZc1do1uO/B53gFXEipwlSjQN27pQGiSs48+CdWdVermJRofZ1VrH3ngfkUNoZW
+	awOYVnGXDNTGJWRxvwbpBdHToLo2UCpjG5R4KAB9TWcZZeF5NSayVq8jl0b62teDKQWVDL2J0DD
+	f6hwwnfaOjQqk/XIjKVGFFLuYhFq9I3i0xMbah2AxMcfDNhzwu5hKUK9tp10qwfkmG+un4/mGm2
+	R+IgEenDbaZRgjz0z10vGOHH5T4Fq8XcY1XcJOGaY53VoTtGjx8LkCy/9PVNXS/FCB/fmU3GrWw
+	eNNaS6ZmdilY/njyGuAmvUVH35rgd4mwMUvZo8QAdl/EOT9LBXsOoAhzTJLroCoC2aXnhObxI8J
+	bZrkLX8VYfTayezP9QbCTn7JW325fI0W27dZq4yhJZqVbQgbXlW5iCB0+VBduQOQCYbI4tUAdud
+	FEcTQZgL7EAR61SPNBjKb9BLBcdVGvC0nF0EZX5p3Y9nj7bmD8Zn28NeOudRfTI55UwAQ2MvHXI
+	1hii8SAmWGDt1mFPtYK1a4Bq+qlG2FHb9mOx4t3JN04ObR5BuzT57mPkvj9y+7lIGSECsUqCZ0E
+	6WyLH/ACC0awwfc3KOhTTSPNsq0Oxe27O2O5FZ/jX3nC1alFviQ9fTuN+uu1A1AnJSUWnTCuNCa
+	AiuFDTGZ4Dopjyd+dlOLGmyYEOjYH3WZGsZk+HG9TES2gJfribUEsCA8jVpGHw51kfMs+Yb1gWH
+	nK9fm+nuhz/tiyhVPILA==
+X-Received: by 2002:a05:701a:cc85:20b0:1ac:f84d:403b with SMTP id a92af1059eb24-1b5568bcba8mr5469021c88.8.1795244042878;
+        Fri, 20 Nov 2026 22:54:02 -0800 (PST)
+Received: from mercury.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b562a82b3fsm5852102c88.5.2026.11.20.22.54.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2026 22:54:02 -0800 (PST)
+Date: Sat, 21 Nov 2026 15:53:58 +0900
+Message-ID: <87wlq6smih.wl-thehajime@gmail.com>
+From: Hajime Tazaki <thehajime@gmail.com>
+To: brad@sim.vu
+Cc: ljs@kernel.org,
+	liam@infradead.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 1/6] mm: nommu: fix do_mremap() to correctly update internal states
+In-Reply-To: <20261120221021.789792-1-brad@sim.vu>
+References: <m21pc0qquc.wl-thehajime@gmail.com>
+	<20261120221021.789792-1-brad@sim.vu>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/31.1 Mule/6.0
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 572321C0004
-X-Stat-Signature: k6o89nf3d4mjyn8yc3nyykrde836bdyj
-X-HE-Tag: 1795235729-4091
-X-HE-Meta: U2FsdGVkX18zI51Cu1neSHB5XbCoDgTm/egyDo58ivhngGivqCWG4jJ15uppHz5PKcQj0CVx9GdvgM7/RAyelpdqnyc7dsWpMo3SiBJdICKcABk8p9T4wd7SSLEwFmSV2XnhmLr6m0YAk+WCY/EHVJUu5J02ckc7vBGMw7huVZ2nS0/bXdV6oTNIpruFXzvsR4ASqPChACRn429aUQhbfF5OR10Dwzx5E8gml6JX1CIx4VrHcWWoKcHsyQYC3nsyHsKusm5HsIlczaQ1i88Bo109I0b8Cw5wGaCEW954Svmr0NwmFxiIRUYg/YnpT5Hs/gBcGSWtAQB3qPBZNS5Z7J7f7wQnHbFOGPe1UU2/rwoe//1Okx6h2rL6uGrfBEDKvCyNIoEs5GBxAhA00eOCPNdfUsccB16vLH9IIJ9p36kXZlMQE+5DZM52o3WvEQvyAa5XVd4N9Gs9ZnKvov2mto0/zyr18iEAcKKgh6CbR7boPCuVtzYFnrW/6yUwSK9mMOu143Lq3RlWIePn2KboRQbm29AKSdlw6hokZZINveuRmGUXeSAAWd1EePP9Y4f9QD5T8ebhtIjXqmmoZ2sKfW324Ro5BkOhDig63Xlt4Rms8WZbuvv+MQpQFReHlDrpJCw4VQy0pdiE63Xw0r31plZ2olbwPtK/2od5WT9v5DA09H2mqRLC+Sy0S1lHujIKP9tcm6vI7hXkkUvas+pYNoNNBi7/lLuDzuWaRFxm80iF84k9seG6e1o1eeNV4DVQQsMLhafAXbKQUJiJq27EMv0SdL6xRGqKl3sdx4wclJ7G5isqZnXTPjCX9yyXsG+eT1SxYTEq5y83f6KdCyW4xLCFhOtuIJg4sZ6r8zlF1kCtH8LipMjaea/T9Jn0sEmwXtzHd0DoHq8+xETqjeU/PILeOAvrxzEYeW5QhO9KTNDOLqbXxnOKv6hBynIB3jiWK9A7r9N5GGdrlsLpCmN
- ep55O++h
- sdJeQ75srge9f/5lWwlVEVKUAgQvqcxnTE5chMwD1DH7Y8tPdA44jYEv8xC6twhV7xVAZy6IEkEsCwa9htByQXln5eO0q/IfPENpmTDuIpxsl/PD+5oBAE/lO8x29Ko2PDWs9ywgyerb9asTkQ34SDTcbLHWy7FUscoQhYukY+u7myHL491pfPYRywMAjs4UhUAvel5bidMZ0PHbr429gGhwacIxO+bQKEWYTxLUtYkaGUO/UQSAv3MBPAOx2T8faPl3+69oksBvsGzeGe+EhGYAtgIp9ln7fRiW4tX77MD2RfXnFsPttPxwm1I3bPEZZRkWjjICFGP6dVtymdwRnS1dQB8PeKFQfKadVs4AqzAgp+UY+itmZWEZyBng1byo5IvSBdA4xcPDYb2GUU8tUpjCgq8E+MeRXbOToV9aX9DB7FpJ+MjhTnaPi6n5gHqROIpWQ9rZdmZFA3fm3FtduGQ+4Fez9aagILBSofiUmPKIm/qg0ZAmmgbItUSF6duEG1fmZ0hPXkii6OgAKhB99TW7Khpz16y+Yg6zGhzV0FI+begNfmYJ8am835JwSN9aL0xH818piPhzXTnESgUpmWj6ERtXUP8x2GRZHQhj4FskSuWaZG5Txsgs6ZVe+S7M0zPFoMb/To6QI24Vq7QDZdduwje77us2yNYYhjAdvJPux+9U=
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 54DD4120009
+X-Stat-Signature: k7n97op5xjznx4txtqqdezqg93mfw7sh
+X-Rspam-User:
+X-HE-Tag: 1795244044-731470
+X-HE-Meta: U2FsdGVkX1/3DBH5SGmj65ryysDVJY8HJaJkd0FpURND154L7a9edUIL63UwFoWsQXfYwT88g/161PF/sVGld7zQ1XRCxMzLqWh2Xjta7tEN9MUWRkf6YD4VtRYprMc2My/cOUiNkude3C7uozrPm6VRjIQjRBXU65FCyH8wwlasYdvK2npaevsTMfnVuIU1mcGJkgfReIZpcssbh9WrlCvjPMvapcbEbqesNup31S0hWVTxifKNVCFuVF1PJZmBFhUCOBDFrTCQqGKxURN83q3LTep4nbOWHHamzTU3RSv58plhcAqOInUS++Fglfm4/w8cO2/jMT+n6EgvAp5ySB/a8+a8GnPrcGVcnn1vZcrjtk3IIrlDiW9UaKmDz/Q7S8J2rthoyrQkoCPJmvjFSqO/m9afrDQaRxyursi3VoLBr9+Ivg6CiI8jvDom8QPNtJOAMcLLYKUeImvbkpQxBKK0FW16qJET1P5a3Gdlq8LcHKOmysehc8OAXIQMkSxIQxtjBn5m9/frCzgZiaFdiiR+hEX+J0eU11Nv7jsJp1jhRDHGWElhDxqqe4lEoOrpcvJPMqR/aL+vzhVFXxmntJWxAWDBr9OyBj0Q/vn7wkVNBFSy5P56TYNE9k5JOJk+q4efs84o+QSKE8RHdBQd7UOchxAEblv9fvu4HipgSj6VDpC2o9v17YREpZkG6cFBY95x3Feds7VC4B9U9zRFWTnJm8RwEgUFi6kxp7AhOVt4kwzaaON8TzBRmLlSx/RacJiM7/9PUWqe0yvb0uxN6xs5yI3pbx4uAo7NxcV0EnhMC34xtG5qy39R5X7A7x4pnGGVBqDePiIrIklIeg3K0o3p+YZQX7RS43iSPIPztn975YhaBwV0LgkHN0njz+JtuGxSENaP/siGCqhvIX8jCt1pTgtpJQJ4+xXNqMGB3jsWhvdMsX+gEEuUXiebHKCfDfgUW7d6ZvPBlyVffzX
+ bQ8D/igH
+ 8BIdJ/Tsqpfm1o6CYLPhwYUfC8zp6yf0/+A7WkOG8mFIjj5s2owBgSmeqeUhPyJn6c5HYFii8bFh2GuctbIKpa0gCmTc4htwnulQocNXRWkqV8tzI+0SfMD191I8nCOMwJ0yG3JRWDCb8mdET2eZquDgBtYwMaV/QcYESD1z/mG+/uew9a6iaRJxO0w/cFXvw/sGRbihbm0qLHbrqsGMjiwcbPsr3Lf8FT24wwpj4w+BGlKeaWw4LtFTr6hB5UX7sCiaZUkFlRwqiE/VGErEvy1qnawz7JFQpN+q/3onDFA6RTlVRLIUkCovs7ZB852Y/skNg8l9pCYwtfApVViiyrzDTish8dFI+MtzrbCblGf6OFx+LBNJUGaGnORowA9GtDAP6U7dNLxmLHre2ZS9SHuQBneuuhS8kG3giUR3w3ejEzZugRzy77LKrIltnhRIRe4V/Et7H7GwFHwp7M5fRHMPh7D0aHlD1mzLCNuDUZ+g03oA2uAUs0YIXmysGW3K6HzGdsYHXPVjeyooCJCxMeZfBDeBl4IM0lEqUiQvwxD3//8F3mSpAllsz8HfcxHxVB2mBJY1kyFwbmC8AfESD/kK+RxLL78eFr36RFu3QvgnuF2vaUCuNyqdZ8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,32 +127,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 05:27:08PM +0200, Sebastian Andrzej Siewior wrote:
-> What is it that you try to achieve and why. Why is !PREEMPT_RT not
-> affected? Half of the problems origin from PI-boosst.
-> Why has the nolock an rmutex-backed allocator.
 
-The bug still reproduces on v7.4-rc3. 
+Hello Brad,
 
-GDB caught n->list_lock's unlock re-entering try_to_wake_up() under p->pi_lock.
-kmalloc_nolock() uses normal SLUB locks. On RT they are rtmutex-backed, unlike
-!RT.
+On Sat, 21 Nov 2026 07:10:00 +0900,
+Brad Hawthorne wrote:
 
-> can_spin_trylock() skips hardirq and NMI. There is a trylock on the
-> local_lock_t.
-> Why do we have this mess and couldn't we avoid having it?
+> I hit the do_mremap() stale range on an Adafruit Fruit Jam board
+> (RP2350, Cortex-M33) running 7.3.1; the code is unchanged in 7.3.4
+> and in 7.3.5, the current stable release. I reproduced its
+> consequence under QEMU mps2-an385 on today's mm-unstable: an
+> unprivileged mmap() of 8 pages, mremap() to 4, munmap() and exit
+> gives SLUB "Object already free" from exit_mmap(). On the board the
+> next exec then faults the kernel; with the patch applied to the same
+> kernel it runs on (11 of 11 runs).
+> 
+> Following Lorenzo's request for a minimal fix-only patch, I have one
+> that only keeps the maple tree in step: it clears the given-up range on
+> a shrink and stores the VMA over its new extent on a grow, with
+> Fixes: 524e00b36e8c and Cc: stable. It leaves the i_mmap tree, the
+> region's pages and the rest of your series alone.
+> 
+> I don't want to step on your rework. Would you rather carry it in your
+> series, or shall I send it as a separate patch with you on Cc? Either
+> is fine by me, and I'm glad to test whatever you post on the board.
 
-This was IRQ-disabled task context, so the check passed.
+thank you for asking carefully,
 
-> I looked at the patches and there something about hardirq-atomic waiter.
-> Wen don't have this. I don't think we want.
+I'm recently delayed to update this patch (sorry), but not removed
+from my TODO list.  It would be nice if you could propose the patch
+Cc-ing with me ofc.
 
-OK, I am dropping it.
+It's good to know that the code is running on cortex-m btw.
 
-I plan two patches: move range-tree allocation before arena->spinlock, then
-restore the RT check that rejects non-preemptible callers. Does that sound like
-the right split?
-
-Thanks,
-Karl
+-- Hajime
 
