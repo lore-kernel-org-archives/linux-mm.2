@@ -1,69 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72380606A6AB
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D4B606A697
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZV/lihAn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZoVXvtNb
 Received: by kanga.kvack.org (Postfix)
-	id E437E6B05BF; Fri, 20 Nov 2026 20:09:39 -0500 (EST)
+	id D310B6B05C3; Fri, 20 Nov 2026 20:09:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1AB76B05C1; Fri, 20 Nov 2026 20:09:39 -0500 (EST)
+	id CBAC16B05C4; Fri, 20 Nov 2026 20:09:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D54C46B05BF; Fri, 20 Nov 2026 20:09:39 -0500 (EST)
+	id BD0FA6B05C5; Fri, 20 Nov 2026 20:09:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B00B76B05BF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:39 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44CFA16028E
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:39 +0000 (UTC)
-X-FDA: 85457343678.02.479B99C
+	by kanga.kvack.org (Postfix) with ESMTP id 976676B05C3
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:47 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 04C5F160295
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:46 +0000 (UTC)
+X-FDA: 85457344014.22.6B11D3C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A9DFBC0007
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZV/lihAn";
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 583C4100009
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZoVXvtNb;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795223377;
-	b=8hA8aYm4gme8OsXLjWdoRyXY3g500w4zscZZKDKCzp40iH505tEQ68nN89s8n4yGgKRY7f
-	v9EX3kuzbcjdIxK8VFsXx999iMP5kun+0apkVWK5VK1bI2aCrSNhgQJQss5UKl2J789F8v
-	zMxLe6EmbtBtlNojlSQkLuAHdvvc29k=
+	t=1795223385;
+	b=mivlG2pU0n2sKNmGXtRFrkbR5P6zRedVqi+4pZ9pKbPm8YAISaMl/GARaM29JqNNkshFXR
+	xr0kvpMnQFr/h8Gu/CWvzQbgrYRXgJwMgjh0tj+CUAjzoJZBCHLGqmA4P0mqfuvkCgBL6i
+	1CO00MAqcMVvFdRcImleencofht7tms=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795223377;
+	s=arc-20220608; t=1795223385;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qwouuZUpxbLLrowpuddDLWpdBddsShOx+ZScJGTwIGs=;
-	b=lcnmFipTgOk+uR7UvpgeyQzuLwFOYnHsfgDgzCG1HvVRvZHV4o3pjJqrPfWEFM69258e/7
-	oyFx63X+RHyqWSc7QApvBgftGEQNk952tp/pr0tCWIk0MSvCGilNkXEhiDBKsZpjBApXJK
-	DmqHBlwZ9uspFMdbdEl3vYnY5384swU=
+	bh=8hNb8W3UGfxBQSao7zkr7/h6IjxifCFNO+cU+J3lxcY=;
+	b=PPTM9INYWQxs+Qx9q/AbLYi6PFPcqGO/hZtFLZcYvId6/StdW7DZ2neQPxiRA91cP88t9S
+	4F4+sW2K5nelxwNRXqyowhzB6tggTeDmV/DBlfkK5dA1qYl2Z+g+TIN04/NgPbN0l04cYk
+	ctcZ+LO3OKLAP5/lWUNt6lmez9qInM4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZV/lihAn";
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZoVXvtNb;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0888742A92;
-	Sat, 21 Nov 2026 01:09:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E8A1F000D0;
-	Sat, 21 Nov 2026 01:09:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7319442A0;
+	Sat, 21 Nov 2026 01:09:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC1A1F000D0;
+	Sat, 21 Nov 2026 01:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795223376;
-	bh=qwouuZUpxbLLrowpuddDLWpdBddsShOx+ZScJGTwIGs=;
+	s=k20260515; t=1795223384;
+	bh=8hNb8W3UGfxBQSao7zkr7/h6IjxifCFNO+cU+J3lxcY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZV/lihAnJhsQldJV7c0LbbWPKvENtq1RmS1kQ5e0U+wE+wGzQKpmt21NuYhr1XkDi
-	 Zysr5oy63xT7/6KLXVC1HecQrVLZ0TJPGTx27xZnhsNF3qcSXaF9ecuS4yhC2Ilt16
-	 tAVBYmkJ3gF/YWpz/eilkfyB5paWgpIg/vrYs03d8R2JuQ0EQZnGFzvlE8H0ORG2T8
-	 ejOh0wikpz6kzWPpKuZBAMoAccISgrVDXIGSwPeSUUQNnuDpbyIJwuJJE7irgP6tRI
-	 6V5s9mtn9sOBzE6Ln1+a7eKM1++6UMURBAc2juhIEzm81cmc4W7985XCjEzhSjhbzH
-	 iL7BN97H7Mu0w==
-Message-ID: <sashiko-outbox-226476@kernel.org>
+	b=ZoVXvtNbUA36Zh0D2qs92O2EYjgL9cJWyeu8f/mRtJ+3M/8FRWPizS9/jDZ8yjHqx
+	 gEJhhdjWf9Yuz2AgsqtEqy/uMmwqRP5rpAQxQH7VNebtonUy6zi++WqXk9r9wzhDJW
+	 8db52UNFwybutKKBmGeNeRXcN/SY6Z3whHE1KBcbTg9TF/5nkzYVeh/N+fvUDNXGWp
+	 vLqcy1Ul09fr7cyw3wyNq2ZbaLZRi2PBxv5PKoTh4AFtZvZ0/1qA1G51n284DjSEi8
+	 Q7VkaH7rrF8Pp1mzgIuBg6x48bcswV4aTsFgL1ERzeyIBpmaSeLjaivBAC5GPfW/kJ
+	 +nEzo/Y1Cs0qQ==
+Message-ID: <sashiko-outbox-226481@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 12/25] block, mm: Support PISA for disk I/O and
- scrub migration
+Subject: Re: [RFC PATCH v3 17/25] net: Allocate small skb heads from PISA
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luigi Rizzo" <lrizzo@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
  Hildenbrand" <david@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Vlastimil
@@ -88,25 +87,25 @@ Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
  Hellwig" <hch@lst.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Dragos Tatulea" <dtatulea@nvidia.com>, "Naman
  Gulati" <namangulati@google.com>, "Pranjal Shrivastava" <praan@google.com>, "Mostafa
  Saleh" <smostafa@google.com>, "Randy Dunlap" <rdunlap@infradead.org>, linux-mm@kvack.org
-In-Reply-To: <20261120010655.467825-13-lrizzo@google.com>
+In-Reply-To: <20261120010655.467825-18-lrizzo@google.com>
 References: <20261109182533.3594984-1-lrizzo@google.com>
  <20261120010655.467825-1-lrizzo@google.com>
- <20261120010655.467825-13-lrizzo@google.com>
+ <20261120010655.467825-18-lrizzo@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 01:09:34 +0000
-X-Rspamd-Server: rspam06
+Date: Sat, 21 Nov 2026 01:09:40 +0000
+X-Rspam-User:
+X-Rspamd-Queue-Id: 583C4100009
+X-Stat-Signature: qz4fq6zhg16crsjg64rkpjexz8fien9p
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A9DFBC0007
-X-Stat-Signature: os6sbs71mge6sfqnmujz8wedrwmg5ws3
-X-Rspam-User:
-X-HE-Tag: 1795223377-413387
-X-HE-Meta: U2FsdGVkX18Ji/EZxwq6PK475pCCfJMEs3lEBXT65/QQ0uNRb4etqsTOdm5Teo7GSGm0RLk40YqMTtp8fvt6GusfJtvkPB2mIIotvCC6pmtGJBDlrR7wXMhCXkapZH6JBovexd1RcSGhGn3j+8Pb4nqRSlBAyoLGU5nBuhYb7sGkWz+ozSjNWBCR4i2rH/86mexb7GkWQ2+O2lEFN8Rb2dOdODoK5quqedHbg2sx+0HTqw7ebBl0/xuOoprrBrPnsJCv4aI/9BJP4hDbiP4Ej62dl1t1tcDia56e8gj3hVDpC/R9HUT5/Kfdg5FCoGoFkGRRNWtKGS/dF8C1mwVWXzcqu6vS4gadN5yQocZo7l52MZDxxWyfhSajLuRHQsMUjGCBUsczWhkupFSYkJwMYO0IecCjZOeTXk+LYuDiJl68T3hWdNPdnBRDmftBR8E0PfLcwp/yj+98uczsuV5vdtglHexrMM+UsGNMSJUE3YVVw5hUn8XyO7MF+McRzaDcJQEJqZRKqrQczTkOvF5PHJsmdTKLE7YJD6UoqMzgoIwovBxdprzU21uRnV2y7UPU5X8sxzf5YQETxKvvUt4uaE3wLtMnBX+he9lkhVDILCAE2/7tR+2d5fub8JTXOdNjqr4P3z+fsy/OCVRpn3d6HjKYvWrsC1BDOIG+3KAVcJgd+BCvS0iMlOuiSBYRj2+QTvd3QtV+0X2zD3JDpu8pOy9neLkCbN0n6mH/TwCKywO/nx/rF5NETErxsknx0dgDm9Cki5Yjmy7gf8gBBZ55vn8IXCkT7ygmx+Rx3TaLPzAX9PAJC9c5t/OMH4wByI+AY8TVfUVJtCZ8nbZbB3uafzuDkBFluT/6EYOROAmyjH9+aynigLvzuwEZ0eaz2UR2vF5FoLU/x7Fwb026CSKTxmxKeRm67zJxcW4P0AP1gFGBBN3LlQOfvRA0J5tUEBTDgKmfOYmT3qxhdTp7SYc
- /sdrrFEk
- /QHWkGOQOr+QloNLhN58LqxCT8oSIUkNMuio7FjvaEQyA6ce1dj/EQpGTBgm7RJ4ir96CDKd2fBekym+aT4J+4a5dVJcEsfVIUE2/ZEhRusBjhza3oMUKR99ykFYGFqebtRbDDl6CjDhwHEYm+qZlSBBNdODyNv8OnqSr9rTXrd/7siAd5dZRCPAu4aHINVa4m3BRHZrZvCWACrc6aRQI7ror4g8K0QLKXvl3mKCchd8tfvnNcsfmk+J8RrKfS1g06wsNYkkpp9azfAf3AroebwNjnTRoiEi5ruMq8Ye7HN0sre/P6l6pJr/jz4cNqFfI0OUOe3zYnlrcptY2ZeU6kdsA8kI9mBTU0WMc1WX9MkMivu4BP0yP0jOnnnZVEkESMDt8kDIRYaRRZTFum5TEnz+2cEAaaf/Znd/D64nhI5V7jP4bpHTOH39YcuxTrhggyhEuR/6+tIGf6KBlFBAemqj0NKK6Ud41w2E+nYWeqEtmN6tjQPw4FcgZMvc8i7cfIc7wNSfRPgzrXcQ3cMbk/GW4eoAXkiOARsbtX3yu7Ea9b71rkPey5dPH+Fv2LSsVBOw1ToPaKg207e3TmUGYcJffaxCh31y+Rd9GPa6oHqqzd/3LPdREq/vO324OAinMYQuCHzCXwFROa1DZt74PDVnTQxp5Kof6Dfu88EJbGjgF31vWkwmFlXbfT+b8OiABNgfoUcZmsqvLxxhdNvU0ouIcwHzh5hWslXcvQvUtnF4V6Fqbai5BxoxTQhuI85ESHxEZLLH5JpBz5VzsEPdnk09ru30MDEtPoqOxf9XYOzQb40Km4H3gt/s+ddQk3HuGkRPOhIypyezL+cWzWadWHO4vg6MB85MiBg2gMzbRCLJeDLNY1+XvRMLEAKQgBCGcuuQbQiCT1vLPVpw=
+X-HE-Tag: 1795223385-446030
+X-HE-Meta: U2FsdGVkX18jJZ2Db608ozqe2+piFSVfF5P+CWlFmu+aFllSS4VAkCQTrSMcelOesbmWvRNnw6mI7fA/jbJMiFH4X4teJe2wN0OUwcvnLa7r3JUW4tTVppdTnLdSTIivmd4zVr5ON9jcKmuZZkOjCO0zILW9Q7LC+Muu7TiyFxrhEJq7aACHJ6FJlii0z48fskTzPAluacn8m2iJngY82B7zpViBRWVJvZ/W5i/JcedXag3OP7+67mpqCUdzgNLgI+Mm/YRDhBt65GE1Qq/oGQHEDdFAlq1CXgc8xsxq7B0qU8noLSVyFm1VrKED+pmtxJuejR0DX00B4/0oeqE8euZWpfBvcXS+3z4O49Aof6TUZJu6ZNundfPux6BizGmLyv44StoVlVsVPnfaFc4dOnHB0Jyss4l+Z2Wm8AiNqnyu3dHluvPkUBsDLGXksnoACd24B9n0BqEhH+SK6VOa7v+7NLOyaX8pVsgrGTjWmt2KItpbjoCQhyea78D9QDOgErWH+hLPbzkPEpH5/Wxbloe8MNL0y128dG3Z8oeCVeXmUjcEvwxB+5kgHNQhME8lGbQfuruMyKIxvSm9c2nt6XVuNqZTDVFcQttrEnogwj/Dsc3vVMjFkit6XDFkGfQfsnG21rkTbYuCunoNVYFusM2+7Zyg60xnBV2F1RFoxu3UhQ+njguaY9Y5gakvJQuWJ4kzzogkg6SbLAe24V8dDXh2F2dkwNQlw+Pq4mknq3RxEHh7GiQoQ6Sp11xzIFHOcmKLZ7gXwQheMnt+HjR2W7/IqY7SGbHHb4Wsh8VOk1JyKjrHEnYbFOc3Qm9oLu+f5Ch3FMaoxA37K/XPm51eXmK9Wz4RVSKdgPd1ihLpNqbyLXgXADV19PKqBwuqVooKf9wE8mUz34s3P0k8G63EUU1nRBKaRk1Zo8L6Jd+xRZQ5CRy01EUddkH7yMGzpmYedOvJKLFmB+abx+h7aBz
+ kdI0mDMW
+ 8p2U9EdN9VoAaiqLGPBWSwgMgIOCpnsesHxEh6HCqiOKY9A6Ab/Mz0TTEkcBuKGBGdngEDLkX1tz64b8DU62m4YcEDkVKwaK4DmeLYEBLcPNO7aofL+NfgzDnEI9Kf/H7cwrFGUQEzDmHgLe9PHWoT11X6kPJDMqocP+cvIKYai44uwA/0mBvsUiEvd2F/tl96kBYxK5sp+/weUXmEDfKHM0F8fxsO/yhSZ7ePCkGsoJvAKUn7TrglvGLld4a6f+KlWkoqVn5zpOmY08zunnmnI0+dRLDJN0hOFTssMbsQ2rO41QZ5cDvwG1L47JFvXfAUooC9peP0yj7LMSWxCxzBo5QxOM7+AoiX4z8+luCBn8hEROo05au4I77/r869jFlOjjvtF/tfh+XM7SCobekk1Clzmk3mr21dlFFoYW4AcPw3aZMM0e5sNF7hBVzLfKWKxIDu2yTuwt3nEuztqdjwT52MoVQdhgYiraX0oLqlha9oo6/NvonCn/7BDG0kqT3xk6ubF29W2nBqiu25uaK9mXFvUtPehy9WiGHlGrtsg5VaeDyReoUdArysD69/ki/NC8PkIweD7zd/iCLP4MY1aPNeoIAK5AGIIAs9ARELFz4eWrpOO9G5cPKCXyphHB2/x24guCju8j9hcide9Qsg40o2QZhcpU98O9w9SC399rkZLPVEUwDfxFpgUneF90YzLir8NTqV4EZR+/SpPTL8sU51RQmpIbEHAb3u0ekFxb7fUYJjKlsvvw5xc3R2zsPc3ZYSgcIyt85aavuvukwhydD6fXS4yB+0dmb5/pyyyXUY5dEWbMVBDKhkvsxm1WwQDsWdK/Hf6z4ydme0Grtnem3nnEHvv9+F3dbhNG5+QyMFA4iSSnr8awbhLKHggSKspUQVicASGorNls=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,141 +115,94 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [Medium] mm: unlocked folio_mapping() dereference without RCU in
-  pisa_user_old_folio()
-- [Medium] mm: pisa_user_scrub_alloc() uses list_is_first() in reverse
-  partial-list scan
-- [Medium] mm: pisa_user_scrub_alloc() drops PISA_LIST_SPARSE when
-  unparking target
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] net: __GFP_PISA leaks to frag pages in sock_alloc_send_pskb()
 --
 
-commit 3b57a0418e67606042f9e55005bdffc210273bea
+commit fb32b2e4054bdacb45b319dad44d287251d24e33
 Author: Luigi Rizzo <lrizzo@google.com>
 
-block, mm: Support PISA for disk I/O and scrub migration
+net: Allocate small skb heads from PISA
 
-This commit extends PISA user and page-cache allocators to support direct
-and buffered disk I/O by splitting per-node user allocators by DMA
-direction, adding page-cache and bio migration hooks, and adding
-background scrub migration for sparse PISA pages.
+This commit adds a parallel skbuff_small_head_pisa slab cache backed by
+read-only PISA folios and updates TX skb allocation paths to allocate
+small skb heads from it when per-device pisa_tx_skb_heads is enabled.
 
-> diff --git a/mm/pisa-user.c b/mm/pisa-user.c
-> index 6c3efaee4ecda..5fb1ec7c45204 100644
-> --- a/mm/pisa-user.c
-> +++ b/mm/pisa-user.c
-[ ... ]
-> @@ -144,17 +248,31 @@ static void pisa_user_put_folio(struct folio *dst, =
-unsigned long private)
->  /* new_folio_t for migration out of PISA memory: allocators never serve =
-these. */
->  static struct folio *pisa_user_old_folio(struct folio *src, unsigned lon=
-g private)
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 56dea49baaec2..0599c7d1aa6d0 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -3062,9 +3062,10 @@ static long sock_wait_for_wmem(struct sock *sk, lo=
+ng timeo)
+>   *	Generic send/receive buffer handlers
+>   */
+> =20
+> -struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long head=
+er_len,
+> -				     unsigned long data_len, int noblock,
+> -				     int *errcode, int max_page_order)
+> +struct sk_buff *__sock_alloc_send_pskb(struct sock *sk, unsigned long he=
+ader_len,
+> +				       unsigned long data_len, int noblock,
+> +				       int *errcode, int max_page_order,
+> +				       gfp_t gfp)
 >  {
-> -	return __folio_alloc_node(GFP_HIGHUSER_MOVABLE | __GFP_NOWARN, 0, folio=
-_nid(src));
-> +	struct address_space *mapping =3D folio_mapping(src);
-> +	gfp_t gfp =3D GFP_HIGHUSER_MOVABLE;
-> +
-> +	/* A file folio goes back to memory that its mapping allows. */
-> +	if (!folio_test_anon(src) && mapping)
-> +		gfp =3D mapping_gfp_constraint(mapping, gfp);
-> +	return __folio_alloc_node(gfp | __GFP_NOWARN, 0, folio_nid(src));
+>  	struct sk_buff *skb;
+>  	long timeo;
+> @@ -3093,7 +3094,8 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *s=
+k, unsigned long header_len,
+>  		timeo =3D sock_wait_for_wmem(sk, timeo);
+>  	}
+>  	skb =3D alloc_skb_with_frags(header_len, data_len, max_page_order,
+> -				   errcode, sk->sk_allocation);
+> +				   errcode,
+> +				   sk->sk_allocation | gfp);
+>  	if (skb)
+>  		skb_set_owner_w(skb, sk);
+>  	return skb;
+> @@ -3104,6 +3106,17 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *=
+sk, unsigned long header_len,
+>  	*errcode =3D err;
+>  	return NULL;
 >  }
-
-[Severity: Medium]
-Can mapping_gfp_constraint() read a freed struct address_space here?
-
-migrate_folio_unmap() invokes get_new_folio() before locking src, and the
-scrub demotion path isolates file-backed folios without pinning their
-inode:
-
-CPU0 (scrub work)                 CPU1
-pisa_user_scrub_alloc()
-  ...
-  migrate_folio_unmap()
-    pisa_user_old_folio(src)
-      mapping =3D folio_mapping(src)
-                                  truncate / evict()
-                                    filemap_remove_folio(src)
-                                    /* RCU grace period frees inode */
-      mapping_gfp_constraint(mapping, gfp)
-                                  <-- use-after-free
-
-Wrapping the folio_mapping(src) lookup and mapping_gfp_constraint() call
-in rcu_read_lock() / rcu_read_unlock(), as pisa_user_want_dir() does,
-would keep the inode alive across the read.
-
-[ ... ]
-
-> @@ -293,15 +432,307 @@ bool pisa_upgrade_user_pages(struct iov_iter *iter=
-, struct page **pages,
-[ ... ]
-> +	spin_lock_irqsave(&pa->lock, flags);
-> +	for (unsigned int i =3D 0; i < ARRAY_SIZE(lists) && !target; i++) {
-> +		list_for_each_entry_reverse(meta, lists[i], list) {
-> +			if (pisa_meta_avail(meta) < (bpp >> 1))
-> +				break;
-> +			/* Compaction needs a sparse page and another partial page to fill. */
-> +			if (mode =3D=3D 1 && (!(meta->on_list & PISA_LIST_SPARSE) ||
-> +					  (list_is_first(&meta->list, lists[i]) &&
-> +					   list_empty(lists[!i]))))
-> +				break;
-> +			if (time_after(jiffies, meta->alloc_jiffies + max_age)) {
-> +				target =3D meta;
-> +				break;
-> +			}
-> +		}
-> +	}
-
-[Severity: Medium]
-Should this check list_is_singular(lists[i]) instead of
-list_is_first(&meta->list, lists[i])?
-
-When the reverse walk skips younger sparse entries near the tail of
-lists[i] (or entries whose alloc_jiffies was refreshed after an unmovable
-pass) and reaches the oldest entry at the head while lists[!i] is empty,
-list_is_first() triggers and aborts the scan even though the skipped tail
-entries in lists[i] are available to receive compacted folios.
-
-> +	if (target) {
-> +		/*
-> +		 * Compaction: park @target on @pa->full, so that the blocks
-> +		 * freed from it are neither cached nor handed out again while
-> +		 * its folios move to other pages of @pa.
-> +		 */
-> +		if (mode =3D=3D 1) {
-> +			WRITE_ONCE(target->on_list, PISA_LIST_FULL | PISA_LIST_HOLD);
-> +			list_move(&target->list, &pa->full);
-> +		}
-[ ... ]
-> +	if (mode =3D=3D 1) {
-> +		bool should_release;
+> +EXPORT_SYMBOL(__sock_alloc_send_pskb);
 > +
-> +		/* Put @target back on the list that its free blocks call for. */
-> +		spin_lock_irqsave(&pa->lock, flags);
-> +		WRITE_ONCE(target->on_list, PISA_LIST_FULL);
-> +		should_release =3D pisa_place_meta(target);
-> +		spin_unlock_irqrestore(&pa->lock, flags);
-> +		if (should_release)
-> +			pisa_schedule_reclaim();
-> +	}
+> +struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long head=
+er_len,
+> +				     unsigned long data_len, int noblock,
+> +				     int *errcode, int max_page_order)
+> +{
+> +	/* Callers with data_len !=3D 0 (unix, packet, tun/tap) have no sk_dst_=
+cache, so gfp is 0. */
+> +	return __sock_alloc_send_pskb(sk, header_len, data_len, noblock,
+> +				      errcode, max_page_order,
+> +				      pisa_tx_head_sk_gfp(sk));
+> +}
+>  EXPORT_SYMBOL(sock_alloc_send_pskb);
 
 [Severity: Medium]
-Does writing PISA_LIST_FULL to target->on_list drop PISA_LIST_SPARSE when
-target remains in the 50%-75% free hysteresis band?
+Does passing pisa_tx_head_sk_gfp(sk) unconditionally to
+__sock_alloc_send_pskb() cause alloc_skb_with_frags() to allocate nonlinear
+payload fragment pages from PISA memory even when pisa_tx_bufs is disabled?
 
-In pisa_place_meta(), pages with nfree between 50% and 75% of bpp retain
-their sparse classification via meta->on_list & PISA_LIST_SPARSE.  Because
-parking and unparking target overwrites target->on_list with
-PISA_LIST_FULL, a sparse page that finishes a compaction pass with fewer
-than 75% free blocks (for example, when some folios were busy or budget
-capped the batch) loses PISA_LIST_SPARSE and target->drain, and is moved
-to the dense head of the partial list where new allocations immediately
-refill it.
+ovpn_tcp_sendmsg() calls sock_alloc_send_pskb() on an established TCP socket
+(which has sk->sk_dst_cache populated) with non-zero data_len whenever the
+packet exceeds PAGE_SIZE:
+
+drivers/net/ovpn/tcp.c:ovpn_tcp_sendmsg() {
+	...
+	skb =3D sock_alloc_send_pskb(sk, linear, size - linear,
+				   msg->msg_flags & MSG_DONTWAIT, &ret, 0);
+	...
+}
+
+When pisa_tx_skb_heads is enabled on the egress device while pisa_tx_bufs is
+disabled, pisa_tx_head_sk_gfp(sk) returns __GFP_PISA, and
+alloc_skb_with_frags() reuses gfp_mask without stripping __GFP_PISA when
+calling alloc_pages() and alloc_page() for the nonlinear fragments.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120010655.4678=
-25-1-lrizzo@google.com?part=3D12
+25-1-lrizzo@google.com?part=3D17
 
