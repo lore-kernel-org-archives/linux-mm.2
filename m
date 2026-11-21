@@ -1,128 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4DD606A32A
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D778C606A330
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 12:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xbtKaUiv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B/pG3fni
 Received: by kanga.kvack.org (Postfix)
-	id A48596B05B1; Sat, 21 Nov 2026 07:50:48 -0500 (EST)
+	id 106C36B00EF; Sat, 21 Nov 2026 07:58:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F9176B05B2; Sat, 21 Nov 2026 07:50:48 -0500 (EST)
+	id 0B7316B05B0; Sat, 21 Nov 2026 07:58:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E7B06B05B4; Sat, 21 Nov 2026 07:50:48 -0500 (EST)
+	id EE9FC6B05B3; Sat, 21 Nov 2026 07:58:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F4D06B05B1
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:50:48 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F0A45A7FE3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:50:47 +0000 (UTC)
-X-FDA: 85459110534.26.B07A42B
-Received: from mail-pi2-f9.google.com (mail-pi2-f9.google.com [74.125.227.201])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1B45BC0003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:50:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xbtKaUiv;
-	spf=pass (imf28.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.201 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BDF456B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:58:28 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4808BC0493
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:58:28 +0000 (UTC)
+X-FDA: 85459129896.24.C035784
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 869D2C0003
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:58:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="B/pG3fni";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795265446;
-	b=yNsAdF9F+WXDX3AcbYLtUgQhump4BrSKdLM/5RhmkfLDTuVPcwMiKiZvXITZgSb/rCVSho
-	SVReDXnYyjVzi44giZDxyzKHwF339oUl6xqzfGD5o1p7g1Gr1rDnksMb+rApSo4HNnRzBZ
-	7rqPPZkEjrapdODdpiEVz5X8Q5Lb9to=
+	t=1795265906;
+	b=7EzZJ277glB87rmOHBPD26huhZdgS6DmMjaK0dpq+XC+1c6ursSiQS3BjEKCsoTI9u8ZkV
+	kwtr49k54pte9BvRGyLNH+NafWGAS6gSv4lhP9JG5L7zUoOGtQsoxNBMfyqGHlNv4M/BNW
+	8fPNolhUtXMzXnZJaSEBeogLbx4LwcI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795265446;
+	s=arc-20220608; t=1795265906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=205CdX5PCQW2SykzUQ2r0VNC2kEGRl78KXXpxrNibvQ=;
-	b=BVW5YfP2nnCyxLqNVge9NaCcfHLyX8jJfPvzUCiNq8Z7VZIchArbOEHmLhS+2bNpvXAGsO
-	LbBHHD5x288ETEG5uvEkv1hPsVBppz1cCNVT2vtngSylzPfpMsMxdW8I1joFIC2MJBsqR/
-	K5cJQ4vsMUixxJNCUYSPNaNuFSAB6lA=
+	bh=KWZoO9rTi5LeBDLEFn7Prw9ze5tRvH03ea2SqG7ELuA=;
+	b=Qy4mgjub1Trm1f3ja1Wj3ChdWdeyTDEbNmuCZAR6seBip31gnaFlRhzFjSlEtGWq2YgQWg
+	SEQ49IZSVRJVo5MdeS18sbsEvU5kzAzU2D1omwnbWPysEvqIUGaITtSX6GKlRnqdUk2By4
+	sYo1wmYJuEnTLiAkIMog2NaQHhkahgU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xbtKaUiv;
-	spf=pass (imf28.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.201 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pi2-f9.google.com with SMTP id 41be03b00d2f7-cdd9d0d40a4so449774a12.0
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:50:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795265445; x=1795870245; darn=kvack.org;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=205CdX5PCQW2SykzUQ2r0VNC2kEGRl78KXXpxrNibvQ=;
-        b=xbtKaUiv4saN3IHAbZV8auunnW0pdRal0CpsiEjG1QAZSSIOUUj/ke7IHXzNQfw+Ur
-         dgMOgLi4JaIsS9wCZnuZ1gjrKUTAHAj4Y7PdnCq4UVWMs/+VdTuvyQMMhpyb/88cb/PP
-         muwMcQCoKkeuicWNANxNSZ0ysbo+2QDRsbzl0NV2sxfq213JWRPc/rQ5bqTfjvtOGz+o
-         7KzhAS1bd77mfEOTzl4BC7WNwEzRduKLYnEAREiIhmpHWqFH2Q90mS/0bTkxRNadECbK
-         8TZACd5INBSg82HB2YsUzTOfuEeo7JfBGdXwQeKvkem8tmnmCIyXJpybF5qKlCaY2fBg
-         R5lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795265445; x=1795870245;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=205CdX5PCQW2SykzUQ2r0VNC2kEGRl78KXXpxrNibvQ=;
-        b=o9bDM6s4HTwC2mEQ1CIIc0guZ+VEw7KwlODTXhdmiI4ow00BTMby5MEi33LpIRBlF0
-         QK5ezocRUSObstbuXOPWOfZVWuIIqXo4LUIaIni+hekqtA5nhPRI1xKm2UoqpesYrzp7
-         V62wyX98mt6kIwVpSU/G1SXtBkRIacpH6L/IaQ3gCxEM1q1uFZD0LAkhKfAf91nx7BeC
-         a3cTrLgHrTIy5qVQLL9Y+7HJnpI1K9UCOJepqjNme/IQBZWdfJD4g8knQYGhaZyWiEnp
-         MDZITFyngfnC/dkSFqqPv9dVpjJqCnDWJkWR9VkNTZPPfM5SKBxobpPlaoKbp0JTUGmW
-         yuSQ==
-X-Forwarded-Encrypted: i=1; AL+hErFkXI29RCvmiBrSI8qPex66G2ADS94Nd+GbQorQuMmou5DC44ONwXlFppHU8fYAiOy68xQviD2JjQ==@kvack.org
-X-Gm-Message-State: APuU4Z87wgqfiGBCSIYOCPQyf6zqpZUXk1UL0oZLlDV6yeI/8cHlf+lp
-	FVefWUzD84ZV9qvd0IC0AMoTZIW/5l9P/aAKU97rbKuwiuAV9XYSdMeG
-X-Gm-Gg: AZFdTZcQ+16YNXeru+aXetasUmCueGz4X37oaQnCMoZLxAUNgnsTp/fYLjxrR1kp4Dz
-	r2UuKXkCZarivREvHf+geNdVMoLD3D9vSfpVrtQggJYUM47biTa9WWpMGnr++U/0z9Sd8FYTYZi
-	Q/9kw6y+6mizQrz/CJM9PuEKvtnftn6mPf8OY3XChvMqFDxwgTe2jcOmWUpQwBg0p4n6PsIpMcE
-	mVv9bMV1LRNenE5pqVMLVjEF85PiC6HAwHDTpC/DBajUygTnfcStfjq5RBtxMhM437/3aoVc+xf
-	8h0THuZxTHeTuOBY5wOjMdKgn6Pg6p5huT6/ph1fYaB9t8DEYdTAQsromRrRATcZPH+VgjpUVIc
-	xe3ckWN414BdnGkAAg3xJLNI/buHJI3Yf9h7ayfB8SyavMGSLx47vA6mDsziYklTz0vbiNuedJU
-	cHI4WURIgO3wEzZbtr+EszutzBEhfrlM5bqFVotS8wM8l0h40a5AJgpEp8ouxWUkV3E7680Hs20
-	R5Hd5KhzBYm3ifdL21UuKCgUdnqfQhRQUnSGI7MPpX91YZnL7n5r8FayQ5rkN1xDjFutYGkaCJ4
-	R2KiFicROgFkbL6RuuUU3Nbxm/uyrOqwwyGp0Qck4LMah2Zn3bfe8GKQ9bJ34SI0cz9GSYTXFqw
-	E62o2FQYlssT5QHGeFeCBnv35lWxvxjd2VQ==
-X-Received: by 2002:a05:6a00:4c8f:b0:8a0:70ff:ab27 with SMTP id d2e1a72fcca58-8c87c09e5bdmr5660349b3a.28.1795265444677;
-        Sat, 21 Nov 2026 04:50:44 -0800 (PST)
-Received: from localhost ([50.7.253.42])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87285c272sm2888869b3a.19.2026.11.21.04.50.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 04:50:44 -0800 (PST)
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="B/pG3fni";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CEF9E61897;
+	Sat, 21 Nov 2026 12:58:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0A31F000CA;
+	Sat, 21 Nov 2026 12:58:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795265905;
+	bh=KWZoO9rTi5LeBDLEFn7Prw9ze5tRvH03ea2SqG7ELuA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=B/pG3fniaxxJtIF96UG01f/whnfvZtNlQ7eLkMd6pxK9R+uze+sqQXMGujcXI/95F
+	 7fzCutN1ujq6Q2FLlclk44wC/PbAwOSrCVHMriLrDdSQ2dwAq5AQYKeYfVk+tvT3Jx
+	 xJAR/s0+lijobTZSfac9mrHItTHUB7aRFzy95hIXqGU9b6d5FFjlo8h/dmKSgVdl+J
+	 qCTS2fOd4fM/FVmUk3bncn/B4b0mfYXAkZzjjo6EKOMn+eOkNMLBvdKaOkzKSAhTo/
+	 GrpISz7UV3F5zVXHx9a7fnOVhfZre8lx2nUcnBezAWpF46NwiTwWNPORwnm2HyHwSZ
+	 R93MGnsWLVwDw==
+Message-ID: <60b9b869-e1a0-40fd-a77c-821ac16f6bca@kernel.org>
+Date: Sat, 21 Nov 2026 13:58:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] mm/ksm: do not inherit ksm_zero_pages counter or
+ PTE markers on fork
+To: "Xu Xin (vivo)" <xu.xin@linux.dev>
+Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev,
+ donettom@linux.ibm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ stable@vger.kernel.org
+References: <20261120074230.40269-1-xu.xin@linux.dev>
+ <20261120074359.41019-1-xu.xin@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261120074359.41019-1-xu.xin@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC PATCH 2/4] mm/damon/reclaim: set memory PSI 0.05% as
- default quota goal
-From: Aveline Noir <jm5905938@gmail.com>
-Date: Sat, 21 Nov 2026 23:39:16 +1100
-Message-Id: <179526475633.4.14859465649138957731.b4-reply@b4>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, arijit.desaii@crusoe.ai, 
- Jonathan Corbet <corbet@lwn.net>, damon@lists.linux.dev, 
- linux-doc@vger.kernel.org, linux-mm@kvack.org, 
- Randy Dunlap <rdunlap@infradead.org>, sashiko-bot@kernel.org, 
- sashiko-reviews@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20261120060741.92121-3-sj@kernel.org>
-References: <20261120060741.92121-1-sj@kernel.org>
- <20261120060741.92121-3-sj@kernel.org>
-X-Mailer: b4 0.16.0
 X-Rspam-User:
-X-Rspamd-Queue-Id: 1B45BC0003
-X-Stat-Signature: fq8fwiz69gq6nx8orp1iuak31c6rqfu1
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795265445-150638
-X-HE-Meta: U2FsdGVkX18ikP+xGuGCyWZ2esINa119SpplLGha1JnNaPjaFbjrEj+4tpcmAs1oSMiRKi4M4WuFdaMBidC+sovvj+9jDiYKUOlNbRLmtBnx4cw3og6RbcPj4XsNHELzUZkQEq+WAphnfBB2QvdTGnWACTk1DNO9XU30fW1OMspcIWIZFU3ObillnLq9vgOQs1Cd/BWdjAFOM2ToDuR9s8bPczWIAfgHTKkT5XtY9LvvAuvlMYcUHbgImNGyJe8VuAUkCa4M7/ZIUP+lsylGqNWL9qVQ03d/TocaCabySn+lAawCpVZY1KWJjJHfczqhxKXlJJXof/uD0F1UlVz6ze+TfafFdHaD8XccIQfe4fwxJVT0h2Ek6Kv3dtf6/JQ6GVpcZIagyxeTfKdx8ZmtkU+NziODP6xpY/o3fvf3pIzRB4H27v7odrkk+gILzROkrRO07ZUOGzYQN04COyl4QzEuq7309AgAkkaIWejSsR1rHAIM7kI1qQWt1bdTdNAInGY/eKBDGDuN6MOlKcAcXhbCWjryxc3WRdwmLLGomYgXcqOV2P7zTXT0cuLJwfiDPdru44V2kej4zq3bX5GKgs+JuNiyFLMVBW8xzFKaHlboBC3ga3V6ORS8o9WtaHN9bDYSB7Aw6q96ngXSFHJ24cWkcZLZkXVjfU7sns9jXawukw8w+50RXWOqb1/F8OYjPO+Q/4Ax/0cBOTBjhDs8gk6PJGkJ/Z+Vkx4bnHRLe/cMkqQn9j441lbrYzuV5UZAs3LxIzlgcgqgfOHMlNqHGGW5mBexAQTT/rzDFcQHXk83qoo9RbruDP4LjdXEZU39sde/Bi2JYy4ZaMjB5eFv3oznQFeO1w7S/GMbBrgRDToL9hmiNfkouY5IKu1PFv9zvzb+vb8SD/wMhv1MHeLqTEKMPvltEzmY4TVfj4Y1q+mcxH/rRb3IsPli07b3ED322v0GxMWMkdsuUY2HXNa
- 2SGB9LtQ
- 6umiHMBB99YgWc14uvj2NSbb4UOFPzj61E/jMY6AKXptgcyxG7rZZmpAli1h0vAZsxaC/8jx2rqqwnmONYjvk/22uXH5YCGyKucjJXAxZ6q+UWNtFtzW9x67B3IdXG1PYgrhotXh9Ob5qouVM5v4bXpCk3rqii1o1A5mCIVnVjzJvgPYS2qQDA8vARoPXAL/Kp5umT+tYLlmeBi97j5x7chC6anDBEUisKd4x1jGbhbkwHsC8ALnvb+DeVYEuauQvi+tTDFmrXThEJbYs0UZ/RLZAeAbDG3dLRWA1WUIz6FaJNoVjLj7ITOymCcbKv/s7wRgiTZGpr/AwHR/rwTmmMrOo34QQyFtfIbwUdjI0j3qA3ol15VVPdIFmj3OrhmTbjxSlJryHlVGerDD1aqpczOZtwvIEg4IlM/sSVQQfV3QSga5kGU5x0QaJBCQuRuTXt2DIaCE8vtvvxM/9fmWWo+jQCKYz5n2s0VylFw6/JVDw/VybpqbrVUaHjLDmSgC1sslZUC3a0PnFkezv2QuALhtccHPms4qd9F03j6/hIqie+KqNoMtyVBlBjPy0GsgJKe6OSxVDDZhZvLpeO2RjhwxeuorHtXq4ehVQVTYI35x9nPR5HocvRdE64kQSiua8ejvgq+jlKUf23e3sqSUxuTL8qNRRQqhCl/ak
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 869D2C0003
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: yqcxcdrws4o6hpekdybbxwxz3cczmzgz
+X-HE-Tag: 1795265906-157714
+X-HE-Meta: U2FsdGVkX19UeQolqjEwEU1I1l8CRDo4XMDb7hvwymWiq7FmXfpc+tb608xCfpHHbJMx/zNZKvKBcd0oKujB2uLZ6cZOnWfW8HWzvKdbVLvNkeVSpWbLG1D1lhcZFPqVBYaxZ0lG9i2GJQlpIoqQ768HGFBttClIrmiFn8Whiy6rcztSRHmk89sMrKqvhnrCmRryp7KFt9VZkUFFdd5iEmGVklk5b0rRvl94y1T6EsIYz8KKvACdcaPVIh5kdzvI3nZtoC1tIR3TSq5P3AOJI3S6d756WPnQFd07+X3iV02MofUTZW74nfSLK/lcgJwWY1Us9wAivI0s+8f+3gCClqtve0KowtRY0NZ1yzcHCjMJY32sYtmvb8AaVMCnw624P5K0A67jbtkQ1phIOKirgUIDsk/H01HI0Zd53N20iurs64eb2Lf9aKcwUIly2NJCuu7b8uuoAZY8coYLG/JLcMTMOD/0XRm9EUopGbF/vxJphtRYbO5rjG/nEpkcmWFTpmKCsLJMqXesSkJHyB1VP7jovVAJEqT7v/xS3e6A54egPWDjRLtEvvyjwxi4jUy60x4ZTCS6HB15eYfU6fnCrhlvYlcaIKkFK8zTjAeAeMOo/aws2Ruvx8nYvl5sms9hL4cFOkgSmVgNBGsmzK3AioqoCKq0lX/xUAn6rf+xaqHSioHhdrGCRKeqmtlspPCrG1tO1aOS5I250GDSNT0N2mcDOwAy3bWlxhJV4ZzXGkov2O+PUWMBitgOPkXTOBFm/q14qwQ78nyutC26zhqGDHRgNBV3CM5E8M3qzjsUyFYJX0GlcR/9iJeLUjmAYayaz8My0K58++lyBrsSe6lWgkQzLspzg+0UIVvERna0vGGB0rpOI09ZDS+W+zF55ZMMPTIZVNBo0mYTrI3dD/HdudsQKwCBig8x+PyLYFih+M3nzLA4XyecSbgNARVxbjnWbgDNf9k+PCtG0Ac6bqv
+ pKi7Tghw
+ Z9FW4lL2ZqiiAz5C5+PJA4kdFY2GJRMF+IxzQxFmNBr40Y1ZHBPusAX4wN/GGhVFJgCIRb+7D//ntE1uKVrdpiDU2aADsG8rLbtfNFeYUnfmXAWMKG13kFq6AeX2nNCz22af5TGHYfRXeBN6WzamRubOfsdZggD1I3BWg/xJ8F8LRRatOFnd3b9+roOM/U6EDv5H+zOByTbDJ8e30+UTl8ExothqlJIm7j++DjOn72TgKHpze+/M+jkopFKtgr59BTVGHanNF3zWWN1KlLsiZIDv9tTnpEqDvcbJ+OO/NBZZSsQssB0M2cGgv+RAFskkecpnXIf6ygueqfIToXocd/4sbfFI3qVq4D4NnjkqYmAPgs6EQnD55NuOtW78OMpDdiDeH3cSn1u0ZwT7Rf8ehxT+h5vEbwZ6IB94FnqpE4ywHdxGyFm4rQVNrIeOVfV+GQSTGXqU4GZzJG63X5Z7YFMW62VNokPyQqolbi5Bt7NN2TCOyYz0xuFA8ohmCgMO+dmM5WcmGyelXdZEY68I2No2bqvkjimNUG4LWSffc5tO6JWcksN1DSkjywYfgu3ddFf7l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,23 +144,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+On 11/20/26 08:43, Xu Xin (vivo) wrote:
+> As documented in Documentation/admin-guide/mm/ksm.rst, ksm_zero_pages
+> accounts only for zero pages actually placed by KSM.  However, the
+> current implementation wrongly accounts for forked zero-page PTEs as
+> KSM's contribution, inflating both the child's per-mm counter and the
+> global ksm_zero_pages counter.
+> 
+> Originally, commit e2942062e01d ("ksm: count all zero pages placed by
+> KSM") marked KSM-placed zero-page PTEs with the dirty bit for unmap
+> accounting, but forgot to clear this marker during fork().  Later, to
+> prevent ksm_might_unmap_zero_page() from underflowing the counters on
+> child exit[1], commit 4d6fc29f3634 ("mm/ksm: fix incorrect KSM counter
+> handling in mm_struct during fork") kept the child's inherited per-mm
+> counter and added it to the global counter.
+> 
+> Instead of inflating the counters, fix the root cause by resetting the
+> child's mm->ksm_zero_pages to 0 in ksm_fork() and clearing the KSM
+> zero-page marker via might_clear_ksm_zero_pte() when copying present
+> PTEs in __copy_present_ptes(). With the marker cleared,
+> ksm_might_unmap_zero_page() will not decrement the counters on child
+> exit, MADV_UNMERGEABLE in the child will not unnecessarily unshare
+> inherited zero pages, and the global counter remains untouched.
+> 
+> [1] https://lore.kernel.org/all/53a7bf3d-843d-4e19-b0a3-cc6852fe72c1@redhat.com/
+> 
+> Fixes: 4d6fc29f3634 ("mm/ksm: fix incorrect KSM counter handling in mm_struct during fork")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
+> ---
+>  Documentation/admin-guide/mm/ksm.rst |  7 ++++++-
+>  include/linux/ksm.h                  | 18 +++++++++++++++---
+>  mm/memory.c                          |  2 ++
+>  3 files changed, 23 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
+> index c329ca747b8c..8968ae3f55c0 100644
+> --- a/Documentation/admin-guide/mm/ksm.rst
+> +++ b/Documentation/admin-guide/mm/ksm.rst
+> @@ -214,7 +214,12 @@ stable_node_dups
+>          number of duplicated KSM pages
+>  ksm_zero_pages
+>          how many zero pages that are still mapped into processes were mapped by
+> -        KSM when deduplicating.
+> +        KSM when deduplicating. Note: on fork(), the child process does not
+> +        inherit the ``ksm_zero_pages`` counter, and any inherited KSM-placed
+> +        zero-page mappings are converted into ordinary shared zero-page
+> +        mappings. Consequently, these mappings are neither accounted for in
+> +        the child's counter nor unshared when ``MADV_UNMERGEABLE`` is called
+> +        in the child.
+>  
+>  When ``use_zero_pages`` is/was enabled, the sum of ``pages_sharing`` +
+>  ``ksm_zero_pages`` represents the actual number of pages saved by KSM.
+> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+> index 596c04ca7326..62fa8ca803ed 100644
+> --- a/include/linux/ksm.h
+> +++ b/include/linux/ksm.h
+> @@ -32,6 +32,15 @@ void __ksm_exit(struct mm_struct *mm);
+>   */
+>  #define is_ksm_zero_pte(pte)	(is_zero_pfn(pte_pfn(pte)) && pte_dirty(pte))
+>  
+> +/* Clear KSM's marker on zero-page PTEs (e.g., on fork). */
 
-On Thu, 19 Nov 2026 22:07:36 -0800 SJ Park wrote:
+This function would be better called "ksm_fork_pte"
 
-> Set 0.5 milliseconds per second
-> (0.5%) as the default auto-tuning target memory pressure ratio.
+Drop this comment and instead ...
 
-0.5 ms per second comes out to 0.05%.
+> +static inline pte_t might_clear_ksm_zero_pte(pte_t pte)
+> +{
 
-> +static unsigned long quota_mem_pressure_us __read_mostly = 500;
+Explain here *why* we are doing this.
 
-With a fixed 500 us target, maybe a longer aggregation interval also
-lengthen the PSI measurement window. For example, if the quota ends up
-being reset every 2 s, should 1000 us of stalls still be compared 
-against 500 us? If so, the tuner would drop the effective quota
-to 1 byte, skipping pageout for the next quota window.
+> +	if (is_ksm_zero_pte(pte))
+> +		return pte_mkclean(pte);> +
 
-Thanks,
-Aveline Noir
+But I'd move the check into the caller and only clear here.
+
+IOW, the following on the caller site:
+
+diff --git a/mm/memory.c b/mm/memory.c
+index ad5511b2e949a..ee4545a181598 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1184,8 +1184,11 @@ copy_present_ptes(struct vm_area_struct *dst_vma, struct
+vm_area_struct *src_vma
+        int err, nr;
+
+        page = vm_normal_page(src_vma, addr, pte);
+-       if (unlikely(!page))
++       if (unlikely(!page)) {
++               if (unlikely(is_ksm_zero_pte(pte)))
++                       pte = ksm_fork_pte(pte);
+                goto copy_pte;
++       }
+
+        folio = page_folio(page);
+
+
+-- 
+Cheers,
+
+David
 
