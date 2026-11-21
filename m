@@ -1,94 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27144606A32A
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 17:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5AA606A330
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 18:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RuZEFH12
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GAoxKLYr
 Received: by kanga.kvack.org (Postfix)
-	id 464176B00EF; Sat, 21 Nov 2026 12:29:32 -0500 (EST)
+	id A7A076B00EF; Sat, 21 Nov 2026 13:09:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 415236B05B2; Sat, 21 Nov 2026 12:29:32 -0500 (EST)
+	id A2B0D6B05B0; Sat, 21 Nov 2026 13:09:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32B5F6B05B3; Sat, 21 Nov 2026 12:29:32 -0500 (EST)
+	id 940426B05B1; Sat, 21 Nov 2026 13:09:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B2556B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:29:32 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4FD3BA8183
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 17:29:31 +0000 (UTC)
-X-FDA: 85459812942.03.186DCF4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B6356B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 13:09:00 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D3F624057A
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 18:08:59 +0000 (UTC)
+X-FDA: 85459912398.15.BEFEC5D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AE5B31C0006
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 17:29:29 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RuZEFH12;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3031D4000B
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 18:08:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GAoxKLYr;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795282169;
-	b=WJEMuUgjkXwsp+Ntz9Y7ec0j7dI1ih/xrKhHXqjUCf65zqZwBBSDQPBmCKCf8Mtzl6VPQl
-	NDXNOvHTe0B+ZU055FCC7r868YSLLtZCBHZ6M173xfbtehjB2Meo6qD3WD4Stn5WK7My9N
-	JMaH9vR3JiPGtFey1duzZYY7LMINvbU=
+	t=1795284538;
+	b=gL2j+Rutz1glHCdZJ9jQ5GFCLDbA2E3lv2fWBYqow2xACgD38ZOQwK/bQfFteWa9dJTPzr
+	xTj7i3zBv8+9CF7Y276NTi2MeHu2PkSeTPcFDzNc1OE11Lszu/eySwGi5/s9kyIMoDLy/F
+	L9lxH/orPfTJ7K6pM+mG6hU+J+bx8ic=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795282169;
+	s=arc-20220608; t=1795284538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NJvtiQFrK+TKOzdlaogJMSqLyClicrfyTdVB70PUMlI=;
-	b=QFCA9mpWKOIKafMsqPsDYGNFiBlcc5c3l86fMADSqer+o0B+tYwZXXSBUV4tA1ymcliKA3
-	QdZzPfBeAi5MBgeDgSZ0D/cGbhAStDP6U1OEqLwL9YjeSrxLf9x+XpphbJOEQhz6vtZj7D
-	tdbzHgWUCzJjlW6VfhmJsKlnXKb/DnY=
+	bh=CQwRyg3E7Pe33Vv03sibxiYkx4sLjX/viouQjlWqGts=;
+	b=xLfj3wMVxltQGVA0yHI1lhjxP9UNhM7Qyu8oaKXAGMLafycqc4SzB24Jvk/qFicq0fK1WB
+	UX31hqzkLFdlf0K/afgEgTkdc5mX/7rIn8LMjgu3ZCCgh6RkinN/4VTQlFaNMkqp4IrduC
+	f7Gaitt8Y4k6BGYRhgXss9gkqu7i6Oo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RuZEFH12;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GAoxKLYr;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 436B840B2A;
-	Sat, 21 Nov 2026 17:29:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4521F000C0;
-	Sat, 21 Nov 2026 17:29:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 0B33F43D2F;
+	Sat, 21 Nov 2026 18:08:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5948B1F000C4;
+	Sat, 21 Nov 2026 18:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795282168;
-	bh=NJvtiQFrK+TKOzdlaogJMSqLyClicrfyTdVB70PUMlI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RuZEFH12nvc2PIbb9pavr1AbcZ5VX507aGY34xBjHeKBSPsbw8RiW3S6Vq+F/+RuB
-	 zvl/t7XXqQ4bO57J+rIZge5gQHAyIpvucvFW2CkDhTjfgK6o3sChHdm6hX5603pTYw
-	 jvN9pQLVAdwoOVp/TOOCGg2Ym+Fl3l+bN3NYKmYVYJIg51s4pudgnEW+kkbcjcg7f1
-	 bPpEIwI2rRfCFtjCnYeCP0sXHoD/D98SG6wn2AOc8e0+24rDxPl4Z4c7Zqqjq8ua3e
-	 c9NCrmW4EqGkUtlLMk3O3NR7JwJbmT98JdYhKlubfdYlaBC11LWPfxZYBODW5Kai8h
-	 Cj/82WdZZ/TBA==
-From: SJ Park <sj@kernel.org>
-To: Yifan Feng <evanfengff@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/core: fix damos_walk() hang with zero watermarks interval
-Date: Sat, 21 Nov 2026 09:29:20 -0800
-Message-ID: <20261121172921.84465-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261121025626.75981-1-evanfengff@gmail.com>
-References: 
+	s=k20260515; t=1795284536;
+	bh=CQwRyg3E7Pe33Vv03sibxiYkx4sLjX/viouQjlWqGts=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GAoxKLYrQK7IFGuFua6ECbRxuvIaLcAU/LtOyTkJyBMgl/OVoOkIB3UFrBJPoaINW
+	 06FrBQ/2qCjQ22IYvJra+Z5722z5hwRmTbK00KQ3v61xStPRNVjlxPO7nemU02AVea
+	 gwmkG7hOxhEQGLr3hywsHS2VtbTgD1qjiB0l6wurrkduJcUxxWvxT3tybEjP+f18Va
+	 VMyrA6DGwgMzYdypvhitA+V8eTBapQW39m4rA+yqD14hJBKSj57aIsvB66JETZQdAR
+	 Yfk2NDC23mDMeQLS+Mb449IVepANsYGFmy2gRZw4sYqiacMom/Wee57laT8Wz8walj
+	 iI2ZpUNq9xY9w==
+Date: Sat, 21 Nov 2026 20:08:52 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v5 12/25] rootns: Track init lifecycle via
+ copy_process() and pid_namespace
+Message-ID: <awHeNG3WJrRsyTop@kernel.org>
+References: <20261121000844.1863324-1-jarkko@kernel.org>
+ <20261121000844.1863324-13-jarkko@kernel.org>
+ <awD0lNmhRPaXI9Pg@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rr19tfnqgbb37fiiweefotsp5wgogaxw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awD0lNmhRPaXI9Pg@kernel.org>
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3031D4000B
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AE5B31C0006
-X-HE-Tag: 1795282169-437176
-X-HE-Meta: U2FsdGVkX19iyPFeA8K57ZdXiBo0sHCL0yrb+EBDyAM6ZmaIWREtv+9H51eefToFAsGgTSOXxALFxW8ZRAReBxVVyyL+oNAFCfnNqX88nsjLpAJ6HvHDgRx7OIe1yLWm8FCWrjUzVHgeqxXBpU1odVWOLa/PdADZxgcag1mvuSir1nuVffhTed2pt7o9mc5vLnBYAVHX4b32nbb++k0/W+E/qhOo96wz5HfG71lMlzkzhzVNBgG8Gvk/JPcVWWdtL4QkyRPc/BqJH2wZJ6hyhGVWc/03S7kVcihb1BZlZ7MOdivXblo3r0GLeWenG1MaRDKzh5fY2doOQzrIfeTmqxJfhFuJ+jztyi5n7WKsGdKOa38BLKqv664OV+/alcI1awvaIs/+HqviQS7Qyg6IaOpn5E41GY+YBJHylLoSU7EhSdkf6efZH/gTlvdrTEaWVetfzfb6n/YuVGsLIjLUGii9fiQgOexLeHVU7EEPQBbFDRg5NYSPM2+Cda7qQQU8Gb1i1oZ3OdUwThG9fpWgXQthJF3znJL6gRWf6C8wBHlijxXhAOI2C7ASaGa1qSoXYx9DDz6D4UIeZfW/qZ4hPlUaEnyHLNwiGsPiGAz/JA5QFP/rTK8BxthEwgGRbUEuaxmQinOoIXqZtouycUaCDHtPW1/ASCXotNBBVUSSARlHKG8uMD2d5Snb7viDdkfsN0rAutwNLTX+QdEwuuqj/+milwUotRV3GScQctBHZzsqjpFeyaZnwo/SEvz5vAmq2EZ4ylryxufFpXmyebwP5v/k8ECzfFkkWshEsL4GdwVIYFsOqHP9mSmH5ECq7NoNkq0iAIiFhneDNcdx2P9v20Xb2BHrRHI8v/BVO2cF+UIgHUTzVZPTTuKs0CKNeJlV40cBszpaQVIvX2d+qZDCoQrKwhceCfQ1lhhHrR/znyibiJ4H2i0u9H0cu82zCptlZyaWTlMLGs0tYVcIpHN
- g9MFQ8gD
- 0fPjSP3C++26IB0t3lnN9y15SrU4gDQi3VIfCjb8tmiTPV65QnVu7fM5e9Gy9i+7h1zXu+B22osfN/wkMeed9nyceZTmc8kXGp8sCiNz1byRcJycnNzkZQT8E4GdNKxd4Q0Cmjr1o37YCVpWc/+FF+Y9flJzw78twIMjQyN0sS4xP4qKUrZ22YlfvhFM5L+yeKrmpandGygZW6Edb7Ma850IisclTPEVgojPtOWzEizkzrRtleK9/YSFkeLvGJyDYoXyX6Fhq4yoM9sdyc+pRXU+tzXz0+SF0LswW8E3j/Db6DwI6zLnfoaJJkaW27dMuvPnvFStdLhtttm0cWlTG/IPuXeudEIUmtV/+TcxV5Ur2jQuwgu+kVIh/k3UV4LfwdQoj+0O6PAH4fL0naBvxwJipiWdteXu3m/K+KQ5nqE3hEFqwh2lrrvgW965maVZBo+xnyJn1zwLBGeObI3X/NBISQ4kNlTvArTQJzuKC4TGJhLsDjutIq6xGVIn8aVdO9E0pC9uwFrBpv4Ed63m2guaG7qfMclu+GEGa0cvvOh1EKZ8=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 6t76jx91itjehrmphpah1sh1cq4e67t9
+X-HE-Tag: 1795284538-295530
+X-HE-Meta: U2FsdGVkX19BTNVEOE0faOb7OpGxARIMmDnSHTa5D8FbAhTJ5KjjwLre2tWfy5J5TotcHPxB0cCQSupz3BXxqG7RemltnGjbM2sLrxRBmLAuTAPS4m9V24jOQahX1P+Fyxjex3gn1UXIMDjObGs8qZ82a3TfOnsC2awvolvxQo/SrR2bzEN0MQJqJpYKef/yMoa7OlceCsqbctO6rmQ8qUw/vjetWYEy98NVvynvcpvLfkgtLbuESGTQixge484JEWwswtcnfP29qQYBgzsp3KdqEt81r+3APT9AZsLMfzJnha3aVFP2hiju1O5pnSclFUyUxO/Zg6DZ/e2jtI+aTCdT2WysmfQNLaJeXsA+56FaZgKqK77b11P7K4/qVI1rGlVXRFeU09GlbdNnfjTh5ideJeCco7EeL9+aAXFbaOU9Xe2PFPq3BrVZT9X17xo1uQagW1JRI2xrCQLxs1lE4xRCgaNxQF8mUVS4+rZxoTwM33j/yVtIcQ6pDoMqQrx/aJwmacwaEcV3fe+J7KNVpmNjqhJbtizt7nceBwcvbEEYhNnWepe/TNyhvbGZsrBiqaKIL1QfixfCAC45KKM/FuqcUdHsdwnolTozwcsFLgkvpnQ30Zkhg3nfyLHpsgPMQX1Y7YcAh5bzhQ3sRa6PSHTdqk0Zi8dT/a8esKTui/P6j+C8gkfli4gT86hlxun/98SrMj4RliCKRDv4JfP2BsfLK7R6291RkZImmrHa9FSwVVBTgqN5wHBAz5uNSB33s4TW8KzXqoqnuwCFa5pZv33bLwdmqh7Zj6IObh/CjOWQpgHQButxDlttb+iYIsCPv3iRJIfmXdGu+10WczK/oSTH71Rgj7wpp+QWp6j8LMqjb0TdVGo2ZS0H9KYxlEbUxPoUc8FxuCIFEMB0Dj3n6+l4U6dml3WQBIaAfRDbWC68kDw0haVJgbcLNDeqYz4E3nUnKy6jkamNXJC2VHI
+ 7a3WbtPA
+ PnB349GZjhgjLqRj9+TSMeA2v1DJ8OFT6mFFVJmiICscLaGSvFZtDnclCqY54v2FWFLTCukOb+dvqB1M6VcDiosacAwkB4rha3c7Aiylf5/IrZfZdwIOb5O8oe65l3A2bsOsDFwh1KPjbccUDbpc8PpS6V/yUeQ4B0kqE/kxK7T+v/2KB/iQsFVCaLFlixtV/dfQxsvdaO7uL9XA+fU+f0gYRw2BpQKU46kpNdXV8QrxfxUz01KhVj0V0xb4dq990DJ419G2TGZddvEWNpS5GHeWCHXPGKQVD2RsdT+zw7ku+dnQB0u6BYMC9E/nhbfUuOIFiCl4IYtd9L34C4CGaV71OaTcjTSX4bN20tg0CL8gKoM/gbQhGs2UqyGQ4QESC8gKZfH6KbUC6qVgLNHuV6pdSMxbxjYWxDEpJL5iHcF5GGHSlw1cgftFbQANLalZQVXoHhK1tX4+ME+x6DV8S7ilkDlqr5D3QkJlBE3gmqwA/ktVO9f/W24yEZerdjfASgpnasTcSUwvBYZiH6o9A3KFSBFNuC2rs8Xj9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,49 +107,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello Yifan,
-
-On Fri, 20 Nov 2026 18:56:26 -0800 Yifan Feng <evanfengff@gmail.com> wrote:
-
-> kdamond_wait_activation() cancels damos_walk() requests while all
-> schemes are deactivated by their watermarks.  But it returns without
-> waiting when the watermarks check interval of a deactivated scheme is
-> zero, which is the default of the DAMON sysfs interface.  The kdamond
-> main loop then runs with all schemes deactivated.
+On Sat, Nov 21, 2026 at 03:32:08AM +0200, Jarkko Sakkinen wrote:
+> On Sat, Nov 21, 2026 at 02:08:31AM +0200, Jarkko Sakkinen wrote:
+> > A root namespace needs to record its init thread group's PID when
+> > bootstrapped and capture its exit status once all processes in the root
+> > namespace have terminated, without serializing normal fork() and exit()
+> > paths inside the container.
+> > 
+> > Commit the bootstrap child reaper and bind pid_ns->rootns in
+> > copy_rootns() after attach_pid(PIDTYPE_PID), and invoke exit_rootns()
+> > from zap_pid_ns_processes() after the root namespace's PID namespace has
+> > killed and reaped all member tasks.
+> > 
+> > Co-developed-by: David Howells <dhowells@redhat.com>
+> > Signed-off-by: David Howells <dhowells@redhat.com>
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 > 
-> In that state, kdamond_apply_schemes() finds no scheme to apply and
-> returns before it calls damos_walk_complete().  The walk request is
-> neither completed nor cancelled, so damos_walk() waits until the
-> watermarks activate a scheme again, possibly forever.
+> ROOTNS_GET_NSFD will be the only surviving ioctl, which make access
+> control wise sense.
 > 
-> For example, with a scheme that has the free_mem_rate metric, zero
-> interval_us and a high watermark below the current free memory rate,
-> writing update_schemes_tried_regions to the kdamond state file never
-> returns and cannot be killed.  The writer holds damon_sysfs_lock, so all
-> other DAMON sysfs writes including "off" fail with -EBUSY meanwhile.
+> This leaves room for ROOTNS_SHARE_NSFD, which would share a namespace
+> from host. This makes whole a lot more sense than unsharing security
+> wise as it is allow listing (instead of deny listing).
 > 
-> Cancel the walk request in kdamond_apply_schemes() when no scheme is
-> activated, as kdamond_wait_activation() does for a non-zero interval.
+> It can be post-clone3 disabled. This is what we do in SGX driver i.e.,
+> have build phase enabled ioctls.
 
-Thank you for finding and fixing this issue.
+/**
+ * DOC: ROOTNS_SHARE_NSFD
+ *
+ * ``ioctl(rootns_fd, ROOTNS_SHARE_NSFD, ns_fd)`` replaces the corresponding
+ * member namespace of ``rootns_fd`` with the ``nsfs`` namespace referenced by
+ * ``ns_fd`` (one of ``CLONE_NEWCGROUP``, ``CLONE_NEWIPC``, ``CLONE_NEWUTS``,
+ * ``CLONE_NEWNET``, or ``CLONE_NEWTIME``) while ``rootns_fd`` is in its
+ * initial build phase (``ROOTNS_INIT``).
+ *
+ * Requires ``CAP_SYS_ADMIN`` in the container object's user namespace, and
+ * when the caller is not already a member of ``ns_fd``, ``CAP_SYS_ADMIN``
+ * in the owning user namespace of ``ns_fd``.
+ *
+ * Returns ``0`` on success, or ``-1`` with ``errno`` set to ``EBADF`` if
+ * ``ns_fd`` is not an open file descriptor, ``EINVAL`` if ``ns_fd`` is not a
+ * shareable ``nsfs`` namespace file descriptor, ``EOPNOTSUPP`` if the
+ * namespace type is unsupported, ``EPERM`` without required capabilities, or
+ * ``EBUSY`` once ``CLONE_INTO_ROOTNS`` has transitioned ``rootns_fd`` out of
+ * ``ROOTNS_INIT``.
+ */
+#define ROOTNS_SHARE_NSFD      _IO(ROOTNS_IOCTL_MAGIC, 0x02)
 
-> 
-> Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
-> Cc: <stable@vger.kernel.org> # 6.14.x
-> Suggested-by: SJ Park <sj@kernel.org>
-> Signed-off-by: Yifan Feng <evanfengff@gmail.com>
+Makes sense enough to include to the next version.
 
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [1] tree.  I will repost it soon (~1 week)
-as an mm.git merge request.  So, no action from your side is needed for now.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-
-Thanks,
-SJ
-
-[...]
+Br, Jarkko
 
