@@ -1,88 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA32B606A327
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 20:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE202606A31D
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 20:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FIlPxmeZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P28TG/jf
 Received: by kanga.kvack.org (Postfix)
-	id BBB036B00EF; Sun, 22 Nov 2026 15:09:11 -0500 (EST)
+	id D41906B05B5; Sun, 22 Nov 2026 15:09:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B45026B05B4; Sun, 22 Nov 2026 15:09:11 -0500 (EST)
+	id CF1E16B05B6; Sun, 22 Nov 2026 15:09:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A33926B05B5; Sun, 22 Nov 2026 15:09:11 -0500 (EST)
+	id C08D26B05B7; Sun, 22 Nov 2026 15:09:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 798DA6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:09:11 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0034E120710
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:10 +0000 (UTC)
-X-FDA: 85463844102.09.585F36D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 68B9780002
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FIlPxmeZ;
+	by kanga.kvack.org (Postfix) with ESMTP id 967706B05B5
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:09:17 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1566512060E
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:17 +0000 (UTC)
+X-FDA: 85463844354.02.5844C16
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7CEED180003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P28TG/jf";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795378149;
-	b=WQxChTk6RtAd80FmdVDdK/aXyDzq861wR/BKlAhS8cSZ6OUeHZuPNLPAj0K6vtD1yqLn2+
-	+gTkw+qVu22NNwhjFxGO6ZpQz/uqY44UFziIpM2v0cZQHAy6quI/QOpCen1LW2FdOYiPL+
-	6Q+gvNTya8NLSffr43z5ctW227+lkQQ=
+	t=1795378155;
+	b=xPOhNG06fqt6dpeV1tXs/XgvTFqYhntoMHVymUM1cg7AqDlVtminvIV2AeZgxqKpTrADDQ
+	7nW91det32TqDFOldrp0plPQyDRKLn94oX5rLqa4070mDV0zYKR6EqfncvEpDqE1YGMgqs
+	azru8WHNbyZS+iVwCmb2pdsyozXJXsk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795378149;
+	s=arc-20220608; t=1795378155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NJy4CQsDbbyrrux6ubIkfBdJ2n5S01Da1nbXLZiKzpo=;
-	b=BVrAkdIqyD7Y2T/cnfmD28n5LBDA8UDc8kfWE1fZt7yHztK8bon3HcARx6PodlaSCDrauq
-	tNXLMvHK0XyT7czObGkqrCLX4dBTLLAUMWahC8hwhaDbzhR2ebV/RYHmZdPCmwZwnB5fd+
-	OGc6Kq1ka+OIipU41Dn6QsDa82YhB4k=
+	bh=qgAd/VA0V0SFS6QRkanen1M9m5R72JoHXnNt9l1b0f0=;
+	b=hFEE5hf5qhQtb5oy82/ZQb/zaFn1FxjmkIQmlSSQG7TrIUF/uzpeaKA5OKOyzscDjpr1QI
+	fX+KW+autG7SdtMbZ4Ywul3mVzEayjCswkdliqlFdJlSb99UIAJVaR4T9cO2U4RT/quZuD
+	qE8SuTCu7Aw23whd+AU1w8IZGCRlTV8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FIlPxmeZ;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P28TG/jf";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DEC0C609F3;
-	Sun, 22 Nov 2026 20:09:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4051F000C0;
-	Sun, 22 Nov 2026 20:09:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A1FAC42D97;
+	Sun, 22 Nov 2026 20:09:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F891F01568;
+	Sun, 22 Nov 2026 20:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795378148;
-	bh=NJy4CQsDbbyrrux6ubIkfBdJ2n5S01Da1nbXLZiKzpo=;
+	s=k20260515; t=1795378154;
+	bh=qgAd/VA0V0SFS6QRkanen1M9m5R72JoHXnNt9l1b0f0=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=FIlPxmeZXnL8jfb5igUreGcXeqBZ5IAPhfnC7/RLkwm2fVCUhGtqYHP5GbDuKZpgf
-	 Rs8od4A00WVlmjWBGKGo1JI6rWCj5nnH1+0NbFWV3AkaIsmYJrE12X6iTuN/k1eFTU
-	 qHOpyuR+Nwcq5ZCDMRP2gPk/h2EmJ/v9lcQ3KUTC29USZykod1aZwlrO8DAi15a4hD
-	 zy5bQ3zQMmT/1KHgei8EgDoFnJTGd80G72XxB2rHkKNj7Sn4cPe3Z8gnlDNJs0gwsh
-	 vuixGezimNtBC0ibmSBuA8VN6JWScZv4O78XVT3q/w0OUhL/QoblIvZBsuRCzQUuQ9
-	 hDDVSB3o1NU7w==
-Content-Type: multipart/mixed; boundary="===============0817330899429733780=="
+	b=P28TG/jfj557Y7MNEKVfg8PB17IIaPG8EaC4Ckjlz91mj3R99wSOaJlPtXNmt8Rjb
+	 QUjgXZGIUX5ijXTicGbgnAkNvSfvrerDwEo0ccVCxYsOyP6YALLBbmtkxCFGLPmjFD
+	 pDRZvJawql5AxieBhsba3ay0Ylbms82auYGDyB8KgQPP9vPfPuzc8pA4A79Eve+SRh
+	 0zxbXKi/4chaRfYvPCYuW9WS+HHgIaqWUeEdEbVQZyi8onJatTBgKPxGqwdrdPGa7+
+	 JPlP/KrqNBrHfel0Y0JV06vSuN1GW8oWBKgLQUki/1mbgZHRq+tN9aFty3QtWaqoDB
+	 t6Fr3eSQU+EiA==
+Content-Type: multipart/mixed; boundary="===============1507986254413833181=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <777039b970038567305cede50f71dfed0a1a4a5616d06298ec2c7c6298cbcd9e@mail.kernel.org>
-In-Reply-To: <20261122193539.3334213-25-jarkko@kernel.org>
-References: <20261122193539.3334213-25-jarkko@kernel.org>
-Subject: Re: [RFC PATCH v7 24/26] docs: Document userland uAPI
+Message-Id: <6d2f2a9724b36a8a1329286865eb8e8502d9e7541d523a21602fd3cb0315fedf@mail.kernel.org>
+In-Reply-To: <20261122193539.3334213-12-jarkko@kernel.org>
+References: <20261122193539.3334213-12-jarkko@kernel.org>
+Subject: Re: [RFC PATCH v7 11/26] userland: Track init lifecycle via copy_process() and pid_namespace
 From: bot+bpf-ci@kernel.org
 To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
 Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,ebiggers@kernel.org,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun, 22 Nov 2026 20:09:04 +0000 (UTC)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 68B9780002
+Date: Sun, 22 Nov 2026 20:09:10 +0000 (UTC)
+X-Stat-Signature: gb9z315md7n7zbif66e7cuqpp11ckz4r
+X-Rspam-User:
+X-Rspamd-Queue-Id: 7CEED180003
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Stat-Signature: an61xkkp84f44k6zpsetz3nqeicsny4o
-X-HE-Tag: 1795378149-49572
-X-HE-Meta: U2FsdGVkX18kjfvEYWLmzcCaSf0fpo6hT/8Kh674glCm6YCzfFa6ldH7GtihMZu7PLE53hP1MhwCFdVS/qEEfiaTXivhgMQLzIj9RJndHWfItAR3JvXavsT1BJqs1EZuyB2ETo7U7JNwmh3Ln7H1oGxOtYFr83v8eT8t3M6nZiB9cLhmagURbvEsvs8IqucRP+vjjzAQP6iDxAN2NmkpXQjMMl1fezucob5HlC296dTNsU5W9mPl5yKUeIBSUmCyVzdSQYRlMIWi/KQT6hfiBXRHlTj/br1M/fQmPnSRqxMV7D7VE79+OYVhvEcVRY4DE4SsRvhp+bGDQc++7K6AaHcA+kjwYuJYtY1w0UW3IV1Krd+ATd4X16G64TH8G/qjYt6ScIUnFyaCNRmp4eXKKmEYboA5s001Um0D2c5IqbeOQ3SyeCRAviPJ8Dvdd1zFsVfro0oIbwu/ySSuB2E2HwQy8F/8txAAmR/oKKygVKB88ELfIGlM+IbLK6f3w3fqC+tkinpg8yOdFfpXIaMGsPLF7UrTbgrlv/ClfWXELPL0ffz3ffohQub8h61PbDiYeWe7H9YIhMl79ILmCp4yyi24iUGIXsoXPcXg+d7LPsA/dZ4WrHHv1SAyvHzCECp57jJUAvxgMh2GeilgbkbQWUyr/ZdZp0jd9hll27dVn2Dxefj4HtN40HEOp4C1fR+g2i2xGSwz1ZT6u9RTujStPF8IwsGfEY12C7Iyv+/tiCIXYgWxGD4qIEnv+/uBD/ZNILfHZE97U2WCYzI4mO0DfLitEDK4xPXDlMGPjlBABzVy9b4Jrq6cmtWX4BPsFlZnYaFTAb2cjbOtvdGti8MPHMhcwk0HE0CeW3sMKIGowFAq+R631JmzL4BCAwqryVbfmaB4bMXpSTKKw+F/efoo/6tJhjEYuwv+/R1s3HGUdesvmSTpRJbSSg7/wAyQhA7jWtzBC8TNZO574qXPfaz
- HnkH9QIs
- iOdBmupP8O6vghvXaDFFbZpMW3Yj6KT3H4J230Y9Mf9k+DZ6ieMgG8GfQ/HIIlaK8gIINw8d0NAb5hk1yIKEYwLQnV5pX/HGGdmJXhq00lCf8FE5Z/FphZrjiAl855Nqz3943c+kLRjJplRy1bPPIl3wSwCbxsm2BJplo0lJ1t9ju0RbywSyCPg6L9mDdLCV7Ac3VXMsm71/5tFBJ5czfCr3iB10K3Lk3BplEpiHyaOPQGoVgYW3DthYiQw/F0r02Bnogqv7PZOX6X1chg0CsDvLuIZ8WvjPLuw0psBIbay3O3x8A0ts9QJaiJ/aTnfWoSA0IQ2E8s5OeOoBMx4IHdzFoFbOyyEXupuyWE+BP0jlJqv/G2rmacnRIF9qatnW5vm4nT7rv5E9UYMRA2bo+zfPw/OqbfdgJPXHwb5NHTeKc7RrmKftLkZ8AoEjSwLVjBbw/7a0IObciKSfJUMFXdBGvFTm/BFB0JAvEmOKjrox1ftkzxR/fcuV7bf4zB/euDzAquKXTtjf1RMYF0ydLlWmvwasg1/3VWMXa+c7JsBVfvmbe5NsWKRXRPMWeYMAoVwNYO7GLojWosfgHoWVcEHNa6s9B9rmPnlQSjsl0e2dZ7fSt2SBR2C1HGi2TgRzw9QJFzvgvEan/S/+HVyCfUXOSkN/fW1HCSVkPV3KB/+0a0yE=
+X-HE-Tag: 1795378155-155327
+X-HE-Meta: U2FsdGVkX1+SqgtjbqW1ttJlXSODgU5pqwuagUf/4gGbCrZ3YjYtEAMgch6m9WHrZ+78Fra15aACMuCBIM5GFSs5jj0tbQ/3sc53Rd1Y/jCvB+swXkN0cIcMLLXkNJpytpFVW9WsWxXlUKGklugQwXaLk5uszf+PY3XjhTRTKx1BR4alxfXm09Am9IOlhjo5s5jQXkje/hdFL7DvzLF/Nmsg2zVBhMgiSEkN4yO7LTzNAaAOvEHYDmmVeNpaJCT9/5ugy/lEwmcTX7dHEw/wDC4wi+6aBYgv//jhN6l/MdUPWqUMN4ogX0CO2p5Ag77/PYSiqYH6W2w67sGb18c93t8ORpm4nwFssTTmWY8m2u8fuJAOz6lf9Sn3NfsYyrSKlc6Hks9HLHjycP2SMp3x0QFE8SLrb5bMSOntPVKqmTClxB6A42IqQqtgGMcCmU+d03Uqi4wX48ymoGz6vDBskzzy2HuUFxPlmCw7wRM4ehctQhcQ4xVnOBaIsJQa91V1ocVNwV7QhyDQhB9dnBF7+moodKE0nbkQIaS9M1ZghJPVgB76w8TgiDwN0JMeiXUoBADc+xZBoodDIwwpvAEK6uJ8I068AwstHQoXaCK88WNKt49sGslSpRGlNCYhjCrqQqBCtdIkmR4nxFBY62iyYnfAL6h77jykav7IRV4QTca96sNSPmYjpsAHJrFJnlAj5e7HShkePhBSO/zsUmPhs88xFCoUNTdFBWfAPUb7PuTAWPywXaHLPft6y8UqINNxre4LYhUqoPaz9xtacu7gsYB19vl+dG2zSdi3p6aN443aW0ZZGOZmONw5BLRPE5PcjmPLlwwo+NZWbRlFkC/+4BOaZB4v6FBW33zEZxaKrjjgHYyo0eaQVkJ8g0mjThPsT0gXGuZTVTxLTUwCdFVt18jI8KJ4LTWl0O8E07BfQhRiR6QJMlpVypP9YjbEtuRgIK9EpUOcoy8TyTha58F
+ IArgjEaH
+ ptnnC+cq9Eb7KtV5upfiStZlkC5TTpHEgDSfMZIPKxsUOxWKOni4MPaNDOffLEVyToZiUXguT/3QOh6WWJGm3VI/dlgNOtJD6+PcvBw1fM+JBze30QFT33YEzku2WXNjks8VeCARC/s8NudZfY81lmytBfjX+6Wojwy1z1j9opNq29Q6BrGb2O/aIUzctd++Uts0PEg+9rJF4Ecf/t/c+/CSn2yXjFUchqdU6VjbiJ6f1LUVKUTvqXh0D9vFnLAhkPqIbYuoTInXZqIeu43Pwe3hhpAkWtJAYcXQ//p8yBEHGGDtSoucT3Bx8/irklJ/Q07btyiyk8EDpWh+WSdjZEowD0PBUrSzk1lyF1aU82/YPLsOcH6znu+JvfWJwL9If82PPIdQgUI2ozve7i5VWkXrQdx5IGGqf0A1sAWbQ926+zhE+1qCHN8ely0Ih0IxL8knePLiKiCOjHYfjZjHXsKezglNv4AhY22m+Xxp90Hs+rYYTjY+1oqbPQjU8Kuu3YyIYyQMV7FzKfojiJikesvatNXq5S5pFnFIQgZVd0Ij67l//+lEdDYBilpOFktEQRh2YNMh/4yyLDKFBpzuoMSkYwqf0nxjVtWWX/medlk7fzpgoKGhfYv3q7o+qIGcP7GF/kYHACHRYRV5IyIk6Nmk0uktUHohJXJXOeMaimQXsLWPGSJiGFBf0UxTlJWREzVC1j8G92dNCNS3VNOimXh+hCO2u3MqLwnVD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,52 +91,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============0817330899429733780==
+--===============1507986254413833181==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> docs: Document userland uAPI
+> userland: Track init lifecycle via copy_process() and pid_namespace
 
-TL;DR: Docs nit: the sys_userns_set_idmap() kernel-doc @size text may render
-with stray raw backticks around PAGE_SIZE; rewording the source comment would
-avoid it.
+TL;DR: Nits only: userland_copy() has an unused tsk argument, and the
+rcu_read_lock()/unlock() pair around task_uid() in userland_exit() may be
+redundant.
 
-> diff --git a/Documentation/userspace-api/userland.rst b/Documentation/userspace-api/userland.rst
-> new file mode 100644
-> index 000000000000..e32ea3501472
-> --- /dev/null
-> +++ b/Documentation/userspace-api/userland.rst
+> diff --git a/kernel/userland.c b/kernel/userland.c
+> --- a/kernel/userland.c
+> +++ b/kernel/userland.c
 
 [ ... ]
 
-> +User namespace ID mapping
-> +=========================
+> +void userland_copy(struct task_struct *tsk, struct pid *pid, struct userland *c)
+> +{
+> +	if (likely(!c || !is_child_reaper(pid)))
+> +		return;
 > +
-> +.. kernel-doc:: include/uapi/linux/nsfs.h
-> +   :identifiers: userns_idmap_extent userns_flags userns_idmap
-> +
-> +.. kernel-doc:: kernel/user_namespace.c
-> +   :identifiers: sys_userns_set_idmap
 
-Will the kernel-doc for sys_userns_set_idmap() render correctly here?
+This isn't a bug, but is the tsk argument of userland_copy() needed?  It
+is not referenced in the body, which uses only pid and c.  Could the
+prototype take just the pid and the userland?
 
-The @size description in kernel/user_namespace.c reads:
+[ ... ]
 
-  @size: Size of @map structure in bytes (%USERNS_IDMAP_SIZE_VER0..%PAGE_SIZE)
+> +void userland_exit(struct pid_namespace *pid_ns, struct task_struct *tsk)
+> +{
+[ ... ]
+> +	leader = tsk->group_leader;
+> +	rcu_read_lock();
+> +	uid = task_uid(leader);
+> +	rcu_read_unlock();
 
-and kernel-doc turns this into:
-
-  Size of **map** structure in bytes (``USERNS_IDMAP_SIZE_VER0``..``PAGE_SIZE``)
-
-Because the second inline literal follows a '.', docutils does not
-treat the opening double backtick as a start-string, so the built page
-would show raw backticks around PAGE_SIZE.  Sphinx does not warn about
-this.
-
-Would rewording the source comment avoid it, for example
-"(%USERNS_IDMAP_SIZE_VER0 to %PAGE_SIZE)" or "between
-%USERNS_IDMAP_SIZE_VER0 and %PAGE_SIZE"?
+This isn't a bug, but since task_uid() already takes rcu_read_lock()
+itself, could the surrounding rcu_read_lock()/rcu_read_unlock() pair be
+dropped?
 
 
 ---
@@ -144,5 +138,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/45063222848
---===============0817330899429733780==--
+--===============1507986254413833181==--
 
