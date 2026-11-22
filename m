@@ -1,104 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5666E606A330
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72A6606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=UK5LpKdm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N7iODn4q
 Received: by kanga.kvack.org (Postfix)
-	id 6C91E6B05B5; Sun, 22 Nov 2026 12:14:24 -0500 (EST)
+	id D825E6B05B7; Sun, 22 Nov 2026 12:15:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 679E56B05B6; Sun, 22 Nov 2026 12:14:24 -0500 (EST)
+	id D32AB6B05B8; Sun, 22 Nov 2026 12:15:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B7146B05B7; Sun, 22 Nov 2026 12:14:24 -0500 (EST)
+	id C70436B05B9; Sun, 22 Nov 2026 12:15:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A64A6B05B5
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:14:24 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC0BD40722
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:14:23 +0000 (UTC)
-X-FDA: 85463403606.19.DC20F6F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CA9C81C0006
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:14:21 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UK5LpKdm;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A3B096B05B7
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:15:35 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23703140718
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:15:35 +0000 (UTC)
+X-FDA: 85463406630.16.40F7F66
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 81E4E20009
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:15:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N7iODn4q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795367662;
-	b=7Sa7hhcQXs09GpHxRRa3v/bXxAXIxjoITzNxiuzEhr5WP2WdajQtS5mZ9mrjDNQARDMQKU
-	Xc/JKyq0eZcNUA451xTGw6pB8MhkPUhbfqPWIeK5/CErgwtdmu7xwgUa5XETdh4COIbK7X
-	qzTClAKEkpsv3E3xyoe5Rh170TItJgM=
+	t=1795367733;
+	b=7rOvEhBSuVhru6NoyN0ITh/+E6aOEyq6Da5ajteboUt8stIYm6/QfYOQnLtoQoGJNaCT3N
+	sztO44/xYX0V85z+A5F7u3zo/n7VHer21yjPMuGRhQAQWjoaAO1aix+37YG0kaUT+EifRx
+	7xmvbixxCrMK36VyG07xIk4dUd+0aBg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795367662;
+	s=arc-20220608; t=1795367733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5JGbsedU74vIQ/0gQEWTkA66OhpSi5QLuKHx51jgv6o=;
-	b=PUt8MK567HYimFE71ODaceq/z8wPbBU9ywLtQoWDJZGk8AU2MJgEVm9dJg8NZnCMoVDmSR
-	9w1gbAJBs/+DorjaKui3r0nLZdBJKKCRquD+iXC7LDP4ZMRh+xzePsd9th6w3RkQkrcn/5
-	4e5PAKwXy3zT4vf30S47X3gzil0XP28=
+	bh=pav7W9CDhzw7qErKCvygpSHTcbOi5Wufp8OZPbyFOjU=;
+	b=ZCEQRXFG+r4UvCazwNLaqsRjQh+W41nT1aNXGINU5YXeP61BMpyMHW11412e7uX2jms8DE
+	5dDw0cYj0s9DHkyutH1YODntISMjO9p6MArOaH6KHmoP6EMTAI+x8aTeNpY4eofRNcb5AP
+	z0USUnOUtTDbsg7OBmswSBdG9K4EAZE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UK5LpKdm;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N7iODn4q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E635141913;
-	Sun, 22 Nov 2026 17:14:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEB51F000C4;
-	Sun, 22 Nov 2026 17:14:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795367660;
-	bh=5JGbsedU74vIQ/0gQEWTkA66OhpSi5QLuKHx51jgv6o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UK5LpKdmOWL0+QIg66xeuCB/MCO3KleNEYpYNhkPYguIjSJsVEOTfFAFSYArDoe57
-	 S9UVOHkKTNDRYrqblFi9Cs7MEWehlW8R2JFhx1Heql/svJVetyCbF8b2SY2y3FQoHX
-	 trt7AR+PG2xFis8l1vlFBhzeunpgbz/Wn7bqWyXA=
-Date: Sun, 22 Nov 2026 09:14:19 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mika =?ISO-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>
-Cc: Aveline Noir <jm5905938@gmail.com>, airlied@gmail.com,
- apopple@nvidia.com, balbirs@nvidia.com, christian.koenig@amd.com,
- dri-devel@lists.freedesktop.org, Francois Dugast
- <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org,
- jgg@nvidia.com, jgg@ziepe.ca, leon@kernel.org, leonro@nvidia.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Matthew Brost <matthew.brost@intel.com>,
- mm-commits@vger.kernel.org, Patchwork <patchwork@emeril.freedesktop.org>,
- Shuah Khan <shuah@kernel.org>, SeongJae Park <sj@kernel.org>,
- thomas.hellstrom@linux.intel.com, Vlastimil Babka <vbabka@suse.cz>,
- ziy@nvidia.com
-Subject: Re: [PATCH] mm/hmm: account for subpage offsets in device-private
- PMDs
-Message-Id: <20261122091419.f82e88761dbd12771fb6c976@linux-foundation.org>
-In-Reply-To: <af91d4a7-11ca-4f84-b8da-33ee1a585916@redhat.com>
-References: <179342234355.4.16705453209886955762@gmail.com>
-	<20261121160037.1a479f3c8b4e860bc23c106d@linux-foundation.org>
-	<36be0904-168d-4813-82ff-27ecced464e3@redhat.com>
-	<20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org>
-	<179535872126.34.4789080961796247940.b4-reply@b4>
-	<af91d4a7-11ca-4f84-b8da-33ee1a585916@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by tor.source.kernel.org (Postfix) with ESMTP id 91FF160218;
+	Sun, 22 Nov 2026 17:15:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217A11F000C6;
+	Sun, 22 Nov 2026 17:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795367732;
+	bh=pav7W9CDhzw7qErKCvygpSHTcbOi5Wufp8OZPbyFOjU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=N7iODn4qTc/7SJ1+BUR7bjrDPdbDNURw2c7OPecOiS5GLpFgUanB6F2FmwvLgVVQj
+	 ek34s54CMmXOcgRX9n/U9tS5Ww+WB6XqqlZXpX7kARJ6kZO8SnV0tWp/XylYb1on6/
+	 vNTweFJ/2xiC0jRjLVsp3O229sH8N6IBdPP+G3EhoATuj0BmvwEYqu21kHV88u++fF
+	 ChA6Qgt4WgI6JQR3UCm+765xdpB2Ung9bDEfYDqmspBEqCkwwTEFvqD2d4nh/ytGLQ
+	 LhZ85rUCPoV7d44m1Pn4fpjIsa2NqqAIlKiM/NBs5QaEFo4uJDCp/onkD4sYsQWbsQ
+	 nDcVuwaLSyRKw==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 03/27] mm/damon/core: introduce damon_submit_report()
+Date: Sun, 22 Nov 2026 09:15:24 -0800
+Message-ID: <20261122171525.153150-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CANOyQmH5FX18LmMW+QwAcvOiATgUqx5VH02S5DyfTg+qPMSX+A@mail.gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: CA9C81C0006
-X-Stat-Signature: 6banwyaczsga5qsyztqm5j7ji5fb9h9s
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 81E4E20009
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: k561ngtjwxrbfqm46h9eskrozswr9wtf
 X-Rspam-User:
-X-HE-Tag: 1795367661-856123
-X-HE-Meta: U2FsdGVkX18ye7VT2lEMnO6AUyTYeI7vLlNY9vKJRoNoXEv856irSlDgQ6U8xGWk5yIGcuMn9goyrpfjw9FODWzjKPR/RuUrowiyffT7plJdbb68eN6jmMD/ow834FwvQKvr5dZuaqw9Ou3luaBATaOZtZ3SbgIShr7GdfN2F/GBxVKrt9Iw8U5mBiE6h0DQdYWSdwzR/D9GtC9yDcKBgOu6h1kNq6QWHG4lJbj530+BU5qlwL6Rm3oLVpzjfcnDOPI+Hl2TgNuQUPSimLhwK4H+k4bzOl0afHviAanvURbvEz3sjRNoBoRqr29AjwphuVV2xW/L8nLnnTZxOzgX7KD8h8vJ+tBn23nPr/lF96Pa1oqP8VHtPu1QPXw6/mlSJ7qaS3KECFOVlPVrEWK6o2gX+e2hrKc1Jm/TWQIu01dQEghaSej9PouVkO6NiaicJ/2QwFy/HgPmRWsxPZYspIyzzPhhC287CyZhZPMjYRF/6tj1Pz/1LqzmrcLhchfzA3yxD9kZ+ewToyw3B1hVSm8pc843s8G8hoDxMeqgxB701XbuYjj3Q+BVROL0ksw4hhdNaRJ3JgXThcznZorbqhJj17Drlun9oPkYta4qFpfHcBJ3Xh1RM7nJVFolc6aeHq82QmMgXY3yU66vRJBFYPm2YpT8H1vcu6Oh56S9+745c01MeaMs2ZBzzKJpbh78JcTc71dvkUSx9UIKMFyaQBnMdSq5iZ3Zww2t0/tfZVLz5ir2RnMv2w5JauiDGhCzhYS/B1rhdnIITvohTlAWHSlEy7NmIJw9x/3mvAS6SBQOk3ZxowNpoqBfaQ8pgaNDQ5ZF81V0PD/whdn8ahJnCN3nEqO251WT4N9qAOwDFL8kU/08fqaQA0Zknq/H6aCb3MzKF2uguE6gnWa58QwNTWz0ER84JyvfVaecuDs6QDddXxb+rfC3leoXXwUVqyQylmmNhzEISwJOOI2umyU
- PTM2deHS
- irmDUBHa4C8glfY7Ey5cX8tM/aNS5KyQsliMSSiaqF6PNKwPyhwHbhbf3FI1m8ZoPbSlbDwZvRLoguJWfcFRN95EEB59lsfIcYTFUcD/XW0idqTsLx1fH0JqN1lv5rXoQuzNxBVbIZiJ3gc53/X6u6q5OdduQ2+HJbtzSDYrUmDqG4QIu33GiPrafFjbBteqCrkDycnduPyE3pmGgjBhInWJ5J2d7s3GxL0zTwTDIIhbPI4cogDqm/2YgSt27T3IFQ5qdx1aV0zHA1KlxfahQDSfeg2I9dcL4HMdzEhv/qB/njsHxqZVUECU6GW9oCPKoea+drM5pDiIfswTUriOloHWxE5tqcnFf5V9PqUqrCwCjMP692sTA6bwte4S1ZrNDGOveIonk4IfjlGixanaYdt8ax1nt+ddNC7As+feasWBEWo3J7JzeZfstJhWZPfRSVL2Ayhsqepj5lYR85vtr1GmHzSArC6rkt3LF2moOtDHSCzVDdcIutnzy9uhdxOtggKqIMxhV3kCSQYyoWqEmldjb2NQcVuAA24U6a295R11s+etNw3dwTRaD33N530uSclHknj5RA60jc4z+HwR7BV+My2cy3i6NQLTCOtr+059sIXrIO/hor6sSbJsJc0Z1XFjGXgVYJzWkkmYuWTEhq+H50J7SunOqv5rN2WTlWYn3euzo5OK6o0Llc+fkzfzD+viY+WLIQ5AQhsgD7RGuInolCQuLmGiJ2WOAdptQaXoLThYQbqynCunURh48YyN/F0rI
+X-HE-Tag: 1795367733-187488
+X-HE-Meta: U2FsdGVkX18aCvSSvPvi7RKKXp4So2aLyuwmWqXModi5g3VHCQUHGiIvoUqixJze1ptUC258V8rHa9dJ30xrQT91Sr/v9Uc6EUVfsHRDGcF/Ljh0iqut2xhkKpZLN1fJiYp1tBe2U3fRwhskpjpM2etNLnlIHJiaEiEKwSR73WSaWs0M2/0cHIEKykfdcML9qkauAUIfGVBaHwn19yPTGWDJ0lKcphoskOKiXY1STTO+MRZ31cOoD+DDcThgds8TTDhp+hup9CTmYEqt7td3Vnr1F9BW5CIFp8gozC+xRxImRhlHnqEBShIDmnMeaeqm2Oqf/v2RWrpR0X++WtHfR9yPl4l0PQsJTukrRsmf7TvKHajDWickvItgu8z8ZFnmbLwfKYtfUjvNDXehmnoEFLuo4DAk8MFLjOo5Qw/to1wlFHYO19yXsr+8q2o4d8GgimKQ7k+Y0sZ8c8mkM7Bwow+OlpGvGOYP/grOfW+E0LG/Fr94Czj2W1VUmahosM51p30yyflzkGZGVjrjg9ei74GtxobJneTDLl/n/ezEOsxT1k/CGg4198QMwlK+Fox95AWMrgdM/IxmSuBQeLz7QpzwWUF9yuiZJjtCGOueei9tFEDrifRBnixNmE3zk0ueNdB39PqUyWFLvXdJwQySbbuozdKFpeijm1ahhyzdzufKaYoshKIdhco8huA5WMJUy0bOf2o2T22eyfWI974eNAVBUnXohrNG9N8rGfM/wiD6wqCOniWrJUYARSuWkmlvXyI5xP2cNp1LWBlxLtkOsaIPGYN7x89FWo9ajO4BABdlMD3LsdUgKRcFAJYiKwnPOMi6f1n5up8m4hso/E9MDfCdmW7hE3O55s2pNE+ebbH0xxt1pAqWtnNFcEg2WocwDKy9zddn83l6BvlijN8yLiNRSTEfgSEGMCP0V2+7um3leb7cS2BHbti+GzDJtwK2/SYeA09KdvU1YlipShH
+ 7BK63ayV
+ s8AuHHdTqKwdVAcghxV6j+chg1xA0isQR8Udpq+d0SCRAN+tar3c8Vhf5AVlU23CZbJBUu6rWcH2V9Nj2UC9hyXcI/pJUynSsn1IsaE6LJoXElBhwL3jKHvURFchMOm2Inl9XsMtiMAS5SrVi1poq9i7iuU4FMYV6uRAvYNADbz+cIWXz91KI4zS+AHKsovPVvmJ3uAgZCr5PSSu7LE0sc9JnFTGVJiS+f6QA2eEbI9VA9g54OHVplzymfkvFWeC2AkPqQv27SN3Easi3KRoAEzw7KAY9cT8D41Pd/Rws/IYupTvK0IrELpxpuUTaBYyuTiS4bJo+kb89+yaCCOmO1pzMMBU6vb0G/ChSsdk7DLGnycU2bptXVexKA090E7yWVjs+S0v/7brEKKM9OsHojGyYsFhvPWWRVoduzAL5+TWQ4DKNsz2x1e7oN9EBXVLExKBrjJ73BqFT44bZ8tQPaHhSmb6YyGUanJLnhUryiQ3xToeweoPYlX/5B+rrdvgZHMV9L0YTrJcZZIO2rT12u4A1YzcaCbpvoOqLnjjgOYvFKGkmdxozzNwnfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,200 +97,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 22 Nov 2026 18:41:39 +0200 Mika Penttil=E4 <mpenttil@redhat.com> wr=
-ote:
+On Mon, 23 Nov 2026 03:06:16 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
 
->=20
-> On 11/22/26 16:45, Aveline Noir wrote:
->=20
-> > Hi Andrew,
-> >
-> > On Sun, 22 Nov 2026 01:52:46 -0800 Andrew Morton wrote:
-> >
-> >> Store the corresponding RAM backing page instead.
-> > This avoids the oops on the first read through the second descriptor,
-> > but leaves a stale backing page pointer after CPU faultback.
-> >
-> > Since the mirror XArray entries don't take a page reference, they rely
-> > on invalidation.  When the CPU later faults the page back to RAM,
-> > dmirror_interval_invalidate() skips MMU_NOTIFY_MIGRATE for the same
-> > mdevice, and dmirror_devmem_fault_alloc_and_copy() only clears the
-> > migrating descriptor's entry before the backing folio is freed.  The
-> > second descriptor still points to that freed backing page.
-> >
-> > Reading the same page again through the second descriptor in QEMU
-> > triggers a KASAN use-after-free in dmirror_do_read(), and the read
-> > returns the stale data instead of what the CPU wrote.
->=20
-> I think this is right, but a fairly artificial scenario: it needs two
-> descriptors open on the same test device in one test, a migration through=
- one,
-> a read through the other, a CPU fault back, and then another read through
-> the second descriptor..
->=20
-> The fix lets the device private page content be read without an oops
-> in the context of one fd which is an improvement.=20
+> Hi SJ
+> 
+> On Sun, Nov 22, 2026 at 8:00 AM SJ Park <sj@kernel.org> wrote:
+> 
+> > +       queue = &damon_report_queue;
+> > +       report->jiffies = jiffies;
+> > +       lock_old_val = atomic_cmpxchg(&queue->lock, 0, 1);
+> 
+> If a submitter is preempted between these lines, it can enqueue its
+> report after one with a newer timestamp. A lookup scanning backwards
+> can then stop at the older report if it's outside the window and miss
+> the newer one that's still in it.
 
-May as well fix it.  I'll test this updated version.
+Will that frequently happen enough to be a real problem?  I think missing a few
+reports is no problem.
 
-Mika, please feel free to take this over, perhaps integrate it (or
-something like it) into whatever you've got going on?  Or not, let me
-know ;)
+> 
+> Could we move the jiffies assignment after a successful cmpxchg()?
+> That would keep timestamps in enqueue order and better fit the
+> meaning of "when this report is generated".
+
+I agree this could reduce races little bit.  But it's too little bit to expect
+meaningful change, in my opinion.
+
+I find a few downsides of your suggestion, too.  It will increase the critical
+section.  Also the jiffies becomes little bit late than when the user made the
+report.  These would be negligible in the real world, though.
+
+So both the advantage and the risks of your suggestion looks not big to me.  If
+you don't mind, I'd keep this as is.  What do you think?
 
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: lib/test_hmm: invalidate all mirrors on device-private migration
-Date: Sun, 22 Nov 2026 08:53:12 -0800
+Thanks,
+SJ
 
-When one open of the fake HMM device migrates a folio to device-private
-memory, a second open can fault the same address into its mirror page
-table. The second mirror then stores the inaccessible device page, which
-can oops the kernel when dmirror_do_read() copies from it. Store the
-corresponding RAM backing subpage instead.
-
-That conversion also makes the backing page's lifetime significant to
-the second mirror. migrate_vma_setup() notifies all mirrors before CPU
-faultback, but dmirror_interval_invalidate() skips the notification for
-every open on the same device. The faulting open clears only its own
-XArray entry. The other open can read or write the backing page after
-migrate_vma_finalize() frees it. Aveline reported a KASAN use-after-free
-and stale data through the second open.
-
-Handle migration invalidation for every mirror under its mutex. This
-clears pointers before faultback can free the backing pages and waits
-for an active mirror read or write. During system-to-device migration,
-the migrating open installs new entries after migration; other opens
-refault on their next access. Remove the now redundant XArray erase
-from the faultback copy loop.
-
-Extend the PMD migration selftest to read its last device-private
-subpage through a second open, then fault it back to RAM, change it,
-and read the new value through that open. The trigger is available to
-a process permitted to open /dev/hmm_dmirror* when CONFIG_TEST_HMM is
-enabled; it does not depend on physical GPU hardware.
-
-Link: https://lore.kernel.org/r/20261122015246.d8b6b98ff5a8157168156339@lin=
-ux-foundation.org
-Link: https://lore.kernel.org/r/179535872126.34.4789080961796247940.b4-repl=
-y@b4
-Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: Aveline Noir <jm5905938@gmail.com>
-Cc: Ralph Campbell <rcampbell@nvidia.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Mika Penttil=E4 <mpenttil@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: <stable@vger.kernel.org>
-
- lib/test_hmm.c                         |   20 +++++++-----------
- tools/testing/selftests/mm/hmm-tests.c |   25 +++++++++++++++++++++++
- 2 files changed, 33 insertions(+), 12 deletions(-)
-
---- a/lib/test_hmm.c~lib-test_hmm-invalidate-all-mirrors-on-device-private-=
-migration
-+++ a/lib/test_hmm.c
-@@ -292,6 +292,12 @@ static int dmirror_do_fault(struct dmirr
- 		page =3D hmm_pfn_to_page(*pfns);
- 		WARN_ON(!page);
-=20
-+		if (is_device_private_page(page)) {
-+			struct folio *folio =3D page_folio(page);
-+
-+			page =3D BACKING_PAGE(&folio->page) +
-+				folio_page_idx(folio, page);
-+		}
- 		entry =3D page;
- 		if (*pfns & HMM_PFN_WRITE)
- 			entry =3D xa_tag_pointer(entry, DPT_XA_TAG_WRITE);
-@@ -327,14 +333,6 @@ static bool dmirror_interval_invalidate(
- {
- 	struct dmirror *dmirror =3D container_of(mni, struct dmirror, notifier);
-=20
--	/*
--	 * Ignore invalidation callbacks for device private pages since
--	 * the invalidation is handled as part of the migration process.
--	 */
--	if (range->event =3D=3D MMU_NOTIFY_MIGRATE &&
--	    range->owner =3D=3D dmirror->mdevice)
--		return true;
--
- 	if (mmu_notifier_range_blockable(range))
- 		mutex_lock(&dmirror->mutex);
- 	else if (!mutex_trylock(&dmirror->mutex))
-@@ -1198,7 +1196,6 @@ static vm_fault_t dmirror_devmem_fault_a
-=20
- 			src_page =3D pfn_to_page(page_to_pfn(spage) + i);
-=20
--			xa_erase(&dmirror->pt, addr >> PAGE_SHIFT);
- 			addr +=3D PAGE_SIZE;
- 			copy_highpage(dst_page, src_page);
- 		}
-@@ -1822,9 +1819,8 @@ static vm_fault_t dmirror_devmem_fault(s
- 	}
- 	migrate_vma_pages(&args);
- 	/*
--	 * No device finalize step is needed since
--	 * dmirror_devmem_fault_alloc_and_copy() will have already
--	 * invalidated the device page table.
-+	 * The migration notifier has invalidated all mirror page tables
-+	 * before the backing pages can be freed.
- 	 */
- 	migrate_vma_finalize(&args);
- err:
---- a/tools/testing/selftests/mm/hmm-tests.c~lib-test_hmm-invalidate-all-mi=
-rrors-on-device-private-migration
-+++ a/tools/testing/selftests/mm/hmm-tests.c
-@@ -2087,6 +2087,7 @@ TEST_F(hmm, migrate_anon_huge_fault)
- 	void *old_ptr;
- 	void *map;
- 	int pagemap_fd;
-+	int fd2 =3D -1;
- 	int *ptr;
- 	int ret;
-=20
-@@ -2143,12 +2144,36 @@ TEST_F(hmm, migrate_anon_huge_fault)
- 		}
-=20
- 		close(pagemap_fd);
-+
-+		/* Read a device-private subpage through another open. */
-+		fd2 =3D hmm_open(variant->device_number);
-+		ASSERT_GE(fd2, 0);
-+		buffer->ptr =3D (char *)map + (npages - 1) * self->page_size;
-+		ret =3D hmm_dmirror_cmd(fd2, HMM_DMIRROR_READ, buffer, 1);
-+		buffer->ptr =3D map;
-+		ASSERT_EQ(ret, 0);
-+		ASSERT_EQ(buffer->cpages, 1);
-+		ASSERT_EQ(*(int *)buffer->mirror,
-+			  (npages - 1) * self->page_size / sizeof(int));
- 	}
-=20
- 	/* Fault pages back to system memory and check them. */
- 	for (i =3D 0, ptr =3D buffer->ptr; i < size / sizeof(*ptr); ++i)
- 		ASSERT_EQ(ptr[i], i);
-=20
-+	if (fd2 >=3D 0) {
-+		/* This open must not retain the freed device backing page. */
-+		ptr[(npages - 1) * self->page_size / sizeof(*ptr)] =3D -1;
-+		buffer->ptr =3D (char *)map + (npages - 1) * self->page_size;
-+		ret =3D hmm_dmirror_cmd(fd2, HMM_DMIRROR_READ, buffer, 1);
-+		buffer->ptr =3D map;
-+		ASSERT_EQ(ret, 0);
-+		ASSERT_EQ(buffer->cpages, 1);
-+		ASSERT_EQ(buffer->faults, 1);
-+		ASSERT_EQ(*(int *)buffer->mirror, -1);
-+		ASSERT_EQ(close(fd2), 0);
-+	}
-+
- 	buffer->ptr =3D old_ptr;
- 	hmm_buffer_free(buffer);
- }
-_
-
+[...]
 
