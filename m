@@ -1,127 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC4B606A33D
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 14:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778F5606A32A
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 14:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HTGNS4xt
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WImNA200
 Received: by kanga.kvack.org (Postfix)
-	id 78A7E6B00EF; Sun, 22 Nov 2026 09:30:33 -0500 (EST)
+	id 51FB56B00EF; Sun, 22 Nov 2026 09:53:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73BA86B05B0; Sun, 22 Nov 2026 09:30:33 -0500 (EST)
+	id 4D03B6B05B0; Sun, 22 Nov 2026 09:53:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 629C06B05B1; Sun, 22 Nov 2026 09:30:33 -0500 (EST)
+	id 3C0206B05B1; Sun, 22 Nov 2026 09:53:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 33B3C6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:30:33 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5467CC0579
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:30:32 +0000 (UTC)
-X-FDA: 85462990704.18.31CDCB1
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8118C140009
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:30:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=HTGNS4xt;
+	by kanga.kvack.org (Postfix) with ESMTP id 0716A6B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:53:45 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66CDAC070F
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:53:45 +0000 (UTC)
+X-FDA: 85463049210.10.DF0058E
+Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7706C1C0005
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:53:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=WImNA200;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	spf=pass (imf21.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795357830;
-	b=oLRW8D1ns4LvGdc2BmV8uFKmZo/6t5rxMl7mI/GDy39bOHMUpq65J/lFwunnP89iGEoxzy
-	SlkTGZe/PIwWNd2gC6DVY0jr+3QtUprFr9hBK9GT3IK78dIhq8gfesrwJQ2Nl2eOD2BfuH
-	N77r8pkZHn7x6tV8a8bpFmPiimFpRKk=
+	t=1795359223;
+	b=7QXO6+4PpQGOkAkQj+pbWTDSk6SxlTMeyRxTqs4WzmNraXv2v0JP3e3V3g/tW7YyHl45pD
+	40gXm+uloPiVUTiZYbHfjhb3ab6ZLuDhBOVesUzAt8p+CLHnQPkfUnUoBW8pca/0dmVmpe
+	H/nnizLCw19VzSuLMXT1xnN2CrDSBno=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795357830;
+	s=arc-20220608; t=1795359223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QBjN2nkZH7Gcj/ZwiauxMt+VX48sTrjkI/4AB/9s0ZI=;
-	b=EOoHfpYvmtDbk03it0FFNu6+UOu+5Cb2JCITb+1chhRRZylE4JrKBjEgGVBtgeyXDM3EXx
-	nlF4y18L4KGPI/guqcsrczvWzgMMRMrKISeZkMu2csvMWz0RASTylTw0/TgvfBNAtoKgqh
-	D2SZjCKz4Ig8eBwA1nmUMh+KGVxc5qA=
+	bh=RMgj1FiPWOfcno2Rg3daraUU1yDv6jWsUnElDClVHG0=;
+	b=Czq2HqFqF7aW3Cafzx+v6XjAm4p2OOw69gPJ2wjdYAO/RzPm+0bKemfVdx2uKpSnTOUrWn
+	envNoGH6TunL8oD2Am+lgRvS1lgZsv3Kn4lQLltOUxxjnG/UQdWr5dhL1DToiAdrkxGxvI
+	EDE4PRPkTxM7hdGJNLF3kVo9YVYm5QQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=HTGNS4xt;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=WImNA200;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-3866a784546so2954457eec.0
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 06:30:30 -0800 (PST)
+	spf=pass (imf21.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+Received: by mail-pj2-f9.google.com with SMTP id 98e67ed59e1d1-3b196fefa1fso1310999a91.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 06:53:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795357829; x=1795962629; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QBjN2nkZH7Gcj/ZwiauxMt+VX48sTrjkI/4AB/9s0ZI=;
-        b=HTGNS4xt7K2qL4ncWexLl2pf1qpP3vSetyed7UAAJQ3DI47n7wwBRZ55jEHxq0P34b
-         QDgS/nGrT+A2+C/1F0sizMBHmyOUbnEUySQ+s7+qylDrOBV/sXqHsN5NZp5NiSdP6N4X
-         B/6N+iBWxGyjRKZE9NZf89InMdNg02Ya4Ckpv+IQMOwSngsuDVvv/K1DBE6oeCNs8etj
-         nqlbpQL8RPxSNnt/vROfKGDiIwwGNJ1uCAkqiqKmL/q3z9pTW9uqzlzg4qMiie/rn7yt
-         FYi1DEDYP/nCZkXWq28G/5wChBAzwNJYQrfhoU/pVINbzUl6NsTAzVjp2wIAbjUGe67q
-         YssQ==
+        d=gmail.com; s=20260707; t=1795359222; x=1795964022; darn=kvack.org;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RMgj1FiPWOfcno2Rg3daraUU1yDv6jWsUnElDClVHG0=;
+        b=WImNA200Y/hf7P8fbzE75e6vf+aDGUVU8lWGWSvIZOakTiQyHSz5HkTp+AfYSsfn7k
+         AUli/U4raS2S4XMaz02qnb3oEbmt5ArX1XsG173yNx/YC0wE1f3aKQ9cm/dfk6gh8leJ
+         3/gUBmkwf0jL6lF7TU0CcJANGnILjwsAuGYX6s089Nw9VE6+o98dsLGkvpsSTQkvx2w0
+         cWXaXUZQvcaiFjqhkPckAwHP8UwylLkf5q1Ju6un3CWpCw1mUOArlZpCX4hLs2ftwuG4
+         EpI40TBxakJ/SCUYIqIPFqGyaBILiTX4z6rBiVYEyPYJrHVkowl1uuOmzBEGI1aE6xd9
+         lPSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795357829; x=1795962629;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QBjN2nkZH7Gcj/ZwiauxMt+VX48sTrjkI/4AB/9s0ZI=;
-        b=bu9bKbbSx08uwszpBr5/U3W2c+U5lGXZz2VULWbMN2+KMjM0Qo3jXw5DI4K5WTW4fx
-         86P5c6FJvnS/b5b1U+v4XRf+aC9GWOjGrxq2uhW2XP03r292yyc/MFYZK6Y5qzFpVoVa
-         fmhMupn1QFF6SAo4XdM8GuLx1H+jSgWIdhoOuhlbB/zWNxr2WHEg3qQjtXlYKO9QnW5G
-         diLKvcM5j9maHCTxJzMMeKCFDQ9xtKfEY1g6VRd0ow6gLWnSGNM9fUR2j92Jzk1jpAVO
-         LCOxoCdkMhn8CIFH49MIe6MPxActWCfEBh1z8HZbPj4Hsz2o4Ty+RgsMKSQP8HgW+KUg
-         HB2g==
-X-Forwarded-Encrypted: i=1; AL+hErFJlij2RT+fSQyLloZZF8APtXeZ6u3RfJVOltKE3FN5pgVsa72ZfVnuE17znInaPv/RGzQXu3PZVA==@kvack.org
-X-Gm-Message-State: APuU4Z+U8aBjnfXc0Hu2TnWGw8B2b4zuPkE4liRACsMo4wHIvSkgwa5E
-	Fk2TlLxofHB8cNDhZa9EMouXRUHOV7UkmuIU2f0+1oqxTIoNUt5qKbguRJ4FkCnmf54=
-X-Gm-Gg: AZFdTZdFYicLEzAKThrmVo/tiC/ONJd/4lgWzc5txjcL963ol83U5icVUd/0wJKnot/
-	mDUISeNqopPfazb1jnk5J8hh2fJToN49L/5Q9afoIVSPSXEChZFwFj1pkmu+ALQRMqlfcxFgSfF
-	PTxzRlY8rHXjQSM1n/M4kR8d/m7tTFGS0iAe7sHm+QVDTvKSAtLukH/F1GSqUl2eD6YFAN/17fS
-	vVVsiwii4BlVR6wR7OTedbnDd279BovrMPXqya4XzAv/+nlpHHDsJfAKwHZLocGkk3YNHI1WPdr
-	OGsuiBopTfnlhEE7/T5gCW2Q/wEIgJyxIm/4QDmjIr7Lo/bGhCWJ9zLbxxLvsM5PvOfg0yHfUi+
-	PnK8nSP8q4sdqA/Ld8VzRgFbOit9V8E9xlfu9dZiqmYmcpnUI/J+1K+BsMD2lMmoRRU1+vuCaEA
-	b3QYDB5fHmqmw3Ek8uwTyWlFnBmft13KvD5fAPkmGXhRy0P8yHTOSOrHIcuGdqbW7gvjE+YxE3r
-	WpRw817/YVEQFb9zNa0tX1awX0EUNXpV+zaiRXH3VCb6aTDVRxl3Sj0NZu0zPyce2UHA+KDt7kz
-	VUpgttJ+xo1tZ3oMfXHB36PXUo2SoG7r/aLUSxUUnrtlm5NgzrhEjjVezG2YRfOtW90gp1iDnJh
-	k5BwXbK6IGmQWpg==
-X-Received: by 2002:a05:7300:e9ce:20b0:36d:5102:9974 with SMTP id 5a478bee46e88-3856c2c2123mr11231914eec.2.1795357829128;
-        Sun, 22 Nov 2026 06:30:29 -0800 (PST)
-Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385667decc2sm27877901eec.9.2026.11.22.06.30.23
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 22 Nov 2026 06:30:28 -0800 (PST)
-From: Lian Wang <lianux.mm@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 00/27] mm/damon: let users report their data attribute findings
-Date: Sun, 22 Nov 2026 22:29:52 +0800
-Message-ID: <20261122143011.85844-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261121210013.130397-1-sj@kernel.org>
-References: <20261121210013.130397-1-sj@kernel.org>
+        d=1e100.net; s=20260707; t=1795359222; x=1795964022;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RMgj1FiPWOfcno2Rg3daraUU1yDv6jWsUnElDClVHG0=;
+        b=n5pyhcqlW4TZYq3M6DguR8GW0iH+dEd3ICW++dbvV0XGrpBgyixvpzidBZldEU7Dhv
+         yzBJYJRESU5IqiyLcZiOJbWQzjqehxQF0LhTqf/zbjEueDOJak8FoH1DGh3zU6Q2Te2Z
+         RX4ZfXi128HTSqlbn57J5v095BOWkdyRDjfemkiO6bN7X1MiOh2tnVmulkz2W33Xc6H0
+         WsZUXdY8e4Hatk4K3fzfxoXXhh9fnP/yfjHzYISeuZd5Z2IOpzSWSni2F/YQKOnaKjCq
+         EutiT596NZh7R9TB6amrPrLPitAoo3CZl2O0Nw0tUVM4I5iZU83nBfn9HzXo1qxZVhpc
+         +lXA==
+X-Forwarded-Encrypted: i=1; AL+hErE5Z9Es/EMZYUoMdZKzFgQHKpmHQZWDDsJCHEzPQro0OeVR2jeOzeg58ik5zgBvPEghObxv1zVt8A==@kvack.org
+X-Gm-Message-State: APuU4Z+3pq8ZCOuaZ+hJDssEuLBi0/xHGftMkiCGF9bWXH/tHHTKVGTU
+	S7g7qmSuCxXTiFdb8dw2Sa6kTjW923DR5/0lVsjzr83HxAZPNq2xbWJ8
+X-Gm-Gg: AZFdTZdmEgCgO5O11MPIEhRmzt+VMVxETdiKp4BClwLZL9Ibp9PvLahcvSyQUsT6YnL
+	v1XLP5FlAIbHhTS4WtLdWyMkNh5xGVn0Wi6ZD9jz5ZTUZoaah0Bhlh4mDMm9lz520zi8xvsOmLu
+	uPhVYqUKDe+rAPwrvuVVj/6NiVq2FDPQ+oevdkqpQsYZb5+NGywf4Pc8aNsUIDPX9FmW2115CFC
+	Afq/9JlL5VuJBQrHlGbGLQ8JqdFA0pLvxP1kGrLoBjy/TTnTsbpi3UaJ3UL/8EmCl94BryHX7OB
+	5iKl+iyDMDqoiWbqpXnKWhKcJJF6XjF4NhFr3UQLzNiqTK5+gX4w37FfULQjBiCZ3Q4WGphVizL
+	Z6CgrhVPjG6sL0zeDQ3wrv7o5zP+oyKnk1N4HrC1gRIskOh4XrjTJs4ARhnJ4C+WyiOmJGFi1It
+	0GG1sE7umR+ZcC+/UqxlOcBGhIZSrKAbKZa9cPXQFMufydhbZb8kuIgbiJQhFEogjpECvmj8+Uz
+	JNhFtabp/vdsyJoVjIOUfUkPordzfFoOZaXosQnkmH93vlMpM8ecgQjE6XFGsXkLH3DvotKWSl2
+	74TBdxlAo57lkEyvRTuJhO620JEOBwxHMY+yC5w1yQIQzqpPiaI+qpH7JiUXKYsmtCe9unZ3EvA
+	Kh2gWbKtGYIogrkzobuAfZ1kectB6Za8w8dXcKUggb1VHbvohQOtd1p9Jl/hVkd7CS3Jffyc=
+X-Received: by 2002:a17:90b:3d4d:b0:3ab:36c4:b502 with SMTP id 98e67ed59e1d1-3b41c90329emr8542890a91.30.1795359222086;
+        Sun, 22 Nov 2026 06:53:42 -0800 (PST)
+Received: from [10.131.38.181] (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b75f2a4sm4545959a91.2.2026.11.22.06.53.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 06:53:41 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8118C140009
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/hmm: account for subpage offsets in device-private
+ PMDs
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Mon, 23 Nov 2026 01:45:21 +1100
+Message-Id: <179535872126.34.4789080961796247940.b4-reply@b4>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: airlied@gmail.com, apopple@nvidia.com, balbirs@nvidia.com, 
+ christian.koenig@amd.com, dri-devel@lists.freedesktop.org, 
+ Francois Dugast <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org, 
+ jgg@nvidia.com, jgg@ziepe.ca, leon@kernel.org, leonro@nvidia.com, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Matthew Brost <matthew.brost@intel.com>, mm-commits@vger.kernel.org, 
+ =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>, 
+ Patchwork <patchwork@emeril.freedesktop.org>, Shuah Khan <shuah@kernel.org>, 
+ SeongJae Park <sj@kernel.org>, thomas.hellstrom@linux.intel.com, 
+ Vlastimil Babka <vbabka@suse.cz>, ziy@nvidia.com
+In-Reply-To: <20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org>
+References: <179342234355.4.16705453209886955762@gmail.com>
+ <20261121160037.1a479f3c8b4e860bc23c106d@linux-foundation.org>
+ <36be0904-168d-4813-82ff-27ecced464e3@redhat.com>
+ <20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org>
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7706C1C0005
+X-Rspam-User:
+X-Stat-Signature: xuw89c8np4soqeamq679qusiq4fwy8b8
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: oe6fpmkhcaompkqist38s1hhx89j49i3
-X-Rspam-User:
-X-HE-Tag: 1795357830-667940
-X-HE-Meta: U2FsdGVkX1/JXKJtvnkahlMti5hMHekx33Pr2pN03+DRd0rvuUg71q8nMPO8G9U0jemKVz/t/ojgYCfxNmzz8EswnsSZmZqnbVZ8Gs15DkCZ8R9YcDCdxviLJXpttRENIomivCdESYBdaARGoY4uqXOJWKGVkgbLbCtvvERwptqarmmSqkqKRS9HtOWM6X5g88yH+xVkZN7XAwXSadD5cqSGWcIVThkCMUIU5bW+mcLcmqymCy7X5+4QhFjjs8Gn+GRcJqEPxWNmvJhPehj9XT0h/mL0w7bzslVnBAb3NiJd/HiHjkmRAciKQ6DKyqSUTlnODLNntQpeExOBLzh15UKSxLA9kQRJD/BiRE1QYKzzw1dHV9Evww3qCgbQnBVheh+oGfHwGppYUpGXg3cXVtEakVN9asp0GIUl7+9OrsyBD9WmNja0zFccfFxko/sWd++kxZ+X2OSL92dxSSjQtvCqZK/ZlMJobWRjY47OBGnSE0WfkZhyezQFO0riZwO0dcoqq6WXprnbhUVjqlVhZSiVuHRgBQAEzGUgpVfdJNz1XLMcFip+y+agS5YLBLT8BcbsndQ/D8IpzPihtQYTtgLw11Aq2/0ET62oigyKH5ELsOYMm9pNHnJPuZsTxrrdw38uC3slFO9tG57LK+F6X+andrvRkab85V3X1ka8xClgfVJdEiAAHPvBEA3tgxPC1tP/kqHe64eoEkpNMFG2TD+9iX2KUTo6tXeHAqyI+NxfDjywkohhB9sATx+keNapHPdLz1bNLvxW0zy//jQPnn73qNh0JCG8GEHGIP73ioXa1ISpRTx3knOUdAdGE9C4meG2xhke9rZpI+3cfZ70i34AjSurFVR8Xb8ml4mgRL1trsqAPYHvHcy54GABq36a2sPkrzNuwj15E3wWGkSNG5RlyqvCnjD6YSFyxCBWXbtpVcIl/xDzdKl/ZSdBtK3mQwt5toLKMwTwSAvqzNH
- 30h4MKyX
- kOwUWLJJyDeJwTCTaBX09Mx4nHOA2iM9ViLeBP4UVlX4QDW6/GdGaFK6IwSOcEEg+VftouDdvKPBpc0x6sWgdu/C0zGDC1jPfOg1QaXNHbt08HHfcUd23PFfZQ9aKQxVooQpN6ytyYCwRXpQ1Jr2bsbUyoagX5WWj/DFtDos/6tYyg36mkMsxhV7d7NSD5rW29/QtRIrT+PgZbEXmSs9+D4j3RknGi/4kE9CVPgDbbSLez9s4x3hA3o7+52Vm5FhGWhzvSnuiSCG+vLtag/G2BCLn2ENqHJ/42UwBRC7EpYuREQCjBc1dix0Z2YOPFxuaidN6ifcWTgKMkXClme1PTqKVY53vugrLMKHTgp8K31koFx0CVDJmRgCif3IsUr8fGl1NRwZL3ZKGbeItlCk3SjMab4+W4OOUSF+xVC+1Y+tRYX/8taExrNW00rvlIySF1NosJM/OHrBCbf2FODfyXD+61KI3vSJQCrGVK2Okbl0dTM3AplSPj3pIJsef8QF0fwcpZiYUXbeBW+ePs6ctM+EE/lsxxnMqoKbRH6u1b80IUJEsQHLIqpdCbOsuMJrkMtXMWfgqqs6dDSQd7jO/QpKk8bzinj+/MTrM+mShjdDmWAPz371jKVGXSfntAPg0w+RNAJUDOk4PsBJbti+egOjOpcRY6+SPDOs7
+X-HE-Tag: 1795359223-556184
+X-HE-Meta: U2FsdGVkX19TmuvUMTdzOiSk20T7DokdylVzzhEpxYYZUklIjOnhLL+s6YuB26rLVWdsjuFF1jnI6PjNvpmQUcJtneqWjZL0MCzjy8iBHMalDotvaNHipSTuOMM25rciFJKfAfZqPIudza8mmuPpw8dYm8YdiYm2k3ieoGLLdehWbu9z2W6Voqm0NtcUmeg6qk7w06gq2sWIFpJ9Ika8gtUlIumJIZ3Keuh/O868fDdYKrGpuFvpdYr7Vv5IkMJfkNlRvhSwFEY4JIAk/346LR4v2FCM1uVTq8EESttTTMGsoRDzvY0/43C17U6g2DyRQ9C6FdShoy7XI/+8GiieoAn2HTOwzf7uQXftSDMKU8gg8ieiK2RzkPMQyMsfMcq7dZLBBIpKrGHPX6zfBAiOZdxRWedMmHYtiK8lFUImiEkCBMVb5rr6peByI4JRjDaYEecmHUam8qrtV2OqirOXOBT1hqCw+CKmTFVaBMlEDNXQhKpXGHYxMrGlg7GazuieE2tKnzXP0Q0qcBIwGeuti2xdcPaXk/u4ZAZoqJ6CnrjRDfqToZGXF4JRR/+LgdjSRoUYDq40CyQvNNgx/+HjGeGSt+6QYWfxaZdn7J+5IATkj7xeeOwHIMNGPFgmQZIlxzIOTlUrp/vvNwRODLqg31gvSryKblK1oqfjMX1+n+xAE3KsPlu8Re2CUEnSqUsmL04LlpmssGHg8Qdmlf1RIG8MXVU2teB/PnkgENLH9WWZjQLPeVI7AlHgPPQ0l1VLRfPjJ/oteiTcC0ZLXylgLRn+N4av2TNlBwrSGUDxZL5oisk9O8CLjZQyAKJwQZp73NatlvhNzpOtWyXUjX+dhU83cHFa8qB+H+Z409x1qNcimL44JDrs8EHYKRcKfM5222doTQYlnKgnfDLO+b9QDObMK/jR31yP44bnSThGcuTLG/duJ/1U1LEq5e20ugYBmb9Wpje+Krn7lVa5vYz
+ +KPIyCoD
+ CGc3EnKHATrFln32nHZIn/zEF5YAwz8y5PtY9g2bBUt6ULk/aZ8EQCbWDthc/vg4rcckl8vfBoY4iiV0I7uQKzLXfx2h8hoh6LOBnr4yZJ4jVhSkqbdjh9yeziBn+93a2jiwyO8xZqYXrCCWTm4QJXmOxRuEU8m9Kgod0980LYat0BGBK1vjqGXK5wlysI+hh/6PyPggzOlwLlqh4+7TgUaj5AJrTaFM+DmfFhKjjAgsI9J4ahQ14+joguViajb+/8Rxg8I7a+6QVAu+rQ4mqqmzXbH+cVu3NbX2Wf3scwbEreqt+mDfMHkl8FEfHYqC9BoZTIk6QqsQNEJdfXDIhoMCbzTnto0N9vIK8J8DrGeKNo2RO21l31CZVUc3TDSLmuSMa4+4iN1x7AxLjomp2HarE/k+RaXUKHZ7BrkhJY/HkmQbVVrr8fPG2briCzcSB64zkir8juAlXNWnZOMaZXHdyOLtH4qSgcJkNlCHP67etMGjcH8ovEa86mCDDOhApXAxaQhyLRpm8niyVnq1moLHcmI07rmsT15AHBvmie64Q5fpB3ACO4TgJqFMJstjAMy4YAdUIGIhUyot2ReKpNukoG0fvY9WhupCyV3ZWziSbPTHzydLzCWBqQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,20 +139,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 21 Nov 2026 12:59:44 -0800 SJ Park <sj@kernel.org> wrote:
+Hi Andrew,
 
-> Build a system for letting DAMON-external entities report their data
-> attribute findings to DAMON.  Let users report their data attribute
-> findings to DAMON using the report system.
+On Sun, 22 Nov 2026 01:52:46 -0800 Andrew Morton wrote:
 
-Hi SJ,
+> Store the corresponding RAM backing page instead.
 
-I'm reviewing the series and setting up the tests. I'm also working on
-follow-up test patches for the report queue and its sysfs interface.
+This avoids the oops on the first read through the second descriptor,
+but leaves a stale backing page pointer after CPU faultback.
 
-My schedule may be a bit tight this week, but I'll follow up here as
-soon as I find any issues.
+Since the mirror XArray entries don't take a page reference, they rely
+on invalidation.  When the CPU later faults the page back to RAM,
+dmirror_interval_invalidate() skips MMU_NOTIFY_MIGRATE for the same
+mdevice, and dmirror_devmem_fault_alloc_and_copy() only clears the
+migrating descriptor's entry before the backing folio is freed.  The
+second descriptor still points to that freed backing page.
+
+Reading the same page again through the second descriptor in QEMU
+triggers a KASAN use-after-free in dmirror_do_read(), and the read
+returns the stale data instead of what the CPU wrote.
+
+The second descriptor's entry probably needs to be invalidated before
+the backing page is freed, and it'd be nice to cover a second read
+after faultback in the selftest too.
 
 Thanks,
-Lian
+Aveline Noir
 
