@@ -1,101 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE30606A335
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6691606A335
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=BTAmTlEP
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HpTsg0vs
 Received: by kanga.kvack.org (Postfix)
-	id DC2D76B00EF; Sun, 22 Nov 2026 02:30:11 -0500 (EST)
+	id EFD976B05B1; Sun, 22 Nov 2026 02:30:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D73A96B05B0; Sun, 22 Nov 2026 02:30:11 -0500 (EST)
+	id ED4EE6B05B2; Sun, 22 Nov 2026 02:30:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C62606B05B1; Sun, 22 Nov 2026 02:30:11 -0500 (EST)
+	id DA0BD6B05B3; Sun, 22 Nov 2026 02:30:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3DE06B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:30:11 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 47DA71A05B3
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:30:11 +0000 (UTC)
-X-FDA: 85461931422.02.2828894
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 56AEA4000C
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:30:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BTAmTlEP;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B3CA46B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:30:42 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41A36A067B
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:30:42 +0000 (UTC)
+X-FDA: 85461932724.09.258BBF6
+Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 10BA740006
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:30:39 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HpTsg0vs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795332609;
-	b=JhOeC6X87fXq9WZfLTU6WtZ0p8vesy23YS8D3hT5dnBASlfQ/DFeXZSXJm4DV2ow3diJeS
-	fjAk7wPmzGNlAtSLgp2odu/Cjfo/bQVE8mZhiavcgHbfzqq8VPPwlwMgBrDlJP5ixvMfQm
-	y4/rjPdq6lQVsPccgayLkHiD/STRLOk=
+	t=1795332640;
+	b=hgDBDMqZ3gj0wqxj0UIO29JHusDTPDh7fPIMNY/a4vM0Vn44Fh8+YicMIeLb9SjozEGc8N
+	xck1vo2nFzThaVaUos8M/m0xzjf30vdkfejNYGqXAYRch31S4Xx9VsdFPAHTpPPHtq5Kn0
+	fjdy98bk+kPOC4SvCLLUpIHp29kSHIs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795332609;
+	s=arc-20220608; t=1795332640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uXWNYjPxX6wVtAP9DzJE75Av2qUwSEdpN8RkrP8QOpw=;
-	b=toBnZLky9F1lShfzDSyxEyDnWL9U3Fkt7lepEqpN36gBqSqWUyw7q4HVf3kR/wJ25GKeTj
-	tkCQr1tRRf7qsnNZ9+CoeYjPcbLBoHHF7PqNPnA6oe9AZl4TJv96lL9+Q6VrWBpwh1LOxo
-	7wPnMflbzyG5Gx1J77ixIVDH0amEOYY=
+	bh=H02gl3A8lED/orev+VVlUTCHLPwpp1eOdDDA4V8ytIA=;
+	b=f7PasNvaIZiWOWrRrqtzbzPOEf+MIA43o1jUGC74CEDIC2jyfkarZMK6vI5d9Lo8EBzG2c
+	O5BWYx7qFqUEeriQ07yNEWjxSBSVQxVJfLnKuAVo1Qvoa8wCK67hagWcGoK/oFx801XAFI
+	Hrj622knPrQ0mi0HTD3myWvS9Lr13XI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BTAmTlEP;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B17D40760;
-	Sun, 22 Nov 2026 07:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB921F000C4;
-	Sun, 22 Nov 2026 07:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795332607;
-	bh=uXWNYjPxX6wVtAP9DzJE75Av2qUwSEdpN8RkrP8QOpw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BTAmTlEPmIlgFRIx7pww1JhEV/sRwv8Ng2+2iKg4j6PzgRMqGv8JHOaw42mKXj1PQ
-	 sM7+AGtDcm8o9O7CfamNPvuyk5C5YNACkYV+YjlZkzN0zYEwAYTR+9zcTmLWp3Dv7L
-	 s+bN1UUxXk1Y7l9a/bXUa2cijblzhbqciIoFoE7s=
-Date: Sat, 21 Nov 2026 23:30:06 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Shivank Garg <shivankg@amd.com>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Borislav Petkov
- <bp@alien8.de>, Ankur Arora <ankur.a.arora@oracle.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, "Thomas Gleixner" <tglx@kernel.org>, Bharata
- B Rao <bharata@amd.com>, "Hrushikesh Salunke" <hsalunke@amd.com>, Ingo
- Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>, David Laight
- <david.laight.linux@gmail.com>, David Rientjes <rientjes@google.com>, Linus
- Torvalds <torvalds@linuxfoundation.org>, "Teja Vojjala"
- <tejavojjala@google.com>, Huan Nguyen <nhuhuan@google.com>, "Pedro Falcato"
- <pfalcato@suse.de>, Peter Zijlstra <peterz@infradead.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v3] mm: introduce copy_mc_highpages() and batch copy in
- folio_mc_copy()
-Message-Id: <20261121233006.bc03ca9b7889c93a482791aa@linux-foundation.org>
-In-Reply-To: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
-References: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HpTsg0vs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=NLC7oANZwCfL7depjHfIzJ4jloTo6BAzdIgGpvntEFI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795332638; v=1; x=1795937438;
+ b=HpTsg0vskqQxsfGCwnJb31GRPaj1j07wdTUu0g+P5JpBon6ebxMWHn69SCrjjvvccIAxv6uk
+ EPGyaVeJeS1yCOFOubeJhafrGVczqk2jFtsW4Zl5OO6iEaa3zssaHLaixwUuUu0RCAc2OR8iQ0S
+ bHHZdsDLF6vDHEwK7gqJFpgw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b98bde626d255cef;
+	Sun, 22 Nov 2026 07:30:38 +0000
+X-Mizu-Trace-ID: b98bde626d255cef
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <3af03366-784b-48bb-a807-9ccea92e39ca@linux.dev>
+Date: Sun, 22 Nov 2026 15:30:25 +0800
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 04/17] mm/memcg: add folio-based lruvec live helper
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
+ Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>,
+ Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+ SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
+ Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Chen Ridong <chenridong@xiaomi.com>,
+ Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>,
+ Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh
+ <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>,
+ Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>,
+ Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ damon@lists.linux.dev, linux-doc@vger.kernel.org
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
+ <20261119-mglru-fg-v5-4-9eee2fe97a2d@tencent.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20261119-mglru-fg-v5-4-9eee2fe97a2d@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User:
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 56AEA4000C
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 10BA740006
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 3tafebpftf7cjoobiaxeb89aty4d7q1u
-X-HE-Tag: 1795332609-290577
-X-HE-Meta: U2FsdGVkX1/dwLgiRRFLSvntS8zPW4wGn2aQS3GtMhaTbYtvPw/jLOMaWuu7obT8MKTDqRd8uhrO0MojH0l8gtAu31k9LhVO2rOdNm9HRDY7d0lKQdqKPDv6S3fs8J4WFBEJS4XF0gOoVNMcCy327jzrmge9enlioIsg8mLqyeHQFgVOS/luVJnUsuzbz6yIalTzBgr2ff87sajd4Jxxe5brRtoAAe2jETAu2NbZSV/xkYlEL0grF3+UvROgLeeYbXkItnrEmt6Kcf19otBnhUJGJj4DpToaX9vLbdNGS2CDK0EWAGyeqTyQqV4+TcJeeYe6FvtZuzZgM6MEVYFL2NXQUcFYvu7lquCTEpwOx/PMP5JLxeMAg/QqSL9nkmjVCudhHOzze8qotBtZVXqFcFHIhB+ARlRuP6KqwqOeD4jCpixBmKphNf4H8MnXcjg3mTtHGfO9Bczg18rkbpf7JhGNsek+f3WZ2QmRXkJA+X3i9Im8BoxbS8TqzK1sIZTEHLez/DH66G3znh8ZghEKevAd8T/v8N4Y+Xu0hcn14MzuKtsE9JLNcJti+Bvuz7f2uu4O5MLMVx3TVmliPx4yxDJarlb6ClffZqXOGxsYsnXC3OhbxpoxAbxOjcr85FEjmgqAx1LRy7uaDIDA8o6WMP9GIubQhwLajjbNV1ZeWw5u4+RPpc/i5Hv5t2hbW5fNVWm7Gm8am5kOB7kujaBXF+mx1QjueYjfQylB7m190KL79E71WXwgj5UbVe0XKOhLYAjGA1RKGubTs/KgFYYDCs6k+UVxYxKhMBtdrOLEZURsrFzWrOin3lURcFWwC0H6Nti+ryQHZM35kEO61a/Dif9RoUz/qGbDLsB1WRHG67u+XmE6m/OpWAkqOjbIT04Gz3TcTFCtdSZI9Sj/xTBajZGNnUFiN3iHhUhmAh2Vs5QUgCWduTm4S+vQh1vcEOA8Vf53PXWrBal7LkYsWEC
- +h56lcUN
- qb4ef6wrV9ietHBQEJq6nNaFgEsRt6aRQJr9jlmr23Rn3Bk37n2bQWW9hGjrvzjw1KdrtaA/3Yvw7diKmV/rN+FAnSMOKK9A+iO0izVAzRclgFVrqpaYuImH1VPgXxe8LUQck2pitBVbGu2E+rQDM29WoU+PwCzlgQtTwdhIsuinkHn+dNIahmXJFzKGe9V21Vn/7SpJPH7R8B8d1kcrh/n9oYL0siPvUIsi6PSELX96y80HfmWV0RQdCqc6M+21SpRodDdzX4zgTLOURnpv67v8Wr0qUIeqDsuiCEreTkPf9ZJ/RtpDKnbL8oHE39SVK9FT1YesO6udRbXcaeQ3wHcaJ0TkWvZ1lFx5dAHSiuH7zW3H8VGC48l0WYcni5KYkr9DiaXypXSnwoEDbGvEHEaNDd5lH9puhk+WEtL/Sd0XAkxzm43rvM0yfH+0/TCJbE2igbK1iHfRxbgveZV8dkidJ7cK0DhxHDVGi89RTAwS16Ac5qdJvhhGQziyhcXMH0F3PeM7V+dUSfLnh4vdDPpeux5iLgM7M5KezWTNGpsGqID63nzODMVKr1U3zanGfS+fislD9ban0tOI=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: yf1koxw9c88p1o4wxxa3dx53fmzdzut7
+X-HE-Tag: 1795332639-442176
+X-HE-Meta: U2FsdGVkX1/JyZYW0kqnxfCep/HMCoY1pvKEIgN8PaaM8TJhQw5gTSzZwpzgO9IAbkom56vd3Ff3K19TIZtKs+qSJhFQOe9v3agBiHfSjeycfeA0ngH26qDBjI95dV8+v4A6YT02+EYxcJZjgISrhOqUdM6evt0RA8d51RzBXzKnEc0cEpdCsTDvPndroqVw9pzhdJTkyVLfdWyRDG0ViAbArOZxEZ/XA1Uew/OgTwABplHm59z+97Lp8RoET5eAwgP8uuA5M5kBHlfwg5al4mmToDXfLMQwmHsaezsuPaeYgpebc7XhwO8RnTv+dphkd6LP3cVd0V2LT76CV/Vx7JyhSIIC6PkiUoCzBcHHqN0qtGZ68NcbfCj2dSk2CVtbMWswH7leJ0D7yE2DnSA+s2FOflYKgwXfQh5szFt8AQQRZo83tvPFKIR40Kf+nUX6tElSFM7yroj71mAaw6siHzC2vF5JohSqKVI7BWtih58fWDS0T8RsLR4HEIYSREGoX+UT6nZkVuX0rm+bAc6dtVGZ9Jw0AfZOO+hn8yHXaSTxhPkNYZ4rvIahTsEsuD/2Ks4rf8a0BlxYwt62MxV4c1VI+GYQR0IxIOR3pxirGjnBSSBGyKaaqkbEtRiynuRFxQjt9jbJk5qY1afX9nQL8s9DWdK4MSl9KfIu5iKbIbHt8zUxaHYI2b4bBDUMP2BETQi6vESsUPOgTlcf9RRaXYv1RKb3fQiU2PZtFlxo6fqC84N0PrAbyuaTvOw905M7dVM7XG/BfTifwl1MAmXfvzFzJqwukQwvI0Ssc5s7vz6G+bxC18d1+Foi258iIi1ZTEHhVYSQoD+ICQWzDhWCggA1cdeOGMDXr2eCZEg2OJIp9gqeUtNuVZj+/uRbYv2zy39CrrNyfdmdXxZzNnTLGCH+oQW2D82pg0kJKVYgprIoxjYmpRiZ6dY41Tp73+cCP6ed+lDM1GHOhVK7QPf
+ NWWR8FSk
+ KAWKUOCu6vc3IRvCXf7hYyIc3s+2Jx7LVIQZGzWOzVqU3JSDyh7PiP0zg5ZMqq8red9YniBJhRRaWAGMij6aBYiC10lA2WQ1Z7bP18OmDIaa3qrKmlfFK04DsrPMmvpMoS2t20XuPjcK1TxORs/un+96BGo3YyX6EIlvvOkqAYxEdytk2dSpCSrOR93t8/eczRxAv9Ajqg1Gca7gSS8bBT1NmgKo+jUCPDg3Q/nzmRbHWiiSGafyCkHqgj3dZJS8vf9kDVynjpcsftayQgy1bVAKC+p7Paqy85hPLTMFawPxEujqa1aWiK3lANmGtgxIHgzseiI6DJ/JXOtKQT0XhbD+j72G0KHbAcqCh4CR3YF4rLLqNaFfC81aVPw5i7lfX9GU3r/2+usnWPyQ6EcNoYOn80zRQ8juOHEKItXvrky1ftVRBQfWTXhphejotd2WDNQVEKyKL4rvJgkhbGhrYsnepXDWXoA3hHbCRoDF46b6T7NdOs6LPpR1wXiLmlF1lF6MFaKnNXTXqIawjRUIAKt0r6cqgVSX9tXIGRTzfiJGlatBZr3Vz9eYX5NJtnUokE6M0UuSQ1oBxu3pxjz5CMrDvAVGDuqj1EE9/PZiJvf/jv0P7BNPUwLotGb5ZJOQduZqWoQVmNkxOICw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,58 +120,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 17:09:21 +0000 Shivank Garg <shivankg@amd.com> wrote:
 
-> folio_mc_copy() copies a folio one page at a time with copy_mc_highpage(),
-> so a 2MB folio makes 512 separate copy_mc_to_kernel() calls. Each page
-> pays the startup cost of the string instruction ("REP; MOVSB" on x86
-> CPUs with ERMS) plus a cond_resched().
-> 
-> Introduce copy_mc_highpages(), the page range variant of
-> copy_mc_highpage(). When copy_mc_to_kernel() is available and the pages
-> are in the linear map, copy the whole range with a single
-> copy_mc_to_kernel() call, so the CPU can optimize for the larger extent.
-> Otherwise, fall back to copy_mc_highpage() one page at a time.
-> 
-> On a machine check, queue the poisoned source page for memory_failure(),
-> as copy_mc_highpage() does, and return -EHWPOISON, as folio_mc_copy()
-> does today.
-> 
-> copy_mc_to_kernel() cannot reschedule, so only take the single-call path
-> when CONFIG_PREEMPTION is set and the copy can be preempted. Since commit
-> 7dadeaa6e851 ("sched: Further restrict the preemption modes"), x86 and
-> powerpc, the only architectures that select ARCH_HAS_COPY_MC, only offer
-> the full, lazy and RT preemption models, also with PREEMPT_DYNAMIC, so
-> they always take this path. The per-page fallback calls cond_resched()
-> before each page, as clear_contig_highpages() does. Other architectures
-> keep copying one page at a time.
-> 
-> Switch folio_mc_copy() to copy the whole folio with copy_mc_highpages().
 
-OK.
+On 11/19/26 5:03 AM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Add a helper that resolves a live lruvec for a folio under RCU
+> without taking the lruvec lock.  It takes a folio directly so the
+> lruvec lookup happens inside the RCU read-side critical section,
+> which a lruvec-based interface cannot guarantee.  The first user is
+> the lockless folio_inc_lru_refs() path later in the series.
+> 
+> Factor the ancestor walk out of lruvec_live_lock_irq() into
+> __lruvec_get_live(), so that both entry points share it, and spell
+> out why the walk is enough while only the RCU read lock is held:
+> reparenting of a memcg that starts dying waits for a grace period,
+> so it cannot race with the caller until the lock is released.
 
+Right, that's the ordering: CSS_DYING is set before the reparenting in
+the RCU work, so testing for a dying memcg under `rcu_read_lock()` fully
+covers the race.
+
+> 
+> Move memcg_is_dying() up in memcontrol.h, next to the other memcg state
+> predicates, and use it for the walk rather than repeating the open coded
+> css_is_dying() test a few definitions away from where it is explained.
+> 
+> No functional change for existing callers.
+> 
+> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
-> On a Zen 6 system with CXL memory, move_pages() gets ~1.4x faster for
-> 2MB THPs and up to ~2.8x faster for 1GB hugetlb pages (numbers below).
-> When demoting to CXL, kswapd uses ~31% less CPU per GB demoted.
+>   include/linux/memcontrol.h | 71 ++++++++++++++++++++++++++++++++++++----------
+>   1 file changed, 56 insertions(+), 15 deletions(-)
+> 
 
-But that's the most important part!  It's the whole point of the patch!
-Yet here it is below the ---, which means "throw this away".  It
-should be the first paragraph, in all caps.
+LGTM, so:
 
-<edit edit fixed>
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
-OK, thanks, queued,
+Thanks,
+Qi
 
-nit: does it really need cond_resched()?  That's not appropriate for
-current mainline kernels.  I guess "yes", because this patch looks like
-something which downstream people will eagerly backport into older
-kernels, even though we didn't cc:stable.
-
-And we care about downstream people.  Globally: "Roughly 60% are on 6.x
-and 30% are on 5.x (with the remaining ~10% split between 7.x and 4.x
-or older)".
-
-I'll take a look at that Sashiko thing.
 
 
