@@ -1,88 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA7B606A683
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091AB606A331
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i8SRVkQV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lLR/wxyX
 Received: by kanga.kvack.org (Postfix)
-	id AF8FC6B05B8; Sat, 21 Nov 2026 21:13:55 -0500 (EST)
+	id 1D1CD6B05BA; Sat, 21 Nov 2026 21:14:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD1106B05B9; Sat, 21 Nov 2026 21:13:55 -0500 (EST)
+	id 1A97C6B05BB; Sat, 21 Nov 2026 21:14:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0D826B05BA; Sat, 21 Nov 2026 21:13:55 -0500 (EST)
+	id 0E6476B05BC; Sat, 21 Nov 2026 21:14:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D8256B05B8
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:13:55 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E87580616
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:55 +0000 (UTC)
-X-FDA: 85461134430.16.00DD65A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 88DAC1C0004
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8SRVkQV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D864A6B05BA
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:14:00 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E9A440639
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:14:00 +0000 (UTC)
+X-FDA: 85461134640.22.65B5F66
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EA6AC100005
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lLR/wxyX";
+	spf=pass (imf05.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795313633;
-	b=jjmoNhj5mYBowGUYTXe0NLNGSLWLtLQMP6+L0xfOLP8KIirrxtnQvOUXoN31XT8YYW3o+N
-	RZR2xXuEleRJ2i3hzQuJV3+zaJBpk4rsDycaEwo0QKj3kacPpone4eK114283vhDx5+iCn
-	SHuTesPHchfzuz0sfHE7DoMWGWipLYc=
+	t=1795313639;
+	b=llLjTLRmG8o72vbKYwDsIx/wpzSqHZ3SY2xX9FUaNzw0AfxSC3lIJ9rnsejy+SAmwGtiiB
+	NgUusFZP9kjr3FAzxyEyg7o17ET78MILr9LB7rM8bcyhltKkwAxQhkMmcRwx1V0I/Ypvud
+	VPfnbFStUO4phJ1mnsr6+KIyPjQqxhs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795313633;
+	s=arc-20220608; t=1795313639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9QITS/QYva23ozmEaxii1esTMO7DrH16wtmaozkU9sY=;
-	b=PAPl7C3Uq5j3+0CaoDW9iCg10Nm9bbll8vcMpXIHoG6aM3Z+Pda7PpM1c7ivAZhC/UU8iC
-	iPdvgI7V9pnKjukyUyxKJnEOf0vxU+GBJAZ7rnnyT9jfyhpdhiCEVysk66LjOHUKgKDvod
-	C0V7WWfPte1RkfGm9yuDmCokgDNNlvs=
+	bh=wQ82POZlS7r2+ERP/+zIeUXyz4CXRnCCzvZCXGyfWyE=;
+	b=79H1BwaF8fhLqhcm8ZyZLzDIi6RpD/IJGVozWyC9dxSAlSAmZiGQADqO+kL8xhq3VBRE66
+	TDteEUrH0ALNF1kLrQq/wNg5tHIVsNa/Wywjdm6h5f/evRMiYY2/MDX/BFIF7dBWJN+bnL
+	E4mQUM1k4HZ4rPk6/Bl8mrHeifkvswE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8SRVkQV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lLR/wxyX";
+	spf=pass (imf05.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E53EF45968;
-	Sun, 22 Nov 2026 02:13:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6314E1F008B2;
-	Sun, 22 Nov 2026 02:13:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 73A4F6137D;
+	Sun, 22 Nov 2026 02:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD871F000C6;
+	Sun, 22 Nov 2026 02:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795313632;
-	bh=9QITS/QYva23ozmEaxii1esTMO7DrH16wtmaozkU9sY=;
+	s=k20260515; t=1795313638;
+	bh=wQ82POZlS7r2+ERP/+zIeUXyz4CXRnCCzvZCXGyfWyE=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=i8SRVkQVfMVUSOaeRqW/22HFBTQge0lZRo7DxOFvUpD9ypGTq29MRAjHTk6SHaO89
-	 u6EN/oWjsUlxlOanYJ9itHDIlKZ5neQql1kEbhKM2sTHIM6+d/j2Nz0pU22v4W5rcD
-	 dhmBZuK0OxEL6Y29d3M28n8tCwoGAx4AmH9KulxtBm1TMFDESvMWXeDgVmShNOY4hU
-	 DCL37N7yglLu0K3JedUaPAHu2eihppaY6yfB1mP+5nlrj3yhBTjRycd3H7d9JGAS9Y
-	 qNEkFhW7PWH6LDeM95M0kf0klzOjG2Tb460O6p+++5cQ3Vg0mGhjFnJzxLIv4+sZaC
-	 XCLLsPM0e3Wzg==
-Content-Type: multipart/mixed; boundary="===============0836080936566238576=="
+	b=lLR/wxyXLGgBm1hR7Rrr5zEpQdI+izxUfnDTQ9baVoWt9TYCTtTbFiXv1MaR8EQRu
+	 XBilrRTHsGZrtSXWdnNCEIwLa1KjPuOkPzzrcwmCwAthqjw4ANEYkmS1STf/vbnEAX
+	 tBEAguEBMKLv5hUFQ671CrPULalwAiMoh1EWC+r05Ya03pcXY4s9MyAfAtG5YVgpyG
+	 6Mjro/EF5MKbBx5Mmea5cPavRnl7GffrOrX/tLB9g2Kkq4Br4FUfSiv/3GZxFcOyKa
+	 xc5+OxbErdGOXYf+vxfkFbmsdAB9X3Xv9+lVV6GwPoooqUmueRI9C2J/7IfnLjIfSr
+	 9ldrkm365H49Q==
+Content-Type: multipart/mixed; boundary="===============6528941915844312338=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <fac042dcb631adc09d227a590d8790c36bf5aa71a7f047f7c07feef2cf8abc93@mail.kernel.org>
-In-Reply-To: <20261122011809.2667684-3-jarkko@kernel.org>
-References: <20261122011809.2667684-3-jarkko@kernel.org>
-Subject: Re: [RFC PATCH v6 02/26] userns: Add userns_set_idmap() system call
+Message-Id: <49ce5ae40b28e104e8fcafaddf26c5825c243908ad6a27003e7eeb82b85a0009@mail.kernel.org>
+In-Reply-To: <20261122011809.2667684-6-jarkko@kernel.org>
+References: <20261122011809.2667684-6-jarkko@kernel.org>
+Subject: Re: [RFC PATCH v6 05/26] mount: Enforce mount_too_revealing() for foreign mntns
 From: bot+bpf-ci@kernel.org
 To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
 Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun, 22 Nov 2026 02:13:49 +0000 (UTC)
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+Date: Sun, 22 Nov 2026 02:13:54 +0000 (UTC)
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 88DAC1C0004
-X-Stat-Signature: o5ecuj77sw3rfbugw9sbbpwt37xodnpd
-X-HE-Tag: 1795313633-346987
-X-HE-Meta: U2FsdGVkX1/DVSIOfA8koN+jIqdaRuKbcX0HM66xOMkWqrsGgq/h3HAg6awqQSTrF6ixX+Tzb0/B3tMWrcDmYofFj4YpUJtXzNTwLX4Kcp6kh16t6x51d95D1RJcoyZIx3xHgiQxQosKiDKOaS5eAPy8L6vxVBHOKunCjBVtokoaMo3LQQXcSUoIuVzr/c7keQ+99wCuDKDMuFze34PmmOn/rU03n8DKLYCYVt0yS72c0VIFUylVM1AdNZuWuEnc6fWNpCFrao3OaT62Gai4dHMlH3uQ533MCn6f6oncMPNfvRvG1TXkv15xsBGxVwquRlV14LsCF/5PUaAQgNonMMYU/JXiSiJ3+R0/+XyfulcSwHfiyXvbPJvs408QaftPyML7j/by2DH3Zw0Qfovvgu7yFHmfm7YtHuM29Cqcm6M57KqfxmEkT2X3w2yVi0tEND8VUBIpH/x/73VsR0K4WOhFCx9NuH2ULCbXuYDY3AGGURolI86Gt75o3bO0wDfhiF+81FsZMiSs4bc6x16ZYfMdMp7bVMOVDXhmzpeWf1BZDhas85CUOzqtT6YMDckK/RmD4l1H9IDYxYl/ncXHxBn37UJhOxxDwuQcED22xCq01N/bHn2uP0/QTpwcPe8unCi13xsCd0HLF6tNc1CQLh408LvcjfTDjsI88QaESXoJw19yMpv46fd38341zp7Co1b5dI0XYunj5/AdjEz5Flyq+OjBWSkHgi5/VvfwdKxRiPgxPG3bfztYNAxKADv+Xv3h/mG0XWXccNVyTDdii5sAkhBT4yN2rMDTr11r72X40B9dOtrAji554dlB8+TEWPH9eBz9PU3kuPN7mxOT9kyV0O6zVfMN1oXhF1RGxYgQ7QTXgWQolP/UlvJtvvJuT32rTVgmIXCRHyg/YDILGFMTn/VUC2b+yjq/CHgIYMUaIV+bCqSdpDqpEm2vXn8VQDtXXCxNXuMoAbXlD9C
- 1ss9xVk4
- cUesfAqstKnqt18c3KDEJfwsO/kx12huS+ZJZdY/lcJd9l3+tRRVQPA/t+bUZ2i/sxBb/j3xWRvc/REPh34DpV6DRioSCc/VMFV/J2Zr/LA+lbh++iC1D1wM+i/w1l9g1z8rlYI0X6XFuxAi1QzuY7IBtirZyDMdW6D33yn/9dYqUugYTpKQdV7Hjsz6eE/qDD/pVBV3Uquk63s2FuKqVeFDZqAi56VeaSCIGOz3bJ6/GQNenoJx0J9xUpb1Lb46ANWpElVwKpaxHOR3l2QauNxR3Rn7B/eN2FRSJwgCgoOuge+/Xu15BDJqRa7ujY1VK9uWUsl97VdSvZNGyvXlHZtn+Iib70vK62S89Bl1YfobpOREKxN4T4WMYCbwWzVnMzWjQpTWLsB74IjCjmTowMXmNDqemL1Ck5FTa570ZYRExrWL69lWlfCkxV1UXPTtoOUlnqY7Y2Ad40zwfwGXlhysMlUs1EScOV6WqwYSf+/g4hbAm2fvG0xjZCw8TygyOG1+G+NmsUZixpCFOjCDiV3Rz7+5eVl2Jw3l66wbF7mqSLgJdf8r0N3cqVpviOiu7X3G4DGr0qzIEyji3ElpIPFN3yHoHjJkO8gwZumFZd4gVnQgmOZmBmzCO3KwCWiRYc1zaQRX+LOz2UArofWU214Sh9SOuGJ7aEZlJQieCIPnNGOcV9es6NmIO20Gborm+pgCGyCgIlbn1cTwVE7PSS2vdXUjLpPb4AHAh
+X-Rspamd-Queue-Id: EA6AC100005
+X-Stat-Signature: adrnaeffxoiwnnc9g57ezuzmabjq576f
+X-Rspam-User:
+X-HE-Tag: 1795313638-194739
+X-HE-Meta: U2FsdGVkX18vIuSx70BHVbAlyI9vi4laEaqCErNdLbe/wQ1MgJGbUONG1bM0XSOF0OAl85FNCLwt7fT0MlToK5Rrsd6BgfjdjBP5XoZulo+L07u0R+V0L1sAfVugxZbStp08h1sGI0Dpxsdl5aa9QRiw8ATYIaxUnMdSKxd14dEzRIBe/uO5nqUTzbX6l5wiiIkCILbGTswFD1WQEV7KWH2VSYqAqFx2tSg4xSmjHyGnAY0qnzGSK+NrrLXRcidMxRAZ+VV96+Io1A3kyXfCJAjyM+k/RHPu+miJzSMwSPWY8OJTPxVdpwciMmCFsuM2UXN3naw/C6fDecGwsh59Ou7O6Y5qM/r3CwpIEZpcOTWXP5lZyfZOatCxIsgTuwqx8ik2PGy8xcWqfE39WDD9DzqfhNxCgSkFNWOYmm5hWTg+6PvsFiLBqR/iyBdBIL/o/V04iqIa1qdHbTWV7vbuRt5b5LjGUH9MNJoiLXLVREP6YWtPiZJyEVr6cWPLNKi6ud16oWb0Vm2XYZRZ6L6zBgut4P0vf3czDrHLOCz3j+pN2LQq7sTukD79udkJS4Hpmac5pZCsHUXJqKdmukZURyTH9DaTZXsrkPpLrRjOQVhSzKVuz7kS6mCYtth48Rt0xK5n5fzuGsg/IA5LsfEWl8YzhpF48nVWn7v2jnBszGdrm51idZAqR+O6Hydn1iw9SKszLMlKX8DNUgtBuHHLdC4RpROfWJsaevObTosyfOWc3clTNHtxBmTllnXvTjoBtmDLMejsOWer6R/Tvom0wElXImHJ2vQ9pMdyveqm8gR/N7pz8R5+3N36pI8j1DJvFkbMLFjhHhY/NjaQ/edkbC4slUNQrx7n09dBvtLvVZeB3FlY/7nQSI9osBX9ds3P4o6l6pTl/3atfe621dY0prabyOI56bZTuZ5VUI82FZtHAPuvhp6Pw8GemwUWCKWWEjZ5vw2SIqGCjdCQ+Qe
+ chaX0IyA
+ Fgt4bXGl6U8AacBySra61hcDPHWFnInm46MRMbxYvxWLrantqLc5bC7Zp3+4G30OKJx8pp2CdAb3MT0fxfVLrp/zS5JEIXdHGEGjkvgB86oxfqaYfxMcEBPSzTb+ecXTa0/1JSvUg1nscKEgnwImVcjdgmGMykWWFaLKe/UEtHu1PAkt0QZT/4lyePJ/budKwAyt5poBrn+/vSqVi3p3yJ09t9qcfPOB+wYPOIV9WD8DFiZzT22+pgaKOS5lkiVidNuoo1PW2fYjmNCY70Bzc87olgQIbARrhMf3U4sflxsn7Sf/o89HaZ64JJSrn+Od66mgIZyDk8zIgaBRCrKQjFtKEKvqTCSAeXVFdh3kSf5VQCbDnl+QdqX8scpjC1Ojo2KFcVmJIL6rCvB7gVfmKNC5DSUX8ItrCAcTV8QLKaWdWab20JH6jR9ecQtTAQOiV3Az0sRBwoxPDB7Fq37E6PmevdouUMG8V6iGeGwDxNVLGR9mB73v4gnxpsFw4lg1VZPcS2RrGDlzoHfFLcovQt384CwhF+bmRwcaywgWM/KQvzYvu9lgAbALSzIIfjJA32u8lUcgUQ2eqiDXV4ecABAPaGA1Aco9cxH+Pifb/2YWP1h3POv+mHuXjB63cKe/K+9l3g7CzTDBB03RVeYKmTUradhIwpnD//NZ9m8sheCLUI1eQPpQ5v8F8T1eDXevxNB+D78qlRdp0MQfNB/zsc+dSOhp1x9QDegxe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,66 +91,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============0836080936566238576==
+--===============6528941915844312338==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> userns: Add userns_set_idmap() system call
+> mount: Enforce mount_too_revealing() for foreign mntns
 
-TL;DR: Design nit only: the new idmap permission checks in userns_set_idmap()
-seem to duplicate existing new_idmap_permitted()/verify_root_map() logic; the
-review suggests a shared helper. No bug is claimed.
+TL;DR: Nit only, not a bug: the CAP_SYS_ADMIN check on ns->user_ns in
+mount_too_revealing() is repeated, up to three times, and could be computed
+once and passed to mnt_already_visible().
 
-> diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
-> --- a/kernel/user_namespace.c
-> +++ b/kernel/user_namespace.c
-
-[ ... ]
-
-> +static bool idmap_maps_root(const struct uid_gid_map *new_map)
-> +{
-> +	unsigned int idx;
-> +
-> +	for (idx = 0; idx < new_map->nr_extents; idx++) {
-> +		const struct uid_gid_extent *e;
-> +
-> +		if (new_map->nr_extents <= UID_GID_MAP_MAX_BASE_EXTENTS)
-> +			e = &new_map->extent[idx];
-> +		else
-> +			e = &new_map->forward[idx];
-> +		if (e->lower_first == 0)
-> +			return true;
-> +	}
-> +	return false;
-> +}
-> +
-> +static bool caller_idmap_permitted(struct user_namespace *ns, int cap_setid,
-> +				   unsigned long ns_flags,
-> +				   const struct uid_gid_map *new_map)
-> +{
-> +	const struct cred *cred = current_cred();
-> +
-> +	if (cap_setid == CAP_SETUID && idmap_maps_root(new_map)) {
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
 
 [ ... ]
 
-> +	if (new_map->nr_extents == 1 && new_map->extent[0].count == 1 &&
-> +	    uid_eq(ns->owner, cred->euid)) {
-> +		u32 id = new_map->extent[0].lower_first;
+> @@ -6582,6 +6582,7 @@ static bool mnt_already_visible(struct mnt_namespace *ns,
+>  				const struct super_block *sb,
+>  				int *new_mnt_flags)
+>  {
+> +	bool foreign_ns = !ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN);
+>  	int new_flags = *new_mnt_flags;
+>  	struct mount *mnt;
 
 [ ... ]
 
-This isn't a bug, but the root-mapping loop in idmap_maps_root() and the
-single-extent unprivileged block here look like copies of the logic in
-verify_root_map() and new_idmap_permitted(), differing only in where the
-cred (current_cred() vs file->f_cred) and the setgroups flags (ns_flags
-vs ns->flags) come from.
+> @@ -6650,13 +6656,18 @@ static bool mount_too_revealing(const struct super_block *sb, int *new_mnt_flags
+>  	struct mnt_namespace *ns = current->nsproxy->mnt_ns;
+>  	unsigned long s_iflags;
+>  
+> -	if (ns->user_ns == &init_user_ns)
+> -		return false;
+> -
+>  	/* Can this filesystem be too revealing? */
+>  	if (!(sb->s_type->fs_flags & FS_USERNS_MOUNT_RESTRICTED))
+>  		return false;
+>  
+> +	if (ns->user_ns == &init_user_ns &&
+> +	    ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN))
+> +		return false;
+> +
+> +	if (!ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN) &&
+> +	    current_chrooted())
+> +		return true;
+> +
 
-Could new_idmap_permitted()/verify_root_map() and
-caller_idmap_permitted()/idmap_maps_root() share a helper that takes the
-cred and the setgroups flags, so the unprivileged single-ID rule and the
-root-mapping test are written only once?
+This isn't a bug, but could the CAP_SYS_ADMIN-over-ns->user_ns result be
+computed once in mount_too_revealing() and passed to mnt_already_visible(),
+rather than calling ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN) again for
+foreign_ns?
+
+When ns->user_ns is &init_user_ns, the first check here is the same test as
+the second, and mnt_already_visible() evaluates it a third time.
 
 
 ---
@@ -158,5 +152,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/44972669664
---===============0836080936566238576==--
+--===============6528941915844312338==--
 
