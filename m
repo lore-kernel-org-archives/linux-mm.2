@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE59A60A2613
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F93A606A6BE
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ImYiBKVg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GvIMyozx
 Received: by kanga.kvack.org (Postfix)
-	id 650B16B05CD; Sat, 21 Nov 2026 20:19:36 -0500 (EST)
+	id 391486B05CF; Sat, 21 Nov 2026 20:19:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6009A6B05CE; Sat, 21 Nov 2026 20:19:36 -0500 (EST)
+	id 2F44F6B05D1; Sat, 21 Nov 2026 20:19:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 516956B05CF; Sat, 21 Nov 2026 20:19:36 -0500 (EST)
+	id 209906B05D2; Sat, 21 Nov 2026 20:19:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 16B636B05CD
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:19:36 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BCACA068B
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:35 +0000 (UTC)
-X-FDA: 85460997510.14.09DDEEF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D6EE86B05CF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:19:39 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 42E1A1A04D6
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:39 +0000 (UTC)
+X-FDA: 85460997678.01.A45C1E3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CADBF20004
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ImYiBKVg;
-	spf=pass (imf13.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id AACB7160002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GvIMyozx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795310374;
-	b=3/4szHxrZ6Ee1GL3gsCxTOk5vJmu/S7w2GbR0K7ZCQya97HORMpC8xcZiH5G0QEmNAv/YT
-	7wBUE2QwhvHbU04hfUVe/CtFwBhGMyIJk0q8aYWLpwhVSPbS8xrwSwaLjosJEByELUhYX4
-	vEIhWnWjGolNccDk4p7ZlZMYVKd+mbQ=
+	t=1795310377;
+	b=kSC/Jm3z/i+RYtW4iJOwt5GhqsdomfaBKgDCEqKCpY+xur672PjhuGtcW7kRnrUcZoQzWX
+	uYFAEMhzXsOJw2HzxFbE4HOu1n52RqLOo8TY6gFMoFa8pQ5rWiOk2Ht2YK2ZhcMwpXw4Rk
+	DUr1qwhrO5Ag8Q3AX7B9640NdNOFa8w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795310374;
+	s=arc-20220608; t=1795310377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jfv3MMg/O7UN8A+W1NHYimNXqqAkPIDpKwh6yDT3Yps=;
-	b=xR01heDO/d/Xmk2Vy87oY+VTUoSNQVd+X1H6/fL09rqpWzeqC+rSwelh3ZNHFvKb5tnhhU
-	cBX7Y7yY4DBbkPqB1SVm7SxZAfgZ+YxGRBMBL/ldeT3qkGQOtKA5ehlCfrDmxe0cDRpYLm
-	jlmP/H+W/JSQFKVN8egMM4pFwheBc1w=
+	bh=cgy8beB6sSd/m8AunHL+Exu9SqwXUH4jGUnQFpHNC2g=;
+	b=2OjOda2fXYQig7R5b9AxE6BNGfoevK6IZYMRTLhHRLystGfo56ysRGcCkcqDWH1R/6UkEh
+	AMeRHwS4h1HOQptX+pOHl+zUe0WHMOf85fuUDhI4lcSOs3FG7nhU4R9AaxHBs8VX4J7Ryx
+	KDI0vlDsTRVo7yr7nWdu4mGttnQqUNg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ImYiBKVg;
-	spf=pass (imf13.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GvIMyozx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 26A654593F;
-	Sun, 22 Nov 2026 01:19:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5D51E1F000D2;
-	Sun, 22 Nov 2026 01:19:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 06BCD4593F;
+	Sun, 22 Nov 2026 01:19:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 391951F000C0;
+	Sun, 22 Nov 2026 01:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795310373;
-	bh=Jfv3MMg/O7UN8A+W1NHYimNXqqAkPIDpKwh6yDT3Yps=;
+	s=k20260515; t=1795310376;
+	bh=cgy8beB6sSd/m8AunHL+Exu9SqwXUH4jGUnQFpHNC2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ImYiBKVgbRfrgL6jWXxTiUQHqd1cEEzMz2iVAaA7uEeHzW4qLJDA3Tl2qGS/3utjZ
-	 vH7FISh1UNPnyMNohDOGsom9ecspAClJKjNoOgplVjFIsRGrEtSBmfapZMPNZamQq1
-	 stUP1vhyNg00QuEzC+Jcgt2GhFZBIdc80ERycGmeMUXDpAmT50+jxrbLIMCBdrfeT1
-	 XI0TeGu0qJq904zZAMgLfpGW7w7+4+QruOgSA3OppYd/eN9giTW4jPDn8h0/uv9QAm
-	 QkM/4NCJvGUQ2s+gGjCFYdooaAGbB7nkU9acbTLeYRCVyAXFKHeGUxZZBRobdO4d5l
-	 N7vc71l/mwM4w==
+	b=GvIMyozxQl2DNpJ+i9/m0l+3o6O48P/fEjSwUWnn82fEfSo57NovKzR3OPVk7A61K
+	 XjAJSkujQBHcPPxECwi5KwwTiRDcYlNDu+e1PNBcEBWMtssY6WRX5vBc53NYjAPBEr
+	 Tv7asu646lnLsM5ppF4enYZnpOkTBolaRtspxeAAY2+udhoECXMsHuGWYNVgQjAmS1
+	 /lOu3eEW0QMsdZpW4L2drbyR2+TIDheT6W6B2Bmd8Hq+T56a0D8kNQVnYjX0Tf8qB/
+	 tyBn0oOE47SMzTP0+w8XxAU+oaMGQA7nbju/cU/6dLYbzWWGPsssXYB958t127iwjt
+	 0eS6dwhezh+RQ==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -95,27 +95,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v6 19/26] proc: Implement ->set_userland() fs_context operation
-Date: Sun, 22 Nov 2026 03:18:02 +0200
-Message-ID: <20261122011809.2667684-20-jarkko@kernel.org>
+Subject: [RFC PATCH v6 20/26] ipc/mqueue: Implement ->set_userland() fs_context operation
+Date: Sun, 22 Nov 2026 03:18:03 +0200
+Message-ID: <20261122011809.2667684-21-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261122011809.2667684-1-jarkko@kernel.org>
 References: <20261122011809.2667684-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AACB7160002
 X-Rspam-User:
-X-Rspamd-Queue-Id: CADBF20004
-X-Stat-Signature: uym6dszf13cchg9neifwycqdho3y3z6x
-X-Rspamd-Server: rspam08
+X-Stat-Signature: pg8mgu8tu9jrtqo1673mrz3aawjrmp19
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795310373-298777
-X-HE-Meta: U2FsdGVkX18cORWcJR3M474YCARkE1KzimpMdOxdmqJbeAjUwnjHHzauZwJOsHgiCC5MznfbFTyG+At9IgOx3qgVHltT1c4wrzHrkvC5hdCCRLMFhw4hvmw3w9I84gEGkMzna2RzXDlP0RGMXzUHzaD2aYpbT0vBJkzY5u0ChscPQjTFRdVkDK6bz2inMQ6L3+31vm/BUAFFBRks5oZm/aKuZQcnDDyI93J894jzo1QnTELkqND5sxmr5Qp3a3OK+Jv/KwV/mL6rrmFhekzfQQe07zwl24zF6NusA+ZVOrEE/L8jGV56Gbcy59VbZooFiT6OLFDZ0TU1ooEwsMgXn7kvCvOMRCSOEXyn7wQ0a00SY1Udd+oXFhL8ALw8CoVb+vG0FlZepFQU1EMbIY/z4krGIsyJ5fVlHn7IC6Ykqd8CE5tpOA8wcl0dFRAz2SSNSqUwYDber06HbEh048NVKI4ZEHSXtRfT0tTxO1dUN4CYMBivLWriotb4uMdlNI+1cST+xRXqZnJkYeRapsYiFt6uLn04RG4pGMcz0Jg7/Sa4Kz1yeK/BYndZB4C6BuI58I/BMS+6fgTeOtd/2VeEgSdDp1LE/cCHk4gBooZP/zXQPyuxQjjvljq4j0wtkiK0jsTUFuxtc3iI43+j/K7I5ZH04bE+ykLIVphLUejqzbqgz5kw7LhjLbJc4vP6BfdqKISLN2EW+fyTpBmEx8fX0iWArtud1zcwb3ZBprAcOBQXvmoocb6XHr1OMB1Hq/C2WsRfResN1/O5t7VxhZCgQxapgVpKVl9kYIGtWF/tVzJ2TI1546kLwWYTEFxbn944hyY+jqIJCWL+2VuJoIRU/Ms9cAAfRlu42x9BAQru4aUmuoJiLGdH3E/nNa7FkJJeS4U0mPP9qjgzYvDiMhwhg4G0/DnYHUvLlEMSfxCRi5R9DtlscMcg+z97eW5XouDaJ/FTnN0VoXcVnjLJV7x
- z+rF2g3P
- LXu+NtO5CFn1p+P2ZAX3rhKvQujKyi9m54bJZCeBB1c4i+9yOZMqeox4axRe53hi7EmVHd5By9J65RMsmzjc8FMD6yePYWXE4okhQOM6j7eiB8LlKfx7oPJe6zUg4XXgxPoVV4ZpDF6QcvhfcD3UjF6pfH3RoUZvPe1GjVvK/4sHTrDs8PO1iPek09UtTyL4dCS9DmeIZQZrw0eULm19d6EcpvX9yRp+N9hkOAaMDvOWG96L3ZdDQ5uqjU7liSbB+tOP/pJRK0wjjwpAm9adTcfVi+6oJhNN3YuNAktl+HjgqThFp44UY4ywDHUPoqU0PgZ8jmC6Rz0ubSTva5ntGb6QBl3h7zYUfT2M0CsDh5Kfmp2s+pJCL92VGSnf9xFqiFfoXNhJ1SM0h/Frg5RLgP4uC4rZVwxhllK3idKqUancHvFGE67uQaGB1M0k9+dcVUUlmMsfETTRqYpfrbaOV8X9x0tIjIa+jLA41nuyAqvTlK6Fmu73UXfcfKg==
+X-HE-Tag: 1795310377-937398
+X-HE-Meta: U2FsdGVkX18U+GmzAoAx33ATglQHSdskR3cE6RgnK1zgxcFq2IDbtU6MrVhE7i1qjDf+1+XslywoBvBbk3wxonHj5zJHWQuim/AELoGLjNQuway7U4lVf6DXwRJaFTzvoDti37lqWXA4Ut8cxAD4VZxWeVihSIin1jhIF/lf1FL7XWB988RZChh5gfyUB6yeW8wmlIBYRccwiqjLsszb81bSiKs2r1HJH7yP/w4/CY5r/ixF9zIgPtP2gM6d/GOZWpIuNLCZs/ZP0+cMjVAnGdzI1SRljqqYTOFtqG0Yu2pFoVwY9SnK39Th9M5XWi+SzWXt7GMx2WYKtw2ka3/YVHn0rQWHrRtOw2IH5eO+xEz8l+EH4KreLglyShsFhk56g2yXRCGpJgOIIzeBlGkBuVu23h3oN4RQfMrc3wZN0naLB4CuxjT2MmJy5pLrDTIYoCBpI518X0vsCRU/EtL7ltw1qPESyFlnPq14CJc+dWYYfuNtDGejI4TsSJm7GFEcZBoGzI8pAJwMMPNfTLgdr3OdveeCgJilHfhBUi5sZWyo5aMwPbUwA0CKocEdLe9w3b6j0q25UU9BDhSHQnEiQdl2q8wxE428x7BO9OAN1lMHD00dYM++hW+gDILDZR6c9vGPZZXpgaMTuwxPnMcL0PTeh42SFYHMOWbIFQa2oxe18y6LQ+PyC8s1TqFd1jLeQU53/hjxuQwDHLWcGz4Z3Or6oBlFqZGjIoCKYZfFDuBdCA6HdQzjvHAdzFulVaFcGhTaCJ6937XF0YEQahdOxLcO0scvRbtDNgsjDfqNAvlFG7ELMaQ0CtopL3oSnePpLMnDiy8RG4doLY1QQ5e+GDCfyYtV1RoIH7U5DhljKFVSzTdl4TfnFzyPmqv9FH7Fjl/4DLL6PGFHj6JV1S3KylpcemX9dhrvMeOmkPQn3ten6G0SwHLrEi7yVyEYAh3AcNDKkrS0Uo97LhrKoTl
+ /O2fQcNm
+ j5IH7h7ZRCD/npIZ0DtgdQ5zQbH+96QfBi0W1LPgRSgnXBraevR5nREk3+kxJEC9H+04Zu2iWcW29SCDNhHgg40ZoTJs3b6/I2VU/Ey+GRUFVnkxOgiX/K76A/P4LsktJ9sXhO0WVGcAficVWcNwY21K7N/ueNmTcfcX9ugsBUSTVTBAemCad/zQB2rg5zl27nYxK28CblMutb8Pva9kGvxY86M9R0NY8PvnEftsweTdl4hX/jVtUuyY2alxRakBE792Sc/g0OGzkIzpZGhvinIVNaXvUDOfyC3fKuHPkvo86XWQUYYkf7yBVV4o3NcoC7O49PQEABnvSfMIIo0izkJJDAxHPYg6iEpbC353/u2HvddHeIYV7XQ7AP6htcIuQvOelc85+2vV802SjxhrzJZgJvlGlp3HiW8O16Tu1knIwxxwF3quGaf4GWu3j5OuiSy9opGPRaUSNpCidoll+rIrQfLlBrZf8s595PdlgZXcd/t4tLCzA20hTFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,88 +124,72 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_init_fs_context() binds ctx->pid_ns to task_active_pid_ns(current)
-and resets fc->user_ns to ctx->pid_ns->user_ns, overriding the user
-namespace delegated by FSCONFIG_SET_USERLAND and leaving the context
-attached to the caller's PID namespace.
+mqueue_init_fs_context() captures current->nsproxy->ipc_ns and resets
+fc->user_ns to ctx->ipc_ns->user_ns, overriding the user namespace
+delegated by FSCONFIG_SET_USERLAND and leaving the context bound to the
+caller's IPC namespace.
 
-Wire up proc_set_userland() to verify that the target userland's PID
-namespace is a descendant of the caller's active PID namespace and
-rebind ctx->pid_ns and fc->user_ns accordingly, and mark proc with
-FS_USERLAND_MOUNT.
+Wire up mqueue_set_userland() to switch ctx->ipc_ns to the target
+userland's IPC namespace, update fc->user_ns to match, and mark mqueue
+with FS_USERLAND_MOUNT.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- fs/proc/root.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ ipc/mqueue.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/fs/proc/root.c b/fs/proc/root.c
-index 7fbbe92bf73a..e61b1a559172 100644
---- a/fs/proc/root.c
-+++ b/fs/proc/root.c
-@@ -15,6 +15,8 @@
- #include <linux/sched/stat.h>
- #include <linux/module.h>
- #include <linux/bitops.h>
-+#include <linux/nsproxy.h>
+diff --git a/ipc/mqueue.c b/ipc/mqueue.c
+index 322c3dd98c44..f3079f7d888b 100644
+--- a/ipc/mqueue.c
++++ b/ipc/mqueue.c
+@@ -32,6 +32,7 @@
+ #include <linux/mutex.h>
+ #include <linux/nsproxy.h>
+ #include <linux/pid.h>
 +#include <linux/userland.h>
+ #include <linux/ipc_namespace.h>
  #include <linux/user_namespace.h>
- #include <linux/fs_context.h>
- #include <linux/mount.h>
-@@ -206,6 +208,10 @@ static int proc_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 			errorfc(fc, "cannot reconfigure pidns for existing procfs");
- 			return -EBUSY;
- 		}
-+		if (fc->userland_bound) {
-+			errorfc(fc, "cannot override pidns on userland-bound procfs");
-+			return -EBUSY;
-+		}
- 		err = proc_parse_pidns_param(fc, param, &result);
- 		if (err)
- 			return err;
-@@ -323,6 +329,21 @@ static int proc_get_tree(struct fs_context *fc)
- 	return get_tree_nodev(fc, proc_fill_super);
+ #include <linux/slab.h>
+@@ -400,6 +401,20 @@ static struct inode *mqueue_get_inode(struct super_block *sb,
+ 	return ERR_PTR(ret);
  }
  
-+static int proc_set_userland(struct fs_context *fc, struct userland *userland)
++static int mqueue_set_userland(struct fs_context *fc, struct userland *userland)
 +{
-+	struct proc_fs_context *ctx = fc->fs_private;
-+	struct pid_namespace *target = userland->ns->pid_ns_for_children;
++	struct mqueue_fs_context *ctx = fc->fs_private;
++	struct ipc_namespace *ipc_ns;
 +
-+	if (!pidns_is_ancestor(target, task_active_pid_ns(current)))
-+		return invalfc(fc, "cannot set pidns to non-descendant pidns");
-+
-+	put_pid_ns(ctx->pid_ns);
-+	ctx->pid_ns = get_pid_ns(target);
++	scoped_guard(spinlock, &userland->lock)
++		ipc_ns = get_ipc_ns(userland->ns->ipc_ns);
++	put_ipc_ns(ctx->ipc_ns);
++	ctx->ipc_ns = ipc_ns;
 +	put_user_ns(fc->user_ns);
-+	fc->user_ns = get_user_ns(ctx->pid_ns->user_ns);
++	fc->user_ns = get_user_ns(ipc_ns->user_ns);
 +	return 0;
 +}
 +
- static void proc_fs_context_free(struct fs_context *fc)
+ static int mqueue_fill_super(struct super_block *sb, struct fs_context *fc)
  {
- 	struct proc_fs_context *ctx = fc->fs_private;
-@@ -334,6 +355,7 @@ static void proc_fs_context_free(struct fs_context *fc)
- static const struct fs_context_operations proc_fs_context_ops = {
- 	.free		= proc_fs_context_free,
- 	.parse_param	= proc_parse_param,
-+	.set_userland	= proc_set_userland,
- 	.get_tree	= proc_get_tree,
- 	.reconfigure	= proc_reconfigure,
- };
-@@ -371,7 +393,9 @@ static struct file_system_type proc_fs_type = {
- 	.init_fs_context	= proc_init_fs_context,
- 	.parameters		= proc_fs_parameters,
- 	.kill_sb		= proc_kill_sb,
--	.fs_flags		= FS_USERNS_MOUNT | FS_USERNS_MOUNT_RESTRICTED | FS_DISALLOW_NOTIFY_PERM,
-+	.fs_flags		= FS_USERNS_MOUNT | FS_USERLAND_MOUNT |
-+				  FS_USERNS_MOUNT_RESTRICTED |
-+				  FS_DISALLOW_NOTIFY_PERM,
+ 	struct inode *inode;
+@@ -1613,6 +1628,7 @@ static const struct super_operations mqueue_super_ops = {
+ 
+ static const struct fs_context_operations mqueue_fs_context_ops = {
+ 	.free		= mqueue_fs_context_free,
++	.set_userland	= mqueue_set_userland,
+ 	.get_tree	= mqueue_get_tree,
  };
  
- void __init proc_root_init(void)
+@@ -1620,7 +1636,7 @@ static struct file_system_type mqueue_fs_type = {
+ 	.name			= "mqueue",
+ 	.init_fs_context	= mqueue_init_fs_context,
+ 	.kill_sb		= kill_anon_super,
+-	.fs_flags		= FS_USERNS_MOUNT,
++	.fs_flags		= FS_USERNS_MOUNT | FS_USERLAND_MOUNT,
+ };
+ 
+ int mq_init_ns(struct ipc_namespace *ns)
 -- 
 2.47.3
 
