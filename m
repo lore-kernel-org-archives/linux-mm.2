@@ -1,130 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A530D606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE30606A335
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=GIWk3jr5
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=BTAmTlEP
 Received: by kanga.kvack.org (Postfix)
-	id CD50B6B05B3; Sun, 22 Nov 2026 02:08:58 -0500 (EST)
+	id DC2D76B00EF; Sun, 22 Nov 2026 02:30:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAB3A6B05B4; Sun, 22 Nov 2026 02:08:58 -0500 (EST)
+	id D73A96B05B0; Sun, 22 Nov 2026 02:30:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC1126B05B5; Sun, 22 Nov 2026 02:08:58 -0500 (EST)
+	id C62606B05B1; Sun, 22 Nov 2026 02:30:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DE2A6B05B3
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:08:58 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1DC76120663
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:08:58 +0000 (UTC)
-X-FDA: 85461877956.20.820AB7B
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2C9F440002
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:08:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GIWk3jr5;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A3DE06B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:30:11 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 47DA71A05B3
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:30:11 +0000 (UTC)
+X-FDA: 85461931422.02.2828894
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 56AEA4000C
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:30:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BTAmTlEP;
 	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795331336;
-	b=VITi+BF904UdvQQ90k/KzIG0GkkdewTgPsVs4WOd/jIsSC4o+qxrjkXBY6S9x4spJtIX8Y
-	q1mgtKbXstI3RntUp+okQwYfCkGA7LAK88qMme808yCb0H1HieMBnnuJqJo3HjF4zuEMLA
-	DfeEQEIp9AV9jgAwrqNSZ/a8p5Q647Q=
+	t=1795332609;
+	b=JhOeC6X87fXq9WZfLTU6WtZ0p8vesy23YS8D3hT5dnBASlfQ/DFeXZSXJm4DV2ow3diJeS
+	fjAk7wPmzGNlAtSLgp2odu/Cjfo/bQVE8mZhiavcgHbfzqq8VPPwlwMgBrDlJP5ixvMfQm
+	y4/rjPdq6lQVsPccgayLkHiD/STRLOk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795331336;
+	s=arc-20220608; t=1795332609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a99BfP2kEbISB20mRXBJCu27gZNr5+UqvH+W0E0W/KU=;
-	b=RCS35ybZSm7iCYtDQj0BIIVLUn7zWBoCzjJqKZ76qrtkuihblZoZVs+6Aqp9VBYix5XmbN
-	vTCj+fFM4l4RLVs8R8V3RABDgU622iQZDTFRZ2N0q2mCVhpwQsRxxDGS7uDNv6k0n4tUsy
-	Wa1cMJkzZxQUl5+3vqHKmxHX+TGe4C8=
+	bh=uXWNYjPxX6wVtAP9DzJE75Av2qUwSEdpN8RkrP8QOpw=;
+	b=toBnZLky9F1lShfzDSyxEyDnWL9U3Fkt7lepEqpN36gBqSqWUyw7q4HVf3kR/wJ25GKeTj
+	tkCQr1tRRf7qsnNZ9+CoeYjPcbLBoHHF7PqNPnA6oe9AZl4TJv96lL9+Q6VrWBpwh1LOxo
+	7wPnMflbzyG5Gx1J77ixIVDH0amEOYY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GIWk3jr5;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BTAmTlEP;
 	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-92119da3d37so22683736d6.0
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 23:08:55 -0800 (PST)
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B17D40760;
+	Sun, 22 Nov 2026 07:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB921F000C4;
+	Sun, 22 Nov 2026 07:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1795331335; x=1795936135; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=a99BfP2kEbISB20mRXBJCu27gZNr5+UqvH+W0E0W/KU=;
-        b=GIWk3jr5CFb1X5sEcOkNlr9bB5MxAmZzZYxPHbsiIixT/YjQtDzkqQPU3qs8HEeU5P
-         MUwzq5edXfLr/5qVsJAKXCu3OQXRfVwRXwvTjTqpDakGbdHweUdFB2FNA3QAnustSUYB
-         UPRbhAMUmIE02SjJ9Rgb4lyjUXTmFYIIK6YbC3xNIeOv2YcPJeZNdgmxMR69978cjjN/
-         eF6i3BYK8M5CkbawZXoytK27aAaCHRF41aFTZYzzwRb+VWkiPFKp15z1O1vd+ejuZcYh
-         +1SiUqXQbYGFUQP9TndwFSBt66CrDSdMffEt7tyNpSu0XOya1olBzW3JdFL4BzFnYkIj
-         gr6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795331335; x=1795936135;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=a99BfP2kEbISB20mRXBJCu27gZNr5+UqvH+W0E0W/KU=;
-        b=qSt/uI/OVF5TxAE21GyDyzfFgX1ye3EBkzGS0Cu/i4P2Ncp/vMatxFaOb2IO/Na28v
-         ISWZJe9DcIUCGvHWzWHr6HjJR3l87aThrULKmQ/DBbJwTZpOJc6z8U6sBJ9YmPKkEEkB
-         hrTjY2B+5jKZc8BD3IGrN8Gk+S4xqwHJAEw6+7esuIrt0I8Qt7lPrduVYnY23yrfpI4O
-         7eXkK0smwAQr7pU5HijcRjdooxenQq3lX2IKv2ycXlGJ1OHwfkSP4uVSWNxonIDa0Muw
-         hfCnKRGaDOelDA8PoWaJT8Q6S1rR1nAQSPhkIqMFgFPD2bMDTJhhp8rgnUeU1q2whz7s
-         ti9A==
-X-Forwarded-Encrypted: i=1; AL+hErFE2+TX9A8ELT4uvgEbxdLxc4yQtFT/IMg6nRTar2kBqltdpORqf+owzsONHr70TPQ1wDWaB9Bsmg==@kvack.org
-X-Gm-Message-State: APuU4Z93bzTuHgf171HhmEdIHfxWLMYXyBUWHMRFTs5QlLH9E6yQRg1u
-	MNPdjdwyAteNe8nArx7N4m5s0FhUxjTY2I2s7ISourMNYXS7A/8mSjBDIbQAF4PWJVo=
-X-Gm-Gg: AZFdTZfJcluGCccxguQyNtMtIPd8zmV68JY2fA10DjtTLgyzioZgo4M9gRctYhN4DLd
-	38gGu5BIdaa4Poc61bnqYNlaVuMyThdooGHqPJZwMrZu9m/+uWF4b0abJH11UZwSVSOvL5nxFms
-	iuX3n4rEN2X/ULdxgkO8hq1OcBnH1N5Z65WVy3XyK5EOopEWqa7j8rtW6WMunm33449uAef/AYo
-	Obsuz30PK0/zQ86SWLXEsm33lfqbniysWiwJ/MjUYTdxZUODzYV5id4YxR8Y3W1M07nDnz7OlVt
-	oXveEf/ADcIQLsPJcyOAbXUSDdEuahs6VdLfckXlmcDEvxXgDhEPSY+ypqNf75910chMfVVPsvn
-	cv1k4WkU9H96VinfkQ59Ot/Jrdjrzv407hMD+zNhxgVV2Q9y2A6B2IimYta1jj8HiB8QL6S15Nk
-	pth3vT2hqTFUF8FmiK/r0iL4CQ1hKnlpMFPwLJ59U6Gq5Fu3VtA0o00LS3L3HIyJCMzJgJ1/m7a
-	UFPPxiZwrVajhlfR76GPBkXkewWTMmte7EXm9MElbN6XNlBM517A1SoZP/rp8eKaRtNt1mDRF0a
-	T1zfkTHEen1Fk/s6ikEWEgASj+5VYudCNL/e0O/zbGhgYMEK5hX1uV+PTa4vL6Kd3j1ooZgpqTf
-	aItY/ZRk=
-X-Received: by 2002:a05:622a:138d:b0:536:702c:f8e4 with SMTP id d75a77b69052e-55d76a75253mr152041481cf.49.1795331335422;
-        Sat, 21 Nov 2026 23:08:55 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7888fb27sm66124541cf.25.2026.11.21.23.08.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 23:08:55 -0800 (PST)
+	d=linux-foundation.org; s=korg; t=1795332607;
+	bh=uXWNYjPxX6wVtAP9DzJE75Av2qUwSEdpN8RkrP8QOpw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=BTAmTlEPmIlgFRIx7pww1JhEV/sRwv8Ng2+2iKg4j6PzgRMqGv8JHOaw42mKXj1PQ
+	 sM7+AGtDcm8o9O7CfamNPvuyk5C5YNACkYV+YjlZkzN0zYEwAYTR+9zcTmLWp3Dv7L
+	 s+bN1UUxXk1Y7l9a/bXUa2cijblzhbqciIoFoE7s=
+Date: Sat, 21 Nov 2026 23:30:06 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Shivank Garg <shivankg@amd.com>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Borislav Petkov
+ <bp@alien8.de>, Ankur Arora <ankur.a.arora@oracle.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "Thomas Gleixner" <tglx@kernel.org>, Bharata
+ B Rao <bharata@amd.com>, "Hrushikesh Salunke" <hsalunke@amd.com>, Ingo
+ Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>, David Laight
+ <david.laight.linux@gmail.com>, David Rientjes <rientjes@google.com>, Linus
+ Torvalds <torvalds@linuxfoundation.org>, "Teja Vojjala"
+ <tejavojjala@google.com>, Huan Nguyen <nhuhuan@google.com>, "Pedro Falcato"
+ <pfalcato@suse.de>, Peter Zijlstra <peterz@infradead.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH v3] mm: introduce copy_mc_highpages() and batch copy in
+ folio_mc_copy()
+Message-Id: <20261121233006.bc03ca9b7889c93a482791aa@linux-foundation.org>
+In-Reply-To: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
+References: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/2] [v3] mm/mempolicy: replace copy_nodes_to_user()
- interface with put_nodes()
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>, 
- Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
- larips <larips950@gmail.com>, stable@vger.kernel.org, 
- Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
-In-Reply-To: <20261120185248.823415-2-arnd@kernel.org>
-References: <20261120185248.823415-1-arnd@kernel.org>
- <20261120185248.823415-2-arnd@kernel.org>
-Date: Sun, 22 Nov 2026 02:08:54 -0500
-Message-Id: <179533133443.412063.14905382167508572303.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Stat-Signature: qie88a1mxh49maykcwk6qwmi1bmrmygu
 X-Rspam-User:
-X-Rspamd-Queue-Id: 2C9F440002
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 56AEA4000C
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795331336-654893
-X-HE-Meta: U2FsdGVkX1/oFMLdimmASv4noidnV9w0cYu6IN/z8mX+Tx0LqmCMMdXChwc2xofVb/m4cjV9XQ4R5Y/6rntg5MG8Wr9+zqlQvGLJQQREk9yLE/dJMO6TO8OVLVmW1FmPK0fugLwyp1wfl4W3KCRYOaRZez3RRJxLStcZw/zx1a7GpwCp/vb2cXrt8FDq3DUtNFk9EyPu63k9mXku92fnjDic1k9Gr/AjH6pkuVuz17D5Nc4Wh22fjH6Ki2404Jc10eLsZWdy166kKihNlZMwtFqJLaYtwMHKdoRpysRxnKIIOLgTCeQbhG9rvQm2kvf15TgBEy2WrX88zleo0QZSF1i+QzzVXevArw4fCBfv3hy5RuSeoUlzJQsEH8rwHVwzdahbwWmt5M9Zwvy8YUhxG5TNPydrBmjIbPpc4wX6U2imHmLJLkGpeKhi9zAe0rfTG8SAwdiMVCq739R5bWbt1c4qxJK5Y4kqos/KvefP0qV9+VVaY5NvDPE6pQ/Wxgap9WdBP0RQnsZhNr1uAiYnjQm7PiEq6/b5fLVYrUpwyMi6SlaqBPFY0GPLScQIDrzE5cHJAgULHWttJ6BzCswv5Rggctkj1MrXZunCv8eajhETQxl3hreUjB7JOxcCksvAEnMGvL23svIvoe1cju1PO5OV08MLMgYv8PZEUaU5r9GnhuzxoSk19o+CLLfyMvU6mHC/gS0m2yrwZEzThsZw5fRGfmRJXQtPmRlUiBpjyL7muyxuYAbD/WQsJ5iGOXQD5wsVZXcU2AmUTi5XIERj27oUnV/RDhdFDzYjrs0SAMBD+fkX6sHUTvUr/IWYox0fIYxdDojqs1795lRU2SWbhs91LUHWGzknL8vPkRGjTNlWdvvhaOLVQLYdTfqrm9Bv7HlkhZ+PkmjM9b4vpzIExg/rjhIpfFuVSE8wA93lg2Cdsx735+oIU89u2w4Ato3mudhzYSDqf5azNVDvU4f
- elvB2u/E
- tFBtosARpV2kFTX+U3nbI0H+TwoIYPCqJWXhmnK/QniDHt2nnbkUdYVxYZpJJV6sEbHaBYgIA3gvbrm9tKn/nB20IM6SsvImAwZmff3VVinGZxoAyjbdmZRD1evl8An6jIdlHF4v2R7BVEUi4wS1c7FY3pr1f/f2s4vrypfsUzi0ePjEtbJYgbVStwilrRnyci0D++2KTfKtVnhw63+66dH3DkSI8SFax6C2cVUA2of+1tC/zm3P+eGPW6QXS4cX7zenZ4p7BWPsr5yk0vyEjIug+h2s+C1WmuXBVWkyhIDqEnVxCumh6YvOd31LVH2FUovjMUIiJyfW9CDm1Qna5QJ9Ca74Dttc8kN/ssodV+ayWXG3gJta8P1BdKccB8+gcUqOlIWoHwB//nY267cypoW5D6UD6oqZ9WsUy4/F1ZBWlHiXNyGarkWC8cV/CkU5nP8eTCI1vBibzCGe9/yyRPe6A6rMMsjEnuUWgxRO/iWfYcT6j9KlYSVkMsmYbdDm8l4HF0Qz6mgnw9NqOMndXb9R/RWgQylKJe4GEAuM6eusbpuFNzNarrO+DpTPLI1cxJ/3UzasKGyTsFvsDiFaiFetEWONIsLJs+ccJBjaz9mw52zZrnGnfet1kc2E9/8Bk1wRPLaWcWNd9AuI=
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 3tafebpftf7cjoobiaxeb89aty4d7q1u
+X-HE-Tag: 1795332609-290577
+X-HE-Meta: U2FsdGVkX1/dwLgiRRFLSvntS8zPW4wGn2aQS3GtMhaTbYtvPw/jLOMaWuu7obT8MKTDqRd8uhrO0MojH0l8gtAu31k9LhVO2rOdNm9HRDY7d0lKQdqKPDv6S3fs8J4WFBEJS4XF0gOoVNMcCy327jzrmge9enlioIsg8mLqyeHQFgVOS/luVJnUsuzbz6yIalTzBgr2ff87sajd4Jxxe5brRtoAAe2jETAu2NbZSV/xkYlEL0grF3+UvROgLeeYbXkItnrEmt6Kcf19otBnhUJGJj4DpToaX9vLbdNGS2CDK0EWAGyeqTyQqV4+TcJeeYe6FvtZuzZgM6MEVYFL2NXQUcFYvu7lquCTEpwOx/PMP5JLxeMAg/QqSL9nkmjVCudhHOzze8qotBtZVXqFcFHIhB+ARlRuP6KqwqOeD4jCpixBmKphNf4H8MnXcjg3mTtHGfO9Bczg18rkbpf7JhGNsek+f3WZ2QmRXkJA+X3i9Im8BoxbS8TqzK1sIZTEHLez/DH66G3znh8ZghEKevAd8T/v8N4Y+Xu0hcn14MzuKtsE9JLNcJti+Bvuz7f2uu4O5MLMVx3TVmliPx4yxDJarlb6ClffZqXOGxsYsnXC3OhbxpoxAbxOjcr85FEjmgqAx1LRy7uaDIDA8o6WMP9GIubQhwLajjbNV1ZeWw5u4+RPpc/i5Hv5t2hbW5fNVWm7Gm8am5kOB7kujaBXF+mx1QjueYjfQylB7m190KL79E71WXwgj5UbVe0XKOhLYAjGA1RKGubTs/KgFYYDCs6k+UVxYxKhMBtdrOLEZURsrFzWrOin3lURcFWwC0H6Nti+ryQHZM35kEO61a/Dif9RoUz/qGbDLsB1WRHG67u+XmE6m/OpWAkqOjbIT04Gz3TcTFCtdSZI9Sj/xTBajZGNnUFiN3iHhUhmAh2Vs5QUgCWduTm4S+vQh1vcEOA8Vf53PXWrBal7LkYsWEC
+ +h56lcUN
+ qb4ef6wrV9ietHBQEJq6nNaFgEsRt6aRQJr9jlmr23Rn3Bk37n2bQWW9hGjrvzjw1KdrtaA/3Yvw7diKmV/rN+FAnSMOKK9A+iO0izVAzRclgFVrqpaYuImH1VPgXxe8LUQck2pitBVbGu2E+rQDM29WoU+PwCzlgQtTwdhIsuinkHn+dNIahmXJFzKGe9V21Vn/7SpJPH7R8B8d1kcrh/n9oYL0siPvUIsi6PSELX96y80HfmWV0RQdCqc6M+21SpRodDdzX4zgTLOURnpv67v8Wr0qUIeqDsuiCEreTkPf9ZJ/RtpDKnbL8oHE39SVK9FT1YesO6udRbXcaeQ3wHcaJ0TkWvZ1lFx5dAHSiuH7zW3H8VGC48l0WYcni5KYkr9DiaXypXSnwoEDbGvEHEaNDd5lH9puhk+WEtL/Sd0XAkxzm43rvM0yfH+0/TCJbE2igbK1iHfRxbgveZV8dkidJ7cK0DhxHDVGi89RTAwS16Ac5qdJvhhGQziyhcXMH0F3PeM7V+dUSfLnh4vdDPpeux5iLgM7M5KezWTNGpsGqID63nzODMVKr1U3zanGfS+fislD9ban0tOI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,25 +104,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-20 19:52 +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The get_nodes() function handles copying node masks from userspace,
-> while copy_nodes_to_user() copies the same masks to userspace, but
-> with a different argument order and slightly different meaning of the
-> same variables.
-> 
-> To make that less confusing, change copy_nodes_to_user() to look more
-> like get_nodes(), using similar name and arguments as well as adjusting
-> the maxnode value once, and restructure it for readability.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Fri, 13 Nov 2026 17:09:21 +0000 Shivank Garg <shivankg@amd.com> wrote:
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Acked-by: Gregory Price (Meta) <gourry@gourry.net>
+> folio_mc_copy() copies a folio one page at a time with copy_mc_highpage(),
+> so a 2MB folio makes 512 separate copy_mc_to_kernel() calls. Each page
+> pays the startup cost of the string instruction ("REP; MOVSB" on x86
+> CPUs with ERMS) plus a cond_resched().
+> 
+> Introduce copy_mc_highpages(), the page range variant of
+> copy_mc_highpage(). When copy_mc_to_kernel() is available and the pages
+> are in the linear map, copy the whole range with a single
+> copy_mc_to_kernel() call, so the CPU can optimize for the larger extent.
+> Otherwise, fall back to copy_mc_highpage() one page at a time.
+> 
+> On a machine check, queue the poisoned source page for memory_failure(),
+> as copy_mc_highpage() does, and return -EHWPOISON, as folio_mc_copy()
+> does today.
+> 
+> copy_mc_to_kernel() cannot reschedule, so only take the single-call path
+> when CONFIG_PREEMPTION is set and the copy can be preempted. Since commit
+> 7dadeaa6e851 ("sched: Further restrict the preemption modes"), x86 and
+> powerpc, the only architectures that select ARCH_HAS_COPY_MC, only offer
+> the full, lazy and RT preemption models, also with PREEMPT_DYNAMIC, so
+> they always take this path. The per-page fallback calls cond_resched()
+> before each page, as clear_contig_highpages() does. Other architectures
+> keep copying one page at a time.
+> 
+> Switch folio_mc_copy() to copy the whole folio with copy_mc_highpages().
 
--- 
-~Gregory
+OK.
+
+> ---
+> On a Zen 6 system with CXL memory, move_pages() gets ~1.4x faster for
+> 2MB THPs and up to ~2.8x faster for 1GB hugetlb pages (numbers below).
+> When demoting to CXL, kswapd uses ~31% less CPU per GB demoted.
+
+But that's the most important part!  It's the whole point of the patch!
+Yet here it is below the ---, which means "throw this away".  It
+should be the first paragraph, in all caps.
+
+<edit edit fixed>
+
+OK, thanks, queued,
+
+nit: does it really need cond_resched()?  That's not appropriate for
+current mainline kernels.  I guess "yes", because this patch looks like
+something which downstream people will eagerly backport into older
+kernels, even though we didn't cc:stable.
+
+And we care about downstream people.  Globally: "Roughly 60% are on 6.x
+and 30% are on 5.x (with the remaining ~10% split between 7.x and 4.x
+or older)".
+
+I'll take a look at that Sashiko thing.
 
 
