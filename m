@@ -1,129 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4BE606A32C
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6807606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=lxi5JrQF
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qd7P/w0W
 Received: by kanga.kvack.org (Postfix)
-	id CF84C6B05B1; Sun, 22 Nov 2026 02:07:53 -0500 (EST)
+	id C35C06B05B2; Sun, 22 Nov 2026 02:08:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCF696B05B2; Sun, 22 Nov 2026 02:07:53 -0500 (EST)
+	id BE68A6B05B3; Sun, 22 Nov 2026 02:08:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBEC36B05B3; Sun, 22 Nov 2026 02:07:53 -0500 (EST)
+	id AFCAC6B05B4; Sun, 22 Nov 2026 02:08:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E70D6B05B1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:07:53 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ECEBD160651
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:07:52 +0000 (UTC)
-X-FDA: 85461875184.01.0F530E0
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0592980002
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:07:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lxi5JrQF;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id 8CA7F6B05B2
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:08:19 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6651160657
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:08:18 +0000 (UTC)
+X-FDA: 85461876276.27.DED3CC4
+Received: from mta0.migadu.com (out-103.mta0.migadu.com [91.218.175.103])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4E01C1C0004
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:08:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="qd7P/w0W";
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.103 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795331271;
-	b=REsvaRmuphOcucR/tWBkGJjh6GwPWUsiEzCRu1rLuQgR3oH5VW6wb7rqi5LuWlGuqJ0Rdv
-	BiQ3Y135Sxn7+dmJwmjyVDFiFZpKsG6G9/h8yKl0fpIV0mWF1fDY3jpTT8m7YgxVTCImBP
-	16qvQbBmsCMneRlrirhw+uKy6FWhx60=
+	t=1795331297;
+	b=TX2HJ5asRoLwiS8yF9yDYyFboiW81ycXo9dPYHYqhVJLfmIhQGc7JM+IdFNjB4GH3znoSm
+	mBiU3fiN4y7k70KOSXVoJWj7v9tzmtmfIYTyN/ZWHGMYZkZapKlV0S2gZJjL7GLjHtxPj3
+	kwWYLC2v+wQlJgANaSYWC+Jlped8v9E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795331271;
+	s=arc-20220608; t=1795331297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yUCb8Lcy89UQfJcZKAktnm4+xKTFfwjUrjGT4Fqtk5c=;
-	b=UlQ3Fvo+YjoiRt8BeDheqtYjUnB4HzHMNNw8SpvBlxrzWT8qx+IEnFcmthsrTJwlN7vubV
-	7s8WTOZdtaZiGkz1H7ZnlyS/HzaI6iSGhpfoN+dNSmsdevRilZyiozeF20A9rBJwWhRfKT
-	4veurotAZmyk1mZBY2ZG5z1W7Hi6GSw=
+	bh=fpVPbeFMltrY5ZOohyFH/1X6RQS2degmMqVdNbfmucw=;
+	b=6eGW3a7LffAQU2kqb0sgMWKlQOSUvnYKXP6Q+Z61pA/CNWDwcdnieC3oQ80d9w4TBMzhDx
+	zm5IWeoKxh6Syk40amVtFei5ipqN3qCbxFEtwdKZhiXxvKrQ5PFpFzqcf+c/ByFZkVbEbp
+	Y5rxg05csvuDGFMubHz5F4qM35Hi6q8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lxi5JrQF;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93f20b304c0so227008585a.3
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 23:07:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1795331270; x=1795936070; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yUCb8Lcy89UQfJcZKAktnm4+xKTFfwjUrjGT4Fqtk5c=;
-        b=lxi5JrQFwv1hUdBuYpYdok+3SFaOtlwi01i09i8FrlK94SkxqwKpfLBrWLfVFpoJsP
-         4NSAa7T70EfrB+nMJlwKIRpIX6Gu3ax3rbZ6hsEtRHw96/jrTTZpk3A3xYhi5Vo46tJC
-         r6JQWSqANoEWYLjmujh/oaS0SyNgvgnwsqGHBnot12u2y6MZCa58STaQSCoXv0RnIuib
-         8CC1Zd7UbdDTebnzeHK50xg4PI6gkfv/S7iQKAm+GHTDA6NNiU6ugKPKD+5AcOSZqHCo
-         jpohSrMNBv4zcpHP/xbK3P0lAuRrYia3/lZqEkttxBFeAjhHQxIhkmrYSO5uzbthaW30
-         0OmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795331270; x=1795936070;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yUCb8Lcy89UQfJcZKAktnm4+xKTFfwjUrjGT4Fqtk5c=;
-        b=Rn+mFhG8ifWnUj7+BLoogsQm+eJVZ8sGWFn9LuV2ZElO6h1TCf1hQkI1AaV17V4tAG
-         twr5ocGwaVI5Qv5xjPh8UoQMJ+QOK75qiOY/b12kIzIidx7pe4NUu+U0VkiPIkGAF2Cz
-         VvUanB4Qd5xf0iPGTZTzMvtaOuBOqY5fK8TZybnEtb78nz+bNRktu9VM7THNzSBtiS+L
-         vB/6a9WDP0xD/vmW2qrpwDE0HAKenao9taTZIqhSenF4aWOb/jJ7cq/h0MCQ5psNoicq
-         ERFfkBE+gyJHNjmAuxWStFExBmK1rh/KgSFOkOoW95NAF/iuqNYQ9tMHaDu/o7HGkTxa
-         dJPA==
-X-Forwarded-Encrypted: i=1; AL+hErFhSaV4RxadxkxA7RsZ71ZjmRJIpl8GAttWw26Pj0RT8YWjLNxXT/tJtOIIN7G4o66Qn57K8bgeIg==@kvack.org
-X-Gm-Message-State: APuU4Z/4JYIXfLEk3k0nFKKCK3h9WwAARxLhR1wtrf+SgAGmW5f0UMlk
-	nIz+hfKGCUqoDF45LXBOuD8bsgOzJgYRTt33jQaiCv3yUALTpY3lFRm81z7WiPhYBSs=
-X-Gm-Gg: AZFdTZdnP4319FGcp49q8jPG07wT9dGdPhRItxiyhp/tz3IRarOsw0Ajndb75zk+h+w
-	r1xmIL5KEyxfAlbEbEtu3rQMDwxWB3NoQZ0jvvj4BsB/EdYEAV5XfXrLRHHyChTmWmrb62w9BHC
-	46SKGf+ibS97QU6w88oL642/8CCGey/wFgPn/uhjn4GBa7u3CW6ip1CG0gml4ah2P3lidVcS1wZ
-	GTPCnCvmeyhsCSDmybWpKOMKAOEoWUiBSBh30f2Wtp33Tz5eB9TRvkMRG7g0ZShvoe6pEINpeMQ
-	JmALjtIPEcZXo9vjiEl/CUm3w8fDr1MvWCfA3Q65F068nSRcjx6C4nbiFkPWOrQPISVyy9GUmfA
-	gacT5/GZwGPZtDLNV8F7eMitdSWhyT8mCOMSslNhOZIA8tz/XsaGKHToFqa/UObU19UDxmBW+Tn
-	AI2EozZjs+wB3yF9JgpswiGD4EPERbYBmXg+1aTrNa5mhAc1+JdmCspqrX83g9L6wg616b3+PZ+
-	5/KZRzKpn2cDsBAMhPZ88t+8iV0cT+5JywzdwrkDOy2VKCJbPWzneWutF/viUjwxNpHfXhn259E
-	I2tWOOTu10S33nyXfJkycelU7xP/C0361Qt1xVTJQeTkTnCmA7iE49p2dZw9nU7dOzDDoZiSZxz
-	hziBdf0c=
-X-Received: by 2002:a05:620a:8387:b0:947:8f04:1c1b with SMTP id af79cd13be357-949ba7e4216mr1216194885a.3.1795331270129;
-        Sat, 21 Nov 2026 23:07:50 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9213515f467sm69991526d6.41.2026.11.21.23.07.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 23:07:49 -0800 (PST)
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="qd7P/w0W";
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.103 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4aLff9bBf+2cChSkzEnmwM9IlWonQJ2YgakFBBad1qc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795331290; v=1; x=1795936090;
+ b=qd7P/w0WaHeuRUTwmP2qeoqkF+rWM7LaWRV8M79yeWh4SIEaQrBwzyCzulaat+uHOMVTGJkD
+ ortCJExsp3wH6cfLIfB80+UMMWjWPQdAx3xusnzVFGfb3KMra8L/NHzsYE9FyEQMDVLbMm/zeud
+ A3Pu20dOGiF8cSL8qKuFTUP8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b8ffee67358adb4e;
+	Sun, 22 Nov 2026 07:08:10 +0000
+X-Mizu-Trace-ID: b8ffee67358adb4e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <bf367035-ee89-4489-b268-631120ac1143@linux.dev>
+Date: Sun, 22 Nov 2026 15:08:06 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/list_lru: fix potential infinite loop on xa node
+ allocation failure
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Kairui Song <kasong@tencent.com>,
+ linux-mm@kvack.org, stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+References: <20261122031143.3639941-1-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20261122031143.3639941-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] [v3] mm/mempolicy: fix copy_nodes_to_user() for
- odd inputs
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>, 
- Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
- larips <larips950@gmail.com>, stable@vger.kernel.org, 
- Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
-In-Reply-To: <20261120185248.823415-1-arnd@kernel.org>
-References: <20261120185248.823415-1-arnd@kernel.org>
-Date: Sun, 22 Nov 2026 02:07:48 -0500
-Message-Id: <179533126873.412063.12506068140979067572.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0592980002
-X-Stat-Signature: yjc5smn4spq7m9m4rdww5i5whfrwnm9e
-X-HE-Tag: 1795331270-673604
-X-HE-Meta: U2FsdGVkX19S18AH7MetJpISJHbZzGsUiTkZG3XxRosKyhYLdu33dBDomp53G9M8bm3/M6ra/e3mrUI4DjKFhr9P+SbQlVkH5BBfYUGuY8I0lsl/Seo52tJE4Qhn9X18MgjJZI50onLAc1X6Su0It7re5SIsUmE8bV5zLbu3xrEmmq0Bb1rnvVSy5CfCu/U4WG7ETN+IEDfFv3zaFoZOfZBaLAmx3K7bO7sdThovASORACK5/ccgDth9cUBfTS8Gb1ITQ+gBui5egR7PQ7O6W18atUmKYmbBhyPBj9NECSuO0XPxyu3FZel8n2k/btZT9Hrk/8ryGckTPjZFLK+vAqCH41z6id69nffuWs63AjcpL10/vA6Z5cfqXog3cbPPusGTnJAthLf47y/J66fLIxz5XRb9JoFBROCLccOlZpn1rJcqoqbGOiTUvtf655B5nyPqX3rYOkAOMseg79cd1QbJ5F73/FFUNvwPfXnE1y55wkbnhzl33VMbGnGJG0Djsp1AdFXinETzlcQvNR2jc2JThasOpHHUrn+RTi4akkh6c/kzMIaJ3ewKkXDECTBHi8sfjTyE7G5UoU3FBsofI8xxOeko8ZKI3qFYDs1qs+Ua0EVDpY6QBt79/0hS9vszNGsTEX7ReorwLaIlwn+LPwGsmTAMPRn3iRBLRput4lqhdSpbz+hCYncggkDVJ7vCTFIhD6cceZgkpbkLnphDCGfawOiLCruM540VeFj4q49NpFPLxpi7CwdxOzly+Az3iuwNATVUc2PvrXPCor4feEALS6u3QOE2ddY1QgBpmb/Q0KlZdsOIG2XSSL7FJC9McXKUKwlwKaQGcfPcfW84tH3y7kp6f99upWBqGDtqykfwBe+XpTnczjcw3yU+xx9akYGse7wzdsGdxeyRfZHc/Ez9xQdiDbRA7SPhhIisacfER8wlsaaEDCoM1bZKFAJ976yqf1USIzXCJTgcK8n
- BrPjpILT
- qI7nFcmX+9tvC5luI/4igrotyx97YVFOsT4fzPh/2FDssu+F/6Gtv8qQoNNEMZKd39bsfWmwO/UxK4AVUd99zay2CkUwFPXHOYQNwQlUwQhWf9SAwVEoxAHf34ZL6smDbxpYYGgm8+Q5ividUJ/t0+/NBWN/5rfoiasrbo4ZDvlYOMGHRfUURzI37rG5rwfx7B6tX2aNOwEHKT45EYnEvNNJ6KuKNnHWQcCWEclXg56ZyT6I7mELv2MLmBeor8qdM5s/4nEkB8kj4klXC59oiRtA1TQ1wnCADMQRCt6wm0IOaTzV5LqrJNiLbVzH7yEUBI2CpVR5jjCueidBsMsiBsFxiFm3OnKxFyQTv7Fuogbn5sJpplmIlhn67HjYMClFlEMDZkSHoDoTaY+K9Kb70R2CGsOfRamqbYjUD9yjXpekcE86Ek0QEkSp9jX9t56KIGr1KXr6j4xxp//7of/RyNu7HDa9zwIb7FE08FFS96jss4um23NAm3wyzhMBIJgAtAH1xgRlOYhmEDYNtuSprfeMNTfbTCQWV6E48RxG4U7fYXJyTnhQ83iT3Dc94malr3f5X6Jq02541VCUGrXVZrOt0/QVXx0/w4/mow85MtMgpaaVUP+VdOa21bY/DA7qKNFq6yhx+Z2PEQWDuD+pGx4h5QwkrMpTyhVo7
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 4E01C1C0004
+X-Stat-Signature: 7ig7oh49xc77gazd4qnef5z1aewbdoxa
+X-Rspam-User:
+X-HE-Tag: 1795331295-197884
+X-HE-Meta: U2FsdGVkX18lU7n7ZuvFaCyb6z31LXfUsWCp4trdb0y3FlJDK4CF3rvQvCiuUCTy71uImDMHuTqw61RkNrozuP4ZMZ4wVSY0W8mqFXymvcpbIG0EqRlsC8MvwA1WCu8+oGfS13ObY4XjaLZmOsMvI0kwFf0ViU2GeyFEaSLoJ9PHQcxxqH8Nzl492WVMRfpoOHVE2LBtl8f60I0f+Tk7i6CrFBb5BKUDyKKEKgsBWZm10Cv4af591GZ3yJ9SL97JfZIZ4dFiQix5Aa8idPSMNZ3ggyoYuhjovJTqOvX9TQM5E7iMFDZSSBAOLv16SZMW0BSOenVLl+MooK4PJr4V20yBjsqIXntTedtyQiLBX1ViYTDZoyw/vgIzrakogugrs2yimYyNHp+avfVLFmCFa/MRNua8WeKS2cx+5LUOkx2YEq68Nq1fzXWh+Yau1gH4scQZcUeuRRi4qBgQkC8lqpWBcklSAly39Vw47jU6mL0m86kx0QRlBDE1JRO+JGsvOVDgsFq2YbKmLbtPicwRoIoCiDHW4RXvDonvDboMZumuTUM0HBaeFp2uujvp5nkKJ0neY1qu5num964hv64qVNd8TcFuA8Si00k7FpbL9MJUNNA+I6KSwnUaX+7SmBQw/bp19BZxO5xgMEKQG22X2LXQrad8nUuvUZfiLpdTOLszFmAPriSCAIZpON+nfEdeTUyraGcA+kjgbWegILFqefFpyfn66L0VY/sONU8Mo8bNOQ8Yu2WuIyNdJyXSoIzl4NIr32YeeDA1g2N2gW/Y2OfWarFslCQ1GS9zjrIT79MOCoCQsH17hrz64vUOEoLnLjg1KueO3cqhELeU5jsfyO+u0+YtsIHMsIeNxdWgwnrT/eTv/79vQEU9cCpTWB/ynY2QdRgbTyLYezL3/e26MxXCui/FoTEPIM+oe89UUQnVZAB79XZlsLbR/sl8Mk0eEREWogIP4byPkD+PVVB
+ oMIsMOzS
+ voAbpDbjK6nkegXRizP2OlgL4geLetMB079oYIEdX8kyqp50kQwPuIHx2J4nczp6v7aVFIR1bQPW/HvQ/WSHEwIZ8YS1JTxqX0gkBNhoDlZb5kk/xH+XQRvF3LESJ364mZ1qzEGIWyBlZLTMzLKucPrqka6Ji4byHRPg2Tfx8WNYodbbgP0W08sSzS6eu2R33RZh+U15sFci/6YXyhKTUQ8IzYxdncg7MzxRcmjunymLn1GOyafRht2FReuVcySNMlROIw+LISg6V7mJarS97zo7Ooc6Rs7bwS1cRFaD6j428tl8xVsodfztmXdyrIoTWfBCAYVh1Gdl6WN5SUWbLM1DQmdzTliGWIEUVnHfvZHCb0cP7zekRFSgscMFvyb/RWgL4UgpWiRGhwIsOAx33Px9OCVeIPSk+FbU1KnUso3biV+AGUpNDFd6xD64+FJlLDagXgax3SVq8pNRbrtDhNfIKp5JpIl9iHn220leaSm73fbAvG8CrVxMz3pcwrterriLIdoQ2ATQS1XouqfelDdaBwsVSr5kEE7uAML7da2DyLDjIJeOHH5PauhQeU6qpJ41KYOWaRZNGjB8Vy50ZLpfSPmzN8/XapLcsT7pPni/9OQlp7udeBXTcdgm++rdx/3B0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,37 +97,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-20 19:52 +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+
+
+On 11/22/26 11:11 AM, Muchun Song wrote:
+> __memcg_list_lru_alloc() populates missing list_lru_memcg entries
+> top-down, from the farthest unpopulated ancestor down to @memcg.  When
+> storing the entry for an ancestor (pos != memcg) needs a new xa_node,
+> xas_store() sets XA_ERROR(-ENOMEM) and leaves @pos unpopulated.  If the
+> following xas_nomem() also fails to allocate, the inner loop exits with
+> the error still set, but the outer loop ignores it and reruns on the same
+> unpopulated ancestor: xas_set() then resets the state to XAS_RESTART and
+> retries the store.  A one-off failure is recovered on that retry, but as
+> long as the allocation keeps failing, e.g. under sustained memory
+> pressure, the loop makes no progress and, with no schedule point, becomes
+> an RCU stall / hard lockup when the caller holds mapping->i_pages.xa_lock
+> with IRQs disabled.
 > 
-> copy_nodes_to_user() is broken for compat userspace in three
-> distinct ways:
+> Stop the outer walk when xas_error() is set so the existing cleanup frees
+> @mlru and the error is propagated to the caller.
 > 
->  - Passing a power-of-two size plus 1 as most normal userspace
->    does can end up calling compat_put_bitmap() with the wrong
->    size, copying an extra 32-bit word from the stack into
->    userspace and overflowing both arrays as compat_put_bitmap()
->    expects the actual number of bits, not the number plus 1.
-> 
->  - Asking for an odd number of 32-bit words rounds up the
->    userspace buffer size full 64-bit words, leading to
->    an out-of-bounds access in userspace.
-> 
-> Fix the calculation of 'copy' to be based on the userspace
-> word size and use this to for calculating the final number
-> of bits to copy as well.
-> 
-> Reported-by: larips <larips950@gmail.com>
-> Reported-by: Gregory Price (Meta) <gourry@gourry.net>
-> Fixes: e130242dc351 ("mm: simplify compat numa syscalls")
-> Link: https://lore.kernel.org/all/20261117101910.1820066-1-gourry@gourry.net/
+> Fixes: 28e98022b31e ("mm/list_lru: simplify reparenting and initial allocation")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/bug/linux-21c1dba9-8d6f-4368-b38b-9a57cacb056f
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>   mm/list_lru.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Acked-by: Gregory Price (Meta) <gourry@gourry.net>
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
 
--- 
-~Gregory
+Thanks,
+Qi
+
 
 
