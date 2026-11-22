@@ -1,68 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A736606A333
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1340606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kP2ZwKLJ
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=CQ21YEoh
 Received: by kanga.kvack.org (Postfix)
-	id 6F2536B05C8; Sun, 22 Nov 2026 10:55:30 -0500 (EST)
+	id BD6E56B00EF; Sun, 22 Nov 2026 10:56:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67BB76B05CA; Sun, 22 Nov 2026 10:55:30 -0500 (EST)
+	id BADF16B05B7; Sun, 22 Nov 2026 10:56:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56B4D6B05CB; Sun, 22 Nov 2026 10:55:30 -0500 (EST)
+	id AC4876B05BD; Sun, 22 Nov 2026 10:56:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 297366B05C8
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:55:30 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C0741206DE
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:55:28 +0000 (UTC)
-X-FDA: 85463204736.06.C80AF9A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6FAB340008
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:55:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kP2ZwKLJ;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 822056B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:56:42 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18492140709
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:56:42 +0000 (UTC)
+X-FDA: 85463207844.02.B21049B
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3636614000E
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:56:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=CQ21YEoh;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795362926;
-	b=oMrZrBCGu1YccWFstixqj14Sap9mS9jajqgOO4aoqF7xdzpKvDp7LZedhEeRF5hTTQc15O
-	S8yvpqWLmzrW0/nJ5orDbVP8koLgutati9gkCBC71KXWMpzEAFoU8f85xRxTSPQFEKNKjD
-	/KGS9m1ov2ZFnmuQsxfrI+n8H6z3MT4=
+	t=1795363000;
+	b=20quRLTR3gCutXSIgNjy6KJ1H5Zsx0F+p29Fxc2uOE6ZUAGfltafd2t4dikJlloZQBnRKt
+	DsPSfWVsSmlWbdxcc9X2Za2fpSQGg9PJ9P692jTTuofLqIH+l4YnYJA/I4K2qgQDn5hJw1
+	heHS9ke+d+yxTUmL9JSeFDSx2NbOOuc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795362926;
+	s=arc-20220608; t=1795363000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8uB9TUoaK0EwcPdykqZJN2k18gBtw3+WNOXzc7jc1Ow=;
-	b=SZagpozLtpw0feH42xLprljpdx2Wx4gEgdr4/4n0VdlhQnmeWMcmBA7rrd6N2+cj5Ho2eq
-	BRBU/azMzKle/uh+OqYoAEdxY/fhjuHWWB45AzLRkC+6W24dAMcGqzKpWTyZBdcwsCj+4+
-	UyWYImTfvBxxyc0SOO6HfmoJByG/Ue0=
+	bh=VgqznfLD+AEq24VzpD10ISeNufFGoggr8PryRgVLhYc=;
+	b=oqEY7M4QNRxWLZiUOYedV7HzEj1z1l8uMeuOtBjlP9ndVWy06VElJy7OHO1+YYg/d4GgGv
+	6PtR3G2GjYjxzLZ0bqvIlz8BGsadbLh9CCnFSGZYDXI9VWyM6tnlSIFQPM1L1AwRbcEW/K
+	Y+rIL0lK9/GpHy+YEBCWpFSoSxUNUpc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kP2ZwKLJ;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 517C140748;
-	Sun, 22 Nov 2026 15:55:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932401F000D3;
-	Sun, 22 Nov 2026 15:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795362924;
-	bh=8uB9TUoaK0EwcPdykqZJN2k18gBtw3+WNOXzc7jc1Ow=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=kP2ZwKLJeJwsViHkCX55ky7IhiP+3smbuMwEBInHWWEEeV0ZYBqcpyzNJsHW0A8Ud
-	 dbFSRCYH+rmB9iQO/qK8BRRXxxLwuT8E+geJ3YT96hQM2XC3Fjtep4GLnOB0/68u3u
-	 T6C4MaYFNMXm6sJ8L5+3WINBpSQ7t4huLi5QujFMpxNG0H2chHfkOAI+2ldb3weOYQ
-	 UlnSGFKGNIIaXFMmJiP9PVZ/1MPe3bdvYvG176oICuUDESTclpsAv1VcM3mw+58NrK
-	 YWVrUOSzuQ4gTQ1MGe3nmHDuW3rqdivJ1gqgZbE83diZwGVNEGLSUOBb+efHS4q3NM
-	 BbNj1+gez26JA==
-From: David Hildenbrand <david@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>, 
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=CQ21YEoh;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-94962d80d34so157106685a.2
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:56:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1795362999; x=1795967799; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VgqznfLD+AEq24VzpD10ISeNufFGoggr8PryRgVLhYc=;
+        b=CQ21YEohS6hZTjeG88eQon8AePCKAasdmRtUPKkeUZbSthIVdJCZBfMihNyIQ9I66z
+         n/9vClVstBeWGMaDx5lixmC5m3UHQJ+GHavjVh0H/FNFqm69tXaicqiuKHg8Br5qRlyk
+         B0FBf7vQVLqbGZZYfNK2xOq23u+iAIJUo4/6HMGl+B9ubP/PCw+XY6p3L9oxxUH8CBrQ
+         u/JErnnnAjNe7OjP8qZ2LPRI0s3KZUZLeiSicOhI5q8KwV0Zasf5nlUtNxqPGazsBQPV
+         xBEldURFB9ayV5gbXr2zYIlAXcPfwbmTSFFa9vpBEEl4CSFGYg9q1B3CPykJyLfFP7YA
+         z9Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795362999; x=1795967799;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VgqznfLD+AEq24VzpD10ISeNufFGoggr8PryRgVLhYc=;
+        b=jSk7/EbQJvgbK2BP+r9NYzHtP9U68In3i7GS6NPvCqyyeFfUoPtWY4Stwj+kiJnW6c
+         Sc0tSQVSSIYHYnPp8GioVGufdPRaPGhQvcfo+wThyDkXNbxq9e6YAswxfF36SDD8320J
+         KsyAtXLXVvRGWlAdaYOrqT/Sg980Qj3fRCpMW0/tlGZEjx3FnP5rynDC+i+EXlfGQxcJ
+         60jFIkUDUc2m32aWwl6IN4a4MgK2hnCqrMYurZnvnmuhRk+hn9iwvDsaEzjISuxmNGJY
+         acV3eKh1LS5+AaElgaXGzNR0lS2Wo+Qr/RmfAW+mik8BsxC0e9aDE2FmUJDR96uNNyTb
+         T2kQ==
+X-Forwarded-Encrypted: i=1; AL+hErH+29AfjGsHI/Aya+haWpOg7balNcXxbRUJeJpE4SadeZ5xDstpGOwg5etD57P3YhOs2LKsfF+SsQ==@kvack.org
+X-Gm-Message-State: APuU4Z/pTRci8APet57AZI1tbMhg/x5B0Nnl1Gl7ld7qFQnJWdEADY1e
+	9ib7PCP6TllSqvRGqhakRNdD2wQN3uOjWYrg3Hil/9ur17RsaxSxPEOm6xLVC6aDwWg=
+X-Gm-Gg: AZFdTZeryJ66gEd6Vsi9KlaaXqLCAXgcd8cfVdG4cI3c2tkflppMcdLisOneoOmvwxU
+	5LXa4l6QdAgtchZCi2lm1IhblnZ+xOFNO3V/aNcie/WpOOiCrAm2+5bALmC8tqRysqZjKNoNgoY
+	H/jmPf1ucIid/ytkmzGbYPLW9SltNaLYONyfbluZM3e710jZoK4+rN8BFjuJ9Rsjcs03cgGN4VI
+	wNOwuF5RVPbU8iOK/K93aO1uvITrThQqDV/r4bFk4B/17ZnrQqPi+MAZgcQPWNPOEgwInRjo6Vj
+	lTn9iGjWuq42gkndf0Lc9AzdpGLtNMQ89MvMQQw2cTqe6oNRlMwVzVBEFJmYmOFSZClsxNn3aK3
+	YZOFXw6uxvT/Lzt7zWLv1tSIO3S/TvpgynN9RYsD8hZe3liVqBWAHjD7F8x4tQWxUYPAs+nDXBI
+	15yvEQJDdqA7FiUxyyZ1EXPUHTb2U7d34GNe8V2n7YBlx3yQuir03ZcM966VjZ6feDwiS2zIpr0
+	4/T43J6fCTUa31+g2UoI200Gyv3VrkWNTE3KrIdTvaa6v4hCkU85q4L2IpBc9wO3CT/K9K7S68B
+	y3E0zjYksExKTYKiMrYAfq8PYOfX1HKkFooQR5HIXOtCJ6fIBnddlbMeTdakLe5+D56tTW1MnLD
+	b5xwO5Ok=
+X-Received: by 2002:a05:620a:45a3:b0:949:6e15:e1d3 with SMTP id af79cd13be357-949ba8246f8mr1442513185a.3.1795362999210;
+        Sun, 22 Nov 2026 07:56:39 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb3f2de5sm619042185a.29.2026.11.22.07.56.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 07:56:38 -0800 (PST)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 3/7] mm/ksm: only interrupt unmerging on a fatal signal
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, 
  Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
  Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
  David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, 
@@ -73,33 +110,27 @@ To: "Liam R. Howlett" <liam@infradead.org>,
  Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
  Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
  Hugh Dickins <hughd@google.com>, Joey Gouly <joey.gouly@arm.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>, 
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-In-Reply-To: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
+ Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
+ Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20261121-some-more-ai-fixes-v1-3-236e925d9b64@kernel.org>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
-Subject: Re: (subset) [PATCH 0/7] mm: reworked AI-generated VMA and mremap
- fixes
-Message-Id: <179536291830.3243.152389320315927715.b4-ty@b4>
-Date: Sun, 22 Nov 2026 16:55:18 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
+ <20261121-some-more-ai-fixes-v1-3-236e925d9b64@kernel.org>
+Date: Sun, 22 Nov 2026 10:56:38 -0500
+Message-Id: <179536299808.412063.10679914509257827963.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: jp9xoicj8ua5k8eg5yuoueccy4oakcyr
 X-Rspam-User:
-X-Rspamd-Queue-Id: 6FAB340008
-X-Stat-Signature: sa5cii5ti5x4oafxpkfid5otyszxod4u
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795362926-959362
-X-HE-Meta: U2FsdGVkX1/yhZx+9a4Q+/p2bKBmXqd2n/lIlkJEePiwhNkCIXidBZ+FtMItLgcAGL1HzMIvWE2HGjQ6702PI588H7Mn3SJYPhzyO8T4PZcBHLUVZnx9SypPRHNY9S9p5V8tYWNyBbRSyKOd+UmUE8kRhdTEbzK3eOJ6R9knSpX4xa8LbZ2B/VcAoTDBjSKDKEFGHIhhQcRRiLWKr5omfKe1Wk9x/q5w6DcdoftZfEcoEyrzs603i5u66/7N/NFajUDct7FUrz0DxddeINUYYVkOkGP3EpRnG8rkF0+lgXphcFStkszR3Dovlcv2aQuK+rEKH3G38jmMX6kWJPuF6/0ruC9wYrg0ZOf2zdv8zycQXA9R9Qv66w1AV6kw9eMRCv1KFp2ENiUKUYG/ASfGbg8LCzEg0kSj5yNSV2kEQmQog0IfHkLc4pkVSAVIwXcv+EYFM3pjcGaXDgfMKt1W0lxQ1aoVxdw5seI1TOU3ndv0cuiXMGhklGrZnubgM2Ux2U8GN35WxMyVFYzCSQkvD2i3AH6wnhd7yXBA8Wl425atxhJE+vN4kW5qRDRsWb5FBwROwrZkzrZ0Yn8psAVlbmc9fMG6DLAtaGkSzfKGBvLIRviynxYKpD3l/4W9bCFO6qs/1hnkTKV3Z44HRYCOgFczJ9L8A4J/ZwMWrpo8xC2GgUi2k8y5rvw0pyUOhGQvkf30fYdIO0+WgG9wF+8YTve2sJYim+N9deL/odFmQI92NxKW5dnMZoAySC2MXEIIJxZhs5NwVf2b8CFhpvSPv2m6rn2JaeLHAtmjkQdFavmvwpycFhnde0wZFjcZ8MAnwpAWxzQas0fwZefgIRde7VCkKr0GSkNGwAI60eDQdfXW7AlgNRnQvdmMpYYrvk+f5u8n3dSls64zazOAo6kYm4XOS9OY4eUv/yDI3+BI7Ivt12YR2fMcQ+lHpBU71eFW0Ljt05U4JcBjdUJnx+m
- EdWSSNIF
- GNtxVKBSHvrwGquhJjz0fGtw+0L2yuYif/hgW9L7G8nNWvfgfYlmJ4+IBY+n+tkhwMnsF1j1CKeBz8wmwycVzbw9idjtNvRhkaPJGkY+GqM+F6qjw6EvRlv0xYVtDLTiibcDAEcTIS0MLqnHERaW0USDnk1vfTv+mfffn1hXPgFWOUQDq6OYWaiVjt7BM4TV8K+qEqomaply7YMF3X7qHgh+vEck7YzDcZiCweGGpq5dVYalRWppWOtETscw+m3ALRmnl/xNq2TQmo4IPEMX7PWYssZaffCnMeDvF9yDbeRtMiIBKpJ748rp4g8qJjzJpkZgSiVeLGn7oAx2T0A3cJtUzVmnqBf+xcbBYD/Sm018p5a8U6aXESVZO37oDfY0KIrcj4r3kPpdYiAc0OujzuP4nFtAJ3iwEyILfolwM6T0f3gapp9guvbBcQYF97AdljqquZv31eRc4SR6XPSZkZAzV4g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3636614000E
+X-HE-Tag: 1795363000-225233
+X-HE-Meta: U2FsdGVkX18VSDmMK2XuxbttllHMnnxlp41dSMi5b4TJJDe84wiWolKvVDPcWqz9A2asiRs7xwqyPrW/TVO/Y9L3mXrCf3YJTSc4C8MxyWZrVYXAZxGe+JELGWpLybEjjp/P/Aaus9QVOC9ExQqgHfBxUUspIvz002pZz5a8hmrS3ed8fEEhpcq0sLZaA5pxHN/0wDUnJQ3WV6ilBso3/EbN+yRrvCKAMLT+a/wlRybtq1tv6LnOgTFi9wkKIlpOG4DMRnbJVSoLQI7zEzrZ4q45KZXS0eLiGQG5ZPbe0+bChiJ9PXu2P6lzBa56+21Vgv6bLuTUguUxQufINCfLZ/aR67O4a3rZxt2yiX3acvPyu68KYY41cFuLTwYfrfNHIF7iNKYi+I7wjhkWHLWXCYsQCnJIABDE1cxN4EwcBfqeSvkMrYkMNUpKPhNRbhFXOCpElfqga7GTKo6se359x0wvQOvPMBa5WY0j0r2GgeM5eLc+aeqTIsICNxuan6QqkShlLshbW+eK/C8bgB4ao+OQNoOOJO4nr+xoQLR+Hd5ofGMRZ78KeNpcJEHrdFuol9CXdHsgFzungFrZRdTNAdQ++eUpBZwjGPdc7XnxnCFAfOS6tOSa5/88zyUyyxxKbeVtgHgPdqmazOzxLbYkxdjgmQVkDOpMvxFnaA4mR3rFBtncWxqP4RchNcpPkc39GNbRFp+4/OiHpXfJAwyNMocLvekV+ZtPilh7XqrjSZ22MRaZ0DngF8xo/+2A8KgZLpd56QEMCnheiWsCDdRzD5vs+62YShJmVx/ct71ndWOXuIx257vZ3wsdKdNQd/WKUvHVXuXqLzcktKA4nHJnQwMgUo9Pyw8K4t3iUe+4Cnb14ccQ6cynl2xBMEhxl2tXQkLBQfr20glUUSfXFscaXgWOdTklyXxXr0ImvQbHG4LxBF3SlF+miUNNjXiZ/36M4uqhh/mYC2x16jFZFNS
+ VYP0s625
+ QpR1u8H8om4QIWsEFnsv9N5NBkATpgBuT+DpKynx5ajNJBfYDSsJpH96X6I4ElvaSiGIcNn31r/k+DXv0PLNgS65qbN4MpZ+VaVl1a/RFsJXacj9VRf/Upy4WKtuQDVCaCidZ44naeBaaxAI6DRREZyuENOw3si5tuFbjh+MeqpDy3DnBa7QM3Dw49igDFz0kvYULqjypPktVHIse8dO0nAxWwLl3Jmmi7hBLuJQXkVzPFf5aAZ72J3TmyvKj1t33s1oupbLJkUjthuslWyLUJKn6wbC0iza9IL5UkhGH6DHO1M+QPBE2YGFS66Ej+aspM44RwIJVh8ADJKVPxfI/RX818W83Ss3ft0A33+55HJbTKFYQyUijBhCvuK0OzoK72OPHAs1u3T1rLi82EMo+MKtW3YTfWf7uCwvHn3HlkHUKaHvxV11kLFm7ZUZcSccjeGlpPc/D2pmBIuRqUkipYMqZWSyeuzpRE4AxnZr9B7pTwFzZLAUvP5mqNdEhxTUOcnQ19Kn0bPE76r8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,43 +139,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 21 Nov 2026 16:02:26 +0000, Lorenzo Stoakes (ARM) wrote:
-> I have reordered the patches here by priority, David - the first 2 should
-> be prioritised as hotfixes, the rest can go in 7.5:
+On 2026-11-21 16:02 +0000, Lorenzo Stoakes (ARM) wrote:
+> Commit d952b79136a6 ("ksm: fix endless loop on oom") added a check for
+> pending signals on KSM break, so that a lengthy unmerge could be
+> interrupted, with the system call then restarted via -ERESTARTSYS.
 > 
-> == Critical ==
+> However, it assumes that the callers can always restart whatever system
+> call started it in the first place (the commit message questions whether
+> this was wise).
 > 
-> 1. unmapped_area_topdown() invalid bounds - possible memory corruption,
->    triggerable by any local user.
-> 2. Lock VMAs before mm_all_locks_mutex - system-wide unkillable hang,
->    triggerable by a local user with FUSE.
+> Well, it turns out that it was not wise, as this baked in an implicit
+> assumption about system call restartability, and it was and is not safe for
+> mremap().
 > 
-> [...]
+> mremap() holds an mmap write lock over the operation, which an -ERESTARTSYS
+> drops, meaning that the restart is not in a consistent state.
+> 
+> This was made considerably worse with commit d23cb648e365 ("mm/mremap:
+> permit mremap() move of multiple VMAs"), which can result in data loss if
+> you encounter this issue.
+> 
+> Consider an mremap() specifying MREMAP_FIXED | MREMAP_DONTUNMAP of two
+> KSM-mergeable VMAs, where a signal becomes pending part way through:
+> 
+>     first pass                          restart
+>     ==========                          =======
+>     unmap tgt1 range
+>     copy src1 to tgt1, move page tables
+>     unmap tgt2 range
+>     break_ksm(src2) = -ERESTARTSYS
+>                                         unmap tgt1 range, which now
+>                                           holds the data from src1
+>                                         copy the now-empty src1 to tgt1
+> 
+> This results in the user observing a successful mremap() but with src1's
+> data missing.
+> 
+> Without MREMAP_DONTUNMAP, remap_move() would find a gap at the start of the
+> range on restart and fail with -EFAULT there instead.
+> 
+> Fix the issue by only breaking out of an unmerge if a fatal signal is
+> pending, returning -EINTR when we do. This makes KSM unmerging consistent
+> with many other signal checks in mm.
+> 
+> Target commit d23cb648e365 ("mm/mremap: permit mremap() move of multiple
+> VMAs") for the fix as this made the issue significantly more impactful.
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: d23cb648e365 ("mm/mremap: permit mremap() move of multiple VMAs")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Applied, thanks!
-
-tree: mm/core.git
-branch: ksm-7.5.misc
-
-Applied patches will appear soon in mm-next, followed by linux-next.
-
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
-
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[3/7] mm/ksm: only interrupt unmerging on a fatal signal
-      https://git.kernel.org/mm/core/c/d90efc5d
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
 -- 
-Cheers,
-
-David
+~Gregory
 
 
