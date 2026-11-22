@@ -1,93 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B9B60A261C
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96657606A338
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=n5cr2gsW
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=b/lVbaU/
 Received: by kanga.kvack.org (Postfix)
-	id BBAF56B05B9; Sun, 22 Nov 2026 13:45:08 -0500 (EST)
+	id E534D6B05BA; Sun, 22 Nov 2026 13:45:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6BB36B05BA; Sun, 22 Nov 2026 13:45:08 -0500 (EST)
+	id E03A76B05BB; Sun, 22 Nov 2026 13:45:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A34616B05BB; Sun, 22 Nov 2026 13:45:08 -0500 (EST)
+	id CA5536B05BC; Sun, 22 Nov 2026 13:45:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A2D56B05B9
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:45:08 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E43FF1C413E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ED7D6B05BA
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:45:09 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1199212071B
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:09 +0000 (UTC)
+X-FDA: 85463632338.21.114C19A
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4F42D40005
 	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:07 +0000 (UTC)
-X-FDA: 85463632254.07.3F92FF9
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 33C864000A
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=n5cr2gsW;
-	spf=pass (imf01.hostedemail.com: domain of 3MDgDawoKCA0w6u17tu610t11tyr.p1zyv07A-zzx8npx.14t@flex--jthoughton.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3MDgDawoKCA0w6u17tu610t11tyr.p1zyv07A-zzx8npx.14t@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="b/lVbaU/";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3MTgDawoKCA4x7v28uv721u22uzs.q20zw18B-00y9oqy.25u@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3MTgDawoKCA4x7v28uv721u22uzs.q20zw18B-00y9oqy.25u@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795373106;
-	b=k06dds1ZkCE+EpF3WnaJTataJt8FIWBTi3p3PVAFBpH4xO3s4JNuIQweQUZrd5Mr4aTZmR
-	DgotxXXBCbEM4bYM1ZwZ701vVs7UZ5upqu+VNgFfzt3+yUJoZW30jOmjJ08m4dcBFgIOSS
-	4pX17nBqd0HRz3+AsNPuYE5gxeSXBoY=
+	t=1795373107;
+	b=1NkLOvLGhaudiRneMpul8VbIE3bwkFdT4bUMNoFXAB9SCr0AaafkRpPmKv1fschP6hw1Mg
+	vlWFIznkbA2McRJ2XXd6EVvoOUktvXhb/x8yDnx7ZIpRWsRG9RNLc9I0gO8WpVr9d9Syn+
+	O1l/lFYfpTZgAUSJy3T8FqONSltPn7w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795373106;
+	s=arc-20220608; t=1795373107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mkVu1BZEh13paTDpck3U+A16xbW48tKn8diy4BeXyyI=;
-	b=Fr+1UzKnt7QVCgsj1mYtuInWXf0Kw8oXPZ69Rcos1Cq5dk0p6ArsEiOYwaW2k9JZGGAT+o
-	i9ps51OZiJbivc5DSPdF/RsVBW8lMjbo0+NzPH4oSD0JOuuQjcH93ATgQmNICSYWTs3Hal
-	QlDC9wSwgMCMTZkKzsIIK6gRCUQPN08=
+	bh=bXQPSKJVaqWfQL317csB6FAtCBOwMGNwoZ92NFySUdo=;
+	b=4U/sGXM0wjBnb/vpEgpVtM4cYNsBIINZKc+bhYylZadyaPfw6YNMQy/SLZJun+5fkFSBnm
+	ANzIsQBfMpmu+sMGTnD70S/YFyDzdoTPvu3GLEOw1aBaBwn8J5pQwYfBOfoMFrqXgxBN9b
+	yhlOvkMqlcrzvP9wuzjJqoToG/Ew3NM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=n5cr2gsW;
-	spf=pass (imf01.hostedemail.com: domain of 3MDgDawoKCA0w6u17tu610t11tyr.p1zyv07A-zzx8npx.14t@flex--jthoughton.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3MDgDawoKCA0w6u17tu610t11tyr.p1zyv07A-zzx8npx.14t@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2f053f95aadso18895845ad.2
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:05 -0800 (PST)
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="b/lVbaU/";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3MTgDawoKCA4x7v28uv721u22uzs.q20zw18B-00y9oqy.25u@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3MTgDawoKCA4x7v28uv721u22uzs.q20zw18B-00y9oqy.25u@flex--jthoughton.bounces.google.com
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdb8e8bccdeso1213639a12.0
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795373105; x=1795977905; darn=kvack.org;
+        d=google.com; s=20260707; t=1795373106; x=1795977906; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mkVu1BZEh13paTDpck3U+A16xbW48tKn8diy4BeXyyI=;
-        b=n5cr2gsW6/HUndXpcmPtOBWYhYJ9oSnHhEP7CtJcBGHhhV+IUXc7CL/vE9d9/iCprq
-         VdRMcIQwxQsoodeMMeWC9OZ1KUKnsCkF6HmUyb2Wi+nhM5uvRmj2IbO3LjKNJ99dmMlX
-         uzbQSOT8k0gtf4Jjw+/2rAWrlMaBPkER2jj6aVzNznxoCM0178/7+RxZe3JL3wvrmeui
-         18m4SyF61YHv1sw30/wK/M3hZlPp64VMUbXSnApkiaLWRoBxvGfOGuNfbs+jBPl7ZnV5
-         wTX9K7kcCwT5v/d9l5ZD1H5RpoGWrI2RNWaw4xRsOHPrrVzn05QoLloakw8JHA0UWWbS
-         V5xQ==
+        bh=bXQPSKJVaqWfQL317csB6FAtCBOwMGNwoZ92NFySUdo=;
+        b=b/lVbaU/pYBAoyguwsOb7UmObvQbNndNFF0B3G5PviGZTN1+fo8xoF2WMQE0FPLEAa
+         KXL7eLJokb/VhVXOg7wC4H20qVmCno5F+F9r1lNEVXZRT3WL/2V258DEU+umqx2JiQIq
+         /Hl8GQ6DEKoobnujhMP/9enbBk/Irbhsh5k89pUXmXAt63Iot7rfWFxtkxrhQez75Kxh
+         p6iyQRbS0GlNyY3Y5ywwL0R1tebCoObewIFeTTes7m83httsMd3qYIuc0dRbX2r6imxB
+         XRJpvqkXraL+qgyEkFntIN4EnreU6oaJnPRMHI2FhGqOBd3ClKes1L0OpvREFGiKsXxz
+         aUHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795373105; x=1795977905;
+        d=1e100.net; s=20260707; t=1795373106; x=1795977906;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mkVu1BZEh13paTDpck3U+A16xbW48tKn8diy4BeXyyI=;
-        b=k2cKNtsUSebGpxRnfTD6y5Mv6uT2rG0Kn7BfBclDV9qGx/xkJm3SwWpoAkLsLt4qNz
-         ByY0AQqV9YW5YuiPJI07r2ejZGm+tqahBsjsAKHeWa/eCZHifs+eNB1Cpz8zZzY3ADb7
-         BDfYzdGXCEJ5sqSO5nl29GgiQxsIWFpXJGtIGFQJxOuY6qqXPi3XzV8jxCDLQ/xmBAAt
-         YjFrertE9UQ3mk3tVrBY3MK2PuVg6UeArwbTYgDJ6TIu0N9zP2fX4U6d/hO0ccj+bnrt
-         3tj2pLgOaNa9KNf9eAjTZ5HZTSE9255yFcN6t6X445erTNS4dIH6TWg9gXFZS9gGUnpq
-         kH2w==
-X-Forwarded-Encrypted: i=1; AL+hErEbNZx+zWy4xJPsIOe9ls2EIvsU3wo6bE6Z8rN6ObI2h/i1/VjegGVpQm0Qrt/BtvJMpoYKJ7RMZQ==@kvack.org
-X-Gm-Message-State: APuU4Z/TQNigrArAiExgWAAH/J313tLzJSAonzdP31EuktNzUbiRz3xq
-	STQJe6bEI45slfWF+hL/TuaFWr84ntW0Eeqiz21d+vNCArwi3QvPfRz3CKBhZpofFltbBQZLJ35
-	jBuH5YBm8x3thtGoZDD73ew==
-X-Received: from plbz4.prod.google.com ([2002:a17:902:ee04:b0:2ef:d472:e87e])
+        bh=bXQPSKJVaqWfQL317csB6FAtCBOwMGNwoZ92NFySUdo=;
+        b=nBDlIujph16TQBiwsZ5GgMXWARTiNd/Fxw1GwkEAXNaot5YgsvTYK9VXAO1//axWAi
+         iHK0Nh895HTFtUigJNFiQxPYaDtI3pn9CAmh7bRlukJGX5e1IfNtfjFiA9ZDFhLTzAkt
+         5QKlMH/SWkSBuu29CpCBTQQiRVrGojzF7ycvIfCGJ09eHfRu12fSH84R3GkRLnYmmoZ0
+         lWN4rPhTonYUyNm6eOJnujTejvYLBsGRIzxRvucHRbnOfpId0rbxZQpGnmMh1tmKJKUD
+         +SVPwjJGxV0xEA5BWdHA+MZXGL10QNxh3Utk0d/6yePCPWYWbv2ZBZhzVmg6iULZFtGW
+         +3eA==
+X-Forwarded-Encrypted: i=1; AL+hErE2hE8Q/gG2cZCdx7N3tItrttjKh68zZ6igNtz1uZY7PLfEv+hoCjvegyZIaZwmoOyVLIgtjRidIw==@kvack.org
+X-Gm-Message-State: APuU4Z+mBe9sU2lVD1WvyaxnxeLK0COdYKPRqzdTLSiZ91RTSe2u9dPi
+	3LjLpdBkzuMwc6sJdd9geIidLCUWRsLTKa08/NGbdAwJf2Sl5YIcZkC9/oA0K82weSvNPPBjPiW
+	1lxgVv917Fzy6OI3FKrILLA==
+X-Received: from pgjg24-n1.prod.google.com ([2002:a05:6a02:8158:10b0:cd8:b29d:d82a])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e80b:b0:2ed:ef1:f78 with SMTP id d9443c01a7336-2f03f11824amr92864975ad.21.1795373104623;
- Sun, 22 Nov 2026 10:45:04 -0800 (PST)
-Date: Sun, 22 Nov 2026 18:44:39 +0000
+ 2002:a05:6a21:4eb2:b0:3e8:b7fd:6280 with SMTP id adf61e73a8af0-4014d85fbbbmr9915990637.27.1795373105686;
+ Sun, 22 Nov 2026 10:45:05 -0800 (PST)
+Date: Sun, 22 Nov 2026 18:44:40 +0000
 In-Reply-To: <20261122184453.2668189-1-jthoughton@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261122184453.2668189-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261122184453.2668189-6-jthoughton@google.com>
-Subject: [PATCH v3 05/19] hugetlb_vmemmap: Allow architectures to dynamically
- disallow HVO
+Message-ID: <20261122184453.2668189-7-jthoughton@google.com>
+Subject: [PATCH v3 06/19] hugetlb: Optimize bootmem folios that were not pre-HVOed
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -100,19 +99,19 @@ Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Nikos Nikoleris <nikos.nikoleris@a
 	James Houghton <jthoughton@google.com>, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspam-User:
-X-Rspamd-Queue-Id: 33C864000A
-X-Stat-Signature: rn1mky3opiwismuicpypjgtchmqd4joo
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4F42D40005
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795373106-68463
-X-HE-Meta: U2FsdGVkX18BQM0JzFcigbyC2Y7MxkCFakxHocVgt/6OaYZhybTXdB7ExzJO+w3r+AUGjjE+hc2dHQG7M8mXdUO670nWruaH0EkT6b9ad4DRbOW8cZLqN04PNYq3MIAuYfeJBvsBOBXNKRfCyZrHnI5UymwPPicM60V2yg0SgkYt690zV4vtQc6pafmSGiiFfcPAoEtZdqxEOEOKMalmBIIujRAx7OfRm+3JdFPGYh+qH0FewaBt047X8GPMSYpex24iwEC4/uZIkQ8zD90Pz8pVlzoyegQhn+aPIxsturBcXZB7Bmj480rt7oFDCZlhWX7NjrFAyqMGX3zYle0vmiVrZC25xZyA0ISjq7PaHWGl59awy9vVEBiVSlDiO59urclTckBNYYW35WvVMDnJj3doKejSiLLY+J1vImY2nUka1P4cZ6lcXuf7U4C0uVx7jHTumxoD8JI9/rKy3vjh0Qt3R88QrrrS1fNlBJ0VPghDtuuTqExCfBgzlZ/VyvqJ7tKnF+bTSPmPQhUNigxv7UjXgNYo8ET7lMTLoby0annYS3E922CJrAyxsIGUyQ0cjBBP2r/TrDh8kWUuE/pRH2Q24pDhM2YnGA+Avga1cYnSkHaisrj+MxfaY4F3w39alcIMKBfSYpe0G419CB7L2GoSjXYDW7Rnc7u4P5fsppATuMR6+vNcO4Cc33HN6lE5bJBvK3XaGAREnlrR66R6YJY+U0sqCNfSNNrXIzFnfelhY7rhODSOYW8N4YKzgaZPsKxMrANNexeQqbn8/Zs18lktaoBemtWLtJ5JOw2OeYVGM4S5spplEz46uXIFjir/oaE/cqo+hg03l5uW3QAJJAlIXz5sX8Pf/ir8VlE9E5J1JL5DK+FVT8aFtuPTFNflJh+HNzIiNUAoUWuWiRUwmaEz+TJ1WRz0eyuDw4IPru1X76/VM2TL5n/spk7wh2W82AxAiorlT9NyUW6bj4R
- iUHrilmT
- SkgS1R0PRKxh7xyQVn+SZQdi6+EjKYkxAV+ZIBLcqCsMiQG7wCXqvHLvbQfNyT7U+PHspJK154WhYbaflkyNLT9x40lrGLssarySv89VPenaXHvknTi6HKfmIhNiJXvpE61WAQrWjl8t5pEH873CIYNz1+3RamojtUdAaTos6BxRDhbzipEhnNpzpoerWnU4agpWXNHG2Rlx4KfCrJw3KzzNm2R4gi6+qYfXfDNqkWOCDvQsUoxdBiXallb2fKOznXSEdaba+Lfd1maPBAxHn3kDPNp9aL72jP30+Shg5O6FcbLC2vFv3Y5guEsmHz+cGe1xXYpeth9+u/keRJWIjMIIzU47pEQ0POjPZgUaffX5wixOzoeeOP045xXx0jMBf+RGuB0y2I7abbQc23dFSw/MiULNPLcQLq/GUkNnPJuVtZ/x1BoTfDcXdl8AIwx4L3Rh61MHo7OlgTyk9ZgXmIcttJYSsxXkniEj/tLuqYjCa1259TFUIRVDk34+0PGfBRQyLM7dPWfDX9qCOYwJ3tHyvrS53Fw/esIo4KcG3tNC4ftYEM7vZooA5AIAtyyrrb7vpEhFzVpR5pFvbiP2ORDE9o2b9qoTPxFrUTRPVnCEgP4ghrwq61eH9AgX/1JPqQhSvk0lugJnhCaOGUIh0daQaqgTl3txylzwu137Z5oA3UIXjkmI7HPy3qmJxjqE3nqDt1Oz6R55ULt48tJ6/9nC5FORvK5ESb+4TaDrxFo45/JcOMY6QrdKEA4aZQy3mDYg9H6O7++xxvCzqgnIDVz17PtKxbOSrQ9DWgVH6S89XWpozo0opQ1JidFdOodcngp0qfzk2k/kAJU8T9BOJeQjQktxAYi/6OXVp
+X-Stat-Signature: couge7em1wi43bgk5rrh8n6uj1wk4mi6
+X-Rspam-User:
+X-HE-Tag: 1795373107-70098
+X-HE-Meta: U2FsdGVkX19X4s/4UDH/BPW0+rS/4rQJgqNb5oLLTgUI/98lZk6+OMShlcbd/F9R6CLW5aPnlI+3YmUmgrp//Qg5HXduHEwwFT29VdUnYUKmVfhH9X6wp15bPp+E4FqCQiGVM8h0TnKf0Sv54EGNJuqKHoqZTVHKn+S9o9fDj7EJuGORFx7rSJSOTSmnRhDr7XKkLdNk5qPYrcHyWI96UCVsfMkjr7+t25HRXGdjmHjdixaMVGse5fZAWEALTU5zMtxCY5MDZUY4MvUvjyeEUS4/XgmS2u51NTMzjcC7CVbytkGNS0c8Cym/gMUWb/W2/7H+0gnFSBOfNl35OOLmzHQBgV1pFPfhhgPRgd/vHsBBCXr4tz5jzxYg3tuM5GXoIkJKW9L4Jcq9ThCRdWjvoOUCIXWAi9NB1ZjCGQOa3hKPaN3xHOR0aRr9RnCvORIIzR6hnisDRlzFDV3q1vPEOiHftHcJeCq6t5aIs0/XfUBqUyVmJIyFj1aoTHaX3Xgq3+HKP0inOJVofjGIjzdmdX7qwJWEB9B9DNfjQNDLlDitRuOLIyBWAjKhJyIwGx3OqAh4pUw8XLGmqynnLWytdSTp/njy7c4a0Z4ZFurY5KxQ4xapVr3JoCTvmGubQr90L1b/cRANyytDkRMOO4zPh1Fobi+Ns0OpECouoQ6HvTxxb4Yjyu1ObTcyDLdypVs3P5H5V8BliKbwbzhM4grSPKbZ5doICs8F1E9WQmXYrtB/qRjz3Og6IWBCcZfC2/cmeh6OEVXZ19fynoIbZ2zlniI5oXv4u+YzuNH6/z2g2NyfTpHSie0s0rhgS2Dzl6yZCt/p5XrwOy6RuG10zBfSmV9yEaOM0AFwmSsNk102b1y55yTPRYnVaoz92ynZrIsjmhsyh4UaBkejfId7QrPcYIoDVs/9ViBj81KFnQm2c89dI4WkkUF4LG09/WGVCrlMRDKxNz8jeB7KGxiIZU8
+ 4V+Vbrdf
+ xnJEV8322BcJmYhKeuXMXZas6zKuCcjdK0WbPa+CyC1gZk+/XEfHcr1AjNOY3bjVZ2pLovObaOqu+pCUpTWjFsdN0NKlhWUacTqoxuKR1QNdhKsIpY4NhIGvfEC4F990LPriEjkQkVNUuPSkvTkqGUwNOoiZ2z+Df8d6H5y0wXSwrae734X6RGLkS0zICSfG6DzcRy/xNaBbTmbsGzr2cpYhwcrtfeLlX91vNGT+ftoYhjr5OXD0f1/pwtwTrd/pB1EIQBTqrlGlzCUmNwjfhAnPG/6DvX0JbJ3aexUO5LMroLyhUhgoAeMNOUHLEmuI614AwGJ6oZmHJ7DcKXVLqnMv2mVpq/cu3n5BD/Ro5hADqG26r9mlGjIA1i44OMbKAdzLL58s1VoaeS00IFqTnLAo8OlicvbdHDzmRSZLiGhDW9KgCnoIL+Yjykdkute+mGS51o68EcEm40JhCQr1MejD/bS8WWsWIYt1yeWXGps2/xnqCBANTOaMtoNT2aMqUDbwVDQxgc8Tkgm8OaK+shckM8r9gG3Yi17c2h4mo27rVRqzh1MIjWa2on1+glpAZ7G54xQdsbvMVFjR1FIcd8ZaDKuO/7BFcXjZud6PG5RQtpQcOSYUYYQqjQZltLTB6I8YjLnyMy+aBBYu+8XDuH88DYzzQCtREM5sBtmqOm4OcdymH/ai71N9dLP/hMOZfaj7qHlQj0j9dLvz2WSI8wuOom/f49ZtDW1Msvm75mTIuZ1YGvco2QjxvORiSKmjVT7OSQ9IuFyeTny2hGkaZBBkUlX14vTn/oTpiFtst9D8EsiA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,70 +120,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-For arm64, only some platforms support HVO. Add an arch hook,
-arch_support_vmemmap_remap(), to prevent HVO from taking effect if the
-architecture lacks support. The hook is not HugeTLB-specific, so it can
-also be used by other users of in-place vmemmap remapping (e.g. FS-DAX).
+Boot-time gigantic folios are expected to be pre-HVOed through the
+section-based vmemmap optimization, so the bulk optimization pass for
+bootmem folios was dropped.
 
-Check it in hugetlb_vmemmap_optimizable_size(), so that hstates are not
-reported or treated as optimizable (e.g. by report_hugepages() and the
-HugeTLB allocation and freeing paths) when the architecture does not
-support HVO.
+However, arch_support_vmemmap_remap() may not yet
+return true when bootmem folios are allocated (e.g. on arm64, where
+support depends on a system-wide CPU capability), while it does return
+true by the time the bootmem folios are gathered. Such architectures
+disable the section-based vmemmap optimization in their vmemmap
+population path (see section_vmemmap_optimization_disable()), so the
+folios are not pre-HVOed and would never be optimized.
 
-It may be the case that arch_support_vmemmap_remap() returns false at
-first but eventually returns true. This is the case on arm64, where
-support depends on a system-wide CPU capability that is not yet known
-when bootmem hugepages are allocated. Such architectures cannot pre-HVO
-bootmem hugepages, so they must disable the section-based vmemmap
-optimization in their vmemmap population path with
-section_vmemmap_optimization_disable(). Their bootmem hugepages are then
-optimized when they are gathered instead.
+Optimize such folios when gathering bootmem folios. Their tail struct
+pages have all been initialized by memmap_init_compound_page(),
+as they were not pre-HVOed. Pre-HVOed folios are skipped by
+vmemmap_should_optimize_folio().
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- include/linux/pgtable.h | 15 +++++++++++++++
- mm/hugetlb_vmemmap.h    |  2 ++
- 2 files changed, 17 insertions(+)
+ mm/hugetlb.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index ab33df268955..8cf44120e2ed 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -480,6 +480,21 @@ static inline int try_update_vmemmap_pte(unsigned long addr, pte_t *ptep,
- }
- #endif
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 72839e98f998..8756c0206922 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3325,6 +3325,17 @@ static void __init prep_and_add_bootmem_folios(struct hstate *h,
+ 	unsigned long flags;
+ 	struct folio *folio, *tmp_f;
  
-+#ifndef arch_support_vmemmap_remap
-+/*
-+ * arch_support_vmemmap_remap - Whether in-use vmemmap mappings may be remapped.
-+ *
-+ * Vmemmap optimizations, such as the HugeTLB vmemmap optimization (HVO),
-+ * remap vmemmap page table entries while they are in use. Architectures that
-+ * can only do this on some systems may override this hook. It may return false
-+ * early during boot and true later, once system-wide features are known.
-+ */
-+static inline bool arch_support_vmemmap_remap(void)
-+{
-+	return IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZATION);
-+}
-+#endif
++	/*
++	 * Bootmem folios are normally pre-HVOed through the section-based
++	 * vmemmap optimization. However, an architecture that can only
++	 * determine whether it supports HVO after bootmem allocation disables
++	 * the section-based optimization (see
++	 * section_vmemmap_optimization_disable()), in which case the folios
++	 * were not pre-HVOed and must be optimized now. Pre-HVOed folios are
++	 * skipped.
++	 */
++	hugetlb_vmemmap_optimize_folios(h, folio_list);
 +
- #ifndef __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
- extern int ptep_set_access_flags(struct vm_area_struct *vma,
- 				 unsigned long address, pte_t *ptep,
-diff --git a/mm/hugetlb_vmemmap.h b/mm/hugetlb_vmemmap.h
-index 8b28063d78cc..440477288d19 100644
---- a/mm/hugetlb_vmemmap.h
-+++ b/mm/hugetlb_vmemmap.h
-@@ -48,6 +48,8 @@ static inline unsigned int hugetlb_vmemmap_optimizable_size(const struct hstate
- 
- 	if (!is_power_of_2(sizeof(struct page)))
- 		return 0;
-+	if (!arch_support_vmemmap_remap())
-+		return 0;
- 	return size > 0 ? size : 0;
- }
- #else
+ 	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
+ 		/* Subdivide locks to achieve better parallel performance */
+ 		spin_lock_irqsave(&hugetlb_lock, flags);
 -- 
 2.56.1.809.ga0b61035b5-goog
 
