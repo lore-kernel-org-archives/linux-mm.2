@@ -1,120 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A82A606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7FC606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bSWZtAuX
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=inZN7/p+
 Received: by kanga.kvack.org (Postfix)
-	id 93ACA6B05B7; Sun, 22 Nov 2026 12:56:10 -0500 (EST)
+	id E48846B05B9; Sun, 22 Nov 2026 12:59:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 912A86B05B8; Sun, 22 Nov 2026 12:56:10 -0500 (EST)
+	id DD27E6B05BA; Sun, 22 Nov 2026 12:59:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 828B96B05B9; Sun, 22 Nov 2026 12:56:10 -0500 (EST)
+	id C74906B05BB; Sun, 22 Nov 2026 12:59:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B4EB6B05B7
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:56:10 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D86DEC0743
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:56:09 +0000 (UTC)
-X-FDA: 85463508858.02.C60E4D7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 303CA1C0006
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:56:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bSWZtAuX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 797EE6B05B9
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:59:01 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D883114071D
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:59:00 +0000 (UTC)
+X-FDA: 85463516040.20.1AFB23B
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0FFF180002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:58:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="inZN7/p+";
+	spf=pass (imf02.hostedemail.com: domain of lylin1023@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=lylin1023@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795370168;
-	b=qKxbXaSmoPLY+EQgGEuwcmOwXePYbnc9+1VYLz1I+vs3VHjOSSnQ4mhI3rE0a7uXB7eO1/
-	nC7+uVJMFg1vch9748jkwVF4ukcQbsauke3Pp8tXGZFYCE5ePGJNo6JyK++MztD5BrEXAl
-	6BA8FPFDWcVg9OD1kUnLvd9/VQYCwvM=
+	t=1795370339;
+	b=cdYViE/qoCj3GY5qzsYOS9XorGzJJSLYvivXF6HmX77VQyyyGfvBPI6CPnyoK+D4mDw+TO
+	yAZjqAVRkXZYIDCiRtLgvQRX9/ByzHYqfgSUyazDXGiW/oxHTgXuzKpgsVMJnpE0UPHN3k
+	2nIwa4dp9GZ5VDYHZI+mxLqkjKyu0Z8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795370168;
+	s=arc-20220608; t=1795370339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PSEMw9cBbCQhxqDi6XpTccEZBErSQpfZFqy7s79g/s8=;
-	b=xMQYvIsPwM2r/Coft6TEAnI0VK/3xnLaMl1BoWl/kEA0P+XW4mNIbdMtl5P2RqZXYCgP5Q
-	bKtfcu7fOU3pQ2wxVwWiaGoNauwf4sfC7asYx6qQKbJxArfslEvBfXSIuH3TXnUVTf5+J8
-	+0uWOh2zrkzkelOIzl+7ScxDTxV6EEg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zZK6D2/szOXdu8ofxhUwHdxgVM+nnJRbws9cN9agyJ8=;
+	b=bWHn29z+kleta7LcBq7Ntl9WvzR8dg3npOHCLi0Ti5pQLPYwJGfyxmvrD+R/kn6Em3cS0t
+	CCk34Vs0CJFecjxo1CWJWgFYi7RvRL7D77CHL1GyM5OuMvqfDMl/HFK/CuCipiBQ9r8URp
+	/hpk2oo1j+I6ttqWlx4yh3qgxSd1cgg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bSWZtAuX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BCAA361950;
-	Sun, 22 Nov 2026 17:56:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5815B1F000D0;
-	Sun, 22 Nov 2026 17:55:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795370167;
-	bh=PSEMw9cBbCQhxqDi6XpTccEZBErSQpfZFqy7s79g/s8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=bSWZtAuXbodhiYKS2QPIX1GrJfI7jYB/qr+DWwbUs1E1rZZPYKKx2bLikqtCy0nSO
-	 Gn//FmQaw0wS4tTguOSLzNq2bX0WX+mxY9jkuur8avzPxs1OTR/0mQtr20nPaXCf6E
-	 bZ0jtjhy3yrIUdUaWOkND45Q4sbkHD+vEbFewxalXT6mTJOLMpZPixe+57d6y5174b
-	 uJN6ICTkoIeGKFnDzvEfBhL6UUc8vmjPNibMcf+KbVpuaTWJ4nuKERVjF+CWLlgagn
-	 K4Z3R0NUFpYdClxtlWMnv6M8prxTtqpBn3w9aYlnD7m5PsLu4EG3CrbyiUMM+uQlnE
-	 KWDfYzaY/Vbeg==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sun, 22 Nov 2026 18:55:21 +0100
-Subject: [PATCH v2 4/4] mm: check permissions and bounds for vm_ops->access
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="inZN7/p+";
+	spf=pass (imf02.hostedemail.com: domain of lylin1023@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=lylin1023@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8b66d1a08ccso1895615b3a.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:58:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795370337; x=1795975137; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zZK6D2/szOXdu8ofxhUwHdxgVM+nnJRbws9cN9agyJ8=;
+        b=inZN7/p+By9CgOc41B2HUq0yoQREPl+HWHzV+PNLLY6/tP9WLJwJAqle6Ah2vB/w81
+         lSaxp/gV66t6pB/QFI6wkmMthWgbGft89J5fvqxW55peWXl5//UHmJGJSQDez9kwdKAu
+         cG5nbZXyBZLYw8lSWUvEtjfb1wkBCoHBia0VuJiSrUOevI8Fks3iKfbrHJ+cyeQjYb2r
+         Lk5jWVipr1WY04BAIykGp14RANHTdA4VeVDuyv/TcEILRGW+rC7KRKln+/9Dkc/PB+ss
+         H7+R4VOi2gaQ2ekBcm9Ed9PC0zKuIvW02bIqk/+bQkdoOFFZTz8si1od9mvM/bgPDOqZ
+         ZHYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795370338; x=1795975138;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=zZK6D2/szOXdu8ofxhUwHdxgVM+nnJRbws9cN9agyJ8=;
+        b=ipA+2+RryvCDnCgWmuWevDqHCmUXQ9yKWRvS4iiVCLpfgk5nf9/gUS/JF+rp9q8yb0
+         J4Ks6VmyyNTT5BwdqsifqAcAecTzZYLupJBpXhZKaRMkVGKprL2iVjSSNDmKtpctspFU
+         XtqD+5IrEmlvUkdEMETi5GPEd9lTmyUumpyybJhRbqbM1lFDnkaPbTVF9phM2rKPjSKv
+         tGln9Tk1eI0mtPkSEtPXuVuRwMkorDpOuBundoy/CJSJDx5nF4jzIcr5O6dCxCmgQDac
+         FrjnHDpUI5tuaZC/76SenEikDREHelc3k9R93ogJKkAyytRfQvwRhbw7NOA4TWjHxEfu
+         kWQQ==
+X-Gm-Message-State: APuU4Z+0ft0ktjY/ipEOmFp1dew2lS7v2QH+4x8u63WhrNUuc+rxdUL/
+	XmAYBQ22tgyVpJ1mouGW6Pon6zkR/bc8jN9yRpAFj2uPQlAe3o2cb3J4
+X-Gm-Gg: AZFdTZd9SzAUKucnjTX7T/eOnkppqsizVQDJFHGR+HoDVR0NilocDnWTGfI2Wda9Yhr
+	ToYgI/4EWRzYlxcCgsQIJjRF+zKH2eAvvpaIF/sIVrw+nkkfTAjov8b2VFOBcdwCs7fuuN2890p
+	6+74yBGgwmveMHplkPcP7re16yeUXuBas64leto7aab5jfUG0VckwcCoTLAcbSrN3zy06rwYG+R
+	aeTXqn05VaHa04ALmHXFKIWYBHSgqkMcFiLS9jy7DsTmXVVcEGQGKy8qA+Jq/L48qJPjU2v8BMo
+	ybMSFD2IVFTnMRHnxM3mc9ivmnscRHOHoQaRrhQrpkIJauf3zu5wIAJTl0UyEVwtdh8W4BSnE4f
+	j3SiUDTYQy5dw3wuzzZWiqS7QCs1LOC70JVJRDakn/DM7auLyrlnXYYhEzvQQBxIPGVPKQ3AfpU
+	hUjh3C89DvAgpAXyiBDIM8EJObu2AO8eQ0O7No9/+VG+zoDDhNAYcH5mwP7/MSIvRTa/KsReyuy
+	11Dtu733rtgBg3NJ3w2vjGwpM7lUcmOzPOxupNyqCSGH5AJ940/rWlqalAQgdmV6rbGM0h9WLYF
+	NlcBZ4XMtsDioAiOpIpTe8nQBOQ/tg1IkS5ZO0lRAg19YejFBlwgU5Jl4DGCqz92PqvBpuVMGvK
+	RohA=
+X-Received: by 2002:a05:6a21:6b0d:b0:3fb:6e73:ce42 with SMTP id adf61e73a8af0-4014d56b3f9mr9114765637.74.1795370337572;
+        Sun, 22 Nov 2026 09:58:57 -0800 (PST)
+Received: from [192.168.18.15] (218-35-178-218.cm.dynamic.apol.com.tw. [218.35.178.218])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87285c89dsm4160040b3a.13.2026.11.22.09.58.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 09:58:56 -0800 (PST)
+From: Kurt Lin <lylin1023@gmail.com>
+Date: Mon, 23 Nov 2026 01:58:43 +0800
+Subject: [PATCH] selftests/mm: skip hard dirty page-cache test on FUSE
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261122-access_shite-v2-4-808d8d2aa700@kernel.org>
-References: <20261122-access_shite-v2-0-808d8d2aa700@kernel.org>
-In-Reply-To: <20261122-access_shite-v2-0-808d8d2aa700@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>, 
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261123-memory-failure-fuse-skip-v1-1-19dcbda6e2e8@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/x3MWwrCMBAF0K0M97sDTaoVsxXpR6ITHbQPZqgop
+ XsXPAs4G1xMxZFog8lbXecJiUJDuD7ydBfWGxIhtrEPIXY8yjjbl2vW12rCdXVhf+rC5Xzqy0F
+ y2x0LGsJiUvXzry/Dvv8AXhvuA2oAAAA=
+X-Change-ID: 20261123-memory-failure-fuse-skip-b976b4ea035b
+To: Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
- Willy Tarreau <w@1wt.eu>, Jani Nikula <jani.nikula@linux.intel.com>, 
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, 
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Chris Wilson <chris@chris-wilson.co.uk>, 
- Matthew Auld <matthew.auld@intel.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- Shrikanth Hegde <sshegde@linux.ibm.com>, Rik van Riel <riel@redhat.com>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linuxppc-dev@lists.ozlabs.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
- stable@vger.kernel.org, Felix Kuehling <Felix.Kuehling@amd.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Chris Mason <mason@kernel.org>, Felix Kuehling <felix.kuehling@amd.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4049; i=david@kernel.org;
- h=from:subject:message-id; bh=SDPlENgFxyN5yl7ubJ5nBWCfOxtZ7of4RTnCk2l/ZQI=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKZdTo55VPOfmTm5z/5fLKWxZ/CxsQFjBHPGmYJ+gRaM
- bGenrKyo5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgIn0CzD84esXTI6vC3iXlrmJ
- u86ZlZVnVvTS5U2hwk4Bd1gkEv/cYWS4cMHoRm7Ed29mXi89zU1qL97WG2+ayKIx7fQUXoej3Im
- cAA==
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ Muhammad Usama Anjum <usama.anjum@arm.com>, Kurt Lin <lylin1023@gmail.com>
+X-Mailer: b4 0.14.3
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 0FFF180002
+X-Stat-Signature: tkcwxxp8udo1g7dqtc65drgxuo11bwgs
 X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 303CA1C0006
-X-Stat-Signature: 1kqhaxcg8efasu44wjea88gs93mwqhia
-X-HE-Tag: 1795370168-46822
-X-HE-Meta: U2FsdGVkX19PTbnCpEzYdnkegVHcZv8q6ryc0Oz0nGiLAoNmBuTS54r4wXjOuZZR6cYb2pjpWiP8Ly4TM9XM3GnxnVfzTWi+tvXmn5LY3i2drfbxE3NIBOZoTvSc8McHqiQVne3h7DJM+ubX0nB6lwz4eF2fPKo25s+3DZNAvHe2yBo8YWnDnHYV2Uqcb2Pikjbr61bS8kN8kjcWO3JFdjfedXvDIn41DL9cnE4shtP+4a/+q+1rdfxxa5Hec8Mc7nFDuK2MYWsTs4K4PaaFPjO1R+0X3z8ADhsn8b7676Befp34JOdH7MyjretDKiPZO5gYu3Zy/ywiCqX25UMvYtZPtn50+OMiTZ9PJ8/6qPsGC+0aSI2aBXdPkI0AqqS15dfY4WjdfJgz0tXCZGFhYUcz2X+n8JAY4gz0dVtawEhq6/rmfFG/B/yQWN6TZ0VmJ28Y8BEo70KXu32XETy1qO1EX4/j4iAwh/eIvUWyLFU8BpeFPO57Ed9R0ffmeSM2myc/VYpTTOfSar/l9F6jNZwtd6HrQnzYd5AVBQQboBysJrmIptj6jzvw3Kn+eUd+yP5Qn0clMibQdKiQbErK+mjMNABchWIScr/4stofmTr0oEe8aJJaSI4fEWfcaC9Yixf8HLlMSbEPWWzgfESAM8wWqSf6PKyPhWC1QbLqhVRcHpLmP7d9kKlV2EmzuTHucZ1lE5Tc3floReZgtpa4yk266RJOHFRzyHJ/lWFb3T1g2WlvyDFZU4DaSTmcErfb4ckk478mZLXEFV7bvCF33czYwM9rTmpORbuc2ARywGJaQD0SgxEQdKf1W+7o9x6p6ruPhBJsl1G4286KsGJ1hedRTeVeQgDpubCXPaotoAnj5vj0efNhyBQ0+00lfYsxA21sY1gXEiOscUEooOqbATlo9/c3lhRphZzimKPHkJYF11nLD1TVsQjCoKVH1O+R6jhDlZSfT1O2bo41X0t
- KnqQ2lyZ
- nJPtowSpFeR/uLjCmlLsFg9wMN/orFi5GLs9nibgE/URsXax5KOa2CHjKVZ7AaclNYTUfdGifssr0JLbvwEtGOTFNVIBxVig1LO5c8Rm+CiEkQQpvhNG/arUx6lMqsPw+QT4daBr/dC00HqEo8F0Php3VwMv9rEPTzCZmTIQiTostCaHgpOLvs/w81CdH4gBr8D1f0TJvI3PiuZ+q73E9fGCWSQjJy8mwQmLGDUkbdikaME07CN7AR2izxcLou0m8nOuVnHo5eE0K4gIfw0hVdqcZv76O0t08WMIxR6AbRww5PiZP/H187Wh0TYjThDeGCzYFXvE1gtxKUHE2CSAUCq1L0w3s8/DHZR4k7qiochTjDk6PQUIwqpkJ+stVjgktilxwPmhcYyT1XqDonEV59K4MB4s0NJ1lMlWXh43V6ItyIhUnrBSpu7dnNrkxDqDM3fzjYBF1WatUq5jBS97AGj5Vh7RRArXV37EJjdMIMMbC2g5On8qtr6Lo0nkvyZQXoLBHLDMdEFS2fkuBTWIRoWwEq6CFp1GWNZ21zRUGpDiVmEtigTPk0nzHl4OsomqPCJeeOjcDgg/H65u/cA8ZfTabXDk2z1UfiF+kdSv6MPmSIh8ord7crNnJHgc8kISVRyyLH2cyRP+AOrgYuaFerINOWNNHMQnYDZqt
+X-HE-Tag: 1795370338-559890
+X-HE-Meta: U2FsdGVkX1/hRoMGRRDCT8Us3s03G1+x3jiuiGfDILGRk0In7BZfNrWC/MZxTBVy/wN6jb7mOW2CjfY2nuwEdWH3KMobK1lJ1WaSnowAkj2q8ABRNljv6FNXJqL3+X/gwRnM3cFvbgsBJx92NT641YR918zsYqqk4Q1L1OfgXCU/jWcnIc1392vm8mQQPvQ8QpPhY4+zGEv3kUaZqKwPNGEcFQRGYPiF46OPIKZKU8N5nqVBOyxtY32eL1VH67ZNNzXPDivj8Pb6mvchec4u124+wEjV7uCYU9SSlGa5qO6t8umv8OGkvmF66cKwRBcvfqliG07DJS3Tm/VwsAWpxeXj9JSHI2NHfA5z0owq5kL/TTsNzy7GRZpkI3qu0hDotVvmuc35QbyJ/NVujU4CGrTfsFK/2//imYRVl/hAWwDtSe4O6ItU2DegA/GwtAzXI1Rp4iR5atxyE25w4DF+MULFwtZ9UoXktmCy8I5bJerX0O5HT8L/tGWTE382dp7cumabrLwMs1yXfxoOEdlHd3Dkb2ZjHRCt/Kmu/Yn1bPDIJT3NRYmGrO7yhNljw0g8SG9ZQZh0pUmXj6UAPQuBWEbOOAMUwDnsHgwBXYd9kaO2reRokyt0nbUDy1LnFjus9lwxsc4RJWuYC3ZMXd9iyq9+4XznaEsRLUHzJIL1EAdYKyZc34BNUBkanoZ373wXYlVmfmsvHGV1rZvYa2tJ8VvNrGJWQsP1+mIaeuUY0XTfM0nfSuwbqMh6XDTDoyASFTxLDyp4OgeHE63by/PBG0pLbm5OQKyCaNJGnD7fk95HFmcoIXFM1EkJvKglchX/Bu7bcQAx+vyCH6P8mZUYIpZJu72dBGPQOm7N+WwFtwPNF7rqHau2wkl1XQIDhKcsGQal/3mxE3bm0M9LWM3tPxHBMSxA7r8yx1S3eEqw8A3zZViPOe3gNv/F0oQ5fpS3OM45HSjpw8r3Bt6QAfC
+ 0/FeqVp4
+ KXyqzhgIo03m39aB7JKallxGRXVUcVSA5YkePzALSJaiQjlOFGdI64+8ZuaJ4+HDglQuZDdsa/zUxa8Lfux9/ujpIq0mHLm3ztigonR+pSdIyEnyq/zDueXYvMdSAIT1sqGvzecIhrmqAKpkutwxrB9N9NT8IT0ZNX+0WBCPhVLYVSgxGNL2EEAgeTHU0lDwPyNZePruWK87FNaGavxksD0i62qklAFO1JF6JtVGHX/30XkfexEqX1GNDncim+ds8RWzh0Iv2G2TkHSZtViLkifSClVsww8wXtQwUxOXQ7okukAfHDMoC5oi3PM7OfNgLBMQvFSafiJWNU71aUUnyWV7q8fUHI9nZIddA/bgk9jBn7fLUaYw2tgZ5IUS4ig5CpCx+u+KlX1r68whBQvQTPVx7ULzCxdNkKtOoLdHFzdJT/BtHvEEkqzJTN3ngv5wy92vnoSKCRotHVU3bgI1mRMySpZhSbWMf/k53fpJPZuonnTAIweyT0CvzECH0RAAdQoBE3IwQ6FYLvo0fPH/+uvB7ZEbpoVKkQhIa7w2OH8FOtuXTeS6dmZxb/mJyfsyXqyVZwp9yQzL3jmK9zzucpgy+ISdj4WJqwLsoBvhJrnLjh+c0NSQ6LLZ9TEV6C4mxgJrLvQdGOjHqa8D9YGg6AyV59FaWbD3Xv4B7REyZuJrTWStMCAOFTGHMUzT+ZLXZFeVV2TjFc+QDQYOnZS8lJinubg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,108 +132,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-GUP rejects VM_IO and VM_PFNMAP mappings early. __access_remote_vm() then
-falls back to vm_ops->access without checking VMA permissions and without
-limiting the request to the VMA size.
+Like NFS, FUSE reports on close() the -EIO that MADV_HWPOISON records
+in the mapping of a dirty page-cache page, as fuse_flush() calls
+filemap_check_errors(). Run from a virtiofs directory, e.g. in a
+virtme-ng guest, the hard dirty_pagecache variant fails on its final
+close():
 
-Consequently, /proc/<pid>/mem can bypass protections even without
-FOLL_FORCE, or cross into another mapping without checking its
-permissions.
+  memory-failure.c:389:dirty_pagecache:Expected close(fd) (-1) == 0 (0)
 
-Check VMA permissions before calling ->access and limit each request to
-the current VMA. Implement access permission checks similar to GUP,
-however:
+Skip it on FUSE, as commit e14e52a7ce02 ("selftests/mm: skip hard dirty
+page-cache test on NFS") does for NFS.
 
- (1) Reject writes to CoW mappings because the callbacks access backing
-     memory directly and cannot handle CoW.
- (2) Allow forced writes to non-CoW mappings with VM_MAYWRITE.
- (3) Allow reads of write-only mappings, as we historically did. Most
-     architectures cannot express write-only mappings in page tables
-     anyway, and i915 selftests rely on it.
+An AI coding assistant (Claude) was used to find the failure, write the
+fix and draft this changelog.
 
-This intentionally breaks forced writes through legacy amdgpu PROT_NONE,
-MAP_PRIVATE debugger mappings. The workaround in commit fa5239f2af98
-("drm/amdgpu: workaround failed COW checks for Thunk VMAs") cleared
-VM_MAYWRITE to avoid CoW, but debugger writes still succeeded by
-exploiting the missing access-permission checks fixed here. Reads remain
-supported. Userspace must use MAP_SHARED instead; ROCm 5.5.0, released
-in May 2023, already does so.
-
-Similarly, forced writes to MAP_SHARED mappings of files opened read-only
-(e.g., read-only DMA-bufs) no longer succeed, as VM_MAYWRITE is not set.
-Writing to read-only files through ptrace was never intended to work,
-and would usually be a security bug.
-
-If this turns out to break real users that cannot easily satisfy their
-debugging needs differently, we can figure out how to handle that.
-
-Link: https://github.com/ROCm/ROCT-Thunk-Interface/commit/fea44fab6e84eda52fcf6b419b35600c18f4c022
-Fixes: 272ddc8b3735 ("proc: don't use FOLL_FORCE for reading cmdline and environment")
-Cc: stable@vger.kernel.org
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Reported-by: Chris Mason <mason@kernel.org>
-Acked-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Fixes: d51b5076c746 ("selftests/mm: add memory failure dirty pagecache test")
+Signed-off-by: Kurt Lin <lylin1023@gmail.com>
 ---
- mm/memory.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+Tested in a virtme-ng guest, memory-failure built from mm-new with and
+without this patch, hwpoison_inject loaded:
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 5d0d58aeff3cb..d43837623a063 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -7412,6 +7412,7 @@ EXPORT_SYMBOL_GPL(generic_access_phys);
- static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
- 			      void *buf, int len, unsigned int gup_flags)
- {
-+	const bool force = gup_flags & FOLL_FORCE;
- 	void *old_buf = buf;
- 	int write = gup_flags & FOLL_WRITE;
- 
-@@ -7451,15 +7452,36 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
- 			if (gup_flags & FOLL_ANON)
- 				break;
- 
-+			/*
-+			 * In contrast to GUP, we historically allowed
-+			 * FOLL_FORCE write access to non-CoW mappings and
-+			 * read access to write-only mappings. However, we
-+			 * must always reject writes to CoW mappings as we
-+			 * cannot CoW here.
-+			 */
-+			if (write) {
-+				if (!vma_test(vma, VMA_MAYWRITE_BIT))
-+					break;
-+				if (!vma_test(vma, VMA_WRITE_BIT) && !force)
-+					break;
-+				if (vma_is_cow_mapping(vma))
-+					break;
-+			} else if (!vma_test_any(vma, VMA_READ_BIT, VMA_WRITE_BIT)) {
-+				if (!force || !vma_test(vma, VMA_MAYREAD_BIT))
-+					break;
-+			}
-+
- 			/*
- 			 * Check if this is a VM_IO | VM_PFNMAP VMA, which
- 			 * we can access using slightly different code.
- 			 */
- 			bytes = 0;
- #ifdef CONFIG_HAVE_IOREMAP_PROT
--			if (vma->vm_ops && vma->vm_ops->access)
-+			if (vma->vm_ops && vma->vm_ops->access) {
-+				bytes = min_t(unsigned long, len, vma->vm_end - addr);
- 				bytes = vma->vm_ops->access(vma, addr, buf,
--							    len, write);
-+							    bytes, write);
-+			}
- #endif
- 			if (bytes <= 0)
- 				break;
+  cwd on       before                  after
+  virtiofs     9 pass, 1 fail          9 pass, 1 skip
+  ext4 (loop)  10 pass                 10 pass
 
+run_vmtests.sh -t memory-failure from the virtiofs directory passes
+with the patch. The soft dirty_pagecache variant keeps running on
+FUSE and passes.
+
+FUSE servers that open files with FOPEN_NOFLUSH do not report the error
+on close(), so the variant could run there; it is skipped with the rest.
+---
+ tools/testing/selftests/mm/memory-failure.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
+index 135a2e8069ba..72a29ec19692 100644
+--- a/tools/testing/selftests/mm/memory-failure.c
++++ b/tools/testing/selftests/mm/memory-failure.c
+@@ -355,11 +355,12 @@ TEST_F(memory_failure, dirty_pagecache)
+ 	fs_type = get_fs_type(fd);
+ 	/*
+ 	 * MADV_HARD poisoning of dirty page-cache data records an expected
+-	 * -EIO in the file mapping. NFS reports this error on close(), so
+-	 * skip this variant.
++	 * -EIO in the file mapping. NFS and FUSE report this error on
++	 * close(), so skip this variant.
+ 	 */
+ 	if (!fs_type || fs_type == TMPFS_MAGIC ||
+-	    (fs_type == NFS_SUPER_MAGIC && variant->type == MADV_HARD)) {
++	    ((fs_type == NFS_SUPER_MAGIC || fs_type == FUSE_SUPER_MAGIC) &&
++	     variant->type == MADV_HARD)) {
+ 		close(fd);
+ 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
+ 	}
+
+---
+base-commit: 7d1a16abe4cc5dccd21e3d6262e44433a5885d27
+change-id: 20261123-memory-failure-fuse-skip-b976b4ea035b
+
+Best regards,
 -- 
-2.56.1
+Kurt Lin <lylin1023@gmail.com>
 
 
