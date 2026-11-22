@@ -1,88 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE202606A31D
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 20:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49434606A33C
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 20:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P28TG/jf
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=OeKs4h20
 Received: by kanga.kvack.org (Postfix)
-	id D41906B05B5; Sun, 22 Nov 2026 15:09:17 -0500 (EST)
+	id 490E36B05B0; Sun, 22 Nov 2026 15:10:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF1E16B05B6; Sun, 22 Nov 2026 15:09:17 -0500 (EST)
+	id 4412F6B05B1; Sun, 22 Nov 2026 15:10:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C08D26B05B7; Sun, 22 Nov 2026 15:09:17 -0500 (EST)
+	id 30A056B05B7; Sun, 22 Nov 2026 15:10:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 967706B05B5
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:09:17 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1566512060E
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:17 +0000 (UTC)
-X-FDA: 85463844354.02.5844C16
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7CEED180003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P28TG/jf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E968F6B05B0
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:10:25 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56882A079E
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:10:25 +0000 (UTC)
+X-FDA: 85463847210.07.A36014C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 81701A000E
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:10:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OeKs4h20;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795378155;
-	b=xPOhNG06fqt6dpeV1tXs/XgvTFqYhntoMHVymUM1cg7AqDlVtminvIV2AeZgxqKpTrADDQ
-	7nW91det32TqDFOldrp0plPQyDRKLn94oX5rLqa4070mDV0zYKR6EqfncvEpDqE1YGMgqs
-	azru8WHNbyZS+iVwCmb2pdsyozXJXsk=
+	t=1795378223;
+	b=VnMY9/Zz/b25jZcUogORD2ZYE+mcbuE7JEAgX1JD+OnH66kQEVwdlzoWP3r4yHNFtpVVOV
+	j6sWghm4VCFpqoK7FHRDrw7AZ0jyBxxc5sadx76nnqeNHLz4Zyr997jgAQHrWGPE66XR6P
+	v4FUCyk3bjfFZEm6mOver69sO8fZm1E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795378155;
+	s=arc-20220608; t=1795378223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qgAd/VA0V0SFS6QRkanen1M9m5R72JoHXnNt9l1b0f0=;
-	b=hFEE5hf5qhQtb5oy82/ZQb/zaFn1FxjmkIQmlSSQG7TrIUF/uzpeaKA5OKOyzscDjpr1QI
-	fX+KW+autG7SdtMbZ4Ywul3mVzEayjCswkdliqlFdJlSb99UIAJVaR4T9cO2U4RT/quZuD
-	qE8SuTCu7Aw23whd+AU1w8IZGCRlTV8=
+	bh=+FsNSHYaB061hlu2KABqxgrNYuq8vEgF2fs6tSZjLEU=;
+	b=q0E1v8BpM5nOUKBEbYkJzSKl9n9dxZfWx0G9FnHcfmLWuBCxKppaCu6NOptSkiUI1XQMPt
+	StbFNe22QhWiNbfq22x9UM/hs1sp/rL5++fQxTfGhA3nzuBsKpBrktCsZfP7ITTcDWT/j6
+	Ttm8kLBWllFOQHMU1rbStEyq3tokxLg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P28TG/jf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OeKs4h20;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A1FAC42D97;
-	Sun, 22 Nov 2026 20:09:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F891F01568;
-	Sun, 22 Nov 2026 20:09:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795378154;
-	bh=qgAd/VA0V0SFS6QRkanen1M9m5R72JoHXnNt9l1b0f0=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=P28TG/jfj557Y7MNEKVfg8PB17IIaPG8EaC4Ckjlz91mj3R99wSOaJlPtXNmt8Rjb
-	 QUjgXZGIUX5ijXTicGbgnAkNvSfvrerDwEo0ccVCxYsOyP6YALLBbmtkxCFGLPmjFD
-	 pDRZvJawql5AxieBhsba3ay0Ylbms82auYGDyB8KgQPP9vPfPuzc8pA4A79Eve+SRh
-	 0zxbXKi/4chaRfYvPCYuW9WS+HHgIaqWUeEdEbVQZyi8onJatTBgKPxGqwdrdPGa7+
-	 JPlP/KrqNBrHfel0Y0JV06vSuN1GW8oWBKgLQUki/1mbgZHRq+tN9aFty3QtWaqoDB
-	 t6Fr3eSQU+EiA==
-Content-Type: multipart/mixed; boundary="===============1507986254413833181=="
+	by tor.source.kernel.org (Postfix) with ESMTP id DC8BC61B77;
+	Sun, 22 Nov 2026 20:10:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EB11F000D8;
+	Sun, 22 Nov 2026 20:10:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1795378222;
+	bh=+FsNSHYaB061hlu2KABqxgrNYuq8vEgF2fs6tSZjLEU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=OeKs4h20pS30oNZ1IR6GnomWw5DqimBeyeF3s3kvf9vG6T6et1HFpXwu+3RUD3kAl
+	 VTBl8DZ7dNxpuLlaF0l10G+XbXn4Bh8/advm28c8V+2c9NNnSdrLUBtzuJz1FfZvob
+	 aI+udgeSDGFiJYNYNYYS0x1Dy9+r3s2cQyGX418c=
+Date: Sun, 22 Nov 2026 12:10:20 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Mel Gorman <mgorman@suse.de>,
+ Andy Whitcroft <apw@canonical.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Hugh
+ Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Dave Airlie
+ <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Peter Xu
+ <peterx@redhat.com>, Breno Leitao <leitao@debian.org>, Will Deacon
+ <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick
+ Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Heiko
+ Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander
+ Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Arnd
+ Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, stable@kernel.org,
+ Josef Bacik <josef@toxicpanda.com>
+Subject: Re: [PATCH v2 04/15] mm/hugetlb: account temporary folios
+ separately
+Message-Id: <20261122121020.4c0964fa03c2255e29fd43d7@linux-foundation.org>
+In-Reply-To: <5f477c4f-9874-4f51-ab84-5b044a3ea568@kernel.org>
+References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
+	<20261116-fixes_hugetlb-v2-4-4dd9e94ea9ac@kernel.org>
+	<45997a78-95bd-4e50-b433-f64237f9ec1a@kernel.org>
+	<5f477c4f-9874-4f51-ab84-5b044a3ea568@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Message-Id: <6d2f2a9724b36a8a1329286865eb8e8502d9e7541d523a21602fd3cb0315fedf@mail.kernel.org>
-In-Reply-To: <20261122193539.3334213-12-jarkko@kernel.org>
-References: <20261122193539.3334213-12-jarkko@kernel.org>
-Subject: Re: [RFC PATCH v7 11/26] userland: Track init lifecycle via copy_process() and pid_namespace
-From: bot+bpf-ci@kernel.org
-To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
-Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,ebiggers@kernel.org,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun, 22 Nov 2026 20:09:10 +0000 (UTC)
-X-Stat-Signature: gb9z315md7n7zbif66e7cuqpp11ckz4r
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Rspamd-Queue-Id: 7CEED180003
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795378155-155327
-X-HE-Meta: U2FsdGVkX1+SqgtjbqW1ttJlXSODgU5pqwuagUf/4gGbCrZ3YjYtEAMgch6m9WHrZ+78Fra15aACMuCBIM5GFSs5jj0tbQ/3sc53Rd1Y/jCvB+swXkN0cIcMLLXkNJpytpFVW9WsWxXlUKGklugQwXaLk5uszf+PY3XjhTRTKx1BR4alxfXm09Am9IOlhjo5s5jQXkje/hdFL7DvzLF/Nmsg2zVBhMgiSEkN4yO7LTzNAaAOvEHYDmmVeNpaJCT9/5ugy/lEwmcTX7dHEw/wDC4wi+6aBYgv//jhN6l/MdUPWqUMN4ogX0CO2p5Ag77/PYSiqYH6W2w67sGb18c93t8ORpm4nwFssTTmWY8m2u8fuJAOz6lf9Sn3NfsYyrSKlc6Hks9HLHjycP2SMp3x0QFE8SLrb5bMSOntPVKqmTClxB6A42IqQqtgGMcCmU+d03Uqi4wX48ymoGz6vDBskzzy2HuUFxPlmCw7wRM4ehctQhcQ4xVnOBaIsJQa91V1ocVNwV7QhyDQhB9dnBF7+moodKE0nbkQIaS9M1ZghJPVgB76w8TgiDwN0JMeiXUoBADc+xZBoodDIwwpvAEK6uJ8I068AwstHQoXaCK88WNKt49sGslSpRGlNCYhjCrqQqBCtdIkmR4nxFBY62iyYnfAL6h77jykav7IRV4QTca96sNSPmYjpsAHJrFJnlAj5e7HShkePhBSO/zsUmPhs88xFCoUNTdFBWfAPUb7PuTAWPywXaHLPft6y8UqINNxre4LYhUqoPaz9xtacu7gsYB19vl+dG2zSdi3p6aN443aW0ZZGOZmONw5BLRPE5PcjmPLlwwo+NZWbRlFkC/+4BOaZB4v6FBW33zEZxaKrjjgHYyo0eaQVkJ8g0mjThPsT0gXGuZTVTxLTUwCdFVt18jI8KJ4LTWl0O8E07BfQhRiR6QJMlpVypP9YjbEtuRgIK9EpUOcoy8TyTha58F
- IArgjEaH
- ptnnC+cq9Eb7KtV5upfiStZlkC5TTpHEgDSfMZIPKxsUOxWKOni4MPaNDOffLEVyToZiUXguT/3QOh6WWJGm3VI/dlgNOtJD6+PcvBw1fM+JBze30QFT33YEzku2WXNjks8VeCARC/s8NudZfY81lmytBfjX+6Wojwy1z1j9opNq29Q6BrGb2O/aIUzctd++Uts0PEg+9rJF4Ecf/t/c+/CSn2yXjFUchqdU6VjbiJ6f1LUVKUTvqXh0D9vFnLAhkPqIbYuoTInXZqIeu43Pwe3hhpAkWtJAYcXQ//p8yBEHGGDtSoucT3Bx8/irklJ/Q07btyiyk8EDpWh+WSdjZEowD0PBUrSzk1lyF1aU82/YPLsOcH6znu+JvfWJwL9If82PPIdQgUI2ozve7i5VWkXrQdx5IGGqf0A1sAWbQ926+zhE+1qCHN8ely0Ih0IxL8knePLiKiCOjHYfjZjHXsKezglNv4AhY22m+Xxp90Hs+rYYTjY+1oqbPQjU8Kuu3YyIYyQMV7FzKfojiJikesvatNXq5S5pFnFIQgZVd0Ij67l//+lEdDYBilpOFktEQRh2YNMh/4yyLDKFBpzuoMSkYwqf0nxjVtWWX/medlk7fzpgoKGhfYv3q7o+qIGcP7GF/kYHACHRYRV5IyIk6Nmk0uktUHohJXJXOeMaimQXsLWPGSJiGFBf0UxTlJWREzVC1j8G92dNCNS3VNOimXh+hCO2u3MqLwnVD
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 81701A000E
+X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: y3ydoq8grfk3zx4igpcinu6eamnqqamm
+X-HE-Tag: 1795378223-977478
+X-HE-Meta: U2FsdGVkX18hhevkT+HyqdcD7iWD3NZNLZLrnT+IFIAnEqImUK3RsXY+3SqWcZhg2QXRLHjwYw+m27M1cV6SmFAcbqmcDMeGdSJOk9ilndc8YhnWOWqdyvYVvQTwJKHYMxTC2vkL/5iNByFosoHBXfIM/6LlKnUcx3QfgaC2ugRmnbaYcAKyU6Z+cdpZanuV2zH20BGBx5qUihE5UlKm9X52uZmvMwf9Ci3OOiXDN1g/0QE1BqxcNqQbkYQ0nlmm78Cz0BOaIJl+Sx6ThRd5owZuAtZdAUEtKpFDpN6dtERk4yUIicYQA0QL3dzwhhsATP+sXw8s5qO0Rylo+9v2qZCoIQKJ1z1BVfaqP8BVEG7Hu0N/OgDFFJJKADf8jtL/Zf5RpUJe1Z3V8SfLXHe3vMMzofmROhXBLLUm7YhMwSYyAF1vSsGCT5FK6RcyTuN2zsAXguooMfJyoAXTYKcvwXyVgJ+JWD6ZnMMKE2ANU5Oz/5/1Lc33YAmUlbp1SjqAcWzSBjRT9JK0WBxAXpqnUIC8NIas5SNupLIof9KiEXbwCGVM8o0MObWCkEv1QRmsjDJDl9zc83GtbHap+tpv00F42hosGm4y2rZRUXVTP6HnCrexUR0aZNQApYvLbDBfn5fX6mz2Csndga5y/oZPpWg7nfisr9CeHJ8Q1tl4jcd7n58ogGc09KooUB6YdjODnFqUawNKFpnqVHdwEY5dCG58EhiYxRLUcGi2dpNHcgRuoeubWRnwZ3+CG8p7aIIsWGwhLxXydUY7BDUrhuRqlZ9Ykitwtcda+vNYSTlwqU25dFut3EzveHXZ8pkQD9IrE5mTR8tZ30+LigctQp1e0jHF9M3SXAkaFtzV5w5QyBxOjy0ImBjkCo82J0LdlOGlVxDvS3X9TiaYolpG1G4PjULDdYy8jEA5zxiXVkFWATtCikscVtINohzl/VBRadnCyNPiGcqn+CLJ9MyCCKa
+ +FIVQ3M+
+ wa0ori3rSmaCcyD31Kw/JZ+QzZBgVgwYpsO8fDaSsPyuROusrMgdBtQfD2hmwe9pE21JFwWZD7du9ZoafnHGkiTuwKvFYrFiHcwLheQbo2Ij+1VOS4AqKb4jtHugl+d2wKRf3zoikL3u96ggt0JtwRLf4gvWzWWBzuGnMM5ednyCZpNCdUe94fd03DRM8QGiB/RuoKvasYSJ25tfnet1jNZwS5v96rR5me2bKxu4kjwXCZLdPWD/kkEGfBB7zVJGQbg0P2hkpoJ1oyfgmNwJz3JkjKMC9kysXRIlwZAu+Qlk/9edODtz1vzuRPAP0/8MhBAK+upO+9iuBG7Ri9HXaeKRX+8BQ9HXqkeeeN0pra34v4FCbwpxS/rsuZRZCOgkDUWT2iSHBItqrwEPLFDI+0RadZE/csN5u7XvvhGfguJlqu3un57HTcXuhyXdu6oxkezGEgVYb6gGA6rInI7EgrfiwxwS3vb9lIXxpYucczF1n/EjocU8QuiEY7CcW88cS6ABHFQIcFxFRN38nrWxwLKFiihtiYs3bPQyzf4QjYiodM02f1X4WiJoXy7SUteFzfq5v+vW7L+tlyZSMxVIEuAXjpGjTj6zxWktFycOVq0G5hMvol+0EDYZYfxLcsVW2GfTFKLuGPbaBDktf4E6ulqRXd2pZA+4fvIiofGaQ2PPOGN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,52 +115,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============1507986254413833181==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Sun, 22 Nov 2026 19:44:35 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> userland: Track init lifecycle via copy_process() and pid_namespace
+> > In combination with
+> > 
+> > 	mm/hugetlb: preserve persistent flags when returning folios to the pool
+> > 
+> > This results in an issue during boot.
+> > 
+> > I think the following is required:
+> > 
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index bfc88d42ef0d..aa6ad8d93266 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -1804,8 +1804,8 @@ void free_huge_folio(struct folio *folio)
+> >                 h->resv_huge_pages++;
+> > 
+> >         if (folio_test_hugetlb_temporary(folio)) {
+> > -               folio_clear_hugetlb_temporary(folio);
+> >                 remove_hugetlb_folio(h, folio, false);
+> > +               folio_clear_hugetlb_temporary(folio);
+> >                 spin_unlock_irqrestore(&hugetlb_lock, flags);
+> >                 update_and_free_hugetlb_folio(h, folio, true);
+> >         } else if (h->surplus_huge_pages_node[nid] &&
+> > 
+> > I'll test real quick whether that resolves CI issues ...
+> > 
+> 
+> Yes, that makes it work. @Andrew, can you fix that up?
 
-TL;DR: Nits only: userland_copy() has an unused tsk argument, and the
-rcu_read_lock()/unlock() pair around task_uid() in userland_exit() may be
-redundant.
+np.
 
-> diff --git a/kernel/userland.c b/kernel/userland.c
-> --- a/kernel/userland.c
-> +++ b/kernel/userland.c
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: mm-hugetlb-account-temporary-folios-separately-fix
+Date: Sun, 22 Nov 2026 19:21:43 +0100
 
-[ ... ]
+In combination with
 
-> +void userland_copy(struct task_struct *tsk, struct pid *pid, struct userland *c)
-> +{
-> +	if (likely(!c || !is_child_reaper(pid)))
-> +		return;
-> +
+	mm/hugetlb: preserve persistent flags when returning folios to the pool
 
-This isn't a bug, but is the tsk argument of userland_copy() needed?  It
-is not referenced in the body, which uses only pid and c.  Could the
-prototype take just the pid and the userland?
+This results in an issue during boot.
 
-[ ... ]
+This fix is required.
 
-> +void userland_exit(struct pid_namespace *pid_ns, struct task_struct *tsk)
-> +{
-[ ... ]
-> +	leader = tsk->group_leader;
-> +	rcu_read_lock();
-> +	uid = task_uid(leader);
-> +	rcu_read_unlock();
+Link: https://patch.msgid.link/45997a78-95bd-4e50-b433-f64237f9ec1a@kernel.org
+Signed-off-by: "David Hildenbrand (Arm)" <david@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-This isn't a bug, but since task_uid() already takes rcu_read_lock()
-itself, could the surrounding rcu_read_lock()/rcu_read_unlock() pair be
-dropped?
+ mm/hugetlb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+--- a/mm/hugetlb.c~mm-hugetlb-account-temporary-folios-separately-fix
++++ a/mm/hugetlb.c
+@@ -1792,8 +1792,8 @@ void free_huge_folio(struct folio *folio
+ 		h->resv_huge_pages++;
+ 
+ 	if (folio_test_hugetlb_temporary(folio)) {
+-		folio_clear_hugetlb_temporary(folio);
+ 		remove_hugetlb_folio(h, folio, false);
++		folio_clear_hugetlb_temporary(folio);
+ 		spin_unlock_irqrestore(&hugetlb_lock, flags);
+ 		update_and_free_hugetlb_folio(h, folio, true);
+ 	} else if (h->surplus_huge_pages_node[nid]) {
+_
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/45063222848
---===============1507986254413833181==--
 
