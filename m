@@ -1,108 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1CF606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AD6606A33A
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vmmyrz6u
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BGsr5tWn
 Received: by kanga.kvack.org (Postfix)
-	id 2DF626B05B2; Sun, 22 Nov 2026 12:00:36 -0500 (EST)
+	id D6CA46B05B5; Sun, 22 Nov 2026 12:03:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B6AD6B05B4; Sun, 22 Nov 2026 12:00:36 -0500 (EST)
+	id D1CD26B05B6; Sun, 22 Nov 2026 12:03:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CD246B05B5; Sun, 22 Nov 2026 12:00:36 -0500 (EST)
+	id C0BF56B05B7; Sun, 22 Nov 2026 12:03:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4AC6B05B2
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:00:35 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54E24A0773
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:00:32 +0000 (UTC)
-X-FDA: 85463368704.15.B2939D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9E86240004
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:00:30 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vmmyrz6u;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B4AF6B05B5
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:03:52 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20581140716
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:03:52 +0000 (UTC)
+X-FDA: 85463377104.05.61B1AF9
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 46D90140010
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:03:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=BGsr5tWn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795366830;
-	b=YpLiS0fyFA5VoFQu4UurQ4aTj8CYke/KdJTVWOTPh28BFgXMl1huuiYUk2KhcnZaMXnCi3
-	DJ5h59N7mfpXfWmKyS8TnuFS+8vn0ZU5WwDH48S5/y4WZG7SuIhnYmfueGa/FgTyct5Qdx
-	TOLka1yRZJow61UGCaqsGn0+oRNpWmw=
+	t=1795367030;
+	b=hGofi5QASqmvFF6kCF6YpeDwA697bwHvsNyJUEBQvdaMcAGN5P2Rajd8rN3H24juOH2npN
+	yZpY43DkKZr/KJmtELpMdI/rYmiqmHZubpHxfKcnI66inNUpAQhgfIaBGq72hOAOKTSDp5
+	Cv9rMXTJXG4ynwYpDROEAQ4uYRz9xZk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795366830;
+	s=arc-20220608; t=1795367030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uEqI+Hp2ezJcINVPIUjY03p8JSLOYnYNaqnNBkjZ3rE=;
-	b=HsnGqLy+nLaggdxcwIK5DG4+AAu2jmbTPtmj1UB+VN4jwa03+1s4ojn4aQauU3pRZO8Ba1
-	oaNmOhs2soCzLtZtQQBAf2F5SYS+8SZQnAjGLWflVBkmg6xBBH46pZqQ1a8zO/qQQ3Plhp
-	wa6A9W/kcKCeE04eltOrJ0gdlP3QXMw=
+	bh=pmTrwXa44wNwYeC7jaSDYKhs1kagM9vZS4uaKGYPdVA=;
+	b=rDPMe0a1ZK610rKmTV+e5Ve5mlZqVtGtIbqwNSrOBY4PYI84oTSt3uz/0EOG/zHLpFe3Iw
+	R9swxhpaDqIeNr/ZvL0SYE0oQQ3iKXWWlpa9wdYC6zAOy8N9zHbO2VqXzhaTBRsriK6geq
+	ojgsWg4YYl+QTFIY8+bWOv9E2yj9PlQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vmmyrz6u;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5ACE361120;
-	Sun, 22 Nov 2026 17:00:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0C71F000C0;
-	Sun, 22 Nov 2026 17:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795366829;
-	bh=uEqI+Hp2ezJcINVPIUjY03p8JSLOYnYNaqnNBkjZ3rE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Vmmyrz6uK/hYFVidaN2kK+me23a5dUvyk0Op1qeTqHLVqOB88p979QDWelJLt4iap
-	 Q1sC8F5zSKZsnUF8J+6xDtlQUU5jID1AtgIYKPRDH4joDHKoOdZ9Z0UEKeZAtS4hQx
-	 yvEnCcbrfkkVFn4UA1Xad0pMG9ZT2em9iF5BDDR36qpKsYiSWqPFlFM2EpWLlPWNni
-	 AFqo/CI+7GxHabb1n9Gz8W7wZ8CkJ7YkvELRNntoSdhJ45I8dnGf7IW2mmXqth+sBq
-	 QNCUJ+JztoZssg7tPc2aSRqkemJ25EJPdIv0x9dG+NYWgEVGBcV1LmZgxEIEXdKLDK
-	 1svDrLaa66c8A==
-From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Peter Xu <peterx@redhat.com>, Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
- =?utf-8?q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>, 
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, 
- stable@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
- Sashiko <sashiko-bot@kernel.org>
-In-Reply-To: <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-0-efa7817a2bb3@virtuozzo.com>
-References: <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-0-efa7817a2bb3@virtuozzo.com>
-Subject: Re: (subset) [PATCH v6 0/4] mm/huge_memory: copy PMDs at fork like
- the PTE path does
-Message-Id: <179536682240.11318.5673184071692513568.b4-ty@b4>
-Date: Sun, 22 Nov 2026 18:00:22 +0100
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=BGsr5tWn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2f00fc215f9so17092435ad.0
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:03:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795367029; x=1795971829; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pmTrwXa44wNwYeC7jaSDYKhs1kagM9vZS4uaKGYPdVA=;
+        b=BGsr5tWnUx8VpP1U2H7TmNgNaO9Yv6V/eV49uxNytaWwzSw9CEwPFNpEOqcp+GY1uL
+         F1NBKWcYDACGWcXJpxhBKSj+O+o1MQK7s0OGrSM+dO/BqSxbH8ujUCFuf+08XBlf6qGA
+         gzRXgoIFbbKPoP9SqM29T2Gm5EYIavn3Qkgl0nNS0K8x7TJ2merJ2szasXBeYiGMO9FV
+         8rSXkvJ2D77UT695AXCayWIutxw90tU7s39rmXuvPuKFWfgQO+ODMn8Zq1FgbdLf1yCC
+         Y/BZVz6kde2/aRL+HMQLGm24XQFL6KI0azYZn0V4KIxfaVBwM0uPhHM1ILH6Oc75pTIT
+         uehw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795367029; x=1795971829;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pmTrwXa44wNwYeC7jaSDYKhs1kagM9vZS4uaKGYPdVA=;
+        b=Hkwa1HX2mkEI9h7Z5sMYPNY9EEVv195oZLRmuiJ2iJZRRAyasF0xAWKO/p41dCS3Zi
+         UYzp2cWflKzVgMiyZDfwZjOWzi/TGcoUGmwAwduougTHFciG5S614twxoUbT3+Fv+QhW
+         cC8Bq9RXRDdd1ocGg7TOdHQNh+Ev4EeCdr1m1qeM9fquEVMzmtly7mhX4DCePoalaupo
+         jjtc3sM0sWqIm5dPsvrx4KyQRh4aWHO3NPOrrd96dtnIm6DRriQiVZBXcN6706XPsJ9X
+         7CY9TlWmtBNs0e/tmJjpAE3gDi4hMGMMUCydFSAZjCeK7GhVejy3LGhQPkIv8qf4/V2V
+         fuVA==
+X-Forwarded-Encrypted: i=1; AL+hErE1EJcGPvQvR4PsjQREIvfCSHdDoj6O7SdsVS+ULk/+pzwyX/DHApTHvtyTILPRBb5A/m4uQu7tjw==@kvack.org
+X-Gm-Message-State: APuU4Z8kmE5i5mep5g6nWSHmCpT4STKq1QaitF4gnMNEpSKDGMEeAQA8
+	fOlKioYP0gywZJrLKZ5noirnfl+35Ig8K9PzK2QLCzXrgIjT9LN2sZOX
+X-Gm-Gg: AZFdTZcXf5buTDxztSITUjAOHrq/Xkw1qOJxOncvSLmnapaqK/SpwFs1/5MUgLEB0tS
+	kENMqVsyK3IPY3RjSul32ZvG9cQev8l/jhQTpD/E0wmIwypmtDA3sM/GhBwwnPOmdBx1r5HN1YV
+	Kh5v1epzFe5xQ4sVbbAPGfrirjCQnlr3Idj+xmbmFbWhw0HwxGmkKnu26BfHferT/8rSXNUerIy
+	nACh4wv8CNntYZDjcBFaSaGdTfkM3R1sQVdG3mtUiN62FQurWJht5WKe9QaZ2aY58jvkQXvaeoh
+	baCFSI9RCCNbX9sxRGwOdWFJ9acoXpiBshFbdFgYp7pXGFfoExAz2As4qFvx4fEp57MNHQ4jfZ1
+	ay4c2y6viq3wiEcpAlISKenCuCfQquVgFbC5oPuPD9agFlXF7lY4o3eyWxswUXz2kHCR3WL7esA
+	nI0eeSrI5CRdY24J3Q5cr30P0GEQf2Y8hsEjNcQxBjsMN69nWQWC5eO/DoyGu34jGMDNhDL0ITw
+	ks2xVZgsk1uVzUMjfldJ8lGbpidWWdjWRFjAlcTUUBNoSwpxVdTtRmDs3Csm6S78CCMedbhNpfl
+	kDOX8stH5v23zA90/b3atZs+zYSdCYy2YkmkUBGaMEIiGoDUAqP6m5TFsZ/S3YbPLT9EfaM=
+X-Received: by 2002:a17:903:41cd:b0:2e9:8bd4:577d with SMTP id d9443c01a7336-2f03f1bfa6fmr95419565ad.37.1795367028759;
+        Sun, 22 Nov 2026 09:03:48 -0800 (PST)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0c42b1sm39111735ad.17.2026.11.22.09.03.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 09:03:48 -0800 (PST)
+Date: Mon, 23 Nov 2026 01:03:34 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: kasong@tencent.com, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
+	Hugh Dickins <hughd@google.com>, SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Chen Ridong <chenridong@xiaomi.com>, 
+	Tal Zussman <tz2294@columbia.edu>, Xiang Liu <liuxiang.277@bytedance.com>, 
+	Ehab Ababneh <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, 
+	Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>, 
+	Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v5 04/17] mm/memcg: add folio-based lruvec live helper
+Message-ID: <awMX9W-Ykjw4maRg@KASONG-MC4>
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
+ <20261119-mglru-fg-v5-4-9eee2fe97a2d@tencent.com>
+ <42207e26-ba7f-4df5-8c80-71fa1b84d26e@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42207e26-ba7f-4df5-8c80-71fa1b84d26e@linux.dev>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 46D90140010
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Rspamd-Queue-Id: 9E86240004
-X-Stat-Signature: hd1dtcu1rro4gosimp8pzgpsg3dz9s9o
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1795366830-784706
-X-HE-Meta: U2FsdGVkX19znZuckRvP3yHBavmKJd4bKwsvNg4s1s9smZVugCTkxcTCYPLrJgZPAnRC6ZQ52GAnO95vxWlJlGg8wK3aOYSecE41RQBdeCwgRS4JFb2AbeCA+rwvP3G+ds7G5tZbRUAaaLlMBqfGVEjju9KLuyKLnDHlsE0BAXV8b/27R2NL310rJNpvcl9iB+rCapRTq9WBQMd6yGmo+mndnTVQRIjdptasYprogiXrHqmBMpbn2T5sCXLQobsfkuVwvwU6VzGPF/XJHzTLCTjDMCKUUgDbFsPnR3+lUq58djFiAu1QHOpLolUSOJv4jjjDycYOUaR5gsVrZzzhAcrZqgtcN2vclmWDR5J8tK6ghAgj7DeC4ExX/gVeilz+CiSkR6y3TJ2BHKXltO/L5urs87X0rgtLEesug5T4VZfNSdveMTaLDlOWluIWyu7SD/CGMTLj/o3OE01D7aUl77qPhMkJe00dIip/jDdsmhiWy/6Vqyrq5+HVWQORQ4Z2TfTzJSAF+kydOuFzxr7MAsI1EOlH7cMym6jtOypEZ+1PL25VBY7qh0QvwGYaD4U3HFkaBdedEEdOYLb6KKKn+l5y7AR7RuNRGE3ERhCg65eb6elxIIIt1UKM2atoyEcy5lOJO0JQgEYRQO3MumDnOYZ9WUBTbWSfofTCXJqLFHL8ghlouQypMcyrBbzX9NVFOJeCOVJhP5fJXmQoU8t/r0EiOKsroYLUZ3l4mCYyajuD1E+cgfawh5o5GHjmuquiB2+XSaM9mJ/BIzr4DzO2NpPZr5nOQK9I+SiGKVwIK6Tah9akRg96lVrFYVWaluKsO0Z6l2B7GwbbAv9Y2SVqlnVerDX6W1AeRAZmwRnlmY9Cj1x/ZX5pnaMNB5OM1P8jC2+iXjpzuzqs9nDoYf+fKSAdHGdpgTeMWlPCe1GPdnGx7ZDPvmTAHUSW3PUa+m8c25AReHYNw9WFCBMF+T4
- H+9jgxDB
- BRJc8+3PqdV3tPKG88OuzJJ6/sJAaJqXLtmEGa5XTRch0E0m0cZ/RMvJ5Gw80S2Q6GMIqxxzxMAEDqsZlYq9BbIp1WRGrkG8HE8jT9uLTKooraxZFCSA+hpzh5C5gDoNcvPw5lSpu1f8dJ+ueLMsGQAktdcDcahE6mBUGgMgmhwPqGMx8pOyaDiPcyojXkA4z1hiynQgn8JFSMqTODPiwKQxvL6o01hbtlXnBrK6zJhL2Lf7+VdKKFFROi4ksIB+54xjVL4dGQgH91sHTqn67akVLoUo3hB7so1cMtJpLSrUNAqYYdAEClR8o6/QWsKbW6hplTvgGJy1pc7AlEgA2odkieEUJbWJodO/20RFYqC6HQDaCKOe9oul6zYq7N/lUCO7WpufSKXQRSj18lgoGjJcrsbEIq64dE9D6nQ7+7egL06xRqu7Dvn9a8CNNESEYkVe01wBM2SBX5Ft4wGMB1aQ4zxJ4logUMQ45DDZAmCXPVU/Y4teyGTTD2nS/iOcUsFl9ATlFrPhXzl+rxzthY8QNbobqOxiGNMDcvo9IEmq3bFCXa63cgsXBgl5jgHDXoyTlJA1GhykYbkDiCZCeKrBPdw==
+X-Stat-Signature: u7dkfenzisep9uio6t6qsmtgmkkh55ir
+X-HE-Tag: 1795367030-978810
+X-HE-Meta: U2FsdGVkX1//jXi8BYvkZV//W5nXgWOpRlt4SzF3ErTz96r/iNYmDXo0ZeV21MqPiM0ZJrF9zi5+LDj/fk7mSk+rhLJwPnmfZczVvqXlzzav5nAgPFW18esLOPxM9V+6UTY+JS3r/Yy3kknxDSiiV0uPXE/vpEtcKgcmGNXqI3jvBs7GVF8itlzah37M/SZlOwuM6RBJ+TxGJ9n+bv/IeVOiowUKXQxGhVd9hxIzxqN9pyqa6cwgykCTWgzEW52e3yPb5sGy2xKyEapDivq+97mGmAdxaI6ggPi39rj261e8wR8IioV0sMW4yv3RkA7md718qMR29u1RZA9h2//HPigVrqAMGQPC1BwwsvcuzEi0jFiF4uvGxu4KwCUHJAlMVkuSahfAsi894oJWv0xibCsWRCMs4iveB7riKurbM/0orpDayMTqx/6mRTy7M5V1ZjdzOEsrndgXNwBH0xxJ2hm6KE8TM8pCfsMjn+Sh7bNt+CcHJuV/Cy0mbPE+lIFU11eGl0u5JOCRZL+7ktAp/GejjYwK0B3CYLCaAcNNcG45RUM96escO7f1SAfiZ6qWOtr0UKcGha8ZI2e6RucW0+ELyjKDnbADQaVzK2vSX6BD4gX63EJx48G2+fkSqHWeZ/dUHnAp2P6w9V5fmkLtJ6mH5b5l29LKX6p/w63rTuY8H6CKbHf1A0EpVzHRvUSNz3b3iQM3msxOKyCTepgtxcwLnEU8NpoK4HRCFcbfNk4ka3im584gis5Nkcu/37giPLFHhMIAX/fnkqN/Io9Xd6Cemy8eJ90hWhelmClSRs3N665U5MwBwMp56gi6TW3ZVGx28Ls4RD4MFrmI9zP9IvLMr00/IfQQnyGD8dQhjPaTRyt6hRjpkfX8zokWrs5P0jenEG0CPcWExx+9Ln9Zq/kZFgHIwLFYuCmGUWNo7+g3EhWjUrwVsShXzxg1ZXl/stRZJPwD1Mezil/JuJq
+ wxk+sFX3
+ KkxdAASH7efu9GT24VFBad9hgw1OI9+seJYBp5bZLF/Tg/tKxGRJyTTkGbV8q+4jXO2HonRlfXxiwyyCC4D3BuwxVXtryHmkN98vbSp8TeYJ1Jp5H4q6R14T+9jtpMEy2YU691s6RlrIcktFBX7dVKrymnzIVmTQXQmVTVPsIwgaCRrP9K6zLVcY416Hyd0sBtoOBu2dOkAsE246f3UmHHpmCkx6UxqlBxe6QG/jWiS1IFegJAYlQY4hYaxbV9w8nfyoY085mTxhD4C5BqtGm4CU1mbYMg2rD6FkEaAx7DREXmzGWcsDYx+7uzXXeQNJj38X5iZeow9T0zMHHWtKgyvOBeI6pjjUhVfViSa86hBh3WRFcVsYn7J1SAgF8vP2EJqwoZkOvj8qzPgGvZUa3xO6whVSPQx04iGAbYaMC943xXbCpsXqFWCSZ80k08WESOB6mDXy0wu9h2i8yxUU1oA3Q4+PJ2RlpWHPFUiTwyJc2ckWdIuhexrkXq51OqmjM7ByJgGsnh9+a0k+UmTALP7vAbF2yH/S4Rhk9Z+RhH374RvCD+92ZxkRbpqghg5su/uMDmOPw3HOyLyNSXGx/EBiHOzx4W6L1o/2LS/MTDJuuzkQOIRCsWyhq93pOaabpNTX1V9cHABInqch4bpvfcgKTZwVA9LElcJepSJj8cDCtWOVBSnq965LyY5UbIxyeotDkzXSNKgL7wtE+81yj2f8rY0SpVBHlUcwp2EalSuLd+5FLyvcVB6MRRr7XN3XPkdS2HX2bXa5C/AFdd9qFubrfNcusJ22wiFdC9W9yD+nDO3h4sizGPzMiCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,50 +145,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 19 Nov 2026 14:44:01 +0100, Konstantin Khorenko wrote:
-> v6 is rebased onto mm/core for-next, as David asked, and patch 2 was
-> finished on the way: it now checks the page cache refcount limit before
-> it copies a file folio, as copy_present_ptes() and copy_huge_pud() do
-> since the refcount overflow fixes. So patch 2 changed after the
-> Reviewed-by tags it carries.
+On Sun, Nov 22, 2026 at 03:53:44PM +0800, Muchun Song wrote:
 > 
-> copy_huge_pmd() decides what to copy at fork by its own rules, apart
-> from copy_present_ptes(): a lockless check for special PMDs, and a skip
-> of every file THP. Following David's review of v3, this series makes it
-> decide the way the PTE path does, under the page table lock, with
-> vm_normal_page_pmd(). That fixes the two bugs v1-v3 were about. The
-> patches:
 > 
-> [...]
+> On 2026/11/19 05:03, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> > 
+> > Add a helper that resolves a live lruvec for a folio under RCU
+> > without taking the lruvec lock.  It takes a folio directly so the
+> > lruvec lookup happens inside the RCU read-side critical section,
+> > which a lruvec-based interface cannot guarantee.  The first user is
+> > the lockless folio_inc_lru_refs() path later in the series.
+> > 
+> > Factor the ancestor walk out of lruvec_live_lock_irq() into
+> > __lruvec_get_live(), so that both entry points share it, and spell
+> > out why the walk is enough while only the RCU read lock is held:
+> > reparenting of a memcg that starts dying waits for a grace period,
+> > so it cannot race with the caller until the lock is released.
+> > 
+> > Move memcg_is_dying() up in memcontrol.h, next to the other memcg state
+> > predicates, and use it for the walk rather than repeating the open coded
+> > css_is_dying() test a few definitions away from where it is explained.
+> > 
+> > No functional change for existing callers.
+> > 
+> > Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> 
+> Reviewed-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
+> 
+> Some nits bellow:
+> 
+> > ---
+> >   include/linux/memcontrol.h | 71 ++++++++++++++++++++++++++++++++++++----------
+> >   1 file changed, 56 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> > index 980358bc6f49..441a5d57e723 100644
+> > --- a/include/linux/memcontrol.h
+> > +++ b/include/linux/memcontrol.h
+> > @@ -571,6 +571,11 @@ static inline bool mem_cgroup_disabled(void)
+> >   	return !cgroup_subsys_enabled(memory_cgrp_subsys);
+> >   }
+> > +static inline bool memcg_is_dying(struct mem_cgroup *memcg)
+> 
+> Let's make it const for @memcg along the way.
 
-Applied, thanks!
+Good idea, but css_is_dying isn't constified, maybe we can do it later I think.
 
-tree: mm/core.git
-branch: thp-7.5.misc
+> > @@ -1510,28 +1520,41 @@ static inline void lruvec_lock_irq(struct lruvec *lruvec)
+> >   	spin_lock_irq(&lruvec->lru_lock);
+> >   }
+> > -static inline struct lruvec *lruvec_live_lock_irq(struct lruvec *lruvec)
+> > +/*
+> > + * Reparenting moves a dying memcg's LRU state to its parent at any time,
+> > + * so anything added to that LRU afterwards would be lost.  This helper
+> > + * walks up to the nearest live ancestor while the caller must hold the
+> > + * RCU read lock: reparenting of a memcg that starts dying waits for a
+> > + * grace period, so it cannot race with the caller until the lock is
+> > + * released.
+> > + */
+> > +static inline struct lruvec *__lruvec_get_live(struct lruvec *lruvec)
+> 
+> Cound @lruvec be const as well?
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+The argument is fine, but tricky for the return value: when nothing is dying it
+hands back @lruvec unchanged, so a const argument means a const return (which
+isn't right) or a cast dropping it again.
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
+> > @@ -1561,6 +1584,34 @@ static inline bool folio_matches_lruvec(const struct folio *folio,
+> >   	       lruvec_memcg(lruvec) == folio_memcg(folio);
+> >   }
+> > +/**
+> > + * folio_lruvec_live_get - get a live lruvec for a folio under RCU
+> > + * @folio: the folio
+> > + *
+> > + * Same as folio_lruvec(), except that a folio whose memcg is dying is
+> > + * accounted to the nearest live ancestor, which is where reparenting
+> > + * would put it anyway.
+> > + *
+> > + * Return: the live lruvec, with rcu_read_lock() held.  Pair it with
+> > + * folio_lruvec_live_put().
+> > + */
+> > +static inline struct lruvec *folio_lruvec_live_get(struct folio *folio)
+> 
+> const folio?
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
+This is doable, will do!
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[1/4] mm/rmap: duplicate a PMD mapping as one in folio_dup_file_rmap_pmd()
-      https://git.kernel.org/mm/core/c/4d47d354
-[2/4] mm/huge_memory: copy file THPs at fork like copy_present_ptes() does
-      https://git.kernel.org/mm/core/c/e21c5cf9
-[3/4] mm/huge_memory: read a special PMD under the lock in copy_huge_pmd()
-      https://git.kernel.org/mm/core/c/39b0669b
-
--- 
-Cheers,
-
-David
-
+Thanks for the review!
 
