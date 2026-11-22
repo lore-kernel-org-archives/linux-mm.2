@@ -1,148 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0CB606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 04:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D18606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 04:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=axOtmIct
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Nvp8og8D
 Received: by kanga.kvack.org (Postfix)
-	id C9C1D6B05B1; Sat, 21 Nov 2026 23:13:18 -0500 (EST)
+	id E63B36B00EF; Sat, 21 Nov 2026 23:48:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4CAB6B05B2; Sat, 21 Nov 2026 23:13:18 -0500 (EST)
+	id E3B726B05B0; Sat, 21 Nov 2026 23:48:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3BA86B05B3; Sat, 21 Nov 2026 23:13:18 -0500 (EST)
+	id D51826B05B1; Sat, 21 Nov 2026 23:48:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 881266B05B1
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 23:13:18 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E84EB405DD
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:13:17 +0000 (UTC)
-X-FDA: 85461435234.06.ECCA3A3
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 030E980005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:13:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=axOtmIct;
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FB566B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 23:48:30 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 130E6A824E
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:48:30 +0000 (UTC)
+X-FDA: 85461523980.08.3107B40
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1AADFA0007
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:48:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Nvp8og8D;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795320796;
-	b=bpdWy0zvS2+KxUJvh1k0P73sgb4JAF0SRLnm1ooAMdMWKwES7wX/SEeSnBP2gmuWG7cZWQ
-	aviLH9V8//cTIYWXc9XjwXP+KjJqiAlZYOMnB+NizmhQPuRFIsOGt/Jil5HaGO/q60BfVR
-	SPYoM9IeVnsukw1PaoEBhkhL67DrSgc=
+	t=1795322908;
+	b=filYhXx/fqmwzz207fsAWOryksPQvrMeNmRkxY9GDmL4gINSLgh7thLlWer9lct30t8FOx
+	WkAhtiTmhop5tq8cSaPguVJOJYJ332Ti6HUlS6iSTc2snJAu8V9hnRRiF1ae47fLIDfF1t
+	rTlihLPkC6ZtHoIBswG5u0HcbhS9c7g=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795320796;
+	s=arc-20220608; t=1795322908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ljRHehwKpqXIEQjugVh5IB8G8Jh5NOSn1c67fpxeVk=;
-	b=lagbhEV6LKV4zYsG6rec81FqwW4w6j+H6tNr0NeqnpYLBcZySn0AkRh/LyDQmb7HbB+8n2
-	R2E8uj6Br7oEdMvFGsABd9COH853lqc7RHWXkseGXVY4fWDT0FDVrDFzdT4lfGeqystNqC
-	pVLMw41rjF5fETK8z7wPmuPRT3Qlo2g=
+	bh=aivprEjWWyuTPpWR091yh3Xxco3ejGQmEcsBHTiq2so=;
+	b=ObCjZ/AC/fpqKak4j6PtR9pLbL8elpTVIt9LJ29UyMvMa2ZOPGdr4BB0rvaQ+dWG2hW8NG
+	RP8EYhK/5dheKNHp0TjnbUwG6F1loAIg+R8a2BnsSjK98DM8Iv6kQE74qgpsVJjIWrRsEN
+	T8f5cH8sTDW+gAw2UBtYlZdYUch7VUE=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=axOtmIct;
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-54492d8a988so218151cf.0
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:13:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795320795; cv=none;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Nvp8og8D;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-55be673e029so155741cf.1
+        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:48:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795322907; cv=none;
         d=google.com; s=arc-20260327;
-        b=s2650fzG8qkR3YraJpKei/dIkm/hFTIvrF8yUjlXiCO07DRdbRFnqB3glv4tMq7Caz
-         u+buriwWXOXRjkt1nOmZBFXT3Jkz4hEtaz2Fl//9lEqRF+wHGwE+VFNtwWDbuKN4n2Eu
-         ZG9ZRxp+RfbSUR4adeOrH7RQbPS40MKKB1bzTm8PIh5lvHDb+LRFsbgIxMXaEbyVD2s7
-         SqWEDwW1shNqW6coRw6qVJaVDVDdqCuxcRU/b7gsOKmWVzBprBQXXLxab/sTewkU+xyu
-         BYbDT6wj9WC1ClLeM7qNET8TcQYMaPEtZhaVtIHK/Fh9pV47zp9AOJHluPEwoaZcy66A
-         fHxw==
+        b=CUADozbnRhSO3REn+DGz1iYbEB5EwyzscScGQvJ5yPGBpkKm6FG6fxov3Oa+qFdhRi
+         T9n/IV4KNVZiVIPg7TUzJDNdWoWWi9G9iYsp4v3CgZJ0/t3gWfTi5gZoArEZGt7bBPSK
+         R1GOEUPJKYX1ZSaoFdoNF4sBCFRD6OlYTTB4PkDG71OP8zqMRbVO4pq1G2QK4/Xer7SB
+         /uneJtR5TWW+flmy/y5848mrd9KMbbDr1/rfGrS/kFmea4y9zvZV96EQmH6XUoN5Owz9
+         mQq7MpyiGnFtOXTgwkBBxv3/w6fuyyFQqfkCkZg02xQaHn82GFMSziGt0oQOvkHBY6cI
+         mr5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=5ljRHehwKpqXIEQjugVh5IB8G8Jh5NOSn1c67fpxeVk=;
-        fh=Jl1yoJ7q7Tfzp3Ql+WWccHdtVYv8cDE6AUuAQyE68us=;
-        b=TdVEEX29gYGIV31Y+MAahXz3au5b+eyaIPHSQvjhsy93is1N9brrTtdt0WgDXeebMZ
-         D5uDhC/t20Cc4G/XQWlbOmmYT6uvfWWMm6x945oe4fwvW1FZhCW/LEEBP7I8kpCo7EN1
-         BdbtypgpLMOotsb6d7q93Ry5zAvL+J7/dOh5tZGP2Pe7fXbc9zAXIIvFvrsj08ugbKwV
-         VIHwGIGJJgGAGxh9GcYAeqifhcajwxAMl3+4h90cIwDk2PtJBgzeONC8AiBHQ2lVO9kH
-         kJUEOvBYqHYGn3A1m7T8qR727j8AC8mr0m6QQvOyKAjuxkY+TBU7u/DfIeIQstKjxybd
-         X4fw==;
+        bh=aivprEjWWyuTPpWR091yh3Xxco3ejGQmEcsBHTiq2so=;
+        fh=nizHHtW14QMZym8UzNBzH9cIw5b+wlUf/p5i2tYYCec=;
+        b=D8pB85Lbt/EKIWZOSjIkLqqVk4dxDm5cvaG8LqUruQ3XqSOLc86ElGDF/1eR8ZH+kj
+         dBx6zKkTAr07h+hZCzXZVMC7CrUUY8ql16k400UT14dpluRhX+UTYyonOysCETgfBLbQ
+         IzjFciT97aJNo6RPERPNd8VlTHEh87ELvMNVnKs2GJLcsxA50D6JZkULyarQQN01mr6w
+         xAt+rolKg9hqMotY5daTD3mQgdb0+dhreFp5dmmUXcePP+N4cFWuRcz2Z6g5wcBTJUZB
+         fpmWSULxmCeM7P41b/6616YMq65lyliUvDwJqWQtTVPCL+4VovrtY1E5SLP1LDma1TZo
+         eDtQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795320795; x=1795925595; darn=kvack.org;
+        d=google.com; s=20260707; t=1795322907; x=1795927707; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=5ljRHehwKpqXIEQjugVh5IB8G8Jh5NOSn1c67fpxeVk=;
-        b=axOtmIctIgUziRPz9eR/BQTI6H7Pq8AsvwkcJ4P/6Fpd26wRQtAVlMC8hzeXvsqG4k
-         EpG05NbU2ihtMxin6xtDMeL1kC3MqlvEPkx2cBk2PJ8/TD/QVECdz8kZXDoI2TAftZtA
-         tcSmmbvpxbL3CUoI/UMm55TyzvDpOHGuFIaWxTOjcgseaNkoS8tjLj8Mr0I3yF45Vt3b
-         aTE3u7hugvioSadDBG1tdWpopL7MWZFOtP7n5D6ycXluqYshAV/O+v3T1ou/dDNCSAzR
-         DqcMD5oWf68Kv7l2PPR5aTfLyjKhz+LzIHfCZVe6ENwjupbBNivdBxiOyqXLD9oKRl5Q
-         VdJA==
+        bh=aivprEjWWyuTPpWR091yh3Xxco3ejGQmEcsBHTiq2so=;
+        b=Nvp8og8D4e64Szryi1pYejFz19pQSEt/71p2PFOwk7OvnOgCc8HL1/Id5+vueoIVEw
+         w2Z9MuHq3QMzXyrm5tOSguKR3EiQiJ+kai0QgylV3fsFvX3pfSADMHavdeX49FVMWbV4
+         /Pe5d+ovOoa3/fq1b4H1KWawt6GgYedCInit2nDTH/kTe6DK9Ka5UWG9fwjOjk3L1HNY
+         KSr/P182Y80WcihKC2ibvumSfiDz8K0uK5aqonD/fbkD1bqp4PgyKyoUXUb+UGlso70F
+         j8nmCmwITZ+EmR2LzcoZOpMU4L7ZJACQSBkxWp9SBn44FtAn7+sX2qNrgIC51s8jRBJW
+         /+gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795320795; x=1795925595;
+        d=1e100.net; s=20260707; t=1795322907; x=1795927707;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5ljRHehwKpqXIEQjugVh5IB8G8Jh5NOSn1c67fpxeVk=;
-        b=c4+xYy/6GeHRjjQOdk3wHbeXCt1I9jsb4ddKTq8phT2iKHmztvCmgCl0qh/KG8WoXh
-         uhBcIEZU2Yb/XUizIMcnm14w5mT4DG8JmxRV5CaiOLKSetWr9n+kYPf38W6W5tB2arLX
-         3E2AGwHJSlZQdF52ZyBNjo4A0EOfh7VFAgnBnVDBQboPMKuXf5ms9TZx3uK+Lvf5vDjo
-         ftU9Yp40bKhW43H5HdMOIl6c9e0TUBzWr2+dsrMWswSZocveFJ1IJRiLrlQ8qQxoMtfz
-         jfz7kCVfzjNFNdZAf11qXs3sD528mjoQk1nq/EbrwitnxOIj3G3rtRe6wIldRZO4P/mY
-         iEqQ==
-X-Forwarded-Encrypted: i=1; AL+hErH2nVH0mIDBiXaQXZOlYutuTEdks2ysxs7YIfT7zOhzdr9V0s2UAsMG8ObhXKhROZZ7Wc1sK8HAqA==@kvack.org
-X-Gm-Message-State: APuU4Z8lZFneRKoVgWqwsuAQkJvM4lWW18VuxNlsKnGxKi6HRDJomTou
-	9UVZCNmv3lMIrELlnAY7A1ZazsIR19oqfm4r4GiXVQ+9KhmDP19sUnUtQLnU/FtFTm8ETFQNKrt
-	AucUzWYJB81zy+UIvhsl39KgKgGDPY35PY8oA51F/
-X-Gm-Gg: AZFdTZcDuI79YVQ/77fUkPgmqcX5CNKzGiIKkd4u76pnjtQjJjkreNrJ8u6X+y7ycxM
-	GZwoMF66XEMYQ8ctUbro0POFZ+7F/EDVjjJdBoeC1ZkRwsflM29VgFie5pb5glCEi8E38R+hm2Z
-	80YkjdXkuywcSK9O0qcHRkAhgkk1MhE2v/6aoU0cWPuCH6hZI4qV4eXmjX7Om/5WTz5GkLF5zfH
-	DVGG6uuMc290KCvZZh32zQAYlWbj4M2G1dgG5EnffndjTmle60N15xmZM8YOFWjvxHgZwd5FMc0
-	AOJIZqVYc23f9hQcSqDwFTNXFTpsKAuuNI2e0wcrUueF8Lo5HNyNL3W+0i43gciuAg8L5JrY+qF
-	JmZQyknUfp69JKEUtZexrcfp7MTDpITYJKJJUnxxny2DWs89HwbjxF0gIpUoPuIEpH8qZ5GA=
-X-Received: by 2002:a05:622a:c15:b0:530:e335:4ef with SMTP id
- d75a77b69052e-55d88014944mr19387541cf.2.1795320794485; Sat, 21 Nov 2026
- 20:13:14 -0800 (PST)
+        bh=aivprEjWWyuTPpWR091yh3Xxco3ejGQmEcsBHTiq2so=;
+        b=2lsVBpai3kFJwWaCa+jAtKb7w9jIgZtfJ2FsMsMCOruIDfXZb3AJXMQOvJBc/2b7gq
+         59Rt0qScfIn2WGKPGpLEU1HgkaiMYL9SkgAdJSz/w+U8c4LQOalwFAy3CSxn2kWegH9S
+         kmZzXI2AhILzL5H+k6Uz4mbkOoR49enFLmv5A5JLuqlaJn1QbHhMzvJZeYPdCVuZd7TK
+         C/vyOzrOLn9CltTRj9gEMTiMMvdk9QblUZK+FfaCRQXpwsvv7qK/lUYGMCc6NXlbsg6O
+         WUqThgEXlShiQHc866AxGUXALXyWv+vhv2NM+ve1wo4zcrxuUf03BH6E2T1fsoY/CPsp
+         dIVw==
+X-Forwarded-Encrypted: i=1; AL+hErE+rltPIW5sPn0NPtv9rE8zn+js6cOJlIm+f3k56ffMbp0htCQgjz3hbFlMHAAMXx6xTPcvn/bbRg==@kvack.org
+X-Gm-Message-State: APuU4Z+yV0jlKlBNJQ3/kPRsmVIbH2VczsIjLPgBa+xCx8eMjlCvhur3
+	tJ4omqfW34f6ehqvTvlIGlAJoJOnw1NyQYb0JFmjf8S4Mo0l8WEovCRaTeQpfQhK1M6LybhX8F1
+	eGCUjeEOPirL3WlaQ/jt6unPDTcX9yLgdkUy13rAb/Fq45DJgx5EUVvtN
+X-Gm-Gg: AZFdTZfc1axYYN4dCNoMAbDhgSvtyIqBPOmhGK9IHIvCbIuoP9lRGdz6NN9XrwZUqXr
+	AmQ0DGtXwyk/VxbtQWSJbwMtrdgcGFmo+2MkXyoTn3UBnU22A7kPkuqfwytP99TLBi9krfwgHF3
+	5dG6dMRDx0eVD0kGUfsLSSm9ToBZin0z1cUJWmT9phzJ3b2xZDXplxoJ3NRDK+aow8VqoM6L9ff
+	EpKlie4xOv+L4wr2bETUsvaTSMaGiAtbrXEGCAk0axrThzS3uuT9auJGjlcgI02aXZM7CUzWx8x
+	3yjQaiEXfJ757cgOV/PSCMghm1qiQ/WAO0qKaYJzvsyZRN0IuAaT7I0PcKl5BvluiuPpwDJ5Y5W
+	GED75ixtGZDLGkSYCi/yK9elNsBlSjBF1uCxnUTShhqTSryWP1vIgOGApuZQ9ax6+59/zRlgCEG
+	xoo07YILwSFdF9Mz55
+X-Received: by 2002:a05:622a:124a:b0:535:bb33:6351 with SMTP id
+ d75a77b69052e-55d87fcff29mr19987351cf.1.1795322906822; Sat, 21 Nov 2026
+ 20:48:26 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261116071325.263682-1-hao.ge@linux.dev> <20261116071325.263682-10-hao.ge@linux.dev>
-In-Reply-To: <20261116071325.263682-10-hao.ge@linux.dev>
+References: <20261118132719.632451-2-ardb+git@google.com> <sashiko-outbox-223175@kernel.org>
+ <b7521ecf-d30a-4b47-959e-43257baaf8a9@app.fastmail.com>
+In-Reply-To: <b7521ecf-d30a-4b47-959e-43257baaf8a9@app.fastmail.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 21 Nov 2026 20:13:03 -0800
-X-Gm-Features: Aa3M54q14FtdKOZ0RiWv5OEBoj77CCH8AI-Mq7soe9RzxldP46nF6XTAMApufpI
-Message-ID: <CAJuCfpF_=KV3ArFO5LtMjc4EGMr79tX_tX2K=YCG_JTvC51OfQ@mail.gmail.com>
-Subject: Re: [PATCH v5 09/11] mm/vmalloc: undo what vmap_pages_range_batched()
- mapped on failure
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
+Date: Sat, 21 Nov 2026 20:48:15 -0800
+X-Gm-Features: Aa3M54offAfg3834PgFby-yYoDkOuUmUfJ9HCVQYtK0CdYb7PRNW36LqxMd2aV0
+Message-ID: <CAJuCfpFH05dc+K=NproS=T_piiJqx-xJ7zvXDdNe+g1_bXF2Ow@mail.gmail.com>
+Subject: Re: [PATCH] alloc_tag: Use __ prefixed ELF section names
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: sashiko-reviews@lists.linux.dev, Ard Biesheuvel <ardb+git@google.com>, 
+	linux-mm@kvack.org, Kent Overstreet <kent.overstreet@linux.dev>, Hao Ge <hao.ge@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspam-User:
-X-Rspamd-Queue-Id: 030E980005
-X-Stat-Signature: try74hwr9iaujdoyq9xnbw9syoarop8i
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1AADFA0007
+X-Stat-Signature: ju9tpjis4sneaygess3z1pdsrxrgpk83
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795320795-641515
-X-HE-Meta: U2FsdGVkX19/BUxuAaEY7FAYqv8jWUQBG3jTlZ7JR8xlwQlpYKCq6z6qr4xrMdRhLxvhkkgETkU7S2sb3t6rBKV667i/XBmcs2IszIuhL1vInBx58nOLjj3slE0ZhObWgc/Eigw3rTNYZtkJE4niKpD9VM4GA/8No8v4FGzSJa0CBSUgmW6wMWfLQsDy3RkOGPcmoldcycql5Qd02C9ZvAHPj1pinUbphkcHpfyW88rzAETs8kv4SRu0mGU1PQtr0PLQ/QUoG+tdcWd00uIpyydlSx0AOzBAhKV2TNMyzsY76ngNtY0fvhHWAmuJh16SF/O6jW4+uRKWJkoLx/fCNJ3GwxQfgQdySYcBL6vTkTc+rn7iIfv9fBDtqAR6bouw+H1FY6EuuDzpeoq/Tc3Qm0+XbKi6GWWnMisEWeuvH1vfXNqqaAkCUC5WhYduyFHAzRuwgvSaH3FBk1mxU+OyeE98sU7PgKT9jW+CEvINgGxnxhWV4sHaJdo3Et7QmPTo2+74g5ZLiDOGrSTEv4f2ZvcRLpp6h75QZXdGcYPFZFk4lLUyqHPS0/v9MZ35hWNs/ZfMuyKLCL24caeSvdjr95k+sAJOuJibBiLdeLqoLHmBCiT3MFn1z9280s4Evb7KRwt5YkgKGAYn5vPTA/27VesWeltQqn5DpF2eR/B6v6tXeNomTOjgqq+T6M+3lRlgP9l3+JN+2UUI8fqa9XDz7ZD3F8dZlSNRqaviLBpOl3ijW2SP4c66XBG3k22aJYEYgbUFZXGLWgBp6A/RT7sAsBAfrB4K7oRpgnPa7VgtwSX0aNccBJP4yu1aOa49VFiJkfUA6BcMsroNd/DHGAwvNZENN/85kynPVOuSzeEd2VLaeeeqrf/2wZY6yow0SfgzuTk3x5oJ5UTgFuXUxIfRMjs652N5VTFEFGHulygTaGRV1rUlMPiGIjjhgx2eeNEK05IdjqRxaihhA7UqEKK
- +r9VQbO2
- XkaLNSkP54zHyShzvx2YqCMPs/OWrEjIOjZlbXvDPKrjB7/nNuA0rSOEWjQXCzntgUl9UyDeTV/+328KVlkNuGILXW4hQJPn1+JEhdgcmEFd3SIpXblARxfzOyKIa8Oxv8rnYJwAcAJ/z2KFxTyam2cM6TekopNXPKt5YRLWVy4RalM52uJb0q5MuLvpeCOJkEZBsjFRJDPlx8kIKLj+8IW4Z8v/X6tVYUawt5aryidgOOkpJ8C/CcBGZobUJ9TZaZWZIXfFt0R+JCjXg3eAqPKXseKq5tUrmDGYw0HvRBy4+musmL/rGO9srOlQ0kcJhXv8h3foDtlYxRFv6sihbbI2c+ynRnMc64J5hvPFQlrzP+knFSYDhDv/l11UO1GRCsK28ZJkwFRD4Z6S0XoRJrtn1AyVXhwKurfnId2pN7OS38+B8Dtzu362jQQO57hX2eBpeFQcwQku7ABwrr58KP+C9/7NLDLQIvEqvhK86sFh/AJoRK5iba8TOnZpbDxg9Ay/pPbhdNleZla941XEW2NBeFQuDXnNDuc9edXXBu5ev7FOC6xG5FuqFyRqc9j9qHObhOORiuQTdf54=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795322908-2295
+X-HE-Meta: U2FsdGVkX18m88yj/c4IpnF5ltIgXAVTBLD4NAm+K7xrJy1fEMgBx8BW9dsNGLZ30k674FPeoDTtvN8s+nUE+55Qc8IcmtFS/iPEQ89kHbpqx4C2NusjaROeR6tZULRBBLwTl8xFgk8cMntmHPvk7y38Wl1cmvug7Qjn06K0O5fJNs9/UHUWUQ4KpzN+Kq17ZNr+L/hWfHC/sQe2IF7SvCAikRMoOw53TrspQt9AkCnsR6RzbfTpf0Wxh14hnbn7a5CNXQoL+ZmcorUdVsdkKicf0pSbdqQ6GIJs8YuIuc4UWMRGymAqGtwMmPsMJ4V7DpQJjuqPRHtIeVRXAn65ACx+r1r+PvcvkZ6yodIQkPkmXABmE8kR8SSV2FCvdcsttxJDcu9VOs4qqbVamQsQY2ywfUNaa9xyMWfsVwWAiQ2ieH/bN8hRaEjgeinHdA05iBtEEEQjZ5+0uIGZI4iqCCk65xPDN+0q5dUpw89KGJDyk/dawpcvk4n7u2F8sAj/AFlBhW9u+YyY+dFCVGRz7XmBrQumGDIK96+e88WUOcF2E8DrNZo/bYnD3HOXYl3CfmeMZ8fc9W/9fDE3mCjVRznT+KmpjVKqB5Ht4HpJ77WXK8zbgpO1+M4pWk/26PXhFKIUfDUw92OT3iikoOThIQXon1mrRrEU5O4Pfulo6SZRhAUsCsQaXoZ4xqfnWpDv1bPj5g9jByJIIZsoA8lZ0ZtPqDGM1944UU8ziOFmTealIXY9AqJ++r4IRvVC8XJpBXOkmZtXk1tQQ/meYHNkXscfSMO4s+fWF7EqpyEIhmzus9oWQ34iXKttbI9P17oYfBPucjUyU36DFN3IWwxMx4MuAc8VcBpDTyRsHoyBELVj2fxeFCGC/sEaamYddSTkALc2KfXHtGBuWAsmC+7jTTi5QaMb1xu0Pq1xlYzpehq1XIDkqIzZxxql+3sgKaUtkKvdtqb0sbwBllyhEUr
+ tafpO312
+ Vg87xMgGE1cIrTErRKfdJHVweWupLkvoqIzFPXVdpn+pAxhgpfNPFieFIN0C8ZvS2+3weBBYfZPb6+qHbjXdCCiJ1CzEpG65VbX9rcBqeWSqOweMdihsxWK/npM1a+/tUy3ZRLZJhXoBE0VP9jNXpBSM16kyWgH+vEdnwJYV32dFJVVW+7/8Epi/67yju92IHney4sw7+gIfWfXQ7sJ71dDHcTn3bPOAgLQ5B9MqnenoJT49tMrXR8IAsE9iw3RTO8Lu7Hbai6DJZm9d8tOxtNiuNfN846STgZ0LUFFI1A9fuZEyAICJAKz6vAi/Gk29ecJJh7QvTE0FYcSOb0TaUzs1Zub2pO6IdgHnMezo3oQk9ubNp0/DUoePBGxbQEB4Ll5vU+kgBWqo9KFaaa+fl7sr7FykAdUMNVB/wPs2eZ7/8NQE0IjgaLvICrfPPrGTHHIETuvcOkpntOz+Fu35oNvh1WLI+dosOYSy/1pOqycWa1e1U+XUrtcjEMTaRlV0Mfp6iOAQyeRTc5nMPxNWhY9g+Vk/Xy/ZNgl5ImFHS82YceVH9GWvDPeOSRyVNx9G80oLJUtehVV87ixXZvE4odwFeddhGbnUmFoxE/WC1G4ycip1461V1nPlcxzV+dI9UH7aqEuqHecF9GgSY8lF4hFoe2HfD1xmBhAf/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,102 +145,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 15, 2026 at 11:14=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+On Thu, Nov 19, 2026 at 6:03=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
 >
-> vmap_pages_range_batched() maps the range batch by batch. When a
-> batch fails, the batches before it are installed, and the failing
-> one may have installed some of its pages. mapped_end follows the
-> end of the last installed page, and the error path undoes
-> [addr, mapped_end), never past the point where the walk stopped.
 >
-> The KMSAN metadata is set up for the whole range up front, so it is
-> torn down as a whole when the mapping fails, like in
-> vmap_pages_range_noflush(). The only caller, vmap(), also calls
-> vunmap() on its error path; the double teardown only walks over PTEs
-> that are already cleared.
+>
+> On Thu, 19 Nov 2026, at 14:27, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 2 potential
+> > issues to consider:
+> > - [High] alloc_tag: SECTION_START() and SECTION_STOP() fail to expand
+> >   macro argument
+> > - [Low] alloc_tag: missing Fixes: trailer for unprefixed alloc_tags
+> >   section name
+> > --
+> >
+> > commit 933587991e6a16ab600445b22347397f80335de9
+> > Author: Ard Biesheuvel <ardb@kernel.org>
+> >
+> >> alloc_tag: Use __ prefixed ELF section names
+> >>
+> >> The compiler will emit static relocations related to a section .foo in=
+to
+> >> a separate section called .rela.foo, i.e., it just appends the section
+> >> name to the string ".rela"
+> >>
+> >> When section names start with . or __, this results in relocation
+> >> section names that are correctly matched by the various pattern rules =
+in
+> >> the various linker scripts across the tree.
+> >>
+> >> Without any such leading delimiter, it may lead to spurious warnings
+> >> such as
+> >>
+> >>   >> ld: warning: orphan section `.relaalloc_tags' from `init/main.o' =
+being placed in section `.rela.dyn'
+> >>      ld: warning: dot moved backwards before `.rela.dyn'
+> >>      ld: .tmp_vmlinux1: section `.rela.dyn' can't be allocated in segm=
+ent 1
+> >>
+> >> Fix this by renaming the section to __alloc_tags. While at it, tweak t=
+he
+> >> headers so that the definition of the name appears only a single time.
+> >>
+> >> Cc: Suren Baghdasaryan <surenb@google.com>
+> >> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> >> Cc: Hao Ge <hao.ge@linux.dev>
+> >> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> >
+> ...
+> > Does #NAME in SECTION_START() and SECTION_STOP() stringify the macro na=
+me
+> > "ALLOC_TAG_SECTION_NAME" instead of expanding it to "__alloc_tags"?
+> >
+> > In alloc_tag_sec_init(), kallsyms_lookup_name() will look up
+> > "__start_ALLOC_TAG_SECTION_NAME" and "__stop_ALLOC_TAG_SECTION_NAME"
+> > instead of "__start___alloc_tags" and "__stop___alloc_tags", returning =
+0
+> > for both.  When compressed page allocation profiling is enabled
+> > (sysctl.vm.mem_profiling=3D1,compressed), kernel_tags.count remains 0,
+> > causing idx_to_ref() and ref_to_idx() to misclassify built-in kernel ta=
+gs
+> > as module tags and dereference an invalid module_tags.first_tag pointer=
+ on
+> > page allocation or free.
+> >
+> > Using __stringify(NAME) instead of #NAME would expand the argument firs=
+t.
+> >
+>
+> Ugh the token pasting stuff always confuses me - I'll fold this in for v2=
+.
 
-As I mentioned before I think this patch should be merged with patch 7.
+With that change, feel free to add:
 
->
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> ---
->  mm/vmalloc.c | 22 ++++++++++++++++------
->  1 file changed, 16 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 28e65073624a..aa80bc273ec0 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3748,13 +3748,14 @@ static int vmap_pages_range_batched(unsigned long=
- addr, unsigned long end,
->         const unsigned int nr_pages =3D (end - addr) >> PAGE_SHIFT;
->         unsigned int prev_shift =3D 0, batch_idx =3D 0, nr_mapped;
->         unsigned long batch_start =3D addr, batch_end =3D addr;
-> +       unsigned long mapped_end =3D addr;
->         int err;
->
->         err =3D kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
->                                              PAGE_SHIFT, GFP_KERNEL);
->
->         if (err)
-> -               goto out;
-> +               return err;
->
->         for (unsigned int i =3D 0; i < nr_pages; ) {
->                 unsigned int shift =3D PAGE_SHIFT +
-> @@ -3764,9 +3765,10 @@ static int vmap_pages_range_batched(unsigned long =
-addr, unsigned long end,
->                         prev_shift =3D shift;
->
->                 if (shift !=3D prev_shift) {
-> -                       err =3D vmap_pages_range_noflush_walk(batch_start=
-, batch_end,
-> -                                       prot, pages + batch_idx, prev_shi=
-ft,
-> -                                       &nr_mapped);
-> +                       err =3D vmap_pages_range_noflush_walk(batch_start=
-,
-> +                                       batch_end, prot, pages + batch_id=
-x,
-> +                                       prev_shift, &nr_mapped);
-> +                       mapped_end =3D batch_start + (nr_mapped * PAGE_SI=
-ZE);
->                         if (err)
->                                 goto out;
->                         prev_shift =3D shift;
-> @@ -3786,13 +3788,21 @@ static int vmap_pages_range_batched(unsigned long=
- addr, unsigned long end,
->         }
->
->         /* Remaining */
-> -       if (batch_start < end)
-> +       if (batch_start < end) {
->                 err =3D vmap_pages_range_noflush_walk(batch_start, end, p=
-rot,
->                                 pages + batch_idx, prev_shift, &nr_mapped=
-);
-> +               mapped_end =3D batch_start + (nr_mapped * PAGE_SIZE);
-> +       }
->
->  out:
-> -       if (!err)
-> +       if (err) {
-> +               /* Undo the part the batches installed before they failed=
-. */
-> +               if (mapped_end > addr)
-> +                       __vunmap_range_noflush(addr, mapped_end, true);
-> +               kmsan_vunmap_range_noflush(addr, end, true);
+Acked-by: Suren Baghdasaryan <surenb@google.com>
 
-So, you are unmapping (addr, mapped_end) range but removing KMSAN
-metadata for the entire (addr, end) range. Is that intended?
+Thanks!
 
-> +       } else {
->                 flush_cache_vmap(addr, end);
-> +       }
->         return err;
->  }
->
-> --
-> 2.25.1
 >
 
