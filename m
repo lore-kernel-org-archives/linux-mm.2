@@ -1,142 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D18606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 04:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11961606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 05:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Nvp8og8D
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=G1ibACef
 Received: by kanga.kvack.org (Postfix)
-	id E63B36B00EF; Sat, 21 Nov 2026 23:48:30 -0500 (EST)
+	id 102906B00EF; Sun, 22 Nov 2026 00:55:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3B726B05B0; Sat, 21 Nov 2026 23:48:30 -0500 (EST)
+	id 0B37E6B05B0; Sun, 22 Nov 2026 00:55:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D51826B05B1; Sat, 21 Nov 2026 23:48:30 -0500 (EST)
+	id EE3286B05B1; Sun, 22 Nov 2026 00:55:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FB566B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 23:48:30 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 130E6A824E
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:48:30 +0000 (UTC)
-X-FDA: 85461523980.08.3107B40
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1AADFA0007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:48:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Nvp8og8D;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795322908;
-	b=filYhXx/fqmwzz207fsAWOryksPQvrMeNmRkxY9GDmL4gINSLgh7thLlWer9lct30t8FOx
-	WkAhtiTmhop5tq8cSaPguVJOJYJ332Ti6HUlS6iSTc2snJAu8V9hnRRiF1ae47fLIDfF1t
-	rTlihLPkC6ZtHoIBswG5u0HcbhS9c7g=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795322908;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BF0656B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:55:49 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 982F81C1F8F
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 05:55:47 +0000 (UTC)
+X-FDA: 85461693534.05.1EF2462
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1AF881C0002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 05:55:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=G1ibACef;
+	spf=pass (imf21.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795326945;
+	b=3zbMTbrPliT762JSPwsXRKZWb3ZSeYeQ/JiMfN5VjQeEcjQd6dW9T2ykz4O9zpyjHdu0kp
+	Xg7c77UqX0q7fyerjZryVV1zvrFzENlMY9TiUiC0w5kWqvhnMfh1BP81/jmxZS1Y314+28
+	4D/lYMuBHVuq24ARY6Hc2R/hGwOD55U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795326945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aivprEjWWyuTPpWR091yh3Xxco3ejGQmEcsBHTiq2so=;
-	b=ObCjZ/AC/fpqKak4j6PtR9pLbL8elpTVIt9LJ29UyMvMa2ZOPGdr4BB0rvaQ+dWG2hW8NG
-	RP8EYhK/5dheKNHp0TjnbUwG6F1loAIg+R8a2BnsSjK98DM8Iv6kQE74qgpsVJjIWrRsEN
-	T8f5cH8sTDW+gAw2UBtYlZdYUch7VUE=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Nvp8og8D;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-55be673e029so155741cf.1
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:48:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795322907; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CUADozbnRhSO3REn+DGz1iYbEB5EwyzscScGQvJ5yPGBpkKm6FG6fxov3Oa+qFdhRi
-         T9n/IV4KNVZiVIPg7TUzJDNdWoWWi9G9iYsp4v3CgZJ0/t3gWfTi5gZoArEZGt7bBPSK
-         R1GOEUPJKYX1ZSaoFdoNF4sBCFRD6OlYTTB4PkDG71OP8zqMRbVO4pq1G2QK4/Xer7SB
-         /uneJtR5TWW+flmy/y5848mrd9KMbbDr1/rfGrS/kFmea4y9zvZV96EQmH6XUoN5Owz9
-         mQq7MpyiGnFtOXTgwkBBxv3/w6fuyyFQqfkCkZg02xQaHn82GFMSziGt0oQOvkHBY6cI
-         mr5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aivprEjWWyuTPpWR091yh3Xxco3ejGQmEcsBHTiq2so=;
-        fh=nizHHtW14QMZym8UzNBzH9cIw5b+wlUf/p5i2tYYCec=;
-        b=D8pB85Lbt/EKIWZOSjIkLqqVk4dxDm5cvaG8LqUruQ3XqSOLc86ElGDF/1eR8ZH+kj
-         dBx6zKkTAr07h+hZCzXZVMC7CrUUY8ql16k400UT14dpluRhX+UTYyonOysCETgfBLbQ
-         IzjFciT97aJNo6RPERPNd8VlTHEh87ELvMNVnKs2GJLcsxA50D6JZkULyarQQN01mr6w
-         xAt+rolKg9hqMotY5daTD3mQgdb0+dhreFp5dmmUXcePP+N4cFWuRcz2Z6g5wcBTJUZB
-         fpmWSULxmCeM7P41b/6616YMq65lyliUvDwJqWQtTVPCL+4VovrtY1E5SLP1LDma1TZo
-         eDtQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795322907; x=1795927707; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aivprEjWWyuTPpWR091yh3Xxco3ejGQmEcsBHTiq2so=;
-        b=Nvp8og8D4e64Szryi1pYejFz19pQSEt/71p2PFOwk7OvnOgCc8HL1/Id5+vueoIVEw
-         w2Z9MuHq3QMzXyrm5tOSguKR3EiQiJ+kai0QgylV3fsFvX3pfSADMHavdeX49FVMWbV4
-         /Pe5d+ovOoa3/fq1b4H1KWawt6GgYedCInit2nDTH/kTe6DK9Ka5UWG9fwjOjk3L1HNY
-         KSr/P182Y80WcihKC2ibvumSfiDz8K0uK5aqonD/fbkD1bqp4PgyKyoUXUb+UGlso70F
-         j8nmCmwITZ+EmR2LzcoZOpMU4L7ZJACQSBkxWp9SBn44FtAn7+sX2qNrgIC51s8jRBJW
-         /+gA==
+	bh=e5Q0HhQjroZ+Rc/PnGI9kGFEaaiyFgbKCtvuSXxJJDA=;
+	b=7Uj+ln2yjLrqdbg1QLFPInFD9Xu0xaS+0StjYP++MIO2UVLFFyN0UYZcuvFOAN7axck8Az
+	5W9H8d3t/YU9qpBXEFEvQpwFLgvdySlGx9NwprPy7Obhfol/ulKTLUTs/MAeMUHuDfzif1
+	dZBvTzAsGqa2bn4ppwF0UQMYPRObBhU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=G1ibACef;
+	spf=pass (imf21.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795326944;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e5Q0HhQjroZ+Rc/PnGI9kGFEaaiyFgbKCtvuSXxJJDA=;
+	b=G1ibACefBxCc4kjEfFDUXrWqftiSac5hx7mOelGSy35l/JWjJq6vrgSMukQlHXzHtkY8yq
+	2irLO1pNrQQSRpTDiRJ3yxSVQ77V0pVYUjXA8ogTgMIGrEGPgrCUdCDHWunnrNNbm7dIhr
+	KkU5EcC7hrqGNgIuUpxINQtz/cmq2rc=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-500-IYZEQiWZMLeGQy7fsVjw1w-1; Sun, 22 Nov 2026 05:55:41 +0000
+X-MC-Unique: IYZEQiWZMLeGQy7fsVjw1w-1
+X-Mimecast-MFC-AGG-ID: IYZEQiWZMLeGQy7fsVjw1w_1795326940
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5c1ab3fe822so873821e87.1
+        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:55:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795322907; x=1795927707;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aivprEjWWyuTPpWR091yh3Xxco3ejGQmEcsBHTiq2so=;
-        b=2lsVBpai3kFJwWaCa+jAtKb7w9jIgZtfJ2FsMsMCOruIDfXZb3AJXMQOvJBc/2b7gq
-         59Rt0qScfIn2WGKPGpLEU1HgkaiMYL9SkgAdJSz/w+U8c4LQOalwFAy3CSxn2kWegH9S
-         kmZzXI2AhILzL5H+k6Uz4mbkOoR49enFLmv5A5JLuqlaJn1QbHhMzvJZeYPdCVuZd7TK
-         C/vyOzrOLn9CltTRj9gEMTiMMvdk9QblUZK+FfaCRQXpwsvv7qK/lUYGMCc6NXlbsg6O
-         WUqThgEXlShiQHc866AxGUXALXyWv+vhv2NM+ve1wo4zcrxuUf03BH6E2T1fsoY/CPsp
-         dIVw==
-X-Forwarded-Encrypted: i=1; AL+hErE+rltPIW5sPn0NPtv9rE8zn+js6cOJlIm+f3k56ffMbp0htCQgjz3hbFlMHAAMXx6xTPcvn/bbRg==@kvack.org
-X-Gm-Message-State: APuU4Z+yV0jlKlBNJQ3/kPRsmVIbH2VczsIjLPgBa+xCx8eMjlCvhur3
-	tJ4omqfW34f6ehqvTvlIGlAJoJOnw1NyQYb0JFmjf8S4Mo0l8WEovCRaTeQpfQhK1M6LybhX8F1
-	eGCUjeEOPirL3WlaQ/jt6unPDTcX9yLgdkUy13rAb/Fq45DJgx5EUVvtN
-X-Gm-Gg: AZFdTZfc1axYYN4dCNoMAbDhgSvtyIqBPOmhGK9IHIvCbIuoP9lRGdz6NN9XrwZUqXr
-	AmQ0DGtXwyk/VxbtQWSJbwMtrdgcGFmo+2MkXyoTn3UBnU22A7kPkuqfwytP99TLBi9krfwgHF3
-	5dG6dMRDx0eVD0kGUfsLSSm9ToBZin0z1cUJWmT9phzJ3b2xZDXplxoJ3NRDK+aow8VqoM6L9ff
-	EpKlie4xOv+L4wr2bETUsvaTSMaGiAtbrXEGCAk0axrThzS3uuT9auJGjlcgI02aXZM7CUzWx8x
-	3yjQaiEXfJ757cgOV/PSCMghm1qiQ/WAO0qKaYJzvsyZRN0IuAaT7I0PcKl5BvluiuPpwDJ5Y5W
-	GED75ixtGZDLGkSYCi/yK9elNsBlSjBF1uCxnUTShhqTSryWP1vIgOGApuZQ9ax6+59/zRlgCEG
-	xoo07YILwSFdF9Mz55
-X-Received: by 2002:a05:622a:124a:b0:535:bb33:6351 with SMTP id
- d75a77b69052e-55d87fcff29mr19987351cf.1.1795322906822; Sat, 21 Nov 2026
- 20:48:26 -0800 (PST)
+        d=1e100.net; s=20260707; t=1795326940; x=1795931740;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=e5Q0HhQjroZ+Rc/PnGI9kGFEaaiyFgbKCtvuSXxJJDA=;
+        b=Y4uQMAH22uSBFLN0gPGOZL/3bzEXfrTHP8NBo05Cbn1elCC5t33kAhLk6S8OsAs64h
+         pUVlP3shDzQphJHDwhrWeAQs56auI6N5Z43oVYi6oMyjPWWbd4pkdixweglHcvsmbhrU
+         UurjbjONHxjQmWBzgCStzo1DqtNwHlw0XyA5u3IT6zw096uEE7AqFhUlMHsZi3/xwyWv
+         uhGcOnZQuVXYQ+iPPcWmr/3mu0BaMKCIo0WHEgf+iWc8bDwdRjDvqciYYpnsYtVG794t
+         +mGYoibs+3V9X/O3jNxu//s9uHtSkzYkgNKXDceuybpB7e2RXPX/GLfYUoT2uQs8rzCF
+         rn2Q==
+X-Forwarded-Encrypted: i=1; AL+hErHpjgZHnr6rgAIWRcyWQMEXOZGknYdJR3kIZz9QNfPf+8wiEzMFk1t1m0ISFwGYEfgrDN3SvnF4SA==@kvack.org
+X-Gm-Message-State: APuU4Z8JrbvqOc2sRLQMT4NquV3F2T2kCoTUBJtB8/Zg/aUJ+N+2Ftvx
+	7gmhOa7PPkXD1WRAfPViNH7gNVvPOzvJPytr8DIz4jla5G4y2TvzGsIe0Pl1TgXsDt6q4+6Cajc
+	YHELaEZo8xp7iPOesrcd3PhJQrZ3g0yrugzHMum3qkYeOn9349Rk=
+X-Gm-Gg: AZFdTZcHNRbz+3nftx34boH+fZai71xljBPS4VFAhkhI6Gl561IdSQK87V7aUUjq4fG
+	R6tIwkU95kcvK8WM6Y53+fX8AE+Ca8EIsgNhALpCveNPmCzkbjYIG25gXAttcjScC3VBWc/g3c5
+	m2AixwKjq3AFTVxH+Z3Lpc7kFQfhN/JmHVTCa0hOwAtsrL26cbvEuAXYE3zN+MJl5hLg0t+t9US
+	7M212YTQXkgMdO/7oUGIAuT2ST1VubQlReaJDm2t3JFD5vaxgaJYwfzR3M7r4nlcxlIJsu1Ly+P
+	scw/Ve95yQ6cPSB3MXsRQldQJn8XaBUlw/pJXDnKmimEz6ydw4hbrs2fBWotgqicU9QOHwDq+BP
+	OCyyiVPFLo68jxNpuIhkA/ypmdx58n2/E2f9QtAqkINWUdu+JFrXS72Dn71PvdnS4EQVsYDbwL2
+	0xG2BQ
+X-Received: by 2002:a05:6512:1192:b0:5c1:a96d:911e with SMTP id 2adb3069b0e04-5c1b79fccd9mr2415287e87.5.1795326939881;
+        Sat, 21 Nov 2026 21:55:39 -0800 (PST)
+X-Received: by 2002:a05:6512:1192:b0:5c1:a96d:911e with SMTP id 2adb3069b0e04-5c1b79fccd9mr2415274e87.5.1795326939399;
+        Sat, 21 Nov 2026 21:55:39 -0800 (PST)
+Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd03bcdcsm1951038e87.45.2026.11.21.21.55.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Nov 2026 21:55:38 -0800 (PST)
+Message-ID: <36be0904-168d-4813-82ff-27ecced464e3@redhat.com>
+Date: Sun, 22 Nov 2026 07:55:37 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261118132719.632451-2-ardb+git@google.com> <sashiko-outbox-223175@kernel.org>
- <b7521ecf-d30a-4b47-959e-43257baaf8a9@app.fastmail.com>
-In-Reply-To: <b7521ecf-d30a-4b47-959e-43257baaf8a9@app.fastmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 21 Nov 2026 20:48:15 -0800
-X-Gm-Features: Aa3M54offAfg3834PgFby-yYoDkOuUmUfJ9HCVQYtK0CdYb7PRNW36LqxMd2aV0
-Message-ID: <CAJuCfpFH05dc+K=NproS=T_piiJqx-xJ7zvXDdNe+g1_bXF2Ow@mail.gmail.com>
-Subject: Re: [PATCH] alloc_tag: Use __ prefixed ELF section names
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-mm@kvack.org, Kent Overstreet <kent.overstreet@linux.dev>, Hao Ge <hao.ge@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1AADFA0007
-X-Stat-Signature: ju9tpjis4sneaygess3z1pdsrxrgpk83
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hmm: account for subpage offsets in device-private
+ PMDs
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Aveline Noir <jm5905938@gmail.com>
+Cc: jgg@nvidia.com, leonro@nvidia.com, airlied@gmail.com, apopple@nvidia.com,
+ balbirs@nvidia.com, christian.koenig@amd.com,
+ dri-devel@lists.freedesktop.org, Francois Dugast
+ <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org, jgg@ziepe.ca,
+ leon@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Brost <matthew.brost@intel.com>, mm-commits@vger.kernel.org,
+ Patchwork <patchwork@emeril.freedesktop.org>, SeongJae Park <sj@kernel.org>,
+ thomas.hellstrom@linux.intel.com, Vlastimil Babka <vbabka@suse.cz>,
+ ziy@nvidia.com
+References: <179342234355.4.16705453209886955762@gmail.com>
+ <20261121160037.1a479f3c8b4e860bc23c106d@linux-foundation.org>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <20261121160037.1a479f3c8b4e860bc23c106d@linux-foundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DKq3SanKl08hA5WE2PXcNrWVfO6k_4CkhbJ4DYrKbiU_1795326940
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-HE-Tag: 1795322908-2295
-X-HE-Meta: U2FsdGVkX18m88yj/c4IpnF5ltIgXAVTBLD4NAm+K7xrJy1fEMgBx8BW9dsNGLZ30k674FPeoDTtvN8s+nUE+55Qc8IcmtFS/iPEQ89kHbpqx4C2NusjaROeR6tZULRBBLwTl8xFgk8cMntmHPvk7y38Wl1cmvug7Qjn06K0O5fJNs9/UHUWUQ4KpzN+Kq17ZNr+L/hWfHC/sQe2IF7SvCAikRMoOw53TrspQt9AkCnsR6RzbfTpf0Wxh14hnbn7a5CNXQoL+ZmcorUdVsdkKicf0pSbdqQ6GIJs8YuIuc4UWMRGymAqGtwMmPsMJ4V7DpQJjuqPRHtIeVRXAn65ACx+r1r+PvcvkZ6yodIQkPkmXABmE8kR8SSV2FCvdcsttxJDcu9VOs4qqbVamQsQY2ywfUNaa9xyMWfsVwWAiQ2ieH/bN8hRaEjgeinHdA05iBtEEEQjZ5+0uIGZI4iqCCk65xPDN+0q5dUpw89KGJDyk/dawpcvk4n7u2F8sAj/AFlBhW9u+YyY+dFCVGRz7XmBrQumGDIK96+e88WUOcF2E8DrNZo/bYnD3HOXYl3CfmeMZ8fc9W/9fDE3mCjVRznT+KmpjVKqB5Ht4HpJ77WXK8zbgpO1+M4pWk/26PXhFKIUfDUw92OT3iikoOThIQXon1mrRrEU5O4Pfulo6SZRhAUsCsQaXoZ4xqfnWpDv1bPj5g9jByJIIZsoA8lZ0ZtPqDGM1944UU8ziOFmTealIXY9AqJ++r4IRvVC8XJpBXOkmZtXk1tQQ/meYHNkXscfSMO4s+fWF7EqpyEIhmzus9oWQ34iXKttbI9P17oYfBPucjUyU36DFN3IWwxMx4MuAc8VcBpDTyRsHoyBELVj2fxeFCGC/sEaamYddSTkALc2KfXHtGBuWAsmC+7jTTi5QaMb1xu0Pq1xlYzpehq1XIDkqIzZxxql+3sgKaUtkKvdtqb0sbwBllyhEUr
- tafpO312
- Vg87xMgGE1cIrTErRKfdJHVweWupLkvoqIzFPXVdpn+pAxhgpfNPFieFIN0C8ZvS2+3weBBYfZPb6+qHbjXdCCiJ1CzEpG65VbX9rcBqeWSqOweMdihsxWK/npM1a+/tUy3ZRLZJhXoBE0VP9jNXpBSM16kyWgH+vEdnwJYV32dFJVVW+7/8Epi/67yju92IHney4sw7+gIfWfXQ7sJ71dDHcTn3bPOAgLQ5B9MqnenoJT49tMrXR8IAsE9iw3RTO8Lu7Hbai6DJZm9d8tOxtNiuNfN846STgZ0LUFFI1A9fuZEyAICJAKz6vAi/Gk29ecJJh7QvTE0FYcSOb0TaUzs1Zub2pO6IdgHnMezo3oQk9ubNp0/DUoePBGxbQEB4Ll5vU+kgBWqo9KFaaa+fl7sr7FykAdUMNVB/wPs2eZ7/8NQE0IjgaLvICrfPPrGTHHIETuvcOkpntOz+Fu35oNvh1WLI+dosOYSy/1pOqycWa1e1U+XUrtcjEMTaRlV0Mfp6iOAQyeRTc5nMPxNWhY9g+Vk/Xy/ZNgl5ImFHS82YceVH9GWvDPeOSRyVNx9G80oLJUtehVV87ixXZvE4odwFeddhGbnUmFoxE/WC1G4ycip1461V1nPlcxzV+dI9UH7aqEuqHecF9GgSY8lF4hFoe2HfD1xmBhAf/
+X-Rspamd-Queue-Id: 1AF881C0002
+X-Stat-Signature: 8awqgbk8xmied3hqo3t5ztnz851jefu9
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795326944-345306
+X-HE-Meta: U2FsdGVkX1/JRAZsqWfH7Ed8vWBBabRfLxsMrsduwjU8nrfouXdzDTg1dLh6/Ko8gD+83kQKjU80Ch2ovyF4rUS7Qq/Q+5v7Kh92WdpMxRqRbmidAVaPervWGhAY+Z6Bomex/odEcwbizX8rRPu7K/sAGlxoCEp/POIzIggyeqhZSNIn0imubCdKj9QYXK3iKP+UNgV+dx65t6aunvfbe0JfeCPYAHw0UCprkff6Hqi50dWemH3kY1d6I8lGOxfJOPV6caRqFYz1EyMF9ksSPdzgfKeCXFwtbaK4htH729S/Qo/Nfu60tnkOSDXK4ARrTszku2ps+vuAANp8W2qJNCxh4228dxpCnPylZMuvMTbN/mISte0eYW+trHbdK09a5DqPUeCSB45/4HnBmzwB8FDfmuucA9bjI9w+SbFqgL3JnYW0AEAIiYPLPdQ5lgHoBdCIAhPzeoitYpe4jMP77UvSU6UNk+VXdWFIUDQWALcAXbC8PWbKc57EZk7EZSr9SKK7c7NdMuiYx0vxRA/B51o54kDDPg3jvcgNgpcXNCyWGLuT6AJ/Ogh66j85S2vQvnCzkz/HZceQDY6iXfZV5V/DYJqmk4CdEktHyf3deTabFcm8iyzG2+sEzLdNEUqhbpFqs/N1Xe0z6R8cg0qMaZRnPIAGuInL67zQ+azd2WQeZohROkY7wFepgOIfdnJdaowENbW+FT1aN4K2SmEeXNS+e73lY3RNNqQYd03Qyb08nhKWmIfELAoFe41HPSXLC1WKF2+xGbPYZVYlh4pAqzY7s9r+Xzf+sf12OJaIwKoU6tLmNCNo/M2KEpJD6Pt2KwvHli9jvsL4Y0RSw3/QI+E93jpmILEU9/8JuchPutfyPrqTQwjYKgafoh/N10NrNBZ3LJMGNm1VggndwskIWfyKzL+k38aBjnQxBPZoxKT/CK4p8A9jhTChHfBwbTcqoB1vQ+362WovVMygHrK
+ LBcrEDQv
+ AvFQ+Cu3WFQPlEv5lYbJko1F0Bat0wTv/Z90ypwwJhCrabu0OoullxDMddgexFmCL3GezY/wjgBTcPWtBwDrlDd/+RU1FqIHqgaMYl4wb8kQtivXvt+9rEsrXnZQpSsyCC12vb6o017pIzfTBURhoMvDoB1s9iUoRGyyl+vsnj8wvFs+Cn74BMyrqpa4rQ4wnVrMJos34rjJ/0G6azCSsaXE9SPrtSacojo3AJdwzTvIeWHaAeQjaEP+j5rxCP6MV5fiB+GG2aI3Je5V6yKd3DCR+twuhFsIBtbtqGBpOu+IFuXY3Hf8OftQapDo5LJ5g9+1MhXyvFNkl7jy6VTP/OcbvxgdmSiU7JFc43NXt/h47Z2ur/eBJuOxwHqsM1B/qZlI3cNOB+No+rYCvjp5iZZHTqp5wimTHXuVJjMZbFfhUbYbVr/CuyqngZ4Q8rXr+19PxOYxwkIvMoXEoSkvVdl/IFQ1Xj9DcjhLwlL4rZ2pnVyaKwBOzUZ/VQwFTFurrfyV69EeeHjGas1Dymx5mHP1BFavdCrpIf8sn8DzcGoehQbyqdQnfieyjAbXLi7QXD2Ggcr0kwjzkGBKeVjASBOQQL6FfuGAlDmiiluYyydj+m3qPlpMrMDAib01bdI4JJWrscesCi0leQWrKPMScEgbniW/g2JvVJmOjU8LfbTkQjFUIDcRQT9/eFFydwvd62U/sJL56uJhKzZeV5PUOMnWt6k3A1AFCCCPhdPTPkgL4xlBao1WXkeW3ORV13EaLnlXqwqep9B4s8/2IRrPZK+Lha5xPFtlSNavxfrVpwpy3/sztFn0zcA5kCB/Fhz5jYvdLSxaZgzm3TWQ6u5i3y9WLxqKfetLvKjXzC7T4iskQayZBZpJT4yAJZOzQOQvGGE1aDrQqphkydZw2EjfYFf4BNETA5fQvPhk1+yScp5ozw4qDP/FasfuZh+SMkN+f7oq/Ex4fNy1YG0emxjt/NxEmKyo1
+ 6a8mF+gx
+ 5HFPU+cFVm7+G+/tnQjOjeS9i7bNbDqacyEFv5mxmHQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,82 +148,141 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 6:03=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
-ote:
->
->
->
-> On Thu, 19 Nov 2026, at 14:27, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 2 potential
-> > issues to consider:
-> > - [High] alloc_tag: SECTION_START() and SECTION_STOP() fail to expand
-> >   macro argument
-> > - [Low] alloc_tag: missing Fixes: trailer for unprefixed alloc_tags
-> >   section name
-> > --
-> >
-> > commit 933587991e6a16ab600445b22347397f80335de9
-> > Author: Ard Biesheuvel <ardb@kernel.org>
-> >
-> >> alloc_tag: Use __ prefixed ELF section names
-> >>
-> >> The compiler will emit static relocations related to a section .foo in=
-to
-> >> a separate section called .rela.foo, i.e., it just appends the section
-> >> name to the string ".rela"
-> >>
-> >> When section names start with . or __, this results in relocation
-> >> section names that are correctly matched by the various pattern rules =
-in
-> >> the various linker scripts across the tree.
-> >>
-> >> Without any such leading delimiter, it may lead to spurious warnings
-> >> such as
-> >>
-> >>   >> ld: warning: orphan section `.relaalloc_tags' from `init/main.o' =
-being placed in section `.rela.dyn'
-> >>      ld: warning: dot moved backwards before `.rela.dyn'
-> >>      ld: .tmp_vmlinux1: section `.rela.dyn' can't be allocated in segm=
-ent 1
-> >>
-> >> Fix this by renaming the section to __alloc_tags. While at it, tweak t=
-he
-> >> headers so that the definition of the name appears only a single time.
-> >>
-> >> Cc: Suren Baghdasaryan <surenb@google.com>
-> >> Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> >> Cc: Hao Ge <hao.ge@linux.dev>
-> >> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >
-> ...
-> > Does #NAME in SECTION_START() and SECTION_STOP() stringify the macro na=
-me
-> > "ALLOC_TAG_SECTION_NAME" instead of expanding it to "__alloc_tags"?
-> >
-> > In alloc_tag_sec_init(), kallsyms_lookup_name() will look up
-> > "__start_ALLOC_TAG_SECTION_NAME" and "__stop_ALLOC_TAG_SECTION_NAME"
-> > instead of "__start___alloc_tags" and "__stop___alloc_tags", returning =
-0
-> > for both.  When compressed page allocation profiling is enabled
-> > (sysctl.vm.mem_profiling=3D1,compressed), kernel_tags.count remains 0,
-> > causing idx_to_ref() and ref_to_idx() to misclassify built-in kernel ta=
-gs
-> > as module tags and dereference an invalid module_tags.first_tag pointer=
- on
-> > page allocation or free.
-> >
-> > Using __stringify(NAME) instead of #NAME would expand the argument firs=
-t.
-> >
->
-> Ugh the token pasting stuff always confuses me - I'll fold this in for v2=
-.
 
-With that change, feel free to add:
+On 11/22/26 02:00, Andrew Morton wrote:
+> On Sat, 31 Oct 2026 15:07:58 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+>
+>> When a query starts inside a device-private PMD owned by
+>> range->dev_private_owner, hmm_vma_handle_absent_pmd() still fills the PFN
+>> array from the folio's first page. The returned PFNs therefore refer to
+>> earlier pages rather than the requested subrange.
+>>
+>> Add the query's PMD-relative page offset to the initial PFN, as the
+>> present PMD path already does.
+>>
+>> Fixes: 10b9feee2d0d ("mm/hmm: populate PFNs from PMD swap entry")
+>> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+>>
+>> ---
+>> Found during a synthetic test_hmm check of device-private THP handling.
+>> Tested PMD-aligned and non-aligned subranges, PMD boundaries, split
+>> PTEs and fake-device data accesses with test_hmm in QEMU TCG; all
+>> executed tests passed with the fix. No real GPU testing was performed.
+> Thanks.  It appears that the changelog somewhat understates the
+> seriousness of this so I came up with a more assertive one, below. 
+> Please check that.
+>
+> I fed this through LLM-driven QEMU-based runtime testing and it looks
+> like it pretty much replicated your testing:
+>
+> : I tested "mm/hmm: account for subpage offsets in device-private
+> : PMDs" on matched x86-64 guest kernels. An unprivileged process
+> : (UID 65534) migrated an anonymous 2 MiB THP to the test_hmm
+> : device. A second open of the device read pages inside the PMD
+> : while the first remained open. A snapshot confirmed a
+> : device-private PMD, and temporary kernel log messages confirmed
+> : that the reads reached hmm_vma_handle_absent_pmd().
+> : 
+> : Without the patch, requests for pages 1, 7, 255 and 511 returned
+> : page 0. A request for pages 31-33 returned pages 0-2. With the
+> : patch, all seven pages returned the requested contents. Page 0
+> : read correctly on both kernels. Thus an unprivileged device user
+> : can receive data from the wrong pages.
+> :
+> : The fake device needed an identical temporary backing-page
+> : correction on both kernels to make this read path work. That
+> : change was removed after testing. This exercises the HMM path
+> : through test_hmm; I did not test GPU hardware.
+>
+> So it accidentally found a bug in lib/test_hmm.c on the way.  "The QEMU
+> run exposed a real test_hmm bug: a second open of /dev/hmm_dmirror0 can
+> put a device-private page into its page table, then dmirror_do_read()
+> tries to copy from that non-CPU-accessible page and oopses".  I'll prep
+> a fix for that separately.
 
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-
-Thanks!
+I noticed that also and will make changes around it in my series.
 
 >
+>
+>
+> I'll queue the below in mm.git's mm-hotfixes queue and shall await
+> maintainer input (please).
+>
+>
+> From: Aveline Noir <jm5905938@gmail.com>
+> Subject: mm/hmm: account for subpage offsets in device-private PMDs
+> Date: Sat, 31 Oct 2026 15:07:58 +1100
+>
+> When a query starts inside a device-private PMD owned by
+> range->dev_private_owner, hmm_vma_handle_absent_pmd() still fills the PFN
+> array from the folio's first page.  The returned PFNs therefore refer to
+> earlier pages rather than the requested subrange.
+>
+> Nouveau's GPU fault path can query one page of a device-private PMD at a
+> time.  Xe's SVM fault, prefetch and userptr mapping paths can also query
+> subranges of their own device-private PMDs.  An unprivileged process with
+> access to the GPU render node can reach these paths on hardware supporting
+> device-private THP migration.  Xe can read the wrong application data or
+> silently overwrite earlier pages of the same process's device-private
+> folio.
+>
+> Nouveau aligns a one-page GPU fault to the PMD head by subtracting the
+> fault offset from the returned page.  The faulty HMM PFN already refers to
+> the head, so this subtraction can select a page before the folio.  If the
+> preceding page belongs to another allocation, GPU access can expose or
+> overwrite unrelated userspace data; an invalid page can also fault the
+> kernel during its address conversion.  This worst case follows from the
+> source, but has not been demonstrated on a real GPU.
+>
+> Add the query's PMD-relative page offset to the initial PFN, as the
+> present PMD path already does.
+>
+> The device-private PMD migration machinery first shipped in 6.19. 
+> Backport this fix to the maintained 7.3.y stable series; the HMM path
+> exists in 6.18.y but cannot be reached through an in-tree PMD-producing
+> device-private migration path there.
+>
+> Link: https://patch.msgid.link/179342234355.4.16705453209886955762@gmail.com
+> Fixes: 10b9feee2d0d ("mm/hmm: populate PFNs from PMD swap entry")
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Leon Romanovsky <leon@kernel.org>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Patchwork <patchwork@emeril.freedesktop.org>
+> Cc: SJ Park <sj@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Mika Penttilä <mpenttil@redhat.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: <stable@vger.kernel.org>
+>
+>  mm/hmm.c |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> --- a/mm/hmm.c~mm-hmm-account-for-subpage-offsets-in-device-private-pmds
+> +++ a/mm/hmm.c
+> @@ -355,7 +355,8 @@ static int hmm_vma_handle_absent_pmd(str
+>  	    range->dev_private_owner) {
+>  		unsigned long cpu_flags = HMM_PFN_VALID |
+>  			hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
+> -		unsigned long pfn = softleaf_to_pfn(entry);
+> +		unsigned long pfn = softleaf_to_pfn(entry) +
+> +			((start & ~PMD_MASK) >> PAGE_SHIFT);
+>  		unsigned long i;
+>  
+>  		if (softleaf_is_device_private_write(entry))
+> _
+
+For this change:
+
+Reviewed-by: Mika Penttilä <mpenttil@redhat.com>
+
+
 
