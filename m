@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61877606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236A2606A331
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FgzGRfYK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CIXU7+VK
 Received: by kanga.kvack.org (Postfix)
-	id 146876B05C0; Sat, 21 Nov 2026 20:19:05 -0500 (EST)
+	id E17EF6B05C2; Sat, 21 Nov 2026 20:19:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11E8A6B05C1; Sat, 21 Nov 2026 20:19:05 -0500 (EST)
+	id DEF686B05C3; Sat, 21 Nov 2026 20:19:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 034C66B05C2; Sat, 21 Nov 2026 20:19:04 -0500 (EST)
+	id CB6FB6B05C4; Sat, 21 Nov 2026 20:19:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D29C16B05C0
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:19:04 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6BC7B405D9
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:04 +0000 (UTC)
-X-FDA: 85460996208.01.3F84183
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BF565A0004
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:02 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FgzGRfYK;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B9CA6B05C2
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:19:08 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3790CA8281
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:08 +0000 (UTC)
+X-FDA: 85460996376.04.18228DE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A376A20008
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CIXU7+VK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795310342;
-	b=vihWz1b68H2FmBuSZu9Z1KKgJ9DRJRLPjKl4ijbVevGFpmmPmeGZmlHuKZSxv6G4kbWoov
-	2XyOnI0a4ygC6jTCzldYKAKeYu+XLwK23PhtdkW0xG6bmfInzcMqP2dG0vj1zFOvyMa4vF
-	ALt0lyhMtmN0dn9oShhhYPJsSq3K0qA=
+	t=1795310346;
+	b=ss7uJ3/2VoqKrPp/gqNQSqLsqRWpdkgPRivNcXk6tmkmA8hK+yFB3Wkb1jUEuLetEwZpeQ
+	uXWJtrNbMqX9dOq+x+5T8PlwUi2KwE8iaVTMvpO9M/UmuaOb0kO9KQLARzVEp3TE/9OjVp
+	fF35mcs2NwQJ41sEBagB4a0fSIjirQc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795310342;
+	s=arc-20220608; t=1795310346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YAN/hIhGbLif51uDHJWEreVc/FgOTWv2rNXCLUKagZ8=;
-	b=FIZgrrn8pwN1ODjKNvZvaXe6vBVoL2dfkuf1sxndDoFPQmJ3QI8jXa7vEJXIl+mxy4ZhAZ
-	7MvFZ/oaXeN0714Bn8BeELgCiC6W9AWiltyjyGQs2pSlphGFWbj6VPHeOEIigXGNaSBMrU
-	oxk1kkryy3TP1C0I9SDIYSRfORe+mrg=
+	bh=yV/3lRQtOQxqgRWopxhp5rjcN498ncYUt5HOtng0GIw=;
+	b=T8+SQFMIoTPrFyrmxn43/MeHOETz3g2QpLN5dZLFOkghreqZaopbi8Flj3cWukxnR3jk9e
+	N0z6dDGobHlze73nxbPoBzY42prFAnpUFmhFG3HkuGysm0622ga83Z8IbVRRuFKbwKZXbI
+	eg6mIVOeYkUeXOXgKkrDdQMY0oAfXW8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FgzGRfYK;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CIXU7+VK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 151B6402F8;
-	Sun, 22 Nov 2026 01:19:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 45E7A1F000D8;
-	Sun, 22 Nov 2026 01:19:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 1E3B36124F;
+	Sun, 22 Nov 2026 01:19:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 24FF01F000D1;
+	Sun, 22 Nov 2026 01:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795310342;
-	bh=YAN/hIhGbLif51uDHJWEreVc/FgOTWv2rNXCLUKagZ8=;
+	s=k20260515; t=1795310345;
+	bh=yV/3lRQtOQxqgRWopxhp5rjcN498ncYUt5HOtng0GIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FgzGRfYKw+DvTaxI/TJkS3XWpgcgNwC1efsrf0owiy14/cSZNn12put4iBUSIKCrs
-	 zZhnP7PNqOXEbq04gIYPVPLQiwTJEmhJpNK+SdBh2Fj3seSPoVDt6Hr0ig+LrYauJI
-	 L3XdKbIZGT2ApiLhefbVuRArglqkOp3aY2Tlp1hc7lxot7it4c2aJhUvdbW3yTWFIy
-	 WgxivBKqGTBb3cz/uCx/mH3SkN5FYjrtvDK5ZFeuDVbYbJSXsdqkQTOJoobW0kaT00
-	 h5pi07pfKUNoB6LMsYlgyYROiHMdkaxjiOKePjU3ad5pi3h9uqnpfP0cd6uJQChr/0
-	 eeQLvrTw8x/tQ==
+	b=CIXU7+VKFKJaP3nZlOBxh6leoLCIsRnbhWL84dTMd9gmRsmMZLObOTmFvSNXR1N+j
+	 mPfbPHZLK8jrhmfKQGmfSupHrgitIRSqvOuyn2KDx5r69Osi1AVy2z1rprDC4Ywt1b
+	 hw/tZ3RtNtRtosxt6m3ylXZZGNzPLOxI83gaVyOyCc8yABdPEFPo9udr8erHP1wT6f
+	 BH8lLBW+gA+v/mjxA70JBjv3OnD7ZUcAuUqGgHPrBab+WFCkhbR28qRf9HZyMI4KnD
+	 KH0aHNS5Ll/iIssvHEynMIopUZ2n5epcJSE3sMX1CYnLP7qU5d7ZGG3bVo/rcFsobK
+	 W553ZabSFTrAg==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -95,27 +95,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v6 11/26] userland: Track init lifecycle via copy_process() and pid_namespace
-Date: Sun, 22 Nov 2026 03:17:54 +0200
-Message-ID: <20261122011809.2667684-12-jarkko@kernel.org>
+Subject: [RFC PATCH v6 12/26] userland: Add userland_open() system call
+Date: Sun, 22 Nov 2026 03:17:55 +0200
+Message-ID: <20261122011809.2667684-13-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261122011809.2667684-1-jarkko@kernel.org>
 References: <20261122011809.2667684-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: s47wbqzkdcf1fkq8xmedxn4urou5sthm
 X-Rspam-User:
-X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: BF565A0004
-X-Stat-Signature: 93egqtg7fbss7ax443jdxy63d655tjew
-X-HE-Tag: 1795310342-884622
-X-HE-Meta: U2FsdGVkX1/UEYqRjeHYSmiTkq9Pbzv+ZMkEswZF8uODBArPvYl3uyR7ePOo1/lznAgT3Z5EMZIy9rMAU4lOlVW8iPeHSqZ35ci8Th9e2m5aOOEFTR5rk95uWbWHxucPJtCWzApq8MasfLUP1ymD2guOGHJ7D9WcZZH4jtmiUyUcfkQ5ZF1IKuXNaHqDHhVRm1Od8cTrly2hJgyt6g3wLkJEFtmVOL4yKWjuorfVIA3JPzdnghjabQRw+jc1wG/R+UtdXLmuv3JyY8gSAwPe3RN7pn8U5KDVLivmNsUEKnrTjLal9OZfKuxZMCbcB2lU1QZ5nKMaHq6Yhz92yhGf29B1tOqqUlm8s0ng0UtEUikTi5yeuXCEf9mBdpj11oseoKILwHZQ0/GtHYdPa26/Prwg9bFVa0mDXa9UeqaOgtK28sS0Y4MxV9Cw2FKWIk8y/y0is1WNGtpXj8YyQYqE+eik5v6qXnnCceJRAdvN+TXFS+b6xS1UqJ2s3vsyHg8wQajt1M3KXF8lA/l2g4sUJuXTXk7IAxhnLY+408G/rRDxFBeq3R7yCVbB2BRLR2HMomvhs0To0KZ6BzvJRYv8PdxaIetnJZ+fd7PFkwI/AY3S/cWXJnxCHOZm3WzEBQuKEnGnadRksUz0BUvimaMuRctCzBMfWKS4P/448fF/bVco5NIBpeFc5OfAYI5TgiByjkq+8nDesyOitxZtTaPP3e7PO8km5Aqs7lq+1NkhSd6orYXrfYZ0yU51Ccz4BV0bSkL7mgvFxFTAAGq9HFeQLH79ZIxWZx/GLMQhVdM+HD9vzUjlwqXckhJhn6UjJMCSBZA07rsL1zOucnj4VpxmGMwz6Ic2DwvA1R7fLpZ8wAH7rA9q1aqgwruuQ81F7HMFkdPJkisT2WbGIL80AxfHI8kR/tA9SPxVWZCXlMHgBcBopYU5m+P4C6Rfgko2SjtrXFyfyptIMVA9eoxcG07
- icsXO9+j
- S/t3V47o9wbx3GeFwnrLdDJ4fRqYQc4rrT6D07f9tTKPfIuZWQYgDH/MsLxNALgw0XVFPrm9ZP21jJbvIZk9WtOLdOa+fyhAxDCnOXXanJIMqKoClKcS9QO5HJqT2ZeuGl40P7ivEhalaJXMchkZFwNJkyPbxpfxoLTKJLAQfpwxdyAHaTSkFlWtpxp3iTME0QN4OoyHnsWvSOlBr9iBNB+6O9UCQPYWZON5Os/DC1GPqqLwIn9v2YU9N8yYY2ia76Y2PWn5IyRxgd37jJSKqam9ptZXPzpyplNUg/DUBw9iu0ZjxjupzlnDYG1988Xn+STGZuD1Cnk7vsH17keq7MrBmImIoYs/727noGI5Num0ewYu6+yXX8Jvffdk4zp5EN5j8z9GkX5z0hRLuQMzelIA0jtDS5Yvow2qnMY1ogP4mTE9nNX5Bw8mMiL8x+D7u3DiRsUAeHGKYTTjPyppf6kpqjd/pD4tieMPHS4UrS/b27ZQ=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A376A20008
+X-HE-Tag: 1795310346-571222
+X-HE-Meta: U2FsdGVkX18oik93A6hPSEgracdCm0z7fcg0KgtsVI1EVxhUF37alA86NrJ1GyucAown5E6rlJqSPvfKBMIaC7hTfV/jZjsexrSzjtaMqsDgFR1Tm91drB7jlS/QFueUOWI/YEh1itmAQWlxkd+DoWt6qFwajAulTcas1FxdH5ixH1VHMPMyHEnDbXH3bb+b/WpjAfXG8s9NFRTWHilFWGUmOooEkyxM950DzKkTeR4k4RROCxtcQKBiYkvCzfGSpASWqP2DLNpaj8YoT7yfDwdxKlAdI55LKu89ZuFbA+8gEI/XWasoc3l8ytKMbN4dycv105MEFaFYp/cXAnMhvTB4sK5IkLQw4d/f8JpPnJQZYs6lYJbpIOS7Z/7cnxPezBvv+Y37MRc6enDamIhKp0lF94sHi4ThiOalodDE2pERzFNjeNGvL+S/VXOu4lBA8fKb01sQTqyk4EWZJKysJx+1xjrwxS2JmxfafS83cHnd8veKvX3DDq5k9gvMjq2QYqihPy8vAzkSYTXLZZiu2V1U/E4s2EMJWs1LNs2rM3BkNyAczmEZw/XlHTczFw07+ftbjg8lXOmP8+SGQ4QCC3riIt5DDYyYq0Xeuzp9vX4Z4QZH1j2VpJ03poCQLZivA68Po3qo81Zmcx1q1sJZ+f/pXiiZp7J8DnALG3eX0RQXHjcfCy1kHK/Tk98kmDD53BYIDg7EjWBe60gn89i54hWLXSNx9gdaqcodxHtWIa+iTlUPyecsSIJh7Xs8wcG1285tH9Rs/TPXovmiSDE2JBoE/YDYTTWuYNyXDDgRwzZxHB1mSvBc0xdghqjsUlWZWrmh8fgyOsQyIGyE4gLodA0xtUbukKBthLwVovgirgB2HVmXNV8qgVH024Ehy6ukPsRznw00s7rdyImHtTeNnDBpJW7C/GlGCA6iqc1DYvRgx/Xh7VSAq8w/roypTA8z6CEmY7TdA66Wn4zEW1I
+ TJ8nThhT
+ KA2Z5hHL91HzS0CHp48Sbf8csT1G2HmgL/4NhuTSOUajwT3GdtaDy/0AuhzRbVzeRRHTBbl9Iw4fNnvOSr1hIMhPwFvOhum0Utdz1XBdMfcaC83LRon5eEPgxQb+NhdZ+yxJBJfhRudunz/iywIANJBtDGw+FV9hrSYDKnAMISXTRTB9ZzNNqu0/vplkk5vuKj6yihecb3uRPGMloTE6wiLCJxZU3uoOzFO9I5j4La8AK76B8xnSWP/S0LiA6plw4kr2QOXBwjs63izEgfqYlL+wlFDEekQrwdBwZ85fuauUxRhrKHIZ+I0Ga+H/iUKuh+urXxF5Ec3sk8aJa6o21ExoVI7WWnTnrmzL6P7CdEPsbOSW077SIiAJcEEbTS71vdg9UiRdwQQnVXrvsllwiG43PBLgqU6GHtU40OmvtfHhFaAusJW2fWHHnNvrs88RBVVlRszaV+jbDFmrzB0OyyhUaG9vtZv5nnfIU3+JLBCjdN2Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,194 +124,165 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A userland needs to record its init thread group's PID when bootstrapped
-and capture its exit status and UID once all processes in the userland
-have terminated, without serializing normal fork() and exit() paths
-inside the userland.
+Setting up an isolated namespace environment from a multithreaded
+manager process currently requires helper processes to call unshare()
+and pass file descriptors back over sockets.
 
-Commit the bootstrap child reaper and bind pid_ns->userland in
-userland_copy() after attach_pid(PIDTYPE_PID), and invoke
-userland_exit() from zap_pid_ns_processes() after the userland's PID
-namespace has killed and reaped all member tasks.
+Add the userland_open() system call to allocate a userland owning a
+fresh user namespace alongside dedicated empty mount
+(CLONE_EMPTY_MNTNS), PID, UTS, IPC, network, cgroup, and time
+namespaces, and return its anonymous-inode file descriptor. Because a
+userland encapsulates process lifecycle and mount delegation rather than
+an nsfs namespace entity, keep it separate from namespace creation APIs.
+Finalize the nsproxy time namespace and pin active references for the
+lifetime of the userland.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- include/linux/pid_namespace.h |  4 ++++
- include/linux/userland.h      | 17 ++++++++++++++
- kernel/fork.c                 |  3 +++
- kernel/pid_namespace.c        |  2 ++
- kernel/userland.c             | 43 +++++++++++++++++++++++++++++++++++
- 5 files changed, 69 insertions(+)
+ include/linux/syscalls.h |   1 +
+ kernel/sys_ni.c          |   3 ++
+ kernel/userland.c        | 107 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 111 insertions(+)
 
-diff --git a/include/linux/pid_namespace.h b/include/linux/pid_namespace.h
-index b20baaa7e62b..ef703a3b8ed5 100644
---- a/include/linux/pid_namespace.h
-+++ b/include/linux/pid_namespace.h
-@@ -15,6 +15,7 @@
- #define MAX_PID_NS_LEVEL 32
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 72308cc11908..2ea8ebd71743 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -1010,6 +1010,7 @@ asmlinkage long sys_lsm_get_self_attr(unsigned int attr, struct lsm_ctx __user *
+ asmlinkage long sys_lsm_set_self_attr(unsigned int attr, struct lsm_ctx __user *ctx,
+ 				      u32 size, u32 flags);
+ asmlinkage long sys_lsm_list_modules(u64 __user *ids, u32 __user *size, u32 flags);
++asmlinkage long sys_userland_open(unsigned int flags);
  
- struct fs_pin;
-+struct userland;
+ /*
+  * Architecture-specific system calls
+diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
+index e3202e7cc2a1..fca9663d09b7 100644
+--- a/kernel/sys_ni.c
++++ b/kernel/sys_ni.c
+@@ -399,3 +399,6 @@ COND_SYSCALL(rseq_slice_yield);
  
- #if defined(CONFIG_SYSCTL) && defined(CONFIG_MEMFD_CREATE)
- /* modes for vm.memfd_noexec sysctl */
-@@ -45,6 +46,9 @@ struct pid_namespace {
- 	struct user_namespace *user_ns;
- 	struct ucounts *ucounts;
- 	int reboot;	/* group exit code if this pidns was rebooted */
-+#ifdef CONFIG_USERLAND
-+	struct userland *userland;
-+#endif
- 	struct ns_common ns;
- 	struct work_struct	work;
- } __randomize_layout;
-diff --git a/include/linux/userland.h b/include/linux/userland.h
-index fa8628e1b89c..ec74eed6de1d 100644
---- a/include/linux/userland.h
-+++ b/include/linux/userland.h
-@@ -9,11 +9,14 @@
- 
- #include <linux/refcount.h>
- #include <linux/spinlock.h>
-+#include <linux/uidgid.h>
- #include <linux/wait.h>
- 
- struct file;
- struct nsproxy;
- struct pid;
-+struct pid_namespace;
-+struct task_struct;
- struct user_namespace;
- 
- enum userland_state {
-@@ -29,6 +32,7 @@ struct userland {
- 	struct user_namespace	*user_ns;
- 	struct nsproxy		*ns;
- 	struct pid		*init_pid;
-+	kuid_t			init_uid;
- 	spinlock_t		lock;		/* Guards userland lifecycle state */
- 	wait_queue_head_t	waitq;
- 	unsigned int		flags;
-@@ -38,6 +42,9 @@ struct userland {
- #ifdef CONFIG_USERLAND
- void userland_put(struct userland *c);
- bool userland_is_file(struct file *file);
-+void userland_copy(struct task_struct *tsk, struct pid *pid,
-+		   struct userland *userland);
-+void userland_exit(struct pid_namespace *pid_ns, struct task_struct *tsk);
- #else
- static inline void userland_put(struct userland *c)
- {
-@@ -47,6 +54,16 @@ static inline bool userland_is_file(struct file *file)
- {
- 	return false;
- }
+ COND_SYSCALL(uretprobe);
+ COND_SYSCALL(uprobe);
 +
-+static inline void userland_copy(struct task_struct *tsk, struct pid *pid,
-+				 struct userland *userland)
-+{
-+}
-+
-+static inline void userland_exit(struct pid_namespace *pid_ns,
-+				 struct task_struct *tsk)
-+{
-+}
- #endif /* CONFIG_USERLAND */
- 
- #endif /* _LINUX_USERLAND_H */
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 5efceb8d58a7..2fceacc17e8a 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -83,6 +83,7 @@
- #include <linux/fs_struct.h>
- #include <linux/magic.h>
- #include <linux/perf_event.h>
-+#include <linux/userland.h>
- #include <linux/posix-timers.h>
- #include <linux/user-return-notifier.h>
- #include <linux/oom.h>
-@@ -2576,6 +2577,8 @@ __latent_entropy struct task_struct *copy_process(
- 					  &p->signal->thread_head);
- 		}
- 		attach_pid(p, PIDTYPE_PID);
-+		if (thread_group_leader(p))
-+			userland_copy(p, pid, NULL);
- 		nr_threads++;
- 	}
- 	total_forks++;
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 127a5fd23e70..70606d9c5b52 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -24,6 +24,7 @@
- #include <linux/sched/signal.h>
- #include <linux/idr.h>
- #include <linux/nstree.h>
-+#include <linux/userland.h>
- #include <uapi/linux/wait.h>
- #include "pid_sysctl.h"
- 
-@@ -280,6 +281,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
- 		current->signal->group_exit_code = pid_ns->reboot;
- 
- 	acct_exit_ns(pid_ns);
-+	userland_exit(pid_ns, me);
- 	return;
- }
- 
++/* kernel/userland.c */
++COND_SYSCALL(userland_open);
 diff --git a/kernel/userland.c b/kernel/userland.c
-index b339aa2103e1..e117b00cb8a2 100644
+index e117b00cb8a2..d99b5d99fcc4 100644
 --- a/kernel/userland.c
 +++ b/kernel/userland.c
-@@ -85,3 +85,46 @@ bool userland_is_file(struct file *file)
- {
- 	return file->f_op == &userland_fops;
+@@ -128,3 +128,110 @@ void userland_exit(struct pid_namespace *pid_ns, struct task_struct *tsk)
+ 	__wake_up(&c->waitq, TASK_NORMAL, 0, poll_to_key(EPOLLHUP));
+ 	userland_put(c);
  }
 +
-+void userland_copy(struct task_struct *tsk, struct pid *pid, struct userland *c)
++static struct user_namespace *userland_create_user_ns(void)
 +{
-+	if (likely(!c || !is_child_reaper(pid)))
-+		return;
++	struct user_namespace *user_ns;
++	struct cred *new;
++	int ret;
 +
-+	scoped_guard(spinlock, &c->lock) {
-+		if (c->state != USERLAND_FORKING)
-+			return;
-+		refcount_inc(&c->usage);
-+		ns_of_pid(pid)->userland = c;
-+		WRITE_ONCE(c->init_pid, get_pid(pid));
-+		WRITE_ONCE(c->state, USERLAND_RUNNING);
++	new = prepare_creds();
++	if (!new)
++		return ERR_PTR(-ENOMEM);
++
++	ret = create_user_ns(new);
++	if (ret < 0) {
++		abort_creds(new);
++		return ERR_PTR(ret);
 +	}
++
++	user_ns = get_user_ns(new->user_ns);
++	abort_creds(new);
++	return user_ns;
 +}
 +
-+void userland_exit(struct pid_namespace *pid_ns, struct task_struct *tsk)
++static struct userland *userland_create(unsigned int flags)
 +{
-+	struct userland *c = pid_ns->userland;
-+	struct task_struct *leader;
-+	kuid_t uid;
-+	int status;
++	u64 clone_flags = CLONE_NEWNS | CLONE_EMPTY_MNTNS | CLONE_NEWPID |
++			  CLONE_NEWCGROUP | CLONE_NEWUTS | CLONE_NEWIPC |
++			  CLONE_NEWNET |
++			  (IS_ENABLED(CONFIG_TIME_NS) ? CLONE_NEWTIME : 0);
++	struct user_namespace *user_ns;
++	struct nsproxy *ns;
++	struct userland *c;
++	int ret;
 +
++	c = kzalloc_obj(*c, GFP_KERNEL);
 +	if (!c)
-+		return;
++		return ERR_PTR(-ENOMEM);
 +
-+	leader = tsk->group_leader;
-+	rcu_read_lock();
-+	uid = task_uid(leader);
-+	rcu_read_unlock();
-+	status = (tsk->signal->flags & SIGNAL_GROUP_EXIT) ?
-+		 tsk->signal->group_exit_code : leader->exit_code;
++	init_waitqueue_head(&c->waitq);
++	spin_lock_init(&c->lock);
++	refcount_set(&c->usage, 1);
++	c->flags = flags;
 +
-+	scoped_guard(spinlock, &c->lock) {
-+		c->exit_code = status;
-+		c->init_uid = uid;
-+		WRITE_ONCE(c->state, USERLAND_DEAD);
++	user_ns = userland_create_user_ns();
++	if (IS_ERR(user_ns)) {
++		ret = PTR_ERR(user_ns);
++		goto err_put;
++	}
++	c->user_ns = user_ns;
++	ns_ref_active_get(user_ns);
++
++	if (!ns_capable(user_ns, CAP_SYS_ADMIN)) {
++		ret = -EPERM;
++		goto err_put;
 +	}
 +
-+	pid_ns->userland = NULL;
-+	__wake_up(&c->waitq, TASK_NORMAL, 0, poll_to_key(EPOLLHUP));
++	ns = create_new_namespaces(clone_flags, current, user_ns, NULL);
++	if (IS_ERR(ns)) {
++		ret = PTR_ERR(ns);
++		goto err_put;
++	}
++
++	if (ns->time_ns != ns->time_ns_for_children) {
++		get_time_ns(ns->time_ns_for_children);
++		put_time_ns(ns->time_ns);
++		ns->time_ns = ns->time_ns_for_children;
++	}
++	c->ns = ns;
++	nsproxy_ns_active_get(ns);
++
++	return c;
++
++err_put:
 +	userland_put(c);
++	return ERR_PTR(ret);
++}
++
++/**
++ * sys_userland_open - Open a new userland
++ * @flags: Combination of &enum userland_flags values
++ *
++ * Allocate a userland owning a fresh user namespace and dedicated
++ * empty mount, PID, UTS, IPC, network, cgroup, and time namespaces.
++ *
++ * Return: Userland file descriptor on success, negative error code on failure.
++ */
++SYSCALL_DEFINE1(userland_open, unsigned int, flags)
++{
++	struct userland *c;
++	int fd;
++
++	if (flags & ~USERLAND_ALL_FLAGS)
++		return -EINVAL;
++	if (unlikely(!current->nsproxy))
++		return -EOPNOTSUPP;
++
++	c = userland_create(flags);
++	if (IS_ERR(c))
++		return PTR_ERR(c);
++
++	fd = anon_inode_getfd("userland", &userland_fops, c,
++			      O_RDWR |
++			      (flags & USERLAND_CLOSE_ON_EXEC ? O_CLOEXEC : 0));
++	if (fd < 0)
++		userland_put(c);
++
++	return fd;
 +}
 -- 
 2.47.3
