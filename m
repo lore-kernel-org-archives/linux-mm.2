@@ -1,63 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C265606A33E
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 12:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3769606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 12:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sqoBuSux
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sNyiml/z
 Received: by kanga.kvack.org (Postfix)
-	id 4810A6B05C8; Sun, 22 Nov 2026 07:48:34 -0500 (EST)
+	id EBA5C6B05CA; Sun, 22 Nov 2026 07:48:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40A356B05C9; Sun, 22 Nov 2026 07:48:34 -0500 (EST)
+	id E91886B05CB; Sun, 22 Nov 2026 07:48:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F8886B05CA; Sun, 22 Nov 2026 07:48:34 -0500 (EST)
+	id D80A06B05CC; Sun, 22 Nov 2026 07:48:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B4106B05C8
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:48:34 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8A88EC06E5
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:48:33 +0000 (UTC)
-X-FDA: 85462733706.13.77D7E3E
-Received: from mta0.migadu.com (out-105.mta0.migadu.com [91.218.175.105])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7F26B40003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:48:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sqoBuSux;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A58186B05CA
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:48:41 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F8C81A06A7
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:48:41 +0000 (UTC)
+X-FDA: 85462734042.20.D752C92
+Received: from mta0.migadu.com (out-109.mta0.migadu.com [91.218.175.109])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 34889A0002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:48:38 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sNyiml/z";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.105 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.109 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795351711;
-	b=hpJhvZfcUkIlnzYFswm2LZQTziMl85dB7n6+aJHAyzGEr+XdIV1+HYOznCXXjr2zehrV64
-	UXZ6/Eu5aOtDOsOLEULkQQEugyeFfmeXU94wGZMhonMaS9HNxZzbGMIew0AQxfE9VifV0T
-	7K2ijhpAjPKhWuYDjJGzA8cvJCT1Hoo=
+	t=1795351719;
+	b=YMsGEhFjUPjD9EytFnbuT2NfMjv+XxdE1ZkIHNgxmUW1pTmebGw0BK25BY4F6MR7deOiwN
+	dcfqoSVff3mhYxVAuXnOCjAREV5D/1tWr60/QMfQrbDvSxcH5JqqFQbdvLOZph3Qm6asdu
+	wQiLEar0/KoMa/+Zwpf6H+EuKcx7rxc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795351711;
+	s=arc-20220608; t=1795351719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWpHC929BGRiYzSAL7uFn6Yn75mqyH04ZOQRNnEh5E4=;
-	b=vA7e5mP2bn0MHJ8oHY6CQWuRlNs9MyLtPaTLV/J3r/guJTF4DAZKNKge+xd3elTZUNJLYh
-	OdCefZFImHDHQzZAVVPCwPXI9tp6sVx47Vh0vpNi5tpknLni8zv8wXP2mycXzn/4ZeMdBQ
-	xzY5LyvdPPEeGf3Ce7N0fWaZW2QkL78=
+	bh=F5mb4gMdHpZJzXBSqlC9XMwKzG9tss4cXHWRmV8y1PM=;
+	b=KJMVVdM19vWK6NQN/VeeMafB2LBqsdd2kVHb2F5i+IwscbzjpyPzb5RCp75UGmvDLMOubb
+	phYOQHmv68uJYcZLuUtk76+OIRI49SoN0G+u4dT2aeTWJoVK/iavlr856DkhOkpbTcqqIP
+	dED40FDji6b22faBle9dTdGaUYTveA4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sqoBuSux;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sNyiml/z";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.105 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.109 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6v8sTTf6pcb85Lo4OtoCE2QJ+satgIKb50EQR+2ySec=;
+DKIM-Signature: a=rsa-sha256; bh=YOz2z0C4QkUvUxcWScNP+zuGI/wOQjQ7nmeOF1TvXg4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795351710; v=1; x=1795956510;
- b=sqoBuSux8Js1l1iFt02kPszQ1/xsLzn1M0RlCTmyNjqog8l3SdbUabO2IA2gfwQMZ0m8BNB1
- AI38qLrYfjZ/LYu9y+lDsia6A/F7/KhO4mC9h7WbDLdJGyFKvUGoYZR+cL/4UWYTW5gzoTHKDVv
- KPcp6MPlfGvMdihBLgH27uRk=
+ t=1795351714; v=1; x=1795956514;
+ b=sNyiml/zpkM2ycBaiGQXFs1ayJPtXjwyrTEnKxG6llJrRwUZKcX4Y8HU/WEcnwXiZRBuiZy6
+ iOk/e5J0FgjQsMETuhXw+HBVLaWWDQdGrZ8+42U/3VZAI4QIjNJmC/bmVYRAPk8X+7Hs7YOXG5Z
+ CnrArj2vjC2WGLVeaUEgHggA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id adc6a1e29aeff931;
-	Sun, 22 Nov 2026 12:48:30 +0000
-X-Mizu-Trace-ID: adc6a1e29aeff931
+Received: by mta12.migadu.com with ESMTPS id 6a9c451795a40c91;
+	Sun, 22 Nov 2026 12:48:34 +0000
+X-Mizu-Trace-ID: 6a9c451795a40c91
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
@@ -79,9 +79,9 @@ Cc: akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org,
 	baoquan.he@linux.dev,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v6 11/14] mm, swap: add xswap grow trigger on cluster allocation
-Date: Sun, 22 Nov 2026 20:48:11 +0800
-Message-ID: <20261122124814.3489077-2-baoquan.he@linux.dev>
+Subject: [PATCH v6 12/14] mm, swap: add debugfs counters for xswap
+Date: Sun, 22 Nov 2026 20:48:12 +0800
+Message-ID: <20261122124814.3489077-3-baoquan.he@linux.dev>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261122124814.3489077-1-baoquan.he@linux.dev>
 References: <20261122123918.3486916-1-baoquan.he@linux.dev>
@@ -90,18 +90,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: padap4mbhnukw9fjgopxjijgto4p9rdp
-X-Rspamd-Queue-Id: 7F26B40003
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 34889A0002
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
+X-Stat-Signature: 1hj5ruxq1wz89oouypz5fthxgampqfsr
 X-Rspam-User:
-X-HE-Tag: 1795351711-130853
-X-HE-Meta: U2FsdGVkX19+Lq0ZQQt2OxyBQe33R27lh21PDLBCMejEkXkztWEl5Rx4/+vgC0djilMDvZPkBdaSQ0ziL04zMW/O6guzCK/usjdosgpjlAmpo0ZpK0US+8mkyw5uqyHCefaBo2dpe6aH8HGvBBq87+SfsSQ8sHo8wQzIqvjdkmWNBTg80Lm8sJYE57Q3KdZ4EHcImc+cEsd383IG1DWL9yDXTJ99ZjNjXTNcR///1j5Vm0gGYQNbflexEZChGYSfuNixAtKy1OrutJxX+DIPuwUMnA7j3B8IVlYELBmhaKtopZRgwxj6AMmfQ3nxyYhEhvTyKHQWbqMZyy12ORN87wbsxcPqz43g5ZexQkyJaM+qhDUjWeb/c+sYB05GiOLfd6VOnGYc5d2VEWnj+ut7JzEfaFkEkm0Shsnq93ukiwkuxlXilmsXhgkZhA+pwdZIQs85b9Rv/HTp9fhZdBgG89AH1VRRvSjSngwCMAeao+HCEk/cyMd99shOmryguuLmSV3i2rlm3zcKm6bnFypgHRr5t9/zTu+W6XsaON3AwdRwtlx4DoPPuOzURneQazcgjHbjajxfFCoaVSJyJuAVOUqNjAjOkCrmNZY9hKk4DC3yhX2e0r++tsaGDowW4m4bQFicTtj3ix0tIfGrln0as45danfauvo1W66K4wXT8ge0uuX+cIlSLVdOdWyME2kc8LJmXChQBZJ47sxC0GPHo61oLTS4A3h4Zxs7p1PEa1sTnUWsepB2fthllwk//+jeEJsoglzC/d/HYegdVevMdS9bmJIhR6EOf/gX5vDh9BHEN0Xh3qdZxVvY9O2CCMnvuqruerK/dLzoRqtFR00ZyXSHGfz+oX5LJbfihpby8igXm0Pk4X0DZ8NrhUBRxNFd2YkIVdhjv+o5KdW/S9qm30XSx6ioI4M3ZKFy8eIZgkqEMsrAS6G1vxGFZzfYaJ8wihGDVM4VkFQlZBw4K1N
- x+XKyb3t
- fvpIEbyUW4iJgeAZgqpOXKSkrlmOZHr4kuYD4x7JyrO+ZIGGGit0GgsXKTJUOE9ECPfZUi/R6WoXugEe1TOtGJwmUmtkbiDwjd6eeT2+vTTxBTCcxqTuOz2WQkQqlZK67U9+G8PAFP0LPEnQ6PEFIJgRk10icDCbcRnDmBXEnp5pUamtDTPbzd58Xjb+ba2JZBSBp4PPWUQw+H141L1DpiuUhFFf2IOdfZIm+EC5CSIcdT3FbAySAaDHzlkHK/mJIljkP3LsNEYSiIf5c6NQZLdbvZ+6ctco/Gej1tr4FMZxIM4CyveHzHNwN9XDQTRjMocc2qPgzzcesQ813I4LHg85QkE92XUhQGJoouWuZerIY6LHCahFeqy25snMknpBl3dfILmQorOqIapg1UVIn2B5Z2PRqi4FyfVK7vrobv27fTrlGKOu8sjzRrD1Z3r9uaPySIPNZ4GICo/gRu0GH2Lj7iQYxIvq6w/PZp7PeDxabEfOR1ghnwP8AsG1Jm+whnET1hOieiFnvhmU=
+X-HE-Tag: 1795351718-920294
+X-HE-Meta: U2FsdGVkX18yry+Dkcyiq9EfVNFravU3efw0UDUHabCIi2l2FCA+jHmHRI2IsSkpY86QvVt67+ZbLlSYC35Nhw4vBwN02tYNvt2l+RXQEy9jwINIXkgWmwb0PaQqcFMkeNlFINn/tqmcOfwZQMEhfY5pLbrDltfdPgCjZEzQU+RBwOIpZtjmybj4qSDsMtAKqgu6kE/15os10U4gQ1yrWRqIR9ZYaFFoHrev8s554g9CZTWAg6mX8KkEaAb5EW9YqdTuyXox0hnn5+tIVRomT1eYS7FudGk0PGVtyYuECqEFjGPnwyBNcRTdT4z7u7wgFN/7tJLfnhpj2I10tzRPEvFQEs8BYwQqFNTyXDINyRrAD2E0UIZ5yqfn88VsN5hIPi/1Pygz3BQ0JZ6S8wjnevygHiCIcv+8TwjNRgG64j/s9kOouDf9qofSxHI4Lst64CsnwOOhiG+hl7C9bE7Zd5AQL/I5JGLCzfYHfgltmuMDeQyGHARMTqvgkmaY9Cus1p7N82/j6gqmql9WPslFII979Kt7IiiupED5/41FwaLrAcOsIAwX5wMO9Dn35v8Ojk+Y+cIRBdX+9AhojE4Ie1p+DvyqJdIw+LZFpO/Odg3utsC+saWf02QvDp9IglW3qvG6wU2WwcvWv0wLpNEgCOq/2uyUibP1+n/as+haiu3QdyUZdiCK4SlbxO/6aIowGhdaI0NyVHAC2xuhN1pgPdE9zqBGdEeWclcrKdrMP+HJNA+xEmHqp+MVNFWj2jd445ES9Kw9SN/DyFowrjgw17cWMNJqvxrSzqZ1xeQyB2wOSRomNshVKiXcNgQVh8Sdb+JuyncdEJISG275df4c1Gv2Ce+7T+dLstrc4vKOArmzBWC3VAUeyIE+mvP+fg9hhpls5/PH86Tsd4Qq1juttZl9x7x/TMAdxah1BGw6RveSY725/5sSRa2jCCT4uYfb8L/bP5pGbioeG/ruZpR
+ Fn0gcBhO
+ puTfkIrnKsouX0Akoj1KM0myVEjSOT1V3SjeT+TCIsNp44p16nil8nszxsAl6y38Wk8wmLu2DmZngjPuXuhIK68kHX8UJ5gGydMpgGetj/0Oz2U9UYUtpEjs35TCnv9lFnUIYgkmQS8RRTnj1q0BCLqwE3pRtPb4ctwxUatE+qyjauhOdIXyKn8ekzh+O/ghtwJLC4RWy/CT+zaVf/RfWfTRiiKhAwYtZdHg/o1NS0dL3VAfgLolpV+pbVOV05D9qY4WzKFCyc3i7F6boBbshv95QLO42Vz4/Z51JoVkRClIHuDH1uPCiSkewx7mZ2X3VtjjPLpXV2FWg1DA5ea1PNYPC4ockFtO/LKgVjrxnpTnLFiPIck5FKf9KQBDKQhuCnbSbeyxpVDSWvEW+hkt432QcFOo9OSZRIbudMSuZ9F0GremUZSaR3KuftsRFKPtFxeoKpYq4JF3bFp+8b44xeAi8kvs/aiPoHShzhb0GT8eu7RKTG6q3OXZs9NBWkczOOZQZN7WtpRGFhFQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,215 +112,168 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Baoquan He <hebaoquan@kylinos.cn>
 
-Grow the mapped xswap range before it runs out. When usage reaches 85%
-of the mapped range, map more clusters from cluster_alloc_swap_entry().
+The mapped range and the grow count are not visible from userspace.
+This makes it hard to check if the grow thresholds work: we cannot see
+how large the mapped range is, how much it grows, or how much free tail
+it keeps.
 
-Grow to about 65% usage. This leaves free space in the mapped range
-before the next grow at 85%, so one grow is not immediately followed by
-another.
+Put this information in debugfs. It is a debugging aid, not a stable
+interface, so it does not belong in sysfs or the ABI:
 
-Mapping pages can sleep. Grow before the allocation that needs them,
-not after it fails.
+  # cat /sys/kernel/debug/xswap/xswap.stats
+  type 0
+  clusters_max 2038783
+  clusters_mapped 255
+  usage_pages 91456
+  tail_free 16
+  grows 3
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/swap.h |   1 +
- mm/swapfile.c        | 124 ++++++++++++++++++++++++++++++++++++++++---
- 2 files changed, 118 insertions(+), 7 deletions(-)
+ include/linux/swap.h |  1 +
+ mm/swapfile.c        | 69 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 70 insertions(+)
 
 diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 02c3861a336d..5d9e5b6f2bd6 100644
+index 5d9e5b6f2bd6..9daf0ac40c39 100644
 --- a/include/linux/swap.h
 +++ b/include/linux/swap.h
 @@ -246,6 +246,7 @@ struct swap_info_struct {
  	unsigned long		nr_clusters_max;/* total clusters in the xswap address space */
  	unsigned long		nr_clusters_mapped; /* currently mapped cluster count */
  	struct mutex		xswap_lock;	/* serialize map/unmap operations */
-+	atomic_long_t		xswap_grows;	/* grow operations so far */
++	struct dentry		*xswap_debugfs;	/* mapped range and counters */
+ 	atomic_long_t		xswap_grows;	/* grow operations so far */
  #endif
  	struct list_head free_clusters; /* free clusters list */
- 	struct list_head full_clusters; /* full clusters list */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 074c5114d129..213b66bb1d6d 100644
+index 213b66bb1d6d..462efeef887a 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -68,6 +68,21 @@
- #define XSWAP_GROW_CLUSTERS \
- 	max_t(unsigned long, PAGE_SIZE / sizeof(struct swap_cluster_info), 16)
+@@ -43,12 +43,14 @@
+ #include <linux/suspend.h>
+ #include <linux/zswap.h>
+ #include <linux/plist.h>
++#include <linux/debugfs.h>
  
-+/*
-+ * Grow thresholds, as a percentage of the mapped range in use.  The target
-+ * sits below the next grow trigger, so a grow that follows a rise in usage
-+ * does not immediately trigger another one.
-+ */
-+#define XSWAP_GROW_UNTIL	65
-+#define XSWAP_GROW_WHEN		85
-+#define XSWAP_GROW_CHUNKS	4
+ #include <asm/tlbflush.h>
+ #include <linux/leafops.h>
+ #include "swap_table.h"
+ #include "internal.h"
+ #include "swap.h"
 +
-+static bool xswap_should_grow(struct swap_info_struct *si);
-+static unsigned long xswap_grow(struct swap_info_struct *si);
-+static int xswap_map_clusters(struct swap_info_struct *si,
-+			      unsigned long start_idx, unsigned long nr,
-+			      bool link_free);
-+
- static int xswap_create(int prio);
- static int xswap_create_by_name(const char *name, int swap_flags);
- static int xswap_destroy(void);
-@@ -1325,6 +1340,13 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 	if (order && !(si->flags & SWP_BLKDEV))
- 		return 0;
+ #define DEF_SWAP_PRIO  -1
  
-+#ifdef CONFIG_XSWAP
-+	/* Grow before allocating: mapping pages can sleep. */
-+	if ((si->flags & SWP_XSWAP) && (si->flags & SWP_WRITEOK) &&
-+	    xswap_should_grow(si))
-+		xswap_grow(si);
-+#endif
-+
- 	if (!(si->flags & SWP_SOLIDSTATE)) {
- 		/* Serialize HDD SWAP allocation for each device. */
- 		spin_lock(&si->global_cluster_lock);
-@@ -1397,6 +1419,12 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 		if (found)
- 			goto done;
- 	}
-+
-+#ifdef CONFIG_XSWAP
-+	/* A concurrent free or grow may have added clusters; retry once. */
-+	if (!found && (si->flags & SWP_XSWAP))
-+		found = alloc_swap_scan_list(si, &si->free_clusters, folio, false);
-+#endif
- done:
- 	if (!(si->flags & SWP_SOLIDSTATE))
- 		spin_unlock(&si->global_cluster_lock);
-@@ -3986,8 +4014,39 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
- }
+ /*
+@@ -79,6 +81,7 @@
  
- #ifdef CONFIG_XSWAP
-+/*
-+ * Link the new clusters and publish the larger range in one si->lock
-+ * section: linking first makes a cluster visible to an allocator only
-+ * after it is on the free list.  @link_free is false for the first
-+ * chunk, whose free list is not initialized yet.
-+ */
-+static void xswap_publish_clusters(struct swap_info_struct *si,
-+				   unsigned long start_idx, unsigned long nr,
-+				   bool link_free)
-+{
-+	unsigned long i;
-+
-+	spin_lock(&si->lock);
-+	if (link_free) {
-+		for (i = start_idx; i < start_idx + nr; i++) {
-+			struct swap_cluster_info *ci = &si->cluster_info[i];
-+
-+			/* A concurrent grower cannot take these: xswap_lock. */
-+			if (ci->flags != CLUSTER_FLAG_NONE)
-+				continue;
-+			list_add_tail(&ci->list, &si->free_clusters);
-+			WRITE_ONCE(ci->flags, CLUSTER_FLAG_FREE);
-+			ci->order = 0;
-+		}
-+	}
-+	/* Pairs with the smp_load_acquire() in the readers of the range. */
-+	smp_store_release(&si->nr_clusters_mapped, start_idx + nr);
-+	spin_unlock(&si->lock);
-+}
-+
+ static bool xswap_should_grow(struct swap_info_struct *si);
+ static unsigned long xswap_grow(struct swap_info_struct *si);
++static void xswap_debugfs_del(struct swap_info_struct *si);
  static int xswap_map_clusters(struct swap_info_struct *si,
--			      unsigned long start_idx, unsigned long nr)
-+			      unsigned long start_idx, unsigned long nr,
-+			      bool link_free)
- {
- 	/* vm_area_grow_pages() takes an offset into the area, not an address. */
- 	unsigned long vm_end = PAGE_ALIGN((size_t)(start_idx + nr) *
-@@ -4023,14 +4082,62 @@ static int xswap_map_clusters(struct swap_info_struct *si,
- 	for (i = start_idx; i < start_idx + nr; i++)
- 		spin_lock_init(&si->cluster_info[i].lock);
- 
--	/*
--	 * Publish the new mappings and cluster lock initialization before
--	 * the count; walkers without xswap_lock use smp_load_acquire().
--	 */
--	smp_store_release(&si->nr_clusters_mapped, start_idx + nr);
-+	/* The mappings and the locks are in place; make them visible. */
-+	xswap_publish_clusters(si, start_idx, nr, link_free);
+ 			      unsigned long start_idx, unsigned long nr,
+ 			      bool link_free);
+@@ -3455,6 +3458,7 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
+ 			}
+ 			spin_unlock(&ci->lock);
+ 		}
++		xswap_debugfs_del(si);
+ 		vfree(si->cluster_info);
+ 		si->cluster_vm = NULL;
+ 		si->cluster_info = NULL;
+@@ -4087,6 +4091,7 @@ static int xswap_map_clusters(struct swap_info_struct *si,
  	mutex_unlock(&si->xswap_lock);
  	return 0;
  }
-+static bool xswap_should_grow(struct swap_info_struct *si)
++
+ static bool xswap_should_grow(struct swap_info_struct *si)
+ {
+ 	unsigned long mapped = READ_ONCE(si->nr_clusters_mapped);
+@@ -4138,6 +4143,68 @@ static unsigned long xswap_grow(struct swap_info_struct *si)
+ 	return nr_new;
+ }
+ 
++static ssize_t xswap_debugfs_read(struct file *file, char __user *buf,
++				  size_t count, loff_t *ppos)
 +{
-+	unsigned long mapped = READ_ONCE(si->nr_clusters_mapped);
-+
-+	if (mapped >= READ_ONCE(si->nr_clusters_max))
-+		return false;
-+
-+	return swap_usage_in_pages(si) * 100 >=
-+	       mapped * SWAPFILE_CLUSTER * XSWAP_GROW_WHEN;
-+}
-+
-+/*
-+ * Map more of the cluster_info array, up to GROW_UNTIL in use.  The caller
-+ * holds percpu_swap_cluster.lock, which this drops while it sleeps.
-+ */
-+static unsigned long xswap_grow(struct swap_info_struct *si)
-+{
-+	unsigned long mapped = READ_ONCE(si->nr_clusters_mapped);
-+	unsigned long nr_new, want;
-+	int ret;
-+
-+	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
-+
-+	want = DIV_ROUND_UP(swap_usage_in_pages(si) * 100,
-+			    XSWAP_GROW_UNTIL * SWAPFILE_CLUSTER);
-+	if (want <= mapped)
-+		return 0;
-+
-+	nr_new = rounddown(want - mapped, XSWAP_GROW_CLUSTERS);
-+	if (!nr_new)
-+		nr_new = XSWAP_GROW_CLUSTERS;
-+	if (nr_new > XSWAP_GROW_CHUNKS * XSWAP_GROW_CLUSTERS)
-+		nr_new = XSWAP_GROW_CHUNKS * XSWAP_GROW_CLUSTERS;
-+	nr_new = min(nr_new, READ_ONCE(si->nr_clusters_max) - mapped);
-+	if (!nr_new)
-+		return 0;
++	struct swap_info_struct *si = file->private_data;
++	struct swap_cluster_info *ci;
++	unsigned long mapped, tail = 0;
++	char tmp[192];
++	int len;
 +
 +	/*
-+	 * Mapping pages can sleep.  The lock only guards the per-cpu
-+	 * cluster cache, which this path does not touch.
++	 * Count the free clusters at the end of the mapped range.  The
++	 * xswap_lock keeps the range from moving under the scan.
 +	 */
-+	local_unlock(&percpu_swap_cluster.lock);
-+	ret = xswap_map_clusters(si, mapped, nr_new, true);
-+	local_lock(&percpu_swap_cluster.lock);
-+	if (ret)
-+		return 0;
++	mutex_lock(&si->xswap_lock);
++	mapped = READ_ONCE(si->nr_clusters_mapped);
++	if (si->cluster_info) {
++		while (mapped - tail > 1) {
++			ci = &si->cluster_info[mapped - tail - 1];
++			if (READ_ONCE(ci->count) ||
++			    READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
++				break;
++			tail++;
++		}
++	}
++	len = scnprintf(tmp, sizeof(tmp),
++			"type %d\nclusters_max %lu\nclusters_mapped %lu\nusage_pages %lu\ntail_free %lu\ngrows %lu\n",
++			si->type, READ_ONCE(si->nr_clusters_max), mapped,
++			swap_usage_in_pages(si), tail,
++			atomic_long_read(&si->xswap_grows));
++	mutex_unlock(&si->xswap_lock);
 +
-+	atomic_long_inc(&si->xswap_grows);
-+	return nr_new;
++	return simple_read_from_buffer(buf, count, ppos, tmp, len);
 +}
 +
++static const struct file_operations xswap_debugfs_fops = {
++	.read	= xswap_debugfs_read,
++	.open	= simple_open,
++	.llseek	= default_llseek,
++};
++
++static struct dentry *xswap_debugfs_root;
++
++static void xswap_debugfs_add(struct swap_info_struct *si)
++{
++	if (!xswap_debugfs_root)
++		xswap_debugfs_root = debugfs_create_dir("xswap", NULL);
++	if (IS_ERR_OR_NULL(xswap_debugfs_root))
++		return;
++
++	/* One device, so one file: /sys/kernel/debug/xswap/xswap.stats. */
++	si->xswap_debugfs = debugfs_create_file("xswap.stats", 0444,
++						xswap_debugfs_root, si,
++						&xswap_debugfs_fops);
++	if (IS_ERR(si->xswap_debugfs))
++		si->xswap_debugfs = NULL;
++}
++
++static void xswap_debugfs_del(struct swap_info_struct *si)
++{
++	debugfs_remove(si->xswap_debugfs);
++	si->xswap_debugfs = NULL;
++}
  #endif /* CONFIG_XSWAP */
  
  static int setup_swap_clusters_info(struct swap_info_struct *si,
-@@ -4060,7 +4167,8 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
- 		mutex_init(&si->xswap_lock);
- 
- 		err = xswap_map_clusters(si, 0, min_t(unsigned long,
--					XSWAP_GROW_CLUSTERS, nr_clusters));
-+					XSWAP_GROW_CLUSTERS, nr_clusters),
-+					false);
- 		if (err)
- 			goto err_free_vm;
- 
-@@ -4252,6 +4360,8 @@ static int xswap_create(int prio)
+@@ -4360,6 +4427,7 @@ static int xswap_create(int prio)
  	 */
  	si->ops = &swap_bdev_ops;
  
-+	atomic_long_set(&si->xswap_grows, 0);
-+
++	si->xswap_debugfs = NULL;
+ 	atomic_long_set(&si->xswap_grows, 0);
+ 
  	error = setup_swap_clusters_info(si, NULL, maxpages);
- 	if (error)
+@@ -4371,6 +4439,7 @@ static int xswap_create(int prio)
  		goto bad_swap;
+ 
+ 	mutex_lock(&swapon_mutex);
++	xswap_debugfs_add(si);
+ 	si->prio = prio;
+ 	si->list.prio = -si->prio;
+ 	si->avail_list.prio = -si->prio;
 -- 
 2.54.0
 
