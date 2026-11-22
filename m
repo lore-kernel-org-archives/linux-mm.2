@@ -1,129 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7FC606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0841606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=inZN7/p+
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hqGEpaEJ
 Received: by kanga.kvack.org (Postfix)
-	id E48846B05B9; Sun, 22 Nov 2026 12:59:01 -0500 (EST)
+	id C2ED16B05BB; Sun, 22 Nov 2026 13:03:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD27E6B05BA; Sun, 22 Nov 2026 12:59:01 -0500 (EST)
+	id C05946B05BC; Sun, 22 Nov 2026 13:03:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C74906B05BB; Sun, 22 Nov 2026 12:59:01 -0500 (EST)
+	id AD0066B05BD; Sun, 22 Nov 2026 13:03:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 797EE6B05B9
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:59:01 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D883114071D
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:59:00 +0000 (UTC)
-X-FDA: 85463516040.20.1AFB23B
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0FFF180002
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:58:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="inZN7/p+";
-	spf=pass (imf02.hostedemail.com: domain of lylin1023@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=lylin1023@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 789C06B05BB
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:03:13 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA92AC074F
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:03:12 +0000 (UTC)
+X-FDA: 85463526624.14.6FDF1FA
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf22.hostedemail.com (Postfix) with ESMTP id F0320C0007
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:03:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hqGEpaEJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795370339;
-	b=cdYViE/qoCj3GY5qzsYOS9XorGzJJSLYvivXF6HmX77VQyyyGfvBPI6CPnyoK+D4mDw+TO
-	yAZjqAVRkXZYIDCiRtLgvQRX9/ByzHYqfgSUyazDXGiW/oxHTgXuzKpgsVMJnpE0UPHN3k
-	2nIwa4dp9GZ5VDYHZI+mxLqkjKyu0Z8=
+	t=1795370591;
+	b=YtwDm37yM7ib7RK+l8kSFXxMrNms1u33urrWrYikROFR9H9TB6LWsu3mg1WuNvLYVw22pI
+	NUjrxcqKNl8gBVh1j0XuzBLzTb/isaMuYuAYAiBvMD6COrPzOQVRdQtj8VKIuzl0rOzg6A
+	QeuqEs86LtwL8DnB8gJ2HkdkH/BYuq8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795370339;
+	s=arc-20220608; t=1795370591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zZK6D2/szOXdu8ofxhUwHdxgVM+nnJRbws9cN9agyJ8=;
-	b=bWHn29z+kleta7LcBq7Ntl9WvzR8dg3npOHCLi0Ti5pQLPYwJGfyxmvrD+R/kn6Em3cS0t
-	CCk34Vs0CJFecjxo1CWJWgFYi7RvRL7D77CHL1GyM5OuMvqfDMl/HFK/CuCipiBQ9r8URp
-	/hpk2oo1j+I6ttqWlx4yh3qgxSd1cgg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EWsKXAM/g+dJIEPiarpqPbtvlz+whrT4/Vo/Gurv3ys=;
+	b=Ibf+aUZOHqIVlz8kdUPIkQIHPMHeLgMyV1D9IZ0hIg5AcGS3jK0i5emO0+VkMzLxhWR/hz
+	lTmNCKxhuZR8Tb65hCgHuSfqbELh3J/8544DNNJVycM7IPFpfP767CCXhAsP1xdWLBI2PD
+	dbDMWWq5fHwRYvynAfyEVKBmIrQREQw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="inZN7/p+";
-	spf=pass (imf02.hostedemail.com: domain of lylin1023@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=lylin1023@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8b66d1a08ccso1895615b3a.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:58:58 -0800 (PST)
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hqGEpaEJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49d05d51553so17187915e9.2
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:03:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795370337; x=1795975137; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=zZK6D2/szOXdu8ofxhUwHdxgVM+nnJRbws9cN9agyJ8=;
-        b=inZN7/p+By9CgOc41B2HUq0yoQREPl+HWHzV+PNLLY6/tP9WLJwJAqle6Ah2vB/w81
-         lSaxp/gV66t6pB/QFI6wkmMthWgbGft89J5fvqxW55peWXl5//UHmJGJSQDez9kwdKAu
-         cG5nbZXyBZLYw8lSWUvEtjfb1wkBCoHBia0VuJiSrUOevI8Fks3iKfbrHJ+cyeQjYb2r
-         Lk5jWVipr1WY04BAIykGp14RANHTdA4VeVDuyv/TcEILRGW+rC7KRKln+/9Dkc/PB+ss
-         H7+R4VOi2gaQ2ekBcm9Ed9PC0zKuIvW02bIqk/+bQkdoOFFZTz8si1od9mvM/bgPDOqZ
-         ZHYw==
+        d=gmail.com; s=20260707; t=1795370589; x=1795975389; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EWsKXAM/g+dJIEPiarpqPbtvlz+whrT4/Vo/Gurv3ys=;
+        b=hqGEpaEJzdv5cgV983Ttxvla8iT5Ux3huVsnEzMSr5IW1ilSknMOBCUyK5hsqbWeSo
+         G9bC9U4XjCta5jvEwuRGsfKGTo8haXmBgDRTest45YVoZDi6lNa1D9ijNHsR3tVZtuLZ
+         xtjM2HIRnL2nJ70qRkq3wZ71T85ZMVf6wdbV3JZB0Rd6bSK2AdPgjwvDLELdHXoxdLN3
+         nt/AMN3gOhUJ8eB8mH4xzwEhkB936d5vFnWqMHwjSeIJshvXDWuzoFR0Q89iZzpMGp4+
+         4pqANZ0Cs+JfdMDAcCN/l1HcXgSkpAJc5VSsFVWq5pVkYS2XYmWS3t+dxW1xhaxK6NiB
+         6mRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795370338; x=1795975138;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=zZK6D2/szOXdu8ofxhUwHdxgVM+nnJRbws9cN9agyJ8=;
-        b=ipA+2+RryvCDnCgWmuWevDqHCmUXQ9yKWRvS4iiVCLpfgk5nf9/gUS/JF+rp9q8yb0
-         J4Ks6VmyyNTT5BwdqsifqAcAecTzZYLupJBpXhZKaRMkVGKprL2iVjSSNDmKtpctspFU
-         XtqD+5IrEmlvUkdEMETi5GPEd9lTmyUumpyybJhRbqbM1lFDnkaPbTVF9phM2rKPjSKv
-         tGln9Tk1eI0mtPkSEtPXuVuRwMkorDpOuBundoy/CJSJDx5nF4jzIcr5O6dCxCmgQDac
-         FrjnHDpUI5tuaZC/76SenEikDREHelc3k9R93ogJKkAyytRfQvwRhbw7NOA4TWjHxEfu
-         kWQQ==
-X-Gm-Message-State: APuU4Z+0ft0ktjY/ipEOmFp1dew2lS7v2QH+4x8u63WhrNUuc+rxdUL/
-	XmAYBQ22tgyVpJ1mouGW6Pon6zkR/bc8jN9yRpAFj2uPQlAe3o2cb3J4
-X-Gm-Gg: AZFdTZd9SzAUKucnjTX7T/eOnkppqsizVQDJFHGR+HoDVR0NilocDnWTGfI2Wda9Yhr
-	ToYgI/4EWRzYlxcCgsQIJjRF+zKH2eAvvpaIF/sIVrw+nkkfTAjov8b2VFOBcdwCs7fuuN2890p
-	6+74yBGgwmveMHplkPcP7re16yeUXuBas64leto7aab5jfUG0VckwcCoTLAcbSrN3zy06rwYG+R
-	aeTXqn05VaHa04ALmHXFKIWYBHSgqkMcFiLS9jy7DsTmXVVcEGQGKy8qA+Jq/L48qJPjU2v8BMo
-	ybMSFD2IVFTnMRHnxM3mc9ivmnscRHOHoQaRrhQrpkIJauf3zu5wIAJTl0UyEVwtdh8W4BSnE4f
-	j3SiUDTYQy5dw3wuzzZWiqS7QCs1LOC70JVJRDakn/DM7auLyrlnXYYhEzvQQBxIPGVPKQ3AfpU
-	hUjh3C89DvAgpAXyiBDIM8EJObu2AO8eQ0O7No9/+VG+zoDDhNAYcH5mwP7/MSIvRTa/KsReyuy
-	11Dtu733rtgBg3NJ3w2vjGwpM7lUcmOzPOxupNyqCSGH5AJ940/rWlqalAQgdmV6rbGM0h9WLYF
-	NlcBZ4XMtsDioAiOpIpTe8nQBOQ/tg1IkS5ZO0lRAg19YejFBlwgU5Jl4DGCqz92PqvBpuVMGvK
-	RohA=
-X-Received: by 2002:a05:6a21:6b0d:b0:3fb:6e73:ce42 with SMTP id adf61e73a8af0-4014d56b3f9mr9114765637.74.1795370337572;
-        Sun, 22 Nov 2026 09:58:57 -0800 (PST)
-Received: from [192.168.18.15] (218-35-178-218.cm.dynamic.apol.com.tw. [218.35.178.218])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87285c89dsm4160040b3a.13.2026.11.22.09.58.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 09:58:56 -0800 (PST)
-From: Kurt Lin <lylin1023@gmail.com>
-Date: Mon, 23 Nov 2026 01:58:43 +0800
-Subject: [PATCH] selftests/mm: skip hard dirty page-cache test on FUSE
+        d=1e100.net; s=20260707; t=1795370589; x=1795975389;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EWsKXAM/g+dJIEPiarpqPbtvlz+whrT4/Vo/Gurv3ys=;
+        b=qAbkqi8ppSmZxQKs43RdmfjGY5U/p8Jok5wMYgGmRQNxNrr6vqGWVpoq/4ZUEKq6T8
+         LS8YAln3Bl6ujMzZWzF6WKt4bFoDcd1dkBVmP4sU4PnkKmyUWuL+SlIpPJLHZFAuC5Gl
+         VAYLQAhMC0+IYQ0DuQl2MEIC9At6amK7p932aBr7hrTBNcHmLpyOIdsSx35EbXkyZao4
+         D5+H4Ktb68FXry2oCBI/dbDHsGOvGzrjBTDw/APrKjNcu0qmj0vzZT/YbsbKtH4B8b8L
+         UQpFq6Yv1XoH0cZoLLe88/CLCdF+L5767qyBIlXVd6iEwa9rnGlrqU/SqzcdixV86eDu
+         F65w==
+X-Gm-Message-State: APuU4Z8d9ww2byukHorFObmCOD3uU1JhmgeDINsiKIx1dWkUx1ypKd0r
+	CbUeP2+uLAGpX91yCxVFhUyN1SFaNOCMAutVSWXVlr21iGyNV5EBXGHu
+X-Gm-Gg: AZFdTZcfaQBeSg6vladgEvqRbJtXiL42N/a/kMpY7vS0kjeItf4d8Iqq2Hs4nd03gjV
+	4adSZI+W68WrsNpBCZNSXVfTZB2+KCyKCY2cDO2qaJurCybRcE8S6CKRJABuV4WayCeidQ6bj/E
+	N96rzJxSEGCHGro0qcw5HuTnoLnxvaruIa8foVfft0Xqg2Ol3QX0Ic8xmEdzvs0VVz0h4JmpU2T
+	8+Xi2sVkAvDnprdg7qC5wDr04VOgXDkVnvb/NIFR1MVvQaDL/anFQDcn0EHIfyfRs2bh0vKIj7G
+	+Gq35dibBylPjaYo/YQAKWc8HWIBHvj2OhpyPZ3VZeANMR3K9e/2q1YWpcHa2GqF5tZSWa2g+mj
+	e9aFp7Vbd+R8ciIMXN290Nj92TJGweXk6vo8qlWBHlNwvXKan7/+yssp7nr/kS/6ohVebzFSN9z
+	XDtcJV3rWHyzKvIYK+AgOkIr340CVS7p6Nzyr/IuUMYxpvIyA5ivF0Qy+hPnkp1NreJRi3LYNtK
+	fs2vyCOADQCDVqSIBjDiTIV4c0q8DmGYojsSaCHyY0M/cUu51XF6WkWhZTT0zYvwyNyy+fjPZIi
+	6WDtMWJLAAiHpbmQPrsPSIMm
+X-Received: by 2002:a05:600c:4e0d:b0:4bb:69b2:d3b3 with SMTP id 5b1f17b1804b1-4bb8881eea5mr202859665e9.27.1795370589422;
+        Sun, 22 Nov 2026 10:03:09 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb9067846esm139868215e9.4.2026.11.22.10.03.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Nov 2026 10:03:08 -0800 (PST)
+Message-ID: <725b9135-2e01-44c0-b30f-dab16d3932cc@gmail.com>
+Date: Sun, 22 Nov 2026 19:03:06 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] mm/vma: error out on invalid bounds in
+ unmapped_area_topdown()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
+ David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Kees Cook
+ <kees@kernel.org>, Peter Zijlstra <a.p.zijlstra@chello.nl>,
+ Ollie Wild <aaw@google.com>, Adrian Bunk <bunk@stusta.de>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Joey Gouly <joey.gouly@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>,
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
+ <20261121-some-more-ai-fixes-v1-1-236e925d9b64@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261121-some-more-ai-fixes-v1-1-236e925d9b64@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261123-memory-failure-fuse-skip-v1-1-19dcbda6e2e8@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/x3MWwrCMBAF0K0M97sDTaoVsxXpR6ITHbQPZqgop
- XsXPAs4G1xMxZFog8lbXecJiUJDuD7ydBfWGxIhtrEPIXY8yjjbl2vW12rCdXVhf+rC5Xzqy0F
- y2x0LGsJiUvXzry/Dvv8AXhvuA2oAAAA=
-X-Change-ID: 20261123-memory-failure-fuse-skip-b976b4ea035b
-To: Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- Muhammad Usama Anjum <usama.anjum@arm.com>, Kurt Lin <lylin1023@gmail.com>
-X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0FFF180002
-X-Stat-Signature: tkcwxxp8udo1g7dqtc65drgxuo11bwgs
 X-Rspam-User:
-X-HE-Tag: 1795370338-559890
-X-HE-Meta: U2FsdGVkX1/hRoMGRRDCT8Us3s03G1+x3jiuiGfDILGRk0In7BZfNrWC/MZxTBVy/wN6jb7mOW2CjfY2nuwEdWH3KMobK1lJ1WaSnowAkj2q8ABRNljv6FNXJqL3+X/gwRnM3cFvbgsBJx92NT641YR918zsYqqk4Q1L1OfgXCU/jWcnIc1392vm8mQQPvQ8QpPhY4+zGEv3kUaZqKwPNGEcFQRGYPiF46OPIKZKU8N5nqVBOyxtY32eL1VH67ZNNzXPDivj8Pb6mvchec4u124+wEjV7uCYU9SSlGa5qO6t8umv8OGkvmF66cKwRBcvfqliG07DJS3Tm/VwsAWpxeXj9JSHI2NHfA5z0owq5kL/TTsNzy7GRZpkI3qu0hDotVvmuc35QbyJ/NVujU4CGrTfsFK/2//imYRVl/hAWwDtSe4O6ItU2DegA/GwtAzXI1Rp4iR5atxyE25w4DF+MULFwtZ9UoXktmCy8I5bJerX0O5HT8L/tGWTE382dp7cumabrLwMs1yXfxoOEdlHd3Dkb2ZjHRCt/Kmu/Yn1bPDIJT3NRYmGrO7yhNljw0g8SG9ZQZh0pUmXj6UAPQuBWEbOOAMUwDnsHgwBXYd9kaO2reRokyt0nbUDy1LnFjus9lwxsc4RJWuYC3ZMXd9iyq9+4XznaEsRLUHzJIL1EAdYKyZc34BNUBkanoZ373wXYlVmfmsvHGV1rZvYa2tJ8VvNrGJWQsP1+mIaeuUY0XTfM0nfSuwbqMh6XDTDoyASFTxLDyp4OgeHE63by/PBG0pLbm5OQKyCaNJGnD7fk95HFmcoIXFM1EkJvKglchX/Bu7bcQAx+vyCH6P8mZUYIpZJu72dBGPQOm7N+WwFtwPNF7rqHau2wkl1XQIDhKcsGQal/3mxE3bm0M9LWM3tPxHBMSxA7r8yx1S3eEqw8A3zZViPOe3gNv/F0oQ5fpS3OM45HSjpw8r3Bt6QAfC
- 0/FeqVp4
- KXyqzhgIo03m39aB7JKallxGRXVUcVSA5YkePzALSJaiQjlOFGdI64+8ZuaJ4+HDglQuZDdsa/zUxa8Lfux9/ujpIq0mHLm3ztigonR+pSdIyEnyq/zDueXYvMdSAIT1sqGvzecIhrmqAKpkutwxrB9N9NT8IT0ZNX+0WBCPhVLYVSgxGNL2EEAgeTHU0lDwPyNZePruWK87FNaGavxksD0i62qklAFO1JF6JtVGHX/30XkfexEqX1GNDncim+ds8RWzh0Iv2G2TkHSZtViLkifSClVsww8wXtQwUxOXQ7okukAfHDMoC5oi3PM7OfNgLBMQvFSafiJWNU71aUUnyWV7q8fUHI9nZIddA/bgk9jBn7fLUaYw2tgZ5IUS4ig5CpCx+u+KlX1r68whBQvQTPVx7ULzCxdNkKtOoLdHFzdJT/BtHvEEkqzJTN3ngv5wy92vnoSKCRotHVU3bgI1mRMySpZhSbWMf/k53fpJPZuonnTAIweyT0CvzECH0RAAdQoBE3IwQ6FYLvo0fPH/+uvB7ZEbpoVKkQhIa7w2OH8FOtuXTeS6dmZxb/mJyfsyXqyVZwp9yQzL3jmK9zzucpgy+ISdj4WJqwLsoBvhJrnLjh+c0NSQ6LLZ9TEV6C4mxgJrLvQdGOjHqa8D9YGg6AyV59FaWbD3Xv4B7REyZuJrTWStMCAOFTGHMUzT+ZLXZFeVV2TjFc+QDQYOnZS8lJinubg==
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: F0320C0007
+X-Stat-Signature: qakinhg6mckic81jtyt5tqhjmj4gkoqp
+X-HE-Tag: 1795370590-753258
+X-HE-Meta: U2FsdGVkX181DBm4EpRMEWRUexh3ceX5Dzn7c/803TpLCsyWRJWD8MlmP9lqEWpRHQmuQvMZbPHLX0qjiigyRaZegTzZUEIg0VqV7f1YP0D1XUVgaAOVxMawZvmxzTYIU5rlxeSwWY2bmQ7KYiU9/AU6lrMAuxaLDqalzkU78wHMBy7vHBbB+MsRc2oHXqJP/oR/fGwznGayI6ROxRzQ3Kyd7SnGdt0zEFoNXQaOs1hLrGdM/FcJKSifa+EKcX5W8NEklx/STp8iMbqb7yBtsL5nyIoo47I0Fmr938j3NA19FpzRUJkvVYZxov+w6Tcvci4qmB0c3pzlx64j2nsdZ40+P226laiVNVbFuSndDM8L0gzjlPjZxA4h3/WVwXXquqGPWuqfi/sP45jqu38k6XL5RNptasRnaYk1uSsjx2hnR8r0TRn1Lu80/dJ5VSNcMgMrxuN/X3m2l7hb52Asrdq3aCuoqr1BFDtmf9ZJe4tpmifIDaxSMuFUI/ZF3To4LkBrZpUCz1EGw3JftFjp8YsOSI7nnHHImGTh13Otdgvetopk97hd3Dxmp0YDmZiSn8OA9ZJ7Q4UrZMlU2nvxFhwQxxkk/cxCQIPDP5Icx5oN5uR8rTsBZIy5PMm2Sls69N04WaQTE/BuWaSvHUbecCsbPedI0gativR3tIHKMHvMArvKd8aV/t9ttddBRjGwTou29Zc1h9K6cqrRKEVLEyJrf7qjxyKE4hMx1DV89arjS2L0S4stRKQ+sVsgYW8x1aq1y1Clt63db3N5VlDOG+cN6kp2XVidPMO4DDdbNZKW0lhA5iI0oT0/FLchqPg5M/TnI6o9+tID35jNYvQjROfr7xRwslkIVGRXWLddX2oXewqOwgz5VJRK7QxHBUSHW3U11lkKa4PghEiRUUyqFiA6AuEEYnVQqYjivGGB6rhSlBy0F92KBlwABkl46xs0fUctBuXPpnhHPk81GGT
+ nSGgJ0st
+ 6i5p1Ylx2F0PHgBio9paqEORiuOgn17nMjB9fnoc6trYid65+5udjCnZTdiQ7HhyFANXFrKIUv8iCq5pkOz3grU7ylinnw3z+jYMVz3jUYOtbh3rAjZiwSlQyOmeX0WEG4Nh5poRaJmEx3RjU7ABXt6LCnM+qAmNoWRiuxoO/PbnEkd/r2zpLxBXgvzS76E+IatgLSxOIe9et+OQewkQVpYEaP9Z1GCfq077LD2skI2IYN4FOXz3u8BnCJ4RcumNJtreLv1OR+CS1Eig4HwqG5uENBbFpwB5zNV9QgzUrbFKVxeEc93Qx9IwvkKMqxoTB0ieTzD2pLxCIAXwR94cliAY6W+tOCHASH4SiTHpUALIXdAkg1haSgwrUm43j43BTp9ZmtXxpWo5YDWpr/SoGERzJvPEfSkgpsX8vJuDEQB1AZJjPSpOGquw+WT7L2Qmc2ru+lZapjrbQvY79vyKdvXn2YpMP1uv/WpDdOnR7uArn+uHiBh7myFY1b2+5SR8ddcWJhfUX5dY7unL8+RrZQRmgiH2l7a2gGy2XG0Xr6ILyE3WikXsxVJyYpdmxBxOn0ejegaEqzgEIxquRP0jIVvAJgZ1DLjiUIsywBxbMqMvpSD16kcWfFCj0o+530xkBBOm8DnYA6nY/kIiyPyaLruShcx3iIinrX4UmriXdGFOLwKxTAme9GZL8rVo4YocSYB9UFwFEsxRR7/kBWhPyyV9fSGYmkJmzgy+TEVm+f1bYp/4BYLaf0LKbOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,67 +141,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Like NFS, FUSE reports on close() the -EIO that MADV_HWPOISON records
-in the mapping of a dirty page-cache page, as fuse_flush() calls
-filemap_check_errors(). Run from a virtiofs directory, e.g. in a
-virtme-ng guest, the hard dirty_pagecache variant fails on its final
-close():
+On 11/21/26 5:02 PM, Lorenzo Stoakes (ARM) wrote:
+> unmapped_area_topdown() suffers from a class of bug arising from a mismatch
+> between how maple tree functions and VMA iterator functions express ranges
+> - the former inclusively, the latter exclusively.
+> 
+> This is problematic with an exclusive upper bound of 0, as it translates
+> to an inclusive upper bound of ULONG_MAX, that is a range which extends to
+> the end of the address space, and start < end or equivalent comparisons
+> evaluate false in a situation where in fact the expression should evaluate
+> true.
+> 
+> unmapped_area_topdown() calls vma_iter_area_highest() to position the VMA
+> iterator into the next highest empty range spanning [low_limit,
+> high_limit), iteratively reducing high_limit without checking whether it
+> has reached 0.
+> 
+> This can result in a [low_limit, 0) pair being passed to
+> vma_iter_area_highest() and thus unexpected underflow. Consider:
+> 
+>     vm_start        = 0x30000
+>     stack_guard_gap = 0x100000
+>     info->length    = 0x1000
+>     high_limit      = vm_start_gap() = 0
+>     high_limit - 1  = ULONG_MAX
+>     window          = [low_limit, ULONG_MAX]
+>     vma_iter_end()  = ULONG_MAX + 1 = 0
+>     gap             = 0 - info->length = 0xfffffffffffff000
+> 
+> The result is page aligned and below the IS_ERR_VALUE() range, so it
+> does not look like an error. What follows depends on the caller:
+> 
+>  - mmap() with no hint can fail with -ENOMEM while space is free. The
+>    bottom-up fallback is skipped, and __get_unmapped_area() refuses the
+>    address as above TASK_SIZE.
+>  - On x86-64, find_nearest_trampoline() can pick the address for the
+>    uprobe trampoline. _install_special_mapping() then inserts a VMA
+>    whose vm_end is 0, and exit_mmap() frees kernel page tables that
+>    every mm shares.
+>  - On powerpc64 with the hash MMU, slice_get_unmapped_area() can pass
+>    the address to alloc_extended_context(), which then writes out of
+>    bounds of mm->context.extended_id[].
+> 
+> mmap() can succeed with an address from the wrapped window where the
+> range above TASK_SIZE is too short for the request and its alignment
+> padding. On s390 that range is one page, so this takes no more than the
+> default stack_guard_gap.
+> 
+> Fix the issue by converting the loop into one that explicitly tests
+> low_limit < high_limit.
+> 
+> Additionally, simplify the logic by declaring the VMA iterator in the
+> loop (it is reset on each iteration anyway) and exiting with the correct
+> output value on success rather than performing a goto when an iteration is
+> required.
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: 58c5d0d6d522 ("mm/mmap: regression fix for unmapped_area{_topdown}")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-  memory-failure.c:389:dirty_pagecache:Expected close(fd) (-1) == 0 (0)
+LGTM:
 
-Skip it on FUSE, as commit e14e52a7ce02 ("selftests/mm: skip hard dirty
-page-cache test on NFS") does for NFS.
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-An AI coding assistant (Claude) was used to find the failure, write the
-fix and draft this changelog.
-
-Fixes: d51b5076c746 ("selftests/mm: add memory failure dirty pagecache test")
-Signed-off-by: Kurt Lin <lylin1023@gmail.com>
----
-Tested in a virtme-ng guest, memory-failure built from mm-new with and
-without this patch, hwpoison_inject loaded:
-
-  cwd on       before                  after
-  virtiofs     9 pass, 1 fail          9 pass, 1 skip
-  ext4 (loop)  10 pass                 10 pass
-
-run_vmtests.sh -t memory-failure from the virtiofs directory passes
-with the patch. The soft dirty_pagecache variant keeps running on
-FUSE and passes.
-
-FUSE servers that open files with FOPEN_NOFLUSH do not report the error
-on close(), so the variant could run there; it is skipped with the rest.
----
- tools/testing/selftests/mm/memory-failure.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-index 135a2e8069ba..72a29ec19692 100644
---- a/tools/testing/selftests/mm/memory-failure.c
-+++ b/tools/testing/selftests/mm/memory-failure.c
-@@ -355,11 +355,12 @@ TEST_F(memory_failure, dirty_pagecache)
- 	fs_type = get_fs_type(fd);
- 	/*
- 	 * MADV_HARD poisoning of dirty page-cache data records an expected
--	 * -EIO in the file mapping. NFS reports this error on close(), so
--	 * skip this variant.
-+	 * -EIO in the file mapping. NFS and FUSE report this error on
-+	 * close(), so skip this variant.
- 	 */
- 	if (!fs_type || fs_type == TMPFS_MAGIC ||
--	    (fs_type == NFS_SUPER_MAGIC && variant->type == MADV_HARD)) {
-+	    ((fs_type == NFS_SUPER_MAGIC || fs_type == FUSE_SUPER_MAGIC) &&
-+	     variant->type == MADV_HARD)) {
- 		close(fd);
- 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
- 	}
-
----
-base-commit: 7d1a16abe4cc5dccd21e3d6262e44433a5885d27
-change-id: 20261123-memory-failure-fuse-skip-b976b4ea035b
-
-Best regards,
 -- 
-Kurt Lin <lylin1023@gmail.com>
-
+cheers,
+jose a. p-a
 
