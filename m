@@ -1,94 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5CE606A32A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A971A606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BOjEfvAw
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ea3+EMLq
 Received: by kanga.kvack.org (Postfix)
-	id B86366B05DD; Sat, 21 Nov 2026 20:22:37 -0500 (EST)
+	id 69D7F6B00EF; Sat, 21 Nov 2026 20:39:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5D6C6B05DE; Sat, 21 Nov 2026 20:22:37 -0500 (EST)
+	id 674F76B05B0; Sat, 21 Nov 2026 20:39:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9C0F6B05DF; Sat, 21 Nov 2026 20:22:37 -0500 (EST)
+	id 58C546B05B3; Sat, 21 Nov 2026 20:39:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CC7F6B05DD
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:22:37 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 089971C3DB4
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:22:37 +0000 (UTC)
-X-FDA: 85461005154.25.7AA897A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7A4511C0005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:22:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BOjEfvAw;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 28A656B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:39:14 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9CCB1405D7
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:39:13 +0000 (UTC)
+X-FDA: 85461046986.11.E7B4F65
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 05A7140005
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:39:11 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ea3+EMLq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795310555;
-	b=3v21pmYrXeCK1PBzbQjut/WjN4VVi4YTJ85Y/+uRo8LdITmNaZdlAgGRAYlgRFxaluuUEx
-	B5qUNOYxreTAUGizvqvyql1gkoLQb88sx6n2H6+JSSIxowBQcib4eAnCZJtKY2d3vXY/Ij
-	r6rqaHug1eqemOtmFyt6r40+uUcbTuk=
+	t=1795311552;
+	b=6j7aSM1igOGi6Wcyl7UlVAPkJ+yE3cjVwCmc5oPsSho1U6RlRr/c+bh8ACuNfkqYbG7DKs
+	smsrtEAxBOSixNWzPIpSvNnUY+G9RYrfjpzl7OzmResDpf1rmEwwEBm4koST02WzvI78C5
+	tfTvvThosnGzIN24WRGGgRn180U1rL8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795310555;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795311552;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zE8gT4dthHqcTUv77ew8bDqnQXZvGmO379GEAq+aYmM=;
-	b=VAgMArQALRlJTnQ9wSRH+iiZDqL11WYO5tV5/t25jCkuhcSVZCl989YIgu4ZZmU6lNDj1T
-	GJ4a1CXsNKTblKTnMZDfn59cQ/KTwJQ49BV+qIOQVx6Z3kmuj9l3ZdFimTA0K9PLRk6A8K
-	cih0YPGa9t4ByxvgmOHLi/taOVsbGo8=
+	bh=kNajklT4NWRuvO4tlojLaU4FTOaYuorZJL8FQmjQkns=;
+	b=T4s6q2t2myyE4TY4Pte/AYB75m8EKXdZm77/k/e1z7veYo502gMD114Lg+1tZs9O5ZIW0w
+	ZbdVqjFnaayseSh7m74hOmHIaemKuqlmGR7Qtj3a6eO0FRUXX/QNomAM+Bh1Qc6dLBpZzG
+	5vCBgk7J5KvgQGiqg8tFsxZbenlhCLc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BOjEfvAw;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ea3+EMLq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0791D6129B;
-	Sun, 22 Nov 2026 01:22:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFF31F000C4;
-	Sun, 22 Nov 2026 01:22:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F9D7432D2;
+	Sun, 22 Nov 2026 01:39:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD50C1F000CF;
+	Sun, 22 Nov 2026 01:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795310554;
-	bh=zE8gT4dthHqcTUv77ew8bDqnQXZvGmO379GEAq+aYmM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BOjEfvAwidbckoqjR4wNrgB9CbuljWYbNZOEhAFhqfQ4NZayeIpUIJzYmE29QtyEE
-	 6tUxCfwpDQJ/uMb6T24gDoLrh3q3I6oNui1kvs4kx4SOQzEhVy0iDeRGqQo4Q1m5Fx
-	 bsSu/X+eX+G2/aE57Ofwxjt1+ouyLaYjhdahM9ds6Mf+JaUVYz+Rb7tQj8f3O3pLTq
-	 G8TWLbT3sBC35XU2vlD4nCJ9ERR2OwIYJV18BZoZGuYRwB//xd0N4pvlcjTxbeF7m9
-	 DPxA2bZWE+dFcJ5DYsJbVG8TiodDTrShUt7xleVmTU5lh20SvmBGrRzAJ4IkQ77tGX
-	 +pAVZa5vTkvgg==
-From: SJ Park <sj@kernel.org>
-To: Yifan Feng <evanfengff@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/core: do not overwrite wmarks.activated in damos_commit()
-Date: Sat, 21 Nov 2026 17:22:21 -0800
-Message-ID: <20261122012222.148520-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261122002930.98401-1-evanfengff@gmail.com>
-References: 
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1795311551;
+	bh=kNajklT4NWRuvO4tlojLaU4FTOaYuorZJL8FQmjQkns=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ea3+EMLqjbQ7qRwbgCzK72nDD3YzZxWc1ejtUmKtpm9Lrr3/e6OuxoRh+5RMhVCsN
+	 BZWuGk0Bt7/F+krh5/ygopq7dBx48ThSHbOSMMC8cTspbSKNNuw3RjUn4SwSKTWbQV
+	 7BNjzqFIQQqcN/BHxkGsOAVmgcUiAshbKS6bPDq6X2LUSnFc9Nh7i1ti+oCIwcuYMa
+	 tnXAWhjoz51Rz4t0myRbUv0viKkltsiVJ3f5M6tVl/dtg4BxvVjj9BojY7YOC1/3Xq
+	 vXiF1rDkzkLVwb4lwyAHatrNxUwQnSY10RRforwNqLbpx5RvP8nlGumxKzU9/gfZ/V
+	 l/gDihNp8yKWQ==
+Message-ID: <sashiko-outbox-227627@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v6 25/26] selftests/userland: Add userland test
+ suite
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jarkko Sakkinen" <jarkko@kernel.org>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Aleksa
+ Sarai" <aleksa@amutable.com>, "Alexander Mikhalitsyn" <alex@amutable.com>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Andy Lutomirski" <luto@amacapital.net>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Christian Brauner" <brauner@kernel.org>, "David
+ Howells" <dhowells@redhat.com>, "Giuseppe Scrivano" <giuseppe@scrivano.org>, "Hugh
+ Dickins" <hughd@google.com>, "Jan Kara" <jack@suse.cz>, "Jeff Layton" <jlayton@kernel.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Josef Bacik" <josef@toxicpanda.com>, "Kees Cook" <kees@kernel.org>, "KP
+ Singh" <kpsingh@kernel.org>, "Lennart Poettering" <lennart@poettering.net>, "Neal
+ Gompa" <neal@gompa.dev>, "Oleg Nesterov" <oleg@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "Pavel
+ Tikhomirov" <ptikhomirov@virtuozzo.com>, "Serge Hallyn" <sergeh@kernel.org>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Zygmunt Krynicki" <zygmunt.krynicki@canonical.com>
+In-Reply-To: <20261122011809.2667684-26-jarkko@kernel.org>
+References: <20261122011809.2667684-1-jarkko@kernel.org>
+ <20261122011809.2667684-26-jarkko@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 22 Nov 2026 01:39:09 +0000
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7A4511C0005
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 05A7140005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Stat-Signature: 7hs7a7sg7jhtnyk9iswu3bp5zsu67pgg
-X-HE-Tag: 1795310555-879036
-X-HE-Meta: U2FsdGVkX189quY/f9HV6Ewbgx5SOyn/jROW8h4GBzdy6qETTb4t6ykNhjAOGZMSJQXl4NQJ7gWA65DZzV0H9zx98Pe7V+KVbkjbkpNpufYpb13I5+IH109hd//9OmvPHJ9uucptCLgk8v+6ZgAs9iDYuW7XkRCWU/OoashvYZxxbw8sZ15D7f9EInRsDx+flm/O0Wi0qnjrnOtdx+SgMeN4b81gfJNa1ku8gMFivbKslSdre8CWORJEPZcV80KUWiPJ0ia2RnM7S8jSqmtDFI+o/w4XlZk4mN9Rf5QnB1EUgGNRzQh7EkZdqpqi5qNMWeddt7+ouW03ysAY1hA+Tx+VqJxyGBqKTctc2RDXePU+mqezghhC3/k7j1+lijUQ3z7/QmsYgLmJH9TUxuVrCDaxaN8MmrkxpUEiL7Do9VE/cRCu1hLBJDK/Akj/s+2wLXpaZzoKEcAsaEV2wkJEt03MTwx4kBKe9/BnKGPiQu5gu2ZacV6F+OwHq2dtfH5fvQAe+MwKJnGpcMe2X+ybCkynUO0j4cuYsiUxdQA/p/h6kjSvQocoRQGLm4ACBVeCWPvklYXmdP59r6FhJde/DEsPuhsc8pVlHLO2HwvPWDNafnfU0t5Ah49zYLqfW53AqG4YpmphocGCsds+OWjQE9q8p4DB1djTL12gKAheIDo2O5PoN4iitbCVulfiTGlRv2v1nEgAa4qdelAVEXk9wfYTnlafgRYg8qDmdrqc7mRXqrRp2MVPBccwraszscFQvyBjVHd5xgLufeh33XNX6fG7G3nAnDdURaYec1NKQHYk7BUGgYlDF+0OrTBeLKpu65/RhWzO999JI1aPRChemRykW2exK4t4FdOJCEIL/okJ/lRLxrh2qJpS785IU8tAuvz4YxJ8lT3+TaysmD65be+zvn6aY/T0KqMt8zYLrVU0QrtmiQQYTcpk7YdxSbjEMf494MdD11CiN/cS1OP
- 7PU2nWwB
- k/AbfOlltiDh3YrF1MRd4bq+mwqq7XjY2w7gdz4av5vs/f3RJv5F63tyTL4u2PH2pnJY7ypx6QtWZybBA6Mjctpq54N2VBnl8bzgO+1f0IDaO15yVVUjwpaOsueVD26O0fKiYkP57QrnaAZAA8iCiFE+Si/1Y7OoiYud9l+JHk9i7Pur+ASxz5bjq9DBv9vr/28P7UVYmVfsuuc/4LD8+44YgotOAuQW5jRL3VUP9H+N5lmCLlGZYucygV8ZT72rAXsx6P0vqQdb3i7FFir5+XpH7FDdyCiZwWGU9bZpJcEtOJ6BuUmTlI7nYTuWbCJ322ll6czaqFLFsHIB2NpjezIPooHKhO4TB/DTQhecNjEL7Pt/bTKQXmT8fXqetkCLH84g/sDIvV2CNdn3YDiZC8H2dlnfBaodq8I5bG55eUU4cUoas6KbtegfTGXqEsp1yVkxT+PXjcJUnV48jEfmeNMzvI6QAiNECqCW4zqm2UuguqeHt6XT7WLVWbSYJBmqI5CLY
+X-Stat-Signature: 3d61yp5p3wmo7k8ytc7m5b6yaa9o7by3
+X-HE-Tag: 1795311551-878994
+X-HE-Meta: U2FsdGVkX1/8L83U3Jlo+w1wZtHciKBEjVznTW/2/buWgOisvYgl2s3hZZeCdPKMQZCvyK1sfz7mxMJ2iIDAeTHpJR+aj4Z3AkyZdlyVk43CxzrX04BNdZhUv5JJY6Emri/iSeyPjnHMZG5A9eKw5/YjXcGmJjeqWSS921NoG6EryQxRb6MK6cQyY2NH7Eztt5GiIfSVP62LlE/rodhRXMZlYOwiKuszzasY/pzGPimTeAHsR7njlfMAxQNsvq3UudLDzz6XasRFuCZduafV6w2C4r4zrJKnwHKydkvapNRiskdwfr3AhLW780A31puQ4hea2buQtK6rqc9w6x1iCTQQwGKUl9HTc7jA7YjnEiX7Hh8Z8QnZ+KpakGDaV1ojlPx9E70i4bpOyeqojRYF75gKjKhOiTRmmoZFRYrpN57I7IRPoOQ9i+8M74ufxMgBJ4Izo2Jsl8buE6r06z0M67oOUAAp9b48qJlfjgi48IEtisrb/6lDyjgnRyynFWzr86CppH1EaNGgpKqrOjJJSSUacQeu1JKt/GuSIut70luYy/AEv8fw3dMHGsY3dbe/QRQ08Lvz+d1hTBE6eaS2qs0DqpRefi5irvL1jndT5rQBAfKsLcUti/HYPWNP2VhcRv8Lk4y9KO4VZsuUuBc6BQ8VJ8ASkU4Ahyg2FfA/tcREpatYTgvgBQr4CJ2KdR6Vzl8JcMBh59HvU3KQ13yV3jNq3IohwPaOCrwter088p84wF28BOWzUm+Yjq4l9oCHVXVCoajg/dWut5tbqhHHDegHV2+3xV/b2pN8Xb4tBiJetOM/r24H/XIcgQOjSmfn+pQCPTtRbdu0Ri9388beGV/Ef8/UyKE5Q3Pzt9EIeEEktROborfdBZ/7fd2dPYxvaAYpL1w5IdT1AFu8LfyA4cO/RsXTFUi39AqqLC2alLVAfRiFkXp344Bq5PK9wKHgEhSNFa3plwRbGgq/eho
+ Smsr90eA
+ /mX+/OZ7/HeM3qxyKBv/JO/9+Z07ycZAW+T36hbFu73Lr5mtRSoLHo699nxKMhhxhULaIz+tEN4Uh5wslIW4tW7aiCIliGMrpFRI6jdBvOF/PbNVfuzqMWsXDE9I0POmJeGp2eG90SNE2HwnnO7DWQ3ISCoaURXVuZRSK5ZVDQ755o45lgfvW0duhLVl7JGMgD0AkXXuZet9JBwU/XhanAqxzA6+oyyqCjBJV5Iq6f4L+cj3/EKuOv6cmF7oGkrbC7aBrkJ+PnZSyhL3mEKhtkpJEiiGg0naoVhjd9YjPBueIAXbyvTwJWyrGpWr8rvV8bg5EW/MNfwszAwHQMfD4Mzufx4cU9SatmsBQBfUZJFisoq+//lY0SdqMg6r4Na4KL8KTtBMCmGdV9SVfmgw+E65z457zUv6/m6wVbuK/8eYGPpPBfDfD4T1OiRa5kc6JNcNHySPbGzGrOgl3OTK0M6aXT742XCv+2vMCsHnj9r3SLwlRdKWrKkbvrDB6IdOMqRDwiQ/VomTffd3KZX0TJN20j6Jivw7JtZ/ka1c+mE8Qw20jZeOUlb2FzxDdmChjn5jeVNZT+zp92Jr5+6tTuhi++tmWdsvWaagz1Z1UeOg3pj13PCZIRS8m+Sg9E4xPj9eOYoYgaDE7YmCVmEmpte/fB+r44kPP6ePs6aVrfAaQ0Yi/UEyWFq7gzTM0qka9m9HfKAr9lnKJyD3pZm5J4UibvY39e4nVmFPdzoZSFWq8l9hnJ1t/LzEMXhcyuMrt0juGsSdtl/2/NCxG25zk09hPTj7R26ub3bRHpnShymLF1bkKDPgxqBNDfnVhj2fPMcFX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,32 +102,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Sat, 21 Nov 2026 16:29:30 -0800 Yifan Feng <evanfengff@gmail.com> wrote:
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] selftests/userland: host /tmp mount leak in
+  check_child_src_slave_locking()
+- [Medium] selftests/userland: 64K-page E2BIG failure in
+  test_userns_set_idmap()
+- [Low] selftests/userland: Python 3.10+ parenthesized with-statements
+  in test
+--
 
-> damos_commit() copies the whole wmarks struct from the source scheme,
-> including the private 'activated' field.  The source scheme is a new
-> one, so the field is always true there.
-> 
-> As a result, a commit turns on a scheme that the watermarks turned off.
-> If the metric is between mid and high at that time, the scheme keeps
-> running, though it should stay off until the metric goes below mid.
-> DAMON_RECLAIM and DAMON_LRU_SORT use the same path for commit_inputs.
-> 
-> Save 'activated' before the copy and restore it after.
+commit ceac0bb92c4f38107df4d9a282065b54c6373344
+Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-Thank you for finding the issue and sharing this patch.
+selftests/userland: Add userland test suite
 
-> Do not restore
-> it for DAMOS_WMARK_NONE, because nothing sets it again in that case and
-> the scheme would stay off.
+This commit adds a kselftest suite for the userland control object uAPI,
+covering namespace sharing, mount-namespace configuration, waitid(P_USERLAN=
+D),
+pidfd_send_signal(), and userns_set_idmap().
 
-Is this really necessary?  If not, I'd prefer restoring it always for
-simplicity.
+> diff --git a/tools/testing/selftests/userland/userland_test.py b/tools/te=
+sting/selftests/userland/userland_test.py
+> new file mode 100755
+> index 0000000000000..eb29cbc9c8f10
+> --- /dev/null
+> +++ b/tools/testing/selftests/userland/userland_test.py
+> @@ -0,0 +1,2306 @@
 
+[ ... ]
 
-Thanks,
-SJ
+> +            with (
+> +                self.closing_fd(rns.get_nsfd(CloneFlag.NEWNS)) as mntns_=
+fd,
+> +                self.closing_fd(rns.make_mount("tmpfs")) as rootfd,
+> +            ):
 
-[...]
+[Severity: Low]
+Will parenthesized multi-item with-statements fail with a SyntaxError on
+Python 3.9?
+
+Documentation/process/changes.rst specifies Python 3.9.x as the minimal
+supported version, whereas parenthesized context managers across multiple
+clauses were added in Python 3.10.
+
+[ ... ]
+
+> +            def check_child_src_slave_locking() -> None:
+> +                self.enter_userns_if_unpriv()
+> +                os.unshare(CloneFlag.NEWNS)
+> +                with self.closing_fd(self.make_plain_mount("tmpfs")) as =
+tfd:
+> +                    os.mkdir("sub", 0o755, dir_fd=3Dtfd)
+> +                    Sys.move_mount(
+> +                        tfd,
+> +                        "",
+> +                        Sys.AT_FDCWD,
+> +                        "/tmp",
+> +                        MoveMountFlag.F_EMPTY_PATH,
+> +                    )
+
+[Severity: Medium]
+When running as root, does check_child_src_slave_locking() propagate its
+tmpfs mount onto the host /tmp and leave it mounted after the test exits?
+
+enter_userns_if_unpriv() is a no-op when os.geteuid() =3D=3D 0, so
+os.unshare(CloneFlag.NEWNS) stays in the initial user namespace and
+preserves MS_SHARED peer groups with the host mount namespace.  Mounting
+tfd onto /tmp without first calling Sys.set_mount_propagation("/") (as
+check_standalone_mntns() does) propagates a fresh tmpfs over the host
+/tmp, and cleanup only detaches /tmp/sub.
+
+[ ... ]
+
+> +            big_buf =3D ctypes.create_string_buffer(65536)
+> +            with self.assertRaises(OSError) as cm:
+> +                Sys.userns_set_idmap_raw(
+> +                    userns_fd, ctypes.addressof(big_buf), size=3D65536
+> +                )
+> +            self.assertEqual(cm.exception.errno, errno.E2BIG)
+
+[Severity: Medium]
+Does this assertion fail on kernels with 64 KiB (or larger) base pages?
+
+userns_set_idmap() returns -E2BIG only when size > PAGE_SIZE.  On a 64 KiB
+page kernel, size=3D65536 passes the PAGE_SIZE check, copy_struct_from_user=
+()
+succeeds on the zero-filled buffer, and the syscall returns -EINVAL instead
+because the extent counts are all zero.  Sizing the buffer with
+os.sysconf("SC_PAGE_SIZE") + 1 would exceed PAGE_SIZE on all architectures.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122011809.2667=
+684-1-jarkko@kernel.org?part=3D25
 
