@@ -1,148 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20532606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA94606A331
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AcrfRABr
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=duxKByMB
 Received: by kanga.kvack.org (Postfix)
-	id 0B31B6B00EF; Sun, 22 Nov 2026 12:37:23 -0500 (EST)
+	id 171126B00EF; Sun, 22 Nov 2026 12:55:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03CD06B05B0; Sun, 22 Nov 2026 12:37:22 -0500 (EST)
+	id 1493E6B05B0; Sun, 22 Nov 2026 12:55:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1F8A6B05B3; Sun, 22 Nov 2026 12:37:22 -0500 (EST)
+	id 086F86B05B1; Sun, 22 Nov 2026 12:55:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A73EE6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:37:22 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C0951404A1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:37:22 +0000 (UTC)
-X-FDA: 85463461524.01.622CA3A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8E32D1C0004
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:37:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AcrfRABr;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0F7C6B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:55:33 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A8891A0469
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:55:33 +0000 (UTC)
+X-FDA: 85463507346.12.430C187
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 71874C0007
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:55:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=duxKByMB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795369040;
-	b=LSHYmpC3zznbqMXieOSkJnNv6RtpPhLXI4SQj6cSovlqtl8J6Du6qzEyrP27s0hd67p0Am
-	NqoOOMiOMNyggU7NZaQFeKqE2iY6cgu7EHgho8UPRKDc8cw/S04oPJxnVWp6VIln1Yu+2E
-	0Jt6dN5oRYDs5JRaFveSQgYxqOtK/m0=
+	t=1795370131;
+	b=yGn3PThLGsHbnZtBguoy9si5SWIUTmQpia393RLlXrcdfsyJHvxoc7U4t2yxMsmMvQQ+wZ
+	ZYXA4J9DC3ptUXp8ErpvbbpW4czlMwXepSKP/4v/zQkVlOELWIdaTYEZ61LITFAQbx8G+Z
+	Wm6k23bJNG2ljnCA2KAqK6golWoVdYc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795369040;
+	s=arc-20220608; t=1795370131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3khkEbh3+4+UW9EqZNzFj2fkzRmCDGkNMhSbTs+zklo=;
-	b=4sSMbOeQrdIvjAPhrO16QOSJQLe8eyvGnsjRNsxG7hsDIW3Uv80VJg6YOXUu/SNZXxwDmo
-	f59nuY185m9FCMQzQESgD/KWKOvDIOD7d3pqilu7NL2uuc8VvwgguAD2TZaM/deh8uWVTe
-	5XBRBChJ1dJ/K82ErjcP1DYZm+Jcs9I=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=h/5Vl306LS0GA0rcZKJVnl2ctvPVB3+FArNa0w73Yro=;
+	b=CJD1rXzVxu1MyIWZYWVH402tFUh9Z0ZeTt5FtrlRaPkmoEB405SwaHI0wDFca260ebsa5X
+	2nU57nSfaXMuMt5JPz4pUFurzjGf790LK4o62ccf4jOBgZp9++iIgTwqZ/gPZXAYwA7H1N
+	mAPZOa03FQ28f7kdS5UI1InlptpX/zk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AcrfRABr;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795369037;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3khkEbh3+4+UW9EqZNzFj2fkzRmCDGkNMhSbTs+zklo=;
-	b=AcrfRABrNOwnEhsGrXTjNVPo+MjeXfswph8Vhc8vp8h4kLa88vPZSvuRGn34JPDmmMjLt7
-	0XwtepxvuU8GS7a5EQ1FhqSTBeS3lKuW+W9aekKmo9+E/CGqVxJHjiwLElbk99x0eNDwKc
-	Q/Distgz3AKHs0SKhtYELbjtO+I5qGs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-kHQNsU1kMSOJgBqpmqYPBg-1; Sun, 22 Nov 2026 17:37:15 +0000
-X-MC-Unique: kHQNsU1kMSOJgBqpmqYPBg-1
-X-Mimecast-MFC-AGG-ID: kHQNsU1kMSOJgBqpmqYPBg_1795369033
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4bb69d84053so16995645e9.0
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:37:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795369033; x=1795973833;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3khkEbh3+4+UW9EqZNzFj2fkzRmCDGkNMhSbTs+zklo=;
-        b=EAe+DTMb+9lasIDeTjDkKYhNgzQx2aOAc+FRjFywF1Eg5voql9A+Md6fNIKz3QdRcv
-         Q5w1wrfvSUvu6kkpUkMYIJLr+wNL4hBtaX9oCZ8vmz1l8WfKfj5y0F7FMaYRtrTiEcO/
-         gfv8FCSBPT6uq9JEl1Y1KjIjlFZyng5ch0f597RjJdOQbJVJks+kgb3anyNoE4AwsXuO
-         Ztt5iFeCx05D7XwUfez0bGNyzOdOtS2i6TUUgepzVPZlYOUGXqh8puT9RiAG0nl1w/kW
-         CQsgWYg157yWbABG25mW77UKSGp+s8tFnjDcG1TBMvcmSCjJL9l3/w6MsvCMAQsRp5fg
-         e+OQ==
-X-Forwarded-Encrypted: i=1; AL+hErH/o2lzLjSZi20Gsamio9NJIIupOOmmvBklrrrZaK2d8IzDsdp8PQccSRPNM/6LV6TUkmDnwN9Ixg==@kvack.org
-X-Gm-Message-State: APuU4Z8oavCHZFWm1rsk09F8WK5+b1MG6zZnYJ+6Q15E827XCbNAMzD9
-	Kc457B3NyQZbURm2SZkMIoBQmYHDLay7FXwvRrFLjrEmWEl1+EGe3AGtD1EFnUk+6JSb79765A/
-	9vT2P421WQipYIXJmf38kYUfRDoFOb8fF+pShRyYhfCqihAN3Yww=
-X-Gm-Gg: AZFdTZe6H+Ielvy1cRkcYpaPEPZn1Wl5lLaEE05IGSfCy7baK/7a4YhuJU4HKQoI+7L
-	zazx5BmUqtd80qNwaf8sj/HXAHKt7k/18KaEsbtL6drRXR/1HQspgqMBZP/TQPG1ZpyXKzMJp3t
-	fx+R/y+IUk68BbsSSvmTm1NcBCt0xzhWjOrQoUqXQTtKKwbK5IqwAAF5UvrURJXrBLH3TQg0W/D
-	OOlDgJzhN6mxue3GaWIpOQ1w3ppZ/EuzzBZi63oNbti5kWJxUttbZkQaz592F5/ZXH3jTn3q4ny
-	lME2FHZv/emAd+Yz98/s/SAfp8xKA+IwNYFBwUeWNgBBipVlKY4fQPnxUpc85EKOUMXmqXycOMq
-	HXtgpxdWj8WvAu0xstbviUqiIigrfEXJXqvTyUcw6hrqJXH+JknkBeHBekoJCYnto6E8u74Lscz
-	DCVAxk
-X-Received: by 2002:a05:600c:674f:b0:4bb:56bb:1196 with SMTP id 5b1f17b1804b1-4bb8880fb9bmr195004215e9.23.1795369033360;
-        Sun, 22 Nov 2026 09:37:13 -0800 (PST)
-X-Received: by 2002:a05:600c:674f:b0:4bb:56bb:1196 with SMTP id 5b1f17b1804b1-4bb8880fb9bmr195003715e9.23.1795369032886;
-        Sun, 22 Nov 2026 09:37:12 -0800 (PST)
-Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb906cdcc1sm114828375e9.2.2026.11.22.09.37.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Nov 2026 09:37:12 -0800 (PST)
-Message-ID: <2f60e148-f9ea-4b48-b8b9-3c524b6a8a2d@redhat.com>
-Date: Sun, 22 Nov 2026 19:37:09 +0200
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=duxKByMB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A26D4408B7;
+	Sun, 22 Nov 2026 17:55:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB00D1F000C0;
+	Sun, 22 Nov 2026 17:55:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795370130;
+	bh=h/5Vl306LS0GA0rcZKJVnl2ctvPVB3+FArNa0w73Yro=;
+	h=From:Subject:Date:To:Cc;
+	b=duxKByMBP2+mJiLV3lYRrKPgtiowdBAgsPJIOTGZnzS3p58QFIkq1X5nGMYdJsfNM
+	 evxhcz1FhYwz1khpDyo/kjMElsksWA2DAYZQuW8yjfOdJAxaqT0kTk/dgJJ3L1YxVs
+	 b6bYv0n/0CSza4S099LFxlPG+mjLC99FtaqxP3vqrBOe/KvmCEPggXwrzwtj46PdmL
+	 zH6u2jCXro9fXxatJHgHkzEGA/pN1yUrjpGfmhjk4zzw2xpr1FXG85n8DZwRqVtmMo
+	 V+B3/ylL49xlmJ3nEPH164nYwknJC3q/uMxMWHQy9Ay2j4bmQ9J6Pw8r1EqMWgOcjr
+	 75F1hXUdF5+Pg==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH v2 0/4] mm,drm/i915,powerpc/spufs: vm_ops->access related
+ fixes
+Date: Sun, 22 Nov 2026 18:55:17 +0100
+Message-Id: <20261122-access_shite-v2-0-808d8d2aa700@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hmm: account for subpage offsets in device-private
- PMDs
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Aveline Noir <jm5905938@gmail.com>, airlied@gmail.com,
- apopple@nvidia.com, balbirs@nvidia.com, christian.koenig@amd.com,
- dri-devel@lists.freedesktop.org, Francois Dugast
- <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org, jgg@nvidia.com,
- jgg@ziepe.ca, leon@kernel.org, leonro@nvidia.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Brost <matthew.brost@intel.com>, mm-commits@vger.kernel.org,
- Patchwork <patchwork@emeril.freedesktop.org>, Shuah Khan <shuah@kernel.org>,
- SeongJae Park <sj@kernel.org>, thomas.hellstrom@linux.intel.com,
- Vlastimil Babka <vbabka@suse.cz>, ziy@nvidia.com
-References: <179342234355.4.16705453209886955762@gmail.com>
- <20261121160037.1a479f3c8b4e860bc23c106d@linux-foundation.org>
- <36be0904-168d-4813-82ff-27ecced464e3@redhat.com>
- <20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org>
- <179535872126.34.4789080961796247940.b4-reply@b4>
- <af91d4a7-11ca-4f84-b8da-33ee1a585916@redhat.com>
- <20261122091419.f82e88761dbd12771fb6c976@linux-foundation.org>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <20261122091419.f82e88761dbd12771fb6c976@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Gh-7-Mf3UuxCqH-1T7TZAa16d7LXEngPvFAU__dUAo8_1795369033
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8E32D1C0004
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/3XNQQ6CMBCF4as0s6aGNtSWrryHIaaUEUZNMR0kG
+ sLdDbh2+ZI/31uAMRMyeLFAxpmYxgRe6EJAHELqUVIHXoAu9VEppWWIEZkvPNCEsnOhssbUxmq
+ EQsAz45XeO3dufptf7Q3jtBlbMRBPY/7sf7Pauj/0rGQpa+eCiZUtu1af7pgTPg5j7qFZ1/ULK
+ L5wnLsAAAA=
+X-Change-ID: 20261112-access_shite-d8a47559572e
+To: Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Willy Tarreau <w@1wt.eu>, Jani Nikula <jani.nikula@linux.intel.com>, 
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Chris Wilson <chris@chris-wilson.co.uk>, 
+ Matthew Auld <matthew.auld@intel.com>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Rik van Riel <riel@redhat.com>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linuxppc-dev@lists.ozlabs.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
+ Felix Kuehling <Felix.Kuehling@amd.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Felix Kuehling <felix.kuehling@amd.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1784; i=david@kernel.org;
+ h=from:subject:message-id; bh=uurjwnOfWQkMhoYI4DMjJoIthu1xPIvQvDdbePa+8Rc=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKZdTqylvaopj9aMl99cWW602yfrivn5ySohf55fPZ2/
+ JqtOX7rO0pZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZhIaSvDXynr1g/nX69XZbd6
+ ZcFsH2J4UpZD8tdum/4+6S3KwvFF1xkZbodO7b9SyfMl4R/TSwnD7cnx3999jJ+ippmflWjJ++8
+ BIwA=
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Stat-Signature: rzxwn4g4c9kj7e38p9az8g6j8m4jf7si
+X-Rspamd-Queue-Id: 71874C0007
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 7ox3h4gohi81mpajge43ytero8tyqbq7
-X-HE-Tag: 1795369039-410001
-X-HE-Meta: U2FsdGVkX19EKITtNuULlWZ+niT9PO/uu0RjvxjQADEwFmdFCFU4N7kSQ8Us2S42gGSxAAeWAAFdmre5UPPi9w7lomD77+fmtG6mY3j+d9l5mYQCJxxn6bWxZyrJNVSN1ZptYT7j/VDyxNad+lOCn70rDQARY76piVKKEMqA5j0PA85ICYwOue5tGtywTDw5v7ii0umO0SxENzlm8naezKXfY14WWJCfFryYpNzPzYUqnSzP+RqXIa7gEaDxHFFT2ngSGbtQeBcvAlujQ9yX8ohu5OswS1I4IrP5cgeyA3XCA82Gh+8FUs6SnnJ6SEb6PdV/i2M6qICnncPLcWPNHTGLoTbrPz78VtLZMVerh7dSv4TNuUvnL7Qii5Arjg/OCA1lQ83vGl5ckdmSqTMcQRx6+jmu0W9Bso/U4DDix79nRLipmLrObPb2quBJQ8SOTxDTe0At+V9HJzpzzT8lhw+2MPR8jiFhvgLlBjzvL1bTZIu4NaJ3+6ddywh1ez6RNr/euypJqXexnW3qkfKXgH3k5pXAtF8WuUr27K/MI+ti5yCmILWIJTsP8nnRQbE/ZjGg6FIGynCpHSNRy3vw8CVzL8+XVa0p97LHM7kDFG0lqk+yCc2NmUFZfE/Ug5VoFGFc2fByY5dR888gygk8zY9KXbEsM+YblfhyCHIfeMQJZmmmBZ73whIlGqSP/KoQIKnubhb2gb2ZEtCInhBqeeywx5QTXCxEYSOYTSmrgrych65zoEWO4UcTsah/0gFa5mEgEM3orNiAE3ablXdX4vgxTXJyH5da4HVxUqysbCvFvP1j0A5Xfa6ZXx6I1vMLuUag9q/+a2HxT0c/WAyUzuipVpqRiSqrBj35F9FbyY0/GIZ/t5xipqvFxuYe8afKpnxfDxetnpPKDEQn7J6VIH8/Rgae4BV7nvcrbuIwkO74yMQ0UqduUxcchuoLWazDuE6SVz7qoNIdZ3tA0nL
- p+D78oaG
- cMWNKoOIquIS67oqWsnSgRiIyGpN0JocpZuYSD8y6kNoItx8UgovwIlju4z8OLYcruYRlw+6VK/bDAjeenF7sIlQU/tjFcxuZFG+1+ldax46nuwTbXQrAV36HBc8/jiJsUNM44vI3or619qeyHqSWGwtSq+Tmg+LUd+qhpzMi6oHGm+t2++OEzmbfvoplU8U2OsSW7FL0ipNHknmpidjnQOu8Y/WzKhA8P07M1nXMC7d0E5k6vl8oV2tcRPrXqah40FIU/NxdqtOnVhux3xNfOt/nAvuClIi8IWLAZ3u62dZrlNHcM4P2DUoBuzY1Oa86frFl+f5ML9xf+J3bslI2LNIazY4bRC2K6wq+QMrHdKTxWslQ+VP1WuMNUYyUQKRl7joJYu0yN3jVzts1qOfiC+whJocpVCYvSHd2EX3gKvGsq5NE+c9C7l1ggtvqNzkXcyC0S65KoAivHmqC0h90Apu11PH1EXf9uZr9uqPGbo5fY1CCEoohgyu2x2QRYNUh0A1G7oJYmZGf9XUiaPfHD2ozCHOlcwHNe0v0KN0R16KP5D8xl/eLPA0hsHfTDkT3iRK4rxl4B7dSkqoDlUwwbTKRlAUzjfDpAM1GG1cBBblzDlFkwI/m2i1crrt1MrJE1/kHV/MavIORMTu5vyfamCDJoXLfQYQZfCbeDJBBNMUIV1pQqWhPJtHU8A/kNbisYlVkjuTA5AW3JN3giJhz66CRpvwso15gIZ7QzdHdABPVKaYSxvthfPbM5iQC0VckL5+jOPS7F3SpfC8N8N1LSMK+yDHWj6TP4knYSAL3v1Oafa7OZfs1OhrExNebKr5f7l0pvGffyAP6TlpAmZBRFqGrOyoCdVO2hFuMGU/ZwTmipS28KcQFBjvb93CXPDpZKkfcJAdk5Mx/OXhLshCHS4lgtVRvZy/jcFgAKXhtmbvru6SzIRHgXsGWVY3rb0+P4g2x
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-Rspam-User:
+X-HE-Tag: 1795370131-564296
+X-HE-Meta: U2FsdGVkX19jNTuF/B/bVzxvtRnK5EtAQp1tafksluDhGSnwQ7PZTHQ240CJGPlEDG6o7jgNum+gy7YxxgxqYtsMFO1y15lz9RgDr8Z7STVTRlKYdlSg8LUvfoAhkPArCSkGMu0hACct7MjlJZcxJxlowLhl5VV8HO5VId95f2W27H+6tzA7troCHwb36SSkXQxCvdxZgsfKs8zopI0wg0dzpJ2BUbbJa6Ku9Xl+wEW12mX/8re4PI4VAJWxI8+htl/gV1uCRJqXjoWa5ZjHhU/fs8YTP8eJnUXVWVOXha26JMi+WZlj5Np/fe9x5phUBsuo8m3n6HmQeUjuSU2lir4DcXKfuahs8gRn3+pq0hdxtGZ9L6O3v7AFna/VLxQHFEiPlxTsu2JD845W6Wt6UkgFQ+eQdebYMZNkmz3HjqQ6J+R/iEIyReIOcyikCzM3PA5sN/MbV8APASGi8WwEMo6Q8kogH2NEgW2ESAk3q2RKKolFZ0nTMQ/7t5qJhCMOsugvNdxh4dgZIMxhSZFJy+8TncXjsGSK17U9ECc2VT+f1lQCoVdx6ysEqSEYur1PzRJzrRcKpP1fVZ3BgafpnkmchMrGYkJ2J2I9p/gdaXtTr0+HBG616cr8vhfsUG/Dy2VDEf66erwMFzL1I4wLFAM0MyiHGIpinpideGL1/wbHUQTmMqgbAkgsXMTBv9Ds7OY4IEpCWb4ic95nudC1RA7fDT3Kt4OCcGhKxbAw8K5CysWzyHASfGF3On5WcAREvQ0Bewt2GLY8t3QrX6G+8Im3NPRqaT8tYFMRpZTEbV35ixyFEya3XDymzKVDtOwW/4lxcMfcl4PKM8cNXX1JhewBtHL73GAzNT8+ExPtVhvqC0OWIQ4PLupOaNn/C7jimABerSq8uN9cMn6WcvAl79CUmD6i+ubOnoWVtpBwzv74xoPCNRRsKo+JilUbwQXdGDnjuFvat1unNmPAjy4
+ V7q+X59v
+ L30jMTjSANW3Qahf6WpDbv8r2DgcM8AxpELt6ApUwaaPq/RMJlTmxcqr49rQzT0xe6InRjVxWYI7/Nc7jdUxEMJzhF+vVyu7wfneGYVw6EA7tCoFCrrPdPMbJE+eqAhHVn6yt9aGQmTwDvNQnUADT5uw1Jn6f2pGt9fy4YWsn9mxwwP57aGCUUh945wBwdytoUYPVBz8YRgJaXHx2bR7B7bOjNUF5Cs48yBHm6LhoPBS5j4J2N3hMfbto+Gq5tCnu5Lcx2oZIE8KwOUhsV36GDH7eZy5s1evumUh8xiA/RE3bHzL/AH0KnJIReE+i0EWUUUsvGQ3bmwmTATbd+v0uVh9iD+0AZHJ14hSCD2NFfJV4xT5zyejr39bwxkBTljXmzkw/j3u5yqYgDSeFFbYJnRbAIIX1eZGVzz2ZOkd5EWffsiVq827ge+tQAtx2G8WRkvePFkPKuoW5hcCng+ho8wjq0FQSNCzOldvQol0d4wLlbKOKeuBXaBeEmwstY3xzveqEaxUN1yan0JWVfYNERliCUqiMXt4UlWsZiil1GEaP8ULS5NUUreZFyIpVml+mq+vfj2uq5ZVsBsLj9bERxZVbneIcuOo2bhrpGnW15HcUdmro3i6pAA3Vte3pYvykgkLerztbGtiBBDizYzQFNPc+8qafsFOgOv0UHqjiA5ctpCM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,197 +126,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+While working on vm_ops->access related fixes in core code for FOLL_ANON
+and VMA access permission + size handling, I stumbled over two driver
+issues.
 
-On 11/22/26 19:14, Andrew Morton wrote:
-> On Sun, 22 Nov 2026 18:41:39 +0200 Mika Penttilä <mpenttil@redhat.com> wrote:
->
->> On 11/22/26 16:45, Aveline Noir wrote:
->>
->>> Hi Andrew,
->>>
->>> On Sun, 22 Nov 2026 01:52:46 -0800 Andrew Morton wrote:
->>>
->>>> Store the corresponding RAM backing page instead.
->>> This avoids the oops on the first read through the second descriptor,
->>> but leaves a stale backing page pointer after CPU faultback.
->>>
->>> Since the mirror XArray entries don't take a page reference, they rely
->>> on invalidation.  When the CPU later faults the page back to RAM,
->>> dmirror_interval_invalidate() skips MMU_NOTIFY_MIGRATE for the same
->>> mdevice, and dmirror_devmem_fault_alloc_and_copy() only clears the
->>> migrating descriptor's entry before the backing folio is freed.  The
->>> second descriptor still points to that freed backing page.
->>>
->>> Reading the same page again through the second descriptor in QEMU
->>> triggers a KASAN use-after-free in dmirror_do_read(), and the read
->>> returns the stale data instead of what the CPU wrote.
->> I think this is right, but a fairly artificial scenario: it needs two
->> descriptors open on the same test device in one test, a migration through one,
->> a read through the other, a CPU fault back, and then another read through
->> the second descriptor..
->>
->> The fix lets the device private page content be read without an oops
->> in the context of one fd which is an improvement. 
-> May as well fix it.  I'll test this updated version.
->
-> Mika, please feel free to take this over, perhaps integrate it (or
-> something like it) into whatever you've got going on?  Or not, let me
-> know ;)
+Fixing it all in this series, because it's all intertwined. Only allow
+FOLL_FORCE to bypass VMA permissions, similar to what GUP does for other
+VMAs.
 
-I can handle it in the context where it made difference for me.
+In patch #4 we break a debugging use case for older ROCm versions, and
+forced writes to mappings of read-only files (e.g., DMA-bufs). Current
+ROCm no longer relies on it, but old setups (e.g., MI100 with old
+userspace) might break when updating the kernel.
 
->
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: lib/test_hmm: invalidate all mirrors on device-private migration
-> Date: Sun, 22 Nov 2026 08:53:12 -0800
->
-> When one open of the fake HMM device migrates a folio to device-private
-> memory, a second open can fault the same address into its mirror page
-> table. The second mirror then stores the inaccessible device page, which
-> can oops the kernel when dmirror_do_read() copies from it. Store the
-> corresponding RAM backing subpage instead.
->
-> That conversion also makes the backing page's lifetime significant to
-> the second mirror. migrate_vma_setup() notifies all mirrors before CPU
-> faultback, but dmirror_interval_invalidate() skips the notification for
-> every open on the same device. The faulting open clears only its own
-> XArray entry. The other open can read or write the backing page after
-> migrate_vma_finalize() frees it. Aveline reported a KASAN use-after-free
-> and stale data through the second open.
->
-> Handle migration invalidation for every mirror under its mutex. This
-> clears pointers before faultback can free the backing pages and waits
-> for an active mirror read or write. During system-to-device migration,
-> the migrating open installs new entries after migration; other opens
-> refault on their next access. Remove the now redundant XArray erase
-> from the faultback copy loop.
->
-> Extend the PMD migration selftest to read its last device-private
-> subpage through a second open, then fault it back to RAM, change it,
-> and read the new value through that open. The trigger is available to
-> a process permitted to open /dev/hmm_dmirror* when CONFIG_TEST_HMM is
-> enabled; it does not depend on physical GPU hardware.
->
-> Link: https://lore.kernel.org/r/20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org
-> Link: https://lore.kernel.org/r/179535872126.34.4789080961796247940.b4-reply@b4
-> Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Reported-by: Aveline Noir <jm5905938@gmail.com>
-> Cc: Ralph Campbell <rcampbell@nvidia.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Leon Romanovsky <leon@kernel.org>
-> Cc: Mika Penttilä <mpenttil@redhat.com>
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Liam R. Howlett <liam@infradead.org>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: <stable@vger.kernel.org>
->
->  lib/test_hmm.c                         |   20 +++++++-----------
->  tools/testing/selftests/mm/hmm-tests.c |   25 +++++++++++++++++++++++
->  2 files changed, 33 insertions(+), 12 deletions(-)
->
-> --- a/lib/test_hmm.c~lib-test_hmm-invalidate-all-mirrors-on-device-private-migration
-> +++ a/lib/test_hmm.c
-> @@ -292,6 +292,12 @@ static int dmirror_do_fault(struct dmirr
->  		page = hmm_pfn_to_page(*pfns);
->  		WARN_ON(!page);
->  
-> +		if (is_device_private_page(page)) {
-> +			struct folio *folio = page_folio(page);
-> +
-> +			page = BACKING_PAGE(&folio->page) +
-> +				folio_page_idx(folio, page);
-> +		}
->  		entry = page;
->  		if (*pfns & HMM_PFN_WRITE)
->  			entry = xa_tag_pointer(entry, DPT_XA_TAG_WRITE);
-> @@ -327,14 +333,6 @@ static bool dmirror_interval_invalidate(
->  {
->  	struct dmirror *dmirror = container_of(mni, struct dmirror, notifier);
->  
-> -	/*
-> -	 * Ignore invalidation callbacks for device private pages since
-> -	 * the invalidation is handled as part of the migration process.
-> -	 */
-> -	if (range->event == MMU_NOTIFY_MIGRATE &&
-> -	    range->owner == dmirror->mdevice)
-> -		return true;
-> -
->  	if (mmu_notifier_range_blockable(range))
->  		mutex_lock(&dmirror->mutex);
->  	else if (!mutex_trylock(&dmirror->mutex))
-> @@ -1198,7 +1196,6 @@ static vm_fault_t dmirror_devmem_fault_a
->  
->  			src_page = pfn_to_page(page_to_pfn(spage) + i);
->  
-> -			xa_erase(&dmirror->pt, addr >> PAGE_SHIFT);
->  			addr += PAGE_SIZE;
->  			copy_highpage(dst_page, src_page);
->  		}
-> @@ -1822,9 +1819,8 @@ static vm_fault_t dmirror_devmem_fault(s
->  	}
->  	migrate_vma_pages(&args);
->  	/*
-> -	 * No device finalize step is needed since
-> -	 * dmirror_devmem_fault_alloc_and_copy() will have already
-> -	 * invalidated the device page table.
-> +	 * The migration notifier has invalidated all mirror page tables
-> +	 * before the backing pages can be freed.
->  	 */
->  	migrate_vma_finalize(&args);
->  err:
-> --- a/tools/testing/selftests/mm/hmm-tests.c~lib-test_hmm-invalidate-all-mirrors-on-device-private-migration
-> +++ a/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2087,6 +2087,7 @@ TEST_F(hmm, migrate_anon_huge_fault)
->  	void *old_ptr;
->  	void *map;
->  	int pagemap_fd;
-> +	int fd2 = -1;
->  	int *ptr;
->  	int ret;
->  
-> @@ -2143,12 +2144,36 @@ TEST_F(hmm, migrate_anon_huge_fault)
->  		}
->  
->  		close(pagemap_fd);
-> +
-> +		/* Read a device-private subpage through another open. */
-> +		fd2 = hmm_open(variant->device_number);
-> +		ASSERT_GE(fd2, 0);
-> +		buffer->ptr = (char *)map + (npages - 1) * self->page_size;
-> +		ret = hmm_dmirror_cmd(fd2, HMM_DMIRROR_READ, buffer, 1);
-> +		buffer->ptr = map;
-> +		ASSERT_EQ(ret, 0);
-> +		ASSERT_EQ(buffer->cpages, 1);
-> +		ASSERT_EQ(*(int *)buffer->mirror,
-> +			  (npages - 1) * self->page_size / sizeof(int));
->  	}
->  
->  	/* Fault pages back to system memory and check them. */
->  	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
->  		ASSERT_EQ(ptr[i], i);
->  
-> +	if (fd2 >= 0) {
-> +		/* This open must not retain the freed device backing page. */
-> +		ptr[(npages - 1) * self->page_size / sizeof(*ptr)] = -1;
-> +		buffer->ptr = (char *)map + (npages - 1) * self->page_size;
-> +		ret = hmm_dmirror_cmd(fd2, HMM_DMIRROR_READ, buffer, 1);
-> +		buffer->ptr = map;
-> +		ASSERT_EQ(ret, 0);
-> +		ASSERT_EQ(buffer->cpages, 1);
-> +		ASSERT_EQ(buffer->faults, 1);
-> +		ASSERT_EQ(*(int *)buffer->mirror, -1);
-> +		ASSERT_EQ(close(fd2), 0);
-> +	}
-> +
->  	buffer->ptr = old_ptr;
->  	hmm_buffer_free(buffer);
->  }
-> _
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Changes in v2:
+- Drop "drm/i915/selftests: request read access for mmap access tests"
+- "mm: check permissions and bounds for vm_ops->access"
+ - Allow reads of write-only mappings, as we historically did
+ - Combine the permission check comments into one
+ - Mention breaking forced writes to read-only files
+ - Extend patch description
+- Pick up tags
+- Link to v1: https://patch.msgid.link/20261112-access_shite-v1-0-988a5c470db2@kernel.org
 
---Mika
+---
+Chris Mason (1):
+      mm: do not call vm_ops->access with FOLL_ANON
+
+David Hildenbrand (Arm) (3):
+      drm/i915: consider vm_pgoff in vm_access()
+      powerpc/spufs: consider vm_pgoff in spufs_mem_mmap_access()
+      mm: check permissions and bounds for vm_ops->access
+
+ arch/powerpc/platforms/cell/spufs/file.c |  3 ++-
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c |  4 +++-
+ mm/memory.c                              | 29 +++++++++++++++++++++++++++--
+ 3 files changed, 32 insertions(+), 4 deletions(-)
+---
+base-commit: 76d96c9641d0c1c0d0e92013a30bd887f8d2dbfe
+change-id: 20261112-access_shite-d8a47559572e
+
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
 
 
