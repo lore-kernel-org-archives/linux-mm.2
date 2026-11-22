@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4392606A696
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BB0606A696
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OKCYL9/h
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e2GoX14N
 Received: by kanga.kvack.org (Postfix)
-	id F29506B05C4; Sat, 21 Nov 2026 20:19:16 -0500 (EST)
+	id 0D1CF6B05C6; Sat, 21 Nov 2026 20:19:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDA086B05C5; Sat, 21 Nov 2026 20:19:16 -0500 (EST)
+	id 05B706B05C7; Sat, 21 Nov 2026 20:19:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEF826B05C6; Sat, 21 Nov 2026 20:19:16 -0500 (EST)
+	id E3E8F6B05C8; Sat, 21 Nov 2026 20:19:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA5B56B05C4
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:19:16 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 36C3E1604A8
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:16 +0000 (UTC)
-X-FDA: 85460996712.09.5938482
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B36CF6B05C6
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:19:20 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F0F8C063E
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:20 +0000 (UTC)
+X-FDA: 85460996880.21.F46BE37
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8E0A440009
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OKCYL9/h";
-	spf=pass (imf27.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 73C48180006
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e2GoX14N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795310354;
-	b=QxfgMdDZUOqDd68w61KQwgl0EWMWfrekhyaIUtHzuEHI1/OaWufPKV1yV5RghlwTIswjD1
-	qupoBTqMTsqdJbaue9xEh7DSH695d4enVOb5OU99c5vGc4BxGmgNNZd3rUkVmUgYFtgSmi
-	92iRYg8CKiNrnqMG/dthwTjHGOuJnzI=
+	t=1795310358;
+	b=aPkmZnQo4A2gkhrONEYVJUiXW5yZK3LkVbviYItuuL2kuM5Qy5/hnQ7TQvZ8ml0xNRACtK
+	GWSu83OZ1z0u8Yr9eCL5qHfa4jPRA7qXqx2f2097QbbTwTbxoy4dQr61osxqYO8tFTLE7G
+	ES/rcAJuvUuMamXlgO/ycPqvUQywU6g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795310354;
+	s=arc-20220608; t=1795310358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qsah9M7foXNK9QvRUXT+CrvXBmg+yydBay4Gf38+YR0=;
-	b=ADBXmCcryR+oioRojCz/lVHqpoJlrrDhcvlacqAy6em5X1KkQhL+F8+L8C1LLwtstoPJkD
-	GFCMgl3vjVyMECrP9VoT4jyFvTg13S1lLZ94Lg7YTDsSKT1tlG9HGp6QilmjUWu72OGh1F
-	xPx0+d5J9PRhhspnRiHUJGOmrzBpZLE=
+	bh=Bc4KCqTCCvqKRhvZx+lV6nXL57V09zR0YOdKWGFcYhA=;
+	b=iNUmR4/GBqpeYVjdQGvXnw9TN6WnAM9QEv8uBzSLFVnsY4o3AezxMfdOGcFcUyHFWv/cfG
+	EMuyJKdriVGJ1YK5ezR2QIUhgkfhs4c/OCDAfwTjXIS6hR9a2ou6yCfjHzSHLxUvEmqEKa
+	uqp1o+dJ2NuILAiyoi68EKVLCjsYUi0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OKCYL9/h";
-	spf=pass (imf27.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e2GoX14N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id E389F45992;
-	Sun, 22 Nov 2026 01:19:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 207481F000C4;
-	Sun, 22 Nov 2026 01:19:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id BCB8E43C55;
+	Sun, 22 Nov 2026 01:19:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id F09711F000CA;
+	Sun, 22 Nov 2026 01:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795310353;
-	bh=qsah9M7foXNK9QvRUXT+CrvXBmg+yydBay4Gf38+YR0=;
+	s=k20260515; t=1795310357;
+	bh=Bc4KCqTCCvqKRhvZx+lV6nXL57V09zR0YOdKWGFcYhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OKCYL9/hTzizf7XZIcDjFqE8r5O8mbskYQYtjjuu5GOLp14M71COOK3RHwALYj0zC
-	 2RcfvSObeAms8ncoscoqC2z3l/cX6+XCThwhswtfIakGCjHB9B/l4tOAbOJVSd/9Wy
-	 GmWvSV+SBiY2b0lnG/GquMH+L79c2Ix9ouvmPuWjh82MtuPSI5HuI79hiWAlfFS5aa
-	 YkPBvWYNwDT3bVKWsdM/Ne051P4jMdIUmIHa8yYxCP8FW6+KH9yHXwlOg9nnCJvuUo
-	 rMKtkpeWfKdn+0VoaIgnRNPBBMnZz9OkDB9y5s62sj29tnDZHgFB1XPzM8LWaEmcRu
-	 oChN4176hN/8Q==
+	b=e2GoX14NlATm1xCe8kfL8b13V3o4ev026JjDpzRUVhQrAW4ge8mPmgOt0siXlM53b
+	 GOCBuE3fvx+EN1DyFout1BBt4pYYKtUBG/u7HDwO8xEx9AwajQcgXyYHooNTFr+894
+	 nh5vlspqdYtceJfowBfHcHkr0qq6ytTqL+4PE9Aj0RiQ7h4qJU3JsEMiSPGJ4kFbOy
+	 7EpswnvEAO+OhQ/TYe2KgiIU8Mf/OdD3IAdY/5WNty+4i9MqtSdCp0VHRlq+mKuT5v
+	 XVkYiSbeufsxkHrL9yM/gJYkBEPaL+cMURtT5/HuKJuvB4QsYmeoxn5CPKYBxCKVUo
+	 5KDKoRMg8HVvw==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -95,27 +95,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v6 14/26] userland: Add USERLAND_SHARE_NSFD ioctl
-Date: Sun, 22 Nov 2026 03:17:57 +0200
-Message-ID: <20261122011809.2667684-15-jarkko@kernel.org>
+Subject: [RFC PATCH v6 15/26] exit: Support P_USERLAND in waitid()
+Date: Sun, 22 Nov 2026 03:17:58 +0200
+Message-ID: <20261122011809.2667684-16-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261122011809.2667684-1-jarkko@kernel.org>
 References: <20261122011809.2667684-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
+X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 8E0A440009
-X-Stat-Signature: erq53p6ceeu9h5cb9kb13krjfqzpi4y3
-X-Rspam-User:
-X-HE-Tag: 1795310354-405079
-X-HE-Meta: U2FsdGVkX1+Ka+FhFkaxm8y6sKQcTfOVGaN5IBDKRJvcGGFdypTdCOPSYQfhGnZa+v/Yles9OJkjRsfN3W+qrJk8E0/e4uV5dtnM2GzqCTfspC42w0ue2KII0IPYYSzy23cb4L68K5qr9WcAU0jpnGKUbTCCoAwFVvdVDlQwIz9xBXL7tddAUArxxGtii7PrVf+ndXkfZKfYm7ZLDE/3abszBnIWGWYrEoAj93ojek9NU1t+s9EaPuC/NDtLM3vlV3Md3cRVjPTCw8wmFPoONZOeuM6LInmVbQ4Ng0Wdqub4UnAJMbz0a6iX7AifSKs+y5BAfgKmp5glfu18XQkI6z1SexsA6kwYT8MzbpPBOCagkYYtz1E0J1batCsW8VX9je9f0bVo1sb2K6gJA0uQVy/0rAV3OLznBOh64f7LG9hnW+bQvaE9HumRDxETgn8PGPHuhDR9wBqsDTrS23k7KGaKo7T1385V+SorLlM9gHYs3fuGBxBxkzGXBXdUcC/Q5CUO6CQ12sAy72Sf4j5qD9jMuceNgD8hXqXYDOTW5ZvvTTHC+WS5MFnFLvqudiGx78cYGeJpyPEwTkcdialC1w5sbnLIFmlEP3ptfCFrUVPvz7UnvNBU4eZtCys7vgxYFUszqXxOcR1ULGxTJaKBN5gHggfthsVr0DFme8S29mrbJbPGc5Z108WsrCY2a0hNX1TlKlZpPX4LKVujGRsNQ9feYaB0cGvYn9A7UV+6Twl+91Cp+/szwzqN7s00JtJqirNNdptCmwIJa8tRkkxU5y/5VWwJC6cfdlXhSuZgyX28On7s2mZn+bpgOC1ltCCc9X4RFnhaVx/mwisINWBROEWZIlH8zCqckkJqmSX9jvlP4JGK1Uk4GooZ4TyTaJVNA3YQjU2ME+t6XKGMiAsO2JccNCGK6RpOTX+UPj7XKEyLpyA+iaoHpBrcBp8UqqVqaeSJ3EyAYOI5aIpLFG9
- FiPFNRl0
- Dl1worIuSySP7gX7LguQD3U6BFHxd2HRFJz97nb+W9jlOJRQgbd7WiAzNc4oguQDbGDAVJr58eLhTmK9UaxMmjwOWi7sXYetn6U1TwqkRYAwel8xjSg5aw1USjXhe9+Idl7VNW7WELk9DL8kOO1DcbbyUAHbSxaJpLxGlzO3LXDh6e1/VC4FtqUQbN5Uw0onFILrhw4HfmqgQTnFG9e3b8NqMbR1NVqJiKHMcGj1vY/rEkTdaqiSjsZMRb1HKRmffdahbc2y/59t5g/KXLy1NMKkLVD+fPx4spZ7PjPHKPrmMQaARJStOk1lwPNGGtKCbARVzFe7jCcriiUH8M13z/gFr4y9ZsxWR/Uec4DM8jzGy9UPJQhMWmKy44A70YSMjVAeVjE0JrDUEOgssOAzNeoNUmxIpNoCTkh2PrgvTIM/fADyfrheVO/43J0C6ngblDEZKKXOqr/RW3JsJsC+FvRM1DRIIF4HNjcMsI+nXj/0dp1PmFkG2qvM1sLO+rwkV0FXU
+X-Rspamd-Queue-Id: 73C48180006
+X-Stat-Signature: yf1mufobjfhn5wuj9xt93xmeemchhdad
+X-HE-Tag: 1795310358-137875
+X-HE-Meta: U2FsdGVkX18tKhb8OVMtZ2urEyJPkZZrmEpr0DEwHLWOrIsPVH8TRg8ImrjyfWrtgBptGQZAYF8NZ0U+s5C8WAnRQ9DbYrI2lbGz3ymSjekge1ICzCPUo+Hn/9uJIDKes4I0S8O0q/L/nxopPYheyl8xMqbVMexREJWcxeiNl+V/Gh6dWZwZDRU3Ds4lSaUL9Eokp0YKWlQbek06LpVN3U4Iu1pLqiymNreReQ+aWHQKTHwjxd8KMSXX4OZNtrr4D/xnJCQRc/53zKsw2Muy0N3DwWkOsdpQYtJRM0COcRZ3o4HXr7cfcJji+8SxTL/ehbktynF04OSHkdjbnOjexeKgwTJIPwMaH3Wi11gi/GZY985dbrv9hoZGC5z6rjapTJ1gFqcmNUBs5bXag+FP0BnWTCIMThchOMw9sFwMXocyeJD07PU1LabN0EI7krlodz0i2UuEy8ZvaPt+gjSlu/+WoES6Ev/EOgNscybmd+10YCMXw4tVtczjWwqWA5BtXvs9yn6swFRIEJ6uahVsFZkPP6GbzhfACav0e/BuCUdCWdrJ2u+BE3054fYAm1EGXR+vLPY1ftC5eab02FHIgDoFXv45GPHlq7FnP/yV83EO3FkEb+JMWkRQl5HLPPEDlJcA6ObWvcepmHNtrPDA4CDBBMYryDafqxXKlWwMxXXeRouX73SKCgOHZHXfkOT4dBJeNftc4SbmE5FlFqqQCYd+BCGJ9iJ/7/LA+ObPMTKLU1j5Jl/qgOduWpsCbf+2Mn0cFE+li0Pd0FngUMCauXI+LVVHwYDoq8og87u9s9wHavoJOfyE7vlUhmnDOqJ/RQWvaB/xGYgb6YMEC/k1PZoZeBmo2kvdkUNhPe1l2UTN0YWNl6Nxgw6DMDVrcr6OJUODpHadM9TYwjxBZ6r/EqG+mynGMEGECKhMEnA+4QBQc6xRWAgN5d3pqbfDNui31EpheVzUNKOLL2ydyjl
+ M8yeZYI+
+ E9UdOSCFbhVgjE0jpfcUy00v57qdsV1FXaF1QoGKNCqpLPTFDLJ48pWc1rVgQkGBNaG9kxpuiSMuA3spqd+L6MBgUxtA0LCMjaEHF3hqaFtfREgOrEy5yDfzerKkz7YcQrXnX3snv1D50TrzK5k89XWEeaqyti3qUPZ2sbHRYlvh77SebIoUDUm1e2eEoCt5r5nRCNIVNL/7WT9mgn30JjPyOAw0S29doO9v59R461KNaHOq9a0lSab/yU/Fq2Ler1xFnRcwR84S4+Xvs1MU8bv3mObhcjde3BXntCKgCvqysPQYG6wly3bXWkz5CHsVWpNpGB4rNJSmhI3d+KNWiPX+a5CKfOQDEivp75Xb5u5CjjZzPsnSP0j6znoHswAMxRyNEhrkb4Svf9TVUGgAdSEE04olRnojULEh70XLG3/VH09tMhz6+B1dbwNFCIeyOl/qFB/buWk7NRotk80qIhKX7PF6By/mKFcsxPtH5V6UkjAI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,165 +124,201 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-userland_open() isolates every namespace by default rather than relying
-on unshare() deny-listing, which prevents workloads such as
-host-networked sandboxes or sidecars sharing a network or IPC namespace
-from opting into specific existing namespaces.
+wait4() and waitid() only allow a parent or subreaper to collect exit
+status, so an external manager holding a userland file descriptor cannot
+wait on a userland init process forked by another process or observe
+exit status multiple times across observers.
 
-Add the build-phase USERLAND_SHARE_NSFD ioctl to replace the userland's
-cgroup, IPC, UTS, network, or time namespace with a supplied nsfs file
-descriptor in-place under userland->lock while the userland is still in
-USERLAND_INIT, rejecting calls with -EBUSY once CLONE_INTO_USERLAND
-begins. Require CAP_SYS_ADMIN in the userland's user namespace, and
-require CAP_SYS_ADMIN in the target namespace's owning user namespace
-when the caller is not already a member of that namespace.
+Add P_USERLAND to waitid() and wire kernel_waitid() to userland_waitid()
+to wait freezably and interruptibly on a userland file descriptor until
+the userland reaches USERLAND_DEAD and populate siginfo_t with init's
+caller-visible TGID, munged UID, and exit status without consuming it.
 
+Co-developed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- include/uapi/linux/userland.h | 14 ++++++
- kernel/userland.c             | 92 +++++++++++++++++++++++++++++++++++
- 2 files changed, 106 insertions(+)
+ include/linux/userland.h  | 10 +++++
+ include/uapi/linux/wait.h |  1 +
+ kernel/exit.c             |  4 ++
+ kernel/userland.c         | 79 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 94 insertions(+)
 
-diff --git a/include/uapi/linux/userland.h b/include/uapi/linux/userland.h
-index e81a06d6e9eb..addb84e996f5 100644
---- a/include/uapi/linux/userland.h
-+++ b/include/uapi/linux/userland.h
-@@ -41,4 +41,18 @@ enum userland_flags {
-  */
- #define USERLAND_GET_NSFD	_IO(USERLAND_IOCTL_MAGIC, 0x01)
+diff --git a/include/linux/userland.h b/include/linux/userland.h
+index ec74eed6de1d..1bab10d931b5 100644
+--- a/include/linux/userland.h
++++ b/include/linux/userland.h
+@@ -16,8 +16,10 @@ struct file;
+ struct nsproxy;
+ struct pid;
+ struct pid_namespace;
++struct rusage;
+ struct task_struct;
+ struct user_namespace;
++struct waitid_info;
  
-+/**
-+ * DOC: USERLAND_SHARE_NSFD
-+ *
-+ * ``ioctl(userland_fd, USERLAND_SHARE_NSFD, ns_fd)`` replaces the corresponding
-+ * member namespace of ``userland_fd`` with ``ns_fd`` (``CLONE_NEWCGROUP``,
-+ * ``CLONE_NEWIPC``, ``CLONE_NEWUTS``, ``CLONE_NEWNET``, or ``CLONE_NEWTIME``)
-+ * while ``userland_fd`` is in ``USERLAND_INIT``.
-+ *
-+ * Requires ``CAP_SYS_ADMIN`` in the userland's user namespace, plus
-+ * ``CAP_SYS_ADMIN`` in ``ns_fd``'s owning user namespace when the caller is
-+ * not already a member of ``ns_fd``.
-+ */
-+#define USERLAND_SHARE_NSFD	_IO(USERLAND_IOCTL_MAGIC, 0x02)
+ enum userland_state {
+ 	USERLAND_INIT		= 0,
+@@ -45,6 +47,8 @@ bool userland_is_file(struct file *file);
+ void userland_copy(struct task_struct *tsk, struct pid *pid,
+ 		   struct userland *userland);
+ void userland_exit(struct pid_namespace *pid_ns, struct task_struct *tsk);
++long userland_waitid(int upid, struct waitid_info *infop, int options,
++		     struct rusage *ru);
+ #else
+ static inline void userland_put(struct userland *c)
+ {
+@@ -64,6 +68,12 @@ static inline void userland_exit(struct pid_namespace *pid_ns,
+ 				 struct task_struct *tsk)
+ {
+ }
 +
- #endif /* _UAPI_LINUX_USERLAND_H */
++static inline long userland_waitid(int upid, struct waitid_info *infop,
++				   int options, struct rusage *ru)
++{
++	return -EINVAL;
++}
+ #endif /* CONFIG_USERLAND */
+ 
+ #endif /* _LINUX_USERLAND_H */
+diff --git a/include/uapi/linux/wait.h b/include/uapi/linux/wait.h
+index 85b809fc9f11..edd39c2cab96 100644
+--- a/include/uapi/linux/wait.h
++++ b/include/uapi/linux/wait.h
+@@ -18,6 +18,7 @@
+ #define P_PID		1
+ #define P_PGID		2
+ #define P_PIDFD		3
++#define P_USERLAND	4
+ 
+ 
+ #endif /* _UAPI_LINUX_WAIT_H */
+diff --git a/kernel/exit.c b/kernel/exit.c
+index d5e7bc2af804..5b0bd3a9187c 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -71,6 +71,7 @@
+ #include <linux/unwind_deferred.h>
+ #include <linux/uaccess.h>
+ #include <linux/pidfs.h>
++#include <linux/userland.h>
+ 
+ #include <uapi/linux/wait.h>
+ 
+@@ -1803,6 +1804,9 @@ static long kernel_waitid(int which, pid_t upid, struct waitid_info *infop,
+ 	struct wait_opts wo;
+ 	long ret;
+ 
++	if (which == P_USERLAND)
++		return userland_waitid(upid, infop, options, ru);
++
+ 	ret = kernel_waitid_prepare(&wo, which, upid, infop, options, ru);
+ 	if (ret)
+ 		return ret;
 diff --git a/kernel/userland.c b/kernel/userland.c
-index 7b44f400dc23..efac9e4f2fa5 100644
+index efac9e4f2fa5..c118defcff01 100644
 --- a/kernel/userland.c
 +++ b/kernel/userland.c
-@@ -24,6 +24,8 @@
- #include <linux/nsfs.h>
- #include <linux/pid.h>
- #include <linux/pid_namespace.h>
-+#include <linux/proc_fs.h>
-+#include <linux/proc_ns.h>
- #include <linux/time_namespace.h>
- #include <linux/user_namespace.h>
- #include <linux/uts_namespace.h>
-@@ -118,6 +120,94 @@ static long userland_get_nsfd(struct userland *userland, unsigned long nstype)
- 	return open_namespace(ns);
+@@ -8,6 +8,7 @@
+ #include <linux/wait.h>
+ #include <uapi/linux/wait.h>
+ #include <linux/file.h>
++#include <linux/freezer.h>
+ #include <linux/fs.h>
+ #include <linux/anon_inodes.h>
+ #include <linux/userland.h>
+@@ -33,6 +34,8 @@
+ #include <linux/idr.h>
+ #include <uapi/linux/userland.h>
+ 
++#include "exit.h"
++
+ void userland_put(struct userland *c)
+ {
+ 	if (!c || !refcount_dec_and_test(&c->usage))
+@@ -208,6 +211,82 @@ static long userland_share_nsfd(struct userland *c, unsigned long arg)
+ 	return 0;
  }
  
-+static long userland_share_nsfd(struct userland *c, unsigned long arg)
++/**
++ * DOC: P_USERLAND
++ *
++ * ``waitid(P_USERLAND, userland_fd, &infop, options, NULL)`` waits freezably until
++ * ``userland_fd`` reaches ``USERLAND_DEAD`` (unless ``WNOHANG`` or ``O_NONBLOCK`` is
++ * set) and writes init's exit information into ``infop`` without consuming it.
++ * ``options`` must include ``WEXITED`` and may include ``WNOHANG`` and
++ * ``WNOWAIT``; ``rusage`` must be ``NULL``, and the caller must run in an
++ * ancestor active PID namespace.
++ */
++long userland_waitid(int upid, struct waitid_info *infop, int options,
++		     struct rusage *ru)
 +{
-+	struct ns_common *old_time_children = NULL;
-+	struct ns_common *old_ns = NULL;
-+	struct ns_common *ns;
++	struct pid_namespace *pid_ns;
++	unsigned int f_flags;
++	struct userland *userland;
++	bool nonblock;
++	int status;
++	kuid_t uid;
++	long ret;
 +
-+	if (arg > INT_MAX)
++	if (upid < 0 || ru)
++		return -EINVAL;
++	if (options & ~(WEXITED | WNOHANG | WNOWAIT))
++		return -EINVAL;
++	if (!(options & WEXITED))
++		return -EINVAL;
++
++	CLASS(fd, f)(upid);
++	if (fd_empty(f) || !userland_is_file(fd_file(f)))
 +		return -EBADF;
 +
-+	CLASS(fd, f)((int)arg);
-+	if (fd_empty(f))
-+		return -EBADF;
-+	if (!proc_ns_file(fd_file(f)))
-+		return -EINVAL;
-+	if (unlikely(!current->nsproxy))
-+		return -EOPNOTSUPP;
++	f_flags = READ_ONCE(fd_file(f)->f_flags);
++	nonblock = (options & WNOHANG) || (f_flags & O_NONBLOCK);
++	userland = fd_file(f)->private_data;
++	pid_ns = task_active_pid_ns(current);
 +
-+	ns = get_proc_ns(file_inode(fd_file(f)));
-+	switch (ns->ns_type) {
-+	case CLONE_NEWCGROUP:
-+	case CLONE_NEWIPC:
-+	case CLONE_NEWUTS:
-+	case CLONE_NEWNET:
-+		break;
-+	case CLONE_NEWTIME:
-+		if (!IS_ENABLED(CONFIG_TIME_NS))
-+			return -EOPNOTSUPP;
-+		break;
-+	default:
-+		return -EINVAL;
++	if (!pidns_is_ancestor(userland->ns->pid_ns_for_children, pid_ns))
++		return -ECHILD;
++	if (READ_ONCE(userland->state) == USERLAND_INIT)
++		return -ECHILD;
++
++	if (!nonblock) {
++		ret = wait_event_freezable(userland->waitq,
++					   READ_ONCE(userland->state) ==
++					   USERLAND_DEAD ||
++					   READ_ONCE(userland->state) ==
++					   USERLAND_INIT);
++		if (ret)
++			return ret;
 +	}
 +
-+	if (!ns_capable(c->user_ns, CAP_SYS_ADMIN))
-+		return -EPERM;
-+	if (!is_current_namespace(ns) &&
-+	    !ns_capable(ns->ops->owner(ns), CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	scoped_guard(spinlock, &c->lock) {
-+		if (c->state != USERLAND_INIT)
-+			return -EBUSY;
-+
-+		__ns_ref_inc(ns);
-+		__ns_ref_active_get(ns);
-+
-+		switch (ns->ns_type) {
-+		case CLONE_NEWCGROUP:
-+			old_ns = to_ns_common(c->ns->cgroup_ns);
-+			c->ns->cgroup_ns = to_cg_ns(ns);
-+			break;
-+		case CLONE_NEWIPC:
-+			old_ns = to_ns_common(c->ns->ipc_ns);
-+			c->ns->ipc_ns = to_ipc_ns(ns);
-+			break;
-+		case CLONE_NEWUTS:
-+			old_ns = to_ns_common(c->ns->uts_ns);
-+			c->ns->uts_ns = to_uts_ns(ns);
-+			break;
-+		case CLONE_NEWNET:
-+			old_ns = to_ns_common(c->ns->net_ns);
-+			c->ns->net_ns = to_net_ns(ns);
-+			break;
-+#ifdef CONFIG_TIME_NS
-+		case CLONE_NEWTIME:
-+			__ns_ref_inc(ns);
-+			__ns_ref_active_get(ns);
-+			old_ns = to_ns_common(c->ns->time_ns);
-+			old_time_children =
-+				to_ns_common(c->ns->time_ns_for_children);
-+			c->ns->time_ns = to_time_ns(ns);
-+			c->ns->time_ns_for_children = to_time_ns(ns);
-+			break;
-+#endif
-+		default:
-+			WARN_ON_ONCE(1);
-+			break;
-+		}
++	scoped_guard(spinlock, &userland->lock) {
++		if (userland->state == USERLAND_INIT)
++			return -ECHILD;
++		if (userland->state != USERLAND_DEAD)
++			return (options & WNOHANG) ? 0 : -EAGAIN;
++		ret = pid_nr_ns(userland->init_pid, pid_ns);
++		if (ret <= 0)
++			return -ECHILD;
++		status = userland->exit_code;
++		uid = userland->init_uid;
 +	}
 +
-+	__ns_ref_active_put(old_ns);
-+	old_ns->ops->put(old_ns);
-+	if (old_time_children) {
-+		__ns_ref_active_put(old_time_children);
-+		old_time_children->ops->put(old_time_children);
++	if ((status & 0x7f) == 0) {
++		infop->cause = CLD_EXITED;
++		infop->status = status >> 8;
++	} else {
++		infop->cause = (status & 0x80) ? CLD_DUMPED : CLD_KILLED;
++		infop->status = status & 0x7f;
 +	}
-+	return 0;
++	infop->pid = ret;
++	infop->uid = from_kuid_munged(current_user_ns(), uid);
++	return ret;
 +}
 +
  static long userland_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
  {
  	struct userland *userland = file->private_data;
-@@ -125,6 +215,8 @@ static long userland_ioctl(struct file *file, unsigned int cmd, unsigned long ar
- 	switch (cmd) {
- 	case USERLAND_GET_NSFD:
- 		return userland_get_nsfd(userland, arg);
-+	case USERLAND_SHARE_NSFD:
-+		return userland_share_nsfd(userland, arg);
- 	default:
- 		return -ENOIOCTLCMD;
- 	}
 -- 
 2.47.3
 
