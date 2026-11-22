@@ -1,102 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CB8606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B561606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0A9I5PP4
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0vDZfee7
 Received: by kanga.kvack.org (Postfix)
-	id 32DD16B05C1; Sun, 22 Nov 2026 13:03:40 -0500 (EST)
+	id 8D4BF6B05C3; Sun, 22 Nov 2026 13:03:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DEDF6B05C2; Sun, 22 Nov 2026 13:03:40 -0500 (EST)
+	id 8ABEC6B05C4; Sun, 22 Nov 2026 13:03:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CDCF6B05C3; Sun, 22 Nov 2026 13:03:40 -0500 (EST)
+	id 7739D6B05C5; Sun, 22 Nov 2026 13:03:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EBD206B05C1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:03:39 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 3C02A6B05C3
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:03:47 -0500 (EST)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 29FE6140729
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:03:39 +0000 (UTC)
-X-FDA: 85463527758.21.CF8B6C4
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4347012000E
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:03:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=0A9I5PP4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2182806E5
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:03:46 +0000 (UTC)
+X-FDA: 85463528052.21.987EC86
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C04AF40005
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:03:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=0vDZfee7;
+	spf=pass (imf17.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795370617;
-	b=A9lLb5PDTv1W/8bW6diLo0pfdzSua4fhMRGG2fcwdOx7aRBe1wO79oBSBWNV/P/H6CMZ4R
-	9vsGbSvL+Bl/EKnvZ6vdhp53tBydHd5y3Tv6ucn7Vr7BHzWBT/6X3JktZ1cLRrGzQewYI3
-	ZJxHLF7a4DSHCWLAdsfAkWw0/zr56d8=
+	t=1795370624;
+	b=Iu2jCFX80bXKZszaRw75Jm/DvWveIVmJDoWMlJFvianpapLXuTbM+wdsziZc+WGJd72ScM
+	16zy0Z41JWicOrOhFVq/5EQJqXe2kwJ90UsQrT2E+2xEQEom5a73A3+ftDyK5LvQo/UpUT
+	sYCTxi5n4FhLmhKB9SSjXtKUBFVSiII=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795370617;
+	s=arc-20220608; t=1795370624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M0QRN+WI/2+N3ORC3EQqEz3+dHsIUQPpKZYtHfKeUv4=;
-	b=p3+WrIPgSszlDcYL9/z3OVp8NQ//XG0p6xeSgL3rABty7bttsWA04Aq/Ero7NnFkUBpv53
-	RAs/3VqMgMIllphlw9XOhlAaGPgL96GpM56y0YKOOp+cTV+P83QU/wSILRliRyzb3yoq/k
-	z9N/kmUVY+Z8nB/7HdBIzSP5fLPnbw0=
+	bh=mu4XfoxbNIitLNaNoA9rOQZrx6f9uvt25KWkgZS+7H8=;
+	b=Zb4JByXWAD/mTt7wwH0cYZNgE1EpSZkg7EDYIwgOGjeMbEeagT78p/t2SeBdLSAYYGtX+D
+	rDFuha6QWfD1W5aiIMLpWo94HXksqcYq0DmgLlgAHhZ/fkXIVFTfPWd5kikBN4fw3s7/V+
+	lp5qbFccUQX47Y7vZ1RbK8iok91t/BY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=0A9I5PP4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a9a8d6cea8so30791875e9.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:03:37 -0800 (PST)
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=0vDZfee7;
+	spf=pass (imf17.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a00so19112915e9.3
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:03:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795370616; x=1795975416; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795370623; x=1795975423; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=M0QRN+WI/2+N3ORC3EQqEz3+dHsIUQPpKZYtHfKeUv4=;
-        b=0A9I5PP4N4vj1PDanXZjOtRVRn8jF/qYQjSqIE2mS/t1/L4cJEBJJpQC30Rk+NaBOi
-         TQI5Q2M24tlgwwJGMxGP5UzMQr1O1fS/nTjsv3EtuWkv4k7MIQq4/VbkTHxkr1oenQ/f
-         z9+EjJVKyRF0HcEm0BgQuUpq9MDBX65pmEjcYBbFo987Laa9+ZeK0WkKE1I3v9ISmJXM
-         V+Gg/70o3Av1abgrKteTX0uLRLGpindS5mfC9X37uKkwvcCmhUjSy9Dw6iM73qVqqZn+
-         c04Ii9fxCmQLj4P4/I5QqGGzCsxYo0YdEY72DIznTfu8xZTJFUVyhomVjHK+PrArdmPV
-         E7hQ==
+        bh=mu4XfoxbNIitLNaNoA9rOQZrx6f9uvt25KWkgZS+7H8=;
+        b=0vDZfee7MkN1gRGPGn+zSQfEvvMIehGgoDAI9mQX+Ql7W+sADbgoD9T5JrNINLj/CQ
+         ++AvfqAgsHbQlkT2aWItjYYfGpOCKHw7OhW3AMIudTK9N6KcWECo4n4khA9UeMOtIVb+
+         b+oDTfUrCMvJpkH/fQWMS1AoaH864RhPRojhcP9XDB6OHCeK0mibu3/Iv9fHs8Hiv/Ls
+         BZPkR4c7KqAqE+ap58DfXAfziyZb0WbUNJXLyHbW84lujX7BzwojqRqdPYVbWJRqBW/7
+         /Ro3yXMTd+WBT2S0eFxMWWbMMxdrD9UziFFmrTZ2IHTy/0iPMN33HKQf16XJH3zGy3OE
+         p4Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795370616; x=1795975416;
+        d=1e100.net; s=20260707; t=1795370623; x=1795975423;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=M0QRN+WI/2+N3ORC3EQqEz3+dHsIUQPpKZYtHfKeUv4=;
-        b=FM2WHMXhjhxWh/aflP2mbRIp8URJvUkxnhizmRagohooifFZ6BdaEvXLpKm/YGEjgs
-         1jI9IndMP0A/Rndp/ZPAaX8R+A/PGjv6IVrOyhJtTSFzbNKsP1b+0RISIViqYDJA5Wxw
-         X8NKxwq742zCu+upsfLtjlk3JnZV88ewzDhp89S1inWWv61MHuM5QaHDePm3hVs1OUiT
-         kmrk0Joe26Om78rrj/uJLqZv5DRQ0xIkiefwXL/toHn6pEX7uvIssp0UIG6h30PHv1vI
-         0Gt6HK1J4PNwkuZqnnXHjgsEsB6qUdaTb6ttM+VYmAZk4DXO08bwnqz0YeviZyHN6vAE
-         LwWg==
-X-Gm-Message-State: APuU4Z/RGUWG2e4YK7WvZ5guo90yhbbUXmSFbM3p4XshdjlkA83PRxnN
-	ltuZEcAEbH7Rn5W8BTTk0iu2nhs+rxf43qaVosoEqiq+wbfyqfl2NvP5
-X-Gm-Gg: AZFdTZcx/lngkV74EdK/YTW9Zd/vhOJetbSlj8xqn38EeHDwm3gl+gUVyI78fqhjmeX
-	TCjum1kJYI/4NjroHRosyRu9kRX2je0DYxmb76V69qLunVp2QqesmZEUOU2RVNm25qj4YyYkVyb
-	ivj+XtMfe/bst3RdqWvePlCMdmh2jz8pssvK5FfUu+8yKik56omRfkwm5hX7AHfU0oi+MEi8s40
-	4Tbt5cklJJawxk+zLdMbafk/btq1IJad4OvK8RRVQBAj6EdFO7CP/dgvErIMFoT+d/gD0/ZhM0c
-	zSeOcJYk/0cQ7YqXpKaYO5JInqmqG10VzQcLGdCMj/4D62kQx5OUPaK9y+F7xzirZRhqf2g49Lz
-	MzAogKBVXwJy+H/qch/LL5mZKTzeE5SkFoq8FWSa2Jv9G2Nf07Rgz3L0AZFcegbynHhcrLkJuIs
-	mw0/lxH5U/x7fUH53xYGlQn8aPFXggPLD6WhqCuUN6t8FcRvQdvujRl2+7LoS0oN7rnpr7NtY5z
-	NIqXT3jEqx1Sn8m4m1QbUiViNb3CA8/kN6HmwzwtysLzknjYVMzSgwxz4h5nv2zM1VoMTOvZ2xF
-	8EC4xTxa/JMltWl/JS9uOcZV
-X-Received: by 2002:a05:600c:154c:b0:4bb:6a78:7c42 with SMTP id 5b1f17b1804b1-4bb887c3428mr203152325e9.1.1795370615902;
-        Sun, 22 Nov 2026 10:03:35 -0800 (PST)
+        bh=mu4XfoxbNIitLNaNoA9rOQZrx6f9uvt25KWkgZS+7H8=;
+        b=kSnHKPqeFHEHRIvHdrcYTc7dc8FZLfZBQ7Uge8lGoccmKGo6LqvwlUS2ouED7qUV2m
+         NGJBSyy/VC8MC/YS2ctZ6BARXhp56Mi/HbnIMm+rHtjN9gNwJ08NoMhf0C3BReKExus2
+         J+1Ew82DWH5FxlL4M8CmMc50kaYjPwGX9m0hq0eFZHOvVnM9vNExIZwnLNsGD2Z+Jam5
+         AWvORZwPMx/e0stsSxe4C+9z27Zm3Y7gGIU4Nr/qR77fjCI18fbaXgbufJwO/WrrGtb0
+         deNy6h6KSw1wIIxMZz3gsYnVXnEjjHhqHOJ452z5G+ClETcvcYkhiCLpDefWRyB1D4lN
+         8gng==
+X-Gm-Message-State: APuU4Z874dKfSIJ7tMNKMVU4+ptIvfrUJlJ2JEP/UWNZCJ1fxVKB3sKt
+	ulnraunVVqfp3h4r0ZnEoNR8ywOSLK6/0L6fvw1xV0KT43/Kv8Ausxy5
+X-Gm-Gg: AZFdTZeIqfj/2r/KOyUtdDjd1JN0mcpUHhvOD4HYn+FDyd+pvHaiJzGUvDELvz6uNs3
+	LgDkfndRX0ELzWTWUNLCkx15q3aCJeeV+aHs+LkKjqxYXHRI9I40o4oc1dyKwfREk8aRW+LLcQR
+	drWY2vorbp3W4RBZY2ib/i4oDtbnvXx54ZyWUMX+4lx04ypySGIEDFpRRw71X4cco/G7xtsWqvx
+	rj8oFGS6E4pvcRAChz9focJ0ArRzIKqv7aXto7v55G3xwlQRyGGXryiKNsuZGiXrPKuG1xk0qxb
+	nEt5xk1FXnBuy0+SOmyyOvL5taxUXhfb3LP8VJgZqPAik5Eze4sFL73iJ6+baGMNdlLCA0w/zTL
+	m/vAeTRyFeof2I9nwNsKW8U35ZI4P0S/OYhATga5OKRQRZZIR7MzLnpnK5mqKr+BrN2DR4bb6Cr
+	8MhaqxXwY3c3oIETpnSsJ1zIrTVD8LUwT6ioF5NPu3U5gGzPqtFirzdFQbuY5guZr6DrH6Xi70i
+	0vi/G8OABvLmjwXqJZzOksEnSZnztLIg83TTKtFCdkV6PtQSEIQwgqlt3yr36r/F4gDp5mkJvFL
+	O8twKpWo3WLAQa3P0sVK/qUFvCL6jV5m8SNNyykjsEH+mg==
+X-Received: by 2002:a05:600c:6298:b0:4bb:6375:aa41 with SMTP id 5b1f17b1804b1-4bb88934652mr177769535e9.27.1795370623445;
+        Sun, 22 Nov 2026 10:03:43 -0800 (PST)
 Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb90660cb4sm194315535e9.2.2026.11.22.10.03.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853b216esm319512105e9.12.2026.11.22.10.03.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Nov 2026 10:03:35 -0800 (PST)
-Message-ID: <43a1524c-a0d7-48e4-8bfb-3912b97fd197@gmail.com>
-Date: Sun, 22 Nov 2026 19:03:33 +0100
+        Sun, 22 Nov 2026 10:03:43 -0800 (PST)
+Message-ID: <9e6c20ce-fa40-469f-adbf-82d87b9790f8@gmail.com>
+Date: Sun, 22 Nov 2026 19:03:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] mm/mremap: respect guard gaps on in-place expansion
+Subject: Re: [PATCH 7/7] mm/vma: make brk mappings non-executable under MDWE
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>,
  Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
@@ -113,25 +113,25 @@ To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
 Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>,
  Josef Bacik <josef@toxicpanda.com>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
- <20261121-some-more-ai-fixes-v1-6-236e925d9b64@kernel.org>
+ <20261121-some-more-ai-fixes-v1-7-236e925d9b64@kernel.org>
 Content-Language: en-US
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261121-some-more-ai-fixes-v1-6-236e925d9b64@kernel.org>
+In-Reply-To: <20261121-some-more-ai-fixes-v1-7-236e925d9b64@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4347012000E
 X-Rspam-User:
-X-Stat-Signature: r4i99yxywaaqwqfg5oopaqepdk9nbj1o
+X-Rspamd-Queue-Id: C04AF40005
+X-Stat-Signature: ijrzuguqhx7rnrbnx4u9iypfkpgmxcud
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795370617-385844
-X-HE-Meta: U2FsdGVkX1+/0C1KcCkCeuv1GmzRb93Vi9lVccYmKRPzttCCb73owmIIbm128uyt1MChVyK3jDKZtDG/Pu9pQWUXSuLMDvB2uxnx8DfOcHWeEpmfwYcypQ2/BlWmb6uj0BANZop+CTsmyemLwuEirDRetX1EhU6dB8Pf5cg7oC/Tu/0k1p0yOyObFMlFslOYfeLdM2YfeN+KgR4CG5gn/Zn+daojS5NRHkkeZdpSUdrWtkoK/aqFndG2bKrt+seVPSm816HjzBN2G2skbM/QSkwdR2pyz/9ZL7dyRziOx/l1b1KcZZxuikEmLYWYpZMWeAqjQGlULfAUwoEyK2P6z9QEQ8+uicDO5T62kdpqyhpO+8HmO8G7+jB7thUoDjYEsmcyRo0qq8qAMOHobGk4QYAbjBE8d14HKB/ZqVBZset1Hpcfi30NTMWTjbn+3O86rvWo2NihnXW9DtpZtdSqUcE+aNIgiY2gc33ODSxoLtsB6HdyaiBX/DtRKKSLb0aDhEqFXORe2dauUvtGADGu6OiZRKogJcG8RxK3ie71z6r4fdRAoH7x5d1mwLjP9J5+fQuBJJaxGoW+V8BORWNlWRrcPh52cIMopGlcJNTY214y9ZkOt/DtC0z90Vtytj2SrRZw6E4e5yqvVecPsVsgB7wG0gRndxKAxQ3CR16p5WdoSEdo/Mpy/EqE+pzvwVDVX9oa3vawg6O0oyxMnCObo+jOIUJGQXNWTZDvPFYLUkRB/sVycLtI7eVhDxUUYmFOd2sfItsz8bMMrl9wAJOMyeF2GsjIxy/DqN6efmvuIa6Y1wVR0dphDZAH5sEEeppqU/7JPmFSloUxSq/SZdW1kTY0+/diseZP41q8Dx85JtpyYUq39z+rdBPFWv0DiwOCo35q7yyQVusDHAKYzkwRBWwkJuKDIjzk9vAq1beEcIyYcA3sW20vyMo67w63EkfMphcgEhBgcGSWWuT6PvV
- B+NOLxk8
- e+WPbPXsjBepXwai+L6YGmZGyOEwj8fh2A5q2sZRdyat6hFD77vvRHg1kLg9O40nzHgRktV4UXbQaEXDb+3vl363s0o8T3sC0Br7gZjtRRlbMkfq6IRMrZIlX1LWmFhIRoPlX+e6Qc33pCqPpxQm5GZdz5Q9t+ChjtVVaX38bBIEwKB8YfNt8aJSkOEufeVC6QsJm8ziSRcS+QS5qvkzybfs9+v2W6v7ymZgEQJbHRNDXWhIxCchUiMFUl7EWDk+MwIbTMuLKj9wE09ieaM/lzKVPQzvRgPHqVVoaHOtWbv3gc37p0GbrlLm4L9XyL+JTAsV/83Aa/QGYztO0ZpLiadXiL7ZulpkkSAIwXi0Ps7ohkRRhEZfYGcoBG4Z2+74Y0ZMTtlJYDPPHW0gf685XfrxmPt8hY+Zp1Nax2OIMEGEqC+k7kLslhbigLYLX4u/L7JSXQffF4xKx9xnySbuH6xKgwQCAJi+mcZpI10MZAHNSt7TJqJof/ZJU7UYi82pG5de5veb191H6GzFwWsmdWvOr5CIJDzBGOIKNFhsRKc5MZNkivio2bwa+oWFyH2AgR1E7nkXgGHyqq2ekK8gUJ6BAMOyXPIz/Jy1PZxFbXD2zWg/zkTTCbSjpxCvku5eM8NtcdYSc4sEjGYqO8Wk0Ao2gbXkG18xzp7SLAhr4asNQWb73lhBYm9esWCZcKGohm6R1QbNx1hVZ+S0=
+X-HE-Tag: 1795370624-321199
+X-HE-Meta: U2FsdGVkX18N90WyzbH2n+lyG3uy5yFyzc9aL8n6G8zIQeY8Ml+uGMnxNc0Bczdgodlugc7tGKozYbt/aPfC0T4cGyKT24FoFHptaPdv3lGdQQdgeYZFK+q5grU1dgvrNLcM40o5y3mi403iaZ+EMPsi5Cx3kB3WJoFDxLmQ116GP2QcQi/tu1+mcGIapCerVB8VVT8tf78ua+5xj1InHZo2mFNKFbdEdDqHG5ZY8d6yDv0b0smyGolejejDXnA0R8hDtm4prgRGbhwjmutCkpImNwhX1n0zIsbexNLKGkpOLp2QFF5C22J+hIrEQRIQWF56aSPNsgIyMf0DVOP/oiNZUqxYOzl1Q+WASsGyZeHKK5mlzCJ9aFx9AlzmRywJZslnlVsPMyCu8AhyLi+YIgrxZT9tpRsLp3ZR9VQS+JHTfjEEAYq3ohvVPo6usUuK2uq+DZlyA19b/izYHyHB5/1zLz+3X3iYMstK/QHW7KGu3RDdjLwexVfykiFwMB+4vr4TuLzUV4lN42pd9iKmmvwSSlgIzm1pbXSRLkOHS1/XtgYB618kHZBnkgZokl7ijlAf/4wFJM6sqnsLZ/kvM7lzpGgK5gM1a72gVnQixuwdI/YXtPwxG+UiP7lv2p6Ql920nYbmHNHDVWLF+j+bqwNHW5qu1DlHPP496Nl+wrWpiioC6BWx+oByKUL+ggLEydAJ39d1j4k1sN/SIno3ProWXIfqgC3gbHS1FwgIc63Hw/v9iBuCWYAO8a2W5d6ZjRldhps/wCCZ05P5vLxAiqrxtuut16GGViuLrEA+RjhEuwKrhvc6D/KKuYWyN1yu3xyVmeYxWjk/3eDfPS6FFWSqgb+22h7fXszkWVtd2Q0ImOiPcGTlIYnrYK4ZM+FfBff/Ax3X6bMPZS8seoa0bPYICpndrar1QJVcIJPWjFcfJ4o5FCnLfe18hSlqyG4ITZ50XRRSU7KNBwLZ+aF
+ MV/jCXt2
+ muo8gpuFuyHUG/p/xMjMjyYH0P3JQX8f5npW9AnCNz5SopJmAjs1NGaTOA766UGs029yEY/Nbq8MEWCf7NtKrmpa2ap2zGhmfokz14hBGtifLTE7neEIh6I5FX4MfxBquescbRxkqUS9g3sxhF87Sv3am8T4Mt+ziAbolpBrX3OS/s88zu31DjBkmgNX4oNaCa2+mnUU55RXCo05HFhOcGThPvYrDmMJZOpY1vz/p4bQovPoppANqe113PryMFgkTnuXirDEGBR+QLoYMsZlBy06TayOqVpXJaRtPd0w5D5EIrHBuWNGWCi6aG6VESiyjkOzE9PpSq2AdR1Qp9hHDUxkjdkkQ1Qgf5/B0qYPPqhwqJdgzNuvbvF8q6t6C4ZlBp414ndFu8xHmxOqTGEl+kKPvwBNC5ILLLVpHC81fG73DWGUPUM3FeKCm4gMsy89Ah4uliTa7nnLGoYJpPzs7Dvvn5LdjF+/H9YE/+UIEyhKspbVTbE4rdR1HOBN4peAJmjmnr/n6aKXecUK7IdEzCNKi/gqiuwCFdM2sIT/CITaANDgBvdkfQtFF9yEr+lRPF2Y9WQfLp2BazfC2s0wXknUAOgluzdLXy8HsYY89ImlEBcL+UOuSssk2Qu89dmaBVP2NCSmbdDqD2BfoCMYLDepoxENodVmJ9U6RjMVnDhHS6+KSGX1mN4Cp2kQO+T2tgF5XkMurLtW8yfpKtYdk70tpz4CTi74CFaOpM3+3i6vE/UE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,23 +143,36 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 11/21/26 5:02 PM, Lorenzo Stoakes (ARM) wrote:
 > From: Chris Mason <mason@kernel.org>
 > 
-> Growing a mapping in place can let it use up the guard gap below a
-> stack, so that the stack can't grow any further, or overflows into the
-> mapping instead of faulting.
+> With PR_SET_MDWE in effect, brk() and the ELF loader can still create
+> anonymous mappings that are both writable and executable.
 > 
-> A mapping has to stay out of the gap of the next VMA unless the caller
-> fixed its address. But vma_expandable() only checks that the new range
-> doesn't intersect the next VMA, and it passes MAP_FIXED to
-> get_unmapped_area(), which skips the gap check there.
+> MDWE only holds if every path that decides the flags of a VMA asks
+> map_deny_write_exec(). mmap_region() and do_mprotect_pkey() do, but
+> do_brk_flags() does not. It always sets VMA_WRITE_BIT, and it gets
+> VMA_EXEC_BIT in any of these cases:
 > 
-> Fix the issue by stopping in-place growth at the start of the gap.
+>     VMA_DATA_DEFAULT_FLAGS is
+>       VMA_DATA_FLAGS_TSK_EXEC    the personality has READ_IMPLIES_EXEC
+>                                  (e.g. x86, arm, arm64, mips)
+>       VMA_DATA_FLAGS_EXEC        always
+>                                  (the default, e.g. m68k, sh, sparc)
+>     vm_brk_flags(is_exec)        elf_load() of a PT_LOAD with PF_X and
+>                                  p_memsz > p_filesz
 > 
-> Growing a mapping into or within the gap of a stack or shadow stack now
-> fails with ENOMEM without MREMAP_MAYMOVE, or if the mapping can't be
-> moved.
+> Fix the issue by dropping VMA_EXEC_BIT if MDWE is in effect, so that
+> brk() and execve() keep working where the bit is only a default.
 > 
-> Fixes: 1be7107fbe18 ("mm: larger stack guard gap, between vmas")
+> Under MDWE, a task that runs code from its heap, or from the part of an
+> executable PT_LOAD beyond p_filesz, now gets SIGSEGV in the cases above.
+> 
+> mprotect(PROT_READ | PROT_EXEC) on these mappings now fails with
+> -EACCES. While the personality has READ_IMPLIES_EXEC, so does
+> mprotect(PROT_READ), as on any other anonymous mapping that is not
+> executable.
+> 
+> Fixes: b507808ebce2 ("mm: implement memory-deny-write-execute as a prctl")
 > Signed-off-by: Chris Mason <mason@kernel.org>
+> [ ljs: switched to MMF_HAS_MDWE test, tweaked commit msg ]
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 LGTM:
