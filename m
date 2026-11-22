@@ -1,91 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23477606A31E
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 22:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516C8606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 23:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OS8TcZci
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=i5HBvmPb
 Received: by kanga.kvack.org (Postfix)
-	id 452D36B00EF; Sun, 22 Nov 2026 17:41:07 -0500 (EST)
+	id 0D0B86B00EF; Sun, 22 Nov 2026 18:47:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42A616B05B0; Sun, 22 Nov 2026 17:41:07 -0500 (EST)
+	id 081776B05B0; Sun, 22 Nov 2026 18:47:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 341936B05B1; Sun, 22 Nov 2026 17:41:07 -0500 (EST)
+	id EB1FE6B05B1; Sun, 22 Nov 2026 18:47:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 14BC26B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:41:07 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BEB38047D
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:41:06 +0000 (UTC)
-X-FDA: 85464226932.18.9AF2A55
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0BC5040006
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:41:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OS8TcZci;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B9A676B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:47:01 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 023081A0716
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:47:00 +0000 (UTC)
+X-FDA: 85464393042.20.61FEB50
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3399016000D
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:46:58 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=i5HBvmPb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of evanfengff@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=evanfengff@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795387265;
-	b=f9J6ce9fHwwsPYLE7R/A8uNBbNaDyDa7yWBBOgGRkH6yhoKmcNj2xaHLa9Jh3BFLeeZJnR
-	fipP0OzMWPsRl8GBmgjqrxUK96TJkQiBAJ0nrM1vyvxyXM6KprhPSnXt8cacym5+VXUOsu
-	LOZbbj8qBFAYIGH1jMvWwapnNhFrYWA=
+	t=1795391219;
+	b=CcFdf6SGzoan0xjdW6VpDaJnAYcIOuJfsFpr4Wl/g5kgW/d49uSkSGydsUzn3zsB+j2Mnt
+	koUp4qSdvaywRLb24+KG6kdThzKAL/iwAz6qbPE53uhD+2f4I1aWQWvfu9rKuine6Xk0AQ
+	IbjGytnvv/cbDlT4IglfTeAn8t5/fnE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795387265;
+	s=arc-20220608; t=1795391219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=sJFKXYBlyKsjrymChPkVlwTwAE7JP3i6GsdhQ8/eAqU=;
-	b=bWK2110IFInpGq7XwZuJJPNtgCijFAc53VdeD8ndbdXDKJm9isv+W8EGRIK9zPow27EieG
-	fmnmnOE0GG3Vkhq6SGEHbiEKP8pJk2iOnDsVG/FF8MCq8A1rt/9BDaRhD3y7xBKYRohNZD
-	tfrqPBRh3ASWog5Adw+VArdYyU3bgiA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5SMUhQZLvGIWMEWzTIwqLJCO1x/4SePRxnBTKofe0h8=;
+	b=3igFO9vK2RJ1voLAnAQSeQ7iI04LNqCxQrrN85gn3NaxwSQOM29rzz/DBTaVb8gyDSF37i
+	ycUjadFeyn12c5BIQvBhsvVDCrBhQ3Pqm9J63jB6ze1aAdaQzoFF/a2bjE3IDNLsUfDAzO
+	HrGMoJROiZuRMO19QVoPX441KdjfPRg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OS8TcZci;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01F7E41786;
-	Sun, 22 Nov 2026 22:41:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3B31F000C0;
-	Sun, 22 Nov 2026 22:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795387263;
-	bh=sJFKXYBlyKsjrymChPkVlwTwAE7JP3i6GsdhQ8/eAqU=;
-	h=From:To:Cc:Subject:Date;
-	b=OS8TcZcihfSP+khLyNygpchK1BCLDPefv4GAZhdMrw/JnZVxFTB5QxsMq7x4VD0IO
-	 pPJDmxdONZVsBOw2JZUD5cwr9xfx5VPu1fEsZ3EqcYn6cM4s9+X46gp2wGRoWaKed0
-	 Nl+hLfwGIXmi21TSu4VAR53a/fRH1b43E8Qow90EqjP5CPUCkLvxdiM5VYAo8XecWl
-	 RnA/BTHEtexTTmUhfcgPcNs3wZ/GnbXVP4X7FayxyIPCM8GjDW1j/O2D9nztkmtfxr
-	 f8Hd5M9hA+1LfntvHkn/CLoc573hHYJQts+tPQIZv4RhH/z1ooGe+hLindixxoqndS
-	 2AGCt6hhFskgA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=i5HBvmPb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of evanfengff@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=evanfengff@gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2f0414c1062so13711915ad.2
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:46:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795391218; x=1795996018; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5SMUhQZLvGIWMEWzTIwqLJCO1x/4SePRxnBTKofe0h8=;
+        b=i5HBvmPbzriqFAv5rkNufNl9GgALLFUoAjSD459T43AmEUQPp4E4yKXipcV3MWjiYM
+         boZAVDY3XbWE35C9b+MeELqe4jRp2jjXdsoWQKOQnsy+3bGYGiHo0jceOqAsENbwVUqf
+         6gRX4UL1B1SN9IVbEQ9o/N1HKfyxSOMHEcjXlMMiUFN/hPpmzNsNQPYfdVflqkVN8Yw8
+         CNCAJCTuTInw9voYuwhGvYyWns3eycGQnZ7mb9E5nGOtw/218n5kpUUQGwqtC4Dtl8GH
+         +1iiPns1OHvIJs1pvUAp/ejiXyPKYrS5ja7uF9fR39sdABvjah8blb/fvv6jN7nG2HHt
+         m7KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795391218; x=1795996018;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5SMUhQZLvGIWMEWzTIwqLJCO1x/4SePRxnBTKofe0h8=;
+        b=udkklSu6ZWeWPfB/XbbBng01xzE/sv9KE+5IFTqFoqOgOmJWP2slsXL0SW8sWs2/MF
+         bUj2+dpUTQg+agcnkAM2RmJODDlpY5hH/T0ktvv+ZAsd8DwvjwlQApNozvLHglLtFSv3
+         n8uRdCkOohPAzoKAEIbtv4BdfK2fiQ9nNGo287uCqfIXnnTJcvZMTX9jiADhWEugd6RC
+         Vus6AenCg9Z8T15IDR9Ptp1mYkCokRn6GAz5ISTvNDzLluc34RCLjYOYHTpJj20MacnN
+         6a5HUznYi60j5936RAHpMUzN6afuFmd6PWyF85E2yvW4cWiRsQB4j06v+VjmT2VRn9RE
+         RkJQ==
+X-Forwarded-Encrypted: i=1; AL+hErHrCc1w/a/lWKmQ48Wte8euwPz4pQjrsVRRu/O+NpqOpIe5H9LprLkRS/rFeybRjdMTfakPIkiWJw==@kvack.org
+X-Gm-Message-State: APuU4Z+Vm3YUGz45s5N85lpEAsN/3hPiwmHjt9ZNlmrf+JQuJD+dlVKz
+	ANSkmPrp1GaagJkI3hyT+iCueFo/YMV0F4zrtgE6P5YfU20aAw/G4a6enfs0Jj8s
+X-Gm-Gg: AZFdTZe072gKiKf2099d/nF+el6e3gEgXwTDu12f7pKILUVElBeDPV69LBih4X8IriI
+	4YsXr3lQG+4Ituj2I2dOgENe8JvsEkoakkeoFhBhLMFb+iEf0qjoFHzwbuo8i0is0H/Kjq1kePO
+	kCj5Gt1z/tegj5pTbqUX47kEO/49lURBrldV+cEnx0wDddaanj0F0wKHbfGajgKza3OAtW6OxTl
+	KQUgyjpxpcvwPjlTVeyzTtzMK+mIieW6G7M9DGtDBneU+Syj1NjDAX/uMtKc49ssrXyMp2+zE86
+	soToUcjHFfWXx4Rms/yLjYbpMt4+GBMxcbaMXKEmFMzKIM4Mu6wlhBQ7Yak8CFBGmNvM/U5GNFw
+	Vqohaa8wSzmJ45D3Zepd6eCSAgwV/S6mUzwEwxHYfej9MmzIPSxb/vxXa3ylJHWwpYwSBCfI0Kz
+	A2Geoz+55HircxD80Sif+1BIEovtc3ypeNTAku01OXmqMqARDwosTS5eVCVSJc/wWso/6jzYMAT
+	34NB3rh9sZWbkjJIIHSJeg71yDMuS4af2ybb/tanXfR5gfGBWxx+sadRyaJIXFDs3EXCYJlEvlS
+	jPb50t5+dArKk74uaV/z9L1rFT6Gu/cu5aWnaNpXfXJ06AzcI0sqUON4QywP1PwQFT1SUsf/0ee
+	51+6LUxMZ8fOjuZqyOf0irXtC106RX1AnlFydB8hdXgfj/aXxSAHVzda9YqAEZE10WAbHXICDb0
+	Qy
+X-Received: by 2002:a17:90b:4b05:b0:3a0:516d:9f88 with SMTP id 98e67ed59e1d1-3b41c911c9emr8676680a91.26.1795391217624;
+        Sun, 22 Nov 2026 15:46:57 -0800 (PST)
+Received: from localhost.localdomain (180.36.101.34.bc.googleusercontent.com. [34.101.36.180])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad47091sm15052556a91.10.2026.11.22.15.46.53
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 22 Nov 2026 15:46:57 -0800 (PST)
+From: Yifan Feng <evanfengff@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: [RFC PATCH mm-hotfixes-unstable] mm/damon/core: cleanup damos->walk_completed in damos_walk_cancel()
-Date: Sun, 22 Nov 2026 14:40:53 -0800
-Message-ID: <20261122224054.79767-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/core: do not overwrite wmarks.activated in damos_commit()
+Date: Sun, 22 Nov 2026 15:46:32 -0800
+Message-Id: <20261122234633.89529-1-evanfengff@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20261122012222.148520-1-sj@kernel.org>
+References: <20261122012222.148520-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3399016000D
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0BC5040006
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: wy5kgncixuen1a5cp3ejzkzondg34tzt
-X-HE-Tag: 1795387264-88241
-X-HE-Meta: U2FsdGVkX1+0c7TONJfuN7o3/uBSG2OrrSqIVxI+wqOgSPyji54BVbi9DZJWGeqCBdLFSW6wgTJFE/IlLxk8Upwk3VoV86DKlz6ey270GEiya0awuH7V3trgBdFZXJfgAwT35O1nPEdf95sQMdePfgZLwzgfGx5C3AmXpCa02Rs0kMAv01hh8xKXS6aygiW5cw1RJ/VUbpzCeEeB8vG33J2WehtPxbknrYDeXuntLZMLYNoHvMfnPJcErIz/46mVCWw86IeXi6Q+yjYS5dZqe8GuE7rYhklZZdsnyDDRl+d1XILZrQ6GsgG4CG0agYfb0A7BjWUPIykTlP7rch48wjvQ/7oO4lNEiiDgR2+d1vo7nI02qiLDby2yvvjXCHvaJEHDxuyP/mRsnWmplfwkEQ3wg6c8KQhjJvlxY8XA0OcIL/uRZI9d4B7cSN6fu1FLh7XUcujWfi9f0KF7LLB9/tIkwzOMz0fObBE4vIx1K0yZ2yYGC+9Ha3HGkze9aHKaYrnL1HXgxdLM8JxV67zlrf/Rg+li5fn8jDn/BOIXwOM5A7LSjVBfirGusqvrY26/nuQKNG9Rz3g2x9CArbAdaFeBJZmXwfLnRufY89yM+RjQRydUjDu5esuzO3ueYnZ7dnNGM8RbxoDl2PPscA/enL1wm+xmOx/mi9zgYEMhlOtVx0qN6jA7ZubkJ6PAjVIfen0w7yqg3120i+edGpo6PrwC63R/RO3Il867q5MREM3vG5+b6g264JZJN32ETiRugWNy+F2d8PLYtvl2f2xNh4Kn5WXq5XTya9QpFHQwcQxRd2niKtOxNWLuQzbzx6YgQNGITQopbRaA3syIYIvNgMyUJsd3vJhd6ReZM7SvzB9fDLE88pVI5E8z4fnVWqAg2YBFGpWU8gzAYYz2V00XXjdLJnoGk9Ga5H68tQgdTOTBr7mNlp7hDzvmRSosvCb1LMWvrlERkSvc2piQO+A
- VKD6qRmS
- oEU3Oeinc5aaDLvDKHCKi1FNQ8CtEFKirini0NPmd5+9sNfjerJz4ZcDQeGBM1EmPutOecHHHJwdgI/hCk1/c13xVXW3OPv43kkKrnRRrGl+hRzb/l2xcb1IvSIrKc0Z6JSuz6ryQ95p4XpZ9UkYhcUBKcjp0eo6mGXe3teBmy36DGKPHlpDiRtNJLbAfcaLprlPkpz58Nxzjgz0TfqJZ61S1l5lwsSkY1Yk7+a9ctj0pjTxqAeeKAl+LJXvrc4rnwzb8dEMj9IDlsAPcyQMYEHHWOuvuJzdNpLp0fiYC+UWVqxb6MTrRL5fTZuWdQH7+FGn4OayP5YFl8M80JrIP3fE6YM/2sCNeiIP20lz10daf/l0vp/WW2Kfy3N9222trEecPmh2vjhQnxRNt2Hy5tH2J2Vtft/cSbqjviqUoC4MV3FFEOqCNNDWR1w4tnwA65TeJbDxMaXp8d56/cigEIyVXu0uRrIsW3HNPHKUuMrHz5qKxMMVSi4+mkNLC+TGGgauPT1EgirJNgSF9QOHEeMrKpc/o1POIwG1nm8u1QTzWuNq0Do64B0OJ9g==
+X-Stat-Signature: 8nig8mutqu1xp75hewpzzo4d55pcthga
+X-HE-Tag: 1795391218-653589
+X-HE-Meta: U2FsdGVkX19VM9gGWixMzA4HzAQ7vfq9YfihCpwqLeM9q9TbJ+aWZ7r0uSpMo6TP0UpsI8EdVf81OqLsStvB8TpLwd9T1OyddFu+EBoMFUB/d7Ynxjhaaft4Z83ivCv36LtvCYVA5bWjc6oymnxa43NMB8jfRHCam9mF3gwKPvW3JSMK7kVdUCBDwDswrxoM4B7D2d7fFakkFc6xBZuNP5REGKrzTGjxRx640K8U3SNUNMjrFUsnJ6V6sSmx/rX1DeesumVjLGyljkpun4zyM56fGNakNx6HuYhXgcbC1xJXJJ2l+z5h3eYKT4FTesBxZOLsSas08OMc1niQBkbyN+xkpRu9KydoLOjbXpltHbgr6bXb4LrRdSsbraCoOTZ215Kuc+vPVSmVhCQKG4QBdMFzZAgvYbHXRlqixCsNttVeEz614/kRhggzEmeQlH815YVQpKkD9OPgSoIWeTI6gssccP3gv7fvFgWPEd3qJ25Buda8NbcM71MGV/nBjtZoECvANd7IsdZaXel7HplrrBNRhlxHu0hBPGSZDX9xLAZ0nfCuhm294Db5ykPuxIvC1yL2MBrwkFCsgdOnukhaglD8Ny37qAdoqHGdWczSB9pXQ8rVJrJJ+vVplNPlUAnhqUQcUsgn4bWmdggBQBLu2AAeo2KQjHGpWUaLPLIJi9IvzbEvKzbECySmFQ4eGvtKVtAUzMCJb9bnfeOXf59sucxmLITXnSwUTY+zExQzmiRg6psC2EODXJEb4SSDeM3EVOWmNs+srip25PW1Ri3OZxe1/b//98c31jVr9GnzRscRceGTngQWA2MtjsYC4MsjZftMwFoH+WM4CLtYfJ5vMcd3EaafuzIOpRbh7d6PFtUNWHRGShVO4CWCv/LJ19SWkf/dx/iTRPXu5u54ax9ucZp5JK0nxFVE39MKdMcMOuy2cZBXlW3AlC4dgWAE2sBli2loItgCfwuC4Gl5QV8
+ UT8gmwel
+ m+L1CRfRZI6suKXOqYYYhGbQR/IIN14XCZo6+vE8NiI2ipwoO6fod+w10mZ1lUTUwT5pJpBxwU051KoKCaJO7UvhKxMX40D/1Tr5/T6FkbQthvxz9CM9XAFZV1aDmWvsdJYWZQtlr+tVEXc6JJjUmz7l2Qt1TF75QF8reMnErqemab7sV31khHiH9XoVUwHLHfH2dM3k5DrvzX7aMu/VrnSVgORS2mJfR8MWhOZdeE3s+QsKQqwyrnc/9p1rezMyS9sEPIBawq3zvnPk1dYZreScouqFEmsko3dg5WNEDjbjauCtTW7w0RmCvIpa9MyQ3KokmLLj+zyFIVNR9EyBNqpax8CSxHvnzXzFc7+eD7no5gG4h9ZpUFIPVsu+p0r9gyJBhwQezoWaNcUyEf8qGZtpFB9e9viP4OfFBa3RitKsbXm6KWYHKbSqtYeyWaWZwGcumbA6seSMpeEVAd6TjRI/oIXN7qXEfBYAqH436BagyjED5LnIjckDwAaHj8okcXUgtHpc+iloZH++jrVIMvO8yPSAlcVBY7hTIo+6HBDzffmphoIcJTD/kjbDIjr4xmGuaaAPMnnoF5y0ugkB58wYj1RLOUePvmmgKnX/5drpF4Gt1kOChuQcRk6vssxXVIT89ExGaXe+hoSfwLtCw+6sWIL6dDgQYXZXNZHUUUwjbrzY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,69 +127,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-DAMOS walk could be unexpectedly only partially performed.  It can
-happen when there are multiple schemes and the walk is requested after
-the previous walk is canceled.
+On Sat, 21 Nov 2026 17:22:22 -0800 SJ Park <sj@kernel.org> wrote:
 
-The expectation of DAMOS walk for a setup that has multiple schemes is
-that it will walk for one snapshot for all schemes.  To know if the walk
-for the one snapshot of a given scheme is done, each damos struct has
-the walk_completed field.  It is set when the walk for the given scheme
-is completed.  The walk skips schemes having the field set.  It is reset
-for all schemes when all the schemes get it set.
+[...]
+> > Do not restore
+> > it for DAMOS_WMARK_NONE, because nothing sets it again in that case and
+> > the scheme would stay off.
+>
+> Is this really necessary?  If not, I'd prefer restoring it always for
+> simplicity.
 
-damos_walk_cancel() cancels all existing walks.  But it does not reset
-the walk_completed field.  damos_walk_cancel() can be called at any
-kdamond loop iteration.  For example, due to DAMON context pause or
-DAMOS watermarks-caused deactivation.  It means that the function can be
-called while only some of the schemes completed their walks.  And users
-could request another walk after the canceled walk.  In the case,
-because some of the schemes still have walk_completed fields set, the
-walk for them is skipped.  As a result, DAMOS walk based user operations
-such as update_schemes_tried_bytes kdamond command could show incomplete
-output.
+Thanks for the quick review.
 
-Fix by unsetting the fields of all schemes in damos_walk_cancel().
+I think it is needed.  With DAMOS_WMARK_NONE, damos_wmark_wait_us()
+returns 0 before it touches 'activated'.  So if the scheme is
+deactivated when the metric is changed to none, nothing activates it
+again.
 
-The user impact is not critical.  No crash or leak happens.  Only DAMOS
-based monitoring results retrieval could work unexpectedly, under the
-certain setup and the race.  Given the best effort nature of DAMON, such
-occasional monitoring quality degradation would be not critical.
+I tried restoring it always.  I deactivated a scheme by the watermarks
+(free memory rate above high), then set the metric to none and
+committed.  After that update_schemes_tried_regions never returned on
+my test kernel (it does not have the damos_walk() fix yet).  With the
+check, the scheme is applied again after the commit.
 
-The issue has found from the Sashiko bug database.
-
-Closes: https://sashiko.dev/#/bug/linux-228a4c52-0545-4c1f-90ce-41114d8272e9
-Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
-Cc: <stable@vger.kernel.org> # 6.14.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index b8678a53b0a98..ec7f20b7856de 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2699,6 +2699,7 @@ static void damos_walk_complete(struct damon_ctx *ctx, struct damos *s)
- static void damos_walk_cancel(struct damon_ctx *ctx)
- {
- 	struct damos_walk_control *control;
-+	struct damos *s;
- 
- 	mutex_lock(&ctx->walk_control_lock);
- 	control = ctx->walk_control;
-@@ -2706,6 +2707,9 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
- 
- 	if (!control)
- 		return;
-+
-+	damon_for_each_scheme(s, ctx)
-+		s->walk_completed = false;
- 	control->canceled = true;
- 	complete(&control->completion);
- 	mutex_lock(&ctx->walk_control_lock);
-
-base-commit: bcafbab5174a89c3f689e458b5114641a0f68032
--- 
-2.47.3
+Thanks,
+Yifan
 
