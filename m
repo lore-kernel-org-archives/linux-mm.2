@@ -1,88 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFB4606A32A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29643606A332
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FeZXY1bn
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GvsIzOyn
 Received: by kanga.kvack.org (Postfix)
-	id 750686B05C1; Sat, 21 Nov 2026 21:14:23 -0500 (EST)
+	id DA6EC6B00EF; Sat, 21 Nov 2026 21:47:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 728116B05C2; Sat, 21 Nov 2026 21:14:23 -0500 (EST)
+	id D57E86B05B0; Sat, 21 Nov 2026 21:47:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63E656B05C3; Sat, 21 Nov 2026 21:14:23 -0500 (EST)
+	id C46C56B05B1; Sat, 21 Nov 2026 21:47:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F7DB6B05C1
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:14:23 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 82CAC1C277D
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:14:22 +0000 (UTC)
-X-FDA: 85461135564.11.FC5D8F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D90A5A0005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:14:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FeZXY1bn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 90D696B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:47:55 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D9EF4805F2
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:47:54 +0000 (UTC)
+X-FDA: 85461220068.04.5F69FF8
+Received: from mta1.migadu.com (out-129.mta1.migadu.com [95.215.58.129])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C7BE280002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:47:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GvsIzOyn;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795313661;
-	b=GNk7y3kl9PiQrFMDCB/wGSdAiI8SdUGwYrN0/rkVOnHG0zh0lYi0CMopPwxdr7vJh+AEri
-	Upbz7eXxCamPH/oadm97b3MFsLfCF5boRTNtuMLbUX2kI34Lbttm3E1lGCextLzxiQNlOV
-	M9J00pZzE9VZrFEcPkVUytK4r5xIPfo=
+	t=1795315672;
+	b=uReZUcbe4rqeh802ZkVrXWCvQzf8g2Dw4s64f8tdxAWMIP5gtbOVBjJ94eWD4wcUI4DykT
+	pfHb0gFkrJtDUN8kMWVIkR99jPgbbQITpfncQxI5OW536EqbiEyiFbOULgxV6e4PF08K6k
+	u0cIw5r/r4ClbFYg7+gj08YVVDGXsJ0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795313661;
+	s=arc-20220608; t=1795315672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h5VA1YE3lZnMuc4pgcwx05FrLM8HqoJ1Sdgg4XfYCTc=;
-	b=1KzPU3Wdx+CETLyc8fAamPl8lopxZrjQzVgiGtqLA7ktRSoucyrdphD2UL7jhqC3FG/PNy
-	tcrtw+iiQy0seJT8H+JxhwpGt9Y9ysrlh8STH8coqyEbgy83Rpar4fB+6mgD/iVrFGMwaJ
-	vgCWucjk+aSA/yzmwP/H8THb5KGB5Q4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=bOrv+xLYUsaUyXaSe+BARibazXC+W+FOt8ErwK+aCss=;
+	b=hNTCsD/2WdV5JFVeploEOBJkcrajhWFJhwqXoqudYQIbLUq1NUjnSKFLtH7ijkSQ298cKq
+	OmgWEVvEwox4lSVBYvI3NMIFRtHKfACCzBZXFTQQB7Ymu6yjeF5Cs5tqKIjzTCnRLhXNL2
+	dBgnUCRjF1+TBOYilLZWqpTJl7OVW5Y=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FeZXY1bn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1DC6345911;
-	Sun, 22 Nov 2026 02:14:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585771F000CA;
-	Sun, 22 Nov 2026 02:14:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795313660;
-	bh=h5VA1YE3lZnMuc4pgcwx05FrLM8HqoJ1Sdgg4XfYCTc=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=FeZXY1bnXRjfWfDhdd9xvxA2C1PvOyxAVG/K78D8Kl9qL79GS5Qc997rcaK+Aa0DZ
-	 jl7mxVscPW7m/j4p3AR8o7Pgfv7EdqDS7MMMUdCmSkdniwuxKXU0nZ1MvJtABdS0To
-	 MGbUtZ0CeNa6NIJe+6hVKxEcz0iQdZ5UtGu4oMb0/TY1/v48944cY4nucneJ6g6kNI
-	 rwBf2H2sqlK4Eqycd2/wLe9kB2+F3DlVJHlbuudR+Wj4FMYMVYloWJ2vmPZtPUaCsz
-	 JYGGcRSqFRIHgjga3nhOPl0vDkmiDNg/9CgrfDzA44h72yk+os9ZejeY4N1M/xJOfN
-	 H4vWAxohEgGEA==
-Content-Type: multipart/mixed; boundary="===============3579480507848251298=="
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GvsIzOyn;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=rzojMZvLtM9+3SwUWO3HxhYcavbGDeGlgbRtLOpYVG4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795315670; v=1; x=1795920470;
+ b=GvsIzOyniRqJWLrSd29NQaoEIkIBRxfPl1mYz3guSdKs+KeehSOg3M+BN50opEeuSqRggTiN
+ CrDymRoMXbaBZOcBSu1ZvDpQZo+XbrlbHRZH2prtGrrSy/q2pdLsCv2fj5vqqm0m0DMxFHjbCmv
+ Q1sqNC33JjQdqb18hpwpuG/8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 313eb3f773ebefb2;
+	Sun, 22 Nov 2026 02:47:49 +0000
+X-Mizu-Trace-ID: 313eb3f773ebefb2
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Meta kernel team <kernel-team@meta.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/7] memcg: effective high limit that avoids isolation issues
+Date: Sat, 21 Nov 2026 18:47:30 -0800
+Message-ID: <20261122024737.2741569-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <a20bfb0569b8af98b16097472118dd35c85fc9c1e258860871b01bfa9c6c9384@mail.kernel.org>
-In-Reply-To: <20261122011809.2667684-26-jarkko@kernel.org>
-References: <20261122011809.2667684-26-jarkko@kernel.org>
-Subject: Re: [RFC PATCH v6 25/26] selftests/userland: Add userland test suite
-From: bot+bpf-ci@kernel.org
-To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
-Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun, 22 Nov 2026 02:14:16 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 54bpizhxj84wib4i74kwfemhpjie1cwf
+X-Rspamd-Queue-Id: C7BE280002
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
 X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D90A5A0005
-X-Stat-Signature: 4oz89ms6uue6rkowe4ja9wf88633x5dw
-X-HE-Tag: 1795313660-517150
-X-HE-Meta: U2FsdGVkX18X2rRaueOFuot+KRawXefpjtAgDU13yojow5UIxYxKqGMbXMJDo86Fb6B4R97eVlQ3DKN0frBHqmn/KCX7uta1aVPZR7/QxcMjMa5aUqAlTAWeWNsjRZliuTflI4MfpxVcUJzD3YJy928eeIQDK1UC6r+gFVmOJ1bjR6SJFC5SzgiemydG95r8XXJzH1BTezUGXW9uTk9/8Jr6FBAszTqX+t4ZJ/vI05rCs5nAmxIh8n6rbH5eOiTKF8tU2zuB2fRCM3/GTuVC7x8X64/Qr+nn+YJBwUTQNRNbWLsQ1rKJE2HCg5k6pQ/gRiX/Qw/Dujg1vA7CWj/sPetztOQQ+zhcTpjttg0w+ceQICOfAqles5Qfpv4UCOL7bEabN+IX57RqHnIy8+1t9cFDDsCL1TS5iXptP6n5AksFOhMAIh8HGN8l7miGAyheTaQr+y0BZI2UxoCkGcHFXg0MwdxCi38Qm+OxHN/d320Kh8dXidGQTsuhvUg/F4NtPOSWyyKwgOB96o1HesSujEIwki/hVSLK8G7eUyfzXsh8DW4hzKZANchOxy0tJmRQT14SEqcHOtWWZ7i8Pa3h9aPF0I3TF13OeVs2VJO/kQxX8CVuheQo6XO2PEl3eYUikHbbI1qALNbuUZoDAZKPJ3qMsqDgJB7QOZCoEneQg3jXq3r7rFkngwuWE1ManPhwvFWaeIG2HXtDUE2NUWy/v7VqTWlmsVAkdgxdw9KtjuKFw/Zr0LWiA68LA3cMTY2VT04DC1JgTmLbfAap/EHpJNqh0koTlwrHm52XeZj98LfW/So5IRHH52/tRK/8Df1egr9xD14uQQBnoWpHCbI/UbS8eO/+DT6s+P5BZD3lsVvj+tk93Npu8yRC+lCKQsFyN0YmBj68sEpgODMV8lchRKfL7TdTpuvuLazkovGUQpaG5aDquAUSNhmhQIJvMojv7qANUnx+4LEeiMWUmYt
- vAmkJbDN
- MM1R0019WtA6kjaN/Qs6CqnfkqQffdZT2/aoBdvhY14CT0JogNo0DNMrHg1/nxYRYuESTGsBQhJviFxHvT6QE9LrcAo4fUr5Vk0HYbqrv+1Ht2WnbqfflGoFfM5la0te1qCcAXKDwfHcVSm2LVajt766CU+BYyn0GqiEfE/GwhEFfA8NT8LUGxeaItQReD3VD9Mb4FWnma9SEc1uJLdBVh2yIKZYNIIPB2UrqkA3UsevYbRRPlH6b+gXetWWbsOEks/cHei32MCAZvf7HF1DJHBLD2/+mKZjUE0NTtSXFmC5JpNv5TnxvsNJU7ir8oT/fmwiILVAXrir7n7XwB/plenOerCPAhOXbADfDjvuXx4p7V+JpW86VLISXQK1P+ME74XTmu0RfkRtmJ4+iFFYRwJCUdLwVR8Izd65CCTvXhUX3K7cG9+nrq12urkrQOyZHHVClg0ftwOhkJ2eJgeKJSI90qp92fsZvT1qVCHHhgQwZGdTWAKGPHQ+nm4ncSBpEcbtbFT+6iahHVb3mx0qGEYvRxXG6NzA3YHiYM0+xUjNtHRmLA0swOCnJHDSIB09mrb26TXa8yWmthWWaM3o3Z6v+0woDBcFlVXpD5MEjgEmd6sQukb7CZQWcZYk+fNCWVIED0L1pkEX6p4P8kcMpA+MGs5ou4X6YlK4jEZILIRezezOFdhdjm9Uisw==
+X-HE-Tag: 1795315671-13248
+X-HE-Meta: U2FsdGVkX1/dOw+FwWQeth/FbtBYEFB823FlHugsttS0t4bWTyI8nsCMypm4LCwYeeVQEkgdGAY+CndqGux9yLWPwrO4nZ9xtRWBQxYIunQkSiL90IDfKHbNzHzR79TrUn4b+xPFRmba2vMsdX7hqVVGdrHtCLltYLJhZ1hpxW95DEBaJiA14h3rY72Dp/TOY5ErIklVbsQJc9l1RWL7fQFs2I0NtEnYvwi3VZR7qofqGTW3ti7ySmoQmEm+oN4QEZVkU+BGhyv2xeUTvEg3iz8Th85KhJcC2Bdhvavvwakf7Sq35eqAUkW0F9F5mUS0s4CSdoj/bKElUcH4O7KVVM9xgCNpri3chbn5nPhtwGNp2tEs6isIqnc55FTevGvkpCEafEq/X16SK0vvmkJI0HvTzuvguumX7ODvKa2FxGXvEOnXfJr/wJvHIDWRB37YNUIzyvlmqll7gj1q73TCKSB8l8Co/fh9cj0sTxwFV6tASEDrRQSL5qj1w7KLA4mxer3ssQylPoAKlXaI9TtX7YS93Ek63hgI1TnRAghCiGCDSIc6vWQ1A1oNtnCXMKmTOoZkEYe8/AeSpxUmUCSdXKkH66CiZDs/FKNJAzGEDcOsPb02DKcHQWlWRA9Ulj4POCZPZM/140YC0KVWkgPt6FpBbEIlHjJ4hDgh8ovB/iPiy3mAsLefkgZOq+tr/RmDRBm5sGAEqC3bg3S5AOxJTg4fXpKm9ZAkfnmO8mnQW2kpPGbf6zCJoK3uj+lWF7/1PDjG764ZVTobQu8oB5hlp1vZLt85FT3UdLT7FZbg0lALX1f7NxvvITGtbPuOlBWwjNsn5/3lG3YDkCTxqV2n5xOb56xA8AqFiBz+2DYgPQWPQYHPkPWsdObW99SnPsME+27MjGp/HCj+SMMe6189vZ1sLJzdbrPVYKKtPp8HBCyNMR9Far/KvmczLGxHjZ/YXSChvM0kgtdWZf0UnrK
+ GRFClolm
+ Li5WI36biYNvy/ARnC/vMgEBm9UOLJviHfyeAdhvdhacbPH9OQhhD8j9WV0aSIECN2aPknCGQ0UndWPF5ks80O2H+qeUsgoJr5L9H4rNhgNQJP2UNt6x3i5istQvtI88/StesNdbIL1WZBnysoX33Nv8LMqmVQjgFjYCKvCzmtcR0gptP0NpjZnLN6jvOdF99I2yPRqaKP1kCjTWe0KIJuu5WxPnlYwtEsVvuC6Wdkby7Xmeq0YEI6u3h6Tmam6M0ceI0RZDznQWLLFyNTdby+4xJBU059bIYy9GHvpoXDO8cqCyOf7chyIAXdhx9s7JCctbjhUfgD7qIvUbchjeonv1KF2Y8KW4K6VDph/WHxEHeHofB04L4EZTkLZQ7culmYVARzR74p2bz8o0NYAuWkfeVOI1dHTpm8fMnguMH4ctm5qaWs0a0gBzt9x9rViygrjqItgbb2fwrilCA0TwTLa7LKJtaAT+VdhaQxFgLUxynpjs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,195 +111,188 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============3579480507848251298==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+(My initial plan [1, 2] was to track kernel lock holders, let them
+bypass memcg limits and throttle them on unlock or on return to
+userspace. I was asked to look for alternative solutions, and this
+series is one.)
 
-> selftests/userland: Add userland test suite
+memcg limits can cause isolation problems. A task stuck in limit
+enforcement in the charge path keeps holding its locks, and tasks in
+other cgroups that need them wait for a limit that has nothing to do
+with them. btrfs, for example, charges its tree blocks to the root
+cgroup for this reason [3].
 
-TL;DR:
-- Selftest may fail on out-of-tree builds: ksft.py helper isn't installed
-  (TEST_INCLUDES)
-- Plain i386 userspace on x86_64 may get x32 syscall numbers and wrongly skip
-- Time-namespace case may fail without TIME_NS; a socket recv may hang on
-  failure
+We see this in Meta's fleet. Over 28 days, on several tens of
+thousands of unique hosts, a bpftrace script [4] recorded sleeping
+locks held in memcg reclaim while another task waited for them. Most
+belong to the reclaiming workload, like its mmap_lock (680,579
+times, up to 4.7s), but some are shared by the whole machine or a
+whole filesystem:
 
-> diff --git a/tools/testing/selftests/userland/Makefile b/tools/testing/selftests/userland/Makefile
-> new file mode 100644
-> index 000000000000..baf26c6780bb
-> --- /dev/null
-> +++ b/tools/testing/selftests/userland/Makefile
-> @@ -0,0 +1,5 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +include ../lib.mk
-> +
-> +TEST_PROGS := test_smoke.sh
-> +TEST_FILES := userland_cells.py userland_test.py
+- cgroup_mutex, used by every cgroup change. mkdir charges the new
+  memcg to the parent while holding it, and reclaims if the parent is
+  at its limit: 350 times, up to 2.5s.
+- kernfs_rwsem, used by cgroupfs lookups. The kernfs notification
+  worker held it while queueing inotify events charged to the
+  watcher's cgroup: 2,324 times, up to 3.3s.
+- btrfs tree locks, used by every b-tree search and change. On kernels
+  with [3], the XArray nodes that index tree blocks are still charged
+  to the task, so tasks reclaimed with tree locks held 2,853 times,
+  850 of them with a root node locked, up to 2.6s.
 
-Will this suite run under an out-of-tree build such as
-"make O=/tmp/kselftest kselftest"?
+Hung-task reports show worse cases. A container's systemd created a
+cgroup while its own cgroup was over memory.high, and mkdir ran
+memory.high reclaim with cgroup_mutex and the parent directory's lock
+held for over 30 minutes. The host's systemd, tasks forking into
+cgroups, oomd and a monitoring agent all waited, so the userspace OOM
+killer could not even read the cgroup tree.
 
-With O= set, the run_tests recipe in lib.mk copies only $(TEST_PROGS) and
-$(TEST_FILES) into $(OUTPUT), and INSTALL_INCLUDES copies nothing because
-TEST_INCLUDES is not set.
+memory.max is a hard limit, so this series does not change it.
+memory.high doesn't have to be enforced in the charge path: since
+commit b23afb93d317 ("memcg: punt high overage reclaim to
+return-to-userland path"), the charge only records the overage (usage
+above the limit), and the task reclaims and is throttled on return to
+userspace, where it holds no locks. Avoiding this priority inversion
+was one of the reasons for that commit.
 
-test_smoke.sh then execs userland_test.py from the copied location, and
-KtapRunner._load_ksft() looks for the helper relative to that file:
+But return to userspace is too late when one system call charges a
+lot, like mlock() of a large range. So commit c9afe31ec443 ("memcg:
+synchronously enforce memory.high for large overcharges") handles the
+overage in the charge itself when the charge can block and more than
+a batch is pending. That brought the problem back: the task reclaims
+and sleeps, up to 2s per call, under whatever locks it holds. It also
+misses THP charges outside MADV_HUGEPAGE ranges, which can't block
+under the default defrag setting. RESULTS shows both problems.
 
-    ksft_dir = str(Path(__file__).resolve().parents[1] / "kselftest")
-    ...
-    return importlib.import_module("ksft")
+This series is a first step in rethinking the memcg high limit around
+isolation. It makes memory.high enforcement asynchronous (to
+allocation and charging) again and keeps it effective for large calls.
+The task handles the overage on return to userspace, and also inside
+the operations that can charge a lot in one call, where it holds no
+locks or only the locks of the file it works on:
 
-Nothing in that flow creates <dir>/kselftest/kselftest, so
-import_module() raises ModuleNotFoundError and run_one() records
-"not ok ... selftests: userland: test_smoke.sh # exit=1" even on a kernel
-with CONFIG_USERLAND=y.
+- Populating memory (mlock, mlockall, MAP_POPULATE, MAP_LOCKED,
+  MADV_POPULATE_*): 2M at a time, with mmap_lock dropped in between.
+- tmpfs fallocate, buffered writes (generic_perform_write(), iomap,
+  btrfs) and reads into user memory (filemap_read(), shmem): once per
+  folio or range.
+- MADV_COLLAPSE: after each collapse, with mmap_lock dropped.
 
-Would adding the helper to TEST_INCLUDES keep the layout that
-_load_ksft() expects?
+These points also throttle THP charges, which the synchronous step
+skips. A file's lock only blocks tasks using that file. Two cases hold
+more: splice() from a pipe also holds the pipe's lock, and gfs2 holds
+its allocation glocks in writes that allocate. The synchronous step
+sleeps with these locks today too.
 
-    TEST_INCLUDES := ../kselftest/ksft.py
+Why not keep the synchronous step, with a higher threshold, without
+its sleep, or only outside these operations? It would still reclaim or
+sleep under locks, like mmap_lock in THP faults and invalidate_lock in
+readahead, and it would not close the THP gap.
 
-net/packetdrill/Makefile does this for ../../kselftest/ktap_helpers.sh.
+This also lets users drop memory.max, which still reclaims in the
+charge path and can stall lock holders as above. They can set only
+memory.high and let a userspace OOM killer like oomd [5], or a future
+BPF OOM policy [6], decide when to kill. Meta plans to do this.
 
-[ ... ]
+The last two patches remove the synchronous step, update the
+memory.high documentation and fix test_memcg_high_sync, which missed
+the THP gap.
 
-> diff --git a/tools/testing/selftests/userland/userland_cells.py b/tools/testing/selftests/userland/userland_cells.py
-> new file mode 100644
-> --- /dev/null
-> +++ b/tools/testing/selftests/userland/userland_cells.py
+RESULTS
 
-[ ... ]
+Tests run in a VM with 4 CPUs and THP on for anonymous memory and
+shmem (enabled=always, shmem_enabled=always, tmpfs huge=always, the
+default defrag=madvise), in a cgroup with memory.high=64M. Reads go
+into an untouched buffer. "No hooks" is the base plus only the patch
+that removes the synchronous step. Usage 18s into a 512M operation,
+without swap:
 
-> +        elif mach == "x86_64" and ptr_size == 4:
-> +            base = 0x40000000
-> +            arch_legacy = {
-> +                "pivot_root": base + 155,
-> +                "umount2": base + 166,
-> +                "waitid": base + 529,
-> +                "execveat": base + 545,
-> +            }
+  test                                    base  series  no hooks
+  mlock, mlockall, MAP_POPULATE,      513-514M     84M  513-514M
+    MADV_POPULATE_WRITE
+  tmpfs fallocate and write           512-513M     84M  512-513M
+  reads of a tmpfs file                   513M  84-85M      513M
+  MADV_COLLAPSE of a sparse range          96M     98M      514M
+    (one VMA, or one VMA per PMD)
+  reads of /dev/zero or /dev/urandom      513M    513M      513M
+    (known gaps)
 
-Does this branch also catch plain i386 userspace running on an x86_64
-kernel?
+Usage grows by one 2M folio per throttle, so it is 84-85M after 18s.
+On ext4, XFS and btrfs, 256M writes stay at 64-67M on both kernels
+(257-264M with no hooks), and reads with a cold page cache at 70-73M.
+Reads with a warm page cache, where only the buffer is charged, reach
+257M on base and stay at 84-85M with the series.
 
-platform.machine() comes from uname(), and a 32-bit task only sees the
-compat machine string when it runs with PER_LINUX32:
+With swap, the MAP_POPULATE, MADV_POPULATE_WRITE and tmpfs write tests
+finish in under 2s at 65-66M with the series (base: 157-169M, no hooks:
+513M). tmpfs fallocate is throttled with or without swap. With swap,
+base fails it with -ENOMEM for small pages.
 
-    #define override_architecture(name) \
-            (personality(current->personality) == PER_LINUX32 && \
-             copy_to_user(name->machine, COMPAT_UTS_MACHINE, ...
+During mlock() of an 80M MADV_HUGEPAGE range, a task in another cgroup
+that reads the process's /proc/<pid>/cmdline every 10ms waits up to
+15.3s on base and under 1ms with the series. Populating 2G with no
+limit takes the same time on both kernels.
 
-So an i386 Docker image or chroot entered without linux32 reports
-mach == "x86_64" with ptr_size == 4, and gets the x32 numbering.  The
-test then calls userland_open as 0x40000000 + 474 instead of 474, and
-do_syscall_32_irqs_on() returns -ENOSYS for nr >= IA32_NR_syscalls.
+All patches build with gcc and clang (W=1), with CONFIG_MEMCG=n and
+with btrfs as a module. A lockdep kernel showed no warnings. The
+memcontrol selftests pass, and the fixed test_memcg_high_sync fails on
+base.
 
-ENOSYS is in SKIP_ERRNOS, so probe_pre_idmap_mkdir() reports
-"userland_open() unavailable" and the suite exits KSFT_SKIP.  The compat
-entry paths of userland_open, userns_set_idmap, clone3, fsconfig and
-waitid(P_USERLAND) are then never exercised in the configuration that
-needs them.
+KNOWN GAPS
 
-The function already tells these cases apart on other architectures.
-Would gating this branch on "x32" in multiarch, and sending the remaining
-x86_64/ptr_size == 4 case to the i386 numbers (217/52/284/358), work?
+Other paths that charge a lot in one call are now throttled only on
+return to userspace, and memory.max still limits them. Most can get a
+throttle point later, some after dropping a lock:
 
-[ ... ]
+- /dev/zero and /dev/urandom reads, getrandom(), sendfile() to a
+  socket, io_uring submissions, netfs and FUSE write-through writes
+- MADV_WILLNEED, UFFDIO_COPY, KSM unmerge, mprotect() of mlocked
+  mappings
+- FIDEDUPERANGE, FS_IOC_ENABLE_VERITY, KVM_PRE_FAULT_MEMORY,
+  guest_memfd fallocate, KVM page splitting
 
-> diff --git a/tools/testing/selftests/userland/userland_test.py b/tools/testing/selftests/userland/userland_test.py
-> new file mode 100755
-> --- /dev/null
-> +++ b/tools/testing/selftests/userland/userland_test.py
+Rarer ones, like sendmmsg(), btrfs send and FITRIM, can wait. Memory
+pinning (VFIO, iommufd, RDMA, io_uring buffers, direct I/O and
+others), fork() and single large allocations (BPF maps and others)
+hold a lock for the whole call or can't be split, so they stay as they
+are.
 
-[ ... ]
+[1] https://lore.kernel.org/20260924155025.949998-1-shakeel.butt@linux.dev/
+[2] https://lore.kernel.org/20260921192559.2619635-1-shakeel.butt@linux.dev/
+[3] commit cf1dec76ba8a ("mm/filemap: add AS_KERNEL_FILE")
+[4] https://github.com/bpftrace/user-tools/tree/master/reclaimlockmonitor
+[5] https://github.com/facebookincubator/oomd
+[6] https://lore.kernel.org/20260127024421.494929-1-roman.gushchin@linux.dev
 
-> +    def test_get_nsfd(self) -> None:
-> +        try:
-> +            rns = Userland()
-> +        except OSError as exc:
-> +            if exc.errno in SKIP_ERRNOS:
-> +                self.skipTest(f"userland_open() unavailable: {exc}")
-> +            raise
-> +        with rns:
-> +            for case in NS_TYPE_CASES:
-> +                with self.subTest(ns=case.name):
-> +                    with self.closing_fd(rns.get_nsfd(case.nstype)) as nsfd:
+Based on mm-everything-2026-11-20-06-34.
 
-A subsystem pattern flags this as potentially concerning: test_get_nsfd()
-requires USERLAND_GET_NSFD to succeed for every entry in NS_TYPE_CASES,
-including NsTypeCase("time", CloneFlag.NEWTIME).
+Shakeel Butt (7):
+  memcg: add helpers to handle memory.high overage in long operations
+  mm/gup: handle memory.high overage while populating
+  mm, fs: handle memory.high overage in buffered reads and writes
+  mm/shmem: handle memory.high overage in fallocate and reads
+  mm/khugepaged: handle memory.high overage in MADV_COLLAPSE
+  memcg: remove synchronous memory.high enforcement
+  selftests/cgroup: make test_memcg_high_sync check that throttling
+    holds
 
-CONFIG_USERLAND does not depend on TIME_NS, and userland_get_nsfd()
-handles that configuration explicitly:
-
-    case CLONE_NEWTIME:
-    #ifdef CONFIG_TIME_NS
-            ns = to_ns_common(userland->ns->time_ns);
-            break;
-    #else
-            return -EOPNOTSUPP;
-    #endif
-
-On a CONFIG_USERLAND=y, CONFIG_TIME_NS=n kernel, the OSError(EOPNOTSUPP)
-is raised inside subTest(ns="time"), the test is marked failed, and
-KtapRunner.main() exits KSFT_FAIL.  The selftest config fragment sets
-CONFIG_TIME_NS=y, so a run that follows it does not hit this.
-
-Should the time case be skipped on EOPNOTSUPP?  test_share_nsfd() already
-handles a missing time namespace with "if not os.path.exists(ns_path):
-continue".
-
-[ ... ]
-
-> +        def check_dead_ancestor_pidns() -> None:
-> +            self.enter_userns_if_unpriv()
-> +            s_p, s_c = socket.socketpair(socket.AF_UNIX, socket.SOCK_DGRAM)
-> +            p1 = os.fork()
-> +            if p1 == 0:
-> +                s_p.close()
-> +                try:
-> +                    os.unshare(CloneFlag.NEWPID)
-> +                    p2 = os.fork()
-> +                    if p2 == 0:
-> +                        with Userland() as nested_u:
-> +                            socket.send_fds(s_c, [b"U"], [nested_u.fd])
-> +                        os._exit(0)
-> +                    os._exit(self.reap_exit_code(p2))
-> +                finally:
-> +                    s_c.close()
-> +            s_c.close()
-> +            try:
-> +                _, recv_u, _, _ = socket.recv_fds(s_p, 1, 1)
-> +            finally:
-> +                s_p.close()
-
-Can this recv_fds() block forever?
-
-If p1's os.unshare(CloneFlag.NEWPID) fails, or p2's Userland() or
-send_fds() fails, nothing is ever sent.  Closing the other end of an
-AF_UNIX SOCK_DGRAM socketpair does not wake the reader, because
-unix_release_sock() only sets the peer's sk_shutdown for SOCK_STREAM and
-SOCK_SEQPACKET.
-
-p1 and p2 are forks of the run_forked() child, so their exceptions end in
-_exit(1) after writing a fail payload, while the run_forked() child stays
-blocked in recv_fds() and keeps the pipe's write end open.  The parent
-then blocks in pipe.read_all(), so a failure turns into a hang.  Under
-run_kselftest.sh the 45s default timeout kills it, and the tests that sort
-after test_clone_flags_and_pidns_ancestry never run.
-
-create_userland_as_uid() in the same file guards the same fd-passing
-pattern with select.select([s_parent], [], [], 5.0).  Would the same
-timeout, or a SOCK_SEQPACKET socketpair, turn this into a normal test
-failure?
+ Documentation/admin-guide/cgroup-v2.rst       | 12 +++++-
+ fs/btrfs/file.c                               |  9 +++++
+ fs/iomap/buffered-io.c                        |  9 +++++
+ include/linux/memcontrol.h                    | 34 ++++++++++++++++
+ mm/filemap.c                                  | 31 +++++++++++++++
+ mm/gup.c                                      |  9 ++++-
+ mm/internal.h                                 | 27 +++++++++++++
+ mm/khugepaged.c                               |  8 ++++
+ mm/madvise.c                                  | 11 +++++-
+ mm/memcontrol.c                               | 21 ++++------
+ mm/shmem.c                                    | 37 ++++++++++++++++--
+ .../selftests/cgroup/test_memcontrol.c        | 39 +++++++++++++++----
+ 12 files changed, 217 insertions(+), 30 deletions(-)
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+base-commit: b298839c2f77b60eea645a68d2245aa088463955
+-- 
+2.53.1-Meta
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/44972669664
---===============3579480507848251298==--
 
