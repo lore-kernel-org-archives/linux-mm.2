@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A971A606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F318606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ea3+EMLq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLWTIuAh
 Received: by kanga.kvack.org (Postfix)
-	id 69D7F6B00EF; Sat, 21 Nov 2026 20:39:14 -0500 (EST)
+	id 655AD6B05B1; Sat, 21 Nov 2026 20:43:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 674F76B05B0; Sat, 21 Nov 2026 20:39:14 -0500 (EST)
+	id 606676B05B2; Sat, 21 Nov 2026 20:43:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58C546B05B3; Sat, 21 Nov 2026 20:39:14 -0500 (EST)
+	id 51E206B05B3; Sat, 21 Nov 2026 20:43:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 28A656B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:39:14 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9CCB1405D7
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:39:13 +0000 (UTC)
-X-FDA: 85461046986.11.E7B4F65
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C81A6B05B1
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:43:50 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADBEEA068F
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:43:49 +0000 (UTC)
+X-FDA: 85461058578.08.1096D55
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 05A7140005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:39:11 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ea3+EMLq;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0D1A7A000A
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:43:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VLWTIuAh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795311552;
-	b=6j7aSM1igOGi6Wcyl7UlVAPkJ+yE3cjVwCmc5oPsSho1U6RlRr/c+bh8ACuNfkqYbG7DKs
-	smsrtEAxBOSixNWzPIpSvNnUY+G9RYrfjpzl7OzmResDpf1rmEwwEBm4koST02WzvI78C5
-	tfTvvThosnGzIN24WRGGgRn180U1rL8=
+	t=1795311828;
+	b=o3yVj4UDIOipe2TbIZpCPGfRipG97nNUNmycuMW6+ozUSxjtxceQAwGCiQUIelaRxlV9KK
+	gwWvvbBaObAwIFNaKJhFhCQYlNfthFfNe6+pexHor4Ou3rI61We5ZITvKlOasZrlDmV8L9
+	7TifIS++miUPaTEW67x100ouqaP19kY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795311552;
+	s=arc-20220608; t=1795311828;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kNajklT4NWRuvO4tlojLaU4FTOaYuorZJL8FQmjQkns=;
-	b=T4s6q2t2myyE4TY4Pte/AYB75m8EKXdZm77/k/e1z7veYo502gMD114Lg+1tZs9O5ZIW0w
-	ZbdVqjFnaayseSh7m74hOmHIaemKuqlmGR7Qtj3a6eO0FRUXX/QNomAM+Bh1Qc6dLBpZzG
-	5vCBgk7J5KvgQGiqg8tFsxZbenlhCLc=
+	bh=xcFuD9TGh+7BMax0WCH9B1L1wKwMb5cO3D0UHkJWHqQ=;
+	b=ThW48sgyi7cuQVE09FMTBgBrof8C4j7hEoXbWYA/xlY2cyvEa79+7w73RaptH0N4ZDqZWX
+	uzxrav6vUlleZPV+Sy+QFpUWvwmfQEO0vSNhv5knUZqa2HvFvuSfd9d6f81CaY8p+KKCLG
+	7OdCmBiggUEdjiCHBn1uRz79eUSbYZg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ea3+EMLq;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VLWTIuAh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F9D7432D2;
-	Sun, 22 Nov 2026 01:39:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD50C1F000CF;
-	Sun, 22 Nov 2026 01:39:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39C6343D15;
+	Sun, 22 Nov 2026 01:43:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E012D1F000C0;
+	Sun, 22 Nov 2026 01:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795311551;
-	bh=kNajklT4NWRuvO4tlojLaU4FTOaYuorZJL8FQmjQkns=;
+	s=k20260515; t=1795311827;
+	bh=xcFuD9TGh+7BMax0WCH9B1L1wKwMb5cO3D0UHkJWHqQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ea3+EMLqjbQ7qRwbgCzK72nDD3YzZxWc1ejtUmKtpm9Lrr3/e6OuxoRh+5RMhVCsN
-	 BZWuGk0Bt7/F+krh5/ygopq7dBx48ThSHbOSMMC8cTspbSKNNuw3RjUn4SwSKTWbQV
-	 7BNjzqFIQQqcN/BHxkGsOAVmgcUiAshbKS6bPDq6X2LUSnFc9Nh7i1ti+oCIwcuYMa
-	 tnXAWhjoz51Rz4t0myRbUv0viKkltsiVJ3f5M6tVl/dtg4BxvVjj9BojY7YOC1/3Xq
-	 vXiF1rDkzkLVwb4lwyAHatrNxUwQnSY10RRforwNqLbpx5RvP8nlGumxKzU9/gfZ/V
-	 l/gDihNp8yKWQ==
-Message-ID: <sashiko-outbox-227627@kernel.org>
+	b=VLWTIuAhQt1tfpWhTGgW1y5jlgcDPw6b7NhvZCIJ4LOL8s++76W2WziW1Q5WPwu50
+	 NdinTg0Mwu24toCH2Uph1RpQdf2aK+JRJ/3yPJXDxFI0EiOBaKhX6NIT8wJq0XXSS7
+	 C8glbI7Efo/3v2t9ZjFlR2HPKxb0PtJgH6arVy5NPW47dDkLcJuIzGKukmeb0/SYBC
+	 9S8lKmVEU00v8Vb0Bf/t2dGOnrcb+3e+ZTheievcuR+Jq7mfDCSblXACon9Z/yHToJ
+	 Z7KPFfIlGLtVKWv9DpibvbokRjif2y0tXyTDLa+T+gZWFCut2S00zW3suMzVS5xExf
+	 FmudS+V0Qsr9A==
+Message-ID: <sashiko-outbox-227629@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v6 25/26] selftests/userland: Add userland test
- suite
+Subject: Re: [RFC PATCH v6 17/26] fork: Support CLONE_INTO_USERLAND in
+ clone3()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jarkko Sakkinen" <jarkko@kernel.org>
 Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Aleksa
@@ -77,24 +77,24 @@ Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.o
  Gompa" <neal@gompa.dev>, "Oleg Nesterov" <oleg@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "Pavel
  Tikhomirov" <ptikhomirov@virtuozzo.com>, "Serge Hallyn" <sergeh@kernel.org>, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Zygmunt Krynicki" <zygmunt.krynicki@canonical.com>
-In-Reply-To: <20261122011809.2667684-26-jarkko@kernel.org>
+In-Reply-To: <20261122011809.2667684-18-jarkko@kernel.org>
 References: <20261122011809.2667684-1-jarkko@kernel.org>
- <20261122011809.2667684-26-jarkko@kernel.org>
+ <20261122011809.2667684-18-jarkko@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 22 Nov 2026 01:39:09 +0000
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 05A7140005
+Date: Sun, 22 Nov 2026 01:43:45 +0000
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0D1A7A000A
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
+X-Stat-Signature: g8ztibf5sibk6i3azjs6nqj63dezzcex
 X-Rspam-User:
-X-Stat-Signature: 3d61yp5p3wmo7k8ytc7m5b6yaa9o7by3
-X-HE-Tag: 1795311551-878994
-X-HE-Meta: U2FsdGVkX1/8L83U3Jlo+w1wZtHciKBEjVznTW/2/buWgOisvYgl2s3hZZeCdPKMQZCvyK1sfz7mxMJ2iIDAeTHpJR+aj4Z3AkyZdlyVk43CxzrX04BNdZhUv5JJY6Emri/iSeyPjnHMZG5A9eKw5/YjXcGmJjeqWSS921NoG6EryQxRb6MK6cQyY2NH7Eztt5GiIfSVP62LlE/rodhRXMZlYOwiKuszzasY/pzGPimTeAHsR7njlfMAxQNsvq3UudLDzz6XasRFuCZduafV6w2C4r4zrJKnwHKydkvapNRiskdwfr3AhLW780A31puQ4hea2buQtK6rqc9w6x1iCTQQwGKUl9HTc7jA7YjnEiX7Hh8Z8QnZ+KpakGDaV1ojlPx9E70i4bpOyeqojRYF75gKjKhOiTRmmoZFRYrpN57I7IRPoOQ9i+8M74ufxMgBJ4Izo2Jsl8buE6r06z0M67oOUAAp9b48qJlfjgi48IEtisrb/6lDyjgnRyynFWzr86CppH1EaNGgpKqrOjJJSSUacQeu1JKt/GuSIut70luYy/AEv8fw3dMHGsY3dbe/QRQ08Lvz+d1hTBE6eaS2qs0DqpRefi5irvL1jndT5rQBAfKsLcUti/HYPWNP2VhcRv8Lk4y9KO4VZsuUuBc6BQ8VJ8ASkU4Ahyg2FfA/tcREpatYTgvgBQr4CJ2KdR6Vzl8JcMBh59HvU3KQ13yV3jNq3IohwPaOCrwter088p84wF28BOWzUm+Yjq4l9oCHVXVCoajg/dWut5tbqhHHDegHV2+3xV/b2pN8Xb4tBiJetOM/r24H/XIcgQOjSmfn+pQCPTtRbdu0Ri9388beGV/Ef8/UyKE5Q3Pzt9EIeEEktROborfdBZ/7fd2dPYxvaAYpL1w5IdT1AFu8LfyA4cO/RsXTFUi39AqqLC2alLVAfRiFkXp344Bq5PK9wKHgEhSNFa3plwRbGgq/eho
- Smsr90eA
- /mX+/OZ7/HeM3qxyKBv/JO/9+Z07ycZAW+T36hbFu73Lr5mtRSoLHo699nxKMhhxhULaIz+tEN4Uh5wslIW4tW7aiCIliGMrpFRI6jdBvOF/PbNVfuzqMWsXDE9I0POmJeGp2eG90SNE2HwnnO7DWQ3ISCoaURXVuZRSK5ZVDQ755o45lgfvW0duhLVl7JGMgD0AkXXuZet9JBwU/XhanAqxzA6+oyyqCjBJV5Iq6f4L+cj3/EKuOv6cmF7oGkrbC7aBrkJ+PnZSyhL3mEKhtkpJEiiGg0naoVhjd9YjPBueIAXbyvTwJWyrGpWr8rvV8bg5EW/MNfwszAwHQMfD4Mzufx4cU9SatmsBQBfUZJFisoq+//lY0SdqMg6r4Na4KL8KTtBMCmGdV9SVfmgw+E65z457zUv6/m6wVbuK/8eYGPpPBfDfD4T1OiRa5kc6JNcNHySPbGzGrOgl3OTK0M6aXT742XCv+2vMCsHnj9r3SLwlRdKWrKkbvrDB6IdOMqRDwiQ/VomTffd3KZX0TJN20j6Jivw7JtZ/ka1c+mE8Qw20jZeOUlb2FzxDdmChjn5jeVNZT+zp92Jr5+6tTuhi++tmWdsvWaagz1Z1UeOg3pj13PCZIRS8m+Sg9E4xPj9eOYoYgaDE7YmCVmEmpte/fB+r44kPP6ePs6aVrfAaQ0Yi/UEyWFq7gzTM0qka9m9HfKAr9lnKJyD3pZm5J4UibvY39e4nVmFPdzoZSFWq8l9hnJ1t/LzEMXhcyuMrt0juGsSdtl/2/NCxG25zk09hPTj7R26ub3bRHpnShymLF1bkKDPgxqBNDfnVhj2fPMcFX
+X-HE-Tag: 1795311827-826102
+X-HE-Meta: U2FsdGVkX18bGcEi3qWCk2VMNL1hYXRIZoLEHJb8ElUEB7eBGmyJpdmcE3SPgS1ApwL6HXFAAT3Fub0OdY8kYvohsFEyTA0fvO8gCUHq2tMWUsO1dEsaYBWuPovMKNkfzUyVcSHOAJnSgUrl25j/pEagVOOWv78F2fmTBnKSJIdo2bnnMhC3+VMoKMM1nk7gdoJOvNuFtNh+2tgBdfM7/RpV0NCoBNOGGybJLE5SBNX4MWnNESg6mw5QwSpsFNMODA0jF6qpVn/JFj4fzGJQr9/XjeMHDOlz4uR7jfzfOjJ7Kpnrib+jWNlZ2vWBjX4QaolKcTC+K6C6x+4dYFTx0M3bt2bPOXmgY04KD8mfwKoq5ZXU1ootBfg864ceXtfW7ny7Xi4pEp6zdM6PWIU6mW87yFJiklcAlUa8qUKT8S4n8X9mLIhpV+Hkna5pKYJAgTA6g2aMQ8v785CtJv3ub+gWoNDcsNqPZVrZemLAQL20xmJGR7Ag46lR92gCjqKkuQGimlqB1WUxETRtNDj/tEsOXgYIeLkhD5/P6qXRupqhIcfH5+NoCoesVrwIXGZ2hdbn5UCYS3MLwQIMiu3hmMEjAqoo21ex1PvdE3240RE1H3t6ypVV7JKD/BGpD2LyNKQVvQncM/kWrStkUOrMeXcqoAmVL44xrW0lVTA/0sVaMKHLNDMNxqGOAEJb2GGBANlRSMB548xbeRX/NQhTvCvWrG4d4AZffUau3CmykUyG4jYNhU+q7BOTOMYPm/zkGeLc6D6IiumlsYI96eViS3ryUg6bwjazCnx+WbfJllIwPrF1ZFhJ0vBk7UUNEuZGUq9tFmmtRmCIcJOKiz9kwHwkD7fL6ejGtW8jboJi4D/is13FO+yLVIQY7A9goQcDKJTv4tThgzuEPGZ7uRg6vtCaFsyx0hD4tBQvV0MS4WKvIYtykTOSiS7fkMTxUwWM+APsH8bZJqIE33TiAkM
+ T5B4fWBi
+ xXlhFpQENU0AGCwu9gyaPc295p8tL6OFbqzm6IEYOSsuU8yUfUxbSeZ+y1RAFYT940dPHSLb9QUlocPqH6v/477lAwSglfmefnYp5oeaQEl14B8oTNzX3KbNd+59RExRBiVSGjGDHRmc/0yXvf3p5J8W6usWbeuTWxExwQs0XyVX6IzWcO37eFnTcM6aZ/+yqpebwnv4KvSQNBUCft2YJRKwa2opFFUhJQlnUS4JuRkYaWZTKUm0c34lhOzWNeeaOUxhIdD19TC4PLs4mnMTxRm1sQqKNX6h7IV6+KgUl0VDjFOXiWcKhV8VsFV83Bv2kwDyaFp280Th4EjWBp7N1k8p/YzVXT8E6SGuHI3vf0pRJaaFiEykL4EPVCtP8sqKqKJNIs+SkYbhReFVUwUYNCBqmgoEF4YBIGGQryHjg9ez6YmPmBCf9ThTUsy4t9P/0TsWMs7C9ZxUb+Esx0qkBC+hXeWB6rpKl96s83/qnGPwj+wPGQTbfD8WPIG/BjjuWq2JAGN+xE+mrZENS2rEwUDsFtPR21KIPCbmFs7OQzfSh0ApvsjUedFBuo1TYBiUMr7WBiHKeMsdZ3XpO/SR+xmjy3c3/TntzIKSaUz0Xhdmm9MOc7ukAc4pfsVutIe7919gbZQ7EbOHOX58wQxEk2dami/HciVt2rwZxADA4y1Ay1Als/gyTv8qrx1P0RrTa7e5DENSlY7rCHhZe5Hz8GYEiWdeKIxuz11BN9XQVIuoOBiVIh2fNkd6R6fhJypEzL4rR3G84Dd9rFpQQgFdSHiYinTPyk8pPEaEhEGGh6scXTn3a1T1ajlskFi/+a2opwEOm8qt3mDeCGfMNa4b2oFAymfdqxgqrz9CPYx8Xpp6U7N4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,97 +104,104 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [Medium] selftests/userland: host /tmp mount leak in
-  check_child_src_slave_locking()
-- [Medium] selftests/userland: 64K-page E2BIG failure in
-  test_userns_set_idmap()
-- [Low] selftests/userland: Python 3.10+ parenthesized with-statements
-  in test
+- [High] userland: missing namespace owner permission check in
+  userland_prepare_fork()
+- [Medium] userland: missing namespace_install LSM check in
+  userland_prepare_fork()
 --
 
-commit ceac0bb92c4f38107df4d9a282065b54c6373344
+commit 705db8da85300ec68db1d2ce6e9711aa2f376bb1
 Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-selftests/userland: Add userland test suite
+fork: Support CLONE_INTO_USERLAND in clone3()
 
-This commit adds a kselftest suite for the userland control object uAPI,
-covering namespace sharing, mount-namespace configuration, waitid(P_USERLAN=
-D),
-pidfd_send_signal(), and userns_set_idmap().
+This commit adds CLONE_INTO_USERLAND and struct clone_args.userland to
+allow clone3() to spawn a child process directly into an initialized
+userland's namespaces and root mount.
 
-> diff --git a/tools/testing/selftests/userland/userland_test.py b/tools/te=
-sting/selftests/userland/userland_test.py
-> new file mode 100755
-> index 0000000000000..eb29cbc9c8f10
-> --- /dev/null
-> +++ b/tools/testing/selftests/userland/userland_test.py
-> @@ -0,0 +1,2306 @@
-
-[ ... ]
-
-> +            with (
-> +                self.closing_fd(rns.get_nsfd(CloneFlag.NEWNS)) as mntns_=
-fd,
-> +                self.closing_fd(rns.make_mount("tmpfs")) as rootfd,
-> +            ):
-
-[Severity: Low]
-Will parenthesized multi-item with-statements fail with a SyntaxError on
-Python 3.9?
-
-Documentation/process/changes.rst specifies Python 3.9.x as the minimal
-supported version, whereas parenthesized context managers across multiple
-clauses were added in Python 3.10.
+> diff --git a/kernel/userland.c b/kernel/userland.c
+> index 739f6b98c1035..283b90869d2c6 100644
+> --- a/kernel/userland.c
+> +++ b/kernel/userland.c
+> @@ -541,3 +542,135 @@ SYSCALL_DEFINE1(userland_open, unsigned int, flags)
+> =20
+>  	return fd;
+>  }
+> +
 
 [ ... ]
 
-> +            def check_child_src_slave_locking() -> None:
-> +                self.enter_userns_if_unpriv()
-> +                os.unshare(CloneFlag.NEWNS)
-> +                with self.closing_fd(self.make_plain_mount("tmpfs")) as =
-tfd:
-> +                    os.mkdir("sub", 0o755, dir_fd=3Dtfd)
-> +                    Sys.move_mount(
-> +                        tfd,
-> +                        "",
-> +                        Sys.AT_FDCWD,
-> +                        "/tmp",
-> +                        MoveMountFlag.F_EMPTY_PATH,
-> +                    )
+> +int userland_prepare_fork(struct kernel_clone_args *args)
+> +{
+> +	struct file *file __free(fput) =3D fget(args->userland_fd);
+> +	struct path root __free(path_put) =3D {};
+> +	struct pid_namespace *pid_ns;
+> +	bool bootstrapping =3D false;
+> +	struct userland *userland;
+> +	int ret;
+> +
+> +	if (!file)
+> +		return -EBADF;
+> +	if (!userland_is_file(file))
+> +		return -EINVAL;
+> +
+> +	userland =3D file->private_data;
+> +	if (!ns_capable(userland->user_ns, CAP_SYS_ADMIN) ||
+> +	    !ns_capable(userland->user_ns, CAP_SYS_CHROOT))
+> +		return -EPERM;
 
 [Severity: Medium]
-When running as root, does check_child_src_slave_locking() propagate its
-tmpfs mount onto the host /tmp and leave it mounted after the test exits?
+Should userland_prepare_fork() also invoke security_namespace_install() or
+a matching LSM check for the target namespaces in userland->user_ns and
+userland->ns?
 
-enter_userns_if_unpriv() is a no-op when os.geteuid() =3D=3D 0, so
-os.unshare(CloneFlag.NEWNS) stays in the initial user namespace and
-preserves MS_SHARED peer groups with the host mount namespace.  Mounting
-tfd onto /tmp without first calling Sys.set_mount_propagation("/") (as
-check_standalone_mntns() does) propagates a fresh tmpfs over the host
-/tmp, and cleanup only detaches /tmp/sub.
+Landlock enforces LANDLOCK_PERMISSION_NAMESPACE_USE via its
+namespace_install hook when entering pre-opened namespaces with setns(),
+and commit "security: Add userland LSM hooks" later in this series does
+not wire Landlock up to security_userland_clone().  Without an LSM check
+on those namespaces, a Landlock-sandboxed task holding a pre-opened
+userland fd can use clone3(CLONE_INTO_USERLAND) to enter namespaces that
+its Landlock domain denies.
 
-[ ... ]
+> +	if (current_chrooted() && !ns_capable(current_user_ns(), CAP_SYS_CHROOT=
+))
+> +		return -EPERM;
+> +
+> +	pid_ns =3D userland->ns->pid_ns_for_children;
+> +	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
+> +		return -EXDEV;
 
-> +            big_buf =3D ctypes.create_string_buffer(65536)
-> +            with self.assertRaises(OSError) as cm:
-> +                Sys.userns_set_idmap_raw(
-> +                    userns_fd, ctypes.addressof(big_buf), size=3D65536
-> +                )
-> +            self.assertEqual(cm.exception.errno, errno.E2BIG)
+[Severity: High]
+Does userland_prepare_fork() need to verify that current either already
+belongs to each namespace in userland->ns or holds CAP_SYS_ADMIN in that
+namespace's owning user namespace?
 
-[Severity: Medium]
-Does this assertion fail on kernels with 64 KiB (or larger) base pages?
+In userland_share_nsfd(), a cgroup, IPC, UTS, network, or time namespace
+owned by a more privileged user namespace (such as init_user_ns) can be
+attached to userland->ns without CAP_SYS_ADMIN in ns->ops->owner(ns) as
+long as the caller is currently in that namespace:
 
-userns_set_idmap() returns -E2BIG only when size > PAGE_SIZE.  On a 64 KiB
-page kernel, size=3D65536 passes the PAGE_SIZE check, copy_struct_from_user=
-()
-succeeds on the zero-filled buffer, and the syscall returns -EINVAL instead
-because the extent counts are all zero.  Sizing the buffer with
-os.sysconf("SC_PAGE_SIZE") + 1 would exceed PAGE_SIZE on all architectures.
+kernel/userland.c:userland_share_nsfd() {
+    ...
+	if (!ns_capable(c->user_ns, CAP_SYS_ADMIN))
+		return -EPERM;
+	if (!is_current_namespace(ns) &&
+	    !ns_capable(ns->ops->owner(ns), CAP_SYS_ADMIN))
+		return -EPERM;
+    ...
+}
+
+Because userland_prepare_fork() only checks capabilities against
+userland->user_ns and current_user_ns() before copy_namespaces() installs
+userland->ns on the child, a process that shares a parent or host
+namespace into a userland and later isolates itself with unshare() (for
+example, unshare(CLONE_NEWNET)) can call clone3(CLONE_INTO_USERLAND) to
+spawn a child back into the unisolated namespace without holding
+CAP_SYS_ADMIN in its owning user namespace.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122011809.2667=
-684-1-jarkko@kernel.org?part=3D25
+684-1-jarkko@kernel.org?part=3D17
 
