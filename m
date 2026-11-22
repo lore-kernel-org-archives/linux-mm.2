@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4AB8606A32C
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608F5606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jo7t7EHN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WvtFRTlu
 Received: by kanga.kvack.org (Postfix)
-	id 5FB126B05B0; Sun, 22 Nov 2026 11:29:04 -0500 (EST)
+	id 6ACB46B00EF; Sun, 22 Nov 2026 11:39:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AB426B05B3; Sun, 22 Nov 2026 11:29:04 -0500 (EST)
+	id 683CC6B05B0; Sun, 22 Nov 2026 11:39:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C0EC6B05B4; Sun, 22 Nov 2026 11:29:04 -0500 (EST)
+	id 59A566B05B1; Sun, 22 Nov 2026 11:39:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1367A6B05B0
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:29:04 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 599431206ED
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:29:03 +0000 (UTC)
-X-FDA: 85463289366.27.8C7FFD0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9012780007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:29:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jo7t7EHN;
+	by kanga.kvack.org (Postfix) with ESMTP id 1D7816B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:39:11 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1E1481206F4
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:39:10 +0000 (UTC)
+X-FDA: 85463314860.08.EE0A98A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 48959100008
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:39:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WvtFRTlu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795364941;
-	b=b/VphwdEVdmfm4INHQ8Qq/XTGDE6APtmYNF+VusOVIltn3mA2k+q4Vj+R3hK0S/jILHYnF
-	7MR/0hyT9dDWZLeWtaXRfw7ZElHYF+j0cqBtzXPMI8cBui9NQEkm/52E7n2y9E1Nvmy6NL
-	eBtWZtyPGPpChdShh5aoomFDvsEwZ6Y=
+	t=1795365548;
+	b=BpMmaP/Xj4sI2Zr4vETjUJnYUJaV8xhctXScry5LLheuGwiWMWFz9Ed+5Qot2HcotPMUN2
+	KkP0dJ6DDjaL0/risPZlHxWozUVXKKDZphPqVhlHs5W9NFvMiEwvKSt27IKdU8M0Kyt/ju
+	6docoemjiCbdDIWnabe2QDYKGJwFrSk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795364941;
+	s=arc-20220608; t=1795365548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XxP8OOhPlU3E52h/c7HsGP6acikMmgnMKkZh4h9TOUA=;
-	b=f8y68RuAUs4xKi3pSvxyr+NojVp4W4+iSWruoL1DVnHikwq/QJyvLXHyxJaGqCAGRcsGsY
-	JjcqvU9rEwrXdMIzymV4xlknUuWVMJ3fwZCT0/Y7KTnVW6flc36WRiWc4dP6N5bZQm3MSy
-	iO0mWe9iCkPTatALhGR0C2DWOam6Nd0=
+	bh=9z9YNC3S7P3k9nmw4kE1f70zUErr4DC5KffY6HobqDE=;
+	b=v95igE9SAXqzDMwVEm2TpQb7l/LwzpouMriAz2AdqtoTkrrDaKpFQexW3BvfMZRNTCrqRI
+	zUc71X5t7N85xMre3HZRa0tm3oxiLu00kr3MGZIfTK9F2ltpoXwfNHcaqYEFUq6olmYKa3
+	UCQgOI0vfJ6ZcSPf933Mknm47KrOZOk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jo7t7EHN;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WvtFRTlu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B03D60E4A;
-	Sun, 22 Nov 2026 16:29:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA351F000CA;
-	Sun, 22 Nov 2026 16:28:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CAB54184F;
+	Sun, 22 Nov 2026 16:39:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4511F000C6;
+	Sun, 22 Nov 2026 16:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795364940;
-	bh=XxP8OOhPlU3E52h/c7HsGP6acikMmgnMKkZh4h9TOUA=;
+	s=k20260515; t=1795365547;
+	bh=9z9YNC3S7P3k9nmw4kE1f70zUErr4DC5KffY6HobqDE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Jo7t7EHNKyqF53k60Wo4LFD7+0c8CuLJn8wSP2453MHDj3L4IyCSGu11HHw6s0LBA
-	 5ovCAOXqS1mqN+Q6c8setMKLBd3X++qACWM0zstTFYDH15hEItZQ7oxkG7Obehu1Z1
-	 7CgR+OSM/JopTMPDxQjmlYN2N4IiZ5Hz3pFFXavtrxzsAnFszhRGc2pxsAJfyHidJJ
-	 3GqsAxmbOpGvDuVvkQ+P1zuwd+WhgGgWAsxNsVrx5WwcMlFW1praNbcyPYKREBQYA6
-	 cDs36ydEoBBR8omgcSy7yZt8/NO0A/frw+WSEhgCqNaTYm7vuKkwhg9jDPatIn93Z+
-	 poeF3M0ypS/mw==
-Message-ID: <aaed2661-8dfe-4b72-84f1-3fe9f4a962e9@kernel.org>
-Date: Sun, 22 Nov 2026 17:28:45 +0100
+	b=WvtFRTluWYnIGZohs5S/7EcqAZ+PiyH5rkX9M/wKqV0r6hRKweQWi7IrAuv+OkKhu
+	 YycXPJZt/gQPSTgikiDkoB4w8/sn6a8qatZr+8UogpHdC6LJVHd1pSqQZW0f59lphq
+	 fDls7ND7UZ9HRAtNewuO+RZTz/nsxaRGzyKsEDu41tRIVtaYPRdcW65zuwO0a5Q7fT
+	 1od6U5F2gcy+4qpLEmHCicd6runxYZ5vMsvwqZ6iHu0CCrhWezC5cfhzgIJyHoq/i1
+	 tRNXwiWfcWl4wRPDXigptB6mt7mqY8tgxV5J5hnC5R93IGyAYI/1ewXC5b8zzimXqA
+	 mfvaGS4zde2zA==
+Message-ID: <7941cfea-9555-4b26-8f1c-f3fb2b410bf1@kernel.org>
+Date: Sun, 22 Nov 2026 17:38:57 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm: make folio_walk_start()'s locking asserts
- scalable
-To: xu.xin@linux.dev
-Cc: acme@kernel.org, adrian.hunter@intel.com, agordeev@linux.ibm.com,
- akpm@linux-foundation.org, alexander.shishkin@linux.intel.com,
- apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- borntraeger@linux.ibm.com, byungchul@sk.com, chengming.zhou@linux.dev,
- dev.jain@arm.com, gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
- gourry@gourry.net, harry@kernel.org, hca@linux.ibm.com, irogers@google.com,
- james.clark@linaro.org, jannh@google.com, jolsa@kernel.org,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-s390@vger.kernel.org, ljs@kernel.org, mark.rutland@arm.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- mingo@redhat.com, namhyung@kernel.org, nico.pache@linux.dev,
- oleg@redhat.com, peterz@infradead.org, riel@surriel.com, rppt@kernel.org,
- ryan.roberts@arm.com, surenb@google.com, svens@linux.ibm.com,
- usama.arif@linux.dev, vbabka@kernel.org, ying.huang@linux.alibaba.com,
- ziy@nvidia.com, xialonglong2025@163.com
-References: <20261102132416.300084-1-xu.xin@linux.dev>
- <20261102132927.301921-1-xu.xin@linux.dev>
+Subject: Re: [PATCH v6 2/4] mm/huge_memory: copy file THPs at fork like
+ copy_present_ptes() does
+To: Konstantin Khorenko <khorenko@virtuozzo.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ stable@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+References: <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-0-efa7817a2bb3@virtuozzo.com>
+ <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-2-efa7817a2bb3@virtuozzo.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,22 +133,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261102132927.301921-1-xu.xin@linux.dev>
+In-Reply-To: <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-2-efa7817a2bb3@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9012780007
-X-Stat-Signature: ukd59p4s8fwbabyarz8m18zaryy7ox88
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 48959100008
 X-Rspam-User:
-X-HE-Tag: 1795364941-111221
-X-HE-Meta: U2FsdGVkX1+5KwbS1yxM5+7ljoUL1omwNDHZO3++2E+CcadShdUGumVAbxRg7Cc6PrCPHQkAmHXUT2oFrKFgcVqGRThJHf1KSSzT/cYltLY1ANbCFPuDBA5AeoNz6eGWHQFV9IjNouNCD6SvdTJ6lVusmoktHDmmWGANcRZjrCMRhf0hlJ/p5AkuimUm9UFj3jxO5vzWfVhH82pdudCntAmK4VwKzPHOa6dTODBsUW4wSRKsMYhpAr9KYe27a/0GG7gHqpfU/S3FYJ8y7cpI8b25QlSG68SL38IWLHHmNcs5xbiqUi8OqEIjIuhhXkbOVDD6GqO0R6Gs3TfGcRDex9K+GK31mkoeFHFzvGPQBn5INF8pgJSFW/QIEWJQCc2JHIHfh9YT70iHvab2eeEpFoeSWVgUbjP9WsGHWwy3TjcNcg6+0dVYumPebX8BWl2achVy79mOFwPOmnv8DwGzwGuQs/GUujDXOHfEnY4mwv937o5Sqvi8oSKTG32r9nkXtUv1t2yjkESCPGYXECQdWlXRnSA5CTyN5Xvz4baIiMgqGg8gJx15dyBCCbQBzatgb08N6AUVI1jWwPF7CFyFJ4tXB/q2j2axiPuN3CHlKDKwkaM9o6XUEDBubAqp0g/L8PbhIMiyt1kTITGB2McuOXr06GXEAQG+WCi1JZjEbD80mwNJu9/DKUZauoRsvjdh2L+56UK6OKq+R6hiW/EQl9+1acMoWEPHkLa+EC60TBZoldFLYq2cxoccr2HrKBWOEjNt8T7HBUlXsLXzVI3iI1eyAjcFHohn+Nk7EZ1JrB17kLVb5NSE7xGNzyG6WKMnIpmUZda0TjJzIgc8DqnXzcpTQYguOR7wGV3SThhau/AWsFptZvQgsi220o3oQ2fSM2BFWNadCcoD9GfMR33dWAxXrMHRFn2vY1AWo1bq71DJRecztJL/NT64dsuvn7yGqOxz2U8EPXMapw32Mdv
- 0/HX2bUx
- oxau6oqs4OsMgcGpdHk7/OUMXI1DJPWZms7H25vKpCW+u3Kza+xMnRP9AtAcwKPn+BmkYq1/uRSZfkqAUlGqk4PiGai6jlIoDDJ8SooaVa38w8KlnlAONgMiP3QK7hL8/Q2UAi90PLbZR6mgtfmcKizyqdbIRiU8ulnOSUsFrWf6nXc7/fWerBj3sHbH+2e6We4a+iB9XcaejgB6eUrbV7M7VKkWSvNd56XA5ELyzAQgmsSkudR6/13KU7L571ZI4RdZsMCCwdP4quTI8PyGFEnGchkfRzy4YXTKC3WJ0f0LrdNpvsz6eRvtqqjUvPPb5xXLjru6cwAX5XDGq3awy473POC5yJfy2TWanpkYOJ1ThT+HtlWzYXElaJDiq0+B/FJjIH5atYkVHrf19TiaLNBtAqeTWDq2Fbo2E67/jKDsdWGMlWAqCbNfBQ5t9J1DynjTfR2fHdHCudzuyBllVDXCAiWCjC4idIcU+YZ4vzdlsbBePAqPz+s1rreSlmr6jV/wSGCQPoAmgltKvpSe8dq0kSmpf0az7XaZJUtoRer/LFBOFNcdn04lY4iKIPq+TarTtBKqQie2XkmdPpQCA/nMU8U3VCcj9+ecC
+X-Stat-Signature: rigiwj73badx1rf57jffr6mirne5g4k3
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795365548-33255
+X-HE-Meta: U2FsdGVkX1+Owcs4i1FeIhZ7S/SA/TCTow1f6yJy8Cj4rAo8gNDNawa10TGAg9PmYR91KqtXnu68gLPke+XgHbSYMSb+v97+LBApZEzoVVETi2ox8lxGIffd6N7nzC5iyO/PXOiOLcS+znD7jnso5AhSILiwMfiVGfp9kjkktxot7X3+JqTMDgJHINcYRzm4tQyj68UNpzP4RDfF5uYpBX32VqAFivjwVMZ0W9+bs+jXTVKuKi5CkV40gLCkPIHGt/sjXYjpdRSSc5jLZP7RLysQoW0qqPwrxtDclcvXZ+nba7KL5ldr37eEij74nhBeulWO9v1JTBpaOCGomK186q8qTjWEIWANWuVBwEtnlrqYjznegBj0Rd16GjCmodFmVJ/uxoxjXJXnoGxk1Kda7CkOJSMfUla8E7VEahCze3ZRGIDj6zBukEy0KYTcpg1qVeCKbQWrlKAE1nrZj+0J2NL+TKez6lqwWxYT3hqEec23ZvT7mS+hto68DPiFEvBMbzbTw0xqk+yxXmTHjt8dqbH48GdWafVXU9FSJP8Mah5UsYNvl3bPyVQ9xFdeo+Oy/blal21h3u4n27zlwkgc5YsYJ7pUKiQG2zIiINHZ0nJ2YiniJRRlut3vvPJa6DFaW1O6F6/Vn3JXY4qrXBySVl8ti+VPtFuv0X/CRD/kutcBF4RvejXakAMGeBgX0O0Vjt3QfbD59P7lw6H3EypdxP0TL4v8MTev9rQrOUzcpAxeDLlaI5QQ3mMiAHcNrylgmDox7OlWbwIW2lwvdjZdJHQdYZAd4PWrtzn92N7UTKHqIWCR55FX96691ruJsKM84oCue4V6fQNXn4FTJVR16X06p7ODIBflWCACYPe94qNOLWw3bAo+JLt3+VD5YGtstAUEhtmjuzUChX/7KZUUTS2tgutTAtrRXosy4nFv0MPHAVMwIdQNA8AGKutBsWHUfR7qpmdkuTX4Ky5NOjo
+ CsJOjNOb
+ eEiMo0vphhiHIl3RBB37hGAVM/07Nen+Fzxe5MKf/sRHrA+7eSOOPLieXl2QbfWjZT+D0S2hLM1kpJaGJkMV4/F0rSwdg25Q0HlI6Efg/dDoW3dheAwYFlC15Nh8PzqYF1yR0oEsmDpl2EsW7Ze3MByMqLkOXjZ3NUoCaNVxJ0Ep88CL+CQVSg1FOWf4huAr/t1FW/A9/iNWZAo82RiikmnDzdfV2VsyghaWbIeYQsJtg+GTGXK0yh1iMhiDUrLR76N0rNLpUG0BjUbQFgxrAY9/mkOxDJcEheO1KUx6/GyELVNPGnbbNa55Br8qBh2o6/c+ggFWoVGqJ7Cmb8luFm/pajqzlI6DyNZjfRJXUa4kOTdu3mQCB5A5GVMAX/QPvH/sDrCmst+2Xn3Su/+bB1itfzAMzEEkMa348/EYLudALLFPznDj2i69SaxvTti3OiVtSeGSbqc0qVtWHLiIedf7mkGttgx9BgZ4qwxxfgp1j3PWRUMemTj2XU+Fwlw5pReLUR/bS4qtjkCTzo9GDZMlywzKLYUHDbTPUFT7DL9l7fFYcyDJRpwjfwGfNYkGd1WKQ/TsgkxtN8RMLJOLncJc3JViNBXoJ96len1jSG+mwRI/33WGe8lCIP376Q07qB2I3uztnwrWHQhTETzrei0tcupsWLB5deWFnkSNWQr7i8+Ad792fmDa4Fky8kWqjWWgHOd8/mHsEMQOh8wXornyPQ13OzBTWY5DLIFdupgwRdMc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,95 +156,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 14:29, xu.xin@linux.dev wrote:
-> From: Xu Xin <xu.xin@linux.dev>
+On 11/19/26 14:44, Konstantin Khorenko wrote:
+> This fixes no bug: it makes fork copy a PMD the way copy_present_ptes()
+> copies a PTE. Until now copy_huge_pmd() skipped every folio PMD of a
+> non-anonymous VMA and left the child to fault them in again, while the
+> PTEs of the same VMA are copied.
 > 
-> Add an additional member 'walk_lock' to folio_walk to indicate
-> locking requirements for the walk. Similar to commit 49b0638502da0
-> ("mm: enable page walking API to lock vmas during the walk").
-> But no change is made on any existing locking behavior,
-> all existing folio_walk_start() callers are currently still
-> under mmap_read_lock() protection.
+> Treat file folios as the PTE path does: take a reference, duplicate the
+> rmap and account them. fork then pays a reference and an rmap update
+> per PMD, and saves the child a fault per PMD it touches. The next patch
+> sends PFN mappings through the same tail.
 > 
-> This change is prepared for the later patch to enable VMA locking
-> asserts. folio_walk_start now operate under write-locked mmap_lock.
-> With introduction of vma locks at the next patch, the vmas have to
-> be locked as well during such walks to prevent concurrent page
-> faults in these areas.
+> That covers the VMAs vma_needs_copy() sends here:
 > 
-> No functional change intended.
+> - private file mappings with an anon_vma;
+> - VM_COPY_ON_FORK ones: uffd-wp and uffd-rwp, VM_MIXEDMAP, and
+>   VM_MAYBE_GUARD, which shared shmem, file and DAX mappings get from a
+>   guard region.
 > 
-> Signed-off-by: Xu Xin <xu.xin@linux.dev>
+> A folio over the page cache refcount limit is not copied, as in
+> copy_present_ptes(): the child faults it in, and fork() fails with
+> -ENOMEM only in a VM_MIXEDMAP VMA, which may have no fault handler.
+> Unlike a skipped PTE, the PMD needs no uffd marker: a file PMD never
+> carries the uffd bit, as protecting it splits it.
+> 
+> The DAX huge zero PMD is copied too, with a reference taken by
+> mm_get_huge_zero_folio() as for anonymous VMAs. A migration entry of a
+> file folio is copied and accounted like copy_nonpresent_pte() does, and
+> made read-only in both processes only in a CoW mapping. A device
+> private entry gets the same CoW check, as in copy_nonpresent_pte().
+> 
+> The copy then gets the same tail as __copy_present_ptes(): write
+> protect both sides in a CoW mapping, mark the child's copy clean in a
+> shared one, and drop the uffd-wp bit where the child is not armed. An
+> anonymous THP is now write protected only when its PMD is writable, as
+> a PTE is.
+> 
+> A page table is deposited under the copy where the fault paths deposit
+> one: in anonymous VMAs, and wherever the architecture needs one.
+> 
+> Cc: stable@vger.kernel.org # needed by the next patch
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
 > ---
->  arch/s390/mm/fault.c     |  4 +++-
->  include/linux/pagewalk.h |  1 +
->  kernel/events/uprobes.c  |  4 +++-
->  mm/huge_memory.c         |  4 +++-
->  mm/ksm.c                 |  4 +++-
->  mm/migrate.c             |  8 ++++++--
->  mm/pagewalk.c            | 10 +++++++++-
->  mm/rmap.c                |  4 +++-
->  8 files changed, 31 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-> index 46d828926009..968f128a5232 100644
-> --- a/arch/s390/mm/fault.c
-> +++ b/arch/s390/mm/fault.c
-> @@ -412,7 +412,9 @@ __context_unsafe(/* folio_walk_end() not instrumented */)
->  	unsigned long addr = get_fault_address(regs);
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma;
-> -	struct folio_walk fw;
-> +	struct folio_walk fw = {
-> +		.walk_lock  = PGWALK_RDLOCK,
-> +	};
->  	struct folio *folio;
->  	int rc;
->  
-> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-> index 1c397be0d092..455428eaf1fc 100644
-> --- a/include/linux/pagewalk.h
-> +++ b/include/linux/pagewalk.h
-> @@ -184,6 +184,7 @@ struct folio_walk {
->  	};
->  	/* private */
->  	spinlock_t *ptl;
 
-Ah, Sashiko is right here that this belongs into the public part and should get
-kerneldoc.
-
-But, "struct folio_walk" is currently filled out exclusively by
-folio_walk_start(), and I'd like to keep it like that.
-
-Also, I don't enjoy that we are reusing PGWALK_* stuff here.
-
-Why not add a second function variant that targets the per-vma lock and branches
-internally to a common helper?
-
-diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-index b41d7265c01bc..13f911e1db5d2 100644
---- a/include/linux/pagewalk.h
-+++ b/include/linux/pagewalk.h
-@@ -191,6 +191,10 @@ struct folio *folio_walk_start(struct folio_walk *fw,
-                struct vm_area_struct *vma, unsigned long addr,
-                folio_walk_flags_t flags);
-
-+struct folio *folio_walk_start_vma_rdlock(struct folio_walk *fw,
-+               struct vm_area_struct *vma, unsigned long addr,
-+               folio_walk_flags_t flags);
-+
-
-Or something like that.
-
-That also means that we don't have to touch any existing helpers and we won't
-even have to store that type.
-
-
-But now I wonder: do we need that *at all* ? It's effectively a parameter just
-to do safety checks.
-
-I'd just document locking requirements (mmap lock or per-vma read lock must be
-held) and call it a day.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
