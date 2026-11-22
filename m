@@ -1,72 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA36606A338
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686ED606A338
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=djg9yD9K
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dymmx6qI
 Received: by kanga.kvack.org (Postfix)
-	id 7F0216B05C1; Sun, 22 Nov 2026 10:45:39 -0500 (EST)
+	id 09D576B00EF; Sun, 22 Nov 2026 10:45:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C8866B05C2; Sun, 22 Nov 2026 10:45:39 -0500 (EST)
+	id 075596B05B0; Sun, 22 Nov 2026 10:45:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7059F6B05C3; Sun, 22 Nov 2026 10:45:39 -0500 (EST)
+	id EA7056B05C2; Sun, 22 Nov 2026 10:45:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B8346B05C1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:39 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B74801C4095
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:38 +0000 (UTC)
-X-FDA: 85463179956.23.8F4DB1F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CA8CB6B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:44 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 57A2F1206DE
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:44 +0000 (UTC)
+X-FDA: 85463180208.25.5E74D03
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F399F100002
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=djg9yD9K;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 963B88000B
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dymmx6qI;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795362337;
-	b=7EBDuKONRO4Wvdw5xrAYgbck00+6m3YFeb9TWDrwaYi66uguMQ8TdXpxiOC4vWHtCgsQay
-	KC0Q2c+wLBUj0x7RQWN0pG1QBiir0aAp4qV6VOtGf/AdeaoKe9lb4npNTDHkrpUgxmpy38
-	a4upVJ9ucDG5Vun9uQAFAdsoVlux9DI=
+	t=1795362342;
+	b=fdigX1Z6pc30hRCt/FZCR2xggPqlG5blaSQ8Ptdn6txKdrdhvFTRIlNUHFWvfJE2/hjCdd
+	k9hnP6ex7tedqhS81Whoxnm8ogm/i9NTdqWpzPESO6mKZUF5dPm2Kna1UAGKiNtQjU/v8g
+	wzqp2M6OrQizn55rEa3mC1Hp7g7cnFY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795362337;
+	s=arc-20220608; t=1795362342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kprcO3EcHS5yezRWk5WPgNPWPyESEQitcOPrSumYn+s=;
-	b=lu0MEQ1Ej8p5NUc2SjcfkALXL8MZaEOPgizabevNomUeHtIat6R5/TvWH3FTY1IKST+rhQ
-	F8hZAeWe3Yz/dGa2XY0kZUjUuwpJ655F72z+rKK4utvpyOQM55zOvOR32XwCbUVDpWezxL
-	07H0H5hHr+URv11RzBoBNLfeqggX7xQ=
+	bh=qP2i0fv4WE8/ipxTLPLincxefCJhx+1CzzN1jBqfoUY=;
+	b=dPtZBBfqtHB5NsSlDYazLdyC8KouBxcSrryIHRF+ZQMwHhT/N3kXOYcDGViKJaw6o8lI/q
+	eTxxCRoCfSC2tXF6Iw9R/rLkuZjinHmCSXdcvqGRUwG0AjGZCrelRGTahmOt2sduSk4DCo
+	nH7OwrMqEsz0pCsin3axhIdGicfyjgs=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=djg9yD9K;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dymmx6qI;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 48F51450E1;
+	by sea.source.kernel.org (Postfix) with ESMTP id E50244408A;
+	Sun, 22 Nov 2026 15:45:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6E91F000E6;
 	Sun, 22 Nov 2026 15:45:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F131F000D0;
-	Sun, 22 Nov 2026 15:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795362336;
-	bh=kprcO3EcHS5yezRWk5WPgNPWPyESEQitcOPrSumYn+s=;
+	s=k20260515; t=1795362341;
+	bh=qP2i0fv4WE8/ipxTLPLincxefCJhx+1CzzN1jBqfoUY=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=djg9yD9KHZWm9IJUHvwxqlrfyvd0n3bS+F1AajcxM7sXzzuMBzIS/Ltl7pDrpLyeI
-	 h9xS3hpFxroIMTLUxmUWZgp8QrwPr1cCHX6yY0vzBqL9RbwD5vCj+vED2mrHkz6cie
-	 2qQImN4ea/RuTmKmuJdny8Wvsa6XpWwnmyANNFjdLcjZhAB9axX23DGml/e1Iz40hb
-	 Eo+cYo6QT9q4n+t7t0sSqUzttIv8sdxekY28KFFhc6NdGK4TitkcrkrFxlrbaXM+z0
-	 MnNW34rsWKejefcsY45mbhOB6fIAFqketvq0YIWeQn7pjE6H7g1Wehj64bZjImDPuJ
-	 aI2fjGgnvAnLA==
+	b=dymmx6qIIpA3rlijmZ/+JB+sfVuETUqDVF91cVYW3+atJAQgn9IWkFqJWFIDoPAcw
+	 lnDt1wq+OtDCkmNG6BT1XPW3EBXuxEosPxQhfsGgZkagI/71TVNv+OHoKreroCp+qV
+	 iP71Zn/rjZzsKOK+5Qj5FXk36hKRXr2dzjXlVzNbWlG5kE86baxHH4UERvEJNtWGds
+	 30JK790FV8zUyTGMCKghisnBysakrG2jOlY9FcF1p72mPe7GrJNcr7itE11Gc6PUQV
+	 A2eS4pwlrmdEXtcSN8JLsZfyeYr4ekr1AuobWKdAIaMg2U0GsXyNE+xeXTz/Qirt0u
+	 uR3xsLcloIBtg==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 07/11] mm/hugetlb: use common compound page
- initialization helper
+Subject: Re: [PATCH v3 08/11] mm/mm_init: make __init_single_page() static
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -79,24 +78,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  James Houghton <jthoughton@google.com>, Lance Yang <lance.yang@linux.dev>, 
  Qi Zheng <qi.zheng@linux.dev>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20261120100856.16929-8-songmuchun@bytedance.com>
+In-Reply-To: <20261120100856.16929-9-songmuchun@bytedance.com>
 References: <20261120100856.16929-1-songmuchun@bytedance.com>
- <20261120100856.16929-8-songmuchun@bytedance.com>
+ <20261120100856.16929-9-songmuchun@bytedance.com>
 Date: Sun, 22 Nov 2026 17:45:01 +0200
-Message-Id: <179536230138.3933282.12771618654272468300.b4-review@b4>
+Message-Id: <179536230138.3933282.3756742305375299607.b4-review@b4>
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F399F100002
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: n1as9dyrdznne8at4q37sqqjpm1sfbmr
+X-Rspamd-Queue-Id: 963B88000B
+X-Stat-Signature: 55wgapx6snsiyqaeawp45wict9mzccru
 X-Rspam-User:
-X-HE-Tag: 1795362336-879164
-X-HE-Meta: U2FsdGVkX1+3iQqQOxxUwE9qRMlIktJ4ZfGeiACiDaCsAclxpgJCAwaVxPiZI3lpsorsV5SHj1KrLqOJQ69VW40nnRGLj/R8sVBubasxe+tY/WFT26Q/o/JdXew522PhBEiGBTGUghEQ9gnYB2N2SnSGVRhfbLyjU11xKOqicgANSZ72E50FObx9PCIqe2MO3HWoczGg3w2niPGcAl+364epRU0d1/rRg2eWR87HQjn6IkQSerPvZY8SmeUsMR+RsM6kkTJ40pY3YomrNW8d/9+TGNVBWqwFgG5xrE7Ay+BDR4R7gQnQux6xWWgb4b6l6uAgV5sr80tgzKf5TXNLHFcVAQ70Kxz2/pfPBYRRgry7K8NvVQJY7/M40ReiUo+VGop75PPvLGQSuLMkxwJkugvoSJOFDfYMb8aD/uq+mUxznJnPBCL9Gmo0lww3yXG5A5Qr6uk4W+m3HNsXHcW5T5Lr+x/hlfQHdIEmKW0qzCWMncpwWOIJMjaQH4LWxkr9IJU1HJeHTMl9niQrKzdmrRvCGAg4UG212/Ejz5rIkUjIcN6t22broak7BwtdYQLJydHbwolrZOiuviEyM4J4ep1gS/zVjaH62Hjse7YFvDSRwek8P5V9LO3W66Y8mycDZUtDDjgZwL9aykGTLWRjakfj1xlo1nu7Krtqfi/JLzeCJGcnzsUa1lPQ8VBttnE+McG51vc9iC1//PtVQkJ8L6vO4iHT7sTJ6TTIIdxMu9sRrabIKL6q8E52eb4QxPGDj/5+UiyL5exVKx5q2hxlFs4BfpyxSSODk9vv4zACuWwuNK9yfEy/665tXSs18hQ0MzcYd0vIg330m7YRRv6H20mPNlWdaG4rc34/IPZk3cnYmmH/UrOfLumQ92M0XQVBYPCUWL8N6joamizM/EJazcxf4J2wEixakVZ8MRWmqBiBvqEPMzTeQsMnVLdYP2cRGf/UaosDoioHdcNooke
- QS8JVJ//
- TVauS70yOlffQovW6HCqVE0JN/mbALs8S3h0/Y06oXHg1A+pgIJH9z1mKJRW5AUt/PypG2/OMu1lj4WdbNF76uOu/sw9TKb1Gj67L4BBztWi4G84YMI5F8DoVWSdh6zPkd+B/tqMytvysMsEALP6eDixQmdfWFQqMu6kb9qBpnYfRa/8SXTga9VzZuv3xsG8Pm+dS0BG+zBDkxLU5DlPTJQ2BHakK6XHwKZMEx/DHYfkF/gM2qfV4Hr5FuPEBhnrWYDgOkpMdGQNZqAXsbQBVzHQZlOGZ5bWwhCTwSZWQyy8wjpOijJ0/Cfhff9ecRlo4+rYQMLFjvMU28Ao69W/ibg0B+fYXupUt1pNgBQNgWWfiRJYUcdtaM+ri1QpmGhkl73Xn/30zHdDPzx8/hvo7+uywxb2wKjWXnTGclQ10LLR2uFu33M3jJ3/DHLMOALU9A9RU1vcSFqlpK2v0r8XXNhjIiTGzhoXP47BfIKIGKnbzvds=
+X-HE-Tag: 1795362342-522444
+X-HE-Meta: U2FsdGVkX18h+3sdb5uNFaYCs9V8g72/IagVPKIzITWRCbMDLbmW2IHnN/ipU5RN5L3y2TgynGXP977oQp8BXdeNAtHzFsMBkMFDAYc2RiosMNM7rHqba3f+AnDvPCsauSy6ErROuWCymEnWTLYAb1qFZoTxxFeylWxbRNAXSCszSkW8g+49hC5Mrr71GjixV0jFxtmSUO7acP3Ev/v2dv3fLOgn7fRm0bs6BsWglNKDHu9FqaP/eyoFT/OHZCl2rSkFE4NRnKZ2GzDv+28H45d2zljPiV5Q9TDvp1asKk7OS7Rpdp1EVfzmhcjV3kJa9ptxB5VI57II/oLVUslShjivhhlWdKtk2lCG5w7NfC9k28MPuIaPAlJp7NTP/8uf2NDjx+kBbtISwM4vJ2GlM7oYtVXketBP29iAWHEAmfnaByhxTrPLUEFP+UTsNOvPEq1FzPLscTUx1ktHggoFYGLNjO5MMMeP8VQBQ3Q/+rb/yglE3IxRlwtH2UtAyG/gIQ6DnQbvmsKsxRouDwWnNBB6FFUzsbNKhqjYnBpiG42RDnu8s7xrTb3+zu8gXxrxu3tEm8O4i+N7oA9eL9phhZD5a87AIcY8tiT9iYTxaicAlNHB9UwaVHUpabkmygvWVeMhomyVr8eOae6/iUzGOm04pUl3kIIfMc+BcEX0AexHEJrJFGCoF8/F5cmWo4VKyT3Kv543IcTEdEaJC9+qQVD5OlLOutYUjC8bNh3Y8L5aPsn8J7zO7GHw9H10LcOqzlbFqqdh+9NYoMIQ5CrrmrScLur0pw6iYCdmOqd0prZEnPdXaax/iwLld8n7oAjoLfKnvlAHuF2gCwvotDklzvV8WuGo7rpX9kYsVBB/o/TCghcuHLKPXytPkc3nM0haBV6WyoykMPaq7RTYn/a0BVgijCxHfnMKxxeq/7ZAXTrnHnF98DtiRzs+icMiZGcfGDqgzDiXi24QM8zlSKP
+ 1YAhde0R
+ dofSevhkSOuJuyS4IyVSwGyxe45o4R+zVDiBw6SNMnl+Son0tpSulN08OBut1WUkfDt2p+smMuCNBobNorOkJY7+HQ2PfUI+r3WWSgA7dTTYDWeoVe9elRyG82SW4Nl65sxGxgj8TjSukDe2uLHrPw5rAkO4LmRTbtUntVJbzW7LrMtVF4fauRfm+rBi+8BwinklAEa4vpjLsnF99b2HMP6vpOpm+hyvYkLuCSxvGZvI+caOZ70aBPv4brp+JffUVr3BEoxrNQ8PaypzXk5UBDuRQFXqCLBz48UirGtwD/eo9yx3v+RWV9BzhToQaPWRP/+hWAm+kG03o03FJ8eVTc9TfBjvueBwaEjEmvTHQQBWiaVeBRomphcbgHFTXnHr/EXYdW+xJtWvonSdupxJPJHX18fIDKprMLisk9DeHi3r0C8mdzBnDlZkaiKbFo9RccgW2IQpm18oLTGPqtFzT7dhIOFFNMERUKlqxka5i9cBD3B5ULyEqnNpIDXiu+0fA0gx3Tssx/IdOkTZASk1EYx5L0DKuf7bnCrwLdxl4nvszwnITk4psZVYq3Cry1iAzVQMo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,18 +104,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 20 Nov 2026 18:08:52 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> Boot-time gigantic hugetlb folios currently use a separate path to
-> initialize their compound struct pages.
-> 
-> Use memmap_init_compound_page() for these folios so that HugeTLB and
-> ZONE_DEVICE share the common compound page initialization path. This
-> removes the HugeTLB-specific implementation and improves initialization
-> performance.
-> 
-> [...]
+On Fri, 20 Nov 2026 18:08:53 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> __init_single_page() is only used within mm/mm_init.c, so make it
+> static.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 -- 
 Sincerely yours,
