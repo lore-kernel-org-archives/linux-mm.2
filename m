@@ -1,96 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3F0606A334
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 00:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FCD606A331
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 00:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hj2E+HQr
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=N1is7NP1
 Received: by kanga.kvack.org (Postfix)
-	id 273326B05B0; Sat, 21 Nov 2026 19:09:08 -0500 (EST)
+	id 903306B05B3; Sat, 21 Nov 2026 19:09:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FCF36B05B1; Sat, 21 Nov 2026 19:09:08 -0500 (EST)
+	id 8DA0D6B05B4; Sat, 21 Nov 2026 19:09:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3FB6B05B2; Sat, 21 Nov 2026 19:09:08 -0500 (EST)
+	id 7A23B6B05B5; Sat, 21 Nov 2026 19:09:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D54C06B05B0
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:09:07 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4AC971C3E12
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:09:07 +0000 (UTC)
-X-FDA: 85460819934.26.C1F5EDA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D7766B05B3
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:09:10 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C4D141A0626
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:09:09 +0000 (UTC)
+X-FDA: 85460820018.28.AD79076
 Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7A45D1C0006
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:09:05 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=hj2E+HQr;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 13069A000A
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:09:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=N1is7NP1;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com
+	spf=pass (imf25.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795306145;
-	b=X0jmnXfKCKSuQJzMQuNDH5qp/Bl3TMOjum5EdR5965r2BefWCBen+SCPf2s4W1MgxPI8Ie
-	X9OTlQiUkn6OGDNu5XZRSUyfFCsAcgVBU/mXDTFyWLhJR565frQmTHPGFba4gdRZQN9GUx
-	i/s9P/zi89YnHT/uwy8/WYTqQgSq0aA=
+	t=1795306148;
+	b=SF/DIcucSrI3p8c2B0rCCzI6mU3b/2UbDKBrTKPxAsYOku/GCfAdMhTFa8GP1lLHDTyDQT
+	7FDvCphOWTA6zaOqRKMLxOnHQ1rpCsbDjoZGuQefG/P9W+tHgdVSvc3rNYLawJdjnqw79q
+	DrmU93CPFEGd+H5oX2TTKL/FKCoYQqQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795306145;
+	s=arc-20220608; t=1795306148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eZ/C0MjLctzDUF6Twskdb3vgozRB4N9gCenz5ZATy2M=;
-	b=nfa28epXa0NgsCkOCaES+D6eHVWfxueEwfUEZQ4U0TYFHl485FjGYUD4Ypeb1UcgSrXAkd
-	deZyO89Hb6lhyuWfGCYQ+TpK4Wup25AoZzDxO53TPKBYb2s4/GCXQFeGp7f+DOZ6WXeXna
-	7XEfQpYI4TTdZEwVWbAZytIu39HMLA8=
+	 references:dkim-signature; bh=FWoGJyOOx8MBudK/SXFqYhSZuLve62rb6ctG2QCZRF0=;
+	b=aYcUhuK1d+mWb3jZK9A2Pc+Nj93JXkUKmjJi4tflrwQtg5Hnv9AcWvFd0IIgiEtx/AtOqb
+	VQNerL0Wq2GTzdSmeCJSHlaVniWeFAbpG4DaLzMuXkEWARk2tvr9Ls9CJPTxrdD9iJP86f
+	DXKk2yGiAueMfgu6MEcEPA4u2PGsGmM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=hj2E+HQr;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=N1is7NP1;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e9f6a16afcso32275ad.1
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:09:05 -0800 (PST)
+	spf=pass (imf25.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2f048bc09d7so49955ad.0
+        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:09:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795306144; x=1795910944; darn=kvack.org;
+        d=google.com; s=20260707; t=1795306147; x=1795910947; darn=kvack.org;
         h=content-type:mime-version:message-id:subject:cc:to:from:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eZ/C0MjLctzDUF6Twskdb3vgozRB4N9gCenz5ZATy2M=;
-        b=hj2E+HQrfvnlea1BXCqTEK/Y4FYyMkNP49qkwaryVk+5WvU3rVgqEciNUtVOUZRg73
-         ywgPkyIiMjKnTV7g65Dk9sA27HBFFTyZK1ViO1bEwD66gKljlHFaKoIS/Lg4+aUHp0Td
-         ZjWuKDXclsIXGmeNvCHb0sKrso8zR3yjvIR2d/P1mY97G1ZA6tkvtnROnolpxjF2aPL0
-         z9KrIJVD6bfiexai3zHJfm9TuM5y9siYSi+/ixnU92Ms2RuU2O0X9/7UU70M5ePm0t8Z
-         bi05ZLc2VmaxcFZNemuov7GEPxBGNlec/o0KNdDNF5WM+RRSnz04yoOYQBi3DYjAGFa1
-         7Ehw==
+        bh=FWoGJyOOx8MBudK/SXFqYhSZuLve62rb6ctG2QCZRF0=;
+        b=N1is7NP14KkVVE39/wK+xqgDbj+8wyv4Smz9YEx7gdo/tvThqRnES6d9qG4IUf4S7P
+         KHPVyPA5qSRL/rPteSiOoiE6CyI44TAmEhAOLdeecb6r9fylkyr4eLxksbub6nEWe3oU
+         grXyuyl+w7hLnGePoCD6Ys+msU4S7q1cU6JqNWGiw+CwITnabypcN082jJXqUbgPZBPa
+         K8tYf5zEcqwTOTb0SaB8XHrkYnzfq0yAMgNrGuudVF8Bj4yUi/hi0afRXI/NOILMduEK
+         srbhWNxeA1sK29c/cgtpc8IDCapdNJyD88AfwT3QE6eeHEhBMaxdiWg4RZXh1w9CZdDh
+         4ccg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795306144; x=1795910944;
+        d=1e100.net; s=20260707; t=1795306147; x=1795910947;
         h=content-type:mime-version:message-id:subject:cc:to:from:date
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=eZ/C0MjLctzDUF6Twskdb3vgozRB4N9gCenz5ZATy2M=;
-        b=vwZXxSXqx3B2so5rP2H4cvsICXuPy/pholIRXr51LLePrh+hSKxZ6P1mM1mIxABzSz
-         mjB3I/a+0XHk6lYYu+dhj4HNZrRhQ8sa0G24C6v3qADNxXi8QvrHd+3HWLuoVBgt4HCA
-         DYgIDp75mwCEjJr1LppQHa1+w976dUUmiZEW69ChHn1b+Ey8aok3fWqYF6emgX1V9Pu1
-         CQtc7JIeOb4M45QNdinmudlPjEcEVc78w3uLSiCj9b9loq6ywcrJm2V/cC7HSEQyv6rT
-         efvNCIpZ6rhk/x6ctzq3GaBuiJv+6Ht6Tdg2XpwmanFTqY30YSULXLk+2nI3lLgiRJyq
-         dyuA==
-X-Forwarded-Encrypted: i=1; AL+hErFx8lFo3lM48SexDpIqXq45TvKrDrkIkG8RCyTRpV9cImgWD34YQN09x01rn4L3pjRhkyazQjVmRQ==@kvack.org
-X-Gm-Message-State: APuU4Z8X7g6KleSYa1dYKWPzlDTA1gigY+1WtD7t3NQC4Jou4ZxCeHjH
-	1np8WSORgV0buSn/r2gNj6K6KhPqTFxqubJkxedZg2aK432V+Bed1Q+NeWcdC00ifNl9hTZpW8N
-	wE+juiB4S
-X-Gm-Gg: AZFdTZdOhV/hN1QrW0kMu8C52dpkyiqdt2pvZ94MFWBMTZcGNMCKgg75URxyKDcWWnB
-	KlLdqjWXMCTPfDitq+rX7Wih97+90KQ24Z/xjTWRNBIkXiXJtU32Xs9lFjWtGobUicmuwIqpaHd
-	t1T8eSmnxyOccTWkm73//QfQ+Aj/6PcfxXkGe+gq6htBgneICDob+9OkwbNp4OX8A+xGqjqeTof
-	/rW0bBhCf+jfD1MZcMZEQTOp1wXbDOHNe3kk4/pbw+0S+Na2lisY7TAepHfegbnBfDiFQNexaZA
-	edtkey3R82TTv/8Ew+D2AVI1R8Y6AIOthFu8TBktqKY8M7mzpeTc3Qds0joRaomHD83vWlsVukB
-	Ow2iKA9pWzFvgt5xvndrpEIYy51Ti27PRyp8bpLfBq5RhnvD+OuamOmKxtx+vUkEbb4/WnOT4+w
-	isFHiPpz+ODl1dWDv4iduGufbP9CWWjQAkN8Gtm4Ob6MTPId+f6OT3rZHQfMUmty6HdTLRCv8f3
-	H4zn5wLGeCfCDFJepzW+MC7xazFXFj1p54k54LImcD7eW0vIvZw7Jv/O6KN05SftXe6DHg3hr58
-	lHWfR9nieZmQ+ZqffDBhRg/CY99GczJaGzQNcmhGy+kHT90h6UZJ6YWg1PtaZUmCx7Buzpckv/Z
-	T5oj+SuiACu4q1aEljPkMPR0YRXGwaV+HsNJ8r05JrAo6qAFF4qwTOMaAc/QIhwnHOARnQjkBgX
-	1eMQNEGb2rfQT5QABGsoD3PQML6dxLaNi6jq5UCttAb4w=
-X-Received: by 2002:a17:903:fad:b0:2e6:23e5:4934 with SMTP id d9443c01a7336-2f0666ca266mr2919995ad.14.1795306143466;
-        Sat, 21 Nov 2026 16:09:03 -0800 (PST)
+        bh=FWoGJyOOx8MBudK/SXFqYhSZuLve62rb6ctG2QCZRF0=;
+        b=T5eOPbqTPXfDoBny5/Z8QogNGfvjx313Bsbl8xK0bR8kt5GeapTstInxEtOx14x3/+
+         eqOEldsXUyAjBGnJvvH+qqNWEzFUoGndPNdC03o1ayTBmAjrTCQJicCcPQRFNig1mCWP
+         xe9Q/gajZvXO2wwuOupzW7AaZSACG4AIQ6CKrQiwaVe/yNpxoRH6C2PXNYlNfHfOR6ic
+         xiaQKXSeV+xs+SZZbJb3M8TQP1ePiQlJQZy+TvBpnqD+b95+Y4kA64+ZAXcmYMyid67Q
+         Za/mdlccgXdM+pdHGh0u+uj96HGYPlWrPghspl4HVj3qUB5gWU9sW55DREjwPI8c6HEu
+         dIjQ==
+X-Forwarded-Encrypted: i=1; AL+hErG8KFgVG1gc8pXRqD+f92c1TRH2VcYV9J2rbc3Gcytm6HrP/njV9AYwrD3hNnISwgX94wCa4r6WZA==@kvack.org
+X-Gm-Message-State: APuU4Z9G1KMWUt5M0lhGYENGU5Ji7PuNawEhHizAr1s7cWgkQVfxSjPE
+	givJSSKV9dKRuo8hBMau/CfkkCrGCvUOTl64HUOrBzsN+jXbARimZon0SWMc1yhyFA==
+X-Gm-Gg: AZFdTZeHkcQMkHWOT/+AwP5OcL3F14xEFoFjFGxy9aE61oQyLnUOC+qzcf5MeEOtLH3
+	W62EnrU4f+lZBxN3xX4FQfeQmJUj3wC+Va3/HGPaRB3+UDJTTNXMOD/nURgseb3cetmPV33S2rK
+	JD5iNuhEfu//vKP5okInR1sOnmQWIM12UM5ukt+gijN+wwbzXnHTDDDp1kP081GZxwlaVsqABA8
+	NghAKB34cvj5vYHZTRQ21kmvgfzQfO5ubu8l6fHcTnUL1rTxM6V448Et/AjwL9DEN+2Psu8bsc2
+	AQDKvHu74gxOYxU5ruLoJk6mFUC4sV6OCF0kSeiUkkM0n3i467gxZ6NnFxQsmzlKb9+uK+bKVpN
+	G1aam40hMjBkMWWDAFtl9EpEXJJUfP5bTl/FCzKBozbDcHUnWnP/M6gPNKYjgQwEB5bWaCNWKwi
+	SGDT3G8MGzWsjCFkx5pC+c5byYSRW7TUVuO2N83Wo949ZgGNostFaPQAy7mAYZ1qCtqIROay9aO
+	uxEWZ5oY6j6jkvKmxmV7+dsAbGmrGzGBjzYbMnflAAxwy7F20m6LOg4ARB70qg0GfU1jLsh7O0w
+	AfTT3F7+4Dx2F1Wr22rSmJRdbnnr8ewyZBBUUAnXdUQ5lbvoJ1Mk0ri/xQj69jrh+jYuNQ7nVGw
+	2ReiJ5cS7NqN6E5F/UWDWHvK2khvyjCKYoVaON2DqKJpr1gEAmOSRXe8FffHdasND+q7E/ml1zA
+	4Hv/qsE8Ct90w0qUoNR6NfzEHxi+xLxrQju1CPwbKzYeg=
+X-Received: by 2002:a17:902:fc84:b0:2eb:188a:1c06 with SMTP id d9443c01a7336-2f06657180bmr2795785ad.9.1795306146077;
+        Sat, 21 Nov 2026 16:09:06 -0800 (PST)
 Received: from [2a00:79e0:2eb4:9:575c:af4:36d9:d404] ([2a00:79e0:2eb4:9:575c:af4:36d9:d404])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405ffa98esm12953309a91.17.2026.11.21.16.09.02
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b40f4312dfsm11918127a91.3.2026.11.21.16.09.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 16:09:02 -0800 (PST)
-Date: Sat, 21 Nov 2026 16:09:01 -0800 (PST)
+        Sat, 21 Nov 2026 16:09:05 -0800 (PST)
+Date: Sat, 21 Nov 2026 16:09:04 -0800 (PST)
 From: David Rientjes <rientjes@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
     "David Hildenbrand (Arm)" <david@kernel.org>
@@ -103,25 +102,25 @@ cc: Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
     Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
     Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
     linux-kernel@vger.kernel.org
-Subject: [patch 1/2] mm: page_alloc_kunit: add synthetic benchmark for the
- page allocator
-Message-ID: <c872d827-76c8-f765-0634-c84c7d9ce853@google.com>
+Subject: [patch 2/2] mm: slab_kunit: add synthetic benchmark for the slab
+ allocator
+Message-ID: <ae9aa46f-8b6d-6c10-ab8d-aff30ebbe338@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: hwj9kjw4a9ept11ndrk7aikshyrhb1w5
-X-Rspam-User:
-X-Rspamd-Queue-Id: 7A45D1C0006
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 13069A000A
+X-Stat-Signature: cfj1b4h61qs7yxor7t4hono7w65df7p1
 X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795306145-634948
-X-HE-Meta: U2FsdGVkX19utz92NQk7kPzxV4IYELJX2Hg1qtolWkRmt5vgou5hJTFQZt2RdtCqTl4jeWUEFtaik5me4ZvqN3x6Uvi2Na1L6Z1hDqqZMptQVzRSM8iI8STz75Fkrg2Wnyfdb48+7Ip4amcNmFZJeut6KcjcDTKsKDGhmop7Wn0A6hYQ31PVv/+EIxxgvNua+yCjgpPkjYsS6I2ul1QLlulRj0+TRcnF8VVWjE7Fw1O99UGu+RbvWuZTWiwc9c6Nb2JCV5v6yWZxtFUiR5P6MK2IqhANcZdDFSkJkoXxOCIpCYriRyATg4Fkago1O1XAJTagKmGmxes/4QZkv+1bONOBo8z2Q4pmJm8O49cS7ubKvGO7o+Fr2S+kaB8B7k1Rcvp6dJZsLwsNechWv0QfUGza61KRAhoe9fmCtLo6hfSZIoSBAq35de3LYgEpEzfk9lVgf1/zmEcgpqykUfKxFM3qZ+ExuZZsFkYkgkCsxmh8cfk+r+h014L18fU6/AFBn5kpCTWmE2pIcr1wdClrZohiy2FtithBpY3wWk3X8DfJDxOKx1izzfOAKxs5Gb7I1U/aSkICEBbewqMLdxPcuTOAjDtwCt8OGjAcy++xuu32H094YpkfvCIPZmxlFz/Odqa9Fy3QsIdM/pV0FFYusFlQGW6cREpSk8OIi45N9YfS4hQHJesUJZ15dAGofaJlSy/FAP3NvtJ4dRQGDLidYqRu4ZREUry1CroSrxNADJsbOilvZZAg6frMqR5z6L89tQaBspV3zRut3LoGOy9wXlXCLbDc6i1PllXBMH7SQU/zAADBnzN3kmFSkboGTf+sEkLbt8GTVr8dyGfsaJY+v2BqNKKXDYSK54TTLdMTBC/D4+IIyrphbOpmMJPk3Ns0gyXeGzL8jiZl6KJ/F2L2tqKyXZ41mpab57zqqCJIiEW4AzcK8PEFfFjJmN5VoXiMKA2GeebNOFdSUKJssld
- IFoVpIqC
- WHrYUi7RcA49/KsJkLJYFxMSaNeha0B5kx4X48KQ8YUMekq05W6piIXDgcLEcRrem+RQMU1Y5jRrUn1nzfK6Tu9snXgz/jSYzx1qprR3F2ud2oMALWR4BBVB9jFHEBPWLDyb8U8gf1oT+UaAcxDA6AwMFqbycIrYmLJW6jPh/IzVk+t0ccLDKR7kaNiM9gu3Qv6kc/WutEHVchhtqvZIns192vuSeHf9GR4Ea7dc1Z2sMpOot8mDP9tMDB8QtXwaOaR+OdeyH6Nbf4Nx4IUJ/QZir+su88FaS9tg5lKZXy3rzts7f9xF9rFOOy+5SI/gDyUlm/54BDjD2pr8y4vCEZcTwwO6URTOtBKohKzo5RQchgYG0rqe2RvcfaIunGvHFvGZ7BrcCI4p3mtLFJqf9Fe/vPDwCs4SrND29PCLXHQLMLlprE4K4jPYjwVFkDzZeoYSKyOGxQnfbjH9ibJtFUXsVtFMoF4l51AQbk9yLjut2JtSGWQGJF/7ZUrqisBSwna0TzREsxSijODsly7eJnQ4PHgcvWQmhqHonljjjGGXg6OONJTf7CAl8eoQGreLB+cPPaCDC9HC0CGgvllDXDmtAXJA4Nkrh+fsvR3FdCMXWO5dg2dPr0YcreFKh/5r4SgpzzCmNLTl/LBedKYt7q9T/f7SSpa5tWeAzJYsP/1L/S9X7+4SDToxxnoyIF+/4yUyIotUdISK8nSYV3F+NAdCptVlkLBe4wS6iB+yyxiSaoWiTHTNrR4U8Mw==
+X-Rspam-User:
+X-HE-Tag: 1795306147-733109
+X-HE-Meta: U2FsdGVkX19Uuq0zG5SSgZ4OHaSlCdDrhNbhBmKxu6Kk69BnfYhDZ4QPKsjjnYPDzWCji/otBTTrLtPdIz7r1ZH06JyPaLjAgAuN0q/1ltr7krocAIbIOJ/HKvKw8AP2DamAN0y9LxQe/fPKn74Vy5gGEHqD///NJUPrAkxINtw0f+GbZ9qKR+PBpMc1yaNhjSNG8sjeXS6W45wYcMeQCUOekDGIucbAjw9UnFYclILwEIzN3dJfcFe3/iNa4tQydi8AmYjWBZ62ydpoSbznbNTdUEyD8r3gi3MQyx0z8UF3tbJEZLRAAyP8TDptb+f5/mODOYfJhvZyv07+CUdyn9zw2TJKC0I8k+2jr2zLkseVpnaGe75ESCbikvdMHZojN4m1lKDRn8A2F53YEEoGA3tWrG54VKtgMYz9M7bCPDsnN0NzXq8dwTavuk0vYroBT2S7uxWop/6XrrKzPElCRHJLp0LxODDVUF4Fb3cQL2BK3yNdlP8MszCenSFdEQLnqRJD49w2vK1ivY0zNB7fnPKzsOsnWlXFpSBIm9C1sXil3ljX4mP/BPKpqNOMCYwjLd7qtxx0oIaprGK3dok3w9hY7TDSBLDtYM1qZpdISVfhi1N5FTRa2ycn5qIi3T1Y0QhJ2k/Avg/iQrmFs7McKbnEt1V6pnOsgbIx0csHJpJSNYlOL4zWT6iAVmckDI3MN8fUfu3Q2gYyEptUIug7J3OGFgEivmuURcU/Y0uXdML2+rqxycvYq51cTrx3a0OeIwKHr41coB+NQTZUSbFdd3TtdW76tlgBxkfaM12kYW6J1OC9WjB/ZVmskd/25ftcGovQzy34eGS3qibeHZi3EQXolbS8kf5umvUmIhwhnVgAQMpmk9znTWR4o5VdUGwCy2bYDgUze//y4c0hd6sLrD4KS653iiaS+OZVoH9GECQInzQCJAajeJov/g3aiVPfWsxv/gjNY8/smSDmf0r
+ ubvPntRl
+ iktB6JKFM4AVoYGplSD6pLC3FN+zNlZEDnm4ocp65g3aoxMi7kzvkVcrmegMhSLajQNMP2C4x8z824iHwZeKtv5KHaIxcBCy7NBphsDUFgqKs7//fl/W/Dd3m9BY0aMuZKXmiIMIm5NOw1qyYS9gF6lHM02s9JdLLTL8cBrsApfk4zMaA6+KsozNVqB4aASWHoPOm1BPhKfXlVIKhz9r28oi7leGo46jADuZHcir0266L298Y7+Sg7WYg76hd/WFNip0xiowWBFvxKk8/pjgxz8za52ttemk9J00CUs9KV4yxQkbKW94wbsj3DPJTyzvF4ui1gZsgUZcNH0MJ0KVnc6VXbeUQbleovFJfSBCA1oGSsemJnZNJdKdYKkMFfuCMPlrDQemSc1nSoi2IfaPyIs/q5YrCctuARuqtPSfw1wqZGerwsETYUkpgRxJHHTe23J65up7xKSAUPrglsjSdfQolJK0kzTg7yA+O9x5gPVqDOH9aPa7TOGyCLWLpfSlX0CBcHb/UyPCkvF6dXl3wFm/um5LT+AiwPLhz795ZNphCV/IbEshNMnARY6YV+ah4L2vD/TRqEcCkRl/XjDj3K88GsSWsIKQjCUo0FzJ/RcGyIg9q+Q0xhUs28nhCkfoMmsgQgF52wZR5xU6U2BqpG70mBlvGb/d/HhadrvFhYbu4MPxzQ1oIhtfCkfZrCcRGN9e+uvcI7vz3UNUAsx6p5N2EZeBRl9ZsELnbEOo5R1RTdcnfqmKOfeBLZVnMUvjgeBt8kcVVQeIrC60mbvHeYHS0hH0/G4cmnLQN0SiTiKUjb50=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,10 +132,11 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 From: Christoph Lameter <cl@gentwo.org>
 
 Add a synthetic benchmark that can be used to measure performance of the
-page allocator.  This is used to analyze any improvements or regressions
-in the allocation and free paths, which are among the hottest paths in MM.
+slab allocator.  This is used to analyze any improvements or regressions
+in kmalloc() and kfree(), which are used throughout the kernel in hot code
+paths.
 
-This is the second of three tests that measure the execution times of
+This is the third of three tests that measure the execution times of
 critical MM functions anticipated to be used by developers to measure the
 impact of any core changes that would end up causing workload performance
 issues.  Google has carried these tests internally and kept them updated
@@ -145,85 +145,96 @@ since Christoph posted them back in 2009 for this purpose.
 This can also be used to detect regressions over time, from kernel
 version to kernel version, independent of development use cases.
 
-The benchmark covers, for each page order:
+The benchmark covers, for kmalloc object sizes that are powers of two:
 
- - allocating a batch of pages and then freeing them, from a single thread
- - allocating and immediately freeing a page, from a single thread
+ - allocating a batch of objects and then freeing them, from a single
+   thread
+ - allocating and immediately freeing an object, from a single thread
  - both of the above concurrently on all online CPUs
- - allocating pages on all CPUs but one and freeing them all from that
+ - allocating objects on all CPUs but one and freeing them all from that
    one CPU (remote free)
+ - allocating objects on one CPU while all other CPUs concurrently free
+   them (1 alloc N free)
 
 Allocations use __GFP_NORETRY | __GFP_NOWARN so that the benchmark does not
 invoke the oom killer on small systems; if memory runs out, the results
-are reported for the pages that could be allocated.
+are reported for the objects that could be allocated.
 
-The test is run by KUnit or doing modprobe page_alloc_kunit directly.
+This is a performance benchmark and is complementary to the functional
+tests in lib/tests/slub_kunit.c.
+
+The test is run by KUnit or doing modprobe slab_kunit directly.
 
 Sample output (abbreviated):
  KTAP version 1
  1..1
      KTAP version 1
-     # Subtest: page_alloc
-     # module: page_alloc_kunit
-     1..5
-     # page_alloc_test_alloc_then_free: order 0: 1000 ops: alloc_pages -> 4074 cycles (1008 ns/op), __free_pages -> 1240 cycles (298 ns/op)
+     # Subtest: slab
+     # module: slab_kunit
+     1..6
+     # slab_test_kmalloc_then_kfree: size 8: 10000 ops: kmalloc -> 996 cycles (248 ns/op), kfree -> 449 cycles (111 ns/op)
      ...
-     ok 1 page_alloc_test_alloc_then_free
-     # page_alloc_test_alloc_free_pair: order 0: 1000 ops: alloc/free pair -> 3036 cycles (746 ns/op)
+     ok 1 slab_test_kmalloc_then_kfree
+     # slab_test_kmalloc_kfree_pair: size 8: 10000 ops: kmalloc/kfree pair -> 832 cycles (206 ns/op)
      ...
-     ok 2 page_alloc_test_alloc_free_pair
-     # page_alloc_test_concurrent_alloc_then_free: order 0: 4 cpus, 4000 ops: alloc_pages -> 4880 cycles (1208 ns/op), __free_pages -> 4832 cycles (1171 ns/op)
+     ok 2 slab_test_kmalloc_kfree_pair
+     # slab_test_concurrent_kmalloc_then_kfree: size 8: 4 cpus, 40000 ops: kmalloc -> 951 cycles (236 ns/op), kfree -> 530 cycles (131 ns/op)
      ...
-     ok 3 page_alloc_test_concurrent_alloc_then_free
-     # page_alloc_test_concurrent_alloc_free_pair: order 0: 4 cpus, 4000 ops: alloc/free pair -> 3695 cycles (892 ns/op)
+     ok 3 slab_test_concurrent_kmalloc_then_kfree
+     # slab_test_concurrent_kmalloc_kfree_pair: size 8: 4 cpus, 40000 ops: kmalloc/kfree pair -> 1071 cycles (263 ns/op)
      ...
-     ok 4 page_alloc_test_concurrent_alloc_free_pair
-     # page_alloc_test_remote_free: order 0: 4 cpus, 3000 ops: alloc_pages -> 5763 cycles (1442 ns/op), remote __free_pages -> 1707 cycles (414 ns/op)
+     ok 4 slab_test_concurrent_kmalloc_kfree_pair
+     # slab_test_remote_free: size 8: 4 cpus, 30000 ops: kmalloc -> 1118 cycles (280 ns/op), remote kfree -> 420 cycles (103 ns/op)
      ...
-     ok 5 page_alloc_test_remote_free
- # page_alloc: pass:5 fail:0 skip:0 total:5
- # Totals: pass:5 fail:0 skip:0 total:5
- ok 1 page_alloc
+     ok 5 slab_test_remote_free
+     # slab_test_alloc_n_free: size 8: 4 cpus, 30000 ops: kmalloc -> 902 cycles (223 ns/op), remote wait+kfree -> 2705 cycles (665 ns/op)
+     ...
+     ok 6 slab_test_alloc_n_free
+ # slab: pass:6 fail:0 skip:0 total:6
+ # Totals: pass:6 fail:0 skip:0 total:6
+ ok 1 slab
 
 Signed-off-by: Christoph Lameter <cl@gentwo.org>
 Signed-off-by: David Rientjes <rientjes@google.com>
 ---
- MAINTAINERS                 |   1 +
- mm/Kconfig                  |  12 +
- mm/Makefile                 |   1 +
- mm/tests/page_alloc_kunit.c | 490 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 504 insertions(+)
- create mode 100644 mm/tests/page_alloc_kunit.c
+ MAINTAINERS           |   1 +
+ mm/Kconfig            |  14 +
+ mm/Makefile           |   1 +
+ mm/tests/slab_kunit.c | 614 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 630 insertions(+)
+ create mode 100644 mm/tests/slab_kunit.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index cc8e9dc4c98f..8747eff14532 100644
+index 8747eff14532..b38d38916e46 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -17927,6 +17927,7 @@ F:	mm/page_reporting.h
- F:	mm/show_mem.c
- F:	mm/shuffle.c
- F:	mm/shuffle.h
-+F:	mm/tests/page_alloc_kunit.c
- F:	scripts/gdb/linux/page_owner.py
- F:	tools/mm/page_owner_filter.c
- F:	tools/mm/page_owner_sort.c
+@@ -18012,6 +18012,7 @@ F:	mm/mempool.c
+ F:	mm/slab.h
+ F:	mm/slab_common.c
+ F:	mm/slub.c
++F:	mm/tests/slab_kunit.c
+ F:	scripts/gdb/linux/slab.py
+ F:	tools/cgroup/memcg_slabinfo.py
+ F:	tools/include/linux/slab.h
 diff --git a/mm/Kconfig b/mm/Kconfig
-index d6131fb7c1e6..1fa0c824fbe9 100644
+index 1fa0c824fbe9..0cfdf3dac0f0 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -1492,6 +1492,18 @@ config VMSTAT_KUNIT_TEST
+@@ -1504,6 +1504,20 @@ config PAGE_ALLOC_KUNIT_TEST
  
  	  If unsure, say N.
  
-+config PAGE_ALLOC_KUNIT_TEST
-+	tristate "KUnit test for the page allocator" if !KUNIT_ALL_TESTS
++config SLAB_KUNIT_TEST
++	tristate "KUnit test for the slab allocator" if !KUNIT_ALL_TESTS
 +	depends on KUNIT
 +	default KUNIT_ALL_TESTS
 +	help
 +	  Enable this option to test and benchmark the performance of the
-+	  page allocator: allocating and freeing pages of each order from a
-+	  single thread, concurrently on all CPUs, and freeing pages on a
-+	  different CPU than the one that allocated them.
++	  slab allocator: allocating and freeing kmalloc objects of various
++	  sizes from a single thread, concurrently on all CPUs, and freeing
++	  objects on a different CPU than the one that allocated them.
++
++	  For functional tests of the slab allocator, see SLUB_KUNIT_TEST.
 +
 +	  If unsure, say N.
 +
@@ -231,24 +242,24 @@ index d6131fb7c1e6..1fa0c824fbe9 100644
  	bool
  
 diff --git a/mm/Makefile b/mm/Makefile
-index f49994e61b03..9e0c4c6c6cbb 100644
+index 9e0c4c6c6cbb..11b695539357 100644
 --- a/mm/Makefile
 +++ b/mm/Makefile
-@@ -150,4 +150,5 @@ obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+@@ -151,4 +151,5 @@ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
  obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
  obj-$(CONFIG_VMSTAT_KUNIT_TEST) += tests/vmstat_kunit.o
-+obj-$(CONFIG_PAGE_ALLOC_KUNIT_TEST) += tests/page_alloc_kunit.o
+ obj-$(CONFIG_PAGE_ALLOC_KUNIT_TEST) += tests/page_alloc_kunit.o
++obj-$(CONFIG_SLAB_KUNIT_TEST) += tests/slab_kunit.o
  obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
-diff --git a/mm/tests/page_alloc_kunit.c b/mm/tests/page_alloc_kunit.c
+diff --git a/mm/tests/slab_kunit.c b/mm/tests/slab_kunit.c
 new file mode 100644
-index 000000000000..3cb78514c060
+index 000000000000..7aae29196fd3
 --- /dev/null
-+++ b/mm/tests/page_alloc_kunit.c
-@@ -0,0 +1,490 @@
++++ b/mm/tests/slab_kunit.c
+@@ -0,0 +1,614 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * KUnit synthetic performance benchmark for the page allocator.
++ * KUnit synthetic performance benchmark for the slab allocator.
 + *
 + * (C) 2009 Linux Foundation, Christoph Lameter <cl@gentwo.org>
 + * (C) 2026 Google LLC, David Rientjes <rientjes@google.com>
@@ -258,7 +269,6 @@ index 000000000000..3cb78514c060
 +#include <linux/cpu.h>
 +#include <linux/cpumask.h>
 +#include <linux/err.h>
-+#include <linux/gfp.h>
 +#include <linux/kthread.h>
 +#include <linux/ktime.h>
 +#include <linux/math64.h>
@@ -270,16 +280,20 @@ index 000000000000..3cb78514c060
 +#include <linux/timex.h>
 +#include <linux/topology.h>
 +
-+#define TEST_COUNT 1000
++#define TEST_COUNT 10000
 +
-+/* Highest order used by the concurrent tests, which allocate on every CPU. */
-+#define CONCURRENT_MAX_ORDER min(5, MAX_PAGE_ORDER)
++/* Object sizes used by the single threaded tests */
++#define TEST_MIN_SIZE 8
++#define TEST_MAX_SIZE (PAGE_SIZE << 2)
++
++/* Largest object size used by the concurrent tests, which run on every CPU */
++#define CONCURRENT_MAX_SIZE PAGE_SIZE
 +
 +/*
 + * This is a benchmark, not a stress test: fail the allocation rather than
 + * retry hard or invoke the oom killer if the system is short on memory.
 + */
-+#define TEST_GFP (GFP_KERNEL | __GFP_COMP | __GFP_NOWARN | __GFP_NORETRY)
++#define TEST_GFP (GFP_KERNEL | __GFP_NOWARN | __GFP_NORETRY)
 +
 +#define BENCH_FMT_LEN 48
 +
@@ -329,78 +343,82 @@ index 000000000000..3cb78514c060
 +}
 +
 +/*
-+ * Test 1: Allocate TEST_COUNT pages of each order, then free them all.
++ * Test 1: Allocate TEST_COUNT objects of each size, then free them all.
 + */
-+static void page_alloc_test_alloc_then_free(struct kunit *test)
++static void slab_test_kmalloc_then_kfree(struct kunit *test)
 +{
 +	char alloc_buf[BENCH_FMT_LEN], free_buf[BENCH_FMT_LEN];
 +	struct bench_stat alloc, free;
-+	struct page **pages;
-+	unsigned int order;
 +	unsigned int nr, i;
++	size_t size;
++	u8 **objs;
 +
-+	pages = kunit_kcalloc(test, TEST_COUNT, sizeof(*pages), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, pages);
++	objs = kunit_kcalloc(test, TEST_COUNT, sizeof(*objs), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, objs);
 +
-+	for (order = 0; order <= MAX_PAGE_ORDER; order++) {
++	for (size = TEST_MIN_SIZE; size <= TEST_MAX_SIZE; size <<= 1) {
 +		bench_start(&alloc);
 +		for (nr = 0; nr < TEST_COUNT; nr++) {
-+			struct page *page = alloc_pages(TEST_GFP, order);
++			u8 *p = kmalloc(size, TEST_GFP);
 +
-+			if (!page)
++			if (!p)
 +				break;
 +
-+			/* Touch page */
-+			memset(page_address(page), 22, 4);
-+			pages[nr] = page;
++			/* Use object */
++			*p = 22;
++			objs[nr] = p;
 +		}
 +		bench_stop(&alloc, nr);
 +
 +		bench_start(&free);
-+		for (i = 0; i < nr; i++)
-+			__free_pages(pages[i], order);
++		for (i = 0; i < nr; i++) {
++			u8 *p = objs[i];
++
++			*p = 23;
++			kfree(p);
++		}
 +		bench_stop(&free, nr);
 +
 +		if (!nr) {
-+			kunit_info(test, "order %u: unable to allocate pages\n", order);
++			kunit_info(test, "size %zu: unable to allocate objects\n", size);
 +			continue;
 +		}
 +
-+		kunit_info(test, "order %u: %u ops: alloc_pages -> %s, __free_pages -> %s\n",
-+			   order, nr, bench_fmt(alloc_buf, &alloc),
++		kunit_info(test, "size %zu: %u ops: kmalloc -> %s, kfree -> %s\n",
++			   size, nr, bench_fmt(alloc_buf, &alloc),
 +			   bench_fmt(free_buf, &free));
 +	}
 +}
 +
 +/*
-+ * Test 2: Allocate a page of each order and immediately free it, TEST_COUNT
++ * Test 2: Allocate an object of each size and immediately free it, TEST_COUNT
 + * times.
 + */
-+static void page_alloc_test_alloc_free_pair(struct kunit *test)
++static void slab_test_kmalloc_kfree_pair(struct kunit *test)
 +{
 +	char buf[BENCH_FMT_LEN];
 +	struct bench_stat pair;
-+	unsigned int order;
 +	unsigned int nr;
++	size_t size;
 +
-+	for (order = 0; order <= MAX_PAGE_ORDER; order++) {
++	for (size = TEST_MIN_SIZE; size <= TEST_MAX_SIZE; size <<= 1) {
 +		bench_start(&pair);
 +		for (nr = 0; nr < TEST_COUNT; nr++) {
-+			struct page *page = alloc_pages(TEST_GFP, order);
++			u8 *p = kmalloc(size, TEST_GFP);
 +
-+			if (!page)
++			if (!p)
 +				break;
-+			__free_pages(page, order);
++			kfree(p);
 +		}
 +		bench_stop(&pair, nr);
 +
 +		if (!nr) {
-+			kunit_info(test, "order %u: unable to allocate pages\n", order);
++			kunit_info(test, "size %zu: unable to allocate objects\n", size);
 +			continue;
 +		}
 +
-+		kunit_info(test, "order %u: %u ops: alloc/free pair -> %s\n",
-+			   order, nr, bench_fmt(buf, &pair));
++		kunit_info(test, "size %zu: %u ops: kmalloc/kfree pair -> %s\n",
++			   size, nr, bench_fmt(buf, &pair));
 +	}
 +}
 +
@@ -409,23 +427,24 @@ index 000000000000..3cb78514c060
 + * run phase 1 at the same time and, once every thread has completed it, run
 + * phase 2 at the same time.
 + */
-+struct page_alloc_ctx;
++struct slab_ctx;
 +
-+struct page_alloc_thread {
-+	struct page_alloc_ctx *ctx;
++struct slab_thread {
++	struct slab_ctx *ctx;
 +	struct task_struct *task;
 +	unsigned int cpu;
-+	struct page **pages;
++	u8 **objs;
 +	struct bench_stat alloc;
 +	struct bench_stat free;
 +};
 +
-+struct page_alloc_ctx {
-+	struct page_alloc_thread *threads;	/* indexed by CPU */
-+	void (*phase1)(struct page_alloc_thread *t);
-+	void (*phase2)(struct page_alloc_thread *t);
-+	unsigned int order;
-+	unsigned int free_cpu;	/* CPU doing the frees for remote free */
++struct slab_ctx {
++	struct slab_thread *threads;	/* indexed by CPU */
++	void (*phase1)(struct slab_thread *t);
++	void (*phase2)(struct slab_thread *t);
++	size_t size;
++	unsigned int single_cpu;	/* CPU with a special role, if any */
++	bool producer_done;		/* 1 alloc N free only */
 +	struct completion ready;
 +	struct completion start1;
 +	struct completion done1;
@@ -433,96 +452,179 @@ index 000000000000..3cb78514c060
 +};
 +
 +/*
-+ * Allocate TEST_COUNT pages and later free them all again.
++ * Allocate TEST_COUNT objects and later free them all again.
 + */
-+static void alloc_then_free_phase1(struct page_alloc_thread *t)
++static void kmalloc_then_kfree_phase1(struct slab_thread *t)
 +{
 +	unsigned int nr;
 +
 +	bench_start(&t->alloc);
 +	for (nr = 0; nr < TEST_COUNT; nr++) {
-+		struct page *page = alloc_pages(TEST_GFP, t->ctx->order);
++		u8 *p = kmalloc(t->ctx->size, TEST_GFP);
 +
-+		if (!page)
++		if (!p)
 +			break;
 +
-+		/* Touch page */
-+		memset(page_address(page), 14, 4);
-+		t->pages[nr] = page;
++		/* Use object */
++		*p = 14;
++		t->objs[nr] = p;
 +	}
 +	bench_stop(&t->alloc, nr);
 +}
 +
-+static void alloc_then_free_phase2(struct page_alloc_thread *t)
++static void kmalloc_then_kfree_phase2(struct slab_thread *t)
 +{
 +	unsigned int nr = t->alloc.ops;
 +	unsigned int i;
 +
 +	bench_start(&t->free);
-+	for (i = 0; i < nr; i++)
-+		__free_pages(t->pages[i], t->ctx->order);
++	for (i = 0; i < nr; i++) {
++		u8 *p = t->objs[i];
++
++		*p = 13;
++		kfree(p);
++	}
 +	bench_stop(&t->free, nr);
 +}
 +
 +/*
-+ * Allocate a page and immediately free it, TEST_COUNT times.
++ * Allocate an object and immediately free it, TEST_COUNT times.
 + */
-+static void alloc_free_pair_phase1(struct page_alloc_thread *t)
++static void kmalloc_kfree_pair_phase1(struct slab_thread *t)
 +{
 +	unsigned int nr;
 +
 +	bench_start(&t->alloc);
 +	for (nr = 0; nr < TEST_COUNT; nr++) {
-+		struct page *page = alloc_pages(TEST_GFP, t->ctx->order);
++		u8 *p = kmalloc(t->ctx->size, TEST_GFP);
 +
-+		if (!page)
++		if (!p)
 +			break;
 +
-+		/* Touch page */
-+		memset(page_address(page), 12, 4);
-+		__free_pages(page, t->ctx->order);
++		/* Use object */
++		*p = 12;
++		kfree(p);
 +	}
 +	bench_stop(&t->alloc, nr);
 +}
 +
 +/*
-+ * Allocate TEST_COUNT pages on every CPU except one, and then free all of the
-+ * pages from that one CPU.
++ * Allocate TEST_COUNT objects on every CPU except one, and then free all of
++ * the objects from that one CPU.
 + */
-+static void remote_free_phase1(struct page_alloc_thread *t)
++static void remote_free_phase1(struct slab_thread *t)
 +{
 +	/* Perform no allocations on the freeing CPU */
-+	if (t->cpu == t->ctx->free_cpu)
++	if (t->cpu == t->ctx->single_cpu)
 +		return;
 +
-+	alloc_then_free_phase1(t);
++	kmalloc_then_kfree_phase1(t);
 +}
 +
-+static void remote_free_phase2(struct page_alloc_thread *t)
++static void remote_free_phase2(struct slab_thread *t)
 +{
-+	struct page_alloc_ctx *ctx = t->ctx;
++	struct slab_ctx *ctx = t->ctx;
 +	unsigned int nr = 0;
 +	unsigned int cpu, i;
 +
 +	/* All frees are completed on a single CPU */
-+	if (t->cpu != ctx->free_cpu)
++	if (t->cpu != ctx->single_cpu)
 +		return;
 +
 +	bench_start(&t->free);
 +	for_each_online_cpu(cpu) {
-+		struct page_alloc_thread *remote = &ctx->threads[cpu];
++		struct slab_thread *remote = &ctx->threads[cpu];
 +
-+		for (i = 0; i < remote->alloc.ops; i++)
-+			__free_pages(remote->pages[i], ctx->order);
++		for (i = 0; i < remote->alloc.ops; i++) {
++			u8 *p = remote->objs[i];
++
++			*p = 16;
++			kfree(p);
++		}
 +		nr += remote->alloc.ops;
 +	}
 +	bench_stop(&t->free, nr);
 +}
 +
-+static int page_alloc_thread_fn(void *data)
++/*
++ * Allocate TEST_COUNT objects for each of the other CPUs on a single CPU (the
++ * producer) while all of the other CPUs (the consumers) free the objects as
++ * soon as they are handed over.
++ */
++static void alloc_n_free_produce(struct slab_thread *t)
 +{
-+	struct page_alloc_thread *t = data;
-+	struct page_alloc_ctx *ctx = t->ctx;
++	struct slab_ctx *ctx = t->ctx;
++	unsigned int nr = 0;
++	unsigned int cpu, i;
++
++	bench_start(&t->alloc);
++	for (i = 0; i < TEST_COUNT; i++) {
++		for_each_online_cpu(cpu) {
++			u8 *p;
++
++			if (cpu == t->cpu)
++				continue;
++
++			p = kmalloc(ctx->size, TEST_GFP);
++			if (!p)
++				goto out;
++
++			/* Use object */
++			*p = 17;
++			/* Pairs with smp_load_acquire() in the consumer */
++			smp_store_release(&ctx->threads[cpu].objs[i], p);
++			nr++;
++		}
++	}
++out:
++	bench_stop(&t->alloc, nr);
++	/* No more objects will be handed over, e.g. if an allocation failed */
++	smp_store_release(&ctx->producer_done, true);
++}
++
++static void alloc_n_free_consume(struct slab_thread *t)
++{
++	struct slab_ctx *ctx = t->ctx;
++	unsigned int nr;
++	u8 *p;
++
++	bench_start(&t->free);
++	for (nr = 0; nr < TEST_COUNT; nr++) {
++		for (;;) {
++			/*
++			 * Check whether the producer is done before looking
++			 * for the object so that no object is missed.
++			 */
++			bool done = smp_load_acquire(&ctx->producer_done);
++
++			/* Pairs with smp_store_release() in the producer */
++			p = smp_load_acquire(&t->objs[nr]);
++			if (p)
++				break;
++			if (done)
++				goto out;
++			cpu_relax();
++		}
++
++		*p = 18;
++		kfree(p);
++	}
++out:
++	bench_stop(&t->free, nr);
++}
++
++static void alloc_n_free_phase1(struct slab_thread *t)
++{
++	if (t->cpu == t->ctx->single_cpu)
++		alloc_n_free_produce(t);
++	else
++		alloc_n_free_consume(t);
++}
++
++static int slab_thread_fn(void *data)
++{
++	struct slab_thread *t = data;
++	struct slab_ctx *ctx = t->ctx;
 +
 +	complete(&ctx->ready);
 +	wait_for_completion(&ctx->start1);
@@ -548,18 +650,18 @@ index 000000000000..3cb78514c060
 + * Returns the number of CPUs that the test ran on, or -errno if the test
 + * could not be run.
 + */
-+static int page_alloc_run_concurrent(void (*phase1)(struct page_alloc_thread *t),
-+				     void (*phase2)(struct page_alloc_thread *t),
-+				     unsigned int order,
-+				     struct bench_stat *alloc,
-+				     struct bench_stat *free)
++static int slab_run_concurrent(void (*phase1)(struct slab_thread *t),
++			       void (*phase2)(struct slab_thread *t),
++			       size_t size,
++			       struct bench_stat *alloc,
++			       struct bench_stat *free)
 +{
-+	struct page_alloc_ctx ctx = {
++	struct slab_ctx ctx = {
 +		.phase1 = phase1,
 +		.phase2 = phase2,
-+		.order = order,
++		.size = size,
 +	};
-+	struct page_alloc_thread *t;
++	struct slab_thread *t;
 +	unsigned int nr_threads = 0;
 +	unsigned int cpu, i;
 +	int ret = 0;
@@ -578,22 +680,22 @@ index 000000000000..3cb78514c060
 +
 +	/* Keep the set of online CPUs stable while the test is running */
 +	cpus_read_lock();
-+	ctx.free_cpu = cpumask_first(cpu_online_mask);
++	ctx.single_cpu = cpumask_first(cpu_online_mask);
 +
 +	for_each_online_cpu(cpu) {
 +		t = &ctx.threads[cpu];
 +		t->ctx = &ctx;
 +		t->cpu = cpu;
-+		t->pages = kvcalloc_node(TEST_COUNT, sizeof(*t->pages),
-+					 GFP_KERNEL, cpu_to_node(cpu));
-+		if (!t->pages) {
++		t->objs = kvcalloc_node(TEST_COUNT, sizeof(*t->objs),
++					GFP_KERNEL, cpu_to_node(cpu));
++		if (!t->objs) {
 +			ret = -ENOMEM;
 +			goto out;
 +		}
 +
-+		t->task = kthread_create_on_node(page_alloc_thread_fn, t,
++		t->task = kthread_create_on_node(slab_thread_fn, t,
 +						 cpu_to_node(cpu),
-+						 "pa_kunit/%u", cpu);
++						 "slab_kunit/%u", cpu);
 +		if (IS_ERR(t->task)) {
 +			ret = PTR_ERR(t->task);
 +			t->task = NULL;
@@ -622,7 +724,7 @@ index 000000000000..3cb78514c060
 +		t = &ctx.threads[cpu];
 +		if (t->task)
 +			kthread_stop(t->task);
-+		kvfree(t->pages);
++		kvfree(t->objs);
 +
 +		bench_add(alloc, &t->alloc);
 +		bench_add(free, &t->free);
@@ -634,106 +736,139 @@ index 000000000000..3cb78514c060
 +}
 +
 +/*
-+ * Test 3: Concurrently allocate TEST_COUNT pages on all CPUs, then
++ * Test 3: Concurrently allocate TEST_COUNT objects on all CPUs, then
 + * concurrently free them.
 + */
-+static void page_alloc_test_concurrent_alloc_then_free(struct kunit *test)
++static void slab_test_concurrent_kmalloc_then_kfree(struct kunit *test)
 +{
 +	char alloc_buf[BENCH_FMT_LEN], free_buf[BENCH_FMT_LEN];
 +	struct bench_stat alloc, free;
-+	unsigned int order;
++	size_t size;
 +	int cpus;
 +
-+	for (order = 0; order <= CONCURRENT_MAX_ORDER; order++) {
-+		cpus = page_alloc_run_concurrent(alloc_then_free_phase1,
-+						 alloc_then_free_phase2,
-+						 order, &alloc, &free);
++	for (size = TEST_MIN_SIZE; size <= CONCURRENT_MAX_SIZE; size <<= 1) {
++		cpus = slab_run_concurrent(kmalloc_then_kfree_phase1,
++					   kmalloc_then_kfree_phase2,
++					   size, &alloc, &free);
 +		KUNIT_ASSERT_GT(test, cpus, 0);
 +
 +		if (!alloc.ops) {
-+			kunit_info(test, "order %u: unable to allocate pages\n", order);
++			kunit_info(test, "size %zu: unable to allocate objects\n", size);
 +			continue;
 +		}
 +
-+		kunit_info(test, "order %u: %d cpus, %llu ops: alloc_pages -> %s, __free_pages -> %s\n",
-+			   order, cpus, alloc.ops, bench_fmt(alloc_buf, &alloc),
++		kunit_info(test, "size %zu: %d cpus, %llu ops: kmalloc -> %s, kfree -> %s\n",
++			   size, cpus, alloc.ops, bench_fmt(alloc_buf, &alloc),
 +			   bench_fmt(free_buf, &free));
 +	}
 +}
 +
 +/*
-+ * Test 4: Concurrently allocate and immediately free pages on all CPUs.
++ * Test 4: Concurrently allocate and immediately free objects on all CPUs.
 + */
-+static void page_alloc_test_concurrent_alloc_free_pair(struct kunit *test)
++static void slab_test_concurrent_kmalloc_kfree_pair(struct kunit *test)
 +{
 +	struct bench_stat pair, unused;
 +	char buf[BENCH_FMT_LEN];
-+	unsigned int order;
++	size_t size;
 +	int cpus;
 +
-+	for (order = 0; order <= CONCURRENT_MAX_ORDER; order++) {
-+		cpus = page_alloc_run_concurrent(alloc_free_pair_phase1, NULL,
-+						 order, &pair, &unused);
++	for (size = TEST_MIN_SIZE; size <= CONCURRENT_MAX_SIZE; size <<= 1) {
++		cpus = slab_run_concurrent(kmalloc_kfree_pair_phase1, NULL,
++					   size, &pair, &unused);
 +		KUNIT_ASSERT_GT(test, cpus, 0);
 +
 +		if (!pair.ops) {
-+			kunit_info(test, "order %u: unable to allocate pages\n", order);
++			kunit_info(test, "size %zu: unable to allocate objects\n", size);
 +			continue;
 +		}
 +
-+		kunit_info(test, "order %u: %d cpus, %llu ops: alloc/free pair -> %s\n",
-+			   order, cpus, pair.ops, bench_fmt(buf, &pair));
++		kunit_info(test, "size %zu: %d cpus, %llu ops: kmalloc/kfree pair -> %s\n",
++			   size, cpus, pair.ops, bench_fmt(buf, &pair));
 +	}
 +}
 +
 +/*
-+ * Test 5: Concurrently allocate TEST_COUNT pages on all CPUs but one, then
-+ * free all of the pages from that one CPU.
++ * Test 5: Concurrently allocate TEST_COUNT objects on all CPUs but one, then
++ * free all of the objects from that one CPU.
 + */
-+static void page_alloc_test_remote_free(struct kunit *test)
++static void slab_test_remote_free(struct kunit *test)
 +{
 +	char alloc_buf[BENCH_FMT_LEN], free_buf[BENCH_FMT_LEN];
 +	struct bench_stat alloc, free;
-+	unsigned int order;
++	size_t size;
 +	int cpus;
 +
 +	if (num_online_cpus() < 2)
 +		kunit_skip(test, "remote free requires at least 2 online CPUs");
 +
-+	for (order = 0; order <= CONCURRENT_MAX_ORDER; order++) {
-+		cpus = page_alloc_run_concurrent(remote_free_phase1,
-+						 remote_free_phase2,
-+						 order, &alloc, &free);
++	for (size = TEST_MIN_SIZE; size <= CONCURRENT_MAX_SIZE; size <<= 1) {
++		cpus = slab_run_concurrent(remote_free_phase1,
++					   remote_free_phase2,
++					   size, &alloc, &free);
 +		KUNIT_ASSERT_GT(test, cpus, 0);
 +
 +		if (!alloc.ops) {
-+			kunit_info(test, "order %u: unable to allocate pages\n", order);
++			kunit_info(test, "size %zu: unable to allocate objects\n", size);
 +			continue;
 +		}
 +
-+		kunit_info(test, "order %u: %d cpus, %llu ops: alloc_pages -> %s, remote __free_pages -> %s\n",
-+			   order, cpus, alloc.ops, bench_fmt(alloc_buf, &alloc),
++		kunit_info(test, "size %zu: %d cpus, %llu ops: kmalloc -> %s, remote kfree -> %s\n",
++			   size, cpus, alloc.ops, bench_fmt(alloc_buf, &alloc),
 +			   bench_fmt(free_buf, &free));
 +	}
 +}
 +
-+static struct kunit_case page_alloc_test_cases[] = {
-+	KUNIT_CASE(page_alloc_test_alloc_then_free),
-+	KUNIT_CASE(page_alloc_test_alloc_free_pair),
-+	KUNIT_CASE(page_alloc_test_concurrent_alloc_then_free),
-+	KUNIT_CASE(page_alloc_test_concurrent_alloc_free_pair),
-+	KUNIT_CASE(page_alloc_test_remote_free),
++/*
++ * Test 6: Allocate objects on one CPU while all other CPUs concurrently free
++ * them.  The cost of a free includes the time that a consumer spent waiting
++ * for the producer to hand over the object.
++ */
++static void slab_test_alloc_n_free(struct kunit *test)
++{
++	char alloc_buf[BENCH_FMT_LEN], free_buf[BENCH_FMT_LEN];
++	struct bench_stat alloc, free;
++	size_t size;
++	int cpus;
++
++	if (num_online_cpus() < 2)
++		kunit_skip(test, "1 alloc N free requires at least 2 online CPUs");
++
++	for (size = TEST_MIN_SIZE; size <= CONCURRENT_MAX_SIZE; size <<= 1) {
++		cpus = slab_run_concurrent(alloc_n_free_phase1, NULL,
++					   size, &alloc, &free);
++		KUNIT_ASSERT_GT(test, cpus, 0);
++
++		if (!alloc.ops) {
++			kunit_info(test, "size %zu: unable to allocate objects\n", size);
++			continue;
++		}
++
++		kunit_info(test, "size %zu: %d cpus, %llu ops: kmalloc -> %s, remote wait+kfree -> %s\n",
++			   size, cpus, alloc.ops, bench_fmt(alloc_buf, &alloc),
++			   bench_fmt(free_buf, &free));
++	}
++}
++
++static struct kunit_case slab_test_cases[] = {
++	KUNIT_CASE(slab_test_kmalloc_then_kfree),
++	KUNIT_CASE(slab_test_kmalloc_kfree_pair),
++	KUNIT_CASE(slab_test_concurrent_kmalloc_then_kfree),
++	KUNIT_CASE(slab_test_concurrent_kmalloc_kfree_pair),
++	KUNIT_CASE(slab_test_remote_free),
++	KUNIT_CASE(slab_test_alloc_n_free),
 +	{}
 +};
 +
-+static struct kunit_suite page_alloc_test_suite = {
-+	.name = "page_alloc",
-+	.test_cases = page_alloc_test_cases,
++static struct kunit_suite slab_test_suite = {
++	.name = "slab",
++	.test_cases = slab_test_cases,
 +};
-+kunit_test_suite(page_alloc_test_suite);
++kunit_test_suite(slab_test_suite);
 +
 +MODULE_LICENSE("GPL");
 +MODULE_AUTHOR("Christoph Lameter <cl@gentwo.org>");
++MODULE_AUTHOR("Mathieu Desnoyers <mathieu.desnoyers@efficios.com>");
 +MODULE_AUTHOR("David Rientjes <rientjes@google.com>");
-+MODULE_DESCRIPTION("KUnit benchmark test for the page allocator");
++MODULE_DESCRIPTION("KUnit benchmark test for the slab allocator");
 
