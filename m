@@ -1,121 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67ED1606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 13:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E735606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 14:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Dq13XRyt
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gd3cMPSg
 Received: by kanga.kvack.org (Postfix)
-	id 902F76B00EF; Sun, 22 Nov 2026 08:50:00 -0500 (EST)
+	id 2BC646B05B1; Sun, 22 Nov 2026 09:00:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89C056B05B0; Sun, 22 Nov 2026 08:50:00 -0500 (EST)
+	id 26D426B05B2; Sun, 22 Nov 2026 09:00:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78ACF6B05B1; Sun, 22 Nov 2026 08:50:00 -0500 (EST)
+	id 183F86B05B3; Sun, 22 Nov 2026 09:00:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 532AF6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 08:50:00 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D66741606AE
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:49:59 +0000 (UTC)
-X-FDA: 85462888518.05.099EAFB
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 141F1120003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:49:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Dq13XRyt;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EBB466B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:00:02 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BB758046A
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:00:02 +0000 (UTC)
+X-FDA: 85462913844.06.7AC8211
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4A34320003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:00:00 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gd3cMPSg;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	spf=pass (imf31.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795355398;
-	b=Hnv/Wdp9/BXwplgzwo1pPh8ybOJ6GPdwmkwM8MvHQmkbhGcYox+kAJTbUMAjwENsS+0ey9
-	HC5TEuYF1mbgdxxDMeuC63b+Z+1WB+ShSVQf9F0kpnmRuBgVnt3DcMgSee351bbw2Mgl0h
-	CBNeZyXS4YU5d1m5cRER1HixFVEfhuc=
+	t=1795356000;
+	b=bdlAs5+hGKlQkM4KMTQRo7ZF2KYpF+CJbQA0or5cEIuiQzoGxzq3nW8+XyYQ9b0NUXXMvH
+	Db6k0HkVZ5H0XL6RoHOI1VwgoIo150sy8oI0sTamJ/I5qJSA5nL5LyX4gvIxUgYPwmiRH9
+	Mzu65KwqBVWgolfTteqWuMdfy8pZHvk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795355398;
+	s=arc-20220608; t=1795356000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3i5MWPEyN/CFOvI6c1AJaNV17PHJ0xdzS2s59Cs1Zeo=;
-	b=rHXpf4PUS4jGCYCDs+fq46ZgmFkvU3Q5bh2mvRZdRK6wqdyY+mu+KJD/udWs9exbKVALSi
-	oacBRATZRJOeIq5XNtNFbQRsCwkfE6p5SSJCrAlqsCfY/QEuzRFV34buQOu0wVpeKdJYAj
-	AGE4kQRksaeK+Z4qC6kaLZeL38XR99I=
+	bh=990T3HNtPZH3bqJpbncLzkV3NXRnQ92AeqD5qJtei7w=;
+	b=FLFUP4Z+C0qFYSq/vWXxBjlv+B3HBMWlm68mtdV6qo3oRge+n2jiF8n6jDZmoiueB2UrTJ
+	atWKRCLnf1wL0hLxvPGO7ldlvjGx2JIsGkmWRgp1J7qC/lJ0AbfYIWhuRkWyGfcPIYGKi0
+	cD0dUdUjL7oTi+m1eZExGzEi+Jpq42I=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Dq13XRyt;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gd3cMPSg;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-33fb4680717so6846124eec.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 05:49:57 -0800 (PST)
+	spf=pass (imf31.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1b3beeaf6f9so2816402c88.0
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 06:00:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795355397; x=1795960197; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795355999; x=1795960799; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3i5MWPEyN/CFOvI6c1AJaNV17PHJ0xdzS2s59Cs1Zeo=;
-        b=Dq13XRytQ3T7V4qxwSAeULlZ+PyXllWq4Z2o0R9n0l0g9Y/7klAUbyn6anBRlBog0w
-         HIakXYWWGLgiAVlgTlUI9LdTkCd9tQi9LQKodUp5+8dq7sB7Hl4oz5yJGpkuyJkzzVKZ
-         hEO63ADLxLWbsuna/L4JZU7pAjGr3U5M9WPNOv0pLYhbiLF0chM6YRueGd6DX9Q1O+25
-         BSNY2XqIKC4TtmdUlkNu8o5PGh5r+KE1UvkCOXDPzW8Y2JYPQ3AlTpvq5mz3m5OMYVrt
-         P85YIlOmbTLVyntDFzICkaUeD4ZhqdTX35T4hP6vBBcy8NTNb7YPRZfyuZsuyjfcuOoZ
-         /bQA==
+        bh=990T3HNtPZH3bqJpbncLzkV3NXRnQ92AeqD5qJtei7w=;
+        b=gd3cMPSghakMX0ZNhsGvHbdxeGha0xsteMm0MZWSFtAq/HIwNOofNIw2gGP6IXIqgM
+         olMOF9sFJdMdesyq1PJF+AwCXtQPOAKX2aw74aAk66cQbseKJM0ysUBJWjiXSIM+a1Rp
+         OEjdRU7s5AH7e623b+dh1eCb75HGl1oCKZN3QrHV0TLeJUca9cze8pkUX7UiGCWos7C5
+         drF0vcZQEeNzoQNIv9+cyW/GPPOMABCq/hoGgrqW6o5tqm9Bfw3gYnAwvwtuZ56FcqkG
+         zTfOZQjatz+6UsvxBbz4gWNPNg6XagvH/4iSIeMLwcQZYiv75l0nwV8GPZFh31906pg+
+         QiTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795355397; x=1795960197;
+        d=1e100.net; s=20260707; t=1795355999; x=1795960799;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3i5MWPEyN/CFOvI6c1AJaNV17PHJ0xdzS2s59Cs1Zeo=;
-        b=VruVihn5hGY9pwjyA9qK143/GInrE5PeyPelkyO+cJm0DWUlMnVjrgA9bhws3Z8h1Q
-         +05IGNXJZQbqzA/IVarvZ1BpT7aEGMB4AsV0bV9AfLDQa++hlwut5LKSh9/1cJL0qR/D
-         kINwslBw4PswI0RfuxQwJur8LuMlhGdBVs/JRBY3tz4BKfBSnoIdZ4pQ5vdbkZLzCF9L
-         VrXVwp27Dkea+6wSKDSvuaioliPNR2INeti4fo6E7uJ+UHFmuYfNmkiu2t4mREJDNhm3
-         ZL2n7LLG3O55iR7A7bddhrC0h0XOJW27PSKeoFxG37Vo2ghPkCshjOr24RtiP85ppy2i
-         DgEA==
-X-Forwarded-Encrypted: i=1; AL+hErFnB5vVhVyHQ6jwqMcpUF7tDLpsPO4vEKrzndkcChW6QLEjGVazkzSHz9G/AzcMXDCoYNh3FUQcuA==@kvack.org
-X-Gm-Message-State: APuU4Z+7yrx7q43F5rC5oaWn7zVwLxVQnoyVl0+R3G0wJoLSZRoJIobm
-	oIWFUu8o6W9fyWvHw6i0S7Zn7TmdjGMdrSmipv/qeXwzcTjKUnPo1eXj
-X-Gm-Gg: AZFdTZd8HIQKRkxIqQdv0jc+FynDtoeUtQDHfQ+vd4Ih2e9rklStDYb0uGlIteNa8P9
-	LMFM/gJkakFjk448w27b7rOh+AXbuD1bHDNMvh5wHh+Xq8B09ioItuSQbAl95YiDYYapPyIsd4R
-	MdzNicvrT/V3T5nUTHFMPOeMy39eBzvNJUh2EJ5+c5EMV91XCiMVAWp9OST7tSLCkpDMQ8SwaIm
-	J0grUXSpjPqTDYIzoJkv8ViGZkRkyGSAaweAim77zuq02ayPAX4yGW9/MIeg1wViS8AEkEylDza
-	99ygpLJk/L1QNQ/JjkJkr38sLHKZEOWFSGKcedlYwLx7TFxdRhQPFNwe0V9Nm+nPhCAeQx60joy
-	P9CAJ+qX+itXFw36DevFDiyYMXjhsB8avFfIuBxcavYHOIyhGUAQasXnZBr3UxBiswuHogpoJSu
-	A2FP652AbNmacxuH/CCULSPl5McnwtbqCyUxLcwhU7P/Np21W69V++Ulr1Amy0e+oXMzpjvlWYM
-	r9iLwF2iDp9H1PMterCd8ULnxy6j8IhVGUsMNXemB+H5kZx0hH1inqroU/cVwlb44nz/z24pi4x
-	62pmqTM/zBbY7XkFcbmrTO+r+vjnO5Jsg2fKikv3HliKhzDl6andHTt/y3B9Mpgk8zlU
-X-Received: by 2002:a05:693c:4094:b0:384:ce59:5e1a with SMTP id 5a478bee46e88-3856ef457cfmr11343027eec.16.1795355396721;
-        Sun, 22 Nov 2026 05:49:56 -0800 (PST)
+        bh=990T3HNtPZH3bqJpbncLzkV3NXRnQ92AeqD5qJtei7w=;
+        b=InJ2nRIuwVsKFmwWIGAY9j+N221ieRIqyYgkKE9HTMfbnkbmNrdsEwCVFRL9dMZ/dk
+         52s32I4wJw4Y3wlB+K7seMYjexZ8KM2wRosgLlBVK/ZjZYTtCrkJ/jAABpJhS0aTzYXX
+         ToS9LPEdreYWxCYPmzNwwcAUtjafcPg0V3XhWtkBmURcLid8r1rFfOJNK6KkfrazMJoL
+         KDQaaA02H1Rc/g0bM9Zyt+KWZlJW3oIlfVTw4MQ7/+kmFbLYyY8hc8sH3o2xxSqoashx
+         qtp9yeUCXq1PMp4DUluufC3nIDu8wfdXkDBmDhMg5h6fpf/4OtFtaI2SJRlygTIt7BKw
+         wmWg==
+X-Forwarded-Encrypted: i=1; AL+hErGOoPOqP7OCXdJ3I1PAHbTpZW6IWbneHwKdzsenNK7UmqKwvoXIZTdNUmlrx46EzdPLNpsllnpoLA==@kvack.org
+X-Gm-Message-State: APuU4Z92mzvwelDvqJ8AKj9S2N2mAr8MBVZE04eK4Y0objoVvBFlvl6/
+	FU22q11M8gaDxsw9blwcmMUVE9oNFnJ/+s1UfWoMQnsFEeQ3cO26He/t
+X-Gm-Gg: AZFdTZfk/0kusTDN27JLoaizGjoEdPPDzo5brIp270WRfuxdVZ0WzGL1rB9h4Gn/v+M
+	5Z9j1GdBdLaZXR8+Y7pPSTGuOxWFnTZ+oVUCae09Ri3f+7r82lQ5pxbYgyP1yQyaNH6ZCnp1jOc
+	4c5dkkiLi4oSvkEBv4Yhk0a9u5+sUcYl+gCvWfGf8ijMJHZFGXiF/Y8ExlNRkAUVCgAgLShyOUP
+	sPCR+2LriP3AwSVqeZwRUhy5adnYVDWH70xDqm+8C4AEvI0ghQy55rjPTA1pE0gooOZKd8/UmEH
+	zv4GTY8Bt3ORN9rj/swo53N7BtGlLoMfvF0D7MDddhW43BPSHc9Kl7KKIgQ6fOddoxQS0gSX8+J
+	xfbWuZa5hXyXKAtkeGdVzvi29L660uR/5LR43xMfohQuD2jpXfvOybxiivSivWkxMIgcZYeQ/Cz
+	ljp6AfwmwNEkYR7NRB7Rv/td6MohgBgoqPgAYEee9rK8tpp8I/bdmaQG1eerflbycX1q5QijE0p
+	uHZWvrKKc7L+PEsl20IT8bDDfJ2zR+w/iDtCWOgVGTzbXyg/xZjcuAUQEktB3tnt/6XxAEW/ySh
+	23ceP7WqzWrn6dKbZ2mx9QfLZZNtSCtmQ7KhaY0JwWoxHSBztOjZTGkNKobIl90N5eV3
+X-Received: by 2002:a05:7022:b909:b0:1b4:f3af:355e with SMTP id a92af1059eb24-1b5568a660emr8203471c88.13.1795355998971;
+        Sun, 22 Nov 2026 05:59:58 -0800 (PST)
 Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b55682d301sm20925807c88.10.2026.11.22.05.49.54
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567e2bd1sm20585980c88.3.2026.11.22.05.59.57
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 22 Nov 2026 05:49:56 -0800 (PST)
+        Sun, 22 Nov 2026 05:59:58 -0800 (PST)
 From: Lian Wang <lianux.mm@gmail.com>
 To: SJ Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 02/27] mm/damon/core: implement data attribute report queue
-Date: Sun, 22 Nov 2026 21:49:13 +0800
-Message-ID: <20261122134939.76758-1-lianux.mm@gmail.com>
+Subject: Re: [PATCH 04/27] mm/damon/sysfs: add admin/reports/ directory
+Date: Sun, 22 Nov 2026 21:59:18 +0800
+Message-ID: <20261122135941.78688-1-lianux.mm@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261121210013.130397-3-sj@kernel.org>
-References: <20261121210013.130397-1-sj@kernel.org> <20261121210013.130397-3-sj@kernel.org>
+In-Reply-To: <20261121210013.130397-5-sj@kernel.org>
+References: <20261121210013.130397-1-sj@kernel.org> <20261121210013.130397-5-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r9uwxh7tnk5i88ic9tdqee8bg1iqh9ag
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4A34320003
 X-Rspam-User:
+X-Stat-Signature: jjjozffppj6w78bhj4f41rzdsmgow9qc
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 141F1120003
-X-HE-Tag: 1795355397-826164
-X-HE-Meta: U2FsdGVkX19o46zLjwgnec/JBGc4IypcDHwu5riL8CNG3SBpALNz6G+iYiv8KfjlyBAkgPTugLWsJ97SZ1mFFB5WzLQKyAxf0/YKGNT1rwpJS6Czmg1h5/irhgmo0up7k/ODblAhMFU3SXWgpPbpjc+BsEaAaxkgNsuNY5WjuYA0piLqgp6AjwfpuOpm3xUrUx1aULs8BFLLkUf8bIvKDpAApqXRKZeNgmcSYHOBchhIkZvqGwuGij8b+LkzoznnnzpxEC+0PvdyOtkezjSDWjsD/eRTnOQJgc0l0p+qjqqq+LhRIlct6Pv/ZGoqWg8NKNQmJnZxC0nPPjMpq4eAj04eTZ7ipyelDK1y1X1hwe36OyTbb++GAzeUU151tMGliX+6qy4uiEUajGkARXBw0E96O7MuGswWFnrxtHNLnflp4MD9w2A/f/0ldalFquGODuJxzzEZM//RdDUhLx4YgnT3uZEy5PhGmOO0FXD2tfCbvqzd5a9XdJzi84w2GmNLVR2bXzAsnQP+ccvvKd6GY9C71bbJ1nlFykNeW58+8fTheh7I/bLvb0nLwzA3HwJx+UDaupHKCdKM7w/8aOaAvWdf8BbtDUxHO/DKpUgoYf0V4y853XtF92wzcWuIgHb9VkzJMFqWC2K68ZzgArqlGh8wW2Sc/T3BP2JSzlzcS7ai6DGEbiuwEkoPa5sya3N+w83VQ3cKY6xuk0aj3OHYj5q+jwkvGcnR/GO/PNrliqfGDGYZ1qPykwLEL+z5rjVWeomUe0pj64vT/9O+hpPZWp7dc0vfRo2e4r0UAKaRZ3SGqsNIb/B6Ta/MywapqExP6bu5ksWW1zWi6zi+SaETFrAFTEi5OJ8qRIDhNtitxbgwIIUtX1r0MdytCOHOUnT41955sZVhgzpvjmMcrMgaFYI6XQaMiRA3y2JuJf93ILtg6Qgl8R4VnptwY0ZUw3SQOz5bW/BcA0vXzFiADN+
- ITKptJZx
- w48Wit3vwH+8It17qvsbAXUeCoQeQCtfhLowk9NPnqUFw2L8pd8MJ9dt7/FJeM9DYoSWOchIaUqNqdNgDzzsV06CCZidY2NF1rKBDGgQVB0IydO32JNVg8kIrZzZdGYexptbTDu9kgtjdHOcT/RjCgDHCNboZh3GUlSbeY5Dh3QvbXjqqZ2Cszb8JnvlVunJncsG2jry/h1SuH7GcYZefCaO1yAyRxdhZx5qt5N/T6tBXs+M4RCzg9bCvKiJgBSjkEg2TwijeMPfE6DaWiP204QJSTQDlnpAjFh5t98QFShTEIYWvRqR25dwDUirlIKJ+a7W19DRGJ/JVGbUUKYLT/sFzzQz57QPXmD+DRpvFbYFYTX5+shI6bpFLJMBaSi8aQsff9d3OCR1G4O9YZeGhqRRby1uvtvowddLQslCRpYhvO5IsRdQioS8mo9nZ/8KugGilU4+i+tpF0oXsjh4987f9ebtiFbizwiBlZBPLr9kIlTjngXAWE++uNEkXUA5IbPtFTpUQ9lhik9nkp5jDb/6c/l3smiVst8NiPjv5nxhcQbZjhiv4pEZjsu0t4kzXVXPIhJK2IZLlQYowE/52Nsdao7yXYGv7CC1B2RcH7/zqutoRfV6NmKWMbqapR//XaQUm+QzPZxcCq1wR85W4aoUGuKCtvcG4FSRPjB0+PoVyt8Y8PXBpz9D5Pw==
+X-HE-Tag: 1795356000-533316
+X-HE-Meta: U2FsdGVkX1/eV8vf1TTOz3ISZJ133+dcSqZIHXB413+wn91+GK/QSrqSLASComEGsbU3/Q5nSXZQTOTgB7TshaIoeMvK07MjzgXawUEjSFlWrtN7AiEcifjvrOPq4xBIEhSPZ+xKeFR4PSv8JFOWU3R/N5w3nXpkzCW6MHM9vnoHMQb43ZyBEZ/9wXxtx/pTSW6p1g975rwVGHBUsvJucpJv25+U975mul8gh08gGl65mg+m31edxRP7ccDx6JBf6qRd6LetEChkEaF5RTvO5SeKRYqpfn/a24/rIlm/xdxxBhmgrsIf/8IYFy1bxGeCYwRA/hiUveC0n1LJ2YiFMN5igswEYtQyCVPve9xOtBU32Dpwa/r2/Lip0BtYw2SVHnfpDDbgf1gGrJoRzt2lwqNplaW0x7mfUVEv77DtjDof3O/cIfrYc51PlqCy1FOhY+HStDehbz3UmkRWNcrBOgwq+WeedJffGJ412iITm8nchm6UggZrO1gJUiOMMck0VBru2ELvUwpfvAOpgsP/qsMCUXd37M0E+ki2+SzLTC7PQ/Fsm967QsMgp8h/u+76T3zjrkZduYx4F6nL1tYChhYgFCcrvfd4zQJ90W1IozvmgRjcWUxioFkrj/MmYo6VE4JCcVvyTBcvlicxkU3Rb0oFFNAvZzxzJAOr5vtavTkNMPZ+6/ryHEtoe0RXEoNizSzMBQwNCUqrHk/vlpkyAdhhNWQz+01EVnMyb+1dXHMJDqLnqxYm6l/uIgXM0Px/gt39QvO0A02/Eldi+/XAOAC7915u+7o8xU9Oa1686N+vsfsyVHOOyvtB9TMDeeqId4JJRxAInS1CR0Sys6kn02Zv84lKdNSHv0wsofaJwndT0a07DrUvJ20b/ztpzs8k8coegnVWdyR0+GanhM9v6K7fydPl6zmcSoJy0WezgZR9+ZMotLF/m3b+t8pdBtB8wcpYwLfjolELmCIloT1
+ lR8OVy6y
+ XF1aBz7ZeQdjvQx29HZPozRPd4z89j44z3BScUVManUI3d/20Fjy3ZWYNCArkEk0KBTigtQudZw420RqhenZmsREzzb6tLrsowiBqrRGaLVj2mZYaunLWcN2lRSE6MPi/xn6To1wrEwnnliDWzGsXqmBshaLzQCmwpyfwX7JEOxQLmPqVXluKRevdNn9UtQQFxDmnPZfznI189OtiGQ8Wj1zx2O0+Y/spP5oD19YXmAKraSRQFamP7iSLO0JVAIVNzBgnlwilL/FWd4MEUub8fSY8gy2yOl2ikvAud3WS0hQUQ1nNBjlP4i7pz91jPjDR77Pu0IeZNp3jXdff70lsfcZYXnFS1hKxZZKCSGuPYMZsao67Jg9hh2Sao1zpXwqUMRj/S+A69gpHJLUAGbMWjCTB9T7NhNILdZTozJQ0pfBD9H/daa5P1e8w05/+R/KV1iKyS4Qx1OWk9/jbSc5u9tIDV4dIsvdSwMaYu1TQLi08qIAebtZssLmdYEo9tb7sB5D0fJ6pghSeZ75K1MEVnQIRzeDe1/Zz8/FXQPDcF2z9Gl95UAs5I3ryN2cRCSHrI4eygbW4bTtSJ1AtwX/SPUDw0RQh7HR7M+SDpnDdnvZCJTf7QVUPBZsF5cEYWwlTRCISpqWyP2o5+VSy7EQwXV8h7y1W/C5aFC8p9FrOVig1kCWlUBCbX1JHHeYGgcsPrEpqiAt8uHpAxCsEM+O02yfP1EIH3GX9ZoP8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,12 +124,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 21 Nov 2026 12:59:46 -0800 SJ Park <sj@kernel.org> wrote:
+On Sat, 21 Nov 2026 12:59:48 -0800 SJ Park <sj@kernel.org> wrote:
 
-> Implement DAMON core internal data structure for queuing received
-> data attribute reports.  Initialize the queue for up to 1,000 reports,
-> inside the DAMON init routine.  Destroy damon_region_cache and reset the
-> pointer for the queue setup failures.
+> Add a new sysfs directory, reports/, as a place holder for sysfs files
+> that will be used for controlling the data attribute report system.  Put
+> the directory under the admin/ directory, next to kdamonds/ directory.
 
 Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 
