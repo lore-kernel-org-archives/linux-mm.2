@@ -1,103 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C825606A333
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20340606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=WsSQ4Mht
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=A/A8mtK1
 Received: by kanga.kvack.org (Postfix)
-	id 33BC26B05B5; Sun, 22 Nov 2026 10:48:46 -0500 (EST)
+	id 3D9536B05B3; Sun, 22 Nov 2026 10:49:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 313636B05B6; Sun, 22 Nov 2026 10:48:46 -0500 (EST)
+	id 3B0D66B05B4; Sun, 22 Nov 2026 10:49:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DEA96B05C7; Sun, 22 Nov 2026 10:48:46 -0500 (EST)
+	id 2C7466B05C7; Sun, 22 Nov 2026 10:49:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DEEC56B05B5
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:48:45 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 66BBE1206CA
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:48:45 +0000 (UTC)
-X-FDA: 85463187810.26.BCCD0F5
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7F25880002
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:48:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=WsSQ4Mht;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 005086B05B3
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:49:26 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C27B1A06DF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:49:26 +0000 (UTC)
+X-FDA: 85463189532.25.22725AE
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 94DCE140002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:49:24 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="A/A8mtK1";
 	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795362523;
-	b=MR9F3hWaX0I6K66cFI90ImzPgYpexTYTnKsoU5LpIhOkRgraiR/G/0BsiFhMYk38Po21pM
-	vxsWpd0THB48j0lcVagd3etudqZMoErYuFB1SdBvXGS90M66Aot8oPCJU0eopDlblm3f5S
-	O39PmXfY7mlalFw0aDTdxcQEpUxhqO8=
+	t=1795362564;
+	b=d/xnDDWgHV+5nKV81CpFVVylY+oV7LuV0kfENDrZhVGyiA7EbxN+yWUsklq6qnMCwoOnQA
+	RK8aFdbOIcm0j6LAnSwwClaP6lMRaowKVvok/FgglbXKCeBO3HOGifs6Wtpl19PPIsCSr1
+	+HvCu013morq+gkKbMuFdiGq7xUc2sU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795362523;
+	s=arc-20220608; t=1795362564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=grmqVvJL1PQoeJYgcb1eXI4pN3Ahy/cNA8wZ4nEV+2I=;
-	b=Af7RFrfV/geAej2WR0NpM5+rLj2rJAd1fpAb/qcIwa/8DOGmkd2TrnkPyzXkOArFXpgAzQ
-	2bJ8fLYU3t5owtQhDzI53ckQo+oIpvWe9Bvx84TgXsw55RgVF23FIlYleHDLXh/xAMOeic
-	FixEhegMlfow2ea/GFiIg+eJmU/2+XM=
+	bh=Kx1Rbm/vL1Usb9vl4zidzFY59VtOehRKYBkUaVoHOV8=;
+	b=wJ9j8nN8QwOtOWiQUxF6MbEXjX69oNft1q8Yq6geijG8er2IX51fKJWZhXJgdVt2+8VNaD
+	9TqPOauX1yPCT0RegqnuurShqDxEHnx26882KD7xZFp91Suz0ZJ8F2xCCGLcs8RhaN2jBj
+	sSNUKxo846xTRjDxgbVcmi1cPNF+MKw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=WsSQ4Mht;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="A/A8mtK1";
 	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-536717a4d83so20927781cf.2
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:48:43 -0800 (PST)
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5569551d19dso38340531cf.0
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:49:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1795362522; x=1795967322; darn=kvack.org;
+        d=gourry.net; s=google; t=1795362564; x=1795967364; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=grmqVvJL1PQoeJYgcb1eXI4pN3Ahy/cNA8wZ4nEV+2I=;
-        b=WsSQ4Mht7w5pHtCi2bcVbuMwULyjkEqDAC+7hAtto3nP0GmeF/vCeDroHQbfzSQLC7
-         H2nbAeKG56BM9w+8+11WZF1SZGpxzHIF/e5lMAJOBkk1wOCMtv+zj7THPyN+WSwgPy9P
-         x9n9UTaK8V94zteuGDheUpnKzd2XeFbkquGusNW/qcAF/hvmikhDGAoP8JdWCQ3P23XQ
-         /NDFv8iyZ+Topg69BXhtj6VsiGNmUcmsl8ACOigMmDmZKY20GCvWkqejLJ83GMf3n/+p
-         UYBlggFCymibqPIcq3Sosfu2RLgMzmsS2zlgkaiWI58beeIG97TRSMRk3oUazxtPQ6RT
-         2ebw==
+        bh=Kx1Rbm/vL1Usb9vl4zidzFY59VtOehRKYBkUaVoHOV8=;
+        b=A/A8mtK1w6m8mMZy0FkSKNyzKqfOmrPi0PwC+5F81QmdXhX4DjdaV0G1duQamPkZn5
+         DGvcT8X1fplMWJlP8bi9gpjKmRIo2MYcmEoees8W5+/t6058vyd20fjN8yyWsoAeQrVT
+         /PS7IFgxf0gQ7GwPFiVyT5SBP528BOd1ekEiOdbA4u70eMDS9uACMV8loG/UOCSkYe5W
+         F0BaRUm/Qn/m7E6UcaYJFZwplYGWKsaehy1EN8Nzjfi12foxFQtzZD5/PZktkcGJr+g2
+         OPlRO6ew/BjAfYMLsQirSefceyAwX0SXFZz1oU4VD4aXUU4QzdXhMlkv6H5PNL+o0s4z
+         14mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795362522; x=1795967322;
+        d=1e100.net; s=20260707; t=1795362564; x=1795967364;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=grmqVvJL1PQoeJYgcb1eXI4pN3Ahy/cNA8wZ4nEV+2I=;
-        b=ZVbG9tDBO60to51WCjk9peTL2ExUunk9A8anBdrUj7yh5sme9NN9p74Q9XrC4268l7
-         pRo+vJWXJtElZhaD9mjWSJ2LlOzq3o4BbQEYYoe7HnOjZqTMCwYguyMZ+EPU8i9pizwB
-         4PDqvFderrN2r3me8F2MGvqn+K76K7RT+povttW34TGRxkEjsfX9W30iBTXOSkjPYUk3
-         bpTtnOivebONKMNYA8NG8jYOWTMySEkEIPdzk441U55YZLg0Qcg4nvUx2FXmfPBC5aKq
-         zNjHOpQJORWxWjBYFo62jccTtpfHRhI6iNhZAfmiH+FJsnbkMHv0iudg2LmdL6LzIP9d
-         xL1Q==
-X-Forwarded-Encrypted: i=1; AL+hErEAw2vbyWTGWH3mej6RkMYW1AYlMRNxappSM3jqO8VeQlXlf+kgjt73h9dLs8uLGBDRZnNIt5zFFQ==@kvack.org
-X-Gm-Message-State: APuU4Z9sTT/Byrd8R4mvxfgkjs7Wv1fCUc3CmJlBxLN4G+MJBEAPkAGE
-	5OrcILVyFp1XtkCiKnWTeq6UiHBhXBeoDu86xm88LOVeSLGV/uFz4GL6IFkfVGcv4Qk=
-X-Gm-Gg: AZFdTZeAIcepFvLfxOnz08Buvpoj0QmoZkF8z3uqC1e8zCtki1mUPz6X8lqP2haSF/f
-	6CFyiZemnvNKgu9E3ZvMKdp55Ktszc4xsESzhkT9oDRUcGMiwm2s88y1SzxOM3eH/Nk5f+/kMMB
-	bE4L2ZJC0ZTP36C9a3GXnPeZQLBIbXH6R2uUKtvRX2h1aqkiAbkrT+5/AXTNP8R3pRqwMocPAan
-	ufuG8AMwCR9mLyLaXsOpRU7rasHUVmKpX3CJIqg5DP0pjp9xpEcc+RndHUArQRLOjxHE/ZxXQyJ
-	AQDQm6b2dun0VcoWJbWCAQxhH1c8zJuhOILaT2wpZ5+72Z34jI6ebO2+A94W7TaYLIPvfEUc8iK
-	J0RqVXcJ2H/JqT7SX4UnNiE3FFBt2ERI3Gk5ESIJgulCDVOtuFnSS9RFXYUW6kib2D8X/wIyVcO
-	s4q8bgssBxY4bUxmqNqrYqZu87YSOAB/vjwQLBo5WhbGQ+azLgPc7RZqXzFiREl0NkQj9fZRxLH
-	T6r28qlTG2L7pmysBTputm9U2RLmsIgA2XvfJUYduhhUyeUo595NbL0hrBlqz9J6mXszT1Qbiai
-	7nFiUlBNw/b1/4pe78F+xdE9f0nKiVy3pDSd+iI0HLzl6HuhEVO+Xbj05dNpDVXuT46GhHU8HGr
-	BMnGhdUw=
-X-Received: by 2002:a05:622a:e3ca:10b0:55d:8486:afe with SMTP id d75a77b69052e-55d84860f8emr81157801cf.74.1795362522583;
-        Sun, 22 Nov 2026 07:48:42 -0800 (PST)
+        bh=Kx1Rbm/vL1Usb9vl4zidzFY59VtOehRKYBkUaVoHOV8=;
+        b=vM7elJqYT3kCvuKdnG9cF2jM3HLPJCO0PHahdMHgsC7Csrflkx4M1eTT69VB/HVbuY
+         V+ApuvHQ7ey1kN8fLMNpGnEw6fGRik3z32IjASl1kgXUXPNogG1cRUV1gF/8ue8K5dYn
+         bp/nfPBePOe6EUHaLLxRTVnIiUbLGNHKYbXVOPwAPPOpB+nMtkSVgVadO6WR8mtfAvP0
+         K/QBEmfbEI/qxGCau6OO9CYh+HGJL1mX9mM1JaBpDrsSRSTLLJgDpn+LX3XrqFqFPMkM
+         +25guR+Crc6AL80Jy1wWAPubUSBX/CGz4tPA3PkHpCfOO0oYAVJtsj9zB1quMPX453vp
+         8fNw==
+X-Forwarded-Encrypted: i=1; AL+hErHWn/C75A/78Y4ckcSC3lQBAhFA3Fuu0OcEmQCbNAhL1fLFmSnlrVzicYAYhJF+S+aGOJxMPB14zw==@kvack.org
+X-Gm-Message-State: APuU4Z+QlPvZW8KiZv/OqbSWfmMcFEX4sWcqgo9syRWyNty+P8p7Y29G
+	DJU0mEIdHN4PMSmsiDg2VfJ6caZe79GDvXXRuyuPAmGLLmAqAfT/mb+IzbEYdQb4P48=
+X-Gm-Gg: AZFdTZfxJdcPUvLgh3pzZrCssLB3Vt1FPjG0jq0wLBr+qb266uJWFS3kZ8OWMmun6pU
+	s8rpy4UtlEbfuy4kQ72v1mSGvZtnMKkE2F52l0m10hbKJ0uNhcEpd7BHKIRhn4t95egxpdI51Yk
+	vEu6vqroRAuubxEJMRg+VcwV83CtNCMY7IDae4YyjeZvlE0WCIsXDvThou1QBI5sMAOJI4By5Wa
+	riSJKpSndriT+qId/G8L7WW+fr05OA+TN0jiM3KyibHIJL8YTH4M0GGfYZJ1c3jBKFRDNZrmkuV
+	Gs9y8TSBuZto3j1Di4/RPWnwTI/yssa7ivkX2/9XB3CGh5poL0IiTjuVBuwYZbAPBhcqtqG8HVC
+	pUcy1GXvsGjUPj3iSsO5EzvlVbzVpws/5E7Km2VpBDEKfQgNBSryHp3plfW7d1CeF5fS9xOkp0V
+	xZQEh6lVQ/EpWP7TtQf3KcM6zRfBYpyvUz3DgFoTfPJJ8brvPxm0Ode0ituQndaef/FOEwvOhdg
+	ysK2J84XHNrAWykG5YLdkWhnN9oO1eflKedohiRYTfMGK135GWSFYVAPWoycQryH20pKs0LtOxo
+	JszysZSxH4Adciv9CF1d52NqRPXgKxehb1UlbREw7khXH0BwwiTpktsp0cRZ7ww+mhQM+fT4Amv
+	bgDvsH7pI
+X-Received: by 2002:a05:622a:428d:b0:51c:b98c:f772 with SMTP id d75a77b69052e-55d769ffccemr140869901cf.15.1795362563800;
+        Sun, 22 Nov 2026 07:49:23 -0800 (PST)
 Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d788506b0sm75398041cf.17.2026.11.22.07.48.41
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7888fb27sm74884811cf.25.2026.11.22.07.49.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 07:48:42 -0800 (PST)
+        Sun, 22 Nov 2026 07:49:23 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 7/7] mm/vma: make brk mappings non-executable under
- MDWE
+Subject: Re: [PATCH 6/7] mm/mremap: respect guard gaps on in-place
+ expansion
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: "Liam R. Howlett" <liam@infradead.org>, 
@@ -113,24 +113,24 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
  Hugh Dickins <hughd@google.com>, Joey Gouly <joey.gouly@arm.com>, 
  Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
  Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>
-In-Reply-To: <20261121-some-more-ai-fixes-v1-7-236e925d9b64@kernel.org>
+In-Reply-To: <20261121-some-more-ai-fixes-v1-6-236e925d9b64@kernel.org>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
- <20261121-some-more-ai-fixes-v1-7-236e925d9b64@kernel.org>
-Date: Sun, 22 Nov 2026 10:48:41 -0500
-Message-Id: <179536252140.412063.16869457803147347876.b4-reply@b4>
+ <20261121-some-more-ai-fixes-v1-6-236e925d9b64@kernel.org>
+Date: Sun, 22 Nov 2026 10:49:22 -0500
+Message-Id: <179536256259.412063.8859349312024671580.b4-reply@b4>
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: zwtwrt1d5shpm1jnqqp37m1b3dkucgnc
 X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7F25880002
-X-HE-Tag: 1795362523-607096
-X-HE-Meta: U2FsdGVkX1859HVxNDkmOEyXY++vMT80Aot5gD+ueQorqO4zsMyLrNnWC5zUXBzwYnTQjjZm2DpAa5uJt8JrCW7UPqxaFsRmbJtDdwQqEMzpCZJRckU+ytvopIhzHGyYdXavbukFGFsZOpWBhfFzd74CNZlijRfMjAq0wrI1G+EGJNJU4akyAanBGpnUkeuMA2dYRcc5Ngn8zVe0ujEekCcwAuCXdAbvUw2Gl5Y/JWLUtNE72dJvBP33QuE1MzPT+Dbdu6dWjmpoDDvQ+3xys1UsZcEchOf26izbnEoapY7WDe+G8sKYo82ILtnY0IF2NCu0h5rPVWrVNSBYQw+YJnTWF8QfqbRmtogEe9SeQu/OGl8UDSWX/fFKt56cPDDrZ/CVCzzPh6c+1qbMqeKUzumOfO1Yvud5qjj9K1QngHWumYXIYttaQ7O8MwmZ6+rwLtj+S1458ue+NaS7M6g5DCsCDO+WB+jBMW4QctV+lhnSAav0ilDBepVWvTR5eR6EZzn7pO5ucPekyj+mrw9TOFickEuqZCuxMcthe5xDgCWYc6+PoAJxckTrC1BtxjvHzvwu9AoQM0iaV2pvdHpHVlHNAN/SGVVLI3XLLGljvK4tcPu/GclFqAC4Kgn/c+Za973U5N8wr3cFfQc0q19V0TokNLi7z5qTeGLu+R3MJXLstPWDmCNEM0aVVrEV29vk9K5x0ngBZ/QN+SsWs/WN4rEFoefMgI5yJx9/JabW+RGauTakSkUO0R9663TpdkOTT0m9IgaUP8AyBGIlCtTeGwQZ+whfas7YKymipFmDtR+wDxBilh/ICidpLKRn2OdOcexs2V01jaaWwEyeQU3V3OCcMHI74wg7ZfLf2PnD94Z3BbogiTkIrw0DBQKYwdSbAqBMxG7gl92SymkgUfwrNSx9al854VJ7V8o4hIalEy5PRBNNe0J3+RosHEuL1bMvtvajcVMvEYb2fRxVfPY
- cO0RGckA
- ydapooEJ05qdgislIA+86JZp7qbxVBXl85JjRN8ljU01S8PSUgtXToGXlxj9k1Qc5woEPFUe0MhKe33vnin203WQlN4mcdY9CrAcXmvSo7EFVMTXNs5yfkKkaMi1NhYyYLTFcvuR5LW2lOCK0jcHk51OKRFW9hCf7pSOsjMvPefRw7iSjXVU4BbG3fx92v9H8qpTfIVdTDnNI0PgLVUrGrqXfEKfaZYeAnBSW66x9h2B0WX2AgR+X2RIAGirVxUhZgiDvb3nH4AH0dh6SkZrIEKwcvac8aDqsbFpE+V284FwZaMe7O/K3ivTJoEpM62cFKiIWOMBgS6i7WsAPRRYZ1GVDmDECTk7Y5aWSrs8DDUkLL/Cdm47JN84WcIc52aslgg06k9MVQwJgWTDQu8SkytCZcW4Yl1e8nBN9JeoRZ/WFUGG3ZjOzTvLwRicpCB0SHErhd7m/j54Fc30DmHFpiR+DvX2lcntaL3huzpxFQA6OF8kNi2/dLOpwjqLj9M8OQY8IqsAFzP+bDPZ8yJnIZll1o7ADr9sWfxIk
+X-Rspamd-Queue-Id: 94DCE140002
+X-Stat-Signature: 1tcoe5zpx75abfx3c8kkfanyy16kjfjb
+X-HE-Tag: 1795362564-905651
+X-HE-Meta: U2FsdGVkX187hVQFxpM8+aHFOTsiXb2X4+1rObrB+q7ll4TYc+gV5vPcsqyu6cQYZFs5dh65BLVOnJ2J4LB/gAOy+ue8dKU0zNiQpTSim0FB66myxvaYPis8BT+XK/jgPyjqmd68LiGg6YIaIrj8hd/b6rF+lQRLtjD/iGF2NS31cSeRF2CmCm9F6GGt3khoJUqIW0SudTvOFPV3vzefCwmcbqn932va6ObvulXFdfqwuFn3WkjFmR3WUQ3oj/9Hx0M0iWfbtxI1VyCnQ9l0GW7piOsMCEl0Rq74L3VE1oq8qk0tLPHlC5KVAtUZ6wZ8jAkcNiTQ5LN8BPp5KLLgX+Ug9dRRHfdlGhXnSk5q5f+ihKPaKBQxCCrqdKHwSyXZQiLPa0IPsMJKcmk2g+oP3jrcplZoAWeiqjf6dysRj4+ZD5WVyidqUxCUAhEBya9zQYJP1MRhB5JR6hoSyhERz/jYMEAzaLDMWs5F0s7rL+IWNctPId+Rl1xQXTHIET4U4PaIbUMJ9GyNGbQeys1M13kkHGWPZiHY/IeiCAuWtX7uXFDdz3k80JhwnXKEXgxLnlnVX4pMWNjdmgyNobVCWGLmXs6lYvtceKztJRjltbkAzaBzzzgVUuFI9/pP3R6SfpXqSVXQAy6en0I4EugQUlUjhj6/zaAFwuBgAR+iqa/XHps2/GapOotCyicAdTGdR8hvB7UzAy60uM0b1IQworqgLDCHqukRK8l0W/cMBODu8vACIaDy4NpB0kRRqx9Hwc6RpaQNYGXOvxEpm2qaNLcGClF8De6tKbQ3x98VjR7ITL2uuCfVPmlOCV3EV7fJoEKOiQqNIM1h8XCBz6hW8YjJym+fPC7zh+AR7JfXbYmpvERMGgmj39DVXeQEORcAsxImZduPNHvl+MwNywyZ3EVt8E4x0sxoZmm/duFkQ0LcnYsdOpDvNfHt78wGR5grc0Uy3ePx7vOfeP+N8au
+ xMchLh0Q
+ bBTWGfw0xLm6LGjQntDYwopf0OfqgKv9UpQUbv+d5uKrrSoQRPwzijd7TU9JBE4+jEekIyp4xeOGceupOTRBZX2qwo7tzhBJzfg0D6bRBt8Ba8SPdFBJnZ5m4SpXbSFHTcxBoIgJnhu8u4TTnuM/Y8XPVE0rkrmPbHa3ir7gND1r5dw0u78dpOn/DhBtnnQLb+j/qyaw+qEX9jnxqpqMqiKB6ADjnlfpU6SJpDL25qD0JL4egIUbVOpZxPvrds0NcYOGss8LX6yf1UFyVjM8VXDe7Rx4E8fTSZXxKlM/43eeVafaiLcbHF7jSrq65tU/+SZyrg9SFu+LZfpFzv0kPRo4YjATRBzTn1xo57SdNtXgHec1ZKCT9DMlgT4Opvq0LxJseA3eQAdpXxO1S1xXPY7mXb+yTVeLtOrA7pcYxhSZXfdP/uSPUEjoKeRMuFERKFOUbSLmopgl/71DxCF+EAVtod6XxRY2wyi0twI0fKqXPLY/Q6buE7hzG5SCoravTMKX454yAEATZGoY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,40 +142,24 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 2026-11-21 16:02 +0000, Lorenzo Stoakes (ARM) wrote:
 > From: Chris Mason <mason@kernel.org>
 > 
-> With PR_SET_MDWE in effect, brk() and the ELF loader can still create
-> anonymous mappings that are both writable and executable.
+> Growing a mapping in place can let it use up the guard gap below a
+> stack, so that the stack can't grow any further, or overflows into the
+> mapping instead of faulting.
 > 
-> MDWE only holds if every path that decides the flags of a VMA asks
-> map_deny_write_exec(). mmap_region() and do_mprotect_pkey() do, but
-> do_brk_flags() does not. It always sets VMA_WRITE_BIT, and it gets
-> VMA_EXEC_BIT in any of these cases:
+> A mapping has to stay out of the gap of the next VMA unless the caller
+> fixed its address. But vma_expandable() only checks that the new range
+> doesn't intersect the next VMA, and it passes MAP_FIXED to
+> get_unmapped_area(), which skips the gap check there.
 > 
->     VMA_DATA_DEFAULT_FLAGS is
->       VMA_DATA_FLAGS_TSK_EXEC    the personality has READ_IMPLIES_EXEC
->                                  (e.g. x86, arm, arm64, mips)
->       VMA_DATA_FLAGS_EXEC        always
->                                  (the default, e.g. m68k, sh, sparc)
->     vm_brk_flags(is_exec)        elf_load() of a PT_LOAD with PF_X and
->                                  p_memsz > p_filesz
+> Fix the issue by stopping in-place growth at the start of the gap.
 > 
-> Fix the issue by dropping VMA_EXEC_BIT if MDWE is in effect, so that
-> brk() and execve() keep working where the bit is only a default.
+> Growing a mapping into or within the gap of a stack or shadow stack now
+> fails with ENOMEM without MREMAP_MAYMOVE, or if the mapping can't be
+> moved.
 > 
-> Under MDWE, a task that runs code from its heap, or from the part of an
-> executable PT_LOAD beyond p_filesz, now gets SIGSEGV in the cases above.
-> 
-> mprotect(PROT_READ | PROT_EXEC) on these mappings now fails with
-> -EACCES. While the personality has READ_IMPLIES_EXEC, so does
-> mprotect(PROT_READ), as on any other anonymous mapping that is not
-> executable.
-> 
-> Fixes: b507808ebce2 ("mm: implement memory-deny-write-execute as a prctl")
+> Fixes: 1be7107fbe18 ("mm: larger stack guard gap, between vmas")
 > Signed-off-by: Chris Mason <mason@kernel.org>
-> [ ljs: switched to MMF_HAS_MDWE test, tweaked commit msg ]
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-this is a pretty bad bug, should probably consider stable.
-I would hope no one is actually dependent on this behavior.
 
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
