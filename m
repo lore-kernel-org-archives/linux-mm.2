@@ -1,224 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C8C606A693
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FD5606A32A
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NHvteN96
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=If1yj84T
 Received: by kanga.kvack.org (Postfix)
-	id 4E95B6B00EF; Sun, 22 Nov 2026 11:48:00 -0500 (EST)
+	id D9E9F6B05B6; Sun, 22 Nov 2026 11:49:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C1216B05B0; Sun, 22 Nov 2026 11:48:00 -0500 (EST)
+	id D76216B05B7; Sun, 22 Nov 2026 11:49:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38A186B05B6; Sun, 22 Nov 2026 11:48:00 -0500 (EST)
+	id C65606B05B8; Sun, 22 Nov 2026 11:49:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 17DDF6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:48:00 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E8B311606EA
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:47:58 +0000 (UTC)
-X-FDA: 85463337036.30.DA1CC43
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010031.outbound.protection.outlook.com [52.101.46.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F2C94A0007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:47:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=NHvteN96;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf25.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.46.31 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795366076;
-	b=Orb55Ei1f+UL+7OQ0wE+qZTYyQDPYzFwluEgxWklDzQVg6IC0QJs/+fjXk7xhA+0cAo2d8
-	o606QbdA1QY4DxS5uMdmKwTC69dDmcHUEktYZhFevarg1VeOTWAfr8cxKjAQOQCIgFHKc9
-	uIWDpYCrQ8B0xo1YbqwVX/weAqmb9Oo=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795366076;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A63E6B05B6
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:49:27 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2830C1206F7
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:49:27 +0000 (UTC)
+X-FDA: 85463340774.10.DDE1BCE
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D223E1C0005
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:49:24 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=If1yj84T;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf20.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795366165;
+	b=e/Dolsu8d+xA9hgmg0oJob3PixI85psxxkk1+zNOCP0cFG8teiA3rs3v13bGH/TzvZhhMv
+	mypZIu435szB29ZBrA0ltTGAG+MF/xmdU2Kjp3QvvYFczY2GxyF98bO2fgaqIgkH/qXZ6Y
+	u7NYt1UyFdelsgnlrL8kUn6vky//Vtk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795366165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JATS/rNWdcvhmGzK9ANEDAbcukOMpu3tVj/EWIuICWo=;
-	b=Ovvy0xBuW79LWtMP+mQGBpXfrLVCbdM+6HRya+6v4Mr3LTNuy3KMHZA4LeX2dVrbtQzlm5
-	HTUvr6g7cfnFrca/hTcVmNEPrq442embUvedTM1xRO8fQ2hWcTSBm0zdNJq/Tyxm96MHF7
-	2fTm5J4dMp5OItyhNzaHV+rMnmqH3vc=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=NHvteN96;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf25.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.46.31 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XDeCJdITcEIKFadnzY9oI70AmgQ1O2qZTyxaDAtFx7xgYOn9oceyXGhqfJhqB06UuATtU1FZttoybrRYCTuHhx69U6SDQPlOtU3iXRD4DdA8VgLLwAQS1vEgpsuybuBvDiaz2uYp6I0leKj4TQNSV9r5zEMNLbVamoX5EWru4LrIGC6+2Hw3z8HJr2WExbs2W3gohwTyXuruWSrU9NiCP3N0noj6lXOA1KMWWxkAEPx+U96mwZA1md4yk7rLEPQDsNkEqxBjEE1InHBY9/H+wboKzzhi5zTa53wYZYYPrIVD4JhNW/9R85Q1mLNAkkSl5MDcFtNBBbBEaMI+Vh5AEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JATS/rNWdcvhmGzK9ANEDAbcukOMpu3tVj/EWIuICWo=;
- b=tCvPwZqVLOYcVZiSWEOpsr+LEAQ9XCtKPk10IL4gDgDDh6yEV7sG7LCj4CGpPPKk9MmlOpw+T60Es4acKzqjNWU4EQWQQ1RhiWlJ8f7iO3oFiJbVtOy2W2a2/oS2kpkjf4DUIomes2Ggstxg4nEpiBepbvwrYBMQsp1NandR9DOgVubYvgWk8UpHXyv91sfKpmbOqnCEyQx1el/LZnO3xFMdWEAlJynZc51Yw4JHgBknqFCev+XiGE5mZOgqqt4OKzzC8yyGUO78X6AqMkq239kvtI4hLG/M0UhqCcDFpQhJBuEdxfLdqoiybEcPppaYfHymagyOtIINwb5sSQln1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JATS/rNWdcvhmGzK9ANEDAbcukOMpu3tVj/EWIuICWo=;
- b=NHvteN96GqE4F5Jx69Kfk0JxoQx7aOJqTEjWKB+k7lipNrHQVgwa/mowVB2CE9nhz6j5Lzwz3v3m5NA8PHA1XSEoDxSAb74gI2ExYAwUp0a0R6EECu6tipxsf98kvSs/pj7rmfS1N7PwOJc5CAMKgMHRKm5MUoSh7yBrQvEiSMhCd2XsQCnhbezzupmtuC4QcL+JMKPKDWrjRf9qiLEAfi25veb5VudDnyLxvogM1HmpL0Ge+ZKKwNa475e3eZswPoRhwpbjQZm1su9WAd4wv8XeSfLxtZnx9DFHtRj1xqL2Q3yppsLJZ9TcCv0BXONroEp0SVzKRxiBTn5kaT8GDw==
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by SJ5PPF6D27E3EA3.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::998) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Sun, 22 Nov
- 2026 16:47:47 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%4]) with mapi id 15.21.0639.012; Sun, 22 Nov 2026
- 16:47:47 +0000
-Date: Sun, 22 Nov 2026 11:47:45 -0500
-From: Yury Norov <ynorov@nvidia.com>
-To: gourry@gourry.net
-Cc: Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Alistair Popple <apopple@nvidia.com>, SJ Park <sj@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Kees Cook <kees@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Xu Xin <xu.xin@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
-	Jann Horn <jannh@google.com>, Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Waiman Long <longman@redhat.com>,
-	Ridong Chen <ridong.chen@linux.dev>, Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
-	linux-doc@vger.kernel.org, driver-core@lists.linux.dev,
-	damon@lists.linux.dev, linux-pm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 23/60] mm/damon: restrict DAMON-native folio operations
- to common memory
-Message-ID: <awMcsTqyCgQ0dISw@yury>
-References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
- <20261120-private_nodes_v6-v1-23-74f5f9a115c2@gourry.net>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261120-private_nodes_v6-v1-23-74f5f9a115c2@gourry.net>
-X-ClientProxiedBy: BN0PR03CA0048.namprd03.prod.outlook.com
- (2603:10b6:408:e7::23) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	bh=1n4tlVAMD1oQEfLg7AgK6BF8JkJzQIdhcOfMal/6gZY=;
+	b=0nnejK5V9SMjOh2ywV+ZeQ7jtn8v8mVoGUZrO3jElzpbyyeI35y5sxnV55Y2/umUme0tX5
+	buOnLnDL5ThG9Yv4dCub/PhEQNV3b+yiTA3taUhSPYI3U1EMkgEcnwvriFgUCf+MRtYgRq
+	Y4hH9XCTizwpwZ66Rgtvz2Sg3FFBTJY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=If1yj84T;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf20.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=1n4tlVAMD1oQEfLg7AgK6BF8JkJzQIdhcOfMal/6gZY=; b=If1yj84Ty+PWC5pwN3l+urBf68
+	2hR0b/KbpLdHtCSDssJRGtWWNVVHcXXibwvo0e16Wu5PcF1GbzrF+0Nn/0orhZPZLp3AaUrOqCeE3
+	M0g3/VZCXrSCWsLf3OJiUda66VgMdDR5zNN/JnYJhMr6Zloh8ZVpZL5T6FbjOGEGGG9pYSEFlPSo3
+	xNjZ+pwXJ34Yaiph8LhnUvR+33XsPWSndNcZzF1mF1Y/Rg3p7J5onQ/FXu2y6sBr06vas2ATQ1cNu
+	jo4l2Ca8g1GdoMwCPQY26/RHxrAwrwLjXqoQ1EhLUm39E6z3sHmGRuhzwWdrOJON3ct7fIVJwApAK
+	GCbPEuHg==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xVAkg-00000001O6v-277K;
+	Sun, 22 Nov 2026 16:49:19 +0000
+Message-ID: <1e62d5c8-3ca7-441d-8979-f054fb815912@infradead.org>
+Date: Sun, 22 Nov 2026 08:49:16 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|SJ5PPF6D27E3EA3:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9d6c601-21aa-49bb-a9ae-08df48b85630
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|7416014|10070799003|4143699003|11063799006|56012099006|18002099003|22082099003|6133799003|10067099003|261021123027099003|261102123227099003|261009223027099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	pttyvZrrYA7D4hAdv7PDsflu6Uh6VmXoU3y2OtFAJmFlM8cifYkMj3e7x9ST23KXiCyG1i8STL/Gc/miT2q7nN2BG3UI8qJz+zvGasSaducR77EwZtbjVCR9qW/4c6DillNCrSxYHFW1+amy6DNVWa+1W6mNXl+7iHyWzh4guW0+eu+ifeyFlERU3Vxisg1LiC7SOmNCUYyppvdX7gJZX3/KYSY/N0gGrq9B7U1AopPUjh0mbnwyZL/7w4fjOIQZG7KEMeseEVMQs209jZx34Orl2QUurwoxz1e/qHg/EgHF61TyldoSPEYQTQi2cmYkoN2oqVm9Nz0ZAjTX5Kia5yFwmNXVZPsJ8bKtTsCioBxdHggrUY8HgtHlYDKOEDfjL3s+8O8FU6NrtcLJ/ZjqhRpAEboiL1P+oIDIY/hDVYmXE5nNQ5D6vTm2QSFAMq4xo9ZBG/ZpH7E+n/vkBCYZe7DibUFAPNVJkKiyfssTr4lYNkVa0tMZvDKPUGE+UlYKXdkY5iSAnRglwaYhdB1lsDWtsRD3sva+l+VRS+3kR9xjxV46hLNqI0Pc8RHsX687nR2ebaJv0Q9Uli8xEu1s2Qi8gcp8wqCxu+N7rJhTHGkoo29el+JhMtfcHxk5y4iutfY4LAHnEiA+8Cp8zlXS+1G3ODe6wDtYr7ka2XLHWMs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(7416014)(10070799003)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003)(6133799003)(10067099003)(261021123027099003)(261102123227099003)(261009223027099003)(261021121427099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QjdoUo1T00asCqtnXElVzkrVImSL9el03xviw6xq11+EwgfI/I2drFxWr2RT?=
- =?us-ascii?Q?baxGGcGpWg3kLEBbOftTJ7VpuZSZGCo0sn99NGLO/B2dSdZMohm3zNtOvmTz?=
- =?us-ascii?Q?G+Kqf9hCW/syX5jqGQL6rHiPCPyQkxpfWhCo/ErzNlHT63i+WKks7Q+ZYd+1?=
- =?us-ascii?Q?V9sieSpd/4GS7vJuZYWGPaUVCNQK6FvWAouIfh5niJZoFB+ifHR3fvrsnRoq?=
- =?us-ascii?Q?imqicWxBezT6XL8Y/QLsUeqWDjBk8soHB/dKGyRzuU9eU1B02MbKM2yTlYrd?=
- =?us-ascii?Q?6yykvfEzHpMdO45UTiTMh28awrN2RYWbwvOlhNS8W8cCR7Ced4pn54w2co+i?=
- =?us-ascii?Q?9tM6/NK6PDY5LhKec4EZeDrQRHIFn1cp9N7tetif61XLbeSJ9TP57AizrSGA?=
- =?us-ascii?Q?i5LfpsCE62TrnioYJkjgPk7OxbXMO63dVqQJyfX8tmgYZ+G9GrzBPNJMQao5?=
- =?us-ascii?Q?NZoQNeVxjcuUl42vU4nfzthMt+sIJV345LYKAjun5z+4af3kKCn9orydLQhg?=
- =?us-ascii?Q?gZ9Kp3N19Gsw/EWJ9j1n+bnIDI8dz0QB7ch2fd/4Zqvj1BdzPWxQ8SNOcuMJ?=
- =?us-ascii?Q?beRQoiGDOl2ZPa2n146+P8ghcOPyeT9xSuIBZO9ivwVF4zoTu44XxGNM82mH?=
- =?us-ascii?Q?U1SjK67jwgFbAoao4SiZC90lMY2mI70n/JNzuZNYtCQitzM6uPf5ZHW7486j?=
- =?us-ascii?Q?/M2n3CgDVKWfaBbYucBTxBNHZeaXmdePKl5w7wAZCn7FA/YyAMNFM6BP0/RV?=
- =?us-ascii?Q?6JTNvL//UZzHVU2elYDvNv62Gt5iepMRH21sbygMOVPIcVwTDH+kXuayVugJ?=
- =?us-ascii?Q?YJ++aifc8xoHje5tyXWliIV1qeZ/cWH/nMHxaEXBH/R82njpCeXHiuS312kW?=
- =?us-ascii?Q?JUlVEXZbv8ZrQVuUunIx9y8FTfwTMrS3YcH+Xf04UvmTq6qRglN6qlM2a6xt?=
- =?us-ascii?Q?TaR1KvfCS0xKdt0mgqvmg9sNXiJK9G3RVvPVH0sTm6OITzj7J/tkfoYs8RNw?=
- =?us-ascii?Q?VeRPcd5dzT7IWifoxTECcVo6R/58PZmGskttf1irgqBPWJDXKlJLu7tYxE5G?=
- =?us-ascii?Q?xwP4ynlysDFbIa4zFb2EsObzWf1nbIrSkvIOK8b6VZUc4GnaAcFyar/n00mT?=
- =?us-ascii?Q?tao90rRFiquIK4DX02/A3O8mDCYejx1M/1SS0ZHm+ygnBBzNTlCcdSTAccRv?=
- =?us-ascii?Q?m4w5nZ0FTbN1Sd/nyCIOnntSwTFdwOKyXIAJ/90/e4fmkR4et3VDMfd1ZJYR?=
- =?us-ascii?Q?YBfrrgw9yor1KWwH2OZEdzisad0IxDvd1Y/G3h89yIZSUO/leWKW89Ax9Q1o?=
- =?us-ascii?Q?vhejkCribBnP+ehHs5YWbvRVmQL7oTtqptLiYwHezsDrUm2WsJAGRytGCGN/?=
- =?us-ascii?Q?AWxsL72oKQ8MD+yOR5+AcXLEJMT5qWAj57V/aSbVuSK095FLfHvgM0/N0pgH?=
- =?us-ascii?Q?u6bqKwO8TgklAGGU5wwX3kBZEJ3lNlDwfI8KjouzYfI3iy8NFStOo9J3clfc?=
- =?us-ascii?Q?S1F0UrFyEMepBSc+h0dW/nT/eRtLboGdw4V7cFW6HR89B3MbHT3MJq8R54C9?=
- =?us-ascii?Q?YkynPk4QhWAL21OiUHB1Bcf172WaJb0PD4pXOPBcEJ5O+T7p0FyZE5QxsIlj?=
- =?us-ascii?Q?GIqr2Z0iIp2bQz+zKPXzC7oSWc8DuSZyqf/GmLyONgm/OCWukRJzO5fCC+Ij?=
- =?us-ascii?Q?8b67FI1um10g2xuoTblCPwcBOm1Hr92FXtb+F/MOFPikzPwAyAZ5exLsd3y4?=
- =?us-ascii?Q?P5utbCJKhbvu777p+E0BOnCiLuHw2kO5mf3H2uisNshlY/BsHMQ+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9d6c601-21aa-49bb-a9ae-08df48b85630
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2026 16:47:47.0757
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f+1VWZU7dM6sKOJYqHO9c+hsyEoiWzlaDXATHgydhHUhlmlPbaVIckNCrUWY+l99eKJI1Qzvn/kkfDGvS5d4zw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF6D27E3EA3
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F2C94A0007
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/12] docs: ioctl-number: update sound entries
+To: sashiko-reviews@lists.linux.dev
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
+ Chas Williams <3chas3@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Helge Deller <deller@gmx.de>,
+ dri-devel@lists.freedesktop.org, MPT-FusionLinux.pdl@broadcom.com,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Zhihao Cheng <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org,
+ Neill Kapron <nkapron@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Hans de Goede <hansg@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>,
+ linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
+ devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
+ Namjae Jeon <linkinjeon@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+ Chao Yu <chao@kernel.org>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
+ Benson Leung <bleung@chromium.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ amd-gfx@lists.freedesktop.org, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org,
+ Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org, Takashi Sakamoto <o-takashi@sakamocchi.jp>
+References: <20261119053514.255348-1-rdunlap@infradead.org>
+ <20261119053514.255348-3-rdunlap@infradead.org>
+ <sashiko-outbox-224494@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <sashiko-outbox-224494@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Stat-Signature: dd7iynn6q9jys5fdzt7bbwfokjrwdeos
-X-HE-Tag: 1795366075-997306
-X-HE-Meta: U2FsdGVkX18GwK+xypYkHTCusO8/R7+rI0zQDoP8u+RAlL7XynzSqkZ42fgDiQGuejbA6wl1svfNAOzgcCiQhPwLUpHe0MULUmgTWkYdmGP4U+8HB/mtaCqTA1uuKinsNhctkGKJUn9qzJ7sqvry5JXDFfLkJv6b/JKu3D25W369UTS2fWul6ILvhg1ZTdJPs42H6zaZ1NbG0BU2ynE1UchweB380to+0EkYZlspChXd3OnwWwpusI6yxZid350r7gRWaifJKa79+OrtRhLdb3e2rpweGuXDjhmbc3FoKHlG+0WvdwF5T1aofhymCjxEJaapjoV5boVynVZvzyrpYa3tSa3zc7M1Rst0/FZYICACOYQio+SwNxjsnUtF12cPcq10exAtwbAqJ106IJJlMGmMx8cQHRYI6ZUnp81cu20BHQIB//xME/DfbWzuuWxI6Ep5p8STYBVJsTntYYXOdOBtkfpnxnNOFHkG5YvaP5BJ7qiQ1GSA08UFCHmxSfiiC2LIiYFhF0vL0JkpSuY3Jh4AqlsgkmYmz1FSTE5FPo7H9+AKzVDhLhNC77sr6HIwlRd13C+2Zrjv7bnrSlTA7p8rHYJZPcWIlgEJToUnIZKrhQnM+2l/cFwuXCBgHjhJ1WWNms3vOTXGZwYoAHVxLq8wbkPPUy/mBPRW69rE24gOJLahD5d7kc4VgBUvZq+fZKOOd8R6wh+qSQks19JZMrUe9fo+POOuVMHiz0vqmH5RTmGvAUZhudVFsoVyJW4wUhe9LsJWjN6YDpovAOEgO21SNgp9eC/4v173HadPv9hn5LAbKiGAvrRpZaP7AWnSiWjZZO58sNw7VctndMyxI3OsKKHZ+3mFWUtwsKc+nXlGwsbbMgkI2aN86CtK7YZ2mixcugIVNGECEJsVRRAKOS0sjxAP5mIUR3RM0Kg67RiGWEPbPw1Yk/gbowxqHoyCgiHqS2voTidL/KAx2q1
- iXnAPvAc
- Yl2S5iRwtwwaM4taD9CBTea9HvG0WVOsyKFMBEsf+MO5e2fxkFdBwVonATxwD+zs3qVcd6078WIrj2QmWcIkbMoCL5ETcm643PnG8PHDEYjVN+Q9Za3WljwFiYT0IajZItUaHX5uSYcbU8iH5r8O1UGRrlQPMfw1COpWL7+Wr0np7j3EsoJQrS1PoCfQS+SOe4py+2oqQQLY2+Ac6fFujqlbFsh3jdbLltAjWbSKBweDHZmpxlFGv5Hlq2UU/+dULVdekU7zUbGDeKv5tE6CaAFTsKIQQixKlWeaMPbPXk54kEW2FUwMSIjhmhGMxdG1FAKlwiJIyCrdJNRy5jI6X+4cGKnezP71tJ6GXrzmYhBc112/lnNJg+V4xg3kG5YcfNKOVk1F9KpVYi3R6ylCtpDPT4DDxYRDKdMvctGSrLlwk0CzTxX0aF5U/SQSpKQQZKnS8mI8WJswd2zAKbxu7nsL62EyCfyzTjns6YJnnoxylSF3CyuJ0/cpNOX9QFTWMAW96PEcOGJfECcoJubUTAyfcdumg5sTo6LZrmDOsjjL/TlkWy9qotshy8ih8mHF3v9W7Tg5ap8m8772iwF6rwD9/PZJT6A4Y64IEiZIAE7c7FXleTGNaIQnj+nrvL6s3h3zY5TIsFFOcsxtUXKJGHid27UiWpkxiCCrbB8Oq/mayy/TLXSh/HYlUOSK1Sh0bqaweTTB+PG02fIjdMa/Vv+XhLaIHRzNQWIEuuwYldiwbjPOOUsS3QZy8Lm6r5d+PU1sTH6FUVEVRz5ErY1ID0FKOy5jYRl9ZxSU4+au7rSxunMaDJduMg8DMp4yZTu374eskTTqgiQ3fGuvfnPPumHt8iXHwa7gkzKSLQ3wMzLW8F2o=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D223E1C0005
+X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3dkf854gg7ucn1qkyzuuebywkt1phmqb
+X-HE-Tag: 1795366164-37967
+X-HE-Meta: U2FsdGVkX187wUa1UlNrXR8N0ZTXJsegW+3JvcLx0gZ3tXL5rcS0lwJ8ckK6T/GKqQr4JAU0uUYhqmHykjrlE4DvCJYIwxO3mTOuVGVlSANakLEuhzgCyclX+YxfIcnsOPBLLtKBXyGoilWZoqM1hoQTEM/Ob08phXkiN768+Bt1uP5ulpFslVuqfiMvkD43XuAxQdf5nhTO24NrEJR8Dc9pFk+TZ+AKNlvPFgY+hu9V++dfa5WRHEUzQM1vusAaBghxzD3YxDJwYBgp6JXbVZS7HSPsehAt0weT/iI1hTSkZYFmjUK5Y8INMA1JaafeN4b0Revslht5i8a3rUEq0OchVTuBoj84Ofz5pMapbEFA5YwVV59lx+1WyILo0OK7GX3bqnARxu7aiwTVNfwB0xBIRYvLaxTAnBCxlTSuHqpP6PmOFoF7qq1OWY4Eg3gpr2imDscrsk+W4ec2AkRfE2yRIV+JLnf2oX0nGIozeLhxddPyujI4fcQmGCjbhCJRJ7+UoUrPZA2iHz+tQo2YRUJYE02vnnaMUjHkN9jG5PyhkbpGLByKxxYEi2YAk9gcGUNnrVa71Vq49xvErUnbTnOhqleU3D4WQi5tYAEooWhVLLcR6u0w9SgxHdyuqw3BUZeiQZySNUzbvj9Zha0MpSRGi0GN9KufI+J5p9I33c4eW4sFCPcP0pJIvMG75Mpkcg/685FQ3pYOVp3/Cowpaj9xf5lEEn/OJauwZYJdoehCgR4D8ZMVpKGLTFNlrMs80rOy72IKWUW26af8fh7F0iYvQe8AqXdSRjKcE0xR/QMvZCrTyUHaROjE0xnFppX+S7KRNOaMUk3OD9a58/krJaSl49wDr4ACaQ2Di/dVWDgrpsgN3tOGDf8ZmzT672WRgL8jHemweEINPEGAf9N+Yxxybd1b1x/dHOe0mi4CSLUqezS7+JVFcb/3Q408MWqaBup80PwUrcpkiIXF8Eo
+ 4X902Ztk
+ P74xUITRQd3bW6f4/HOAch6DK8Sezuj5SvbrhkVT73lxF6POybiZmtITYWrJPtlF2QGLNdy8LoJ6kcvqy0R7ppZJu8kMD+iOT8IE6xuRYUXU4Hvxb5Bby1yZFkQ0UTdbHtudhadEWlQoG5S50bji39ObrzulDyn2z4uhbBgC/qjntppFm2yS+X9Zj4v8xunKQPF0+CZjsh7CFLeaRsK5JqCo7uKLV1X+B6xBYOHzwn9lyF+Yt842jwwRcG4WnNaQ3/WiMf47OvTI7LGt/mKYE/yj05mdSIamSe9SkCNVqU32YjUtvMddoL5QRHnq0OU8QPP3TnjoP5AGGR87JIoXwqmI6zkQ32CzkHXDQvzQG9TwWuhR9DuEzNL2HQ06M+VI8jbzs0XGap5LNoK/0OfPouuhDQqnH40f9zkNWGdWkBVGP8BJ0dgCfyxUHECmb7DOyOMK99gG32uaMuRWSf3q325ovvLeQFxqHpZEHtevTGssXqrn4H46bYuRZwJOzsU7TQxkeZDSS0siEFnV75pNs8KqrEFzCLsBEyyenlY8hlCQ0rzBAyBjZzWO77bZQdZLYDahy1j4M/aBUzgpkEtfrDalbKYWAs+pBuiE2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -227,68 +139,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 01:09:14PM -0500, Gregory Price via B4 Relay wrote:
-> From: "Gregory Price (Meta)" <gourry@gourry.net>
-> 
-> DAMON acquires folios to age them, check their accesses, and apply LRU
-> operations and migration. Treat these as general-purpose MM services
-> and restrict them to N_MEMORY_COMMON.
-> 
-> Memory outside N_MEMORY_COMMON can still hold ordinary LRU folios, so
-> it would pass the checks that keep ZONE_DEVICE memory out of these
-> operations.
-> 
-> Treat these folios like ZONE_DEVICE memory.
-> 
-> DAMON cannot acquire such a folio, so it never ages one and virtual
-> address monitoring reports it as accessed, and DAMOS cannot isolate
-> one for migration.
-> 
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
->  mm/damon/ops-common.c | 5 +++--
->  mm/damon/vaddr.c      | 2 +-
->  2 files changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> index 15cabc79613b..57201a0c5e3a 100644
-> --- a/mm/damon/ops-common.c
-> +++ b/mm/damon/ops-common.c
-> @@ -17,8 +17,9 @@
->  
->  static bool damon_folio_acceptable(struct folio *folio, bool monitor)
->  {
-> -	return folio_test_lru(folio) ||
-> -		(monitor && folio_test_hugetlb(folio));
-> +	return folio_is_common_memory(folio) &&
-> +		(folio_test_lru(folio) ||
-> +		 (monitor && folio_test_hugetlb(folio)));
 
-Can you minimize the diff? That would also improve on readability IMO:
 
-        if (!folio_is_common_memory())
-                return false;
+On 11/19/26 9:36 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Low] docs: ioctl-number: incomplete sequence range for
+>   sound/scarlett2.h
+> --
+> 
+> commit 93a4f635ed001735e939a3dc4a2526e8af9e9bd0
+> Author: Randy Dunlap <rdunlap@infradead.org>
+> 
+> docs: ioctl-number: update sound entries
+> 
+> This commit updates the ioctl-number documentation table with additional
+> sound subsystem files and sequence number ranges.
+> 
+>> diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
+>> index e1d56d5cccd14..f29d2c17ca7b9 100644
+>> --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
+>> +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+> 
+> [ ... ]
+> 
+>> @@ -204,6 +209,9 @@ Code  Seq#    Include File                                             Comments
+>>  'S'   80-81  scsi/scsi_ioctl.h                                         conflict!
+>>  'S'   82-FF  scsi/scsi.h                                               conflict!
+>>  'S'   00-7F  sound/asequencer.h                                        conflict!
+>> +'S'   20-52  sound/core/seq/seq_compat.c                               conflict!
+>> +'S'   60-63  sound/scarlett2.h                                         conflict!
+> 
+> [Severity: Low]
+> Should the sequence range for sound/scarlett2.h be 60-64?
+> include/uapi/sound/scarlett2.h also defines
+> SCARLETT2_IOCTL_GET_ERASE_PROGRESS with sequence number 0x64:
+> 
+> include/uapi/sound/scarlett2.h:
+> #define SCARLETT2_IOCTL_GET_ERASE_PROGRESS \
+> 	_IOR('S', 0x64, struct scarlett2_flash_segment_erase_progress)
 
-	return folio_test_lru(folio) ||
-		(monitor && folio_test_hugetlb(folio));
->  }
->  
->  /*
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index 1e65e7651cd9..338876559140 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -830,7 +830,7 @@ static void damos_va_migrate_dests_add(struct folio *folio,
->  	if (folio_nid(folio) == nid)
->  		return;
->  
-> -	if (!folio_isolate_lru(folio))
-> +	if (!folio_is_common_memory(folio) || !folio_isolate_lru(folio))
->  		return;
->  	node_stat_add_folio(folio, NR_ISOLATED_ANON +
->  			folio_is_file_lru(folio));
-> 
-> -- 
-> 2.56.1
-> 
+Yes. Fixed now.
+
+-- 
+~Randy
+
 
