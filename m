@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA61A60A3802
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 19:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B85B60A6F69
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 19:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HQQjMQcH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n5gU4g52
 Received: by kanga.kvack.org (Postfix)
-	id 84C4E6B05CB; Sun, 22 Nov 2026 14:37:16 -0500 (EST)
+	id 00F7F6B05CD; Sun, 22 Nov 2026 14:37:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8243F6B05CC; Sun, 22 Nov 2026 14:37:16 -0500 (EST)
+	id EDE116B05CE; Sun, 22 Nov 2026 14:37:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 712FF6B05CD; Sun, 22 Nov 2026 14:37:16 -0500 (EST)
+	id DA41F6B05CF; Sun, 22 Nov 2026 14:37:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FD6C6B05CB
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:37:16 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B51D61C3FF7
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:37:15 +0000 (UTC)
-X-FDA: 85463763630.14.1AB2E0D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA1ED6B05CD
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:37:20 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2EA34806FD
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:37:20 +0000 (UTC)
+X-FDA: 85463763840.26.5C71652
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 20DD140005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:37:14 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQQjMQcH;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9307440003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:37:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n5gU4g52;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795376234;
-	b=Vbx5PiBaXqRDVHdc4aCqVohT38NcoGYgZjJjG1/msvWNW3IvHS7t0YfGSKkacHKb/7aD8Q
-	wKQC2iLhn7vM+nJ/ukxaBCfTzvne50t29//nUB5azL9wvnyrncx0NyQUKaprhri0ALNl5f
-	6nJI8g4Yw0tyRPbHpzsRjmzpEhqjKwc=
+	t=1795376238;
+	b=fOF2TASt3B8Ofucgtx3/T69ds9GBsx8K84dleXAldj0vYkKykcYwWD8EWjwRT01qBn40Xr
+	YcrorTp/SkkRLpeXuUTixdjbUIKdgo7iTdyqlGVVEnphE5HBkE/9yTnbQg9AOLDj0UInX/
+	k8iILuTEz+Uy2OftQLxj1NGpMBLu07c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795376234;
+	s=arc-20220608; t=1795376238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=khxvpcGeTbqQJJSuGbnlbIcol0rjjybMBYSoawPmV50=;
-	b=ZimzzATUCS0uNbW29IZcldhAZwmyE9S59gywJePiF36OuHm+OJV5zEJihftLJc3rkEgsoG
-	AyDXhG/sFgxvOI6+fA25oy9d0SyDmwxKaCMAqR4iPyUcZ8o29FTa7V5mqhiGKdlZno7RFS
-	cCLJqXvCNFPndLGRX8Q1qfBbEi//C5c=
+	bh=Jfv3MMg/O7UN8A+W1NHYimNXqqAkPIDpKwh6yDT3Yps=;
+	b=8Sz69SCASThDsiatcn6a+RiRe+KW4nKCf87+b2hadexTHHHQ1gS3jvsnXFTWkUZIhWrWW8
+	w5Mb1Nc3XNLLn5HcunFhThg93Pjfo/nxV5XI5NrTfU1uKqdeAcj+m4C1UA1vHb8v/HGDNj
+	6WNQ4tupNhBJ2grpN5rkE3PHyv6zoM4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQQjMQcH;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n5gU4g52;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id AA1CF601FF;
-	Sun, 22 Nov 2026 19:37:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A59BA1F000ED;
-	Sun, 22 Nov 2026 19:37:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 472D261219;
+	Sun, 22 Nov 2026 19:37:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id DB0961F000EF;
+	Sun, 22 Nov 2026 19:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795376233;
-	bh=khxvpcGeTbqQJJSuGbnlbIcol0rjjybMBYSoawPmV50=;
+	s=k20260515; t=1795376237;
+	bh=Jfv3MMg/O7UN8A+W1NHYimNXqqAkPIDpKwh6yDT3Yps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HQQjMQcHancZxRSEXTnnNfnmTv7tzCkRXR8gIRGuI6Kc1UeH+LaHw4TYQ003/ayOU
-	 gDqP6tUK/r+t1pBzNsi1MyGF8MUCz2vYR8XvkldC8IJmfod6XSWPp8hEVUDYWDCcbL
-	 mH4yheFxBNmBFok98NZeorlOW9Mj1DWCEk5c6KKXkVCpPQBIcUwZkJkMwYQVZHu63w
-	 wYY1klB0TTGXd6wN8TZ6YId+Ca0GtXKxzxdMI8tN6PEQgaw82keC4o9Col5QNmEi4j
-	 eoDB7f8gDENj95Pb8o/SB+pF6BLcwQQUmKWHcCvXcGAQekK97LLL91HwXFzy1J++SG
-	 kMHn0ByvVy4gg==
+	b=n5gU4g52v76arg2qLN1/ypN62ZK2xci1H49qauQnRD1ZQ4gQRiaGYjG+lO9PfDqlW
+	 JaNR9IvTfBSu/9qDydT2bch63eLvpP4T1EDPgHW8Mzoto0p3nO+szhaHzKbf0skjP8
+	 /oEkzdVR1WlrXz4CBqyZipi3lB4p4mouk96KgWm56giD5yEchAfUB5dWsIpwvq5/SO
+	 eFtzo8KxT3hJ5NmYppp9kdPQ1v715sI0tizcf/CAez1gsnUTR9o9L7Xqzl9uV6h2dk
+	 aX+ZhnyZudMcQlmfslgweTo5EdDIU4iAKk/S4ZSGZENNEbQqlJTvaN0c/FeqdYoMKS
+	 vZPBDfzIqGCmw==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -96,9 +96,9 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v7 18/26] fs: Support FSCONFIG_SET_USERLAND in fsconfig()
-Date: Sun, 22 Nov 2026 21:35:31 +0200
-Message-ID: <20261122193539.3334213-19-jarkko@kernel.org>
+Subject: [RFC PATCH v7 19/26] proc: Implement ->set_userland() fs_context operation
+Date: Sun, 22 Nov 2026 21:35:32 +0200
+Message-ID: <20261122193539.3334213-20-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261122193539.3334213-1-jarkko@kernel.org>
 References: <20261122193539.3334213-1-jarkko@kernel.org>
@@ -106,17 +106,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 20DD140005
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9307440003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 1pw6j47jumycmapc8ekyu3aaki7gf49t
-X-HE-Tag: 1795376233-875487
-X-HE-Meta: U2FsdGVkX1/gcpXiSRG2KgmXVLOFcBP1VAP1UMU+dv70aGC5g9e7sWjRZT0dy4ol5tLclNC3ljQ9/kZ1fyNoaexPvWhpv/hib7jRnBnEmxpNhW6J7qhMj5VL+kHuJSXPc0b28X0uvdI8r2y79ZhHlKyNcNJdm352GgsajSBNo/GqKRvCsZliMc6HRT0aVzTnD4T/TamGXVOwWvAr9PRs/cw5oZ9S9F6W79glJH5eb7pqeCdE+B3MV8FJOrPVAlZJecbD95DSnWevRVWPKTwwilQ9MVAm23Q+w57iFs5WQmOb2w3eAhHvdqI2T78pFPzrXZU8UYhKZCtNzjsD8F/KkNtmHGIY3IqbSMm+v9+uVStLPJCXoPBM2XA4QQ2iuchDtXMrvpiXZY8WjqCHVgBYQ9dJN/km42jv9R8NV7flZjapHGS3fdBWEcFAl5fK3lJmNgVhWSNHvYHzpW/DroBOpPrGWYUaaUpkUx6GE59SrNNBpKtRAj2CqNPhpDwBwqUAxZB2L9V8gzR6nvBThlWM7fjFo2P45yw/quCP4vg8rwk6m/9zZYDPDI+fpv3F5qYUmZ9uPjPy5sDisW56zXCDXunxQrcj9QDQw6FDJjy++fa00kLsSveqP7g+rI+y0RRvZGSmQk1ufKRt/SKQ9QUHRgRzTt26l3Ul66Ov7lty6/lZYTsRsEMFBrSzazTGdpml3qiIa5ZGgwV5a81oqRuLqdbxTjCMVwBZjwgiREWJIyFcDabFJI82BWXHh2GMlKQgNDYKUL1+BF4tW7klE+5pE9/97WQu5lm/EQPM2bCOR1Z/df5ZS6Pz2gQn1UUw0CTpOvzZ17lq33ibxvx1arLA/SubWTflbeCDkH4j60f9UTML27oCLwVRJQiaGcnI0xZv0g6/+OwJQayBauFEWHxyATbhAKvimIMnpUdhWW/RNxmj99/Ivxv+eNMg1DTtX8sJ+kq6hw3bx7j1Gm1cGSL
- w9/IYO6y
- 7l3vDKs9YF/WyEaqHS6Mqvh2lbD8dsmlbq6lTTMU3qWsa5v44fN2wCWHxr2O5YkY250rPPMWnL7Q9Dugzalu+JIFhsZVKaHfIzVhqFf0InQLa6w7Tth9mt4dZeRhJV76I3tI9XhMPMaVpGGiq6+pkfUQ5mHqJ+b7nrZFoRmzAiGw+cgZj+HM5QTI1rb5ijogMgH0lHUhU48rZuw4aBLR8Ezo9lV70ejaEYt21s0wJr0qGqnWiH6mYfMOBGIXWelVBb3+Y10jgcJ4jFaaf3Whps/j8qPA3DY1GA5OmZFrH2ddsQZXNN3mhrG+dalbWAZUBYJyXq1yb/rE2PGsZ7gUidqHh09Eu/u+HYCA/tl4em2vLoubkkkHXLC1JCYGdsbJYUMm8Xb/Hg9poWeKtmavAyPTKAiJbzyZIvvxeF1lqhKKMK7qGFBTdKK0XnsNcpWjkT9UDdKFu/ZOc9QP+QM4QT03Qo2bLKIGRV5d+KDTLLMSQD3G/1ZdxwcECPjcPz7CtJvuztOR3vPwgAbfp3kiCrTyikZN9OO76+j7l
+X-Stat-Signature: a1m7nfumfkp81fn8igtbemx716n5htf4
+X-HE-Tag: 1795376238-661206
+X-HE-Meta: U2FsdGVkX19m8JQ9oiu2bvKrHglyck4jh9NxgUE0ycwciFUkaZAsdwMVicJvj5/gE2fNZksVAdKPLGssHmmln947Nb3A5mdCVqHH6t+U2l0c7n3TSHeBQFMGvKYO1lUIp1EPNTUUvcqRGOmYy29q63wMYNISpg+4DZOW1Vg1Gd3/O3F+Ukxgb4BizXCAzWl4f2BeQvCBKaFgqa/uGynwEuFyqppvCr3rlgzNCJwW34FZ4F1pLvVpgfjOC27KYx09OuglMr76B64pf7j6rh9vWgvMkEmq1IoO3pQ1jG5nl0gqQ6TEJmzg69INR5C8+DSIEXvGv39db6VJWXojeFd9WfKO+pShJj22efGuTT5kT+VsXeAn/KcWdsPiBg+d6S4CTDcFviunpdpTRo4/Yc4WR0sLRxRi+ZrU6mvLXEHkivg279v6ERy0H/F9yHNPfY0MAgz5ULdGftK3cj1OlbHmP84vFQZ/8Uf6j8HD336tIc/lN/WcYbRXQyMIEbBhR1W+7exg8q7IOP53112Ibh/1Q3vpGzq97oTwi7JBfzSJdiiprykdUzQvHvLFGCZQoVvAhrZPZJeNA07DYBKaKecbPIUj0qfEKvIcMhHID/Mtco+aEn2NI3CcO1m4F1/YaR9edp4QVTTAmddBLJRCwvvz1Vsh8pOov2ezL1SsrBf2l3goWkQ1sav20mL61hdDRVXu/A1AbJqt43MbPfg2ddUgCLVmUBMPTNbIBb3DSHVwb+FKcEqYejKWyk6P0TGBlBMeNyTBn8g8c46fkyNup+FGGVV6yPGJcJqxIUX59/S46HNnhSUftXGQeaun/kEHig2iqMbmV7JXkBXGdfgdX6c6R9S8IM32SbR3iTxOuALHSsZo+hyWN7sME5ce/0dYQueAP3dzdzOeS/fwYfLTlPn5dhwjJ6j+xFqwAaSHnWaVmHig2lBt9FnL8dsuks3nNRZE6Tehz6Zne+RckSiyzW1
+ jUAc1KAn
+ Sed1wP+LdP19ahipoW4EcY26HbYk0yNXaTzgUdn8hC+QAOY2sSVuFsoYhGsONyGj9cJ0T0JpdF86Z30nALCIQQ6hl2d7XzueEsaaDzm/IK7NOFcBsYeZZFnVQmz5orlzkVZx7kioA0xSuXgwKnpe54/x+0q34/CP+P5lz3dyrrU1cqKuElTZi4lJqz7fxTBJQM4F1KwNPopoofo3d+awPWq7qOvPZrgcVF+gF8xZEccf6D73SpIYlYyv51XeRfS+mRuYj64GBRruviVP2kcvQ7hpT4HeWRD0Qny4x7JTCES6EBm4gnIbA615UAcBlg4l8YHxgoIi0r7pAAYMb1LXwJiPAChmgx9v+aws3lYrfTdHn/Gi0xHrMxKihB6bfJvAVwDmwljnOiHbIMAadLHXY/ys819mwHJXNdxMrj8j/95tAajpoVecUNtqFaIaGoJ3Pbn3vk070sW51vV60RDLoW02xlB7nsqJZ/BfIF8YCOzb/OXxXP+r9PBoFbZl+FE0y17vVKkbFyLvKjoRYTRJkHP2AYlcVefqNOMwZaV+z2fNihJfW3W5Lm3xcO+n4pcW4YAEErKe68hMB5v3Kfoaeqfd5BEgqZnUrQpOmOuew1c7X5s40t2oFYgHRYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,631 +125,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-fsopen() and fsmount() gate on CAP_SYS_ADMIN in the caller's current
-mount namespace and initialize filesystem contexts from current's user
-and network namespaces, preventing an unprivileged external manager from
-creating superblocks and detached mounts for an unentered userland.
+proc_init_fs_context() binds ctx->pid_ns to task_active_pid_ns(current)
+and resets fc->user_ns to ctx->pid_ns->user_ns, overriding the user
+namespace delegated by FSCONFIG_SET_USERLAND and leaving the context
+attached to the caller's PID namespace.
 
-Add FSCONFIG_SET_USERLAND and the ->set_userland() fs_context operation
-so callers holding CAP_SYS_ADMIN in the target userland's user namespace
-can bind a newly opened fs_context to that userland once before offering
-parameters. Gate userland context binding on explicit FS_USERLAND_MOUNT
-opt-in (or FS_USERNS_DELEGATABLE), mark tmpfs, ramfs, and devpts with
-FS_USERLAND_MOUNT, refresh fc->cred when FSCONFIG_SET_USERLAND
-authorizes and initializes the context, and keep devpts pty_reserve
-restricted to host mounts.
+Wire up proc_set_userland() to verify that the target userland's PID
+namespace is a descendant of the caller's active PID namespace and
+rebind ctx->pid_ns and fc->user_ns accordingly, and mark proc with
+FS_USERLAND_MOUNT.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- Documentation/filesystems/mount_api.rst |  32 +++++-
- fs/devpts/inode.c                       |   4 +-
- fs/filesystems.c                        |  15 +++
- fs/fs_context.c                         |  21 +++-
- fs/fsopen.c                             | 137 ++++++++++++++++++++++--
- fs/internal.h                           |   6 ++
- fs/namespace.c                          |  18 +++-
- fs/ramfs/inode.c                        |   2 +-
- include/linux/fs.h                      |   1 +
- include/linux/fs_context.h              |   6 ++
- include/uapi/linux/mount.h              |   1 +
- mm/shmem.c                              |   5 +-
- 12 files changed, 229 insertions(+), 19 deletions(-)
+ fs/proc/root.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
-index e8b94357b4df..55edc9fdd6fd 100644
---- a/Documentation/filesystems/mount_api.rst
-+++ b/Documentation/filesystems/mount_api.rst
-@@ -80,6 +80,7 @@ context.  This is represented by the fs_context structure::
- 		unsigned int		sb_flags_mask;
- 		unsigned int		s_iflags;
- 		enum fs_context_purpose	purpose:8;
-+		bool			userland_bound:1;
- 		...
- 	};
- 
-@@ -123,7 +124,8 @@ The fs_context fields are as follows:
-      There are a subset of the namespaces in use by the invoking process.  They
-      retain references on each namespace.  The subscribed namespaces may be
-      replaced by the filesystem to reflect other sources, such as the parent
--     mount superblock on an automount.
-+     mount superblock on an automount, or to the target userland's
-+     namespaces when bound via FSCONFIG_SET_USERLAND.
- 
-    * ::
- 
-@@ -186,6 +188,15 @@ The fs_context fields are as follows:
- 	FS_CONTEXT_FOR_RECONFIGURE	Change an existing mount
- 	==========================	======================================
- 
-+   * ::
-+
-+       bool userland_bound:1
-+
-+     Set when the filesystem context has been bound to a target userland via
-+     FSCONFIG_SET_USERLAND.  Filesystems may inspect this flag (for example in
-+     ->init_fs_context() or ->parse_param()) to distinguish userland-delegated
-+     mounts from host mounts.
-+
- The mount context is created by calling vfs_new_fs_context() or
- vfs_dup_fs_context() and is destroyed with put_fs_context().  Note that the
- structure is not refcounted.
-@@ -214,6 +225,8 @@ The filesystem context points to a table of operations::
- 		int (*parse_param)(struct fs_context *fc,
- 				   struct fs_parameter *param);
- 		int (*parse_monolithic)(struct fs_context *fc, void *data);
-+		int (*set_userland)(struct fs_context *fc,
-+				    struct userland *userland);
- 		int (*get_tree)(struct fs_context *fc);
- 		int (*reconfigure)(struct fs_context *fc);
- 	};
-@@ -272,6 +285,23 @@ manage the filesystem context.  They are as follows:
-      finds it's the standard key-val list then it may pass it off to
-      generic_parse_monolithic().
- 
-+   * ::
-+
-+	int (*set_userland)(struct fs_context *fc,
-+			    struct userland *userland);
-+
-+     Called by FSCONFIG_SET_USERLAND after updating fc->user_ns, fc->net_ns,
-+     and fc->cred, setting fc->userland_bound, and re-running
-+     ->init_fs_context().  Filesystems opting into FS_USERLAND_MOUNT (or
-+     FS_USERNS_DELEGATABLE) that capture additional namespaces from current in
-+     ->init_fs_context() (such as PID or IPC namespaces) can implement this
-+     operation to rebind their private context to the target userland's
-+     namespaces.  It may update fc->user_ns, which must equal userland->user_ns
-+     on return or the bind fails with -EOPNOTSUPP.
-+
-+     On success it should return 0.  In the case of an error, it should return
-+     a negative error code and the context transitions to FS_CONTEXT_FAILED.
-+
-    * ::
- 
- 	int (*get_tree)(struct fs_context *fc);
-diff --git a/fs/devpts/inode.c b/fs/devpts/inode.c
-index bd1e8eb26edb..921b67d18fa2 100644
---- a/fs/devpts/inode.c
-+++ b/fs/devpts/inode.c
-@@ -434,6 +434,8 @@ static int devpts_init_fs_context(struct fs_context *fc)
- 	fsi->mount_opts.max     = NR_UNIX98_PTY_MAX;
- 
- 	if (fc->purpose == FS_CONTEXT_FOR_MOUNT &&
-+	    !fc->userland_bound &&
-+	    fc->user_ns == &init_user_ns &&
- 	    current->nsproxy->mnt_ns == init_task.nsproxy->mnt_ns)
- 		fsi->mount_opts.reserve = true;
- 
-@@ -457,7 +459,7 @@ static struct file_system_type devpts_fs_type = {
- 	.init_fs_context = devpts_init_fs_context,
- 	.parameters	= devpts_param_specs,
- 	.kill_sb	= devpts_kill_sb,
--	.fs_flags	= FS_USERNS_MOUNT,
-+	.fs_flags	= FS_USERNS_MOUNT | FS_USERLAND_MOUNT,
- };
- 
- /*
-diff --git a/fs/filesystems.c b/fs/filesystems.c
-index 3083d904df9b..9429844bf6bf 100644
---- a/fs/filesystems.c
-+++ b/fs/filesystems.c
-@@ -18,6 +18,7 @@
- #include <linux/uaccess.h>
- #include <linux/fs_parser.h>
- #include <linux/rculist.h>
-+#include "internal.h"
- 
- /*
-  * Read-mostly filesystem drivers list.
-@@ -390,6 +391,20 @@ static struct file_system_type *__get_fs_type(const char *name, int len)
- 	return fs;
- }
- 
-+struct file_system_type *get_fs_type_noload(const char *name)
-+{
-+	struct file_system_type *fs;
-+	const char *dot = strchr(name, '.');
-+	int len = dot ? dot - name : strlen(name);
-+
-+	fs = __get_fs_type(name, len);
-+	if (dot && fs && !(fs->fs_flags & FS_HAS_SUBTYPE)) {
-+		put_filesystem(fs);
-+		fs = NULL;
-+	}
-+	return fs;
-+}
-+
- struct file_system_type *get_fs_type(const char *name)
- {
- 	struct file_system_type *fs;
-diff --git a/fs/fs_context.c b/fs/fs_context.c
-index a50584df97be..cd004750b99c 100644
---- a/fs/fs_context.c
-+++ b/fs/fs_context.c
-@@ -249,6 +249,7 @@ EXPORT_SYMBOL(generic_parse_monolithic);
-  * @sb_flags: Filesystem/superblock flags (SB_*)
-  * @sb_flags_mask: Applicable members of @sb_flags
-  * @purpose: The purpose that this configuration shall be used for.
-+ * @init: Whether to initialise the filesystem context immediately.
-  *
-  * Open a filesystem and create a mount context.  The mount context is
-  * initialised with the supplied flags and, if a submount/automount from
-@@ -259,7 +260,8 @@ static struct fs_context *alloc_fs_context(struct file_system_type *fs_type,
- 				      struct dentry *reference,
- 				      unsigned int sb_flags,
- 				      unsigned int sb_flags_mask,
--				      enum fs_context_purpose purpose)
-+				      enum fs_context_purpose purpose,
-+				      bool init)
- {
- 	struct fs_context *fc;
- 	int ret = -ENOMEM;
-@@ -292,6 +294,9 @@ static struct fs_context *alloc_fs_context(struct file_system_type *fs_type,
- 		break;
- 	}
- 
-+	if (!init)
-+		return fc;
-+
- 	ret = fc->fs_type->init_fs_context(fc);
- 	if (ret < 0)
- 		goto err_fc;
-@@ -307,10 +312,16 @@ struct fs_context *fs_context_for_mount(struct file_system_type *fs_type,
- 					unsigned int sb_flags)
- {
- 	return alloc_fs_context(fs_type, NULL, sb_flags, 0,
--					FS_CONTEXT_FOR_MOUNT);
-+				FS_CONTEXT_FOR_MOUNT, true);
- }
- EXPORT_SYMBOL(fs_context_for_mount);
- 
-+struct fs_context *fs_context_for_unpriv_mount(struct file_system_type *fs_type)
-+{
-+	return alloc_fs_context(fs_type, NULL, 0, 0,
-+				FS_CONTEXT_FOR_MOUNT, false);
-+}
-+
- struct fs_context *fs_context_for_reconfigure(struct dentry *dentry,
- 					unsigned int sb_flags,
- 					unsigned int sb_flags_mask)
-@@ -320,7 +331,8 @@ struct fs_context *fs_context_for_reconfigure(struct dentry *dentry,
- 		return ERR_PTR(-EINVAL);
- 
- 	return alloc_fs_context(dentry->d_sb->s_type, dentry, sb_flags,
--				sb_flags_mask, FS_CONTEXT_FOR_RECONFIGURE);
-+				sb_flags_mask, FS_CONTEXT_FOR_RECONFIGURE,
-+				true);
- }
- 
- /**
-@@ -337,7 +349,8 @@ struct fs_context *fs_context_for_submount(struct file_system_type *type,
- 	struct fs_context *fc;
- 	int ret;
- 
--	fc = alloc_fs_context(type, reference, 0, 0, FS_CONTEXT_FOR_SUBMOUNT);
-+	fc = alloc_fs_context(type, reference, 0, 0, FS_CONTEXT_FOR_SUBMOUNT,
-+			      true);
- 	if (IS_ERR(fc))
- 		return fc;
- 
-diff --git a/fs/fsopen.c b/fs/fsopen.c
-index 70024870fefa..33cc9163c670 100644
---- a/fs/fsopen.c
-+++ b/fs/fsopen.c
-@@ -13,9 +13,14 @@
- #include <linux/security.h>
- #include <linux/anon_inodes.h>
- #include <linux/namei.h>
-+#include <linux/capability.h>
+diff --git a/fs/proc/root.c b/fs/proc/root.c
+index 7fbbe92bf73a..e61b1a559172 100644
+--- a/fs/proc/root.c
++++ b/fs/proc/root.c
+@@ -15,6 +15,8 @@
+ #include <linux/sched/stat.h>
+ #include <linux/module.h>
+ #include <linux/bitops.h>
 +#include <linux/nsproxy.h>
 +#include <linux/userland.h>
-+#include <linux/user_namespace.h>
- #include <linux/file.h>
- #include <uapi/linux/mount.h>
- #include <linux/audit.h>
-+#include <net/net_namespace.h>
- #include "internal.h"
- #include "mount.h"
- 
-@@ -41,6 +46,92 @@ static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
- 	return p;
+ #include <linux/user_namespace.h>
+ #include <linux/fs_context.h>
+ #include <linux/mount.h>
+@@ -206,6 +208,10 @@ static int proc_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 			errorfc(fc, "cannot reconfigure pidns for existing procfs");
+ 			return -EBUSY;
+ 		}
++		if (fc->userland_bound) {
++			errorfc(fc, "cannot override pidns on userland-bound procfs");
++			return -EBUSY;
++		}
+ 		err = proc_parse_pidns_param(fc, param, &result);
+ 		if (err)
+ 			return err;
+@@ -323,6 +329,21 @@ static int proc_get_tree(struct fs_context *fc)
+ 	return get_tree_nodev(fc, proc_fill_super);
  }
  
-+/**
-+ * DOC: FSCONFIG_SET_USERLAND
-+ *
-+ * ``fsconfig(fsfd, FSCONFIG_SET_USERLAND, NULL, NULL, userland_fd)`` binds a newly
-+ * opened ``FS_USERLAND_MOUNT`` or ``FS_USERNS_DELEGATABLE`` filesystem context
-+ * to ``userland_fd`` once before parameters are supplied. Requires
-+ * ``CAP_SYS_ADMIN`` in the userland's user namespace and binds the context to the
-+ * userland's user, network, PID (``proc``), and IPC (``mqueue``) namespaces.
-+ */
-+static int fsconfig_set_userland(struct fs_context *fc, struct fs_parameter *param)
++static int proc_set_userland(struct fs_context *fc, struct userland *userland)
 +{
-+	struct user_namespace *user_ns;
-+	struct net *net;
-+	struct userland *c;
-+	int ret;
++	struct proc_fs_context *ctx = fc->fs_private;
++	struct pid_namespace *target = userland->ns->pid_ns_for_children;
 +
-+	if (!userland_is_file(param->file))
-+		return -EINVAL;
++	if (!pidns_is_ancestor(target, task_active_pid_ns(current)))
++		return invalfc(fc, "cannot set pidns to non-descendant pidns");
 +
-+	c = param->file->private_data;
-+	user_ns = c->user_ns;
-+	if (!ns_capable(user_ns, CAP_SYS_ADMIN))
-+		return -EPERM;
-+	if (!(fc->fs_type->fs_flags &
-+	      (FS_USERLAND_MOUNT | FS_USERNS_DELEGATABLE)))
-+		return -EOPNOTSUPP;
-+
-+	if (fc->need_free && fc->ops && fc->ops->free)
-+		fc->ops->free(fc);
-+	fc->need_free = false;
-+	fc->fs_private = NULL;
-+	fc->s_fs_info = NULL;
-+	fc->ops = NULL;
-+	fc->sb_flags = 0;
-+	fc->global = false;
-+	security_free_mnt_opts(&fc->security);
-+
-+	if (fc->log.prefix && strcmp(fc->fs_type->name, fc->log.prefix)) {
-+		struct file_system_type *orig;
-+
-+		orig = get_fs_type_noload(fc->log.prefix);
-+		if (!orig) {
-+			fc->phase = FS_CONTEXT_FAILED;
-+			return -ENODEV;
-+		}
-+		put_filesystem(fc->fs_type);
-+		fc->fs_type = orig;
-+	}
-+
-+	scoped_guard(spinlock, &c->lock)
-+		net = get_net(c->ns->net_ns);
-+	put_cred(fc->cred);
-+	fc->cred = get_current_cred();
-+	put_net(fc->net_ns);
-+	fc->net_ns = net;
++	put_pid_ns(ctx->pid_ns);
++	ctx->pid_ns = get_pid_ns(target);
 +	put_user_ns(fc->user_ns);
-+	fc->user_ns = get_user_ns(user_ns);
-+
-+	fc->userland_bound = true;
-+	fc->userland_mnt_id = c->ns->mnt_ns->ns.ns_id;
-+
-+	ret = fc->fs_type->init_fs_context(fc);
-+	if (ret < 0) {
-+		fc->userland_bound = false;
-+		fc->phase = FS_CONTEXT_FAILED;
-+		return ret;
-+	}
-+	fc->need_free = true;
-+
-+	if (fc->ops->set_userland) {
-+		ret = fc->ops->set_userland(fc, c);
-+		if (ret < 0) {
-+			fc->userland_bound = false;
-+			fc->phase = FS_CONTEXT_FAILED;
-+			return ret;
-+		}
-+	}
-+	if (fc->user_ns != user_ns) {
-+		fc->userland_bound = false;
-+		fc->phase = FS_CONTEXT_FAILED;
-+		return -EOPNOTSUPP;
-+	}
-+	fc->phase = FS_CONTEXT_CREATE_PARAMS;
++	fc->user_ns = get_user_ns(ctx->pid_ns->user_ns);
 +	return 0;
 +}
 +
- /*
-  * Allow the user to read back any error, warning or informational messages.
-  * Only one message is returned for each read(2) call.
-@@ -123,9 +214,11 @@ SYSCALL_DEFINE2(fsopen, const char __user *, _fs_name, unsigned int, flags)
- 	struct file_system_type *fs_type;
- 	struct fs_context *fc;
- 	const char *fs_name;
-+	bool priv;
- 	int ret;
- 
--	if (!may_mount())
-+	priv = may_mount();
-+	if (!priv && !IS_ENABLED(CONFIG_USERLAND))
- 		return -EPERM;
- 
- 	if (flags & ~FSOPEN_CLOEXEC)
-@@ -137,17 +230,23 @@ SYSCALL_DEFINE2(fsopen, const char __user *, _fs_name, unsigned int, flags)
- 
- 	audit_log_fsopen(fs_name);
- 
--	fs_type = get_fs_type(fs_name);
-+	fs_type = priv ? get_fs_type(fs_name) : get_fs_type_noload(fs_name);
- 	kfree(fs_name);
- 	if (!fs_type)
--		return -ENODEV;
-+		return priv ? -ENODEV : -EPERM;
-+
-+	if (!priv && !(fs_type->fs_flags & FS_USERLAND_MOUNT)) {
-+		put_filesystem(fs_type);
-+		return -EPERM;
-+	}
- 
--	fc = fs_context_for_mount(fs_type, 0);
-+	fc = priv ? fs_context_for_mount(fs_type, 0) :
-+		    fs_context_for_unpriv_mount(fs_type);
- 	put_filesystem(fs_type);
- 	if (IS_ERR(fc))
- 		return PTR_ERR(fc);
- 
--	fc->phase = FS_CONTEXT_CREATE_PARAMS;
-+	fc->phase = priv ? FS_CONTEXT_CREATE_NS : FS_CONTEXT_AWAITING_NS;
- 
- 	ret = fscontext_alloc_log(fc);
- 	if (ret < 0)
-@@ -222,7 +321,8 @@ static int vfs_cmd_create(struct fs_context *fc, bool exclusive)
- 	struct super_block *sb;
- 	int ret;
- 
--	if (fc->phase != FS_CONTEXT_CREATE_PARAMS)
-+	if (fc->phase != FS_CONTEXT_CREATE_NS &&
-+	    fc->phase != FS_CONTEXT_CREATE_PARAMS)
- 		return -EBUSY;
- 
- 	if (!mount_capable(fc))
-@@ -291,6 +391,8 @@ static int vfs_fsconfig_locked(struct fs_context *fc, int cmd,
- 	ret = finish_clean_context(fc);
- 	if (ret)
- 		return ret;
-+	if (fc->phase == FS_CONTEXT_AWAITING_NS && cmd != FSCONFIG_SET_USERLAND)
-+		return -EPERM;
- 	switch (cmd) {
- 	case FSCONFIG_CMD_CREATE:
- 		return vfs_cmd_create(fc, false);
-@@ -298,9 +400,17 @@ static int vfs_fsconfig_locked(struct fs_context *fc, int cmd,
- 		return vfs_cmd_create(fc, true);
- 	case FSCONFIG_CMD_RECONFIGURE:
- 		return vfs_cmd_reconfigure(fc);
-+	case FSCONFIG_SET_USERLAND:
-+		if (fc->phase != FS_CONTEXT_AWAITING_NS &&
-+		    fc->phase != FS_CONTEXT_CREATE_NS)
-+			return -EBUSY;
-+		return fsconfig_set_userland(fc, param);
-+
- 	default:
--		if (fc->phase != FS_CONTEXT_CREATE_PARAMS &&
--		    fc->phase != FS_CONTEXT_RECONF_PARAMS)
-+		if (fc->phase == FS_CONTEXT_CREATE_NS)
-+			fc->phase = FS_CONTEXT_CREATE_PARAMS;
-+		else if (fc->phase != FS_CONTEXT_CREATE_PARAMS &&
-+			 fc->phase != FS_CONTEXT_RECONF_PARAMS)
- 			return -EBUSY;
- 
- 		return vfs_parse_fs_param(fc, param);
-@@ -390,6 +500,10 @@ SYSCALL_DEFINE5(fsconfig,
- 		if (!_key || _value || aux < 0)
- 			return -EINVAL;
- 		break;
-+	case FSCONFIG_SET_USERLAND:
-+		if (_key || _value || aux < 0)
-+			return -EINVAL;
-+		break;
- 	case FSCONFIG_CMD_CREATE:
- 	case FSCONFIG_CMD_CREATE_EXCL:
- 	case FSCONFIG_CMD_RECONFIGURE:
-@@ -457,6 +571,12 @@ SYSCALL_DEFINE5(fsconfig,
- 			goto out_key;
- 		param.dirfd = aux;
- 		break;
-+	case FSCONFIG_SET_USERLAND:
-+		ret = -EBADF;
-+		param.file = fget(aux);
-+		if (!param.file)
-+			goto out_key;
-+		break;
- 	default:
- 		break;
- 	}
-@@ -482,6 +602,7 @@ SYSCALL_DEFINE5(fsconfig,
- 			putname(param.name);
- 		break;
- 	case FSCONFIG_SET_FD:
-+	case FSCONFIG_SET_USERLAND:
- 		if (param.file)
- 			fput(param.file);
- 		break;
-diff --git a/fs/internal.h b/fs/internal.h
-index ee3f796241ac..c7b57263ac83 100644
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -40,12 +40,18 @@ int __block_write_begin_int(struct folio *folio, loff_t pos, unsigned len,
-  */
- extern void __init chrdev_init(void);
- 
-+/*
-+ * filesystems.c
-+ */
-+struct file_system_type *get_fs_type_noload(const char *name);
-+
- /*
-  * fs_context.c
-  */
- extern int parse_monolithic_mount_data(struct fs_context *, void *);
- extern void vfs_clean_context(struct fs_context *fc);
- extern int finish_clean_context(struct fs_context *fc);
-+struct fs_context *fs_context_for_unpriv_mount(struct file_system_type *fs_type);
- 
- /*
-  * namei.c
-diff --git a/fs/namespace.c b/fs/namespace.c
-index b2c89ad2393e..18534cd2d601 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -4716,7 +4716,8 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
- 	    !ns_capable(current_user_ns(), CAP_SYS_ADMIN))
- 		return -EPERM;
- 
--	if (!(flags & FSMOUNT_NAMESPACE) && !may_mount())
-+	if (!(flags & FSMOUNT_NAMESPACE) && !IS_ENABLED(CONFIG_USERLAND) &&
-+	    !may_mount())
- 		return -EPERM;
- 
- 	if (attr_flags & ~FSMOUNT_VALID_FLAGS)
-@@ -4751,6 +4752,16 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
- 	if (ret)
- 		return ret;
- 
-+	if (fc->userland_bound) {
-+		if (flags & FSMOUNT_NAMESPACE)
-+			return -EINVAL;
-+		if (!ns_capable(fc->user_ns, CAP_SYS_ADMIN))
-+			return -EPERM;
-+	} else if (!(flags & FSMOUNT_NAMESPACE) &&
-+		   IS_ENABLED(CONFIG_USERLAND) && !may_mount()) {
-+		return -EPERM;
-+	}
-+
- 	/* There must be a valid superblock or we can't mount it */
- 	ret = -EINVAL;
- 	if (!fc->root)
-@@ -4792,9 +4803,12 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
- 		return FD_ADD((flags & FSMOUNT_CLOEXEC) ? O_CLOEXEC : 0,
- 			      open_new_namespace(&new_path, MOUNT_COPY_NEW));
- 
--	ns = alloc_mnt_ns(current->nsproxy->mnt_ns->user_ns, true);
-+	ns = alloc_mnt_ns(fc->userland_bound ? fc->user_ns :
-+			  current->nsproxy->mnt_ns->user_ns, true);
- 	if (IS_ERR(ns))
- 		return PTR_ERR(ns);
-+	if (fc->userland_bound)
-+		ns->seq_origin = fc->userland_mnt_id;
- 	mnt = real_mount(new_path.mnt);
- 	ns->root = mnt;
- 	ns->nr_mounts = 1;
-diff --git a/fs/ramfs/inode.c b/fs/ramfs/inode.c
-index ef91b933d4e6..d15542145704 100644
---- a/fs/ramfs/inode.c
-+++ b/fs/ramfs/inode.c
-@@ -319,7 +319,7 @@ static struct file_system_type ramfs_fs_type = {
- 	.init_fs_context = ramfs_init_fs_context,
- 	.parameters	= ramfs_fs_parameters,
- 	.kill_sb	= ramfs_kill_sb,
--	.fs_flags	= FS_USERNS_MOUNT,
-+	.fs_flags	= FS_USERNS_MOUNT | FS_USERLAND_MOUNT,
+ static void proc_fs_context_free(struct fs_context *fc)
+ {
+ 	struct proc_fs_context *ctx = fc->fs_private;
+@@ -334,6 +355,7 @@ static void proc_fs_context_free(struct fs_context *fc)
+ static const struct fs_context_operations proc_fs_context_ops = {
+ 	.free		= proc_fs_context_free,
+ 	.parse_param	= proc_parse_param,
++	.set_userland	= proc_set_userland,
+ 	.get_tree	= proc_get_tree,
+ 	.reconfigure	= proc_reconfigure,
+ };
+@@ -371,7 +393,9 @@ static struct file_system_type proc_fs_type = {
+ 	.init_fs_context	= proc_init_fs_context,
+ 	.parameters		= proc_fs_parameters,
+ 	.kill_sb		= proc_kill_sb,
+-	.fs_flags		= FS_USERNS_MOUNT | FS_USERNS_MOUNT_RESTRICTED | FS_DISALLOW_NOTIFY_PERM,
++	.fs_flags		= FS_USERNS_MOUNT | FS_USERLAND_MOUNT |
++				  FS_USERNS_MOUNT_RESTRICTED |
++				  FS_DISALLOW_NOTIFY_PERM,
  };
  
- static int __init init_ramfs_fs(void)
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 5b3a100aba77..afb514600372 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2306,6 +2306,7 @@ struct file_system_type {
- #define FS_USERNS_MOUNT_RESTRICTED 512	/* Restrict mount in userns if not already visible */
- #define FS_USERNS_DELEGATABLE	1024	/* Can be mounted inside userns from outside */
- #define FS_DISALLOW_NOTIFY	2048	/* No fsnotify marks on its objects */
-+#define FS_USERLAND_MOUNT	4096	/* Supports FSCONFIG_SET_USERLAND */
- #define FS_RENAME_DOES_D_MOVE	32768	/* FS will handle d_move() during rename() internally. */
- 	int (*init_fs_context)(struct fs_context *);
- 	const struct fs_parameter_spec *parameters;
-diff --git a/include/linux/fs_context.h b/include/linux/fs_context.h
-index d1727dffecc5..a98e5a40d54c 100644
---- a/include/linux/fs_context.h
-+++ b/include/linux/fs_context.h
-@@ -23,6 +23,7 @@ struct net;
- struct pid_namespace;
- struct super_block;
- struct user_namespace;
-+struct userland;
- struct vfsmount;
- struct path;
- 
-@@ -36,6 +37,8 @@ enum fs_context_purpose {
-  * Userspace usage phase for fsopen/fspick.
-  */
- enum fs_context_phase {
-+	FS_CONTEXT_AWAITING_NS,		/* Unprivileged context awaiting target ns */
-+	FS_CONTEXT_CREATE_NS,		/* Set namespaces for sb creation */
- 	FS_CONTEXT_CREATE_PARAMS,	/* Loading params for sb creation */
- 	FS_CONTEXT_CREATING,		/* A superblock is being created */
- 	FS_CONTEXT_AWAITING_MOUNT,	/* Superblock created, awaiting fsmount() */
-@@ -101,6 +104,7 @@ struct fs_context {
- 	const char		*source;	/* The source name (eg. dev path) */
- 	void			*security;	/* LSM options */
- 	void			*s_fs_info;	/* Proposed s_fs_info */
-+	u64			userland_mnt_id;	/* Target userland mnt_ns ID */
- 	unsigned int		sb_flags;	/* Proposed superblock flags (SB_*) */
- 	unsigned int		sb_flags_mask;	/* Superblock flags that were changed */
- 	unsigned int		s_iflags;	/* OR'd with sb->s_iflags */
-@@ -110,6 +114,7 @@ struct fs_context {
- 	bool			global:1;	/* Goes into &init_user_ns */
- 	bool			oldapi:1;	/* Coming from mount(2) */
- 	bool			exclusive:1;    /* create new superblock, reject existing one */
-+	bool			userland_bound:1;	/* Bound via FSCONFIG_SET_USERLAND */
- };
- 
- struct fs_context_operations {
-@@ -117,6 +122,7 @@ struct fs_context_operations {
- 	int (*dup)(struct fs_context *fc, struct fs_context *src_fc);
- 	int (*parse_param)(struct fs_context *fc, struct fs_parameter *param);
- 	int (*parse_monolithic)(struct fs_context *fc, void *data);
-+	int (*set_userland)(struct fs_context *fc, struct userland *userland);
- 	int (*get_tree)(struct fs_context *fc);
- 	int (*reconfigure)(struct fs_context *fc);
- };
-diff --git a/include/uapi/linux/mount.h b/include/uapi/linux/mount.h
-index cb4f7175db02..4c70c0183f5e 100644
---- a/include/uapi/linux/mount.h
-+++ b/include/uapi/linux/mount.h
-@@ -107,6 +107,7 @@ enum fsconfig_command {
- 	FSCONFIG_CMD_CREATE	= 6,	/* Create new or reuse existing superblock */
- 	FSCONFIG_CMD_RECONFIGURE = 7,	/* Invoke superblock reconfiguration */
- 	FSCONFIG_CMD_CREATE_EXCL = 8,	/* Create new superblock, fail if reusing existing superblock */
-+	FSCONFIG_SET_USERLAND	= 9,	/* Set target userland, supplied by fd */
- };
- 
- /*
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 10cef89b00b0..61503304be6b 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5592,7 +5592,8 @@ static struct file_system_type shmem_fs_type = {
- 	.parameters	= shmem_fs_parameters,
- #endif
- 	.kill_sb	= kill_anon_super,
--	.fs_flags	= FS_USERNS_MOUNT | FS_ALLOW_IDMAP | FS_MGTIME,
-+	.fs_flags	= FS_USERNS_MOUNT | FS_USERLAND_MOUNT |
-+			  FS_ALLOW_IDMAP | FS_MGTIME,
- };
- 
- #if defined(CONFIG_SYSFS) && defined(CONFIG_TMPFS)
-@@ -6021,7 +6022,7 @@ static struct file_system_type shmem_fs_type = {
- 	.init_fs_context = ramfs_init_fs_context,
- 	.parameters	= ramfs_fs_parameters,
- 	.kill_sb	= ramfs_kill_sb,
--	.fs_flags	= FS_USERNS_MOUNT,
-+	.fs_flags	= FS_USERNS_MOUNT | FS_USERLAND_MOUNT,
- };
- 
- void __init shmem_init(void)
+ void __init proc_root_init(void)
 -- 
 2.47.3
 
