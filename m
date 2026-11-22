@@ -1,117 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6691606A335
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C753B606A334
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HpTsg0vs
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lJ3nCZd0
 Received: by kanga.kvack.org (Postfix)
-	id EFD976B05B1; Sun, 22 Nov 2026 02:30:42 -0500 (EST)
+	id DF05A6B05B2; Sun, 22 Nov 2026 02:32:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED4EE6B05B2; Sun, 22 Nov 2026 02:30:42 -0500 (EST)
+	id D9FC56B05B3; Sun, 22 Nov 2026 02:32:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA0BD6B05B3; Sun, 22 Nov 2026 02:30:42 -0500 (EST)
+	id CB5BF6B05B4; Sun, 22 Nov 2026 02:32:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B3CA46B05B1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:30:42 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41A36A067B
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:30:42 +0000 (UTC)
-X-FDA: 85461932724.09.258BBF6
-Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 10BA740006
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:30:39 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HpTsg0vs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2396B05B2
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:32:50 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1FE4A1A05CC
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:32:50 +0000 (UTC)
+X-FDA: 85461938100.20.D634E86
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7372E1C0004
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:32:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lJ3nCZd0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795332640;
-	b=hgDBDMqZ3gj0wqxj0UIO29JHusDTPDh7fPIMNY/a4vM0Vn44Fh8+YicMIeLb9SjozEGc8N
-	xck1vo2nFzThaVaUos8M/m0xzjf30vdkfejNYGqXAYRch31S4Xx9VsdFPAHTpPPHtq5Kn0
-	fjdy98bk+kPOC4SvCLLUpIHp29kSHIs=
+	t=1795332768;
+	b=SdxndbvtyDqNzArKZp7Q9w1kTXuFam08G2DHTgSzFJjQPLR8CxR2zEsGFbydiblsnwGVpK
+	Gy9IsdUkzonr5/IM7HynnX6DbK9RH1C46hXukujF0GRCa5oCgKhxoZTuLr3heSpoJIxHot
+	A0tk8Sr2hkI1VYKRBOcP7lZPFVPLz5Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795332640;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795332768;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H02gl3A8lED/orev+VVlUTCHLPwpp1eOdDDA4V8ytIA=;
-	b=f7PasNvaIZiWOWrRrqtzbzPOEf+MIA43o1jUGC74CEDIC2jyfkarZMK6vI5d9Lo8EBzG2c
-	O5BWYx7qFqUEeriQ07yNEWjxSBSVQxVJfLnKuAVo1Qvoa8wCK67hagWcGoK/oFx801XAFI
-	Hrj622knPrQ0mi0HTD3myWvS9Lr13XI=
+	bh=WyD6vZwsbqD1rCnJYnzGCC4kFn6/ifhIz6k1Z/FVYBE=;
+	b=MrdyKm/EqDY6nVu2muKuTRR5JFuI14bKDakPZfag0LLFupGQLlVhRAt3pEeA48p5QacSB4
+	m2J2JM5u3Z1HO/h+GZq5YDW9M2OHz77CosezHt3Z4DbwwD5CigeGaPnmPu5Dl6Tjdm1yNI
+	mIoONDkQyBYOeqKjYB2VYIRHsmNxvRM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HpTsg0vs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NLC7oANZwCfL7depjHfIzJ4jloTo6BAzdIgGpvntEFI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795332638; v=1; x=1795937438;
- b=HpTsg0vskqQxsfGCwnJb31GRPaj1j07wdTUu0g+P5JpBon6ebxMWHn69SCrjjvvccIAxv6uk
- EPGyaVeJeS1yCOFOubeJhafrGVczqk2jFtsW4Zl5OO6iEaa3zssaHLaixwUuUu0RCAc2OR8iQ0S
- bHHZdsDLF6vDHEwK7gqJFpgw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b98bde626d255cef;
-	Sun, 22 Nov 2026 07:30:38 +0000
-X-Mizu-Trace-ID: b98bde626d255cef
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <3af03366-784b-48bb-a807-9ccea92e39ca@linux.dev>
-Date: Sun, 22 Nov 2026 15:30:25 +0800
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/17] mm/memcg: add folio-based lruvec live helper
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
- Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>,
- Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
- SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
- Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
- Zicheng Wang <wangzicheng@honor.com>, Chen Ridong <chenridong@xiaomi.com>,
- Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>,
- Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh
- <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>,
- Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>,
- Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- damon@lists.linux.dev, linux-doc@vger.kernel.org
-References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
- <20261119-mglru-fg-v5-4-9eee2fe97a2d@tencent.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261119-mglru-fg-v5-4-9eee2fe97a2d@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lJ3nCZd0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A0237438AF;
+	Sun, 22 Nov 2026 07:32:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD531F000C4;
+	Sun, 22 Nov 2026 07:32:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795332767;
+	bh=WyD6vZwsbqD1rCnJYnzGCC4kFn6/ifhIz6k1Z/FVYBE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=lJ3nCZd0tkBKG+H/14bwIIoF2T52C3dYmp+wXDbhAQ834OdNDgmcIstR5aW/JSlz6
+	 J2PO8y3kni4dzglkdA6e3lykQWEw7aKbek9xmRIZAGYWarW0+POXzpWQdY+H+vCrAq
+	 t6F+xcAK8ngaLwl0Cj075UrmF1CzoAPIZeWGljV1rjEZFt9pALsGIVQ8qGJWWuz5sD
+	 WJWl3oSEs6QmXcWEp9W6weL/YzeOIbjaZEFPrW3/PYDe2r057raVvVhzudmPRFfJLX
+	 kvoxH1bg4jh3By06IxlfZ3i17+5gi7TVO/QDYS+e2Gp9rqwcyld1Fb5K2HFXM/2EcH
+	 aC4oN044t9q+Q==
+Message-ID: <sashiko-outbox-227786@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3] mm: memcontrol: don't miss processes whose leader
+ has exited in OOM scans
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhan Xusheng" <zhanxusheng1024@gmail.com>, akpm@linux-foundation.org
+Cc: hannes@cmpxchg.org, mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, penguin-kernel@i-love.sakura.ne.jp, tj@kernel.org, mkoutny@suse.com, chris@chrisdown.name, cui.tao@linux.dev, linux-mm@kvack.org, zhanxusheng@xiaomi.com
+In-Reply-To: <20261121073222.834282-1-zhanxusheng1024@gmail.com>
+References: <20261121073222.834282-1-zhanxusheng1024@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 22 Nov 2026 07:32:46 +0000
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7372E1C0004
 X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 10BA740006
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: yf1koxw9c88p1o4wxxa3dx53fmzdzut7
-X-HE-Tag: 1795332639-442176
-X-HE-Meta: U2FsdGVkX1/JyZYW0kqnxfCep/HMCoY1pvKEIgN8PaaM8TJhQw5gTSzZwpzgO9IAbkom56vd3Ff3K19TIZtKs+qSJhFQOe9v3agBiHfSjeycfeA0ngH26qDBjI95dV8+v4A6YT02+EYxcJZjgISrhOqUdM6evt0RA8d51RzBXzKnEc0cEpdCsTDvPndroqVw9pzhdJTkyVLfdWyRDG0ViAbArOZxEZ/XA1Uew/OgTwABplHm59z+97Lp8RoET5eAwgP8uuA5M5kBHlfwg5al4mmToDXfLMQwmHsaezsuPaeYgpebc7XhwO8RnTv+dphkd6LP3cVd0V2LT76CV/Vx7JyhSIIC6PkiUoCzBcHHqN0qtGZ68NcbfCj2dSk2CVtbMWswH7leJ0D7yE2DnSA+s2FOflYKgwXfQh5szFt8AQQRZo83tvPFKIR40Kf+nUX6tElSFM7yroj71mAaw6siHzC2vF5JohSqKVI7BWtih58fWDS0T8RsLR4HEIYSREGoX+UT6nZkVuX0rm+bAc6dtVGZ9Jw0AfZOO+hn8yHXaSTxhPkNYZ4rvIahTsEsuD/2Ks4rf8a0BlxYwt62MxV4c1VI+GYQR0IxIOR3pxirGjnBSSBGyKaaqkbEtRiynuRFxQjt9jbJk5qY1afX9nQL8s9DWdK4MSl9KfIu5iKbIbHt8zUxaHYI2b4bBDUMP2BETQi6vESsUPOgTlcf9RRaXYv1RKb3fQiU2PZtFlxo6fqC84N0PrAbyuaTvOw905M7dVM7XG/BfTifwl1MAmXfvzFzJqwukQwvI0Ssc5s7vz6G+bxC18d1+Foi258iIi1ZTEHhVYSQoD+ICQWzDhWCggA1cdeOGMDXr2eCZEg2OJIp9gqeUtNuVZj+/uRbYv2zy39CrrNyfdmdXxZzNnTLGCH+oQW2D82pg0kJKVYgprIoxjYmpRiZ6dY41Tp73+cCP6ed+lDM1GHOhVK7QPf
- NWWR8FSk
- KAWKUOCu6vc3IRvCXf7hYyIc3s+2Jx7LVIQZGzWOzVqU3JSDyh7PiP0zg5ZMqq8red9YniBJhRRaWAGMij6aBYiC10lA2WQ1Z7bP18OmDIaa3qrKmlfFK04DsrPMmvpMoS2t20XuPjcK1TxORs/un+96BGo3YyX6EIlvvOkqAYxEdytk2dSpCSrOR93t8/eczRxAv9Ajqg1Gca7gSS8bBT1NmgKo+jUCPDg3Q/nzmRbHWiiSGafyCkHqgj3dZJS8vf9kDVynjpcsftayQgy1bVAKC+p7Paqy85hPLTMFawPxEujqa1aWiK3lANmGtgxIHgzseiI6DJ/JXOtKQT0XhbD+j72G0KHbAcqCh4CR3YF4rLLqNaFfC81aVPw5i7lfX9GU3r/2+usnWPyQ6EcNoYOn80zRQ8juOHEKItXvrky1ftVRBQfWTXhphejotd2WDNQVEKyKL4rvJgkhbGhrYsnepXDWXoA3hHbCRoDF46b6T7NdOs6LPpR1wXiLmlF1lF6MFaKnNXTXqIawjRUIAKt0r6cqgVSX9tXIGRTzfiJGlatBZr3Vz9eYX5NJtnUokE6M0UuSQ1oBxu3pxjz5CMrDvAVGDuqj1EE9/PZiJvf/jv0P7BNPUwLotGb5ZJOQduZqWoQVmNkxOICw=
+X-Stat-Signature: 4ysi7emsf49ycst9mfe6zpamp5mioxpm
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795332768-652824
+X-HE-Meta: U2FsdGVkX19wAsQb24MJ07dVMgFkyHFPWzsgrHs4YfYpAkHXNiNdLy+Jw8X8q+stvLh92lNT7HrteQpH6yKxw5RhHrovAfp3qelj0Vv1f3ruL+t8G/mRfmQ6/B5XhyII5NfVjA01kyVBuvlldC/JV2glhvj2GtuorMVDwFpKKeeOmEJzeFhNnf/uzZq9DkrMHFcLYD+IpXKzRPx5JwDJCEBkyhEHKXbZ5XA4YYMVZFI/R59YO76hJdTScgLZhT1RrqSEjbJkjOmq7KYEIJkFedx94v/y/k+a1+UTKICIRhFCB/T7gqHmowhFyAx2AzhYfQNHAhXQuhrdioBwEVbXuBjhtSqbtxeUB4zUeNmVGVOGafcO6Fb97lDWlWcBdg4S9G3M8YOovAHOVgo+B5jxKXSDfJR2xxOF4Q3uqhLTI24OISmQIC8iiWsxMqgEqMCL3wkU3nsJdkfQkXZr89zdTvr/3tPRV0241ciNwn44XlIt1nDOGZ+6lNSlTGiAqkW3xtbFYGKvwo4IKGz24g6vWMtYUAVloGCyLVaaWzCBN7HtnZCDwj0wrHEmksXwHEu/g6zwn5j8eJApPjBYBav8iG4iAXwUy+3Nakwdj7ASdx0DbIFwnbEPveB9sE95bCrsa2pYrdiSy4yRVc1ycFiAiZwmHe4/47JBPcXl9ZhN7SDAg4fDTkHbafm2BWvs0vbaFKsVzwmZ7uPgyZwws408qG9T8Sc4pj04DxEZX78Q2mUhH/41CnvCtKBNppozIiM6RKb2fsUEwDuPunISX1A68sQnoC27eNsE2l36h7RVXTKlRodq9f4fD1vSR1HC0W3XRlaCA833PuEGUHwj5xpkqt08pULjrmOp7FVHdzo7GLxRMVaccssG4+6yhT8nznrKGL+kw26McVbwrXf2OW8R4rz/cTmJlQz5xme/i2K4ynsXakmYOo8h35I6O/TJ23DXdl1/oAMoNcozc16OIaP
+ bLfFfOMA
+ LW7pGoCCal62kieZBlZk62flk2BoTFEBBwKzKBkWIDcEeTHr9qCqqD1V5bl8KCQD2tOj6OBfvqUYlM/N4JWQ8ah8JaNLvU+sssoPeaek8gEt/hBsUGoNEjGvGH/vx3XdydacKg8e01fPwIIu06BYzPGGrtHzPKvOQIjioxpobZyNnCMKNl0/rPQLmJc4WHKa8IDQFlXJvCJjp7mpiRQmR3ZRpkl7xETgYfMa4tCg+kcb/fr1MiLuKbyNeaI18r2Bkpc7Tb2pjPRjMTXZA1jzyzlpB9rWBC5JNiaEftpm/DhHWv6bLFFDdsdYKzhbb57s5POM0nL32/PqwfXOEAEtxkidSiv08NKGh7EPGE/Rnbw+x2snDFRDiZTdiBu10RVZFMdvGTJPMOU/uzOBVWEqcTIftkdoJ9iqqJI6Rzbgc7RMZ0wjRjabIPij71MvQQ/FRC6OURtVe+EGi2zPCi63URLhCbdpEZELpYf86VGqIqe4H9qNcUxtHs3/FtvCYxsaxUIXFqT/USPACVgDQPUYlMzsiqkupBaW5OEl6+kXvP6JpGvEUniPffHAPkK5crRSjqjkYDBDtS2iItsCaH7EGwPRObAvyYf02b2AOqlJFgw1XaM0iy9ITbG9hmSKDZ6uIYF2oRO4pycpvXgho3DOpvHkZCy0YhawL+U35IDPk5C9Hh0++BI6lDnr8VOz4jQxs6nOUlK3cqI35NaAa1Vsx5kofWFdgkSMOrTAPyJDQ0JXahNig0QeiQ2L5TE/quwgG9FV7JWI1bKQGFnDQwx6q5x4nFBVPi7mDu9zA37djU7Sgajjgawc30ZfHmWraGFZhI2CprCuPpavZVC5GFN5WF+W5Vg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,48 +91,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mm: memcontrol: mem_cgroup_scan_skip() exposes left-behind
+  exiting threads
+--
 
+commit 7a7da7139a4622f1e1e4394bcb56c233c1176259
+Author: Zhan Xusheng <zhanxusheng@xiaomi.com>
 
-On 11/19/26 5:03 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> Add a helper that resolves a live lruvec for a folio under RCU
-> without taking the lruvec lock.  It takes a folio directly so the
-> lruvec lookup happens inside the RCU read-side critical section,
-> which a lruvec-based interface cannot guarantee.  The first user is
-> the lockless folio_inc_lru_refs() path later in the series.
-> 
-> Factor the ancestor walk out of lruvec_live_lock_irq() into
-> __lruvec_get_live(), so that both entry points share it, and spell
-> out why the walk is enough while only the RCU read lock is held:
-> reparenting of a memcg that starts dying waits for a grace period,
-> so it cannot race with the caller until the lock is released.
+mm: memcontrol: don't miss processes whose leader has exited in OOM scans
 
-Right, that's the ordering: CSS_DYING is set before the reparenting in
-the RCU work, so testing for a dying memcg under `rcu_read_lock()` fully
-covers the race.
+This commit replaces CSS_TASK_ITER_PROCS in mem_cgroup_scan_tasks() with
+a scan over all tasks filtered by mem_cgroup_scan_skip(), so that
+processes migrated after their thread group leader has exited remain
+visible to memcg OOM scans.
 
-> 
-> Move memcg_is_dying() up in memcontrol.h, next to the other memcg state
-> predicates, and use it for the walk rather than repeating the open coded
-> css_is_dying() test a few definitions away from where it is explained.
-> 
-> No functional change for existing callers.
-> 
-> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   include/linux/memcontrol.h | 71 ++++++++++++++++++++++++++++++++++++----------
->   1 file changed, 56 insertions(+), 15 deletions(-)
-> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index afbb638e7e1cb..3355341666db5 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -1426,6 +1426,44 @@ static void invalidate_reclaim_iterators(struct me=
+m_cgroup *dead_memcg)
+>  						dead_memcg);
+>  }
+> =20
+> +/*
+> + * Let one task of each thread group in @memcg stand for the group: the
+> + * first one that is not exiting, or, once the whole group is exiting, t=
+he
+> + * first one that has not exited yet, so that an OOM victim stays visibl=
+e.
+> + * The leader is not enough: a group whose leader has exited can be moved
+> + * without it.  Exiting threads left behind in @memcg do not count while=
+ the
+> + * group has live threads elsewhere.
+> + */
+> +static bool mem_cgroup_scan_skip(struct mem_cgroup *memcg,
+> +				 struct task_struct *task)
+> +{
+> +	struct task_struct *t, *dying =3D NULL;
+> +	bool live_elsewhere =3D false;
+> +
+> +	guard(rcu)();
+> +	__for_each_thread(task->signal, t) {
+> +		bool here;
+> +
+> +		if (READ_ONCE(t->exit_state))
+> +			continue;
+> +		here =3D mem_cgroup_from_task(t) =3D=3D memcg;
+> +		if (!(READ_ONCE(t->flags) & PF_EXITING)) {
+> +			if (here)
+> +				return t !=3D task;
+> +			live_elsewhere =3D true;
+> +		} else if (here && !dying) {
+> +			dying =3D t;
+> +		}
+> +	}
+> +	/*
+> +	 * Once every thread has exited, the leader stands for the group until
+> +	 * it is gone, as with CSS_TASK_ITER_PROCS.
+> +	 */
+> +	if (!dying)
+> +		return live_elsewhere || !thread_group_leader(task);
+> +	return live_elsewhere || dying !=3D task;
+> +}
 
-LGTM, so:
+[Severity: Medium]
+Can mem_cgroup_scan_skip() expose an exiting thread left behind in the
+source memcg once the migrated threads in the destination memcg begin
+exiting?
 
-Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+When a multi-threaded process is migrated while one of its threads already
+has PF_EXITING set, cgroup_migrate_add_task() skips the exiting thread and
+leaves it on the source cset->tasks until do_cgroup_task_dead().  With
+CSS_TASK_ITER_WITH_DEAD, css_task_iter_next() continues returning that
+left-behind thread even after the last migrated thread enters do_exit().
 
-Thanks,
-Qi
+Once the migrated threads in the destination memcg set PF_EXITING (for
+example, after being OOM-killed there or calling exit_group()), they have
+here =3D=3D false and PF_EXITING set, so the loop above ignores them without
+setting live_elsewhere.  If the left-behind thread in the source memcg
+still has exit_state =3D=3D 0, dying is set to it and mem_cgroup_scan_skip()
+returns false; if the left-behind thread is the group leader with
+exit_state !=3D 0 (or a leader concurrently migrated out of @memcg after
+css_task_iter_next() returned it), dying is NULL and the !dying fallback
+also returns false without checking whether unexited threads exist
+elsewhere or whether @task is still in @memcg.
 
+An OOM scan in the source memcg then visits the migrated process through
+the left-behind thread: if the process is an OOM victim in the destination
+memcg, tsk_is_oom_victim() causes the source memcg's OOM scan to back off
+without killing anything in the source memcg, and if a migrated thread has
+not yet reached exit_mm(), find_lock_task_mm() on the left-behind thread
+can still find the migrated process's mm and select it as the source
+memcg's OOM victim.
 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261121073222.8342=
+82-1-zhanxusheng1024@gmail.com?part=3D1
 
