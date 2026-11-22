@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6888E606A335
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED624606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=knANyb0T
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hqDHEe46
 Received: by kanga.kvack.org (Postfix)
-	id 6904B6B05BA; Sun, 22 Nov 2026 10:45:19 -0500 (EST)
+	id E317E6B05BB; Sun, 22 Nov 2026 10:45:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6682E6B05BB; Sun, 22 Nov 2026 10:45:19 -0500 (EST)
+	id DE22A6B05BC; Sun, 22 Nov 2026 10:45:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A4E66B05BC; Sun, 22 Nov 2026 10:45:19 -0500 (EST)
+	id CF8326B05BD; Sun, 22 Nov 2026 10:45:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 375B86B05BA
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:19 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9315C1C3FBD
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:18 +0000 (UTC)
-X-FDA: 85463179116.30.C258DA3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D6DFC20009
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:16 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=knANyb0T;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A846F6B05BB
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:23 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05E0F806B4
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:23 +0000 (UTC)
+X-FDA: 85463179326.24.4EFB346
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5C73E10000B
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqDHEe46;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795362317;
-	b=dK9LLAg1aMyrQ8hNtJJR5YLph4dw3JmngzX8rb/uwf40m6TJCSr7aWyfbvpQZIQMWwa26Y
-	/daZbY01ict+S1CbsakucPvqYtD9RDpYLvEwriFwsR42OghuPs/3jV519cwLQ/dv3rF2kf
-	V+/v3VuyKrZMhmEchFUOnMgN3NIBlMY=
+	t=1795362321;
+	b=Hyd0qHNbgoM5ETnExX1HMsQTi9QD9Yb2yUx6FoYV62HY8lOWHDHdJQewE0rTHgAXWjlME0
+	FJ3CO18i2WhsjD+cYxp+8ThxVQ+dOxMUsbkFcTS6ieV0Ixd6GDZ0C+Fo0lJbUHN2TXgcd/
+	sLNitM826w1/eskHAkpWGEKY4IGKNcc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795362317;
+	s=arc-20220608; t=1795362321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KFZH0AZyXfU9b1MVkZv6qUaABnlF4rXr9gf9ekczrx4=;
-	b=XqlyvmVStILBSXDubgNKPn4HZyxojfXHKQxwr4twOdM4BXGREDIx7GUc7BQbg2clYT7w7K
-	Hi1GRWBVYFgfj42zHmaov/AKjnH3EdIKswx1Buqso483QnwKRfyGiiB0gRJ3BMVdPYY8nU
-	rhSKaeL+trYTZj21gLgk6Ssmteg0+Ns=
+	bh=n6HyvgrVnoNLeUBk5MVuoXgI9Ikn/Hd+Z6Svdu4Eqt4=;
+	b=hIQt8yzBQ0IG+gWmrtl0LMbt69gtE9iGdCPO30ILmYk+cSMH0wiAWDK0kxS4qyhAlNCXCd
+	prvkR0meX56jXxa2jbM6ZcZr6FwFjcjVuszLvdr+DfCGrf0N4gsIkJ6U06ABkRR312bbop
+	xYNDJteL6ip0cDndjtVD59wjICEVdx0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=knANyb0T;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqDHEe46;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 42A8C43273;
-	Sun, 22 Nov 2026 15:45:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B401F000C4;
-	Sun, 22 Nov 2026 15:45:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EAB2861876;
+	Sun, 22 Nov 2026 15:45:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432561F000D3;
+	Sun, 22 Nov 2026 15:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795362315;
-	bh=KFZH0AZyXfU9b1MVkZv6qUaABnlF4rXr9gf9ekczrx4=;
+	s=k20260515; t=1795362320;
+	bh=n6HyvgrVnoNLeUBk5MVuoXgI9Ikn/Hd+Z6Svdu4Eqt4=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=knANyb0TG8HksC2vzIjoaZcR6GLrc4P/hYaBK6c00mYHbs1h8ZLgdtKvdlUWattto
-	 AAp5APUZp0QJT4XobHoXoH0Or68apPKc2CwPG0/+kW6oiljIG4X4MYCi9kKup0PO2o
-	 ifyNAnwMotnHyLsgYfHJQ3EJLEVAWbGdQ8oL7Tj8Y+sAo53Yv1bJ0EdJm1dioc3oNr
-	 LIxWNoDiGDKNjTJ43tlqqrWl46/ZuoI+csB7sb5z/2hNEppMm1uVPRKJBMPxisAz5X
-	 91RhKRjhVrsK7jZA/W2/76qLhuxK3ZvkUAClZp94kkSwrpGZLbqnUSK9VzvGpWPtCJ
-	 UHhatCzKG67fQ==
+	b=hqDHEe467lkxllXKMfbQqPDyhyP0PHHokQ3jYE12AG9DdEq7KUvz/RgsfttvAr4EI
+	 wo6U5T0oq2ptRRRwTkJcTMeJIrOPaoXP5erSBcH/BbSP2cDylsg9HkksiAqVx/uG0U
+	 zRdxJ6ijIuNAm+rvtKZtEfQZrX1zeG9pCfAfwZ/KZ8KgeAgOk/XFvwoWuHMmUuEcKo
+	 tQUVqf7Qaw5bIojFMsvhCOoARSApRTPZWwlvlxOU3Alqdkuw6kgrJFRIqlUefprnO0
+	 fWkOLC6ebRVBiYe8pHiVj29sngSNKcSToNo9PQriMaFEu0LKzZctIGGH2duEsM+BPA
+	 RZEzLV6+vmwEg==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 03/11] mm/mm_init: simplify zone device page
+Subject: Re: [PATCH v3 04/11] mm/mm_init: factor out compound page
  initialization
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
@@ -79,24 +79,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  James Houghton <jthoughton@google.com>, Lance Yang <lance.yang@linux.dev>, 
  Qi Zheng <qi.zheng@linux.dev>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20261120100856.16929-4-songmuchun@bytedance.com>
+In-Reply-To: <20261120100856.16929-5-songmuchun@bytedance.com>
 References: <20261120100856.16929-1-songmuchun@bytedance.com>
- <20261120100856.16929-4-songmuchun@bytedance.com>
+ <20261120100856.16929-5-songmuchun@bytedance.com>
 Date: Sun, 22 Nov 2026 17:45:01 +0200
-Message-Id: <179536230136.3933282.15537267556935821561.b4-review@b4>
+Message-Id: <179536230137.3933282.14696783498187127744.b4-review@b4>
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: 1dsfphqx9btgr5zf5zi6pqi9j8q1qkmw
 X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D6DFC20009
-X-HE-Tag: 1795362316-132241
-X-HE-Meta: U2FsdGVkX1+NsSfas+/GVnU24DEXtJ6HlixCF/r7vQyUzCi5PXVg10G04hidwfrYj6f50G6i5VcYoqVXUB6LKFCdnr18LpCRbm5XykDrUps2Mne6kVNdZq8s7Kt5Xh11aLufJJTfNPoCTIHb6WBwlwdIcxpX7sfioaQZXCFE5s0+SK66h7WfK19eP/SVoQOXZ4CoibiB4TzR++61W9Zm9Eu1XTHfhkl6nDaLnULEZh9PPYH3MH7KZ5pmLSTne3lmUrS1FJsLsd8t6F8aGkPWhvgvUE0aCu9q489+QXaZJv/MJ+M/4gvuHLHdrcLfASOc8k/ul6Pywlwv/ephk4iFb5OZ/vreI89L8Dkmn11Dy3K9A5dqAdPerWR7kWXhLcaGaB2J7RX/Q6DqAfGnY9PeY0GKBoRIVe1pTTc7EjdnVPjLqSzMl1XRlV2S/cKzTNi4mG4ueI5UBkQuME1Jq64ApUXdj9zMMYeSy/IDtHbqVRAAiJ5Ue29XT0C+t48s6tZTuTB5nrz3kW66wfGJCSGc40uBv7gFk2NXYuAuujb3kv4OPpcFGG/dVp0I5H+ZZm9gbZy1uZL/RWLgyQOuQfPGamUxTyRCZqz8q4EO7yJ/u4Gamj7k4VWpNDBnzg6EO0cR97VegXpR2HNkS16X8Gta/jpnJdpb/JrbygUl3JCYZ1qWqabzIU5/ryLmUh+Ic61i/srcJuZmD+qehPLhZjYnuI2szA+h+ULG3iIsFZNXBYNYz65ci0fPqjhdY+L6dvQd3UJqXCmFEV0iXW1hVKKEWFnMQFIBCwLDgR03vcFrNhzzY0jH+C2KIbkOn8B46zGkx1vnp8+3HQTVC0rzILM6zL7CcT5+4eIy+R4akAHJOnUarE3ezxrlsxhCMe8RkTLlDbyTjW1RrBhoZfbpk0+3A+etbaPavZCkfrDCzp6xvdWo1De8q737hS80Q+7ffzGdvJFt8cOVc+Gv2S8SYl6
- jQvqNf/U
- dANluOehIKjiiE+oe6LxwzrBe6XgMfi+isruKtxTTKpWsp0IBgYop6NdCP2q8zoa8JS4iMEo938EErI9EpWXWLuZbPKscEOAtgPoLFgiSdHPrbzDA0Yg1L1BMlodDiKs62LVoJ/jmW+hyf+hwm7JAlbcaX9cYZlYbCDJBo5vH2RStYiNYMxESvuFWiYFvodRzjiAgx+nYHw6wndTObwlj8EVK6px0wr1U+oRL3A85GpiOd/MI/sNZnEqa4Z17ItMWy8HdrHSQmixd3bX7NyDgVRz3vZwzasgdjs4I71B5eHqn1nLhwwXZf+B3a1/omPB9H1I8OOzMD6B4S8MV1IJfkTItOLhaRiZPTFBINNG03EtdLXNZ5euVWqiln1JPv5HbzXxJQxjHzaLFy7GU4Xnl6uXRPxOnSNxsJqmfct0aSzrWI95/HI0+c2vqqW9BBHp1bbIYEJ6Qu66Y7OsaZgv5D6HqydeiXL/TYL1u2B5C9+7AuVKrrPbFrrhkkKvoi3afy8RcXBVB59YZRbMxjvJrYAoFmdK+Vg/9pVtH
+X-Rspamd-Queue-Id: 5C73E10000B
+X-Stat-Signature: rhui9xaczf9mi7yueidkhcj9yhyjn3ph
+X-HE-Tag: 1795362321-981857
+X-HE-Meta: U2FsdGVkX19tKfnuquJCSbaDsAP2pcyXDK4UgVhQ3Sd33MVHOqae/PnO7iNYLScU0ruGxtyfmRiYcZTcy4dwYcLy47TRIQPG0FEFbg6+X2YYk0sofh/LkNDybSZnGb5XuTofsQCTqzTEWHmfpqIb/TtMF2BxGXRrjtHPvzU3LUWINAEbkGYFd4ObAVBd0zoZ5hlC1p743R/wGB9eOm4Y1j22Aqxaoh0wiTM/R4NTA1kkY4piHG2MlEvL6p60Kne3VtGjNtDmiH4MPV0ikzjfDNqaZmI2pV/ORlH67X2a0nQPOVEGQqMAWLR3iUYaDNJJosZpBguAjrKq6V3HpTKCAh/IhhYs8COOFpqrPl3LRmNk2mWRlNcqSo3kHnNVFY/VGevVWEjhAeTZ9FCygBjFlTJV4z6fy1k7zpkhsJueuLNNMIvh9dmpn6NR6RwCSdcbIa1+qfoM+TqOkLwke9y6Q9fhvyN6TFEopRBU9GeB9QqZ2k/uhM7PpJgQ9WjnbqpxTItCL8LIY+INjBCILtjvUeh4YpaEKqNECiJ8fcpahzEiQ1Thvr08pMufky4VkWjjE8tphO/Zu6knmBHMYm306jA8JgT5RDwC2pNVNq3oA+sgMxqBWdPEDWde3AGK9vwpjOqy1ZOPTJnpHIRXE/K9SfaEEahS+C+ONaJO7P3pWHkp+NxVSGFDl3fK4i3pKscAR6DSAU8h8JGoZz2E8xOGIKfcHgijkps4L8qo6qExL2h/26cT6RjR6c22EdtfDlzNP5mjtmUwtlXfGpsSry/i2SuqPRfMn/63gngYGuBeBuwLPtgVHmb2u4uxvyGFOQpddKv3FQHifK9X+pKjbNeQe2DsCD5bWam0cWOYTCmK3GZRunCWOZ+FsL5ieJu3+5P8vckZ9dz1QgNCcXMYg4C4EwEl2IMDly/+ORFPCrU2GMguG2LhTpRVZQatrtia9tkF73EbKAJHpom8Xx9l78V
+ GGqECr/3
+ paVdghpvw8HbzZvlISLNFrt9NlR6Xfo50Oyx0tl6es1y093kl7O9uo9gbNJCX+hOqThkguAA1EbMBoYdMQB6POavh4H7SBe/AeuIrxzUSqn7IeVlOSrQ8WHhf9T2k3Qy7Lqrkz6ZyIXECW3erp7HRvNVbhLmNyiyQKD98V5lM216hFRlmdMpI3sx6oa6+3i1tw2bZ7a6W4XUiFKxnTHzxQR2tiyCF1uqbs9jeAZ2hTYJUmxYZ01/mP1iN1UR2bssX1gjGRH6NbGIQjJk2p2bwxZ1sdErOdig1LAZq2/M7H77vB5Hxq8ZN3H8GJH6GyL3W+T0HTH5e3ig1aoHepwADefNFXZIoIzznkELZQbu8ipzXIUT4vDRKQgkdUkLiM9k2Eb5Nl/9bXOPM1THKcx25+m+IV4zst9sgJubFuV9XFyRvHLcKUwtNqtADsr/aWxaZzGMGk4as7/g1d3xXk/hLoQwyT/Raxb9RNi2fryH3EIdWNiv8qTLjIiptPHpYTbrz71eDnDIalH1eu8DplNhE55qZCUr1eU99ZL/c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,17 +105,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 20 Nov 2026 18:08:48 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> memmap_init_zone_device() currently seeds its reusable head and tail
-> templates by fully initializing the first real struct page and copying
-> it back into a stack object. This keeps the first page outside the
-> common loops and leaves __init_zone_device_page() only for template
-> construction.
+On Fri, 20 Nov 2026 18:08:49 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> ZONE_DEVICE initializes compound struct pages while their refcounts remain
+> frozen. The setup is open-coded in memmap_init_compound(), including the
+> per-page initialization and compound tail preparation.
 > 
-> Build both templates directly from the PFN-independent state. Add the
-> head-specific pgmap and refcount state to the head template and the
-> compound metadata to the tail template, then initialize every page
-> through zone_device_page_init_from_template().
+> Factor the common setup into memmap_init_compound_page(). Keep the pgmap
+> association and MEMORY_DEVICE_GENERIC refcount handling in the
+> ZONE_DEVICE-specific path.
 > 
 > [...]
 
