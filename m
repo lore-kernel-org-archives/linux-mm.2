@@ -1,100 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BE7606A330
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8217606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k7ylMQXH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GC/IuWKz
 Received: by kanga.kvack.org (Postfix)
-	id 7B9EC6B05B2; Sat, 21 Nov 2026 20:45:37 -0500 (EST)
+	id F1FD96B00EF; Sat, 21 Nov 2026 20:57:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7917C6B05B3; Sat, 21 Nov 2026 20:45:37 -0500 (EST)
+	id ED1186B05B0; Sat, 21 Nov 2026 20:57:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A6E26B05B4; Sat, 21 Nov 2026 20:45:37 -0500 (EST)
+	id DE7626B05B1; Sat, 21 Nov 2026 20:57:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D8816B05B2
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:45:37 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE77E1A0493
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:45:36 +0000 (UTC)
-X-FDA: 85461063072.22.5CAA4EB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4255D80002
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:45:35 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k7ylMQXH;
+	by kanga.kvack.org (Postfix) with ESMTP id AD41C6B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:57:02 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 40678405DE
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:57:02 +0000 (UTC)
+X-FDA: 85461091884.17.5B5F1D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A661D140003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:57:00 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GC/IuWKz";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795311935;
-	b=tiCPNSy7/0h8fXhTzkPWuTd8FqnjoySLtkqFNNb16F4LD+Npugfl58qSwqW13J/dlYYx2L
-	lcWIsu86VVPgVcnUcXScFoFCj3fRlE2cNz0JbNThjPQXIT8J5EOHZ1zG0CzSDS1Xa0XlFX
-	9tSWnIkg9eH2fBLfGEVDIba7mTjitmc=
+	t=1795312620;
+	b=gm9yKCm1XrTQLcldXbVW+nsRTpcq90t4t7F2KQmlAV7hBj5hNWEZ3XC0Tz5hxc6lNd4Rnz
+	n7HCXTgh9hVZ9uPdaT3MmbMDtClSTufUcGV7P50IWdTvQcZA1VbBX52dbRjZXaYuIu4swm
+	izq592Lu27HQs4UUy7R2tlSpKTZXYGs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795311935;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795312620;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EM4+43T1scJ6GiZV72AEDDRm99LdMgBsCTmaQ1zQpII=;
-	b=hKFWDtEOWGQPxVH8CJgrhw9YGVKNoG/A14/cNw5YT+O9JHEleh1yLyGWLcWU3Ui/Qodoem
-	KfqgybaCm7HWbojFu6T29hogdpeEfOYKjSna+LYHK8ke6fXZ9oUWq9hwQwOhvhxEAWVXE4
-	mw8y+PZieoRkajd6vwlwg+sC2rL2iZ8=
+	bh=ThwrOz4KQaf/68vZr/EK5L1WefkBvf/yK3CtlQ1HEo4=;
+	b=AwOEPNE9UC2gplcjiFrf4yH1/e3vDL8dzInp2Zyl+TI8/QlPuJQRcrZLUupk3fGbYM+bxD
+	Xopryszg90SqGu8pBSk2HazBCTqNNnX+yaQmvkudX8ombJWsSaYc1apcZrPiRrf+hqzgRl
+	oE/Urg+J4uzhkWL4POMCPjjU61ZiNKc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k7ylMQXH;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GC/IuWKz";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7611643A0D;
-	Sun, 22 Nov 2026 01:45:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3827C1F000C6;
-	Sun, 22 Nov 2026 01:45:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 17FB460625;
+	Sun, 22 Nov 2026 01:57:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABEF1F000C4;
+	Sun, 22 Nov 2026 01:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795311934;
-	bh=EM4+43T1scJ6GiZV72AEDDRm99LdMgBsCTmaQ1zQpII=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=k7ylMQXHqxOS6ixuIq1rwku3yNvoV4i3bvxJugzgrobnxWDANUB5vTb2Qh3Wcvbr6
-	 4Nrcq8Gc2yLW2lzX5pnlaRyDCCXFFus4TRRqV3JalRCqnme8teQjct66FX8MRxbNbY
-	 bPaSHEkoGM4oR3YZrRj8z6ZrkSllUsJ6f1jp2XupqeJVuqHxgdd3mENwQiB3NIoRU1
-	 B6iL1iv0L9jre2aNbiSYdTCaEKWAK1BOxVQjQh6T1Lf1XuYr5DhJM6FFGsC8vtGiDY
-	 1mjb5uOFb/GcMDqwaEXENYoj0/SyWymdtbyzwaGVRzdaxd04BiiG4IY3vEy+cx6oDl
-	 J5AVekoLhjPUg==
-Message-ID: <sashiko-outbox-227631@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v6 18/26] fs: Support FSCONFIG_SET_USERLAND in
- fsconfig()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jarkko Sakkinen" <jarkko@kernel.org>
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Aleksa
- Sarai" <aleksa@amutable.com>, "Alexander Mikhalitsyn" <alex@amutable.com>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Andy Lutomirski" <luto@amacapital.net>, "Arnd
- Bergmann" <arnd@arndb.de>, "Christian Brauner" <brauner@kernel.org>, "David
- Howells" <dhowells@redhat.com>, "Giuseppe Scrivano" <giuseppe@scrivano.org>, "Hugh
- Dickins" <hughd@google.com>, "Jan Kara" <jack@suse.cz>, "Jeff Layton" <jlayton@kernel.org>, "Jonathan
- Corbet" <corbet@lwn.net>, "Josef Bacik" <josef@toxicpanda.com>, "Kees Cook" <kees@kernel.org>, "KP
- Singh" <kpsingh@kernel.org>, "Lennart Poettering" <lennart@poettering.net>, "Neal
- Gompa" <neal@gompa.dev>, "Oleg Nesterov" <oleg@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "Pavel
- Tikhomirov" <ptikhomirov@virtuozzo.com>, "Serge Hallyn" <sergeh@kernel.org>, "Shuah
- Khan" <skhan@linuxfoundation.org>, "Zygmunt Krynicki" <zygmunt.krynicki@canonical.com>
-In-Reply-To: <20261122011809.2667684-19-jarkko@kernel.org>
-References: <20261122011809.2667684-1-jarkko@kernel.org>
- <20261122011809.2667684-19-jarkko@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 22 Nov 2026 01:45:32 +0000
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4255D80002
-X-Rspam-User:
-X-Stat-Signature: 46r98p5hbobu3xp6dwkpqndowoor65rw
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1795312619;
+	bh=ThwrOz4KQaf/68vZr/EK5L1WefkBvf/yK3CtlQ1HEo4=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=GC/IuWKzdP3XPrZY10V0RiplZlejXzbWqHWY2QaOy4znVfE3YN5fkGAgzUnxJiKVi
+	 SPLiEY5c8KMToEo+eZ/6XZVlUDB4rdVdhYv3Bd3S7cwuW5JxRQ4qJm1JPiKn1EtnXq
+	 BOBnnj3U6wWLp2zpdRigdS5yMcgJ3q0jI4h8LsJirUNb1rQi55p1rxggbTdCWzVv42
+	 Uo4cPxRFR53JJuCkEghXMu0Iz2lXAlOWLxU3GdMdcDrY5PYQDRu8yP+kBww+bpkOUj
+	 e7YbUHBNXVoPyB5Qxq4Ve/oGeOT/tplGDKuacxwSvtew1eVp1UBxIfzR0tUg9cMXMw
+	 QofJXhNKIHfqQ==
+Content-Type: multipart/mixed; boundary="===============5046235082527952735=="
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Message-Id: <99f64593ccffc93d735505cff682eecae40a6671b80ad7485c078ff8f335a214@mail.kernel.org>
+In-Reply-To: <20261122011809.2667684-25-jarkko@kernel.org>
+References: <20261122011809.2667684-25-jarkko@kernel.org>
+Subject: Re: [RFC PATCH v6 24/26] docs: Document userland uAPI
+From: bot+bpf-ci@kernel.org
+To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
+Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Sun, 22 Nov 2026 01:56:56 +0000 (UTC)
+X-Stat-Signature: cjnkk449ia9wnbmw846gjn3u93kw3dfu
+X-Rspamd-Queue-Id: A661D140003
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795311935-198667
-X-HE-Meta: U2FsdGVkX18/UwkdgV12vyvXjnQwraOEWJBxCf9uZrPK+RSu0Qj6ffFTdjG3JQKRYM+I7P/z92DGxfxyEw5zd6RxSsemUDMw84IsZ54BRDPuY1LZjSoR6BpzjvUy81dKA0V4OXvd00GkKbeneyy7zZ2ov7j1BKjF5yQQ6qmboEyPavdo0wXrlIQ/3qUnH9v5Z//3aqRs7zlLIDaYgDbXsul93RdAenz+k+Ma0WpAfN9saCifjU+oaXioKgzCwidbMc3IOndl4mMskFMZ42XmJsBZsxudTvlhCw2XSe4CQOM0zx//m/IR5QpPFF4tuyxa0929SwwD2lpinKTND0kQHGUJvGi0jmZr8rRX81M3NTVMvrVYsLFNgiYgUjo5j0AQutnjHzxNbBrowTHiiPGknxAneGdlBSMsr1vgBP772EYm4s+yNs8KSEOPis1XQWWYFW7shdtT8Ek7hx3Jm3EwhhuLolL6qLDQ3luLj85hkAttn923Zk+dqGp5Lw1DsOI/q/qgpwS0Pi+PrA4uNmxUAaGDsFKT6vFMcop8GKkw25xJugnqwfyUacm3Ss7tNEVbDjPmpEFebllfd2vazZ5ijXIhuTApYqepbgq8Mbm1ptAdciDDuuPZJDgco0oEW7XuY9RahmPx+4ayJnRNBrSe9xmpPRrrE4db++LTQKpxRjPeCCB6m5CH1zE2eAZELcU5ZAV4bWB0fTKusC0iW33a2ZLBgX08H8vDvb6iWCcBv8m/sU4jxo+BfEl8e9t2yzQOvsqImugMIXFVTmCinQAfQmiDUeOypCl6qMo4dTFPZ/NEXVg5vlr+BG00eyi56Diewx43rjPJwtmEQx6eqrVwZ2CRbPDNFyI+laLiN3LWJYZkuE05FyVH2NpWm+QOW27bZmQundjGO30F6hUCRiIPLthBCRfKTIcZ6fGZumWR9urxd3UYkQZar9b9enc0+Y/NMt9TePxmjRfXF1hVNAm
- gOTXXt1n
- a7rMo0TbeRznGb9ut3+N3K5iNXaTndgqJZ+Vc7uvjLvYmERTT8+xG0XYebUFKSoS1eUV1FeQtuLqdUIeISoJUfEc3v3aF+mAOU9BvBtPPdBvY/76trj15ueId+5MF8uPMKGAZppqII1KTIzJv52rA0cC3t7CncW892Ka+MfYOXrEKtQK8jEMlta7SpL9Wkhj/lbP+6sGghaCpAb5ewvLCcARy8UkwRlU9aokcmIFgW1vxpKNQDfu3Kyih/OdoSJOIT2Bcd1JeY46n3NGe6C9pzM5KZybDJvjXR5RrqkyEACwV62QcoB6etUryLt9PMlnnsi/LnDoEPGncNsn2NgXH3Zda0qAarQqHWXMewpuFc0vUkn1Vjb3MsiovlBAAeVIHI94YBrUUdxQL1NcrpJWyXBy11i0cH1pCFPF66VhNkV0cHqRFSOIyR0XIO9b5yju8Q3nh0BC91n+3D9NrKOkG2bxjFBLo/6IrHMicex+aKJJ4UO29KddtMLfzDbqyWTEbu387+wqdcfYetKzhiHpeItKRI/FxV89Nw7xiOJRcAUykbHiDd4H2GicZkBPk1iSvpn8LUYdWEYDKs+xgUtQukqWQmvvuMBBBCsYS5ctUAsGmEHRjjSnlgCRGNI8PpD+NALVXjpWuTA2az1IUjVL07LAjh+sj1AbPNoreu0uR9z3awRosSTMemeSNTlVDYh81lbiSl7Ko5imlterKHDCGU2fk49Nov4tN8Jbzy5JOXuhwl93dV+B9nx0HeG9dumHkhR7F7wrJ43Cr6IaXkiOwQh9KlQAK/ghqo3yKj09blxe8qxISApsP0qslAnRP0QVeMUGQf5Ul4go9bQgJMzC9Ne7wSVG9NtlyFXPKF8YUngO/7ks=
+X-Rspamd-Server: rspam02
+X-Rspam-User:
+X-HE-Tag: 1795312620-949543
+X-HE-Meta: U2FsdGVkX18c3JqD01e3P0vWbauwKw4QBNViryQnNpHDj05mSqtnrWPQghPRT1Cz5z2AOqK/+PNNdEWdwLZJoFWBH31FLLYrLohOIkrqk4n1GQPsC6/OcGCS2Blr+6OK+GhlE88S/b1vw36CCdLlIx8GUZSjiBs2xxbCbjd1uJ4hS0f27XjSVlGBeZqewzGW30d/DZ64PMnXn/lcIcCwamiZAupSNtfYoc8KOhGdIOTWwn9xduPEXg92iIZMlOA31bhCvwwCFVEVqCD5fxJH1hQdQ/gMNOfXFOd1Kr4LM9MPWX4W4IOLpiVeAO66NiQ/DIan5ipNDeJzKeWRG+yn5x7SPvSXsJeylJBTTzXM7DLsxb152mq+5aOOlHMD5xTaTcT1i31FLnPsQbRExLbqrIe9ApkbF+t1E++YE5BRXSc8GioTdKoHHY7NL8GMj/FCQ/X/ki3Eq/Jtw+1q0t3dEe7P8ivPHswvNd4m5DW9U+OjD/QReS2HTTbygNAeZnNRWUw3nfOKYtSZe6tF0v1kMcvqn9Z06woTYu+wOjrYiHUFNCKC/RxTLgGohCUGcdbHMruNUuuRwmwz5d/v7fCz62VzaKc9uxdd55pzIA0hTRq6hXorPFVuHAkho3OKFOL/T3QLtfSrI+hZuvq1DtCBGD4kCM6sXJaLJiCLSuhrSFZ8vkv9BxRtZHVpnOG+ocDYZMvChldGO+SXEU7qHv05O3GPLkHdMPInBZQDODXBxgwMI0GoVZZAUtS/qfWnCk2SllL6U9PvYiLMJZl+b5TZ0zTuXjv1RF5oROlInkzFugnRh+dZgIqkBPXvTbOhi0+pLo4TtZwx5WHUVb//kQwWd1vafGcSeFqB7j4KDTO/5hZtAXmk45KK0pOoX+LPwj2lbr2lBnIAnpNRRL4kbz555DRQ5NLGKSoadrmkJnLKsgJ8Ed2wz3Y8dR1ekegNdtJiGWJMMS0SGPCaXqmWZFD
+ dAWl+cVu
+ BpppL5xNED4lt8LoyfflSs4xSSK8lgrKM8ssWGlGCxLmVy49onfRrBJzFw+Mh6ZbIh6ohf7g7+Ja/wHoG5T7XdeDV/gR3xfvk4Wez7xXXh5UMSjQDGbXQJ5D58V1gkCZCLbpL6tnDf+iRDwey9if0Jt/yR10TIOiE4gqyGCj6IkMU8pxv1srI0ymjkIxGBV/BYp8o3KY6Dcvdxc0kU7aHk0wl6McmI3LnXCnfD3gAx6fbawWo73p8tS3oYq/0+GrcnXBKX9QWcLpIzZDIGVuj9HI//1U8aaJmgY/ODcAM0aRY/y12bqOnJMXk+ohBoxl7Xt9Jk8dSKWBkPg/K2POvAFO3zun+8034WiQlLGxdYFqPMJpL9vgpx6ThEs3gbZxpPman/W5AToNX2XMzu9KyD5KcOaXAXYnmpkzjb/3qtburN/SRs3Vlywv6jv0RwNEetoziaV5Bu2DTtEtgO7vxhqHAGr4vyTjKjYo3J0uSPQGEwFHa1f/Vqnjy5/odGE3UiSVvgeY5+c7Bh+/UFxHxX+XJZPArp0mxVYJ0TiWbbNn9DyB8b87n+tgleBvUdCnkEWgvf+A4fykCeTmEneWMdQ2/TrhckBA+S8Fj0SZjCG6FcH/DUuwxJ/m5vdHIkBU63ZpRD2Rcq6OCn8UmqznVC54VrEU+vy0AKML4dh2Fxgj0ZhWFhVovFXCswSi8igiyTheyQiLVfhm+m4M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,67 +91,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] devpts: missing fc->user_ns uid/gid mapping check in
-  devpts_parse_param()
---
+--===============5046235082527952735==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-commit 3b686423ce72875c03141d25884aa118403b95e4
-Author: Jarkko Sakkinen <jarkko@kernel.org>
+> docs: Document userland uAPI
 
-fs: Support FSCONFIG_SET_USERLAND in fsconfig()
+TL;DR: Documentation only: the new userland uAPI doc never defines the
+INIT/RUNNING/DEAD states or their transitions, so readers can't tell when
+USERLAND_SHARE_NSFD is allowed. Commit message also misattributes ioctl docs
+to nsfs.h.
 
-This commit adds FSCONFIG_SET_USERLAND to bind an fs_context to a target
-userland's user and network namespaces before parameter configuration, and
-opts tmpfs, ramfs, and devpts into FS_USERLAND_MOUNT.
+>     docs: Document userland uAPI
+>
+>     Userspace orchestrators need a clear specification of what a userland
+>     is, its build and live state transitions, USERLAND_GET_NSFD,
+>     USERLAND_SHARE_NSFD, waitid(P_USERLAND), pidfd_send_signal(), mount-tree
+>     construction, user namespace ID mapping, credential rules, and process
+>     creation semantics.
+>
+>     Add Documentation/userspace-api/userland.rst to include the kernel-doc
+>     sections, ioctl descriptions, and system call reference from
+>     kernel/userland.c, kernel/user_namespace.c,
+>     include/uapi/linux/userland.h, include/uapi/linux/nsfs.h, fs/fsopen.c,
+>     and fs/namespace.c, and register the userland ioctl magic in
+>     ioctl-number.rst.
+>
+>     Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-> diff --git a/fs/devpts/inode.c b/fs/devpts/inode.c
-> index bd1e8eb26edb7..921b67d18fa2e 100644
-> --- a/fs/devpts/inode.c
-> +++ b/fs/devpts/inode.c
+The message says the ioctl descriptions come from the listed files,
+including include/uapi/linux/nsfs.h.  Is that accurate?
+
+The only nsfs.h content included by userland.rst is:
+
+  .. kernel-doc:: include/uapi/linux/nsfs.h
+     :identifiers: userns_idmap_extent userns_flags userns_idmap
+
+which documents the structures and enum used by userns_set_idmap().  The
+ioctl descriptions (USERLAND_GET_NSFD, USERLAND_SHARE_NSFD) come from
+include/uapi/linux/userland.h.
+
+This isn't a bug, but the body paragraphs and the Signed-off-by tag are
+also not separated by blank lines in the message as rendered.
+
+> diff --git a/Documentation/userspace-api/userland.rst b/Documentation/userspace-api/userland.rst
+> new file mode 100644
+> index 000000000000..47d5c39ccb1c
+> --- /dev/null
+> +++ b/Documentation/userspace-api/userland.rst
+> @@ -0,0 +1,73 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +=============
+> +userland uAPI
+> +=============
+> +
+> +Overview
+> +========
+> +
+> +A userland is an anonymous-inode control object opened by ``userland_open()`` (not
+> +an ``nsfs`` namespace) that binds a detached namespace set, an initially empty
+> +mount namespace, an owning user namespace, and an init process lifecycle across
+> +build (``USERLAND_INIT``) and live (``USERLAND_RUNNING`` / ``USERLAND_DEAD``) phases.
+
+Where are USERLAND_INIT, USERLAND_RUNNING and USERLAND_DEAD defined for
+the reader?
+
+These states are not in any uapi header and are only used inside
+kernel/userland.c, and no section of this document defines them or the
+transitions between them.  Yet the included sections rely on them:
+
+  USERLAND_SHARE_NSFD works only while userland_fd is in USERLAND_INIT
+  P_USERLAND waits until USERLAND_DEAD
+  USERLAND_GET_NSFD for CLONE_NEWPID needs the init to be running
+
+What moves a userland from USERLAND_INIT to USERLAND_RUNNING, and from
+USERLAND_RUNNING to USERLAND_DEAD?  The commit message promises a
+specification of the build and live state transitions and of credential
+rules, but the document only has this one-paragraph overview plus the
+included kernel-doc, so a userspace reader cannot tell when
+USERLAND_SHARE_NSFD is still allowed.
+
 [ ... ]
-> @@ -457,7 +459,7 @@ static struct file_system_type devpts_fs_type =3D {
->  	.init_fs_context =3D devpts_init_fs_context,
->  	.parameters	=3D devpts_param_specs,
->  	.kill_sb	=3D devpts_kill_sb,
-> -	.fs_flags	=3D FS_USERNS_MOUNT,
-> +	.fs_flags	=3D FS_USERNS_MOUNT | FS_USERLAND_MOUNT,
->  };
 
-[Severity: High]
-Can opting devpts into FS_USERLAND_MOUNT allow an unprivileged user to
-create slave PTY device nodes owned by arbitrary host UIDs and GIDs that
-are not mapped in fc->user_ns?
 
-When a process in init_user_ns binds a devpts context to a child userland
-via FSCONFIG_SET_USERLAND and passes uid or gid options, fs_param_is_uid()
-and fs_param_is_gid() resolve them against current_user_ns() rather than
-fc->user_ns.  Unlike shmem_parse_one(), devpts_parse_param() does not
-verify kuid_has_mapping(fc->user_ns, result.uid) or
-kgid_has_mapping(fc->user_ns, result.gid):
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-fs/devpts/inode.c:devpts_parse_param() {
-    ...
-	case Opt_uid:
-		opts->uid =3D result.uid;
-		opts->setuid =3D 1;
-		break;
-	case Opt_gid:
-		opts->gid =3D result.gid;
-		opts->setgid =3D 1;
-		break;
-    ...
-}
-
-devpts_pty_new() then assigns opts->uid and opts->gid directly to
-inode->i_uid and inode->i_gid on the userns-owned superblock, allowing
-slave PTY device nodes to be created with unmapped host IDs such as
-GLOBAL_ROOT_UID.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122011809.2667=
-684-1-jarkko@kernel.org?part=3D18
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/44972669664
+--===============5046235082527952735==--
 
