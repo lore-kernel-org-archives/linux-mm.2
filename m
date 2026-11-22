@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9742606A33B
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 09:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C50F606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 09:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Arb4mkNQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dd0ckpvV
 Received: by kanga.kvack.org (Postfix)
-	id 9B86E6B05B1; Sun, 22 Nov 2026 04:19:43 -0500 (EST)
+	id 60F1D6B05B2; Sun, 22 Nov 2026 04:19:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 990926B05B2; Sun, 22 Nov 2026 04:19:43 -0500 (EST)
+	id 5E7FD6B05B3; Sun, 22 Nov 2026 04:19:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CE486B05B3; Sun, 22 Nov 2026 04:19:43 -0500 (EST)
+	id 4FDDC6B05B4; Sun, 22 Nov 2026 04:19:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AC846B05B1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:19:43 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E5E0C1A0657
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:19:42 +0000 (UTC)
-X-FDA: 85462207404.28.7F29FA0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 21B396B05B2
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:19:45 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 84BAB1C3F4E
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:19:44 +0000 (UTC)
+X-FDA: 85462207488.04.CD0680D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2396D40003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:19:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Arb4mkNQ;
+	by imf31.hostedemail.com (Postfix) with ESMTP id DFDFF20002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:19:42 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd0ckpvV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795339181;
-	b=v4j52TnFtg1p9SraefdC+sVW9tu0YMKn1xLZfxM67nCsuFssArSoj0hSNoye5CEPm3mbmi
-	Y94xRz3918BI4u2EIPeYpBxPIviNlhJCPzsmiCgxIq+N+CdU9IzVdpgZB+LdxxUzMfTviC
-	sN2AKkVNhHChoNacBUJKUaAyARoANkw=
+	t=1795339183;
+	b=vrCb8Oi2MDbD6l2cN65HMUT2by8Eg4S+Dgy4unURkTd9Ew25GBNR4Vru/uYVwXPPXTMG43
+	HyBv2tDoOqqVtVt6p+x/6c9Z/37CP3rzh50hxj1kLSlVqgsf+Hi1s8/iykRsqzWfnSWMH/
+	jDEsYlQ97q8JjwKz2isi0RPaCNVVu5E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795339181;
+	s=arc-20220608; t=1795339183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1XyftV8GVsZDOcq2i3DlqyLQd8hIM8BmGNI2WNlBAD0=;
-	b=qxzqziKmcm3417rc6K1cp072s6IYniLXYNWU4KpEQ/p54fm1Bhpbirvt8qO5iHrp4pCDX2
-	APCRrG3RoUMMAZdaHt0TVuN4qgXVRKWLvkFoBnbyiYErPbGrXvUdTH0kRXiwzky/uyzd3n
-	gPacXUm715otOgYofE85l3TqLV0+7CY=
+	bh=fVNYRzFGTGfYNkMSOeZUACCFY7N+y5n5CkCmP6DMOOY=;
+	b=34FDVOcadhltgPl8LQZbUn7I3ulwzMkf5kguksP1K7FC4Rl/n8IuOMQ7OvRR12+ecef2k0
+	VNmMXrSOVc1GjiHkwBefxs3G2kofeQjEt5lOGVxoKSO7JAtQvLWY1hZNgLSRgjN3fFB+hX
+	bO0908gUlFazc7qCbSk+j2HEyP0cRXs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Arb4mkNQ;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd0ckpvV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57A7B40398;
+	by sea.source.kernel.org (Postfix) with ESMTP id D79FD41738;
+	Sun, 22 Nov 2026 09:19:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB5E1F000C0;
 	Sun, 22 Nov 2026 09:19:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DC41F000C0;
-	Sun, 22 Nov 2026 09:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795339180;
-	bh=1XyftV8GVsZDOcq2i3DlqyLQd8hIM8BmGNI2WNlBAD0=;
+	s=k20260515; t=1795339181;
+	bh=fVNYRzFGTGfYNkMSOeZUACCFY7N+y5n5CkCmP6DMOOY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Arb4mkNQaABokJfYXMRZnv2NqMcuJKpcQBj6I/4FGp27aVCu0NZSNC0R4vWvcgtxS
-	 yc3rvMtUORDGJhG7CWNWLPhUuWuULrlkESeOGkHqg5nC1dTLzB618EqkzC818N9xST
-	 cS423e5R7/apM9xz5/i39cVPfPoGBDWTkAlcGpPB/uWQ0la4eaF3+WMdl7FO4/wHIQ
-	 zuPAzWslFOsZb3mZApQjof+vIhnjInvSkYtm1bLlQFMG3O8Co7XYo5PdvGpOPcerAF
-	 0TiBtrOA+SJr8UKGGfuV/FR10MjHn5OxYNUBkzZbA/UzleKV4z5DRzHaSwO2qjAoOJ
-	 m7QYTWqBSaHsw==
-Subject: Re: [PATCH net 3/4] net: skbuff: limit folio refcount when splicing
- pages into skbs
+	b=dd0ckpvV9iU7+l+MXGIYaoxsyzfzMGuyX+mHtXwLU3oOVA4/OiyW8JrxgW0I3Xqec
+	 7FgAEaDrhiJB092xBEqWK/s49hNFgLMbFpjyHvt1qet9i0msAlDiKZ1ZBj83NddO9q
+	 /4ArRBggAXbyey3y8ParLgxacHl4TUbBEtfcROGQUrtS2o8AdewpqfAF9kSnlFwmg9
+	 4rb96Nm62Qvp7xfkr+AwcQESkV9ASMn5NQ+aFeAESjEOglV978WkqaWpD4meoMx1ZT
+	 vXjqkR4MwyY1PHsPR6/47P19h6xmDgyClyhSkm8PA3oBVhADR618h0X5rvVc2jotl3
+	 HQ7hJASzf2Ugw==
+Subject: Re: [PATCH net 4/4] net: skbuff: limit folio refcount when splicing
+ from sockets
 From: netdev-bot+sashiko@kernel.org
 To: david@kernel.org
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
@@ -71,27 +71,27 @@ Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  willy@infradead.org, ncardwell@google.com, kuniyu@google.com,
  pfalcato@suse.de, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, stable@vger.kernel.org
-Date: Sun, 22 Nov 2026 09:19:38 +0000
-Message-ID: <179533917877.3135.7884614269284288545@kernel.org>
-In-Reply-To: <20261118-skb_refcount_overflow-v1-3-5551b4954c3f@kernel.org>
-References: <20261118-skb_refcount_overflow-v1-3-5551b4954c3f@kernel.org>
-X-sashiko-severity: High
+Date: Sun, 22 Nov 2026 09:19:40 +0000
+Message-ID: <179533918041.3135.8460911693239501161@kernel.org>
+In-Reply-To: <20261118-skb_refcount_overflow-v1-4-5551b4954c3f@kernel.org>
+References: <20261118-skb_refcount_overflow-v1-4-5551b4954c3f@kernel.org>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2396D40003
-X-Stat-Signature: 941ukook17dr5f3cro84rkrubiphbu3u
+X-Rspam-User:
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DFDFF20002
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795339180-259383
-X-HE-Meta: U2FsdGVkX18MG8tbJd2wMzYHuF5zMn3MEyLULXgl4CRMG0O70r+Eq0oDNbyb4eM4k/0YlMuxNw4+WZZjydh9zOj4FMRBBgVtujd3xETd0r13p6B0BDpho546JeOn/kCr4R49K1LPElr7BSFAW4sV74swd0n/xEjja2xQQ798QPO5UfMb1yumwtBwWApLAsEoiT6etaZ4zmGuYvbqRM7Clo0S7ObKKMKLiBUMFJCJOpDwQmjWFR9i9cPDtgMHPO2kBeCg99RrfwkSr+Eg12UG6NGrUGzGIH30Q0QkAfNr+rzlN8/dRFRVQ9bWEB8WVqwkIXZFwwBPGPET/m8xTmdAyN6y9IZLf8uP4Omr8PFVFlIeiWyhWHTn2o41IbgGWZn0eCT9WY+hEjLbzYYqR8hJukbFp3p3b4Eb8AzGfELtCRbeheNjU+RvL8xAa5I4UeQhseeHB3kwDCT6W1fSjMuEO+RrzfK9tnugruLyaRnIvj5iwjwbm9k4mycTVvMnt2HGDs91xPiLUYjBRTHpkF9fHCJL8jTP7zAYRvzxfxfATpfD9IR/tQqvst9LTK6lNJmKfKwyM5eKzvVF//geTPUnqh5GBtBJz4R8arQ9Lzj8Ej4U7a8vFO4TehJ+WZxLkxDDTQh9U6mGhC0PvjttVZMI3mhCohCQPYrPpjm6OnLlVF93q7sH731InndaZa//I2x6sWxgdNjUneuPoJRNeBkIKsK8H3baFCyYhIA6ASvDfR8/x4F03KxQjdwQ1V3/5hB+kJziJp1WrY/klxcik60UPESqxGj3w2foEbrKcZVheS3Sr4tFI/qy1t6Yljtebp/PVAeIt3lsgrkxdGagCw8cWIHYEDSLFqQl8XKd71kPeQYXk3oPVYYu2zQCgXtFl/a80dQ61DQZdpH+XkXnttcpFFl4Bg7xyTayu0P/zFVpPLw5GOCgHaNQa6j/FoqfDpZ5zMyIBWDKodz8jYrfcqG
- iakF/fkA
- YSulHpt3yRmBidAJpniDteotSP3CX7AF8Umb11uASPCIghfA8+C8BzG1gY9zuPsaSv5yW62kMunf9BUggDgpL7jTFksLzY7U0TYBPiOhc/IY/3C1fVAF8FELr7Ab+RlhoM9bafV4iGAzNB3t3QsIPXZKOb63rW3ZjLzWFExfeRzTkThLSaGwyZwrXiY6xYCh3Es1J9xvAzZWJEQMA1pbnGbEm5Ubey+igc3UUVolMVLJbO1n0GHHEe5/IJ5LcreLRTw6tVdDHWSaCz2LDW9amU02bkJFJ27tUtcaQL1+98Upwuczozbs/+v+PQrGQrn7UF+GASkDH2kiNYsnbZNNYgDLBR3wO5XHLsF0prVW95Adg1b/AsrZkmguhnAY2RjcBZ29dgOgRAlJeiaHvs5+qeLBzSSrCpF4mosUx8MDytHkVn5mhzZ05b2SAVaKHO4mkm9t/go8R2vep7OCZ8WDnrv9iykJ0APsRYwIX6lF9IlxmtENLB+eQgZzryMSKffzu98w1sqx8LoRg42Y4sS+rAJBJ8vspfTe+Hfu9KsKzlAYsB1vtEyx41k4tGc0DXloMXxfV8vW9fPAKMZZ7ibQtYbl+LhElR+3zmqNg3M7wNfEQyZNRaUUAcdB6YE5v2zKYrD2FI+aZyN/gA2M+Ef18qoWsBXhYgXNOKRFY
+X-Stat-Signature: cop39rpquf934nokoea6opk7wnjxsak6
+X-HE-Tag: 1795339182-700865
+X-HE-Meta: U2FsdGVkX19YacC1UPq99wtORXZfIvME2ABBa8xHpw3Ou9KewFQNvRAh3OktsViPR7lIXDD9lpMTocaVgiVOSOXMwR3MurTR4osZTR0qJBpU8pdTGfX4vSPrN73ojHUBKRwu6K7XOmdUjqfgoQlBtfxHATQpjuBC9F6f/W5EepH6QVG6w7QlW9qpqEOr4cqi/1P5e5IYBP1Qs0SGAFizIQhDsXr0tpWKr/IvbvPOd7lhJAYhgoevEHXGO7GPV4paIyHNXIqifvnFP77iUwYakPYz6bZrXtA6NVifk2kr2alCUXDY7YpN+4avCVkrdueu3czbqbU7+aod9804yK+G9bUFfugCy8THqutAf6KUqsf3AiSOKoW+DDD/qTAYxQJkeV5qE9XtwjWyuFllYMtIThaeoHRWWhTFaCX6U1Db2TX4Rm/Ng6EWZRQDZG2UcaZf/ci287/OTBYMlW6aDiR+uEjgPAaGUAn95T0x93UEztHiT0tClDUX98ZKrAv6JEq1AqTlEcAQA8IOfZuDWfFo2UAREve3OQjVUfiYYd9cII6xi5/RHz/gDJn+qyujG6s7f1QuIutyFdnQfw4FFoBf9dNwclH5LMo9RoyEuaFhh8Y7gBMkyYMuhbncyLoDbOE4KLiS4jiJ1fXdhmOYQoxyQREg62mHhMLgITHlOU94PuOhtYtzUVJQMQ1Jc9Dck6dITs634rskNuQf2sXtt5cqXvOIxvuqCvWS7VchYwE8Y61cLCWHFENhe+KKmzO+g0Yz7ktII5jN9CWQ6OLjk4cwBtXEUi8oJM5M3O360TE23yd/V2G9eLobGssW3lUOZ7pM68uYcVue/KvVlo7dOUKrrDzxYoDjfHM/eRcLxjF5m/Vx5frRpb1AJMQHmasn1qAqfThAjyISHp09fGEXL3exruc0A/tGQAVPmZpwSkEJH5ILaTCxPIdc3xolDY+TclV+pZ5ADh/Qd7yr5nfEAgD
+ bWsuf5eG
+ cxgxGifliA60onQrnbbd75JWxNXkxtlhcmXZZmjBhec9qZlCJYgImaZaFRcqOvRabywhKDkKVwDHDgVnqtnU7cCltCvzNcxMLugIh77FfXCE5Vkc1KXSjl8eyIjQlb6OhHL+868ahx8mIlDaJ+VFvAoEIZrMnY2dfo7mSsS1U9zE/GB6HTiWhcs1ED2ltLQst/5DSW+3qqyWZmKDTqkcQ2rp5YaZt4XR6ROQwm/mYGLDzVkQyRZZ63uN1Yc+3vYm6QzQHOTC7d7cY7iDAX65/IIdDUBh4Hqn4GiNBmuCr76h3oU2bOR905ic8Xo2/izp4NrLRweoB8yMG7dSVZlVJ/xyshwflTu7NQc3T2BUteAEyGHIhX8eP6EU/XznJLCA2wOe9/j+0pAFass+HIK/WNsLmiZNJHpgiAKJs1fBJWb3fkwq8t1A0yZ4OTXB2mITtlp9kMhiu31yRV12yKCIJ55EQp+w7rkkwsfy56pI4DpyTml5PJm/zn3ZbHf5TOFnC4WHt8Srrwf0CFoibeeT/glkY4MzIJ4gNFiC4gmqsGdWTGnKYerl/ICEDJUuuC2uLQxgTEV6rzUQ3HTwIkOpWRxara4qOQh3Vg+dIFArX8SZQTMRqe+M1ZNSSNuNqT25y5e0TILIx2+eDcp8SFxl0zSAa+L5drm9FgJUJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,153 +100,135 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] The new comment above skb_splice_bits()
+  (net/core/skbuff.c:3295-3300) says the function "Returns the number of…
 
-- [High] The fix leaves the kTLS MSG_SPLICE_PAGES paths unchecked.
-- [Medium] The new -EFAULT from skb_append_pagefrags() can turn a
-  refcount near the limit into a persistent loop of NFS connection…
+Pre-existing issues:
+- [Medium] skb_splice_bits() still returns 0, which callers report as
+  EOF, when nothing was spliced because linear_to_page() failed to…
 
 --
 
-net: skbuff: limit folio refcount when splicing pages into skbs
+net: skbuff: limit folio refcount when splicing from sockets
 
-The patch changes skb_append_pagefrags() to take its page reference with
-try_get_page() instead of get_page(). If the folio refcount limit has been
-reached it returns -EFAULT, so in-kernel MSG_SPLICE_PAGES users such as
-sunrpc can no longer push pagecache folios past the limit.
+This patch uses try_get_page() in spd_fill_page() so that splicing from
+sockets into pipes cannot push a folio refcount past its limit. On
+failure it returns -EFAULT, and the error is propagated as an int
+through __splice_segment() and __skb_splice_bits(). skb_splice_bits()
+returns the error when nothing was spliced, so the callers don't report
+EOF.
 
 > diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index bed1c8c4c6b99..c937d74eed6ac 100644
+> index c937d74eed6ac..b73fef7a1b460 100644
 > --- a/net/core/skbuff.c
 > +++ b/net/core/skbuff.c
-> @@ -4714,8 +4714,13 @@ int skb_append_pagefrags(struct sk_buff *skb, struct page *page,
->  	if (skb_can_coalesce(skb, i, page, offset)) {
->  		skb_frag_size_add(&skb_shinfo(skb)->frags[i - 1], size);
->  	} else if (i < max_frags) {
-> +		/*
-> +		 * Don't use -EMSGSIZE, as callers would just retry with a new
-> +		 * skb.
-> +		 */
-> +		if (!try_get_page(page))
-> +			return -EFAULT;
-
-[Severity: High]
-Does this cover all of the in-kernel MSG_SPLICE_PAGES users that the commit
-message is aimed at? Both kTLS sendmsg paths handle MSG_SPLICE_PAGES without
-ever calling skb_append_pagefrags(). They still take an unchecked reference
-on every spliced page.
-
-For software kTLS the path is
-tls_sw_sendmsg_locked()->tls_sw_sendmsg_splice()->sk_msg_page_add():
-
-include/linux/skmsg.h:sk_msg_page_add() {
-    ...
-	get_page(page);
-	sge = sk_msg_elem(msg, msg->sg.end);
-	sg_set_page(sge, page, len, offset);
-    ...
-}
-
-The only check in tls_sw_sendmsg_splice() is this one, and it does not look
-at the refcount limit:
-
-		if (WARN_ON_ONCE(!sendpage_ok(page))) {
-
-For device offload kTLS the path is tls_push_data()->tls_append_frag():
-
-net/tls/tls_device.c:tls_append_frag() {
-    ...
-		++record->num_frags;
-		get_page(pfrag->page);
-    ...
-}
-
-These references stay in offload_ctx->records_list until
-tls_tcp_clean_acked() runs, so they last until the peer ACKs.
-
-The sunrpc example from the commit message appears to take this route.
-svc_tcp_sendmsg() sets MSG_SPLICE_PAGES and calls sock_sendmsg(). On
-XPT_TLS_SESSION transports, set up by
-svc_tcp_handshake()->tls_server_hello_x509(), that socket is a kTLS socket.
-So nfsd pagecache pages would reach sk_msg_page_add() or tls_append_frag()
-and never skb_append_pagefrags().
-
-No later patch in the series touches net/tls/ or include/linux/skmsg.h,
-including "net: skbuff: limit folio refcount when splicing from sockets".
-
-Should the spliced-page references in sk_msg_page_add() and
-tls_append_frag() also go through try_get_page()?
-
-[Severity: Medium]
-Can this new -EFAULT cause nfsd connections to be torn down over and over?
-
-nfsd threads are kthreads, and folio_ref_count_over_limit_slowpath()
-refuses them at FOLIO_REF_COUNT_LIMIT, with no admin headroom:
-
-	/* Background threads must not consume admin reserves. */
-	if (current->flags & PF_KTHREAD)
-		goto over_limit;
-
-On the read side the limit is checked only once, when
-filemap_splice_read()->splice_folio_into_pipe() calls folio_get_checked().
-After that, nfsd_splice_actor()->svc_rqst_replace_page() takes an unchecked
-get_page() for rq_respages, and the pipe reference is dropped. With this
-patch, sending the reply needs a second, checked reference per page here.
-
-Let k be roughly the number of pages from the folio in the reply. Suppose a
-local user holds the folio refcount between FOLIO_REF_COUNT_LIMIT - k and
-FOLIO_REF_COUNT_LIMIT. The read stage succeeds and fills the refcount up to
-the limit. The send then fails:
-
-skb_append_pagefrags()
-  try_get_page() fails, returns -EFAULT
-skb_splice_from_iter()
-  iov_iter_revert(), returns -EFAULT or a short count
-tcp_sendmsg_locked()
-  returns a short count
-svc_tcp_sendto()
-	if (sent < 0 || sent != (xdr->len + sizeof(marker)))
-		goto out_close;
-    ...
-	svc_xprt_deferred_close(xprt);
-
-This closes the connection together with every other RPC in flight on it.
-The client reconnects and retransmits the same READ. Nothing clears the
-condition, so the cycle repeats for as long as the refcount stays in that
-window.
-
-Mappings are checked against the same limit. An unprivileged user can
-therefore put the count in that window by mapping until refused and then
-unmapping a few pages.
-
-Before this patch the send succeeded. At or above FOLIO_REF_COUNT_LIMIT, the
-pipe-stage check makes nfsd return an NFS read error rather than close the
-connection.
-
-The commit message says:
-
-    The only caller, skb_splice_from_iter(), handles that.
-
-For sunrpc, though, the error ends in connection teardown, and nothing falls
-back to copying the data into frags. Would a copy fallback be better here,
-or is the teardown intended?
-
->  		skb_zcopy_downgrade_managed(skb);
-> -		get_page(page);
->  		skb_fill_page_desc_noacc(skb, i, page, offset, size);
->  	} else {
->  		return -EMSGSIZE;
 
 [ ... ]
+
+> @@ -3284,7 +3294,9 @@ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
+>  
+>  /*
+>   * Map data from the skb to a pipe. Should handle both the linear part,
+> - * the fragments, and the frag list.
+> + * the fragments, and the frag list. Returns the number of bytes spliced,
+> + * or an error if we could not splice anything because we could not take
+> + * a page reference.
+>   */
+
+[Severity: Low]
+This isn't a bug, but is this return description complete?
+
+When spd.nr_pages is non-zero, skb_splice_bits() returns whatever
+splice_to_pipe() returns. splice_to_pipe() in fs/splice.c can fail for
+reasons that have nothing to do with page references:
+
+	if (unlikely(!pipe->readers)) {
+		send_sig(SIGPIPE, current, 0);
+		ret = -EPIPE;
+		goto out;
+	}
+	...
+	if (!ret)
+		ret = -EAGAIN;
+
+The reverse case also exists. If linear_to_page() fails in
+spd_fill_page(), nothing gets spliced, yet skb_splice_bits() returns 0
+and not an error.
+
+Could the comment also mention the -EPIPE and -EAGAIN cases that come
+from splice_to_pipe()?
+
+>  int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
+>  		    struct pipe_inode_info *pipe, unsigned int tlen,
+> @@ -3299,14 +3311,14 @@ int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
+>  		.ops = &default_pipe_buf_ops,
+>  		.spd_release = sock_spd_release,
+>  	};
+> -	int ret = 0;
+> +	int ret;
+>  
+> -	__skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk);
+> +	ret = __skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk);
+>  
+>  	if (spd.nr_pages)
+> -		ret = splice_to_pipe(pipe, &spd);
+> -
+> -	return ret;
+> +		return splice_to_pipe(pipe, &spd);
+> +	/* Returning 0 would make callers report EOF. */
+> +	return ret < 0 ? ret : 0;
+
+[Severity: Medium]
+This is a pre-existing issue, not one introduced by this patch. Can the
+spurious EOF that this new comment describes still happen when
+linear_to_page() fails?
+
+When skb_head_is_locked() is true (a kmalloc'ed head or a cloned skb),
+spd_fill_page() goes through linear_to_page(). An allocation failure
+there returns a positive value, not a negative errno:
+
+net/core/skbuff.c:linear_to_page() {
+	...
+	if (!sk_page_frag_refill(sk, pfrag))
+		return NULL;
+	...
+}
+
+net/core/skbuff.c:spd_fill_page() {
+	...
+	if (linear) {
+		page = linear_to_page(page, len, &offset, sk);
+		if (!page)
+			return true;
+	}
+	...
+}
+
+That 1 is passed up through __splice_segment() and __skb_splice_bits().
+With spd.nr_pages == 0, skb_splice_bits() then returns 0 here.
+
+The callers treat the 0 as end of stream even though data is still
+queued:
+
+  - unix_stream_read_generic() adds a chunk of 0, breaks because
+    unix_skb_len(skb) is non-zero, and returns 0.
+  - tcp_splice_read() breaks with ret 0 although the receive queue is
+    not empty.
+  - kcm_splice_read() and tls_sw_splice_read() return 0 directly.
+
+The old code also returned 0 in this case. Hitting it needs severe
+memory pressure, where sk_page_frag_refill() fails both the high-order
+and the order-0 allocation.
+
+Would it make sense for spd_fill_page() to return a negative errno such
+as -ENOMEM when linear_to_page() fails? That would send it down the same
+error path as the try_get_page() failure.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261118-skb_refcount_overflow-v1-0-5551b4954c3f%40kernel.org
