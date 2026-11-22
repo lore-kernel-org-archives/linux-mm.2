@@ -1,88 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643A8606A32A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B27606A32C
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LAiB2BDW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QFaCXoo1
 Received: by kanga.kvack.org (Postfix)
-	id 66E566B05B0; Sat, 21 Nov 2026 20:57:08 -0500 (EST)
+	id 0088C6B05B2; Sat, 21 Nov 2026 20:58:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 645D56B05B1; Sat, 21 Nov 2026 20:57:08 -0500 (EST)
+	id EFBC96B05B3; Sat, 21 Nov 2026 20:58:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55B4E6B05B2; Sat, 21 Nov 2026 20:57:08 -0500 (EST)
+	id E386F6B05B4; Sat, 21 Nov 2026 20:58:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 31AB26B05B0
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:57:08 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C257140634
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:57:07 +0000 (UTC)
-X-FDA: 85461092094.22.82D1EF6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id ECAEE100005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:57:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAiB2BDW;
+	by kanga.kvack.org (Postfix) with ESMTP id C44FC6B05B2
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:58:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4ED1FA81A7
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:58:48 +0000 (UTC)
+X-FDA: 85461096336.18.C5E3011
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AAB32C0003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:58:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QFaCXoo1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795312626;
-	b=zA3E5/xBet4UikExRI5Nn6zgSWVwnRxCjWZdEirhNjNz/BEurzA3aDTDPdyXcv+nHrOctE
-	LN5vUMP5uZHLAX2JFheXsxA9GFVYQ7QBbDmWup2dScfH+D5f4LqqOZUFs0g1WqgfApbVcc
-	QbEGW3aYCPm8aZ6zDZUhflBF3h/092I=
+	t=1795312726;
+	b=n9duhbGBeuRYU/cM8wK+gocSgkLHvb7ATBwHBNvaC614g/iZp6LEd85CVTMyIBkN1e2vGT
+	PhbDsxncuveR017UAaq9lzKhOwErRTbXG4tKpvgzDNf+9s3ZFbXRnwIW/d9J1xSX6HyBSQ
+	ZpYuVrAM+JIvX89pqoeNx/SnSAc3GJQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795312626;
+	s=arc-20220608; t=1795312726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/FyTmAO6EftrsMjGyxjzlp9mWuafpHrb9mW48T2Oss=;
-	b=G0gA80o/6SdlqblbtK1vljrqGDbPxuoEeBU5/JfC/JgWtHNFbO8pwlygEzhiWIRrsblF3b
-	G/mGGyZSzG9J9F1imVIbwGpnK6bHCpbuOHcLsHrmwfAolClWoyayrM5vrKL5+iwyzhguc3
-	VMybrwHqhc946moWNCpe2uVInxELSyk=
+	bh=my1JKAIGP65RNH2BdYIO2cHSch4Ja97YSaehc+euNFY=;
+	b=eZUKdwT7Suv2UvOYge1rlb91xEtaR5d2h1RZA2QKMRhUTi5JNB4Eipqmxh7js+/jpsMRDK
+	BcZ/mlJdvae66A1x/D/3dnjweW9WJCCaCoB4YPkXCJNin9Vj0R2GCYY696NJyThtURh9ml
+	ek6Hzebc8/hBIU0PtraKdhQ0n/RPjgk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAiB2BDW;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QFaCXoo1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 821D160EF8;
-	Sun, 22 Nov 2026 01:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C01F000C6;
-	Sun, 22 Nov 2026 01:57:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id E7AD2418A9;
+	Sun, 22 Nov 2026 01:58:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 4C08B1F000C0;
+	Sun, 22 Nov 2026 01:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795312625;
-	bh=6/FyTmAO6EftrsMjGyxjzlp9mWuafpHrb9mW48T2Oss=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=LAiB2BDWU3KDfnCXLYfa7ih/CTFK11tTVZY3+hcQ/8vJmjiSoq/EV3Fgt7hrC/RwN
-	 +EqFbeoqKBYoGn9x471Yg5WTU7aY5g9GaaSEAB3NB2KflPUI5KhBRuyCsEhd5qNQLP
-	 FoUZPTG9ZHGlbSGQoFSZSRGIgo9FUgvcF+qWFzrw5lnwZs86zK0kAG6+8hOTAaEf06
-	 sAS9sL/Qw2Nmb4LR5oTfDBR5Sf9b+shshushM71J23frttECA+gOdPvLONAVYmyXhO
-	 satqdnxwF+LliRSVYYpzkQ8NJpepILIsfD5r6Nliu9SfNY85l+4YcgAEAEOSkN367Y
-	 VPkKumdQpdPrQ==
-Content-Type: multipart/mixed; boundary="===============6512166407887190360=="
+	s=k20260515; t=1795312725;
+	bh=my1JKAIGP65RNH2BdYIO2cHSch4Ja97YSaehc+euNFY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QFaCXoo1RFl2e3MqcAATZcvWUBppaOK/u4W9/JRBcAkZTZdBf5NNHKDAP0XVFq2UB
+	 18NyeT4o7uDpW+GnmmzI+4F6b4waTXBsZLCb5Oc5D078Fi5KZpOmNE5DRLdoF99CyC
+	 fwmNjLEdakpaJ0FjhWNtTGhuldX628gpogHz2YrFO3V/F2JTjJYRYykIAz6ZKvEbdf
+	 Eq4Aa9/TFt/ibItvOY1ZqmLL6sInT0GslX+yZWal1rDzhJqeSDUudf9mp7kJ/4VXuy
+	 Yy1eAUnby1UT8qqZtlLSU/6Nmx51AhaQmuwK2mxrpWKp33SvdrM2vbo+hOz7jV/vBA
+	 SCSWiC32vxOXg==
+Date: Sun, 22 Nov 2026 03:58:41 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: bpf@vger.kernel.org, containers@lists.linux.dev,
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Aleksa Sarai <aleksa@amutable.com>,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Giuseppe Scrivano <giuseppe@scrivano.org>,
+	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
+	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	KP Singh <kpsingh@kernel.org>,
+	Lennart Poettering <lennart@poettering.net>,
+	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v6 00/26] userland: Userland containers
+Message-ID: <awJMUf_Upp_ilYPe@kernel.org>
+References: <20261122011809.2667684-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <3aca9b48a99eea17865184e5107f26499594cb8e7cb05923abc9cad098e24c5b@mail.kernel.org>
-In-Reply-To: <20261122011809.2667684-2-jarkko@kernel.org>
-References: <20261122011809.2667684-2-jarkko@kernel.org>
-Subject: Re: [RFC PATCH v6 01/26] userns: Factor out idmap validation and commit helpers
-From: bot+bpf-ci@kernel.org
-To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
-Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun, 22 Nov 2026 01:57:01 +0000 (UTC)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ECAEE100005
-X-Rspam-User:
-X-Stat-Signature: f7uex5pjrsnrjsrjnobp8nrkkma7fbgb
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261122011809.2667684-1-jarkko@kernel.org>
+X-Stat-Signature: 6om1i1i44yjxi9swd6wz4uubdbtcii4h
+X-Rspamd-Queue-Id: AAB32C0003
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795312625-363842
-X-HE-Meta: U2FsdGVkX1/ZxGFYOi4R84qnWpnDOJ8NH3FzbRncA4yRNfh+ijx9KXpwMgHujkoujKJnp7nX3jYNXuOMSK/AHjjviTLUQnBxADOv0tF4A3rJojbDyJefADefTdRhAbWRgOtEyB4F+7V1YabLJZSjsjyrUEr/D09KGVQcO0nK76M6UN6iSf3KcDmwzbiBB2/1kDWFOzkcJvrUCpo0z654Srwy28UhW4rBYamjsF9lRjxNe23k8+YhNkE0Z8uePp0lQejyQDZf8NrnzPp+BoSbGq5v7FLShBHuGAMay56LtBk+L9BN8bZTYu0PgAOtJDbFoqtqEyICCgIihVtRl/sNL9Ur5y1mBgQaHP3qxNnXf/ENi32Tpqst90HdN+qXrvK1uhn3KElSlucdUJgaBVvhRt2Qn/nvKaRpm+MyCOl2WwMnoDFUY93sLzB/7Xrgk0u5BwUWQMn0ixnc3rCtNgh0IVB9M7Lpbe2/qjkXdR6XQ+tDKkvdfe7Het5pT53Z3LeptwgVLDizGHVX/4AfnI2Vb+nFhxqrV8ep4EKvV7fcCMKyX7PzUVFHGxITbPkeVmQmNeRcR3sH8MLq56ukNxfeP09/SPIL5Uqgc5Qke05bZuE7ZNZI9Hldf/pHGcv5BXMmFsqSJk3hYJcS7ycMCtCUp3KGmoYDwpmPSUO6V4NU+oybMhS72qpRP+oyEGJ0sL5175Zi0us+2Jhq+2g1PaxwwJWAxu8L5O7VQ9Kp9TA26UpHHwtJeMW9GeGEV4YENge5QtMx1CK7NY8ZWImqD1eD/twSlUEQV+a2NPoSe2fi63sIKuS9DdJCeUGNucRDnj9QwvfOE+UxI5PYgw0HR8UReDH+dOtaEzxkTGeaGl2zxaONOmwn1QaXeb3ThoqLYCkosez+fJj58hT4MpNBJN5XuI7BiFfeAyGcqR7euyDlg+ztVI2qrK37pVFvOSkFulThKrD6tcWhIijdhySU1dd
- 54hKT87/
- gxdqcVGUEWCkZvzazVjWn1sfQs72XUk/usmveIdMB+E+e/b2WHoGgX8Z3s7gybHTRlwjTK+5xd3O0/ryQ0wvIIjvMgle3lABkuqC8FWxcWRNvzUKXCQk7mn2V7A+PRHtP7XMWAElsUMQwnqUY/B6BUphVacdf31+7KrsDECjAr3692DUBfIqWi5aoH/v3CaSb+ftLlhnJh8H1I3dyHe5WXUabFxREeL76EwyNWL4GCQrkBTVnFJeTyh2EuAt+pISNMNnUhG1RJ5ta1I52hOiKfO+bXs27VacqhpWnywtY4iPKDcBkdtDE3lZXdgumcss3XQ6s7Ecurs0L/Fm43JTWcP2cL9j8b89rYfRiJ/LcA/EN2X3Z50cWcVmwB2GQZ2p03sXCV3VIw1zQwBrfbdK+Am4YkSeNxhvy2jVFKePCsIZODFVjtjwjGj6j/tf+x6jwtQHlA2nixNrOYxEj5bPklkPXh9mwTnM2g4c1YCLkvaGN5CfyJNIZgTpFSD8VMfihXLtfWQewv+Dr7ww5GFO1655o1ls+KORN9oVXqkvBTBM0HHYEfZiZkUHwK63QrG8L9b3ZEiz0k0696Hv2yc9TqmgMAPX5cb0OydBEZBk0SGkGB0bY1Qe4xhLkTJkAhBBDIhFf358eMxRqaMkUjUmwUIoDBV77azOMl3XBgusMmOqOTMg=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-Rspam-User:
+X-HE-Tag: 1795312726-791877
+X-HE-Meta: U2FsdGVkX1/g9IxT1MZuLRR10hoSqCdLjgoYgyZaNCzWbfCChCah+yebzd4wEcgkj3LDfBlyYRSJz24dWJ/SYlRvgdBwp4/UXoYY3XSctRLfKRFDOxjz71HW5yCp2ecVehjjWDknzqkPqIu0bS2TAL/pXjjYO7L/XIuQ69qWbhDpMLNMbMLE+60bnzTBIIRElVHppPgML8qhTWr7Hch2I5Z8SfW4qMZ/UTjEuWfSGgbYwgrh/B1ESL9mPzEjMwjF3kK1NPPdD0jqlLe77AJmP/pxyKiS9oA5relHw+cZLWv9eVcejWiNVF2wStxjJoQPzgi9WyPCrB3OaqgI4umVuxI5joPm+DuebidRFjDBQOzZd62UXW5/+85R5kUglHpgUtGsKArxKDWm2PVa5QvapO1Sb+Lg7dInRSuE4l1jawWDQxibi8RGSasWkAyUqLjusqu8gZ78XzesPQhWBFUUazFix20xvgxGq02EusTEv7JCpFeS3WQdSuu0oBf5SoCpALafKobo5vbVh+4Xbcpnb++JrkzdF6sUDSy2vpPbFW2sYXz60xuFbVzQD9qSkmw8AIcZe7dxz7xvniWVaoG1fmFeLwNJRi2rLUV9PQa9EoV9ouL9YO++/IcyjxfK0HXsv4FDUFUOaWaZD+oScr63Wtw2uhNsk2aK5C8DMR/qLvprmLl+PHX0O3bov+7TBSlYtGlrSIF+xIoDXB3bXMvNcWtW2MC2UTJbvPCWR9pEN5n5t11o8G95vNSIT2I5h59a9/1pd9ZFM2whWPKXdnoH20bWk+RbahmohK0CD1i5uE5sUlhLmgm4MEAfCSyY+yBaQGCQp8i9hoTdOTaoTlZA+d0Iq3igkcdTnQ9ZlzV8GxSp8MibaJV3S1VUzM8V1Qk9P186Yfa75UdpOwk7no2XKhME1yQAEgDQ3bKvcUwpl7fBYV/4BsasOWpgNwb/vJ/pKUM+vVPQUGJRKXYvD2C
+ lgh/hdck
+ SR4sKPyKHPVuwfZmjuVpOFcG8jL4PjSOxi1hI8paNNOnJWwg1EO9+kYmqfUIVN+rlI7dqdwNd5znqn8lEyZog7KJlBzuA981zeuRouQPS7jhSdY9k/1MuAhc78a/kckB+Fk+AOxzU0BDx+j7GjdSAQCUB2IkJnMm/WVQPpmAwMnY8bV7nNeQ2yiTL5Z3VKq+i2ssfZsKaJl2cDOYfBE5x7m2FlkzE8jNtl+NhOcCDAPo/POAfC38lpqxkDGQNg6z5q2lOXgZl3WGybFp/wJeCYJdZXpHOc/HU22LTUpTeTCrW+zMZK/QK/FnyK5PJKNQxZ0wqTpETx5sqwA5i6K+Unnn0KeOLmHhtGijIdNgb1FLGk+xOUEFV1RuCJ5n38LnTlWoAoujwc9bfmk479/GN+hVw36dWmaWWcdVMVqhYsqRZakU0cJLxpBiwZ4wxaECVT6KfwjRNDr4PPwNNq0N4mD9ieauDl/Khjhjjzk7R3aI8v+98zan6JBpQUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,64 +115,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============6512166407887190360==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Sun, Nov 22, 2026 at 03:17:43AM +0200, Jarkko Sakkinen wrote:
+> Work on this feature started in 2025 from David Howells' container object
+> patch set [1], which I turned into a namespace for namespace roots and
+> rebuilt around that premise.
 
-> userns: Factor out idmap validation and commit helpers
+This text is out-of-date and need to be updated.
 
-TL;DR: Nit only: the smp_rmb() pairing comment in commit_new_idmap() names
-map_id_up(), which has no barrier; it should name map_id_range_up(),
-map_id_range_down() and m_start().
+To put short, this is a continuation of "Failed" and "Repeatedly" :-)
+[1]
 
-> diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
-> --- a/kernel/user_namespace.c
-> +++ b/kernel/user_namespace.c
+When I looked David's patches in 2025, I thought that while the
+packaging might be a bit unfinished the mechanics made sense to me, so
+since then I've occasionally worked on this problem (with long pauses
+in-between).
 
-[ ... ]
+The lack of embryonic state, a compact and policy-agnostic
+implementation,, the lack of weird parallel syscall API, clean
+allow-list security model (with LSM hooks) and the enablers for hotplug
+are I guess the main differentiators to the pre-existing science.
 
-> +static void commit_new_idmap(struct uid_gid_map *map,
-> +			     struct uid_gid_map *new_map)
-> +{
-> +	if (new_map->nr_extents <= UID_GID_MAP_MAX_BASE_EXTENTS) {
-> +		memcpy(map->extent, new_map->extent,
-> +		       new_map->nr_extents * sizeof(new_map->extent[0]));
-> +	} else {
-> +		map->forward = new_map->forward;
-> +		map->reverse = new_map->reverse;
-> +	}
-> +	/* Pairs with smp_rmb() in map_id_range_down() / map_id_up(). */
-                                                         ^^^^^^^^^
+I used a lot of same thinking in the life-cycle model as in SGX driver,
+which can be seen e.g., as in the staircase initialization i.e.,
+how ioctl's work and some other things. It was a reference of
+an isolated container I guess that pre-exist in mainline.
 
-This isn't a bug, but the comment doesn't match the readers that contain
-the paired smp_rmb().  map_id_up() has no barrier of its own:
+[1] https://lwn.net/Articles/1102593/
 
-    u32 map_id_up(const struct uid_gid_map *map, u32 id)
-    {
-            return map_id_range_up(map, id, 1);
-    }
-
-The barrier is in map_id_range_up(), which is also called directly (for
-example from statmount_mnt_idmap()).  The procfs reader m_start() also
-pairs with this barrier:
-
-    unsigned extents = map->nr_extents;
-    smp_rmb();
-
-Could the comment name map_id_range_down(), map_id_range_up() and
-m_start() instead?
-
-> +	smp_wmb();
-> +	map->nr_extents = new_map->nr_extents;
-> +	memset(new_map, 0, sizeof(*new_map));
-> +}
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/44972669664
---===============6512166407887190360==--
+Br, Jarkko
 
