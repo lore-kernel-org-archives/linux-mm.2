@@ -1,88 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFB5606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA7B606A683
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HuzYQ3+Z
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i8SRVkQV
 Received: by kanga.kvack.org (Postfix)
-	id CF4C26B05B6; Sat, 21 Nov 2026 21:13:50 -0500 (EST)
+	id AF8FC6B05B8; Sat, 21 Nov 2026 21:13:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7F886B05B7; Sat, 21 Nov 2026 21:13:50 -0500 (EST)
+	id AD1106B05B9; Sat, 21 Nov 2026 21:13:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B94CC6B05B8; Sat, 21 Nov 2026 21:13:50 -0500 (EST)
+	id A0D826B05BA; Sat, 21 Nov 2026 21:13:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 96D026B05B6
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:13:50 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 070DF160622
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:50 +0000 (UTC)
-X-FDA: 85461134220.09.91F1326
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D8256B05B8
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:13:55 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E87580616
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:55 +0000 (UTC)
+X-FDA: 85461134430.16.00DD65A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 650971C0006
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:48 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HuzYQ3+Z;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 88DAC1C0004
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:53 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8SRVkQV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795313628;
-	b=8BjfhY/c81zoE47UreAiwzejLt41YcyTCW6RK7t7dcU8cEb5ZKL9L9sFCZR2nIu4vZn5ty
-	65nRF2WMjeM73A4pBByyTUGZQTO9+jjLtumIcC8LhWDCQZGb2Qr5SnwaNqr9h9Vqj8ba/+
-	9xvFRik5hX4ac4sS6fRx+dSIc1bX53o=
+	t=1795313633;
+	b=jjmoNhj5mYBowGUYTXe0NLNGSLWLtLQMP6+L0xfOLP8KIirrxtnQvOUXoN31XT8YYW3o+N
+	RZR2xXuEleRJ2i3hzQuJV3+zaJBpk4rsDycaEwo0QKj3kacPpone4eK114283vhDx5+iCn
+	SHuTesPHchfzuz0sfHE7DoMWGWipLYc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795313628;
+	s=arc-20220608; t=1795313633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fZRJwAY0kLkmZpFTl11wk8j7FY+RcHR74PBO3B2HID8=;
-	b=iLUgXwZxCrAoptV/mOzoDWgva58on6or/gzmFiGw9mNh8X77Ui8KK8uuGaALjoBr6sZ7wD
-	JcPpR+7RffkNvPzk5mPf/eTcfLPyMrrtNKIuIeupcerZfxQfr3Z8SVs9Z9fgt2u47xtZ47
-	/CxM7nU/PcEwsS8SXSi0auC6c59GMBw=
+	bh=9QITS/QYva23ozmEaxii1esTMO7DrH16wtmaozkU9sY=;
+	b=PAPl7C3Uq5j3+0CaoDW9iCg10Nm9bbll8vcMpXIHoG6aM3Z+Pda7PpM1c7ivAZhC/UU8iC
+	iPdvgI7V9pnKjukyUyxKJnEOf0vxU+GBJAZ7rnnyT9jfyhpdhiCEVysk66LjOHUKgKDvod
+	C0V7WWfPte1RkfGm9yuDmCokgDNNlvs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HuzYQ3+Z;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8SRVkQV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 93A4D4372A;
-	Sun, 22 Nov 2026 02:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3081F000CA;
-	Sun, 22 Nov 2026 02:13:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E53EF45968;
+	Sun, 22 Nov 2026 02:13:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6314E1F008B2;
+	Sun, 22 Nov 2026 02:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795313627;
-	bh=fZRJwAY0kLkmZpFTl11wk8j7FY+RcHR74PBO3B2HID8=;
+	s=k20260515; t=1795313632;
+	bh=9QITS/QYva23ozmEaxii1esTMO7DrH16wtmaozkU9sY=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=HuzYQ3+ZJ4kIQAFE0RRBLcAdMCPKIzlkXHrLV4idMRn0R4difRDbB9pQRXrJGFSut
-	 drbvK8Hxjyw0a7PVuHsUeBe8N4ajEJ3dwCOOa0P7S1hinBUW56jo2uIcrmCQwuWDR6
-	 I6XQiDO1LhCvaQF8w+GKOEYGmNoHAaQ+/nxIvG65kJiY9Isl1nJrjR2Tim1IdXxkWD
-	 LEqcqG5WovbXGTZ1ryNg/VsTYR6GAgWmx1XdPJzxoo6bZsZYsS8/c3q8JbKwvX3S4T
-	 oQNTD6qfb+ev+ZgDKyIAJDjVNHujT0e7Eyt3OqFOka9tlHd4GAFYSKWMbP5RrsD9lk
-	 E0xsl2WH3feww==
-Content-Type: multipart/mixed; boundary="===============6920277758331287056=="
+	b=i8SRVkQVfMVUSOaeRqW/22HFBTQge0lZRo7DxOFvUpD9ypGTq29MRAjHTk6SHaO89
+	 u6EN/oWjsUlxlOanYJ9itHDIlKZ5neQql1kEbhKM2sTHIM6+d/j2Nz0pU22v4W5rcD
+	 dhmBZuK0OxEL6Y29d3M28n8tCwoGAx4AmH9KulxtBm1TMFDESvMWXeDgVmShNOY4hU
+	 DCL37N7yglLu0K3JedUaPAHu2eihppaY6yfB1mP+5nlrj3yhBTjRycd3H7d9JGAS9Y
+	 qNEkFhW7PWH6LDeM95M0kf0klzOjG2Tb460O6p+++5cQ3Vg0mGhjFnJzxLIv4+sZaC
+	 XCLLsPM0e3Wzg==
+Content-Type: multipart/mixed; boundary="===============0836080936566238576=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <1d998074e046fc55d51361a3f7d642ab1405b4ec87d9bcfe315f717fcf52e456@mail.kernel.org>
-In-Reply-To: <20261122011809.2667684-14-jarkko@kernel.org>
-References: <20261122011809.2667684-14-jarkko@kernel.org>
-Subject: Re: [RFC PATCH v6 13/26] userland: Add USERLAND_GET_NSFD ioctl
+Message-Id: <fac042dcb631adc09d227a590d8790c36bf5aa71a7f047f7c07feef2cf8abc93@mail.kernel.org>
+In-Reply-To: <20261122011809.2667684-3-jarkko@kernel.org>
+References: <20261122011809.2667684-3-jarkko@kernel.org>
+Subject: Re: [RFC PATCH v6 02/26] userns: Add userns_set_idmap() system call
 From: bot+bpf-ci@kernel.org
 To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
 Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun, 22 Nov 2026 02:13:43 +0000 (UTC)
+Date: Sun, 22 Nov 2026 02:13:49 +0000 (UTC)
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 650971C0006
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: kasj8omfnwh3odjzwpqst3ao3oporud7
-X-HE-Tag: 1795313628-130957
-X-HE-Meta: U2FsdGVkX18EVi46cS2n7IUJc0O/zdSWz7yuaDQXWJzMD+YmaqcqMo3Or6xkXNajZHFSG42qr1aQopzAOY9v2VBoSIpbhnm4TKlUEtyMTGFSFyCceqDf0Hfd6QPnRpxleaKVL/mxQJBq6ZNkdr6PB+18AaNq/Ao/zIgXNwrsEMd47IZBLHflgnr/62SgevktkD6jrc3oihOzYsU2/KBzvuXt3sKW7hQhZNSqMdrwz8ybDApa2FzmzT2eZxpp1nBs1p2T3tEK9f9SZpYu1YR4Rm2AuuoLhVB/XxDRP8jBL3RBVUMLOnvjf3LfOxq76tNf/bYsuszOiPlIcjR2JCFfZiF0J6DLoKWDUSFIAfeliBkVzfGXlH/DLcGzyZ7xHN0mlB3Z8Ka2yq3jooN73TZblCZ+x2oo8RM/6qHZrqeNBp+tU828JNYBxCRitTNg996hjAEEJHj3YWsGQ4BP2h+Cc68c/J58Z30ymHJAzi1LUGIIlUJHhrcoX3lFHcbQvkEpMYhidJ3l2w0IILMlfNRppUwVzjqRJyVukJ0z5A/BJY2KQ5/cnvJUdFCqlVKAvxYKim1BcI0SAK+0U25HdJYTZIZjjsobCgZDwgEP5CJWY25+fHDGDLvU2MUYMSWC4iMls4nTSOpOMhzsARzLRtLF41Ftq6I33edQ+2Z3xEhdVsNmemF8h9toohCU5Jc1YYJ7sbfw4IS/w1hw6FsigFITxwIoN52PugluYzsgNgsPzYXncJW+FRVhO5IYTr9Z3XCe76MYOE7C3xMTkNaHcrundWk6t/FUh2VlgkNXwNW6+j0u/opGGb2VWNgqAvDYb9FkXUOC0JD0FtOeOs1roTTL7uH7R2jpMAlJQSblPA4q1EeVV/QASmQKhrj+8QyXj0WehWXmmXtHIOGlBluCGRGLSVTwyOXDiYBBIJGvL+A0BadpOeKO3zqGXYSOu9NiCN1xTm2YqtBa/kt/wq6qIJX
- 5pZ1PrOG
- SkfbkBbeJoHjcnrdbfkm7Xf8j7OkHH0FFXsUdHeqFhD/Y1I+F2R7k75t+rWCUdH2YBahT2ghVBGJ7KFtsf7AuJWQjuMrUzBECfSO7wQSa2SlfxQEsmiCx+bi/TcxqfjzReG3Ee5qx9XzD0WvXKP5Q7T7VdoIE+DQw5EHefhyEUBTGF9wjx0mIGc1pSNrU/pZ8adtiLqEVRPfAY/U5P23c9RrfpH1rqHz3EIJ8/rrn33IlAiEnXFauQ8Epgl7O0y8h5AxOnhQQdbZ75S7sXU7UaD7gcffkJ3h4uwtjUM6X2ykxxGbU8u0p1V4rrmMV3d29lyTWE28BzesnGHWb1gm4ZPy/ZoxfJLCsa/s8M+LGdoFA1Cpn4gltpyI6iXL4vfvErWtkx4ZevXy2RQDzKYPGFPwgeedrdm63IpHIL3evnunBJ9cktjNvS7F1eWlzDxwTqSobOgF8Z75OX8+es7D8sP6rTKTr6qZxUBf07JtN1kOIaSGYXrGh1qC/KYikndFqRyfdNV1RrxriyFXF/FJgdfcbgWLksvmo+rJ7mssnarjPO6WeeAxRJ2eFQOpsDfLN9aFqx/jy8eEx7Sc/pmmzbXmj5MZ4pxO8IlIztPl/BXBZBdnKQ4QE3NpXsSQ/UL4gz6Whzbd8PWV+E7hK+hVJcDoiw+jxJHHXRvkQWDRwFnZ5YfkRKESZ6mwhO3qoGlsFkfAIzuEc3N/sSvqHRRAwSmDSbLRYNYrsy13C
+X-Rspamd-Queue-Id: 88DAC1C0004
+X-Stat-Signature: o5ecuj77sw3rfbugw9sbbpwt37xodnpd
+X-HE-Tag: 1795313633-346987
+X-HE-Meta: U2FsdGVkX1/DVSIOfA8koN+jIqdaRuKbcX0HM66xOMkWqrsGgq/h3HAg6awqQSTrF6ixX+Tzb0/B3tMWrcDmYofFj4YpUJtXzNTwLX4Kcp6kh16t6x51d95D1RJcoyZIx3xHgiQxQosKiDKOaS5eAPy8L6vxVBHOKunCjBVtokoaMo3LQQXcSUoIuVzr/c7keQ+99wCuDKDMuFze34PmmOn/rU03n8DKLYCYVt0yS72c0VIFUylVM1AdNZuWuEnc6fWNpCFrao3OaT62Gai4dHMlH3uQ533MCn6f6oncMPNfvRvG1TXkv15xsBGxVwquRlV14LsCF/5PUaAQgNonMMYU/JXiSiJ3+R0/+XyfulcSwHfiyXvbPJvs408QaftPyML7j/by2DH3Zw0Qfovvgu7yFHmfm7YtHuM29Cqcm6M57KqfxmEkT2X3w2yVi0tEND8VUBIpH/x/73VsR0K4WOhFCx9NuH2ULCbXuYDY3AGGURolI86Gt75o3bO0wDfhiF+81FsZMiSs4bc6x16ZYfMdMp7bVMOVDXhmzpeWf1BZDhas85CUOzqtT6YMDckK/RmD4l1H9IDYxYl/ncXHxBn37UJhOxxDwuQcED22xCq01N/bHn2uP0/QTpwcPe8unCi13xsCd0HLF6tNc1CQLh408LvcjfTDjsI88QaESXoJw19yMpv46fd38341zp7Co1b5dI0XYunj5/AdjEz5Flyq+OjBWSkHgi5/VvfwdKxRiPgxPG3bfztYNAxKADv+Xv3h/mG0XWXccNVyTDdii5sAkhBT4yN2rMDTr11r72X40B9dOtrAji554dlB8+TEWPH9eBz9PU3kuPN7mxOT9kyV0O6zVfMN1oXhF1RGxYgQ7QTXgWQolP/UlvJtvvJuT32rTVgmIXCRHyg/YDILGFMTn/VUC2b+yjq/CHgIYMUaIV+bCqSdpDqpEm2vXn8VQDtXXCxNXuMoAbXlD9C
+ 1ss9xVk4
+ cUesfAqstKnqt18c3KDEJfwsO/kx12huS+ZJZdY/lcJd9l3+tRRVQPA/t+bUZ2i/sxBb/j3xWRvc/REPh34DpV6DRioSCc/VMFV/J2Zr/LA+lbh++iC1D1wM+i/w1l9g1z8rlYI0X6XFuxAi1QzuY7IBtirZyDMdW6D33yn/9dYqUugYTpKQdV7Hjsz6eE/qDD/pVBV3Uquk63s2FuKqVeFDZqAi56VeaSCIGOz3bJ6/GQNenoJx0J9xUpb1Lb46ANWpElVwKpaxHOR3l2QauNxR3Rn7B/eN2FRSJwgCgoOuge+/Xu15BDJqRa7ujY1VK9uWUsl97VdSvZNGyvXlHZtn+Iib70vK62S89Bl1YfobpOREKxN4T4WMYCbwWzVnMzWjQpTWLsB74IjCjmTowMXmNDqemL1Ck5FTa570ZYRExrWL69lWlfCkxV1UXPTtoOUlnqY7Y2Ad40zwfwGXlhysMlUs1EScOV6WqwYSf+/g4hbAm2fvG0xjZCw8TygyOG1+G+NmsUZixpCFOjCDiV3Rz7+5eVl2Jw3l66wbF7mqSLgJdf8r0N3cqVpviOiu7X3G4DGr0qzIEyji3ElpIPFN3yHoHjJkO8gwZumFZd4gVnQgmOZmBmzCO3KwCWiRYc1zaQRX+LOz2UArofWU214Sh9SOuGJ7aEZlJQieCIPnNGOcV9es6NmIO20Gborm+pgCGyCgIlbn1cTwVE7PSS2vdXUjLpPb4AHAh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,80 +91,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============6920277758331287056==
+--===============0836080936566238576==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> userland: Add USERLAND_GET_NSFD ioctl
+> userns: Add userns_set_idmap() system call
 
-TL;DR: userland->lock is taken with irqs enabled but, once
-clone3(CLONE_INTO_USERLAND) lands later in the series, also under siglock; a
-possible deadlock lockdep would report. Latent at this commit.
+TL;DR: Design nit only: the new idmap permission checks in userns_set_idmap()
+seem to duplicate existing new_idmap_permitted()/verify_root_map() logic; the
+review suggests a shared helper. No bug is claimed.
 
-> diff --git a/kernel/userland.c b/kernel/userland.c
-> --- a/kernel/userland.c
-> +++ b/kernel/userland.c
+> diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
+> --- a/kernel/user_namespace.c
+> +++ b/kernel/user_namespace.c
 
 [ ... ]
 
-> +static long userland_get_nsfd(struct userland *userland, unsigned long nstype)
+> +static bool idmap_maps_root(const struct uid_gid_map *new_map)
 > +{
+> +	unsigned int idx;
+> +
+> +	for (idx = 0; idx < new_map->nr_extents; idx++) {
+> +		const struct uid_gid_extent *e;
+> +
+> +		if (new_map->nr_extents <= UID_GID_MAP_MAX_BASE_EXTENTS)
+> +			e = &new_map->extent[idx];
+> +		else
+> +			e = &new_map->forward[idx];
+> +		if (e->lower_first == 0)
+> +			return true;
+> +	}
+> +	return false;
+> +}
+> +
+> +static bool caller_idmap_permitted(struct user_namespace *ns, int cap_setid,
+> +				   unsigned long ns_flags,
+> +				   const struct uid_gid_map *new_map)
+> +{
+> +	const struct cred *cred = current_cred();
+> +
+> +	if (cap_setid == CAP_SETUID && idmap_maps_root(new_map)) {
 
 [ ... ]
 
-> +	scoped_guard(spinlock, &userland->lock) {
-> +		switch (nstype) {
-> +		case CLONE_NEWNS:
-> +			ns = from_mnt_ns(userland->ns->mnt_ns);
-> +			break;
+> +	if (new_map->nr_extents == 1 && new_map->extent[0].count == 1 &&
+> +	    uid_eq(ns->owner, cred->euid)) {
+> +		u32 id = new_map->extent[0].lower_first;
 
 [ ... ]
 
-Can this lock be taken with hardirqs enabled?  Later in the series,
-commit 498ccb2ffbc4 ("fork: Support CLONE_INTO_USERLAND in clone3()")
-passes args->userland to userland_copy(), and copy_process() calls it
-while holding write_lock_irq(&tasklist_lock) and
-spin_lock(&current->sighand->siglock):
+This isn't a bug, but the root-mapping loop in idmap_maps_root() and the
+single-extent unprivileged block here look like copies of the logic in
+verify_root_map() and new_idmap_permitted(), differing only in where the
+cred (current_cred() vs file->f_cred) and the setgroups flags (ns_flags
+vs ns->flags) come from.
 
-copy_process()
-  write_lock_irq(&tasklist_lock)
-  spin_lock(&current->sighand->siglock)
-  userland_copy()
-    scoped_guard(spinlock, &c->lock)
-
-siglock is hardirq-safe, since it_real_fn() reaches it through
-kill_pid_info()->lock_task_sighand() from a hard hrtimer callback.  That
-gives siglock -> userland->lock, with userland->lock taken here with
-irqs enabled, which lockdep will report and which can deadlock:
-
-CPU0
-ioctl(USERLAND_GET_NSFD, CLONE_NEWNET)
-  spin_lock(&userland->lock)        irqs still enabled
-
-CPU1
-clone3(CLONE_INTO_USERLAND)
-  copy_process()
-    write_lock_irq(&tasklist_lock)
-    spin_lock(&parent->sighand->siglock)
-    userland_copy()
-      spins on userland->lock
-
-CPU0
-hardirq: parent's ITIMER_REAL fires
-  it_real_fn()
-    lock_task_sighand(parent)       spins on siglock held by CPU1
-
-GET_NSFD has no state check for types other than CLONE_NEWPID, so it can
-run while the userland is in USERLAND_INIT or USERLAND_FORKING, at the
-same time as the bootstrapping clone.
-
-At this commit userland_copy() is still passed NULL, so this is latent
-until that later commit.  userland_release(), userland_exit() and the
-later userland_share_nsfd() take the lock the same way, and the series up
-to 942764a55437 still uses scoped_guard(spinlock, ...) at every site.
-Should these sites use spinlock_irq, or should the userland_copy()
-bookkeeping move out of the tasklist_lock/siglock section?
+Could new_idmap_permitted()/verify_root_map() and
+caller_idmap_permitted()/idmap_maps_root() share a helper that takes the
+cred and the setgroups flags, so the unprivileged single-ID rule and the
+root-mapping test are written only once?
 
 
 ---
@@ -172,5 +158,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/44972669664
---===============6920277758331287056==--
+--===============0836080936566238576==--
 
