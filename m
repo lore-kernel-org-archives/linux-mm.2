@@ -1,88 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F48606A334
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F79E606A330
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V/Zo18nh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B5JOemNw
 Received: by kanga.kvack.org (Postfix)
-	id C0A666B05B1; Sat, 21 Nov 2026 21:13:34 -0500 (EST)
+	id 26D4D6B05B2; Sat, 21 Nov 2026 21:13:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBBAF6B05B2; Sat, 21 Nov 2026 21:13:34 -0500 (EST)
+	id 21E156B05B3; Sat, 21 Nov 2026 21:13:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD1456B05B3; Sat, 21 Nov 2026 21:13:34 -0500 (EST)
+	id 134756B05B4; Sat, 21 Nov 2026 21:13:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F52B6B05B1
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:13:34 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E70A340639
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:33 +0000 (UTC)
-X-FDA: 85461133506.23.2C10E37
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E2CE26B05B2
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:13:40 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2012A0690
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:39 +0000 (UTC)
+X-FDA: 85461133758.15.13B9657
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 51F3F100003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="V/Zo18nh";
+	by imf02.hostedemail.com (Postfix) with ESMTP id 750F580004
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:13:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B5JOemNw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795313612;
-	b=GpZH4YpiWG+sHL671iyc8w+4NM8nVxQDxTrStx+72SmYS/A+e1Nk0M+8XJZoGVifxOGRZ6
-	3dROppl0Nw6pC3wQvH5mb8vHogCzcw3irWKgspDxFatXm+gs4pPmVbiAMou4cQXbTrzkQE
-	Li1jI4+xVF1B64hzqcVLPOwYs+V0udk=
+	t=1795313617;
+	b=tYWveWE+O3AIuLQPsy/2TppGYO8FNV+d7W4XW/LGBgnUXJjDBd5peB6rjV/vY4PNKWTlZR
+	SYiWGaxoVn83atRyPjDENGPSFM8tWn/fj/jiufhW71GJmscHpzjAB7zVXAcKGHq6ApyJWI
+	ixM6OPrrH1ZRKA+SzThReKa3qTvlDh4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795313612;
+	s=arc-20220608; t=1795313617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6onxn2SinNI7aDwblXFHgIt801pm4vHKztESGvGpEJI=;
-	b=yhO+NxxWfes+SkKFJYGTQ/oLa8UhddD4Nj1CLWZKyHvgw6xQQqr12WGAvtjDgEwoi5tfCO
-	9o6eMNrSat/aiIQXeXq8Q6bmuMD9C7AXRuhIwaXhdBNUWiy5Q8+nW9G2SylAe7uF6sThTw
-	h5NBLoLDuJLdoxKqbZT8QEzNPA5nVao=
+	bh=cSdr2cBdqkloDgvS8BMjQJSoyDpO64vjXYle1ikr1YQ=;
+	b=W21yu/UpLE1m3LKIE4mF4bGX6wr5tTtjzTMOgN4N1diVx1+QQ0PFp5gByXkZEisp73ji30
+	8DDrnmpSpwyrO49J+l2XklrhO/xZpjPssPZsS31p6ehEnv4F1eXiQL+nq+aJU7tGwfGFND
+	P+a85p4E4cMZRg8jLWyuGC0zX6ZeAA0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="V/Zo18nh";
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B5JOemNw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 79885455B0;
-	Sun, 22 Nov 2026 02:13:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68491F000C6;
-	Sun, 22 Nov 2026 02:13:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AE8CD402CE;
+	Sun, 22 Nov 2026 02:13:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3491F000C0;
+	Sun, 22 Nov 2026 02:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795313611;
-	bh=6onxn2SinNI7aDwblXFHgIt801pm4vHKztESGvGpEJI=;
+	s=k20260515; t=1795313616;
+	bh=cSdr2cBdqkloDgvS8BMjQJSoyDpO64vjXYle1ikr1YQ=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=V/Zo18nhbvS+GdkUZnSRduvKQP7SwU1hnOnfyDwKPrDeF9kw0HnG6Fmytp4RuPcc4
-	 HfjdoGTbczc9OOYW1q0xE+1zzoPmoit/tUtcvaC/jc8PZtJ3DParoZ8dzgaFLOkCOt
-	 96THICVwPgRWc/b8UGWlzqRA+D6MBHzOzWkVM2AYcUoe7cQYP1p5TcsL7AqVTox6cl
-	 m8NDk35Dy5mxDQz6qWa6daqB6ki8PtmASiGB+KWQJt3q2xnl+WNbTlvE3F4HZkvPcQ
-	 AvwHVxHJFcsyUwb/RkJgxHxkSeidwB7YiGU9KENXXAas4XWXe2rNgkjx0W15n/Urz1
-	 xi3VlQHaKI2TQ==
-Content-Type: multipart/mixed; boundary="===============4694831360438668141=="
+	b=B5JOemNwzbqZMdKmy8t8vqSrhW01QJnCyEIibiwaUziPQ5Sc5NQavrA2vLyp1LPBp
+	 VNQDXSAAD/P1KrEfPW77SO/Pmw9NMoJ93RjyBmmeJMkKa0QJ8aly9oZA5ofCUdn60q
+	 LFGpGstl6NI4Akc0S/XxRJINjkl2JCuUhtCX7LP21ZG/3OR7M+J4eSDQWtuBz/wCCw
+	 TiqMouXeULkeIph5i3nEqXzCAy3gLKW9e5xLmXYztgXixlP4cGqEfJ2kTvU4M/y2rz
+	 djctkzD3/xFfC+61kWTsvVp92OuRRNqHSw6aaSyhd0vkJ042MkVN4cia02bB4g2Isx
+	 x3SHdE1JpAy6Q==
+Content-Type: multipart/mixed; boundary="===============6118825193041384337=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <5bdbcf00cb4e4471bbae9999b2dd8ee652650653ac4182840c5c0d416229d7ef@mail.kernel.org>
-In-Reply-To: <20261122011809.2667684-12-jarkko@kernel.org>
-References: <20261122011809.2667684-12-jarkko@kernel.org>
-Subject: Re: [RFC PATCH v6 11/26] userland: Track init lifecycle via copy_process() and pid_namespace
+Message-Id: <5cf1f729e21c52032316bd1351ca28d6bf30e54d9ece35b6f6055c94a61e6883@mail.kernel.org>
+In-Reply-To: <20261122011809.2667684-17-jarkko@kernel.org>
+References: <20261122011809.2667684-17-jarkko@kernel.org>
+Subject: Re: [RFC PATCH v6 16/26] signal: Support userland fds in pidfd_send_signal()
 From: bot+bpf-ci@kernel.org
 To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
 Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun, 22 Nov 2026 02:13:27 +0000 (UTC)
-X-Stat-Signature: 64cx7uo6gbzyoyrnq1cc8gpn1hyn3i8e
+Date: Sun, 22 Nov 2026 02:13:33 +0000 (UTC)
 X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 51F3F100003
-X-HE-Tag: 1795313612-454058
-X-HE-Meta: U2FsdGVkX1/PY+lRQqEjxcPqR5gUnjgzAyz0HPVB3UU54RK6fBMM7emZDJUHbvgsrF7Wvmx2M2mOT3WFjVkT3Qvm4kbc+VJIr/kC2BYwvTHTVjpB9KuR+yV7vAuSDCtqQ2k0IG9DCZnuFSymVIPIrFz+uIkicpIESYKl5Dapku8mjkiUAgHWCtjArMaoL9i7tcHxmpzZ7EwpHFIPMXzLxZriMKM9aLRz1RGyfXEtr3BgYPQ53v3liI2BNbUwNJuvcLhB7lBCm712X0x1VkvEDuQIyHXFfR27KRMepzwJALO6THcLNRqBU9ifRN+ubDwLOJ16g2zLqayOcWae+s/H9yzN0YCSHbv7SLiP/9AdBapHP28d7d+cVyXqnSN4Bnd1dwItVjqsdB5FMjMYcF+Am9q7/Tch2RiytBGQsh3mJ+YOlaHPHFgFLpTcHzHvxK08YZfyv0LaG3xW1p32QhFF4tyBt9Qia9+rFkVFnU7NEqZjH6907VW4LfVoHgHXcLnoimxu6BVaBjxU8Ijao798MVbKTDUUXbN6It9ztzPvNtYbADOXb3fvUajzJXQp09IbMGh6n5L5nQ6QKDKpOdFOjD8FR6Ts+jLj5G8sIVPb6maaf9Jwuv5qSQPqLL6uhs4L1X/rKCrWX13Cwv54FV3CurIznWMC++L2ST45f40diJNcpQb9St03xHpdMmwsMTaSDKEoacyLJ8aYg/0//v+9zj2bZWlks4eHmpqbenwD7pW08jJniLSggk3ujLnT2lzDBkSjhUcx/SIqHfIKyLZwUoFiyVvmrNapL6Ujs6jF+qfZzpILEjwYmcFDTbrc8z5jqkZ+DpRwQ/2rfj8lm2CT6nmb3TNKHRsoykOtb2g6Yyiq9tdifMAnxBSrqw0vXryLnnkUAScbxVlLSnuwXvIPbmOflynpN6hfTPb0oGspnDbFp8VSxYgTRomylLSMqFHKeccvgZBsURqCxtzliQa
- sp+UnbMt
- 8rlRNPcbdHrphzcLmDvGeLKloexvw6T1WsFwyf4+D44QFnlWPNq4zmj6f3mJYhmcQsj8wb0cP+bzKZ/EEODCqVz8o+k/DqnSCdTLJrlU01lAns2R/aS0hJTbBWvH/X6Q0Yq89grtMJk9ZzDa01bQHKO65C6lVsyjhprCjyeGMs/P47FHjRFZFo20OTMSgShfeuTB0CMEpxg4uc/cPbVnDr17jorn3xIICj4uPePzXT46WqiVp7mt9NsrcG63K4dxNCwhmVwY/tl13A3JW4ja66xte48+ADf9YlkylW8WjV4oVXVm5I/oGAJHJFmDugM6hWGi2AjthGWyFu4w1LQmItU2C+ZJuSQfP6GwzcxTJHvagdoC3HzjFE1widcjZE69hHM0louuBcSBRXrZidKL1KX3AIw4NlLUFQWWh9d5NiHLYLpWe4fBH01xRscSeX4ev+SaISay7lBExEXrgR8EWMjbqFsyiN9gbpBQ6WInZZzr+hxwjQhmM4MAHj35o7YbNXRKwGPoDLjxIakIGT0E5KMrn6Uhrh5V3a4Bld18Nqydz4PZ+0vGEO481Os0u+ETBQXN0XzC5o0IMofpUJ9x8EiA0GwkDF6kxs5xSRyvjvbJEMJtx3W7Sy+Zon5ITZJHv+Ns1JhegQNKar0BBAgdqWgOk+0k0cr57TZ35vBMi/lJ7N99mcFZvVd09+RYKoFOe/XhlR9sc/QddX6A16y6aRWeJH2o1vg8uzRKJ
+X-Rspamd-Queue-Id: 750F580004
+X-Stat-Signature: hse55fbeooxs4pe3sdqmfkyb53kizt1m
+X-HE-Tag: 1795313617-368000
+X-HE-Meta: U2FsdGVkX19iTD6tIcH70A58tBcetuww5UhL/QJoNfVc+piHILItYlHfoy5tSwKUjda0lv2AVhIluCH5JtYuI1K+Sw8L3+LBKHwuQVY8Qo3wDoSHwNE+nCusCW8CD9gQMx0424tJQe5w2CzICw8rvucQ56UqQnECp8Pmo/Dd4xw+5iY2lwr/41QsuW7GwzWPCqwaiqIEAyk1q+PgdV3Ajo1fkv8CK9Zngp6U50swbtc818d/7+YZIp5f1E1J/z3IO9zl9mCUOQ2vWW12gOZJXVk39+NUbwT9qZSs9q/JWk0phPsPvPgfrpmn+S3R5w0RkN0jy7YLBt/pR+NR+QBV53kJ7vqYylxO91KfyrJmJ5uNgsuaOB/7HDPjivhabjw1y4+3C5aSkLvREWwDF4DDGWPzBlIfnMpbDQUTKF744ecjcOPRmsS/wVpah1C4C2CXbRszPMaN0481/uWeYpuMCYdbEG/6nLASXwQfCqSdicYn/Xr4bJFL0lL8C+mAUqayAP4eeEuvWIeaHQvewx+YX6OT404B1ibZPvdgz6Um4scWTW2Jg7o/MReh7bbMaxBK0pmF/WRa3FwS0oJQ/4g6AgjKm/wrdxwNiOV9v3DtF1re/l5N+FPcT/ZCRveMKyI9tkxHjTHe1C3cJ70jqQgv6Qdg8vDTf0hi6fAx1A2/GGcCyx7xjAZgelq8Fu4xogxsIDy+REW/ImnDBzHURTXqabCqfwnV4fylbQBkb/G7zfnm5ifeQYVAVimNOVUzffhLIrOe1IPPWiwQJwpmHblv/b/rERcI4sP0fnHqLHOha+Q6dgXlT0MW+5/sM677lC/PTBMNyWggosT/OXNNck6x8lL2r3arsCV7WkbBNdt2CU5Cp4tO1X+ZlIsDHf4gLklL1qLYP819tzYc0Ka3tFX/TA9mjlh4mSS2AI1JPG0IXa5ZwkgGE6NW9NE5jHyxI/qa6b2dYu/0/NYi6AnE7s6
+ 8sz3UcEW
+ t8TrC6kkchWKZ4VotU9BNdE9KFi+wY5l5n+/RzHjdeCWUuFV6H+koF/eg2twf7eD5dQTUZ39NVwo826ao+tlQOI+S7pRpj6pWFtDP77aCvElap917YgQbUkej8tsu/PW3laMYAc0ElT9S0REBq9JuTP1yFS9oSuzl+AVmefUXmpgW02ogJjuZOYTdTseboFdY7gaEFH5Rq2cCf1Kah9VBgrH9jc/iTvo1l8acRwbhLi+FvWZZx3PJ0PjTgc7lG48muv7ti7cn8r0ng5To+6Uy1k1+3XbEGZwxHmywZvfY9QlZle+1zXwaq7SarX4skr9w5blEhiDMk+8nKx4trZQE8q0Cc1VQuUj61vG7r9+7q78tDg9hDdZn6r9kaW7q3immVmTqtpQSMeDwmnKaGfY9/mq9YjtsBHZ0W2aHicXLiG+ncVRdOe4552IbNWu0DnfywLW0Uk/U+4u9cIglXQB4PY2bF2vRgWhZVM0KBQuOfG+2rE2FQu19CIYe5jgRdJMZZrU1/78f376oYh56rBhehIG/ABHQRBHGSjrlrfn5Tq+HMGYogtc9UdPcpjLOpyZ0YQwyNUp2UGEltWXQFm4e1/7CoU/4bNEA7IdjY6uPGPyaPNYPilo8exUpyF7unfRKJ9o6rEExQrnkon52SVZCBaZrRt6bptz8KTA0Z6vot/M+bYDgxPB30uWhA7b6LWiGdc33xM36TKKlQQ4HbkJCRF10z/fDi8QlilIQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,112 +91,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============4694831360438668141==
+--===============6118825193041384337==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> userland: Track init lifecycle via copy_process() and pid_namespace
+> signal: Support userland fds in pidfd_send_signal()
 
-TL;DR: userland_copy() may take c->lock inside siglock and tasklist_lock,
-while c->lock is taken with IRQs enabled elsewhere; this could trigger a
-lockdep report and a possible deadlock once CLONE_INTO_USERLAND goes live.
-
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-
-[ ... ]
-
-> @@ -2573,12 +2574,14 @@ __latent_entropy struct task_struct *copy_process(
->  		attach_pid(p, PIDTYPE_PID);
-> +		if (thread_group_leader(p))
-> +			userland_copy(p, pid, NULL);
->  		nr_threads++;
->  	}
->  	total_forks++;
->  	hlist_del_init(&delayed.node);
->  	spin_unlock(&current->sighand->siglock);
-
-[ ... ]
+TL;DR: userland_send_signal() may miss a child forked by a parent outside the
+userland's PID namespace (e.g. after setns()), so a broadcast SIGSTOP/SIGTERM
+could skip it; otherwise the commit message needs narrowing.
 
 > diff --git a/kernel/userland.c b/kernel/userland.c
 > --- a/kernel/userland.c
 > +++ b/kernel/userland.c
-> @@ -82,6 +82,49 @@ static const struct file_operations userland_fops = {
 
 [ ... ]
 
-> +void userland_copy(struct task_struct *tsk, struct pid *pid, struct userland *c)
+> +int userland_send_signal(struct file *file, int sig,
+> +			 struct siginfo __user *info, unsigned int flags)
 > +{
-> +	if (likely(!c || !is_child_reaper(pid)))
-> +		return;
+
+[ ... ]
+
+> +	scoped_guard(rcu) {
+> +		read_lock(&tasklist_lock);
+> +		idr_for_each_entry(&pid_ns->idr, pid, nr) {
+> +			struct task_struct *task = pid_task(pid, PIDTYPE_TGID);
+> +			int err;
 > +
-> +	scoped_guard(spinlock, &c->lock) {
-> +		if (c->state != USERLAND_FORKING)
-> +			return;
-> +		refcount_inc(&c->usage);
+> +			if (!task)
+> +				continue;
+> +
+> +			err = group_send_sig_info(sig, SEND_SIG_NOINFO, task,
+> +						  PIDTYPE_MAX);
 
-Can this nest c->lock inside siglock and tasklist_lock in an unsafe way?
+The commit message says the signal is delivered "once to each thread group
+including in-flight forks".  Does that hold when the forking parent is not
+a member of the userland's PID namespace?
 
-userland_copy() is called from copy_process() while tasklist_lock is held
-for write with interrupts disabled, and while current->sighand->siglock is
-held:
+The delayed multiprocess signal handling only reaches a child if the parent
+itself is in pid_ns->idr, so that group_send_sig_info(..., PIDTYPE_MAX)
+hits the parent.  A parent outside the userland can still create a member
+process, for example by calling setns() on the PID nsfd from
+USERLAND_GET_NSFD(CLONE_NEWPID) and then fork().  A later patch in this
+series, "fork: Support CLONE_INTO_USERLAND in clone3()", also lets
+subsequent callers join the running PID namespace.
 
-    attach_pid(p, PIDTYPE_PID);
-    if (thread_group_leader(p))
-        userland_copy(p, pid, NULL);
-    nr_threads++;
-    ...
-    spin_unlock(&current->sighand->siglock);
-    write_unlock_irq(&tasklist_lock);
+In that case:
 
-siglock is taken from hard interrupt context.  For example, the ITIMER_REAL
-timer uses a non-soft hrtimer, and it_real_fn() -> kill_pid_info() ->
-do_send_sig_info() -> lock_task_sighand() takes siglock in hardirq.  So
-holding siglock while acquiring c->lock records a siglock -> c->lock
-dependency.
+  parent P (outside pid_ns)          userland_send_signal()
+  copy_process()
+    alloc_pid() -> idr_replace()
+      child pid now in pid_ns->idr
+                                     read_lock(&tasklist_lock)
+                                     idr walk: pid_task(child, TGID) == NULL
+                                       -> continue (skipped)
+                                     P is not in pid_ns->idr, so it is
+                                       never signalled
+                                     read_unlock(&tasklist_lock); return 0
+    write_lock_irq(&tasklist_lock)
+    fatal_signal_pending(P) == false
+    attach_pid(p, PIDTYPE_TGID)
+  child runs without the signal
 
-Every other acquisition of c->lock in the series uses plain
-scoped_guard(spinlock, ...) with interrupts enabled: userland_release(),
-userland_exit(), and, from later commits, userland_prepare_fork(),
-userland_finish_fork(), userland_waitid(), userland_get_nsfd() and
-userland_share_nsfd().  That makes c->lock hardirq-unsafe while it is
-nested under a hardirq-safe lock, and lockdep should report "HARDIRQ-safe ->
-HARDIRQ-unsafe lock order detected" the first time a userland is
-bootstrapped on a CONFIG_PROVE_LOCKING kernel.
+The comment in copy_process() already notes "If current is not in the same
+namespace, we can't rely on fatal_signal_pending() below", and only the
+zap_pid_ns_processes() case is covered through the PIDNS_ADDING check.
 
-It also looks like a real deadlock:
-
-CPU0: a second clone3(CLONE_INTO_USERLAND) caller in
-userland_prepare_fork() (or waitid(P_USERLAND), or USERLAND_SHARE_NSFD on
-the same userland) holds c->lock with IRQs enabled.
-
-CPU1: the bootstrapping parent is in copy_process() holding tasklist_lock
-(write) and its siglock, and spins in userland_copy() on c->lock.
-
-CPU0: takes the parent's ITIMER_REAL (or a posix-timer) hrtimer interrupt,
-and it_real_fn() spins on the parent's siglock, which CPU1 holds.
-
-Neither CPU can make progress.  This looks reachable without privilege,
-since userland_open() creates its own user namespace and the caller holds
-CAP_SYS_ADMIN/CAP_SYS_CHROOT there.
-
-In this commit the call passes NULL, so userland_copy() returns early.  The
-path becomes live with 498ccb2ffbc4 ("fork: Support CLONE_INTO_USERLAND in
-clone3()"), which changes the call to userland_copy(p, pid, args->userland).
-I don't see a later commit in the series that addresses this; at 942764a55437
-every c->lock user still uses scoped_guard(spinlock, ...).
-
-Should c->lock be taken IRQ-safe everywhere (spinlock_irq/spinlock_irqsave),
-or should the FORKING->RUNNING commit happen outside the tasklist_lock and
-siglock section?
-
-> +		ns_of_pid(pid)->userland = c;
-> +		WRITE_ONCE(c->init_pid, get_pid(pid));
-> +		WRITE_ONCE(c->state, USERLAND_RUNNING);
-> +	}
-> +}
+Can a SIGSTOP, SIGTERM or SIGHUP broadcast miss a process that is being
+spawned or exec'd into the userland at the same moment?  Should the walk
+cover these entrants, or should the commit message and the DOC comment be
+narrowed to forks by member processes?
 
 
 ---
@@ -204,5 +170,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/44972669664
---===============4694831360438668141==--
+--===============6118825193041384337==--
 
