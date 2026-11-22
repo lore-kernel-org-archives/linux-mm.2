@@ -1,92 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BD3606A32A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8E8606A330
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nTRs+bQn
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eIxmltCX
 Received: by kanga.kvack.org (Postfix)
-	id 4DDCF6B05BF; Sun, 22 Nov 2026 13:45:15 -0500 (EST)
+	id 9720B6B05C0; Sun, 22 Nov 2026 13:45:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48EEE6B05C2; Sun, 22 Nov 2026 13:45:15 -0500 (EST)
+	id 922FD6B05C2; Sun, 22 Nov 2026 13:45:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37C956B05C3; Sun, 22 Nov 2026 13:45:15 -0500 (EST)
+	id 839356B05C3; Sun, 22 Nov 2026 13:45:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E7A76B05BF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:45:15 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 908591A0710
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:11 +0000 (UTC)
-X-FDA: 85463632422.16.B3AB789
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CFE25120005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=nTRs+bQn;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4414C6B05C0
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:45:17 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C614A073D
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:16 +0000 (UTC)
+X-FDA: 85463632632.05.79378B7
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DBD411A000A
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=eIxmltCX;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of 3NDgDawoKCBE0Ay5BxyA54x55x2v.t532z4BE-331Crt1.58x@flex--jthoughton.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3NDgDawoKCBE0Ay5BxyA54x55x2v.t532z4BE-331Crt1.58x@flex--jthoughton.bounces.google.com
+	spf=pass (imf19.hostedemail.com: domain of 3OTgDawoKCBY5F3AG23FA92AA270.yA8749GJ-886Hwy6.AD2@flex--jthoughton.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3OTgDawoKCBY5F3AG23FA92AA270.yA8749GJ-886Hwy6.AD2@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795373109;
-	b=SfxndlBZEwpvPAepp41Gkudu9iIvN5cC753CXBiwI6nngme8voREfWwAof5/aohMBW0kxK
-	QL8ZMt5hc80PKZs8l60q9c9WrG5PBpQLYJPAu/tZSsNojgFfKU9ZuQD1uENA1AM1siuneS
-	hyEhKEysED0VI0Yi7LQART1tlLRUP8o=
+	t=1795373115;
+	b=CuZkClm4alb3w9z3+mVTPBAB3LII+eDz/MiTUnA+aLR57iqZu7f3BxRSv8aIyMgapH/HW0
+	1B4rlD4MRlVigsaO4sy28E2JSUE/ScSuzJRrxgtLbR3tL9ToLGgmp4wqByFb0Gq13hxH92
+	sJYair6QkXHCd5c1SfCUjOUqODxZfmc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795373109;
+	s=arc-20220608; t=1795373115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4UO6lsBJ7c54oQdvfF5gDh+eGlBppWPfqiUT6SIqJiU=;
-	b=ryINcrD5uMXiVtXxVuT3nRlkLvQRula+iVH7DGwLJnc+oyN2+UKLxx+5UYACNpFiXiuEOa
-	Rm4LWBOd4SY9zLYw0iC9w5ejk5jyY7/yy38RaBrheEWPDbRLfV7zuk8inzK3O6T6yCbjBd
-	kJvCVe3pFweH86XN1u6xUZl7dGWuUZs=
+	bh=TxPlxxAqJE3tW6UmldmaY6HGp5vlDJN47buBYWjQlQE=;
+	b=0XSrArjTYydIKE5Xyz96vuShQSU9rG8f+34d3sQxe20gkfk8SoVXoH2eRRq/aXc10gvvU7
+	P/JDF6kTpIRACmS4yXllxaYOmVBa3aeRBnhQqJa4DAGt8L9Uq41921OBYafLqAgg9GZng1
+	iLO7P2Vi7skVDGDaSsXSVJefjqo1KSE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=nTRs+bQn;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=eIxmltCX;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of 3NDgDawoKCBE0Ay5BxyA54x55x2v.t532z4BE-331Crt1.58x@flex--jthoughton.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3NDgDawoKCBE0Ay5BxyA54x55x2v.t532z4BE-331Crt1.58x@flex--jthoughton.bounces.google.com
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b18165dc53so3084915a91.3
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:09 -0800 (PST)
+	spf=pass (imf19.hostedemail.com: domain of 3OTgDawoKCBY5F3AG23FA92AA270.yA8749GJ-886Hwy6.AD2@flex--jthoughton.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3OTgDawoKCBY5F3AG23FA92AA270.yA8749GJ-886Hwy6.AD2@flex--jthoughton.bounces.google.com
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ed08904845so37289275ad.3
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795373109; x=1795977909; darn=kvack.org;
+        d=google.com; s=20260707; t=1795373114; x=1795977914; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4UO6lsBJ7c54oQdvfF5gDh+eGlBppWPfqiUT6SIqJiU=;
-        b=nTRs+bQnN8Mxo6DNjb8BUjDZfuTYtuCksPjRW2bLv+KYtQglbex6cyymMOFuonnhxK
-         jQKVfIzJvdp9WBuvpaw2DYiyfPlTWEau4qhAOUVrASx0xHSmNLnlcW8dCjAVD2wDfTch
-         rqCNefzxbPBZ0T6nt6RHMYpubv9yBSGvJiFMafrW3NpwwgMdh+/X8lq1p0dDxCVV4rgt
-         jazaN37nNvhW8FsMk05cjzdds8LIp1yYcKJmYexapbsMxFdn/b/h74pwiu9RqvvSuCrG
-         EOA3doAYizl9V+02FSCjsQxlxliVX/Q7eLfND/g2ZZCCHSBmzhewCM7+NOP8NbfzlLKM
-         eO3A==
+        bh=TxPlxxAqJE3tW6UmldmaY6HGp5vlDJN47buBYWjQlQE=;
+        b=eIxmltCXPU1Qb0WkfGbYEbmauBTZZmY/HmKhQkm5Ok43BxIv95NNrY0vW12+hRorWm
+         LcCpnEEncnFZPzNBBNWkLbR97SZs82fsQuTl5eBuaqP1RDjJOTw6N9IDnG8C2g94pSE4
+         86f/+jxRQkRQHhl97B5zlcjJX/dgyoMJ6NJI2Aa5zFYiabglDN8ZhAzv4eCtAnUu8XAZ
+         nW40T7VniRKJf7TLdHZYMY7dtb/ogT3uvuiPOPLWFX8pB26GuwULrRxDEvFVwcX3YwU9
+         n6HNYQ+IlRwMjtP6Gy+QKUrG9NGmXV83WkrDLrGC3ZBFOQsBbnU0dUWdpmJMp8P8CLso
+         BSxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795373109; x=1795977909;
+        d=1e100.net; s=20260707; t=1795373114; x=1795977914;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4UO6lsBJ7c54oQdvfF5gDh+eGlBppWPfqiUT6SIqJiU=;
-        b=nlk718P14FATqhLX23rUAQB6BlBpZrx7Un9zKS54J+Uz1J9gd+i7lcrThP0Pp0QBlL
-         4rJ/5KNuCqBShdpC7e/4ChycWQmPQKbgYMITxwLYxHDqHoqv+cxPagKChb2jcQCtRv/p
-         9MANkAXHWMqYy2zbxmEk8qWLihuVraF3zwpc15oeZ/byBWGsz44wja0NoyfpMdjyXZV6
-         /YORka9a7QB/zF9nxXFVBHHDXoJtd+Qe3J2IgIxDgeIZsDu0iLcZxFf8zQDbPEFrDQXQ
-         df2z0X64Ot8t2qwOQpwpc57nw76dtjfCS7FHRy9YefTcsAJVJ79HJvi6SMH4OyKDTtLF
-         WqDA==
-X-Forwarded-Encrypted: i=1; AL+hErFMelDHnVFUrWyN+dG98aQ1vfUPsBker5EKCGpNtKEtO9cx8Qa01AQosniRq6qmuwEYYe91LSGFbA==@kvack.org
-X-Gm-Message-State: APuU4Z+pWH8pnhxco1lLZ+nLTPWd1vWIeTXGNq2sJFhpArrodNaMdF9Q
-	1qzgUDH3BYrwwcoIj0KJj5KKoO3uoKCOMbwoqRqV7qwJossp5/yu0i1n6Px3goobQevy8aAOXUx
-	pUK7LTpjDaRtAqAmDKmXl/A==
-X-Received: from pjbie6.prod.google.com ([2002:a17:90b:4006:b0:3b3:c164:f1d8])
+        bh=TxPlxxAqJE3tW6UmldmaY6HGp5vlDJN47buBYWjQlQE=;
+        b=c0y/fyyhvj61NVP7c+sI/jTqkzU/IYncyZvl0UtjyWOeaILzg8lu8vISeT7HIysSml
+         xkDotit5lh3FxWj3sa1nUsGbF42bjQzHPC6G0pXBhYDL2MxaL8NeoC4O9DqjwMcqzvhR
+         ZZfhxP1i/gdm4KUe2Kt1HdNjX8MnpQuV/3fTh2wExP/t/UUJPrKHt8Ik3YwDlH3BT5UH
+         VH9sw6AHCAXGw1XosXeDK6eqFwGgHo2SZsjlfVrFQn0f7LHCOVpAVPT+JwcbMb7N/MUG
+         kC8EGaZC9lJNEk71r1ekiqlK1bL9zlilwBQ8v2CnBHmI2YqX7eSrIDdjnl1NJIqWCtOY
+         51Pg==
+X-Forwarded-Encrypted: i=1; AL+hErEBeikpW2TBMMU4plMFsKgH2H9IXLaLCWWimZQNANlzTRwgihPB87YFWr0PVKR1He3MPg8RE4Z+fA==@kvack.org
+X-Gm-Message-State: APuU4Z88AEDtZi1ktJ7EuIGYjFcepJOQf4bU9nMMGDhbehFPg8tBSzOX
+	ZTTgg3dYmMJyBI23SztTFVe01YDUiXvPekxxftttL5fYhALcsdmaJkjt5maCDOH0AB9Qi90KPYc
+	YqIWmTp0WmrNqObKKBiA6aw==
+X-Received: from plfn5.prod.google.com ([2002:a17:902:e545:b0:2ef:d037:6013])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:17cb:b0:3b1:3598:f881 with SMTP id 98e67ed59e1d1-3b41cb20b9amr8960448a91.53.1795373108395;
- Sun, 22 Nov 2026 10:45:08 -0800 (PST)
-Date: Sun, 22 Nov 2026 18:44:43 +0000
+ 2002:a17:902:d2cf:b0:2f0:25ea:8fb3 with SMTP id d9443c01a7336-2f03efb1073mr100873735ad.1.1795373113358;
+ Sun, 22 Nov 2026 10:45:13 -0800 (PST)
+Date: Sun, 22 Nov 2026 18:44:47 +0000
 In-Reply-To: <20261122184453.2668189-1-jthoughton@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261122184453.2668189-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261122184453.2668189-10-jthoughton@google.com>
-Subject: [PATCH v3 09/19] arm64: Add bbm_through_af capability
+Message-ID: <20261122184453.2668189-14-jthoughton@google.com>
+Subject: [PATCH v3 13/19] hugetlb_vmemmap: Add fault injection for in-place
+ vmemmap PTE updates
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -99,19 +100,19 @@ Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Nikos Nikoleris <nikos.nikoleris@a
 	James Houghton <jthoughton@google.com>, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 9xf3up6f99u5yehgqotzq5jkbj51drwa
+X-Stat-Signature: isnsj7r4mkrym1k83cbizx9smhirk9ik
 X-Rspam-User:
-X-Rspamd-Queue-Id: CFE25120005
+X-Rspamd-Queue-Id: DBD411A000A
 X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795373109-271652
-X-HE-Meta: U2FsdGVkX18pDI/TMMpaLCS4fHs2zHLutVirQ7DPZSAXB87FR4TVOkhdT8FqPuMmYGyWFWgU9QpOxWoFBbnd7pSwpaj8DN5wzNQoUTQXweHIFqGKkmIPQtb9GZ51LCm2+hZguRlLoH1SO0u+cioehnnLnpqMdXSkZTQkpo1+p/t2iSPYAammCMxNlH3htwGfqS/dvSSwsCMCflco8uSiFyhF2H6ijQCYuhFfTDXhDk8gJ8BApH4JLZBeBxejxfGwkC58AekHgNzi91TMJCdfAFeEFFcailCGePg9Kq+bJj1AkYSflhoRr9l3ZOx8JWG94zIFbPaWFoOoAqQRr/TuxgS/fBpYVFxU+ymdQsIMHj4bcMpekRpUfzRRal3K4AAl+GiQWEpvS3XO4Way3Fiuojqu6f2i7W1LY//8ZEISH1GDxA5qQAbH6IYPSifCTX4DEYEIjdYykevluIdAyLj45rFo/mgebhlp8j17GGfMO583oYCZYYETw5Ccsx877DGInrjY94ac/FDclP5oaI+c3MruFfvYjC/MHHIADhFhj/kkIbQeOT2xaZNRiN026KZuSRbh9NirxSKX+D8B/EC5EP6HEnyfZ44ZrmxeOpslVNR9ToKfpk8Sj4wp9SiK6SI3NhHQcac+waZzTGjB4Hk6IEnqEGNOh26PE4Ekl9721P6dCRIbx6+NQFuNmjLJ/FeSJrV4DAKGa9mY3qG/FitlqpGkSixoZALNXG+2b/TDsPIzwBDXrk/zu/UEaFLJfleHpZ0b266co2awDIX1o4/B6MJNPFNp9spGfA8el0FmQFDUDMXmyIvdFeItNPmyT3jtMtll1Y0q0znIBNf/fsoO4PsJI6rXgOvIQ8vxwz95dnHbcYX4DNOVeGM9d0qGjffS+FxnR1sj+FvAQHKDaVNbbGa/uPi5oGeZvDP8XsW0iy5TvWJveN49XOdbcORZBO7pVz1k1B1d4SbyDLm9nQy
- zb69jHLO
- 9iUq4qJM9LPkmgmpCjWqYWwvHMWl3fSyDdwLrvcZ+oe/oygNGyDtREcFDBfkST7RK17ua0OBgmDkZahLrRaoVibHLexw4jKvxefRCaJMUKWnEh4zXtXuL5tOtHBnhPGn4csdJYrJWf1+BCwwTlCBiSH98A/u/AlJE0vQfH1Q1aTeiX8i7F2pDp5Es9kmB/Fr9Dt/sw553/ktqXtYiQz8yVf/ULa/eyRevJmYy6Nuz7Wro21CMqRgtTVHx000FISPUh+Laiq2x92spy2Kv1KHOP9cBUcXcKGuYxiEbl1ma3XuuzE8c/diiPKJZ8U+CnNgTuMhElBt8yUDlSvLoufyvM6efdYdXaHKidNy4djWJlPw5tZwuBG7qg8IOMMO7AMjU5BcWmKjU3LI6kWXXe1H2Sn+yHE9YMkyhZTrZeIoWON1G/5K9Nvufv3taZS33DSMGVLx1PBTHo6ZS4dRn0Urqq4zMIqY6vaHpt578CRJTLfMQ5OYwpcKJEVyF0e1wZUOQCQE/e3xkcIg0I7fVNMVnCXFgZaUaoF5Rw4ueP1+WEA8hQm1FjMTJ25VK34JLptJVhmn2KJPSnmwaukVLYoIEJ0Qnz39203zgdCYsmpruxXiC3VB22nV/KQKLKU4A19vndvA7ELGfLfXnojgMrXa2OZa29k8PfVko/FjV3vM6lxqGk2XF6dT4LGJy59V+xECJD/2nV5ZXzkDRGzgkVEnfdgq/BUhak9UoL9fFuKFFnglBYaoQqMjwHm66Sf5/Nh1cc6hgP5WpXQ8sJMWByn3g5E6gDThaEUh6QMBHtwnsFabW7YAjo3VDZ1iS2SIFUzeXWTvY1w3CrayIRoewvlCN91jzKB/OE73+SHCzsU4+LwRwsza+leemilCZAE84YAptPo24
+X-HE-Tag: 1795373114-782031
+X-HE-Meta: U2FsdGVkX1+Mw6ksm5NyMvoaxXd6a93ooMSGf8ZBdGOjRTw+5a7ksG+sWyBoZHNM1FbohAamYSX5iqpQICboGWoy0jFquww1ksPbcets8zCNfJG4qFrf6WV9QPCnYCYOy0CpOIoNvcOv+jWOWCsg1hwVJVfjb2t+ojdQLnpqz9M0pUqb88hIWBuMr3+TQLkjri6WZniaFqEQ06tozQ9QucDrYC/sozlMTQMoHjOs3yIpDbtmgUYfeprk9gTntOjHS72SRfbPY/a3gUc6Esk7fCcvSvwfuDknifuxkn/09pkB7US2aUOjU4QGs45T2DXEMy2Et5o8yvI79l6oO21nNmi+8ryFWfQcwU2CVItpjj9+WffzZU7sjC//05eqY1pdLa82xY8/F+Q6zWPSbtNwkLYZqdOIvzftqDhUi5RiOLclhHnTzn3xohjZP/Rdv1DhO54/eYOy+m60bsGikncc1U7YgunhSAMXGDPchdDIzK6A9Mxu3JD8rhcGgGSyIfQaLt49w1IX+/Zx2BfOajWTSq646OF0H9SlgVpSQ8ZFysN7vq0cCJTo2RP/X5zFcvcP+/FOmTh3GvBHOeB1hWyVt1Ix8VuRxmbRk6+DbVdcc9FyhRUEnUsVlUTY153gJotzL484jQtimhrdzS178fgUqLQIy/9gHdP92pGCdJN1Wq6RtCogEZtiLi7gL49yFBDPz7Tnfw3PbqJMUEm/nCZOzvaD7AHjZ4vI5JwmRRFdZKCmPF4w7oqZfqfktiV01wGy6f7C8hx/Nat17SDNtZEPNoai5MoA6rTB8aUEZcLtPs6vv+YmlxQ6XP2nltfmzZaI3v52BMqeG/YvDJHK3vP0kJxaklZcJhb2DITbYVWNB9RYgqM4Q17IFc/OpV7uElEAw70j9lz+0V2PY3SiqyZR9PtcqMEQHOCF1nZYbHTkBStiny+VZKr4Xq0Kk5RIs4kPE1LUEBa1C5PNH+EhxZO
+ pSLoJQLf
+ zhxc5edTuNrdYz+8nZxmoBekCktmgwBO1Tr0FnaG5Ml7veSpddL/GvHQYysmuxrsov4tC4O0bu6MHuD9N5uwdr8zhqVYwSCecOCu9rLAyk5Au+GMoTEUjq1TJ9OgVKrn9quAv74ADD3Uzu1i/9qRD/VnKGTno4N6Xc68k6c1q25S3LVPLcrE0H2cYAWGRNFeWhHZOwc8vQuiv9sD8sLuYvobGXT717cZ52JC3v2eCNGRMUh5ReyUwkdXbXo7R0nclSsPZj44SeLQLKoRdWQItfxxvTomK162PQAD7IzekmvXz3nE96v4qS+5E01oLzXxI3Pk/BTakqt7u4lK1im1R8daHnr+WQFB9Bi1GOYnYBmo1HPz3cG/EOgYOEx5UlUV12iu/xF5d0qsnQIANY7r3DTBqtMHcQRSrI7oPGMAcwq3zc1uI+MadW48GZpRAQ3Efl6xh5ALSMJOF2Ac/x/Q90MLSOjhRDjIkxzQQvh9mxxxK4DFrd6GU5chwbz3Q22EVoGzMQh5nIzqF7ZvDBkAUsn41RPJ4pUTIPq5oUZOsSC7H6wRJixbPIZ42YDdHSl1l3NAvbRUkbLxjNoiYxQs6BbxzSk6jdcO04dFo2+zO2XMAmkqGQFtXROcwL8SubZX5+hAF0RiVd/TJEL27HhsrBGSKMUek2LzdDJGkfofoAgYcFkXOmbpyNAxB8WFPAbrdh2OjEMKNuyzojyx4MqQuOUMjQAhcgclwnZP5ewKk1d7CESRtLi4FbbFJhu6bJNTYmMrGcQ/DfGJGwS4GDvyNdr6+ZJy8duWIyNryRqv+dHUzCnEkrCBex7q3ZDf+hO2zPUf3rOe4rZCeHcwprQCUo7RjilmlWk9/jhIISYV+Jlf4tfEoiqoR9nRRBV5mHR6B238T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,129 +121,155 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-HVO requires BBM Level 3 for the block -> table transitions when
-optimizing the vmemmap, and it requires hardware AF management to avoid
-taking page faults on the !AF translation that is installed as part of
-the RW table -> RO + new OA table transitions.
+try_update_vmemmap_pte() may fail, e.g. on arm64 when the update keeps
+racing with hardware access flag updates. HVO handles such failures by
+rolling back the optimization, or by leaving folios partially optimized
+if the rollback or a later restore fails. These paths are rare to hit
+normally.
 
-Call this requirement "BBM through AF"; i.e., all CPUs support BBM-less,
-in-place TTD updates. Model this as a system feature, as all CPUs must
-support it for the kernel to use it.
+Add a fault-injection capability, fail_hugetlb_vmemmap_pte, under
+CONFIG_FAIL_HUGETLB_VMEMMAP. When a fault is injected, the PTE update
+fails with -EAGAIN without touching the page tables, as if the in-place
+update had given up.
 
-It may seem odd to check for HVO support directly in bbm_through_af().
-If this weren't done, any system with mismatched HW AF will no longer be
-able to start late CPUs that are missing HW AF if all early CPUs have HW
-AF (and BBML3).
-
-This depends on HVO enablement not changing after boot, so select
-ARCH_HUGETLB_VMEMMAP_OPTIMIZATION_SYSCTL_RO.
+It can be configured through debugfs or through the
+fail_hugetlb_vmemmap_pte= boot option, the latter allowing failures to
+be injected when optimizing bootmem folios.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- arch/arm64/Kconfig                  |  1 +
- arch/arm64/include/asm/cpufeature.h |  5 +++++
- arch/arm64/kernel/cpufeature.c      | 33 +++++++++++++++++++++++++++++
- arch/arm64/tools/cpucaps            |  1 +
- 4 files changed, 40 insertions(+)
+ .../admin-guide/kernel-parameters.txt         |  1 +
+ .../fault-injection/fault-injection.rst       |  6 +++
+ lib/Kconfig.debug                             |  9 +++++
+ mm/hugetlb_vmemmap.c                          | 38 ++++++++++++++++++-
+ 4 files changed, 52 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 9b08b2457a55..4cce60c2de66 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -61,6 +61,7 @@ config ARM64
- 	select ARCH_HAVE_ELF_PROT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_HAVE_TRACE_MMIO_ACCESS
-+	select ARCH_HUGETLB_VMEMMAP_OPTIMIZATION_SYSCTL_RO
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
- 	select ARCH_USE_CMPXCHG_LOCKREF
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index e3c8a1493dc8..b9106b5a8dcc 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -909,6 +909,11 @@ static inline bool system_supports_bbml3(void)
- 	return alternative_has_cap_unlikely(ARM64_HAS_BBML3);
- }
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 176648941aec..b8a8771631c0 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1694,6 +1694,7 @@ Kernel parameters
+ 	fail_usercopy=
+ 	fail_page_alloc=
+ 	fail_skb_realloc=
++	fail_hugetlb_vmemmap_pte=
+ 	fail_make_request=[KNL]
+ 			General fault injection mechanism.
+ 			Format: <interval>,<probability>,<space>,<times>
+diff --git a/Documentation/fault-injection/fault-injection.rst b/Documentation/fault-injection/fault-injection.rst
+index c2d3996b5b40..403206645fa4 100644
+--- a/Documentation/fault-injection/fault-injection.rst
++++ b/Documentation/fault-injection/fault-injection.rst
+@@ -16,6 +16,11 @@ Available fault injection capabilities
  
-+static inline bool system_supports_bbm_through_af(void)
+   injects page allocation failures. (alloc_pages(), get_free_pages(), ...)
+ 
++- fail_hugetlb_vmemmap_pte
++
++  injects failures of the in-place vmemmap PTE remaps done by HugeTLB vmemmap
++  optimization. (try_update_vmemmap_pte())
++
+ - fail_usercopy
+ 
+   injects failures in user memory access functions. (copy_from_user(), get_user(), ...)
+@@ -263,6 +268,7 @@ use the boot option::
+ 
+ 	failslab=
+ 	fail_page_alloc=
++	fail_hugetlb_vmemmap_pte=
+ 	fail_usercopy=
+ 	fail_make_request=
+ 	fail_futex=
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 2d22638ec13a..a6a9bc01a320 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2098,6 +2098,15 @@ config FAIL_PAGE_ALLOC
+ 	help
+ 	  Provide fault-injection capability for alloc_pages().
+ 
++config FAIL_HUGETLB_VMEMMAP
++	bool "Fault-injection capability for HugeTLB vmemmap optimization"
++	depends on FAULT_INJECTION && HUGETLB_PAGE_OPTIMIZE_VMEMMAP
++	help
++	  Provide fault-injection capability for the in-place vmemmap page
++	  table updates done by HugeTLB vmemmap optimization (HVO), i.e.
++	  try_update_vmemmap_pte(). This exercises the rollback and
++	  partially-optimized folio paths.
++
+ config FAULT_INJECTION_USERCOPY
+ 	bool "Fault injection capability for usercopy functions"
+ 	depends on FAULT_INJECTION
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index a01377c37c96..4cacd7aee719 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -17,6 +17,7 @@
+ #include <linux/pgalloc.h>
+ #include <linux/rwsem.h>
+ #include <linux/vmemmap-optimization.h>
++#include <linux/fault-inject.h>
+ 
+ #include <asm/tlbflush.h>
+ #include "hugetlb_vmemmap.h"
+@@ -44,6 +45,39 @@ struct vmemmap_remap_walk {
+ 
+ DECLARE_RWSEM(vmemmap_remap_rwsem);
+ 
++#ifdef CONFIG_FAIL_HUGETLB_VMEMMAP
++static DECLARE_FAULT_ATTR(fail_hugetlb_vmemmap_pte);
++
++static int __init setup_fail_hugetlb_vmemmap_pte(char *str)
 +{
-+	return alternative_has_cap_unlikely(ARM64_HAS_BBM_THROUGH_AF);
++	return setup_fault_attr(&fail_hugetlb_vmemmap_pte, str);
 +}
++__setup("fail_hugetlb_vmemmap_pte=", setup_fail_hugetlb_vmemmap_pte);
 +
- int do_emulate_mrs(struct pt_regs *regs, u32 sys_reg, u32 rt);
- bool try_emulate_mrs(struct pt_regs *regs, u32 isn);
- 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index c9c9a6889455..d241638b5143 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -76,6 +76,7 @@
- #include <linux/kasan.h>
- #include <linux/percpu.h>
- #include <linux/sched/isolation.h>
-+#include <linux/hugetlb.h>
- 
- #include <asm/arm_pmuv3.h>
- #include <asm/cpu.h>
-@@ -2044,6 +2045,31 @@ static bool has_bbml3(const struct arm64_cpu_capabilities *caps, int scope)
- 	return cpu_supports_bbml3();
- }
- 
-+static bool has_bbm_through_af(const struct arm64_cpu_capabilities *caps, int scope)
++#ifdef CONFIG_FAULT_INJECTION_DEBUG_FS
++static int __init fail_hugetlb_vmemmap_debugfs(void)
 +{
-+	/* The kernel only enables HW AF updates with CONFIG_ARM64_HW_AFDBM. */
-+	if (!IS_ENABLED(CONFIG_ARM64_HW_AFDBM))
-+		return false;
-+
-+	/*
-+	 * BBM-through-AF is only needed for HVO. If HVO is not in use, don't
-+	 * penalize systems with mismatched support.
-+	 */
-+	if (!hugetlb_vmemmap_optimize_enabled()) {
-+		/* Only valid if HVO cannot be enabled later via the sysctl. */
-+		BUILD_BUG_ON(!IS_ENABLED(CONFIG_ARCH_HUGETLB_VMEMMAP_OPTIMIZATION_SYSCTL_RO));
-+		return false;
-+	}
-+
-+	/*
-+	 * We need BBML3 to support Block -> Table transitions without taking
-+	 * faults, and we need HW AF support to support changing the OA without
-+	 * taking faults. has_cpuid_feature() checks HAFDBS >= AF, reading the
-+	 * local CPU's register when verifying a late CPU.
-+	 */
-+	return cpu_supports_bbml3() && has_cpuid_feature(caps, scope);
++	fault_create_debugfs_attr("fail_hugetlb_vmemmap_pte", NULL,
++				  &fail_hugetlb_vmemmap_pte);
++	return 0;
 +}
++late_initcall(fail_hugetlb_vmemmap_debugfs);
++#endif /* CONFIG_FAULT_INJECTION_DEBUG_FS */
 +
- static void cpu_enable_pan(const struct arm64_cpu_capabilities *__unused)
++/*
++ * Inject failures as if the in-place update lost a race too many times
++ * (see the arm64 implementations), without touching the page tables.
++ */
++static int hvo_update_vmemmap_pte(unsigned long addr, pte_t *ptep, pte_t pte)
++{
++	if (should_fail(&fail_hugetlb_vmemmap_pte, PAGE_SIZE))
++		return -EAGAIN;
++	return try_update_vmemmap_pte(addr, ptep, pte);
++}
++#else
++#define hvo_update_vmemmap_pte		try_update_vmemmap_pte
++#endif /* CONFIG_FAIL_HUGETLB_VMEMMAP */
++
+ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+ 			     struct vmemmap_remap_walk *walk)
  {
- 	/*
-@@ -2953,6 +2979,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- 		.type = ARM64_CPUCAP_EARLY_LOCAL_CPU_FEATURE,
- 		.matches = has_bbml3,
- 	},
-+	{
-+		.desc = "BBM-less TTD updates via Access Flag",
-+		.capability = ARM64_HAS_BBM_THROUGH_AF,
-+		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-+		.matches = has_bbm_through_af,
-+		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, AF)
-+	},
- 	{
- 		.desc = "52-bit Virtual-Physical Addressing for S1 and S2 (LPA2)",
- 		.capability = ARM64_HAS_LPA2,
-diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
-index 3125695122a0..25292233ecd4 100644
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -15,6 +15,7 @@ HAS_ADDRESS_AUTH_IMP_DEF
- HAS_AMU_EXTN
- HAS_ARMv8_4_TTL
- HAS_BBML3
-+HAS_BBM_THROUGH_AF
- HAS_CACHE_DIC
- HAS_CACHE_IDC
- HAS_CNP
+@@ -274,7 +308,7 @@ static int vmemmap_optimize_pte(pte_t *pte, unsigned long addr,
+ 	 * after it. The refcount is zero, so the cmpxchg fails and leaves the
+ 	 * page unchanged.
+ 	 */
+-	ret = try_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
++	ret = hvo_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -313,7 +347,7 @@ static int vmemmap_restore_pte(pte_t *pte, unsigned long addr,
+ 		return 0;
+ 
+ 	dst = vmemmap_dup_page_from_list(src, walk->vmemmap_pages);
+-	ret = try_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
++	ret = hvo_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.56.1.809.ga0b61035b5-goog
 
