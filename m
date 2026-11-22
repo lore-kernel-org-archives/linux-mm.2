@@ -1,103 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E21606A32A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B98606A32A
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=c9fPYzvO
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=tYx9S+No
 Received: by kanga.kvack.org (Postfix)
-	id CB3CD6B05C7; Sun, 22 Nov 2026 10:50:07 -0500 (EST)
+	id E89D96B05B9; Sun, 22 Nov 2026 10:50:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C64A76B05C9; Sun, 22 Nov 2026 10:50:07 -0500 (EST)
+	id E61526B05C9; Sun, 22 Nov 2026 10:50:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B98416B05C7; Sun, 22 Nov 2026 10:50:07 -0500 (EST)
+	id D523B6B05CA; Sun, 22 Nov 2026 10:50:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D22D6B05C7
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:50:07 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF78FA074A
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:50:06 +0000 (UTC)
-X-FDA: 85463191212.15.5742C89
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2AD60C0009
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:50:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=c9fPYzvO;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id A54E56B05B9
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:50:33 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E4EFA06C8
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:50:33 +0000 (UTC)
+X-FDA: 85463192346.18.5A34D9B
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 57338C0007
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:50:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=tYx9S+No;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795362605;
-	b=5dkBnNRxENTjIOP/dEIWwRLA4AaYCOIvKtNzVYeypoNU/KgUNyS5m3qWtCswKJ/2P1H7O9
-	Lhpb+27Fs/KMl+zsgN8kpE2capyoDZu29ULAn7wVGsMo6pGcfcExGFsr6qoO3yA97JWuNM
-	IuN5qbWBJ2PF3yk7mBxNYtR3Q5l9lMM=
+	t=1795362631;
+	b=H5kgpS01tHMPj+COB5fkjyOp8+U1I29cCPB2nN7V+0fa8LNut0pv6p1L3GZKXTN4YXM9Zs
+	9hL+7HpgIQSxdErSIYtjZ1Zlsz1guUnMBvyadLFmoHQseTHUx/53F87XBudMTIUr7F0DSs
+	Jf5CKjQksg+zZd25IEZo/3PHCZiL3y0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795362605;
+	s=arc-20220608; t=1795362631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w3rclRjxjm+xEndB7WYb8szsZvXx3T969YLqRHQLZsM=;
-	b=4AeHtrwPrra2K+siXUYrxTsEy4WUBEvuyXO9fjw1BTXfy8wa+tn8f+dlTSZC6Xbp0Ybddr
-	gQhH/FaoNR5I5r3bga2Q1CTky6ce9qSiV59g/F9z7hMJKksD+C9uWno6PM6hdWOodu+CMy
-	GqS3Ce8LlIJg33e4hqoIdzGOBnWXcyc=
+	bh=sfE9ffid3qsS6HCt6GKuvhh3G4tRqIqs8ErTq4gAbSQ=;
+	b=uFtBHCwdrPOSKjK75yJNHtN5tpktXnpfWAEL+Euj8zrpmroCabf7GbX5WyOs9xq1yTVhTJ
+	UzWELIH5DWdZjoK1E0q/8qq0dMMUMKEMcEkeLgIugWKKyqyj1xU6iWUqw37UjO/8rch7HE
+	SlDEap/0MTVwI8vECnCj9GyD001UjtE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=c9fPYzvO;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-949680e6d82so310658285a.2
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:50:04 -0800 (PST)
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=tYx9S+No;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93f269e335eso332448885a.3
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:50:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1795362604; x=1795967404; darn=kvack.org;
+        d=gourry.net; s=google; t=1795362630; x=1795967430; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=w3rclRjxjm+xEndB7WYb8szsZvXx3T969YLqRHQLZsM=;
-        b=c9fPYzvOjzDdSRQg2k/LBsEpyWyR1bioQ4wrzPygyZ9ESUrLh941Sb/5dVZAWCYy/f
-         YwLVfMcUzRq4+Xy0al+EtPoKXz0mV10221F+qiRO8JyLRE/bJ7aHKKTa2vvyonljVqn7
-         NqTfqv3TS/uDRSWM+gP2bGoI6w9wsfOUQ9f4XIJmayZaewZfNWV6FUmPZ0gOGnIb5F6k
-         BzUAGyHKuuH6UTBMl7JZhH2IwrLXF00AD9VIfm4X6Vg71RcR85MWWd9EHbPEhvex23TQ
-         rX3tvXzGLTM/oP4frrOyhP08eTxIwxPrRC8LigtYXwu+J5KTa3vjvIuLNnkYuHxVtm3H
-         DRcg==
+        bh=sfE9ffid3qsS6HCt6GKuvhh3G4tRqIqs8ErTq4gAbSQ=;
+        b=tYx9S+NoSITFtmoYvmiC4p9MyhFDTw5CS9SDujpwOL2M7YwDnJsHg/IMTL36QwwCt4
+         Qq7ICufaxjeqrFY+hsY8+lm6QxNM6qDE8209JvvqtIkWHDaFUh0/0Z8COO0r6Zh1CRBE
+         ygAbv7bbQ4CJYZyUOAs2aIxirqsR9uBrsUZiFtruwKKn3Uq3mXUo6ilNUf0CckmRPx7k
+         NPdQjRzO1g6FoHINp3dBB7DlxnnFarfj8bw+iI7oF8ahR7bUlc1UbUH+g+4aMMs4uZPn
+         9naSG4Tw5+To0EqdGE6tDOklz56PFaNmhN3/cHf0Qy2yx0gtTBFcFyCIvcWA2MrYj3Rz
+         Pw2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795362604; x=1795967404;
+        d=1e100.net; s=20260707; t=1795362630; x=1795967430;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=w3rclRjxjm+xEndB7WYb8szsZvXx3T969YLqRHQLZsM=;
-        b=Ao3iyAwn4J162QV+0750WKYj5G3IKxgeKedgqjZyhXEQnaLqAIsLqWRw53R0p0MYQY
-         wjj/Jj58fJA+QuxSV/pqyjWN3z9xTWpG2LejjBtx4BxI4wZjqWBU5WgRM5bV9nTUKA5n
-         waLw73kAgpg5BwLxglRo/Y+11KG7fsSpXWJ0lcVzDiFEgzr7mKZQTdsFyg1+an/GGH9x
-         ePH6edCQJoaSK8s+iQFwVWP06M5y0XC5iRis+Zp8dXnHjcNwKyXY1AiRIQtnMJME8LY8
-         +iQfLyd/FNKHASnusCJZficTZNAxDZ+sI8yFYN9d0llwgvQ8N32HyekVxImK4OeT8Av+
-         Zqjw==
-X-Forwarded-Encrypted: i=1; AL+hErGem5QItTni6SqEz+nDgjG84oqDdN6i48e6SG6BPCBzjhIEUEd+H/TghMXXfHJAzRgkAkCBCOJeTg==@kvack.org
-X-Gm-Message-State: APuU4Z9s3JzQGXxtjtyX6dWSXsBmav6cSq1aWoTtWUD8M3pVQZjaT/3D
-	5M8LB6yN7PAHHIrTbZ3GTW/jImaBRKedB1hfJEwHRSWNW98BP5dAAhimfu8yX4eLQ+A=
-X-Gm-Gg: AZFdTZchn7fuf7GPimhMMyDFBXJPfTADFcMMu64dRUj+ulMNZqkkJfEUsBpwwl73c44
-	i5NNw86e1K6mq45ne6hcP2/00ce8k7oROZU6+FTto5vgzmFoF5YBimU+Yzafuu1dUjx33et62Tt
-	gm6Nl6sm8mv0oPmJWBm9T99mMDYucoay++azztmbAJ/FTan3hl5v6UrvPGNJDgZVlTDkTYxfyQA
-	a9Dp8k6+hino0SXyVFiOveZu5mOHjviuAoDKEQGzuw4QWJVCqj/MziQ62+Lps2AkmdSQRWjpb12
-	FVYokAxjJ3fMop56gIM1xYrgv3Fn6hNC2tsamgx1Jo0zmCWcvzE8OdkMeYuAR1oUyjbmNuOcMyo
-	Tz4xRKlfjF1Vc65NtjRsY2+DeBZJBN9cHIJpJyYzdmZ/xyQCLrQKvrnSp3O5sxvXyILYsa0VECc
-	UriwwAqRsCEBhG57PhwfP695Y2Wmj+G3qyRQ5ePctfbLmkAt7OiuE+IQZm/JOEjmckRJCLPF9LG
-	JmEFUJ/2U3cLwhv2Pd8OzerUFCcckjPovsR5iZtdCo4G+fWiG8jkdomBzSgHeqamCrBocCkE0KM
-	WSI1kfAds55cVbsX03S9Y6EdzUOek7PCnrIUoTUbRL0XtE7u95WRMhqvod3fehN+uMVNixKDdKN
-	FnIm+WiUh95FfIrgptvDAH6ZLlVgb
-X-Received: by 2002:a05:620a:6505:b0:949:744e:12eb with SMTP id af79cd13be357-949baa10b08mr1523882385a.65.1795362604231;
-        Sun, 22 Nov 2026 07:50:04 -0800 (PST)
+        bh=sfE9ffid3qsS6HCt6GKuvhh3G4tRqIqs8ErTq4gAbSQ=;
+        b=X+sQ1u1A6bqecI7fGspSOnL4BAOh6OBYN0tBmcpjDt89sXBoZ2xQ8LFva/qlf0QaHI
+         0RAjNMuU5uD13vaEt31SUnShNhR79biT4FABxmu02jPz++CN22DzeBq0oH3nQP9LNvSm
+         mAcZZY2SBOTH2jttoF9Xtt8uCETQBiVSUOlzlU4T7L8qjm11yFCf/WmTUNjMl7WFU4xO
+         O61Uz9KaF7MoVtQk7GEYzcGKYtjASuQn3/6EtInfc+lYAYyzhUEoQ3XQxmJJlkpB4N+E
+         DvfONZ9wSMZSpB/TcvntYD7uIy9iAm4RvfbakBhpE8OdFiWIPeyn4WB5obhkZZ1EJajm
+         QHZw==
+X-Forwarded-Encrypted: i=1; AL+hErGzZaQkY9A+iwMe2gwMz7ybOVFv8ERhPlXoSOKk120s1maeOsMoysZkPihZ4iboNxQXXmVgTnzQkg==@kvack.org
+X-Gm-Message-State: APuU4Z9635Y58i+7Y4br30kl2gQM6ppQNCbb2TVTBbIUIDIMDDA3FPCB
+	n6g+qQLr12M4tonxwP6FAp20td6P2p27tAJMJjE7fR7+0ZGz3/hRYVZqVT5UpgCZlyA=
+X-Gm-Gg: AZFdTZebj0dyfHV4MhhmV6o79tOhAxEOeII3tlzBA3klSiSo5TLYcZpFfOD1gX6GWmF
+	vPXkQYQqT1NBc359ZrQK7jmAAI1PcU6rUKtQdbekULYpYxq1i8glaDVyxDRn43GYCDKoClg8xlc
+	etVLoyoxAX9FllvEB6WavSf2ovHhrztALHDlAQOdlzp3lnvBIWIvD/QFv4SIIKIzL0zHt+Jv553
+	awl3meDhOUuRKxREqoPpop40ge2/207hSrynX7HxULTyYfEEORKbJuYd/EikOEdg5qajDV4XHmA
+	k4y0xnUc6u5hzf6jcuckbj5AXmp6VXenqWTJvpc2v3Fp9rXVKgxpbElYzNUPdvny9RW/e6O6Zzo
+	qRdjUR4mTfL19/a/4D82jA0Gdk5dqR+pzv7Z0J7Hix6zRGDjMeYH884ck5k1GgCOSNU8jkoRH3C
+	YY96ZbHLf102cLcCY61lPSVsln3P8Xz0K8sZk+T1oaOVmwRt+uHT9MX8csTjpFDM96tDOL8+Mbq
+	8jsEwTkBwpQ5pDyMrmcfhzF11WblwuVyljEdfv8KHdwdqwT2n2Glif1qM5ooiB4QAn+LvwJfOJs
+	VY+oqCaQP8i1TYlAIJn9Rr/+9tWE5Kmv0k2SyefLKhDYJlo1kBDGSSSQKgxo5wPeqY7dOGx56dO
+	2U6HUE/fJBD0NJa7hvoFtKbk9y+mv
+X-Received: by 2002:a05:620a:4713:b0:93c:a468:2db1 with SMTP id af79cd13be357-949bab11618mr1604125185a.58.1795362630552;
+        Sun, 22 Nov 2026 07:50:30 -0800 (PST)
 Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb41c105sm632888485a.39.2026.11.22.07.50.03
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb41a341sm626128785a.37.2026.11.22.07.50.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 07:50:03 -0800 (PST)
+        Sun, 22 Nov 2026 07:50:30 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5/7] mm/mremap: apply the mmap() offset limits on
- expansion
+Subject: Re: [PATCH 4/7] mm/vma: fix uncharge after failed stack relocation
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: "Liam R. Howlett" <liam@infradead.org>, 
@@ -114,24 +113,24 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
  Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
  Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
  stable@vger.kernel.org
-In-Reply-To: <20261121-some-more-ai-fixes-v1-5-236e925d9b64@kernel.org>
+In-Reply-To: <20261121-some-more-ai-fixes-v1-4-236e925d9b64@kernel.org>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
- <20261121-some-more-ai-fixes-v1-5-236e925d9b64@kernel.org>
-Date: Sun, 22 Nov 2026 10:50:03 -0500
-Message-Id: <179536260304.412063.8485838901368834162.b4-reply@b4>
+ <20261121-some-more-ai-fixes-v1-4-236e925d9b64@kernel.org>
+Date: Sun, 22 Nov 2026 10:50:29 -0500
+Message-Id: <179536262938.412063.9413830491196612418.b4-reply@b4>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam06
+X-Stat-Signature: dtm74xfc8abh146ggdik7zg5mo5oe755
+X-Rspamd-Queue-Id: 57338C0007
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 2AD60C0009
-X-Stat-Signature: neueoc9iriykpgbric916eihtucc9b4k
+X-Rspamd-Server: rspam02
 X-Rspam-User:
-X-HE-Tag: 1795362605-702822
-X-HE-Meta: U2FsdGVkX1+K9iHovLKlNDHXXi4eGqN92kIOpqdXgHexLRx2eGydMn4mlijrrNSmNBDt7oykW2H/M8DvHL+sMqA426RveXLY7m1Afae3wkERZVIOC785mfoFjp0HRKRuzh0FzVqbW3xKsWOBFOcZg0Wf9eXJfvnMVpYBCGK1oml/zp5sJ8b73x70fXMMr+IDEaw58xRHezlQoX4Ry6BqXxT2UyuBan33VibL//2yy1e73xvDSiPGUkZxnIUKgfH2Gn/gsuVMQlrbwHifnM8VOmYfbsR71Kui0sRKYGsq5wVqFwF5DpHsLzToDiJgidTpyVQcFIEl2R6WDD9IYiCKW7ow1VWrJp4RwgJldmngc/5nQMIaXCGGBxQHGJog+a56/WJtqNYf8Y92d0+cJfMUsx1EFN8TY18ATy3yWUwgkJ3/OgdazPo2u3CSzwvjWdeSVEvuVRIEL6eXE38mTM0kapVc5Y9cmpuLw7iEUNOcf0fsEDj4BRVhpuUuO1GoJhcVWNZmC45ndQz4uexPX92lzKo7SxOIPjxdYp41a03OuGJV/UpuMuZusnbafE9FsP/CE49K9rJcJGOku7BHIGIa51aspo+3C/XEBmTXdENMgVro4IV9uAMgJ24J74lw6/6opofPOcsxq0RT6n08bJUo/9bYBpb/GtuPleGmHUDC6xkFedSeas0K4e7WglPovdKG0uFyI6ueYkpVcc3J3KN8D8x28G+mvf6amzglaX3Pb+j9Ny9nFRCj4QkNBT9oHsqxbfp6V43SHCtvD+Mrn7szjilFTVutHzRcNfOsb6pvygW1dv+6POIcJoQKE8vORDY4CqpH8pce3LM2gv2ttqwTLg+I3IccT90M8lirAj5XHYcbcykINNkA391p4whCNWNw6NrFtUMw24+iWtKmx+j8aKRmsXoAaduP/Pk7jarr9RNI5MTbdlU+3q45UnYiRW2HSFT2D/GRaiQ2guaZK4v
- e/liyUBX
- H3yXmuWEupFu11ToAsKzDvT3guow665I5jnOeacNuWBdgABWnXOl+HK+xgm5SmMbgE621OH8TzbKDW95cCaQWTn3X/yhHehWHIGXmwgtxcnMfG0dK1ZJwvZ0KdNB7sSdA3DF9jk67UPg5iP9Xo3p+EartX1zJzpBAcsUAuZ+of3pDNziPHekOoMlAd2U5l719twB+ajGvPaKEVd4KRlh2l+o2Okt4EYctilrciSgjikEc+TBK3aIRpKdudvcxn+W7LEoASTV9ZdFtfx4ms2w/8+JcAE40YZobflFerZXXzpjjmOne7tlauxtY5Cv8ZuhcE6GMD58Lvh6MBpj+ZqkvEOW2eYmm2Sigh83o1XoxB4zcIGPyTbfS1cHMuo0fu2e/85foBeupmnOpLYGUZMxmKwUjZkC0bVt/Uh9eDe3h05hGRH9zLi96++CNQh7AEx7i2RDITh0mfkAiL8xlLOCQOrgichdN2Ds3tX++w3XXf9sntW5z++n2FZ7ZjXkMTTh4RWmcHy6Bgkpi6JY=
+X-HE-Tag: 1795362631-374940
+X-HE-Meta: U2FsdGVkX18no8xoqN/66E+CGDvPhiSmEmGIO5kUsQysPy3dtSH5zz5+qJpiUzjA6lT6DGfZbk7wXDY9N3iIH3xiBuAsKGOdbfDmW2M4JcSB7oZr7rJTT+DM0LPTwpfA39Li4n/DXAPxtQJHYzDJQQaeUfLIlCaifUj5yAMpJJqQGReb09kWkca1n2jiNigOFj1BLacKt31/LNzBDm9JWCD6TpyNdKRCn1MYLKO7wzEue8zpRduv+6TtmpDbmGcX+sMdjtQfEMIW0PiDcVXXBOgR7NomWLxTxv6xAVB1WPnANbgrzvvVTlhFNC1Dpz+ecjE8b4KjMa4E49PlKzAfEXok7cb3iNd8Mb5kgE7XIRTxzadWsB1zW+d1JXSIvw4KJz+SJw3KR+as+/zvLbPH4AbgBk8FcOzpEqEEnoylgNHk9xJiO0R/keAJnvmk7j76fHnVzVmsDycsnUUX5P7zPq3XCIcII/zmz6wOivob7mf2RGZozfTMQ4v0QIOvhyOSfgoJeWxjRkm94p/Q3b4xZdkBpUl6+PLnXZ6Hd+vswJtmUmk4cY8HOq72r5IJMevWM8O6e3giKQ4Q/UO0xCTfpC9ZlUjSks1E+Pa42wfr8XvH/E39jyGH3rbzSLiMS5fNd4tS28TW3iDgewkmoQ3H/F9dQf/dmWRbxkIrKLmJt5EV+PkvF29HHpAyF/GgNFnfVFtpITkchfCFvVK5+uXhhsWXBer1zQegWmh+9yqiKSa8w2Xj7P73uQWXyTlmkdLnw4e00mVi1a8jFJ8A5uvdYPA+g31K5aKfUrT1PZI0KFAhxHgvgMfCODWEpdVXR8VGPW40LWN8KnPx0arbXvR+l6NH1DmQGIA1fj23h0unz2KBHiRB+1UKFr/gHuq/n9IZC3drFFr7XmNlBcD85hPiUuP8V2nLbVF6q5xiyj9PjVdntEiZceWJzetw+hYL2yn6Ky/LrEDiWiRVszPfmWL
+ yswh3nVC
+ UA5uMlwEAOwoYYf59lbiRFIzv/RvTn1ddCorjjOOMxP6RAOYFRArUzSs/9eFoEOfGuTKgpeueMvf+qA93sj3rHWgmyC4d+v3BkQ1guSLsO8kSnW3nDatiIqsywRJ5XSv5Lt/aQH5s6UHWz7j3D3bP4q9i8S7vJpSno1IY8r7piT4hYf9VkaCKYNkcrIR+uWwtxURzSXgESNtwFc6y4Rvh2tynbTMNuB2wHAAXqkmEeYxuVN9pk20830ukxSxxlCOzOaLyT65iJJnTihnYYqD/HkHuZHX3hvv5cU+AU4gilRXzw0ZCApOghSfDZJs5U/vpYfUPaKqtraH+yW4sT29w9fPCKBm0OZfhj0zH55hr+U+6L6dYQvZd3VaBhUN1Y+HeVkQfGRTrnlrEeA/+dTwc9eGCRbatk/rmTSF6EApAlxGeCj4EozfJ/EfefNYv9DH2X7EAa4QNm6tbmyzI/kjwbrSju2a2NLpUf3y31NU8BxjnJEfxUAwk0gVjHruiLm6zrahURnyr/LV3DPE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,30 +142,39 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 2026-11-21 16:02 +0000, Lorenzo Stoakes (ARM) wrote:
 > From: Chris Mason <mason@kernel.org>
 > 
-> Commit be83bbf80682 ("mmap: introduce sane default mmap limits") made
-> do_mmap() reject file mappings which extend beyond the maximum offset the
-> file can support, via file_mmap_ok().
+> An execve() that fails to relocate its stack can underflow
+> vm_committed_as, and the commit limit of vm.overcommit_memory=2 then no
+> longer holds.
 > 
-> However mremap() can expand a file mapping and only checks that the page
-> offset does not wrap, so a mapping can be grown past the limit that mmap()
-> would have enforced.
+> exit_mmap() uncharges vma_pages() of each VMA with VMA_ACCOUNT_BIT, so
+> the charge has to match the size of the VMA. relocate_vma_down() expands
+> the stack VMA by the relocation distance without a charge, and relies on
+> its vma_shrink() to make the two match again. But it returns with the
+> VMA still expanded if move_page_tables() can't allocate a page table,
+> for example at the memory cgroup limit, or if vma_shrink() fails:
 > 
-> Fault handlers rely on that limit. For instance dax_iomap_pte_fault()
-> converts vmf->pgoff into a loff_t, which overflows for such an offset and
-> defeats its i_size check.
+>     relocate_vma_down()             charged    vma_pages()
+>     ===================             =======    ===========
+>                                     L          L
+>     vma_expand()                    L          L + shift
+>     move_page_tables() fails
+>       return -ENOMEM
 > 
-> Fix the issue by applying file_mmap_ok() to the expanded range in
-> check_prep_vma(), failing the mremap() with -EINVAL if it exceeds the
-> limit.
+>     exit_mmap()
+>       tear_down_vmas()
+>       vm_unacct_memory(L + shift)   -shift
 > 
-> This means that mremap() now refuses expansions it previously permitted,
-> however no file can have data at these offsets, and mmap() already refuses
-> the equivalent mapping.
+> On x86-64 with 4-level page tables, the distance is up to 16 GiB for a
+> 64-bit program, and about 128 TiB for a 32-bit one.
 > 
-> Fixes: be83bbf80682 ("mmap: introduce sane default mmap limits")
+> Fix the issue by giving back the charge of the stack VMA where its
+> relocation fails, and excluding the VMA from what exit_mmap() uncharges.
+> The argument pages of the dying task are then outside the commit charge
+> until exit_mmap() frees them.
+> 
+> Fixes: b6a2fea39318 ("mm: variable length argument support")
 > Cc: <stable@vger.kernel.org>
 > Signed-off-by: Chris Mason <mason@kernel.org>
-> [ ljs: fixed up commit msg ]
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
