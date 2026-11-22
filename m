@@ -1,100 +1,171 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277D3606A33B
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 09:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FF6606A32A
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 11:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=wBlI7zm4
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z/m9kr0N
 Received: by kanga.kvack.org (Postfix)
-	id 2555E6B00EF; Sun, 22 Nov 2026 04:52:53 -0500 (EST)
+	id AAFED6B00EF; Sun, 22 Nov 2026 06:39:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DEEE6B05B0; Sun, 22 Nov 2026 04:52:53 -0500 (EST)
+	id A39BB6B05B0; Sun, 22 Nov 2026 06:39:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 081F46B05B1; Sun, 22 Nov 2026 04:52:53 -0500 (EST)
+	id 8DAA56B05B1; Sun, 22 Nov 2026 06:39:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D0B2D6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:52:52 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D14C3C06A7
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:52:50 +0000 (UTC)
-X-FDA: 85462290900.10.2B97BA7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0656C140007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:52:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wBlI7zm4;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66C6E6B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 06:39:03 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E20F6A82F0
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:39:02 +0000 (UTC)
+X-FDA: 85462558524.29.52AF298
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 16A1B140007
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:39:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="Z/m9kr0N";
+	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795341169;
-	b=N8OJcTdRphMo1jA6tvu+zRtd+oURrz7k27aIVr9JpnfAPJicD0hFbSRIusrCL6/yshl9Dw
-	CbxFjBeuh/xsP/IXDU/BPw7nsMW4Y78MunxCm9FgiWpmA5stZGxYiAS+JVgr69kWjJT4EM
-	3NnHNfr7c6/2ZwX+hl+FGQtN+rXCeFM=
+	t=1795347541;
+	b=tEd8Td72udvecv1OEw872USI1L6UmBg8GNGVDsgerfI+mXUAuPwYn8mqnr1rWkC1Fe3+uD
+	CwomKFUixCzNcVEorQryYiGuFkjSmtw1blRGVD/rzum7F2287xpWKRIY5dHf1lZriiaf7k
+	Ynaz0AKU5/C+EidRSH5iMcaB1AfxbG0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795341169;
+	s=arc-20220608; t=1795347541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=530GHac6mJJlARMcZhnSyYnD4ziuOybglG1oyg7MtIg=;
-	b=bL1OPwZT2ZFBw4TSpLv1g8aHnbHinYuOe5D4bUpPRbXqTe4x6iV3sOHP6q+qAj5iP15uZ1
-	OlV9X0ywQnPTbCuf7QkDMoI4JicVpFVrLyP5QpGgZl+7Pjhm8U/pNNQIauFUdJsv2gg87S
-	udrLxP8u2fszpoP+NbClpU4seTVZE/s=
+	bh=9SL2nw3BljIJfL2BNxy4TtTwunpxe4OhPHoB+8Eji+8=;
+	b=NnsiCuIZ7w9GCARFRy2G3NNUaGQL6JXIvWf4F2mB25XIVQaZzeke+Wxkrz1DUkThMVNOM5
+	gMJNDPx6DEUhRDK4ygucHzD+0vGU58LW1O0tStSfe19ooJpzrxV8xNOjozH2IZ8ieG6oaI
+	UDObo5RJZ4kFQw9KhpefPkMabckJswk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wBlI7zm4;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFFC36137B;
-	Sun, 22 Nov 2026 09:52:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1F21F000CF;
-	Sun, 22 Nov 2026 09:52:47 +0000 (UTC)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="Z/m9kr0N";
+	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1b50a4bd2f3so3681709c88.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:39:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795341167;
-	bh=530GHac6mJJlARMcZhnSyYnD4ziuOybglG1oyg7MtIg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=wBlI7zm4CR5lvitfKL08hDnNAC74F8f+kW0/gspGe5h/qgWpc/cDxmPZCWZGcZXMK
-	 6435A7gXWZuVpxZl8DxkEyJP2dF3PN0HG6NxxY/BpORklPI0tlIcLZ+44lGFN1fJz8
-	 8PPE4FYITG56tMZ4obJfZ1VG4loUfPk0as+pg458=
-Date: Sun, 22 Nov 2026 01:52:46 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mika =?ISO-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>
-Cc: Aveline Noir <jm5905938@gmail.com>, jgg@nvidia.com, leonro@nvidia.com,
- airlied@gmail.com, apopple@nvidia.com, balbirs@nvidia.com,
- christian.koenig@amd.com, dri-devel@lists.freedesktop.org, Francois Dugast
- <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org, jgg@ziepe.ca,
- leon@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Matthew Brost
- <matthew.brost@intel.com>, mm-commits@vger.kernel.org, Patchwork
- <patchwork@emeril.freedesktop.org>, SeongJae Park <sj@kernel.org>,
- thomas.hellstrom@linux.intel.com, Vlastimil Babka <vbabka@suse.cz>,
- ziy@nvidia.com
-Subject: Re: [PATCH] mm/hmm: account for subpage offsets in device-private
- PMDs
-Message-Id: <20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org>
-In-Reply-To: <36be0904-168d-4813-82ff-27ecced464e3@redhat.com>
-References: <179342234355.4.16705453209886955762@gmail.com>
-	<20261121160037.1a479f3c8b4e860bc23c106d@linux-foundation.org>
-	<36be0904-168d-4813-82ff-27ecced464e3@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20260707; t=1795347540; x=1795952340; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9SL2nw3BljIJfL2BNxy4TtTwunpxe4OhPHoB+8Eji+8=;
+        b=Z/m9kr0NzQT3f3RhDSqdyI/LGvc7Bdhb4732IdgpBePVlBruPZNQA6AsJY+ZowHO9o
+         afwMazmg1BrLYQtJ+tbNuQMTQLs4akTTEtb0HxJP2mDvaL2XKWfmXYOr5TVmsfIT7vPQ
+         2hhKbeAsRXdh+1bKGhmALWZFmOiziW1+yZQ12AuhBwMGClN/EGzfDOZwD0+kJbWe2uN2
+         McagloiT9H4STZlFNRS2s9B/g/Bq/ovWk1MYtDiqJIL4Xn552qJCPu8zk4ArFSpUwbyi
+         iYtZBPqSIcph5DQiDG96JnuwTMd8oCNJM0KIC8ZVPwxEX8oRQyEIWc4Smcn40bUYZIPN
+         ebbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795347540; x=1795952340;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9SL2nw3BljIJfL2BNxy4TtTwunpxe4OhPHoB+8Eji+8=;
+        b=h8ExMbMZCDcHodK682SqbLkMCyyZoWOr3myzH77N9o3J8gE2Xku34WRPAEf9UQ/7iW
+         5SJ0CFE7B8W23rAaRCPMA+kBJvn+uQka4epGq6fpWX9vWUw+my5UyPirDzmBOKe429SC
+         JKVsDCmtIBzJaajmWRf0HvrHEKaqW3zwNteIfJYCp3h7E3FTEE/jTh8Vot7OdJ4dIsle
+         yJWFjp7lEkf5xrUA6iLYtwONZNrDwkWCJTtJ+IMGIwI9MdIzvZYAw08EhnKlN5arrLjv
+         sABiibAfGanPbeVEw5liUiWBQn3njhE9wVhzmksf+VNzJTmup7Nr/APeizxiC6ayHX85
+         43/A==
+X-Forwarded-Encrypted: i=1; AL+hErGV8Em1DnsGmudb+k6ABcfUcw5oTTkhjsmN99IC9ErYExz0cWv4G11TBmvuDVjLApne5Fq8HSSYJA==@kvack.org
+X-Gm-Message-State: APuU4Z/iLSemK4aD0ysTjMGhAv+9aSV7cfRPcoWyM9HDzprDdrLIcDbN
+	UTWPj2Rv3IDtIMY2jVuYxbK+A24c4MKtE3VymVVvyn+wgTlhd+yAnhtA
+X-Gm-Gg: AZFdTZcMm4lDzwTJJz8uemn0ROhVT/82YyCtx7fJcyXugQRYZcFis0Qk36CuKFRnztr
+	OF7DQRixjV/cOq2oHmHcs+w4jNM55kXeJf6NWgF0g66B5xxCBTAJIKumHiQHtuegJG37g3KZQVO
+	K7i1iz/44jMxcuwHHeBFhazvWGMdR5uCRomp4GsZmEA+3TbeBfpZFsaLTjBSPrV35bi8prztdlU
+	uYaV8xt9hzVMO/0PyJQEMKLx5CBZ45pF/uTvQst1INs6+Lt/rTyoQOT19nHZf4JaaWFx1e4j/29
+	e28Soua9gCxC2Y6931wTSUb6WGqTNiBWTJ3epc4NOpltcRSa+4PIs36IUoNrY1sLVAKHJ7/HFhb
+	W90q+ahxruOVINKsHTd/Zyvz1MdXZ7pPOBUTqDyqjeeq4PZ+W4IMmewLEijQHGvNkF5+gj/9DBo
+	JcqbQI+RTyx4SqGwK4qvh34TOsqHIMvnE90Illu0BNjaoaJRnlw/JswrmJ4115aB7/uBZsi01IF
+	Qawk8hivucBFOezxXUgvfo2ZeqfCfr1RTLx9kSVEtSMJxEzP/ZDJIbr2YmCBGDK1bEAWVEI+F20
+	cTdlpNmtxipB6Zf4f0t+EwqD6EwQiNkIYZayHMgNTWIeD7TgdkXmjlOczNAiEMgfjeE3
+X-Received: by 2002:a05:7022:f509:b0:1b3:ad88:b9c5 with SMTP id a92af1059eb24-1b5568b7e07mr8368775c88.24.1795347539687;
+        Sun, 22 Nov 2026 03:38:59 -0800 (PST)
+Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-386aaae4960sm3717851eec.18.2026.11.22.03.38.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 22 Nov 2026 03:38:59 -0800 (PST)
+From: Lian Wang <lianux.mm@gmail.com>
+To: Kairui Song <kasong@tencent.com>
+Cc: wang =?utf-8?q?lian=EF=BC=88ByteDance=EF=BC=89?= <lianux.mm@gmail.com>,
+	linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Nico Pache <nico.pache@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Hugh Dickins <hughd@google.com>,
+	SJ Park <sj@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Vernon Yang <vernon2gm@gmail.com>,
+	Zicheng Wang <wangzicheng@honor.com>,
+	Chen Ridong <chenridong@xiaomi.com>,
+	Tal Zussman <tz2294@columbia.edu>,
+	Kairui Song <ryncsn@gmail.com>,
+	Xiang Liu <liuxiang.277@bytedance.com>,
+	Ehab Ababneh <ehab.ababneh@intel.com>,
+	Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	Hui Zhu <hui.zhu@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v5 00/17] mm/mglru: frequency guided promotion (MGLRU-FG) and flag cleanup
+Date: Sun, 22 Nov 2026 19:38:17 +0800
+Message-ID: <20261122113833.62817-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 16A1B140007
+X-Stat-Signature: ig95wsxh3qouhhk4xmbyr4t1bybiiha9
 X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0656C140007
-X-Stat-Signature: 3hjokqwh9cjj9gqwueoj5n8uw6eqafay
-X-HE-Tag: 1795341168-77028
-X-HE-Meta: U2FsdGVkX19k/dfsC2C84hGdhCYWbnuFfbqyJbrRYPuS4MBUXDi8Wwgw9KhSncNVI7YCyHfgjKD3CI01D3cERGIWeYu20fku5rvwLJH5ZLQijhIbqz3Ol+pf6XWRInJ48XROCCHeetVxkkR3kITnqL5ghWMkjctgs7iuIjRRtgwBUWoNHjpPzEWwVRD54v592Ms6w4NM2hKvGlEEqL69ibIaeq11FfirPYVcMMEKR3scnqdMiY1VSxANaWftRAdmc3XloaH7QPXicYujZ3S/JFimhwH/LE8svew9U5wr1VN7NVRIhzqLLkcy7vIvZlzn3/qr18w+tgXHbtqVlFWRL6l02fuC26Nj8iXo6h8TGoVhlrWrnsYoq13ZjCaVhj6kJDz3bvnzyhTtgJ06FUwy9MEumWFky2tOHCqpTwvkrdcU/tvUsVslQkgqmvc2SLzQsq9ee6Yd02JsGk+FQiV3H4fH/jaSZ+/FSC2W3isCSZQimc1cSBticYLIHWx2oC8mxO57ah5NXIGTrigx8zZ5reSygrf8zfc5tCjEfTZrp4U/nrAGFJ0QIp3BwFtCUXOCUTEcjUSOAURAqVi4E7xV4uNXwjH8mh85/yDHg13ARY2OUrR8YEy3+1/Ha01jpXA+wfQyerCV11pnBE7O5x5iR87WuXfxYDD+u3mbIMiqiqZZW0EX7CQmsjqYIn2jSLKWF5nnhbxKbtbNr3JN5b0cIwGvvEGyS0aXOkcM9DZgWdh1gfmfucsPPJ5ZO9Z6UEtLilWiyhZXEeC6iKm77t4X23beMwW5tqI4OweSD3GKBBa4SoU78SNboB5Qvi2+E3TF89roJDKwHgXWbP1hp7qqRvUWbkw0EvK7V0g53d2AOCUXM4YTfLPjfv5RjAED/ZpAjA1yvWxFSsymXcxeWWQk8LxkteZbvvt8UIjBmU8srTlVL0busrxOaZhjeZlSJ5/qWFVqF86rXJcThbC6uNl
- JRhMpjPE
- 4S8AZ5aD39nBnK/KP5LfTImQa0S7v2myv3K+4BZdfnLJEvq01pWejPk7bX993cekdetxIF9n9MrW4K0tzlZMNny6kY2zuEmxI51Hzjj8Ebq8fQbKvGQACVc2JdT+ulOVIDQGws/TIrrCUlbJyNUoW7Im/56UDuMa6IuGCRCHSVntv5qTMqDfPh2K+hwG0com/YlgZz2JIWNmTiw2zqVHeQ8ycXWCtkYbhnoK6T8l97WIiQ42FWZAFGdm9Sdeglrdzk53gsHyVuOuMCdyCoS8oa0RxI+jFPNeaa1RZ7DjPk0zbHL6kS1PzLkWCQLFnJfIbmAuguzVLI8CCAp/yHVtKcVO+hs41kMXDXcCKyzxbI+xcA6NvExAoKMGDjl+7qkapXUs3xp2xjvSiUEefEBcxug/IxzZ9jm3Iwz4oKCEkpcbxEWMMaqBvij+Cg7P/d6MwnBHPOzeVsgiWsh22swZXrfLIuy8LLXu//uFhjtt3z5rhA4y3b9uGsc0t0r0eNIA2+0pZ4RTnhrOg8Nh3cOLbj72J/XQ1qw85mn1rYNAdlcum2w5E/QxNIdwsx5/QENeRTsvVRDQ1KSArjTj3l3sPBgoGwQ==
+X-HE-Tag: 1795347540-745105
+X-HE-Meta: U2FsdGVkX19oJ5tMAA6qKCA5Dinag2OayFXsw9EMFtpg0GdIyUrEGcCKNEd6o7WTvNWqYD1lAAnznO8+1z+gw6PnRl3idCPUQdOkp+0CgRLcLY3L/rFAX4Hq5oW+3EX5mHlad0uTnhh0PV+CYb3EhZ16IZ+aRIac5orLwiqowqB/PY6Uu+M3KQXIWsyZxSrlzpaKKEAQX45FlbvfxH12PrAt8sl2V4P4GA5F/ljuJrPLHvPLThAHl+G5kgtZrSPQioff7TSAn8SWolsSvX5REZYGo/LzZM3drEs2a7Y1+ajxdtviCRPVJlAwQQ1TCLm8e3NE7LZzI6aGNDwBj2ea6bfXcZJ4K3Y1saVi8MDVpF1+DDwm2j0zn1q6ElUkt55sUWyX9pXRFNMS97CYPuHyjt+sRG1HjCLv0wqu2HdLAXYHMgp9ZArFdr6Xp3E6ZHuJmCq0z76jB0web0MKvTN9wUa4UXmNk6niprVlBpjmuVQsnqXxDCLhwnsBWSFQG4vHL78NAouRGtj8fTdBvVJ9V5D4PXnzdyt+q/ZAgJnUAX657Lzt8IhV/6meCKRsw67aDV6XHC6Wb0M7N4Qo60Cy20O6HZR8DyAxPKl8Tl7vrFoW2dtzUbk2frEad4FRrb9O/FbYnaaCkuCk+rwD2k3u7DZSxtNjufqnq3n0/XSRYFlRUKkSceO5AQQmUG3r/kZb+7FgevRDcYH+lD/MIPIDAlnG2IplqjIRb/ApE70HQ5viTdKmMf4/MsgqBq9knP+lz7ziryxaHzkgNcrpObf+/Cz3dU5MLwiu9OWhaqJdyr2C1EhVFmxrEw2+ei/sPyu1JLd2DrnBXRKsYxbCxcjc0Mnd+vxmYQCX3v4quMlzWsSqxX9gmRNAxu+I9LYOeYK+jhO9OdaR1JCBHN8R74U90/GfXh/uvJnnedDYK48EIiakC9I/UysM/y5eYulY44z9Vr6iVfJFM7BpBekCaNt
+ 717YBzyo
+ frQjrcd6kQCM9k9Qtbb8yplkrmTE/5ysjZZkM/fWBdFp+x+sVSS7iybl7Mswjo9c1lJzkV69t5kso3lyU25QeYF+AkjF/dYwUa0kbLorbtnnnvIDu2rSlCcf6Vs+ptKOfYCGwo1WhgSE6+qM4SGShl24DpRc1PXbuRMJzOvt70UDJcvckzmyJMzM5Pjiwp9a6ViJWtyp63lpDwqR64bdYrvxgl/onqZCiEvg9NLLtCkBG0dKv/NHjEdaPTeco0/002CjK+iOxoML02+5+s/dsG+JvKWXPlpJkZ/YDZnn3Gui/2c6OOITy0hIrfqoA5t5SucTi3o0Zcbc3MTrRmKVj90A1km8bbfBk385L7bkFitDkKEf+JDjBKsPHuyOiCMF3vdp2w261QvLvWbf4imdwE1oCASpOSMLl0DdxfUI9TASmxbsYTb2moTOnGydbTbO3vRZHg5LYwMYWyCnqBRedkq/jxrIqwhjz89kGA+BRU256k901hG6RWkEfJ9GXS5D039lbUhkT6d+54FGa2byBRoscw3fd2TO0y2+PxFmRof1kELeYooVh6QId6ojpvI5KkJnltb6naV835jmwEn1lVwFCrsnnH0fBXh8GP+PEyYH3bYSbS02p+5lUr5+cdbIR+dn0kSpX+KZOjr3NoAjC2w4+jRnCfd3DN9jFlWfS/0IfhEoG+HRAUMYW608RqKy6GkaTPBROkee0Lw/dBQinG81fU8UFFMpjpp9FbKOIp0TCFFxsh+nmAZkhZj3IDCuMF3Oo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,126 +174,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 22 Nov 2026 07:55:37 +0200 Mika Penttil=E4 <mpenttil@redhat.com> wr=
-ote:
+From: wang lian（ByteDance） <lianux.mm@gmail.com>
 
-> > So it accidentally found a bug in lib/test_hmm.c on the way.  "The QEMU
-> > run exposed a real test_hmm bug: a second open of /dev/hmm_dmirror0 can
-> > put a device-private page into its page table, then dmirror_do_read()
-> > tries to copy from that non-CPU-accessible page and oopses".  I'll prep
-> > a fix for that separately.
->=20
-> I noticed that also and will make changes around it in my series.
+Hi Kairui,
 
-I came up with the below.  It all tested out OK.  wdyt?  I guess it
-should have cc:stable>
+On Thu, 19 Nov 2026 05:03:32 +0800 Kairui Song <kasong@tencent.com> wrote:
+> - Rebased onto current mm-new.
 
+The v5 build checks on x86_64 passed without issues.
+I'll continue to report results from additional tests and workloads.
 
+So feel free to add:
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: lib/test_hmm: use backing pages for device-private mirror faults
-Date: Sat, 21 Nov 2026 17:06:45 -0800
+Tested-by: wang lian（ByteDance） <lianux.mm@gmail.com>
 
-When one hmm_dmirror descriptor migrates memory to device-private and a
-second descriptor reads it, dmirror_do_fault() stores the device page in
-the second descriptor's page table.  dmirror_do_read() then passes that
-page to memcpy_from_page(), which can oops the kernel.  This was
-reproduced with an unprivileged process using the fake device in a QEMU
-guest.
-
-Store the corresponding RAM backing page instead.  For a large device
-folio, retain the subpage offset when selecting the backing page; using
-the backing folio's head for every entry would return the wrong data.=20
-Extend the existing PMD migration selftest to read the last subpage
-through a second open before faulting the memory back to RAM.
-
-Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
----
-tl;dr: The unpatched kernel oopsed when an unprivileged process opened the
-fake HMM device twice, migrated an anonymous 2 MB PMD to device-private
-memory through one descriptor, then accessed its last page through the
-other.  The patched kernel returned the expected bytes on all three ioctl
-paths.
-
-A was reproduced and saved before B was built.  As uid 65534, a static
-userspace program verified that all 512 pages were device-private PMD
-entries.  A READ of the last page through the second descriptor produced a
-KASAN-enabled kernel Oops in dmirror_do_read().  Independent A boots also
-oopsed on WRITE and READ_UNLOCKED at the same last-page access.
-
-With only this patch added, READ and READ_UNLOCKED returned the expected
-0x0a byte, and WRITE returned the expected 0xa5 byte after migration back
-to RAM.  The modified in-tree hmm_device_private.migrate_anon_huge_fault
-selftest also passed (1/1).
-
-This reproduces a userspace-triggered kernel Oops in the fake HMM device
-used by test_hmm; it does not establish reachability through physical GPU
-hardware.  QEMU guests used matching kernel configurations with
-CONFIG_TEST_HMM=3Dy and KASAN.  The guest device permissions were set for
-uid 65534.
-
- lib/test_hmm.c                         |    7 +++++++
- tools/testing/selftests/mm/hmm-tests.c |   14 ++++++++++++++
- 2 files changed, 21 insertions(+)
-
---- a/lib/test_hmm.c~lib-test_hmm-use-backing-pages-for-device-private-mirr=
-or-faults
-+++ a/lib/test_hmm.c
-@@ -292,6 +292,13 @@ static int dmirror_do_fault(struct dmirr
- 		page =3D hmm_pfn_to_page(*pfns);
- 		WARN_ON(!page);
-=20
-+		if (is_device_private_page(page)) {
-+			struct folio *folio =3D page_folio(page);
-+			struct page *backing =3D BACKING_PAGE(&folio->page);
-+
-+			page =3D folio_page(page_folio(backing),
-+					  folio_page_idx(folio, page));
-+		}
- 		entry =3D page;
- 		if (*pfns & HMM_PFN_WRITE)
- 			entry =3D xa_tag_pointer(entry, DPT_XA_TAG_WRITE);
---- a/tools/testing/selftests/mm/hmm-tests.c~lib-test_hmm-use-backing-pages=
--for-device-private-mirror-faults
-+++ a/tools/testing/selftests/mm/hmm-tests.c
-@@ -2087,6 +2087,7 @@ TEST_F(hmm, migrate_anon_huge_fault)
- 	void *old_ptr;
- 	void *map;
- 	int pagemap_fd;
-+	int fd2 =3D -1;
- 	int *ptr;
- 	int ret;
-=20
-@@ -2143,12 +2144,25 @@ TEST_F(hmm, migrate_anon_huge_fault)
- 		}
-=20
- 		close(pagemap_fd);
-+
-+		/* A second open must read the last device-private subpage. */
-+		fd2 =3D hmm_open(variant->device_number);
-+		ASSERT_GE(fd2, 0);
-+		buffer->ptr =3D (char *)map + (npages - 1) * self->page_size;
-+		ret =3D hmm_dmirror_cmd(fd2, HMM_DMIRROR_READ, buffer, 1);
-+		buffer->ptr =3D map;
-+		ASSERT_EQ(ret, 0);
-+		ASSERT_EQ(buffer->cpages, 1);
-+		ASSERT_EQ(*(int *)buffer->mirror,
-+			  (npages - 1) * self->page_size / sizeof(int));
- 	}
-=20
- 	/* Fault pages back to system memory and check them. */
- 	for (i =3D 0, ptr =3D buffer->ptr; i < size / sizeof(*ptr); ++i)
- 		ASSERT_EQ(ptr[i], i);
-=20
-+	if (fd2 >=3D 0)
-+		ASSERT_EQ(close(fd2), 0);
- 	buffer->ptr =3D old_ptr;
- 	hmm_buffer_free(buffer);
- }
-_
-
+Thanks,
+Lian
 
