@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A563606A33A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F95B606A6B9
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EuHyVgS0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nU2piSAo
 Received: by kanga.kvack.org (Postfix)
-	id 0EB886B05B4; Sun, 22 Nov 2026 13:45:01 -0500 (EST)
+	id 3CB9C6B05B5; Sun, 22 Nov 2026 13:45:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 096456B05B5; Sun, 22 Nov 2026 13:45:00 -0500 (EST)
+	id 3A30B6B05B6; Sun, 22 Nov 2026 13:45:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E78806B05B6; Sun, 22 Nov 2026 13:45:00 -0500 (EST)
+	id 21E086B05B7; Sun, 22 Nov 2026 13:45:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A6D9D6B05B4
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:45:00 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2204A1A070A
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:00 +0000 (UTC)
-X-FDA: 85463631960.08.9764F1B
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5F66E1C0006
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:44:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=EuHyVgS0;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E64B36B05B5
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:45:01 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FC7C1C34EE
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:01 +0000 (UTC)
+X-FDA: 85463632002.01.8F30C39
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A5A1520004
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:44:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=nU2piSAo;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3KDgDawoKCAUoymtzlmytslttlqj.htrqnsz2-rrp0fhp.twl@flex--jthoughton.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3KDgDawoKCAUoymtzlmytslttlqj.htrqnsz2-rrp0fhp.twl@flex--jthoughton.bounces.google.com
+	spf=pass (imf03.hostedemail.com: domain of 3KjgDawoKCAcq0ov1no0vunvvnsl.jvtspu14-ttr2hjr.vyn@flex--jthoughton.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3KjgDawoKCAcq0ov1no0vunvvnsl.jvtspu14-ttr2hjr.vyn@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795373098;
-	b=6CAIBFMF4iFvSMFBm8CG10dXECQYGjT061YzKX/M9MQm1QBXPAFOldFh47HdCCnyH/7C5Q
-	u9jkdbChDmr256HohxxYsw8DKMNNMCWfrCKnPtV+13ksdlv/KQOogCUAQ9NJK4JL5j4EWi
-	t6RF1RQthlnM2Mp/BcZTDflr0pF76zg=
+	t=1795373099;
+	b=fKseZ+8K03Nenrac9q6NoO4ISuBay1yTf3lD8Xl5VUu5O8ZikacuMKwWuRQTIZf2qdiIyl
+	vBzsXQBOtH5fqNBHh1tzGR4bO2AsGT8m2BxQHD61sYWCZvM7eItJtgShiMJBH8JoIEVyjF
+	MHBaLfRexWFxoGeJRoY5Is1Iyqn+knQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795373098;
+	s=arc-20220608; t=1795373099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u826aq6QgFuLwy4ZUNvGuXRkf41ETeakzXxIgVKKh+Q=;
-	b=omSTxncnmX8oo3/1GvCgSGQLszPv+mHP6kBkyChjidC/HdfMj72OvtzjAmQQBSo7rRT23H
-	7julUMnRo0IZnhj2e2zqG3w2F3AtZCQCJpV+DAgXchuiiqQf6AMSmX6vRCYJWJGif9vsAl
-	jWNil9ALcUvxBlZSOV09GywvUWAU1wM=
+	bh=a/BzRua6E4eXmgBBVosYCcmxsDMlITpi7UmbKmFzU4U=;
+	b=qYOm/197VqvbKXLY82Y51H9ueCEXSmThf0rznREw9VfjXFoZmzXMqS8mnsF+cwYuuCihui
+	FEsPGic5Z8hUG0wPbsSLuEu/NUpZNX6YPnJoad9yFnxcBpUo8WIywocXM0Y6aBow8Jr7eZ
+	ZFf11+lTyq7DEK6KMw+5SbAvDoDP+Ec=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=EuHyVgS0;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=nU2piSAo;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3KDgDawoKCAUoymtzlmytslttlqj.htrqnsz2-rrp0fhp.twl@flex--jthoughton.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3KDgDawoKCAUoymtzlmytslttlqj.htrqnsz2-rrp0fhp.twl@flex--jthoughton.bounces.google.com
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3b42c3dba96so2996132a91.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:44:58 -0800 (PST)
+	spf=pass (imf03.hostedemail.com: domain of 3KjgDawoKCAcq0ov1no0vunvvnsl.jvtspu14-ttr2hjr.vyn@flex--jthoughton.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3KjgDawoKCAcq0ov1no0vunvvnsl.jvtspu14-ttr2hjr.vyn@flex--jthoughton.bounces.google.com
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b456fee3b2so956776a91.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:44:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795373097; x=1795977897; darn=kvack.org;
+        d=google.com; s=20260707; t=1795373098; x=1795977898; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=u826aq6QgFuLwy4ZUNvGuXRkf41ETeakzXxIgVKKh+Q=;
-        b=EuHyVgS02+Z8VSjiIrco1XuV/aZNTQY/b0qhGs9lO55JlKmKUWMMJ8opFF4uaGmd/J
-         If/DSxnSba9L+oKaLcBLuhrkgcNnhLehdXoGvRkGflcLV8783tNjY0WvX2Glnin1YS2T
-         g+ETxH55t8qL3DxeYbXshTjjB57o8Bf7nKJZ5+c8/4DRoAcSNnC/LgmWoGt9ag4QZCVr
-         9FbWbVCGMFtF6M5oX+GQhfSR0KOzm4H7Oyyb/1VWU3KgwDncKNgw3M8RUmEnlfiOAaw9
-         R4/pZk6RSAy5h9Ra4qGtxTHlG+PjIVU7h0c+C8e3aVkD1rO+7iGXHVU/5BVXGLPC638W
-         BHvQ==
+        bh=a/BzRua6E4eXmgBBVosYCcmxsDMlITpi7UmbKmFzU4U=;
+        b=nU2piSAorgd9z5OT7pcaeRYBRMbepYjP+n63T5QarLOO57ICe2JZOCEbySpTSB0Pkq
+         d+K9I7lpNBnX/PnnD4Ly1ur/Z5aTLu831HnRwVWLWCBnHu/Gj+vVNQBlmbySmBiHXDjw
+         JMoXXxwW1NecTaon2grd8pPEybaSofbQayCv+ttbUXocpsoj0L+gK+EZ2j9gQ9DdCr89
+         6KbxKeaQOPG7sld56o8PKT8L7n2zvsRxq43Z/NvXwnNs/uoa4GM47DhzKtwCdOGb88Yz
+         Sh2pd9MeFs0EXihLeG09imo2v1q3UsJx2oJp2c0mr83JiixOJXNc85U0S8y2zXrPtm/u
+         RReQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795373097; x=1795977897;
+        d=1e100.net; s=20260707; t=1795373098; x=1795977898;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=u826aq6QgFuLwy4ZUNvGuXRkf41ETeakzXxIgVKKh+Q=;
-        b=0w79294Us5SmLgIOlgH6xuPV/KW/ICAQ3xjPOutbVNPfvst+3yZkkfxv8nZGKMzVPN
-         xOIc0lEtagxxHzyNfSuA1srH8+0SxpyvlS+lL8q/+Q6UrScWKeR2C1QkuVa7I+5pMLhi
-         nMngxQA/+6qzgVfGP3kpoqWbASwvgGhaAh8k6kSXj0KNo6icM8UnB2bBqUwFw43dFR+b
-         Zt6Z95Q9XXecExDwNwZkrp2hoKGgzQQD+XT7rOPLPNbpYNYdi2AotsbNIMI6FKHbtSFU
-         a2y4YdPXx1hzcwKPWk+piGohwGtNld+LvU8UnjszeVdUXluCn7TXQ71eTs27A/jS8XKS
-         yjog==
-X-Forwarded-Encrypted: i=1; AL+hErFtVRS5sxttr5L6MRm4Yw5mz8hzwgHGX1YXHkbOXVBOelvke4CH2K7NQj7MWLLuGEtGcXh3L3LdHg==@kvack.org
-X-Gm-Message-State: APuU4Z/J1nQc/ouQ4soClkpaHxCWW/EWXkw4GXvPa3bWZClpnFeEHFKx
-	aBO/JoQjX9+OlNPY9dd7LRCBwCZz74hLzkdumcYqYkesfVygtR0o0VWEYdAl9lARdaTFIXHrB/n
-	1EtYazHWqBqdlZTrXa7UZyA==
-X-Received: from pjrn1.prod.google.com ([2002:a17:90a:b801:b0:3ac:3bb4:e960])
+        bh=a/BzRua6E4eXmgBBVosYCcmxsDMlITpi7UmbKmFzU4U=;
+        b=OGzbAApi5CR7XohYAgVnUGA1+FUOgva6vTukbfnsNkTi8lyJD2HKYPUv5wi20TttVP
+         kWcyFMgjqFOvqfKkBxqDhZQANVKKXrVSQbAbMc9dn/re+qK8fmMKc/di+CmBLe1Ma4xb
+         ObItLAhBc6B03HZO5K92v0/eGWRzjqxpqsiXj8eP8Kca5CQLacCEbv2T66ncU//5K5sp
+         DJm2sExJAHF94WEguLh2sdBWBnDGn6+Ed9iS0cRxxVhiTY+qjaF0RHrt0o2nm+g1MspZ
+         ltbka5q3qylx/rZZvHGNHT/6QF+H60FpwRv9mtnzB3PxA43VbMVyxc4fnXM89kyIid1M
+         YIcw==
+X-Forwarded-Encrypted: i=1; AL+hErHYWW5oh+fRM/kZqE6d7pDTQYlR7U9TIGi0bvAyTCsz7Dd6x3SnfViVfgoeTsqrTAKU7unKQbE+dg==@kvack.org
+X-Gm-Message-State: APuU4Z//Pqu1XTajxc6oLiR0YC99npOPFO17A0Tx6WsbCjGgxwfFtqra
+	uG5DvYKT0HtTpCf03giIeOjmKdUDHvbYApewEjKFqWPRElCxM6mMSXrmy4/lIo+0q9YCmSWhhHh
+	svieT4XtBZ6aSNnhPu5xtXw==
+X-Received: from pjbgm11.prod.google.com ([2002:a17:90b:100b:b0:3b4:3d61:7517])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3f43:b0:3b4:1621:ba74 with SMTP id 98e67ed59e1d1-3b41c8fe3a5mr9462380a91.17.1795373096769;
- Sun, 22 Nov 2026 10:44:56 -0800 (PST)
-Date: Sun, 22 Nov 2026 18:44:35 +0000
+ 2002:a17:90b:4b:b0:3ac:d39d:ee4f with SMTP id 98e67ed59e1d1-3b41caecd51mr6521075a91.44.1795373098233;
+ Sun, 22 Nov 2026 10:44:58 -0800 (PST)
+Date: Sun, 22 Nov 2026 18:44:36 +0000
 In-Reply-To: <20261122184453.2668189-1-jthoughton@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261122184453.2668189-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261122184453.2668189-2-jthoughton@google.com>
-Subject: [PATCH v3 01/19] arm64/pgtable: Clear AF with LDCLR on supported systems
+Message-ID: <20261122184453.2668189-3-jthoughton@google.com>
+Subject: [PATCH v3 02/19] hugetlb_vmemmap: Always flush TLB if needed upon PTE remapping
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -99,19 +99,19 @@ Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Nikos Nikoleris <nikos.nikoleris@a
 	James Houghton <jthoughton@google.com>, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5F66E1C0006
-X-Stat-Signature: 8acfi3r1kske7n75ak9585ba16qht9ik
+X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795373098-70500
-X-HE-Meta: U2FsdGVkX1/+xW94zVsZ3q7d4AB7zKPEZuQpZnN2E7Paw2m+G5Sv+ZF5n2YbvcG4Q26jYqc4gZy+ZHI7Spx9J0HPPnn2zfB6cWFqBzYpV5g04zoHXXB+Rjxd16+Pi9JcSYg8BlnIZYY0j5cINjXu5oQDG8H2CGClYeua/53Lwz0JsnKzyuUB74TMG10/gCEk+LicUiQy1s8l12WGbhS0jPBwLh25v23rBVmqqd8N6gxvbPqaPNAjEcO1V06ay59hqyFEUfU62mIzHffoX/1AbdMqo0KXu8ZmBdqiu3JPPzMCF8Y8ebVhpXsNo8nPCkMPx7CWizk0JFhft1Ivgo0e+wSIh9w1pVhFZjL8S8+XoMiPMO/8CtXEmNfKECvO/4A7WhjpNpELhsOLNenrxaZ7+MmtjLOUz36gN0Z89houSRAYuAhas95DjDmtLegoR/P8Lt2rIgLxA/3q2bmcbD1i4kZSu7HFKC1ANF8EvaFO36ESeQsnTpemoS74Cyyjbh7VpGYsBkn3/TN38Jv6E5entWAtJhBwJBDaFQwiHx+qdFuy41oySS2GGEddee3rEppu5qQ8SmbkgaVmeVhPIZr+Xvfv+Rx+lOtjTOBBZ7eAJ66dhIsr/sI48B555divxKp1agcmEQFSGYOScZ74msXweMqu0Yu9I7I4BQBzya/2ZtHpkGZoe406LVg2Kin2Thf1+E6KUZxLWiOIzO6CetVPW1OA16WEZfDXL7erKK9oQ2ZHMKQiEXkQ5LqtlnENZoPWF8nqIhRN3BXw1ch++TUdOrACgzVAEv6ocHrXxeQ1YO4gWj6QIqcqyYfHKYHsPLUTFmNdcUUpjCOgmN35zxEqwVHAyhQ677B5j6X+ZyGSAA5TxHho9S8G7xXhHzTXlNHQaDnkqPC38pPi+0KaQ9m7zDOEUWLXmA3k7mTMR/Ohk/mCI3be2QhotZIQNQVkLQMZGXnvcJqw70Nh/576Yra
- H7WobpCT
- BC8AAc5mBTC1TEnFe1tye3IuWlncp+Xs3Y/i1WK2EvkBfNMbbXr4oxNG0WYw0Fupf/1jzBFQFOd+RBMHyAhwNPzA/SAA7D9x8KVz29ySulPbAXtLFoWFID8s+0ZshApKf1zguYFcphlTA0Qg5sQZpqRfEho0q3W708+Jy/tiBo+D0ACm/8xoqTv2TrpszHpee70oOZx56RunWjN284UFCMl7lZaIQAytTSDgaEv9VJ3+4DI5BMy7cTYszlfiNAtgttJTCZ8Q60Q3IBxfQuQSVFgEMLUyytssh3RQy4bjREVZVn9O6pqyt2fjiJpSJo1EcRPEgxj494/IKtnp8snF5cU80L3CRfdTmEXbsG+DUTByb5jlqMTOzWUeMVq2vXDEekt/cULlHv/0srYMvdrMpW8e+gDPRIFLjmhNoxmiLu4fYwbhn0k+YnJIrwq0CIm49s7MOF+FB+15pmSszdSp701aQm2JFgJthzugF9U9Qovf4zGcHudRYjtn83h2rsDm8XoKl0xuyxLRMmZX+8uiohEaP+iwUpSuNRWS+WRw5gFR4wpzeYFZ/ow+SJr4oclMjPQaHKPvHxnymOgVdD6OYZJwc6inHIVgsIwv6I0kQMYUQyVYC1LIg55kuPgorp/wzQbGmiNDd18EpKFCMsNIhZ5rbddQ93eAxqQkuuy4H/v6J9nw65A/jS9IDG9q+BycM85WukB3/euzlf8qlL8+3pVDbV0Zzt8uJpaR3KmjsOV9xFV2kBlg9R9hIWZBt/aQ99+kU+UKA9KwRZ+6TAVykWa+Kli8Vyrbm1JFgXr7svPnqhV8=
+X-Rspamd-Queue-Id: A5A1520004
+X-Stat-Signature: pimopxjd4irm4y3s9yxoh7wdxzzkrp3e
+X-HE-Tag: 1795373099-509200
+X-HE-Meta: U2FsdGVkX1/GTlpwxJk0ujte+PnmG8uf3/5E5ccmaykQjEbqOxX0FwYTlq1q6wOFVrdX1PDWyb6YuLx+S3fThup8eyWm/ybn5NFKOaDrV+ThBexcIEoQj+UST+YhdLAI3qVa55ef/ZTCBQvQyVDtWiPha0D8Rqzl3LJxaeXEAUR0mtOzm+fmxg9sG5xnrJzRSyoRJhlinhzgs5cJi30vXRmKVagdEKw0rWHsFLnwi9FCFpe0U8fgSZRlOTEmNvzbXJ02v2qvJeBb+NoMuIZrPQJyY/RBvJOmzGtIkOSdgzyR+Q+DfSz4E2AIr69U4kTpTiY7iXVelaXZ53+M26iTTDfsZPnOIBsVVSikspvlXeY0HAD/WZDrotnfmOvSuHmp8V7QsxF6k9xre0DUFMyMZkInzfNvOjFr1lb43oFe1ORTlvZqLwFttBF6MXQGD8mFJ0UrvdgCw4lprRzsLHfFBwGBHVrGsq6J2U0vXrx9krlK5u/SkjnFzv76gi/F96+cUsoUS6rir564C50IVpdHCzBJ4aF7KMBxMJlY5yJSJy4M/0xdS7XdJFbWVUWoGelJC+mP5dJCpjUukHMiu5UN7HVLtZoctiGDrHA4m+FcuBVlW2r3IkJlyjbm8P3qaUh3tscrVRiqkOPhLJgIRcHY/oIQM7+o54I3WD9BQD0I2zMiMgeGyXA+Nfp8cSgmkjBGdyMzplC1TBxV0Cycq1Rb369QcUUTDuP8kwBOANTxhf7YejU5tTD141+gX8n/GZAlpxoPOsa8hgy2AnYYR6U2IlE8xldMWPEEv+w/jkB8rwvDRBtrw++1KcqchHB2RlSlYABi/k0wztF2xo1Jjt0BeCTUKYzsGaWgBK7E0gyX8lDsBh8e7nc71n7Y43sOvREtAz9wyZYpbpQNmnvs9rxIwRzl2K2bdkq2FwBZ9sSXAbvHBxMUv3TSfJ7ck9l4AFdQ5KgFQs5qvQZaqrGQO8b
+ x2SKcQ2i
+ h8VZFcy93O4a5rHOmeaQ4hGHfj/+Wg4tfntEdg96WsHfP20sqdoD4w+lheq0Xx2bnLebZQY36xplofIeLgFu0xdMnPG/FU5Unf6tlZY3707sCllF6HNYzR+4meFdB8sJHLx9wL+D5Wy6nfyw9YmaIDrVICVzN5kBQ5y18omY16AkRsXLhcRZWLODexizuFmteQ2eC/ZegtkhkmNaEMQ+iTh82qtXeQYVx90xLuboPQfHm/uveGCjrWYiYq0puJkPygDCwjmmBBS8JcOsAIVBg+jVQD1UE5bt7+dBVtHBhBNopgRyEu7IjieJCkUfacSLkw/BpgLM6m56Zf/xePyxtV7UhbOyx/e6TZZNV38uvye0aaqE112Wu5sJIkmvtYJ2A+YY3jgJrjEwuCZooWGPnajO0QUMbLnUpHO/8ZPuK1pc0Fj/4vgO8MYsFDdSb09mI4gcEw1qRFrCXC+PAI0gVQ1RzFzZOTXoHET11KxtQUTpSKVbOtTG+4fJ8a6g2HRKzcO4GWt1GZSDCxUawc822DXV9rhwRxcqmOFF6/rf+2CDL643hpjQIoL7H/EWMO9ogQ8YKc3yAEvQnqeCKG+aSaPLAVdIYSO9g5OlHvNpNgzGmcJKIGMG/skV4kkKuQ4we2mF6yy3shRi0x2aH7J8P+xNLLRwhjgMRGq+no4SCeqTis+1afapjCOpopAHlue7pMaYuezCuJ8H0BKYDTid55mVMrMWKXZHsxHfMbJA5nvrvy6KcjCXtQrdYEe/TlhD8BHCDe7cpEyAJ905kl4HYOS5P4sWARP3ctirGUp70hNSFywe6mD1LqXiiRlet5GDtweaMWheC8AmSh08bcn92WyQWJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,49 +120,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Replace the cmpxchg loop with atomic64_fetch_andnot_relaxed, which, on
-systems with LSE atomics, should end up as LDCLR.
+vmemmap_remap_range() can potentially leave the vmemmap in a partially
+optimized state. In this case, a TLB flush should be done if the walk
+caller asked for it, even if the optimization was not fully applied.
 
-This is somewhat overdue. In recent versions of the architecture, if a
-system supports FEAT_LSE, forward progress guarantees for exclusive
-monitors and cmpxchg loops are relaxed.
-
-Mechanically, I would love to write test_and_clear_bit_relaxed(), but no
-such function exists (test_and_clear_bit() has full ordering, which is
-also undesirable). Implementing test_and_clear_bit_relaxed() properly is
-a pretty large change; use atomic64 instead, as pte_t contains a u64.
+A follow-up patch will more completely deal with partially-optimized
+folios.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- arch/arm64/include/asm/pgtable.h | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ mm/hugetlb_vmemmap.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index ce51c1b9be22..4285b7e7a6a7 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1252,17 +1252,11 @@ static inline void __pte_clear(struct mm_struct *mm,
- static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
- 		unsigned long address, pte_t *ptep)
- {
--	pte_t old_pte, pte;
-+	atomic64_t *pteval = (atomic64_t *)&pte_val(*ptep);
-+	s64 af_mask = PTE_AF;
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 09b9fd83c198..7be08c68c2f1 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -163,13 +163,11 @@ static int vmemmap_remap_range(unsigned long start, unsigned long end,
  
--	pte = __ptep_get(ptep);
--	do {
--		old_pte = pte;
--		pte = pte_mkold(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
--					       pte_val(old_pte), pte_val(pte));
--	} while (pte_val(pte) != pte_val(old_pte));
--
--	return pte_young(pte);
-+	/* Atomically clear PTE_AF, checking that it was set before. */
-+	return af_mask & atomic64_fetch_andnot_relaxed(af_mask, pteval);
+ 	ret = walk_kernel_page_table_range_lockless(start, end, &vmemmap_remap_ops,
+ 						    NULL, walk);
+-	if (ret)
+-		return ret;
+ 
+ 	if (walk->remap_pte && !(walk->flags & VMEMMAP_DEFER_TLB_FLUSH))
+ 		flush_tlb_kernel_range(start, end);
+ 
+-	return 0;
++	return ret;
  }
  
- static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
+ /*
 -- 
 2.56.1.809.ga0b61035b5-goog
 
