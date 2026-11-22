@@ -1,93 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD738606A6AF
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6525606A335
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KRsIXVOv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EHsC4CTY
 Received: by kanga.kvack.org (Postfix)
-	id E43966B05B3; Sun, 22 Nov 2026 11:14:55 -0500 (EST)
+	id 0B3B26B05B1; Sun, 22 Nov 2026 11:17:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCE846B05B4; Sun, 22 Nov 2026 11:14:55 -0500 (EST)
+	id 065AF6B05B5; Sun, 22 Nov 2026 11:17:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6E666B05B5; Sun, 22 Nov 2026 11:14:55 -0500 (EST)
+	id E96166B05B6; Sun, 22 Nov 2026 11:17:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9475D6B05B3
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:14:55 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2944AA04D0
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:14:55 +0000 (UTC)
-X-FDA: 85463253750.27.CD42768
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 58E12A0005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:14:53 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KRsIXVOv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD6576B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:17:27 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 58BF3806BD
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:17:27 +0000 (UTC)
+X-FDA: 85463260134.18.8D4E48D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 89E1E16000D
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:17:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EHsC4CTY;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795364093;
-	b=SyG5Ns0YK8XuDCmy6HVEogJTKXTq+ne/yYojrU1LXb33LD1RkUU7b7e485CMRK46cnuqy7
-	nw7uWOcIuHAnSpJCn5Lvm2lA2UHg0WRJ8ezkk1/jwFt/TFIFkLIOxiKSkOGLK0hSAw4EQR
-	3TEakpWwjLCUCqvlMlFrNC9xjtUjcHE=
+	t=1795364245;
+	b=WKgjWWaEEaep4oboEhUslHPG5GLEf8ARm4yunszqqs8262nZpT6IM0DFWae5WbHkkQpDxh
+	j5qiU7sC24OFnmtorZ9S7uU05E71B+eLKglid21NLfqxUuX2lrwcb4+a5pLgMR0Xl6D7b0
+	XrSRyhn9zr16tKcNCoLMlRVO4GRcI/Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795364093;
+	s=arc-20220608; t=1795364245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M0XQPV+kx4upVZMbk4LNgSWgp4hVc8/l0NFR7dE4f7k=;
-	b=O71bbbC6vy/e8M1O7o/Uo0R0BTlbVwHsoa+W3pAqTuYbjf3T+2HQRpos4udAVvWocrZW77
-	7zztPPNYR0j57u8dCgQSxPzijGQ/wv8C2AOjTt5uUIjoxtn+0lAQFW7D220zQcZKpegEYj
-	Q1QhY9NLlIRqkmgHKp4s/++lKJRVEDE=
+	bh=nR/Mv8pU+awzbKHVLVTOvIJwcSoB3/LbebgRm55ntSw=;
+	b=ymg8Y4re3VjPiz2gkQhWzN4oKgc+35X4sbS5yIFiZ7YwAxLrcHKPSaEZskn700PzpADTc6
+	mRcskvjrUuYtwHgPWTrbD/ZFvqBnkuU4cuStM09CgfGskH1bgORObwu5sVccV62lV8O/03
+	8CxibZaLcDgDaWP5nlo+0vF9igEJfSk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KRsIXVOv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EHsC4CTY;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B3A240232;
-	Sun, 22 Nov 2026 16:14:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D214E1F000C0;
-	Sun, 22 Nov 2026 16:14:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 12C3560D3C;
+	Sun, 22 Nov 2026 16:17:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E891F000C4;
+	Sun, 22 Nov 2026 16:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795364092;
-	bh=M0XQPV+kx4upVZMbk4LNgSWgp4hVc8/l0NFR7dE4f7k=;
+	s=k20260515; t=1795364244;
+	bh=nR/Mv8pU+awzbKHVLVTOvIJwcSoB3/LbebgRm55ntSw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KRsIXVOvqYXoxEwFU782dp+LyTgf1irzunY5nI4cCpkfJH6//6Zw4QWkZtB9LQAbP
-	 f904tQ0OgN+tUDsP2EcjKHiOME1qRz3Z48Ji8AfaMwxLpYvfeW6FUnS9YVwhM3YTLY
-	 XEvD7E4i6XSXX85O66ysqgSYHbqSFq4jMawhGtnvOpwnYk4+ymjzpzBpaGYTa1yVLM
-	 8pYPgk4nj5bp/xDZeh9vv70aeSEgR6te6q4iddfvTWJI5/umz1aK4q4KXIZm/M4W1U
-	 6CYdYW7AgDt2knmuVpxcA+0tHAu38O6PB19J93HAeOb5jaWyQyLiuh6DHFWbdwmI7r
-	 2JKeAsghKlt5Q==
-Message-ID: <b9569459-cb8b-48f9-a2fa-233cffe01a28@kernel.org>
-Date: Sun, 22 Nov 2026 17:14:35 +0100
+	b=EHsC4CTYewr8mI8OaADDEq5jIWtfCtl6qJKSpZCWS+G638u1IEt6FEddjKRZ/1mjW
+	 iZ9bkOoAYfW6hNFTyBpzFs1sCJq1P32mkZ2JUK2v4GgWBNdBM7oXuciS59RGfSvxsD
+	 d9X2GMgmRijAwtma/G0cv3+I/xsjjC7rYIGbaKPsCBNvIZF7jiFCdws8Zz2fX4JvV8
+	 lyoGGSvbI2wnVbcexJaQe5Gxdc12IF+re7h6Bc9Kp9H7RQILVWIsHXXOx1Fm91JKWm
+	 +cPqYYVeteRw5jTtrIl6EBP/JGBumLtlm5lLmwekdRW06eS1f5+758PSLk//NQcQXg
+	 LLs/BqBJBrtOQ==
+Message-ID: <a8aa2827-520f-4e64-92d3-776e891b3927@kernel.org>
+Date: Sun, 22 Nov 2026 17:17:07 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm: make folio_walk_start()'s locking asserts
- scalable
-To: sashiko-reviews@lists.linux.dev, xu.xin@linux.dev
-Cc: acme@kernel.org, adrian.hunter@intel.com,
- Alexander Gordeev <agordeev@linux.ibm.com>, akpm@linux-foundation.org,
- alexander.shishkin@linux.intel.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com,
- Christian Borntraeger <borntraeger@linux.ibm.com>, byungchul@sk.com,
- chengming.zhou@linux.dev, dev.jain@arm.com, gerald.schaefer@linux.ibm.com,
- Vasily Gorbik <gor@linux.ibm.com>, gourry@gourry.net, harry@kernel.org,
- Heiko Carstens <hca@linux.ibm.com>, irogers@google.com,
+Subject: Re: [PATCH v2 1/4] mm/pagewalk: delete the unused member
+To: xu.xin@linux.dev
+Cc: acme@kernel.org, adrian.hunter@intel.com, agordeev@linux.ibm.com,
+ akpm@linux-foundation.org, alexander.shishkin@linux.intel.com,
+ apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ borntraeger@linux.ibm.com, byungchul@sk.com, chengming.zhou@linux.dev,
+ dev.jain@arm.com, gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
+ gourry@gourry.net, harry@kernel.org, hca@linux.ibm.com, irogers@google.com,
  james.clark@linaro.org, jannh@google.com, jolsa@kernel.org,
  joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- liam@infradead.org, linux-mm@kvack.org, linux-s390@vger.kernel.org,
- ljs@kernel.org, mark.rutland@arm.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, mingo@redhat.com, namhyung@kernel.org,
- nico.pache@linux.dev, oleg@redhat.com, peterz@infradead.org,
- riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com,
- svens@linux.ibm.com, usama.arif@linux.dev, vbabka@kernel.org,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, xialonglong2025@163.com
+ liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-s390@vger.kernel.org, ljs@kernel.org, mark.rutland@arm.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ mingo@redhat.com, namhyung@kernel.org, nico.pache@linux.dev,
+ oleg@redhat.com, peterz@infradead.org, riel@surriel.com, rppt@kernel.org,
+ ryan.roberts@arm.com, surenb@google.com, svens@linux.ibm.com,
+ usama.arif@linux.dev, vbabka@kernel.org, ying.huang@linux.alibaba.com,
+ ziy@nvidia.com, xialonglong2025@163.com
 References: <20261102132416.300084-1-xu.xin@linux.dev>
- <20261102132927.301921-1-xu.xin@linux.dev> <sashiko-outbox-195353@kernel.org>
+ <20261102132844.301730-1-xu.xin@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,21 +132,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <sashiko-outbox-195353@kernel.org>
+In-Reply-To: <20261102132844.301730-1-xu.xin@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 58E12A0005
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: fnfzwm8b57x7x76gq6gwiqiy19fg418g
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 89E1E16000D
+X-Stat-Signature: 9ekieccjkhm7ne7rfjmbtjtx6yrjxn8u
 X-Rspam-User:
-X-HE-Tag: 1795364093-613217
-X-HE-Meta: U2FsdGVkX1+/mSV96ADIUOghMOMuUT+eAS52BCkUxsBFj+4GBA2lGgR9ScNJnqMO64OTXOMYykOzNjvTiKOzg7654ZIUeIFHkwpD6t+lRK5DsKdKlVqjOTsW6DA1+JOIhDcnGOggo7jDC8A3PZehdDTthUGWBFXRadA/tfMLkRdjM4qW1FjryiuUfuvucuiaYXnpTe/qYoOyqJXkVu5j7Py9PPsBX3SS9UzbW322uQJ7c9gvNmpahB2lqBN8AqasmwPe3amJoy4WVSkNkQXnqlbKAK7Et9hw8uJVM+U0CEiGMcptKYW8K5cfbNTQ4hm4QMOxGfwIlH5jn49OwDUny4KKSR1PKFX9qlcCntSHqGdbM+L6qgwK9jfaOSfLGpz0elXWpm1/ER2GecbxM+Pl1GViOingiv/IFhyMzdmV2Cg+iSrAApOoz45ANDBOWT/pnI9IYteLN1ZEt90adneN1dYxDFMgjYJRE8NxL1vjlh4AP19Fl1WDnRMnrHm3yQe27GjMRaXuUIdG9sWoAOhF+j9zmyMcqWPOGQ1J+G+Sz8myEFWoUCJI5JOTXNe159tmwCO1X0d8vYcYlV2oPISbugvOV3rxc2g12ocerpqIoTOzQ9EgMaEcnjzEQAbHYBRiFKNNRv6gNSYvLPgabhvYe72g5hjNPpyHo86xkkwEFFt1iXrrSk/HkzHQugakXdZmq4GsCHGXYSdMS+HPfU0NmJmsrRzHbM4hDpR3BFosIHhQTEF5z7fQEcTCeXq+HkqoxIfDOpCSEI9zD7i69c2nrBSDMVE9hQDS7IWUA7YMmQFB2kpJeGbdifa1nEl3+mSj5AxrPWzXYMGjlIH45THhPPwWAuUt5eNzcr1jXmRBXoL/adlLsBFaGcosYp1R2FM0AfvSzMYd0IkS6lfS7UVW9QHUUNgd6osP2zdsncgOEDSup72YibLwl9sZ8a/iSRKt76LdJWko8DdzKTGe7ZC
- NpInYtL+
- F3hoddO3s5Fa8kJlquUiSh5FXR5N5TKoAo06j930KrMjGaBXZN6yYMXZP35RMwvG1oyzAj7cGLRKMtt/cp1NXgi7dw/j5ymBpDwhEAK82n8IsHJalYKElzXJ7W1lyATYniHk7pYm/kKLouFUwwMUMGf66TqZ41ys6R0CdOrUFAO2MiEaIPgaPnRBniAgieIVhYJPFB1zEZfGTm/OTQukeveABq49t/LIzrTyB1frOfUITnoOUyDz5CuxOPF2/8dVZlp9tmGxmriUmDv5HZO6BlUlSzY/NkIavwZwzMCREjFYYgwaZrzHgcouJ1VY9fd2KITynYLXxdMMBfxw+00rF5416ZSdNYrjKGWduVenizUqjvWVJGzIXlgW3K27L9jd0Hl1CQXmjhP+7R0M+7cFfPVDmzixS4PSn3XOItvKQoAUtD6z7c39Y/9gsF1KWzD5FBBVWP8G3Yy3orDvJDK806cKNSKScuPBLSRKzPeUNf0zeFAx3cCJ8uQCP969DBuB2iCA4aINg3oq+6Z/207gpAS0EolVQfes/+j0cHKlR+l8bmkXWJh/qjvnO0Qg6N6dvAnur9aKPSkFgKZSCeCqpaJHL2abtP8C5oJCXNptEW1F+WMSMdMmMb97n1DT2X31aQq1m
+X-HE-Tag: 1795364245-422151
+X-HE-Meta: U2FsdGVkX1+vv66kQpUNVahnJQfb3YmJJo0U9KxTS481PIMGQxX7QmN8D8HB9vt7dF8/f4eXztDfEgsjWr6ljpXAnwOPEDvx7CPOOeanwMLtBuNuVVkbOlfc2/ehJ4E1xqJXIJ7OzuePKHWfdqkRUpXxhbf9fSmPDnRIWuBpwwtOs6JzEWSk2pGzue2+BV8Z2GK+WhV+6xZcfuDFX3qd7lco7/R450kUaff/Tozoo5vczQrwQ8mIIMJdCYMv+KOwGAKA39W6iVc9gbg8vZY3RVJ9GfAYUB/1tfOBMm6OycG+9iPawAoXS9zVcxN2jAqx2pzy893OOJL5kc7eceSKldUqvThnjaRa1j0kxJUO3+W4aj41z1OxMIdQGeXfw3+wadmDpBUZkzu2QkmaeQVzvbepZyBu95WHxo4lMgjDQ9ozIvqvet7i6aN7UXbYx2F5RIRPzPQS/VVb9OSxMcja+LqW56Qsi+n/J1OLJ/MM4apVtUCYB6WuN/XLloL3HOxWKiQ35NTG5xVe7Kj/jIz0czQLf21SXkcu9dlDbz66L96HOKSp7DzlYWFCu5C95tm3Lo1iarW+3p54IYof132ROYadB6RiEsrw/1tyAVDAdsiid9V89GsoZI/HxvUhNMsmo6gqtI4BJMJv0/KgfpoO+/JQi7lfCoKrurBS+7LZn3s8ZoPxt843aFoNAc/1aVh8TtFmWvAzydrxQCZoQ9dBma7d/coRcgAMz4Q8aGExVoqM2j8IxfV/YjKNDI1AZlOvUU3QIic+oLT+U5UHdVY+48aQnhXRBzVh2iP66+eC2PuttfIwoiolEPzcQR3xmJgMRFd+jB9CYodA9auDEy8ouyhvycrF/3qppGOOLtZlVsxxJOXC2c2+3ihbkxAvxcnvOKh6IDB67QfiaYXmo+jFPipdTX3UjHExYRMz6pjnbjb6dUTY9NJGpSglIZK4gg22cnNAo/1G/zRptAK8pRf
+ QOrDn7IA
+ 6GgpCH4+FJZS6FqWUNHHL4aejj5/ZLqkEn+WfvU8tZ3BLfUp1GCd5e/tHmJLHgWs/4nybLrH/KiMemGeNj2JAUPw/WvUVgyBd3s8QMOXxh6TCqUkmeYsCYadakozNxXhQQ/90HAJyNsTx6GyAYq8FNjk+BmlmnF8ijiCwrj04rk+dWyUIUZ1QaD0TEQjwZaia2CTYyFvxxl9MgupHKJ7iAe5RID7a+OqHtBzQU3sdImH2Fg3wwcDjuFPdkLaqSH16DfNjHgDUi2ZSdda6+PHgaSZq8mYsfkvh3ZfltgcsKBmaU69Q81WfGpqUVJNcqx0Ej5xd1JmrOhpuLVoG6qnSyNBPCKN5YLY4JDjAn9KZMejBf5O9eFRR8WbtT+4RrIyvNGlZmmPJRbQ57hhgyqoo1WmCF9L6oTga2kPe5CcSu79ATdP9lh0ve8t7nyuRrQpER6O42IsivXyPdLDOlt6SLusW6RARY8aMB/mjsOqNG/G9TLtoaGOxmUrifywQ2NSI8i0XUmm84d172S+oUb21BY7zvckho5WOJ2Rdru9ShpeZhRBGUF8VOcdpvFPp21XNn3cOc9zBQhxbEN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,13 +155,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 14:31, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [Medium] mm: inaccurate commit message on write-locking in folio_walk_start()
-> - [Low] mm: folio_walk_start() duplicates vma_assert_stabilised() via walk_lock
-> - [Low] mm: missing kernel-doc and private placement for folio_walk::walk_lock
+On 11/2/26 14:28, xu.xin@linux.dev wrote:
+> From: Xu Xin <xu.xin@linux.dev>
+> 
+> The 'vma' member of struct folio_walk has never been used since it was
+> introduced by commit aa39ca6940f1a ("mm/pagewalk: introduce
+> folio_walk_start() + folio_walk_end()").
+Right, I went back and forth whether to pass it to folio_walk_end() or not and
+ended up leaving this stale member in.
 
-Can all be ignored.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
