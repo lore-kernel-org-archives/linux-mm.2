@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CADB606A32A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3234F606A330
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 18:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mS0RAK2i
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ohEaID/L
 Received: by kanga.kvack.org (Postfix)
-	id 52C3F6B05BD; Sun, 22 Nov 2026 13:45:13 -0500 (EST)
+	id 2B79E6B05BE; Sun, 22 Nov 2026 13:45:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B5346B05BE; Sun, 22 Nov 2026 13:45:13 -0500 (EST)
+	id 1F88F6B05BF; Sun, 22 Nov 2026 13:45:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A5606B05BF; Sun, 22 Nov 2026 13:45:13 -0500 (EST)
+	id 09B156B05C0; Sun, 22 Nov 2026 13:45:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 125B76B05BD
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C6D8D6B05BE
 	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:45:13 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E90C120713
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:12 +0000 (UTC)
-X-FDA: 85463632464.23.35EF364
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B09EB2000F
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=mS0RAK2i;
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 566911A070A
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:13 +0000 (UTC)
+X-FDA: 85463632506.26.97CD633
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8B53E1A000D
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:45:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="ohEaID/L";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3NTgDawoKCBI1Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3NTgDawoKCBI1Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com
+	spf=pass (imf19.hostedemail.com: domain of 3NjgDawoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3NjgDawoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795373110;
-	b=eg50eerD7MRjzy6g7zw7qCx8l3rX2GWZmmwftQSQ/+UiYN0TdEW058NYKKCgCsmVecAsui
-	lt1ES+3erz/K27Chzh76mIh5AlXNGoaHib51jh6+0S3CtiTtp/j+5WK/JVySfC8yIPZ/cZ
-	XuOvxCs+/xGHz7roIxlKKzgdMAhmmzQ=
+	t=1795373111;
+	b=FOkhbR5x6d6KzlBY2TGJmeMvnWDFQMMsCsUU8pknGyN6tz50LzAV//ndUv6QoCQPsQDFY1
+	KJOlyhD81NDblGfXbSgxSKC/jz/BBEMwhwwBoSNcNVCJ7MBV8SEgOXkhTWX4+qAFuYWNhY
+	hqCNnxWFPDtZaOXjQjJ/XOdk0OuaNPg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795373110;
+	s=arc-20220608; t=1795373111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tjhtu2IQKTqTGBX17Faec5as53bYJgHEh739WAlPWGk=;
-	b=cYgfm0RE/+pmfi00Eud14VrxGh/RFoUPjkqPsHs8YR3g87JOU3Hs4Gs1N8aohNWyOSj7qe
-	eY9SR9+fSCMbm97H477OnUntxAmcKo0qwjb3u7R6WJSOQmad/9e5+hxlrBYL/V0smAotmm
-	YKqm4K2/zisAFgqqUUSGw3f48gsYrgQ=
+	bh=BkLWabiVP2N6o8/3oJvFuhS7Z3IRmMXaOcCIdqoyE3U=;
+	b=uiGZVzd9GTVoYrmlDV3SRkgG/G2g+f7Bmw1jkURHsGcgaB1Mi8j8LDWdybFdAZXv3p4h3O
+	v7ugQvkLimj5zpujUx2VIeQRMk7v6W3As11jm6+VCXHC9WcUX3te4aeTOlomZ/Rd/iQFkv
+	CGNycd1ATHItzgdYAUldWaidPb2Ufug=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=mS0RAK2i;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="ohEaID/L";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3NTgDawoKCBI1Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3NTgDawoKCBI1Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2f040c6e0ceso25115985ad.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:10 -0800 (PST)
+	spf=pass (imf19.hostedemail.com: domain of 3NjgDawoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3NjgDawoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cddf34086c8so1521334a12.3
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795373109; x=1795977909; darn=kvack.org;
+        d=google.com; s=20260707; t=1795373110; x=1795977910; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tjhtu2IQKTqTGBX17Faec5as53bYJgHEh739WAlPWGk=;
-        b=mS0RAK2igqAugRIqoJlCoYXV89Smnem5HQSyuSKJHUIOmNY2O6bLxzk7DfKhcH6lls
-         5b6JDGUfJJzCCYR7g+LOLhjhA3XZnqvjM00OhZo9rQPvgc+peuXIvM8VZGUlimR7UEln
-         VWMFi3boVCpHMZskquzdYLw4Y5ofBpELEVPPxOiGOyP/GW9vKkCx/oEXgTnxEU5UThYy
-         4uUJJkj2vaZOq20+QvhJlyiVrx9U+aay53l1uE7pJju+TQ2xjDjLAFQ1kKTLLsov5fJ8
-         nvNOJNEcGQf509d1rdaVLhaONYmfgJo6O5KhOY70jCXgWTbm+Yx4qFTECMhm5YOAyvAC
-         UYQw==
+        bh=BkLWabiVP2N6o8/3oJvFuhS7Z3IRmMXaOcCIdqoyE3U=;
+        b=ohEaID/L3qpzhB8zgZQSvAb/UmiZDffGrSX48msMFIedqHonO4SFesokPOPgfC2l7q
+         8uuokU5d02qkM5QSbr8pCvnD6k2JISpMvLiqnjPjMndK+oiuQz9PB8lCIWQTtQf6lDM5
+         Ou8vUfBIcnPfNIZXYw+5AafV2wuV9ysE67Y61ccmAGL3W3lm6z+1tp7WB+qgjsdzXmR7
+         1KDeMMaYOGB7HTmWxQNAeVZGwXn5bzfMOM4cC0nzIEKiL4YlJLjhkUEEVhNdc7rkgBGA
+         XydDxgZhEwvIJWmY9x7a3/eTcMFnBI3T64a0jEIAEXY/rSljQaYZyAo+1G/HizTIEXJn
+         xlWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795373109; x=1795977909;
+        d=1e100.net; s=20260707; t=1795373110; x=1795977910;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tjhtu2IQKTqTGBX17Faec5as53bYJgHEh739WAlPWGk=;
-        b=THmweO7iUAnl0O/RtI3Ng8R0nj0exvCC2I+FjnnmmBoVI0IMFIhbE7MphGi7Uy+Enj
-         nXy7RUtoy2fkm7WRpF7mTekIugXoqE+rzfATGJce7C1fhuEiAiEdQAWjKEO3iq0Akok+
-         irBMWMqKVRD9yOFEXjM0bk+1IN2cELewYgJ5tTI30aEmmbIkw7BmCZOseFCrUtHgM0YW
-         //70YOhVBmwQIWoopKw4hZSk6aN05ngmufcL+tN5K3qZs3Ah5orIWUmM4j99zgfsz+DE
-         oyDK7ZU1JnX2sSkxSz2KG2wjkApNi8Xxi9W6pJvfXaMg1AgVjjF0LUpNfrvK6T8riz8O
-         eaAA==
-X-Forwarded-Encrypted: i=1; AL+hErFen8njwumRpMEI6RlDVdLgaXpXNrOXwHLC/xF7syPlC7y/1A+Lu0Kbo/t0islUmGvM8PE54zfCcw==@kvack.org
-X-Gm-Message-State: APuU4Z876e0mD6ltBlMYHdvBDrbBEbnjT+TO/WqX6B2aM9Xy6ND1Hu6K
-	6mhdia32CZ/oHSxUmJ2TenI+cd5n013UbnMEINiFBAW7f5g7nQKCZMlf9hS2H2L9xRztqPmJeYR
-	hqOPOvOCCzrtx8tY7uQ7gpg==
-X-Received: from pjbmy10.prod.google.com ([2002:a17:90b:4c8a:b0:3b3:79f6:3f84])
+        bh=BkLWabiVP2N6o8/3oJvFuhS7Z3IRmMXaOcCIdqoyE3U=;
+        b=aLNLolvRXnMlOadAOYlUSoGBfY/72K0HSHymjHUX7zgo+vf+IXLp85cYxGz24BwGE0
+         5athb14vtTryo82+GyN0nF5RB9Q6pYr+HKI2x3gNbNIFJ0t0uzFeXigR/XyAhT49lSCZ
+         wtaOgG5Ldb6ox3hFBcp7fCkmHojAd/5kNIpm0DjgU2Et2pwcserE8Qxg3wHYEILhgh66
+         YQesthwoRrGWzELGBajY7FcnpdEz0XcnmHT9WM4yyPSMeSFqiXQ0rOEhXeYjBetNCLJd
+         rO+910/dZeZBw7erCjlxdMwVZkq49WDIKFAvNosa7EimkvmMLsbhJQwNz/WUHl34Kper
+         dCSQ==
+X-Forwarded-Encrypted: i=1; AL+hErFQCvr0j0+acaBgxbquv7orEmz6AEj8F30OI1IOBJlK9lwqDZrCtkQGRW2HLDZyshgHru9dGKHEpQ==@kvack.org
+X-Gm-Message-State: APuU4Z8o+L8OHypCyyKNoJ3IcX2Qe2loZchjUz2J29wUyBpOip3zr35b
+	Yj7K0qWAsWRp6liRBZzfzfNhpu5Gglxki6RPDvECLBnne14xloYT2L4rCjGzH5FE88fmW4u06o6
+	22dxwjczhpu1GqmLBy3v8Tg==
+X-Received: from pjvh9.prod.google.com ([2002:a17:90a:db89:b0:3b4:1549:36a6])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2f8f:b0:3b3:ba43:54c3 with SMTP id 98e67ed59e1d1-3b41c942998mr7718358a91.33.1795373109239;
- Sun, 22 Nov 2026 10:45:09 -0800 (PST)
-Date: Sun, 22 Nov 2026 18:44:44 +0000
+ 2002:a17:90b:4d10:b0:3b1:b66a:c05 with SMTP id 98e67ed59e1d1-3b41c8e0c5dmr7640072a91.14.1795373110066;
+ Sun, 22 Nov 2026 10:45:10 -0800 (PST)
+Date: Sun, 22 Nov 2026 18:44:45 +0000
 In-Reply-To: <20261122184453.2668189-1-jthoughton@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261122184453.2668189-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261122184453.2668189-11-jthoughton@google.com>
-Subject: [PATCH v3 10/19] arm64: Implement try_update_vmemmap_pte using the AF trick
+Message-ID: <20261122184453.2668189-12-jthoughton@google.com>
+Subject: [PATCH v3 11/19] arm64/mm: Align vmemmap to maximal folio size
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -99,19 +99,19 @@ Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Nikos Nikoleris <nikos.nikoleris@a
 	James Houghton <jthoughton@google.com>, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B09EB2000F
-X-Rspam-User:
-X-Stat-Signature: jeefxdx7bhj19orz3mukhdaax4bumkyu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8B53E1A000D
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795373110-169910
-X-HE-Meta: U2FsdGVkX19brs/5JjeUoSSk5yk89uCtCqF4NnXRM75RJM37uFI+WJOxXLIk59cp3nFXqZc68bBpbaTnZmsztiYeFyZNEEF+Nw181k0NEujlFDJPKn2gQk4lxT9cc6YnKwL8G/uH5A6YBzd+Y3DljuiGb+iFWktO/xyDSPC6TJ+5lxX1puumACeppg97K+CrHIoujT07dKUF9Cxao5LkU2IXTEjvlQh2bMIRus33voDaxtjE9krfWM+3oPvORZXZdUc78lU27ozDhhcG0UNFyfllQgGSzWfYVa4UUjjQbMsqIJdhR5/lFloQ52fuOA25WR1xOHl8ToAUg8PCPIWQ71QjVrNyOMjthirtGR/uH6ssESY/Y7/3wl35HyNrSDYbQeYmaOMOhlUaRQAs5slPX+3yBah+IIX8eq2IAt6BvAo9ZVtiU5s9VTwV5OfgK4SJtyQRHkBPLoeOXpOwAIdLHsJDkghXoLTdaXGPbwOQD+HsM0k5VllLWo2h/xU6e8h09eIt/bJEZiFWfIR0MISOJGuOb0Ce91V9fyCkyBmvCo19bOhClVKyCOtZSRMJzF+fSmRouMcyXxirq5oTPdl0KYsbCWttPEcbfQJYqjVsp2d7jW3naOd1nerhzF9QrmkFdAyPMC1jIapUoLi4o0j3SCSQBhgQ2gXhaA4JMMGY5idt8oU9/qIBE+KtdZdEQ55L8mzWYkZUGs7ZkeO3carwfIdtoEirqFBB1+YQuJ4d3kB7kyejB65wFPc2eIULjVQ7ExuTlzK1fZd97w6fAu+5B6PXAViqA4mRkKvxeI4SWxz9fjZrMZM+pvEVatC1hH8WhAyrzhPIQTujq9JB+1PAKs0U+p49C0ZCUxTFkTyBPiZzqYCffzPMi33bsyk/MAFl12AiucQASCTRUoDMy6UefBUemQy6hk22FEqMitSTAandtWr5aMhvjCYP/cRze1Pec3+0QtNI8fRNACiKoQ2
- MD+b6ROa
- sFUOK8PJzNAZ4spdkkT/Lf3hKa2xUGO8Qxl//meWU0kUbfvSvdnxzy1fx4hqe0GNwOCsZNrhY4+7CuxRe6MGtITBXAWe7xzioDozwsn4l1KzQpxKmAtNL6uMq0MTBCsB1mVIQghhZViSpAC0spIO2bE3BrgEICfZ9pkbIdxwjXSINXgwumVe+ImOo04Hr6hgMB7jnBaKVZKlsDV5DcY/yCVDm1/KNGjkhie0OrxeXA/6XaIfz6527utLdMxM3SlNrag+18xSSHHEqbZswu5nMfSX1TZ8cAPwuoMlmYaTOVYVgjiPVsapxPo8V5XAW/zTaGv3bcBtJG/j+dWfO/tpHnUeLpJAP9CFZLaSeVu8XobFvHPoPTngT41TU5DV/csTaNywh1R0//yIKROrBcvyhkm7ypBlvi1xT9PwIkI31r94irgu/VrBIqkvPOpU47X/Lf4MqyNCZTrmKrN1Vry4LriDIX5v3j81HTblAxEd5NmuCgE7cmkAtrrZlQXAs7ppiYtfrTFvvM9qcPEGCncUvbqlpK1QHlZBpUERYL3gwRLtPmwtn5wUlfzwBnjGBsZyvq8Mpu65CFDx+VmBItOT+cosIwizcsxoqtSRUh7Q94XoCwlJP/4g8jeLQBLG4M9dIIOZXBHpnZ+NDCH9l4bX53TfB2Xg811d4SAKFFf795tCZzpWO5gp/oIBtqh83uDisqZ6d8gN/SAnKGfe/zuFfQji32XANjD05pPwcZwcc1EEnrHKkuoeh+K8xhfij8R4aGNa728JhhZHzWsESCFoLVbcftq0iFBX4KEMTXtvDOi50z0lD3XbisUQv6V10+6qk0uXj8KyB/j3kGiUl4khHJ7ZXhnRAumyxvr3P
+X-Rspam-User:
+X-Stat-Signature: 6uzf813xozayg1ikj1choc1886z1gi4e
+X-HE-Tag: 1795373111-709375
+X-HE-Meta: U2FsdGVkX1/eSSZN/lsAZcnQ/6/2HB0AaA3e7Qbl9XJ+SOGtHwoC0XBEPx10SRYNPCyj6vkQ1OlsRoCUSZrg2K3mPw/6lNa5SMJE8gtsM6a9yg/b5krlH5zypPYATUusFa0QuqQwB2AZjqnup3HnIdyybRcIN3l3cZRmcvZwTenXOCqddFbtZEfD1tWRASoN7G6ZGQh/WNEw7Cfszzj4OprJyTZXG3U56M3Vq3Udd8mgluaFjpEj3W+vJTeGPyfq57W/XHSFYKSa1YwUkes+eqmcoe/ALa4LUNLugNoHVLqI0rVbBJn0XgZ+dm7TblyQDEaQiNC8zBjAZgD9HaBXV2Byyxf9wpTpdAlNanh/Vdl1rZhelfPEl1e6YUj+msBzpDj2K1wyJ9y8g0xM3M5+ey3aVoq2ftzptKXuo9I6XkKGGB4XGStafZ0/cqCbH1mWb/wJAijIKDjZBos+QmPTgpBKBxvtD+6tDWiPA24WzQxKfxKbTsiRLl269J9ircAlxsgs9F3hav5p89TVwBb9jlLy0/wRQ2hF8N2Mx2Io7khRMqnu4vR8mTX7wErSpy/dRyBatUlWGaSS6rQfOuqR5VzWSqJE3x/cfAAm5kans2GJYJqqtkcLmDZFfSK9N57Fw+dwYlEhZ3hscJc0GqqCp34cytT6zPiHXxK7r+kQzSt94/FzF1HC8gTObHnJ7gMCG3T9LvOXv9sQXuqXFFJr+6z4ZXY2ZbgcT/xLYFS5nj84jFwly1fzwS11Vvx3GKRV38BEPHcYSbhz7HMfECSU4nTPbT4x1qs/UGL1aZmgb4Lmcgs2pvh6S5p9uOHmX90s9YsP1hQwEHflxu3KkpO2FFyRP+/JkM5NQT0Fw7HKzJkGuWjidEAvzLdIAt8m5A1J72Wpo/AE6YwrcZtFCRXfSQITlGbXlYzUYrIJOVgHoS2O8eCS5zOCKDMg93jP7tAETDw9UAMdvyo9cavR9Hc
+ K/scPOc8
+ aisC/xJQGWdENKZeL1sVJqK2eoyOCAepZ1xErc/6W9+VuKENGUgpL6408NE/7wblqhqNESzJvh7NfHJJdo5t3LScALgGvZiHyQjmgeFtIzqC0OCdPNI+LWBKCiiHAavZewHSg5yRz2Dhx9Ii6Iow9k/kExTUR9q9L/sLs3LVacqm97ohGvwjVR1gEM5eD6sPQH92b8loRXH9OdOnWRArItdW09gUFTJWXP3Tn+2VLE94yFMnxvYDasw1st2OBh1uoxFIcpIu4xZvwXyTXuBB+Aw5W2sPnjRDweYyCMAf0BwI+mj0bbYfD3w8tEMWA6zhihv1MaT8UWrARN4RspyWfGGqeJzadHKC3Brp4kStjvyo8kRIVIH+KnLyILPkO5aYLd3hCB9OPA9Y2gjhZ0TAj1juZrY/qxQ64k34eqm3uaYrCCNAUQKfUFrD9KHSBRQbBWIGYwoevUI/GSQek3o6L/QkFVGEAooQ/ezTn0681fLFuuedMwdj1x1zx/0cCWxmqs6FVSGoMtgAO4ctWoJKwmauP86VK7yCJGlJ5CTGoGGL/HhZA+2+GlQ7I/vAgbhWmMDh7lviupnksJ/Bxa9VxAl9vXr+isSvZKQFloxw0l5YqYGxS72hgWI/E/81HnJ1ob04bKg3zptR1XN0pidTUPvtSQpbTiLnm8DQASHd7rW1Cgr3Fl43ccBVbzH+AYOIQpVd0JhRnDE2M9cC6pwGUsKxv2m/IOtxxjCB2Ozrn8SnOFNIAOUrMNmzlJYPozKLKCBh9vHiBIKR6Yu+qVgK/7DMpJgr+bBdd+aYU6IM+sdwcPeE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,109 +120,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-try_update_vmemmap_pte() must modify vmemmap PTEs without introducing a
-time window where other CPUs on the system might fault.
+With CONFIG_VMEMMAP_OPTIMIZATION, compound_head() derives a tail page's
+head by masking its address. This requires the head struct page of every
+folio to be naturally aligned to the folio's vmemmap size, up to
+MAX_FOLIO_VMEMMAP_ALIGN.
 
-Normally a break-before-make sequence is required to avoid conflicts
-with cached translations. However, if we can guarantee that the existing
-translation cannot be cached, a BBM sequence is not needed.
+On arm64, the vmemmap is offset by memstart_addr, which is only aligned
+to ARM64_MEMSTART_ALIGN: as little as 512M with 64K pages, where 16G
+CONT_PMD hugetlb folios exist. VMEMMAP_START itself is sufficiently
+aligned for all supported page sizes and VA sizes.
 
-Translations with the AF unset may not be cached (see Arm ARM Rule
-DWZCQ); the implementation of try_update_vmemmap_pte() on arm64 takes
-advantage of this fact to replace a PTE without BBM and therefore
-without leaving a window open where PE might fault on this translation.
-
-Of course, if some CPUs on the system do not support HW AF management,
-clearing the AF will introduce potential faults.
-system_supports_bbm_through_af() will return false if any CPUs on the
-system do not support HW AF.
+Raise ARM64_MEMSTART_ALIGN to cover MAX_FOLIO_VMEMMAP_ALIGN, and assert
+at build time that VMEMMAP_START is suitably aligned. This is a no-op
+until arm64 enables HVO, which selects CONFIG_VMEMMAP_OPTIMIZATION.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- arch/arm64/include/asm/pgtable.h | 59 +++++++++++++++++++++++++++++---
- 1 file changed, 55 insertions(+), 4 deletions(-)
+ arch/arm64/mm/init.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 4285b7e7a6a7..7421c0a048ff 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1249,14 +1249,24 @@ static inline void __pte_clear(struct mm_struct *mm,
- 	__set_pte(ptep, __pte(0));
- }
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index 4e7682dfe366..7186d86afc41 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -35,6 +35,7 @@
+ #include <linux/kmemleak.h>
+ #include <linux/execmem.h>
+ #include <linux/arm-rsi-cmds.h>
++#include <linux/vmemmap-optimization.h>
  
--static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
--		unsigned long address, pte_t *ptep)
+ 
+ #include <asm/boot.h>
+@@ -92,11 +93,22 @@ phys_addr_t __ro_after_init arm64_dma_phys_limit;
+  * in the virtual address space.
+  */
+ #if ARM64_MEMSTART_SHIFT < SECTION_SIZE_BITS
+-#define ARM64_MEMSTART_ALIGN	(1UL << SECTION_SIZE_BITS)
++#define ARM64_MEMSTART_BASE_ALIGN	(1UL << SECTION_SIZE_BITS)
+ #else
+-#define ARM64_MEMSTART_ALIGN	(1UL << ARM64_MEMSTART_SHIFT)
++#define ARM64_MEMSTART_BASE_ALIGN	(1UL << ARM64_MEMSTART_SHIFT)
+ #endif
+ 
 +/*
-+ * Atomically clear the Accessed flag. Return the old value of the PTE.
++ * With CONFIG_VMEMMAP_OPTIMIZATION, compound_head() masks the address of a
++ * tail page to find its head, so the head struct page of every folio must be
++ * naturally aligned to the folio's vmemmap size. The vmemmap is offset by
++ * memstart_addr, so memstart_addr must be aligned to the largest folio size.
 + */
-+static inline pte_t __ptep_clear_young(pte_t *ptep)
++#define ARM64_VMEMMAP_OPT_ALIGN						\
++	PFN_PHYS(MAX_FOLIO_VMEMMAP_ALIGN / sizeof(struct page))
++#define ARM64_MEMSTART_ALIGN						\
++	max_t(phys_addr_t, ARM64_MEMSTART_BASE_ALIGN, ARM64_VMEMMAP_OPT_ALIGN)
++
+ static void __init arch_reserve_crashkernel(void)
  {
- 	atomic64_t *pteval = (atomic64_t *)&pte_val(*ptep);
- 	s64 af_mask = PTE_AF;
+ 	unsigned long long crash_base, crash_size, cma_size = 0;
+@@ -218,6 +230,8 @@ void __init arm64_memblock_init(void)
+ 	/*
+ 	 * Select a suitable value for the base of physical memory.
+ 	 */
++	BUILD_BUG_ON(MAX_FOLIO_VMEMMAP_ALIGN &&
++		     !IS_ALIGNED(VMEMMAP_START, MAX_FOLIO_VMEMMAP_ALIGN));
+ 	memstart_addr = round_down(memblock_start_of_DRAM(),
+ 				   ARM64_MEMSTART_ALIGN);
  
--	/* Atomically clear PTE_AF, checking that it was set before. */
--	return af_mask & atomic64_fetch_andnot_relaxed(af_mask, pteval);
-+	/* Atomically clear PTE_AF. */
-+	u64 oldval = atomic64_fetch_andnot_relaxed(af_mask, pteval);
-+
-+	return __pte(oldval);
-+}
-+
-+static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
-+		unsigned long address, pte_t *ptep)
-+{
-+	return pte_young(__ptep_clear_young(ptep));
- }
- 
- static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
-@@ -1921,6 +1931,47 @@ static inline void clear_young_dirty_ptes(struct vm_area_struct *vma,
- 
- #endif /* CONFIG_ARM64_CONTPTE */
- 
-+static inline int try_update_vmemmap_pte(unsigned long addr, pte_t *ptep,
-+					 const pte_t pte)
-+{
-+	const int max_attempts = 16;
-+	int attempts = 0;
-+	pte_t old_pte;
-+
-+	if (!system_supports_bbm_through_af())
-+		return -EOPNOTSUPP;
-+
-+	/* This routine is only to be used for valid-to-valid transitions. */
-+	if (WARN_ON_ONCE(!pte_valid(pte)))
-+		return -EINVAL;
-+
-+	old_pte = __ptep_get(ptep);
-+
-+	do {
-+		if (WARN_ON_ONCE(!pte_valid(old_pte)))
-+			return -EINVAL;
-+
-+		/* We should never get a contiguous PTE here. */
-+		if (WARN_ON_ONCE(pte_valid_cont(old_pte)))
-+			return -EINVAL;
-+
-+		if (pte_young(old_pte)) {
-+			/* __ptep_clear_young() returns the overwritten PTE */
-+			old_pte = pte_mkold(__ptep_clear_young(ptep));
-+
-+			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+		}
-+	/*
-+	 * Translations without AF cannot be cached, so we can replace
-+	 * them without BBM.
-+	 */
-+	} while (!try_cmpxchg_relaxed(&pte_val(*ptep), &pte_val(old_pte),
-+				      pte_val(pte)) &&
-+		 ++attempts < max_attempts);
-+
-+	return attempts == max_attempts ? -EAGAIN : 0;
-+}
-+
- #define __HAVE_ARCH_VMAP_PTE_SET_HUGE
- void vmap_pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
- 		       pgprot_t prot, unsigned long size);
 -- 
 2.56.1.809.ga0b61035b5-goog
 
