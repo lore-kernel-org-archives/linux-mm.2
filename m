@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F4A606A335
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 19:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783AC60A3823
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 19:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J2p8Uw3t
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h++5CFR1
 Received: by kanga.kvack.org (Postfix)
-	id 713796B05C0; Sun, 22 Nov 2026 14:36:51 -0500 (EST)
+	id 0AAA96B05C1; Sun, 22 Nov 2026 14:36:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EAED6B05C1; Sun, 22 Nov 2026 14:36:51 -0500 (EST)
+	id 05C286B05C2; Sun, 22 Nov 2026 14:36:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DBD16B05C2; Sun, 22 Nov 2026 14:36:51 -0500 (EST)
+	id E3FCD6B05C3; Sun, 22 Nov 2026 14:36:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 16ABA6B05C0
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:36:50 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3AEFAC0767
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:36:50 +0000 (UTC)
-X-FDA: 85463762580.04.66A5C65
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9B38E180007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:36:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J2p8Uw3t;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 92F866B05C1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:36:55 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B5DB01606A8
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:36:54 +0000 (UTC)
+X-FDA: 85463762748.22.D6A075C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 219601C0002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:36:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h++5CFR1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795376208;
-	b=dOyhpmdalorwmGn6GWTr52ubMq2jM4p5e4j/+qfdogdkkPmSSidkLgQEndvU932HPgdHhT
-	N45GgO8b3Qg4kgzRWZEmXcpl9X5aMLzyndYFAZ4KI/ihnWzP2GtFa9rG++mm2IqzN6qpcs
-	3AzHK535r7cZXqP7f/RiqOAYGuq9NV4=
+	t=1795376213;
+	b=ItZyORb3jqIMpWLWR3auH3+P6zbDOTqG7P0ewU6YZMggPFGRFXXz+t2NtX5y4XbXbBOPyy
+	iXuB5rqUBccSoSRVBabhaczpoYYB3CS+y9aaHuOmJXSAVc/d4Sptqw9vqYeYe67vURSiNh
+	fGIjCfEF3S22P/VP+MwxYWEqwmpiKjw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795376208;
+	s=arc-20220608; t=1795376213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HhStIPKcjxn5feiVQQthiDAsaf5QXO2X/we9bRZ2ovc=;
-	b=JpCGMPWpqsSSuvsw1tEWhuSShtJuhw4yW/u4lgu/NPfIyIZE15VoNPdx0s5qfyIaXH3HDK
-	x6DfinzbC2mlV/5BahgXXNxt2TKwgZffutpf28VBOPMY6gmXaqsArAyILp3mqe29Od7xUN
-	0ReAFlAkBvLTjajedW9h9KgsIaozHbk=
+	bh=QgUTYSoeBbicoM/Ctv8wuw6txQmYFirn0xuo3QUM9bE=;
+	b=SJ8aevyh55pPNu1HJJaCe2FKL4W6dnFqnhhUPIF8ecJU4ymt+ALia8bygMPq0CxAKBjyrv
+	z5CcAIyILSl5FLHek30JpdS2V5aWrsOe/jMl2pcrtHBGY26A7neDYLiYaIFqg3RMrfwJB+
+	Bg8fFXj9eVnaB7ChSWinqb8iTZlLCrs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J2p8Uw3t;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h++5CFR1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 3AD5E61E0B;
-	Sun, 22 Nov 2026 19:36:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 161B71F000E1;
-	Sun, 22 Nov 2026 19:36:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 75005455B6;
+	Sun, 22 Nov 2026 19:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 96DEE1F000E6;
+	Sun, 22 Nov 2026 19:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795376207;
-	bh=HhStIPKcjxn5feiVQQthiDAsaf5QXO2X/we9bRZ2ovc=;
+	s=k20260515; t=1795376212;
+	bh=QgUTYSoeBbicoM/Ctv8wuw6txQmYFirn0xuo3QUM9bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J2p8Uw3tToGSVpLPHI/ucHupSZdB5Yj8etAJN6ZvUe1N9Mfhwn7WkGmPNajjpa+m2
-	 XmWcivurVwUJqhvH+l4bD3esY8AfbvSE1E62GLu3HGDZ1I4jLEhFRTN/vBymzmzbVO
-	 NwmsSJ+oEMZUwBatE38HrA9XAAxW9Fo88Nv8oIpEvXGN9A1qOeTkInVESes6jCWnc1
-	 zGU63Agrse/TuqwIUSvYPWXMrUY/Eq8E5aj9/XIhcJ6h5p+ck0XMAo28A/7h5huKGu
-	 MzkQLSyxnzBgAlct+yDcHRcYYJoqBROIMPeSd2Yhjk29Dw/vwX3SCsM95T4U7PwTUp
-	 BszEjcK2Fa9rQ==
+	b=h++5CFR1P60aN6bCiiNMePpNEGsSZ4HlKZo8lWB6f4wdhTNz6/tSkMTg8xEpHbRxI
+	 GlwySIf772FfNejL8QOE7DS9Aizp0uVQ7OkmwxoH40uYofSQqCzfMJ58pVkImG6RIZ
+	 K4AMH4F5lVhyQeJnnZn7QVG98lo9L40YECd9yjtIprIs1WGapBRgEZTAUwpA1D/vse
+	 9AnVSn/pA6MDVVk9wdaaUy3HQ3N4ZDFectxotNoTvOE88ZsWBmeAVyX1TQJ6xY8ovy
+	 Svslni2eYDTNSN8Tttx+qsHPiF94D8NrmsIIFhHGYdKRWN+DSQF0ejgfAakQavvOKS
+	 d7uWpKN6e7POQ==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -96,27 +96,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v7 12/26] userland: Add userland_open() system call
-Date: Sun, 22 Nov 2026 21:35:25 +0200
-Message-ID: <20261122193539.3334213-13-jarkko@kernel.org>
+Subject: [RFC PATCH v7 13/26] userland: Add USERLAND_GET_NSFD ioctl
+Date: Sun, 22 Nov 2026 21:35:26 +0200
+Message-ID: <20261122193539.3334213-14-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261122193539.3334213-1-jarkko@kernel.org>
 References: <20261122193539.3334213-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9B38E180007
-X-Stat-Signature: ini675xafebj5gcksfp4icsazzwkpsh9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 219601C0002
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795376208-299595
-X-HE-Meta: U2FsdGVkX18KiY0ncoWG36ic55gSmY/mJQs2pnmvV2wPkAlggEXJBamb24FD4rKRB0pG2j8cZaOm3x+djgiQuLqQpLD9uK5tjFANx23kKCCdVpbLiGsNTZjBixYz4hz28UrwFySJMdGfXLIDdsPYk337FB0KlluKbcA8FLoBL6/gssfVkOMborwV9Qz6Eu0Yr9pBQNB/NPEMgTQom/TrqLt3MpS63MKxUm4sF3PU2hE3oUWSyrSApdu39ggYRlitNYc6wZSVuCzD9iCUpDVywp8WzQOxDUduOhJe/VqQlhB3W2PghbD6sgM5c6HtDJnqObI5pCS6p+8xRLVWMphVJQbh2huRypLOGMkJJCexNQ64vAkZwc7309Bq/VwP2sJTv8KR4924LeK7nrL+1fkdBmuw7SZVODnpM9zwP/hQXTCL40Yh07NDx6n3Emw12jN4oIRDLkTqyqjt+47o6/ZqJrpX+RpPu0XUwtb9LQmJudysyQ4CbKMcO/GArj09nV8Kc8M411nivpJTSaH89MYAtaDEA7dgJtzC8XSQT+WXnig5xCkWdds+PRqZdD/wHJxpYVtG0C30dV7kHFDMUyC/SgvgG2c1/eLLF5dm56EYZTVqNBtUjV1RlHfvevPkQR68BC7YSZr9Vatdefcnf10mlRgcY3A8w3kox49h0SdalTowN0t+ovozVsOPLmaIPh/y4PY+Y8W0+JMisi6qj0ETstRCll0y2RDix5Pgf1qVO16PQtmsVxon3BKwsFUB4y/HRez9q23X8sXStZgz1s11+J4ANB1AjUdhdud5tre/o7cXssHZrYyb61DTb8dVQaJaczjuk3/1bp3zVMoppqSICqdT+LT2SldtZ6rWX6KIG6TH7J4zYgi8Eo4O9kDdjT0jLOg5rEFAc+MzWQN9k22Z8fIOSNF4tn0NHeQ3PtLHaKg+g3hYJgrd4ohr4nmNQ8X8u5AIg0hCBB1GQxrPr9k
- DJKaTnTx
- mduMpuGgyrAKm+MUN5vsRzEl2rTZQL1spvkLFNu2mwbq3iTSP9V5+b5Vv41CNKJkwzK3ulv5fdxpCgWpIayp+3dSu3Adys2qhoBZBckfm2ZT9S/LRls03Z400gAVI0kvSlf1V8Xm8jCAv1RJKj3u21g5GIF9jKIWooY9Xe1fFJNnlJph8lJryet9D4iTBks/yxd/h/TYmi1pNWeu+3gl5Npkf1fOQhLMDI+sxZJfdS2DWbMyCE9E3yaMb/WW1lUjW+yZdadBfdj+WDm38Y2iiiaw1l+55fEzPZ0/dHLUjyxT9dOKv7hyRFIodPPOMTLX5fzQSa7JS973M3ZKkzBlNjqy2unQqxDD/bUQ1+D4gt+Phd80aHpCUmlDQ4rly3uJY3visNsyUqHfF05YSBu01iEB1q7DCs6eiGy+hLOZ7ah7T5QWYhnEN5Jsff0NkzeD7rv3xaQB57VXcgU2zXOgyoeLI9yJN5X4Kgu0UFcdsHIqL6ts=
+X-Stat-Signature: pu7psde9rosrrdnkhp5w9gamwcqdepiu
+X-HE-Tag: 1795376212-105670
+X-HE-Meta: U2FsdGVkX1/7z9Rw3Vh3oDJf+0Z3WoZRMpe7sykAty69d6erWi2JU9+Wt6722pRmeUalQ61jc/90/ozABDzSzbAJix+GFwS0qLyxr+Ho86L7Wr5k35uXhFya60Zwt9hvk5tYae1WiGcFmgTvD3GCfdW3BbUlLXKh+gI9RkT1e3qc1galP1D8MrAZa7b1+nCt0K9bdKwSZRlbvbwhnRUE4uX/YpzuXehl74MYfAq48dW75JrFwglo0WBgefgb4HEpFLSbUWNyqMKFgHpISBm5efv+H+3n/UgF/3P9XNp0IC6euiZzW3O8cwwhjjKI/LvopIaUNqFdxbfIEcBhFNN7tsnxBf7zKCUjRZCG6QpZarpC+/a+dP3zT6VWecEaN9PlO7Sd16WMx72iFDFQ4udHjYS/4KpKeooRwKWziQzLNmIUVHKvziOUrhx7kFu1NmCkXzA38ps4zMedPEdn4QQ5+AjIxalgFg0syzClY28pCA2O75ix6pIE2bQAhYpIdi+6kQJlvv5xO7NRW54hGDfiZj4DoJq/ZoHTqvOb/ZVqJs6W8x0E0NY4EWpOjT6Laex25/RGevlTwrx/r2R2BTkYF8BIJGISFBYAmkLf+1sb8tAAVlL0O5FAnzCwBei5afyeUuFisLd4wTlk6YprB3POhvy98eu+LZWTlsUDT2quFLiKPhpupHR4mfutpRoDW6j7dy4c9HPO6W4z3afwcTc/rJ6AFLzelKV1cO6bIQ39fuHvbspgOYURvZMrt4F7DBKNF4mMpdLhPVdD7AqxeWxt9t4hl7pnMM1RXAs/vx7SZYF/uSjJ5EbJMcSC74//Snk43x4eQEdJsHLOyzXiAEedqvffHvTBG8JkLsA4eerPhWMdY1aAebRt/rpWLQ4a017Gp2D0nZs1psHXeeo4O1hrfulwX/CFC6gihFULCBgdXJneEX1XO4hknlJQ215XMV2iyfWjvDyJsNLsgT4TLzH
+ 5SeDpqka
+ 465SAJsb3OUxU8hjIe6mf13bqudTleMKglETkxCVfAxpSPJtDQS/uRSmbx62f1UP3OmY+QMI0k/1DEC433CWzZEQZbh9qIdbG0bR3zABnR3v0CDur7N2VoCkXLa3JJtNqrmdM21+Y369PFcSjipfi93y1Gd8pHfV154WdWsyqZG9qIJWCMHFzd5A+sEW5NYLzPn+66a0vEzZ9VwWWxOHFIAqLqw73FuZinYelBAp7wTqnVSpzaPBEgNdHaKX5NiXAk9BHqYK/7HlkeyHYa2gVJiUVlRKYD9ghR9MhKVA06pCp17aJLbGCSezG7sF7No1oZ1DBOjBhat1MSXR1ZEr6zyhVOBnMXTh3jLy3UNY4MmZ6mXf2mLtDS49XLJWh+CPv9CIWHI2oA8rAAT19Z0EaxWt6uSKQ3yAFSBy+ObJxBRk1PCUcLLGOjnkVc7+PIkpNKgFDRYAPTGBf/kROjYHIbMIQyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,167 +125,192 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Setting up an isolated namespace environment from a multithreaded
-manager process currently requires helper processes to call unshare()
-and pass file descriptors back over sockets.
+Standalone namespace operations such as userns_set_idmap() and
+move_mount(..., MOVE_MOUNT_T_MNTNS) operate on nsfs file descriptors,
+requiring a way to obtain member namespace fds from a userland file
+descriptor before any process has entered it.
 
-Add the userland_open() system call to allocate a userland owning a
-fresh user namespace alongside dedicated empty mount
-(CLONE_EMPTY_MNTNS), PID, UTS, IPC, network, cgroup, and time
-namespaces, and return its anonymous-inode file descriptor. Because a
-userland encapsulates process lifecycle and mount delegation rather than
-an nsfs namespace entity, keep it separate from namespace creation APIs.
-Finalize the nsproxy time namespace and pin active references for the
-lifetime of the userland.
+Add the USERLAND_GET_NSFD ioctl to open an O_CLOEXEC nsfs file
+descriptor for a requested member namespace when the caller holds
+CAP_SYS_ADMIN in the userland's user namespace, additionally requiring
+an ancestor active PID namespace and a running init process for
+CLONE_NEWPID.
 
-Co-developed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- include/linux/syscalls.h |   1 +
- kernel/sys_ni.c          |   3 ++
- kernel/userland.c        | 108 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 112 insertions(+)
+ fs/internal.h                 |  1 -
+ include/linux/nsfs.h          |  1 +
+ include/uapi/linux/userland.h | 19 +++++++++
+ kernel/userland.c             | 76 +++++++++++++++++++++++++++++++++++
+ 4 files changed, 96 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-index 72308cc11908..2ea8ebd71743 100644
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -1010,6 +1010,7 @@ asmlinkage long sys_lsm_get_self_attr(unsigned int attr, struct lsm_ctx __user *
- asmlinkage long sys_lsm_set_self_attr(unsigned int attr, struct lsm_ctx __user *ctx,
- 				      u32 size, u32 flags);
- asmlinkage long sys_lsm_list_modules(u64 __user *ids, u32 __user *size, u32 flags);
-+asmlinkage long sys_userland_open(unsigned int flags);
+diff --git a/fs/internal.h b/fs/internal.h
+index 3f2fbac40f8e..ee3f796241ac 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -250,7 +250,6 @@ extern void mnt_pin_kill(struct mount *m);
+  * fs/nsfs.c
+  */
+ extern const struct dentry_operations ns_dentry_operations;
+-int open_namespace(struct ns_common *ns);
+ struct file *open_namespace_file(struct ns_common *ns);
  
  /*
-  * Architecture-specific system calls
-diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
-index e3202e7cc2a1..fca9663d09b7 100644
---- a/kernel/sys_ni.c
-+++ b/kernel/sys_ni.c
-@@ -399,3 +399,6 @@ COND_SYSCALL(rseq_slice_yield);
+diff --git a/include/linux/nsfs.h b/include/linux/nsfs.h
+index 731b67fc2fec..40912c1eb5ff 100644
+--- a/include/linux/nsfs.h
++++ b/include/linux/nsfs.h
+@@ -23,6 +23,7 @@ bool ns_match(const struct ns_common *ns, dev_t dev, ino_t ino);
+ int ns_get_name(char *buf, size_t size, struct task_struct *task,
+ 			const struct proc_ns_operations *ns_ops);
+ void nsfs_init(void);
++int open_namespace(struct ns_common *ns);
  
- COND_SYSCALL(uretprobe);
- COND_SYSCALL(uprobe);
+ #define __current_namespace_from_type(__ns)				\
+ 	_Generic((__ns),						\
+diff --git a/include/uapi/linux/userland.h b/include/uapi/linux/userland.h
+index 4a9031f81dda..e81a06d6e9eb 100644
+--- a/include/uapi/linux/userland.h
++++ b/include/uapi/linux/userland.h
+@@ -7,6 +7,8 @@
+ #ifndef _UAPI_LINUX_USERLAND_H
+ #define _UAPI_LINUX_USERLAND_H
+ 
++#include <linux/ioctl.h>
 +
-+/* kernel/userland.c */
-+COND_SYSCALL(userland_open);
-diff --git a/kernel/userland.c b/kernel/userland.c
-index 44a1976f97c2..472d75423b95 100644
---- a/kernel/userland.c
-+++ b/kernel/userland.c
-@@ -135,3 +135,111 @@ void userland_exit(struct pid_namespace *pid_ns, struct task_struct *tsk)
- 	__wake_up(&c->waitq, TASK_NORMAL, 0, poll_to_key(EPOLLHUP));
- 	userland_put(c);
- }
-+
-+static struct user_namespace *userland_create_user_ns(void)
-+{
-+	struct user_namespace *user_ns;
-+	struct cred *new;
-+	int ret;
-+
-+	new = prepare_creds();
-+	if (!new)
-+		return ERR_PTR(-ENOMEM);
-+
-+	ret = create_user_ns(new);
-+	if (ret < 0) {
-+		abort_creds(new);
-+		return ERR_PTR(ret);
-+	}
-+
-+	user_ns = get_user_ns(new->user_ns);
-+	abort_creds(new);
-+	return user_ns;
-+}
-+
-+static struct userland *userland_create(unsigned int flags)
-+{
-+	u64 clone_flags = CLONE_NEWNS | CLONE_EMPTY_MNTNS | CLONE_NEWPID |
-+			  CLONE_NEWCGROUP | CLONE_NEWUTS | CLONE_NEWIPC |
-+			  CLONE_NEWNET |
-+			  (IS_ENABLED(CONFIG_TIME_NS) ? CLONE_NEWTIME : 0);
-+	struct user_namespace *user_ns;
-+	struct nsproxy *ns;
-+	struct userland *c;
-+	int ret;
-+
-+	c = kzalloc_obj(*c, GFP_KERNEL);
-+	if (!c)
-+		return ERR_PTR(-ENOMEM);
-+
-+	init_waitqueue_head(&c->waitq);
-+	spin_lock_init(&c->lock);
-+	refcount_set(&c->usage, 1);
-+	c->flags = flags;
-+
-+	user_ns = userland_create_user_ns();
-+	if (IS_ERR(user_ns)) {
-+		ret = PTR_ERR(user_ns);
-+		goto err_put;
-+	}
-+	c->user_ns = user_ns;
-+	ns_ref_active_get(user_ns);
-+
-+	if (!ns_capable(user_ns, CAP_SYS_ADMIN)) {
-+		ret = -EPERM;
-+		goto err_put;
-+	}
-+
-+	ns = create_new_namespaces(clone_flags, current, user_ns, NULL);
-+	if (IS_ERR(ns)) {
-+		ret = PTR_ERR(ns);
-+		goto err_put;
-+	}
-+
-+	if (ns->time_ns != ns->time_ns_for_children) {
-+		get_time_ns(ns->time_ns_for_children);
-+		put_time_ns(ns->time_ns);
-+		ns->time_ns = ns->time_ns_for_children;
-+	}
-+	c->ns = ns;
-+	nsproxy_ns_active_get(ns);
-+
-+	return c;
-+
-+err_put:
-+	userland_put(c);
-+	return ERR_PTR(ret);
-+}
+ /**
+  * enum userland_flags - Flags for userland_open()
+  * @USERLAND_KILL_ON_CLOSE: Send %SIGKILL to userland init on final fd release.
+@@ -22,4 +24,21 @@ enum userland_flags {
+ 	USERLAND_ALL_FLAGS	= 0x00000003,
+ };
+ 
++#define USERLAND_IOCTL_MAGIC	0xB9
 +
 +/**
-+ * sys_userland_open - Open a new userland
-+ * @flags: Combination of &enum userland_flags values
++ * DOC: USERLAND_GET_NSFD
 + *
-+ * Allocate a userland owning a fresh child user namespace (with the caller's
-+ * effective UID and GID as owner and initially empty ID mappings) and dedicated
-+ * empty mount, PID, UTS, IPC, network, cgroup, and time namespaces. Control
-+ * operations authorize against capabilities in the userland's owning user
-+ * namespace.
++ * ``ioctl(userland_fd, USERLAND_GET_NSFD, nstype)`` opens an ``nsfs`` file
++ * descriptor (with ``O_CLOEXEC``) for the member namespace identified by
++ * ``nstype`` (one of ``CLONE_NEWNS``, ``CLONE_NEWCGROUP``,
++ * ``CLONE_NEWUTS``, ``CLONE_NEWIPC``, ``CLONE_NEWUSER``, ``CLONE_NEWPID``,
++ * ``CLONE_NEWNET``, or ``CLONE_NEWTIME``).
 + *
-+ * Return: Userland file descriptor on success, negative error code on failure.
++ * Requires ``CAP_SYS_ADMIN`` in the userland's user namespace.
++ * Opening ``CLONE_NEWPID`` additionally requires running in an ancestor
++ * active PID namespace and that userland init is running.
 + */
-+SYSCALL_DEFINE1(userland_open, unsigned int, flags)
++#define USERLAND_GET_NSFD	_IO(USERLAND_IOCTL_MAGIC, 0x01)
++
+ #endif /* _UAPI_LINUX_USERLAND_H */
+diff --git a/kernel/userland.c b/kernel/userland.c
+index 472d75423b95..fd5f67c0245e 100644
+--- a/kernel/userland.c
++++ b/kernel/userland.c
+@@ -23,6 +23,8 @@
+ #include <linux/slab.h>
+ #include <linux/syscalls.h>
+ #include <linux/uaccess.h>
++#include <linux/cgroup_namespace.h>
++#include <linux/ipc_namespace.h>
+ #include <linux/mnt_namespace.h>
+ #include <linux/nsproxy.h>
+ #include <linux/ns_common.h>
+@@ -31,6 +33,8 @@
+ #include <linux/pid_namespace.h>
+ #include <linux/time_namespace.h>
+ #include <linux/user_namespace.h>
++#include <linux/uts_namespace.h>
++#include <net/net_namespace.h>
+ #include <linux/idr.h>
+ #include <uapi/linux/userland.h>
+ 
+@@ -63,6 +67,76 @@ static __poll_t userland_poll(struct file *file, poll_table *wait)
+ 	return mask;
+ }
+ 
++static long userland_get_nsfd(struct userland *userland, unsigned long nstype)
 +{
-+	struct userland *c;
-+	int fd;
++	struct ns_common *ns = NULL;
 +
-+	if (flags & ~USERLAND_ALL_FLAGS)
++	if (nstype > UINT_MAX)
 +		return -EINVAL;
++	if (!ns_capable(userland->user_ns, CAP_SYS_ADMIN))
++		return -EPERM;
 +
-+	c = userland_create(flags);
-+	if (IS_ERR(c))
-+		return PTR_ERR(c);
++	if (nstype == CLONE_NEWPID) {
++		if (!pidns_is_ancestor(userland->ns->pid_ns_for_children,
++				       task_active_pid_ns(current)))
++			return -EXDEV;
++		if (READ_ONCE(userland->state) != USERLAND_RUNNING)
++			return -ESRCH;
++	}
 +
-+	fd = anon_inode_getfd("userland", &userland_fops, c,
-+			      O_RDWR |
-+			      (flags & USERLAND_CLOSE_ON_EXEC ? O_CLOEXEC : 0));
-+	if (fd < 0)
-+		userland_put(c);
++	scoped_guard(spinlock, &userland->lock) {
++		switch (nstype) {
++		case CLONE_NEWNS:
++			ns = from_mnt_ns(userland->ns->mnt_ns);
++			break;
++		case CLONE_NEWCGROUP:
++			ns = to_ns_common(userland->ns->cgroup_ns);
++			break;
++		case CLONE_NEWUTS:
++			ns = to_ns_common(userland->ns->uts_ns);
++			break;
++		case CLONE_NEWIPC:
++			ns = to_ns_common(userland->ns->ipc_ns);
++			break;
++		case CLONE_NEWUSER:
++			ns = to_ns_common(userland->user_ns);
++			break;
++		case CLONE_NEWPID:
++			ns = to_ns_common(userland->ns->pid_ns_for_children);
++			break;
++		case CLONE_NEWNET:
++			ns = to_ns_common(userland->ns->net_ns);
++			break;
++		case CLONE_NEWTIME:
++#ifdef CONFIG_TIME_NS
++			ns = to_ns_common(userland->ns->time_ns);
++			break;
++#else
++			return -EOPNOTSUPP;
++#endif
++		default:
++			return -EINVAL;
++		}
 +
-+	return fd;
++		if (!__ns_ref_get(ns))
++			return -ESRCH;
++	}
++
++	return open_namespace(ns);
 +}
++
++static long userland_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
++{
++	struct userland *userland = file->private_data;
++
++	switch (cmd) {
++	case USERLAND_GET_NSFD:
++		return userland_get_nsfd(userland, arg);
++	default:
++		return -ENOIOCTLCMD;
++	}
++}
++
+ static int userland_release(struct inode *inode, struct file *file)
+ {
+ 	struct userland *userland = file->private_data;
+@@ -85,6 +159,8 @@ static int userland_release(struct inode *inode, struct file *file)
+ 
+ static const struct file_operations userland_fops = {
+ 	.poll		= userland_poll,
++	.unlocked_ioctl	= userland_ioctl,
++	.compat_ioctl	= userland_ioctl,
+ 	.release	= userland_release,
+ };
+ 
 -- 
 2.47.3
 
