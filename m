@@ -1,122 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04F7606A6AA
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 19:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896E5606A330
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 19:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=If6Azv7y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UCCM8jza
 Received: by kanga.kvack.org (Postfix)
-	id 010D76B05D9; Sun, 22 Nov 2026 14:37:52 -0500 (EST)
+	id 6BA356B05B9; Sun, 22 Nov 2026 14:52:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2A486B05DA; Sun, 22 Nov 2026 14:37:51 -0500 (EST)
+	id 66AA66B05BB; Sun, 22 Nov 2026 14:52:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E40746B05DB; Sun, 22 Nov 2026 14:37:51 -0500 (EST)
+	id 580BD6B05BC; Sun, 22 Nov 2026 14:52:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFE956B05D9
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:37:51 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 40973A83A2
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:37:51 +0000 (UTC)
-X-FDA: 85463765142.04.BA30847
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 166B76B05B9
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:52:36 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C58440715
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:52:35 +0000 (UTC)
+X-FDA: 85463802270.11.03336ED
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id ABF16140003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:37:49 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=If6Azv7y;
-	spf=pass (imf23.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id DF59BC0008
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:52:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCCM8jza;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795376269;
-	b=OIjB8AGR4M2SJNYgTVA3b/wQ7qEeYeg4gnxFLEzoKwAVUmrWUMhQcn88QIy4xqjt8yK52+
-	gs2hY41bXVRRduaH8ZwbERCZKqJwByif3lSt0Q/NjVz58XivZ7/73l9KcC9E8x3bgZIqED
-	rgFRsHHkglzqj40lWCJePnivbGvDPNE=
+	t=1795377154;
+	b=d1FuRLxzPrDSr4BimrN6iCoG7VtwxSxt6wwT3N7Uz+opuYx8BdAkt8JQnMotm2AmqUWGJM
+	FtI9iN7yDFJwgRUO2nW5SLRFMfCkhaKpHhyxXO8vuLPJml4pDqllH1Fnrwxm/7ipjaVI19
+	wsFddH1X8D8wgJgr21vqGneCZ7ew73Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795376269;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795377154;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c/grzABhgrBQ8/IrA5G6GcEKHy2OSZTwhNr0CPP3+U4=;
-	b=v0KpG/3t/mzzEt3KnZlPB/MypUJhnJKm0p7X6B9af0k8UbGho/VRgwLLgut6rSiRQXOFyO
-	zhSWu7crmK5JZ0ltmiU6Ppejqw5hzm3L9jmm9ubPXDJAFCMJTtSa0vZQM+zqRsf96DgXSs
-	fp4c0rGx1D/UCq2h+6q0PpJLSeZ1gi4=
+	bh=oB53AiQQW9kpLqFTwPLdStd+pKNNCNgAcTj6vtNksiI=;
+	b=YQMMcYjG28pBG+8Pj0BIT+oHhuHPbfR8zCIYBTSFlr1RyVn41WVufT5IEX/YlwyoFOw3KT
+	UY3DqGjTn/X97Q4r6KjjuzAmgdMgU9eWhvI3Cd72jI5ine4Lr63vxbAPWOV4eLKZiqtII7
+	nmyxjpKTw0jpdXzKhVGQ/INkeU/4QiM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=If6Azv7y;
-	spf=pass (imf23.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCCM8jza;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id E8F7D408C8;
-	Sun, 22 Nov 2026 19:37:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id E59221F000D1;
-	Sun, 22 Nov 2026 19:37:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 184784332E;
+	Sun, 22 Nov 2026 19:52:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9281F000C6;
+	Sun, 22 Nov 2026 19:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795376268;
-	bh=c/grzABhgrBQ8/IrA5G6GcEKHy2OSZTwhNr0CPP3+U4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=If6Azv7y7srTCn6OR0qdqZQAwa1W7Gt05tNg4TPPtNZ0kqbU7S/HJIrOaVSbu5He2
-	 UcQYGZyFJswbruL02XotkP5Qo0sAiLgKUKGIQ8Gi8yiHFaR9w9q4Wx7olOPpVQs/Ky
-	 A9rTDmfwXa5kKjKsqhuSfUcv8eeNDe3A2PZuK0tdgw2gon96AVqaD6syspi5fkJ3Wo
-	 ScgOoGL5gTQFoAfLmxdcLAxxx/Ypx7zjqXVJyKlTiTYDeVpD48x/RK33TjzOrp5rLO
-	 ANINvuVSa4Z5EmpoCFu4ML34znZVg9/tvfMwXoQWObjGP9ozyW5Vp36n4R0Za6rYTG
-	 k9ENPgWMMUgug==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	bpf@vger.kernel.org,
-	containers@lists.linux.dev,
-	linux-api@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Aleksa Sarai <aleksa@amutable.com>,
-	Alexander Mikhalitsyn <alex@amutable.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Giuseppe Scrivano <giuseppe@scrivano.org>,
-	Hugh Dickins <hughd@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Kees Cook <kees@kernel.org>,
-	KP Singh <kpsingh@kernel.org>,
-	Lennart Poettering <lennart@poettering.net>,
-	Neal Gompa <neal@gompa.dev>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v7 26/26] MAINTAINERS: Add entry for USERLAND
-Date: Sun, 22 Nov 2026 21:35:39 +0200
-Message-ID: <20261122193539.3334213-27-jarkko@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261122193539.3334213-1-jarkko@kernel.org>
+	s=k20260515; t=1795377152;
+	bh=oB53AiQQW9kpLqFTwPLdStd+pKNNCNgAcTj6vtNksiI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UCCM8jzaKPGvBdMxxTt7G6+YtHW35kSK4nIHnILYexvOGzFiQGx7wbiJfTTEWQG2n
+	 4KGWp0aMiu0+j5BLZk8+0GX6Srq518ciVqilMGs/gk+icFQzeznUiasFeCVLQUpnZL
+	 rR2ynpIZQwyYi8sE9vCuAIhN+RGLJpZ3YU428BAav07mSf5NTBhAK4BbB46rW1LsUW
+	 9Yh2qozw48I4g5Hgnp2fS2+7Z7R82FlPhPUJVN7hmMUCDNWf+5jd97Mk3RgfJVu+EF
+	 4BbeRxuaY4QhSsgGPcQ5bsRRk0zibQsj8bqa330d+pn81fJW1luy4nPH/L65JCNn62
+	 TLb3aIg/lTI+A==
+Message-ID: <sashiko-outbox-228295@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v7 25/26] selftests/userland: Add userland test
+ suite
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jarkko Sakkinen" <jarkko@kernel.org>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Aleksa
+ Sarai" <aleksa@amutable.com>, "Alexander Mikhalitsyn" <alex@amutable.com>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Andy Lutomirski" <luto@amacapital.net>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Christian Brauner" <brauner@kernel.org>, "David
+ Howells" <dhowells@redhat.com>, "Eric Biggers" <ebiggers@kernel.org>, "Giuseppe
+ Scrivano" <giuseppe@scrivano.org>, "Hugh Dickins" <hughd@google.com>, "Jan
+ Kara" <jack@suse.cz>, "Jeff Layton" <jlayton@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Josef
+ Bacik" <josef@toxicpanda.com>, "Kees Cook" <kees@kernel.org>, "KP Singh" <kpsingh@kernel.org>, "Lennart
+ Poettering" <lennart@poettering.net>, "Neal Gompa" <neal@gompa.dev>, "Oleg
+ Nesterov" <oleg@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "Pavel
+ Tikhomirov" <ptikhomirov@virtuozzo.com>, "Serge Hallyn" <sergeh@kernel.org>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Zygmunt Krynicki" <zygmunt.krynicki@canonical.com>
+In-Reply-To: <20261122193539.3334213-26-jarkko@kernel.org>
 References: <20261122193539.3334213-1-jarkko@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: ABF16140003
-X-Stat-Signature: ijszpstgrkxcz7s5rt477hp8sbdxsc7a
+ <20261122193539.3334213-26-jarkko@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 22 Nov 2026 19:52:31 +0000
 X-Rspam-User:
-X-HE-Tag: 1795376269-92417
-X-HE-Meta: U2FsdGVkX19vH7a1EB44qqFvzEaiDWD0TMI87QA4JiG53yu+s8TfzRUffI/4DfB08OuMT6HH3V+i4PHygV+ApWRq87L5ABPxljN6cnv9n6rAJTS4tS+1Qef74a5Tjq9d/vHvOvTn5xEwEtEUMXoJDP64o6IEufLPcIvv8ne9ruEXeTMbwG5yQB+zTtTwI5f1f9lnTajsUD3dcufPPBj5ciFmU4s+8tUDP8mE5S66JR9N0E3FafYZh0lGuz99S898WKecM81+99T0SfOsSYSQ3/GnSMKpTWZQnosmxl4ZqhP42V6gnf9t9FiFX2gqNieHKkMwwnuvAp6YAposyAPD9UywgXw+Fik0c3x4JBgokmv0FRQUlKNQfikCoTZ+jc7LhirlTzpCL97vwOXEQEmcB7w4/lTSAuUeU5Cv4Qij+b3Nhz+uOe5Fl7m0nR5UDeODA4AIZHiHmCippOnCtgYbz2lBleLcKtj6XLC6FgDFRZrpB5KE7/vnNuv04cIlHZJM1N4dg+P4hReoXiEF/s05g6k4O9TASL1X0HifLAGZld7w02lA32wRjVU0iohuvX1SVE9QaPL0I8sZPktB2fQ/66s/L9L4WtJzaAhhXVTqBBq9I58Cd1F/Ri48NOz6XAHVaCS+uDQwJEDCHRY1ub4/B1/g98jyY7WW0H5K0qgJf6Rzifq1d01gUvI+aWnRSjvOiEq1hk3AvN5NA7N9do7/rcZEtwR7Cr73D1IGtdWxkiXOFMtPJc4TOK69Nu0dPlTeOGG4wM09Mg79nfO2YMA5NN5XS18yC2MSk0gtkSIMj0DihDmVOx+UMj7Ho62QjfAx8eckV29q2QGDku06gCOSn+8sp23Jx8UV6b2Ln+v5qxtAKUe70FLxgevUl6tbNDXCfitO7KIgQ+ktzjjZer86MyJTASYjauIuxHQ2xpJNk6tgbM4Wfq5u0k7npACg10U+0HAAraKxzqMdmPqfcLq
- sc1arVV/
- zITJ3IzOE5J1P8pMMcLR39zR46RZ2wJqwKto+MxKFN0FP08NEx1MVLKv6UUdiNXxzq60SUECreolNjdRxn2yOqFKSXvgRcvGRpzVS3DrYvd8UZ/svbxXMrSYiOCuJO7U8N3nXG+K6l7glPYzsYcsDdr1FScxvd6JPEii1KUf53HBFBDYY+Lv6631pAR8Fd6KMQT0RD7B9SSoAeknRiJgn1dGKa9fu6rTLngFrqJIszCB17ZtZDjUOXxWSFW8WzAd9FULl+Ji27BtBoIoa3DFU2cSStYzaK2Go4R102O7I36bAAeyXnAM8KnT1lMoT//XkrGVXIH8JtPBoEKO1A2uSohmWFz2vXSQtWRYx5iUv/mklM2okkXc5UueLAFezdp4BZF/cDtkTOEnZ6qljgFQr0XRTfHIXcC8nGIV9HTDehpMrerSdylO5n827bV8t0RmkRneh+jB+1kPzPCIw21DujMwSxukguLFhOS7MhgF3/sAnwXOMwwCTe64qVrVnF9P0i/ZcBBeulk+WvY5U4kCajdRHNN5Sa5LaYqoYVkAnn+vr7+w/L0WA3tlEvO9plji4Z5CJtsImygT0MtNZkOF86hDadEG+FcEBZExCyqj3xAsq0Av3EJwNTGITzNoPcdAuU1ed
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DF59BC0008
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: s1i41hioag7oafxrjonr4oxbbfweuxrf
+X-HE-Tag: 1795377153-30704
+X-HE-Meta: U2FsdGVkX18q12khRV1dwW689m5+U2Jx2k4PxxzF5QBF2+pO6PfF50sQBPWVyOzPUQ1csafgTsu0DuKV9ygoMfBTN4zWC0wgHIA+dEDLUd0hWhCdeQKcZW7ZbaqWP9LLZuVBz+g7WMOmoDAUjTq8jzDyMr4T4eA9VWtd5CyeiCPtroDtjTgzDDlcYJ4sER6RsDEztAMNlaEqf4IrBmtgTJy48ug9vIEKT1AWE1/w2TGc6RjtGkNW0tQO+495WrFscqc0nWuJrLrHFqnloMYJ5kwbOv9pPbt5qKLz4jMaQXeEfbnwiOOsYncDJGg7g0Lif4erb6a8aH7dFzo8hdhdp/tyHC0V6YGZfXaCITUGp2S+cNg3mlW26X0098IjxnLeDLzMGsXjIRPFRLC0Sd7BdZrcQCYcV6E1V5+DzEIcammir082abmqDMOfvC34/AxTjwGfqvoh8k4G24K3+D0Qxo8zrITR08fpE2BGcOvSmovHT9riPMaI7WuZN4zhIH0/wIpUaZrFap7ACV3Q7Lewa4HX6JEkfQcMfDxfr3y+CvooSqtpGH8/hAb6+IXDBaXgy0IQ9PjumM/Wt6k812p5QAqI4q3A3wkp83YqkcD9sfuCui0kdDvep68IIVKUBbsQdwatZuqkum0NzmyoFe0Jw4LOpT2QWWWtkrOjrgXjw3qt0gljMf6EGaX3X1KQeeNe/S93j1lr8vsNz405H4Zx1lNTh3Dm2EHiRNRB7b3SNkG9nULCCKlMm6LyC7A+oSdUqLNxzws0KpoxHoqNosUusAYUUQ0IehcgA4M75LsXm8xm0pmYT3qX4CdcbTNorFzKumyvGgPpEOEyVXaBHZj543eeUAOAOqi/hB581Y1LiWqJ8AauKsCa6fIOHyqyyW8HEOlBfXxhnxdhiyCBYpXwBQoA8BHZR0ZKs1cvXE2kNcjivU9GTcf+8q66ovzNdLnbngw6oWc4nB7nqqg7S1y
+ tjlvFwOx
+ i8JvmlCriXSX6b0HoZYqsRuFM5pD1bUnBlDKLzPVf9GkgGafqXe/73pPwvzm+1N+uZs0eTO9glYUHpc1Aucs76AD5xUaJbRivnNE7xRkuW9Nm/GZ3Zu1tfEZtiKorQmVcCg9RuYbinOSu+6hjJnkIFgcbnMpB4d9HXcPNTb8dRnGmSTNmesWtxQenjnOJDOTytGo+IwETnfhO4iytjdwRAnIfEnmbxLzkTVV/MzwoKvdKT5yaTPLvV3hCnr3n6HF12AK92Vadv0bDtDeKfB/P3H7JpSVsCUwfDLZlDUB/ZX4/+FsgtWQQhEq67W3Nwhx6tQTiYhu3H4NGspus0Ltv9mycGbFuKjw7KPRBtNhCEXFCPcZane8PXXh/8KajdVToMh6xIfxnna5pCfEc5hozkAwgqfxWbwNNUZnicv10owx+la42RZQ4V4DXIgpN7TlOL8POB0TaPoO2M9M9vA1Qy3a2QGln/l/5E8d2r8z1JjfUGCUCT5ENaPYyx24MOrth2+RvhitF3t7GG+6KFitCCqCGsaS3lxkqkPZipswMOdx8t3m682AiHNKJIsSXhAtvhkDvJhhrc/6r6GWVMVQGh4EEeTBboefBpp6mr5T8G+1iO4IumEzrfEc+/sTthd9SKvAJy62JmLdRKYmALza2rn49yTEXiLEifauuwvP2Ye3b98sQYrRUk8rVI+AYvnQLzMyqWsppCxTGwTjucCdiuVDnodtzVyRqD46UjqQEVwAzGmqEZ42sKSXr47R4VRaizJe/ApKsVerBgbrunr6rSJgHDZbQ/W7rkeAIqDlERP6yBE4+F5nCp1Tid3F69Q1Rl8s9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,38 +103,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Record maintainership and mailing list routing for userlands across
-their uAPI headers, core implementation, documentation, and selftests.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] selftests/userland: host /tmp mount leak in
+  check_child_src_slave_locking()
+- [Medium] selftests/userland: 64K-page E2BIG failure in
+  test_userns_set_idmap()
+- [Low] selftests/userland: Python 3.10+ parenthesized with-statements
+  in test
+--
 
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+commit cd1410a72fb4e8338db290b21743ad1e3c5bf460
+Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7cbce21ba45a..54d8f628cb87 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -29285,6 +29285,17 @@ F:	arch/um/
- F:	arch/x86/um/
- F:	fs/hostfs/
- 
-+USERLAND
-+M:	David Howells <dhowells@redhat.com>
-+M:	Jarkko Sakkinen <jarkko@kernel.org>
-+L:	linux-fsdevel@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/userspace-api/userland.rst
-+F:	include/linux/userland.h
-+F:	include/uapi/linux/userland.h
-+F:	kernel/userland.c
-+F:	tools/testing/selftests/userland/
-+
- USERSPACE COPYIN/COPYOUT (UIOVEC)
- M:	Alexander Viro <viro@zeniv.linux.org.uk>
- L:	linux-block@vger.kernel.org
--- 
-2.47.3
+selftests/userland: Add userland test suite
 
+This commit adds a kselftest suite for the userland control object,
+namespace sharing, mount-namespace configuration, waitid(P_USERLAND),
+pidfd_send_signal(), and userns_set_idmap().
+
+> diff --git a/tools/testing/selftests/userland/userland_test.py b/tools/te=
+sting/selftests/userland/userland_test.py
+> new file mode 100755
+> index 0000000000000..2b43adbbb4291
+> --- /dev/null
+> +++ b/tools/testing/selftests/userland/userland_test.py
+
+[ ... ]
+
+> +            with (
+> +                self.closing_fd(rns.get_nsfd(CloneFlag.NEWNS)) as mntns_=
+fd,
+> +                self.closing_fd(rns.make_mount("tmpfs")) as rootfd,
+> +            ):
+
+[Severity: Low]
+Will these parenthesized multi-item with-statements fail with a SyntaxError
+on Python 3.9?  Parenthesized context managers across multiple clauses
+require Python 3.10+, whereas Documentation/process/changes.rst specifies
+Python 3.9.x as the minimum supported version.
+
+[ ... ]
+
+> +            def check_child_src_slave_locking() -> None:
+> +                self.enter_userns_if_unpriv()
+> +                os.unshare(CloneFlag.NEWNS)
+> +                with self.closing_fd(self.make_plain_mount("tmpfs")) as =
+tfd:
+> +                    os.mkdir("sub", 0o755, dir_fd=3Dtfd)
+> +                    Sys.move_mount(
+> +                        tfd,
+> +                        "",
+> +                        Sys.AT_FDCWD,
+> +                        "/tmp",
+> +                        MoveMountFlag.F_EMPTY_PATH,
+> +                    )
+
+[Severity: Medium]
+Does check_child_src_slave_locking() leak a tmpfs mount over the host /tmp
+when the test runs as root?
+
+When os.geteuid() =3D=3D 0, enter_userns_if_unpriv() returns without unshar=
+ing
+CLONE_NEWUSER, so os.unshare(CloneFlag.NEWNS) keeps shared mount peer
+groups with the host mount namespace.  Mounting tfd onto /tmp before
+making mount propagation private propagates the tmpfs mount into the host
+mount namespace, and cleanup only detaches /tmp/sub, leaving the host /tmp
+masked after the test exits.  Calling Sys.set_mount_propagation("/") right
+after os.unshare(CloneFlag.NEWNS), as check_standalone_mntns() does, would
+prevent the mount from propagating to the host.
+
+[ ... ]
+
+> +            big_buf =3D ctypes.create_string_buffer(65536)
+> +            with self.assertRaises(OSError) as cm:
+> +                Sys.userns_set_idmap_raw(
+> +                    userns_fd, ctypes.addressof(big_buf), size=3D65536
+> +                )
+> +            self.assertEqual(cm.exception.errno, errno.E2BIG)
+
+[Severity: Medium]
+Does this E2BIG check fail on kernels configured with 64 KiB (or 256 KiB)
+base pages?
+
+userns_set_idmap() returns -E2BIG only when size > PAGE_SIZE.  When
+PAGE_SIZE >=3D 65536, size=3D65536 passes the PAGE_SIZE check and fails lat=
+er
+with EINVAL because the zeroed buffer has no extents.  Sizing the buffer
+with os.sysconf("SC_PAGE_SIZE") + 1 would exceed PAGE_SIZE on all page
+sizes.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122193539.3334=
+213-1-jarkko@kernel.org?part=3D25
 
