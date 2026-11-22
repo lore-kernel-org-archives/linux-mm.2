@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29643606A332
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1C1606A6AD
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 02:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GvsIzOyn
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SB3XWdtX
 Received: by kanga.kvack.org (Postfix)
-	id DA6EC6B00EF; Sat, 21 Nov 2026 21:47:55 -0500 (EST)
+	id AC1696B05B0; Sat, 21 Nov 2026 21:48:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D57E86B05B0; Sat, 21 Nov 2026 21:47:55 -0500 (EST)
+	id A71FC6B05B1; Sat, 21 Nov 2026 21:48:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C46C56B05B1; Sat, 21 Nov 2026 21:47:55 -0500 (EST)
+	id 9AECC6B05B2; Sat, 21 Nov 2026 21:48:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 90D696B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:47:55 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D9EF4805F2
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:47:54 +0000 (UTC)
-X-FDA: 85461220068.04.5F69FF8
-Received: from mta1.migadu.com (out-129.mta1.migadu.com [95.215.58.129])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C7BE280002
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:47:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GvsIzOyn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FBC66B05B0
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:48:00 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D585A160620
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:47:59 +0000 (UTC)
+X-FDA: 85461220278.16.A08BB4B
+Received: from mta1.migadu.com (out-141.mta1.migadu.com [95.215.58.141])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C9DB240005
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:47:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SB3XWdtX;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.141 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795315672;
-	b=uReZUcbe4rqeh802ZkVrXWCvQzf8g2Dw4s64f8tdxAWMIP5gtbOVBjJ94eWD4wcUI4DykT
-	pfHb0gFkrJtDUN8kMWVIkR99jPgbbQITpfncQxI5OW536EqbiEyiFbOULgxV6e4PF08K6k
-	u0cIw5r/r4ClbFYg7+gj08YVVDGXsJ0=
+	t=1795315678;
+	b=7TPMbwDbxy3XH/rYpNaNYbrT7krg7R7Bw+IwiienYVPtvmWssoKkLkFwKkpSOlXeQppmZp
+	U0XFQio7soG5G6C1+qlio7U8dPwH0BN+vbN0tGCD2b1zgR8PG7vAquFO1QpdbJrdR0lKXR
+	T4+hAhWLj4xfeYDb2chLUVj5XUMgLrI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795315672;
+	s=arc-20220608; t=1795315678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=bOrv+xLYUsaUyXaSe+BARibazXC+W+FOt8ErwK+aCss=;
-	b=hNTCsD/2WdV5JFVeploEOBJkcrajhWFJhwqXoqudYQIbLUq1NUjnSKFLtH7ijkSQ298cKq
-	OmgWEVvEwox4lSVBYvI3NMIFRtHKfACCzBZXFTQQB7Ymu6yjeF5Cs5tqKIjzTCnRLhXNL2
-	dBgnUCRjF1+TBOYilLZWqpTJl7OVW5Y=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UXpp8sp/GRVRsUtSepKaptGcuvVFgYldxI029IWKwww=;
+	b=D05czAYHkyDB144ZUivxn8qKdv6kTjyMCl1T3mYmEH/lbd8vDwfZC+GHe3cqW2vn3Gx7yk
+	h4W4C5LsUlll5PRrm1bSA1ILRup4BYfo5+nV6e55mv2m6yqz7QdZKm11IgTsd5iFlz0Qzx
+	Ee8RZY4hUYaNJffaxUphAU7wEtcvD2Y=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GvsIzOyn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SB3XWdtX;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.141 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=rzojMZvLtM9+3SwUWO3HxhYcavbGDeGlgbRtLOpYVG4=;
+DKIM-Signature: a=rsa-sha256; bh=4VmPcRtrp5VsXyo2a9LQORInZeHKK19ZabzxdfHobDU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795315670; v=1; x=1795920470;
- b=GvsIzOyniRqJWLrSd29NQaoEIkIBRxfPl1mYz3guSdKs+KeehSOg3M+BN50opEeuSqRggTiN
- CrDymRoMXbaBZOcBSu1ZvDpQZo+XbrlbHRZH2prtGrrSy/q2pdLsCv2fj5vqqm0m0DMxFHjbCmv
- Q1sqNC33JjQdqb18hpwpuG/8=
+ t=1795315676; v=1; x=1795920476;
+ b=SB3XWdtX9vVAhV2yqIyXR+Z3FAT3/zOTjYraEr2dZNCwA6Bf6Tyn/9wM94ZqX1O3zQFQDyHK
+ w+qv72ybnzH9+o2vqiQ+uVhC/3MoHj0fm0ZzoW+xl/oBGO1XZ8JfBvM2xoNMl5z7VKJu3Odj5Cv
+ /kJz20WwIl4HstMbzIeJdiL0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 313eb3f773ebefb2;
-	Sun, 22 Nov 2026 02:47:49 +0000
-X-Mizu-Trace-ID: 313eb3f773ebefb2
+Received: by smtp.migadu.com with ESMTPS id 6514b70c0cb31dcf;
+	Sun, 22 Nov 2026 02:47:56 +0000
+X-Mizu-Trace-ID: 6514b70c0cb31dcf
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Tejun Heo <tj@kernel.org>,
@@ -84,25 +84,27 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-fsdevel@vger.kernel.org,
 	linux-btrfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 0/7] memcg: effective high limit that avoids isolation issues
-Date: Sat, 21 Nov 2026 18:47:30 -0800
-Message-ID: <20261122024737.2741569-1-shakeel.butt@linux.dev>
+Subject: [RFC PATCH 1/7] memcg: add helpers to handle memory.high overage in long operations
+Date: Sat, 21 Nov 2026 18:47:31 -0800
+Message-ID: <20261122024737.2741569-2-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.1
+In-Reply-To: <20261122024737.2741569-1-shakeel.butt@linux.dev>
+References: <20261122024737.2741569-1-shakeel.butt@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 54bpizhxj84wib4i74kwfemhpjie1cwf
-X-Rspamd-Queue-Id: C7BE280002
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C9DB240005
+X-Stat-Signature: sh1n4m7oscws1m4p4iie1tzbpeuanu71
 X-Rspam-User:
-X-HE-Tag: 1795315671-13248
-X-HE-Meta: U2FsdGVkX1/dOw+FwWQeth/FbtBYEFB823FlHugsttS0t4bWTyI8nsCMypm4LCwYeeVQEkgdGAY+CndqGux9yLWPwrO4nZ9xtRWBQxYIunQkSiL90IDfKHbNzHzR79TrUn4b+xPFRmba2vMsdX7hqVVGdrHtCLltYLJhZ1hpxW95DEBaJiA14h3rY72Dp/TOY5ErIklVbsQJc9l1RWL7fQFs2I0NtEnYvwi3VZR7qofqGTW3ti7ySmoQmEm+oN4QEZVkU+BGhyv2xeUTvEg3iz8Th85KhJcC2Bdhvavvwakf7Sq35eqAUkW0F9F5mUS0s4CSdoj/bKElUcH4O7KVVM9xgCNpri3chbn5nPhtwGNp2tEs6isIqnc55FTevGvkpCEafEq/X16SK0vvmkJI0HvTzuvguumX7ODvKa2FxGXvEOnXfJr/wJvHIDWRB37YNUIzyvlmqll7gj1q73TCKSB8l8Co/fh9cj0sTxwFV6tASEDrRQSL5qj1w7KLA4mxer3ssQylPoAKlXaI9TtX7YS93Ek63hgI1TnRAghCiGCDSIc6vWQ1A1oNtnCXMKmTOoZkEYe8/AeSpxUmUCSdXKkH66CiZDs/FKNJAzGEDcOsPb02DKcHQWlWRA9Ulj4POCZPZM/140YC0KVWkgPt6FpBbEIlHjJ4hDgh8ovB/iPiy3mAsLefkgZOq+tr/RmDRBm5sGAEqC3bg3S5AOxJTg4fXpKm9ZAkfnmO8mnQW2kpPGbf6zCJoK3uj+lWF7/1PDjG764ZVTobQu8oB5hlp1vZLt85FT3UdLT7FZbg0lALX1f7NxvvITGtbPuOlBWwjNsn5/3lG3YDkCTxqV2n5xOb56xA8AqFiBz+2DYgPQWPQYHPkPWsdObW99SnPsME+27MjGp/HCj+SMMe6189vZ1sLJzdbrPVYKKtPp8HBCyNMR9Far/KvmczLGxHjZ/YXSChvM0kgtdWZf0UnrK
- GRFClolm
- Li5WI36biYNvy/ARnC/vMgEBm9UOLJviHfyeAdhvdhacbPH9OQhhD8j9WV0aSIECN2aPknCGQ0UndWPF5ks80O2H+qeUsgoJr5L9H4rNhgNQJP2UNt6x3i5istQvtI88/StesNdbIL1WZBnysoX33Nv8LMqmVQjgFjYCKvCzmtcR0gptP0NpjZnLN6jvOdF99I2yPRqaKP1kCjTWe0KIJuu5WxPnlYwtEsVvuC6Wdkby7Xmeq0YEI6u3h6Tmam6M0ceI0RZDznQWLLFyNTdby+4xJBU059bIYy9GHvpoXDO8cqCyOf7chyIAXdhx9s7JCctbjhUfgD7qIvUbchjeonv1KF2Y8KW4K6VDph/WHxEHeHofB04L4EZTkLZQ7culmYVARzR74p2bz8o0NYAuWkfeVOI1dHTpm8fMnguMH4ctm5qaWs0a0gBzt9x9rViygrjqItgbb2fwrilCA0TwTLa7LKJtaAT+VdhaQxFgLUxynpjs=
+X-HE-Tag: 1795315677-625143
+X-HE-Meta: U2FsdGVkX193rYnBuGVELopqcTYnxS/kY10PuL/Rxhm640OhfFoO1Qf1dSVAUnpCl8sCwhwd4U9uOStMDZKhftV7/KjDXNNQoQZn1YUady0uy9KHxOoeUfNevYPrCkbeHUCn+ik6aVz63vOK5dIG2lpkfNmpHpqF3IDmKHTNehF8o+PlBp3jy3grCzTcs0kz+ZTAVknA7LrNs0KlKGh9kTCwcJsG1TXxXJ6prf6t6ZVv8CYH+dhHooDxNGP/VEFnBJdlGdonv4MhS3GdGO0ZxvrKkcaKu5exP0ZjBrCfmc9mUgaU2ATdYYMgbwHW/mvCIMAGizo2UnVzmqmkmikKweFOjkllWt/fFLKIR2yoH8hlmuZqToZ+1R2mLl5wZTbt8rYs6b5d2GNkwoFpUzNevNL8zvR8/BSK5baA8F1m2d3DUKGwlOqsBL1Oi6HXf3vcyXhr/wDTysU7SVPw5lebSsTZ4yQOrvcA6VoMrnhne82JqDGxZknkPLqFay2MtQ6Lp2OoM+HlupxCPiaGOPjM1JFVz0HJEPAUIfijj5bdSdjMZVNs+Hlh4mYEGEMy2Wx8knrNJha39NQoJPyRQzul0DB2dy3s6Jmm8MAqrYyeFjC58P9ETNbdyBjYNxvm2Tiq/eI27Iaqt869vP4lAIQMKCECPE8VdTKC5ICtARSslSSx2tKN0t/ykXBJwuiD5VLJm+ZqPFXufELj1STygOct8nAdPtrVtn7SpSTIC5Si+wUw+fHhhy7wDtEOMhxoWcXbn+P4TTxHLZa9N8m4NA1aWXav5kqcjRw4GkQSoxxqmAoc+so+TtEfrqH6lTrSUYQNVw1cwMtNJTlce8WGRpIwuaBYshmhiXwnP7FctMBr6UztjubZnBxN/DXooZB/HQ54snZr7q4pZPssYkhH4qpyEWlLZ9Le4Xw2CKhTK34loJNTdKxZYtdSVerH7oUmjVyimniskhHVxaoACKLIbkc
+ OdpiaL08
+ 5XvNkIH+OR4spjHmDJ5g3sN2TtonhSbguTXLV/p0I2aw2GWvJsKi+UQN0YzaeSREf22xb97eAfN2lBBTuTQcfkaPoEKvqKym0HrmFEAyl/F5s3sCVI09C+OR94MMePDpmRphyskPJ79FHBbcJWfN0N58ThNtR78J53LAl73hC8opd0+u4tPz7oO+sekVq/zURnEBLX638JxnivG9zVhBpXJTz1xH3yMkukvcOEnTkyiorRALLlPjAelAGykIb9WB95/Ri/mlk9ib/I87zYStLX5ecZt5JrT5O/gprOjmmDO0jGrQWc4PgA7F/vOcxywv7U5mVIFNhhs5zRF+IrHQBhfbBBJTrZD6leObFeDXdiluHGEuTz/Uzg0rI05bo3ZPo4ddoIa0uo/4ilBKeYFuCt4KchjsNd0fA4CbVjPBhJoltbr6EJMz/CXGG5lcydEJMAeaE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,187 +113,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-(My initial plan [1, 2] was to track kernel lock holders, let them
-bypass memcg limits and throttle them on unlock or on return to
-userspace. I was asked to look for alternative solutions, and this
-series is one.)
+Since commit c9afe31ec443 ("memcg: synchronously enforce memory.high
+for large overcharges"), a charge that can block handles memory.high
+overage right away once more than a batch is pending. It reclaims and
+sleeps with whatever locks the caller holds, so tasks in other cgroups
+that need those locks wait too.
 
-memcg limits can cause isolation problems. A task stuck in limit
-enforcement in the charge path keeps holding its locks, and tasks in
-other cgroups that need them wait for a limit that has nothing to do
-with them. btrfs, for example, charges its tree blocks to the root
-cgroup for this reason [3].
+A later patch removes that step. Operations that can charge a lot in
+one call then need another place to handle the overage: a point in
+their loop where they hold no locks, or only the locks of their file.
 
-We see this in Meta's fleet. Over 28 days, on several tens of
-thousands of unique hosts, a bpftrace script [4] recorded sleeping
-locks held in memcg reclaim while another task waited for them. Most
-belong to the reclaiming workload, like its mmap_lock (680,579
-times, up to 4.7s), but some are shared by the whole machine or a
-whole filesystem:
+Add two helpers for them. mem_cgroup_over_high_pending() says whether
+more than a batch is pending, the threshold the synchronous step uses.
+mem_cgroup_over_high_throttle() handles the overage if so; its comment
+says where to call it and which gfp mask to pass. Export
+__mem_cgroup_handle_over_high() for filesystems built as modules.
 
-- cgroup_mutex, used by every cgroup change. mkdir charges the new
-  memcg to the parent while holding it, and reclaims if the parent is
-  at its limit: 350 times, up to 2.5s.
-- kernfs_rwsem, used by cgroupfs lookups. The kernfs notification
-  worker held it while queueing inotify events charged to the
-  watcher's cgroup: 2,324 times, up to 3.3s.
-- btrfs tree locks, used by every b-tree search and change. On kernels
-  with [3], the XArray nodes that index tree blocks are still charged
-  to the task, so tasks reclaimed with tree locks held 2,853 times,
-  850 of them with a root node locked, up to 2.6s.
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ include/linux/memcontrol.h | 34 ++++++++++++++++++++++++++++++++++
+ mm/memcontrol.c            |  1 +
+ 2 files changed, 35 insertions(+)
 
-Hung-task reports show worse cases. A container's systemd created a
-cgroup while its own cgroup was over memory.high, and mkdir ran
-memory.high reclaim with cgroup_mutex and the parent directory's lock
-held for over 30 minutes. The host's systemd, tasks forking into
-cgroups, oomd and a monitoring agent all waited, so the userspace OOM
-killer could not even read the cgroup tree.
-
-memory.max is a hard limit, so this series does not change it.
-memory.high doesn't have to be enforced in the charge path: since
-commit b23afb93d317 ("memcg: punt high overage reclaim to
-return-to-userland path"), the charge only records the overage (usage
-above the limit), and the task reclaims and is throttled on return to
-userspace, where it holds no locks. Avoiding this priority inversion
-was one of the reasons for that commit.
-
-But return to userspace is too late when one system call charges a
-lot, like mlock() of a large range. So commit c9afe31ec443 ("memcg:
-synchronously enforce memory.high for large overcharges") handles the
-overage in the charge itself when the charge can block and more than
-a batch is pending. That brought the problem back: the task reclaims
-and sleeps, up to 2s per call, under whatever locks it holds. It also
-misses THP charges outside MADV_HUGEPAGE ranges, which can't block
-under the default defrag setting. RESULTS shows both problems.
-
-This series is a first step in rethinking the memcg high limit around
-isolation. It makes memory.high enforcement asynchronous (to
-allocation and charging) again and keeps it effective for large calls.
-The task handles the overage on return to userspace, and also inside
-the operations that can charge a lot in one call, where it holds no
-locks or only the locks of the file it works on:
-
-- Populating memory (mlock, mlockall, MAP_POPULATE, MAP_LOCKED,
-  MADV_POPULATE_*): 2M at a time, with mmap_lock dropped in between.
-- tmpfs fallocate, buffered writes (generic_perform_write(), iomap,
-  btrfs) and reads into user memory (filemap_read(), shmem): once per
-  folio or range.
-- MADV_COLLAPSE: after each collapse, with mmap_lock dropped.
-
-These points also throttle THP charges, which the synchronous step
-skips. A file's lock only blocks tasks using that file. Two cases hold
-more: splice() from a pipe also holds the pipe's lock, and gfs2 holds
-its allocation glocks in writes that allocate. The synchronous step
-sleeps with these locks today too.
-
-Why not keep the synchronous step, with a higher threshold, without
-its sleep, or only outside these operations? It would still reclaim or
-sleep under locks, like mmap_lock in THP faults and invalidate_lock in
-readahead, and it would not close the THP gap.
-
-This also lets users drop memory.max, which still reclaims in the
-charge path and can stall lock holders as above. They can set only
-memory.high and let a userspace OOM killer like oomd [5], or a future
-BPF OOM policy [6], decide when to kill. Meta plans to do this.
-
-The last two patches remove the synchronous step, update the
-memory.high documentation and fix test_memcg_high_sync, which missed
-the THP gap.
-
-RESULTS
-
-Tests run in a VM with 4 CPUs and THP on for anonymous memory and
-shmem (enabled=always, shmem_enabled=always, tmpfs huge=always, the
-default defrag=madvise), in a cgroup with memory.high=64M. Reads go
-into an untouched buffer. "No hooks" is the base plus only the patch
-that removes the synchronous step. Usage 18s into a 512M operation,
-without swap:
-
-  test                                    base  series  no hooks
-  mlock, mlockall, MAP_POPULATE,      513-514M     84M  513-514M
-    MADV_POPULATE_WRITE
-  tmpfs fallocate and write           512-513M     84M  512-513M
-  reads of a tmpfs file                   513M  84-85M      513M
-  MADV_COLLAPSE of a sparse range          96M     98M      514M
-    (one VMA, or one VMA per PMD)
-  reads of /dev/zero or /dev/urandom      513M    513M      513M
-    (known gaps)
-
-Usage grows by one 2M folio per throttle, so it is 84-85M after 18s.
-On ext4, XFS and btrfs, 256M writes stay at 64-67M on both kernels
-(257-264M with no hooks), and reads with a cold page cache at 70-73M.
-Reads with a warm page cache, where only the buffer is charged, reach
-257M on base and stay at 84-85M with the series.
-
-With swap, the MAP_POPULATE, MADV_POPULATE_WRITE and tmpfs write tests
-finish in under 2s at 65-66M with the series (base: 157-169M, no hooks:
-513M). tmpfs fallocate is throttled with or without swap. With swap,
-base fails it with -ENOMEM for small pages.
-
-During mlock() of an 80M MADV_HUGEPAGE range, a task in another cgroup
-that reads the process's /proc/<pid>/cmdline every 10ms waits up to
-15.3s on base and under 1ms with the series. Populating 2G with no
-limit takes the same time on both kernels.
-
-All patches build with gcc and clang (W=1), with CONFIG_MEMCG=n and
-with btrfs as a module. A lockdep kernel showed no warnings. The
-memcontrol selftests pass, and the fixed test_memcg_high_sync fails on
-base.
-
-KNOWN GAPS
-
-Other paths that charge a lot in one call are now throttled only on
-return to userspace, and memory.max still limits them. Most can get a
-throttle point later, some after dropping a lock:
-
-- /dev/zero and /dev/urandom reads, getrandom(), sendfile() to a
-  socket, io_uring submissions, netfs and FUSE write-through writes
-- MADV_WILLNEED, UFFDIO_COPY, KSM unmerge, mprotect() of mlocked
-  mappings
-- FIDEDUPERANGE, FS_IOC_ENABLE_VERITY, KVM_PRE_FAULT_MEMORY,
-  guest_memfd fallocate, KVM page splitting
-
-Rarer ones, like sendmmsg(), btrfs send and FITRIM, can wait. Memory
-pinning (VFIO, iommufd, RDMA, io_uring buffers, direct I/O and
-others), fork() and single large allocations (BPF maps and others)
-hold a lock for the whole call or can't be split, so they stay as they
-are.
-
-[1] https://lore.kernel.org/20260924155025.949998-1-shakeel.butt@linux.dev/
-[2] https://lore.kernel.org/20260921192559.2619635-1-shakeel.butt@linux.dev/
-[3] commit cf1dec76ba8a ("mm/filemap: add AS_KERNEL_FILE")
-[4] https://github.com/bpftrace/user-tools/tree/master/reclaimlockmonitor
-[5] https://github.com/facebookincubator/oomd
-[6] https://lore.kernel.org/20260127024421.494929-1-roman.gushchin@linux.dev
-
-Based on mm-everything-2026-11-20-06-34.
-
-Shakeel Butt (7):
-  memcg: add helpers to handle memory.high overage in long operations
-  mm/gup: handle memory.high overage while populating
-  mm, fs: handle memory.high overage in buffered reads and writes
-  mm/shmem: handle memory.high overage in fallocate and reads
-  mm/khugepaged: handle memory.high overage in MADV_COLLAPSE
-  memcg: remove synchronous memory.high enforcement
-  selftests/cgroup: make test_memcg_high_sync check that throttling
-    holds
-
- Documentation/admin-guide/cgroup-v2.rst       | 12 +++++-
- fs/btrfs/file.c                               |  9 +++++
- fs/iomap/buffered-io.c                        |  9 +++++
- include/linux/memcontrol.h                    | 34 ++++++++++++++++
- mm/filemap.c                                  | 31 +++++++++++++++
- mm/gup.c                                      |  9 ++++-
- mm/internal.h                                 | 27 +++++++++++++
- mm/khugepaged.c                               |  8 ++++
- mm/madvise.c                                  | 11 +++++-
- mm/memcontrol.c                               | 21 ++++------
- mm/shmem.c                                    | 37 ++++++++++++++++--
- .../selftests/cgroup/test_memcontrol.c        | 39 +++++++++++++++----
- 12 files changed, 217 insertions(+), 30 deletions(-)
-
-
-base-commit: b298839c2f77b60eea645a68d2245aa088463955
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 980358bc6f49..77115fe1873e 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -942,6 +942,31 @@ static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ 		__mem_cgroup_handle_over_high(gfp_mask);
+ }
+ 
++/*
++ * True if the current task has more than a batch of memory.high or
++ * memory.swap.high overage pending. Each charge that finds overage
++ * counts at least a batch.
++ */
++static inline bool mem_cgroup_over_high_pending(void)
++{
++	return unlikely(current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH);
++}
++
++/*
++ * Handle the current task's memory.high overage if more than a batch is
++ * pending, for operations that can charge a lot before they return to
++ * userspace. The task may reclaim and sleep here, so call it only where
++ * other tasks won't wait for it: with no locks held anywhere up the call
++ * chain, or only the locks of the file being worked on. Pass GFP_KERNEL
++ * if no filesystem locks are held, and mapping_gfp_constraint() in file
++ * read and write paths.
++ */
++static inline void mem_cgroup_over_high_throttle(gfp_t gfp_mask)
++{
++	if (mem_cgroup_over_high_pending())
++		__mem_cgroup_handle_over_high(gfp_mask);
++}
++
+ unsigned long mem_cgroup_get_max(const struct mem_cgroup *memcg);
+ 
+ void mem_cgroup_print_oom_context(const struct mem_cgroup *memcg,
+@@ -1376,6 +1401,15 @@ static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ {
+ }
+ 
++static inline bool mem_cgroup_over_high_pending(void)
++{
++	return false;
++}
++
++static inline void mem_cgroup_over_high_throttle(gfp_t gfp_mask)
++{
++}
++
+ static inline struct mem_cgroup *mem_cgroup_get_oom_group(
+ 	struct task_struct *victim, struct mem_cgroup *oom_domain)
+ {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 091401cecf39..6d147153bd06 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2707,6 +2707,7 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ out:
+ 	css_put(&memcg->css);
+ }
++EXPORT_SYMBOL_GPL(__mem_cgroup_handle_over_high);
+ 
+ /*
+  * Called after @nr_pages were charged to @memcg. If @memcg or one of its
 -- 
 2.53.1-Meta
 
