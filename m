@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4177C606A32E
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 19:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40184606A6AA
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 19:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jx9MYo4v
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OoGSfxYg
 Received: by kanga.kvack.org (Postfix)
-	id 27EDB6B05BA; Sun, 22 Nov 2026 14:36:34 -0500 (EST)
+	id 035416B05BB; Sun, 22 Nov 2026 14:36:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 230346B05BB; Sun, 22 Nov 2026 14:36:34 -0500 (EST)
+	id F28126B05BD; Sun, 22 Nov 2026 14:36:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 146156B05BC; Sun, 22 Nov 2026 14:36:34 -0500 (EST)
+	id DA13E6B05BE; Sun, 22 Nov 2026 14:36:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8FCC6B05BA
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:36:33 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A02476B05BB
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 14:36:37 -0500 (EST)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0953FA74BC
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:36:33 +0000 (UTC)
-X-FDA: 85463761866.19.CC04103
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ED4B01C40EA
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:36:36 +0000 (UTC)
+X-FDA: 85463761992.19.CFF66E5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7309940007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:36:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jx9MYo4v;
-	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5F38340003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:36:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OoGSfxYg;
+	spf=pass (imf04.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795376191;
-	b=tiu4zqN/vD1pQWm1etvFKZ/BpbvGIgmKqFY5HaclE7g5vw4EcsON34s8oxrXLh5uEt5OVy
-	vdJWsT4UvnDYFLXRLL7eO/USrKPJSc/E89yp/tREcfLrub1LCTD0Tz/YGfRpnWurVZvlp/
-	ChAAfVoigSaLhILkvG8PG3pGNg0lkFc=
+	t=1795376195;
+	b=CZEOv+asVivK8jo1fQ4Z4q411vofxCO4Mze3anI1t94HR2+unxYSu/B4WjfPLb5ZCtcUFI
+	XQhrBy7h/2Ufy+bnStcuCw0kCirRewYN4gnupMkLPQoum1KueK2GHERRrcCxtKS4HKT1Bc
+	YUSU1zRI/RpNIxgjGirRCCsiNem7+08=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795376191;
+	s=arc-20220608; t=1795376195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=43MsiEFgIrWkQNcNF+GYEjx93qeN3UcnPDjH27vMBMY=;
-	b=WFcbljQizFpJi77yZDO2oXfCungwnSfXBSuKT93v2TmpxrqoOtTVLELscPlhc9MF0Ws+T0
-	dMbU4KN2ZZdE9acg3zFXUfVRWZL5Qy3muxr1DLjuGAGHhAbpZAJyjHdJRn61ewQkWc+8Zs
-	y4jgKGrmXsUPRkltot4F3JI6h6MB5n8=
+	bh=ujYt3pxK39YV6xgrJ9ycAzI8XphJxsY1pHf5v0/Q8cY=;
+	b=y1iHG1AmrhMLi6l+97UutrjTNP6znh+86XbSQugxEbqJAHDg2119DbmoTwUz1uY022ZtM4
+	z01xWM4kTDaB8S7Z1MPvsV1bQbzF8fkWxCS44E03pHchoUUH+gQYlQF7vkBazPm7DjrfcL
+	ttD8CadfTDJC/Y2Pa/t9bfsnUrHzhkI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jx9MYo4v;
-	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OoGSfxYg;
+	spf=pass (imf04.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 0D7C561B45;
-	Sun, 22 Nov 2026 19:36:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 1E7691F000D4;
-	Sun, 22 Nov 2026 19:36:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 0529C61E04;
+	Sun, 22 Nov 2026 19:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 275C91F000E1;
+	Sun, 22 Nov 2026 19:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795376190;
-	bh=43MsiEFgIrWkQNcNF+GYEjx93qeN3UcnPDjH27vMBMY=;
+	s=k20260515; t=1795376194;
+	bh=ujYt3pxK39YV6xgrJ9ycAzI8XphJxsY1pHf5v0/Q8cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jx9MYo4v5dG6TuiLqqMpwfnCLNp1dU3fsjM0rs7NeUiQpqvCbQkc6zfNZfQn1ceCg
-	 dkL6lAYTT/XApYv1EnrG/3bDLes3Ar8rT3NVk6CyizxCjxJOWQr/BQgKMnE4DozfXc
-	 6MaZrPMCQKrw6XbZAf3J55qgj9MKKx8nvfOUvGoHcJ7/8yOdGVy1JssCARbZmF8vek
-	 6kxEG95kGAihkM4HDqZ8n1mTcg/lmo4gtW2J8GayVKr+sLDzrsuUuDCALp/vF2d+2v
-	 BPUR0GZ3wJ2zZz8SvSCUOuV/4ea/j5aB9DkmJvEGCqfWbjjKoyCZJsHY54JfZejPWu
-	 dmVhu9cXx73XQ==
+	b=OoGSfxYgsZcZJElXw84v9gsSeSMwok9hzGq6rqX9ynWRDXqq3zx71CzuuYvvw2g/R
+	 1UpEgjqxgsRgThvgJblfJjMiuNX4mqqhqHoyFnm0J7hEkd5/8FlUQcVS3mkMU4mMYX
+	 iF91SZzxOwMNMH2crVXxL7rch4XakMfXwpVbdpSN68at4yxvJhdrFGtdqimiqw52tC
+	 d1j+4sNCZtrz2PP53RcNgvvbAnU4dUe5TRSV/ZC+XXhMOQA24qIq01hpvWa3QXVrBH
+	 aYxsxae0fedmvv9+V6SNnLaGfcB9iN+D8NEneNdjl2luzlR75sAG8Cl8K/pyTCNbLe
+	 u82rSzLk5TrlQ==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -96,9 +96,9 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v7 08/26] userns: Factor out install_user_ns_cred()
-Date: Sun, 22 Nov 2026 21:35:21 +0200
-Message-ID: <20261122193539.3334213-9-jarkko@kernel.org>
+Subject: [RFC PATCH v7 09/26] nsproxy: Expose create_new_namespaces()
+Date: Sun, 22 Nov 2026 21:35:22 +0200
+Message-ID: <20261122193539.3334213-10-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261122193539.3334213-1-jarkko@kernel.org>
 References: <20261122193539.3334213-1-jarkko@kernel.org>
@@ -110,13 +110,13 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 7309940007
-X-Stat-Signature: 3nqrpy193mogkctqnejdyrru44bt6tk6
+X-Rspamd-Queue-Id: 5F38340003
+X-Stat-Signature: k6e3zzbmdykz5cxnhx6j9f4o6wnf5u1g
 X-Rspam-User:
-X-HE-Tag: 1795376191-482281
-X-HE-Meta: U2FsdGVkX19hc9nS9Oh02YMtKQSSCyX3TTgKd4NJ2mipExCu/gxq9K+NeB2OMHM7RkKPZ8uCQCO/6mdnws0ckTDGJ1er3vT+SUim2dyDfwzkCZy6v3ZdybqtT3wWJa0tjjF8fTCiEX3sna/24WoQXOOT38MaMvP1uZWAgcGxkE6ao5wG7miLCFm7pTp6JZOtVZ5IEN+4d4NCpZMr/oUQEtSVCLYelnTrTwINqJVnjsncd6dJnmLT3zz1VqvcJplwCfGc0ESF0soie+r914YXAnCuMtEog6qgffGUSoejulJUkluMzVaVJHJo6xcFPNZvt0je2g9Y+KZ9RJ/lP5+iPVNQZzftT6K48Ze276FDO51IM62ShZgXtLcmmixly5F69NypyndJuFOITqzJss8EnCGBEuwgexeAShq/5d6DkGqye7t3Wzv070aIPnmjPsMfkGJnZx0BM3G7tyTPTpuM5WIItek+l/+FN4Vz5hPHv0rJjE4yi/FSDfqXvoF3Bb0X3kWw6H6rL1Sx+O1kErWj27kjQNKMVN9QQ5SdVKdYW0GWgDStErt8Rn4PcFfNcWQw5Ip7j13JRdJERW55XHzt9fk6FIbsy1RcU0J9qWGdkdS5Xk2Q03Q/4utgaC9XrveHkvfEGskLaUaJhjCdRiadH7QKvkdjRXzcbKt0uKHiI+CPQyRPWICRFVfoAR7q4J5MPYdy+063AL1mr+wPTLBeAq9jFQoHJynpS0/ZblUa7JscCPchXyVDiz/o4sJB8JjdOcfjj3Oet0xySgAbsyanzeS5lzHlXJTdD9Y4MHxjfiUxOnNBIuw9A2xR5MBFIPaFkEU3ZX0GuUw5TC6Eb82gk6WDxEsFY1x3B2vorP9TxFFFdxyVzn0y66PKPNmJ9st7Yuoc//azuw8J1EE0dMJWPXZyxfDTqT9bnmvzEN/naP/ReM638UZM3dWVn+3/Go1R38C9wiwrwVwuzqYBndn
- pMUX/dTD
- cKNIiR+l6lVg0ov86t7Sc8frAw+gMSBHMwfm7CuYn/wIIRTfFvzj61V5XxdJXzUOvKatD26RiL2b/wtSBiNW/1QXfq6Xw6iVs+8Kjuc/yIXAVB3S5M95C2vN/FXRL/o7KvJFx9qVxpMfDpZvJBVpeP9pfHPyLu4G89dO3yTZOub7u7vbJU2E9E3vUjSnqm0MJXnrfGe21ZSK32xQcmTf3dSDZhbj1ZyX+FTFO9jvhZtJssuJfwk5XN5xF1/OOz5d38x7ISuLa50mOJwUZVJG7cSNgsGdlVGBoS/aJksNK3OlmPmvObF1OM9BjOz+7WI8wpmJecwhBCSfP4sfF2ukg2Bo81/LMigjtgyy1kn/X7xHAO1MXC3WYcvJY/T0+4w7U8PJ+Ph2ERp7G+cJZTARHfP4y/lsILFT+zfEg4jADzaNTiDamCdqKxcW9ZGdFU4kt7W8VuNFA5DilyzA9u+E5zCCry453dSrVYFJAhWh52ssoPEc=
+X-HE-Tag: 1795376195-834586
+X-HE-Meta: U2FsdGVkX18bxqx0CKK2XpnB8/KbEyJE09xOStNX2zqVdDuRZPiBLKRNPiMIaOBQa+OFQhJ7aHM8spVUMDT4IkHyhrAuNPTz+YSwjA0OM9wtU2yB+ZxpGrop3bf1AI3V8784aOINg1YhE/qpH9kco90cfBColtJv2uYmLalnIWAW4AAiOiZrqWwonaKJrEz3fmukK/LcCxKDp09iJ9LsJIGjersga5p0mX+M1UnT9gpxbRzc5okXyB3vI9IIvLuP68WhdSz2/GFHS5esafHr3betpaVhmSBXqIJFjW/8ThzKkFSCuyqIwF2t9xXIvbepGPTOUMGr0s2DJ0MIXU+gVJI618QjvQQoVRTDe40ho1Bw9MnTfyVV/+QjlRO28oIaukRgZvIpVy1Kye5anugaTEwxwtxv4m/6U/8S1BLCd9vGDb93JJ+/J+445hy20INAeeanFYtyuOmOWWBGrxgtE5s4zpu6BtNauYDXyYZj0R4I0TqzlJ2bF1fffbzHQf/xTiIAX9n0WNvaLebBnAvEvgms5FCsq9uANkOLSDUlp7Xs6LKiOzi4voBHyKSekpAJk+KtJ+cS85D8LKvykCjBAx1n2VOkf06LS/1xnVe37hhA4T1+ioF3fWjxPVJCzJ/abcK8TwB6FOlPHsauXAg6fgQdp+9oJArWMtByk1UWuDYnKUvsLS1elyeaJQXaGZqOVSwy5r3NS2HRncLDFG/b+DdLPmryNcwJH78qfg3dH0AvACWNzfUX0JZENqLnIPKQC9IBMHUpFBYNjqkv8XkaOlYXP2cNSk3tlHMuNz26FYEbBWXc30CpCqD0s+23XffOysSKNkl6RbirigL7c5qarXyO+2Wli765p3bX+CPo52gCVkmAK6XLkJRF4G8/b+PcKN+kkyiwAxi9PwU4hnZM/M0dqrmBoFMa0uAzJlwcEnbMAQ4vphz0VIafqiqav07EwQC2RJqEOrGHbYibeA6
+ wLMNvmvg
+ MaRm7nQFWyRNy1HcCM70Mb+cmrKZ/pmAec5P/rJMFQAyCrPVCsTdhYgACJgdkoWpyghSWD3QPvyFBGhMXMjz4YoLHIRJ679uCZ3rp+m345kKPB7prcUUx4ZUzVTbbuP9mD9T+as3iDv/0u8slVuF/j4by9R6170sJSm2uWQID6HUF4Ik199HjFwSQFGj1G1EkQ1gOkMPUufUtBoetbf9io9/kwJA84Y7XHgTzTc0uUDnpDKCyypGKkvrejPL1k8KCd9/5vIASfBSyxtpBCC6Bc5QWiIYuf9+QI9DRwXTunXdYpdH/yx2qECH5KlofZ4RsbjDXruJN7z5fxyaTDM20KCN/e4kWZvLaZ93hMKaqpdBEo6qCT/ls7zsjMjqCqVBCG5DIZTMxgzATonpB3nxeKiJ9xrMN5d3PBC9bPwDQDtopB15LEOdC4O/VboKNxPe3je+ESEYgOrxbKb7pIj86p2kwPD3jdBwYkuZDWzCUa0ItLxA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,77 +125,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-userns_install() updates a credential's owning user namespace and
-rebinds its ucounts inline, which cannot be reused by fork paths that
-switch a newly allocated child credential into a target user namespace.
+create_new_namespaces() is currently static to kernel/nsproxy.c,
+preventing callers outside kernel/nsproxy.c from constructing a child
+nsproxy without mutating a task.
 
-Factor this logic out into install_user_ns_cred() with a !CONFIG_USER_NS
-stub so callers outside kernel/user_namespace.c can install a target
-user namespace on a prepared struct cred.
+Expose create_new_namespaces() in <linux/nsproxy.h> so userland_open()
+can allocate a detached namespace set from current.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- include/linux/user_namespace.h |  7 +++++++
- kernel/user_namespace.c        | 12 ++++++++----
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ include/linux/nsproxy.h | 4 ++++
+ kernel/nsproxy.c        | 6 +++---
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
-index b4a50edfe003..ecee91aa2257 100644
---- a/include/linux/user_namespace.h
-+++ b/include/linux/user_namespace.h
-@@ -182,6 +182,7 @@ static inline struct user_namespace *get_user_ns(struct user_namespace *ns)
- }
+diff --git a/include/linux/nsproxy.h b/include/linux/nsproxy.h
+index dc2447f5f092..d611c40cb4ce 100644
+--- a/include/linux/nsproxy.h
++++ b/include/linux/nsproxy.h
+@@ -12,6 +12,7 @@ struct ipc_namespace;
+ struct pid_namespace;
+ struct cgroup_namespace;
+ struct fs_struct;
++struct user_namespace;
  
- extern int create_user_ns(struct cred *new);
-+int install_user_ns_cred(struct cred *cred, struct user_namespace *user_ns);
- extern int unshare_userns(unsigned long unshare_flags, struct cred **new_cred);
- extern void __put_user_ns(struct user_namespace *ns);
+ /*
+  * A structure to contain pointers to all per-process
+@@ -92,6 +93,9 @@ static inline struct cred *nsset_cred(struct nsset *set)
+  *
+  */
  
-@@ -224,6 +225,12 @@ static inline int create_user_ns(struct cred *new)
- 	return -EINVAL;
- }
- 
-+static inline int install_user_ns_cred(struct cred *cred,
-+				       struct user_namespace *user_ns)
-+{
-+	return -EINVAL;
-+}
-+
- static inline int unshare_userns(unsigned long unshare_flags,
- 				 struct cred **new_cred)
++struct nsproxy *create_new_namespaces(u64 flags, struct task_struct *tsk,
++				      struct user_namespace *user_ns,
++				      struct fs_struct *new_fs);
+ int copy_namespaces(u64 flags, struct task_struct *tsk);
+ void switch_cred_namespaces(const struct cred *old, const struct cred *new);
+ void exit_nsproxy_namespaces(struct task_struct *tsk);
+diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
+index 2dcf105e8ee2..3c4161515c3c 100644
+--- a/kernel/nsproxy.c
++++ b/kernel/nsproxy.c
+@@ -85,9 +85,9 @@ void deactivate_nsproxy(struct nsproxy *ns)
+  * Return the newly created nsproxy.  Do not attach this to the task,
+  * leave it to the caller to do proper locking and attach it to task.
+  */
+-static struct nsproxy *create_new_namespaces(u64 flags,
+-	struct task_struct *tsk, struct user_namespace *user_ns,
+-	struct fs_struct *new_fs)
++struct nsproxy *create_new_namespaces(u64 flags, struct task_struct *tsk,
++				      struct user_namespace *user_ns,
++				      struct fs_struct *new_fs)
  {
-diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
-index 61dcf2fab6f0..218ea4e73006 100644
---- a/kernel/user_namespace.c
-+++ b/kernel/user_namespace.c
-@@ -1613,6 +1613,13 @@ static void userns_put(struct ns_common *ns)
- 	put_user_ns(to_user_ns(ns));
- }
- 
-+int install_user_ns_cred(struct cred *cred, struct user_namespace *user_ns)
-+{
-+	put_user_ns(cred->user_ns);
-+	set_cred_user_ns(cred, get_user_ns(user_ns));
-+	return set_cred_ucounts(cred);
-+}
-+
- static int userns_install(struct nsset *nsset, struct ns_common *ns)
- {
- 	struct user_namespace *user_ns = to_user_ns(ns);
-@@ -1638,10 +1645,7 @@ static int userns_install(struct nsset *nsset, struct ns_common *ns)
- 	if (!cred)
- 		return -EINVAL;
- 
--	put_user_ns(cred->user_ns);
--	set_cred_user_ns(cred, get_user_ns(user_ns));
--
--	if (set_cred_ucounts(cred) < 0)
-+	if (install_user_ns_cred(cred, user_ns) < 0)
- 		return -EINVAL;
- 
- 	return 0;
+ 	struct nsproxy *new_nsp;
+ 	int err;
 -- 
 2.47.3
 
