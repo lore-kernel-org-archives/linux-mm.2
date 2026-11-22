@@ -1,98 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B520606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88035606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yxs9eT9X
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=od4mp1lj
 Received: by kanga.kvack.org (Postfix)
-	id 294A36B05B5; Sun, 22 Nov 2026 11:03:05 -0500 (EST)
+	id A5F3C6B05B6; Sun, 22 Nov 2026 11:04:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26D3C6B05B6; Sun, 22 Nov 2026 11:03:05 -0500 (EST)
+	id A371E6B05B7; Sun, 22 Nov 2026 11:04:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AA296B05B7; Sun, 22 Nov 2026 11:03:05 -0500 (EST)
+	id 978416B05B9; Sun, 22 Nov 2026 11:04:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE50A6B05B5
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:03:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77711140717
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:03:04 +0000 (UTC)
-X-FDA: 85463223888.17.AA9EB6E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C2F70180012
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:03:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yxs9eT9X;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 79CD36B05B6
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:04:09 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 06F7F1606C4
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:04:09 +0000 (UTC)
+X-FDA: 85463226618.13.CF76327
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 55EEC180010
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:04:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=od4mp1lj;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795363382;
-	b=bk/Q4kK4EgJ3ziP5+hdcXCKD7VqDNpDFeJmTo0vJlXC3m0LFjeWvxWfg+URNB9X8gMK1xb
-	2XHUSzCqOL7RnicooqOwvr1qQcrsFycx3jObAwb8eAdQmxmqRClX3StgPIvAF5luyst85D
-	uGiteg6k5zcXgzOoSPSTx+QDb6KuQg4=
+	t=1795363447;
+	b=GmfayLC1zyYA+3C44us29vxj0NCacWN5OMvAzS/IT8pH8yDLagNj8DmJZfbKCvH96Zwe2w
+	M4SFRw0JalRjgcoivrPFLHw2oGHxlax6sSJKpmF6CNfPxdPF4Htnogdq0w92VcaJSHNK5I
+	zr4eeIFMuYQrNcHqGlYL8uApxK9SZ5Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795363382;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795363447;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pWrFVk6jgK3PVLqBM+zS8clEjvR/O2D2al0UZuWHR8k=;
-	b=QDqBhoiQVJLGm3yRgit1BzHjngS8e7PJXxOKRk7sOtzoV3S1dm+uC1kGn/XNTuGRqyOQIY
-	oIypJ77Xf5JPVgJVfqDjcV6FYoQ3TOD3G3rBNkqH5KsuBK/YnItRvKeZ2s6xlhPEZwSc+V
-	2xwRX8fePVuOx5MdQRkfHOKNVilgVSY=
+	bh=7u5y5zGE2Pf7qEYb5K9ZeD/3c+cJ1a9rZgL59c6k4rs=;
+	b=WEX91AdCxdjlm3ilZIKEV0yeLF3DG9Cj8Iz92tx7NVBP8tK+TFAtHYl3GtItqsdTUwsdZM
+	XJZC6v0dSrfgjV3rXzMdL8eQddU1VQBEWz7209DLYbDFsP2rDWvlUgkv7QnuDCQoHFINs9
+	HUfa0qfGjVVmEqubAFiqodF8mywXoFA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yxs9eT9X;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=od4mp1lj;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B8A16020C;
-	Sun, 22 Nov 2026 16:03:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF4D1F000CA;
-	Sun, 22 Nov 2026 16:02:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 87AA243F4D;
+	Sun, 22 Nov 2026 16:04:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F131F000C6;
+	Sun, 22 Nov 2026 16:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795363382;
-	bh=pWrFVk6jgK3PVLqBM+zS8clEjvR/O2D2al0UZuWHR8k=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Yxs9eT9XTC+S/5am2omSG12K+MahuUn2IgzI1Wv2tYqr9H8Tzg1YoK5asUHr4rc2c
-	 G6DogWsTg/YRXrVb9WspE52ukHQVmGgjYKS4zc/AWGpu6MdNWxLC/vH8k6KOYtLdkV
-	 hGfleRdqUJ/6yLce1Ac9kaFrX+AGZsyEGAVEVwwzu+nQAZqsaJQqVxLM5FHXtSIjN4
-	 B6gIaVLhNtctOiEgek95gzk43jUMOZgMWRYiVuQ4r0XHbJSbY6oaX70oTc6Ia87kCh
-	 VVC31cxiOcPU3R31J4BVuT+ky6N1meB9/QSmawXajdjK59GB7GIYS22Fabl69Q1hPz
-	 iiYV/axftZjVw==
-From: David Hildenbrand <david@kernel.org>
-To: David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>, 
- Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
- Arnd Bergmann <arnd@kernel.org>
-Cc: larips <larips950@gmail.com>, stable@vger.kernel.org, 
- Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
-In-Reply-To: <20261120185248.823415-1-arnd@kernel.org>
-References: <20261120185248.823415-1-arnd@kernel.org>
-Subject: Re: [PATCH 1/2] [v3] mm/mempolicy: fix copy_nodes_to_user() for
- odd inputs
-Message-Id: <179536337870.3554.2407408081823588964.b4-ty@b4>
-Date: Sun, 22 Nov 2026 17:02:58 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Stat-Signature: 7h96yfmzqqhxpfu86aqu1bd3186hey33
-X-Rspam-User:
-X-Rspamd-Queue-Id: C2F70180012
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1795363446;
+	bh=7u5y5zGE2Pf7qEYb5K9ZeD/3c+cJ1a9rZgL59c6k4rs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=od4mp1ljvGcVj0ltN6nuQcczVy5x7E9Ygo2gNUzw87mPqrpqxa7/rQyKHtfj5NUXJ
+	 hRGOwMO0UVjL/rS1fOkxvApHcPWxG6HpuoEB4nWXDc8ibM1E/JV7e6kRpNJ5zTFwtM
+	 3CwrdEnbhKAZWQkyH5F2lrkgLTPSqUy0W4unOqCUMJYHYSe+KeGtMOeiEWM+k8NahC
+	 foZgud5H2kpqKlmpTl4OFblaNm9RElfcVhbfgF5+JIBIu71S/OMd4eZyO7rSr//qp2
+	 D1O2TyZsi9yS6yfSepCI5lK/k0bU1BT8kOacrW/XdhgJfXi13q1BgcPm/lt7BasZgm
+	 kMTRmMssDkmxg==
+Message-ID: <sashiko-outbox-228074@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/7] mm/vma: fix uncharge after failed stack relocation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, "Suren Baghdasaryan" <surenb@google.com>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Pedro
+ Falcato" <pfalcato@suse.de>, "David Hildenbrand" <david@kernel.org>, "Jann
+ Horn" <jannh@google.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Kees
+ Cook" <kees@kernel.org>, "Peter Zijlstra" <a.p.zijlstra@chello.nl>, "Ollie
+ Wild" <aaw@google.com>, "Adrian Bunk" <bunk@stusta.de>, "Xu Xin" <xu.xin@linux.dev>, "Chengming
+ Zhou" <chengming.zhou@linux.dev>, "Mike Rapoport" <rppt@kernel.org>, "Michal
+ Hocko" <mhocko@suse.com>, "Hugh Dickins" <hughd@google.com>, "Joey Gouly" <joey.gouly@arm.com>, "Catalin
+ Marinas" <catalin.marinas@arm.com>
+Cc: linux-mm@kvack.org, "Chris Mason" <mason@kernel.org>, "Josef Bacik" <josef@toxicpanda.com>
+In-Reply-To: <20261121-some-more-ai-fixes-v1-4-236e925d9b64@kernel.org>
+References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
+ <20261121-some-more-ai-fixes-v1-4-236e925d9b64@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 22 Nov 2026 16:04:04 +0000
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 55EEC180010
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795363382-939053
-X-HE-Meta: U2FsdGVkX19wwpRPcFG7GYMufXoZzpPzewi30y8phR34ebMbZxRqy67+LzxpSWSokCiG3HRf6pl5IZLLyEpdWEgjNUkgqmgWDQljajy58g7DnsDREwZJ+G4Oiz6O/Gz51moBTHeqHWru9gdJqoQrD9cJ5Jtj5AY7Np9Wos0L+tqd7I2mmIU4x13nkbDcHkmYknuGaCebzBIPW0v6kDkcb/UVRxOToPDgSe+AQRgjXHwwg9QKwwDo1Jcby8TXEn6Ud2MjloXZMWovWSnwtuxzrCgsDlfQoTD7C7CDi7HT0wjJ8Lej6sV4oURGEdVE6vifGw4lw6lFsQJzv5zg7rFnClR5EgFMsdMHKGv2Rr5pMo79vuExuIIr/hlo0YghfGISPWM2PwyMQuJ/QPvpy1Cjv4xA8ddtbT7Ri/Vs/qeo+IYOoi8J6CbM2O9qg5RGxj//i2DyPx2ex3S7fG21qckw7c/c+/0Q78voiqkL0f11SMMqH7RvmzWKjf1sZViHCV9TELKtf8HkJVLLgi98LUaLfd91r16PCoFNIgLcv/dEtulson0W9NNIcFJPZmVRHca0ae+nOXKv90QNk9BdL4X/t72fuE9golgldIjFAjEpd2b8jcg6LEEggvf5Bm7EWG38uikTba6UPcctEXNsvLl3hwFHIJbNV/K+1dBpgoUs3W+AEzb06mvvRRnyyAMnZAOXBMiuQF39tYExo9inWrBM9tmbvg70eaqnBCb0v+ErXLJ4kRXHxFVJAzAIORowTjg/tSfWM+/z+CVR+sdqlYbe98oeXEBMX6Z4NOJ+4uIJNZ1stouG54faiGK/eQc5Mszp9RBhu+qm8vvcw0dG/1cfJMNjq+JTdxM0rKcPwbxc38bsPdkcmPyJNiS6X0D/eDXVsE088mY+PdQ4b1sW060CsjYnpjN/1bSzjKWandu7yC1Du9MmmWOSMT1FDwlyyTQg9pXe0qfIzwZe/lrMNXp
- kjOJetOF
- oxs4LVH7YMazEa7oyJHGlK5o+C2hAleAgXlaYNxdInuoVQIHN5Oaj7BzC5dfbawkCJVWm33m+ZEfFrJ/U6gx8y+H06vEudk8pZAb9gxCKYZ2tqZph5sP1LE/ZwW0tlSTeOA8okeJNb+EGrxXLn1+damYjaGzjWQqvxT430gi0Lte/Riw/BV/C6R/ECz207/umaAi8GHQV3VVgwfYIQKMt9VrL9d/yhfBI5k2oSRzzbf0g8sVYlTbJmZNljGzuZXZrvsuBnkm/roo6tiR7cRtmgIM6XenKQKFOq9CRtc5kS23DVhJKQcA3xFsjmnDs4f2CXfifX+swqP31EY7DC38mrINrf9cFrp6j19HWldnliIxH+cK8UHRdUR/OxwFWEYnC578lGZtYk0+duBi2hkRO99IPlDCJX1M+TniZwJjRjIysK/p3bLg/p4IN8B4l/f229OkTdF01kTFqqiZXL5SJmiZvRuuOsCnEoNcLV07K4Zlxhgyl/nTJ1I6yB9sVqD9UCHp/MgyYrHMsG8zVecK2lMgGEV7ng4Gpk6eKofh5RB/92zVUKSMB2g9gf4Mgy7v/1FfbPgrgXJrOtWWrkQ0/G9/25A==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-Stat-Signature: bfx9yazhcbriyy5h94hd9cm8sok5d91c
+X-HE-Tag: 1795363447-804213
+X-HE-Meta: U2FsdGVkX1/T1urEhSCzgRFRNtQd7OeKlGTXdoEbJkq0zVRESAGDRw37r9zgpzE5QyqlhxQqePlHWdLqEtX4bF8A5ba0j6B4COEMS2m9APDtirXYkQD33bXUTfKDAGFNwjlbfocsh9HlQDHYtHhAtbIQ1DR/61InTr46Y96s+dc7n0s9XIaa5OtXRxNj1mY7zZ8sam15S3jAjptxriiIW5L8KCdXRUaFIBsF4D/Na2aDwjCDj60bCY7ZCRtX7gPGONv4a2xdltBsB8Q6ld32eerAIZ6d7fZN97Tp0GJ0IZd+5njlN+Z7zufl2MKRzD5TER6QcR93+5sEOpVNaApkFoEywZwVWYa0+oK/bf4lC0jueCuB68BG7GNGofFXf09i2v6kxmR51GF0aJhNTF+t3dDbdHddoQHsjNLcgXhkrEHDmlcTQTChUNAsaNHGV8m4L1+57SM29660nNlYvxELSzjqaRV+3wy+zgBX7Y8dMQt7pdkHYZJYRtEawqYl18yZrUDCxnoCkMK35Wjyf9OZ/XNCD1zFZ0YRtqAuFJ8GxexOxs7Qoed0tXZZqrSfczGIBs0XPw0A2jufVrhxN7f85tdI/n+oWm6Avlod6Fexu5mpzQTyu6cxxlkzF1OoGRNTAXh13PKy06e1KnJGonINCi23gnbd7QMBAAp9k0w6lzE4h7LIWog46HWdMxw5hcIsgfgUagz5yH9OYnDbrO9obmB4mr5Pii0ye6slN/+o7dioI5tvTHULFE+M+SXIoNbEJCCadQF4a8zsr/sgCCSjByu6MLY1jm3bUxBgPCU4Hw7ts1LPwlVJQAR6ODcOTO7Oi9hPDoTf8Dx7WVOnpq/9gud2fp30QXBGpS3/TnQghP49eqtUQNcka3Wjm90zrG+B2yhlbgtDk3p6mW+tHgqkml2p9DBeO9QNSBVOlgQsZemCZjda15+nWtwi68gt5hgVF29iXxISIJzKW5KrkKF
+ DqsuE18Y
+ xUofLnBgJE6/lbBZPVU9z4L3tnVDFVOpck/wlBqMcXoj0pUx3uAbDnjMo8WzLD+t/RZQU+pCXi5GdwVg1NKEEGNQobLPiARiW5MkBe+Y3USnrU2KYe+9i4WR9QIBx5JR6Nfzau5wHVXLk4YkP+ItMBLTu9o51sEsGCuNnjFc2IPawP1gigFuhuTxnfgBRO+U7mP0nBr4CVsokkBBqqIubXBaIc3msLZR1fphXMNRn6t3HoZKFSswCus1ygP940HZInXiXG7Y/x7BS2GD+yQintFSFRKVZdbiF0vezHbWnetrDQBpxnaMd/K2HfE+w1y5Jsk9rIVF2FsJ/0PWpZmQoYGoOGpexNDmKD7IACHjDb4u5QMM5tKOMsWa/ITmzdsyld8zr+U0W9l2NxN4My8vri+UcebGxMv6OUETa++QvPSGXLWm4dCGLF6KUjLmwYVePiOAyvNO+9h9nqtePEKnaC+EoWiGaVvtv9P49GI+ln3DB01GoWbnB+C6bym2IOC+tRO0vycIrV+tTIYYmxradX3/Q+zOU0wLI4YdNKf2GQaVn6QOC9vvptDyzw1Oc8w0sKmXLsOQBfQloJRz6ULS+qlkHb3qG9VW8QLjkNHMUoK2QK6J0OGidYu5g6f2OnRART0sCvReo99tIczMAM1oNDEsH8HebXxIpV95uJq6u/ovJ1NewO/APug8OfBZpYXa8kMpEwGdICy7yd6sRZRUqAPtpAKTt/rUJ7CslSQRSrBeCSdsiPJXgMXGO5UvvAX+TKMN6OBDP+1IonMWLm5HxkQgUoR4nSYdkXDj4CakhVX8amCI79syZIIDUeo/kQ25uwKaRfXc+ZY5OqiTSIGjyEhgXACloWXNplBlL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,45 +101,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, 20 Nov 2026 19:52:12 +0100, Arnd Bergmann wrote:
-> copy_nodes_to_user() is broken for compat userspace in three
-> distinct ways:
-> 
->  - Passing a power-of-two size plus 1 as most normal userspace
->    does can end up calling compat_put_bitmap() with the wrong
->    size, copying an extra 32-bit word from the stack into
->    userspace and overflowing both arrays as compat_put_bitmap()
->    expects the actual number of bits, not the number plus 1.
-> 
-> [...]
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] mm/vma: unaccounted writable VMA left mapped after
+  relocate_vma_down() fails
+--
 
-Applied, thanks!
+commit 9c6f7e9f77d24dc1b72d41f3c440f1ede99ab822
+Author: Chris Mason <mason@kernel.org>
 
-tree: mm/core.git
-branch: mempolicy-7.5.misc
+mm/vma: fix uncharge after failed stack relocation
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+This commit uncharges the initial stack length and clears VMA_ACCOUNT_BIT
+when relocate_vma_down() fails after expanding the stack VMA, avoiding a
+vm_committed_as underflow in exit_mmap().
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
+> diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+> index 586c521559424..84b98f1a201d7 100644
+> --- a/mm/vma_exec.c
+> +++ b/mm/vma_exec.c
+> @@ -45,6 +45,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsig=
+ned long shift)
+>  	struct vm_area_struct *next;
+>  	struct mmu_gather tlb;
+>  	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
+> +	int err;
+> =20
+>  	BUG_ON(new_start > new_end);
+> =20
+> @@ -68,8 +69,10 @@ int relocate_vma_down(struct vm_area_struct *vma, unsi=
+gned long shift)
+>  	 * process cleanup to remove whatever mess we made.
+>  	 */
+>  	pmc.for_stack =3D true;
+> -	if (length !=3D move_page_tables(&pmc))
+> -		return -ENOMEM;
+> +	if (length !=3D move_page_tables(&pmc)) {
+> +		err =3D -ENOMEM;
+> +		goto err_unacct;
+> +	}
+> =20
+>  	tlb_gather_mmu(&tlb, mm);
+>  	next =3D vma_next(&vmi);
+> @@ -93,7 +96,20 @@ int relocate_vma_down(struct vm_area_struct *vma, unsi=
+gned long shift)
+> =20
+>  	vma_prev(&vmi);
+>  	/* Shrink the vma to just the new range */
+> -	return vma_shrink(&vmi, vma, new_end);
+> +	err =3D vma_shrink(&vmi, vma, new_end);
+> +	if (err)
+> +		goto err_unacct;
+> +
+> +	return 0;
+> +
+> +err_unacct:
+> +	/*
+> +	 * The vma now spans more than was charged, so exit_mmap() must not
+> +	 * derive the uncharge from its size.
+> +	 */
+> +	vm_unacct_memory(length >> PAGE_SHIFT);
+> +	vma_clear_flags(vma, VMA_ACCOUNT_BIT);
+> +	return err;
+>  }
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
+[Severity: High]
+Does clearing VMA_ACCOUNT_BIT here leave the expanded [new_start, old_end)
+stack VMA writable and unaccounted if the task does not immediately exit?
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
+When execve() fails after bprm->point_of_no_return, bprm_execve() sends
+SIGSEGV via force_fatal_sig(SIGSEGV) rather than force_exit_sig(SIGSEGV),
+so SA_IMMUTABLE is not set.  If the task is ptraced (for example via
+PTRACE_TRACEME) when a memory cgroup limit causes move_page_tables() or
+vma_shrink() to fail with -ENOMEM, get_signal() intercepts the SIGSEGV in
+ptrace_signal() and the tracer can suppress it by resuming with signal 0.
 
-[1/2] mm/mempolicy: fix copy_nodes_to_user() for odd inputs
-      https://git.kernel.org/mm/core/c/50d3f729
-[2/2] mm/mempolicy: replace copy_nodes_to_user() interface with put_nodes()
-      https://git.kernel.org/mm/core/c/995fcdf5
+The task then survives in userspace with an unaccounted writable VMA of
+size length + shift (up to 16 GiB for 64-bit tasks or 128 TiB for 32-bit
+tasks on x86-64), allowing anonymous pages to be faulted in without
+charging vm_committed_as (bypassing vm.overcommit_memory=3D2) and
+underflowing mm->total_vm and mm->stack_vm (which remain at
+length >> PAGE_SHIFT) if the VMA is later unmapped.
 
--- 
-Cheers,
-
-David
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261121-some-more-=
+ai-fixes-v1-0-236e925d9b64@kernel.org?part=3D4
 
