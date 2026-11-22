@@ -1,94 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72A6606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75343606A695
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 17:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N7iODn4q
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zF9OvarD
 Received: by kanga.kvack.org (Postfix)
-	id D825E6B05B7; Sun, 22 Nov 2026 12:15:35 -0500 (EST)
+	id 8A41E6B05B9; Sun, 22 Nov 2026 12:17:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D32AB6B05B8; Sun, 22 Nov 2026 12:15:35 -0500 (EST)
+	id 82C746B05BA; Sun, 22 Nov 2026 12:17:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C70436B05B9; Sun, 22 Nov 2026 12:15:35 -0500 (EST)
+	id 71C176B05BB; Sun, 22 Nov 2026 12:17:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3B096B05B7
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:15:35 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23703140718
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:15:35 +0000 (UTC)
-X-FDA: 85463406630.16.40F7F66
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 81E4E20009
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:15:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N7iODn4q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 41AD06B05B9
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:17:01 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C52294071C
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:17:00 +0000 (UTC)
+X-FDA: 85463410200.28.E047999
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DA373A0002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:16:58 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zF9OvarD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795367733;
-	b=7rOvEhBSuVhru6NoyN0ITh/+E6aOEyq6Da5ajteboUt8stIYm6/QfYOQnLtoQoGJNaCT3N
-	sztO44/xYX0V85z+A5F7u3zo/n7VHer21yjPMuGRhQAQWjoaAO1aix+37YG0kaUT+EifRx
-	7xmvbixxCrMK36VyG07xIk4dUd+0aBg=
+	t=1795367819;
+	b=3dB1bPomYCotPaVP0aaWT2laO0HAo9rAaEaWXHHZsTSW92W7hT+HT9lcrzgb2x4hsMBLNU
+	O2MnHxMzjuZ/9kbKOZUtThwaoeYj8/tg6Zn9zW3wjGH39SBm6klYXGB6wzk6olRkTkumn5
+	fgqAqbyfqgQRlZE6OImQZ3vpV5N+EaI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795367733;
+	s=arc-20220608; t=1795367819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pav7W9CDhzw7qErKCvygpSHTcbOi5Wufp8OZPbyFOjU=;
-	b=ZCEQRXFG+r4UvCazwNLaqsRjQh+W41nT1aNXGINU5YXeP61BMpyMHW11412e7uX2jms8DE
-	5dDw0cYj0s9DHkyutH1YODntISMjO9p6MArOaH6KHmoP6EMTAI+x8aTeNpY4eofRNcb5AP
-	z0USUnOUtTDbsg7OBmswSBdG9K4EAZE=
+	bh=uZBVsygS6D/XCIyZiy9rHnS3W7U40v2cBdi6mraqHsc=;
+	b=uRpgIls7OfK59pT7a464uECMKRW7bhBzVcksGoqI+ti5WflModS9r7nwvBFczrACjpKUfq
+	CDA1XsHfAzZUlMevpftWYNfCO2H6kNSY+FhgTwX8kEF42zyU8590xmHrFkK25rSF733EOI
+	tMUNA1pINMhe0GSyd/k1dyv//5KrSuk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N7iODn4q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 91FF160218;
-	Sun, 22 Nov 2026 17:15:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217A11F000C6;
-	Sun, 22 Nov 2026 17:15:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795367732;
-	bh=pav7W9CDhzw7qErKCvygpSHTcbOi5Wufp8OZPbyFOjU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N7iODn4qTc/7SJ1+BUR7bjrDPdbDNURw2c7OPecOiS5GLpFgUanB6F2FmwvLgVVQj
-	 ek34s54CMmXOcgRX9n/U9tS5Ww+WB6XqqlZXpX7kARJ6kZO8SnV0tWp/XylYb1on6/
-	 vNTweFJ/2xiC0jRjLVsp3O229sH8N6IBdPP+G3EhoATuj0BmvwEYqu21kHV88u++fF
-	 ChA6Qgt4WgI6JQR3UCm+765xdpB2Ung9bDEfYDqmspBEqCkwwTEFvqD2d4nh/ytGLQ
-	 LhZ85rUCPoV7d44m1Pn4fpjIsa2NqqAIlKiM/NBs5QaEFo4uJDCp/onkD4sYsQWbsQ
-	 nDcVuwaLSyRKw==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 03/27] mm/damon/core: introduce damon_submit_report()
-Date: Sun, 22 Nov 2026 09:15:24 -0800
-Message-ID: <20261122171525.153150-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CANOyQmH5FX18LmMW+QwAcvOiATgUqx5VH02S5DyfTg+qPMSX+A@mail.gmail.com>
-References: 
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zF9OvarD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a00so18905145e9.3
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 09:16:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795367817; x=1795972617; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uZBVsygS6D/XCIyZiy9rHnS3W7U40v2cBdi6mraqHsc=;
+        b=zF9OvarD0KjOBdxRKwaQxMn4+24Ve2UkdKgpiukaMGUbQ1TqXBi09yPYRxhE+KE2ha
+         L3+TXb4Zf6ftcEIWaqMmQ0ge3qbv2PmfG8pvEnRnLJTig+viX2wTrqcOK5ibPaD2HI1x
+         SfuMDsZhSB+iziaW79cFJrAwlQf6pRxoD4hKTP3XRS2asLlLBhxEolo8aWotOf2jxLTs
+         NAHyQCPm6zDyu2wwFOzScYoEG7P1/bjR2ecVC6rG491EblXjtiSWs0jMd+Yldfytw8bZ
+         2N7gXl6dWB+wfeAwSccQTg58TEmQOBqO3roSLmkq2kvc5MxnPk4234oQVKxwLTY+6Qh+
+         +kiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795367817; x=1795972617;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uZBVsygS6D/XCIyZiy9rHnS3W7U40v2cBdi6mraqHsc=;
+        b=k2Y6yCDqiIS4ZWLZ+EEDHpqM5GEhhsEVvtqnD/0yMoX7GpsnfUkWGF0a0SNM9uvk9X
+         k6nP0wNU28ZdN2F7o8Mmrubhy705JPPheAXHD/q1Nt8wduF/AD4fovRoWlsbg3EewExQ
+         /I+uytAVzDx2xHcfzsiLg7sRH7XWxVe5InuxCpMXImKUoFFCYA6br7YR+fPxQBE7q4nF
+         STyJ7s8vCntsJbyYZ7C+rI3xniHdjdO+6Rs1yIoemgYr0XdT8S+n8k6r6MoLT0rPPIUW
+         n43L+q8xtKSVsgsvAxNv/exgg/jqGdgKU52TeU7R4vRMhmHiVCen2EtNCRWbrVruMe7u
+         pN+Q==
+X-Gm-Message-State: APuU4Z+Iceh4kH2w8L++cHAqYkgDkGxdpau4jI6KVFCjPYzSQzoWibR+
+	++UIXNzEpHS8gS4/UfxGkHbAaAj5JCkzGQdjM6b2zMkS5AVkATjG4i2t
+X-Gm-Gg: AZFdTZckxFxnH3j2Bt2uNdrYtzFa6WiHFEf77w0SSgBqPBeVrhxT3XiiHCrJhmitEOL
+	4hEuFGR30SxeEF+MJEq61i8nmxEWrSGZtbHUseceJ8ALomURug4JjljPU9vGnVZQmCtID30YIS5
+	rCGAA0DTuuxP1Xxg712oRDOVaAP6DnIHbuDwq1jo/Y4hVlanmleeBx1P1q1crz4H4eWLGL8azVl
+	oKGRGAKMMhIn1Uyfxiqkps2O99cliF8Cg2SE8syjux+IbwNJShEKJ8MCPGukqwpHWdjzTdGutSv
+	nBfyFVHYQYW8vdYYuqICPiOI/8NIwMfN4CY86Yf+lNZoeIgOm+aiRzxLF3TB2Bb2IValKDp/+xX
+	SUW62n7duRbPcP37ZaLYL2yWE2B8AgAgUDPDanqJKyZ7cehMzTelWCuxNKAo2au78kEOO7v1APJ
+	EtZElyqRuip3LIUDXvRQGB2o2dDqgnnYy8MB6xDjhpKZL+GZhcxSEQUTk5g9AW3bFN9GwfZaiTh
+	4AI+UqzgcTxBAt6Zme/lnwv4LAP+YJyBGKKp+/2qZ59M7ZJvrEEqbRYYLiAwGRPt5s1UGhAtbBM
+	pdmrI35OrOcPZUtuZboFaGEZ
+X-Received: by 2002:a05:600c:674b:b0:4bb:6947:3e1d with SMTP id 5b1f17b1804b1-4bb8892c0fcmr182147755e9.20.1795367817148;
+        Sun, 22 Nov 2026 09:16:57 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab69bf630esm18145971f8f.16.2026.11.22.09.16.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Nov 2026 09:16:56 -0800 (PST)
+Message-ID: <2da64337-5135-46ec-b7ef-0e1654f76238@gmail.com>
+Date: Sun, 22 Nov 2026 18:16:54 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/huge_memory: use NOFS when allocating while
+ splitting folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, "Lorenzo Stoakes (ARM)"
+ <ljs@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Miklos Szeredi <miklos@szeredi.hu>, Joanne Koong <joannelkoong@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+ Chris Mason <mason@kernel.org>
+References: <20261122-migrate_reclaim_deadlock-v1-0-83c56185b0fb@kernel.org>
+ <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 81E4E20009
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: k561ngtjwxrbfqm46h9eskrozswr9wtf
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uxpa6wnn4bejm18zrxj15eks86wkgupw
 X-Rspam-User:
-X-HE-Tag: 1795367733-187488
-X-HE-Meta: U2FsdGVkX18aCvSSvPvi7RKKXp4So2aLyuwmWqXModi5g3VHCQUHGiIvoUqixJze1ptUC258V8rHa9dJ30xrQT91Sr/v9Uc6EUVfsHRDGcF/Ljh0iqut2xhkKpZLN1fJiYp1tBe2U3fRwhskpjpM2etNLnlIHJiaEiEKwSR73WSaWs0M2/0cHIEKykfdcML9qkauAUIfGVBaHwn19yPTGWDJ0lKcphoskOKiXY1STTO+MRZ31cOoD+DDcThgds8TTDhp+hup9CTmYEqt7td3Vnr1F9BW5CIFp8gozC+xRxImRhlHnqEBShIDmnMeaeqm2Oqf/v2RWrpR0X++WtHfR9yPl4l0PQsJTukrRsmf7TvKHajDWickvItgu8z8ZFnmbLwfKYtfUjvNDXehmnoEFLuo4DAk8MFLjOo5Qw/to1wlFHYO19yXsr+8q2o4d8GgimKQ7k+Y0sZ8c8mkM7Bwow+OlpGvGOYP/grOfW+E0LG/Fr94Czj2W1VUmahosM51p30yyflzkGZGVjrjg9ei74GtxobJneTDLl/n/ezEOsxT1k/CGg4198QMwlK+Fox95AWMrgdM/IxmSuBQeLz7QpzwWUF9yuiZJjtCGOueei9tFEDrifRBnixNmE3zk0ueNdB39PqUyWFLvXdJwQySbbuozdKFpeijm1ahhyzdzufKaYoshKIdhco8huA5WMJUy0bOf2o2T22eyfWI974eNAVBUnXohrNG9N8rGfM/wiD6wqCOniWrJUYARSuWkmlvXyI5xP2cNp1LWBlxLtkOsaIPGYN7x89FWo9ajO4BABdlMD3LsdUgKRcFAJYiKwnPOMi6f1n5up8m4hso/E9MDfCdmW7hE3O55s2pNE+ebbH0xxt1pAqWtnNFcEg2WocwDKy9zddn83l6BvlijN8yLiNRSTEfgSEGMCP0V2+7um3leb7cS2BHbti+GzDJtwK2/SYeA09KdvU1YlipShH
- 7BK63ayV
- s8AuHHdTqKwdVAcghxV6j+chg1xA0isQR8Udpq+d0SCRAN+tar3c8Vhf5AVlU23CZbJBUu6rWcH2V9Nj2UC9hyXcI/pJUynSsn1IsaE6LJoXElBhwL3jKHvURFchMOm2Inl9XsMtiMAS5SrVi1poq9i7iuU4FMYV6uRAvYNADbz+cIWXz91KI4zS+AHKsovPVvmJ3uAgZCr5PSSu7LE0sc9JnFTGVJiS+f6QA2eEbI9VA9g54OHVplzymfkvFWeC2AkPqQv27SN3Easi3KRoAEzw7KAY9cT8D41Pd/Rws/IYupTvK0IrELpxpuUTaBYyuTiS4bJo+kb89+yaCCOmO1pzMMBU6vb0G/ChSsdk7DLGnycU2bptXVexKA090E7yWVjs+S0v/7brEKKM9OsHojGyYsFhvPWWRVoduzAL5+TWQ4DKNsz2x1e7oN9EBXVLExKBrjJ73BqFT44bZ8tQPaHhSmb6YyGUanJLnhUryiQ3xToeweoPYlX/5B+rrdvgZHMV9L0YTrJcZZIO2rT12u4A1YzcaCbpvoOqLnjjgOYvFKGkmdxozzNwnfQ==
+X-Rspamd-Queue-Id: DA373A0002
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795367818-870769
+X-HE-Meta: U2FsdGVkX1+0jNoVmPCv/QYOgpga+bnUVFrh0vHe6DZu7w6TFOlItiPNGHnpvWOl3cVyRByFWMMHeDghIPh2TotxagUKfe/gAzYAFBgwVYp1/1vGRsvd5NuzxFvlHTOfQONv6NomWK1GYSwJ8SzTO3KGIP4MsPhDw3pmjDR8ISjmHQ4oijtjY9dgCOJOwgVUgCzrqYnuT24h1x7NxkiHObfulzBcX9DEfZxTrxfnDfk8MNH/Z27UKVh1YzbXWcm/6rGxa913LtDQnEzdgS3MTkiUD52GI3drBZ9q3g3HIs2b8ZGAfXxjRENb8NkCC582UsYOSdCbjtZMVmppRmFqiIY6GTrtLP5aP5Sn4XHBjLXx+MHFQPSdDLAsi84MPCmE/sRzMjcSA/x5ZidRYwWGih6UvF9Va1nQnkzjTEtQsOmBEhXjNIrSLYctYHF6mR8wJb91NaC1Ry49mjetRH3zi51SbRLiMdnOV27adMEFzPdzBMIUglgS1Vb58JJcvu0Jc2K3Q++e3gdtqOThfgqccqmc40afK8vLIQ8JynrRRbs6ncvWWb/1cPyvSkQ6AfXcM1yTrWoFCjN1FRYBEF5xPG83n7WRp8rYY7hP38GiTYVPBXbGR1yFVjjva9h3pKjMStyYnC35BtV27sZNcCsOsOFegs5hJckoLaAB7pboCVFmqCpbVPtqhrLIGGWmJDt2V8hqs0dNI72pJ0rKMZv6KWsnoesyYUUR8a5+R/5zg5bPbEOMEBdmpycClQLci7R3dKRm5nqEAQMYedFeHLwF2rVC+PH+IYoR5hyZnQYSaSpVBLyl8PQ/jRnrn33OadpCKu3JYtOCx9qfHIydTbBMB6eHtN+IIDOGsrtxSV0Lm5vHc6wdyp/uIL21MGTyRZNRHPw0K70a5kJmkrXBAQTkppXJfTD0XlKO53X8x4wueWyrR/Cwnds0JnX4y9Ir8HEOgCTIGzQR6eOZIpTIeSN
+ C0GVb8pF
+ SMbDK3iAjtjXBtM0CqKeQOIGtl8XSUTkNSrQ39lonI89G+/kknrqMPp/il85XHWVnk83Hdd1Ec6Xv2nttdUuiGrt1/rp/eimQd0RA2J45vv8OFDOo9vcSk/+71OkidmYARwJmpr1bNwBJvga6kqXLZryAMQL9bz9BTufFdXrC0qAZ0q+FJDkNu2xaVGJZg79WPEcf8agA39+BxgXZhVVWkSuhSHrD5nIUsovwReuDOlEpW2LACHoXK963GSLbmdcvwQlqBLquqXkP7AIK0bgtlm29eqqYT5zXqskVka6ajIguYP9DMxSFB8rw4m+G42R1J63MgA299mbVV8opJndc5y3q9E9s+GBSRPPClLm2wFdGGJoZl7Wk2Om83bQHiRN0M6nRX9fGgrcKVEpe5LPWvxfimFGLQF389ll03n9/ji9qkQPVK5n+rPoiTZ1fCg6xf7kW6tf04xCPbgGq6xS9C80zJ1LTsiF7A46yifH794R/b7Sbz5r3dCxg8rxP8sin8oYR5vBHR6s11s+4qsZ01PH7rT4jFgAMwuXE6GHvax2ZjY6IDyBedikWTjsV8R6zdHL2LVIKQGVejkTVPOXpudpxkFW+BDgHgZt9iR3govYYGRVqfz9NjrD2a48e4YZiL9jtuMCekGhPWqqRon5S/BAVqIYsvsEtXroQ4RGmZvEZmeaW4zzFgPAtc8M17e/lpOCDg9D+8bR9QnU2vAtkSoYmtyqnx352yl47bORzXMzds1M4nAjGA8ee+p7THIMB+MmZTKxJctPBf3DeUJlDEO3nutVXwMaC/xJUMkdu3GzWkZUBj6VSLe9flphOUQczroCW3fbsAdtn+ng=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,42 +148,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 23 Nov 2026 03:06:16 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
-
-> Hi SJ
+On 11/22/26 1:42 PM, David Hildenbrand (Arm) wrote:
+> Various callers (migration, memory-failure, s390_wiggle_split_folio) split
+> locked folios without holding a reference on the folio's inode.
 > 
-> On Sun, Nov 22, 2026 at 8:00 AM SJ Park <sj@kernel.org> wrote:
+> Splitting a file folio might allocate memory for the xarray and call
+> filemap_release_folio(). If either ends up in direct reclaim with
+> __GFP_FS, reclaim can evict the inode through the dcache shrinker, and
+> wait in truncate_inode_pages_final() for the folio that we hold locked:
 > 
-> > +       queue = &damon_report_queue;
-> > +       report->jiffies = jiffies;
-> > +       lock_old_val = atomic_cmpxchg(&queue->lock, 0, 1);
+>     try_split_folio()
+>       folio_lock(A)
+>       split_folio_to_list(A)
+>         xas_split_alloc()
+>           try_to_free_pages()
+>             super_cache_scan()
+>               prune_dcache_sb()
+>                 iput_final()
+>                   evict()
+>                     truncate_inode_pages_final()
+>                       folio_lock(A)
 > 
-> If a submitter is preempted between these lines, it can enqueue its
-> report after one with a newer timestamp. A lookup scanning backwards
-> can then stop at the older report if it's outside the window and miss
-> the newer one that's still in it.
-
-Will that frequently happen enough to be a real problem?  I think missing a few
-reports is no problem.
-
+> This requires that nothing else holds a reference on the inode, and can
+> be triggered most easily with FUSE, which evicts inodes on the last
+> reference.
 > 
-> Could we move the jiffies assignment after a successful cmpxchg()?
-> That would keep timestamps in enqueue order and better fit the
-> meaning of "when this report is generated".
+> Further, xas_split_alloc() charges the XArray nodes to the memcg, and on
+> cgroup v1, memcg reclaim waits for file folios under writeback if
+> __GFP_FS is set. That can deadlock if writeback waits for a folio lock
+> that we hold, for example with ext4.
+> 
+> Let's fix it by splitting folios in a NOFS scope, so callers don't have
+> to care. A NOFS scope also covers allocations that filesystems make with
+> their own gfp flags, for example in filemap_release_folio().
+> 
+> On NFS, splitting folios with pending writes or ongoing writes to
+> fscache might now fail slightly more often, until these writes have
+> completed. On netfs, only folios that are being written to fscache are
+> affected. All fairly irrelevant.
+> 
+> This has medium urgency.
+> 
+> Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
+> Fixes: eef88fe45ac9 ("s390/uv: Split large folios in gmap_make_secure()")
+> Fixes: 789763523fb4 ("xarray: honor XA_FLAGS_ACCOUNT in xas_split_alloc()")
+> Cc: stable@vger.kernel.org
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-I agree this could reduce races little bit.  But it's too little bit to expect
-meaningful change, in my opinion.
+LGTM:
 
-I find a few downsides of your suggestion, too.  It will increase the critical
-section.  Also the jiffies becomes little bit late than when the user made the
-report.  These would be negligible in the real world, though.
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-So both the advantage and the risks of your suggestion looks not big to me.  If
-you don't mind, I'd keep this as is.  What do you think?
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+cheers,
+jose a. p-a
 
