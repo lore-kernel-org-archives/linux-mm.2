@@ -1,114 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E906606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 08:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3C1606A32C
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 08:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AuObBb11
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ceVAMCxC
 Received: by kanga.kvack.org (Postfix)
-	id 2777C6B00EF; Sun, 22 Nov 2026 03:19:28 -0500 (EST)
+	id 33D5B6B05B1; Sun, 22 Nov 2026 03:20:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22A656B05B0; Sun, 22 Nov 2026 03:19:28 -0500 (EST)
+	id 315C66B05B2; Sun, 22 Nov 2026 03:20:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13FA86B05B1; Sun, 22 Nov 2026 03:19:28 -0500 (EST)
+	id 254166B05B3; Sun, 22 Nov 2026 03:20:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EA9DE6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:19:27 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4A1A1C3EF2
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 08:19:24 +0000 (UTC)
-X-FDA: 85462055448.03.7219C77
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1BC3E20008
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 08:19:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AuObBb11;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F0F576B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:20:29 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 07821803AE
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 08:20:29 +0000 (UTC)
+X-FDA: 85462058178.04.26C83E9
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5975C100006
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 08:20:27 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ceVAMCxC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3x6UCawsKCHwpfqjxmxnslmlttlqj.htrqnsz2-rrp0fhp.twl@flex--kaleshsingh.bounces.google.com designates 74.125.82.72 as permitted sender) smtp.mailfrom=3x6UCawsKCHwpfqjxmxnslmlttlqj.htrqnsz2-rrp0fhp.twl@flex--kaleshsingh.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795335563;
-	b=vrj5B+fXGpW62RiiHt/ek59tU7hD0dwe/tt42JWwzfq5Ia1KE9YIRPQkPfedxSkJMntf/o
-	E/HgpviZ/OKyu4lGbMzW5aNNkm0SYlFcJ/uaZMgIUIw4LLaruIo9doGdwubuhG1e9GcUrA
-	GiqspjOkC9PFlRFjAourrk1yBDtFQl8=
+	t=1795335627;
+	b=GyLhR4RFsXAeUEnA/txJiAoUaTCsJTJk7bdnUKIUg1HgylWWWrPYTd5ZBl2Iyfeal8QPlJ
+	Mu4LO+6gXWhSgZCiEipq4DB5ACsSujiLpjb/jghsF8CcBoNeHpMiOuVZlNQ4HgrBY9T8Nb
+	OIIigs+k3/Rw7lYFP8XOEA9gCHIZv0U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795335563;
+	s=arc-20220608; t=1795335627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SZZ+FaVNZ81W5N9A195kfiFuUgvoLvnOZsjSHMvxU8U=;
-	b=ZHgV7o6Tig+bP3dG708NHLFVH8oOsQjNK9Bjt2Hx1g/gsPLRgi8WF5DJVqiGO/k168b27T
-	YCjFT0WzawOmGiilrmevCB3iNWv2BKDkYvgjKxamjTyh664DmdFISm6bCBlS+tN+xVZOpd
-	YebPtUYWMRYfEpfrFgjc6PdKJ6w99NA=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9REF9NRXOVx9SK9lOEFtyseicoUgX0zz5kc9LuhiAJc=;
+	b=InBYrKXTQaBQVAUFbufsXey0IJ6gDcmq/Mf7haOEC2O6GfD2CpEWsze7M8Gs7alNVjjdj+
+	tKqLT+hO1H/NfgDc7tWOLWoaAz8YAOZjlWZXeNyBIqEh7VhhJMBk6bBA3pDZ/a+hotFPqm
+	JTNt5nwL/0c2Usyrzu5SKy47FuNGLpQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AuObBb11;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A2014351A;
-	Sun, 22 Nov 2026 08:19:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AE91F000CA;
-	Sun, 22 Nov 2026 08:19:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795335561;
-	bh=SZZ+FaVNZ81W5N9A195kfiFuUgvoLvnOZsjSHMvxU8U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AuObBb11SmjvobS9klEq8nSSkb5UNYg6rD8AbEZBcdTNHachQcn5GeDysByNH4JJS
-	 K9sSWZGaYbewG8ddLA9UBjTs4AZZ1sYA9d2g8w8ebb45svMEU1fZBurAY10RtfBQD/
-	 PPXtWjZ57cRP5bM2o6916uoRN4HSwyz3b9PlGUjQr4y6cZRaU8zJejjL3MdZqdJtLq
-	 tluupgXdnz9FwtBqMMXw4qooXJGWUkxsZAeJ2wSH+5CdidkOIqjY/bF5FR2ZvcF7re
-	 QxOAAGM1X0eHaivJl+i5Ytw4NqrNhdB3pY0xZVqk/vZYqkZey8pdRW80e4VO5zMSQh
-	 GrmYuI5FNxezg==
-Date: Sun, 22 Nov 2026 10:19:10 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alex Williamson <alex.williamson@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Chris Down <chris@chrisdown.name>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v11 00/13] PCI: liveupdate: PCI core support for Live
- Update
-Message-ID: <awKlfqlQYhphXCvf@kernel.org>
-References: <20261118223704.3286085-1-dmatlack@google.com>
- <DN0FL1752MH5.1FSZE620OJBM0@google.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ceVAMCxC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3x6UCawsKCHwpfqjxmxnslmlttlqj.htrqnsz2-rrp0fhp.twl@flex--kaleshsingh.bounces.google.com designates 74.125.82.72 as permitted sender) smtp.mailfrom=3x6UCawsKCHwpfqjxmxnslmlttlqj.htrqnsz2-rrp0fhp.twl@flex--kaleshsingh.bounces.google.com
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1b29df78132so2208019c88.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:20:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795335624; x=1795940424; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9REF9NRXOVx9SK9lOEFtyseicoUgX0zz5kc9LuhiAJc=;
+        b=ceVAMCxC5a47iVSjW3XbNwsfDMHeemSfh5aOyICRnDOrYKOdy+GoRQnfkJH4+x8EQO
+         37oYMyy4wRWJgLjFwbhnCNc9qbZdzDIHhtCrHwVNcfSnN1k6fLFexAeCAt/bMzPEGJnj
+         rx8/0G+sJaYfO5n+GeQ/ILtWtkdti6SIdzg/gqCxokaAhpwc33L5bHuJoWr4dGEdvTo9
+         ji42W04LXvaEvbXE145iQ9lUh/E1cCa3rGD1YUFwajspKmug24tHqKKIFXzJvwZeHqOl
+         a0bqJPy3/22xwzH27qRytX1L9WU7TCzAgpCtKP5Nrz6ppHMNcwYqmRzHqtJaGoIQN4GJ
+         Qcmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795335624; x=1795940424;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9REF9NRXOVx9SK9lOEFtyseicoUgX0zz5kc9LuhiAJc=;
+        b=hWGLpEWQRxXmiDsQ0smmN655F7NdOXkFpbrAu7/+fSJ7hbPDdJ9ER11DcNoDpfPL5e
+         j74c6WogaeThbUOvw4wn4A9PlR0pwAIJuXFKyf5gioQSm5kvZBGyBhtVHEMJsiMaRhii
+         ex8U+vKvVQGhOUk5dWvY8l56Jv7euERtIkN8485LMHqF9sCO3WvkjaM+b6yiP//mj/7t
+         LkfB2bC/y50tglr3kuJ6Vi3mHSa78XoIb01j6grKNUVtQUvKb/BzMJuhRA3JEfGS886q
+         zC0KcLqAZAA+0Q46iFLI319BQWwQf076lqA9VyT5IscYHol6W+5s/lLa9S/cWAE9eR6x
+         Dvxw==
+X-Forwarded-Encrypted: i=1; AL+hErFrFDfMxc3nRAyvka7XFwA+zBzWCz4ldhtrOLlfXp5pNh5DdBcLpj7tAv/x+6tuh5Vu/gm3Px9mFw==@kvack.org
+X-Gm-Message-State: APuU4Z8AUa/L53a3T8564K1+Dgh9/L1sevj1B1yOmR6HN+TnWkjWUQdl
+	XSAYgbGQlwQKwV0eT5VS0QD9YmxyBE9L9JvJOa7Nn/yWKDcODM1F5hzCnW+SCo3/9s2VIEeO2zn
+	+XUlOgGetcRmX77mR7UvaUMJSnA==
+X-Received: from dleb8-n1.prod.google.com ([2002:a05:701b:4248:10b0:1b5:5697:15b6])
+ (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:7e8c:b0:14d:c53a:f6a0 with SMTP id a92af1059eb24-1b55689eb35mr9056801c88.13.1795335623311;
+ Sun, 22 Nov 2026 00:20:23 -0800 (PST)
+Date: Sun, 22 Nov 2026 08:20:16 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DN0FL1752MH5.1FSZE620OJBM0@google.com>
-X-Stat-Signature: rfrc7q14mb4eozy3tiocwjak1yefracy
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261122082020.1255434-1-kaleshsingh@google.com>
+Subject: [PATCH 0/2] selftests/mm: fix userfaultfd tests with CONFIG_PTE_MARKER_UFFD_WP=n
+From: kaleshsingh@google.com
+To: akpm@linux-foundation.org
+Cc: kernel-team@android.com, android-mm@google.com, 
+	Kalesh Singh <kaleshsingh@google.com>, Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: o5zts6858i5ohs1j7rqkaxpsir48hsm6
 X-Rspam-User:
-X-Rspamd-Queue-Id: 1BC3E20008
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795335562-305911
-X-HE-Meta: U2FsdGVkX187XIjkZQGWcuD7fhA7M7BAANIUecOdqTNhbjIOUlKNo5Y5xzNAvqKHF/z/DylazQDzktK4x0S5r9krZjZp6aEnbw6uqnX3fPCcP7eUM8vCAbtScpbG8hNgOJb5Iw+9DBfLtebpbSQUc9j1CS+65RLX7mKhxYo/Xii8u0gFqFdU+PjQY/bUH+kC7oQt+ScnMUdRiJfBwfV0YrK/u7I7SH5XwmeHomJPqKkCUmxFVM5f9033sptnhWjxjiR4w5xgtjZjcUq9TaPnwcj+VosluFhCBgf5lcAW7Zed4blh/6pPyPVcNuDqfz1D4HGlFj3bNuqy+4NXiGSS9yCa2AWtVkCCvTEO4WWtLEjOnasx3MN6yPjyKravCLAkntpKwwqYqF3paNfMwif14DpZ7J/2P+IA/XfWJRcvyJFMavtYwqxHBEdwyDLzGDg9hS2AW1asfX5eRIpHZ6t+wsb1cxpWz9gEqnv1/bJ4+o1t8PVtXIWyIU3mUeWbmsKt6EuDArNgeV099nnq+AZhISETK6gkyE0vvxgV4bW2bkvq7YduDgryjy0BYnFwFP9srVy7kyfjB3o6/WP/rzsQTGjHQmw9FBYbcnpFrJDKhQUoEucdXgP969Sh20lT+zVVZtBkQWDZAj5hTzyIQ5oWuOJPVvXiP1f0OOQ7OjugAX92TxPPhHvu0uI3+5H/rJU7vH/ZZ8iTsJljRnw9nOI6dflIlUEQKmAhyY8kphvphxzrsYv9afiuVmDPVEcyx/gV5zawqk8C85VvQ4CLzyoGIFdE9X/5Lck5dvVMNkTlmUUjdWRebd8TfvfrmSQ/xS0TAGvIBjwuuqRT0wokZQ3E78wFOL8QeoChaChvBWZmblVFYk47W0Gi7kIpqvxwIbylNWpX/vZ85clLJYLbxn+2ZcOZ8w4aqqqgMmcApUolii7Qh23Pe6tCi2JpUo9d0JsJQMum0UmJJsvQlQ5ChRr
- lI69tXAV
- ewR7Wr2ZzPQAHllGXGIYOzBDruBH3Hne7djhIoQmDrHRqUwOGVpiY7tkehVUKuie15e+vmCxyaEXfV2e8tEbDt5BThEWF/n9mjlOpgShkCa8YZHJl+Ryi0Hcae+pnd4KRqAe6i1KKxT+s5MOLI0ppbJSyqSNXMCtew5rXcPaF3EU6NNYSj3Wv3ICJfh9CYqx5tv0sFJJlLJ5QfzCN0DuovCm+eJqF0c9ZfMovNo/FXeZck/tMgDh+njCly4OoLSBC5Otbu+dviv6oIza/oRUJZlf93lzI8NrdZ6jBI+lW3ojZOSb1EALHhkgwL8D5iNTlDjprz4RUVw7Lil5D7IkuOLqJ5lJ+DWZLqJsOyKWtVORrPQDfEQhe8TaTdGzDjLxzGEtNzL1Q7aaea7rHSQeQh8NrtZ0ksMoUCaqFPqV6FHk2WUK9zm0RUZ/ZhrruDsuWQpZdM8KcV5/g0fX3Hmw3cV6b7OVTLEkPPHDXFZQoGDa4RpQ=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5975C100006
+X-HE-Tag: 1795335627-397196
+X-HE-Meta: U2FsdGVkX19OMgpkodY2CkualDYgZXQwu0xhkgHUaR0hAkkEPuY00HAO6ER6pzKR2V7Q8QQVLnjryNTQW7DDocm2Yf64o6nTfggxZ+ODy9u731hIhR2kIqvl0fBndDTUbw0xmp8/HkcPWiZmK0WkWLZw+Fx7dwPQWaxlpBPnyNWQgckKqFpVyxJzyGRO51BEJYMEHQT43gG7IUUOUjT3/RxKRecvYOqMHFh6xF0jZL8Ot1x9JwbXj2LfwfDM3thtNoE+2ZZpR28y9da3M5YhuiZxOW1gGSFGCzng/dc/1Kh093Gqo9OJlusTpXIsBq5MpwZoGNTqC5k0vz2acXhIRQlbmrfj5Dkx+jfogqSGnT2FPZbukFkRd6ahBNWikgkO5WDrMCtpYkma6/4Ii1Bk9+fx7pL9wvCFVgpUJjV8WLf+A6nHdHFQAr+oG/j9+kM1qpkfUqk2giX/+B9h+1D+hSZu9ZwazPJBfRA13DAtRLGxfWStCUVeShbzE93XZM9vkFwPFVZkccdHjrWAnvV9RjA3/uKXLMRrmFLE/XLwBM66sBg5jKmLFWW71DJHWOsLv1LZ8IP4t/kQr0psvhBT9dyESCNuzS6G876HAg4wJRXqs+nfTnYOlkdgi7NbsSBrAcP7TV7ulLZDdT/WttmXn9RzGCrJSodFoqqIxCorHlmr2vG8dTbLdQ3pbKCt0spo8OFwSCvKQwMW2SZirmBlHJGFGLGahOTcvTDjhCAdt/ncvvaDD5Qxa1yMvxI9TYyI3NcOsOPuW7MQUzHCjirrPYO0yHT+fuWksiNLdZG9b0QDpZZXqzxPfj9eXf7aMIAp0n1d+uppvltd3nFKv2cP0Z6qTAQs1q+1duBtoeSuraubOpgFIMJzw9b59J7xRyWocyFsksi1refQkDtvag3IX5G4482e3kY7iZOt03Xf79hs+bLzuOINL7S+zRnXNwgETM6+vjvgFQOsRkCJa1+
+ t/n8wrc1
+ 4H6vQ12YPrnG6WeJyP7lwQvNbg+rITkR7V/JLk8uayVBZLXO9W9VN8Tt9dT6RMDWe7YDXMIDfY2/B2TUQ8KuhpzEXaFUQEVsBt4xIdtD8WVOElT969EvIvay8tRVxsADaGYwm4mnxW/6vzJYYvrO3lWJTnRI5RgXq7dD/uNv9/rN48UZeAN0F610ktuZVr6vlG49WRMEMfOzjxlf/hTE1KbSm7WiRl58TJv96h8TiHdcxmL11K1A+hBtSnt738CR6/fbFc3q0c8GIlWCRafocY/YuXuLmZmX3FgInTRkIw6ojDUC2Z4/YGUTzseLE9S4Sw3GG1un7nSP1MmUlTXPVuNOwOUltXwFLS2IebeFdYX6B39XpkYWPO58Bj4tN9W8YHPvg8Febz+MbgKQVx/OYrrJ1bZWk8yfSboDAyb0McVojWzjd8TAeelzebRikBup1JjHN+U6oQAy60tV7bCHhs0It6tsbzi7zsYnQdCmX99pAjDt3FBll5lNkmuTVGncxRVVfzEaZsbS0vnAIK0MyaEzMjdWhaE5qyAWRc9sOF860sxCWzJ7vFdkFLrKDAGJ33VhAIqbH5s8aSUKIQL++nvBFxVE8HA0YZc+IHWJ6IiG4Cq93vurAbNUSdJALxRoZQ332Jpmwa9Kr8/DHeTR9DFpd+NhFeGNmALqp8i20Q4e0BG6vPrPd5nO/S5bCOCY4sTCwSF6F2ZVDLDVvgcvEX2+NdvoM1ILGIdFLJWI2GMrzaNgJ58Pi687xlbzA7lecSx1MfhfFOhNSeIBIPHMOunUMuBey2r4VaneXLgxUE0/GerfJpVwOfK5f7+9iqSDm77kPU/Osg4o183wKX3LQG3af1aiP1Rn3plTS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,29 +113,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 03:35:58PM -0800, David Matlack wrote:
-> On Wed Nov 18, 2026 at 2:36 PM PST, David Matlack wrote:
-> > Merge Plan
-> > ----------
-> >
-> > This series is intended to go through liveupdate.git, the tree listed in
-> > the new PCI LIVE UPDATE MAINTAINERS entry.
-> >
-> > v10 and a follow-up patch were applied to the lu-pci-preservation branch
-> > of liveupdate.git. This version is meant to replace them, and applies on
-> > v7.4-rc1, the base of that branch.
-> 
-> Patches 08 and 09 have Reviewed-by tags from Alex now. I have a v12
-> prepped with some small fixes from Sashiko and a comment cleanup from
-> Pranjal.
-> 
-> Mike do you want me to send a v12 with these changes or send separate
-> fixes for you to apply on top?
+From: Kalesh Singh <kaleshsingh@google.com>
 
-Three fixups on top will do. Just please send them as [PATCH] fixup! as a
-reply to what you are fixing up.
- 
+With CONFIG_PTE_MARKER_UFFD_WP=n, userfaultfd write protection only
+works on anonymous memory. uffd-wp-mremap then fails its shmem and
+hugetlb cases, and uffd-unit-tests skips anonymous runs that would
+pass. Patch 1 skips the unsupported uffd-wp-mremap cases and patch 2
+filters uffd-unit-tests' required features per memory type.
+
+Tested on arm64 device: with CONFIG_PTE_MARKER_UFFD_WP=n,
+uffd-wp-mremap goes from 26 failures to none and uffd-unit-tests
+passes 78 tests instead of 70; with =y, the results are unchanged.
+
+Kalesh Singh (2):
+  selftests/mm: uffd-wp-mremap: skip unsupported shmem and hugetlb cases
+  selftests/mm: uffd-unit-tests: filter required features per memory
+    type
+
+ tools/testing/selftests/mm/uffd-unit-tests.c | 42 +++++++++++++++++---
+ tools/testing/selftests/mm/uffd-wp-mremap.c  | 13 ++++--
+ 2 files changed, 46 insertions(+), 9 deletions(-)
+
+
+base-commit: 4843f6873f7c4835e62f2c73ba0fd538e57a2f22
 -- 
-Sincerely yours,
-Mike.
+2.56.1.750.gf70dc682cf-goog
+
 
