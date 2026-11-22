@@ -1,134 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FC6606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 21:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C12606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 22:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JAvgdXbW
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Lh82JeeL
 Received: by kanga.kvack.org (Postfix)
-	id 403CC6B05B1; Sun, 22 Nov 2026 16:19:53 -0500 (EST)
+	id CB7786B00EF; Sun, 22 Nov 2026 17:20:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B4946B05B2; Sun, 22 Nov 2026 16:19:53 -0500 (EST)
+	id C8D876B05B0; Sun, 22 Nov 2026 17:20:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A3FF6B05B3; Sun, 22 Nov 2026 16:19:53 -0500 (EST)
+	id BCB146B05B1; Sun, 22 Nov 2026 17:20:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E97626B05B1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:19:52 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 59F1E805B5
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 21:19:52 +0000 (UTC)
-X-FDA: 85464022224.20.1515DAD
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 77EAE140007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 21:19:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=JAvgdXbW;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=skhawaja@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9276E6B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:20:52 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7154780718
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:20:50 +0000 (UTC)
+X-FDA: 85464175860.27.0887DA8
+Received: from mta0.migadu.com (out-193.mta0.migadu.com [91.218.175.193])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3964420003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:20:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Lh82JeeL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.193 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795382390;
-	b=ZuHtzNw5WvRWcBBp0wbAv58/or+2ratDfvm8+WmRfpt09qo/YWusfRN9AiS4eOm9eH2WC0
-	bLJeYk+NvOm/F3EzKNh+FReNGUFdymYZggq7sf1t5/K6evkkJvmRkpiGDEnngama5lJweT
-	ipFsrFszQC5UObZNK64444qYdCHS+5k=
+	t=1795386048;
+	b=6+JmavtDn7MFdyEY5mdEnxxZVxccXUT6ctCZ34lYtlGFEHq7w/ry+D+V1ALAs05EztWhO8
+	lCY9e6gXrec+h7TVF/Y4tmkxcRQlxIGJzLAOSjU1rmqeJbQXgRv1irz6pP6P+NE9v3fw8C
+	+pBwleLranb663m1RFXqGr/fsI9CNlk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795382390;
+	s=arc-20220608; t=1795386048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jlHx3q8hlvOapQpFRbpBP1dZTmv+VTbbRyW9rgzkxFM=;
-	b=SPVzq3MK7TcUx4X7pEjICDvfiQfHI7NLwE8tq0Z/tj+rIK5VWvtUJvRPeJv8AVbubXN6R2
-	7K0hrDtq42ObZdvo/hwApSDWXcvX3PjDgMzOLUJf3XXhhJqOM3GES44et99y5Cy8uuz/qJ
-	w/7CBvT0gOdcVXBD7Y/YCDVLU2cnSjw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lc6fUtsCWmeV+5/+DCrLem52MZY6l2sSFs8DDA0bUS0=;
+	b=Vh0Cj+K/fEHBB72rgc+gOAU79h21xomqDVjoOHhaxxXtfTcQcC43qgVOlZvje6p2KWP/ar
+	yZmtnx3Uo6QZH/CF0szM987ujVSIyZCONH9MJYXR3LNup9gsxdpmHPZNsCwgql8jaIasbd
+	5uZFdYIezV43U80TOGze1KZN4LE71tY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=JAvgdXbW;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=skhawaja@google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2f048bc09d7so61355ad.0
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 13:19:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795382389; x=1795987189; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jlHx3q8hlvOapQpFRbpBP1dZTmv+VTbbRyW9rgzkxFM=;
-        b=JAvgdXbWMBaITtYZ7SxLeX83AezBPTd/HHed1Ucy7VfEkoMX0tMVnrz5BBaQJK+oJQ
-         wuNzXdv3+P7YkBLPbawBd7ZGI3UaoU0DNI54vGT2wHzZoVO0MJbdTyRv9Zr43CxeRgn1
-         rxxep6YC7wg3vgrBV43Zfca7aLWUh4ukSQh6GzWKsE0hzNwd1QQtCwVwBjAqVJe5p4wC
-         PAnLchTfZa6M9CPd9XfkBhtDAckTapZMETD/aOxbueHN/K7x8na2dcScB8eGeY9xQz33
-         69As6fSD+DDGfwfbLkXRyh0ctKYEmdz3dM2waVfniFyq4Rms39Lb7VaX8M0hr2II2dg8
-         Ouuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795382389; x=1795987189;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jlHx3q8hlvOapQpFRbpBP1dZTmv+VTbbRyW9rgzkxFM=;
-        b=OJv5QTHzQU0bhJj+vtjbVxZD5RfFafctpz1ZPYuGH0impUJkgpZDuBivqCw6Q0zKc5
-         qQh3nmIldbtcXd3FIwt+sh9QXutbBgv7KAsUokqdVzfVwjDtGcYDADy1VKBTxGfRibOz
-         Yd+42WIMLt3M/P+KZgRTFHO48PTLB8sNhZEGnCyVC9+W72msfNcNK47jVhsWsdr9oNh+
-         e8WOG88Mfk2zDBstXOV4wwOfrrfIbfa+BUcqAUcRGyGNYP1qro5is1o6UOKqLOe3nqaJ
-         EddikB2DkpDGFLsP20dU/rQb8oGzdButr1Z1bZ2QTzu8wCx0TzucIoYI67/P6hRw2g/D
-         ByYw==
-X-Forwarded-Encrypted: i=1; AL+hErFjIVUvgnSBBnXIrSxH6jy0N7Rf7YuNJ4+r/QlfZht9FEeo05z3kx4Vsz2lyBKo+jLFEAHR4G6drA==@kvack.org
-X-Gm-Message-State: APuU4Z/tYhQShOWFIxjWQo7cnrZNu0/jyxmyVq7JcqJ9ZCTsuwtYs5cH
-	9HmWW891Hai6yHp8TebGuIF66+aOau2C5Wif5Ye7BRbE8hF7LBHjGJ8gqyf80F+LEg==
-X-Gm-Gg: AZFdTZf97JrTuPEIfw7D0bQfM3rYCA8Kck5jg12+/7rtPZUhUMW7akvCVRoQ1fgFGJQ
-	r9DGoG0LNwCz4aB3jUV4p7iesTgVJZxFoN1canPu419/FeQchLMwv+YkgMoV+pMD97KeX1v6e5z
-	sZ8wsWEtl7kLYzFvPYg4i2CJWNVr5mtqjoY5vdcRAqu3XuN2gHBQheDed49P7XQTvaV29gu6/8P
-	NWhl9Tf5Bc3v1LUBIt+wqxWS21tNQVR4CnztjMIwBBxsXFyb+Dj7zXI9OHSmuQjLEfJhT7D7Ea6
-	COIrZQKr1Muyxn8958VrKqKZ2FHQC+42M4bxRt+jNQWnZBajOSl5gtaaJU+s45CgOQ+cKmnOT0k
-	BShX6loaz/kh2YE/WhzICER39BRPHF76GULcc8xUiZC4xNuoYu8JGZ/IjXewbJiGRs+vmATqdzw
-	KkucdOiNbQJPZAOqvm28aVXp9VrQhIRQcyIYvwX0UXKtwveYS68JQ5Wm7aDqGgJn8agAH5koCe6
-	CGzpQqn+OXssXdJwe431NVhOipuKNkEZnsgsy0NjvZ36YHjRcS6/DTp1Fmcs8VxzTmfhlEzsIEf
-	ALGZAM1LFW3C99mbS5DuwRlX2rIlz/uFgqzHBpQgEYCoSSioW+35ROSJKcEvVXakpIvjmis/a0S
-	CLIiindldGGXo3dCMzNan+A==
-X-Received: by 2002:a17:903:19e3:b0:2d5:db38:8010 with SMTP id d9443c01a7336-2f066708a17mr4257845ad.15.1795382388397;
-        Sun, 22 Nov 2026 13:19:48 -0800 (PST)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d63728sm18461423a91.8.2026.11.22.13.19.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 13:19:47 -0800 (PST)
-Date: Sun, 22 Nov 2026 21:19:42 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
-	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
-	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
-	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, 
-	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
-	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
-	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
-	rdunlap@infradead.org, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
-	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
-	vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Subject: Re: [PATCH v6 03/27] liveupdate: Export symbols needed by modules
-Message-ID: <awNVk3q6Q6sAHn6U@google.com>
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-4-vipinsh@google.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Lh82JeeL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.193 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=UYOxhiiES+py02IgKFMURgWV6dfWF2tHLsN1Lp7J5FQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795386046; v=1; x=1795990846;
+ b=Lh82JeeLemmM0UYjtA/NFJZxNWK91MVjMZukChWSlaMtTjaOHk8l6ryx7EDFzvlyQGT28vWe
+ PXneeVJXf5ZIjVIXIGfceD/XJTnEknxqiVWmJT0GbImwalz4TlQA1ZFx5pPQN0zBaFGaU9mi4LS
+ mPG5F6wMZjn7M1pUKAVOu5uU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id f9332ef0a593abfd;
+	Sun, 22 Nov 2026 22:20:46 +0000
+X-Mizu-Trace-ID: f9332ef0a593abfd
+X-Migadu-Flow: FLOW_OUT
+From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+Date: Sun, 22 Nov 2026 15:20:27 -0700
+Subject: [PATCH v3] mm/ksm: prevent zero-page remapping during
+ ksmd-triggered THP splits
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261102153656.1431701-4-vipinsh@google.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 77EAE140007
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261122-b4-ksm_fixv2-v3-1-f78ea7779746@linux.dev>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNQQ6CMBBFr0JmbU07YiOuvIchhtJBRgVMCw2G9
+ O4WXJvM5uX//2YBT47JwzlbwFFgz0Of4LDLoG6r/k6CbWJAiVpJPAqTi6fvbg3PAQWaRmqkAot
+ cQ5q8HaVg013LH/vJPKgeV8faaNmPg/ts/wKuvT/qdFKcjFaVlXmhGnV5cT/Ne0sByhjjFywnx
+ 0m6AAAA
+X-Change-ID: 20261025-b4-ksm_fixv2-2bf062e92946
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Usama Arif <usamaarif642@gmail.com>, 
+ aarcange@redhat.com, "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: dw9xd97ig7upwd3zebammq4nn8bu9p4o
+X-Rspamd-Queue-Id: 3964420003
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: k4qc6pgnx7tu38dh6xd8kchdp1co9cp3
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
 X-Rspam-User:
-X-HE-Tag: 1795382390-578819
-X-HE-Meta: U2FsdGVkX18rStJwSHU2X4vbDRLyVwyRqpzqbrV54n2OgRD8gxwO6D9BrXe44lR6AmmIvJKsnNv8pBzToyTNBeFD/SlCR6UbsRC9KnR5nPOfPW361OEqY/alxfhDURVrhfzBbEaeinb0lHie4i473MOQBcWqQ5CwISAZxWQPOrFVTVdL3PZJq57UyjnyqogJdKv2Qh5aPhOm/lKW+xYJbF8wUIHDb+11OnIa3yEcdstvnif1QPjtYx8uHFaCBJ2rip1R8dUZrKUFUGOmTkPeYJZo7BDaB2bKWpuV4zh/z9mpGZ/ydrMp/F9X7Kt6pHZ7TY2wOyei7ZiI/WcETNKCLGvdmXiVOMYCHxHAY4IImVYjhuh7LdLyUS/+q3ONdQrTVPy2Ut2eKD/unlQPPnB+ZMe+4KPA4R/9RPxmrrTF7JcSHtkRnk01R2YU9Ql/ZFNwBdu5+9TEh7LZB11Ugs3PdwpCtX4bvzHkWN5mObwQdJaK6DztJTfy6FNkUpKmDdDPCsyjfvxd1NVassBMVLgTapjjkO83G0waKB5MeFGJBuwHO+OIVj1AIpyn/jyYYgETqMq6Dk11PW5MdGf5en8BMaCNj8oChD1RrVrXLGQvQmXOBkGVPSTT6odqWubFYUM4Bp3qfRWdz8C6pJx8kyro6deQYI8UpSNdppoluIyz18P4vG/Nd+OGsG31OqbqzfSI3ydSTDHZjsZn3Zd2XVm5vMxcKw0JfThoXsyprmaRCqDSLUgdvr33bMCbdgl2tMLWD5ka5LS1vEttTlX24zFSGWeNy5z70RvT9gJUoQ5xkeUKzIDlVUvYo9A+rS82oZeK+8dfNQHsby0ZDKghvSVLgD5V0j/ZtFI5KOFJsz1+yuWumtKhWQIRvotgAVq8LuIEd3CEBrSt0WMeLmBqa+2AebsM8ADxkHZfZS4mu1lIQvv2GusRR3o4a1ND0BcFtbALn+e9rlRe5v0zmER+GY7
- nwm+l58k
- FcLL0bJDE6vK2Un0XI9q3YIuJ9YoNfDc06LLA20zbjmGqIwwukFZ/fYvD201AjuG7QfRjjFaPDiXTfeMgpvEC8alTtYgJHnjBss8UUUTCARuQKwt6VjjDO/rhyvmrbY55jgf3fSAnbhZDUzrjr1NAY6SZ0RZMNNYNy/ibIqZpQMiwKUfr0n+uEs0Ma8lr4KF5QRC5LXRJ4qMFWst6O4xgnYktm8C+XGdB6C/cVcfwk3xcfjX3nwwvPYqH9ihVHuHdEy4pnyxVdIXf2m5+raHb1mppBjl3HY3kwOTc046QZuGO5AFkVwwEcZOA/5eUs6u4UqslCzIb7ZR5Z09rshLL1wPRGMVKtFgP8LR9PKqBCu6ACKTIN5s4ebiBAFGphKkbquz/Ptgcb97Az+BND7q+EeheP0r3cmqB1T6KoxAIeb7NqxUIWLmPRHhk2lTOpRm+X1Qi8u34ttAtNdp3A0kuWs+2ge1r3clxFtE2bfLndY+FbisXmZXJKjAiMTYp3icvjVIj1l6/2C8xKuLccR+y0jCrm8lnl2cXe/S9kQsK7VtrFikzksINtg+h4KUHt9g4oqWBYsxk8cZ/q8xJ91nu/BtcY9FdOuDbn796u6RjIYH5CPA=
+X-HE-Tag: 1795386048-811509
+X-HE-Meta: U2FsdGVkX19adczse0+1DByu6vkLxwZRTIInrTe3TtNgX1F9J9oABAXfgpB83Zrh+Jj76ADqyxlW6Mcsxx/ETeK/MUEa6GVwIiBBdye35fpwOA+uWRUujYTr7DIi2BZKEEFiJCd06CYk0KvpfJQPrZZHWZHSYRx8ll7ITEzq8zIN45eYM1cIYzi6apJHubgA/VeMErR8rjF37+cb+dWP0Klp6jTYs6FgRWzmZXHvU61Ys65Psv8zZ6geze5/we37AIq1Pjugwmovyae2Sdkq675atwccHuJANhygv6xazAK6f0WBAl13eKz3NGEAZLd/iuAurylt7zjEgJlxmsEeYpIL7wXAcAkuuznuyiE+LYpbcDEaj39h24lkBKPKHMbmnr/t2gp/BRbhV3K1qDVbhZ3knVDkYP1jDSHc0lSqqqDyOxVYgLIgi4+s5C0EefLN8nr/E1EXRgyFOPVCkutOGXlCim0YnaRNDODLu1yY9PMgERE4XqQYoFXKFWMlf4wDuJll5u0M++/bK/po1jolsGX2X4inPZ7Dt5NvApvHaiuFpqI2IcERbH7fLtpwBHPXozyObtBWi5YWFE/aXp7HMT1/OqpvF8PQ0TzpzeTaqNrKkPTqfKyDBzNltF0jnDjahEEu3vqq/jjJ25DE8tOiEWYrXmfA2BaKgqtwkVEVs5hDIlDJsR+mEx/kMt0IWnlBgbycHSm/OyJTMTsB6ZDG5x54kEjplQ0mOXPVmtQd5TSjd6LR8w0HhCkBJmLSXCfidFK7s1wfpmn2cGoBpntfyIkcfBU9OJDdfqNvd2WIbLWLWN2JHg+jRU0Z5ey9T9qLo0OAj/HVWqM9Qxuxqv62w5oTLgqpL/JeVI43ahONh0aQOQlixI9LsWmqXf4C0RLIWnvoknRlur6mPhLvDWHe1HWSkoAck+LJqikfhSuQT7vzlAGaWHeXfNGtvEjqfWxkHoJ9/B0ZDLPZf/VDDrI
+ 2cSfOOkm
+ EFNkYTx8HDqQb/K7mYg4NoYivEYDRTzXf7rqjMJhuEMfe8O6Wn1+uayNQqqX17uOlbNFw689Vu4r/xwM4yUjU36+pknfVElH6PVW/DgCK/UYZR4x+nAxg00r3MN+1z0Hm5LW4pqQ8o3BDFFDgTJ0/0mXwb7WqTkkVUG38BPyTtcrp5Vdy26f7BdQN1MIgHbbJafPPNFtir+aQMebVPByDM+2rm0WfVAV7duOgiDjxsJjyMHi+FrVmx2zXIEa4lYV2uYJGmu/721czjC+iFlH9P5eLhL1T34BBWcXvvpWqmk/OWM3/sg5waPaRpbNItCpDbpHPl5YdMfga01uAIPP1745J9H456XqLBQBUsubJBiuLHFyZwrfQUa3XzyO7HPl8s8s5goQpsY5aCyecZdz8VH/ZI8YLQfS2NE6t30qYNDFlMYoeIELPBuhpEhNr6Cq7xRZMdXbOOq528uKO1brq227k7z+4e/ILr0xuC8/S0vuER2lTmN9aI4QMIgIP/eHW2LoGjGjrFpG42QJ2jMTdPpM84amrOSURL877wMgQzM5fNUh0pSBOKgMbK89qvm/uCOXg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,47 +108,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 07:36:32AM -0800, Vipin Sharma wrote:
->Export liveupdate_register_file_handler() and
->liveupdate_unregister_file_handler(). All of these will be used by
->vfio-pci in a subsequent commit, which can be built as a module.
->
->Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
->Reviewed-by: Pranjal Shrivastava <praan@google.com>
->Signed-off-by: David Matlack <dmatlack@google.com>
->Signed-off-by: Vipin Sharma <vipinsh@google.com>
->---
-> kernel/liveupdate/luo_file.c | 2 ++
-> 1 file changed, 2 insertions(+)
->
->diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
->index dbae0715220b..6aaa9a531428 100644
->--- a/kernel/liveupdate/luo_file.c
->+++ b/kernel/liveupdate/luo_file.c
->@@ -916,6 +916,7 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
-> 	up_write(&luo_register_rwlock);
-> 	return err;
-> }
->+EXPORT_SYMBOL_GPL(liveupdate_register_file_handler);
->
-> /**
->  * liveupdate_unregister_file_handler - Unregister a liveupdate file handler
->@@ -933,6 +934,7 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
-> 	luo_flb_unregister_all(fh);
-> 	list_del(&ACCESS_PRIVATE(fh, list));
-> }
->+EXPORT_SYMBOL_GPL(liveupdate_unregister_file_handler);
->
-> /**
->  * liveupdate_get_token_outgoing - Get the token for a preserved file.
->-- 
->2.56.0.317.g454f8302e1-goog
->
+Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
+when splitting isolated thp"), splitting an anonymous THP remaps all
+zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
+This flag is set unconditionally for every anonymous folio split,
+including splits triggered by KSM.
 
-Can you please send this separately, it can probably go in without rest
-of the vfio changes? This is required by iommufd and guest_memfd also I
-think.
+When KSM is enabled with THP=always, this causes two regressions:
 
-Thanks,
-Sami
+1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
+   split_huge_page(). The split remaps all 512 zero-filled subpages to
+   the shared zeropage at once, freeing the entire 2MB THP when KSM only
+   intended to process a single 4KB page. This bypasses KSM's
+   pages_to_scan rate limiting, causing ~1GB to be freed almost
+   instantly.
+
+2. use_zero_pages=0: The same split side-effect occurs through the
+   stable/unstable tree merge paths. Each pages_to_scan iteration
+   triggers an expensive split_huge_page() that silently frees 2MB,
+   while the scanner wastes cycles on tree searches for zero-filled
+   pages that were already freed as a side-effect.
+
+Introduce current_is_ksmd(), to check if the current task is the KSM
+thread. Use it in try_to_map_unused_to_zeropage() to skip zero-page
+remapping when the split is triggered by ksmd. Allow remapping during
+reclaim running in ksmd's context.
+
+Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+---
+This patch fixes a bug in KSM where the pages_to_scan limit is
+bypassed and the policy (use_zero_pages) is ignored.
+
+Commit b1f202060afe ("mm: remap unused subpages to shared zeropage when
+splitting isolated thp") added zero-page remapping when an anonymous
+folio is split, including splits triggered by KSM.
+
+Skip zero-page remapping when ksmd triggers the split, while allowing
+remapping during reclaim running in ksmd's context.
+
+Changes in v3:
+- Drop the patch gating zero-page remapping on shrink_underused.
+- Allow zero-page remapping during reclaim running in ksmd's context
+- Add a comment explaining the ksmd check (David Hildenbrand).
+
+V2: https://lore.kernel.org/all/20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev
+V1: https://lore.kernel.org/all/20260609114619.144416-1-npache@redhat.com/
+RFC: https://lore.kernel.org/all/20260508170509.640851-1-npache@redhat.com/
+---
+ include/linux/ksm.h | 6 ++++++
+ mm/ksm.c            | 5 +++++
+ mm/migrate.c        | 8 ++++++++
+ 3 files changed, 19 insertions(+)
+
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index a0d358a1feb6..23c8e9f60118 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -17,6 +17,7 @@
+ #ifdef CONFIG_KSM
+ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+ 		unsigned long end, int advice, vm_flags_t *vm_flags);
++bool current_is_ksmd(void);
+ vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+ 			  vma_flags_t vma_flags);
+ int ksm_enable_merge_any(struct mm_struct *mm);
+@@ -144,6 +145,11 @@ static inline int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+ 	return 0;
+ }
+ 
++static inline bool current_is_ksmd(void)
++{
++	return false;
++}
++
+ static inline struct folio *ksm_might_need_to_copy(struct folio *folio,
+ 		struct page *page, struct vm_area_struct *vma, unsigned long addr)
+ {
+diff --git a/mm/ksm.c b/mm/ksm.c
+index d24b129932bf..60656b05419a 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2873,6 +2873,11 @@ static int ksm_scan_thread(void *nothing)
+ 	return 0;
+ }
+ 
++bool current_is_ksmd(void)
++{
++	return kthread_func(current) == ksm_scan_thread;
++}
++
+ static bool __ksm_should_add_vma(const struct file *file, vma_flags_t vma_flags)
+ {
+ 	if (vma_flags_test(&vma_flags, VMA_MERGEABLE_BIT))
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 65869b8acec5..b0949f43ed5c 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -305,6 +305,14 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+ 	if (PageCompound(page) || PageHWPoison(page))
+ 		return false;
+ 
++	/*
++	 * When a split is triggered by KSM, let KSM take care of scanning for
++	 * and deduplicating the shared zeropage. Reclaim in the ksmd context
++	 * should still be able to reclaim zero-filled pages.
++	 */
++	if (current_is_ksmd() && !current->reclaim_state)
++		return false;
++
+ 	VM_BUG_ON_PAGE(!PageAnon(page), page);
+ 	VM_BUG_ON_PAGE(!PageLocked(page), page);
+ 	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+
+---
+base-commit: 2dc60bd9975fc8666a13d58410499e06e6799ba9
+change-id: 20261025-b4-ksm_fixv2-2bf062e92946
+
+Best regards,
+--  
+Nico Pache (Red Hat) <nico.pache@linux.dev>
+
 
