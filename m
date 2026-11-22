@@ -1,116 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD03606A31E
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 22:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23477606A31E
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 22:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g+7KT+cq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OS8TcZci
 Received: by kanga.kvack.org (Postfix)
-	id 193A46B05B0; Sun, 22 Nov 2026 17:21:02 -0500 (EST)
+	id 452D36B00EF; Sun, 22 Nov 2026 17:41:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16B236B05B1; Sun, 22 Nov 2026 17:21:02 -0500 (EST)
+	id 42A616B05B0; Sun, 22 Nov 2026 17:41:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05A126B05B2; Sun, 22 Nov 2026 17:21:02 -0500 (EST)
+	id 341936B05B1; Sun, 22 Nov 2026 17:41:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CCA706B05B0
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:21:01 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27E17A07BC
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:21:01 +0000 (UTC)
-X-FDA: 85464176322.21.33376C6
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 676B040007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:20:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g+7KT+cq;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 14BC26B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:41:07 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BEB38047D
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:41:06 +0000 (UTC)
+X-FDA: 85464226932.18.9AF2A55
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0BC5040006
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:41:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OS8TcZci;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795386059;
-	b=AUOhRsuQkObzEeoFGElDjZGi1vLt9aufrceD/3un0Ei232yb+M4tKbt0rG9kDgjdQpQ0aX
-	EavfeAU0HX/kGmE664T8fs3rt/eKg7QvmI/qqBk/U4FdJ5R5bYudcF/dmcoPjsYZYmLFIE
-	OKMJQGSyQp7SDmtOOzMXAAs8U8hnjKA=
+	t=1795387265;
+	b=f9J6ce9fHwwsPYLE7R/A8uNBbNaDyDa7yWBBOgGRkH6yhoKmcNj2xaHLa9Jh3BFLeeZJnR
+	fipP0OzMWPsRl8GBmgjqrxUK96TJkQiBAJ0nrM1vyvxyXM6KprhPSnXt8cacym5+VXUOsu
+	LOZbbj8qBFAYIGH1jMvWwapnNhFrYWA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795386059;
+	s=arc-20220608; t=1795387265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M6PsEO40SXnidvY6m77b8qIgVTuYI1RooLAz613fO6Q=;
-	b=yXzO4GKrMSSKWwCeuW2PQrud2XMJwnZ2y1kxVNNbUQN/nae+dBXSIrvKnABjw4WXWhrzIf
-	4Lb0BTES8r+iPgWVuEi67NSuMwLNqorp3SxfEvcrmybP09X6+gdtxe8ZSHGbUizQcyDYjC
-	q4IRv54qLgJh/ARCAc0r6axwRDkI1so=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sJFKXYBlyKsjrymChPkVlwTwAE7JP3i6GsdhQ8/eAqU=;
+	b=bWK2110IFInpGq7XwZuJJPNtgCijFAc53VdeD8ndbdXDKJm9isv+W8EGRIK9zPow27EieG
+	fmnmnOE0GG3Vkhq6SGEHbiEKP8pJk2iOnDsVG/FF8MCq8A1rt/9BDaRhD3y7xBKYRohNZD
+	tfrqPBRh3ASWog5Adw+VArdYyU3bgiA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g+7KT+cq;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795386059; x=1826922059;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lc/6luGnTfiYQ5L6WAjEeu9PRcuwZl5d6rQ3ClQHdbc=;
-  b=g+7KT+cqARaVakhDsmToBsFW3VNR62nd2+qKvbo3212kQ6/DGYM2vLCl
-   LgNlkzHUbU3M7MxV6Xklnly+IQxsFHQO0+VaIXxwmeDxuSxq0JeB3PR+y
-   u2gzS+mQnW12b7A/TH0a52iZ0/HFP/+0xKQyg1nn+lOHxa3Kk5k4vv5ee
-   MiPEu+2mFCC6jjBvQ21oz2OMT8Milb3WbdTxcaFVUMH2ET5NUt2NxUHXY
-   Q71Qikl88TIQh/HMTn1gPsAljfKaNuLKLp4Gc5DH83Hsk1qfMZeHXi87O
-   +RpA2QFg6mEXp+5bGOWbllpEW68iB1RTUetWgpUlD3baA8bWfNJUe+W9J
-   Q==;
-X-CSE-ConnectionGUID: Kut/kVrDSKK8CBIT7qRrFw==
-X-CSE-MsgGUID: yjYZguEETdW3cS3qCo+Whw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4222457"
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4222457"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 14:20:56 -0800
-X-CSE-ConnectionGUID: RnvpdRQeRIyzEGL4W/QQFg==
-X-CSE-MsgGUID: XHRIZMQGRly4H4OxIWPybQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="11164227"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 22 Nov 2026 14:20:54 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xVFvW-00000001M9S-2JJP;
-	Sun, 22 Nov 2026 22:20:50 +0000
-Date: Mon, 23 Nov 2026 06:20:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jim Cromie <jim.cromie@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jason Baron <jbaron@akamai.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	Jim Cromie <jim.cromie@gmail.com>
-Subject: Re: [PATCH v3 6/6] drm-dyndbg: drop BROKEN on DRM_USE_DYNAMIC_DEBUG
- for testing (DONT_APPLY)
-Message-ID: <202611230650.Ebz6km83-lkp@intel.com>
-References: <20261121-rd-mostly-v3-6-89e74b23b491@gmail.com>
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OS8TcZci;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 01F7E41786;
+	Sun, 22 Nov 2026 22:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3B31F000C0;
+	Sun, 22 Nov 2026 22:41:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795387263;
+	bh=sJFKXYBlyKsjrymChPkVlwTwAE7JP3i6GsdhQ8/eAqU=;
+	h=From:To:Cc:Subject:Date;
+	b=OS8TcZcihfSP+khLyNygpchK1BCLDPefv4GAZhdMrw/JnZVxFTB5QxsMq7x4VD0IO
+	 pPJDmxdONZVsBOw2JZUD5cwr9xfx5VPu1fEsZ3EqcYn6cM4s9+X46gp2wGRoWaKed0
+	 Nl+hLfwGIXmi21TSu4VAR53a/fRH1b43E8Qow90EqjP5CPUCkLvxdiM5VYAo8XecWl
+	 RnA/BTHEtexTTmUhfcgPcNs3wZ/GnbXVP4X7FayxyIPCM8GjDW1j/O2D9nztkmtfxr
+	 f8Hd5M9hA+1LfntvHkn/CLoc573hHYJQts+tPQIZv4RhH/z1ooGe+hLindixxoqndS
+	 2AGCt6hhFskgA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: [RFC PATCH mm-hotfixes-unstable] mm/damon/core: cleanup damos->walk_completed in damos_walk_cancel()
+Date: Sun, 22 Nov 2026 14:40:53 -0800
+Message-ID: <20261122224054.79767-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261121-rd-mostly-v3-6-89e74b23b491@gmail.com>
-X-Stat-Signature: p85xwxiozeki38m5xcg9wkmgipr1pyr6
+Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Rspamd-Queue-Id: 676B040007
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0BC5040006
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795386058-729933
-X-HE-Meta: U2FsdGVkX18qNg1WWLt39/IjtsBEtsNLkrEsuXtEliCU9tNm3KRYwzhQA30Uopm4Htqin7Dt8QqCKyr3x6JpGQqtuM2RRQlDqV6qxjtb7eU6aEtZEbEsRCuhBp1KTFpezBxgIOngflBkvaTCOYyp00aAtcAScTjy6Sbd9VNmfhd0vTpz/GsOeOGDTHZr0V/EdrRpk3BO79Zh9VsUfedlFyktVVKjS9LkTqrV6x1Aj6WBnmkCccrbpKjM0nPPX1X2SH5+tcwk674tAS1nMIOKpYw/zQ+XtvdfAp2J4ULav1rPyFqrhOk3oKvsXTuOdjJRkB+41i5saZ7B4oTbQ6OvZt/Ns3rru8a/7Zgeyr2GNVcOdJ9gREen24RleJ+5Nappd7AnFljZLFK6QIfnvfGYU0OZtHnXDEMGxpXbda6PcE7AUzem/MaQBOiZq19C9+pjJVyLbbUqjisJ55MJ0z0CFHD5wog5XEsQCCKbjBFHHTFaqnmnXry0EI43GINvfsgcXdYjqLBzJOg9rACBWyFMWiDWEjhsjUWKoNeFLbLeJo1eqFhYrUhfhkzq5WGkAv+lasZDNMbNjMwb7vog2VRbdoTUJQpHrRf68ndRQZ4VCiiX8M46SCYo3J88MTXgDn4gLXGag7a6eRxwTeogDorO9DyLUrHORiVyAHxUcbLuzQETKXLRgYawX/0j6nAMRKeKhNEXh83QyQqX2q6uemjpnSvdbpgoJH+6AAsiNe+KJke8ISu8ffqzngXm7aSBk/MSUuYrFFUUo1ppyKYCGdYuKyc9Bo9NMiBOpIMSw4Rv5S6OZ3AoJQqS9TVSnwjwFmEwX3jrBFQRgl4nlX9KseRsnkn4KKJA+/VxrRBzWnBe0yydfm/mLg7jyq5DKdE6jwH6edP3MvmzTuFrn18zWFDik3bVGeYcotaV+kKBVEQD7RoN7w/J75LYEXj1mFhf89FEGK65DPN54t5TnAoBec8
- HI6hxlJO
- TWRZSoe55ZpvNW4VZsuPxDlhwzmYWRYvdF8xGRZtO82QfELo4ga+dMdjQKbDSgAfIb+3MgbPn2xzS/nrIfJUk5NxaluDeLc5ZgpdL0K21UA7Jtsfi1FCR8Nw+xFpLGjz20xYSAHHbhsGyVvE/L15Y+b2GQZZD5e1iYLaYyN02wzSYNlEAe0dIhDpl7MyerO2Vlymki8UEQ/kLYdOw49LGu1dWFPoqNIxe1IkVk+gS0Rg1RqSuj09rb1ZZ++xYFWKTOJIbqxKptPMrEQ0Vhl3fK2uITMFmkhQXqJLYH2X2m+pCVjOLz9dtwbUPkO6qNAkBeSuGIeYAjD9G973WKHjrl/CNmuzPeisS0GmiMjtfVR+fF5TCY0Q1+O61y8gpgId4VQpqub8rko6JwQ/eoVsaQOFro+yb2DAmPwMXpvg3a7ruMk2s6pfbKxp1nSbP6oLvC7yGP28FAo+m8CaShXyWw3EsP4aapsx4tsKM+/pq51JLbgpWV1Ki0C5I8gDJ8yyjvld4PLDH8MSBE+1GFIocBJqqizOVYURjlixlzqpzrV/SCC13r/iM6MeiEXPX/+How2z88J9xGUF6Uc9ojzZiHPZ1wdcTgBHxCeh3b+8l+mFzQugiBn730wOGhwL2G69xrpX8eBWgWSnwVDRN0tnHMFyvPSpKmU776p+MMQSUPEQZiFr6HXufWhzZq5WfDpUkBaEn
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: wy5kgncixuen1a5cp3ejzkzondg34tzt
+X-HE-Tag: 1795387264-88241
+X-HE-Meta: U2FsdGVkX1+0c7TONJfuN7o3/uBSG2OrrSqIVxI+wqOgSPyji54BVbi9DZJWGeqCBdLFSW6wgTJFE/IlLxk8Upwk3VoV86DKlz6ey270GEiya0awuH7V3trgBdFZXJfgAwT35O1nPEdf95sQMdePfgZLwzgfGx5C3AmXpCa02Rs0kMAv01hh8xKXS6aygiW5cw1RJ/VUbpzCeEeB8vG33J2WehtPxbknrYDeXuntLZMLYNoHvMfnPJcErIz/46mVCWw86IeXi6Q+yjYS5dZqe8GuE7rYhklZZdsnyDDRl+d1XILZrQ6GsgG4CG0agYfb0A7BjWUPIykTlP7rch48wjvQ/7oO4lNEiiDgR2+d1vo7nI02qiLDby2yvvjXCHvaJEHDxuyP/mRsnWmplfwkEQ3wg6c8KQhjJvlxY8XA0OcIL/uRZI9d4B7cSN6fu1FLh7XUcujWfi9f0KF7LLB9/tIkwzOMz0fObBE4vIx1K0yZ2yYGC+9Ha3HGkze9aHKaYrnL1HXgxdLM8JxV67zlrf/Rg+li5fn8jDn/BOIXwOM5A7LSjVBfirGusqvrY26/nuQKNG9Rz3g2x9CArbAdaFeBJZmXwfLnRufY89yM+RjQRydUjDu5esuzO3ueYnZ7dnNGM8RbxoDl2PPscA/enL1wm+xmOx/mi9zgYEMhlOtVx0qN6jA7ZubkJ6PAjVIfen0w7yqg3120i+edGpo6PrwC63R/RO3Il867q5MREM3vG5+b6g264JZJN32ETiRugWNy+F2d8PLYtvl2f2xNh4Kn5WXq5XTya9QpFHQwcQxRd2niKtOxNWLuQzbzx6YgQNGITQopbRaA3syIYIvNgMyUJsd3vJhd6ReZM7SvzB9fDLE88pVI5E8z4fnVWqAg2YBFGpWU8gzAYYz2V00XXjdLJnoGk9Ga5H68tQgdTOTBr7mNlp7hDzvmRSosvCb1LMWvrlERkSvc2piQO+A
+ VKD6qRmS
+ oEU3Oeinc5aaDLvDKHCKi1FNQ8CtEFKirini0NPmd5+9sNfjerJz4ZcDQeGBM1EmPutOecHHHJwdgI/hCk1/c13xVXW3OPv43kkKrnRRrGl+hRzb/l2xcb1IvSIrKc0Z6JSuz6ryQ95p4XpZ9UkYhcUBKcjp0eo6mGXe3teBmy36DGKPHlpDiRtNJLbAfcaLprlPkpz58Nxzjgz0TfqJZ61S1l5lwsSkY1Yk7+a9ctj0pjTxqAeeKAl+LJXvrc4rnwzb8dEMj9IDlsAPcyQMYEHHWOuvuJzdNpLp0fiYC+UWVqxb6MTrRL5fTZuWdQH7+FGn4OayP5YFl8M80JrIP3fE6YM/2sCNeiIP20lz10daf/l0vp/WW2Kfy3N9222trEecPmh2vjhQnxRNt2Hy5tH2J2Vtft/cSbqjviqUoC4MV3FFEOqCNNDWR1w4tnwA65TeJbDxMaXp8d56/cigEIyVXu0uRrIsW3HNPHKUuMrHz5qKxMMVSi4+mkNLC+TGGgauPT1EgirJNgSF9QOHEeMrKpc/o1POIwG1nm8u1QTzWuNq0Do64B0OJ9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,57 +94,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Jim,
+DAMOS walk could be unexpectedly only partially performed.  It can
+happen when there are multiple schemes and the walk is requested after
+the previous walk is canceled.
 
-kernel test robot noticed the following build errors:
+The expectation of DAMOS walk for a setup that has multiple schemes is
+that it will walk for one snapshot for all schemes.  To know if the walk
+for the one snapshot of a given scheme is done, each damos struct has
+the walk_completed field.  It is set when the walk for the given scheme
+is completed.  The walk skips schemes having the field set.  It is reset
+for all schemes when all the schemes get it set.
 
-[auto build test ERROR on aebb7274476403040d582c61478df8f4a7bf9cd3]
+damos_walk_cancel() cancels all existing walks.  But it does not reset
+the walk_completed field.  damos_walk_cancel() can be called at any
+kdamond loop iteration.  For example, due to DAMON context pause or
+DAMOS watermarks-caused deactivation.  It means that the function can be
+called while only some of the schemes completed their walks.  And users
+could request another walk after the canceled walk.  In the case,
+because some of the schemes still have walk_completed fields set, the
+walk for them is skipped.  As a result, DAMOS walk based user operations
+such as update_schemes_tried_bytes kdamond command could show incomplete
+output.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jim-Cromie/drm-print-Mark-__drm_debug-as-__read_mostly/20261121-142254
-base:   aebb7274476403040d582c61478df8f4a7bf9cd3
-patch link:    https://lore.kernel.org/r/20261121-rd-mostly-v3-6-89e74b23b491%40gmail.com
-patch subject: [PATCH v3 6/6] drm-dyndbg: drop BROKEN on DRM_USE_DYNAMIC_DEBUG for testing (DONT_APPLY)
-config: csky-randconfig-1001-20261123 (https://download.01.org/0day-ci/archive/20261123/202611230650.Ebz6km83-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 15.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261123/202611230650.Ebz6km83-lkp@intel.com/reproduce)
+Fix by unsetting the fields of all schemes in damos_walk_cancel().
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611230650.Ebz6km83-lkp@intel.com/
+The user impact is not critical.  No crash or leak happens.  Only DAMOS
+based monitoring results retrieval could work unexpectedly, under the
+certain setup and the race.  Given the best effort nature of DAMON, such
+occasional monitoring quality degradation would be not critical.
 
-All errors (new ones prefixed by >>):
+The issue has found from the Sashiko bug database.
 
-   In file included from drivers/accel/ethosu/ethosu_job.c:15:
-   drivers/accel/ethosu/ethosu_job.c: In function 'ethosu_ioctl_submit':
->> include/drm/drm_print.h:566:9: error: implicit declaration of function '_dynamic_func_call_cls' [-Wimplicit-function-declaration]
-     566 |         _dynamic_func_call_cls(cat, fmt, __drm_dev_dbg,         \
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/drm/drm_print.h:654:9: note: in expansion of macro 'drm_dev_dbg'
-     654 |         drm_dev_dbg(__drm_to_dev(drm), DRM_UT_DRIVER, fmt, ##__VA_ARGS__)
-         |         ^~~~~~~~~~~
-   include/drm/drm_print.h:672:33: note: in expansion of macro 'drm_dbg_driver'
-     672 | #define drm_dbg(drm, fmt, ...)  drm_dbg_driver(drm, fmt, ##__VA_ARGS__)
-         |                                 ^~~~~~~~~~~~~~
-   drivers/accel/ethosu/ethosu_job.c:527:17: note: in expansion of macro 'drm_dbg'
-     527 |                 drm_dbg(dev, "Failed to copy incoming job array\n");
-         |                 ^~~~~~~
+Closes: https://sashiko.dev/#/bug/linux-228a4c52-0545-4c1f-90ce-41114d8272e9
+Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
+Cc: <stable@vger.kernel.org> # 6.14.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index b8678a53b0a98..ec7f20b7856de 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2699,6 +2699,7 @@ static void damos_walk_complete(struct damon_ctx *ctx, struct damos *s)
+ static void damos_walk_cancel(struct damon_ctx *ctx)
+ {
+ 	struct damos_walk_control *control;
++	struct damos *s;
+ 
+ 	mutex_lock(&ctx->walk_control_lock);
+ 	control = ctx->walk_control;
+@@ -2706,6 +2707,9 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+ 
+ 	if (!control)
+ 		return;
++
++	damon_for_each_scheme(s, ctx)
++		s->walk_completed = false;
+ 	control->canceled = true;
+ 	complete(&control->completion);
+ 	mutex_lock(&ctx->walk_control_lock);
 
-vim +/_dynamic_func_call_cls +566 include/drm/drm_print.h
-
-02c9656b2f0d69 Haneen Mohammed 2017-10-17  560  
-84ec67288c10fb Jim Cromie      2022-09-11  561  #if !defined(CONFIG_DRM_USE_DYNAMIC_DEBUG)
-e820f52577b14c Jim Cromie      2022-09-11  562  #define drm_dev_dbg(dev, cat, fmt, ...)				\
-16deeb8e18cafd Jim Cromie      2022-09-11  563  	__drm_dev_dbg(NULL, dev, cat, fmt, ##__VA_ARGS__)
-84ec67288c10fb Jim Cromie      2022-09-11  564  #else
-84ec67288c10fb Jim Cromie      2022-09-11  565  #define drm_dev_dbg(dev, cat, fmt, ...)				\
-16deeb8e18cafd Jim Cromie      2022-09-11 @566  	_dynamic_func_call_cls(cat, fmt, __drm_dev_dbg,		\
-84ec67288c10fb Jim Cromie      2022-09-11  567  			       dev, cat, fmt, ##__VA_ARGS__)
-84ec67288c10fb Jim Cromie      2022-09-11  568  #endif
-e820f52577b14c Jim Cromie      2022-09-11  569  
-
+base-commit: bcafbab5174a89c3f689e458b5114641a0f68032
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.3
 
