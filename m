@@ -1,123 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D366606A32A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 03:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E615606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 03:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=F36G0ze4
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RMmlsde+
 Received: by kanga.kvack.org (Postfix)
-	id 819CF6B05B2; Sat, 21 Nov 2026 22:20:32 -0500 (EST)
+	id 8957E6B00EF; Sat, 21 Nov 2026 22:24:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F1636B05B4; Sat, 21 Nov 2026 22:20:32 -0500 (EST)
+	id 846526B05B0; Sat, 21 Nov 2026 22:24:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70B806B05B5; Sat, 21 Nov 2026 22:20:32 -0500 (EST)
+	id 735A26B05B3; Sat, 21 Nov 2026 22:24:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4471B6B05B2
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 22:20:32 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A986BC05D9
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:20:31 +0000 (UTC)
-X-FDA: 85461302262.30.1D57FF7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4741E6B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 22:24:09 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B4077A06A7
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:24:08 +0000 (UTC)
+X-FDA: 85461311376.06.29CE3D8
 Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BCA56C0003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:20:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=F36G0ze4;
+	by imf02.hostedemail.com (Postfix) with ESMTP id C920E80002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:24:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=RMmlsde+;
+	arc=pass ("google.com:s=arc-20260327:i=1");
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795317629;
-	b=MfnNChGpR12iWFjliTUxpEkVtu8sW7hwPKKKxSvLpfgsIiu9Cy7aUxlAUCU5yYFprqCXZd
-	HH0/nbdwkvOR4r/i3ioKqCNDl2gafN4gnWryqk2C5Dl16GJXk0V/jp+0W1hveRRjKFB9UG
-	ZjjSMsctTUt7ZPJNgX7cCUp19/iq1wU=
+	t=1795317846;
+	b=HKZVY1chlwc9XbyHG1MoWfLCSB+Zi+exdFJeK4JItBHndbZTNUuStVD0BPj/ElFiTsj+HB
+	W/lff0M8ey9iy0lxKnONsRvge5ptIJvtjdpzcO8cSSsjsTKS2d/b4vavFB3RLF9ugfzp3o
+	tGI1SKh1dPR2VaOAJUsz+M16Wnm53SY=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795317629;
+	s=arc-20220608; t=1795317846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gv3IQZHKimM8bI9m6RymLgtSv850RKl/MFJtLbuy7EI=;
-	b=CCmcj9y9S8Mg5+oDALzEZCiCdMg76Jw3oLHuwsNcILpdKW0anWa45ZfJwaoEBLpBm7m31k
-	N9rZIxj7itTsl37uXtohusXv3OEBYSvm1v20Bt4stopKYoLRdfZCdYbfs9BiGOv0XBPSuo
-	IbAwTBEgPMbv9MGDUCErXYHo0trEl4Y=
+	bh=FGKxFPn5xySqoyCRzT5dIDYsGVRKkWI39lN3gH5sSKw=;
+	b=6csVVZRcvbzkzVeJOUc5s8vIoMYqZ9yHQmUU0zlN0i2au2bRmuLYSHTF4PXQBc8ItE5Y8m
+	E5AelOC0xSE/UB5ofPxlDJsrWcGIcAVFPs8d93i2gV4trykpdEkjmhfzMhFtKDUrX0xAR1
+	/vebyc/9wiRjJzTedjbFDlBqMgeA/IE=
 ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=F36G0ze4;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=RMmlsde+;
+	arc=pass ("google.com:s=arc-20260327:i=1");
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-54492d8a988so214661cf.0
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:20:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795317629; cv=none;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-55be673e029so152041cf.1
+        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:24:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795317846; cv=none;
         d=google.com; s=arc-20260327;
-        b=TKDYtcLXAu7qER/Ox37D0n/gah8IjUVREAvJ3AqxTRynDZl/YfrYgXmOwvNY57so1K
-         abU5ECTAM6lsjR/SAc1ln/eI9ZbfHG8MRohZrQNNqdn0nfyZKHDtmBFuvyD8PMuMTbJH
-         mzDB2yrtb4BWxxwX2piGsNpNWBWOoAoIVe+VbrDqy9/sBmzsf7PvrRMngsp4qKflbA1j
-         eTi9vD/+lgzkGK6kJ8++tIySTv6Ed2uqAQhI0fQPdJTguw5rIQ2ucJHTOZMBXwWagmqM
-         6JLanpkf3ok+yNznstk+tQUbFaQxYu8lJybvpZ9S3UsM9c8K2aakgtisJQKC2TyJjHXq
-         1zig==
+        b=p4zCdmZ+0v5nWCA95znhK/xUmycIberZ2og6pQ+uC4Uw7X82SFscLAwKiIwDeKzZaz
+         hkdqXucQs5l2IAqFX4l4LCVRZhqMNgMpVIeGZn2fU51EtDj8zex7eNPeTHB3gswpdO0V
+         skU+0Mduwb+aYiyjDvmuLfUEjP3WjQF5Sq/8pFkUkrHeiPeEY2KVs+BOEf4PITJVzL9d
+         pVNIRJpP9UhSFAQHXYIL5k9BbUaAPxeYQm4odLSKOmHvdpXVCaN+EG80IWzOHXS2ghdn
+         tx9kGIbsie8tB0Gp5jeNOBAw6Qsfwo2/rj5iFHS/5vJjaF+Fq/mUrsFxfZNwNCQsO2VO
+         ZxKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=gv3IQZHKimM8bI9m6RymLgtSv850RKl/MFJtLbuy7EI=;
-        fh=Lt3rE5mQ5z7QUbWFNdJvQolmioyocSALbVz6dLc22zc=;
-        b=E4nAqhSE5op7uzDFp/V9s/uvOyLckfBXvcDy0XV49PlpoByFWbw/quDV62WIVzpu0u
-         j1TzMxjPP3RQzAHVY20EE29orT0TMOio9USkBSFINELUicomtlSzA8+g5UdX8DYC9QjR
-         EbQsVmPG5A9W+pwQg2UGAG7O66n/ngFAcIwOY98XBG+XKzQTbVGtUM1Zu5dowOMrPsYW
-         8wDIY6hfXJSk0A2QbSKo6mzFCvtcGJw3xEsPuPrKouKToR/O/oLpqzcLn9bZUfnFHod8
-         OJFHGd1Y0jgNf9WBAzfBCAeOgNYMnvc0ep2bt4TKfUguyZaEZvxV3MCfwKttG7lhVCma
-         PZhA==;
+        bh=FGKxFPn5xySqoyCRzT5dIDYsGVRKkWI39lN3gH5sSKw=;
+        fh=vyJ+BUMb9EkdDlo3NP961NPCSDRODCtjioN6BmhFXJ4=;
+        b=oUXUPVrKX7QH55pPiOr0sk+0wV4EPSIdUAKp/ZmcrjtL9F7icx8kqLcYLSD42ILgYb
+         i0rWNz93am5rj3/LXMxukl8hG0h1Z8ibWQJRvLONJFMJj3sMVxCIuL6R99+wUi0LADbU
+         EL2SPsKkPE5eXZ0pAmYH5IzlJRHSwguidtgDD1eBed3yw1eXeo9gbyAavCPYo5N60tZB
+         aSQHx0Xh92S18XgjirPqW9HaJJ+FMzW70nwuzlV4973ygx5ha7mRPv1MMOZHY3kzunKT
+         BHBm67u8zBFN+nN/PV4Qx4Uc6Vm2vkRnS5X+f7sRZTuAbDtJI4tsH5Q1fwku6+r42e70
+         bpig==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795317629; x=1795922429; darn=kvack.org;
+        d=google.com; s=20260707; t=1795317846; x=1795922646; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gv3IQZHKimM8bI9m6RymLgtSv850RKl/MFJtLbuy7EI=;
-        b=F36G0ze46ltvA8UPre9Qwg2+5UjeqaE0+3hvLcYsOww6KKJBYuHtoeJ/+93gVrTf6R
-         NLe2n0cOA+bI7Nji7UqkoBC/CFG6wQj4uSlLRCx+JSz/JtVdqzpTQKBFPqdSYujbMzmB
-         gypa9VLa7iofALDj2AChmUXX7UEx17GvIgd4pz9r310SEXQbV87Xdn4JQMGZ1D53Ibhw
-         2LL7r6y7Ugkw4+4r5nJl+cHwKfWAnLdtBt67F4NZ5d4gZiahvlfizEO48VgttMtrvpqo
-         VdIVuW+flvnIKP2GyCmhlW6Aqv/y2A9wuMfpf28c3OiEOp3ctzscT2eiMHnIby+AX8fL
-         aacw==
+        bh=FGKxFPn5xySqoyCRzT5dIDYsGVRKkWI39lN3gH5sSKw=;
+        b=RMmlsde+Jd2bugjUyEQ/mYD7RX39OAyTmug1VPfLYpqgpdTsffWfV0hh+3KHZYbnY1
+         AfXw1gEVOGapby/BdOZUJEvA3hfPQEXlvKjnXisgcHwurfG9tNQab04V0jGzmnvFhMxl
+         PogwIK6+KByB1v9cdAzUjFwzCwh5pSey8R3xD1VuzAFQY3LrANk5ZP58XJWsEZmMBnwt
+         fTn46SpjiIpvpwHLWZqgDl1/FoQy7b2yJh1ekqb4Lda7DYq3JPZ3iX4EJumImZ5EQTsp
+         JEAo3oHEjjzBfEDsQ8Cm/ZvvbUapO0rczaDNLHNaj2sa7F4YNLeXj1gi85MEZlyZajWs
+         zRqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795317629; x=1795922429;
+        d=1e100.net; s=20260707; t=1795317846; x=1795922646;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gv3IQZHKimM8bI9m6RymLgtSv850RKl/MFJtLbuy7EI=;
-        b=1li++2AP/iSzA2pDwmPKBr2iEVVNWuJD8j9yRIidRnsCbFMWnSt8/AlSS4UvD1WA3T
-         KNwg4Nbvu0Ak2i4TlFCcwESqEdvY50JuARo4nG1YqzBKvJzjFM8snAIZYCkuQmx33qm7
-         XtY1Lt0DJ9ElVErYJIGmB0vqpqRseTzx76k/FWTtCzg3J+tm9vgCsrEP3jIThfALyGpf
-         YoJp7IH09E2UQ/XkP7dCuooIBJjQnK6Kd+JLyoMq7IxURT8OkZmp0DH+nzWtlHhM1Dv9
-         oPHsVq3RsQavtX1BgcmTPMPQLxhRM/AGfXmu3865ePoKNxtYcQ3x1BNiRNtxc+luXkgl
-         Qf1A==
-X-Forwarded-Encrypted: i=1; AL+hErGqnmlOzeTAO/hAhGZEyEgpeVxBYru3nEZUq8L5eq99sSBnXzCu38WVBK14S485MGtBr4Wr9JCj1A==@kvack.org
-X-Gm-Message-State: APuU4Z8Qzs0c9SlxyBjDxYDYeKvkaUIkUzCVl3wc0NMNaKpoz9QezWSF
-	HJzkK8pkpfttwOoROM2VSEJDA7t80WfmvEL2R1lh0g0B8q0bI7BqnOUupvv1gzUOqVmPux7bq4f
-	xIamM+op/N87kGJglnd1cbNW5u6f29KGzWnpaYtab
-X-Gm-Gg: AZFdTZdJiQHx8vYvQfVswECO4tc6SrHDMmz1mM3LjEzkRzKUxmM0BBYxi1+NWA+v4Tp
-	NVDLhMINPkSS4fOD+y+XjNzBiyypyaCSFQSokW1dk4yL3RTf8o12ah/O9BL9hMPNqlTYxhLvyws
-	aC4O2TqYnq6itg02PJ/C/844iX6foycekteCmOypTEz/BPnmRax8a/DCvZXO7uzo4pwCsODcMdg
-	8IcAbP/Uf62ZZxToBkW+woeIBpQp+Ozon5Dk6Cweo/t16SN6kCCX4EtIYqh1EAmoIHug8zz530F
-	fIcCq7aTYd+QFRmFGMxuJ97p7puau8PuvqiWOVtJg7W0Goa6gJ44QtXS6UcB7zw3v8Acu7edPdn
-	4cKn0ZGqAZjiGtThIF3sa9fILZSoT65ZroolsqamqjgfvzyYhlZ/a0HYmb4Mcd4RyU+zmQ80=
-X-Received: by 2002:ac8:6542:0:b0:55b:ab4a:6fad with SMTP id
- d75a77b69052e-55d88fffc05mr16118011cf.9.1795317628142; Sat, 21 Nov 2026
- 19:20:28 -0800 (PST)
+        bh=FGKxFPn5xySqoyCRzT5dIDYsGVRKkWI39lN3gH5sSKw=;
+        b=BfNiBUMtQ1iOL8nQsqVJN0t7kxioN6o1Jx11q851NBkCKAE19BmVvZnGNZzMJZL8Nd
+         DiJ8TpXdsgy+EnHBL0BHicF1iahbyozInD2s3V/Td4d/MjLdwpB1VVNqTOl2z5ySwlQ9
+         A3UG+tWYPfYBXhUmbneQITVyKszyCN1u8i3ndwlXGBt07f21m0w4NnaFXUtAOcG94TiD
+         VOUYkRDBzJqdBM/CfH/mva1iwhbavTM+UeH3UFN/6S6uWGruApsCJh+dnUbR56DnDYFE
+         /uCo0JF+JSzBPTsqZk12uju7aZOdNNwaP+DcR/JIxJ5UARD8QdXt3Zf0mRad2JT31FI4
+         uBCw==
+X-Forwarded-Encrypted: i=1; AL+hErHdgFXEMeHIfKBAN0n8xR0gIAjN0cwcKSo1OC7CqnDZrp18OkBl8xjn2b59tai+RryhlACsqcbDGA==@kvack.org
+X-Gm-Message-State: APuU4Z/EKhcokj0ZUeIfGxbX3CafXDWXxVleEAgfY4gaN/Suws7IZqgb
+	4XKIqXQTaKYDUjabLEVJqHX9zrUvZk+P05QF1M1+AmmTqe5i2iQ69+lQjRO79vfLTCwQq/lEUnx
+	w/9j4nUnR0oKj5Cy/NKnDwczNaCsn/9lhVw3+YN+T
+X-Gm-Gg: AZFdTZdFMhG6KUR4vlo0KqqBKE+OE//8R9udQlYRSfXtjZVzBHHEYqqfVCSdou7/F1c
+	luBoTdL8TltQYt1sMnmks8NF9oEJEMfwsmRWxvJ31Kf7IAuw6EJU9gBXr3Sx2RZMl8EXseH4bhJ
+	4C2XrdmwO/zTxLKMBAPN1D7m3NE0D9zNpujLXiZZ7s89uBOrEP/6bXJLJqn8LoE1syWACqZH6ml
+	B6E6OmI7QFDU2vuYOwHygSZja2utwpOndiMqyVVHVRDsDLpfG7SEz8XEr/hewZk4KHE8k9YopQU
+	UZsHI0k49C0gMBjgKLsNKdTxowATq/mC0XLdWcqFrHnKh3va9KjLS31bpKyQ8VPRU5At3y8rUw1
+	ESKGupdV3/YjLuJnkij/9Wryd6v+VJoYEmnXQuP02yFuYO5V1FhMJRdGjyspVwDRUpqlBQfg=
+X-Received: by 2002:a05:622a:2598:b0:533:9731:f0f1 with SMTP id
+ d75a77b69052e-55d890363c8mr16483081cf.10.1795317845380; Sat, 21 Nov 2026
+ 19:24:05 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org> <20261121-some-more-ai-fixes-v1-1-236e925d9b64@kernel.org>
-In-Reply-To: <20261121-some-more-ai-fixes-v1-1-236e925d9b64@kernel.org>
+References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org> <20261121-some-more-ai-fixes-v1-2-236e925d9b64@kernel.org>
+In-Reply-To: <20261121-some-more-ai-fixes-v1-2-236e925d9b64@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 21 Nov 2026 19:20:16 -0800
-X-Gm-Features: Aa3M54qj2gRAgBBYtx6A2i2xOdED2vuVhUgObvafxq4NJaUBmmLRoUOUdO8rGJk
-Message-ID: <CAJuCfpGkHJv3DUL8tByCrN9_PT7MJnRkg+dJH_oj-gm+2q7Nuw@mail.gmail.com>
-Subject: Re: [PATCH 1/7] mm/vma: error out on invalid bounds in unmapped_area_topdown()
+Date: Sat, 21 Nov 2026 19:23:54 -0800
+X-Gm-Features: Aa3M54oyWvj3bs4F65WF6fcW7Mb0TWr88KUK43PO30yLTmdl38G6gNGWPlfj7T8
+Message-ID: <CAJuCfpF4fxuAkuqrhkT_Rp3qaUo7+oiC_CrkYMGJcReeJzo1rg@mail.gmail.com>
+Subject: Re: [PATCH 2/7] mm/vma: lock VMAs before taking mm_all_locks_mutex
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
@@ -131,19 +131,19 @@ Cc: "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
 	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: cgo4pnzo46m9sfmw5sdzwfbfo1aaa4dq
+X-Stat-Signature: xiyn9j4g9daahbe8jafz6n3hjscfec85
 X-Rspam-User:
-X-Rspamd-Queue-Id: BCA56C0003
-X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795317629-564014
-X-HE-Meta: U2FsdGVkX19pIURUgj4mlIeHe1crJheuKIYHrrhU4khy6vkZvAA5G2gQfz6S47FkyPIA19Xf79wAFOMGEWxE9SeDIr3qpy9aEBcEKTS2Bn6dhZK3afOlkNri9EP0mZFUjpAuB/ZmM85MKYOnVW9l+vdrQup16lvr929mE2AEmAYEPPIlnCsXg3G0WV4uwushNP8VzWgJWhHmtratAVuBVXFWVSDzKxj6Ano9MeALowuL0K5VXmQOUfMFaSyFhV24M10jDG/HnM4v2/ttPkFXYPbyyxaVPZEtCy8T5NINNezqpL/3dFRkbDybkR33F34tEN9OPV5+XIvzbpq662aYykuZm+Mzg3mEgG4ip6jTCs8Wj0c+kgJSUioPvx43ABox74PLgHJ5Pz34Cf/SfmMYUQxMuXR1TIgD32RmggPTXrxNZYJNy62tgqpxaD8Oj857VRgyOQasCfv22S46s7F8K5YkD7JMfHimPLapZc0l7W9WzWacCCLnfx2Dp9ShGUPSa5mcHtQz+xRLjBmdYyVlDyrIsqSUx1RULHUtGbGKUNnF8n1p4SNHFn7h/MBxx8+yFicdlswL5FMCLHIbuu99tYrB7rs5GXbm7/zB/YtEcDB6wUQ5tAWsWgf884kowF6fKxhZI5YKNm+zUvaVrrFC3oCUx9j8eIdfeA88k8Q8CE2/IkI+KgLBgvjgJruyuyVn00P81fYmAa9KyQSmT7859xt7v31a/OKV+fekasizSAH4y5QiQkiR2C8lFh/T8lUBWVASGi0/8oflho+MWVQaDMae4JzR6TFs05f3K8Hqg0q/CSn/ChK5y3B9MQWHPqeIqKXHCgZVOGi59IwMZZqrEYWIRXpqalSFrXj7uzcqzedndRSscmAza54IPalrVKXjsV8ow8xkAdqkZppdyxToBZt+VtMDw27uCaZ6xtmGRaDESUH4ytTIuEZwk+eeM1DNyIDcs34kS0bNtO7S6tT
- nVhdJLUJ
- kntFGf2chrBeaZ7qUjRYtJC9gwAxBJ5y8PunJcIAKK3akPc310bT2d297vkfbXpLJ9HgNddBg/XAwILkcXLp2izRMAb7FnqrHlWMlThqEl1Ma87oMBdoLobAOszOkaETZFhKpzRfCi+FE782DXPDm1ad93BU/nRN0rwEM2LBn4L1fqoFARQBKfp54DR40MI4I14fXR/INy72WL9VPiu5OU8zVwvMZBLT4KHSb8PDcNCGdAxXHX6nCGG6rigwO7/3ZIxMk9zpUzI62J9TiuL3ypIDZ9ZIOv9t/WljSiCMGzHVvnmqDfAR0tHewhjUXiWeodQI5RCF11Hjq/F83F8nQLEixd8x56V4RxS5FOjYfkzScTQ9yT/Y+SeGuhuQpX+5N7b3EvRf/bsLo5Bba993odrui7PUv8Jq17IMQQqG+8BujNlSlAwt4Oqp1XsQ3Latpaxlfp7Vr6lWLuhQl4umyOr5qJEHAheNoETK04pi1NPb+9bf8Rs0p27IAMmiYasc07X4I0FZj5vAWuT7voME+Qg1KHWyn45ZizMMqRrILb2Gj9y8rf45HViiiJA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C920E80002
+X-HE-Tag: 1795317846-844189
+X-HE-Meta: U2FsdGVkX1/8+3Q7o2N5DebCYu0DhQRtfYuVAmf4u7ZDZvlgCxZUq3yjY4LE2bAAUkYYV8zaZtTY+USQcXJzYUGHVcKZ+2C1sRMA+Tl5THY3ZqJhUOsFPNmtpAgW/ENP4xQ3bfJNdQLBW7Y1oXxlYOyv63dQkdpskJALJd99Si3f6KucDbATRtwS/ZVqCU17f0w+hIq9Pil01pinJA2k83E+oESwDRMIG5O4Ue3s03VoISrHHs/Nw++40yMjpQZgalc+g8+sSQ69xwUL/CyyjDctHSMxtcaCWHIcLZotOEj4QS0GC+tRfED1YtPpTtT9cuuz9FUh/3f4tIxnGANC/Ve7Plmq4aCPlPeydrDdS0xnSnQgnBiUpmsIIxlYXcxKUxpeTqe5i361ubSMfUWieOqmViWg0eCYWvKn6q1EGLblhbCT5+BOMKELUgVcHjwinFi1Vo5kYI6cP7EqmFiwxSTkiZLh3CMs7SZLbx7PILJK6TdNYlk7t3jIbt6HY7VETyCtSZJj5PagDKeW9jKDpQjycgR0VJspgFliRVYxk4WHe550fSJH2aX25miRUL47qrsZhbHigcU6tC6kPgk5bZN/C+TrfAUMTCNz/Onb7LuM2aDJ3/v6LCv0Um66V7UwSnwURvRBd7En8FQrMyDWLph3gQjk2vsduCL/I02UYCVtBnAG9c9GsrNu8KOow58yQz4Of+eRU8o9OD7lFp847cbMhOpZQRLVahKBFsIH6CcBHa5QkCLLCU8zpVJD0wjq6R8rbJhayrz1p3vvn7ek/zSxpDWz+lrwomy0IJtlkrxBo1ou0YnYZcl7rk66r23es0ez5JgksWnVi/JACO8wXBodg5/I4zKVhuvgLUY6vPkEr99XIs8cmBktRMsEw9986l7LgtCugNcUOGRWngntsx/pUfVeWzVm72akDBDq8Ls9Y197UJ/eL4Jk5m6jk5Om6HWoFDkCx20pL8iTOUi
+ 1ad4Yexv
+ 7F09OgjZJ9leW+orKF/wVNJqXoquDY9Y3UgH59ht2zAG5+1u05TBrcssg6+j/WDEjxMyKu9OwT81ecFfrcxM+6pkAIITABY+uM2OCo0adnDRhEKcvuf/WNI9fiOlBQctRozcrdxHNGOv13lnRYU+FhSVDoapaMsncSNUu2hYNeYiL2v7bAZr7sP9VGvQkR+J+FGmgD6GzSnG2klNrevhlQKIQcLcvE+Qh2yYzCtwQQhYEjd3BqRXque/x17ExA50WhoIk8zM1HYBFGilSqZbN5joHUSwtCT2oVb1XbgLxluSoKb6IlvHowBaMD44v0GhQTcpNZf9mb0TMWnbVWi4rpBgLMW+x4GXOF5sEELrkPmCN5vKHMQzYKVjfWJpSx8D7E4y5RzCKoMO4oHudxw7oK7NaFmJonAHRXNhDgNi/CyzffN5mSrBblQSTaHIho4J5RR1GyIbMR+Mz+zdPt/HW5tyKEZgl0Ws8fCORpP1z7IlRh+fGCtLPqIob4naIw18OOBiWBvZ7P+DmUxX2FY4lDgVBsB4aRRCiFXUenrC2t3OXHJYue3kijn+mwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,146 +155,132 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On Sat, Nov 21, 2026 at 8:03=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
 rg> wrote:
 >
-> unmapped_area_topdown() suffers from a class of bug arising from a mismat=
-ch
-> between how maple tree functions and VMA iterator functions express range=
+> If an mmu notifier is registered for an mm while one of its page faults
+> sleeps indefinitely under the VMA lock, the registration of mmu
+> notifiers for every other mm can hang un-killably.
+>
+> mm_all_locks_mutex is shared by all mms, so its holder must not wait for
+> something that has no bound.
+>
+> However, mm_take_all_locks() calls vma_start_write() on each VMA with the
+> mutex held, and thus waits for the readers of the VMA.
+>
+> Since commit 4ed4379881aa ("mm: handle shared faults under the VMA lock")=
+,
+> such a reader can sleep in ->page_mkwrite().
+>
+> Consider fuse_page_mkwrite(), which sleeps until the FUSE server replies =
+to
+> a write request:
+>
+>     mm A, thread 1          mm A, thread 2         mm B
+>     =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D          =3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D         =3D=3D=3D=3D
+>     lock_vma_under_rcu()
+>     fuse_page_mkwrite()
+>       folio_wait_writeback()
+>                             mm_take_all_locks()
+>                               mutex_lock()
+>                               vma_start_write()
+>                                                    mm_take_all_locks()
+>                                                      mutex_lock()
+>
+> Fix the issue by locking the VMAs before the mutex is taken.
+>
+> Additionally, make the VMA write lock killable so a fatal signal returns =
+as
+> quickly as possible.
+>
+> Finally, update the comments to reflect the change, dropping the lock
+> ordering list which begs for bitrot.
+>
+> Note that the lock order at the top of mm/rmap.c doesn't appear to be rig=
+ht
+> - the hugetlb locks are taken after the VMA write locks. However, this wa=
 s
-> - the former inclusively, the latter exclusively.
+> already the case, and can be addressed in a follow-up in any case.
 >
-> This is problematic with an exclusive upper bound of 0, as it translates
-> to an inclusive upper bound of ULONG_MAX, that is a range which extends t=
-o
-> the end of the address space, and start < end or equivalent comparisons
-> evaluate false in a situation where in fact the expression should evaluat=
-e
-> true.
->
-> unmapped_area_topdown() calls vma_iter_area_highest() to position the VMA
-> iterator into the next highest empty range spanning [low_limit,
-> high_limit), iteratively reducing high_limit without checking whether it
-> has reached 0.
->
-> This can result in a [low_limit, 0) pair being passed to
-> vma_iter_area_highest() and thus unexpected underflow. Consider:
->
->     vm_start        =3D 0x30000
->     stack_guard_gap =3D 0x100000
->     info->length    =3D 0x1000
->     high_limit      =3D vm_start_gap() =3D 0
->     high_limit - 1  =3D ULONG_MAX
->     window          =3D [low_limit, ULONG_MAX]
->     vma_iter_end()  =3D ULONG_MAX + 1 =3D 0
->     gap             =3D 0 - info->length =3D 0xfffffffffffff000
->
-> The result is page aligned and below the IS_ERR_VALUE() range, so it
-> does not look like an error. What follows depends on the caller:
->
->  - mmap() with no hint can fail with -ENOMEM while space is free. The
->    bottom-up fallback is skipped, and __get_unmapped_area() refuses the
->    address as above TASK_SIZE.
->  - On x86-64, find_nearest_trampoline() can pick the address for the
->    uprobe trampoline. _install_special_mapping() then inserts a VMA
->    whose vm_end is 0, and exit_mmap() frees kernel page tables that
->    every mm shares.
->  - On powerpc64 with the hash MMU, slice_get_unmapped_area() can pass
->    the address to alloc_extended_context(), which then writes out of
->    bounds of mm->context.extended_id[].
->
-> mmap() can succeed with an address from the wrapped window where the
-> range above TASK_SIZE is too short for the request and its alignment
-> padding. On s390 that range is one page, so this takes no more than the
-> default stack_guard_gap.
->
-> Fix the issue by converting the loop into one that explicitly tests
-> low_limit < high_limit.
->
-> Additionally, simplify the logic by declaring the VMA iterator in the
-> loop (it is reset on each iteration anyway) and exiting with the correct
-> output value on success rather than performing a goto when an iteration i=
-s
-> required.
+> Target commit 4ed4379881aa ("mm: handle shared faults under the VMA lock"=
+)
+> as this is where it became possible for VMA lock readers to sleep in
+> ->page_mkwrite().
 >
 > Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: 58c5d0d6d522 ("mm/mmap: regression fix for unmapped_area{_topdown}=
-")
+> Fixes: 4ed4379881aa ("mm: handle shared faults under the VMA lock")
 > Cc: <stable@vger.kernel.org>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 > ---
->  mm/vma.c | 42 ++++++++++++++++++++----------------------
->  1 file changed, 20 insertions(+), 22 deletions(-)
+>  mm/vma.c | 29 ++++++++++++++---------------
+>  1 file changed, 14 insertions(+), 15 deletions(-)
 >
 > diff --git a/mm/vma.c b/mm/vma.c
-> index c82e9306b11a..09bbcdb4971b 100644
+> index 09bbcdb4971b..f8cf319ff9cf 100644
 > --- a/mm/vma.c
 > +++ b/mm/vma.c
-> @@ -3369,8 +3369,6 @@ unsigned long unmapped_area_topdown(struct vm_unmap=
-ped_area_info *info)
->  {
->         unsigned long length, gap, gap_end;
->         unsigned long low_limit, high_limit;
-> -       struct vm_area_struct *tmp;
-> -       VMA_ITERATOR(vmi, current->mm, 0);
+> @@ -2375,15 +2375,10 @@ static void vm_lock_mapping(struct mm_struct *mm,=
+ struct address_space *mapping)
+>   * mapping->flags avoid to take the same lock twice, if more than one
+>   * vma in this mm is backed by the same anon rmap or address_space.
+>   *
+> - * We take locks in following order, accordingly to comment at beginning
+> - * of mm/rmap.c:
+> - *   - all hugetlbfs_i_mmap_rwsem_key locks (aka mapping->i_mmap_rwsem f=
+or
+> - *     hugetlb mapping);
+> - *   - all vmas marked locked
+> - *   - all i_mmap_rwsem locks;
+> - *   - all anon_vma->rwseml
+> - *
+> - * We can take all locks within these types randomly because the VM code
+> + * Mark all vmas locked, before taking mm_all_locks_mutex. Then take rem=
+aining
+> + * locks in the order mandated by the comment at the top of mm/rmap.c.
+> + *
+> + * We can take locks of the same type in arbitrary order because the VM =
+code
+>   * doesn't nest them and we protected from parallel mm_take_all_locks() =
+by
+>   * mm_all_locks_mutex.
+>   *
+> @@ -2400,20 +2395,24 @@ int mm_take_all_locks(struct mm_struct *mm)
 >
->         /* Adjust search length to account for worst case alignment overh=
-ead */
->         length =3D info->length + info->align_mask + info->start_gap;
-> @@ -3381,31 +3379,31 @@ unsigned long unmapped_area_topdown(struct vm_unm=
-apped_area_info *info)
->         if (low_limit < mmap_min_addr)
->                 low_limit =3D mmap_min_addr;
->         high_limit =3D info->high_limit;
-> -retry:
-> -       if (vma_iter_area_highest(&vmi, low_limit, high_limit, length))
-> -               return -ENOMEM;
+>         mmap_assert_write_locked(mm);
 >
-> -       gap =3D vma_iter_end(&vmi) - info->length;
-> -       gap -=3D (gap - info->align_offset) & info->align_mask;
-> -       gap_end =3D vma_iter_end(&vmi);
-> -       tmp =3D vma_next(&vmi);
-> -        /* Avoid prev check if possible */
-> -       if (tmp && vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS)) {
-> -               if (vm_start_gap(tmp) < gap_end) {
-> +       while (low_limit < high_limit) {
-> +               VMA_ITERATOR(vmi, current->mm, 0);
-> +               struct vm_area_struct *tmp;
-> +
-> +               if (vma_iter_area_highest(&vmi, low_limit, high_limit, le=
-ngth))
-> +                       break;
-> +
-> +               gap =3D vma_iter_end(&vmi) - info->length;
-> +               gap -=3D (gap - info->align_offset) & info->align_mask;
-> +               gap_end =3D vma_iter_end(&vmi);
-> +               tmp =3D vma_next(&vmi);
-> +               /* Avoid prev check if possible */
-> +               if (tmp && vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS)) {
-> +                       if (vm_start_gap(tmp) >=3D gap_end)
-> +                               return gap;
->                         high_limit =3D vm_start_gap(tmp);
-> -                       vma_iter_reset(&vmi);
-> -                       goto retry;
-> -               }
-> -       } else {
-> -               tmp =3D vma_prev(&vmi);
-> -               if (tmp && vm_end_gap(tmp) > gap) {
-> +               } else {
-> +                       tmp =3D vma_prev(&vmi);
-> +                       if (!tmp || vm_end_gap(tmp) <=3D gap)
-> +                               return gap;
->                         high_limit =3D tmp->vm_start;
-> -                       vma_iter_reset(&vmi);
-> -                       goto retry;
->                 }
->         }
+> -       mutex_lock(&mm_all_locks_mutex);
 > -
-> -       return gap;
-> +       return -ENOMEM;
->  }
+>         /*
+> -        * vma_start_write() does not have a complement in mm_drop_all_lo=
+cks()
+> -        * because vma_start_write() is always asymmetrical; it marks a V=
+MA as
+> +        * VMA write locks do not have a complement in mm_drop_all_locks(=
+),
+> +        * because VMA write locking is always asymmetrical; it marks a V=
+MA as
+>          * being written to until mmap_write_unlock() or mmap_write_downg=
+rade()
+>          * is reached.
+>          */
+>         for_each_vma(vmi, vma) {
+> +               int err;
+> +
+>                 if (signal_pending(current))
+> -                       goto out_unlock;
+> -               vma_start_write(vma);
+> +                       return -EINTR;
+> +               err =3D vma_start_write_killable(vma);
+> +               if (err)
+> +                       return err;
+>         }
 >
->  /*
+> +       mutex_lock(&mm_all_locks_mutex);
+> +
+>         vma_iter_init(&vmi, mm, 0);
+>         for_each_vma(vmi, vma) {
+>                 if (signal_pending(current))
 >
 > --
 > 2.56.0
