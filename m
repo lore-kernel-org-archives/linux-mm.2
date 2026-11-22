@@ -1,119 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3DC606A333
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37372606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 07:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LHuP4vQ0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ep+qtuk/
 Received: by kanga.kvack.org (Postfix)
-	id A14CF6B00EF; Sun, 22 Nov 2026 02:54:01 -0500 (EST)
+	id 50DE86B05B1; Sun, 22 Nov 2026 02:55:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C72E6B05B0; Sun, 22 Nov 2026 02:54:01 -0500 (EST)
+	id 4BEF56B05B2; Sun, 22 Nov 2026 02:55:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B5796B05B1; Sun, 22 Nov 2026 02:54:01 -0500 (EST)
+	id 3ADFB6B05B3; Sun, 22 Nov 2026 02:55:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 529C06B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:54:01 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0293716062D
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:53:59 +0000 (UTC)
-X-FDA: 85461991440.21.616A0B7
-Received: from mta0.migadu.com (out-102.mta0.migadu.com [91.218.175.102])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CD39E100005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:53:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LHuP4vQ0;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 197326B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 02:55:52 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6E8CD1A02B9
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:46:06 +0000 (UTC)
+X-FDA: 85461971532.03.F3A4F3D
+Received: from mta1.migadu.com (out-24.mta1.migadu.com [95.215.58.24])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5B76E180005
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:46:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ep+qtuk/";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.24 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795334038;
-	b=8UQGW9HRfOL77rkGCa+Jr+ZcnbkU+Zi5DwVYuotoEGc7n8FCpRSBwOqI1C+W1zCidiIdUt
-	6UEyckSGA0iKv2k/OjWRJbih/LHVyrZMHSbbaCTtdcxjfp1Y4PoU7g94EIT3Iig/kTo/dh
-	8dTfRXFWtMiOqnhhStwfqQp+8unVi7M=
+	t=1795333564;
+	b=JB+riSXRt8NmRE8jKA2N97ZX8O3+b+6HWtCX91EY4cOlXcTuVgRW3Eg/2kBYG0QFRTH33E
+	gnJxcKBEugCp6C7eRs5kBGGCHez5fIxmjVHlFOZKvNfe/T7ZRIobbC5ZdyMAc8y/ZVL0Oi
+	iXh9TN/JEE8uR/MOEXz9D47ckiAlNoM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795334038;
+	s=arc-20220608; t=1795333564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mOcmoHBzKwzqRhuvzie4cVIDXlVg/sxRWH6argNn2FA=;
-	b=oLj2PCWfBq8HGqB2hTNbf7QEU6pHILVEayi6GEEwpsdc3Q7ylbUe3zM/H1quooB+isxZmY
-	IXR+Uxb9UoeQrjyTEClfl3w7yo1y5DlRu4WY7fHjfhXHjIXGeybL51aIlIh/t8iNKXR2QB
-	KlJppaqlae/TkJixvIw5lbAq/akYg2A=
+	bh=fjN2XrDXoDL6HaIL9EYpcjTaN40VnCpFbTbw1leaE1g=;
+	b=Tswj951ehXhoytQF/A8cvyAYX0RRh26YXaPT2HjymaeAWyXc7HGubHhs1dtXTVORrIZWYu
+	dDxOwhy+WHarUTTGda1a6Xpw4oesOX0rgiD99KoOVKL1zeu8AT0C0oTk8WUq6cJSrmQ8ES
+	ZePqaAxAXt7+0ncFlPesdAf7vJ0iRg0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LHuP4vQ0;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ep+qtuk/";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.24 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=zkTOqn+rNjlOfmFIyhoF6rAk683YaTwi6c+aGGYoa60=;
+DKIM-Signature: a=rsa-sha256; bh=fjN2XrDXoDL6HaIL9EYpcjTaN40VnCpFbTbw1leaE1g=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795334036; v=1; x=1795938836;
- b=LHuP4vQ0LbfH0TkiIc7OPnMdIxBu3k1zCmUWVwzAtOnjVmf0a7rwmnpud7efP4ws1s4i4kHF
- 1hxO0Ln+Tqt7z1JUMNar2v1E2mG9HikoNFNE88J416rT3vWkwiJ2+7S1dIDKNCSy/sr0MuM4ANQ
- MzPpOjU+kVGOeQw/LXMgJJJo=
+ t=1795333562; v=1; x=1795938362;
+ b=Ep+qtuk/XW/3WBXdJc2FfXG5ni5wxOG8njJc02OEXT57/3jHMHHaWIt9HvTyl8sSqIw/eG1y
+ Ogd7q0XaWhZzffdm30DqHZpdTokF7+jmEAUE/7WVfOH4yPRilUe4g3YDIFma+/A+EBcnqrZ4rwM
+ +njendDcKBMg+aCJ6YS+Tn5c=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 862c2fb0d81c39f5;
-	Sun, 22 Nov 2026 07:53:56 +0000
-X-Mizu-Trace-ID: 862c2fb0d81c39f5
+Received: by smtp.migadu.com with ESMTPS id 56927addac11c5be;
+	Sun, 22 Nov 2026 07:46:02 +0000
+X-Mizu-Trace-ID: 56927addac11c5be
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <42207e26-ba7f-4df5-8c80-71fa1b84d26e@linux.dev>
-Date: Sun, 22 Nov 2026 15:53:44 +0800
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/17] mm/memcg: add folio-based lruvec live helper
-To: kasong@tencent.com
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>,
- Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v5 02/17] mm/memcontrol: allow update of LRU statistic
+ without holding LRU lock
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261119-mglru-fg-v5-2-9eee2fe97a2d@tencent.com>
+Date: Sun, 22 Nov 2026 15:45:28 +0800
+Cc: Muchun Song <muchun.song@linux.dev>,
+ linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Chris Li <chrisl@kernel.org>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Nico Pache <nico.pache@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- linux-mm@kvack.org, Nhat Pham <nphamcs@gmail.com>,
- Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Nhat Pham <nphamcs@gmail.com>,
+ Youngjun Park <youngjun.park@lge.com>,
+ Zi Yan <ziy@nvidia.com>,
  Gregory Price <gourry@gourry.net>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
- SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
- Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
- Zicheng Wang <wangzicheng@honor.com>, Chen Ridong <chenridong@xiaomi.com>,
- Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>,
- Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh
- <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>,
- Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>,
- Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- damon@lists.linux.dev, linux-doc@vger.kernel.org
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>,
+ Hugh Dickins <hughd@google.com>,
+ SJ Park <sj@kernel.org>,
+ David Rientjes <rientjes@google.com>,
+ Yu Zhao <yuzhao@google.com>,
+ Vernon Yang <vernon2gm@gmail.com>,
+ Zicheng Wang <wangzicheng@honor.com>,
+ Chen Ridong <chenridong@xiaomi.com>,
+ Tal Zussman <tz2294@columbia.edu>,
+ Kairui Song <ryncsn@gmail.com>,
+ Xiang Liu <liuxiang.277@bytedance.com>,
+ Ehab Ababneh <ehab.ababneh@intel.com>,
+ Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>,
+ Lian Wang <lianux.mm@gmail.com>,
+ Joanne Koong <joannelkoong@gmail.com>,
+ Kunwu Chan <kunwu.chan@gmail.com>,
+ Hui Zhu <hui.zhu@linux.dev>,
+ linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org,
+ damon@lists.linux.dev,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B8BCB9C4-53C8-4D47-868A-EEEA4E0EBE23@linux.dev>
 References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
- <20261119-mglru-fg-v5-4-9eee2fe97a2d@tencent.com>
-Content-Language: en-US
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261119-mglru-fg-v5-4-9eee2fe97a2d@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: q3i1ia4ojw14j86o345c7cdbsy1esjsh
-X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+ <20261119-mglru-fg-v5-2-9eee2fe97a2d@tencent.com>
+To: kasong@tencent.com
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5B76E180005
+X-Stat-Signature: gdrgwn9oafqkc679ds4x1yqi5ep3g8ty
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CD39E100005
-X-HE-Tag: 1795334037-10175
-X-HE-Meta: U2FsdGVkX1+yb5//OP2eYlfu4Hp3u6XIX/F/2TM88V/ETZWAwxesUXkNyAcIZ2hHfxmLo6MQUkVDXaTl943W9FyAfiuAh+vRvyE+JnVJ+pjTcWJfgL/wV+OyAxTBSkUH3SXxKman7Gg5GntO0rrKNb6DpB3D0+Dpdsjqo9u/UH1XjCNmhgQ2xCJyi72noW7COgg+MHsMTL2HhATdb43frFgdCXOiioc+839nZaYnu8YGv8GlCC4p1NBy1HuDrtIHhR6NNhE9/Leh0GqNCwxx+iXm7wnV4w0nA2Oq5L7ZPBstVX2qj8rF21GmtRNbJG2BR7u4eOfuwkdIVQ4O14DE01luvHTM4Jqzm6Q2CstLKwQlirhX1RsJP3JqeHp4NEm/IcDoD5pYtBpSfzA68NNmiukANw5laIxKEbSIDx94utVjtzjNdlndd25zoFV+Gez4h56mrJNfk8qRI2J5bhahHqKjAqIAEkGm5gu99HWXY5V5PjpbSrfBZeTdRDVl/A6VecYqV61yA3WXyOFVluiOXFN2SXjwPLT5Sr8d4FWJ/WwSi6SXNsqYK4Xw7A04wmSsRmoKhmPocVih4ySmHYp42avWgXJh5hzpr0sMWLLU+47Anyf/8M9RujfhRTI9nv3nZ3+KCOyb4KhCTl2q/STIV2a/xxP4HhFyRoQ+gIKVZlz6eo0IStpoOUcXW3GfzeZrEYVOp512rF5GzHWhuxADKCWZ2aX0ZvuIpwJhXBERXCEnaJG0qqVtD8u7Mw5wKsSE7jJ1XlaSCzhxd//MKHAfBOjPxn9kz5/ba/ZVbdgKb0rnf1cMPjKVQ5FiGGQI6HeUJn3NE2RA87MUgqRP5wvS42OlkjYNmCy+cYBX2le0d60HGcS6rqHBvaDyRnYuz73ktXjsd8GBGHdMibGugOvR1FwmxNqSzyqq6sWLPJRGT1FE2ozv7NuAtzXvCd7IvKNFmI+SlH2BmO20CYWu6HZ
- e2L3QFbY
- cM8Z/DzqL7lAW0kZ2fs/vyIjLy9wHj02LeIbqMf9ZhCIQQvEt2ED93JwfHpQJYu3/xMX70ZbKBrJAgp1e3y8uOxin3BjhKp/QgxRSmAHEWLFjHdyJJ2cOjYkkfFF/6Y/N1NDuOJhnFa7EUAU73YgURv/TM7bS4p+U/un1cfUmRxkQpxFWUPTBb9KQJBn9rXNMbSispl21zvLMm43lEZBrpqBJPSow8GWUW/4MKtmtjGInvhR575fiqTdHOwZ1KEib2AzeW1t9Yaj7i6MvJK5rCzWgQhdTOkRgd6/fLUc1BWa6C1VNVObxYK5+N/+mpkT/UQVHRHewufNw3GKxjqL0dqHdtIVUMtggGioHapATc1/nwVfDqRGOvCOttxsRzVfzodN7EZdq7zq2aEbkQ7Bo2HZEUCFiNSOohSSDxnZFIe/0VyUvVB4oWbQ8PCDcuVaLggpuysqWSIcfk0996Ql36f0AASQKD2ilaTJgUZsQrobzaHukXE9YD57nyDHFBItA6oBdhEWyktmUmR5FeHhqmgy7LDL3LcAZTbPPKsF5Q9Lv+g6OknFT+MJABGsgT4zd0uuIM6OXpmrY3y1tqeeGVou6fn/6tdIdAyfl0LIG/uGHyuCdNq5zhitqvFnrgnsmJwKrjqwLqZhXsxw=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795333564-975094
+X-HE-Meta: U2FsdGVkX1/qKTVM1m1eAT9B42d6gZi3MSwZdXjXsJTps2oPLRw+iOWYnfjqEYKOksL8UJKxOBm1DhzDwdz4HwaOX5PyLGxuYVY1iFDeY4MQ+U9jWvkFAhzHVsC8e3Oqbbw3eh2kbylvJCE6s3h/ggZt39aXmW0V+Bqv4tx5IR40XSxxHy6IodZUVootq2oBfhvwcYtcouF9B5m0aRLhLG4lbDdLuM3hjug8Duwa3rBbUd1shuuhqvm02RFTmBkL3kJX+pVWrsy7EaXXWaB7hvnK69+/LCdIOvjuhyqWzGVS3VdESCteUbdOZJdtt1bUf70nxPl66Wy58SQ5dGHZmKUN9Y1z3bOe0MiCZgQroneEMfBIfG7/J/2T4UC3WqBhh7I53loGIU92RcPxVTacj9XsVmCmxylmIa9bxkP1KTTTgfCB4a59tnTAqK3JwKC9un9BQJBpk5fTNfTnxt2vxGLoPjSB7c9rdeOuZ73ychmSVajwcT+B3gm/BqcuYKYeBlsKh2mkWsSdXV7o2VrO7h9gjgn7YAztAdpixqw6S89utB8CfFGbancjf4PVlvD7pDtqCvqqFLlllaXAVZBnYHsKvBPcq+ot7f4Rz3scYEr+XIZAaGFnhemCigVJTpozELJaJx0Ej+jaFwzOqXPpGr9FpfjTh9rf+AqUVuIP1mBNRIVNz403FQuPyW9HUiaGHZN+US5HYv/bpGWtuEVMQSG8z72h3Oc0ucTwqQcy6NKI4j2wO7UiHPN7+6woKuv5dZALln4zHBZjr2nL4in6zN7W04DjYfL7c2wsuMFkvVmVG/HUl/+CdR5tCRwCaOT3Pu0xiyf78Kq1hM7QSqb6ELGM/d8wdbduBM4ZSYJ/UEN/7dChYUjDLOXq+gSHuTKbPIsxNCvCeRPgCszgJGdtim1sK+XfsxUQ9rP00P5IAQwdVVJeuOudbJdAtSCEx7yvO2RNVdpiijSY0nZRtos
+ LE2y/x+X
+ BkKALxq3nRS2oY59MAobf3s0uovnG8/N4CGL6k6DQ2HLo0Qzm96S+6yoxeE2FLDEoLyhuxPS1wN5m21TSrTZ33WRtL+2T1UnUinWE5V5jG5/NOUTOjN9sYoe0+/hfdyc6U3s7o1lzjJ9DLjdAwDW1d983zc456+I07uzXiBsu+ZdxtnFqTTYArE0rMrZXKVxoSa0veKibAyYV0k0Hkms94kulKz71EZn3PqM+Xr3wzR4OoM4UKhoeTfpA0SPhT/hUwODIJ1u3ZF+8JHlycYeLJBOhKqcGaS279eiowz7TmWU/4CBAi0+d0xeR0VPaSa/QQVoPcaPP+f1eduxD1wIQHB70AVlmV6THH2vREA6vLiiRqHgxh2CxbSWJYz/xTjNgDHllcdrrzCfeqLrTP6a8GZocLXDmz4QAEkekzbbEpY07NlISeS6ei3PnQYnazBu/3ce2DLqnj1otjl3mxHICRzuQmtgzMTYtIuBoq8qMgVHX5AxWN/Rm9yfeuoDaqDMIE2SESZiCK66kKBA+VeX1MbxMgY3nBC0CJu2FifdB/IJl8/5O2tr9CuZdn/aLXg69nVyUNZusxEhNPWtMDamEjZ8+8qejWAvBQLuY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,187 +147,22 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 2026/11/19 05:03, Kairui Song via B4 Relay wrote:
+> On Nov 19, 2026, at 05:03, Kairui Song via B4 Relay =
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>=20
 > From: Kairui Song <kasong@tencent.com>
->
-> Add a helper that resolves a live lruvec for a folio under RCU
-> without taking the lruvec lock.  It takes a folio directly so the
-> lruvec lookup happens inside the RCU read-side critical section,
-> which a lruvec-based interface cannot guarantee.  The first user is
-> the lockless folio_inc_lru_refs() path later in the series.
->
-> Factor the ancestor walk out of lruvec_live_lock_irq() into
-> __lruvec_get_live(), so that both entry points share it, and spell
-> out why the walk is enough while only the RCU read lock is held:
-> reparenting of a memcg that starts dying waits for a grace period,
-> so it cannot race with the caller until the lock is released.
->
-> Move memcg_is_dying() up in memcontrol.h, next to the other memcg state
-> predicates, and use it for the walk rather than repeating the open coded
-> css_is_dying() test a few definitions away from where it is explained.
->
-> No functional change for existing callers.
->
-> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
+>=20
+> To enable moving file pages in folio_mark_accessed directly and lazily
+> for MGLRU, allow updating the LRU statistic atomically without holding =
+a
+> lock. It may cause temporary counter underflow, which should be fine =
+as
+> the counter is eventually consistent and only serves as an estimate.
+>=20
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 
-Reviewed-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
+Acked-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
 
-Some nits bellow:
-
-> ---
->   include/linux/memcontrol.h | 71 ++++++++++++++++++++++++++++++++++++----------
->   1 file changed, 56 insertions(+), 15 deletions(-)
->
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 980358bc6f49..441a5d57e723 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -571,6 +571,11 @@ static inline bool mem_cgroup_disabled(void)
->   	return !cgroup_subsys_enabled(memory_cgrp_subsys);
->   }
->   
-> +static inline bool memcg_is_dying(struct mem_cgroup *memcg)
-
-Let's make it const for @memcg along the way.
-
-> +{
-> +	return memcg ? css_is_dying(&memcg->css) : false;
-> +}
-> +
->   static inline void mem_cgroup_protection(const struct mem_cgroup *root,
->   					 const struct mem_cgroup *memcg,
->   					 unsigned long *min,
-> @@ -1349,6 +1354,11 @@ static inline bool mem_cgroup_online(struct mem_cgroup *memcg)
->   	return true;
->   }
->   
-> +static inline bool memcg_is_dying(struct mem_cgroup *memcg)
-> +{
-> +	return false;
-> +}
-> +
->   static inline
->   unsigned long mem_cgroup_get_zone_lru_size(const struct lruvec *lruvec,
->   		enum lru_list lru, int zone_idx)
-> @@ -1510,28 +1520,41 @@ static inline void lruvec_lock_irq(struct lruvec *lruvec)
->   	spin_lock_irq(&lruvec->lru_lock);
->   }
->   
-> -static inline struct lruvec *lruvec_live_lock_irq(struct lruvec *lruvec)
-> +/*
-> + * Reparenting moves a dying memcg's LRU state to its parent at any time,
-> + * so anything added to that LRU afterwards would be lost.  This helper
-> + * walks up to the nearest live ancestor while the caller must hold the
-> + * RCU read lock: reparenting of a memcg that starts dying waits for a
-> + * grace period, so it cannot race with the caller until the lock is
-> + * released.
-> + */
-> +static inline struct lruvec *__lruvec_get_live(struct lruvec *lruvec)
-
-Cound @lruvec be const as well?
-
->   {
->   #ifdef CONFIG_MEMCG
->   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->   	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->   
-> -	rcu_read_lock();
-> -
->   	/*
->   	 * The memcg can be NULL when the memory controller is disabled.
->   	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
->   	 */
-> -	while (unlikely(memcg && css_is_dying(&memcg->css))) {
-> +	while (unlikely(memcg_is_dying(memcg))) {
->   		memcg = parent_mem_cgroup(memcg);
->   		lruvec = mem_cgroup_lruvec(memcg, pgdat);
->   	}
-> +#endif
-> +	return lruvec;
-> +}
->   
-> +static inline struct lruvec *lruvec_live_lock_irq(struct lruvec *lruvec)
-> +{
-> +#ifdef CONFIG_MEMCG
-> +	rcu_read_lock();
-> +	lruvec = __lruvec_get_live(lruvec);
->   	spin_lock_irq(&lruvec->lru_lock);
->   #else
->   	lruvec_lock_irq(lruvec);
->   #endif
-> -
->   	return lruvec;
->   }
->   
-> @@ -1561,6 +1584,34 @@ static inline bool folio_matches_lruvec(const struct folio *folio,
->   	       lruvec_memcg(lruvec) == folio_memcg(folio);
->   }
->   
-> +/**
-> + * folio_lruvec_live_get - get a live lruvec for a folio under RCU
-> + * @folio: the folio
-> + *
-> + * Same as folio_lruvec(), except that a folio whose memcg is dying is
-> + * accounted to the nearest live ancestor, which is where reparenting
-> + * would put it anyway.
-> + *
-> + * Return: the live lruvec, with rcu_read_lock() held.  Pair it with
-> + * folio_lruvec_live_put().
-> + */
-> +static inline struct lruvec *folio_lruvec_live_get(struct folio *folio)
-
-const folio?
-
-> +{
-> +#ifdef CONFIG_MEMCG
-> +	rcu_read_lock();
-> +	return __lruvec_get_live(folio_lruvec(folio));
-> +#else
-> +	return folio_lruvec(folio);
-> +#endif
-> +}
-> +
-> +static inline void folio_lruvec_live_put(struct lruvec *lruvec)
-
-Ditto.
-
-Thanks,
-Muchun
-
-> +{
-> +#ifdef CONFIG_MEMCG
-> +	rcu_read_unlock();
-> +#endif
-> +}
-> +
->   /* Don't lock again iff page's lruvec locked */
->   static inline struct lruvec *folio_lruvec_relock_irq(const struct folio *folio,
->   		struct lruvec *locked_lruvec)
-> @@ -1826,11 +1877,6 @@ void mem_cgroup_node_filter_allowed(struct mem_cgroup *memcg, nodemask_t *mask);
->   
->   void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg);
->   
-> -static inline bool memcg_is_dying(struct mem_cgroup *memcg)
-> -{
-> -	return memcg ? css_is_dying(&memcg->css) : false;
-> -}
-> -
->   #else
->   static inline bool mem_cgroup_kmem_disabled(void)
->   {
-> @@ -1901,11 +1947,6 @@ static inline void mem_cgroup_node_filter_allowed(struct mem_cgroup *memcg,
->   static inline void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
->   {
->   }
-> -
-> -static inline bool memcg_is_dying(struct mem_cgroup *memcg)
-> -{
-> -	return false;
-> -}
->   #endif /* CONFIG_MEMCG */
->   
->   #if defined(CONFIG_MEMCG) && defined(CONFIG_LRU_GEN)
->
+Thanks.
 
 
