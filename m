@@ -1,99 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88035606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4563F606A32C
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 16:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=od4mp1lj
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e6LvUN2B
 Received: by kanga.kvack.org (Postfix)
-	id A5F3C6B05B6; Sun, 22 Nov 2026 11:04:09 -0500 (EST)
+	id 4468B6B05BA; Sun, 22 Nov 2026 11:05:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A371E6B05B7; Sun, 22 Nov 2026 11:04:09 -0500 (EST)
+	id 3F79A6B05BD; Sun, 22 Nov 2026 11:05:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 978416B05B9; Sun, 22 Nov 2026 11:04:09 -0500 (EST)
+	id 30E316B05BE; Sun, 22 Nov 2026 11:05:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 79CD36B05B6
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:04:09 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 06F7F1606C4
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:04:09 +0000 (UTC)
-X-FDA: 85463226618.13.CF76327
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 55EEC180010
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:04:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=od4mp1lj;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F02CC6B05BA
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 11:05:33 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 814E8A8050
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:05:33 +0000 (UTC)
+X-FDA: 85463230146.28.32BEC39
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BA99740008
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:05:31 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6LvUN2B;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795363447;
-	b=GmfayLC1zyYA+3C44us29vxj0NCacWN5OMvAzS/IT8pH8yDLagNj8DmJZfbKCvH96Zwe2w
-	M4SFRw0JalRjgcoivrPFLHw2oGHxlax6sSJKpmF6CNfPxdPF4Htnogdq0w92VcaJSHNK5I
-	zr4eeIFMuYQrNcHqGlYL8uApxK9SZ5Y=
+	t=1795363531;
+	b=wHnnhqC38jB+2xexofRRUTrYN+xuAlDgh4URaB2u0VM3MBkYeQpM4ZM/FmjoKqm4fn7kA5
+	2xuyAvkbVNjzpz13yRsf5uUzOG8TjaI/iliZn+El1mFqAQ2m32V6D13uLQJMHwpcMRBhs4
+	+RAt+C44bm7W676+QJ+rWRE8+nA2G6c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795363447;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1795363531;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7u5y5zGE2Pf7qEYb5K9ZeD/3c+cJ1a9rZgL59c6k4rs=;
-	b=WEX91AdCxdjlm3ilZIKEV0yeLF3DG9Cj8Iz92tx7NVBP8tK+TFAtHYl3GtItqsdTUwsdZM
-	XJZC6v0dSrfgjV3rXzMdL8eQddU1VQBEWz7209DLYbDFsP2rDWvlUgkv7QnuDCQoHFINs9
-	HUfa0qfGjVVmEqubAFiqodF8mywXoFA=
+	bh=bcYPGhhNRQkPKiAevxXV6mkoY0yLLDaPyFoFmXuKLVo=;
+	b=g+nlyGTJpo8o95DqCOufO6UEQYby+VSel2mEiHfVk/OnE2o4p9csLkCFc6mZ3ywViASnXf
+	Z1QBTP6UvZJxmb3FTlYBEPmpKAGCipCqs34b16B+33fDXU1+QaHoI1FZAhCR5Cf7n0k2+E
+	d7fsqofhYdmMJatFmb2NdUiqXIwwVTI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=od4mp1lj;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6LvUN2B;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 87AA243F4D;
-	Sun, 22 Nov 2026 16:04:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F131F000C6;
-	Sun, 22 Nov 2026 16:04:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4606661874;
+	Sun, 22 Nov 2026 16:05:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F4D1F000EC;
+	Sun, 22 Nov 2026 16:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795363446;
-	bh=7u5y5zGE2Pf7qEYb5K9ZeD/3c+cJ1a9rZgL59c6k4rs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=od4mp1ljvGcVj0ltN6nuQcczVy5x7E9Ygo2gNUzw87mPqrpqxa7/rQyKHtfj5NUXJ
-	 hRGOwMO0UVjL/rS1fOkxvApHcPWxG6HpuoEB4nWXDc8ibM1E/JV7e6kRpNJ5zTFwtM
-	 3CwrdEnbhKAZWQkyH5F2lrkgLTPSqUy0W4unOqCUMJYHYSe+KeGtMOeiEWM+k8NahC
-	 foZgud5H2kpqKlmpTl4OFblaNm9RElfcVhbfgF5+JIBIu71S/OMd4eZyO7rSr//qp2
-	 D1O2TyZsi9yS6yfSepCI5lK/k0bU1BT8kOacrW/XdhgJfXi13q1BgcPm/lt7BasZgm
-	 kMTRmMssDkmxg==
-Message-ID: <sashiko-outbox-228074@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/7] mm/vma: fix uncharge after failed stack relocation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, "Suren Baghdasaryan" <surenb@google.com>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Pedro
- Falcato" <pfalcato@suse.de>, "David Hildenbrand" <david@kernel.org>, "Jann
- Horn" <jannh@google.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Kees
- Cook" <kees@kernel.org>, "Peter Zijlstra" <a.p.zijlstra@chello.nl>, "Ollie
- Wild" <aaw@google.com>, "Adrian Bunk" <bunk@stusta.de>, "Xu Xin" <xu.xin@linux.dev>, "Chengming
- Zhou" <chengming.zhou@linux.dev>, "Mike Rapoport" <rppt@kernel.org>, "Michal
- Hocko" <mhocko@suse.com>, "Hugh Dickins" <hughd@google.com>, "Joey Gouly" <joey.gouly@arm.com>, "Catalin
- Marinas" <catalin.marinas@arm.com>
-Cc: linux-mm@kvack.org, "Chris Mason" <mason@kernel.org>, "Josef Bacik" <josef@toxicpanda.com>
-In-Reply-To: <20261121-some-more-ai-fixes-v1-4-236e925d9b64@kernel.org>
-References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
- <20261121-some-more-ai-fixes-v1-4-236e925d9b64@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 22 Nov 2026 16:04:04 +0000
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 55EEC180010
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	s=k20260515; t=1795363531;
+	bh=bcYPGhhNRQkPKiAevxXV6mkoY0yLLDaPyFoFmXuKLVo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=e6LvUN2Bfc5dLrNMY5ZDTuCQCgxrj/lFy7kFVIfMpe5Mm3kjCLj7cEkYFhpx9l7JG
+	 W9knIw2yKLc7bB2UbxkaUveTlMpYkI+UMuQN/Jl48kIX1RjLYalUst2zk7/9nHY2Yt
+	 PNBpVWWC2G2+X+G/e/BYNsukReSIXWO+KuqxOW/EuSBC92dbnrMLSsxsoHByR/Se+/
+	 Mxv9x/SLBlbiArTACoe3CmKbfFWiSS2jDQ70041SY2KHJMWSFp4wthwODCveiAP+/f
+	 ToyAmrrvnpyxAxSe4+jLLM9B2tbstPwFAT6USDQAbBq6mRpGj4wIVy+ZBW1QjbjIBj
+	 w1mX9QpnylTig==
+Message-ID: <e95ddb9d-4608-44e4-8602-2b07ed656901@kernel.org>
+Date: Sun, 22 Nov 2026 17:05:25 +0100
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/7] mm: let vm_ops->open() fail for hugetlb
+To: Josef Bacik <josef@toxicpanda.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
+References: <20261118-b4-vma-open-fail-v1-0-c8b0209f2700@toxicpanda.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261118-b4-vma-open-fail-v1-0-c8b0209f2700@toxicpanda.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Stat-Signature: bfx9yazhcbriyy5h94hd9cm8sok5d91c
-X-HE-Tag: 1795363447-804213
-X-HE-Meta: U2FsdGVkX1/T1urEhSCzgRFRNtQd7OeKlGTXdoEbJkq0zVRESAGDRw37r9zgpzE5QyqlhxQqePlHWdLqEtX4bF8A5ba0j6B4COEMS2m9APDtirXYkQD33bXUTfKDAGFNwjlbfocsh9HlQDHYtHhAtbIQ1DR/61InTr46Y96s+dc7n0s9XIaa5OtXRxNj1mY7zZ8sam15S3jAjptxriiIW5L8KCdXRUaFIBsF4D/Na2aDwjCDj60bCY7ZCRtX7gPGONv4a2xdltBsB8Q6ld32eerAIZ6d7fZN97Tp0GJ0IZd+5njlN+Z7zufl2MKRzD5TER6QcR93+5sEOpVNaApkFoEywZwVWYa0+oK/bf4lC0jueCuB68BG7GNGofFXf09i2v6kxmR51GF0aJhNTF+t3dDbdHddoQHsjNLcgXhkrEHDmlcTQTChUNAsaNHGV8m4L1+57SM29660nNlYvxELSzjqaRV+3wy+zgBX7Y8dMQt7pdkHYZJYRtEawqYl18yZrUDCxnoCkMK35Wjyf9OZ/XNCD1zFZ0YRtqAuFJ8GxexOxs7Qoed0tXZZqrSfczGIBs0XPw0A2jufVrhxN7f85tdI/n+oWm6Avlod6Fexu5mpzQTyu6cxxlkzF1OoGRNTAXh13PKy06e1KnJGonINCi23gnbd7QMBAAp9k0w6lzE4h7LIWog46HWdMxw5hcIsgfgUagz5yH9OYnDbrO9obmB4mr5Pii0ye6slN/+o7dioI5tvTHULFE+M+SXIoNbEJCCadQF4a8zsr/sgCCSjByu6MLY1jm3bUxBgPCU4Hw7ts1LPwlVJQAR6ODcOTO7Oi9hPDoTf8Dx7WVOnpq/9gud2fp30QXBGpS3/TnQghP49eqtUQNcka3Wjm90zrG+B2yhlbgtDk3p6mW+tHgqkml2p9DBeO9QNSBVOlgQsZemCZjda15+nWtwi68gt5hgVF29iXxISIJzKW5KrkKF
- DqsuE18Y
- xUofLnBgJE6/lbBZPVU9z4L3tnVDFVOpck/wlBqMcXoj0pUx3uAbDnjMo8WzLD+t/RZQU+pCXi5GdwVg1NKEEGNQobLPiARiW5MkBe+Y3USnrU2KYe+9i4WR9QIBx5JR6Nfzau5wHVXLk4YkP+ItMBLTu9o51sEsGCuNnjFc2IPawP1gigFuhuTxnfgBRO+U7mP0nBr4CVsokkBBqqIubXBaIc3msLZR1fphXMNRn6t3HoZKFSswCus1ygP940HZInXiXG7Y/x7BS2GD+yQintFSFRKVZdbiF0vezHbWnetrDQBpxnaMd/K2HfE+w1y5Jsk9rIVF2FsJ/0PWpZmQoYGoOGpexNDmKD7IACHjDb4u5QMM5tKOMsWa/ITmzdsyld8zr+U0W9l2NxN4My8vri+UcebGxMv6OUETa++QvPSGXLWm4dCGLF6KUjLmwYVePiOAyvNO+9h9nqtePEKnaC+EoWiGaVvtv9P49GI+ln3DB01GoWbnB+C6bym2IOC+tRO0vycIrV+tTIYYmxradX3/Q+zOU0wLI4YdNKf2GQaVn6QOC9vvptDyzw1Oc8w0sKmXLsOQBfQloJRz6ULS+qlkHb3qG9VW8QLjkNHMUoK2QK6J0OGidYu5g6f2OnRART0sCvReo99tIczMAM1oNDEsH8HebXxIpV95uJq6u/ovJ1NewO/APug8OfBZpYXa8kMpEwGdICy7yd6sRZRUqAPtpAKTt/rUJ7CslSQRSrBeCSdsiPJXgMXGO5UvvAX+TKMN6OBDP+1IonMWLm5HxkQgUoR4nSYdkXDj4CakhVX8amCI79syZIIDUeo/kQ25uwKaRfXc+ZY5OqiTSIGjyEhgXACloWXNplBlL
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BA99740008
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: 6u973u1ngtt61sgxob3yhud1d38854mp
+X-HE-Tag: 1795363531-813171
+X-HE-Meta: U2FsdGVkX1+goOVz81VaUILsXUjz6I8jybCM+lvPztv5wmQbxZZF1MMMHUQZLlSr30I8GEpmuElDO2xluW9VcI/eTF4CMS1MIQs3faPDzTooe8GlZsq5AdZvF8zZoxJqwyrFifHrxBemabLC91PoW9tsL2MqHoxH5KDg8Z8Fy9qIwJkcirKwnM4imLifMPiliyAZOy/ufMxTp6/J3kFqRBnM17HIGakTCkEzDqDDcwhxBp4WU7RI4pwq/rgo3sIlBdA22KbeEL2YQnrzGsASL1fq8Qwy/f70ZcUZYQEvsecU2+AqIOBEXnlK4l4/i/Se84JHA5WmM375syZvREqVnSUJX9Nb61QHmzqElqGGQGq8dTKR1C4KDAvF8flHLXBaj3hnaW5u60DiPiNNTN/VLetOd0N0dU/hvrGnfeh1hhcyOOpjT8GVHfSYPtt49DT0coB4PAhb7OnXtTj0uPi8mEoDW9Si2q1T8Prn9HSIHj3dz1d58ZEe/kWhmqGH8/uqpDP4pT2inVJFMOefc1hHkchIdrNAeMP0yedpGhLgLA6w2FNdQMvflyTBr743RW7IKUid4TnTsJ1jArHLJerlL/Kcp4ABR+89Bidqr5fZHaR8+kvf7FbGo71E3qohW8Y47me8ELVpVzj3S1BCd8kbZYPipMSGSal4L6OKMNV3xRLhOESMJ2Hxk4QGdTgZ3NJsgowusJmHbDRnwkLJwA6ll/8G0sjMxkYCWwqdF53yhgqzV1Q5HCOxw+wbdTvi1A9dFTtrSev24JWc2b+RHjCn3MlfmG5xN4YvhAlwXlBpa7jGdTC70Uw6nQUT5qFTRooCVtFmvk707zTiXjR9eWxBH4v0BbAvHjKH1d+90bYMBhY4LpDh2VIY7VX/nG85bTB5C0om9WzTCm1Vi/sLIoOXI6xByasEcdy5pQxWfNjDI+XLEYQnyuHgbODVU3Ub6qYYgogyKGPM9EXARE9svzF
+ dGskQkyH
+ 5Mc98M/4J/a28VUldpE2Rd5V7LTcdatdMvFBm+FRDnmKxcYOb5GI4mrrodDZXR2fs7Qt+F0gWydenvuHRGZrGexD7CzSYQ2GoLMP3DDLdvohG4OhzhuR3rKVxR0DV2hGX/lLMPAQuKVSOfBCbNG6N5a61tp6j/z5kXBgB0GCRSZlptElCbnZy8ocTu7rPKnKhwQZFhj4ZqVX4VK693KLRWsVQebyuarh2JClu3e3nvCp+xH5z94pJgIWmv70J2aw3avYOL2jXHi8JF4MI4AfPy7xiGXAIl+xlTMGazXlYGmyUT0j2ijR11T2qqg4GDfjiE+Hprat8vdYkoTIOMWXNtRWE/h17BaHhjRNtuwqkn386jJafBWAH8o5KmWwA1bEWgqu0Y19U1EE/ti0rk5si1GNSmw9Wtl6g03UU378vmaM+qiZrYCoEnLXYSirkRf/LPz2G72O2DP5bO9xwPT1OZ8mj65XGEvGLrnm+6kzHDuH+gwcyYXUr6iHqCb9BrfavuZ9VBHgqlZ5o6jrnTOVXRwJTlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,91 +142,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] mm/vma: unaccounted writable VMA left mapped after
-  relocate_vma_down() fails
---
+On 11/18/26 18:00, Josef Bacik wrote:
+> Hello,
+> 
+> vm_ops->open() can't fail, so anything that allocates in it has to hide the
+> failure.  hugetlb is the one I care about: if it can't allocate the VMA lock
+> for a shared mapping it carries on without one, and faults can then race
+> with truncation.
 
-commit 9c6f7e9f77d24dc1b72d41f3c440f1ede99ab822
-Author: Chris Mason <mason@kernel.org>
+I'll leave the final decision to VMA maintainers, but for me this is the right
+thing to do and I'm sure it will come handy in the future.
 
-mm/vma: fix uncharge after failed stack relocation
+(I have the faint recollection of people having to work around ->open not being
+able to fail in weird ways.
 
-This commit uncharges the initial stack length and clears VMA_ACCOUNT_BIT
-when relocate_vma_down() fails after expanding the stack VMA, avoiding a
-vm_committed_as underflow in exit_mmap().
+-- 
+Cheers,
 
-> diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-> index 586c521559424..84b98f1a201d7 100644
-> --- a/mm/vma_exec.c
-> +++ b/mm/vma_exec.c
-> @@ -45,6 +45,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsig=
-ned long shift)
->  	struct vm_area_struct *next;
->  	struct mmu_gather tlb;
->  	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
-> +	int err;
-> =20
->  	BUG_ON(new_start > new_end);
-> =20
-> @@ -68,8 +69,10 @@ int relocate_vma_down(struct vm_area_struct *vma, unsi=
-gned long shift)
->  	 * process cleanup to remove whatever mess we made.
->  	 */
->  	pmc.for_stack =3D true;
-> -	if (length !=3D move_page_tables(&pmc))
-> -		return -ENOMEM;
-> +	if (length !=3D move_page_tables(&pmc)) {
-> +		err =3D -ENOMEM;
-> +		goto err_unacct;
-> +	}
-> =20
->  	tlb_gather_mmu(&tlb, mm);
->  	next =3D vma_next(&vmi);
-> @@ -93,7 +96,20 @@ int relocate_vma_down(struct vm_area_struct *vma, unsi=
-gned long shift)
-> =20
->  	vma_prev(&vmi);
->  	/* Shrink the vma to just the new range */
-> -	return vma_shrink(&vmi, vma, new_end);
-> +	err =3D vma_shrink(&vmi, vma, new_end);
-> +	if (err)
-> +		goto err_unacct;
-> +
-> +	return 0;
-> +
-> +err_unacct:
-> +	/*
-> +	 * The vma now spans more than was charged, so exit_mmap() must not
-> +	 * derive the uncharge from its size.
-> +	 */
-> +	vm_unacct_memory(length >> PAGE_SHIFT);
-> +	vma_clear_flags(vma, VMA_ACCOUNT_BIT);
-> +	return err;
->  }
-
-[Severity: High]
-Does clearing VMA_ACCOUNT_BIT here leave the expanded [new_start, old_end)
-stack VMA writable and unaccounted if the task does not immediately exit?
-
-When execve() fails after bprm->point_of_no_return, bprm_execve() sends
-SIGSEGV via force_fatal_sig(SIGSEGV) rather than force_exit_sig(SIGSEGV),
-so SA_IMMUTABLE is not set.  If the task is ptraced (for example via
-PTRACE_TRACEME) when a memory cgroup limit causes move_page_tables() or
-vma_shrink() to fail with -ENOMEM, get_signal() intercepts the SIGSEGV in
-ptrace_signal() and the tracer can suppress it by resuming with signal 0.
-
-The task then survives in userspace with an unaccounted writable VMA of
-size length + shift (up to 16 GiB for 64-bit tasks or 128 TiB for 32-bit
-tasks on x86-64), allowing anonymous pages to be faulted in without
-charging vm_committed_as (bypassing vm.overcommit_memory=3D2) and
-underflowing mm->total_vm and mm->stack_vm (which remain at
-length >> PAGE_SHIFT) if the VMA is later unmapped.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261121-some-more-=
-ai-fixes-v1-0-236e925d9b64@kernel.org?part=3D4
+David
 
