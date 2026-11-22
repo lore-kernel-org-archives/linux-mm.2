@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BB0606A696
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9D0606A690
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 01:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e2GoX14N
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dz/4YhIh
 Received: by kanga.kvack.org (Postfix)
-	id 0D1CF6B05C6; Sat, 21 Nov 2026 20:19:21 -0500 (EST)
+	id C91B56B05C8; Sat, 21 Nov 2026 20:19:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05B706B05C7; Sat, 21 Nov 2026 20:19:20 -0500 (EST)
+	id C69136B05C9; Sat, 21 Nov 2026 20:19:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3E8F6B05C8; Sat, 21 Nov 2026 20:19:20 -0500 (EST)
+	id B7E726B05CA; Sat, 21 Nov 2026 20:19:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B36CF6B05C6
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:19:20 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F0F8C063E
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:20 +0000 (UTC)
-X-FDA: 85460996880.21.F46BE37
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 843A96B05C8
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 20:19:24 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 13EA11A04D6
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:24 +0000 (UTC)
+X-FDA: 85460997048.30.7BF5DEF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 73C48180006
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:18 +0000 (UTC)
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6711E180009
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 01:19:22 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e2GoX14N;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dz/4YhIh";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795310358;
-	b=aPkmZnQo4A2gkhrONEYVJUiXW5yZK3LkVbviYItuuL2kuM5Qy5/hnQ7TQvZ8ml0xNRACtK
-	GWSu83OZ1z0u8Yr9eCL5qHfa4jPRA7qXqx2f2097QbbTwTbxoy4dQr61osxqYO8tFTLE7G
-	ES/rcAJuvUuMamXlgO/ycPqvUQywU6g=
+	t=1795310362;
+	b=zILqxdDF8Gx/qRg7RhZ/e0PxLlZdVWVhfetnr9qc1C3KLzVIxKVA3XzkXAG9UCOlk8AAfv
+	SI9JKLlNY9MzDn7pz0sTIRydTrfuTs0CUedqX55/wF51+jfzdDEOuzshAsU+uTj1Pg/uF6
+	ste6+JewpfglcT2axCS3ba9g0Eczm+M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795310358;
+	s=arc-20220608; t=1795310362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bc4KCqTCCvqKRhvZx+lV6nXL57V09zR0YOdKWGFcYhA=;
-	b=iNUmR4/GBqpeYVjdQGvXnw9TN6WnAM9QEv8uBzSLFVnsY4o3AezxMfdOGcFcUyHFWv/cfG
-	EMuyJKdriVGJ1YK5ezR2QIUhgkfhs4c/OCDAfwTjXIS6hR9a2ou6yCfjHzSHLxUvEmqEKa
-	uqp1o+dJ2NuILAiyoi68EKVLCjsYUi0=
+	bh=RAXPLGk4ldTVweRjtypyvQWpm01HWBNWEtkTkkZV0Ks=;
+	b=aCQSBAQWIQRv4SF8JI99GUxhTObz+ADJd6UNoPlqusdp/OvF3M/Yn10AxhitBhwbAOQq1r
+	nywyE30xZkrGsqaexfckn2UkYUY4uLuX7mwz87rO51B0wW13qHB9K2UdJVac2GD2myojNK
+	/j2rLYGigql01ByfkbldmTxlJrYMR1g=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e2GoX14N;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dz/4YhIh";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id BCB8E43C55;
-	Sun, 22 Nov 2026 01:19:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id F09711F000CA;
-	Sun, 22 Nov 2026 01:19:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 9B2C940723;
+	Sun, 22 Nov 2026 01:19:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id C9AE81F000C4;
+	Sun, 22 Nov 2026 01:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795310357;
-	bh=Bc4KCqTCCvqKRhvZx+lV6nXL57V09zR0YOdKWGFcYhA=;
+	s=k20260515; t=1795310361;
+	bh=RAXPLGk4ldTVweRjtypyvQWpm01HWBNWEtkTkkZV0Ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e2GoX14NlATm1xCe8kfL8b13V3o4ev026JjDpzRUVhQrAW4ge8mPmgOt0siXlM53b
-	 GOCBuE3fvx+EN1DyFout1BBt4pYYKtUBG/u7HDwO8xEx9AwajQcgXyYHooNTFr+894
-	 nh5vlspqdYtceJfowBfHcHkr0qq6ytTqL+4PE9Aj0RiQ7h4qJU3JsEMiSPGJ4kFbOy
-	 7EpswnvEAO+OhQ/TYe2KgiIU8Mf/OdD3IAdY/5WNty+4i9MqtSdCp0VHRlq+mKuT5v
-	 XVkYiSbeufsxkHrL9yM/gJYkBEPaL+cMURtT5/HuKJuvB4QsYmeoxn5CPKYBxCKVUo
-	 5KDKoRMg8HVvw==
+	b=Dz/4YhIhwbfL7TBgpLOYcylHoSeC+EfOHizQxdnsHkkOkMt8dmQPqoFCuUqkozR/D
+	 Ms9eeSCO9jU09brnBXTvHR8rTFC+YaPSbPtaS0Fp3UD0xZpDqjlYwLFsZVvI7cJogJ
+	 zP54NVWr2/eJab+dPmKx2QKMmua8/q3GNiHGjOqHHETgHjx1gJ03D5+3Rg/37LSUgH
+	 o3rzBgmcblZ5FaJs8T+Kku3WVSB/72I7DwwvZ2jaqT9n2mrLElXIG9YzMMrl/GsZnY
+	 0k0iaQ7jc3K4+WNUvL9r/kw2Fh4CYRr8g9YB+JqSIj9hG3B2SzE1tkWIt9FNRIQ8XB
+	 QgSw7hVxu2wQw==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -95,9 +95,9 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Serge Hallyn <sergeh@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v6 15/26] exit: Support P_USERLAND in waitid()
-Date: Sun, 22 Nov 2026 03:17:58 +0200
-Message-ID: <20261122011809.2667684-16-jarkko@kernel.org>
+Subject: [RFC PATCH v6 16/26] signal: Support userland fds in pidfd_send_signal()
+Date: Sun, 22 Nov 2026 03:17:59 +0200
+Message-ID: <20261122011809.2667684-17-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261122011809.2667684-1-jarkko@kernel.org>
 References: <20261122011809.2667684-1-jarkko@kernel.org>
@@ -105,17 +105,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6711E180009
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 73C48180006
-X-Stat-Signature: yf1mufobjfhn5wuj9xt93xmeemchhdad
-X-HE-Tag: 1795310358-137875
-X-HE-Meta: U2FsdGVkX18tKhb8OVMtZ2urEyJPkZZrmEpr0DEwHLWOrIsPVH8TRg8ImrjyfWrtgBptGQZAYF8NZ0U+s5C8WAnRQ9DbYrI2lbGz3ymSjekge1ICzCPUo+Hn/9uJIDKes4I0S8O0q/L/nxopPYheyl8xMqbVMexREJWcxeiNl+V/Gh6dWZwZDRU3Ds4lSaUL9Eokp0YKWlQbek06LpVN3U4Iu1pLqiymNreReQ+aWHQKTHwjxd8KMSXX4OZNtrr4D/xnJCQRc/53zKsw2Muy0N3DwWkOsdpQYtJRM0COcRZ3o4HXr7cfcJji+8SxTL/ehbktynF04OSHkdjbnOjexeKgwTJIPwMaH3Wi11gi/GZY985dbrv9hoZGC5z6rjapTJ1gFqcmNUBs5bXag+FP0BnWTCIMThchOMw9sFwMXocyeJD07PU1LabN0EI7krlodz0i2UuEy8ZvaPt+gjSlu/+WoES6Ev/EOgNscybmd+10YCMXw4tVtczjWwqWA5BtXvs9yn6swFRIEJ6uahVsFZkPP6GbzhfACav0e/BuCUdCWdrJ2u+BE3054fYAm1EGXR+vLPY1ftC5eab02FHIgDoFXv45GPHlq7FnP/yV83EO3FkEb+JMWkRQl5HLPPEDlJcA6ObWvcepmHNtrPDA4CDBBMYryDafqxXKlWwMxXXeRouX73SKCgOHZHXfkOT4dBJeNftc4SbmE5FlFqqQCYd+BCGJ9iJ/7/LA+ObPMTKLU1j5Jl/qgOduWpsCbf+2Mn0cFE+li0Pd0FngUMCauXI+LVVHwYDoq8og87u9s9wHavoJOfyE7vlUhmnDOqJ/RQWvaB/xGYgb6YMEC/k1PZoZeBmo2kvdkUNhPe1l2UTN0YWNl6Nxgw6DMDVrcr6OJUODpHadM9TYwjxBZ6r/EqG+mynGMEGECKhMEnA+4QBQc6xRWAgN5d3pqbfDNui31EpheVzUNKOLL2ydyjl
- M8yeZYI+
- E9UdOSCFbhVgjE0jpfcUy00v57qdsV1FXaF1QoGKNCqpLPTFDLJ48pWc1rVgQkGBNaG9kxpuiSMuA3spqd+L6MBgUxtA0LCMjaEHF3hqaFtfREgOrEy5yDfzerKkz7YcQrXnX3snv1D50TrzK5k89XWEeaqyti3qUPZ2sbHRYlvh77SebIoUDUm1e2eEoCt5r5nRCNIVNL/7WT9mgn30JjPyOAw0S29doO9v59R461KNaHOq9a0lSab/yU/Fq2Ler1xFnRcwR84S4+Xvs1MU8bv3mObhcjde3BXntCKgCvqysPQYG6wly3bXWkz5CHsVWpNpGB4rNJSmhI3d+KNWiPX+a5CKfOQDEivp75Xb5u5CjjZzPsnSP0j6znoHswAMxRyNEhrkb4Svf9TVUGgAdSEE04olRnojULEh70XLG3/VH09tMhz6+B1dbwNFCIeyOl/qFB/buWk7NRotk80qIhKX7PF6By/mKFcsxPtH5V6UkjAI=
+X-Stat-Signature: sxzr3fr3kff4hsyuwkdobgcnd6faetpr
+X-HE-Tag: 1795310362-560323
+X-HE-Meta: U2FsdGVkX1/+47+f+mcdsRRp+SWdZaxX37SHgumnQHA26YHLBnGmkUPeyl1GRrtE3uvc5NuCEGkHtsXw6JfcOrep5TreS+4SpongoLh2tdyyTrr0HvD56klgivylMiiPWqBlsxz7U+iu7wmgLP/2sST9wRHX3EtxXzVf8qEj/WnufFcQdyIlan+37k7TzVqpQnr+cOI4yHNgnEu8+R06NzyGciH5h5VHsd9s/eDbJQKxNr3VSfqyDqUsnfNIC7d0g9EvZH/jwUu6QkcEGajQQTZbuh8xyusQ7O6UCp1xqJVQCxd9yoWwPq5E723tckcARKKXz78abjREiSp5A9ufSUBJh6YqwCa7aZedXOt2rRqc1gyPkYDeOT3ibV1qVf2IFGJ6NbqTa3t9McXFtRopClC/YWAw6ucFj5x8RXrRc1C1Qu5N0iDu/cnUUavJjJZlG0WIymktiF9CVMg/uRR9HJD5A+bwHIbC3iM5U2ndO2wZRLuQx1vlCLmnzCfKsHekwKnrwBNIdYJVcNt+Qta839nF6cK9iOjvWPqoEhgsnrf12X8mLRIxSKTvS1nAPRf4e3EouXeV4OyHw01XViMOXvdYZRvVT3XdA/RJAZC08VOtLvRRL0A3NezRQ0obr0eHrEoIxyzFxGyO1PYmhPghOqYQauK6pq4tP+FKDNCdRhXph5A9Eek2AzSFy6VluGQPpyncLs5/Ntt0k8Ps/pvP8AnsLzVacF1my8amuGtfJqrsv8ZA9GfzELHHZ3pFY+1kU7Z4UAep1aVs79x2VSLrJE/J5FP1P6cjaLRzPDFSPgb8ikwUhzVjJQkrOrFls6F3IHNL0J2BBK8ta7zaHeJQbBmhzVxfyOtOm54jsYRSuP94Abhg9KGXlN+kfOC6xpNaqWYVUekkLk1zT5NS+UT7slllEai6p9TcfsY76TZ/teFUCmVPm9uQCDPkomQiN9zD6Gp8CFYWfHy6t5/qf18
+ Di4v3qa4
+ 5g/IAxOhFW//m05FLTAaLpRdLks4/+GrfE1oexeLKvDf9EinKRZX01gr0ERi1i+8nzSnpJ1h4xLuInRE5sKPSoBQz2JtPSjZMQWGkslvmBnlH4AQL2VyiLpuqL3dTDcAXKCR8JKWbOXcGNHcWLWUuBM3CzTNqCUdgiGaGo9Vthpa4So9CvdPOMvEiVJJzJBVxyvFSUVXq9Y76VkMTT+xP4EnqfOo1hzMStcnlYlLzbJGNXfbrzsiOFb0gmOAt4AWoB+zGpO7lf9U/9CGKeD0WUZcBsq+ZOu6w0Cqa5mj+K7UfQ858RUQP033feISCj67wRjQaMIQRnangjnc+dfbGVK3rfG07f47RK31rsCNfn+2uw/I7/Pg/yvFOufi7+zKNTbQz+TKP0qjlKozXtPDoIuvw53HaOFFhxniMS6jUPKHaPuWit3dWmqCWD+tCXF7W5Ole6YFZybo0crNgtJ59DBIi8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,196 +124,145 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-wait4() and waitid() only allow a parent or subreaper to collect exit
-status, so an external manager holding a userland file descriptor cannot
-wait on a userland init process forked by another process or observe
-exit status multiple times across observers.
+Signaling every process inside a userland from userspace via /proc is
+racy against concurrent fork() calls.
 
-Add P_USERLAND to waitid() and wire kernel_waitid() to userland_waitid()
-to wait freezably and interruptibly on a userland file descriptor until
-the userland reaches USERLAND_DEAD and populate siginfo_t with init's
-caller-visible TGID, munged UID, and exit status without consuming it.
+Teach pidfd_send_signal() to dispatch userland file descriptors to
+userland_send_signal() when info is NULL and flags is 0. Require an
+ancestor active PID namespace, walk the userland's PID namespace IDR
+under tasklist_lock, and deliver a validated signal once to each thread
+group including in-flight forks, aggregating per-process delivery
+results.
 
-Co-developed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- include/linux/userland.h  | 10 +++++
- include/uapi/linux/wait.h |  1 +
- kernel/exit.c             |  4 ++
- kernel/userland.c         | 79 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 94 insertions(+)
+ include/linux/userland.h | 10 +++++++
+ kernel/signal.c          |  4 +++
+ kernel/userland.c        | 59 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 73 insertions(+)
 
 diff --git a/include/linux/userland.h b/include/linux/userland.h
-index ec74eed6de1d..1bab10d931b5 100644
+index 1bab10d931b5..173c22c27ae9 100644
 --- a/include/linux/userland.h
 +++ b/include/linux/userland.h
-@@ -16,8 +16,10 @@ struct file;
- struct nsproxy;
+@@ -17,6 +17,7 @@ struct nsproxy;
  struct pid;
  struct pid_namespace;
-+struct rusage;
+ struct rusage;
++struct siginfo;
  struct task_struct;
  struct user_namespace;
-+struct waitid_info;
- 
- enum userland_state {
- 	USERLAND_INIT		= 0,
-@@ -45,6 +47,8 @@ bool userland_is_file(struct file *file);
- void userland_copy(struct task_struct *tsk, struct pid *pid,
- 		   struct userland *userland);
+ struct waitid_info;
+@@ -49,6 +50,8 @@ void userland_copy(struct task_struct *tsk, struct pid *pid,
  void userland_exit(struct pid_namespace *pid_ns, struct task_struct *tsk);
-+long userland_waitid(int upid, struct waitid_info *infop, int options,
-+		     struct rusage *ru);
+ long userland_waitid(int upid, struct waitid_info *infop, int options,
+ 		     struct rusage *ru);
++int userland_send_signal(struct file *file, int sig,
++			 struct siginfo __user *info, unsigned int flags);
  #else
  static inline void userland_put(struct userland *c)
  {
-@@ -64,6 +68,12 @@ static inline void userland_exit(struct pid_namespace *pid_ns,
- 				 struct task_struct *tsk)
+@@ -74,6 +77,13 @@ static inline long userland_waitid(int upid, struct waitid_info *infop,
  {
+ 	return -EINVAL;
  }
 +
-+static inline long userland_waitid(int upid, struct waitid_info *infop,
-+				   int options, struct rusage *ru)
++static inline int userland_send_signal(struct file *file, int sig,
++				       struct siginfo __user *info,
++				       unsigned int flags)
 +{
-+	return -EINVAL;
++	return -EBADF;
 +}
  #endif /* CONFIG_USERLAND */
  
  #endif /* _LINUX_USERLAND_H */
-diff --git a/include/uapi/linux/wait.h b/include/uapi/linux/wait.h
-index 85b809fc9f11..edd39c2cab96 100644
---- a/include/uapi/linux/wait.h
-+++ b/include/uapi/linux/wait.h
-@@ -18,6 +18,7 @@
- #define P_PID		1
- #define P_PGID		2
- #define P_PIDFD		3
-+#define P_USERLAND	4
- 
- 
- #endif /* _UAPI_LINUX_WAIT_H */
-diff --git a/kernel/exit.c b/kernel/exit.c
-index d5e7bc2af804..5b0bd3a9187c 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -71,6 +71,7 @@
- #include <linux/unwind_deferred.h>
- #include <linux/uaccess.h>
- #include <linux/pidfs.h>
+diff --git a/kernel/signal.c b/kernel/signal.c
+index dd770e68faee..5b11e67dc98a 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -37,6 +37,7 @@
+ #include <linux/capability.h>
+ #include <linux/freezer.h>
+ #include <linux/pid_namespace.h>
 +#include <linux/userland.h>
+ #include <linux/nsproxy.h>
+ #include <linux/user_namespace.h>
+ #include <linux/uprobes.h>
+@@ -4181,6 +4182,9 @@ SYSCALL_DEFINE4(pidfd_send_signal, int, pidfd, int, sig,
+ 		if (fd_empty(f))
+ 			return -EBADF;
  
- #include <uapi/linux/wait.h>
- 
-@@ -1803,6 +1804,9 @@ static long kernel_waitid(int which, pid_t upid, struct waitid_info *infop,
- 	struct wait_opts wo;
- 	long ret;
- 
-+	if (which == P_USERLAND)
-+		return userland_waitid(upid, infop, options, ru);
++		if (userland_is_file(fd_file(f)))
++			return userland_send_signal(fd_file(f), sig, info, flags);
 +
- 	ret = kernel_waitid_prepare(&wo, which, upid, infop, options, ru);
- 	if (ret)
- 		return ret;
+ 		/* Is this a pidfd? */
+ 		pid = pidfd_to_pid(fd_file(f));
+ 		if (IS_ERR(pid))
 diff --git a/kernel/userland.c b/kernel/userland.c
-index efac9e4f2fa5..c118defcff01 100644
+index c118defcff01..739f6b98c103 100644
 --- a/kernel/userland.c
 +++ b/kernel/userland.c
-@@ -8,6 +8,7 @@
- #include <linux/wait.h>
- #include <uapi/linux/wait.h>
- #include <linux/file.h>
-+#include <linux/freezer.h>
- #include <linux/fs.h>
- #include <linux/anon_inodes.h>
- #include <linux/userland.h>
-@@ -33,6 +34,8 @@
- #include <linux/idr.h>
- #include <uapi/linux/userland.h>
- 
-+#include "exit.h"
-+
- void userland_put(struct userland *c)
- {
- 	if (!c || !refcount_dec_and_test(&c->usage))
-@@ -208,6 +211,82 @@ static long userland_share_nsfd(struct userland *c, unsigned long arg)
- 	return 0;
+@@ -287,6 +287,65 @@ long userland_waitid(int upid, struct waitid_info *infop, int options,
+ 	return ret;
  }
  
 +/**
-+ * DOC: P_USERLAND
++ * DOC: pidfd_send_signal
 + *
-+ * ``waitid(P_USERLAND, userland_fd, &infop, options, NULL)`` waits freezably until
-+ * ``userland_fd`` reaches ``USERLAND_DEAD`` (unless ``WNOHANG`` or ``O_NONBLOCK`` is
-+ * set) and writes init's exit information into ``infop`` without consuming it.
-+ * ``options`` must include ``WEXITED`` and may include ``WNOHANG`` and
-+ * ``WNOWAIT``; ``rusage`` must be ``NULL``, and the caller must run in an
-+ * ancestor active PID namespace.
++ * ``pidfd_send_signal(userland_fd, sig, NULL, 0)`` delivers ``sig`` (or ``0`` for
++ * a permission and existence probe) once to each member thread group in a
++ * running userland. ``info`` must be ``NULL``, ``flags`` must be ``0``, and the
++ * caller must run in an ancestor active PID namespace.
 + */
-+long userland_waitid(int upid, struct waitid_info *infop, int options,
-+		     struct rusage *ru)
++int userland_send_signal(struct file *file, int sig,
++			 struct siginfo __user *info, unsigned int flags)
 +{
-+	struct pid_namespace *pid_ns;
-+	unsigned int f_flags;
-+	struct userland *userland;
-+	bool nonblock;
-+	int status;
-+	kuid_t uid;
-+	long ret;
++	struct userland *userland = file->private_data;
++	struct pid_namespace *pid_ns = userland->ns->pid_ns_for_children;
++	bool any_success = false;
++	bool any_other = false;
++	bool any_perm = false;
++	int other_err = 0;
++	struct pid *pid;
++	int nr;
 +
-+	if (upid < 0 || ru)
++	if (info || flags || sig < 0 || !valid_signal(sig))
 +		return -EINVAL;
-+	if (options & ~(WEXITED | WNOHANG | WNOWAIT))
-+		return -EINVAL;
-+	if (!(options & WEXITED))
-+		return -EINVAL;
++	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
++		return -EXDEV;
++	if (READ_ONCE(userland->state) != USERLAND_RUNNING)
++		return -ESRCH;
 +
-+	CLASS(fd, f)(upid);
-+	if (fd_empty(f) || !userland_is_file(fd_file(f)))
-+		return -EBADF;
++	scoped_guard(rcu) {
++		read_lock(&tasklist_lock);
++		idr_for_each_entry(&pid_ns->idr, pid, nr) {
++			struct task_struct *task = pid_task(pid, PIDTYPE_TGID);
++			int err;
 +
-+	f_flags = READ_ONCE(fd_file(f)->f_flags);
-+	nonblock = (options & WNOHANG) || (f_flags & O_NONBLOCK);
-+	userland = fd_file(f)->private_data;
-+	pid_ns = task_active_pid_ns(current);
++			if (!task)
++				continue;
 +
-+	if (!pidns_is_ancestor(userland->ns->pid_ns_for_children, pid_ns))
-+		return -ECHILD;
-+	if (READ_ONCE(userland->state) == USERLAND_INIT)
-+		return -ECHILD;
-+
-+	if (!nonblock) {
-+		ret = wait_event_freezable(userland->waitq,
-+					   READ_ONCE(userland->state) ==
-+					   USERLAND_DEAD ||
-+					   READ_ONCE(userland->state) ==
-+					   USERLAND_INIT);
-+		if (ret)
-+			return ret;
++			err = group_send_sig_info(sig, SEND_SIG_NOINFO, task,
++						  PIDTYPE_MAX);
++			if (!err) {
++				any_success = true;
++			} else if (err == -EPERM) {
++				any_perm = true;
++			} else if (err != -ESRCH && !any_other) {
++				any_other = true;
++				other_err = err;
++			}
++		}
++		read_unlock(&tasklist_lock);
 +	}
 +
-+	scoped_guard(spinlock, &userland->lock) {
-+		if (userland->state == USERLAND_INIT)
-+			return -ECHILD;
-+		if (userland->state != USERLAND_DEAD)
-+			return (options & WNOHANG) ? 0 : -EAGAIN;
-+		ret = pid_nr_ns(userland->init_pid, pid_ns);
-+		if (ret <= 0)
-+			return -ECHILD;
-+		status = userland->exit_code;
-+		uid = userland->init_uid;
-+	}
-+
-+	if ((status & 0x7f) == 0) {
-+		infop->cause = CLD_EXITED;
-+		infop->status = status >> 8;
-+	} else {
-+		infop->cause = (status & 0x80) ? CLD_DUMPED : CLD_KILLED;
-+		infop->status = status & 0x7f;
-+	}
-+	infop->pid = ret;
-+	infop->uid = from_kuid_munged(current_user_ns(), uid);
-+	return ret;
++	if (any_success)
++		return 0;
++	if (any_other)
++		return other_err;
++	if (any_perm)
++		return -EPERM;
++	return -ESRCH;
 +}
 +
  static long userland_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
