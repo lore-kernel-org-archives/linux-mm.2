@@ -1,71 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686ED606A338
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45F2606A333
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dymmx6qI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J5JKrpeR
 Received: by kanga.kvack.org (Postfix)
-	id 09D576B00EF; Sun, 22 Nov 2026 10:45:45 -0500 (EST)
+	id 0C6196B05B0; Sun, 22 Nov 2026 10:45:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 075596B05B0; Sun, 22 Nov 2026 10:45:45 -0500 (EST)
+	id 04E6C6B05B4; Sun, 22 Nov 2026 10:45:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA7056B05C2; Sun, 22 Nov 2026 10:45:44 -0500 (EST)
+	id ECDF36B05C2; Sun, 22 Nov 2026 10:45:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CA8CB6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:44 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 57A2F1206DE
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:44 +0000 (UTC)
-X-FDA: 85463180208.25.5E74D03
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 963B88000B
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dymmx6qI;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE6FC6B05B0
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:45:49 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44119A818D
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:49 +0000 (UTC)
+X-FDA: 85463180418.24.4DC3327
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9E610180003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:45:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J5JKrpeR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795362342;
-	b=fdigX1Z6pc30hRCt/FZCR2xggPqlG5blaSQ8Ptdn6txKdrdhvFTRIlNUHFWvfJE2/hjCdd
-	k9hnP6ex7tedqhS81Whoxnm8ogm/i9NTdqWpzPESO6mKZUF5dPm2Kna1UAGKiNtQjU/v8g
-	wzqp2M6OrQizn55rEa3mC1Hp7g7cnFY=
+	t=1795362347;
+	b=ONSjEttYYZJ04+1CMzYou5OxFa1u84xasYcchZ8r8Za2riFXj0skiuVub1IWO4SZWHZ818
+	+YFigVd+NqcUttm8nbLrBb5z0cWT4ijWGgvtIfI9r1K43l5GnPsOhcWyRjX3OqxaXAYkLg
+	J1zQCk/WW26HxY0Pg6K81tJiLhj+uyw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795362342;
+	s=arc-20220608; t=1795362347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qP2i0fv4WE8/ipxTLPLincxefCJhx+1CzzN1jBqfoUY=;
-	b=dPtZBBfqtHB5NsSlDYazLdyC8KouBxcSrryIHRF+ZQMwHhT/N3kXOYcDGViKJaw6o8lI/q
-	eTxxCRoCfSC2tXF6Iw9R/rLkuZjinHmCSXdcvqGRUwG0AjGZCrelRGTahmOt2sduSk4DCo
-	nH7OwrMqEsz0pCsin3axhIdGicfyjgs=
+	bh=R06u0i6qVr/ExIhOD9ayL8/TTOc1DfJVloR61DvdyBE=;
+	b=4amm1MyxnKRADLCaLNVqrVggemRkBYuUaCSJ9hrjRWuEakLunkaERk1SWaQ3ze6OIsQ6zv
+	yK6dbU+VWwoiRNpf9sW4QJurvkFaAvnXmg/MaUkH2oz8dP0E4JDLTEQBXNYmb/o2Q56J7e
+	G607ACE3dMRtEKVanTou6ALkbmnoNHA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dymmx6qI;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J5JKrpeR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E50244408A;
-	Sun, 22 Nov 2026 15:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6E91F000E6;
-	Sun, 22 Nov 2026 15:45:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4124F6188A;
+	Sun, 22 Nov 2026 15:45:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C111F000D1;
+	Sun, 22 Nov 2026 15:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795362341;
-	bh=qP2i0fv4WE8/ipxTLPLincxefCJhx+1CzzN1jBqfoUY=;
+	s=k20260515; t=1795362346;
+	bh=R06u0i6qVr/ExIhOD9ayL8/TTOc1DfJVloR61DvdyBE=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=dymmx6qIIpA3rlijmZ/+JB+sfVuETUqDVF91cVYW3+atJAQgn9IWkFqJWFIDoPAcw
-	 lnDt1wq+OtDCkmNG6BT1XPW3EBXuxEosPxQhfsGgZkagI/71TVNv+OHoKreroCp+qV
-	 iP71Zn/rjZzsKOK+5Qj5FXk36hKRXr2dzjXlVzNbWlG5kE86baxHH4UERvEJNtWGds
-	 30JK790FV8zUyTGMCKghisnBysakrG2jOlY9FcF1p72mPe7GrJNcr7itE11Gc6PUQV
-	 A2eS4pwlrmdEXtcSN8JLsZfyeYr4ekr1AuobWKdAIaMg2U0GsXyNE+xeXTz/Qirt0u
-	 uR3xsLcloIBtg==
+	b=J5JKrpeRbv3KoXb/fFkbQiJT8oCObVmV5YI2MMz1JdmXiwwwcf+/s+uTQ1zrBptSK
+	 P9grABDegn8ECnf4qHT3ppteLub+cZLns+sZRMnkn1GVRRR6M0ZjguTQRLj0qiOZ0s
+	 l/57wwWJ3IutPARuYrKlEDJmsdLGhHJ4O/Nqae2TTw18CppXkhChCaU7vnPnz/OtO4
+	 4FH3M5g499Alom3DtZ7KnbEMnjWkoRdLlGgLPfG1Ixpgap0O4yYaCS0uFVAO/Ou9tF
+	 8m0e5XWPpQXrBNJkR++PNgBdVIdrcHul/KLJXCxw1E8iSX/Nk8jqsib3TegYWzoBh+
+	 ee4lyl7ihv+zA==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 08/11] mm/mm_init: make __init_single_page() static
+Subject: Re: [PATCH v3 09/11] mm/cma: centralize CMA pageblock
+ initialization
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -78,24 +79,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  James Houghton <jthoughton@google.com>, Lance Yang <lance.yang@linux.dev>, 
  Qi Zheng <qi.zheng@linux.dev>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20261120100856.16929-9-songmuchun@bytedance.com>
+In-Reply-To: <20261120100856.16929-10-songmuchun@bytedance.com>
 References: <20261120100856.16929-1-songmuchun@bytedance.com>
- <20261120100856.16929-9-songmuchun@bytedance.com>
+ <20261120100856.16929-10-songmuchun@bytedance.com>
 Date: Sun, 22 Nov 2026 17:45:01 +0200
-Message-Id: <179536230138.3933282.3756742305375299607.b4-review@b4>
+Message-Id: <179536230138.3933282.17513671725421744205.b4-review@b4>
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam06
+X-Rspam-User:
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9E610180003
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 963B88000B
-X-Stat-Signature: 55wgapx6snsiyqaeawp45wict9mzccru
-X-Rspam-User:
-X-HE-Tag: 1795362342-522444
-X-HE-Meta: U2FsdGVkX18h+3sdb5uNFaYCs9V8g72/IagVPKIzITWRCbMDLbmW2IHnN/ipU5RN5L3y2TgynGXP977oQp8BXdeNAtHzFsMBkMFDAYc2RiosMNM7rHqba3f+AnDvPCsauSy6ErROuWCymEnWTLYAb1qFZoTxxFeylWxbRNAXSCszSkW8g+49hC5Mrr71GjixV0jFxtmSUO7acP3Ev/v2dv3fLOgn7fRm0bs6BsWglNKDHu9FqaP/eyoFT/OHZCl2rSkFE4NRnKZ2GzDv+28H45d2zljPiV5Q9TDvp1asKk7OS7Rpdp1EVfzmhcjV3kJa9ptxB5VI57II/oLVUslShjivhhlWdKtk2lCG5w7NfC9k28MPuIaPAlJp7NTP/8uf2NDjx+kBbtISwM4vJ2GlM7oYtVXketBP29iAWHEAmfnaByhxTrPLUEFP+UTsNOvPEq1FzPLscTUx1ktHggoFYGLNjO5MMMeP8VQBQ3Q/+rb/yglE3IxRlwtH2UtAyG/gIQ6DnQbvmsKsxRouDwWnNBB6FFUzsbNKhqjYnBpiG42RDnu8s7xrTb3+zu8gXxrxu3tEm8O4i+N7oA9eL9phhZD5a87AIcY8tiT9iYTxaicAlNHB9UwaVHUpabkmygvWVeMhomyVr8eOae6/iUzGOm04pUl3kIIfMc+BcEX0AexHEJrJFGCoF8/F5cmWo4VKyT3Kv543IcTEdEaJC9+qQVD5OlLOutYUjC8bNh3Y8L5aPsn8J7zO7GHw9H10LcOqzlbFqqdh+9NYoMIQ5CrrmrScLur0pw6iYCdmOqd0prZEnPdXaax/iwLld8n7oAjoLfKnvlAHuF2gCwvotDklzvV8WuGo7rpX9kYsVBB/o/TCghcuHLKPXytPkc3nM0haBV6WyoykMPaq7RTYn/a0BVgijCxHfnMKxxeq/7ZAXTrnHnF98DtiRzs+icMiZGcfGDqgzDiXi24QM8zlSKP
- 1YAhde0R
- dofSevhkSOuJuyS4IyVSwGyxe45o4R+zVDiBw6SNMnl+Son0tpSulN08OBut1WUkfDt2p+smMuCNBobNorOkJY7+HQ2PfUI+r3WWSgA7dTTYDWeoVe9elRyG82SW4Nl65sxGxgj8TjSukDe2uLHrPw5rAkO4LmRTbtUntVJbzW7LrMtVF4fauRfm+rBi+8BwinklAEa4vpjLsnF99b2HMP6vpOpm+hyvYkLuCSxvGZvI+caOZ70aBPv4brp+JffUVr3BEoxrNQ8PaypzXk5UBDuRQFXqCLBz48UirGtwD/eo9yx3v+RWV9BzhToQaPWRP/+hWAm+kG03o03FJ8eVTc9TfBjvueBwaEjEmvTHQQBWiaVeBRomphcbgHFTXnHr/EXYdW+xJtWvonSdupxJPJHX18fIDKprMLisk9DeHi3r0C8mdzBnDlZkaiKbFo9RccgW2IQpm18oLTGPqtFzT7dhIOFFNMERUKlqxka5i9cBD3B5ULyEqnNpIDXiu+0fA0gx3Tssx/IdOkTZASk1EYx5L0DKuf7bnCrwLdxl4nvszwnITk4psZVYq3Cry1iAzVQMo
+X-Stat-Signature: 6e5o7ipzbu3pj9t7ejqj8k7q88njormy
+X-HE-Tag: 1795362347-777980
+X-HE-Meta: U2FsdGVkX1/JzGLm6y2d8mR7V5885WSPbd6HKu2DR+NuTHUeLw+KTSgzqdoxZIDD6w4O6N2i9J9ij7M809ShO3RFSAZrBpO56IEfgQvfCmPwWYbKIaFE2BEiNV8vmV8XHuc7Ttn1QFk1JN8IEdm4h2/jS9hysPJ9YRLGWOqmiqpjEgGhse4difKOPpIp1a81Zx2g64GokMrhz7R8C9KHdMUtIdx0T1MNjZz6jryLtEx8A58QzXylo9jkGyDzPyNJsPwaABG9z8CX6ygTdSWMkjivyA4eF2K7OmDHDJTco7cTY6BLNm3WZ2OEjlK5zJdO08pv+iUZdoqRcpSWyeEqFRSQhvymj7XLbPym0kdT0yoiseP9WiDsxX6kg8q70IMo/NkLyf+0vRdsuvGO3EWi/029InIrEVn4drvbgj6MjLdXvPnk6Lp6y/s0r34xw2eWwY5RR4ydSt5pMWopmLrWhQ2Kuo0LtY035U3y9/h0as1nWEq+i6UANTkXJk/iPvIs7Aj+J4izzEBu+JwwYzA+VeTZE550bB/JZh7xenPyV3OG1jnoiQwT/1DwLfIxHppt/4tXePAyIbbEaz2rjhcNKvlgqZX6UKNkGlPbrk58pMcB7T9JOA91gKJkzpCtFn3rk8XVi9ZCrg+QJCa7HG5f9CYuHC/1ZtYToOKoyiagCtCFzrhlV4AMm1r3azyX95Me8df4jWOsTQxUwFyI0JxF1nH23H4/K8kNiWJtt8aQu/RQTpz6mfoK/fswTojkCzOq8TRV6Txw9YQNySekPHnoJUS3x36EVneJotTZACWoJkt7gL2q/A9SIZhDs9coCwoBfdg8ggvjox8BJjQDtRZ33Iw88rMsN+hfxoBqzkXyix+UN4yb8OWyS5k7jekl1DNHkrYo7i7gJbZ3sSRUgwCorVYD9HVyexwqQiozUXr4CxUpUqtLddAC0l3XPeEY/AH8y6LLgX/ZLTtjNAcNQYX
+ W6z1c6n8
+ 7dA/9TpF2w0vwxcSQwKYXPSsCJIFWJOgiysXA6iA+ruRwVL0qx4D2PhHLfURRisptP7fywcAl0O0h2U+l+D4vIXoZgkWg/rPOCIB2WkAV+oWg0r4ErFfrNXBY8rQ2uGddp1yTtHVEnmSUQuW0yBhOszo1ed/3PvX5er2G6fEKL8CX3mRuJMidRYwlimvzdP2bDiL1EAnjyZK5Rid//s+YEmKx1v+hqfMrkcs5XGM3FO4u1SGCi1aBo2pSBCzDrTnPMmjYl43SgSlZHy/mOw2ZwFQmr71ejUzzsNKHcJjsUPG4n9IH3MzhpfNye+sMvjHfDmZfsC4E5U+qsVASJ3kmDWGiDStzXgKC1fbMpMrBUIzkS+YnSGJyDm4MWkjqJ1I92ukhK/lBA/eTxj69+oOCgXk7aQk9bR6V3/kAeY6H6OsKms7RAlc3QIAUi6UIzHpUOjXRg/Yog/CPoxXf+eDeaogPa47CjEDXNBvwExaveKByaOg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,11 +105,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 20 Nov 2026 18:08:53 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> __init_single_page() is only used within mm/mm_init.c, so make it
-> static.
+> Early CMA reservations currently require callers to maintain CMA state.
+> This exposes internal bookkeeping requirements and splits responsibility
+> for the same area between CMA and its users.
+> 
+> Make CMA fully responsible for the state of early reservations. Pages
+> already handed to a caller remain owned by that caller if activation
+> fails, so keep their managed-page accounting intact regardless of whether
+> CMA retains the rest of the area.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 -- 
 Sincerely yours,
