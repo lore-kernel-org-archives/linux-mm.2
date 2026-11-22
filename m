@@ -1,126 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE61606A684
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B03606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z8UhRyzJ
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=A3mSp33Y
 Received: by kanga.kvack.org (Postfix)
-	id 32A2D6B05B5; Sun, 22 Nov 2026 10:39:43 -0500 (EST)
+	id E075D6B05B7; Sun, 22 Nov 2026 10:43:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DAF06B05B6; Sun, 22 Nov 2026 10:39:43 -0500 (EST)
+	id DB7346B05B8; Sun, 22 Nov 2026 10:43:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CC7E6B05B7; Sun, 22 Nov 2026 10:39:43 -0500 (EST)
+	id C7FA56B05B9; Sun, 22 Nov 2026 10:43:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F04066B05B5
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:39:42 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8327B406DD
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:39:42 +0000 (UTC)
-X-FDA: 85463165004.10.CC56A2D
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 91210C0004
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:39:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Z8UhRyzJ;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A434B6B05B7
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:43:36 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38143A818D
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:43:36 +0000 (UTC)
+X-FDA: 85463174832.23.55FEF54
+Received: from mail-oi2-f8.google.com (mail-oi2-f8.google.com [74.125.231.200])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3DCFE1C0009
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:43:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=A3mSp33Y;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795361980;
-	b=myw3PCAOkzKuDznf4rTHVm5XtZYvQ3UGINjXaVHmilEGOWKm6vBThGsoIHXr0rDhc0JDGR
-	ForqHtDvBddFZ4Gxt4sM6qe/IWyxfjN1JCjvNyVgUz9mY8VPiI8NGfUX+m8SRoSlbXH6tF
-	jng1yfk0qi7lG909VZ9lWBe7Wuzy4dc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795361980;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf21.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.200 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795362214;
+	b=PjvAR5beQdDeRlizDUUJ5MfK6OE+7Q48prIMe14A6Hdw7iC6WdSg4wu6DFfsE64efCBKva
+	du/Mmgv4gIfgXZfkxSLo2540uDFasempvfRw8CHcuRP/01mSd0yEPzUhQQAE6KhUmfs/X1
+	TvMvlruuKx2sCpwkbfm9W/H/bKoT/U8=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795362214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CF1vPMfVpzbutUW1ILt/0v1q/2bQg+t3fMWuVpjH1nY=;
-	b=NLdB8rsRDn4F/y7ufFo3D6eP9zUaQi6sxJ7fRjl3VFc9Cr3aMDd6tZaLdDp7jeWf9MLDw7
-	eO1eonogJUIGbsfWcBLGaAaMff983OnZgdsJYuFX5Acnlb31X6jzFtfgPAIZ13Ouo4WOq+
-	AQkEVzpN9aeizHSPiG34pX0RAZQ7Cjs=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Z8UhRyzJ;
+	bh=fK2KNecjm4gsbzz96uBojyVhl02omCTQXBqS1mJ9XuA=;
+	b=SHqO39ex8dwJvf6s+CRYml5mk+C3WioDpDxbgBiaoAbE7qpMHZ7d65hJMx9KN9wa8QJsOg
+	L/n3juE8Iwd3qe7CCojei1piehqHfF+RsZzbOdDAdQ5xK7l8e53OVQVxmMl7ohopW4gPkD
+	fb3pURJOXHoEC/edl0k1MatccLp1g0s=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=A3mSp33Y;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b88b74e54eso2871128a12.0
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:39:40 -0800 (PST)
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf21.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.200 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+Received: by mail-oi2-f8.google.com with SMTP id 5614622812f47-51cddc2451aso733719b6e.0
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:43:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795362213; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CjqYjtxJ4y+cVFU29+OhW0cH88kjOfRzGimt8oY0RtDjVICcg+DJItEpvW1krCA314
+         yi6HtVyw5J538RbPMILCFEJCOOQQRgbwfbbfWBRrbuK4yEshUl4CiaQbQMBY4rMjMnLx
+         U42lpje+0IjpUxLpYtXWnhy0cDiUwG2FymwZNuVvtBkJ/Icy8qsklsUgwy8uytBYuTM1
+         Vb651akLUXh0xYeAOmIKv/rI/vzAF9R7pbKIYUU7q9rOTkTGXVuFMEMPUMz2vvq2BqXP
+         O1QbbTXizhzCKf9sy/rXcSJxWrLezfChnrlSgof6UFyy0Pq8kiz31XXVEcPGIWTWn8eP
+         noIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fK2KNecjm4gsbzz96uBojyVhl02omCTQXBqS1mJ9XuA=;
+        fh=W6gxgZ0qkToNqtnO/6LhLVja4NTTHAfVbUgxqFuq1fg=;
+        b=pz7jZKbh/SBuTyxkN9kEwZeJgiLIDEuShnXOIXEbX33N9piHfJvlZMnzXmBFbYLAZo
+         2Uv8RDN+MRq/1haDBurhU/k5mbGlLmJiPdObx98awHcr6W2SuLs2VXe5rZ+Q+MJ+MdaZ
+         nymgxBK75xrcFH8oIOwxU+vRwyXusQZm/3kICoICghCUh2d7Ls9ytlv0Wsoexo9mDCyi
+         lEQ9t1zqEaGs+/LgT1TMHNqNF7DqBtzI30Llv/LN4afl19fQNSwCl/RL5TlvE1EIJCiT
+         42TW1/53aOTCs7g/YwtR2e+kYV6J4n+qMyo4Co8yBYkiBmqkRbjJO/XAObBKO+kNkSyc
+         Y9TQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795361979; x=1795966779; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:date
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CF1vPMfVpzbutUW1ILt/0v1q/2bQg+t3fMWuVpjH1nY=;
-        b=Z8UhRyzJhPxU6YI6ZbtHD7j1GUYkTzsW0OXdCjE//5HCSoWdm2DoP8eINE1yja9oXS
-         EGfRiud7PUgl9Tw8bN4N9JdJK6//UbJF5zi3i03/fipXl3RC/ICvpLPTeh0j5jCJvLR6
-         jbeGaBESYX1OEOdYM7GUqfRQIl81KvSO8wpEsfqDc+lV01y2kCnMACIF69XgKyy+2X1X
-         0/AZbXHqIDWgX4JywbsCcRQi2rahQM+Tss1inzy82ygSF3vdtuHXCnNdhm+5n65V7YZm
-         88T2rnAyjjPpj1aO3CfYiG1zh5UuPn9T8zHW+TSxxKuWx1f47Z4OaQP7AoptIxsHKOeU
-         PhlA==
+        d=gmail.com; s=20260707; t=1795362213; x=1795967013; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fK2KNecjm4gsbzz96uBojyVhl02omCTQXBqS1mJ9XuA=;
+        b=A3mSp33Y2lklv8xF94riBoK7VCxcKEYSQnteQ0X9ODjO0Dad2yAG4i62JRrRnAjszR
+         ii/RGeovyQ+6S/iMWnbKFY7yKtPENY5EgZ+1LdmRlwNNRk9vud67NOWbNSa7/OPCQnN+
+         7Kj3WmlQcNjpWN8RwRlDi7kJH9wTsR9YM0AhQQYAXxwZ4pPE+0E4gzfImINVxHnXjIrD
+         Jk8vQhEmAdBqnxQHDEqMR5fr2upiv3rEkMG8zHkWRih0JqfaarOaZ+a4akv5VrGheqTA
+         g0vFRaLq97rsJzRNEGu4VwHHGg8hLN6/LDoWcwmKtCbiUQDHSDSrcU6b78KdUOtGBCvZ
+         KXfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795361979; x=1795966779;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:date
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=CF1vPMfVpzbutUW1ILt/0v1q/2bQg+t3fMWuVpjH1nY=;
-        b=fK3phw0ImBSdr57CfDKwLRsU5a9sJDvNzH+2HQe9kvLbV7f11vZpnQhtEqXUE6hsrG
-         B5AN+f9Nf8O2khA0VgYMzAqrI//ReOaEGOiYm3QAscMN9d9nh7uwyqeRjXt0KX96kpiE
-         6xlBzzxlEUhhV5OeJm+wZS31EIx/888tXFCCofoTh6l63rGwebh1/+A4kKkg+w0oIPCf
-         c0mmAUz2YpecQrg7oFYLk2XlNOPSNpX8v9ebiO+xqj0U3jxZas1llv30ix9R9DTqa6De
-         5IKkvNS3h46bdW/Bd7rH2AecOZTEYBTYl6it7lXtbo3CrcfYGT9RlCh+mJO15O6fVuzU
-         GkAQ==
-X-Forwarded-Encrypted: i=1; AL+hErGSNRU8HixnMMH2BG5G+/0MA2YYHGFP+1Fyd8yHTkuGYtz5vy+zJhUTVNMn9aXS7cnmQrDkZXxoIQ==@kvack.org
-X-Gm-Message-State: APuU4Z/aAEuRzuG4dDAJS3Qqe/OjuIi7HSXOPS9kKQhL+7csfmOVPqPR
-	MuVroRTPG2rG/zUG+yGumsRT0Gn+EYogG/nnjWXAM1QicjpMg/SqoOMJ
-X-Gm-Gg: AZFdTZcByVod9Ddm5tyN5Srk+4RWkky2arGjrOqBYoZ0+6wbPh9KEDaVO+plsnUESJd
-	CcDN3CxGsNlVTgp6TOF63QsjrukoRomnVOL4QVhtrbg4nbNJLrR02mEqnsnblLQHf/H203d5Q/A
-	GwBCJrMN4+7C1HZMUHF1bOgt4WmZJBWFC+BYAS/xTabByrDkbAwrazfeZBgBJCastPf8H0dWYPe
-	2dZk0ZdQauko/oT0BDJ9oiKo/e0CccPpfeezvhM0t1oHVDdrnS+E9/awTKQpIApVa8kb7+pSYz1
-	tHEJRTD9cg7ggOUya6nv8+nPd+VOUik9LXsVEXAghW2XYjqtPHgTY6wBHGizCqI4swaiLKjMvSn
-	s9GYlZykat7YSL6c8SfodvLos16p/6EioTOmV3m76q63OO7P1XvjU1riAOMeMGjyNqFUCAEvnkq
-	UCmDinKNC3LwjZ3tsZw9PjnwypnwyDZBuHfaBxcE+71r6En2NvJRcfaaDPrCsm0nSjLjOBuegVw
-	cwDQQEVU6J3RFWBDzFugWb3kUV26csDEvEt0hY1Edmn1BGs23MidjI9Ae+PAw0xrSg3gQ==
-X-Received: by 2002:a05:6402:1f07:b0:6b4:87b8:1348 with SMTP id 4fb4d7f45d1cf-6ba37e83f34mr6102402a12.27.1795361979136;
-        Sun, 22 Nov 2026 07:39:39 -0800 (PST)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ba370e8ad0sm4097712a12.18.2026.11.22.07.39.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 07:39:38 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Sun, 22 Nov 2026 16:39:36 +0100
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Ye Liu <liuye@kylinos.cn>
-Subject: Re: [PATCH v2 1/2] mm/vmalloc: drop VM_DMA_COHERENT from
- remap_vmalloc_range_partial
-Message-ID: <awMMuDowZKcMYc-8@milan>
-References: <20261029-vmalloc_remap-v2-0-c4705cbf26c2@linux.dev>
- <20261029-vmalloc_remap-v2-1-c4705cbf26c2@linux.dev>
+        d=1e100.net; s=20260707; t=1795362213; x=1795967013;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fK2KNecjm4gsbzz96uBojyVhl02omCTQXBqS1mJ9XuA=;
+        b=QtHSTnH0jxAZIn8KHop7ZLpMaIzB9/8Xrwkb0kULH3oTqWCybfXXKID0QCqtnEoLzk
+         ZvoF/FfGAHD8oy9vITxEkOZVtiVGeZwEgnMOnpRmdoWmT8MrTSjGAYM+FmxpHqL6vnwg
+         3IYmzDXMJOjU59mpd+P/vfhVm7PM3GSFYV/CVMBd7ochpBRy6XtbVA7x14fiVBgh5vXc
+         8ChANO3+yX9kfB5nkIZt+9jm7t4k2oHJUDKEzK6XFw1cDe6UaX/qk56LY+Z1TE/+mMFs
+         lha62O2LwfsEJK2Xm0tM6qrxoAH/cQpsRa80N+i3U/DKisg/pKErb+8BHX4dMvathZfO
+         NdoQ==
+X-Forwarded-Encrypted: i=1; AL+hErHyZxJk2tttWUDvtHX73vaSWwVwIS6HzMWqkKGalC4xekpfKx+6pbhN/t3Ku5hx7RAU7d9zsm/Scg==@kvack.org
+X-Gm-Message-State: APuU4Z+aod2qbTJLRCRxjmNDvqqnOeiWbmM0Iv4Zch/4tHrFM4lG4DEY
+	rijPXrAnofcAXnTJ3kJm3+YPg1kSJXFz68C8LkkdG9ep39TwmBNMYKR/20SKxx1GAIPWdx7P1PI
+	G+Fn4M1Vo/oYofHp024ud0Hs9kOGu3S0=
+X-Gm-Gg: AZFdTZcdN77CZeGtiDi5iK/7p5BgzbE5LWLNhJLi8tNZYioBPCkR8UBzdy6INybzp/e
+	eTSoTcgfGXMlwkH1v2AFdD8OLVxqKbuCY7CzRpVu+jmD7RHS2fVWemtTC47K1difPdinbPfAcjy
+	LcxyJwmvrp/FAUpYAMls4seWvqCdvwOOk2UjMjyoCm7/XaqIoCfSc1v9tXufb7AyDP1hzmRZYfS
+	m2/eUnWdnpLFTE0k56gKsBdqq2mAP/vx4JJ8fEHaHjUn8t2Cy8vOhZFHZVqlhTCc0gLp6Y4zXfB
+	nfgEsEJYHUdmL46/s3+1kpvLzjS8t4tbwtwQ3Y9W8FAxpn8DxrqE1bCyT1kAO/CN+5XSgUaYBcF
+	Bixvvnad2Q7XrXUFXBpulcyO3EJFehLPXcc5BGbryUyOgXJpkpz2Fo6WqryR4x/kmRIRg39BvMo
+	pHC1sI+XdNaVQW3796rvnW721pPyDN
+X-Received: by 2002:a05:6808:6615:b0:55c:844:9904 with SMTP id
+ 5614622812f47-57a0950377amr9553693b6e.17.1795362212940; Sun, 22 Nov 2026
+ 07:43:32 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261029-vmalloc_remap-v2-1-c4705cbf26c2@linux.dev>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 91210C0004
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+References: <20261121210013.130397-1-sj@kernel.org> <20261121210013.130397-3-sj@kernel.org>
+In-Reply-To: <20261121210013.130397-3-sj@kernel.org>
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Mon, 23 Nov 2026 02:43:18 +1100
+X-Gm-Features: Aa3M54r_iVP4bVZcK2JPCcha3mQ_iDkHO1_5j6gGvQxgZFzDQ8kSC8cPoPNvnOk
+Message-ID: <CANOyQmE9kM_WgOneXhQ29HTFDLYJwdzWjVKj4e11ESTtT7K2Rg@mail.gmail.com>
+Subject: Re: [PATCH 02/27] mm/damon/core: implement data attribute report queue
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6auw1dwuux8j7s79g3s1foutws51ymcf
+X-Rspamd-Queue-Id: 3DCFE1C0009
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: dczorezsixm6q98343pm6max4p7g45a5
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
 X-Rspam-User:
-X-HE-Tag: 1795361980-559665
-X-HE-Meta: U2FsdGVkX18Yhr77xKsak4rnGk3qtS+n94HUibGAi6AgX5EQ8/jHC8WBxgVt+pkfVk1C8FD1Fr8I4kiexWpCBujVWlAB8XgOEzrXOMXV+iuGto6UlEGhyWZ/Iq6gEcd9D/OBlofzzMQMS36J5j+JXF1dYGNuAvOUi4a/V6yEHZ7uA8CRYXX1tWkiDZ7i4gugorGmMLulKU2ViI1pQ5bmaZ2iz1q+7H8vLJ/FB8EjFSW9+Y6YasRzxzoXj+n1lAHf/SsMQZ7I+OCiQlM83wSlO7YZrkzc7X+eu12xXQQdwwt1n+OBPFaSFqDpmAbJ70ie6ynrSCoa8vL7TpjpsDM4Ok+5MAObI8450eeDlahOsscrrv7NwmLIKywFoOerk7xvnAk4r2sBCkQmmftP6OIVa1/f4pq/rNXSSa29wI5texptSdBdBhD03LKVZJNn0OJ6rxXiFxciQLDpWFkQvv+sIRStIQEe/3rH1BJDcp/YSAi2e6C+UiYJvMhLm6K42WUi1HoqueIpCdPgVPY9H3fM4U0X0RbD6OtgrIYSKQTEbo0B2v0o/zkBvOAu992pMN5fClAHlS1jZzLs/HW+iBtFTY+qXqQkju5JPPkGxdvV9XYF3YocRtSTfzddI8nnn+DzqPIMLRmE30LN5i7bJWKdjwAyYUTWr6hszQBODg6ptFGsf/FwOplRCFFWyeZbj6myebMmgQ2SBCWq5sVBUeTzXit5IdzWgFUNgOUjgrMS6MZ872zMNRWDScqJ4MTIVghA2AM9q7YKd8hRUuVjNDnkuu9rQP/Y4twH9vjNbb9eHH+QzOvhQGERw3wIT52r2TvP80qtb/E0++S19xBOnZcczeYOW/k6N5HVF1GVuUEAI/YEkGWh3AeLzy+tN80ozDogYBo9+vy4Nem5mPhY8ohiS2xzH3NWQog7nkDwNvD6WeJUxktWW42Wu1rBr7NGAUCPB+RKQx4AG6peRuF0vwb
- iMfuFELv
- dK4JTSZ7ISC5rZAI1EY9F2bqnblwDZk3G5XwflsIA5o6Goo8DaSLT7gRHVo4qtIcsoKpzCaJ4MakuM/XRxXeyUe9SW9hOWr0t7OoJcT8uYwPFmmLTNdq55ZT5XR3j76vPFdVsrjYtlJ6AfJQ13Bus0rxRR1rw6gEgGKGChWxRmIHcoyEGXSWby/ztFtRxJf5ZWx85DOw5EqYr1GmskYqvk1Rb1NMh0oI3EPWDL1R1X7r9sXVhisxZq5AMAWFeL/PC88UDhAKrHmQv852ybA5X+D3xGJKTVyFkAk81ULDoXsfJVUpeqUSHoraVRH4ij8Ld4trCR6+riI9eLeU9Za+ORY/sNttaeb11l2I8LMTALyZ3BoIXUJIgqN5s7V7a3i+r77ORhrxk/L52FFB/rBW4+oo6troQh+gDO3c+lnrSm9g+3MHp4AGP4icZjLospU9jDrZU6ieDtLlCComt8JQfbmdSVnGs50cxrGxX8lDceGnd3Z+5XxJ8hI5PG054nvMxv5Zbg3j55wo6EwlK4TWf9suWpQAPSnXVQJuFR6O7GGUPePHZscUgRHH79zvfmXDkXPKzl/bXxmeZ0KY+wOSAJo/3+OrLIP0DGFLW5Qkw+bPRUFddHpAwR9FUka4At/cbwaA18HVGcu9KWQLZpncYAafjDuZlUnarnlWv6z/89nWFM6lyROeTGUAdjz5fKiPJCccskLQj2iP/dAYYHE4m4KXxG5y9N0zPn565HksEXzI20NgUTZ+7jSg4wwLCIYnDEMpO
+X-HE-Tag: 1795362213-172328
+X-HE-Meta: U2FsdGVkX1/0pNAUSLKxWY0ydr0hKo8HxsgtuYMlsIrvh3Ph/C84BVEciKuGEXeLkmz4SL/tM/nZN9bt6tPQj8b3c1jeC6J58Aa2Rz4dS2+gsV+a5IAHao5lk1p15I73n1fMfbmLPeT4CABDVojTwCrPHh4IcZfBW6dU8r60cOvVSgXMq1HrNY3bFaQSrCVJCMn8v94Nw7YNcpVoKZEGgOIA7Xs8w/mt+sOHxc4RyO34WdyxbMkWptJUXl+jk+psa9Gj8QW98sd02zMmQa0pKorp+d1xQ6D42BtJAk00NoXGdvzOM8HzPX+brtmYHYwCsVcq3o/j0bbB182+HqHjC1DlzIFvYJu3fcUgYIq4ZK+TVgjlfoXvQo1nymQ4Qp6cccgyjQ0GzUxicpl/DTCqpraPRTtkd8mH9CGEObPgceDHfyop8KuXsMlls1Wyh95q3GJvSlNQ6grn4r8TeCvbcgKxkscb7ZVS+jQYUzlEaAyutvdSxytqx6/DIhlYHUDjluzumi22anXPXp7j02n5xSDcmtmCbADlOyecPKKskqi6RqzWuSOOnA1cqy2R3wLgNwSBlsG1vaVCXuKFE33+dfGAranXV26aEN9w6JIl9zWt6lJ/M18QWXbdgO2GbP5Btf6okuUxZoNIszLNvITzeMjCGYpBSPQYHTyEJHJ62OiMxJTaxTqhUt9U3FmS4SwSIyAAfmBTA0Xgra3psjhTGJdcazmE76o8U+tz7sfcClvDq0VGKvdvTtTTYsxdeil+Xg5M/ugFyhrd6Uwd1AZxqCoIbTH8AxeUwkbhtU4NfH4HdoPHeEOl/q5ClxktnCPp1mBMFAr9EQhFN6uUgFQ/6vwdamJEHWpuvSIjjl5yFddyLU2pPxwIGNff/Y0bP4X4lMFJYZoQZzQB4WB/Nlnrq8NEA7bHMzJYEj5I+OdfUF7Bvtns1/wAkFFtrt/jHgpFjIzGRIXxsWBwxBcJZhR
+ YSuJyEtl
+ xxyfKBEacbt5em3n6deElpfJFpDyhhSoh7ekPjBNkhk7VGHt2JsGxXtYKoziQuS/cCWeuGpmlzNE62BKPfoQSA8kSiP2733X2A3Y6DCjobTXpa57NG0tMZUzlqucEALs9tXb6T48AuFbW2kAtw+21uYIOCyfcXmtNyMw1t/JBagX4B96DBfbk2R8UWQKiCSPSUAjyMrxVAvSZXYL09sPQhmV30XIcuQCoViC+52to34jGFi15pxD7JcsdNvYMpQ14yMSK72q35iHYROv2yLCOoDXLHa7o0dbm/f/+JIh56Gi0qpahYAxZPBS9CMg9actEhFG1NTwWyze/wDv+Lkw9OXjODhn02zq1ZA8z0pb6f6MoIEFDS3+Uj5fFxv2H1FhOSjdTQJiGeJAIwCDPHZg/Wp7/dQZnu0duoY4Val16uQXa++puXWpsQSQ1Bq9MScerCDFYtP3c1R5IuV0nzsHhBt5jrloFN6ABsXjjxh/IKH6NwAnHU+4O66aSaLGJ8hx17IJPXhvdEaqkFF31fahtTHJc4WjAsjlx0IrWqjKuFjzyrjMi8IafaiColfXGQdQ9ihO1cFz5OLAGbsrksmp2yVouxR2Z4y5xGcci7AWPpJmA2IHI8vwOuwhFOpTJ8U5I1gNQekgT1+T3EIRf10GiZFwE1m3UBnbLbBN7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,50 +143,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 05:19:07PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> No caller maps a VM_DMA_COHERENT area through this path: such areas
-> come from dma_alloc_coherent() internals and are freed via vunmap(),
-> never through remap_vmalloc_range[_partial](); all 13 callers pass
-> vmalloc_user()/vmalloc()-backed addresses.
-> 
-> The flag was added in commit fe9041c245196 ("vmalloc: lift the arm
-> flag for coherent mappings to common code") as a mechanical
-> translation of ARM's VM_ARM_DMA_CONSISTENT.
-> 
-> Drop it so DMA-coherent areas can never enter the path.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/vmalloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index db669103dc66..a888eca016a8 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4894,7 +4894,7 @@ int remap_vmalloc_range_partial(struct vm_area_struct *vma, unsigned long uaddr,
->  	if (!area)
->  		return -EINVAL;
->  
-> -	if (!(area->flags & (VM_USERMAP | VM_DMA_COHERENT)))
-> +	if (!(area->flags & VM_USERMAP))
->  		return -EINVAL;
->  
->  	if (check_add_overflow(size, off, &end_index) ||
-> 
-> -- 
-> 2.43.0
+Hi SJ,
+
+On Sun, Nov 22, 2026 at 8:00=E2=80=AFAM SJ Park <sj@kernel.org> wrote:
 >
-I think we should really clarify why а remap_vmalloc_range_partial() should
-no longer accept VM_DMA_COHERENT mappings, because this change explicitly
-disallows a previously supported behavior.
+> Implement DAMON core internal data structure for queuing received
+> data attribute reports.  Initialize the queue for up to 1,000 reports,
+> inside the DAMON init routine.  Destroy damon_region_cache and reset the
+> pointer for the queue setup failures.
+>
 
-Could you please clarify why we should disallow this now?
+Looks good to me.
 
-Thank you!
+BTW, while reviewing this, I noticed a pre-existing issue in DAMON
+sysfs. If the core fails to initialize, sysfs still registers the
+interface, and trying to start monitoring with an initial region can
+hit a NULL pointer dereference.Maybe I'll send a separate patch
+to fix it.
 
---
-Uladzislau Rezki
+Reviewed-by: Aveline Noir <jm5905938@gmail.com>
+
+Thanks,
+Aveline Noir
 
