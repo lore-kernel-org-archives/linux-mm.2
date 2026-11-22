@@ -1,144 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8444A606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 12:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CB7606A333
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 12:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QtATdAra
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=T7GvXMgx
 Received: by kanga.kvack.org (Postfix)
-	id BA79D6B05B1; Sun, 22 Nov 2026 07:04:45 -0500 (EST)
+	id 6E0DB6B00EF; Sun, 22 Nov 2026 07:39:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B585F6B05B2; Sun, 22 Nov 2026 07:04:45 -0500 (EST)
+	id 696C16B05B0; Sun, 22 Nov 2026 07:39:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A20136B05B3; Sun, 22 Nov 2026 07:04:45 -0500 (EST)
+	id 5A7A06B05B1; Sun, 22 Nov 2026 07:39:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FCCD6B05B1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:04:45 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3ADB01A069D
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:04:44 +0000 (UTC)
-X-FDA: 85462623288.17.1BDF120
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 777A3140007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:04:41 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QtATdAra;
-	spf=pass (imf26.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 33CE86B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:39:43 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8CA480680
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:39:41 +0000 (UTC)
+X-FDA: 85462711362.14.E121DE4
+Received: from mta0.migadu.com (out-2.mta0.migadu.com [91.218.175.2])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AB5D940003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 12:39:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T7GvXMgx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.2 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795349082;
-	b=cGA43B//CrJwS0VBxJdWKkUIkeievN1ZXW0pRWR784UfhPIDtp87zNo0/55I+TRr91DT8O
-	e6h2fs20ffw65Xoz4Y8iEsUvR6uh6fax9fs3VTXSeO0jWRdM6VBiyrjU9QxbSNbDtraqDm
-	dvAcwx0rXB7vfeXMQQ6skoLsy6WTo3E=
+	t=1795351180;
+	b=wMCriqYc2RJEBiLoJVLzUjo4kSdn3XSt3KKIEWuX6bVleaUHk4DFxUZa96aGZ5H4wqARxE
+	FRPCZxxb024ayB3ITsoCtDmRvobjdx4widn2grk+tgwHyKq/RMI3asr3Kzc9Ps8Kmy2tj3
+	ggLAysAjymZfvQgP8EC+Ef9oqhP+61o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795349082;
+	s=arc-20220608; t=1795351180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V+yb/y9hVY4gQHBtq0ety+i4x7YbvicEI/eHAt9Cm/M=;
-	b=IqOEEPne52k8+/mYqL16FZRpBzLopdVhqQhsRssKHF8QwAcdQimJFUUNoeVRBAV+ptIcW8
-	XeA8PssQvs32AY1fCaAANH0UdaonOwoWEaBbfwasfhyGyYM0/JwQxVOBt8WoW6fVw26d0x
-	tukuyIYZf8F7sXS0eovgtU8/HMTvvGI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MjleVL0tqY4h5vvQVikisyp95jaXgvwRJdn4ki2WBHY=;
+	b=a3SibBDGwN/iHi2Xc7a68M+1eGTikwMsg9wtte/M/LEFSxQh4Hdbydpzobx+ejvevHYvLR
+	EpAKOj5RDUsa1mXpVQQB6tsIwnfTFFGeN9dSoqSrdHf+WKPwa06viNMpkLee3XgK6u3/R3
+	G+5KzroGLVJzD8UmG/QodiB1qqOISyA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QtATdAra;
-	spf=pass (imf26.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795349080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V+yb/y9hVY4gQHBtq0ety+i4x7YbvicEI/eHAt9Cm/M=;
-	b=QtATdAra9RhIwPgRhS7ygnxiUsv7aGRaEtVv/V9javQUjljEfvnitQt838MpxOLMnZQZRy
-	5UgPfmIB9WMmlg1dSMEBQzTlRSh3lMBl8ka372+01J7jf3jP1w1YCTtvdvtXVR7x77X2AU
-	MzJ4RIfh4ETtbo47V2tFa10PXO+Gosk=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-maj0bwZwMzOxWiWHXhqHJQ-1; Sun, 22 Nov 2026 12:04:38 +0000
-X-MC-Unique: maj0bwZwMzOxWiWHXhqHJQ-1
-X-Mimecast-MFC-AGG-ID: maj0bwZwMzOxWiWHXhqHJQ_1795349077
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-5c1ac335922so1071396e87.2
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 04:04:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795349077; x=1795953877;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=V+yb/y9hVY4gQHBtq0ety+i4x7YbvicEI/eHAt9Cm/M=;
-        b=GT3HezegN80er2mWixOF89YLHXZWJEf9Ncte1+XmxM9wIiYfNo28nozqif7z/iFGpM
-         9iOaPWbavWt7rTQ5mrEDWfdLD5zIvW8S0tWsVqHiMLlXWRW8l+CZsIUThdS9DTH6cr3z
-         IkhYhO4GwD/FudxT4l/cTqo0Ah40Vm2RdpcR2my+8aAFcTkIEqtaiOb2Kn51bloAV81a
-         FvQcEmbpwCUsbZ+365bnDZovpnXfFc7co3O2sBQRBCg7GkjjcTRBnEbCA7LHdIL3y82a
-         z5Aybnt3gxzxUF289JLstM88qUSporuKrenPVNyqLLUAStcLKgF0idsdZ2OkbrA/m1/k
-         Mn2Q==
-X-Forwarded-Encrypted: i=1; AL+hErFCV8S2HCLvYasgNyB7VlklaJT/BviN1PX559a+hAUorkVNsp5t36X3qpxqezaINpQDcJ8p1afaEg==@kvack.org
-X-Gm-Message-State: APuU4Z/sv2bnFUY0tomsQIAoQL9hQx1eohFNvRKKPZw7EqNlV6x/uE/m
-	j97vv84Bl4zk9vYh5iJoNKf3Op2SVhksAf0ErPhV7r1SLRvkDGnMsLyZJ6vO9iZi29DkuYEO9MS
-	Mt5Q8ziZgfQcLdIiu1DwLaF1ldqH8Rx1g/QmoL5kuGAVC3gHmVhI=
-X-Gm-Gg: AZFdTZf93IpENnPvS85WcplTnFbx2WvcQauQC58tuPaswtTNgHszzS6OO6U87Ajxzyo
-	TyAXGQsrfyb/BJ64I5Vxb04Kna5Vxp7uWkhilKjrAp6lME/HwsDSHZUy1mY9Q0eJoqsk0mCJBDB
-	MpDJgYWvmH4KVMQr2VP8QS8wZefK2xNScnRQXfi6a9p6md/Yt1pBAVORl4qIO0PfEsbkma9TTO6
-	JQFY5KZ0KABkL7ALREFZUsu9sALlA6S/jUvGlG7zEcCvgrH/oHWMu9rcl91I5tVfIRKBfrYTzjk
-	GJ3YFtHP2rU2auCji3e76J8VP4fGuTxiag9FDdQ13MxVN3BVDNuoWkd+yS1eEgfs1PFHZQhsDRp
-	QOCpCH0/X/mKBvZTLRLKnjoFBUBcIpm7qWjTOWw7TTgMFcfb5lxyxJtd5aJhtTvAFMVPIbTZD7c
-	wxBuAZ
-X-Received: by 2002:a05:6512:251f:b0:5bf:e540:85e6 with SMTP id 2adb3069b0e04-5c1bc80fc24mr2490879e87.24.1795349076857;
-        Sun, 22 Nov 2026 04:04:36 -0800 (PST)
-X-Received: by 2002:a05:6512:251f:b0:5bf:e540:85e6 with SMTP id 2adb3069b0e04-5c1bc80fc24mr2490845e87.24.1795349076163;
-        Sun, 22 Nov 2026 04:04:36 -0800 (PST)
-Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd017803sm2088742e87.38.2026.11.22.04.04.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Nov 2026 04:04:35 -0800 (PST)
-Message-ID: <ab91c700-311c-4bd5-8d8e-d90d573f57c0@redhat.com>
-Date: Sun, 22 Nov 2026 14:04:34 +0200
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T7GvXMgx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.2 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Ky7YtxIAbOQTCVzCi1Gw2/0sLzylAhZ+y2+tOAS/5rY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795351178; v=1; x=1795955978;
+ b=T7GvXMgxRQa0apTe4L/KHmxRF2BPglsixr0c0mvfzAETVmUwnt6fn+wMOr6LpgQvfLB2Blt2
+ oUi2daUTpXo+xzbU1gFY4kHL7aVVfHtRhu5WtN4buL9HGNDDh4pZGS3eIq7LV5V2gX7IR8794ve
+ BBYkuFlIft9JX436N3Z29Wu4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id e28ef95bf9ccf3aa;
+	Sun, 22 Nov 2026 12:39:38 +0000
+X-Mizu-Trace-ID: e28ef95bf9ccf3aa
+X-Migadu-Flow: FLOW_OUT
+From: Baoquan He <baoquan.he@linux.dev>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	urezki@gmail.com,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	shikemeng@huaweicloud.com,
+	hannes@cmpxchg.org,
+	yosry@kernel.org,
+	chengming.zhou@linux.dev,
+	corbet@lwn.net,
+	kunwu.chan@gmail.com,
+	klarasmodin@gmail.com,
+	linux-kernel@vger.kernel.org,
+	baoquan.he@linux.dev,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: [PATCH v6 00/14] mm, swap: extendable swap devices (xswap phase I)
+Date: Sun, 22 Nov 2026 20:39:04 +0800
+Message-ID: <20261122123918.3486916-1-baoquan.he@linux.dev>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hmm: account for subpage offsets in device-private
- PMDs
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Aveline Noir <jm5905938@gmail.com>, jgg@nvidia.com, leonro@nvidia.com,
- airlied@gmail.com, apopple@nvidia.com, balbirs@nvidia.com,
- christian.koenig@amd.com, dri-devel@lists.freedesktop.org,
- Francois Dugast <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org,
- jgg@ziepe.ca, leon@kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Brost <matthew.brost@intel.com>, mm-commits@vger.kernel.org,
- Patchwork <patchwork@emeril.freedesktop.org>, SeongJae Park <sj@kernel.org>,
- thomas.hellstrom@linux.intel.com, Vlastimil Babka <vbabka@suse.cz>,
- ziy@nvidia.com
-References: <179342234355.4.16705453209886955762@gmail.com>
- <20261121160037.1a479f3c8b4e860bc23c106d@linux-foundation.org>
- <36be0904-168d-4813-82ff-27ecced464e3@redhat.com>
- <20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: DoIDBO82a7aThruw3WEVp45BmRWXcN-buNlB7rKDZuA_1795349077
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AB5D940003
+X-Stat-Signature: ud3pe877wt3kz8gifkanunrw8su3jdsp
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Rspamd-Queue-Id: 777A3140007
-X-Stat-Signature: rhpe1p5jqqusz6zcfccrxmri1qad8e6y
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795349081-125731
-X-HE-Meta: U2FsdGVkX1+4PM4CF6KQPdvJu9xxJ4ICwg9OWAFwAb/ASHtXzoY0CLsrplEnqRwTqi7CR51OHRlTysmlsMOG3ZfEJ0ZHsa5ipMNvfCH5OdPhvbaolRqJu0gHKyJh+PpJQtMM2/NEb0/8lkxzNqclt116WH+H3hU+wQ5U0ZjOmPtbXj7nVI9H8wR42/Bz3du/0QKg7dW3anE3w4z6nex8UT7NVAAR5cjeMVAR+4Il3GD5yRgp2wOGSWgfKi/SA8wlgNnHBdr32SRor8R5O5/a7qtNh5DUsOyNn3oTbTDAtN/t7X/KP5EvxNR9hbqGwn2ifuvxHN7KpXbhlCMLX2XqmFqUmBfoRsaNRZ90l78O8Xj2YB3AMCNpdYpxOyVgZOpz7boHt7EoN6bvKtXKmwIKqTLJg+ksB4TBZxjRx7xVKbyq2lqfJr3MvYlvbdA2GYC+PMXsanqWiQzcEB9RzhD5gBqgURWfHpTcMsE3XQYQXSzLaTzqwW2LVvZiW0Y0PQ+MQXRJz1ilhXnrNzYMTQWg3KvEnf2OHCyPLOwkuUfQvM2MxEguedwPr/zVMct1hxEHTtH9J0EqEfwv4JPI1m2U+4Yhh3ou2h1t6EDqiEb1Q/MsBEVXGZeSkQ4MXl7PUYHLMrzldxjhwNwpd/LZaK6yL2KGSeuGn/B3Mf7b3RwZ0HxZDz6bUmoaqb30434iyIkucMxspnmLizVyGuxZsQjv2RwDsCRBit/F80dnUnRTQO1DUAYw882utKz4U0HR8VljURUR+LWYMrO0l94l/g0j9FPDgtmzzfLcYmalNKSgDuw8K9NiWu3TCXzLrtudNeZMu9FKZsArJ2Fe3GrSKt9wqCYHcTXEWB2TlcHZNmy3bVA9EVBz4nL5ByPiUgAxLq38cZgZAz9W59RxZBedWdG6mJRM3ZjQvUAaQpvyNvvngZmKRSuW+PAPicZ30FGOLoTR4GjHJvUwKrhdg9rKsTP
- jZv7bSWG
- inn6YsOmSG7GGSG1OLtiMn4MffYIEDBU+CGzy9hu1FoNxk87iOF0GcAUTLoXcsftEFbUHhiwKoVxdk2Fwe6yETdcgz9NdgJ2xKPl48C6B470GF7QxZGIUSTPB/FycfnyUhmGMUJDAoViq85Sv4cGluKEfZpEyK13WLEqovVjmV0yvFOj59Xa+SKik3gojPTrEWJOx/1E9Wq+4jj+qzHAnfx+5sVrt/1PEIP/uLZ9icFXOMlvh53bDFspurrmi99NEaD4Iscvp6EQjX7aRzI8hKcMAR1OeicZ38v0wloaqNTBWQksoF3cD9wW8E+q+0xdGt6pF5cFAXva9VT2mGcWkEgenTDpiaAtAfmrVKckjaZyYNRQcI/1O2Ujgdn1+J5vVL7CJ2thJfmV4lMT+ydy0e/sekKnp18w5QckKotIXaEQl+/9flFovh+OUo80Py5YN/wxmY3o40Iol8x/HTppG4ygAu3+rykHwPwyONV8gwk3iAYS1VBWgfSfz5V6UKhH608fzY4h7zzAOAUr8KupnzCJwD9gGS4QLz8BpvkNZblEjNFtvFRcv1VmYTK2YScDM4lJyxvnO1pmieTZW58Np9dWWVdvBaml3l42rRtc5HywXq2hRfO+dXL+KjAYuTkpBkpaMAYFL/+8I1UHXaMf3DyDtyV5GT6pzDmJazD0vHRHsKC8H62n3tk22P+YLeMMtMS/HtHQapKQLSYxrU3JZJtpRZWjEQJnt8wE5Ot4j2nNPjRBOFMGEwZLCRdywFgtmPnZityrAHnRHxU5qoEpDYAGbMw==
+X-HE-Tag: 1795351179-34783
+X-HE-Meta: U2FsdGVkX18nN5hIzu6YbXpMt1qk+Qx3tmTNha3pnWhFMnYwoMgEb2Enk06A1m8T5UZdq74in3gW/dy8GNi5Wa/JunUN0r3cUyBT9dpoO49xxlVqz6j9dZnyA9InK0Vv2BYsnyEGVhq8OqHWFucV1/LtJoZvuU5uyEjyrR+q+/XPdnOH5rdhI09AvnRP1eAgSgUneWJPjt+edSYp18ZN7nkQ7NqMuhlze+NE3VIxHpAHzs80f1ftMyo8jUyPe++QOlCIpiWslDOuo7aBNLoiMdvxe6k/IRI51dtuoK9GK88v/C2gUtpG8hywZqAfQYWW1Z+2+N58lWP5RFABkJ8pJv0R84FUd6BqgBea3NDWVmZpRupcOpLz3t0FuumK734PqgLOBcna4X3rTyuuYOKK5ay9GjbTSu6YVAdR1a2/HPBydbMMPJu9nHvY6ira13wCKWMBLBd62zsBq3yApAOh+QJgRreqDAsGpoHyaYxsmTyjeqU7N3Tx7ymfvbbCdbco72xE2YtyxNyPRN0XY1WrC9SzWoFJkrs56RWfVbvqHvZOC2iInN574A1NSBc9sPjice0Am0jplHtr/Y4mNlPHAsW4/WCHM8t7UaAM31rR5NYmh0fNBRzacFJfUbUSXgUbJSIpgGckgLnrSYxbQwlUa5A13wx/y7UJfJkJvwlcrQ5aTflbh8BDh2s8mRVu2m/P6oKJrZuIDGCX6HKou90mJaaRaWgmFY0YNYV/+4rYHifVxhGEeIgzN3q3g0MgzptYW5dLYOFo+rjQTDUOppBq5POGDGsqKfMZwo+iOkLPTlnE3PjautX3uxBqJ5LUmmr5TRDGDDH6SeUn18G+naReI52LATIcp4jnhY7eUxxvm8fo9GGtg3V3h06/L7wE1sAaw8OQLA+elrYYMoeA5M5siTEdFtHEUFRCIqoUl6pfB2xG58V1o26FDGng+yYroaG+TLLhl09ODM09HrH3xw1
+ E7Qy69+c
+ pQGbOQWA0xVxq9uADx683GYkWAMPcTvZadRKJR2Z6TsxuqT4y1UO5ZxDAcqG+LM9AWEpb/O/Vxtrk0+6fFpFztwv2q1l/2n92ird/PHWeKItV9M/AyvvX7uPgkwbJbrxE1C60FFNYC98o9WrFQhqits4xJJCoOJq4lgBKEGuWMDyXRLhnnKPZlZ2rLBNK24kGibTcz346Z/qS9ATMmHac3INCojO2zf5MLilyj4+G/rmEywqakp7NRhpb1vsZ0YK9jkEjwgo/JDyilq71DdOQwDnOuWoT6PmAbheF57eHXFRNTqugUoxIY7HnOdmKikcasMsYCXgx2Yq2Mx17/olRRSFapXQYb8IRsVTpQrDTAdkqKIGiOIMgRdl0A8iNLI30SzGS5XMk1euc87dVLvVvs0W82GJLAZ25I3zDcmw0gAoB/EwOTGFXXqco9vb+X3aQAwq7Vq0xbeRER04+wWwJoLkb+fuzeFbNHiax/3FhIxsNlEyq74/KIYgy6qY79SW3iBloUKLIj8qTKosVcGP5hqJ20KO4Jn1Tty00EZ6FDvxS2K9drvfdApVU0FiScjPTRnLG+LgUZPykKRB3qXar+OOUcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,132 +106,362 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/22/26 11:52, Andrew Morton wrote:
+From: Baoquan He <hebaoquan@kylinos.cn>
 
-> On Sun, 22 Nov 2026 07:55:37 +0200 Mika Penttilä <mpenttil@redhat.com> wrote:
->
->>> So it accidentally found a bug in lib/test_hmm.c on the way.  "The QEMU
->>> run exposed a real test_hmm bug: a second open of /dev/hmm_dmirror0 can
->>> put a device-private page into its page table, then dmirror_do_read()
->>> tries to copy from that non-CPU-accessible page and oopses".  I'll prep
->>> a fix for that separately.
->> I noticed that also and will make changes around it in my series.
-> I came up with the below.  It all tested out OK.  wdyt?  I guess it
-> should have cc:stable>
->
->
->
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: lib/test_hmm: use backing pages for device-private mirror faults
-> Date: Sat, 21 Nov 2026 17:06:45 -0800
->
-> When one hmm_dmirror descriptor migrates memory to device-private and a
-> second descriptor reads it, dmirror_do_fault() stores the device page in
-> the second descriptor's page table.  dmirror_do_read() then passes that
-> page to memcpy_from_page(), which can oops the kernel.  This was
-> reproduced with an unprivileged process using the fake device in a QEMU
-> guest.
->
-> Store the corresponding RAM backing page instead.  For a large device
-> folio, retain the subpage offset when selecting the backing page; using
-> the backing folio's head for every entry would return the wrong data. 
-> Extend the existing PMD migration selftest to read the last subpage
-> through a second open before faulting the memory back to RAM.
->
-> Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Leon Romanovsky <leon@kernel.org>
-> Cc: Shuah Khan <shuah@kernel.org>
-> ---
-> tl;dr: The unpatched kernel oopsed when an unprivileged process opened the
-> fake HMM device twice, migrated an anonymous 2 MB PMD to device-private
-> memory through one descriptor, then accessed its last page through the
-> other.  The patched kernel returned the expected bytes on all three ioctl
-> paths.
->
-> A was reproduced and saved before B was built.  As uid 65534, a static
-> userspace program verified that all 512 pages were device-private PMD
-> entries.  A READ of the last page through the second descriptor produced a
-> KASAN-enabled kernel Oops in dmirror_do_read().  Independent A boots also
-> oopsed on WRITE and READ_UNLOCKED at the same last-page access.
->
-> With only this patch added, READ and READ_UNLOCKED returned the expected
-> 0x0a byte, and WRITE returned the expected 0xa5 byte after migration back
-> to RAM.  The modified in-tree hmm_device_private.migrate_anon_huge_fault
-> selftest also passed (1/1).
->
-> This reproduces a userspace-triggered kernel Oops in the fake HMM device
-> used by test_hmm; it does not establish reachability through physical GPU
-> hardware.  QEMU guests used matching kernel configurations with
-> CONFIG_TEST_HMM=y and KASAN.  The guest device permissions were set for
-> uid 65534.
->
->  lib/test_hmm.c                         |    7 +++++++
->  tools/testing/selftests/mm/hmm-tests.c |   14 ++++++++++++++
->  2 files changed, 21 insertions(+)
->
-> --- a/lib/test_hmm.c~lib-test_hmm-use-backing-pages-for-device-private-mirror-faults
-> +++ a/lib/test_hmm.c
-> @@ -292,6 +292,13 @@ static int dmirror_do_fault(struct dmirr
->  		page = hmm_pfn_to_page(*pfns);
->  		WARN_ON(!page);
->  
-> +		if (is_device_private_page(page)) {
-> +			struct folio *folio = page_folio(page);
-> +			struct page *backing = BACKING_PAGE(&folio->page);
-> +
-> +			page = folio_page(page_folio(backing),
-> +					  folio_page_idx(folio, page));
-> +		}
->  		entry = page;
->  		if (*pfns & HMM_PFN_WRITE)
+A normal swap device has a fixed size, set when it is enabled. This does
+not fit zswap well. With zswap the swapped data stays in RAM in
+compressed form, so how much swap a machine can really use depends on
+how well the workload compresses, not on a number we pick before we know
+the workload. Size the device for the worst case and most of it is never
+used; size it for the average case and the machine runs out of swap
+while zswap still has free room.
 
-I have this same chunk. I think it's needed, all dmirror readers expect to
-copy_to_user() from pt.
+xswap is a swap device with no backing file. In this phase its swap
+entries hold pages in zswap, and its cluster_info array lives in a
+VM_SPARSE area that is mapped a chunk at a time, so the device covers a
+large swap address space and costs only the chunks it has actually
+used. The device grows as the workload needs it.
+
+This series is the device itself: the sparse cluster array, growth, and
+the interfaces that create and destroy one. It is phase I of five; the
+physical backend, the swap accounting, the swap-table backend records,
+and the runtime shrink build on it.
+
+Runtime shrink is left for a later series. The plan is to run it only
+when the device has nothing live: no entry and no backend record points
+into the tail, so no swap reader has to be tracked. It would lower
+nr_clusters_mapped under si->lock and unmap the pages behind it; cluster
+0 stays mapped because it holds the bad-header slot. The details are
+still being worked out. Note that without shrink nothing breaks: the
+device keeps the peak range, and only the cluster metadata for that range
+stays allocated.
+
+Design notes
+------------
+
+In this phase the device is only a swap address space. si->max is set
+when the device is created and does not move for its lifetime; what
+moves is how much of it is mapped. swap_info_struct carries
+nr_clusters_max (the swap address space) and nr_clusters_mapped (how
+many clusters are mapped, always from cluster 0). get_swap_device()
+rejects an entry past the mapped range, and the walkers that scan a
+device stop there.
+
+Growth starts when 85% of the mapped range is in use and maps until
+65%. The call comes from the cluster allocation path. Growing maps pages
+into the VM_SPARSE area, and mapping can sleep, so it cannot be done
+inside the allocation that would otherwise fail: the swap-out path would
+then have nothing to fall back on. One grow maps at most four chunks,
+and one chunk is PAGE_SIZE / sizeof(struct swap_cluster_info) clusters:
+85 with the current struct size. Mapping a chunk and putting its
+clusters on the free list happen in one si->lock section, and the larger
+nr_clusters_mapped is published after the clusters are linked. An
+allocator takes a cluster from the free list under si->lock, so it can
+never see a cluster that the published range does not cover, and a
+reader can never see an entry in one.
+
+Creation and teardown
+---------------------
+
+The device has no path. swapon(2) opens the given name as a path first,
+and only when that open fails with -ENOENT is the name taken as a
+request name; the exact string "xswap" asks for the file-less device. A
+real file or directory called "xswap" keeps precedence, a path that
+fails for another reason is returned unchanged, and "./xswap" or an
+absolute path is a file as usual. This is the same rule swapoff(2) uses,
+and the path is copied from userspace once.
+
+There is one xswap device per system; a second create returns -EBUSY.
+/proc/swaps shows it as "xswap", so swapoff xswap and swapoff -a both
+tear it down. Its counters are in /sys/kernel/debug/xswap/xswap.stats:
+
+  type 0
+  clusters_max 5120
+  clusters_mapped 85
+  usage_pages 0
+  tail_free 84
+  grows 0
+
+With xswap.max=10G the device has 5120 clusters (with a 2 MB swap
+cluster); an idle device maps one chunk of 85 clusters and the tail scan
+leaves 84 of them free.
+
+Hibernation device discovery skips xswap devices: there is no block
+device to resume from.
+
+Configuration
+-------------
+
+CONFIG_XSWAP depends on SWAP, 64BIT and ZSWAP. CONFIG_XSWAP_DEFAULT_MAX
+sets the default size of a new device; it takes a percentage of RAM, a
+size, or "max", and defaults to "200%":
+
+  CONFIG_XSWAP_DEFAULT_MAX="200%"
+
+xswap.max= on the kernel command line overrides it:
+
+  xswap.max=8G          8 GiB
+  xswap.max=300%        three times RAM
+  xswap.max=max         the largest size the device can address
+
+The address space cannot move once the device exists, so the size is
+settled at creation. That is why this is a boot parameter and not a
+runtime knob. The default priority is the highest, SWAP_FLAG_PRIO_MASK,
+so xswap is tried ahead of an ordinary swap device; a lower priority can
+be passed in the swapon(2) flags.
+
+The device needs zswap: without it swapout takes a swap entry and frees
+no memory, so creating one fails with -EOPNOTSUPP.
+
+A cgroup that cannot zswap (its zswap limit is zero) is not given an
+xswap slot; the allocator skips the xswap devices for that folio.
+
+Limitations
+-----------
+
+This phase has no physical backend. If zswap refuses a page the folio
+stays in memory, so an xswap-only system can run out of memory once the
+zswap pool is full. Keep a real swap device on such systems; phase II
+adds the physical backend.
+
+An incompressible page is refused for an xswap entry even when the pool
+has room. An xswap entry is not put on the zswap writeback LRU in this
+phase, so a page stored uncompressed could never be reclaimed. Phase II
+gives xswap a writeback target and the page can then be stored and
+written back.
+
+xswap does not take large folios in this phase. A large folio goes to
+the first device in priority order, so at the default highest priority
+it is split into base pages and a lower-priority block device never gets
+it whole. Creating the xswap device below a block device avoids the
+split, at the cost of trying the block device first. The data is still
+swapped, in base pages.
+
+The device does not return its unused tail while it is enabled; destroying
+it returns the whole range.
+
+Under extreme concurrency the per-CPU cluster caches can hold all mapped
+clusters, so an allocation can fail while page usage is below the grow
+threshold. The folio stays in memory; it is not a correctness failure,
+but it can look like a false OOM under pressure.
+
+Overcommit
+----------
+
+An xswap device advertises its whole swap address space as swap
+capacity: si->pages is what /proc/swaps and SwapTotal report, and what
+nr_swap_pages uses to decide that anonymous memory can be reclaimed.
+The backing is the zswap pool in this phase, and real swap devices in
+the later phases; the swap address space is not backing store in either
+case, yet it raises the commit limit that __vm_enough_memory() enforces.
+
+Which semantics this should follow is not settled here. Counting the
+swap address space lets a workload commit memory it can never back; not
+counting it changes what SwapTotal means. swap_info_remove() skips its
+commit-limit probe for xswap, so destroying a device does not fail on
+headroom the device added and a workload may have committed into, and
+real swap devices keep the probe. The limit can then fall below
+Committed_AS; new allocations fail until Committed_AS drops. This is
+left to a follow-up, together with the rest of the swap accounting.
+
+Testing
+-------
+
+QEMU KVM guest, 8G RAM, booted with xswap.max=10G.
+
+The shell's swapon(8) opens the path and reads the swap header itself, so
+the util-linux swapon(8) cannot pass the request name through unless it
+knows about "xswap"; a matching util-linux change, will be posted separately,
+lets "swapon xswap" do it. swapoff(8) passes the name to swapoff(2), so
+"swapoff xswap" works as is. Without that change, create the device with a
+small helper that calls swapon(2) directly:
+
+  #define _GNU_SOURCE
+  #include <errno.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <sys/syscall.h>
+  #include <unistd.h>
+
+  #define SWAP_FLAG_PREFER	0x8000
+  #define SWAP_FLAG_PRIO_MASK	0x7fff
+
+  int main(int argc, char **argv)
+  {
+	int flags = 0;
+
+	/* The request name is never a path; stay out of any cwd file. */
+	if (chdir("/"))
+		return 1;
+
+	if (argc > 1)
+		flags = SWAP_FLAG_PREFER |
+			(atoi(argv[1]) & SWAP_FLAG_PRIO_MASK);
+
+	if (syscall(SYS_swapon, "xswap", flags)) {
+		fprintf(stderr, "swapon(xswap): %s\n", strerror(errno));
+		return 1;
+	}
+	return 0;
+  }
+
+  # echo 1 > /sys/module/zswap/parameters/enabled
+  # ./xswap_on 100
+  # awk 'NR == 1 || /xswap/' /proc/swaps
+  Filename                Type        Size        Used        Priority
+  xswap                                   xswap        10485756    0        100
+
+A functional tests reports 30 checks passed and 0 failed; the
+overcommit case was run separately with vm.overcommit_memory=2:
+
+  - create and read the size; SwapTotal stays fixed and SwapFree stays
+    in [0, SwapTotal]
+  - grow past RAM; stop at the device size (the cgroup runs out of room
+    and the OOM killer takes the workload)
+  - an incompressible page is refused and stays resident
+  - a cgroup that cannot zswap gets no xswap slot
+  - swapoff xswap, swapoff -a, and a recreate at the same size
+  - 2000 create/destroy cycles
+  - overcommit: with vm.overcommit_memory=2, 8.15G of RAM and
+    overcommit_ratio 50 (CommitLimit 14.56G, Committed_AS 4.65G), a
+    10.49G device and its swapoff both succeed
+
+The functional matrix, the swapoff name cases and the 2000-cycle leak
+test were re-run on this rebase (7.4.0-rc3, mm-new). The latter two
+ran on a kernel with the later phases applied; they still only cover
+code this series adds:
+
+  - swapoff name semantics, 11 cases: a real file keeps precedence, a
+    dangling symlink reaches the device, a directory is EISDIR, only the
+    exact name is accepted, a stale name reports ENOENT, -a tears it
+    down, and destroying with pages live keeps the workload alive
+  - 2000 create/destroy cycles: no per-cluster state is leaked (largest
+    slab growth 115 objects; vmap_area's +613 is the known lazy
+    vmap_area freeing)
+
+Performance: the numbers below were taken with the complete queue on an
+x86-64 server (2 nodes, 72 CPUs, 252 GiB of RAM), on 15f114dac9a7
+(mm-new, 7.4.0-rc3), against the same tree without the series. The
+pageout run and the usemem split were reproduced on the posted base; the
+pool peaks quoted are from the earlier run.
+They are repeated here only to show where the series leads; each later
+series reports the measurements that belong to it.
+
+  - 128 GiB MADV_PAGEOUT, 144 threads, interleaved NUMA, two boots with
+    five rounds each: 86,594 vs 87,026 instructions per swapped page
+    (+0.5%), 3,280 vs 3,287 MB/s pageout (equal), and about 40 seconds
+    of pageout on both. The instruction difference is at the level of
+    the run-to-run spread. The same run on an earlier rebase (67f3b04b)
+    measured 87,999 vs 86,818 instructions per page (-1.3%) with the
+    same pageout rate; the signed difference moved between -1.3% and
+    +0.5% across the mm snapshots, with no change in the pageout rate.
+    Wall time is about 8% lower with xswap in both rebases, but the
+    pageout phase itself is unchanged; the difference lies outside it
+    and is not attributed here.
+
+  - usemem, 64G touched in a 48G cgroup with no real swap device: under
+    cgroup memory pressure the same-base kernel writes 3.62M pages
+    (14.8 GB) back to a swap file every round, while xswap keeps all
+    6.83M pages in zswap and writes nothing back (zswap pool peak 10.6
+    vs 1.8 GiB). That is the phase I trade-off: without a physical
+    backend, the capacity is the zswap pool.
+
+  - Kernel build under memcg pressure: 1G memcg, 40 jobs, one 72-CPU
+    host, two runs each. Both kernels are the same tree; one has the 46
+    commits and the other does not. "No writeback" is the cgroup knob
+    memory.zswap.writeback=0, set the same way for both.
+
+      config                elapsed        major faults/run  zswap peak
+      xswap, no writeback   3:44 / 3:44    63M               186 MB
+      base,  no writeback   3:50 / 3:50    63M               175 MB
+
+    With the same zswap knobs the series is 2.5% faster on this workload
+    (3:44.4 vs 3:50.2; the two runs of each kernel are within 0.3%), with
+    the same major faults per run and a zswap peak 6% higher.
+
+Change log
+================
+
+v5 can be found here:
+
+[PATCH v5 00/19] mm, swap: extendable swap devices (xswap phase I)
+https://lore.kernel.org/all/20261109055455.536925-1-baoquan.he@linux.dev/T/#u
+
+v5->v6:
+
+- Rebased onto 15f114dac9a7 (mm-new, 7.4.0-rc3).
+
+- The device is created and destroyed through swapon(2)/swapoff(2) with
+  the request name "xswap" instead of the sysfs create/destroy interface
+  and the per-boot stable id. There is one device per system; /proc/swaps
+  shows "xswap"; the counters are one debugfs file, xswap.stats.
+
+- The request name is only tried after the path open fails with -ENOENT,
+  so a same-named file or directory keeps precedence, as it does for
+  swapoff. Only the exact name matches, and the path is copied from
+  userspace once.
+
+- An empty path is rejected before the request-name fallback, in both
+  swapon(2) and swapoff(2). (Sashiko, v5 12/19)
+
+- Runtime shrink moved out of the series to phase V.
+
+- An incompressible page is refused for an xswap entry. The entry never
+  reaches the writeback LRU in this phase, so a page stored uncompressed
+  could never be reclaimed. (Sashiko, v5 01/19)
+
+- A VMA readahead skips a cross-device xswap neighbour instead of
+  reading it out of zswap. (Sashiko, v5 01/19)
+
+- The zswap writeback worker stops when memcg is disabled and nothing on
+  the LRU can be written back, instead of spinning. (Sashiko, v5 01/19)
+
+- A large folio that only an xswap device could take, in a cgroup that
+  cannot zswap, fails with -ENOMEM instead of -E2BIG, so the caller does
+  not split it and retry every base page. (Sashiko, v5 18/19)
+
+- A grow links the new clusters and publishes the larger mapped range in
+  one si->lock section, so an allocator cannot see a cluster that the
+  range does not cover and a publish never leaves a mapped range with no
+  allocatable cluster.
+
+- Because of the shrink split, the grow threshold comment and the
+  debugfs counters no longer mention the shrink, and the counter for it
+  is not added here.
+
+Baoquan He (13):
+  mm/vmalloc: support vmalloc-backed VM_SPARSE areas
+  mm, swap: refactor free_swap_cluster_info to take swap_info_struct
+  mm, swap: use a VM_SPARSE cluster array for xswap devices
+  mm, swap: widen swap_info_struct max/pages to unsigned long
+  mm, swap: create the xswap device from swapon(2)
+  mm, swap: refactor swapoff and add xswap_destroy
+  mm, swap: require zswap for xswap devices
+  mm, swap: let the command line set the xswap device size
+  mm, swap: add CONFIG_XSWAP_DEFAULT_MAX
+  mm, swap: add xswap grow trigger on cluster allocation
+  mm, swap: add debugfs counters for xswap
+  mm, swap: do not give an xswap slot to a cgroup that cannot zswap
+  mm, swap: skip the overcommit probe when removing xswap
+
+Chris Li (1):
+  mm: xswap support for zswap
+
+ .../admin-guide/kernel-parameters.txt         |    9 +
+ include/linux/swap.h                          |   15 +-
+ include/linux/vmalloc.h                       |    2 +
+ mm/Kconfig                                    |   20 +
+ mm/page_io.c                                  |   13 +
+ mm/swap_state.c                               |   24 +-
+ mm/swapfile.c                                 | 1026 +++++++++++++++--
+ mm/vmalloc.c                                  |  149 ++-
+ mm/zswap.c                                    |   34 +-
+ 9 files changed, 1183 insertions(+), 109 deletions(-)
 
 
->  			entry = xa_tag_pointer(entry, DPT_XA_TAG_WRITE);
-> --- a/tools/testing/selftests/mm/hmm-tests.c~lib-test_hmm-use-backing-pages-for-device-private-mirror-faults
-> +++ a/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2087,6 +2087,7 @@ TEST_F(hmm, migrate_anon_huge_fault)
->  	void *old_ptr;
->  	void *map;
->  	int pagemap_fd;
-> +	int fd2 = -1;
->  	int *ptr;
->  	int ret;
->  
-> @@ -2143,12 +2144,25 @@ TEST_F(hmm, migrate_anon_huge_fault)
->  		}
->  
->  		close(pagemap_fd);
-> +
-> +		/* A second open must read the last device-private subpage. */
-> +		fd2 = hmm_open(variant->device_number);
-> +		ASSERT_GE(fd2, 0);
-> +		buffer->ptr = (char *)map + (npages - 1) * self->page_size;
-> +		ret = hmm_dmirror_cmd(fd2, HMM_DMIRROR_READ, buffer, 1);
-> +		buffer->ptr = map;
-> +		ASSERT_EQ(ret, 0);
-> +		ASSERT_EQ(buffer->cpages, 1);
-> +		ASSERT_EQ(*(int *)buffer->mirror,
-> +			  (npages - 1) * self->page_size / sizeof(int));
->  	}
->  
->  	/* Fault pages back to system memory and check them. */
->  	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
->  		ASSERT_EQ(ptr[i], i);
->  
-> +	if (fd2 >= 0)
-> +		ASSERT_EQ(close(fd2), 0);
->  	buffer->ptr = old_ptr;
->  	hmm_buffer_free(buffer);
->  }
-> _
-
-Looks good to me also!
-
---Mika
+base-commit: 15f114dac9a7bde1796f0e54e22726fd31cfa8a5
+-- 
+2.54.0
 
 
