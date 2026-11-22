@@ -1,101 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019F0606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 20:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA32B606A327
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 20:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iYDuuwsM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FIlPxmeZ
 Received: by kanga.kvack.org (Postfix)
-	id 1006D6B05B2; Sun, 22 Nov 2026 15:02:41 -0500 (EST)
+	id BBB036B00EF; Sun, 22 Nov 2026 15:09:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C9406B05B3; Sun, 22 Nov 2026 15:02:41 -0500 (EST)
+	id B45026B05B4; Sun, 22 Nov 2026 15:09:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F30F06B05B4; Sun, 22 Nov 2026 15:02:40 -0500 (EST)
+	id A33926B05B5; Sun, 22 Nov 2026 15:09:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D1A366B05B2
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:02:40 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1DAA81406D4
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:02:40 +0000 (UTC)
-X-FDA: 85463827680.10.788CA1B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 68CF81A0003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:02:38 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iYDuuwsM;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 798DA6B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:09:11 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0034E120710
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:10 +0000 (UTC)
+X-FDA: 85463844102.09.585F36D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 68B9780002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:09 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FIlPxmeZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795377758;
-	b=DUsLsjXxXRttH8c7WLD25QnNGkH7etPB5JZBKKT6qF5korSk9ntxAa4q0Pdkgdz/mYITbc
-	YFmc/lzlAKZewGatdGJp7UJI1YBSxN+5kICiPwVAYkddgUAJJpA+hORzcNTldUsz0XFMeR
-	FY5UzM5wUsJ+azo5K7wQaG7erKekkPU=
+	t=1795378149;
+	b=WQxChTk6RtAd80FmdVDdK/aXyDzq861wR/BKlAhS8cSZ6OUeHZuPNLPAj0K6vtD1yqLn2+
+	+gTkw+qVu22NNwhjFxGO6ZpQz/uqY44UFziIpM2v0cZQHAy6quI/QOpCen1LW2FdOYiPL+
+	6Q+gvNTya8NLSffr43z5ctW227+lkQQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795377758;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795378149;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JaJjkwdjsuthCIR31B8yCOpvVbzH1az3i0dKy7BlJwI=;
-	b=aQPU0DujNHh7RcMXJrLjhcZ9iAeMymY2LbwQaoqkee5Scs0vTc28oHW9QaVFmf8iaLSxa9
-	xnSWbQATv7MoOGvV9Bc3uWpe1Kgft9/u/+IO6XQuBc3aLIqaeU0xH6KlvrxwBNGwEkEowR
-	w8LxMV9+Xtq2KwyVsu6JiZLqb+loOdY=
+	bh=NJy4CQsDbbyrrux6ubIkfBdJ2n5S01Da1nbXLZiKzpo=;
+	b=BVrAkdIqyD7Y2T/cnfmD28n5LBDA8UDc8kfWE1fZt7yHztK8bon3HcARx6PodlaSCDrauq
+	tNXLMvHK0XyT7czObGkqrCLX4dBTLLAUMWahC8hwhaDbzhR2ebV/RYHmZdPCmwZwnB5fd+
+	OGc6Kq1ka+OIipU41Dn6QsDa82YhB4k=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iYDuuwsM;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FIlPxmeZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92636405AE;
-	Sun, 22 Nov 2026 20:02:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8511F000C4;
-	Sun, 22 Nov 2026 20:02:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DEC0C609F3;
+	Sun, 22 Nov 2026 20:09:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4051F000C0;
+	Sun, 22 Nov 2026 20:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795377757;
-	bh=JaJjkwdjsuthCIR31B8yCOpvVbzH1az3i0dKy7BlJwI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iYDuuwsMu6QqZhpSArwN97LlxRt4YeKDxUs+o2Nn5r3yIABQmHIMyV9K7e2yRsVfo
-	 GN+H3WMaZJPYo2jFkVt7t1+dqhDMSPmXyW5X3osUTUJJqCMADnu1rOypIhaA4nwziG
-	 /ugW+Y1lfibrU2igij3QthyRHY4X1VfrX2cSrdhF4Z/SgM4hjm+BnlwnPL6pr/EyIn
-	 NRPsMgqa3uiX5Gamvq+LHrUhCcc75fLKA5XT/RmX0qNBDYCI0yaGG9omsHWngRL5ro
-	 dq7RtmddyliPPihPBmWojLUn04dom2+QoWcDzTQzttPVN0zKtLR6L0hNC7AgVgKOzL
-	 j2CvGCoaL6XZg==
-Message-ID: <sashiko-outbox-228306@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v7 06/26] mount: Support MOVE_MOUNT_T_MNTNS in
- move_mount()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jarkko Sakkinen" <jarkko@kernel.org>
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Aleksa
- Sarai" <aleksa@amutable.com>, "Alexander Mikhalitsyn" <alex@amutable.com>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Andy Lutomirski" <luto@amacapital.net>, "Arnd
- Bergmann" <arnd@arndb.de>, "Christian Brauner" <brauner@kernel.org>, "David
- Howells" <dhowells@redhat.com>, "Eric Biggers" <ebiggers@kernel.org>, "Giuseppe
- Scrivano" <giuseppe@scrivano.org>, "Hugh Dickins" <hughd@google.com>, "Jan
- Kara" <jack@suse.cz>, "Jeff Layton" <jlayton@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Josef
- Bacik" <josef@toxicpanda.com>, "Kees Cook" <kees@kernel.org>, "KP Singh" <kpsingh@kernel.org>, "Lennart
- Poettering" <lennart@poettering.net>, "Neal Gompa" <neal@gompa.dev>, "Oleg
- Nesterov" <oleg@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "Pavel
- Tikhomirov" <ptikhomirov@virtuozzo.com>, "Serge Hallyn" <sergeh@kernel.org>, "Shuah
- Khan" <skhan@linuxfoundation.org>, "Zygmunt Krynicki" <zygmunt.krynicki@canonical.com>
-In-Reply-To: <20261122193539.3334213-7-jarkko@kernel.org>
-References: <20261122193539.3334213-1-jarkko@kernel.org>
- <20261122193539.3334213-7-jarkko@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 22 Nov 2026 20:02:32 +0000
-X-Stat-Signature: 14gtx6e87199716jqfyrpops1onpyg85
-X-Rspamd-Queue-Id: 68CF81A0003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1795378148;
+	bh=NJy4CQsDbbyrrux6ubIkfBdJ2n5S01Da1nbXLZiKzpo=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=FIlPxmeZXnL8jfb5igUreGcXeqBZ5IAPhfnC7/RLkwm2fVCUhGtqYHP5GbDuKZpgf
+	 Rs8od4A00WVlmjWBGKGo1JI6rWCj5nnH1+0NbFWV3AkaIsmYJrE12X6iTuN/k1eFTU
+	 qHOpyuR+Nwcq5ZCDMRP2gPk/h2EmJ/v9lcQ3KUTC29USZykod1aZwlrO8DAi15a4hD
+	 zy5bQ3zQMmT/1KHgei8EgDoFnJTGd80G72XxB2rHkKNj7Sn4cPe3Z8gnlDNJs0gwsh
+	 vuixGezimNtBC0ibmSBuA8VN6JWScZv4O78XVT3q/w0OUhL/QoblIvZBsuRCzQUuQ9
+	 hDDVSB3o1NU7w==
+Content-Type: multipart/mixed; boundary="===============0817330899429733780=="
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Message-Id: <777039b970038567305cede50f71dfed0a1a4a5616d06298ec2c7c6298cbcd9e@mail.kernel.org>
+In-Reply-To: <20261122193539.3334213-25-jarkko@kernel.org>
+References: <20261122193539.3334213-25-jarkko@kernel.org>
+Subject: Re: [RFC PATCH v7 24/26] docs: Document userland uAPI
+From: bot+bpf-ci@kernel.org
+To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
+Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,ebiggers@kernel.org,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Sun, 22 Nov 2026 20:09:04 +0000 (UTC)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 68B9780002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795377758-423208
-X-HE-Meta: U2FsdGVkX18kPtNSKj+DXcDWA6tKMfHSn2kSGzECVkcC4+C2aDb/+7KEJkp67EXlWCxMVba15yTIzp9lsL0XE/MsRaAxviGReSnA7x+b3s4UYhUdlc02KWMPiNrBS8HNGFHrW11aXLe5BNh7+fii5xGWaOZTMWJPzYlxhAJjisP7QsGK56XkHHTvE1ItNHD+E30z6adWi8rj1JAOFQBJQDcpzHFKBQygf6VxvOo3s8L1JGv5tdNNZKwHg2WChzWQvKW/jB54nwSa+0u0qJQQE8xyjfpGElgEkX2Ms1thEsyX9obHKqj4rZ7o8SMLCFt/NYQDKj2MzpbfxpOLBx899Os1ipOLwY6L6acaAHUXcqEE7wRjzDrpwpyZXaEq5asrhO6FXaulSYtvytxqAy7a7mY3JNnlLGvphCBZzAF1yDapG3CeHUg4uxixlnDL5CWA7+NJiB+jx9CHCsuuexsIEQH+9Hy6TZVqLTB3AIlO4GVRqWvsp1bXNsZFrw1H4GIC9gTn5qpVjL6wfQM29yOlGTNGF/sPgiwS3+zlyFnduGEWGmnQtLeG9Lawtz2iesKqE0Jg6bocWwhg8i8juUE32Fxoc8lfhB7ZsUNnpneysWSgOtppfOXNrchRvZ4N8VpH4xlKxTRu9FAGKIRGbe/aG/ykfywLokw8yVBonP+5ypHEWYfdIzwXkGELKHq9b0vbxm2UpcLA8tkzF+DUUFPhhrmvFhntHyjekKv6jRUF1XD/V+praMBdoxTrnhhEiWfBgonreDE6gSDyFmJfO4+JgOo6oZmSp3PWd9bnD2qQFVIjtJMm4uAgWrGM2L9yxllWfnt86Dk3Ms5yvJKrjKklGodMbq17hVIuQmwhTgmM5FMQDPIGsXf9FC79wcpM7cJ1EUeVGzdEBXvbp8tGQ8uB0stt+FlyWCyuoe8Z6c+/gRt68gmilxmnRT1VWzzQRcYARFVuRO9j6AWUtzhBGEw
- oeD3GZou
- lsJauggAUJ6msyHXJ4p1eqSQG0oaCsdayvupbX6AjfO2ivZFP2RB8r8z7P/Z9lwBvTYkQ4p4DCjB7Ylq+mpuUYVtXIOLyO0JdpA1lq1qa+QGy428r4CXwbf0NZHlM/wIABJ3YJ0+qZyBBk3zz/f07x4AzWGkGK8NQno5C5GDGVx4No2NR1ic8JQnziImAsvn7ixQXmSgdfQW1wVJRwQhw6ulokP3pRx2GGbpoCC6Osq/SAqxxVtX1f87NFteSwwhv59hkOnmxMLHFDAHVgRkKeAPeMzOwCEjHpXO0/7X2/ueatDVVDIvjaNbHIzyDFaSMprpg0yU5av8TGtrzVw1FE5490KcLftLqadf/NOEuZbPkKOz4pWO9l9rFSAgJlFO7JPTwxY17WuPMp0hpglDgkBi5ZNvoe4g8V4mcN9n+uQxeS/6zXdfhUZ09as5SjA5fphBZToxTqou9Yl85wqtsMQe1tYX9mmufPaSYLOjeT+4amciPmFUE/drHqSH0kG7PC1ITxbItYJH6fR7pCnmOCX9zp4YyzvejMYLjtJk/WNh+yLMl56hBgc8eMUOyf7i0Qz1wQXHwlBGWBM+tXkh/dmF4jCloab6to7zp6t9F5Xke9Hrw6bdkmSzGjSelxUJXF9tmvo+j6VqgsIn8akiMeyE1xGnlu+hFcdVQUvcTeT712/4KD1uLxiGOoNrxFf3kr/T97LzvINyLeCW8fE8omuK9uSfOr12ZmWTJxT7SxOfQU2nqJh/j8x3Hb8jKTkKD8LcrhQIjzCU9rm5QTdbIcY59HNGzczB/WL/5yAwhVf0rmnLMe6jgWKCAxtqEV0iJaN2RsW6dSg5q5wCsD4jRKMtfoo+HXFjmuqayb+8gFRmiIzM=
+X-Stat-Signature: an61xkkp84f44k6zpsetz3nqeicsny4o
+X-HE-Tag: 1795378149-49572
+X-HE-Meta: U2FsdGVkX18kjfvEYWLmzcCaSf0fpo6hT/8Kh674glCm6YCzfFa6ldH7GtihMZu7PLE53hP1MhwCFdVS/qEEfiaTXivhgMQLzIj9RJndHWfItAR3JvXavsT1BJqs1EZuyB2ETo7U7JNwmh3Ln7H1oGxOtYFr83v8eT8t3M6nZiB9cLhmagURbvEsvs8IqucRP+vjjzAQP6iDxAN2NmkpXQjMMl1fezucob5HlC296dTNsU5W9mPl5yKUeIBSUmCyVzdSQYRlMIWi/KQT6hfiBXRHlTj/br1M/fQmPnSRqxMV7D7VE79+OYVhvEcVRY4DE4SsRvhp+bGDQc++7K6AaHcA+kjwYuJYtY1w0UW3IV1Krd+ATd4X16G64TH8G/qjYt6ScIUnFyaCNRmp4eXKKmEYboA5s001Um0D2c5IqbeOQ3SyeCRAviPJ8Dvdd1zFsVfro0oIbwu/ySSuB2E2HwQy8F/8txAAmR/oKKygVKB88ELfIGlM+IbLK6f3w3fqC+tkinpg8yOdFfpXIaMGsPLF7UrTbgrlv/ClfWXELPL0ffz3ffohQub8h61PbDiYeWe7H9YIhMl79ILmCp4yyi24iUGIXsoXPcXg+d7LPsA/dZ4WrHHv1SAyvHzCECp57jJUAvxgMh2GeilgbkbQWUyr/ZdZp0jd9hll27dVn2Dxefj4HtN40HEOp4C1fR+g2i2xGSwz1ZT6u9RTujStPF8IwsGfEY12C7Iyv+/tiCIXYgWxGD4qIEnv+/uBD/ZNILfHZE97U2WCYzI4mO0DfLitEDK4xPXDlMGPjlBABzVy9b4Jrq6cmtWX4BPsFlZnYaFTAb2cjbOtvdGti8MPHMhcwk0HE0CeW3sMKIGowFAq+R631JmzL4BCAwqryVbfmaB4bMXpSTKKw+F/efoo/6tJhjEYuwv+/R1s3HGUdesvmSTpRJbSSg7/wAyQhA7jWtzBC8TNZO574qXPfaz
+ HnkH9QIs
+ iOdBmupP8O6vghvXaDFFbZpMW3Yj6KT3H4J230Y9Mf9k+DZ6ieMgG8GfQ/HIIlaK8gIINw8d0NAb5hk1yIKEYwLQnV5pX/HGGdmJXhq00lCf8FE5Z/FphZrjiAl855Nqz3943c+kLRjJplRy1bPPIl3wSwCbxsm2BJplo0lJ1t9ju0RbywSyCPg6L9mDdLCV7Ac3VXMsm71/5tFBJ5czfCr3iB10K3Lk3BplEpiHyaOPQGoVgYW3DthYiQw/F0r02Bnogqv7PZOX6X1chg0CsDvLuIZ8WvjPLuw0psBIbay3O3x8A0ts9QJaiJ/aTnfWoSA0IQ2E8s5OeOoBMx4IHdzFoFbOyyEXupuyWE+BP0jlJqv/G2rmacnRIF9qatnW5vm4nT7rv5E9UYMRA2bo+zfPw/OqbfdgJPXHwb5NHTeKc7RrmKftLkZ8AoEjSwLVjBbw/7a0IObciKSfJUMFXdBGvFTm/BFB0JAvEmOKjrox1ftkzxR/fcuV7bf4zB/euDzAquKXTtjf1RMYF0ydLlWmvwasg1/3VWMXa+c7JsBVfvmbe5NsWKRXRPMWeYMAoVwNYO7GLojWosfgHoWVcEHNa6s9B9rmPnlQSjsl0e2dZ7fSt2SBR2C1HGi2TgRzw9QJFzvgvEan/S/+HVyCfUXOSkN/fW1HCSVkPV3KB/+0a0yE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,89 +90,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] fs: propagate_mnt() before lock_mnt_tree() in
-  attach_recursive_mnt()
---
+--===============0817330899429733780==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-commit 1a941bfde892dcdbb8ea855a00043b140fa232a3
-Author: Jarkko Sakkinen <jarkko@kernel.org>
+> docs: Document userland uAPI
 
-mount: Support MOVE_MOUNT_T_MNTNS in move_mount()
+TL;DR: Docs nit: the sys_userns_set_idmap() kernel-doc @size text may render
+with stray raw backticks around PAGE_SIZE; rewording the source comment would
+avoid it.
 
-This commit adds MOVE_MOUNT_T_MNTNS to move_mount() so that detached
-anonymous mount trees can be attached directly into a target mount
-namespace specified by an nsfs file descriptor.
+> diff --git a/Documentation/userspace-api/userland.rst b/Documentation/userspace-api/userland.rst
+> new file mode 100644
+> index 000000000000..e32ea3501472
+> --- /dev/null
+> +++ b/Documentation/userspace-api/userland.rst
 
-> diff --git a/fs/namespace.c b/fs/namespace.c
-> index 1bb9f90a65239..93dd11da7e734 100644
-> --- a/fs/namespace.c
-> +++ b/fs/namespace.c
 [ ... ]
-> @@ -2725,11 +2738,22 @@ static int attach_recursive_mnt(struct mount *sou=
-rce_mnt,
->  	hlist_add_head(&source_mnt->mnt_hash, &tree_list);
-> =20
->  	hlist_for_each_entry_safe(child, n, &tree_list, mnt_hash) {
-> +		struct user_namespace *child_user_ns =3D
-> +			child->mnt_parent->mnt_ns->user_ns;
-> +		bool cross_child_src =3D cross_src &&
-> +				       !in_userns(child_user_ns, src_user_ns);
->  		struct mount *q;
+
+> +User namespace ID mapping
+> +=========================
 > +
->  		hlist_del_init(&child->mnt_hash);
-> -		/* Notice when we are propagating across user namespaces */
-> -		if (child->mnt_parent->mnt_ns->user_ns !=3D user_ns)
-> +		/*
-> +		 * Notice when we are propagating or attaching a foreign
-> +		 * source tree across user namespaces.
-> +		 */
-> +		if (child_user_ns !=3D user_ns || cross_child_src) {
->  			lock_mnt_tree(child);
-> +			if (cross_child_src && list_empty(&child->mnt_expire))
-> +				child->mnt.mnt_flags |=3D MNT_LOCKED;
-> +		}
+> +.. kernel-doc:: include/uapi/linux/nsfs.h
+> +   :identifiers: userns_idmap_extent userns_flags userns_idmap
+> +
+> +.. kernel-doc:: kernel/user_namespace.c
+> +   :identifiers: sys_userns_set_idmap
 
-[Severity: High]
-Does running lock_mnt_tree() after propagate_mnt() allow copy_tree() to
-strip covering nsfs submounts from propagated copies when attaching a
-tree across user namespaces with MOVE_MOUNT_T_MNTNS?
+Will the kernel-doc for sys_userns_set_idmap() render correctly here?
 
-Earlier in attach_recursive_mnt(), when dest_mnt is shared,
-propagate_mnt() clones source_mnt via copy_tree() without
-CL_COPY_MNT_NS_FILE:
+The @size description in kernel/user_namespace.c reads:
 
-fs/namespace.c:copy_tree() {
-    ...
-			if (!(flag & CL_COPY_MNT_NS_FILE) &&
-			    is_mnt_ns_file(src_mnt->mnt.mnt_root)) {
-				if (src_mnt->mnt.mnt_flags & MNT_LOCKED) {
-					/* Both a mount namespace file and locked. */
-					dst_mnt =3D ERR_PTR(-EPERM);
-					goto out;
-				}
-				src_mnt =3D skip_mnt_tree(src_mnt);
-				continue;
-			}
-    ...
-}
+  @size: Size of @map structure in bytes (%USERNS_IDMAP_SIZE_VER0..%PAGE_SIZE)
 
-When a manager in an ancestor user namespace (src_user_ns) clones a tree
-containing an unlocked nsfs submount via open_tree(OPEN_TREE_CLONE |
-AT_RECURSIVE) and attaches it into a less privileged target_mnt_ns onto a
-mount that an admin in target_mnt_ns->user_ns has made MS_SHARED,
-source_mnt's submounts do not have MNT_LOCKED set yet when
-propagate_mnt() runs.  Instead of failing with -EPERM, copy_tree() skips
-the nsfs submount on the peer or slave copies, revealing whatever was
-masked beneath it in target_mnt_ns.
+and kernel-doc turns this into:
 
-Locking source_mnt before calling propagate_mnt() when cross_src is true
-would ensure copy_tree() sees MNT_LOCKED on the submounts.
+  Size of **map** structure in bytes (``USERNS_IDMAP_SIZE_VER0``..``PAGE_SIZE``)
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122193539.3334=
-213-1-jarkko@kernel.org?part=3D6
+Because the second inline literal follows a '.', docutils does not
+treat the opening double backtick as a start-string, so the built page
+would show raw backticks around PAGE_SIZE.  Sphinx does not warn about
+this.
+
+Would rewording the source comment avoid it, for example
+"(%USERNS_IDMAP_SIZE_VER0 to %PAGE_SIZE)" or "between
+%USERNS_IDMAP_SIZE_VER0 and %PAGE_SIZE"?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/45063222848
+--===============0817330899429733780==--
 
