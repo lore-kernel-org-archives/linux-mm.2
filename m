@@ -1,89 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5ACF606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 20:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073D7606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 20:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aR5tLEBi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DtQFC/+B
 Received: by kanga.kvack.org (Postfix)
-	id 5BB746B00EF; Sun, 22 Nov 2026 15:23:13 -0500 (EST)
+	id D8D086B05B1; Sun, 22 Nov 2026 15:28:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56B946B05B0; Sun, 22 Nov 2026 15:23:13 -0500 (EST)
+	id D15C16B05B2; Sun, 22 Nov 2026 15:28:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A8AF6B05B1; Sun, 22 Nov 2026 15:23:13 -0500 (EST)
+	id C2C6C6B05B3; Sun, 22 Nov 2026 15:28:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 138726B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:23:13 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 72158120645
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:23:12 +0000 (UTC)
-X-FDA: 85463879424.19.14BEBC8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EDB3A180003
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:23:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aR5tLEBi;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 976696B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:28:07 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD314C037B
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:28:06 +0000 (UTC)
+X-FDA: 85463891772.16.575682C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3EE68140003
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:28:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DtQFC/+B";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795378991;
-	b=BDsaJUjuR40WFpKuw2c+MI4fOpj3+G4sYpFSmHiKxmr2hOevonnUjquJ8l4uDmirY75r/v
-	z/Ra4LpFCxAYudW3aByGaxd+4/05GwpuRoNYqHfjRxAihvxh2W0Rb5pDI4t+dkVFdcQcse
-	gFZnacPn7ZE88XkD+DFbXwHHpV1/+20=
+	t=1795379285;
+	b=pCW2ZexyZDDVkoCvvZ20MQVY2siwVh8cqI2HQ9JZqjLT+RfEmC1j313vciGNEonNrGy3lO
+	sP3CwhjTDkne3sRI8mH/dmO4ATcgBMdxCcbtPB/INxlBTodn8iQYkmCtRPp3Jv5yf0L8Xf
+	/+1kAZtlp8A+K+tJva/gMZLWihWvtGc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795378991;
+	s=arc-20220608; t=1795379285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5ie3mh91Y4PxnFzZQ4NkpPcqbOA7zUvMeHhYs25z4a0=;
-	b=76Rv1uGmxQhzHc8/NwkAeCs+Cuzny4veYGD6SiTXi8nzPv/sjThGHWMK/s+/9zFMRooVF2
-	sM9PmVCUcWqVQaxGi+ysuPE4L619+FqEEo3J09kHP6mJwEopZ3PxGBc5rq26NqWUo+BsBV
-	1SM0si4wXsljccOicf0JJH+UzE9RfX4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hX4n2ELcNNj0/4nHT8RN7SbsIUQvyFqPuov+TG5Nv9g=;
+	b=mDgXywQuckVu+ZE4Ja8gP7UZnz7nAFJWwK6ksjd9Ry6Mu8o485P2nM0ewtc7WctnmC0Slb
+	SLagjsNqY0g7KI/vNeevqkyfPZu1+AgObzU5ywhZAwdWXPkdO77z5lDglWBjTjo8sb43oF
+	8dOcjrt8z19vy3YZZ1aKBle/xgxYhqI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aR5tLEBi;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DtQFC/+B";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 682BA60141
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:23:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDCE1F000C0;
-	Sun, 22 Nov 2026 20:23:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 61C4444781;
+	Sun, 22 Nov 2026 20:28:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579341F000C0;
+	Sun, 22 Nov 2026 20:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795378990;
-	bh=5ie3mh91Y4PxnFzZQ4NkpPcqbOA7zUvMeHhYs25z4a0=;
-	h=From:To:Cc:Subject:Date;
-	b=aR5tLEBiQQ9qYhBlbQ58FE48NPpxIOIUpGWIAD02M7RR45W6n5k+DccC9MWIJ2Nmx
-	 dwjYxAoyhRkFAtxbkIfUGEHmMdFDpqFgqdupeb/2hLSojI+rEaPKd/2/GoXtYEzVoX
-	 fo5PX1hSj4+/fb57vEVq9MsQ4TGdn+1sLTrfE0BIJrD1krSnQGLeYS+UTR987NuAiw
-	 r5tAQX8ugV+IFEAnPmLQeUfpe3UgpX8YcviU55XA7Gzms9R1qof+T7avoeYgVkd2M4
-	 QRLHHPo3R4VDTZiIOVCmAbgUkRmm9G8f6maAD62f7EmIGJ54ZP7SbheZa6ZAMMxq0J
-	 kzmZ2/LeGwH0A==
-From: SJ Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SJ Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Wrong example command for auto-tuned DAMON-based proactive reclamation, and solution/workarounds
-Date: Sun, 22 Nov 2026 12:22:57 -0800
-Message-ID: <20261122202258.161562-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20260515; t=1795379283;
+	bh=hX4n2ELcNNj0/4nHT8RN7SbsIUQvyFqPuov+TG5Nv9g=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=DtQFC/+BjIVL35yRIkQAYiez++FX6dq1X7g9+U5wiM9l5aQa2bCiQa0lA2KTXkgKO
+	 2GT1VmmiI5zeFd1FOhAPus/+fS4ofCKzqBssX2tUSpnCu5DOjAqzn3puJ0tq8KB9t4
+	 GpNPbpdGJuuLtuJfgKRWiznvitvtiWUv388C8tOsf0YN4/CfgUZ1IiMn3x35uwU0Mn
+	 1Ao9M5lEIvKdmb/YeWSZ7g4sl3nh/deToqadEqFwGkeoAk1OyDwjyExdU9l/1PjW8N
+	 jHMgktO+4YczGQbKoF+Q9d+vLGJmsYwWWN9aZj/3h6aCyWyoR5o2gpSdRDOswa7+zR
+	 QEgyW1cP1w0QQ==
+Content-Type: multipart/mixed; boundary="===============7306649944735902366=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Message-Id: <b6da91bd7d0e63cbf8a3d96298191544d46afbc7d0ba1a7fa55b996f7d7cd7c3@mail.kernel.org>
+In-Reply-To: <20261122193539.3334213-11-jarkko@kernel.org>
+References: <20261122193539.3334213-11-jarkko@kernel.org>
+Subject: Re: [RFC PATCH v7 10/26] userland: Add core infrastructure
+From: bot+bpf-ci@kernel.org
+To: jarkko@kernel.org,linux-fsdevel@vger.kernel.org
+Cc: jarkko@kernel.org,bpf@vger.kernel.org,containers@lists.linux.dev,linux-api@vger.kernel.org,linux-arch@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,aleksa@amutable.com,alex@amutable.com,viro@zeniv.linux.org.uk,luto@amacapital.net,arnd@arndb.de,brauner@kernel.org,dhowells@redhat.com,ebiggers@kernel.org,giuseppe@scrivano.org,hughd@google.com,jack@suse.cz,jlayton@kernel.org,corbet@lwn.net,josef@toxicpanda.com,kees@kernel.org,kpsingh@kernel.org,lennart@poettering.net,neal@gompa.dev,oleg@redhat.com,paul@paul-moore.com,ptikhomirov@virtuozzo.com,sergeh@kernel.org,skhan@linuxfoundation.org,zygmunt.krynicki@canonical.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Sun, 22 Nov 2026 20:28:00 +0000 (UTC)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3EE68140003
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: EDB3A180003
-X-Stat-Signature: fi5g6h47gzemfd13eisfzcfwqfiboere
-X-HE-Tag: 1795378990-625705
-X-HE-Meta: U2FsdGVkX198eJ7Y2X039NFhI0P5KzPRTbCJX7zRYZwVGdUYtQS7hS+jpbwj3IfKT4bs9vdxeAeDcnvNkFj+b9owDGog8Yo3LbDzYT4gLf9Hl8PhcX5xcoZgmr53/RKn38FVjQywztZu203nKeynlffoOuh+5fWAvMelYIEmiQVtubp/eO7A0Ssc85CwH5dtvo8BmaVkCbtSJkAdlHJKgAHB1RQLQmgJ+F8fCJMiJGiGIbFeMnNRzAgVlnMBlPIoRK4+JPwY7Pct4lC/vV6zh+4goJ8pdfpMpCSsuMY0eIUHM4RRX7cP9rKLgj/8NSOu2OONc7exxoefMDwDKIqv7amLOCpK6yakb0Tjuewhm2dc6St7vHseGlV0YPtk4IKCwLD6wqvxePV7jklan9GRXE9jRh6yRxjczBj6Tf/3Ty2d+/R2SlGsdrf4ftWeyuPreBW8kiiIO34Fnnge6/wN27P8b2q34rk0Gishj7MUK41yTNxO+PwpMl3Xau8TXzGw11COl8QjdtBK25DfFQ4xgqiLrynUvLzNAq0KoUQRkrWs80cPReyiaFAG31MwvcfAbNr2KsA+5VvC+sL6z+Ebd3umpzAGK8HBdZBfs11q+FjsBeSbquF8DHaaIKCx7qbLdVyh9sopQFSKgtWfAiCInt4AmimDCrAxsl6G0riuGHs7b2KMgydq2DnZ6dwTndD0U6mYOeWgRkkYqYo4YsEsn5X0qiL8UNNSebmVWpKfialR1rtdMDjNdpcR13lYSya40iNSv/zs4i/DhFxqSAAGd36bwjebSrF+teVJbsjnGVNF1L6ePxkvK9vxSBsmFZoFrz7u8lilcSO/vfIphZmNpdKZYv+DEfCJlgj9F7pTiH3CtFHYEhVD533whXZuni3P0C/FQttbUslh5RbAMjMrgoOC68XwLhF75mwVeRRJXbxsizQNjJ8Xnu38ZwJblcplgzV9dBU8eT5thQ4BEKI
- dhTgcM0Z
- OKfcVvZhaCLUOTrJtf1LKDlK3BzJq6EX8nKhTbupKXsiICFknYHtvD5Dn9pHZhWxa3KXG+3gW8h71lbfjPcu4WEySErqyZt70P0ynZY+HnGGCs9wqi59H7kMP0R0GAfFWBSNPDNzeMqzdrq60SRrDhdaD0paD3hUaGcF3nplOVPjgYvDO93YOAjNsc7ED1dYR9uPV1UlloYAO5sKF0wbTNK2TdorZYd7OfhBiHyv8LdBubZ5sR3Poazo2ENNaBvQv9iOdS4Pu2f51RcrwdQ/hWyN3SNibihK6GOPYcvkIlz7k4zpLgGp9OQUxsQ63y1jNAzSYgHz9t2iQKCodoGh4CJYIrEvHPy84jbAQQygSskI7+IT5p1hBx0J5nOgjdgx2M19GLJX8+iWaZ/kQw4oiKtkG6e6rcpvom8F3C+d2sArVblHF4+8FfCr699zuba/3QR16NQ0eD0Spn0M54UlgJwL2Cn7qaifOLxHRXTa6y5yKuP0vEjpo3v4t/hYpoELKFHyqU4eGHsCeIngxM8inKwk5+nUXnN5yWzhqZI2j5G7S6HhG7syTkqd0CzW67F2tx+Ozd4tKRUc7DC9GhjeSr9qEaKBo8e0r8iDOWoCHZE13k6ttuKcW9SnE0IxMgg1FpcGO
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-Stat-Signature: wfnzx3nua7o9spz4j6cptp3mzwmc9x4t
+X-HE-Tag: 1795379285-341189
+X-HE-Meta: U2FsdGVkX18bU9Ybivdtx++1WSztX8D0Wq7TLhvqqm2eKouR8EdWmATobGKvBaKTlcAasI8B1w00gKyk0sqWgsaeRHmNzDIvCoIHO6Q0wikUww+cXOff7IJAuA7a5ujqD+0qJgK46BJrRSs+Jyi80mdDuhKGpdC7dSja5XKHKJnFvRZPxy6v3t+rf1tV3tTskEb/xIwd54jwkZjXtne9Rq5ALJF0JsyRyLbG5ot7XCSZchHlFSVNNN9BAcQcRMwsqCgi7XjEXW1woRyPHLHR+KhRztney61xpp9+A0R/U/axV9/+HZhGMgJ07NRWJZZ46BaovrYhKvUhIgo7SO5YQN0VlNSPU9DpYnzDQguZIyUZXinW+tPoyeHPu56Z6BRNg0Y4xJtdrVHJ+neWzVSohHtxJHFTmL8fyvIY5kle/SHlUppcDSic1pldogTHvzAsgHvkuoB3O3fHApLulVpJghqlhkheF5DLqtzFFM0X8EZEil2eIjsXqg9PQZSMzYXcsFUdbOdfkOB8JuGUHbBwLY5/OcAhLGw1IZvlfE4kVUcQjGZxyEfXOb3nJ6K4CXPoVo2ov+eTEo1dnwTZ/h7uoDMoJEAYpLByINo1NEZ9qZL3NXsBRIgejPUbReqka3aAVoTzi+j8tseKbVTGaiuh85hDWO0Ny9OdmQPv2Ja+Em9EoRytMi5/QoIiq8V6FQl5JyFRGcWtEIaBjB6OSBCzCSuN9RWPx894ALgY41+2pfQdwNX4k/23uFiDkfIWn4uVtVPlBmv+tddsZTHK2CX6H/u/i92CcYI4OeDte8L8JgxzsQlVIM3G4BTNfZPONiq88n6oUAX4xKGcJHN+Ypj41fUfODSAOEJf67dcD4owywsoydLQiWozSsKa695K5hxj4iI4Ye5G+6NX63mi2wCo/Y00PTDNqjprvrFhmBBHlVTkdpbeANhy2vmSciddldrOtYFIYSOsB+7XEtCiirA
+ 7oqIuptN
+ 20lTZRr4ruyWCeZDKPuy0LXT31x3tCbJxHLITjjm3k+m59J9p9T4CEEO3vVN2djBXU8Iy6+g+e8z2H0mSpb4pC7xhQcsT4HeoGrse2ZecNRhlxFd3IneA7YhB2Mo4f6CvcO4WeQMEaqwcYGS1Sah2OskAf8pZZXf6O72D4ZR+nSMmwE3zBpwmm0exqk4+VjEgOWA86HwWje+F12UAunKVT8B+5+hrY6J8eV4Y+cXjsACY01XmZF7WSs/xRf960SJxdWJdzIynULmjbhG3Hn8HhVCFvto3H2G7zVN+GAHXBKV5F6NpCTHOnskjqkhFihJY5dnk9a8rOOwx79rZNnOQl3Z8YMu8qeVPgjcb1fFLvr1SN4MK2ghXKAlNmC1lwEYn+rRwq+vhx52m4M2/4LgAn87g+eH0nq63oMgME51wGWyPwLEIJEf7dbZoZCAhJLRnVweEjAJAXI2rCSn6Le9f8kSQ6rD3cJmOJ0aEqMyQmnrcE2fRLtrpP+8XjhLA8BaXERln6Adz3hJ2xOQiGXo+6as5Stl64oDnzY17BNAaL4paCU+q8WWIyKwdyyGhoi2EsvL9y74cofrurUf1vJIn/g8aD5TeJMbJWgEsCIwqOnVLQK7K7pPCYZAHEfhVAQDnInDJfrMhn1xB/jHpVJYtytq7mka+z2nz3888fn02a2rvk1vnStpKMGxeQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,141 +91,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello community,
+--===============7306649944735902366==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+> userland: Add core infrastructure
+
+TL;DR:
+- USERLAND_ALL_FLAGS in the uapi header becomes fixed ABI; adding flags later
+  may break rebuilt programs, so consider keeping it kernel-internal
+- USERLAND_CLOSE_ON_EXEC naming nit: other flags use *_CLOEXEC
+
+> diff --git a/include/uapi/linux/userland.h b/include/uapi/linux/userland.h
+> new file mode 100644
+> --- /dev/null
+> +++ b/include/uapi/linux/userland.h
+
+[ ... ]
+
+> +enum userland_flags {
+> +	USERLAND_KILL_ON_CLOSE	= 0x00000001,
+> +	USERLAND_CLOSE_ON_EXEC	= 0x00000002,
+> +	USERLAND_ALL_FLAGS	= 0x00000003,
+> +};
+
+Should the USERLAND_ALL_FLAGS mask be exported in the uapi header?  The
+later userland_open() syscall validates with:
+
+  if (flags & ~USERLAND_ALL_FLAGS)
+          return -EINVAL;
+
+Once released, the value of this mask is fixed ABI.  If a later kernel adds
+a flag and grows the mask, a program rebuilt against the new header that
+uses USERLAND_ALL_FLAGS would get -EINVAL on older kernels.  If the mask is
+left unchanged, the in-kernel check stops covering the new flag.
+
+fanotify hit this: include/uapi/linux/fanotify.h marks FAN_ALL_CLASS_BITS,
+FAN_ALL_INIT_FLAGS and FAN_ALL_MARK_FLAGS as "Deprecated - do not use this
+in programs and do not add new flags here!", and the valid masks live in
+include/linux/fanotify.h (FANOTIFY_INIT_FLAGS).  Other fd-returning
+syscalls keep their valid-flag masks kernel-internal, for example
+CLONE_LEGACY_FLAGS in include/linux/sched/task.h and VALID_RESOLVE_FLAGS in
+include/linux/fcntl.h.  Would it make sense to move the mask to
+include/linux/userland.h?
+
+Also, this isn't a bug, but should USERLAND_CLOSE_ON_EXEC be spelled
+USERLAND_CLOEXEC?  The other close-on-exec flags under include/uapi all use
+the *_CLOEXEC form (FSOPEN_CLOEXEC, FSMOUNT_CLOEXEC, OPEN_TREE_CLOEXEC,
+MFD_CLOEXEC, EFD_CLOEXEC, ...), and the name cannot be changed after the
+ABI is released.
 
 
-I suggested wrong way to utilize DAMON for auto-tuned proactive reclamation.
-Let me explain more details and correct way to do that.
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-Wrong Suggestion
-================
-
-In OSSummit Europe'26 and a few offline discussions, I suggested [1,2,3] people
-to try DAMON-based auto-tuned based proactive reclamation using DAMON
-user-space tool (damo) [4] like below:
-
-    $ sudo ./damo start --monitoring_intervals_autotune \
-            --damos_action pageout --damos_access_rate 0% 0% \
-            --damos_age 2m max \
-            --damos_quota_space 128M --damos_quota_interval 1s \
-            --damos_quota_goal some_mem_psi_us 5000
-
-I found [5] it will reclaim much less than expected amount of memory.  That's
-due to the mixed use of '--damos_age' and '--monitoring_intervals_autotune'.
-The intention is to reclaim regions that not accessed for two or more minutes,
-while auto-tuning DAMON internal for optimum access monitoring.  But, in this
-setup, the coldness threshold (2 minutes) can increase up to 4,000 minutes.
-Memory that unaccessed for 4,000 or more would be rare, even in real workloads.
-That's why it is expectd to reclaim less than expected amount of memory.
-Please read the issue finding [5] mail for more details.
-
-So sorry for the confusion.
-
-Corrected Suggestion
-====================
-
-A right approach to utilize DAMON for auto-tuned proactive reclamation would be
-using 'age_ms' DAMOS fitler [6] instead of the age threshold (--damos_age).  It
-could be done using DAMON user-sapce tool (damo), like below.
-
-    $ sudo ./damo start --monitoring_intervals_autotune \
-            --damos_action pageout --damos_access_rate 0% 0% \
-            --damos_filter allow age_ms age 2m max \
-            --damos_quota_space 128M --damos_quota_interval 1s \
-            --damos_quota_goal some_mem_psi_us 5000
-
-Note that age_ms DAMOS filter is not yet landed on the mainline Linux kernel.
-It is expected to be landed on Linux v7.5.  DAMON user-space tool (damo) also
-got the support of it starting from v3.4.4.
-
-Using the version of damo, you can also show if your kernel supports age_ms
-DAMOS filter or not, like below:
-
-    $ sudo ./damo report sysinfo --print_feature_name_only \
-            --print unavailable_features | grep "sysfs/damos_filter_age_ms"
-
-If the command shows nothing, your kernel supports age_ms DAMOS filter.
-
-If you want to try this by backporting the feature on your kernel and need
-help, please feel free to reach out.
-
-Workaround 1: Periodic age threshold update
-===========================================
-
-In some cases you might unable to use the age_ms DAMOS filter.  As I also
-shared on the problem sharing mail [4], you could work around by periodically
-refreshing the threshold.  Using damo, you could do that like below:
-
-    $ sudo ./damo start --monitoring_intervals_autotune \
-            --damos_action pageout --damos_access_rate 0% 0% \
-            --damos_age 2m max \
-            --damos_quota_space 128M --damos_quota_interval 1s \
-            --damos_quota_goal some_mem_psi_us 5000
-    $ while :; do \
-            sudo ./damo tune --monitoring_intervals_autotune \
-                    --damos_action pageout --damos_access_rate 0% 0% \
-                    --damos_age 2m max \
-                    --damos_quota_space 128M --damos_quota_interval 1s \
-                    --damos_quota_goal some_mem_psi_us 5000; \
-            sleep 300; \
-      done
-
-The first command starts the auto-tuned proactive reclamation.  The second
-command starts an infinite loop that adjust the effective coldness threshold
-for tuned intervals every 300 seconds.
-
-Note that DAMON user-space tool (damo) of v3.4.6 and earlier versions will not
-work as intended with the above example.  Those versions will reset the
-auto-tuned sampling and aggregation intervals back to the default values (5ms
-and 100ms).  Hence the coldness threshold is also not properly updated.  To use
-those versions, users should first see the tuned intervals and manually set
-those on periodic update command.
-
-Because that's too cumbersome, I made a change [7] that avoids such unnecessary
-reset.  With the change, the above example will work.  The change will be
-included to damo v3.4.7, which will be released tomorrow.
-
-Workaround 2: Small coldness threshold
-======================================
-
-The periodic updte might also not feasible for you.  In the case, the simplest
-workaround would be setting the coldness threshold to small value, like also
-mentioned in the issue finding mail [5].  For example, like below.
-
-    $ sudo ./damo start --monitoring_intervals_autotune \
-            --damos_action pageout --damos_access_rate 0% 0% \
-            --damos_filter allow age_ms age 300ms max \
-            --damos_quota_space 128M --damos_quota_interval 1s \
-            --damos_quota_goal some_mem_psi_us 5000
-
-The effective coldness threshold can still be increased, up to 600 seconds.  In
-usual real world workload, the aggregation interval would converge to 2-20
-seconds.  The effective coldness threshold in the above example becomes
-6-60 seconds.  It may look too small threshold.  But because it has memory
-pressure based coldness threshold auto-tuning, the auto-tuned threshold would
-be larger than 6-60 seconds.
-
-Wrapup
-======
-
-Do not try the example command for auto-tuned proactive reclamation that I
-suggested at OSSummit'26 and offline discussions.  Use age_ms DAMOS filter as
-explained abovely.  Feel free to request porting help if needed.  If age_ms
-DAMOS filter is not feasible, consider periodic threshold update and small
-threshold as workarounds.
-
-Again, sorry for the wrong example command.  And I hope the above solution and
-workarounds help.  Pleae feel free to reach out for any questions and issues.
-
-[1] OSSummit talk: https://sched.co/2RaXh
-[2] OSSummit talk video: https://youtu.be/GolUxZZrVsU?si=qdPFE1RZAaNZ0lsY
-[3] OSSummit talk slides: https://hosted-files.sched.co/osselceu2026/67/damon_howto.pdf?_gl=1*1dml5iu*_gcl_au*MTM5ODk2ODM5LjE3OTE1Mzg3NDA.*FPAU*MTM5ODk2ODM5LjE3OTE1Mzg3NDA.
-[4] https://github.com/damonitor/damo
-[5] https://lore.kernel.org/20261121015324.83753-1-sj@kernel.org
-[6] https://lore.kernel.org/20261106020559.98352-1-sj@kernel.org
-[7] https://github.com/damonitor/damo/commit/9f124c1b95684065128
-
-
-Thanks,
-SJ
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/45063222848
+--===============7306649944735902366==--
 
