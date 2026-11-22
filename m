@@ -1,124 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40DE606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 03:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C987C606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 03:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AJZb3O4G
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=egtv4N6Y
 Received: by kanga.kvack.org (Postfix)
-	id A102B6B05B3; Sat, 21 Nov 2026 22:37:16 -0500 (EST)
+	id D9C406B00EF; Sat, 21 Nov 2026 22:42:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C0AA6B05B4; Sat, 21 Nov 2026 22:37:16 -0500 (EST)
+	id D4CDF6B05B0; Sat, 21 Nov 2026 22:42:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 864DB6B05B5; Sat, 21 Nov 2026 22:37:16 -0500 (EST)
+	id C3B636B05B5; Sat, 21 Nov 2026 22:42:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B8DC6B05B3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 22:37:16 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A26241A02F9
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:37:15 +0000 (UTC)
-X-FDA: 85461344430.13.701A1A9
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B5D0D100007
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:37:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=AJZb3O4G;
-	dmarc=pass (policy=reject) header.from=google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 999D16B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 22:42:10 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A78F1605FF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:42:10 +0000 (UTC)
+X-FDA: 85461356820.19.2E26196
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4481440004
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 03:42:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=egtv4N6Y;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795318633;
-	b=QBeKrO3Bj5+lGDQXt6St426QSD4gU1I3RBYq460w9UzYZOwtT58pk382xHj8cf0wlhQNTi
-	sGDN9wO7L9GDThovQX49u+JtV8y9ybBgNaIc4kbEK5UPOrQSCYU8P08AtQDhRTkSkgZRg2
-	s1/bL/cO9xKcUeg5ooek/eV+vMl4Pn8=
+	t=1795318928;
+	b=Ho6jYITyoAavuYlRF1uwC4jDgh6fgd4oGAmIlfUY6wyno35FTyuGNi8dxGk957NAWHKLLN
+	qA+u5400TLuqcRAatMXtU/z30InEG7MF+a3giG06u3QWERrLSYllruaFrzW6uWft+7rdfs
+	q5K+dCONJKmbR5B4oJ+lmpkpZ0kt7z0=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795318633;
+	s=arc-20220608; t=1795318928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2LfQyaKPdDmtAwB9hpMWlkNP+E6RdLGt5t+eKHjqhEM=;
-	b=tSbu5QiRWAxupiZ64RWJo9ndsti8K49jmtiwhy7XaR9RzsknGeCkaQNd3SRYhqwaByWjzJ
-	p3dsMGk/ahJFdzVKwKw+9AXlw5HcbwEXSuLQ1iXcwiDTLDShccOn7wJDLl/pPWCQkZPajc
-	ky0giLtMR9mWZRTQUVti2F/TYLct5+s=
+	bh=c45EPQcbmQIFYPGkXIL0CwCOiwuT0HfkEVcRKYI+NUw=;
+	b=Q1c541u5Ly7ZgKz5/NAjZlq606kMsZaNN7PBjmgnz+LX1RDXa+/s/hckefIKxu1AhtKBAp
+	gBDiVjh6Q/D5GWRsTBr2pSk3WduI7J2y3s8i+afZFVFFXezuAX/3EtN9hLlnEeM17oQEE6
+	c4POLX+AZOhh+KhOMy5aLB/Hr87GB4U=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=AJZb3O4G;
-	dmarc=pass (policy=reject) header.from=google.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=egtv4N6Y;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-54492d8a988so215321cf.0
-        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:37:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795318633; cv=none;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-54492d8a988so215531cf.0
+        for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:42:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795318927; cv=none;
         d=google.com; s=arc-20260327;
-        b=pd13/7QLTs96JIDxngRrp8pW/7a5fHHjiB0+hTGpzam0tIQguA5zK0I0tMrzGEqRkK
-         AhriQHAP9Rc1fDR3joV6g9KoL3Fgy5f/vHnDZouSp5GgMejrnZ51Kba0eBLbbDEhK1Q4
-         LSqv3IeURmGqTUeB7kAH0yv1Z2jrLgY3O6Sbhnd8GG6x4U6wSoMzgcniM6WxGccvvo2m
-         zKHGNrSqGIxU7vOXyAiYNmyq3jUG6Kq2z4vhTD56iuSeGMF1jC9cLFdkY0d8hrRoUFMN
-         e4GOV3/Y1Wvtc9siM5ANWyxzrCZ2aOD1iaMtoz5GAcK7H9gSzvuWKUdBNyKMs0CiIJa8
-         JIgQ==
+        b=AQ4SAgygALJryGXgnFCfLlRTvHxEoYAQYN5OCcjzyD6DThz46MRhugPVqPtsLTupAi
+         EacPdRgtS7V1qjvHydiIGp6dcqDsvdAQsneBLEaY2y4c09nXTyC2FKdnmG7wWJET7Jw3
+         Fr7UQTMSL78d6JzDwQ70Y/+tSAC5uupxMwAJHInzrLMPLWCUrz9s6W9c/5USV4Rx+zup
+         7yrEpQ8aCKcHmeu6ZH8zHcrkhXZYI2lkAQxguTLnZ/6udtTC0jP6OkZwV1+wC2AEIe33
+         yaBpEs8rAeaU7aGS3IAAf1QLYvDJ5OyQaVgXcANgjes9p/DrO1hvQZYU/0YUMyRdQqz8
+         o6nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=2LfQyaKPdDmtAwB9hpMWlkNP+E6RdLGt5t+eKHjqhEM=;
-        fh=rEcovH3l8VxGoVouXvJDawLXVo4CpTwMZH5T4Nzj7cc=;
-        b=WNkQpnTVMBgEU47NkFfjH2VOGuehOKbeeJjvN8fxdlt/W4/LyQ246d4KPpIj1J8Ym3
-         7rap5GiFwH7OM6J0vOGg9fulvIK3f57NX/7j55IUr8cI8tL4Nr54XqQaPGrOCUJKF/kx
-         pfO6o04QdZQjjx0kblHcAOKBuKg/FG5UJTEcjLqnQztDdm2d2S8PlsEXCo8y7POcrogY
-         M7JhkJ8AHJL56whZdXTHKOCutXzygHaRnWTY2HX9Ajf+uRvgQjTh9Pa/zaIc1cA52FEC
-         KWBSP8whrsrpxeUyW5SnTRj8WVAu/GftUTTfh+zhGGd5ZkFAP6fd4yti4xHo2Hg4Cj69
-         Sj1g==;
+        bh=c45EPQcbmQIFYPGkXIL0CwCOiwuT0HfkEVcRKYI+NUw=;
+        fh=qPBtEwRXNs1YUEwBG+2k4+3P0cNIAczVsqHr+itZ748=;
+        b=g35rC6DYzttZSupzNMWpYSde4SHWa20ZBpjI/1lzEzy5YJmvP8mwJ12etwZxG/UGn8
+         m4uyolDjPzM5xKd0BmDDWPys5Szwcmw8DlbUDSFsFQp8rdHkUUZQd1OhmrtQyTXRSOp0
+         ryu2BFOKhEUWvHvCyb8JJyC8xStu/GalVghj/Rtyw/8Oxdnp8e9RswUt4rF7DY1tfJNt
+         sIvWAIW0/Sc3c81u5TYcYfEJH+6fNW3Q0/BKr4sEDnMz/X5H45F96kyy2UeJDqWf0RNE
+         LQHl9G7r4mWX3f9hHNdVsOUHxoxDZwe8wTQb5jRdHf1HWOve2udHFfkLBZNskgbkAMlF
+         /dvw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795318633; x=1795923433; darn=kvack.org;
+        d=google.com; s=20260707; t=1795318927; x=1795923727; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=2LfQyaKPdDmtAwB9hpMWlkNP+E6RdLGt5t+eKHjqhEM=;
-        b=AJZb3O4GkZv8CkcjcAqNjDpL4VxDZcv+1V+UbFDsTKEnvtDHZ8HgG3pP6MxRzUEITA
-         UJSVu8A5EOkcbbV4E2uPJPlQhc6XobKtI480i03EMBW31kMmb+9lAxyOdKkqY/0TL6Uc
-         CmWLusO/cMf51aADoNkMhq7UF9jwSj1/4fKi8t8NSldh8jjlP8ZrzvHi7uKjTOxe4xXd
-         dJIVPaFBGmtIcSAfHi03kzuPDElQImHQe0kkm0b71h40QutVcGXEWSot8b6yeBQj5xtm
-         MYZq2lm3D9Gn2AZQtcsUbshRsdC+qeEZB/PPmNY0Zpen1CT8B4yOKi1AYu8bZDAj7T5m
-         iYzg==
+        bh=c45EPQcbmQIFYPGkXIL0CwCOiwuT0HfkEVcRKYI+NUw=;
+        b=egtv4N6YxIY7rgC60F7O2OJnVeWkhhBQm9y4ytvX90ebXGS1tEYn+d2fuOsMNP+4ZR
+         Wj7o3fQfoKU/p7Q53WtzhKQ7aIepxWnly6hyOqr5DNtqAtLCNJzddyLND7yKG0AlUYhz
+         VAsBo4hV6BQQ2otuG2cfYmEGSJAYzhVCw8/gj3jauanC6kyFcUnHkRFhcp2UUHuB/sP8
+         g0gBpwgHPGjGanNKZTmgptuHhF2qdYz7+wSNWPc3At2ucHDwjfyWDy34XGn2oe4u/Ruk
+         tf5rtiC53mCD5T9tN6LB6VMtM8dI4WCJO3pKghqtHJsxp/B2UQFcZOBpXrVy15UuxU69
+         H5sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795318633; x=1795923433;
+        d=1e100.net; s=20260707; t=1795318927; x=1795923727;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2LfQyaKPdDmtAwB9hpMWlkNP+E6RdLGt5t+eKHjqhEM=;
-        b=xT+x1MAPy9RecGFWsMh+DxWOtdcnmP/Rn72lGcSNopQKqEseIX44Fho2HlNpblSqtc
-         3xeUsvPKlPZFtFzuVvsfKLr5MkTaFcRC/aK3Xlok+QlPXefUXDuBXAPxAyTIJ1G7hwyJ
-         XNqdT8pGHEL4+188yKRvT2FUWHlu53SyVRgQtgFLXS4Qy6kxt31sO8FFFg17i54hMnK9
-         oGjVNp1O05j0j5L8hsqEeqPwztr1lX6wz0ItvG5m8dcAgBqlHr10ckj3/VR8y8xIpcb2
-         N2bcZ+jw3esgJOolmMWqdy9DAlVK32YhMA0I74qncPsGxZKYhKSYhf5D8psHfGZbAu4f
-         Ho+Q==
-X-Forwarded-Encrypted: i=1; AL+hErH0zz2TO24IHRIC/kieGTbTPtppb+1HaR+QECLQL8wj3hjtNP1CFqnNPP4pymKSEyFmedUjoHBs9w==@kvack.org
-X-Gm-Message-State: APuU4Z+12/rCJ95e5Ia/0a9nMtcb7BCqk7rD6HaxMiClA7PRNCRYP1/H
-	9lrdzEaok8QFO++db2KFPyGUSBIimcP1+tMET4HAsjovvCFvaHMk8l+kl8kKONBf2JPwpZrmpjQ
-	knhylh1Kphksl6F18BC/76q4+h+2D5UZptq/snkbG
-X-Gm-Gg: AZFdTZcpyfy/tF8gO1telpSkAOmSr6l/LZ13Eto0BvHTFaNq/cd02SpmH3ynyFyjwzs
-	vNd0/quM2/QXhHH1kObAemQ3keUCrsHqHhitnGIW8Pxuot5KARZfe9i/71sIK+qM8BmO8HJbZjs
-	lqtI5e0Fiwn/pEAlh/KC8MvzYbqMjO6Kz1jN7qqXMnhLfvFpY+rubodAdb9NiKGpoZTSXrmFFvi
-	n6FEP15w/yMJoV5Qgv3POQaY267wBztpv9KNEiCl94RplNSa9A2aIXqCHEIq+ptM5UUrmbuGAgR
-	K5kMoilD6kWqvU/LiCsM/czJjcqWunn08Vrka87iXZAvSShZ80d+y8jxKE8wDYN5HWET3CdB8YX
-	LfcVxnF0t5lHpSzQCtsGSPw3dm9rZbFv1NH9uvhwaoIr6sD6eaZ8F64ILPyE2/nduIKHtF3Jxom
-	u9vZlOCAn8L7SnGhQE
-X-Received: by 2002:a05:622a:544d:b0:535:ce3:ee07 with SMTP id
- d75a77b69052e-55d89061678mr17270921cf.13.1795318632302; Sat, 21 Nov 2026
- 19:37:12 -0800 (PST)
+        bh=c45EPQcbmQIFYPGkXIL0CwCOiwuT0HfkEVcRKYI+NUw=;
+        b=hg3R5kSQ7P8Rwj6sxTxHddCjp6aEt/MIoIw3N/9urSwBx2hGzv3BnAHR7kdI21qwMp
+         Oyc+xRxGXDw5EbispCkDhySK3uXfCt87zBA3kRlefTmIb2Z8QOiNPHS1EFAUAzgRjwj2
+         TkhJOo15IptcDfgN48OFhPuETqMhdpptil/4zqeTij2VXbrssfd098dl4nQFkDNHBG8Q
+         QMbeildetdHBL7stvdAraxxODaoa6F1WG6ZoIlmtq3ow0YSgxmqyZkzsTRcmmzuHhs/B
+         HRHbtAQ4sYPn+3Y7IzOFlqWQPxCqWqBKHg47xvisIe2PrWYrr8PGitV3LhbMKRk3n5rZ
+         cN2Q==
+X-Forwarded-Encrypted: i=1; AL+hErEWI82hwzVLwIUFBKdlUW30StYhlTScHZPQ5IXKfD2vLRhVnCkPh5A1cnwAvfNnDic9HLBRCmxeHQ==@kvack.org
+X-Gm-Message-State: APuU4Z/NgIJsYQxv+ocnvM90qs+7HiNe5/fK1Do6aUVX8hhaUVcAVmnq
+	F/58buq0BY0CzScKWy8IORs/Y5qpeUyF/XkiYivgFJJTB2jJVbsFVPOVfPF9hqu7DfU5rHNRVLE
+	8tGxhZ5WqPR3oEo0Y4YC6Ab1AydPfR5O7jZqEVLox
+X-Gm-Gg: AZFdTZfYwMiDPwrzzts2F276xjN3i1IB0+V08tftXkR9lUWFEQgod+qWmGzOdu5tJZx
+	bp2UnmgA4fXC2rCBjkIKcqFj1SDN7VZCOIc8MoWLsf9aV0MXjog7EzqV4g2483KK1dTP3WliBaT
+	4FEkOo99G2MTdRK57Clt0IkG9rDQaAbKZzwQ5++v4CHysz62FhJSy04KhTeQwDUvn+xWXZDH7iz
+	uZFBsZhrQYZ0a4vcS6rutReygMKXJ7Hu5ovx759B6ksrQHzJz9mgvrJzlvOZOLAHfajpxV9A0Ee
+	tbEw8sw9XHP67hUdPEIG9GC5mFXg6BXIkFpa+FIZ/8bM2ld7/+UQF6iL6yZlrJ3QFf/B4MWz8DW
+	AsLk7/TrXpiqOhCzrAoqzUPmi97KfFOq3r4EwhVftPcutMSFhPi/wugDqtI6IC0gT9hR6LfM=
+X-Received: by 2002:a05:622a:c15:b0:530:e335:4ef with SMTP id
+ d75a77b69052e-55d88014944mr19193131cf.2.1795318926848; Sat, 21 Nov 2026
+ 19:42:06 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org> <20261121-some-more-ai-fixes-v1-5-236e925d9b64@kernel.org>
-In-Reply-To: <20261121-some-more-ai-fixes-v1-5-236e925d9b64@kernel.org>
+References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org> <20261121-some-more-ai-fixes-v1-6-236e925d9b64@kernel.org>
+In-Reply-To: <20261121-some-more-ai-fixes-v1-6-236e925d9b64@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 21 Nov 2026 19:37:01 -0800
-X-Gm-Features: Aa3M54qOE2eAiS_4WrdIE1htjEWK1zJnqa2hRoPrBF_s_15MhPGp5CEUFjZBJkM
-Message-ID: <CAJuCfpHAw6GJuMrbHZG37u3mPx7MZ-DkryQXQBf=F+aNcX4Y8w@mail.gmail.com>
-Subject: Re: [PATCH 5/7] mm/mremap: apply the mmap() offset limits on expansion
+Date: Sat, 21 Nov 2026 19:41:56 -0800
+X-Gm-Features: Aa3M54p22wLexZAqgWrgrNgpAaeLioT17WYmqt6szdyg8MKz9U8vecc7bPDpR1o
+Message-ID: <CAJuCfpG2hkhYM7P3E1k=VhRPaa=WPe6XRfdDB+ZZjYteWogV7g@mail.gmail.com>
+Subject: Re: [PATCH 6/7] mm/mremap: respect guard gaps on in-place expansion
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
@@ -129,22 +128,22 @@ Cc: "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
 	Chengming Zhou <chengming.zhou@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
 	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, Joey Gouly <joey.gouly@arm.com>, 
 	Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
-	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: a8iho7ozbqth4fi84ihii9y4cfa878sd
-X-Rspamd-Queue-Id: B5D0D100007
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4481440004
 X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam02
+X-Stat-Signature: bxu6g31cp13fy39huc13o5bcdwk79tnp
 X-Rspam-User:
-X-HE-Tag: 1795318633-713027
-X-HE-Meta: U2FsdGVkX18I1Xn7kXpYXWPhAqKrQ5KhpDtYnYd6EX+12RK9a5PSp0MqecL4Wp5QLdp11Ely6SHpwEROliCvF85UL/h24QcbwFyxrQCvF4Up6D8Hix+ZhtIWAYFT23j+dOuyJhqfOtLwyLclYfPr6lV70j++AwA+okEVuktetwmgpLOl7mmifkici0Dbeldig2tOYX807WwTvbr5FKm2Lj+zZ1MltZ2NArpksQ9n2pUNog4g1nwfN7FcAV9jD40/4FeviJagDMwFlAQq6zDgfACT1GtnW2wPczioJKJpCleoEnh6cWVO65vdXDsgSbnJ+gzGb9LgHsKECkmiVxrDscuC0XAqFsF3Wt0nDy7Dh4hEEWyKX4rWQevBlJK0RUzFc8xXHJqllmu4nzu6zmaxIXql9hbOqfVCt6zlE9uTewkw/PKGqaVloprEci5eI+erM4IwgSmTClRCDZRxcY5Yc6MLrME1+lKhKRJtI67tkZBDWtOCHcaiO6V/+rHI2SwKdbmC7VF+gTE5P9EgnMt9Ojbw3uJCO/DDby2MYKn7ejyQwxPamd4I7QhCtQVhLvNaVd1WCXhaEpWxVofxa7o25vx8R8NDcumGX5nwC9WDhbJuXuRwvk2xdS3ExmK2P16J/3HoiJycd1l7+mPdnHYf5KZfWx7e1QaHXIq6FKzXsFXocfo19Ns06nhgA35vumBifheCebMR9SADAk4b5NKjOLRApYe/4csKGJmeeNEUtMbonINCucIBV2zmejH4JU/x/725oYWfVxCdIonTeAWBvE8PL8cw5t+fm5pui1hkoXom7PSOjT1/zr7FaS2sDur7/qUUV0RB/LByhpNJbaoDLqjY2btZ4lne7im1fEGwN6C04Yr5U9MFipxRCJwLx0GseDolNjz9HOIVeFPDsbRJ3XsNiT2ujRSg1gXiiAKRWJ2mTTTr59+Cnl/5UE8BspVroTWendDhnBPz2IQP0GT
- PhNKk99T
- CUKHQsBZEhLAgA2Um4n4XZQnW9XuMHpZpw+SrLYBYA2wpgzW2Fe3hrh5+zyCLdfM7jl7ziLyRurwXTfRTa7i+p0soT43K9ji++WkPizoN8w3fpSomwQk/f5y7XxQM3Lp6/6MoFnivzY2BWUShmigh4/xMbZvr5xaEhmpeLW7sT5EQMjKinSx8/3TblxR2SoOAKV0ky/oqXK0aJHWwXmVQZJlfuQgiwQ7QJ0NFHM4oWy2hdHwFNkiCm9dUNaajFpKXSVJ9VZRlLE8dVTRAJrsy0ePWCkH5akMtJdUAnze+CThzfsSxr9SzJfLY8Q+lEN3K0HCO1bap8Gtu5HtrGvZZvHIvtUiojQ41JZNHIdEtnfkAxqQpC9fvQlJ8pZP/LG+tGM+sjVwoUo0qwWoNI/HmS+VwqsGC46A7ikdgGKCbrNIriVn8lbVtMlhrjMlhBVu/tmwqwfczVCvEbRZpQJgbTixZ3gwRp0aDINYszQSnMxsZnEd5Gd5rwG189sXJxEIjarHB
+X-HE-Tag: 1795318928-508312
+X-HE-Meta: U2FsdGVkX18I2dcyW0mAtkRVX4DQICCbX1bxiix+Z5cQN6dEdrlIIr8sxwnx4JntygF2dZRx+DGPrToxjRSWP/3Qorac+N1lGm6qx+eEOyuaExP987lnw1SVB39SHx36dgr9ddP1FSldX7sUrlUvq8ZccFFmJi5z39YbBp17RXFMMrhyJAulWxE2NEPiXNqlcrYtErE+UPPFFqfTJGWAi+YI5M922RBJ4BUzUEsyAJc6umrqXN/csuq8SN3jF/1EJdT1cPsk1u/BEzP+X+5T07V2yTpQ495QmjdGC/tmjOadPi/2zI6/XC4K6N2sh6b6Y+Ck6mV3nC619MQfmBQBIZ4T/aOfQpd3bURuhDbOI8c8356v9ukYxGLAHcCOC8IWMPzrVLTbSCGo6OXmj3Dj0pDOc6J7Waufh+j3j03U4qggqiu2KiEB4KYhe25jpJzHdmUF4CaDzn27DSudj23SZJ3DLhmcKlrPEcphvT8m9fI6UiLWcHgfi/Pe2rEHELyBODFvGidiZd3l2Lbz0hz5qzCoXRSuyRvf5oQgGnXpV+cxA+oWQ+aFPvTpVuabOqGx89zYd9rp2YqG3ScUdnsBzaqbtoc0/uBwkf7N6b6muCsRbzizKpoMsaw30aIeVW23wADughqtoyBYPm0AKcdv7iaLSvecQc6dp8MBVKlgO6TwBF7WhtPO6XOD+0ySsHU2cn72y1KwXt6eLpP1CpzeG6iL/wYXBKpaTamYyI+fW87cexo/yoYFSPf77JMgcNxIKxlmC1jhTjGPx+oqoiGiuBd2+s+PQQNGJ7vHcTF8LAKeMk/jugJ6vcJ99eBNPmTMJAWQ11/vBfJ0ayUyM+wiksmrfzfJfoIfMoux8H7CkM2cVG4+nuGXXSied5ppsFTGOK+9trmCkxpFHQfbKUq0EV2GPmpYrobsQ+qvYdyV64Yt+/7EmXczUl1c0dE+I6TDkaQB49e+GW+XB1RLdf6
+ OUP2gaUj
+ 39cQsEZSgjJl3Lwg9NSlcTC4c8zq8CqVdtzv9j6RkgLKIMPK427xTUtoVTvunX5CnJkjPuSFDZHmZAmqNMLqlH7MoRmyjtuc9jLJhT/iuuOdZUvukS1nL+yM0+5Rc4P9xVSvl8SjL1qVJb64A5qtVFoLc3N4oHVo0/hKl88jA7UbpGFxm8+jgA2mQNtQquKrk+GxrWIaIIaTHpR+PhqlevvQJM/Gn/nwDapZj/ELS4DFi6eWcgKfia7Q01zHkMESGXow93g5adLPrDdrhmh6iVdhlckBZ/Km4fZPYdlgzdwfYtAN3o/7uhkZ3v9h7IPRBaOxdGsixiTj6XWmYdq98MWL27QfXB5okAjQo2nTlpq8AWau7/JrmDdzBmMLzl0rwhU8j+YnM3LhLtTENGMG8z9xV1ExQ8mBwLlD7ZS9OmKzgKo0k6+kqvY7o23PIRM0WCWa0khshFPnBWKkf4B1hZ6xtYDQfSSgU2h+NBlYIrjuBnraG5YV5cnDJO84GHUvy23Ed
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,104 +157,52 @@ rg> wrote:
 >
 > From: Chris Mason <mason@kernel.org>
 >
-> Commit be83bbf80682 ("mmap: introduce sane default mmap limits") made
-> do_mmap() reject file mappings which extend beyond the maximum offset the
-> file can support, via file_mmap_ok().
+> Growing a mapping in place can let it use up the guard gap below a
+> stack, so that the stack can't grow any further, or overflows into the
+> mapping instead of faulting.
 >
-> However mremap() can expand a file mapping and only checks that the page
-> offset does not wrap, so a mapping can be grown past the limit that mmap(=
-)
-> would have enforced.
+> A mapping has to stay out of the gap of the next VMA unless the caller
+> fixed its address. But vma_expandable() only checks that the new range
+> doesn't intersect the next VMA, and it passes MAP_FIXED to
+> get_unmapped_area(), which skips the gap check there.
 >
-> Fault handlers rely on that limit. For instance dax_iomap_pte_fault()
-> converts vmf->pgoff into a loff_t, which overflows for such an offset and
-> defeats its i_size check.
+> Fix the issue by stopping in-place growth at the start of the gap.
 >
-> Fix the issue by applying file_mmap_ok() to the expanded range in
-> check_prep_vma(), failing the mremap() with -EINVAL if it exceeds the
-> limit.
+> Growing a mapping into or within the gap of a stack or shadow stack now
+> fails with ENOMEM without MREMAP_MAYMOVE, or if the mapping can't be
+> moved.
 >
-> This means that mremap() now refuses expansions it previously permitted,
-> however no file can have data at these offsets, and mmap() already refuse=
-s
-> the equivalent mapping.
->
-> Fixes: be83bbf80682 ("mmap: introduce sane default mmap limits")
-> Cc: <stable@vger.kernel.org>
+> Fixes: 1be7107fbe18 ("mm: larger stack guard gap, between vmas")
 > Signed-off-by: Chris Mason <mason@kernel.org>
-> [ ljs: fixed up commit msg ]
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 > ---
->  mm/internal.h | 2 ++
->  mm/mmap.c     | 4 ++--
->  mm/mremap.c   | 6 ++++++
->  3 files changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/internal.h b/mm/internal.h
-> index a09dbdfd615d..aa7fba0a1c41 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -941,6 +941,8 @@ extern long faultin_page_range(struct mm_struct *mm, =
-unsigned long start,
->                 unsigned long end, bool write, int *locked);
->  bool mlock_future_ok(const struct mm_struct *mm, bool is_vma_locked,
->                 unsigned long bytes);
-> +bool file_mmap_ok(struct file *file, struct inode *inode, unsigned long =
-pgoff,
-> +                 unsigned long len);
->
->  /*
->   * NOTE: This function can't tell whether the folio is "fully mapped" in=
- the
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 7618e72766a5..79702841c06c 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -264,8 +264,8 @@ static inline u64 file_mmap_size_max(struct file *fil=
-e, struct inode *inode)
->         return ULONG_MAX;
->  }
->
-> -static inline bool file_mmap_ok(struct file *file, struct inode *inode,
-> -                               unsigned long pgoff, unsigned long len)
-> +bool file_mmap_ok(struct file *file, struct inode *inode, unsigned long =
-pgoff,
-> +                 unsigned long len)
->  {
->         u64 maxsize =3D file_mmap_size_max(file, inode);
+>  mm/mremap.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
 > diff --git a/mm/mremap.c b/mm/mremap.c
-> index fff0465f5e06..8043c425b5df 100644
+> index 8043c425b5df..2460f9421a13 100644
 > --- a/mm/mremap.c
 > +++ b/mm/mremap.c
-> @@ -1791,6 +1791,7 @@ static int check_prep_vma(struct vma_remap_struct *=
-vrm)
->         struct mm_struct *mm =3D current->mm;
->         unsigned long addr =3D vrm->addr;
->         unsigned long old_len, new_len, pgoff;
-> +       struct file *file;
+> @@ -1552,10 +1552,12 @@ static unsigned long mremap_to(struct vma_remap_s=
+truct *vrm)
+>  static int vma_expandable(struct vm_area_struct *vma, unsigned long delt=
+a)
+>  {
+>         unsigned long end =3D vma->vm_end + delta;
+> +       struct vm_area_struct *next;
 >
->         if (!vma)
->                 return -EFAULT;
-> @@ -1870,6 +1871,11 @@ static int check_prep_vma(struct vma_remap_struct =
-*vrm)
->         if (vma_is_fixed_mapping(vma))
->                 return -EFAULT;
->
-> +       /* The expanded range must obey the same offset limits as mmap().=
- */
-> +       file =3D vma->vm_file;
-> +       if (file && !file_mmap_ok(file, file_inode(file), pgoff, new_len)=
-)
-> +               return -EINVAL;
-> +
->         if (!mlock_future_ok(mm, vma_test(vma, VMA_LOCKED_BIT), vrm->delt=
-a))
->                 return -EAGAIN;
->
+>         if (end < vma->vm_end) /* overflow */
+>                 return 0;
+> -       if (find_vma_intersection(vma->vm_mm, vma->vm_end, end))
+> +       next =3D find_vma(vma->vm_mm, vma->vm_end);
+> +       if (next && end > vm_start_gap(next)) /* intersection, or in its =
+gap */
+>                 return 0;
+>         if (get_unmapped_area(NULL, vma->vm_start, end - vma->vm_start,
+>                               0, MAP_FIXED) & ~PAGE_MASK)
 >
 > --
 > 2.56.0
