@@ -1,136 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1018606A681
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABEF606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=GQmQyhYT
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eNmCjWZI
 Received: by kanga.kvack.org (Postfix)
-	id C93336B05C1; Sun, 22 Nov 2026 10:53:29 -0500 (EST)
+	id B10106B05C0; Sun, 22 Nov 2026 10:54:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1CBF6B05C3; Sun, 22 Nov 2026 10:53:29 -0500 (EST)
+	id A9A4A6B05C3; Sun, 22 Nov 2026 10:54:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0E786B05C4; Sun, 22 Nov 2026 10:53:29 -0500 (EST)
+	id 962F56B05C4; Sun, 22 Nov 2026 10:54:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E5B86B05C1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:53:29 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3FE94C0232
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:53:28 +0000 (UTC)
-X-FDA: 85463199696.01.E1DC41D
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 599671A0005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:53:26 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GQmQyhYT;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EF136B05C0
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:54:45 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05118A074B
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:54:41 +0000 (UTC)
+X-FDA: 85463202762.29.13AFE73
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3FA1420002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:54:39 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eNmCjWZI;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795362806;
-	b=AGF0AOzk8GJLk5RNGw9pJ7d7C1caRZ2UQjz52Ct1gSU1bb6ZKBWHDe5uHKt6pQj8VAVZyi
-	H9vJf7tcC9aImYOwFaavj4l+Rxm9HzlF+Wt/aCqomgaGpjymOKixqa5v1OJZev0WFTSMt8
-	75bIdosBzSOdPVk+ACtjkQDrKQ73uFQ=
+	t=1795362879;
+	b=aBI4IklMyUjUFw3r3KxyO3ijTE+oCcEgqmh0fpIQxFE2fzOpDKfHqh//GRUXjB9D3iSTBp
+	iEviJg6cOkMWCSZZwncS+rGESAx21KiSgTP4NEEAqJWgQBbiAvR25/+HxcQDcPvnVQP7iP
+	CDyZwgSAdxUC89ZsWWfniKLiwiQqxZM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795362806;
+	s=arc-20220608; t=1795362879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fzk0SoUY1PVvL00u1hntgJWoBs0ufQmEIsqyDHWq1II=;
-	b=x459wXJ6rzwPiyXLarSjCDzbcUPvbutYyIZu5fJ433yAXH0ouICE34XKwvnJ0+Pir3C8qg
-	JxLji43R7O1gc/onV2OgqBSJ1lF13cErKiBsdV2OHVfR5CdZya9c8ukEWM1ZoCj5bQLTws
-	n+rw2hRL491GoyklwJXpg/pHhl0zii4=
+	bh=LdaYsrBV//l90A8xrl2sVTadKpolcP7rxT8hA/4z5oM=;
+	b=AureR2V2cnuDcRxc85zjOknC0ofT5+1+H+n27c4IYDiYXoz/uFart+rg8QdGNwa7Xsiam5
+	kNYID1N9LJ9rk1mMvFteA2Mxc4Cg2hx4r15YFS9CXkc+dS/+OwbCzmbIKfa32HkxfDGH9s
+	KSFmp68hXswyxLnpyQVOjQ0vqb47fF0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GQmQyhYT;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-9210f2622ccso33432836d6.3
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:53:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1795362805; x=1795967605; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Fzk0SoUY1PVvL00u1hntgJWoBs0ufQmEIsqyDHWq1II=;
-        b=GQmQyhYTIUzVhKMy+EzSsSvG5iMq7hPpU9qoh9E8OnxSyPu1duLBkFPR7tgO/nxNH+
-         iOBKdggSv9tOWQQxxUIzLA2nl06v1WhGx0Dokkqy9WXWAgl+R1m1N7prVhIhEByQv8xQ
-         oR16NkYEdBOhkrvFUsRxZy8GMMF2nJuM48/jLnIsJhrkqcILbGH20Miu/KZkubk+mtoa
-         H4B7J/ECHyLFz9qY6x4OF4kGF9BD9OdQQ/aawmZFW6sjEot/IvSGARWAQSUXMbLxz/j7
-         v1lpE1dQXZsNQTW2UC8BrffcSSLOmSsUgrh5s+L6W/OiBAwmGIrV+VC0Y2FK9D1VGkYL
-         T/Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795362805; x=1795967605;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fzk0SoUY1PVvL00u1hntgJWoBs0ufQmEIsqyDHWq1II=;
-        b=BxxgTDoZ/beDlj8CIhISBQfCrC0lBFQ+n/hQ+wLQJ/Sj23m7WTd2TeMiKb3t6oL7Ib
-         oVqt39EEoTT3gk0dLuTKp0dEi4Wqo+mv+X/M9ZsUYY3xBqxsoloHjEnDMKTaLA7qhz7j
-         PV/Zjg/hoVSmiUyB5dVpURTHvFmJ2Nq0ouCyFI0SziPGIjS5Q0kcbeoYaRsJk2Y38oBw
-         +0GGr0Y9R52zfXdR8mfaUVoU0xywpUzQjM3afZqzEYK4RZISEb0v73hcFD8KjXREMjP9
-         a49gZqqyMs7BXNgOMEe5b+IvV4aaNjZqteh/PeByBekE3y4esUNyLJS4bgcTe71ahCqd
-         lOoA==
-X-Forwarded-Encrypted: i=1; AL+hErHVJ9bs7L3ydwymSsluJ8cAMZ8SUWiSJ+zadZLGtvJeqqjFSIpqhh6BPXW+2ilYRzx7EAd2E1vjPQ==@kvack.org
-X-Gm-Message-State: APuU4Z82ixDrZ4Kz5gtQxh2pGxk/yFKqb+BduSBA/RF4s0VcQCyv5nMU
-	UI6mvDqnz37x4h2DOYZI6M7NyKYmHX884a4M39GndKZxZMOMnQl0hIM7UN8ykUKbnH4=
-X-Gm-Gg: AZFdTZfik0KNZ7/gqLriE8HGYVztKx3uowzqQcxj3FCtR2/PJYJeUrJT4CDZ+oEBrtL
-	uHLBQ4f4zKCNRsDcQl+FtEBX+o4T/GTVbKqtAx+b7A/5ctnQJkmd/K9fvA0slEHIDqd2K0bXSbG
-	Rg+KesBmpYTovCGfERKcLdDSQuH4AGvStIGntef152/lstFzQvtWTWQG7QDQWVR6pyeImT947r/
-	l3JJQ3Y9VdPb8M3aQj+IhncaV/+GI3V9iERtkvP4/3zkUl/yd10xDzsWqG9M2k/YnQvYbI33sVT
-	QHpmZK/pba0yzoyJGkhUFKqIFZiA3OQOOVhGe/UACJdb0T9Ag794q86k59s9WBqpTVUUXuGXFbm
-	1UhuYfGeSaZTJmH18+0IFMeEza6Q6dr4ht16iW6qVhmGDmHweDCEpr4Y5yRYWwrkgaZvdSDzrNm
-	3tsd1mnQTXafQ21UDjynyTBvuf++NzssXZqyoKBQiD4/lsX3btBNsd2Skaild7calBAk37ALZrz
-	UC/phUaUzWGJrdwq1w3L+jMFILvARE+fgnm7aXQySDCcsYy8HK49jTSQolDkCRgVA2h9UJdc0A4
-	+23JfgMKib6e3zIRM3QUqbQhBqVL/0etIFRhVzC3IqE4uSHW8K6OXLHsSkXE42UZ5iGmYSz4zON
-	kaQe9R+f0
-X-Received: by 2002:a05:6214:85cb:20b0:91f:300e:a8d9 with SMTP id 6a1803df08f44-92134adf81emr116279406d6.21.1795362805570;
-        Sun, 22 Nov 2026 07:53:25 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921347a0b79sm81259446d6.5.2026.11.22.07.53.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 07:53:25 -0800 (PST)
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eNmCjWZI;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D64AF60D3B;
+	Sun, 22 Nov 2026 15:54:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE61E1F000C0;
+	Sun, 22 Nov 2026 15:54:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795362877;
+	bh=LdaYsrBV//l90A8xrl2sVTadKpolcP7rxT8hA/4z5oM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=eNmCjWZIsyfkrSTYKobRjGHedyTU5Z9bTCVcyhze465Y5N7+8Wg/9rpFRgsH9Oh19
+	 V2EJgQsnodqvhMRObp81DS16vI/ns9pnkk4kVeRBcnCoEqXmX+9HvSuCfGTIANDeS+
+	 rTrsNo2Cf4SuVMFD1u8utbp3PPUrpKbSrXYdvPx9+8rJb3oR2njHTIM8rRHS3IzVAF
+	 ScdijMJUILXpGgsUcRoigmUcW4SJ8lDb+QgI7VFpEoCHUOoVb+c+MOAzmOAKIIIRcI
+	 AV3dydypkslxe8pM4UGYFS0dsvT2D+HktC+ifhTb3Z7cPkOhKQgdu9/D0jVJKotuJE
+	 di1FOQYwqlYqw==
+Message-ID: <fd2ba9f1-db7e-4d15-9860-4d3930898266@kernel.org>
+Date: Sun, 22 Nov 2026 16:54:27 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/7] mm/vma: lock VMAs before taking mm_all_locks_mutex
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, 
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Kees Cook <kees@kernel.org>, Peter Zijlstra <a.p.zijlstra@chello.nl>, 
- Ollie Wild <aaw@google.com>, Adrian Bunk <bunk@stusta.de>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
- Hugh Dickins <hughd@google.com>, Joey Gouly <joey.gouly@arm.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
- Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
- stable@vger.kernel.org
-In-Reply-To: <20261121-some-more-ai-fixes-v1-2-236e925d9b64@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/7] mm/ksm: only interrupt unmerging on a fatal signal
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
+ Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Kees Cook
+ <kees@kernel.org>, Peter Zijlstra <a.p.zijlstra@chello.nl>,
+ Ollie Wild <aaw@google.com>, Adrian Bunk <bunk@stusta.de>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Joey Gouly <joey.gouly@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>,
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
- <20261121-some-more-ai-fixes-v1-2-236e925d9b64@kernel.org>
-Date: Sun, 22 Nov 2026 10:53:24 -0500
-Message-Id: <179536280440.412063.5336368383648661511.b4-reply@b4>
-X-Mailer: b4 0.17-dev
+ <20261121-some-more-ai-fixes-v1-3-236e925d9b64@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261121-some-more-ai-fixes-v1-3-236e925d9b64@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 3FA1420002
+X-Stat-Signature: eo5chhwcadmasuk3e3g1wyaanby9fqej
 X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 599671A0005
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ek8ypwxd47qebdh7inaf59jhk8gsq8th
-X-HE-Tag: 1795362806-493664
-X-HE-Meta: U2FsdGVkX18g9KCeJjnQrk1KFR2H8z/cXXuO/SEkjVBnOUGm9Z6A/r10fkFkrWYG0b9AGB9/N5m29z9UKtwDcjVTfes2YtUG5BltwNov7AR3qaTjI9MOPp8YLHqdVRs2CMQdnWLArybyUmd/gMWgdJCuw8xPD+A/2Jzz7VO/61mlJOvfPZp0jP1dylcz5+iac0FgjFA5GTOY1y2iBtlVxz8LjVxHfsutaBq1wSTq7zaR+L+g2d5O1vDOfZGzaAMQpxPeM98gbXzEwz93ZxN01Ikb0yjAC4ROYHTLxpOlq8asUCxg9VbTs6X05xUlG4RZhsk8ca1CHLGwWpIagyMmwCELYX+rpr2E/y5RMiC/Z18cPdzBYn0DHvFEffB4ClQy2aHkrJuW4CG01jBHe0/NOlR4bKABY4iQU23cGB0smFjoXBNMq1iVomhPmb6D5I/0rcxfBmDimHbR/QET1+NEmozHFYkOnfKMpMzqcIwItCEqFeY1co+pcLDFM+1D0maWftsLljxc3CaPxcmJffGQDOdtuL0EVp3tYHZ7ENhiQnSrktBxfmf9UDem0SzeX+1jutT4LvJwyoEZJkrpl7akrTDU8zb009repTcC1iWhyc6Hi4uewTFxZu8n9Ban835LbPjFyZm++Q9l5Um3rLibiKIt9807Yrkgzh75Va2N93eTdkQs/5S92w4/UZmdGG6mR0c2uPMk766gNPX0s96SoC9ANscpEfowo4h7K2pIxIDvwpBsBr2A7Ni9ye70UlJOQj+OD+qS/aUz1Gf8etoGlYvaB7Ys8wPSAS4p+Y+YWtE+bR4pmggvZ4Cp70SOUdtvi087b1xLGOAY9R6ZlllmHh3bGgMba9GMw/gR/siXaP5cG2qSwX00jGCi0S0IT9lVCnlJ8dZ8j4wPS2bhlFDSvfDJJ+h740PNQ+rmFMKILpjy8AixwoBd57XRx1cCgLRIyEI3SLja44vfxkg3lgi
- Dpy5W2Iv
- R/OEi5FZ7morV6PMa0U0GIVZ8TFzr+EZg6vjaxbCSIKudCHk8l7ADksHoFkeW2yMkSLetjKZ4KJUqqCSr6YNd18srCDsiIIMTihq3JyVeQq6jtwy4ufuYGfss5a5GRTg4bhl47ekti0b9DPAjNavCPg6p1m6QL9CfHyDWB4aDn/cgJ/SHDa7lmReXOybNFQBx6YI7VfRDuEWcNb/IXtM0zPfIHopcQsr647ZsM2TMmHI6cDmPkvwNRuqVkDPsQWBSnqJHsfH1ky+HM69nIRVhWq5Vu9my1uYGdxIRZAC8Y482CZXo5UhvYKVGM7Lu9dwHcIZjNGnO9njEbQaRCu0x1pgtW67QF/kKS8LUv/+foDfQZKN03jvF6KnoU7Jb5Y7Mo1Ho10v2uunJojitRA674aEbqXaVrQVqWCIpt3bBOG6PkmgCOPo5l2DCgmVQ/zai1danQ5ffO5BQgKunYiBpEtp3/Q8XUv5Oz1MKr8tB24gGpFf2syfY2hCUSBwV7/o1dsPSahJ002k4R02M0gPfwPvBMBY7Rpe1Ix3v4rN3UMn9vUn05s+8bkg/0A==
+X-HE-Tag: 1795362879-100089
+X-HE-Meta: U2FsdGVkX19dtWZfY4ygbWF5LnY9yGkL5sluaOLy98LRIyeW7cSptj56yRzv9ypJkjMn4XIv43EJdqatvh55yzuZ18Y7xCck31bmviD8RiV3deIwMYH2dtbg4PSFvMFPKv9ec2GT39fbZMpecHC8Xbrwz4zlV/fIhEYVPXLTcivfaSNcneCp10mNsmRIJtv+ePxHBGM57oLT7y9TMb1DINEPNQ6acr+yT002Rs8OZoER/RS/CHw0gsed+AoJEz6AvBv2UScYc9KyiEhcxunIQcYAbHai4SU+um+6g/NH3UW5VhamDnmtqP5z5WHWCzUB3tKpVG1KCW7SGhQaHAenARt2Qv0751HRxgM0xBlOpk8CueJxKzAS/6lg+GHoebN9Ea+a7Pj7wC0vvlrw6F/YvbZTecNCvj9ZcDE9/eevGp6l9CEUL27SWbLvDCJnP/9j0xRzN+cPjxYZ5E6fqSVVOoSPxAvnzZk9ZAUaPlttDNvUEcFmrjZijqIl08GGdjHCjSymS28z6vMM5RSP1lnTGDVsSkzMMPCPw+5Em0AmngVVeRVC1QA8yoabicrtmuoWFV7GDXgNqC5oJYSHRXtJww12UdsWleYxVA3zWcPmpfmd7K0vKiA+u1YNBl9M36fXgZHjl0BBRYp3WHDQt9yFCzKcvFxzfldrDxa8nN5lpNMZH5xCEFAQbAGnjhQaNzKr7S8Nqm1OWpJhVDQDVAIGd1nAm6plfw1w4lB7m56u4QWfn/RbdZx4uCqe9BG9qjpCneH/A747Yv1gPs8Yp5diiTkY1UPiEFM8Fu5TjWS8VgWAwJGpfv+C+ON2MKZjZQMVejUuPC3iEAPf035gHE9uh1k+ynSJRR0CHA/Xfb54ZdnJPW2XzvqdMHg9BpmmQbGGR5NsFyeGYdI6CxEBRMJGPPILMIFi5GHV9/yyQqWCUX+jDB0OBFe3Q3ZlCqGFtOu5j5wwIWPmDzXY/UV2wpN
+ 1ItY8fmv
+ m0unKRsal3OqK0SlLppOsTRumbznRft03IeEUKlpY+kR3CzeOibj/YcXlZW2hGFNPa35G6vSl3lA99Eb+k+bNrO2t0IP9vv80BPKBmvX6I8OcCzUBXExlJ8c/Xv32L12EBJ7FBwxVnhuG/Z8vD+QjrsuSi6sigMD4T8MX/wAr+UDQGlQIiuM0kXvt9D+uZRh/qJIcCMS4MfotEM6zZZ16Q88PswneilPviEoXWT7+dUfE3RUfji35EoKQ54XWWut3+yTYBd8ZGPcWN48keNbvBmbHlVHOLxDonhT97KBWAsn2eOEMNKkYexmoSeps3wIuLgvNl3hhNFs0tZmX/gDZb+5jw3m68oNPMM4Q96Oe5jUsNoNBS+9eDbagpMvamBf7fBPaadS0+k98F4DfMel193BDzl3Pn2NFYdgI/XXiprDi+ag18O8xa4dh6s4wf4Hbjc1ihAyOrcunUf9tKMR9wyL8X3W/owxrqcDUBGw6pXnhGj6XqIZtnEE8vmjF3scB1wfEd71KKdHYICtUEZGhZSILMbv0hzckpzPj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,59 +153,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-21 16:02 +0000, Lorenzo Stoakes (ARM) wrote:
-> If an mmu notifier is registered for an mm while one of its page faults
-> sleeps indefinitely under the VMA lock, the registration of mmu
-> notifiers for every other mm can hang un-killably.
+On 11/21/26 17:02, Lorenzo Stoakes (ARM) wrote:
+> Commit d952b79136a6 ("ksm: fix endless loop on oom") added a check for
+> pending signals on KSM break, so that a lengthy unmerge could be
+> interrupted, with the system call then restarted via -ERESTARTSYS.
 > 
-> mm_all_locks_mutex is shared by all mms, so its holder must not wait for
-> something that has no bound.
+> However, it assumes that the callers can always restart whatever system
+> call started it in the first place (the commit message questions whether
+> this was wise).
 > 
-> However, mm_take_all_locks() calls vma_start_write() on each VMA with the
-> mutex held, and thus waits for the readers of the VMA.
+> Well, it turns out that it was not wise, as this baked in an implicit
+> assumption about system call restartability, and it was and is not safe for
+> mremap().
 > 
-> Since commit 4ed4379881aa ("mm: handle shared faults under the VMA lock"),
-> such a reader can sleep in ->page_mkwrite().
+> mremap() holds an mmap write lock over the operation, which an -ERESTARTSYS
+> drops, meaning that the restart is not in a consistent state.
 > 
-> Consider fuse_page_mkwrite(), which sleeps until the FUSE server replies to
-> a write request:
+> This was made considerably worse with commit d23cb648e365 ("mm/mremap:
+> permit mremap() move of multiple VMAs"), which can result in data loss if
+> you encounter this issue.
 > 
->     mm A, thread 1          mm A, thread 2         mm B
->     ==============          ==============         ====
->     lock_vma_under_rcu()
->     fuse_page_mkwrite()
->       folio_wait_writeback()
->                             mm_take_all_locks()
->                               mutex_lock()
->                               vma_start_write()
->                                                    mm_take_all_locks()
->                                                      mutex_lock()
+> Consider an mremap() specifying MREMAP_FIXED | MREMAP_DONTUNMAP of two
+> KSM-mergeable VMAs, where a signal becomes pending part way through:
 > 
-> Fix the issue by locking the VMAs before the mutex is taken.
+>     first pass                          restart
+>     ==========                          =======
+>     unmap tgt1 range
+>     copy src1 to tgt1, move page tables
+>     unmap tgt2 range
+>     break_ksm(src2) = -ERESTARTSYS
+>                                         unmap tgt1 range, which now
+>                                           holds the data from src1
+>                                         copy the now-empty src1 to tgt1
 > 
-> Additionally, make the VMA write lock killable so a fatal signal returns as
-> quickly as possible.
+> This results in the user observing a successful mremap() but with src1's
+> data missing.
 > 
-> Finally, update the comments to reflect the change, dropping the lock
-> ordering list which begs for bitrot.
+> Without MREMAP_DONTUNMAP, remap_move() would find a gap at the start of the
+> range on restart and fail with -EFAULT there instead.
 > 
-> Note that the lock order at the top of mm/rmap.c doesn't appear to be right
-> - the hugetlb locks are taken after the VMA write locks. However, this was
-> already the case, and can be addressed in a follow-up in any case.
+> Fix the issue by only breaking out of an unmerge if a fatal signal is
+> pending, returning -EINTR when we do. This makes KSM unmerging consistent
+> with many other signal checks in mm.
 > 
-> Target commit 4ed4379881aa ("mm: handle shared faults under the VMA lock")
-> as this is where it became possible for VMA lock readers to sleep in
-> ->page_mkwrite().
+> Target commit d23cb648e365 ("mm/mremap: permit mremap() move of multiple
+> VMAs") for the fix as this made the issue significantly more impactful.
 > 
 > Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: 4ed4379881aa ("mm: handle shared faults under the VMA lock")
+> Fixes: d23cb648e365 ("mm/mremap: permit mremap() move of multiple VMAs")
 > Cc: <stable@vger.kernel.org>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  mm/ksm.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 623a2cdb3924..5d320a200951 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -627,8 +627,8 @@ static int break_ksm_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long en
+>  
+>  	if (ksm_test_exit(walk->mm))
+>  		return 0;
+> -	if (signal_pending(current))
+> -		return -ERESTARTSYS;
+> +	if (fatal_signal_pending(current))
+> +		return -EINTR;
+>  
+>  	start_ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+>  	if (!start_ptep)
+> 
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Thanks, I'll queue this in mm-core for the next merge window.
+
+Everything else can be merged by Andrew.
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-~Gregory
+Cheers,
 
+David
 
