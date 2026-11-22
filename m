@@ -1,102 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1340606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB8C606A320
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 15:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=CQ21YEoh
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=K0DZt8TE
 Received: by kanga.kvack.org (Postfix)
-	id BD6E56B00EF; Sun, 22 Nov 2026 10:56:42 -0500 (EST)
+	id 6A8F86B05B6; Sun, 22 Nov 2026 10:57:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BADF16B05B7; Sun, 22 Nov 2026 10:56:42 -0500 (EST)
+	id 65A1D6B05B7; Sun, 22 Nov 2026 10:57:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC4876B05BD; Sun, 22 Nov 2026 10:56:42 -0500 (EST)
+	id 56FE16B05BD; Sun, 22 Nov 2026 10:57:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 822056B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:56:42 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18492140709
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:56:42 +0000 (UTC)
-X-FDA: 85463207844.02.B21049B
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3636614000E
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:56:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=CQ21YEoh;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 245A76B05B6
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 10:57:53 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A60A61A06D6
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:57:52 +0000 (UTC)
+X-FDA: 85463210784.20.BD7B531
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C03C9A0002
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 15:57:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=K0DZt8TE;
 	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795363000;
-	b=20quRLTR3gCutXSIgNjy6KJ1H5Zsx0F+p29Fxc2uOE6ZUAGfltafd2t4dikJlloZQBnRKt
-	DsPSfWVsSmlWbdxcc9X2Za2fpSQGg9PJ9P692jTTuofLqIH+l4YnYJA/I4K2qgQDn5hJw1
-	heHS9ke+d+yxTUmL9JSeFDSx2NbOOuc=
+	t=1795363070;
+	b=L+PPM1dsXUHbyKqXMLBmqRqptrwmOAaVDbN0ZODpSXDrf5HO4vFP7rmLhckPcxGRGaTSNq
+	r4A3EfUubbw5uFAuBem8VzfzW+vzF6LJBFnHRyT2pf7fI/M1l/dMYXRdD5ui2PBCD0MoYy
+	FAt5IJPtVDJPduNkumsFZjWM95CuMpU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795363000;
+	s=arc-20220608; t=1795363070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VgqznfLD+AEq24VzpD10ISeNufFGoggr8PryRgVLhYc=;
-	b=oqEY7M4QNRxWLZiUOYedV7HzEj1z1l8uMeuOtBjlP9ndVWy06VElJy7OHO1+YYg/d4GgGv
-	6PtR3G2GjYjxzLZ0bqvIlz8BGsadbLh9CCnFSGZYDXI9VWyM6tnlSIFQPM1L1AwRbcEW/K
-	Y+rIL0lK9/GpHy+YEBCWpFSoSxUNUpc=
+	bh=NcHYZCZqGjruQWjTBcuHdUshGK9b343QactbdxqWzZY=;
+	b=l9OcxYxq8msYHio1v1FqRpY3mZiPIf+EAA240JOOhozWnTScmnBkGOeLFK8ir2voaWNmZ1
+	/VGYSggDujntO6O8bT3A5NvlOYPuqye/oCtRXNnx7kRLT7ndSB3L+f7hhTUiyifUDww4ZX
+	UX6yq5OW7Z1jLDQ7KOyQ2SaeMkvOreQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=CQ21YEoh;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=K0DZt8TE;
 	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-94962d80d34so157106685a.2
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:56:39 -0800 (PST)
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5495d549924so29372601cf.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 07:57:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1795362999; x=1795967799; darn=kvack.org;
+        d=gourry.net; s=google; t=1795363070; x=1795967870; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=VgqznfLD+AEq24VzpD10ISeNufFGoggr8PryRgVLhYc=;
-        b=CQ21YEohS6hZTjeG88eQon8AePCKAasdmRtUPKkeUZbSthIVdJCZBfMihNyIQ9I66z
-         n/9vClVstBeWGMaDx5lixmC5m3UHQJ+GHavjVh0H/FNFqm69tXaicqiuKHg8Br5qRlyk
-         B0FBf7vQVLqbGZZYfNK2xOq23u+iAIJUo4/6HMGl+B9ubP/PCw+XY6p3L9oxxUH8CBrQ
-         u/JErnnnAjNe7OjP8qZ2LPRI0s3KZUZLeiSicOhI5q8KwV0Zasf5nlUtNxqPGazsBQPV
-         xBEldURFB9ayV5gbXr2zYIlAXcPfwbmTSFFa9vpBEEl4CSFGYg9q1B3CPykJyLfFP7YA
-         z9Jw==
+        bh=NcHYZCZqGjruQWjTBcuHdUshGK9b343QactbdxqWzZY=;
+        b=K0DZt8TEOpwIbqjECsISarnSfEeh5aISYM6h2MU5jPvcMi13QhQO2zADKQxJQY8L+U
+         bWkKeXr/IgmbZrjMmkNsqwUwq5DdlEOEQL+voIMEVAqtdBQ0gCIeLJrJQmQ4laTOIWPK
+         n2p8WzeVCqKeLUXyzl/a/Bkc0eB6v+63FNVboPCwzuNPhhbEpyTOsuinvcneMFogz6wm
+         ma2xZV7Y2NZGD3xi6sP1vYZ9aSnmlH227flLCs2oJU750dKVIjg6ZDwWTa4TM9Q1tw5a
+         Fmff10SH4LSmvA/Xhx33hbv2QtzkzJO2lyBYn+BwHFw+qf6WdLgrfPas7WN+mubXzh7S
+         Slqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795362999; x=1795967799;
+        d=1e100.net; s=20260707; t=1795363070; x=1795967870;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VgqznfLD+AEq24VzpD10ISeNufFGoggr8PryRgVLhYc=;
-        b=jSk7/EbQJvgbK2BP+r9NYzHtP9U68In3i7GS6NPvCqyyeFfUoPtWY4Stwj+kiJnW6c
-         Sc0tSQVSSIYHYnPp8GioVGufdPRaPGhQvcfo+wThyDkXNbxq9e6YAswxfF36SDD8320J
-         KsyAtXLXVvRGWlAdaYOrqT/Sg980Qj3fRCpMW0/tlGZEjx3FnP5rynDC+i+EXlfGQxcJ
-         60jFIkUDUc2m32aWwl6IN4a4MgK2hnCqrMYurZnvnmuhRk+hn9iwvDsaEzjISuxmNGJY
-         acV3eKh1LS5+AaElgaXGzNR0lS2Wo+Qr/RmfAW+mik8BsxC0e9aDE2FmUJDR96uNNyTb
-         T2kQ==
-X-Forwarded-Encrypted: i=1; AL+hErH+29AfjGsHI/Aya+haWpOg7balNcXxbRUJeJpE4SadeZ5xDstpGOwg5etD57P3YhOs2LKsfF+SsQ==@kvack.org
-X-Gm-Message-State: APuU4Z/pTRci8APet57AZI1tbMhg/x5B0Nnl1Gl7ld7qFQnJWdEADY1e
-	9ib7PCP6TllSqvRGqhakRNdD2wQN3uOjWYrg3Hil/9ur17RsaxSxPEOm6xLVC6aDwWg=
-X-Gm-Gg: AZFdTZeryJ66gEd6Vsi9KlaaXqLCAXgcd8cfVdG4cI3c2tkflppMcdLisOneoOmvwxU
-	5LXa4l6QdAgtchZCi2lm1IhblnZ+xOFNO3V/aNcie/WpOOiCrAm2+5bALmC8tqRysqZjKNoNgoY
-	H/jmPf1ucIid/ytkmzGbYPLW9SltNaLYONyfbluZM3e710jZoK4+rN8BFjuJ9Rsjcs03cgGN4VI
-	wNOwuF5RVPbU8iOK/K93aO1uvITrThQqDV/r4bFk4B/17ZnrQqPi+MAZgcQPWNPOEgwInRjo6Vj
-	lTn9iGjWuq42gkndf0Lc9AzdpGLtNMQ89MvMQQw2cTqe6oNRlMwVzVBEFJmYmOFSZClsxNn3aK3
-	YZOFXw6uxvT/Lzt7zWLv1tSIO3S/TvpgynN9RYsD8hZe3liVqBWAHjD7F8x4tQWxUYPAs+nDXBI
-	15yvEQJDdqA7FiUxyyZ1EXPUHTb2U7d34GNe8V2n7YBlx3yQuir03ZcM966VjZ6feDwiS2zIpr0
-	4/T43J6fCTUa31+g2UoI200Gyv3VrkWNTE3KrIdTvaa6v4hCkU85q4L2IpBc9wO3CT/K9K7S68B
-	y3E0zjYksExKTYKiMrYAfq8PYOfX1HKkFooQR5HIXOtCJ6fIBnddlbMeTdakLe5+D56tTW1MnLD
-	b5xwO5Ok=
-X-Received: by 2002:a05:620a:45a3:b0:949:6e15:e1d3 with SMTP id af79cd13be357-949ba8246f8mr1442513185a.3.1795362999210;
-        Sun, 22 Nov 2026 07:56:39 -0800 (PST)
+        bh=NcHYZCZqGjruQWjTBcuHdUshGK9b343QactbdxqWzZY=;
+        b=PG6CN6wsI7vSkztidHskANvfh4Md5avVVZ8oAOfc5mhguHipHfYFZtuO0/toOxL6Ir
+         bmaCG8Aop6JrcMHnlUmOpdBJbrFtN9mQl2xtRuEHRKnbppNkOH3LMOUkbFkdbdhjjVLA
+         m6J9/g4JPLtKXfabEBZ80cgBUEdOJiuKkM4Sl3BaDrTb4DZtkh9eJW9K0dOsOsosX7h9
+         FFYP4kAxVv7aRaX2bQKfSaPkGpgmZ33Qo7dVy5xZqbdDRK1Thn6thMHEpXuG64KHfqQ9
+         LhUmOkKsiio6ZUIEg8A2vtBSvO9R3y5hZP7S9isp4UkyjF41CfkI7Oyy1mU/WWzyOyDI
+         IErg==
+X-Forwarded-Encrypted: i=1; AL+hErEnHYa91eW4ZEnSdEGM2870v7cLcFy42Ku45bmhlurPPtt2nnEaByo7UV8ZXUJPcr+sCwXg0g8+bg==@kvack.org
+X-Gm-Message-State: APuU4Z/lwa2XJstEu3gxU+FRpc7G3vE979rqxJHkvs/UCQpw5sg8kgVS
+	Zj873qzPniK8p9oIk5vGuZ0EILlQxFa5a6FWdfp4a3bR/bjWlRi6qCkXoiwg2FySCLo=
+X-Gm-Gg: AZFdTZezlI8EHy9brwjIhYebjLtoTr0jgNMDKPp21NitHFIYMA1iUS9mUxX2oGM9vsM
+	fclHXcR1ojotP/sWtd1tffIB3UfP8AtmcGp7Fxf1MCpJGBj6imsGT6k2Dh3uxZEx5t2z+DgeIHd
+	j79AlhnsYJEcF4u73yme0TyMNtefjG279+gTz2Y5Aw/0K/dE2ErRWGG1kCNnUARGKqkP4EXSsmJ
+	0935JFMA4SaYprdu43t8cc4vp3IuVI7TWSOonmOLn5h63gd+yvDucS47VB4/bz13xQOOxT+6XbT
+	veg5qHs9fmYeHbrkUEhO/CIm8RammXKGNARYjYBtLObJfVPjxBkauitDvM44qRKPNYjdKQP5dkZ
+	U5pcNDain7FDhO264I2k9b3DCsSNkq6ZVhsTmTbByic1q6qFNo8BYcKU0ESnXTBpGqs12dMBxSe
+	e8WxfW/cZ/oONUP/RyUE5UsIxWtx8MgvHi1DUZnu0l9tbNXRXkBIspCncPppLzOFL2YGnqrtuw4
+	F+R5FCgkJ8AnraVBeKJW42PWuViutCd38Ujq7Bxmg/VwSJsMca41ienGyaK6Hh/bTxuDyp3nl7S
+	fEog06DBNjqtH37HbEbU2RxBQfYowB/05jz1J50k8jlSAHXtr5I1rdlnNnYl/uL3t3kqL5ReYYb
+	Km6MwLY4=
+X-Received: by 2002:a05:622a:1aa2:b0:536:719d:7974 with SMTP id d75a77b69052e-55d76a5212cmr163702871cf.55.1795363070036;
+        Sun, 22 Nov 2026 07:57:50 -0800 (PST)
 Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb3f2de5sm619042185a.29.2026.11.22.07.56.38
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7887bec2sm76958671cf.22.2026.11.22.07.57.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 07:56:38 -0800 (PST)
+        Sun, 22 Nov 2026 07:57:49 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 3/7] mm/ksm: only interrupt unmerging on a fatal signal
+Subject: Re: [PATCH 0/7] mm: reworked AI-generated VMA and mremap fixes
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: "Liam R. Howlett" <liam@infradead.org>, 
@@ -113,24 +113,23 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
  Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
  Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
  stable@vger.kernel.org
-In-Reply-To: <20261121-some-more-ai-fixes-v1-3-236e925d9b64@kernel.org>
+In-Reply-To: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
- <20261121-some-more-ai-fixes-v1-3-236e925d9b64@kernel.org>
-Date: Sun, 22 Nov 2026 10:56:38 -0500
-Message-Id: <179536299808.412063.10679914509257827963.b4-reply@b4>
+Date: Sun, 22 Nov 2026 10:57:48 -0500
+Message-Id: <179536306892.412063.18259419201274512281.b4-reply@b4>
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: jp9xoicj8ua5k8eg5yuoueccy4oakcyr
+X-Stat-Signature: 1yhe36tibk59hodgu5rja7obyrqw48m3
 X-Rspam-User:
+X-Rspamd-Queue-Id: C03C9A0002
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3636614000E
-X-HE-Tag: 1795363000-225233
-X-HE-Meta: U2FsdGVkX18VSDmMK2XuxbttllHMnnxlp41dSMi5b4TJJDe84wiWolKvVDPcWqz9A2asiRs7xwqyPrW/TVO/Y9L3mXrCf3YJTSc4C8MxyWZrVYXAZxGe+JELGWpLybEjjp/P/Aaus9QVOC9ExQqgHfBxUUspIvz002pZz5a8hmrS3ed8fEEhpcq0sLZaA5pxHN/0wDUnJQ3WV6ilBso3/EbN+yRrvCKAMLT+a/wlRybtq1tv6LnOgTFi9wkKIlpOG4DMRnbJVSoLQI7zEzrZ4q45KZXS0eLiGQG5ZPbe0+bChiJ9PXu2P6lzBa56+21Vgv6bLuTUguUxQufINCfLZ/aR67O4a3rZxt2yiX3acvPyu68KYY41cFuLTwYfrfNHIF7iNKYi+I7wjhkWHLWXCYsQCnJIABDE1cxN4EwcBfqeSvkMrYkMNUpKPhNRbhFXOCpElfqga7GTKo6se359x0wvQOvPMBa5WY0j0r2GgeM5eLc+aeqTIsICNxuan6QqkShlLshbW+eK/C8bgB4ao+OQNoOOJO4nr+xoQLR+Hd5ofGMRZ78KeNpcJEHrdFuol9CXdHsgFzungFrZRdTNAdQ++eUpBZwjGPdc7XnxnCFAfOS6tOSa5/88zyUyyxxKbeVtgHgPdqmazOzxLbYkxdjgmQVkDOpMvxFnaA4mR3rFBtncWxqP4RchNcpPkc39GNbRFp+4/OiHpXfJAwyNMocLvekV+ZtPilh7XqrjSZ22MRaZ0DngF8xo/+2A8KgZLpd56QEMCnheiWsCDdRzD5vs+62YShJmVx/ct71ndWOXuIx257vZ3wsdKdNQd/WKUvHVXuXqLzcktKA4nHJnQwMgUo9Pyw8K4t3iUe+4Cnb14ccQ6cynl2xBMEhxl2tXQkLBQfr20glUUSfXFscaXgWOdTklyXxXr0ImvQbHG4LxBF3SlF+miUNNjXiZ/36M4uqhh/mYC2x16jFZFNS
- VYP0s625
- QpR1u8H8om4QIWsEFnsv9N5NBkATpgBuT+DpKynx5ajNJBfYDSsJpH96X6I4ElvaSiGIcNn31r/k+DXv0PLNgS65qbN4MpZ+VaVl1a/RFsJXacj9VRf/Upy4WKtuQDVCaCidZ44naeBaaxAI6DRREZyuENOw3si5tuFbjh+MeqpDy3DnBa7QM3Dw49igDFz0kvYULqjypPktVHIse8dO0nAxWwLl3Jmmi7hBLuJQXkVzPFf5aAZ72J3TmyvKj1t33s1oupbLJkUjthuslWyLUJKn6wbC0iza9IL5UkhGH6DHO1M+QPBE2YGFS66Ej+aspM44RwIJVh8ADJKVPxfI/RX818W83Ss3ft0A33+55HJbTKFYQyUijBhCvuK0OzoK72OPHAs1u3T1rLi82EMo+MKtW3YTfWf7uCwvHn3HlkHUKaHvxV11kLFm7ZUZcSccjeGlpPc/D2pmBIuRqUkipYMqZWSyeuzpRE4AxnZr9B7pTwFzZLAUvP5mqNdEhxTUOcnQ19Kn0bPE76r8=
+X-HE-Tag: 1795363070-294810
+X-HE-Meta: U2FsdGVkX1/vYSNLc6RlGnnXitxYgPDBl2o7oxnFduv5p7U8NwEgLTF9C6Ei3p4OAYFVm1C0R/KfvrZq950KGv7ZXiU3z96rzNQVCRfjPVzyFcnbn0NrQMKqylv18R5kDI7zW8v0N16+sXsF7KPMCZoNaVZm+E05iUOOaFa3rfXR1eggcxo3LM1w//Uub+59H/QO3A11Vhznir0+ujJOzrQ2clpIuHPThCKaCUmMg3Lpt4qgIWvDD00E3r6vn6xj8Rg5OfzPzcE4VQSLJE3YTZL7zqPHEfkqWvr+hJAP5O5MqlArNFXxIIwoCPaENMCDVED61PoZva2OC+Y09qYegeOA4m+n0/t21Qnap3Xh210R90JxqvKbxUTIWd+YctirkVb3VOgmpBP+8zi4wHjMGIk4OWYXeLN6gPSvXdrosbKJ0pT5oD1zmEmP4rAgqkoDCcN8YbuXiLFIN1h6eRRLpucXm2fPdZnQTPDntxEmTPRXjtvBH0n89JYzOefstJYNxCBQ0AXuzgwptYyQP4wgh+ycJUu+PXCU5w6V2k/8gpKAes/ZeszfkXb5CVbyKdcKy0fIcjLzpaFiSmZnvQShQOPQWbveNSDRanU3G6TDXtNNpIvQyyWRiRsVxxvuPQ+Us7oDxRd/SUrqom8yn81jdPWv+nA7hbvXJP95l3Fg1LTiPcWKfoQUDNqXey7vZeAa1+KZIwzT6VjyU4oGxvRK/Ncrm1v6D/UA22m1ADkoN6LfRqQ3SNwIoIl/JVyRHEkVbLwuxlbTjfd+Q1As8tduW+3Ln2ZzmM58jlqU7hABA/RzPCgtwDowHRaeJNMJDRDv/NrQmimXhehCb71Vu04HD+38qcS9OY5kc198y4sQk1YEDRSYmXQ4h9cvw8jSJGVj84PsZQnVo9hkHmEq9dp1abXesw1BHBz92k6IFVRH9SbnQ06PNHsiWfuE0UzT5EEwvLYejUGSCJuWE/MRKOu
+ aIYDCzWd
+ t+tD8aAbGJfm/SP65gP/Zc8lwTf8LnkBcqhugSc/cL9gIPNG/jnN8izjNkCfRBYxdSPsd78EiqPxT9eAHakFVYX8STEJEqFQIXZvZzbU6QcatEeHf0z4WR8Z6PwkPFMO240TCEJLoEFzWokAVOOVvzevLmvA990VKHB3eWn3pN+VfHLKPd/40CBtK0aEVA5Q5zJq2bAisz2tFqoRhXsmApCuoCkb7NLrFtosmhzX7xGdPkaJjUsUn2ocaSqQDMSy8qDL+SEEtE9po6DQ0xEqul0V/vDgvkLOqZLZk2D7KcHVmNUG3tGDIj9mxxLGmZhTl6L/dD3Zqm5v2UC7FpuZ9bLgKWpklqBnUJJBLDf0RsHovhSNYqnoZv+gcdwTSBNsYrpVcABRXDD0TFxsX014P2/3WFqvTe3DXapvzJA+8sTrvj9YEQD1tu9NseO7ePdEZbz/4OlZyyW89Wh8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,58 +139,45 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 2026-11-21 16:02 +0000, Lorenzo Stoakes (ARM) wrote:
-> Commit d952b79136a6 ("ksm: fix endless loop on oom") added a check for
-> pending signals on KSM break, so that a lengthy unmerge could be
-> interrupted, with the system call then restarted via -ERESTARTSYS.
+> I have reordered the patches here by priority, David - the first 2 should
+> be prioritised as hotfixes, the rest can go in 7.5:
 > 
-> However, it assumes that the callers can always restart whatever system
-> call started it in the first place (the commit message questions whether
-> this was wise).
+> == Critical ==
 > 
-> Well, it turns out that it was not wise, as this baked in an implicit
-> assumption about system call restartability, and it was and is not safe for
-> mremap().
+> 1. unmapped_area_topdown() invalid bounds - possible memory corruption,
+>    triggerable by any local user.
+> 2. Lock VMAs before mm_all_locks_mutex - system-wide unkillable hang,
+>    triggerable by a local user with FUSE.
 > 
-> mremap() holds an mmap write lock over the operation, which an -ERESTARTSYS
-> drops, meaning that the restart is not in a consistent state.
+> == Need fixing ==
 > 
-> This was made considerably worse with commit d23cb648e365 ("mm/mremap:
-> permit mremap() move of multiple VMAs"), which can result in data loss if
-> you encounter this issue.
+> 3. KSM unmerge only interrupted by fatal signal - silent data loss on
+>    mremap() of KSM memory.
+> 4. Uncharge after failed stack relocation - strict overcommit limit
+>    defeated system-wide.
+> 5. mmap() offset limits on mremap() expansion - invalid file offset
+>    reaches the DAX fault handler.
 > 
-> Consider an mremap() specifying MREMAP_FIXED | MREMAP_DONTUNMAP of two
-> KSM-mergeable VMAs, where a signal becomes pending part way through:
+> == Hardening (no need for Cc: stable) ==
 > 
->     first pass                          restart
->     ==========                          =======
->     unmap tgt1 range
->     copy src1 to tgt1, move page tables
->     unmap tgt2 range
->     break_ksm(src2) = -ERESTARTSYS
->                                         unmap tgt1 range, which now
->                                           holds the data from src1
->                                         copy the now-empty src1 to tgt1
+> 6. Guard gaps on in-place mremap() expansion.
+> 7. Non-executable brk mappings under MDWE.
 > 
-> This results in the user observing a successful mremap() but with src1's
-> data missing.
+> As usual, please go through and check these carefully for correctness,
+> sanity.
 > 
-> Without MREMAP_DONTUNMAP, remap_move() would find a gap at the start of the
-> range on restart and fail with -EFAULT there instead.
+> Note that one of the original patches was punted over to the BPF
+> guys ([0]), as it doesn't feel that it'd make sense to change core mm to
+> address it.
 > 
-> Fix the issue by only breaking out of an unmerge if a fatal signal is
-> pending, returning -EINTR when we do. This makes KSM unmerging consistent
-> with many other signal checks in mm.
+> [0]:https://lore.kernel.org/all/awGZWsCp6v63H_py@gremlin/
 > 
-> Target commit d23cb648e365 ("mm/mremap: permit mremap() move of multiple
-> VMAs") for the fix as this made the issue significantly more impactful.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: d23cb648e365 ("mm/mremap: permit mremap() move of multiple VMAs")
-> Cc: <stable@vger.kernel.org>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Was able to reproduce every issue and validate the fix.
+
+Not sure I agree with your assessment of NX brk mappings not needing
+stable, that's a pretty bad bug in my opinion.
 
 -- 
 ~Gregory
