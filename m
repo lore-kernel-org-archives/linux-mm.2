@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F858606A330
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 00:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDFC606A32C
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 00:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jdzme6jD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nWkOOfqm
 Received: by kanga.kvack.org (Postfix)
-	id A8D176B05B5; Sat, 21 Nov 2026 19:10:59 -0500 (EST)
+	id 583516B05B6; Sat, 21 Nov 2026 19:11:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A64A36B05B6; Sat, 21 Nov 2026 19:10:59 -0500 (EST)
+	id 533A96B05B7; Sat, 21 Nov 2026 19:11:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92BED6B05B7; Sat, 21 Nov 2026 19:10:59 -0500 (EST)
+	id 423CA6B05B8; Sat, 21 Nov 2026 19:11:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 43AC06B05B5
+	by kanga.kvack.org (Postfix) with ESMTP id 08C806B05B6
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:10:59 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EC64EA067C
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:10:56 +0000 (UTC)
-X-FDA: 85460824512.10.5D03AC2
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 17565A067E
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:10:59 +0000 (UTC)
+X-FDA: 85460824638.25.2A98688
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5414780005
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:10:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jdzme6jD;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 892171C0005
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 00:10:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nWkOOfqm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795306255;
-	b=TjuvOwIyq0ask/dBKkNpUJjp8y6Cr0oCe4OL1xNkMbr0wtIyrHEwhoTov/toB0zgfBj67r
-	2lBdyi0FqH/mDDyTugPsQMghyFWMO1VurPA8i8nh+VVPLkUSVCZMmoh9YAm2exzGkPgqQg
-	chUG9SWuBRcitp9biU9fDpAsOm4OlTA=
+	t=1795306257;
+	b=PmtsWECk36xMd/7UCS6nrdtt/SlBvE0d1fRuoEDhKDKLSGlkfVba6uDDRMwlZTPHyXHfJh
+	ElGl+tRuUyc6ytyyuVqBVHa58S7EA57DMlFQXHBHjIz26xTCpYCuTKqvqI7+EXCYAZ5VAI
+	EEb2HDuoKZzZwSmyjFJ7lqFLUnOSWmk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795306255;
+	s=arc-20220608; t=1795306257;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iqb1sxGXVs+ZBL2YO1Gxpd58VvwV2+dlg9RG8sovwRk=;
-	b=8IsVUKEhg37R9zReMDmHHgBqiMZkOqgGq0wdn5FxEsYT/9QT5hGfUuiEJRj8j3bY2HEAq6
-	hPuRGutSf9Ju381jaadF/OHa7pyrQQo0S3gCKP4VW+nfFTx8Y+f+3hvsatd1G7N1WyubdH
-	LAHMJP+lkoks2kS6IpsbBPdLHm3bPso=
+	bh=s3oqHKKaMc4jz8f4vxbyN/0+IPUCihsP+4tQ8YCz0nQ=;
+	b=GkYgXbMxz5zCLTsPDT+9RqJmE9YxrtMyclbbXCO8YFXWAxED012DpDyiD9Npzr6LvYVYYy
+	LzEht3CShg9BmSnuPPeIDvIWQ1BnAwmTMJOQPkyId/+i75oXb1jYsObaWnSdCYwHaq4739
+	86nK3FRj8Re7/HsO2jt9NjjmLvMrJ8w=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jdzme6jD;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nWkOOfqm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6106F60F01;
-	Sun, 22 Nov 2026 00:10:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6A91F000C0;
-	Sun, 22 Nov 2026 00:10:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C8D1861C79;
+	Sun, 22 Nov 2026 00:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C451F000C0;
+	Sun, 22 Nov 2026 00:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795306254;
-	bh=Iqb1sxGXVs+ZBL2YO1Gxpd58VvwV2+dlg9RG8sovwRk=;
+	s=k20260515; t=1795306256;
+	bh=s3oqHKKaMc4jz8f4vxbyN/0+IPUCihsP+4tQ8YCz0nQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Jdzme6jDlPEH9sXHNBaFkNO/jgmbvC1G2RSo97+cJNY67STD7lrt2j1TZm/bun4Qv
-	 sCVAI5JtJ9kPPD2C4c6IOFkgIOSrQplvNb7vhkTwXldlDssVbaY4UImqvq8ysBamCH
-	 oHxbnqxB49eL8sokvPPJlRl9qX2nk38biae/yynw9WPyOM+nBS2ii/J4RQqZjxVzji
-	 wjPHBlUdt46uLlvpf+ruGWd0e8/3iXMuv6dXr6ENWr+PmA+QBPtZ96Z5r7pkdnj93s
-	 ovP0x7nnHWgP+LSUqxzr+iej73HAjJEpro00U2O1yyU+LaV052sRgZrW9CBbC99t59
-	 QqfW2Jv5S1/4g==
-Message-ID: <sashiko-outbox-227537@kernel.org>
+	b=nWkOOfqmIL5Mm1bLeZK0VEN57SsUekCLltzuBfJSpeyK6F0lQZ6HpdlCmVWT712Sz
+	 /SyiNBHQd6GFHU8eUl6RBjmqAiRcNAAlSLQy8Id1wK2PKZzeF0XuQSf0zFZ8AG6+s4
+	 ZOMlYzZxGWV5SXTal8klHGwxqglveAKpAWK5OChtT4Lda1E8kv/dnkS07RQytBqU6o
+	 jS8pixp6q9yTWiDryQ5qUfrfbFJsR3mT1a1ZtgGa15t8zrTEBxlFHsktHVtemEkfUm
+	 SKVOtfJ/3V20orVOjqcZ1gdpkhSwRyUHY4TbZ9Ursv/wNL2yzynIpJWAJJEdhR2vwF
+	 rIdRsR6dUf7Dg==
+Message-ID: <sashiko-outbox-227541@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v5 02/25] userns: Add userns_set_idmap() system call
+Subject: Re: [RFC PATCH v5 06/25] mount: Support MOVE_MOUNT_T_MNTNS in
+ move_mount()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jarkko Sakkinen" <jarkko@kernel.org>
 Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
@@ -72,24 +73,24 @@ Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
  Bacik" <josef@toxicpanda.com>, "Kees Cook" <kees@kernel.org>, "Neal Gompa" <neal@gompa.dev>, "Paul
  Moore" <paul@paul-moore.com>, "Serge Hallyn" <sergeh@kernel.org>, "Zygmunt
  Krynicki" <zygmunt.krynicki@canonical.com>
-In-Reply-To: <20261121000844.1863324-3-jarkko@kernel.org>
+In-Reply-To: <20261121000844.1863324-7-jarkko@kernel.org>
 References: <20261121000844.1863324-1-jarkko@kernel.org>
- <20261121000844.1863324-3-jarkko@kernel.org>
+ <20261121000844.1863324-7-jarkko@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 22 Nov 2026 00:10:52 +0000
+Date: Sun, 22 Nov 2026 00:10:55 +0000
+X-Stat-Signature: 96ycyjahk57tz6ku6udzbdxfkytry8xk
 X-Rspam-User:
-X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 5414780005
-X-Stat-Signature: j6yz6d4o1o9np69omiy1ticaery619be
-X-HE-Tag: 1795306255-547013
-X-HE-Meta: U2FsdGVkX19dMNatGaXnb8J1rfQFzF+VVB4D+SM5lTRuI8wAaGCzdwfpunr+h/aPqZlLjxJhoQ3gUJt6kNT5RYcN/2VmfaepOA4hfYRj3ErmKOeFUckLQ1WOY3+YfKmkKJ6nTT4541zFxklVG9UbWE/jDx+TlM/WbQROWudTjzXn0MjsDyTGKVOZbDwDRePUCDGN5c717zQbX3TtkImHxsHCmuFhE/Z/uw7sei0bWiH+wMVvpbgfhEUt/RcZxwO9dj8C7EuIaZ6BN+U7eY3IGAm6OILer4Rjk0AvgMxcdZenqaNtwWWJgbkiZndqGwr70r7J9eCnjM9ijSwPjZIATXS+w343HF5FMGQBjxqFFKO6tAmTjJGXxKwXs0Mgx/ME//Pq2GofVF0eJwNExjyJErRfnD60nHGgMofR+sTEHpjXbEaXAhJ5gKZm6yr952LNdZOCZ7QbR0hG1LXolI4zVQ/KDxMaUgP+bxaNxU5ht/YEGQVKclWKDpTzPinkj1Njh1NPcoNfKk7RLwr0p45EFUt74f/MlhszuciVpOVAm6weR1lGQKaxZ476tmZwyduDF9+o8lEdjIfYQGftxFPrrWtJF3Zvub98LLg32rgxmtoXulQFvdy/7mfmtqAKPFOt/MFm/VV2jzgdKf1ERPXmBzPhveWORUsFf7DBTSPUbwWHTlwRVefrV/j1JUR3GbqjiXheWbY8DnEyUgFUyf8/ceGUMchfWV8tSL+i67xGNsF7oCCI57H+aL59lHiC2r14zHgheWeDwXZwNVJdTn+ijnc0rnqHJf3XSwYTTPOToqTyXOYsMCnVwJckbrJdrlHatvg0+sCq/COH4IVKJm1amWtiQrXrLHhWh8rwXmDLosHdCR65xz9c+RI5xWEnqb63ezgDxnaXKuIfggFtVU9CvgQTVugtMV/yKjkN6jtpGoQARxNgV/fRbzfYlEyBrtrFxlkbl8a34J/wXYfJTZH
- 4u8Zw08O
- kfbzv1BhmfYwbVZDOnUsM57X6qxPEk6roH3iG/Tb9pRomQ+NRFG5HhfyQ9WFNonr9Rnf3tvSUBOKERB3wgAFSIk0xBTHL189bmXy6jYJxIBqmxJN4FDv9CjGlXBTAzqPIPIrrorCknGh5jV4Vx/eASY52m0iv0k+rTN9B4btvf4HtuI3lYGX3bXzvV477bBA77YlZescxnz/2BZTINvlRVzSdw+2Khlo2E5lZa+ATnBvkaBmL71SdV6c5LSkSeAAyKSi+Uf3/t49HFBjbE3dgkx6xPir+OisMLDtQbRuTw21EliPkcM8pOkNEU8c9krGL/990jciCc8KTbISOzJ4HmhZE+pZieqbbWD9lzaS/DpqJP7h1r4XYRKqgBVWeI16PL3O/Bvue73xL1SOqYfo7A9BRZH7rESDNPG0+JPsxw4RToLvClpBTX7FztfVCWvgwGBVhv7ba4BWTpzbnpOSMaFud2o+79uPZQFsfZEh22knAVbbTe/d/wpH0IetqOJBF2BcWsvlyAv6UYw0ok1JfsHi572YspoHkqFnv7jPN9ulcdH+QPb4fdTW9HM2wwgSO0Yj33YsACTGwy/AtGyo+FwllxozUToMbyQ5vt9nVqKf2iKWpUod/Zy9LpfrTwSB02w9GzFczIhjiSqvGvdt6xuxz7XhfebkN/05bfQmH2ppL+cI7y6B1k5pbB2h1SoKWfSZDI3J1fpyvdrTibpOYtKutSzSHXUnxhqATxgy5PE0aP4s0GRgHcYJEnIauUoChpott7kYPOvgsGvZxjkn2EcxllwLhpWjbrMdh8LhZ7RoQ1Bc0Vh/Tczag88TgX+6zZNHCUjr9ZJoXWBZ1D3ksKF3Y4nzVNbm2+UrRQ+N3xLngfo0=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 892171C0005
+X-HE-Tag: 1795306257-929274
+X-HE-Meta: U2FsdGVkX197r4Nzzo9SWaPmB3Grmm6X9QwRD12Tnj9UM11uMAac5R4/fKnFt3uWrn+rguLsJlngMEuViXFYcnkF1oR5+EL4diwM/cjbC/rQEaKOTwe5+cm0XYy2zmMiQZSJGhKG9XuwmwjW+ZoECc6uVX+68Ww0xuP91oTRLlk/Gvt7h6dBY7585Jz0oZYR8xj9KeDWqPvyBK72S23JVrT/xk/cJCxfdjKIoqyJeo2dWeHAjUAYLLnlx5vUlYYJKiP/vvi83x45IzjQYSlKT/Hm5fSAwM4dpUPaMHVQXxyIATXTbGCcJs3HPKv0qU/p9FPV5v+RXB2k737aQfWoJAy3NtRLMfYVwl6gnkMc7KetBU0/vXl3iu9maoAf8MVvxM8zismnUMpFqStlJZrJo+v303pkk8d6U1btyoDzos9ZGSdLyPUVLzYwOMip7/dEC/3VHZp7fR2iQIZ6QDaiTvQQ8eYY8msCICsu6TJ+ducyeIO3Yhm1XLLcaxx+RlDJBJzDzMco+9RX5vi08UhQ5A4wUEG17dfaZG0u81fj0MhRA4MblZVuHHlSlDKvuHjCGJ/eFHrXjJldXM5ggnHAda6X2ZX7LZp9qTM6XraDcEMzM8KU62vuPAssoRSWufYiJ5d6cFlGp+XRbds0TVTb10vf8NyL/orBjc/ZaDVlkDxCDpC2phnjeBexZ707A8/XKwGDhh8dq6ImkOx0RIc5NTSwrXFx9z6q7HQKsxIz8lVjoplOTGRPp6I/XDfYdbOn2KTcuQ+hjqGpAEpCT0NZFLPCQ5TpNpCGwMY4CETV/cuI3b/02xEiPpgsHJIjCFj+QG0a0XD0i3F6BPYjaFsPOPCZo3Lj7GGJRMZWoxodt6nwWYKmmna+5jh5b8Z5955UZtK/FavMX4eNLjQqmEH2rTPx5a7Kc41lU6pFrG0OhomLQDZ282rt7za7MuEMRtq5EVGEL5tczlmg4VtyS8R
+ W4TtIbPv
+ Vj6fAm9aGUlx7KLiQfT54aDZI2mNUMF+mWRdb0z5H0E/Oqg8PHMBhLC+RVW+Q7tUuQJr6jpIbqfdHiAE0B+aJ4z1HKm5smqp+CTviVJAkYeyA5xyt7sumntcGOh+p3hVWrN3gwIwg68GTTUjnn2qwf6Gr7Wpy4vEacymjCqs6q0dRX+nwsLrbXc0ZIZlSsu2Z9+Qt6aw2SPOvGyGUjuObzvxvuW7z3XF8BV4moh5ixoGWflOUVm2zjesIfPuY34Ih+p5BQ7gP5boaE5U9yAh5VVNUQDWcPUt8zslz39mMX0KfD0wgYgLZOgvF0pGXCWZxBULltCBuEKOxXn46oXBdcfJGm3A9cH+Q44P1DwSSoCmD7RndaFu5DnBuNw0smkKBfEKwgGNNf9MMpKz98XAVsOFZhNZ4j1DO4bL3fvxB3oAbtqg/felOspixaGpk6ZTZrBNwJxFxjjyvmUEW2vVuvfEk1MJEb5IOx6SaAC+IEaSoMWj7p8DvMj7Ty9BkImYcvflhM8rV2dOxzTOTkbCTiO5MpQu2FMXghzIZ4XkFquLRaRa1fX/hl+sxlLhuOsuegURt4XDXifrH8nN/y5h3CH8YyfvBzaKG1rMqKQH6SfaMxN/HOc8ByDpgJSf/jrEdYDOCH4Z8DbAH0Ib1kLNKc1xDn4ZKSRDMJI7tqnWe3SMdCCyJcRgwX7U1kRgK0jvEImFJF0z8QEVehNMdb2he1AArWnqaPq7GnU7cjQYAL8Ck66rXYP11BotmActBMgyXJsWNvfngmzKv7qwb0tJwcQ52FgTjepLarMaIvgZeh9W5PQBBOm+J/ZGwMV6Yr/R0Dyb6kBNGXuWWreUA1faJW9tURg4khP2l2gj5wqpgYpC7VQw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,209 +100,87 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [High] userns: missing target CAP_SYS_ADMIN and caller checks in
-  sys_userns_set_idmap()
-- [Medium] userns: unbounded size passed to copy_struct_from_user() in
-  sys_userns_set_idmap()
-- [Medium] userns: transient ns->flags mutation in
-  sys_userns_set_idmap() before validation
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] fs: namespace: broken cross-userns locking in
+  attach_recursive_mnt()
 --
 
-commit cd58304550496b7580b53ae3de9d67b848eccae2
+commit 74ae0b488300551c347e9b244e2d68e31f9a48cf
 Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-userns: Add userns_set_idmap() system call
+mount: Support MOVE_MOUNT_T_MNTNS in move_mount()
 
-This commit introduces the userns_set_idmap() system call to atomically
-configure setgroups policy and UID, GID, and project ID mappings directly
-on a user namespace file descriptor.
+This commit adds the MOVE_MOUNT_T_MNTNS flag to move_mount() to allow
+attaching detached anonymous mount trees directly into a target mount
+namespace specified by an nsfs file descriptor.
 
-> diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
-> index 6b9673dcdc670..d7f2cad388c8c 100644
-> --- a/kernel/user_namespace.c
-> +++ b/kernel/user_namespace.c
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> index b2dc84c0d0d66..b65f1fdd92811 100644
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
 
 [ ... ]
 
-> +static bool caller_idmap_permitted(struct user_namespace *ns, int cap_se=
-tid,
-> +				   const struct uid_gid_map *new_map)
-> +{
-> +	const struct cred *cred =3D current_cred();
-> +
-> +	if (cap_setid =3D=3D CAP_SETUID && idmap_maps_root(new_map)) {
-> +		if (cred->user_ns =3D=3D ns) {
-> +			if (!ns->parent_could_setfcap)
-> +				return false;
-> +		} else {
-> +			if (!ns_capable(ns->parent, CAP_SETFCAP))
-> +				return false;
+> @@ -2641,6 +2652,7 @@ static int attach_recursive_mnt(struct mount *sourc=
+e_mnt,
+>  	struct user_namespace *user_ns =3D ns->user_ns;
+>  	struct pinned_mountpoint root =3D {};
+>  	struct mountpoint *shorter =3D NULL;
+> +	struct mnt_namespace *src_ns;
+>  	struct mount *child, *p;
+>  	struct mount *top;
+>  	struct hlist_node *n;
+> @@ -2662,6 +2674,9 @@ static int attach_recursive_mnt(struct mount *sourc=
+e_mnt,
+>  		user_ns =3D current->nsproxy->mnt_ns->user_ns;
+>  	else
+>  		user_ns =3D ns->user_ns;
+> +	src_ns =3D moving ? NULL : source_mnt->mnt_ns;
+> +	if (move_mntns && src_ns)
+> +		user_ns =3D src_ns->user_ns;
+> =20
+>  	/*
+>  	 * Preallocate a mountpoint in case the new mounts need to be
+> @@ -2728,8 +2743,12 @@ static int attach_recursive_mnt(struct mount *sour=
+ce_mnt,
+>  		struct mount *q;
+>  		hlist_del_init(&child->mnt_hash);
+>  		/* Notice when we are propagating across user namespaces */
+> -		if (child->mnt_parent->mnt_ns->user_ns !=3D user_ns)
+> +		if (child->mnt_parent->mnt_ns->user_ns !=3D user_ns) {
+>  			lock_mnt_tree(child);
+> +			if ((move_mntns || is_anon_ns(ns)) &&
+> +			    list_empty(&child->mnt_expire))
+> +				child->mnt.mnt_flags |=3D MNT_LOCKED;
 > +		}
-> +	}
-> +
-> +	if (new_map->nr_extents =3D=3D 1 && new_map->extent[0].count =3D=3D 1 &&
-> +	    uid_eq(ns->owner, cred->euid)) {
-> +		u32 id =3D new_map->extent[0].lower_first;
-> +
-> +		if (cap_setid =3D=3D CAP_SETUID) {
-> +			kuid_t uid =3D make_kuid(ns->parent, id);
-> +
-> +			if (uid_eq(uid, cred->euid))
-> +				return true;
-> +		} else if (cap_setid =3D=3D CAP_SETGID) {
-> +			kgid_t gid =3D make_kgid(ns->parent, id);
-> +
-> +			if (!(ns->flags & USERNS_SETGROUPS_ALLOWED) &&
-> +			    gid_eq(gid, cred->egid))
-> +				return true;
-> +		}
-> +	}
-> +
-> +	if (!cap_valid(cap_setid))
-> +		return true;
-> +
-> +	return ns_capable(ns->parent, cap_setid);
-> +}
-
-[ ... ]
-
-> +SYSCALL_DEFINE4(userns_set_idmap, int, fd,
-> +		const struct userns_idmap __user *, map,
-> +		size_t, size, unsigned int, flags)
-> +{
-
-[ ... ]
-
-> +	if (!map || size < USERNS_IDMAP_SIZE_VER0)
-> +		return -EINVAL;
-> +
-> +	ret =3D copy_struct_from_user(&req, sizeof(req), map, size);
-> +	if (ret)
-> +		return ret;
-
-[Severity: Medium]
-Should sys_userns_set_idmap() reject size > PAGE_SIZE with -E2BIG before
-calling copy_struct_from_user()?  When size exceeds sizeof(req),
-copy_struct_from_user() calls check_zeroed_user() on the trailing bytes,
-which scans the user range word-by-word inside user_read_access_begin()
-without rescheduling or checking for pending signals.  An unprivileged
-caller can pass a multi-gigabyte zero-filled mapping and stall a CPU in
-the kernel.
-
-> +
-> +	if (!req.flags || (req.flags & ~USERNS_IDMAP_ALL_FLAGS))
-> +		return -EINVAL;
-> +	if (!(req.flags & USERNS_IDMAP_UID) &&
-> +	    (req.nr_uid_extents || req.uid_extents))
-> +		return -EINVAL;
-> +	if (!(req.flags & USERNS_IDMAP_GID) &&
-> +	    (req.nr_gid_extents || req.gid_extents))
-> +		return -EINVAL;
-> +	if (!(req.flags & USERNS_IDMAP_PROJID) &&
-> +	    (req.nr_projid_extents || req.projid_extents))
-> +		return -EINVAL;
-> +
-> +	if (!ns->parent)
-> +		return -EPERM;
-> +	if (current_user_ns() !=3D ns && current_user_ns() !=3D ns->parent)
-> +		return -EPERM;
-> +
-> +	if (req.flags & (USERNS_IDMAP_UID | USERNS_IDMAP_GID |
-> +			 USERNS_SETGROUPS_DENY)) {
-> +		bool file_ok =3D (filp->f_cred->user_ns =3D=3D ns ||
-> +				filp->f_cred->user_ns =3D=3D ns->parent) &&
-> +			       file_ns_capable(filp, ns, CAP_SYS_ADMIN);
-> +
-> +		if (!ns_capable(ns, CAP_SYS_ADMIN) && !file_ok)
-> +			return -EPERM;
-> +	}
+>  		q =3D __lookup_mnt(&child->mnt_parent->mnt,
+>  				 child->mnt_mountpoint);
+>  		commit_tree(child);
 
 [Severity: High]
-Does omitting USERNS_IDMAP_PROJID from this CAP_SYS_ADMIN check allow any
-unprivileged process holding a read-only userns fd to write ns->projid_map?
+Does overwriting user_ns with src_ns->user_ns break cross-user-namespace
+mount locking when source_mnt is attached via MOVE_MOUNT_T_MNTNS?
 
-For /proc/<pid>/projid_map, writing requires opening the procfs file
-(mode 0644, owned by the target task) for write, so VFS permission checks
-block unrelated users in ns->parent and unprivileged non-owner tasks inside
-ns.  By contrast, nsfs files have mode 0444 and are always opened O_RDONLY,
-and caller_idmap_permitted() returns true unconditionally when cap_setid is
--1.  As a result, an unprivileged task inside ns that dropped capabilities,
-or an unrelated user in ns->parent that obtained an nsfs fd (for example via
-NS_GET_USERNS), can call userns_set_idmap() with USERNS_IDMAP_PROJID and
-lock in the write-once projid_map.
+move_mount_mntns() checks CAP_SYS_ADMIN in target_mnt_ns->user_ns
+(ns->user_ns), not src_ns->user_ns.  When src_ns->user_ns differs from
+ns->user_ns (for example, an anonymous mount created in a less-privileged
+user namespace U2 is attached by a manager into a mount namespace owned by
+U1) and dest_mnt propagates to a slave mount in a namespace owned by U2,
+child->mnt_parent->mnt_ns->user_ns =3D=3D user_ns (both U2).
+lock_mnt_tree(child) is then skipped on the copy propagated from U1 into
+U2, leaving MNT_READONLY, MNT_NOSUID, MNT_NODEV, MNT_NOEXEC, and submounts
+unlocked in U2.
 
-In addition, when file_ok is true on a delegated nsfs fd and the caller
-lacks ns_capable(ns, CAP_SYS_ADMIN), neither USERNS_SETGROUPS_DENY nor
-USERNS_IDMAP_PROJID verifies any privilege on current_cred() in ns->parent,
-allowing an unprivileged recipient of a read-only userns fd to disable
-setgroups(2) or configure projid_map on ns.
-
-[ ... ]
-
-> +	if (req.flags & USERNS_SETGROUPS_DENY)
-> +		ns->flags &=3D ~USERNS_SETGROUPS_ALLOWED;
-> +
-> +	if (req.flags & USERNS_IDMAP_UID) {
-> +		ret =3D prepare_caller_idmap(ns, CAP_SETUID, &new_uid,
-> +					   &ns->parent->uid_map);
-> +		if (ret < 0)
-> +			goto out_restore;
-> +	}
-> +	if (req.flags & USERNS_IDMAP_GID) {
-> +		ret =3D prepare_caller_idmap(ns, CAP_SETGID, &new_gid,
-> +					   &ns->parent->gid_map);
-> +		if (ret < 0)
-> +			goto out_restore;
-> +	}
-> +	if (req.flags & USERNS_IDMAP_PROJID) {
-> +		ret =3D prepare_caller_idmap(ns, -1, &new_projid,
-> +					   &ns->parent->projid_map);
-> +		if (ret < 0)
-> +			goto out_restore;
-> +	}
-> +
-> +	if (req.flags & USERNS_IDMAP_UID)
-> +		commit_new_idmap(&ns->uid_map, &new_uid);
-> +	if (req.flags & USERNS_IDMAP_GID)
-> +		commit_new_idmap(&ns->gid_map, &new_gid);
-> +	if (req.flags & USERNS_IDMAP_PROJID)
-> +		commit_new_idmap(&ns->projid_map, &new_projid);
-> +
-> +	mutex_unlock(&userns_state_mutex);
-> +	return 0;
-> +
-> +out_restore:
-> +	ns->flags =3D old_flags;
-
-[Severity: Medium]
-Can clearing USERNS_SETGROUPS_ALLOWED in ns->flags before
-prepare_caller_idmap() expose a transient "deny" state to concurrent
-readers if preparation fails?
-
-proc_setgroups_show() reads READ_ONCE(ns->flags) without holding
-userns_state_mutex:
-
-kernel/user_namespace.c:proc_setgroups_show() {
-	struct user_namespace *ns =3D seq->private;
-	unsigned long userns_flags =3D READ_ONCE(ns->flags);
-
-	seq_printf(seq, "%s\n",
-		   (userns_flags & USERNS_SETGROUPS_ALLOWED) ?
-		   "allow" : "deny");
-	return 0;
-}
-
-While prepare_caller_idmap() needs USERNS_SETGROUPS_ALLOWED cleared when
-checking an unprivileged caller's GID mapping, mutating ns->flags in place
-and restoring old_flags on failure lets a concurrent reader of
-/proc/<pid>/setgroups observe "deny" before it reverts to "allow". Could
-caller_idmap_permitted() check the effective flags value and leave the
-update to ns->flags until the commit phase after all prepare_caller_idmap()
-calls succeed?
+In the same case, for the primary mount (child =3D=3D source_mnt) attached
+into target_mnt_ns, child->mnt_parent->mnt_ns->user_ns (U1) !=3D user_ns
+(U2) is true, which locks source_mnt with MNT_LOCKED inside the privileged
+target_mnt_ns itself.  Also, checking move_mntns unconditionally for all
+entries in tree_list sets MNT_LOCKED on the root of every cross-userns
+propagated copy (child !=3D source_mnt), preventing slave namespaces from
+unmounting propagated mounts that did not cover an existing locked mount.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261121000844.1863=
-324-1-jarkko@kernel.org?part=3D2
+324-1-jarkko@kernel.org?part=3D6
 
