@@ -1,129 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB950606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30890606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cpqCxV3m
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j7nkVgaa
 Received: by kanga.kvack.org (Postfix)
-	id 1EDD26B05B1; Mon, 23 Nov 2026 10:05:10 -0500 (EST)
+	id 020656B05B4; Mon, 23 Nov 2026 10:09:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19DB56B05B2; Mon, 23 Nov 2026 10:05:10 -0500 (EST)
+	id F13EA6B05B7; Mon, 23 Nov 2026 10:09:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08C856B05B5; Mon, 23 Nov 2026 10:05:10 -0500 (EST)
+	id E29E06B05BB; Mon, 23 Nov 2026 10:09:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBA916B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:05:09 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 79D38808D4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:05:09 +0000 (UTC)
-X-FDA: 85466706738.14.58B16AC
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A76D014000E
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:05:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=cpqCxV3m;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of lylin1023@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=lylin1023@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B619C6B05B4
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:09:40 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 379571C4340
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:09:40 +0000 (UTC)
+X-FDA: 85466718120.11.72DDA88
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id ADE00120010
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:09:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7nkVgaa;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795446307;
-	b=dNGgY+/Pt33jIyvsttBdLQjGBIdA9ucoBNRg4gjn7THorLbwV5u9OyBzyXY55clzbq+m5o
-	xnwBeXEXqxWyKhbvM2AscQ+n39kkk/xi1vyNAbIiY0GbMVmAAUYHfAqHPROjCss/ru21i9
-	rEgoTmnNSJ0UynQrAEnADsC7lK7ro64=
+	t=1795446578;
+	b=Zr8uJhOT0sI9QvO3F4KYHJ/UNqDUm6IWOu9TpAca6NjGQ6FRiyJRtWv9FbyQc6jiw0neMM
+	K8yEQGHFbPyarUDr5BWPIm/c2RKCXJrvBDgM3DM2dSXgzIZRAXreduPSOOXigDXNRg72Q/
+	AmwvNLvk4zH5BVK2gTRNzIAu3wR59to=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795446307;
+	s=arc-20220608; t=1795446578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lv7P97cFEnUlqcS6xftzBXprT2lVDyXxXMjQGY9uQEo=;
-	b=qfIsAAKuCUUu8fmE3VpdIAfXYx3VLiGUNvwTo7CK6eNH+WNCrXi2S/QHwGJx3dsEp0Y9lN
-	0BFlkx29GitRtFje4pUasUmWdF8WMTyjOz5TlPSrAsmERDM2049x6zDag0rrMdN7jxNRqP
-	R+xKqpMbrRKH/6B0MyAsw495DXiLD8Y=
+	 in-reply-to:references:dkim-signature;
+	bh=JJ8c/8W1EmEuE66i5nJ5h2SZQ9wJSL5O/EOD51UVqLE=;
+	b=RxbVIlKSkPguahFJkU7bQLzb2qTpN7qJbhZhh/ZTkxYqjgCaGMwC3B8d/7UMTRL9N16ai+
+	myZqpVdeaGpX8awhTSMagwoEKiPgMbt4PNGt+SHJ6JkDXr+u2Z6c8SIhBKxCeN2s6oeiSl
+	OjPdShzpkDXnNWr5mN9Z8IjUmz0469M=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=cpqCxV3m;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of lylin1023@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=lylin1023@gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cdb15cd8558so1444939a12.2
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:05:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795446306; x=1796051106; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lv7P97cFEnUlqcS6xftzBXprT2lVDyXxXMjQGY9uQEo=;
-        b=cpqCxV3mohRoTHHuH/y355gp6nY5TTzDEwlwOTNpN9+ontk8Gvi6vnPa2RB5m+csQW
-         A3vKF7FhkfsftT6yrs4jB9BLUP6Cddo7QSOwoOzRrDUyHTXAABW6K3cwyFAPvp/VMNdm
-         7s67WnqQGvesXN/T6Ye9/u4GSl/XeGoHHwsi54dqKw+/3qzBi4yrt1jCqH8WvsjQ1xRs
-         jN7SJABid3ARFqgtApzmrCcFKPXDmFn149efdevea1mduQ4g7Aga+IX7HF6Mrd6MrtxL
-         8g3MclU5/Nw+rcjjBWzJE9ydGloV7odlUs8H+QBzwjACNwF2U2oSHSzPplOAAvg2XZ9Q
-         B1Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795446306; x=1796051106;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lv7P97cFEnUlqcS6xftzBXprT2lVDyXxXMjQGY9uQEo=;
-        b=pzEi26BupnF7z2SUaNFSjIu5wnQNVWf2PHKwpAjDTrP1V/ipy7BLvcLUZIatfs1yhw
-         iny7DNe+yERByy4EtZgbFAyjpMh/tmqVfZvKFWKpBcMQfQWYuhod6q9EU+G9ArG/mEWf
-         ndQfybbmT7/9PWWCNHFIORzNekuYbU2TL3vqnDWGDJ9IB3hgjo2RSJQx0z8P6fvAmv5J
-         3mxrYUlmlsLB7JylLUYtPnAryp+3vpfIFVB7VwrmyqViNXojsXKYLnRVSvQ+THAd8Ugi
-         /xPm2ArO5ZX4IqavLyInRIkZWMZ6eW2NY1dCdmRP0tLt3NwFbkkaM1LaCp+u/AlBGn5v
-         Om5g==
-X-Forwarded-Encrypted: i=1; AL+hErGcDj3nrZ4AledKu8ytSHkpE1PLhC0ssSRGYynHOdnGN1zlF8+5sMh9dN+xF7nXjvIbkWbCSTRCIg==@kvack.org
-X-Gm-Message-State: APuU4Z+U1rNc6bYKLQYQW9I4uWGxJtDBy9dmjetVrNq75rT6L49Q5X9y
-	a5wlmkdkT9XjVJQ8gusBgh17Ya4mU9kO8A4pYo+qYrTR8IF1nXeQ7gCh
-X-Gm-Gg: AZFdTZddatNi5CRKmhaKQkVG+7lqJyOfF3lBS0fqUPNMo86qUb21G+51NhwPVWTzm8K
-	dW+5YPi6urnVzWPMJEEJlWRpGPvsjU2GEQ5/bqTqoJd3ihqrNAt9Q6+hT2BrzuLK8nwTOOegTfr
-	YXOLjs5KfKrMTi4MMrGt+xQUnpvdPB1JeHenr3Z5eLVXN6T8dlBw10btl27SYrejj76maEb3zCB
-	Kq8wYy8JxrdfGHpGIkrX38Dx5H5nWkMQzwIQpwxuKiew2a8QKTEsgUNQmeLs4oioRsjXJLq60Pu
-	llAApRPPAJSDlPoFzDOJEm+KA7PFULBntaIuGrnp+xzfwzozkxx7HFOtVKgJAZJ7l99QOrNR5wo
-	qMwEJU1Xv1hHHG0dW0RmVaVW8hre0Wjb/y8ds3N+t5MB6ULjubdBcLUGy9rfxrn6w97fKKytMUS
-	lxAqh57BVTanF5ZpTzYcwIOCRdAG6e63BiSXRfRYWjbTu4YBFmqNmfgtMrUwUSp87QN+y91T0rV
-	8ApEKjSVQLQ/Ozpth+Ey42zkGDsdhqzMvHPOZxmeSuCOlBysGFJlCQoA1W0zIcaJwNvkSL4qwQ1
-	SN3tDHhc1LN8CIqSHEK1wllU9j+DA/MJe5RUtQbeCTYrMgmRLhModVdWWdl1BFYNM0Gmp/g=
-X-Received: by 2002:a17:90b:180b:b0:3b4:1336:4f53 with SMTP id 98e67ed59e1d1-3b41c7d5c11mr9976213a91.1.1795446306224;
-        Mon, 23 Nov 2026 07:05:06 -0800 (PST)
-Received: from localhost (218-35-178-218.cm.dynamic.apol.com.tw. [218.35.178.218])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b217a5bsm7853738a91.0.2026.11.23.07.05.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 07:05:05 -0800 (PST)
-From: Kurt Lin <lylin1023@gmail.com>
-To: Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Muhammad Usama Anjum <usama.anjum@arm.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: skip hard dirty page-cache test on FUSE
-Date: Mon, 23 Nov 2026 23:04:59 +0800
-Message-ID: <20261123150459.2211177-1-lylin1023@gmail.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <25ecd9ad-7c5c-16ff-5197-5703622a88b1@huawei.com>
-References: <25ecd9ad-7c5c-16ff-5197-5703622a88b1@huawei.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7nkVgaa;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A6E96224D;
+	Mon, 23 Nov 2026 15:09:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED331F000C4;
+	Mon, 23 Nov 2026 15:09:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795446577;
+	bh=JJ8c/8W1EmEuE66i5nJ5h2SZQ9wJSL5O/EOD51UVqLE=;
+	h=From:To:Cc:Subject:Date;
+	b=j7nkVgaactOMke8k3yZMiQUfqdT7YZtD1yDQNOU7+OoldrqyMeYZrmc+ezJbemsA/
+	 R67BJu8UQ1hQ3CjM8qeLRfIBsP1Q7yCh2jTE8xsB+4hgaEljBgj5HCkX02nzlLaJ/R
+	 SOcM46OCVzo9gw1YUUXLo9RfEBbA66+YgCqcHwn5GhFOQpi+o/W5jtKwn1Pil1vZjB
+	 jMW6feld473fB+ZG8dSzpJ1UWyiSTy5mbFj3xEzTjjm2wyNIF7LZFBOTzs0ofiCu5D
+	 1xd5vFwrgoE3ltrJtZY03t/LWv/zwyHJ0gwLoQwvglWBaWR1a9Lciz6xKAx+5te0qv
+	 xFxwy7Sak/xgw==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/3] mm/damon/tests: add KUnit coverage for age_ms filters
+Date: Mon, 23 Nov 2026 07:09:24 -0800
+Message-ID: <20261123150929.81797-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Stat-Signature: 9cyafi3n9uetyyrjtbfrgtga5bt98831
 X-Rspam-User:
-X-Rspamd-Queue-Id: A76D014000E
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: jddnb3bii7x6y7urmbo8ch1o5zggh8js
-X-HE-Tag: 1795446307-455289
-X-HE-Meta: U2FsdGVkX1/tgrKzjIHn8Sm+o0Z+rYUZdV36TlemQCen4HiMjKaaEOQyQsopFF16rCUT4MVIfBvcxRb0yt5xRiyla06dNa9BIG2m8ohw4VLfuhhTkpBoYTiM4mpcnt4hCm7C8BXwF2n6MZp9XzM+sepDKYWxRp0V71F3/8R68x7D+8LFi7rVdbr+BxqHuTyXjvmRpHyLttOXc/1DmcZ005kFq4HyLiFHDxiVHaiDZVJcCrIa1ESJJphZyMmC2B0MicSaV+OGsoqfMvPyjew7rfEFvPo/NQT0n7Jb3X7gyI6YLlow2/iDHWNMg/G11J7mseoC7/ik5P/RQhxMFdbeXPwiMmooy7thpzneIsM39vVMurU6bKtwcINjA25shKQMbv/7Q07QiiKPdeEJOJqbVlgzBARd7+/N79MABexX4aNBZWtd8bpuuH5pIdgn+WHP0nmgCsFNUSu9hIx2iO+Xp8FFUpJCij0c/HKqansXaOxUpUr3MoagdnwPbuFaoXAjEwbObAR2qa8XbaoTN51eLFCOi2GtJKw1JM7KzpG/fqHwLS4u4HJsN88ooHanN0Ojo/VJqqXnF6e9P/ksudPhwljrUmJyEdUdhoXYbBUBDjEmJuem6CZ5lACMwMNMUmsMVTJbyNM3snstz5iWeX8nra95lAPI4rNJA3AHb3wPEW/frQs8yvq3p1Pi86Mt4XJz22bsmPCuigzDJDdd+KCELlR9xm7Tc4FwQEYYdrN/84FOWM8SIv/+4Ju/XsfzJjxON+wRlMJuOGTTZEzClHtaLNwwdaFJOckwfu97sdE/iUQKX22OpxmCCBB8KyU7C/ko6kHAqsoP8tOWd2P8lekXXRZjn2TFO/y8gGRYq3iatnh7LJA5P3mf+jo0dMjiq3u4EaUmja46gvZ+ipMdlaPdFG1pMDfNTM6v1uGp2GnV1A69jCyDa+YnmNCMGjq1bCeswhewC6cYf9bIAIUXXYx
- urL4DQgk
- DG49WOx4mkumKbiUpgcKteD0L4XsCg1H4B3ZtGKP1SwPfwCu6R2HDnj0cXpD5f44VSc3/Gmo3qkroHUWfBszY5Jmfdv7nGGqF8YuvqxVIsGVl27OU24xjVWyKiOGo90bhpHalh+fXrbWZKkdz0sjRBjNoGZjc/Ertq+xUTIv2SPMEXk6stvR5JdLrnf7O3o4+7RWU9KaXvP9R9nsFjo1Cx1ogOClZ1SzWi0xrLkYTo0qmXmj2IicUImniFbpzxrYFLzEsN5pCK0JHEapTMOpayf9C6N4zFy5o8oDps8t7cTv9zI961TBrl8LtU5F38zCys08/PMhj6x/9WXFypPC5AKIuM9p9JZqu+e9UYwAfOhAF6xtI4k5wxHmgft0PIirLJ7nDwKYiOJaFgj97EkY2IXShN40GnN7UcCfcfr0aiOQibdgtVDVJHooFRdjNCgVecxRsWA3vHwTlPoNLOU9ANDSvn7e1soOsBtTflupNif2ZhjBDqKbb7Y5n3lp9levK/LerpYakApv6uIkX+yE59iYl4x6UJAN9JcpGeV2llipMiUn84oPzopSlHiJ37cdPTPNrhTFdanqg7Zma9bJfo+DQ+NEYCuLpWV9EFE+g35Q/buqbXlt89wxZtRATQ+wBz+U86Ps7sbBCMPYjHjkTo6G+1v4YqPnLdTzz/rL/Coorb4VXlPSk7qzHw5HQORrRpDuZBFFAxEZeiJvnX0GbaJeFBX6QKzoo0MQXFJWvUjtzZ3fje3bBaVJozKFmnTtwPiQ2
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ADE00120010
+X-HE-Tag: 1795446578-537606
+X-HE-Meta: U2FsdGVkX19JviKMkRMcMb4rz4EssZosNKMUX0N/HoKrUt4Os5lafuWXNBV4e3zJ+Q/PzlbveDYyeQ/9EpXx88vYfZFHpKX7XieqbgW/OUCqxOFCE8yNZx81JfUG1EfsIyxMPbJfgG9kZj+Y2q1WhVYqMGaRl/mCyBS6icr3X557xCAwZYqcY40Y1qFg5WQPkGIolGim82/VXxkL+5RdyoKIcrMXc9JMfBfvnrTeZi4tLMUx/dTMiGfnvfQbwR+OoQ9Eq3OJVLI/tSkSXw0wQ2EJQp/2euhWwN89lz6o3OKqO26ZOdfU74FZdpoHILpIZSXpg0/QQLY2horggf4fU19CB3wHK82BhoFqJibtZ+vjFP0eBhzBJ03wIuZ65mSaeMYHRERLsd8s/+S67HIBq0SmDtfbBgHA/kkOcNtNITPHfZe6I0gG7YnGFQ6alBcRmVUMJH3Zx++E0cosqR5XfvcaOP5w8x+mw6+4TSg5QqTjaDDY2nR+u4//nFemtV2GIIpnBXgBsBtbbx4hcjiTzUuBrgErTzOyNMC2dsVauy1hwiq+UMc5dd/cXow+/WkPujIblCPiObDmlveaZcnb+OhzMxLoMX0u26Ih9seV02t7ssD7XPbwj4h3Kxa48LmCB8A8b1ZnIFYSEJRu5i52cwNwmlSvM52u0f8UixWScNCGuzaxnMN25qlSuvH0T17U5zsE76Hlt53kzvnYZC6nZ+kDiD5dwVZyYqTzI9vpcNuDFrHGfKGREFEgRrbeTKmFLmcILVIcvQmat129++ZOU3dI8dynanSPyQ7kQfEkY/zMyfBipOQIcjQYDhbUoRj9cRUW8sILeNdmFqfsTUk/cx7pWcxv7HoPQuT8qNXOwh4q5pE2+kbrGBfpExeCxy3MJGw8GXDS7PUKpHvgqBgDOA+ofpkmiwI3JxwJWbwGjkdN1dNqQmALfVzQfIP1SrSdSOEPX5EtroedKuMD5x9
+ TzH6xO+E
+ mPAK/3ZduLX4owPc1ESNmo+VHU2dqeZ+TUbAdduMS+jEdtsRk+chShS8rJNWdcJwqXnEeJQQkP5VTEsj4sYpn8BDHNt2z+/n/hb7jFwM6EOy7U5dDX/xq7ReiVpqlDMWA0dU6om6BwgyPTD1plP7+aecech0/6WKid1SfqfnuzOrnzFMMsRD5C8cxdBKXXKEjv3L3xDD67kQ2Pwy4nh3SLBv7lYYGz3m7dSZMMDskGlbEXCvQsUyNu2FVPtO/Vioc9rb64Ba2F2HyhBxN91AUBJPSGFHDmT51bbzVk5bfYqgy8ANfrUVgdV9bY2YAdaMkvQEdqq8tWXX+9718Nj000ZK3QG1maXhGVE0E86WQyswzaMpeqRX5oKV+LLaghs7BqPHl3/GIjxubTqJi3y1Wjv6N00XxFvtMQVDAOQP2Wr5lyUnVWl/msMgjVg50nLFYXg/J+p6JdrX+RISRM4jPoIIlmkiw9TxbdYYLv2F5RfgO8oot9ICw9XtY39gMXu2Q+tBH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,24 +96,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 11:06:45AM +0800, Miaohe Lin wrote:
-> Would it be better to add a helper? I doubt there might be more
-> unsupported filesystem.
+From: Jason Angelov <jasonangelov@ucla.edu>
 
-Thanks for the ack. There are more (CIFS and orangefs also report the
-error on close()), but Andrew has since replaced this patch in mm-new
-with e747ed2c3418 ("selftests/mm: check that fsync() reports
-hard-poisoned dirty page-cache"), which needs no per-filesystem list.
-My patch can be dropped.
+The DAMON core tests do not cover DAMOS_FILTER_TYPE_AGE_MS. Add tests for
+committing valid and invalid age ranges, identifying the filter as
+core-handled, and matching ages at and outside the range boundaries.
 
-I tested mm-new 87cdbd9bd631, which has e747ed2c3418 and 44191f78d131,
-in a virtme-ng guest. memory-failure now passes from virtiofs, where it
-failed before, still passes on ext4, and 50 runs in a row on each were
-clean. I did not hit the unpoison -EBUSY on virtiofs even without the
-ftruncate(), so that part is not covered here.
+Region age is counted in aggregation intervals, but age_ms filter bounds
+are in milliseconds. The interval-change test checks filter matching
+after both increasing and decreasing the aggregation interval.
 
-Tested with the help of an AI coding assistant. For both e747ed2c3418
-and 44191f78d131:
+Changes from v2
+- v2: https://lore.kernel.org/20261116-test-age-ms-filter-v2-0-3b265d59ec98@ucla.edu
+- Collect R-b: from Aveline and SJ.
+Changes in v2:
+- Fix commit-message formatting, line wrapping, and comments.
+- Set age and interval inputs directly in patch 3.
+- Add SJ's Reviewed-by tags to patches 1 and 2.
+- Link to v1: https://lore.kernel.org/r/20261113-test-age-ms-filter-v1-0-b99eab2f71bb@ucla.edu
 
-Tested-by: Kurt Lin <lylin1023@gmail.com>
+Jason Angelov (3):
+  mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS in
+    damos_test_commit_filter()
+  mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS in
+    damos_filter_for_ops()
+  mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS interval
+    changes
+
+ mm/damon/tests/core-kunit.h | 93 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 93 insertions(+)
+
+
+base-commit: 5247761933577a245d262c55994032b86cbec2d1
+-- 
+2.47.3
 
