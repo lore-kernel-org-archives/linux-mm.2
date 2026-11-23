@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CB3606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 12:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFF9606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 12:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LZ4TBU4E
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UI8TsO5e
 Received: by kanga.kvack.org (Postfix)
-	id DE9846B05B0; Mon, 23 Nov 2026 07:49:02 -0500 (EST)
+	id EACC96B05B1; Mon, 23 Nov 2026 07:49:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC1A36B05B1; Mon, 23 Nov 2026 07:49:02 -0500 (EST)
+	id E5DC06B05B2; Mon, 23 Nov 2026 07:49:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFE9D6B05B2; Mon, 23 Nov 2026 07:49:02 -0500 (EST)
+	id D25CB6B05B3; Mon, 23 Nov 2026 07:49:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ADA536B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:49:02 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 45D60A08DC
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:02 +0000 (UTC)
-X-FDA: 85466363724.18.6429915
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A402E6B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:49:03 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43F06C088B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:03 +0000 (UTC)
+X-FDA: 85466363766.06.816698D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9FEFF40008
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LZ4TBU4E;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9D647A000E
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UI8TsO5e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795438140;
-	b=yUKu73a8oQPVPSrkUwk+oZQBkP3e1I5tVt7GqZGoqfGHqIkvT/B2ULLDVinKhLv96mBymR
-	Qk15N2HoDvlk5K3GA8yRd+8qS/2glJyxmHSkp6RckX8pY3TGKHaZVUbclBzxDpNq4Afc4u
-	XdAemIa73/afOkRFjreP24VrAxJbc9A=
+	t=1795438141;
+	b=LiXnALE9EB3M7jDALGc0U8kJYcDlbySVTzs1cXy8t1JAEJ755WpI2ah59ceAuxOpx/b39D
+	0sUbt1ylPNiqEtXL7+3VQd5nS96WQp2VOG4QbUTD2y/wuQW8APlRTMHGuYy7dINPad/xX5
+	kfw3vav+snyl5BuiegYOTjCqdEG2N1E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795438140;
+	s=arc-20220608; t=1795438141;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3P0QFWOXFf1JVcoZWmNHfhcB6UAmWhbNDIJa62Al99A=;
-	b=oYgX8UswgcpJJms99iNgnJw5Et2gJ9Wvbkb+byiBNI4BOODlNjmDjbMWpumPaF6/Iek5P9
-	HroTv77IaQgQFHv4tCvob3MmmR/N//v3TEQgs4/HGx3NUQ8bGEQdEz/1i2968QvzFdU+Gx
-	K0qaOXoji/x4Lqt+BCZl5pYV6xJ1GD4=
+	bh=+JC9YmPJ2LrQXvduH7B2fcZk6U1dHPA3n7WznDqWAu4=;
+	b=yXYDGeKrcCo8IsYNDo3O1xnpfpW0ueXxsF1NUnOpdLgafv3INu5cQNWhrie+fcjMEK2PyD
+	dIiJKzVCNAs2rCvcEIPIJmFr/KU0NvWaspbjvWMWJSdpuQPA7VZ8B0P8J1I05YSVT3Cjd9
+	XRtk9YzC5LOZZ+YSmAAGpp+70wJPvUU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LZ4TBU4E;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UI8TsO5e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D821F620FD;
-	Mon, 23 Nov 2026 12:48:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2D11F000D2;
-	Mon, 23 Nov 2026 12:48:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FB7A62111;
+	Mon, 23 Nov 2026 12:49:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1261F000EB;
+	Mon, 23 Nov 2026 12:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795438139;
-	bh=3P0QFWOXFf1JVcoZWmNHfhcB6UAmWhbNDIJa62Al99A=;
+	s=k20260515; t=1795438140;
+	bh=+JC9YmPJ2LrQXvduH7B2fcZk6U1dHPA3n7WznDqWAu4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LZ4TBU4EVchSX1M179OKUSRcJfdJiRyTjp2gAzmj1NF639MGAp3GsU8Kl3yfI8240
-	 DjDy4BT0M5vd/omRg019ByrMQjglepX3JonDOWbDoR8Jplj0zRLCo1MsAZgXXQEhrw
-	 oso/ckKBNUIEQIkEiRqeqWPW7qnb/uIqBHWkHqkesKFYt4O88UaMvSMBDYF5mzrv5q
-	 A1KiTRST4WDoU5ZIYCvy9Bu6lI64du+gN+T1ZFPA7tsSYAGuNOAmaT/4v2CqXOEOT8
-	 j9q0trk0VFsm/yrWLwLU1m3t9v8c356Et1cKdKRnShP1cPdzayc/gnfxqXj9/xJ3un
-	 QKwsPYHVgjNJA==
-Message-ID: <sashiko-outbox-229251@kernel.org>
+	b=UI8TsO5e7YHq1TaocyCe6lhFzp5JJSfJRpWV7Nje+l2r+rnOlw63lta8rdjdqnd/y
+	 32DMrQrHqtN9LmxPYYfCRdduQIg+5nzgBBM2c+Wwg5o/vBQcSVPiUSMJcDGarEtaKv
+	 QUpZoJo62AzqPqNhs4mACijCmLBhnc5+xUC5v7Iej7zkvIcTw/3iPKvJ4Lrfk47PQ2
+	 O2qjzSujM1SRKOBVg4ZpuCPWu70Q3+90sTK7/+ixyuosh3EhDLWcOOrkVvYI4biDHR
+	 FM+BwRi/FlUK78mjCzcJoNgEXwJerKDiCPRy2d1pZc+UIv0P3KT8+eBh+qTEwpjSfc
+	 UGSZ9MflS0oJw==
+Message-ID: <sashiko-outbox-229259@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 01/14] mm/vmalloc: support vmalloc-backed VM_SPARSE
- areas
+Subject: Re: [PATCH v6 09/14] mm, swap: let the command line set the xswap
+ device size
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Baoquan He" <baoquan.he@linux.dev>, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, david@kernel.org, urezki@gmail.com, chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, shikemeng@huaweicloud.com, hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, corbet@lwn.net, kunwu.chan@gmail.com, klarasmodin@gmail.com, "Baoquan
  He" <hebaoquan@kylinos.cn>
-In-Reply-To: <20261122123918.3486916-2-baoquan.he@linux.dev>
+In-Reply-To: <20261122123918.3486916-10-baoquan.he@linux.dev>
 References: <20261122123918.3486916-1-baoquan.he@linux.dev>
- <20261122123918.3486916-2-baoquan.he@linux.dev>
+ <20261122123918.3486916-10-baoquan.he@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 12:48:58 +0000
+Date: Mon, 23 Nov 2026 12:48:59 +0000
 X-Rspam-User:
-X-Rspamd-Queue-Id: 9FEFF40008
-X-Stat-Signature: rkdzynhdb6w4iuqb87escox47e9o66b1
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9D647A000E
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795438140-732364
-X-HE-Meta: U2FsdGVkX1/Pxh09ps/MtO2bJ29ReT4fubD4dRtqU3EirPwIqwXiN2JL8BuL5JJnBI+18flVYXD47iVryzV+QoN4XuBmV1jhWk+eewOFppax0z9ICwGSvvUWpLV+FrxqmhNUuXyBlZ+i4MQ7TW8kOnniTAaib6NFvgxQxd4o/btJ3OclTdVreB+tFTzWEoczny9ZrEpcvdSp8gIXCBjWTNg7+R7S2Q7mcr0YpInWvlqCLupTFREfLMkoVeNjKDmLgRBDzpUGOg8wjLS/CgygVB504F2l7oH2JpmH2s+pOOMiU1sAKAOsjrm9kkaydz2w4vkyJMb6el215DvN91Bs64sZ1X8NLtuJwZOPIBQwS63xkDZTmnYeEWUEisITHVA2VyAJP0fsNxTlM7rPZsmc6AQjWVeC8c3pL5tZlC0Idk8GbuGvR0O5SSW1DxxJnIC8MxgveSb6bQBMpz8Tig3CABySlhb57UCqVxwzI3NsC+clAmT365g54JIAVVAoV9n+qOHZsyx76g5HALyehcksuJrpRkY61tKwEnW8NcEmg2qRuF0Z/6jwPiTlCnLmlRW5ZGHg6OPEh33CKZO1QeITpzKubjEAG0a0vVYcPQM+7jUY2sMHssLBRAPhyZz3lp4NAZZAx89sh+3D09tzsVCsdUqKYiq2zwpoHIKm7h2K4n8tIw+CoRUkZHNex/q2gbPh5e581Lcbpsp78WyfSlboVWdQilH9cYfwB9UKuW4NjZ1PF/kBS7b4iwOtdc21cM57zxX8QhRAA446AadCSxLX44Sy2knxM6TcEeHdBOpY+meQ6XOeFg7lb53pUsHoWXt1g5EvpgNIx/C7VCd7eIR4TEsRSkczvbrFTnUpGYuQ8JeiZZFkNs0D2c0ZMjfLjVsdZ/KMUmt1d/x9dKeNN663ARx2ASy1HJzRQqWI9BXKQCQMA7cRLM6dlutkLVFoTpyuT2gP0YUmyKBRtgITDIK
- 1FTLWEkI
- hxYDMoqXzF/yQh8d/QgnnwUd6X6qfEAyFlQ2zaC0lnnncGUoIpjDumyMmkU8UxvtJ3ZMdDcDNctHjgynSCxiJrPbmCuVouihdBjAPiC66/lGSk3AE7sGUtvfBV8Uzz7DXoBHCROuGlK8Ka1pr8uO+7iL2pWWynQSkNZ6mDVVCcsP1fFxSzcV62VEka7NJ4+0iyv1TkfkW1mrWEZYePBC4vBejdLPCSugtNPtk0gZG0rfrDuSTwG6wWU9dkWm/6n3ah432P5PPjdrDZedStBwvNqRxzqpvqXaFXymzjg3IzL5rM8rZ3TTr0tBgkaOI53HKW3xLpxPaZVaXgnYE9CeCGKeqhtFBy6gkhnMxaibF/RKjwMnssLzHf4REqOCzcYT4mE3ZswpD6zoIo909W6rGLm4Xn8Rr2+rLSps6sML00a5bgKuBwIkaM4t9NfKzdNSVIkhQWT6ZmIMqc0B6g2eXbsiNCYv4tFEHXGgydxEbDhjALkmM4EOE6rMfa+r4lWeDRUhyRfLs5wzeW1xrmLi+S6C9JJTIA6z8Pb7JOgOVlVTTjT2hA56OAkTUBxqJicAqAiLnBHN8jaWFJVitjPxBp/GX9tqdOGVXnTKQfH1+bc0pap/VrUcPvSNZ/Fj6nJRNvJc9aoLixyqvfdoLpBC3Igy/5hXQUw4hkr7ri/mZNzwt2okX865FC+TDvY6nbvTI5XsprDNIJCMsVuRSSxdsCZGn2RTcltDNqy12s2Ub56ALIxJqOHl9dgr9OmVwTYOlQAzPzIq3DFbRk+o1D6ZD9oKsB0f3ANYNsSh/vqdR9HWwe/butpa3guonFIOA9zHsXs78XuFs5UwcoshbJVDmUg3Zkhgy/Pe7TSmbjBEtjpRtTU771DZXOVlPV29eGpA6T5ZJ4//koeyp7pXFvOWqgjDnL82YbpjWmkoN
+X-Stat-Signature: xk1hbpir6hoxqm7ie8pjs3yo9hw9d1uw
+X-HE-Tag: 1795438141-373086
+X-HE-Meta: U2FsdGVkX1+nEetCqtSFZ5HyUfgJNMEgYmu4naO5U/7Ip/mNZpbfzNQXwKP0Oy9Bl3Sj/NftI2Q2gshsiwMLJ2oAs5F6S9j0TuLwIR2DaiMDtrxp6JtiZNfLs4Pr/e7UB1qefPIXm+65HBF05ClfDDFuKLyH5e+cAtdVgDIHuAx+z3uawpUgn0uGc14jktLVbSW/P0yvl26ppAHyaLWIBAOh6nc2ZaMAQ80vOKH/9/bn0xv66rgcTVcEpfPgRyz8bEK6BnO2XjAMwAxmzg8GdBjTYfTEsJp5fUTlPozOh9CeZt7uD+dFj+Jzwkz+hfzPUJN5gXwaaEQvOIUtXzGp9qIrQggddptOZA6FfLkY/LU5MGywXMHHAQnJjNjOKJC1VD/PqMexULu6Gp9MzsAgqSqIJ0Ld+n1BYRHB8hClYoN7Z0JWGZi8VcQWNxogdfv+WwUMsyyTfsef2jAGyBpm7UGmFdPN/kSTD82+244I2dV+28J5W1XNhy74xalRd7OaZrYFojbOtSpA0vNYjFgI1AZoWqkZVuEpvPzURqbes2qOJ5EgUkAGxMuLCWLWB7ltA7ftSTogt43cE22iEaEXuAVUzIW9iDxZNEVznuzsFitAJdj8glS86CzvCMA9vo4Fw3l0ftqEF/dYHLX9plGwDkHVGFGVohXyEiemHRQl89mhi6njO5NMvJ7d7egN5wfpud5x/xLa7mVKIRxk92OYEcB5D572KXft37X5WcEFx4zfL+9squKYI5p99kOAyiStyOhHAwQ1So2TbkRBQ56Matac3M3OFYrr9vvzj69fcB7MEe6BfAt0G/lRaO3NoxEGQLNzR8rSMQsiaOhu57wwRMEdYGrIZ3XiZ+cWoGvqZg+TPS6S3RFXCegeQYBBsFSz0dFfnxaB3hE8WoeJpltbv0eG+QgsL+IaVtfUnZpaG2FkKB2uUlIQxbiLcZrv74bqup42LmEfRwCgNIMd8fF
+ k+oY6rhe
+ YH1D92hSdHQLsDcLy9isGX0nY8spUhRYTcJc8bcJC3wWHedIpYpqlra64gaVgqBcIOPoQgirbDRmNCwQMAowPsajQGMhO1dh37GpnXNWDFhhc/PC83g3zJ5FeWg+tIdkn1bEdaaejViDqM91bhy8Uf6XPh9vCJUbNgCpjVBpqkrIPyZ5Texmu7WLgUq6OHhFRWVy1Op/Fc4fD+/Ae2oCvadASQbnB7eWhqjJHtJNkInTs8XJRYavFuYSVfMx8cHT5jon2Q0LNX4u+H8Yl58duOi9cC7EWx0DCG3wuVzoX21G4lG8+C8tRouxGmLTW23YRPh55xcqC9XizLRObBJSU7jePVd81Cm9ovpg/2xrhV/u1oJs4PW8zNVFtu8G4vIZRvbTnsDxjkpYCfKmFVXZmmoXyiqOztSTTMAKLt7wQiwldOttnlN0ftAKq2qjMPnNiQlQjNqOWeKAcdgfBZMHKI83/XRWklHoYu9nn7R8S6U7G/4tLxFINuKScK1x6IhUHkGShZvAye5EjBvOQ5wnynAGwPyniylIzrsZL2Aoj8TZMPwDNa6Ikh8NFl2o3JLyN48GVyoVzA1+xGytNVdtQNa58qce1pxfpsl5bL95gWIjihNNxYuMVnkYJV1osyzXVcSlUV1zNT8liebW9iobgD64JFOmNUxT8ukCIrBAFhbQVRZR5WHbpdHmKuBI9GpjQTo0UoQZzjySOVV3wmLgy2Zxkx+NHIKuCB1sFWiwzgH2o3RRYiziA6R5raZndBxVx/8Vh8Y5FzHCU4f8Tv9dLja2+Io4R0wdKJjgJMoVtyUm72fpdJ+osdb60AGRDcQplB8VBKXirYkk6MNCqhunDq4H2Po0jMDJ1Lx/ab4hm7daVAYg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,106 +97,91 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm/vmalloc: vread_iter() ignores nr_pages =3D=3D 0 on VM_SPARSE |
-  VM_ALLOC areas
+- [Medium] mm, swap: multi-GiB eager allocation in xswap_create() on
+  xswap.max=3Dmax
 --
 
-commit 06f2dfa4d38fcaa037aa36eab4a7c644b49409c4
+commit 29d7f4cc8e13bb0b7ff644445a526d24fc58d1df
 Author: Baoquan He <hebaoquan@kylinos.cn>
 
-mm/vmalloc: support vmalloc-backed VM_SPARSE areas
+mm, swap: let the command line set the xswap device size
 
-This commit adds vm_area_grow_pages() and vm_area_shrink_pages() to allow
-VM_SPARSE | VM_ALLOC areas to be dynamically backed by pages from the page
-allocator and freed with vfree().
+This commit adds the xswap.max=3D kernel parameter to configure the size of=
+ a
+new xswap device as a byte size, a percentage of RAM, or "max".
 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 320e981188c98..0fe2f1c39b96e 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index ba899e349e992..6ce5dbb3b1035 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
 [ ... ]
-
-> @@ -4983,12 +5114,18 @@ long vread_iter(struct iov_iter *iter, const char=
- *addr, size_t count)
->  		if (n > remains)
->  			n =3D remains;
-> =20
-> -		if (flags & VMAP_RAM)
-> +		if (flags & VMAP_RAM) {
->  			copied =3D vmap_ram_vread_iter(iter, addr, n, flags);
-> -		else if (!(vm && (vm->flags & (VM_IOREMAP | VM_SPARSE))))
-> -			copied =3D aligned_vread_iter(iter, addr, n);
-> -		else /* IOREMAP | SPARSE area is treated as memory hole */
-> +		} else if (vm && (vm->flags & VM_IOREMAP)) {
-> +			/* Not backed by struct pages. */
-> +			copied =3D zero_iter(iter, n);
-> +		} else if (vm && (vm->flags & VM_SPARSE) &&
-> +			   !(vm->flags & VM_ALLOC)) {
-> +			/* Populated by the caller; treat as a memory hole. */
->  			copied =3D zero_iter(iter, n);
-> +		} else {
-> +			copied =3D aligned_vread_iter(iter, addr, n);
-> +		}
-> =20
->  		addr +=3D copied;
->  		remains -=3D copied;
+> +/*
+> + * The most a device can address, whatever xswap.max=3D asked for.  An x=
+swap
+> + * slot is still a swap entry, so the swap offset limit applies even tho=
+ugh
+> + * the data never goes through a physical address.
+> + */
+> +static unsigned long xswap_size_limit(void)
+> +{
+> +	unsigned long limit =3D swapfile_maximum_size;
+> +
+> +	/* A cluster index is an unsigned int. */
+> +	if (limit / SWAPFILE_CLUSTER > UINT_MAX)
+> +		limit =3D (unsigned long)UINT_MAX * SWAPFILE_CLUSTER;
+> +
+> +	return limit;
+> +}
+> +
+> +static unsigned long xswap_size_pages(void)
+> +{
+> +	unsigned long long pages;
+> +
+> +	if (xswap_size_max)
+> +		return xswap_size_limit();
 
 [Severity: Medium]
-Can vread_iter() read pages that are being freed when a VM_SPARSE | VM_ALLOC
-area has nr_pages =3D=3D 0?
+Can setting xswap.max=3Dmax cause multi-gigabyte eager allocations and a lo=
+ng
+unscheduled loop during xswap_create()?
 
-Earlier in vread_iter(), the backed size is computed as:
+On 64-bit systems, xswap_size_limit() returns (unsigned long)UINT_MAX *
+SWAPFILE_CLUSTER (~2.2 trillion pages with 4K pages and CONFIG_THP_SWAP=3Dy,
+or ~35.2 trillion pages with 64K pages).  Although si->cluster_info uses a
+VM_SPARSE area to populate cluster metadata lazily, xswap_create() passes
+the full maxpages to setup_swap_clusters_info() and zswap_swapon().
 
-mm/vmalloc.c:vread_iter() {
+First, zswap_swapon() allocates and initializes one struct xarray per
+ZSWAP_ADDRESS_SPACE_PAGES of si->max upfront without cond_resched():
+
+mm/zswap.c:zswap_swapon() {
 	...
-		if (vm)
-			size =3D (vm->flags & VM_ALLOC && vm->nr_pages) ?
-				       (vm->nr_pages << PAGE_SHIFT) :
-				       get_vm_area_size(vm);
+	nr =3D DIV_ROUND_UP(nr_pages, ZSWAP_ADDRESS_SPACE_PAGES);
+	trees =3D kvzalloc_objs(*tree, nr);
+	if (!trees) {
+		pr_err("alloc failed, zswap disabled for swap type %d\n", type);
+		return -ENOMEM;
+	}
+
+	for (i =3D 0; i < nr; i++)
+		xa_init(trees + i);
 	...
 }
 
-Unlike regular vmalloc() allocations, a VM_SPARSE | VM_ALLOC area does not
-set VM_UNINITIALIZED and legitimately has nr_pages =3D=3D 0 before the first
-vm_area_grow_pages() call and after vm_area_shrink_pages(area, 0).  When
-nr_pages is 0, the ternary expression falls back to get_vm_area_size(vm)
-instead of 0, so vread_iter() calls aligned_vread_iter() across the entire
-virtual range while holding vn->busy.lock.
+At xswap_size_limit(), nr is 134,217,728 (2 GiB of xarrays on 4K-page
+kernels, or over 10 GiB with CONFIG_LOCKDEP) up to 2,147,483,648 (32 GiB on
+64K-page kernels).
 
-When vm_area_shrink_pages(area, 0) runs concurrently with /proc/kcore reads,
-setting nr_pages to 0 under vn->busy.lock no longer prevents vread_iter()
-from entering aligned_vread_iter():
+Second, mapping the first cluster chunk calls vm_area_grow_pages() under
+PF_MEMALLOC_NORECLAIM, which allocates area->pages for the entire 192 GiB
+VM_SPARSE virtual range at once (384 MiB on 4K-page systems).
 
-CPU0                                  CPU1
-vm_area_shrink_pages(area, 0)
-  spin_lock(&vn->busy.lock)
-  WRITE_ONCE(area->nr_pages, 0)
-  spin_unlock(&vn->busy.lock)
-                                      vread_iter()
-                                        find_vmap_area_exceed_addr_lock()
-                                        /* vm->nr_pages =3D=3D 0 */
-                                        size =3D get_vm_area_size(vm)
-                                        aligned_vread_iter()
-                                          page =3D vmalloc_to_page(addr)
-  vunmap_range(...)
-  vm_area_free_pages(...)
-                                          copy_page_to_iter_nofault(page, .=
-..)
-                                            <-- use-after-free page read
-
-The same race occurs on the error cleanup path of an initial
-vm_area_grow_pages() call while nr_pages is still 0.  Even without a
-concurrent grow or shrink, vread_iter() walks the page tables across the
-entire unbacked area under vn->busy.lock instead of skipping it.
-
-Checking (vm->flags & (VM_ALLOC | VM_SPARSE)) =3D=3D (VM_ALLOC | VM_SPARSE)=
- when
-computing size so that nr_pages =3D=3D 0 yields size =3D 0 (or skipping to =
-next_va)
-would avoid this.
+On systems with less physical RAM than these metadata arrays, swapon(2)
+with xswap.max=3Dmax fails with -ENOMEM and a warn_alloc() splat; on larger
+machines it pins multiple gigabytes of unswappable memory before any page
+is swapped and stalls CPU in the xa_init() and swapoff xa_destroy() loops.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122123918.3486=
-916-1-baoquan.he@linux.dev?part=3D1
+916-1-baoquan.he@linux.dev?part=3D9
 
