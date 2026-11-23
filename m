@@ -1,145 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34B6606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581D2606A32E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SgkIFv4n
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=wdW0YDDp
 Received: by kanga.kvack.org (Postfix)
-	id BF3486B05C9; Mon, 23 Nov 2026 04:40:30 -0500 (EST)
+	id 768086B05B2; Mon, 23 Nov 2026 04:41:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCAB66B05CB; Mon, 23 Nov 2026 04:40:30 -0500 (EST)
+	id 7383E6B05CB; Mon, 23 Nov 2026 04:41:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6C016B05CC; Mon, 23 Nov 2026 04:40:30 -0500 (EST)
+	id 674ED6B05CC; Mon, 23 Nov 2026 04:41:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CAD96B05C9
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:40:30 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0997D1A0806
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:40:30 +0000 (UTC)
-X-FDA: 85465888620.11.1B7CA0F
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 47D0E20003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:40:28 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=SgkIFv4n;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of hughd@google.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=hughd@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 47F096B05B2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:41:07 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E0F491607AD
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:41:06 +0000 (UTC)
+X-FDA: 85465890132.03.C84FDE8
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 15AE2180009
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:41:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wdW0YDDp;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795426828;
-	b=PtWUe2m63qc1jF/tlbF8sDRI1HXMYXM92m7h/FOeNNjGHsntKMbCHvuOTeRrdA6wE0tAHl
-	dYGnfWyOTpPA2f3gOaFDDpSF43FBZ0SqBrnBB4+i3WWyZ4Iy16GSUrqPnNYn3yQsOLJQ85
-	UEKOFq+EYWLalC09k9/2SaQ/l2ikl1A=
+	t=1795426865;
+	b=PNpVu6gFFe6uVyvwv7FwgSF9rvEQ3DT+moHCeldRb4m9fnmxPXag41D3lwG1n3nszkXEwR
+	k3jXU9yELVGAra88wWSKuC+hgM94aXP7qjcmp1caRr1AkOubl3fxTmWQYvbjt0YaGLI2Ew
+	qa6Uw3yFgjHimYNiDKxve0w33CERrM8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795426828;
+	s=arc-20220608; t=1795426865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=thx09sK5axuy1Mqno0O+zJDzS2jXR+z5TmxbMTktwk0=;
-	b=oYTe10dcKRQXZsq+ESKPZuNiFFfosFpnSKPdu6oSatipr0r9kNvjKRiPEaO4Ca6ZITHoHo
-	GMIPlXae0Zj+hRndlo/P80x2kuJUpQqDqdTNj+9cHZpaDUGW77Eic19nGaiv0xB6Sv56Zq
-	OPGehSze2FdAnb0TemmrwfpY20YEDY8=
+	bh=klUf2CdqHQRXCM9LUthGI+m1p+fVvUp/IIQj44sT9IQ=;
+	b=BCOfKt66UNgWsBUKwdRip4uFQQzcrHvpMkmb4cuEe0J9H8rpeSHZz5QcrEJx7emCwSb3ZQ
+	2yVSmh8LcMGlq5X4eSu7erMlwMsknUPj5xNiPwSfhG/DizGT1NoBqkXrgJEF+FCeU86lx8
+	+8RD/Fify7AND5X2hMI4oJ26JWWnkus=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=SgkIFv4n;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of hughd@google.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=hughd@google.com
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-67c58f18765so1980585d50.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:40:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795426827; x=1796031627; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=thx09sK5axuy1Mqno0O+zJDzS2jXR+z5TmxbMTktwk0=;
-        b=SgkIFv4nOj1V24ZJhITtuUjRMjnQH/krrqQMCX9+g3npXtm3H4r0gUAdk05lwIzKJ8
-         2cr+hyJ862jIR+pRYsC1HSX64ovSJKZBpgf25KMqHYY19pJgY7sy4Fc0wiUlfRy1aHdk
-         WRY09Dri/cfmX79Ym5infUiAy0lsLF2Y7ViRUNiM5KT1oBuPeKZErlPcTKuG79xqgqdU
-         MR/SlUQJ+RuCTcxkhl0mcAqJqOuhYHi3mDrR+ayDXUXXNKAGizQPgPpkz2y3Ttu4UDlh
-         kVlvn+STFXq1blioQW5cJsXBWXte2OV/OI5nKWyimZHiWWsPLPPl4CwHgWRuAVC86UWs
-         kLQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795426827; x=1796031627;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=thx09sK5axuy1Mqno0O+zJDzS2jXR+z5TmxbMTktwk0=;
-        b=eJdAOdXzjwThdGyQIhY5Wu3G0LJ79E/w269/X8wpdslsx64K6Qodobl7hEntyDXcfB
-         eT0mtNtNk+8lAk4hh6GAMauBtJy392iVV+5Vn0fm9/CPvYufYNAdiVHjoy3OgijVOGAD
-         Xwacbh+vTQyV5W29Vtb5CKuvd4pUOUGxUSxx59lqB/Qx9Ad2INR1PYpB53JQKtluyHrW
-         29aTZkyn7Dv5+6/wyAkfVKLEf7lOo/r7RXMtdDMI59cJab/IGGO1oBvtFovJ0j1/Hfor
-         p3aFOC4+KJWVDBqIysM6/SMgW8q5CGkX+wvEIfR6rd8RjUv3or3tWq+ljeSPrVszIpUJ
-         0oOw==
-X-Forwarded-Encrypted: i=1; AL+hErHJ9ZqLH20ufqqIIyuk4G+j0Y2c81BD1aZ2WMQcBjpDTiYBqpuji67IN/EiXYn+w1bYBgBhdgrMKw==@kvack.org
-X-Gm-Message-State: APuU4Z+QXKpewdtbd+vzI3OiY08BRmwkIbuuo4yBNG1XL3wpDDwxw6C6
-	oU05l5ZQZimBGF+V6jsM6muyXkrDiOWt35lSag4R8ofT8iSA37c8VoFohiGeKIeNmg==
-X-Gm-Gg: AZFdTZcaRRqzmrkbI/5z0vN5kctT9V1qTjyfIfO4VKKu2NJWGRL8dn05vsdV7GIMu/y
-	W7UO/bbEGKZA9z3TW6MjUYOYMh+kmoIvFRR9YU28jXalf4258j5f5BceUFSdagADWH3JES/2KGe
-	86BW7GcqSITYhK4xOH38J9Nz80phO6qfeF/vu+LBgV+g7mCqihjp94V7tn0Vcv5R0GhYR6bDH/5
-	+B3MFyKoaGDmnrkw4XQbZ76g8tCndvM6AI9NYBuGKCM9Rp3ztX1OPhSvKP6YqRMX6cnO5M2XAGy
-	o19ndOcVEREfMfIaXJ3G0S3n9jgWz8JWeTjAnuq5AB3PpJ5UTv7VfLGT8u48p/BiPR7rnkw6hHB
-	xBXSZVhsTDVL82SS5Ka8pLIIcqK36XIDvTlCjsH5oBkde1cuVTagLK7qvo1FD2VTwLF9x6tI+l0
-	m+p+NbO2SRsm3Nvsy+DqVFXmkcJwDpW1f2i5u17tIYwHFV6HD/a/tJNkTDaqqNl2maHgZmuFadc
-	CQcAw8FK/rxgMg+l3dHwCYb6K1MhiW1tDVqQBiN+nTMtA6iNhcsIx5KblIdHuoieEwTHgADBnx6
-	DI/z4wfSouuMEImFo8OTnmXGG1nSl3CBPipDaqpnOQPUmRL9hVapTFvoZ6EUevRRUu7QGQ5sdfX
-	hDckkv+595bdq5h3w0UPdKOxX
-X-Received: by 2002:a05:690e:bc2:b0:67c:70cf:c90e with SMTP id 956f58d0204a3-67df443b020mr3503639d50.39.1795426826585;
-        Mon, 23 Nov 2026 01:40:26 -0800 (PST)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67df33105fesm5150875d50.7.2026.11.23.01.40.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 01:40:25 -0800 (PST)
-Date: Mon, 23 Nov 2026 01:40:09 -0800 (PST)
-From: Hugh Dickins <hughd@google.com>
-To: Alen Karnil <alen.karnil@ideasonboard.com>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-    Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/26] mm/fbatch: drain lru_add_drain() and _all()
-In-Reply-To: <179492383658.1554713.9260140415931487684.b4-review@b4>
-Message-ID: <db50635f-5f02-73a2-83b3-8ec7dc980b56@google.com>
-References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com> <179492383658.1554713.9260140415931487684.b4-review@b4>
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wdW0YDDp;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795426859; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=klUf2CdqHQRXCM9LUthGI+m1p+fVvUp/IIQj44sT9IQ=;
+	b=wdW0YDDpm6O9CRiIV6Yk8Wd9yTWmQCUsOfFMi5e5LPr59IoWSEJkeCwz8AX2bfp7oo2eeev0lYrDfI4psNwEqbZIIpDVmrc1eqfu4sh2SDvxRMdiu/p44Hns9BiW3qbbFNcgWZ3+MaWp7LlngT5TQtMBJSIRbz525OOt1+KPM2s=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XFGswNE_1795426856;
+Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XFGswNE_1795426856 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 23 Nov 2026 17:40:58 +0800
+Message-ID: <100c33ee-be1c-4eeb-a94c-567cc0337c78@linux.alibaba.com>
+Date: Mon, 23 Nov 2026 17:40:56 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 47D0E20003
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] mm/vmscan: move code to lru_gen_{add,del}_memcg()
+To: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, baoquan.he@linux.dev, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org
+References: <20261116081403.216452-1-max.kellermann@ionos.com>
+ <20261116081403.216452-3-max.kellermann@ionos.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261116081403.216452-3-max.kellermann@ionos.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 15AE2180009
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: b5g85tscuos9fh4ff666jgu4k5x8qqnd
-X-HE-Tag: 1795426828-661446
-X-HE-Meta: U2FsdGVkX1+jPqLCJ+PmSSG/damA6dWWpFW84yb6so3IMHgfNhJGbgu/e/qo5CZgWUWLpE7UO5ez0akNCf3dHvXZ/oXsBW9hywTJPO/FgD+h7tQRShJdAbx4OjzzDCopTS/Rt1iDtZlEsST6q/aGnYZpWj7MiKtEflz57OvegktqRej+btUIrNOO+LwmRx6GgDZZ3TDHtC5vL+t6i8mCQcQXN14UbejjndeQMvAhxrxlPO2INiiVIMo24iAiRF/ioQQhYZvADcy51rHfp8AIZVBmJrVxe9tR91ZE0Q24FcegInr6oqmVzEJPlr+ShkkxM7vz8UOZ3UrcJifRfpc+TlHU/Ef9iQ2sGJ2NihoPb6lyO9dkWmmqJe5rYIv7h3ULXR/4X/Vo664UJabIXjCFscnbNwi8sEbiUtCSi9HYK+TDXhWERzC1JEpsBW7pHFHavrjMafcwdXTUogJwd4Ha1rOdhLtl9abc2cb9RUpJbkr0/9vBUqzFmYMNmYlXX+XZk42ty3O2YFbHe2E+5wXOZ9JEotUauJhSF2FtSoMZp2dTiIgnJx9PHUEepvsea3iC319f6SEwQIijKtFZbTZVEcdT0AeVorsbzJXy6D8y0bRDcGIiyO8Zasq9vNbhg/mYRAhjrMqsFJeZQX3D3BMae7hZQVsV8h8cdhnQAARwxybHrF1+z25ARKYgcDC/d9Dq/2XcKPSClV20AmD0Vc1hCYFiRNbQM/1Twj/CeRG/Zsanhhua73shbF2NlZoAQh/hN2PmvPc2wm2Bcjiz11ZwuK7+YXJeN4p2i3TjLu0NWdBxFLl3WuOGepXh2amx4GUf8HPcnqLt2317DK+x+XQE+VbCSMUR7BFyYU9t5wO9wXz+xWiJbKPSir3cdem1d5Iwa18s5wYdH6e+5etiknIun6uoBRTn6GUaiyU1/hahEtyPbk/YiuQWyHyCfvYYiUKdNjW4WU5+Yw8Iqhf1aYQ
- EK+X5vEg
- 0TErxzMguEL16vEb+78cV/rCokyETfLZLx5GEx0dITHtsVytPAzqcAzvn+YnMGzx/ne6tpDnj3DvfPGqD7FzTzp7iY4j6C5eRpQQcR3ReqlMu/NQYvKO+SsAg0kRKoKwJsC6XHQ2IXPnACg3sffGy+zDQuwdSIL2nC50+NHtIr8cFoQ+4j1u3xQPhRB7CqRD0jjb7vbMATdPGDf4xibWJqyA/AStoc1JB1N3ZjEaTnDkNdQljO8/mMP8WPDpJ6oplCPUNiCCZUDXlIUzErsDj4XBOVh4Wi4xpiqZByyYoRioTItC1IrVpwtgXqDmV5V60rRqptsuSc2kcWJBI6ejJPonixy33UyEGvKd7jB4PmY7hmfaiu4PZAnrmWlFkXM3u7uXRNTM31HS3rzYXd1Ukm4WZMDB0Z2iqbHFRQSs1zxAqs4QxWeTwCpXEihK8SOQxsAMzVDcW6ZutwgzZmTQUcJiAIsTdkS8i+rZelMPU1ZLGJZe0oascqL0WjNH5IemvUiUMQf0nHlo7yW0geQPnFimeU0hwPbPOGiMzy/E81wrOXSKkmehHyMOhaBSlEf0qg4VUqWFCd86bx2SoHTD8onwfOUcp0DSHQ59HFrFqpBGYYjJdTvh13n1qlO/93IQDgrTdy19jZ2vusf0wJ587DE11BgiJyFqKvq7NundfZ3DtGhVnRNVKc43HYCoHFA0oQybP30DMEjTYw/Mq4HlcCoovaulaJiFGjlNmvfHeotG1SvnUX8W9f3DQxr+eawtBrRgA
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: ztfx5g43bapwd8b67h67pmyk5w7fqwa9
+X-Rspam-User:
+X-HE-Tag: 1795426863-299909
+X-HE-Meta: U2FsdGVkX182KE5c8DiuK3Msut/m+VgRLF++PSkvjPl7kPPg8ZfTVaoolZafcT86sjDYmHe8T1B5PG8DUP6tx4IWTeMc+bK9g4JAuarZnCxcXhUODZnQB2dVsy9CmZ60I5ZXNA/vOE+HzXlWEq0gJk/uGX8W9CK2XsD8dQyBoofFMfkGBwy7uzPH38DbYzB6yAolVCvRGxZwQ805spBahkhcrCqV6Kavu+rkOsiIzEUkiw7iVeoV2raZiQg4tEY4+rKAbrn941zA2hZdcRgi9QBIs4v302nx0W9FNca749/PN1wEaIjrXSHSFn3yB/g3gcynFRVVECjQPf5uanykyz4D4gr2hkwTmAbe8jdOShc5NoJPh/6gaQLsFwXQyiNCJ9ojOeTa2R83TQm7m7xSlX4uu/F1aPahpC9UKGqilaN2NKlWbPgRm1uYTSMXtRvYx5lqL1rgGHNbdk5RHUuslBEf8knjgTvxklbqLKirnJvVUndr0x3t0cNTbvQ9KS4cIrXR6i3Xox44YJewiFF9YUBVD1oW+eYVjjB41z5qyGa9vcdVr7N92UfNmHM1z6TTjSZ3GrjE5+tbSN1XjPaLIAv/6k2PVv434bjrcnSUhAbzdfuWadCYKuW6c5Txj453GNSxBUtVFdjobIzbCdn7ib5tWbS1H8IKjxi5EDHEebLaYwToIIj2zBvv/RoT3GT4r8l0gH+ULx/v6b2DMTCjrgZCfQ235Z4DoPfD16r/oCwJO3/G391iapKrswooNgXEkHMvnxmN6kvde89OKvc46+wnakF/APVIlH7BQVDgbAEJqyvDP6aIH4+rR/kQkRpJPeuMs5StpDV2WthgBfGs07zlHRE2a1stCXY2KsDS7jipWDOZRQdWnvI/w6cbKr8ltg+BEuyWgrmQu+UvdZt1M7qb5x7f4C97HwDqsz0aTLmiCQi+y8MlbPUM2jZQxTt06BA5RkJtQAymuKFXyw7
+ NXRWfvau
+ 7EqGumSXa6ak6/QdNXukwkX8FqWnhi/k1ZivwE52CajJOuwkTE5p2WkDM9SWQxSirNovbvxiU8w7WMI5kMBsWvxm/pFlLodUsQfhDN5TC4T/aAC449C3dJ1tQzVbQyC0G44w5FbLHFr8C+JbcYD/iPSeuZmNpYY+XBlpIauvZrrlggitNun4VDZECMo0wDuoY+SvHh4dnf8r1xF99+6nNXZ4n6uaF5a/rvECm7TUXFDTmvgaf9V06gmGN4Iub/5tkMdVIllAn/+A76OVGDGCv9p/vtWh7zL5n8OuRI7S579dECZl1/CTZxnxfbJGIkhlDRKjG9MXTN+0XTvSg1DNIzcmC6Hv/dAO6haz5h7ufR+cgEj4KCRDNncnEW23p4BKY85tadEb+V34wNjc4MvcnH8V3PfEy6ue6EP2oAfYP7hOxbgr5XpY+CD1fJRSqSQzio0yDkbLymKgvhow/BjsaQ9hnss608VXGI3J7brFct6aJf0VNdMYiiQYydBnMDxrIqMWB12QmnTohUFTZjoC1qI85EQpyymkp1LXMAG1TYchHl7kUWjdmZWHfFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,44 +95,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 17 Nov 2026, Alen Karnil wrote:
-> On Wed, 09 Sep 2026 02:39:08 -0700, Hugh Dickins <hughd@google.com> wrote:
-> > mm/fbatch: drain lru_add_drain() and _all()
-> > 
-> > [PATCH v2 00/26] mm/fbatch: drain lru_add_drain() and _all()
-> > 
-> > This series was prompted by lru_add_drain_all() appearing in watchdog
-> > backtraces: not to blame, but blocked on an unresponsive CPU to run
-> > its workqueue. lru_add_drain_all() is a heavyweight operation, which
-> > we often hope to avoid by a much lighter lru_add_drain(); but even
-> > those local drains can aggravate the lruvec lock contention which
-> > per-cpu fbatches are intended to ease.
-> > 
-> > [...]
+
+
+On 11/16/26 4:14 PM, Max Kellermann wrote:
+> Preparation for the following patch that adds tail caching.
 > 
-> Tested-by: Alen Karnil <alen.karnil@ideasonboard.com>
+> For simplicity, hlist_nulls_del_init_rcu() is now always used, which
+> is also valid during rotation, because the entry is immediately
+> reinserted under `memcg_lru.lock`.
+> 
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> ---
 
-Thank you, Alen, that's very encouraging and helpful - though I think
-it would be too presumptuous of me to add your Tested-by tag to each
-of the 26: I'll just add your Reviewed-bys to 01 and 02, thanks.
-
-You may be wondering what became of the series: it's good, and I did
-rebase it to 7.4-rc2, folding in JP Kobryn's fine improvement (thank you)
-to __page_cache_release(), and Kiryl's !folio_test_unevictable() safety
-in lru_add_del_folio().
-
-But found there was already a conflict in folio_batch_move_lru() in
-mm/core.git, which would make several of the rc2-based patches not
-directly applicable there; then saw David's "MM: Firefighting mode"
-mail, which confirmed what was becoming apparent, that it would be
-more helpful not to repost the lru_add_drain() series this cycle,
-but rather attempt to review the current fixing activity (I've tried,
-but just cannot keep up with all that David, Lorenzo and others have
-been achieving).
-
-I intend to post again around 7.5-rc1 or -rc2: I'm probably naive
-to hope that the fixing frenzy will be less by then, but I'd better
-go ahead with a repost then, whatever the situation.
-
-Hugh
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
