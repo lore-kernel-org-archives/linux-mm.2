@@ -1,120 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB1F606A320
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7806C606A32C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cHe+OruU
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MbmIxTcQ
 Received: by kanga.kvack.org (Postfix)
-	id ECD606B05BB; Sun, 22 Nov 2026 22:14:50 -0500 (EST)
+	id 7FE5C6B00EF; Sun, 22 Nov 2026 22:22:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5C06B05BC; Sun, 22 Nov 2026 22:14:50 -0500 (EST)
+	id 7D3A16B05B0; Sun, 22 Nov 2026 22:22:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBF4B6B05BD; Sun, 22 Nov 2026 22:14:50 -0500 (EST)
+	id 6EC1E6B05B1; Sun, 22 Nov 2026 22:22:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B9A636B05BB
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:14:50 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DFD81C4194
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:14:50 +0000 (UTC)
-X-FDA: 85464916740.09.F48CDA2
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7E260100005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:14:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cHe+OruU;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 41EAF6B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:22:49 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0859712079D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:22:48 +0000 (UTC)
+X-FDA: 85464936816.25.29980FA
+Received: from mta1.migadu.com (out-4.mta1.migadu.com [95.215.58.4])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D2E1F20002
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:22:45 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MbmIxTcQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.4 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795403688;
-	b=mdTDhTmAYz6f+dRq9jGm6DzVXW0m/rNB0tkzTNcbrNNmaTKnqXYKd1kWEy0L6StUIuZCaz
-	5Lm4CDIhvqjV0NVQdsgFOFaqFV2xAQ8mh7D1mvL3kE6O1MPHMnbc7ofEfTGisDxJKOM5bn
-	TVclzKFRf5K9F/+hMlB7Ns7Zp5t5bjg=
+	t=1795404166;
+	b=Hrg1/eCUnUTRzEL26UkWeWPGVnBsbeU47lHa7wDMXos2oKECslquXLJ3jV9HKjdd+7V7RS
+	grHAcudH/T+sgJduWUw9GDO7PsSHr543Jr3Jx0wH63PgLdgfRvJmRMkVug48a2/SpiuhRM
+	3WZlm/9uUSSQ89cDRrsryRBJmaQ2oYk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795403688;
+	s=arc-20220608; t=1795404166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WmgsHFkL+h5rhuDAcwccXtAUWFqNQ8ooJCVW/O2Ov/8=;
-	b=dUkbUIcyBOGvbbsty6XAn8AaC4DtLzTaugarVWtBAHUDORYbKTvrcQxqNqon45oCtFRfYO
-	/CHL4NQo+p6sX8HPxaIkCvtNyPphFp48X+1HBKprOJ21oELq94zuoaZJbE5aM/BWOIxN3p
-	MQ6PV2306e20SVGSDu/L4RzE0tYKyEw=
+	bh=mmVRvdK02N6AgoL3Fkb1Slsd4s0/SBaF5vDPeDu6iRw=;
+	b=aTgOqaCoFN+SskjyoqAUlX54jkJwwyFUzLoFB8f11umk3MhiqAqvLGiJi+nMtpeuVEqdTL
+	Xblm6KOBcOp/m/bFKfjIO5uzNvjYRWXnRo+PTRGxFQ2c8Pdi5AW4pFUbAsQN15CXetDgrq
+	QReUTB2sh8tBC62e9rSPPVJTLjREpYE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cHe+OruU;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cde84cb8803so297924a12.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:14:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795403687; x=1796008487; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WmgsHFkL+h5rhuDAcwccXtAUWFqNQ8ooJCVW/O2Ov/8=;
-        b=cHe+OruU+d2rtEijzqT/YV71kz2Icd1eDl7dzv1fS0dKbwwJa9tIdvnHVzh7PJelwL
-         c0NEpp7+n3+E+H+9oMp3pzxrAeFrfEvkCNP4nIdz4r2x6hlDykfw9Hr04ToRGurGEEEz
-         B4jvAldCjBFjJh3Qj6uFq5h5QPKthDFMGMdoo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795403687; x=1796008487;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WmgsHFkL+h5rhuDAcwccXtAUWFqNQ8ooJCVW/O2Ov/8=;
-        b=qXb0lZIcRBPvO4sqIyQi3XIRxooKVebvlQ6a9kSu88Cj+Y5JjrsdOsyo+evBgDIbLR
-         RYzuSJti1TnXqcGvaK2j3qkZLdrq0Fg8KJjM3Aj2v7800k3zB7xO+mzFhe5cMSqVROr9
-         WQ1V3qrPLbpnJh73PinLLfXeT66YWQ9kPjBZrsHSBFrH+klEyHoCP17Vq75Bi6nsveL9
-         nCKPfXMgVUD6Dp56kM6pJ/yIlgx/JA5x/BYfePuWpBRJP1ej2MblshcjRBc3Sy7V8OA3
-         ZxfwfBTQQevVtyBrzTPUwMPQRPN/aqoSyh8SMvMb004FR4EN1uElDA37J4rLE2dOaYtp
-         biJQ==
-X-Forwarded-Encrypted: i=1; AL+hErEBej4WHnyTZoQLOeN7vT+9Z59iAz7B0QzOnrqh3Wu/lev+AEyd+NNUskcgcRJpL72Zkupq95FZLw==@kvack.org
-X-Gm-Message-State: APuU4Z9eaV4GvGdNQt4AjRW9wtCvg2sLybNFjlD3f+PHQreeTyO8HjZ1
-	wQ7t0KvTtyXNbhYLp4DCOV3ixTJdGhGrpsZKkCnMRCdzf7hC2v6g9YA2HrIYwh6MMQ==
-X-Gm-Gg: AZFdTZcPsKCDQdprsQQpE7fmizFa7HJ0wVAkSTj4f2WtfZK3WG9L3lfRqMJurHwGFod
-	rFUigYVSXnwfJFDCxaTzH9YpXLG2MagPdwv60gNY0HwWQIhmebuB3wL3YQOcAHaNBgwdbEXzYgC
-	fkT0KFJpsSdhAPiOJncL6sLaFYIr8bTwe7IVLFWOkU5IEEQjtk0VDCU1kMv0FBdM/4Y+80TWlJz
-	cxOKijlMifSP4df+hX6+C6jbJLIY7FVyRHcJhalzP0bU/pfxvfuREJ5jZL8VW37+904RSEbtfgK
-	yg+9QR9COd77nyOY6bJuTHDkQQat2RaeRGYMG7oUGY20fQcvyVcsDL1jWs1SZv4wcgN83kMcN9U
-	yuexqhuIylKHEpfBc6JOOeToFbXnNLiAePrqxNkzzlt2gkdXrdAvioaNKmLALEVZUgD16ocaFAs
-	zD4BdmOWAkBheJMie/75+1Oo1tmoeyu0MCh1INyRQEu6bJBjKKW3NsBdZGsDJaLkmgEzToTwO52
-	mqet851l5koMLyMlxXVx8HS77G2ONxtJiFCi/WWS7LcRhKjnuVfYLoBn18NJAMD8pKX1YAlHtYL
-	isuSJ9jZdZSeazRkngtmSgcRIab6eOmf0jXqpPQBFf8SvGdW/Jk0D78OdCEYCA1dYAPBXA==
-X-Received: by 2002:a17:90a:e7d0:b0:3ac:929e:691 with SMTP id 98e67ed59e1d1-3b41c8d5a52mr9034938a91.17.1795403687341;
-        Sun, 22 Nov 2026 19:14:47 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:d8fa:c511:e415:e0d0])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41abb1b66sm16010576a91.1.2026.11.22.19.14.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 19:14:46 -0800 (PST)
-Date: Mon, 23 Nov 2026 12:14:43 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>, 
-	Hongfeng Chen <hongfengchen@xiaomi.com>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH 1/2] zsmalloc: free a zspage's pages in one batch
-Message-ID: <awOvXnBW_QWGigkX@google.com>
-References: <5666c1c8c04998784c81fc8fe751e35aa40af578.1795403342.git.senozhatsky@chromium.org>
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MbmIxTcQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.4 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/mnPk6TbiEx963fDemDdeJymjABb+Fn9UESDkxFlWro=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795404164; v=1; x=1796008964;
+ b=MbmIxTcQ3G8tt5wpa6I92LbDuMVfs1806E7cCC5PBI2vMou21aB8rNHj0nuJts8H03VVD2PI
+ 9TAupc99w0fWffVFDQy168Kz8ejfAY9iYpPuItzqQ6Uyb/Izcz9NyUgvR3SABuMbZKKvSgRXEae
+ vJQh1W78cvOAENKbObhR4Edc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id a40b5ee157b951a8;
+	Mon, 23 Nov 2026 03:22:43 +0000
+X-Mizu-Trace-ID: a40b5ee157b951a8
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5666c1c8c04998784c81fc8fe751e35aa40af578.1795403342.git.senozhatsky@chromium.org>
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 7E260100005
-X-Stat-Signature: hzbci6msefzzuqe6chs7r4qqz9kggnx7
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v3 11/19] arm64/mm: Align vmemmap to maximal folio size
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261122184453.2668189-12-jthoughton@google.com>
+Date: Mon, 23 Nov 2026 11:22:18 +0800
+Cc: Muchun Song <muchun.song@linux.dev>,
+ Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Nikos Nikoleris <nikos.nikoleris@arm.com>,
+ Linu Cherian <linu.cherian@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ David Hildenbrand <david@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Nanyong Sun <sunnanyong@huawei.com>,
+ Yu Zhao <yuzhao@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ David Rientjes <rientjes@google.com>,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <ED44F18E-E7FF-4B53-9B5B-3201F1100154@linux.dev>
+References: <20261122184453.2668189-1-jthoughton@google.com>
+ <20261122184453.2668189-12-jthoughton@google.com>
+To: James Houghton <jthoughton@google.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D2E1F20002
+X-Stat-Signature: ofg5b7qk345ce47ars3b94j3icjrourc
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795403688-526829
-X-HE-Meta: U2FsdGVkX18chGQL85fkdis4vE6ub/ZsVJyaUrXfTLmraTZs9rk7jGZwJqarNcQn3YHV2lc/AY16OQN2MjTUI1SqzaeipySQXyUPCiOFRh+l/wVqJDI0qj9LP7GCu3CY5LAZiTK9ZdwIcMlfayQIGjzgWrffglXT63SM1jV6nMP7IzpxgrGVlf60cgufSJfUpk4+BitthwZIqwURSAA8VeKbc5Vaxm01z+xWHSriBT6Uukd3SqZzznjBusY41194tmYY1HSRmG9mKpX9Kh1YW8TDbWXKJ4+aklyaK9k7wa87HKGun+C+XlIMch3Xj91MbOvDGJBRsbJnyyQx+Q8unFkvBQwzoOypj6B6qomFvR25m/sDNnV56w8OfBSqAj/oqPlmxM7DappAMTn+JOqfPzI2lKRSgcOWbhBreW2ZAqASjHofeMxkoK7qOMwqM3ZW4MunWMmnY3IGk2XmvdDxsAh50/WWY87w4liLmpHfOF1/tOSi+/9tZzVrv5+EEOLNiYL37x/91b4ikgwRalbfjyWwvF9mQeGNoatRTHbJRUPjQhxIau25HLiYHrjAitOavFg5gXBUoWsJYIY7KKgv5vkZMeP2ypBfyQAd+QZTYkz0vQlmenElfRANJcogwcy+st+GyhaaJBD/LC0OxgFjBcTgnB3hsj1yV1soTJSCdwte3XywV+/3Mwnqi/j/rHSkfI/uAkmCJDFhSNFqPSLPC6ZCL3xhHHFs8VzpBsE8heSr/E5kwLklL/f4xzxVGIoJ66nQ78kMrE+NHQ+TAcUEPR+uXnOklERNlA88b5bf3D8uL+eg/Oq+XeXTAunBCAUK/YHRZ+6cWBokWDbIQmFZOW+PhHL9INrEUSg98F3Fkh52UTJJqnjus+yRbfE9GoIPaMkbF+ClrV30UYN+z1M73pyjxsDsjFjGPVPTF5VrPjYPiC/9zfSG+rZ6zJhlA74EymST7ahvrAfnn/yVuWd
- Pwi+3hmf
- 0NgJVLNYRDf+VEvefi8BNGY+D0VR+3xwp0dgwnggr2NCrbMsJVMAHrikT8aw1e2ybHoE2YyF/yRCXeDFUI44cDugLkITycDXfzpH1gylwOlz7LcedrNPsKr7bW4YyrepcztMutWwWl5pmadiUR0QpNg6ujOzmODO3mtPrq1wUIWY/yJOhZxJwS77oVM3LammWtm9qbJRx/xmhMIeu+mg4U8w5Bt8yGv8UzOfEgvg0NXvYi0Kak9dwBexoA1hQea0RH8Az2Gqk5aRTFosvl1N8fMOUWj0ieDITIJHFz6xJLJPtowQ2Q/OxW4RR6bXP8tRWCZcLC2iiIt+fltqlbFamiOU0azd6R/6iLNrC7U06sEsuFZlpUZGHwbJ7tlWk44B6R591r89mzKcBWSt7XGEyeYe6ZNJXudBkyShGc1HXiHz2rN+ZNeTX+MhjO43jX5FSUNJaA9X9dDg85cYyWjITQQdt45BpMdbUEZ/uIpwBG4FsDDwl7w2AWZnlUe4wLJx3aA0LUIoRJGQkLVF+pUGKsYo8RaIrZXZ9GUb1Wkhdm4JiYhXPndD/LWjggW71hwuwAC0bIN8/iFJEtDo=
+X-HE-Tag: 1795404165-576488
+X-HE-Meta: U2FsdGVkX1/LFev3A8tfimzTEFSbGj1o9hLSmgRDsSno4zmyIa3+3FGZdKumF0b5B0IvxofCxYrJfXqv4c3wNmukEOeld2sORgKivwPf3mRh48jygZsMkBzEhjGr4gR/0eMR3pjxnQfqBd9MBHjQM5d7y5eeJaV065tA60SwR9JyHCmCe1/BRzW5gRyjRSsok55UxjvhC56ndXmgOq2WTNrQSdbxPMi1C4Kjl3JUcxm19aXJFj0ALEzsvkbhA3QbltFLxcXFn7b89ezr99BABCn2WitKiy5z/fUeGE6pt7CzNC8yIH4yGSfSZoKFgUAaW5moR/b90WbPb7tO94ziYnS3m4bmX750WKTsSsngQEp8qMi0LpvdqYVmES89D6XeLukkdEjijJTyTqp3f7BzaRRNi6oDBrBddxbV43yaoiv4crgfTHoC0EANAIo+BThbi5gJQfBS2+p+mns8LbRsvEGi4TSxwUs/5+DEnL6fMR+IUVdXUomyDjrZh3ASIo46qsbbL25FODJ+dICI0l6SzeFtGyCLoehcxD87c3z7ezLITzCYK+rHlYMYH36SquWl8nn8uPEfIvww0hCLKyhpTH0Tx6qNs3kkkEjD16CG64ACPxkK6zZMGvrBfXd44lzpnK11IfvtC5xXsl/1p59fvs3HgcmCXbRJFebeXe+KOn5nSnHut6HS7+MXOa0rYYKHQOebZmk8TpGVSWG1YKfw0j2RxueWdNBWLfJAiDikYjPXWbfe7Hmcs/h22KkLNyFQT447hf6spAmba4+pgLTHI6dqKKktvMCm+QU50SALn6E3qh3u3M/mO6XH0vjYGKyl4ERgjgq4V6LZAVyotsIw3qrA+P/3TNdlDmUFFGh/3EIc1FQxJ47ah1AT43F5C8IdyoFi/dHc6J2UIujjTi+8k1kk4omdeU5De1wYxcoSogncu6n05QBfHTZvRThdhQY+PB8u/5wFMU4mUbCt2Un
+ pWpEpatx
+ +I2OGht8YrD34i8cymR6EV+R5C0o8rsjzvWKTleGCR4oC/1M5mQRX03ZSMOEUl5WKqs817Nj6IVM6f2ubQ5DmdEUW+o6jZvX6Ip3CTnM2EhL5hJfntNvJwkFiYlUQNcb1BIgr0DSHkCCU7SxbLOjsb6IbrhYLC01lpCFENusHAkrigkyV/RO0cgeiSFrwoBJPpwsLWQ36RX8ZrXo/tHeyEwaAKkvGRLFs5xbJgaV96bPU2i0hjUdjtnt96+NuzoT2SRLj2/+woJZOe+Fw27sEvRBuZzEcen6cfqdI3Kj87eo+3umyWpBMBGKappqB8vdEiy5DMgMYJwVmMD6gXAbyFQTiEN4unVhQv84N8+IBnkxygZCKJMsEEBegvp4xL4ye0GJHC8S1O7vSHkfQfmXhzZf2LeBjl1MZG79WY34BF5KGs0C7XkSuNLpOrEGA2Y9BJz5Pjp9IFlRdEIMbhO92AF3qSSG7WwdEL19D/UrqvtJ8gX7vbRzcjF3GzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,10 +111,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/23 12:10), Sergey Senozhatsky wrote:
-> [...]  The batch lives in its own noinline
-> function, which also keeps.
 
-Oh, the "which also keeps" part is a lefover from a previous version of the
-patch.
+
+> On Nov 23, 2026, at 02:44, James Houghton <jthoughton@google.com> =
+wrote:
+>=20
+> With CONFIG_VMEMMAP_OPTIMIZATION, compound_head() derives a tail =
+page's
+> head by masking its address. This requires the head struct page of =
+every
+> folio to be naturally aligned to the folio's vmemmap size, up to
+> MAX_FOLIO_VMEMMAP_ALIGN.
+>=20
+> On arm64, the vmemmap is offset by memstart_addr, which is only =
+aligned
+> to ARM64_MEMSTART_ALIGN: as little as 512M with 64K pages, where 16G
+> CONT_PMD hugetlb folios exist. VMEMMAP_START itself is sufficiently
+> aligned for all supported page sizes and VA sizes.
+>=20
+> Raise ARM64_MEMSTART_ALIGN to cover MAX_FOLIO_VMEMMAP_ALIGN, and =
+assert
+> at build time that VMEMMAP_START is suitably aligned. This is a no-op
+> until arm64 enables HVO, which selects CONFIG_VMEMMAP_OPTIMIZATION.
+>=20
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+> arch/arm64/mm/init.c | 18 ++++++++++++++++--
+> 1 file changed, 16 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 4e7682dfe366..7186d86afc41 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -35,6 +35,7 @@
+> #include <linux/kmemleak.h>
+> #include <linux/execmem.h>
+> #include <linux/arm-rsi-cmds.h>
+> +#include <linux/vmemmap-optimization.h>
+>=20
+>=20
+> #include <asm/boot.h>
+> @@ -92,11 +93,22 @@ phys_addr_t __ro_after_init arm64_dma_phys_limit;
+>  * in the virtual address space.
+>  */
+> #if ARM64_MEMSTART_SHIFT < SECTION_SIZE_BITS
+> -#define ARM64_MEMSTART_ALIGN	(1UL << SECTION_SIZE_BITS)
+> +#define ARM64_MEMSTART_BASE_ALIGN	(1UL << SECTION_SIZE_BITS)
+> #else
+> -#define ARM64_MEMSTART_ALIGN	(1UL << ARM64_MEMSTART_SHIFT)
+> +#define ARM64_MEMSTART_BASE_ALIGN	(1UL << ARM64_MEMSTART_SHIFT)
+> #endif
+>=20
+> +/*
+> + * With CONFIG_VMEMMAP_OPTIMIZATION, compound_head() masks the =
+address of a
+> + * tail page to find its head, so the head struct page of every folio =
+must be
+> + * naturally aligned to the folio's vmemmap size. The vmemmap is =
+offset by
+> + * memstart_addr, so memstart_addr must be aligned to the largest =
+folio size.
+> + */
+> +#define ARM64_VMEMMAP_OPT_ALIGN						=
+\
+> +	PFN_PHYS(MAX_FOLIO_VMEMMAP_ALIGN / sizeof(struct page))
+> +#define ARM64_MEMSTART_ALIGN						=
+\
+> +	max_t(phys_addr_t, ARM64_MEMSTART_BASE_ALIGN, =
+ARM64_VMEMMAP_OPT_ALIGN)
+> +
+> static void __init arch_reserve_crashkernel(void)
+> {
+> 	unsigned long long crash_base, crash_size, cma_size =3D 0;
+> @@ -218,6 +230,8 @@ void __init arm64_memblock_init(void)
+> 	/*
+> 	 * Select a suitable value for the base of physical memory.
+> 	 */
+> +	BUILD_BUG_ON(MAX_FOLIO_VMEMMAP_ALIGN &&
+> +		     !IS_ALIGNED(VMEMMAP_START, =
+MAX_FOLIO_VMEMMAP_ALIGN));
+
+We already have a sanity check in spares_init(). Doesn't it work? If we =
+really
+need a check here, I think we should use compound_info_has_mask() for =
+the guard
+instead of MAX_FOLIO_VMEMMAP_ALIGN.
+
+Thanks,
+Muchun
+
+> 	memstart_addr =3D round_down(memblock_start_of_DRAM(),
+> 				   ARM64_MEMSTART_ALIGN);
+>=20
+> --=20
+> 2.56.1.809.ga0b61035b5-goog
+>=20
+
 
