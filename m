@@ -1,35 +1,35 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA57606A32A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 08:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E74606A332
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 08:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VzwXNCjd
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ljFKBqmi
 Received: by kanga.kvack.org (Postfix)
-	id AE32F6B05B7; Mon, 23 Nov 2026 03:58:35 -0500 (EST)
+	id C49446B05B8; Mon, 23 Nov 2026 03:58:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABAFD6B05B8; Mon, 23 Nov 2026 03:58:35 -0500 (EST)
+	id BA6886B05BB; Mon, 23 Nov 2026 03:58:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F8536B05BA; Mon, 23 Nov 2026 03:58:35 -0500 (EST)
+	id A6CAF6B05B9; Mon, 23 Nov 2026 03:58:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 70B076B05B7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CE816B05B8
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:58:35 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F18911A07B2
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 03972A84E9
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:58:34 +0000 (UTC)
-X-FDA: 85465782948.05.1499CD2
-Received: from mta1.migadu.com (out-106.mta1.migadu.com [95.215.58.106])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E264E80007
+X-FDA: 85465782990.11.5A64765
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C013920004
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:58:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VzwXNCjd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ljFKBqmi;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795424313;
-	b=a5T4qv+7cr0xwIy50kNMJYJfF1HG76R5OoVaMempC0I0011hjvwwaFH5lgGccWVO8scOsi
-	T+a7HGQ/IIEFNI/vmWrDklDGNMP0enq5OfZLlF1TZaQHtfnGWsKkKXGrcBT0kTcJeLp0zM
-	wGrTqOk8/5cMjXiW5V9NSDJNT/uKAxM=
+	b=jFDDJOA49ZdFvn5uENNlv8fU4hPJnB8e1UoYKLmbCWRjsvNSABFjs9oMXnaVpSarepo4f5
+	61dDamdl0OVJdhjfDm+heI2lvS5JoQQYkOnxzDqC1z7HSMM44kWTh0Qqstj24p1QYl5izc
+	dw5mWs69i5N4+3Qns0HfPw9QHcu0Wlw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795424313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -37,64 +37,85 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PEVkgjNwteQWXeEGGE/XbNqiDaZupu9T9ugvumTBAG4=;
-	b=Nwd0Qw6l3i8YH7431J6dbnUe0zjHaTE9xY5pOCm1Jwlarcs055O1jb0iwwLphH/aWhH28D
-	nPt0ZUCeklFiu4XFdTLSVZY2bipXRGwU4cT3shR2BoGwleKqGRKe2bwi2no2tM/b+G035L
-	41T9VtDe0tZtJpHZ/Hde8WBujEfocvs=
+	bh=b3WMjSBwi5PFDvIaCpQd7Axi/XWPxIYqZlMheE6sk7Q=;
+	b=ExNpomXgEA31uBJlS392S6EHMtTNzdrt/9k4g9RPXmTush2DHWp3tdxM7lfwNoko0Uzrej
+	6mVGVHbe8movpBHVl8TMnrRnv7y8UcjNcvWP+eFIMC1HcTo62sGOJpdkbJzYLNPfGb0I1l
+	flSxB+FZ/glS+WiOlBrFfTMT93CRZts=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VzwXNCjd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=gphQPS+W/QJD5pZPnxEe/GSlf9Pi+eZYPYuS7nN28bE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795424311; v=1; x=1796029111;
- b=VzwXNCjdi/jji9kw25xCUWmJ7zjT4NG6MvPjULeAn5kwe/duLUa+AL1abOV4n/7H4pEV4fi8
- 3slftz+casREDJzPoUbkVARCC3pmi1k2xLRtJePjMY/T4q3EMqi8X5RT2MXMkcT+j+REpEDnhX0
- 4EhO6K01Q3D060nNjgWsdZqY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 67cdf347499ef05d;
-	Mon, 23 Nov 2026 08:58:31 +0000
-X-Mizu-Trace-ID: 67cdf347499ef05d
-X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: david@kernel.org,
-	akpm@linux-foundation.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v5 2/4] mm/mglru: add PUD-level Bloom filter state and generic helpers
-Date: Mon, 23 Nov 2026 16:57:58 +0800
-Message-ID: <20261123085800.981256-3-baoquan.he@linux.dev>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261123085800.981256-1-baoquan.he@linux.dev>
-References: <20261123085800.981256-1-baoquan.he@linux.dev>
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ljFKBqmi;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAC6F1476;
+	Mon, 23 Nov 2026 00:58:28 -0800 (PST)
+Received: from [10.57.91.245] (unknown [10.57.91.245])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BFF623F882;
+	Mon, 23 Nov 2026 00:58:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795424311; bh=IyuQOHegOm7o8+idks5YbotHgA2kGInEw/MsLFSwZbI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ljFKBqmieG86A9o17mg2OKClKeqYmywjsi88qro4DKa+Bzf6DMkYNr9cZvknPpkUp
+	 MK+dIkOffcqanqO2jC1axlvaTs8nppW4q108uU909LcHYNdp1I6oK5movdwY5TJcih
+	 uXIzdw84Y8RliXz46ZJI31Ytyxy9qn1kOEfkLx1Q=
+Message-ID: <7a3ffc6a-866d-472b-91d6-886ca8095008@arm.com>
+Date: Mon, 23 Nov 2026 08:58:20 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6y4fbe13qzg9dp5f9a1ugu8kb6eta1yh
-X-Rspamd-Queue-Id: E264E80007
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm/kasan/kunit: add page_alloc_skip_kasan test
+To: Jeff Xu <jeffxu@chromium.org>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver
+ <elver@google.com>, Boris Brezillon <boris.brezillon@collabora.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Chia-I Wu <olvaffe@gmail.com>,
+ Dev Jain <dev.jain@arm.com>, Ian Rickards <ian.rickards@arm.com>,
+ Jann Horn <jannh@google.com>, Jeff Vander Stoep <jeffv@google.com>,
+ Jeff Xu <jeffxu@google.com>, Kees Cook <kees@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Peter Collingbourne <peter@pcc.me.uk>,
+ =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
+ Tomasz Figa <tfiga@chromium.org>, Will Deacon <will@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Miklos Szeredi <miklos@szeredi.hu>, Baoquan He <baoquan.he@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Allison Henderson
+ <achender@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ fuse-devel@lists.linux.dev, kexec@lists.infradead.org,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
+References: <20261123033111.2349160-1-jeffxu@chromium.org>
+ <20261123033111.2349160-3-jeffxu@chromium.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20261123033111.2349160-3-jeffxu@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspam-User:
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C013920004
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-Rspam-User:
-X-HE-Tag: 1795424312-306230
-X-HE-Meta: U2FsdGVkX1963TFhamljMPIMKRMh08d7wn1hqI1Q8sFRrf0N6D1sanH9aICFo4SsXtqqmh6eg7VuPiTjoPQo5MiVlsqE0Ew1d1jfblcR5XmVYD0ccYh5abZhAqtmYb9DE56KlQhAbP3vnU8fV1LEnIzZ3f3CZNm6ayVBIFyKLKQpP5AwVHnh+5vd5us2/CbheZXoo6vGue5nVU1iSNG586/ARm4aW7iHc7VGp8GUXgjcOuCdudlkvt6Au9CFxvJ4SJ+ra2FpdeJvQyrmyz8CLn87m37xJbn0rKC0Ct0WbA0rbLkT0axqGP8+Nw43WYzKfhmN/ivlTXZaUf883zq6wP5y0i+iHUNNgqrb7OodFKcOoGrLT22i5kLARoxI3adnvyF4h++dbyb0JwaUcf144tlhmxYTaR6NNdOUd0hG6Sym1Y9e+kyppLT3WZe1jYOz5zcQT0SS/UyamUl7NlQg6cDjnYdcPZAtfr0I2Gf2j76KGOYYTiFbfQQ4NoNMDkWMT99rL+wY3PVYfI53CXks8NmI4qCOYhnzCLavZVuMW2cxm8SZtPF3hWjd5+CPbkYCnUyGYV1Fb0cUVme23Ap0U0yo8C8c+TUiGAnLNdBPMYanrKI/BujU83cvi9hJ9u9UkduODZaReVfPx4IlXPfSfgkXBn3wRt07SfMXbsxvVc/GV7RIusXMFWuE0X/1IedLE+1IT0LLP/WDcYp756ZUAx3s3SiZ/u1blG+r6emfRuenAt0dTAqxrpT0D+RNse4/o3ZrAmB2986xVazrnsEOLuP6WzpgB/b/FqflLmNZZbJEbOkdcs0eY61mA3eYewk/fDEAMTk9wVOY9d2qcGf5dfEhwF7k9+bDXLm72nVe6y6/IoEqar3osio1IJvQZLvLhuSrYb4DF60B0eWc9qnQ2BZSwI1LvMd3Sst49HHrztgxj14KABGR7e2CkAOiPNRjpDpCY73u62b30oKfEpm
- HoMqTMWx
- jbRikVLOsaRKxC1A+JIeRR13Y4lIPyIeg/2RKl+/AwaOXStgc+zCODYqOrlBnar5iSu2tSMaWpbuh9aUCB3s5uZ4W4vzY5Kl6hkWKrLzqEpJjMER4V837Ftezf8NKhlKWl+mvqQatBpRwUt2kLKaH9ODlI6gr7LArH31rz2Qtzg2w9EF2DLcgRRZ4jFsdxycCnJZFAb8T4lsXD/PjIM0noAYbez4qqpe85ZM/ztNsZtrv8aYX1ZiY9EuHWDflULxqyYvC/2r+PP2SsIsYVQV7N/evNi0JF6nVAjEhDfm7obhby4IIG5PecFdNn3f+hcIkQ6fjKniQmzMgcVrL+N5N5r51bbWJsIKIT0NG/tuMnElhemKnyGXVbmaokpaDM2gig8Qre/ZAZz+1XcAK4l/DMQNV0wo6IxJ7WEtyJO8DCCs6A8T2Ph/kAQRtBwOYDbD0vcCR
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: zyyq1j8fnqkiqtrpm85edywm9q8ec9dx
+X-HE-Tag: 1795424312-463764
+X-HE-Meta: U2FsdGVkX1+rLMlk6XsK5ynA1ol0DqeccjNfTbp4hBXzuTPZnV/c8qN6R768BU5s7vyGvYsjTPesbkdgeaoQGt0nZ9zepAo8y899Uy+n8dWE1JsTZAfrJzibbRBk3Hcu+QvuT2Bkp6FMg59XlHioPSY9TnabIdXfUzhMa3EKlLgQR8eDglFhBXOna5JiY6nExLDWTlRlaa//4jVrbj9BFqv8aRwNp6K9hY6KDpccazSATK3OKnSpiBKjHQE0CIPn3ZinodO3ECHNcj0ZyHqmVZa5H0gxmFjr0yyIhFSDdgDefYhbxn5b3eoNc25rRP+hT9bhzSahf/plaJDt+8KnU/B+vYyUwJ29785HbeFcevYtE9hmEiVTW/h1OUCRCEXWzCtTj1yFUAcCOZwcvAk7dNA4JgMXlukQCdvxKyKLNcb3OmAXdzwiSJX1vJvqW93Ii+YdnmcQOaThOBY3RvcQdOoeQ7sAi+SBkpT+eE7dD4IJBpmkuAdtbqanB0bHBMu2+NUtrwCsTUehVtsVF16nMW334NKWsgPdLy8V4qLzjjrkDdOIgoS9hpwV1OzNJNr7pKgoS4rcSeSwalhA3KGb3VWoEM6vY+SjcWDtYao20+r/czVJbz1ufiZShQQlp0CYiyq1YZQdq7DUjJeCzG7KPACmUdY+51FgLw9tau89S01U6xfml6GSyf0WJkzvmmk0O1/PvnDyT7K/MmAzKz38iSEF9xIhabdf/Tuw4WLfOK5YpO4h9M+KyaRn9mrRROUCd39CcgZT9KnLbD/6N4zpLJU+Xx3rwyQdeJggOjO+73H1/qQbEa6eLwSS7wcoztgZFriPJuh9xP7Ng/TBfbYgCHLBw/41OTTzRy0NDA5XDIVntxkTpoO6ld6UuifTfCbqdKlqiLH2WwLq9c6SvDCI94zDlL2OCHv6UMrJAw0EPQQS6ktKCiwD32+5yxl5XNMBirO1oz9mGKXxUBRBwJJ
+ S/N+PByq
+ 4r0vhMfliV1cdnDWzFTE4PP7oOzNzTRbJ2eegZfX8Csg9a5JCUo52Yc3tzfPzOC/T9FxOuwbyB0CFdbThk5Gn5AR4cntFLwdyY/tzrKBBpqtGZZ0spt6jND45H07Bpv/9djCrmxiad142tB7TgQf334DF9fpDi2yXSi7/rHg+KQbr2fX2h+HJXf4/6p/I2a+L63FtDQJv9g+HXumid/Qq2hukEh/VcUuK816hDAvpRdFR0YTBz/HMRsx1A/Rw36wuml7czV7s0NwXo5sROYj1N5YEt45fNwE0St7pGrMPY25On8qyWv1XrjBQ6e0JGFxPImYKePeLznTiY5UQzMAOdgTUDqazrcqZSXIc8QjSEV2xViEEapMzb6kvOA7UXOHKPRefwFjwQzlKk3PRuaV4GJYLz1Rm2Fkw2mPkMp2SoPT52LZT4/w07KO2McAO6ao97+qyv3vlADCLJMcbDjV2qBvG3wrtePxKkmJheZtzbd5phexU00gh58Ua6vPH9/IdtN1aRBdXdY70KAOX0LV5Y/RVZRGnGCGQcomr7/B/NQz0tp5TO2IqeLYjYL4i1Kj1P0L0KL3RBa97YJLz8AfhC0VSZ/cRuWJ1beHMbyrNbZZ63iSwRACuzg8RTKReZOPy0fKHjkj6QgyGtv19D+/FIhHoFB4fbYR/Hl5F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,184 +124,90 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Baoquan He <hebaoquan@kylinos.cn>
+On 23/11/2026 03:31, Jeff Xu wrote:
+> Add a KUnit test (page_alloc_skip_kasan) to verify that page allocations
+> using __GFP_SKIP_KASAN (GFP_KERNEL | __GFP_SKIP_KASAN, GFP_HIGHUSER, and
+> GFP_HIGHUSER_MOVABLE) under CONFIG_KASAN_HW_TAGS:
+> 
+> 1. Reset page_kasan_tag() to KASAN_TAG_KERNEL (0xff) across all sub-pages
+>    of a high-order allocation, and
+> 2. Return a match-all (0xff) linear-map pointer from page_address() that
+>    does not trigger a KASAN fault even when the underlying physical
+>    granules carry a mismatched tag (such as KASAN_TAG_INVALID or
+>    restored userspace PROT_MTE tags).
+> 
+> Tested on arm64 with CONFIG_KASAN_HW_TAGS under QEMU (virt,mte=on) with
+> kasan.mode=sync, async and asymm.
+> 
+> Signed-off-by: Jeff Xu <jeffxu@chromium.org>
 
-Generalize the Bloom filter state and helpers so that another filter level
-can reuse the same hash, double-buffering and reset logic.
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
-Replace the PMD-level filter array with a two-dimensional filters array
-indexed by level, and add BLOOM_FILTER_PUD and BLOOM_FILTER_PMD. The
-PUD-level filters work one level up: when all PMDs under a PUD fail the
-PMD-level filter, the whole PMD iteration can be skipped. Cross-node
-empty walks are the case where this wastes the most time.
-
-test_bloom_filter(), update_bloom_filter() and reset_bloom_filter() take
-the level and use mm_state->filters[level][gen] directly.
-
-No behavior change yet, and no PUD-level bitmap is allocated.
-
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
----
- include/linux/mmzone.h | 10 ++++++++--
- mm/vmscan.c            | 39 ++++++++++++++++++++++-----------------
- 2 files changed, 30 insertions(+), 19 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 8aabe0f23e60..f057c98d1f97 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -588,6 +588,12 @@ enum {
- /* double-buffering Bloom filters */
- #define NR_BLOOM_FILTERS	2
- 
-+enum bloom_filter_level {
-+	BLOOM_FILTER_PUD,
-+	BLOOM_FILTER_PMD,
-+	BLOOM_FILTER_LEVELS,
-+};
-+
- struct lru_gen_mm_state {
- 	/* synced with max_seq after each iteration */
- 	unsigned long seq;
-@@ -595,8 +601,8 @@ struct lru_gen_mm_state {
- 	struct list_head *head;
- 	/* where the last iteration ended before */
- 	struct list_head *tail;
--	/* Bloom filters flip after each iteration */
--	unsigned long *filters[NR_BLOOM_FILTERS];
-+	/* Bloom filters flip after each iteration, indexed by level */
-+	unsigned long *filters[BLOOM_FILTER_LEVELS][NR_BLOOM_FILTERS];
- 	/* the mm stats for debugging */
- 	unsigned long stats[NR_HIST_GENS][NR_MM_STATS];
- };
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index a0cbbbb2ff00..7d20ee1b6c10 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2819,14 +2819,14 @@ static void get_item_key(void *item, int *key)
- 	key[1] = hash >> BLOOM_FILTER_SHIFT;
- }
- 
--static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
--			      void *item)
-+static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-+			      unsigned long seq, void *item)
- {
- 	int key[2];
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = READ_ONCE(mm_state->filters[gen]);
-+	filter = READ_ONCE(mm_state->filters[level][gen]);
- 	if (!filter)
- 		return true;
- 
-@@ -2835,14 +2835,14 @@ static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long s
- 	return test_bit(key[0], filter) && test_bit(key[1], filter);
- }
- 
--static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
--				void *item)
-+static void update_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-+				unsigned long seq, void *item)
- {
- 	int key[2];
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = READ_ONCE(mm_state->filters[gen]);
-+	filter = READ_ONCE(mm_state->filters[level][gen]);
- 	if (!filter)
- 		return;
- 
-@@ -2854,12 +2854,13 @@ static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
- 		set_bit(key[1], filter);
- }
- 
--static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
-+static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-+			       unsigned long seq)
- {
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = mm_state->filters[gen];
-+	filter = mm_state->filters[level][gen];
- 	if (filter) {
- 		bitmap_clear(filter, 0, BIT(BLOOM_FILTER_SHIFT));
- 		return;
-@@ -2867,7 +2868,7 @@ static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
- 
- 	filter = bitmap_zalloc(BIT(BLOOM_FILTER_SHIFT),
- 			       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
--	WRITE_ONCE(mm_state->filters[gen], filter);
-+	WRITE_ONCE(mm_state->filters[level][gen], filter);
- }
- 
- /******************************************************************************
-@@ -3110,7 +3111,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
- 	spin_unlock(&mm_list->lock);
- 
- 	if (mm && first)
--		reset_bloom_filter(mm_state, walk->seq + 1);
-+		reset_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1);
- 
- 	if (*iter)
- 		mmdrop(*iter);
-@@ -3761,7 +3762,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
- 		}
- 
--		if (!walk->force_scan && !test_bloom_filter(mm_state, walk->seq, pmd + i))
-+		if (!walk->force_scan &&
-+		    !test_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq, pmd + i))
- 			continue;
- 
- 		walk->mm_stats[MM_NONLEAF_FOUND]++;
-@@ -3772,7 +3774,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 		walk->mm_stats[MM_NONLEAF_ADDED]++;
- 
- 		/* carry over to the next generation */
--		update_bloom_filter(mm_state, walk->seq + 1, pmd + i);
-+		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i);
- 	}
- 
- 	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
-@@ -4434,8 +4436,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- 
- 	/* feedback from rmap walkers to page table walkers */
- 	if (mm_state && suitable_to_scan(i, young))
--		update_bloom_filter(mm_state, READ_ONCE(lruvec->lrugen.max_seq),
--				    pvmw->pmd);
-+		update_bloom_filter(mm_state, BLOOM_FILTER_PMD,
-+				    READ_ONCE(lruvec->lrugen.max_seq), pvmw->pmd);
- 
- 	mem_cgroup_put(memcg);
- 
-@@ -6151,6 +6153,7 @@ void lru_gen_init_memcg(struct mem_cgroup *memcg)
- void lru_gen_exit_memcg(struct mem_cgroup *memcg)
- {
- 	int i;
-+	int level;
- 	int nid;
- 	struct lru_gen_mm_list *mm_list = get_mm_list(memcg);
- 
-@@ -6168,9 +6171,11 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
- 		if (!mm_state)
- 			continue;
- 
--		for (i = 0; i < NR_BLOOM_FILTERS; i++) {
--			bitmap_free(mm_state->filters[i]);
--			mm_state->filters[i] = NULL;
-+		for (level = 0; level < BLOOM_FILTER_LEVELS; level++) {
-+			for (i = 0; i < NR_BLOOM_FILTERS; i++) {
-+				bitmap_free(mm_state->filters[level][i]);
-+				mm_state->filters[level][i] = NULL;
-+			}
- 		}
- 	}
- }
--- 
-2.52.0
+> ---
+>  mm/kasan/kasan_test_c.c | 44 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 44 insertions(+)
+> 
+> diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+> index f34163e19bd6..72342137bb18 100644
+> --- a/mm/kasan/kasan_test_c.c
+> +++ b/mm/kasan/kasan_test_c.c
+> @@ -380,6 +380,49 @@ static void page_alloc_uaf(struct kunit *test)
+>  	KUNIT_EXPECT_KASAN_FAIL_READ(test, ((volatile char *)ptr)[0]);
+>  }
+>  
+> +static void page_alloc_skip_kasan_helper(struct kunit *test, gfp_t gfp)
+> +{
+> +	struct page *pages;
+> +	size_t order = 2;
+> +	char *ptr;
+> +	size_t i;
+> +
+> +	pages = alloc_pages(gfp, order);
+> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
+> +
+> +	for (i = 0; i < (1UL << order); i++) {
+> +		/*
+> +		 * __GFP_SKIP_KASAN allocations must carry the match-all tag
+> +		 * in page->flags, and so in page_address(), not a random tag.
+> +		 */
+> +		KUNIT_EXPECT_EQ(test, page_kasan_tag(pages + i),
+> +				(u8)KASAN_TAG_KERNEL);
+> +
+> +		ptr = page_address(pages + i);
+> +		KUNIT_EXPECT_EQ(test, (u8)get_tag(ptr), (u8)KASAN_TAG_KERNEL);
+> +
+> +		/*
+> +		 * The memory tags of such pages are arbitrary: stale poison,
+> +		 * or tags set by userspace through PROT_MTE. Accesses via
+> +		 * page_address() must not fault regardless.
+> +		 */
+> +		kasan_poison(ptr, PAGE_SIZE, KASAN_TAG_INVALID, false);
+> +		KUNIT_EXPECT_KASAN_RESULT(test, WRITE_ONCE(*ptr, 0),
+> +					  "WRITE_ONCE(*ptr, 0)", false);
+> +	}
+> +
+> +	__free_pages(pages, order);
+> +}
+> +
+> +static void page_alloc_skip_kasan(struct kunit *test)
+> +{
+> +	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_HW_TAGS);
+> +
+> +	page_alloc_skip_kasan_helper(test, GFP_KERNEL | __GFP_SKIP_KASAN);
+> +	page_alloc_skip_kasan_helper(test, GFP_HIGHUSER);
+> +	page_alloc_skip_kasan_helper(test, GFP_HIGHUSER_MOVABLE);
+> +}
+> +
+>  static void krealloc_more_oob_helper(struct kunit *test,
+>  					size_t size1, size_t size2)
+>  {
+> @@ -2369,6 +2412,7 @@ static struct kunit_case kasan_kunit_test_cases[] = {
+>  	KUNIT_CASE(kmalloc_large_invalid_free),
+>  	KUNIT_CASE(page_alloc_oob_right),
+>  	KUNIT_CASE(page_alloc_uaf),
+> +	KUNIT_CASE(page_alloc_skip_kasan),
+>  	KUNIT_CASE(krealloc_more_oob),
+>  	KUNIT_CASE(krealloc_less_oob),
+>  	KUNIT_CASE(krealloc_large_more_oob),
 
 
