@@ -1,86 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D852606A32E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259BA606A697
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dhUms7oH;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=SZJ7c1JZ
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=NuQxcyBf;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ee7e9mzF
 Received: by kanga.kvack.org (Postfix)
-	id 647396B05B5; Mon, 23 Nov 2026 08:51:24 -0500 (EST)
+	id CD7336B05B6; Mon, 23 Nov 2026 08:51:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A73D6B05B6; Mon, 23 Nov 2026 08:51:24 -0500 (EST)
+	id CAF236B05B7; Mon, 23 Nov 2026 08:51:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 472376B05B8; Mon, 23 Nov 2026 08:51:24 -0500 (EST)
+	id B50356B05B8; Mon, 23 Nov 2026 08:51:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1114B6B05B5
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:51:24 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 052B11408AC
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:21 +0000 (UTC)
-X-FDA: 85466520804.12.CE00E55
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 851CB6B05B6
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:51:25 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2417E1C3C76
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:25 +0000 (UTC)
+X-FDA: 85466520930.29.DFA6CF6
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2861620004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=dhUms7oH;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=SZJ7c1JZ;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4652D40003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:23 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=NuQxcyBf;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=Ee7e9mzF;
 	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf13.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+	spf=pass (imf01.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795441880;
-	b=kxO86Uvv7f1OiQ6+e1Pt3LPlMIkNvfLalYhEDou1h8s9dsb3XVip+8zz5ZHol+FdTcSJbo
-	Dx/FIHqgRmQZAbi9+oPyit+SmABiZJaMzrrXCeCURSV+XxTs3s+D0rI8ueHVXpvB6zOBHA
-	AnEnWw2noILGLboZI/dgyh5IgjfmfKQ=
+	t=1795441883;
+	b=40OoRrVi6mFCrfYIVjyILUVuNyKNlYGxSdQ9dQs0LHCxizzw3YADWv/wKdqABfSnyt4g6l
+	LENzi7K1rrLFJMYCc+QZpNZX2OUedj0VqthvdelgEBk8gqjnTm7aH6fALdA1C1vGs+wgyP
+	5Xhl2Qh0UJILfiCTK6Jvu0d9Uc71TLw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795441880;
+	s=arc-20220608; t=1795441883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eDaWEGVSberGT3lup7BUtg92+nPcoIl/POEYu2Hk/qs=;
-	b=7DoBuRnztYg3Eqf4To7XKyLPQd87KalZrtPDfPULvqCemql084aUdlzzpTMIWJgrZQLRHl
-	u3rKwCi32AjDKIlFsFBwq7u1UI6TzQ7BY9KR9rXtj1TVe2exd5YsEuNygXUQagK+39tS8z
-	DOOptSUuTC4Nez6JImZo7qjR6tgNLoE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Guhg1K0FMFBPE0u0CIJl3O+ZgtOjrn7cr+GEqqxWqko=;
+	b=2TTSr/FcSCV58zdzagdN9DyltEh6IHOpVxaRHPMZnrSDFhendVjYC+qKbx86dDnD7rlxNS
+	93QLuyXagJ6Bylf2Yv3gAyJ7RSTqbpOJElxMa2rOmdjLtUF1Dv49801i5Lc8LfC7gyQ5/S
+	jlsAE5GzLpCV53JMd9DKIr2iiEVbfOM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=dhUms7oH;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=SZJ7c1JZ;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=NuQxcyBf;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=Ee7e9mzF;
 	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf13.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+	spf=pass (imf01.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795441877;
+	s=2020; t=1795441881;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eDaWEGVSberGT3lup7BUtg92+nPcoIl/POEYu2Hk/qs=;
-	b=dhUms7oHgMAyTwjaFQ4RcmHZy3AcRiYZGHrtxzyko2OKJq9ppnxdmoYRgjmCHmDl72nUPK
-	L/7fYN96Dq/EWTGaIbc6mSLcy31gm1eTfI4kwupFpFPjC112yyZkM8ESt8bMlcCF8FmAER
-	KmEK8t92o7JvwtqkOPsvSFKiP0dHe4+qaQz5h0vFdUIKKWIuL0I9ZQNNlUKxBIx2c7YsVt
-	9wFwFcCd8I9ee05oaCZWhsyhqcXGDWdhcn0TprHoLVGNWll7eYv0kGf1d15Xde8wEa17I2
-	nVKIeHL9cL2tRun1gCxK7pNUw/9eoEPay1jdaqJRmlkyRrC7OYH3x68J6Bc0fg==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Guhg1K0FMFBPE0u0CIJl3O+ZgtOjrn7cr+GEqqxWqko=;
+	b=NuQxcyBfhV7EAPhhJJ0IrWwI8Sg6agHEvml/ui+39lfH4IvCvHOhVb3sTcEszxrptDYhzM
+	KOTWGp0s724CoC63fsCVglfZK3pNCVB8Dpc4O3J+oZJetwugA7rRVDeJweiqPTc8fFxGvo
+	RmhJHmEu3rwm40c8zSLI4bxEI1qi65sJ8cASKE5pWCVY38ce3oB6mbJaStD5r9bHbVd18/
+	R42vVr0ltwptVz13BPAw5JmRofzhPG5tYJKVGp3gS5RHItjXpfpb6NKiTXVnBsh/nC0c3b
+	8kgM8WRRit79N6lKDO5GVLdWFOxuL3Rdld+lG35LGAQjhk+TpvfZuqpuvy+zig==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795441877;
+	s=2020e; t=1795441881;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eDaWEGVSberGT3lup7BUtg92+nPcoIl/POEYu2Hk/qs=;
-	b=SZJ7c1JZEJleqouSHibtjvawagbQZiztXnKad+RaVrzqS2CEbt3LfVh0aVKUf8rCz1vARk
-	veQbOsz5bF+5U/DA==
-Subject: [PATCH v6 00/11] vdso: Reject absolute relocations during build
-Date: Mon, 23 Nov 2026 14:50:51 +0100
-Message-Id: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Guhg1K0FMFBPE0u0CIJl3O+ZgtOjrn7cr+GEqqxWqko=;
+	b=Ee7e9mzFD85deKLGcm8e5YD0L+U1o17HaFbybIhTLTjFkWWkRB4gFePrbUFQEhupkaPgbn
+	0vbj4CqmhgO4CrAg==
+Date: Mon, 23 Nov 2026 14:50:55 +0100
+Subject: [PATCH v6 04/11] arm64: vdso: Enable the vdsocheck tool
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23QzWoDIRDA8VcJnmtx/LanvkfJQd3ZRljWohtJC
- PvuNYGQUjz+B+Y3MDdSsSSs5ONwIwVbqimvPfTbgcSTX7+Rpqk34YwrJrmlbaqZ+lDzct6QFlx
- ypJ5zzZ2IYDSQvvlTcE6Xh/p17H1Kdcvl+jjS4D59em7oNaCMOms88/MELKjPJa3nreQ1Xd4nJ
- Hez8T+OYGOHd0fhHKMIUQauR454ORpg7IjuSGOdmYwwVoaRI1+OBT52ZHc0eBs0KFQYR456Opo
- 5Nv53U90R3gnjwM8Q5//Ovu+/Goaqs9oBAAA=
-X-Change-ID: 20250428-vdso-absolute-reloc-a226293c1761
+Message-Id: <20261123-vdso-absolute-reloc-v6-4-161e218dd217@linutronix.de>
+References: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
+In-Reply-To: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
  Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
@@ -120,25 +119,25 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Peter Zijlstra <peterz@infradead.org>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795441872; l=3723;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795441872; l=2617;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=838wXNltovAdYq5DnbIAatCSo/HDl9G1xi3tlTew/l4=;
- b=JGW/t5g7XakafXkEmZgN47zuaZVRMd5P5Z1iLiNybaoBHrfSDWqN9ASPR8Bxcs9mW00guv58q
- XTXxW/DfNA2DS7eGKT7s34DDNPA2BkV8xQIeN4+3mlNlEP2jFFXWeWs
+ bh=ORz4l21C1iPuk7FCAsvH2byEFW0UweMz0824cCTy53M=;
+ b=q7DXOLJiNCyz2OBeq2mHIOnoqJ70WoExeUnEefxSG/lSMIqTsqHDcIrncJ9VEiIXA1Umw12+U
+ OOQlmf3HB4zBZUGjar3eMCLr8sFDPZAeV+wIvbVyQBy37Hse7yPcaaY
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2861620004
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4652D40003
+X-Stat-Signature: o33srdim9ddcmgknwuehij15gpmnjm11
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: xn3of9a3fw9ojqzdgxsufaez9fpr93yt
 X-Rspam-User:
-X-HE-Tag: 1795441880-216732
-X-HE-Meta: U2FsdGVkX18enQoOh9J020CCUWOnWsfTu3wvj2b2a8z4kmEoYYZ+ve/Ze7lJmqXkNAKpzRuWDN/gou1p4jj1T8CYmmubVaRoXMY8Bje/TR8uzzFHCQtfWgQnzMqKGgqq/EcwPwmqb3nPdpe4z1W3Gt7JZ0Re1kSyQrimJDw5c3K7sC6bZpOf8nuzYm+WmtJcbs0t3sfb/Y6xPPF3Myl1zufbeVJux43J1Aq5AQYd4Z5UQbaLLwNUWGY3uy8zXgZVPZh6qhT5/P+FI1CdfF7DjhHIaEJFGB47wSdJP17lzOjUgBKhWppycJMNiw4suQ0fXHQIzeUvw2t/FQ90imQaXr4O5VG2JxhKk4hM8ltjvHq+MmL4XLmnjuhKN4GmpGEpQSigrKYx081KIUuQyZQm0qK8BMMDlYA1kPcGYHN71jwxtj+lfMvpBRqX4H/Z4mlD84vrTlQqgvJX1ExHXCeaK+eMD2ovOqIvQY/55VcUH2qJlNRShG1lfJcvlWJdSjN6dHm9bkyh5zVdqwvW7o8Wuu0VXzme1swyP2JbAtUQ6t2yQWS7B+W3eF3KCJfpAKpXIrHLH/LvqbexhABfTKQQDDRvYmkNaTZglDiMD1cgaO+7tOH26gvz6kX6PEYkqx2YzXbAtptibXtZNKb1KEPNlGN2v9jIJ8+OkNFmh4YkKWJbla/ROn/c6e0PCXbCcvJrNj5bmb2hGRYI7m52w5rWYpS/oWgX1V7yR8io6m+zTa0BwvpvYrB+dOhle8LIkJMokLXVls3taoDe5Lg2kU5DfemSTUzSmJoGqPV1xrCW1hAx1Wdl8TwOJR+fQ0XEV3KvLUwi1QCe1faYVleSMD9yNnn/PKSmVBAtTqzT8akgdIdkefqhVeICBe1drk02/QRIfuTcrEK5GuyxmSi6xT8Ktdu8IJZIqY98BnufIcaGdC0fo8I/KqjD2vpsovIEBj2BMdc9juLM21ffRybTr1I
- 8x5K0Ue7
- 38gfmhCMK0zRvdgDus9JyUXBbdRIs0qVEpMKgFN50iOvgqVThEgLuc27bFnQd+lpOMsh52nOyGROxl1x3tRmL7JG9Qmj+xswCDWGZXesI6QC6d7edymYsxco0xYkHYVrlpk8FKBc1b1tkZHC6onm/1Di7QHh3DlZBkN3WxjBg6h4M/7F2gUBatPBiMFwj7N80KgyBqcnYBqycM15LfAf7tigk82zcp5PPrqKa1BVi0VUiazPM/Q5VdnpbBFLpGFT8QAgTA3duwdUFOsNCK5N+wCnUPBIAkBwon08wRkNBTw9T0E2sximcC3rot4ffTp6mGEWpFS9KvRxxNEWS590NaZBTXNyHdK4o4Y2hxYmVdwEWQv2Sldzv4dVqbBLSW4l4NyuoK1DGQC9kH/nxHZwyn6t/sb7stuFGPmz+uvKDpstcnq23q5MUcsYlmyY+Iqi12j6jDk1KNbST56SIVE8V9MYqhmM19nNuREMNO8rT/NzEui8GV/z38C0mGdkngBpoXYGOp+O+fmtCwF/Tf3cXesc9D0p0ye0spFdmfqGhiF6oX8+QwLz2WQF63j6MPwoExq4AtqoxAJqQghMd0kXc6yql/l2FSNti2EFjPSHN0zV/I+aHzZ/MLySr4Jf3lImg3M1q8b6YX0RS4fQTWCVyvezeFG+/R55nHfO1316N65tcPN1+liMajVIW1Dc2HGAUfvdoV3C4VO+KEjjYS5Yy5CAHsgCt9OxRygmiYK2eibzQqZEbV6n260A+8Rea9pj+f6EZYFQwS/kp2oJUCI99YeFVOCCZ59teCAFQAyAOge8kx+5i5NcVX3alOdBhv7pks+J7l3IgJUVadlqo8yjFChNP47VQIRzz7Skwn7Mg2lAJwSBdJBXISdxOwDPeC9xKYkDw
+X-HE-Tag: 1795441883-664757
+X-HE-Meta: U2FsdGVkX1/u0rAfYa4wFUg6G2qsEDSxe5wmCVw0ZhfiK+TmIpOMwoO7KoCOFsLT8D8k31j1yJ261dpGtIoVi4oGVpfYWAdYSIC+vasOUAgPGOy7HuqnqPAm9SC0Mm9gMN6ycDwcs2Ti7y5iKtYgfaSgLg9NQ4sLW/ozR7jLV0UzYwOg5yUsdTytX2y5ZqZpMwsEUnw5C/95TxuajdC8RUd0DjXT5ljV2B3Gw6LSiqYyksqj/PoTMVhftzNMM2kYJWwZDG0L9SedBUreqWiw5ObPi11dvgBVJTzs9SYLKozuAn9i30Fzrs+WI/s0RR4fq9f03m1yBQAmyIiP5zeNVuiHEjCfR2o4g3JnNj3dwJ0WlDwCqCL4o6J5S+9W3ud8ufnZXA4m25GzlODX2RAKr3R8u+CIn721EgRcKBPN3MhHW4qAJqCHFd0IufF54Ruj2jvYs33Voptf5Twob6Lty8BVin/F8eYfW82EZI5hahkyFxajAK3LFp6gaPq0rxJ3evebd+zCOaqWyzh3vA60Rz3LmXBxbf5pUCQqnAbo2ipYsNyZrV1RtRlXlLpEUZ8AMSjLKAwyzG9tXLFj3kwD+y9ZOgqoMZAF55kZsBDq257YnhPSWnVu69LKg9UbTrLMeX1e6dCi3R/uMYQbDghUEuVeXl/2BIvbNk1UQb3dTpw6cOb5qyVvgzCkzI3cZFHEArQAEsCZPZu0NpZ4k9AjnxZ4SX4uMBV+800g7wwIqUCF4UsSsIP/HnvH4Gqb8QqO5KEb/pINlFxNFJQxmdTBR7fXh0FrkZwyrrHmbDTCVUo3SghVr58j9OWnGKq0LJGpfb9Ax0eIJoCFUUHYdeUWrlrUODFmVlnUKEObMl5/sUzANugwJr5nyFloHSctucjsFZd3Ph9Msvy5RTKPuDn2+Uclx/m4+Cj5tK4NS2GVijju4/3i8LZWAAwonFowN6sPpmnX0Xn0edLkdHC6w+E
+ UniHtTS4
+ IMTmH3Ld5Mfrk3lmEkEpz5xo8ZASN2k43LHeKs27FrUOztSiNcnpsEMpsbnI7bTJmNJxwj8btGLgRAJkq2JCb9sk5qr8vGtwSKhQJOzUADlx9TUl6QgJh6cPe7jZi2hGppuu8UGDzisoT2AwyA9sYFhYdssoKIIsrVlPoz99FkNTbZVGa6Ch+b13hZP1Z4Mhe5+KdyjxFeFaYC7pnb/uPioP8a5LSbiQep4JbuDWGPB/cPOgbyXudnmIj8gUBMZjedZVaJ3h79JyZxIi7rxSEfYkon2oKzAtzvlEGbgJ8ZhRdBv/iaE2O6WwrlLuqrtAm20PWfk8Dv8/jimvI5ub0ub5G11tYaP7FyuRdIT7ePAGzgQzrRIlIrBLnEazvDrqmeYeGaSSNOVV3BI3nNLvvXqbGBswhnJABP9G8E9Ypcy2hGMjP2AmdNb7vkZPsfhQqiFYG219uJUFHqyb5V4Juk94Hj2GaSuBwDIOr0r6mKK6Mb5+LXpuIoHA33AN7871rZRtxtZwM6NQbwumLPIc4RgBgbGUbe8G+mOm1jNlS2RD4qRnhSPrxweZgFObLlpHIb1Jg3f291c0+3FAK/lPYlh6E6kEu7LCxmszTUirym6uULBrMUhFgvgUbKPTG7alYzduj70sJ+5b41hMxL6i3BVBcgWsODa2zh6sDfIzMHAQcPtoVjpbCG5ybNWjVGA1ZFFxm7QxgJlk9M/ySfzxNpho6kmIT8SVvpH1G7XPRcZw+yAxQP37If29fXplUViCr3DGUMU05fSpbWrM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,91 +146,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The compiler can emit absolute relocations in vDSO code,
-which are invalid in vDSO code.
-Detect them at compile-time.
+The vdsocheck tool validates the object files and final .so library.
+It can detect if the compiler created relocations which are incompatible
+with the vDSO which need to be worked around.
 
-The tool is written in Rust. However this does *not* introduce a Rust
-dependency for kernel builds with CONFIG_RUST=n. If no Rust toolchain is
-available, the new comprehensive check is skipped automatically.
+Wire it up for the architecture.
 
-libc elf.h is missing some of the relocation constants,
-so hardcode the magic numbers instead.
-
-Kbuild and Rust folks: This contains custom definitions of hostprog
-bindgen and rust library commands.
-These are currently only defined inside the subsystem directory.
-Let me know if they should go into scripts/Makefile.host.
+The compat vDSO will be handled by the existing 32-bit ARM configuration.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
-Changes in v6:
-- Drop all UAPI header changes, hardcode relocation numbers instead.
-- Add note about Rust *non*-dependency to cover letter.
-- Link to v5: https://patch.msgid.link/20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de
+ arch/arm64/Kconfig              |  1 +
+ arch/arm64/kernel/vdso/Makefile |  4 ++--
+ lib/vdso/check/vdsocheck.rs     | 12 ++++++++++++
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-Changes in v5:
-- Rebase on v7.3-rc1
-- s/HOSTRUSTLIB/HOSTRUSTC L/
-- Pick up review tags.
-- Also handle SPARC.
-- Build 'vdsocheck' during the prepare phase.
-- Drop now unnecessary riscv LTO preparation patches.
-- Link to v4: https://lore.kernel.org/r/20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 1075bc661833..df22b4ed5e29 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -258,6 +258,7 @@ config ARM64
+ 	select TRACE_IRQFLAGS_NMI_SUPPORT
+ 	select HAVE_SOFTIRQ_ON_OWN_STACK
+ 	select USER_STACKTRACE_SUPPORT
++	select VDSO_CHECK
+ 	select VDSO_GETRANDOM
+ 	select VMAP_STACK
+ 	help
+diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
+index f6619e1cb2ce..5d8c34c7be51 100644
+--- a/arch/arm64/kernel/vdso/Makefile
++++ b/arch/arm64/kernel/vdso/Makefile
+@@ -61,7 +61,7 @@ targets += vdso.lds
+ CPPFLAGS_vdso.lds += -P -C -U$(ARCH)
+ 
+ # Link rule for the .so file, .lds has to be first
+-$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) FORCE
++$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) $(vdsocheck) FORCE
+ 	$(call if_changed,vdsold_and_vdso_check)
+ 
+ # Strip rule for the .so file
+@@ -79,4 +79,4 @@ include/generated/vdso-offsets.h: $(obj)/vdso.so.dbg FORCE
+ 
+ # Actual build commands
+ quiet_cmd_vdsold_and_vdso_check = LD      $@
+-      cmd_vdsold_and_vdso_check = $(cmd_ld); $(cmd_vdso_check)
++      cmd_vdsold_and_vdso_check = $(cmd_ld_vdso); $(cmd_vdso_check)
+diff --git a/lib/vdso/check/vdsocheck.rs b/lib/vdso/check/vdsocheck.rs
+index e28ee59a900d..0d5ceaca34d7 100644
+--- a/lib/vdso/check/vdsocheck.rs
++++ b/lib/vdso/check/vdsocheck.rs
+@@ -57,6 +57,18 @@ fn allowed_relocations_for_machine(machine: u16) -> Option<AllowedRelocations<'s
+             ..Default::default()
+         }
+         .into(),
++        bindings::EM_AARCH64 => AllowedRelocations {
++            in_object_file: &[
++                260, /* R_AARCH64_PREL64 */
++                261, /* R_AARCH64_PREL32 */
++                262, /* R_AARCH64_PREL16 */
++                273, /* R_AARCH64_LD_PREL_LO19 */
++                274, /* R_AARCH64_ADR_PREL_LO21 */
++                283, /* R_AARCH64_CALL26 */
++            ],
++            ..Default::default()
++        }
++        .into(),
+         _ => None,
+     }
+ }
 
-Changes in v4:
-- Replace the inline shell logic with a dedicated build-time tool
-- Link to v3: https://lore.kernel.org/r/20250611-vdso-absolute-reloc-v3-0-47897d73784b@linutronix.de
-
-Changes in v3:
-- Drop already applied bugfix for arm64
-- Disable LTO for the riscv vDSO, as it is incompatible
-- Link to v2: https://lore.kernel.org/r/20250430-vdso-absolute-reloc-v2-0-5efcc3bc4b26@linutronix.de
-
-Changes in v2:
-- Link to openend (invalid) GCC bug containing more explanations
-- Refine commit messages
-- Don't fail on commit absolute relocations in debug info
-- Link to v1: https://lore.kernel.org/r/20250429-vdso-absolute-reloc-v1-0-987a0afd10b5@linutronix.de
-
----
-Thomas Weißschuh (11):
-      vdso: Add the vdsocheck tool
-      x86/vdso: Enable the vdsocheck tool
-      ARM: vdso: Enable the vdsocheck tool
-      arm64: vdso: Enable the vdsocheck tool
-      powerpc/vdso: Enable the vdsocheck tool
-      riscv: vdso: Enable the vdsocheck tool
-      LoongArch: vDSO: Enable the vdsocheck tool
-      s390/vdso: Enable the vdsocheck tool
-      MIPS: vdso: Enable the vdsocheck tool
-      sparc: vdso: Enable the vdsocheck tool
-      vDSO: Automatically enable VDSO_CHECK
-
- Makefile                                    |  19 ++
- arch/arm/vdso/Makefile                      |   4 +-
- arch/arm64/kernel/vdso/Makefile             |   4 +-
- arch/loongarch/vdso/Makefile                |   4 +-
- arch/mips/vdso/Makefile                     |   8 +-
- arch/powerpc/kernel/vdso/Makefile           |   4 +-
- arch/riscv/kernel/vdso/Makefile             |   4 +-
- arch/s390/kernel/vdso/Makefile              |   4 +-
- arch/sparc/vdso/Makefile                    |   5 +-
- arch/x86/entry/vdso/common/Makefile.include |   2 +-
- lib/vdso/Kconfig                            |   7 +
- lib/vdso/Makefile                           |   2 +
- lib/vdso/Makefile.include                   |  14 +
- lib/vdso/check/.gitignore                   |   3 +
- lib/vdso/check/Makefile                     |  34 ++
- lib/vdso/check/elf.rs                       | 498 ++++++++++++++++++++++++++++
- lib/vdso/check/vdsocheck.rs                 | 299 +++++++++++++++++
- 17 files changed, 896 insertions(+), 19 deletions(-)
----
-base-commit: 0e2fcd5208a4bbe53419a0e4359df3a614135649
-change-id: 20250428-vdso-absolute-reloc-a226293c1761
-
-Best regards,
---  
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+-- 
+2.56.1
 
 
