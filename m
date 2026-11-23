@@ -1,138 +1,166 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4DC606A33C
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44101606A6A8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bNWDAJAr
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Yzqy+haz
 Received: by kanga.kvack.org (Postfix)
-	id CE0166B05B0; Mon, 23 Nov 2026 12:49:10 -0500 (EST)
+	id 605B16B05B5; Mon, 23 Nov 2026 12:51:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB8D26B05B1; Mon, 23 Nov 2026 12:49:10 -0500 (EST)
+	id 5DD356B05B6; Mon, 23 Nov 2026 12:51:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA7936B05B8; Mon, 23 Nov 2026 12:49:10 -0500 (EST)
+	id 4F3286B05B7; Mon, 23 Nov 2026 12:51:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 963156B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:10 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14BC9C09DC
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:49:10 +0000 (UTC)
-X-FDA: 85467120060.17.26B5241
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 36B0C180006
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:49:08 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=bNWDAJAr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795456148;
-	b=WIo5X383mB+M4HNLUI5JKDhL9Q6pCESl8i5QNd3F3YP0bVeMkvwpx7ivxWR+H4nZrVyw47
-	Iraxy/SD+8U9Cwd4DL4AwmcXLv2OfHe2409iUlncmsfi999SN+RqVn0M0mdhO+OfO+1UyU
-	/nTYTWqr8K5HdgJsVfGtszyBNQA43i4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795456148;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A4736B05B5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:51:02 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 42F67120954
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:50:57 +0000 (UTC)
+X-FDA: 85467124554.16.CB2C39E
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 24207A000E
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:50:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Yzqy+haz;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of namangulati@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=namangulati@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795456255;
+	b=F2+VsIhgvnwXcPw4NBraDub6j9FydvcRhMm36/iWZDaWHjTaK5kfcu/krJv9esr0CTtxKQ
+	2ryiDCaIYqolvI1TmZoqoLFXRmiH2DEa/OPXd5GeExpVP8GbOY7OBqw8kLClmJ6Z3AWumm
+	Wi0fz+tGxK/mIi8G3V41bUkn4f+2+KA=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795456255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uy8AXENEvxp8VrMkoOr6XkIXIF2ZC5d2aIua+WZN33M=;
-	b=FQbQKVyTmSh7VC24q4s/ODpEz5wZHZeYPIEtWnxE2SpsTjzm9ZmyXBcjAB4eLL6yX3DpPA
-	efLRbbCLkvcwprbs3jcZKzavreP/V+DQwnPID9Csm8uYZp7QZAvHtkST+uLYQy7QXXBJo5
-	Wv6YNHpXwmSmKXxPVBmFopzN7aMSFMg=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=bNWDAJAr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-483c607ccb4so1915834fac.0
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:49:07 -0800 (PST)
+	bh=ezlDWRMj9kmxxJBJDvLQDaV+rNJm+P/qJAKPI2Vbze4=;
+	b=xt/Lhig04Tz+i/pEW/uR3F5bV859TMzQ8VgvtukbwEvxG6I5rxvQEhz4Lbu6qq7rBykxN/
+	Hx1jNR99o4LU8OG1XsOhP82tu0Dfm5BXtpkqbI2B0wrPCCbmb+z2BcI3P0QOyYVCm6Rsf1
+	F3IJtooAAAYmCWTrhPO+PVzesnufGq0=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Yzqy+haz;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of namangulati@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=namangulati@google.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4bb6860f867so102605e9.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:50:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795456254; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FbkHkvQTHEBeN2vBrsYVs8YrwH+ZbI9FpMVtiWKgTSBx/WNnDKVnXlm/7YhXfBKcXB
+         eFLdB6qmEBU2Z8lxnBX7R+gGaF3fN6k0YNXmK5UF+0GFyjmU+0SIg29QwSSDWmQ+Chu5
+         nlBmZJSU/VdAmBUQotaJaNl4WhRX/CuhyVHYI/Sx5E65O0GxMLDFAjENpF+X67ZVo2az
+         wATAjwxZsGvP2mpUJXxRHguDZ08nrIrYDu4rxWwFRRxlNJjD8/gY+aDefAZBLUbq714c
+         QYZpUPE2m62Nn2PQhE3yG2Dhz2rDPCPqWjEuPN9g6Eg1SnHozwN1PMAV93B9PnDBDKNT
+         9f+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ezlDWRMj9kmxxJBJDvLQDaV+rNJm+P/qJAKPI2Vbze4=;
+        fh=qnX86pBn3V+qUNvw604fcGv5X3pUL1RO1DK5BB3ord0=;
+        b=AZDA4jk/0Q3RCDzTWfT7cyIoMXbknVjpkPCSGNQnzb8ykXRjw/jOYY8qIFhvk0RFp0
+         pUbbH9vwtQMmPBwKpQON2Ot02g2sKAy/DuwCxlbMOL6633pr420ysl6wfc8GofQROzvx
+         kWUgYj2Hu0RP+aJytljanYPfOZ6+jteYv7nGdikiTu8AZ3vZJRvP14Xwtuz4ucPld7Sz
+         jGBdQ3yMpifKn9okZV+ltGZ8QGI1QxJ9peLfz9OOLHX7GJe4OprvOJfdi+TXChQ0TDZZ
+         PBINSR6zsLX9y4oamyHe9wvXJq7RxEQ3pgeJ12cFev6W9WM3jbQWBLQIRkAHT+iTJjc9
+         8Efg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795456147; x=1796060947; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uy8AXENEvxp8VrMkoOr6XkIXIF2ZC5d2aIua+WZN33M=;
-        b=bNWDAJArFYfBj1YGdZeVrSsLfyJM/+feF9oC2lb13P/vY9/f6eb+Kage3oJ8wR5iVs
-         94puj2sxo43PwwTN9cUVnJeVbb49PeydJbzFeCZCRwOj5HQlxmfj0eo3CKEMx4wmJDS3
-         eF7wECbjiGA6Mk4vye88jeTuq6Kr39DJ3S/doexzBbdJHzwaeyE/hyrfTPQa0gmP+ZKZ
-         nK6sNviXPsZfb3J3H3QKxLXSsMwQC+759LLTOjYOnqbwxx5ooEfGqRtz/g1P9amCyv94
-         RHNXBZM5BW4ykX827Cy9OrwzC6zaHycBapgUH5rrnzNoip6N0LXFQE9qxP2jZt6OCfwv
-         sHFw==
+        d=google.com; s=20260707; t=1795456254; x=1796061054; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ezlDWRMj9kmxxJBJDvLQDaV+rNJm+P/qJAKPI2Vbze4=;
+        b=Yzqy+hazPWsnfIgC3OmYRQadAXIgXXK14iWYaXew+Qqfj22EODRFeIYtLEasVp8xy3
+         DPPCHr59HK0paGFZOqUqTkpbkQxf6/pQhh8ioMyBRQW72Zw1p15gqAPBVlI5lsThR3SF
+         9g9JBl8mYrBLn4xruHZctoWgfZlCgpbFmt+9ct+JAChFVdJ1F6ENR6Jpw3St5Rlqb9GV
+         bUXD/rj85cPYQSc6Lb/Y6x54uesym3z7hFpvbykdIr/pEDaa/Ua/yN5f3NEHeF8rZwKo
+         E3FOj6oSDSqRbsaLFV+LjPizBuIjroIK8u/lhJvaTFSdcqOkPAsdpXbTlWPtNkv7rQzc
+         0kog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795456147; x=1796060947;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=uy8AXENEvxp8VrMkoOr6XkIXIF2ZC5d2aIua+WZN33M=;
-        b=B6nIwFv/qJxALRSS7x8FIiSHsRXPU6HtGbYlSfDBB4Mzu/7EmHGEwHjnal/LQhnXBA
-         eRRYXlPNn0GJYLGipbZ2/VBwo1VQqsb4zkP2j0jy17qRThdS8GuDYpmP5HxQSI3+c1HP
-         eFNLsYnAfJ/Jo1AGX626isQvqj6e7lpWJs5v8Ut+C/evGTJohDD8L0+wo3SYJhr3WFzO
-         InGkmSsqDBHad9X4Oynp+j2GuvHIW18oALzt6C+Z+NN6ii1YFiuYiwh3s6UY6WG5CPXI
-         x1xIYIiS9cuwofu+9M2/NFbhU1htbZJvql8Av3g8uoHhEwGoN7BHXRRtDoAYYmBOsgZs
-         k+Vw==
-X-Forwarded-Encrypted: i=1; AL+hErGrqCiu7J/YMR30f6kjCBE4i6pMAyB9nIM/tRbTmeGNFyLdk3hwkoHJCCojm6qvZ922EwTm3om8Ow==@kvack.org
-X-Gm-Message-State: APuU4Z95HLLXmWc8+Mu/AKYEtDL2kWvdMQrL4USK/SyRVU0BOiXDbL2r
-	S/HfpbB5XjAuiyfY/ATjK/GGxh3zNxSVhPDVPnUC7ZYj4Qgs5vFjRs02
-X-Gm-Gg: AZFdTZe1pI/6OCwKS+Ordz4w3jGb1L0ZU2/eR86NA6iFZ9tG5gnVSBSRLggzOuOtaJw
-	YWaDiggTB89EW6JR10qRHydDBL5iTXXOqFR9Y4EN2OY5oWx4cKk4ttTcKyZfWT1C+2PClK2u3gL
-	E5LmwaBbtpJN/Te6LwPWtn1NJK7HovGdLD+CRhvb6XD6pdzptUAL7FE4iweZB0yA9D78tto0N7o
-	JMElyk9NUGJ7ov88416Xm32XcKOhRWRMaOJSpw82IPIN6ObQUZ0tkK7CCDuHwfoqRmQ5gdIXYux
-	wREgja1FSjfy8q2kJaX8tA53CD9wFPwUmaipB/HTumzZFW2KdSeF/Jgv6D/FwcQHbqzAPZfT3T2
-	M0DWyQ7NVMTCRRx1Vy3zz+8BSaEToOgDmZy7siLMCmgq5KrZ/9SN0XpYIckfDjJm7Gsa2f1Fj9l
-	VqpCIh3kRg5U2oEhhdNp1Gsq62aMJSy7tLRFX3TviZMoGoP8QVJ7NC6SGfI3lb1bKZgP7ZhxBq7
-	PvLc7dp3Q072+5nkbweGmHJVR3hcij85CSQ09A10dNnkvvICLweAwbgOhGKFhQh4IFFY1MNRGhG
-	uCXF7xa/M9tsE2JE/8OJhAOIP0rhoME1HajapmAY1+vpOsQ/9zONXpCL7S8=
-X-Received: by 2002:a05:6871:295:b0:4a7:4b64:3818 with SMTP id 586e51a60fabf-4bc85eefab2mr10911425fac.39.1795456147071;
-        Mon, 23 Nov 2026 09:49:07 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:e::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4bcf0794755sm10740921fac.10.2026.11.23.09.49.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 09:49:06 -0800 (PST)
-Date: Mon, 23 Nov 2026 09:49:05 -0800
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 2/2] mm/vmscan: consolidate promo vs. high watermark
- checks
-Message-ID: <awR8ZuldFtf93uNF@devbig011.atn3.facebook.com>
-Mail-Followup-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20261118230539.3789231-1-joshua.hahnjy@gmail.com>
- <20261118230539.3789231-3-joshua.hahnjy@gmail.com>
- <84ba8739-1f1c-4838-b607-e6181fe55002@kernel.org>
+        d=1e100.net; s=20260707; t=1795456254; x=1796061054;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ezlDWRMj9kmxxJBJDvLQDaV+rNJm+P/qJAKPI2Vbze4=;
+        b=d7ji1ifrsQ+7+9r81/AJzotmkZdfRN1ontA9b7Xx7oLuKthN+rSPqBt30aM3aa/gcG
+         qKrRtLAi6AdfB7EtdD+uVRZCH//B7UykZn5cSolYx1lPPZaC7cScQo7LnhELZOMyXfpc
+         yC0vFtyYFAOPlDeis7bXCWEMvWLMKO6sTwCuurO+gziyazAJZBUUVhBvmE+GMPF2H2LH
+         ka1TYW07kgA90X4xnkWWwlODKssLb1Jm7yBFmD3wpaXdNwonYFrg5tGFY3mTRPf5bdVr
+         7P1CXqZJQ1zxUlU3kmF5FaB605StqnHHoLJkCE1F0KOZiKnkzE+vSLeYyjJ2ioa8b3eN
+         pWLQ==
+X-Forwarded-Encrypted: i=1; AL+hErF72QcJ/n0tgmpIFrPWSt4MWRskNSQ3L/z6Pof0GTsSC1MBYfGapec6AX+o81MEAZ/WnuFHe3mjjw==@kvack.org
+X-Gm-Message-State: APuU4Z/TFoPI3WlhPXGgZ2TrhXurxGKKjoo6GAxWKNGq/+lphAtFMl+n
+	jmrYVDdW85w9EkHms7ntVpZ9v1yGSVF19kpqZ6PjYv3UTbisurTGvDc93eltBiEyQy9woIiwWP4
+	ptIXU1xkJkmnnzPQsPuRKmOJXwernPesWLDmUZOzg
+X-Gm-Gg: AZFdTZeg04KflBVCwSj0hqEl09F1pRoT7SegH9buDAR/1fEBOqu+dyhbJQi9RnT5gEh
+	taed+WvQe5lGJuRyk7Oq/EmJI9+FFHOyFt622tL2jGgscyu/W79kJmz9MPdKh3xAXDpK6w2iLXa
+	O3F/2MpeXbPxEQIvLmiNippAwUOYzIvVm+Mqvz1Shxn+ja9SDE/KcjiC1lAoHsekq8ThX5RTdYc
+	z05nldPIUUdx7u6lRgvhszA/veLzBN0UG0bF/B9a5Ok58+FKwSRBgtAj4VUeUh95nr/kEdDh3Ky
+	5SjvMW3zuGFcDpXaOrKfMwwEHNIeo4WMV4vwjZ97HEgYeOxSRQKLhSXcq8UJSVIlv7xHUM4lCZS
+	o4FVDMMqhfZNOvUYDJ7onRMrTnGDfSwirAkli3lRTc2vQmRvQ8BfDszmSb5Cu0uMjXa4=
+X-Received: by 2002:a05:600c:287:b0:4a1:e368:cbf7 with SMTP id
+ 5b1f17b1804b1-4bb909d0619mr1867585e9.0.1795456253076; Mon, 23 Nov 2026
+ 09:50:53 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <84ba8739-1f1c-4838-b607-e6181fe55002@kernel.org>
-X-Rspamd-Queue-Id: 36B0C180006
-X-Stat-Signature: cywnz54b61sgu5orknk9m375xjnx7zz5
+References: <20261109182533.3594984-1-lrizzo@google.com> <20261120010655.467825-1-lrizzo@google.com>
+ <20261120135013.GO3115493@ziepe.ca> <CAMOZA0LmZ9PFzxLcc1SuS8piFyZu6P=vX_qR2jy-3QRUoNCUKA@mail.gmail.com>
+ <1f10002ea9ee16a17087bd06e4a1685a973fdf6e.camel@linux.ibm.com>
+In-Reply-To: <1f10002ea9ee16a17087bd06e4a1685a973fdf6e.camel@linux.ibm.com>
+From: Naman Gulati <namangulati@google.com>
+Date: Mon, 23 Nov 2026 09:50:40 -0800
+X-Gm-Features: Aa3M54qK7IY8ZMBupflhQ8_7jK3YPX7yjpTGqvTp5f5henwr9osR6FHQsicVdiQ
+Message-ID: <CAMP57yVZx=s-JXHfQfd_ouv2jV6MMsJXpxVLkQQHG=7qfFVJfA@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 00/25] PISA: Pre-mapped IOVA Superpage Allocator
+ for DMA and CoCo
+To: Niklas Schnelle <schnelle@linux.ibm.com>
+Cc: Luigi Rizzo <lrizzo@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Jens Axboe <axboe@kernel.dk>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Harry Yoo <harry@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
+	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jann Horn <jannh@google.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Simon Horman <horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Willem de Bruijn <willemb@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Joshua Washington <joshwash@google.com>, 
+	Harshitha Ramamurthy <hramamurthy@google.com>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	Christoph Hellwig <hch@lst.de>, Dragos Tatulea <dtatulea@nvidia.com>, Pranjal Shrivastava <praan@google.com>, 
+	Mostafa Saleh <smostafa@google.com>, Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, netdev@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, driver-core@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-api@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: j4yims5e6ancg5wd3dzqg5i1f5f16q58
 X-Rspam-User:
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795456148-367368
-X-HE-Meta: U2FsdGVkX1/rPpPC0NMf54viM0+sHRVTj7ZLvGMLIv3FQjc2E4Gbn2xmbE9STBKIiItE0J7ViABtgPElSlnzIgCm/BKsRydlCLu1lIggEpNveG8xnXfZxMKbuU0EpaclHVvjKAAYadU4td4YLv21zcsGq/zDhhyuXCPQQFj0v7s6tJBSUZBtZ+hkflmvlTrwbYk7lesl/WwcGGgGBMfrmQZijwqHWDixEtvzI8Xl+hcuHxQOwOCS63hwb4F5u97N+5mNokujkuHbhF6k9mg5QNXrmrog1FCXmx9ZxXXGy6eG9nXwLZ8ip/zT4P1H/dr9KKqZFBhhwGkcl2XmklB4L0LmUWoMpd4i6gyRHfBjR76H83ZAz6zAKNmNKZWeDJlkvMRfgLo1BYoxuCcUea6D+ZhrwnVHMYA2mCBH2jjcNgGhXL3kV3/fRXwheoNan8vjCoYOInALultTSog+iWcVJrX+CFpyGVAwIWCP3hU99+naRszRnNahMZNj5qYzt5TgGm6IkndMRvwbcR89qySaD3awd+EejXqEcLe8gYidYjaFCTFlu7YTUIQ6p1CXPQEY+XmiS5rtEHO6WTTKB/yN2Titj2BULnZ+UZ+PM0q/rCKcGtroydr8u4dNbrh8C6zR5XYc7BM2lDTK2BdJneWixwyccsYEvvpcmApon6qFLq96jihyuwQ14P57cpSCQvdfoUlUgj1P+2FSCzmbzBPLhtSR9fP+ic4zzQrzI4fgMEt0vmPO0LTi+HPW1cKz6M1ZkgNj8FhrGdz2+HypjN16g/C4xnxvmT1N85z5DXwlJyHMj4Ramgt4WyUMsCYNIiJHql3LAujNqbZuP6xOv6Y/7EmWvzeJsje2Y+P8Xm94RK/MgVCHlz5jFbreG8OKV0W3h4ZVLLK0Hl4Gq8mU1dFUQeEBOL927Byi/pQkRBr35jCvRLxBxqc/KLPUPFICqc3Kib0Rpl2OxBvEvnzLWyS
- cqOPBcrF
- YTGcA9MtimTrJUsFFooPVzQPrcSSP2Hg/XhChlR9qydsypzHh6vk3HargwdTl90mlJuQ77UCmefxxXTtM7RgBehsfoAQiKgo/aAFfHuHhL5GTONbcjOOi/z6mAZm7VEy06Yp0Lu69mO+nsIAbnnKyWpOHVc+n0LxmZj/LIfZx31TuMMygI0mFU06/NcdIxkxRdRBHd3q++J3jhYSS2jAodf1a1PEnhUvRSViN2zaNcAHvZ/al6tbU0qhP7EqXHQlkPky8TIxjrgMDxWs6LSOMv6CMnCVtzAuLIXc4+OXSQNYUDKuQQ5Qh78tX2nEHkGp/z+x0am7kBhFtcUPaVH/39clnSWSa58oWLHLeO0NM/E1Mw7Zy2nok1lJitl/lMIKp+DzqMJS6H8TBKMozos/jsH4dvEmTouprepaIGXAW73MB7hcg2/jjP+bWg+2htliXsgYBRWIEhQjvg//ZHCJL5tVXb7+N2If9CJnrM72Va+xuVwE9+6Fp9nTKC66lAE8cgNPNDyPqUlNv8j8OFcbNHXGHR7e1IG+vc1v3WvaM1JRpoSvTf0/b4KgvqUmZOer8F377hOGce71rXaTJe/JJnlCc1ROgpJnuI7lxdT/UApmC4PErF3/FTYb77Pd5PL9TZu5clX/lHchvqgM7Jc3QJTyqG6GNgFngt+qaviy/U38HY85azVaQ549isq2zd43N3NoAEeqQClAKQWK4jAn+H7G+LDd3s0gtqlnaYfzXAmO7aA38YyYX4hUEXGK3L/0k9tWXqwoGsAivLSAKuvLcrPC7jsxXIu1MAUJvgnOG9XyZv4yj3+6ouM+MYnY40f8A/Ixn2zgkq3Wl3uedUTfihgKqL8Qil80AluST/G9763/vho3kKe6jdjGvHWm4c7M4UlTMjSzYWg7k1fgf2V0NwXNXT7yhVZG71OsnR4GSncMjL88=
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 24207A000E
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795456254-941241
+X-HE-Meta: U2FsdGVkX18lM2qzY5VCxtO74gIJyqNZOZDvdf5XNloEfIyEjhzcdoz+b+fYXYnh6xBD8em2xDp+XhUrHsYEHwFJ/1VXFMOUkNJXqnzBqCHlmbX95UqD7/QwbmEWuC6zmF75qHjatoH4EyapZzgItKougoANsuaaNfcKjWflvbWHfPdpKkN5foiApaUZTi8DfQZneRYCVX1438D2TxEFSTtocfznypOE/qENuutqWG5HELgyCnSvo9TQ82nBsJBHzCgjwUqE/ohkp7124cmANlAAF6NfppmIrmgLwDSezkMQaQvdv2eIHBtZyYuONacdZQwT3sPoC6H6xtUKIyG8qVgLaltqQUULRIMJkK0dvJe6Jq10ZMJ4hwgy5RSKawvCmTDN33E8zSrDOeUprcPngOJu+/2I8m+e9raBEMjrWD50dMw1Nd0Sc6icfCLE8w71spnYgBSriKVoeZGFZWG86+h4Ap3eM7axqGm9uB35eBEwuBMSnrardHD6IK9XMYCnTDlNKqjaL/eJi+EN+C9tXBmYSFceNYDvdPYcrsRw93bj/r8FiGQxuIFTQYzE9THi+Tl819Du3sAE8SNsE2AfiT0zFzWKc/MTZC/pD83bn+GsUbsTRJ6zv8TJXKcF8iYW5bh2FiDeyBr0PYGz4SV6r5IBsEta2yB6pk3zWg3MpTkTtlNToqPJoVbWsSvydpj+WASRbyzAt+MEPUozST6VUbvt+mxdvS0TtVKlWKumzOH8za/ifgIyCn7rUJC+xoy620EcjQh33p7A/pxVr6c3FzDQV+U5gnxvI36I8mnDPOLPHLYUD6alsvA5rgpOtf8Gz4e6QnktgzciRXBoZiNJU4/DvAy6VxSU//MLbVhAoLHDbViFWFVKMjMpTBxqMMZtFKq3oheicBbjiJenFBUE1uad+mF0ogz8x7YxZEpMzUk+kwVc3gKC7II4+2IMZg0ioySfKVRnrN2zNy3cqHH
+ 50ZrcD5X
+ /k0cT7t2kzMoZ3pPesUWsE48drzrZNxtPVqfujII3ZNrt54Bhvb6tnyCqPE7VTvDoyRPSf0OIs4vZsMF6DctrZZw3bFz3NGvId26CyPFzlu7uJo5IHoYv/XBr77+g7aqCI7pmV405qSDDRTOoRcIKo5l/DawOC/Zur3QuOSsuex6CEz5kDWqQT3Ue6SI3EUsTRzG1nsdBP+6Ila1gw7nVQEEwQzD3kbUPErgXPt92x5j4u14ySu8kl5P2pvaOpOTD9M4akOtznnstSZmwAsJrryW5bwl0CTQbK5qh9j1h0fI8zuz+deN1Yq7lyULswOzZhnUuGHbA/j84u3cSFKPQJ+q//dPnHle+42iagrFd3D3TXch1tON3d6BtuYEtEfXDB5f9JRknB+Yk/n/cac/zMq2DZi8FHsv74R+cjY57dbvyAS6Qw2q8IZRmyUexFZ1OPZxQZGlkqSBJ/zXVIYH4D8c4jKXYbWZ/Yw+EGEGKMBIb4GcLXnsrG2NfRtb8h8WSD9hAkAELd6yOkTl/fGEgwr3t42ZEghbqZ4i22PJiHC8cSomFW6kj3EFlMiOx3GaWgf1mWUv8HeGdWEN4SCk5YkI2wa2vu/Zv9+suZTIh/IhdPSHok5yZnNAQf1dHREtR5iWrpScy69VnwKBHy8dlm0thzDjjxpVm6g64
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,140 +169,118 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 02:44:31PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 11/19/26 00:05, Joshua Hahn wrote:
-> > There are three sites which all check the watermark that kswapd reclaims
-> > zones up to, which is the promo watermark when NUMA balancing memory
-> > tiering is enabled, and the high watermark otherwise.
-> > 
-> > Consolidate the pattern into a helper function. While at it, remove the
-> > include for <linux/sched/sysctl.h> in mm/page_alloc.c now that the
-> > dependency on sysctl_numa_balancing_mode has been abstracted into
-> > vmscan code.
-> > 
-> > No functional changes intended.
-> > 
-> > Reviewed-by: SJ Park <sj@kernel.org>
-> > Reviewed-by: Chris Down <chris@chrisdown.name>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Reviewed-by: Gregory Price <gourry@gourry.net>
-> > Reviewed-by: Dev Jain <dev.jain@arm.com>
-> > Tested-by: Chris Down <chris@chrisdown.name>
-> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > ---
-> >  mm/internal.h   |  1 +
-> >  mm/page_alloc.c |  6 +-----
-> >  mm/vmscan.c     | 22 +++++++++++++---------
-> >  3 files changed, 15 insertions(+), 14 deletions(-)
-> > 
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index 566cbd2dce485..8beb5b263ca1f 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -68,6 +68,7 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
-> >  				gfp_t gfp_mask, const nodemask_t *mask);
-> >  unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru,
-> >  			      int zone_idx);
-> > +unsigned long kswapd_wmark_pages(const struct zone *zone);
-> 
-> Can we inline it? Seems wasteful to make the allocation fastpath call to
-> vmscan.o just for this.
+On Mon, Nov 23, 2026 at 2:10=E2=80=AFAM Niklas Schnelle <schnelle@linux.ibm=
+.com> wrote:
+>
+> On Fri, 2026-11-20 at 15:19 +0100, Luigi Rizzo wrote:
+> > On Fri, Nov 20, 2026 at 2:50=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> =
+wrote:
+> > >
+> > > On Fri, Nov 20, 2026 at 01:06:30AM +0000, Luigi Rizzo wrote:
+> > > > This is v3 of the RFC previously posted as DMA_PMD [0], now renamed=
+ PISA
+> > > > ("Pre-mapped IOVA Superpage Allocator"). The text below follows
+> > > > Documentation/core-api/pisa.rst (patch 25/25), which has the detail=
+s.
+> > >
+> > > I thought the conclusion was to just do this stuff in netdev pagepool=
+,
+> > > now you come with an enormous AI series spread across the entire
+> > > kernel?
+> >
+> > There were surely comments claiming nothing outside net/ cares or needs=
+ this.
+> >
+> > I respectfully disagree, witness is the fact that e.g. there was alread=
+y an
+> > io_uring proposal which is smaller, but does not address applications
+> > that want to use the standard disk I/O paths (libaio, buffer cache etc)
+> >
+> > Nothing has changed from the initial series in terms of size, use cases=
+ or
+> > subsystems involved. Large files are placed where they should,
+> > the series covers the same three use cases (disk, network, CoCo), and
+> > touches three parts which it has to touch: mm (most of it; it is a
+> > memory allocator
+> > extension after all), dma (it hooks into map and unmap, not a large cha=
+nge)
+> > and net (the pagepool change is a couple of lines; the tx path needs to
+> > touch more places because the current stack assumes all paths have
+> > the same I/O requirements).
+> >
+> > For CoCo, there are very fine grained controls so the bounce buffers
+> > can be enabled only when they don't pose a risk, which in turn
+> > depends on the threat model.
+> >
+> > Specifically, for network tx buffers or disk writes, the user-to-kernel=
+ copy
+> > is basically a bounce buffer provided it is used correctly and not leak=
+ed
+> > elsewhere (which is the design; of course the implementation
+> > needs to be verified and possibly fixed so that it matches the design).
+> >
+> > cheers
+> > luigi
+>
+> Hi Luigi, Hi Jason,
+>
+> I've been lurking but following this series since the start. I am torn.
+> On s390 where the IOMMU is always enabled on our closest equivalent to
+> bare metal (non paging LPAR hypervisor), and where we also default to
+> an emulated IOMMU in KVM guests, the underlying problem is a real pain.
+> We're also in the process of enabling large IOMMU mappings via the
+> generic_pt API which are 1M and 2G on s390. So, the idea of making
+> better use of larger mappings is very attractive to us and I applaud
+> you for trying to tackle this very real issue.
+>
+> That said I do have to agree with the critique. This series is too
+> invasive, too unclear in its layering, and most importantly it feels
+> like you're trying to do everything in a big swoop ignoring advice from
+> the maintainers just because it would limit the scope of a first step.
+>
+> I also don't think Jason's point is that nothing outside net/ cares, I
+> think, it's rather that the IOMMU and DMA layers already offer the
+> tools and each subsystem needs to use the right combination for its
+> specific requirements. And if a tool is missing this needs to be stated
+> very precisely including how the addition keeps layering intact.
+>
+> I don't claim to have a simple solution to offer, if I did I would have
+> sent patches already, but let me state my thoughts. First I think this
+> really needs an iterative approach with much smaller self contained
+> steps and focus on specific issues. With that, I think this should
+> focus on the network stack, while the io_uring specific proposal can go
+> after the block layer. Also in my experience networking is where this
+> hurts most.
+>
+> Now, I wonder if we can't start with something simple. What if the page
+> pool could start by allocating in batches of PMD sized and aligned
+> folios of contiguous pages that can share a single large IOMMU
+> translation. The page pool can then still hand out pages from that
+> batch without having to do sub-page allocation but would already use
+> much fewer IOTLB entries and the locality might even help non IOMMU
+> workloads. So, I'd even hope this could be enabled by default and this
+> is actually something I don't like about this series, I really don't
+> like having a tunable when we know that larger IOMMU mappings are
+> strictly better when you have an IOMMU that supports them.
+>
+> I think that approach would also align with Jason's idea to keep things
+> within the network stack and to work with the tools we have until their
+> limits become very clear.
 
-Hi Vlastimil, thanks for taking a look! Yeah, sounds reasonable to me.
+Hi Niklas,
 
-> I'd probably put it in mm/page_alloc.h as we're trying to split out the
-> monolithing mm/internal.h
-> It shouldn't be a problem to include include/linux/sched/sysctl.h there for
-> sysctl_numa_balancing_mode, hopefully.
+I have been working on this idea exactly - extending the network
+page-pool with a memory provider that allocates large pages, splitting
+them into N smaller pages that all share a single IOMMU entry. I
+breifly shared my approach in the v1 PMD series [1]. I'm readying a
+short RFC to share shortly, would appreciate your feedback.
 
-Doesn't seem like it will be an issue. Let me send out a new version for
-this with both changes then. Have a great day!
-Joshua
- 
-> Thanks.
-> 
-> >  
-> >  #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
-> >  #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index e7a7863e381ab..31a670eb4832c 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -45,7 +45,6 @@
-> >  #include <linux/mmu_notifier.h>
-> >  #include <linux/migrate.h>
-> >  #include <linux/sched/mm.h>
-> > -#include <linux/sched/sysctl.h>
-> >  #include <linux/page_owner.h>
-> >  #include <linux/page_table_check.h>
-> >  #include <linux/memcontrol.h>
-> > @@ -3805,10 +3804,7 @@ should_skip_kswapd_zone(struct zone *zone, unsigned int order,
-> >  	if (waitqueue_active(&zone->zone_pgdat->kswapd_wait))
-> >  		return false;
-> >  
-> > -	if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> > -		mark = promo_wmark_pages(zone);
-> > -	else
-> > -		mark = high_wmark_pages(zone);
-> > +	mark = kswapd_wmark_pages(zone);
-> >  	return !zone_watermark_fast(zone, order, mark, ac->highest_zoneidx,
-> >  				    0, gfp_mask);
-> >  }
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 9959ca158ce83..9af50783fc824 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -478,6 +478,17 @@ unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru, int zone
-> >  	return size;
-> >  }
-> >  
-> > +/*
-> > + * The watermark kswapd reclaims zones up to. With NUMA balancing memory
-> > + * tiering, kswapd keeps room above the high watermark for promotions.
-> > + */
-> > +unsigned long kswapd_wmark_pages(const struct zone *zone)
-> > +{
-> > +	if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> > +		return promo_wmark_pages(zone);
-> > +	return high_wmark_pages(zone);
-> > +}
-> > +
-> >  static unsigned long drop_slab_node(int nid)
-> >  {
-> >  	unsigned long freed = 0;
-> > @@ -5212,7 +5223,6 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
-> >  static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
-> >  {
-> >  	int i;
-> > -	enum zone_watermarks mark;
-> >  
-> >  	if (unlikely(sc->proactive && signal_pending(current)))
-> >  		return true;
-> > @@ -5224,12 +5234,9 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
-> >  	if (!current_is_kswapd() || sc->order)
-> >  		return false;
-> >  
-> > -	mark = sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
-> > -	       WMARK_PROMO : WMARK_HIGH;
-> > -
-> >  	for (i = 0; i <= sc->reclaim_idx; i++) {
-> >  		struct zone *zone = lruvec_pgdat(lruvec)->node_zones + i;
-> > -		unsigned long size = wmark_pages(zone, mark) + MIN_LRU_BATCH;
-> > +		unsigned long size = kswapd_wmark_pages(zone) + MIN_LRU_BATCH;
-> >  
-> >  		if (managed_zone(zone) && !zone_watermark_ok(zone, 0, size, sc->reclaim_idx, 0))
-> >  			return false;
-> > @@ -7131,10 +7138,7 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
-> >  		enum zone_stat_item item;
-> >  		unsigned long free_pages;
-> >  
-> > -		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> > -			mark = promo_wmark_pages(zone);
-> > -		else
-> > -			mark = high_wmark_pages(zone);
-> > +		mark = kswapd_wmark_pages(zone);
-> >  
-> >  		/*
-> >  		 * In defrag_mode, watermarks must be met in whole
-> 
+
+[1] https://lore.kernel.org/netdev/CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+=
+BJRVYf3JB1g@mail.gmail.com/
+
+>
+> Thanks,
+> Niklas
+> > >
 
