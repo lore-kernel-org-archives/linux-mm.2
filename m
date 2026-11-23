@@ -1,110 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8143F606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1979606A33C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NhD/xOlx
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lG3uyAYp
 Received: by kanga.kvack.org (Postfix)
-	id 6D0666B05B2; Mon, 23 Nov 2026 11:10:31 -0500 (EST)
+	id F3A706B05B0; Mon, 23 Nov 2026 11:13:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65BB06B05B3; Mon, 23 Nov 2026 11:10:31 -0500 (EST)
+	id EEB2D6B05B1; Mon, 23 Nov 2026 11:13:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 521B66B05B4; Mon, 23 Nov 2026 11:10:31 -0500 (EST)
+	id DDA6B6B05B4; Mon, 23 Nov 2026 11:13:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FD9C6B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:10:31 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 980A2808F5
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:10:30 +0000 (UTC)
-X-FDA: 85466871420.28.C490D5E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BCB6A14000D
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:10:28 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NhD/xOlx";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795450228;
-	b=oaFvcsl/eI2LpLqmIYl03RMlAL0Ypg4dWz+ZWrwjn1cdaKv09ZN+0/RJCURvhBu4lhXfPq
-	kmeDeHuF1Dz9mj/iz/0Iv07siK5p6mCdxS+OwnwqcU4bJozRkf93S/oASwV4WSWcOl86wQ
-	EJCPqVdU+mNDoxRInBQK9SiIMAKFDfQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795450228;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B684B6B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:13:27 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49C3B1A093D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:13:27 +0000 (UTC)
+X-FDA: 85466878854.10.1197438
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 37C2840006
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:13:25 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=lG3uyAYp;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795450405;
+	b=DyTmcC5sgNiBopkK1Vk8upOlJri8OLA6zkLaAk1ZD+a8o1/3+UHliIzu4zDOdm0tt542pw
+	v+31QFQBGvZXTzJRECT8BwYej2z+e0QOX847buTF/kjfEZaPRVfk0gPQds+9VUrCjjctJk
+	9bUNftpZilYzwDJDbE40tVBFUyyFFeM=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795450405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lfsfc1WMfSC0QgUpwbLULjOQXGicAPKLtwLK5uI441Q=;
-	b=uJ9ZmMe7GxUJQuE9R6tPNW8XX+16D0TS61QO75q8JZ2LQNCjQTLaHl2ew6AdYAT9g/Urok
-	Pp80xMpw25oNpfwBj2BkXL8CiA07cVi8wlJ4o/mHLahMEoFBgrPq676JtSvAYq1XHA+Gmc
-	rRW/EwX6jbUP/ODNWZeh+1bPmNe2MtY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NhD/xOlx";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A73B540A71;
-	Mon, 23 Nov 2026 16:10:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8501F000D0;
-	Mon, 23 Nov 2026 16:10:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795450227;
-	bh=lfsfc1WMfSC0QgUpwbLULjOQXGicAPKLtwLK5uI441Q=;
-	h=From:Date:Subject:To:Cc;
-	b=NhD/xOlxcASeAudQuKlMZ5sD5z16j33iIQmWBQdrZ1Ow2Nf7X+7PfO2DUkpTg21R7
-	 nI/DOR4DG37WrAXucBV+4HOr35ErWqSjeoGz+MaPylglqsCDsP/ce+LF590mrE0XKK
-	 tp5beo3JoCjT52hiBgqbCBkgqM/BCEO78gNWk8axoKED1j3Pv47haxy6oux2MagLnm
-	 3uDj7LBiga/vtH4LX2Y+OiNVc2Oa38GclNbw60zKndLhA+WJS328ZNEu3Q2gYtzDwU
-	 WG7oULkRLPJYfERHt+jeRINzYumS0C3FBBPBjBNP+0rzGWUj+gX3C014V6U24hTUL3
-	 uQv6yk7AcazJg==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Mon, 23 Nov 2026 16:10:15 +0000
-Subject: [PATCH v2] mm/rmap: correct VMA write lock position in lock
- ordering
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VC60GZZo31yUNr+wgKLno9Qh5+CFy8SXNEOHTmSSUVw=;
+	b=NdU/wyOsRNG7PpXqoqUtuI0LfeASOeFSvdMTKpoNxL/fpC54N3zhuEC/HV2FybxOmaNNSr
+	rVGzoZ4oQGsLSfxdpYx0YFrGpt0nusCUlVQn3k/Ra0bnh0+W7sz53tYWOzw4c8IvvOroh3
+	xXbbozvSI0TffVgpf8Mz40KikwAYubA=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=lG3uyAYp;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-54492d8a988so510151cf.0
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:13:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795450404; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BmSMlEYDAdWWwl/fn/Nc1K+JL4dVOBYnpWsmbLnm0XCHHpkqJEpvvHMGuxxBs/x7Nw
+         qtlaCy+CMk4F/wYZJMv+NBWwzwtVCVjpz/dE0+DWVpOKKwGSAbHtEkj1AwiXMMj5lAqJ
+         XsD6jBzkbX3xiXqH0NL6/QiQ4G/mL3kcHw8JY3sohzlSSUSFTHCsAQzA8RvuZ+nk2v+1
+         nz7Y3pCnfi1Ad310u8pm2/wMqhtQKK8kGnBUWqYnQzm3Y8QvQpUveGBatUMLYRPmnLML
+         Hp4oR2uerNRio4kAFB+Mme8VPjPFB5IMDiNCBZBa5RDQ+Ou//cP6OAz5PDMCprafn08E
+         jhow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VC60GZZo31yUNr+wgKLno9Qh5+CFy8SXNEOHTmSSUVw=;
+        fh=zepb5xnTQdRWfVjznhAFQPHofu4AwdQMkiF0pse6bkc=;
+        b=Dj59aaWSh7gRIsxBHqw/cEnHW7okL+0achaer1RiBwDIKRoQ76vjtcVpY81dAU6M8x
+         H/5HCg5O9N7CWRgQhJI+ZvDI7XZ2pUX1l1vqHvVMcUCIzIyvKotlRXvcUpSdXg5ZeSsW
+         wlyRPmjvywSJrzYkphHed4QZECZh0S0Py1O6UKBzX6oLeXLBl1blBTqbBPAOH/JWOBtA
+         gaTuNSf0pv7t4u5QAe1QSOFIcIHCgCNBNNitm81dKk3O7wLgMqjrecc9Lbg2rvLjQKEg
+         qDNA/IukCScZ3P9GV4tBr9hrGWEEnhdj6EDhphEAgNxn0vsH7Y30jE8mYQdUpUuOlQq2
+         Kuzw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795450404; x=1796055204; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VC60GZZo31yUNr+wgKLno9Qh5+CFy8SXNEOHTmSSUVw=;
+        b=lG3uyAYpvRM4Pr+dlSrg0N6LuJQHXVvzDQOL9ysLidcGhmqt4fJEKTi7ZCOdYd61cs
+         kBIgMURFWD7d7HHIJRSN/oiPxxpvZGP92Hg19r/H266IfydHGfV554C+rcyAo5YC/Is9
+         OWvC3PR3/wkiE74vRBgAkUpV9HDwKdrhbbfwLJCleOFmxuwNnXd7wW5W8gtsqhXIacIn
+         bXaWeYWyrdIg4EfNx02QkC8WgTQssmD/BYOwKh43gzyDHuqNwGl3/ubQ4KM/I314M51w
+         sysgSJ3jeM98BuOPQiulUqYIY3YDwirWC8NeJVA75AmpdrVluvExXsbhha7cC7e8sx5m
+         C2DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795450404; x=1796055204;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VC60GZZo31yUNr+wgKLno9Qh5+CFy8SXNEOHTmSSUVw=;
+        b=lNV/qC5D2XUDh4xsiJTi4Jn2FxXvSX3gEPWHx7+cBEYo+U2fJ2Ld66A2WiCsyXgtS9
+         u7BYUJMhKXzg27BTyvlMGjt4t22O2LkWJAxKA7Ei7YkSXqMG8KseRxnd9pjUQ8WuRgCc
+         /RNnsvDJrqVmVgEWvil9J/Coio62m85pqr5QP3/M2YsWdK96/dN57AigOaDhd4dK2TBS
+         R0kIWhs3ewMPU9kC4AiCHA03qj7/EWhYeFCIBQ6TaBdrqN79TRJz/Nd15Svo0DCJaWm3
+         x29Zgifg9dWQibfehQzsfQdpgdDu6XQ8jMlwzfW4njV8eLYJm2eJ0gAyjWqiOEJ6rOm0
+         f91w==
+X-Forwarded-Encrypted: i=1; AL+hErHjlSZDui9orc34/BoFgfxs0cMo2Y9iG8vhzLSXeFDhSpBI+TOgwF1O7YTcqSrdRzOOOUm70yeu4g==@kvack.org
+X-Gm-Message-State: APuU4Z9+MDVfgsFUkjnjYOtDGUukEMyaiERSwQV//vrg1mUNLzGwsNL9
+	hvPjNahZ3E2y+tZNr+tXBZS8wDa4NEe3qxssqmWMgtRJ391Hk7bxNyiSKrGVTj9SXzjTyUN9T0A
+	X7NQ1O4+AFHBuWV7LwtMW72qf8+8KGMGW/xSBVyvQ
+X-Gm-Gg: AZFdTZfTkgzy+owVkljMNXRjNnQwwgAMVh9FbEW/Eq/FGRXA8zYUuZjJyPriQSQ9AFU
+	T3DbpHZLg37WxRftMGX5NM4+hb9qtj/lX/UHbQbf2mGOXP5h6dmlJp6bRJn56fNyLpmSThcYrge
+	KWNt0/6olTZEmS0p2s8Rpssod3CG+3VU8mvW83b1dxMJXb/dYUTFa9n9hAehT4893Eihq6LiuDQ
+	qhZ0Jlc9Z21Za7dM23ZItAnMDY6x4Ps44KKeP2l59Ddu8NR1exMARrwVQOIfD6X+NKsqR6ZovSE
+	vpN95KVadws1f+kRwUJqedSwawBSjAntXg6iLBhYBIkJSIFAU/uO5YO83elYkj7MDeVhSKwjupr
+	ExsSjz0FedtqoUAZqjoxU8Vz2OaFX2bu+fDqt8Mj+hipBPvYrLYx47mrJUFsNWULYQVTbjTs=
+X-Received: by 2002:a05:622a:2b44:b0:55d:3243:574a with SMTP id
+ d75a77b69052e-55d880eb263mr39740601cf.3.1795450403673; Mon, 23 Nov 2026
+ 08:13:23 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261123-fix-rmap-lock-ordering-vma-locks-v2-1-11b04646abe4@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/5XNQQ6DIBBA0auQWTuNYDHBVe/RuEBAnWjBDA2xM
- d69qTfo9i3+PyAHppChEwdwKJQpReiEqgS42cYpIHnoBKhatVIqiSPtyC+74Zrcgol9YIoTlpe
- 9JGOrtGnurRlGbaASsHEYab8Wz74SMFN+J/5cxyJ/+ke8SJRotHK193pwjX0sgWNYb4kn6M/z/
- AIMNe4M0QAAAA==
-X-Change-ID: 20261121-fix-rmap-lock-ordering-vma-locks-62593469bf59
-To: David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
- Lance Yang <lance.yang@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, ljs@kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3465; i=ljs@kernel.org;
- h=from:subject:message-id; bh=JFN3XXJROK9z0GHrDq6eqZSloqOW75UtPvr8ButN3P0=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZUrN9Epjj/UR614id1zhvIph3tpNPeIV2Gr+kot9s6
- /idX552lLIwiHExyIopsjz/Ir4/SCRsXucFfzeYOaxMIEMYuDgFYCIbJzH8U36SlhZUujN8o9fs
- zoeXjywVMLlj6e1468eaP/tO3k4+as/IMF/5pnXQ9yzbJ5t/rBbZcezXETn9+//Dyjd4rZ5lmWC
- WyQwA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: gribguepk3jt8jcpwpidaarn1g83sznf
-X-Rspamd-Queue-Id: BCB6A14000D
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261116071325.263682-1-hao.ge@linux.dev> <20261116071325.263682-10-hao.ge@linux.dev>
+ <CAJuCfpF_=KV3ArFO5LtMjc4EGMr79tX_tX2K=YCG_JTvC51OfQ@mail.gmail.com> <0e30c5c2-b9d0-40ea-b7f9-af9a8854bd58@linux.dev>
+In-Reply-To: <0e30c5c2-b9d0-40ea-b7f9-af9a8854bd58@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 23 Nov 2026 08:13:10 -0800
+X-Gm-Features: Aa3M54r0R4skiMgKsHIc0IKP4yYJ-BOLVODQJYPoar_iFImIJ0fTee_iDqFXrIw
+Message-ID: <CAJuCfpE7S3uTX2rqEkmYqhO6zuqTKtDH88w20m1_fMHF8L672Q@mail.gmail.com>
+Subject: Re: [PATCH v5 09/11] mm/vmalloc: undo what vmap_pages_range_batched()
+ mapped on failure
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+	Shrikanth Hegde <sshegde@linux.ibm.com>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 37C2840006
+X-Stat-Signature: qj6mi55q1ddh85b69w33bsd744kipwh3
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795450228-893511
-X-HE-Meta: U2FsdGVkX1/2V0Vbn4pe+Na6K5BN2zLtAZtKrtYRcVZqOgjySjyu627JnxZ/FGFfBYv82eoHS2tXF13/uPj9U5d8eAL4h3uetI5XCBuKZogz4Zm66y3CsTbYwBhYoMy6gLF99tXWs4+gtjkCwZm2nA4e5bFqasUIxZUINYRwALK4vnhKvMd8HXnMJSP5A3HiyWlL88Y4D05mfyq2Ibf9i6TjwbL487O9f50caYUUNWtUFla0LpY0HExSYsKvxRc/EmNCZza3TYMNutCkCgOnTOnJsE/hPq9kc+DxCFe/yKw5pW9hV7/AHgiPKlNK+9d/yBkLsfsY/5b6f9+j0xoJCwwIuL4oFjiDu2P8Cs6IPRF0FEo8ovQHkn6o7DcEJD3S9A5dlqdMSjcJPGzKBd9lLZaaUfODneXHjWX9l6B85B4OE83kfVvalL73mTmA3BfexoQzwYZdVPQeH2UixzlsAtJ+jILyKuUzqfwsHQJ1BlRtER4wWtOLikBfTGNHi3DuJE7JpuZwmKXQAzozkt8QH+WLmgKhyUCY5ymFyfkcXqQOXND3zuRZBSeE4dZECKbEdjGV+WJM6nUeAPGJg0xUSKR5a4C7mcJESMp0eIb6Z+5jnhX5yJ2FK13u5n6VGDHnI4GI3ZtqlrFTRlfmFji3JzG8cL11WHgHro+3MB47b2RmiXKVEwYmATUWH2/touyT+2817KFUQ8z6YHFakY9WkbUhPa8XgmOKODLEjYwA7o+Ha+dwcb+DsuCqMuYwLyW3JiRGzjOYoMWP2b1bWfhPr4aoePfXKfIift0TyiJ0E4otXudP4yVEYMXZ6i7PRerMFqoN67JFh2F9bZeLjFwcvVuk+EnTN4jUPFGcV+I3XBe08gSivy7bho08PXUgl3ekksDVt4azLZmbzeJOwFAmV4OjW+NBM0LW3Ov+eu7rhq+skdQNJ29lY1kDR3F47FMXPxeiUYml19F9NbEeF44
- mNx7uU9f
- 8AC/WCLyLn4t4IgEJxYe860TWu116/EJaoSiZEDt3dUPMYGlo0aR1xf1JrudzYbuBkzwaBCnfCs94y6UfNP7bnRCHHTywHS7IsSp2zBGJzlYBOV4OZ4DpWhZYd8i4Vi4vdpKfHvnPnnI8TXY+T/p0wfwVc6NJeESVjEYeyoicEFKJG45mtKVPe3jvWoEgXZbl9HmDCq+3o3SXkaes6t/iMd1BLCMdfWaazKBbnaNFlL2+ycq6wdJDWtVlkk0s/8McodtufRRXZn47kkgKbiBei2oFtLBKT3WCVKQ/qXEyVdZdCx8HEiZyB5OSNx80HLUFJBu4ZvE8S9ys0u0XMU8adIHW2gzsMrfW281ZunAoMwt6lHzuftvpYNGhD53ih67h9FVz0WTczr66GVKgV8BvEwDPMqW74s2U8aFetnHVn5FTN6CPFZ2u/2gLzvAwJ8imvBnC/EqDwDxwaKeICbxDn2nvIxsu/GdnGDZd
+X-HE-Tag: 1795450405-560043
+X-HE-Meta: U2FsdGVkX18IYAM8C2Qshx0J9/ACY8Ymn1jJvKi/fAplHoYkpYiv3U5GI1PH7a+5MrjM2AcvqULmNA3LmBBJGdHw50s/OKFFYFnWkSg48897u9gRAzrQDo0GMSGoTNeMzU8PVnKi2bOj2bVz6eYkIluDTK3pBF6IAS1RiMqXy1F3cNQHb3xge6SX+je6HVMGBdt6bvBG0/81JjZX3bS4FPwukCMX9bZiWqZB2HloQx3kpRr5zUKT0mc/z87FZNHDPRW+6uvlYci/kvgws+nJLpQ/4lnXQnlfc+VuDtNwMzs/m5J59AiRBmK+f7j6xoVlXw/OqGj3PpEq9dS4VFjUkoSas3V79npXDTISJuov0rzJFHng6zCpttH8i+KGOSY9tdf+ZhnsJ9OXrA31mo9w1khtQC+DEIgBtmVFF281Z9rdPr12oigJRZ2aFzHURWoBqnf8e/kQhznc08FqZHNmcnQTqYvtsVrB0QRhVjxbbCDiNQoFnUDx1Jz8J1Bbf0sQ9wiKfY65kQra3FWwNCU+F+ITalEvTvj7skRKrNB8LN9A1fowqI/frv5CPKzg0oiQog958PammOAIza+Lo9Yfigep3Fmn7TQJfSMu3IuSd+aOdNsVeAAWQAUk2p+QrXRL/AXMbfC2zDWtwa/RBRe0qWWPtuzxSzdKcNZP4aQpsBkTpbrknN9C4SviREaTCUldS79g2Kx3hEVHhhMW9N7o0nBEP0LHCSw0iqEeo4nMohNI4Ly+sRiYJh4qRfc5ISDnRYp8vkJ6z9kY95tw9GDQBTBCTWPdvHivUycthmJy/xaA7rpN23OXlgQ7aXOb/o7YYG63kYFtvnBXvgs4GwRA1k+dlEAnQKKcsH2NXpKPblKRONkIrSCbhQZybR7VEEH8Ldpit1/QS6pxEzVnXKGVEKdVwTiAQYkVb/KVPTZr1aLLDmUDnLMKUeJ3HVFNR5GvlxsMYUmdcTaEJhY3Crc
+ FpAddx2N
+ H44m/SUqckpTBfKYaxq+qG1/gm77v2mqggo1r97BTpW01Y4EIzf+Bt7CqngryMG4Bwfw3MnZJikaiVr6iqgi1TS9O6zHKFDyt3x1YhmJpj07JpAFxzksNdPLGo6E+OXtFdKa9fvWZwVkCacsJ0CuCalAX+IpK9eS0+K/7t3Q6FsWtWCWTYNxUrdQAf3Jl8+f7Mkw/DCIGmXX+BJQ0/eO1zD6osucMDdEY9qhOmCIcdjpn9/6xDry0VZcZQ88e+BbO53a0tfP3bbeqldL687d5J7gwEDkpz/+iJt1kXNt2zFlN45rHpBFgAcujCfhdRvSMsxNIfMAlHE3gVic4gBfE0JUuVS+oY2uobBMsgL+cR6QUuXURULcJQbd9RqfRsc+vbvT3TF0IOMek3h5lP7K6+FDWmeaDFi4ggCI0W/SjpWKM8Aj+iKhT+OErksthQAxpNqBjerNQYCP9N2MV2rIZVoZGHNK8pkjuTkElU9hhmEH0Uhvlh2xOZ395MhrupuW4dM5VtWna750McT7JHsgQWplHZAhg/U4jgxVdlyYIr3pjnQFNteX8ghpj6HCVXdejRlrlf4grEKWK2wU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,92 +152,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The list at the top of mm/rmap.c is taken to be the canonical order in
-which locks must be taken in mm to avoid lock inversion.
+On Mon, Nov 23, 2026 at 3:32=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> Hi Suren
+>
+>
+> On 2026/11/22 12:13, Suren Baghdasaryan wrote:
+> > On Sun, Nov 15, 2026 at 11:14=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrot=
+e:
+> >>
+> >> vmap_pages_range_batched() maps the range batch by batch. When a
+> >> batch fails, the batches before it are installed, and the failing
+> >> one may have installed some of its pages. mapped_end follows the
+> >> end of the last installed page, and the error path undoes
+> >> [addr, mapped_end), never past the point where the walk stopped.
+> >>
+> >> The KMSAN metadata is set up for the whole range up front, so it is
+> >> torn down as a whole when the mapping fails, like in
+> >> vmap_pages_range_noflush(). The only caller, vmap(), also calls
+> >> vunmap() on its error path; the double teardown only walks over PTEs
+> >> that are already cleared.
+> >
+> > As I mentioned before I think this patch should be merged with patch 7.
+>
+> Ack.
+>
+> >
+> >>
+> >> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> >> ---
+> >>  mm/vmalloc.c | 22 ++++++++++++++++------
+> >>  1 file changed, 16 insertions(+), 6 deletions(-)
+> >>
+> >> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> >> index 28e65073624a..aa80bc273ec0 100644
+> >> --- a/mm/vmalloc.c
+> >> +++ b/mm/vmalloc.c
+> >> @@ -3748,13 +3748,14 @@ static int vmap_pages_range_batched(unsigned l=
+ong addr, unsigned long end,
+> >>         const unsigned int nr_pages =3D (end - addr) >> PAGE_SHIFT;
+> >>         unsigned int prev_shift =3D 0, batch_idx =3D 0, nr_mapped;
+> >>         unsigned long batch_start =3D addr, batch_end =3D addr;
+> >> +       unsigned long mapped_end =3D addr;
+> >>         int err;
+> >>
+> >>         err =3D kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+> >>                                              PAGE_SHIFT, GFP_KERNEL);
+> >>
+> >>         if (err)
+> >> -               goto out;
+> >> +               return err;
+> >>
+> >>         for (unsigned int i =3D 0; i < nr_pages; ) {
+> >>                 unsigned int shift =3D PAGE_SHIFT +
+> >> @@ -3764,9 +3765,10 @@ static int vmap_pages_range_batched(unsigned lo=
+ng addr, unsigned long end,
+> >>                         prev_shift =3D shift;
+> >>
+> >>                 if (shift !=3D prev_shift) {
+> >> -                       err =3D vmap_pages_range_noflush_walk(batch_st=
+art, batch_end,
+> >> -                                       prot, pages + batch_idx, prev_=
+shift,
+> >> -                                       &nr_mapped);
+> >> +                       err =3D vmap_pages_range_noflush_walk(batch_st=
+art,
+> >> +                                       batch_end, prot, pages + batch=
+_idx,
+> >> +                                       prev_shift, &nr_mapped);
+> >> +                       mapped_end =3D batch_start + (nr_mapped * PAGE=
+_SIZE);
+> >>                         if (err)
+> >>                                 goto out;
+> >>                         prev_shift =3D shift;
+> >> @@ -3786,13 +3788,21 @@ static int vmap_pages_range_batched(unsigned l=
+ong addr, unsigned long end,
+> >>         }
+> >>
+> >>         /* Remaining */
+> >> -       if (batch_start < end)
+> >> +       if (batch_start < end) {
+> >>                 err =3D vmap_pages_range_noflush_walk(batch_start, end=
+, prot,
+> >>                                 pages + batch_idx, prev_shift, &nr_map=
+ped);
+> >> +               mapped_end =3D batch_start + (nr_mapped * PAGE_SIZE);
+> >> +       }
+> >>
+> >>  out:
+> >> -       if (!err)
+> >> +       if (err) {
+> >> +               /* Undo the part the batches installed before they fai=
+led. */
+> >> +               if (mapped_end > addr)
+> >> +                       __vunmap_range_noflush(addr, mapped_end, true)=
+;
+> >> +               kmsan_vunmap_range_noflush(addr, end, true);
+> >
+> > So, you are unmapping (addr, mapped_end) range but removing KMSAN
+> > metadata for the entire (addr, end) range. Is that intended?
+>
+> Yes, that is intended. The metadata for the whole range is set up
+> before the mapping starts, kmsan_vmap_pages_range_noflush() at the top
+> of vmap_pages_range_batched() installs the shadow and origin pages for
+> the entire [addr, end) in one go. So on failure the metadata is fully
+> installed and has to go as a whole, while the page tables only reached
+> mapped_end and are undone up to there.
+>
+> I know this looks somewhat awkward. The asymmetry comes from the metadata
+> having to be set up before the mapping starts, I don't see a way to avoid=
+ it.
+> Maybe add a comment explaining this?
 
-However, VMA write locks appear to be misplaced. These were added there by
-commit 55fd6fccad31 ("mm/khugepaged: write-lock VMA while collapsing a huge
-page"), which was focused on expressing the dependency of locks after VMA
-locks in the ordering on them, disregarding those prior to it.
+Are there any side-effects like the one we found earlier with
+unmapping PTEs which we never installed?
+I don't think a comment is needed as it's quite obvious.
 
-Of course, a VMA write lock requires an mmap write lock to be held, so this
-leaves three locks to consider:
-
-mapping->invalidate_lock (in filemap_fault)
-folio_lock
-hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
-
-Each of these locks is either downstream of a VMA, or is not able to
-acquire a VMA lock at all (e.g. in an rmap operation).
-
-This is because accessing a VMA's file (thus mapping), traversing page
-tables to a folio, or interacting with hugetlbfs requires the VMA to be
-stabilised in the first instance.
-
-Nothing in the kernel takes any of these 3 locks before a VMA lock, and
-indeed in each case that a VMA lock is taken it is taken before - so the
-kernel is already violating the ordering as-written.
-
-So fix it. Also add [_killable] to reflect the existence of
-vma_start_write_killable().
-
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
-v2:
-* Updated docs to reflect change as per Suren.
-
-v1:
-https://lore.kernel.org/r/20261121-fix-rmap-lock-ordering-vma-locks-v1-1-952c0dd5bc3a@kernel.org
----
- Documentation/mm/process_addrs.rst | 8 ++++----
- mm/rmap.c                          | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
-index 04b649818cc1..40be3a46a521 100644
---- a/Documentation/mm/process_addrs.rst
-+++ b/Documentation/mm/process_addrs.rst
-@@ -418,10 +418,10 @@ ordering of locks within memory management code:
- 
-   inode->i_rwsem        (while writing or truncating, not reading or faulting)
-     mm->mmap_lock
--      mapping->invalidate_lock (in filemap_fault)
--        folio_lock
--          hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
--            vma_start_write
-+      vma_start_write[_killable]
-+        mapping->invalidate_lock (in filemap_fault)
-+          folio_lock
-+            hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
-               mapping->i_mmap_rwsem
-                 anon_vma->rwsem
-                   mm->page_table_lock or pte_lock
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 65646ed6fc45..55367e7d3eec 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -22,10 +22,10 @@
-  *
-  * inode->i_rwsem	(while writing or truncating, not reading or faulting)
-  *   mm->mmap_lock
-- *     mapping->invalidate_lock (in filemap_fault)
-- *       folio_lock
-- *         hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
-- *           vma_start_write
-+ *     vma_start_write[_killable]
-+ *       mapping->invalidate_lock (in filemap_fault)
-+ *         folio_lock
-+ *           hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
-  *             mapping->i_mmap_rwsem
-  *               anon_vma->rwsem
-  *                 mm->page_table_lock or pte_lock
-
----
-base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
-change-id: 20261121-fix-rmap-lock-ordering-vma-locks-62593469bf59
-
-Cheers,
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+>
+> WDYT?
+>
+> Thanks
+> Best Regards
+> Hao
+>
+> >
+> >> +       } else {
+> >>                 flush_cache_vmap(addr, end);
+> >> +       }
+> >>         return err;
+> >>  }
+> >>
+> >> --
+> >> 2.25.1
+> >>
 
