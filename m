@@ -1,147 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF737606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF3F606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dQVJfxbn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HRTPwa/C
 Received: by kanga.kvack.org (Postfix)
-	id A94106B05B0; Mon, 23 Nov 2026 11:24:02 -0500 (EST)
+	id 822B96B05B2; Mon, 23 Nov 2026 11:24:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6B2C6B05B1; Mon, 23 Nov 2026 11:24:02 -0500 (EST)
+	id 7D3156B05B3; Mon, 23 Nov 2026 11:24:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 981266B05B2; Mon, 23 Nov 2026 11:24:02 -0500 (EST)
+	id 7105D6B05BA; Mon, 23 Nov 2026 11:24:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 269326B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:24:02 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A097F1A090A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:01 +0000 (UTC)
-X-FDA: 85466905482.02.F96F6AA
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 98C2C18000A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:23:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=dQVJfxbn;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795451039;
-	b=WcTR7N1T3Lbv3uAxEvFJfaSIfYXqgh9i6vQscUwMilq+DJUQTaO9YPqtKhybzT8Q4b7eUH
-	Q90Ds5SA45lAUUJ8hSgcBVVlvAvsgHpFHt7C/UuWxz4+9uJtWE1jCY1L6Nb2YFs6br1DRE
-	25HgUyFabL92QOJMPyIr41/E6eeQuZw=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795451039;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 41FB36B05B2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:24:07 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A276680918
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:06 +0000 (UTC)
+X-FDA: 85466905692.04.E31EDFF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DBAA620010
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HRTPwa/C";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795451045;
+	b=g2Fye+43TNonKgxKHg4steG5pbYwKDGsUfCtDf+jG8Jk0IfkvPo+P2U0mbsIQMtP9alnFj
+	4RSUhTASAaNxXwqw/PEDwILHN9Zifh/aBzWUVCH0O/jtKHIox33LYtKhFxh8CbbneGN80h
+	WIjoLfHXbDcTtbq71rIzCt8aw/jnkwc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795451045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vsXwjKBnoZqeiXMuVVDpDy/CmbHWkBJEaAM3FjaXc2Q=;
-	b=ty+tSYl4NcE96X88XRP4B/1bsM1CrubqcbR+RHkOZ8cGBFDttZOEAX48u5iq4jdhLnWim1
-	dTzpNikjQzEIc0gQQs9tqJRYeVLmG3eBjx9Ak1pjLXp8M0QbmWUNO0qXq0x74NxZYlgtdE
-	YC4atq32dZ0awGcVAy/sc4BNoODGO30=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=dQVJfxbn;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-55be673e029so441591cf.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:23:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795451039; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jabE8bsO3vY3xHAKHwRK3P0cAb278jEht9/ZdIJ4U0FQi+CjG7dktQpzoDz67Tc5cQ
-         Ssy/TeYMlFjjx2ulKDS7PRR6OXMEgyBKAPWOsZKkXV6P7wwXGXoTfU0uQZOgmlmum+sC
-         uHZLMVWQDErrpoqPlfTXOO7uwEEOeKHzBAiyr46q90Vp+5osN19CXNz6QEmTr51O4Fmc
-         GBg/AKJlnCvRg+PrY9k74KksZdNxW8Ziw9RALgqjr/sjudCNqzuxggqe83uqq1wpW12B
-         r6yO5h+0leEhalRkQSrPCyquykw9+bW3T0XmF7HhaYYA83LoKKlhb7ekHP9RqhEI7r6V
-         NnPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vsXwjKBnoZqeiXMuVVDpDy/CmbHWkBJEaAM3FjaXc2Q=;
-        fh=eCiSCyCEjTS+MRxznaYY0eJcUw+csBF3/fjlXvcPQuE=;
-        b=lH/R1ft6j9poxM18ZocC9GCkHyI7OlG6MCl8+ezQ9EU3yfZTifKUMfORLY++zdQJna
-         6mCouehOgnw0K8tZ0uMrA/gpdIwFfGdKgJdptRbqWdU0/CzFe5zDn1B9E0LJ/rvfZ24E
-         5ptFAC4SVLaJmQYqV+mgX+u6Pk104ZFpUYg9XHfbADihDeRftfDzyZR29r5N78mmrAmd
-         ZuYzLDd8OdkkQP21a4w+b+Ydzu+l6qVeEchvyV0blQe8FqIpaEYlnf++mLShlFYGYgbF
-         5kRklsfekL9pa+zV+aOgqCJtgzS3Jw3C+k9wLdi9LjmZf3VmTIXGwrpH2LFWVwsLNXix
-         foZQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795451039; x=1796055839; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vsXwjKBnoZqeiXMuVVDpDy/CmbHWkBJEaAM3FjaXc2Q=;
-        b=dQVJfxbnzvXl4cBXRYM7fXdGZCWJqwL1m6VdkoWlLWYHnnE2IlG7MIW5VmJwlUKoCd
-         hMvsVUC40o0Ukgmn7bj9ULJB3lMwoh1fLFQwsPq03HHhLVaCaYb4CeGpstof5j8k3xLS
-         SWM+P1Nia3ev+QJLSsdP4HQmYjjw2RPK56Dm+bho/QdfjRj3eR+T2SOfHwiEdllLY67D
-         X1tMd9w+1QzuWusbm47RzFaClkrtK9ieJlVIDuwHVT81cYrx8uTa4oAOY86rZt5Cxc93
-         ZSDVdFOQpudBbsiiw9KqiriHw6ZxgqA61FHkB3zh122A8/4B22vt7XjJB+vmrTo6fQKa
-         IsIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795451039; x=1796055839;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vsXwjKBnoZqeiXMuVVDpDy/CmbHWkBJEaAM3FjaXc2Q=;
-        b=epaocmx3iUkrjLZbuE97J2eMLuxqcpEI5bVj6ERZVVkm6GpM50MWbVBvurEAKCPiWm
-         jOVHu0///ifsEjKWJxWhczfpnbYzB5V4sjVYpZ0iMqy0QAcr5+eaiG+i5/LdXltUW9fN
-         WNM/LMh6C8j+rmLXY58GeR8vD9xQSxB1KFPG84SlhODdM9ffr1CnvrhN1KlPd9Gw/duk
-         psvwRzafadDuXnC2FRa3uEzBzVAD0WZ+cPINdaCxUwytI2bwJtfsxLw1OjEq0w9Mism7
-         CDVgR+cDlZQtzgxtaacYARTMJLP74Y8x6AcUnR78JaqASrY6Eoed+ywlBPQiUCiAwTho
-         HPPQ==
-X-Forwarded-Encrypted: i=1; AL+hErGQw4jdmi4iiA3KUGs5nqkOucFVMvb/aefN71D7yelC4vy9HXNDbc02wwajNBlDmpiURZfEPacGPw==@kvack.org
-X-Gm-Message-State: APuU4Z+aaQ1+PYXrQ1BKj/MPDFJ++QpQj1gDCbWA55FVhQKaF1mkSG9X
-	LYCy8dioRKDvTLLtMZg5kNCt8L9jYwRAIU+uTiVqkrcyL+j6To9gVBy8oO/X5KICVl+bMvkFoKM
-	q4n2BtS66rPZtYcUHzoXg9aty+gpUUrL6DL7nvEDx
-X-Gm-Gg: AZFdTZfemiJAzYh2YFtue1/OghKvHYx3+c+2XUL9YEKaLEncA+xuizVNvlI65Z7GiY/
-	HiFNKTw6TIGk9vXoHMdinA4R7mnEXlxxeHgts177EBBM/q7SjCyNEqAWDYx+UkwwmyO0dCc6YCS
-	EMRXiDaaB3Vu+8ocBi3casnKieCIKK8gh51LUkaxlvkgdFskRLdzJNYCA30XjtJDNUHRS8L3xZ0
-	7a1Gvk8hsOGyvhHxpkLlUEG3DJdkXbdx2UwcL/U3yXhMVKNjyYnoypkBq6SomuNU/jRrOChQLID
-	p4SrLy30Diwuf6if2jVyVeoKaMJTKDgbBlzEN065nKpICgkkH/hIkpBm7eNulSIbLr4GLKKpLyO
-	d0MY7TM8eFebCWvpczlPzQGXxjP81JerJFaDnvAr+YTcqoVMd+PbOdGhvPCTsjKAS41Iav3t3SE
-	WVTpdiTsOlIne3IGKy
-X-Received: by 2002:ac8:5cd5:0:b0:55b:d494:187f with SMTP id
- d75a77b69052e-55d881708admr36121241cf.5.1795451037939; Mon, 23 Nov 2026
- 08:23:57 -0800 (PST)
+	bh=DXavW4JWzr1Q6W/lcF7e/uXGv4HjAfnzdjNwVnsw0mE=;
+	b=ndOXc0qM2nmmJhX7uuL5nD1KrvU26BtrTRo//tkwqy7XR8z1emTtQO0xeVTLEivaGvOmvN
+	RvUdLnIz9p67nNGtDOvnZyYyoinP80Pz75JoniN/V47lYJF7Epx9I3gwgSlQULiRON3Zii
+	ZauYm4TaycqT3Zf+pbQGZSdVcSg4Kbc=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HRTPwa/C";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 152C84489D;
+	Mon, 23 Nov 2026 16:24:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026541F000E6;
+	Mon, 23 Nov 2026 16:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795451044;
+	bh=DXavW4JWzr1Q6W/lcF7e/uXGv4HjAfnzdjNwVnsw0mE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=HRTPwa/CG7GeJX/h6unRrUok3iyt++C87ZisW5dSA1pkNjBFXoKnQGd2R3+99lWbf
+	 tCetkOzw10KfiAfqEDb1zDLFv4dSTB2BpsmYl3iNpebQ7hv/xp3wS7tvtpJJa02uwR
+	 cWfyimQxDjn0P8ABZU7kIiHW3OOa5izFSY2TAj6KjfDZ5K5c4NNBj7+23dHYLhz01P
+	 5G5QuAYWkHHF59D7fxqFV4RmpzUN6f7pMDyC7k4H5a+AAMLrnAgF2jgE6mfDpZnnN3
+	 xFsw8dAcIFFyrXfH5mCymvWuv218H/b5jt86qgLvxzV/SBpK/t0zlUKbz90HWv9EDM
+	 kWUJXsBcJy++A==
+Subject: Re: [PATCH net 1/3] net: multicast: keep source filter state when a
+ source update fails
+From: netdev-bot+sashiko@kernel.org
+To: x-professor@outlook.com
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ akpm@linux-foundation.org, vdavydov.dev@gmail.com, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Date: Mon, 23 Nov 2026 16:24:02 +0000
+Message-ID: <179545104255.3135.1386420892995095806@kernel.org>
+In-Reply-To: <fcc87bc014e01d9571fa33aaabd22180908e55d1.1795102467.git.x-professor@outlook.com>
+References: <fcc87bc014e01d9571fa33aaabd22180908e55d1.1795102467.git.x-professor@outlook.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261123-fix-rmap-lock-ordering-vma-locks-v2-1-11b04646abe4@kernel.org>
-In-Reply-To: <20261123-fix-rmap-lock-ordering-vma-locks-v2-1-11b04646abe4@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 23 Nov 2026 08:23:46 -0800
-X-Gm-Features: Aa3M54r8I6SgrrT7SXUxZTPDg2iuNTzqihC88BGRoF_BhP_IlsfH8qQxtpUWWUs
-Message-ID: <CAJuCfpFzd4kKcyUVewacpt-jxPn9tfwWzf=NdDVvaeV_AZckEg@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/rmap: correct VMA write lock position in lock ordering
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 98C2C18000A
-X-Stat-Signature: ggexp7dptbmqmziwhbqibkofahtj9yur
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Rspamd-Queue-Id: DBAA620010
+X-Stat-Signature: ppacy9yia3pn7zfchr3kammqdfnjw7gm
 X-Rspam-User:
-X-HE-Tag: 1795451039-161961
-X-HE-Meta: U2FsdGVkX18CxsyLaDUwadkYgfUQCtUlt7CovKzX2YYrZLF1C2a26evFbME3ufMKMPDQ9wc/xP+yZZNbbP8dq0igGUaTp77VGo7D2VluQG5JimfI9mknpIvg1jnrrLADeH4E+qZNKw7O/fxQyoYJXYdkctQXwg41E0+RJVmYrurHnB+02rfGc2lLpkqrzWEQGM/QHGK8xv3/rqtyUdcb1hnVLgNYqXU/AOe1Q5gBtBKTZHXUUb9yYNIzMnZmBrIxlQ+9gGIyX/Se3Xn2H5JtwrW/9qGWPR1FiorPtuTujkxPHZXCtNH8cL5XV7yuhLoxuFJHYjl0pKVWg1U7stgt5ThSPgk5YrBSt1Jb5WIWcNYtXYpRINOXlYemDhFc8wqqda4s1vI9HOjYubi7raPereVQGovnNz/RnLOW4+rCMLdUYBvrxG1R5xbYWmzmzaU3M1cT/5M/h0D/kVbcyAlLEejtUjO07JeSZaoHh6Jxt4ZgEgWrIkFrK/6yVcuRxydL36g23832tGn8y3vuf1jNgdWr7bNaQ5GE1j9YaKypG+ig4ZYqWrThG2VDSar63i2V4q+toBt0ilB8YBZHOtcjrmbOxIFjfikBGJz8XP4P5d/exSOW8X2SINHeOJ0N9/ywJ2gp+K6iFDoQ8lb4a8NnI2L7XIJuZtDgC9Zrnr9xYF5RSf1A2NaLF2f90tpdx82kzWY2eLM6zzMQ8tzBHdDb+n1y6+3zXNfE+n7DQPVU5tgw5sF3f7oJgYFc5WBahXtdHzDGNn+LoPHYQ+ISEvJHySOzMkyOU3ZbiLJmMeIQpdBYhU5Fzhx8+hdRuxaY+aR2npr4g2a8dPZV7wREVKKNm5QYWPWcjRXu5ux30omGlpWbvlo7e0vhTZKoNKyO4GLng4VfZg4sGexTYG+/BORBMUC/n4bVDhheWX4MLTNEaxjLZg4oFLLVDEjbx2npCDgKe+vzjbPaCI7Ws0XG7ns
- J/seLh7C
- 9B/l+HkcteOi8Idiw5262phDrCs2DICn6FH4MObTmk0P7IkWJbR7DLm/4cqDDTETdaRBOgOs/OB/OPecPaE/Gd1CyjxteLHpSn+piICv87XR8J7XHjQGWCGTyw9tRABP3ERD47vWz6AXEJJUHfhH0p6OUa4/XscLHP56wdxp/xH2lBnMRSeKYlw4Gu4oAGZ+0eOyzUjOZEfJNtVQq5MLyoHlRsR0xmNdfFqlEPiqwgn1s2B2KL+ep2hhV78NoVTPNU9b4791cEdkaqtnNER117CKcKltiu38mibYhDikDRdn7DOCZcoQOYN64kMc7LFw0+Hl4vSRZ9+iiTx3ewPlBQtKV6dZb2IJt+cvczmFa/I4xIzASjo36w9ol0AkSf74kCR50I4ji25l2o79x4gGiKPyU20DOqFxicpGFvUR2WsAV5qNvWFAOVykkZaB9AAlxxSI8LEZBtravc7+ZtpNqneT7tYrgp/vAAkTNQuMbY5/oQQ0jKnNcP8K+vZPKmo7sRMSD
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795451044-496014
+X-HE-Meta: U2FsdGVkX1+LDYC+HIEQ6NkOPzWDoh/+BgSzhaaENOVAxWIVoC9fVqfO56xx4fLV0nQHEH/FYO4M2bxD0qfxES4XushPpeEVyrOdjTU2IZbJkQ9VDgo7VbQ+uX3SAIe1zolXYG5YJGmvbpG9XlzqfEnpxUnvDze29jM2OQbUAb79jkiFGQ1F1YOD8d8C57uSe8OoNY3m+ECzJkk2dzgROSODfE7YJ4r538KuOTBfOPPd+o54DiUMzPJ9DlzXwAp1vRGt8pBfDVUo+g6EVypvD72apw4/ijV3QbPDvnKTZSphDfjcR+kElS1au4TobQEdgBYKJu6pGvu2yg4jHlMWokLP/C5zMZNyPk9u57dotOnc0w/xAqF50N136Z3mrK0PLBeCXAr5dIktI5PYNQoVvy4C9KO/MMRJzN/5QAtifC3JmSN0RJM2pa5s3GDf6+SEGGFVccwfvbmExqWsEbQZ4Epe8Qd2SFaiY6FhuuraYgwC+/n2Ea9rFHTU6xTSnZYDOd+iux166LjYSpVvD/mCw21tMbfi27C0i5aTly4WJaw3pRJ6LcfFw/muQxzhr1Z4Q6uEA/I5P5IyWKLE2PpLrCAd64InTSc87uMr1GLrqtdktflQCDaB+ndnxUS3Y4BCtrLG15Pd+zt17OjtphgtylIyD4VpVxrbwg7yKQdDixLGHL3hHeLNlZ8QDM3FOjrgXzg6/4kWhzmRg7Mkz+QysDBE9yVQQrev++DMEgpFVu3hX1wPi4SVljEvL87xx9pkYVomzcvYzzvkXYNsSQsNb/3Hr8cYZ1sm29myDrc0IPH2KxB2VbHwGUKCCy9Rh/CANZrOab//9WbmGbEnXyXuyChlxrhaVXWF4XSb5N9aYxKSGuysTjw+msAiRzNvqNrMZ3+Q/sQiM00avjXgJrJuKKdQQymhRFWqfCRj1zWTKGE30s4FtZcJOfwHzs3ACV1T2Ryqnp7y6ksGzNsH2Mg
+ 9MgPTNRm
+ fBKPPkh2effp5WaQn2+wLU5eeFTcq4yEbXA2JSXJrrI4Rt/3D+l0gnVA8o7MD8ujVV/e1vr9zh5+/zeSK2rxuaRjFweZdDTL5IFD9FEjAdTgsAwUJXy04nON0paZpbrlZL/L3epmrrhfsIF5WPHVgIJtDBz1PO3RM+Q/U68MZWwhbBrdNULa5uRD0mXUE48nnQnBUBr4HfRYei/F+dKQV1PbLuxOdHQNcm+p3OYaAfTpJ456GDWXaVDXg3a/gXvadbg2GCKGNnipYr6AhFpxiCv88zayGVQEFjuOK/xC0ut9Bo7qpHClLG0hGiT8OhbYQh94Yus6k8ZjPwssCwoPRlcWC7a5jfioDdFCf3T2evMh+W57QW/LD7chavmlZmXommHembSumSQTe8pE158RDSCyLjlzfU+DB4msazX0JCjAxIlf5/UcesVI8w7I8HgBdudhBLkboSjoGFZ9oZus3SoQPXeJmj90/4vzFj6+EdA8gARjooS292mWpZS5hFEWlT8vm7hkgkwaiVgUT5Fkoev0o1xsypzNpPbyqbwl686EtZLGySksiQleKLyp7m9RUtwD8UfOSh13y9kN8JflbaDbtiT/WVX5CsOFHPRxx56YHE0GhBi2koFx6qLBYhNWovL459HX//6cWLGzHGvPEjkLA8WMZBbAnrYpRYtgDchJJYfYSVJ5Tcm24WYcrR+giz+Icxg2dUAhSY5M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,109 +100,273 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 8:10=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
->
-> The list at the top of mm/rmap.c is taken to be the canonical order in
-> which locks must be taken in mm to avoid lock inversion.
->
-> However, VMA write locks appear to be misplaced. These were added there b=
-y
-> commit 55fd6fccad31 ("mm/khugepaged: write-lock VMA while collapsing a hu=
-ge
-> page"), which was focused on expressing the dependency of locks after VMA
-> locks in the ordering on them, disregarding those prior to it.
->
-> Of course, a VMA write lock requires an mmap write lock to be held, so th=
-is
-> leaves three locks to consider:
->
-> mapping->invalidate_lock (in filemap_fault)
-> folio_lock
-> hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
->
-> Each of these locks is either downstream of a VMA, or is not able to
-> acquire a VMA lock at all (e.g. in an rmap operation).
->
-> This is because accessing a VMA's file (thus mapping), traversing page
-> tables to a folio, or interacting with hugetlbfs requires the VMA to be
-> stabilised in the first instance.
->
-> Nothing in the kernel takes any of these 3 locks before a VMA lock, and
-> indeed in each case that a VMA lock is taken it is taken before - so the
-> kernel is already violating the ordering as-written.
->
-> So fix it. Also add [_killable] to reflect the existence of
-> vma_start_write_killable().
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-> ---
-> v2:
-> * Updated docs to reflect change as per Suren.
->
-> v1:
-> https://lore.kernel.org/r/20261121-fix-rmap-lock-ordering-vma-locks-v1-1-=
-952c0dd5bc3a@kernel.org
-> ---
->  Documentation/mm/process_addrs.rst | 8 ++++----
->  mm/rmap.c                          | 8 ++++----
->  2 files changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/proces=
-s_addrs.rst
-> index 04b649818cc1..40be3a46a521 100644
-> --- a/Documentation/mm/process_addrs.rst
-> +++ b/Documentation/mm/process_addrs.rst
-> @@ -418,10 +418,10 @@ ordering of locks within memory management code:
->
->    inode->i_rwsem        (while writing or truncating, not reading or fau=
-lting)
->      mm->mmap_lock
-> -      mapping->invalidate_lock (in filemap_fault)
-> -        folio_lock
-> -          hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs b=
-elow)
-> -            vma_start_write
-> +      vma_start_write[_killable]
-> +        mapping->invalidate_lock (in filemap_fault)
-> +          folio_lock
-> +            hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs=
- below)
->                mapping->i_mmap_rwsem
->                  anon_vma->rwsem
->                    mm->page_table_lock or pte_lock
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 65646ed6fc45..55367e7d3eec 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -22,10 +22,10 @@
->   *
->   * inode->i_rwsem      (while writing or truncating, not reading or faul=
-ting)
->   *   mm->mmap_lock
-> - *     mapping->invalidate_lock (in filemap_fault)
-> - *       folio_lock
-> - *         hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs =
-below)
-> - *           vma_start_write
-> + *     vma_start_write[_killable]
-> + *       mapping->invalidate_lock (in filemap_fault)
-> + *         folio_lock
-> + *           hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbf=
-s below)
->   *             mapping->i_mmap_rwsem
->   *               anon_vma->rwsem
->   *                 mm->page_table_lock or pte_lock
->
-> ---
-> base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
-> change-id: 20261121-fix-rmap-lock-ordering-vma-locks-62593469bf59
->
-> Cheers,
-> --
-> Lorenzo Stoakes (ARM) <ljs@kernel.org>
->
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] ip_mc_source() (net/ipv4/igmp.c) and ip6_mc_source()
+  (net/ipv6/mcast.c) still switch the mode of an empty filter before…
+- [Medium] The patch now returns every non-zero result of
+  ip_mc_add_src()/ip6_mc_add_src() from the add paths, not only…
+- [Medium] The new `done:` rollback in ip6_mc_source()
+  (net/ipv6/mcast.c:504-508), and its IPv4 twin in ip_mc_source()…
+
+--
+
+net: multicast: keep source filter state when a source update fails
+
+This patch restores the previous socket filter mode when ip_mc_source() or
+ip6_mc_source() fail after switching the mode of an empty filter. It also
+returns device-side errors from ip_mc_add_src()/ip6_mc_add_src() before
+the socket filter is published. When the source update fails, it drops a
+membership that the same MCAST_JOIN_SOURCE_GROUP or
+IP_ADD_SOURCE_MEMBERSHIP call created.
+
+> diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+> index 52cde8782eebd..bfa448028f8a1 100644
+> --- a/net/ipv4/igmp.c
+> +++ b/net/ipv4/igmp.c
+
+[ ... ]
+
+> @@ -2530,9 +2531,10 @@ int ip_mc_source(int add, int omode, struct sock *sk, struct
+>  		}
+>  	} else if (pmc->sfmode != omode) {
+>  		/* allow mode switches for empty-set filters */
+> +		oldmode = pmc->sfmode;
+>  		ip_mc_add_src(in_dev, &mreqs->imr_multiaddr, omode, 0, NULL, 0);
+> -		ip_mc_del_src(in_dev, &mreqs->imr_multiaddr, pmc->sfmode, 0,
+> -			NULL, 0);
+> +		ip_mc_del_src(in_dev, &mreqs->imr_multiaddr, oldmode, 0,
+> +			      NULL, 0);
+>  		pmc->sfmode = omode;
+>  	}
+>  
+
+[Severity: Medium]
+
+The mode switch still happens before the request is validated. It is only
+undone at done: if the request fails. While the switch is in effect, can
+other code see the temporary INCLUDE{} state?
+
+At the socket level, ip_mc_sf_allow() runs under rcu_read_lock() only and
+does this:
+
+    psl = rcu_dereference(pmc->sflist);
+    ret = (pmc->sfmode == MCAST_EXCLUDE);
+    if (!psl)
+        goto unlock;
+
+inet6_mc_check() follows the same pattern:
+
+    psl = rcu_dereference(mc->sflist);
+    if (!psl) {
+        rv = mc->sfmode == MCAST_EXCLUDE;
+
+So group datagrams that arrive inside the window would be dropped for this
+socket.
+
+At the device level on IPv4, suppose this socket holds the only EXCLUDE
+reference. The forward ip_mc_del_src() then drops sfcount[MCAST_EXCLUDE]
+to 0 and switches im->sfmode to MCAST_INCLUDE. ip_check_mc_rcu() reads
+this without a lock. Would traffic for the group be rejected for every
+socket on the host until the rollback runs?
+
+ip_mc_del_src() also calls igmp_ifc_event(), which arms mr_ifc_timer.
+igmpv3_send_cr() only takes pmc->lock, not RTNL. If the timer fires inside
+the window, it looks like it could send a CHANGE_TO_INCLUDE{} record,
+which is a leave on the wire.
+
+Even if the timer does not fire, the rollback is a second device-level
+mode change. A call that changed nothing would still produce qrv
+CHANGE_TO_EXCLUDE records, or MLD change reports on IPv6.
+
+When !add and sflist == NULL, the call always ends here:
+
+    if (!psl)
+        goto done;	/* err = -EADDRNOTAVAIL */
+
+So that path never needs the switch, and it is always rolled back.
+
+On the add path, the window includes a GFP_KERNEL sock_kmalloc(), which
+can sleep in reclaim. Allocation failure under memory pressure is the
+failure case this commit is fixing.
+
+The commit message says "the EADDRNOTAVAIL case keeps the EXCLUDE filter
+and the group is still received". That does not hold during the window.
+
+Could the code fail early when !add && !sflist? On the add path, could
+the allocation and validation run before the mode switch, so the window
+goes away rather than just getting shorter? The same applies to
+ip6_mc_source().
+
+[ ... ]
+
+> @@ -2585,10 +2596,30 @@ int ip_mc_source(int add, int omode, struct sock *sk, struct
+
+[ ... ]
+
+> +	/* update the interface list */
+> +	err = ip_mc_add_src(in_dev, &mreqs->imr_multiaddr, omode, 1,
+> +			    &mreqs->imr_sourceaddr, 1);
+> +	if (err) {
+> +		if (newpsl)
+> +			sock_kfree_s(sk, newpsl,
+> +				     struct_size(newpsl, sl_addr,
+> +						 newpsl->sl_max));
+> +		goto done;
+> +	}
+
+[Severity: Medium]
+
+This now returns any non-zero result from ip_mc_add_src(). The matching
+change in ip6_mc_source() does the same for ip6_mc_add_src(). Both
+helpers also return -ESRCH when the device has no entry for the group:
+
+    if (!pmc) {
+        /* MCA not found?? bug */
+        rcu_read_unlock();
+        return -ESRCH;
+    }
+
+Can setsockopt() now fail with ESRCH in cases that used to return 0? That
+would affect IP_BLOCK_SOURCE, IP_ADD_SOURCE_MEMBERSHIP, MCAST_BLOCK_SOURCE
+and MCAST_JOIN_SOURCE_GROUP.
+
+This looks reachable in a few ways.
+
+On IPv6, without privilege: a socket joins G on interface A with an
+explicit ifindex. It then calls MCAST_BLOCK_SOURCE with gsr_interface ==
+0. The idev comes from ip6_mc_find_dev()->rt6_lookup() and can be
+interface B. The pmc loop in ip6_mc_source() still matches the A
+membership, because the ifindex check is skipped. ip6_mc_add_src(B, ...)
+then returns -ESRCH.
+
+Before this patch, the socket-level filter in that case was committed and
+still enforced by inet6_mc_check(), which matches by address only. The
+call returned 0. Now the call fails and the filter is not applied.
+
+On IPv4: lowering the MTU below the minimum and raising it again goes
+through inetdev_event()->inetdev_destroy() and a later inetdev_init().
+The socket memberships survive, but the new in_device has no group entry.
+Source operations would then return ESRCH.
+
+Also on IPv4: __ip_mc_join_group() ignores the result of
+____ip_mc_inc_group(). If that allocation fails, the membership has no
+device entry. A new IP_ADD_SOURCE_MEMBERSHIP or MCAST_JOIN_SOURCE_GROUP
+would then drop the membership and return ESRCH, not ENOBUFS.
+
+The commit message says:
+
+    Return device-side allocation errors before publishing the socket filter.
+
+Should only allocation errors (-ENOBUFS) be returned here, with the
+-ESRCH cases handled separately?
+
+[ ... ]
+
+> diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+> index ecef55f261890..0d982f7d29cda 100644
+> --- a/net/ipv6/mcast.c
+> +++ b/net/ipv6/mcast.c
+
+[ ... ]
+
+> @@ -403,8 +404,9 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
+>  		}
+>  	} else if (pmc->sfmode != omode) {
+>  		/* allow mode switches for empty-set filters */
+> +		oldmode = pmc->sfmode;
+>  		ip6_mc_add_src(idev, group, omode, 0, NULL, 0);
+> -		ip6_mc_del_src(idev, group, pmc->sfmode, 0, NULL, 0);
+> +		ip6_mc_del_src(idev, group, oldmode, 0, NULL, 0);
+>  		pmc->sfmode = omode;
+>  	}
+>  
+
+[ ... ]
+
+> @@ -494,6 +501,11 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
+>  	kfree_rcu(psl, rcu);
+>  	err = 0;
+>  done:
+> +	if (err && oldmode >= 0) {
+> +		ip6_mc_add_src(idev, group, oldmode, 0, NULL, 0);
+> +		ip6_mc_del_src(idev, group, omode, 0, NULL, 0);
+> +		pmc->sfmode = oldmode;
+> +	}
+
+[Severity: Medium]
+
+This rollback undoes the forward mode-switch calls without checking
+whether they succeeded. The forward call
+
+    ip6_mc_del_src(idev, group, oldmode, 0, NULL, 0);
+
+returns -EINVAL and changes nothing when mca_sfcount[oldmode] is 0:
+
+    if (!delta) {
+        if (!pmc->mca_sfcount[sfmode])
+            return -EINVAL;
+
+        pmc->mca_sfcount[sfmode]--;
+    }
+
+The rollback's ip6_mc_add_src(idev, group, oldmode, 0, NULL, 0) still
+increments mca_sfcount[oldmode] every time. Can this leave a phantom
+reference on another socket's device entry?
+
+This looks reachable without privilege, through an existing mismatch in
+ip6_mc_source(). With gsr_interface == 0, the pmc loop matches any
+membership for the group, while idev comes from a route lookup. Nothing
+checks that idev->dev->ifindex == pmc->ifindex. For example:
+
+1. Socket S2 joins G on device B with MCAST_JOIN_SOURCE_GROUP. B now has
+   mca_sfcount[MCAST_INCLUDE] = 1, mca_sfcount[MCAST_EXCLUDE] = 0, and
+   mode INCLUDE.
+
+2. Socket S1 joins G on device A with IPV6_JOIN_GROUP (EXCLUDE{}). The
+   route for G points to B.
+
+3. S1 calls MCAST_LEAVE_SOURCE_GROUP with gsr_interface = 0 for a source
+   it never added.
+
+4. The forward ops run on B. The INCLUDE add raises the INCLUDE count to
+   2. The EXCLUDE del fails with -EINVAL. The call then fails with
+   -EADDRNOTAVAIL.
+
+5. The rollback runs on B. The EXCLUDE add sets the EXCLUDE count to 1 and
+   switches B to EXCLUDE. The INCLUDE del lowers the INCLUDE count to 1.
+
+B would be left in EXCLUDE mode with a phantom EXCLUDE count. MLD would
+report EXCLUDE{} for G on B, and device-level filtering on B would accept
+all sources.
+
+S1's later leave works on device A, because __ipv6_sock_mc_drop() uses
+mc_lst->ifindex. So the phantom count would remain as long as B's group
+entry exists.
+
+Before this patch, the same sequence only left a phantom INCLUDE count
+on B.
+
+The IPv4 rollback in ip_mc_source() has the same unchecked pattern. It can
+be hit when a socket membership has no device entry of its own, for
+example after an MTU drop and restore or a failed ____ip_mc_inc_group().
+Another socket then has to create the entry later.
+
+This also seems to conflict with the commit message's claim that
+failures "preserve the previous filter and membership state".
+
+Could the rollback undo only the forward operations that actually
+succeeded?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1795102467.git.x-professor%40outlook.com
 
