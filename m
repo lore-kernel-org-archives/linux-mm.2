@@ -1,90 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D20606A68D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B37606A6B6
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=RlTFDi0u
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=joufhle2
 Received: by kanga.kvack.org (Postfix)
-	id 523536B05B5; Sun, 22 Nov 2026 22:31:24 -0500 (EST)
+	id 8CD8C6B05B6; Sun, 22 Nov 2026 22:31:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AD7B6B05B6; Sun, 22 Nov 2026 22:31:24 -0500 (EST)
+	id 87E536B05B7; Sun, 22 Nov 2026 22:31:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34E246B05B7; Sun, 22 Nov 2026 22:31:24 -0500 (EST)
+	id 720C56B05B8; Sun, 22 Nov 2026 22:31:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECF806B05B5
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:31:23 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B8A680796
+	by kanga.kvack.org (Postfix) with ESMTP id 4DF936B05B6
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:31:27 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC296A8458
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:31:25 +0000 (UTC)
+X-FDA: 85464958530.07.2EE74BB
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 06A0E10000A
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:31:23 +0000 (UTC)
-X-FDA: 85464958446.22.4AA7208
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 905AC160003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:31:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=RlTFDi0u;
-	spf=pass (imf08.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=jeffxu@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=joufhle2;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf14.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.216.43 as permitted sender) smtp.mailfrom=jeffxu@chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795404681;
-	b=qPPXSZtii65xVP/piRFs1tCgGa4TJApiScqhzHaWaiSBZ63o6ZipsacIzSGLYbRL4i9Sqg
-	D+HSOXnAEgJX4hSIMbtK4e4gxnBcSemMB+X5nJlmyJfO54RzZNIgERR76+ZQuPBCT/31d7
-	fPRuCI/DRqtuZKHBK9VEvNS3aA8p2yw=
+	t=1795404684;
+	b=BSQ6oRPtfwEOgwiPf1adyI1ut2G4cMoq36zEZFuyb13XmOA7EooUZ3e4wQ1cHod8+dE6kr
+	c1wTjeGGqL8YGXKoMpaWyHPHpDZy8Kmx3a7X1isQgmv5e8P4EfLYkcDwSjhtWvHFnxn1iK
+	9BrWwMGLfHCSMCB7N02RkEsMp2wdX3o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795404681;
+	s=arc-20220608; t=1795404684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=n3/QgCFjzvK6G73Tiampz5hPbLES3QQEgOsn43qeBn8=;
-	b=ttH92ieHN3w7rSGNpjVQUxJPEgTIE+1uPUYdkf/z0VEcc0q1S+Wqd9i6buD8RYjenQqkCH
-	yrI9AIwRtqajU6HE6prPgRvlC7MWuhldM9mLKQBf/uFfg8e3FhArE9YPi5kI7QZX86qvsC
-	OOEEs6JdFSXD8fUo8z/4bLCH9k2FUqc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=u+VJkDmgbhhT238e3Khqv+7tnUuWga3+yY83FP/NeKA=;
+	b=xwI+It+U4lBVv79OYuDxwh2demdaJ6Woov5ky8e6pe7cc6QXhDizsyKE/Xioyelrfaajem
+	t6Vzkpnr5UJ6PyHJyO990QgSAgTcG3AjJcnKGuhV/TdS+L+xeDnzzEa9ARMRado1DWuJ03
+	KVeAQeSfdGF2/aTB5qlgGVPsgTRcHKs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=RlTFDi0u;
-	spf=pass (imf08.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=jeffxu@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8b3d544148dso36673b3a.3
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:31:21 -0800 (PST)
+	imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=joufhle2;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf14.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.216.43 as permitted sender) smtp.mailfrom=jeffxu@chromium.org
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3b3f9cbafecso373955a91.3
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:31:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795404680; x=1796009480; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=n3/QgCFjzvK6G73Tiampz5hPbLES3QQEgOsn43qeBn8=;
-        b=RlTFDi0unGz9cPLDVNm5SDe67uJykCbJlrTvQ9Wv5RxbkVw2UNpukOOcNBunyO2Qf2
-         FKUZh53i+jS6OEExvfX2tt7yX+kGFLFwry+DlTnBdQLfovVJiaz6D1adQ6z3lZDe4rsJ
-         Mn0r0+wNYnTHwxvUTXAt0CVMM+fEWNuhBQg7A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795404680; x=1796009480;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1795404683; x=1796009483; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=n3/QgCFjzvK6G73Tiampz5hPbLES3QQEgOsn43qeBn8=;
-        b=oBUWlLSNDLCqPJVS5yt6nLuhMtzLZVf4r1QCThFvHPTWLc/LDjqgw1Nzk1//ogGEjq
-         IjNR9/RGgM4g4PFGadhHS4aIdkvTuSXb2eIUuwNApJeMg5OifgKFYn6X/xB6B9qTGzo3
-         owZRG83aAJapEXa40FRH4CeF89tcRs0bEHwbMVx7qeoH6jOLp0pIckn8lN4Aa7n3rf5r
-         rjtPbKW/i4/Fm4d1IqkXB63sfRX8cV4w+xylZnh70lB+3VzahUmmcsObgzeJCJJnwJda
-         vgSwF6XIgOX9AxGJ95t4jaS9WyMcUkcrS5w1WyWv+CbNeMaTLeL6VqlBV67bTGOd6Ko9
-         lBuA==
-X-Forwarded-Encrypted: i=1; AL+hErGIlctixubV3WL6SsUKYXkHUVH0UEpNDju5XPyD6gEgNlAKReB+4Yi9rwwaNOLRow+popaIj7dbeg==@kvack.org
-X-Gm-Message-State: APuU4Z/pq/gS5qUFrG++XsxyodqwtOFfd3yiHE83mQJjCZH2y/tJ+Pye
-	GNlj/CdVPCgxTTQIwWf2Ub4soHGB4J40DeSv7LHlNKX6BqbgK5cNEV8H7c5U78lDZw==
-X-Gm-Gg: AZFdTZclh/x0CwWi6dc3H5Gh+rm4U7qV+/dJ1tnyKNxpeDbml3u3GVDOagCNPpIOtY/
-	vz5WYNeIH6xdJTg01OJ2K05bYRWd2rRBLn0ZeN83tmZ1YzrAz42u+1nBWA4b2bkeyMR5615ugGC
-	Yr/EVIfKftQrxrQC/2jPeJgPueqnxPyuWNyLw4uOhxD9NV9tDRqGAb/GTQnRi0nnsJg5PGqXTg2
-	J544bPtiJKZ6enTLy9roTx3Mx2crN0LFE6E/M/X4fkuiZ5tWOkGzI6V6NepWTbrsp777rh48zfA
-	fqa7QfDqb4ibn7uRcIJ6YPlkwWjr3rEzE8OMLlCw+AkOi6ke3QjnUShZjacQMRW76kJ9svG/WN7
-	C7BbYLwq0NgfCtR8jn6GIjp+LtL+zrJf0URpC7lVU3rvkcUmM9pFNvlrpvzUFsrq360T6grI6MI
-	qc9+8jsSNj9njDBoKVkAWBLXuqPpMAc4q8L6VZvaFu2MW5ktyN5ZnGT1jxkL1ZRRduHXYBpibnq
-	dC1tw4+h6TIuViOV12q1vnxADtiieVxiVOT6YztDr1fegPg3GoVF+o/9t9ZhIogLwFm9TaU39WL
-	wXeFF7QCC/hTzPwwX/iOxFHwEkCEdPPVV9jKdDGjyrFitSCeiyQN972AgVXf7ENuL6XSNA==
-X-Received: by 2002:a05:6a00:c1ca:20b0:8b0:4ee8:10b7 with SMTP id d2e1a72fcca58-8c8792b617bmr11211724b3a.1.1795404680238;
-        Sun, 22 Nov 2026 19:31:20 -0800 (PST)
+        bh=u+VJkDmgbhhT238e3Khqv+7tnUuWga3+yY83FP/NeKA=;
+        b=joufhle2Kxhd1LIgUexT4Qid1FdVz6i4Yg696D3BApDmW1Dtat+LVUqs2/YXsHvt1g
+         EjwFMMNTga2vkc3hxuXhiUCFpI7i8HbSCLo4hVpfyONarwZ2D4IHPZ1maIyG8y7zAqQr
+         qLvBooahXUjGcwLFjmTdty8lFCLGEUEvB/P2Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795404683; x=1796009483;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=u+VJkDmgbhhT238e3Khqv+7tnUuWga3+yY83FP/NeKA=;
+        b=DNz4DEQkX1LX9uZggynNXpRJS9ynG0GCvNEgs/lTdy0Wkn7VdlsbbqeZNiKCljJIsH
+         rmk4UCP0KnEU5bkQ7B07tHPdmTrPKEculoEhNdV2n5U4igRNHalAnlHNZFEaRil/jcwa
+         VdhDB+dDG4sgcO+FFeV+kIyNSPXBnRNh5GDcajq4yw2DuW30sP+iBNscCDc34EGGqdfT
+         c7kqY0osTgXMHsDcDfSoz75KQ1afpbXPgOeMTgZTPDRU5fVz+YxkI16o8Q4ME2gPoiPy
+         7wKRApRf0Y6HjuKXRZsV+qak3qfILon91fp931jYHfwqadKm5Jhmj+m/ZO8/lKLpja9e
+         czfA==
+X-Forwarded-Encrypted: i=1; AL+hErFZb+t+mbUoEehqaG/9EPDkxCR39kT6KXzDVM+AaKTRY/HZm5QkRnZIV3Rj0ypl9iZr9hY6UURJGg==@kvack.org
+X-Gm-Message-State: APuU4Z+nv8ZPNhIhRejmFEEfHIh+jGXeufgAsDcw27r/aAuBQrpz58Ir
+	8zUyZHu9Rfv9Xi5pib5jRLf7zvJ+e54VBIm1KU92BO5YAloUNxmHUfG6ctzLPRg/Lw==
+X-Gm-Gg: AZFdTZdVXOAoMymuo7XK0IaPLZDfG6PeYDrXxZHBrwJiAO9Lf09IkAcgYmVY5hH2Zyv
+	bmVlu59r19eOzGdZt/CemVFq7A7lnKrKkXcVTuADrYAa0hnzwImdyv7vPMlYE8C08QHVgxVJpag
+	oXhswMcwfHsFENuAFik4n5xcYiPTqYyYV8/MEfvg0C3zkVtj62w+txu702R3JQtpsvKcZXVrCK4
+	3QSHf2NG4pJN6opionOBkQ/DWHgmHsVt6ED+Hu66RryLibZddXnQqIdIVcFXj2ER9hPyTf0YUti
+	/EqEXBZIJ/v5QkdqmaCxGprD2aC1SoWwzi7fVgKYDZSj7fFTRQFSA5NQ6wL74OtHkp8jPcKxT1o
+	qpmiMpZuNdvcUiReDFp/dlypNNV9Xn4U8weB4JNX4dHqLwheWrHEtMrEgbBP10yEo5oTVz047Nh
+	KTZgi7155PDAWLW+bNWQJjbIK0N+hFImqmvyUEj0XGL0ELtbt16E4jD4Xt0X+W82FMkRUAlez1f
+	FxBOVWpBdrEeFyzdMgSiG/dT76j5eckK9lkisGquzwVa+hC7BqIAaixZshDXoDiG1OAIdrMRq9Z
+	kUqwxdppq7gQUdCJrsTFln+wV+CWwdoCb3jcH5xjdRWjSfu4CNw+18AoZK34aHB51KPzQA==
+X-Received: by 2002:a17:90a:e70c:b0:3a0:c1b1:45fb with SMTP id 98e67ed59e1d1-3b41c58aebdmr15663729a91.0.1795404682704;
+        Sun, 22 Nov 2026 19:31:22 -0800 (PST)
 Received: from localhost (221.247.125.34.bc.googleusercontent.com. [34.125.247.221])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-8c87285c14fsm4712022b3a.15.2026.11.22.19.31.18
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3b41ad48786sm15745736a91.9.2026.11.22.19.31.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Nov 2026 19:31:19 -0800 (PST)
+        Sun, 22 Nov 2026 19:31:22 -0800 (PST)
 From: Jeff Xu <jeffxu@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -142,25 +143,27 @@ Cc: Jeff Xu <jeffxu@chromium.org>,
 	linux-rdma@vger.kernel.org,
 	rds-devel@oss.oracle.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/2] mm: kasan: skip KASAN for GFP_HIGHUSER
-Date: Sun, 22 Nov 2026 19:31:09 -0800
-Message-ID: <20261123033111.2349160-1-jeffxu@chromium.org>
+Subject: [PATCH v2 1/2] mm: kasan: skip KASAN for GFP_HIGHUSER
+Date: Sun, 22 Nov 2026 19:31:10 -0800
+Message-ID: <20261123033111.2349160-2-jeffxu@chromium.org>
 X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+In-Reply-To: <20261123033111.2349160-1-jeffxu@chromium.org>
+References: <20261123033111.2349160-1-jeffxu@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 06A0E10000A
 X-Rspam-User:
-X-Rspamd-Queue-Id: 905AC160003
-X-Stat-Signature: 3okn7fufzy5wsfpf5ym3tgtqgi3arrc6
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: eqegkwrafrwhugij1dangomz61c74w67
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795404681-972882
-X-HE-Meta: U2FsdGVkX19GEHb2E8x/Wsi8LnTuPHXKwI98zzc0sqKwJBX1FRXgSf2rfX2WEvJo9htdMpn/RAxB6Izbfd9pXwsr/qjZ6yc0sfwyBSf4zESMyzF7zb/eNdiLA4pDw8igIrBCzVaPu7TPXPe0OL9cR0l6KHw+CzH6owy7yHML1msdfR8hwqWAlaNWAEK4sbIh4CPiv6tmIQmtwoEPjYldQONrBIj2RTwj4644rIwOE4ilJpeVQxQ5StkeAbmXW8dV20hW/sapwvt1MayD3jNCbOxLuU4mgnvRD3Lc7ovCfWe/fcvnlxkCU2BRjrNyzN2223ojIkgEx+YKxYdaA2sBuyhRRLvu2+VfDUT2yQFh9P9Scr5T/zbnlUbH2cLa2kq1p4Zn8npTlkqpQpvYygaRRb5NOgDZiXkbb+9Oy/wTngRnln02vsWx9KKSZceDLh6yvQYBa/Jc9p6pURKgb18DKT1VfFrLv3JNp+cfe1lQvQDM5V7fS1c6MdTiOiqdSXcBxbQIziroQoJnpcbo4fs+byTBV1LFNJZhFcOtCE8vPOIDTwY8xquUyn9dCZEKqCiH2xFgmBow68obk5lGMkInLWLLbnjEtT9PzlnxERFlmXPFyXvijkaeFTu0Qph0uwKfPsXJQ97D3g4vBmkHiZrbA57H1oKqwx23/ug7vKdx5oBPMuWl1KRqHs7nlyCUIaOjvU2UhorFCYCB3M6hEAqXnWFDSCAAr0jyfkFoh56wzW5TV3qTlipA41fPoKtLUyaNI13esk3EMF9whHpsiHUx0MF9XzHCGgBJVdwrQ5g/2uWx3k2J/so00jUhh6h2+FO2MKUAE9U+JKJm+5Z/lAmw+HTHGeMaf8mt4GJ76Bf5c2lCnIZD+gzR8Dy3fFABID2vhvqy6G66bmRFYUIz4puR99GRaJrGdE38qoQxuU+x/XkswA5vFpdiFC3P8TC8QghB6VfhJZuxMDUDhxz2T5d
- o2KqSR0c
- l84tkh4IyESCfozF4JveuDHOBxktKC9DSnOC1/Zc65MGLA6RX+pMhK3ZbQInm2De9IDmVXxO82GU5ajbrE11T9G4UYVrR5zWhXdJNoRSgCWMhUCodzhK0sM2o4mcpu89Cy+ipZy3YKNGToGtb1QK06kgfgUwbX273y1/YPK2fgDiukQI5mzcNEvLEy/y6VyFnkGbGSpVz5IeTXAN04eD0bDtKnI7pxi609fjyJlv7t0m57Q8lfUtVIcw1/yX2oEEBXwj1dPS1sMaj5iBYKUbJDo7O8hz8OS4+IT/842Vin5b+LUnPS9Mh5KsXTW2meLZEHt8VbwIDseFCokhHqfEYJqf9PWng/2ENKf+T+mvSg746IRHEhnp27VlpvX1nyABu5agHUq2D1oyC8rhthhBbw0C9w1LA2ZsS5gkqkJqPyzjnoU/ErPldlKSuSOHDjZge5pveHyTtMfcSiG5LcYj0I/2ANUZ5vKa9KkgnQXu+w1HHz+UvPaM5SqGW4IsnzRHrIIY/enr0WfD5r91f7P1IQkqrz61S627ZRe1Eg6ZjcDbuaKiJC+cvz6VXYjQo/tEXXzMGcSTKIXZSHpLtyJo73JNGxbrdfv8UdV2nZHk37fRAunHUL0PlLtyR2TJJTzB5AefHaykGaxBOh+XjitLL039VB0J/QsXyTEsZ2JiNLZai+53K0dVuuOv1N5Gpi9RL2Z9l
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795404683-259044
+X-HE-Meta: U2FsdGVkX1/n7XIRDYWGtzeYhT927WI0DkQ/IgbTmkyYg/XGrz08EePGRW6Xvrx2WLtbIigh8OpN0/iErvvGcOmBUMzPUwwsgEnqkzyezg0PdmpGr1kt+1ploKwWpJSQ1Oatkf7N4km5snpPACOovmC949x1MwqwNeFGyTTSB4zXovHZUIFr1OD/ZCuyDsQj17Nf6CDZGvvN0LF0jUdtCnhyGNur9E/RJ//Y1ICT2P/3SprAav6QbCnAr24A6v1E6gvgALiHjOJeY34DxMGzoj25vpyAmo+uHfP1FoSiJImELWdYhmg1UtbVr/XQBydApzBoJxb1P4kpRewSrjLMyn6QzcdF45IkDutsuh/92bQxoTrXX3mmmY4EkyzOyL7M9z3KvY80mMdI0GZF+YQLrJ4CIRrhVWiZ/sKCzE+EMnpn4HTAX15/OIC9LsSWEDjkatI1Y7NnK+7G0Mo7Wdgc/5FV7NEwaQkTsiwscWc40JzFZ7YC8yuDN/EahhagbCFNnzJUgbKWdSutUxWBrXFXDdFGMv2VrfwVKQWdur1v4H9SjEhlj6q/iOcg2+ho2NN3w2tUl3O+7BTNohryk9qxWJSlq6du16eYcXmsu9tITT0Vqa2hhZ7maYB3K+zV0X9VEjgyHk6dQM8PvQ8Jr6wr5jtgv97IfmPV1u1y1S7E1LuFDuurFoHEeRlJtRacCnitR2i+DrcTSBO1RfRaSjYR3+cF9BBMRAWs6WHLq8pf9TVAsN60WE0r0m1z7hJDProidEiEkki43Nzdi3HH0HWlHPUaqhPDLTNtulye2vnlpBPaERf/qf5P1Hrujsn083uZPASuD6wY/ceaQ9bfZxAzmV3M8YyFKb+i7CMDGuDYNjq0oHeVfAhVQ2+eI11mTb6y2YX7lZAovkbTmUlggc+K9l4Ob95Bs4Vpu5bPCYbXuSO8XoUU8jges4qllLVUupEIfQpVfPBwwAkGCywJ/KG
+ VvcYcEP7
+ pYFFnXVoWR0xG9zziqLa8TR+Ymd/LFSNwkd/IEQtEzPHUeL2Kqh7r9lq2ldm1nQlUkg+8Q32Oq/AaloU6pVV60+TfDfff3ZhX/RVsrwbxulThluhflLQ7Krd/ZK9A/j4eECCxSrRADRBq9FlxROcm2qEeO5Lwx4QDf8Wlvbxq/5OydsrEsKZNMraoCHRx6OHjJjF0exOwa5y2p+5gq2tW3bfnzGkhBDyEpcO6em33yT/XFYbjqHHI2tYfJNZ/SnA/u0cgj/Mi/EiATjnKm77HWMOUNQmwhaR1z6ft5v7rV0linnCRxYLcQq/PjFak8UY20W3YJrKZbAxnZNdzxnhBtld53KYBiGmFSmaLA4I/pV4sB7Rbe8lYU36yi1RVO172z98I+FndBWkshA2UZadMcx8WVL7PLpL5CiaUNZZJx+iNrwmoBdW+Sy+muakEVH3J2/7bk5tpQlskxm6cCzFryP3S4bwHanEVE2aNoz6tiLwHflH+m86zqeXoBKqUH8Xv70QjiDFzPQu76TRW2+Zz45SVSh+7AA3+6JcY+XbO1en/1sW7+KM15Nxw5Kl+EeebytjbUKuMS8TwtC9HJoQ4lzxTs7JHM9ydQ+SsfY+CrHJNVKf61Ba7Hm7M0p4jxrzUJPEEQynBleaQEyA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,59 +172,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi all,
+Move __GFP_SKIP_KASAN from GFP_HIGHUSER_MOVABLE to GFP_HIGHUSER so
+non-movable userspace page allocations also skip KASAN tagging on
+allocation and poisoning on free under CONFIG_KASAN_HW_TAGS.
 
-This series moves __GFP_SKIP_KASAN from GFP_HIGHUSER_MOVABLE to
-GFP_HIGHUSER (patch 1) and adds a KUnit test for __GFP_SKIP_KASAN
-(patch 2).
+GFP_HIGHUSER_MOVABLE already skips KASAN because user pages do not hold
+kernel data structures and tagging every 16-byte MTE granule on
+allocation and free is expensive. GFP_HIGHUSER has the same contract and
+differs only in being non-movable, used mainly by DMA-BUF, DRM/GPU
+buffers, and non-movable HugeTLB.
 
-GFP_HIGHUSER_MOVABLE already skips KASAN tagging under
-CONFIG_KASAN_HW_TAGS, whereas GFP_HIGHUSER does not despite sharing the
-same userspace-allocation contract. On an Armv9.2-A device (6.12 kernel,
-kasan.mode=sync), skipping KASAN on GFP_HIGHUSER cuts 32 MB
-/dev/dma_heap/system alloc+free latency by ~80% and improves an
-app-loading OpenGL benchmark by 15-23%. As a side effect, GFP_HIGHUSER
-shmem mappings (such as drm_gem_shmem_helper / panthor [1, 2]) stop
-hitting the swap-in readahead PROT_MTE tag mismatch, though the general
-readahead issue for other gfp masks remains separate.
+On an Armv9.2-A device (6.12 kernel, kasan.mode=sync), this reduces
+32 MB /dev/dma_heap/system alloc+free latency by ~80% (~59% alloc, ~98%
+close) and improves an app-loading OpenGL benchmark by 15-23%.
 
-Changes since v1 [3]:
-- Dropped GFP_HIGHUSER_KASAN, the pipe/FUSE/kexec/RDS conversions, and
-  page_alloc_highuser_kasan (v1 patches 1-4 and 7) following David
-  Hildenbrand's and Tomasz Figa's feedback; kept those callers on
-  GFP_HIGHUSER (2 patches instead of 7).
-- Rewrote patch 1's commit message concisely (Lorenzo Stoakes).
-- Dropped Assisted-by: trailers from the patches, keeping tool
-  disclosure here (Lorenzo Stoakes).
-- Rebased onto mm-unstable (d12eccbcb79a).
-- Kept the fs/kexec/RDS maintainers from v1 on Cc for visibility since
-  those patches were dropped.
+Callers that access GFP_HIGHUSER pages through kmap_local_page() or
+page_address() (such as ramfs, pipe/FUSE buffers, kexec, and RDS) lose
+HW_TAGS checking on those pages. None of them store kernel structs
+there; this matches the trade-off already made for GFP_HIGHUSER_MOVABLE.
+Generic and SW_TAGS KASAN are unaffected.
 
-Testing: built and booted both commits on arm64 with
-CONFIG_KASAN_HW_TAGS under QEMU (virt,mte=on) across kasan.mode=sync,
-async, and asymm (9/9 runs passed for page_alloc_skip_kasan; 3/3 failed
-as expected when patch 1 was reverted, with the next test still
-passing). Verified W=1 builds with 0 warnings across arm64 (HW_TAGS,
-generic, SW_TAGS, no KASAN) and x86_64 (generic, no KASAN). KUnit tests
-were not run on real hardware.
+Signed-off-by: Jeff Xu <jeffxu@chromium.org>
+---
+ include/linux/gfp_types.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Tooling: an AI coding assistant was used under the author's direction to
-audit GFP_HIGHUSER callers, draft the KUnit test helper and changelog
-revisions, and run the QEMU/KUnit build and test matrix.
-
-Link: https://lore.kernel.org/r/20260519-panthor-kasan-v2-1-b7384458f076@gmail.com/ [1]
-Link: https://lore.kernel.org/r/20260521105148.5497c281@fedora/ [2]
-Link: https://lore.kernel.org/all/20261116230627.3537051-1-jeffxu@chromium.org/ [3]
-
-Jeff Xu (2):
-  mm: kasan: skip KASAN for GFP_HIGHUSER
-  mm/kasan/kunit: add page_alloc_skip_kasan test
-
- include/linux/gfp_types.h |  4 ++--
- mm/kasan/kasan_test_c.c   | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 46 insertions(+), 2 deletions(-)
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index c1331bf0b239..bb54c7abfb02 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -376,8 +376,8 @@ enum {
+ #define GFP_USER	(__GFP_RECLAIM | __GFP_IO | __GFP_FS | __GFP_HARDWALL)
+ #define GFP_DMA		__GFP_DMA
+ #define GFP_DMA32	__GFP_DMA32
+-#define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM)
+-#define GFP_HIGHUSER_MOVABLE	(GFP_HIGHUSER | __GFP_MOVABLE | __GFP_SKIP_KASAN)
++#define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM | __GFP_SKIP_KASAN)
++#define GFP_HIGHUSER_MOVABLE	(GFP_HIGHUSER | __GFP_MOVABLE)
+ #define GFP_TRANSHUGE_LIGHT	((GFP_HIGHUSER_MOVABLE | __GFP_COMP | \
+ 			 __GFP_NOMEMALLOC | __GFP_NOWARN) & ~__GFP_RECLAIM)
+ #define GFP_TRANSHUGE	(GFP_TRANSHUGE_LIGHT | __GFP_DIRECT_RECLAIM)
 
 base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
 -- 
 2.56.1.750.gf70dc682cf-goog
+
 
