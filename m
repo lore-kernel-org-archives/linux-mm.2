@@ -1,79 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43114606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB6B606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kWphZf/y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VNiLRKhg
 Received: by kanga.kvack.org (Postfix)
-	id 5E10F6B05B3; Mon, 23 Nov 2026 06:10:14 -0500 (EST)
+	id DA8F06B05B5; Mon, 23 Nov 2026 06:10:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 591226B05B4; Mon, 23 Nov 2026 06:10:14 -0500 (EST)
+	id D5AF36B05B6; Mon, 23 Nov 2026 06:10:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CEC66B05B5; Mon, 23 Nov 2026 06:10:14 -0500 (EST)
+	id C97006B05B9; Mon, 23 Nov 2026 06:10:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E1A86B05B3
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:10:14 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B701780820
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:10:13 +0000 (UTC)
-X-FDA: 85466114706.17.1E2F1FE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EFE5840009
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:10:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kWphZf/y";
+	by kanga.kvack.org (Postfix) with ESMTP id B0D006B05B5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:10:27 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 516CF80829
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:10:27 +0000 (UTC)
+X-FDA: 85466115294.24.5DAE311
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8185FC0006
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:10:25 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VNiLRKhg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795432212;
-	b=3lm0/msvzyDtwkDpwH4HMu78EoQ6fKzfqobAtyyjSh8ZFeOSfYEQtLe1wgH3fGu1BJ6y2G
-	WRC8DKDB/Nh9FrMNoC+152wAExaUKhjYQAc9fGdmLSWSYxFSsPlmw1e/6hmR6z/CRpC3KO
-	hNlFqcafGq3C5mXvzqNWU4q3gJyo4bo=
+	t=1795432225;
+	b=25Ru69jqcvcUF3OrimqBbth27zLeu9DPCc/P6qwukuCqrjimiw2VKkw9kcLrKrD5kcCp2a
+	6o28DpSUCIiHbFQLgqZHqZgZwDpJZAl5cGSG0oVQr7P+swHeooSOruKlKKCxrjUtWNli7+
+	cCrfpB/p+IsS08eBTtbxH0g/9n4w5wk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795432212;
+	s=arc-20220608; t=1795432225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jB4Jc0m241bDmamiVxwXgatL0MljUoYCzUMg2HcGIDw=;
-	b=SRFL5LSno0hfNjrQ/UWPsfWf8CXsCFkdsdBOx0Dgf0/+R7N97q8lMp7RbB6Cs2duz8HrBn
-	7D0nKLHF3WKME9K9vw2tqXk9Dh0rIxCDhHuaBjyFYB9BoHAAQSqYhBKGbGgUZyXfvZ5A0K
-	IfYFzONpkBhUHlrW2GWodkmqROn3w4A=
+	bh=flWDZ0WVYrcCzYvgql2By/t92QQCD+UIxAgzzj+gmqc=;
+	b=b8dchAS631OjIqnHiVYcEIvGK7x86qLeUhUdjlpuHz1nwj111edjhX6B1IJg89y1ZWWbYo
+	g5D74YfPKse/wn5cdgX15vzmXL6vrGCpF8Tbumqe0nTKelC/qRH3ZFbkuR/U0aPEnMw2OR
+	IosEOSJ0DcRbf5lZb/yUD1jt9Ee/OI0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kWphZf/y";
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VNiLRKhg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 388186207F;
-	Mon, 23 Nov 2026 11:10:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6620F1F000C6;
-	Mon, 23 Nov 2026 11:10:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 67112447B4;
+	Mon, 23 Nov 2026 11:10:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EAA1F000D1;
+	Mon, 23 Nov 2026 11:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795432210;
-	bh=jB4Jc0m241bDmamiVxwXgatL0MljUoYCzUMg2HcGIDw=;
+	s=k20260515; t=1795432224;
+	bh=flWDZ0WVYrcCzYvgql2By/t92QQCD+UIxAgzzj+gmqc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kWphZf/y/YIu6XBeBrWtheRyIohUen6aDmlkVygIEOIPi+zvDVA8TPW/TlPfDRERB
-	 wWsTV6Yaf0bvFcBzGVZ4DwcFJwpH8z6xzA9u4SHOLfoANmFC2z60x7HvZYUW1dy3Mb
-	 GFUSICJDM12Ry7j6Jm9tRjY6nj7QDTJwgHwicVHo2rDAQT/XDRxdCzuB/a3ogiZ7lX
-	 NX77yuyXYTVL5Fctzkxnr2CbuX58PtQcAZAD66u5Vxcub+OLrgbJJsU5NJ9mJzJ/4Q
-	 ncogL9Akmq6+ia+VBuaAdRU3yyarubZbzAguIgAvkR9T1xR8jD5S5T9KAGb1CefH69
-	 FJrAY5Z1IU80g==
-Message-ID: <0c29cf1e-0234-429b-adef-fc7b52290906@kernel.org>
-Date: Mon, 23 Nov 2026 12:10:06 +0100
+	b=VNiLRKhg/s8fUbvUbgXUpTi4aO3InN6M2ExDDK0FqhNT0LPNwRnUdloYCnGMWQDsg
+	 2z3/kxh01SWaTdPny/+NTmhbrzX3+dzxd8HhS16Oa7AtPrM0IXG66pXMS4cou0aXAs
+	 PpUrT5BtGvCBOUZj9aC8WaDqxlgghB3ySGFIlhHlPq0GM4qQwofnWiQ1o6niuzqEgs
+	 ZBP0yaC0tyW0rkuZJz6NGyo3112oYgfw1w5vSOJUv7asgRSyWrXPILSBvPtR01UkmE
+	 qxzYHIR+Bl5CMhpVOZUJCp5lZyu6LiejdVXJwInK4OnUomYkPEOa6NlhcyXNtppN0E
+	 /wPwluPfug4AA==
+Message-ID: <b161e961-eef4-408d-944c-eb352d3088fb@kernel.org>
+Date: Mon, 23 Nov 2026 12:10:20 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/mm: Preserve the final page owner record at EOF
+Subject: Re: [PATCH] tools/mm: Report page_owner_sort output errors
 Content-Language: en-US
 To: Zhu Jun <zhujun2@cmss.chinamobile.com>
 Cc: hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com,
  brendan.jackman@linux.dev, ziy@nvidia.com, akpm@linux-foundation.org,
  david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
  iamjoonsoo.kim@lge.com, linux-mm@kvack.org
-References: <20261120062140.98503-1-zhujun2@cmss.chinamobile.com>
+References: <20261120062146.98518-1-zhujun2@cmss.chinamobile.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -114,22 +114,22 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261120062140.98503-1-zhujun2@cmss.chinamobile.com>
+In-Reply-To: <20261120062146.98518-1-zhujun2@cmss.chinamobile.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EFE5840009
 X-Rspam-User:
-X-Stat-Signature: 3d13onj8dkdp94qd77tkt1e4r6owp18t
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8185FC0006
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795432211-27924
-X-HE-Meta: U2FsdGVkX19MAq67MK7DCmvAYr8Hp9Ql7s8/3IVq+qgVYlLyGCSm6w/mm9IbynDYc+fH6zUCvTNDjNFLFcw9cdpWwaGiDOr9SURL9EIIqHcFmncx+XuGHeCIHFIcmqWa/u7QaNcIIxLyofl/KGNVXKbEr5VDlJDF3bDF3zegwiSA+bS7zqfQBgHsjArLYcpu/+Pw0srYszLEMMoaD9uoiTz2+JX7k5I7oXdM17NMcVtrDr7Dgc1hdcpFUeACZpCBhFg1aWnDjgvQ2aC7MWKYM7C0nz6PeHJ8FPJtjHuadBpBjYmTCDwRhd9VUf9bDY6qR9LMHdhOduUx4wrYozsQDV2vDUDi9mnROVTuvRM0v8SS/vK9QIrouApE6/rFD6jMKBRy58vRVEm2Z9NgxH5hwEy1CgxKU2OHHtTWAGb1K4fGNAvx+5llPBlKKD7DCUXpXUBELjHsXflmb7JtlgV6dPclaQgjObv8dKs8Idz4SuhwVHEWAV2u9HI+jv4bO9yRKbSnz37A4f191kdai0+zrsFTF22Ejg4pBSygEwEOBBUz8lELmy6N4/59Y5GfXvOwN3+/Np24rhVVuZ3BwPQi2L4IxHP8hCp0tvEuP0a6tpZsuWkuaRPGh8DGYRJ3C3MW+yVnEkZVLx5+SlJnOcwe/EBTkpspJ4Lt3GJ3snZk/M3hJ5eOCuI3mDwgUuBoBdVldtxXMy6cIqGMGetPNUtulNezGIS99QezN398JbjDI6CBijDX9ZxSGWozLGzq+2Re/LzpcxL/8KRYM0XRf9d3UnKN+6zm6zuYYnVXkpUGnE3K8cS1SotUMbhZ3+NtX9mnzvxF+nYW2x0K2TIhFLXhK6jUfOPPtSdJmesqlG+pBePSCOqBYOU6J+tmlFMcUAhtLgpx0mei3jT7DCUTcon0htRjr2EzGTASqHzzNSS2M2gO4h70AaHmitO7CgKc5JpyuQJvFMOKbc5rBkZs8si
- L4RKTdB8
- 5A3V15j82bZuPTpPerTwvUECuMkJoKQ2M6CzkjFcnPmtWcEWyXe4ksgfl9QYnjj+JRSPsUmpG32e0mjaR10P9K6QsNEiM+u5URTcdVjncjnIBtDmLjZmz7Mc45BjBQGMPvkb8iatgNX6U+umuALd8uvGgCx3F6ih9IvqJGGwRSSR3P5hKs+9psfbkOHBCTAlHxoDHNK3+ekTnDmYX57PhVoGJAjZ0a4pix83RGz/xpmsXYlBwmUk06An0Y6v+R/GETyMYJh/dgp2L9r4Y4ahqODCoDifRKsyBpG9quY7MxGeIJ9c2By6R+JPiy1hxR+y3OiekdFr0DXjiTsHSeinmolhOqNWBJ7SP4KDJJrJA3lblw2RUbe94cCnEhHqHTYrADaYaoSiEF5UkidwA4w9DsaZsrlQ/kjrfiViife0hiaKPVysLu/NuFMamnlGz3bGiOwUJHTZxaimaBpxekYGrJzgF0qXEn9SJUarI7RLvxquS2d9NizkvPIh7zsGFwViHnvNF
+X-Stat-Signature: frcznhfgrarw7hezmogjnxcyk6q71ny4
+X-HE-Tag: 1795432225-177517
+X-HE-Meta: U2FsdGVkX18y33UoZEAzsTsl4UHHUkvzBwnBkh6E3UOUwDzleWMP1lCoBe2r/WSAZWmXsIhfwQdHvsswXOJGFOqqAGrZFM/TbVovezBG81KQUyGJ2P7IGacDtFcI+t/DVF6qN13lgXN9xGggU3v5CMTtcZOY3wAao3EyQidMLTFvUMU2LlRR1VTLOnwio5ZNhMcigAn5MsZpRG1dMfP3R0VQQljnL8SWWf+iCkpZPLise+He8uMT1rju8ai+aj9z/IvQiXiPZzwPgSuWXrjgh8sDmSHn5jtih0Z7bYu4fsr65kZbzeH5AUc96i0tguzwoIvOMalR7ySR4Cu4gC3JzzM2/YKbLq6r9mcHZ92L08HZgNPx0vKpQrBjFlPkE/l7N2kRKJ4eRPegw1oOe4VuruezsifMizt8dq8JMfm8yGTc0Vgxasnk1StlxrR0exsDKFaUonIxzaog/dSVsSDfWYyaWIIYRR1H2WYHPo+l++HJxJH+WBO1jORxTcALCVn4ejLscuS3Ele8kqdg9U1P6Ik1xlgKFlvIyacMVnWpV7gdNcpGnsRQ7gT0qN2CHsZPuGIkjGi5eO4/tdpD9sD1Rea7IfBJ/s+S5J4+p6cek8T0aVmTkdzB8a6yyJ6k5XOEdElnNmLBNCukkkY5scpb2XraInf3Om5W2/Wah3UskIeCK3jV1mczh6BIujtr7WjQrocoKKW7a121toiMbRzPxulnGP3mWf62mzomoG99ddZSH2By93b1DaodpsSvPaR6JgXgQsl9Usi5olG1Kq9mym1TK35LrC2Gq0lKoSHpoNAWztd9id7/EhOJPZ46DvNqNP3PQ2+wpEFldJM1NcWH6V6KZSqUudccE48tImrA+Ib7jeSPq1R94Yev3Xyc5uexEy85gldiVscg9NvoIOJ4gx/Drnv0TEWtZ6MotwsprQJQ8AV4FOLzqAvQplhJRFIAXVexfsvf9YLtrQn00NT
+ qgypH0dF
+ 6CItF0I++G/LEbruonaDJ/pFonEtQBO4yWYXlr29ciK96UNXh4JNUGbnfp6rXZrR8fPb9yMdeiCSLZPkI2FHx6bXBTe9gWQ+A7XtmWgVRjP7p6po1FMjW38RvaAi5xEIp4uMg2A/TMt999XbijyZKPbJYMQqTvNvnZP8HAap4OQKqbtl80GbaBf4NKxskX8Ku9alj/DGCyJhBnrNrLMLriNY8Pr2PCj5J/GQrubufohWt2KvxQySmMDihKCreznvJcFwhInpV1mujqeXRwstw1+s5V+ZTuFzzvNXJRPtuzS5yE9pUDY3EMnY8fNmOlsFRHo5nzYy5lsZoAOSpsQbNj9VxYGd0lMQjYwxlfpuCUHAnP6/4xWPKFTd0OcEc0pSFJaXul9jKO5qB72p3QFCnmLmZwY5ktWOhK926t9+91mIrAWQDqIEtVgXNX8RICWZzk9oe1bMynQIVm5YgEv9a8vQ24BgZsfZHmRXqt3dnUIaA7izB2nF2WFsawgqbU7S01uo061RKU5QeIg321dwsnTZFP7mi9j4HYsQoYuXWXcS/lGJGM8eNTNcKbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,12 +139,13 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/20/26 07:21, Zhu Jun wrote:
-> read_block() only returns a record when it encounters an empty line.
-> If the input ends directly after a complete record, the function returns
-> -1 and main() silently drops that record.
+> page_owner_sort does not check its output stream for errors and relies
+> on process exit to flush buffered data. For example, writing a small
+> result to /dev/full returns success even though no output is saved.
 > 
-> Return the accumulated record at EOF when it contains data. Keep the
-> existing failure result when the buffer fills before reaching EOF.
+> Check for earlier stream errors and explicitly close the output before
+> reporting success, so errors flushing the final buffer also produce a
+> failing exit status.
 > 
 > Fixes: 48c96a368579 ("mm/page_owner: keep track of page owners")
 > Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
@@ -152,23 +153,25 @@ On 11/20/26 07:21, Zhu Jun wrote:
 Applied to page_alloc/for-next, thanks!
 
 > ---
->  tools/mm/page_owner_sort.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  tools/mm/page_owner_sort.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
 > diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-> index 6c2ac5d9dc4b..48c403d3de4f 100644
+> index 48c403d3de4f..13166199ef0d 100644
 > --- a/tools/mm/page_owner_sort.c
 > +++ b/tools/mm/page_owner_sort.c
-> @@ -134,6 +134,9 @@ int read_block(char *buf, char *ext_buf, int buf_size, FILE *fin)
->  		curr += strlen(curr);
+> @@ -1024,6 +1024,11 @@ int main(int argc, char **argv)
+>  		}
 >  	}
 >  
-> +	if (feof(fin) && curr != buf)
-> +		return curr - buf;
+> +	if (ferror(fout) || fclose(fout)) {
+> +		perror("write output");
+> +		exit(1);
+> +	}
 > +
->  	return -1; /* EOF or no space left in buf. */
->  }
->  
+>  out_free:
+>  	if (ext_buf)
+>  		free(ext_buf);
 > 
 > 
 
