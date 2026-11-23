@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BE4606A338
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6BB606A686
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n+sgLxGr
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vvl/uopy
 Received: by kanga.kvack.org (Postfix)
-	id E2E736B05B1; Mon, 23 Nov 2026 08:05:18 -0500 (EST)
+	id 3CF626B05B3; Mon, 23 Nov 2026 08:05:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDF316B05B3; Mon, 23 Nov 2026 08:05:18 -0500 (EST)
+	id 3A3D16B05B4; Mon, 23 Nov 2026 08:05:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF60B6B05B4; Mon, 23 Nov 2026 08:05:18 -0500 (EST)
+	id 2B95F6B05B5; Mon, 23 Nov 2026 08:05:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B04246B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:05:18 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0AA5714089B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:05:18 +0000 (UTC)
-X-FDA: 85466404716.18.A11B439
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 016976B05B3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:05:20 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8950D160820
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:05:20 +0000 (UTC)
+X-FDA: 85466404800.11.E3C19C4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6A73D12000E
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:05:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+sgLxGr;
+	by imf14.hostedemail.com (Postfix) with ESMTP id C3995100007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:05:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vvl/uopy";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795439116;
-	b=VWSYbg7FwXGVUtjlK9eATrKZHohckjm+aZutptz030cUHHKOlnTb0ZpL4IR6G6kLzsZOkN
-	JrLXYnP739YDYsH3vSOKPO5XNT1jGGahCipHEZ4MHpoj6mLGAAanWhgpSdIBUQ2GnTI9Dk
-	loZkOX7JlpJIjWmcFpHUotS11hBm7Us=
+	t=1795439118;
+	b=hBWEyctNs5A6fCl6+zh19JuYFs/oH9lYAtoDJXYLrkdEg0LD0c+wiGGVv/Z+ZguKlv6aEs
+	6YPgzteYIXvbP0pF2og/gWRZp2DbRHgGT1tUeAjsbMrnoycX8vRQyAVZU2QasTo9jTDLGg
+	QntNqNDNSQao9eX/M8yK8PpuAY3BNLA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795439116;
+	s=arc-20220608; t=1795439118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=03p8gBbwhN0/a1fezsMSRz0eiTfq9c/8Q3jeu/5CZkI=;
-	b=yvkEev7dUh234AK6+nwjLcAe1rC2aIK2ab7w0pqf/OWnDiU0XdrYfiP9UiZQ1TlylBRWPm
-	XlXHi3T8K119M/6xkMQnOv3b9rDG2ZzwcnX9JuA0kmziiBuuxshBjYXIur3PmAHFgcWrfv
-	I4CXiyWNL8+9/SdXlOkVvTTg23f7GmI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aPK7OR8CzM9eLpteSO+lvQgKJGtTEcPn8rI1ujD6sP4=;
+	b=fNhezBzf5DyyQRYrr0ungsr2/LHRbLqF8OsjIsiycHAKJqDBQBgO/9ANTvi6G0DtyCMRJ3
+	NUrgT78oXE1ypqhs4TVZSb7hPlPd5LjjOcy7vkJB7hAzAd6yxRqfICTkfoXTLi1dof9Ev5
+	EDMlCNEWNBrkSlLeaOEGcW0Jnw7jjmk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+sgLxGr;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vvl/uopy";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 461D640095;
+	by sea.source.kernel.org (Postfix) with ESMTP id 106E1456A1;
+	Mon, 23 Nov 2026 13:05:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2125B1F000E1;
 	Mon, 23 Nov 2026 13:05:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5931F000E0;
-	Mon, 23 Nov 2026 13:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795439115;
-	bh=03p8gBbwhN0/a1fezsMSRz0eiTfq9c/8Q3jeu/5CZkI=;
-	h=From:To:Cc:Subject:Date;
-	b=n+sgLxGrJanpQVxingJTfafcfka71+Qt6nGUufSLEbqSb8C5hi48hikcgRmCcSd3R
-	 2kmX2JgAD1IGTwpsTWrPfBv6v4IpXO05T5zqSnAS/pZQOabGGJkZS9ZiI3i0qKqVs5
-	 OG1b3WshJW1LJRFvij2gwPuRrC5hNDjs/Wn8iCL13dEhLSjMW6SPIOv8QM/SkKOuWz
-	 4JyDkcf9S4Qx6LEb/ZpQSXuvzixR9rKeOC1ilXXmzEoWXWp8yhDqI5JRf1f11stOVQ
-	 nx8INvW5yPVLHf8Ydp3Upb0cXzEvVOdEgUAK7lsfHS51kFANZaOI7IoMDmcTMItyaF
-	 hepOP/5C7Ff7g==
+	s=k20260515; t=1795439118;
+	bh=aPK7OR8CzM9eLpteSO+lvQgKJGtTEcPn8rI1ujD6sP4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Vvl/uopyu0VvgPP4uP38bzkxkZ1rfqoTtfRseS6r4oEvY3wFx/Xshiy7IGBESPgDI
+	 bVPrRhiNvIqyn/K1cUdLQkKbnj6wYeCjejwZz4Q+/a7K/WwWoJFRkG7KpyGWjjMJ5q
+	 LK6jPzXUb3s9b1/Bu8xzI4vRDMOsXRf+KDFkvVE6RxfatEULmDnKgXnVfnoODcQ93n
+	 nJRSNHCfH1kKG6VIUT3v7XlKS1R/VCoeRJ/DLBpcBimPQE7Q7ZFC2afOPpILWwmJj3
+	 9mSP2zTSTD4a/WNeA/Njjie9eb2nCC4oeq7j26NYQY4EtstC2AY9LzGbIy8surydY1
+	 bdoSpJozUNlpw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -70,25 +70,27 @@ To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 Cc: kexec@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 0/2] memfd_luo: keep memfd frozen until finish
-Date: Mon, 23 Nov 2026 13:05:06 +0000
-Message-ID: <20261123130509.4032642-1-pratyush@kernel.org>
+Subject: [PATCH v3 1/2] liveupdate: luo_file: allow keeping private_data from retrieve until finish
+Date: Mon, 23 Nov 2026 13:05:07 +0000
+Message-ID: <20261123130509.4032642-2-pratyush@kernel.org>
 X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+In-Reply-To: <20261123130509.4032642-1-pratyush@kernel.org>
+References: <20261123130509.4032642-1-pratyush@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6A73D12000E
-X-Rspam-User:
-X-Stat-Signature: gf779juci5ha9w45wgupuk35rrpox33z
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: zxkumkp3u3arz7s1e4axnn9wnnhd97wq
+X-Rspamd-Queue-Id: C3995100007
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795439116-621253
-X-HE-Meta: U2FsdGVkX1+eGgyGW4Vs8xTRAUCh46gP6uPoUt3Jbm7Rmf+UmurbYXIdqQdJ1dbkhXrwG42kwTLyQRsVftkvqDO4bK08aY7xXOQS1hOcw3T7sDEoAygFCU4U41KsJ6nmo37fPPlladyCggsp1/Q/V5CIMk9ynvG6TZJUHWDYwehsTv79lhxVIpB3myAeFDgYggw2N7FrrN2XeSrKcplCJFr0WpY4SsXA2dEmXjZ/UzKEmIf8lGZC3dpW6cBrI7TOZ/4Cz3+eQllCK8kymq1ZVA1mJpiJW/xTTS64Xj1E9Ez+vM2+jt126aqeGgFth/QNpi9oaS7N+W//z0bavRzX9X21sjWors2iyhYwwbt9XSfk2sCm89IIznyDSYkzhcCr4h/X3vRUeiN+s2810ijBvlkVxmPDjQiTmZPb657ID79SifMvfPZRFXyHktENM0NWOdW8dSmQk8ecoExo9sKla3xc9Bv7sBVDD+5go5ENEkZahlnCvkZ16yl4y4QKuQtfAvqyvOM0/UrPz6MGIT7eZ1WmlWxBTBTUtq1PfjkMPOYXPNDdSoOQ2LSHdO1ZY2Esi0VEvtsqH7JpjCq5iA6U8WhZ4/ti0ZjXxH8DfuUXLVMWm78SA7kEqZjurhRuPXfM9XuKkRMaEHQCQ/a1T2IlZ/MhDXMKflghm4jsatWeRxEdOA+iRD0hNis5cnS+SG3pb9pz7al0jDWajfp/EKOLxBZoA83z7ZZlXpZP8eoLdEKb8SN6pUFLW/5Uh3z4f3muVQsdJORCJPB7oeyH7a+AE0dvlDzCUkFYyXnOwaete4sM2GRFtS1bVw014fUpK6wQwO3keuDSF9j/P0zsUWFbsQ4kNMZ0+p2TzoZW/FwM3hHrFJjHaTd61025Gp0Fr5HkWMDkmaWhxAvszD8jC5STyUGpTYd4wsa2/RSfTYBhTQhQe100XMZRvVq3tLDddclk9rsC/LwahnLrX2pdrBm
- u0rqMtTa
- PeRNnKmE0WyVY/4fvQYzhxlqR/1o0+ASfk2eXaDF5YGBPYI85wr14SZfnYFxDiyNO5olvLfclpiedgcN3lz/Tvf4JwPjWK51lPj6NuCzW0j5+/PZLbgXL2SawvGd+Jf1LS56MfZgTZ11r4lEMnB9XgeIOO4VbnreLwmhK+yfUO9h/9K9qIXCmqBSiwQ3/7v48Q3SAUYzdmjH5SCQwLbQFjze8sMoqvlRF1JW/RzKT0kNnef6S4DjvNaHYWPhaqKTBwW0OYCL8STycQ1VJB2eyNjUs0zaoezwiUVRxZKjAAuf/oEYQ9yTIXeLAhaXiYg8wewpZU19Cc054pwmpUx2QTWGv92PZ3NQpUgI+ZQ/o+Z85xfTrBDxM0UIt+xOwWF/J2CFeWjIweCTaiwcUtId38lMqRdowkt9psQIJaxttYkV2SHtQpOB5FYpUb8ZdmeFFNKVzJ92uCDYjcyTkHRRbsD5++74ZPfr8RptO8WWj5zpgyIlZopziSJpXHLslaVUW2xWh
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-Rspam-User:
+X-HE-Tag: 1795439118-104370
+X-HE-Meta: U2FsdGVkX1/l1hvo/UVKaoxfFFIShjLAsmyjAljL26VLNULWdc6dpk4UiWx/bMfLt8UvR9OofiCkd4TWLP8dnJK7LVky/QbeR9vuLg/yfCzGhJg6k1ItnUoDAIxmVINMg8FU5Pi+a4aOhEBpsLIez+Y9SH8p6jnULWIIX6ysNcTbCh978985zInr4pajzbr+9LUswY1NyZWhqamKEkOC2PNncet5kkTIUfda2FOSJ7lipFA95cFsQW8LBlxNUw7WKfTMZHmCsMrWkDnJwDgOn5EdUsuE85b+LKr5nirlNkJZgYZJaIVs4PHNPbdghJE2tuPIjimszDH2Jca/kgDmgxf2wppTRFhURvLw6i4vL7NoGIMJmYPvlcxfcKeCYvE/2mwbahEsDoEUPUT6IkXaC7caiB6r3T/oYuMT3OhMMvg0klr0YlyoxxqUzIdhrrSVBR352hQFLiYtBS3pcA45NTbzMq+f+1Wl/WKrN0zaA3BgruS0hMnSxZRQDHgwH9wZVIGFT4p/GuyYbYg3dNlo9ZwwqGZZdGL0ef0Cujd4BVabI2x9nkQICP/g/tfbPcUtOxWzZ9/kyIa9zbY/SXq/vBninbsjRm2btaeUet7XbnwLsF5FL5ojn5pp/GXXvxVZX0wpnB4eFoqm61ew/galizevNi4nomVm/Xy037ofhdJ4f57f9DE330C/jit4PTdzOFiK9JoB5rR4QhNrP0fohDtNlHS4tA8Z2Wlyr4X0uvj1BHCX9dPSiAiXEUa4RosCMDej0yGV4M+ZBTT100/KUZ0UoOFBaF2TR0PAT5TnwLkSCBxQjE7DBlUEz9oM4xP7jZJcPmlshirhe4ihALhRo+Y7KevymPgvxBDHi/eRSmjzOhLFX0ejyZxYGwB+3rweQC2xH5XMRh10kDMG1Va7ImuqooDMgpvOuEEDUsEu85KubxWuDnfbhzX+VAeHKgVvpovS6iuU7xOIdLqzjAm
+ x02ZXJx0
+ HDgi/XpFPSaCCZmxi/3LDvYVNLW23/3+uqfdkXtUnUPs6cl9FKVrlmeAw76EnMhby1D4HYRqDxO7Lf0x9aD8TjDZ9ifEJC/WeRU3Gus98MNp2ERce0h3nuCM3Yj5nHo/kQbtg4OY+i4j+e3Gn3NoalW6JBr1RHl3zbn0FEvnzgcxwchlPNxFAC2deP34JG5/HJ7KMvkt5mm0wooEvpb4i0VwaG0huKOeCew2S44mmVmgymK7NiDoRAZ4M1nYD5l502CdXaDxE9jO9xfC2s9Cx0sjq/gmhxXMu/cHuNV3uxtRBUOFtuGtDFWDGQTElxD1WHJnSfcwm7etopVu+X1I9CajSv7j359wcxHGqK304gxUzByArdlArZj42SLUx0GWCHKkWqCFIFYOHF1Z5DWZAHnSCkH1f0HOZrg1LzzeYCqbhoh/ctb7F/AWUpHTNcYtQ++utomyfWMoUxVVgTVID9Q9l6ByaJt5i3RT8wKJ+C7wCVqxfloSv/APGyvm3iQiXFWIgVE34GPN1VmUTYLdlsUKck4nScgJFPWjt5zdBygCLubZtWk1rN2r0cOqez4+J80CZfYvgOd3lUBU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,54 +101,101 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Hi,
+The private_data field of struct liveupdate_file_op_args lets file
+handlers keep runtime state that is not preserved. It is set by
+.preserve() and passed to the later outgoing callbacks, up to
+.unpreserve(). But in the new kernel, nothing set by .retrieve() is
+kept, and .can_finish() and .finish() always get a NULL private_data.
 
-This series keeps a retrieved memfd frozen until finish. The main
-motivation is to let dependents like iommufd have a chance to acquire a
-reference. It also fits conceptually: finish is the point when the file
-should be back to "normal".
+Handlers might need to keep runtime state from retrieve until finish.
+For example, memfd will need to remember the folios it holds on to
+until finish so it can release them there.
 
-Patch 1 allows keeping private_data from retrieve to finish. This is
-needed by memfd to keep hold of folios_ser, which it uses to give up its
-pins.
+Save the private_data set by a successful .retrieve() in the luo_file,
+and pass it to .can_finish() and .finish(). The handler must free it in
+.finish().
 
-Patch 2 does the main change.
+While at it, update a stale comment under struct
+liveupdate_file_op_args. There is no 'data', but there is
+'serialized_data' and 'private_data'. Refer to them instead.
 
-The series is based on
-https://lore.kernel.org/kexec/20261123130115.4021199-1-pratyush@kernel.org/T/#u
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Tested-by: Chris Down <chris@chrisdown.name>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+ include/linux/liveupdate.h   | 11 +++++++----
+ kernel/liveupdate/luo_file.c | 11 ++++++++---
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
-Changes in v3:
-- Patch 2: Document in the Restrictions section that fallocate() fails
-  in all modes while the memfd is frozen, and that adding F_SEAL_WRITE
-  fails with -EBUSY until finish.
-- Collect tags.
-
-Changes in v2:
-- Replace the stale reference to the 'data' field in the struct
-liveupdate_file_op_args kerneldoc with 'file', 'serialized_data' and
-'private_data'. (Pasha)
-- Collect Reviewed-by tags from Pasha.
-- Rebase on the latest liveupdate/next.
-
-v1: https://lore.kernel.org/all/20261103181916.2462825-1-pratyush@kernel.org/
-v2: https://lore.kernel.org/kexec/20261103172251.2348370-1-pratyush@kernel.org/
-
-Regards,
-Pratyush Yadav
-
-Pratyush Yadav (Google) (2):
-  liveupdate: luo_file: allow keeping private_data from retrieve until
-    finish
-  mm/memfd_luo: keep memfd frozen until finish
-
- include/linux/liveupdate.h   | 11 +++--
- kernel/liveupdate/luo_file.c | 11 +++--
- mm/memfd_luo.c               | 91 ++++++++++++++++++++++++++++--------
- 3 files changed, 87 insertions(+), 26 deletions(-)
-
-
-base-commit: 4209b08181c75ea02164832cd8f47526de28d40c
-prerequisite-patch-id: e225259e2b7bb6664d8efdf9ca0bdfae24616fee
+diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+index 6051abc0612c..f01e9ab68d99 100644
+--- a/include/linux/liveupdate.h
++++ b/include/linux/liveupdate.h
+@@ -37,12 +37,15 @@ struct file;
+  * @serialized_data:  The opaque u64 handle, preserve/prepare/freeze may update
+  *                    this field.
+  * @private_data:     Private data for the file used to hold runtime state that
+- *                    is not preserved. Set by the handler's .preserve()
+- *                    callback, and must be freed in the handler's
+- *                    .unpreserve() callback.
++ *                    is not preserved. For outgoing, set by the handler's
++ *                    .preserve() callback, and must be freed in the handler's
++ *                    .unpreserve() callback. For incoming, set by the handler's
++ *                    .retrieve() callback on success, and must be freed in the
++ *                    handler's .finish() callback.
+  *
+  * This structure bundles all parameters for the file operation callbacks.
+- * The 'data' and 'file' fields are used for both input and output.
++ * The 'file', 'serialized_data' and 'private_data' fields are used for both
++ * input and output.
+  */
+ struct liveupdate_file_op_args {
+ 	struct liveupdate_file_handler *handler;
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index a39992da504f..9bda37b0dc4f 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -145,9 +145,11 @@ static DEFINE_XARRAY(luo_preserved_files);
+  *                 .retrieve(), and .finish() callbacks, allowing it to track
+  *                 and update its serialized state across phases.
+  * @private_data:  Pointer to the private data for the file used to hold runtime
+- *                 state that is not preserved. Set by the handler's .preserve()
+- *                 callback, and must be freed in the handler's .unpreserve()
+- *                 callback.
++ *                 state that is not preserved. For outgoing, set by the
++ *                 handler's .preserve() callback, and must be freed in the
++ *                 handler's .unpreserve() callback. For incoming, set by the
++ *                 handler's .retrieve() callback, and must be freed in the
++ *                 handler's .finish() callback.
+  * @retrieve_status: Status code indicating whether a user/kernel in the new kernel has
+  *                 successfully called retrieve() on this file. This prevents
+  *                 multiple retrieval attempts. A value of 0 means a retrieve()
+@@ -616,6 +618,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+ 	}
+ 
+ 	luo_file->file = args.file;
++	luo_file->private_data = args.private_data;
+ 	/* Get reference so we can keep this file in LUO until finish */
+ 	get_file(luo_file->file);
+ 
+@@ -643,6 +646,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
+ 		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
++		args.private_data = luo_file->private_data;
+ 		args.retrieve_status = luo_file->retrieve_status;
+ 		can_finish = luo_file->fh->ops->can_finish(&args);
+ 	}
+@@ -661,6 +665,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
+ 	args.session = luo_session_from_file_set(file_set);
+ 	args.file = luo_file->file;
+ 	args.serialized_data = luo_file->serialized_data;
++	args.private_data = luo_file->private_data;
+ 	args.retrieve_status = luo_file->retrieve_status;
+ 
+ 	luo_file->fh->ops->finish(&args);
 -- 
 2.56.1.750.gf70dc682cf-goog
 
