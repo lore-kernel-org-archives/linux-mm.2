@@ -1,125 +1,265 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AED606A32D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAAED606A33D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Q7zccCPJ
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qZeMY5N8
 Received: by kanga.kvack.org (Postfix)
-	id DB1726B05B2; Mon, 23 Nov 2026 05:11:33 -0500 (EST)
+	id DB2606B05B5; Mon, 23 Nov 2026 05:11:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3B566B05B4; Mon, 23 Nov 2026 05:11:33 -0500 (EST)
+	id D3C5D6B05B6; Mon, 23 Nov 2026 05:11:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C039E6B05B5; Mon, 23 Nov 2026 05:11:33 -0500 (EST)
+	id BB4EE6B05B7; Mon, 23 Nov 2026 05:11:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 916DA6B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:11:33 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6267140823
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:11:32 +0000 (UTC)
-X-FDA: 85465966824.22.E778E06
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D88B3140002
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:11:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Q7zccCPJ;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 84EC26B05B5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:11:37 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F234F40869
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:11:36 +0000 (UTC)
+X-FDA: 85465966992.06.3D01981
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4C65340003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:11:34 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=qZeMY5N8;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf04.hostedemail.com: domain of schnelle@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=schnelle@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795428691;
-	b=SrPcP/+cCNvGG7fSWOQW6bE89yoXmD6sXicjiXlim8B0cc3IrqWe/cNpObWcScyHIr3BiU
-	3kp1kHxJ2qQbIijhlL2ROAoBUsgXQZ/+sNXzEJsOZR/bD2lNPliwbpCOtYZ0SPlHAUnJ5J
-	Lcz8evL8u9Uhkpr9TLw+ZwPMRpePc2Q=
+	t=1795428694;
+	b=bNPpi0A6+PEHjnrXl14F8SjpgBdfLEfneu3yl7zSX7j2FNKUrKOKrmlApehjbSDt/L4KH5
+	xALeOyP1f9jDC0llH721wTvKcuGtNARbi7oL4mqtGFnrV5/iN9GFM60bbQBrus46+KAxqp
+	BcBr/MAZQwfSPj34MO/1s2JDM9SmL+E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795428691;
+	s=arc-20220608; t=1795428694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DwLiyOh05b0NI0/gh6SV/G295VOAZ2Tu2Ln3fZH+sNU=;
-	b=GFlZfh1p9pOQAqVzUimhEJshJ1RU1GiJDqakERGh73PHudah4ceG12bxgE9FkpAWmcYZXZ
-	s3dDd7GNrZYKnXd4nQx2msUtGJ/5RaCymrhqNTMEwsdDDpkbRe1eQVTfECS/Dir2b69li1
-	UxK42cDNmLnCF67OZ4yOEp6g9P+NRPA=
+	bh=2snuaHCf1ced3ZKcOLzPklCct0WrnW+pIXLZNFNgR0g=;
+	b=cY5FUVEIWJXNyqdxRXa36fmm0ymVA/bjSYFGVgBOEGyv1hsJh1q/GrYfT7KhaOe22jo3Mu
+	5mHZp0eHMuOKBBWN3dSjkfX6bf1JrWTXOtKZiYqn0eLasUppkfFe8yDKHnHK0Ul0gX32Gk
+	yDQfhpigl/Uxi9SEIGvraAFFAdnOThE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Q7zccCPJ;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4a5024b3c28so2419876f8f.0
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:11:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1795428689; x=1796033489; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DwLiyOh05b0NI0/gh6SV/G295VOAZ2Tu2Ln3fZH+sNU=;
-        b=Q7zccCPJ7CMObMkhvEPB5P4WFoeBPglKuGoOnci9dFczFSh5yctJPGnHauHduoOfqo
-         2ipeFzJQfARSSsY5M8kkjH6XFZ5hlrtxzJ/0+YH5yCT+zN9cixQmG4DmMZGmyGP/Ub9b
-         90YhY++THdF6zHsKCGKSQsE/s76taHCANRbDFdcdRsifH5uCoENmuGgjOwvjQBxgjLeQ
-         dJL1/YEfP+Ji7sdNQvH0coMhGn7tJmH1bGdFAeyvicLafWdbhCAXDjnjKUxZW0aIbnz+
-         NOH/GdwIxn5DfxB/vC+fUffCCKfwf+zcmi4XB/k1I/+P7ZKL1e2iTxX8/w9nb95sOcwA
-         h+VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795428689; x=1796033489;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DwLiyOh05b0NI0/gh6SV/G295VOAZ2Tu2Ln3fZH+sNU=;
-        b=ypPWD7/R+Beie35JDIPIqIxZuXRMRts7OtFEVQ4M6PhLwBFRtMWfEatfj5nrHz38qv
-         AfYdrxIkggA4hNXE+o5yDLCpi0Jt0RN1AcdHXvILElY/wAZjR8axvDOCw+0I5udRPVxq
-         VaEYM4x5JDOn6nr+egHNwPODlnfUyCmT3UCaVbZHRuy/uXi4yzMcLMoTYJy1/fLPZvNM
-         gX5QAakCcHxUkfGuCrN481Jz1LBf00tiOZBtuvx9JkEt9iPZzRbMtgTtxWmBD51oz3mA
-         nKyJ7eH7VpsQdLh7tH6yY4Mf1NsrPcgEWWVsvw24slssDXkLkaZfyMJwUsguxjQFt7MS
-         7WnQ==
-X-Forwarded-Encrypted: i=1; AL+hErF0CpRZHfHX5OFipvXONjkEqr6fzNowKVC7C9sUCj8iOnKOATh1I6snAe5LuSBisMBY6Od2Z8z9hg==@kvack.org
-X-Gm-Message-State: APuU4Z8eqSLtjqzkAxV2u82+Zoe5rkJDwKYOa3cbU/a+56biIVBVU7iO
-	6/OWEGz0E39pDVZ4wUy9/2uj10o2QaW93JK7IxEktiL25yRfr1xes5JBk6cUaEd6NYM=
-X-Gm-Gg: AZFdTZcpCTVLRwjEWES/sDBu1oqou6hD1C15USvCraH0Y+LcZPvrJci5xVNZuavLYVj
-	2UzeX2F/Y5KB2RbZQkj/NSHjN0DhBSOyKmx/b7VVtzlpN8f7cBKAsrtl7ewPBZ4it/Jnh/rxXyr
-	rGjdjrlRBbVaXWc/h1tUuY8WguXAUshpK0gVx7IwEc3nvUZeNtC5mt790ddHdLm9a6HYsnqBuVY
-	kT8PLcroZ3vVw7f4+sPxohHOlnVeJD49T8it0UaDZSZdf3fYo0hfiNgsCcCnKOR6kRWwKWFFRIJ
-	aBnlOb3M1VUG49JOiyPZIwAnyy5gEUNg98mFwfFmXuQxdEG1NQtFI+HyqhlTUAZKQ2Kjc5kyDkd
-	Q6X7/bTBy50yZESTlkUYYpSiib22k0L40ZkC2xt53AxXrcQmfcD5ds4GSsacfCkhifJqtLlXfSI
-	Je4jSqqE/qGYwcHm+j5qWMLn1XLJr1MZVTR+otJE9bms3oHAZ5kbWTL/dgiNDLIN0E0xd/bnaav
-	zDg5vJ/nDWIWTiJe/sZbCXfodS3B40/Pls4IlNCAG9NLHcSDk+/4B8cu7kedjzcK41DfuaQKxya
-	3aEg/w5XN7RFXizJo/Vk7O70/eXxxt5IYDg5A/F+2Yg=
-X-Received: by 2002:a05:6000:2211:b0:493:72f7:1d5b with SMTP id ffacd0b85a97d-4aa5b235116mr26571679f8f.29.1795428689306;
-        Mon, 23 Nov 2026 02:11:29 -0800 (PST)
-Received: from localhost (109-81-82-199.rct.o2.cz. [109.81.82.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6a67fe75sm24009577f8f.24.2026.11.23.02.11.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 02:11:28 -0800 (PST)
-Date: Mon, 23 Nov 2026 11:11:27 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Zhan Xusheng <zhanxusheng1024@gmail.com>, Tejun Heo <tj@kernel.org>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	penguin-kernel@i-love.sakura.ne.jp, tj@kernel.org, mkoutny@suse.com,
-	chris@chrisdown.name, cui.tao@linux.dev, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, zhanxusheng@xiaomi.com
-Subject: Re: [PATCH v3] mm: memcontrol: don't miss processes whose leader has
- exited in OOM scans
-Message-ID: <awQRT7InNqEF-K8-@tiehlicka>
-References: <20261121073222.834282-1-zhanxusheng1024@gmail.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=qZeMY5N8;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf04.hostedemail.com: domain of schnelle@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=schnelle@linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN9ZR6F1603637;
+	Mon, 23 Nov 2026 10:10:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=2snuaH
+	Cf1ced3ZKcOLzPklCct0WrnW+pIXLZNFNgR0g=; b=qZeMY5N8IsLbhZxLNNTnPn
+	zrukWbf9ynh54WOK9bRXhxGoG0zFvnrjzj35tqdh1TjJY0r8LGKZU2z8AH+d3c+b
+	hmEFCp5VNW4FBBpwPErrLNxj0aktXwD11NF4zCyxAX0XxNRLugr1+H3BWoR/S0/u
+	75Lhh66vaTxYE6oHew2u/4MztrSP9qPDucHFeqZkrRB27f+cLHGb1LEw4aKtVmlP
+	H0dURSVf8URxndmV8GBY1qYKaBLJjDhFVyrkbCBIj5uaKpv0UOEf3AFpGcuVIX97
+	7dJ2SrFLP5w15rfj+ud/pdG2xcmaPRQ8QV3YW7moe1JCiR1CjpHsZewNo/JTmo6Q
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g32jru-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 23 Nov 2026 10:10:52 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN9JeFg2759046;
+	Mon, 23 Nov 2026 10:10:51 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3q4h675h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Nov 2026 10:10:51 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ANAA0Su29229686
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Nov 2026 10:10:00 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13BA55805E;
+	Mon, 23 Nov 2026 10:10:51 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2901F5805A;
+	Mon, 23 Nov 2026 10:10:42 +0000 (GMT)
+Received: from [9.111.1.66] (unknown [9.111.1.66])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Nov 2026 10:10:41 +0000 (GMT)
+Message-ID: <1f10002ea9ee16a17087bd06e4a1685a973fdf6e.camel@linux.ibm.com>
+Subject: Re: [RFC PATCH v3 00/25] PISA: Pre-mapped IOVA Superpage Allocator
+ for DMA and CoCo
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Luigi Rizzo <lrizzo@google.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand	
+ <david@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Vlastimil Babka	
+ <vbabka@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon
+ <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+        Marek Szyprowski
+ <m.szyprowski@samsung.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        "David S .
+ Miller"	 <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub
+ Kicinski	 <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Luigi Rizzo	
+ <rizzo.unipi@gmail.com>,
+        Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R .
+ Howlett"	 <liam@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Suren
+ Baghdasaryan	 <surenb@google.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Brendan
+ Jackman	 <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+        Harry Yoo
+ <harry@kernel.org>, Christoph Lameter	 <cl@gentwo.org>,
+        David Rientjes
+ <rientjes@google.com>,
+        Roman Gushchin	 <roman.gushchin@linux.dev>, Hao Li
+ <hao.li@linux.dev>,
+        Matthew Wilcox	 <willy@infradead.org>, Jan Kara
+ <jack@suse.cz>,
+        Jann Horn <jannh@google.com>,
+        Catalin Marinas
+ <catalin.marinas@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki"	 <rafael@kernel.org>,
+        Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet	 <corbet@lwn.net>,
+        Simon Horman
+ <horms@kernel.org>,
+        Jesper Dangaard Brouer	 <hawk@kernel.org>,
+        Ilias
+ Apalodimas <ilias.apalodimas@linaro.org>,
+        Willem de Bruijn
+ <willemb@google.com>,
+        Kuniyuki Iwashima <kuniyu@google.com>,
+        Joshua
+ Washington	 <joshwash@google.com>,
+        Harshitha Ramamurthy
+ <hramamurthy@google.com>,
+        Alexander Lobakin
+ <aleksander.lobakin@intel.com>,
+        Christoph Hellwig <hch@lst.de>, Dragos
+ Tatulea <dtatulea@nvidia.com>,
+        Naman Gulati <namangulati@google.com>,
+        Pranjal Shrivastava <praan@google.com>,
+        Mostafa Saleh	
+ <smostafa@google.com>,
+        Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
+        iommu@lists.linux.dev, netdev@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        driver-core@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <CAMOZA0LmZ9PFzxLcc1SuS8piFyZu6P=vX_qR2jy-3QRUoNCUKA@mail.gmail.com>
+References: <20261109182533.3594984-1-lrizzo@google.com>
+	 <20261120010655.467825-1-lrizzo@google.com>
+	 <20261120135013.GO3115493@ziepe.ca>
+	 <CAMOZA0LmZ9PFzxLcc1SuS8piFyZu6P=vX_qR2jy-3QRUoNCUKA@mail.gmail.com>
+Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 23 Nov 2026 11:09:40 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261121073222.834282-1-zhanxusheng1024@gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D88B3140002
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: yudtwm64rgzbj8e9qddn9fgdnw1qbgtc
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=SoQFe/O0 c=1 sm=1 tr=0 ts=6b04112d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=9jRdOu3wAAAA:8
+ a=HXTMhFcmDb5UjnNm18QA:9 a=QEXdDO2ut3YA:10 a=ZE6KLimJVUuLrTuGpvhn:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA0MCBTYWx0ZWRfX+SnUpKBhpNxt
+ 6ltTAuPh+dSZqgYKHq2EXRW6JLOXkC9bKqTXzOMLsW4XQjFY6ICqrLo1eTubFi7+T30qb9yK/Sq
+ g1x/8GS5VQC+luYkfurSA9hBn0vrob8=
+X-Proofpoint-ORIG-GUID: g4YrXK8XHnOLs6hMgSbVa0siPTgmA4y1
+X-Proofpoint-GUID: COYrNUVwdZNscqeoFw9r-VC7XEpM8jcb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA0MCBTYWx0ZWRfX221TJUFwr82H
+ r3mUgrbkS3uy4QqsIJGhCohR3l6xECTkhKk2B/N+op9eDonLFxwOFN0BdaUaIXtTpXOUZet8yjN
+ aQlwwBmgQtA65yL9mninHDLTSLbJu4ItKtAXWNMNxzzqty4zhE/M4TSxo96726kPTyeUU6ftpwy
+ nMPPh4y+F0eTHqjEmxDqB/W+qR7NxyImWAm9TD2IUIquUft3bkDpuLb0y6KBbY2D/Z3udRSkp5M
+ b9WJVFEzVvGYZohAzenyKN2CvdIWAVHV/ZiWNJcAMXZvh6xJ0rBHnZWP3x4W3UuDHE6P8UNcZwa
+ hy+ETYikMLYo1Q6uFj+WQpJ+nZYJywIs9NZmsfo/gl5fTKDa/fZeQJ0BItRWk4w3+zIRFz+E1VC
+ e/nL6Pxj4e61wP1HQ9jbJ0vXal7SsOq9rUnB0y6Dst6TB8/6U0fvmd7OFSp9F5EGScS3L+ocPeG
+ uHgw66vM79lVBe3iOHw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-23_02,2026-11-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1011 malwarescore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611230040
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4C65340003
 X-Rspam-User:
-X-HE-Tag: 1795428690-566680
-X-HE-Meta: U2FsdGVkX1/0U+yIhPp/J/1nO2hluXxXSv29JxonJP9QJMEkkZjfiSI/ZNpjR9YLv/wwCHAM146x0zuHeuf9QDzYZotcYpigzKziNoe00pSnJ1o6uQ+RIMuUzDR/YkwOzhYsgJDFoDX/jtAr+MGkJ0m1n1Gx7HANUuTC/qwJ7TnqI1KxmWXoDw0n54mM4eSvoywF2LU0jzn2XUlFKo1XnVYNOW74s9YvzLngHdQhey8KCvvPwsFj3JWywc4y3oS78eA03tGfRKfCV+O42d/VmKq7F3EiazVlmwb3XnLr+kQXyNJHO0VYhDtA345kkZn96dHo6b53+UoE5YU29tZr9qX6hTRH2Cc5g8AdntG40Aw3uOzVNN1/jWnnA4eYUanYQ7g42v95XWQyhCYorKPPOmd9Di+5fWbkhck5ILXf2HZRCO0+qaAwuiEkS8dTr0RadlUTCzmAQkV6Ehn3urzMWbskpXzUJq9NZmFH0Za7SH4GbVvqt/yzQ9d4qY50ftSOTEOxWwB2eGMDL27GuqNaYDIsEU0PYJenb+TFVdYbAA/SIuvhaHHcUJnFj9er+k+bvf+/FiUAyPQKzlUJWgINvZgY/PTJCRLZVarWi8lVyX4lulBmrwgKefjshG+JQlfakDUFdsKMJN4KM7rL2L/FOekrfI7nH8DjN767sQy22d5FAQTszq0f2IkSiBKzW6KLgtSkuxipmnvLrtSzgmg7chN0cBRlh3/sEK7dAcPLlWVSWu1jozrG+b9jcI1s5upI8Byr+q7INKXpxfhpMGFiKOu50NMUEvf605tANJW7NrgjRtIuGGrTp8QD7QmoYDHC9Ed8j78Ts1YA1lUeBoA1K+nacljRpdgayhPq12Cpz6iHe92lG4gwu0Ty/ua8mJ96UIqhCN7qKGx9bsRm0uwThkT197BpAWMBD0d8qpsVBFuY2mnPeTFgSKFHgVWE4g9R3km1OenIYcB4u7J/tRl
- c+ZhlOSy
- TbWodXRL6Ge9E7iyK44JX/NBqJ9yDDewJ3qAOxEpOYaP9Sb9TMx0D9wy2fEZIL8IJCnDSVqLQHYK5AGebUiEjYARZoUXaoY96t/2Sx/fxEZ43RwlTrwdoUhqKSnrnca3+AYrDWHqVja2GGRS48SuiSe/pdJSKobvDadsclabk1u2+QQdPmGzRNhZqA57rjra6PhTmM8391nSdQLXVDZHQJ8oSS08NIOt4BjQWwIGOH3dJZmTZgMzXj0tNdN/JLm1pQLCE9YbfNkfKPBagVwUksTiKukzIWxeFdlAYEpysmoElU/ua9DHuFuTNS4bVh905k6DZtr/FYHUZmAfJ6GYe7ds2zY6TlPVxcQFGeDr5RbVp8YSexftUSiSON1hthyY+O0FyFgRUqOL8YMbHLEQTNvnIyVnGPkbXBEIMAEy8+4ldmnAj2c4+V4071Hk8rvG11DL6Q7LbVwg+eFGlMUD+Tgq3t6Gx3pBGLEcuIH+u519czL5SL52yG4aBkyEStAfIMkFhEtCISTaiWMtYntMO/Vmcapb2OHR9RG7QtnNETTKLUFYZSaVf1U1Y40NkeR6p/GrTjoXTbGMoGrQ=
+X-Stat-Signature: r9izgdr8acp3h47wywymut6gfda9jn6f
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795428694-771269
+X-HE-Meta: U2FsdGVkX1+mRHzR7F1aG9eZbW3mQKx3jNpm2o0DStPPjM3SHaBrWDq3BMDr0N9ZNueKHOTYMlwZedIlT4wViyDWtcAqMGtnSEwUqUBbx6WME/Z/O6P/GCHKf7Di2B82ftXinnLMC9pGeeNDq/FmkK2ndv4OLWOAdU+1ufYmyQ4x2bs5olWC4nobeyL2HGprw4aN4uowMeDTmenSJaYZd/97VYcJWTEZncEtigvRPqfGuhDb3F9xzhw5Wz4yt9LLL0G+OZ3XUq7XOmG9ax4yIx1CXytD2FAW7XwfpaNhl/scCnMv24E7F3DREiR/Uc6zNHkhywkPCoqaCN4SMkipKoAi7lQKE5Dq6WIkU3kQQM1tfIMq3Mn4o8sB6HFKiAYYSIEjIpBNZ4sFkkhwBFuxlFFXXq0+Jb/KPPMk27XS1ZyBUkT4xnUv75LLFDuQsjOikxzCLW1hd6RIKGyCnkJIDczuxzfUOLdYZOe/BM5X1vFzCoHto/dytlEna8KZHmpImkcG0ITVX9lMayTZ475eteUNEiPkH2kztCaZFYLX2QvAQY5r+k8J01FBtrQLchJEbi57m6gOpgZlHPq0TeL1/A2WFjIkqrMg61lLC5JaU2YxSLsYY9ppDSSA6A8LVVX8nKArz+rWwEXEVXAkPkOSlC41e6+b9fnFVbCFjBwV2R9GkMLrS8tczZd1EW3m5FUsc0fy46rxLMEAIS4GCQ0HTyLjp191aZEgLIFiRqfXYfdmyGEVus58/uJstiwPp7trwKVsf1kQF0G089UAJRX9PrMELLDqA54qzblRpHN2pKQzexfnRrIy9amCwLb7JljgXxW5FuR+epaKoF32eLtstv7HW/CNLGqz+jvbt04wqnaWoEExMSbz5BpdrRFbTWtChuU5Yoe4NTt3eGE5xi8MLWP8VmQ+7TKgvR+qu4yf+1Y/g5X7f2uTdhm332dVQ5yd22kZ39FpnthsFFk3Hyi
+ dtR9ojzk
+ BMLWN4HSrwfma3O8bIOiwLcWria1e+FWhbh04b9e1pqFHw27zBcHq1oTDLD8I2rjOqTHi+nWwBWmS4RxoNbnemJ66mmB8STaZhE7MYiDc/R7O0zONRBVwr/U6wPbOSgjEhoGbvXCgOkJjPapI+aF7puxowAHvrbvzX5K4i2GIZtEbhLAV70HW+yoYuTt3kciIzgB7mzcGV4YfsTa3A7oJbsLdh7N9gehRc+W1pO3eZDBzZTG3z4RhAnHd2VlegJ0p+8xh3OgzYYFBySgeJhijAJgYk6m6D8WSob9wXWmGo/58lwJjI6bu0O3WhMUSOLwd8tIT63ixDPBMlvC0p9ufdmLPB5jHEm6AXZsi+utYWz6e+8z9QepWZVvJ4NTmWCJPjeySi/aFoiRFmMVdT8pZcRmEFarXwYCOAjzVtZOP3ivHJVi0T362Jihzi4/wsFrW1Vvb1OZ8Tgty8Wqwie2ReMDAt8mhPvxqZNRccPWEhCP+SJ5f6H3G54GoC+qJVemx3iORhAgrO60IunIj3eDODRtI5dzxjVDWLxUC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,22 +268,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat 21-11-26 15:32:22, Zhan Xusheng wrote:
-> Moving the exited leader along with its threads came up on v1, and
-> there has been no answer from the cgroup side.  cgroup.kill had the
-> same case: da13e0e72a73 ("cgroup: fix cgroup.kill for exited thread
-> group leader") walks all threads instead of the leaders, and
-> 5f4a3f743acc ("cgroup: don't kill migrated processes through their
-> exiting threads") then had to keep an exiting thread left behind from
-> standing for a process that has moved out.  This patch does the same
-> for the memcg scan; the second case is what the live_elsewhere check
-> covers.
+On Fri, 2026-11-20 at 15:19 +0100, Luigi Rizzo wrote:
+> On Fri, Nov 20, 2026 at 2:50=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wr=
+ote:
+> >=20
+> > On Fri, Nov 20, 2026 at 01:06:30AM +0000, Luigi Rizzo wrote:
+> > > This is v3 of the RFC previously posted as DMA_PMD [0], now renamed P=
+ISA
+> > > ("Pre-mapped IOVA Superpage Allocator"). The text below follows
+> > > Documentation/core-api/pisa.rst (patch 25/25), which has the details.
+> >=20
+> > I thought the conclusion was to just do this stuff in netdev pagepool,
+> > now you come with an enormous AI series spread across the entire
+> > kernel?
+>=20
+> There were surely comments claiming nothing outside net/ cares or needs t=
+his.
+>=20
+> I respectfully disagree, witness is the fact that e.g. there was already =
+an
+> io_uring proposal which is smaller, but does not address applications
+> that want to use the standard disk I/O paths (libaio, buffer cache etc)
+>=20
+> Nothing has changed from the initial series in terms of size, use cases o=
+r
+> subsystems involved. Large files are placed where they should,
+> the series covers the same three use cases (disk, network, CoCo), and
+> touches three parts which it has to touch: mm (most of it; it is a
+> memory allocator
+> extension after all), dma (it hooks into map and unmap, not a large chang=
+e)
+> and net (the pagepool change is a couple of lines; the tx path needs to
+> touch more places because the current stack assumes all paths have
+> the same I/O requirements).
+>=20
+> For CoCo, there are very fine grained controls so the bounce buffers
+> can be enabled only when they don't pose a risk, which in turn
+> depends on the threat model.
+>=20
+> Specifically, for network tx buffers or disk writes, the user-to-kernel c=
+opy
+> is basically a bounce buffer provided it is used correctly and not leaked
+> elsewhere (which is the design; of course the implementation
+> needs to be verified and possibly fixed so that it matches the design).
+>=20
+> cheers
+> luigi
 
-Tejun, is there any strong reason to keep the exiting thread group
-leader in the original cgroup? This makes CSS_TASK_ITER_PROCS iteration
-really tricky and error prone as above examples show.
+Hi Luigi, Hi Jason,
 
--- 
-Michal Hocko
-SUSE Labs
+I've been lurking but following this series since the start. I am torn.
+On s390 where the IOMMU is always enabled on our closest equivalent to
+bare metal (non paging LPAR hypervisor), and where we also default to
+an emulated IOMMU in KVM guests, the underlying problem is a real pain.
+We're also in the process of enabling large IOMMU mappings via the
+generic_pt API which are 1M and 2G on s390. So, the idea of making
+better use of larger mappings is very attractive to us and I applaud
+you for trying to tackle this very real issue.
+
+That said I do have to agree with the critique. This series is too
+invasive, too unclear in its layering, and most importantly it feels
+like you're trying to do everything in a big swoop ignoring advice from
+the maintainers just because it would limit the scope of a first step.
+
+I also don't think Jason's point is that nothing outside net/ cares, I
+think, it's rather that the IOMMU and DMA layers already offer the
+tools and each subsystem needs to use the right combination for its
+specific requirements. And if a tool is missing this needs to be stated
+very precisely including how the addition keeps layering intact.
+
+I don't claim to have a simple solution to offer, if I did I would have
+sent patches already, but let me state my thoughts. First I think this
+really needs an iterative approach with much smaller self contained
+steps and focus on specific issues. With that, I think this should
+focus on the network stack, while the io_uring specific proposal can go
+after the block layer. Also in my experience networking is where this
+hurts most.
+
+Now, I wonder if we can't start with something simple. What if the page
+pool could start by allocating in batches of PMD sized and aligned
+folios of contiguous pages that can share a single large IOMMU
+translation. The page pool can then still hand out pages from that
+batch without having to do sub-page allocation but would already use
+much fewer IOTLB entries and the locality might even help non IOMMU
+workloads.=C2=A0So, I'd even hope this could be enabled by default and this
+is actually something I don't like about this series, I really don't
+like having a tunable when we know that larger IOMMU mappings are
+strictly better when you have an IOMMU that supports them.
+
+I think that approach would also align with Jason's idea to keep things
+within the network stack and to work with the tools we have until their
+limits become very clear.
+
+Thanks,
+Niklas
+> >=20
 
