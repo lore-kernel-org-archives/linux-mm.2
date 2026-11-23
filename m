@@ -1,101 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605EB606A32E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 06:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688F0606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 06:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gpuPjbek
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=f43vwgDi
 Received: by kanga.kvack.org (Postfix)
-	id 87ED26B05B1; Mon, 23 Nov 2026 01:39:37 -0500 (EST)
+	id 8B8A96B05B0; Mon, 23 Nov 2026 01:46:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 807726B05B2; Mon, 23 Nov 2026 01:39:37 -0500 (EST)
+	id 862706B05B3; Mon, 23 Nov 2026 01:46:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CEFF6B05B3; Mon, 23 Nov 2026 01:39:37 -0500 (EST)
+	id 778B36B05B4; Mon, 23 Nov 2026 01:46:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DCEC6B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:39:37 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D1E55160494
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:39:36 +0000 (UTC)
-X-FDA: 85465432752.08.45AA193
-Received: from mta1.migadu.com (out-36.mta1.migadu.com [95.215.58.36])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 90889C0004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:39:34 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gpuPjbek;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.36 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 569EB6B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:46:17 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B82DA1207EC
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:46:16 +0000 (UTC)
+X-FDA: 85465449552.07.4254D0D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DF77AC0003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:46:14 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f43vwgDi;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795415975;
-	b=v84uXSv8b90BEnxu+J6KV9gZvvWNWjM/nfaujoWdoPQeWHu219wqbwuFvWNXcHy/zL6Zh8
-	hhY+OPZBIjgZgpsuqNSNL6Ds1PsVSQ4yebr4wffNWUFlAxoMydev6MHd3c/9j5GmMTPNoX
-	ljso6gqaq/2+LufJpUDyBpUZYjKmWac=
+	t=1795416375;
+	b=SerW33CPxu6MxO6h8+UKL88oUPE15CXkVMbguSfyW9L8bmK3mORJCbwslb65KCfai58Rd9
+	bIWN1GVuiZta28wHKXdyGiKm8aeHg0aspCUGFtARVbOCXtTx48nxpF7ZJJk2DXi4HVW4/I
+	hZBN7LxUDxQVmXPkEaNxlN8OKVLbYtQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795415975;
+	s=arc-20220608; t=1795416375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1S+FjIq6iQ59JuCSrkDkJDXNBT3bARoAzrzzdcKK3hc=;
-	b=raOtX6+O0Lu1I/Gs3KUfLjTmqnfiw9CDt9iD1vAOVAhG3ugxl/kkLoJMl+el2h1HsZQ1Cg
-	eUNkS4OIKtpxx1EEmbrauF9L7qwwStUQJARfwrwUIPd+gYXUOgj9P7mfOkAxLSd8J6aTk/
-	uAPhtcLkzjVhZfDV1FMVsr+IYvpLtBI=
+	bh=smMnBtOrXp4KpQwGfADX4ET4EDpnjYeR/XXFrdbolek=;
+	b=Vpd2M+jifVzL16JcQGZjU5h92a51PK9KaLW/me6yys9nKjdtnuMQj3cdlKnkgM6DHYWl0J
+	pPc5hsW8ubyGrYqGSK15/BdzICpb96P+m4VJWererUTL3pTOCva/xcN+qqagZK7lFNVsk7
+	X7yyEFIWcTjITicRaFYENgeTwgUT/h0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gpuPjbek;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.36 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=EGI+hFYSI6qeyRcfjHp8n/r3RKOt4t3CJPzrN5D49Oc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795415973; v=1; x=1796020773;
- b=gpuPjbek126+k4ikzIEVnpzVvCcwh8lf7SHiElMR/xFmDyWR+AmS2CpWX++AkiwuZSCIHli+
- b7uYGDaqJNKoophIy6kfGgY4yH7CruzYv2JLoOb4Jxn83J6wInJAOBosabRtD4fMhPB9kRTAvuj
- JoxmP4rb5FpRe47vFhXHog3k=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ebc62440839800c0;
-	Mon, 23 Nov 2026 06:39:33 +0000
-X-Mizu-Trace-ID: ebc62440839800c0
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <240018e0-02c1-401a-a979-3f867526191d@linux.dev>
-Date: Mon, 23 Nov 2026 14:39:22 +0800
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f43vwgDi;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3CE4261D1A;
+	Mon, 23 Nov 2026 06:46:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1F61F000C0;
+	Mon, 23 Nov 2026 06:46:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1795416373;
+	bh=smMnBtOrXp4KpQwGfADX4ET4EDpnjYeR/XXFrdbolek=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=f43vwgDiyUwxOgba9MedwB1i3kx8fX77P+jVWeAczvu/WwhfD0oCf7N56P7hJIcnt
+	 nLfDANZkcx3oHd5XORFo3BBNijzFunB5QSnRSkhH/MON/ag4WHCU21wDk+h644cXsy
+	 oXhyCEvKWuGDmN8+hmbE/MFHFMCZaDWI8So99uWQ=
+Date: Sun, 22 Nov 2026 22:46:12 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: david@kernel.org, ljs@kernel.org, hughd@google.com, chrisl@kernel.org,
+ kasong@tencent.com, riel@surriel.com, liam@infradead.org,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, baolin.wang@linux.alibaba.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ baohua@kernel.org, youngjun.park@lge.com, linux-mm@kvack.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+Subject: Re: [PATCH v5 0/8] Optimize anonymous swapbacked large folio
+ unmapping
+Message-Id: <20261122224612.8e7f1bafa2b712521a95ed79@linux-foundation.org>
+In-Reply-To: <20261123053543.295467-1-dev.jain@arm.com>
+References: <20261123053543.295467-1-dev.jain@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/11] mm/mm_init: verify zones for
- template-initialized pages
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>
-Cc: "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Muchun Song <muchun.song@linux.dev>, Li Zhe <lizhe.67@bytedance.com>,
- Andrew Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- James Houghton <jthoughton@google.com>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261120100856.16929-1-songmuchun@bytedance.com>
- <20261120100856.16929-2-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261120100856.16929-2-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4p6j1gk4jjtgi15j1yiz9x3w7baei8f8
-X-Rspamd-Queue-Id: 90889C0004
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam02
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: DF77AC0003
+X-Stat-Signature: 6wsestjzr5b3qu3fd86fwjogzedowt6c
 X-Rspam-User:
-X-HE-Tag: 1795415974-34286
-X-HE-Meta: U2FsdGVkX1+rIm1tGqSLkTYgD3nn0rJgU2Lshbu+RLtE+ewGPU4vP4L2mhU2OOGAeFBm/i9N12FeOphJKNUu5PpEeH9bwnMWpPg9XJgzCsIovqbAHsdo1+I395pwV8+muaxYL8Rk7yD5W3fwDqp3MDlMaQa0DtQmlkref+g2537KaH6y3Bp5u1qeIOKaKaFUQ+kDF5p4xpclic5UzIkpEe5WX/2ZF+oqU4Bl8GfoiFMy6JSqp2LYpaE+vZuU0DQnOoFUaZa6etgYCICF1DN6KJ/sWXElbkQk7n5+xO3i/hcRCSI4Qv6yFEDkXbnFPqSUJUkU8eFuPwSPVmowHtUGOBnUqXPJpvIdFik4fCT+IOzi2J5XO5bNSXsiM8n0DlA5SaWRb1VcVJYITpMvi2tSk3jHVAeJ7zoEg638WmTNkbbLUe6FNpjapQpJPVQ8OOG8bKJGbVo+83hYMJqdbeoG9k6FXEH06Re0lR4RfTlV9tVd06x7+gHh0e+W90VrqgySIxvk2lYjlz6G2eWTh7WQNTSIIIoMyQizZML6yj/X7IaqCsDAJJQgMElvkc17SZGAW1Q5510J8ooMBMFd/5HSeaKqSVFGVJ5MNR7ePhWjSmxp2oEvS0s29IW6C19gmy12UEsryACoZYi0FfyH59Puw9i+KzXxh+vpnAtmWee4MWKix9Lbz6tvPxv81J8pATR13lVv+lNMOG5vNBRsICAMX8UWfUKJVb1a57COuNAUQA7nOI1oIbFeDmolsgKYdEapxVM1997rgEhM+gVsD/YrlN3gQMYufa5cDChzuNl+2ipEZSwUN120KN5upgI4iIimPDxIXFp/tjdREV3m+C9vsX5mNhdQTyhipPDX9mO4u+ts5OM0NQawy5g9UNh8rmLRbIUsShW2zJGLkv6yoVeCNqdDMPT+sxIq9JVVNJ7CjhDfRsk8rtR54csXIclEmebmf6oxWiGyf8Yei11jR9x
- BOWxx/h7
- yO068WtmNQp2xeUVkm174tw+gqswghxDQi8v3gDA66WkWaHNqZ8l11i8yvwOkr4kPl9QfsG04pGuFEtJYREOd3AtU7c7Z8Brh4YKqBce1guRwjQYzY1WKDaBL58+rM1+yO1oXUWOCAP2YnccSo8iXffnXX5+/VUc/tEDCA8AvCgP85Qvl1fZlfNGG8pDHdUpARRT2GIOsMZTxBOV0dXKJwm2BCT2l5a+CaiB5rIKpx07ZM6kqCZLXWQMwi/9iiNXR1Q56x5ngYAbMrm2ZLpJpo3xowEyCwssIYLeRJh43H6j+skSCqWu4gQ/wtmBloQ/wG8dDSJqLVfKVP0YhgOTejyQSdXj9CjoA5XkdpBrNtWBTCXNn3pK+RfGkQrSqtgAl93J2y7zKbYaSc92IrFdNFYPVP6FosiVuDKRgmqAZ0vzQQ60X4Um97pcsrqrECSgP8zQ5gH8bj7dquEjW5lqg4Th6UYsKe8htL3j7/dtgxX5RoCJgO9ti81glF7jyhmSU4+RFPTQ1JSBMpUOZBKi7z+toIIKf8+zcTBUr8hgjZczKU3GvDddsEIOHV+kOnLyYHiPihArIQYdJZjs=
+X-HE-Tag: 1795416374-941050
+X-HE-Meta: U2FsdGVkX1+70rzu/eSI95dYLHZJH2qGG23oAhK3wZcRrmSfyEnn9a1sHxqxlUtha8sh4U55gV/cZ8o4CnTvK+c9fwtX7eZZ782Spde7hOodYpKGMHWb2EU+hsCxAiIBV2ZMbn8EODD67LYE6pNtyTPAFz6IJlz2nUBzoZWEqh/EqGF2t6bbqA54BtMKze3SLCEqcEkpmJh65b7uxCruQwhZ6DBqT/xApeA2HlpWpjAfYh8II9Mn2xWNZHG3hMjOPwxw246kH3QgBPUIC3GxsGsOvgOnmgTAMtKhRUomwwwIy2N1YvvOlEH1/a39thQX/3ki8JkQMVzgFbbxhgUy9fNfzHGqCm3h+fHI4GxRr3DwUTYhuLytu512rg1vLVbnHagXoTqEKu8XfQe8wPU1iLpdSs1WtkcA8H8MHJl8siwaANzv/gI4jP3ZHPBGq4ermKXyO/4XGxHAUFPFVa9vs6BzpqmJmqF7nexn7lNulIWTNmqN6A37MMQ/E9iheAOax2+NbR/94++43O1pcJi0zb4qHtrqEjBgf2jtxTsXlxhpvEdzgPJqpqHwJ3xa29Mo0G1XdYNm9Vl9nYOhaK4oeWd1tyKigecHYrCvBj3C96nJyLoZjfOE6LAflAbxmMkXzfwH/9gRP5TyeAusKYFaUIrFbyQo5jhCGj6/JncYGSNWGT+qVBABo/7WVkEfL5yev2sEYhCqL20tcEYyZ4xNQZgcRvYmane5m3pdZcvMjWKKRlXDPy3JzHPuV5FwJHtDKCdiHnplD2n1bM2bXYdRXcXFrfR59HejgoKdz//PwwhpDBs66elxy9nryj7skvSceqyn704GJONLkfvICO07NxLnAC68Q4CDdP7Rb9NVoVODoNIxdDQ8QDFQWwspAPKM8Qbb9deK5NYYeMA7XBq5jxdZU1Ao9w2zABxTuI698fcRDJp/NEzetf6AWqo72m9tYT/REOMDWTUQDsi8XVm
+ PVG1XGCW
+ A3z5SUfcuoIi5D259YXcKCxjfTbun0JwbxRmToEKv1h7bxssWw5sEKkm0UkDagC51xPRfEp+PEnDxOKdU2uU2L3RXx5vc/M8u3JKKOYyzzEgJH2OdOVuGCs+HYUFBqAadTjs7UCaMaTe2QZQvVJE1KFgzAzoxH9kcTZXaWxNk4gms+8mi1wb1h7mayVCN+AHpCQxZ9/vheZs12389BW4FcmFBGIey/f622prtiiPoUqrCv0k122xB6KzuskLB6iGK/VuT9+uWBd71epssXqm/t08aw7aAeAcaAwTjbJVVv6ZCB8UIJApM2UI2mif98S1j2IBancqRi6sJuEc3/QJUHDq2R0yhqr+hUWqTCBE5xqhn2vDcdhCmHMyoso0MD+MpHvrEunGrWBOWuQPWJI8eHsX1pXMrWfc0Yxm/CtOeLuiKIU+fJp0dekt4YUlerZRxT65a1VYmatX6chf4smy4+YGxR7atliArOXC3qoJKRlCDAH4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,92 +99,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Muchun,
+On Mon, 23 Nov 2026 05:35:34 +0000 Dev Jain <dev.jain@arm.com> wrote:
 
-On 11/20/26 6:08 PM, Muchun Song wrote:
-> Template-based ZONE_DEVICE initialization bypasses
-> __init_single_page(), which means copied struct pages do not run the
-> vmemmap zone consistency check.
+> Speed up unmapping of anonymous swapbacked large folios by clearing
+> the ptes, and setting swap ptes, in one go.
 > 
-> Verify each destination after copying the template so the fast path gets
-> the same validation as regular page initialization.
+> The following benchmark (stolen from Barry) is used to measure the
+> time taken to swapout 256M worth of memory backed by 64K large folios:
+
+Curious.
+
+>
+> ...
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> ---
-> v3:
-> - Retarget zone verification to
->    zone_device_page_init_from_template() after integrating the helper
->    series (suggested by Mike Rapoport)
-> - Collect Reviewed-by from Lance Yang
+> Performance as measured on a Linux VM on Apple M3 (arm64):
 > 
-> v2:
-> - Apply the zone verification in memmap_init_page_from_template().
-> - Collect Reviewed-by from Mike Rapoport.
-> ---
->   mm/mm_init.c | 1 +
->   1 file changed, 1 insertion(+)
+> Vanilla - Mean: 37401913 ns, std dev: 12%
+> Patched - Mean: 17420282 ns, std dev: 11%
 > 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index a9d848c92678..0129152b74d8 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1082,6 +1082,7 @@ static void zone_device_page_init_from_template(struct page *page,
->   		set_page_address(template, __va(pfn << PAGE_SHIFT));
->   #endif
->   	memcpy_nontemporal(page, template, sizeof(*page));
-> +	vmemmap_optimization_verify_zone(page);
+> resulting in more than 2x speedup.
 
-For PAGE_SIZE-aligned devdax, dev_dax_probe() leaves
-pgmap->vmemmap_shift at zero. When section_activate() populates a full
-section for this pgmap, it records compound_page_order = 0.
+Big.
 
-   memmap_init_zone_device() (pfns_per_compound == 1)
-     -> zone_device_page_init_from_template() (each template copy)
-       -> vmemmap_optimization_verify_zone()
-         -> pfn_to_section_compound_order(page_to_pfn(page)) returns 0
-         -> vmemmap_optimizable_order(0) returns false
+> No regression observed on 4K folios.
+> 
+> Performance as measured on bare metal x86:
+> 
+> Vanilla - mean: 54986286 ns, std dev: 1.5%
+> Patched - mean: 51930795 ns, std dev: 3%
 
-With CONFIG_DEBUG_VM and CONFIG_VMEMMAP_OPTIMIZATION enabled, the
-section-order lookup runs for each copy. The zero order makes the
-condition short-circuit before either page_zone_id() call.
+Small.
 
-Once patch #4 splits out the base-page loop, could we put this check in
-the compound tail-copy loop? Like the following:
+Why the large discrepancy?  Host-side caching?  Was any IO actually
+involved, or is this all CPU burn?
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -734,7 +734,6 @@ static void __meminit 
-memmap_init_page_from_template(struct page *page,
-  		memcpy_nontemporal(page, template, sizeof(*page));
-  	else
-  		memcpy(page, template, sizeof(*page));
--	vmemmap_optimization_verify_zone(page);
-  }
+Maybe arm64 stuff such as pte-batching or TLB invalidation avoidance? 
 
-  void __meminit memmap_init_compound_page(struct page *head, unsigned 
-long pfn,
-@@ -754,8 +753,10 @@ void __meminit memmap_init_compound_page(struct 
-page *head, unsigned long pfn,
-  	if (vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
-  		nr_pages = VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES;
-  	/* Initialize the tail pages from PFN-independent template page. */
--	for (unsigned long i = 1; i < nr_pages; i++)
-+	for (unsigned long i = 1; i < nr_pages; i++) {
-  		memmap_init_page_from_template(head + i, pfn + i, zone, &template);
-+		vmemmap_optimization_verify_zone(head + i);
-+	}
-  	prep_compound_head(head, order);
+I mean, that's a huuuuuuuuge discrepancy.  What's up with that?
 
-  	pageblock_migratetype_init_range(pfn, 1UL << order, MIGRATE_MOVABLE,
 
-Thanks,
-Qi
 
->   }
->   
->   /*
+Also, Barry's
 
+	memset(addr, 0, SIZE_BYTES);
+
+will trigger swap_writeout()'s is_folio_zero_filled() optimization
+won't it?  That may affect things a lot.  Did you try writing non-zero?
 
