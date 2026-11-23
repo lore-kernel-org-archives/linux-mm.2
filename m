@@ -1,133 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09813606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43114606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=KvhrT8NK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kWphZf/y
 Received: by kanga.kvack.org (Postfix)
-	id 191516B05B1; Mon, 23 Nov 2026 06:05:39 -0500 (EST)
+	id 5E10F6B05B3; Mon, 23 Nov 2026 06:10:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 142CB6B05B2; Mon, 23 Nov 2026 06:05:39 -0500 (EST)
+	id 591226B05B4; Mon, 23 Nov 2026 06:10:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 030E96B05B3; Mon, 23 Nov 2026 06:05:38 -0500 (EST)
+	id 4CEC66B05B5; Mon, 23 Nov 2026 06:10:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D797A6B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:05:38 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 303661407C1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:05:38 +0000 (UTC)
-X-FDA: 85466103156.14.1B34F93
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 19D3B1C0004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:05:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KvhrT8NK;
-	spf=pass (imf18.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2E1A86B05B3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:10:14 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B701780820
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:10:13 +0000 (UTC)
+X-FDA: 85466114706.17.1E2F1FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EFE5840009
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:10:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kWphZf/y";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795431936;
-	b=8jhgUB9NZOiu/nDpotzn/D2ngxj+bhsETolpovEHBKqO/WHrZu6XlBTKDvwsJWuCCg5NKA
-	B9v5/Z+78R1E2seVHY51bWQ/Ss8J+KjHVMN5mHo57UzBdQsyUa3ZWXmo+azPZw2SzWnVPz
-	cUikeACO8hyPSkbIby9+0el1eKtoV/c=
+	t=1795432212;
+	b=3lm0/msvzyDtwkDpwH4HMu78EoQ6fKzfqobAtyyjSh8ZFeOSfYEQtLe1wgH3fGu1BJ6y2G
+	WRC8DKDB/Nh9FrMNoC+152wAExaUKhjYQAc9fGdmLSWSYxFSsPlmw1e/6hmR6z/CRpC3KO
+	hNlFqcafGq3C5mXvzqNWU4q3gJyo4bo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795431936;
+	s=arc-20220608; t=1795432212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y+pXRncvtOc4nB9TtW4KG6FLyRulzoczl3trVZwKBJI=;
-	b=UUDyjJXj2qXZspgoXfJWFEa1En/+wNKR+I98Ni9gsTnXNmdjb01ul+eCM4qtcCwpYRELsO
-	XlpuoQ2674nqF/R0K0IvZbbegboc790ILV7JbyJTym+nHQMa977VK+YXZqeWPWC1Z24zk5
-	hGxuD6GFvmfYHWnXTY3FlDE/rQM2qgk=
+	bh=jB4Jc0m241bDmamiVxwXgatL0MljUoYCzUMg2HcGIDw=;
+	b=SRFL5LSno0hfNjrQ/UWPsfWf8CXsCFkdsdBOx0Dgf0/+R7N97q8lMp7RbB6Cs2duz8HrBn
+	7D0nKLHF3WKME9K9vw2tqXk9Dh0rIxCDhHuaBjyFYB9BoHAAQSqYhBKGbGgUZyXfvZ5A0K
+	IfYFzONpkBhUHlrW2GWodkmqROn3w4A=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KvhrT8NK;
-	spf=pass (imf18.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 218E3143D;
-	Mon, 23 Nov 2026 03:05:32 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A83273F882;
-	Mon, 23 Nov 2026 03:05:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795431935; bh=kCUeWgNlDSox1V+xXIV0FoQklIwe01iQtQShkTSpFns=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KvhrT8NKkwfUQlN/JVYJ5xdBVy5POFXKjhsTfodMnif/DZoxUXBTRSE+v99DKNllE
-	 5d1fBxUVR51g74P9by/+O7T3jZUmuCzToT2ynvCd+snaLJQPIjfE7jA9gHVgHouzT3
-	 DFYSeENRGheUkSn0CCeE9f0MsFw+W0BZ+uXNA9WQ=
-Date: Mon, 23 Nov 2026 11:05:23 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-Message-ID: <awQd81MwZqi55gf8@arm.com>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kWphZf/y";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 388186207F;
+	Mon, 23 Nov 2026 11:10:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6620F1F000C6;
+	Mon, 23 Nov 2026 11:10:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795432210;
+	bh=jB4Jc0m241bDmamiVxwXgatL0MljUoYCzUMg2HcGIDw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kWphZf/y/YIu6XBeBrWtheRyIohUen6aDmlkVygIEOIPi+zvDVA8TPW/TlPfDRERB
+	 wWsTV6Yaf0bvFcBzGVZ4DwcFJwpH8z6xzA9u4SHOLfoANmFC2z60x7HvZYUW1dy3Mb
+	 GFUSICJDM12Ry7j6Jm9tRjY6nj7QDTJwgHwicVHo2rDAQT/XDRxdCzuB/a3ogiZ7lX
+	 NX77yuyXYTVL5Fctzkxnr2CbuX58PtQcAZAD66u5Vxcub+OLrgbJJsU5NJ9mJzJ/4Q
+	 ncogL9Akmq6+ia+VBuaAdRU3yyarubZbzAguIgAvkR9T1xR8jD5S5T9KAGb1CefH69
+	 FJrAY5Z1IU80g==
+Message-ID: <0c29cf1e-0234-429b-adef-fc7b52290906@kernel.org>
+Date: Mon, 23 Nov 2026 12:10:06 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116091137.94252-5-aneesh.kumar@kernel.org>
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 19D3B1C0004
-X-Stat-Signature: tts1c1z8zuww5c5qumzoz1x43h7on6cq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/mm: Preserve the final page owner record at EOF
+Content-Language: en-US
+To: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Cc: hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, ziy@nvidia.com, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
+ iamjoonsoo.kim@lge.com, linux-mm@kvack.org
+References: <20261120062140.98503-1-zhujun2@cmss.chinamobile.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261120062140.98503-1-zhujun2@cmss.chinamobile.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EFE5840009
 X-Rspam-User:
-X-HE-Tag: 1795431935-498127
-X-HE-Meta: U2FsdGVkX1/TGQp7HSQVTuyJC8aS9+EcPWxDe3vbP3CISHOds107rWdLXwS5GEEl5JMpFgxvWBz6dAgRkNf98cLdVmyGmfXrRxRYIMtLzuZHwckOoG6FTIjOOhYdQt+bdA7nKbJMYFFIl8DXHSlpjVb2YQbEonmh9qCsxIYdywTctPz77gB9eL0dBvUPszhO+YbjS2nqfENnxuAhBIQ1IbmhlQ1nuMYELYl6fcWj52SvjZ5FAnXPklE1aZEMNpCCEPM02E+sA96iPZAc5KJWdO5qX6uHvIple2fBDt/L373cQMsZTck4wn3kezV4rKtJvdOKK/+GjxtKxZCVGLQbzf0Xt5o7x/FauR4c3JHmTL9kjLFYu6f7PcY7g43MbhYTSSCBDRP1RX7aZTjGbHmS9aIZdDeYfPztlFdK6jRmbYLmBCJA4rWdJKEf8T8FA7b5BEeKH0KjenDlI/o+teWkwK763CC0BlmXymnsb6/fOjyJmfEzuWUX5bxke2Mt8wZpVs5K3G8ThKsKYt0YALb4f8P1w7ClqxlHzZHWurJINa9OJbSiHyvDKoVGNQ/w1KOZpaBiNNz80acjehHneu+NJfdqWas5dTJvXURnaOfzV2o5ytrp29rZYtkv4ufgX0YfKwjFb/KYdjCbPRFluOPSKxq06Zpyaxc38Y9ucarvD7bhFEFTQSCC4fwMMVfKAdikAVF632hbAu6X2UQtMSn8fnr4XIbHMuORN53lJC0EMwD0ht8wvxYXlPm6c/AzbSMZDhky9/nmpcFDSeJS10U+1TimBvQRLixpnRFUUvzGKgVv89gv1UZHulnth0qJVV4LIcbg2c2O2vw5eJA0ixPLZIw8stzxJuQ/8ABqHwtSkFf06mTtb4J0GAwjFXOcFHIdCSajg0DnuJZINVQmqnFn9mfVVHOkJxbRT1QxrqRp+SLK5713xrdqEbq0w+RCJ+/Oxy4lnRa/DiAH4eqyrZr
- Q3ZiSlxU
- fK4Rh27WSpdPuo4ycIRjRhZM639gO44KUpk8zXevDHhfQESGI/VSmRQ0TZAJi6BWgeM9Zuf6JQdyjJHt1zJ2fzQLI6T4LQu+nM9F8lsGh5Rj2zNNSUu+TiiwU/bCAam1N6q8tnU+hgNAtu2caOxr2czr1dbPxM029uJif9moHkkhC/qCEvXEwArj+cAXx1s+3hJS13JBhVm89t9X1wY6CAHP35Td328GbwOoG8J/cAmtXOR2mzLBYSJbh3IxtrU8oPzJEJ7MSFqBYJtzg8SUleyBEM/CgSrEb7cRfkgd6Dtoo6hhY96J/PIP/YleLoq7L+3o3Kwi0yKwgrua3VDKUkGMzM4RKf0Qdq8GUn1fZfGyF9I9NJtpaZkFav8JCd0gmhfTL08BfNGi+N6Rp9k+GKw1hlnmA52LZY9RTgI0YDqI4QGcoj4efj24G/PMzoMJFOXuDOcWaVSMfVTs6Xp0Bv/pp+lXJ+V34E9dEd6p0t3OmkLd6YMUVyppimr+0uDXDYf1sZYbtOpU9TeeqoR+jpiyYhA==
+X-Stat-Signature: 3d13onj8dkdp94qd77tkt1e4r6owp18t
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795432211-27924
+X-HE-Meta: U2FsdGVkX19MAq67MK7DCmvAYr8Hp9Ql7s8/3IVq+qgVYlLyGCSm6w/mm9IbynDYc+fH6zUCvTNDjNFLFcw9cdpWwaGiDOr9SURL9EIIqHcFmncx+XuGHeCIHFIcmqWa/u7QaNcIIxLyofl/KGNVXKbEr5VDlJDF3bDF3zegwiSA+bS7zqfQBgHsjArLYcpu/+Pw0srYszLEMMoaD9uoiTz2+JX7k5I7oXdM17NMcVtrDr7Dgc1hdcpFUeACZpCBhFg1aWnDjgvQ2aC7MWKYM7C0nz6PeHJ8FPJtjHuadBpBjYmTCDwRhd9VUf9bDY6qR9LMHdhOduUx4wrYozsQDV2vDUDi9mnROVTuvRM0v8SS/vK9QIrouApE6/rFD6jMKBRy58vRVEm2Z9NgxH5hwEy1CgxKU2OHHtTWAGb1K4fGNAvx+5llPBlKKD7DCUXpXUBELjHsXflmb7JtlgV6dPclaQgjObv8dKs8Idz4SuhwVHEWAV2u9HI+jv4bO9yRKbSnz37A4f191kdai0+zrsFTF22Ejg4pBSygEwEOBBUz8lELmy6N4/59Y5GfXvOwN3+/Np24rhVVuZ3BwPQi2L4IxHP8hCp0tvEuP0a6tpZsuWkuaRPGh8DGYRJ3C3MW+yVnEkZVLx5+SlJnOcwe/EBTkpspJ4Lt3GJ3snZk/M3hJ5eOCuI3mDwgUuBoBdVldtxXMy6cIqGMGetPNUtulNezGIS99QezN398JbjDI6CBijDX9ZxSGWozLGzq+2Re/LzpcxL/8KRYM0XRf9d3UnKN+6zm6zuYYnVXkpUGnE3K8cS1SotUMbhZ3+NtX9mnzvxF+nYW2x0K2TIhFLXhK6jUfOPPtSdJmesqlG+pBePSCOqBYOU6J+tmlFMcUAhtLgpx0mei3jT7DCUTcon0htRjr2EzGTASqHzzNSS2M2gO4h70AaHmitO7CgKc5JpyuQJvFMOKbc5rBkZs8si
+ L4RKTdB8
+ 5A3V15j82bZuPTpPerTwvUECuMkJoKQ2M6CzkjFcnPmtWcEWyXe4ksgfl9QYnjj+JRSPsUmpG32e0mjaR10P9K6QsNEiM+u5URTcdVjncjnIBtDmLjZmz7Mc45BjBQGMPvkb8iatgNX6U+umuALd8uvGgCx3F6ih9IvqJGGwRSSR3P5hKs+9psfbkOHBCTAlHxoDHNK3+ekTnDmYX57PhVoGJAjZ0a4pix83RGz/xpmsXYlBwmUk06An0Y6v+R/GETyMYJh/dgp2L9r4Y4ahqODCoDifRKsyBpG9quY7MxGeIJ9c2By6R+JPiy1hxR+y3OiekdFr0DXjiTsHSeinmolhOqNWBJ7SP4KDJJrJA3lblw2RUbe94cCnEhHqHTYrADaYaoSiEF5UkidwA4w9DsaZsrlQ/kjrfiViife0hiaKPVysLu/NuFMamnlGz3bGiOwUJHTZxaimaBpxekYGrJzgF0qXEn9SJUarI7RLvxquS2d9NizkvPIh7zsGFwViHnvNF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,107 +138,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Aneesh,
+On 11/20/26 07:21, Zhu Jun wrote:
+> read_block() only returns a record when it encounters an empty line.
+> If the input ends directly after a complete record, the function returns
+> -1 and main() silently drops that record.
+> 
+> Return the accumulated record at EOF when it contains data. Keep the
+> existing failure result when the buffer fills before reaching EOF.
+> 
+> Fixes: 48c96a368579 ("mm/page_owner: keep track of page owners")
+> Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-I'm replying on this patch rather than on the one introducing the API. I
-think it's more obvious here why I think we can make things simpler.
+Applied to page_alloc/for-next, thanks!
 
-On Mon, Nov 16, 2026 at 02:41:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
->  static struct page *its_alloc_pages_node(int node, gfp_t gfp,
->  					 unsigned int order)
->  {
-> -	struct page *page;
-> -	int ret = 0;
-> +	struct cc_shared_pages mem;
+> ---
+>  tools/mm/page_owner_sort.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+> index 6c2ac5d9dc4b..48c403d3de4f 100644
+> --- a/tools/mm/page_owner_sort.c
+> +++ b/tools/mm/page_owner_sort.c
+> @@ -134,6 +134,9 @@ int read_block(char *buf, char *ext_buf, int buf_size, FILE *fin)
+>  		curr += strlen(curr);
+>  	}
 >  
->  	if (node == NUMA_NO_NODE)
->  		node = numa_mem_id();
->  
-> -	page = alloc_pages_node(node, gfp | gfp_flags_quirk, order);
-> -
-> -	if (!page)
-> -		return NULL;
-> -
-> -	ret = set_memory_decrypted((unsigned long)page_address(page),
-> -				   1 << order);
-> -	/*
-> -	 * If set_memory_decrypted() fails then we don't know what state the
-> -	 * page is in, so we can't free it. Instead we leak it.
-> -	 * set_memory_decrypted() will already have WARNed.
-> -	 */
-> -	if (ret)
-> +	if (alloc_cc_shared_pages_node(node, gfp | gfp_flags_quirk,
-> +				       PAGE_SIZE << order, &mem))
->  		return NULL;
->  
-> -	return page;
-> +	return mem.page;
-
-This part is mostly fine but I do wonder why not make this alloc
-function the same as buddy alloc_pages_node() - return a struct page
-pointer.
-
->  static void its_free_pages(void *addr, unsigned int order)
->  {
-> -	/*
-> -	 * If the memory cannot be encrypted again then we must leak the pages.
-> -	 * set_memory_encrypted() will already have WARNed.
-> -	 */
-> -	if (set_memory_encrypted((unsigned long)addr, 1 << order))
-> +	struct cc_shared_layout layout;
-> +	struct cc_shared_pages mem;
+> +	if (feof(fin) && curr != buf)
+> +		return curr - buf;
 > +
-> +	if (WARN_ON(cc_shared_calc_layout(PAGE_SIZE << order, &layout)))
->  		return;
-> -	free_pages((unsigned long)addr, order);
-> +
-> +	mem.page = virt_to_page(addr);
-> +	mem.shared_size = layout.shared_size;
-> +	free_cc_shared_pages(&mem);
+>  	return -1; /* EOF or no space left in buf. */
 >  }
-
-Here it gets weird and I don't see why we can't have just a buddy-like
-interface. The kernel-doc for alloc says that shared_size must be
-retained for the corresponding free but without reading the source code,
-you can't tell that cc_shared_calc_layout() gives you the same
-shared_size populated by alloc. We have a similar pattern in dma-buf but
-using the compound page order.
-
-What's wrong with a simpler API:
-
-struct page *alloc_cc_shared_pages_node(int nid, gfp_t gfp, unsigned int order);
-struct page *alloc_cc_shared_pages(gfp_t gfp, unsigned int order);
-void free_cc_shared_pages(struct page *page, unsigned int order);
-
-Both alloc and free take the original request order and perform the
-round up internally without exposing the details to the caller. Alloc
-shares the whole resulting buddy block and free makes the same block
-private before releasing it. We can document that free takes the
-original requested order and releases the whole allocation. Partial
-frees aren't supported.
-
-We can get rid of layout and mem structures (or at least not as
-part of the API). Of course, this assumes that the shared granule size
-remains constant for a guest's lifetime but I don't think that's a
-problem.
-
-> @@ -278,7 +267,8 @@ static void *itt_alloc_pool(int node, int size)
->  		if (!page)
->  			break;
 >  
-> -		gen_pool_add(itt_pool, (unsigned long)page_address(page), PAGE_SIZE, node);
-> +		gen_pool_add(itt_pool, (unsigned long)page_address(page),
-> +			     cc_shared_granule_size(), node);
+> 
+> 
 
-Here we can introduce:
-
-unsigned int cc_shared_page_order(unsigned int order);
-
-and just use (PAGE_SIZE << cc_shared_page_order(0)) for gen_pool_add().
-
-Was there a caller you had in mind that needs the common allocator to
-share less than the whole buddy block?
-
--- 
-Catalin
 
