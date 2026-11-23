@@ -1,265 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAAED606A33D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E867606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qZeMY5N8
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Tp8Y+6DM
 Received: by kanga.kvack.org (Postfix)
-	id DB2606B05B5; Mon, 23 Nov 2026 05:11:37 -0500 (EST)
+	id 813C76B05B0; Mon, 23 Nov 2026 05:15:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3C5D6B05B6; Mon, 23 Nov 2026 05:11:37 -0500 (EST)
+	id 7EBA56B05B1; Mon, 23 Nov 2026 05:15:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB4EE6B05B7; Mon, 23 Nov 2026 05:11:37 -0500 (EST)
+	id 701A76B05B3; Mon, 23 Nov 2026 05:15:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 84EC26B05B5
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:11:37 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F234F40869
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:11:36 +0000 (UTC)
-X-FDA: 85465966992.06.3D01981
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4C65340003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:11:34 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 46F1E6B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:15:49 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BBFFD120830
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:15:48 +0000 (UTC)
+X-FDA: 85465977576.04.001BB21
+Received: from mta0.migadu.com (out-32.mta0.migadu.com [91.218.175.32])
+	by imf04.hostedemail.com (Postfix) with ESMTP id ACD4C4000C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:15:46 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qZeMY5N8;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf04.hostedemail.com: domain of schnelle@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=schnelle@linux.ibm.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tp8Y+6DM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.32 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795428694;
-	b=bNPpi0A6+PEHjnrXl14F8SjpgBdfLEfneu3yl7zSX7j2FNKUrKOKrmlApehjbSDt/L4KH5
-	xALeOyP1f9jDC0llH721wTvKcuGtNARbi7oL4mqtGFnrV5/iN9GFM60bbQBrus46+KAxqp
-	BcBr/MAZQwfSPj34MO/1s2JDM9SmL+E=
+	t=1795428947;
+	b=c/zL8halS73pVTCp6UTauW1PfQfZTbgP0MM0jYKqq1sY/+KCfWrgmVKyUAHSuMQ3x/AceD
+	VFCAKWF4rbyuMdnTA36w7ku8+jqqI8OzN+6i1eX72ReyQXLv2MF27tVpfxk8KvbpNN8S+V
+	wj4BbrJRQowpq5woAcWENqMTPpE9Z+M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795428694;
+	s=arc-20220608; t=1795428947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2snuaHCf1ced3ZKcOLzPklCct0WrnW+pIXLZNFNgR0g=;
-	b=cY5FUVEIWJXNyqdxRXa36fmm0ymVA/bjSYFGVgBOEGyv1hsJh1q/GrYfT7KhaOe22jo3Mu
-	5mHZp0eHMuOKBBWN3dSjkfX6bf1JrWTXOtKZiYqn0eLasUppkfFe8yDKHnHK0Ul0gX32Gk
-	yDQfhpigl/Uxi9SEIGvraAFFAdnOThE=
+	bh=5VZam8o1y0qDbPb40lL86ri5OnzIJLEYJQ5jktXiFv0=;
+	b=sR5Wi3cnW/GBBNJiuJ06d6QkskjnCnOMEN1xOF/xL2VLBkcKLYY1VGF3GQvxFuds9t1e9M
+	+s5UCE0UMWFzQNEY3Hs1u1+WegM1lIVc/bClZK3uMCs1N9lEXagyGtEJ+lpjm0bLhHRzky
+	yK2u0emgVyB7XzudBU8TzdlvV/C8dzs=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qZeMY5N8;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf04.hostedemail.com: domain of schnelle@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=schnelle@linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN9ZR6F1603637;
-	Mon, 23 Nov 2026 10:10:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2snuaH
-	Cf1ced3ZKcOLzPklCct0WrnW+pIXLZNFNgR0g=; b=qZeMY5N8IsLbhZxLNNTnPn
-	zrukWbf9ynh54WOK9bRXhxGoG0zFvnrjzj35tqdh1TjJY0r8LGKZU2z8AH+d3c+b
-	hmEFCp5VNW4FBBpwPErrLNxj0aktXwD11NF4zCyxAX0XxNRLugr1+H3BWoR/S0/u
-	75Lhh66vaTxYE6oHew2u/4MztrSP9qPDucHFeqZkrRB27f+cLHGb1LEw4aKtVmlP
-	H0dURSVf8URxndmV8GBY1qYKaBLJjDhFVyrkbCBIj5uaKpv0UOEf3AFpGcuVIX97
-	7dJ2SrFLP5w15rfj+ud/pdG2xcmaPRQ8QV3YW7moe1JCiR1CjpHsZewNo/JTmo6Q
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g32jru-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 23 Nov 2026 10:10:52 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN9JeFg2759046;
-	Mon, 23 Nov 2026 10:10:51 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3q4h675h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Nov 2026 10:10:51 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ANAA0Su29229686
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Nov 2026 10:10:00 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 13BA55805E;
-	Mon, 23 Nov 2026 10:10:51 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2901F5805A;
-	Mon, 23 Nov 2026 10:10:42 +0000 (GMT)
-Received: from [9.111.1.66] (unknown [9.111.1.66])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Nov 2026 10:10:41 +0000 (GMT)
-Message-ID: <1f10002ea9ee16a17087bd06e4a1685a973fdf6e.camel@linux.ibm.com>
-Subject: Re: [RFC PATCH v3 00/25] PISA: Pre-mapped IOVA Superpage Allocator
- for DMA and CoCo
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Luigi Rizzo <lrizzo@google.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand	
- <david@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Vlastimil Babka	
- <vbabka@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon
- <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-        Marek Szyprowski
- <m.szyprowski@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        "David S .
- Miller"	 <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub
- Kicinski	 <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Luigi Rizzo	
- <rizzo.unipi@gmail.com>,
-        Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R .
- Howlett"	 <liam@infradead.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Suren
- Baghdasaryan	 <surenb@google.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Brendan
- Jackman	 <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
-        Harry Yoo
- <harry@kernel.org>, Christoph Lameter	 <cl@gentwo.org>,
-        David Rientjes
- <rientjes@google.com>,
-        Roman Gushchin	 <roman.gushchin@linux.dev>, Hao Li
- <hao.li@linux.dev>,
-        Matthew Wilcox	 <willy@infradead.org>, Jan Kara
- <jack@suse.cz>,
-        Jann Horn <jannh@google.com>,
-        Catalin Marinas
- <catalin.marinas@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki"	 <rafael@kernel.org>,
-        Danilo Krummrich
- <dakr@kernel.org>, Jonathan Corbet	 <corbet@lwn.net>,
-        Simon Horman
- <horms@kernel.org>,
-        Jesper Dangaard Brouer	 <hawk@kernel.org>,
-        Ilias
- Apalodimas <ilias.apalodimas@linaro.org>,
-        Willem de Bruijn
- <willemb@google.com>,
-        Kuniyuki Iwashima <kuniyu@google.com>,
-        Joshua
- Washington	 <joshwash@google.com>,
-        Harshitha Ramamurthy
- <hramamurthy@google.com>,
-        Alexander Lobakin
- <aleksander.lobakin@intel.com>,
-        Christoph Hellwig <hch@lst.de>, Dragos
- Tatulea <dtatulea@nvidia.com>,
-        Naman Gulati <namangulati@google.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Mostafa Saleh	
- <smostafa@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
-        iommu@lists.linux.dev, netdev@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        driver-core@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <CAMOZA0LmZ9PFzxLcc1SuS8piFyZu6P=vX_qR2jy-3QRUoNCUKA@mail.gmail.com>
-References: <20261109182533.3594984-1-lrizzo@google.com>
-	 <20261120010655.467825-1-lrizzo@google.com>
-	 <20261120135013.GO3115493@ziepe.ca>
-	 <CAMOZA0LmZ9PFzxLcc1SuS8piFyZu6P=vX_qR2jy-3QRUoNCUKA@mail.gmail.com>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 11:09:40 +0100
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tp8Y+6DM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.32 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JunA8M01hnMz3RMuM3CcwD3rgeX5dq0GUnfQcSCgCqU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795428942; v=1; x=1796033742;
+ b=Tp8Y+6DMuRHYwvurMY48qyDWbd0vw0TdktcTwlx10+Xqft7yl2FVn9qY0rDgNlLWbF0XNToB
+ GBhGZchj5OMfOz2RTBBzVPpi9wsdgt9b4V7ZM4Q6v6ZhHgYUJg4+jYEmGnUrFy87utwC32ikWLn
+ ZtgoR+mE8u5I1g4F9/UpnX4M=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8cf77738964f3f07;
+	Mon, 23 Nov 2026 10:15:35 +0000
+X-Mizu-Trace-ID: 8cf77738964f3f07
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <81b05a10-1b20-4132-8cc6-c71b88f21414@linux.dev>
+Date: Mon, 23 Nov 2026 18:15:29 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=SoQFe/O0 c=1 sm=1 tr=0 ts=6b04112d cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=9jRdOu3wAAAA:8
- a=HXTMhFcmDb5UjnNm18QA:9 a=QEXdDO2ut3YA:10 a=ZE6KLimJVUuLrTuGpvhn:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA0MCBTYWx0ZWRfX+SnUpKBhpNxt
- 6ltTAuPh+dSZqgYKHq2EXRW6JLOXkC9bKqTXzOMLsW4XQjFY6ICqrLo1eTubFi7+T30qb9yK/Sq
- g1x/8GS5VQC+luYkfurSA9hBn0vrob8=
-X-Proofpoint-ORIG-GUID: g4YrXK8XHnOLs6hMgSbVa0siPTgmA4y1
-X-Proofpoint-GUID: COYrNUVwdZNscqeoFw9r-VC7XEpM8jcb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA0MCBTYWx0ZWRfX221TJUFwr82H
- r3mUgrbkS3uy4QqsIJGhCohR3l6xECTkhKk2B/N+op9eDonLFxwOFN0BdaUaIXtTpXOUZet8yjN
- aQlwwBmgQtA65yL9mninHDLTSLbJu4ItKtAXWNMNxzzqty4zhE/M4TSxo96726kPTyeUU6ftpwy
- nMPPh4y+F0eTHqjEmxDqB/W+qR7NxyImWAm9TD2IUIquUft3bkDpuLb0y6KBbY2D/Z3udRSkp5M
- b9WJVFEzVvGYZohAzenyKN2CvdIWAVHV/ZiWNJcAMXZvh6xJ0rBHnZWP3x4W3UuDHE6P8UNcZwa
- hy+ETYikMLYo1Q6uFj+WQpJ+nZYJywIs9NZmsfo/gl5fTKDa/fZeQJ0BItRWk4w3+zIRFz+E1VC
- e/nL6Pxj4e61wP1HQ9jbJ0vXal7SsOq9rUnB0y6Dst6TB8/6U0fvmd7OFSp9F5EGScS3L+ocPeG
- uHgw66vM79lVBe3iOHw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-23_02,2026-11-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 clxscore=1011 malwarescore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611230040
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4C65340003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/11] mm/kmsan: undo the shadow mapping when the
+ origin mapping fails
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, stable@vger.kernel.org
+References: <20261116071325.263682-1-hao.ge@linux.dev>
+ <20261116071325.263682-3-hao.ge@linux.dev>
+ <CAJuCfpHOZS6mp_no3wKmU3-S4HKspnbriUw8Mwtxf3nmw0-pfw@mail.gmail.com>
+ <CAJuCfpFv=sCeib+SDWJNW6oqbNnhT+m3YjnfKh8jNkquzuYORg@mail.gmail.com>
+ <793d63ff-c48b-431d-8a2a-4044feb45721@linux.dev>
+Content-Language: en-US
+In-Reply-To: <793d63ff-c48b-431d-8a2a-4044feb45721@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Stat-Signature: r9izgdr8acp3h47wywymut6gfda9jn6f
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795428694-771269
-X-HE-Meta: U2FsdGVkX1+mRHzR7F1aG9eZbW3mQKx3jNpm2o0DStPPjM3SHaBrWDq3BMDr0N9ZNueKHOTYMlwZedIlT4wViyDWtcAqMGtnSEwUqUBbx6WME/Z/O6P/GCHKf7Di2B82ftXinnLMC9pGeeNDq/FmkK2ndv4OLWOAdU+1ufYmyQ4x2bs5olWC4nobeyL2HGprw4aN4uowMeDTmenSJaYZd/97VYcJWTEZncEtigvRPqfGuhDb3F9xzhw5Wz4yt9LLL0G+OZ3XUq7XOmG9ax4yIx1CXytD2FAW7XwfpaNhl/scCnMv24E7F3DREiR/Uc6zNHkhywkPCoqaCN4SMkipKoAi7lQKE5Dq6WIkU3kQQM1tfIMq3Mn4o8sB6HFKiAYYSIEjIpBNZ4sFkkhwBFuxlFFXXq0+Jb/KPPMk27XS1ZyBUkT4xnUv75LLFDuQsjOikxzCLW1hd6RIKGyCnkJIDczuxzfUOLdYZOe/BM5X1vFzCoHto/dytlEna8KZHmpImkcG0ITVX9lMayTZ475eteUNEiPkH2kztCaZFYLX2QvAQY5r+k8J01FBtrQLchJEbi57m6gOpgZlHPq0TeL1/A2WFjIkqrMg61lLC5JaU2YxSLsYY9ppDSSA6A8LVVX8nKArz+rWwEXEVXAkPkOSlC41e6+b9fnFVbCFjBwV2R9GkMLrS8tczZd1EW3m5FUsc0fy46rxLMEAIS4GCQ0HTyLjp191aZEgLIFiRqfXYfdmyGEVus58/uJstiwPp7trwKVsf1kQF0G089UAJRX9PrMELLDqA54qzblRpHN2pKQzexfnRrIy9amCwLb7JljgXxW5FuR+epaKoF32eLtstv7HW/CNLGqz+jvbt04wqnaWoEExMSbz5BpdrRFbTWtChuU5Yoe4NTt3eGE5xi8MLWP8VmQ+7TKgvR+qu4yf+1Y/g5X7f2uTdhm332dVQ5yd22kZ39FpnthsFFk3Hyi
- dtR9ojzk
- BMLWN4HSrwfma3O8bIOiwLcWria1e+FWhbh04b9e1pqFHw27zBcHq1oTDLD8I2rjOqTHi+nWwBWmS4RxoNbnemJ66mmB8STaZhE7MYiDc/R7O0zONRBVwr/U6wPbOSgjEhoGbvXCgOkJjPapI+aF7puxowAHvrbvzX5K4i2GIZtEbhLAV70HW+yoYuTt3kciIzgB7mzcGV4YfsTa3A7oJbsLdh7N9gehRc+W1pO3eZDBzZTG3z4RhAnHd2VlegJ0p+8xh3OgzYYFBySgeJhijAJgYk6m6D8WSob9wXWmGo/58lwJjI6bu0O3WhMUSOLwd8tIT63ixDPBMlvC0p9ufdmLPB5jHEm6AXZsi+utYWz6e+8z9QepWZVvJ4NTmWCJPjeySi/aFoiRFmMVdT8pZcRmEFarXwYCOAjzVtZOP3ivHJVi0T362Jihzi4/wsFrW1Vvb1OZ8Tgty8Wqwie2ReMDAt8mhPvxqZNRccPWEhCP+SJ5f6H3G54GoC+qJVemx3iORhAgrO60IunIj3eDODRtI5dzxjVDWLxUC
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: ACD4C4000C
+X-Stat-Signature: sgegx4s3e45478cmykeoe44mey38iten
+X-HE-Tag: 1795428946-226935
+X-HE-Meta: U2FsdGVkX1/bctjDQ2F8kSjqx0up49UL0BjszaNUYa/MmnAzG3MbvPLt/ofyoMX9S9sznAZkPO+OjJ0Cl3WGxYUtKv6CzKaXXVDjWUbRdXyCZxaeix6mSzn/K8Pv1LDwPN2hVyqQL7Trm8bs7gdDTkaNdwnMSA4R00DqyWG5Uo83XKGIjETeeuobvZUZLm+bFkLD4MyV5UniRDeE8wyCg3svM2KU7/UAaBE19qk4qXI4wSSi9+3N13hk3zHIbJ6FdIkMNg6wkZd2zqsY7LLccSon11eWxzxg4uo0mI23VnruChGFAzaFgYMv9W1APn7aKYsSyD2ZIAOJB5VWZtnzbGEEAWtVzXlE8WigAcM6D6WMXDM8iwCxz4GPZI/bcpXMSmsDqGhkJr8EQe7AaCn5Bjo+kij+M/P35Eo3k8KlEIzyJZ2HiE27TETQJOfoSvS1cfopESQkFNqDM4t+n85daiDz7ACIJZtxHshiK0QCl0EHdTJWiWlY663fAy3MO38EzU8UeHPVhMOcFrwTyzfHQi57jpQtI280iOM/9CmdpOZcdK08qevMglXLu7JUgMo8Riv/xrvwBzaJsAEO/HYVV/Dm94H9MRIFRJ0bhpuIdelqfQqk7eLSEZZEvn9wItUUEF28C2zzpiyzUW3Egn6NysyJmTLPTdbPAU5vV8xDWxg3Gj2u743k7Gf2k649zcYdtkMgxTptZcSPaLgx55d29+7h4ZqYaHQsGdvG1jvPpkrzhCYfOFnm6FO+otK76dtJZAFOA07TAnSAOweB/9wAw4Lr/sPt6EQ+4H/zUFCqKmjweY6AzZliaYeP3JnXd0/CpLcF5efkKS4CeAYB1rUOIk/iZjUVj2zIewwLC6vj67GZVnMQD1PcK+FO3nNTCvgGe0jxcrLmoQE5DxjaymoVKqlnQmxTgUNjw+4i+QcobIh7RVtzuEwTaGwIDnaIoEGiNWI+jJVixvVlToAQGsB
+ N3OC1CAG
+ yqT4Fn2BgHgiinYnmnWZrwrDVagWdjmIg1//DsfSMWw8OrcIW+WlCSYuB1bG4Vg+Lso9GsvgEHxw4UHwzsKolmS757H6R71cBNfxj9V4M+K0J7q5Yc1Ee6V2jXHRJFn3d6YCzkCcxtKsMFiHsxytBHyTlX/wGkkHukrYYsRcfWU55CGL6RMtpG1inWBTLdwf2ptSbuQgiIl6RjB55jr1Lh4h9XYYCnXL5j/y7uLXLzGGrvrQAns45PKxgA6shUgyFEAdvnaoCkVq9IxJ/0mpzNkHPQuCP3QaxYYdqQnL9bCLDRgRsu4NxgemNR7YkIDL2sy6MCpYrz31xROUnmSBbf838t1meZ1MLiQbFeQJdQXPt8AsLUNhBdMaSnl9uirnWu6lDyj+vKJ/tYm6q10x8Nvs1ckZecGsaCpiNJcJkKIALSsAYO+NUa5MKSvju35/U007HjQkLNQUpEbb+/hLKd9Xii4/WwweSGZMohUuGZtmTIvdOeQWaaTLHGHHCJsBdaYKJVcc+VPh4r8QMIStq0h6ysqSzvYxPJZKFfM9tzHeUvizsEWSjR0HhI4WoC36W9IXMjhyusRhYBvFllnque99W0ULINzFdP9YEN4yiY8Tr5ic1fPefziclmQIstUfWNItv+njmDzRi5IEyUN/kgu67eHmW/SKHK8dJK9buFiV9dmq+oXjN8/m5Uc+KyINtmTo79gwLN2kcKBrTpL0FxSb85WKDo7NcxnrkdfVofAXan1zwRuXjDgsvyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -268,99 +110,142 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 2026-11-20 at 15:19 +0100, Luigi Rizzo wrote:
-> On Fri, Nov 20, 2026 at 2:50=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wr=
-ote:
-> >=20
-> > On Fri, Nov 20, 2026 at 01:06:30AM +0000, Luigi Rizzo wrote:
-> > > This is v3 of the RFC previously posted as DMA_PMD [0], now renamed P=
-ISA
-> > > ("Pre-mapped IOVA Superpage Allocator"). The text below follows
-> > > Documentation/core-api/pisa.rst (patch 25/25), which has the details.
-> >=20
-> > I thought the conclusion was to just do this stuff in netdev pagepool,
-> > now you come with an enormous AI series spread across the entire
-> > kernel?
->=20
-> There were surely comments claiming nothing outside net/ cares or needs t=
-his.
->=20
-> I respectfully disagree, witness is the fact that e.g. there was already =
-an
-> io_uring proposal which is smaller, but does not address applications
-> that want to use the standard disk I/O paths (libaio, buffer cache etc)
->=20
-> Nothing has changed from the initial series in terms of size, use cases o=
-r
-> subsystems involved. Large files are placed where they should,
-> the series covers the same three use cases (disk, network, CoCo), and
-> touches three parts which it has to touch: mm (most of it; it is a
-> memory allocator
-> extension after all), dma (it hooks into map and unmap, not a large chang=
-e)
-> and net (the pagepool change is a couple of lines; the tx path needs to
-> touch more places because the current stack assumes all paths have
-> the same I/O requirements).
->=20
-> For CoCo, there are very fine grained controls so the bounce buffers
-> can be enabled only when they don't pose a risk, which in turn
-> depends on the threat model.
->=20
-> Specifically, for network tx buffers or disk writes, the user-to-kernel c=
-opy
-> is basically a bounce buffer provided it is used correctly and not leaked
-> elsewhere (which is the design; of course the implementation
-> needs to be verified and possibly fixed so that it matches the design).
->=20
-> cheers
-> luigi
 
-Hi Luigi, Hi Jason,
 
-I've been lurking but following this series since the start. I am torn.
-On s390 where the IOMMU is always enabled on our closest equivalent to
-bare metal (non paging LPAR hypervisor), and where we also default to
-an emulated IOMMU in KVM guests, the underlying problem is a real pain.
-We're also in the process of enabling large IOMMU mappings via the
-generic_pt API which are 1M and 2G on s390. So, the idea of making
-better use of larger mappings is very attractive to us and I applaud
-you for trying to tackle this very real issue.
+On 2026/11/23 16:12, Hao Ge wrote:
+> Hi Suren
+> 
+> On 2026/11/21 05:49, Suren Baghdasaryan wrote:
+>> On Fri, Nov 20, 2026 at 9:14 PM Suren Baghdasaryan <surenb@google.com> wrote:
+>>>
+>>> On Mon, Nov 16, 2026 at 7:13 AM Hao Ge <hao.ge@linux.dev> wrote:
+>>>>
+>>>> kmsan_vmap_pages_range_noflush() first maps the shadow pages and then
+>>>> the origin pages. If the second mapping fails, the first one is left
+>>>> mapped, and the callers do not roll it back. The next vmap of the
+>>>> same metadata range hits the stale PTEs again and fails with a
+>>>> WARN_ON() and -EBUSY in vmap_pages_pte_range().
+>>>>
+>>>> Undo the shadow mapping on that error path, the same way
+>>>> kmsan_ioremap_page_range() cleans up after a partial failure.
+>>>> __vunmap_range_noflush() only clears the PTEs; nothing has touched
+>>>> the shadow mapping, so no TLB flush is needed.
+>>
+>> After a second thought, kmsan_ioremap_page_range() does not skip TLB
+>> flushing. __vunmap_range_noflush() comment at
+>> https://elixir.bootlin.com/linux/v7.4-rc1/source/mm/vmalloc.c#L497
+>> says:
+>>
+>> The caller is responsible for calling flush_cache_vmap() before
+>> calling this function, and flush_tlb_kernel_range after it has
+>> returned successfully ...". There are no mentions of guarantees that
+>> mapped PTEs require explicit access to be cached. Please double-check
+>> if this is safe.
+> 
+> That's a subtle detail. I've looked up the relevant documentation.
+> You are right, and my "no TLB flush is needed" was wrong.
+> 
+> The Arm "Learn the architecture" AArch64 memory management guide says it
+> in "TLBs and Changing translations":
+> 
+> https://support.arm.com/documentation/101811/0106/TLBs-and-Changing-translations
+> 
+> If you change a translation table entry, or the controls that affect how entries
+> are interpreted, then you need to invalidate the affected entries in the TLB. If
+> you do not invalidate those entries, then the processor might continue to use the
+> old translation.
+> 
+> The undo changes the shadow PTEs, so the TLB has to be invalidated.
+> 
+> I also checked the Arm Architecture Reference Manual:
+> https://support.arm.com/documentation/ddi0487/md/-Part-D-The-AArch64-System-Level-Architecture/-Chapter-D8-The-AArch64-Virtual-Memory-System-Architecture/-D8-16-Translation-Lookaside-Buffers
+> rule R SQBCS:
+> 
+> If a stage of translation is enabled for a translation regime that is not out-of-context,
+> any translation table entry for that stage that does not cause a Translation fault,
+> an Address size fault, or an Access flag fault is permitted to be cached in a TLB or
+> intermediate TLB caching structure as the result of an explicit or speculative access.
+> 
+> So it may already be cached by speculative access even if there was no explicit access.
+> 
+> For the kernel side,  Documentation/core-api/cachetlb.rst
+> https://elixir.bootlin.com/linux/v7.4-rc1/source/Documentation/core-api/cachetlb.rst
+> says that The "TLB" is abstracted under Linux as something the cpu uses to cache
+> virtual-->physical address translations obtained from the software page tables.
+> Meaning that if the software page tables change, it is possible for stale translations
+> to exist in this "TLB" cache. Therefore when software page table changes occur, the kernel will
+> invoke one of the following flush methods _after_ the page table changes occur:
+> 
+> The condition there is the page table change, not whether the range was accessed.
+> 
+> Likewise, I believe flush_cache_vmap() is also required.
+> The sequence in cachetlb.rst is
+> flush_cache_range()
+> change_range_of_page_tables()
+> flush_tlb_range()
+> so the cache flush has to happen before the unmap.
+> This is exactly the contract that the __vunmap_range_noflush() comment you quoted spells out,
+> the caller is responsible for calling flush_cache_vmap() before the call and flush_tlb_kernel_range()
+> after it.
+> 
+> The code will do:
+> 
+> --- a/mm/kmsan/shadow.c
+> +++ b/mm/kmsan/shadow.c
+> @@ -258,6 +258,13 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
+>                                             o_pages, page_shift);
+>         kmsan_leave_runtime();
+>         if (mapped) {
+> +               /* Undo the shadow mapping set up above. */
+> +               flush_cache_vmap(shadow_start, shadow_end);
 
-That said I do have to agree with the critique. This series is too
-invasive, too unclear in its layering, and most importantly it feels
-like you're trying to do everything in a big swoop ignoring advice from
-the maintainers just because it would limit the scope of a first step.
+Sorry, this should be flush_cache_vunmap.
 
-I also don't think Jason's point is that nothing outside net/ cares, I
-think, it's rather that the IOMMU and DMA layers already offer the
-tools and each subsystem needs to use the right combination for its
-specific requirements. And if a tool is missing this needs to be stated
-very precisely including how the addition keeps layering intact.
-
-I don't claim to have a simple solution to offer, if I did I would have
-sent patches already, but let me state my thoughts. First I think this
-really needs an iterative approach with much smaller self contained
-steps and focus on specific issues. With that, I think this should
-focus on the network stack, while the io_uring specific proposal can go
-after the block layer. Also in my experience networking is where this
-hurts most.
-
-Now, I wonder if we can't start with something simple. What if the page
-pool could start by allocating in batches of PMD sized and aligned
-folios of contiguous pages that can share a single large IOMMU
-translation. The page pool can then still hand out pages from that
-batch without having to do sub-page allocation but would already use
-much fewer IOTLB entries and the locality might even help non IOMMU
-workloads.=C2=A0So, I'd even hope this could be enabled by default and this
-is actually something I don't like about this series, I really don't
-like having a tunable when we know that larger IOMMU mappings are
-strictly better when you have an IOMMU that supports them.
-
-I think that approach would also align with Jason's idea to keep things
-within the network stack and to work with the tools we have until their
-limits become very clear.
-
-Thanks,
-Niklas
-> >=20
+> +               kmsan_enter_runtime();
+> +               __vunmap_range_noflush(shadow_start, shadow_end,
+> +                                      gfpflags_allow_blocking(gfp_mask));
+> +               kmsan_leave_runtime();
+> +               flush_tlb_kernel_range(shadow_start, shadow_end);
+>                 err = mapped;
+>                 goto ret;
+>         }
+>
+> Thanks a lot for catching this, I learned quite a bit about the TLB
+> along the way. 
+> 
+> Thanks
+> Best Regards
+> Hao
+>>
+>>>>
+>>>> Fixes: 47ebd0310e89 ("mm: kmsan: handle alloc failures in kmsan_vmap_pages_range_noflush()")
+>>>> Cc: stable@vger.kernel.org
+>>>> Suggested-by: Suren Baghdasaryan <surenb@google.com>
+>>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>>>
+>>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>>>
+>>>> ---
+>>>>  mm/kmsan/shadow.c | 5 +++++
+>>>>  1 file changed, 5 insertions(+)
+>>>>
+>>>> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
+>>>> index 0c88d89bf0d6..212449db34a1 100644
+>>>> --- a/mm/kmsan/shadow.c
+>>>> +++ b/mm/kmsan/shadow.c
+>>>> @@ -258,6 +258,11 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
+>>>>                                             o_pages, page_shift);
+>>>>         kmsan_leave_runtime();
+>>>>         if (mapped) {
+>>>> +               /* Undo the shadow mapping set up above. */
+>>>> +               kmsan_enter_runtime();
+>>>> +               __vunmap_range_noflush(shadow_start, shadow_end,
+>>>> +                                      gfpflags_allow_blocking(gfp_mask));
+>>>> +               kmsan_leave_runtime();
+>>>>                 err = mapped;
+>>>>                 goto ret;
+>>>>         }
+>>>> --
+>>>> 2.25.1
+>>>>
 
