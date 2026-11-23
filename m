@@ -1,60 +1,60 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC61606A695
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C16C606A685
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=s9dM19ug
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=USga5qsi
 Received: by kanga.kvack.org (Postfix)
-	id D1B1B6B05B6; Mon, 23 Nov 2026 05:53:48 -0500 (EST)
+	id 9914B6B05B8; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9DCD6B05B8; Mon, 23 Nov 2026 05:53:48 -0500 (EST)
+	id 8FAB86B05B9; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8C386B05B9; Mon, 23 Nov 2026 05:53:48 -0500 (EST)
+	id 65D336B05BA; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FEC16B05B6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:53:48 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 079A8140847
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A1436B05B8
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1CCCC0864
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:53:48 +0000 (UTC)
-X-FDA: 85466073336.21.8F1C8E7
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8D691120003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:53:45 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=s9dM19ug;
+X-FDA: 85466073336.16.F99945A
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8B394140002
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:53:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=USga5qsi;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf29.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+	spf=pass (imf23.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795431226;
-	b=eDLw3mK5Jey3j86yo376VElpAu8rox2Q+tCLcF4kzf+s13sY6zl1kfqm6EmeDvnTGOdq29
-	Rp2Cl2WkWdF8/kwpCqZFPIdepEkWxZrTGT9FwKAcQVnONreQw6DYr7HdEZgXhXQ0PC0J6W
-	yv2P0nodN4y/OYrr66Qu+7zor2PQMzE=
+	t=1795431227;
+	b=RIMbjM/iz/T/N2+pZ6GJPeUpwSBndboV/aeoN6RZzzigZGtl/7Sjxi/u2D9iNDnSnWeqXk
+	y45vuJsFS2Shjv15mpuzBrFY2srfQ6DeUCNKOB42ofHTQ7970UB9d6mL2WGFxqW1U3C3pK
+	w6wqJjnwsjzaX0+l566EPdEiSFP0IXg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795431226;
+	s=arc-20220608; t=1795431227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A3phjBExbUr81r3vxQBKTbLo8eDTIjhtFVnpEcO61Fc=;
-	b=2bkYHmG6tJXSYlHzv+8LL3bYlEk7bUtCp+IBFc2YsDl4H7hJDXKzzULyspW6cLlJ4CoSVV
-	8TJXg/lvrjm/1piNpEakqPVlx6zy774QMApvye+iN2sk/volZ/Xk8ieZy5Xr1E2nOqORMB
-	O2z5Debyz1A6QZvZ6Xehllbo7nkUT7o=
+	bh=eweSWDSOsQOE27RcEvRysjLv1HR4X1mxM7SMOMd00P0=;
+	b=KCfusiJ0ZGViCk2pQZMr0PmFktCn80L8Yr0jwzvNS0exTnqIF0TT6PT7Lvx5xvWzQHX6+P
+	fKwApGJg3jlYKYx6JoOU4AuBn/55gA2U2IECrh4Mh6zo5aCTPEXHqv+RuwwGBZner4xwdS
+	6jDTwsgucnJi6rEkNIJuLPzMXSkEHlE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=s9dM19ug;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=USga5qsi;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf29.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+	spf=pass (imf23.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1795431222; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=A3phjBExbUr81r3vxQBKTbLo8eDTIjhtFVnpEcO61Fc=;
-	b=s9dM19ug2Bj2OrxWhgSFyjzQ4ixaCnpLz96K+8OLUVuCYcKrJ7OSzInUbBswLPadFVwWKimhqX+opsaGBMES8IEb18HABWlsSIQa1ergsgC+jYYtvvU4U7/34AHUyHPm3hk+J/mVTB5HfziFr0r2EgXeRXZKHyo98iYhRDnbEkA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XFHJh.3_1795431220;
-Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XFHJh.3_1795431220 cluster:ay36)
+	t=1795431224; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=eweSWDSOsQOE27RcEvRysjLv1HR4X1mxM7SMOMd00P0=;
+	b=USga5qsirAS3HY/LkQVWy4O1wshw1s7nJFqjIp3l25JoGtJGiUvbv5M39hjoAc+tpYIXZCBeYxFORXG0ye1OZ4KwZ5ZXCVjmESk632bIqMbm37U2AZofdTV/NuVuFfFLqQX1bSKIsqrfXrveMUvzaTY7r0/yQI34r/2rggqoASk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XFHJh.Q_1795431222;
+Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XFHJh.Q_1795431222 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 23 Nov 2026 18:53:41 +0800
+          Mon, 23 Nov 2026 18:53:42 +0800
 From: Qinyun Tan <qinyuntan@linux.alibaba.com>
 To: akpm@linux-foundation.org
 Cc: hannes@cmpxchg.org,
@@ -79,9 +79,9 @@ Cc: hannes@cmpxchg.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qinyun Tan <qinyuntan@linux.alibaba.com>
-Subject: [PATCH v5 3/4] mm: thp: restore SHRINKER_NONSLAB on the deferred split shrinker
-Date: Mon, 23 Nov 2026 18:53:33 +0800
-Message-ID: <20261123105334.2524066-4-qinyuntan@linux.alibaba.com>
+Subject: [PATCH v5 4/4] mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
+Date: Mon, 23 Nov 2026 18:53:34 +0800
+Message-ID: <20261123105334.2524066-5-qinyuntan@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20261123105334.2524066-1-qinyuntan@linux.alibaba.com>
 References: <20261123105334.2524066-1-qinyuntan@linux.alibaba.com>
@@ -89,19 +89,19 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7jmiafotuf6cy85qmxk9s7dn5cpgpafr
 X-Rspam-User:
-X-Rspamd-Queue-Id: 8D691120003
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795431225-229544
-X-HE-Meta: U2FsdGVkX1/7eJiFHhXeByxPWD9Dkww9IkqXpsgcndc8sHI+TdMyKdbG3iiuw6GjpAbm8XG5x2nmY60H4QF9XC42c0pnC0oycYpul+pDaClpF/sENeiGLQ3MTdWWK+0EmJCRm/fRNlu3odXPZXeYOuHTC+sypH/BXTTWCHqh6PIua9ZbU63oQwhqW1kZur8SR8a0NhVP87l44DbEdnB7jgfYuQVVeyKamMuuey9E6LEbLuroSBJ87X4Ztas9HmYGY/92jHmuUAgG60mmh2DfMXB0adsWHcpr6iLVs8Z4/ROpWhkoMXDCVxtNcO/shuepe3iySf4WaypPY6/ONu/76NL1XFufN3jwaUexyEVrWNZxG65IgYpItjbEQmO1VkPM2tKWhGVaT/XywtigE9cXy70jDEM3y2OD1h/rs9pE2QBP+OXB4R/Pj0+6sWHwMBZUAsZvSiTUEcbbky97GZKFqt2bi7H6suPAfl/+gQHn3xRQ69gHtN6C9W1TTG2ahE8jqF8RDkBKuJ826NgVxHQ+74xA4SxGx2w666DGhiL319GXVoFgWyym2FWstgLnQnzcbdI0q8OWI8C+SsoE7ciNHv4FRxJbiEiW4OSVoxso6EBHmP+/aW3k3PfH1i8IKMGLrsXfP0LxZFFany/ZM8Gup9jXa8hIpw6PRyg1ynQaGPtdceSp7JitAWjx03XNkbpzJRcVgcOPD2vRKu/mpSx64hbARSReSgHIF9WyL6xfiQNW9WSgbKIWW+xrCDbcVk309noBdLKccV5e1xz9HdRsm7zkqLr/TYABA3pw30TxPwyghWR+7aGPDJahRaLmMfq9YnMwGcLqwETzzp7LwcGzg9itIPs0FfXj2Gf1PWVHi5zKl2rDWex3eSBUqnCCjbCuD/Y/Bt2p0F7d6qH0fx+uwk8V67gWcgcbO08vkGr5c5roDRfHP9enPcjGAhie3UBL7JWUwtq+GEjtkugETIr
- pF8y2ix1
- HRtn4HhP5GvWhvR/6eBByjv37Ol0cb9IpTVftOZLzs8o8W8NMhVixs3yU1mppIlfI+Nvxl8ReKiYBcI+Opg4RJfQn6/Q8On2Zfp1sjpUBNjDdPubOt4ZCEsyv+LObdfm6E5Es9+LQYFzLJ0beDPv0km1sk4jwtzKeKCwQZWKC9hh2Iob69gGsryxRku7IlzBGgY+6gR10Q365tSJ8QPR6Nz14SQ8aa1Y16hxWneZeMjpf2sxEIqG2sZS4lEScTtOhGQmWO3b44Ut0Un428/N65hkYz9z0K9G3aT1JvXQZU1tmZx4p/NcUU9M4F6PamPbX4DFQl7o5bpCvZM8VjBFlG7CJNzZPJjg4b7WJgh9B9Rn+bz0gdzBKHPKI6JbNdNH+xYyQaPcS1oe+rSaKl0G//eIgx8nvv0WqhAg47vHek0W4f0L0iGqOG37CEdiuSgVE9yOxVjmOneKu0aGQsjG8Pt8Me5XQP7s5vreFBaVIq81T6b/1BdWoStTkx13XyfR1FUHKdYnouPwP8+63MGyLpcbBsREKQzLsMwHBzB8+PfGE4TBSXPJ+Lzfug8f8vbIKyRu+r63Ku0bIR5rUwlaXPNb0/nSEYdbDuv3X9Sh/kONhoEh53Q473cOmNreigPUbqREkj+xEwpQViJc=
+X-Rspamd-Queue-Id: 8B394140002
+X-Stat-Signature: k1498cw6u6zoy46r4z38uzzpmb38jcfx
+X-HE-Tag: 1795431226-820118
+X-HE-Meta: U2FsdGVkX19yqLczd5SaoGQqVCW6Y11lrB2eB6uHWcKnq3o5pKapoZJlhd6UmNwNt+aTDSK/19pKfgfDsS6E8+XX9t+ayMhJpuCZgft9msyAt2ByOt+Ys/+CF1g174efuDNEMzZz9pcjhdEt0GXuXj5wIQAVlpQSr9OixMkeWPGJlr0qKyLGa54vPIsxlzjrDwuOhS8OhE5yqz5XYU4UYH2h5TnZdy57J5Aa3RilIzWqnUlZ15CbtKteWaHJLQBX7BUT59vecRAlemTw8xOP3aYgU3BXd5jlJbzax6+PZq5fFPxurDYxq95t+SFUHfEfYVZhWOxrhSk4y/r3kT0jisNJDVw1oU0iBLtOU6/VOcuIfjJH1hTH5yrOnLIvIfF3mGRpDm3Aebms1vokP4NXfyEQiJmzftV04fPQ/Wi2RuwDCq0GOot7UXy03a1ILmiBqHsuGXS1fmyMb3FWRCiPJdYctXJyb7Av8ms+f2ooAk7iynFRSjQ4COYaFO/9OmiGR4f4CoOTjdhXrFymS97HjyofYRW/om/StoRymYdKIvE8v1hOgngS8bBdlTuLihcJUWq6/tgtIRcw3jQCYy4dY3H9RAoboCRwU3oNo7C7a2pROreUiz8lP3ZEJPnYa97KutlvGjyaSEkj5F3iK7H/6g3LfKkUTBmTNB6jzNO3HAWJZU+y6QwvITvt9VmC86c7o1XUhzjpd6m0zi7xGaSValL52LGXpqoYR3xD06IEFZtrACoJ7f6oqrTYwBkIN7Na1jQyeKDTvo7aYc2gH1aniI/4rJO5Oi+OcWvBDQH6GNB5nMfzB2u0FCmebJif79AdXFwJYG0e3SN3t8Bj7CDSC07BBa3DB1vSmiUKRvHB/Lzbudj/P5YxHs+N9SfvP6yJKf+buYzmm7DZzGNKGOc25Taky8vrNLy7QbxyjeY/+KowhxZdhtkAS78OhEd79/1S5ROBfmnuVp3d8Ibxr5h
+ KBafjWfa
+ p5YSFfncmOu6KXm52XULRbcdjBhLkUAQw6OZ4Gmyt1G9udmuWCBAFbA0+bXXMlwnTT4U3z1x/F73iIQ/aKNFdeV2pyeMKRJh/jAFwEkSYHD6NY22Uj8Mg/CcQ3r1riml1eCHURlsMyxJYkMRnw0kRQlL4kq9eEetwo/zCxApM1dObGBy/3e89R8P0+pUdhXfRq1i6dIxe1gPapRFGSkDIZQjBLTeM8mrdNqgzUyOeONniHddzsB4h0o1I7GokFtO5hZhsNp+DJEJst5sxplI4jPUEVsvnSbyRCuAa0qgJ7rZcKoGJB/iu5+9abKlWwH0Jh2puBWpnK4gehbdO+oy3yA0b8EeJ1yQnQmmxzAvpi6Y7F3EFM9vHJgwXFJnGoA6ztKfIGGTjBARiJlCZ0xXhVrp/SVSTkVgyQWeA1nZCqCE0wNbYIfAx6TPkhKCbXCB4NtXoiB/Cr2M7KUCbbGOT9a9gsV2hhZx5o0xcvv2sbX2GiOKlqiJYnpSOIliM+UOBz9kS8KdVgevB+Ud1ywd2nPdeupJPBXHU8lMHcIAr0bxvzo8CYPTh/v798RwP7CDe+6n4Y64zsZFEePNe2OIfpNl3ln4+y+2nJcCR0RGwlnD3U/zMrsQXoRg4caW28sWvQMZL9gmXqlMJAOs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,56 +110,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On a system booted with cgroup.memory=nokmem, the deferred split
-shrinker is demoted to a non-memcg-aware one.  As a result, partially
-unmapped THPs are only split under global reclaim; memcg
-(limit-induced) reclaim never splits them, so a cgroup under memory
-pressure keeps its underused THPs intact.
+With kmem accounting disabled (cgroup.memory=nokmem), memcg reclaim
+never invokes the zswap shrinker: a cgroup under memory pressure does
+not write back its own zswapped pages to make room; they are only
+written back by global reclaim or once the global pool limit kicks in.
 
-The shrinker has carried SHRINKER_NONSLAB since commit 0a432dcbeb32
-("mm: shrinker: make shrinker not depend on memcg kmem") precisely
-so it would keep working with kmem accounting disabled.  Commit
-fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-dropped it knowingly: under nokmem the list_lru collapses into a
-shared per-node list while __list_lru_add() still sets the shrinker
-bit on whichever memcg happens to add the first item, and with the
-flag set the shrinker would run twice per reclaim cycle.
-
-NONSLAB-backed lrus keep their per-memcg lists under nokmem now, so
-the shrinker bit identifies the owning memcg again.  Restore the
-flag.
+The zswap shrinker is registered memcg-aware but without
+SHRINKER_NONSLAB, so under nokmem it is treated as a slab shrinker:
+before commit 03375203e1da ("mm: do not allocate shrinker info with
+cgroup.memory=nokmem") it was skipped by the !memcg_kmem_online()
+check in shrink_slab_memcg(); since that commit it is demoted to
+non-memcg-aware at registration.  But the zswap shrinker is not a slab
+shrinker: it tracks zswap entries and resolves the owning memcg from
+the folio's objcg, independent of kmem accounting.
 
 This was noticed by Michal during review of the patch "mm/list_lru:
 don't copy stale shrinker id from non-memcg-aware shrinkers".
 
-Link: https://lore.kernel.org/all/ah9PGv12mqai84ES@cmpxchg.org/
+Mark it SHRINKER_NONSLAB so it keeps its memcg awareness and runs
+under memcg reclaim with nokmem.
+
 Link: https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
-Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
 Suggested-by: Michal Koutný <mkoutny@suse.com>
 Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: Usama Arif <usama.arif@linux.dev>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
- mm/huge_memory.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/zswap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 75e8641bf9ff..0f1714b10614 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1058,7 +1058,8 @@ int folio_memcg_alloc_deferred(struct folio *folio)
- static int __init thp_shrinker_init(void)
+diff --git a/mm/zswap.c b/mm/zswap.c
+index a2e0314db1cf..730ddf6f5005 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1379,8 +1379,8 @@ static struct shrinker *zswap_alloc_shrinker(void)
  {
- 	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
--						 SHRINKER_MEMCG_AWARE,
-+						 SHRINKER_MEMCG_AWARE |
-+						 SHRINKER_NONSLAB,
- 						 "thp-deferred_split");
- 	if (!deferred_split_shrinker)
- 		return -ENOMEM;
+ 	struct shrinker *shrinker;
+ 
+-	shrinker =
+-		shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE, "mm-zswap");
++	shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE |
++				  SHRINKER_NONSLAB, "mm-zswap");
+ 	if (!shrinker)
+ 		return NULL;
+ 
 -- 
 2.55.0
 
