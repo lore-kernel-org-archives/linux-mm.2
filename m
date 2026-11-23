@@ -1,94 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3B7606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96080606A68F
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jAfwxev4
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iBp8GcxU
 Received: by kanga.kvack.org (Postfix)
-	id 6C6ED6B05C6; Mon, 23 Nov 2026 09:18:21 -0500 (EST)
+	id A98BE6B05C8; Mon, 23 Nov 2026 09:18:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69E5D6B05C7; Mon, 23 Nov 2026 09:18:21 -0500 (EST)
+	id A6F4F6B05C9; Mon, 23 Nov 2026 09:18:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DC806B05C8; Mon, 23 Nov 2026 09:18:21 -0500 (EST)
+	id 9ACC76B05CA; Mon, 23 Nov 2026 09:18:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 325D46B05C6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:18:21 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAF5CA0915
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:18:20 +0000 (UTC)
-X-FDA: 85466588760.25.37DE649
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D6FE0140005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:18:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=jAfwxev4;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 79A1B6B05C8
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:18:36 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1127CC08E8
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:18:36 +0000 (UTC)
+X-FDA: 85466589432.04.7BC5F77
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 42F7714000D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:18:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=iBp8GcxU;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	spf=pass (imf09.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795443499;
-	b=LJomwl3e+a1rvbXHE3QLy5fnTvbTRguayBFLJPjbM0sgS9lssRWePQJSnHCKWiwTA1gHDG
-	EsVgQ5jIwSA3R/O0hTMW3Fq9F56iynw3vpl9mtKAt8bblNIS6rea8NGbAQr38oABPHdI07
-	sp72WWs3ePT/4jQv/2XqdjJjiY/br6M=
+	t=1795443514;
+	b=1YkpQIrVmbR3PnjPqTWVmH9npJv4gaYjvU450XjsCbDk6yotBpd6x0968IHKYxJqBrh8IT
+	cUw1aYnVQgqRx+ubgXG00sODnR0RFnZSuVepVmkVVNF9m0V9whP6lAHkizHssgGJbh3HQo
+	M3SUZi6R/APbrI/KnZK7DcDkWK+2Yhg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795443499;
+	s=arc-20220608; t=1795443514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wZPzpBpjg0sp41buwUabT4ELftt8au76u2ycWcMBhOA=;
-	b=ETbTLfJ1ZrJD1Uf1kYHUQ59A3S2M8Os1NrFsfRP7GBRIleSqPmaMC9PI+C9e3iH+C0A0pg
-	nBUgiizcJwE7mxhcJnox26k9MTnKOJ3BaZqMJLYa72zom3Ou4kp2FbBLmxfrzHqSCQeHoz
-	tbmqSlm65GdAntrpvqTSoM07o+gKMTc=
+	bh=phsdk8t17LQ5zdqcOPOzFghmL6S8vOZKS0iyfCAYlN8=;
+	b=iSK5PI5uB+CL4MxE6gXAriWMHQxX25F9RIe5OqX59TY89kCsTon8O/5zH3nb6YnXzH+Za2
+	bCZI9qtaDax0qKfJ5qOkjeoorUHNYyDM02ex8myEf83YiGI6L1NDOs82lvUyX1Qq6AESZt
+	sKDdSJ5aAMwc0vA+dD5V7LAwV7oJir4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=jAfwxev4;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=iBp8GcxU;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-1b3acec6677so4680175c88.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:18:18 -0800 (PST)
+	spf=pass (imf09.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-15dd124bbe7so2089234c88.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:18:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795443498; x=1796048298; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795443513; x=1796048313; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wZPzpBpjg0sp41buwUabT4ELftt8au76u2ycWcMBhOA=;
-        b=jAfwxev4wEJVu82vEJy88Xb52jmelo/Kv3D8nRiEWKf5V07bkkWliLS1ag+eEWDFvp
-         EBn8y4Nr5/7zU4vYwv7LY3IUI0u5GCD4pT4Ns3D6UZks3+Q4zUMvdBpKFvdeIkhX3lZ3
-         VXwKZTBpbLkFcuSmM1gpBbPUI3Qk3BGqNdqSGUfi0aSKbwXWdKHTNarigWrvM3Dyed5w
-         pWEwWWtCzgxdzh34mqabxVp6bcMhDd0Ay0bMzegyNdqX8mfsMf0Opjl08W67XTGmp4RK
-         nIBomygPLFi7G/vBgdoU4Lk5m1yBg9uUNlX/dYGzoJ6y/CJmalETwrVRAIrzT+9TUaWz
-         Dh7g==
+        bh=phsdk8t17LQ5zdqcOPOzFghmL6S8vOZKS0iyfCAYlN8=;
+        b=iBp8GcxUVdXrl76Y+T8/Byel/4pwQIQydRlgRmjVk/QWKcv6HxCe0okAksRiYhhjXK
+         dCdFg14NLPxcdTwuFqzfx/N51KODqgoSOCfqucETu18KcnD2OfukmEQmtG3ND/nCn3zZ
+         84YUyqBZXjnbGIsVUinUJ86HZNeBCZ7aDmRg+Oc0SLbm1RM47hV5E69lJpLc9hGjXH8f
+         3JdHsA1fv3LhirI3eT+cdwn8cNcrpp42METTFQbUyddnxud8utYQoe3NBf0dnbTEiowK
+         6lC4dSy2Vl8AUoAxryumbROFEtt+7/XqfELv4nK3WE+UBK3ngSqzKuv0uW4rvIEIqTjF
+         hb3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795443498; x=1796048298;
+        d=1e100.net; s=20260707; t=1795443513; x=1796048313;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wZPzpBpjg0sp41buwUabT4ELftt8au76u2ycWcMBhOA=;
-        b=LtWrFcBSiOsds8hz+PkjX9XjefPCY8ghy30p7bBiQ6hWsbL2TOcpS0t8C1DuZ1oY3x
-         ILMJCMSyYVPxuyC1HZ85ePoIPve0KIGx+pSg4zR/tcU8U17bmuB0F2OsTyiv6Epzns89
-         o3GrB0kGoTKqeB906UtUIp168Gq9zYRBk0ZkBfCXDGZeycHyYBI5mLZTkk8LlQ69Yrzu
-         nd5OILGXXWBIAppgeb+2PPsM6ZGBYHJlJYgkZev60dxqVVwNe6ZRgIN5QnGH+gXkItrt
-         kpffg+2n24VVp2PaRPMCbxd92nwsv+Sara0eJ7pZ2DzSBJb+52ZGHBYVf4hnVkLp81Zh
-         82Qw==
-X-Gm-Message-State: APuU4Z+h0Bj/rGnNAXXTQ3gfn3aWbqMTKkzMevmkkyMPJoa7ctHH+Muy
-	yKJQ81ouJmd7O8opAD7Up10mSsIDQTHUFQ6nqZ2iGvTLpFSnE5Hwn21Lhf6Gl/u0
-X-Gm-Gg: AZFdTZdxkKbkQmkyuLz+9fm7cBBnx1pzf3GYAF4LryTp9D9Qs8RLpf/jFpXHbUBuhfl
-	sMwbcfUnkTvzP8+/EGTPht3Uf8BoNBjWCenaMpfBl3Zi1SMVOtmAN/5pqWeHCNpHRdZAmWhajYS
-	1NWLYh2FGGd4R/ZczQEILJ0w44BRnhfHAEZDamg8P28HxsLa2IF9LJJpUH810W7uK2xOxA8gxSe
-	vcc7gKSbVKhJ3yxn57EPIm5GY1PSTGApzUwmqB9e8PBoLcsq7p+uSBNtt9hHkrX6TGTBUweGolz
-	bJNpVG/IPwOUh1ILEzbd0/wDH47pcCFXly9JBYUIj7G3Hm0eBmGuz5cSfgMpFZ1Ly78Fc7nNT1x
-	wBBcOFnSrxRXmLMWnjlMPf1n/MXF9eA+vkEBRBl8PcEJGIQ2/mFYrzVeSbAxixDjo46ptDJt+AD
-	e0mbOs0NLUsYmf9Va/AXhvZsnnHgmNcj/Lte2Ss3TDE6At9/DCBbfKoPcF9zhkjlTsPTHIYgzue
-	cigy8M4zlyI7tVrmE323mZz6g6fjDgflSMGwvETz1PZWoWaFNno3e05u93x8T6f+oxtU97dJVGH
-	HxkuuORb9uJ3uej4EB88uM0WhvWvNootZiz6fp4QlTkHDc1acx+dm/0AxiNNClnK8c2zoZqg2vM
-	nzJgO0qSymvYtT70=
-X-Received: by 2002:a05:7022:f509:b0:1b2:41af:c21c with SMTP id a92af1059eb24-1b55694689amr10214838c88.39.1795443496157;
-        Mon, 23 Nov 2026 06:18:16 -0800 (PST)
+        bh=phsdk8t17LQ5zdqcOPOzFghmL6S8vOZKS0iyfCAYlN8=;
+        b=rLgbRIhboG2Pg5ekzirx9Evn+EbuEMNCQ4X0AbDQxHTr9hMGx926zXVwoQBlapTJkT
+         /C6kQxOrlfK7yvFsX1AV6gQ4Y98+1VdIQC1UZRoNlhTPxRXiyDJtan1zbHmR6AZdN6iL
+         X5jWsh7K4WkH5iJgy4OBoWQTP6ceNctuWJMr6c5bjAozjOLjW8ZQk2GN0WOd2z4YQk9F
+         dMuogF4R+Vdru3lGI8XFUasMNOcuUSiXpH69QwaSecW/M3JkCxUs5N3qnVm82yCR0ymL
+         bTGgO3aPuICKtrI4qs/0mnu6YTI6nXiRKPYGA+/83tBPgAxbZvFltRmddbfUwKQKetIw
+         S7rg==
+X-Gm-Message-State: APuU4Z9AnoBGxFuY4Bm+JOqoRC81gEfASfXyYYrcW7sc/JuMecl9pRnD
+	6NitTlN4385QBiHYpbVXDdMxMj86pV9H/sms7q7mRxiWWoWqII3lRa01/pnghvDg
+X-Gm-Gg: AZFdTZcL45hfiBCLb6ddzeA5nAVrMvIpPrpk1RCxs2P5iOPZDYJ4A7Bo8/rp2E9q/8x
+	wJn6V0U9tdMkfXqiz/Ho7peQ9xLCO/EHssuHFCj8Rl0FeFaCTHhRXdnJFmyYU+bvb/23WXD6tTB
+	JE6c8IWQrb8K/wr3V7CQbTCaktjQN/ujz6S13qED7cglCNnIh1kOOvbwOP4J05onAhaiyFIe6KB
+	p6osNSE1ox5VxGHB5Mo9qKDo/00dIA8lG9RPNBv1x9e0eZtzqahKr1VINfGbSobnYQ9FaSV+20d
+	gY0mVKpCCsYDiO64Wxslx2sg5i2g7zi7kfHZNIYkOGrE41Bn3V5AxEthDMIZS3tk8VIwq3Vc1NJ
+	QsGqjyh/FFE6Nc+t7vlDYdVfqqOUhN/eFuitTvVA9Jj8t7rq5AfP/EBC/D+G/r5lNFLqJbsxEau
+	jaLN7Fq3ZlCNMrGbevivGuOBcX46byDQ9EDrDCcLDcuIHy9nTv6nIA8bT5YFQj77EP7iF40B6El
+	hDfOS3VQun84H2LQohIJIwEjmtSfGNsZ5Slv400+PIXxbxYzMUwNzjK/e+lpJ87aJtCWaxBLlOS
+	4kivo9z3wRBFCfTl0DtmT6Z+bHAtaHNp9d1mLUoof2M+DZJ+Lb+VMHXA3S/Tq231XOPP
+X-Received: by 2002:a05:701b:450f:10b0:1a7:78a3:bda8 with SMTP id a92af1059eb24-1b56f87ae87mr4467587c88.27.1795443512936;
+        Mon, 23 Nov 2026 06:18:32 -0800 (PST)
 Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5569bffd2sm26797807c88.0.2026.11.23.06.18.09
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567e2bd1sm27824408c88.3.2026.11.23.06.18.22
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 23 Nov 2026 06:18:15 -0800 (PST)
+        Mon, 23 Nov 2026 06:18:32 -0800 (PST)
 From: Lian Wang <lianux.mm@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -106,9 +105,9 @@ Cc: linux-kernel@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Thomas Gleixner <tglx@kernel.org>,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH v5 09/19] mm/swap: avoid direct reclaim when populating swap cluster metadata
-Date: Mon, 23 Nov 2026 22:18:03 +0800
-Message-ID: <e920cffdb3a65905dbcf51fa3520785a8c49fcb4.1795439990.git.lianux.mm@gmail.com>
+Subject: [PATCH v5 10/19] mm/swap: mask the off-list bit when checking whether swap is full
+Date: Mon, 23 Nov 2026 22:18:17 +0800
+Message-ID: <0d61898075921b05c626accfa34a60e16472b556.1795439990.git.lianux.mm@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1795439990.git.lianux.mm@gmail.com>
 References: <cover.1795439990.git.lianux.mm@gmail.com>
@@ -116,18 +115,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D6FE0140005
+X-Rspamd-Queue-Id: 42F7714000D
 X-Rspam-User:
-X-Stat-Signature: 7p56jh6tywgqfsxtxxftnb3jbhkq4i9n
+X-Stat-Signature: igxk8z1xu45zwwswy6cgzeqewxf945rd
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795443498-668736
-X-HE-Meta: U2FsdGVkX19WBwAKzh5BfyTdk3RFpiGpeHv7gzjg9KZbAtOoYD0VJPrFAk2RRLjjtLAvQzA95coTKkFroNqm8mXyv4PxllvYeSPtgyqA71w/M2zWkp8s4eB2X1kQ2x4SqdZYTXk6ZGI2N68Q9DnykxF8qAjck0j3jNLKfpL5vE6np0REkTaNAKSN4RQOME2XGklwCasgDM2GiYV+5BKw4BdkCWVQfbwJxFVRxUiIcu0+0HgS1mKDlC4F/FxYbWo+w7m/2lboJwlZfYwEtYTHEZk+2L+X3nTSRtjnY/din0dckF5JDr1RdzN20dzH2Wl6sAuF4gyejrGnVenGLGukd1SKHidxU3cBzFh/3RnHiCXyTPzslmL3FGCy6mn7uvtv6STu3mXQkXxEjc1vOyURH9mg7YbLgXagldrGH8LTiknNEQp4pgiBCCj1am8jSZ1Esy09VZz3/ysmP7g3Ox98oWOZ9LZDiFYHXO1P9ZV5FA3g/O4CuIJ/6lv82+jkhtiNjWV7sxlZoWXPQviZdlvrTdp6IhQDmCokpSjPQb3LyN8Ch/mnvpj58V+3x8eYYYXX6MIvg6vX/OYB9H0o9hcCghsFnprFzWuNZF2us2CEDJObn9etxGt6kGeenVGWhCiwk9F0hE6xRTp6U1Wc+tTPtsE1yWpbUpgLfwpZqP95XBu57IbODh7QqHx+BWWiSryvkKpKfY5Ogs7dtgbR1QPP3jIKnEWyWtqgcd+Ly43kJOFmEtFQwyBKiSt9O0FZyEl/vT5p0q+6w+n3me1KJHNJ4bxKM2Iv724Hxc47G+5AjDR2CsKAx33RI+88Vni7tfnQz6U+CXjAMzFa9URmejBINTDB1NlZYnn7KAdeNQmFQ/bAzFwZOk3ngED2iuGS65ryzy9gHu9z9HvlMY3XMvVGjdv6DCqnrmCLBJxcByZRwFaaZ1GVyt9aoa71eDF7oj1nKH0Emo4BaKsklMGx47V
- DndaUkrd
- BuorUu8HDf83QQXpUTfyArOYua001SwqYmzL/343Cwh/mJRR908rPiDh6vfDqGKbvE6f5kvMpsLlU1tovcSp9ep78RA2jCfbIV+Naw874VzC/mMCuddPuNzLP4I9Jjmet88Z06Ggh2R4LLD0Y8rwo782UmpaCxNhlP1t/cINFrFvr00INMUixmOUqG21jeELif+7Mk6+1O7icMNT4/T2lbcKVp2HIDfXlm3UQ9n8HSKrV6290KB2OsmfKN1C+hCpUj0ezqd6Kkn4HNvMiQyVjVoTw1DVJZVCNDMg/C1FUHy+zLT/4hvfGq2HWcSLJcEyXBE3UJwQbeKxJh+bwexe3yDVEeh1/jfsvJ/KyD1psg5/YkS7g2nZ+PxkchttuGjraJyuqUUbykyHVJ5M/zSx++9ujt1++XZ/4osMQpJOFXyffDpDYWKFXJacJGHriz2+CeM0MoVx6vtCsquuRkiubvFPkSBWl0FourJe5/vkqEgmOAn3KPkOBZMDA2rkFSNc25/vO4ZsPJegFKqTNwUUnGmrSXYPTLi84NAsDdkWKmq9WZEfoMVaOzkdAGdfB7B7nUoqO/9uNjtpkSCur4V0R3NBVqT3tmYRNnoH9Rw3byqfNZUDGg8aESg5wlPRyFScxN/YkVS66GZJJ5dOfbbN0V2Z+I4X1giwd+bpX
+X-HE-Tag: 1795443514-640936
+X-HE-Meta: U2FsdGVkX1+YK5eMfLKYnZm8acyBQXGE4tRqm8xqQ7IzUkMoGKIRGhDfhbIr6LsWBNsJRZXqXpWDe9v8Eo4aZbjZ8vX4fTrvd204WTiU4fFtZ/3K9D6/q+eaHIZjp4MeK8uR/R3ahAd2/ifbNJw4hyIZWRTJxKoLBdHpHD6wJIUBGNv8L/aGOJdeWwzYvYgtNymGdOeUAO7wa5Qt5pTCYR9XOk1h3pzEQiiywusMqfRi6y85eZK+gLTC8C0dIpm8h8moeJRpMXHr/z1u03je/ngWfIt+11ZfNoKWbeWDQxFkJpQoJbA2Qh5vLFLOaj1NhORtIRpi9U+B6Q5oX+4V2qIwSpzdBprLYx0LyDfr+raj71Q0qCHB2WbtwkPRiThpVaM1uolAO81hiE7Jf/Kra/gDJzGwcqrtzaBpKM3uzXU3BEO2o5szkz3bL7hLpFgMp8FwRikq3f4d20R9SegZTdw0mbAfMMpdmvLb9BvmJUyjOI7ZEZv55SFK6noIDDCfsrZLrG3MONn7ZfNlfPn1gjVikI62+F1PqEKGwwsgWJGhtF9Mqyqyoh7wOjpJ5nHqeBvtvc9yLch786t9kIjbDSWN7/ad8vuikBoZzFyAl63eQj516vpLHaDsjJr6rWyWs9J0AFlwUmLH8j1W/667lPG8iCnSQBcRb9yZ+EF/ZIsxii+Aod9A+4mzuxzBLfXdNl2Qo+KQRxM2aUnHT6sh9s6seNSk6JYQUI9GIaalXyZ6geazG4FcDs+A3NsLP7obHP8f5bKfExVqhAtBbh6QLppvx4SdyXRXyj1iDg6NxDGi2a8S5dk9q934h7C7V3afIFJl0rB4HLHjPloDleqH3KC3b6y+q9a54tflkcvOGDtMRLVCYn2TBEPoPhjKyFrtvp0kUJJRa6UZLjkzM4p6nYcfMknv4C3bTfj5Mmmdnr40nH1EAEY3BBd8uGy79NEZ5yRjaECD8SXyZdctNLc
+ Lt4mL9PT
+ 89aopw7sqC+zBZRxHwq76uqmv5SrKaLL+49F8TyiuqNszN+LzOUea4zQ5X7AbkGmQ6LPPym3MiS7KcOR8UtOZ4uTVR00ceVVNxmgHSg4sjfD4P3Nf79x7eIxtu1qSUa1CmV0aIp0rDuZPcc9LSJ8eHK+3p3jl0+87N/SLhV3X/mvNpISIG3mGxUrdmGsFYeSSDoykmWkVQuMXQOfwgDfe6sksdxm862I62d70u9LySQDx5t5FowKdobfvvHwnGqE4U4k0CqrEN14e95BjDbLJyYrS/J9ODEWsyyEWPa4UECqqD+F2pqDKLYmMU8WK1CJqrd2W/sAFG8hVZSudUrzrkqhTTZHaexSTnhmWwgPdMPYncgVUb4dPS2PLNA5irx0MoPm8tRnlDzxPRUGQfqXO18jmblPOvFM6TjBnf1YpwvvLYuM3TklCKCIJbWKGr33bd08mEOrIz4N+HPa+89gb65ZF1F2+fIiOQBiZaQ97+zSw2Uys5yFKoB57CSm8bTdTxNPMzyG4TY1lvRdLcRDTFhIrj3vVl5/DXAJQ0NSoaY482moMSzuk44KqFDWpktkyrnooOuo3HoPx+Nun9cx5FlSk/hftE+5qyO4INggKgF3qmgCPNdnvPwnRO9HqCbovGGe6rbMGQa4j8aMwQ2OD1UkwHIa8Q0zsSHimqL2LpmYoEp3z0L2QxyC/2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,85 +135,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Swap cluster population is entered from swap allocation and may itself
-need memory for slot metadata. Its fallback drops the device and cluster
-locks before allocating with GFP_KERNEL, which can reenter swap
-allocation through direct reclaim.
+add_to_avail_list() clears SWAP_USAGE_OFFLIST_BIT with an atomic
+fetch-and. The returned value is the old count, including the bit.
+If a freed slot has already been allocated again, comparing that
+value directly with si->pages misses a full device.
 
-Make this allocation boundary explicitly non-reclaiming so callers can
-retain outer synchronization without a recursive swap allocation.
-Clear __GFP_DIRECT_RECLAIM from the fallback request while retaining
-__GFP_HIGH and __GFP_NOMEMALLOC. The retry can still wake kswapd, but
-fails without direct reclaim when memory is unavailable.
+Mask the state bit for the comparison. Keep the cmpxchg on the live
+counter so that a concurrent free can still make the device
+available. This also applies to the existing plist allocator.
 
-This can make metadata allocation fail earlier under memory pressure.
-Keep the existing isolated-cluster rollback and restrict this request
-without adding a task-wide PF_MEMALLOC scope.
-
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+Fixes: b228386cf237 ("mm, swap: clean up plist removal and adding")
+Link: https://lore.kernel.org/all/f53b388e1bcf6840457fe5041e989a3c0d0cc4df@linux.dev/
 Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 ---
- mm/swapfile.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ mm/swapfile.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index cd2cb360f274..70913402a265 100644
+index 70913402a265..1ef5f1ead656 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -586,13 +586,14 @@ static void swap_cluster_assert_empty(struct swap_cluster_info *ci,
- }
- 
- /*
-- * Allocate swap table for one cluster. Attempt an atomic allocation first,
-- * then fallback to sleeping allocation.
-+ * Allocate swap table for one cluster. Attempt allocation under the locks
-+ * first, then retry with the locks dropped without entering direct reclaim.
-  */
- static struct swap_cluster_info *
- swap_cluster_populate(struct swap_info_struct *si,
- 			 struct swap_cluster_info *ci)
- {
-+	gfp_t gfp;
- 	int ret;
- 
- 	/*
-@@ -610,9 +611,11 @@ swap_cluster_populate(struct swap_info_struct *si,
- 		return ci;
- 
- 	/*
--	 * Try a sleep allocation. Each isolated free cluster may cause
--	 * a sleep allocation, but there is a limited number of them, so
--	 * the potential recursive allocation is limited.
-+	 * Drop the device and cluster locks before retrying. Metadata allocation
-+	 * must not recurse into swap allocation through direct reclaim: callers
-+	 * can retain outer synchronization across cluster population. Restrict
-+	 * this request instead of granting the task PF_MEMALLOC, which could
-+	 * give allocator hooks and failure cleanup reserve access.
+@@ -1347,7 +1347,7 @@ static void add_to_avail_list(struct swap_info_struct *si)
+ 	 * that updater happen to be here, just skip adding.
  	 */
- 	spin_unlock(&ci->lock);
- 	if (si->flags & SWP_SOLIDSTATE)
-@@ -620,8 +623,9 @@ swap_cluster_populate(struct swap_info_struct *si,
- 	else
- 		spin_unlock(&si->global_cluster->lock);
- 
--	ret = swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
--					     GFP_KERNEL, false);
-+	gfp = (GFP_KERNEL | __GFP_HIGH | __GFP_NOMEMALLOC) &
-+		~__GFP_DIRECT_RECLAIM;
-+	ret = swap_cluster_alloc_table(si, ci, gfp, false);
- 
- 	/*
- 	 * Back to atomic context. We might have migrated to a new CPU with a
-@@ -3160,9 +3164,8 @@ static int swap_device_disable(struct address_space *mapping,
- 		return err;
- 
- 	/*
--	 * The swap allocator doesn't take swapon_rwsem. Looping through every
--	 * cluster lock after clearing SWP_WRITEOK ensures that allocators see
--	 * the updated flag and that no allocation remains in flight.
-+	 * Drain cluster-lock users after clearing SWP_WRITEOK, so swapoff
-+	 * does not race with operations that started before the transition.
- 	 */
- 	for (offset = 0; offset < end; offset += SWAPFILE_CLUSTER) {
- 		ci = swap_cluster_lock(si, offset);
+ 	pages = si->pages;
+-	if (val == pages) {
++	if ((val & SWAP_USAGE_COUNTER_MASK) == pages) {
+ 		/* Just like the cmpxchg in del_from_avail_list */
+ 		if (atomic_long_try_cmpxchg(&si->inuse_pages, &pages,
+ 					    pages | SWAP_USAGE_OFFLIST_BIT))
 
