@@ -1,83 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C563606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C737606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=i0WDMFuA;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=7mhh8fkl
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=TR8XczD/;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=hoHVYH9x
 Received: by kanga.kvack.org (Postfix)
-	id 29F0F6B05C4; Mon, 23 Nov 2026 04:37:34 -0500 (EST)
+	id 1691A6B05C5; Mon, 23 Nov 2026 04:37:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276176B05C5; Mon, 23 Nov 2026 04:37:34 -0500 (EST)
+	id 0A2696B05C6; Mon, 23 Nov 2026 04:37:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 166156B05C6; Mon, 23 Nov 2026 04:37:34 -0500 (EST)
+	id F20966B05C7; Mon, 23 Nov 2026 04:37:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E157C6B05C4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:37:33 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5F1B51607AD
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:33 +0000 (UTC)
-X-FDA: 85465881186.01.D55B45F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE9C26B05C5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:37:34 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A92A807B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:34 +0000 (UTC)
+X-FDA: 85465881228.03.05A973E
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AB552140009
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=i0WDMFuA;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=7mhh8fkl;
+	by imf02.hostedemail.com (Postfix) with ESMTP id B8E3080007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="TR8XczD/";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=hoHVYH9x;
 	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf23.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+	spf=pass (imf02.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795426651;
-	b=DJfPG6lgTCF2z8EuTwbRWGhgYPG65jX4qzdXOzoH3G176EE2WugCg6N3otYb2eeOsJ5F4F
-	KDlHNbrbHj3ojlUCOW7z04RU2ass+fcaarPCavB0d5XxNH6LaB9HpiRmcs86iU6fvqbmob
-	K82dyA4xxAvzqcwCVqAoyuW5sB8nSJQ=
+	t=1795426652;
+	b=iEFIHRI1QaH3eEVo66SBf4gJLhkst+NYtyQmrW84trMm3Lk+8zPm5GansAsybicRsPcIrL
+	YSs5qbx5VP7JBlg06kNQlLSX5P7zxE3LY+nfUpUJBSPu88O92lr1WaeQATsOiUC2PrGLd5
+	4YZRLJRsakdUu6R2yufh1dROU0/aVGQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795426651;
+	s=arc-20220608; t=1795426652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6O8o4jPy1JR2PVJ3l/7YMV8E/5cyWIFMpsjiqqNdK9Q=;
-	b=J0poRy4gHFoNPySJtXEN8gIJZXoKr+gmU/RukTy6KxJA77n/nWzRSd2TYyqwy2OtHl1hJ+
-	IquRfQKNRVma7vg0WYfXhwA/XCZGB591N/wuCujUBRc2AWv25aB8Is4CbrMo7Hn+FeO9gx
-	ZQYPnFluhJk3LXlkw7PQnrsCgNmPnWQ=
+	bh=OzqRCnJR602SPiJtJXTG2PDcd45+A0tgb/oYXFQovLs=;
+	b=D+vYWjehJBCbXpeCdMG3U9t0IYENzOz3RlicshleDWE+iWJr1QM0dod3U7FDcqxS/o2zCL
+	kfiBsYrW9Rljw9lvQ4l6jHQhGAVGhO5fCjm4ISPinkkcbIUKFzGVD/Z/hr0d2X9M7ZkdhW
+	GO9wrI3RcX+unKbFqf9ETdQwW63FO2A=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=i0WDMFuA;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=7mhh8fkl;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="TR8XczD/";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=hoHVYH9x;
 	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf23.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+	spf=pass (imf02.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795426650;
+	s=2020; t=1795426651;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6O8o4jPy1JR2PVJ3l/7YMV8E/5cyWIFMpsjiqqNdK9Q=;
-	b=i0WDMFuAdZ2j2rOtxrd1oZv/FkA8Zp0c0dAMiqHcxV9AQMvw9zWWBpAXxB01tlEHVKbl1c
-	xx5XliI8ACdB9yBxdxLxGu7qzryOwbaFbW+i+rSoV3DxerMmyEaAO4cU1vDSWYAIXnfHvO
-	21Sr6Q4wVLZzwo1Ob4tWM6RdWOFnjfDFcFmHBXgHfCeNVASJ6MpDdRqQ2Wb+MOX+6Ic/Zp
-	oPsmXQYL9M79ldoIbg7c+oq/fVFbvWgqyoLx3myysEdv0KsG5lTMtACMg3B5SbicTWQUbG
-	l5Zo+jNl6b7uMJwahvcGFmmIsImP3IPO3YVAJTn+TuAcogVLzylegCP7rhZmlw==
+	bh=OzqRCnJR602SPiJtJXTG2PDcd45+A0tgb/oYXFQovLs=;
+	b=TR8XczD//6I1MR5e9lJz+GijeGBKJ/F77cjTzH8vVoII07f/tMCwr/xGjF4TQGtgulC1EP
+	vACmE5JKgFiiOYT5KMeM2ILfQDDi13RwanO37c9TmxxeyyWSa0jXluHBhTGxRKR0Yl64Oo
+	7CYJEReknofWyo9+snoBGSVkCzXAajtax1AaQ/4R5wOyeTS+P0v42R8b4YqyL/j18nRyhy
+	mAwleNFjqSK+iTvML/y9rFNzZ0CRLbBTDuzjqKG2uRk179PYD2MCsPQ1UIFgLV23Hjv6Nc
+	mYzD6KuLCKi+7tfSemTLaki6pb72ly81l56+DTIHo3Ug7lZ9pzlij7cZQsJJsQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795426650;
+	s=2020e; t=1795426651;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6O8o4jPy1JR2PVJ3l/7YMV8E/5cyWIFMpsjiqqNdK9Q=;
-	b=7mhh8fklHnCbzFB7I+Q0iexBgbzBVixkvY0GBhA1YVDTjzBQjroLWJYnoRr5gGZ2or0Rlj
-	Kd3zBjtkngEuJxCQ==
-Date: Mon, 23 Nov 2026 10:37:13 +0100
-Subject: [PATCH v3 08/15] LoongArch: Remove AT_VECTOR_SIZE_ARCH from UAPI
+	bh=OzqRCnJR602SPiJtJXTG2PDcd45+A0tgb/oYXFQovLs=;
+	b=hoHVYH9xKLXuXyJAz+H1gDzElbvGfdJZ93NePphkmUT76//hgCh1ZCl3cIDoWvCVOzkPxm
+	cENh6xJYPcEMYdBw==
+Date: Mon, 23 Nov 2026 10:37:14 +0100
+Subject: [PATCH v3 09/15] s390: Remove AT_VECTOR_SIZE_ARCH from UAPI
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261123-at-vector-size-arch-v3-8-d342dae9e843@linutronix.de>
+Message-Id: <20261123-at-vector-size-arch-v3-9-d342dae9e843@linutronix.de>
 References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
 In-Reply-To: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
 To: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>
@@ -88,25 +88,25 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
  linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795426640; l=1767;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795426640; l=1450;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=vBs3VQQa67rpUmE2rrBLqD26Zpyg2BNszpmqddnCDow=;
- b=cLRElbxW7EhCUz/xMdMTbFBzL6Lski3xa/GSrklt0Zpdw5U2z1v/lmUutRs/DZrC5RtEPdqXP
- iJPTytwMCD0A+UQ2BgjEc7a7FwJHbB1gtR61Pfli6wtUhfwog+Lxafo
+ bh=XHafUQ8AvHq+zUf/VxtJZdze1xMjqQNOG6NhH665A6A=;
+ b=oxMrqHfHeIxNkNvUbLxa7kn1LyC91rAIVfldoDncMK3YDOPceCuvoLmcVldlsZq98SdN6iXBt
+ Y22qC0QCyKzCx4lysgpfyA2b5U5DJjnjaaEah8tYPviOHRifBjjXfLp
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Stat-Signature: zz3q6yfz1m1emoe37h3n4xrxy9maxewu
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AB552140009
+X-Rspamd-Queue-Id: B8E3080007
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: e1regj7gthdzni8uuaum6dum1joxqkdh
-X-HE-Tag: 1795426651-337854
-X-HE-Meta: U2FsdGVkX18T0JDNICtTz73SllKFeM1/H5hhaswVGmfsxEkeFxk5JVgoFz6OmcuVURWBtTSTgn3oUlGplrLNox83663/Go+dad+SDKanunRSRDcETDdD4Cb7Wlm47rHII2xoWT7RWskTsNvfXXfUbm/XVm46t+migWHQhwh2+WpzsdIyCVHoMIAgSnGXcwEG5Yg40ZL/0MTaPt56amZoB/SWuQPcLQuXp3kNDZU+ZFDBwFVKncnrDf8PSCBQfxgNUF4LarJ6kDR3J2rgAx6PS2u74dhFIUpclRWpHfejh2omaV6eIP0AiUJDDeDRScWZB0BCwtikzb/QKW1gxdeLnjzG4Z880s7spKr7ZgN9vOZCJj1ShmBV7IBzEVsUVDYrEn4Aub+BwlmMO3HNHF2KtVc5sQV4enwpvE9mOO3Rrh3MmuGGyDAk+GXMjnPU3HgFCxKA4zDIbJEVY4avBk7vYzwwEPoips+ZohjcHtp82psXkg5MH9lznhKaxtM8F4wT79GPqxKtKxgW1gYUNg1tMIWpGtCUQwQNb+SwGOQIe2k68ye3LuXRLGrKnsFEOqd4DlU4ssHef5upjOzaJCBzYMX7fYVADjOWSzV1K/T4FHOOcHduT5ccpyUF2yjAXaKem0MgtY7IDl+k0t6ivLlF8jKbKtc3Yda/IGrgelJ+H7gLiqb+9CIy17TEp8aRNcfU8m5kOUm9gEpERZCMI/rwOqLJdSCHlKMYfv1ljgz2dfINYW1PQmWKDIGYRdans3gAkuEJivqnD6AdsWpvnFRdl35mG5ESXZ375/H+lCK6KoaJPNLXrdAYDW1jnbhEeaZGG6c6DcYzgdOJHogsR2/0MlxuQNhA0hxjhXgth2VhQdWqr0j/N1trZtOguuAe9oX669xpfM1d4NjdNzHcavSCT990Rflzt25xJvFd5ThiP3AKxKJlDRZt916SHizRcEXQeyIwP3cqHVE/hV7aj3V
- sLLhPIdi
- WIHvcjmauzx9kvwzWEomkI79xhOx0B9+dkz2rZME/FKLNgS8nxPm9Z0RLD8BNc0SQpUguy71cGKIRmPy+5xn0Q6wwXToD31e1x4vSrS4qSr8mQFgO3C0WLFJwydmv+IFPQv5lemwlcd5R4fD6AoesIDOIv5GSj1d87h2aU/fJfTYN33/s0LvF/1oyoG+ALka+R8pJd0IgKV7JQC5nwGO43soq+dNiwnQWGxk8AaPFpcsJynf5LU2qrrSSVSkf4bAXocgKKAkgsgnPVS9pp+NVkS+Ghlk+tOyP/MgsxP4X7/JbsWupB+8ivpt/VuS5AQH8HhUDlgMX8heOb11g9Q+AQxvtUBH7DVxvdflR/Sl/C16uMidZxu0DUOfXSw+TiRhVxdtTnQEUDh8RSJxsy53Xp04Z5aTzW3+KYsKNU8IQB007z7i/vCbip214f/OqT4POOwjZ1pHL7V0A4zy/xqv5v9vwiRIHSRGgx/VyraZ/pcHdu7QfZdoBjhQs5mO7iP/TC6LPDAPcV+Tq8LQ/fHzekqikIsBZh6JlF00pcefEyS2he76xXYRontqSPivPbylRhrWgiTfGa/G9RwWyEXd7r0w8IAfqoaPy+BX2/OFOh+wuaWWL0vfCt2QiuADzyRUZQ4r+yRLW4ZLVUTgrQEds3dYieNLsiLyGHJjw7Y9PQV07TVGeNDRDCkKTdHolQhKjlq2GzCXyNXj0YTMJKZ/AGKrSwVzm/dfMfYFJMnr7sRwUH4g=
+X-HE-Tag: 1795426652-423992
+X-HE-Meta: U2FsdGVkX19XJ87ETalNu68BrRii3y2Rc+aQ/afXffEKXPZ/+8Ht1dFqoClq2PMW6pJY3mJsFNcVSWWHQu12YxAhBgm/HsdEAa792MsJ0D3FtvFrpurOVKFCiXp5aVmscpMjafnINZJyT08hiMSwygxsML5216ZBB68ql8PNczwl8IG/vEblXY+GsALYSD+sUXmfXXjZbPYbEcCdU+4ZOJVLoXh4EKj6QIM9XdCY8fear4fbpZmgVyW1j8DTVVrv1s6z7JnUU4AOp8ZdNe11+Kty+i6JjHa45eK9oLPfEXxESjZtXB5UyZAaOA6aNBwCqvroML9v9ZD1GupHi1IPoSgq8Bk808v3g+n5sxmE+A3ALrWbQqjSqCnl8WEJrQXSTaGtDaRAdEugo1Hn9njUuX+K6cPf39mVUBS84rFo2QfUfYBAbRJT4rVhnv3lxV75q3EULoCuq59h7ehjJW2MgclCGeGN96isF+zniWH5ymXa7Rbey8OlMmBTYgXoaGJxQv6fPfLpQBlIxVIN+IMskw8jvztjF7Id4LnEXcQf+WAYtMQyfLn+tpfDs7KRnv0I+wTQDSJqa9xCUJrN55QGQQJCApHVe0gsD0wbyPs2dm6hW8xXDW0+OpUkr24HTlU8H+kOoqTeNDyP07AdVJC7TXqr1BXN9RnyofaYtUaVp29eBHuH45SOEkr6dqO7n1UhpoG3+bZKKRgD5dPIbFmoZzJax0jpiW0Vz5Z57P9GFfqJYmFcY8Zsb6PZ2FTjwQxyi2Ef34kQVfe0Vg+/woWzJiZbWtCOfq4MM++wGjwIOgr10cY3YUCcm+cCiq3MO8liToUnQIOWUdidkGeNQcLTdjnq8I6+fKzjnqX+SIeTNmLDMRrJphEFWMIqITumvYLDexrDNVccVT6EGFE395cw1bIINCzbaRPbJu8XL5xTZEluLVCTdz6nx0GuPjg93eY1EDgR/kPShh9EI9HiDUI
+ 95xzSxY+
+ al5kztbGlH0VRi2lDBhSOH1zhxSwsN7vZ7lBp6GkeslJJEhILNr8bgtkGMneic6BQiknQHBB4ZoXenRorcmhdu+54BZ3wpx6eOQFsWEVbYD1GnF8lkQMXDxi462Xa3HzUVHnCL3Y+S5d2VW1BFzJ5+ej4EQb1z5AxfltV9ivAtWmuCI+GRE0TgF6T5OhnSRHRg1EST2CL6lD2twdFWKBr9TsR1lGT1EQSY4tFzyUdJrfm/arhJ3c01U9JxiFOpjw/4KUlX6dTWou37sPoah1p0wt31sr4md0SrmSQhIUBeoevX7J2CL+vMhlJwibKb1WqkrtjNIix04nDOYbM2F6djKoruGKl7Olq5Xo2/W2tzGSus/8GY8c/TnuMLGlQsBSeTBeL0vWtlXU16GXCIK/3+3ZAP+OHWhhfh0106sR5IZj2sRfhrlYDwlMp/EW6nCdTug+503BPp45npnRZjFbzZEL5PdtHf8QX3C3ETzMy6mmragIoI+R2RBaaSCNr8htWMkCmbAx0xNCNyO8ajmyc//SNoWcyFs0wNZHN4V0NIGH7QtD8FmcSk1/m9geiHtZh5CEUn/O5aHsCQsrQI4dhwOli+Gm7kXFIxSHv+wfBhS1jlBJ+0CahPgNcfvuyyqDOnnLfBKRBhdnA+9GJn5sEe+zTb+Yu9cIJ7fqHjT2cJbchHBpvGbLonahuRX1McsE7suNb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,50 +124,39 @@ Move the symbol to a kernel-internal header.
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: Kees Cook <kees@kernel.org>
 ---
- arch/loongarch/include/asm/auxvec.h      | 14 ++++++++++++++
- arch/loongarch/include/uapi/asm/auxvec.h |  8 +++-----
- 2 files changed, 17 insertions(+), 5 deletions(-)
+ arch/s390/include/asm/auxvec.h      | 7 +++++++
+ arch/s390/include/uapi/asm/auxvec.h | 6 ++----
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/auxvec.h b/arch/loongarch/include/asm/auxvec.h
+diff --git a/arch/s390/include/asm/auxvec.h b/arch/s390/include/asm/auxvec.h
 new file mode 100644
-index 000000000000..37dd717a3a22
+index 000000000000..beaaefe12a84
 --- /dev/null
-+++ b/arch/loongarch/include/asm/auxvec.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Author: Hanlu Li <lihanlu@loongson.cn>
-+ *         Huacai Chen <chenhuacai@loongson.cn>
-+ *
-+ * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-+ */
-+
-+#ifndef __ASM_AUXVEC_H
-+#define __ASM_AUXVEC_H
++++ b/arch/s390/include/asm/auxvec.h
+@@ -0,0 +1,7 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#ifndef __ASMS390_AUXVEC_H
++#define __ASMS390_AUXVEC_H
 +
 +#define AT_VECTOR_SIZE_ARCH 1 /* entries in ARCH_DLINFO */
 +
-+#endif /* __ASM_AUXVEC_H */
-diff --git a/arch/loongarch/include/uapi/asm/auxvec.h b/arch/loongarch/include/uapi/asm/auxvec.h
-index 922d9e6b5058..79691c422c7e 100644
---- a/arch/loongarch/include/uapi/asm/auxvec.h
-+++ b/arch/loongarch/include/uapi/asm/auxvec.h
-@@ -6,12 +6,10 @@
-  * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-  */
++#endif
+diff --git a/arch/s390/include/uapi/asm/auxvec.h b/arch/s390/include/uapi/asm/auxvec.h
+index a056c4637ffc..54bbfd68d709 100644
+--- a/arch/s390/include/uapi/asm/auxvec.h
++++ b/arch/s390/include/uapi/asm/auxvec.h
+@@ -1,9 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef __ASMS390_AUXVEC_H
+-#define __ASMS390_AUXVEC_H
++#ifndef __ASMS390_UAPI_AUXVEC_H
++#define __ASMS390_UAPI_AUXVEC_H
  
--#ifndef __ASM_AUXVEC_H
--#define __ASM_AUXVEC_H
-+#ifndef __UAPI_ASM_AUXVEC_H
-+#define __UAPI_ASM_AUXVEC_H
- 
- /* Location of VDSO image. */
  #define AT_SYSINFO_EHDR		33
  
 -#define AT_VECTOR_SIZE_ARCH 1 /* entries in ARCH_DLINFO */
 -
--#endif /* __ASM_AUXVEC_H */
-+#endif /* __UAPI_ASM_AUXVEC_H */
+ #endif
 
 -- 
 2.56.1
