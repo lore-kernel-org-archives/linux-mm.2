@@ -1,107 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5C8606A685
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75748606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=3VkflIru;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=kAAiYpzk
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Ea1pyXsz
 Received: by kanga.kvack.org (Postfix)
-	id D2D686B05B1; Mon, 23 Nov 2026 05:03:27 -0500 (EST)
+	id 856256B05B0; Mon, 23 Nov 2026 05:09:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D05BC6B05B3; Mon, 23 Nov 2026 05:03:27 -0500 (EST)
+	id 7E0BC6B05B2; Mon, 23 Nov 2026 05:09:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1A996B05B4; Mon, 23 Nov 2026 05:03:27 -0500 (EST)
+	id 6CED96B05B4; Mon, 23 Nov 2026 05:09:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A32046B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:03:27 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EDAD40867
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:03:27 +0000 (UTC)
-X-FDA: 85465946454.11.2F2C529
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 822AEC0009
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:03:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=3VkflIru;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=kAAiYpzk;
-	spf=pass (imf28.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 42F046B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:09:17 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B7633A850E
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:09:16 +0000 (UTC)
+X-FDA: 85465961112.24.825B944
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BA927140003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:09:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ea1pyXsz;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795428205;
-	b=SAdmpUif6mXtTTxu23rsh1jfoqyx9ICm7Beld5CYq7b1AKSpau+ksw14tGWau51nTfsoVe
-	kt3P52TEJJxJ3689t/Zz5Jdq8pgB4fEXQ4an1FwMgQEdpmpK1weL1dH07O6Z/bJ/JzJr5h
-	zVdknHmC4Dej9OSe3qKVbk1vtH7tsYI=
+	t=1795428555;
+	b=DU/RAZ0jogvVuYoX9MTW8KyvfNhc7ReSJCNGkbCHdNSawWhS06NcbWaggu3NDySYG/Pwir
+	agLgvSa7e3vXgnvVfcqKujXznwkPTpOjueCnKAHWnwCvnU0PeWltKVepq/qpJFTBPdD+F+
+	yVMse8qXw+cswiosNmijRThUhVpIM+g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795428205;
+	s=arc-20220608; t=1795428555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CD4ic9Gltp6sjM8mfIwiECFvv0TUSDYXBdZI3py6+Hs=;
-	b=YDT8f8mbjUo0yXoHwqeyLnbzyC1H0VyV/Y+rdMKeqtjS0fjwqkYSNEQRcQRz6A50xKDm7C
-	gHQAcGqCP0uETEPXMrCorJU+XF3JOwzINKS917Gh9k+AyKXBgMTwfxm764lydPlYtbVX3V
-	1iWQRYoGuIr2VVUrYW7IWMQLIy5KgAs=
+	bh=pryCjk4CWyRrgAZYc/zoRA3NaYdrmsP+3BUItR4T6Yg=;
+	b=JO+Jol+tTACKC//ePxNx2FrjHZGjSP1JH6JeHZJx0gG9TyolwDVmp9VYzY1jSZ1BkY15mN
+	N6r6vBNFIaNuDyqX3iHgHdn9Fjjj7moPfnrSv9qvkbMM5qSTuLIGiotd5VMKcrtwMGJE4W
+	Qyh/O4u7/aJ3fUscFHIgJIXknLOywmM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=3VkflIru;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=kAAiYpzk;
-	spf=pass (imf28.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Mon, 23 Nov 2026 11:03:22 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795428203;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CD4ic9Gltp6sjM8mfIwiECFvv0TUSDYXBdZI3py6+Hs=;
-	b=3VkflIruKARozyrkLHlX2mQ95+oFUmmPQ9g7O4L3WFJ+V/4YkuEfXhftFZgsdG9N+ReUrC
-	3ECXYSLczZ5sfXJmW/dp9rUJNM/FMjQfywHZgZtQzuHb0kSoe7hHEhJUgFIKC0qG05v5/W
-	deQUhf+pARzVbGBEEIbo6yBX9OA7AK30MKgGM9nFf9PO5zjwkdkfGkZM9cxjaj34VKvOsw
-	myOUpmdrBt4nOPgZIRTrtBBjy4he4UJ8IukvSGDbAO08UnI4M4oCeuCrk04sAimvWyNpHh
-	OeIZxe3E8yO3AcaESf76ss7nR72GuxDw2HX74Yv5N4Yb5IVJ8j/g7DgcR1hCiw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795428203;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CD4ic9Gltp6sjM8mfIwiECFvv0TUSDYXBdZI3py6+Hs=;
-	b=kAAiYpzkfztPq6MYwun6e1Y8Vy2mVk9Secfye9usXniusBTfN7Fozg38iBhnOT33Y8lwOo
-	+hHvYlvL/ixDdMDQ==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	Paul Walmsley <pjw@kernel.org>, Andy Chiu <andybnac@gmail.com>, 
-	Magnus Lindholm <linmag7@gmail.com>
-Subject: Re: [PATCH v3 00/15] exec: Remove AT_VECTOR_SIZE_ARCH from UAPI
-Message-ID: <20261123110111-6431e85f-39a4-427e-b545-2e7a590a6c19@linutronix.de>
-References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
- <ec5359c1-c16e-4177-8dfa-2ae5ab8a874f@app.fastmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ea1pyXsz;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795428551; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=pryCjk4CWyRrgAZYc/zoRA3NaYdrmsP+3BUItR4T6Yg=;
+	b=Ea1pyXsz+qmQWzrsa59GHbKMO5OKCuCphCTO95c9YjnGhnJoYhwO/pdgwXxbplHaLHE8a2tduqRMBPepdCPIgDpPxkQIwPE5/kaevos+iFkuy8YiAh3dn1p8//b93OJeC95GnGEpJRw7F3lF8TzcJmUs50FAemE/uWevTqBzmTU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XFH23DP_1795428547;
+Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XFH23DP_1795428547 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 23 Nov 2026 18:09:08 +0800
+Message-ID: <cc47e669-a662-4d80-950e-d44bb4c311a3@linux.alibaba.com>
+Date: Mon, 23 Nov 2026 18:09:07 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ec5359c1-c16e-4177-8dfa-2ae5ab8a874f@app.fastmail.com>
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/5] mm/mglru: reschedule between memcg reclaim
+ attempts
+To: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, baoquan.he@linux.dev, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org
+References: <20261116081403.216452-1-max.kellermann@ionos.com>
+ <20261116081403.216452-6-max.kellermann@ionos.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261116081403.216452-6-max.kellermann@ionos.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BA927140003
+X-Stat-Signature: 5dra49ghqnjig59wgrxatmitkpa8nsz4
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 822AEC0009
-X-Stat-Signature: 5nwk9x8xwhx18qfosiw414mjahwoz5qh
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795428205-970633
-X-HE-Meta: U2FsdGVkX19qpcTKO70TR5E3p7kdffeS0RIcMJLqZ5hAEJkWe7Yd1cRXmiLJu+pSFIV8nXA5dsyo7nSb+33QLm62eAJeZh0tyoQ5Bd2AcJX525e/z8EEtq4L3+15/3I8YfVitPda/iGCsQRt+ma9PiUYKfo0hQlNg5GEgA4DO4Vjrf02Wvduk+yI84XtyQBP58DXYTLR6Cm30+7NXH7csM9Q4zWK9gGQhLijffcgsiCMuWbKp8S6i0lGI7G4igijnfIvCn19IEQLtDrdmIZ2H401F0t3ErGvfD5jT4g1HVEe2eoXr+72tvv646n4tbeG4a+lsCkz1dRKiR8ep1iA6QazQwEI4DZ5nlkdGBeGCJShQ+9pbczvdmLPyzyjs1gXwVNLelD1c/6U368a66Wn5SmhMyFlNIl6Tp5+mDoYA5oXBfoF63pp9Sb0wpn6bQKzQXIwZyloPoi769fRbGiKw+yd7SCWf7ZCIRznRV8CkJczVrjCouMVayCtKOXafTki+9dkhBIHBH6Qa1Dw8NLrmcKhwgSJ+GGmyrafsz+SfTci+icnXWjwH9PvZw5e32oDSEdY4iMvPsfegoTy1l+rgly5B8517sy/g0ez83oSK0LPqxKX61AgDFpt/WNi2Zs1QBjechJMSlpzwHNHM3zrrtQwRfydf6Hru8Mlnnfqo7oyS7jb5pbUQRUB/pRBaTB9+CABCiP/tdQi70v3UDFvNCNUvh4myz9vwCR8eYvXfJt67pgvSOeCKSDKJE2AUGJO7efLpaelak5mUky4o/dSZHoFh1lY7PKdGzEFNM6OM5qAERxC/EAXxbjd/JdwCERa30pkHgTD/HdX2Q2E2BUikj7tSu0YI3nVsrlOZwWh/1pLmK1pKVGjjyPGsF8SZNFJbUp18OzmzRn9vUMRfiC6Je540If73CAqilGk1hdnzWgdy2/RHyJAtdm/OTC0+uGMseXVI0f+V1h+Rgyg1LS
- qx++4hO0
- IoHgaCJZoNWWYwE4GLBvt1ov0YaT6scCG0QmWr+0Tj+0Hl0Zyftx5W1wqD4pUseLf3xE2VW90SHpICiUofAzngimzVJE3L64DJaNz/Txwr07NhE8pfBlU3UQr1p1GdDuBqwF7htafeTDifi3yPtCwJqUYEd7E2MBf5fnRjA7M+radZWnbRlaMJncV7uJnDhH2OzdQuJnyqyxXKkLThFH+8p1JJPb8ap4ztC0k6j5FE+BRULVbpF9qFWXfL6Yzvt6KI1oQHRou9OZ8rV1o9tVUzhJc8LkKNQM7Sm39uXLSxlHxGLzvy3JaqDDZNwc2lAQnf0FibazXdA3ikiApCjGmvy4cPaUeBlIV4m1aGhgnoILMjUxAbgDPnI78FI4HDtf2eC7bBKEQtaGYI7gk2XptZ+FDS7IGgfPv6Cv6jwuSn0VS1doBblfBirrtsLybtWZsOHPA2IcveLwEVv3fEd0Je8HQRn/skJTwWq9lJvFSXCnbfZ88R6M4AHLCkpCNsm35tOvgsYvjwqCoEsupyzkBa21TyWoyK37ve/B+tfyGPkN0lA0NWfMudkAnBEaoV60iF6O7CiRsrYEdLBQhnwO+lWIiUjfxLWZYyiY3N7TM7HTAq24MGSd2mrQUZwcm9ahqatA3wleebJlZmFMsWJJUSQ4+l/v6c/FJixnT8Vb8AA5c6Nx+2O9ftdaoQWxiMNyc67B++NtvGSfbaxbqw2fQELgJjoG6G+1Q+aYQcXkaIRizQkBeVr2phrArLA==
+X-HE-Tag: 1795428553-180771
+X-HE-Meta: U2FsdGVkX1+5DbHZ7n3qsDew11SXlWmd36G36fkedcXYpws4qBnr1RS3C7hsbjyHjMX5adCTU4etcbgZW7DwrJa9PKAbirkJVyzwT6IEXzM8CECQt5aJlWRntQ4wx+UYDaq0bHV82+rD4vdmBjlenJANJBqGwjg4nSN0C7kbTPUlFFR5otObIbg4iOIJNoLUoim/AYJGZox7yFm9a2jMJ3EpQvFruBSncKPdYRA4TmMmX2g5pj15o/nbD0d7hxTAfxTUFzLr0vXbazJTLyJiNEtSYxtSw8gTU1oDsFE4pkGmQ+lPvjDNSPe+O605h3nfFNcLwjU+rkE6Z3FPSajpk6DbhJW5ptwv9uL7c7Vc3Q2h4aKtqzCMbeKQuF95Ze3rbbra8/1Pz5AihKyq8QZDnxMT9be1DlrhU+uHGI2xCfBOMLhWboDTlUqyUDo4bvw95sKSSUnpdL5tsisUPfeyNA6ads/GEeH1tphRJIJVLpcCB1n9iGJHwEtgLVVYK7MBMghVKf6DGpa45k1Ua6sTzlCoqD6zpDW2NhcbDBTCnq+2vuWB9IH/PIV0MNIAGhMUNODOegU2/EAVLhiDOYcSyxAmydrnHeCwV1K3CWjO4eZQ/UTKBc2yfBgPLxL7xrLhC+proNHUhxCdNQhKKbg7BVuk6eM+S0EtZ0hEWshOEYfUhUC1fF72ksFunqqtLv/IqmIdxlPunQMRTA/p9urOvIDo42Ewxa3afzD6kOxMiWLxv/pTctryXx64aiuYQnu2yvkOrFZsFsCXvF9gn5DS98niMR5uunPyvtzJYc8aTD7TS1Yw7saw3+f0GWBBs8tUDQhMaaqXdH1k3ljh3wj4+434q34pPmk0myYNDUBCNGpBG+4bzj95Kbwea7UelwWwzIqoSJOAKxWPimtOGQLMSB0a/oJ7qQh2S2F5n79JI/nb14pS+3r7UnCDaRM1OYM+ubRcqgyRhqfrUYnD/ey
+ Zabhl2lG
+ oNBKjjaZ5q/01GlPuuAcmlPCsbY4T8L3v57DamzczuvWpRT1q8oAq6II6CkKngPN9wBi1WYF1S+MO/UcVI2kuwB9tmSLbWQSIMxobTovmGlqJ2Z0shrnnOOjDDF852CCygoHZ7ecGrJQVE2ZmmKAfjKTOBwImlqFp6+55l5cvTaWyuFHAPR5crvpqgPe5/n3KZ8bI2CDwQQjrMrSIhC3ofnV15udW4Elg+W4PReYzCa8ZCEyuP3sgamFRw5FmHnEX0pyAkHY/fV6fwMx4VQ4XAmHu8HA5xE0Nyz6PprxjtssTiZ8fUFes3Ym2KQ6yZxGoJ77C9W5wPF31LRkJAMfZwpXKLPQcknRDcvn+2jEAOmh3/X1d+Kfe1TTfGoHU6t34ijJtH9XyfPgb9PFtWCH/Ym80DFab/VDh2ZUpzKYmxASWaL5w/A9jLREm7OvSMJ4nnKKDlDUWWkvHc/kk6WGbv+XexaP/A3+xOcX63NFmvRnT1iwZozaQItS2uM/WseIlrNEB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,31 +96,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 10:44:40AM +0100, Arnd Bergmann wrote:
-> On Mon, Nov 23, 2026, at 10:37, Thomas Weiﬂschuh wrote:
-> > There is nothing userspace can do with this value. In the kernel is
-> > always combined with AT_VECTOR_SIZE_BASE, which is not exposed to
-> > userspace and also changes from time to time.
-> >
-> > Move the symbol to kernel-internal headers.
-> >
-> > Meant to be applied through the asm-generic or execve tree.
-> > The default recipient list was huge. I trimmed it to only the
-> > architecture lists.
-> >
-> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+
+
+On 11/16/26 4:14 PM, Max Kellermann wrote:
+> shrink_one() can return immediately for empty or protected memcgs, and
+> try_to_shrink_lruvec() can break out before reaching its
+> cond_resched().  A scan through many memcgs can repeatedly rotate
+> entries without giving other runnable tasks a scheduling opportunity.
 > 
-> Hi Thomas,
+> Call cond_resched_tasks_rcu_qs() (as the existing shrink_lruvec() loop
+> does) after shrink_one(), while the memcg reference still pins the
+> cursor and before reacquiring the RCU read lock.  Also call it between
+> bins and nulls-marker retries, covering scans that skip every entry.
 > 
-> I'm happy to take this through the asm-generic tree. I've already
-> made sure it all applies and the patches look good to me. I'd
-> wait a few more days for additional Ack or any other replies,
-> let me know once you think I should apply this version.
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> ---
 
-This v3 is functionally identical to v1 and v2 which have been on the
-list of a long time. I am not sure how much more feedback will come.
-IMO it can already be applied to gain more exposure in -next.
-
-
-Thomas
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
