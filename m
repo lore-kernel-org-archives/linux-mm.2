@@ -1,120 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF62606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 23:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D60606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 23:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=k2AnF6Sg
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=ONd1LIr4
 Received: by kanga.kvack.org (Postfix)
-	id 833F56B05C6; Mon, 23 Nov 2026 18:39:57 -0500 (EST)
+	id 5321F6B05B0; Mon, 23 Nov 2026 18:46:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E5946B05C7; Mon, 23 Nov 2026 18:39:57 -0500 (EST)
+	id 50A8A6B05B1; Mon, 23 Nov 2026 18:46:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FC2D6B05C8; Mon, 23 Nov 2026 18:39:57 -0500 (EST)
+	id 3F8506B05CF; Mon, 23 Nov 2026 18:46:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 411416B05C6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:39:57 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A46F9A872D
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 23:39:56 +0000 (UTC)
-X-FDA: 85468003992.27.716F38A
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D97CB20008
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 23:39:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=k2AnF6Sg;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3yc4EawgKCNg7G4NF46EAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--dmatlack.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3yc4EawgKCNg7G4NF46EAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--dmatlack.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0A1C26B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:46:20 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 274C880A39
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 23:46:19 +0000 (UTC)
+X-FDA: 85468020078.29.9F0DC94
+Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C4F0B14000B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 23:46:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=ONd1LIr4;
+	dmarc=pass (policy=reject) header.from=broadcom.com;
+	spf=pass (imf26.hostedemail.com: domain of jerrin.shaji-george@broadcom.com designates 209.85.216.98 as permitted sender) smtp.mailfrom=jerrin.shaji-george@broadcom.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795477195;
-	b=X/3YjtqDz8n1zj761larbRsgKUgkBhn84rlt9Tw1ISiSX6j+Tim4xsrKfXcptYXCrqYMJJ
-	PN83ZrgrDQHLRKqTeRdbYhUECFDifEQKIk1ZHYwY0AgFQVuTV5YkaKzwxCnAXBtBX5upUs
-	saa1KUrbBYdZvD3AaMzNbYPxP0KSLN8=
+	t=1795477577;
+	b=cMYnHv++6YVDeDmrRlDOTTwDIRkGl+eHTGVquVjY1A/CbY3zPTE6O0aiL52k2++MkkpDg3
+	ITOSXYsP9UE7HbgP2+Qr3TSL/tm3uwCvuDadrfa7I1g1iznq/SkjDH7njuAimJsFjI1sGH
+	1zocDHKzCXXefVqOh6UpFhUZrC4A+AQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795477195;
+	s=arc-20220608; t=1795477577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TfpmwInLEGo5frDChwR3ktzWoQYmqPnvABEvfJfxR3I=;
-	b=GdXnFEcOrFsLIKXUWYVjNNCcBC7M16twEfoXTfmR4lVhwDI+YNyGSgqt835tIrDlfQp8Xc
-	lw5j2OXv+Eu/+P68aWPgZrkQ6N0jBOo+19df9aGyEjgvct2eFT1I4XB8yrQCMPaySt/avm
-	SIfG+62MV3Hu8ZgxWqO0/l9fErYycDw=
+	bh=6lD5yBClNN+VymwvtGLoS6TtLHPECYALK6M/5xDhEAk=;
+	b=nNjYvzikajFhbzfQNVBB8EQvd4hwT8XO77nUAKIChQaWnOmIi4DYE3bOnNzia1KxPZuDob
+	RO4Q637lYVldQuiJEqCni3Wy9F/WyrmB+7yQIfDYOwk9rmdhBM03b4FAOpYRa9sJWKjMsq
+	qUP2hfGVlX6CXTMyuGeHAj0pA7+U6qk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=k2AnF6Sg;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3yc4EawgKCNg7G4NF46EAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--dmatlack.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3yc4EawgKCNg7G4NF46EAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--dmatlack.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4ab8b4887d4so2786526b6e.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:39:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795477194; x=1796081994; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TfpmwInLEGo5frDChwR3ktzWoQYmqPnvABEvfJfxR3I=;
-        b=k2AnF6SgAKfHuOtZUDSQfy1BLBfAT0yZqkSSBX64+gOxVqURzTCK/TSfZXOMtuwhvv
-         OgEdgpyrjJoD7opQdoRvO/miOs7Can1vultZBwD//7emOchGAJkjZZI/O3doH2vs4fdm
-         Gbvr1RLHQq+/4MIvwua6Ui+hnwrsEjGCNk91touCuUwPb0NAK/btCBMQu48wFv0FMpch
-         i/z3Fpmgd1bhxUTkjimlO6OWwM5z5JVkwvgvBEuSr9R+oU3lvUCY7iQu0S9PjWRCeVN1
-         1Q0I2xSLvFIDUybti7So/VtiM0GK35V+GOzt1WePUzbLl3cfggHmp2tefG+h9JSh8K5X
-         1SHw==
+	imf26.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=ONd1LIr4;
+	dmarc=pass (policy=reject) header.from=broadcom.com;
+	spf=pass (imf26.hostedemail.com: domain of jerrin.shaji-george@broadcom.com designates 209.85.216.98 as permitted sender) smtp.mailfrom=jerrin.shaji-george@broadcom.com
+Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3b4cd193b50so152681a91.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:46:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795477194; x=1796081994;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TfpmwInLEGo5frDChwR3ktzWoQYmqPnvABEvfJfxR3I=;
-        b=MjtDxkN4vxA8+UQb3h1Aq0q1fOyy2IVh4/z440Gw0liiFH7dAyL1L0q05s/GyCc4d2
-         wOAQwUWa91U2cHWZLpjnjMt/FuucamRr2PXMtbEi5+62hnc9NExjQg90dea/pyKT7NJu
-         RMTYj8mfq8kDLrYkVdgbLWfscmWbQzWHlTrNVoVPdPtO2ErFmuKiVlhruaWuA0lWimYV
-         jbgqy3dMeufIp/VHDUQZQX9FncmhnFp/voEx8wJnwpE02b+RZMjT3P/Zi/EVvC2MWBKc
-         GZSJsRj0kwO4bxl7zE1i3QYesG69kMwWexVh2ZVUlezCIeLR2yd963sIdySJq9+XZU1J
-         KZ9w==
-X-Forwarded-Encrypted: i=1; AL+hErEA9fVHMmFGy3i3XnevzcIZt5UXFVPF549m59PIT+rKmkHpuvRxHrlpLxi7LHFuaJ6Pz5yyU26HSw==@kvack.org
-X-Gm-Message-State: APuU4Z/R6fgyYh7AvvH4WGkbfuFCsiu/kUcaFSX8tRoLVwtpVp8KP2y8
-	LcQIlE0K35GzaUgWKLDKemAlDUhXFegtEguGjFGlU2M47xpmwwx5CQBOY03E+WJ4ijmHPtOrK6l
-	ohH1kNpIONF4pTw==
-X-Received: from jats20.prod.google.com ([2002:a05:6638:2594:b0:61c:f132:938b])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:c3d2:b0:579:293a:52ac with SMTP id 5614622812f47-57a06a0f737mr14141383b6e.9.1795477193657;
- Mon, 23 Nov 2026 15:39:53 -0800 (PST)
-Date: Mon, 23 Nov 2026 23:39:23 +0000
-In-Reply-To: <20261123233924.3970932-1-dmatlack@google.com>
+        d=1e100.net; s=20260707; t=1795477575; x=1796082375;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6lD5yBClNN+VymwvtGLoS6TtLHPECYALK6M/5xDhEAk=;
+        b=qhNkA6gT+4fWVZASUGJUqeSCsSpVLjBXXWEdFsRx0tEKYKEwHCdu4XnwhMSFPGg7pm
+         v5o2MnXhe6XHBEqS2WXsdAFAYXxJpmLRaJWzTFL7u4S8hQHUnVNxZZ+ed3lo/9/4QDaO
+         rTJjz1FDrde3tW52dG2rt2kTizvw4LkgvhbWj/RJQaifc/iaAAUYWiGzga25vRJ5p5ZN
+         P059grgMPc7ZsU2nhtW/U3ljlg2IsSJsk5+mLtkBr3nGHsG500ZGjbOBWTK/vAPyuQip
+         tBt+8fWLypx1zfrypxjG5Xf1mQFw9hRKVtVaa6S1UQ1UjJBTiO8tTDDGmegyxbHbdp7L
+         r89w==
+X-Forwarded-Encrypted: i=1; AL+hErGVdztqucc/9kci+KDpRFGkc8aDb+LFhKki2jQRf2hDgw63MRr2pljJCCm9OoKRFeDsrUYcJHjqlA==@kvack.org
+X-Gm-Message-State: APuU4Z+rcKI1j+ElOi6kQqr1zreinwvmRgHmfOZGhJ2VB5y5bVpNiWi8
+	Yn9Ok9N013E/kgr9fbrr9ZkUERhoJ/q2qpig5jhqOXUTF3wdIjGuyFKu7xbufvG/R9RA7ER8Grg
+	aQU/6LK3fwjCi25TkzFH2VXz/9TbkCgcbp0KWJNcDCO+EW21xhjMONgDza1j8UXdndLu6UeDh8e
+	TUnZtgvt+seLHJcP9G3jUfTGpT67o5OCjE3gtrlaZxwjheVeLR8H1p/g9jPnuV8UjqKuh+MsUxm
+	mRrFuZOuXfXINo=
+X-Gm-Gg: AZFdTZebrAlxVYsP3voZrsQI+qc380lwJSTxUkjTkDdfRdEvHxP7xXWPKEpIrJ4KZC1
+	vGEvHgpFhqOKF2tbFOhPVjE2vPrABMdiXfm3SI7E1Tjmk+yrwL0nKcSDHwCnRF+/qiERXAB84om
+	DR5M4D0KYLUQTguGrz+zLokMWCkltYJW4CpRP9uSDllxmYtp04XUMiKQ7GSb+GTsNCgU3c4JU5P
+	O3EtU82yc8x4t/nSU/Xe4RYfjS/Sw9gKb4mUKKZOQap+kr6VFR1vcYIjo+ZVu3wYWbjtC4kU9I2
+	koC8Ydn7yhpN25dQRIQ/luLfYym1zEPNq0wH+54LiA+8O6d6we30DDDYY+LiV06ZjvKaavM3Ywd
+	Rk5g6iw2P1Q2RJ+aAEk9H9mYbkmgkg0nd6s2fnfG4zJxrpaKPPfsj34V3y8Xp6k91zVl8OGcFyu
+	rJjsRBYiulRRW+pWfEx31K73Ys9m8pnqRuwXJinFbKpZPZU0Q=
+X-Received: by 2002:a17:90b:55c5:b0:3b4:5b2c:2959 with SMTP id 98e67ed59e1d1-3b45b2c29b9mr7384276a91.63.1795477575196;
+        Mon, 23 Nov 2026 15:46:15 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-100.dlp.protect.broadcom.com. [144.49.247.100])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b40625d66bsm10068405a91.4.2026.11.23.15.46.14
+        for <linux-mm@kvack.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 23 Nov 2026 15:46:15 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-9806756ea40so2480298241.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:46:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1795477574; x=1796082374; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6lD5yBClNN+VymwvtGLoS6TtLHPECYALK6M/5xDhEAk=;
+        b=ONd1LIr4ejeM4QcafGLbNhE91kFgzsyUOGmTTV8BEPPLndwhCActLs98cxBk9MOtJd
+         v4Wkr3LN2rbee64DgzPTQ3QQL9YiiJiGzxBsmqz3ChFC/yb8AQ6H1CSdaUxbB3qSO1ey
+         qnzIc4GO4QCs0TW2i+wv+LS37z1ZkjROhWDsU=
+X-Forwarded-Encrypted: i=1; AL+hErERJ0aQJLYuTu/7UT6Sf1i5vBQBYsoiNO605sLqiVQM9QgPfOwF/2ufKABE5q+V7LFOs02IY+gaXQ==@kvack.org
+X-Received: by 2002:a05:6102:1610:b0:7d2:8dd0:2eb with SMTP id ada2fe7eead31-7d7393ff1d8mr5969333137.8.1795477574042;
+        Mon, 23 Nov 2026 15:46:14 -0800 (PST)
+X-Received: by 2002:a05:6102:1610:b0:7d2:8dd0:2eb with SMTP id
+ ada2fe7eead31-7d7393ff1d8mr5969322137.8.1795477573649; Mon, 23 Nov 2026
+ 15:46:13 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261123233924.3970932-1-dmatlack@google.com>
-X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261123233924.3970932-19-dmatlack@google.com>
-Subject: [PATCH v5 18/18] selftests/liveupdate: Test block accounting of
- retrieved tmpfs files
-From: David Matlack <dmatlack@google.com>
-To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org
-Cc: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Christian Brauner <brauner@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, Jonathan Corbet <corbet@lwn.net>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	David Matlack <dmatlack@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ob6cheypcfz5mt1h1t63i6uo6d7ejrhq
+MIME-Version: 1.0
+References: <20261120-b4-balloon_nr_pages-v1-0-d8944b587819@kernel.org> <20261120-b4-balloon_nr_pages-v1-2-d8944b587819@kernel.org>
+In-Reply-To: <20261120-b4-balloon_nr_pages-v1-2-d8944b587819@kernel.org>
+From: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Date: Mon, 23 Nov 2026 15:45:47 -0800
+X-Gm-Features: Aa3M54o9To1m2Mt4frhSqoy_chjBpgWQHpG9-FBy-A8uiNdhJvZ87Cw0sfMLCGk
+Message-ID: <CACKNADXLUOdqtJLWdqy1OPEeEmj+XnPk8usqRHcssOYjt+8yeg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] vmw_balloon: account 2 MiB pages in NR_BALLOON_PAGES
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Nico Pache <nico.pache@linux.dev>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000003e5020660fa33ab"
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Queue-Id: C4F0B14000B
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D97CB20008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795477194-221818
-X-HE-Meta: U2FsdGVkX18SDNBkBnvIAyV4DDt8sjdb1rwnpkXHix5h1RcSDfAIqZCAlF+P+xkg189N9STVT6wGjqBZYmj+u+xXz8hh/YN5kV70WY4RWrIpSipAYMX1sKSrvmglQtT5adYQA32jeFfD3FnpQ6lEVmLucGMQ2D5jSh5Xuo63VTYVEGpCIQRKBXXNQQ/icAq5rWrEWdC6LBrIV2KgeYojiVIZZlpR3RHWZ1xsanuF8eQmvJ8PhON6GSIMPfv69anfwhcdlhw2YnT/u73n8mp3p+0GPWJUMVcEiVy6Ka93Thl8ndP4zwEmfmNKrXuGL9ogGeLpsaEMBclUC0JdKDS++T3t9k0QoixqdjFNiM6mf+3rOkPKIDOWrCTXVAsS+MNjuWREVEbeb02rBIZVqosJLq6JshBeVAvAaSf6rEkvs6KL8htkWghVEhyAkCj/XwY/6XgswppR5+uShh7ZWBT6xqTNBicjBQkC6ybaPFWgVapm50D+zo28YrntaRfMB21iPbLUrF+XsN3L45dvyMeUH8g8THVDSasHUo6ktLjhxmmhPBSsQ7w1CCvaeVTHLT9r1Apg0FpyHw4FZJAlFW/A5PQbHBIV63VgEPuTYIlFU97Djy6OjGbZWrayro5mybQC54N8vfHSKGL2InNUwzusy1LmLaN2zCIcOKo2GrxBx2X4TKFK4A+yRImbYXSAB1msK5hVUbxna0XkOiwpCVd/m1EdEsPgygj/bo0Xq5M7XmJIFmnF1FiobIc63FjdEZTfk5eZul7xdvK4JMG5MAIci9EfJRFr2KLdfJfFvS3hUR5B2/mMDDUGUgAg5uqSbRfRv1ik6p3sKLrEixp4cPPRItww/zOOhNaduvVww9YsORXnLwo5ihzqOd6kRj+sKS3TAGlBbyAabu3e93zvgPNWJuKdwBcvmqguvqS+DrXlGHoT8ykBfy/Lp2ZOu4MpOOWGbNA8doW3p/DmMNzeFgj
- 16oKK5rR
- cAKHjLzW93ZkUuJZSn47Hdg4lhaX90hhk7TukP4PREfmMiwE5+o57mp7rsh4zX1yUcyXyeVkktCwndx2yCdea2A9MhUrkETVlfGLOoJoU4OmCrGmnzUbEgTrJQV0HdZE8DXdG3KWNb16PnKSPcHEk9dAFvVwIm97wnPrCMURanv+STPShsEFD2/ezyx9rUNrmnyh7hwPJRuKtxFJeTEaqimmSfv++e/le6Ihrx8q1Y/TPUDpRMapyUg2DxFDmWLywTbsc3MDZEozaNobU/i/dmjkugQPPm68oX3qdZyv4bwmOevQSrxO0FPRzdGtIsSLXbF9XF+UT5qaDxEY1hSGKmVSprqMIojQ3ZgCJMidZJW1BB3bH+IvSNt1uPXSCxVCGPuheOqF2onkT4SEGLXa2fmzKFAGADoFIrdD3JRTK4s1PhxaYbOkTEVMU5DXe30l+0O62wczosry2gRZKmgmXLzPZ5j6z7b7sQUEKt1SFgR8SUp2/a0vll5GQHnggF5yKRxIVFLO0JLIGWSuZ3c/kCcI+bUy1JF+G0zrRJhMwDDDCUJSOdnkQYnKLWQyQsb17Ws1jIO29zmnvD+MD2iHOIsD7pt7Cy2gS7h9HgAhbrYpyJJpWc33u+RlhzM5I7Xn15Qvu7wMtafr54Rf7HwRTxtRpJfDs/uwhK87VnjMW8oYK8JDIJOkB0QB+VW8qzFaY88Hzo804PYs+JWk3o16dgfoIvsBkKdCBCzHk9IKIh9Nhk/1pnmIm/TjyF8d7Cokdhz5dgGjsCRoXAnHbOK633swxj+TidlawcD3W
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: wm5qu5b1zxptgwfd5sfz6ncnm7sacnnd
+X-HE-Tag: 1795477576-621817
+X-HE-Meta: U2FsdGVkX1/NTUokeXeA3F2FNLWYyrYqlfs+++RhzdBF5RaV+S8KZKsc/5zkbgAki0D6gqYWWBoNL/hWVxl09zBB6kKvWDsX4NzPmjLa3mFZjWp68uZTauJ5JmyMrc5AcaKK6KNsY2b8pN4YHNTekTtnPkvCURGiX9EDfLR3gPWUPx/MTQPUBiyWdq0l37nHyAVAkTYv0RmfIM90M6wtWtj5CsL4InlTk0HYovWAXv9zSe6os+Lwnm8ex+0PU4EYtB6LOYUQJulE0ZMfsS1PtbLBMuTlOH5UTCsrrhC4rG1dvUSoImexrj+BtAGiwe+fVdsy5cB8pdxt2Lq99O35fHiCUgh8uGYR7PApANhua404TXyxW679lwPgUPGiv7QGcnO4CS16mR1OEsPsLQA1uUTuOHSSkXaowOkU+YI9oKyAK0zKqoIbfzsZpggs7roJRB4Wetk6Osla4MMl+ldNEbLTn14G9Y9cmUhzdeNWx11KR7xaTkGmZhgfaUTMbLaImYbg6hTrutcpb4hDwO45D3H+NRan/tgeHzlFgL1Y+ghyCDCUi6BkIgLntL3mUpMyyluSB+iIIkVfGoVnacDJpeMyf4DxbUAmwgOebwz8HufDkTIwEDoq8mn+LFf/17mV0ObepVlQlGS0auJ/dLrVgUhWlgTQUPMjfcX5bxIJIiNr/3WTivDZEJ76pY/6ruTUniEXaqfD9Q6jIOp3HJgSANe6zUj4lX/6JBEPj5VKd47MbkWIAWG/Zs0NJ1vkNyTvh4f+Wl7UkRHoDXDGxznmhaSa/PMZT+fd2BDDImckFYIGdqpagGM7eKypAivF5oVJgHCCz09bShAPAphi9ARjfc0GH5Dcxev40IWWlnbcB8bUlyldBcnfnhg4hpcgBV4p9il7sAYbZc0PAlPH05zOOYwSAQ4+aKo+jDLF27PI1EB4ouwzL4+YwDA1esIRH7US3u99c3veyLRAZYGzvyQ
+ 7g/V4eb/
+ N8M8FnhFacxRABc0k9oSoXpik9bOhYw83PhDj8PS/DOyra26Qmc8ZurK4eCVSRfRloTJ3YgYY3QNC8G/n+/xCTJBW/YeuauEx08qYvMw+TMhW8hyS7QSaS7ajQ/knAiZwAMRLUrOAO9lPKQntNtpoJYTrHdxeEcH7SVm/dBz+xqIa8ltLe3nd/i8a679gZ3ufBkzzep6EKn4uStNf9ey5hOdre6iG77tv4U4N5GASgNwdP+ILvDGyl55hjdYap1O1ib6z3BVmLHlrmq4Ii7UOadNSVvHNrr9Y1fMhGV7iVKF98Epv7k8ccg/b9iZ3uoAvIAP7a66ErxIBsHzmL3G+otfiseb5k1vLB0d/p4CsGLnOgo5H5/lmyuuzqOplJBXCk74r48xbRq7+8PqXg+X99gdXUtsSoPcWObBoDkrPzsrN+maQp5WCrS9V0QoXitMtGxr6Ig7Shl4yHGOtB59FUU4FLUQBFxlPO9evkV0jKxhysNN0ABLQJf3Clo5rDg1TiBLWXSHg042FPCYQhJ4PrnjAv/Uq2AFzV+q8Wpg7n+Gcv6pDUvHx1YdSOvQ5wVoeVHnsPcm5nSay08p7S9kXUuBQ/f2+kUaHzcTpKUcbGPm0kvbUycKO9aALWLIBwBb9npNeZll8n5MKeVCVW4OYMtvIYBS/KILqXvOFPlA/EZ24wcSUBRCL0m1OpWRA56Vp+/ETvuynvYqLD9jdk1QudIYieiAUCpmfc1MR5mQvLOQW0/dxqTl8A3JWcgvujTy4nmBLPP02EciBLoiSlxHzdvfPFEWgWJ0W4p4el/0IyKnXqOrKdVIBsT0XBLbK+PvLleksYhDEVi7Wonc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,389 +136,136 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add test cases to luo_tmpfs for how the blocks of a retrieved file are
-charged: The file fits a mount of exactly its size, and a large folio
-that extends past the end of the file is charged in full. Running out of
-space on the mount, or hitting the memcg limit, fails permanently,
-leaves the target empty and nothing charged to the mount or the memcg,
-and the session can still be finished.
+--00000000000003e5020660fa33ab
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Enable CONFIG_TRANSPARENT_HUGEPAGE for the large folio test cases, and
-CONFIG_CGROUPS and CONFIG_MEMCG for the memcg test case. They are
-skipped without them.
+On Fri, Nov 20, 2026 at 2:34=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> vmw_balloon keeps 2 MiB balloon-inflated pages on its own list, not
+> using balloon core that takes otherwise care of updating NR_BALLOON_PAGES
+> for base pages.
+>
+> So far we didn't account 2 MiB pages under the "Balloon" counters, so
+> /proc/meminfo etc. would not reflect them.
+>
+> Fix it by updating NR_BALLOON_PAGES when enqueuing and dequeuing for
+> these pages manually.
+>
+> This has low urgency.
+>
+> Fixes: 4d689474e1b2 ("balloon_compaction: update the NR_BALLOON_PAGES sta=
+te")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  drivers/misc/vmw_balloon.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-tmpfs quotas are not tested.
+Acked-by: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
 
-Signed-off-by: David Matlack <dmatlack@google.com>
----
- tools/testing/selftests/liveupdate/config     |   3 +
- .../testing/selftests/liveupdate/luo_tmpfs.c  | 283 +++++++++++++++++-
- 2 files changed, 284 insertions(+), 2 deletions(-)
+--00000000000003e5020660fa33ab
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-diff --git a/tools/testing/selftests/liveupdate/config b/tools/testing/selftests/liveupdate/config
-index 37230f4c488f..7f38291c979d 100644
---- a/tools/testing/selftests/liveupdate/config
-+++ b/tools/testing/selftests/liveupdate/config
-@@ -1,4 +1,5 @@
- CONFIG_BLK_DEV_INITRD=y
-+CONFIG_CGROUPS=y
- CONFIG_DEVTMPFS=y
- CONFIG_KEXEC_FILE=y
- CONFIG_KEXEC_HANDOVER=y
-@@ -7,7 +8,9 @@ CONFIG_KEXEC_HANDOVER_DEBUGFS=y
- CONFIG_KEXEC_HANDOVER_DEBUG=y
- CONFIG_LIVEUPDATE=y
- CONFIG_LIVEUPDATE_TEST=y
-+CONFIG_MEMCG=y
- CONFIG_MEMFD_CREATE=y
- CONFIG_TMPFS=y
- CONFIG_TMPFS_XATTR=y
- CONFIG_SHMEM=y
-+CONFIG_TRANSPARENT_HUGEPAGE=y
-diff --git a/tools/testing/selftests/liveupdate/luo_tmpfs.c b/tools/testing/selftests/liveupdate/luo_tmpfs.c
-index 7911ac28188f..df2bc1488c01 100644
---- a/tools/testing/selftests/liveupdate/luo_tmpfs.c
-+++ b/tools/testing/selftests/liveupdate/luo_tmpfs.c
-@@ -62,8 +62,9 @@
- 
- /*
-  * Everything happens on a tmpfs mounted at TEST_DIR. In stage 1, the source
-- * files are created on the tmpfs mounted at TEST_DIR/src. In stage 2, each
-- * case runs in the directory TEST_DIR/<name of the case>.
-+ * files are created on the tmpfs mounted at TEST_DIR/src, or at
-+ * TEST_DIR/src_huge for files that need large folios. In stage 2, each case
-+ * runs in the directory TEST_DIR/<name of the case>.
-  */
- #define TEST_DIR		"/luo_tmpfs"
- 
-@@ -145,6 +146,7 @@ struct test_case {
- static unsigned long page_size;
- static int dev_fd;
- static int session_fd;
-+static bool have_huge_src;
- 
- /* nolibc doesn't have these, so use syscall() where needed. */
- static int do_fcntl(int fd, int cmd, long arg)
-@@ -213,6 +215,16 @@ static long mnt_used(const char *path)
- 	return buf.f_blocks - buf.f_bfree;
- }
- 
-+static long mnt_free(const char *path)
-+{
-+	struct statfs buf;
-+
-+	if (do_statfs(path, &buf))
-+		return -1;
-+
-+	return buf.f_bfree;
-+}
-+
- /* Mount a tmpfs with room for @pages pages at @dir. */
- static int mount_tmpfs(const char *dir, unsigned long pages, const char *opts)
- {
-@@ -248,6 +260,26 @@ static long read_long(const char *path)
- 	return strtol(buf, NULL, 10);
- }
- 
-+/* Write @str to the file at @path. Return 0 or -errno. */
-+static int write_file(const char *path, const char *str)
-+{
-+	ssize_t len = strlen(str), ret;
-+	int fd;
-+
-+	fd = open(path, O_WRONLY);
-+	if (fd < 0)
-+		return -errno;
-+
-+	ret = write(fd, str, len);
-+	if (ret != len)
-+		ret = ret < 0 ? -errno : -EIO;
-+	else
-+		ret = 0;
-+
-+	close(fd);
-+	return ret;
-+}
-+
- /* Retrieve with the argument @arg. Return the new fd or -errno. */
- static int retrieve_arg(__u64 token, struct liveupdate_shmem_retrieve_arg *arg)
- {
-@@ -462,6 +494,33 @@ static int preserve_memfd(struct test_case *tc, unsigned int flags,
- 	return ret;
- }
- 
-+/* Preserve a file from the tmpfs mounted with huge=always. */
-+static int preserve_huge_file(struct test_case *tc)
-+{
-+	char path[128];
-+	int fd, ret;
-+
-+	if (!have_huge_src)
-+		return KSFT_SKIP;
-+
-+	snprintf(path, sizeof(path), "src_huge/%s", tc->name);
-+	fd = create_source(path, tc->size, tc->token);
-+	CHECK(fd >= 0);
-+
-+	/* The test needs the last, partial page to be in a large folio. */
-+	if (tc->size % page_size && file_pages(fd) <= nr_pages(tc->size)) {
-+		ksft_print_msg("%s: No large folio for the source file\n",
-+			       tc->name);
-+		close(fd);
-+		return KSFT_SKIP;
-+	}
-+
-+	ret = preserve_fd(fd, tc->pos, tc->token);
-+	close(fd);
-+
-+	return ret;
-+}
-+
- /* Skip a case whose source file couldn't be preserved in stage 1. */
- static int skip_not_preserved(struct test_case *tc)
- {
-@@ -1335,6 +1394,186 @@ static int exec_after_finish(struct test_case *tc)
- 	return KSFT_PASS;
- }
- 
-+static int mount_fits_verify(struct test_case *tc)
-+{
-+	unsigned long pages = nr_pages(tc->size);
-+	int fd;
-+
-+	/* The file can be retrieved into a mount it fits exactly. */
-+	CHECK_EQ(mount_tmpfs("fit", pages, NULL), 0);
-+	fd = retrieve_new(tc->token, "fit");
-+	CHECK(fd >= 0);
-+	TRY(check_restored(tc, fd));
-+	CHECK_EQ(mnt_used("fit"), pages);
-+	CHECK_EQ(mnt_free("fit"), 0);
-+
-+	CHECK_EQ(ftruncate(fd, 0), 0);
-+	CHECK_EQ(mnt_used("fit"), 0);
-+
-+	close(fd);
-+	return KSFT_PASS;
-+}
-+
-+static int mount_too_small_verify(struct test_case *tc)
-+{
-+	unsigned long pages = nr_pages(tc->size);
-+	int target;
-+
-+	/* The failure leaves the target empty, and the mount untouched... */
-+	CHECK_EQ(mount_tmpfs("small", pages - 1, NULL), 0);
-+	target = new_target("small");
-+	CHECK(target >= 0);
-+	CHECK_EQ(retrieve_into(tc->token, target), -ENOSPC);
-+	CHECK_EQ(file_size(target), 0);
-+	CHECK_EQ(file_pages(target), 0);
-+	CHECK_EQ(mnt_used("small"), 0);
-+	close(target);
-+
-+	/*
-+	 * ... but the preserved contents were restored before it was detected,
-+	 * so the failure is permanent. Finishing the session frees them.
-+	 */
-+	CHECK_EQ(mount_tmpfs("big", pages, NULL), 0);
-+	CHECK_EQ(retrieve_new(tc->token, "big"), -ENOSPC);
-+	CHECK_EQ(luo_session_retrieve_fd(session_fd, tc->token), -ENOSPC);
-+	CHECK_EQ(mnt_used("big"), 0);
-+
-+	return KSFT_PASS;
-+}
-+
-+static int huge_folios_verify(struct test_case *tc)
-+{
-+	unsigned long pages = nr_pages(tc->size);
-+	int fd;
-+
-+	CHECK_EQ(mount_tmpfs("dst", pages, "huge=never"), 0);
-+	fd = retrieve_new(tc->token, "dst");
-+	if (fd == -ENOENT)
-+		return skip_not_preserved(tc);
-+	CHECK(fd >= 0);
-+	TRY(check_restored(tc, fd));
-+	CHECK_EQ(mnt_used("dst"), pages);
-+
-+	/* LUO keeps a reference to the file until the session is finished. */
-+	close(fd);
-+	CHECK_EQ(mnt_used("dst"), pages);
-+
-+	return KSFT_PASS;
-+}
-+
-+static int huge_folios_after_finish(struct test_case *tc)
-+{
-+	CHECK_EQ(mnt_used("dst"), 0);
-+	return KSFT_PASS;
-+}
-+
-+static int huge_folio_tail_verify(struct test_case *tc)
-+{
-+	long pages;
-+	int fd;
-+
-+	CHECK_EQ(mount_tmpfs("dst", 4096, "huge=never"), 0);
-+	fd = retrieve_new(tc->token, "dst");
-+	if (fd == -ENOENT)
-+		return skip_not_preserved(tc);
-+	CHECK(fd >= 0);
-+	CHECK_EQ(file_size(fd), tc->size);
-+	TRY(check_contents(fd, tc->size, tc->token));
-+
-+	/* The whole folio is charged, including the part past EOF. */
-+	pages = file_pages(fd);
-+	CHECK(pages > 1);
-+	CHECK_EQ(mnt_used("dst"), pages);
-+
-+	CHECK_EQ(ftruncate(fd, 0), 0);
-+	CHECK_EQ(mnt_used("dst"), 0);
-+
-+	close(fd);
-+	return KSFT_PASS;
-+}
-+
-+static int huge_folio_tail_enospc_verify(struct test_case *tc)
-+{
-+	int ret;
-+
-+	/* There is room for the file, but not for its last folio. */
-+	CHECK_EQ(mount_tmpfs("small", 1, "huge=never"), 0);
-+	ret = retrieve_new(tc->token, "small");
-+	if (ret == -ENOENT)
-+		return skip_not_preserved(tc);
-+	CHECK_EQ(ret, -ENOSPC);
-+	CHECK_EQ(mnt_used("small"), 0);
-+
-+	return KSFT_PASS;
-+}
-+
-+static int memcg_limit_child(struct test_case *tc)
-+{
-+	long limit = tc->size / 2, usage;
-+	int ret;
-+
-+	/*
-+	 * Charging a large folio doesn't invoke the memcg OOM killer, but the
-+	 * source may have gotten small folios. Protect the child, so that the
-+	 * retrieve fails with -ENOMEM instead.
-+	 */
-+	CHECK_EQ(write_file("/proc/self/oom_score_adj", "-1000"), 0);
-+	CHECK_EQ(write_file("memcg/small/cgroup.procs", "0"), 0);
-+
-+	/* The folios are charged to the memcg of the caller, which is full. */
-+	ret = retrieve_new(tc->token, "dst");
-+	if (ret == -ENOENT)
-+		return skip_not_preserved(tc);
-+	CHECK_EQ(ret, -ENOMEM);
-+
-+	/* The failure leaves the mount and the memcg untouched. */
-+	CHECK_EQ(mnt_used("dst"), 0);
-+	usage = read_long("memcg/small/memory.current");
-+	CHECK(usage >= 0 && usage < limit);
-+
-+	return KSFT_PASS;
-+}
-+
-+static int memcg_limit_verify(struct test_case *tc)
-+{
-+	unsigned long pages = nr_pages(tc->size);
-+	char limit[32];
-+	int ret;
-+
-+	CHECK_EQ(mkdir("memcg", 0755), 0);
-+	if (do_mount("cgroup2", "memcg", "cgroup2", 0, NULL)) {
-+		ksft_print_msg("%s: cgroup2 is not available\n", tc->name);
-+		return KSFT_SKIP;
-+	}
-+	if (write_file("memcg/cgroup.subtree_control", "+memory")) {
-+		ksft_print_msg("%s: The memory controller is not available\n",
-+			       tc->name);
-+		return KSFT_SKIP;
-+	}
-+
-+	CHECK_EQ(mount_tmpfs("dst", pages, "huge=never"), 0);
-+
-+	/* A memcg without room for the file. */
-+	CHECK_EQ(mkdir("memcg/small", 0755), 0);
-+	snprintf(limit, sizeof(limit), "%zu", tc->size * 3 / 4);
-+	ret = write_file("memcg/small/memory.max", limit);
-+	if (ret) {
-+		ksft_print_msg("%s: Can't set memory.max: %d\n", tc->name, ret);
-+		ret = KSFT_FAIL;
-+	} else {
-+		ret = run_child(memcg_limit_child, tc);
-+	}
-+	rmdir("memcg/small");
-+	if (ret != KSFT_PASS)
-+		return ret;
-+
-+	/* The preserved contents were restored, so the failure is permanent. */
-+	CHECK_EQ(retrieve_new(tc->token, "dst"), -ENOMEM);
-+	CHECK_EQ(mnt_used("dst"), 0);
-+
-+	return KSFT_PASS;
-+}
-+
- static int memfd_preserve(struct test_case *tc)
- {
- 	return preserve_memfd(tc, 0, 0);
-@@ -1661,6 +1900,42 @@ static struct test_case test_cases[] = {
- 		.verify = exec_verify,
- 		.after_finish = exec_after_finish,
- 	},
-+	/* Block accounting. */
-+	{
-+		.name = "mount_fits",
-+		.size = 2 << 20,
-+		.verify = mount_fits_verify,
-+	},
-+	{
-+		.name = "mount_too_small",
-+		.size = 2 << 20,
-+		.verify = mount_too_small_verify,
-+	},
-+	{
-+		.name = "huge_folios",
-+		.size = 4 << 20,
-+		.preserve = preserve_huge_file,
-+		.verify = huge_folios_verify,
-+		.after_finish = huge_folios_after_finish,
-+	},
-+	{
-+		.name = "huge_folio_tail",
-+		.size = 100,
-+		.preserve = preserve_huge_file,
-+		.verify = huge_folio_tail_verify,
-+	},
-+	{
-+		.name = "huge_folio_tail_enospc",
-+		.size = 100,
-+		.preserve = preserve_huge_file,
-+		.verify = huge_folio_tail_enospc_verify,
-+	},
-+	{
-+		.name = "memcg_limit",
-+		.size = 4 << 20,
-+		.preserve = preserve_huge_file,
-+		.verify = memcg_limit_verify,
-+	},
- 	/* memfds. */
- 	{
- 		.name = "memfd",
-@@ -1765,6 +2040,10 @@ static void run_stage_1(int luo_fd)
- 	if (chdir(TEST_DIR) || mount_tmpfs("src", 4096, "huge=never"))
- 		fail_exit("Failed to mount the source tmpfs");
- 
-+	have_huge_src = !mount_tmpfs("src_huge", 4096, "huge=always");
-+	if (!have_huge_src)
-+		ksft_print_msg("[STAGE 1] huge=always is not supported\n");
-+
- 	session_fd = luo_create_session(luo_fd, SESSION_NAME);
- 	if (session_fd < 0)
- 		fail_exit("luo_create_session for '%s'", SESSION_NAME);
--- 
-2.56.1.809.ga0b61035b5-goog
-
+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
+tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
+2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
+phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
+a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
+ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
+07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
+SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
+rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGczCCBFug
+AwIBAgIMP8k3oYr9dy0fawOFMA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
+ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
+MDIzMB4XDTI0MTEyODA2NDc1N1oXDTI2MTEyOTA2NDc1N1owgbcxCzAJBgNVBAYTAlVTMRMwEQYD
+VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
+MDExNzEWMBQGA1UEChMNQlJPQURDT00gSU5DLjEcMBoGA1UEAxMTSmVycmluIFNoYWppIEdlb3Jn
+ZTEvMC0GCSqGSIb3DQEJARYgamVycmluLnNoYWppLWdlb3JnZUBicm9hZGNvbS5jb20wggEiMA0G
+CSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC97H4mZ7IND/iMuoaowZaUcFWQmAEUROR90vJqkzU3
+4ljaKHGMed2anb74NFJ+ij38btvWCdWlqUCs4umStciFyeOshWgBWlZO3bpE9BkonLzG9DGwSz5v
+Ve2coDRxUIjXbcXgys1z+HiIaZVEBEtpGgBz/Y6KeJr6HHOLq3+1VA6HZ887DMaJ0BygdtOm/g/o
+6d185nbusa6X1Si3WqQQEGq9/dHdVg/ScOBl4Hu/sEyY5dYEtIS6+wJOfeWq7PnJwK/ebKrmDXRl
+CPyPFwCghdN64vwTIJ+z21krDj9mv3w4e/ow2NiOI82oVpFYCmR7NQAYn+zR+9ZMebTTtUR/AgMB
+AAGjggHhMIIB3TAOBgNVHQ8BAf8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAC
+hjpodHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMu
+Y3J0MDkGCCsGAQUFBzABhi1odHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVj
+YTIwMjMwZQYDVR0gBF4wXDAJBgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQw
+MgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1Ud
+EwQCMAAwQQYDVR0fBDowODA2oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2
+c21pbWVjYTIwMjMuY3JsMCsGA1UdEQQkMCKBIGplcnJpbi5zaGFqaS1nZW9yZ2VAYnJvYWRjb20u
+Y29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8GA1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCS
+MB0GA1UdDgQWBBRPHRKFeJNRjFAKjHRo2iVVbhmbHzANBgkqhkiG9w0BAQsFAAOCAgEAZ1qrS6Fb
+dv9hzcer2Yv+uU29P/iOOBMMIkRHYE2il+wClTPJMmcqRAmTu8S2az2h8XpMkKoWDTHwcj2KUfaQ
+UlkMc5m9wMxAVDrklB1uE25jWKnE2X3NQn62oxIMbATya2F6ev8p59kLh2xo0GVxotVnapnbuAaH
+2D6xevthNq3e2akPKltISCI38CVOcC7rWuBZrLgdR8dEDLyZW6UMPwJLk7v4ZPyn8E5pMKc0fI5V
+ZaWzs68PnkVmKNbpx1cECaQjsrBrXo/HNOQ/DGhHXNIF2k71laGetuCwhewrSdiLQZ3g+oAAvfKU
+/FZV1kxiUVet5SmPA02BCW5yz80uHPemLT8KW8un9H15UXd+axLYqKEgr0nzl9stxbsC3vC4pbXQ
+688Xqj7ZDCj3LGVbFWcdQ6bPAcxDwLm2z6A7PJdV4xDPTYhsK4io5/ZfaHOC8DqKT3klVZIo+Heg
+5NMaydZ2ZiuKonE1AwMVn0KLV7r+vs/l8mIxwHLrNuWu501u2FYtMLcau6ZT0KbjwCKmMVqpvqMk
+Wybe9jF+aZWzjNutxjSJGP5oSmrUpNP3UzAio93FKeLiweQ6L7E6GTBIrWNKHEog46OpVY865QPD
+v1r5jLUYELDXa/NsznnUxWljMsYK9Qa4a9MUkQn+FF0b1xE5XuFm3mncJgGAsbZeN8kxggJXMIIC
+UwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQD
+Ex9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAyMDIzAgw/yTehiv13LR9rA4UwDQYJYIZIAWUD
+BAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIHHwhlLmK+lPSjnvL0KJHTVkI4kBzkdH2IHR6pHEdN9L
+MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MTEyMzIzNDYxNFow
+XAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAK
+BggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAJXc
+BfmrWXFo69xOCkcKAonrEpIu5YNuIdsEaxRC5r7BR21kWFGz6i7JUyYx5bfAjtjl8OfdVzh9kxMH
+kBw2aGvpq2DZgbbXRDf1A2JoH07VhvbtaWnsCxpoM9vGreNMdwJZQvgieBUAfrFjwVH5XrFkK3UZ
+UXn8TNNq/xPBDvrNRVUvq44ZS5LDXikxAs5LZwtb9Pyo2vve6N0Glo+UuPlH46UaFKTXxQ/m8XWP
+Hyi4L0pE3AfjHT1r6uA++/IjuklgTR8WwKFp40O7USavYut9YyFI/DKwdFMTaHIPAMgtq8GCCM+v
++lRG/dDMsLbHxK8FR1f9/VzdsLRaGZoIkUs=
+--00000000000003e5020660fa33ab--
 
