@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA7C606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BD5606A684
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=GyCi9MXd
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=WMHCDNSZ
 Received: by kanga.kvack.org (Postfix)
-	id D5D2A6B05B7; Mon, 23 Nov 2026 14:56:29 -0500 (EST)
+	id 483906B05B9; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE4E66B05B8; Mon, 23 Nov 2026 14:56:29 -0500 (EST)
+	id 3E7EE6B05B8; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAC366B05B9; Mon, 23 Nov 2026 14:56:29 -0500 (EST)
+	id 2D3006B05BC; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 653986B05B7
+	by kanga.kvack.org (Postfix) with ESMTP id E95516B05B8
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:56:29 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 01C7516093E
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:56:28 +0000 (UTC)
-X-FDA: 85467440898.08.052235F
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 638491C4472
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:56:29 +0000 (UTC)
+X-FDA: 85467440898.22.B5DB350
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5A39940006
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9A9921C000B
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:56:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="GyCi9M X";
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="WMHCDN S";
 	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795463787;
-	b=32SiQ8dJp2p9X7cFm2R2e7bS6JVPs7I104abphEG3D/WADBA/RWsZP1yy3jBkGsN1G43IM
-	BqIAuoXfeKfwr+ZmEP5GMir3v/pp+VIixgX8YZ95/KZ0veGVCW1Oi7aGVYSmW0QWKoNSno
-	BOB38XQ5ZhrRnf2hSlr8L4lpG8qIwWM=
+	b=1zJ4x3ylvkG4Ntth53FF1AhwnL7NZJnONqaCAS/mJ6i1e51oHMYZARuI+pFIbPz9j6TnYv
+	CnhmL1vJx3jomj0HByR1ZBQIOO99Qbxc/OdKvuju+0hqJMvo/W6tWJqsYGz8AHWDXYmT1+
+	EH4Umlm4VYHHnc5ORupZzD9mf4Kz/CM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795463787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Can82GwJLZ6xNFloN0UvipHW26+kIvgtH3oyrupC710=;
-	b=Ve0HRs+jhUJEu7NErGcUpv5hYuhanICORXQHm3b0Rv0UWs3rwAtw9z93cPGJFrjRwpPlZv
-	/xE82wbM1j5vxmZF0XSbdDD4o75PzDqEW92Wc3L7UpbPTVwvlrsMpP7WDvDrVaowy3z1DX
-	roH38927IvOQJFG+b16wXRrtBTv8HK0=
+	bh=psRfc0KHheIriVsHfc4tEURoTeOTCGIfo9MPK7BM01o=;
+	b=mOJNjAp1is2P/pjDkzQKXDjg4ahesDxgp8WZlFwqSTQJjhBsH79OjbCbvMnJ3ZoG7ah36B
+	6Ujg3L13O7Ahr23fDX+yxPRp6Kgn/gI1DOdvHnlRkmfEVypxAnWpIXe9LFNz8Q2mO09Xtp
+	Oabo8J+wwHSNwaVCLhgOFw6dXGaro9E=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="GyCi9M X";
+	imf21.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="WMHCDN S";
 	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=Can82GwJLZ6xNFloN0UvipHW26+kIvgtH3oyrupC710=; b=GyCi9M
-	XdMGJPLYKb681Mul/PozoVN4IhEIQlzk2y4fhyibojn2D4rnbJztGxsCKbCamUO2H0/aBjW13Af+R
-	QGtBTPfimG+/LUIug75QleEtpH5Cg9MfRHuWX1Zn3eYjBEwiIQMfAXji5jZ2b26Py2H/AlKMJ+NDS
-	UUhuoSPpmM8jImd+IMld6fQUGG7MHXTgolYiF56a/qAaqz5x2iV199RbmOayWnco7zhJbUsfLsA5p
-	k2lYz08oYTnxS3p5CIbBAUMNM24gCv/TdIGhPLJ0RzmSj/i6MkBS3msbIqqCv5rPsJM2XKMBNdUTT
-	IeLUsWP1pOaImNhHX/YTPMXEgwKg==;
+	:Resent-Message-ID; bh=psRfc0KHheIriVsHfc4tEURoTeOTCGIfo9MPK7BM01o=; b=WMHCDN
+	SZMjBzZPPYC6sFRzkkaLym/MIvixrdAnn4T1oTUKOtKoCY2MlTJy+XODOUHzRNaoGUmN7WB/uC9sA
+	BoilXj99ZhUn205mvvc0SVnkZPoGsbGB8iljRzCjbXY77KH+KZ5bBM/f7Dq7f95JZwthppQI1zg66
+	fxUraWqzTG1RRRRjxBa6QyBBuIUqfMPBzjYZj9c5khQOSF+dp+SswIeqwpwjTCKH1GS9dOncuUPEF
+	2K7s5X5zvz8XXMfjshWj4hz1Y13nk1L3hIlusyiLG9Dzg4XTtNhN9WDgMuFPlZoPNOFhbxi5tII9x
+	3MQg61tFwwl6HNo21KJrYh2HvBgg==;
 Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn.surriel.com)
 	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <riel@surriel.com>)
-	id 1xVa99-00000006IU7-25zi;
+	id 1xVa99-00000006IU7-1RMz;
 	Mon, 23 Nov 2026 19:56:15 +0000
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -74,27 +74,27 @@ Cc: linux-mm@kvack.org,
 	Jason Gunthorpe <jgg@ziepe.ca>,
 	Peter Xu <peterx@redhat.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [PATCH 8/9] mm/gup: batch contiguous same-folio PTEs into one refcount grab
-Date: Mon, 23 Nov 2026 14:56:08 -0500
-Message-ID: <20261123195609.4115244-9-riel@surriel.com>
+Subject: [PATCH 3/9] mm/gup: convert follow_page_mask() to return a long
+Date: Mon, 23 Nov 2026 14:56:03 -0500
+Message-ID: <20261123195609.4115244-4-riel@surriel.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261123195609.4115244-1-riel@surriel.com>
 References: <20261123195609.4115244-1-riel@surriel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9A9921C000B
+X-Stat-Signature: yj6iifkihhsexpmittdi6p1qws3bhsna
 X-Rspam-User:
-X-Rspamd-Queue-Id: 5A39940006
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 7hokqphsi46tmxpiughro3i1hk3s5f53
-X-HE-Tag: 1795463787-122724
-X-HE-Meta: U2FsdGVkX18wRRZhkjLnBrW/6ObBnSSU1bSD6mcgAcuf6SN/hn/G2uhory71McC9SSm0BIDnkvrKBJi8yHw0JoEAhDnCOXm413b3735vdt6Jt9ZU/MguaLZlCJb47H31Z1iH0UA4pth4bejvYaQZBzumHS2l7AHUUEAbYiKzEf2fcdwd04SVtJ/03f/Bks5wCqqI6ZolJiFVSRjdlePOkxZIGEu5gL9XLd4lKazzt+nC0a1YHqq9/0ft4DnFlC42ev3XYVhD5aDDoJWMk6jvevhX+J3yhNIi8rCDmecLOv1elwZbnpJ9w8alRGOBgOPzd0DKX7yiuUBluBEpefLJCziSgn6EGIs3NVw/1ikv/MW2DuXkoc1L1U+CiRdthNkImk8cKfqE/T9mxqKjCgx2VlGMsAEAhBohBz6NNVkiXhD1StWK9LQUE/Pg007uMOOFCuItfqQEkbKoRG+fGCTbcNxS8FO4OqADJoFTbtl9X7vNmf0zF9r2xtGB1e2pmg/3NeT/LcNVv1o9RULwLJ+vXPlDeMFCAq7U3VIbMgoNShETApvnnVj0fEPkH8/ytl7mc3BYRq2ApJlzngo3jdPH/mXFVWN2SVaMSZftmdNoHFt7dvHcdrEc6xGxnsk98SA9wxLUQ5I9sZqpgHdh0pgJaaYjwil0EYAHWu01wqhmrCpeVo1HoI0whEpoAp0gBT8+xT7cWDkRnIewxjQridVivyUkrBFSyuqzaMpHM9N8gajC4blRzGjl29WwVfL0sbsXHidES43XFFeuP4s9C+6FRr3jKI++Nygdd/bCBBdqE1jEXrqfg27JIH817CE9fJGxtExoZ6EQxgDOT3mr4P+mkpmmBJN0hwR99guhyyAicYXqL9XFejYDMUlhvLJYnMochR6WCMyGk+aolymAxQD1p/fKtXBzi24vinD6eu5zp4RSJQ8q9U2R6PQqcPF0jMd2tK/j9oO5LYBXo1aY7DY
- uzuORpkX
- bkaz8Uh1SXeujMnHZXRn+JfUoACnK3usV20eM4PNgcI3YXXKlZQA5nwifssuJIN7DOBQU1EK65Z6d72XzjAsRmOrMBsAvHiZz3hPiRsI5GZdday+Ex7Zkqp0QiBsdh6+uOX1QOYdA+Xk4ecFYEQUF3CA+Ke1aKQ3ddXIs7gUzCPHpIetppou7if+/Ic2TYECjIlH5xj4pibFUA6vlto3XI4wt+aS/BzDBsj9wiOlnVFuvAQHmfTRF5PAhJIcmQA7X0++EDLNSSplDIVdnxTSrQa26dDNDpbxXl2USdLvM7q+1bAO8j5Ac9UWd/et+dA8zMMFudw81zRui2k640h3LyaarMb6Tg1weXv7I6yYVJucNhk5DL1acI0r1jXx/jD67mBQjGL9Tz1O3oaRQ/CgE3KxC/U1G04nVH5TijCAa9h6/5z5MxB/2EkAkyw5e5nWn3JjitQ8s4qDbgcq+ZwZPuPvbFVseWw808HjRt53d2toxPPX/jJzTlBY40A==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795463787-657413
+X-HE-Meta: U2FsdGVkX1+KLVdmBReYY1SaPbtuSZ0J3lX/tioJ40cZaY1V3EwKQTIEF0b9R8dkBO3pyiLOIE9kHInFxYeHn4n2G8jaYUDQOkt5FojdDYFzKN680RZrCE8CN/YHVseruR0hihwBoMZno/pdvtK92dV0TnebXYypfx5G03NNRRCUbqTkc7gQuSkgbi0O01IA0VhCEpC/nteDb3xKfx0dW6y1PBdrlXsGCnBmHTKKAq66jEAqu1dDzyH6FNXsqZR4Rz7pQzA+VaEBmy+NIUNR/chk6ak7r6WFA8QteFDZM52qOFfyX6HDWpuxTZL+U+sqjMO/s5vk7S7yBdr2TcnHf6J31XIxrsSW7ZHL1TM+KAvxCyeC+p4ydbHxv2cBuKDG0C6rGV7ujBChyqSeiOvrMqwhDDMrXX2keyeaUaOZ7zdtnhkzJNAqXf9lQ/R7IYZ3F+A8Uv8iab/53cWQC0IJhKH7mmNWCwZcYGLDO1/Vp8E65++vmhS4R6kufjzyEmodbpvKw8eIs22zFj6+LvF1hmHzOFwMHUA9u9+BJgDLX15MY0j3eSmjVKlL1if/Y0AfcXWTz/Wrb5Q6uG1ToK3AfoXDPZPaM2y8E93j3IojU2lUOVOontXm7jUzhhP8opcxxAt5CGwr+uxpOq0x1uGV1pxfHRE7xv5NxLm2YF2PGr9NhmEAIjKYgLC3xm7rXgk6cIFDgMem2aIabOpQTtEFp6vHk3P9FLTazREB4T1YH9V0/GBo+Piwqby1qe5PGp+N9tzZo/viPOD+RJ/IGOBCUgSiNpK3SNwneYgR5sRngudqtNm9xRSqCZoXOXpQdLY9xDRiRhSbmbCCnh1puHbDN4HlToNbMIep+DJD5OTLUzaxzji0OfXaRDASTA+RsknJvg8Vliu2SmNHyCVlOMM6GvP4aAt0oqHFp/K+9H+Wg6OxipeNk0Z+vGmrM2LQIa53vBfufS1n1doh4PZzRAS
+ ZuDP8uTJ
+ qHol6+em6CGG347d+O8KSu7U1tdm7pVThMR7zyBhnXF2dSqfnnIMC+JHFKeF71kZNGco00IgtBJuyTJIp9Tyj5O9kZpa2885hhgNu7Gsw5/8c+jSwP3J7d4+ZAo8V2YNHlzzdDhY2+kc1f62qzkQXTtb4B1llkzw1FW1Gp9BAVzVgxvbAtJAEC9aXUgzzo4eD7AbtB+OjIu4uRztKrxEUKtKkOMvwh4Mos57lPqiDM6BzoZ1X4VHVb0VczVxeHYtf0yh/MNcxjnxAUfPUCk5bm5qmzkMeva0/1daZoVDDQcmloZar53ybupOCiaD+kybn4p/wj67i6qvObGYh9WHzUR5fNw462hshAiW+GMZy5V4pbL0McANgGB316LnB1ZrQ5fePei++Hqm7/9YkXR5+PH3yZPRD3oaLQWvafYpqC46ebx8gMQvROkLUsAhrYRZGpbclQEn/lN2iFPlZNh2p03ooGaPvDjHwooZdPi2fOGaVvvY+GrcIvIMIZm6Lbvxq33Dmc/EF3021Y4raPeiFtcdDs0icTEf6pGialULYfIqDoX30/Jo77ye3QqZUmGLDmuuTGmpgiS+lbuOoyzlLnWA5JzmaTCDIyFgN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,184 +103,590 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-follow_page_pte() now walks a whole page table in one call, but still
-resolves and commits each PTE on its own, so a PTE-mapped large folio
-(mTHP) pays one try_grab_folio() per subpage.
+follow_page_mask() and its helpers return a struct page pointer: NULL,
+ERR_PTR(), or the page found. Change the return type to long instead:
+0, a negative errno, or 1 with the page stored in a new pages[0] slot.
 
-Add gup_pte_batch_len() and give gup_grab_folio_pages() a run
-length. Each run starts with a full per-PTE resolve, then
-gup_pte_batch_len() finds how many more PTEs extend it with a pte_same()
-scan rather than a re-derivation of each page, and the run is committed
-with one refcount grab. Runs stop at folio boundaries, so plain base
-pages are unaffected.
+This lets the return type carry a page count rather than a single
+struct page pointer.
 
-Gather the dirty bits from all the PTEs in a batch, in order to mark
-the folio dirty for FOLL_WRITE.
+follow_huge_pud(), follow_huge_pmd() and follow_page_pte() now store
+the found page in a pages[0] slot. __get_user_pages() reads that page
+back from pages[i], fills the rest of a large folio's run itself, and
+flushes the whole run's caches with gup_flush_pages(). The follow path
+itself never flushes: the caches are always flushed from
+__get_user_pages(), without any page table lock held.
 
-Same benchmark as the previous change, with before again taken at the
-base of the series:
+The vsyscall gate area bypasses follow_page_mask() and fills and flushes
+its own slot the same way. The gate handles a single page, so it
+initializes the count to 1.
 
-  gup_test -L -m 256 -n 65536 -r 16 -t
-                        before      after
-  64 kB mTHP           2946 us      231 us  (12.8x)
-  4 kB base (control)  2753 us     1198 us   (2.3x)
-  2 MB THP (control)     72 us       71 us
+*page_mask and __get_user_pages()'s handling of a large folio's
+remaining subpages are untouched, and mm/gup_test.c
+(PIN_LONGTERM_BENCHMARK) shows no measurable difference for 4 kB,
+64 kB mTHP, or 2 MB THP.
 
-The 4 kB column is the previous change's 2.3x, unchanged: base pages
-share no folio, so there is nothing to batch. 64 kB mTHP goes from that
-change's 2.2x to 12.8x, a further 5.9x from committing a run with one
-refcount grab instead of one per subpage.
-
-With FOLL_TOUCH, folio_mark_accessed() runs once per run instead of
-once per page: 512 calls before and 32 after over 2 MB of 64 kB
-folios, leaving them referenced but inactive after the first call.
-That matches the huge-page and fast paths, which mark once
-per folio. (Measured by Yuan-Hao Hsu.)
+No functional changes intended.
 
 Suggested-by: David Hildenbrand <david@kernel.org>
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- mm/gup.c | 95 ++++++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 76 insertions(+), 19 deletions(-)
+ mm/gup.c | 258 ++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 141 insertions(+), 117 deletions(-)
 
 diff --git a/mm/gup.c b/mm/gup.c
-index b5747f2c2ca3..886a413b8233 100644
+index d35fedbce7e1..963c09b955d9 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -1011,6 +1011,46 @@ static long gup_lookup_pte(struct vm_area_struct *vma, unsigned long address,
- 	return 0;
+@@ -608,15 +608,15 @@ static inline bool can_follow_write_common(struct page *page,
+ 	return page && PageAnon(page) && PageAnonExclusive(page);
  }
  
-+/*
-+ * Return how many PTEs map consecutive pages of the same folio and can be
-+ * committed as one run. Always at least 1.
-+ *
-+ * The write-fault and unshare checks in gup_lookup_pte() are per PTE, but a
-+ * writable run needs no repeat: a writable anon page is exclusive. A
-+ * read-only run under FOLL_WRITE or FOLL_PIN does need the per-page check,
-+ * so it stays one page at a time.
-+ *
-+ * @fpb_flags selects the scan: slow GUP merges young/dirty so
-+ * folio_mark_dirty() sees any dirty PTE in the run; fast GUP scans
-+ * locklessly and revalidates the run after grabbing it. @vma is only
-+ * needed for FPB_MERGE_WRITE and may be NULL otherwise.
-+ */
-+static unsigned long gup_pte_batch_len(struct vm_area_struct *vma,
-+		unsigned long address, unsigned long walk_end,
-+		struct folio *folio, pte_t *ptep, pte_t *batch_pte,
-+		unsigned int flags, fpb_t fpb_flags)
-+{
-+	unsigned long max, nr = 1;
-+
-+	if (folio_test_large(folio)) {
-+		max = (walk_end - address) >> PAGE_SHIFT;
-+		if (max > 1)
-+			nr = folio_pte_batch_flags(folio, vma, ptep,
-+						   batch_pte, max, fpb_flags);
-+	}
-+
-+	/*
-+	 * Read-only runs are trimmed to the leading pages that need no
-+	 * unsharing; a zero return means even the head page needs
-+	 * unsharing, and the caller must fault it in instead. Writable
-+	 * runs need no repeat: a writable anon page is exclusive.
-+	 */
-+	if (!pte_write(*batch_pte))
-+		nr = gup_pages_not_requiring_unshare(vma, flags, folio,
-+						     pte_page(*batch_pte), nr);
-+	return nr;
-+}
-+
- /*
-  * Walk the PTEs from the start address to the end of this page table or VMA,
-  * whichever comes first, and commit every page found.
-@@ -1046,7 +1086,10 @@ static long follow_page_pte(struct vm_area_struct *vma,
+-static struct page *no_page_table(struct vm_area_struct *vma,
+-				  unsigned int flags, unsigned long address)
++static long no_page_table(struct vm_area_struct *vma,
++		unsigned int flags, unsigned long address)
+ {
+ 	if (!(flags & FOLL_DUMP))
+-		return NULL;
++		return 0;
  
- 	for (; address < walk_end; address += PAGE_SIZE, ptep++) {
- 		pte_t pte = ptep_get(ptep);
-+		struct folio *folio;
- 		struct page *page;
-+		unsigned long batch;
-+		pte_t batch_pte;
+ 	/*
+ 	 * When core dumping, we don't want to allocate unnecessary pages or
+-	 * page tables.  Return error instead of NULL to skip handle_mm_fault,
++	 * page tables.  Return error instead of 0 to skip handle_mm_fault,
+ 	 * then get_dump_page() will return NULL to leave a hole in the dump.
+ 	 * But we can only make this optimization where a hole would surely
+ 	 * be zero-filled if handle_mm_fault() actually did handle it.
+@@ -625,12 +625,12 @@ static struct page *no_page_table(struct vm_area_struct *vma,
+ 		struct hstate *h = hstate_vma(vma);
  
- 		/*
- 		 * no_page_table() may access the page cache for a
-@@ -1061,12 +1104,33 @@ static long follow_page_pte(struct vm_area_struct *vma,
- 		ret = gup_lookup_pte(vma, address, ptep, pte, flags, &page);
- 		if (ret || !page)
- 			break;
--		ret = gup_grab_fill_folio_pages(page_folio(page), page, 1,
--					     pte_dirty(pte), flags,
-+		folio = page_folio(page);
-+		batch_pte = pte;
-+
-+		batch = gup_pte_batch_len(vma, address, walk_end, folio,
-+					 ptep, &batch_pte, flags,
-+					 FPB_RESPECT_WRITE |
-+					 FPB_MERGE_YOUNG_DIRTY);
-+		/*
-+		 * Break out if the helper says the pages are not
-+		 * usable as-is.
-+		 */
-+		if (!batch) {
-+			ret = 0;
-+			break;
-+		}
-+		ret = gup_grab_fill_folio_pages(folio, page, batch,
-+					     pte_dirty(batch_pte), flags,
- 					     pages ? pages + nr : NULL);
- 		if (ret)
- 			break;
--		nr++;
-+		nr += batch;
-+		/*
-+		 * The loop's own increment covers one PTE; skip
-+		 * the rest of the batch.
-+		 */
-+		ptep += batch - 1;
-+		address += (batch - 1) * PAGE_SIZE;
+ 		if (!hugetlbfs_pagecache_present(h, vma, address))
+-			return ERR_PTR(-EFAULT);
++			return -EFAULT;
+ 	} else if ((vma_is_anonymous(vma) || !vma->vm_ops->fault)) {
+-		return ERR_PTR(-EFAULT);
++		return -EFAULT;
  	}
- 	pte_unmap_unlock(orig_ptep, ptl);
  
-@@ -3021,8 +3085,6 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
- 		pte_t pte = ptep_get_lockless(ptep);
- 		struct page *page;
+-	return NULL;
++	return 0;
+ }
  
--		nr_batch = 1;
--
- 		/*
- 		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
- 		 * pte_access_permitted() better should reject these pages
-@@ -3062,20 +3124,15 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
- 		if (!gup_fast_folio_allowed(folio, flags))
+ static unsigned long gup_pages_not_requiring_unshare(
+@@ -760,9 +760,10 @@ static inline bool can_follow_write_pud(pud_t pud, struct page *page,
+ 	return can_follow_write_common(page, vma, flags);
+ }
+ 
+-static struct page *follow_huge_pud(struct vm_area_struct *vma,
+-				    unsigned long addr, pud_t *pudp,
+-				    int flags, unsigned long *page_mask)
++static long follow_huge_pud(struct vm_area_struct *vma,
++		unsigned long addr, pud_t *pudp,
++		unsigned int flags, unsigned long *page_mask,
++		struct page **pages)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct page *page;
+@@ -775,22 +776,24 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+ 
+ 	if ((flags & FOLL_WRITE) &&
+ 	    !can_follow_write_pud(pud, pfn_to_page(pfn), vma, flags))
+-		return NULL;
++		return 0;
+ 
+ 	pfn += (addr & ~PUD_MASK) >> PAGE_SHIFT;
+ 	page = pfn_to_page(pfn);
+ 	folio = page_folio(page);
+ 
+ 	if (!pud_write(pud) && gup_must_unshare(vma, flags, folio, page))
+-		return ERR_PTR(-EMLINK);
++		return -EMLINK;
+ 
+ 	ret = try_grab_folio(folio, 1, flags);
+ 	if (ret)
+-		page = ERR_PTR(ret);
+-	else
+-		*page_mask = HPAGE_PUD_NR - 1;
++		return ret;
++
++	*page_mask = HPAGE_PUD_NR - 1;
++
++	gup_fill_pages(pages, page, 1);
+ 
+-	return page;
++	return 1;
+ }
+ 
+ /* FOLL_FORCE can write to even unwritable PMDs in COW mappings. */
+@@ -811,10 +814,10 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
+ 	return !userfaultfd_huge_pmd_wp(vma, pmd);
+ }
+ 
+-static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+-				    unsigned long addr, pmd_t *pmd,
+-				    unsigned int flags,
+-				    unsigned long *page_mask)
++static long follow_huge_pmd(struct vm_area_struct *vma,
++		unsigned long addr, pmd_t *pmd,
++		unsigned int flags, unsigned long *page_mask,
++		struct page **pages)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pmd_t pmdval = *pmd;
+@@ -829,24 +832,24 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+ 
+ 	if ((flags & FOLL_WRITE) &&
+ 	    !can_follow_write_pmd(pmdval, page, vma, flags))
+-		return NULL;
++		return 0;
+ 
+ 	/* Avoid dumping huge zero page */
+ 	if ((flags & FOLL_DUMP) && is_huge_zero_pmd(pmdval))
+-		return ERR_PTR(-EFAULT);
++		return -EFAULT;
+ 
+ 	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(vma, flags))
+-		return NULL;
++		return 0;
+ 
+ 	if (!pmd_write(pmdval) && gup_must_unshare(vma, flags, folio, page))
+-		return ERR_PTR(-EMLINK);
++		return -EMLINK;
+ 
+ 	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
+ 			     !PageAnonExclusive(page), page);
+ 
+ 	ret = try_grab_folio(folio, 1, flags);
+ 	if (ret)
+-		return ERR_PTR(ret);
++		return ret;
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	if (pmd_trans_huge(pmdval) && (flags & FOLL_TOUCH))
+@@ -856,23 +859,26 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+ 	page += (addr & ~HPAGE_PMD_MASK) >> PAGE_SHIFT;
+ 	*page_mask = HPAGE_PMD_NR - 1;
+ 
+-	return page;
++	gup_fill_pages(pages, page, 1);
++
++	return 1;
+ }
+ 
+ #else  /* CONFIG_PGTABLE_HAS_HUGE_LEAVES */
+-static struct page *follow_huge_pud(struct vm_area_struct *vma,
+-				    unsigned long addr, pud_t *pudp,
+-				    int flags, unsigned long *page_mask)
++static long follow_huge_pud(struct vm_area_struct *vma,
++		unsigned long addr, pud_t *pudp,
++		unsigned int flags, unsigned long *page_mask,
++		struct page **pages)
+ {
+-	return NULL;
++	return 0;
+ }
+ 
+-static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+-				    unsigned long addr, pmd_t *pmd,
+-				    unsigned int flags,
+-				    unsigned long *page_mask)
++static long follow_huge_pmd(struct vm_area_struct *vma,
++		unsigned long addr, pmd_t *pmd,
++		unsigned int flags, unsigned long *page_mask,
++		struct page **pages)
+ {
+-	return NULL;
++	return 0;
+ }
+ #endif	/* CONFIG_PGTABLE_HAS_HUGE_LEAVES */
+ 
+@@ -915,15 +921,16 @@ static inline bool can_follow_write_pte(pte_t pte, struct page *page,
+ 	return !userfaultfd_pte_wp(vma, pte);
+ }
+ 
+-static struct page *follow_page_pte(struct vm_area_struct *vma,
+-		unsigned long address, pmd_t *pmd, unsigned int flags)
++static long follow_page_pte(struct vm_area_struct *vma,
++		unsigned long address, pmd_t *pmd, unsigned int flags,
++		struct page **pages)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct folio *folio;
+ 	struct page *page;
+ 	spinlock_t *ptl;
+ 	pte_t *ptep, pte;
+-	int ret;
++	long ret;
+ 
+ 	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
+ 	if (!ptep)
+@@ -941,14 +948,14 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 	 */
+ 	if ((flags & FOLL_WRITE) &&
+ 	    !can_follow_write_pte(pte, page, vma, flags)) {
+-		page = NULL;
++		ret = 0;
+ 		goto out;
+ 	}
+ 
+ 	if (unlikely(!page)) {
+ 		if (flags & FOLL_DUMP) {
+ 			/* Avoid special (like zero) pages in core dumps */
+-			page = ERR_PTR(-EFAULT);
++			ret = -EFAULT;
  			goto out;
+ 		}
  
--		if (folio_test_large(folio))
--			/*
--			 * The reference acquired above keeps the folio stable
--			 * for the following checks.
--			 */
--			nr_batch = folio_pte_batch_flags(folio, NULL, ptep, &pte,
--							 (end - addr) >> PAGE_SHIFT,
--							 FPB_LOCKLESS | FPB_RESPECT_WRITE);
--
--		if (!pte_write(pte)) {
--			nr_batch = gup_pages_not_requiring_unshare(NULL, flags, folio, page, nr_batch);
--			if (!nr_batch)
--				goto out;
--		}
+@@ -956,14 +963,13 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 			page = pte_page(pte);
+ 		} else {
+ 			ret = follow_pfn_pte(vma, address, ptep, flags);
+-			page = ERR_PTR(ret);
+ 			goto out;
+ 		}
+ 	}
+ 	folio = page_folio(page);
+ 
+ 	if (!pte_write(pte) && gup_must_unshare(vma, flags, folio, page)) {
+-		page = ERR_PTR(-EMLINK);
++		ret = -EMLINK;
+ 		goto out;
+ 	}
+ 
+@@ -972,10 +978,8 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 
+ 	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
+ 	ret = try_grab_folio(folio, 1, flags);
+-	if (unlikely(ret)) {
+-		page = ERR_PTR(ret);
++	if (unlikely(ret))
+ 		goto out;
+-	}
+ 
+ 	/*
+ 	 * We need to make the page accessible if and only if we are going
+@@ -985,8 +989,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 	if (flags & FOLL_PIN) {
+ 		ret = arch_make_folio_accessible(folio);
+ 		if (ret) {
+-			unpin_user_page(page);
+-			page = ERR_PTR(ret);
++			gup_put_folio(folio, 1, flags);
+ 			goto out;
+ 		}
+ 	}
+@@ -1001,23 +1004,27 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 		 */
+ 		folio_mark_accessed(folio);
+ 	}
++
++	gup_fill_pages(pages, page, 1);
++	ret = 1;
+ out:
+ 	pte_unmap_unlock(ptep, ptl);
+-	return page;
++	return ret;
+ no_page:
+ 	pte_unmap_unlock(ptep, ptl);
+ 	if (!pte_none(pte))
+-		return NULL;
++		return 0;
+ 	return no_page_table(vma, flags, address);
+ }
+ 
+-static struct page *follow_pmd_mask(struct vm_area_struct *vma,
++static long follow_pmd_mask(struct vm_area_struct *vma,
+ 		unsigned long address, pud_t *pudp, pud_t pud,
+-		unsigned int flags, unsigned long *page_mask)
++		unsigned int flags, unsigned long *page_mask,
++		struct page **pages)
+ {
+ 	pmd_t *pmd, pmdval;
+ 	spinlock_t *ptl;
+-	struct page *page;
++	long ret;
+ 	struct mm_struct *mm = vma->vm_mm;
+ 
+ 	if (unlikely(pud_bad(pud)))
+@@ -1030,7 +1037,7 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+ 	if (!pmd_present(pmdval))
+ 		return no_page_table(vma, flags, address);
+ 	if (likely(!pmd_leaf(pmdval)))
+-		return follow_page_pte(vma, address, pmd, flags);
++		return follow_page_pte(vma, address, pmd, flags, pages);
+ 
+ 	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
+ 		return no_page_table(vma, flags, address);
+@@ -1043,28 +1050,28 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+ 	}
+ 	if (unlikely(!pmd_leaf(pmdval))) {
+ 		spin_unlock(ptl);
+-		return follow_page_pte(vma, address, pmd, flags);
++		return follow_page_pte(vma, address, pmd, flags, pages);
+ 	}
+ 	if (pmd_trans_huge(pmdval) && (flags & FOLL_SPLIT_PMD)) {
+ 		spin_unlock(ptl);
+ 		split_huge_pmd(vma, pmd, address);
+ 		/* If pmd was left empty, stuff a page table in there quickly */
+-		return pte_alloc(mm, pmd) ? ERR_PTR(-ENOMEM) :
+-			follow_page_pte(vma, address, pmd, flags);
++		return pte_alloc(mm, pmd) ? -ENOMEM :
++			follow_page_pte(vma, address, pmd, flags, pages);
+ 	}
+-	page = follow_huge_pmd(vma, address, pmd, flags, page_mask);
++	ret = follow_huge_pmd(vma, address, pmd, flags, page_mask, pages);
+ 	spin_unlock(ptl);
+-	return page;
++	return ret;
+ }
+ 
+-static struct page *follow_pud_mask(struct vm_area_struct *vma,
+-				    unsigned long address, p4d_t *p4dp,
+-				    unsigned int flags,
+-				    unsigned long *page_mask)
++static long follow_pud_mask(struct vm_area_struct *vma,
++		unsigned long address, p4d_t *p4dp,
++		unsigned int flags, unsigned long *page_mask,
++		struct page **pages)
+ {
+ 	pud_t *pudp, pud;
+ 	spinlock_t *ptl;
+-	struct page *page;
++	long ret;
+ 	struct mm_struct *mm = vma->vm_mm;
+ 
+ 	pudp = pud_offset(p4dp, address);
+@@ -1072,7 +1079,8 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
+ 	if (!pud_present(pud))
+ 		return no_page_table(vma, flags, address);
+ 	if (!pud_leaf(pud))
+-		return follow_pmd_mask(vma, address, pudp, pud, flags, page_mask);
++		return follow_pmd_mask(vma, address, pudp, pud, flags, page_mask,
++				       pages);
+ 
+ 	ptl = pud_lock(mm, pudp);
+ 	pud = *pudp;
+@@ -1082,18 +1090,19 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
+ 	}
+ 	if (unlikely(!pud_leaf(pud))) {
+ 		spin_unlock(ptl);
+-		return follow_pmd_mask(vma, address, pudp, pud, flags, page_mask);
++		return follow_pmd_mask(vma, address, pudp, pud, flags, page_mask,
++				       pages);
+ 	}
+ 
+-	page = follow_huge_pud(vma, address, pudp, flags, page_mask);
++	ret = follow_huge_pud(vma, address, pudp, flags, page_mask, pages);
+ 	spin_unlock(ptl);
+-	return page;
++	return ret;
+ }
+ 
+-static struct page *follow_p4d_mask(struct vm_area_struct *vma,
+-				    unsigned long address, pgd_t *pgdp,
+-				    unsigned int flags,
+-				    unsigned long *page_mask)
++static long follow_p4d_mask(struct vm_area_struct *vma,
++		unsigned long address, pgd_t *pgdp,
++		unsigned int flags, unsigned long *page_mask,
++		struct page **pages)
+ {
+ 	p4d_t *p4dp, p4d;
+ 
+@@ -1104,7 +1113,7 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
+ 	if (!p4d_present(p4d) || p4d_bad(p4d))
+ 		return no_page_table(vma, flags, address);
+ 
+-	return follow_pud_mask(vma, address, p4dp, flags, page_mask);
++	return follow_pud_mask(vma, address, p4dp, flags, page_mask, pages);
+ }
+ 
+ /**
+@@ -1113,6 +1122,9 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
+  * @address: virtual address to look up
+  * @flags: flags modifying lookup behaviour
+  * @page_mask: a pointer to output page_mask
++ * @pages: array to receive the page found, refcounted per @flags, or NULL
++ *         to walk the page tables (e.g. to fault pages in) without
++ *         collecting or refcounting them
+  *
+  * @flags can have FOLL_ flags set, defined in <linux/mm.h>
+  *
+@@ -1123,17 +1135,17 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
+  *
+  * On output, @page_mask is set according to the size of the page.
+  *
+- * Return: the mapped (struct page *), %NULL if no mapping exists, or
+- * an error pointer if there is a mapping to something not represented
+- * by a page descriptor (see also vm_normal_page()).
++ * Return: 1 with @pages[0] filled in if a page was found, 0 if no mapping
++ * exists at @address, or a negative errno for a mapping to something not
++ * represented by a page descriptor (see also vm_normal_page()).
+  */
+-static struct page *follow_page_mask(struct vm_area_struct *vma,
+-			      unsigned long address, unsigned int flags,
+-			      unsigned long *page_mask)
++static long follow_page_mask(struct vm_area_struct *vma,
++		unsigned long address, unsigned int flags,
++		unsigned long *page_mask, struct page **pages)
+ {
+ 	pgd_t *pgd;
+ 	struct mm_struct *mm = vma->vm_mm;
+-	struct page *page;
++	long ret;
+ 
+ 	vma_pgtable_walk_begin(vma);
+ 
+@@ -1141,13 +1153,13 @@ static struct page *follow_page_mask(struct vm_area_struct *vma,
+ 	pgd = pgd_offset(mm, address);
+ 
+ 	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
+-		page = no_page_table(vma, flags, address);
++		ret = no_page_table(vma, flags, address);
+ 	else
+-		page = follow_p4d_mask(vma, address, pgd, flags, page_mask);
++		ret = follow_p4d_mask(vma, address, pgd, flags, page_mask, pages);
+ 
+ 	vma_pgtable_walk_end(vma);
+ 
+-	return page;
++	return ret;
+ }
+ 
+ static int get_gate_page(struct mm_struct *mm, unsigned long address,
+@@ -1497,6 +1509,7 @@ static long __get_user_pages(struct mm_struct *mm,
+ 	do {
+ 		struct page *page;
+ 		unsigned int page_increm;
++		long nr;
+ 
+ 		/* first iteration or cross vma bound */
+ 		if (!vma || start >= vma->vm_end) {
+@@ -1523,8 +1536,11 @@ static long __get_user_pages(struct mm_struct *mm,
+ 						pages ? &page : NULL);
+ 				if (ret)
+ 					goto out;
+-				page_mask = 0;
+-				goto next_page;
++				if (pages)
++					pages[i] = page;
++				nr = 1;
++				page_increm = 1;
++				goto fill_flush;
+ 			}
+ 
+ 			if (!vma) {
+@@ -1546,10 +1562,11 @@ static long __get_user_pages(struct mm_struct *mm,
+ 		}
+ 		cond_resched();
+ 
+-		page = follow_page_mask(vma, start, gup_flags, &page_mask);
+-		if (!page || PTR_ERR(page) == -EMLINK) {
++		nr = follow_page_mask(vma, start, gup_flags, &page_mask,
++				      pages ? &pages[i] : NULL);
++		if (!nr || nr == -EMLINK) {
+ 			ret = faultin_page(vma, start, gup_flags,
+-					   PTR_ERR(page) == -EMLINK, locked);
++					   nr == -EMLINK, locked);
+ 			switch (ret) {
+ 			case 0:
+ 				goto retry;
+@@ -1563,7 +1580,7 @@ static long __get_user_pages(struct mm_struct *mm,
+ 				goto out;
+ 			}
+ 			BUG();
+-		} else if (PTR_ERR(page) == -EEXIST) {
++		} else if (nr == -EEXIST) {
+ 			/*
+ 			 * Proper page table entry exists, but no corresponding
+ 			 * struct page. If the caller expects **pages to be
+@@ -1571,49 +1588,56 @@ static long __get_user_pages(struct mm_struct *mm,
+ 			 * for this page.
+ 			 */
+ 			if (pages) {
+-				ret = PTR_ERR(page);
++				ret = nr;
+ 				goto out;
+ 			}
+-		} else if (IS_ERR(page)) {
+-			ret = PTR_ERR(page);
++		} else if (nr < 0) {
++			ret = nr;
+ 			goto out;
+ 		}
+-next_page:
++
+ 		page_increm = 1 + (~(start >> PAGE_SHIFT) & page_mask);
+ 		if (page_increm > nr_pages)
+ 			page_increm = nr_pages;
+ 
+-		if (pages) {
 +		/*
-+		 * The reference acquired above keeps the folio stable
-+		 * for the following checks.
++		 * This must be a large folio (and doesn't need to
++		 * be the whole folio; it can be part of it), do
++		 * the refcount work for the remaining pages.
++		 *
++		 * NOTE: here the page may not be the head page
++		 * e.g. when start addr is not thp-size aligned.
++		 * try_grab_folio() should have taken care of tail
++		 * pages.
 +		 */
-+		nr_batch = gup_pte_batch_len(NULL, addr, end, folio,
-+					     ptep, &pte, flags,
-+					     FPB_LOCKLESS | FPB_RESPECT_WRITE);
-+		if (!nr_batch)
-+			goto out;
++		if (pages && page_increm > 1) {
++			struct folio *folio = page_folio(pages[i]);
++
+ 			/*
+-			 * This must be a large folio (and doesn't need to
+-			 * be the whole folio; it can be part of it), do
+-			 * the refcount work for all the subpages too.
+-			 *
+-			 * NOTE: here the page may not be the head page
+-			 * e.g. when start addr is not thp-size aligned.
+-			 * try_grab_folio() should have taken care of tail
+-			 * pages.
++			 * Since we already hold refcount on the
++			 * large folio, this should never fail.
+ 			 */
+-			if (page_increm > 1) {
+-				struct folio *folio = page_folio(page);
+-
++			if (try_grab_folio(folio, page_increm - 1,
++					   gup_flags)) {
+ 				/*
+-				 * Since we already hold refcount on the
+-				 * large folio, this should never fail.
++				 * Release the 1st page ref if the
++				 * folio is problematic, fail hard.
+ 				 */
+-				if (try_grab_folio(folio, page_increm - 1,
+-						   gup_flags)) {
+-					/*
+-					 * Release the 1st page ref if the
+-					 * folio is problematic, fail hard.
+-					 */
+-					gup_put_folio(folio, 1, gup_flags);
+-					ret = -EFAULT;
+-					goto out;
+-				}
++				gup_put_folio(folio, 1, gup_flags);
++				ret = -EFAULT;
++				goto out;
+ 			}
  
- 		/*
- 		 * We need to make the page accessible if and only if we are
+-			gup_fill_pages(pages + i, page, page_increm);
++		}
++
++	fill_flush:
++		/*
++		 * The first page is already stored and references on the
++		 * whole run are held; fill the rest of the array and flush
++		 * the caches without any page table lock held.
++		 */
++		if (pages) {
++			gup_fill_pages(pages + i, pages[i], page_increm);
+ 			gup_flush_pages(vma, start, pages + i, page_increm);
+ 		}
+ 
 -- 
 2.56.0
 
