@@ -1,103 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4596E606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5E0606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=TpQZw53a
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0QPGWew+
 Received: by kanga.kvack.org (Postfix)
-	id 64BA96B05B4; Mon, 23 Nov 2026 09:14:53 -0500 (EST)
+	id 934756B05B2; Mon, 23 Nov 2026 09:16:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FCCA6B05B6; Mon, 23 Nov 2026 09:14:53 -0500 (EST)
+	id 8E4CA6B05B7; Mon, 23 Nov 2026 09:16:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 511946B05B7; Mon, 23 Nov 2026 09:14:53 -0500 (EST)
+	id 7D37B6B05B8; Mon, 23 Nov 2026 09:16:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 296206B05B4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:14:53 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ADA6B1C3D91
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:14:52 +0000 (UTC)
-X-FDA: 85466580024.03.09B68F4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8131240014
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:14:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=TpQZw53a;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of ben.horgan@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ben.horgan@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 478566B05B2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:16:05 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B41E9A80C5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:16:04 +0000 (UTC)
+X-FDA: 85466583048.13.2E604E2
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D545980008
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:16:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=0QPGWew+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795443291;
-	b=7y20OR4UGxEn/SfMNuvx1KoP5zscO/Q2mmkuSIFK3w2lztqIe2uFYYO/fVJTkkVJtGRFDf
-	9qR4g/0MfGZ7O2onVyEbp7CU8uJ+aolFmk5ueN49dTJSdWm16bOkr2VA+JyklyHx3anrPs
-	F82UaEgJXMJgfWkFxNBCOmosKdqrjXY=
+	t=1795443362;
+	b=oE/ALiHlfGCcqVC2Zvx3qIogZy/UWuYK2hN7hjR8uhgW1oT2+ZOcm2JtDxkIPhLKdQc4Ut
+	DOPXGohE+vQ6/m1k25hR0LG4Yty0fNTLecCAZU5eDewg1FpBkTL5G8Qrul9oL2QcQFg+Do
+	mZ6jiy8/U4O2nNMHyDqJ3OZ2Qc6TLeA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795443291;
+	s=arc-20220608; t=1795443362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BzWlJypFH0JBdyX3v3gI3tSAws9JaPsiAy4GuzyD5ZA=;
-	b=m0S/vVWmhw+Bf5SW89lH1v41FoPsejMdijc0cXdZRieN/bXv5tSNWAKTPe1jviOjyrf3A4
-	UhzzFMCqRpzsw6RTf2FslI9JJULZGMm+IGxFTPrZ48xZvdQ8QA0D/bcgN0lPvJPNWXQulb
-	PgWyeh3/XVCj0saWvBRsVv3a+S3RmVo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PjRuNUOgfB3Fg1Fm9BbnbhhqY+ZgAzXM9O/HQJjsyY0=;
+	b=M2/R+ou8g9XMCVHvPNd9pICRk1vMZyfEp4CG3CZ6stvZf9YuTqw95rfKbGNxhmMQN15ouS
+	67aQLYXPaO0Mq2M7r9ps+65QkcP946tCfrBJ9rxjGWBDPHnCOmiJOva56LuLgo0Ak64pB8
+	P1GpFGQNo9CyDLp5GRxxFVBPwkrMv9g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=TpQZw53a;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of ben.horgan@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ben.horgan@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6767D143D;
-	Mon, 23 Nov 2026 06:14:46 -0800 (PST)
-Received: from [10.211.55.3] (unknown [10.57.19.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 85C483F632;
-	Mon, 23 Nov 2026 06:14:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795443289; bh=13+dL+2yU1ST0Gj3ZErbeUJoSIXiq2YVvfbO1TbDWFQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TpQZw53aO4s2CGwpt4CspTd4evdvoct8/Xd6AMv3lVDPfLwuP1n9VgLyar/Yv0L1g
-	 i8auUfjTyeM5tev+x0ZUJ8vhTZIinVGgUt/LwpuaOjG66TyqxN0O1hfPIueITCccsB
-	 yj4Mzrg8OqqUI0kueXe6Fz3NArQudEjfPYlEiKJQ=
-Message-ID: <17fe3497-b887-4dc1-a8f8-3b647c1880a6@arm.com>
-Date: Mon, 23 Nov 2026 14:14:40 +0000
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=0QPGWew+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-14394530ec6so4848606c88.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:16:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795443360; x=1796048160; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PjRuNUOgfB3Fg1Fm9BbnbhhqY+ZgAzXM9O/HQJjsyY0=;
+        b=0QPGWew+hygUV7ZtGeimFXWRMQmqEhlL2VskAStZFS66smQYaMdlEat6x5ausukNEh
+         1QFen+LrRnw5Ahzy1Qd9rvZANf+uF3YaebvAQ9p8NP2cqqS4FZYjOX1LpsvDHjf9yYhA
+         kR3G5k+4Nmkd/eniYo4AC9GB3deRHByutP120+GFLha3qNOPUz2LMoALKadY08gnpbHN
+         IX/lELR5ULRf4lHM66khI1Aeqi48DG8zdp6G2B1X6S8aaxEzh5WZNYsUGWubJvXN8P33
+         VoAB/1gB+N/S/V86ZgeDL62SwOZ/zahigSAFASVdnatmQW3q4D7d8Pb93EwJ5GT0AMzQ
+         f0Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795443360; x=1796048160;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PjRuNUOgfB3Fg1Fm9BbnbhhqY+ZgAzXM9O/HQJjsyY0=;
+        b=lKeeTErDVvRC6JdKEIWg5RVj+BocDPXCexcJp1fSGHoeHsJpyFmzb3zolSLIJKq6uY
+         3VyDT6O6L9Cu+nQS8NLxyP5ywArsoV7DZHzce+4t++grPihkrVHghkRzPCY9zOriJzIM
+         PksfzlHAt48VPJodfTVvSOte6w+bXBBPHIlt2R5B8g/UCJBgvua/FO6Fe05CntV65sW6
+         r+M2ZyUleNhfx29upQOHhIxSWZFk57SaLw0/FyY5pmNbu3Bd7J0V4xMFAlqK0xJXmd4z
+         aFM/GfJKWZ8mAO/j8lDapyNjMJNOehcDGvNWXDRUBsaCO63E7txZ/Bm/BU6xvP2fEOeS
+         pWFQ==
+X-Gm-Message-State: APuU4Z8ievkmo/ITJujwpfWO+ZCkdnRMbtH/eO8GeBSyE5iofefym/Or
+	LuUp6+q8Z5094jJ4N8t5mNb6IGascilJz2pn+7uQSTE/CxfoOze740RDHEfHWlkC
+X-Gm-Gg: AZFdTZePt1OjiCpPL7QEVi4L8Ur0QLR6X/UTe9Ho+/sQyb69xLfLbS2hw9B2mp7NHJi
+	HVlogjTFMaEH1cunPZVilp2LUgVJLOZwhmnIrnVCQZ9u9lIqnqIgsBIo6qBedPyvgts+p/GzOHf
+	5IOezqVgk8b6F2I7kRoa4lpvuD8JSnjmi+foc5EgtA+wJ9PL4A+MeFX5V594UWyjoybbzfwVqUa
+	mwtI7ho2X8SPpc8pxYL5pLGgTu+ZP1ZsBibQTWOpzr0a3/pwwz2dbT2ZAxGjr0IX6+deWqthuoA
+	ut+SCXxqwR8nC6RX6hQ548uvwLVAE1HjoitIN8c+f4Y4ibP9BEhNgskcbMA3AH77ds+jbsDyDsD
+	sYtIkgnoyvZNmlCsYoZEROry9XN2ea0Qc9Yhpq++9R2eR6EvYpkh0/q65x6snHFim6MS/vhNePy
+	p7lj9bBoeVAQWoSDP2WWaxhjxv/AEVY89H5pRio7dc3eAnZkSoqvlfpAw1V3I6R0KFPtx6/y6Pj
+	gMYaTlOOSWy1oDZAKHMoREUd2JAdRDd9WhA0hbJtFACv28kL3lhOnbFPjvsB+27ZRcIGLadVNNW
+	pp2KNXWBAC2xbncri19qETdwTKY0RdyryDZ0Cleyplk49S0r+DQYej35l0IYtkI21+GJ
+X-Received: by 2002:a05:7022:f509:b0:1a4:4194:fc04 with SMTP id a92af1059eb24-1b5568e4322mr11657910c88.28.1795443360380;
+        Mon, 23 Nov 2026 06:16:00 -0800 (PST)
+Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567ff27bsm31101950c88.6.2026.11.23.06.15.54
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 23 Nov 2026 06:16:00 -0800 (PST)
+From: Lian Wang <lianux.mm@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>,
+	Jihan LIN <linjh22s@gmail.com>,
+	Kunwu Chan <kunwu.chan@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v5 00/19] mm/swap: introduce priority queues for swap device allocation
+Date: Mon, 23 Nov 2026 22:15:50 +0800
+Message-ID: <cover.1795439990.git.lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [RFC PATCH 1/3] fork,arm,x86,fs/resctrl: Fix stale resource group
- assignment vs copy_process()
-To: Reinette Chatre <reinette.chatre@intel.com>, kees@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- kprateek.nayak@amd.com, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, bp@alien8.de, tglx@linutronix.de,
- dave.hansen@linux.intel.com, tony.luck@intel.com, Dave.Martin@arm.com,
- james.morse@arm.com, babu.moger@amd.com, fustini@kernel.org,
- jedrzej.wasiukiewicz@intel.com
-Cc: fenghuay@nvidia.com, peternewman@google.com, yu.c.chen@intel.com,
- x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev
-References: <cover.1795197419.git.reinette.chatre@intel.com>
- <b2e13da64ca3e41207b5d46fb060bccefaf9fecd.1795197419.git.reinette.chatre@intel.com>
-Content-Language: en-US
-From: Ben Horgan <ben.horgan@arm.com>
-In-Reply-To: <b2e13da64ca3e41207b5d46fb060bccefaf9fecd.1795197419.git.reinette.chatre@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8131240014
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: r7s7965r4e5i9rqre4kwbam3gmct6df6
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: p9958o6q5t8xr63p445kidtnjtyirp1q
 X-Rspam-User:
-X-HE-Tag: 1795443290-271333
-X-HE-Meta: U2FsdGVkX19wgRettr/zP/bMEF2157GcsEA9IvlFp4295pX34lPWM0co+ybtCp/vkDZWd0A5Q94DIWukywEH9+4Iuwi+iU2j9ScEKh1qZMemKGh0Yka2BMnClHZ22r/oPtsfBojHANAnytILro6Qo4RzPH7C1wQYuuqDEi6JL7/ILQm7j3duJ8HZp4dzs5Seec9lqNZGxPdQeDwFNISlpJsP8z3uwo/N2MTNdx1OCdwvFoIRarN6RtPMv9OmO0s4FfGS0P2pdePzEKQF3SX8uQD6CLBUAfB+inFkCd73OIHi6jy16P0O5fJaMMTSAAgMgcIer9Jriq+3/G6rNBHHKq+v7hPhafxVXoLHhQ0XcyB48epiJs+dSTFwh/84+FOnoZIGF6qg+VYzbMHUp/idvAukQNdCGrj1BOet3Sc7F73Bp9jkS5KE6L2L7VkTI4NMnNtsCrShQON2VvaxP027gLWJPG0i5tC+hm6rJT9r8N05wotGY6wXhNpTIQaSdKSYBH90AJS9vW1nrgQQx1YQIxfMoytjrBo4Xnew4FstFEPpjBMVXtkbY9unxB8irfPw29CBl6SNIFJ3dMel2iBOigO74cjWH5tY+9oLYxNHwaKHXqLDbPu8lFi3SdS0iF3Qmc7IFt0Ha8api/zDAtRSRcT/M3hrPb7K1lu2cvkSSYgwJfSIFYhhbNaqSJoeKqFndf1KTvLQh6tdIeUfiiQ5G9lu8V8Ji7hyPYN/arLCo2PPFP7Ry103IVPNRs5CO95u0cdZVwo4sZT+ppc+pZ68sieomUKvQpcqyyQS2r4UY9J1kOt5xI0ZeqAs1LY3po8XTFmUw/xvVj/oOJRLu2wffBl5gnjvxigM/ZryUH5tfD6Z9of/k11KuApYcTVhEA8RrmFlJNnYx+NFDydlFzIRtlbpPee3J+Kv3fBGxIc1hxBb5Eu8k24V0LsK0XtXdH+zVoTZ8yl6b7e7dWjHhPk
- BYVa28Ma
- w+cg/dD15AVHMraFcHa9/s8D5X121QlPAkSu83aPDNL7DOf6bNBx8f66TP0MOcu1ML3yO7AgAvkd3f0o0N2rbkJAEwZLBhZmwO4IPTWkOdXoTRXas5gJ0MapCEOtB+4In4oQ8Vs4JtvWZYZ1Yw67+9ihi5389wvdifw6gC8lg4aKZLrEK9wOgHGd04d6poCZIhOKgNgnUNrOO6aBLZUHwItJAzF5NxlAdTG+676OV1iYZpJJ91HpFAel6bfLcmI9wL3+K+x2wcnOQ7giBlAnHeCzZDc0dkw17yC/bUmZ8hA/UuAmW5tS9eius1HeHwOQKOuDeUP3IvlVVwYtErBRYLlmFBQiw2wgbZvYFOEAk1UWvIb36RRrGoV+d8waULwultuSD7NFIKaX+m9vCsXXW7VxpW93J2j/9hxk7G0RMGbIKZHSitRTxSB2QubRo9LIQNKfFuVn2woqpnRwLvIgEISSrP86Lok4yOQ4Jk/0Fw9GqqHXu771Qf6VqcqO+BmcUVsL6ZKphGZhImeu6PV6K/5hyEg==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D545980008
+X-HE-Tag: 1795443361-576084
+X-HE-Meta: U2FsdGVkX18aNLFyCMGyBWeWgqN6N7liL9bMSnKa6GRGocPf0Z0dOYUaa66ogMvqf+/tNErXlc7F57S6wNwfVZjRaliIKhu0EpAJC1xoUr5qLmuCSKqk6DpIHhEAZXsLkF80rEfKPnAO0kpDvxXZc/06iFxPbBMHcEuf9d4+CRLWh9CPmJxW9nKDj3e6ThiEPaZGwMcbv6409DioyYD6EWme3aRXQuoNWq6eLkt7f7+XcMLYQF7O0gtS8vX/9pH7FZfd3GjKzxox3v4JsyvgQhDU/OuOFdjiR3z5bEhD+1akZpL6vdk1DudoDvU478mmBYOo5F4qTgqeC3QfIe22x5TAptg+Y4KFgbiPSZKFWqXnUeWQajhPeEQV9CZ9WQdWuzcxtSQOchjRn38E8dTO1btr/B+55c8uNUwFQHjYcFbHos7e1OC3crfYPGvykoL2AnnlY9gC93ucEOCV7vV3tQHqI5Eg1pRSYnXvqroQpmH/tyE8yLkOLvAJ4ytikE+kOH7Hw4+5rUGW/VsC6BbIvT2x/ajBKWAeJzum5+iOZ4hhr4RZDCKZqHgumZ96+MhSvcz/It9sgXtz5ujsHrqwa8rA/hfA238gF5AQ7j+Z1YsaDrrB6iogpXz1xTN5zHcQuK+BronCb9iZNN5KB9heujkVBWPfwZfRSzSvqudBHa6pjVNtGsJXN5dOrhL0wMfWNarfIRXI9O62X/4N3I/WZcYEQTqMeakCXozghfVwQx50ErkR6nAqQ/pwzby4EskEgP23TgalgEyCAeGrVP2srMkPNuZcVCB/9Lh9Xasy6lSLldajJPzTN23jU+7Fzos3tZ7Pkw2/CsYu/opMqEbLdNAl3xfyBkYoV+IsUQKMkNQpHE6r7MYkpNm75/VSp9O3p9VUN3XVzwQNWElVF78IRkgy3jo/8kC3eFeDEGZuk+PeS+UmxLX33VPflDiiK/E/SeVmm5wcAzbDIeCEM8s
+ 6/xxM5xx
+ GQTHgJfiIsIGrESukj2l0M/j89P2z6GvrjIihlvsv0bZoMZk91j5bjVYf70tGoeDw7Rb+aHbYwm4iskYC1DMlPhfOhhowm3eqhndcxCV2BZarf7smJoXZYW/StaGaQILLncpCaXcB+Y0x6r83EeFermu6XlGG80RBFdenlR3FGdMXXz16Bulk1KR0uXlR/SQL5BuvkVWsjwUOCnrvl9erxlBAyoHd1bbMoJmEtAoFuYKdOGBI6/dUWlgB/BPkK5bVI1/uTNmPlGgKqZ8DcWs2FQ5RpN2BMIJ2iN8zsEfo+34d4RM44EVyv+vawy3cz20M8nQccR3H4hwvtphfIhy5fcuB8qHWUuDhaFJDryPiipXNXhxR7JF3+wTshSskN7xeF+cl5RWHy9dodvKJIRjIdQUG6RQZFcYDSJU4dMKV1c4tBmooXNBYWSccHwU2XB+n3uphq2Fcp3LxRVHK63WD0hI40/ox5oR97jXkPlfjyRsQhtgvNGwk62tL6Nv30ZEZqe+EPJVb5LgGROJLOz9Rhm9wIJkFs1+kuvtUGdCsYcjEWnQAw5qZjnu4aKj+uciHCcz7QjPqkYYja8lJRS49z+R+jcdqThxTraLNKf6TVg5uFyoRUbamOODxDf84za3DRSVN5BCzEq5vZkKpb2YXiGNBOBHp8BtpNlmwYOCy1FTMc6RZ+NpSqBTQQdnJGrNzfZmNd0r9umxQmX0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,311 +132,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Reinette,
+Hi all,
 
-On 20/11/2026 18:39, Reinette Chatre wrote:
-> During fork a task's CLOSID and RMID are copied into the new task by
-> dup_task_struct(), early in copy_process() without holding tasklist_lock
-> or any lock that resctrl takes. The new task becomes visible to a walk of
-> the task list later in copy_process(), after it is linked onto the task
-> list while the tasklist_lock is held for write.
-> 
-> Removing a resource group moves all of its tasks to another group by
-> walking the task list while holding the tasklist_lock for read, and then
-> frees the CLOSID and RMID of the removed group. A task that copies its
-> parent's CLOSID and RMID before the walk reaches the parent is missed by
-> the walk: it is not on the task list yet, and it cannot get there while
-> the walk holds the tasklist_lock. By the time it is added to the task list
-> the CLOSID and RMID it was initialized with have been freed.
-> 
->     CPU0                                CPU1
->     ====                                ====
-> 
->   fork()
->     copy_process()
->       dup_task_struct()
->         /*
->          * New task inherits the
->          * parent's CLOSID and RMID.
->          */
->                                     rdtgroup_rmdir_{ctrl,mon}()
->                                       rdt_move_group_tasks()
->                                         read_lock(&tasklist_lock)
->                                         for_each_process_thread()
->                                           /*
->                                            * Parent is moved out of
->                                            * the group. New task is
->                                            * not on the task list
->                                            * and is not moved.
->                                            */
->       write_lock_irq(&tasklist_lock)
->         /* Waits for the walk. */
->                                         read_unlock(&tasklist_lock)
->       /* Lock acquired. */
->       list_add_tail_rcu(&p->tasks, ...)
->       write_unlock_irq(&tasklist_lock)
->                                       free_rmid()
->                                       closid_free() /* ctrl only */
-> 
->     New task and every task it creates use the freed CLOSID and RMID.
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 
-> The new task and every task it goes on to create keep using a CLOSID
-> and RMID that resctrl believes are unused. Once those identifiers are
-> handed to a resource group created later, the strays appear in that
-> group's tasks file, their memory accesses are counted in its monitoring
-> data, and they are subject to its allocation policy, while the group
-> intended for them does not control or monitor them.
-> 
-> Introduce resctrl_copy_process() to copy the parent's CLOSID and RMID
-> into the new task from copy_process(), while the tasklist_lock is held
-> for write. The walk holds the same lock for read for its full duration,
-> so the new task is either already on the task list and assigned by the
-> walk, or the copy happens after the walk completed and observes the
-> parent's new resource group.
-> 
-> resctrl_copy_process() reads two values that some architectures store
-> separately. __rdtgroup_move_task() assigns them with two stores while
-> holding only rdtgroup_mutex, which resctrl_copy_process() cannot take,
-> so those reads can fall between the two stores and leave the new task
-> with the CLOSID of one resource group and the RMID of another. Assign
-> them from __rdtgroup_move_task() while holding tasklist_lock for read
-> as well, so that resctrl_copy_process() observes both as intended.
-> 
-> Add an architecture call to perform the copy because CLOSID and RMID are
-> stored per architecture and cannot be read and written as independent
-> values on all of them.
-> 
-> Fixes: f3cbeacaa06e ("x86/intel_rdt/cqm: Add rmdir support")
-> Reported-by: Jedrzej Wasiukiewicz <jedrzej.wasiukiewicz@intel.com>
-> Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-> ---
-> Note to MPAM maintainers:
-> 
-> resctrl_copy_process() runs on every fork(), so
-> resctrl_arch_copy_closid_rmid() is a static inline on x86. Doing so is
-> perhaps not required as fork() is already expensive.
-> 
-> Even so, I attempted doing same for MPAM but ended up with solutions
-> that do not seem ideal:
+This is v5 of Kairui Song's swap priority queue series. Today, choosing
+among swap devices of equal priority means rotating a shared plist.
+With this series, each CPU advances its own position in a ring of
+equal-priority devices. The allocator selects a device before looking for
+slots on it. This keeps the existing global swap priorities and does not
+add a tier ABI or a per-memcg device-selection policy. Memcg swap
+accounting and limits are unchanged.
 
-Thanks for considering MPAM so carefully.
+Thanks to Kairui and Kunwu Chan for reviewing v4. I'm dropping the RFC
+tag and submitting the series for review.
 
-> 
-> - A static inline in arch/arm64/include/asm/mpam.h, next to the other
->   accessors of thread_info::mpam_partid_pmg. Nothing on the path from
->   include/linux/resctrl.h reaches that header, so the definition is not
->   visible to resctrl_copy_process(). Making it visible means
->   arch/arm64/include/asm/resctrl.h has to include asm/mpam.h, which
->   does not seem to match MPAM's intended design?
-> 
-> - A static inline in include/linux/arm_mpam.h, beside the
->   resctrl_arch_*() inlines already there. asm/mpam.h includes
->   linux/arm_mpam.h, so the reverse include would be circular and
+Changes since v4:
 
-Hmm, the existing include of linux/arm_mpam.h appears to be unnecessary.
-As such, that include can be removed and resctrl_arch_copy_closid_rmid()
-could be a static inline in include/linux/arm_mpam.h.
+- Rebased onto mm-unstable at 7d1a16abe4cc (7.4-rc3), retaining the
+  upstream swap size reporting fix in swap_show() and swapon().
+- Following Kairui's review, renamed swap_ring_iterator to
+  swap_queue_reader_head and ring_only to no_fallback. A large folio
+  can still try other devices of the same priority after an allocation
+  failure, but not a lower priority.
+- Following Kunwu's review, retained READ_ONCE() in the availability
+  check, removed a misleading comment about slot reuse, and made both
+  /proc/swaps iterators check the published swap_file under the read
+  lock.
+- Split the off-list bit fix into patch 10, before the queue conversion.
+  The plist allocator also needs to mask that bit when checking whether
+  a swap device is full.
+- Revised patch 04 to distinguish all allocated descriptors from
+  writable devices. drain_mmlist() needs only the usage count and no
+  longer reads the flags. si_swapinfo() takes one flags snapshot when
+  accounting for devices being taken offline. I have not carried the
+  previous Reviewed-by on that patch.
 
-Thanks,
+Testing:
 
-Ben
+I ran Kairui's benchmarks on the 7.4-rc3 base (7d1a16abe4cc) before and
+after applying the then-current v5 patches.
 
->   mpam_get_regval() cannot be called. The copy would have to read and
->   write thread_info::mpam_partid_pmg directly, which no code outside
->   asm/mpam.h does today, and would need a CONFIG_ARM64_MPAM guard
->   because the field is only present when it is set.
-> 
-> The out-of-line definition this ended up with matches
-> resctrl_arch_sched_in(). Please let me know (if this is a change you
-> agree with) what kind of shape it needs to take for MPAM. We could also
-> just make x86 and MPAM both be out-of-line - doing so may not be felt by
-> the heavy copy_process().
-> ---
->  arch/arm64/include/asm/mpam.h  |  6 ++++++
->  arch/x86/include/asm/resctrl.h |  7 +++++++
->  drivers/resctrl/mpam_resctrl.c |  6 ++++++
->  fs/resctrl/rdtgroup.c          | 21 +++++++++++++++++++++
->  include/linux/arm_mpam.h       |  1 +
->  include/linux/resctrl.h        | 28 ++++++++++++++++++++++++++++
->  kernel/fork.c                  |  3 +++
->  7 files changed, 72 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/mpam.h b/arch/arm64/include/asm/mpam.h
-> index 70d396e7b6da..0746e5d7cc2d 100644
-> --- a/arch/arm64/include/asm/mpam.h
-> +++ b/arch/arm64/include/asm/mpam.h
-> @@ -63,6 +63,12 @@ static inline void mpam_set_task_partid_pmg(struct task_struct *tsk,
->  	WRITE_ONCE(task_thread_info(tsk)->mpam_partid_pmg, regval);
->  }
->  
-> +static inline void mpam_copy_task_partid_pmg(struct task_struct *dst,
-> +					     struct task_struct *src)
-> +{
-> +	WRITE_ONCE(task_thread_info(dst)->mpam_partid_pmg, mpam_get_regval(src));
-> +}
-> +
->  static inline void mpam_thread_switch(struct task_struct *tsk)
->  {
->  	u64 oldregval;
-> diff --git a/arch/x86/include/asm/resctrl.h b/arch/x86/include/asm/resctrl.h
-> index 8f6edcdcfd87..199ca9af0089 100644
-> --- a/arch/x86/include/asm/resctrl.h
-> +++ b/arch/x86/include/asm/resctrl.h
-> @@ -153,6 +153,13 @@ static inline void resctrl_arch_set_closid_rmid(struct task_struct *tsk,
->  	WRITE_ONCE(tsk->rmid, rmid);
->  }
->  
-> +static inline void resctrl_arch_copy_closid_rmid(struct task_struct *dst,
-> +						 struct task_struct *src)
-> +{
-> +	WRITE_ONCE(dst->closid, READ_ONCE(src->closid));
-> +	WRITE_ONCE(dst->rmid, READ_ONCE(src->rmid));
-> +}
-> +
->  static inline bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid)
->  {
->  	return READ_ONCE(tsk->closid) == closid;
-> diff --git a/drivers/resctrl/mpam_resctrl.c b/drivers/resctrl/mpam_resctrl.c
-> index 5468367776e2..7aea58fca85b 100644
-> --- a/drivers/resctrl/mpam_resctrl.c
-> +++ b/drivers/resctrl/mpam_resctrl.c
-> @@ -345,6 +345,12 @@ void resctrl_arch_set_closid_rmid(struct task_struct *tsk, u32 closid, u32 rmid)
->  	}
->  }
->  
-> +void resctrl_arch_copy_closid_rmid(struct task_struct *dst,
-> +				   struct task_struct *src)
-> +{
-> +	mpam_copy_task_partid_pmg(dst, src);
-> +}
-> +
->  bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid)
->  {
->  	u64 regval = mpam_get_regval(tsk);
-> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
-> index 57ab090072c2..ebf780fc5fe9 100644
-> --- a/fs/resctrl/rdtgroup.c
-> +++ b/fs/resctrl/rdtgroup.c
-> @@ -657,12 +657,28 @@ static int __rdtgroup_move_task(struct task_struct *tsk,
->  		return -EINVAL;
->  	}
->  
-> +	/*
-> +	 * Hold tasklist_lock for read so that resctrl_copy_process(), which
-> +	 * holds it for write, cannot read the CLOSID and the RMID of @tsk
-> +	 * while only one of the two has been updated.
-> +	 *
-> +	 * Hold tasklist_lock just for the @tsk update. A CPU running @tsk
-> +	 * keeps using the CLOSID and RMID that resctrl_arch_sched_in()
-> +	 * applied when @tsk was last scheduled in, so
-> +	 * update_task_closid_rmid() below has to interrupt that CPU for the
-> +	 * new resource group to take effect. Leave that until after
-> +	 * tasklist_lock has been dropped: a CPU waiting for tasklist_lock
-> +	 * for write waits with interrupts disabled, and @tsk's CPU is the
-> +	 * one that may be waiting, because @tsk may be forking.
-> +	 */
-> +	read_lock(&tasklist_lock);
->  	if (rdtgrp->type == RDTMON_GROUP)
->  		resctrl_arch_set_closid_rmid(tsk, rdtgrp->mon.parent->closid,
->  					     rdtgrp->mon.rmid);
->  	else
->  		resctrl_arch_set_closid_rmid(tsk, rdtgrp->closid,
->  					     rdtgrp->mon.rmid);
-> +	read_unlock(&tasklist_lock);
->  
->  	/*
->  	 * Ensure the task's closid and rmid are written before determining if
-> @@ -2959,6 +2975,11 @@ static void schemata_list_destroy(void)
->   * If @mask is not NULL the cpus on which moved tasks are running are set
->   * in that mask so the update smp function call is restricted to affected
->   * cpus.
-> + *
-> + * Tasks created while this walks the task list are handled by
-> + * resctrl_copy_process(), which tasklist_lock serializes against this walk.
-> + * A new task is either visible to the walk and moved with the others, or
-> + * resctrl_copy_process() assigns it after the walk completes.
->   */
->  static void rdt_move_group_tasks(struct rdtgroup *from, struct rdtgroup *to,
->  				 struct cpumask *mask)
-> diff --git a/include/linux/arm_mpam.h b/include/linux/arm_mpam.h
-> index 002f56e15362..b605e9771c32 100644
-> --- a/include/linux/arm_mpam.h
-> +++ b/include/linux/arm_mpam.h
-> @@ -56,6 +56,7 @@ bool resctrl_arch_mon_capable(void);
->  void resctrl_arch_set_cpu_default_closid(int cpu, u32 closid);
->  void resctrl_arch_set_closid_rmid(struct task_struct *tsk, u32 closid, u32 rmid);
->  void resctrl_arch_set_cpu_default_closid_rmid(int cpu, u32 closid, u32 rmid);
-> +void resctrl_arch_copy_closid_rmid(struct task_struct *dst, struct task_struct *src);
->  void resctrl_arch_sched_in(struct task_struct *tsk);
->  bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid);
->  bool resctrl_arch_match_rmid(struct task_struct *tsk, u32 closid, u32 rmid);
-> diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
-> index 10dfdca7f4bf..32d8bf9ca9ba 100644
-> --- a/include/linux/resctrl.h
-> +++ b/include/linux/resctrl.h
-> @@ -7,6 +7,8 @@
->  #include <linux/list.h>
->  #include <linux/pid.h>
->  #include <linux/resctrl_types.h>
-> +#include <linux/sched.h>
-> +#include <linux/sched/task.h>
->  
->  #ifdef CONFIG_ARCH_HAS_CPU_RESCTRL
->  #include <asm/resctrl.h>
-> @@ -729,6 +731,32 @@ extern unsigned int resctrl_rmid_realloc_limit;
->  int resctrl_init(void);
->  void resctrl_exit(void);
->  
-> +#ifdef CONFIG_RESCTRL_FS
-> +/**
-> + * resctrl_copy_process() - Give a new task the resource group of its parent.
-> + * @child:	The new task, which is not yet on the task list.
-> + *
-> + * Call from copy_process() while tasklist_lock is held for write. Serialized
-> + * against rdt_move_group_tasks() and __rdtgroup_move_task() that hold
-> + * tasklist_lock for read.
-> + *
-> + * dup_task_struct() copies the parent's CLOSID and RMID into @child before
-> + * @child is linked onto the task list. If the parent is moved out of a
-> + * resource group that is being removed, that group's CLOSID and RMID are
-> + * freed once the walk completes, leaving @child with stale assignments.
-> + *
-> + * Bring @child up to date with the parent.
-> + */
-> +static inline void resctrl_copy_process(struct task_struct *child)
-> +{
-> +	lockdep_assert_held_write(&tasklist_lock);
-> +
-> +	resctrl_arch_copy_closid_rmid(child, current);
-> +}
-> +#else
-> +static inline void resctrl_copy_process(struct task_struct *child) { }
-> +#endif
-> +
->  #ifdef CONFIG_RESCTRL_FS_PSEUDO_LOCK
->  u64 resctrl_arch_get_prefetch_disable_bits(void);
->  int resctrl_arch_pseudo_lock_fn(void *_plr);
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 5efceb8d58a7..8344e0d27b78 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -105,6 +105,7 @@
->  #include <linux/stackprotector.h>
->  #include <linux/user_events.h>
->  #include <linux/iommu.h>
-> +#include <linux/resctrl.h>
->  #include <linux/rseq.h>
->  #include <uapi/linux/pidfd.h>
->  #include <linux/pidfs.h>
-> @@ -2491,6 +2492,8 @@ __latent_entropy struct task_struct *copy_process(
->  
->  	klp_copy_process(p);
->  
-> +	resctrl_copy_process(p);
-> +
->  	sched_core_fork(p);
->  
->  	spin_lock(&current->sighand->siglock);
+On one x86-64 host, both kernels built the same source (4dbe24720eb3)
+with make -j96 and eight 8-GiB ZRAM devices. Each build used a fresh
+output directory. The BRD test used twelve 8-GiB RAM disks, a 24-GiB
+memcg limit and one invocation per kernel:
 
+  usemem --init-time -O -y -x -n 32 1536M
+
+Times are in seconds (means for kbuild).
+
+  Workload        Runs/kernel   SYS: Before -> After      Wall: Before -> After
+  kbuild, 2 GiB        12       4193.23 -> 4271.06        167.80 -> 168.80
+  kbuild, 3 GiB        12       2257.60 -> 2299.63        136.29 -> 136.77
+  12-BRD                1        141.16 ->  131.44          6.61 ->   6.32
+
+Both kbuild cases used 1.86% more system CPU time; elapsed time rose by
+0.60% and 0.35%, respectively. In the single BRD run, throughput
+(48 GiB mapped divided by elapsed time) rose from 7436 to 7777 MiB/s
+(+4.59%). There was one boot per kernel and the baseline ran first.
+The BRD result alone does not establish a repeatable speedup.
+
+v4:
+https://lore.kernel.org/all/cover.1794666741.git.lianux.mm@gmail.com/
+v1 and original test method:
+https://lore.kernel.org/all/20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com/
+Related swap tier work:
+https://lore.kernel.org/all/20260916183437.2946306-1-youngjun.park@lge.com/
+
+Best regards,
+Lian Wang
+
+---
+
+Kairui Song (12):
+  mm/swap: remove unused parameter for reading swap header
+  mm/swap: clean up hibernation error handling
+  mm/swap: cleanup and document swap device availability flag usage
+  mm/swap: introduce swap device iteration helper
+  mm/swap: change the swapon lock into a percpu rwsem
+  mm/swap: serialize swap publication before removing swapon mutex
+  mm/swap: consolidate swap inuse accounting helpers
+  mm/swap: add priority queue for swap device allocation
+  mm/swap: remove available list
+  mm/swap: bound synchronous discard outside the allocation reader
+  mm/swap: drop swap active plist
+  lib/plist.c: remove requeue function
+
+Lian Wang (6):
+  mm/swap: avoid direct reclaim when populating swap cluster metadata
+  mm/swap: mask the off-list bit when checking whether swap is full
+  mm/swap: reuse per-CPU queue readers across priority changes
+  mm/swap: advance the global queue cursor directly between priority
+    rings
+  mm/swap: skip reader rotation for single-device priority rings
+  mm/swap: redistribute queue readers after membership changes
+
+Youngjun Park (1):
+  mm/swap: change back to use each swap device's percpu cluster
+
+ include/linux/plist.h |    2 -
+ include/linux/swap.h  |   45 +-
+ lib/plist.c           |   71 --
+ mm/swap.h             |   12 +-
+ mm/swapfile.c         | 1446 ++++++++++++++++++++++++++---------------
+ 5 files changed, 963 insertions(+), 613 deletions(-)
+
+
+base-commit: 7d1a16abe4cc5dccd21e3d6262e44433a5885d27
 
