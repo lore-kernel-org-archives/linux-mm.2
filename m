@@ -1,86 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B933606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 01:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6115A606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 02:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FoPYA2G+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O2VB9rZs
 Received: by kanga.kvack.org (Postfix)
-	id 009D46B05B0; Sun, 22 Nov 2026 20:53:38 -0500 (EST)
+	id 6A7476B05B1; Sun, 22 Nov 2026 21:01:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFCFC6B05B2; Sun, 22 Nov 2026 20:53:37 -0500 (EST)
+	id 657D96B05B2; Sun, 22 Nov 2026 21:01:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E161D6B05B3; Sun, 22 Nov 2026 20:53:37 -0500 (EST)
+	id 51FDC6B05B3; Sun, 22 Nov 2026 21:01:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B87686B05B0
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:53:37 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 43CB3160776
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:53:37 +0000 (UTC)
-X-FDA: 85464712074.09.70FF2FD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4B817160002
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:53:35 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FoPYA2G+;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 337296B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 21:01:48 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A07BA8077C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:01:47 +0000 (UTC)
+X-FDA: 85464732654.29.F518EA4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AABE840003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:01:45 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O2VB9rZs;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795398815;
-	b=xaowoi6vEeboS1KIpttL3ZiOdPQ+KswZTkCjpiNMXNo5Paa6EdEiMuTmm7f3Ops6h5VFvU
-	Emzb2B5uFcC4oyEFd8IdoiMAy130eqFoG7rg5hKVaHeCwrYS4hMxggMh22XnJBjSARRuCQ
-	IfrFaevY+QxAoiJn82XbLJLNkfDrU+4=
+	t=1795399305;
+	b=Ig0a6lAhHxu1wx/VIUZoParNrG73KHZQ0rxEJM/Z7cYlGbtT+y+dyttMqMks2tWLZUAv3q
+	Y4AHUjVx6uHi4DkpQzdsp7MaHuCZ7N5zrC0x2Lw9dhEsiy4ULHFqOjs3QuLoeqoocUVi+e
+	V7E918X0e5gEHenXwOQVaYAffEfsz+M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795398815;
+	s=arc-20220608; t=1795399305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sPv41HsofzT9QRCIlHB+B+IXmly/SiBKVbRaSebsetU=;
-	b=4JQ0uH3MluzqaMkjO1ddBqPl1AIvIVmn8lHOoVhchp0/c/+5gq6807msWd2GNpB/pRi24s
-	gA5saBM3yCkdff2YWiKtQA9KDUp1Zuxby0xD0JmjPq6RjLYV3avCY3lwiCOaT9sTe6ru0g
-	xJ8mwgpF3fGqybHvHXIg5mV9wp6D5b8=
+	bh=3XCN8MNx9DQWn83H6jTo1oY8Z1rb7ww+YHjpWxJXSWU=;
+	b=BqKC0zWrNRkca4ccBcrY68s7UvEfK5mKpCc5jGxGhm8VS4/812B6exzUQlObqivWQZQ8mw
+	z00ax3rwyH4WnoKGinHcVozl9D+z8e4e+pKrUgdgXc6Zu9rWf630z6AC0Vr87asrn7bO+3
+	2zecwKfAGbm9ClrNSRih2HW5RkVSK14=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FoPYA2G+;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O2VB9rZs;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88C7544F50
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:53:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0151F000EF
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:53:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 32FA061B16
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:01:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54EF1F000D0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795398814;
-	bh=sPv41HsofzT9QRCIlHB+B+IXmly/SiBKVbRaSebsetU=;
+	s=k20260515; t=1795399304;
+	bh=3XCN8MNx9DQWn83H6jTo1oY8Z1rb7ww+YHjpWxJXSWU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FoPYA2G+J+zjXF9qLqIyuvD8xy0Su3rqhmySBnSdTR8Ne3tlX8n+AFiI44Qih0rbp
-	 enBI41GL9ezrXnzGOiOWSjFgm1XUwjzlqgi12Z8Z+Ae1st55Qr++vdnyh01TaE4jAW
-	 Cx1h0mie6siLYbJTaJPya6Kss7+XJZQUXVEBgEh04GQBpjXWgjBdZRssK5nYL0J4zh
-	 ZKIRBcyj2iShj8v9STSc4nrzWJZSKQlQhFIg4wNmHGxDl+jNe/F3+u4DhopnlVgXNj
-	 4Kxjy+drvdEis87Bn8WaGmlVpe6Tkdk6XJuHgPPjRDawC2mHOjRt+UJoS1Zauyui6j
-	 1SuONatwyRUgg==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9495d543c42so296647085a.3
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 17:53:34 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEhvFuHrb2iI5tOh5NzKRRyrmlDCdqXMOcXAtlZlNdAGiRvmsTzgrcNXVuPEyEwD4ZQzYTMKB0i4g==@kvack.org
-X-Gm-Message-State: APuU4Z82j14LCiSSCin4Rlh5O64RtXjpu9pBpO4DWWEbHBsYkWH/xpKy
-	x1t1zHX5pqmQXrB3exTbaIbUunX9+jV74QmVuWYhPx4KdgTFbBx/YGwGY5aNM1b6CGawRr0H1dl
-	e4wUbhP9Vk/l9wGN2NT/m7yQ5ehLTkrU=
-X-Received: by 2002:a05:620a:130f:b0:949:7b40:5678 with SMTP id
- af79cd13be357-949ba9e19a8mr1736245285a.53.1795398813620; Sun, 22 Nov 2026
- 17:53:33 -0800 (PST)
+	b=O2VB9rZsOmJSEq7AbJ3AasTzaOZd/nYi80NZEfGhMqTmKa0Qlqlcm34U24FExyVTv
+	 CAYKWOxQIALQ0tKud/jaxRfvdbytji8bzpRqXkkgoM8EWixaJtjIQDyfq0j5n/87na
+	 ysFGtO/DQLI6E/NYbrwT1HXg9NsMxEq8gWgsOh4fagsGh66LgeSqfBdXCWkeufzJGR
+	 u3U3c9Nyg+Lahr2QzfM316FUeDUsKfZDavAwj4j4SM3XxG8Ys2se/UlhuOnM0c8uzu
+	 mPSJiHqsCdurDI2r86lh/fIasi3FRIFkjp/WfEzEDFiKBm9WPD0z00d/JCX40I3nMP
+	 AsMEr9J8avz2w==
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-94961d90b79so323760885a.3
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:01:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEhzr9b1+P1Q19/QBT1r8dgEiLb1h9KRSAWZAxhITWd615zl/nuW6coJdyOiJaMVkJnzXY9ywhLXg==@kvack.org
+X-Gm-Message-State: APuU4Z/ZE21oT/w5wljs9r8ByAuUKg3HHhGUGCBVbCz82PyXJnbrJeZ9
+	ab+yNnApGK8NH5Li/fuvXFm7tsGE5bPHgkIcUbdLUDJ0THcRP/ezozrphSjTkqo7Kmk80Yh2+JV
+	Zmug8eETze5/AH/BQ6OjvBi+X0WJU4wY=
+X-Received: by 2002:a05:620a:8388:b0:93e:e425:229f with SMTP id
+ af79cd13be357-949bab2ab74mr1674615185a.77.1795399303983; Sun, 22 Nov 2026
+ 18:01:43 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261116081403.216452-1-max.kellermann@ionos.com> <20261116081403.216452-4-max.kellermann@ionos.com>
-In-Reply-To: <20261116081403.216452-4-max.kellermann@ionos.com>
+References: <20261116081403.216452-1-max.kellermann@ionos.com> <20261116081403.216452-5-max.kellermann@ionos.com>
+In-Reply-To: <20261116081403.216452-5-max.kellermann@ionos.com>
 From: Barry Song <baohua@kernel.org>
-Date: Mon, 23 Nov 2026 09:53:21 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yZznwxOZmfeB2SpgT1enRbQMyKnN4QjEFdoN-PJi7mkg@mail.gmail.com>
-X-Gm-Features: Aa3M54qK4wPWc_XdvESaK_X96UC5ef31iB9G90RGWdgsH-87Oq5vyoTtWFtdPXs
-Message-ID: <CAGsJ_4yZznwxOZmfeB2SpgT1enRbQMyKnN4QjEFdoN-PJi7mkg@mail.gmail.com>
-Subject: Re: [PATCH v3 3/5] mm/mglru: cache the last memcg node, make tail
- insertion constant time
+Date: Mon, 23 Nov 2026 10:01:32 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4w3cP+tgCGhTFu5p27Wi-9AFCneQgwLUAUg7X-gvX=e4Q@mail.gmail.com>
+X-Gm-Features: Aa3M54p-50BtAbApXAC69mU4ZCzPL9LtAqomEWm18qsEYdXBO_694xtx7kaXITk
+Message-ID: <CAGsJ_4w3cP+tgCGhTFu5p27Wi-9AFCneQgwLUAUg7X-gvX=e4Q@mail.gmail.com>
+Subject: Re: [PATCH v3 4/5] mm/mglru: avoid redundant rotations of young memcgs
 To: Max Kellermann <max.kellermann@ionos.com>
 Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
 	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
@@ -90,18 +89,18 @@ Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ze93q5j33onss7gqbc3bb91gmfqafxb1
-X-Rspamd-Queue-Id: 4B817160002
+X-Stat-Signature: 9tkzmrroeir4wytimx8xgx8kkiwcsg3i
+X-Rspamd-Queue-Id: AABE840003
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam02
 X-Rspam-User:
-X-HE-Tag: 1795398815-666251
-X-HE-Meta: U2FsdGVkX18OqPx6GPZwAtwaKJc7tAHq97sL9aBXXzDKGwI31D6hh/r8lgTvBomN8n3SxjoCN4WGrWu805b0zhNnlNw+nXB/N/G5Yd5LAvnAdB/NU71A94dCh4jJM9O4zLgE68oYW849S5C8Mol5F9DXBWN5iHBLczucpwBkcilkheADf/AbDGf2iL7YyMKGh7CWPm94LB5g1I9ojydSJUl+WKFNneToDPgVFtq4+Dd7OaYxUQ3yssScgwLwZ37RjVXlPHYf3Rh63IgxvqA1OF/5qh3EmOgtOR8D0cYshLigBYxySao7nEHKmpZcfKZiwJJosNY37AoPMcpHbaPhfC2e9gQgKqIs0K07AHIBBXg1lWqVIT+1W8XLb5SO/+nKkssCvjpOpdxwCGSIJydUvYpTFNSL+R8t+n0kwAT1Cj0Y+ZD2t31SnjJsDU0dep4flITJhjSJisC7m0Z7VnrbbPqVUVB7BpLt9AlSZ1AIkeEhOwVaNCYoJj0XYcv9llrDan/5uFNuOC70pNs8aBeoKojGU+f4hiPU0Xeutv+GvsoIiUH2TQhpAHSWcOs+fD1csTHf6517w7TFsm/uf/W81cz4BYFdJ+7w2WYC8DULwyVXuKu/wfO96VOKMrOt4BHP2rU0m3gUfBpbC7umjJREWb2Y+8NzWZp08w5cEN5Kge1Pm7LQBEHR/DWozO6gzM+YoYmwm/Hb5/N+OBGX6ZWN6twTJHMiL1sWhEK+BLLyvPme2aGcOcZp5CypXKXEEkYz3aCJzn7SBaq07ZLxPg8loHRFhC56Mg10MUOdoTKvenjc6xsxZyazekAZmx9rELPkLYW7bamhozWdLTstrMZjtkclTjEU8W6Ju/kcw6w1v9yFACcK8VIZ6CKwgn5vvlMTw+h/eauaWy66zMAEbt4Jz16jYk4lnO43ETbe7atf+OLrBvsWfHDBFzfCQLQD939GW1LXX+KAcWe1unyFKZg
- nHv90dRS
- 5Pf/9LLljfRsVHaVNCUliRyVrgTU8sUpQMomILUG3i1hB+O3PpMbU4Yn8WGbncMvGawF+LghwozTzWDUhehWS0ajKB3t3TpSS1aCJXJ+cJxtwEDsP8mkD3CoFGsvFH1N6tBXt6yOhfNZDRFi4R5ur2QmFHVly9DrJDfm4lMv7nQkIkqbEY9D1ZpQlIXVtR82T49El6RNg00U1P9MRKoM6QdZuiJ5zv6ZeeJhf68f+DUL31Os3bc/AWd7hFjWnQkdeQmj0TkJ212egzS2/f98ipbECkTWro1p8JrfUxtQ1C6rE2hXQKTIBjK6sb6k/8ZGJ25oLWdGtJmJ5gapD3tjLwsLysoA/12a73VG688elpI/h6cBH+L71m+GTShzHC9IY4lRnbJiThUgYxjgp3u4ovDmsprE8hrR+WLpn92tNj9rmC5NympBquxDxAUOstB6poGABKRWcEawlD+JkdXpXzrmAbhSFV76/d46x3TTUmxWvY8GBeGuYgqrTAR5bpRtsMPuZGtPTjFGs7TUGuR3Nfhsmd6EyFm0f8eLsiJ6g+jvbJYM4RY30cPptxONBwGqXZTs+RwAnTiLjIkmCOQGqlHjexw==
+X-HE-Tag: 1795399305-567538
+X-HE-Meta: U2FsdGVkX19Nbbd7be7pgclfMzqW7dbLIGArB5gz4mwFDIpJkAGtzH/8wsSZh/x0YoNbQeKsD2yqrv+xq04d5hPtvFZrVpfp7fV2sLOBOzc2cx/6rO1VU7JXcxyKyJLv4AIwaOeOzkmSmFY+xvd0/Vjf23t83uH3uGx8AuZwb/jLMNvDjmEDPdxdMdqysm86gd0F5y7y8/+IsEO7L57l2/Zx2ZWxpO5gYvdv7lOG8pex95YaDEakHwVcO2iY2kC3SI7zpVY6EFPWB1R3EqfvFe7zoK4uqQguHVpsN8kXXRZrc9w2B7fdfjnEIVhw+EkI1CPp9wzmDRHP2Ybisjo0DZm5Wys9G1TuUOHEjrtX80RpOPDgSu3diGEj83CHPuAeYyL5ZwaRp1M/kkQCHQ/PfnduTDoVX1THGAMM9fWVbCAhGBK4j5Oe88/+WwGwrdeFFbzGnkvY78iuEi7OP83cWoJyQHoX+sC9v7RZGak7b0M7UI6WLxtPhWHoxfRggEbbqVPYCrmQ2HqdaAENIdOZz2aJottn9vnfDKeyLhquqXmMSzRR2GXzkzW6TT3eg+WgGZKirUfopTnJ6l2q6g60hPSmDc3Xl2oXF7mCtKUv7tEg0rGhgP15G3CgrpwtZbS2ufYc031OqG4yD2nfjYQwS8+AMizOP1VcN4h099m122QhXZ0m6H6J6Hdx2d+zC3EDW4HpmJ+/o7dSivFNHPjRexac296F8NTzh0ttQfd9JChXRZkVgA/tCTgtEypaQfTtwjJSCb2qyFg7GhDo/e0bhepPSbskSt04PKvGXAOq9ENf7jaIfLIhEkZnV9cAk4iPxJS2vjCYeowekvfD12Q0odt6f1HuB1f4HTCBa5+KmyPlWbDC3db4xyxpQmMhS3/OOk9X7RzeJy1Pg1319X3QSDVUA4kiyhJpYctjbJOOlbzY2CpF9/h4B1RpqhqfaLhqFHMGf3xwglEsO96Ktdf
+ kgSCPOj5
+ wsjKu5E2ElWgmb+nSwwBymwOCGCugo98SOe63BEBykU/UkqeNUsUY6YNtsV2Ni+y7kQUtMSu0G0uy4r1ohEawawdBTomSZWlY40tfIygj9mzjFaAan6vNrtsCMAK52e+/9rh+Dy92ABPb9Lb15uzI/gxBdfl7MQSTj2LsM+26IWaYjzrBwvizVsCBN04tdUCirt9/acTPr+arseQOb0o0nk/uj9xyz9g1W0oOWSZzu08s2Ag4i3u19KqRZvj9eX9W3vIdTm2a/Fi6GKP5Tg7ryQdLLqG6Ecfcux0+JyyLkUH6S1u0adtwmZe0Byz/ioI0/6DLIb8pqAtJblqwG9BaeLzaqx9A9TV2AYSEd5uStsJ2bBEgS8zsDLddPtKlpJbSrMkq79FpaYzuZpp/38AQwEbb/C6nhQ0PMACZRyZAaBHY6s8XUxRL/kXADy/A69kg47dV7PWXyZ8rbOawg0HF4oZYHy/Tj16wZPDLgg7LFXRyZO5uxp/d60jfU5NfcsNQNR11m76jC4c4oUL5vtxyBTsB1FWU9SmVNNH63+kn02Kc5TmqZFRW2RtEvpqCaOWyLv3V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,88 +112,82 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On Mon, Nov 16, 2026 at 4:14=E2=80=AFPM Max Kellermann <max.kellermann@iono=
 s.com> wrote:
 >
-> Rotating or onlining a memcg currently uses hlist_nulls_add_tail_rcu()
-> which walks the destination bin to find its tail while holding
-> `memcg_lru.lock` with interrupts disabled.  With thousands of cgroups,
-> this takes a long time and causes severe lock contention.
+> Concurrent reclaimers can request promotion after another reclaimer
+> has already moved a memcg into the young generation.  Requeueing it
+> into a random bin again adds list mutations without advancing the
+> old-generation scan.
 >
-> Cache a pointer to each bin's last node, making tail insertion O(1).
-> This requires remembering the bin number (but the new struct field
-> occupies a hole, so it does not grow).
+> Therefore, skip `MEMCG_LRU_YOUNG` when the memcg is already in the
+> default segment of the current young generation.
 >
-> In a micro benchmark that creates 1500 cgroups and repeatedly writes
-> `1024M swappiness=3D0` to `memory.reclaim` in 8 threads, the request
-> rate increases by a factor of 9.5 and the average duration of each
-> write request is reduced by 89%.
+> In my micro benchmark, this increases the request rate by 36% and
+> reduces the average duration of each write request by 27%.
 >
-> All writes return EAGAIN in both runs; the benchmark measures the cost
-> of reclaim attempts that cannot meet their requested target, not
-> reclaimed throughput.
->
-> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
 > Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 > ---
->  include/linux/mmzone.h |  4 ++++
->  mm/vmscan.c            | 24 ++++++++++++++++++++++--
->  2 files changed, 26 insertions(+), 2 deletions(-)
+>  mm/vmscan.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
 >
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index c161d563ce8f..8382fc86cf0d 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -570,6 +570,8 @@ struct lru_gen_folio {
->         u8 gen;
->         /* the list segment this lru_gen_folio belongs to */
->         u8 seg;
-> +       /* the memcg bin, protected by memcg_lru.lock */
-> +       u8 bin;
->         /* per-node lru_gen_folio list for global reclaim */
->         struct hlist_nulls_node list;
->  };
-> @@ -661,6 +663,8 @@ struct lru_gen_memcg {
->         unsigned long nr_memcgs[MEMCG_NR_GENS];
->         /* per-node lru_gen_folio list for global reclaim */
->         struct hlist_nulls_head fifo[MEMCG_NR_GENS][MEMCG_NR_BINS];
-> +       /* last entry in each bin, or NULL if empty */
-> +       struct hlist_nulls_node *tail[MEMCG_NR_GENS][MEMCG_NR_BINS];
->         /* protects the above */
->         spinlock_t lock;
->  };
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 49ef29a86553..7cfaeca9a605 100644
+> index 7cfaeca9a605..6b7c9f118e18 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -4434,18 +4434,36 @@ static void lru_gen_add_memcg(struct lru_gen_memc=
-g *memcg_lru,
->                               int gen, int bin)
->  {
->         struct hlist_nulls_head *head =3D &memcg_lru->fifo[gen][bin];
-> +       struct hlist_nulls_node *last =3D memcg_lru->tail[gen][bin];
+> @@ -4472,7 +4472,6 @@ static void lru_gen_rotate_memcg(struct lruvec *lru=
+vec, int op)
+>         int seg;
+>         int old, new;
+>         unsigned long flags;
+> -       int bin =3D get_random_u32_below(MEMCG_NR_BINS);
+>         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
 >
->         lockdep_assert_held(&memcg_lru->lock);
+>         spin_lock_irqsave(&pgdat->memcg_lru.lock, flags);
+> @@ -4490,11 +4489,19 @@ static void lru_gen_rotate_memcg(struct lruvec *l=
+ruvec, int op)
+>         else
+>                 VM_WARN_ON_ONCE(true);
 >
-> -       hlist_nulls_add_tail_rcu(&lrugen->list, head);
-> +       lrugen->bin =3D bin;
+> +       if (op =3D=3D MEMCG_LRU_YOUNG && old =3D=3D new && lruvec->lrugen=
+.seg =3D=3D seg)
+> +               /*
+> +                * This memcg is already in the young generation and
+> +                * reshuffling it again cannot help the scan of the
+> +                * old generation.
+> +                */
+> +               goto unlock;
 > +
-> +       if (!last)
-> +               hlist_nulls_add_head_rcu(&lrugen->list, head);
+>         WRITE_ONCE(lruvec->lrugen.seg, seg);
+>         WRITE_ONCE(lruvec->lrugen.gen, new);
+>
+>         lru_gen_del_memcg(&pgdat->memcg_lru, &lruvec->lrugen, old);
+> -       lru_gen_add_memcg(&pgdat->memcg_lru, &lruvec->lrugen, new, bin);
+> +       lru_gen_add_memcg(&pgdat->memcg_lru, &lruvec->lrugen, new, get_ra=
+ndom_u32_below(MEMCG_NR_BINS));
 
-So this is the case where the list is empty, right? Maybe add a
-WARN_ON_ONCE() check before this code to make the assumption explicit
-and catch potential violations in the future.
+Hi Max,
 
-VM_WARN_ON_ONCE(!last !=3D hlist_nulls_empty(head));
+I know it was my suggestion to avoid unnecessary calls to
+get_random_u32_below() unless we actually need them.
 
+You then pointed out that this would move get_random_u32_below()
+inside the spinlock, which I had overlooked. Sorry about that.
 
-The patch itself looks correct to me.
+Have you tested whether calling get_random_u32_below() under the
+spinlock increases lock contention?
 
-Reviewed-by: Barry Song <baohua@kernel.org>
-
-> +       else
-> +               hlist_nulls_add_behind_last_rcu(&lrugen->list, last);
-> +
-> +       memcg_lru->tail[gen][bin] =3D &lrugen->list;
+>
+>         pgdat->memcg_lru.nr_memcgs[old]--;
+>         pgdat->memcg_lru.nr_memcgs[new]++;
+> @@ -4502,6 +4509,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lru=
+vec, int op)
+>         if (!pgdat->memcg_lru.nr_memcgs[old] && old =3D=3D get_memcg_gen(=
+pgdat->memcg_lru.seq))
+>                 WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1=
+);
+>
+> +unlock:
+>         spin_unlock_irqrestore(&pgdat->memcg_lru.lock, flags);
 >  }
+
 
 Thanks,
 Barry
