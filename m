@@ -1,84 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82996606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC102606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eCqd/aEU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E0+Q72hR
 Received: by kanga.kvack.org (Postfix)
-	id 915756B05C5; Mon, 23 Nov 2026 11:28:30 -0500 (EST)
+	id 807816B05B4; Mon, 23 Nov 2026 11:30:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 877CB6B05C6; Mon, 23 Nov 2026 11:28:30 -0500 (EST)
+	id 791496B05B5; Mon, 23 Nov 2026 11:30:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 767346B05C7; Mon, 23 Nov 2026 11:28:30 -0500 (EST)
+	id 60A946B05C6; Mon, 23 Nov 2026 11:30:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D9286B05C5
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:28:30 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D543E4091D
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:28:29 +0000 (UTC)
-X-FDA: 85466916738.13.28F57CD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EEAC6B05B4
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:30:37 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E15E1C43C9
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:30:36 +0000 (UTC)
+X-FDA: 85466922072.21.136F27C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1C4558000F
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:28:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eCqd/aEU";
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8A7BB40009
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:30:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0+Q72hR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795451308;
-	b=ZiMnPJ8KawlY72WVKvVly+EDIFMAe1L2gxcKm2B0RcrfGhXWgBbJWQyUUOuwE9i5M8Dn4p
-	6hWEC68JtlUjRsmc63Gtrg+3xwDSGau0l58Ej+kLL0CtmTSVZUukI6PG90/SinnKTAluo2
-	lE7IeJ65ypF5ir4kUmWPQh53DgfB1EQ=
+	t=1795451434;
+	b=5Tq0ONjDgtWTAkPSMCIebtf+htvscM66f8dzJA3CaDAbBVWT/FMUHZ8L6MK0N6gzuxliD9
+	iKZCzlm1UKtxPUn3wtya0qUkTmvVxG5sWXRiYFrjfdmHZZ9U9+hE0utZrcKh0ZWQmHXU8t
+	SmD0VfIaGyHSrhlL73oJxOD6Jrw/hGk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795451308;
+	s=arc-20220608; t=1795451434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HoffiGSe9lw4TF78z8YL8hpSMNdnj0ja/nyeeNcyrXk=;
-	b=meFk62tvG/PoGqANHGT8muCEPIgJMyff7JWwLdhP87XtaTrmmxlBKZW3newfOwCa6M5hYm
-	yxNsELYf+OCmKeBAmUBaIc05vqiCQGbBOw3isuT2aVib7rqla/FBK+TyVo6PkVeAB777w4
-	y0H7G9o+gZqHckPpDcuCo9whFn0zSA0=
+	bh=3Id7WGSAHR3shCUUyvffsnWFyWGcWhkwKAm9+/q7F4Y=;
+	b=gyuHnjoVnDmyoR6vLHtjS9D6aL7n21GPF70IS/hhhCenVFMc4bagTsUqvPiexrHmkPrz74
+	VWBbPGx2Tp/UGYOo5CRW4LLRWaWNbDxdJm03zwJt1zznuTcg1iYb33/3sO46XJe8FjREvb
+	mANKF/qSXpc6edfutAuE7w9nt6BAWQw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eCqd/aEU";
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0+Q72hR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8F55161106;
-	Mon, 23 Nov 2026 16:28:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC671F000C6;
-	Mon, 23 Nov 2026 16:28:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 018F96184F;
+	Mon, 23 Nov 2026 16:30:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D811F000C0;
+	Mon, 23 Nov 2026 16:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795451307;
-	bh=HoffiGSe9lw4TF78z8YL8hpSMNdnj0ja/nyeeNcyrXk=;
+	s=k20260515; t=1795451433;
+	bh=3Id7WGSAHR3shCUUyvffsnWFyWGcWhkwKAm9+/q7F4Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eCqd/aEUFhcobkHvIRtslNYaDGlGNpaRXJC8alAL83lgKuviAeuU6mdUDav93Pgy9
-	 8VxMUIjUigeixYM5oHGcipMNKKyAnLHLBRF0M8X2FZL+yd6mEMvwsvhcG6Q77MOb/W
-	 /C6GhffmiD/GB8EILT+jsP7PY/U7eXGiL7153iHCwCGNoLriv5QdnAX6jNlYb+QUda
-	 x/j4wWLxjhYqUjTIcXxQh5EP4E8jgrRney/i8h4DhayasETzlK5VyJOdMZHXtXqpZ5
-	 ulFM1trBjMGmlrF/sKyKSYrc3m9t9ga5qzUNDoY9tO5mhol8107rllA42p1i/GmryX
-	 n/eAjsBpPfIog==
-Message-ID: <377c4f51-8c52-44e8-a282-097f3b6905b9@kernel.org>
-Date: Mon, 23 Nov 2026 17:28:20 +0100
+	b=E0+Q72hRW1vFotqa29WdwYokAX1DIUx5cQ2UT7hGDB5TaUbiSDhiuBmJxGTTg0eXz
+	 K4wLkEyrVQy/UE1XtVx3D0jddWDAHoe8BjSleaxedxdNtC8G1UkQMznhkiAGX0Lc2z
+	 wNluFPTHh0vx3+bfKbfVkr7K1wFCChtWWqKu60c1/9L9mfFWdOzBhHwzWZVKgUHGaV
+	 J62ArEyK1ibIr0QVgrFANexEiHwac9nZXE+LdUw4KXZngZLNYtUu97sTCNuVmxrKMR
+	 dRejsRcsTaFCZ31oA57K5nxtOagmRI726Cm2F0chUPkw09ZCpXeMZVO7xBeZEbPDYb
+	 SYbV0BbmiHeQA==
+Message-ID: <787a9e9e-407d-42ee-ac27-fb402323083b@kernel.org>
+Date: Mon, 23 Nov 2026 17:30:26 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/rmap: correct VMA write lock position in lock
- ordering
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Rik van Riel
- <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org
-References: <20261123-fix-rmap-lock-ordering-vma-locks-v2-1-11b04646abe4@kernel.org>
+Subject: Re: [PATCH] mm/shmem: fix swapin livelock on a mismatched large swap
+ cache folio
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, mt4022@columbia.edu,
+ Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ stable@vger.kernel.org
+References: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
+ <3c61a49f-6a0d-49eb-8682-aece4e7e7226@kernel.org>
+ <4af8b7ef-8028-4b98-ad21-5620f8b92f42@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,22 +125,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261123-fix-rmap-lock-ordering-vma-locks-v2-1-11b04646abe4@kernel.org>
+In-Reply-To: <4af8b7ef-8028-4b98-ad21-5620f8b92f42@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1C4558000F
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 8A7BB40009
+X-Stat-Signature: ym8gdef6nn3o8xgm5kbqqtp9d6hqjmym
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: o1spjr9pu1ctmbpgj69a86gyb45jcjfx
-X-HE-Tag: 1795451307-511917
-X-HE-Meta: U2FsdGVkX1/V1m06EmcXO05rp06p0FGucV6dS2x7K8XX3g+lGAspWIXZBA1IUb1O9cab/s5tj/Z0Rt2Ph7l4kHcpn5MzNZ3JfcapLVhBOWHpN4nByzOGuDy7SihPkFwgQ8acSEpYwk884cBTsznJrOmPNInahn9BtbJfFT+O4f5xwsoIyQE34k1vKIdEoPXw647bMFEKV712SOjSEnZkq/NL0dZWdk4gebXNu2CYqLgj/29rpZWiip27EPJsimCIFl+FVjDc+H92JGekV7rWzIw6aSNsgrXL8OXfXZ4v4rtx9LsN6zwL+1ueFalHNldXnFfGh+//nKdd9hQhcUGid3qW3enqihaxAgWkGxz26ICIjJT6/sxc86qiSGotCMLyJsMS9CBK2mktgd2l9Y7Twstf9gd9EFIVwaav7loG/ghtJgue6Xsg+8rFsqnBVKnEMbXLxx0OeCmHoMU9sfAjtS9e/Fhi02nvJwGp0mgMhaTMpLh5jU3QrfA0BTOz7el5popiu1wWTKtGgzeKkKnjD7inWylownDsVXi6vRZzGvPFuw6tIeuVqX/a2vASb9ztPugnwFyGDLDlYAETpqyoT5IHw+5FeNihumpfxUx7/20ThnTEjB2GxXo0bRuS153+yeMmJr3KAF2MXpncWn3lUa4HGsCkPKu97wuWcuO/aVdJXtiLgu3DyYtC36KQqMkgd/9Xuz5ZEDycNeXlEhKxreacMtcOWuWZgMrs/gcOVQGXjyvZQgwq2LjtU7lUc1nJSkcFeshsJ45p+fcPkKaOck1TpBYuuaRhFbcktmO/5Zn5Y4Xx7RkwR8Lfu8MNSXocMo6dh7vAoaLH3ahb63lN5qhs3xjuIvBSklcr5xyaTUsMZZ524EJFwbLI0AJJpGK/5d1yEqIWxVvQ3vTf5v+l4AMTFHUUWH6zq0AwciksBKx4ezT7AlNdSoEbxgT3CJ2LSzPJzdNtks92RCuhj4v
- bm7fMqpI
- DQDHYzMZyDCzYtUa6E6lITE6n6l4aeja/UTVz/UpB/YhFuS0m7lTusZQBIV5bo2CMenHgUe/+sRXNYKxSf0pb7uvdzvWqGSIApnypff57RfhnzDxF+bxWGgf0S5+uei9BlruN+R0GfXYg9+Ta5e5VjGTgPS0z+FT5TpHwt9HN11EX1Fq8tTQQY6mUFla7TPsU/V3CiX6e2lhrjIFQ01cRDaJcXuxH9/SMxvA7eFsZO/fXc5D35aJT0YCsn/SFuoD5T/BUtnMH7aGXCDYrxwmZOHpv9nHOQa0DHRLv+UW/wLx1bpT376PzM5lkqhoIuZj/obccE89bDGNOldEvU0dkfmSfA4rGiK/NxivZhw0V6DSgABa3+ttSd3P5EqdImmKHwRBv8wZc1DHz5G5tj9b1O8ifIL0k69NFkYZ2S/gpIG/xHzj+hwCWmv5qkI4ZDkdqXJi59tn6KiHnsYzn3mUmdT/0SDuepa1OSi7rOn/vpjoP3Z6qdMk/aY8lwtPwxH1qvBUU
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795451434-833621
+X-HE-Meta: U2FsdGVkX1/ojnEXcC2yZtQYzQ9teO65az7Ib0H+sPP9iD38QLBtCkqMlEZ/HQqQrJZEYFspwnmUTrjE0w8vwXjG2+SiEbnYqKb2hZ8ROAvo3vaJqqIMqtnnVowBzBA0xIOQ5aENKcsK4hyG8txslySKJQwAYTHuKXLs2gR2UCwtwfCKx89eem3LCxJX0iCJALMby/bHDQRMp4tcNr9gaxs8Fi4rU5GMvRc3koMIkpu1yxI1/tdBRydpHaQo9XOU96PXHMipKoL397d+fCNHcbzVjN8axj8szxJ/4/C/CRyZxxfAdqX/hPILxU9ynq07zzJgSDkmEFcPHSpDUwfnQXW66ST1RkMQTKx5EIdXdsAamvIPykmm0rUYJJFd3Lgd/Lf0otDPy6JahGR+KKVap6e3192EsJl+DQ9NlRbuDVTvPZJCH9mBPtodfuWBCGheM1R91862AV6kVvk4PsqVNINLCJzpMWUYvrFJGv06JFImPODV8UYttMOhsefQjHa7JNVsKkWlAponcbjHfuDW76sKQsL/7ILf/Zo6qMwpYRXYmMgLK1gu5w7kLd7L+KDUEId/P73u5+DnzDYkQ1kZXUoGI45nWVoPXDy0wqf0zud4u4Y/U5kLsLg+aiHjwYHfL9JT5O9cCYApTWa/EQ6VrCmyYapqKUqQbEIe9et2Bj/Fo5qjhz1L7KWvg9dsdKw4V6+sNd1x1qIvE5O4lro7wRcty3Y9eVLX+XAaEUPjDePuUfXOnn6A/Uhtjs8/a3gbu3E5yqRHoNAZT0sSHn3DvJ+nVS7nBAEeiA56Ebd5iYzTWgcIzkvsoga0LhIfSTxdAI7GDR5HS4ad4HiMQRn9/HjF4FZNGWnV4KpFu2ICXtFH6dC1CnEZOWo+PMABoqw2D9Owzdg0A7exLboJtNdzvjr33nTZ5g9SnbUeIyLtUc9ka/RRpqgNdcA9iC8Y6nYvgU202MBBuCZs1Pjbe0P
+ b9+b4rQc
+ UnhgBAlz5cGUFb6NCGb6PddxjUYTe3ZdPtPJomFrYr5DNghtdhk67brHNuyRZ5XN/hjoFYcg4nyzU+GCWCyWjigoAq1JNq8699ALSzOjN/kgyeNjbSAUgx5ZPNPe/XDoDKqtLS+waWh4JLYkwkeNYlQZsmeHNIaygnzpslnwbVQbEAgYwHO2R9UFnBjxPBijYXyhu/engmaj6ycJiHPZ71dz60rkDGyIfeJi+frLB8CzFBfxIpArp7/YVjQ/0gKEV6KYlw2RzPhPbi3dcfCmqAoAWJsiZEryThTSZaXsf1uqVU5SXb21Y2Hzfwr65vL5JQJvSP3c+6PWVdISRO7CWraOFU0fZhbImDgApnIdPXLfKGfXU81to+eZyk0SUdPTeYrOzZ3AHtl+UHIkxOmMnLG4o2BEv01SN8TTY34/1/zmUOQ01nmeQDbakNETWYfalkT9hLbPqab+BdMDn15pG3/yIP8SMYHeIvTbd8YyfachnNlragk321dK4r11x1F0Ubbhk8s+2YH9vQ6xkSa+42ufybAY7RcoqMNGa47uCgtYsNQmVQGO08Typ9bojvgK3MfKudAU07tEs28SXVaRe8WQVW/pzT2tLlHDn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,91 +149,191 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/23/26 17:10, Lorenzo Stoakes (ARM) wrote:
-> The list at the top of mm/rmap.c is taken to be the canonical order in
-> which locks must be taken in mm to avoid lock inversion.
+On 11/23/26 08:18, Baolin Wang wrote:
 > 
-> However, VMA write locks appear to be misplaced. These were added there by
-> commit 55fd6fccad31 ("mm/khugepaged: write-lock VMA while collapsing a huge
-> page"), which was focused on expressing the dependency of locks after VMA
-> locks in the ordering on them, disregarding those prior to it.
 > 
-> Of course, a VMA write lock requires an mmap write lock to be held, so this
-> leaves three locks to consider:
+> On 11/19/26 7:06 AM, David Hildenbrand (Arm) wrote:
+>> On 10/27/26 21:33, Mani Tofigh via B4 Relay wrote:
+>>> From: Mani Tofigh <mt4022@columbia.edu>
+>>>
+>>> On a SWP_SYNCHRONOUS_IO swap device, a large shmem folio can be left in
+>>> the swap cache over swap slots that another file now uses.  Reading
+>>> that other file then loops forever in shmem_get_folio_gfp():
+>>> shmem_swapin_folio() finds the large folio, rounds the index and the
+>>> swap entry down to the folio's size, finds no matching entry in the
+>>> file and returns -EEXIST, and the retry finds the same folio again.
+>>> Since the task keeps the mapping locked, a munmap() of the same mapping
+>>> waits forever.
+>>>
+>>> The folio is left behind when the slots are freed and reused while the
+>>> swapin is still allocating it:
+>>>
+>>>    Task A (reads X)                      Task B
+>>>    ----------------                      ------
+>>>    shmem_swapin_folio()
+>>>      allocate a large folio
+>>>      for X's slots
+>>>                                          punch a hole in X
+>>>                                          /* X's slots freed */
+>>>                                          swap out file Y
+>>>                                          /* Y reuses those slots */
+>>>      add the folio to the swap
+>>>      cache over those slots
+>>>      shmem_confirm_swap() fails
+>>>      /* -EEXIST, the folio stays
+>>>         in the swap cache */
+>>>
+>>>    Task C (reads Y)
+>>>    ----------------
+>>>    shmem_swapin_folio()
+>>>      finds the large folio
+>>>      rounds down to its start,
+>>>      where Y has no entry
+>>>      /* -EEXIST, retried forever */
+>>>
+>>> Before commit c246d236b18b ("mm/shmem: never bypass the swap cache for
+>>> SWP_SYNCHRONOUS_IO"), a direct swapin that failed this way freed its
+>>> folio instead of leaving it in the swap cache.
+>>>
+>>> do_swap_page() already drops a large swap cache folio that does not
+>>> fit for anonymous memory.  Do the same in shmem_swapin_folio() and on
+>>> a -EEXIST, remove a large folio that is not
+>>> anonymous/dirty/under-writeback from the swap cache so that the retry
+>>> swaps in a folio that fits.
+>>>
+>>> The reproducer below fills a small brd swap device so that a 64K shmem
+>>> folio and the 4K pages of another file land in the same slots, and races
+>>> a read of the first file with a hole punch and a swapout of the second.
+>>> This bug was identified and confirmed with the help of a deterministic
+>>> hypervisor currently under development, but the non-deterministic C
+>>> reproducer can typically trigger it in the 2-4s time range.  With the
+>>> fix, nothing is triggered after 600 seconds.
+>>>
+>>> Fixes: c246d236b18b ("mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+>>> ---
+>>> Two patches in David Hildenbrand's v2 shmem fixes series are related
+>>> to this one.  "mm/shmem: fix truncate hang in large swap entry" [1]
+>>> makes truncation retry -EEXIST directly, so it can also loop on such a
+>>> folio.  "mm/shmem: preserve allocation errors when swapping in large
+>>> entries" [2] fixes a different -EEXIST loop, where a failed allocation
+>>> is reported as -EEXIST.
+>>>
+>>> [1] https://lore.kernel.org/all/20261027-fixes_shmem-v2-10-86a00952acb9@kernel.org/
+>>> [2] https://lore.kernel.org/all/20261027-fixes_shmem-v2-11-86a00952acb9@kernel.org/
+>>>
+>>> Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/shmemloop.c
+>>> ---
+>>>   mm/shmem.c | 16 ++++++++++++++--
+>>>   1 file changed, 14 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>> index 13e0786436cd..f1da8432d55c 100644
+>>> --- a/mm/shmem.c
+>>> +++ b/mm/shmem.c
+>>> @@ -2568,11 +2568,14 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>>>   	 * and swap cache folios are never partially freed.
+>>>   	 */
+>>>   	folio_lock(folio);
+>>> -	if (!folio_matches_swap_entry(folio, swap) ||
+>>> -	    shmem_confirm_swap(mapping, index, swap) < 0) {
+>>> +	if (!folio_matches_swap_entry(folio, swap)) {
+>>>   		error = -EEXIST;
+>>>   		goto unlock;
+>>>   	}
+>>> +	if (shmem_confirm_swap(mapping, index, swap) < 0) {
+>>> +		error = -EEXIST;
+>>> +		goto failed;
+>>> +	}
+>>>   	if (!folio_test_uptodate(folio)) {
+>>>   		error = -EIO;
+>>>   		goto failed;
+>>> @@ -2613,6 +2616,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>>>   		error = -EEXIST;
+>>>   	if (error == -EIO)
+>>>   		shmem_set_folio_swapin_error(inode, index, folio, swap);
+>>> +	/*
+>>> +	 * A large folio that does not fit the mapping, e.g. because its swap
+>>> +	 * entries were freed and reused, would be found again on every retry.
+>>> +	 * Drop it from the swap cache so the retry can swap in a fitting one.
+>>> +	 */
+>>> +	if (error == -EEXIST && folio && folio_test_large(folio) &&
+>>> +	    !folio_test_anon(folio) && !folio_test_dirty(folio) &&
+>>> +	    !folio_test_writeback(folio))
+>>> +		swap_cache_del_folio(folio);
+>>>   unlock:
+>>>   	if (folio)
+>>>   		folio_unlock(folio);
+>>>
+>>> ---
+>>
+>> I have an AI fix here:
+>>
+>> Author: Chris Mason <mason@kernel.org>
+>> Date:   Wed Nov 11 18:44:55 2026 +0000
+>>
+>>      mm/shmem: don't drop a folio whose swap write failed
+>>
+>>      If the swap write of a large shmem folio fails while a swap-in of
+>>      another file finds that folio in the swap cache, its data can be
+>>      silently lost. A read of the file then returns whatever the swap device
+>>      holds.
+>>
+>>      "mm/shmem: fix swapin livelock on a mismatched large swap cache folio",
+>>      earlier in this series, lets shmem_swapin_folio() drop a large folio
+>>      from the swap cache, if the folio does not fit the file that is swapped
+>>      in and is neither dirty nor under writeback. A folio that does not fit
+>>      can belong to another file, with its swap write still in flight.
+>>
+>>      shmem_swapin_folio() holds the folio lock, but the code that completes a
+>>      write does not take that lock. And a failed write sets dirty before it
+>>      ends writeback. So the folio can look clean and written, although its
+>>      write has failed:
+>>
+>>          shmem_swapin_folio()              swap_write_end(), failed write
+>>          ====================              ==============================
+>>          folio_test_dirty() == false
+>>                                            folio_mark_dirty()
+>>                                            folio_end_writeback()
+>>          folio_test_writeback() == false
+>>          swap_cache_del_folio()
+>>            /* the only copy of the data */
+>>
+>>      The fix used here is to test writeback first, and dirty second.
+>>
+>>      Signed-off-by: Chris Mason <mason@kernel.org>
+>>
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 915b312e14175..457a502353a9a 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -2809,10 +2809,13 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>>           * A large folio that does not fit the mapping, e.g. because its swap
+>>           * entries were freed and reused, would be found again on every retry.
+>>           * Drop it from the swap cache so the retry can swap in a fitting one.
+>> +        * A failed write sets dirty and then ends writeback, with no folio
+>> +        * lock, so test writeback first. Both flags share folio->flags, so the
+>> +        * order of the two loads holds.
+>>           */
+>>          if (error == -EEXIST && folio && folio_test_large(folio) &&
+>> -           !folio_test_anon(folio) && !folio_test_dirty(folio) &&
+>> -           !folio_test_writeback(folio))
+>> +           !folio_test_anon(folio) && !folio_test_writeback(folio) &&
+>> +           !folio_test_dirty(folio))
+>>                  swap_cache_del_folio(folio);
+>>   unlock:
+>>          if (folio)
+>>
+>>
+>> @Mani, can you double check if that makes sense (can we actually trigger that), and
+>> if so, send it out officially, with Fixes tag ?
+>>
+>> Feel free to rework the patch as you please.
 > 
-> mapping->invalidate_lock (in filemap_fault)
-> folio_lock
-> hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
-> 
-> Each of these locks is either downstream of a VMA, or is not able to
-> acquire a VMA lock at all (e.g. in an rmap operation).
-> 
-> This is because accessing a VMA's file (thus mapping), traversing page
-> tables to a folio, or interacting with hugetlbfs requires the VMA to be
-> stabilised in the first instance.
-> 
-> Nothing in the kernel takes any of these 3 locks before a VMA lock, and
-> indeed in each case that a VMA lock is taken it is taken before - so the
-> kernel is already violating the ordering as-written.
-> 
-> So fix it. Also add [_killable] to reflect the existence of
-> vma_start_write_killable().
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
-> v2:
-> * Updated docs to reflect change as per Suren.
-> 
-> v1:
-> https://lore.kernel.org/r/20261121-fix-rmap-lock-ordering-vma-locks-v1-1-952c0dd5bc3a@kernel.org
-> ---
->  Documentation/mm/process_addrs.rst | 8 ++++----
->  mm/rmap.c                          | 8 ++++----
->  2 files changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
-> index 04b649818cc1..40be3a46a521 100644
-> --- a/Documentation/mm/process_addrs.rst
-> +++ b/Documentation/mm/process_addrs.rst
-> @@ -418,10 +418,10 @@ ordering of locks within memory management code:
->  
->    inode->i_rwsem        (while writing or truncating, not reading or faulting)
->      mm->mmap_lock
-> -      mapping->invalidate_lock (in filemap_fault)
-> -        folio_lock
-> -          hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
-> -            vma_start_write
-> +      vma_start_write[_killable]
-> +        mapping->invalidate_lock (in filemap_fault)
-> +          folio_lock
-> +            hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
->                mapping->i_mmap_rwsem
->                  anon_vma->rwsem
->                    mm->page_table_lock or pte_lock
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 65646ed6fc45..55367e7d3eec 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -22,10 +22,10 @@
->   *
->   * inode->i_rwsem	(while writing or truncating, not reading or faulting)
->   *   mm->mmap_lock
-> - *     mapping->invalidate_lock (in filemap_fault)
-> - *       folio_lock
-> - *         hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
-> - *           vma_start_write
-> + *     vma_start_write[_killable]
-> + *       mapping->invalidate_lock (in filemap_fault)
-> + *         folio_lock
-> + *           hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
->   *             mapping->i_mmap_rwsem
->   *               anon_vma->rwsem
->   *                 mm->page_table_lock or pte_lock
-> 
+> That makes sense to me. If Mani has no time, I'll take care of this fix.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Queuing this in a sec ...
+Yes, please!
 
 -- 
 Cheers,
