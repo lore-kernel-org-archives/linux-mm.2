@@ -1,92 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581D2606A32E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF07606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=wdW0YDDp
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ii5KGgU9
 Received: by kanga.kvack.org (Postfix)
-	id 768086B05B2; Mon, 23 Nov 2026 04:41:07 -0500 (EST)
+	id 7FCDD6B05CB; Mon, 23 Nov 2026 04:41:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7383E6B05CB; Mon, 23 Nov 2026 04:41:07 -0500 (EST)
+	id 7ACC36B05CC; Mon, 23 Nov 2026 04:41:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674ED6B05CC; Mon, 23 Nov 2026 04:41:07 -0500 (EST)
+	id 6767D6B05D1; Mon, 23 Nov 2026 04:41:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 47F096B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:41:07 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E0F491607AD
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:41:06 +0000 (UTC)
-X-FDA: 85465890132.03.C84FDE8
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 15AE2180009
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:41:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wdW0YDDp;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E2936B05CB
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:41:09 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8C42807C7
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:41:08 +0000 (UTC)
+X-FDA: 85465890216.18.4C8F442
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3784214000D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:41:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ii5KGgU9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795426865;
-	b=PNpVu6gFFe6uVyvwv7FwgSF9rvEQ3DT+moHCeldRb4m9fnmxPXag41D3lwG1n3nszkXEwR
-	k3jXU9yELVGAra88wWSKuC+hgM94aXP7qjcmp1caRr1AkOubl3fxTmWQYvbjt0YaGLI2Ew
-	qa6Uw3yFgjHimYNiDKxve0w33CERrM8=
+	t=1795426867;
+	b=XXwyoj3bl2+yPtK0i5eWQMlbtypr4vc+T9IPdEo0y7K++q7fGhIqaIMfv7ImyzmgCNhDjw
+	yX4qWZiLCf4Ai8wAqsjtiq0TEh6NKpS63wY/YMCn1JRk3fFrpj4ZI/ZT4I2lQvdV719T/i
+	nxSnMqPoNQ1MZWxIeUFc/7El1307E7E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795426865;
+	s=arc-20220608; t=1795426867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=klUf2CdqHQRXCM9LUthGI+m1p+fVvUp/IIQj44sT9IQ=;
-	b=BCOfKt66UNgWsBUKwdRip4uFQQzcrHvpMkmb4cuEe0J9H8rpeSHZz5QcrEJx7emCwSb3ZQ
-	2yVSmh8LcMGlq5X4eSu7erMlwMsknUPj5xNiPwSfhG/DizGT1NoBqkXrgJEF+FCeU86lx8
-	+8RD/Fify7AND5X2hMI4oJ26JWWnkus=
+	bh=zDbsCd40aR7Nelqiz/HDZ/5GIrPYzGKWnCVoVVylrKQ=;
+	b=gFclBr8gGOCvcGkGv9fcZ2X7RYc3MqQKhdAsWJ/YWkiWFeUJYKMTajvmz17rt+Kg12tQXC
+	2lcDXguEyXu66/lidpIFwTOJetCKQmNv3kCA5OUuvFM6GVrl0IfwvOWyvHp03kgJD+kfwo
+	Y+gfo2UFVfp9pMvHBPMNI229z/zmMn0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wdW0YDDp;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1795426859; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=klUf2CdqHQRXCM9LUthGI+m1p+fVvUp/IIQj44sT9IQ=;
-	b=wdW0YDDpm6O9CRiIV6Yk8Wd9yTWmQCUsOfFMi5e5LPr59IoWSEJkeCwz8AX2bfp7oo2eeev0lYrDfI4psNwEqbZIIpDVmrc1eqfu4sh2SDvxRMdiu/p44Hns9BiW3qbbFNcgWZ3+MaWp7LlngT5TQtMBJSIRbz525OOt1+KPM2s=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XFGswNE_1795426856;
-Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XFGswNE_1795426856 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 23 Nov 2026 17:40:58 +0800
-Message-ID: <100c33ee-be1c-4eeb-a94c-567cc0337c78@linux.alibaba.com>
-Date: Mon, 23 Nov 2026 17:40:56 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ii5KGgU9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E329618D8;
+	Mon, 23 Nov 2026 09:41:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A971F000C4;
+	Mon, 23 Nov 2026 09:41:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795426866;
+	bh=zDbsCd40aR7Nelqiz/HDZ/5GIrPYzGKWnCVoVVylrKQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ii5KGgU91+AwbrxiYqP9KH9Qd4WEHVCyZvPdZcqMGofPlPGy8+vUsx8utI1Qc+as7
+	 2VH7UaMcpWjCvQQknd1XiMpG4PdTc2TvX/8pstKHeb9RzXXJDJzhKs/t9BifU4S/ws
+	 C4mcsSDGgS8dXgHf4XW6DtisLdPPBhjdEsJr5JnFwMlauuOhTQioA6fwiSJYLUPOWh
+	 /yUsoW2h2Ey9gPXxGg8MD6GeDuR79Qc/GUdsUF0MzrZjNYfptWG0dbxk9t6N+4APgM
+	 c3jWodz4up8EhQQu1p3+wJk1CwO0TWnBfg++BYfabEfRjqijD3PrJVWxMjmv8ro6hu
+	 twnyGDZej7qUQ==
+Date: Mon, 23 Nov 2026 10:40:58 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Li Zhe <lizhe.67@bytedance.com>, Andrew Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 10/11] mm/cma: localize init_cma_pageblock() to cma.c
+Message-ID: <awQKKhcwHGM-oiFW@localhost.localdomain>
+References: <20261120100856.16929-1-songmuchun@bytedance.com>
+ <20261120100856.16929-11-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] mm/vmscan: move code to lru_gen_{add,del}_memcg()
-To: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
- kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, baoquan.he@linux.dev, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, hannes@cmpxchg.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org
-References: <20261116081403.216452-1-max.kellermann@ionos.com>
- <20261116081403.216452-3-max.kellermann@ionos.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261116081403.216452-3-max.kellermann@ionos.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 15AE2180009
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: ztfx5g43bapwd8b67h67pmyk5w7fqwa9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261120100856.16929-11-songmuchun@bytedance.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3784214000D
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795426863-299909
-X-HE-Meta: U2FsdGVkX182KE5c8DiuK3Msut/m+VgRLF++PSkvjPl7kPPg8ZfTVaoolZafcT86sjDYmHe8T1B5PG8DUP6tx4IWTeMc+bK9g4JAuarZnCxcXhUODZnQB2dVsy9CmZ60I5ZXNA/vOE+HzXlWEq0gJk/uGX8W9CK2XsD8dQyBoofFMfkGBwy7uzPH38DbYzB6yAolVCvRGxZwQ805spBahkhcrCqV6Kavu+rkOsiIzEUkiw7iVeoV2raZiQg4tEY4+rKAbrn941zA2hZdcRgi9QBIs4v302nx0W9FNca749/PN1wEaIjrXSHSFn3yB/g3gcynFRVVECjQPf5uanykyz4D4gr2hkwTmAbe8jdOShc5NoJPh/6gaQLsFwXQyiNCJ9ojOeTa2R83TQm7m7xSlX4uu/F1aPahpC9UKGqilaN2NKlWbPgRm1uYTSMXtRvYx5lqL1rgGHNbdk5RHUuslBEf8knjgTvxklbqLKirnJvVUndr0x3t0cNTbvQ9KS4cIrXR6i3Xox44YJewiFF9YUBVD1oW+eYVjjB41z5qyGa9vcdVr7N92UfNmHM1z6TTjSZ3GrjE5+tbSN1XjPaLIAv/6k2PVv434bjrcnSUhAbzdfuWadCYKuW6c5Txj453GNSxBUtVFdjobIzbCdn7ib5tWbS1H8IKjxi5EDHEebLaYwToIIj2zBvv/RoT3GT4r8l0gH+ULx/v6b2DMTCjrgZCfQ235Z4DoPfD16r/oCwJO3/G391iapKrswooNgXEkHMvnxmN6kvde89OKvc46+wnakF/APVIlH7BQVDgbAEJqyvDP6aIH4+rR/kQkRpJPeuMs5StpDV2WthgBfGs07zlHRE2a1stCXY2KsDS7jipWDOZRQdWnvI/w6cbKr8ltg+BEuyWgrmQu+UvdZt1M7qb5x7f4C97HwDqsz0aTLmiCQi+y8MlbPUM2jZQxTt06BA5RkJtQAymuKFXyw7
- NXRWfvau
- 7EqGumSXa6ak6/QdNXukwkX8FqWnhi/k1ZivwE52CajJOuwkTE5p2WkDM9SWQxSirNovbvxiU8w7WMI5kMBsWvxm/pFlLodUsQfhDN5TC4T/aAC449C3dJ1tQzVbQyC0G44w5FbLHFr8C+JbcYD/iPSeuZmNpYY+XBlpIauvZrrlggitNun4VDZECMo0wDuoY+SvHh4dnf8r1xF99+6nNXZ4n6uaF5a/rvECm7TUXFDTmvgaf9V06gmGN4Iub/5tkMdVIllAn/+A76OVGDGCv9p/vtWh7zL5n8OuRI7S579dECZl1/CTZxnxfbJGIkhlDRKjG9MXTN+0XTvSg1DNIzcmC6Hv/dAO6haz5h7ufR+cgEj4KCRDNncnEW23p4BKY85tadEb+V34wNjc4MvcnH8V3PfEy6ue6EP2oAfYP7hOxbgr5XpY+CD1fJRSqSQzio0yDkbLymKgvhow/BjsaQ9hnss608VXGI3J7brFct6aJf0VNdMYiiQYydBnMDxrIqMWB12QmnTohUFTZjoC1qI85EQpyymkp1LXMAG1TYchHl7kUWjdmZWHfFA==
+X-Stat-Signature: 16gpszzb194napwkgj8r7rgss5t98kzi
+X-HE-Tag: 1795426867-124455
+X-HE-Meta: U2FsdGVkX1+IVk85d1+MHyhCvyCTEn3suHkd77KuG9t0UrI8TnYwzy9w3/maSsO2RGMMb5N8XdoCdKkk/5fXE1Hv0LL8wIvYHfEyFlkY3UCwSvfZk1vvwdePemB2E+FAwQ+oexm/2Gx8+edgBsRbuTiY8G+xkhmzR5A3N5FmmclAQjyQ4uurS8C+H0ogsSZyZHgmCiA+l8WdPTEXD0mWtAfPGaGWPbOmNK40lRNSSPVn+B4LNmTpyC6A10HvTusq3uH6sc8k/ZlgM/DCTkg6EIxIeF2Kn+vf28fU1nh++aaJu/IWQ6Up7+0nTol/DWANy0eb1Pmi5euVsGu5zKOl/TndEGV5gfAJOw8YYdlfAYyzQCcok0pbYlkgSl6Org3+TtyydkdRJWe4PzPCdF10v2c5RC9IRAKf3Dhem/yU5RG7rBWzJQrjzsK08r6aoyWDwUBbYobD1LxAFPCRRS9egDEzzQoQjY07lQsQ1T89YBe/Dtkafn+w6HEyT7I2KNHgK6IxnqV2AWS7AIIp/lfWQgoESM5A+mLdXRSgoyjaxcn/uLk/0pNLzpjbWK9v0c0ndtQvLx17frRV1X6Z2pYOmjOSt/FvTdFN2iM2nMxIcRqDAj0Ds5b0ZT/0HYBii5/mr4rRsOieFNdY7AJ5g4/XWAeDRSDzTHby2V/v5tTue1pK10noKDPuiUlI30ex1DMuXaBq2JWhzXIxDZA85AYqvsxuLXYPJ6zUjezpg1xdibP4zny9pInAhPHIpWmvwSYUBRyum/gpfPSoJW0eo8hi30Eu7kHptddnzhNx2KJ0N9kiezb5OvgMWx4VYm45lMCTm+GaZ1BUb86gWmCRSMPEjPqqCo5etAidElPiiD/cxON0Mvguc7/WfXOcBMyr17zdlKC6Y4EafI6wmTW4kyufRs3QbqV5zfRqlnJynAZlVf+I3i7WRBxVmh3QKVwkEds2kuHkn+A2pv5mljMFaDD
+ g5ryKE/D
+ kqqdNgAO3iYzrBtrpVzp5t3pOIpGI9Xwv9NKGVGkz2xF50g8JaH4LG0B9TGim29eXR9p48iMuZTHRVYVrVj9hrkBQ3hskc1VmR2hDu4Mk9NKLrVJi6V7bMnwZMXbo+ZZz2HbAWrykvFnEs0ndeAI4f9LosOzO/bBFkKvgPLW2+BwY12cr/PoWdjjPGLJm2TiXS3MD6yVwJ7iS8+rElPUoXrf+FqzS6MWU2NDmZ8rjcK27OIX1Pi1U5zyw+Z1oWbjPysc4vx52TEXHyeSNkyryokoPivmSkJkgi+siozrySRrMFRGo148p3k2MfNFHwMYfDz9HweWPj1uvpxZ79kAYGzyvr3Pa7YdGan5Dq1DE1HNXSmVIJsRmGHiNNLIr/KfZyb67ILzHi714tvjibCQEw/aeixcJrFju8ti4nAiB8W0Cz0BrE6w9zq8+9aPbcf17tXTQA1fWY78mtJTfk+sNKbhrX2TphrPt7jjVIKydp9lBDOFcHYf5rOfdu6oPquc9G1qwGViX2mo43s/pWcFaadrtUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,18 +104,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 11/16/26 4:14 PM, Max Kellermann wrote:
-> Preparation for the following patch that adds tail caching.
+On Fri, Nov 20, 2026 at 06:08:55PM +0800, Muchun Song wrote:
+> Move init_cma_pageblock() from mm_init.c into cma.c so it lives
+> alongside the CMA code that uses it.
 > 
-> For simplicity, hlist_nulls_del_init_rcu() is now always used, which
-> is also valid during rotation, because the entry is immediately
-> reinserted under `memcg_lru.lock`.
+> No functional change intended.
 > 
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> ---
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
