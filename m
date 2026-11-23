@@ -1,36 +1,36 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDC8606A33E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 18:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DADB606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 18:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZuqDxe5K
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GKDIZnGP
 Received: by kanga.kvack.org (Postfix)
-	id 0D7756B05C0; Mon, 23 Nov 2026 13:53:39 -0500 (EST)
+	id 6A3EF6B05C2; Mon, 23 Nov 2026 13:53:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B0DA6B05C2; Mon, 23 Nov 2026 13:53:39 -0500 (EST)
+	id 67D6D6B05C3; Mon, 23 Nov 2026 13:53:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F09A26B05C3; Mon, 23 Nov 2026 13:53:38 -0500 (EST)
+	id 5431A6B05C4; Mon, 23 Nov 2026 13:53:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B86B16B05C0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:53:38 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 36757A86DD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 264CE6B05C2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:53:39 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7536160927
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:53:38 +0000 (UTC)
-X-FDA: 85467282516.12.FC6D765
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 231144000F
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:53:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZuqDxe5K;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf27.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+X-FDA: 85467282516.20.D6514C3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7C1AD80011
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:53:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKDIZnGP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1795460016;
-	b=54ClbC8GLHUjjwD3utKSRJznZDBtCQIICNba1azdUlpsT/NFM3xqT8kf4IVwCoRE+jTaAc
-	bwJyDcLpWY3U0a14ACC6lU4vlm+cQnpVqSlXvKtpIHy9V6Oiqu8yhZ8j6zTOXx3MqoQoMB
-	ZawAG/+JcRveD7k1SCpmyURoUxzhNtI=
+	b=dO1f2i5P3DLKvNhyZIsHxm+TaYXZhe2OIJSrurtEQxHkSQFVFufUgtJW/junHv9MSrUJki
+	9hPJge8Dy9+jAbwWnTSTQmmByF0Dtvk/B8J+xcBdfWn+lGAtClxg5tNKJP2SzCIbKt0DQ9
+	wwcP8nrhXHbP/zGUqQ/Iq/phZG4OZeg=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795460016;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -38,67 +38,67 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qPY6Gpk1GxeXHfsNbxjcPs+9GQpLxPguF+KSpyU0BSA=;
-	b=2ED/XfCLMinUh+ZRQIo3hPpFrp/z5ePpxXTUJ0x2hFcEkqgMwIp5M/Nt8KaTBn4JW12yz+
-	IbuFopcOBnCJV8P5GsnzVbFPowMrg9vWdjpF1wLRlyTub6uSfZlr4rOVMvjpy+BaWxbyj7
-	m1sMXnUBY8LBdRsFVng2S+TAUDntOgY=
+	bh=horbJ+WRFpXrHIUpt9mddEfhWXyxTruu2VhXlMsfh58=;
+	b=pQIaMTneN1CCwKYMr7DZDofSTk1wF4X+UDjmwfNhgV5BTcrwWGFdtVHsIC6hsp6r1GlocJ
+	69eqfZxIuclYfFrzDmZJzk9U2j8WvYMIu//D1xTL4w6gpD8wBv9Pen3iBjKXgkuqqo1sPI
+	pnec6V7FF5qZKkxYrtm63oHDF7YLqn0=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZuqDxe5K;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf27.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKDIZnGP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AAE7F6242C;
+	by sea.source.kernel.org (Postfix) with ESMTP id B82AC459C8;
 	Mon, 23 Nov 2026 18:53:35 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795460015;
-	b=ykCXgYseupH1NWa096EtDRlPwr1kbjrRM5Ie7F89QmaP1j6sqsJ9nnZsyy7PXjLumaIm
-	 L6Vb4gLB5BrQIqeR2hn1HvXmlIa69c8DpTsRRcFgDTBUbykojd8vXr9jBE7xUz/Xd8Uzd
-	 2JyQOJWeQvpWjU0LN+tX7A/xvyrpk8AH4YOVXazLLzCuhmqNa1SGtS3Gga1x0/DOHDcyN
-	 gxldSsSxwOcoIA17R4m5wJ2Hm1uLJ1xNlX6af1ue7u72zy5lh8IpSscvoot+69d8fErlx
-	 qaYz/yxHWkiFF8TAiM87Kn9wLwt2ZPjItc3z+LJEpW8CvrgbxvzkHbax4diPXpNAIgw==
+	b=G03C/5HjEjKhUH2+zf5qgZ28CMrZE6ybXryG/Af9QNxMJWzdlYCz/BXB9dkvrVFym1eZ
+	 3LE8BKkWHqOMPlW1dp6HO2yPNBnBoIbT9OQrqxTzHB54hbiS8FngQkj272gxUtdI+7SJr
+	 9Jw14VnYUvAZkmSKmGgvm1RAANoL4GO7HC7I23hCVOscZ+uHgZFi+Ve7go7IXfYON2hxD
+	 B6ksVsdmqOQA6AtElpTPKRauofLBL8tW5y4pdSpltIJTDtuJ6koY7kh6I+L0ASucHYnaV
+	 8UySGPvN0tAPv6tMgT1yd9az1FVlu1mqiHByS9VHL0BDcgBsJKcVdMtNLAxdFJEmxlw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795460015;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=qPY6Gpk1GxeXHfsNbxjcPs+9GQpLxPguF+KSpyU0BSA=;
-	b=mNqLLIrO/R1HSehraW1jhTPj4NAWGw/XMHsqhu9arNg51+K4g8SHOOJGsC2pDc5/tmAV
-	 pMMp3oXuJ1nLrJevDYv8vFEVI9YjEx8CakdgFUh3m7g0Ajl8cw64SugQuSBEJO9m8yhW8
-	 UJSBM6oATK9cH00JlqCUuL+U1W+4P3mvZywyjpS+Cjhj644gXuGgnoGAXZVAlyPDNFluB
-	 qxS2dZdbhCFHe4oZPEYnRcR5b6zXGfvzaebfuT0A002exo84JNgh7cZkpbtDhCc86ZF/Q
-	 HrkT4dvVCsORrNH/wZBGqblrA0+a62Yz5+TERtHeRwI81S/ZBP5hvCvX2NhLq/Z0vVw==
+	bh=horbJ+WRFpXrHIUpt9mddEfhWXyxTruu2VhXlMsfh58=;
+	b=w1DiTysvg81+bhT8NwrYI84j27sXnnMk7925rcada6dQNRtNHXot7m0deiM31HpqrE6n
+	 kxxH5h4AmeaQzHUEMUwOx3E6hUCas3nHbpbJRNeQrGnFiUDLgsv89yDoS6B/AuODZ3euR
+	 NrVLSgnR68Fv4PxLpn529c/tebnfZqVO4S/4PsPg+WOL/G4VPPCRYOf4zVbioc7hO7erD
+	 Q2x5WJCX9oxNfWHB641pMudkcLuzek1+JWsN9KN27rKK9XvEXDI/qIl62Ig7sWufj2a24
+	 1GD4vw4DPR1yrzjHCrHcFdqDQcnCwii7GY8ArLsJyqENpr9DnkpmMKSGqP6MGbHa7ug==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B34541F000F4;
-	Mon, 23 Nov 2026 18:53:23 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 8326D1F0093C;
+	Mon, 23 Nov 2026 18:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795460015;
-	bh=qPY6Gpk1GxeXHfsNbxjcPs+9GQpLxPguF+KSpyU0BSA=;
+	bh=horbJ+WRFpXrHIUpt9mddEfhWXyxTruu2VhXlMsfh58=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=ZuqDxe5KOPm164Fb2Vz05B6TeOEf0nqlV4XrPLsIR8SoKaFTv2GWIwEiLrut5qiRS
-	 mFXHSNeGYU/a9601/6XXRGZmK/TK3xqvRRTHilB+RqluuV0X3tkUOzno9W5rKberCv
-	 /ologgR3LW/sPuTdecaSHFMTkS1TN7SV3lC/MHp1ylXPRXshgJH61HCk6H9TwYTAzA
-	 d6iB2TfK3Ylt9ZSn8St969Xd26cBJH0MPC0F30gcHOUzlz1q1Nt3gK/gi67k7fEFjX
-	 IDxYP4J1p9J8hE96IqtnHz7V+zJQho11gdAuPS0eeaVAiAeaRMn+vVmoXt6NnV35IB
-	 zlCPfUp+8Ilkw==
+	b=GKDIZnGP1nsLho3StgmJtoB0tWjmF1R/i26GT0x7BDL0ofepHXYEibCqSsQ9JeZh/
+	 zSfn22yG3+CDWr63hXkeKIYmB8mGiAZ2JqoBRSPtTqynG4XYked3LbDu4SLoAYdSCU
+	 6NHTr2Lqdo9YY2cNgfQu66a5Le/nY62bRFTw2CNyzjMx0rkBBw7FD50ly+SwlwRiud
+	 fXAaUmST/hThyCnN/E6MJ5T/q8YDAr8d6U0VV7I6abbDL8JUheUPpbn9nbag60508C
+	 eJQcJeRVi6nS43VfSzgO9frGSVag93tNLakzCCmR/NM+C9ZprPcRLPQ+ejEuhbVAE0
+	 Z2VgHhHi9QhNg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 471CE4C651;
+	by lkml.kernel.org (Postfix) with ESMTP id 630B84C655;
 	Mon, 23 Nov 2026 18:53:01 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 24 Nov 2026 02:53:02 +0800
-Subject: [PATCH v6 10/18] mm/mglru, gup: mark folios referenced via a fast
- helper
+Date: Tue, 24 Nov 2026 02:53:03 +0800
+Subject: [PATCH v6 11/18] mm/mglru, smaps: convert to LRU refs based
+ operations for MGLRU
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261124-mglru-fg-v6-10-8ffea39934a6@tencent.com>
+Message-Id: <20261124-mglru-fg-v6-11-8ffea39934a6@tencent.com>
 References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
 In-Reply-To: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
 To: linux-mm@kvack.org
@@ -132,11 +132,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Tianyi Chen <hi@tychen.cc>, Kairui Song <kasong@tencent.com>, 
  Ridong Chen <ridong.chen@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795459977; l=5455;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795459977; l=3877;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=EDvLpnxrpVD1Kfz+v/3OI17Dk6Yj7fBAiXtjWEmtcfY=;
- b=n7lufqexladK34F/awLOMu/YkEQJxZMmTJft2kkPNiKhixsNSlw2tnT0Eri4RZ4Nl8hmLaSz7
- plNCLhLOSEeDefNIfoeK4sf8RYsnkDXloTqw6+THIDruqVfCyK7ORqH
+ bh=SyGC47j2sShmDrstNnpICQjj8oxfwuGK/s3C+V+Hk1k=;
+ b=zDeAcKA97ZXD5+wk30UPTAW0+f1NPxG7RvOr5muhguEVkFZjwS92VJecDA26puiKkUFemGJIY
+ FU8Dgte6mVHAd28IbxPk82XmytTsRUsfRtz/LrUROT9BqXOCuZBS2gq
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
@@ -144,18 +144,18 @@ X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 231144000F
-X-Stat-Signature: pktghq9ryobx1orriqwufwupt5k9t5fs
+X-Rspamd-Queue-Id: 7C1AD80011
+X-Stat-Signature: wucjzryc9oi3eh6dffq8tjnq1pahkwja
 X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795460015-731559
-X-HE-Meta: U2FsdGVkX1/UQJbMBIj8hv637k1uHJE/6i57rtogy1sh4ZWPXzWMjBTxM/vChoDHCrR3RL/cbec3MZVeXxF9R+hMVaR2l2sIFClV1jKMEAglscr+CVmiKlOEhRNyqWwqvmNWBDm3nIYE5HEvHJ2xRMgqD196TlHONgwH/8GqooDi+9vbSt/u8PWm7suXoZ3rYriQtue0Dy8LrPkoqebLmxQDY7clTUPBTlLn8Kz7hTzSg2qzF7AVL+bDIwBOZv0xxF5hIfphiXiMUIR6ZP/LuC8F8IgDD0yQLbTsyamOuAh/BGpqGM8644F6oOdGrNdqlMF8mZAElclDtasxM/HTis0dZjhqq7bvJyIOM6T0o7SJJ+oyejqkUvcsmvQ0zLvIUXTMqXlHXOTKDtpEgFpsQLw1hN07WSMdP5k9lx1FOYN6Vlhj/YeFx7AJsJnLUwbEwHOep4KQl6/LXBGpxvYj12ggB86H8L9u83NProRE8s5VH81716WtFM4rh8jUxVpU5Uhe8rv0HLJZBPZJ0M6SUpa9Eq3jOjFDTITt/egs3ZhzYctiRTGK3xlO6emucLfjmTWRT3oAZ/mPMQ0z73acN0dUS4DhAME+0/B1PJcn4xflTFgFCKBKatwj6TszDHqvIUpkjUrw625MCRBAracW9ILK7KjCyQTZXITcr4cLFYZAf2jKwrQSiy1ILHsRDfByRJmL8wmNeybhNXf0CabD2PkE9aw9a9+wm1IB4cLMOIz1/b/lnopLvjh1t3Bq4R2Qma8gd+PIVuIGysRZcJo6QwrKzbpcINtENIU7vkdTduF08scSrGa3D3N0TRA3ms9VXJqLob6IxM2Gu9xdRDRFp61kh8TcizcBUcWEOqEqj8sYA5C70bQTLYMXVGyIJHPdU+WgaHC4byxwfXyW3F1c95Sjc2byUhnnW5Os3WXigFrU6TfopRb3pEOD3zzz09clSqbg9bc0FrsgumVrAZj
- o28HcKlD
- 56r2UbmencIUlypdBmg8ZtsfMMu1eLg8QnkSo84YYNVArXE3h0ibL3mDOrvWFua66rpYK5aICqxBc44qBdR2UYYFGJBK4h62tgl4m5s3ESsUS98FGarSAm8jSTid0qnu4N0GSaK1KH3AUCsnfbb0Vd/to8X7w8rx1mnexUL7ZQ3m6TRoIuDrb9fDKAZVZfU16H7YZN2dTMptCteJ3WuFDOwpIkisTTOu+PrpMKJAuSy57kqoA9uavgwfIiUwJ8Kr7zFvKvHszitbDRr5OSBTg7uEZvxOpwvnojx7f1kX8f2etN9B5CjW9YstevFJGLEyWRedvqPeB8NdNby/2d1G5EVB8v0l8ngdC3XcrlUWYa1JKrOuixJufq9r/9lbdLr6cif6XWnN7LH2b5/D6MAWlHjoy3Yj3AeJic0pb3D2ZARlKC4+OKZf3dyGwN1KUekqVgrTSMN/wlhAM/Ez3QDoD7yS1rTlA72AOn+zJjw4VulCD9YfaFptupkgUsflIeV77gPHWtgIgWZInYSg7uYXkaL+xUg3gr4PCrTVLCI/8BceI/4RjP3Q3tkhgo+mq4Boscx8zuYebPG+E74HfTwFFSvC++Wf5tTCSOHBEACWqv+QMJAGXgfX6bYqFUjwUK5PH/1msMuFTXE1ADV82nJYXqj5ZZTeX3BGAwlkEq2IA5y0eoY1xxfeOGcGbacOtEhFbu7g6DtiIDbMrb9uV9m9zh91FpE4DfiXHm76esT+0I6EXKL5LhiKw0T53O1sS6KLpIiJ+FrzS68q5oXWHJ/4WBfxcdXKItJ4HPHIkBGfk44ZQyQV+EadkUuPepA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795460016-748404
+X-HE-Meta: U2FsdGVkX1+wq9GdXEKyNIY+5UwPunrkBs3TEJHjbwCrliUFvwob6uvyiJmDQnYPWa659OBJLm1Xinf2yVltdVbloQQalKxSNFsLIVdKhkLTdmwAQMeBdqXnqxQ/+O60Oi13aYdKRmkpYm9UhcDLRRB4kbkheG2jOHHhQHCWbQSrD7Kbf7HgXzr4FyUkWPpwnDxL63sIZlGKzaSqPkzLv2t3o9yhNFsggty59L60NqMcqjlZqxNUpEhzfSQ6UqPAkGNlqjY16UdfhUYS4Eo4U4cliR6VSKX+yjHL1kDDNLo52iofs7lSXAlDm+KmkaOsx/0e+ZhHuoMmJuETYPbVnboAvVMUI7JrfDakBDdSXGfDpQGsYJjF2FTOnxRSGUDBoGcPOHihfaODRFcufddzxcF6yK2i4q+OTidqtoFxLkOoJZwAtGmTL0Fhgd86sIAr9Epu4BTXxKcz0q4XuWQJ4qDeyb8yiE4BIjLJNeKKDewWyrpO/Vp0JhQmfOjsUFFOJv5+sWs1eYqm5FUewhopLH1pcDFX8YlUH5ljWs33EPvUvgkmpSLIIFMrcJk6jEV+4Jr4LWD8i1B51eXKtCMoDf1wMVJqxFMeJ5amxZ+rSVfiHTOGaLKBRcgVcS0vxLXD04V3zWBC50/JYIuH2mfvC6m9vA/7AvTErsasZLP8il96vxHgCnWf5CVWod4yJqp2dCQYzi0HZ+lN8mzUjcqcBGaOHEe/CmWak6Vgb/6qBWDuqNcpEn48gw25nqotWXBmvYkcj/JmDetuJqlr1EC8yao5RbyBKr17/B8Rw/wOResj5tTi6JUlGKSv9L/BMLQvXwPMHRs4X50jbo50dKh4UI16BjzCgOHx0/HJCVNvRHqQMT8rcvguK3SJCk5H3K4F66QyhcY9kJ4ivXYHlUgkubMKc6tXmi5GOl4D7A7a99NOKbFet/FVPGlp7vGLxu/TFaE/gYvbggNh2Velbd3
+ sGrl7GVT
+ ghAEuKYLuEUdGtqrYMBVvVNL3UHyFuNCl6qN1PhKVAi2n/i1LHPCvWHoA+0F9OlvtKWYjaG8WXKRRoHMs8eOXJcz9CZf9JuZNC/SyLJUZ7DjqyDcoSsGtiuKNN+3u6i29eFFZzDW5F7Y9B3hs/KlUJwVcMJPN9gTV5DoTxJsIK7ELbTpXVEIa3iwStrSsPgbuiapmZzyMO140L8gWaJoRtjruUgoMFQCkFzGQ6/H+jfMMzyhqhYswC46PVuskrP0P54L4V8wTimlJvgRXscTDWI1+BIMXFOMk6S4uZZYWmmUBHvj6/dQmjc+FTu/PBZTDsMmSEdVA0pxaZbhIuJ7v9kgnELE/4dBVZwHQGWE56Zy2wJnKOVFz0+kRxgkHI1NDgb0VErUqdQYaXs8pdIY3wVf2tGV8OMMLmSd/FO/pjB1wM7HVUBDquIpyV/2gXQse2Y8I2yABc39QDn2/WYi9Jo/c4Th95kNORTaYsryDrja52RmyO4KiKTJGp7ehsj+aVSL0O2Li3VYsVYXLrzppTkGS5+hnZ5nA2sAik3zPzSy6d2B8+xwqjNR+25fRNZu1IsBk8Rxl/SbrncPpcaelP32/EgUCVP3CE+uM86eBhozdqsmlUFls4vuEZp5Wbv9pcqGGOxl9jshUON+VfIrIYzcUPzKfcn/BTvUbRp2tzaXQ6qBa+CV8a8t0IFZEyPA7JRYnzn6XpsdVtrR6j4Yjb9Ewz7VAzq9+QeGTL3N08wVCsCyTqsSX11gyLB1K3iST7PIxx9HWqKAM6s3ge7b2MXt+hcwhlyAOVB41Pmu68Bt3XTYEcQZ01p70ZPyWCsPjAUFe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,157 +166,105 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Kairui Song <kasong@tencent.com>
 
-Introduce folio_inc_lru_refs_fast(): raise refs from 0 to
-LRU_REFS_REFERENCED via cmpxchg, or just set PG_referenced for the
-classical LRU as before. No counter update or promotion is needed,
-nonzero MGLRU refs are left unchanged.
+PG_referenced is only the lowest bit of the folio LRU refs count
+(LRU_REFS_FLAGS) now, and MGLRU never kept it stable: promotion used to
+clear it, and now it toggles as the count grows. But with the LRU
+referenced count as a stable API now, we can use two helpers to provide
+in-kernel users a stable and sane reading of the referenced status of
+an LRU managed folio.
 
-The classical path is taken for a folio that is off the gen lists while
-MGLRU is off, not on lru_gen_enabled() alone: while MGLRU is being
-turned off, a folio can still be on a gen list after the static key
-flips, and setting PG_referenced there would bump its refs count.
+Add folio_check_lru_refs() and folio_clear_lru_refs(), which use the refs
+count when MGLRU is enabled and PG_referenced otherwise, and switch the
+smaps paths over to them. The lru_gen_enabled() test stays inside the
+helpers, so its static key is not splattered over the few call sites.
 
-That check uses lru_get_gen_flags(), so move the helper out of the
-CONFIG_LRU_GEN block, it is now built with the option off, where
-LRU_GEN_WIDTH is 0 and LRU_GEN_MASK is zero. Keep the decoded value in
-an int so the subtraction of the offset-by-one encoding cannot fold to
-ULONG_MAX before it happens to avoid -Woverflow error with CONFIG_WERROR.
+Convert smaps as the first user of them. MGLRU now reports every folio
+with a nonzero count, so the reading no longer flickers and clearing no
+longer results in an ambiguous status.
 
-This helper only aims to be fast, it exists so the gup fast path can
-stay a fast path. The new helper doesn't account for refs above
-LRU_REFS_REFERENCED but that's fine for now as GUP never used that
-or anything similar for CLRU either.
+The classical LRU case is unchanged.
 
-Convert the gup fast-path sites. No behavior change for classical LRU,
-no regression for MGLRU either. Just prepare for the following changes
-by providing a helper that follows the new convention.
-
-Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
 Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+Tested-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/mm_inline.h | 62 +++++++++++++++++++++++++++++++++++------------
- mm/gup.c                  |  6 ++---
- 2 files changed, 49 insertions(+), 19 deletions(-)
+ fs/proc/task_mmu.c        |  6 +++---
+ include/linux/mm_inline.h | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 3 deletions(-)
 
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 540c936aad47..d2a524c6ad4b 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -890,7 +890,7 @@ static void smaps_account(struct mem_size_stats *mss, struct page *page,
+ 
+ 	mss->resident += size;
+ 	/* Accumulate the size in pages that have been accessed. */
+-	if (young || folio_test_young(folio) || folio_test_referenced(folio))
++	if (young || folio_test_young(folio) || folio_check_lru_refs(folio))
+ 		mss->referenced += size;
+ 
+ 	/*
+@@ -1690,7 +1690,7 @@ static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
+ 		/* Clear accessed and referenced bits. */
+ 		pmdp_test_and_clear_young(vma, addr, pmd);
+ 		folio_test_clear_young(folio);
+-		folio_clear_referenced(folio);
++		folio_clear_lru_refs(folio);
+ out:
+ 		spin_unlock(ptl);
+ 		return 0;
+@@ -1719,7 +1719,7 @@ static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
+ 		/* Clear accessed and referenced bits. */
+ 		ptep_test_and_clear_young(vma, addr, pte);
+ 		folio_test_clear_young(folio);
+-		folio_clear_referenced(folio);
++		folio_clear_lru_refs(folio);
+ 	}
+ 	pte_unmap_unlock(pte - 1, ptl);
+ 	cond_resched();
 diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index b15c3618a1f2..13c8b6bce349 100644
+index 13c8b6bce349..0f470ddf5c48 100644
 --- a/include/linux/mm_inline.h
 +++ b/include/linux/mm_inline.h
-@@ -105,6 +105,22 @@ static __always_inline enum lru_list folio_lru_list(const struct folio *folio)
- 	return lru;
+@@ -513,6 +513,37 @@ static __always_inline void folio_inc_lru_refs_fast(struct folio *folio)
+ 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
  }
  
 +/**
-+ * lru_get_gen_flags - Return the LRU generation number from folio flags.
-+ * @flags: folio flags
++ * folio_check_lru_refs - Test if an LRU managed folio has been referenced.
++ * @folio: The folio to test.
 + *
-+ * Returns: A number between 0 and (MAX_NR_GENS - 1), inclusive. Returns
-+ * -1 if the flags indicate the folio is off the list (e.g., isolated).
++ * Returns true if the MGLRU refs count is nonzero, or PG_referenced is set,
++ * which is also correct for the non-MGLRU case. Kept as a separate helper,
++ * to avoid splattering the lru_gen_enabled() static key.
 + */
-+static inline int lru_get_gen_flags(unsigned long flags)
++static inline bool folio_check_lru_refs(const struct folio *folio)
 +{
-+	int gen = (int)((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF);
-+
-+	/* The gen is stored offset by one, so zero means off-list */
-+	VM_WARN_ON_ONCE(gen > MAX_NR_GENS);
-+	return gen - 1;
++	if (lru_gen_enabled())
++		return folio_lru_refs(folio) > 0;
++	return folio_test_referenced(folio);
 +}
 +
- #ifdef CONFIG_LRU_GEN
- 
- static inline bool lru_gen_switching(void)
-@@ -168,22 +184,6 @@ static inline void lru_set_gen_flags(unsigned long *flags, int gen)
- 	*flags |= (gen + 1UL) << LRU_GEN_PGOFF;
- }
- 
--/**
-- * lru_get_gen_flags - Return the LRU generation number from folio flags.
-- * @flags: folio flags
-- *
-- * Returns: A number between 0 and (MAX_NR_GENS - 1), inclusive. Returns
-- * -1 if the flags indicate the folio is off the list (e.g., isolated).
-- */
--static inline int lru_get_gen_flags(unsigned long flags)
--{
--	int gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
--
--	/* Exclude the legal -1 from the unsigned MAX_NR_GENS comparison */
--	VM_WARN_ON_ONCE(gen != -1 && gen >= MAX_NR_GENS);
--	return gen;
--}
--
- static inline int folio_lru_gen(const struct folio *folio)
- {
- 	return lru_get_gen_flags(READ_ONCE(*const_folio_flags(folio, 0)));
-@@ -483,6 +483,36 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
- }
- #endif /* CONFIG_LRU_GEN */
- 
 +/**
-+ * folio_inc_lru_refs_fast - Bump folio refs count without promotion.
-+ * @folio: the folio
++ * folio_clear_lru_refs - Clear the referenced state of an LRU managed folio.
++ * @folio: The folio to clear.
 + *
-+ * Raise refs from 0 to LRU_REFS_REFERENCED and leave hotter folios
-+ * untouched. For a folio off the gen lists with MGLRU off, a plain
-+ * PG_referenced set.
++ * Reset the MGLRU refs count to zero, or clear PG_referenced, leaving
++ * PG_workingset alone for the non-MGLRU case. Kept as a separate helper
++ * just like folio_check_lru_refs().
 + */
-+static __always_inline void folio_inc_lru_refs_fast(struct folio *folio)
++static inline void folio_clear_lru_refs(struct folio *folio)
 +{
-+	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
-+	unsigned int refs;
-+
-+	do {
-+		refs = lru_get_refs_flags(old_flags);
-+		if (lru_get_gen_flags(old_flags) < 0 && !lru_gen_enabled()) {
-+			/* For CLRU, just do folio_set_referenced() */
-+			if (refs & LRU_REFS_REFERENCED)
-+				break;
-+			refs |= LRU_REFS_REFERENCED;
-+		} else {
-+			if (refs)
-+				break;
-+			refs = LRU_REFS_REFERENCED;
-+		}
-+		new_flags = old_flags;
-+		lru_set_refs_flags(&new_flags, refs);
-+	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
++	if (lru_gen_enabled())
++		folio_set_lru_refs(folio, 0);
++	else
++		folio_clear_referenced(folio);
 +}
 +
  static __always_inline
  void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
  {
-diff --git a/mm/gup.c b/mm/gup.c
-index 7605da0e06d8..da04bebfff43 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2921,7 +2921,7 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
- 			gup_put_folio(folio, 1, flags);
- 			goto pte_unmap;
- 		}
--		folio_set_referenced(folio);
-+		folio_inc_lru_refs_fast(folio);
- 		pages[nr_pages] = page;
- 		nr_pages++;
- 	} while (ptep++, addr += PAGE_SIZE, addr != end);
-@@ -2990,7 +2990,7 @@ static unsigned long gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp,
- 
- 	for (i = 0; i < nr_pages; i++)
- 		*(pages++) = page++;
--	folio_set_referenced(folio);
-+	folio_inc_lru_refs_fast(folio);
- 	return nr_pages;
- }
- 
-@@ -3032,7 +3032,7 @@ static unsigned long gup_fast_pud_leaf(pud_t orig, pud_t *pudp,
- 
- 	for (i = 0; i < nr_pages; i++)
- 		*(pages++) = page++;
--	folio_set_referenced(folio);
-+	folio_inc_lru_refs_fast(folio);
- 	return nr_pages;
- }
- 
 
 -- 
 2.56.1
