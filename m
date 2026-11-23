@@ -1,135 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E573606A335
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21643606A32C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zlw6eqn7
+	dkim=pass (2048-bit key) header.d=armoriq-io.20260707.gappssmtp.com header.i=@armoriq-io.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ULeZ994e
 Received: by kanga.kvack.org (Postfix)
-	id 3F9546B05B4; Mon, 23 Nov 2026 06:42:02 -0500 (EST)
+	id 472646B05B6; Mon, 23 Nov 2026 06:44:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AA0D6B05B5; Mon, 23 Nov 2026 06:42:02 -0500 (EST)
+	id 423946B05B7; Mon, 23 Nov 2026 06:44:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C0DF6B05B6; Mon, 23 Nov 2026 06:42:02 -0500 (EST)
+	id 312166B05B8; Mon, 23 Nov 2026 06:44:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00DE96B05B4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:42:01 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B3706B05B6
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:44:03 -0500 (EST)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 839FDC087F
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:42:01 +0000 (UTC)
-X-FDA: 85466194842.03.E4E1A4D
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9F24B40002
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:41:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=zlw6eqn7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9F25540892
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:44:02 +0000 (UTC)
+X-FDA: 85466199924.03.BB09A75
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BBC4A40004
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:44:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=armoriq-io.20260707.gappssmtp.com header.s=20260707 header.b=ULeZ994e;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of harisudhan@armoriq.io designates 74.125.82.173 as permitted sender) smtp.mailfrom=harisudhan@armoriq.io
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795434119;
-	b=OJr1szHTBCOLyl2Mk3MoSrDkXZ+r0AAsC6xMRpcSkuFARQwXQWcqLMrsbjroOQ0BEE9zoX
-	sTmhwIQG7qTbjvx1XiWBd8XqiY9E0mqGWiZyWOaf4L6aZCllK4DqqmWAXRKkpjVaFtE9o2
-	Zb+8soTuAoQeGputA6nN+5uABLuvGCs=
+	t=1795434241;
+	b=ISbtwkaVpu9chUYx7ST5Dcs5JXD8b6sDcwY56lWZWOZg4bQoGw2E3SiCPyCGIPEfGmAzpD
+	tilKECJrncPRt9YaZYojjLzdDlH2acQVbq9GKdqTErN5u0CafcMjB6JlarUSH35zxQonDz
+	3eCF9/AUL9AJpt9qKtY7sUddOXouu+Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795434119;
+	s=arc-20220608; t=1795434241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2pe6kDm4hsS2/g1veafnEkrqROCAZR+w7+EWRL5nhP8=;
-	b=UGfX0eqqLLn8S/31zW3lXdEU3lhJ028Q2h1QUPXkcONnCXbQdhbDG8n2ogBXKnghC7him7
-	FJnWF29qKLD29Ad7kK3isBBkVMs3bHnqXG7Ald2SL/Apr+sdhwvrVxfgj3czVAyEOFH0WI
-	DVWTlJevjo6S8PZfzyoAaZNzEYnXWwM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CUCPhF26O34G5hnc4b0my/OnjDHNH9LBcPnQRfSJOAE=;
+	b=Wwm3JcRXM1x33h0uyujGwWBefsQ+ykUIqYdjE1Mwbb33VtdDAIoZ5RVDSO1tE9rSIS0CH0
+	caSzlmUafpaQKr89BASH5kTFOq9SugYdFrVs2bKLTCoWM0GHCqc5urpA6MIKRNg6DW2XUZ
+	xZ6IDUMy2P5ZtJ8vk9P7/1//ZcpumXE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=zlw6eqn7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=thehajime@gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cd60c5da24cso2043281a12.0
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:41:59 -0800 (PST)
+	imf17.hostedemail.com;
+	dkim=pass header.d=armoriq-io.20260707.gappssmtp.com header.s=20260707 header.b=ULeZ994e;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of harisudhan@armoriq.io designates 74.125.82.173 as permitted sender) smtp.mailfrom=harisudhan@armoriq.io
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-385c497bf94so1821894eec.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:44:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795434118; x=1796038918; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :references:in-reply-to:subject:cc:to:from:message-id:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=2pe6kDm4hsS2/g1veafnEkrqROCAZR+w7+EWRL5nhP8=;
-        b=zlw6eqn7ImUCrfoLhKiDS9L2mCIWrq/Qoiud2B1rZhr4Af8NftBeNu3n+Kn2P/5jnw
-         doWE+q08oiaZ0Hl/HzZZjAvvxehO0TOIuOrK7PGyz3uboD68T1GCUbz48E0jXjuWvRUT
-         bBMX3QiTnW2SpbZvZxZZGMajjUDmyIrDmVn56orjYN1YsJKw6rVeY8tl/bkIZ31/dul+
-         defGwDOYy6RDNMAyFNR9Q++5ZMhvvZipL05awdemxmMYW42NIQxYZIlvEBq26FI6x/C5
-         zRhTaaWEb6FwWUkyni5/iaOwTdbFhW+RrOQJmO8fy529luz2ePB9zRrNdeUshg6WsB98
-         bQIA==
+        d=armoriq-io.20260707.gappssmtp.com; s=20260707; t=1795434239; x=1796039039; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CUCPhF26O34G5hnc4b0my/OnjDHNH9LBcPnQRfSJOAE=;
+        b=ULeZ994eNdHn1+kSeB6aJv8CdtI86mFpPHWFtPTFUWT8iKgiT6dduXzMGzX4gRBQjj
+         YRv1/W1vy3VwVCgd2emiyqSFpb2hVQR52QD49rDLZh5JPoP7x9O7XDtiERVAqdLNMErR
+         HNOqU7nUh+UHb03YKfut/g8lvNxGmDUzRmIE9cRHpXpLWUHbbQK6xVyKz4rMPN6S69IU
+         qhdW+p5H+LLTh7dvs637eDmPJn1aTSeN48n+YB8f0SEgnHaREAf0083bsRoEd3iU4G98
+         eenbegEixVEWKZDgyckUWldeFvdXWVbJ5V/hKRqIM3sp0CvNkxOXQ1uwFmhV9To3BS+/
+         MF1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795434118; x=1796038918;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :references:in-reply-to:subject:cc:to:from:message-id:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2pe6kDm4hsS2/g1veafnEkrqROCAZR+w7+EWRL5nhP8=;
-        b=hpWxFi55eKtZg0VNhwEorqNwdzD2E3cIhaFspp3FzJ2pcL5cnSqn2Pv3/rUokKjZbr
-         yvPmGmRgyvY3gi6b4u9rpDjtdBu+IVmn/FCbJSEXT9OEPt0Rp8h4aDPHocgIt/04aMUR
-         +tsBEL+bgNvrTCQkzKL0/haKbsZ0/v9TboWeTU4+g5u1gWy3ciCmvSX+cslUdSReQb6j
-         A4mSAAaL3WPXUPFfB+6lLNdSKh6vC8vIXFJ7nI0sJzLbeN2xoLqBw6UYU3WkQpxCZyej
-         UqaLx89IJYkJDBwvDdZKLu8baxjJUenAqrAY0RsAzz5mWGylRXZd9+5de4mbuQbru+d/
-         BPbQ==
-X-Forwarded-Encrypted: i=1; AL+hErFm/pgE6JwMcWSxQf3Y0LNmIEYapyJKpbn3my5PZX7kIySSNgkJ+hlnnQ70+EsAGO/X1qnpXsIOkg==@kvack.org
-X-Gm-Message-State: APuU4Z8ZVN1mt6SkoykiRt6LFxGKYkwnTGcrJiCkYl0qgzcoKyWIQL0+
-	UrkFMKlvDgHcpL2X9Vkq3AG5z/I0O6JEyks8W8RhCVstzaey3JzGfQGi
-X-Gm-Gg: AZFdTZc7XIznYzR9xgll42XlBz5+6rfCibw770HPUgA6rDSw89YhtLHybJ60ZbE0l+O
-	yUFDs9jPHYLOv9TXY7nBZmBlm1negwDV8JLZ4CI685Pi5j9hj7wDcEgaCUklH75GsstRX6S5688
-	2+XZxxv22D6nVw99/QNKwA+yIs9swMKzzBAa1kWX+r97BGgMvgODFyonYIsELuGUgoFCF+ZTc3K
-	zUSSgajDzc5bysNck8fXL1wuM5vmvzB1jWCDvi8EIJ5nP7ZOlX612hXcToGJgFsE0JxIV2o4KWs
-	P+pdSK8QbqHQygZuoKiTklL4GVnIqmwyLnRWxEnNTux5aGn1rohKZ+myZc5dIsR1aad6LJDxYQ1
-	VfTxqhUrUULnDBrnUG1TP0a4fb0FgWT0SZ/I6kZTW5wAk+zGdNYF3Xfe1jukYvM2RZEvq4KCliJ
-	aYJM/w86Fq/A5uJdPYxNhqCILRFVagi88nURQCpE9LjUHqr3xaMuaH7AJqAZ2pCzd8k+bK2XZ24
-	RQi1N0nx5TizgnBOuJ+Q/yoSgQSP2sUmS67hLCUdm7rZyUOWBNaLrM7u1T4Vbyvfafb8TIRqJrC
-	UHtEY2zIgns2MCzNgfFiVYMNRs+bFXIehjPXuPyb7/LglCusfTUPo5lgBdHF6moXTYSzKI5qs55
-	dQlkyLlFVyaCHSClFFs7lTqrUCckjrWCRoJALne0APgtK/zWRfIZq4cXmavdDf7AGykRmhHlfZD
-	r//olcWkGFwiBlbqQPLfA5cBuKcf3lmgLR/aGj7VI=
-X-Received: by 2002:a17:90b:4d89:b0:3b4:3c33:3e5d with SMTP id 98e67ed59e1d1-3b43c334caemr4444363a91.67.1795434118309;
-        Mon, 23 Nov 2026 03:41:58 -0800 (PST)
-Received: from mercury.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b8c2fcesm5775530a91.4.2026.11.23.03.41.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 03:41:57 -0800 (PST)
-Date: Mon, 23 Nov 2026 20:41:54 +0900
-Message-ID: <87v75nsrjx.wl-thehajime@gmail.com>
-From: Hajime Tazaki <thehajime@gmail.com>
-To: brad@sim.vu
-Cc: akpm@linux-foundation.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	david@kernel.org,
-	surenb@google.com,
-	shakeel.butt@linux.dev,
+        d=1e100.net; s=20260707; t=1795434239; x=1796039039;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CUCPhF26O34G5hnc4b0my/OnjDHNH9LBcPnQRfSJOAE=;
+        b=eoIGZyEvi7ZlCZBz0X3vXdLKfKbHVH7NEu2QisrOoGxdO50YJgaHA8Y7q93/zpeIG7
+         gKCyxXyD9nnUIoyUO/Xordu/zf5F9e+ejgyPqcnADvUA2Kss8k9Te4Oe4UckcrMjLQpn
+         eF9PqPoYnZD1ELUlVJkT/vBLFk1AA4JZO0OIPI3IoOcUK62bJXNcLV/Kx+dpUJY3xK1z
+         ZvLFyJVjBcCPrcY5RToQ31OtJR7fJGGSggFnPMy5TLHr//a3AwTXtaPwxxaH5a5hn+7G
+         SLjZpSlh6602rIO7Hih4aMSyK+AVosde7CsSDGMFtiML6BcAgsGfiG7KZjPlgKr8nBdQ
+         gbMQ==
+X-Forwarded-Encrypted: i=1; AL+hErF8M53vO/xU3MMFrS0Wb7tMPN7R5iJ5zwA16hUJ1wPnXDk/dMoKjHPVr1jWYRWIXUgum5Y4tkPk2A==@kvack.org
+X-Gm-Message-State: APuU4Z/a3R4/ETnYn238QnG2tPSMVBWrWAvwG/kr44C9569hdxxNVlZl
+	QN0D+E5LLE2QgEaDIhUqg2Y6yZi7xmPMhslusgUsPWsf33a6YS3WYYrPwPRkOT+sDpVk
+X-Gm-Gg: AZFdTZdYLANdaNxEwFmETEub091VBmXWNLZahyu9VgtRor+T9I0mh1N0wGa2GblIaKB
+	+qei+k2sB+oNb9qtaVYCDqAtjdDOzY03ihOpJw5RQTDgz1v0SmTZd32mGtVCzwga32iWoj2ULay
+	zynTqqIdgywh0i5BdS0t1Dz2u1J0W4w0bOMQgU4Q8V5uo9/pHF0I1fAhL9tGKrgfiiVYPradkvD
+	HiiKtIva8lgDCFouKeAijetxJlrY4UlrH6r8HzqOLLu1VGD1FTNoeTddAFhHL0tR6WU5e6jwD5w
+	lF1PEimuolDtsw4SmA54xpJNC32SUoS9ayfEgA1uCXZLI5mk4LXOCJpM4l1hMnNW9vNEA0zoFXX
+	IM+9WoF5OWW0MODBg2qykXK6cvgwbPwI4U9SGv4NF1/QkTcrRB7XvwvU1sS7QzrL9je3WDfhcPV
+	FFqExetkgOn73dNmB0wRDXrDoFhm3owHhwNZ6hB4Wf470iQVBDgowtmyi5sQZs0GPDvn+EsulgH
+	6zKQI7Ih+1Hjn7qox/jZ8rbtOnbgUQMLWIwEoNfTlaLevCCuRrTggjG+N5VcoWzTKcniEe1zEnO
+	Kq4dfZv+ArD0Sxy3ixzgy03eeeCWFvDnoqxWTyOIhHZOCB2Z1ggdrVRXev0ULaugDLotDxoR/MY
+	hkeChgUvxmLrruqCKYG3sOFw6Rm9fFG6e5IcaACCTjWXcUeHQjr8MAA==
+X-Received: by 2002:a05:7300:26a2:b0:386:b0ea:3263 with SMTP id 5a478bee46e88-386b0ea340cmr2766188eec.40.1795434239138;
+        Mon, 23 Nov 2026 03:43:59 -0800 (PST)
+Received: from localhost.localdomain ([2409:40f4:14e:94e0:654e:d7ff:13d2:447d])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38566cd40c5sm41943583eec.10.2026.11.23.03.43.48
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 23 Nov 2026 03:43:58 -0800 (PST)
+From: "HARIHARA SUDHAN. R" <harisudhan@armoriq.io>
+To: bpf@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/nommu: keep the maple tree in step when mremap() resizes in place
-In-Reply-To: <20261121083139.803682-1-brad@sim.vu>
-References: <20261121083139.803682-1-brad@sim.vu>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/31.1 Mule/6.0
+	linux-security-module@vger.kernel.org
+Cc: "HARIHARA SUDHAN. R" <harisudhan@armoriq.io>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Segall <bsegall@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Morris <jmorris@namei.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	Ketan Bhardwaj <ketan@armoriq.io>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: [RFC PATCH v4 0/6] security: introduce Kernel Assurance Plane
+Date: Mon, 23 Nov 2026 17:13:02 +0530
+Message-ID: <20261123114308.8103-1-harisudhan@armoriq.io>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: multipart/mixed;
- boundary="Multipart_Mon_Nov_23_20:41:52_2026-1"
-Content-Transfer-Encoding: binary
-X-Stat-Signature: 7apookybkoc6qmcp9u1xodq6sm7czero
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BBC4A40004
 X-Rspam-User:
-X-Rspamd-Queue-Id: 9F24B40002
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Stat-Signature: pwehuxd1gdw4zxwitfu31ogo41fhi3k6
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795434119-613490
-X-HE-Meta: U2FsdGVkX1+RVrrHD4MGBMJc5OU8W5p/drDOofm2kMb4wRZoeXqaw4LLoX8cJQ1PEIjEr+kNPeIUec3GIJdpe5CaROXFEA33UBnAcl5VENsP228y+VPoGKIZUPRcXlF808akChPDKeEr84ozotJYi++jhbEkDhq5doMjomq0DJDAy+cYoYGHXacYZ6U0TeoqrIK7yp1JswJRk2XK2Z7JSpUrmp1+VnFIfO0ClS9NI+dDM+hcdrA6UeagNZfPgMjLhUUlPqijfous2snq7le7zWFJGFES59Ook/zkeQ20OvmIYjGQfGdV8+YCS+DjVvVgqGQznX84fF1yYlMW949dRhU+vtmiDngk5oKoAMO1kysSg1jnbXsOOfTXpu+l2vFAZze+s7L5WHsfbcte1p5jvfQAmlIUQTKqGgT0+vIMOvV3ejjDSGIYxOMYz6WpA5oDePN/WE/yVGYxi5D124kxgMWlI2LcouaPUwUcnzVTGwxRw6HG8FCLhkqUqb4HVF+WYQ/AB0q+QW9gb+Jt5F6FW26v372QB/H+E0JsQZLfqAAuFF0az1c4jsu6UFb/XhTG+YTkz6d7m+gFiuR1Xa6Ul0RCUNdlWn+F0lwutNhViRaQ0d85CSbAlQokLIx0ph4tlSY5eTlYJG0gOP1It/R1Wpw0bEjF4MM4xaxwAISxx8EebIRpCGVD2ozXTkoYYMGBJqbfcVsgINMK7Pzf/NA7wxfYEHYWSJg3sEn3DadPVaAhhPpB6xwhVJ/zrWvcGtoSoGRy+FYLA6xMyklsSoTBcCCUszYnHeWQYwQpIno7RQWNeShrUhab8Nb0ZaZtQcQ056I0IqCqQCk2GWxGj1hd6PhZnPgJVFVyfOnC5bOZO59iWEsNqM9jmghhC2yLdxYFI/nVC8XSTCSc1C6WkB3JQt/4sVA5N6v4qugTCT9C3TDS5FlUsD5cE3hCT5noQkbgHVnAZfUgT0N+ldq210e
- W+9NEqag
- F5RYARm8oDEcrCeBP/E2sLnKLwdHX6RSkFXpsnNu05PGf4xudSa5WtN2fV8+lfVd3/Ou40N87QMu/jE+nbS0tZKPX0H3Vcfuk/HGSBZid+bcok+2sxlL2jry7tDYlW43p35HT5tC5VHEMhTi5TU0v/fLTNVmzzIgAbuI3NT4x3AqK2Etwezte4FzGJFyipKIysilqBJPEt2499M7wcC31qoI3URnyLpO2FPGUm2ZpKanFBAoJl6j80lqEG9cGmfTtcg8yITKPpOKxlzpRMLtBRZq6CqriQ0e7jvej298J/bDdxSQnZDCa4mY4oroRUt/AZ4YtzGUswcO5TYmUjGWIRZlwG8hUiVxbdpMjRu8r4nx7oSzpUUOoCr7Z4PMm1gVRucL+r4lYJ/g6UXEAd2DvzajHf7rqtFhx9UeUQWGhQ+UAAqCfemj6FaSD301z+lLUdzlsrwEZH3CGEv40F3Ew48LqI+HhUemd9H3C/XOQnBW7OeLaxihNfBwHV5Ao7dXboRX14Z9qQtnHGcNQaghVvbNufO4vWdhAOmTTHxNfmn7e8mq4B7Gup8wl/wQ+egmPyTAEK6ADpEtcRhwO/hCo7i5wSlpnEz1PbDvdXVAV8iRLmcYkWJ3I9mUqpbJe18+J9Ej74E3OrwrnTNEbf/FwHjGOVJbYen40mlxht3Xq+geE1eursoqUMEX7YdBUYcn7ER8A9RlLo/P3zKj6l2EjtRlVN3bGbE8epZJU
+X-HE-Tag: 1795434240-987328
+X-HE-Meta: U2FsdGVkX1+q3dFF4/mOEfvA2S+xpwqPnbiZF4g1xa8wXvIOW46LGhLCZBfQHCzWZ7XAxKeEGHnbQPmGuVl/Lp/0EwQ3oRvDYr9OoTYysTfuGEiyjSp6vxcxmR6CVBMG32gVXZfAuR+oFNTrrFOWcLR1tNuZcjxDU/iTZrnuYMLf9gcHEuUaTeXLxp8sAJDcODRv1aibREjSmmBP6EnQXcOH5Dv9ZSiyieU3lT+DEpMz3/ND4hgGoVXffEizUtOAhIxHPqQEB1hvEc8ZqhaXN+dLhnlUvSLx4fob5x2MKQNPBvGkYjyFBHpqwt9YtC1JKb3S97LH9qGmy0Pzmi1RnTarMDGEzkMpYXY8Z4Z9ZkpkPkHmL+dcscmtlSmPHW5s4wHZMjlMwbGbu4AcZG5mYfrh4z8lsB7JfQPRz2E+P74BffRLvUAVB6ZCOE5onC95bEtl57Ii5An3Kt9SB03H/XKtO7caPBvZDuG/XBACR79nSwHSmmtEs6VAyu+w88qTvlZncSqOXobSpmWOqVeGt2swIMpKzDLaNGFLUFK39ZscPqIdaTtDa0GxHea27Lu/+nT09BVamZa/HAD7EVqDqxwW2nCnIr+SJx7KXAVk51T7sbapISVUnyn9UNx5wHJfLtbSjYQJjvn3FSfU48cI684XxhnAv4DsgGT3b2H7JHNSlEuVXzKAVqiU2KATfOcedP+UoYP/WufK5n25FTMCd3te00JRk7ihzO63iF38GgH14K+W3XartOzQpIvyP9Ore/Ul1xkOTkVDk1Nsykw69Ls1kQmM1Lm5tz/fUByS6id/3pkteUzhbgywmq05zRL17oqynqoY9UDkbID8OBqc+yMgXW+QnwraQmF5yMGND+0/sktMDilK2z7KpBYu4IbUqqATZPtKVpeVPuwI0LX+qUqlyye0qMh/GH80zHKcOb9bmTMLAk9nuXmJqJLrsQq/QKV1NKFdrc+4IUH+gdM
+ 0CVLNzDA
+ 9A6kTz9Q/AVEHTeA9oyWHtXX5p1nNSC5ys64wmmVDw6RlbQm1UYmcTuGH9nQzO6rn7FFv9vxq0OCXFnOm3JPNCMVhDgGi3WuF9DkAK/KaVZMxNynFLGGFTH86xcMjsVsN8y9gL3pVzjrk4Yrpl2nZE9Ojhh4mYAOiTYGGxzB8s6UDEhceQQLgtN/Ko4QidaqO8Z9Tv+r1UkvxX4BppVQ8TgFoB8DKOlV2uoF7NotKKXjlzkHrW0OPIQQFOiaeJ6+bDJ/7eRbjFAufS1DS9R1Tz57fkHKTZZyQS9joRPECp0KNiXwySf3BohXMdoGBU8T1IrLEh+mAd3a+J6xYUwMXPS7qnWsKxtwB3zAa/OIydOUWl17JKM53Frzzcs1lzN68/yRTOP8Y2fZrYG7TA2phb29jUxTbMMzLpVqyD8a8J54d6RmcRVRicdQ1D8FWFJKtoVdPMt5MmU5nGz4KUcSDjRq4eCf6Ssmd9aHxj3BHNsvQhxQuSjKESJB2x8etHi8KQnHhD5x9TLB986RTxriormi0SqnWNZxr8Gun6+Ryk17pAzhPNuUKEp7CzbgS5zFNwFC5/L9xetW3MTnEmxvhR/kgGBz5JTUM02nge1LcIXb5PiQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,153 +149,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---Multipart_Mon_Nov_23_20:41:52_2026-1
-Content-Type: text/plain; charset=US-ASCII
+Kernel Assurance Plane (KAP) adds an objective-scoped authority context as a
+kernel object. An Intent Lineage Group (igroup) is that object: an externally
+managed authority whose lifetime is tied to an objective rather than to a
+process, a thread group or a sandbox, that a trusted controller can update or
+revoke in place while unmodified worker tasks keep running.
+
+v1 [1] was the design document. v2 added the implementation and moved the
+control plane under securityfs. v3 [2] reworked the design document to answer
+the v2 review. This version folds in the v3 review: automated review findings
+and a request to put a diffstat on the cover letter. The design and the model
+are unchanged from v3.
+
+Changes since v3:
+
+* Fixes from automated review (3/6, the LSM). Each was checked against the
+  source; findings that did not reproduce were left alone.
+  - Fix a use-after-free in the link check: the source parent dentry was read
+    and then used across a sleeping allocation and d_path, where a concurrent
+    rename could free it. Pin it with dget_parent and release it after.
+  - Fix an uninitialised-stack infoleak on a short connect(): the target
+    render read the address and port before addrlen was known to cover them.
+    Require a family-sized addrlen and otherwise leave the address for the
+    protocol layer to reject.
+  - Close a fail-open path: when a mapping's backing path cannot be resolved,
+    mmap and mprotect now run the execmem predicate with an unresolved target,
+    so a revoked or expired igroup still denies rather than allowing the map.
+  - Normalise /proc/self to the thread-group leader in the current PID
+    namespace (task_tgid_vnr) rather than this thread's global PID.
+  - Do not let an exact-path deny be slipped by unlinking the file first:
+    d_path renders an unlinked file as "<path> (deleted)", so strip that
+    suffix before matching.
+  - Match a user-namespace create as "user:create" so a "user:*" allow or
+    deny applies, rather than a bare "user" that only matched a wildcard.
+  - Guard the transition-sequence parser against u64 overflow.
+  - Reject a lineage root that carries control characters or the JSON string
+    metacharacters, since it is written verbatim into the kap.events JSON.
+* Control plane (4/6, securityfs).
+  - kapfs now sets its superblock operations (simple_statfs), block size and
+    time granularity.
+  - Validate the lineage-root write the same way as above.
+* Design document (1/6).
+  - Clarify the epoch semantics, which were contradictory: a running task is
+    narrowed by installing a new authority at the same epoch, which re-points
+    the bound task without interrupting it; raising the epoch is what revokes
+    a task, failing its checks closed until it is bound again.
+* Cover letter: add the diffstat (thanks, Lorenzo).
+
+The prototype runs as the guest kernel of Kata microVMs (Linux 6.18) and of
+Docker Sandboxes (Linux 7.0). In a Kata guest under nested virtualization,
+running the same binary unbound and then bound, enforcement adds 154 ns to a
+read and 787 ns to an open, while the unhooked getpid control does not move. On
+Docker Sandboxes, allow, deny and revoke were exercised on a real agent.
+
+Known gaps, where feedback is welcome:
+
+* Whether KAP should keep its own mediation or compose with Landlock and
+  existing hooks is open and is question 1; the current series is the
+  self-contained form.
+* The authority wire form is a strict subset of JSON and is experimental.
+* Decisions are serialized by one spinlock, and those that resolve a path
+  allocate a PATH_MAX buffer before taking it. Both are prototype choices.
+* igroups cannot be removed yet, and kap.procs keeps the pids written to it
+  after those tasks exit. A task's binding lives in its task blob and is
+  released with it.
+* A thread created while its process is being bound can miss the binding.
+  cgroups closes the same race with cgroup_threadgroup_rwsem; KAP does not yet.
+* Control writes need CAP_SYS_ADMIN. CAP_MAC_ADMIN may be the better fit.
+* unshare and setns call KAP directly because they have no LSM hook in this
+  base (question 5 in the document).
+* There are no selftests in this series yet. It was built with and without KAP
+  and with networking, namespaces and io_uring disabled, and boot tested in
+  QEMU with lock debugging (PROVE_LOCKING and DEBUG_ATOMIC_SLEEP): the control
+  plane, file and exec decisions, epoch revocation of a running task and
+  kap.default.
+* The LSM ID is provisional and is for the LSM maintainers to confirm.
+
+[1] https://lore.kernel.org/linux-security-module/20261021165748.19304-1-ketan@armoriq.io/
+[2] https://lore.kernel.org/linux-security-module/20261110202246.274-1-harisudhan@armoriq.io/
 
 
-Hello Brad,
+HARIHARA SUDHAN. R (6):
+  docs: security: Describe the Kernel Assurance Plane design
+  security: kap: add the LSM ID and internal headers
+  security: add the Kernel Assurance Plane LSM
+  security: kap: add the securityfs control plane
+  kernel: add KAP checks for unshare and setns
+  MAINTAINERS: add an entry for the Kernel Assurance Plane
 
-On Sat, 21 Nov 2026 17:31:39 +0900,
-Brad Hawthorne wrote:
-> 
-> On !MMU, do_mremap() resizes a VMA by writing vma->vm_end and nothing
-> else, so mm->mm_mt keeps the old extent.
-(snip)
-> Sashiko's review of Hajime Tazaki's nommu series found the stale range
-> in July, and his fixes and RFC since then cover it [1][2]; review asked
-> for a minimal fix-only patch with a Fixes: tag [3]. This is a minimal
-> version of that fix.
-> 
-> The consequence was reproduced and this patch drafted with an AI coding
-> assistant (Claude, Anthropic): it reviewed mm/nommu.c, wrote the
-> reproducer and ran the board and QEMU tests; I checked the result.
-> Stable backports need adjusting: 6.6.y and 6.12.y lack
-> vma_iter_store_overwrite(), and 6.1.y nommu uses the ma_state API.
-> 
-> Link: https://lore.kernel.org/linux-mm/20260710021028.892645-1-thehajime@gmail.com/ [1]
-> Link: https://lore.kernel.org/linux-mm/20260813063401.1786548-2-thehajime@gmail.com/ [2]
-> Link: https://lore.kernel.org/linux-mm/an77pELeQdW-sTEi@lucifer/ [3]
-> Fixes: 524e00b36e8c ("mm: remove rb tree.")
-> Cc: Hajime Tazaki <thehajime@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Brad Hawthorne <brad@sim.vu>
-> ---
-> Hajime, as you asked, here it is as a separate patch with you on Cc.
-> Earlier note, and his reply: https://lore.kernel.org/linux-mm/20261120221021.789792-1-brad@sim.vu/
-
-my earlier patchset contains a kselftest case, which tried to test the
-issue which your patch addressed.  Part of kselftest is now upstreamed
-and I would add the additional one specifically for the case of this
-issue (this patch addressed).
-
-Attached is locally tested kselftest with your patch.  Would be nice
-to include this in your next spin as a part of patchset.
-
--- Hajime
+ Documentation/ABI/testing/securityfs-kap | 111 +++
+ Documentation/security/index.rst         |   1 +
+ Documentation/security/kap.rst           | 341 ++++++++
+ MAINTAINERS                              |  10 +
+ include/linux/kap.h                      |  16 +
+ include/linux/lsm_count.h                |   9 +-
+ include/uapi/linux/lsm.h                 |   1 +
+ kernel/fork.c                            |   4 +
+ kernel/nsproxy.c                         |   5 +
+ security/Kconfig                         |   1 +
+ security/Makefile                        |   1 +
+ security/kap/Kconfig                     |  14 +
+ security/kap/Makefile                    |   2 +
+ security/kap/igroup.c                    | 976 +++++++++++++++++++++++
+ security/kap/kap.h                       | 160 ++++
+ security/kap/kap_lsm.c                   | 903 +++++++++++++++++++++
+ security/kap/kapfs.c                     | 530 ++++++++++++
+ 17 files changed, 3084 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/ABI/testing/securityfs-kap
+ create mode 100644 Documentation/security/kap.rst
+ create mode 100644 include/linux/kap.h
+ create mode 100644 security/kap/Kconfig
+ create mode 100644 security/kap/Makefile
+ create mode 100644 security/kap/igroup.c
+ create mode 100644 security/kap/kap.h
+ create mode 100644 security/kap/kap_lsm.c
+ create mode 100644 security/kap/kapfs.c
 
 
---Multipart_Mon_Nov_23_20:41:52_2026-1
-Content-Type: text/plain; type=patch; name="0001-selftests-nommu-test-mremap-grow-after-shrink.patch"; charset=US-ASCII
-Content-Disposition: attachment; filename="0001-selftests-nommu-test-mremap-grow-after-shrink.patch"
-Content-Transfer-Encoding: binary
-
-From 608869187e388e16e4c2b2caf5a174c3a424dd7b Mon Sep 17 00:00:00 2001
-From: Hajime Tazaki <thehajime@gmail.com>
-Date: Mon, 23 Nov 2026 20:24:08 +0900
-Subject: [PATCH] selftests/nommu: test mremap grow after shrink
-
-The existing mremap shrink test covers dropping the old extent.  Growing
-a shortened VMA must also store its restored extent in the maple tree.
-Shrink an anonymous mapping, grow it back, then partially unmap the
-regrown tail and the remainder to exercise that tree update.
-
-Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
----
- .../selftests/nommu/nommu_mremap_test.c       | 58 ++++++++++++++++++-
- 1 file changed, 57 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/nommu/nommu_mremap_test.c b/tools/testing/selftests/nommu/nommu_mremap_test.c
-index 6ee89cb25f61..550c21fadbf4 100644
---- a/tools/testing/selftests/nommu/nommu_mremap_test.c
-+++ b/tools/testing/selftests/nommu/nommu_mremap_test.c
-@@ -133,6 +133,61 @@ static void mremap_shrink_test(void)
- 	ksft_test_result_pass("mremap shrink\n");
- }
- 
-+/* mremap_shrink_test() covers stale entries after shrink; test regrowth here. */
-+static void mremap_shrink_grow_test(void)
-+{
-+	void *addr, *addr2;
-+	int cleanup, head, tail;
-+
-+	if (!nommu) {
-+		ksft_test_result_skip("NOMMU only\n");
-+		return;
-+	}
-+
-+	addr = mmap(NULL, ps * 8, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (addr == MAP_FAILED) {
-+		ksft_test_result_error("mmap failed: %s\n", strerror(errno));
-+		return;
-+	}
-+
-+	addr2 = mremap(addr, ps * 8, ps * 4, 0);
-+	if (addr2 == MAP_FAILED) {
-+		ksft_test_result_fail("mremap shrink failed: %s\n", strerror(errno));
-+		if (munmap(addr, ps * 8))
-+			ksft_print_msg("cleanup after shrink failure failed: %s\n",
-+				       strerror(errno));
-+		return;
-+	}
-+
-+	addr = mremap(addr2, ps * 4, ps * 8, 0);
-+	if (addr == MAP_FAILED) {
-+		ksft_test_result_fail("mremap grow failed: %s\n", strerror(errno));
-+		if (munmap(addr2, ps * 4))
-+			ksft_print_msg("cleanup after grow failure failed: %s\n",
-+				       strerror(errno));
-+		return;
-+	}
-+	if (munmap(addr + ps * 4, ps * 4)) {
-+		ksft_test_result_fail("munmap grown range failed: %s\n", strerror(errno));
-+		cleanup = munmap(addr, ps * 8);
-+		if (cleanup) {
-+			head = munmap(addr, ps * 4);
-+			tail = munmap(addr + ps * 4, ps * 4);
-+			cleanup = head || tail;
-+		}
-+		if (cleanup)
-+			ksft_print_msg("cleanup after munmap failure failed: %s\n",
-+				       strerror(errno));
-+		return;
-+	}
-+	if (munmap(addr, ps * 4)) {
-+		ksft_test_result_fail("munmap failed: %s\n", strerror(errno));
-+		return;
-+	}
-+	ksft_test_result_pass("mremap shrink and grow\n");
-+}
-+
- static int get_shared_writable_file_expected_error(const char *path)
- {
- 	if (nommu && get_fs_type(path) == RAMFS_MAGIC)
-@@ -344,10 +399,11 @@ int main(int argc, char **argv)
- 
- 	ps = sysconf(_SC_PAGESIZE);
- 	ksft_print_header();
--	ksft_set_plan(ARRAY_SIZE(mremap_cases) + 2);
-+	ksft_set_plan(ARRAY_SIZE(mremap_cases) + 3);
- 
- 	munmap_shrink_test();
- 	mremap_shrink_test();
-+	mremap_shrink_grow_test();
- 
- 	for (i = 0; i < (int)ARRAY_SIZE(mremap_cases); i++)
- 		run_mremap_test(&mremap_cases[i]);
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
 -- 
 2.43.0
 
-
---Multipart_Mon_Nov_23_20:41:52_2026-1--
 
