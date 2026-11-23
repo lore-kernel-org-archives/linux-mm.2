@@ -1,92 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E62606A337
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 12:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F0D606A333
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gSVuiFaW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jP+52d5g
 Received: by kanga.kvack.org (Postfix)
-	id 9F3386B05B4; Mon, 23 Nov 2026 07:49:07 -0500 (EST)
+	id C53936B05B0; Mon, 23 Nov 2026 08:01:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 955966B05B5; Mon, 23 Nov 2026 07:49:07 -0500 (EST)
+	id C03876B05B1; Mon, 23 Nov 2026 08:01:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CE2E6B05B6; Mon, 23 Nov 2026 07:49:07 -0500 (EST)
+	id AF2546B05B3; Mon, 23 Nov 2026 08:01:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 55B066B05B4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:49:07 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DADB31C42C5
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:06 +0000 (UTC)
-X-FDA: 85466363892.27.F8D101D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 81F306B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:01:34 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 902321A088A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:01:33 +0000 (UTC)
+X-FDA: 85466395266.25.83C4CC8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 46FAB140003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gSVuiFaW;
+	by imf04.hostedemail.com (Postfix) with ESMTP id E498A40009
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:01:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jP+52d5g;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795438145;
-	b=BkojEUk5ZtbojrK02UGL69DzpVWb0Xy6xr6guyivYLOqE9SokbvUSX9qBmyWpF3G5u0Z4K
-	TGuBly/KKga13YbpqBupPXlhzGbNWgPpB714eGFlvK0y0BGQ4qh+IMABIaexCz1Vh+Jf36
-	XhbyoP/hBzhCiK74dxLcGjI8sXsor1I=
+	t=1795438892;
+	b=Vjfpavx7IiLpEbkQX8mW9YgyeOOcpfWe62w5i3AmZpKBi5hj0csFEBzzVNUg7/Tces5B6v
+	EqiBH2rb+WRo8GoAU0Fa0pZ0tdphkzhRCIiuP8NXElEd4poMVj7sQvWkIrX869OISh9O2Q
+	xfYmR+Thh8PL4L+L+ADNUgxVwh0qFJI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795438145;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rnR/HtVQ3ceUuwdOQEq43zu84XQJC/5vmpXAH2WxiXM=;
-	b=EHlRuI9cOa2GwQ2wOoJzPwpBaeO4BNpUsUXi7dDHPv6orA0tvAOfBvA6bk4HbJ50jQY/yI
-	N4qII6C3KejsSE8T++m0SpvKFOXiBPQeB65rYCX+dKHdj42pe9+mnYr/hOFcqZ+J8375Ba
-	1woVUJdlyOG+iz1hxbWOR7BlNafhFVc=
+	s=arc-20220608; t=1795438892;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7eHgAUF6b9K1iuUvmb5aLHuZl4vVt6BbaMArUNeQ1AE=;
+	b=lLI5/XGA1FCHgYXxKvnpMs6PHZX8b379TrnP5jccpNBjA+TMFO21rRjW4SBZJnmyT8Wd3c
+	i/AoAfGS1lzNrIs6quzYuBR3LBIOUgAHYdittFpOEhdnlQrljBOBgWftqhHaAWRiRZ2shh
+	roLFFZa47lICu6gWa2jcbM41syxCyqU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gSVuiFaW;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jP+52d5g;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA2A061CC9;
-	Mon, 23 Nov 2026 12:49:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B851F000D3;
-	Mon, 23 Nov 2026 12:49:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D6E3E6214E;
+	Mon, 23 Nov 2026 13:01:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFA21F000D0;
+	Mon, 23 Nov 2026 13:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795438144;
-	bh=rnR/HtVQ3ceUuwdOQEq43zu84XQJC/5vmpXAH2WxiXM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gSVuiFaWHN1fSpQcvQEqZUahTDgAeNq04N3cz/sDQMO9Z3dSWN2muujfYIiHEWmlC
-	 a1TELuyfPOsYbJPBgyrOhxWqzg6RXdv9ydkKch/ANq95zPNwk8FJWaXkEPpk7lBJtB
-	 wdR+ScuQgX3k35P5mMHkMW1Aj1p0iLwHDUOTgGoMS3YtHDirAZ0mg6dpBioHwigbK+
-	 xSEVb6S/2RrQ7vDoXeq1CclkAiqxhHS+FzuhWYX5DLQDfyOTwjazd08DXt/W+EbXQ5
-	 0nYqjJhrb7nntFZ9FffVyDZeghYZxDPX5sKcE5X4xbDALzBogAzgFj9KG9QGWTva9F
-	 9wpL7/BpZZxAA==
-Message-ID: <sashiko-outbox-229263@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 13/14] mm, swap: do not give an xswap slot to a
- cgroup that cannot zswap
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Baoquan He" <baoquan.he@linux.dev>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, david@kernel.org, urezki@gmail.com, chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, shikemeng@huaweicloud.com, hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, corbet@lwn.net, kunwu.chan@gmail.com, klarasmodin@gmail.com, "Baoquan
- He" <hebaoquan@kylinos.cn>
-In-Reply-To: <20261122124814.3489077-4-baoquan.he@linux.dev>
-References: <20261122123918.3486916-1-baoquan.he@linux.dev>
- <20261122124814.3489077-1-baoquan.he@linux.dev>
- <20261122124814.3489077-4-baoquan.he@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 12:49:03 +0000
+	s=k20260515; t=1795438890;
+	bh=7eHgAUF6b9K1iuUvmb5aLHuZl4vVt6BbaMArUNeQ1AE=;
+	h=From:To:Cc:Subject:Date;
+	b=jP+52d5ge/wZmjJ9NXFAd2oqQBOjyvHIXexJ3xt8oF/leitOQkmOzVZQ1HRbPYd/h
+	 VMM5GDP9z4zv0oyOprBXzDSC6XDrbaRSeq8d4i/FuDsClXKuj9xDah6QEjh9U/dgz8
+	 K0gTrSDuYWeVCHtEx4MNE+n7OpgCd53e32zXEpNLowjHlbE6Mt/X4JDex1glku4bXe
+	 YNkCeXUtggnVaDMQND4LQmT4UwRGfzve4YLrZGZDLGxQIX3wGE/7il3Aweuz5KM4Kj
+	 ewszvahP566oAAGzmy/jTKVN7tQLEth8eZ0ZViPBNtd3F2auZq3JHiZrcmbTXy6QUE
+	 xytCGRuhQabyQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3] mm/memfd_luo: don't use memfd_pin_folios()
+Date: Mon, 23 Nov 2026 13:01:09 +0000
+Message-ID: <20261123130115.4021199-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 93fmkfqzm7t4f4y37ux4k3afoj8r8j85
 X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: E498A40009
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 46FAB140003
-X-Stat-Signature: 9g3xdqsob4co5zthxjr7t1c1i8zzm4ss
-X-HE-Tag: 1795438145-159740
-X-HE-Meta: U2FsdGVkX1+E12yWl6hNCCV/P+RRsqcCWICxXKBpOfPUJvH1Tk7ylag6pdKVq2F1V6J4FnLh8IwJl9q+uYg2cW/4NTb83SBV2lPGoWqzhqtDUqzi7jZLcMLZzLhIzkh+mchxGji/GrWk/iw9odkknS5G0fWhhDISWgD9ldLI2CvLo+Ch5s5Wzc3BwJMqpsku3hG2hBJXXIX7XfnLmQtapeRKeCtUuK4MnlAUk1FiI1lBj6pKhW4NclkWATBrIA1s5VXpNxNpR7zipldFvN5hxgvBojhY8Kgr0ccZt1CzixvjSOZFhkDvtjz31cfzq2zPOu1+vLFZeeY1WlJmGkE6DT9QDJF2AuwUIXji1oi8lWheBYhEjsFj1pIOcHQGRozJqnx3736U2PoCLOJma48+4pJVrGghZpModjFHexocYzINlwN3zkQUSmvPNvNvp5VksH8ld6A3zhZT7GP9OKeH2oaLBYwjaycKVjZRbnEwouaRidIISa3pvoedXAQ1GuDItf3AMriH2YRB6WsDZ3kK3rN9qb16L/B46DERfdzRHdfvhlWjwUww9RGYdxEKtjxaJnidMwe67JQz+8rRtQ9XDWzpoeKqiPyvZq/gpl0CrdIFZMt+tpO1VMXGpklBzt4IaDcp5K7ewkU+lkI1AersHZm6VBhgZ8NyIGcOaDl/qLJgceDruvVrOfJknL904q31FPESIEDrlxwTqWOnCQToHzDNGBx6/OvzsuRHCfOjVkm7hIbPonbQx7RccpzbG9DRQGoljvKij70pUmn6klj7dC4enHAAtNSEZ76gO9mFAEXqM6deCkH/MXnvRVELXdfhZu2ZCh0VtP6CGHb5JYN2b5r3s404a2Z5PLHiKo7ltJBKL4fwMK7u4sv7SiqDNQ8hYwRIH8RouovHu9/49laEW6dAJLwV5PFjCe/2QIhxMl0dICXwBy8sbB9GhRNxwhfWCcBcB6b0yBA4QKZ9Krx
- yFlIqm92
- L8bqeFscOCNgy/LNrt22H4In6vwp+MqG5m0bDmRQooWCxyW1YqgVwL6n3pJz2v0dAodf1de/XA7guJ8qXjUrys9olMIc8K56ZvOxcniMQpwnEDBBYaCdmjEOI0Ozdcdr6xgtH0WXiOpYprnF9P6LWtKwWWS5YR0R2QENjWnlMC57KFZ6Bjf864cgY0SAUUAvFrHeAhBqQYs9Zmls5CkIMkRpcvx5WNNtB97a+3ZR6EiV6Ut0YAvtDxE50imWni0zaD56RamPMHgxZH6WktVe3U01rQSqsLHmZgMG/l3JoJJa+QAENL6hmpPmjseB+QBjgO1iVMUmERGvQFhzxyRE4yVwy9gjEb009oRFGKz2yHrk4ml3+rFlUcoq7pK5jNidhCEHZTIZQWB17tde6vyx8swBDqrCg1m/pTe7g4KmwbVc6cvVYdmjF2120cPQUMbf0O7hpC+66s4t3c8RR74kbbl7B7eUgvVD5UhWQ2HgmLCtNOe3J6ocTGjVXk5j9v1bUlqdj4jxKolGs4umA+11hDTX/FZjGMndpNTsItACrt7eapB7BgI+72qSktYOlhwz2qVaJhhLqb2ULxwJNopb/RrWdtcn5NaKzPm/6Uz8+QbWDe6rK++BnpwRXiIuM45f8xJclcVSw+U/sOMEW3HIt7WPfXCtQ4nAfoDZoLMXRhDGp5TImZflnBrYfuZz8Z9QqhmdwxGXruUENhz6kAIahYLYhdDLmoO5qhuNMaBnVjwMUOXM7sC8x99cq1cpLwlASqJ5Nn2TmsJSv0RDXS0G77v+lBMCHvbVgAi1QeAqkPWo/Ucy7tOSqHrpbFCwIsR2IeVs1gTCMT1v89YNKdNk1GzfX4E8TdxWt69OXpBez9G1geCc=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795438891-913365
+X-HE-Meta: U2FsdGVkX1/PYdYmiKU6wxS5oWUHTfMCpJ2A7hQjGm0SNjnEjNUdVpFrH1Knx41ndZEudLc3X/jV9eqOXjgJmoU6EsTljFGZ176lUfuSVBRaG5Gyvybb8OICVIgVknnCJSPzwt+bH0SXRmCdbvyNL+73qF+fTKRR25nuAnrKSsX2AYemnQ06j1L+WiggRnXZsF9sb/Qvzw17JhGOA9vXNeKaHYi4jfxFCdbi1fECa+bIkKowpZUCifKGwpTwv2Ujji9wIUKbE9i6K5Fa1OlU+1w+wmB/kcz9yfDeIuLtm2DrIk0LgyFu/iKZQiGQ+NGsUyH3DwyF0h82bbgqJtvd8g0qfQrzKx2ZXkHz8POdWfk80dmjXu8QKN6s8bz4R5SuQvGT/YjmeWSpjsqNdesCKvWax1zUXRFCvg6nXIDGJG8pH0Ko4BDdGGRIwuH0zy1c6B+ZyWgUACnXJxsYEN9iihmA1ocoENT8PbwWnJcEqilD3MR4412VptGpx+VjhBJqt1Kg3ImJl6hXVyjPy5HA5Io8eb3y4phY1I0hHQhumXX3NXzJV9QUsOio5lvG88X4xRqTjA5gVB7axUf4hVsaWxCdUviNcdZYdpIkqeGsNbe5k19LRfLTCjAUD4MNk6/6t+YTkwm+Rk+D/rP0Leu+cXcEMVp6Z4VLVvPnWgtTQHFGWpknNf3Ep+Ki/ZHuH3DY4YkWU1Uro1HDdF5dOh7VF0dMy7yUGjptU1zuPqFTVMIypx2unJ4Y+NMgcLe4lllqEZX+UsSnXzfYOGBvi0kA+C85WnCWrzJixM0E1mGzebR3J5p7SYGwSZJbzXwQtZ5AiUA7cyZIu6mY60ynLRkR3oBvwupOph/jyBM3ykxzqco5ETBlQxpM3XJYMNfq3uMJkkTphntIbnHFrJZM+3oZvYbCAx3w/D7wshXdszbu10ULU1nix4z3xXKsvou4Qvt5TgSL0Y0ffQXSM7sbdhN
+ jCyb3SHT
+ fHKFY59XJPuwoGouIwgxYb0On8n2ElOfLOIgTobAIDX06Irxp9Z5a+QSvJJ8U+VCH53rxjXkcdoBFgSSN1SuxNtZ2y4ciSlf59QssYuKnqcCkTVtkIjDaFm/XwTxYj4fXBwOrIw8Mc+HkU9VFytmUchcb7eUa6H1hl1GIUtoyAT7mZxce25vrxnm4rVlVmNATQNCl5xOy4XQptWnJ5CbN9U5bILo9WMSUO/zqg/qiHeA+WtX6PpL0yj+TTticMM91FdzXbD9z6TEFfn2G46pxaUUoCFoVwi87+aje6U4+hR0c01+CiZFBG7FMyy9IP8GGuleonyHQfXFhIPl3BBqzSG8k+yZl1BEPt1MSbZeyS/I+LLv6XXYS/5A0lifQvhqzebRIIdgzcxrAQoRCHwlO6etKI0DlAIkVaHUYXqoBm/wiwItQagi5Sfj76d0uP+H0cmiAsX+IRTl8hJMLAMVzuqP7q6+gfEKS3/4+v34Hw6fJeet/N3bNldQXf/OJG/E+0oO8HFlJ4bont5hvnAZ2ROIjazGswGFR0WZPwpWoaeErPq0DfEc/mbhBJpRzG+tJ6qs1aPAMVKnvRKSSKE9FpmfW1ptXqu1I6z0Y5VHG1GtH8sc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,181 +95,480 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] mm, swap: percpu_swap_cluster priority inversion in
-  swap_alloc_fast()
-- [Medium] mm, swap: futile global lock contention in folio_alloc_swap()
-  without real swap
---
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-commit 0b727ee132b797f75c4ddc0bee4e1bc176587e37
-Author: Baoquan He <hebaoquan@kylinos.cn>
+memfd_luo takes a snapshot of the folios in the file's mapping. To make
+sure the snapshot does not go out of sync, it pins the folios in the
+file via memfd_pin_folios(). The pinning also migrates the folios out of
+MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
+region.
 
-mm, swap: do not give an xswap slot to a cgroup that cannot zswap
+memfd_pin_folios() does not lock the folios. So it can race with
+shmem_writeout(). A folio returned by memfd_pin_folios() might already
+be in swap cache. This happens to work but is fragile. memfd_luo looks
+at folio flags and index on a folio that isn't in the memfd's page
+cache.
 
-This commit skips xswap devices during swap slot allocation when the
-folio's cgroup cannot accept another zswap page according to
-obj_cgroup_may_zswap().
+In addition, memfd_pin_folios() needs the caller to allocate an array of
+folios. memfd_luo does not really need that since it will vmalloc
+folios_ser and store the information there anyway. The folios array is
+unnecessary overhead.
 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 462efeef887a8..90f17edce1d04 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
+Finally, memfd_pin_folios() fills in holes in the memfd. This makes
+preserving sparse memfds very expensive in both compute and memory.
+While this patch doesn't yet stop filling in the holes, it sets up the
+infrastructure to make it simpler.
 
-[ ... ]
+Fix all this by walking the page cache directly using shmem_get_folio()
+with SGP_CACHE. This returns a locked folio with an elevated refcount.
+memfd_luo holds that reference until the memfd is unpreserved. This
+blocks compaction, migration, etc.
 
-> @@ -1612,7 +1618,7 @@ static bool get_swap_device_info(struct swap_info_s=
-truct *si)
->   * Fast path try to get swap entries with specified order from current
->   * CPU's swap entry pool (a cluster).
->   */
-> -static bool swap_alloc_fast(struct folio *folio)
-> +static bool swap_alloc_fast(struct folio *folio, bool may_zswap)
->  {
->  	unsigned int order =3D folio_order(folio);
->  	struct swap_cluster_info *ci;
-> @@ -1628,6 +1634,11 @@ static bool swap_alloc_fast(struct folio *folio)
->  	if (!si || !offset || !get_swap_device_info(si))
->  		return false;
-> =20
-> +	if (!may_zswap && (si->flags & SWP_XSWAP)) {
-> +		put_swap_device(si);
-> +		return false;
-> +	}
-> +
->  	ci =3D swap_cluster_lock(si, offset);
->  	if (cluster_is_usable(ci, order)) {
->  		if (cluster_is_empty(ci))
-> @@ -1642,13 +1653,19 @@ static bool swap_alloc_fast(struct folio *folio)
->  }
-> =20
->  /* Rotate the device and switch to a new cluster */
-> -static void swap_alloc_slow(struct folio *folio)
-> +static void swap_alloc_slow(struct folio *folio, bool may_zswap)
->  {
->  	struct swap_info_struct *si, *next;
-> =20
->  	spin_lock(&swap_avail_lock);
->  start_over:
->  	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
-> +		/*
-> +		 * Do not rotate a skipped device: the walk follows the
-> +		 * rotation and would spin forever.
-> +		 */
-> +		if (!may_zswap && (si->flags & SWP_XSWAP))
-> +			continue;
->  		/* Rotate the device and switch to a new cluster */
->  		plist_requeue(&si->avail_list, &swap_avail_head);
->  		spin_unlock(&swap_avail_lock);
+There is still a need to migrate folios out of MIGRATE_MOVABLE page
+blocks. This is because those might be CMA or KHO scratch. memfd_luo
+will hold a longterm reference to the folios so it will block migration
+in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
 
-[Severity: Medium]
-Can a !may_zswap allocation overwrite percpu_swap_cluster.si[order] and
-route later zswap-eligible folios on the same CPU to a lower-priority
-physical swap device?
+Also factor out folio unpreservation logic into memfd_luo_put_folios()
+and use it from memfd_luo_unpreserve_folios() and from error paths in
+memfd_luo_preserve_folios().
 
-When may_zswap is false, swap_alloc_fast() rejects the cached xswap
-device and swap_alloc_slow() falls back to a physical swap device.  If
-that physical device has SWP_SOLIDSTATE set, cluster_alloc_swap_entry()
--> alloc_swap_scan_cluster() installs it into percpu_swap_cluster:
+Since shmem_get_folio() always returns uptodate folios, drop the folio
+zeroing logic.
 
-mm/swapfile.c:alloc_swap_scan_cluster() {
-	...
-	if (si->flags & SWP_SOLIDSTATE) {
-		this_cpu_write(percpu_swap_cluster.offset[order], next);
-		this_cpu_write(percpu_swap_cluster.si[order], si);
-	} else {
-	...
-}
+This change also improves preservation performance, shown in the table
+below.
 
-Because swap_alloc_fast() only rejects SWP_XSWAP when !may_zswap,
-subsequent folios with may_zswap =3D=3D true on that CPU will allocate up to
-the remaining SWAPFILE_CLUSTER - 1 slots from the lower-priority physical
-swap device even while higher-priority xswap space is available.
+|------------------+----------+------------+-------|
+| memfd            | baseline | this patch | delta |
+|------------------+----------+------------+-------|
+| 4K pages, 32 GiB | 748 ms   | 600 ms     |  -20% |
+| THP, 4 GiB       | 0.59 ms  | 0.59 ms    |    0% |
+| THP, 16 GiB      | 2.99 ms  | 2.61 ms    |  -13% |
+| THP, 32 GiB      | 4.83 ms  | 5.21 ms    |   +8% |
+| sparse, 32 GiB   | 8695 ms  | 7269 ms    |  -16% |
+|------------------+----------+------------+-------|
 
-[ ... ]
+Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-> @@ -1987,10 +2015,21 @@ int folio_alloc_swap(struct folio *folio)
->  {
->  	unsigned int order =3D folio_order(folio);
->  	unsigned int size =3D 1 << order;
-> +	bool may_zswap =3D true;
-> +	bool zswap_checked =3D false;
-> =20
->  	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
->  	VM_BUG_ON_FOLIO(!folio_test_uptodate(folio), folio);
-> =20
-> +	/*
-> +	 * A folio zswap will not take must not get an xswap slot; without
-> +	 * a device to route away from, skip the lookup.
-> +	 */
-> +	if (atomic_read(&nr_xswap_files)) {
-> +		may_zswap =3D folio_may_zswap(folio);
-> +		zswap_checked =3D true;
-> +	}
-> +
->  	if (order) {
->  		/*
->  		 * Reject large allocation when THP_SWAP is disabled. Check below
-> @@ -2011,8 +2050,8 @@ int folio_alloc_swap(struct folio *folio)
-> =20
->  again:
->  	local_lock(&percpu_swap_cluster.lock);
-> -	if (!swap_alloc_fast(folio))
-> -		swap_alloc_slow(folio);
-> +	if (!swap_alloc_fast(folio, may_zswap))
-> +		swap_alloc_slow(folio, may_zswap);
->  	local_unlock(&percpu_swap_cluster.lock);
-> =20
->  	if (!order && unlikely(!folio_test_swapcache(folio))) {
-> @@ -2020,6 +2059,20 @@ int folio_alloc_swap(struct folio *folio)
->  			goto again;
->  	}
-> =20
-> +	/*
-> +	 * The gate was skipped when there was no device; one may have
-> +	 * appeared since, so ask the slot itself.
-> +	 */
-> +	if (unlikely(!zswap_checked && folio_test_swapcache(folio) &&
-> +		     (__swap_entry_to_info(folio->swap)->flags & SWP_XSWAP))) {
-> +		zswap_checked =3D true;
-> +		may_zswap =3D folio_may_zswap(folio);
-> +		if (!may_zswap) {
-> +			swap_cache_del_folio(folio);
-> +			goto again;
-> +		}
-> +	}
-> +
->  	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
->  	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
->  		swap_cache_del_folio(folio);
-> @@ -2037,6 +2090,13 @@ int folio_alloc_swap(struct folio *folio)
->  	if (mem_cgroup_get_folio_swap_margin(folio) <=3D 0)
->  		return -ENOMEM;
-> =20
-> +	/*
-> +	 * Only xswap devices exist and the folio cannot use them; splitting
-> +	 * cannot help.
-> +	 */
-> +	if (!may_zswap && !atomic_read(&nr_real_swapfiles))
-> +		return -ENOMEM;
-> +
->  	return order ? -E2BIG : -ENOMEM;
->  }
+---
 
-[Severity: Medium]
-Should folio_alloc_swap() skip the allocation loop when !may_zswap &&
-!atomic_read(&nr_real_swapfiles)?
+The diff is unfortunately hard to read. It would be easier to review the
+patch by applying it and looking at the final code.
 
-When a cgroup has reached memory.zswap.max on an xswap-only system,
-checking this condition only under failed: causes every reclaimed folio
-to acquire percpu_swap_cluster.lock, take the global swap_avail_lock in
-swap_alloc_slow(), and for order-0 folios take the global swap_lock in
-swap_sync_discard() even though no usable swap device exists.
+This patch is picked from a separate series I sent [0]. It is more or
+less an independent change. It fixed a race for that series so I added
+it there, but since that series might take longer to go through, I think
+it is useful to take this patch separately.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122123918.3486=
-916-1-baoquan.he@linux.dev?part=3D13
+[0] https://lore.kernel.org/all/20261027173031.763213-2-pratyush@kernel.org/
+
+Changes since v2:
+
+- Reword the comments on memfd_luo_migrate_folio(), memfd_luo_get_folio()
+  and the allocation comment in memfd_luo_preserve_folios() so they no
+  longer say folios are "held until the next kernel". Instead, say that
+  preservation holds a longterm reference on them.
+- Use a bounded for loop in memfd_luo_get_folio() instead of an open
+  ended one with a separate busy retry counter.
+- Collect tags.
+
+Changes since v1:
+
+- Add memfd_luo_get_folio() which combines shmem_get_folio() and the
+  migration logic.
+- Collect tags.
+- Rebase to v7.4-rc1.
+
+---
+ mm/memfd_luo.c | 306 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 190 insertions(+), 116 deletions(-)
+
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index 6b68220275eb..c963bc3522e6 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -77,26 +77,161 @@
+ #include <linux/kexec_handover.h>
+ #include <linux/kho/abi/memfd.h>
+ #include <linux/liveupdate.h>
++#include <linux/migrate.h>
++#include <linux/sched/mm.h>
++#include <linux/sched/signal.h>
+ #include <linux/shmem_fs.h>
++#include <linux/swap.h>
+ #include <linux/vmalloc.h>
+ #include <linux/memfd.h>
+ #include <uapi/linux/memfd.h>
+ 
+ #include "internal.h"
+ 
++static void memfd_luo_put_folios(const struct memfd_luo_folio_ser *folios_ser,
++				 u64 nr_folios)
++{
++	u64 i;
++
++	for (i = 0; i < nr_folios; i++) {
++		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
++		struct folio *folio;
++
++		if (!pfolio->pfn)
++			continue;
++
++		folio = pfn_folio(pfolio->pfn);
++
++		kho_unpreserve_folio(folio);
++		folio_put(folio);
++	}
++}
++
++/* How many times to try migrating a folio that is not longterm pinnable. */
++#define MEMFD_LUO_MIGRATE_RETRIES	3
++
++/*
++ * Preservation holds a longterm reference on the folio. This would block
++ * migration in ZONE_MOVABLE or CMA. Move it out.
++ *
++ * Must be called with folio unlocked. Drops the reference to folio. The caller
++ * must look it up again.
++ *
++ * Returns 0 on success, -EBUSY if the folio could not be isolated (e.g.
++ * because someone else has it isolated right now), or -ENOMEM if migration
++ * failed.
++ */
++static int memfd_luo_migrate_folio(struct folio *folio)
++{
++	struct migration_target_control mtc = {
++		.nid = NUMA_NO_NODE,
++		/* Not movable, so the target is neither in ZONE_MOVABLE nor CMA. */
++		.gfp_mask = GFP_USER | __GFP_NOWARN,
++		.reason = MR_LONGTERM_PIN,
++	};
++	LIST_HEAD(source);
++	bool isolated;
++
++	/* Flush per-CPU LRU batches holding the folio so isolation works. */
++	lru_cache_drain_for_folio(folio, 1, NULL);
++	isolated = isolate_folio_to_list(folio, &source);
++	/* Isolation holds its own reference. */
++	folio_put(folio);
++	if (!isolated)
++		return -EBUSY;
++
++	if (migrate_pages(&source, alloc_migration_target, NULL,
++			  (unsigned long)&mtc, MIGRATE_SYNC, MR_LONGTERM_PIN,
++			  NULL)) {
++		putback_movable_pages(&source);
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++
++/*
++ * Look up the folio at @index, allocating it if needed. Preservation holds a
++ * longterm reference on the folio, so folios that are not longterm pinnable are
++ * migrated out first, retrying a few times if someone else has them isolated.
++ *
++ * On success, returns 0 with *@foliop locked and holding a reference.
++ */
++static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
++			       struct folio **foliop)
++{
++	struct folio *folio;
++	int err, retry;
++
++	for (retry = 0; retry < MEMFD_LUO_MIGRATE_RETRIES; retry++) {
++		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
++		if (err)
++			return err;
++
++		if (likely(folio_is_longterm_pinnable(folio))) {
++			*foliop = folio;
++			return 0;
++		}
++
++		folio_unlock(folio);
++		err = memfd_luo_migrate_folio(folio);
++		/* Someone else might have it isolated, retry a bit. */
++		if (err && err != -EBUSY)
++			return err;
++	}
++
++	return -EBUSY;
++}
++
++static int memfd_luo_preserve_folio(struct folio *folio,
++				    struct memfd_luo_folio_ser *pfolio)
++{
++	int err;
++
++	err = kho_preserve_folio(folio);
++	if (err)
++		return err;
++
++	/*
++	 * A dirty folio is one which has been written to. A clean folio
++	 * is its opposite. Since a clean folio does not carry user
++	 * data, it can be freed by page reclaim under memory pressure.
++	 *
++	 * Saving the dirty flag at prepare() time doesn't work since it
++	 * can change later. Saving it at freeze() also won't work
++	 * because the dirty bit is normally synced at unmap and there
++	 * might still be a mapping of the file at freeze().
++	 *
++	 * To see why this is a problem, say a folio is clean at
++	 * preserve, but gets dirtied later. The pfolio flags will mark
++	 * it as clean. After retrieve, the next kernel might try to
++	 * reclaim this folio under memory pressure, losing user data.
++	 *
++	 * Unconditionally mark it dirty to avoid this problem. This
++	 * comes at the cost of making clean folios un-reclaimable after
++	 * live update.
++	 */
++	folio_mark_dirty(folio);
++
++	pfolio->pfn = folio_pfn(folio);
++	pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
++	pfolio->index = folio->index;
++
++	return 0;
++}
++
+ static int memfd_luo_preserve_folios(struct file *file,
+ 				     struct kho_vmalloc *kho_vmalloc,
+ 				     struct memfd_luo_folio_ser **out_folios_ser,
+ 				     u64 *nr_foliosp)
+ {
++	struct memfd_luo_folio_ser *folios_ser, *shrunk;
+ 	struct inode *inode = file_inode(file);
+-	struct memfd_luo_folio_ser *folios_ser;
+-	unsigned int max_folios;
+-	long i, size, nr_pinned;
+-	struct folio **folios;
+-	int err = -EINVAL;
+-	pgoff_t offset;
+-	u64 nr_folios;
++	u64 nr_folios = 0, max_folios;
++	unsigned int pin_flags;
++	pgoff_t index = 0, end;
++	int err;
++	loff_t size;
+ 
+ 	size = i_size_read(inode);
+ 	/*
+@@ -113,98 +248,65 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 	 * Guess the number of folios based on inode size. Real number might end
+ 	 * up being smaller if there are higher order folios.
+ 	 */
+-	max_folios = PAGE_ALIGN(size) / PAGE_SIZE;
+-	folios = kvmalloc_objs(*folios, max_folios);
+-	if (!folios)
++	end = DIV_ROUND_UP_ULL(size, PAGE_SIZE);
++	max_folios = end;
++	folios_ser = vmalloc_array(max_folios, sizeof(*folios_ser));
++	if (!folios_ser)
+ 		return -ENOMEM;
+ 
+ 	/*
+-	 * Pin the folios so they don't move around behind our back. This also
+-	 * ensures none of the folios are in CMA -- which ensures they don't
+-	 * fall in KHO bootmem. It also moves swapped out folios back to memory.
++	 * Preservation holds a longterm reference on the folios, so keep newly
++	 * allocated ones out of ZONE_MOVABLE and CMA -- which also ensures they
++	 * don't fall in KHO bootmem. Existing ones are migrated below.
+ 	 *
+-	 * A side effect of doing this is that it allocates a folio for all
+-	 * indices in the file. This might waste memory on sparse memfds. If
+-	 * that is really a problem in the future, we can have a
+-	 * memfd_pin_folios() variant that does not allocate a page on empty
+-	 * slots.
++	 * A side effect of this is that it allocates a folio for all indices in
++	 * the file. This might waste memory on sparse memfds. If that is really
++	 * a problem in the future, this loop can be taught to skip empty slots.
+ 	 */
+-	nr_pinned = memfd_pin_folios(file, 0, size - 1, folios, max_folios,
+-				     &offset);
+-	if (nr_pinned < 0) {
+-		err = nr_pinned;
+-		pr_err("failed to pin folios: %d\n", err);
+-		goto err_free_folios;
+-	}
+-	nr_folios = nr_pinned;
++	pin_flags = memalloc_pin_save();
++	while (index < end) {
++		struct folio *folio;
+ 
+-	folios_ser = vcalloc(nr_folios, sizeof(*folios_ser));
+-	if (!folios_ser) {
+-		err = -ENOMEM;
+-		goto err_unpin;
+-	}
++		cond_resched();
+ 
+-	for (i = 0; i < nr_folios; i++) {
+-		struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+-		struct folio *folio = folios[i];
++		if (fatal_signal_pending(current)) {
++			err = -EINTR;
++			goto err_restore;
++		}
+ 
+-		err = kho_preserve_folio(folio);
++		if (WARN_ON_ONCE(nr_folios >= max_folios)) {
++			err = -EINVAL;
++			goto err_restore;
++		}
++
++		err = memfd_luo_get_folio(inode, index, &folio);
+ 		if (err)
+-			goto err_unpreserve;
+-
+-		folio_lock(folio);
+-
+-		/*
+-		 * A dirty folio is one which has been written to. A clean folio
+-		 * is its opposite. Since a clean folio does not carry user
+-		 * data, it can be freed by page reclaim under memory pressure.
+-		 *
+-		 * Saving the dirty flag at prepare() time doesn't work since it
+-		 * can change later. Saving it at freeze() also won't work
+-		 * because the dirty bit is normally synced at unmap and there
+-		 * might still be a mapping of the file at freeze().
+-		 *
+-		 * To see why this is a problem, say a folio is clean at
+-		 * preserve, but gets dirtied later. The pfolio flags will mark
+-		 * it as clean. After retrieve, the next kernel might try to
+-		 * reclaim this folio under memory pressure, losing user data.
+-		 *
+-		 * Unconditionally mark it dirty to avoid this problem. This
+-		 * comes at the cost of making clean folios un-reclaimable after
+-		 * live update.
+-		 */
+-		folio_mark_dirty(folio);
+-
+-		/*
+-		 * If the folio is not uptodate, it was fallocated but never
+-		 * used. Saving this flag at prepare() doesn't work since it
+-		 * might change later when someone uses the folio.
+-		 *
+-		 * Since we have taken the performance penalty of allocating,
+-		 * zeroing, and pinning all the folios in the holes, take a bit
+-		 * more and zero all non-uptodate folios too.
+-		 *
+-		 * NOTE: For someone looking to improve preserve performance,
+-		 * this is a good place to look.
+-		 */
+-		if (!folio_test_uptodate(folio)) {
+-			folio_zero_range(folio, 0, folio_size(folio));
+-			flush_dcache_folio(folio);
+-			folio_mark_uptodate(folio);
+-		}
++			goto err_restore;
+ 
++		err = memfd_luo_preserve_folio(folio, &folios_ser[nr_folios]);
++		index = folio_next_index(folio);
+ 		folio_unlock(folio);
+-
+-		pfolio->pfn = folio_pfn(folio);
+-		pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
+-		pfolio->index = folio->index;
++		if (err) {
++			folio_put(folio);
++			goto err_restore;
++		}
++		nr_folios++;
+ 	}
++	memalloc_pin_restore(pin_flags);
++
++	/*
++	 * Free the unused tail so it doesn't get preserved. If vrealloc fails,
++	 * the folios_ser is still valid.
++	 */
++	shrunk = vrealloc(folios_ser, array_size(nr_folios, sizeof(*folios_ser)),
++			  GFP_KERNEL);
++	if (shrunk)
++		folios_ser = shrunk;
+ 
+ 	err = kho_preserve_vmalloc(folios_ser, kho_vmalloc);
+ 	if (err)
+-		goto err_unpreserve;
++		goto err_put;
+ 
+-	kvfree(folios);
+ 	*nr_foliosp = nr_folios;
+ 	*out_folios_ser = folios_ser;
+ 
+@@ -215,15 +317,11 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 	 */
+ 	return 0;
+ 
+-err_unpreserve:
+-	for (i = i - 1; i >= 0; i--)
+-		kho_unpreserve_folio(folios[i]);
++err_restore:
++	memalloc_pin_restore(pin_flags);
++err_put:
++	memfd_luo_put_folios(folios_ser, nr_folios);
+ 	vfree(folios_ser);
+-err_unpin:
+-	unpin_folios(folios, nr_folios);
+-err_free_folios:
+-	kvfree(folios);
+-
+ 	return err;
+ }
+ 
+@@ -231,26 +329,11 @@ static void memfd_luo_unpreserve_folios(struct kho_vmalloc *kho_vmalloc,
+ 					struct memfd_luo_folio_ser *folios_ser,
+ 					u64 nr_folios)
+ {
+-	long i;
+-
+ 	if (!nr_folios)
+ 		return;
+ 
+ 	kho_unpreserve_vmalloc(kho_vmalloc);
+-
+-	for (i = 0; i < nr_folios; i++) {
+-		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+-		struct folio *folio;
+-
+-		if (!pfolio->pfn)
+-			continue;
+-
+-		folio = pfn_folio(pfolio->pfn);
+-
+-		kho_unpreserve_folio(folio);
+-		unpin_folio(folio);
+-	}
+-
++	memfd_luo_put_folios(folios_ser, nr_folios);
+ 	vfree(folios_ser);
+ }
+ 
+@@ -287,15 +370,6 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 	ser->pos = args->file->f_pos;
+ 	inode_size = i_size_read(inode);
+ 
+-	/*
+-	 * memfd_pin_folios() caps at UINT_MAX folios; refuse larger
+-	 * files to avoid silently preserving only a prefix.
+-	 */
+-	if (DIV_ROUND_UP_ULL(inode_size, PAGE_SIZE) > UINT_MAX) {
+-		err = -EFBIG;
+-		goto err_free_ser;
+-	}
+-
+ 	ser->size = inode_size;
+ 	ser->seals = seals;
+ 
+
+base-commit: 4209b08181c75ea02164832cd8f47526de28d40c
+-- 
+2.56.1.750.gf70dc682cf-goog
+
 
