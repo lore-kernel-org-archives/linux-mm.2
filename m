@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFF9606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 12:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA2E606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 12:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UI8TsO5e
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMeyM9w4
 Received: by kanga.kvack.org (Postfix)
-	id EACC96B05B1; Mon, 23 Nov 2026 07:49:03 -0500 (EST)
+	id E10B86B05B2; Mon, 23 Nov 2026 07:49:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5DC06B05B2; Mon, 23 Nov 2026 07:49:03 -0500 (EST)
+	id DE8FF6B05B3; Mon, 23 Nov 2026 07:49:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D25CB6B05B3; Mon, 23 Nov 2026 07:49:03 -0500 (EST)
+	id CFE9D6B05B4; Mon, 23 Nov 2026 07:49:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A402E6B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:49:03 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43F06C088B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:03 +0000 (UTC)
-X-FDA: 85466363766.06.816698D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A40E26B05B2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:49:05 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 248A01406E0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:05 +0000 (UTC)
+X-FDA: 85466363850.18.737A45C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9D647A000E
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UI8TsO5e;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7D39F40005
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:49:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMeyM9w4;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795438141;
-	b=LiXnALE9EB3M7jDALGc0U8kJYcDlbySVTzs1cXy8t1JAEJ755WpI2ah59ceAuxOpx/b39D
-	0sUbt1ylPNiqEtXL7+3VQd5nS96WQp2VOG4QbUTD2y/wuQW8APlRTMHGuYy7dINPad/xX5
-	kfw3vav+snyl5BuiegYOTjCqdEG2N1E=
+	t=1795438143;
+	b=PfMu3YuWiz+Lke1/8kMHsyWGxsbz43AWVKWCmQ20CVPRciGkYI4Mu+5zS3TCw7Kds7prGv
+	KJVymnA4QiU7vvSo8B+HmtQwWggIgjylOGzSKAP9iACkFKl3v1Nf+ZA7+aO98NWN8F1D6J
+	xWfWQpd3Or/BZXQpyqSMvbOKwHkHR98=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795438141;
+	s=arc-20220608; t=1795438143;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+JC9YmPJ2LrQXvduH7B2fcZk6U1dHPA3n7WznDqWAu4=;
-	b=yXYDGeKrcCo8IsYNDo3O1xnpfpW0ueXxsF1NUnOpdLgafv3INu5cQNWhrie+fcjMEK2PyD
-	dIiJKzVCNAs2rCvcEIPIJmFr/KU0NvWaspbjvWMWJSdpuQPA7VZ8B0P8J1I05YSVT3Cjd9
-	XRtk9YzC5LOZZ+YSmAAGpp+70wJPvUU=
+	bh=CcUJZh2iVCey09WwO68bTuzXv/XpDY4bETROSLqmp/E=;
+	b=F9aU8edx56SqMWky9coHSAUScVmMRiFSdo5SJcBfoh3Izq7dKefLN6mTtA2G4/7+QvWuZF
+	N1a9hOVtwy0FR3JI/X8fxOCzjwBvhyjvD7zzcvEn3u7kDoIsL1fanPZb2PeXXbW+TRJeYW
+	Xu2mILDpYZu5PAeRtP778AyW2+5JvgU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UI8TsO5e;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMeyM9w4;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2FB7A62111;
+	by tor.source.kernel.org (Postfix) with ESMTP id 13AF662115;
+	Mon, 23 Nov 2026 12:49:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2D01F000CA;
 	Mon, 23 Nov 2026 12:49:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1261F000EB;
-	Mon, 23 Nov 2026 12:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795438140;
-	bh=+JC9YmPJ2LrQXvduH7B2fcZk6U1dHPA3n7WznDqWAu4=;
+	s=k20260515; t=1795438142;
+	bh=CcUJZh2iVCey09WwO68bTuzXv/XpDY4bETROSLqmp/E=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UI8TsO5e7YHq1TaocyCe6lhFzp5JJSfJRpWV7Nje+l2r+rnOlw63lta8rdjdqnd/y
-	 32DMrQrHqtN9LmxPYYfCRdduQIg+5nzgBBM2c+Wwg5o/vBQcSVPiUSMJcDGarEtaKv
-	 QUpZoJo62AzqPqNhs4mACijCmLBhnc5+xUC5v7Iej7zkvIcTw/3iPKvJ4Lrfk47PQ2
-	 O2qjzSujM1SRKOBVg4ZpuCPWu70Q3+90sTK7/+ixyuosh3EhDLWcOOrkVvYI4biDHR
-	 FM+BwRi/FlUK78mjCzcJoNgEXwJerKDiCPRy2d1pZc+UIv0P3KT8+eBh+qTEwpjSfc
-	 UGSZ9MflS0oJw==
-Message-ID: <sashiko-outbox-229259@kernel.org>
+	b=ZMeyM9w4pQQQrRX0pMOl+4s1zqgbFyDx6KWLn42IFXbbVb5rWqfRuqMdEn4tyzSA4
+	 d+/3/F2vMa5x51nTml3cIDWJe39BiwoSyfVcV0ocJah8KdM36IaVfKoG1oOtBWZR/D
+	 YcV4EWTa3Pg9Vmhht1FCkHwo6lkJsYr3SLIz8TYycH3SAc8qKf2HrDvhbHqCv9SQJF
+	 XxRAnV2uTghyv+2tvcJuRW3HELTCScxTC8E8VnBgOg7jBUi4G8R04V1vHlpOIaNEBK
+	 Z3cb1+WQfVexYDThzQmP4oZu3QswBeFA+MZAETMJkgADgr2tdj+GzYKZCrzN9XtDsa
+	 qrCeh2WdMAzkQ==
+Message-ID: <sashiko-outbox-229261@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 09/14] mm, swap: let the command line set the xswap
- device size
+Subject: Re: [PATCH v6 11/14] mm, swap: add xswap grow trigger on cluster
+ allocation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Baoquan He" <baoquan.he@linux.dev>, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, david@kernel.org, urezki@gmail.com, chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, shikemeng@huaweicloud.com, hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, corbet@lwn.net, kunwu.chan@gmail.com, klarasmodin@gmail.com, "Baoquan
  He" <hebaoquan@kylinos.cn>
-In-Reply-To: <20261122123918.3486916-10-baoquan.he@linux.dev>
+In-Reply-To: <20261122124814.3489077-2-baoquan.he@linux.dev>
 References: <20261122123918.3486916-1-baoquan.he@linux.dev>
- <20261122123918.3486916-10-baoquan.he@linux.dev>
+ <20261122124814.3489077-1-baoquan.he@linux.dev>
+ <20261122124814.3489077-2-baoquan.he@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 12:48:59 +0000
+Date: Mon, 23 Nov 2026 12:49:01 +0000
 X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9D647A000E
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7D39F40005
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: xk1hbpir6hoxqm7ie8pjs3yo9hw9d1uw
-X-HE-Tag: 1795438141-373086
-X-HE-Meta: U2FsdGVkX1+nEetCqtSFZ5HyUfgJNMEgYmu4naO5U/7Ip/mNZpbfzNQXwKP0Oy9Bl3Sj/NftI2Q2gshsiwMLJ2oAs5F6S9j0TuLwIR2DaiMDtrxp6JtiZNfLs4Pr/e7UB1qefPIXm+65HBF05ClfDDFuKLyH5e+cAtdVgDIHuAx+z3uawpUgn0uGc14jktLVbSW/P0yvl26ppAHyaLWIBAOh6nc2ZaMAQ80vOKH/9/bn0xv66rgcTVcEpfPgRyz8bEK6BnO2XjAMwAxmzg8GdBjTYfTEsJp5fUTlPozOh9CeZt7uD+dFj+Jzwkz+hfzPUJN5gXwaaEQvOIUtXzGp9qIrQggddptOZA6FfLkY/LU5MGywXMHHAQnJjNjOKJC1VD/PqMexULu6Gp9MzsAgqSqIJ0Ld+n1BYRHB8hClYoN7Z0JWGZi8VcQWNxogdfv+WwUMsyyTfsef2jAGyBpm7UGmFdPN/kSTD82+244I2dV+28J5W1XNhy74xalRd7OaZrYFojbOtSpA0vNYjFgI1AZoWqkZVuEpvPzURqbes2qOJ5EgUkAGxMuLCWLWB7ltA7ftSTogt43cE22iEaEXuAVUzIW9iDxZNEVznuzsFitAJdj8glS86CzvCMA9vo4Fw3l0ftqEF/dYHLX9plGwDkHVGFGVohXyEiemHRQl89mhi6njO5NMvJ7d7egN5wfpud5x/xLa7mVKIRxk92OYEcB5D572KXft37X5WcEFx4zfL+9squKYI5p99kOAyiStyOhHAwQ1So2TbkRBQ56Matac3M3OFYrr9vvzj69fcB7MEe6BfAt0G/lRaO3NoxEGQLNzR8rSMQsiaOhu57wwRMEdYGrIZ3XiZ+cWoGvqZg+TPS6S3RFXCegeQYBBsFSz0dFfnxaB3hE8WoeJpltbv0eG+QgsL+IaVtfUnZpaG2FkKB2uUlIQxbiLcZrv74bqup42LmEfRwCgNIMd8fF
- k+oY6rhe
- YH1D92hSdHQLsDcLy9isGX0nY8spUhRYTcJc8bcJC3wWHedIpYpqlra64gaVgqBcIOPoQgirbDRmNCwQMAowPsajQGMhO1dh37GpnXNWDFhhc/PC83g3zJ5FeWg+tIdkn1bEdaaejViDqM91bhy8Uf6XPh9vCJUbNgCpjVBpqkrIPyZ5Texmu7WLgUq6OHhFRWVy1Op/Fc4fD+/Ae2oCvadASQbnB7eWhqjJHtJNkInTs8XJRYavFuYSVfMx8cHT5jon2Q0LNX4u+H8Yl58duOi9cC7EWx0DCG3wuVzoX21G4lG8+C8tRouxGmLTW23YRPh55xcqC9XizLRObBJSU7jePVd81Cm9ovpg/2xrhV/u1oJs4PW8zNVFtu8G4vIZRvbTnsDxjkpYCfKmFVXZmmoXyiqOztSTTMAKLt7wQiwldOttnlN0ftAKq2qjMPnNiQlQjNqOWeKAcdgfBZMHKI83/XRWklHoYu9nn7R8S6U7G/4tLxFINuKScK1x6IhUHkGShZvAye5EjBvOQ5wnynAGwPyniylIzrsZL2Aoj8TZMPwDNa6Ikh8NFl2o3JLyN48GVyoVzA1+xGytNVdtQNa58qce1pxfpsl5bL95gWIjihNNxYuMVnkYJV1osyzXVcSlUV1zNT8liebW9iobgD64JFOmNUxT8ukCIrBAFhbQVRZR5WHbpdHmKuBI9GpjQTo0UoQZzjySOVV3wmLgy2Zxkx+NHIKuCB1sFWiwzgH2o3RRYiziA6R5raZndBxVx/8Vh8Y5FzHCU4f8Tv9dLja2+Io4R0wdKJjgJMoVtyUm72fpdJ+osdb60AGRDcQplB8VBKXirYkk6MNCqhunDq4H2Po0jMDJ1Lx/ab4hm7daVAYg=
+X-Stat-Signature: st1h8cs3bzyww8btgeo11k3zseeqnc3b
+X-HE-Tag: 1795438143-541853
+X-HE-Meta: U2FsdGVkX1/sR3cQBn1V6jB3sSD5tmZx+1hn3f6fKgwMvDXjdNWHw/I0HEzpff1SxheRWwSXLCApM/ud40gbOdPAkYFxjbm5bpZScVHh50+PIT1NqoBoyxpBhbcEj3wfVdOm1Fz6kCuxxxbD0iklP6GLjZZSycO8Jo0X8BCyFbloPPBDcdd62brJLhkYs7TDeqP9gfj6ZblrlAF1BDsOfO2olTOs4hH38eYRkvhIqPERkpkEp20vrsXRVSIBvc6H5GunM6H82a6jCUOZSBMf7NZhr8dYn1sAnKfbN90612roYJobwGMWuOM5atTilkI9Vw/3jc7ihuSft3KYYag8sCMdAPGBi03mDTdkIFhH+uAnUf6he1nfp8/FvPpCrvtqBWitRJleW00Q2KuSVjqmDttqqbz2UDEsAd66vmUCJ6TZBnfmtjoIVGliYVGvEcFQ+AkBvIEjKZVhEzd1hyOq4SSRU60v9alRoOvVPeDc04vNx3dZOcPRKNhSEKEGwGERlNAyzvy54y3IOKAk4qZV8c2jYzwr9Mdsw98cVsKU0hykb/rhRa0x6/4h4Y6PnURv6PY2U9LVmvF/VjVftcctFb0eR1dw0XP0R/EGMs+92rJhK20l/E4ZMkc4uZukKzAa3IypP/1lUZp7Vn85KP5HZc5zOL92s21AO4KjJXe/HKZVxuIuM+Be7Al0i0zEAaCMp1YXFlbFTdQcEJ8mlS1Kdsx5zr2pgvFv1bbjtVzr5liVws5C0PEEpPUmwVDtcOc0BqAg24VWUXAjaEk9xz8b1OpifmyV264WgWR1G84FO3nNUm+5c+/GGOrFLZ8cw/p+82dU9bHPxuxUGTJF31dT97jsYekiRHX61kYlkYrBNNk5BnQzVAki9PaCsaVO2pxguMRFjhozBRnrn7qtDts2ZLaClBmwi9zQqcgSulmpe+E+DuYxkG3iTJkmbnwZPZobIqgVgzr3g7qtd9F67vV
+ 4PP8+XVG
+ 958gXZVvD3N3DW4E+aVTciMoBeAzIOLevaJ80Wd3lAxs7a65xwgF6hRIvRxUcWU6+0qC0V1epK6n5WoEn7IiLfaYWd1KJkCAbotDnf/8CtoK2YHC32hwkkOQzQuBwytP0ZbiUubB8IBOoLEhbepkY6CyC2Ycz73R5J7E3Rf3ZXQbNORyUH1Xun2fum5M/hBFN/HdE47lKp7KynjxgPe+RHSOL2KVp3j8MiQCU5IhcooXONoKKsx+EZrrqARpJIhkQwvuLBwKUOb9mPD9uAvCMAH7rObgYX13DLpWDggiBR9Xod/rCWZu7X5c4gOOZQqzcfUbEIjjS0SmvqJJ9WdqphmhSo6QyyzdffGwZiaxvpaQ8+VtwY2C8VPLGxCPNv64bebgmRvq7/zRnNerMkTNx2X5NvylufKfkBoTz5mm0zPDP3MbEZjKWiD9V9tRHFM04c2Qx9mvN5Z6mBPcL5EDbkSL3xLgCF7yACgez7wlin+vCZUuhBqJZUSRVsbrqm/Fw9wEUdmmJOly1bAUZBSvFQmm/CBUKpqwC1JSu/ZC2dVo31L/EYJSmvyTr97qrx6K5CQRiB2XZ/ulg5jKnGHGHLSvKuv/jMlDY3GjZ9zFxhbTDAsZUr21eiGgzA6Mt0cc4pYDYiteBJO4tcdFCViNNoUT5IsXTxpvHQYG0ybJrgTMjQrxzdde9463rfIbXnz2WR5H9W51BN8zo8cf2G7Vc1hAt0JORQbcQ37wi4sTAs0xk7SqAZ6tfa5SR7TUM0tWiZiIEg4lNsQgfjAGJ7UYP60VqRw0XP5wp5cUzQkoKpw78eX2sEM+jHHjUowP27zytcjDiw/qMi0Ti6sKKL3GfhMMSivnS5DhdbhSloucjfDDLvn8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,91 +98,118 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm, swap: multi-GiB eager allocation in xswap_create() on
-  xswap.max=3Dmax
+- [Medium] mm, swap: premature xswap allocation failure below 85% usage
+  in xswap_grow()
 --
 
-commit 29d7f4cc8e13bb0b7ff644445a526d24fc58d1df
+commit 71fd2887206158954afee3bd83d348af42ba786c
 Author: Baoquan He <hebaoquan@kylinos.cn>
 
-mm, swap: let the command line set the xswap device size
+mm, swap: add xswap grow trigger on cluster allocation
 
-This commit adds the xswap.max=3D kernel parameter to configure the size of=
- a
-new xswap device as a byte size, a percentage of RAM, or "max".
+This commit grows the mapped xswap cluster range from
+cluster_alloc_swap_entry() when swap usage reaches 85% of the mapped
+range, mapping enough clusters to bring usage down to about 65%.
 
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index ba899e349e992..6ce5dbb3b1035 100644
+> index 074c5114d129a..213b66bb1d6de 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
+
 [ ... ]
-> +/*
-> + * The most a device can address, whatever xswap.max=3D asked for.  An x=
-swap
-> + * slot is still a swap entry, so the swap offset limit applies even tho=
-ugh
-> + * the data never goes through a physical address.
-> + */
-> +static unsigned long xswap_size_limit(void)
+
+> @@ -1325,6 +1340,13 @@ static unsigned long cluster_alloc_swap_entry(stru=
+ct swap_info_struct *si,
+>  	if (order && !(si->flags & SWP_BLKDEV))
+>  		return 0;
+> =20
+> +#ifdef CONFIG_XSWAP
+> +	/* Grow before allocating: mapping pages can sleep. */
+> +	if ((si->flags & SWP_XSWAP) && (si->flags & SWP_WRITEOK) &&
+> +	    xswap_should_grow(si))
+> +		xswap_grow(si);
+> +#endif
+> +
+>  	if (!(si->flags & SWP_SOLIDSTATE)) {
+>  		/* Serialize HDD SWAP allocation for each device. */
+>  		spin_lock(&si->global_cluster_lock);
+> @@ -1397,6 +1419,12 @@ static unsigned long cluster_alloc_swap_entry(stru=
+ct swap_info_struct *si,
+>  		if (found)
+>  			goto done;
+>  	}
+> +
+> +#ifdef CONFIG_XSWAP
+> +	/* A concurrent free or grow may have added clusters; retry once. */
+> +	if (!found && (si->flags & SWP_XSWAP))
+> +		found =3D alloc_swap_scan_list(si, &si->free_clusters, folio, false);
+> +#endif
+>  done:
+>  	if (!(si->flags & SWP_SOLIDSTATE))
+>  		spin_unlock(&si->global_cluster_lock);
+
+[ ... ]
+
+> @@ -4023,14 +4082,62 @@ static int xswap_map_clusters(struct swap_info_st=
+ruct *si,
+>  	for (i =3D start_idx; i < start_idx + nr; i++)
+>  		spin_lock_init(&si->cluster_info[i].lock);
+> =20
+> -	/*
+> -	 * Publish the new mappings and cluster lock initialization before
+> -	 * the count; walkers without xswap_lock use smp_load_acquire().
+> -	 */
+> -	smp_store_release(&si->nr_clusters_mapped, start_idx + nr);
+> +	/* The mappings and the locks are in place; make them visible. */
+> +	xswap_publish_clusters(si, start_idx, nr, link_free);
+>  	mutex_unlock(&si->xswap_lock);
+>  	return 0;
+>  }
+> +static bool xswap_should_grow(struct swap_info_struct *si)
 > +{
-> +	unsigned long limit =3D swapfile_maximum_size;
+> +	unsigned long mapped =3D READ_ONCE(si->nr_clusters_mapped);
 > +
-> +	/* A cluster index is an unsigned int. */
-> +	if (limit / SWAPFILE_CLUSTER > UINT_MAX)
-> +		limit =3D (unsigned long)UINT_MAX * SWAPFILE_CLUSTER;
+> +	if (mapped >=3D READ_ONCE(si->nr_clusters_max))
+> +		return false;
 > +
-> +	return limit;
+> +	return swap_usage_in_pages(si) * 100 >=3D
+> +	       mapped * SWAPFILE_CLUSTER * XSWAP_GROW_WHEN;
 > +}
 > +
-> +static unsigned long xswap_size_pages(void)
+> +/*
+> + * Map more of the cluster_info array, up to GROW_UNTIL in use.  The cal=
+ler
+> + * holds percpu_swap_cluster.lock, which this drops while it sleeps.
+> + */
+> +static unsigned long xswap_grow(struct swap_info_struct *si)
 > +{
-> +	unsigned long long pages;
+> +	unsigned long mapped =3D READ_ONCE(si->nr_clusters_mapped);
+> +	unsigned long nr_new, want;
+> +	int ret;
 > +
-> +	if (xswap_size_max)
-> +		return xswap_size_limit();
+> +	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
+> +
+> +	want =3D DIV_ROUND_UP(swap_usage_in_pages(si) * 100,
+> +			    XSWAP_GROW_UNTIL * SWAPFILE_CLUSTER);
+> +	if (want <=3D mapped)
+> +		return 0;
 
 [Severity: Medium]
-Can setting xswap.max=3Dmax cause multi-gigabyte eager allocations and a lo=
-ng
-unscheduled loop during xswap_create()?
+Can cluster_alloc_swap_entry() fail without growing the mapped cluster
+range when concurrent CPUs isolate or lock all mapped clusters before
+swap_usage_in_pages(si) reaches 85%?
 
-On 64-bit systems, xswap_size_limit() returns (unsigned long)UINT_MAX *
-SWAPFILE_CLUSTER (~2.2 trillion pages with 4K pages and CONFIG_THP_SWAP=3Dy,
-or ~35.2 trillion pages with 64K pages).  Although si->cluster_info uses a
-VM_SPARSE area to populate cluster metadata lazily, xswap_create() passes
-the full maxpages to setup_swap_clusters_info() and zswap_swapon().
-
-First, zswap_swapon() allocates and initializes one struct xarray per
-ZSWAP_ADDRESS_SPACE_PAGES of si->max upfront without cond_resched():
-
-mm/zswap.c:zswap_swapon() {
-	...
-	nr =3D DIV_ROUND_UP(nr_pages, ZSWAP_ADDRESS_SPACE_PAGES);
-	trees =3D kvzalloc_objs(*tree, nr);
-	if (!trees) {
-		pr_err("alloc failed, zswap disabled for swap type %d\n", type);
-		return -ENOMEM;
-	}
-
-	for (i =3D 0; i < nr; i++)
-		xa_init(trees + i);
-	...
-}
-
-At xswap_size_limit(), nr is 134,217,728 (2 GiB of xarrays on 4K-page
-kernels, or over 10 GiB with CONFIG_LOCKDEP) up to 2,147,483,648 (32 GiB on
-64K-page kernels).
-
-Second, mapping the first cluster chunk calls vm_area_grow_pages() under
-PF_MEMALLOC_NORECLAIM, which allocates area->pages for the entire 192 GiB
-VM_SPARSE virtual range at once (384 MiB on 4K-page systems).
-
-On systems with less physical RAM than these metadata arrays, swapon(2)
-with xswap.max=3Dmax fails with -ENOMEM and a warn_alloc() splat; on larger
-machines it pins multiple gigabytes of unswappable memory before any page
-is swapped and stalls CPU in the xa_init() and swapoff xa_destroy() loops.
+Each CPU missing in swap_alloc_fast() isolates a whole 512-page cluster
+from si->free_clusters (taking it off the lists while
+swap_cluster_populate() allocates ci->table, or holding ci->lock while
+allocating from it), whereas swap_usage_in_pages(si) only counts individual
+allocated slots.  When more CPUs allocate concurrently than there are
+unlocked non-full mapped clusters (initially XSWAP_GROW_CLUSTERS),
+xswap_should_grow() returns false and the !found fallback only re-scans
+si->free_clusters without growing, returning SWAP_ENTRY_INVALID and failing
+folio_alloc_swap() with -ENOMEM even though unmapped clusters remain.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122123918.3486=
-916-1-baoquan.he@linux.dev?part=3D9
+916-1-baoquan.he@linux.dev?part=3D11
 
