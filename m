@@ -1,135 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3A0606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 07:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF5D606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 07:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uokl7cT3
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=pfyknVj+
 Received: by kanga.kvack.org (Postfix)
-	id D5FB06B05B1; Mon, 23 Nov 2026 02:40:38 -0500 (EST)
+	id CF2146B05B3; Mon, 23 Nov 2026 02:44:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D37636B05B2; Mon, 23 Nov 2026 02:40:38 -0500 (EST)
+	id C7C996B05B7; Mon, 23 Nov 2026 02:44:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C74616B05B3; Mon, 23 Nov 2026 02:40:38 -0500 (EST)
+	id B6A916B05B8; Mon, 23 Nov 2026 02:44:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A03BA6B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:40:38 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 127861407FC
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:40:38 +0000 (UTC)
-X-FDA: 85465586556.16.7FBDBA2
-Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 28CF640007
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:40:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=uokl7cT3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.131 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 965A96B05B3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:44:35 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 293E61A035A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:44:35 +0000 (UTC)
+X-FDA: 85465596510.19.D4F2C27
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 14F3E140003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:44:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pfyknVj+;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795419636;
-	b=e1bk6nHOX7BJ/IiTQSTTaOeGBUVUY7XxSkMuhkat2VJDTbAHaIlnNsGsYmvnIqkQ/YE76H
-	2o5TqilLqHYmMI9W4OuyC8HnA2UGrXpqqN39Oi2qvy41fHlyZJxnLGaujO+VJMWHXmdBso
-	ttu3Wy2xn9vNdl9urwZuZYDir9s8IHs=
+	t=1795419872;
+	b=LVCWnISyPbdaWzUnXgqeEYLw09PF+5pe77FkrJv0XLqNV68sTF74d0eoe4v/5rh/JCYGn5
+	th08ZAY41tNWy8IRIA75e/Ro3ObS8u60pgRo9QJ+dkBUZIRYGZUYCenYXDdOjzag4dypSa
+	aejT3YF5vGtgD6sBkLf3Q0U22Ndxkaw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795419636;
+	s=arc-20220608; t=1795419872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0OSpOlJ5QU7jjdI5ogSU6KcCruhdHca3yQivXfMqClg=;
-	b=J8OYUxWv3XhecjFff881WMHIJVwvU/inP9hr3xahnWRD2wwjQMkaVE7PGKr6qxft2YxaTN
-	Y5t0oLtLMnin2tOhqlZHWaTJvYU7K57BcSZ4syOP4WQIUqtQPH8URU+1JZpaf8c5H/F4mE
-	dMRvgFnU5GW/diJ3+j8+VNXe0DMy69s=
+	bh=JJkQya4c8RJJzm9nBLBXauSmtfVWdU74c+91+UOjFS4=;
+	b=itkSNJTx00B8y1w/3/QRFbz4enfoW7QacGf3kASM8h5pKkBKbrpGvzkx8fDSq15ahUTxi6
+	TcSoXRP6NCrIww7O6N4ccY49A0QDkK082xTekxInH+1M0LUtnpgFFKvd+3gO1wNI03YaOL
+	lYFB8ooP5oUAyMt7pL5+0+mwbE1gJJA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=uokl7cT3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.131 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-Received: by mail-pj2-f3.google.com with SMTP id 98e67ed59e1d1-3adc0ac3566so709066a91.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:40:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795419635; x=1796024435; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0OSpOlJ5QU7jjdI5ogSU6KcCruhdHca3yQivXfMqClg=;
-        b=uokl7cT3c90Kx3wHcJQtQsdf4O/APUkWd9CWEfMCuEJMgSNIsibtWvLWxGKYY+EdFZ
-         Nu25sSprNhkhGaZg3fCkdO9SytEz3FQ1ogc+1vy3J9H3MiiyXvvgguDrX1xCL59X7LYD
-         sQhN8DCsm+e3payQQ8HLQleZTgEA1KaaB/A5i8xEsnPsiWpCRssRb46MXdKaEaa6YrcV
-         MSxVcec4sBUHnrlzeLPZ4EVWfuVYxPhR1b4f0GapXPKSm7Uu72cwxPoTRogqmSLte9JK
-         IQ3lE15e7eibkCqPPG22ktTLAZG0WwlvqBwi9BEEQlnc8UnvCK7T1ZeThyapjwlDkyWE
-         9yQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795419635; x=1796024435;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0OSpOlJ5QU7jjdI5ogSU6KcCruhdHca3yQivXfMqClg=;
-        b=NJBvuQ8m/kQg+fxFB2DJNhuRFAuV071c3F9BXmX+7knOCndtjDWAwY6VgPaH4ptmn2
-         /NQWv6oc6Fi9odLcpsoRT2mOoLOM/qhhuNAefquT/KN9ewKmzioDasdu9wayuN3sQuPb
-         1f7TihDyHoSdN04Mrqob/SWq7i/oK9LShLAXS5k24aF8QZWNgnxOZJrlnCteOwnpJRXu
-         AzKfKpCssvPshRTjqo4GSmzOAD+fmbaGfEwGpP9zq8Skrw/yvV6KLCV5NrMVbfVjaiUU
-         R8NyKAl1l+F9TK0u46tkoQtcf1MZkSchaf9JcHKAaE+tjTlmgD9pTiSLR+zimQo/BFHy
-         A8dg==
-X-Forwarded-Encrypted: i=1; AL+hErENl59jk2wJjVMZ1+Z06HhpB2lAOCIWUA4zUkG/xYvj64JaE9cRGtZ/6yOWn5tSuIHr/fHTY4PTFA==@kvack.org
-X-Gm-Message-State: APuU4Z8RLz9sBZyjgFTZjI4KTiryc3cfDFyiJJaxV86a8HYZmSImVAey
-	qbN/+6dNnGLn46+MQ5VasD0VlSDHw0EXeB6NBRBQ5nc0Jj1TkPw/vzUb
-X-Gm-Gg: AZFdTZcTw0QHBslgLSqA6FuNx/iuo1pt/XiahyLdsyhBUJUyGu5/TNxVJU3rxOtAnHh
-	uSxgReqvMhUtz3xrh1V1V4/lzyt2hcSFgK8mWbgeEq2tvxociYJmRHBEIjfqJiUhWEfpgCxN+zn
-	edUomVGq1gD0103WuTNVhRO+YAUC8ESG5h64tTN8x4nnqpSqHrtutPFKCzJC2nuL7ifNmgxau4X
-	b1UCOccX3LzbBy9t9pBMaRM4XcKAblNXNWkd7Z+HF6kyICh+WKU+FAsKVH1xcARjJ7rbQEcu4+B
-	bCMAX/5YBxfgctZi+88jSeq21Kwyw0Llzm4nRY8PXXP3BEfwybXHkZ33uGyJGyuAobvY88/ZM0w
-	voVPHHqmpFbeldGHJgKzyu0eQACCG2fa1KJWDml2SX/IkG1okk5SjSGsLCMKQPaWuvSf/yGrMje
-	2ZSu/P6PRNYVrMGkZiel7hqlf/eDmAKgZNf7z/RLWz8xcxVhqkCcx+fD6p4GrbPEikozT76v/6z
-	57uP06dYuAezRS3Hj2Lpu7TB2wcLl/MaALlsaiXch0Mmj+Dt2E/oyUKPwY8JVZYVkGI2BTEhHSI
-	3AljQJadrLO8z5SwLViu9roqyOgOMebh4gRe
-X-Received: by 2002:a17:90b:2f8c:b0:3b4:1997:3495 with SMTP id 98e67ed59e1d1-3b41c9613bbmr9155015a91.57.1795419634749;
-        Sun, 22 Nov 2026 23:40:34 -0800 (PST)
-Received: from [10.125.112.22] ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad8ef99sm17103994a91.12.2026.11.22.23.40.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Nov 2026 23:40:34 -0800 (PST)
-Message-ID: <a3ebfc1c-9c98-44a1-96e2-4d92daed4ba4@gmail.com>
-Date: Mon, 23 Nov 2026 15:40:19 +0800
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pfyknVj+;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795419859; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=JJkQya4c8RJJzm9nBLBXauSmtfVWdU74c+91+UOjFS4=;
+	b=pfyknVj+Ntk/fM5Yyv7bVnypgJfvu0NR++lSEmjoKpiPkjJvenwVG7s1q0epJMHvYgPJpG4+b56gGp8VV3a3UZaQQwsp4nS6/Kzw51N4dBZ7HKIJqLp9rrFGpk6bY62XBMcQIcKmVPQFGWgq6ekbRGLd6jZOEctt9uIlVE5k74o=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XFFWEwR_1795419856;
+Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XFFWEwR_1795419856 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 23 Nov 2026 15:44:18 +0800
+Message-ID: <d6c70716-86a7-46f1-abac-57e3c909d214@linux.alibaba.com>
+Date: Mon, 23 Nov 2026 15:44:15 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/8] riscv: build crash_mem ranges from memblock
- instead of resource tree
-From: Wandun <chenwandun1@gmail.com>
-To: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu
-Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
- chenhuacai@kernel.org, kernel@xen0n.name, alex@ghiti.fr, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, saravanak@kernel.org, akpm@linux-foundation.org,
- pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev,
- robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
- kexec@lists.infradead.org, linux-mm@kvack.org, iommu@lists.linux.dev,
- robh@kernel.org, baoquan.he@linux.dev, rppt@kernel.org,
- m.szyprowski@samsung.com
-References: <20261021083011.2170525-1-chenwandun1@gmail.com>
- <20261021083011.2170525-2-chenwandun1@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20261021083011.2170525-2-chenwandun1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] mm/madvise: fix MADV_FREE handling for PMD-mapped THPs
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Ying Huang <huang.ying.caritas@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, Sashiko <sashiko-bot@kernel.org>
+References: <20261119-madv_free_thp-v1-1-a312919e1ee5@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261119-madv_free_thp-v1-1-a312919e1ee5@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ayminngafrn79sb8fcn34b73iusjht3p
 X-Rspam-User:
-X-Rspamd-Queue-Id: 28CF640007
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1795419636-450454
-X-HE-Meta: U2FsdGVkX1/vfn8s34i+GuutD70R4YwG2JUVcH0kwWwNatkGjpVHvqJ0w/5zRAJFEbg7AS7eUhxfjUOno6lQ4xtI3xhNDXYDUV0w+kLUGWPFbArI4IHgC3UufJW9Bl27LTwZZeT3R8QWvUgclI7B8CUGPHcOXDKFNmiHFQuWAL4p8ZCSO4mbWnKgrCeoYuI1bonI4XthjkQ709C652o+x71IobbvOWizvSFrWqzwtr5ZethOib+Nzav4EwuvTUxG0sfrbrrQrQ5tVQyXI8Fod3vYL1I3CdiVJ50ZSUgKqrgUi8fpiEoNW0onSUNxv+cfCdvUiQ04Xns0noc3P0qOwJZ3C4lmPWcTxnOISgcz8+KtNWriyinhFHS0ivmlEs1SH15BI4BoOJQhc8K24pF91JFDJVD4zS04Qzio5OMUe10NbCQlZe11Amf/Mf0azmfOHrgESb9d0NfW1+t8tIaCSmCxZo4kz2QR0jvaS4Q9FIoJQHJnQwKOxqT+CpyruQIkcFANPf3ErSNOt58um6GZtVP5u3iXVQMYWKj7fY5FPXm68wpz/URqJ38B/nsg4YstaCK2uaHNSw3gt9ewJ6n4ktjmZGGlSMx7adopgK8ElXdHg5Nq/86Hhw55ZZyi/5eETtDBVh0cyRf39mZRLzZcqnuc5l2Yqq35Ry4+I8PlYUKj6aRnmWDw7yq9oF2ptxGpKqKMSXEjHirUG+uLUxMPXjLtm4TWP3UYHil6VXahhGR9ySKbZoig04JTybzx3VBFrbbepFitUow42Qq+RF7PPFTja57coAmraspNBdtqgZgZRbA+a06ds8Eqw/3tQR3PNuKoVtDuEKgM2lIPqMBMjevHJ2nv6uJ05zNKwFS7lp2B24zXyMEVIWRNqMHIksdvWL2k1EFaIbGAydWC/WRHsmCSouJn25l+DnbV5bVdNQrM6DWkS32AkUhy5OEOujRDdlNhP9lpEo96sQMnrrH
- 1/TrtwEm
- v5asBIz6/vxiXMtYes6/EU681s8EgXgzGJImz+qJbZk9WT0jkWNeEw4sLfRk+lXl0pIh8A0+Zya79NcgF6SX1HtDaVHX4bhrZLhRUVdyXX6u0FYHku8yQB+PEkMLyEkBthidyroqACAlRBpt8Vcbtjjp/fz/fTs+6ZMCfMwNDgpHzhAe9XTyRpFTHRfruiDtMWlRot0kNErV5/vJNznP6FyxEpS0sSHWBz521xda2UBjg8cFmd5mzRlVJJNhPq7dbSTeIA0LhOZT39fjDDVRRL1j0HvOdDmpObQsGyl7GmGNTMEUST+zpwHu5Qh7i5cQ1uLacz/W3rdzlAltWn+DtKmDvBgV1+cooQ/PLb6S/OtOJHq8QqP3apaekFDU5FwHkEQcJ9pztLcyhnejD/UJhmKIPx1sn+lOES0eRNb7R7kxxsVAV/HfdvblPDSjyqhtFwQPuMg6nI3PEBeiZAfdUdzJi0lirnGppyUhqG2pCARz0vXar541btla2BKsOWotq2Mcg4NBz+YbcUIvUYc+xv8AbYCI0UHnUCjsLJ2TOfI7rlWJeHe3cbFmbbn7NMGyIh7AAdAx2esyQS6iOA2FKUk5XRtdK5IocHPgzrBs7H4VuJZHKCSDWMxuRpSycucHv8b82egrvXr+F2e3u2lgtbrk6/uJDN/9xJyrE/3XM+8bFfiJAJwBNnPQpC0+EpMA3nZldxzltubtmJQCqLPP/1gaG1vnnvHBFI78hqHGapZdpnh35v7o5PHI5E1RnlQFfbdPml29h6lD1x8l9z/2ocuA2SQpc1mEWPlREyvL9at1yezc=
+X-Rspamd-Queue-Id: 14F3E140003
+X-Stat-Signature: cf5cm3t46zdzd7hpoay4axepozszbcnn
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795419866-918906
+X-HE-Meta: U2FsdGVkX1/dtLrT4YFK8OxI6aJ/qEZJ6KL1m3NfZ+M+VkkF5LNU2QZAh6BJOn7+XBopxAYnw8LQ8oO+z96cOKo0pa2rR5zwgXAdT9OuHhUhIDu3nSqQG5fHForPcVXQeZS0rovYKI9QE5jp/Lf7BlZ0fBgde5fVqK2EsUWxYnz5MH9vQhUuvc1ALqdg+sIesjFFaQcb7nGiM3YVvgBjVw6RJDAwyztFVx3U1qi8QPDemAbTHy9MAgeiD+rzCNIyNqR3rRKRbE/kPrO1X329jjJ0MxrErbXSN0p+M8aBvHmWif//sG35H34Wrcl71q+l7r1sYwNFlhACe8w2VW5WJnJeI9YqLIehV2V+4CTRGztdgy+zZSgNdya+U33e1+DieSQo6gS8Ya4gxu1sTAW0Mi6iFvujhtann5OG/Uxgp3pdoz8PyqNWZaPEYUbEPZJYLFywpV1xqFclHCBewB88in2I21ITHEilC9R5LwZCLy2jGc4sETinL2TJtEjqHaqAfDJoZsjhYeWIJQyseuCBNKQMaRrNSRoZD4GHQ9nMpKV1Tv2CgD/XwJgjDpLdDeRvydMTZEfh20gIPlO4JAg50mW0CEgNGEbZ2mJWUlj6UdOK0Mn47sjT+8n5iU+03ZkM4moNdBYNaCC8GfTiM3hOIeZ3WoDg4SfVBA4njumvxlLX8R5gOIKQ8ylzMYADFaIkKw+vA/VqnX6zgXsB77FFBRYGw1AyTB7Kn3lzKXYk42daw1SzhjNDqZayOwiY++UT6GqQ6/kh5L3MOsYg//HDkpGSPmh711R6xFDtmwUXZVuuVGAMng654H2VTt80iYPzmuwKW6TjSRpi0HbNFm0CbTjCd+dKlnJuvT6gsZtq0IbsXgamtYGu6FPwCAW6alGvbEN7BCZehf6mrsyXJ4M19oB3dFhvk51RexysVNwLiDQbWtFUV3cpniLMxH4se0Ffl9oGqT1NplmsiemSJbC
+ AM3qWB5L
+ cI6bGm7bVTwY8fX44oCRtjxO2LIgh1NLLERUCRrjuxO4up38LziO8nWjb5qh1tQC6wANdJ72jTJzbIxj+B2ThbpOTfH0uqMfwJ5dVz/G4zr9OQyT+XDSEBKE4QNlgEfyvrszyo1t7H+ZT7F/aq+uV7die75ibmJ8prvsK0bpr/p1Lzm6hQsQSYwmkBbACvl4R/GpyiKi2n7GG/3kUvHdVubOfWB2PO18mhPFkOd93PKDWAII/AjYjizbfsf5bulGDNiScaYsBpT52gwHi3pw8ituEtDzU/wnwA41URJEDYjMj+LRnsw7IZPLzbJ6wg6STyRrwcDptormF8JgxSNJzb8NnnFgyS0f9KFOBCeKUAr53sFOcbI2cfkcbbb4xOtW0eeiJFGiQzlc9n2OMLYjBJUVNWGBEBt2h4CRxURC9IGKOiUN28xn7zh23dGa+YtRxBGG0VLLoiPlsVhLircZlNb1lYa0ggvHkQe1qmC0o2gmwnLzCqmqwZ1t7Bpp635pg4dFsQEOBBDX8AaNFd0hpt56+n9WWOtX6cpjf1kA8k+yQ5fOVI4wDh9zKohtjppjqC4sxgwNKi4C5oOLdYlfNZV09RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,109 +100,57 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 10/21/26 16:30, Wandun Chen wrote:
-> From: Wandun Chen <chenwandun@lixiang.com>
+On 11/20/26 12:04 AM, David Hildenbrand (Arm) wrote:
+> After MADV_FREE cleared the dirty flag of an anonymous folio, reclaim will
+> later free the folio without writing it back if no mappings are dirty.
 > 
-> Replace walk_system_ram_res() with for_each_mem_range(). A later patch
-> introduces MEMBLOCK_NODUMP in memblock, the reserved-memory regions
-> marked with MEMBLOCK_NODUMP can be excluded from the vmcore by walking
-> memblock.
+> If our folio is still in the swap cache, the swap entries then point at
+> swap slots that were never written, exposing stale content of the swap
+> device. Bad.
 > 
-> for_each_mem_range() iterates memblock.memory, which is freed after
-> init unless ARCH_KEEP_MEMBLOCK is selected. riscv needs ARCH_KEEP_MEMBLOCK
-> to filter reserved memory from the vmcore, so extend its condition
-> (ACPI || KEXEC) with CRASH_DUMP. arm64 and loongarch already select
-> ARCH_KEEP_MEMBLOCK unconditionally.
-
-
-Hi Paul, Palmer, Albert,
-
-A gentle ping on this patch.
-
-Mike has requested a RISC-V maintainer Ack before taking the revised
-series through the kexec tree. Could you please take a look when you
-have a chance?
-
-Thanks,
-Wandun
-
+> madvise_free_pte_range() therefore frees the swap slots first, and skips
+> the folio if that is impossible. madvise_free_huge_pmd() does not, and a
+> PMD-mapped THP can be in the swap cache if try_to_unmap() failed during
+> reclaim, for example due to a racing mlock().
 > 
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
-> Acked-by: Baoquan He <baoquan.he@linux.dev>
+> Further, madvise_free_huge_pmd() checks whether the THP is mapped by
+> other processes before taking the folio lock. Another process that still
+> has swap entries for the THP can concurrently map it from the swap cache,
+> and we might end up clearing the dirty flag of a shared folio.
+> 
+> Fix it by factoring out the folio handling of madvise_free_pte_range()
+> into madvise_free_try_prepare_folio(), and using it for PMD-mapped THPs
+> as well. Hopefully this prevents further bugs.
+> 
+> For PMD-mapped THPs, this change implies:
+> 
+> 1. We free the swap slots of a THP in the swap cache, and skip the THP if
+>     that is impossible.
+> 2. We check the mapcount under the folio lock.
+> 3. We no longer lock and check THPs that are neither dirty nor in the
+>     swap cache, just like for PTE-mapped folios.
+> 
+> For PTE-mapped folios, this means:
+> 
+> 4. We check the mapcount once before taking the folio lock, to not lock
+>     folios that are mapped by other processes.
+> 
+> Only compile madvise_free_huge_pmd() with CONFIG_ADVISE_SYSCALLS to keep
+> !CONFIG_ADVISE_SYSCALLS builds working.
+> 
+> Chris and Sashiko reported the missing swap cache handling for PMD-mapped
+> THPs, the other issue was found by code inspection.
+> 
+> This has medium urgency.
+> 
+> Fixes: bd4c82c22c36 ("mm, THP, swap: delay splitting THP after swapped out")
+> Cc: stable@vger.kernel.org
+> Reported-by: Chris Mason <mason@kernel.org>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/sashiko-outbox-202086@kernel.org/
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  arch/riscv/Kconfig                     |  2 +-
->  arch/riscv/kernel/machine_kexec_file.c | 31 ++++++++++----------------
->  2 files changed, 13 insertions(+), 20 deletions(-)
-> 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index e7891a2a89da..e21d0bab77ee 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -58,7 +58,7 @@ config RISCV
->  	select ARCH_HAS_UBSAN
->  	select ARCH_HAS_VDSO_ARCH_DATA
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-> -	select ARCH_KEEP_MEMBLOCK if ACPI || KEXEC
-> +	select ARCH_KEEP_MEMBLOCK if ACPI || KEXEC || CRASH_DUMP
->  	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if 64BIT && MMU
->  	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
->  	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT
-> diff --git a/arch/riscv/kernel/machine_kexec_file.c b/arch/riscv/kernel/machine_kexec_file.c
-> index 26cd2a8bd0cd..808e872f4063 100644
-> --- a/arch/riscv/kernel/machine_kexec_file.c
-> +++ b/arch/riscv/kernel/machine_kexec_file.c
-> @@ -37,39 +37,32 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
->  }
->  
->  #ifdef CONFIG_CRASH_DUMP
-> -static int get_nr_ram_ranges_callback(struct resource *res, void *arg)
-> -{
-> -	unsigned int *nr_ranges = arg;
-> -
-> -	(*nr_ranges)++;
-> -	return 0;
-> -}
-> -
->  unsigned int arch_get_system_nr_ranges(void)
->  {
->  	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* For exclusion of crashkernel region */
-> +	u64 i;
-> +	phys_addr_t start, end;
->  
-> -	walk_system_ram_res(0, -1, &nr_ranges, get_nr_ram_ranges_callback);
-> +	for_each_mem_range(i, &start, &end)
-> +		nr_ranges++;
->  
->  	return nr_ranges;
->  }
->  
-> -static int prepare_elf64_ram_headers_callback(struct resource *res, void *arg)
-> +int arch_crash_populate_cmem(struct crash_mem *cmem)
->  {
-> -	struct crash_mem *cmem = arg;
-> +	u64 i;
-> +	phys_addr_t start, end;
->  
-> -	cmem->ranges[cmem->nr_ranges].start = res->start;
-> -	cmem->ranges[cmem->nr_ranges].end = res->end;
-> -	cmem->nr_ranges++;
-> +	for_each_mem_range(i, &start, &end) {
-> +		cmem->ranges[cmem->nr_ranges].start = start;
-> +		cmem->ranges[cmem->nr_ranges].end = end - 1;
-> +		cmem->nr_ranges++;
-> +	}
->  
->  	return 0;
->  }
->  
-> -int arch_crash_populate_cmem(struct crash_mem *cmem)
-> -{
-> -	return walk_system_ram_res(0, -1, cmem, prepare_elf64_ram_headers_callback);
-> -}
-> -
->  static char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
->  				 unsigned long cmdline_len)
->  {
 
+Make sense to me.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
