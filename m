@@ -1,97 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8129E606A32C
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFCA606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ie1STN6V
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X6IPU5uk
 Received: by kanga.kvack.org (Postfix)
-	id 9EB286B05B0; Mon, 23 Nov 2026 10:13:20 -0500 (EST)
+	id 4E7DF6B05B3; Mon, 23 Nov 2026 10:13:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CA506B05B3; Mon, 23 Nov 2026 10:13:20 -0500 (EST)
+	id 46BE36B05B5; Mon, 23 Nov 2026 10:13:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9003B6B05B5; Mon, 23 Nov 2026 10:13:20 -0500 (EST)
+	id 35A2F6B05B6; Mon, 23 Nov 2026 10:13:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C3486B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:13:20 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F238D40930
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:13:19 +0000 (UTC)
-X-FDA: 85466727318.23.155A847
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5C59D180011
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 149C76B05B3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:13:21 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A4C22A0942
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:13:20 +0000 (UTC)
+X-FDA: 85466727360.22.6896082
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0C70CA000A
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:13:18 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ie1STN6V;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X6IPU5uk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795446798;
-	b=l2oJ2Q8m9yzpKmsA51oGnBpX8vne2xGYZfNvJcW52XzDnTYgXAVxL84Ip5+cufW3fppHXx
-	nmhoRL+7rcoCC2H9TffYOy5DuzYhSDZ7njIK1++Cz5O5h/Brw+4n9NaooQAxmN8oGAvvoZ
-	s/iYdA8OMpwERs1GVpkxuzL5zkk3tds=
+	t=1795446799;
+	b=wUjMcMW1bijO0pjyQFmBwXExix/A6UYH9zqRbinaWqgGwWzapCiWa7OL6kwP/vuLERYsSm
+	KAwArQmqA2Vp0zAy1nEdRrEtNw1iXV+EnpyB7ZkMV73Cc6lM51S/DPo1laIAMfK9kS+uxm
+	nZc4on4+95OpZhEl7164RIe4/YNP3sc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795446798;
+	s=arc-20220608; t=1795446799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Rgusygp+RlAE67y/ngtutPu5kD5yNG5Fz8DTmip9El4=;
-	b=8hRr+CTtC8GayNEaUyTVjlF0iIE5LpIFAMo8JYMAg6Av9KF08tmlv7bU+Yhu5HvQwPUt/2
-	DXDXHNq+Mc+cT4idBJeay0sk7Ept+4Ud7KXpkorZsh4Kq2bV5Buz54AQa4sncU695wn8Za
-	GTniLi6KN5RP7CR9Z4cnUcW2KGCZiAE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mLxLJ8l0Ff3sL09Q96DcxX0CNZnNS+MEVi4Fs2AfUmE=;
+	b=FbDgKO03wEWXlnkyZtIYNU7ZGOFm3Wl2g4AdBzMP8DuvEPWfL/HhdsYL7DjwZKOZh68x0S
+	4TCaDNwCIA4rMChK+N5rPPvi9r9EJl7ovwH3FhcYjHalRHp6tvyL3Y5XfuIwk7y94DVlZJ
+	zMQxT+AOoIBioS1phimuNVgZOhB4UPI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ie1STN6V;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X6IPU5uk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75D37409CF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3EE3C61413;
+	Mon, 23 Nov 2026 15:13:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3361F000D0;
 	Mon, 23 Nov 2026 15:13:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3601F000CA;
-	Mon, 23 Nov 2026 15:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795446796;
-	bh=Rgusygp+RlAE67y/ngtutPu5kD5yNG5Fz8DTmip9El4=;
-	h=From:To:Cc:Subject:Date;
-	b=ie1STN6VSXka1O5wuIlHmb2D+6VN2EcNXv6egd3sZtpNduYhKEt/3sI8rK2YwKQ9V
-	 FjjIiDBGekIsRy7TiF9wgpxj8EZuar+wU6vXs4hCw9dNwIFEm2WApWuZ728w6Xoz0q
-	 0cqvdn2Ox02VUSJZaJG5Yjv4Vq61qxeX49R8vFzRGTJyxkxrrFswoeC94M/ufSy/M3
-	 f/bIrYcFlRTJbVoKXRi9NgEcnN8q8PwybX2QkSD2/ZFd8BZTctau+LmZZ7aUjIJASR
-	 0UoX81gFt4ylmLkQd2OEaOZ+m41nB6t69/Vh2hDlqC9MSn3GDzeKDaHhUJopqTg3VE
-	 eiTls4YAeRpyA==
+	s=k20260515; t=1795446797;
+	bh=mLxLJ8l0Ff3sL09Q96DcxX0CNZnNS+MEVi4Fs2AfUmE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=X6IPU5ukO3vA+LUlcrhEnvvQFNumCquDdR3nGXDG/Y0gkprdJ/DBsdGnG4gh0F1+F
+	 WaJN3CXG7bUCxnBU+ERr3gBF1epY0/BGg/VxqbfnpvnBXTCss8U7/3JNEk7YtsRFR9
+	 6nVk1KGyUqv0AfAhDQ1EIxEZlWSdsCTIC6RK8xLwHd3i7Ka4+Srw/IaT+lAzdrOxVi
+	 hkSeTnq/v9BjNpJWDe+dTwP7tU7boOOWbl3uKXFNwMQD/y7Ly70R3USNGy896mZBs/
+	 j0IrXfWIJ6p3/xoGUTcNzQUb7FDLcpQ2j6uEh46pI15AcZItAHIHIiCEbvhjcNA2NE
+	 WMmdYt5/Za/rQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+Cc: Mattathias Pinchover <mattathias.pinchover@uber.com>,
+	SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 0/6] mm/damon: add sz_ops_filter_passed_last DAMOS stat
-Date: Mon, 23 Nov 2026 07:13:01 -0800
-Message-ID: <20261123151309.82675-1-sj@kernel.org>
+Subject: [PATCH v3 1/6] mm/damon/core: introduce sz_ops_filter_passed_last stat
+Date: Mon, 23 Nov 2026 07:13:02 -0800
+Message-ID: <20261123151309.82675-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261123151309.82675-1-sj@kernel.org>
+References: <20261123151309.82675-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5C59D180011
-X-Stat-Signature: mayry9cyz788qrooska3ryhm5uej6gtq
+X-Rspamd-Queue-Id: 0C70CA000A
+X-Stat-Signature: dxpa69etc9qaq5diug4b56hspxm4oxao
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1795446798-339402
-X-HE-Meta: U2FsdGVkX19iEi8qTDH3zHf5r7O2V3Xj6UNerbsAbg0i9+EPgFsaO1XW3zIDIXT4uqlcMP7gXCy3vInTqx/hdZkdCmP9LQKBEfvyc9Agu0svCAz2RAZexMtWNNvHf3BGXfcwkb+RCR6gZQlsQrxvDBEt73JfTmXNnSs0PneBrDg9YMAmVP8I9h4Dv81wBjHVyoh8YXslginkGGXZCPdZPoQZWu6NqfBJ5bt0GcfZsuSxTF2JW3n2lsy+QGp1h/AFCYGcJPMZ654bvKJikvCc5ep8TQoH7/cfK0JBqjfCPzRckv+pFmXnYWynOyTXNM/isCp7iNh2DatWIv2JY6Lms0uWPE2cei/etrgsjiauab8bbf1SPGhOrTmGdUkXVa/oxCza9r//l27MoWASXaqEfeWEnt+WlbkLi3+oW3868W3lujLTdIK67JzfXXPWFXZsCHxj6ndo+Yl1kcIl/9LB69fYUnWiBNrjQzC5VpUmF2Ms+4jaBtt8GNLMTru4R7EJt205kBHVN5ZQusW73ZffyldA4wa51/bpfKsm4W/TWrCY5/kjWX9OHrpoXpdVV+l/hhh/bZjYX0+PCD6NGBtNJR3Py3o5T5jHgFlwR8Rf/uuJpyd6EfGBHhNafgufueBaCs5wq1e1dBiZG57P+YtsZZKN5MOYecq++ryxGNb5hoYbrHsshfxddJ1iTE6c0eQYUr4U1wmXVK4nwpU1n584niEcbb+B4sTH/RJg6F4b4udZcbqHR2gzsRE2vaOrp5OS8uWLUx81t84sztzW+8o7K9Y9oHxu1ocWW6NrE26vUHee6il0Gx8h0WCYWu+fU+OhfdaOp4ASSQOcMoDRiN/kKTGCbqjWcExIXFiwNu/QpW/IyvNvjO5gDfuFEJsJ8RX+gXw/MZhwmfKXgGo94iEwF9gEErz1Dkj4Msp5I0dOWU03w8wGRjVOX0uYMTZuFn4z9iK4rSFp0684lKrfxbG
- SQfTBEhf
- 96jF57AjA2o0AmhhPDVxe2XnTIoApiogbO1oOb72FDKWY1PtICxqkADugA7O593CndFS18sUfwhchi1FlPpal+7R9pvKA91E7NIkP8zQSNpwxYSXa4eqvdEJ88urrmz6deeBTJsAJNyCZLBjdlGVlC4jXi6jetcBQo5749SjsmAZtkkCDFP4ydvIXgdlTY+UrvBn8ouPb2peH3AZIBPR5wF6FLzy+Vq9d5/toBkzDga9Nu9pncgbK0YFpKO78pT3pai+Z+Fg8NgBam/KC0gegDjDclmO8ZiQi/aivd5bl6Q1ayIyd6ogC4FRwpJ0OB5h2TU/w611I9/k+R4DgZXu0gzq+Vc5dzj3LHdx5I6Ix0fQcD7gc6liCzS25IXd1IxMkgsm8S5CpYzb4BShwwjKkt+O70zgYD4yI5rmLM1rnP+RFvpYLFVTh/Mm2TFUFhB9ctdsWcjA1ZEKX9rfyyYMBYJL0RgKfHCkirLlCKWJY8XTb0YYI2NGmtKkH0u5Sp3pJBJeyMuQ1dYwlsNjEX2DX3puyVoSqGJGcj0TpE2IchgiOfUe0Tgptzr5m51z+OJMh4nX16clXcC/r9GKQcB6/wjgUYW3aG+Dzc96WJ8R1ymTQNtA=
+X-HE-Tag: 1795446798-605693
+X-HE-Meta: U2FsdGVkX1+g/zlNYNQh6IytzsqM+5qLbNXxtHAKS1RaM2daH//3FrgybMVozl6ug3r28Wt+7R97MzNmnEI0lpwaCUXGTvqbME6A20FND6oXC6g7Zl1KyUhd63vt2cwkbX4qMlFNgvj1Udofid8xQgw/O0XPaOjJEv5lV2f7p7oFJLi56E7zTdUSX+mWOXcvemEy2fVmGlz15s8bTDYxAnolYydmUqQq5SttEvp3z9ouBePJMimk9g9wioNcVWQClUmnv36zzwLGgrKuygwZSoi9Pmbjb+FPMYprjDTtfTCqJ4gBWrPacuhvfWFr0FXG1nSuiPujSQQHTAOf5/L1DGUQf25oz3H0fP2baZsuXnEA8jMdpUMXCcQP+TswSOruQf5jZevVDBdqsgmR1I1ryalqtF6mFPN40atw0jqNqbegMViJfsfiAzBJjo0lOvvJN2d92iacOOr5b/y7opW34Mx2DDKtPTwH+zlVpDscuKp4KJN3BsVkGY5Fd4aMYozayO9nbHf4Bq9EUNBDO61LewpmKDKj+2hzEyUFJsm3SxgQ2LpAfx55jvGC6f2w7C9TREvUtOd1b79idBr8pmc99gTpARKAUMiYJDg9uSq5U/S06Y/mlBjmOsV3b2NWqShs8FIKe2TnSe6Ch4fnVl+sZouNOEM5HYY4hBBhFkY219njl7hYN2vF2Pt1+ypQ4U5BLHDXaNdyJzMnDV9/nJptutryAXV/qUm/IHq3Z+GS7BUvPgcEI4DGY5j2DXYfYZaJXTEPlfe4v5PZjciZMxrkUar4y+Lhn4km8Ebmc4vEmwtUHD9sQVObjdQTdtQ0FEGeA/XXVKALD9WIPk5+Iku0sO03DNeZ0LDJ+LdP4A12w2YcspmHaGTrSSkamyJC7+X74EbcIhmFoxxJup8MQb+SvJC1UyHKY+D2K/kd8rEmcjrdmYmWZrNQdCRLNQiM/U3CrRYsFooVfepPOQsfgS0
+ 5+hetb0A
+ guDJZasSdxMy/PMNIirGATjRh0X7lAJJaP1VilSSpKGDmjL8nCDLUl8Qa4Ejm3TGdsfzU8S6VJbENQNFvnIrPDplhfgsUocfCNk64Mr1WHXeMFJcCnINcdwX9/NocrF5vmWtyAdyu96TCMF99T3/fUHgdbOUhU+kGHq4qDs9YGYMK6dTWjoKlCfxqAOd+T8sJ42tKejrbZEpdBKXTn9Lyun/eJW9UW7PsFJK7SjFAyB9MOA1VXH+41i2Mrhd551cuH61B1k7v+nrhUfs66Fm0x2ayW78nwpvG4S+b4Sn8V32zbKgrUXOujQmhrp8qu2wLcA1LS6aV+s+jmNqhjQCGd3xNZK0t2lXACbUzg6Fib8bvQnRdRsR0h8vtkb0qkCSLcaONWM1qDRlXHeyMUXgl9OVZBCcdcsUxBBMJv8HDZ3bEk2mho1h7Md/Vx8F6cpNQkHTntZ4pYfUySOz0oBflX4f3i8UjftRh43LJ3VRPeS1XeqebkRvPrInZPl2bOPK2ga3ESNM3XrPcOMpAAqNrEnSsOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,102 +98,82 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 From: Mattathias Pinchover <mattathias.pinchover@uber.com>
 
 DAMOS stat sz_ops_filter_passed shows the total bytes that passed
-operations layer-handled DAMOS filters, accumulated from the beginning
-of the scheme's execution.  Users who want the amount for only the
-latest apply interval, e.g., the size of a workload's anonymous memory
-that is cold as of now, have to keep the previous value in user space
-and compute the difference.  To know how many apply intervals a
-difference covers, they have to rely on nr_snapshots.  But nr_snapshots
-is increased once per target per apply interval, so the computation is
-complicated for contexts having multiple targets.
+operations layer-handled DAMOS filters, accumulated from the beginning of
+the scheme's execution.  Users who want the amount for only the latest
+apply interval, e.g., the size of a workload's anonymous memory that is
+cold as of now, need to keep the previous values in user space and
+compute the difference with the help of nr_snapshots.  Because
+nr_snapshots is increased once per target per apply interval, the
+computation is complicated and error-prone, especially for contexts
+having multiple targets.
 
-This series introduces a new DAMOS stat, sz_ops_filter_passed_last.  It
-shows the amount of sz_ops_filter_passed increase in the last apply
-interval of the scheme.  It is updated at the end of each apply
-interval, and kept unchanged until the next apply interval is
-completed.  Like the other DAMOS stats, it is exposed under the stats/
-directory of the scheme in the DAMON sysfs interface, and refreshed
-together with the other stats when refresh_ms expires or
-update_schemes_stats is written.
+Introduce a new DAMOS stat, sz_ops_filter_passed_last.  It is
+updated at the end of each apply interval of the scheme with the amount
+of sz_ops_filter_passed increase in the interval.
 
-Patches sequence
-================
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Mattathias Pinchover <mattathias.pinchover@uber.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ include/linux/damon.h | 6 ++++++
+ mm/damon/core.c       | 5 +++++
+ 2 files changed, 11 insertions(+)
 
-Patch 1 introduces the stat to the DAMON core.  Patch 2 exposes it via
-the DAMON sysfs interface.  Patch 3 adds a kunit test.  Patches 4-6
-update the design, usage, and ABI documents, respectively.
-
-Tests
-=====
-
-I ran the DAMON kunit tests (all 50 pass, including the new one), built
-mm/damon/ with W=1 (no warnings), built htmldocs (no new warnings
-compared to mm-new), and ran checkpatch.pl --strict on the patches (it
-reports a warning and an error on each patch because it does not
-recognize the Assisted-by tag, and four alignment checks on patches 2
-and 3 for the continuation line alignment that the existing DAMON code
-uses).
-
-I also ran the DAMON selftests in a QEMU VM without KVM, on mm-new and
-on mm-new with this series.  On mm-new, 12 tests pass, 2 fail
-(sysfs_update_schemes_tried_regions_wss_estimation.py and
-damos_tried_regions.py), and 1 is skipped (sysfs_memcg_path_leak.sh,
-because kmemleak is not available).  With this series, 13 pass, 1 fails
-(the wss_estimation one), and the same one is skipped, so I saw no
-failure that mm-new does not also have.
-
-None of the selftests read the new stat, so I also checked it on a
-live kernel.  In the same kind of VM running this series, I started two
-Docker containers, each running a Python process that allocates 512 MiB
-and 2 GiB of anonymous memory and then holds it.  Each process was
-monitored by its own kdamond, using the vaddr operations set and a
-stat scheme with an anon operations layer filter, with refresh_ms set
-to 1000.  Output from sz_ops_filter_passed_last was correct:
-
-    # cd /sys/kernel/mm/damon/admin/kdamonds
-    # cat 0/contexts/0/schemes/0/stats/sz_ops_filter_passed_last
-    546385920
-    # cat 1/contexts/0/schemes/0/stats/sz_ops_filter_passed_last
-    2157043712
-
-Tool use
-========
-
-Claude (Anthropic) assisted with the code, kunit test, documents, and
-changelogs of this series, as noted by the Assisted-by: tags.  I
-reviewed all of it and ran the tests listed above.
-
-Changes from v2
-- v2: https://lore.kernel.org/20261117-damon-sz-ops-b4-v2-0-439888fa04ac@uber.com
-- Collect R-b: from SJ.
-Changes in v2:
-- Patch 2: join the attribute declaration onto one line
-- Patch 3: call damos_set_filters_default_reject() before adding the
-  scheme
-- Patch 4: keep only the stats list bullet, dropping the explanation
-  that the stat is not accumulated
-- Patch 5: wrap the stats line in the usage document
-- Link to v1: https://patch.msgid.link/20261116-damon-sz-ops-b4-v1-0-1cffe7227e6d@uber.com
-
-Mattathias Pinchover (6):
-  mm/damon/core: introduce sz_ops_filter_passed_last stat
-  mm/damon/sysfs-schemes: add sz_ops_filter_passed_last file
-  mm/damon/tests/core-kunit: test sz_ops_filter_passed_last
-  Docs/mm/damon/design: update for sz_ops_filter_passed_last
-  Docs/admin-guide/mm/damon/usage: update for sz_ops_filter_passed_last
-  Docs/ABI/damon: update for sz_ops_filter_passed_last
-
- .../ABI/testing/sysfs-kernel-mm-damon         |  7 ++
- Documentation/admin-guide/mm/damon/usage.rst  |  9 +-
- Documentation/mm/damon/design.rst             |  2 +
- include/linux/damon.h                         |  6 ++
- mm/damon/core.c                               |  5 +
- mm/damon/sysfs-schemes.c                      | 16 ++++
- mm/damon/tests/core-kunit.h                   | 93 +++++++++++++++++++
- 7 files changed, 135 insertions(+), 3 deletions(-)
-
-
-base-commit: 60a393b8ae5d63691c0ea9b21571441911afd81a
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 06bd92981af21..3aff5c525132b 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -351,6 +351,9 @@ struct damos_watermarks {
+  * @sz_applied:	Total size of regions that the scheme is applied.
+  * @sz_ops_filter_passed:
+  *		Total bytes that passed ops layer-handled DAMOS filters.
++ * @sz_ops_filter_passed_last:
++ *		Bytes that passed ops layer-handled DAMOS filters in the last
++ *		apply interval.
+  * @qt_exceeds: Total number of times the quota of the scheme has exceeded.
+  * @nr_snapshots:
+  *		Total number of DAMON snapshots that the scheme is completely
+@@ -379,6 +382,7 @@ struct damos_stat {
+ 	unsigned long nr_applied;
+ 	unsigned long sz_applied;
+ 	unsigned long sz_ops_filter_passed;
++	unsigned long sz_ops_filter_passed_last;
+ 	unsigned long qt_exceeds;
+ 	unsigned long nr_snapshots;
+ };
+@@ -578,6 +582,8 @@ struct damos {
+ 	 * @action
+ 	 */
+ 	unsigned long next_apply_sis;
++	/* @stat.sz_ops_filter_passed at the start of the current apply interval */
++	unsigned long sz_ops_filter_passed_at_start;
+ 	/* informs if ongoing DAMOS walk for this scheme is finished */
+ 	bool walk_completed;
+ 	/*
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 986404b547ebd..a99663f1f7ef0 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -769,6 +769,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
+ 	 * or damon_attrs are updated.
+ 	 */
+ 	scheme->next_apply_sis = 0;
++	scheme->sz_ops_filter_passed_at_start = 0;
+ 	scheme->walk_completed = false;
+ 	INIT_LIST_HEAD(&scheme->core_filters);
+ 	INIT_LIST_HEAD(&scheme->ops_filters);
+@@ -3532,6 +3533,10 @@ static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
+ 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+ 			continue;
+ 		damos_walk_complete(c, s);
++		s->stat.sz_ops_filter_passed_last =
++			s->stat.sz_ops_filter_passed -
++			s->sz_ops_filter_passed_at_start;
++		s->sz_ops_filter_passed_at_start = s->stat.sz_ops_filter_passed;
+ 		damos_set_next_apply_sis(s, c);
+ 		s->last_applied = NULL;
+ 		damos_trace_stat(c, s);
 -- 
 2.47.3
 
