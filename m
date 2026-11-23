@@ -1,101 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78551606A336
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 07:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71747606A33A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 07:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q3ZHFOLH
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=CfSP0pgN
 Received: by kanga.kvack.org (Postfix)
-	id 6A23C6B05B0; Mon, 23 Nov 2026 02:16:24 -0500 (EST)
+	id 71C756B05B1; Mon, 23 Nov 2026 02:19:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67A046B05B1; Mon, 23 Nov 2026 02:16:24 -0500 (EST)
+	id 6CD856B05B2; Mon, 23 Nov 2026 02:19:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5916A6B05B2; Mon, 23 Nov 2026 02:16:24 -0500 (EST)
+	id 5BBEC6B05B3; Mon, 23 Nov 2026 02:19:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4133D6B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:16:24 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B7E39A084B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:16:23 +0000 (UTC)
-X-FDA: 85465525446.28.DE898E9
-Received: from mta1.migadu.com (out-132.mta1.migadu.com [95.215.58.132])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B89FEC0004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:16:21 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q3ZHFOLH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.132 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 30B206B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:19:02 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ADDA21407FA
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:19:01 +0000 (UTC)
+X-FDA: 85465532082.04.BA794A2
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2C89840005
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:18:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CfSP0pgN;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795418182;
-	b=RATzCtqILWxpbNw8cXAG4/TfltEaWfP9q/GZxAxK8EqCRALRIS6pHzEmMrJsklKkXGcbNv
-	CbYUXIq8kZ82PZUQa2g3sKzQwgCN9efkxAQOcz+cEu6FkO2LLvtmVEm4qUoKNpgLdFC5tE
-	ip7P5z55bASZ1v2oYbRd3cXFro1/ddE=
+	t=1795418338;
+	b=UAjJ/DDX7x7vDCjsLLeoJmBuP+AFa0GeTkkfyTTtR1Vb9f5yTv4o7JkiUCb6t/etlqEMvx
+	2l9ep2PO5j2//W159Zq9x4A/kUaI5TvPMBwnZtVOM2UAoOZRPsbrITZ1sz08IZPtAASkry
+	lLByXlt9vI7Dh0xkVCgTEJBlw3Sf8+I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795418182;
+	s=arc-20220608; t=1795418338;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qWuSEBbe4RE+BEi4g+bK4UJkZUyNGdpTjGoBgR8/Wcg=;
-	b=WPrNVtAgVPj++K7IyTaJU+rmhV1ZUSh7ZLOBpu5NgMO09pVhsjMg6bzDOmSOSwZbZgj801
-	2kVcNBYGymd+Aoz1dj+my0SxAJ9/jYQxQkyesPGfQLmmyFewzjC0jXRJCSmVtgLxV8fPky
-	KmoVXNA9ecVz/edLm6YgKhk/C0ueUeA=
+	bh=Q8GYORsnAO82wSpPrzmShMv7mBPXyM/CZgLgnjki5vY=;
+	b=T85JDWpya9ThWJT+UwEw4O3plEwO3PqXxccfsjbbVGDMxwjkJ8UgJFeo7rICFXRAl3jQPe
+	nVJ/toDi7SI1C54Ez+EydZNAva+zRVEqEf76wbqx15E1vnAXJ3SvDWY6FL7MHnSn1VlA31
+	kvy0wu0gbHtfkhBloxgr0wQGR0pwC1g=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q3ZHFOLH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.132 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RmJfjbW9hanTanRMvzBOFEucChAhacO/MlKfSklTaqw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795418180; v=1; x=1796022980;
- b=Q3ZHFOLHQgeWyu8jn9GzKSy5xUH4NNHprAauA0Qa3wLS2LmLxWxDZ7uPzL3xvCghUYTAVKe+
- KdqUBKV+6Eod5KaRbX6DTm1ElzOS1ZYhIAvfMrrQSrjd4eFwkYz/vassKdcZNHoJcrtpHBebwpo
- /oEdcYEP3WYRHEANHtT7wELE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0696a849d2745a18;
-	Mon, 23 Nov 2026 07:16:20 +0000
-X-Mizu-Trace-ID: 0696a849d2745a18
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f4f45970-d917-4fb4-8bae-63c836527888@linux.dev>
-Date: Mon, 23 Nov 2026 15:16:11 +0800
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CfSP0pgN;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795418330; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Q8GYORsnAO82wSpPrzmShMv7mBPXyM/CZgLgnjki5vY=;
+	b=CfSP0pgNFJHmbvfQ6ctTaNSXuadCkkuitAA1+Ts93PuzWTButsQXSapnZw+raCF+9+4KGeSlNhcBRNn1YtfKWOJPI06ltrF+uGJKa/BfRLIvhJ8blQKeh3tVHKG74UYBtrsaEKiiOxmH4yeFipFQrwI8NSuSY/oeO1bySVxAOQ4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R391e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0XFE82IO_1795418327;
+Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XFE82IO_1795418327 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 23 Nov 2026 15:18:49 +0800
+Message-ID: <4af8b7ef-8028-4b98-ad21-5620f8b92f42@linux.alibaba.com>
+Date: Mon, 23 Nov 2026 15:18:46 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/11] mm/hugetlb: drop boot-time HVO handling for
- gigantic folios
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>
-Cc: "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Muchun Song <muchun.song@linux.dev>, Li Zhe <lizhe.67@bytedance.com>,
- Andrew Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- James Houghton <jthoughton@google.com>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261120100856.16929-1-songmuchun@bytedance.com>
- <20261120100856.16929-6-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261120100856.16929-6-songmuchun@bytedance.com>
+Subject: Re: [PATCH] mm/shmem: fix swapin livelock on a mismatched large swap
+ cache folio
+To: "David Hildenbrand (Arm)" <david@kernel.org>, mt4022@columbia.edu,
+ Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ stable@vger.kernel.org
+References: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
+ <3c61a49f-6a0d-49eb-8682-aece4e7e7226@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <3c61a49f-6a0d-49eb-8682-aece4e7e7226@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B89FEC0004
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2C89840005
+X-Spam-Status: No, score=-29.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: 9iakx3coc9tciwfzpb1bbeuix4y45sj7
-X-HE-Tag: 1795418181-99358
-X-HE-Meta: U2FsdGVkX184aKic+xyYT5Qpmr4lcoGrBP5Drej5Wh4pNxANqeMY57o9yeFCAt158N/gi87u7ewkeHGgWsRcP3Yss/M4FxWPmLecTKuhCYvaor9MEYid4t3bT32PrHVH/M4UkxEV/gytaQ3PRAmDDbRWm98BezuD9q5Vtohv5wRJr89VlmcgEPoDxL7Rn2Fi4T0VXxCTHckUC56n/Jqk4qWHPA1StbTWJcLnqvcGNtdILqehIUNefKTedMnx8eLpv0aLLCT+2vBuKhHHJLzREJTF1Fuzp8nnaKcSWV4coxRhCMKSADqKewOJP/HCR4hbKyCBWWLWzEFUTYdmqndFwvKDpHAWVmisHbT2j4sQyzwASVj6Yub3RrYlun/rtLJNKvoL0kkUaopQ55fXmsej/pZWIpe+0TG10ZlYvOAWbG6gxKXCbKaS0RAoubaiZsHgFss7Kjym8oukr6Zu5ELXrDZT8bpVLdTex45kKfSzHI0WgSwpg14pYlmW6AL3FW6cn+LZJow86BeReS+9Flip2tXsXZ8djs2ysg0MlPpXlu0206UYLupRojmp9HCVlMm+N0LerSKg283GIOELVq4Q9B3HjRdWtnFbijmWTfN1G0DHruaZQuNDUJjrxtWbY2phjh6RQMUQqzsWu7wrl/lOcYJpHNRj3yLGQclL7dYm9T2itkLgfdGODIuFCPv9xe5BhI8gTY36c5YCiWPR2SbyJSthIvydhMnL0uP03DXLSjIdYHg102cuf7mFulCaWfu6TnQtlXwUTYZucxbHtnaNTjwoxBUBZtgGf9/Y81kjNAqkGMjTpz3LxswhWEHwV/kF9Eh8d39V+II75C8SwFW9/rRlIbcsy7In2EZfh+2FYVoAY/9OPaMlBqONIYZb1cwVRVRmmK3ePXEnk3Ikr56qnpac5/Lp4tdr1PkB/Fq6smJV7xlrod9D6TKypauLxEj7LEtTiZgoXMbCpN9aqL3
- FYzSuj89
- WiPNNRrrzDOo8KJlFyZ9d+iHxfq8mabGifvFQ4GEjBQwVaJMoWxFmNeMwFWNJsBtuSGN6ghX951XFyWq6IUixdHZROssFB9ws5TinrDUrk6od9uVejBi2T101wnz3o8TcdiWQzmWH2QYDUBNg2CpPUtXJ+0xD8uoUgQl2qIVurBKz7PzLKjZYlkdH17D5NpGOLo3uDb5cP/oYjj6vIPR4OU87w3t5OxRdjesxizystTJ4khK88LJ71eZsi/toJKRiU8eySoefnDRzytSlPd51ho7K9wLKE+DT5mwRhHo21Lcfm0Bbm48gaj1T5XihKIj+jIJNYeJPc1zQBnX+innoE4xRrRcwbUWQWOnlLCkRHa18/YRHGLCJHhhzq4WX+oNIs+7bNm+V84CQDaccBnstLZfa/Jvd+ZtrkOgYiM2G9XV3k00vS3y/NTiblD/YAbrzZf2259o/EAcuYMFv3l4gXuicF3hJjmhzpMyLW40gzd/gT1ya82+JoEi63J8tNrkWhtXH
+X-Rspam-User:
+X-Stat-Signature: qqxag7psfj6hrpm5juk3m8a6agxu3ju1
+X-HE-Tag: 1795418336-146000
+X-HE-Meta: U2FsdGVkX19N5ZxxJnCl/q18GDopB6czkmPb83R4zRQdwt369sCOI/WAGWHXVy6taKyoADndej96knayVOBvPX48kzFR05Ok/Jc/ANkWfuJzxeomwmIas5qUYIm5KQUp+3i7Kyd2JWyF3zBO5x57PJWEubRieWzKBZ9nwihsTvmwILGGPztKmCU1TjL482B2p28FKREwtKh6KgRLcT27rmzY3ott5ScojAz/2j3gvtATmCQo9MYx2jNViTAUN4eIc71+Y5sWA1s7yYvCUULl/kR4sp3qNQvSAuN9od46wn+5HmZzCEb/8SbMY1gGqukXGyI9B0089JJb2ZuELAMSfZF8945C35gyCM3LN02maE9uNI7/sdVrur+nuRF4+4QxxG4pGCHIqZoS6Nqe6rCVEuA+/eDb6zmK6sUlkr5nj4gOevlHIV2SPPjVvKp7LyLx3NIix6/uMqkU3oAgP94LA3xSi4ASkj8+I9v0WbdjRABz83CND6IvTQ4seGUbsT84N21OFv6VsLsFN/PnFd2egxGp5un90O0AYWDEjY/xQ08Uu7P2FbZJlUL4jY8eIi7cJ56ROY7kJDy4B51TggeWvu6C9G+e/FEe8Ql2YkINsvVpQRtTD2lp8MOCfgf3x/Yo/1hsSZHOFkXfb1jBS48/sDp0wobFY/BF4R9tdI8h+tJIvWNCSKmXv35uDZ0Rn7xIqxnGUZTWwk2x3T4WWtS8aeuNNra5uXZluO2X+zO6fjB3GNI58Jg+B3B0yPVPVLgefjgWxcLMyJyLXk/EtHLpdH8XIKZOLB1lu2QCOfuXVqOd88OY6/NKdhHIyaZu8qfbZk0PkQj6gVu5pih5Grku8oTM8UrCdA5Ob91e0bakdx0G4pCNjQgqhI1PPHSLqIoyjRCJDgutWrTjHmVkkp5oPHU3WZSky2V5X+/cdse2EOStksGyA7pLtWw0c7052eVRHswE29MXDBraKr88lEa
+ ItE9qyxp
+ gn792EwkAPku+L5ixtZSge/M7Im5c0EfrizmCApXWfNylz1b3gCV9bZljPYjyB47LbL9yIsl3ZPBJ9KvoMaNoZQUzpTNBG9zW3IQqzBHGsfv4beshEJYyABLAXfjSKyrapIMPdk6NjgXDgWgYjmDX7lXA1zZl4MTnYAbJQ59789ZAjV/T2KQ1th//TSVo2sDB/m+AbKzUm5/VKXNstErmSqNWGfSxtrBg/Z/lg48YqiROMsndvJ1gkjaMKL9Y/UUqMXfvdDmRinyZzQK9VxdgMsdOFAcGd6uL/jqNyeA0dwC4ZboKjGxchVnlQxs2mha+tWwxMqTvt75jHZbtdIix8bkiWgrqSk1KZZPrmySVlJu8+rGdGEegkVHS3j/iyRIu4pKdOnIPIlMQCGpVY2l+VIASZWNzCM/dMeTpvr9wk5DsU2bz29gCSl/Vm/pBnIuCNUnX0AyVpJnfpdtVeRJuUOl21N37CxVCo1NGeAi6jXRmploXUbL6MtVmoa+hsXFiBmTBI826Y4DHvG5x7Nepg0q72Y3gNLBQL7NYDe2hqNu8GY8HFDCEiTkJHsrFmpBH6pTnQjwbyp6qgbw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,29 +100,184 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/20/26 6:08 PM, Muchun Song wrote:
-> HugeTLB HVO is currently supported on x86-64, riscv64, and LoongArch.
-> On x86-64 and riscv64, gigantic HugeTLB pages are larger than the
-> section size, so the existing section-based vmemmap optimization
-> infrastructure is already sufficient to cover the whole folio.  On
-> LoongArch, HugeTLB HVO is supported without gigantic HugeTLB pages.
+On 11/19/26 7:06 AM, David Hildenbrand (Arm) wrote:
+> On 10/27/26 21:33, Mani Tofigh via B4 Relay wrote:
+>> From: Mani Tofigh <mt4022@columbia.edu>
+>>
+>> On a SWP_SYNCHRONOUS_IO swap device, a large shmem folio can be left in
+>> the swap cache over swap slots that another file now uses.  Reading
+>> that other file then loops forever in shmem_get_folio_gfp():
+>> shmem_swapin_folio() finds the large folio, rounds the index and the
+>> swap entry down to the folio's size, finds no matching entry in the
+>> file and returns -EEXIST, and the retry finds the same folio again.
+>> Since the task keeps the mapping locked, a munmap() of the same mapping
+>> waits forever.
+>>
+>> The folio is left behind when the slots are freed and reused while the
+>> swapin is still allocating it:
+>>
+>>    Task A (reads X)                      Task B
+>>    ----------------                      ------
+>>    shmem_swapin_folio()
+>>      allocate a large folio
+>>      for X's slots
+>>                                          punch a hole in X
+>>                                          /* X's slots freed */
+>>                                          swap out file Y
+>>                                          /* Y reuses those slots */
+>>      add the folio to the swap
+>>      cache over those slots
+>>      shmem_confirm_swap() fails
+>>      /* -EEXIST, the folio stays
+>>         in the swap cache */
+>>
+>>    Task C (reads Y)
+>>    ----------------
+>>    shmem_swapin_folio()
+>>      finds the large folio
+>>      rounds down to its start,
+>>      where Y has no entry
+>>      /* -EEXIST, retried forever */
+>>
+>> Before commit c246d236b18b ("mm/shmem: never bypass the swap cache for
+>> SWP_SYNCHRONOUS_IO"), a direct swapin that failed this way freed its
+>> folio instead of leaving it in the swap cache.
+>>
+>> do_swap_page() already drops a large swap cache folio that does not
+>> fit for anonymous memory.  Do the same in shmem_swapin_folio() and on
+>> a -EEXIST, remove a large folio that is not
+>> anonymous/dirty/under-writeback from the swap cache so that the retry
+>> swaps in a folio that fits.
+>>
+>> The reproducer below fills a small brd swap device so that a 64K shmem
+>> folio and the 4K pages of another file land in the same slots, and races
+>> a read of the first file with a hole punch and a swapout of the second.
+>> This bug was identified and confirmed with the help of a deterministic
+>> hypervisor currently under development, but the non-deterministic C
+>> reproducer can typically trigger it in the 2-4s time range.  With the
+>> fix, nothing is triggered after 600 seconds.
+>>
+>> Fixes: c246d236b18b ("mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+>> ---
+>> Two patches in David Hildenbrand's v2 shmem fixes series are related
+>> to this one.  "mm/shmem: fix truncate hang in large swap entry" [1]
+>> makes truncation retry -EEXIST directly, so it can also loop on such a
+>> folio.  "mm/shmem: preserve allocation errors when swapping in large
+>> entries" [2] fixes a different -EEXIST loop, where a failed allocation
+>> is reported as -EEXIST.
+>>
+>> [1] https://lore.kernel.org/all/20261027-fixes_shmem-v2-10-86a00952acb9@kernel.org/
+>> [2] https://lore.kernel.org/all/20261027-fixes_shmem-v2-11-86a00952acb9@kernel.org/
+>>
+>> Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/shmemloop.c
+>> ---
+>>   mm/shmem.c | 16 ++++++++++++++--
+>>   1 file changed, 14 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 13e0786436cd..f1da8432d55c 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -2568,11 +2568,14 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>>   	 * and swap cache folios are never partially freed.
+>>   	 */
+>>   	folio_lock(folio);
+>> -	if (!folio_matches_swap_entry(folio, swap) ||
+>> -	    shmem_confirm_swap(mapping, index, swap) < 0) {
+>> +	if (!folio_matches_swap_entry(folio, swap)) {
+>>   		error = -EEXIST;
+>>   		goto unlock;
+>>   	}
+>> +	if (shmem_confirm_swap(mapping, index, swap) < 0) {
+>> +		error = -EEXIST;
+>> +		goto failed;
+>> +	}
+>>   	if (!folio_test_uptodate(folio)) {
+>>   		error = -EIO;
+>>   		goto failed;
+>> @@ -2613,6 +2616,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>>   		error = -EEXIST;
+>>   	if (error == -EIO)
+>>   		shmem_set_folio_swapin_error(inode, index, folio, swap);
+>> +	/*
+>> +	 * A large folio that does not fit the mapping, e.g. because its swap
+>> +	 * entries were freed and reused, would be found again on every retry.
+>> +	 * Drop it from the swap cache so the retry can swap in a fitting one.
+>> +	 */
+>> +	if (error == -EEXIST && folio && folio_test_large(folio) &&
+>> +	    !folio_test_anon(folio) && !folio_test_dirty(folio) &&
+>> +	    !folio_test_writeback(folio))
+>> +		swap_cache_del_folio(folio);
+>>   unlock:
+>>   	if (folio)
+>>   		folio_unlock(folio);
+>>
+>> ---
 > 
-> Therefore, boot-time HugeTLB HVO folios can rely on the section-based
-> vmemmap optimization infrastructure directly, without the extra bulk
-> optimization and fallback handling.
+> I have an AI fix here:
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->   mm/hugetlb.c         | 25 +++++++------------------
->   mm/hugetlb_vmemmap.c | 19 +------------------
->   2 files changed, 8 insertions(+), 36 deletions(-)
+> Author: Chris Mason <mason@kernel.org>
+> Date:   Wed Nov 11 18:44:55 2026 +0000
 > 
+>      mm/shmem: don't drop a folio whose swap write failed
+> 
+>      If the swap write of a large shmem folio fails while a swap-in of
+>      another file finds that folio in the swap cache, its data can be
+>      silently lost. A read of the file then returns whatever the swap device
+>      holds.
+> 
+>      "mm/shmem: fix swapin livelock on a mismatched large swap cache folio",
+>      earlier in this series, lets shmem_swapin_folio() drop a large folio
+>      from the swap cache, if the folio does not fit the file that is swapped
+>      in and is neither dirty nor under writeback. A folio that does not fit
+>      can belong to another file, with its swap write still in flight.
+> 
+>      shmem_swapin_folio() holds the folio lock, but the code that completes a
+>      write does not take that lock. And a failed write sets dirty before it
+>      ends writeback. So the folio can look clean and written, although its
+>      write has failed:
+> 
+>          shmem_swapin_folio()              swap_write_end(), failed write
+>          ====================              ==============================
+>          folio_test_dirty() == false
+>                                            folio_mark_dirty()
+>                                            folio_end_writeback()
+>          folio_test_writeback() == false
+>          swap_cache_del_folio()
+>            /* the only copy of the data */
+> 
+>      The fix used here is to test writeback first, and dirty second.
+> 
+>      Signed-off-by: Chris Mason <mason@kernel.org>
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 915b312e14175..457a502353a9a 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -2809,10 +2809,13 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>           * A large folio that does not fit the mapping, e.g. because its swap
+>           * entries were freed and reused, would be found again on every retry.
+>           * Drop it from the swap cache so the retry can swap in a fitting one.
+> +        * A failed write sets dirty and then ends writeback, with no folio
+> +        * lock, so test writeback first. Both flags share folio->flags, so the
+> +        * order of the two loads holds.
+>           */
+>          if (error == -EEXIST && folio && folio_test_large(folio) &&
+> -           !folio_test_anon(folio) && !folio_test_dirty(folio) &&
+> -           !folio_test_writeback(folio))
+> +           !folio_test_anon(folio) && !folio_test_writeback(folio) &&
+> +           !folio_test_dirty(folio))
+>                  swap_cache_del_folio(folio);
+>   unlock:
+>          if (folio)
+> 
+> 
+> @Mani, can you double check if that makes sense (can we actually trigger that), and
+> if so, send it out officially, with Fixes tag ?
+> 
+> Feel free to rework the patch as you please.
 
-LGTM, so:
-
-Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-
-Thanks,
-Qi
-
+That makes sense to me. If Mani has no time, I'll take care of this fix.
 
