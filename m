@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCCC606A332
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CAC606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=dW5Cdkk4
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=TWxZm/dZ
 Received: by kanga.kvack.org (Postfix)
-	id 60D406B05BA; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
+	id 78EE96B05BB; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56E956B05BE; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
+	id 6F2996B05BC; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 322256B05BB; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
+	id 609316B05B8; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 014FF6B05B9
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:56:29 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 822A91409E1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:56:29 +0000 (UTC)
-X-FDA: 85467440898.01.CD69C66
+	by kanga.kvack.org (Postfix) with ESMTP id 209B66B05BA
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:56:30 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3516A85E0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:56:28 +0000 (UTC)
+X-FDA: 85467440856.09.1E8DEDC
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E006C100005
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5D61840003
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:56:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="dW5Cdk k";
-	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="TWxZm/ d";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795463788;
-	b=PJJAyXTUWjdUPmNwO90HGF6fypGSW8IUy87ZrisNC9ls54ytX15393/IQBpZpMEXBm1JeG
-	LQNCklN1o+yTkHt28x7dlbiAcDcJIsAhgpXRE/dysI5AnInE33WFUuqkABr9a3rcMHlAV8
-	cZnk/uWYQ95EyWlTrzX7it5gFyxa5TA=
+	t=1795463787;
+	b=8BhU2GWZ24RxJ6mHnsXXR+gLFl1rePjM9B5VTEnMRvK9d8j1HlVgki+KV+V8CrPfkPjO6v
+	S/Fq3t9kI3uuqSBHqiawS+F6W9p+YRJG/0+o0M9SiZC8Sf821zvPng/dCY0C+KDLXL+vex
+	dNGyI4kHBRFuX8wPVYzHEnmBS5Mu+hQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795463788;
+	s=arc-20220608; t=1795463787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IiLEpxFdp/GdWWLhE2SRceq2aNaPLrmH4fAKh/8siQw=;
-	b=niS+9lZ7AbJJCPdnwwsiJwZcrAoewMKoBw/KeHr6C4+dgV0N5UidHPe8q441imd2KWaGpi
-	vxyILsxfFFma+6GeCHji85xfHgLekK7HiwUu6LKVNorRr/ogFkrjfR6q+XgQ2x/dNHG8Eu
-	/DtP/mrKfc5tH9R8PNdth15vGhDr4TI=
+	bh=SNg/eN30d+0BFvF9t/QYVmNoDb1lzvAqSarbFDg/MKE=;
+	b=Q2qCUKWJ0igK9jGUktexJFGeUwA1Cs6Iv9luLW5eY99pi1Z9hpjodVYo2k8cB5plAFaw2e
+	UykRMDLFvwLSz6JVWas4gnkqEWO6tN88LYQHmLug7otLDWFlPpVLxFEl38jMTC9mUrW9lw
+	m0CZ48nqcNN1XGFB18eXULqMyKgrHFg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="dW5Cdk k";
-	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="TWxZm/ d";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=IiLEpxFdp/GdWWLhE2SRceq2aNaPLrmH4fAKh/8siQw=; b=dW5Cdk
-	k4L9Y2JmljporTezPw+aHpEUtoacoF7UfrA6w4xnXXKKfOKtaqurjnUfV4qUaSCulnTbfxhVMT7Qc
-	Yz59Ao45rw+bHu+b0IS/Q70xoZBfxsgBxNQKGamwYNt9nlYYNRv0F/Ak/Lromoa3CugZN7tQHo7MA
-	bdebbrRHXNiBALSwLRI7b7ctpAeMI9ylA3ycftgdtpObfVG4dPSla7HUEvAXIPce7UL4oMTi6EGni
-	q1RJODhMyPqFPmZAOeLQfuJRjGsd0rDkgy6WGWBzfuQjB6XYztkstieGzn7mtc6LkIkGYax20nnGz
-	AXHMdJZ50tEcn7qVZSaX5p6UIRrA==;
+	:Resent-Message-ID; bh=SNg/eN30d+0BFvF9t/QYVmNoDb1lzvAqSarbFDg/MKE=; b=TWxZm/
+	dZ0v63E06eHlklmT+WDHwGP1hIkYnKx0guN4mDEWWcSeIAqqxdy5PUKUA9Rg8yUTHZDQm2BzNDC8S
+	OSA5I2Ujbl8238wuBeAokM++MnPwzvB+l67E2hBhRQ3GGAYkmmkcfh55yLghR9moWtAtPVtJ0fai3
+	yQzzeED5w41VzXmZnFsHjRCtCiMDQaM/vO+GWnkqda5iAX3sSszBvCISQmwG7iBHynple/qEcKSFM
+	rgH5RM2FRXEP7ungdCDhsQTCMtE5QxMljgMU6RBY85sGan9KKUTmVbZ98NO8BPdf4zaLRbEmp8UCC
+	ZxkhoaHtZyWr39sOgEg7c1KpH7nA==;
 Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn.surriel.com)
 	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <riel@surriel.com>)
-	id 1xVa99-00000006IU7-1aVr;
+	id 1xVa99-00000006IU7-1JJ4;
 	Mon, 23 Nov 2026 19:56:15 +0000
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -74,27 +74,27 @@ Cc: linux-mm@kvack.org,
 	Jason Gunthorpe <jgg@ziepe.ca>,
 	Peter Xu <peterx@redhat.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [PATCH 4/9] mm/gup: split out folio grab-and-store helper
-Date: Mon, 23 Nov 2026 14:56:04 -0500
-Message-ID: <20261123195609.4115244-5-riel@surriel.com>
+Subject: [PATCH 2/9] mm/gup: break out gup_flush_pages() helper
+Date: Mon, 23 Nov 2026 14:56:02 -0500
+Message-ID: <20261123195609.4115244-3-riel@surriel.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261123195609.4115244-1-riel@surriel.com>
 References: <20261123195609.4115244-1-riel@surriel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E006C100005
-X-Stat-Signature: zpy1qc4h9odaqsxgp67a81d6t98819gd
-X-Rspam-User:
+X-Stat-Signature: a85jfemxo1ifewn16cuutwjw47tjind1
+X-Rspamd-Queue-Id: 5D61840003
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795463787-514024
-X-HE-Meta: U2FsdGVkX1/LE7pkm3HZwc/VbPTvjlJv1+mjHPRrl6l/Oz7q6BV1bkP3kFWcUeqCItf/T0N09FPMs3uVmS5sivk7aIrozoCiI+Q6fZ/MEGbnrbQttQk+ESRVyqZ/g+jVU3QcDe2paPPLe1mmVno366ANwDJZHK3wXm+9Gc5PA7dumGQwScePWJ8bI/S6ou4tVrFu12wzQnmKGmRMxhS3O4tDpeglzaKgaM/lhrieDWKouiyiq0T3hCpA+XdBcV37AHLL3VtYiPCo5vmccZXqEIkns+zcMkVFrgUk6aIGaN1ArIzdVVAEVQh0tLBuQDnvhtLZGA1c8GVn+L3enVHEIF+zO10S0VlLqjxO7TN0zxuRbD8jHOPH8tBim7h8IC/Z7NO4t2Bj/u/vrxVVgzpmuXb61PwJB4oekRjmD/HV3Fhh3daBWLt2ogPt5xAekz6nEkeURVLy9kjtDSF5/sGVDT+i+PWg/Zlkbvp3C9ahx03GQ9AKu3hzBB86lDiI5QJaewCykFoo9qkGiwbBfxxfHFH18ls7OQne5ygkOD8XElu7rsku1WfGoLU+j26p/nh7EqhQuPxnEcSeuwDuAsWhvzKPFI2y4L9PhvCSqa5RjgxGaCtiI21IrECH6yUOpWBtjzbwWuF00TmCSbl+lMss6TU7b/UQIJm/BDts1n0CHuuD05XbJxbBvmwf4IeP7dUlQdTwsdULwmAIIsvWQuk6HsKFDjEyB87rFB6EpJR9PKU1BmT749GRS9LCDBG1gfTyokTavSDqvncTVaSsqUZhDP7bX/tj36TUQsmd8SvUsHW7VnrWVOKCUsQRTOyT/iGyl17IOKsB80yhxAEdviZ2aWIC9XsBQ0duDilEXX6DzQprF8/ZwAvn4ZAuw/vU+ZTTqBCQgPDIgnkCZ3sZ0TKqpSVX7/SZ/i2iAxp6VMKUisrPezd7vG+RZ2ZKIfG6eZBHQFA1SlvBDUrRjPbjMsE
- sR/uwW9r
- 9ODT/VuEQeuSkZvjMWdUS8UEKcw998RgDvXc5p2oT62LVZKTCdMdYcJZHvWlHH36yY48gIaS0m55QJf6Gc5xrFuFYTzfbekLWJkwUuYME/3FDpvsYLYkU7oIjr1snhoGGGbN7vSYtfJiBAfllRuNDFe1Ane7+e9M0hDK28Amu66pE/HUUpOVCKXY+Twh5MvuyePdizN4HmkraX7H7XXv8xmMT+Ik9AP3eq7pbRJWlbKr/L3ne9VIFl2mGMoYRSHTStikjXTBULtX3qDZonJSBn1kfbBvT4nub6cEI8G9/3gYlmKyXOXxpDeNKAW/GiOSRvka883WBfT+/De+ho+TeSGBZidbIaif9Noot1adN2vYuvU/3snoPvBEdgn2+D46q9D/jhGmsHYXppWc3BWd9MIJuWadiDB70fImPeVbLhT6oFdIGl8F56PmnxpKtIfh+1fUAlucwCq6JnLh40Af5te4A5t0ljnPvd5tSLRo04f9YtKmgS6qWYjSntA==
+X-Rspam-User:
+X-HE-Tag: 1795463787-884725
+X-HE-Meta: U2FsdGVkX19UDrYlEeVTgKVLN5ckrrs8IhymYGFO8qhqbU5lmM1PJDwCudHOpvuAiOoc6cT/AfezZVDFXA+Y8O2gDsLGZU4qSy9UZXj0zEPKMySXQXgKnchG1iBQndddTT9qsh7BDKsaY+3zbA1MeD04iPg8jQo9mAcG4Mkk8ZR2sgbsHNrlPO6PageU1Mw8FQuXY9mel+3a5eE66u6Fl6kWCattPmbGBapqeg12NEpOPgwISGDerOUQv12cBF3B5ocBzlHFRb4xm+NNUTqLFsMlwisLAc1wNzziDP8P8d8YwXdeY6SBpWB99VrMZS2BaOlNbBJ3lzNE19hpA2ZnXNYMXvrkTtE0hcKGTwwkQ4pX1+mY9QLltWbtXwlT9UMciCLfOb8liScJDx92IK7ya4u2deIbtLqYd9Zb8k5/6QuB3d7XgWUrAXpN6vZVCloZdwDNis3FQbxbj6dGfuRmkmCMqMI5JujkLkkGoi3VWnPs3qJ7PSm8cgnoltPT87IJl/Xm/nWE7Egg9F85JMtYD9A3GcBJF+BzBf8oAGjMXClx7gMtUbLdiOeA9tJtyHsclS3CuBO8QDUt5ShI64g+8C69y3Z8JUGPWe7IP8tAd4kztwxfFE1VZ1MvKR9asvZv09yHezAyIe5wF12YqumXaGfHOwgVcMtx6YviOpUCsDGbs6nhhyEKBEGfQng4WsTf33W3MBDUt/ThV7NFsqb4L8AFCIKRwTagoDOnjIBznY3G/1nC+6sFvtZQZgQs6Yg2hnfIxcHKGTQuIYIVcPZrXUl6zW661b9TC7SdYGiW7ffSv1exrWLfJioKXf1X3VK64otdOkOxygyZmghPk1cu2vEkq5/EqSSZFARQrrNL2xvNFKIFg8SbZtQBPGdz44cbfW/Wss8aE22znlTxKmfiddYQT9L1SyfPge6z+vt4sEvjVQuDkVkhJf1duo3jfZXYY/AWzJ7/VAbSwojBh91
+ FSMuSrm9
+ mvMfvtF5Kc93DcANkflKGVDQEzIgqoKX4lqN+gf+7tXF+jGhefjEFf0J69i0UOEf46vJ1H/Q5FwYNJy876yioJ6OWKrejWxqzvaSID5Bg0mEhJgyAbCvHvkk0QFbns9XrMHChKhSvQ7EcILRyUX4NICaeT1P6JzeAcE8FvuzGWBz67GmqNPAvPpV//KeDCsXFuyaJUxicESyNMi3tkFrJ5ntDN+otJaA39+zBAWv7M3tSAgGhqt0UxGRaZ9SD5clm1HQKXvFrREgKHEeQ1Bk1e9DoJe858Z+BVRkVZR2cbORSLFyla/yzTKm4IB10faVg/UD4fyALURQPY0GXQRkYiTVDTfBbL9w87IY/LnvrrpBXn2INqJ6aLHia+slkJYhl9IFsPsiEfwJ8VdCSER8vsvFD/n3bLwSOzKjxejvrTegvNM9CKgq6OpOykv8bsuJf2uRA5mSl1Nm9veGQ+gCmZxcaTrhu9NqyLouow28iU84fKaJf5rSJSCI450sTBZvcnt/LL86+EGX0ksp5b6BhPhE6tQ+9nZVudCS6JnP0OIN6ubE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,120 +103,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-follow_page_pte() does two things once it has resolved a present PTE
-to a page: run the per-PTE safety checks (write-fault, unshare), then
-grab a folio reference and hand the page back: fault it in if pinning,
-mark it dirty/accessed, and store the caller's array slot.
+__get_user_pages() flushes each page's caches in an open-coded loop
+right after filling the array.
 
-Split the second part into gup_grab_fill_folio_pages(), which stores the
-pages with gup_fill_pages(). The cache flushes stay with the caller in
-__get_user_pages(), which runs gup_flush_pages() without any page
-table lock held. Storing one slot under the lock is cheap; flushing is
-not, and needs no lock once the folio reference is held.
+Move it into a gup_flush_pages() helper.
 
 No functional changes intended.
 
 Suggested-by: David Hildenbrand <david@kernel.org>
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- mm/gup.c | 76 +++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 47 insertions(+), 29 deletions(-)
+ mm/gup.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
 diff --git a/mm/gup.c b/mm/gup.c
-index 963c09b955d9..d2097ecd1576 100644
+index e0698d2075b4..d35fedbce7e1 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -921,6 +921,50 @@ static inline bool can_follow_write_pte(pte_t pte, struct page *page,
- 	return !userfaultfd_pte_wp(vma, pte);
+@@ -729,6 +729,24 @@ static void gup_fill_pages(struct page **pages, struct page *page,
+ 		pages[i] = page + i;
  }
  
 +/*
-+ * Grab a folio reference for @nr pages starting at @page, mark the folio
-+ * accessed (and dirty for FOLL_WRITE), and store the pages for the caller.
-+ * The caller (__get_user_pages()) flushes the caches with gup_flush_pages().
++ * Flush the caches for @nr_pages pages stored in @pages. The caller
++ * already holds folio references on the pages.
 + */
-+static long gup_grab_fill_folio_pages(struct folio *folio,
-+		struct page *page, unsigned long nr, bool dirty,
-+		unsigned int flags, struct page **pages)
++static void gup_flush_pages(struct vm_area_struct *vma, unsigned long address,
++		struct page **pages, unsigned long nr_pages)
 +{
-+	long ret;
++	unsigned long i;
 +
-+	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
-+	ret = try_grab_folio(folio, nr, flags);
-+	if (unlikely(ret))
-+		return ret;
++	if (!pages)
++		return;
 +
-+	/*
-+	 * We need to make the page accessible if and only if we are going
-+	 * to access its content (the FOLL_PIN case).  Please see
-+	 * Documentation/core-api/pin_user_pages.rst for details.
-+	 */
-+	if (flags & FOLL_PIN) {
-+		ret = arch_make_folio_accessible(folio);
-+		if (ret) {
-+			gup_put_folio(folio, nr, flags);
-+			return ret;
-+		}
++	for (i = 0; i < nr_pages; i++) {
++		flush_anon_page(vma, pages[i], address + i * PAGE_SIZE);
++		flush_dcache_page(pages[i]);
 +	}
-+	if (flags & FOLL_TOUCH) {
-+		if ((flags & FOLL_WRITE) && !dirty && !folio_test_dirty(folio))
-+			folio_mark_dirty(folio);
-+		/*
-+		 * pte_mkyoung() would be more correct here, but atomic care
-+		 * is needed to avoid losing the dirty bit: it is easier to use
-+		 * folio_mark_accessed().
-+		 */
-+		folio_mark_accessed(folio);
-+	}
-+
-+	gup_fill_pages(pages, page, nr);
-+
-+	return 0;
 +}
 +
- static long follow_page_pte(struct vm_area_struct *vma,
- 		unsigned long address, pmd_t *pmd, unsigned int flags,
- 		struct page **pages)
-@@ -976,36 +1020,10 @@ static long follow_page_pte(struct vm_area_struct *vma,
- 	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
- 			     !PageAnonExclusive(page), page);
+ #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
+ /* FOLL_FORCE can write to even unwritable PUDs in COW mappings. */
+ static inline bool can_follow_write_pud(pud_t pud, struct page *page,
+@@ -1566,9 +1584,6 @@ static long __get_user_pages(struct mm_struct *mm,
+ 			page_increm = nr_pages;
  
--	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
--	ret = try_grab_folio(folio, 1, flags);
--	if (unlikely(ret))
-+	ret = gup_grab_fill_folio_pages(folio, page, 1,
-+			pte_dirty(pte), flags, pages);
-+	if (ret)
- 		goto out;
+ 		if (pages) {
+-			struct page *subpage;
+-			unsigned int j;
 -
--	/*
--	 * We need to make the page accessible if and only if we are going
--	 * to access its content (the FOLL_PIN case).  Please see
--	 * Documentation/core-api/pin_user_pages.rst for details.
--	 */
--	if (flags & FOLL_PIN) {
--		ret = arch_make_folio_accessible(folio);
--		if (ret) {
--			gup_put_folio(folio, 1, flags);
--			goto out;
--		}
--	}
--	if (flags & FOLL_TOUCH) {
--		if ((flags & FOLL_WRITE) &&
--		    !pte_dirty(pte) && !folio_test_dirty(folio))
--			folio_mark_dirty(folio);
--		/*
--		 * pte_mkyoung() would be more correct here, but atomic care
--		 * is needed to avoid losing the dirty bit: it is easier to use
--		 * folio_mark_accessed().
--		 */
--		folio_mark_accessed(folio);
--	}
--
--	gup_fill_pages(pages, page, 1);
- 	ret = 1;
- out:
- 	pte_unmap_unlock(ptep, ptl);
+ 			/*
+ 			 * This must be a large folio (and doesn't need to
+ 			 * be the whole folio; it can be part of it), do
+@@ -1599,11 +1614,7 @@ static long __get_user_pages(struct mm_struct *mm,
+ 			}
+ 
+ 			gup_fill_pages(pages + i, page, page_increm);
+-			for (j = 0; j < page_increm; j++) {
+-				subpage = page + j;
+-				flush_anon_page(vma, subpage, start + j * PAGE_SIZE);
+-				flush_dcache_page(subpage);
+-			}
++			gup_flush_pages(vma, start, pages + i, page_increm);
+ 		}
+ 
+ 		i += page_increm;
 -- 
 2.56.0
 
