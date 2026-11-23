@@ -1,113 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67E8606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 00:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB242606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 00:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Thac0G2i
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dD5jYhIR
 Received: by kanga.kvack.org (Postfix)
-	id F0A246B05B1; Sun, 22 Nov 2026 19:13:18 -0500 (EST)
+	id AACB86B00EF; Sun, 22 Nov 2026 19:21:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBB426B05B2; Sun, 22 Nov 2026 19:13:18 -0500 (EST)
+	id A36916B05B0; Sun, 22 Nov 2026 19:21:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD1BC6B05B3; Sun, 22 Nov 2026 19:13:18 -0500 (EST)
+	id 8FEA86B05B3; Sun, 22 Nov 2026 19:21:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C03736B05B1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:13:18 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3FAFDA07D1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:13:18 +0000 (UTC)
-X-FDA: 85464459276.03.500AEF6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AC22940005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:13:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Thac0G2i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 580C66B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:21:22 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B407C120757
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:21:21 +0000 (UTC)
+X-FDA: 85464479562.28.E93070A
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D8917100002
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:21:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=dD5jYhIR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795392796;
-	b=t2cCJdMpr0W3iz1/0ySjrMnMKZFBvlJanSOThGdoWRh3fr5vlZ7tKpIlXjRYCmPapMQfLo
-	N9c/bzNXh5Ue1414wBxM6hrfpsfDeSxvVUeYS30FMbFfRhion9xFu4ckdFIxLOYDodfVbg
-	w+tunE32d0E+mte3ASPlYfG7qxFvzgs=
+	t=1795393280;
+	b=B23FhQJrYfrj2IpiFbMTnE9Fjknovg7/FQpuWpVphOHF7ON7lAEo8Vk674ZdWYTLX8YQ+e
+	weie3FBTXalj2bj12pxhx56c4VCTaNvSxxnrE5nJzdOfn0MW4ZiXxWl0X3cogzBWia8SRp
+	hjEMGD2r3xd/5Hq1EWiu5oONNOandiM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795392796;
+	s=arc-20220608; t=1795393280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wNHqEZsoH0fl0KvemxrRFgEKII9FO4FpbdMxVzBA/es=;
-	b=w07kZRQE4Q6/H6WzdbeQiTWwvUFxbksHKy680R0kNQnCGv5indmlqpsJbHOtYnBQiSiTy5
-	zMd98vBKgiJuiuEPTWt/KwXsdzu9xgHYMNjsP9494ccCQBVhGmK3BawrUDjR9KzMiCNXy5
-	TxSPh4hgiXu+6epbNg1dBvfKA6Ci998=
+	bh=KF23iyWwR5yZnzbUCvNMaMixSGrIyVPB1oghCsOfI4k=;
+	b=DZGWrpwqNRxhX6FiQaZZ1bfTBHze8efS4kAzo2LYM6M5mPX1lYKwxh+QjlE4JG7f0kGS3z
+	OTsRi6c6W3DUSwKOmBgzlG992dRNak6U62CP3uPOCefZBkmu2Yk9zrEr8F0SkcTZSyny9k
+	7cSDSdJGuo+aLMBtXSlHOyBCZT+ADfM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Thac0G2i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id D244E44D7A;
-	Mon, 23 Nov 2026 00:13:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id EB8E31F000C0;
-	Mon, 23 Nov 2026 00:13:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795392795;
-	bh=wNHqEZsoH0fl0KvemxrRFgEKII9FO4FpbdMxVzBA/es=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Thac0G2iUDcXz2qgaJW8h/S+5nNIqyajBYdxzDEme/bJSPMTe7c3pRgwzgodAVoQh
-	 mSokN09iHBie/kF/x0KahT2ipTDZfjbXgWYwU1GSRAZwJdLyPaFSaN/DwkoxM+5A+p
-	 7MshlxsCaWUb+qkLze23KVR1cmAv5hnNsNU939yryaW8IPFXuZTne6FPxmqP8Go0Sa
-	 cDfWRGtcKwXGHvXoVygr6TiD71aXKFcfCOU2d6HUw9YdgmFVbrYVyY6igYRm3F9YKb
-	 EViZyMRONm1wSRulbDZZ/8V5UuxKVjY/b0SanxkgwkIiE4eozqzbOYfncDgHX+BmsK
-	 M4rbopl0ZwExQ==
-Date: Mon, 23 Nov 2026 02:13:12 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>
-Cc: bpf@vger.kernel.org, containers@lists.linux.dev,
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Aleksa Sarai <aleksa@amutable.com>,
-	Alexander Mikhalitsyn <alex@amutable.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Giuseppe Scrivano <giuseppe@scrivano.org>,
-	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
-	KP Singh <kpsingh@kernel.org>,
-	Lennart Poettering <lennart@poettering.net>,
-	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=dD5jYhIR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cdb2e0062bbso970064a12.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 16:21:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795393278; x=1795998078; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KF23iyWwR5yZnzbUCvNMaMixSGrIyVPB1oghCsOfI4k=;
+        b=dD5jYhIR/zI8OAg85FxBKAxv1vIpKKIqYepzTnen9Okp6WyQhJb5fgoU+6PkiSlaFv
+         mzHsWH3cHgtYet0dh/1rL2WSJDum9aNSiubgtLezvgbQbTa+ZKdUGoR8C9GjPQuZ55zZ
+         v2iPoT+idMlnab47joEQyl2jasuSAec/cwFDi4KuVWqRIcQ129TyB+K+ji3BtQ9SKzqW
+         3bAiqqEaxPb0PkfSGZ4lFPU4UM1nRdNg6WKBBxXsBSpZC2/Ltzvoq5QAbggJ933/Qx9e
+         wbAggduQtxbGkw7Rp2Sv0K8cEblUHzdvYeXUdwlyzMWYVs+4xk0MNzV/EnuFtBWIri6x
+         eoiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795393278; x=1795998078;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KF23iyWwR5yZnzbUCvNMaMixSGrIyVPB1oghCsOfI4k=;
+        b=GuLDlHTaZLaLTBg7Ilsydq4z4WPbn77xLw4XR4JoXWeoSqWNrbSgSuOwuzzm1iJ+ME
+         SJwT+6OXj7vUrQkB1xzGUZSC2MkwHocdB2tN9Pp0zhe7MbSgaYX0431jphnFQ0N7KaHb
+         30C29MvZjDMIggpxZVbINDircT8Hsc48yBBol8HsMVDkjauGUxkn4UR90gVJVBbU8LS0
+         z4NDCA0/rOCeqLlMqeuYjmwLMRsVZlw7F7RFYJKmoWDrCRZaAB9cZpWWZuXVbR4pbkdu
+         gIjyk2yBI9Eng1Pc6n87TCBKhyYh1R5gkMMuyei66FufIdzebKv1nTcI/sMI7kIE+ckr
+         WVrg==
+X-Forwarded-Encrypted: i=1; AL+hErEH+Ocb4vT50KQWbFyoqVEq1TNpk9e2rqtcObmzU+1zwYTHPGEMAj+rVp/xd6v4aLDgNmBn1WTOsQ==@kvack.org
+X-Gm-Message-State: APuU4Z8oQhyDOuzKbkZ2eOmSAmWoBDIvgY3pJwjfF5mdNIhx2Vv61AoL
+	wfX6lMDc4oDHdlgamDr1EEkUlzfZG+LWT4Z44+8jFtB86h9uk9mr9+li
+X-Gm-Gg: AZFdTZd8MfxDWayY6lGWA7LmElitUW1hoPL6rnM6xQffzgOJjefFJoBrgexTblroiuy
+	MLYeMOUDFfxnxh73CaKVr6Eoi3g5xWQgV0LL3JbpJr0gcChFt1FBbwOP4EhvDI3NyUwpJaJf5Je
+	qDdAdQC7hoSbVL4b6nI8iMd6LNsO2PHqeuBsikcNvvPZRvNSSO2IBTytduZuEMszcQ/zhUFANvz
+	w+cDMOuk50L9+GH/kAeAnTws+KAtmqaSUS8D9zuQIRSyVtcA+uTdhTHeJRCsxvRGl2si8wqhTEq
+	NG1zThDxtJu1LzcMfXEPiTJ1PxbFRyvvYSlmWlnQIeV/oxFPC2VfVyGE1HrKBVQeUhnrBlERGOs
+	1GwdpMr1+elmPetq2EAOVUeaR4ST5ffcl50SatNVKcR6kaz8zCpd51Ywned7NrHXgvR4th5izod
+	Olx05kr4IqpuIyKUOSjnph1xjg1ailPo8Id+FvGrjN4BXl1FPs8i8qKgZWnyjoks/KYf+ojkQEX
+	En3+/+eSDMl15p1CVrZt6jiH2R747JRSBFgdaMEyXJYiFsHdL5eXLv7es48o0IxfepOmhNd4uz3
+	m64hAmzumcQphKHvwGUJfn4HNoRcuy13hVqP50qDkj78CjarIMwc3I6xOU+o4RGOH57UW9dm5od
+	5ZrItpY3B267fiHkVN7AaC1duB0uPmYnemnk=
+X-Received: by 2002:a17:90b:1801:b0:3b0:9984:18c9 with SMTP id 98e67ed59e1d1-3b41c8e16efmr9088622a91.11.1795393278264;
+        Sun, 22 Nov 2026 16:21:18 -0800 (PST)
+Received: from localhost ([153.61.198.247])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b8733e6sm4860403a91.3.2026.11.22.16.21.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Nov 2026 16:21:17 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 23 Nov 2026 00:21:16 +0000
+Message-Id: <DN25ST0D5K1J.1NI5236BF2BPY@gmail.com>
+Cc: <bpf@vger.kernel.org>, <containers@lists.linux.dev>,
+ <linux-api@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-security-module@vger.kernel.org>, "Aleksa Sarai"
+ <aleksa@amutable.com>, "Alexander Mikhalitsyn" <alex@amutable.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>, "Andy Lutomirski"
+ <luto@amacapital.net>, "Arnd Bergmann" <arnd@arndb.de>, "Christian Brauner"
+ <brauner@kernel.org>, "David Howells" <dhowells@redhat.com>, "Eric Biggers"
+ <ebiggers@kernel.org>, "Giuseppe Scrivano" <giuseppe@scrivano.org>, "Hugh
+ Dickins" <hughd@google.com>, "Jan Kara" <jack@suse.cz>, "Jeff Layton"
+ <jlayton@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Josef Bacik"
+ <josef@toxicpanda.com>, "Kees Cook" <kees@kernel.org>, "KP Singh"
+ <kpsingh@kernel.org>, "Lennart Poettering" <lennart@poettering.net>, "Neal
+ Gompa" <neal@gompa.dev>, "Oleg Nesterov" <oleg@redhat.com>, "Paul Moore"
+ <paul@paul-moore.com>, "Pavel Tikhomirov" <ptikhomirov@virtuozzo.com>,
+ "Serge Hallyn" <sergeh@kernel.org>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Zygmunt Krynicki"
+ <zygmunt.krynicki@canonical.com>
 Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
-Message-ID: <awOFGIWekH9-vlhM@kernel.org>
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, <linux-fsdevel@vger.kernel.org>
+In-Reply-To: <20261122193539.3334213-1-jarkko@kernel.org>
 References: <20261122193539.3334213-1-jarkko@kernel.org>
- <awOEa303zNUDrzA3@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awOEa303zNUDrzA3@kernel.org>
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AC22940005
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: f77yq4fyccxurxqg3qckge97o7j8hnso
-X-HE-Tag: 1795392796-439696
-X-HE-Meta: U2FsdGVkX1+Ja84PZnKT0SM0h4blBPVy9ZMAidX97VwVd7tQ9Eyi7KwE++whqUCcZUIj2lWvNF42sKdkrSexGwYceddmuruY+AKVAnpJmp8eOjTZXjQM9igmxw196nWITs10xkVH68mLokmJAytdpM5pdo0iOe4w8KkIvcpiN5WozLe07UzYkTRNVs3Ry1lCdP0lDKTJUGoNyJa3u6pSzcpPTg6L+AQc634vj7wtWCy1jYugNetKJL2ptql4gf3I/fNLgoI4hdEuGLa3I90K6ijJcAz3xqMgvh665yrKP5NM9Bkpok0GSArcDJD4Ln/VkHvPLKU4KQoVmqwJtVvyrAdpAvVbLoLbwozmrAc+aLMJ1GkDbdJ0U+oZNooSEdU5G2EKYdHzD5jTbSwCc1ayJsapXdaHU9vn4L3QxghRX66NytwY89U6fsu/80nWv20wadT3vHBoA8vnXSD8V/yGpBCEX+oc4c6pJsqfIKecf9AA3yBx4D5Bmx+OX0gR7g6mAFnvMQB1UA0M6K3MQTZB9WJSXxYXfKWTyu+sd4tCXCo40tEZGu6AoUdj/GMU+3h+5/thpkysWkMl6Xn84n+o8FcDkaxG5v5F7WXMTqF1L3/OnwXU8C4RdIrbzVDmkx0qwzs9rs/3OFPttLcbsuVz721NTC9+Xd/brd5MWbgBaMlMByMkdIxHTnbCFkRtFvhqn05bBRiqvMmGURwiSaaWuRpKtCIBv3PDHGFsqthUENmJ8/oMi4Mxm/CNOhdqiQiWs9ByTJi2WZz6r/1nQpVNizqghYEx2CJzJFWYRsZP7eFoa5iqYZLbDbCULO89EwC4ncSNhEDmQtevb+Avw1wRcR1x9PtnFucCqUBBvFrJPoKZauPhM4BdqfyJgq9f2CQ7U8nSpOHr46zeXefAJLMhtZEDuFSe8Jq0mUcSlSXi1L8govTa5x55ezNnl1p79R2y8oCHyrojLwIdxgIZg4W
- IqR09lcE
- 7losCNpIPpbVz45JPuxhYFJaDPSLXWQid1ylEnNZ08J+qnunlVGSiM0a8+Qd0Qn7FvpiRg87JsDhKxnGWPhvEf4dlgXmRGYhiJfT/fEVO7xvyB8/H6ljDnR9vnHHjV5iFI57WOnc3FWGWAa8/2laU9hnSWTvMs+8oI2vQwZLRFglNC+eBWkLbiJpdiE23W3P9oJt8EJLMKdIf3W9oAzIxx9no77ybl6hh3X8/CnCqfPlt3dVHC3A8zbmLsXVCRQuGvpNjYivow4D4LsCBjPtV9kqzKy0/e0BEmPFsGFtLx4DaQPNCD98Wh9g1JjRWzfkFYEK9adHI+0UYC+jAWqHOMZvKBGwNGK5hnQxAm+sSSwQG1EbxhNE6F+4PNsqUlhfuvsecB3QUNAMtmL0yTDG9DWCKPC6hBnynEY8G+5aXFs1xbojISpoSTY8IaEVnps+Wwxw/
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D8917100002
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: scbze65zft3axfsqeire3y4kff6ru9qe
+X-HE-Tag: 1795393279-308291
+X-HE-Meta: U2FsdGVkX186tV0YW4gSlVpDmdIujW3Gd+5LIntYEE9rmn6xXDYK4chSExGp+bbzwoV0jUlazvO1lN4noy+3xPE06Rkd7yeNaihZGCvc1is+VbNHBgIO3FKn2WtNfmMel6SthowkyyhlHw7MyHaqyD8N75srKFZsGBOFCMaW6h3sh6O0ihh/iORQSGHtCL8S0tCXUFHoCJuJLMXMVrcWGIU6Mj8ZtDLOKY5KAmyD0IneDCaeA7GBmEv7B1jKFr2jp/TR7J7yZpYm7YEk4ctVodhIXD0E4duDcS8iK5eqhH1P1J5VMvO+5xcUnYWIVlCJWMm+TwygmfWAeA2hEzeYWaFZyQltpRYMQYLRyVWq57C56r8bFwwf+nxq+OUjxQrrJw7J7hWl+ejv1ug/WRNrc4iNRTkLWKskUr0JswJD93xC2ZXouyl67VUngQ0rPM5g4JqDhcNANTV8uxG6mWySdeHJ/i+yvoq/cXgNZFvV2t+o6slkdp7QB/rIeXXMW0k3bOhpawqZzhVZeMGpK6jFcFcJgBGZnt2dpToHlwjEbsZVeJaAAInapey9SdOwzpGe8qMVsJq3XKngEEr6SaOxxdjHX/+znx2ghjDOlgznqClbQwgtIn1J32sXRXhOQqY+4+9y3pTpkBO7CN7zwwc+CwIwZvUEN2Gsee25YU7vb8p7sGm7mZseg+IhiUQkHqmADyRHesXY9VwnLJ/XkCvzaUMGDAaKQxiqkjavQ9JDIGlhUU0UY6xndSiKRejNoki/R1yePW4cKcF3fk1gq/V1Rshgnn5w7brohf6odM9Ll4owqjxwshrihxtguBT0/30018QNqWZ6CFg/Q2tx+SFquKPSI/oMzVYQdSRMfnlRx5h0r3Q3zkJNNqhVSuuzxp+CHk/EdbX3ci1lknj1kED3AopTHdvepUmtH8p1EmYXZmNKFJA8dkrMY2fPzw+7IIdiBzbBl2HY9Eiyq5iDKbe
+ a7277zAV
+ tFgiFoWN1lug6R8a1eEKCFKQlG0AJhdH33m5bgWfZQinYVdDJzjkb6uWxd/FejrCKithh6uXRm1UE3rlfRlB6FQLGGRzLZxZP0uh0qhLZGqeFiSxaafqqzdmi8GbVmUCobWU6Lv+MdJLqqKvy9iKpPq8pVTDC8cOcuBfUvtblISuQa0ACgPI7vWXqdl/8rq2Q0v5PV9rmmdexwtgc0Lw7ShtpKwBWgwDRrpPd5F2O/GNBL4+7BM0D9ZNyCF9j2zW181SGLI4ZF3m7wkohF/fY+rmIll1mijGC+ikpQfkAaZN/cVjavP51ASDR05agjNVpHeYK0/vwRecZXn6Nq+h9I8AUBoXy1N4QfGwTXKLf9UqX09CHRUUgR3NYvpvxKKq6Q/8DlQFaMGE/09xNOi12evnboEph1632VYTX+phYcce5BUkmt3QFCL5erWhEoWkBwnPb94Hi+r9KSFECiIvpYdrdDtdaZ0mwYjttFuZJ6fYq1C908aejBw49Ff4RtLTipzMlYkMOq0KRsHdqRZORXftJtd5OYsKBX8vNwF9ARrYQk7uSXqsLribgsaODOTnFje3aNqR3eNUHvExUvFUhh3I1YpIU+pWpOh3s9wFlVADOXwt+gDNt90hHjNsc401hHn+tFg9lFsZv1dNXLlQs/FbS1FKbdHJsv4aYC8i1Xd3HbIq683mqm6USaVujXofBvq2rdpGpA2Piienqib+JF2dV9puUzcy6Y8r4eXgdOdCofey8eMtImwPyoBEi8unJ58HH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,33 +142,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 02:10:23AM +0200, Jarkko Sakkinen wrote:
-> On Sun, Nov 22, 2026 at 09:35:13PM +0200, Jarkko Sakkinen wrote:
-> > SYSCALLS
-> > ========
-> > 
-> > Two new system calls are proposed:
-> > 
-> > 1. userland_open(): open an opaque staircase-initialized container
-> >    object (modeled on Intel SGX enclave initialization with separate
-> >    build and live states) with no embryonic state, opting selected
-> >    shared namespaces in via an allow-list instead of unshare semantics.
-> > 2. userns_set_idmap(): configure all UID, GID, and project ID map
-> >    extents for a container user namespace in a single atomic system
-> >    call.
-> 
-> Andy, perhaps a bit too far of the box idea but I'll just throw this out.
-> 
-> An alternative to userland_open() would a file e.g., virtual device
-> file, and necessary wiring for open().
-> 
-> Then the added syscall surface would reduce only to userns_set_idmap(),
-> and it adds more robustness to access control (e.g. who can create
-> containers).
-> 
-> What do you think of this?
+On Sun, Nov 22, 2026 at 11:35 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> v6: https://lore.kernel.org/linux-fsdevel/20261122011809.2667684-1-jarkko@kernel.org/
 
-Also, easy way to detect the feature. This does make sense to me.
+v7 was sent 18 hours after v6. v6 got replies from the bots only.
+v1 was +2559 lines. v7 is +5782.
+All six findings of sashiko on v6 are still in v7.
+None of the seven versions got a reply from the vfs or LSM maintainers.
 
-Br, Jarkko
+The way you're spamming people you're only reducing chances of anything going in.
+
 
