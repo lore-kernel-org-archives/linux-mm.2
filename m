@@ -1,117 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB626606A32A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78CF606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E+DW4KoP
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GDGEYtL7
 Received: by kanga.kvack.org (Postfix)
-	id EAABC6B05B6; Mon, 23 Nov 2026 11:20:19 -0500 (EST)
+	id 13E0C6B05B8; Mon, 23 Nov 2026 11:20:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E82436B05B7; Mon, 23 Nov 2026 11:20:19 -0500 (EST)
+	id 116116B05B9; Mon, 23 Nov 2026 11:20:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC11F6B05B8; Mon, 23 Nov 2026 11:20:19 -0500 (EST)
+	id 0057F6B05BA; Mon, 23 Nov 2026 11:20:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE0656B05B6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:20:19 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 601241A0921
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:19 +0000 (UTC)
-X-FDA: 85466896158.09.24E2D5A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B8731A000E
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:17 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E+DW4KoP;
-	spf=pass (imf25.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D55406B05B8
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:20:25 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D2361A090A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:25 +0000 (UTC)
+X-FDA: 85466896410.23.3394909
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 951A2100011
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GDGEYtL7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795450817;
-	b=tbyKadq8FDyCe5VRWPAI21QyI7jbomEfz1Fy2QMZNJpTdpt6KraS+dEkjcgpbWWKBo0inv
-	4pu6Jv22ey7a8j/lGRLbPV4mYdgJx+UW9apgesUTJmP0FqCtg6ILcg9gy6nHJghU51xPWD
-	D9BBmG/coIt9PEBI5g0r24xj/T7PD1g=
+	t=1795450823;
+	b=gPzR82p7dT3FEtd5r7nP1A7ywYCwJje80zy3B6Am9zKMZy9ciXvIIAKLKhvJpcvlBUYQlt
+	E5852G3n5JaZ1kJUZnp7osAILl5C241fvr7Mojume38cDr44cyVabUMDaE3W8jfj2hljB8
+	Q0/JADpouMs8bApRo7nCs4w2f9rqH1Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795450817;
+	s=arc-20220608; t=1795450823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GMGSS5PYQROX99GbX8HvEIwUcXDerAKEsLEch7k8S3Q=;
-	b=joUy40od5bMW1+zTnNu1yD3qsYKBqVb5bHp8214fNtfLW2XtPHh538s2Y1S7PdYLHRQlBU
-	04DEYoErnTNSpzu0dPEZHYrB7/GmlqZ0AO8hSiN11c4aMCFPeKOhEKhcRRfd21z2OTktl8
-	lgca+0jcRhqm0qE6RlyFSewCbKseFIs=
+	bh=VMHCwMuWqOW4JKKsOO+FUuvLN27CPePpxu9ZaOnKa9E=;
+	b=LDz5MGiySt4vz+sclaPGCuDiEvAhpZZDAcHG1iws68q3lCUyq0KpGXU2lMqwLj4JMmqXSA
+	TXS8X7OGH+rqoFe40YcTVGVfWucAsdkFX2BJrlUr58M/kQH5yiMiLh8YImJ1RVxkTgywmy
+	o79Pvobmvd3w7uz3R6hU+Dsd5WukjAw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E+DW4KoP;
-	spf=pass (imf25.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GDGEYtL7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 3060862333;
-	Mon, 23 Nov 2026 16:20:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id D6B941F000E0;
-	Mon, 23 Nov 2026 16:20:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D62C141919
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCD01F000EF
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795450816;
-	bh=GMGSS5PYQROX99GbX8HvEIwUcXDerAKEsLEch7k8S3Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E+DW4KoPCdkP0AQy8Eb0/14XBngcdtMwfMbHwhhIHUm50tW7cOaw/xqxK7jHRXVvA
-	 h6xW4/VFgnzqKgIaQzItf4e5tWtRkfeo5rxwfdP5kmIRq52BJG+Cfxbn8F26657Vbv
-	 bXLwCI4mAw8CMP7UnG2kbaWYiTDo/AEU9mEpPkzvjoFO203JPq8ZSSlccM16/paxWa
-	 e4WbfLjHRcHYUHgcj3QyL/+wmyhqHwMCzQ1olCaopaSvnOe5wGmYmz3Ab8BIDg76Uw
-	 Z8PS45zGNNQRJqS9ctOuLCzPVW0OH6XgNAGxzR4QiA4WTETKNhkM1EDbYY1MaTvT3i
-	 mCam8UCZ/+adQ==
-Date: Mon, 23 Nov 2026 18:20:12 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
-	containers@lists.linux.dev, linux-api@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	Aleksa Sarai <aleksa@amutable.com>,
-	Alexander Mikhalitsyn <alex@amutable.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Giuseppe Scrivano <giuseppe@scrivano.org>,
-	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
-	KP Singh <kpsingh@kernel.org>,
-	Lennart Poettering <lennart@poettering.net>,
-	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
-Message-ID: <awRnvFNoyAS8XRwQ@kernel.org>
-References: <20261122193539.3334213-1-jarkko@kernel.org>
- <DN25ST0D5K1J.1NI5236BF2BPY@gmail.com>
- <awOQDOel_72Xwjm7@kernel.org>
- <awOUJCbB_j0BuHvo@kernel.org>
- <awQ-2UtDRtrv9fNu@kernel.org>
+	s=k20260515; t=1795450822;
+	bh=VMHCwMuWqOW4JKKsOO+FUuvLN27CPePpxu9ZaOnKa9E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GDGEYtL7lELpnekg2dZtA0noURTy7b8Qqb2t8Aco6KI9yGEey4fOdVST0kDaZmm9D
+	 qC2767n5fEM+SF/OXeH1t9cTXTP/JKvCy756skEqRJ7Eg4CN972uwQAZN5ovDno7CI
+	 mUXd5gPHzP9IfCpfhvbG4S17C48Rz5PdKk+55UH3coS0CP5YCH3+3lbgoDbVUytG7b
+	 qm18Tkjao+EplItC6lP/zxbj2jul7amNgqUtJk95OK+gQNITt1B7pUJsqIpJnLfwWb
+	 8zyOFDaA2eQUm1tuXM8bC0l8uJdybFb3+6sKhiu/fmashydUuDYBl8Tu6PI7ZP4QsG
+	 sm3I0pw9V8XpA==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c515319dd89so395826366b.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:20:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEAvdKBJlcnQ9YDoK9l39/fvfberrA2k8z2TmNkR2fvvjRquvv4Qc2u2K1AQ4Vb1Tj3xd1NpBKpJQ==@kvack.org
+X-Gm-Message-State: APuU4Z8R5iFbaizvKQUfjBNlowBKnAsvD2ujyboD/n0h+mZ8vadSTg99
+	7gWojpWm7lPYrdZEZDRahGd9K12DYvPOP023oH1KP3/SnaavY5PCXH//A5mUM3VknKr6PEO+oun
+	wpQCnDcu+YQ+Jhp0GA2DSJrrTp4c6EOs=
+X-Received: by 2002:a17:906:7b48:b0:c26:1648:a062 with SMTP id
+ a640c23a62f3a-c513a9ae0d9mr693411966b.29.1795450821212; Mon, 23 Nov 2026
+ 08:20:21 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awQ-2UtDRtrv9fNu@kernel.org>
-X-Stat-Signature: 8iu7tjfcj86eurg1cxqq4nbwfnky7hh9
-X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261123032512.6119-1-raizudeen.kerneldev@gmail.com>
+In-Reply-To: <20261123032512.6119-1-raizudeen.kerneldev@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 23 Nov 2026 08:20:09 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zMhvpiD6JXBfd=KCVfHxQ3=VgmsVpcoydC89Kyj37thJQ@mail.gmail.com>
+X-Gm-Features: Aa3M54pyWRX5QSV5IVnMsgXQsdYhEWxByyxSD0tUw2dlim72dadxdTz936Q7lRk
+Message-ID: <CAO9r8zMhvpiD6JXBfd=KCVfHxQ3=VgmsVpcoydC89Kyj37thJQ@mail.gmail.com>
+Subject: Re: [PATCH] mm: zswap: remove dead length check in zswap_store_page()
+To: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
+Cc: chengming.zhou@linux.dev, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 951A2100011
+X-Stat-Signature: sarif3di715mxqkuc1bh4bygxbf1tejx
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B8731A000E
-X-HE-Tag: 1795450817-899736
-X-HE-Meta: U2FsdGVkX1+kWvqZS683YTpjgOIkrcdmKnMfxvq8PYRZEvrw2YBHhx9ga+KCYHraxjTsKXnmlh+60lHVgN7A+pUQ24x5seP0AXINp8kEVcjju0j2aeqjEHnVEvQ+WrJsbqyM5RPNDJDc2EfqMExQrO5Up/yWR1yNRezdZCEm18ZxrWtRrtNvI76l87rKHDikoYqhYrf+ptVbhn+kXZ8Ep0hdW2h3TG2ZHG3gxXYAwXOd2E1A1CX7oVG1JRur1LLWsJ/t4ILDMjBstL81Q5OfSTE6r5VNM5FJzm2860Lg4ax9OYHfTx6+5WJ3MkOK4+jWBzwE9zp+PAJWayVRnQTc532OSbao3CbKfG11xLEewX15E1+qK4qNVAP4ey+n7WeYLBP8Ilea9C3uRfvDJxttJKQHEZnL/Lt3aj5TSjNh5daeR/1vsdGQ/RExH/zwcdzWsVWqSG5q+I53AdZ19WomTy13YysWlk8Axel7Pn33SaXfdKYjZai1moDf/8FiqsQ1OIVy5e0zgO5Kp9InF+UWYp3jBWT24BfFEzaETG72Ur2UTSDxJAx/C2ecnmI33bdSfPqbVRZVanp7yF/J9fnrpGLzZCDDPoVpybu5rU0QtOBP8DbgStjLwhF+/GYHpbyuip30m4Nodt5xdPqwlgCU3tBPdKqNd3F8MCJJCj1MJW3PxwDN+YOcikd6CvheTBn5YjCaUOSDclZeLsF0wD6OYKjC6MNJ90veLjkMXmD55Hxr69FIDX572+QvE92+VrZSEP5dJhLopD+hUidA20SdlCTrFA4mV/KQQJWMfYuRdGrb0yPStXPFeVBOmfmTv9ftg8VgXZ9+ek/sbf5/pGtsL0MAM4POz1YGUClpiQT0RbrbXiJwIFu7ubbxT9Jg9uSEMhTelb8w1OB1miRerlxtOwK/ljNts9Kbny9zKNdmexCxgAAT9v3YY/jBDWDQ0p48LtbFjru+R3QbkE3pNF4
- vKpfbGqE
- A2C/O88rJLaEzgrwVBu9cZ8HzfoRfBfUm/2pNT2DyAGmc+Smv791WrPi4W8ytI11wwLzC1Zq8L5kPR6l4A2Lz/inYVWuw6Dei6Xmko+gSoZJ3FlTo9ULj4yJqhV7YfXsuwrkWDMOMfy0IHhXqKSbIafvTJztD6bVzKPlAgyl7yxKeGbngmdu6rRz7uWUkgNpzotLoB8nbgXXNhuKgl2leAvANJx4QEth7jfjhl2CdbF4FC3Tr4PLCK+SvWo7tLtscch9n1rhi+Cnw4kkL4R5ummGnFkFyqrUFiaefJSwoLjjiDfEoijTE8x93F8rDPBLsGDEO1bJKrmNqOeL+IrclhH9R9kJldo9a+f0iecImyKCAtSN/jn16JpT9s6PhQYzpcvvwQ71agl4n8Wmguqfzr/y6+ZuqhirzO3X4rYRVrZ3Vq0t3skTm2rGJcquzApfEpHahh0WmxBXtBjxgYiMoi2o0ubzpIhM4njTD+BBxd/okoq4kAvJZS/nsnaD+ofLoIvDCyies8sQ3XBc=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795450823-28175
+X-HE-Meta: U2FsdGVkX1+L/jZetbAayBiHVveJhWyUsNp1UmcxY2azeFOYK870yAT64BwGaEjePR1A0in1lmohjD+gf9ogyFZS6ZYNczAEAvXBKlKOM4lKvEZKcDQvGVgTB2iFZ38RHsVRdc0dmu/v+A7bsCGMC18M+o5oPzdbkkFfkjVyx7ejRarJV5M5O/8JZ3msN58QKfwRlRLuWfY4S/vIYp21gsZ6jBKXoTu+2ilAVWlkH3gAGn4DwwKZ6U/lUScvKPF2dhhkgeD2D6OEeID9U4wsOGzGS/tEwPOrwpnLadkYfENg9K40h+fQMBzmYNmfuNmokcoEPy559xO6JlI+IMGkOKqEhM2Q9VJ9KJizNvltuOuhFUEDiIMB/MPElQNyjdNg9ZcJu9bNDGzEIQirtk7EKHNMs939TYkblhWTqTdOAtgfcLc7z/j0ods+V4inbil7IEXjhW3J3eg9mBDjg+e8jNXCuL3IBdAENGBmwxS4MD69g0ibKIwO+dLi+OfhnhbsJpKIhxLQiYAZ+1mMYqx4qI/0rKlihhfomd2Hz2oKlkaCteeeLUgQHP+yYpIyorRVhOhMld20o8cfgJv1sve/WnGXMkpnghaNrGijjbOOxIQHMM888FIoohnYlQ0543GZ6wdaFGHLGdvlw5pRC94vMK+pTuvFbN1nFcEm+ODayKXwvonmSRzbwHEpTpafQW6sfCMAPcRIpBT2bLn3sry/sC0qUEOddGumTV4zZk32nW9/MWvUoxALMockbtKF+xidlyAmM8AhR9b7S/jdHUQDRnkhT3mmNGPZa8WDj1YHKeTncWALvaGhksMIDDrbHvs8+JRyaAuAWyTkpjnzvFOnnZK6RO5M1fEwiNSWD+Rrw0B+X/sj4OYe+S9KxIoMhzyWHGueGT4oHafP9c8x1Rj308xF0L2EFbv7CBwWzyOSc7+etphDsyE8LIdjzYnbxJxZLKFTaswMBmubbmhEx6n
+ bsMo4NdO
+ mNUJmzrcXa+MYQ5OXuijspiZGQiOg50RMjNSaae1XavFn/sirOF7PlDF+ec7oxVAOWj1nmvLqpF4U6iUwRo2YiRpGnO5yQZwYvdm4V89qiFvuCMN54lkB9dWOgHzB00Qc9IRwWWOv5uqpY2TLnP4p40AdhvkjkiHg8T58HZnqpVL5wsydxwFlXnfrRDmZB/n+V9kBNd/o4NjCZf1RPDEVsyOrbEQsHplatAjPx3cx2Nk9hNO1BOvEMqDaRjNQEREqs3UtXdOcqIMuln0V3CQcO1m9IPaAxap/TIlty6+9jgzI1E5k2U2MX/OII9MNdFbhwPA1Ql26IV3MeE/Gd1Ly1EEr73uLAS2+w1MSWFcFL4xWcR7YcOjl8HwDmKvmykHEanHp5X0c3kxlCmHc8lIkio0ZoiCCEh4AsTVN0dOyEv8OhjpIAP2b36n6+vohOKNnVu4QmWp3p24dMeaO8YWcvu+dyyGnBtkJvPLAOYCk1+pBvTIyd8h9UPZJr5PLIv9Pxdx04/vIoDwwBFNfS1PEZ2/Sgzec72HEnGcaAPLel7MrorLg4mDD9W2rnKSTXqrueIAVj0XmHGxVm/VTGt7dppq6cQAnKEdTU+Zpvt4xQIw1ehJz9XIlgxEUstVtaszjE5//EaTFYpCm2BPQy7R4XNdcFT13BPV7AW5CCZbuCQarCuA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,21 +105,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 03:25:45PM +0200, Jarkko Sakkinen wrote:
-> 1. It is possible to use file a instead of syscall for container
->    creation. This allows to split the framework in two pieces:
->    the core piece and the driver piece.
-> 2. It would be possible to create Linux Container Module framework i.e.
->    LCMs. I'm underlining the technical side here, not sure if this makes
->    sense or not.
+On Sun, Nov 22, 2026 at 7:25=E2=80=AFPM Mohamad Raizudeen
+<raizudeen.kerneldev@gmail.com> wrote:
+>
+> zswap_compress() never succeeds with entry->length =3D=3D 0, so the
+> condition is always true. Remove it.
 
-One more viable option:
+It's probably a remnant of same-filled pages that was not dropped in
+commit 20a5532ffa53 ("mm: remove code to handle same filled pages").
 
-3. /dev/container i.e., replace userland_open() with a device and
-   appropriate wiring in file_operations. It right now has only couple of
-   flags as an argument.
+>
+> Signed-off-by: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
 
-Has advantages and disadvantages over a syscall.
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 
-Br, Jarkko
+> ---
+>  mm/zswap.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index ae19e301fced..9590f333d83f 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1509,10 +1509,8 @@ static bool zswap_store_page(struct folio *folio, =
+long index,
+>         entry->swpentry =3D page_swpentry;
+>         entry->objcg =3D objcg;
+>         entry->referenced =3D true;
+> -       if (entry->length) {
+> -               INIT_LIST_HEAD(&entry->lru);
+> -               zswap_lru_add(entry);
+> -       }
+> +       INIT_LIST_HEAD(&entry->lru);
+> +       zswap_lru_add(entry);
+>
+>         return true;
+>
+> --
+> 2.53.0
+>
 
