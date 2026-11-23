@@ -1,98 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1D3606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC2B606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HQzoRCH4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jub8/30H
 Received: by kanga.kvack.org (Postfix)
-	id 1592A6B05B0; Mon, 23 Nov 2026 09:48:29 -0500 (EST)
+	id A0C9B6B05B1; Mon, 23 Nov 2026 09:48:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10A6B6B05B1; Mon, 23 Nov 2026 09:48:29 -0500 (EST)
+	id 9E3C76B05B2; Mon, 23 Nov 2026 09:48:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01F9D6B05B2; Mon, 23 Nov 2026 09:48:28 -0500 (EST)
+	id 8D3216B05B3; Mon, 23 Nov 2026 09:48:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D0FF56B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:48:28 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 669501208D4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:48:28 +0000 (UTC)
-X-FDA: 85466664696.30.50210D4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B3D27C000B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:48:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQzoRCH4;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 69B5D6B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:48:32 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 11B661A08EC
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:48:32 +0000 (UTC)
+X-FDA: 85466664864.23.9906914
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 65E10160005
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:48:30 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jub8/30H";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795445306;
-	b=pXnVV2cYU9YWEXhzaY61mgCk9RO+vdcCO9OPC66vdSy/X49qAsEshTPNYLFW0awKAQwzfv
-	snQjRPLatoeOfZsvKgCgJoBn09FKWRLkZw0iWJ3Zvi0BWmBXpsfPGLeEEnc/iVjzDCNv3j
-	AJVOzrnaeDq0Dl6E/EJf+w7FNiK1INU=
+	t=1795445310;
+	b=3Jjr5u2f83dIlsr4ZdDT8LP0hMkkmB/utffKbI0wgbJHZo3jU6t882cpexpWj6goZMyRo1
+	AspvDbPKVue0NLqwhCI2pRy82GcBAGzlfKsimT5j2Vzm/kpKQlTiV8B9cQNfEUhUEh/Z9v
+	LHVCZiOkglNBzm1pUv8oPn7z/Cm+plA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795445306;
+	s=arc-20220608; t=1795445310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WJ3P4mBUVy41qNcxI7plDsGfTdz3BhWQQIugrNMcZRc=;
-	b=REriL+xpgKpBI7YD0vru9d2P2W2gId6NlZReIzHg27LzhO29g5MvMWx4dikKYOY990KZs7
-	/Cuv4rXW+XEyhmN2cS6vEfaAXMANnuRzsD1VbeD1jRivuDBCi+AUii169JfpsebIhpyhjK
-	6LQ2C0R6WF+w7naxO0nLhhT7eIM+zh0=
+	bh=COU3p8mhLvRYDZ7TXv24gbV9Mm0T8HfG6LrqY+C2miU=;
+	b=AAXDMFcke/EFzbGhF+DDBiTV6txujMC8ArtTPfK6ZXkttRhVrqEF4DQz+UOBAnPg2dDX3o
+	B3qVZAhGPNDNn9iCqwGUHb/QzQDp/V8MbUtqU49ujvBRHk2fWay1dTYQycrKjUJWbwvlc0
+	iU3/OxF/dEoCoNYnO5ueHAuebezo2+k=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQzoRCH4;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jub8/30H";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D28A04076E;
-	Mon, 23 Nov 2026 14:48:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1FC1F000C0;
-	Mon, 23 Nov 2026 14:48:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D2DE06223E;
+	Mon, 23 Nov 2026 14:48:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940581F000D3;
+	Mon, 23 Nov 2026 14:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795445305;
-	bh=WJ3P4mBUVy41qNcxI7plDsGfTdz3BhWQQIugrNMcZRc=;
+	s=k20260515; t=1795445309;
+	bh=COU3p8mhLvRYDZ7TXv24gbV9Mm0T8HfG6LrqY+C2miU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HQzoRCH4BdAdPYRHQXArv/qj4IGGIGykWokCNRMIgp/SdNn+qeMBjgOoRVJkLCgvC
-	 pv2f9XCF/58/29WtKNsTwKNpSPdpn51eazUR1G4blpwTaWVgSR/ByKkVBxfWZyqeMq
-	 tV1QWZ/fJ133l/Josnqmd9h9iB4/lISzgZpQ72alvT3h0NjBXhV0yoJWtU+prVWxBR
-	 8tsqjBIOzsGPKtybB2stL854tYpi2f+Ircge5iHHSqilfMxrWyGIctT6GKipeEMRaL
-	 rx1IWsdyAYI3UaZX/FGclvu0K8Hlnujn3GhLFvDnBsdJb6QJwryfnAIG1Tz94/ePAj
-	 0oPosEg2bVnLA==
+	b=jub8/30H77a+LnJJFaB1btgtBWhm94GK8KHAGpB6a/HGXmRdAq7SAM6x/AM623wMl
+	 Szhxiz/FEmlHWT5Q1O4lyUHYSaVNnO5amh/WWhXeKtL3aP7RBN2kH9vVCIg9Yps6u0
+	 qLJ0TMbfvC1EP4nMOAX04Rt6rjlT9MtKx0rSGR0jisdy+v+qIpzpK1NE9Cbo+d3wIn
+	 h8/3Of/u2wqIBbq0sDikY8sbsamD7Njthic/O+IVOSB3aot1VsERiXetp+oM0GqjuW
+	 bjMf3H7Yw4vJO9WbN1yQBcwPHv852222CzAAWfE9cIg0q2om49UTOx64T03/tk6pCk
+	 zhkUaySt0kJ5g==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-To: vbabka@kernel.org,
-	akpm@linux-foundation.org,
-	Hao Li <hao.li@linux.dev>
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Cc: kernel-team@meta.com,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Conor Dooley <conor@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: don't set SLAB_MAY_ACCOUNT for KMALLOC_PARTITION_CACHES
-Date: Mon, 23 Nov 2026 14:48:19 +0000
-Message-ID: <179544526759.3606123.1000047458494853310.b4-ty@b4>
+	linux-kernel@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	kasan-dev@googlegroups.com
+Subject: Re: [PATCH v4 00/10] replace CONFIG_SLUB_TINY with a slab_tiny boot parameter
+Date: Mon, 23 Nov 2026 14:48:20 +0000
+Message-ID: <179544526762.3606123.14263351659988256833.b4-ty@b4>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261111125628.375624-1-hao.li@linux.dev>
-References: <20261111125628.375624-1-hao.li@linux.dev>
+In-Reply-To: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
+References: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B3D27C000B
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: wh4z6ura4stpespqbfrdjon8kkpgqzfe
-X-HE-Tag: 1795445306-708214
-X-HE-Meta: U2FsdGVkX1+SF4iBWHrM05YVyQOPEW5dsyhePc9cTL1M9PXrNEFBbVHUMvGfPVBE2LXsoI8sumXh9SoBOGawN5SlSQqnALpktRnGn3+fH3byXuuo0pB1tfl4gEMNoyilVrOk/48Du35BRD0Th95rCeizVlFZX0yfWdpW033xwfmTMK3v/yVrvxZCupWzFQrq+qpw6PkoHz9I5Hn3kw+JeomY0irlGzTlhjWUMA0cHJLpc8RYrhql2vjBtTDWcqfgp0JcwA6Ygu3o4rVDQjTTAlIHjp8cl84NaP25yJ7jCrqdvhwtXEy+K1YWkzoMgcSkHNI+4cWXkt8GvjqmA9BNLE81JEiomt88PCtKSxJZmC0aXyVVWxY6ER+y2t6XqAcNmcnRQc82HGWKPuyWf1McHsevhAbPLpLTbKeLa3DQNO27waytz03p8Ovvcr9UYKJMSqweNdpuSMYkp917m+iY9EUqu/crP2xkB1VMy5NjDNMkk/p6OEXhTQlgWMG1i9IXOXFaDf0+UmXOz+xbmPZw9+H7VKZ3MHQRAtJ0HQe0+2CCMxOP1CkyK4Zxdnu/b0icFnyXmVgzJgoMJNojyyjTZ5cVXRscJdTvzLZUxZp6dCV1LatjsFZokll+Xzde5SG5l4iSR52r52VA5/yIoqtWHWoxK8J9b2IiR/gTIoPWvQTPSWRVnWZxxHyZ597NSRDW2NVWwYnt38ImjtCJ82ExuJgAtd/yDsE1xvsIRyHMncM5E32gq7PK8bvwqvxYzegYf0JVilJQWVNeAqlZcHC7tDdrC46pCow7SGjWnkATwcWplpt2P8vofRTDNt9ViKHlvwjYBX7YRflw2ODGEuM+WXt3DeM1XefZJqb4ky8p9Y65DlmKlsFPHCuhQLeG4PqfvIYSotux7K3DAwcXR3MsJLieHY9C4iEGKiQyw1ePqVbyqsLrAWkNo+wkQOtSL6e7gTQEAWSGAmWxosWdspW
- PoFmAO2+
- C4FIiY68ciqCQMzv+GgtAHGCtF6Rj8ifCn67S3YoqxmAAZIejb9kz25vpnO7V7X+IOw52YrkIw14azcOm66QNqxlB5bwvQbQnuaYjNSouMmKTBJ1qNen8rfxhUiiAikCNm0dv/cGG5p97oCl3ovalQ/d6N8ZFbrQ6VL7QCC8MNSXR1CHmDIUz1QbmgEV5xgZ9Rwv9xpDxGDnPwae/bYmYvkU1xutL28qHkGv+VkOsmmJzKOBCHVcs49+NNbXkgraDyELomKf0E35L786rAuSzIJChOzYSVgA36EshY6Bvnc2fmk3AH/7l+jQLbO/ldABoIkXT3p8nJF1LpBeNnA23zcFUteDqOx4fkLqNvKDzbclFGZ12EPZ3xy4EVnZMcM8OJhzrVx4uiWvcK0fiRlOFKfNGwCYTY+7vgx4+OVjdFtVpWs0YPB4gvsOHgDV5SzogKIm7y9J9DcS1rbPELv+7B7+dD5VC+YmUq9yzWTp0Q+LxGac=
+X-Rspamd-Queue-Id: 65E10160005
+X-Stat-Signature: wwj3wb4dfeswrwrja6q57hxjhaos374u
+X-HE-Tag: 1795445310-959965
+X-HE-Meta: U2FsdGVkX18UTuCb1CYQHgTFdEdyF2mcrkwIHGcpq2jtZFUXbhO+on3myowQqGbGXEl5oSJY5iL2E/dmTw3hpS30nBHJ6WMfVr0LyIRKZ9IEq3A9jucLhQ4txIziuf4qN9EU/AmrrrSLdlHg3FeYa5cOSXu04hFHgfrtTPBL4C4WpgwiJw4oLJ5NZqKd8FkEzEuSMTQVLguMMBvVE3n1TOIeJjQyY9w371aWhWG9Nw8eeRxN3C+ZNHEZGHiQu5mIQKG4hva2Q9WbUpTnJQbOs6PtXZnp1+3jRdOQVmLbizg9Wk2J7ioP8O8TDIUNhziQDqEI6bsPv6JUEAHe9IrKU1PiXSSbmK79UqoO5n8J+WoIUIFNWnu4+14JRreQp2E3/v53VeAU24gqFmn5WZ4PMn9fIz+oVLcVba1+QdEKc3ZbzWfONIqYHJeBAiN6WUnCZzW343nLnJlE92056FfwxyROaELvbzUt9tIf1imft0kMFMiiQUSTiL61aNAusd2ytlUPBHx3FXQDtYtVPNPULBRMR65qbzGIUHFpjjaiEcteVneFwoyv/AbLWjTDWm08qK+Z+3l1OrD6Y1M64mebXJBCe1R8QzEQYL/dnG6k5wowG4UlZC5F0zC4gBbDHUhr6aUhnWzmNQBe5SfANpC+5BBh2iaZfyixLkIk22LXdOhUI4/tgvzbN86f4ZqiUF+XXFJKCE2q+UcNnMl4tP4kQmq/BO/m58xy6w5W8ktdYBtfV1qzyN5HQrZXP4J+uVUU7xYHP1rrw9fCxofRqcZYXcEmHGyvz4TZmMvz3j9PtWR6juPhjlxNUtQgoiA3h7fgOMJN+n1+2iqCn4Qx1vg4C80M9U6Yzsc3jpkaAztk0PPUgjzYhD/ZPH6j6dtcFxCAkejmVFtm8XNQgIHnZRhDm1Q0G8fYX3SeHMfrCd/KGRxbhmcp9L+7ml84D77bhllzMwUI4r6Rt+9g/i/cA8F
+ kCF4LS5I
+ LJIpGR/aauNHImeuxLJ2Mpmz+exCuaR4KW29uS+ZMAFLosXhxK8f9T4QKeIm2dNZFvRcbj2PPcz8HNOL/VDG2yMLBkuWA16hZagbKhcoHpYQjtyNT/67n5e15nCaS70DBTzXa5ZhICZ4hnY4TPGe6VLV1WH1QbCUa4X5gE/gUOKL/9A7uQ9Kt9VE+Ouopm0YQAQweb0aoWU7HBG/nbocFBoOV3/LztDuwd4yYlD98xnH64lwB5dGUOWUU5iOJyYPtGjgAxIB0OZ9aXj85wGhf4U10o0d7qbReYM+hcrg+R7dBOmBYXRDjERIhSS287Q6jofFLtU2s/xO4V60SFxAF/Jogyoqo761kWVX3ugMcZXlLG71VVY40FcIe7F6WVDn3OdpwPCL4vWB5aP8bzHv8fY4TDfHRZAe9x8iJ3iLNHimrIng8mP9Axz17fykkUGwEgUFqI5Qf1nA0gDhL3/vnZtSZFTXOwO2RpRiRo7xR3CM9VgJ6dfgyqeaiofbhfkDd6+jqDsWS2lpXuiZLnKzFcUafq1na1LGmopnR0698I9JrI9/BdN9fzRtQIsa9vxEHjmA6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,21 +109,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 11 Nov 2026 20:49:10 +0800, Hao Li wrote:
-> An allocation with __GFP_ACCOUNT set (without __GFP_DMA or
-> __GFP_RECLAIMABLE) is redirected to KMALLOC_CGROUP and will never hit
-> KMALLOC_NORMAL or KMALLOC_PARTITION_CACHES. Consequently, neither of
-> these caches requires objcg slots in obj_exts.
-> 
-> While KMALLOC_NORMAL already skips setting SLAB_MAY_ACCOUNT,
-> KMALLOC_PARTITION_CACHES still carries it unnecessarily.
+On Mon, 16 Nov 2026 07:47:08 +0100, Vlastimil Babka (SUSE) wrote:
+> CONFIG_SLUB_TINY was introduced to help tiny systems migrate away from
+> the SLOB implementation so it could be removed. Its main purpose has
+> been to disable all forms of percpu object caching (cpu slabs back then,
+> now sheaves), and being a compile-time config option, some extra minor
+> saving were achieved by code elimination or more agressive merging of
+> caches with reclaimable and non-reclaimable objects (keeping those
+> separate helps reduce high-order page fragmentation but not memory
+> footprint).
 > 
 > [...]
 
 Applied to mm/slab.git for-next, thanks!
 
-[1/1] mm/slab: don't set SLAB_MAY_ACCOUNT for KMALLOC_PARTITION_CACHES
-      commit: ec81fa8f7dbcf89d9b4112544f76f47c8eb5c725
+[01/10] slab, kunit: pin test slabs by an extra allocation
+        commit: 59cb3f752d7df4badc0ff6caf1b13ba293049b79
+[02/10] kasan, kunit: pin test slabs by an extra allocation
+        commit: b5f4208f057248d96adf876e50e03a7c92cb82ea
+[03/10] mm, slab: refactor slab_min/max_order handling
+        commit: bea9fb71610535595f7d39715ca47248c785110a
+[04/10] mm, slab: introduce slab_debug=N
+        commit: c6fe42e8966e517773fcb41efd02c7cb2eab9697
+[05/10] mm, slab: rework KMALLOC_RECLAIM handling of SLUB_TINY
+        commit: 5e3df3c9656df19053909c4aa70792007c5ddc59
+[06/10] mm, slab: make SLUB_TINY handling dynamic for sizing decisions
+        commit: 0582f36165726165012f66be8924e2123d679795
+[07/10] mm, slab: convert CONFIG_SLUB_TINY checks to kmem_cache_debug()
+        commit: 7d6e6d4e50b91ede6662ea177e25b38b3bfbffb9
+[08/10] mm, slab: remove remaining compile-time checks for CONFIG_SLUB_TINY
+        commit: 0ecb9fa1456b356e604848542787aeb6b87b6505
+[09/10] mm, slab: add slab_tiny boot param
+        commit: 9d83e029638706e283df6079ff4db017e8881769
+[10/10] mm, slab: deprecate CONFIG_SLUB_TINY and reduce its Kconfig effects
+        commit: 3464ad6cacfa65099378798cc0d95c9e5151e86d
 
 -- 
 Cheers,
