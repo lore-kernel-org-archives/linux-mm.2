@@ -1,112 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48638606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AAC606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=auLbbl2o;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=qMqMlGFZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gNCYHgmi
 Received: by kanga.kvack.org (Postfix)
-	id 44E906B05CC; Mon, 23 Nov 2026 04:37:40 -0500 (EST)
+	id 625C16B05C8; Mon, 23 Nov 2026 04:39:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4246E6B05CD; Mon, 23 Nov 2026 04:37:40 -0500 (EST)
+	id 5FC526B05D4; Mon, 23 Nov 2026 04:39:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33A9B6B05CE; Mon, 23 Nov 2026 04:37:40 -0500 (EST)
+	id 538BF6B05D5; Mon, 23 Nov 2026 04:39:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E4036B05CC
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:37:40 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5DB8160805
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:39 +0000 (UTC)
-X-FDA: 85465881438.17.EFB4EE7
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 052EB1A000A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=auLbbl2o;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=qMqMlGFZ;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf19.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 325EA6B05C8
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:39:05 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8683A082B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:39:04 +0000 (UTC)
+X-FDA: 85465885008.10.788525B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3F7F24000D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:39:03 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gNCYHgmi;
+	spf=pass (imf04.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795426658;
-	b=UWu0iO9NR8i7Th9NUQdehe9f/Vh4egge7GParwsVaewvQfTjnzgfvkSz1XFJT5bMTvmLtp
-	DQQA9y0EpQYZNTgV+zR0m7EhS/YUTFTcB4isvUPQ84GlBq2g6BJ2g4BNkwgHCodJ20My4K
-	gJJgG/LBNKtPlHqmNIrIFCVY7AMnTzs=
+	t=1795426743;
+	b=GsFWvVFhTtSsu3jmcJT067RDi6EHPWyonyHRJBKm+Dkr7sXnasEVFwbv8Tzk7v0n54tIGj
+	KQWvCluiWilovZmimyNGnYREBE9jyALUIVx9LW3ThPBVW0E9Ytan5z5N3DSkoTF1rTTdXy
+	SVjg8XXN2rZe5GD1CNK1Vfjlc6dOZg8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795426658;
+	s=arc-20220608; t=1795426743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YWYGWS4auZwM9Q07LV23QUYJ6/wrrSYEmZV3T9JL0KQ=;
-	b=kuzDx7u8eL1B15h8F0LS9c2VVexCjVIWOtaVr1D4PeR+CY2Ml5tT1hev4bZPIrpI5hNX+E
-	0ZyrDIcQ4sCIrGVo/Z4xqtsmPplTwk9DIcgOIhjdMy88TC1/nf2TTERTDOdpgs0zO6mEPM
-	LAWhDZUaR9R0B79HW5JslWq+CxD4tp8=
+	bh=p4kT2PbsLUH/8zbjyftxImFQBIAZp/1opbC0UWneA9s=;
+	b=oc0238XAoQdh7bjUXZxkv0AP7zPpWWeKu8Jg2r+97L2TRssjmdalvm8aBIFBLtoY+9hJDz
+	jU6ukzK3/Ci8s5UtzpUGw8F7hkMibaNUOds9Z1rot07mh/DCkHECwP0DhReDzcLp2Pz3vh
+	2H7g1q7rR9A7RuWkfZ7XpALlzLydxPQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=auLbbl2o;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=qMqMlGFZ;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf19.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795426656;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YWYGWS4auZwM9Q07LV23QUYJ6/wrrSYEmZV3T9JL0KQ=;
-	b=auLbbl2oH4Ot5YpCeUEcYQ2dIFo74raPeSEpSgBeepfy72T3dv6ySqNZw8grm6xlh59KuT
-	i7WWn60yQYtSqGOjySH/D5mPaenZdFLjQryxByxKOS8oKkotAVm++xQQ/BfFWq0WydplG7
-	Bc3VI1YdNWooahhM59wa1198KWdmK1pmX5ZxVOlwkUPefFYYwSOgHhVMfbt1yaDxsxTQRw
-	QvaT84wAf4K0nwWClg3Zan10Pwtp9aucgSxaEQ4bzDDgd19eRgjLZOyFQ8fPOY8Qe8yEg1
-	B/xsSTsGNrZ0LAIMJP7x7jGA7J7+iD6ijUD8C4UHQUeo3CCHawC1aw7IuMaVeg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795426656;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YWYGWS4auZwM9Q07LV23QUYJ6/wrrSYEmZV3T9JL0KQ=;
-	b=qMqMlGFZf4t4nwAx7Fj+UHvCQee1C2mTmihf6zAwsYxwJeLug2K+qgxMTQI0UA9bbmc37v
-	oXm3bpJIAE5VGxDg==
-Date: Mon, 23 Nov 2026 10:37:20 +0100
-Subject: [PATCH v3 15/15] auxvec.h: Drop fallback AT_VECTOR_SIZE_ARCH
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gNCYHgmi;
+	spf=pass (imf04.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6B12F41FB2;
+	Mon, 23 Nov 2026 09:39:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B1D1F000CA;
+	Mon, 23 Nov 2026 09:38:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795426742;
+	bh=p4kT2PbsLUH/8zbjyftxImFQBIAZp/1opbC0UWneA9s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gNCYHgmi2kkGeS5qIT8UVErS88deSRWmUfkZjVx62d4DujkBhSOnGFA0Bf2o+kqCP
+	 zmmidedoTTT49FdIx9vU4aB57Q//oPyEw/C05MzvWAV4wUR0S4U3E3qB/ChA7uluhX
+	 7c5H6YlPpME7xCcI9moRx6EVxufyQ75niXtuMTyDBGWuDulvi2U2TnfWd3yr5Oq+HS
+	 Sst4CRzXikx4aS1/SAQclKiLBxvkeF6aRjSW3Qkm7K5Tqu7X9U5CHn3/qkfH2rXpQy
+	 KOPMEkf4eJLcrZx4l1RyYCk0uMhahOS3Q/xFeyR3bNUNov8dS5Hen/CTAFZuYooVRF
+	 ZNsn7+QSvZZww==
+Date: Mon, 23 Nov 2026 10:38:54 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Li Zhe <lizhe.67@bytedance.com>, Andrew Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 09/11] mm/cma: centralize CMA pageblock initialization
+Message-ID: <awQJroxCj52AqPDH@localhost.localdomain>
+References: <20261120100856.16929-1-songmuchun@bytedance.com>
+ <20261120100856.16929-10-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261123-at-vector-size-arch-v3-15-d342dae9e843@linutronix.de>
-References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
-In-Reply-To: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
-To: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
- linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
- linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795426640; l=772;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=JAUB4d6w3tpvVvnJFyNZBhcXBgmmxi5dKlrBgo20+M4=;
- b=kCgAOd1xOlVd/uE/bDzZYB74ed4Qvm9zJWmY1xGZI3IKoxs4346rY6+SlaWFSlHZ/Fy/xnAaO
- 7YsjYIIefxeCjUKx3kra6gHNuGjcu1KYMGOdN3sVIQWVAqnwsOe+Hdb
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 052EB1A000A
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ctjpr9ncz96w6amjeyi8bx68ir5q3ba7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261120100856.16929-10-songmuchun@bytedance.com>
 X-Rspam-User:
-X-HE-Tag: 1795426657-333585
-X-HE-Meta: U2FsdGVkX1/xkUq4AUTIx2tvugoTbJ8BGQgh7W+iIsVhKAo1x1OMICOQgFd64HSIbhEUsx5MRnqAKEVz6CjeKkiYgTPWxDr2ERR7stOMlIwkn/ZObI6W2ZcdFJP5W8HaTamH9jSrFXGhCJQoKiJTcSHLuTvt/MQPYQKKD2yUdchfcqIJnJ0w7ZCBr5KPMe8Oyp74HK/IXOzR2fC2h8RJJJXw7s7+SpNZt57isqkjWzf+RW323aT9Y5VPLjqNsVm+/noFhQHapIIAGHZFyK/dpOnQp0nmpCdHW6fW/BxABYwO1NEJUkq2k1AHDyzaZQ9qfI32XVr9cg4fJAHpixXZgYXDJIsfqd/ByPvrycv7mmZJ6auPkaTVfStdiqRimIh9KY5yYOFnjlLzceT5hvvJhMo291SrWpEPOfBGkpUjO9uy3DrOup+P/cp7X6w7qWqaJPdMZ8sYVIfEowbKsJ6MO7dfeoNSIubuJsEvgKuegHgvE+dYNtal9YaW3ihqORAPvSa1PGieQ+LjRP7wqWEqRPKylK2gRb/DUmwIe5sJKNDCqtgaCrjVCReuRkqnKW4OCp9KL+9q93fFSUnB/FD9eoSbdk86hLL7QifG7cVcrWNn0eHe1melZyX07WnMO1dN4aYK5X0gxIOeZKGI7tonIINLUdrdabKKy/WbmNdDsvl43glC3EYvyQR3ciuKQ/IIV9x8WRbFEk5Rr5NjCv+BzFktz22Uj5UskCuzONlTQCvJxjIOPpPVjNZZt7bLZ2s1lJz1I6lu9QhhRkdIoxG5QjibmXJSnoggZhT/+E1KnQwFx2F6SsRP3MwCMFxdEXOOcnVJw6xvreQAr8Pm5QIGuwdcVX++7VG6EO3R0FLv5h2/1ZlQJS30bhyqWOk+EhkVQdWKI+3CicXhSxQE6HSswuh0hTHGvDjdGfGNVD1yVXT7EPtsjLaZ14tNa2BouzBBCmHHCOJxtYGNLlCIj9v
- aOLJwwzv
- Wn1xHwL6/3ipip0RFVBj8fBtMhhBvRzkOouXkicUZaFE79i9H8/aaOUmVV/guiJzTsYE4tsCUGY4QkVA52QbExPexHpXxS4lLzgR2ivMhNl3l+e0l2iwMyGOVi2JVWeKUaVeMljHgvCJH74d9FMXz7gM2xXXUiyBgHDpai/Gfij4A1dYLqyI5QGzAs7qkp9tQkCxE1YZBPqhcIvY4bZDqlX9weS1RHdVGscnkGk/Hc7PaPdkooapzE4SE91NG6gnxe6OuQlQ9PJksVwgbCB/B5Fn/PHu3jqM4vZvYPejl03LvGRnvfiIFfk5vBVUZHQY6abyyKQHWxZL8haXZ5CWolulLTce7elBrAY9wOLdXF2VdcH13OEs93BN22TWqCQODvpPHC69aAgPTCVSU+mt33+Mn3CNQRed/mmX1UrdqmeCvORBHYeX1gFxC/fKkKlT+Qo06ZPodnmV7js+A6yp/iC8ceH7ufnIeA9svMnThCfwzy7HqbEHsQJ42Djy3eFEKFr5WfD9fWRKiZYgxEnXiFawQey1R5WIjG0BI1qgKmhDrvANf7NOGYytXkCiSldh3VSgTwq6BFPksbw+UahgANefySMAPYaWPiA79GcUOPOilwF5tD1UECTANMlynOsvDShbxvlJwyTRndd5tXzYuWK3KcWzBwZjiyTInDIMetLNx4XcrodvDfSd/yzPFf1BDbAvocO6lnm42OZkXBYcgR5J0yXUaC0Q0I7kNjj4nCeYZCN3jCD38NwhxgsmIRSwo7Ws0thWwa+nqz7o=
+X-Rspamd-Queue-Id: 3F7F24000D
+X-Stat-Signature: 4ndaepqrncm7n7ajw84r4q8567fg1cob
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795426743-717236
+X-HE-Meta: U2FsdGVkX194zbBKxmwsz5B2W35XwbcyX06XP9K69fpNuWIxCcqeGs1bKn/RIjrgrtdveklAcELL/1OXSa/16iexqZnQq39WWIPbbdZRwR5/Q7UA+UggShGFRcfqhiz8fJoVkcU90RoaiIEbvG7dsRoMj8TzTHVBQj/YKE6wNdUfUuzDwKeVQANj0g2Em/IML4utv/KnFsIqkQsVAHPDb8KXoe0F3/G4Is4vrPAQgzbiM+y+F7LOny/XDk92/vXj9/mu/1PbWwkCiin+3p/4P+d2A21AxmoueYBaapeSz6yEICpza3MGCsTOoe9WwZFwtlN2TuvsXeXMMiOL4Vu7G2ksXk3xLRRWJskYKjB+E7iErcg/h+RrKf73X+eTaz43wx5aJh3JowBz7kWdDqw8BIamsZYWbQcsQ1EW58aluLbnKIUeVe1Iw1jo+PFP4brqJXDZOQlfsHoIdLtkVoeHcyltgEEo0UtNwtQwZjBmbBP2cqRdh7JNQq/c2Tfr0ti5wXf5kPr/cG0fZ30BVoySCNwi7nYYXepfkkUV97f7uRUgzdXU0UxPDGCz6HB/OPICA8/4BSHzUXCzT4Jjg/ig+/f4dYlBjez6rS3g3TgyE7DdZCSqcg2no82nLVjaNqCTq5utvVoUIhIg00MPuHVwbS3pT1zuJNTZbQbdmeLgPm+xZs7X2gJN2hruOSQ4JOPPeR/nXEenhLdClB8OXzRVhUvYZlWHT1lK+IwTHSEUDK3pIM3HKm01z4VnvQ5q+9M32eIZLPSNBNYaVy1ZN+MY0r+Sq/HkYbreBB6+SAEKMmWRH1W+LHI5z618ziD5HAdb8D576wyzXfdJeJ79XY/pV0Zh08aQrWxJK7xn60bSg5kqewU9ZO9ZCkyLaMDTN9NJrZLsLGiD4p17DO1a3JQx6YaoOBj6Lx9pNHYd3aUKWADzJP3RbA1g6vOU6KSuO3zbtV4INwJZLTtlieC19xV
+ nLIQELxW
+ IkhK1E7XOHEvBhwkkscTYD+XkvWsP/pcA0GjNnN0C+Rc/mLnsuPNX+S57zqAjwBqkDYCPXFxJyZfnLIJ8yzfNS/zf9EOckTFV+YDikNaUg38FlCNmuKDBWv5D/AYAi7qFZp3dHqeMSp7G7X46XEigqYcv64NEjRJGgdpC7u8+Lt9y8DgoVgnRZf2n1o2gkc+7hVJZmPyILclFeCWuGC4gRNYKCzMjAiJ4s4yLu49JafFiGQL3J24to1TDksnm+LTEkskcoprDV7SqsIr3obOP5Y7makTEWX8o+57uCtLKuVQAMQEwq9R7mqjjWcQ+qYhJjGgEJeXuZN5KlGs8Ysi6mpWAkdW+inhO9BFUcOj5KUCQSLfETW2R23XPjLAu8ezLo4TO4Bq6ihSHiHH6Xj+h/Jig0HM0uL7drOfSbPnHN3qQmcxbpsS6JW2sKJTZ4ijnjegaZoZdVSLtyqJvrLNQwQnSG645lr1mS2PKSZIeb3R7IBc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,31 +104,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-All asm headers now define this constant.
+On Fri, Nov 20, 2026 at 06:08:54PM +0800, Muchun Song wrote:
+> Early CMA reservations currently require callers to maintain CMA state.
+> This exposes internal bookkeeping requirements and splits responsibility
+> for the same area between CMA and its users.
+> 
+> Make CMA fully responsible for the state of early reservations. Pages
+> already handed to a caller remain owned by that caller if activation
+> fails, so keep their managed-page accounting intact regardless of whether
+> CMA retains the rest of the area.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Kees Cook <kees@kernel.org>
----
- include/linux/auxvec.h | 4 ----
- 1 file changed, 4 deletions(-)
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-diff --git a/include/linux/auxvec.h b/include/linux/auxvec.h
-index de1c33c4a256..f7ddea1dbc8e 100644
---- a/include/linux/auxvec.h
-+++ b/include/linux/auxvec.h
-@@ -9,10 +9,6 @@
- #define AT_VECTOR_SIZE_BASE 24 /* NEW_AUX_ENT entries in auxiliary table */
-   /* number of "#define AT_.*" above, minus {AT_NULL, AT_IGNORE, AT_NOTELF} */
  
--#ifndef AT_VECTOR_SIZE_ARCH
--#define AT_VECTOR_SIZE_ARCH 0
--#endif
--
- #define AT_VECTOR_SIZE (2*(AT_VECTOR_SIZE_ARCH + AT_VECTOR_SIZE_BASE + 1))
- 
- #endif /* _LINUX_AUXVEC_H */
 
 -- 
-2.56.1
-
+Oscar Salvador
+SUSE Labs
 
