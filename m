@@ -1,125 +1,177 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581BC60A5BE7
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 08:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D762560A5BE6
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 08:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=n18gQ95z
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=F6dpwv40
 Received: by kanga.kvack.org (Postfix)
-	id 8070C6B05B0; Mon, 23 Nov 2026 03:01:05 -0500 (EST)
+	id EC8866B05B2; Mon, 23 Nov 2026 03:07:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B7336B05B1; Mon, 23 Nov 2026 03:01:05 -0500 (EST)
+	id E529E6B05B3; Mon, 23 Nov 2026 03:07:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CCC96B05B2; Mon, 23 Nov 2026 03:01:05 -0500 (EST)
+	id CF2A56B05B4; Mon, 23 Nov 2026 03:07:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A1C46B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:01:05 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D14AB807E1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:01:03 +0000 (UTC)
-X-FDA: 85465638006.26.BA4660A
-Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D32634000B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:01:01 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=n18gQ95z;
-	spf=pass (imf17.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A353C6B05B2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:07:01 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1144BC0832
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:07:01 +0000 (UTC)
+X-FDA: 85465653042.09.A7A4930
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1D00214000B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:06:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=F6dpwv40;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795420861;
-	b=KqxK4cZCggdKnz+lv/RAIHS2Fyc7vRyHjmfamLeBaHglvwHowpytd24jzlprSon4DDrsm0
-	6xcAcumGtiiVUP2krljTLxrH29C/BocE9zWhaLH8Qxz5dcuyi9OTcRz8j2bzy3ONBYJcLw
-	tgIYGXhcDtt8v0CGu39XukSm/d9nsFk=
+	t=1795421219;
+	b=3WkAzfKEMDQKZw+UHkXw3d1pbsZeUdNtru+SJoi9GO9XP6EVfwOllGUvJhLqLT3Mba23if
+	330NHZDwt0y0g39klVgTDOgeu+XoOq6/McQUFycsOocKXuvH+2DeEVM8ar2vrnQAF7k0Dl
+	Nb21Wm9Xag18ja5VxFKHkTtGX9XtKvw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795420861;
+	s=arc-20220608; t=1795421219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=f4kxL1RSmgNIZ5ncBejETsrMHrpcYl0Fuets3/kxcc4=;
-	b=WUE57GZ27tmMDflt7lM2ldu7ofVjr9KurF+cDwSd7B893zp41pcC5Gi0MmTjimiNVyEpKN
-	WL3D4AkDatXuz1JlCow6AjTj78W/949zHOFXFNi+tSmTVM3AniEzgoCiWuSNUONOO/mVqe
-	oKtYATAj3/75XVSj1/X5akoiS8QAsxM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GdWbto/GYuZDXyTvm+7T3nEGrjgUlN0uIoNMYNUd3jo=;
+	b=C1591kI6KQkqghzHt8/uHtms1C7DlDIBeKFZe6FNYrf0fRbZQGJ7CSt/p6nvnKzymrvo1y
+	4L6RphS4/0n8CBGKQNxUlY+2r3xmlrOo24dyR+T3OOclZcW5yEjYfPuW/jWAnId3x6kv44
+	GB4d6zI0U2m2s3cT4DkpFB7ef7dyQy0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=n18gQ95z;
-	spf=pass (imf17.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-3b14c80b210so637567a91.0
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:01:01 -0800 (PST)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=F6dpwv40;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-9496577d4c4so367300785a.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:06:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795420860; x=1796025660; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=f4kxL1RSmgNIZ5ncBejETsrMHrpcYl0Fuets3/kxcc4=;
-        b=n18gQ95zQ51YicL95sQhEGBZOoKJ/lsCBQ3lSyulgJ4qwpA2sMkqAe6uju13jD26EI
-         pKjjfnsSTag9V9oWOgBQQYGuNX4bjUW1wvHO6anARMAd+mDA5QfU5w9LhygcWrTxtrHI
-         p8voEQmi8Y6Kv2DrjRoxmSRrK6rkA9GyF+fFhpESzSsZsEA85L0MBrXvKsFBfuLi8EOX
-         RqDs88qMvM6243wPZbgGE4JuQfug0XxaTdwpUcNR/f5RZbKLI4irzft1+C0ZOL59Rg3E
-         LEv2opBsEKs5HtU86b/1dP7t7JGo7ck0KkPOGkogHA9WOoKhFDIh8aD3M6ubYL3av73k
-         ESjA==
+        d=gourry.net; s=google; t=1795421218; x=1796026018; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GdWbto/GYuZDXyTvm+7T3nEGrjgUlN0uIoNMYNUd3jo=;
+        b=F6dpwv40f3LrgmOykJknsjxl+XmMW+3fhtassYJ+lHLmL7lWvWnf4gsLDxYA1dmJVS
+         Z0dJY2nyJH6T9r/72Adu4QxAYYYvmSLDiWiQMAw5DehxzuhZCWduETgFMbT8LzDtRBI5
+         5oH9JfUFjXPxSkWrvg3udUUTuol2QIXx2ZMr5PzlcMkkUYAJboKGLHnFEYqfh8LJH7af
+         n3M0ht3fHr0YzuAO9rJBIiXyYDEmh5YQv9LhEKUgUG+3To7D1oPsA8RKNbFDVA2STtcA
+         BxGQDyp7RcnKgZsIC+3qR0jVpB6DyBqO8uu5bhld3mulPDPI62CHNFKNftG1ObnSh00A
+         r/uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795420860; x=1796025660;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=f4kxL1RSmgNIZ5ncBejETsrMHrpcYl0Fuets3/kxcc4=;
-        b=icrgg47CNWoekYYIOAS5EiXvFeXvUPAL/kIyXz8AY8aZx+lYM5wW7J2CS+Y4pyqLV1
-         yBatBvIZd7RXOTS1r0KPjX1F86N5GTDomDGUNWj0urK6k80CTMLUVn697dfWtKWov4w4
-         FwYoDqcxdsTq92gfn8eWe4K3nnKt8nV8Zi0xQivqR3ezxtw7vIkLkpPCpcs7WBANNxQ2
-         ruE9U7VjAs87Zg4Tc+h9VAaWDH8HsaCbj4MI36gkMly2owf9o5TS9WMC5q5/3Ti4D5QJ
-         Tqqg0/BcIXOQv8uaWqLIsj08ZqXoASpAWCvGbLBwIhwLECVi0jqf4FiQVDNp3cQWaz8D
-         YyKw==
-X-Forwarded-Encrypted: i=1; AL+hErG3TFvWb0kPJAAF4ZFFDMTP8uPw690tw1fgGdYfDxp3V8wgGTm99LAckyMeN5usVKHkEIv4Dpgz3g==@kvack.org
-X-Gm-Message-State: APuU4Z8DSmIwWM33noO3ixkEdoBzrvCsr4fG2C4wr+IqxONXw8al466g
-	acR9bHH5ngcyGB1k+wyt+sl2tYrHWFW6gwgMckumiClQO87BVZY3VXLX
-X-Gm-Gg: AZFdTZe8CBMu9jVJLFPlKHLwN1ZxmcgRBKXD0QxyyU+eoaRUqfJ8BT8US4pRmWqIrjq
-	PVb5NOxH7gGIx6LsdWD8aSJNgiHacJdYfYWXSTvBe3xolbZCfRVCCyUJ+sXzTFpiaZ0+xTi0XIa
-	JflBU6Jzpzu+c9F2tsuSgmtV3x9r8cpokIdP8ph8Lijldifwd5d1sbrDKXD/28xuhphGjqvFSDQ
-	lQnjxSQ40f7uiWIPOf+RU2VwJzjRxDzTljPwR+LCYspaNl8VK1vaEwRKWEHJ0lksDhZ1la3Dzu2
-	j9vHR93dC90V038iDFl4zSXRzjTf5LZ2JJ6uxZxmCDSl8clYNqoy+WpToi9xEumGmcrYW5v7A+y
-	t/ugVB0DNbRnQY9KX2FuwGii9KHMbg7m3W3Vw8YyCfnja5OPmsHbT1t2kZnqIQE9Ginp0XuMb6B
-	KLHQa/l2E2xOo+PaZK9Da2GNHO038xuBpkHlGwu/Sq99t17QR5wusL+zOjCzmc7r8eOirdxAq0n
-	K/osHsMkgUTOj+DpmnCupvRFy0cH9PQDTNj5OGAcGrcuvJCo8y2xQJbfpUh4ePL3Ws3yuUxH92x
-	fwy1+rRkSREkvCuRd4RQcl0VJotwQJmyOCSOXdlphBunQeRS9QBRY/yQWIfOM5ItPAsdLTB2sI8
-	2xxI9fmIxcvIKL6IaI48DwPMVqoNNJdbk13Gev23uuTve2SAepo0GPUj4iJm+bw==
-X-Received: by 2002:a05:6a21:32a0:b0:3e2:90da:9594 with SMTP id adf61e73a8af0-4014a37929emr10127148637.9.1795420860377;
-        Mon, 23 Nov 2026 00:01:00 -0800 (PST)
-Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c873c1cf4fsm5020034b3a.49.2026.11.23.00.00.54
+        d=1e100.net; s=20260707; t=1795421218; x=1796026018;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GdWbto/GYuZDXyTvm+7T3nEGrjgUlN0uIoNMYNUd3jo=;
+        b=CtjmQfhgrE1SVSTc2VbVWLhauDtZQracilkY29zxONgjF7BB/jrZyN8SbsdHVXN0JH
+         f8txwSxMPOPQefd8fSJsZQQL1gqmGmTQpiY65dprGe8r+2mRn4mXO0RJ917z/zBu/QWf
+         zQY5ptzDxtkcoUGt/Xk7Fo9D75/GBG4uibsBJCKzv/wp5FVVGEZ6R6rMvYwpA9/Snz6M
+         hk8IDpuGZLIZxNFVp5yVyC1kmNUYE3GZrt7XQu+ye3fSMf9BUVn8ro5HQPjBIbjCV99L
+         rfo27+qe2Lw/ytXWcy7PjLGbFUVvlgl8SukyPUSdI2vKFUj13PQ0SGlh0Qbw5naEBm3v
+         6NKg==
+X-Forwarded-Encrypted: i=1; AL+hErEDGuZF6v12NYNLUZDJCSWRk3ucRf9RXQi3I/xYfBtVxyHV/E2iyAtJk/ofSm7iymUxr/C+Zkg0sg==@kvack.org
+X-Gm-Message-State: APuU4Z9dlMI7cAc/mCLtMT4jtQApj5lUnnpMsJpGdQz6flnEoZy/Wh+k
+	RHEsiHBuiBEOiqnYnxj7wBD9VhlJ1sD8F1OF0kw4XuiQH/z8+tVx2yNOY/jor1JH27s=
+X-Gm-Gg: AZFdTZexfbkj0qT1PN7V7usAVej3T0uWXDd4jF+kCBRIkZXNJagABlK3Qgcjz7Uvdl+
+	QDdHRpYLkGKkHbsftYwT3T2PWn6CtohmMDex7Vfoi3m9KfiSkGDKdd8KYDIXU5kzhokDXAOqB3w
+	UT4tHTKKIqK4EqYaDQFGtgmxXNI0W86LhOMYCWAAzsjw3Ve6zut13sxE6GaQaI4tRbBrPfec7J4
+	oGHPjD1NcpIy1rhemA5jnBh71iVKUuM/NlTHutdwhSkbJxVl3DSugrMP0dw8ahD6fkxCx4wcWpj
+	39T2IGJRV+MeTgGoDyGGMoeAJ4HvGLAZVt1RTIi+H7iQ1PGxWDIu+BLWYgvkB7KvhFqbMzrPOg9
+	bw7fRg6iPHQzTyi+NEkYddNWDbkpcp0Mx1NANa4ME82gOAljXgkeCdc+4pUB3dMgGxykm4RV5tO
+	zemWPknTkXZof40IcSwNj6GYcBnswwgGbXrNS0iUVDyL0dIpzn5IU1a+mPmqCITdKhJLom7j48y
+	GIDm32FumjM/GH2E/RyCeru2cbiWoUq/gTa9BOMbRjlJHGxilA2BXk6atmru3lF8BptkGV+Jq26
+	0a7HjLmsRkbu+UlGdooq/ZAO7NlCVbTGWLTCjncxYasYZVdoyPtkcp0OZGnorl+bUEUiEVV8XRX
+	eYflMw+nTgeTxOhMzRk0Kn22bCHMt
+X-Received: by 2002:a05:620a:4481:b0:93f:2571:bb6d with SMTP id af79cd13be357-949bab32ff9mr1727268685a.39.1795421218145;
+        Mon, 23 Nov 2026 00:06:58 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb349db3sm745619285a.7.2026.11.23.00.06.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 00:01:00 -0800 (PST)
-From: Aveline Noir <jm5905938@gmail.com>
-Date: Mon, 23 Nov 2026 18:51:45 +1100
-Subject: [PATCH] mm/damon/sysfs: skip registration if DAMON core init fails
+        Mon, 23 Nov 2026 00:06:57 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261123-damon-sysfs-init-guard-v1-1-a2a6ca65693a@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NwQ6CMBBEf4Xs2U0sJoj+ivGwLQuspqXpFpUQ/
- l0Qj28y82YG5SSscC1mSPwSlSGsYA4FuJ5CxyjNylAey8qY8oQN+SGgTtoqSpCM3UipwdbVZ67
- qmhwxrOOYuJXPT3y776yjfbDLm21rWFJGmyi4fov+3qdEZB/zhDENlhW9x8Bv3P/NBZblCxZgk
- SS0AAAA
-X-Change-ID: 20261123-damon-sysfs-init-guard-fc87e688acae
-To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Lian Wang <lianux.mm@gmail.com>, Dawei Li <set_pte_at@outlook.com>, 
- damon@lists.linux.dev, linux-mm@kvack.org
-X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D32634000B
-X-Stat-Signature: iak64jwrr74g5gdqy6bdz91wy8jyk45d
+Subject: Re: [PATCH 00/60] Private NUMA nodes
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, 
+ Yury Norov <yury.norov@gmail.com>, 
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+ David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Oscar Salvador <osalvador@suse.de>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Johan Hovold <johan@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+ Matthew Brost <matthew.brost@intel.com>, Byungchul Park <byungchul@sk.com>, 
+ Alistair Popple <apopple@nvidia.com>, SJ Park <sj@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
+ K Prateek Nayak <kprateek.nayak@amd.com>, Kees Cook <kees@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Michal Hocko <mhocko@kernel.org>, David Rientjes <rientjes@google.com>, 
+ Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+ Jann Horn <jannh@google.com>, Chris Li <chrisl@kernel.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Youngjun Park <youngjun.park@lge.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Waiman Long <longman@redhat.com>, Ridong Chen <ridong.chen@linux.dev>, 
+ Tejun Heo <tj@kernel.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ Dan Williams <djbw@kernel.org>, Vishal Verma <vishal.l.verma@intel.com>, 
+ Dave Jiang <dave.jiang@intel.com>, 
+ Alison Schofield <alison.schofield@intel.com>, 
+ Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org, 
+ driver-core@lists.linux.dev, damon@lists.linux.dev, 
+ linux-pm@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
+ linux-kselftest@vger.kernel.org
+In-Reply-To: <awNavE8dAGr-amfQ@yury>
+References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
+ <awMdeK8O-5mffg2m@yury>
+ <179537469194.412063.13456998694958645706.b4-reply@b4>
+ <awNavE8dAGr-amfQ@yury>
+Date: Mon, 23 Nov 2026 03:06:55 -0500
+Message-Id: <179542121527.412063.3452837736734095837.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: m46fzz68eaxai4syeg9mnct6o43qsoxf
 X-Rspam-User:
-X-HE-Tag: 1795420861-732789
-X-HE-Meta: U2FsdGVkX1+922oibQoYfNron80Yi08hBcdKxzoNbsj6ypXQu04XVkAH9g4a9gAcumtfWLAvbfMM0zYMg6E3U8j/NWBF2c5B9NwVclXPiXWAMDZnrPxMFkP2RsnJckrKQ1Kcf1u4rBYyqvRWZ6LqR5PTGUEnLuCPgMaUFIBYUq1uepNteNT8G1afGH1KPTbhdapd3QhMqFcSKoeDdB2RgqUfdYBJYdEGzVSBYXPmZxmdzyd1JVBeiK/+v84axn4bS1Q4uwQSRT970VlVXgzNhsOBOIuItLi/jYtwE3K4+G3HJA7S5rWlQEz1SGHqcjWvgNmS8ljXNFGpHzkH+HZnQ05I0UghRvuT1RtYqBPAmr0pOi1KMOQkTVpHGg1qq7PoK+cdyLFeVmgyip8mStEtzwVwxKgmtyDn1zk48nVAm70OakL3UI4NLHCzTXKeXZeBXmvRv6gJJLvcGec0cwHgltGgvlKAOCxJ2qfzIgtPlawx8bQVZZTw9VWRuyNqZ8ZmmdH1H5gl6fHFEBEOMuJ+ZL0oWgONbomFK7tWi+7HXJxF0zvLGoTGudkywve+jcqiEw0NwRfRj3b2kVob9ZqRBcFCw2B92ZsYAzhdUUCFAfVW+Hk+8Q8TeGpTSsgFUs3RgIeJHVnnpneG1hpSNqqt5PEVzfj/j15SrBH9mX0+s2n3bfjJLITnOlTfco13tLzDvdpbtxFIWCRhWNsU2Jzk7BR28ggQIVIbUYR+1WSDS/piM+U1DOl92+vPaLGvkB+8sMuF3tTXKdSKVQ8N+ov1oFMDOstTSWTVMFAmqb4+TQODheglkFDDFn46Xw370Mo+d5X6wcieL+zaZjNBmpu0YSDlIgWVWLRJ56eqaq8mL/HISEbrx5nSqCjuk0GV9H9N0CTOngdZIz+CYTqmh3UdTCh2C2zR2+S2GTkJS7ZqbVH6e5rZ0UDIbEGcDPnmdhbFacCWdBI48OiVYHcK5jZ
- TULXid1M
- 414c5fFgC+grYdHKQTBYTxmWWQu8y3ywFBHP2IFe6KLNgco5wZA4yy8qgFubpaRwUbd39EPhrc+KDy403pXDuCOn04vnz0+bwKotHSIW6yIYvblBCciJarFMBt/hHA2DFARp40Hu040rNIGiQUNoQcTUSGfooSemPJMyQct0J3ENT6hEwDD5tnFxB+RRvaZPzSfBQd058Y/QVbwuRtXoIHt+FasIlIHfmc63gNBsKp+K8xbzAQJORBN5L1EdSyd+lImYlYuS308Shq3GZCpkajACyEpsfbqS4BOCqizToNHEnr2NeuWTsyoMT4cx/EUx8lYLLK0EWcJOGwXZmDkbHdPBb4rc8mboUbNJCF9/K90Xlz4tUSN2/UUf2a2LWgHRqjrLv3QT3EUf0Awn2j4s41TBGQY0kk5B+FNd2ySeE9nnIOM+EHLmoYDsNZdKIabwPZDX2WjGovDNVAZyQHGgHI/8SDNBDKKRbtY7mjhcXZ1AYM0ss2S3HWlj+oBj72UkRJJVEND6gzekswidMBfgIBpQJQfowAS4cUwoXREiLrnSK0sqwYexAsBBznmrIOTsx2062536HkO4WPnutLIfn5D9yeFs6DSYvwEhW3on8bTiooyun7mSxeg0EGO/clwwM0zzDQ/JW7adVpUuTxbE4fZ0HCWEFGbU9MIzfbvl4BXzrZFN2gkkAOCLg9Sp51TRlGxC/Z/kW0MBvDhWIUJH3zHrAVHC0PB32lof9MjVXqIoAFRXC48UDvuYxeWNMJ8MBJyX0
+X-Rspamd-Queue-Id: 1D00214000B
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795421218-331410
+X-HE-Meta: U2FsdGVkX19xI/qkr3pj9bMhGO/lqoqRVk5eePLmdFjlFETU/RbSStIy5NfiQZ80BL/2wrWmDy32lKsUDyYenAxLHpEYQ3EtGbof69PQU0tMoRT0vbAJ9uW/45ugUQ/9F5rHGWYX11zrKs3KbY/Kp/ZQd++8dP+yYVp+qne1+CY3lckQOcyjxL6zr5qSkBNwsp9SjvXYOVFmsJGm1aVRL6oE7kLY9KVjUFuflskDNvcHGU1tOKofZNzHKBQaBmtSvPXEBbdETrP/SvbxSepcwLsoe6DJqU00Pc+0yQ5UYqvHbUVMl75C2a9f3ca4u48fi1RLaiqt7ty901smGR62Z4bLOA7Gy5xWNiMH0Jrb8bvulod9tJkEZbvzxgKZ3rybrDnbCxohzHnj2w04LzNUyp5GToROsDXdQ4Xk9o9icu63iQn9rlU+Zi0AfLDfLqFkrM5KDhF8/ZO5U5n2ZeoUf+zr2LwHPi5Ql1atJe6/8Qgf6cMSrwBgOnSWOiuaFiXUQPjxdNk6qRQk28swPL7oTR5P+LHuI9Ccr0iBwGyaNYNBPQfIBHo0lVydN+lX5UaLL3+O/vrHGq+RIhUiraJOTGb07BPO4pHqOSK5BLPNcssIFQzwxB7lhMBKuxQFhl06zbZdZdyn6oQmP6agPr3UPzPSxQlqrHUM+zw0yzDsAVC4VdlkhTcYvKullaeL4qok9PVkyV7UTZfojMvPdSZLxF8wOIs61Tesmk4fAZ8lMIiT/dB/or8qwuKEHYAwuIc0GXHt7UpvcFl7eNCsYZO9N7ZUAwwvDbZaVV7up3B87CzBNZoOtiQPrNfgsHxb0z8TJhF0MtH5BH+T6R8hbysVnqk2ou2WeScb9N77fy4hGDOGFkGcuM6vWm8L/rEAyMg6tqwzBIjVest64gDFQC5SfUfxeHP8XKlEnrKPGbaO7eIhklYCK/65aC3Qhkl5aFzeKyjiYTwGZ1nKDmHSYqf
+ gnGR1kaa
+ UXBPey4di9IrE9cKnaDbSuyY5Cw8d9XmN7pPaalC4LfcTOaQIrgT6LiEAcG2S2WMG0D3KGoys4z6/ICgJqOViYb6PssENb7VbY408HQrE+HppzJ2ZQZmV8zL35J+7Ys8ox3Zoc3NqpQ/bjPsr340vxyrrx5HpUzYE7Lk7Wwv1H3mMCE6LCxjLMFcFJDh4O5Eslh0ITIZPVzf8KUAqn3W0X9tQqQhdgMs32OwKHFJV57/wiA7uPwnrY2PksniS/qU7ttjB/nIskNEy2n8RkUkCwOg70azNqiyt9yuEHXAqhXtdiY8XWtfaeSB0benHm+xgV274cqVzipJmla35CayCla8YvDTW7QBXxOV9yuB9Is7X2OtwEacZSEo5nuVZal80ldHx7KWhiQ3ZPobBVs7lr5qi3DbeYwa1Fw6gB69zkpmJeQTj073Hx/LHAo3uUiwpK1HNivKEjvLn6HqUVQC7ocQdTrpv52TCb8TT4MUBbTthl/FSh0H4Wz6a6AFPYxmhQt0CxhEzFQph8LCI39FhyCrN/hYU1ZY1+Z7C5SSPCvl6/KaKRgIntlE5MOLmlA77R9KAcsqinpan1WfoSfSOM1b3jMeOrARnVZMsQtTp8gfon9A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,49 +180,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+On 2026-11-22 16:12 -0500, Yury Norov wrote:
+> On Sun, Nov 22, 2026 at 02:11:31PM -0500, Gregory Price (Meta) wrote:
+> > On 2026-11-22 11:51 -0500, Yury Norov wrote:
+> > > On Fri, Nov 20, 2026 at 01:08:51PM -0500, Gregory Price via B4 Relay wrote:
+> > > > This is v6 of the Private NUMA node series. The series falls into four
+> > > > parts, each building on the one before:
+> > > > 
+> > > >    1-18  mm: introduce N_MEMORY_COMMON
+> > > 
+> > > I walked through this part, mostly. It looks like you can substantially
+> > > decrease the patch count if you keep N_MEMORY meaning unchanged, and
+> > > add another type, like N_MEMORY_NOALLOC.
+> > > 
+> > 
+> > I don't see how this would reduce the patch count substatially, you
+> > still need to convert existing N_MEMORY users and need to differentiate
+> > between general purpose memory nodes and private memory nodes.
+> 
+> Please check this quick attempt with my codex. The patch count is reduced
+> to 52:
+> 
+> https://github.com/norov/linux/tree/private-nodes-v6-n-memory-folded
+> 
+... snip ...
 
-Here's the sysfs fix I mentioned in the report queue review.
+Patch count is not what we want to be optimizing for here.
 
--- >8 --
+Your branch carries the same code (+3 lines net actually).
 
-While reviewing the DAMON report queue series, I noticed that DAMON
-sysfs still registers its interface if DAMON core initialization fails.
-If damon_init() fails to allocate damon_region_cache, starting a
-kdamond with an initial region can pass a NULL cache to
-kmem_cache_alloc() via damon_new_region().
+The patch reduction comes from squashing the per-subsystem conversions
+into one 16-file commit.
 
-Check damon_initialized() before creating the DAMON sysfs directory and
-return -ENOMEM if the core is unavailable.
+It also broke get_mempolicy(MPOL_F_MEMS_ALLOWED) - it now returns
+memoryless nodes even if the system doesn't have a private node.
 
-Fixes: a18709442869 ("mm/damon: improve damon_new_region strategy")
-Signed-off-by: Aveline Noir <jm5905938@gmail.com>
----
-Tests passed in x86-64 QEMU TCG guests on 9f004372ebeb.
----
- mm/damon/sysfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+> The more important thing is that N_MEMORY and the proposed N_MEMORY_NOALLOC
+> is a disjoint, contrary to N_MEMORY and N_MEMORY_COMMON.
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 779c98205a94..7de0f03a3fd5 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -3035,6 +3035,9 @@ static int __init damon_sysfs_init(void)
- 	struct damon_sysfs_ui_dir *admin;
- 	int err;
- 
-+	if (!damon_initialized())
-+		return -ENOMEM;
-+
- 	damon_sysfs_root = kobject_create_and_add("damon", mm_kobj);
- 	if (!damon_sysfs_root)
- 		return -ENOMEM;
+The proposal here is not novel - version 5 was also disjoint:
+https://lore.kernel.org/linux-mm/20260720193431.3841992-5-gourry@gourry.net/
 
----
-base-commit: 9f004372ebeb18fdeb699f9880a0e472df90135b
-change-id: 20261123-damon-sysfs-init-guard-fc87e688acae
+   N_MEMORY and N_MEMORY_PRIVATE are mutually exclusive states.
+
+I moved away from that because it changes the definition of N_MEMORY.
+
+The subset model is easy to understand
+
+N_MEMORY               - a node has memory
+ -> N_HIGH_MEMORY      - subset of N_MEMORY
+ -> N_NORMAL_MEMORY    - subset of N_MEMORY
+ -> N_MEMORY_COMMON    - subset of N_MEMORY
+ -> N_MEMORY_PRIVATE   - subset of N_MEMORY
+                         (COMMON and PRIVATE partition N_MEMORY)
+ -> N_MEMORY_<FEATURE> - subset of N_MEMORY
+                         all N_MEMORY_COMMON
+			 some N_MEMORY_PRIVATE
+
+It's additive. Users pick the set of nodes they want for their purpose
+and don't have to cobble sets together or remember special helpers.
+Users don't even need to know about private nodes most of the time
+(mempolicy being the one major exception here).
+
+In the disjoint model, N_MEMORY no longer means "has memory". Recovering
+that set requires new helpers, and the meaning changes silently for
+every in-tree and out-of-tree user. Anything that wanted "has memory"
+quietly misses private nodes.
+
+Either way you have to audit each N_MEMORY reference and decide whether
+it wants that state or a feature variant (N_MEMORY_RECLAIM, COMPACTION).
+
+The difference is how a missed site fails. In the joint model the
+zonelist and the common-memory folio checks backstop allocation and
+access, so a missed placement site costs some additional work.
+
+In the disjoint model a missed site silently drops a node from stats
+and accounting - or worse fails to allocate per-node meta data.
+
+So no, I do not think we should go back to the disjoint model.
+
+> > And N_MEMORY_NOALLOC is not a good name.
+> 
+> Sure, I'm not attached to any particular name. Although,
+> N_MEMORY_COMMON nothing better to me. It answers the question
+> 'what for this thing' even worse.
+> 
+
+happy to wordsmith the names here.
+
+N_MEMORY_GENERAL? _DEFAULT?  _COMMON felt intuitive but I am happy
+to rename it whatever.
 
 -- 
-Thanks,
-Aveline Noir
+~Gregory
+
 
