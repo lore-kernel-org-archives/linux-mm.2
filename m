@@ -1,79 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15515606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8570D606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eRBwAeck
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eUIJxoyw
 Received: by kanga.kvack.org (Postfix)
-	id E7F1E6B05B1; Mon, 23 Nov 2026 11:38:16 -0500 (EST)
+	id 980F26B05B0; Mon, 23 Nov 2026 11:43:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E566E6B05B2; Mon, 23 Nov 2026 11:38:16 -0500 (EST)
+	id 931A36B05B3; Mon, 23 Nov 2026 11:43:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6C556B05B3; Mon, 23 Nov 2026 11:38:16 -0500 (EST)
+	id 820926B05B4; Mon, 23 Nov 2026 11:43:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ABEFB6B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:38:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 51FD61208F3
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:38:16 +0000 (UTC)
-X-FDA: 85466941392.22.7DEF17E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8314B20006
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:38:14 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eRBwAeck;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B3766B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:43:59 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E5FDC16090A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:43:58 +0000 (UTC)
+X-FDA: 85466955756.07.D4EB860
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1E19012000A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:43:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eUIJxoyw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795451894;
-	b=BuoNOIdTLdtMHtvTHmPdSXfDPyPusw0JBFt9TRag1hhy1EKmVfdc0eTJyXzTk1awUpRX1c
-	dF6hVTbMS5dVVxFCDlVx089CmK3YC2VxbtPFz5FRdgFNCgiefqmZsFy5uF8xQDPU3GEVbS
-	N4Sqx7b3ukRopsF/57zqEMKa5ogKcSI=
+	t=1795452237;
+	b=Syq54Jcco+19rDJ0uZyCij62FtkxVPABGvYRlYMH0kDhqEgVr3cxIxRZnmrW/TlFmVax9S
+	TZ4WfuN4pg9YWOw2/xW0RhNqNM/cqlPeuIf/81TKBVff/J3/0xmkfdNCG/6nVyytRkgnHu
+	7h8wrjiZQf7+ibLqcQTcKD5XgxtBaDw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795451894;
+	s=arc-20220608; t=1795452237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BX2g8Y4HGKdlZ1kRSAOIsbxsW5G+eW95mvD7IhCq3Nk=;
-	b=bWXGBJDosq9Px+3c93c57X4FdmCboSYNaO/O33EoNBKsH3Oe1A09i3F6HWa8Jd1N1GhK6b
-	p6iAVe/kRbLI2I0Ki+K2oQLPPDQtfCFocSZciIjHPBKRXDAN20McaEb/pQK2l87oWJGRLm
-	SiSkx1LfFMg8jWYCf8kmBjd5VRsdh1E=
+	bh=Rs+CcN71c0Fi1/KME24fU/+FqAEJoRqbsSd1mHJLo5s=;
+	b=czxj/TE7AFVfxjxe+lV2KCzCUldKcfYEOE7RLawwhnrW4HCicME9OIxKzQbXxts7mM88tL
+	B2NrEls4HyTjdTCA6WtCDAM82x+1lt6yzSetbNR3d9k4WzalI1DU0lC8YbcStrT93fv86J
+	Xu4LGklss9TsktlMGh6SJNNszHt6HCc=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eRBwAeck;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eUIJxoyw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 078DC60F8C;
-	Mon, 23 Nov 2026 16:38:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584FB1F000C4;
-	Mon, 23 Nov 2026 16:38:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 487BB40275;
+	Mon, 23 Nov 2026 16:43:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184B11F000D0;
+	Mon, 23 Nov 2026 16:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795451893;
-	bh=BX2g8Y4HGKdlZ1kRSAOIsbxsW5G+eW95mvD7IhCq3Nk=;
+	s=k20260515; t=1795452236;
+	bh=Rs+CcN71c0Fi1/KME24fU/+FqAEJoRqbsSd1mHJLo5s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eRBwAeckG0wIXF13+5haRM83QgRUvcGG5FS1ubKeHVkvDr3k65QyJcsTA+0TW+aoY
-	 3U8kOTLamW1dN0MDrNuBUQpFmQpQc/Oe5NcKSDiwYKK4EiNZZBvWM8rFbBA2fizqSs
-	 baZ9FmtEe47sdBH1KJYkvwTGBa2c03cFCjE5d6TA4egY4dEIzbSJO7MJP3Mf/KIwmY
-	 RBL4cZm+/K1/jDmrQeV9wCbcJ0FSLViAFKVaUgSbAIPrR7NebZ4YQwYfXpXODwIKAv
-	 QiA5DOz+EeGSIUphl35vUfT/UU+0X/fa8yUuSBRtAGOr8V+YoJ+7XFcNg0ZFMbSlLE
-	 yNfTAgeqIeRyQ==
-Message-ID: <43ecd498-71a8-4b60-9f03-3cd96810a4ca@kernel.org>
-Date: Mon, 23 Nov 2026 17:38:08 +0100
+	b=eUIJxoywufebTbJfzuPZAEBRRY74GRd1ScI2vtPbTncPWSZ6v5NL0meYpV84J0aSL
+	 EoQmp7bLEyLIr6yEDDVn+ySZ3daJiu7s4mGkeoGF1XF3YTZ/kuEoBRoGUH6YKEVq+p
+	 wgYPVt9yuBDFwbAUalV9l7yifFlNEOOAcOOiUQ2nWKoNBZC0in9aBrSKqLdq6J94iu
+	 +pYQZIZ2YWO/6FOaGn4nIci1NxbLY/RL6j8LOIxOt7sCh0YglUVA+GzVHaVE/0H10X
+	 SeNCwVDQ7Uk4k5mbl4Cb4IvQVt2psJ5yjJRz2TUH9mBUn8LoWKpsHv0bqaTbmcxK8L
+	 Zzr4NldKiCy9Q==
+Message-ID: <ccd35073-e77a-4864-ada0-4b43329e8ff4@kernel.org>
+Date: Mon, 23 Nov 2026 17:43:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] mm/ksm: do not inherit ksm_zero_pages counter or
- PTE markers on fork
+Subject: Re: [PATCH v3 2/3] selftests/mm: fix false-positive and racy KSM fork
+ test
 To: "Xu Xin (vivo)" <xu.xin@linux.dev>
 Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev,
  donettom@linux.ibm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org, Karl Mehltretter <kmehltretter@gmail.com>
+ stable@vger.kernel.org
 References: <20261123034136.209410-1-xu.xin@linux.dev>
- <20261123034331.236509-1-xu.xin@linux.dev>
+ <20261123034517.236914-1-xu.xin@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,22 +120,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261123034331.236509-1-xu.xin@linux.dev>
+In-Reply-To: <20261123034517.236914-1-xu.xin@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sk9jr75uzr9srh46hgjxdpet4xp7ig4y
-X-Rspam-User:
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 8314B20006
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795451894-717222
-X-HE-Meta: U2FsdGVkX19+U5x8OpjpeKx46yhWgNM/26zzGJiSbNAGXR3ZP1KRlERBHUmdP6vk7HNz7wrz15m5i9LWfI1fhOUewI1c/YKCv1wEZ8MZuJCIiI63vw1nHRfyxV45SJEfquY1KnGUcIu0x+rBg1O00HboXSe+ClRpMgGPCc+J4vGicwDqxBHIW04yyV4+U3gOoYRgjTVXSgwmBuRhHs7f3VD3r0NbrzZGR3EjTGgRCTUp+ScYgWwwZxvbWKl8k0Pcs+CIsO4Hb/ZIsqp2pcrMHVl37EEAO3BfQWGe0xjKFvMszHCfv9huGQ0fwOwZ7fZY6Hy/KuTiuYjEmhpVNeFNI/1+3sP8NLUsEZW6Sxb9gAWX4ZgEUFaWN5wMK/vbiYdb7zev+I9wa84+niU9wzUHiYKGJxojo3NggQCYdz4T3BGhvwZRkiuegi1nD9NmoOlWb1B1DVXKKLphuj+zzeY5ydbESSQaOxzUDp1kOzyKXol6qT5xFkMswF45wP4mG6oZ1LK7OU7f5OJYJ/SolhD26wA5Cqh/XQm0nGtqKKVnM5tHuV+vv38OHVXdHKXLSwI2sNYPzqrH9R+r7h1YzWMdmAd7qAtN5TcgflHdeZning1vAPZ+WWasWFDJQQUoA1h9ksop8aM8zXxmzGeLhkvP1YOtUWoM932b4nLqs62I0G9le+izY+jo1iM/c7LOJ+0IfxUv8beuQyTBpPfyq5Oku03VIiGI2WfL3yaAru6A1kpksr2k3iURotvFoWQlcry6AZauhnEst5iGGcykqsc1Z1VF4zBlxUSgmHawctf3VBI/Be98YDBY3wbucuEMu93qV56o4TDcrzElPKIiiCUqyf/YvRKpCTypc4nAhRUYj0MeYNNHQ8TAqkivKBwNiUR+JwvTERSJbsfLqPQQMVSQklmpetG4ng32D2xwN94sGEUdg1XLID70KUYugJNnEUcVeRvlhXmwqChSUTgHOYC
- yAIlOjFu
- kwaUY55Us7UvR9TACSKjcmKqYPsIr9uu/Rmx4RaU+u7l5iARFuqyvNFhtHwQIUiidRRRp17hpd6n9h+HXop1XgfPO0aRe+jD/01w2CdzOra87XVLB2Jt2v8olICihaeK78J/kZed9lfmO1r2aJYfcZ0Vv2hWNOMMdb5AM+hq4JXxT4BSQ8n5FMtnhWSIbscO1ZKn7tOO5UFJ6KlUjgmlkvX/wPajhrPdSXZ5ZU8viqU14BObeCxD0G+KBDR7+yZly9K+S6Nwr8txGdQRmZ5am5fkx2TXhfKopgEWL9OvaJCnV+Xae7x+CvdT4BNUeMjd7lBRO//2Eq0CjvOafd4G7pC8Qtbpe7VtLMR1OL0lpu9VWCehCHVy91jbA7wnHQUb7F4BytnZhdNo3+6TWU9laT/kP+sH894Hjy8BRzZlBG8jLFBxR/ZoCwGpfB/Ddhg7mhq52W985wzCBxA65iNHEyIu4QuFHgpm0utqCPK1RWR7w6muXLFJt3fwCv78hyVvm1M853k2V4iHI2PtdDByH7jyA00fmOc5p+5PpVr1PuBwotMp6A4kNzQ0cWk487+lh8nlE6nd42lU06hXb9mXizRmqnnXDyX12ml2R
+X-Stat-Signature: cpbxc4ss87w4zmyfmjssh3h7xco1ozph
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1E19012000A
+X-Rspam-User:
+X-HE-Tag: 1795452236-377247
+X-HE-Meta: U2FsdGVkX1/LZW9WxUqeEcY/ZqvEcVA9j5B+icW2oZHXMYSinu3QEFNO28D1jbFvs4GumVjM2NUN/25U02qvcKwuyB0vNyPQlii//mDwXczSJ4lJkI0tnPMr8gBHVuqTgoJgPCJutAM85VeM1iYtyR1PY/wkdh1+RvUgnEWQgG/KDoAs1tG5lF/UQFdLVU4EKt96cqJVUb6UAe2DZUloGqtLlodNde2o1F2034UyVtcV6vuVHGrobGKVRel3mRxNe/H8Sh0mJXjU4wKtHAZbH+qLanZc7o3vTBxxsturnZqslO0AgE1j/T9Yqyb7ZkEIGnMZTO3TQlFZ6LQy6Lee2D+3eZpPheHOl65Sw/RbXT9XQoGkeI/laTOEgFjysGidwBqmDVZoeNTxgdduBbFp++jBxnJOPeHKDvinNJtYE48IlQQZzJTk3sg+m1lbG7j1Mx30l/Bu/ZuGr61fL+Sga9AX4c4c5JKzORkddyvPmtEQREIWxa77oF5IvvU/s2SlL6Mh7FtQh/lmVHS3dYgBtQvTGNItSBDbPPpFCcN02Nehx6zNwquUOEyPVreNkqye5qZcdoTdptOBoo8maDHfp+eAhIs340wCRlihMoxd4PwlCP43IQHdS2sWzN8Wt0jm4TOha9fAyWDfB/Mt6y1/+Q7qErW9ffu2TwAF+xIQwagGjyGo54sNvb5Dk1CzQkol7h9Sk3xxdmcGuejZZHIbOvW9ey6T8t7fqUO2ZqPNzghH7b6/qZzuBXVd9BNaCTZGXOs7NcJOJFhRCG+aBUmLqMLzMKhk/D1ErMuX3Xs/Kqc6e/327apcTjcW/1kwdCG7KCM4hU8YxkwPT6SXw39dxeQvnt7eKf7d2wucOpPb7S6fdK1g7e3VbkKoqPR1vu7uwgrA1MznsK2qtsCGXAjnRgdhJKjj0TOUt73P5+WSY52iNXVMGBPX9j/Tvw8JvOv+hv7qv2dfpUXKpCV+XXq
+ 1NdlW2dH
+ w+McTjydNvb3hoxBbTVPjmoHnJaJQvXYHQyWfrnVdo4psswgnUPXjgrsqmfnobQedBxA101058hEjMcew5uE1WO2v2HSMdItET+s45pful5O1XwZeqqkUIsWoEino49StKRPv0MGt7a2yK/oIBvD6zXORs2aLlyy172JLZPUt2ndNzWx6QDzyGRsEMAiqiyjs3c+td42r6lvSWd98JWJkbu6gAF/LD7MceNUmc2VCT++s5w8+AyTzYz/Jn9MAIlB9mzlaI6UPOX6OsufE89UDyfXbUJl7RIOWWestq7mSIT0pltZIuvITF9DH8AeNo2CJ8ErBI6OsclQbI8D408d4hJX0IXSy51ZiQ1oFYu18b592koNOHrvn5WpVDioFjbUlvxZBspT0IDt+PS8mF3y5hDewTJkzJRfwkz6p5Fep7dXoRYPkakeCKkH1hcqZbr2QKFXDenYhuCHf6d5Eb3ho7FfTuBLZM9A+jhqJ71bLFrNv938qVm1LpxvJGJ8BLp9vy464
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,93 +144,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/23/26 04:43, Xu Xin (vivo) wrote:
-> As documented in Documentation/admin-guide/mm/ksm.rst, ksm_zero_pages
-> accounts only for zero pages actually placed by KSM.  However, the
-> current implementation wrongly accounts for forked zero-page PTEs as
-> KSM's contribution, inflating both the child's per-mm counter and the
-> global ksm_zero_pages counter.
+On 11/23/26 04:45, Xu Xin (vivo) wrote:
+> Currently, test_fork_ksm_merging_page_count() passes wrongly even if
+> fork() fails to reset mm->ksm_merging_pages, because the child process
+> calls init_global_file_handles() -> ksm_stop(), which unmerges all KSM
+> pages across the system before reading its counters.
 > 
-> Originally, commit e2942062e01d ("ksm: count all zero pages placed by
-> KSM") marked KSM-placed zero-page PTEs with the dirty bit for unmap
-> accounting, but forgot to clear this marker during fork().  Later, to
-> prevent ksm_might_unmap_zero_page() from underflowing the counters on
-> child exit[1], commit 4d6fc29f3634 ("mm/ksm: fix incorrect KSM counter
-> handling in mm_struct during fork") kept the child's inherited per-mm
-> counter and added it to the global counter.
+> Fix three issues in test_fork_ksm_merging_page_count():
 > 
-> Instead of inflating the counters, fix the root cause by resetting the
-> child's mm->ksm_zero_pages to 0 in ksm_fork() and clearing the KSM
-> zero-page marker via ksm_fork_pte() when copying present PTEs in
-> copy_present_ptes().  With the marker cleared,
-> ksm_might_unmap_zero_page() will not decrement the counters on child
-> exit, MADV_UNMERGEABLE in the child will not unnecessarily unshare
-> inherited zero pages, and the global counter remains untouched.
+> - Drop init_global_file_handles() in the child process so it does not
+>   call ksm_stop() and mutate global KSM sysfs state (unmerging all KSM
+>   pages across the system) before reading its counters.
+
+Right, that's not required just to access proc_self_ksm_merging_pages_fd.
+
 > 
-> [1] https://lore.kernel.org/all/53a7bf3d-843d-4e19-b0a3-cc6852fe72c1@redhat.com/
+> - Use '!!' in exit(!!ksm_get_self_merging_pages()) to avoid 8-bit exit
+>   status truncation (e.g., 512 pages on 4 KiB systems truncating to 0).
+
+Ack.
+
 > 
-> Fixes: 4d6fc29f3634 ("mm/ksm: fix incorrect KSM counter handling in mm_struct during fork")
-> Cc: stable@vger.kernel.org
-> Tested-by: Karl Mehltretter <kmehltretter@gmail.com>
+> - Introduce ksm_pause() to pause ksmd (write "0" to /sys/kernel/mm/ksm/run)
+>   before fork(), preventing ksmd from scanning the child and incrementing
+>   its counter before it is read.
+> 
 > Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
 > ---
-> Changes in v3:
-> - Rename might_clear_ksm_zero_pte() to ksm_fork_pte() and move the
->   is_ksm_zero_pte() check into copy_present_ptes() under the !page
->   branch, as suggested by David Hildenbrand.
-> - Expand the comment above ksm_fork_pte() to explain why the marker is
->   cleared on fork.
-> - Add Tested-by tag from Karl Mehltretter.
+>  .../testing/selftests/mm/ksm_functional_tests.c  |  8 ++++++--
+>  tools/testing/selftests/mm/vm_util.c             | 16 ++++++++++++++++
+>  tools/testing/selftests/mm/vm_util.h             |  1 +
+>  3 files changed, 23 insertions(+), 2 deletions(-)
 > 
->  Documentation/admin-guide/mm/ksm.rst |  7 ++++++-
->  include/linux/ksm.h                  | 22 +++++++++++++++++++---
->  mm/memory.c                          |  5 ++++-
->  3 files changed, 29 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
-> index c329ca747b8c..8968ae3f55c0 100644
-> --- a/Documentation/admin-guide/mm/ksm.rst
-> +++ b/Documentation/admin-guide/mm/ksm.rst
-> @@ -214,7 +214,12 @@ stable_node_dups
->          number of duplicated KSM pages
->  ksm_zero_pages
->          how many zero pages that are still mapped into processes were mapped by
-> -        KSM when deduplicating.
-> +        KSM when deduplicating. Note: on fork(), the child process does not
-> +        inherit the ``ksm_zero_pages`` counter, and any inherited KSM-placed
-> +        zero-page mappings are converted into ordinary shared zero-page
-> +        mappings. Consequently, these mappings are neither accounted for in
-> +        the child's counter nor unshared when ``MADV_UNMERGEABLE`` is called
-> +        in the child.
+> diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
+> index 135191f99962..b871d5656688 100644
+> --- a/tools/testing/selftests/mm/ksm_functional_tests.c
+> +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
+> @@ -668,10 +668,14 @@ static void test_fork_ksm_merging_page_count(void)
+>  	if (map == MAP_FAILED)
+>  		return;
 >  
->  When ``use_zero_pages`` is/was enabled, the sum of ``pages_sharing`` +
->  ``ksm_zero_pages`` represents the actual number of pages saved by KSM.
-> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
-> index 596c04ca7326..f29aec4496d0 100644
-> --- a/include/linux/ksm.h
-> +++ b/include/linux/ksm.h
-> @@ -32,6 +32,17 @@ void __ksm_exit(struct mm_struct *mm);
->   */
->  #define is_ksm_zero_pte(pte)	(is_zero_pfn(pte_pfn(pte)) && pte_dirty(pte))
+> +	if (ksm_pause() < 0) {
+> +		ksft_test_result_fail("Stop ksmd from running failed\n");
+> +		goto unmap;
+> +	}
+> +
+>  	child_pid = fork();
+>  	if (!child_pid) {
+> -		init_global_file_handles();
+> -		exit(ksm_get_self_merging_pages());
+> +		exit(!!ksm_get_self_merging_pages());
+>  	} else if (child_pid < 0) {
+>  		ksft_test_result_fail("fork() failed\n");
+>  		goto unmap;
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index f26f9e4bfdbe..e638475543e6 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -1080,6 +1080,22 @@ int ksm_stop(void)
+>  	return ret == 1 ? 0 : -EIO;
+>  }
 >  
-> +/*
-> + * Since the inherited mappings on fork are not expected to be accounted for
-> + * in the child's ksm_zero_pages counter (reset in ksm_fork()), we must
-> + * clear KSM's dirty-bit marker on KSM-placed zero-page PTEs to avoid
-> + * underflowing the counters on child exit.
-> + */
-> +static inline pte_t ksm_fork_pte(pte_t pte)
+> +int ksm_pause(void)
 > +{
+> +	int ksm_fd;
+> +	ssize_t ret;
+> +
+> +	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
+> +	if (ksm_fd < 0)
+> +		return -errno;
+> +
+> +	ret = write(ksm_fd, "0", 1);
+> +	close(ksm_fd);
+> +	if (ret < 0)
+> +		return -errno;
 
-Instead of the long function comment, I'd just have here instead:
+Could close() fail and set a different errno? Unlikely I guess, so this is
+probably sufficient as is.
 
-/*
- * Strip KSM information from the PTE for the child to simplify
- * ksm_zero_pages accounting, and to indicate each deduplicated zeropage
- * only once towards the user.
- */
-
-I can fix that up when applying.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
