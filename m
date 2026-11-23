@@ -1,132 +1,157 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A00606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F82606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w8h2m4oA
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=cPLj8Yt9;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=hC6LIkJb
 Received: by kanga.kvack.org (Postfix)
-	id E8CFF6B05C0; Mon, 23 Nov 2026 09:17:09 -0500 (EST)
+	id 53F966B05C2; Mon, 23 Nov 2026 09:17:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E64736B05C1; Mon, 23 Nov 2026 09:17:09 -0500 (EST)
+	id 516406B05C3; Mon, 23 Nov 2026 09:17:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D53CB6B05C2; Mon, 23 Nov 2026 09:17:09 -0500 (EST)
+	id 3DE2A6B05C4; Mon, 23 Nov 2026 09:17:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B809F6B05C0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:17:09 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E888C08E1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:17:09 +0000 (UTC)
-X-FDA: 85466585778.17.2A9D958
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7C0CC8000D
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:17:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=w8h2m4oA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 169786B05C2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:17:18 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 819581408BB
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:17:17 +0000 (UTC)
+X-FDA: 85466586114.22.EB0735C
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 46B2A20014
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:17:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=cPLj8Yt9;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="h C6LIkJ";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.148 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795443427;
-	b=04BXMrCqQ/dyid3Zr4b80hJ4V2Cd320V8a+uDA5ssYTTRXFRNZZyaJieUXAZAVhcyTXPCJ
-	Zry+hLr2zEjR5782xUAIugApVyjXIQYuFDIE3xNA8Tg+xLoEvUNJJyKKR9fxIvoMly4Y4t
-	gOcFBRvEEZBd3hpIg0l9GsRvC1VkM28=
+	t=1795443435;
+	b=1EJNbQkPJR5sEiREDx1yz0oEKlx/gvtp+tfqCnMF3WjsH/z2+VVmi7b3SR464F3n99bq58
+	LEgZZ3TN4VkssV4UFtuGQUjSIMIXRml8uPYGPm+W7+M7M7Alu2E9mATghjtT0YOBuC9tJ1
+	4K+Et5PcWu/L0dOaiWU/m7MFOQYA3yQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795443427;
+	s=arc-20220608; t=1795443435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XBjZy5aXe1k0hsGSbAtSU1DGVkk1NgApIFU82uacohQ=;
-	b=MB70Hp71LYAwXqMaA2q7YItCoLtdgcZIFHzefqEwhsXP9FaEQfgcRXpX/x2dPdfeJAZ5FT
-	emFZz7DZTU6kbBzNItmTQ8cPYLkJNsqs8XhdcDfQUnYg9wV4SCrTWUb9qHjJzcupvhpecM
-	C6KzfFjP8I6bK+pzGEXw/6aJA51xxTU=
+	bh=BHJ91NJtNYQ6/J6+FaRGzznho5yPOY/r3tuo2Sshg1o=;
+	b=6vTmFzf0mzo6q0Jcdw2d7ejIa9Kb3id6cZR3Xn0IVNflQ46dXX7iLxSBiL/bbos9wuCbWn
+	OwL/eYPhAaq7RZ12nFuttjCne/Fb/MhMUYk50vWmKK2e4MwDbBUaRYAfCWFCiTYWcpqLCw
+	xomKNncXHqyBZODOogeZ+cMNqXL1Q3A=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=w8h2m4oA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1b3beeaf6f9so4075686c88.0
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:17:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795443426; x=1796048226; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XBjZy5aXe1k0hsGSbAtSU1DGVkk1NgApIFU82uacohQ=;
-        b=w8h2m4oArIsthaS52I3/9IgPiV1nrU6hSwzIBx6/lP+3Fszl6qBZkl9t1b5mEiUIXi
-         xxXoIxhbB7HI6YR6wOii+NkoWGvxK5LmhrPbr+6eZcYr3AkzOt5pjK0i25X89XSWhSAh
-         B6ANJpq1rye7reMVJ+JmtZeroMiad+nj/jtKlrj4ZIPoqq4svLoXdxGvhBmZcr8NZcQg
-         VuQeLhJlP8CNY2Zwgh3EPz49A5QfPY5D5om0KVO+VDxVAQWYQEbEkC7bITovKCt2UXF6
-         mdm5xwfFCgWHuw/d3X4ZARlA62ALtQj3tBRgh87e0sLw6uilhDtL2R2MzWatjnp9bkSU
-         fmTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795443426; x=1796048226;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XBjZy5aXe1k0hsGSbAtSU1DGVkk1NgApIFU82uacohQ=;
-        b=k2ShyzHy0Wrf4363jygHc/yZaa8AO1kMckC3US5P9iMQdUWcny6DvW+8Qg8O+/LU31
-         T2/vx4NqGSj0uEy+1e88ykQoDWzXhpKyjqcglHt3MbDv6/5YN08XT8QkT/o7irLTPe/i
-         DK+mzTXFVJvIHP9pmIArKNOg7Zuf9CJXTLz1lMN8PaHDfOwk3ebTBzYr0lhy7DViykPo
-         8PZG1z+HPpcemNvJG7oUPi/tKlkFeA7bQ+NH8zbixdQtmr3O2GLRmY5iViRDI0cVuH69
-         sWPTbWw3QGDfhF998xrG8DZFvT5CJdM6pPB3chNihsHnpv9jqm9qNPMbeKIYmT1dMJ2D
-         wBjg==
-X-Gm-Message-State: APuU4Z8ud9AbVRn5pgNqP5h5LUC4ggHrBMcmwvjlXp6nWQ+SZ20ihFRr
-	Dszab6j/VQSCfttxXL/I32Sngk9xQFmPbx7YesatcBPZMEHro8akYdQLCmJkBZJg
-X-Gm-Gg: AZFdTZf11Pi0VFxE5Z6/N2K2INGS/Un/eMYvYmjlsYXh0WJKAzY8An2LEaGhISx9AOB
-	6HtAUKO3QneF406BbgbUHAcLxTLbc3XGniw8aJY/ILurB033Cjy3jvCzPbUWK+VoQguCWluGQMp
-	nYaua8RlboGPF4eVNjjrXcymjAIRPeuSQv9Nn2Hta9Er6Nu2ftTNF03qj0JYwD2opErAl6hMdiG
-	HmJbJ/FXdq1JrJt2Q7s/nTJZEtSGp8px+5aEDt5e+HYx2gYsAv4T7jy5VwQNKBPDCxC3iF25A5W
-	FJgLmormonHq5HBUJ+JHH8fLc/EbuGIs6zlBmjEhKu2UEhrc0awCSYbFccgLx6EWSEHrRDSVdma
-	4rvE6ax1Xt2r/W9MxyfmvByRg2L1FDgSw+95PTxia2/YMwPpwrpJ4sEj49UgwIFMC47y+W5psgo
-	9+mpNsCHWu6v5T/yTIWWuQEyco5yFUJ7gA6pGAVchezTkvScb7voavGxhgWCnn3MYWSuPOxdMMd
-	vxD1H8wLoTjv5vSXglzQQbXGHBryYAoNI6JHKJjVCI7vAu07hgcbVR8Gi+YhhIelKzPegsfXoSl
-	HKrCSAXvnNyMHsMKI/koxnDWIKt+iF1nXmqNM9ctkQFqTabIAmOWc6xeFwYRBytSQAwW
-X-Received: by 2002:a05:7022:7e82:b0:189:d6bf:7eaa with SMTP id a92af1059eb24-1b56f39c64bmr4473331c88.16.1795443425420;
-        Mon, 23 Nov 2026 06:17:05 -0800 (PST)
-Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567ff27bsm31107781c88.6.2026.11.23.06.16.57
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 23 Nov 2026 06:17:05 -0800 (PST)
-From: Lian Wang <lianux.mm@gmail.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>,
-	Jihan LIN <linjh22s@gmail.com>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v5 06/19] mm/swap: serialize swap publication before removing swapon mutex
-Date: Mon, 23 Nov 2026 22:16:54 +0800
-Message-ID: <030796dcb2086484f87e2250d9cf9a04fccf54ab.1795439990.git.lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1795439990.git.lianux.mm@gmail.com>
-References: <cover.1795439990.git.lianux.mm@gmail.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=cPLj8Yt9;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="h C6LIkJ";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.148 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.phl.internal (Postfix) with ESMTP id 672B5EC0B7D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:17:14 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Mon, 23 Nov 2026 09:17:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795443431;
+	 x=1795529831; bh=BHJ91NJtNYQ6/J6+FaRGzznho5yPOY/r3tuo2Sshg1o=; b=
+	cPLj8Yt9KDzFT9oOBUn+/GuSsf5mynsPFU3peaGSzzjdcM3xPq2nCeDkNchhwU0y
+	agEnTSgyBbGQ/yirLqdAtbec6K/eMPAPx84L678ABrYcb+wpXySl2GHRp4LB9WLN
+	CFo2ebu58MUl9iNZ9Ieq9B5w0n8KUsPK5DwUz9m8y9EZ7/GezgGomuFh9mdki4r/
+	+BIiXtKtzOGG5D+kuw3mpodMWyr20zPfOAhpC9pxJqrf1XcU6K399GtXsEQMc/8R
+	39qj2UCf7kgamdATa+Pl6YH54Dj6cd0VQx4T8GjJ0eSyaIyzVoR7OVUL9GzpK8m7
+	+ruoO3v7zMRO6WezXgniMQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795443431; x=
+	1795529831; bh=BHJ91NJtNYQ6/J6+FaRGzznho5yPOY/r3tuo2Sshg1o=; b=h
+	C6LIkJbKj92f5S7k/JXfyeaid1Af9ZzNDUOfhQPFxJP9BRVK8CoFu3txAUBGFSdE
+	kDtEOIgPiZzvlCZbCv4YLx/KipUoHlpFtABBaFDzTO/Eo99zurKqUHK11ZRFH3nk
+	zrK7lUHYw/5sxSK66fxI2EBGUdhZg116RSbILC1OuB62zbnw2sD4sW3+a4PBWhw+
+	vIkMNp+LX1SFD5zMvRTmes4VjgpqWOOFse8Womzu4lb2d/5udJ8V95DWmA0O1EvJ
+	RGzmtn81sr/9oZLy7H3BztHTIli/UeDdJz4S0o8+2QlJ2kzB0w3ffJ58MILv/tOp
+	VBsPDLa1+OUIFoA4NwwtQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795443431; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:iEqAUWz7qxnbFuMCKcmhRsGvrtI1+pJSb82V2yTWerXMQOD
+	4PC6n2vCDdyrHFGIeY+ZUhzMFGAm46qWs7LtNPFVpEI+svguee1XZDhyd+42eHRv
+	p7+WnSQlqloSjoZIptoygMH6Em8/skj26OO9Dm1FlwkAfIFqVI4O6QuZWgQnPw6x
+	in0HmhvBVCV6ictacurWldUKgPYqp7YflUekiMMnJ4JpNxhATRKkLHTnW+PrNxDc
+	H5CBrLEiVNUXeXHcldx05boYP34hl/KVWFd2FuJB48ubrCqfoMgG3+YJ3mwLxLBc
+	8iU2E39l9h7UdRjZ1iXh8V4kyKcxfN8+tqDyaYA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:Sap56MIkcyZT8r4cYNPG+lEt8q7zj6cm/hR6DX/YHXU=:rDsMBjpfa65jK66igtyHf1M93PmlfJObl6/94lUiVSI=;
+X-ME-Sender: <xms:4koEa8b6jWHk9Km-gWsvkjXKBe9FOycLSAoQHdX1x28WgylltvrlXg>
+    <xme:4koEayN-2NZ5tuVMTv_F6M4wNcDyjmgtjmjdAzvHywIA7KHMufFQZrYw4q170T5Th
+    fPdBGfTNlodLlNUN9knmz7mxDJr9FP9Hc2uPOv3pg8T14AiyewMGhM>
+X-ME-Proxy-Cause: dmFkZTGFrwq2MF5SSuOMe3naqs9tbtMAmc3XEG2p+PrgD+xfiVSS77ldCceRFMgHOXXvSL
+    Ging+R6VT6K3yz4OUeCdmIETXjNj7XXI0r9Tg2543OHjiuaKhMh+yVJAoB6OkAWbwGP/U3
+    JowxnSxhNhDyTsBNjiM7LlqkLGWpphbuTeJ0WjErvJ9KhK0fJtLolaHFC6Kw2talXF2YGF
+    JN7yWyVcYnsY66wGn8uoBc1Op9fn/HtafFpC/Ha3Z7ng5ziTGTERGiQYQq5K4ZdS/5JuDE
+    HH1gfdWjYiM0bW96wZfgClnWGF2XIAu99qwAHGam6Iwuv/kahBWnYmwWVFrVPNzzZ/ahP5
+    U1UkBFU5ZxOctbFZFvYR87OCQ9D85IrFkHXF9AU7aFYWG6vLW8lI9uDg5E561v2/5hKHQA
+    sjQFn5A8NcDFUKKIz/Gj2N6XcZVOTlbQkDMhl7pFKmJR0nTwtc/ea8J3ozLffLR/0wUUbB
+    iamGkspUsbgem4niF9wBtKb8Aybdc10XaTbLUSATly8dgGeAoj4vWgf2FM9ltEDrHvDjNY
+    51emBC5k6bV+SyYpJacMFkokFxMkxKPk9r+T99bzSjJsfdRVRAC/r+2KM3FJJSK6C1f8wW
+    I+V82FhA+/RpOowStt3CO/53UAvaoCC1+Mr9HKqAkD73+MJL10fMk/SelFXQ
+X-ME-Proxy: <xmx:5UoEa7zTEzd5mDVuAJ0khzXfAhl-NnyAwD2CijXl1cunNEN88JhvqQ>
+    <xmx:5UoEa4LmzfnQ4K0KUaYuA7sCKQ4bXebQmmhpsTBdhtm50HSfa0pUZw>
+    <xmx:5UoEa9456MjeyYgj744opH-waU6skY_xuQzxaCDvT7bwukaslpL8Pw>
+    <xmx:5UoEa2xmieeiTKUZnDvuF-Yhydil8f6ZkK_qEXx5P2wofodg1yRZbQ>
+    <xmx:50oEa5l_6AC-8c6ZgGJR10cedMu4FgnH1XmeVBS7jPfPPs2PoWN-CFom>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 6EB4832A009C; Mon, 23 Nov 2026 09:17:06 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k6ajiius6ickofm1byuxkix3rf87s5w3
+X-ThreadId: AMjdjL9dYp0J
+Date: Mon, 23 Nov 2026 15:16:41 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: "Kees Cook" <kees@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-alpha@vger.kernel.org, "Paul Walmsley" <pjw@kernel.org>,
+ "Andy Chiu" <andybnac@gmail.com>, "Magnus Lindholm" <linmag7@gmail.com>
+Message-Id: <b7b8e8cd-d0ba-4e37-93f3-0fa209207124@app.fastmail.com>
+In-Reply-To: 
+ <20261123110111-6431e85f-39a4-427e-b545-2e7a590a6c19@linutronix.de>
+References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
+ <ec5359c1-c16e-4177-8dfa-2ae5ab8a874f@app.fastmail.com>
+ <20261123110111-6431e85f-39a4-427e-b545-2e7a590a6c19@linutronix.de>
+Subject: Re: [PATCH v3 00/15] exec: Remove AT_VECTOR_SIZE_ARCH from UAPI
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 46B2A20014
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: wiqjenk31zh418n8hjinnwk578dkyg8w
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7C0CC8000D
-X-HE-Tag: 1795443427-544176
-X-HE-Meta: U2FsdGVkX1+x4kLGl0e57nA0TeLUPHch81TUXEx1d2RdYP3+5LmUFp2Im4NrkhnFUj56IWjZcl6SIAvamf7jkc19YL7x0/JN1QQjMZAZetkmG6mIaRAZUJqF9qsEyxCmHTQkfehkxFW43xKTTCyPfArEKbgFjKaNUkQZCO6HtaQI+0cgoVXd6RJtBklZnlxvAzVAIwuKOy+1egwVqMHpo6MpVO4F2TlNhf9qFi+giKq48uLZWZ5vp6ycpHtNMafwsiy8bTlzjBfPyq7dpeipvkA+FxEkh7b2NmVpmoccYBzG2QmL8+lJTN+m64l45x6VkqnvtrTw4h2TBStG5tDyAX3uIno8jLG47YDBOWpEtv1yedUJBmVEX2u1kzWxh5kQogoIxeg3Wfe2LlvleY95yqiVGO1f0Y1HZd+4r43w78ACweqSmBMHuKp4X7zItEcSsac7y5BsrsAoIpwwEU8JpU5n5QE+oDCm+tKnrraJk/y1ibQSgvw5tmlGHZAjw/r3tQ2L/EewIC06iZ5xdM0QW60wyC5aAa+zXKjlJGC1p81V7/V0CYSG4m86CKbLfTbyGm79W3jtbG4x08L3jXW/vV8N4WW9IjtEbCAUcA1qhrvEAAUQ0L3hIq+h8vFYoWL2VlfT3kM37nFnBhPl5ZZlh64qQHgjEHGVn1wlTCL/k9jOioRoIPlSdgpwl0Yp7v61aUlNrCYreg9JWrWXK97Xkn94DFH2CS5NOlVoGQtN0u0imljTpkj9YnTApjkUDmkgNdemlCOWPV7+a3mjVOle97+bR9HxhdIdeWBv3sA8d9ZtRVoQqeOd5EYSqDu/dF2lpgHdjmg6xMtpG5vJQOF6Hh1x0H94NX4gPyGA9ageIL3cg8qF3WFNT39B4I+kSIiSTlL7B97AIJEtM0aSCQsek6lSNuFTaG+R/o8OY75mjb+KfKr7IkQ8K+oDELpAgldywth2d6ZFShN7BJkdCv7
- QZU5gSkT
- IE3z2YjOCWenfs75vvI+L308PbW3hqk4RkOMaDghLpHki7RtmN0PkWTGKOfQOOFu1/zpaaFgUbLv2xisJyoNCyfuCxA03+3JJTxumMp1xEMuFmA6ojGkfYpkIGt9qGuE1GXPGTvw6Y5PSbdgjuD2riUwaXDD79qv5UR9OLJqQX1fZSSv2Cl3d0iX2gkYLN2Ll5seF1JYPQ59BepMost5ENVFnTCxIj2BTnpiez0nRbMlWPmFCZcMQFTyakVxGyGXINArBryoNAH52pv9Fys3NbWmAovT2dkDPnE4UmPyNZuxc63t2g49a16UMiqf9Z/rhVDv67kTZEXiqMd1eKTAF3xIoKnB+qMPbjlo74VdwMXbLak2iS7GPmeWvLgRXWXZLDYYJpSVtv4fbOHRL6G7FZlXLOhUyiRFH7HvwpNr2TlNC1oNrLlfj3j1a4wlVbEpP7cY3cjxEL7VW8H3GxT6ji+m+5pZuupGRjpZOfgkVBiT0Ubmrvh4NePOgYTcR/FyadpGxNz/yQ+OoXnrP95TLJEraWxN6ub5DipkCSD4j8PX8j3a2jikDB4p8xU0Ps3W4MdwxloaicIBNYUuOSzaLxway6fjdnocYLpxy4dFyhc2in327T4q97qMj5V8fqamESEUwSkgXcvuffKIX0hqEv51vOojvuB3PgXFvHa1mo6L9rHENzrcQSh/mPg==
+X-HE-Tag: 1795443435-999659
+X-HE-Meta: U2FsdGVkX18Kp+An6j0p1dR3Kkfgsl/39Lq3JfKqSUT3AY98FHn5Rvd8etJbMpXYFbaxPLsZ0CXpcrDKaWXW1WeM0TSxoXwk/dmw6zbY1ArPtPWqEFn/kS31usrsCOxV/+xcVAr+QrYYjmUbE/0T4lp+CtrgNNJ16Qou+dBkqEzfeEuBihbqtiLD3uIfkjRkb/TZIYdpanoW/fmN9viZQrOnhUPvcChc+Z+qYj4LNT9FSShUxj5p3nyVacqC+iz7uGaC8VYahTAUfkYxYJRuX8AMcVhMHHA4/AqdgEx6arXz8nTGxk14pzy+IojPWKFLI1symp0HWHkQksrbYaIT8stBscWYf5ec8C6V/cZWZxVWftqqxQv1/FH6QfjorIv3aRVibj3vfphW3/ERq3Lp8JJ3DDssdr54EAIn3AkK8FnPbin/ewdV1RLQfqtmuXmgeqQnEVygMj5g/GmTiTmt5fm7k9MdfJWIXg8uBDtRrsJGi72LTM2QlBiWYF8NzDJCqjhfmn5Ikz3AX+pxmnuLVN1mpZdZN14YV7j4ACk0ShN6bLisDNTW1JAbJwt5Vk0Mj000Q0CtQ+jM/MZN068xI5DmoyDQBunYDoUFsLWg5+SZGpzIyLHyOtmD2C6DEaxhqw3otxb2Z5/Q3OOT76WQRkO3uCXN+kb3x2rx7nBVc3S17BxIgp8qzcwQM3br15oWv+51CjRo+frV0W4dsKfnbmRGUHIz388HipOINnQFs4+4dpU98ITFl75rktM7zP4Cfh+MK6D//ie4Y6C06D1+LnkTykVS8X2kI4iRslrgv9WjPMy/8E6eD7ijUislwSOy919DA6vKwlp0XdpX8EdVAQJKGkOpZJ4PiCU4LlAzBHgGa9TsAKyqlkowoqX2sNRLKf0NEAuVe1aXl+dC8GeTCy/k3BbMFB3nFLR4SVQJyF/4hqoG7CSPbm7+3BVnMT73WkqDp45ggh8zCru8gOH
+ NBXEfwL1
+ Lx6CmGCspDe3LxpCN6DGP0SGw/w6q10DMJZ6c5x7f0VDYi3G92gals/fQtTO3Tq8CsPxcENC0xhxqlpQxvexPnXI4zhtSoPe3gGK910o0x7nYvRAIRRkjR9Ne3WxMj1jTywRZt/ijBeqpRHrIB9iK74FgkMrF0sYNzILJNr76T8JFgB7TgZWV8eYkhgUMfnAyu5S326UFrWnK/o/zjYOyJOx1An3ucgfdzEZkklGu+Wb8blu7Elw4Q5vUKAUnYfxD8NWzKl2vtMsggb+ZFEWBD20QLZ3xOdwtKt4Aqz9l3fwjRH2czrJxFskL1JcAp1pTYLyvtHEuEzEV6cpclsgD8AFqmDbUSAe/SYQb4MIQNKalQUBe4MI57OrAWE9rbhJs4gNJfLhi8Lm70ugSY429SzudpxIwkzWE1ctKAKnkB16dLBh+5+F5ykZg9kPhj2P1StCiDF3tAz+j1RYUZLQWTsuphdnmSw7YxnteSs/9zUGb3xqNEA3z7lLv+PRnLjpvQBf48Mc/4Ul3SBJ0jff1HC3b6DweNqC77bKJflD42KmFcRYZfIWl1QTX3Qh2mAr4g05k/wg5cORJ52tBPU+cGc6SHpxy+yhlKpmqssLra9DGoMNDNAmNlDufcUW5yMs96P+KJwk7C+jzOI51PG/EYATuvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,163 +160,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Kairui Song <kasong@tencent.com>
+On Mon, Nov 23, 2026, at 11:03, Thomas Wei=C3=9Fschuh wrote:
+> On Mon, Nov 23, 2026 at 10:44:40AM +0100, Arnd Bergmann wrote:
+>> On Mon, Nov 23, 2026, at 10:37, Thomas Wei=C3=9Fschuh wrote:
+>> > There is nothing userspace can do with this value. In the kernel is
+>> > always combined with AT_VECTOR_SIZE_BASE, which is not exposed to
+>> > userspace and also changes from time to time.
+>> >
+>> > Move the symbol to kernel-internal headers.
+>> >
+>> > Meant to be applied through the asm-generic or execve tree.
+>> > The default recipient list was huge. I trimmed it to only the
+>> > architecture lists.
+>> >
+>> > Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.=
+de>
+>>=20
+>> Hi Thomas,
+>>=20
+>> I'm happy to take this through the asm-generic tree. I've already
+>> made sure it all applies and the patches look good to me. I'd
+>> wait a few more days for additional Ack or any other replies,
+>> let me know once you think I should apply this version.
+>
+> This v3 is functionally identical to v1 and v2 which have been on the
+> list of a long time. I am not sure how much more feedback will come.
+> IMO it can already be applied to gain more exposure in -next.
 
-Move publication of swap_file, resurrection of the device reference and
-the writable transition into one swapon_rwsem writer section. Split out
-a writer-held enable helper so initial publication can share this
-section, while failed swapoff can use the locking wrapper.
+Fair enough, pushed out to the asm-generic tree now.
 
-With file publication and teardown serialized by the writer, remove
-swapon_mutex and use a topology reader across /proc/swaps iteration.
-Only expose entries with a published swap_file. Other bits in flags
-can already change during device setup, before publication.
-
-The publication boundary excludes proc readers from partially published
-state and gives the lockless live-reference users initialized device
-metadata before the device becomes an allocation candidate.
-
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Co-developed-by: Lian Wang <lianux.mm@gmail.com>
-Signed-off-by: Lian Wang <lianux.mm@gmail.com>
----
- mm/swapfile.c | 39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 7a97cfd8d009..24f301ef4e3a 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -139,9 +139,6 @@ static inline struct swap_info_struct *__swap_iter(int *i, unsigned long flag)
- 
- static struct kmem_cache *swap_table_cachep;
- 
--/* Protects si->swap_file for /proc/swaps usage */
--static DEFINE_MUTEX(swapon_mutex);
--
- static DECLARE_WAIT_QUEUE_HEAD(proc_poll_wait);
- /* Activity counter to indicate that a swapon or swapoff has occurred */
- static atomic_t proc_poll_event = ATOMIC_INIT(0);
-@@ -3161,9 +3158,9 @@ static int setup_swap_extents(struct swap_info_struct *sis,
-  * Mark a fully initialized swap device writable and expose it to the
-  * allocator. The caller must have resurrected its percpu ref first.
-  */
--static void swap_device_enable(struct swap_info_struct *si)
-+static void __swap_device_enable(struct swap_info_struct *si)
- {
--	percpu_down_write(&swapon_rwsem);
-+	lockdep_assert_held_write(&swapon_rwsem);
- 	spin_lock(&si->lock);
- 	spin_lock(&swap_avail_lock);
- 	si->flags |= SWP_WRITEOK;
-@@ -3173,11 +3170,16 @@ static void swap_device_enable(struct swap_info_struct *si)
- 	atomic_long_add(si->pages, &nr_swap_pages);
- 	total_swap_pages += si->pages;
- 	plist_add(&si->list, &swap_active_head);
--	percpu_up_write(&swapon_rwsem);
--
- 	add_to_avail_list(si);
- }
- 
-+static void swap_device_enable(struct swap_info_struct *si)
-+{
-+	percpu_down_write(&swapon_rwsem);
-+	__swap_device_enable(si);
-+	percpu_up_write(&swapon_rwsem);
-+}
-+
- static int swap_device_disable(struct address_space *mapping,
- 			       struct swap_info_struct **swap_info)
- {
-@@ -3340,7 +3342,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	if (!(p->flags & SWP_SOLIDSTATE))
- 		atomic_dec(&nr_rotate_swap);
- 
--	mutex_lock(&swapon_mutex);
- 	percpu_down_write(&swapon_rwsem);
- 	spin_lock(&p->lock);
- 	drain_mmlist();
-@@ -3355,7 +3356,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	percpu_up_write(&swapon_rwsem);
- 	arch_swap_invalidate_area(p->type);
- 	zswap_swapoff(p->type);
--	mutex_unlock(&swapon_mutex);
- 	kfree(p->global_cluster);
- 	p->global_cluster = NULL;
- 	free_swap_cluster_info(cluster_info, maxpages);
-@@ -3397,20 +3397,18 @@ static __poll_t swaps_poll(struct file *file, poll_table *wait)
- 	return EPOLLIN | EPOLLRDNORM;
- }
- 
--/* iterator */
- static void *swap_start(struct seq_file *swap, loff_t *pos)
- {
- 	struct swap_info_struct *si;
--	int type;
- 	loff_t l = *pos;
- 
--	mutex_lock(&swapon_mutex);
-+	percpu_down_read(&swapon_rwsem);
- 
- 	if (!l)
- 		return SEQ_START_TOKEN;
- 
--	for (type = 0; (si = swap_type_to_info(type)); type++) {
--		if (!(si->swap_file))
-+	for_each_swap_info(si) {
-+		if (!si->swap_file)
- 			continue;
- 		if (!--l)
- 			return si;
-@@ -3431,7 +3429,7 @@ static void *swap_next(struct seq_file *swap, void *v, loff_t *pos)
- 
- 	++(*pos);
- 	for (; (si = swap_type_to_info(type)); type++) {
--		if (!(si->swap_file))
-+		if (!si->swap_file)
- 			continue;
- 		return si;
- 	}
-@@ -3441,7 +3439,7 @@ static void *swap_next(struct seq_file *swap, void *v, loff_t *pos)
- 
- static void swap_stop(struct seq_file *swap, void *v)
- {
--	mutex_unlock(&swapon_mutex);
-+	percpu_up_read(&swapon_rwsem);
- }
- 
- static int swap_show(struct seq_file *swap, void *v)
-@@ -3954,7 +3952,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 		goto free_swap_zswap;
- 	}
- 
--	mutex_lock(&swapon_mutex);
- 	prio = DEF_SWAP_PRIO;
- 	if (swap_flags & SWAP_FLAG_PREFER)
- 		prio = swap_flags & SWAP_FLAG_PRIO_MASK;
-@@ -3966,11 +3963,14 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	si->prio = prio;
- 	si->list.prio = -si->prio;
- 	si->avail_list.prio = -si->prio;
-+	/* Publish the file, live reference and writable state together. */
-+	percpu_down_write(&swapon_rwsem);
- 	si->swap_file = swap_file;
- 
--	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
-+	/* Make the reference live before exposing the writable device. */
- 	percpu_ref_resurrect(&si->users);
--	swap_device_enable(si);
-+	__swap_device_enable(si);
-+	percpu_up_write(&swapon_rwsem);
- 
- 	pr_info("Adding %luk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
- 		K((unsigned long)si->pages), name->name, si->prio, nr_extents,
-@@ -3980,7 +3980,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 		(si->flags & SWP_AREA_DISCARD) ? "s" : "",
- 		(si->flags & SWP_PAGE_DISCARD) ? "c" : "");
- 
--	mutex_unlock(&swapon_mutex);
- 	atomic_inc(&proc_poll_event);
- 	wake_up_interruptible(&proc_poll_wait);
- 
+     Arnd
 
