@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E53606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 18:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E492606A338
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 18:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HDdFSan7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OI4LOAcN
 Received: by kanga.kvack.org (Postfix)
-	id 088B06B05C4; Mon, 23 Nov 2026 13:53:42 -0500 (EST)
+	id 19A766B05C5; Mon, 23 Nov 2026 13:53:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03B4F6B05C6; Mon, 23 Nov 2026 13:53:41 -0500 (EST)
+	id 14CC86B05C6; Mon, 23 Nov 2026 13:53:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFA716B05C4; Mon, 23 Nov 2026 13:53:41 -0500 (EST)
+	id 0623A6B05C7; Mon, 23 Nov 2026 13:53:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AF22D6B05C4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:53:41 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AF9A120974
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:53:40 +0000 (UTC)
-X-FDA: 85467282600.03.F1A539A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D42EF6B05C5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:53:42 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A58F40872
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:53:42 +0000 (UTC)
+X-FDA: 85467282684.06.76EA17B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7B9AE16000E
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:53:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HDdFSan7;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 66FD2C000C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:53:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OI4LOAcN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795460018;
-	b=W8CoMxPikhiZVE8hrHU+hAwJHmEn+ZrvDnoiVPi7M4qHlnMKZARL4Em1pxotkkVpG1khOK
-	sgfG1XWmHRelmZJo5WcKDiXs0xyPb2qm44LVGpDQEvv9Nzk/v6VubP2Isn09v9gzGiS3NX
-	FbxLxmI8zpIYb9hkQVr5k8Mmlf80tEY=
+	t=1795460020;
+	b=w1MNyI6ltEu/KM83CjSEAMn59vBtiVQnK1NlRtWthY/qAQRv7gOpqEARvJW4/l9HWzA6Wr
+	pYyZwbMNwmi6KZSnHn+JdUPLYzU/FVK2K+agRHEbimqDkycKG9exKl/7LLqKRY+PAV/syG
+	Ha5yGY2f10ReSubWcQDZ3bsSeQh0oJM=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795460018;
+	s=arc-20220608; t=1795460020;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fy4iqtyOKVldxfrRoRe9ktEnWMk4sYM46noWj6UrSRw=;
-	b=3OuBpuebUtzV0L233QbDU0qWBn95vkBKRQxt6O36yMxEgS2MhJSGmltjnH4rEhPuMeaBPQ
-	RQW/sla5685iCGYEQ8cgdqf1vWjR5CxWVf8pj5Y5rSDj5xh/lTyFZuGw6jHigfUKWte9Jo
-	+hyJVLzh9aGrXvXYF7tqgAO6DBPR2wM=
+	bh=S0g05G9qZGx4poDmgO7lZ71KlplbuRcjeb30J2se0iw=;
+	b=Fo6oRVyC6X7cfx8q6d0NW/l3DkF1816hsGo0VaFhSM/yJg3Rf3D1g3v2LUmVIlQ9An26Kq
+	v3yDZLk0YC+xAJ4Qn775cCIblQwrTX+yW/496MsftKeBmKwS2KtsRXPa44jl3oK8gCIKmX
+	4rIvKjT9TOw22aOqccDyz3uFadYhlkM=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HDdFSan7;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OI4LOAcN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C0E062426;
-	Mon, 23 Nov 2026 18:53:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E3316141E;
+	Mon, 23 Nov 2026 18:53:40 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795460017;
-	b=Jjom/3pXj9tQ4Zp3RY6f1pRLFSFi1elnVZHOHB16wOhnCgzztlKtRhds8GqKWoTbFEh7
-	 FfyFpocQ8gnZXG11ZMWH0dKXcBRs+B1NQ6x2dOwzudNvipDxD8r8ORv8sY7alkGQsyRaM
-	 xHw7fmarnOqgfcJrJh5iXpORnzg+WlxaaWDqqPQuLaHlg7QE7eXZXb63d8pWM75CGE6Sp
-	 GNNeQk6qJOA3RbjOAgLudIryPmgPkgzyLuIoEbtWmyEVWVhWRBvKFAX9aWHCev5dG353a
-	 dZhr6uCSMMdmGgTpiUo9Z9jGuUt9ox/7HZaVYiXqP0SREdR+Wo9EpqYacfrovf81V5Q==
+	t=1795460019;
+	b=XlZNcG1eQ8UO3gM8pVnzANPdqacQycBHowY5SGrdhkfXgN3mGRJqGcgzXWWwZPbjV+k0
+	 P5/SwKN+oPOGNN8mAxK577W2KYQUC4trJIORxfyNlESSpoWNJr22tun4Vxsb8O1+wk+8y
+	 2A46zDGs0V9LZ5IsnUma65vaq3rhs+tReJwUU8M+G0wXh3kxehj3VJH5LK4YDQW+nDReW
+	 jcuaSlD8ekp9MsM65F8FBmjGwLgZWUqgnt24ZIbys2vC5mhA0MVHs8UVTiMgmgCCA1gJv
+	 42c+C4OORrmFrs1+A1lP+AGKSADkr7URFBBbKTNDgYUfwwDmQQ+wnp9Q2kjbRo8DnBA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795460017;
+	c=relaxed/relaxed; t=1795460019;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Fy4iqtyOKVldxfrRoRe9ktEnWMk4sYM46noWj6UrSRw=;
-	b=tRGxDVjH8MG4m8kIQshdLIlAYSkuobghJlZyhEOJRFnchk5NMEm1ZuL+cNRaBTMSHB+v
-	 ZzCrqNeCOC9oL8+eBJwOhx5obY4uuaAeU24F9RWRSYLzunqyjXg4tct3cb7r6Nv2595Tj
-	 9S9chC2aPBehcCUuFKQ4N/spZVS3zNJGiBAy4ewHWy0TDb0XPcOgb9ypo3JDQQXnDot03
-	 WIAOMrgCMO5I/oNHdWaAcWHsfaGdj/pXSTgOpf0HkhREeaAqU0yLHhJ1bh29S4NfVSzot
-	 NnuU3VKDVDIip+n9LhxM/AuLw3QoX8Lv6ZN4FfLkFcTs3nFUSIZaEz2cYcHjoHpczWw==
+	bh=S0g05G9qZGx4poDmgO7lZ71KlplbuRcjeb30J2se0iw=;
+	b=grp95qAAe8ok1C1VsANNaBMj6dQFGNEgLp9N4A62wiDqUIHQtH3p7PnfPV1DngYZ/ept
+	 ddyFhTiC3lzky3qqRgDoW9Q1aVNPZn5J2ZDDS3pQivtXqOr9GddP1Wq2bKRdjtt70NG/8
+	 tpbcbrxxmYZifrheH6AtSfUUXhkAcTTopdQXco+71ayyxLkb0UOYw0j6IodS9SyuO0m4S
+	 zxr9h+ATB97DwSDBXoGEtX/2R6R++JZ2EhRJ/frGi0xc0E/l7MXjyALAQIKcbFtjp0NTW
+	 SMnnYGUNeaTnfydTqeoiFZq5N7YZ7O63DLy7b4wk9ZkFUqOXTiTVmvUEjipvt/06vQg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 05F841F00A01;
-	Mon, 23 Nov 2026 18:53:26 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 515341F0089E;
+	Mon, 23 Nov 2026 18:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795460017;
-	bh=Fy4iqtyOKVldxfrRoRe9ktEnWMk4sYM46noWj6UrSRw=;
+	s=k20260515; t=1795460019;
+	bh=S0g05G9qZGx4poDmgO7lZ71KlplbuRcjeb30J2se0iw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=HDdFSan784ZY1na1QkuZrD95OJiWZSBxW9gq0IStIhqhG0yjn0dpGPLLGatoic2DP
-	 Py7ZCCqX5utH+eeLqYyOdGxXmcWhNWPFhzmDDMoHwmXyzb0BPwiitlD84JT8t3ocM9
-	 3fF85JwREouTYeQn0DrSMgA+MCpvbj5GgMG6chRw/nS+zWCb1B31mtQjRv//RVYdwI
-	 Y8dUXCa2xCVsKHSNpuYZfMD1ckgK1ZXwVEP/viCzLZZe47PMjmHamNIAE5XE/EVBqF
-	 kfkLTE6Xb2npiprm7It0dl0ROQvEbq60eDfb/z8FrZooitk5uC4vvYoTKkeoIJTlTK
-	 Vzw7roGeXf40w==
+	b=OI4LOAcN4E/4zVyXqI2A61Tlme4Iy4E3rNCQ7ChWI15doWpkJiblS4VzWnkHDKcMH
+	 feh+nHj6jU5xw275gQGTxXx/p6m4DT2uM+Uhka39Cm+gLsMp1V7wtUdsrpVIbG2dOV
+	 3XDNoQT9Cf3EcTlIsjW9Qt28hE4eO4sxQ00stEM3/FRKWb6HrMKB4jpQrhph5f15Uf
+	 QOn2VcGUZ3rDLa5/vIotCHclUtYgkSHVfmoh/ccX03+CzoPOVYVehqV/bWTeYo78s5
+	 OyZ+cm2A3CkhY3Zzp7kwzSTxqy2mbYJIX8m/qIZTWe851LkSVBEWnfIoos0yRUJbD6
+	 dDfZZwkHX/q2w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 7F6304C659;
+	by lkml.kernel.org (Postfix) with ESMTP id 9B9F14C65D;
 	Mon, 23 Nov 2026 18:53:01 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 24 Nov 2026 02:53:04 +0800
-Subject: [PATCH v6 12/18] mm/damon: convert to LRU refs based operations
- for MGLRU
+Date: Tue, 24 Nov 2026 02:53:05 +0800
+Subject: [PATCH v6 13/18] mm/khugepaged: convert to LRU refs based
+ operations for MGLRU
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261124-mglru-fg-v6-12-8ffea39934a6@tencent.com>
+Message-Id: <20261124-mglru-fg-v6-13-8ffea39934a6@tencent.com>
 References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
 In-Reply-To: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
 To: linux-mm@kvack.org
@@ -132,11 +132,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Tianyi Chen <hi@tychen.cc>, Kairui Song <kasong@tencent.com>, 
  Ridong Chen <ridong.chen@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795459977; l=1016;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795459977; l=1410;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=ofT3DkXyC3h7ptCQPZjIa/LhrvPGmBU9+3gfY2rFnss=;
- b=o6eHIETcJuwaJUc97SH5F7SQ/kGVMK/yHu942m9yR9l+9EVkcSYS7fRXRI9yRCIPDg6wTwp7x
- /7/d/ERJJiaCtmPfVXmihoibf7n0JZz3OuQL/SSmum1iHaht3PhdLNZ
+ bh=ylGSrEczLifu/DdmhwMoGhk6njBmtr2EJO7xuMx10kQ=;
+ b=pXXLUep3I/vltYX0L1UH0GTTRjdiy0b3iBc9jWcCRdtT3cKw00OaEvGBk3uaweRY+TaoRFVrh
+ ZG6rFxHmKKzBv05zdRFuW60YLUnIX7HDic9FG8ptG6NTl5y6QM0dqWa
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
@@ -144,18 +144,18 @@ X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspam-User:
-X-Rspamd-Queue-Id: 7B9AE16000E
+X-Stat-Signature: ipukiji44kuy1mwn9gsfj7wtaof1trhw
+X-Rspamd-Queue-Id: 66FD2C000C
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 6u3uwgmanu6nkexo9j5yhqd1tybhf1qy
-X-HE-Tag: 1795460018-299653
-X-HE-Meta: U2FsdGVkX1+U/+5S0aSLwxzetlpVibHSd9kmIfczxPlSfuhIEaRtajDv+YdBHzeiP6o5j1twcUAVJZCo9DnH8VRkm9iCvA+tQ0p//eolnfkJoDFW5xtLXIYyf/Dz7O0miq2qyywCEU+x/6oPchyT+BG7Z48ORkyYuRAv8l9zYdTx1rF6CHaEZzQDz1mphM0+sRyKq010Xs4Lena/TTGpDdQMINtt65gW0AGQiNc2DFZ55Zh192IFvkhpgHqAVL0DBuU5fASyOFlrUtUmsstCn9i3ArINQ6mFvkXBxuEuBvZ46lVQjpeJxyazBS7NoWKY0Z1YkPrC3qYm+vpfwleO+ZE78FHaOVFQJIGUm7z1K6lTjBi8xMEAtrV0kiA71VN2YPa949+MPw0JafPakL4dCQx8qK27o6A2c/M2HCqjjmUn2L/+L8P0oqoTq/eOAtrfVOSUJQkJ1f+lG0mA9fkYIUn/1fHLclBABPOa0IEsFZXInhOz1ubsMr6Cy4Qr20YPTj4pV5CsDvysqa9C8iER3TMKwAiavHplR9T7/eSpgmCaQpvy5c4WJmUlug/ptv/Ghj2YZ+lzE+Ynij/n3t0d2/+T+PGYva1hMgT1RVnkLuxFDjy1yQtqh44WENqGgSWk2z378YfazHW2W/+CO1ziJs6coYugiacpLy2QUzNv4wV+/wVYyTLGkzQ6JcgV3qDpaqGhPSFEbk6hZl5h/wWB8G4EnZixmTp+VJK5Nfqo1Iy+SgbVPnccEeyDUK4s3ocatAqzSABrN5VAFLCyqmakSBUakPX0A9ymgmPa9El5vO/atG4jqkviHF2csZTtjit+aVRKhTCQcH6hxWLzxJ6n/Etu8rM9pFYICY60u/w/YDnJTXBweV3KSDIFHB+YUjlx4VP3UQK8FJ/pfYj4xlwDaZPv2KTYcQ3qtjMabCGDYR58lT+sALjPp4thWKF+oyH5uXwtylKs2hmDR7SfmX/
- 4T6XdwYC
- s/OgCk9Q/j3eEeki57RIjyJGDSfRfTyGZLvc6JV0aedyXHNimWbdgm6jApQS1go8siXhBb2L8EcDzSa950VieP3ef6eMEfAmdleWbVQj6+wmoG529uSpCo22DmEQbOHC1eczQy7Do4lEL3yf/3XZCSH33wUGxDeeUw6N8V/GufKNOdkyMPTyvfanYUlQNqJK15BBsyX7iKy3qCIDjS2824iOzWdXgi3bGXwf6sLiriVoIBUoHQk6sz5/vGpVtmGJN0WSCb40gVna5Q/VZkC0c66z5IUF4ySGiddRG2BjVBp6iqf1rU3ftHDhpfy3QlgvpLPMLT7KJGohDRrDhTh5A1nidJkre3OJ7iEN7NRef+2F+/3saS5P9lrbj1co4o9lI2xYCahK+iUBz9+WJqGTGzI6KHnVJxV93p/AcmgEKcYSLwFyKJO2mT1h5TcTk37khK5JOw7Ix9MdIYKi3l3QU8GvLNUe7Xm/lIMt+8EdAGp/f7rx9RQO+ctQbR7v0hTzmCFnZ4u0dZo6zumqQGXqC14wih7E5dXYyPdkAmHi+sE+S1ZBI0TWzqZNGdRJdQYfjAUhvNdkQrAVINJsF3YihH5sSOeBYKcEEVuC2H4OAVrZ3c8aGjDYKKNvnZYFhXAFvnmaJ97dgB4rl6TuploEo4ADougM5BXHtobZmOjU14rJmAvABFo/EfHHWEeI0NwGdWEmFyABf+kYiS7t8f4xtJVx2VdXA4MLimZcfDztZcKp1mUDVSt7Gwg6WcBOgaP3UmpQUP+6kjsXOojow8bidAWdZcMTcCA+BcWy50qJQP34WA0qJRcraX2TJDwaPVXubnS9sL1+YIya1u7BxAuEikj36cHrRNLzS9LmxWlgwaUZNx+4lQG1p8uuV/Q==
+X-Rspam-User:
+X-HE-Tag: 1795460020-244583
+X-HE-Meta: U2FsdGVkX18j//frTWVmjvlFVNjRxWHwSCpvtrEwqXzF3E+sLDGMXOWp3E8y8bfyKcQRGmO38iCP2zRhUWvU7E/m7VyQHjCelf9lroO2vNt4nzxZGJ/ahBDp9ov1cSpV6FBTTu23+Gl7+W9lDdwD1GtPebuRvnwRKr9Ceu2vgLSyPSe3TL5l2nLcYUdDcF3XOWhjgv5MGKOtyKOiQ3YBXourdwWcMZcR6rYOsYqlH9YB1Jtyd0tu92+nMnkKKvHF4WBzs2aXak+3kMsqLaoI36rjjDyFlQjvdCCdgf1DH4DBr2MPgHQhB4vtUFOqATsq4DzfIARcQOJV+mkj2Hz2GbaksUnRrGBMMdPc33cg1yF6uXZ3oPwK4mnqqa0P8xRSCAdZMrsh8Y0rJVcI0tfOxc+2K67bHZc0bl0efbhqi9DEZMXvfOx9VNgkVEqQijhJYpqCaoB0XmKHRox9R6jRFw15RYaiz0A9dB4AoR8uC9PENUoO24Fr+HCsHk2HvaulX9jfuLqxMVPaDOQfjMSKKYfbIt9xacvYoCHKFtP1qDWBd3WiV1z9RdnNoDXlX+ohvwZr976HeWxTyi6GwrCxYuQKPAcH29FMXGrWOMzTN5j6ISl30t96ZHPNCTa0goy27d93ezF8/zPacLRjkVHU+25PkH23V5l/0ilmpuKLgbSdgtCyONvboBfnrrYF6NxcqxHgXTL5oDAuppW19KpiisP20dxN+VKQWoG6Ww51ECep4WJISnaqK/Mnws+ON45xS26KQtqZ632u1Z+Fwa4IWNYWUKcUYTW4DYMvp/vh6fewVq0tKsq7M2+hUKgU92G/EingyhckXKVPDAfue9I1IWemRe0/YbO6DnCPRhrGrpuijWzOye/lB3CXrv836o2r/mlu3eHeF3inUc8bpxPmomXYubjFvoF8cZ1g3DWUTDUgzzryxa4rTmj0k7ivO8ouSHWGH0SG5y03ryOOg2l
+ KV61Ybpi
+ XB9Dc5r4j5IhS1D+cdNCed3/xQPjv69gdgszMutT3mfz0BhawVp9AoHNz16FqSmqbWgYZrH+EJnUfLwETJ7q+WTATFlzs0ae1roY4J9e3MihgoQbvRScxA0x0EJgUsQFsvRmqCHzXs/h7F3FO1HRSguSjp9+9GMWIOec5lXgEAGFWmYtFFJOFXikGsvE5L8GrjMgvrB4dEq0BKCxT2wfVf6iY3p6r657g9spR25uu4MnOfXfyZ1gmp9O8Tr3r6yT3eJOh5uwpXEA7nk14I5dKZ6+Rj4t3ySHiJ1omfYp7ORPpK4wQWHmRPKi2QCA9rRCoLhrc7z4bTpTciJRUciC7gUoxeGQ00hkMFwDevqUxotRl0DP/DLLGyMHzXyTKtU7tfgpIUKc7MFavZKGmELJdqruXBn0ys6pz4K9l1furObqYxiQNDxQryRk8sbkUJdZUM1/VdICQBvBcaaA+fxBjbBUTaM4q49cI3cp23RvSJe14LLQtuJ0qL2Y1Nf7tkJtqiPSAUiKzmutc0ZT0gNVdvHkP7gGC2hox/4AzsWDg+1KIOXl7bj68lbqGI1OKZwc69QT6dXXCQKJh7e5+A8ioHxYJ1DF+0NtV7GjFnixBSB4Zy+IxcnrsBOOKK9zVNTSdEfkvvbzNKa6Bil3C8e8n/9yMMeXMQVxLHam+AkTN5SApPKOeNnJgTmpHjciVFsVQXv70rv/xo0ZMUTaXlRNQh/ue3cqqWxLmWtFHmtjvE2ObSC+ws8TteiZeXtx75IFYlC+UhcbLyF6+NGvg0CYFmvIdxwudWteF4gkC41XuSyPen3iYe3xVEuj5vTmRpWrbrSofDbBxLEnupFnhPmm9cZRPcsH6+DI7xgQ8H2ePU+/vOXAREpr6pwp6bQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,34 +166,38 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Kairui Song <kasong@tencent.com>
 
-damon_pa_pageout() cleared PG_referenced directly, which under MGLRU
-corrupts the folio's refs count. That flag is now
-bit 0 of the count (LRU_REFS_FLAGS).
+For MGLRU, PG_referenced is only the lowest bit of the folio LRU refs
+count, so folios with nonzero even refs no longer have the bit set.
+folio_pte_referenced() testing the raw bit misses hot folios at
+refs 2, 4 or 6, under-counting the referenced folios of a candidate range
+and aborting otherwise good collapses with SCAN_LACK_REFERENCED_PAGE.
 
-Reset the count instead under MGLRU.
+Test the refs count directly when MGLRU is enabled, mirroring the
+smaps conversion.  The classical LRU keeps the plain bit test.
 
 Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
 Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 Tested-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/damon/paddr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/khugepaged.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index e89cb14ee17b..411e1d557ba3 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -279,7 +279,8 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
- 		else
- 			*sz_filter_passed += folio_size(folio) / addr_unit;
- 
--		folio_clear_referenced(folio);
-+		/* The region is cold, better drop the hotness info. */
-+		folio_clear_lru_refs(folio);
- 		folio_test_clear_young(folio);
- 		if (!folio_isolate_lru(folio))
- 			goto put_folio;
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 2dc4245814df..5e768481ac22 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -579,7 +579,9 @@ static bool folio_pte_referenced(struct folio *folio,
+ 		struct vm_area_struct *vma, unsigned long addr, pte_t pteval)
+ {
+ 	/* The folio was referenced previously ... */
+-	if (folio_test_young(folio) || folio_test_referenced(folio))
++	if (folio_test_young(folio))
++		return true;
++	if (folio_check_lru_refs(folio))
+ 		return true;
+ 	/* ... or the PTE mapping was recently used */
+ 	return pte_young(pteval) || mmu_notifier_test_young(vma->vm_mm, addr);
 
 -- 
 2.56.1
