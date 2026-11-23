@@ -1,155 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992BC606A32C
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F8F606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=O7AgBIDQ;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=b/xkS61/
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HzEYkNQa
 Received: by kanga.kvack.org (Postfix)
-	id BB3C76B05B1; Mon, 23 Nov 2026 04:45:13 -0500 (EST)
+	id 03F786B05B7; Mon, 23 Nov 2026 04:47:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B84CC6B05B4; Mon, 23 Nov 2026 04:45:13 -0500 (EST)
+	id F323E6B05BA; Mon, 23 Nov 2026 04:47:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A73736B05B9; Mon, 23 Nov 2026 04:45:13 -0500 (EST)
+	id E6EE16B05BC; Mon, 23 Nov 2026 04:47:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 86CF16B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:45:13 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 236D91A07FA
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:45:13 +0000 (UTC)
-X-FDA: 85465900506.18.75C4C97
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D95AD140003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:45:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=O7AgBIDQ;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b /xkS61";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf09.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.151 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B38B76B05B7
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:47:29 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4ECC880416
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:47:29 +0000 (UTC)
+X-FDA: 85465906218.04.B7C0D93
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 513708000B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:47:27 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=HzEYkNQa;
+	spf=pass (imf30.hostedemail.com: domain of abarnas@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=abarnas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795427111;
-	b=lM6tLnsA5Mvo/DcNcwVdeGvZeeF7OCufAHomiJbxXHXuQfw5Puz7g3LOm3HUxSYZl25Vww
-	Ngf7XMrwP04+PRv0qGvlAvxnlCBOd9MTinEggxpRR+gozVVOGxYrFEa5seF4puxP6/focG
-	tWS3jD+w5oR2WZ9GhaadBbGkClLckC4=
+	t=1795427247;
+	b=L4ESdzeQz8T+crOcr44ln5E74aBTxzXxLRQZqK/0XiJwoowa1dOAzAS99Z0omMiNZ9Nknu
+	h+XDw6me42TWVIs1nbLUgEosR+LsQmwROBfU1TUZ1pTvIsHfUTuyfBvExxiAWKW1Y1RbUa
+	9VflFumoqepk1Gym2A7GLK6+3vmytBM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795427111;
+	s=arc-20220608; t=1795427247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jf6Sqoi3Qn0aJKe116rFzx97I+WLp3H4fMEI81ndjOw=;
-	b=VtSyQUNQfwxoEnKhhXDXex8fU1MAHXp/tg7px2YkUpDs4jRacMr0+Isvj88WTyPY2eNv/r
-	phgftGEHjAhurPbPfi2FUNiSN2KGgTRL2uhdAHwkMI1rYd2LRo0nBz+1cG8w/ftC2HbHKI
-	oJBXtUg1AuqOdBf/GZGZqO4mJPpqOOY=
+	bh=4cbec6c+ppo8fwshTZKR1fXrJKjbe5WIyXh3pcA7EKE=;
+	b=HYWWyc+1NS3rwSYebSgvtxHgvpe9QEPeMPaDb1+2kAvktrnW2HQ1rFBiwafsfQ+O9bv9/j
+	OzwGMdbEwN9qnwdGRfW4WTLAhYJhAg7xj2Hg7gPyRVi3gDDLq2eXmsyyiD6yukE2pNqpPz
+	3roJojauBjVsN6Cgk6G6BXBxomwdwBY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=O7AgBIDQ;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b /xkS61";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf09.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.151 as permitted sender) smtp.mailfrom=arnd@arndb.de
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1B649EC0AC6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:45:10 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Mon, 23 Nov 2026 04:45:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795427107;
-	 x=1795513507; bh=Jf6Sqoi3Qn0aJKe116rFzx97I+WLp3H4fMEI81ndjOw=; b=
-	O7AgBIDQYiGEwcU13yBP7pD9SSA2LG3Y/2zfedNLAskwZiMNiVx/3YiRQCiif00L
-	KR7wbkQkixoe73zVJ1Er/fxNvlv6oup5Qs7tIFLBQvXHlNf2Lls/CBhsRQAvANrx
-	vUnwgy8YyeKjiP9KtWB5j4f+P5wk+IKDzKMPufgsh1nSdormzySXKWxUMBRzZLP4
-	HbZufdcYy1Pd6Ly1p43LoHR+3Vb0Qwnx8PqLg6abpEKgj7bS8ALsGmKzkbvNFBXa
-	MiwlM30/oy4VCzbP2D0Cn/RvckE2/6m1FYYRZEehucfMzUofj1hrRnSQadQl3L8k
-	K8KcORqTkWAcvTDrUnGBuA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795427107; x=
-	1795513507; bh=Jf6Sqoi3Qn0aJKe116rFzx97I+WLp3H4fMEI81ndjOw=; b=b
-	/xkS61/kMaSQuNIi8DG0o5vUJAH7d6Q1xIk97skI5kwzb7tPoAEfcUn2XJqOMww4
-	uf8Sh9s1OXPn6LqvXUYfgtWz+icscUJeCIALVZo6TozAZu0w7OG8m6ae/YqfUECg
-	k4juAs2ogTO8ctEgqAPm3vFT0ppNeEeqIgPHEcEBLM7hm3pLpXsXo5QUVdFEP1/S
-	UkZh2vllQKqkeLfF4kPo9CKZj3Qe9PIXsR15BgQHdGjzXIRTIQBO6ZjEDE6EU8MP
-	X6IKLwE7y81JcCGVdMF0ste0Er3Nm+tWTxhbFCV4yRSDgl3CK22qv3rqFc404Pic
-	SmeAIHQMNgJ5z33uvvV5w==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795427107; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:TlEY/U/tiddl+YZ1nEvLS2YSCC7Wr8ImgsrqFlnRoaK8JBr
-	psE4f2G24nve6hRZ7ilX/vFN52S0OcVc8OFjWyAgZ4xe9rBS4ayE8xMv4yoi7Yar
-	jFCqpcFYzBj8+Tj8VGMz4tzSTv9Dgx+eFmmJM/t+hsPLjiYQzSWFrlgHmwpvD1dT
-	V3uLfjOG8H/SXy4hIL/19/WhFM0RvtbCAgpKhgNObDUz7yfy/POPPP3UUsfZgycX
-	K8iBtjoVMvmGxoxvv6klyJbp4JOUUZz5BN9q6dtNe8N43lyG20wCMMBLiq5W/6YI
-	5RwYWyy2XYFAY4m3jUFUWBSFeRTys/r13lyZJag==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:n6aZHqmDv56bF8XRSZatVJoaf2cIxLxzDgGBelOCUhY=:k9xBw4n1GQ1b94YYLMbzPhZvmLufZirlyqxW+aNOye4=;
-X-ME-Sender: <xms:HgsEaxOhIy6VSqHjWAAc5S8_-r6-9swBvBxAZEerTD2O5jLd3ZgG0Q>
-    <xme:HgsEa-x69Xr14wICuR1V3aldkqPMHk8AQ7qJe2NS-7QWty46aKqak2PekFIgToWpz
-    PoRPYsUtqMhT7VkM1ce2MJx0QvsB3KlJ6zaH6kNqLo-5eQx8qKiXe0H>
-X-ME-Proxy-Cause: dmFkZTFpjowEKf6THSkdHWlNfLsqi/vZ5GVMYQLFUxpmwMKx15Gn0GblHHreGqWlNSZRJ3
-    6Stix52GCratCpj/7n/ateu49JFA5AjKZNwJ4R9VBgrMnT1kWC9uZL/57j7guCkzp/axZj
-    7i8/C5KOfhgQ77XKEjot0lXHcH9w8HKqAMH3Sqehj7oZCfsAqKXpP+uFG+6U2gp4T7mAIb
-    lPd5PSTOjznfw247G71MJjn0c6a6ZsMiXUIGFEjVlndXWZ8kMdo/fyAm2Icr8OU41WdOww
-    82BaQor6puPLTTo8KDZD6rQ36OvbXVnyqY5z9bIpYMFPhmT2b04eSG2J/h9UtsImG7IdeO
-    b9w35fi2So7GFHUgGGCEXxt5oRewJYy8gfT6oAfvi4NLlTPiFtaBawQqb9/9DoasICM2/w
-    ffH5NjKuoyrFGXpYfuE+zqEYHhuPIItq0tr7E+LmfnS8/tixEooc1ShXYR6S8j14tfzbXp
-    vzLQaphfQaLAl5/NnHlEV6SaEXsvOlJQWNvupyJHK6sIYHYYMIwHwgDnRF/ICBQvKO5/JH
-    dPz6PlKvqNhJMc/zq9fkS/kxOD5L+5/9q7vlw+ymavddfSFaFBHsZ+E8RK4GE5ANtYShX5
-    t2Q81Q/mVgdYPz2HP2pupFNyQEvOwqpN0/DPYeMPIyxKE8Px19JhQ9r8FMaw
-X-ME-Proxy: <xmx:IAsEawGGTpdHb13lBvPvA-EMxmxgd-z86XmyBfAQKnW2yo2D4hi7hg>
-    <xmx:IAsEa-PLkdycf7S3rOl8FXT72ZX879GL4GOYQl-HDahX_Sv_GlAI5Q>
-    <xmx:IAsEaysK0ulq58o5gOXQVpwfq5yCaWkpgPWJ1er_z6kFjW2uDX6ikg>
-    <xmx:IAsEazVFOMlr6GbbnLAYYQyoBUp3w7jHyHBXanRly9aDQskU-2q8Zg>
-    <xmx:IwsEayan8b1DSh4GdNFijLjU6RL3T1AZo6Ww15949JvjYP7Bm8s6GjOk>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 32C9A32A0099; Mon, 23 Nov 2026 04:45:02 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=HzEYkNQa;
+	spf=pass (imf30.hostedemail.com: domain of abarnas@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=abarnas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a9a8d6cea8so38132105e9.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:47:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795427246; x=1796032046; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4cbec6c+ppo8fwshTZKR1fXrJKjbe5WIyXh3pcA7EKE=;
+        b=HzEYkNQaVI4e+8lgOfZr4WvoCEHLDK08d6Z09V4ccdb6alTwaYiFw16Ro01FcSf8xY
+         RACX7XT0/Mr8PmOZDottj4lcTqlyFzfkAuj/KpwtFo53Tzcv4z4GnMgf248mAjHSTudR
+         OPE1W7INFoHOvN5rrBtCM5FAbulmN7ve34rZNsTQwIbIO0l+qd/TD18AZ2NdW4o3Ix1u
+         /vrwlmO9JSiwrmP5amkDCetvc+f7hok4dP5NHJjaUngH7TLfp8HdKgHf2RMyJloQ0pyz
+         zT8bNzKyO8JxIggX/C/fbHnyiOIMVvxTxrTMmbOZ59dr+9JJthUjxC8UGP3CO3eS0AGu
+         Vucg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795427246; x=1796032046;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=4cbec6c+ppo8fwshTZKR1fXrJKjbe5WIyXh3pcA7EKE=;
+        b=WYbMScXbCNmzIEvSOON9k6JxUA57W35c6KvO80QmpSRSpEV34o2nyMJhOd1sMsUfd2
+         WHxTU2bpm25zA63OlGwfhouHvuB8MXShOCkVh4NtBAV+fE+6kby82dHPTvi7bEGc4lga
+         B45A9PLW6NSrUUgZkDoVuX8xxzN4jg3EwGY+ipgeaVhQwXXvAy+OiQWFndCe4fUMw0PG
+         xxP4KkXfNVmONaeHIDU6steFtqNNZXLKWY4PzDpQNwNJN+m7fo3xEvErTWkb4MawzHQ/
+         Q8fmZ1g6EBiztSFJ70Ezt9oO1PnCktGHX2qTyn2UM85I2Gae95IanXkY8Rd76+H1dKqD
+         j2Qw==
+X-Forwarded-Encrypted: i=1; AL+hErEr7EzxTakirOsUv7oHo4m1h43Rumduh7vCzEI+qcqmw71XA0cJUHSn+uB/xBN35/5kh0SeebBvEA==@kvack.org
+X-Gm-Message-State: APuU4Z/FlLJdVjBRAl0Z4tW3LZgFpcWCFl2k3roI2R85DPOBlezG1MN0
+	lFO1kUHVtGZBhnPhvjyQw+wwv4+Goy/Ec/G0oyDRLt2ffQylY3/5CyGxYRlgYlkAUA==
+X-Gm-Gg: AZFdTZeeTWFMt8imud/QcOdG5NhZzCMuhpX+VqSD6BYspDM8rzrwl6himZ+2xsVbOKi
+	LTzwNyGiP7T35Zv5EBJ0S1cEskAPu7AjML7F7tQMn1j+wUq8IStLD7D+Z+488LKwYKQbuaM3Eni
+	wwEKFCHvs6/s9mTkihghsoDsldsL2KO0oe+tGIhKT/bd1N/CcuBEpN/FPKccG+tTigsO4Gzm67w
+	44U57v3GcRpikQnJ4tbcgv9x+RN6VoulXIwndSI5R6D9OfVQMr5i0T52XaOVaG9Ol5I9Mqw8Viv
+	tqwrymk0aKvTdfAt1n+4IaTkC6nAFIZIrGryTNsoUAS+N6Ou5e3mu3oaoSJhNE+M5HZKuZkMFBj
+	8JrWfjYpDja/OWapurkD/7pAj0Ke4z6fcr80IgtRSNUXjJSdP/5gSHllR+nNBZl9YuO2TPsjBLy
+	8yGKxlG4GQzJNTqdAjKn9tOPLQPGCzTCwPTedNT1rDgatXPfWQxVTMVfcwxpoJtPqP1e8Mqpn4l
+	g1kdaIgPjOiBkDPAkLheBneZIC7H/hB8Gjd1RNPfYu+1kktiZ0u81jOXZXPsfdTnAtEEiUNcIaA
+	CVfJBhzMQQAbnJS/9yJwBSVRZ/PH26BayK402wb00s/yKt9CVwyjroezMcA=
+X-Received: by 2002:a05:600c:4f81:b0:4bb:5e8c:13bc with SMTP id 5b1f17b1804b1-4bb88805902mr213726495e9.7.1795427245214;
+        Mon, 23 Nov 2026 01:47:25 -0800 (PST)
+Received: from google.com (30.0.77.34.bc.googleusercontent.com. [34.77.0.30])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884ab091sm483566095e9.11.2026.11.23.01.47.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 01:47:24 -0800 (PST)
+Date: Mon, 23 Nov 2026 09:47:21 +0000
+From: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [RFC PATCH 6/6] arm64: mm: support PMD page coalescing in the
+ linear map
+Message-ID: <awQLqYbrrgwUycxP@google.com>
+References: <20260611130144.1385343-1-abarnas@google.com>
+ <20260611130144.1385343-7-abarnas@google.com>
+ <799181c3-a1a1-4de7-bc6a-576d3282efb0@arm.com>
+ <akuieSDlbYdHnkCV@google.com>
+ <aku8zidRtXPe_Rle@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AMjdjL9dYp0J
-Date: Mon, 23 Nov 2026 10:44:40 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- "Kees Cook" <kees@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
- loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-alpha@vger.kernel.org, "Paul Walmsley" <pjw@kernel.org>,
- "Andy Chiu" <andybnac@gmail.com>, "Magnus Lindholm" <linmag7@gmail.com>
-Message-Id: <ec5359c1-c16e-4177-8dfa-2ae5ab8a874f@app.fastmail.com>
-In-Reply-To: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
-References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
-Subject: Re: [PATCH v3 00/15] exec: Remove AT_VECTOR_SIZE_ARCH from UAPI
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aku8zidRtXPe_Rle@kernel.org>
 X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D95AD140003
-X-Stat-Signature: 7pbi4i6j8jbq8xcteai6ewwwahgch71i
-X-HE-Tag: 1795427110-676598
-X-HE-Meta: U2FsdGVkX18TAts27DGZbydeHmzOEkZhNrbSu5kSnfrJsCD3nVeeb7nEXrPijHVEO2f1QJLXOpAyLLecm90ix8jO1sScvXEZ50ilfnYwzaOXcw3MB1trTQAEhWYwCNa0x3hgbttgseMiaiDYZO+5hzIOs5afYfRBsRxBsN40hiq7wb0TK3l3qyZxsaqRzGMQAe/2gqp8ULvcyc+CPStR4kUH/xCs3Hag+xiNRE3loyfclDmUDI4QNZFF3t/UrEyYZUuKooqh0B99ZVL3xCaOlILZjTSWUEivoV+SDAvLT5heQasoIDkJWK3b2NzSitKPPsTJ1gO9bt3tPYGWWS0ERqTD6chlc8T8Sey+Vr3RSqCgfACIgZl6Q8MRaRBhX2+c4jJztTSdrdaqUAH8KqASOyR8hktmO6vexIDFJWJvs7iQ1lDRKFw9T0Si4nmbz8rrkqCfSQ7eCTDcwODNPcVWD2qTJd3prcQ2TbZtN32Pz6hXNICBJZ+k/JlzHUIqnUdQkIWFSfoBbJIRQODkTnmjjL8SgmSXGatu7otmMg9iZ3jiz3I+dls09aMj63RZzEo02ffFw6QE87sf3xThrC6GzW80I2kMohxOA9nb6TcxIdAKTLHprjjn+QWzds9164M04TjJe17aNHj5EGY5k9VTp4rYm3bNwREYHBRoFFv6O2h5hk5hNDQQtHlNgjHvJ64GBcWSsS8i8XAMXOpfCJkkrir7rnNIV8B2yN4jwuACfF69Xna6hdgWUYkPePbNLz/VnJg4H4YvRdtGdcIkMQrXfTOa2PN0C5l0sq4sNP7wsAsCImBTGtMSlguMW9JAmoMYrabonUSj+srXGtfgG1HqlmUPbRX8v4miu72KZ3Q+waWQnBOzxbO/YmTgDggxilM7lW4nOuEWB9GRv2bnjkUC6BABFYBcaWlqKu8ZODMJbvFcw2muTg2+tQZAazbW1FluBWqNbh3GlWUKMgO+iLq
- YHZpbtjj
- RNYqbPR0y9OVReO21nMdSgBpoYaGo5o8cBcTHy565Xl9KwIuSSKXBqGBjkS2zOCkg4IgZJEMgOSlGiu9WbvcArHNDou/fH663ggtAlA3GonLmIRomwcS1+mU3fNI4tuYF8R6skrdc3JevTuiVI5Km+DupoNnZo5N/L5WWemdMraATWMB/UuGOrz5nlkCISUcqFHv25ByviS7xFznnRKkgA7S+z64aFFn7ZKhg3rYfE510F9Z7ehleQd5IDWCdvDV3+CKm5kohU0Y7DuoyCYRbALT8IgraouCrHz5ha87jlBSckACRvkPfY7SjElfc03hqBIf07eI28gZ8QmD6+NI3M//jwu3p24WdrL/lf+of0ld1rxRfUqHjFsqBhlxHeRBDXIMOUks5jxVM1QaDO4j5RQahdXWnf3KrhFw5HplfU92II0Zh9vyL9KYMe3vTFueFtp9WIBkTJ27wTNXiBvBhfcOFszifyGx00tIRWNk2hWDqJW9NljVXACxKbCSQszo/AnX6UMQxnRFYGSvPZisxdwTftBfay8WMQMFnHEHoqZ6ztyRfdlLIHlNJUlGZ4d6k1NorFRAXpdSIbU1pxPRF00yY2NuCiK3H35yBn76h6OO6rzTkHyMDtRnPcCrvLbzsEvUaYrc2rpNfJcljbC9rMf311w==
+X-Rspamd-Queue-Id: 513708000B
+X-Stat-Signature: opy9u3br8djxa4snognheemdcqwpk79w
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795427247-392762
+X-HE-Meta: U2FsdGVkX1/pvwL/MbpAMkO81Kyqqml1yTprpd9r/DRDrSn10Qv7eeJJft+R2gHZ6yK5zWSapPj7/fcheLrFIhDHDJMeKEnRGEZwzOgNpyNR17XkjIYI7nYRKOyNfRYawxLy0zfTrBP3gF1OPy/lSZUgQpGg72YQVVEexRZH0SX/hYkMwP0vUPVWL9UNcARMppfkopQMECCy9y2rDze4CnqJKwnUGCjEc09q06VGKW7UQv6nSU8GWjczYOUPyCI+Ew3gTnNrdt8Ni6zWA6AfmHyagQ4AKMPmqtehqs844fzOeLUupqxSdQoisQI02Oug14tOeNVLeoOHfV3J6rK+Z5V5ax/EStuUQhN7xpT1IUoqXG9dDqAaLu+HZNvsLR9fCvqkPgnfm9xqYEIr7Z8NzEPiW98r8uwU1soVBUgn5vU7fUCT1dfoOM7wUx93azikodOjNiujLOv0BscLC7tqoX1QT/R0dgv02L3l27vMDOQk3h/tW5ErovttXUzkp9YAecNPFy7sKl4qikvgdCq65wAzLQAfiZnKo4P4XvOHznmVRFa3p4WBm96wLUv5aU8cXlZdS1epPnezpN9Ce0589Y1qdCsjOMJI+T7P1mjW+8PpZfUSEgDjjY+OXFo2PfFx7AdJdumCTSh5vURKVWsvVmdO5Hra4K4c4sz88RPgKnS6BwQXqqqZd+YbHJ0ss2irr1kKFE6aCVip/+Sz+RB9W9Je1CqOYwjS919LkxHxp0zTwN2xxBOGx629WsEMM6xGFPe528BKzIJ+z6YOwWJARd7C6z2CcfHnT3dj8Y17CfZfSq52sKKwwxlYqRwv8u8mgLvIyza4KLE6GlbwweJrCI7ubZ56BXidQ+I8m8p9juulACAkjWok2NnwGFM6iZpYcEUmQ4v+Oxpc+7wvno293QREK0jsGplrBNPNkyfw9Me4fpLd3vvttcqX9+sqHJc7h1KzStufmIWXtAzfn2p
+ movnDQ/T
+ OYcwk2pArpdA1i9KN/28aGPhJl1YcobETgkW1C+7NcabgpiKsa5Q7qHKawcegK/IPq4RKvrUsQubMe4hWU4Llp0rV9/5WhxWOCm836L+2baAIEM4B2I92DdWsGNW3+B5G492VfUvOp5d8QVWMPKJ8njGgO7tzdCaOl5Vd4H1PJAwZgtlLGDYpLE8AxNrskz3gkNRISjMQ6gqtXvxZHmodxu3LCrqttweP6pC3Qz28Tgep3UajFMDugeDSUQUByJUsKWoyrj5+FEfp//yig7Tk55gZiTKNynkRtIceR/ryI89YqO5pItsBykudQQG6rIsDIR2ek7abgrqTwB0ksVrkgBnQaT7xIJXGiU69HrWs3/1WAJ9yd8N1iDF+g5lj5H3HWe26y1NgI5+w8fpNkVdKrLrVBvwoZFrEWE+QwJ/Nsh74pi0M0tZQRwsleMQNNu1yEZBVNbbek6pn/ACVI5Pd2uPOUWy7umvVJSLgSYgdNdhYQK/T1UbsTeSMZPBbDScG0d5awAR1lzQ6iIITG47C8qJwzffDNaSc6/EMxB0GgipR62zrNYcplbUYEllTEf3uqR53+MYEJKmRMmxZ6XQ0kRwqmqU+aaql/6qwdUYTS16iCcFaLKyq/YN2uDsg3UkegqdU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,25 +135,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026, at 10:37, Thomas Wei=C3=9Fschuh wrote:
-> There is nothing userspace can do with this value. In the kernel is
-> always combined with AT_VECTOR_SIZE_BASE, which is not exposed to
-> userspace and also changes from time to time.
+On Mon, Jul 06, 2026 at 05:33:50PM +0300, Mike Rapoport wrote:
+>On Mon, Jul 06, 2026 at 12:41:29PM +0000, Adrian Barnaś wrote:
+>> Hi Mike,
+>>
+>> On Fri, Jun 19, 2026 at 02:40:40PM +0100, Ryan Roberts wrote:
+>>
+>> > I don't think this is safe in general. Let's say we have a 2M region split into
+>> > 512 x 4K PTEs. It's possible that the first 1M is one object and the second 1M
+>> > is another object. Different CPUs could set_memory_*() on those 2 objects
+>> > concurrently. If one of them then calls this function, we could end up
+>> > collapsing the whole 2M while the other is trying to modify the PTEs and they
+>> > will race.
+>> >
+>> > Note that splitting _is_ safe (and protected by this lock) because you'd have 2
+>> > objects backed by the same PMD, so they would both have to split before
+>> > modifying the PTEs.
+>> >
+>> > I think you'd need to ensure mutual exclusion at a higher level if doing this;
+>> > probably execmem is the place that can ensure that no objects within a 2M region
+>> > are racily trying to modify their permissions?
+>> >
+>> > Thanks,
+>> > Ryan
+>>
+>> I wonder what do you think about enforcing mutual exclusion for permission
+>> changes to the ROX_CACHE block as Ryan sugest?
+>>
+>> Would it be appropriate to add locks (over `&execmem_cache.mutex`) to
+>> `execmem_force_rw` and `execmem_restore_rox`?
+>>                                                                             I
+>> see that x86 has a lock that wraps entire process of updating attributes
+>> (including spliting and collapsing pages):
+>> ```
+>> spin_lock(&cpa_lock);
+>> ret = __change_page_attr(cpa, primary);
+>> spin_unlock(&cpa_lock);                                            ```
+>> As I understand it makes it safe already.
+>> However, on ARM64 there is a split lock (which works fine for spliting) but
+>> for collapsing at least on my implementation it is not sufficient as
+>> Ryan pointed out.
 >
-> Move the symbol to kernel-internal headers.
+>I think the lock should be at set_memory level so that set_memory callers
+>shouldn't care about the differences in arch implementations.
 >
-> Meant to be applied through the asm-generic or execve tree.
-> The default recipient list was huge. I trimmed it to only the
-> architecture lists.
+>I also suspect that the lockless page table walk in update_range_prot()
+>isn't safe today.
 >
-> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+>> Best regards
+>> Adrian
+>
+>-- 
+>Sincerely yours,
+>Mike.
 
-Hi Thomas,
+Hi Mike
 
-I'm happy to take this through the asm-generic tree. I've already
-made sure it all applies and the patches look good to me. I'd
-wait a few more days for additional Ack or any other replies,
-let me know once you think I should apply this version.
+I have recently got back to the topic, and I have one thing to clarify.
 
-       Arnd
+Currently the collapsing mechanism that is backing execmem cache, 
+following execmem_restore_rox() description
+
+```
+   * Restores read-only-execute permissions on a range [@ptr, @ptr + @size)
+   * after it was temporarily remapped as writable. Relies on architecture
+   * implementation of set_memory_rox() to restore mapping using large pages.
+
+```
+is driven entirely by the architecture code. It has drawbacks, that could 
+be addresed by passing some of the responsibility to memory owner,
+execmem rox cache in this case.
+
+Arch code at no point is aware if the piece of memory it makes RW/RO, 
+is ment to be collapsed. Every permission change can cause entire block
+to be collapsable so we need to try collapse on every run. We can probably
+make RCU-like mechanism to batch those events but still there is a lot
+of pointless runs just to find out we can't collapse or collapse of memory
+block that already have split operation waiting for lock release.
+
+I was wondering if it would be acceptable to create a try_collapse operation
+in set_memory api that would tell the arch code "I will probably not touch
+this anymore for a while, you can collapse if you want". And call it 
+after predifined delay from last execmem_cache_restore_rox call.
+
+ From execmem side it can be based on the same delayed work mechanism that 
+execmem_cache_free is using. 
+
+I have a PoC locally but it is mostly vibecoded and I have already 
+discovered some bugs in it. But conceptualy it worked. After a batch load
+of modules it collapsed all execmem cache blocks in both direct map and 
+vmalloc in a single run. 
+
+Before I craft a proper patch set I want to ask if it is in any way
+acceptable approach? 
+
+Best regards
+Adrian
 
