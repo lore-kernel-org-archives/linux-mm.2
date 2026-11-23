@@ -1,106 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81466606A333
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4D2606A334
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YvgjBJDe
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ed7M+ndB
 Received: by kanga.kvack.org (Postfix)
-	id 909166B05CE; Mon, 23 Nov 2026 08:53:06 -0500 (EST)
+	id 9896D6B05B0; Mon, 23 Nov 2026 08:59:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E1886B05CF; Mon, 23 Nov 2026 08:53:06 -0500 (EST)
+	id 939E66B05B1; Mon, 23 Nov 2026 08:59:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F73C6B05D0; Mon, 23 Nov 2026 08:53:06 -0500 (EST)
+	id 850386B05D1; Mon, 23 Nov 2026 08:59:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D5C46B05CE
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:53:06 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2F3F1208BA
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:53:05 +0000 (UTC)
-X-FDA: 85466525130.03.4CF6BD1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 38CED80008
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:53:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvgjBJDe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 657D26B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:59:16 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEE8FA090F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:59:15 +0000 (UTC)
+X-FDA: 85466540670.12.EE38A2C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 02313160005
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:59:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ed7M+ndB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf08.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795441984;
-	b=jhX52Q1cHPJwEZFFCM5tFwyg/iXxAjlxZqs1zSxBEvi+AbKfoBqdBptyI2/F7Ic/wfACkt
-	m/8dlAcYltibZ0cvKzfmfzVwrfn5M25xOmnLjO/Qb282UxxRqqpHCH3Ed+Fis4Vla8EXSZ
-	jfrZvM9NfjyaYdjMA6n5+LHj0P2D/8k=
+	t=1795442354;
+	b=oGdaQWclR3k418haP0/kwQ655JXdSe+ZesbowREvokfdPDKCFu0T26KBv4r/hP92+n+UMO
+	9OCjFkZZcqoPeMvJa7/sFwDgZCPliajN0M/BMLJgcXRnsliRfMalw1FYRs+LiW/+dae2lK
+	1EeM/5PSPxTlniTJbnw5wOykCmWJ5Tg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795441984;
+	s=arc-20220608; t=1795442354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w7l6GOVj1ta19VMv5L9sRcj+U6VdIqUJoDJrYzcoSww=;
-	b=Hzfh10/zfAdDg5xTQaHsFxHvgVcD2oH90MR9GcScOXXqQnmD2KJ3lPBhQoh0eEk1258y7T
-	ntfixO0NzPWN7BXb2Z5Piu4Dc5oC/GSkPBzfxDRl5wojBe/a4kGxFHZI9xxQwAAshM/kfS
-	1uVZ3WpHuI6hHD/pj+kKuhxbdsKgDG4=
+	bh=ZIppZ5VSu1Vdxs+kZ2hQDu5Utw55NAcCNL9PonbNlV8=;
+	b=8LlHs6tBVpqXM2iNkeoV+OBURXFLMFjpkwrNafX43rJGGQkYGZk0oApdFtyjGscYxBnKMf
+	zfvxgkw6DbaQRXQAA47Iyoba7Yqf+J0P4T84sW8wYcVczG/0k7QCK4npKd1yKahRkly0+v
+	N5BvKIEVKKHwMHpoo2yMtpkZbP7jb8k=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvgjBJDe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6EB7840A03;
-	Mon, 23 Nov 2026 13:53:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0C11F000C6;
-	Mon, 23 Nov 2026 13:52:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795441983;
-	bh=w7l6GOVj1ta19VMv5L9sRcj+U6VdIqUJoDJrYzcoSww=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=YvgjBJDeY6bRVM//Ef/CR3wqhigSAXRBKPMQZnFSl5rRLTYBReyZxGh4KYDN8PZjg
-	 e1+q37zjOWNa/zW6PenUUWn4c+VSxL3VGzz/+YMEB6zdCxuNSRKkYB0fP4i+Q14BwT
-	 C/JymHhoTW1bVfQOv01xOXfAgeEuNJ0kuGBFXXQmTrpRqNPhoqIr3HHlAdhY+r4bUD
-	 O/4WA+RiRgRRCs1i/0nEIMC5nXuVPNWyHrrDqCwNAZDqOsUYPVCgi46EHQtaywgH7d
-	 t/KS4bMveDBrIxMGKCwvWZuMAhNU1gWeMuXMmM73wRDtKsvO63AyJoLgR4ttgh5g7b
-	 E3/6pDDp/TlTQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
- <rppt@kernel.org>,  robin.murphy@arm.com,  maz@kernel.org,
-  will@kernel.org,  David Matlack <dmatlack@google.com>,  Alexander Graf
- <graf@amazon.com>,  seanjc@google.com,  jgg@nvidia.com,
-  loganodell@google.com,  arnd@arndb.de,  dwmw2@infradead.org,
-  baolu.lu@linux.intel.com,  Bjorn Helgaas <bhelgaas@google.com>,
-  oupton@kernel.org,  alex@shazbot.org,  gle.com@google.com,
-  pbonzini@redhat.com,  Andrew Morton <akpm@linux-foundation.org>,
-  kevin.tian@intel.com,  joro@8bytes.org,  kvmarm@lists.linux.dev,
-  linux-pci@vger.kernel.org,  Pratyush Yadav <pratyush@kernel.org>,
-  kexec@lists.infradead.org,  kvm@vger.kernel.org,  iommu@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org,  skhawaja@google.com,
-  sagis@google.com,  linux-arch@vger.kernel.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 04/19] liveupdate: Reference struct luo_file_set_ser
- via serialized pointer
-In-Reply-To: <20261110050202.529473-5-tarunsahu@google.com> (Tarun Sahu's
-	message of "Tue, 10 Nov 2026 05:01:47 +0000")
-References: <20261110050202.529473-1-tarunsahu@google.com>
-	<20261110050202.529473-5-tarunsahu@google.com>
-Date: Mon, 23 Nov 2026 13:52:55 +0000
-Message-ID: <2vxzwlq3zmbs.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ed7M+ndB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf08.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795442353;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZIppZ5VSu1Vdxs+kZ2hQDu5Utw55NAcCNL9PonbNlV8=;
+	b=ed7M+ndBtWGxHpoPxB68ujeSxoSK//kE5J1mtmcwWK66+O8taKlHEzkADQZL4P97Od2b/l
+	2BT5ZA/vhrLZnHXW04LK2T11EJlgtxZivEfIKEddtqqFM9cVlBdjOlfSp9BbAujI2QM6Pl
+	qodcQNasu7rDSJQk29MjE/TI85hD+uM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-hGGQHv-jN2WZbHXAb5GYWw-1; Mon,
+ 23 Nov 2026 13:59:08 +0000
+X-MC-Unique: hGGQHv-jN2WZbHXAb5GYWw-1
+X-Mimecast-MFC-AGG-ID: hGGQHv-jN2WZbHXAb5GYWw_1795442347
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 20F801955BDD;
+	Mon, 23 Nov 2026 13:59:06 +0000 (UTC)
+Received: from bfoster (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8149B18011E2;
+	Mon, 23 Nov 2026 13:59:03 +0000 (UTC)
+Date: Mon, 23 Nov 2026 08:59:01 -0500
+From: Brian Foster <bfoster@redhat.com>
+To: Ding Feng <dingf3ng@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/3] tmpfs: zero post-eof ranges on file extension
+Message-ID: <awRGpWDa9jAGYy4d@bfoster>
+References: <7cc5ca1f-fbeb-422f-bc05-55b3f6b6db20@kernel.org>
+ <20261121152706.34523-1-dingf3ng@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20261121152706.34523-1-dingf3ng@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: CW69IcjShbeJ9Fg6map8DcJu9FNZZ1jw6lrd8p9DQBg_1795442347
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 38CED80008
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 02313160005
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: d7ecuau3yna7a49kd8dcucrp9ej4pgmo
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: ss8fafrd8u9mt1i611hwnpgku9xpdo8h
 X-Rspam-User:
-X-HE-Tag: 1795441984-813817
-X-HE-Meta: U2FsdGVkX19vdQXKBa6dZ5q33jnbEFY/I+uv/JgSg8DMwOoO11Kv39xCpOma/rowBKn4c8YiOOqY6HBDEsnX5G6V9tgbUQ2YC1/ekePtf7AMQLwh248PBixUBZBBfG55xfsjKWcXe3IOXDSglFD3RJNCOMCQvAtNg9JB1NltgVKFq9CTaow2tWEltoUJovJbssaZsgq5ISprkJpeXSChTb1WXZYyYilwpLnaz8ETP/xwf2A1r+Z2gv25oTaD6o2QM1xqrXRDcL1+4vXQ7sgoqiuwoQaAUgP+gPVxjeXD6IKt007s3ZxHsR0Ru7D8R/bhJKEW4p2nLwR8M2CML1fivVhhD4qgwGS/rVK+f3I3xHDAUOT9aPtGW3c15ow8Cn+mqm9nReRK1eeFIf9cDdIzGllZ91wKI12tXT9ah04ifAzUxZpbtbVgyoT0d1K+1j2R3DN+vCVU4xkNlJzgwky4DQIE8XnMF9arXqGtm+Yf+U7BvOUsXrNkUxOBKFWk5zGq23tS/rdZPVu6yHt6RYCKI79Fipe7rq5IfKe5/Hz2JXhRcxynYpcFh11hA9S9WnzOaoNTQ6b0mRZwkTcLHL//FPZRkphqkF4Hx9mP2NFgZoM1BlgVWpXOPbrjex2/1Q6DhYb/hAioBbipbP8+fWfVyv49rCaH8NpUfOG85xkBZcKFTXksGrYxQF4o/ytCP174ClDoKaZLzbpTiDMVIQuAWgfsuCJBgUz8/8G/h34KiicHbXCMb9sXDdPPYspFpVptlnz1vxwVm+0ASEEH6Y7PDVCxLPjyNTXshdg3U62sDs8q12pFtr87iN+eO8hQxVSbFrg5UAcIFNsFYoAgDrSkbu5I7+kiz6W2UOsyB8jYZ0X5Sw1zWXSCrR8edDyS0axYn1J7IAlq2Zw5gfxLsW6+SGGZyd0VMMaF6t/7sV0EmFPQiGu72a9r4yEdv1ADBsaG0k20rNFLBTdMoCuoigV
- KwPzZRxk
- +bfg6XsyOkVUnVUNyegAxuoMk8GnRLnaSEwg5eM+birwhQRPxgmW+f3cXi2MzP22fS7LjpJXbFlkjBW2Dr06V9ekM2jPwma4juaYKk+QVlsiBGbgYF1o8bwy1rpKjovT6gj56OK3gRnR9iYE+OA4PNtFKShRgzj/EOs0LhyfRQb8uVb47KIx3W5AaXR4oM726TQAZ3ZJaAKXMsj553HOu9AxAIMDrQE0OuKTlIypBI+oljtxf/msd0x8eOzXuc0VAt+5oQIkAuzgzfu0dZwYZc1qmDqaYVUl6jsp13g5s+P25REIEQKNm9hVhykJZ6zcd3OGtZa5JdFah5tJUE3A9ULbCpJ158iG/csjekCNcwfDroPX7F3k1lnl0ZNsvozBUbnyKdAl4HmbzmXETBNhKCOK8o5wSLI3X3+B9ccvfGMHz1prMIYC9EE+wUXMwmENchewAWW57SQqFGGqZJ24q52tbZUOAd4AUrKTLn3AIha5YDBryl6xglzx2le/dToopq8abDAvlJ1yBw3hWnwMOolZqUgeBglMYqVpQwEEN+6Xk36dyANePUsDO9g==
+X-HE-Tag: 1795442353-73686
+X-HE-Meta: U2FsdGVkX1+pPs+HPghyLDrL9NJa0EYcSTdbmJaqv1vpEhq7utkqy74333GCv5tE6faAgm1Dgp7w0bZc6BMXyztcWA3avN/NdAAoVFegZyAvlbesikwK8RRYzj4ePguzA2/Pprfi7hW9NJdp7cT8DW9cAwVp3AvlLj9Um4nHkAE/ZhnU3EPklG7KqUvCfCch/jXBNSvvOxsUo5nQ/dhiouAd/JQYLygDwQ7cAgZPoezDM0ZhUtqVVnW1PdaV3kFmQl0JXW8Swjij1Vwksi0G1oCJl81DMxFYjLPyMKeuA5Gw1+TIzr159ti8oiQRA5LW92yUk1NTl+MbBlENj+IzDkAglxvIcCWBzdeBpcnQ5wlukNI8WjZHykatcWyWQlats3FbFNLkuwyP663Q48chqcwHl4VcYWCXylAB3r3w7IPJDb6rVKOwUER30uZV53pkRfCrgshx7qjdYtrGNpzB4Y+fswxD+dPsaN+xTWk9KDXh82ROIintKJv6glnx6+yE+zVgcpVpGyjbZeog0+OEfItArNl/H8QwA/YGdPxq0D2raGrXegbH8NxbQ52uCI8OrhInxYTg+vHkk7qAD9n6X//42Dk+cOqURfh4TMKS63vRA6Lh+3H6zG7zrXf3GeFlvoXVO4/XcohMziWIpBt3uRcWj9FauH6JLPGOhFUa0OVIXJaP1t1XTLlXsmsYDKLYh2OemyAyug47Bts5uGPmcI1x0ZJcVnG1REX3ghXpx7CUJdegdh4lW7W4iv4HKa5CVR5Iw2MjO9FvuI6m2aGEPVO/YLLeP0Snz+vpbojYP6zcXZbl6xR5ABmJETicI0ttRR9z+SuA+1GmXpusY4X1I2sMOtiRWN0JFrRZ3pJK2XfIFDNyVo94//FrbdZ7Wfz6gO5KOyvT/E6nR99CWRLeoUOExe0sfaWp3lefaOHNcuzxxG5rp2YTF9X+OgIpvic8aQNjaYNFppym53GEayU
+ 8N+GlVjB
+ OF9lOhjJut8JH8QjTQ6ev3yK7UIG0dZsz8WIBgu2GB6gRiDwrwaMpjRJZ7qUK35nEQtQT09UmQLmiGbE9e78MLF+ERkTGSTg+Dnt8CEyQ8U8xctvBD5eTVqdr+OvH0iunXVa/8X//WN+IKe9hWhLqic6EO3CmajIfV29/s92Q10y7BpYtY4DFDf6bHeGBX7FCzqzUoDuA8MZ+S62jGjrfs5x0xYxHzGJ7PyrooEwqcnfXncOJx3YCgMgbn3DPy8rsWd8Y/19OFNLE4rPp7ka7X+QYbn6JSbftgGa60XGGNvochYh8VkC1usoO2Tmme+zhgSJ6QE9I8lKFi0lceXY0dYPlYHuCUYaCXRm/H0Q5d10a9oLpUR9I4Wl5RsMDh1BKgeMRh/okMRwlXT/tBVHcavGkVjStVmKmax9b1JEW9Trms1LPJzvYqR4nIcsIYoA47SWvWkFnDdFB7QsC9Cp+0W/ME+nFZgfwz8vqSTDvcEhlgbKWofCmwdhR8G/lnAotByd8Uz8QXnRK9eOR1O5kcBr1MZm5yJ+4MJO9d9tm96IPg/ljrFIr3Dd7sgbz47d7b7b74PzAWTFB067rk3kzwkqYpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,28 +109,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10 2026, Tarun Sahu wrote:
+On Sat, Nov 21, 2026 at 11:27:06PM +0800, Ding Feng wrote:
+> Hi David,
+> 
+> Understood, thanks.
+> 
+> Brian, do you plan to revive this? If not, I can rebase it onto
+> current mainline and resend it as v4 with your authorship kept. Is
+> there anything from the v3 review that still needs to be addressed?
+> 
 
-> struct luo_session_ser currently embeds struct luo_file_set_ser directly
-> by value. Embedding struct luo_file_set_ser couples the session layout's
-> size and field offsets to struct luo_file_set_ser, preventing either
-> structure from appending fields independently across kexec.
->
-> Convert struct luo_session_ser to hold a DECLARE_KHOSER_PTR pointer to
-> struct luo_file_set_ser instead of embedding it by value. Reserve space
-> for both structures in each session block-set entry, placing struct
-> luo_file_set_ser immediately after struct luo_session_ser, and bump
-> LUO_ABI_COMPATIBLE from luo-v5 to luo-v6.
->
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+Hi,
 
-Apart from the static asserts,
+Thanks for looking at and testing this! This was still on my radar as
+well, but just hasn't been high enough priority to get back to quite yet
+unfortunately. I was hoping to get back to it some day, but if you have
+time and interest please go for it..
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+I don't recall any outstanding work from the last post. I think Hugh's
+response is probably the latest (i.e. he was digesting and framing
+further feedback). Otherwise I think the latest post passed all my
+testing at that time, though I do have some notes on an i_size vs. swap
+issue that I documented as unrelated, and otherwise don't recall details
+of.
 
-[...]
+Note that we did add a little test to cover this in xfstests:
+generic/363. That runs the internal fsx tool in a mode that
+intentionally pollutes post-eof folio ranges and detects unexpected
+non-zero ranges being mapped within eof. You should be able run
+generic/363 or fsx directly on top of tmpfs to test (along with your
+direct testing of course). I also found it useful to run this test under
+various conditions: huge=always, artificially low mem environment to
+generate swap activity, etc.
 
--- 
-Regards,
-Pratyush Yadav
+I'll try to at least make a pass at the last version I had posted to try
+and page back in any details and help with review if I can..
+
+Brian
+
+> Thanks,
+> Ding Feng
+> 
+
 
