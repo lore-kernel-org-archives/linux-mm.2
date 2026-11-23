@@ -1,98 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC146606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AF1606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5dj3Mb9
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ldGyBC+E
 Received: by kanga.kvack.org (Postfix)
-	id 57E626B05BC; Mon, 23 Nov 2026 10:13:25 -0500 (EST)
+	id E5B886B05B1; Mon, 23 Nov 2026 10:14:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B9B06B05BF; Mon, 23 Nov 2026 10:13:25 -0500 (EST)
+	id E0B866B05B2; Mon, 23 Nov 2026 10:14:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A7BE6B05C6; Mon, 23 Nov 2026 10:13:25 -0500 (EST)
+	id D22996B05BA; Mon, 23 Nov 2026 10:14:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CE1D6B05BF
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:13:25 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF9E740942
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:13:23 +0000 (UTC)
-X-FDA: 85466727486.22.00E2D13
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 53CFE80008
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:13:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P5dj3Mb9;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ACF5B6B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:14:59 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 421C6A8618
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:14:59 +0000 (UTC)
+X-FDA: 85466731518.11.87A4DB6
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8CAF91C0006
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:14:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ldGyBC+E;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of mohamedalibouhaouala@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=mohamedalibouhaouala@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795446802;
-	b=4QqF4TTADrX91WaEzJM9lvJ0ZBvFdFJeTCeyPbVNIOrBhs5nG4H7qO22vtLSnaXs6W0bmn
-	zdH1oaw//vBQU+Rb7zch6ElGQmkM5d8nAKB99VWyFLi73TbgAraoh5g69E0owoTPwFleR3
-	UJAhAhWEbwv1QLEz0tzcj+e4TDLv8B0=
+	t=1795446897;
+	b=QN4kGwbYOrw0gtqpCCFjco9W242ZWgiIB2KRJaOMgoGdAIwQxkhc1crc0nMOaqm76AOoaz
+	9LffXihpB9TqCHRTji2CkrNg+fX5Gognh89ZAg//614wJQvOBHaXmoaFS3bOyS8nuLUWfD
+	LPjeEM4Hc+lERuNSQtXMWLkeDRIH728=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795446802;
+	s=arc-20220608; t=1795446897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1mpej1tSUVKVbZbXvgjSwlFMXCUxn0nEZS2E76PYIAw=;
-	b=mOIBbTK/eY88Xyq6RpByAwpnR1z43TmLx6tyDMHNpXr0gNgHqF8gdAbi9gPVREyLJ8MAtE
-	EqqKCiTluAhs5YIGUyIiTjYeuF2mpJZTijfcvxkeZDIXpagtmAa4hOYLl0fSTpPPnST9js
-	Svkf0M6XuDgDhu9GGc7RKY5pa9f5+qE=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:references:dkim-signature;
+	bh=L5M3f6tXuCeudVEXZHMryiVzKAWS6njMK2AQVRvQJEE=;
+	b=3z8n0QMM6LOEwZmhzfagi8uy7dBrEDnfL542uaUs4WRuRA8b1s5vXHh333xv9KjaszS7su
+	CByj/1TlXXmDVR0JGdlZld0ORQxX2JPxXa3hBIjLtUPyjo+imFGWkl5dV9M1JmcKdMTXiy
+	XSMGRJoTh3a8eF5fJJ62idvBWPJs9Bs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P5dj3Mb9;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3C2243D2F;
-	Mon, 23 Nov 2026 15:13:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F811F000D8;
-	Mon, 23 Nov 2026 15:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795446801;
-	bh=1mpej1tSUVKVbZbXvgjSwlFMXCUxn0nEZS2E76PYIAw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P5dj3Mb9YWClwC82+rDqHgCQ33jNWa7Vvlfns1t1x+yApnSZEe8Cn+sbz9CcuPPEL
-	 dog5VHj2S7+aI/2KdHDBLpIjfCF75PK/pW++N9nAEFePFQiVtZbN6ZuDJ+rtMb11XA
-	 WtvkcRp2Hk6Nq4xceQbrlwpqgvVo+I5VYoV7Nj9rqgkGEArzxYcyn9KlBEeLiqpaGC
-	 Q9A1KJ2D5YupU3sr+pr5iEnxGdkLIkI+tYkxKOjk+7/SYVSJ8wx/Zg6fSp6doT2jC4
-	 sNe9jeulUe6KvHjsq3nBDjyTFHRQk9qTC95drVPZWV400b8OXqNNfGbyeoYLEn5Eyt
-	 oj0kz4TyjjXrA==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mattathias Pinchover <mattathias.pinchover@uber.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	SJ Park <sj@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 5/6] Docs/admin-guide/mm/damon/usage: update for sz_ops_filter_passed_last
-Date: Mon, 23 Nov 2026 07:13:06 -0800
-Message-ID: <20261123151309.82675-6-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261123151309.82675-1-sj@kernel.org>
-References: <20261123151309.82675-1-sj@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: f9cquzsxr14ax7u6mzh3j3nhuk9x5ks1
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ldGyBC+E;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of mohamedalibouhaouala@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=mohamedalibouhaouala@gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4ad6219f7d8so2722644f8f.0
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:14:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795446896; x=1796051696; darn=kvack.org;
+        h=in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=L5M3f6tXuCeudVEXZHMryiVzKAWS6njMK2AQVRvQJEE=;
+        b=ldGyBC+EJIt2528LcTGjsw8IU1m6LuBgKlr7LzqCRTZTzH9pJ/geOnPppSUgnieJrm
+         PKhOC5Qg6bXyhs9gkdjk9S45edIbbjci+gaLQ5Y6ZxpUVV5KNZSDt3mlttTPiVTuyKMr
+         h/W2PP/oZqkNfNnRgwI4/ZlYvHuu99AZgB23xybL+ggqX9w+0C/ooZZ77rVPXCirTBfu
+         7YltluSZoFdCBlJ6pirKhSIZ5dMgu3oykqFPIjAAxKe2K+3CMzrD9Eebz3J9fPoQopni
+         t8/uO1DjoUe8IbIrU3hhRlGo08bv3rXEFy2umuFFSjmk1m1rAXh9ktq9USCljHRMwvma
+         6W5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795446896; x=1796051696;
+        h=in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L5M3f6tXuCeudVEXZHMryiVzKAWS6njMK2AQVRvQJEE=;
+        b=ZSDjeaAYGii8Kjsiu1LOQTwm5BJ5CXUE3hOTIA0GQcvZBQzvRu8Avrw20K18gbyZIb
+         OAdnW23mXZFNckzeKRfIAd2a81hIy1ryrwI/5dql8lV7k/oM+zHifisQLB+N0JpI7awc
+         jhlmxV3CohXrY8PPwg3z72AiNzp/ai7ZZTwTe4BGzAdEwN723LndDnjJNE64RlGnvkpt
+         nMZYZ9a6zTxfydkmrnjyZq3GZReZBKLQ+bJ04D/ClXU/Wpl6OyALaUVH1E08scnMMdZF
+         wuDdiPAToQCDgmMVGXGZS8/usE9BOpKKGWzo77h6eZ2nsgGyIreAMGqAQmHhuq2qHoq9
+         UcKQ==
+X-Forwarded-Encrypted: i=1; AL+hErEh7ZiKn5Nv/vY5eUWCgrQ4YNYkLwDUwCVwWslqk9aMwQGJOYJdc9q2vpz/5sB4sPJKzFWVrAgTbA==@kvack.org
+X-Gm-Message-State: APuU4Z9lBqbIxDwXHyYTPFO29ef76B/tB78XLZYSDM2MURLGJqtzUa2t
+	XNn+Grwlg3VWKKojRcR33NcgDnXOHdN0Zv8m4RhYR9gY6AC5j3IVaNr8
+X-Gm-Gg: AZFdTZcIA5bX71BYSK01bmFsUh2ILwJg4ceXPLuTZQ1BKEDl+2p8m09h82bhs4zOjET
+	TfqrxJfBYfprwYxIRNL+TYa4NHd5+unSadjQesPf1Ip5CAwd7Dlq2gzegcVHd1wCLX8yo8cga9O
+	qr8gMp2aAaGO1z4MdSGpuP01wbjju6S1TRAwgmClLF5JHBuMKOpluO9s1338yId7Jex6v1zKGEL
+	nwe5/4Mqa6lQFI4b9t0PB0nxEBLyZdhiy2aI8pKol4L9x19H79VqMOsbKMtBNt6aXBNqGEYL4Ba
+	N0YOSI78+lk5nRzTZPQbhO0fJkLrWZNavFwIizMz6MePBvPcRgHUy2Zr4tMZ7FrDE+E5XiUjGcF
+	tJiF8lzvKQxxgaQH6h1l4WUc40IKs6pOKOTITgVxoA6x2+QA2EJHTejRPMeXEKXApogrd+oUs42
+	6l+oDe/MHVgWGoTeCFaXxQe6eqWRYHE4myLYLdzXJ0HAzsKIUC37nLMs+D1lMOb5BYU/SQs/Du4
+	jaosu2JZ9KfkIjbGw6lZpTOKx170MCIUoA0R3KshaFTc/5alt7wfC1pAPc3e1KT6Zx48B/ffTDW
+	VbE+FuPPBRGHA2hVsbBXRuq6KnDlzUoaYqu9CHO9Vr5iGF9hwIAbtmTTPa+I1ls0PAfWr8hcYzn
+	07qI=
+X-Received: by 2002:a05:6000:4b15:b0:48d:df08:307c with SMTP id ffacd0b85a97d-4abb8ac0d92mr20304624f8f.44.1795446895827;
+        Mon, 23 Nov 2026 07:14:55 -0800 (PST)
+Received: from localhost.localdomain ([196.178.137.149])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ad644140b5sm19778632f8f.17.2026.11.23.07.14.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 07:14:55 -0800 (PST)
+From: mohamedalibouhaouala@gmail.com
+To: jack@suse.cz
+Cc: willy@infradead.org,
+	corbet@lwn.net,
+	mohamedalibouhaouala@gmail.com,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH] docs: filesystems: update filesystem type, superblock and inode documentation
+Date: Mon, 23 Nov 2026 16:14:38 +0100
+Message-ID: <20261123151438.47681-1-mohamedalibouhaouala@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <p7wf376fhejkqtke2l6jxwzytlhiiaidjdaeapw36jxukbk2qx@kyk2wc5m
+X-Rspamd-Queue-Id: 8CAF91C0006
+X-Stat-Signature: 1mt1etis5gkk9kwczpoyitcu3qe1sc4e
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 53CFE80008
-X-HE-Tag: 1795446802-928710
-X-HE-Meta: U2FsdGVkX19g2Kvre4cQiW7IAOHFZFPFJULjqGh3UVeBl3z67YMDjbnCi8z2Le1bp+GbAh4/at3w+PmjjNRF/hGjmFS/meivGY/MFyild2fulE0PBF9mr5dKDdiJqWAgDWjRdeu3PhYyGcnGvYJ97UBfSm/Hyji/eTXF2n5WLHCyOomqiw9AYe0sV40aJVLpGYpwyw8vVZazkkeZJiU/TCumVyT3pCzyYRlX3CGJeKBZOq+tE+u0Zzm2GOu9jWmOXdxLAdjoK7/4wReW43gcwlNEMDjfl5MBBkUdpTgACAg0Jlwlq/wTNBj+iFiCajkTgo1IklDzNO9+GuqJZUHx89/TM+JONZOOK8wmmY4KhSmdTIXZzQkAi4zDR01dNlRCUlnLN/dxKg6aONo45KgjCHIdM+566JRt01MbW1+A03pOE7GMCJXXrskWglPGY+IlIYqqoO9BIAk+9F+qdV6NlBt+am0Ydx8mmm/wAq0pmvNlZg0UBKEZG6Jebx/qoCziZF7gxBZ3fbgqi5nhWA52z2gXYHRPKZ5GZB1nsFj2AbHovnfyyJiTwoI+KpqAv7ThL5mO7FlzqGlQAdd8/nSzow88INKXzH5XivGP8hApO6pQ+eF+M6p4tReev10xckLWlushjiTySLyrLTgwRT/Vcch9K4vOmXHQ5+Ud1VTFbKlWZhV1JckGz1XwAyyDBcUQqa/FgQed3vx5WAQWp7KNL+lxdYglRGCPt3aY6vxsqtjZ6Cngv2DfoJcQNXt3zPuXVJ8DZnzKcP+YHrtncRisNBNnc5ARO1cna20RJwiHOVdBFpER2Tf7booH1cXqaSobc0vvI1SAwIL7JVah/qs7YDyyuZ9uVPRnEelrzpSUbRUKUF5xKyjiUK5uUiYxRMDrNu6Ogq8BurnM+y0NdF9Y/3/QK//3291xZEbEavaZWphzJkagOgNLHHfOO2i3HbIjXUiKGjKrcSBPJ67zMru
- cgOlnUSy
- jNiXu5mHhhGBgLc5aTbfgO79u9YYNX8uBrAY2Tt2GuZNuK9aCLXOHrkJgtyyb1ta+sojzX0XJffCLJiOiIzeAEroBB+di8fAPXSGDivijKgeTqxb6nitovrElZlQxWTTTOz9IWdZuSGQS699c5pt3G45YFC+5JGlCAWLo7D9ASnvcemUEQSHpyQ2Y1IZjoD2EMWVy2YeGvK3smFSL/s2Ogh1j3Gg4icsNcZOvSqcllbmkAhvrerasweuptio0eCzS6ArI+XYqBebJrlldonHquuhFZ0PYJoNMMWpJMQMOMvXnfga3CVdaJDdCTztScjfxWsx9cae+AiJTJcaWTGwYEVHFC244FoCN9IVDiwNYRyaKExacU2KsdwTNtG+QnVmh/cxBU6h7MmYY9Pgat6yjeXMZ8nBb7Hztz+spO5tXOB2THeNwPUvq2F+6ujhQ2irC+S4EL1/OD0PJJ08zP3KpRBIMhVTIVEs9YuoR5nHGNqmA104TPalhRLwaNMTaZc2npdvmTzCDnouWmeB+9l9nB/YQTLc8xZb7Z3eg4Dy4rzkF0WE1qGJmxdx5MaLUnAnOoww9
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795446897-816429
+X-HE-Meta: U2FsdGVkX18QhtT/n+VjikQf3ku75Xhu1VGnLpa7fF9FAMcpCLxgrUutJy3V899ZyHxHMHe3WWRl4FqUyzIEfT8SLGbdLsrFCZDNTfhf99XFyEivpVjLyFscnu3ZdnCUxtTuY57A/Eqbh8H2XJZdW40/AaomaCUaJ0qmAGY8a/gAIe+nYmazB6LJzltSva2637A2XA5JzwTzjYwUdf8M5h+V8myY+KF4ttUEnVgebk3knqEsemLsYG4Z8sKlI045B7530gCYP19VcMnM17NctZGlvwDKdtnr4aTHfOziY5m7+oCpQppoFtcBNsa7t1kqUIsHrjs9XEPtGcg3cbDPOwGQOFPrHEoS0kHkZJnaiaZqDCjVlh9+pCFCDDRj4xzNNueW2Nx8CpPLiFaRbFTvXarkecj8ifzvQvEUnM5gQWZTpaSA0S9EV4FxsvEY+U7L4EabLbnuEqx5phldu2JREB4mBPA0plxaXk1TqudByLUyd948iwegg6Cdp+mMUCOVA2S5z/Roq9vMQgF3Y+yzyqhn0fOCelc4VwzusY/GxG1NW7CNnvXGV01l788s1igSCEedXD3Q1o7QNaD0RU4/IAretkX3WG3kadm29RL/VuM2Epysr6J09jEi5TlVe9VUFjYCJieCszrjg33dEBoRMaVtksuqR/dquJcK5e6TwTtSC2ZsYeOJxDuXMBGIQW02BR6ZzdJcnT5SSpMz9d7b1vZBlFonU+bxAJJiY9eP3WLA0Sg9B0J1HhoMyjtMycEJRNnSl2BqRKIVnUL2A9IcmVpy5giNe2cVs//efvoQRDspJf+QW8VkGXzr+1hfoEbg0jSDYvCu9arQ6MOUSU90C24ROF8YfLawsDtbrD+9DPCfdMyhhyL0hVqB0Y3kRY1jgm/FfYadg6Tg1aWuLfJd7m+o7v4+QGajlAFonEj3KqonhSYPIUqMMElZHqA0MmSW3A/Lu2z0QUwGSFn0soS
+ Oifk/VoU
+ XeyAoAyF5PtXUTcMUIENCKHRa2RVx1rClWISAesKzmnEh3Jun6epXLw9bk8IFmdqg4g2w5+ccExqEJ2iOMPg/T+nvNcIsJ5usoxjjB2cNV9CqfnW+ELPtIw49RkFLr+IRMSaqswICfP523U+KmqmvB+HYzHerO3pjb9InwOG+pKbBI0z6J+Qt7EhipPJE88iIuNeD7+p38wIrZPyu5JkQwteyfZTtyLSxgPcMbUwKJD7nSgHJLZaq/2mbDT6Pebo7Gf3OsTxr7e86Z8/I+Jg6eAngD8bpBs4LKp1J5qZkPCe9tzJ9eSC0noBBAUn8qAM1n8mXllN207lW0KWa8oDx3Nf9oGeHIMZ5MeVOEuXpIONd67ET7PSjVWTW528SVMIw9C3yw2F7wXNT1I4miEB1QgybI6+3lqfj6CuIZfsajEU02SPaurEOw/PbaPinK4nSK9xTlK9q8N6MJr6wE/mTOXRSxhcJH8TS/i8WtSNubw2Bk6PwEVQzIji2bvOwykQuhPdhrKjhF8CZ5d5fKGi29rGoUZDrekiV74lEjSwEp1ML761WitrUnOAfi0pcAA9zojLMu6hbd+8E4oWgFj9j6+RXcQSudOhiG9jvP9otpILda9GJ0UyMLL2mwpQgdVLibYf5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,47 +122,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: Mattathias Pinchover <mattathias.pinchover@uber.com>
+hurn>
+References: <p7wf376fhejkqtke2l6jxwzytlhiiaidjdaeapw36jxukbk2qx@kyk2wc5m
+hurn>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Update DAMON usage document for the newly added DAMOS stat file,
-sz_ops_filter_passed_last.
+Hello Jan,
 
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Mattathias Pinchover <mattathias.pinchover@uber.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- Documentation/admin-guide/mm/damon/usage.rst | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+I checked the patch against both master and vfs-7.5.misc. It applies cleanly on top of both branches, without conflicts.
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 6093b1c8fbfd9..51c4909f1a8b2 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -105,7 +105,10 @@ comma (",").
-     │ │ │ │ │ │ │ │ 0/type,matching,allow,memcg_path,addr_start,addr_end,damon_target_idx,min,max
-     │ │ │ │ │ │ │ :ref:`dests <damon_sysfs_dests>`/nr_dests
-     │ │ │ │ │ │ │ │ 0/id,weight
--    │ │ │ │ │ │ │ :ref:`stats <sysfs_schemes_stats>`/nr_tried,sz_tried,nr_applied,sz_applied,sz_ops_filter_passed,qt_exceeds,nr_snapshots,max_nr_snapshots
-+    │ │ │ │ │ │ │ :ref:`stats <sysfs_schemes_stats>`/nr_tried,sz_tried,
-+    │ │ │ │ │ │ │     nr_applied,sz_applied,sz_ops_filter_passed,
-+    │ │ │ │ │ │ │     sz_ops_filter_passed_last,qt_exceeds,nr_snapshots,
-+    │ │ │ │ │ │ │     max_nr_snapshots
-     │ │ │ │ │ │ │ :ref:`tried_regions <sysfs_schemes_tried_regions>`/total_bytes
-     │ │ │ │ │ │ │ │ 0/start,end,nr_accesses,age,sz_filter_passed
-     │ │ │ │ │ │ │ │ │ probes
-@@ -631,8 +634,8 @@ online analysis or tuning of the schemes.  Refer to :ref:`design doc
- 
- The statistics can be retrieved by reading the files under ``stats`` directory
- (``nr_tried``, ``sz_tried``, ``nr_applied``, ``sz_applied``,
--``sz_ops_filter_passed``, ``qt_exceeds``, ``nr_snapshots`` and
--``max_nr_snapshots``), respectively.
-+``sz_ops_filter_passed``, ``sz_ops_filter_passed_last``,
-+``qt_exceeds``, ``nr_snapshots`` and ``max_nr_snapshots``), respectively.
- 
- The files are not updated in real time by default.  Users should ask DAMON
- sysfs interface to periodically update those using ``refresh_ms``, or do a one
--- 
-2.47.3
+The previous documentation work I submitted was a separate patch updating Documentation/filesystems/locking.rst.
+I wasn't aware of any ongoing work overlapping with the changes in this patch.
+
+Please let me know if you had a different set of changes in mind.
+
+Best regards,
+Mohamed Ali
 
