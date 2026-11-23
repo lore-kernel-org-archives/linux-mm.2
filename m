@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3602606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 05:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990A8606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 05:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tI1Nu6dK
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hgDZs5Dr
 Received: by kanga.kvack.org (Postfix)
-	id 176296B05B6; Mon, 23 Nov 2026 00:36:08 -0500 (EST)
+	id 4343E6B05B7; Mon, 23 Nov 2026 00:36:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 126836B05B7; Mon, 23 Nov 2026 00:36:08 -0500 (EST)
+	id 3E5576B05B8; Mon, 23 Nov 2026 00:36:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0151D6B05B8; Mon, 23 Nov 2026 00:36:07 -0500 (EST)
+	id 2D4DE6B05B9; Mon, 23 Nov 2026 00:36:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C6FB16B05B6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:36:07 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 055936B05B7
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:36:14 -0500 (EST)
 Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 535168066A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:36:07 +0000 (UTC)
-X-FDA: 85465272774.28.56476E3
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5E682C07ED
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:36:14 +0000 (UTC)
+X-FDA: 85465273068.28.5A545D7
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6C1D2100002
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:36:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tI1Nu6dK;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9EB4440004
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:36:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=hgDZs5Dr;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795412165;
-	b=RVN5ltlhOsEUgdHk/9S9D9oMrlt4hebaEF1vFKQ0zKHU2Vno3nsAaik2pKO3DxYGUhnAah
-	HhSkOSBTcNHqEA0adeD01PnGidN0L07jnAf9IpkdUMgYIDcDhYNdAPTuw5Cuv8NrJnGqw6
-	do1fmFF1Hyh7e+Xl3HL9aQhS6ecOR5U=
+	t=1795412172;
+	b=nWRYG0owj35WWp7cVIPA/Yl7NNHy6EsiamVAlxjzl/8b8/Wd6930d4sr1ikt9iCIInzKlX
+	PeA7GVhrWOVSMoFS3/u9m62fHwwvOOWt0P1sxSdTCsrxwei71ce1r67q+24Q0fIKK/I4+b
+	33ECwR04toNKZxm0T3DktpkEivjssH4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795412165;
+	s=arc-20220608; t=1795412172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sztOyUtvVwNCz1gvYmQqcZM5lnFUEIW2aEPbQXELVl8=;
-	b=ID5dtLziTDugZN+Uj5CWyyU/UgNNGOQafOV1xLAO5alsPyPVafCUE60stKh6QfOl/dbSog
-	Pagy4COJEi8O77xp+iFBDJa9KtX9Yz+OSHY6zPkHI0yIWk+wCB/UVuNqJRE9ssc/P7g8eu
-	WaYilK5TUi8G7O/SVz3ixzgJO4a+4mE=
+	bh=hwUABIJPcG4wkw/8tyCLv0mDdg/1SOEEW0H7s6Vds+g=;
+	b=F1diBx1PM/N0f8bJHn0heAsSZczfxrXKRUyvFrbI5q4Q/qyLglEc1r1+eBFYbx9ixVx1OO
+	mL1xZ6Qnv0NdKuaHwFxSmdUo4Yyjez5qPNrl9iiL2nH2/vdBlr+KDSXDhtsQUi9CDo8cg+
+	ZRPOK8/uD4rSa+UWKVv9gVcTyz7WWc8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tI1Nu6dK;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=hgDZs5Dr;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 71C181688;
-	Sun, 22 Nov 2026 21:36:01 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD3581692;
+	Sun, 22 Nov 2026 21:36:08 -0800 (PST)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A57D13F632;
-	Sun, 22 Nov 2026 21:35:57 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E12903F632;
+	Sun, 22 Nov 2026 21:36:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795412164; bh=gBDzWBJYXCQ1hckvPrejnaqoFVdt4IWBe1N7CMV/06g=;
+	t=1795412171; bh=GiyoVPsQ8pJcUMUz9ig14lCYYTm6ntdIpsEuyMUyRbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tI1Nu6dK10FLwU3cJAoGnGK96Llq8wfx2UUIM9qfkqH9XdwK5e38fA4G1Xhr5/pxI
-	 hJM9YWoggAA72nMNfdVoc2xON4tS7moYImK40i3b3WZ4KkLnilIinLn9L9xYzEHf2b
-	 QItcZU8zNfULgDd0HHwFvruyFhIl/A4L+u1+Qt+w=
+	b=hgDZs5DrWBKasgA1sCCmE6LfT51UNHaqp1BBGWf9znpKYhJ/7K8mmGdfv5Un9DAQB
+	 yK+6djzg+yN1Pajfm7rRvNkPWKqi2ZAtbS6cJ2ZQ+9YZJ70b81ijTjvbjBDfqUTfCI
+	 DIFPijrpv7cG4fow+F7WXNa9YP9aeCwSx/SVsFms=
 From: Dev Jain <dev.jain@arm.com>
 To: david@kernel.org,
 	ljs@kernel.org,
@@ -84,27 +84,27 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	pfalcato@suse.de,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH v5 1/8] mm/swapfile: add batched version of folio_dup_swap
-Date: Mon, 23 Nov 2026 05:35:35 +0000
-Message-ID: <20261123053543.295467-2-dev.jain@arm.com>
+Subject: [PATCH v5 2/8] mm/swapfile: add batched version of folio_put_swap
+Date: Mon, 23 Nov 2026 05:35:36 +0000
+Message-ID: <20261123053543.295467-3-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261123053543.295467-1-dev.jain@arm.com>
 References: <20261123053543.295467-1-dev.jain@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6C1D2100002
-X-Stat-Signature: a3dw6kj5kteqogxr9hmmej5qrbshp1mp
+X-Stat-Signature: auwngntgrfwmfqrr5rr6yctowtd1pdan
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795412165-49900
-X-HE-Meta: U2FsdGVkX1+NaHtl489Kje0vFPANIdEgWUBOWWOWmz48hi4QvBPjB9LjQBmS3dx/7UlcfcGJUF36wcfPEC0paB1w0n1HXXLdtdAhho2InvB3XDmCwWS/7gK6xSmgXBAWLlvCDT+GmP+NXnG9v2rNyEUdj5umu673miEgQ3ULWyjpZj5QurWHXswNtY2HCcmVTB8h5WKqhUDXi5oeZoXgInE+SusL5++u1F00JF/GBZR4qWpThQiZ5+2ZRc7vmrI0coV/MqChkUDXoYqxvn6Uu9VIR8Zz+OaSnQU6xnB03lLlBL6VLcRtZL04N+EnDU6NfCXAJZb7HtbsFpIlt2KD6UzIbpl0KheL/BuV0fYdos1SpPvvLAtEi0Il2l4yX9BU8MB8WXcC54QhQBZAM0jhSV0SlkUzPGVprgwPNlomo98L4R3E6gCxEiSJ80hJ11UYzGYCfT9weqktYx9iFIg/TONLAS9Tqzdte0etw/vXYjCrxv0hNBC50YOl7kluNsqc/UgJqPF+PV3yWx7vGtB9WHAuQNNlU5scT2geyy4jJHJW36I8/jUGV4PhrdhHKGgKhqLkN+U+QXM/4zgKChpjMpns1LP/ABEYILOI8XgKXC/9TL1vNAWHJxmaaKs/IZPhTAQkcjdLcdvVlTMvt0Uv082TS/G0Es62hqhs1O0vrWxmcm0ThN3LQ0KpLjIW2HQQtOudgRrX4VmPURw5d0dx/j+8JU8Uyv6orUoS3Buz2kDj+iOP8sDTu7e2ldoqYsPVGSTaE4RLihg2DcyBGT0N2nJ333vxqQB7E7IE44C3O57Iz8ttp3xTDfaiLMKUJi0boyoGft4czj/WAiZFBtRfov0Lxy78ld9QtupAjw8dclRvS30/AT9jUtf+Ehc90hR2l34cR1tEuAJZ2R2OclHjHlNVNW2W4vixw6wxmI2wDTYKN5tDhftedh9+pRbaBRKbfo97GY4g+vYXQB2C3Bn
- nsruEV3L
- Y1qn+KG916t9nrxmDLcPbylNm5EYcQ6bPY8O2QGvWbvoZdnCh9PKtzzc9qnw96FXbzMsywryLA60FMXd/g5PmO8oo13N44+fs6fUqemvmAGSuY1nc+ppLV55HVkzFM6kmCFqxNbFYxCgtUBy24dgZ/i5Mcr5KWtRmpgXod8V8AzMsHj1NACxkPXwVMPQsCtcWBgj1wtp1q7rqjHqqSt0hr0QGaW2q66Nj6QjLoj1/T4yp3uvhtyDrY1fnoDJpu9CjNj6FCAAcxDI2/NvOtr9qG06WtQcQf6Wpis3Do92P91TqnxHqymDbXncD/Nv2nbkmsME62TTDGtvCcZVzGyERdjRaNyjDoM2KNjazRjL0DO10DuR/NUMz7rYQlM0vomklFSedDm6wzlwrty0uaTs7hq9WXZpQuAgmtUzSkSylQ/Ss9jhZzgaBsPnLXxMSV1bNCWDh5/2WS3KJ3jozTa+1sXFWLe0ADanjISSJnAg5rN/bUJY=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9EB4440004
+X-HE-Tag: 1795412172-441821
+X-HE-Meta: U2FsdGVkX19/CVM/PGMlJtt6qSf6AptDwZL2XK3WnQup6i6INot7cix4dBBUCwm09SMn9Me/7hGX/mr9e507agmaff9BZE1ZpRKGOTQwpygr8wvd81T8NQwjTvkSK3b9om09/UpVIUKro/O5RMLWiWtpMqDLn0rA70BngjzNgmpSBzT6I0Jg6SgwQp8+sILkvBinW/nCWD71uyGXikpPFUi+URwCiiUlhzN1y3PA8a5JQ3EEtX63jvPPIVYv8Ja9xVybQaCa8H4EDpgHLLCahOdpVqeMk6Dyhtq4R7a3RN1ixfsM9li/+7H7cE/jrQH4s2VMZM0G2qA3QXbzbxrSSHPW2Cayqi+WabU2C0UV1NR5pU++XvvHAg87/lD/Lpz5HnQr52+1J4qnPW0V2ALjaTD4Y1r0sjpJ6yNAUw38/i7SAYGnuH/tD2M5xQ4dD2b4Uug4wM6VnzC3x7X67d39mas2Zh+ILJkp7w4UwwxWXhkQfKKpNE0KpFRsuZYU13BMhlRS0fW7AdrAn7oj73bntECSaT6GAm042fMddlm90TZv65g+D6Q8Cp8pXZvKx3I0XBcJ+bEF3vJh0CCwNsGLt1xWoVGn2Bujm9AXAJAhjEHeaIEdVG1+vLJa5aRhDd2PZ8nPVP6mM7ECdkyBVxBwBoPwiJt9sBjBVhOR4STzmKhcRUKla7y+Ric+l2x1bqux3uFHo71mMxirE7WwaCWRWWCdMA2bqu7Hj0ZnFWdWWbubZSLMQxlDzRgEK3SklmjvNllKtdmGpujoru8tPavQ82sU9vh7v7u7x7z84wVTtH2FsyQV1b7KdI1t8XTkLxHC/tLeUhl+Ueh5rT5ftdDOFcycjtoZ2jJAxhwPbGYQZgRNnoAon2kNtEAQc5jotFNZ+4Wz7Cr3kI1ZGugTOzAI2GlHbZJ792oJMfIV91yZSfx9fH3trUIjIjlYXZPS//xuGVDfAMbUYU7QRcUqn7b
+ utCLg0vd
+ MLm54DYfQkmiUY4wgq+/JDmIQo0TWVtketTsYcBioekrHxLMMyCqxddqT0lX8c64XNovQT2wFmJ/gWUP+YzBX6A73U+ZuKmDX+mtVR9Vti2d3uVKWLnXS2E7hJbQVbPjoUCDrJjYp0TLU3d3BQ6A14xzp7SuhcBuQ6yF7l4QaF2ZVXMy0dgW2ZnVteFSXnB7RbjgxKO4nPTcOcLdy75v6xyAgmBf1lGNrGXfhmJ+5RixHHwnp6HFJqhL1shOzBEZM+sULd0vTdHNRcTATZqy7BSlkk70+kk6TOuDcBRohE1NQ7uFga9PLjFqvUm2O/a49mBLuT0sVH3siW7QDFSdr5d1IfZgyOnnKsU5YtixGKSDHbBqepbuCYMhdMsBJgceNKBj5hRPn7Zs8+wfOXZdqSIkY7rswK+ESTBJSlDVd0gC3rUHbzblOR4e0xbuBMvCDC67OBqQEw3eEgFJfE6ZuBt+jUyKeUw5RkA28TbSd2gvsQD0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,16 +113,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add folio_dup_swap_pages to handle a batch of consecutive pages. Note
-that folio_dup_swap already can handle a subset of this: nr_pages == 1 and
+Add folio_put_swap_pages to handle a batch of consecutive pages. Note
+that folio_put_swap already can handle a subset of this: nr_pages == 1 and
 nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
 
 Currently we have a not-so-nice logic of passing in subpage == NULL if
 we mean to exercise the logic on the entire folio, and subpage != NULL if
 we want to exercise the logic on only that subpage. Remove this
-indirection: the caller invokes folio_dup_swap_pages() if it wants to
+indirection: the caller invokes folio_put_swap_pages() if it wants to
 operate on a range of pages in the folio (i.e nr_pages may be anything
-between 1 and folio_nr_pages()), and invokes folio_dup_swap() if it
+between 1 and folio_nr_pages()), and invokes folio_put_swap() if it
 wants to operate on the entire folio.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
@@ -130,109 +130,164 @@ Reviewed-by: Kairui Song <kasong@tencent.com>
 Reviewed-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/rmap.c     |  2 +-
- mm/shmem.c    |  2 +-
- mm/swap.h     | 18 ++++++++++++++++--
- mm/swapfile.c | 18 ++++++++----------
- 4 files changed, 26 insertions(+), 14 deletions(-)
+ mm/memory.c   |  9 +++++----
+ mm/rmap.c     |  4 ++--
+ mm/shmem.c    |  6 +++---
+ mm/swap.h     | 17 +++++++++++++++--
+ mm/swapfile.c | 21 ++++++++++-----------
+ 5 files changed, 35 insertions(+), 22 deletions(-)
 
+diff --git a/mm/memory.c b/mm/memory.c
+index 6a23198c1c67..ed6dfdb63994 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5327,8 +5327,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	if (unlikely(folio != swapcache)) {
+ 		folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
+ 		folio_add_lru_vma(folio, vma);
+-		folio_put_swap(swapcache,
+-			       folio_file_page(swapcache, swp_offset(entry)));
++		folio_put_swap_pages(swapcache,
++				     folio_file_page(swapcache, swp_offset(entry)),
++				     1);
+ 	} else if (!folio_test_anon(folio)) {
+ 		/*
+ 		 * We currently only expect !anon folios that are fully
+@@ -5337,12 +5338,12 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) != nr_pages, folio);
+ 		VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
+ 		folio_add_new_anon_rmap(folio, vma, address, rmap_flags);
+-		folio_put_swap(folio, NULL);
++		folio_put_swap(folio);
+ 	} else {
+ 		VM_WARN_ON_ONCE(nr_pages != 1 && nr_pages != folio_nr_pages(folio));
+ 		folio_add_anon_rmap_ptes(folio, page, nr_pages, vma, address,
+ 					 rmap_flags);
+-		folio_put_swap(folio, nr_pages == 1 ? page : NULL);
++		folio_put_swap_pages(folio, page, nr_pages);
+ 	}
+ 
+ 	VM_BUG_ON(!folio_test_anon(folio) ||
 diff --git a/mm/rmap.c b/mm/rmap.c
-index 09c33b9ec585..ea94e69010da 100644
+index ea94e69010da..98690947ef19 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -2167,7 +2167,7 @@ static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
- 	swp_entry_t entry = folio_page_swap_entry(folio, page);
- 	struct mm_struct *mm = vma->vm_mm;
- 
--	if (folio_dup_swap(folio, page) < 0)
-+	if (folio_dup_swap_pages(folio, page, 1) < 0)
+@@ -2176,13 +2176,13 @@ static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+ 	 * so we'll not check/care.
+ 	 */
+ 	if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+-		folio_put_swap(folio, page);
++		folio_put_swap_pages(folio, page, 1);
  		return false;
+ 	}
  
- 	/*
+ 	/* See folio_try_share_anon_rmap(): clear PTE first. */
+ 	if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, page)) {
+-		folio_put_swap(folio, page);
++		folio_put_swap_pages(folio, page, 1);
+ 		return false;
+ 	}
+ 
 diff --git a/mm/shmem.c b/mm/shmem.c
-index 81c1d63de334..aff46b2508a7 100644
+index aff46b2508a7..0af500103036 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -1986,7 +1986,7 @@ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
- 		 */
- 		shmem_disallow_eviction(info);
+@@ -2008,7 +2008,7 @@ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
+ 		/* Swap entry might be erased by racing shmem_free_swap() */
+ 		if (!error) {
+ 			shmem_recalc_inode(inode, 0, -nr_pages);
+-			folio_put_swap(folio, NULL);
++			folio_put_swap(folio);
+ 		}
+ 		shmem_allow_eviction(info);
  
--		folio_dup_swap(folio, NULL);
-+		folio_dup_swap(folio);
- 		shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio->swap));
+@@ -2445,7 +2445,7 @@ static void shmem_set_folio_swapin_error(struct inode *inode, pgoff_t index,
  
- 		BUG_ON(folio_mapped(folio));
+ 	nr_pages = folio_nr_pages(folio);
+ 	folio_wait_writeback(folio);
+-	folio_put_swap(folio, NULL);
++	folio_put_swap(folio);
+ 	swap_cache_del_folio(folio);
+ 	/*
+ 	 * Let shmem_recalc_inode() reduce alloced and release the block charge
+@@ -2679,7 +2679,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ 	if (sgp == SGP_WRITE)
+ 		folio_mark_accessed(folio);
+ 
+-	folio_put_swap(folio, NULL);
++	folio_put_swap(folio);
+ 	swap_cache_del_folio(folio);
+ 	folio_mark_dirty(folio);
+ 	put_swap_device(si);
 diff --git a/mm/swap.h b/mm/swap.h
-index d5bf21f517dc..ea710cec986c 100644
+index ea710cec986c..891f41c4556c 100644
 --- a/mm/swap.h
 +++ b/mm/swap.h
-@@ -244,7 +244,8 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
-  * folio_put_swap(): does the opposite thing of folio_dup_swap().
-  */
+@@ -246,7 +246,8 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
  int folio_alloc_swap(struct folio *folio);
--int folio_dup_swap(struct folio *folio, struct page *page);
-+int folio_dup_swap_pages(struct folio *folio, struct page *page,
+ int folio_dup_swap_pages(struct folio *folio, struct page *page,
+ 		unsigned long nr_pages);
+-void folio_put_swap(struct folio *folio, struct page *page);
++void folio_put_swap_pages(struct folio *folio, struct page *page,
 +		unsigned long nr_pages);
- void folio_put_swap(struct folio *folio, struct page *page);
  
  /* For internal use */
-@@ -368,7 +369,8 @@ static inline int folio_alloc_swap(struct folio *folio)
+ extern void __swap_cluster_free_entries(struct swap_info_struct *si,
+@@ -375,7 +376,8 @@ static inline int folio_dup_swap_pages(struct folio *folio, struct page *page,
  	return -EINVAL;
  }
  
--static inline int folio_dup_swap(struct folio *folio, struct page *page)
-+static inline int folio_dup_swap_pages(struct folio *folio, struct page *page,
+-static inline void folio_put_swap(struct folio *folio, struct page *page)
++static inline void folio_put_swap_pages(struct folio *folio, struct page *page,
 +		unsigned long nr_pages)
  {
- 	return -EINVAL;
  }
-@@ -464,6 +466,18 @@ static inline void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+ 
+@@ -478,6 +480,17 @@ static inline int folio_dup_swap(struct folio *folio)
+ 				    folio_nr_pages(folio));
  }
- #endif /* CONFIG_SWAP */
  
 +/**
-+ * folio_dup_swap() - Increase swap count of all swap entries of a folio.
++ * folio_put_swap() - Decrease swap count of all swap entries of a folio.
 + * @folio: folio with swap entries bound.
 + *
-+ * See folio_dup_swap_pages() for more information.
++ * See folio_put_swap_pages() for more information.
 + */
-+static inline int folio_dup_swap(struct folio *folio)
++static inline void folio_put_swap(struct folio *folio)
 +{
-+	return folio_dup_swap_pages(folio, folio_page(folio, 0),
-+				    folio_nr_pages(folio));
++	folio_put_swap_pages(folio, folio_page(folio, 0), folio_nr_pages(folio));
 +}
 +
  extern const struct swap_ops swap_bdev_ops;
  
  int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index c2af13eb15b3..a7d7e1f81c79 100644
+index a7d7e1f81c79..cd81a7bcffb8 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -1804,9 +1804,10 @@ int folio_alloc_swap(struct folio *folio)
+@@ -1836,27 +1836,25 @@ int folio_dup_swap_pages(struct folio *folio, struct page *page,
  }
  
  /**
-- * folio_dup_swap() - Increase swap count of swap entries of a folio.
-+ * folio_dup_swap_pages() - Increase swap count of swap entries of a folio.
-  * @folio: folio with swap entries bounded.
-- * @page: if not NULL, only increase the swap count of this page.
-+ * @page: the first page in the folio to increase the swap count for.
-+ * @nr_pages: the number of pages in the folio to increase the swap count for.
+- * folio_put_swap() - Decrease swap count of swap entries of a folio.
++ * folio_put_swap_pages() - Decrease swap count of swap entries of a folio.
+  * @folio: folio with swap entries bounded, must be in swap cache and locked.
+- * @page: if not NULL, only decrease the swap count of this page.
++ * @page: the first page in the folio to decrease the swap count for.
++ * @nr_pages: the number of pages in the folio to decrease the swap count for.
   *
-  * Typically called when the folio is unmapped and have its swap entry to
-  * take its place: Swap entries allocated to a folio has count == 0 and pinned
-@@ -1820,18 +1821,15 @@ int folio_alloc_swap(struct folio *folio)
-  * swap_put_entries_direct on its swap entry before this helper returns, or
-  * the swap count may underflow.
+  * This won't free the swap slots even if swap count drops to zero, they are
+  * still pinned by the swap cache. User may call folio_free_swap to free them.
+  * Context: Caller must ensure the folio is locked and in the swap cache.
   */
--int folio_dup_swap(struct folio *folio, struct page *page)
-+int folio_dup_swap_pages(struct folio *folio, struct page *page,
+-void folio_put_swap(struct folio *folio, struct page *page)
++void folio_put_swap_pages(struct folio *folio, struct page *page,
 +		unsigned long nr_pages)
  {
 -	swp_entry_t entry = folio->swap;
 -	unsigned long nr_pages = folio_nr_pages(folio);
 +	swp_entry_t entry = folio_page_swap_entry(folio, page);
+ 	struct swap_info_struct *si = __swap_entry_to_info(entry);
 +	unsigned long idx = folio_page_idx(folio, page);
  
  	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
@@ -244,8 +299,18 @@ index c2af13eb15b3..a7d7e1f81c79 100644
 -	}
 +	VM_WARN_ON_FOLIO(idx + nr_pages > folio_nr_pages(folio), folio);
  
- 	return swap_dup_entries_cluster(swap_entry_to_info(entry),
- 					swp_offset(entry), nr_pages);
+ 	swap_put_entries_cluster(si, swp_offset(entry), nr_pages, false);
+ }
+@@ -2602,7 +2600,8 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
+ 
+ setpte:
+ 	set_pte_at(vma->vm_mm, addr, pte, new_pte);
+-	folio_put_swap(swapcache, folio_file_page(swapcache, swp_offset(entry)));
++	folio_put_swap_pages(swapcache,
++			     folio_file_page(swapcache, swp_offset(entry)), 1);
+ out:
+ 	if (pte)
+ 		pte_unmap_unlock(pte, ptl);
 -- 
 2.43.0
 
