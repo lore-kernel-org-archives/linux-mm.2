@@ -1,93 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816E5606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544A4606A33A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hcCpM1qM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EhQuDqUF
 Received: by kanga.kvack.org (Postfix)
-	id 9229F6B05B2; Mon, 23 Nov 2026 09:28:07 -0500 (EST)
+	id 6A2536B05B0; Mon, 23 Nov 2026 09:40:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FBA06B05B4; Mon, 23 Nov 2026 09:28:07 -0500 (EST)
+	id 653556B05B1; Mon, 23 Nov 2026 09:40:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8386B6B05B5; Mon, 23 Nov 2026 09:28:07 -0500 (EST)
+	id 5698B6B05B2; Mon, 23 Nov 2026 09:40:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CBF46B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:28:07 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E5AAE1608AA
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:28:06 +0000 (UTC)
-X-FDA: 85466613372.24.07474ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 56C68100007
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:28:05 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hcCpM1qM;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A38C6B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:40:55 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BF4FC1A08DA
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:40:54 +0000 (UTC)
+X-FDA: 85466645628.15.ADD06A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 373CD20007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:40:53 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EhQuDqUF;
+	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795444085;
-	b=yPsUYrGe0QGVktx6CeB5farb17+POliNFypLh6fFa9i9Hte7L1F/XawftaFDhDEg5u5Un7
-	Ns4wSmk0m7NXYnJu9Hs61EQf9srejabDhB+2p+tYEjZ6yP4DNRHJtaWXvsFaRO2VK/GhPE
-	1XkVaxDJwWYzgn8K5v0RAw0JfzWCKGg=
+	t=1795444853;
+	b=cXUXM5/Vfz3W51IEJK/03uczD/hZ4MlHBDmTcazweyAG120S2Fv03SkknAiX8e3DtLc9fR
+	qgXhjbIR8j9nvcGoFVoxCzcDtUuKKRaqW3um7XY1YrfR4rC8qNiWGXsa8jDwndk8mFiCrN
+	nzoj5zkmvlX6w8cCdtn2v0psO7xi/NM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795444085;
+	s=arc-20220608; t=1795444853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kUibffDJu+NILeHG7932dLRGDC9WduDU2Wovc7T9JVU=;
-	b=GjWDSnGIHvq0P8X8jCk02EWOravGrnTwET76XANkOII7c1O7ltqDlfQrrfyow70QNQTfP6
-	ga3cSq5dneOZ1z874FSFAlmLeGeYHIynHt5h62LJ9F4bCdHRiDEkdbKV09kbTyFrQobahT
-	4zCjKkqvqQacwzmspAdclQ9zLijfUmw=
+	bh=VOsTEFHih5VGh65hIOhMdFK7B8YNvZl3Iglz0jpWLso=;
+	b=aFeMx+EIDUV8k/73eUuxUhHMxLBtuhckq5HrZqKv1gc9xEmauDSLYLO9UWswh8AqG9Pegg
+	Gh5P4bAykVxehnu4bJuxeR9EDPxiROhNNIRF5pAbszy02XXtWBXu5bA6q1EgF3MP/Cvh3q
+	l2XtbUaakz+SgeTKgnrxn77VahKGBdw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hcCpM1qM;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EhQuDqUF;
+	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 98E62611BA;
-	Mon, 23 Nov 2026 14:28:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A213C1F000C0;
-	Mon, 23 Nov 2026 14:28:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B49941E8D;
+	Mon, 23 Nov 2026 14:40:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD2E1F000C0;
+	Mon, 23 Nov 2026 14:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795444083;
-	bh=kUibffDJu+NILeHG7932dLRGDC9WduDU2Wovc7T9JVU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hcCpM1qMfibR4i6H9L8GR5F8FivmKW6k3htnsn86kOZtVqPGRZzL0Hm3QfznWjirT
-	 JbSkX87kAQJz9Qus6xK0zyANrpLzXt3imH2BbbU3Iejm+S1ftwt3Z6zommNMkCj67T
-	 U+I0AjKC6y5iGGEb/rgWr6hl9pesr2famgSNsLVjexeyxfIHWX/ncfjMwb6elE0AC0
-	 AST+AUhm+gt2ktMARJPMePwYwGbPRTxKjOkfdf/qq3o99H0GQFo1RbE1R+AkA44kzE
-	 K56tDOM5YYswCVLcJqxNRwLbv0WIir8QpbHlPyOezQv3lKrERjcEe1hmCWm1pL/2nI
-	 IYmbGYHxvBrcA==
-From: SJ Park <sj@kernel.org>
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	sashiko-bot@kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 14/27] mm/damon/paddr: support REPORT_MADE type probe filter
-Date: Mon, 23 Nov 2026 06:27:55 -0800
-Message-ID: <20261123142756.84068-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261123120009.9120-1-lianux.mm@gmail.com>
-References: 
+	s=k20260515; t=1795444852;
+	bh=VOsTEFHih5VGh65hIOhMdFK7B8YNvZl3Iglz0jpWLso=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=EhQuDqUF7DT4TxtUVj9OVj3hTI5W7/nX+vJBMGjIrlutfWt0271APj+JosrDBV2AM
+	 uut6trIXiw9gA5t4IwPJueJwzj9HFtdUmkBzMc25B+WVSM98Cm2yI8DhpgxTSr78Fs
+	 0vCN7pHkECxedbb55AQsjW+X27PRzf58UPb+Tqg+TSlPv/o1rl0l2NzYCEWJL+4g5/
+	 Hw3Auknd7cZH4CLJjUs29SlW4cydIVH/NtK193SF09uzDfVCpDWaX2qCVqmz1rChCw
+	 MLo2KazaBsVn6lCDr4eLo6ojuIsBh555XaGs58UHfZp30JcithhFCYfDtzruEDI36+
+	 FuL+NMy8p6Rsw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+ Matthew Wilcox
+ <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry
+ Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, Christoph
+ Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman
+ Gushchin <roman.gushchin@linux.dev>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v6 08/12] rust: mm: add abstractions for allocating from
+ a `sheaf`
+In-Reply-To: <DN0YBZJNQVW4.2RY9NCR5T33HZ@kernel.org>
+References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
+ <20261120-xarray-entry-send-v6-8-1f69d7385f70@kernel.org>
+ <DN0YBZJNQVW4.2RY9NCR5T33HZ@kernel.org>
+Date: Mon, 23 Nov 2026 15:40:36 +0100
+Message-ID: <87mrqztxuj.fsf@t14s.mail-host-address-is-not-set>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspam-User:
-X-Rspamd-Queue-Id: 56C68100007
-X-Stat-Signature: cw7a9frgu785ci1ehritfgabexx9yh8s
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795444085-314524
-X-HE-Meta: U2FsdGVkX1/tSSmQ+WGBvuZzIwgfO/ZZjtFXGFn0+hdc9FDsGiAqWW9tcsuuIRsM2hkk4ujF2wZ0c5d7oY3P14+vZ17oOxrmRUcS8BG7w718HujFZjm/7d5gmZ/B1dQHtHunnEYUPL6U/oFQqJm7/F1k5KOWZtunJpIHMESk5gstbX5FIQ9T4DfNV5h8ljqu2wMaDfeZjZ5Hyig4qFE6u0719XP9SzZcPRsaCqnMDj4XoHVdHpUQVJ4FqsxHeMkX+WybLonDIbV9A+Ra/0bdyuWi7OU4QgLPpg7+mYZ2LbwDiR3LgsEtMZ/HisyqgcNq+1Q1Sr7JPa5m5tkgcXAy68cWrv3QFclPAPV8dBEU3z5Hi/QXlG+iQJPP+B/gnGe1yc3QEffgOy55TEhucl1TwEIykcq0tYaDilnZqYcgrj4vxqOWFw1UuFrbagOCOssOH4lkj4+x5GlODH3hSDnOEcQISRhKze5mygUvyLu0qug/a9gg4vR2ruPWn6N2zCL2KUMkrvPvQPUoryJQw4v1bSnuAxsyCP38SnPQBqSu5OvkiMYOPQ1BxzWbwJ2yuO1d1AN/JxbuafFd1UvkZ4knGmKRdBZcENIrffOazaZAyGZuN/Fp/vuotY4ZBvGdd4VCOJj44IFSysqmkIMuTBjPqZbmiOy0vOwfRjUMGcfHLscfaFTcfU4EQq4kAIbv2Ay7aB/vhHrN+qPMbTAnyxVBNHRCfLL6wi1E4Y2Y/pdVt8c2me+8zvc/o8LubcV/z+zBfaWC5kvO6MfN3TU/Ah2GF3hMUN1YTcCh3UJzOjMIU/huOb5VIV2YZ7Q5nkjw8H6L/Uiu4JckJCaU1IJRzxyPwXOVn10cnO0NMJ8+UOcj4mbWPybfzwj4YpKAnZKCr4qnbx0fIpSllx8I2ORfHGGZ7VLlvzYkdmchF1hsyjj/Q4Jmo/BXdctf9bes77QmwSiXZFlZlcsCtkwJyeAxsSI
- AqGmyMQR
- Uq5p6i6KyGIOMZ7UbvMOdMyqTbDLelKFrlmL3Kbh316VnE5JlQICV8r073/RwdbZ5U1ILVha2MYNRiZfaGKEJjrcBuvfSlW0k2EgbNiTclkK7u5lXgICt2BJ0qaSr4ignw1SdcURv2m6watEeXAQwzxO3GGoMkpPO2vxtu1hZk5SQUq0QrUE6AF1pW9mepDyklMKSVN3KZSzO9DdTrq82wtChXrhFBABQ5jqRr6AICUxzLU0na06i8R86O73S2Hit94s+NwmF47Z8cvki9DnAhuAqvsXNqSBUBEIXQtKG80h09xQFsZohXbkh6jsSi51Zjdfcywmowd56/UUWBbzNE6++hKZjGIJssiM4LjrvKZ0jAhsnFGgd4WXLSRdZApDyxFnELtYhCE2sDOA9dyYYFnB0oX0uA7Yiqz9W5IWBNFSOOAi7tvidHeRqGOB5LpPN2059eT7XP6h5Slg7tiGw26SxFUM9DRtyvlCAnbaISXXO39Wg6yCcQnFHDvLgCdP2zbXwrlgrA5I/Fza2+FfUv1UMkNda75+KPljv24HATdFhAPvNL1lhmadzSpXnNWiOK1dyR2LJocVaFlLZv4MSRJNlPnn2HX8GmdNW
+X-Rspamd-Queue-Id: 373CD20007
+X-Stat-Signature: jgqcbrb7grpdsh6s15m8n6mhrak8ez3j
+X-Rspam-User:
+X-HE-Tag: 1795444853-329866
+X-HE-Meta: U2FsdGVkX18MTv6xmu654PvEM4s1LRM4NnkkV2NQZrV2Z4hcO79hYTkxsNA0nhgLsJBhhg20JYxvFVCXYwn9xeSfAkBJUWNJzgyC5xjJPmaQNA3jvoedSGE6XecIMlXg2D9GQYRO1j313aCQzYErAdz2qiIo1NG25MHPRMaBcEohAMiO1FRYk8amXxvleNJA4RD5PTGAs6a+iMlISSXOHuw4ztTlmU6g9MwDH7NkeEKxvbMb2knoW+fQ/1lOkSWJZaOAwkPpTW+HXIalp1Vq+o/9Bb35MipGfSXuvnL3ogyTmvT8rSD6pcPmnVob8VorNoV9n733ShTbjPJmKqn1Hsm5w13KDcoa/DjZu34u/q78+fgrnrBpQgYXw5TqOYUBIGi8mivwC2+cp3aub2f+8AK157I0ewHulTPgxG5kvpFQjHFdl8tSzDjvFPwSpl3WbFO8pkhCpugQ1/sBPy42tkaA4QdbUkLzrSgInIeEyTQUwrqDX8N7ZnFMjfs9mppTRwPJogmTMuFuFH+OfjCJYlMPw94nAv4YA1eZaEriZsZoc/rktE+zJa+u9Iw2bLxsfrk6n8o3T6VPmnWTVvhbDIY3+Ft1RW8VbPd6XicKJvv9u7WRFhfUBbT19+e4BvmCMMIxPH3l1QCGvIbE2WPfs1gn7wGHoTx8nkTHjyHkmeb7GAZMwvyPmSvgEKoefunYOCl4S0OpQJLOVnySJv2sBbG7fiFAGbE7hwDllxqOkYWBZfd+SLnfRrzmmcvFKmw1wAUbSAAbANXjLj+97futCHBHuRFybKCK9Cf34dK2r5ynydtEarfiP+74KeqyHPr4o6sog8ayXAEDE4DodZREp25btKfFIi9uEmHQz8bqQ2O9xF4L9KcQ2WecQMidsAJv6LWO+/BtPaMkqq4eo0QnrTVSdDSHBmCj2bZDKA2DjKSz25sB/U9dJj9rL+vO9skuVTlTsPugZaE4qF7u3mo
+ aUK4cxiJ
+ fhbcpiUKEQchHWPbjYqiehUymFME9aS27pWAaHcM4V3nlaIqC2D7jb0lATvof5nJ6dQR1M1exnJX7cFtyHNWRq0rRrZ7qufhq/TQzN9lPzBX6WURxpBScZ7qLVr2wT0ZePv5IeG83TiRLDK1Q1IgaGK1y0OFn4kRonWUxHQvTF+IvByE3pm4x+gMNnbiZGZiUPg1aYu6P6EKEeQcvYLZnJAI0f3Uuq90I1Ozd4hSKuA56lo+wc1Um+2emNdFwORgSF3qtr3tpKYzuTlZzMOZ1kxCbLR6Ju/HUkgWNR5aJA8fcEwoO+ZW8vYjgxtZhJy4WTZd4I5kFxsNowM0W3A9SgqkA7wVnijZTrd6U9LC0+UqNYdZwpKYs7TGwCHFeOLZiVhMVv1U2UbzpnWNzRmmIDtUQFyB53S8qBiD9iu2vLDrvK7fwXSiI224G8CWAOuFzBbvcPLmt/Qi1AQE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,24 +109,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 23 Nov 2026 20:00:02 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
+"Danilo Krummrich" <dakr@kernel.org> writes:
 
-> On Sat, 21 Nov 2026 13:19:20 -0800 SJ Park <sj@kernel.org> wrote:
-> 
-> > +               addr_range.start = damon_pa_core_addr(pa, ctx->addr_unit);
-> > +               addr_range.end = damon_pa_core_addr(pa + 1, ctx->addr_unit);
-> 
-> Hi SJ,
-> 
-> With addr_unit=4096 both endpoints round down to the same core address.
-> Could you fold in the change below so the lookup covers [start, start+1)?
+> On Fri Nov 20, 2026 at 2:10 PM CET, Andreas Hindborg wrote:
+>> +/// An owned allocation from a cache sheaf.
+>> +///
+>> +/// `SBox` is similar to `Box` but is backed by a slab cache allocation obtained
+>> +/// through a [`Sheaf`]. It provides owned access to an initialized object and
+>> +/// ensures the object is properly freed back to the cache when dropped.
+>> +///
+>> +/// The contained `T` is initialized when the `SBox` is returned from alloc and
+>> +/// dropped when the `SBox` is dropped.
+>> +///
+>> +/// An `SBox` holds a reference to the [`KMemCache`] it was allocated from.
+>> +/// Dropping the `SBox` may thus drop the last reference to the cache and
+>> +/// destroy the cache, which may sleep. See the `# Context` section of
+>> +/// [`KMemCache`].
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// - `ptr` points to a valid, initialized object of type `T`.
+>> +/// - `cache` is the cache from which this object was allocated.
+>> +/// - The object remains valid for the lifetime of the `SBox`.
+>> +pub struct SBox<T: KMemCacheInit<T>> {
+>> +    ptr: NonNull<T>,
+>> +    cache: Arc<KMemCache<T>>,
+>> +}
+>
+> I did only notice this patch just now, will take a closer look later on. But
+> this all looks like it belongs into the alloc module.
 
-Thank you for finding the issue and sharing the fix.  The fix looks good to me.
-I will fold in it.
+Yea, could be we should move it to `alloc`.
+
+Best regards,
+Andreas Hindborg
 
 
-Thanks,
-SJ
-
-[...]
 
