@@ -1,141 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3685606A339
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5F4606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nM+tnc/f
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Zyd4QvL5
 Received: by kanga.kvack.org (Postfix)
-	id 0B1626B05B8; Mon, 23 Nov 2026 11:49:41 -0500 (EST)
+	id 33E696B05B1; Mon, 23 Nov 2026 12:04:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 061C36B05B9; Mon, 23 Nov 2026 11:49:40 -0500 (EST)
+	id 2EEDD6B05B2; Mon, 23 Nov 2026 12:04:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6D1F6B05BA; Mon, 23 Nov 2026 11:49:40 -0500 (EST)
+	id 1BCA26B05B4; Mon, 23 Nov 2026 12:04:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BD6936B05B8
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:49:40 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C316B4098A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:49:38 +0000 (UTC)
-X-FDA: 85466970036.15.E65D87B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0AAD5C0005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:49:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nM+tnc/f";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E193D6B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:04:52 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77CAE120906
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:04:52 +0000 (UTC)
+X-FDA: 85467008424.07.B8BCBD9
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9B7112000D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:04:50 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Zyd4QvL5;
+	spf=pass (imf31.hostedemail.com: domain of rientjes@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795452577;
-	b=mOmyQLVyftRfWx5OBFb45aTRj7qRaxAsvCu3Gg8MxPO4+h1dIK5xhNLN6COXAmjVY+FXgI
-	0YwPecJf4J463O4OlRpYDvPEHLdYqxv+lDEq9JtjMqDMu3OCVoprLhQeynpDxFYeRCbG2N
-	W7qpnu6TVZi0WLpIRWcYa1BXDqDs1+g=
+	t=1795453490;
+	b=LWdkrOfOVxHhesJU1llXkKeJZ3phWFS6NuRVynUPiJgLM+fWBonUG6krdrV12wVsOP85UC
+	lpc65+PVdGAMdiY4w4IQZrGq8fu5KcRqJMt6d/LmGyAxcBlb2qaA/aTs4KdKBnBqfxwZmp
+	Wdqj7hOhwZNJEjIqGqt6b8zHKeGyo0Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795452577;
+	s=arc-20220608; t=1795453490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YCuAaCr6jzaRuI8obgyWyzu2xTHrj4+Ag4DYtGsL9PY=;
-	b=ylLypRUad2GdbpZIEY9zuI7b+ydp3vpkOxwnzo3BBZHityBsBNTAbsv7PbmkgWucZ3W65g
-	AR+Q5fto3UYLexIYBCk9KcC2V721bS5AkssAR85jbG7RZuAHSgbq+sJ1SY4r0BdSQrW+l+
-	OD4u5nHVbc6fPgRuA7tybSqjpGoVKBM=
+	bh=6z6ak377Awv+mxJYPSVQS/ONw5MrRNWXM3G9SGJDdio=;
+	b=vbourDpc8BDIN/ISovZBZRL1OpmTIvTqtjTM2/eUM0M8y9VwZbLoBjf0yqPCmCLCM569Z+
+	63CA0JHcXXTFyYftMOb8Pkio4iuaT1rcasHaslsrRO94YPsWAV7JNvFpBmaC+dDGNWg0NF
+	zlDuajsSQwXpdtCdJ0tN95priRXwQs0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nM+tnc/f";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A89A462399;
-	Mon, 23 Nov 2026 16:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412381F000EF;
-	Mon, 23 Nov 2026 16:49:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795452575;
-	bh=YCuAaCr6jzaRuI8obgyWyzu2xTHrj4+Ag4DYtGsL9PY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nM+tnc/fHIRs9y+KjV7vr5gk3kHBo8bnP17v6GUQgagSxaqT+B+1uqLncybnbNlVV
-	 d+Th6Iiz145NRZBrac2BjmUUgnypFhYE3w6Vc1q+3r6P76AQWTKzlPS6BpwskR66G9
-	 uL3vDIO/at5gv/6kEH1ha6tj1frHX+WGX/+fe1lDJ1wK1ZrOlTo+IPige9fOrmngcL
-	 Beq2BGzgmLJsME7agvgi8UsDwWcwzho+9IG3MreLtk+eMFdxnLeVBTYOcIJ/JNJ9OI
-	 cTlffh01hfSNWiK5PMon8X5ceRhrRAQerejs6IS6rOACR/bt/RiyewStW5DT6mmtyr
-	 ciXMVzTA6VmLw==
-Message-ID: <16d172a9-bf5c-4a69-93d1-b48cd53b67b2@kernel.org>
-Date: Mon, 23 Nov 2026 17:49:30 +0100
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Zyd4QvL5;
+	spf=pass (imf31.hostedemail.com: domain of rientjes@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2f048bc09d7so120295ad.0
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:04:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795453489; x=1796058289; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6z6ak377Awv+mxJYPSVQS/ONw5MrRNWXM3G9SGJDdio=;
+        b=Zyd4QvL5I5Q+PI0bAbgJL+go/WpK4yOGOEP9vubOmG1zmR9BfIDZaWlTNdCRJuDARY
+         nj57eDrYgUSzsagvzToRakDTBhyLpP4f1OPQoXaomMqJV0sh9+NrczNjxQ6mNaH1dAQM
+         aww1mzbJNQZgGbcg9VfBRAKGbV12nkjY9qtiYBQ7DWpkaPEaj2QWB01nj8qCH0SFrd5+
+         4MxSJcatAYgzYY/1RlYG5lFdPa+Otq/+vBHEsE3DLzPHMukXuHIkyh3LDSNt1TA7l+0Z
+         vJJYLDgetoU4QBJNd59n5EfTImUQQ+GMRhXCPMSYNTxmwYGjiXBnbaLdVh/YbLWKBdTj
+         g+Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795453489; x=1796058289;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6z6ak377Awv+mxJYPSVQS/ONw5MrRNWXM3G9SGJDdio=;
+        b=HpPbqiaM5OW906fRixyTOrT15AaKExbjEwf5MkDAzWm+5O0mjHbPOZRxnzPyRsTbsD
+         SNbLEAbL305wMX/YCZXe0fqiIBR0VYApWPeKKgybo72cxKzjGMZbpxd3ZBziLYP1tDNP
+         LAUBBrH+frKSTYy7QnDFbiOFYtAmrVq646yXxaKjX4FAhsFushxDhSgilfJtuqIX/2Vr
+         7mO26QMv1Ih7nnqzhXrhBY0/vabvMS+brrk4BN5mxmocn+46PHTKv5MMag1oJkzmUIwP
+         6Iz2dafqi9himcQmNxV8UzEGt4YLfNEHfZMDOm9h2/2gLu2btVf7fzvDNZsS9KfMRF9n
+         gDgA==
+X-Forwarded-Encrypted: i=1; AL+hErHy+q0S8cIaaXqhHwL2VAGFnO7Bvq6OMfb1e4xy2w4r2Uh+54DP/QM4WV6YhRlLCwYMyUyt9jyMSQ==@kvack.org
+X-Gm-Message-State: APuU4Z/JZKlkKl0f2eU24xlVs6VEUP3MG5kcg48TU5jQDXe13Lfscb5n
+	BwB9+AcE1B3+ZwvTZm/bpIp8idd3XPX1oSnFUki0Ym+VMhwuZCqaTu+RSGcieNL+3A==
+X-Gm-Gg: AZFdTZevBJuaSu0C8EoZp+nPbyHT04eEnPoD+/XK39IaubmE1JwJVL6dW73p4OjvLuR
+	8m9xPg0sCxmr2dpo7btzUZSRSm+9Q87SFnfyvfSXnmBQhikupDRyvVz6O3L/RAe7NFPflrkDEuo
+	BexWnWR2bM01rQdJDVnRVmmeBeuyGTJOwA3NwheaXNbN58jMzyLTX9joq+2U/PgCASqtKcMjOmo
+	tjcL09Mc1REU/5nqTVnJAq7xmhiv52LUiSHqak7L3x4s8uU9L4zvgcHffRkSCs9Qru08AnKF+M/
+	Rym03sIhXOkNxKJ9uh7g9wNwtCIRnZz8b5pfBzmLQw9Bd2YRlQ1Mgi8rf37/i6usQHuYqirOnqZ
+	nC0JAi6pOwia29vJl7W9WkZosZkz3SgMTUKl6kUfNrwYfsNyDp3O97x9AnihDyxmqsRTDnRYu4/
+	36efqmQ3Mxdfdb5XwVoV9H3+eDbzBgbumTFRb3quFIbbaNvtQemG3NF2asD3tLai1zKo7EuAbkH
+	LRMrDHz6b46ud/fNLNrS8nVn/Pp3qZLkA5XxzOYLuL5efMxdiajuM8p87I7Belt43qVfWIQP9ZD
+	j3KjXpeuaPipYbnoJXudv0f8Iw/E2xxWjI+E6xB/y6RNO7OxwSPzZMeaRHZ5D+58jhbcXIyf8F9
+	WCxhTFRxqfLq0fbbggCfwPY3uOcVU4fZiGX8lRHfmT3x0VWTT5myWRshX2DNeqH8+NCy++6aJxM
+	lwetKL7mEZFYeGsaHCD9rLkfVoHXhCzdg1fny3qu6DERoGRg==
+X-Received: by 2002:a17:902:f790:b0:2e5:9bdf:6b65 with SMTP id d9443c01a7336-2f0615ca0f5mr7681115ad.0.1795453488528;
+        Mon, 23 Nov 2026 09:04:48 -0800 (PST)
+Received: from [2a00:79e0:2eb4:9:2973:837c:48c1:1e91] ([2a00:79e0:2eb4:9:2973:837c:48c1:1e91])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87285b60csm5993799b3a.9.2026.11.23.09.04.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 09:04:47 -0800 (PST)
+Date: Mon, 23 Nov 2026 09:04:45 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: kernel test robot <lkp@intel.com>, 
+    Christoph Lameter <cl@linux-foundation.org>, oe-kbuild-all@lists.linux.dev, 
+    David Hildenbrand <david@kernel.org>, 
+    Linux Memory Management List <linux-mm@kvack.org>, 
+    mm-commits@vger.kernel.org
+Subject: Re: [akpm-mm:mm-unstable 327/327] arch/arm64/include/asm/percpu.h:261:1:
+ sparse: sparse: cast truncates bits from constant value (ffffffffffffd8f0
+ becomes f0)
+In-Reply-To: <20261122194825.2541c7389c2f958ef3d07fbc@linux-foundation.org>
+Message-ID: <7d1f916f-2a4b-c31e-617c-e1da7623fca3@google.com>
+References: <20261121133112.48w1QOqw-lkp@intel.com> <20261122194825.2541c7389c2f958ef3d07fbc@linux-foundation.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] selftests/mm: verify ksm_zero_pages is not
- inherited on fork
-To: "Xu Xin (vivo)" <xu.xin@linux.dev>
-Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev,
- donettom@linux.ibm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20261123034136.209410-1-xu.xin@linux.dev>
- <20261123034548.237302-1-xu.xin@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261123034548.237302-1-xu.xin@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: 1zaciqk3dt5snkydj8brtseybzi5k8mo
 X-Rspam-User:
-X-Rspamd-Queue-Id: 0AAD5C0005
-X-Stat-Signature: m8nopy3doze4suf67oxobd4ez7ji9job
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-28.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795452576-349109
-X-HE-Meta: U2FsdGVkX1/vC7haXbdphGN9n72O2pDUwzkSASrTZP1Qe07JDa62diUjwRq9qXdZNun1bjTraxo2siQgsF88NDnNL378BOHtFr+lM6UCdb0AWTKvS8Tsx6PAFpIuT9Aj28kRbQw6t91Z9ctZ685KI6vZHwAqLTqRLerDlKDP5kJyu8g9Ev2oynf5Jrn2izlsR8bjbf/XbCPKTsnTYYliDGFCK/Ea9mrZ2iWwrxpMFb/pzjWqMR6FTmOfGEw2bkcF4C+NKoEFU+hBD/xGwkS5+yY8U5DMzReMYFBycNlv/p9DceCxB1pHaCrVhkpEVUP2vCr1vDGy2Q4c5+imJ5gW8NnkqvfsrksbiwkFo2R7B48T8TzngUeY8/02k03LqBA/5N5KX48TXNqAkPmWH/tUFZ7f7hwCj9ZbuMysg8THUhRnHGun+X65sP4cj333XJQNC85Ylt3vbqw3XyiJBz4MllOqIjY6qCMv53HElZfWVAAFnvdkjJpVd9H1nPHHdH2/iS/VnRq1XawAt80iVYDt2t0tRi8+AE0iWIoOmNMccvOhLsgmgz32ua9bDCwCHYUZfAbsoFU1GpAOsrRFYIo6rmjfO8fCNJ4FYVdCbz2CTOktiSsjqHeFHkZHy/cKKv6ykU0q5JIXB3AyQFR9iJONJqAXK6hZgykWobVfSwB22sfGf1J4wEjQiYgCcao6lgiN5xOEZg0+SZMC0biFEco96+XaNzMxepHlCKSF1Pd9J1Q+/XOSZJ4qcnhn7frtsW8n4V+nxeQ/eH1cgqrJ5k9qdjt2/Y6Yvo37ZHng/pYwYb+CFOTMp7as0i897ngNo9KBqQv6SNXDmGljQZj9sgL7QiJ84KSnbhj67YCgEqvgncjV++k9p1R9NX//VD1f6iyJ61A3D9qSkp5HkBsdGpwF08c0xYDaCgRIoz+lDUleS1bM5jFAMMiUss2Dw014YKvB3KQpSnKk5WwVsnPYOt1
- nVqZjTv4
- 7uUc24xoLOpZMq4oALbfGx8kIIgsMHnW2Mgyoxcpz7pbVQF1WWCxgyt/sUaZPlsTUk9/o4HXWY3/NgAKlNDcCaVtCdQ1r2wuIjdE6MYI+X4zzjT+U58NIc6VRV1nMZ+xRmsbz7PZg3N/Fw8XvI6ZmCmnED40gd+Ui7IxEhTJ96D2PRHJs2jXscRsHXRye/qlPflrY1HZ4Af/cEVSAOtUwE+1ZspimS+PsbgABxZDN1JxbCem8Ezuu3PxRgWoIeF/SWd+P7AjJcDDU7eHLA/qrpGwYSiaauFCnsuyTQpQGLqgiuKUyO7o6viDLPWxtUvzVapcGJuZP/0C5sviMMMHkNjJb3Fa9ZogK6XxNIkZxZogsCBxyqRlXIQF7WTGSxglYqm+Oc6NRPtMVoxV+e7mXcKsVZkTKri0rImenHQveBRi8TIFNCyjuG8dsn47vyvtHqA6HIsqdENZWU1VV2+48qOWE4a2HiYIVizppzFBU0F3Q/kW/QwFTsFjJrVy4/xmvFxw0UMd+U+8/nkqJcnjS2vnCbQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9B7112000D
+X-HE-Tag: 1795453490-170604
+X-HE-Meta: U2FsdGVkX1/SopHyR8jaMybPxxJiU8YjJvQ+baQCatPffjecQcZGsEwlAVkgPxVUnhSWUuMchCok5EnVYdsg7VwGRZnNUODaFMqAiTtKpvxhBoWt+6GhJmj++QILXttZ+pL8TJNohQn7/7LUQLbf1DXT7UPPG642OLISHroeCsNLnnR0O4chZffUeV1jPudJfxIg/foNyJc6YklsD2UvPqA2v01oF33sHc2ovsYc4dWdg0uADGQ2n7ofYOkMLVGpY2rEXa1pSx6sewzEWPhHQZy6OD4l9jaNOy4MSx06xRN+9OPFF5Tp+LrGh6LEnl3aSsyf8JwZUHBhK4llGGGn9Sec15kTkC1OJP3nbdes+GWeamReP88Mq17d9sXE9bY2zu7mQI7NvU8Nm1pNY0YsUayRwEuS4gdeQLz5TNRshpz8wH5jrOo5vyyAMsORJZurVPFnpzLmxBcfEkAmNStbg070JAoi2q3UuiMbMCBx71swPKDgZ5lX4/n8zZ4LMzt8hsmZDZNwYRX0YPvz9UG0QYJLbRpn1mS6beFqd9DWLNekHSmiy7k7azThp6uwpQM7II2ydtRElLfTAt+k5wlaR9TDes5wHtRUVBtkXKYZmFLRhFMKVjYYD5wddWAz1QYV3n//6nmcvf5DHcXUjQy4JVDhY98x5xQVajWvIN6eaRdFXWOIyM2OeUTxRu3zIXxeK4UcRq8Ij7BXQ3mVwLZldL8aoe3mnIwbzaNV34h3TmvQaM/iAmf8Tqr1tqdt8fenzvbZE1KgqM1r9fVDdrO1Q/pY5ais/wMSBJWSG8V+dytv7UtsP7e7zRV6NKtmr3kNN8lFb9gqlyiCp0ksnlnXr4j6LyR8axZMqtVgC+Mv1J4F9zO1zsYfVdE89Sjsu6mnt6SvKdPo6CsS62goH1gGaDGq63fO5IvjzkYqFM2DL5jPOCdGDuAftpHRM0bV9HCUvvaOwHF7GEK86ejgSTO
+ lgb2BDJF
+ OniOGGL6mCDSQ9HWwBal85Sc/cNwY0o6Rc2FrzoP+X0K8l1AQwi7PUNiGAMTyPHjBHSmlRhI6h2vkTJQoHlYHhOXmBATgh/eIJo2mkNB+v9HzhO5KxF1iiueKSXH2ffPF7LkCEABgNFUh7re9R+QkpmOGMK/GcWrYc+vqfM/GG2UCF57T45kJuloLglqqIniXF07uWBYUdApmkhhB4iQqXH8HE9Ocx/86SP3sg9xdIgsZAk4hy5lDeXI8zHfC0KE4E08M/we0ePrxoq2UDn6urXdHDJom51qgdcbqWtcBwc3r3T6rMJuCrJ9jcfzCSztReY2VL7t+DliM8LdsRla8oUePR5QhFzPa4k7kyT79w9VoPsgMwt7BbtHZXbUlrpM2xLQXyNAxJ2xmRcMKOKE0VbC61wMvrZlfgKqmru9ODRaJLHNs5AQLApQ+sEfk9iBdXdE5mzZvHbSzRneMcuC6Z92M8Pmtze3Z0z3zyC4DM39uvY/ScMYoK5gUhkbuF5IuUehKTtE+9tdHKa/ydhsxRKrlVBBqzzKgH3Jz3Sg2zQIKki02+B4s6V0vU8c/WrdcyiDOW+CF0vpXH++E+OBOQKQHPCx+pCYJaUhEXH9b4JAmLqRLeYWa+vXbdFx3nU2ViqAVXJPzRto1h+5OX/K+n3VGOaiU25D5NqOArQbxTpSjYQe246bt3J2l/Pax2RsTdKHE++SpP5McdHOc6uQ7rgo9TdBdcDhKn/hy15LgV34kSZF/jpEAPRm0RvMEgXjRsq9T+AfVfKpfSiXfVgYZTKTY//UrGK50s2Cd8YgFWOar6xBzc6B5CZGQtALJFrvstQZ0XoFrsN/aVJMACgLJ/LjQjU9/5ja0zchn4HlG0jOMbPC0C7S2jtw14mZzHye5TAvYz+zvAC1VdW+w7dloDOshE3dYsHSS71Bs5DjrVqmWdYOYfJKPU4ong6iqRNnfgfS0kF+3ClMfH3soksh6T8bJqHe7
+ F0LiiZS5
+ okQV21ypIDZ+LNg2fUKChoHkR7Jz7qzxHZBU/5p5StDmzUDWYE1Dvjz/149CUVHi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,128 +131,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/23/26 04:45, Xu Xin (vivo) wrote:
-> Extend test_fork_ksm_merging_page_count() to enable use_zero_pages and
-> merge zero pages alongside non-zero pages before fork(), verifying that>
-neither ksm_merging_pages nor ksm_zero_pages is inherited by the child.
+On Sun, 22 Nov 2026, Andrew Morton wrote:
+
+> On Sat, 21 Nov 2026 13:34:45 +0100 kernel test robot <lkp@intel.com> wrote:
 > 
-> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
-> ---
->  .../selftests/mm/ksm_functional_tests.c       | 44 +++++++++++++++----
->  1 file changed, 35 insertions(+), 9 deletions(-)
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+> > head:   7d1a16abe4cc5dccd21e3d6262e44433a5885d27
+> > commit: 7d1a16abe4cc5dccd21e3d6262e44433a5885d27 [327/327] mm: vmstat_kunit: add synthetic benchmark for mm stats
+> > config: arm64-randconfig-r2305-20261121 (https://download.01.org/0day-ci/archive/20261121/20261121133112.48w1QOqw-lkp@intel.com/config)
+> > compiler: aarch64-linux-gcc (GCC) 15.3.0
+> > sparse: v0.6.5-rc1-21-g84ec0658
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261121/20261121133112.48w1QOqw-lkp@intel.com/reproduce)
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/20261121133112.48w1QOqw-lkp@intel.com/
+> > 
+> > sparse warnings: (new ones prefixed by >>)
+> >    mm/tests/vmstat_kunit.c: note: in included file (through include/linux/irqflags.h, include/linux/spinlock.h, include/linux/kref.h, include/kunit/test.h):
+> > >> arch/arm64/include/asm/percpu.h:261:1: sparse: sparse: cast truncates bits from constant value (ffffffffffffd8f0 becomes f0)
 > 
-> diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-> index b871d5656688..0e128c579d5c 100644
-> --- a/tools/testing/selftests/mm/ksm_functional_tests.c
-> +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-> @@ -655,45 +655,71 @@ static void test_prot_none(void)
->  	munmap(map, size);
->  }
+> Thanks.  sparse is being a bit silly here.  Using a variable instead of
+> a constant silences it.
+> 
+
+Thanks very much for taking care of this, Andrew!
+
+> 
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: mm/vmstat_kunit: avoid sparse warning in vm event cleanup
+> Date: Sun, 22 Nov 2026 18:51:40 -0800
+> 
+> Sparse warns about -TEST_COUNT in an unreachable 1-byte arm64 per-CPU
+> case; the actual counter is 8 bytes.  Pass the completed loop count
+> instead to silence the warning, with no behavior change.
+> 
+> Link: https://lore.kernel.org/r/21183f5b-2697-cbe6-6370-dbd27c5e2b60@google.com
+> Fixes: 7d1a16abe4cc ("mm: vmstat_kunit: add synthetic benchmark for mm stats")
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/20261121133112.48w1QOqw-lkp@intel.com/
+> Cc: Christoph Lameter <cl@gentwo.org>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Liam R. Howlett <liam@infradead.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Sarthak Sharma <sarthak.sharma@arm.com>
+> 
+>  mm/tests/vmstat_kunit.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> --- a/mm/tests/vmstat_kunit.c~mm-vmstat_kunit-add-synthetic-benchmark-for-mm-stats-fix
+> +++ a/mm/tests/vmstat_kunit.c
+> @@ -107,7 +107,7 @@ static void vmstat_test_interleaved_zone
 >  
-> -static void test_fork_ksm_merging_page_count(void)
-> +static void test_fork_ksm_statistic_count(void)
-
-"statistic_count" sounds odd. did you mean "statistics" or "counters". Below you
-use "stats".
-
+>  /*
+>   * Test 3: count_vm_event() benchmark.
+> - * Restores counter balance with count_vm_events(item, -TEST_COUNT).
+> + * Restores counter balance after measurement.
+>   */
+>  static void vmstat_test_count_vm_event(struct kunit *test)
 >  {
->  	const unsigned int size = 2 * MiB;
-> +	long merging_pages, zero_pages;
->  	char *map;
-> +	char *zero_map;
-
-Can combine with previous line.
-
->  	pid_t child_pid;
->  	int status;
+> @@ -124,7 +124,7 @@ static void vmstat_test_count_vm_event(s
+>  	time2 = get_cycles();
 >  
->  	ksft_print_msg("[RUN] %s\n", __func__);
+>  	/* Restore balance */
+> -	count_vm_events(SLABS_SCANNED, -TEST_COUNT);
+> +	count_vm_events(SLABS_SCANNED, -(long)i);
 >  
-> +	if (ksm_use_zero_pages() < 0) {
-> +		ksft_test_result_skip("Enabling use_zero_pages failed\n");
-> +		return;
-> +	}
-> +
->  	map = mmap_and_merge_range(0xcf, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
->  	if (map == MAP_FAILED)
->  		return;
->  
-> +	zero_map = mmap_and_merge_range(0x00, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
-> +	if (zero_map == MAP_FAILED)
-> +		goto unmap;
-> +
-> +	merging_pages = ksm_get_self_merging_pages();
-> +	zero_pages = ksm_get_self_zero_pages();
-> +	if (merging_pages < 0 || zero_pages < 0) {
-> +		ksft_test_result_skip("read KSM stats failed\n");
-
-"reading"
-
-> +		goto unmap_zero;
-> +	}
-> +
-> +	if (!merging_pages || !zero_pages) {
-> +		ksft_test_result_fail("KSM failed to merge pages before fork\n");
-> +		goto unmap_zero;
-> +	}
-> +
->  	if (ksm_pause() < 0) {
->  		ksft_test_result_fail("Stop ksmd from running failed\n");
-> -		goto unmap;
-> +		goto unmap_zero;
->  	}
->  
->  	child_pid = fork();
->  	if (!child_pid) {
-> -		exit(!!ksm_get_self_merging_pages());
-> +		merging_pages = ksm_get_self_merging_pages();
-> +		zero_pages = ksm_get_self_zero_pages();
-> +		exit(merging_pages != 0 || zero_pages != 0);
->  	} else if (child_pid < 0) {
->  		ksft_test_result_fail("fork() failed\n");
-> -		goto unmap;
-> +		goto unmap_zero;
->  	}
->  
->  	if (waitpid(child_pid, &status, 0) < 0) {
->  		ksft_test_result_fail("waitpid() failed\n");
-> -		goto unmap;
-> +		goto unmap_zero;
->  	}
->  
->  	status = WEXITSTATUS(status);
->  	if (status) {
->  		ksft_test_result_fail("ksm_merging_page in child: %d\n", status);
-> -		goto unmap;
-> +		goto unmap_zero;
->  	}
->  
-> -	ksft_test_result_pass("ksm_merging_pages is not inherited after fork\n");
-> -
-> +	ksft_test_result_pass("ksm_merging_pages and ksm_zero_pages are reset after fork\n");
-> +unmap_zero:
-> +	munmap(zero_map, size);
->  unmap:
->  	ksm_stop();
->  	munmap(map, size);
-
-This ordering is odd.
-
-Why stop in between?
-
-Also, I suggest using a single label, like:
-
-char *zero_map = MAP_FAILED, *map = MAP_FAILED;
-
-...
-
-if (zero_map != MAP_FAILED)
-	munmap(zero_map, size);
-if (map != MAP_FAILED)
-	munmap(map, size);
-
--- 
-Cheers,
-
-David
+>  	time = time2 - time1;
+>  	avg_cycles = div_u64(time, TEST_COUNT);
+> _
+> 
+> 
 
