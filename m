@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7D5606A680
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E94E606A337
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f27GqoCR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kYNrN/cR
 Received: by kanga.kvack.org (Postfix)
-	id E67116B05B8; Sun, 22 Nov 2026 23:08:58 -0500 (EST)
+	id 122046B05B9; Sun, 22 Nov 2026 23:09:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E19946B05B9; Sun, 22 Nov 2026 23:08:58 -0500 (EST)
+	id 0D13F6B05BA; Sun, 22 Nov 2026 23:09:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D54896B05BA; Sun, 22 Nov 2026 23:08:58 -0500 (EST)
+	id 010406B05BB; Sun, 22 Nov 2026 23:09:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A8EA26B05B8
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:08:58 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0EB25C07DB
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:58 +0000 (UTC)
-X-FDA: 85465053156.07.577BEF0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 73DEC40004
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C36B66B05B9
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:09:01 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBB4A140325
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f27GqoCR;
+X-FDA: 85465053072.18.8597541
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2180F1A0003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kYNrN/cR";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795406936;
-	b=uuX1/XvPGMJ22QUrT98PVcW68NNO2p3aaoVYTL30m/gBVCwEvxd6k/HVfPU9U8j/SfD39g
-	EjSWjdK/hx2EnCz65z6a3m8IxG+K6tLd1xx7dP+vgOXZAvdJFVWF99p8QUMYDHtBT/9+tq
-	qaLTKLQVSAPeDZ5JY2w/huwRw4yNQQk=
+	t=1795406935;
+	b=kya7r4jfdEReITI6CN0kJsbFTyOGeS7tjw70QzMREz//SwYpy9l1D+hApFXJuh616iVV1e
+	XkJWxnq3jOSa6LoLiIPjxeBGlmYog7ObPdmIy6fh/roG6sT97hTR3KH9OCp0bCPbnznrt4
+	yp7p4a46glJF/Mx/QAtRG8+isfrK/vc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795406936;
+	s=arc-20220608; t=1795406935;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AuqHw4Gph9RkjKQWaBLx14RfCwHsQlcWjuogypsPLII=;
-	b=2c7MgfKcC4HkcPvBEOJ2Xcnbzx2fibKezqFWze50NYyKYGiY84CvwFNC9f449caHa7TbzV
-	Fp+tD5G523VFJwQd/OssGhhL/rjc0qeG679Xr0UKNud1YjEjmkVvtN0DNf/c/pwC8Yj7IW
-	ClHviwbELg7Zrzr3kXuk6xA5299vk/Y=
+	bh=kkB6AqmsMab5b2ZWWO69wff8bL46ujVgMLlY72Z6qGQ=;
+	b=PLPYBpc/KwUryxIq6Q5Cd0D3CbejOUP8iK3SILBQ5dUGRrliM1bkONKKLJV74oigL1iqLf
+	0QV/op0BXWRSJfcEFtrA9eu2kkADSBC/zZTSPUW3BccdfBXANgQ5687kyuhuP16UQeYtbX
+	qYwWlXfUqyLioNGr2I3Bf/dwI/IntK8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f27GqoCR;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kYNrN/cR";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0EF2560148;
-	Mon, 23 Nov 2026 04:08:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005651F000C6;
+	by tor.source.kernel.org (Postfix) with ESMTP id C042360D60;
 	Mon, 23 Nov 2026 04:08:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6858D1F000CF;
+	Mon, 23 Nov 2026 04:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795406935;
-	bh=AuqHw4Gph9RkjKQWaBLx14RfCwHsQlcWjuogypsPLII=;
+	s=k20260515; t=1795406934;
+	bh=kkB6AqmsMab5b2ZWWO69wff8bL46ujVgMLlY72Z6qGQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=f27GqoCRUvuOyIVASRTCW2ZkktYzSWd7f8Xx8EGVefjahUmDIt730ULy7uOI9tjMb
-	 aOSwjyXFvdtULjlv8v1GN7jCA4WG2L+Ov4E9amMHxNEedNY2GCVx4wgd+JIp16cpYR
-	 zYQzrBxlPGtkbWIAPpCO5TK46VR3jElPCrhE1e32J30AW9yZAbKq/7eU4z9gzpKNP0
-	 X7ia1aI8nTrkT4nBa+tZD3JnHytXK8WijHlbv0kzFnqM0G1cFnGQoiEmd4W/Q3df/C
-	 urSIMKsHFVBcBPO7pTh9/VWJiqwmffl5uN8BOFji7TyNchc1H7pMJq/ibDAOUkjbgU
-	 68Y5MJCdHs1Rw==
-Message-ID: <sashiko-outbox-228645@kernel.org>
+	b=kYNrN/cRj45aVGlGCLxboueqzMoyf1foncKVwiqqs4jE9AxuRK74A415aUjAXtscV
+	 Fy2fWC28f85AHH29Eeno0eHUGtyvg5ePB81pxNfHJHl064/niRJXXYcAyqX255Ysae
+	 +JdfXjHEx2sxqsataIDUrMNZoB35Cy97S/6jJ4nRV0TRzREg5S+43hVKI0sE6J45Ms
+	 0C8PbULI6+D2lLmKCBiSBXY1xkx7tYinlmFuS4R7kLWKgeIwYvkCADNQcycev5VmLS
+	 dwgeIU58+SiFJZRrjnmSNj1nSsVBFYXBwwMiKxCixe4/fe8UF9Kc5+/rsuZDxGglFF
+	 maUHxeKGIGKXA==
+Message-ID: <sashiko-outbox-228643@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 16/19 DO-NOT-MERGE] arm64: Implement
- try_populate_vmemmap_pmd using AF trick
+Subject: Re: [PATCH v3 14/19] selftests/mm: Add HugeTLB vmemmap optimization
+ stress test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Houghton" <jthoughton@google.com>, "Will Deacon" <will@kernel.org>, "Catalin
  Marinas" <catalin.marinas@arm.com>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
@@ -73,24 +73,24 @@ Cc: "Kefeng Wang" <wangkefeng.wang@huawei.com>, "Nikos Nikoleris" <nikos.nikoler
  Hildenbrand" <david@kernel.org>, "Ryan Roberts" <ryan.roberts@arm.com>, "Nanyong
  Sun" <sunnanyong@huawei.com>, "Yu Zhao" <yuzhao@google.com>, "Frank van der
  Linden" <fvdl@google.com>, "David Rientjes" <rientjes@google.com>, linux-mm@kvack.org
-In-Reply-To: <20261122184453.2668189-17-jthoughton@google.com>
+In-Reply-To: <20261122184453.2668189-15-jthoughton@google.com>
 References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-17-jthoughton@google.com>
+ <20261122184453.2668189-15-jthoughton@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 04:08:54 +0000
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 73DEC40004
+Date: Mon, 23 Nov 2026 04:08:53 +0000
+X-Stat-Signature: 1qpt57aoty85jwsx95a4iyx15cj8jn5d
+X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Stat-Signature: atzhoiwos7ueq9gzywaa8cqizb9ju8jn
-X-HE-Tag: 1795406936-460210
-X-HE-Meta: U2FsdGVkX1+4AvZO/gep30wf3+yWR9EeIYeTRuITHTri7UPWAVmeaiI5SB1jq/P0XMa89SDkbMq/Vb5HWzhAZe5wHQaUX/X55K9I2DgUtLKkI+KpI7/O9um4R65waYEP0Ug0IIKlcweUuuBXs2vdxqYqNUimq41xY5L6xXbrGSymSg5feCIN7185VNWo5OQKkCNjAMdSXvJ82nRCsN8fWO9E1feD5gxu0jhIsv5RXruqJ9qriNj7tf0BSMExSU67lth1yyS35A7cIQcYlTxF3WTQLblsiPMY2zMJlpq3sZs7Ad1p56XeE53ZJnTMj40+hCo+5OcmlPXKyMHEhO/wdRWTvqng7jADnDWNCFfrUrp50t6eeo8szbpWTgVVe/ASvFkb/7JB/BNUWh+aj8eYzGyo38Br8jNiXCplvRBKM2+l86tbrP4L/vbWGKTeJdBcweduRmkhX6MmaZD4k51Knu2Nt1Eb4LSIabZzF2WYWzXPSOBv4GPx5MyrQG9sZqf/0hmOfXCJ6iiEKAT6t8igEBXp9k7nczK2iMI98l1E/cDVRGrfqajAN4onjb1wDms6UzDrhMw+ojyL9N6wLwDdVO4oS9uTqTzFlVou1iMMAQKuZSLD9hrwyd3VVcdEv/21YAyp0wOUqkNrAYOZFBdIyTQA6Cus2RcSccYJdhLJRyU5poKDdsYuKuJZk39kZ30l12dVefBA2P+dGUjTT10vHm5JXVseIwxhVeFAw9Mwor6erLsUgqvPFs7dxqy6xcV2T0Hzz4VVas3d0KAgxbKZ45yvIAD4LP70YRylMzLsnh+4uvM7DRSf86bugdUDs4j+LagUw9oSUOuP1OiYPhGEvG9s96no/ZOsV8c0ijbwlrBoK2m1z1hqQ7cNxhrUtBjDGmE5mEZJ/HFQzN+RuJfnQQetro2KMMq499rziCGCctv325NY5uLI3gK8TIRwPe/40XX03SEZm5w0pgoj5Xb
- NDGpq0cr
- pC2u7JIi5rMBmQRsH20D6I5gJTGvOT31sHAq8KzC0OIjDIt+MP/R/Cu55QDNO7+YCRLUyiYudYAO5s8tVbbeVTze+iE2qh+ZASs4YqOoxG8lu3sF5/vdL3943JVdM+CsTB71pFJFRX2AI9iyhoTW+gnOOozKTIdowmbQrgSsthyw3zphejSvpN5/g5AyUaOF6zqn0VKfX85vKZZt6giQT/z6FUKlA/ULm1U/SGKDxogCHT+vPmnxILI5IJm+Pp1PP1vuTwKNVpfbUPMsEGg0KVyLXXchH5lqXk5lnWg3LOBphe+cIyeyYvgo8XGC4XcQF1kWz6OZ+zUTgiTMcnM89yj0NYn6bGCafCfCXH7yb+PYh6G/Srt0L31MMOH+zzObfrYb1hVgM/g+GSX4OseIzTpn7xfa4n3p5jLLtn1exRRV4rI2VYn0eQC+/7WkIV0bQa0TqePhmuAUKvZZpxBzzlPEBw/I3mitClwjNqnOoYoubOHyAOKBDLHu0iTvatCydsHtIkVrBQWizfPvw7IXwV3mTpnHwQ5btFOYb2MEqzIaLeWTUUm7/t1so+O+TKHaukI+w9buGpPivq184tO7/DGDU4JRXWuI4DPHshuJpgaNh4LuiIyFSXJDi4fm3Vg9JW+SVpEqFql39RXM6bBlNuEaQuj5SJ7sl9rWhN09K0D7Qdh7rIC0GgHa5csSuUj8iccpPE5xg1qpwlalJsgjUKcbaux4dCzmskXdxQiYgLGb0fLa7Rq9iQmxbgEhyhA7WGW5zAbYFmJZLJZ+k8KHv6ofO9J/K3ZapoMXrffesbQ9VpE8IvE1osm2tgaaafLunF1+Y0mxK7IlcD2CRuCOhX1VeI5GkJlRfhRY1iVsJ5Cj479eXr6+Fm5ic9Hje7FyInj88eiI5Prul8Vw9t1RYMFM4Y0pF8HQ9F8voAOXdnPBlYoiwtDd9N2jsdg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2180F1A0003
+X-HE-Tag: 1795406935-859441
+X-HE-Meta: U2FsdGVkX19l680j49mzMk87Pm9AqJSxOfZPyhcOAOseFEb93sZZ6kvsCl2faO0nJDplYlcQBRuSOJJ26jHBsLP2fXsVaQA0WDbXvN/v7shzw6K1uJDjzu+9YROhwtatFDwhsCZ2Xj79H3hI6YAx2VCpdV1JmFMcpSGGFz9M5pHAwT0kL/NptvB+bOcHh5tM1KiSY9M7pIK5zEOX9a4FfnzP5GnwWfBJG7cgY4+f8tcMmHgOtF5r8NijLKdNqMUzy3FTevrnHxHYpMhQeufkVU4K2txxXO8M5x4glGvE6rSf2gf8t8Jrcs+wlFx953G3qxuvMZ8dO/amydZTBERaTCAo8EK8Ewy859cCOPq1ghGrC2RRhR1FSrcIPssK1kdll5ZNCNTNXuIfYdIegv3izj7DVz0BKI0ev07Szt8djcEogqI+yC/U7e9EP8YX1WXUURwTTUOFHfkjAdGQNRkswcA1ifUUDIA73xwjJeyqMsY08w9PjSIv7+oCU4NRrwuQQ7Nj4z6aAxwGSxDpvRU1cHjtZKku0o+qMDQYsyWf4zl/FxBxakmNdWHBAmZlFaYIUMj+O9N4sKxkP/CSaNVm0E33XbGqfNgXzVJQr0vgWG3YFThTdFRa9oISIo5fHswgpBTrvCZ2TVzbSKsqBovD/z+piP5BQKXWktVHmT6nMhBntO+faDJTxEpNKvl7b27VifjbRWc4geWGVDbpyKzxbdW+uASb9dlIHytnYhq88T3FyA1Q0tjxX/QvZOU3IGlDUPusr6OXOCP5UkPcFmxB4NVQAF1B4xz2fK9vD34YqJbfQ4qPbfaOfA1JfcrdDfz8jWlJ1JglMWlFfsHqO9bifgXycJH1LXFHYv4C3Yh8FfoIoyiB+AaXFcl/AkyGn7A6xS9Fa/kHtte3EYJd/OTLRAqkIQw606sPnGyZoW8waFlYQOrV8m4qmLsKYT7FlEP+ujxNrlYgFbxlmS+yuMx
+ 4Bj9hk23
+ uQKBrTy8ixwkEpMgNREqzLpSCX2wr0v1ofQL4tAMen+ywz0OmOdQrvM913lYaDCMzGJKOrS0LWfQQTIkbJGgslawxJyZXuD+NY2toHr26BV9O956UffK6mT9a6cZSe8XAYgviQHRO1bz1DxMFFQVhnh+JZvZ9HfUnPunP/lWQ+3XrgZv6da1UGPF4TSKK7Wxy/RBhPHk9xNvQniYZprC0YMzNzTjkAZeHHANYNQHox3STrvvEIm+e+7zZh6pPGlC+4uEX+YvQnvy76slM1G8jrr7dIIclM+NIHc+caTfmFuEatKW48lnp1YLMBVbXKzNp6XzdP713jReeg1In50Ez6IlFMA2T5KtsLGVePD+/6hSz1Ly7ae4zwpd0oVaoJ1+1MwG3OyOCxsb7TqdSal1qypx+lPMe0WrJ5YTqWeP+BMR9iU6uHN0YwrRrGae6bKTHptIM1A67l7qmnkr+u4Y8eLSDPHAgYOdu5kMBnW57y9YoPHR/bAuOp2ozMLck2FR04JpMnv0wtvoUA26WNJv5PYTahmpnKgutgTIzpAALm7oKAZJIe3iIjxou5fCPB1hVEGJSAWpj3o3J2lFKgWyJ3rA/iDjZ82K0SPl4aJkJmcDPNhPOC2sh9moq6b06iBt6wcBCN/KP4eYHFHaWb3PSkpIDId/Zf8O1+5bxZR33mmCOpbeTwOdrPso+x1lnwLR00Tn8kvgnE3MtfijHhsutnj7jsQBeuPE9/U+Ol5g0cjRqUzcaTZSuYr4j6ydoJRu6e7nH3sBD18eIat0RpPZDGxmKRGnjW/jDuCvrFc7HwNDvqZ8NV3uWaMLMkQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,110 +102,136 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [Medium] arm64/mm: over-broad TLB flush in try_populate_vmemmap_pmd()
-- [Low] arm64: direct AF=3D0 block-to-table transition in
-  try_populate_vmemmap_pmd()
+- [Medium] selftests/mm: offlined memory blocks not re-onlined in
+  stress_phase()
+- [Low] selftests/mm: unchecked mktemp failure in
+  hugetlb_vmemmap_stress.sh
 --
 
-commit 1319c4a7862ad5f3b810c4beca866ee98bd48fd7
+commit 15090370906fbd4c082668bfc18a1ce3c873bcb2
 Author: James Houghton <jthoughton@google.com>
 
-arm64: Implement try_populate_vmemmap_pmd using AF trick
+selftests/mm: Add HugeTLB vmemmap optimization stress test
 
-This commit implements try_populate_vmemmap_pmd() on arm64 to replace
-in-use leaf vmemmap PMD block entries with table entries by clearing the
-access flag instead of using a break-before-make sequence when BBML3 is
-not supported.
+This commit adds a kselftest script that stresses HugeTLB vmemmap
+optimization (HVO) across accounting, concurrent access, and fault-injection
+phases.
 
-> diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pg=
-alloc.h
-> index 0263329fb7b30..7e304f01ce6d5 100644
-> --- a/arch/arm64/include/asm/pgalloc.h
-> +++ b/arch/arm64/include/asm/pgalloc.h
-> @@ -124,9 +124,54 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pgta=
-ble_t ptep)
->  static inline int try_populate_vmemmap_pmd(unsigned long addr, pmd_t *pm=
-dp,
->  					   pte_t *pgtable)
->  {
-> -	/* BBLM3 is required. Its presence has been checked. */
-> -	pmd_populate_kernel(&init_mm, pmdp, pgtable);
-> -	return 0;
-> +	const int max_attempts =3D 16;
-> +	int attempts =3D 0;
-> +	pmd_t old_pmd, new_pmd;
-> +
-> +	if (!system_supports_bbm_through_af())
-> +		return -EOPNOTSUPP;
-> +
-> +	if (system_supports_bbml3()) {
-> +		/*
-> +		 * BBML3 allows block->table transitions if the PTEs underneath
-> +		 * do not conflict with existing, potentially cached
-> +		 * translations.
-> +		 */
-> +		pmd_populate_kernel(&init_mm, pmdp, pgtable);
-> +		return 0;
-> +	}
-> +
-> +	new_pmd =3D __pmd(__phys_to_pmd_val(__pa(pgtable)) |
-> +			PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_UXN);
-> +
-> +	old_pmd =3D pmdp_get(pmdp);
-> +
-> +	do {
-> +		if (WARN_ON_ONCE(!pmd_valid(old_pmd)))
-> +			return -EINVAL;
-> +
-> +		if (WARN_ON_ONCE(!pmd_leaf(old_pmd)))
-> +			return -EINVAL;
-> +
-> +		/* We should never get a contiguous PMD here. */
-> +		if (WARN_ON_ONCE(pmd_cont(old_pmd)))
-> +			return -EINVAL;
-> +
-> +		if (pmd_young(old_pmd)) {
-> +			/* __ptep_clear_young() returns the overwritten PTE */
-> +			old_pmd =3D pte_pmd(pte_mkold(__ptep_clear_young((pte_t *)pmdp)));
-> +
-> +			flush_tlb_kernel_range(addr, addr + PMD_SIZE);
-> +		}
-
-[Severity: Medium]
-Should this pass addr + PAGE_SIZE instead of addr + PMD_SIZE to
-flush_tlb_kernel_range()?
-
-Invalidating a single non-contiguous PMD block entry only needs one
-overlapping page-granular TLB invalidation, as in
-unmap_hotplug_pmd_range().  With a range of PMD_SIZE and stride of
-PAGE_SIZE, pages equals PTRS_PER_PTE (MAX_DVM_OPS), so
-__flush_tlb_range_limit_excess() returns true on CPUs without
-FEAT_TLBIRANGE and escalates the flush to flush_tlb_all().
-
-> +	/*
-> +	 * Translations without AF cannot be cached, so we can replace
-> +	 * them without BBM.
-> +	 */
-> +	} while (!try_cmpxchg_relaxed(&pmd_val(*pmdp), &pmd_val(old_pmd),
-> +				      pmd_val(new_pmd)) &&
-> +		 ++attempts < max_attempts);
+> diff --git a/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh b/tools=
+/testing/selftests/mm/hugetlb_vmemmap_stress.sh
+> new file mode 100755
+> index 0000000000000..b64fdb3ed7614
+> --- /dev/null
+> +++ b/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh
+[ ... ]
+> +orig_nr=3D$(cat "$hp_dir/nr_hugepages")
+> +target_nr=3D$(( orig_nr + nr ))
+> +marker=3D"hvo-stress-$$-$(date +%s)"
+> +tmpdir=3D$(mktemp -d)
+> +pids=3D()
 
 [Severity: Low]
-As reported by Catalin Marinas on v1 [1], this rests on an architecture
-detail the review could not confirm from the kernel source: can a CPU
-walk cache or TLB retain information from a valid leaf block PMD
-descriptor when AF=3D0, or is a TLB invalidation and break-before-make
-sequence still required before converting a valid AF=3D0 block descriptor
-into a table descriptor without BBML3?
+What happens if mktemp -d fails here?  Because only set -u is active,
+tmpdir becomes empty and hotplugger() appends to /hotplug in the root
+directory (which cleanup() does not remove).
 
-If it can, skipping flush_tlb_kernel_range() when pmd_young(old_pmd) is
-already false or directly overwriting the valid AF=3D0 block descriptor
-with new_pmd leaves stale walk-cache or TLB state active while a table
-entry is installed.
+[ ... ]
 
-[1] https://lore.kernel.org/r/aoSJcAFMNJ1nPl2H@arm.com
+> +hotplugger() {
+> +	local blk state removable
+> +
+> +	while :; do
+> +		for blk in /sys/devices/system/memory/memory*; do
+> +			state=3D$(cat "$blk/state" 2>/dev/null)
+> +			removable=3D$(cat "$blk/removable" 2>/dev/null || echo 1)
+> +			[ "$state" =3D online ] || continue
+> +			[ "$removable" =3D 1 ] || continue
+> +			echo "$blk" >> "$tmpdir/hotplug"
+> +			# A signal aborts a pending offline_pages(). Use
+> +			# --foreground so that the writer stays in the worker's
+> +			# process group and is killed by stop_workers().
+> +			timeout --foreground 10 \
+> +				sh -c "echo offline > $blk/state" 2>/dev/null
+> +			echo online > "$blk/state" 2>/dev/null
+> +			sleep 1
+> +		done
+> +	done
+> +}
+[ ... ]
+> +cleanup() {
+> +	local blk t
+> +
+> +	stop_workers
+> +	for t in fail_hugetlb_vmemmap_pte; do
+> +		[ -d "$(fa_dir $t)" ] && fa_disable $t > /dev/null
+> +	done
+> +	if [ -f "$tmpdir/hotplug" ]; then
+> +		sort -u "$tmpdir/hotplug" | while read -r blk; do
+> +			[ "$(cat "$blk/state")" =3D online ] ||
+> +				echo online > "$blk/state" 2>/dev/null
+> +		done
+> +	fi
+> +	# drain() also frees free surplus pages left by failed restores.
+> +	drain > /dev/null
+> +	rm -rf "$tmpdir"
+> +}
+> +trap cleanup EXIT
+> +trap 'exit $KSFT_FAIL' INT TERM
+> +
+> +# Run a stress phase. $1: name, $2: fault attr to enable ("" for none).
+> +stress_phase() {
+> +	local name=3D$1 fa=3D$2 base after injected
+> +
+> +	if [ -n "$fa" ] && [ ! -d "$(fa_dir "$fa")" ]; then
+> +		echo "SKIP: $name (no $(fa_dir "$fa"))"
+> +		return
+> +	fi
+> +
+> +	log "phase $name: ${duration}s"
+> +	base=3D$(memmap_total)
+> +	[ -n "$fa" ] && fa_enable "$fa"
+> +	start_workers
+> +	sleep "$duration"
+> +	stop_workers
+> +	if [ -n "$fa" ]; then
+> +		injected=3D$(fa_disable "$fa")
+> +		log "$name: injected $injected failures"
+> +		[ "$injected" -gt 0 ] ||
+> +			log "WARNING: $name: no failures injected"
+> +	fi
+> +
+> +	drain || return
+> +	after=3D$(memmap_total)
+> +	if [ "$after" -ne "$base" ]; then
+> +		fail "$name: memmap pages $after after drain, expected $base"
+> +	else
+> +		pass "$name"
+> +	fi
+> +}
+
+[Severity: Medium]
+Should memory blocks recorded in $tmpdir/hotplug be re-onlined at the end
+of each stress_phase() (or in stop_workers()) rather than only in
+cleanup() on script exit?
+
+If SIGTERM from stop_workers() terminates hotplugger() after offlining a
+block and before "echo online > $blk/state" runs, that block stays offline
+during drain(), the post-phase memmap_total() check, and any subsequent
+phase.  When page_ext is active (such as with -o and -m together),
+offlining a block frees its section page_ext table and decrements
+nr_memmap_pages until the block is re-onlined:
+
+mm/page_ext.c:free_page_ext() {
+    ...
+	table_size =3D page_ext_size * PAGES_PER_SECTION;
+	memmap_pages_add(-1L * (DIV_ROUND_UP(table_size, PAGE_SIZE)));
+    ...
+}
+
+As a result, stress_phase() reads a lower memmap_total() than base and
+reports a false accounting failure.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122184453.2668=
-189-1-jthoughton@google.com?part=3D16
+189-1-jthoughton@google.com?part=3D14
 
