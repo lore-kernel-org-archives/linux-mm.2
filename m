@@ -1,94 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22059606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE70606A33A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p73C2CNC
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lwRxR/zw
 Received: by kanga.kvack.org (Postfix)
-	id 3201D6B05D5; Mon, 23 Nov 2026 09:20:02 -0500 (EST)
+	id BABC06B05D6; Mon, 23 Nov 2026 09:20:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D0BE6B05D6; Mon, 23 Nov 2026 09:20:02 -0500 (EST)
+	id B839D6B05D7; Mon, 23 Nov 2026 09:20:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C6156B05D7; Mon, 23 Nov 2026 09:20:02 -0500 (EST)
+	id AC0E96B05D8; Mon, 23 Nov 2026 09:20:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E6A596B05D5
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:20:01 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F47EC08E8
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:20:01 +0000 (UTC)
-X-FDA: 85466593002.08.9E1AF04
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B1106160007
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:19:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C2186B05D6
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:20:17 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E7731608CC
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:20:17 +0000 (UTC)
+X-FDA: 85466593674.16.E016B98
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 640FC160011
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:20:15 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=p73C2CNC;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="lwRxR/zw";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795443599;
-	b=lcKJXHWELQjo63Rryzz0ZCA1B7mhEVIpjcwqGg8gI5xnLkA2ZdNxownH+CRK9RYLLNYLNb
-	gSd0BlYwuh1Tlf/6cD32il+qIuvJMlmVWGPVyTHvk1qKFBhzXxBcsZ0aJhgNdZgWUxyc1w
-	haiurYU5xmsJEuIiovSlVrpPuGR1R54=
+	t=1795443615;
+	b=kFtz/e92wdTeR8WnSFNdsQZekdOh87rgvUs5aLcQWbH+TOyBW+5iQcqa32ltmdQgsqHFgf
+	ocQ+soAJACTOBNZYc6F5z7Rh0zz4l6//fw2mYZcBF3eb+2T7nmhr3+ABzrU7X35m49+09E
+	6t9KPDCSMuLKu1ZLsJh+sR8AZDL+YiA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795443599;
+	s=arc-20220608; t=1795443615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y226DZkwLHV/0wLned+bdA2tSEyU1JvBKnaVWIVUoR8=;
-	b=uluDrE8Mdo9xtXL6icllqYaH6Bdauc9W9HmsGJ1ghPdw35PAGGh2/iAdDCucsYCB/5uBeV
-	GFxO3PiqheQPQIAzxYF35fcZjPN7MjYMk4pxaYgot5qbK5SAge9tFAsQ3IHQ3DGg6VOZLw
-	XjdlfvkEq//grSJrgFBh4+vTUXS4iBU=
+	bh=mXV6+GG0z8PCuL6UAZBUPBZ1GbikKdS6r0oEptKGfNs=;
+	b=ABwjpX84/s1DxvU1PMhc4INLf/axpvzMUvgqM69uRhkiV5NWNlXWaqLBK7wO7wNX7JecvH
+	2VMvcBqXI5mLGljAn7+nXV3SemFmOGubHkgJF9uYf/LXSnHVAYtrD0cT+788yDXEr3Y2Gz
+	WkQzgzXBqvZSVp274fn1BFdDJMH3iw8=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=p73C2CNC;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="lwRxR/zw";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1b3acec6677so4683403c88.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:19:59 -0800 (PST)
+	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-385d8a00598so4608572eec.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:20:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795443598; x=1796048398; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795443614; x=1796048414; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=y226DZkwLHV/0wLned+bdA2tSEyU1JvBKnaVWIVUoR8=;
-        b=p73C2CNC5B04YeDmaQf0D4Tefihk71cNzJNzXMQKElfweMeSAgOo5jzKVIjvVto20n
-         Q0pGf/ogCoD6582u4I+uUVINrOvHrdWfydQ1GS548ObIdoSKGAgpAtWKvQfclaKrvxns
-         +BLrKPU1DFKFs5GEYLV+ubgv1hpd79Jcons6KA3gzRnxOnwAMXgipbLRwdD4aFUaW6QG
-         VG4pjywwQiXS5M397WqGaeBkkIvWPdvCsettkwjqOoSlpK/0r1XO5o4DpUmjjRs89X1H
-         sOp5jyNgLp0VJ/nondi2etCPkpuh0PPItSi82cFDulNTSjhCbgSDSR72J92d8fNlcAso
-         klBQ==
+        bh=mXV6+GG0z8PCuL6UAZBUPBZ1GbikKdS6r0oEptKGfNs=;
+        b=lwRxR/zw1wjkSktTs0q8kbCdliv64d0xs5oK8gAEdNoh2OWMjvp4x97zKkH+I+u24y
+         lQBFZwcC53rCbThfr0VPz8i5meSlZGVxmF8/b7i0LqPCEPOZZoyb3OrybKYGWpk99+A5
+         Bk6PNI/YWin8fH1Q5gBcficc4akRqlsyNVHro2gIR/mbQCCZbDFxYgfrknG/XJHC8u4v
+         hEDdajfVlYUaal1xjsd+q/698CXPvEP4gOxsDa+a2SHlc1Zs9ZFNE4QOJSPFnTyQ1xo7
+         awujC6R+CNW8Z1F77zO1ynet8xWnBn4f9bzOuMgKN5GVkAe+kXnWov0CaTQAKB2yElwR
+         AG0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795443598; x=1796048398;
+        d=1e100.net; s=20260707; t=1795443614; x=1796048414;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=y226DZkwLHV/0wLned+bdA2tSEyU1JvBKnaVWIVUoR8=;
-        b=q8SCku/umJKxGUh+wqwpZ4kMMbu7C5UMV2IadP+7swSbIovR0/l+NQUe3FW9lOq5KD
-         qR4sdRlcSz0+hdnaYBU/Tip1um9v2LhAtKiNFDWakiuzrdAi7IW5Pr9R77tRo4fyVWdx
-         fCkSwswTuC6aZRvU3PeRGCbgONFXdUrOvcVMmj1qcuVnRgpaCCYVQJQ0+LtCiFjkjWSV
-         Snr/lO/cqlOVuV/uiT2bw1OfIxbcijVktOySKDUm4QGYn6LKDIH03ell+7sDOA+/vIXg
-         MjzYAk8lbprCkaX/5Ry/3lN3HvS1hDJ4qxmIvi0h7dry0WAz2wZKzUQkZN56kit24TnK
-         jqBQ==
-X-Gm-Message-State: APuU4Z8ufIUYCy2YjFpbszDaLBjbM7zTooh55I1Lhkps94vEK/aGKUBy
-	RyMj5pElifadWIaW9IRRVJI/nB1hJXrEeQ6JJsk0kBAb97R8GLGzBdeZ91tpo5a5
-X-Gm-Gg: AZFdTZc8JW58QOc7+Z5W15lOdGn+ud8Vfl4t82U5lR8pDB+PRmoabjNp4KRsZb8ZfDg
-	AWEapKrmYaDNqUE0RKUqYuQXPzWq2aIWpaYFXg22JiJIyFptTnXquR5GlYRXUfOzNFelyWDwuK2
-	Kkn5XBstIkU8bxr3McgX359ryErKDQluYCuClurBeE0CHh3KAzzNPUUzBebOzSwdUBuDwPf4MB0
-	mAvVF5u5G7CFHKiFoSr5Bq0OGa9Y5/1tRm/Jp/xbxDNPsGUi6c+57rETIcbwDoIP/iaULQpgrER
-	7q2PielMMWNjauWAmwzYIcPrbra0v8nhuIyRO7txrQPR4qNultA10QSrY1BH43Y629u6BwbiU62
-	dw1x7+SwaJTLRCIouAdeQGCDHvoHTtmYwFApmIKjThXDYCZl9uZJH3FkWh+qvj7ZimyTFtGQWXt
-	0gJHFiCfWbqfjWU/KvFV8GcS4S1qnzsWwJ9FlhUv3Wn4V8n/2tawRZXVreGfeO31hsG/uyN3sUa
-	//yvAPFxpqPDbcOrhnXkjCV+ylD56inqkUANeSLFODGjLiu6YhkynK2zO1cdDwWdKJtwUqlc7b2
-	jPaDZlCjIt/JpIizSkFUIpmMuna9o15inZGT/HjI2aW2vs7QqcuKMNOir+i9YUuh4O6uFX8aNel
-	kqpENrRuYhX0v02Q=
-X-Received: by 2002:a05:7022:1586:b0:199:e38c:29a0 with SMTP id a92af1059eb24-1b55690e6e8mr13031567c88.31.1795443598397;
-        Mon, 23 Nov 2026 06:19:58 -0800 (PST)
+        bh=mXV6+GG0z8PCuL6UAZBUPBZ1GbikKdS6r0oEptKGfNs=;
+        b=XAIv/e+pWS0IokdyF1pLPbvjURgMhBwnkce+xR+wkiBlj0u19xwvKoUBTnLykhhBSB
+         IijpS+hoyZYq5/M7F88KF6qsQ+hAfJLuPkKE5tS8QgLErf1DpVsRehazGUSuiHM1tBa5
+         R+C3Y6pqngxAbn7o8v/goU7mcuZ19mOp2KzilpprxczUvOgSDfwYKsYRu++bi/wu1I1H
+         U0Bh+SzWKycaKXGPrwwibkPoqfONTRmOSRawhHLpjWA77HhBNgAw19X06tV3N+L7bVYz
+         LJpIcsGJgQjK/TlxKYbCf2u4HOsVGw0CZ9p0g6xFnGjRUsJplyjaWy3ZpDxvMtHh6Lda
+         tksA==
+X-Gm-Message-State: APuU4Z+OpCXR0aRTjFx5LdZ7jzG/HQItwi9EDgqLUel61JvNTBRcMIqr
+	k3fwPIry9zdDT4IpOInOaGwu2iIPGapJGzriG5GMtJgXsLg5B7puaYVq7Fiqge4i
+X-Gm-Gg: AZFdTZdJE3GRFSoU09+MZ97Kiv2quNfIIUWBf8ftnt2kq9Cy0TgSZE6WOha6Ykf45Hf
+	xS/rkj0TNuFDBOWvfh0JjijEveIvuwhlb/TQHeZ6woELE92mp1PpB304gRoAIxToEy1stP+/H8L
+	ql83Rz6sa2MPz+cK/9tvJTCCeC9aTIVInF9gFIN8qR/zzdm1tX3AxV0QOajCCmdyl7MMLuvTR5h
+	qq8hyiUD50GVsbKn0PQ/uymg2IMHalnXz4p3EA/ZAseOKAwR+58AXFWPV/v4WOThdQ/qaGAYNko
+	VJjwGxsTbKtGmYGt7xdCWgofeAkNfPoymVU5Ma2SJqjds/7rrnmluG/F6ymqdIwVuj+ev3PKdbu
+	mGf54JDK+XJx+4QopI4OpIAqPiTUAWnJBmfXofWRlH21SUnvGmLtOfpnTzBONhcPOq5lA9L6tBl
+	qkXL8MxlujzeLwGTeSHtAKVAwMblnbXMeXB0V/mfg6Ay4YQHIzfQE+XAXGri0xF3y1aNkxl16om
+	3QCyubBxJpdEXdui738IYBgcTeug35YoNAmYrcOeF7bnSqWEnYoV9ovhy8yZbSFm83+AANWxhIy
+	zEGFB0ZTxRUzUQNojWiTmBl82Lv+cV9a8D0624PZl0NEvuSOjbwdnAg2qGYV8fTJTYHX
+X-Received: by 2002:a05:7300:8282:b0:385:af7b:d788 with SMTP id 5a478bee46e88-385af7bda3emr10643390eec.2.1795443614142;
+        Mon, 23 Nov 2026 06:20:14 -0800 (PST)
 Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b556840494sm29427377c88.12.2026.11.23.06.19.51
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38577214c2dsm35579857eec.17.2026.11.23.06.20.05
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 23 Nov 2026 06:19:58 -0800 (PST)
+        Mon, 23 Nov 2026 06:20:13 -0800 (PST)
 From: Lian Wang <lianux.mm@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -106,9 +105,9 @@ Cc: linux-kernel@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Thomas Gleixner <tglx@kernel.org>,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH v5 17/19] mm/swap: advance the global queue cursor directly between priority rings
-Date: Mon, 23 Nov 2026 22:19:47 +0800
-Message-ID: <7d2e42d489849716d6a4a3b906673959e6d9a28d.1795439990.git.lianux.mm@gmail.com>
+Subject: [PATCH v5 18/19] mm/swap: skip reader rotation for single-device priority rings
+Date: Mon, 23 Nov 2026 22:19:59 +0800
+Message-ID: <e2a77e8a6c81c5cf56694b18f8e27b038055ddd4.1795439990.git.lianux.mm@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1795439990.git.lianux.mm@gmail.com>
 References: <cover.1795439990.git.lianux.mm@gmail.com>
@@ -116,18 +115,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B1106160007
+X-Rspamd-Queue-Id: 640FC160011
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Stat-Signature: 3b1gutzqipkwgp449y8dzg7sib1cf7c5
-X-HE-Tag: 1795443599-822751
-X-HE-Meta: U2FsdGVkX1+JbDt5aKN83HorBK3XsYUQcNrgg8bHixGLJg1xvsUOJL0LYYJjHxXnbD5wzRW+tKBf5roTi69b0/Y+G/t7elkEmBGYZ98G7qtQTF+WjwAReyKXQpEnXa0gluv3LNBZn9f7M01wUBx3CYlGA5bdnVh22KFtLpTY/BtfLR/oWIK2bO30Hfdv46XLqF1tygTns6xDo6pTc1WBifMGTricwCup+9EYrIZrzRFeagzAZksc6lUVKXb1mnH7hqgqM25wWetJJIrMuvSxA7go+M1kuCmUbjHiPyve3AhDntvob6yb3hRFMjCfRlUd+aYRh38hUrJTPbrk7MlDGTtMIBSxkUoXPtPBUFNH5HQWQG3FTDPx19O0z6Btu1oLDDaNxrGhCpgW14TS8mYEw5nLAuW/VoHIbJTiO3QyjZC7zWUqkmOmA5m//bXQk54P6CxPORoCG2sDvCHFJnm91+afbskcP54YHfZT++cWS+VbkH+/Dl6/jTfdIZtSbw+0QQ/Oxv1a/0YIFCfyZRUf3K1ythdiB1oEXm/SweGx62Fik96pY4MdXFqw4c8p5i5k1e0aEDHu3uazglny9tcsTHVOw4l4RyIwQ2ry7YaKXagSci7/LfsGWKNfrFp+HnRctV3fFm1L655ZHtdZzQm01oVtWC3gY5dTWQdkUtTFfpvghL8nS0dK8yGGjRn/mggQJK+GvYfxtr6Jj7cHKspbdRdjy8ytwg8i7lTxc7p0S4z8kSlbWRT4Kn2VAZhDAJ0baZ+XVpGHXLJvPGgWX4jFsFbHT6Akl7rvt5I4XwspQrvkgj3KZy9idFNfcQsLw82Tvb79jivvnzL77OIAzaSualSYJozftGnWvz2wI9msEgTI7I3hSZug0WqS8nYvA5HJlnDnZyliB2Ug4DFNYqFxKvSkifhE3vvLqS6jmOVdseqthoWWqzTNsGA0RWNzN9cZEgQaoqXqnk90/qBTjig
- qrP5sAkK
- Sr1DENVajly4/CRMkjwFy4s3Ig60mrYK3WxPjVyHyOwvBmBQRhvObD2OzSxef85VGhJVIuxpP0ZosefETSrvkSf23q6YPLDtILgFZ6jPtA5dOAcdI/Tjnj/Zn4lIK4GJ+rnT+/TEe9PbXpmNmGIrTchdfpM/uCD6tztM4AMdpdv1j66pbl10nc7STJQxDprSkPgc8nmEGbK49xj89Lf63vdKK2LMABhZBhuK/VjaS0Z/UFsUFRKvE6HOT+dyBE9zFQbuZBie+wlHlJYkxSuXsQTJK8GD7g7JoJFyOi1Mf7PUXCjt5EzRClGmFyb/8UNI+e3AU1NuLjMZEy/qCvEnt3y/pTx4I68M8L6e8LmRQHZFZDvyTE5OBNiD2FbWbtar1oFHJ/zEVYSYSOT3LTO/o5ABng2S2g4suFR1L89TNnh1uNopJktTv8SFgrhcMbCmPKBp9MjeAnfpDeYXCRS6WQS6yfegXt8VDD8DXGHsDjPLiwRih1dCXERiOtGzRbGTYvXOgbqr6X6EdzS2vw58SE5JQGXvxyRrfVx34PuO69tjob3G6jfAf4yY41zG+Tamsos4WjPLqqFR925LErLuqSuadze/tRPiozEWolE1wHW6zsEZFZdEJXSouaVYcDdNUR7OPkMN9TcRAQbBakzsKAIszY2L+lnAORrHWaAC+Mfv0UfM8PVjNAjQZJbbnbc/ngXW7VArYwd+ZuOM=
+X-Stat-Signature: kiarai9y98oboexqmeejrbzqd56dpe3k
+X-HE-Tag: 1795443615-161009
+X-HE-Meta: U2FsdGVkX1841/X6OO/Br/rWoG5gInvgRF4ZRmsQdWMI/duddkOMp/X+xtfRzw7r8XSq9s8Fhu2mARCNGQ0wrPHJOzVR9OUmT8sYACOGtfur7nbKD1n8eOeTFY2nlYgYeok30FGSObC5X4t29WFb1RPvWvU7NjGuXaBsjDHxeWF4vrDTkrSf2tFdxsOPVWgtkuFwsYhVLDfl4qI93wmkIbhR9N0gMmGr5+lS3MDOjZtXSMieWg6dMvgoo9QUDFAdEbA0y3VE8NOOeoVuL60EhMKZ9NSdE2ggGmeexBThx6Ux0uVVMOfoaCZBqTUBgdQiZ0Sr3VVkhLgpu1mYZB6IvB5aRlUBM3eaNqYV0r3bI+nCKV5e+hIWXCjsDPc+G9iyvkKWqIrZN7Q0bmBs0aVax/h2p+8v9y3aIwqLHVErJKlt7f8gY/vg08WRCpNlL8BfJGOm47g8KP0ymR1UThUG+6jy5l2rWwQOooSL4xB7cmnLHlGrtp/7EntvaSKuE1fgyyPxRsiq4OAhDxn/vntrH1HqXgj0bJyZu0PF4buk6IBx5yKNLh92mNW04E4/DdVWoIRPch3Y2b1LR90ifk18wNfiz4fNkywGjEJmARN2BuFzGV6RhczdJp9WtPoEMU1BIl7YEeB3yRjGOfdxcs5TAajD6Vqp7OpBeKvHKciIvG77rhJMY7MCU9sja4A1jNytZ2SLVRIlipYxmW/G8dbPDRBvFiUG03ZajGbiSBSa+r8znYUNSXKXu+Hb+Wa5U2h/rxkf5az+vv0eBIBtf9AkHioE5rQ5hpXqSCWf8khSW0ZpXEmBvMo5wIoNGuh2iYap3HrPvAwaqn7NJgFu4D7LNh6OjdfVBXiYKgqZam3VO/SExuo1AN07jLFpyEdcTB/T3zI6xitRuDz6DmK3CKN1aN360ACSizbnsLPWtfXPpzgn4z/OoYbdZpErHiSGhusaFTjSALZn2BNNZb4pGex
+ QqJEGclK
+ M9zfme9JLbQELbJEbtEK3SGyGuMYYFAzPid7yn21LIbNAbe4chrzEau25lmiijcj2WH9HKCDlf/lMyEpY2lRvVJpyCTIbClrVgr1MrV5JdQxFRNMSy1v62sRYjI2sWh7EhT9v+bXtkq1nzIO9y0re86DjBTArpkvDBqFOx5v4IW3UanDisYyotLLKNo6dwfvXsayipIohjb/LpKoyzq4NuYZoA3vkoIZt3ik9o/vxp6qOEH+okcSyKRjr8ThFd1ilMzm883voikJfWKpZKC0IuvKVKyOyB5EKSRWeo+d9Kpf+BsUZ3a6Fur2iNP0u6+SLvh/gM4kAbYKoPnXAX4KOOvGmX8L2xfHkp0vAjj90ejt/QFisc6d8MbX0DPeiY4deRV2u/j8zsn2+v0xrwNn/XhK30lyDXCoBAPL6W0muomDX4FrRXFzkRTWk6vvQbizIHGx3hALcGJU+AtukgjUGW2EJGjh+7BZQdZBrYKbs+fi5575KuU35T4ErXWsOO3ylt/Y9SKYM0CYC7Od+NY4RjKKL0xv0pSceMXt1tY6l7iw6lJc7eOJvm/nDm6woPNx7ULpi4oYPQfoqTAWKLxVHKC0qmmxeXnkZ2oTe2XoQTYWHmsmEefgpTllT43a5zPJuTQ19XGwK1vSkRka3jgY9+Xy/4mM81ogFHbJj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,143 +135,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The allocation walk previously passed a total retry index to the selector.
-Each retry translated it back to a priority ring by scanning from the
-beginning of swap_queue. Keep the ring index and the number of attempted
-peers in the task-local cursor instead.
+A priority ring with one device cannot benefit from rotating its starting
+offset or maintaining a quota. Read its only entry directly while the
+caller continues to hold the topology read lock and migration protection.
 
-Snapshot the starting device only on the first visit to each ring and
-advance each peer exactly once, including masked entries. Preserve the
-large-folio same-ring boundary and the stale reader-offset correction.
-The selector's complete walk is linear in the devices and priority groups;
-device cluster scanning and availability updates have their own costs.
+Consume the cursor attempt and check the full/disabled pointer tag through
+the common path. A masked singleton therefore terminates or falls through
+with the same bounded behavior as a multi-device ring. Keep the existing
+large-folio same-priority failure boundary.
 
-Keep the topology read lock and CPU migration protection across the walk.
-The global selector uses only existing priorities and adds no per-memcg
-device-selection state or ABI. Existing swap charging and limits remain
-in folio_alloc_swap(), whose failure path classifies allocation errors.
-
-The walk no longer returns an ignored internal error to that caller.
+This removes reader-local state updates for the common single-device case
+without bypassing device lifetime or availability checks.
 
 Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 ---
- mm/swapfile.c | 51 ++++++++++++++++++++++++---------------------------
- 1 file changed, 24 insertions(+), 27 deletions(-)
+ mm/swapfile.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 0c4452fa53ae..5a8663e9f954 100644
+index 5a8663e9f954..91de93043500 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -194,10 +194,10 @@ struct swap_queue_reader {
- };
+@@ -333,6 +333,11 @@ swap_queue_get_device(long nr_alloc, struct swap_queue_cursor *cursor)
  
- struct swap_queue_cursor {
--	bool valid;
- 	bool no_fallback; /* Do not descend to a lower priority ring. */
- 	unsigned int ring_idx;
- 	unsigned int offset;
-+	unsigned int nr_iter;
- };
- 
- static __percpu struct swap_queue_reader *swap_queue_readers;
-@@ -307,37 +307,39 @@ static void swap_queue_install_readers(struct swap_queue_reader __percpu *reader
- 	swap_queue_reset_readers();
- }
- 
--static struct swap_info_struct *swap_queue_get_device(long nr_alloc, int nr_iter,
--						      struct swap_queue_cursor *cursor)
-+static struct swap_info_struct *
-+swap_queue_get_device(long nr_alloc, struct swap_queue_cursor *cursor)
- {
- 	bool rotate = false;
- 	struct swap_info_struct *si;
- 	struct swap_queue_reader_head *head;
- 	struct swap_prio_ring *ring;
--	unsigned int dev_idx, queue_idx;
-+	unsigned int dev_idx, queue_idx, nr_iter;
- 
--	if (!swap_queue_len)
-+	queue_idx = cursor->ring_idx;
-+	if (queue_idx >= swap_queue_len)
- 		return ERR_PTR(-ENOENT);
- 
--	queue_idx = 0;
--	while (nr_iter >= swap_queue[queue_idx]->size) {
--		nr_iter -= swap_queue[queue_idx]->size;
--		if (++queue_idx >= swap_queue_len)
--			return ERR_PTR(cursor->no_fallback ? -E2BIG : -ENOENT);
--	}
--	if (cursor->no_fallback && cursor->ring_idx != queue_idx)
--		return ERR_PTR(-E2BIG);
--
- 	ring = swap_queue[queue_idx];
-+	if (cursor->nr_iter >= ring->size) {
-+		if (cursor->no_fallback)
-+			return ERR_PTR(-E2BIG);
-+		queue_idx = ++cursor->ring_idx;
-+		if (queue_idx >= swap_queue_len)
-+			return ERR_PTR(-ENOENT);
-+		cursor->nr_iter = 0;
-+		ring = swap_queue[queue_idx];
+ 	/* Consume masked peers too, so every walk remains bounded. */
+ 	nr_iter = cursor->nr_iter++;
++	if (ring->size == 1) {
++		si = READ_ONCE(ring->dev[0]);
++		goto check_device;
 +	}
 +
-+	/* Consume masked peers too, so every walk remains bounded. */
-+	nr_iter = cursor->nr_iter++;
  	local_lock(&swap_queue_readers->lock);
  	head = this_cpu_ptr(&swap_queue_readers->heads[queue_idx]);
  	/*
- 	 * Snapshot the starting offset for this walk. Other allocations on
- 	 * this CPU can move the shared head between retries.
- 	 */
--	if (!cursor->valid || cursor->ring_idx != queue_idx) {
--		cursor->valid = true;
--		cursor->ring_idx = queue_idx;
-+	if (!nr_iter) {
- 		if (head->rr_counter < nr_alloc)
- 			rotate = true;
- 		else if (head->offset >= ring->size)
-@@ -1845,29 +1847,25 @@ static bool get_swap_device_info(struct swap_info_struct *si)
- 	return true;
- }
+@@ -361,6 +366,7 @@ swap_queue_get_device(long nr_alloc, struct swap_queue_cursor *cursor)
+ 	si = READ_ONCE(ring->dev[dev_idx]);
+ 	local_unlock(&swap_queue_readers->lock);
  
--static int swap_alloc_entry(struct folio *folio)
-+static void swap_alloc_entry(struct folio *folio)
- {
- 	struct swap_queue_cursor cursor = {};
- 	long nr_pages = folio_nr_pages(folio);
- 	struct swap_info_struct *si;
--	int nr_iter, ret;
++check_device:
+ 	if (swap_device_masked(si))
+ 		return ERR_PTR(-EBUSY);
  
- 	percpu_down_read(&swapon_rwsem);
- 	migrate_disable();
--	for (nr_iter = 0;; nr_iter++) {
--		si = swap_queue_get_device(nr_pages, nr_iter, &cursor);
-+	for (;;) {
-+		si = swap_queue_get_device(nr_pages, &cursor);
- 		if (IS_ERR(si)) {
--			ret = PTR_ERR(si);
--			if (ret == -EBUSY)
-+			if (PTR_ERR(si) == -EBUSY)
- 				continue;
- 			break;
- 		}
- 		cluster_alloc_swap_entry(si, folio);
- 
--		if (folio_test_swapcache(folio)) {
--			ret = 0;
-+		if (folio_test_swapcache(folio))
- 			break;
--		}
- 
- 		/*
- 		 * For large allocations, try every device at the same priority,
-@@ -1882,7 +1880,6 @@ static int swap_alloc_entry(struct folio *folio)
- 
- 	migrate_enable();
- 	percpu_up_read(&swapon_rwsem);
--	return ret;
- }
- 
- /*
 
