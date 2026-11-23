@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91DF606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78F5606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iampxN5t
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AZ6GIxFi
 Received: by kanga.kvack.org (Postfix)
-	id 05B336B05B4; Sun, 22 Nov 2026 22:45:50 -0500 (EST)
+	id C695E6B05B6; Sun, 22 Nov 2026 22:46:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F27106B05B5; Sun, 22 Nov 2026 22:45:49 -0500 (EST)
+	id BF2DF6B05B7; Sun, 22 Nov 2026 22:46:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D706B05B6; Sun, 22 Nov 2026 22:45:49 -0500 (EST)
+	id AE2EC6B05B9; Sun, 22 Nov 2026 22:46:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BFBA86B05B4
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:45:49 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3186C07E0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:45:48 +0000 (UTC)
-X-FDA: 85464994776.23.28EC5D2
-Received: from mta1.migadu.com (out-215.mta1.migadu.com [95.215.58.215])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 61087A0005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:45:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iampxN5t;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 89E5E6B05B6
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:46:01 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0BF85A79A5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:46:01 +0000 (UTC)
+X-FDA: 85464995322.07.3C2DCF0
+Received: from mta1.migadu.com (out-220.mta1.migadu.com [95.215.58.220])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 138CA180005
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:45:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AZ6GIxFi;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795405547;
-	b=xuNCRc+KauyGr74M635ShEneRN54tj6/AW6/HKqfoTTKrXMZw6CL4mC3/h8A1JE00a1XaZ
-	xhiD1qYTh+DloVSDW1OzKnQ42XY3a9svXZT/Jp/UdKD+xmgVHYzkeJyMnSEOnYP5WgmfKb
-	ilfze1PvAgh/UPtnJmZWaKhBe8B/6W8=
+	t=1795405559;
+	b=L5OenKc0jFUtd10FP425weHbJbSZqXlu3Bwrg75N9uplWYufRcumpk/WGUHSSlJe5WKnxw
+	EiTYpcZCDE/AUwi4ufMdok0oyG0WUOd2R1BV+Pm4GLd1x+htGiZppEcQXQCRR+dRpxRaXZ
+	6nHz1qLihe+WOzya55HjcBZNk2WGKtE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795405547;
+	s=arc-20220608; t=1795405559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=htJ+G2m31J9SRlk7O48P5yvgT1ieAXPqPN86Pmytgdo=;
-	b=E7h9BE7enx8vdUGwjQO8oJPSu1FgekXfm19fCOo5oLlbaqJhdF5rA2TtXsFl/dVIuHYekl
-	lj/2DNr3SakN6KG3KWnZnWPjj+qEqyzniFveqBGsLrQZbGsrTHW97Qna7SVobMzZPZr4+e
-	XGBEK1vM3cHMcBd4RMCkEM3tZV7lJIs=
+	bh=/Qa0HZZjs7or3S/BSPmhnoxADvYGuQMQWM8HAvfk0Ro=;
+	b=vIQHMZfc46+RGU7YJgtseY4dX/f4cjFgT01maBrNzEP3EW+yDPL/lf+E3avrwlNhQAe0FC
+	8VdU2GmT3BJ8psRKifVb3fXzNowWw6KkdkU10zUe9nuMexb2NMgCb7Uz550vyqmEtKqQKy
+	9X2EbXEIHgboYASm1Sz6qnTGyd3nqs0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iampxN5t;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AZ6GIxFi;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=AjGuHxKPho2+lTUWKKgkjdNmlALln6KLBsfucJzafsI=;
+DKIM-Signature: a=rsa-sha256; bh=ieS6icOUU8W2/q+0+Ez1Zj6/vTJxsNmx9lTsgVr45kc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795405542; v=1; x=1796010342;
- b=iampxN5tRwt8Jt0+JUf7XqHmjXfTDzr9pzLiB1c91Ee+hYZQ8re+GvnFmQrA1ezYSjZjvzGv
- f+Ba+fbDbg9B/kV6vyWdS9ON5iEY8frgB1r19U36+eonmk+dbKjVbRNkfqRRKSYjSgg+jvQojDc
- k0hVpQZjwuFX5P3807OrPw7w=
+ t=1795405557; v=1; x=1796010357;
+ b=AZ6GIxFiXyYvb3yzi1ie45t+JCI8YjlvB7igI1mXeblpvO+QZ/ykV/Alp2a/NQ1lwyR+1lqe
+ d/L8Hf30fcByxeOHETETqcQaHFGr8nabFXdCVWMSS6E6kQ97WzY0GuAwQu59vjbqmZXD0O2/8Wp
+ I9zJ1ylSjQZyHK+DgcMK4thI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 7f0750ea786c6782;
-	Mon, 23 Nov 2026 03:45:26 +0000
-X-Mizu-Trace-ID: 7f0750ea786c6782
+Received: by mta12.migadu.com with ESMTPS id 1cf38e753e5e894b;
+	Mon, 23 Nov 2026 03:45:57 +0000
+X-Mizu-Trace-ID: 1cf38e753e5e894b
 X-Migadu-Flow: FLOW_OUT
 From: "Xu Xin (vivo)" <xu.xin@linux.dev>
 To: xu.xin@linux.dev
@@ -67,27 +67,27 @@ Cc: akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	stable@vger.kernel.org
-Subject: [PATCH v3 2/3] selftests/mm: fix false-positive and racy KSM fork test
-Date: Mon, 23 Nov 2026 11:45:17 +0800
-Message-Id: <20261123034517.236914-1-xu.xin@linux.dev>
+Subject: [PATCH v3 3/3] selftests/mm: verify ksm_zero_pages is not inherited on fork
+Date: Mon, 23 Nov 2026 11:45:48 +0800
+Message-Id: <20261123034548.237302-1-xu.xin@linux.dev>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261123034136.209410-1-xu.xin@linux.dev>
 References: <20261123034136.209410-1-xu.xin@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Stat-Signature: 8oagorn919aqutc4ftxh7h5jo4p4kjp4
+X-Rspamd-Queue-Id: 138CA180005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 61087A0005
-X-Stat-Signature: ek7eqhhhxcc3hzpppbupszagpfyfpj7o
-X-HE-Tag: 1795405545-806166
-X-HE-Meta: U2FsdGVkX1+rGPFkue702VTwFERrex+lDXJh8lAA7Wp3rgIBLKTt/F9HRuJ6+p3G3TskpfVmUf/SUkixXhyFXTWJ0dBJjAGT86Wk+n3spn0xRTQOMxXPBKKNZ0uZtxut7K5o5jVOzRGOJ6mUiQAeLEHPWfvwHi25bKzrMpLTCpCPHNf9FXRk+fOQD4u/rJw9kpf37ei+h8g5t6yd3u5qt2M3JxAklH7ETUrhr7UJ1pYd9dxbtn3gWwm6PaFMci7Uhlco++n8cEh2Ai7VHJt+07qtlRpSg1g3x50Emom0ao1xGZdlyd7nYLUu7m078TS4/LqAQJTpAGNo+RWx3DKTnPamHAEtmqFlU1S3rE4OHUAGqkXZ2KWp7lEXHxJkXDMDqHpqqEhaByA4k34OPNdXS8kiJ/hyTcZyhuZJiG+wvdpjO6qOUf4pHWrwlX8w9lpXeEpTKYgmWCSjtIeTxhhU3xj1e9SP3ivSRmzy7AlpgUHiAsJoNmNJnsd0T7AU45tE0NrIT8759cm0N5PAzZdglQTyZK7FNSY4TaYBWh0XVW91Sbrj/fR70FdbcFvo/bUt5KH20EmIwh9TIbUbiZFoutjXACDsWepS4ENKbxao7uMOsMWJp4ua52rIZsIdx5gYoZUIHo9yiY2Fzr+2ivFjkRGN1Hom2ZZv0Ak4hl7LMkGGxWid24pTDrsqhPCS6bThFqxscsOdL2PYOVoKWCpMxVnRUM0U9fsDWkPAW+Epeq5Y6pcEWOBTxbHPpIR/FSKVNv0C2s29Lk6UdDJ1DgBBh4V8kIbMRkTZSK2E4B1j/291o/JMkjjPb260Ir5uYIOSYvmpy0bdXA/Qct1vzBQuC0cp9QNYaI0g/C4F7v7vH4qgpSMRS9OHeEYae8iK4cRJnAdI86GDftjsR0SJQe0mjRmzCn/lGM+7nT+yh59SHFdJf1pD9fouhNwnQ1ATyETjBYK7MipOuDdRhgI8bBm
- C5clu9/o
- 5b8z4TB/Kj0HWiTfOzMf6jC+Jj9LkD7dxgqxPsh3W0EdLr9vZse2LOFqGwX8+nUn2vUqVobuDLlxyhL1wnrlmMW18hnn6P/TvlXaDeHNRQjhYdjHoI5+dNLtzqqTE8TLn1IJmaXmbRTFEW7s04E3cFXdrxcD/lmS28iec7lxXJYEmJnnWm8hu8nsZ/G4B/r9Zc90VtQQROtZDh8CjwtfQMoBz2u8PFiMhpc6cq+SF4JfpF/UeMLnDzaco5VaE5wOPyQaJICMcF84200L20AAtYcVhG/xmdhUsj0fPKbyZjJm24myC2eFBEaA+Zud3kplC9BGfdqGGJ1Xd+Nlx+sqB//sA6fXPdUvctPycmJ1aJcnOfMyLAOqvf37nAhqzk0Ca8x7xQP1MekQuiwlRg8LlegE6mHAI1li5FxV6dKH8vLo/TRBS2zHu10IGLw==
+X-Rspamd-Server: rspam02
+X-Rspam-User:
+X-HE-Tag: 1795405558-223192
+X-HE-Meta: U2FsdGVkX1+PbBjSh0dTenaTcKOmQq1ZjoKsJFdltLQa1eFNkIldSQHgCbYVCdbBSmuGmSh/OR/N1QaAwE8zmKOccY6KGVLRs4w/FqYHyYLIaRXraJJlFZR1ihbrXcgbIshR98smrSHej2tcjKriZA2WDb19PHzjkCRnqQ1O1fIbxm6lQHVKCcdCaAn7u1Ih8bUX1nAE8+NWISn8OBinepk9QoIbQHh9QGL48KAVVJRU7og0d45cTsWvtgZgUSAq7Dw0u+ZTYdXAReMG02Vjl/yValgAELtF9etqK8sEYSoYvB4c9w8XfSHo55CnK1aXPPImTFVgPpZte4diCP/5ZdSmGzmPWL8YZXp0XEStHWZvF+ByEm/lgk0FruLrjFvlNKwHM+PqtC2ylRuugC7XxfF30tceEGnKjh6/B+/SwKkmLDb0MGP7YiWa0Tu/xdaKDgFXUbolSKls6ZBVO4UzT8lqY2ijG6/MqOskER5z1mOD9Udnua2YpAgzidZwABlacSWI3mE+WdkDk3nFnDmJWb8fpaVVLszqYc8Z0qThmunTlqZHalnzA/Bh5qEUcEaQ01h7x6W4dDnyKI2vK+l4x1HyM4utH2EJyxan/I2pfTCD4Rvz4f3M/Gu6MkYPR96IaWglAFbAq2y4uHF6PksPFRthSgduOc7fKKaC2F0zYVxh+u6IvNuQbH3iY8Y1dUaojTcFyuztPnIXRCDtW7Zx3KyR7YPKB2d27jr6+s5Ip7nFcK8rR2LwCDh72p20AY77WGJwb4hVec7ovUz40wWUJQ2PXQ3XlYs2Av8GDHIIL/MLB4HmhgvJH5kx0CmHt8buP2cWT7aIIBNSbN6S4xRdTXAxin1BNfG83x5jpL/SZs7RcMd0Bmk8tZsphbz+To9wtDGKWegd5BaXJJ8W1Sm1lNgqI+szDMfn6LMT+8w5LT5IKrK/ra2tfaYkr57mV5k1iEqSraFCCzPptcz393s
+ uVAxWPLC
+ ONA4eg5DHIuEA5xErUIjElXQ6LK0QEI4yRpwV4jyoo9kx71213k2yeNSsQCohStTH+Wfs4RUSjuxHDtZgG5wVlvLHZUMCf17VC6VE3Oy3L57WCWV+KeIUSA7PZkLtQF094m+HQj6FVz8Y8HxVoOGHBqrFnToRz0nfsHSMj6Fhnau5cVSRnseZ5xGawj11lraBTnwUuo0nEve/HuxNxYWg5sgY/ZBteMcJUEJS+VW5roTt4nbA8QXklebODeZFcbJdOtO8cISp2/HpIg2iT2WiMuPxpHFYYRhTmYsYrMW7Fndsicsj+AVuJNo2pqV6W7Xeu4N89fkrFIYBLVd22Yp0eLidU4Cpmb24mlfSsT2vrCkKLDLXseXHfobGxQtLO1WWmUKciQ8L43T9hTS25ewWQGRgzx48WgVU26tHQ9IH6BLeTmB9OY0eBWDuagW9yfy94R5YWOLuoYnDIqhmSkkZW4U/rNlA5e8nk+spAiDyt9iaKasUqgtd0ozpFhPbliIu7uBk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,91 +96,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Currently, test_fork_ksm_merging_page_count() passes wrongly even if
-fork() fails to reset mm->ksm_merging_pages, because the child process
-calls init_global_file_handles() -> ksm_stop(), which unmerges all KSM
-pages across the system before reading its counters.
-
-Fix three issues in test_fork_ksm_merging_page_count():
-
-- Drop init_global_file_handles() in the child process so it does not
-  call ksm_stop() and mutate global KSM sysfs state (unmerging all KSM
-  pages across the system) before reading its counters.
-
-- Use '!!' in exit(!!ksm_get_self_merging_pages()) to avoid 8-bit exit
-  status truncation (e.g., 512 pages on 4 KiB systems truncating to 0).
-
-- Introduce ksm_pause() to pause ksmd (write "0" to /sys/kernel/mm/ksm/run)
-  before fork(), preventing ksmd from scanning the child and incrementing
-  its counter before it is read.
+Extend test_fork_ksm_merging_page_count() to enable use_zero_pages and
+merge zero pages alongside non-zero pages before fork(), verifying that
+neither ksm_merging_pages nor ksm_zero_pages is inherited by the child.
 
 Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
 ---
- .../testing/selftests/mm/ksm_functional_tests.c  |  8 ++++++--
- tools/testing/selftests/mm/vm_util.c             | 16 ++++++++++++++++
- tools/testing/selftests/mm/vm_util.h             |  1 +
- 3 files changed, 23 insertions(+), 2 deletions(-)
+ .../selftests/mm/ksm_functional_tests.c       | 44 +++++++++++++++----
+ 1 file changed, 35 insertions(+), 9 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-index 135191f99962..b871d5656688 100644
+index b871d5656688..0e128c579d5c 100644
 --- a/tools/testing/selftests/mm/ksm_functional_tests.c
 +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -668,10 +668,14 @@ static void test_fork_ksm_merging_page_count(void)
+@@ -655,45 +655,71 @@ static void test_prot_none(void)
+ 	munmap(map, size);
+ }
+ 
+-static void test_fork_ksm_merging_page_count(void)
++static void test_fork_ksm_statistic_count(void)
+ {
+ 	const unsigned int size = 2 * MiB;
++	long merging_pages, zero_pages;
+ 	char *map;
++	char *zero_map;
+ 	pid_t child_pid;
+ 	int status;
+ 
+ 	ksft_print_msg("[RUN] %s\n", __func__);
+ 
++	if (ksm_use_zero_pages() < 0) {
++		ksft_test_result_skip("Enabling use_zero_pages failed\n");
++		return;
++	}
++
+ 	map = mmap_and_merge_range(0xcf, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
  	if (map == MAP_FAILED)
  		return;
  
-+	if (ksm_pause() < 0) {
-+		ksft_test_result_fail("Stop ksmd from running failed\n");
++	zero_map = mmap_and_merge_range(0x00, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
++	if (zero_map == MAP_FAILED)
 +		goto unmap;
++
++	merging_pages = ksm_get_self_merging_pages();
++	zero_pages = ksm_get_self_zero_pages();
++	if (merging_pages < 0 || zero_pages < 0) {
++		ksft_test_result_skip("read KSM stats failed\n");
++		goto unmap_zero;
 +	}
 +
++	if (!merging_pages || !zero_pages) {
++		ksft_test_result_fail("KSM failed to merge pages before fork\n");
++		goto unmap_zero;
++	}
++
+ 	if (ksm_pause() < 0) {
+ 		ksft_test_result_fail("Stop ksmd from running failed\n");
+-		goto unmap;
++		goto unmap_zero;
+ 	}
+ 
  	child_pid = fork();
  	if (!child_pid) {
--		init_global_file_handles();
--		exit(ksm_get_self_merging_pages());
-+		exit(!!ksm_get_self_merging_pages());
+-		exit(!!ksm_get_self_merging_pages());
++		merging_pages = ksm_get_self_merging_pages();
++		zero_pages = ksm_get_self_zero_pages();
++		exit(merging_pages != 0 || zero_pages != 0);
  	} else if (child_pid < 0) {
  		ksft_test_result_fail("fork() failed\n");
- 		goto unmap;
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index f26f9e4bfdbe..e638475543e6 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -1080,6 +1080,22 @@ int ksm_stop(void)
- 	return ret == 1 ? 0 : -EIO;
- }
+-		goto unmap;
++		goto unmap_zero;
+ 	}
  
-+int ksm_pause(void)
-+{
-+	int ksm_fd;
-+	ssize_t ret;
-+
-+	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
-+	if (ksm_fd < 0)
-+		return -errno;
-+
-+	ret = write(ksm_fd, "0", 1);
-+	close(ksm_fd);
-+	if (ret < 0)
-+		return -errno;
-+	return ret == 1 ? 0 : -EIO;
-+}
-+
- int get_hardware_corrupted_size(unsigned long *val)
- {
- 	unsigned long size;
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index ab1325dc6580..df16973d108a 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -168,6 +168,7 @@ int ksm_set_smart_scan(bool enable);
- int ksm_use_zero_pages(void);
- int ksm_start(void);
- int ksm_stop(void);
-+int ksm_pause(void);
- int get_hardware_corrupted_size(unsigned long *val);
- int unpoison_memory(unsigned long pfn);
+ 	if (waitpid(child_pid, &status, 0) < 0) {
+ 		ksft_test_result_fail("waitpid() failed\n");
+-		goto unmap;
++		goto unmap_zero;
+ 	}
  
+ 	status = WEXITSTATUS(status);
+ 	if (status) {
+ 		ksft_test_result_fail("ksm_merging_page in child: %d\n", status);
+-		goto unmap;
++		goto unmap_zero;
+ 	}
+ 
+-	ksft_test_result_pass("ksm_merging_pages is not inherited after fork\n");
+-
++	ksft_test_result_pass("ksm_merging_pages and ksm_zero_pages are reset after fork\n");
++unmap_zero:
++	munmap(zero_map, size);
+ unmap:
+ 	ksm_stop();
+ 	munmap(map, size);
+@@ -842,7 +868,7 @@ int main(int argc, char **argv)
+ 	test_prctl_fork();
+ 	test_prctl_fork_exec();
+ 	test_prctl_unmerge();
+-	test_fork_ksm_merging_page_count();
++	test_fork_ksm_statistic_count();
+ 	test_merge_aged_pairs();
+ 
+ 	err = ksft_get_fail_cnt();
 -- 
 2.34.1
 
