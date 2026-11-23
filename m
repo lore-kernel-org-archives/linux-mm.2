@@ -1,116 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A77606A320
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 01:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956E7606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 01:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HF9uETWv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m5brb9u8
 Received: by kanga.kvack.org (Postfix)
-	id B2D356B00EF; Sun, 22 Nov 2026 20:09:03 -0500 (EST)
+	id 766D56B05B1; Sun, 22 Nov 2026 20:14:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADE316B05B0; Sun, 22 Nov 2026 20:09:03 -0500 (EST)
+	id 717F56B05B2; Sun, 22 Nov 2026 20:14:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F3CC6B05B3; Sun, 22 Nov 2026 20:09:03 -0500 (EST)
+	id 5DF9A6B05B3; Sun, 22 Nov 2026 20:14:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 773636B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:09:03 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E539B12077B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:09:02 +0000 (UTC)
-X-FDA: 85464599724.09.9798473
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5DEFE1C0009
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:09:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HF9uETWv;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B9376B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:14:17 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C7E61A05FA
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:14:16 +0000 (UTC)
+X-FDA: 85464612912.24.6F98F4D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DBBB1A000B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:14:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m5brb9u8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of tzungbi@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tzungbi@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795396141;
-	b=Fajis2LZOOG3xmPVm1xTBzyS40u6sNFbmOP3z/ShYTTzmBRpUVc4nELkNjSSttVZKWmc7g
-	MCKaZRJuMBEMd/gJFb0abD+A5SyRAjMwENG+REgIkRsMfaiv319/BvkaNYQTGPcSYs3jP/
-	1wPYwAWi5PRS1lnTCVVOBfCpDI4Q2ns=
+	t=1795396455;
+	b=NLXjcbFe+0sFLz18smwfc293hOxV4T7B0/EzIJQJNXhAmsGfLvWSDy20kCNvMa4KPGHuZ+
+	02V+ByrmM0yNKVQAtBpVB3TO2EW5kk/cdQ7/BOWmw/9bEk/pkA/+yT23Ra046IMsdfiR2l
+	z2O2lJkRBvkO4L51BXmT7ybV5zmvA4c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795396141;
+	s=arc-20220608; t=1795396455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=54suIHluMeZO/ufn4/dBIrDiE7/KVFZ3u4m3JUaSiGc=;
-	b=GaLF00P9IqpxJcOpWL7EAfM6X02tHxn42VuiX0VAgTK9G8hnc/l1ybnKJSUkHoH8AU66ud
-	pJB0w5vNdQ6CLzZBZg4xScmmLxXnZ7T/IhZCTgsaQH3KFDahJVhlBDyvPsdsyLgwvOAwoQ
-	DEpZTbwoiMo8nQ9tDusrE9frtnEzUyg=
+	bh=1nAFz1rE2Zgq0kT2UJ5pKEhQqcU8lxqQXw2MrFx+Nfc=;
+	b=oaPVarl3ed4LCCZywuwKrC56G/AvycccesXVefumxQ4d8+bNLxLBdhpkHKKocvOlZ80W8c
+	Gk4c3z44RGkNIRlJljpHgHlmwjaC923AcZJZSW8gWAfVpfpCpW4c5KRWXLOEubJzx19t8/
+	KilgYwancfBxE98rK+4S9jIypIoQBiU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HF9uETWv;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m5brb9u8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of tzungbi@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tzungbi@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 69F096060E;
-	Mon, 23 Nov 2026 01:09:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5FAE31F000C0;
-	Mon, 23 Nov 2026 01:08:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A90CD411F0;
+	Mon, 23 Nov 2026 01:14:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C351F000C0;
+	Mon, 23 Nov 2026 01:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795396140;
-	bh=54suIHluMeZO/ufn4/dBIrDiE7/KVFZ3u4m3JUaSiGc=;
+	s=k20260515; t=1795396453;
+	bh=1nAFz1rE2Zgq0kT2UJ5pKEhQqcU8lxqQXw2MrFx+Nfc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HF9uETWvgDgCbmGGppAFO03CUDvTiOIhaCY09lktVw3xBo+nBNXLRW9vgavEdg8Yq
-	 w6jb69qUgfdhMLLUmmEukONSxkeSOgm4ac11L4U2+6RHH7AfddReVAfDbiWC20UZJ1
-	 ObzV8+KU9EaJEEKwf9vQ0MB3DAwy3F+GuZAUWZiOM7AyEKWqXvrFk7f7TpuEGttoN4
-	 Fy8mjA8UXStRyDAuKWmm+xzq5TtrHIVGOHkgItUyaQRjYNC63yXCwvcjmrZVfvnU/t
-	 +zElr+nCAMWfHgU4XzXa9pP0+2Ljdb0uQglf4xGcMb1ZolxErN/TPOiWi0uas5nrft
-	 DoyDlnL5SNLMA==
-Date: Mon, 23 Nov 2026 03:08:56 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>
-Cc: bpf@vger.kernel.org, containers@lists.linux.dev,
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Aleksa Sarai <aleksa@amutable.com>,
-	Alexander Mikhalitsyn <alex@amutable.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
+	b=m5brb9u8foWKbi7SrlcdW6nE2yWIS8IEGVU5QHSZYMih+9IEkmiqaNM0lLx2EYbPE
+	 Ene3Ka2hJ1BAvW2vOWqYEoxo49rMX/8KuHKgTHWJQeFE3NrlIrAf3xeYL6VLmMY+/l
+	 ekFXnTI29+zSfV1Cj1JiY8g0iM3LpoM2wMrgHM/4k71UbfvjD94MuJKD4cUZLqKZBp
+	 tapIlLzsw5cg25rKFRJ3Wy6OzHRx9WFNJ4Dy/E+S8IHUzJbf1ziPCMSD/LFgujVS+y
+	 I6gkNfNt8+7zFmlY0xlcmT0RV+dcWLazJhMGzWNLJfBLUPxJ9MdE0Cw4N9AumibzJ+
+	 +Zbi9zcgZuE0w==
+Date: Mon, 23 Nov 2026 01:13:59 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
+	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	MPT-FusionLinux.pdl@broadcom.com,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
 	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Giuseppe Scrivano <giuseppe@scrivano.org>,
-	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
-	KP Singh <kpsingh@kernel.org>,
-	Lennart Poettering <lennart@poettering.net>,
-	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
-Message-ID: <awOSKAvA-65pF3kw@kernel.org>
-References: <20261122193539.3334213-1-jarkko@kernel.org>
- <awOEa303zNUDrzA3@kernel.org>
- <awOFGIWekH9-vlhM@kernel.org>
- <awOHVCpztLQv4Uwv@kernel.org>
- <awOIIuoNvNLZ_scF@kernel.org>
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
+	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
+	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Benson Leung <bleung@chromium.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	intel-gfx@lists.freedesktop.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org
+Subject: Re: [PATCH v2 11/12] docs: ioctl-number: update platform entries
+Message-ID: <awOTV4kbshpi_cxp@google.com>
+References: <20261119053514.255348-1-rdunlap@infradead.org>
+ <20261119053514.255348-12-rdunlap@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <awOIIuoNvNLZ_scF@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5DEFE1C0009
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: sdwwnmaw7qbee3t6fcbekc7xbbuo9m8d
+In-Reply-To: <20261119053514.255348-12-rdunlap@infradead.org>
 X-Rspam-User:
-X-HE-Tag: 1795396141-484443
-X-HE-Meta: U2FsdGVkX18KC8iVQR3DrKT7gT9y71Y75U7EuwNrsoDi6aXt+M/XBniiQlyjySf/Nd16oWt3qkLtn7ohPKwFbEVl5OGvWhvem+J/dEnDj51xCa9Awg6p6fSdnrJkX/4z7FWa8nQjUwvwiilN4om65Go3OlLC2BYhbwRPMOEGn4MbJhZBlG902YsyhkSSnyPK2BFfn1qIMxOP2IXqziK1cCEp2RN7ZQlenRfPtnJCepSmhHO/aEnq+fSnCN8nvrL4BYTfDNbKoXjGRGN07Vnqk89smqLIK3T5pC7RhAcjIv4kpSZtzf/mNOMd7A7+QJODiPCrqkk+/VOtie52AlRiHwb17Sr7C/zNcY3Ska9WxoBmpBwcLMTMLpwTzJD+1wX5Ax8TfehZf+6/U+z9d/MhRUrC/5r0mNADRaDeUodXc0rwL5JRmpqbws0DkSwDJkVPI7ngztaAWldfcncWJhty7K26IO4+5ZhSIn+6TUPQomYlRoKh2O65uZLtiK6E7UDBBH0EIruuoVJbjtaQDS5BTuvP9aoIghcfZOyEDj9CzFWwL2RBfx5OWeiTdMciPzFvtaVfZRA7ukEkS3OowGuL1BRGFahB7t7oi08whQxtXl2WDT4NYD9hfFpbBQwhl4m3heYBosrNCikpDritGPCnN2m43zmr6uefHPWqrumBOv09vZLQpftFRjuyol6JODZiBZtBxa28YmjFfjHPHN1JMN13B4Fw5X23+ueRw1uWPzEsGUQMnjAkIS/cFcFF3Xmp6FLKsw676sPx3DYNvErf50CqPDdsJ0cU1Jw47VRObYdQZzCOlmiY3Autw86I9VauzeokGAz+1+ZWiGfcdJM0x9ewX6wfWH3E0jSVNkpTIZCynhvOH7gF+QLubhYk9dPPCvWSsCo9Kj8sccm0BKXcCPrW+1V/rqHHTSjpkl6eSwkXauU7MQRSOOjS+QLbITpG39OPw6o36L62kJ1eq3a
- d6MMG8qt
- cFkAdPdiK9co225LH58Bhe7Lnoe8d6vyu1oEGzPtJc7xkUUJr2sb5MGi325Kbavuehs7ucUPTSsdW+jlDuq2x14dPi2hyb+ooO8o1u2/RAKNnMbkv+DV8NF61W+1ah7CUhv8NVDtgcmJ1KjIxCkhuwsJw3F/mwoPPuvbe8f3A9unsSpCtRKVfS5pHVu9uGKhVZCGxyGec04dWve7dK3azSdHiYImIDD3FUQ3KdBTtFQZk+f/e0o2kQdMCoCUHohB/nBglfv8c/4B80i+Ab+VX4zxw64GkBcnDcStHpz3usep2Alm5MX6pvYV3dg+wn51q2N0rPjwCppLFNYgpXhAjj7NSw8lL+5Myyg+sSIrJe9vXN34V4aO7k5oTLa388QhJv75Hs4dPhFIzbKBB8npSRu/qQXOg93AgK9qua1MCDf6Jn1PUkSv1evMlWah6N3dhrLAo
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: DBBB1A000B
+X-Stat-Signature: ecejfxjffu1zsy86ssjmoyxo4mf1by6r
+X-HE-Tag: 1795396454-648981
+X-HE-Meta: U2FsdGVkX1/UYKSdXf+swI+us/J2sm6M311EjOzyJ8W3Ow7ZJjXYEbTXJq3xAs8GxnayMT4/iCK8rAPc85crallNtB3iPG8YjC6YJNQTknKrF7Lob1Nnv22CJRi2U8C0diizoyz11tmPrMBQZ7AYM2neT+eRkMW7pcLieCC+vQEW/nJcogozjyVVPAx6AqRoJNnf7aOhlyOfUqhwxUtgHYgdlin0mDn6wJqKmaerz8vihWxMivVwMG99T61Fh9uxKYxfno4lGW1oS4o3gef2k7wRD2W84joksQNSk3NB0TxOvwwb/15ff3m1QsmxsFLRjOhiCTJIcQSEhag5SqWeCLc3qepTeT2BD8cEjf0OPyGPCZS0KTs5nI2ufmeNAo5LcTgKVbAQ4zTnN2XakqQfgE1wO5c5YFW/9gS5q4nJozEheWePum/8AgFTzEASgiUQhVPwKohAPN+gV4DYYnAMksrIWZht9bAToaQY0n6x2TjtQbhUjx3noA9IFdXyZ3ofr7tqHaRKd4n34iLLIMKKHKzu47nBngLeMz/FarZxxwRVmpvcdsB+vG5sey5AFWgE3SqoHAUHpOzaiIQ/DvKfpFMTLP7Rai/3q8o/ZFbgk/AmCOAzeFTRhGqcjhBalBzO/+nRJAcnprRgOMIDxhzkZi28xw0xA1fYTRyX1p/83GQmjCXzoW0N88rYCtQXctALUlS5U9McGKuwrJq5NxxZuJnhKQ1tv8VL6v5VMO6RlSKzeGlUJcAFLTfvcJfi9K8EK93sMM50H8NbrpjrRrmcnemebbnEZ+Cxp5er0kvAhR1+392pKCillo2nGx3TzFJEbPyjLRuQir7vkjAmfYsVw+mdEBcaX0H6Wiu5p046QvIdbxoKvB0q1azBdaOjKfTGMU3PK8OW24lofOW+xftR+QJm24WKxm0TkACccvar9InF2qbY5Vp5Ys2o877yXIRBZs1eEjb6rk2OaCr5vVd
+ 0HE9tVOq
+ vAM5SvU+w6tk2i/LE2lNGa2e8Ezn+5ccQSC/Vl6sDHkOQwSsvAL8EDX/k47GcHcc9uRAIHApBoo3Go4V1fkgQIi3DN+iYzbibq1LzcgWoL9DXQAN3DUSbd4aaqzBMQYlHnnbKV5ZLHsx1vouKnJHeDiqlwVFsid8pOoSLdWw79JLEz47uVlDDOkQJxtv0mtfdwU8oq/lKB4PfvUdYYq6ikjsyyEv1Q2J5xlnfGjau37zrcxLecvTsFEgAjjKgW94Oenu1PGpNQ15jCLd4nzQG72VNdmJ0/SIhbYgFxe/XsiQnrP8HxUAuYOZe/RF9LFiK7M2Wu/IZrEFvRFDk6301OnooJSZ3GB+Y6mOHUGVohqyYPAFCH8hszarr2ACtdBELQ0+vdgCDiLRjEDq7/tKKUvgCAcPn5p3ME2aUV1iyyE5pI1m7aKCNp4u4HJcjuP9JePpxJQwNU09gSChtCh/WrOYV54x5ek4U2eGVYu3sOZ5Zo1eVSDgjUEu1HZw7cwpBbwb+Bx4te3tS7bt1+WD6DspIdOX59u0I5XKNYMnJIH+KjOZfWM1AYatEToNx+E2cJt/SdkkD8NTGmRGzLXgJkeu5IXs5E9fFpDyyvnD0RUICmxY6g+v9GdvksTsnUt7GFekZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,49 +151,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 02:26:14AM +0200, Jarkko Sakkinen wrote:
-> On Mon, Nov 23, 2026 at 02:22:49AM +0200, Jarkko Sakkinen wrote:
-> > On Mon, Nov 23, 2026 at 02:13:16AM +0200, Jarkko Sakkinen wrote:
-> > > On Mon, Nov 23, 2026 at 02:10:23AM +0200, Jarkko Sakkinen wrote:
-> > > > On Sun, Nov 22, 2026 at 09:35:13PM +0200, Jarkko Sakkinen wrote:
-> > > > > SYSCALLS
-> > > > > ========
-> > > > > 
-> > > > > Two new system calls are proposed:
-> > > > > 
-> > > > > 1. userland_open(): open an opaque staircase-initialized container
-> > > > >    object (modeled on Intel SGX enclave initialization with separate
-> > > > >    build and live states) with no embryonic state, opting selected
-> > > > >    shared namespaces in via an allow-list instead of unshare semantics.
-> > > > > 2. userns_set_idmap(): configure all UID, GID, and project ID map
-> > > > >    extents for a container user namespace in a single atomic system
-> > > > >    call.
-> > > > 
-> > > > Andy, perhaps a bit too far of the box idea but I'll just throw this out.
-> > > > 
-> > > > An alternative to userland_open() would a file e.g., virtual device
-> > > > file, and necessary wiring for open().
-> > > > 
-> > > > Then the added syscall surface would reduce only to userns_set_idmap(),
-> > > > and it adds more robustness to access control (e.g. who can create
-> > > > containers).
-> > > > 
-> > > > What do you think of this?
-> > > 
-> > > Also, easy way to detect the feature. This does make sense to me.
-> > 
-> > This as a side-effect would enable LKM compilation, and reorganization
-> > of the beef of the core feature as a driver. Not sure what would be
-> > the best location for the driver tho, perhaps just drivers/userland.
-> > 
-> > I.e., full decoupling from the syscalls.
+On Wed, Nov 18, 2026 at 09:35:12PM -0800, Randy Dunlap wrote:
+> Update the list of platform/ files where ioctls are defined and update
+> the ranges of function numbers that are used.
 > 
-> Right, and LKMs are great for live patching. This has enough quantative
-> weight.
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> ---
+> v2: no change
+> 
+> [Since having multiple maintainers trying to merge these would
+> cause some conflicts, it would be more manageable for Jon to
+> take all of these through the docs-next tree.]
 
-Not actually sure given clone flags etc. if detachment is doable, or
-even if it can be, makes sense. Likely not so great idea after all,
-after thinking this for a while  (at least not in this form).
-
-Br, Jarkko
+Acked-by: Tzung-Bi Shih <tzungbi@kernel.org> # cros_ec
 
