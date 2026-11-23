@@ -1,108 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FA8606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1FA606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VhAuS/1v
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=ZItaBidm
 Received: by kanga.kvack.org (Postfix)
-	id A60F26B05B0; Mon, 23 Nov 2026 08:27:24 -0500 (EST)
+	id CB3026B05B1; Mon, 23 Nov 2026 08:32:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A38926B05B1; Mon, 23 Nov 2026 08:27:24 -0500 (EST)
+	id C666A6B05B2; Mon, 23 Nov 2026 08:32:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 975796B05B8; Mon, 23 Nov 2026 08:27:24 -0500 (EST)
+	id B54AC6B05B4; Mon, 23 Nov 2026 08:32:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E4F96B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:27:24 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19B72A08F3
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:27:24 +0000 (UTC)
-X-FDA: 85466460408.08.DF197FD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 370E7140003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:27:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VhAuS/1v";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795440442;
-	b=w/XdpIUMKZua5F21GkxH8R4ysy8hnepcTY1trqJBeG+vUFQgT2Ue0+PHujCh2kxJVtct6V
-	oLZG7+zQwgqwKx+jlJxaYbqwBqc/3aUTzNRqA+WkpsKYs+zLBUhIhUvonpMMi+tb0nNky8
-	bdwpsktvzxeMq6Oty3AmkXvgXDEAQO4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795440442;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA8E6B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:32:15 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 235901C42F3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:32:15 +0000 (UTC)
+X-FDA: 85466472630.15.3C253CB
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BE8E6100008
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:32:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=ZItaBidm;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795440733;
+	b=HguvijPuZ165mVLxFAXTDHdmaeSR48Jsv0Qgnyk5IoQdUgwpPrbgC61cFmVXRieg/JTObc
+	ubI3ycgknmvSGv446vMgl1jADf232JzcEg1FYuD65xkTYJ4eBFwkMry8lNhL0NWvDSRSA7
+	zzYiIS+i3pvHKX/cnrD59ZUeJtPzmHI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795440733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HJWW3lAYD4SS32dHbc78BmhWsFKqKKOPG4WVSgqL+ZE=;
-	b=Xmh/FuHecErRrhQ03xLWgRxJA9aTaYWAfcSwRZpQbxqjKijgqc+pFm3CXXpxxA/z1CGkyc
-	1B8oWtJJdsX/54dHRUNFQjTHgXa1CracKEurg/FJG2tjfyjVl2TiBOfPvd4cd/B7MrwdJm
-	nk684rMG/ITA3X2GiNir//2eHerAz/w=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VhAuS/1v";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 22830442A2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:27:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB69F1F000CA
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:27:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795440440;
-	bh=HJWW3lAYD4SS32dHbc78BmhWsFKqKKOPG4WVSgqL+ZE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VhAuS/1vfW959+qJtrgNkgsp9BQcjJ89ZYVRqF9lApBNYmRhuL1jCe/hQIJS5a0A9
-	 GUvRbCFV5jCYPWhITNYsRb0hDaVRh2HI/zspmCyG0VPj7XNguNNlfJTvH0XzOH7UEG
-	 BF82WauajIjmSlowZTIpfzv/tq1fCIdVNMavzRR7Yvsnku/5pj1grRKShsY944tZqX
-	 nzLvcA2wtkrxzNc5BhUyE4BaWOHGybHQdoD9QO0gC4PuWkFoAHBhXxhuKwd9c9BKwh
-	 Xfx0AA9pcn0cvfhU1SEo5z4KHHNUEa6S0eR3NGJPLo8oTih+RDbYCUqVMIl7LRNU1x
-	 i4C6uVAqqWqWA==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-94961bfe1a0so220517885a.3
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:27:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHVmZ+x2u4hAkjuz5u6GuNh3jyS5OkzonR+r+0tNv3pd9enpqzqlxshm7gh/HbP5cO3Q3yQrH3glg==@kvack.org
-X-Gm-Message-State: APuU4Z+Pi2YunfdxlGVe8TCwbpDNrRjUOsI6Nf3+O+K4xVs+Rsw6DdYB
-	eRoHE0J/gVNrr393lbKxSQ/Pm3ENGjCsKUW2Gb9OYWhGNZMCp8IhQgBndTObw0GSUVWy8RtTgq3
-	hfmx4ngyZBquiNKVvYXDE9BfXS3BBNyk=
-X-Received: by 2002:a05:620a:31aa:b0:949:3066:5551 with SMTP id
- af79cd13be357-949bac80948mr1952036985a.79.1795440439933; Mon, 23 Nov 2026
- 05:27:19 -0800 (PST)
+	bh=/ptu9eKd6CbNmjxebzPMpiJtVszjbsUASR3ibR5T8kw=;
+	b=Dm8H+ANrPqb3pcjodaBz6l7MmFhq83IW51o6kjt2wexIkmh89UF/vTNAw/qzExTlUf7yoK
+	DVocgONy8i0hH/YiiOHk16gDdyj8YojHeJ/zexEZG5vtXKeh9hhQaDTXzf/0oQJfGeHjtg
+	8RIYWoSrFVbIyA+N1dYDol9vFns5ydY=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=ZItaBidm;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c4d28f75d62so547890166b.0
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:32:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795440731; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nYaHyr+LqAadoclleitZEl3hNVi6wBbThSzBLG6q9FAbSYdUFqKcUjbo7PRFR4DRnK
+         xuXAbAYlfBhnGBIQSZ0CTCrQyQsWqmXkoyEUjzf/n1k6XG+hJL2vd5GDoXmCR1REow62
+         F+amtnsztZjnioF7HilVTGSwbO/MVqQWMk/WjcnOuttbjV3MHlpc7xJz7uwiPHDBb1sk
+         Q88kWDoXnWpr1rhlfEAElhZihWYjWmRiHenSs/wDUUNo1UnirJJ5DA9vIvMczFggl2wN
+         +Zyv6jn8Wj64KWBFnw0tl8KV3ZFaH3KjFuNus9OL6HIqEj8ep+o2QhylfWdQ49Iv6qtg
+         8d+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/ptu9eKd6CbNmjxebzPMpiJtVszjbsUASR3ibR5T8kw=;
+        fh=vVz7htVFass/7B0JMxu89MIr6zm63BG9Lnv+DR+SI+A=;
+        b=YGNi48dMYrFPzZCUeIRXQ4824JWYGJ/dwm7sbTZrPBDBxqKGrzPbVFuFp/RhRcLI6I
+         LrmFZgEnJ9RBr0HDAhgW9+IR+qe6LA0Tk22eFciz3PpI40OIsNsyv4bzpjL1MJSvlfON
+         1AQH+UaelfxJmLi9VlPPFhLZfEirY8sjiyr/BtGE8ntYVQ0KfflOmWrX4nzkteSCTqAk
+         0NJxXf1e7zJFZz4CXNVWGdhHqmMg5AxGta9jLDf7Sj1ugGZq0fz7bDsWL5O+IUW3H+Wx
+         FPLtuhz1ix1KR6eg2Cx+qQmdY7BXzjSjfFE0PRMfyWDQTvLOYdONfKsw+3K8bMEI+7G0
+         /QSw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1795440731; x=1796045531; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/ptu9eKd6CbNmjxebzPMpiJtVszjbsUASR3ibR5T8kw=;
+        b=ZItaBidm3vRZvE+KX4NhbJVCt3sB2YUzJiX8msbRb5BUNfU7EVD/a07VN2iZe86rbJ
+         RtSoADcdvYhx8dxdrNLmrAURvV1qHG9XVFPHIdxdTk0lNS20OaSAghzh+0mCpXawEEca
+         tK/G/kBoAVnVf7EnbSgLtKxg91yOjBlA0LRpEySVRIioGh2GjD04hxXFJm1y2cLXe7vr
+         yKdFY6tNla9Q8RZh1SaKL5d7y9m/4z7jWJSK4G3YA09jyKqZa59I5ZjCrOkmwaR8FQ5e
+         /82tdCOaDVR8WkXR/00Cs6FNgHT7Hw7bk+p7UsTGNpGnm2tUxCz++GZ2A+lYFrVsQqNi
+         a4/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795440731; x=1796045531;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/ptu9eKd6CbNmjxebzPMpiJtVszjbsUASR3ibR5T8kw=;
+        b=nMfbKLtTKTuGXC5jyVO7LEn7LQgUzALgcoHwr+b0dvl/r8APC3MT3eWOQ8phzwnlis
+         Fsd6E7VE5oPziVNSkwljdCRxtPrkTAL3pVOXWH6BFIYCeUUM+JLAHXjJezxC+/6EWdfS
+         XtL1YmY1ei+7mUabn82qEuKr8HsGU8v+5IgpwduJcOOY+lSuWnMHCuU2yn1aw94x4Wco
+         LbgHZPKIBGntgqgLW/0Bwqh3EqDqdcdmRjuthfR0O8Hghxd2u6lplEB4ZpzI84i1Nhr1
+         tcMRR3E1RimNwrKU1d2A7sQXruW3n26jANXHys2O3ZJr6Nsimqg99s0t2cHy2iqP6Eja
+         SajQ==
+X-Forwarded-Encrypted: i=1; AL+hErE5ZD4C2WYlfG6FsIN7IMzLeB6wbbgvIkXNCzGqGEoRWSgM3SrLvRGlbY3e4Ja/3ZhioxXD0l5+Dw==@kvack.org
+X-Gm-Message-State: APuU4Z+GVeyC2mfjo38sOl2FpFt8g0g8QVum1gQ9tSZdaJkhbgjZbk2h
+	WSyp4xlJJyKRUyphtwB+LN9/m4i73n34OnwplhkpWgCv+vjR47NyyWzgSmlqWEqXPxB4LWg06MU
+	p8LMloFyg6srkoN5jTyve5td2ccK1LMyf2zJ8zeJLsQ==
+X-Gm-Gg: AZFdTZeSkJDtr/MqdlNANVwt0ftkpccW5zsmAnGe5jdUe7EPJ8IvF/V6CBPkEnLgyoF
+	LUyfanRP11e/H9NXjSFBRp0XfvCQX01PdP1z7AdTxaPajgeRYLS6x+W/1oMBPAn0IpG1VAK9d0C
+	JqlF6rvT34fDUgEHxoo+VbTw5dyeI1CluEWLBXLmNh53sQJPUOtlMmsGY70uVx4CoKstEqTEAgJ
+	yrPhfTZVO9CIdY2swQMTari58ILzWZv30bivwb87fce5iA3EUdCL/hvestkOAiGHcmwj4sYreiu
+	yeVNlXG0c4w+OdEznN4Orakdv+YznFG4XMTy5d/3a853QMkjVzuckzbJEEeqbZ0BjguabP/SiGG
+	ISbqqOcy7GB7EO/zggyi8PxnltL62ivflulk4bnDq/lZYBNA3HBFRXVsrrmsZTgb91g==
+X-Received: by 2002:a17:906:694f:b0:c50:ff1c:22be with SMTP id
+ a640c23a62f3a-c513aace676mr685329866b.16.1795440731316; Mon, 23 Nov 2026
+ 05:32:11 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 References: <20261116081403.216452-1-max.kellermann@ionos.com>
- <20261116081403.216452-5-max.kellermann@ionos.com> <CAGsJ_4w3cP+tgCGhTFu5p27Wi-9AFCneQgwLUAUg7X-gvX=e4Q@mail.gmail.com>
- <CAKPOu+-Pzp-ovWNq394yBD0Qa5zCLZjx=sE3ixLs+WLf4EgZBw@mail.gmail.com>
-In-Reply-To: <CAKPOu+-Pzp-ovWNq394yBD0Qa5zCLZjx=sE3ixLs+WLf4EgZBw@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 23 Nov 2026 21:27:07 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yV=RvOMqpmaxFJGeBorPm-mz1VGoTb7_dLs-4pvrD56A@mail.gmail.com>
-X-Gm-Features: Aa3M54pg3_5VxI8d6rS-DICxqkbqp2A05_T4kaagAVAVzN0pAmcXIWNuJR8gCys
-Message-ID: <CAGsJ_4yV=RvOMqpmaxFJGeBorPm-mz1VGoTb7_dLs-4pvrD56A@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] mm/mglru: avoid redundant rotations of young memcgs
-To: Max Kellermann <max.kellermann@ionos.com>
+ <20261116081403.216452-4-max.kellermann@ionos.com> <92bc11db-ef40-48e3-8768-9af36bfb5a7e@linux.alibaba.com>
+In-Reply-To: <92bc11db-ef40-48e3-8768-9af36bfb5a7e@linux.alibaba.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Mon, 23 Nov 2026 14:31:59 +0100
+X-Gm-Features: Aa3M54rFMydpSO212ScIFwe64mMnhlUhUt1F_GHwaP5Pid0tLkWi9Npl8x_Do2s
+Message-ID: <CAKPOu+8vso58=3Z8ijpg+91q=BSmJ-M01KyNY=NwUH-9HV_ikA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] mm/mglru: cache the last memcg node, make tail
+ insertion constant time
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
+	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
 	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
 	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ar11fo4pkdaxsnsqktsp8nf9x7xx5pjp
-X-Rspamd-Queue-Id: 370E7140003
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-Rspam-User:
-X-HE-Tag: 1795440442-517626
-X-HE-Meta: U2FsdGVkX1+TgtVjCE+qUf+XfPdDhAAJM4bPZJzmlXuH+X4p7G/tbYTOJ3LlhLTWH8Ixq7QiFKe2iV4HMN8BFv2xOXVQmAdBMEeaKmNscfXAoWljr01fUQBJ6j4M6U0L+X7WEUhqTZPe1c0ojj2bWfiIXl3vIJqYEF/W9G0zhIrn9f/gZw8IJHFXWW2UlfRmpTXKzlDspY8BOPb7eOHKuM2WvFOYS+ZScuarwTSvC2g3agB85CuXF76E/tfo83/aW3mDqCF4nkLva1SX/XQVQc68JhR9XOUgr4A7yaBTISGitvod6aeLgBlB2PaG6Uc+WMEZodGyaUKNNpD4dI0HGWD90iHIcPKwq8BvyM3eFzzo223daoLGHDOvzw19aSLapvd6TVV3mrIsPm9mL5JymsLkL1mQcwuuJgawXVLzi6pI5ALDpAje7NdBUl+2tXJr+xgf4RjS2PzuIoz9OA1jhzsSpZkkxhtXZNM/eVsYgo/TjLXN9/1KvyPS4jjuPIf7Bz8kgUvVmmJytJTHTNSLhzHdlwa+AE0EkDNRCbComxkYYL6D6hhr2hDCbL/Cb+hn0jEE6rvpmn3AZQtVH/CvKCK5LtvUt+9IX48aADfQrA+lxJuprKgJba/RJxVSqiwEAUYBpMFOl5/9VgtUr/o1+X44+6SKNh3O3g9niZ01zwp2xjVUrXXQZa81DA4ebDGm3OBlxi+2jPkrDZAbC0L/I0G99lwUxAb7KDCFUKI+Ev1C+FCbnis9UjHDSKde5ip4fr/9sX/PzFG4t8TlezcgBYlW6rIMknPLXxh7C9H+aQtaqRtg0a25RGbZHWrfcqabJS5+96uzFWgmymr9IXsmvWA2TuMKRLe1GBlTgFp3ZGWHkXd4XCP1XErunOfATwFn9awcXMv+gk1Cv4oEIaGlcEshoMicg1qWmgDafpvRsQq22XCkCfB1JKBiJXWNojtZWziarInHt49r3t1+KVZ
- RtcdsIwk
- QgGhbECFCcYgNea+lbWRvoSU45FmMJTeotvZvj9CKUR57or8AAXOEPjJUv5KKs+fAp3LZ7rsIn97lG9ZZI1vpzLk77KXrUiadm3Fcdr7nPFG1VBFvfusWZvHAwMZTH3n3ughEhVxrbljM4Gzm2n+s36edbdO+mxhIVtr4kXZnopoFurnwZaxHFRMTOqEiPn1ThrMcLT1NIESZ9xEW3YlVyNjHHdYhSstlcqKuCae1rMh/OfX7ZjBSx5Fco/8IyBxXAfqxS+MvBAjitzDsmJYT/EJa4Q32cgk4LrqWD4Q9sLMKYFqPqp+2D7zaN+m9WiXuuflzQMl5//rK1VpAa0ep1E+3QL12/bq8NOO3XcN8vU2Utz+TcJPb4s6RyVA670f75aOaX+IGlqwKmRInWI9xUTNDp+cHF1awlvd0bL/HHK3mcv05dl1k3yZFwM5MqSHcOqfnZHJzu47p/AWANsLMMWQqlV+MOblNrIaJMUFkkC5R1S3U6Aw/toA0dzTSnddBXZ1E2y5YyfaPvlYiPs6ZUYMWIgGfxN2bIwlfc/mrBudCQR/vNJBDwPc0EZ4mMFZ4WWH3c1fTozbEjEkma/3aIlc3fw==
+X-Rspamd-Queue-Id: BE8E6100008
+X-Stat-Signature: pqzxbjg3f7eejpge4hsuccicdxmtqfh9
+X-HE-Tag: 1795440732-455179
+X-HE-Meta: U2FsdGVkX18BX+uGhC/4YegOWiPmKjSM3dTeqA5SiG/Ngh6rKUgBOHPtr/ALuhwF5MTqPVe71e0dK0GsJA5yRCgyjhX2tCAid5XmShqJKpECucHHBiMOi8QzjI6OgdyUgBSDJ9ceJlxPK+jeXcz+pjcWUHUJlJo+wOLxI9E+yeFD+ZSIN9SFRCkhw7p0Rc/QO+Z+qEdoAMJb07ezfYwztS8XERF7TWeyNAd0FwPcu4GUetiEsr6m8N+HLMTY6gwkPt4gRlp/vBe6WADQVr5BIZIUnk2D7/9IrFptjC0P+rclvKgEWtGEDReOezX1vmIsY2TmOE8gAVD5Ou1AhMAtRtYMy26+f0PoeO6uP2xHds4AxZcLjSdpDqdxTr9Su4wHeL4wCGTNNnuZrjXfqe2i6QKlq3lU4u4bJipbu6Ex6QPtk9/ntENuVucBg20htQA2AB7yJU5iRnmMSdQThTjpCr+vResoe6XnlkuZ6piCPtph7HMRGAAWskJPm+ZfIa9owZ1B5DiWfXNGAp0r+fdYjnqu00Qkd7EH1HFJo6CU6SV8vmZyA3YqKDkeDIYzlrmZ1NQmHVZaHShBiOggW72QNgfAcJXxZFHm7cMF8WRcS1jDz3ciTbGrLlMvQD7KB1gstEk9wJp9cQtjynVUuf1EFP3zXRzNk38QAR0YO6G2kH4AXtzyuuXUKaanFyxMFe8keDTnz5OnAXXygREGB/AmZxOKfZ68VfFaAekDfxUobc7qpul4ETR/Hc4kbdn066uXHU3WDlbEKiiypopl1HWcfJhc8ggPdpLnw1V3SVwosVLPvrH75VKocikehEfR+6Bq71/vtIwntHXAupCZHBz9rPr9yyJLx1N7DAHN6ruTQAY4ov3/SjuRwDkV2K/NNM8zLthlENNwpTyNHZPdIDD/b5MVPK3c40O5FkXxAQk0ATjN2PYOKk14IeM2zD3PL8m+xNz2qKyRyKAeOfzl5RZ
+ VkUAlkFQ
+ VD90E/gYNKPsavdr+RSd6jsWRS6aK/oXgtGHWvb0yrk6PszFr/QIvQevpvsPHIAy1o3fiYL6qTYgA57CUcHd9Y81CyN8qXJgJiVCkDCImK8FJkr3zmp8C+k55QzP0yRcbYkJpyYg0U4eEGqJg8VE3JGrR44D5kdCDfcSVzkQC7Je44ps3aNb80WmKetFVEttSMkaRaQU/F2TQCtdGLKhYIAtrB97wWMj7d67V2DgbwzzzphUoafFN7/FxUaZ89sUHqNnWUygWJOUgX99V9cePr1VuqJorvjS95K4v6rRX9sAcRfy+wYN7O+gItch5szjq6soyPL4fb0Y8UGi96KAy3DuWOdE//cDJLmd519wBT/Sejp6ywhY9sGY7UD5mqjyeWsvUK7tilB2cp7P5Ez1Qi/Xk4mhZwwrptWn/G89YFmi8dk/wOkm7+iji0tAZdPor0xpfyoP2QFYdrnm5vzFENlIBCV+mv8OyfHVjYVkDEjXMR9KiSwQlQuLst6+Bje++xBoeR2MuDsM0iKvVukBInKIMwTCKL1e2fd+C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,61 +149,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 9:13=E2=80=AFPM Max Kellermann <max.kellermann@iono=
-s.com> wrote:
+On Mon, Nov 23, 2026 at 11:00=E2=80=AFAM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+> > Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
 >
-> On Mon, Nov 23, 2026 at 3:01=E2=80=AFAM Barry Song <baohua@kernel.org> wr=
-ote:
-> > I know it was my suggestion to avoid unnecessary calls to
-> > get_random_u32_below() unless we actually need them.
-> >
-> > You then pointed out that this would move get_random_u32_below()
-> > inside the spinlock, which I had overlooked. Sorry about that.
-> >
-> > Have you tested whether calling get_random_u32_below() under the
-> > spinlock increases lock contention?
->
-> Yes, indeed it makes a big difference.
->
-> My initial version which always called get_random_u32_below() at the
-> beginning of lru_gen_rotate_memcg(), prior to locking
-> pgdat->memcg_lru.lock (but some of these "bin" values would never be
-> used with this patch):
->
->                   &pgdat->memcg_lru.lock:     103487653      103501074
->           0.06         301.90   195317628.84           1.89
-> 113777275      116290184           0.04         339.54    30052760.20
->          0.26
->
->  Completed: 681 (success: 1, EAGAIN: 680, errors: 0)
->  Elapsed: 61.23 s; requests/s: 11.12
->  Latency: mean 713.05 ms; max 7470.24 ms
->
-> With the get_random_u32_below() call moved inside the lock, however
-> only called when it's really needed:
->
->                   &pgdat->memcg_lru.lock:      99442644       99458122
->           0.05         342.95   243043664.06           2.44
-> 102985677      104642320           0.05         231.58    34095676.89
->          0.33
->
->  Completed: 548 (success: 0, EAGAIN: 548, errors: 0)
->  Elapsed: 60.66 s; requests/s: 9.03
->  Latency: mean 880.18 ms; max 3847.24 ms
->
-> I did a few runs, and while there was a lot of noise, but the
-> difference is real and reproducible.  Surprises me, I wouldn't have
-> thought this would be measurable.
->
-> I guess I'll move the call back out of the lock section?
->
+> I don't think this fixes anything, right?
 
-Thanks for testing, Max!
+Right.  It fixes a performance problem that leads to RCU stalls and
+soft lockups, but it's not a bug.  I added the "Fixes" tag for the
+commit that added the code responsible for the performance problem,
+because I thought that might be helpful and appropriate - is it not?
 
-Yes, I agree. Let's move it back outside the lock, even if that
-means doing some redundant work. The cost of increased lock
-contention is much higher.
+--=20
+Max Kellermann
+Principal Architect
+Hosting Technology
 
-Thanks,
-Barry
+cm4all | Im Mediapark 6a | 50670 K=C3=B6ln | Germany
+General information about the company can be found here:
+https://www.cm4all.com/impressum
+A member of the IONOS Group
 
