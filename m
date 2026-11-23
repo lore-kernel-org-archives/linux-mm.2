@@ -1,102 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E640606A685
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129DA606A330
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nAPVMx2m
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KTmcDw99
 Received: by kanga.kvack.org (Postfix)
-	id 28B2B6B05B0; Mon, 23 Nov 2026 12:55:25 -0500 (EST)
+	id 2B6A86B05B1; Mon, 23 Nov 2026 12:57:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 215176B05B2; Mon, 23 Nov 2026 12:55:25 -0500 (EST)
+	id 28E3D6B05B3; Mon, 23 Nov 2026 12:57:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DE156B05B3; Mon, 23 Nov 2026 12:55:25 -0500 (EST)
+	id 1CC5E6B05B4; Mon, 23 Nov 2026 12:57:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E2A246B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:55:24 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8051A1A0985
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:55:24 +0000 (UTC)
-X-FDA: 85467135768.18.382A8F4
-Received: from mta1.migadu.com (out-81.mta1.migadu.com [95.215.58.81])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 34EA24000A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:55:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nAPVMx2m;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.81 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EFDC56B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:57:49 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7DA6316093B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:57:49 +0000 (UTC)
+X-FDA: 85467141858.11.0EA1E88
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E226B1C0008
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:57:47 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KTmcDw99;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795456522;
-	b=7X/5k9hV3xPwczHw971d4NBkZq05uBCAnwNdpUjUylEBL+PbtE6MSJKzFj1h0B5G1mefeR
-	YgzsW7GKY0SaW7EwuupIyGAZBN3UE1Q0QAwPuecVjz/qRG9oxriMsiysffkj+Wbauorur2
-	rXF9IKdKRH/epV7CVw9N/gNg2xJSViQ=
+	t=1795456668;
+	b=VPP/s3y3QeMmRwpnZn1pEX+WxO52+LO1QE6FypeSYfV9Ey6FRNhL+deJioikiDAoasjklL
+	0iGcc9UezZdr+wn+cQ/74KOSsn7Ufh8i9mztFWvenkn8E6xKFsHGHJP0rLEo2PNKMAiVD+
+	TuyB5rtVZCsry4IAqtkJSHVlfePh7To=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795456522;
+	s=arc-20220608; t=1795456668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xMHaM0uSgX3eSpN4mZEmyB3Lyh48q6GW6tOkCnfZECI=;
-	b=AxuppfEnmSF+gscXRrVhJMB9ZC1SjtqxVuEukRzlRaUjLrpIAR8feEZWeXwcenban5djPK
-	XqCw7xXOX2DQa4LTiijEuyjUSXLpnAwVuZSoclYt96cmMz854DdRAAERz1G8zvxC6qs+GA
-	3u+tFelQIeP3rCmk+0+cbpJj/yEZArA=
+	bh=FygH8g0jvNBoZW+cHCkqSpUmMRuJL+3an1Z2bUsVRq4=;
+	b=StwEwvb0UlQ2nAZstFUO17CS1fN0OT+g+j0y9g0kIdTebJVYaudIPZrf/YsnyqW2NVny1N
+	atoYbNmfKsPBJVmNBi0zh85n7xRgCrjT8OKs7YyROdlz7pHmHrkGNx3MdDO0jIJzhwb6uK
+	trEDnI8N/EozpgCvJfcSwzlNALT3kgE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nAPVMx2m;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.81 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/8a5s3NnlmOS+o3OmDGmvQNljvm+stDs8p/PoHCQulk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795456520; v=1; x=1796061320;
- b=nAPVMx2mzQQTQbJbg0Z4a11SsMepXBqjha69zs3FDfbtuGRPkWP1ni8+Rrj820a196YSt3Tl
- sV1fP26pVukADIcJguZEuVdEWZNamVKifmfXXaa70LE/TjQBU7FEt7+mqC9hDqhrks7KckKI0pC
- 2KBTh+s3+ooN7vphvD7KPThA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9cef6277f6cdfc24;
-	Mon, 23 Nov 2026 17:55:19 +0000
-X-Mizu-Trace-ID: 9cef6277f6cdfc24
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <94a074f1-753c-4ed1-99e8-59d227f70ea3@linux.dev>
-Date: Mon, 23 Nov 2026 17:55:17 +0000
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KTmcDw99;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 04AB960E6F;
+	Mon, 23 Nov 2026 17:57:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F18C1F000CF;
+	Mon, 23 Nov 2026 17:57:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795456666;
+	bh=FygH8g0jvNBoZW+cHCkqSpUmMRuJL+3an1Z2bUsVRq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KTmcDw99fYlvBkqMPHrKYiHIdaafAHIkaELEmmQiUPF/yuskkJGbTOepnSdzDC4uS
+	 IKPISIi5mGiw2pj8ulN5M65cJCoV8br0xYAefa1xOY2HuG6DOYkiOcyuCzVUK4Solu
+	 HSCzuvMisVzGDfLUyRuYatnqsw2Tuiqc9bO4+f0TYl2K0LUonhi1xPjUiKH5xYzdXL
+	 q+BCtuwFum6HJCJdnsroqKqTskq+513xMg9rLhEhLWD+HVw3je4q9Wtoe5A4sCDL8A
+	 rQ4ck3+j+lBgNzjwUZyVU3DRF/2QuhsXGfTevqg/1MTQco1bE7H9fBn/wXR0bgs0TN
+	 gSGS2a2LgP0Ew==
+Date: Mon, 23 Nov 2026 17:57:40 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, david@kernel.org, akpm@linux-foundation.org, 
+	kasong@tencent.com, baohua@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	baolin.wang@linux.alibaba.com
+Subject: Re: [PATCH v5 0/4] skip empty PUD subtrees during aging with a
+ PUD-level Bloom filter
+Message-ID: <awR-UsoEGg733fQA@gremlin>
+References: <20261123085800.981256-1-baoquan.he@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/5] fs/proc/task_mmu: read the PMD once in
- smaps_pmd_entry()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com,
- byungchul@sk.com, david@kernel.org, gourry@gourry.net, jannh@google.com,
- joshua.hahnjy@gmail.com, liam@infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com,
- mhocko@suse.com, pfalcato@suse.de, rppt@kernel.org, surenb@google.com,
- vbabka@kernel.org, ying.huang@linux.alibaba.com, ziy@nvidia.com,
- kas@kernel.org, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kernel-team@meta.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev
-References: <20261123163301.1568240-1-usama.arif@linux.dev>
- <20261123163301.1568240-4-usama.arif@linux.dev> <awR2bZl4CvSuInmk@gremlin>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <awR2bZl4CvSuInmk@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 34EA24000A
-X-Stat-Signature: ae5b6bdeh4g8pqrzzsb8foejmgeaxcn4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261123085800.981256-1-baoquan.he@linux.dev>
+X-Stat-Signature: eq8gppsa1e9jw3ys6xoajfibnuoq6uft
+X-Rspamd-Queue-Id: E226B1C0008
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795456521-18754
-X-HE-Meta: U2FsdGVkX188osagtATsAB0GFPY4ZZORqM3HswrMbg4/3bQa3xY9N+Xr/Z0XtrXasDycJpCpYPxgr/hvMeZZBtFPp0gVgeeyZTTk3Ixc4m6FOU5awxYACJHZzGMCnEomCmK0atWBH35vxrPC9eIZ7YVYyOiVhRElsfatvIegFy9ZNBjD1v7HLW68Prz41cwNrKhYSvuSCLERFZKCJjl5Q5Y8S2LjBpiOJBY4KkaSLGn+cfqOd3L7n8ntK5UZfslq/n6U+8b4YhYO8rBIcE3y9FulrCrQ8EBn895YS21fDaKyKBGuHpn6Q+ZosQLYjyJwFDkFz9n5uuPDzDsNp6zRgVVl03D8fEuK9ZaBY4+NUpq8cImZwWYft6OQo+tLzb3Py0uyyyemlennj1YNWpRakB61asIOzv9sBzA3skm0zhdpzsYYSdV2hjv8sgNA6uUVVtkohYHwvl763CL81WpYfhRTQ5gev4zAE/lKM8Afqp6FeHtw+lVQDW1ADVykY3HvDAcsEvQUNYtib3RFbNf4dFFjySfKPP1sgkKBvOklrFtVPDSdKitBjTITphWV9OfKsvc1/ee+iYWHcnmLtT59K5zjhz7E6/xSD4ludKiYd5dMRyNaYR2PhoSCO1cZHREzlDMmVbVo6300j/Nap5ZdlkBxbXPcDfDlDo5sCEuZH/DPecwpE6iqm8MZMJRWrMQXuipcMtvKiIpGehQp+1+azmPybSRSVjYMtryxNQEjg8Zok4gfJyD93khoS86oYM0hWVSPFCGf9ORvNDugx225LNaU/WL38L8YX3LJX6WaPnHjYo1khJ0NwixgXGEVN49JpQikkkPGFRR6jEfdW+AflHaGLfergTuSnDBh3qUuE1ThiH/zxgnARA71egn7ZCncSwyRq41H0cvz8vsLjulk2oGnZiGbUntaCELnxF0me3+HMNLkPJWLZZprfX5LTzNX5MS8UFkLi1eMBuRLI82
- dlDidoBw
- Sd3oGNEX3xB6WcOYTM/2wG4RgVEegaRP1eJlyaEGVt3PIfyLFABqFwXO+i4IpRTgccHTLq7Ke6R+h+CZzC0ZuvcdgKTfs+gMNdNSNt2OK491Nh5zkUYqxMfSTmoat9i6RRkoIiyBjkVi5zEQnDTHBQjC9Qzbh0+UKO/W5ys0KoXziJFVHqu9H/7ApwnH1u0fJiks4BuiDDpF9rFrB33Dqc5nxIibOBsEr/64GoI0lTquidPASmOm/aUV+hvuk57L0zy/3W0ipWsdViTpAebHNAQaXCnnd93WpDrBTt8htDLFEx4dpTy9rLum4E8Kdb3pObiggzu721TWCejanZSdCWiAwp1+UJsL9VVGP94Jm0ujbaAf/mOhz8ow1c/SEbjkFHqUOGMVvIhFjLTBnsrAVA5i/FmyH8atlIakLb32WbWjb0O4y43/FcRFggOxXxZSh0ITNWDqjzZHTyR6CPMHgg/kPz2lHrd5D0J9jqIXXQ+ZpE9kHXpAtrfh9/QAyqkTYBaO6sYHEWN6oLKOhTYkQf9+SbQCU+SgTzcqqzshtp9ZW+OmAuzOXzo+k47T9wcliXO4IU4yOys7J2T5XaQQfqFUvtWZ1OJ6BRw6NtmyJoZqgvKdwv0HUfWn5LDWpgqkj7iAZ
+X-HE-Tag: 1795456667-207689
+X-HE-Meta: U2FsdGVkX18R6chzUM38WUkJ81gHsR8s3PxmXN0hjNbJ5/xEZSbyrjJHnjSdSPlpjc0C/YPP9f/LRhf2eGKwp3spgXYPmHPWWPHrIX7UuKAZAF29iBrsnjJyqxlYOzGXSSk0twwWfGXiIDoId3oacA4VVdzqVw3Lw3PbZ6uJ+tjzfSzOPHBouVcxXYNFdHgq9h98hYAlsiA7pBTqTD9XxygSVBGzwRx9w6vgtEq/1kjZblHjRDS7B7TKg0HGG1nhu//UCpZibecY8ilCNLIEwlnZUdjSboR6V0Pmt1nnX/lmdoiHMQ8YqMErSmy7Hj+33/vkjjGPzQT+xObyjNdAm04N4B1G2cWqmGI1QI9kO9k6BIWirSe+IRz9a61o6081to9fl8rOTSD70p3PYgCGhI8kdne2+ToJMe7slZmiTGZbCAB0ibX9U+8eF5rifjSMOWeyd36htEKibRRYROoiaeadixxvgX7hKGskTvTS0GzEajDdWzM4YTUS3lZPNeuHN+j/mHAVFu5AzgKkIY07LNGS7VlkcS16bmZHZWw8VoGXBs/Tvqzb5RA8kiZ0aUUuDBeEeTe/cJLl9vgWcTXsRN1Ycf0JVLRhlSMGc2GrIwI7JZV9U+7q9O3koE+jbd/k7/LFjPGVnmHmkjMkQxwhfmFec2b0iVRMk/wmaXPFAt5ez2psJG4n2+to+/nAB07BrvcbbY+vObIK7rE/OokYILZxCLqHnSlhHB80ffVHjGMkJBFF6TlXNxMLr1eUt/qkzoE4/d56dhJjpQ8qdbxJwcsHhA9K9sZb4582qVyk5kxc1jG8/XAs0iOnR3pfqmUYYDsAJKJhy6MRiC+bot6zRX4POxj3k84IlIKWYj/sRaBKOdzDxv11QeHMhy7X85UOBEVay9ohxqDoQElob7ZBEH3DmOjtBi2VuPj2VW+KN0vYT9RLQb+IL840PENrY09soUTlp9kLt+pARzRSto1
+ Gcoxc8HL
+ hJu84fHUsJ5FRZ3+Czry0R8gy9z7llX1Oi9g/xmmo9+p6BMU5hhjzJsiJ5aLQlRv4jW7AKBR7a48NCBpoobYv9qBARmEb7w+p1fOO9ORUSVR/457uWF4V7AbzQwbbJUzNzQUPZCLXod5gvIX7mAVMaGxOV0pdZ7PW5FXMh45f1BZh96OYjUUCmuh8xpJre/99kifrMDXu1xhm8AswTWL33hOUZ8h2dC+0AU5Re7IhdrESxu8iicfzASQ/JXde8oTnT7X5dvDBko2FdOCK8DFXfqSgByYOiltcNKdwPZelNoCSw9/75zhcxF/FM30Fi85Hhc+o2/dqxLLRrjLg97k6bEiyxb0p9o0W2lq6bwuZr7pHs3Wmk+6hErTeVPdbndvLyn2qbKqqzYeezytvSCKpLn6sdfEY/zPBJIEPR2lLmOz39ii5t93gHmqQV5ardiO+kl/9SPgXnJUL/C7faXOqOGsINck/UwvekAGuR4ECV1DtaThZIjo/wpaOL8ufn3dBX4PrdhVj22G6LMeHrZC1/GzSlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,78 +96,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+(Got a script set up to detect things not cc'd now)
 
+On Mon, Nov 23, 2026 at 04:57:56PM +0800, Baoquan He wrote:
+>  mm/rmap.c              |   5 +-
 
-On 23/11/2026 09:24, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Nov 23, 2026 at 08:32:09AM -0800, Usama Arif wrote:
->> smaps_pmd_entry() dereferences the pmd pointer six times. Read it once
->> into a local with pmdp_get(), the way smaps_pte_entry() already does
->> with ptep_get(), so that every test sees the same value.
->>
->> No functional change intended.
->>
->> Suggested-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> 
-> LGTM so:
-> 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
+...
+M:	Lorenzo Stoakes <ljs@kernel.org>
 
+Please cc- me on rmap stuff, thanks ;)
 
-Thanks for the reviews!!
-
-> 
->> ---
->>  fs/proc/task_mmu.c | 11 ++++++-----
->>  1 file changed, 6 insertions(+), 5 deletions(-)
->>
->> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
->> index 540c936aad4714..105c4998eef48f 100644
->> --- a/fs/proc/task_mmu.c
->> +++ b/fs/proc/task_mmu.c
->> @@ -1022,14 +1022,15 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
->>  	struct page *page = NULL;
->>  	bool present = false;
->>  	struct folio *folio;
->> +	pmd_t pmdval = pmdp_get(pmd);
-> 
-> NIT: Can this be const or are the helpers not safe for it?
-
-Ah yes, good point. Its good to have const here.
-
-I think the rest of the series is good to merge. Should I wait
-a few days and send a new revision with the const change here?
-
-> 
->>
->> -	if (pmd_none(*pmd))
->> +	if (pmd_none(pmdval))
->>  		return;
->> -	if (pmd_present(*pmd)) {
->> -		page = vm_normal_page_pmd(vma, addr, *pmd);
->> +	if (pmd_present(pmdval)) {
->> +		page = vm_normal_page_pmd(vma, addr, pmdval);
->>  		present = true;
->>  	} else if (unlikely(thp_migration_supported())) {
->> -		const softleaf_t entry = softleaf_from_pmd(*pmd);
->> +		const softleaf_t entry = softleaf_from_pmd(pmdval);
->>
->>  		if (softleaf_has_pfn(entry))
->>  			page = softleaf_to_page(entry);
->> @@ -1046,7 +1047,7 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
->>  	else
->>  		mss->file_thp += HPAGE_PMD_SIZE;
->>
->> -	smaps_account(mss, page, true, pmd_young(*pmd), pmd_dirty(*pmd),
->> +	smaps_account(mss, page, true, pmd_young(pmdval), pmd_dirty(pmdval),
->>  		      locked, present);
->>  }
->>  #else
->> --
->> 2.53.1-Meta
->>
-> 
-> --
-> Cheers, Lorenzo
-
+--
+Cheers, Lorenzo
 
