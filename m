@@ -1,105 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095BD606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D960606A334
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oR3Dklxi
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=v6NoB6GU
 Received: by kanga.kvack.org (Postfix)
-	id 2D5666B05B3; Mon, 23 Nov 2026 05:50:54 -0500 (EST)
+	id 9C0C56B05B7; Mon, 23 Nov 2026 05:53:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2866A6B05B6; Mon, 23 Nov 2026 05:50:54 -0500 (EST)
+	id 949A96B05B9; Mon, 23 Nov 2026 05:53:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 175876B05B7; Mon, 23 Nov 2026 05:50:54 -0500 (EST)
+	id 80A7B6B05B8; Mon, 23 Nov 2026 05:53:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E0A516B05B3
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:50:53 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6C3741602C4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:50:53 +0000 (UTC)
-X-FDA: 85466065986.16.5D66D98
-Received: from mta1.migadu.com (out-128.mta1.migadu.com [95.215.58.128])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C658D180003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:50:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oR3Dklxi;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.128 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 53B776B05B6
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:53:48 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D237E40876
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:53:47 +0000 (UTC)
+X-FDA: 85466073294.13.D1F9331
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 33A25100007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:53:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=v6NoB6GU;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf14.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795431050;
-	b=VxdpHCMzZXF6cCMf513bpP6Ci6IF1z5U6CiM+y6HVnzOhDxq4wRxYHmnldy9ZGTvXWZcjG
-	JybKmRgA13DB1Mz/salno5VhSiaB7EYZ0J8vnvItuLQlGJg2ylv+vagotIg+ClVZRgxF87
-	p+LH7RIfGoOpgIg1InXM76+FlWgfUOg=
+	t=1795431225;
+	b=LkQQK6OyQP+AQSUj1sLbv//oW5w+WCp3oOExdKGkNHfaANf7GT3o6DAEHlQhlIcDTT8Sp1
+	6APa47SFUu0I4I9sllBqwpOevj/vFcMetD0JtcZf4BMmKVdcbyPEdVeXyzs0F2ncyVncfU
+	jP4PTxA7VvQInxzAU+TVUO35Pu0KtC4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795431050;
+	s=arc-20220608; t=1795431225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vhvizTOCvV4TIlk2GcF40P/D+TPRIEQFdThENdsfieo=;
-	b=4arwV0x0QDUHbfgwCGOXN9/7S8aEDnBPSLa4PeI1yMItC16z7AMaO5tWbYOFpEpzfcBfAb
-	ljQ5PH8Ibaz1lkkCJXTMSzrwB9b5NBWqD72hIXj7hFtH5+isI2gjKTbeD0giZRiSzwqf6l
-	a1MtAbjTCYxM2t+n88ER4IsrqbzRWxA=
+	bh=3VJosOTv7rTl0MIXfVCQbhZsKJYv+HSjoRx7LySLiRY=;
+	b=ISpmalqsOMgbT9fASYY6/+C74do+LIDVEGdWfN1kHhoRxtyqhvKHzE3AoMwANFnSQeDy3z
+	FBUmcroq+qxODGfZpVgryjtz8REroTy6wy2RguF10JaFQoarBhNBcYUu0kPirG8o175dzv
+	+zbxdXUoZHVJKLYjSllDjSuVuJnNQHM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oR3Dklxi;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.128 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=viMFF8KDVrzt4/XX4zUzvKF7yd+58lRueswEeUuhWIA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795431048; v=1; x=1796035848;
- b=oR3DklxiA5CoSXAZwGsWaPrByW1kvROR7Kr3EoFwViPCxlgljJ+wob3xqCEsNUDPT8i4+ST3
- L7NIxTpQLucT7oY9wprkbBPdYbIZjVyg2v7V1n+r5GQj/tG3KRlrJvckZeMy4Jcr7lQV2yd5Ln4
- 1fKa6HHBU/ZzBB6IKR2uZSHY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6aa3c8c191b175a9;
-	Mon, 23 Nov 2026 10:50:35 +0000
-X-Mizu-Trace-ID: 6aa3c8c191b175a9
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <7fad5338-7e9e-4fcf-b369-20f80639a9e4@linux.dev>
-Date: Mon, 23 Nov 2026 18:50:28 +0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=v6NoB6GU;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf14.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795431219; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=3VJosOTv7rTl0MIXfVCQbhZsKJYv+HSjoRx7LySLiRY=;
+	b=v6NoB6GUFuJhuwky0H/JJPit4YvFHuGdaI5Qek18hMDZtamX63Sc1ypdBU2wlDcODPbRBRxmeYAyCC1e7XWA1jFfaky2sIBii9UfGKn54xjIRYh4pPDrZ80rCwQfXqj6GaNso5O7U1v9C6LwRUjtvBH1IUr8Oj04pHuRc9CKtKM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XFHJh-7_1795431217;
+Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XFHJh-7_1795431217 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 23 Nov 2026 18:53:38 +0800
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+To: akpm@linux-foundation.org
+Cc: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	mkoutny@suse.com,
+	david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	usama.arif@linux.dev,
+	david@fromorbit.com,
+	qi.zheng@linux.dev,
+	yosry@kernel.org,
+	nphamcs@gmail.com,
+	chengming.zhou@linux.dev,
+	xlpang@linux.alibaba.com,
+	ryncsn@gmail.com,
+	gourry@gourry.net,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qinyun Tan <qinyuntan@linux.alibaba.com>
+Subject: [PATCH v5 1/4] mm: list_lru: index per-memcg lists by memory CSS ID
+Date: Mon, 23 Nov 2026 18:53:31 +0800
+Message-ID: <20261123105334.2524066-2-qinyuntan@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261123105334.2524066-1-qinyuntan@linux.alibaba.com>
+References: <20261123105334.2524066-1-qinyuntan@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/11] mm/vmalloc: undo what
- __vmap_pages_range_noflush() mapped on failure
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org
-References: <20261116071325.263682-1-hao.ge@linux.dev>
- <20261116071325.263682-8-hao.ge@linux.dev>
- <CAJuCfpFvA5oqop2tovy33fKydx7n8Sm=X-hE0sJxpcR1gg5hMA@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpFvA5oqop2tovy33fKydx7n8Sm=X-hE0sJxpcR1gg5hMA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rbyrfa3rhcaxdygmms6ob5kqpmyk6dm1
 X-Rspam-User:
-X-Rspamd-Queue-Id: C658D180003
-X-Stat-Signature: fud6wxq44ff7xpgroy9h851zcnpbd1o1
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795431049-537395
-X-HE-Meta: U2FsdGVkX18HbzWMWoq+9m7cVD9H+PFJ7JGVlygVElCDSc04vw3faRh7hPY/FcqEWgW9PbvvzFa2szRyDf8mrQkdKwvzDHB55HlHmUeBTBpPoehrYZFx9fs5gySMGuh2hJ+8JramwPIqLlzXIE6iXLRE6dK2ZGa9144MAk4wXLIZefT5OSU5169tOKct+5WdAyHc5OVYfdzTAT3Fy4vvol1l1bG9KAbHIFtT8k+hKsbXGmGLcQg/sDi4+HN3ea0+4g6ihalWszgqNaNDkA+MbNURnKNfHnchJNy2JJK8KyWyg3GcN3vKSzHzNY2RRk891ClWlFudm0EHd4f/stx1SyCjlBew4cHbCqMC0G2YioALQCwHDuQk8MuHxWe0OCzOWEJm1jdUxj3s9nFCoO/yMtzTStPyiued1MwqffX7+R0XoDBNeCmILCR3qq6vuIXAkgLLO3lvz/jCRbbJYNXhVtIIeXRRqqc9wg2h4Uq0EMyNUHPYemBRyr/Lq+Zo2rMYkt0LdI5v+HOeCsn4AdEmIJukO7UnXkBYTr5uvhyTArqKSRU1W3V3esLr8co58r6wik4FGAUUYz6I+drCj4B44iL7bGlN9wVNQUUSoNrcsl19yEiLc3UCcFsh6MVC8t3aJ1nbPQ+Y9174l9C4BRltS4DMmIJgH6jXZUW5GIFu3cF9X0zwLYsHguc19+F6WyM1z4D5BgtiVYOVJIMxayPBmTyh3MLcoPQaVHz2m9FoiTAayk/a2ktmYPut+iQkZ1HdjC78/59bIU0HaciMNwzV/EQRRpv6reX7gLVHj3q29Wdm8InJxJlsSQb+PB5F/CSaEfHHVNqUguuAwvcpmQncyI+mL9lTYzRsZQf02irwYQgral4CRM5H73qIppv2WDgevfwCFJFqkJMCUDSe42tdk6jOHXthOKOQ4pK/+e4ibRhHL3DbagUQ10MbNvkcXy606NLE3W2sOFypPBn6oO3
- UvzKHOB0
- tStO63TwdJebcx9ICFFbuglrRS5tFeDDNkhcUs3rX0hGaanW5xgCOZqRIE307tFOE1SCw7jEyYbDYEfJehAOm57BnLwSvSxbhSgza1eKexafjFRLMxRZ4xG95NtGse6X0xUUtXefLaaC5OpZCoHz4Y2y/x376LFGjrkQOvcVqLlaCttTg7rSNknZn6+cQBM5U3hRX6AAYeeZBCjQKDVFenb18/0235TB+g6f/G5pSMSV1gFYjTZkoUlff9QJ6Rk/AuXTi1WvsY+8uluvNEXycgBwvjgu7QcJP+9vaEA+oyiA1E8YnkskkpsRFfVtiydNAh5zCatnQ2REgnQfiZv/KvA90qogkrQP5uaJESGeQIV4m00MrVK44Kw7nN7pn3eJMH1/qLaVwP0ZP3PqtNciwIoM7GK7IrPVn1JFzaiVTeoSt9yNJcerBqaNeCMTAUut9YOH//iYyWisxVjUMZiAGoLhXlodgPiRqCm0OgYrmQfzW1yBQLU3tUZxUVb5vDuzSpUXNLzcG1RUWf858IXNefz3p52KIbKtBREUQbFncEbvjLevomGTxVNNLumQrPiMewvaIKRlBUJ4X0xveaoec0mTE1pDpGyyDdNe5CttpwKCfLoo2H+FByVhkD0MWdi9lTCgixhSdfNVjlMtH1TW/+x019UiRv/oMPzDANFBAPykDF1l4GP6WM5ka3g==
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 33A25100007
+X-HE-Tag: 1795431222-622398
+X-HE-Meta: U2FsdGVkX184bnpNxz46835IScwEXCFKlluo/o8m2PuN9gwE8w3hvdD9R0GWr2Zc4aY2HX3/tT+wFEbhbDmqHfhR4YNydELB1bco3IezPl8AWuLJxkkA7t0e/TAk6XqskjajV5S3o3xSkjLPy4kGB7FPSM8+fnuLPcS5FAudNzxCXkfLwyRUS2rr8wyJtO4VTom1yI0x89hG//x5MD20cGZ6OhP6q0dvhegirucaUGjQ/lkGzOmoBlhcH5f2cS1vPlYd6LecOafn94CgWBtlBo2PoY2LVNxy1UhLfSSas2YgiucXuekFRnxisioXvz3okj85Hk1fcBCg3HLr6Vst+EN6rnISsk98dLPNigbbOZ2H9hMrFOGOpynxEDbLK1ffmJW1gEdFfdNlXFxxjBahhjQqoqxhDuY7xAsVt7YXBdwKR9LCig9fRmnPIlgpUTnrG3KzFLu/DbxULNTxTcmfVEUIBfh97CZI0yqj35xpSem3j9Sl8koWSQK1sX17kOH+x+oDrt388PPNO9oJvSpFiiKi3hg9dzslfyDndBNFDjUxxxiicemgEmIzMiaBJNFF/A7rnuLt0NIUZ+hwGjucMALJJ7ISxgbIcJ0N3+r3bOdKa8af4z3+AKAZiL90fCoDLd2xzQ/L22ATCVx18URhtVcxuffdCAGP/AbECdxAVslLho+GQuSdkx0PAOERai7zeQ89erNAPg7DpltdqY4JRQjGCha6ynIDTohBUeImJOFxrabmXk110lg4+GUjHtKyG0mYBP3dMnrDoeLokw3rAYCfhtG3W6LvVB3h6dXezIIeq4S/o1+1Mpvpv6DjpoTGRs5NI7b9Ml1P3FVzmkBzwPLJDIkoRef7WW4maJ5nFP790JOZtp3zy8LBfmI7cpdIeHI7g62YpBmt3hA+VG/PPmq3IqNu8UH8vAzaNcduCfpPOzDakm7DufSwuf1B5XmMrxeQ7zN5DDQR/u6OfXY
+ jk0R/xxH
+ J+WFJ4AOWNnZNafzyrh72KBvCH8801PheXtqACM2eIRHtLtQPqkSFBbM5/JIcbkJ01OBI1cPNw2oCsWACCh0xaFc1m47wz2gzvPDxhcSDOxFbhDcY3rdb+4BwzoDeQSTeFwKypI1H3h57qeI9sPDMwLtF0Bx5/GiJ4oZCckBbwszvG04vCHUiT661ySekv0Mb/FJLYDHVffOVn+9ydJ1m8DdfiLTv/dDFMKWJk/wQES85yXRuakQzDCSOnsCEMgO/jeDpBQ2UKOnxyNLpDcEi4IIKwqoEcTAUJDQE1A+C6aIuthKgTt/JA+LGO4SEFUGCP2Q0PYrO9g7Nc6wswEk7ugX6JlM7XDWdARN+NML7c4cGbQNiWO9tQeLeQ6quScaAdpn1ImsuQk427QTkCKQC2lViSm1ipk3FrOBYCjMhuf+N+67xZUytQ4yxE+S365i3tgiF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,211 +108,294 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Suren
+list_lru uses kmemcg_id, a copy of the private memcg ID, to index its
+per-memcg lists. kmemcg_id is only set when kmem accounting is enabled.
+Non-slab shrinkers need an index that also works with cgroup.memory=nokmem.
 
-On 2026/11/22 11:58, Suren Baghdasaryan wrote:
-> On Sun, Nov 15, 2026 at 11:14 PM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> __vmap_pages_range_noflush() maps a struct page array and may fail
->> half way. The ptes installed so far stay behind, so a retry of the
->> same range, the __GFP_NOFAIL loop in __vmalloc_area_node() or the
->> module tags populate, trips the WARN_ON(!pte_none()) in
->> vmap_pages_pte_range() and fails with -EBUSY.
->>
->> vmap_pages_range_noflush_walk() now reports how many pages it
->> installed through its running index into the pages array, and
->> __vmap_pages_range_noflush() undoes [addr, addr + mapped_pages *
->> PAGE_SIZE) on failure. vmap_pages_pte_range() fails with -EBUSY
->> instead of installing over a pte that is already set, so the ptes
->> below that point are all ours, while a pte above it can only have
->> been put there by somebody else, for example when the caller's range
->> overlaps an existing mapping. Going further would clear ptes that
->> are not ours.
->>
->> This path can run with a non-blocking gfp mask, the undo passes
->> gfpflags_allow_blocking() as can_resched.
->>
->> Suggested-by: Suren Baghdasaryan <surenb@google.com>
->> Suggested-by: Uladzislau Rezki <urezki@gmail.com>
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->> ---
->>  mm/kmsan/hooks.c  |  4 ++--
->>  mm/kmsan/shadow.c |  4 ++--
->>  mm/vmalloc.c      | 36 +++++++++++++++++++++++++++++-------
->>  mm/vmalloc.h      |  3 ++-
->>  4 files changed, 35 insertions(+), 12 deletions(-)
->>
->> diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
->> index 69008b085658..d830a4e649f1 100644
->> --- a/mm/kmsan/hooks.c
->> +++ b/mm/kmsan/hooks.c
->> @@ -208,7 +208,7 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
->>                 mapped = __vmap_pages_range_noflush(
->>                         vmalloc_shadow(start + off),
->>                         vmalloc_shadow(start + off + PAGE_SIZE), prot, &shadow,
->> -                       PAGE_SHIFT);
->> +                       PAGE_SHIFT, gfp_mask);
->>                 if (mapped) {
->>                         err = mapped;
->>                         goto ret;
->> @@ -218,7 +218,7 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
->>                 mapped = __vmap_pages_range_noflush(
->>                         vmalloc_origin(start + off),
->>                         vmalloc_origin(start + off + PAGE_SIZE), prot, &origin,
->> -                       PAGE_SHIFT);
->> +                       PAGE_SHIFT, gfp_mask);
->>                 if (mapped) {
->>                         err = mapped;
->>                         goto ret;
->> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
->> index 212449db34a1..452760a333e4 100644
->> --- a/mm/kmsan/shadow.c
->> +++ b/mm/kmsan/shadow.c
->> @@ -247,7 +247,7 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
->>         origin_end = vmalloc_meta((void *)end, KMSAN_META_ORIGIN);
->>         kmsan_enter_runtime();
->>         mapped = __vmap_pages_range_noflush(shadow_start, shadow_end, prot,
->> -                                           s_pages, page_shift);
->> +                                           s_pages, page_shift, gfp_mask);
->>         kmsan_leave_runtime();
->>         if (mapped) {
->>                 err = mapped;
->> @@ -255,7 +255,7 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
->>         }
->>         kmsan_enter_runtime();
->>         mapped = __vmap_pages_range_noflush(origin_start, origin_end, prot,
->> -                                           o_pages, page_shift);
->> +                                           o_pages, page_shift, gfp_mask);
->>         kmsan_leave_runtime();
->>         if (mapped) {
->>                 /* Undo the shadow mapping set up above. */
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index 5c1eacc2a0ac..4f3c320a4849 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -725,7 +725,8 @@ static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
->>   * may have contiguous chunks, as hinted by @shift.
->>   */
->>  static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
->> -               pgprot_t prot, struct page **pages, unsigned int shift)
->> +               pgprot_t prot, struct page **pages, unsigned int shift,
->> +               unsigned int *mapped_pages)
->>  {
->>         unsigned long start = addr;
->>         pgd_t *pgd;
->> @@ -748,6 +749,7 @@ static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
->>         if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
->>                 arch_sync_kernel_mappings(start, end);
->>
->> +       *mapped_pages = nr;
->>         return err;
->>  }
->>
->> @@ -758,18 +760,36 @@ static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
->>   * The caller is responsible for calling flush_cache_vmap() after this
->>   * function returns successfully and before the addresses are accessed.
->>   *
->> + * On failure the PTEs installed by this call are torn down before
->> + * returning, so a retry sees a clean range; PTEs that were already
->> + * there when the walk failed are left alone. When @gfp_mask cannot
->> + * block, the teardown skips cond_resched(), it may run in atomic
->> + * context.
->> + *
->>   * This is an internal function only. Do not use outside mm/.
->>   */
->>  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->> -               pgprot_t prot, struct page **pages, unsigned int page_shift)
->> +               pgprot_t prot, struct page **pages, unsigned int page_shift,
->> +               gfp_t gfp_mask)
->>  {
->> +       int err;
->> +       unsigned int mapped_pages = 0;
->> +
->>         if (WARN_ON_ONCE(page_shift < PAGE_SHIFT))
->>                 return -EINVAL;
->>
->>         if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
->>                 page_shift = PAGE_SHIFT;
->>
->> -       return vmap_pages_range_noflush_walk(addr, end, prot, pages, page_shift);
->> +       err = vmap_pages_range_noflush_walk(addr, end, prot, pages, page_shift,
->> +                                           &mapped_pages);
->> +
->> +       /* Undo the PTEs installed before the failure. */
->> +       if (err && mapped_pages)
->> +               __vunmap_range_noflush(addr, addr + (mapped_pages * PAGE_SIZE),
->> +                                      gfpflags_allow_blocking(gfp_mask));
->> +
->> +       return err;
->>  }
->>
->>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->> @@ -781,7 +801,8 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>
->>         if (ret)
->>                 return ret;
->> -       return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
->> +       return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift,
->> +                                         gfp_mask);
->>  }
->>
->>  static int __vmap_pages_range(unsigned long addr, unsigned long end,
->> @@ -3715,7 +3736,7 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
->>                 pgprot_t prot, struct page **pages)
->>  {
->>         const unsigned int nr_pages = (end - addr) >> PAGE_SHIFT;
->> -       unsigned int prev_shift = 0, batch_idx = 0;
->> +       unsigned int prev_shift = 0, batch_idx = 0, nr_mapped;
->>         unsigned long batch_start = addr, batch_end = addr;
->>         int err;
->>
->> @@ -3734,7 +3755,8 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
->>
->>                 if (shift != prev_shift) {
->>                         err = vmap_pages_range_noflush_walk(batch_start, batch_end,
->> -                                       prot, pages + batch_idx, prev_shift);
->> +                                       prot, pages + batch_idx, prev_shift,
->> +                                       &nr_mapped);
->>                         if (err)
->>                                 goto out;
->>                         prev_shift = shift;
->> @@ -3756,7 +3778,7 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
->>         /* Remaining */
->>         if (batch_start < end)
->>                 err = vmap_pages_range_noflush_walk(batch_start, end, prot,
->> -                               pages + batch_idx, prev_shift);
->> +                               pages + batch_idx, prev_shift, &nr_mapped);
->>
->>  out:
->>         if (!err)
-> 
-> So, you are recording nr_mapped but not undoing
-> vmap_pages_range_batched() partial mappings yet. You do that in patch
-> #9. It's weird to fix one place but leave the other one until later. I
-> would suggest merging patches 7 and 9 to have a complete fix.
+Use memcg->css.id for non-root lists. The ID stays allocated until the
+CSS is freed, so disabling and re-enabling the memory controller on the
+same cgroup gives the new CSS a distinct index while the old CSS is
+still referenced. Reserve index zero for the root, which uses the
+per-node list directly.
 
-Yes, that looks correct when revisiting these patches.
+In list_lru_walk_node(), hold the RCU read lock across both lookups so
+the CSS ID cannot be reused between them. css_from_id() can see a CSS
+before its online callback succeeds, so check that the CSS is online
+before taking a reference. Drop the RCU read lock for the walk and
+keep the reference across restarts to recheck the same owner.
 
-Thanks
-Best Regards
-Hao
+Remove kmemcg_id and reparent the lists before the objcgs on memcg
+offline, including when kmem accounting is disabled.
 
-> 
->> diff --git a/mm/vmalloc.h b/mm/vmalloc.h
->> index 4ec114a75f04..9ea28845f713 100644
->> --- a/mm/vmalloc.h
->> +++ b/mm/vmalloc.h
->> @@ -40,7 +40,8 @@ void clear_vm_uninitialized_flag(struct vm_struct *vm);
->>
->>  int __must_check __vmap_pages_range_noflush(unsigned long addr,
->>                 unsigned long end, pgprot_t prot,
->> -               struct page **pages, unsigned int page_shift);
->> +               struct page **pages, unsigned int page_shift,
->> +               gfp_t gfp_mask);
->>
->>  void vunmap_range_noflush(unsigned long start, unsigned long end);
->>
->> --
->> 2.25.1
->>
+Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+---
+ include/linux/memcontrol.h | 16 --------------
+ mm/list_lru.c              | 45 +++++++++++++++++++++++++-------------
+ mm/memcontrol.c            | 45 +++++++-------------------------------
+ 3 files changed, 38 insertions(+), 68 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 980358bc6f49..f0001174180c 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -335,8 +335,6 @@ struct mem_cgroup {
+ 	/* Private memcg ID. Used to ID objects that outlive the cgroup */
+ 	int private_id;
+ 
+-	int kmemcg_id;
+-
+ 	/*
+ 	 * Should the OOM killer kill all belonging tasks, had it kill one?
+ 	 */
+@@ -1796,15 +1794,6 @@ static inline void memcg_kmem_uncharge_page(struct page *page, int order)
+ 		__memcg_kmem_uncharge_page(page, order);
+ }
+ 
+-/*
+- * A helper for accessing memcg's kmem_id, used for getting
+- * corresponding LRU lists.
+- */
+-static inline int memcg_kmem_id(const struct mem_cgroup *memcg)
+-{
+-	return memcg ? memcg->kmemcg_id : -1;
+-}
+-
+ struct mem_cgroup *mem_cgroup_from_virt(void *p);
+ 
+ static inline void count_objcg_events(struct obj_cgroup *objcg,
+@@ -1872,11 +1861,6 @@ static inline bool memcg_kmem_online(void)
+ 	return false;
+ }
+ 
+-static inline int memcg_kmem_id(const struct mem_cgroup *memcg)
+-{
+-	return -1;
+-}
+-
+ static inline struct mem_cgroup *mem_cgroup_from_virt(void *p)
+ {
+ 	return NULL;
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index 651983d0bf8b..b4c879d7ba01 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -41,6 +41,15 @@ static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off,
+ static LIST_HEAD(memcg_list_lrus);
+ static DEFINE_MUTEX(list_lrus_mutex);
+ 
++static inline unsigned long list_lru_memcg_idx(const struct mem_cgroup *memcg)
++{
++	/* Index 0 selects the per-node root list. */
++	if (!memcg || mem_cgroup_is_root(memcg))
++		return 0;
++
++	return memcg->css.id;
++}
++
+ static inline bool list_lru_memcg_aware(struct list_lru *lru)
+ {
+ 	return lru->memcg_aware;
+@@ -74,9 +83,9 @@ static int lru_shrinker_id(struct list_lru *lru)
+ static inline struct list_lru_one *
+ list_lru_from_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg)
+ {
+-	int idx = memcg_kmem_id(memcg);
++	unsigned long idx = list_lru_memcg_idx(memcg);
+ 
+-	if (list_lru_memcg_aware(lru) && idx >= 0) {
++	if (list_lru_memcg_aware(lru) && idx) {
+ 		struct list_lru_memcg *mlru = xa_load(&lru->xa, idx);
+ 
+ 		/* Lists at a reused index belong to another memcg. */
+@@ -425,25 +434,30 @@ unsigned long list_lru_walk_node(struct list_lru *lru, int nid,
+ #ifdef CONFIG_MEMCG
+ 	if (*nr_to_walk > 0 && list_lru_memcg_aware(lru)) {
+ 		struct list_lru_memcg *mlru;
+-		struct mem_cgroup *memcg;
++		struct cgroup_subsys_state *css;
+ 		unsigned long index;
+ 
++		/*
++		 * Keep the ID from being reused between the two lookups.
++		 * css_from_id() can see a CSS before ->css_online() succeeds.
++		 */
++		rcu_read_lock();
+ 		xa_for_each(&lru->xa, index, mlru) {
+-			rcu_read_lock();
+-			memcg = mem_cgroup_from_private_id(index);
+-			if (!memcg || !mem_cgroup_tryget(memcg)) {
+-				rcu_read_unlock();
++			css = css_from_id(index, &memory_cgrp_subsys);
++			if (!css || !css_is_online(css) || !css_tryget(css))
+ 				continue;
+-			}
+ 			rcu_read_unlock();
+-			isolated += __list_lru_walk_one(lru, nid, memcg,
++			isolated += __list_lru_walk_one(lru, nid,
++							mem_cgroup_from_css(css),
+ 							isolate, cb_arg,
+ 							nr_to_walk, false);
+-			mem_cgroup_put(memcg);
++			css_put(css);
+ 
++			rcu_read_lock();
+ 			if (*nr_to_walk <= 0)
+ 				break;
+ 		}
++		rcu_read_unlock();
+ 	}
+ #endif
+ 
+@@ -526,6 +540,7 @@ static void memcg_reparent_list_lru_one(struct list_lru *lru, int nid,
+ 
+ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+ {
++	unsigned long idx = list_lru_memcg_idx(memcg);
+ 	struct list_lru *lru;
+ 	int i;
+ 
+@@ -538,7 +553,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
+ 		 * allocating a new mlru since CSS_DYING is already set for this
+ 		 * memcg a rcu grace period ago.
+ 		 */
+-		mlru = xa_load(&lru->xa, memcg->kmemcg_id);
++		mlru = xa_load(&lru->xa, idx);
+ 		if (!mlru)
+ 			continue;
+ 
+@@ -553,7 +568,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
+ 		for_each_node(i)
+ 			memcg_reparent_list_lru_one(lru, i, &mlru->node[i], parent);
+ 
+-		xa_erase_irq(&lru->xa, memcg->kmemcg_id);
++		xa_erase_irq(&lru->xa, idx);
+ 
+ 		/*
+ 		 * Here all list_lrus corresponding to the cgroup are guaranteed
+@@ -568,11 +583,11 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
+ static inline bool memcg_list_lru_allocated(struct mem_cgroup *memcg,
+ 					    struct list_lru *lru)
+ {
++	unsigned long idx = list_lru_memcg_idx(memcg);
+ 	struct list_lru_memcg *mlru;
+ 	bool allocated;
+-	int idx = memcg->kmemcg_id;
+ 
+-	if (idx < 0)
++	if (!idx)
+ 		return true;
+ 
+ 	rcu_read_lock();
+@@ -616,7 +631,7 @@ static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
+ 		}
+ 		/* Set before the lists are published, and never changed after. */
+ 		mlru->memcg = pos;
+-		xas_set(&xas, pos->kmemcg_id);
++		xas_set(&xas, list_lru_memcg_idx(pos));
+ 		do {
+ 			xas_lock_irqsave(&xas, flags);
+ 			if (!xas_load(&xas) && !css_is_dying(&pos->css)) {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 091401cecf39..f6c8ee7f6fed 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3839,33 +3839,6 @@ void folio_split_memcg_refs(struct folio *folio, unsigned old_order,
+ 	obj_cgroup_get_many(folio_objcg(folio), new_refs);
+ }
+ 
+-static void memcg_online_kmem(struct mem_cgroup *memcg)
+-{
+-	if (mem_cgroup_kmem_disabled())
+-		return;
+-
+-	if (unlikely(mem_cgroup_is_root(memcg)))
+-		return;
+-
+-	static_branch_enable(&memcg_kmem_online_key);
+-
+-	memcg->kmemcg_id = memcg->private_id;
+-}
+-
+-static void memcg_offline_kmem(struct mem_cgroup *memcg)
+-{
+-	struct mem_cgroup *parent;
+-
+-	if (mem_cgroup_kmem_disabled())
+-		return;
+-
+-	if (unlikely(mem_cgroup_is_root(memcg)))
+-		return;
+-
+-	parent = parent_mem_cgroup(memcg);
+-	memcg_reparent_list_lrus(memcg, parent);
+-}
+-
+ #ifdef CONFIG_CGROUP_WRITEBACK
+ 
+ #include <trace/events/writeback.h>
+@@ -4341,7 +4314,6 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ 	seqlock_init(&memcg->socket_pressure_seqlock);
+ #endif
+ 	memcg1_memcg_init(memcg);
+-	memcg->kmemcg_id = -1;
+ #ifdef CONFIG_CGROUP_WRITEBACK
+ 	INIT_LIST_HEAD(&memcg->cgwb_list);
+ 	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+@@ -4415,7 +4387,8 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	struct obj_cgroup *objcg;
+ 	int nid;
+ 
+-	memcg_online_kmem(memcg);
++	if (!mem_cgroup_kmem_disabled() && likely(!mem_cgroup_is_root(memcg)))
++		static_branch_enable(&memcg_kmem_online_key);
+ 
+ 	/*
+ 	 * A memcg must be visible for expand_shrinker_info()
+@@ -4423,7 +4396,7 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	 * here, when mem_cgroup_iter() can't skip it.
+ 	 */
+ 	if (alloc_shrinker_info(memcg))
+-		goto offline_kmem;
++		goto reparent_lrus;
+ 
+ 	for_each_node(nid) {
+ 		objcg = obj_cgroup_alloc();
+@@ -4481,8 +4454,8 @@ free_objcg:
+ 		}
+ 	}
+ 	free_shrinker_info(memcg);
+-offline_kmem:
+-	memcg_offline_kmem(memcg);
++reparent_lrus:
++	memcg_reparent_list_lrus(memcg, parent_mem_cgroup(memcg));
+ 	mem_cgroup_private_id_remove(memcg);
+ 	return -ENOMEM;
+ }
+@@ -4500,11 +4473,11 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+ 
+ 	zswap_memcg_offline_cleanup(memcg);
+ 
+-	memcg_offline_kmem(memcg);
++	memcg_reparent_list_lrus(memcg, parent_mem_cgroup(memcg));
+ 	/*
+ 	 * The reparenting of objcg must be after the reparenting of
+-	 * the list_lru in memcg_offline_kmem(), which ensures that
+-	 * they will not mistakenly get the parent list_lru.
++	 * the list_lru above, which ensures that they will not
++	 * mistakenly get the parent list_lru.
+ 	 */
+ 	memcg_reparent_objcgs(memcg);
+ 	reparent_shrinker_deferred(memcg);
+@@ -5942,8 +5915,6 @@ static void __init memcg_struct_check(void)
+ 				      private_id_objcg);
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
+ 				      private_id);
+-	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
+-				      kmemcg_id);
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
+ 				      oom_group);
+ 
+-- 
+2.55.0
+
 
