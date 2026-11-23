@@ -1,59 +1,59 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A021A606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CBC606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 10:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=oodj3/y2
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=dRSiifnu
 Received: by kanga.kvack.org (Postfix)
-	id EC2E26B05B9; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
+	id 0A7C86B05BB; Mon, 23 Nov 2026 05:53:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD5F66B05BB; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
+	id EC0F06B05BA; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C765F6B05BC; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
+	id D14066B05B9; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 998DE6B05BA
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A0106B05BB
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:53:49 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 38B611A081A
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 249C3A08A1
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:53:49 +0000 (UTC)
-X-FDA: 85466073378.03.6F71E5E
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 99D1314000B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:53:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="oodj3/y2";
+X-FDA: 85466073378.06.D025392
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8343414000C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:53:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dRSiifnu;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf26.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+	spf=pass (imf23.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795431225;
-	b=GAWlGuAXWN/XCG3uxZ1t5Y5a9+Fd1iLQZArseWndJDZp2Vrc8ystYTeDRgeF5mNFHEK2Iq
-	7QiJ5EgR7lAoD8qX1npTsZxq3yelRXrYeoMJeIhKCyNjxPtzCszFIaJbZeaEWISEpQnPeP
-	4t612DxZXV2yl0xFQYRPncuQKwpV4Xs=
+	b=YlGKQOEUktJIMiMf3zPWVVB6xuDI5fsw9KUhRo8IcKOovrZKcIoENBjrkIGtkqxW6hCFlw
+	8LujdZVFSYFgYP9f0ri2Az7HPyrzs5ngn7pjXd9ptHJXjp2dJYWsH8EoLxlenYmrzvKgbH
+	MG7LRkdrLzqzxNFEpDcqrb2NX6Yrr3I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795431225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=5Y6RrQPl3+RDc3EwpamkVIy6Oyhib7bCsIXwFSNt6so=;
-	b=4rw4CE2ORydGWxb0xFWOkpculZLZmfuYsEFgxsgPigpv28NSrAHuIg5DmLtiS4keobCLZR
-	WQ9v74BoMC2m8qRCY6oCHOy8RnH64sJBw7slqsi7e8WkBGRpyjCD+2YHqrmI4zql4Vx9LC
-	7suD3uEFAVcWCBOenkxNIjTOZvScLQE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=c9L6jvOwGrAP6YCaPZASj/kNscePV1aVd/8CkGJVXlI=;
+	b=jUvhJhNXIQ7nr3UXeqXbHd2YuMSgRKoJrvrOaVV7fcvBfnYitILxKVIKUhMV2QOLuvGXEx
+	FAzSbT+5H2s9715NH0GEWf8sPgDzrAJhZDQKNs3TTu+EXiJZvAb2UkWB/FXKXJT9gdedm6
+	mLhdSN5f+9OKG423TZ7tMWbTjVWXZ8w=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="oodj3/y2";
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dRSiifnu;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf26.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+	spf=pass (imf23.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1795431220; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=5Y6RrQPl3+RDc3EwpamkVIy6Oyhib7bCsIXwFSNt6so=;
-	b=oodj3/y2bd+8IJ8KIoGzTWmXDhA0FWxNC91KJCU2gCjBwyK69AWUKGGP5J349NSfLMMvVRH6+inEOnNhXe//V6VeHoOlJT2hOmIXXiGsUxyirsBZ/+ifKMGleHiSMtBZFQy74PWwlMOO0z3WDfKQg8A6Ibgsd0+fLxVE07W841c=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XFHJgze_1795431215;
-Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XFHJgze_1795431215 cluster:ay36)
+	t=1795431221; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=c9L6jvOwGrAP6YCaPZASj/kNscePV1aVd/8CkGJVXlI=;
+	b=dRSiifnutECFeYiDF25cvuXZLTnVN7a4PMZglPNUWw/epIsmobsfNNCiaEs5tyXj8fnkeDq6aQC7lnuXYUpoKTKyEt0oYudP1ashsdifwsy+SKS+ZTCIaYEw1Lde7mteEV6iIBLpeSOCMxQ1vNEk0tYYA/DcYcqFal3sp54pMeM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XFHJh-e_1795431219;
+Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XFHJh-e_1795431219 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 23 Nov 2026 18:53:37 +0800
+          Mon, 23 Nov 2026 18:53:40 +0800
 From: Qinyun Tan <qinyuntan@linux.alibaba.com>
 To: akpm@linux-foundation.org
 Cc: hannes@cmpxchg.org,
@@ -78,27 +78,28 @@ Cc: hannes@cmpxchg.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qinyun Tan <qinyuntan@linux.alibaba.com>
-Subject: [PATCH v5 0/4] mm: restore per-memcg reclaim for NONSLAB shrinkers under nokmem
-Date: Mon, 23 Nov 2026 18:53:30 +0800
-Message-ID: <20261123105334.2524066-1-qinyuntan@linux.alibaba.com>
+Subject: [PATCH v5 2/4] mm: list_lru: keep per-memcg lists with nokmem for NONSLAB-backed lrus
+Date: Mon, 23 Nov 2026 18:53:32 +0800
+Message-ID: <20261123105334.2524066-3-qinyuntan@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261123105334.2524066-1-qinyuntan@linux.alibaba.com>
+References: <20261123105334.2524066-1-qinyuntan@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ip5w9kobjk1f86qr78617w5zs1iq5fcz
+X-Stat-Signature: uf8hjgaft8amdwr5qed9bck6kt4tdt9n
 X-Rspam-User:
-X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 99D1314000B
-X-HE-Tag: 1795431223-207047
-X-HE-Meta: U2FsdGVkX198dKBDBVgb8cneHFcl6oH3g498tgugwGODv529fvAdh/mKItrZrmCKufijpQwB2ZCmEjLnwH5da9f7cYCMczDeUkPkO3cPL/0IyitXLo363pDVxaWxnK571Xj6D7Cg9JUm6vmBBe14IVeRRL9k3An0uyFozBKeFH0gOxSotiuBkf8yRj41xx5EdFKg4dg2lIslV1TV2x7kd9X73zRQnrToD8PiqMja5U5boUfJUiD7EYgwXf0XROppbGVKD3ZzE+kdT6i+cE8v6KMBG82tveAdH0W/hrSJpAY39F2tGUILS47Nke7aC/5kVtpzIxVlSh4PFJuNK+UJIyYHn/GQlqjW5zF/qJBUmN+Izt4ar5OvJRECpH3y0AqIKf5TdjJ/xKodDvPKGSgNIOwrRiPqfiM6k/HZfhk4ZjpMx9CygHbBYXTmQhrt105lUXWoYRrxBBUh+7ru64PPzHs8hvkY57Bp768UYlpHpa3jW4Lv/dCy/Q9ki1/H4ANwILiISYxotElEsJfOPF6b8M2XrDlM53ecxV/GWIQYuK+X9rc4whvGADhDCWylF+HiTyp8mxg7PuqFR2szfGCwQpD5eFdQNMk8ZiA4ZB36fCjAKtazVIFtuYZ/DxhuPfYmXJ27gX8TELo++s7t0CB7757Ug3X7WXUG899YoEyvwfZbWJ9nrHkpDAmM7AWdiPIUtRQtLxd41v3DVmNwDRQMq0wPXjW5e1FNrbd62Y26SlrtWKD2kgncCcF3qKWMZZcFNuioSnzdbxskql9lFeX2lJEAaqvbziZpjt5ohCfpZ1moqJjGwpX9W35eicbd5jXrP2wTmLJW+rAiXab682V5zny4LseAKMtJ+G/bYsJAe+9J/vKEBh0jSJJApf3kLO3i5wn5xoUHBBVpOiVPEWd8cRtF0lMgRbbSNWvY9t9ySn6HKlvaCE4Tbbwy0e8nyGDgEJHAXY8RNpb9PICDCCY
- iL4WYX5K
- a0GUPO3sHXXHP+fVuSGsDFJNzTuoqvZ6DvvO7Sdd+vphcaFencvI2VUCIP9OTtQlVKOn2EM5Ksl1Gv+v8qUy+wDXygGsfD7YQ9gX4KbIZYRbJo2W+egQaGPNgywe9gRvVnL6SUaQK/wI28KiPvzEVahuncilWs2FqMaj9neBERKAew1VDrgBUOeOZKTOkuEnJSYN5sZ9iWfFYKhV6AY7kK9GonswujchEQl+ypeex0/l6lxBlZVKi7BAdwxgosgTTqEYpnTBHdrJF3yXja4iGT+Ak7xO9A7ptvsox1mPwSeX7fyjgM2qtMbMoBujzLAnAVkzcLjXTCSEo8U4YyDxOePD0CjVDHMXF60F7gmhBZEq/2D3JHQhwaU/fCBxjUdOBjK/GqhvRscyP91Brpa6OylSxXmGazstA8gEtr2cSvIjKUEbYpy7P15AwNC8cbW4Uc457VxnvfnvdventaqS9VXqzGDdNRfLqtCndbWki66RfQ/HKhEx33aGyny5zFMYIM7wrMB/u8MrQXcnosUddoXnsByM/g4nMgCtbmGSTzN1bLjk=
+X-Rspamd-Queue-Id: 8343414000C
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795431224-309474
+X-HE-Meta: U2FsdGVkX1+IXSnZI/YIuiCsrCNUmIizCm7E1lz48ZrLZJi+FAGniA1HL40vrzbSWoSHtl2kfy+LgQUWMrqpMYVfG8et9MTbT0eJTwuUBg0sPeW93maDJAbrJEkkZ0u73ziiaT6ViphRFtya8TsPGkBbNYfi6jiA62Nhe61IXCOQQYDzCkAMiFVGCOesiaIlCHD1T48MN6gQdW0/BXAE+ikZI63yzdXMYn30EnBFlrIQ7hUDJa8fVYXbBFWcCVQqsJC4padAnQxjbHKKp06rg4CcF+zbL4XRxT9nYdAFHhbadRu5LMTuCInmKlUOWkWrWCvkQdXXvO60Zv/9BTWoxTr9MnkXEY9NWaW7Anm2aeJk16AKypGphCL8iKylMFmKjsiZZibOm/LP1KvK6QewaFPC0mYApx860WB0wo/CRJnnyvIMTgP4exV4LaaICIM9ABBcmw5iJUztzL55PrgNHj2zZ3UDN7zdTkekPcIpY1rQbS/TcZY5kavRJ6VdEWpc6G9A5XE+Qx+3WaT+D8Uq4gTl0mBPY8kdPlR5rsnE2b8PT5FosoKEhM4U0jeoeSffz3P9qoL2hyLrlrEhRYwLZtEmsTB3LHY45podWTeCt4saO3MARtS2fgULJpF1fcbPznT/pniKkNr/tzKoCHxRKuUhgR2zLBQgD+x31Tj2fj10ldF7IjJB9Q7+2SCcaPd/17YRnBEc4FnNFobNaCxDWC2NKYCoAhIBFebvzuhwR/rhacrXGSnzTfTQ9Xj/sGiQWGW2QTe/RpmCvdbTH9CRFHNb9d7tqqSyR2sbUe8gUmcTmwXvWlraf1/jcw+kha/yibpwHxaw6JFgqp8Mj70sIKLZN36oFh1fBrEECerG/yLS4bzbeWC6NDL6GbYItUAJyBcowhNByahIQeil9VWJKE6pooU6joKXbNptY6qskejHlELOB7Cgx5Z1YVNaiYlWSB2jM/0DbZeem5R0qxz
+ 8Hdk7C9u
+ t9sbARldXt0HUHzrvJa03f2ostWT+LmdzXgLrkc2x00Iyu6lyLVXDWuC+trWCrJUgHFnOLRYjKNKsme3OmXvX64c8Y2UlrMAZKMu2alFlJpKiNhuVQpI2Qp9IlS2KdMUsWXq6y4yFvu1sWI8utJpsGJL/XBYYrgSwr7eAKbdrsXqxUmf4OlxUNtN93Qm77YPn0uEOrGs8fjb4otK0vtLf4bFbO84v2u/6Ih5Vc5RbDaOiyRidUT3xpGRzThIQ/nEhT6sPdwruAHcd0mzCPfsDYYCqie87UUk707qa0r0wS70gvDxnwyVAzV0rBdqJqIxsELbtiJRiAZVxEd1qONar3UwFN54AYCf6BH/qlDcOfZ0iBpjSs858GY+PJCKlKh+DECcJRHYZ5hi1ARLZvafZenIEhLBN089z7ZUxOKDRqXmcHXmVs43UbBYFtmoOXbiWvQyILugi4ZF2HKolroGQooTu2OJI7XfMAmpe8u2cfI8u4tapk7bMbjIb8GYerDyVT+3x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,106 +108,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With cgroup.memory=nokmem, the THP deferred split shrinker and the
-zswap shrinker lose their memcg awareness because neither sets
-SHRINKER_NONSLAB. When a cgroup hits its memory limit, these shrinkers
-do not split its partially unmapped THPs or write back its zswap
-entries.
+With cgroup.memory=nokmem, __list_lru_init() collapses every list_lru
+into per-node lists.  That is fine for slab objects, which are not
+charged per memcg without kmem accounting.  But a lru backed by a
+SHRINKER_NONSLAB shrinker, e.g. the THP deferred split queue or the
+zswap entries, holds user memory, which is charged regardless of
+nokmem.  Collapsing such an lru loses the per-memcg view of its
+objects.  Reclaim can no longer target just the cgroup under pressure.
 
-Under nokmem, __list_lru_init() also disables per-memcg lists. Setting
-SHRINKER_NONSLAB alone would leave all memcgs sharing one list per node
-for each shrinker. Adding the first object to an empty list sets the
-shrinker bit for its memcg. A second memcg can add objects without
-setting its own bit, so reclaim in that memcg may skip the shrinker.
-A scan for the first memcg can then reach objects belonging to both.
+Keep such lrus memcg aware under nokmem when their backing shrinker is
+registered SHRINKER_NONSLAB.
 
-Before commit fafaeceb89a5 ("mm: switch deferred split shrinker to
-list_lru"), THP had fully per-memcg deferred split queues embedded
-in struct mem_cgroup, working independently of kmem accounting.
-nokmem only opts out of kernel slab accounting; THPs and zswapped
-pages are user memory and remain charged to their cgroups, so
-per-memcg reclaim is still what these shrinkers want.
+This leaves the savings of nokmem intact: slab-backed lrus (e.g. the
+superblock dentry/inode lrus) still fall back to the per-node lists,
+and the per-memcg lists are allocated only when a memcg actually holds
+such objects.
 
-Patch 1 drops kmemcg_id and indexes non-root lists by the memory CSS
-ID. The root memcg keeps index zero and uses the per-node list
-directly. The lists are reparented when their memcg goes offline,
-including under nokmem.
+Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/list_lru.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Patch 2 keeps a list_lru memcg aware under nokmem when its backing
-shrinker is registered SHRINKER_NONSLAB.
-
-Patch 3 restores SHRINKER_NONSLAB on the THP deferred split shrinker.
-
-Patch 4 sets the same flag on the zswap shrinker.
-
-Slab-backed lrus (e.g. the superblock dentry/inode lrus) still fall
-back to per-node lists under nokmem. The per-memcg lists for the two
-shrinkers are allocated on demand.
-
-With nokmem enabled, the test_memcontrol and test_zswap kselftests
-showed no new failures compared with the unpatched kernel. When one of
-two sibling cgroups exceeded memory.high, the patched kernel split THPs
-and wrote back zswap entries only in that cgroup.
-
-Changes in v5:
- - Rebase on mm-unstable (7d1a16abe4cc) as discussed with Andrew [7].
- - Fold v4 patches 1 and 2 [6] into patch 1. Use the memory CSS ID so
-   that two generations of the memory controller on the same cgroup
-   have distinct indices while both are alive.
- - Keep the memcg argument to the internal walk for the owner check
-   on restart. Hold RCU from the XArray lookup until the walker takes
-   a reference to an online CSS.
-
-Changes in v4:
- - Fix the boot hang reported by Kairui against v3 [3]: the walker
-   no longer reverse-resolves the xarray keys; the index is passed
-   directly through the internal walk path (new patch 1, split out
-   as a preparation so patch 2 remains a pure key switch).
- - Drop the kmemcg_id member from memcg_struct_check() along with
-   the field removal, as pointed out by Gregory Price [4].
- - Otherwise unchanged from v3.
-
-Changes in v3:
- - Index the list_lru xarray with mem_cgroup_id() (the cgroup ID)
-   instead of the private memcg ID, whose lifetime only covers
-   online groups, and pass memcg pointers through the list_lru
-   plumbing; inline memcg_online_kmem()/memcg_offline_kmem() into
-   the css online/offline hooks (patch 1 as numbered in v3, per
-   Johannes's review of v2 [5]).
- - Describe in the THP patch's changelog why the list_lru conversion
-   dropped SHRINKER_NONSLAB knowingly, per Johannes's pointer to the
-   original discussion [5].
- - Collected review tags: Johannes's Reviewed-by on patches 2-4,
-   Nhat's and Yosry's Acked-by on patch 4 (numbering as in v3).
-
-Changes in v2:
- - Keep the list_lrus behind the two shrinkers per-memcg under
-   nokmem, so the shrinker bits are set for the right memcgs and
-   scans stay scoped to the target cgroup's objects (patches 1-2
-   as numbered in v2, new; addresses Sashiko's review of v1 [2]).
- - Patches 3-4 are unchanged from v1 [1] apart from review tags.
-
-[1] https://lore.kernel.org/lkml/20260904033503.4067283-1-qinyuntan@linux.alibaba.com/
-[2] https://sashiko.dev/#/patchset/20260904033503.4067283-1-qinyuntan@linux.alibaba.com
-[3] https://lore.kernel.org/lkml/20260910080722.3961351-1-qinyuntan@linux.alibaba.com/
-[4] https://lore.kernel.org/lkml/arNK64PxTXbVEhis@gourry-fedora-PF4VCD3F/
-[5] https://lore.kernel.org/lkml/20260907110111.2286932-1-qinyuntan@linux.alibaba.com/
-[6] https://lore.kernel.org/lkml/20261013031221.1997194-1-qinyuntan@linux.alibaba.com/
-[7] https://lore.kernel.org/lkml/20261120191122.f31167fc1c987196e5a0b86b@linux-foundation.org/
-
-Qinyun Tan (4):
-  mm: list_lru: index per-memcg lists by memory CSS ID
-  mm: list_lru: keep per-memcg lists with nokmem for NONSLAB-backed lrus
-  mm: thp: restore SHRINKER_NONSLAB on the deferred split shrinker
-  mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
-
- include/linux/memcontrol.h | 16 -------------
- mm/huge_memory.c           |  3 ++-
- mm/list_lru.c              | 49 +++++++++++++++++++++++++-------------
- mm/memcontrol.c            | 45 +++++++---------------------------
- mm/zswap.c                 |  4 ++--
- 5 files changed, 45 insertions(+), 72 deletions(-)
-
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index b4c879d7ba01..78ca07bbc3a3 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -712,7 +712,9 @@ int __list_lru_init(struct list_lru *lru, bool memcg_aware, struct shrinker *shr
+ 	else
+ 		lru->shrinker_id = -1;
+ 
+-	if (mem_cgroup_disabled() || mem_cgroup_kmem_disabled())
++	if (mem_cgroup_disabled() ||
++	    (mem_cgroup_kmem_disabled() &&
++	     (!shrinker || !(shrinker->flags & SHRINKER_NONSLAB))))
+ 		memcg_aware = false;
+ #endif
+ 
 -- 
 2.55.0
 
