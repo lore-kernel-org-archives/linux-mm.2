@@ -1,110 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D6C606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0B6606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Th2i2qeV
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=rph2yaNB
 Received: by kanga.kvack.org (Postfix)
-	id 78A0C6B05B6; Mon, 23 Nov 2026 10:44:06 -0500 (EST)
+	id B085F6B05B0; Mon, 23 Nov 2026 11:02:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 761816B05B7; Mon, 23 Nov 2026 10:44:06 -0500 (EST)
+	id ADF806B05B1; Mon, 23 Nov 2026 11:02:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6781D6B05B8; Mon, 23 Nov 2026 10:44:06 -0500 (EST)
+	id 9F5E66B05B2; Mon, 23 Nov 2026 11:02:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 503A36B05B6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:44:06 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E2D35A8634
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:44:05 +0000 (UTC)
-X-FDA: 85466804850.05.55F2747
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 472B7180007
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:44:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Th2i2qeV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B03A6B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:02:13 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07FCD160927
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:02:13 +0000 (UTC)
+X-FDA: 85466850546.29.C7D0657
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1D61680004
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:02:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rph2yaNB;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795448644;
-	b=rIK5+Gfmg4pAY9u48AeDYqLtPvdNOz+BetzwPPn9YQk4voSSd4AKXE6urzfwd2nd10eV3b
-	koxomXgNSW9PoTFR1aoc+QAPEupDNjkH3IgxdQryTBnerFwVe2w7gAy5CrOmBspsujPEDv
-	RGkIX8Nhwy+uEksD8zjOFvKdXJxvvsw=
+	t=1795449731;
+	b=ORgWkhQJvy2U92PS5g3zkoZK31rdlz113+Rv/MWqnRZTiuOmrepcj8fU6n6NhPL/Aqxvt8
+	desq6nh9JsHdfQr1zCjd0rtdl/QMCRg1qIhnvElStovy12Y0XhI4zGctfNhte7F5m+fg9l
+	w1XSK1yJBU5jL7/TkZritkPeYjCN5+4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795448644;
+	s=arc-20220608; t=1795449731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o3SOCtJoKICNsA1ttJ020LJOorIPqLqxhGmSDBRPhw0=;
-	b=zpdAex3qpaPZPbRL55uY2YCF3jy7NKnDSpgIg8MVUa8TiDu4HVeudLzrbo6fWgE+yGaCnU
-	naqh3PkGfxyuCP1IJRii1laDskqw4e9NaZZC8Jv29MfGGJqx5luOCkom0Kg6l3TqCI5jbd
-	9KcpsE4XzB5MtLSNn0/90lCTCdydbyU=
+	bh=WKGG8yQhQluo1jeMgy5Pk2aPts9Q3V6ZRR7HGYPBxOI=;
+	b=6B5n0SO274/s3++E7JJmIOhklTQ+DF6iAvXulpSlIeFmG6C4UwO4RK4kJH2ORVWB7kFdHp
+	+InZvOwJgBQGz1eItngQdB3zwGP8zgj3xGpuZ63LEtS3/S28TH6eFsAullopUtO4qKSxb9
+	6eeb1e5ZY+HoUqre7EZ3YUqN6MhYJwA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Th2i2qeV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rph2yaNB;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FD196222B;
-	Mon, 23 Nov 2026 15:44:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221481F000D8;
-	Mon, 23 Nov 2026 15:43:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795448643;
-	bh=o3SOCtJoKICNsA1ttJ020LJOorIPqLqxhGmSDBRPhw0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Th2i2qeVV+3UqjBguZyjAQDAFIoyWMKuiTL1pshJSMujAM0dt1bpZ5xTHBOavBkOk
-	 co26wj1mVHb+tbSpaDj+K5PYIKyN4KJ6y6PA1OoUMqE1Y72nP6Jj5KPCWASS6LIdOt
-	 u0XRu7SxOWPk2gI+seKgn3UIHB17yZ7/KMGOtTD2/ZCFVMLDenoe0Vnxa40BQbXBiD
-	 XOwlIVBBtTBUSBPAnP5GzwNlfZB92FmEeGSboGEOZEX7Eonc6UJRnsXBs6q0GynV3i
-	 cd4p04WMsmf8iDFjqrlsdUwWrgxzqq55jhOpQdp+yQgumL6zE8NKlN46AnSKosU2QE
-	 qG2RHrINsTPXQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Matthew Wilcox <willy@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Andreas Hindborg <a.hindborg@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
- Daniel Gomez <da.gomez@samsung.com>, 
- "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>
-In-Reply-To: <20261120-xarray-entry-send-v6-1-1f69d7385f70@kernel.org>
-References: <20261120-xarray-entry-send-v6-1-1f69d7385f70@kernel.org>
-Subject: Re: [PATCH v6 01/12] rust: xarray: minor formatting fixes
-Message-Id: <179544862191.2286374.18027596474344839534.b4-ty@b4>
-Date: Mon, 23 Nov 2026 16:43:41 +0100
+	by sea.source.kernel.org (Postfix) with ESMTP id 6048F44D50;
+	Mon, 23 Nov 2026 16:02:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAED11F000EC;
+	Mon, 23 Nov 2026 16:02:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1795449729;
+	bh=WKGG8yQhQluo1jeMgy5Pk2aPts9Q3V6ZRR7HGYPBxOI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=rph2yaNBXwJZOPhwxVMX/y08tuzLhPa5ch2uDrK7AJv6bHG1kzodt90Vkh6UeFKA7
+	 aDABcvWiZ9xOhXE9RCvUFpSkj1oVc0yf6PncX3YXBEK3Mcn8mkMYciWBipsRgplNeP
+	 uRyk2prYaNa6KQdYVE073xUFv8Qc3V+RKoLGqK9Y=
+Date: Mon, 23 Nov 2026 08:02:08 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kurt Lin <lylin1023@gmail.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, David Hildenbrand <david@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko
+ <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Muhammad Usama Anjum
+ <usama.anjum@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: skip hard dirty page-cache test on FUSE
+Message-Id: <20261123080208.b84bce7a706a0351aee6aead@linux-foundation.org>
+In-Reply-To: <20261123150459.2211177-1-lylin1023@gmail.com>
+References: <25ecd9ad-7c5c-16ff-5197-5703622a88b1@huawei.com>
+	<20261123150459.2211177-1-lylin1023@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1D61680004
+X-Stat-Signature: 7yeh7oegs1wmuz4i6dgi6yx9gj85q79t
 X-Rspam-User:
-X-Stat-Signature: hbcb6nesgmucpoug6haqw8c75uqk3gt6
-X-Rspamd-Queue-Id: 472B7180007
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795448644-291754
-X-HE-Meta: U2FsdGVkX19beoJlT21Fj+nJfYOnt6Umw7VXTZ6LhLTt1cK8Oy5uyTgYh5Amsq7H6OJhIo+3keoKA9r7//Lt3NL9vnfUgn99UpL9wKt2/Sn8/b5XAEhcGirt+Rt/GvY1ivDM95WJB7o3PKd86lF5NBEo4wf7DGd99aq7stv/tzSSDmREB7Xq129P3ywiFqhF4CNGkVG1X/gpYJJUh+lBlDGZTgaKTv0ipOLvXAwDIeSBlhVvoo6pO6SuFOkc4nWihVEOHseSgrRjOSFBWNMFEVrCfa0sfDUoCHbKlZFwwfNNWtag+hhp3CvnuGqLnoKHymUsb8ekAl3cizB7AnolDiWL/S4wLYf5Vg+qpL8V3QdJjc1R2jw/XsdPhC69YLuVigreJlXWCflhkCDR77zp/08MS5SVGhFIZEX4E407OFDLb3P6pAuBH+74Lyc3Hhq6vu97ITvEpU0nwCQb2pxSG+rHITqWdzIZuOnlGsUTfGsrwiGIKIUvkQOdFWyiteAl9csVGw97Qgr685mbDmlEU6kRtULsQp2mdQ6o4HsZT8GDnFiA5gWiZIgCpPmUm88Oj2MKDgKxZnCb5XqQ/SKTe1bDBk2Uw3benA6cIVzwFF2+Uy/d88M22i3v0QvMH/OviZ7AQzE8WK5YD0y+tFvNuaPgrTrBwyByvofHKndcmsfg2e7raK6ZIOSODAwy5iByxRG6rY3o90mECFmW5AjQDR3r9yrHOqLLpnkpLJ6aMO0xsm4L4pAht2msqec2dRAF64KPvIzOIG3Ah0d7juEV34Sb6GibXqlzLgIvowczUOwjDBP9wcYkOLvf2hcdd6AXjovRXhE+dQS4+37GMSPVnsm9hlS9b0I7hxcJNXo3LHZ/3sdNyhUCDqUjT3gwISdDgGGVZqy3ZRm73B/MphDwdvDXXMC0BzzOebz+MNou0zhAQJmgvvoBNsOVMnwgZN1e1UTDM0F7+CR6F1EsjfF
- 4OjFyr/A
- MwKjvz13JYddyF4Y0u3c23vghwCgVFoBfb8WreRKGf3POme3M1GV662PsXJ+3zh3iSgLZbPAuLiRL0EInhoizjwJzwmnjW1E8/1CiaVAls+OuPBccSDHighhiEputHIJvOnHCNAENDly4v6KOcq6O/Di04xU5KduOar17tBSRjs+WMM4tZI6dWOGF9dh0/hynQruFJ9P9+bd59gBLHtZup5wzfduKnYbKw2zGTTbCqEopvrHDuBo3a5zkMZHblfGdLu6iXeUn7OFPfcVX5Ht/eAIyQaWL8JiQEYYAiAbcPDdrW/lRuzrUImqhnxwz6Vr8eVDLZtvbPPQJcLLCu9HgrnZsb1yY6nFPydBEGoNz8Y1ezpcoWEzGr+rRehFmCo9yn2at2NyGQEnZhpEDKQNpg/DdgJ/Zn/wgVEm30wyAIbUtc2omhNoIt6O2lG32Y/T3XUMtnXpnPkGSKit6jSH2sQi/bg==
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795449730-108710
+X-HE-Meta: U2FsdGVkX1/lxQxxY0pzBIJy5mQ2mQUNDavCnctP3ggJTeUPQETMMQ6HWkm4enw3RzcaFVgM+1oNWO8jA4X6Xi5ISs5I9OQcPiRSSacEPi84wqL68KBd+exTkp6C4NC0PUcuOOuYId7zfXS90f3rZGm1bqxrP97ckF6wAWdKqzhnIlk8gbG4yo15iEoUf/IkFDamKpEZsFLdWD9xxDLISm7oMrxY1uLLYHqA1dZHLHGXceK64ZeojjvRGFFLkTaTGTSuvbJAfSRxg877u3q4yrHPrCtDv9cihGNbn4mfq4dHjfFj/wNb6yfi+N0O/uiSLD6BzMK8ws4HFnkmlWRGwu//C9kIm0z2uBI54AMZ/BtjNiTBonodF84Wnt9rkcv+4WUpkWs6iVRpDAAqpVjerVO1W97QETlGxCxIyq8kttqofwLmvJshfHqrxe9Qcm/1TCCAgWWLNQ+asLHhBsZ3VQXYxy3EffIipTVVcbrdXm0e2ckPCrgrtMgZObqxnpvUE0nNd3U2cdEKxCp2W3Q3S3VcHBXp38ztlQbjneg95CtX26ajlb05VEOaJBArqwmMRkbUOM64kBjTF3Aib2OrUAan8uem8u2ePxaI+dGIunudeBrqaIwgeImKD9dHsueSQfuYRI19EctNbg/dHesPIVf6TxmzvtmTSy1ULL+phFpfGhJrP7yu8UXsHAt5JC8Gda1fB1hYl+M14Bni+G4Bi52W1BPC3IN/xIYR2m+eI7KqaUD/KbL5ayZYU1vlxs9KmwPNEajg3dPksNe4ADo5UC83Og+WDWWbUz0uhQ+LBGS++Mg6Zsh9fswMGJlKVTAvZQfilOf+Ozsd9yPwALxRkCJQP3bzdYsvLL5QJHfIK1G/fBygs8MwOsQE4HFZ/6PqYIs4NwcYf1nH7nkIDSFlP1lVIrwp5kKlzKuunVITsXs8rba2CxAwTZwA3jMHVmqSbM5nmJhQbpOc11iVqf3
+ daROHObg
+ 3RUDU4PrEY5eJ5uLlNADJWAtX+D/ENM1PivHTOQ+7IPDgfp89+3HKimM4SKzTGLKp7OiX/Zj5tZGMwSGRTZzYGuOrJOZK2mr+rdMYfJ6FmKpDXsJIQPEgF6CuXdNNR3/0k6ER+uuLM+jOuWjytlnZ3SRuRM1liOC+EZ07qp2cmnhP8poD+Wd2CMvNxrwFked+gyumlGvoq4BplkTPJmGDt2XhwCRhsSkLagHWPCW4ab8UJv+C0J7L4vZCiyrQEgehZ5BldBhWyuvUM2JrfDWwCZL5ir8fje2tck6CM/mVjkhcf9IrV7aWD/2Jja2mmWxz6UH8BuWLY+l7RD3/GSWuMxjm2YzLswnfCBdUN2YtLkfy3gtxzYGbafVX2AJQX8j/lLdprLUlPEhutxMw8/v1R3vw8weADcStHWEa8Nmgl0gh5ADHoMP/1w4JpqP/unW4/nzmm2Ibxc1qt3nL7VLCLWdirarTUQ+OVplPmClfYl8DKc9SVOTgGrYOU8wAXD7rp29f4JZFCkzkBexr6GJE+jFOwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,30 +97,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Mon, 23 Nov 2026 23:04:59 +0800 Kurt Lin <lylin1023@gmail.com> wrote:
 
-On Fri, 20 Nov 2026 14:10:12 +0100, Andreas Hindborg wrote:
-> Fix formatting in xarray module to comply with kernel coding
-> guidelines:
+> On Mon, Nov 23, 2026 at 11:06:45AM +0800, Miaohe Lin wrote:
+> > Would it be better to add a helper? I doubt there might be more
+> > unsupported filesystem.
 > 
-> - Update use clauses to use vertical layout with each import on its
->   own line.
-> - Add trailing empty comments to preserve formatting and prevent
->   rustfmt from collapsing imports.
-> - Refer to the kernel crate as `kernel` rather than `crate` in use
->   clauses.
-> - Break long assert_eq! statement in documentation across multiple
->   lines for better readability.
+> Thanks for the ack. There are more (CIFS and orangefs also report the
+> error on close()), but Andrew has since replaced this patch in mm-new
+> with e747ed2c3418 ("selftests/mm: check that fsync() reports
+> hard-poisoned dirty page-cache"), which needs no per-filesystem list.
+> My patch can be dropped.
 > 
-> [...]
+> I tested mm-new 87cdbd9bd631, which has e747ed2c3418 and 44191f78d131,
+> in a virtme-ng guest. memory-failure now passes from virtiofs, where it
+> failed before, still passes on ext4, and 50 runs in a row on each were
+> clean. I did not hit the unpoison -EBUSY on virtiofs even without the
+> ftruncate(), so that part is not covered here.
+> 
+> Tested with the help of an AI coding assistant. For both e747ed2c3418
+> and 44191f78d131:
+> 
+> Tested-by: Kurt Lin <lylin1023@gmail.com>
 
-Applied, thanks!
-
-[01/12] rust: xarray: minor formatting fixes
-        commit: 62cac56c118c96bf2026275a0edc80f1b3a87375
-
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+Cool, thanks.  Yes, that's a work in progress, I'm drafting an email
+but not quite there yet.  I think I have 71 filesystems working but a
+few (cephs, orangefs, afs, hpfs, omfs) are fighting back.  
 
