@@ -1,91 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB19606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3680606A685
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=AH4TBgs3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BSsAkja9
 Received: by kanga.kvack.org (Postfix)
-	id 3599F6B05B2; Mon, 23 Nov 2026 04:11:26 -0500 (EST)
+	id C3E676B05B0; Mon, 23 Nov 2026 04:17:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 331316B05B4; Mon, 23 Nov 2026 04:11:26 -0500 (EST)
+	id BEF286B05B1; Mon, 23 Nov 2026 04:17:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26DA06B05B5; Mon, 23 Nov 2026 04:11:26 -0500 (EST)
+	id B050F6B05B2; Mon, 23 Nov 2026 04:17:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 02A766B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:11:25 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A1E51607AD
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:11:25 +0000 (UTC)
-X-FDA: 85465815330.21.AA84700
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 17B4314000B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:11:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AH4TBgs3;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 948076B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:17:36 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E02E1407C3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:17:35 +0000 (UTC)
+X-FDA: 85465830870.13.4FAEBB4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AD17340004
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:17:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BSsAkja9;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795425082;
-	b=1eVKNokOBsA8U9jCPRmekP7cjneiFac48v6phx2cDal8oeUqQWGgSr+mv2z4LUdwSGVVdf
-	QIEttClfw8r/d1b9CHLnHGfImYC3BKcrzKOE1wLuw3Wzfhd5z25PjRM2rD9pkw/K3WjeMQ
-	CaR3hK1t+4fLY3G5mqirA6ntvicZJAo=
+	t=1795425453;
+	b=wImIA+Yq4Y+5CUkUCmsa8fbDY4PicGLmik45eEhTkGWpAViDmUoliUmsC5QZtRzQBYhwzy
+	ewFraLcOE/n7O+YvWevy+nJhcDNx1cF5+Zyc3ufPc9lybIDPWmHrSvT4NHeEHHPbkDyP3A
+	auT6YO8P+itAUuFWZMOsYtI6/VEzVyA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795425082;
+	s=arc-20220608; t=1795425453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ac8gm8BAflyZQyZhhIITxaxPSlspaqUNqNNCAAWfRPo=;
-	b=7qZCAxZVXJeBWXBOS+fMLqocR3jN9JNAaNSuDIHsTfuqPelPs5nPWe+X1DzzT7WTzmMcrC
-	o8BtvAB6sPW33zDWl0IxD0wWzNkZcDZFCnXqbpf9sz/mYyZNRMtbjWzd4NeFn+ctqRwS6o
-	wJlJyB3JyiBUzzbrqvetKzNQ9svydh0=
+	bh=pAeqH2lbSZ4Ao4jPN8l2z+KhJzrF0U/3yuXon/LVDYA=;
+	b=hcZjIF43NhfajrBe8dhPK/duXZYuceoeB50Zq4dZIYIJZfW0se0HltTyu3CuRDZUkgmcEj
+	xmSPA6FxXCy50PONaeRML6GNZDnicov4BimliWLhk9Fx3jAtqnK75cvwh35ipzdAeXOMNw
+	sTGHbAKmAE8k1LpR5OOkPCrCKrD0NWI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AH4TBgs3;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1795425077; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Ac8gm8BAflyZQyZhhIITxaxPSlspaqUNqNNCAAWfRPo=;
-	b=AH4TBgs3AMx4k30rfihnV+kKEQrU7vG+r3OBhcnzGbyRit0EZXO0UPSaAjPAnggUDWWERPw/SCLnCLPF3l02iqnDaLTzTiCXNr1NjNHSvFVvCcTx64q5DzepESBhPzgW5Lvt7aP0365Dot62BQNB83ygl14W7jnIr2TI7Ose7s8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R671e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XFGA2m0_1795425076;
-Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XFGA2m0_1795425076 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 23 Nov 2026 17:11:16 +0800
-Message-ID: <48e3657c-d29e-44cd-a235-c93051520674@linux.alibaba.com>
-Date: Mon, 23 Nov 2026 17:11:15 +0800
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BSsAkja9;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8C5B145675;
+	Mon, 23 Nov 2026 09:17:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AC21F000CF;
+	Mon, 23 Nov 2026 09:17:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795425452;
+	bh=pAeqH2lbSZ4Ao4jPN8l2z+KhJzrF0U/3yuXon/LVDYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BSsAkja97HyWf7GGseray2KaN536PM/WTiRetMCPtOR0y/38zEIi+oQ+85HbfxqeN
+	 +AUUiMd5Mx+aucnHHVTBsqKuJShD+o0Tvv79KhwxRYASxacA4zhoUPfrAfdQk2BFrT
+	 K8IWOa584LLX3/C6rNmDZFv7tUKHgKLFlH1NjMvFS8BzZGFwvIPdqc58TbR9H4lSjk
+	 5/x1d4lyRfdF0ZWoFwwXk4l3KNGycZEL1zMr3LvjYiFRTujlDOxWr6zjWbtKtU0p9g
+	 w0QauuNJvtK9xMHNyrTygWlzlr+20N6uOD1GTYF7lqQEMhiEUepZUCA9qmKCb7aqlD
+	 3zaDvivrn97vw==
+Date: Mon, 23 Nov 2026 10:17:24 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Li Zhe <lizhe.67@bytedance.com>, Andrew Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 01/11] mm/mm_init: verify zones for
+ template-initialized pages
+Message-ID: <awQEpDupp7uEiRTu@localhost.localdomain>
+References: <20261120100856.16929-1-songmuchun@bytedance.com>
+ <20261120100856.16929-2-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/shmem: avoid zeroing new folios twice with
- init_on_alloc=1
-To: Fnu Samridh <samridh@modal.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261118-samridh-shmem-send-v2-1-f2ea01bfc178@modal.com>
- <e4c0fcf1-b70e-4d22-9c4a-5829e1438ce5@kernel.org>
- <CAKyepcSuZ49Nv2D3UGC++-niYtfMcPEE7sjAf2SSRx4KAy1oGA@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAKyepcSuZ49Nv2D3UGC++-niYtfMcPEE7sjAf2SSRx4KAy1oGA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261120100856.16929-2-songmuchun@bytedance.com>
 X-Rspam-User:
-X-Rspamd-Queue-Id: 17B4314000B
-X-Stat-Signature: dnna64mp3b4xougnsghkqhsniyutk9u5
+X-Rspamd-Queue-Id: AD17340004
+X-Stat-Signature: yx8b9mybcxd8bccy6nnoan46yo3ywqyt
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795425080-636175
-X-HE-Meta: U2FsdGVkX1+jdXhE/78TA1zNwaMvgndxi9nxr2GBnmQUGDM2ql3+61dtPNtwYAdVf0BnLH2xTOyGKdrhN4ORH3DmvviI19VfYKz4GcNcYJi5YOrZcSbhHisfnuVwSoEzj0zGsTV6WDtJzh5m57QmiSeLTrQXKMVuN1grLLvhZT64ADqQvl5A1BcrAWPFnpp17B8zMGP4iwj55hhH3gUGT3AvhrQZGr6LaVuofF1/381YZIM4vP9UxFjp9e16cTrcC+fJfjHsnTzqkeQ8FEMMMi11x/OHYphTGKFoVE28j4CN1SOritMxrtjeIElDqcNGtnby1LSfnTd+c0Nh9yzZG5gQWYzWrbC4sba+8zkTL1IGpm3rZLBKgP8u+3lOSRp6CyNkUKG8net6xhjc4gHGBH7oACgrXssybBVCiQ2JsPdiSGc6czkU+AJQ3MosZ9JAclDiTPUzlHu+HBdtsXnJCblNbvlffwhKh5Vln5J6AI62Hlzt8qDjsiD5fuU2JhqrETbAuNrRKdbmkeTXKK8JNR46xzSHEvLM8LT8X+n/NJU54oJ5pQFEQVxm8hPqABAHRikYGunI3DCRUQY+qEr8sHFapIXKH2kih3dj7QKw1JX+urxu8sPPcIksca2+ozX4LVm3Y3hUDSl+DbXtpUdu5zpSetRuZQ1v4HO8M4vvKynuHr29/c/tWeTtyUq2F903jOHshcL0L/ec9Oa2JKB4mJJZSNlIVDXJtlOu36yGB0espECEALc+NSB/AI0+Yhhnp3Ka7LYiy9WE/OJyzSgYYh76jk4bwAfBy622oDw9sZS6fHCTWFKK6haFoaYgCIPRZrljcuB9EV8pXQ+4z7sWza2dHkunxPFjwaaTY1ECsC6pAnXNn4J/Af+rhL7z3p9RJRBOIR4WpUpWgGNsbqoA239aP0g+ifKRCxgaFm1Hwbt8JcU3NW+/TkNtuyv/vfqmmgFhWyI6vWpCzg5Tj7Z
- k5m4m/vO
- jl77O9BIxmlMe+5MbPmMwmHr8mlvhy8Uii/kBwZutIUqzgAoS3Swq1i52Guknt4njzhiGBdW/rE/XYCdNBDFHq9y8bCYqff8556oL276M52ydV2UiGMxgbwQj8iH47RlgfhgHmb47W2smJIWkF9P2OzG5shKbs98yoP3KuRwWBo6fa0D5jvXc7mT2A/vamnmE9ApULPCldyM15SndlutK3p8nlD9Cr1UyVCyvZJ3wfaT+3XayvTDXtvO2fpkto9F+NveHFBjdU9hSurMoDIdzeNfIM9eHY2oqkFAJwtQpvM89sZufowz3iPt9mHruzTTSDXbhNInG/J10Afb1C1EDTXibuaueuDRy0iQt/wWBg+vtQF3RwO7a1qNfOkF9mOvr92jXfFse03QlTVz9z/KlrG/lX+zYfb5uxGy13KP1agI0fIADw98yLf/7lUypqjmrdqYiEUmgWXVV27L6vM5+d83v8JTaF2s/KIdkNjYKLFwoZdwNH1olSCyEww==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795425453-186577
+X-HE-Meta: U2FsdGVkX1/NaCuoKU6hgy0p6Mi0Iw+hogO7knfr6ygOVCAptqkAs2V4nw6xJfzhSOI1n1MVwix9P3WeacL7m4lO3dy7NyedL1W+awhXw7bBPBGNTdpnoiM4y3pM+8Ag568SZsNQ3PNgB+HO0xzJ3plWDZST+16SG1EflTLcGFiNZ5lS8f2qoG1EHAlIKrDLebOcRsSLGd/nCOSMIzeaHahVZuBNmwy17+FNAEBcg7TvLK7bIsALb+QLT0U+kLErC925c4AlVRFdqC+mnn1kpM3y7tf5sPW+b22rf4DhgHfq1DEMwvcvrgZoi47gHCn92+sMKeIqNFRjnPyDwwIIhMStmLTyqrHKWG3YtDMJdkJ2y2ittZ3jOnGhX1UfkBHaAhkMPbeTirRsYSZpsThunprA0mSNTvjn6X+0NY+gW+ovKMinPs2xw8VhsIXko1rh2/hU+xMjc+hCfCy/7aOIyu9xAzmg8wE88hirK3ieDgbsTAapfDgE5UDSM9Ljv/dK3QQeGDyrZgrPDXBolLwyRo820IYstPEhWb2ICJ3iwlFxQccV2rfgy286w2eS3PzlwypvFP4CGcMGKt7SEwC1mudxiSKBhTZHAAd6DP504yyI/ST7OPy25q87mtXoV5PDZXvjvGma40vHX+FrzT2CCAGoFdHZHrFLY9obsyAH5NBOesBbIRVEDfDnCoERsCJFghe/jmNSUQweXR6KOuroUAP6ke2TFxfbXJSngmGX8+JdNhsQ4P9l1BP5vJN2uCptGV8xkMg5/P612loI1ELQKbmYcpP7pA+OaqlE5GspElVwAEa6nvql5f1Jqe6JaWfFhdzWJOhpSP/sEbmAw/bsL917SsBb+Y+WFa1CrajLnyYuXBsRKQiLfAy0oORSFx8s0s0v0tPWEK5GTpxmKUZL5axavMxXdlKOxYgS1xIQS6GNx6oD/BbqIMDeyfxkpEPkMEeezZ9B6KeoXQuoEm9
+ QYaI6o63
+ K7M+xSQbuRxxnET00LvDMjjxxKfT+CvWV6ikgAdPtATkLCcS/kbwYN97G10uUGlql8N/2gvL4tLqfDE998jdR3ymju7JrT6phxmtztUqizsiETMFKoXIUuqA3SmSwJq8nSHvdXICWc5y/3XfdNW0XFHyo9GXie6+J2fC745hWASlfNZtJQm8Dc3dzL/wEN9F9V8JC+iKK/4fXc1OBzUXKkRR8vbmA6n9Jc2c2oWwjECFUvgWryEKY/I5zc5szzeUDg+T1gPPzU06el2x+cmhLOGR0tKNDwDapoFs+9NdZBtcgc/oy6yj7bcJf2X2k7J6pWeVLPOXSpnItJGVtVN/1sNZMKXlwM6b0Ybmp0IwWWhK51XOCQpbvHRRaj0nepwvqc7BfCIZxYawi3C4z23T6EUjWc4koXm/5gqdvCcYhnYTsUXiti0o96a2s9cm56rqCeJ0yaVBpGtozg47apx5/qeW95jMcVz5K1BMbkCNjlyapXvd9apyXpIbMCZ81EEJk0RtOfFT8amFTDOLrKh/x0aNO1uiUd1gYz629iB6oS7vvj2TFWMZ3vl0vCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,17 +105,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 11/21/26 5:40 AM, Fnu Samridh wrote:
-> On 11/19/26 18:06, David Hildenbrand (Arm) wrote:
->> I do wonder whether that could go into the loop, because I faintly remember that
->> user_alloc_needs_zeroing() is disabled when CPUs have dcache aliasing.
+On Fri, Nov 20, 2026 at 06:08:46PM +0800, Muchun Song wrote:
+> Template-based ZONE_DEVICE initialization bypasses
+> __init_single_page(), which means copied struct pages do not run the
+> vmemmap zone consistency check.
 > 
-> Yep, it always returns true on CPUs with dcache or icache aliasing, so
-> the flush only matters when we clear. I'll move it into the if block in v3.
-> Thanks!
+> Verify each destination after copying the template so the fast path gets
+> the same validation as regular page initialization.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-With that addressed, feel free to add:
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
