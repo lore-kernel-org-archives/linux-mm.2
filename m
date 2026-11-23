@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF3F606A32D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1204606A691
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HRTPwa/C
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N0RRJX22
 Received: by kanga.kvack.org (Postfix)
-	id 822B96B05B2; Mon, 23 Nov 2026 11:24:07 -0500 (EST)
+	id B30906B05B3; Mon, 23 Nov 2026 11:24:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D3156B05B3; Mon, 23 Nov 2026 11:24:07 -0500 (EST)
+	id B0B7C6B05BA; Mon, 23 Nov 2026 11:24:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7105D6B05BA; Mon, 23 Nov 2026 11:24:07 -0500 (EST)
+	id A1E836B05BB; Mon, 23 Nov 2026 11:24:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 41FB36B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:24:07 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A276680918
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:06 +0000 (UTC)
-X-FDA: 85466905692.04.E31EDFF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 70DEB6B05B3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:24:09 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1AED16091B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:08 +0000 (UTC)
+X-FDA: 85466905776.18.6716A43
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DBAA620010
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HRTPwa/C";
+	by imf06.hostedemail.com (Postfix) with ESMTP id 29167180003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N0RRJX22;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795451045;
-	b=g2Fye+43TNonKgxKHg4steG5pbYwKDGsUfCtDf+jG8Jk0IfkvPo+P2U0mbsIQMtP9alnFj
-	4RSUhTASAaNxXwqw/PEDwILHN9Zifh/aBzWUVCH0O/jtKHIox33LYtKhFxh8CbbneGN80h
-	WIjoLfHXbDcTtbq71rIzCt8aw/jnkwc=
+	t=1795451047;
+	b=oMvIrbVVOh67QSZQii8s9TEkYxhZb1yeB6lWMJxhUcNeLW9mt4yFkdL+Vx9ayT8aoeHYxa
+	Kar0cFbU+SEUfH8a/HyzGoYdDdGHqPvnFr8Od3BIZpDluh1VY1Q9m50Nz3nnc06eYIRVyL
+	zmHz0epFv371d2pd8uNZa1iFWQPHmTs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795451045;
+	s=arc-20220608; t=1795451047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXavW4JWzr1Q6W/lcF7e/uXGv4HjAfnzdjNwVnsw0mE=;
-	b=ndOXc0qM2nmmJhX7uuL5nD1KrvU26BtrTRo//tkwqy7XR8z1emTtQO0xeVTLEivaGvOmvN
-	RvUdLnIz9p67nNGtDOvnZyYyoinP80Pz75JoniN/V47lYJF7Epx9I3gwgSlQULiRON3Zii
-	ZauYm4TaycqT3Zf+pbQGZSdVcSg4Kbc=
+	bh=ME4azgngOCTJNfnpv6QdSj8+9zz0mmaxRAUYJ+dI6fs=;
+	b=sGiluPbkXRGpqQHVubDs+D/5AhET/wZtaOtcd5d+SbnKZ6y9UyL78Rr6iYRU6kpfBkTNWQ
+	XQ5UCwT7svKU1fagzXtU20ZZ9bQg53ksJFBLFk9JMa+0njGgZZidOA52dRICUgHxM/PH1d
+	/SywEAJf2HeNu/MH9oM10ayjxVWWpWs=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HRTPwa/C";
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N0RRJX22;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 152C84489D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F23A40233;
+	Mon, 23 Nov 2026 16:24:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092631F0093E;
 	Mon, 23 Nov 2026 16:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026541F000E6;
-	Mon, 23 Nov 2026 16:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795451044;
-	bh=DXavW4JWzr1Q6W/lcF7e/uXGv4HjAfnzdjNwVnsw0mE=;
+	s=k20260515; t=1795451046;
+	bh=ME4azgngOCTJNfnpv6QdSj8+9zz0mmaxRAUYJ+dI6fs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HRTPwa/CG7GeJX/h6unRrUok3iyt++C87ZisW5dSA1pkNjBFXoKnQGd2R3+99lWbf
-	 tCetkOzw10KfiAfqEDb1zDLFv4dSTB2BpsmYl3iNpebQ7hv/xp3wS7tvtpJJa02uwR
-	 cWfyimQxDjn0P8ABZU7kIiHW3OOa5izFSY2TAj6KjfDZ5K5c4NNBj7+23dHYLhz01P
-	 5G5QuAYWkHHF59D7fxqFV4RmpzUN6f7pMDyC7k4H5a+AAMLrnAgF2jgE6mfDpZnnN3
-	 xFsw8dAcIFFyrXfH5mCymvWuv218H/b5jt86qgLvxzV/SBpK/t0zlUKbz90HWv9EDM
-	 kWUJXsBcJy++A==
-Subject: Re: [PATCH net 1/3] net: multicast: keep source filter state when a
- source update fails
+	b=N0RRJX22wIA9TkrEx1tjIGlt3lmxaaFzDw/lSUKyIMt7cEWat0bGVFjYgbHgQQIQ2
+	 wOvA3XXlvtWO1f1JVBiDYbwdK/x8ko0nO7axlVj9H/10hDnuJzbI+fzgQBsZyd3iyf
+	 DS2Cs0ZpiH8PGSjjJTIpPYHpJZwlhtk8WwUWxLJNrRKOvTCggl7YAdMYYNw46WiL/+
+	 xfoCRKY9H1WBegipnLGbXBdh9JpuvtHGFvbLnktk5J4XqkQsAnQ+Eka++pDNeJD5Ez
+	 7/bHrIW1JP4ekQL+qhotAKmiHj52y+Nvpmvdrgob7idGvYtJhV2BwZlSKp22CWiTiw
+	 RJVWToXrKWUFw==
+Subject: Re: [PATCH net 2/3] net: account IPV6_2292PKTOPTIONS and multicast
+ socket state to memcg
 From: netdev-bot+sashiko@kernel.org
 To: x-professor@outlook.com
 Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
@@ -71,27 +71,27 @@ Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
  roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
  akpm@linux-foundation.org, vdavydov.dev@gmail.com, cgroups@vger.kernel.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Date: Mon, 23 Nov 2026 16:24:02 +0000
-Message-ID: <179545104255.3135.1386420892995095806@kernel.org>
-In-Reply-To: <fcc87bc014e01d9571fa33aaabd22180908e55d1.1795102467.git.x-professor@outlook.com>
-References: <fcc87bc014e01d9571fa33aaabd22180908e55d1.1795102467.git.x-professor@outlook.com>
-X-sashiko-severity: Medium
+Date: Mon, 23 Nov 2026 16:24:04 +0000
+Message-ID: <179545104461.3135.5611486557181472051@kernel.org>
+In-Reply-To: <5f2e25611e300561db512cd3ad3190f4d782484a.1795102467.git.x-professor@outlook.com>
+References: <5f2e25611e300561db512cd3ad3190f4d782484a.1795102467.git.x-professor@outlook.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: DBAA620010
-X-Stat-Signature: ppacy9yia3pn7zfchr3kammqdfnjw7gm
+X-Rspamd-Queue-Id: 29167180003
+X-Stat-Signature: hx7wf7iubm947we5sytyf6ytgii99s5p
 X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1795451044-496014
-X-HE-Meta: U2FsdGVkX1+LDYC+HIEQ6NkOPzWDoh/+BgSzhaaENOVAxWIVoC9fVqfO56xx4fLV0nQHEH/FYO4M2bxD0qfxES4XushPpeEVyrOdjTU2IZbJkQ9VDgo7VbQ+uX3SAIe1zolXYG5YJGmvbpG9XlzqfEnpxUnvDze29jM2OQbUAb79jkiFGQ1F1YOD8d8C57uSe8OoNY3m+ECzJkk2dzgROSODfE7YJ4r538KuOTBfOPPd+o54DiUMzPJ9DlzXwAp1vRGt8pBfDVUo+g6EVypvD72apw4/ijV3QbPDvnKTZSphDfjcR+kElS1au4TobQEdgBYKJu6pGvu2yg4jHlMWokLP/C5zMZNyPk9u57dotOnc0w/xAqF50N136Z3mrK0PLBeCXAr5dIktI5PYNQoVvy4C9KO/MMRJzN/5QAtifC3JmSN0RJM2pa5s3GDf6+SEGGFVccwfvbmExqWsEbQZ4Epe8Qd2SFaiY6FhuuraYgwC+/n2Ea9rFHTU6xTSnZYDOd+iux166LjYSpVvD/mCw21tMbfi27C0i5aTly4WJaw3pRJ6LcfFw/muQxzhr1Z4Q6uEA/I5P5IyWKLE2PpLrCAd64InTSc87uMr1GLrqtdktflQCDaB+ndnxUS3Y4BCtrLG15Pd+zt17OjtphgtylIyD4VpVxrbwg7yKQdDixLGHL3hHeLNlZ8QDM3FOjrgXzg6/4kWhzmRg7Mkz+QysDBE9yVQQrev++DMEgpFVu3hX1wPi4SVljEvL87xx9pkYVomzcvYzzvkXYNsSQsNb/3Hr8cYZ1sm29myDrc0IPH2KxB2VbHwGUKCCy9Rh/CANZrOab//9WbmGbEnXyXuyChlxrhaVXWF4XSb5N9aYxKSGuysTjw+msAiRzNvqNrMZ3+Q/sQiM00avjXgJrJuKKdQQymhRFWqfCRj1zWTKGE30s4FtZcJOfwHzs3ACV1T2Ryqnp7y6ksGzNsH2Mg
- 9MgPTNRm
- fBKPPkh2effp5WaQn2+wLU5eeFTcq4yEbXA2JSXJrrI4Rt/3D+l0gnVA8o7MD8ujVV/e1vr9zh5+/zeSK2rxuaRjFweZdDTL5IFD9FEjAdTgsAwUJXy04nON0paZpbrlZL/L3epmrrhfsIF5WPHVgIJtDBz1PO3RM+Q/U68MZWwhbBrdNULa5uRD0mXUE48nnQnBUBr4HfRYei/F+dKQV1PbLuxOdHQNcm+p3OYaAfTpJ456GDWXaVDXg3a/gXvadbg2GCKGNnipYr6AhFpxiCv88zayGVQEFjuOK/xC0ut9Bo7qpHClLG0hGiT8OhbYQh94Yus6k8ZjPwssCwoPRlcWC7a5jfioDdFCf3T2evMh+W57QW/LD7chavmlZmXommHembSumSQTe8pE158RDSCyLjlzfU+DB4msazX0JCjAxIlf5/UcesVI8w7I8HgBdudhBLkboSjoGFZ9oZus3SoQPXeJmj90/4vzFj6+EdA8gARjooS292mWpZS5hFEWlT8vm7hkgkwaiVgUT5Fkoev0o1xsypzNpPbyqbwl686EtZLGySksiQleKLyp7m9RUtwD8UfOSh13y9kN8JflbaDbtiT/WVX5CsOFHPRxx56YHE0GhBi2koFx6qLBYhNWovL459HX//6cWLGzHGvPEjkLA8WMZBbAnrYpRYtgDchJJYfYSVJ5Tcm24WYcrR+giz+Icxg2dUAhSY5M=
+X-HE-Tag: 1795451047-401434
+X-HE-Meta: U2FsdGVkX1/+fu68ykl+aVgvgi4gSJfsVdnnupb575mPO6CB9imL2zw8P5HEmqMM/ZoJZThFxqzTV9CwE7HqM6In5sj8hWfmF3FlQ/tY7Tr1XVNpYRK3BZXG/hndz523yKl2kZiPh8RCt4Qit8iJ1T/9wKXTPwL7xYpqvK8yf2/dcGf2qADbr89w8tzNZbQWF5on4lu+1hYYUkQSA61pS51zxibEHdH5+guKjUU8oFGxJ6eYamR4LqKybTSGriKEdXQf0jLwqPRrYw1OqyTz/phMY5crwet4+//IhNt2EEgjn6RgLuGbYY3/SUuWk/SiVCzzvO4Z8BSo/WKiKq86LtNMbtGnwELgrZeJHyIg7N8IPPB2j5gl4Du/yLuMycMcaDg6qKwapb8XDzyGOjBMVuQ6uWh5aQdxCSSg0Y0y1Urfc4Kd3/7jODKmB6T/LJTMJh180iNI2zgn1P+iSgw2x2KCnGyh+ebHBYpJJo4KZXsj1wI3ZyjPP5/IkyNFQvEE44qrHddkVS2M5oqJJXbLuPYVi1Fj8IgSrVcH6Zxon5S810vtGvUJn1rY9JxUlXwkLm5xZooPcp7kwHdGZCwdSy8y1BsdiHUaWS3K2uATQP4eXWyWPWZF/ysu4jSGVWKw2OPUpVH9OSn4lXb1zmzd4HbJg4yG6mR7fyY8qf9UWtmi8KQ/dIduk327HxH1FtVYUF0P+Z6vqHq4l/2UC9LMHiMtcDKw9B0+Kq8kPJuudpIL66GeRgN7fj6mroMhgQVcG5KtBxAgeLICE6BelhCVbJOY3iVcpTUyv4NmKbe2DUeHP/tw4Hd1FKJtEK3SHBS27qalNxO0/oPhb2rYc2BglOO75zYFMEmVzZjDvXDC4UD5t9GPaCFQzXsSxt5H9+NLIardx8AeqMeV3jvn9daqhOOdJ515WNpdo3QMvz+vFaOQ16Juvzi9AGEVTcYRwSItOmJxEKivSZ1IxQc4iZE
+ tyPNR48E
+ vqrqr7RtCC4LWlJ4qk/0QkIIEk9XBRpD8v+jR2xrZ0SAziY9idoZ2C4sRagyNBaa+kMrQT66DqscvQJm6xyvZp/jssu8VO0A7gUUmbLfa0zjdZhaYoyIardi/QLRRIeYLgHyZbIJCp5LbOHaoM5CM45v2O6ge5idgB0x7sBxq2whNNimGPgXrue0yC2DlAGZisxmDGW2d+kNT4MJTqzbKNUVetO6MJzcGRLlBdoLgs+4oqJieo3/893ckqypX+C2KD2m/m9dbadKZjQJDJLGugLUDgglnUkiStpWcdD10lj8LxY2CvDeIpo6DNdJdb7HliB7GCEmS3SDE8cUEt5aeDDRnX+S5c3JppqUMd2LcVhUNvpMde7Y/jnK8mK4zvC74+jeGjmWsxq6R7E+XIs6589fmmNp9ksRTSXm1Hk1AujXi1HYvda9cg9R9G31G1kbloHVzfLrYwBVoEUWaSTAJ/TcRJsKj0vftamfW4YqbC1UwHyl5+uxDvM70AIeTwSPl/PuoVFeHPGDs837lgPpBiwurasdjvgese2cDEDU+1v4oB90WslJaE9cd/rJjNiy0XqRhCWXUD+de7y/DBivw98o3dGRxFdNgHVWg4kG87UyLJedMXJpBAU6Be+zxsobXTxpYTTjcPDQgdubwcKCBJwVNBwsESx8myXEYn/k3GEeFwju3bqgbVg1v5Yva73qLU//kwamaBfKM2PeJjHsb7OZBi37tvDCSutKAkPCIFSZgBMAUTxVPR1/OZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,7 +103,7 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -111,261 +111,231 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] ip_mc_source() (net/ipv4/igmp.c) and ip6_mc_source()
-  (net/ipv6/mcast.c) still switch the mode of an empty filter before…
-- [Medium] The patch now returns every non-zero result of
-  ip_mc_add_src()/ip6_mc_add_src() from the add paths, not only…
-- [Medium] The new `done:` rollback in ip6_mc_source()
-  (net/ipv6/mcast.c:504-508), and its IPv4 twin in ip_mc_source()…
+- [High] The patch charges the IPV6_2292PKTOPTIONS buffer to memcg only
+  where setsockopt() first allocates it (do_ipv6_setsockopt(),…
+- [Medium] This patch charges the per-socket multicast records but not
+  the per-device objects that the same join and source operations create.
+- [Low] In the source-removal (!add) branch of ip6_mc_source()
+  (net/ipv6/mcast.c:437 in this commit), the code allocates a smaller…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the commit
+  message describes it as a general sock_kmalloc() issue: 'Allocations…
 
 --
 
-net: multicast: keep source filter state when a source update fails
+net: account IPV6_2292PKTOPTIONS and multicast socket state to memcg
 
-This patch restores the previous socket filter mode when ip_mc_source() or
-ip6_mc_source() fail after switching the mode of an empty filter. It also
-returns device-side errors from ip_mc_add_src()/ip6_mc_add_src() before
-the socket filter is published. When the source update fails, it drops a
-membership that the same MCAST_JOIN_SOURCE_GROUP or
-IP_ADD_SOURCE_MEMBERSHIP call created.
+This commit changes several long-lived socket allocations to
+GFP_KERNEL_ACCOUNT so they are charged to the memory cgroup. The affected
+allocations are the IPV6_2292PKTOPTIONS cmsg buffer, the IPv4 and IPv6
+multicast source lists, and the IPv4 and IPv6 multicast membership
+records. sock_kmalloc() itself is left unchanged because some of its
+callers run in softirq context.
 
-> diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-> index 52cde8782eebd..bfa448028f8a1 100644
-> --- a/net/ipv4/igmp.c
-> +++ b/net/ipv4/igmp.c
+> sock_kmalloc() limits allocations using sk_omem_alloc and optmem_max,
+> but does not request kernel memory cgroup accounting.  Allocations retained
+> by a socket can therefore consume kernel memory without contributing to
+> memory.current.
 
 [ ... ]
 
-> @@ -2530,9 +2531,10 @@ int ip_mc_source(int add, int omode, struct sock *sk, struct
->  		}
->  	} else if (pmc->sfmode != omode) {
->  		/* allow mode switches for empty-set filters */
-> +		oldmode = pmc->sfmode;
->  		ip_mc_add_src(in_dev, &mreqs->imr_multiaddr, omode, 0, NULL, 0);
-> -		ip_mc_del_src(in_dev, &mreqs->imr_multiaddr, pmc->sfmode, 0,
-> -			NULL, 0);
-> +		ip_mc_del_src(in_dev, &mreqs->imr_multiaddr, oldmode, 0,
-> +			      NULL, 0);
->  		pmc->sfmode = omode;
->  	}
+> sock_kmalloc() itself is left unchanged: some callers run in softirq
+> context, where current_obj_cgroup() uses an explicitly active memcg or
+> the root memcg, so those allocations have different charge-attribution
+> semantics.
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch. The
+commit message describes this as a general sock_kmalloc() problem, but the
+reason given for leaving sock_kmalloc() alone only covers softirq callers.
+
+Several process-context sock_kmalloc() sites also keep allocations for the
+life of the socket. They are uncharged and limited only by optmem_max:
+
+net/ipv4/tcp_ipv4.c:__tcp_md5_do_add() (TCP_MD5SIG, no capability check):
+
+	key = sock_kmalloc(sk, sizeof(*key), gfp | __GFP_ZERO);
+
+net/ipv4/tcp_ao.c:tcp_ao_key_alloc() (called from tcp_ao_add_cmd()):
+
+	key = sock_kmalloc(sk, size, GFP_KERNEL);
+
+net/ipv6/anycast.c:ipv6_sock_ac_join() (needs ns_capable(CAP_NET_ADMIN),
+which a user namespace provides):
+
+	pac = sock_kmalloc(sk, sizeof(struct ipv6_ac_socklist), GFP_KERNEL);
+
+net/ipv6/exthdrs.c:ipv6_renew_options() (unprivileged via IPV6_RTHDR, also
+HOPOPTS/DSTOPTS; smaller, since each header is at most 8*255 bytes):
+
+	opt2 = sk ? sock_kmalloc(sk, tot_len, GFP_ATOMIC) :
+		    kmalloc(tot_len, GFP_ATOMIC);
+
+The anycast record is the twin of the IPv6 multicast membership record that
+this patch converts in __ipv6_sock_mc_join().
+
+The TCP_MD5SIG keys alone let an unprivileged TCP socket hold close to
+optmem_max (128 KiB by default). That is the same per-socket size as the
+IPV6_2292PKTOPTIONS reproducer.
+
+Should these sites be converted too? If not, could the commit message say
+why they stay uncharged?
+
+> diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+> index bfa448028f8a1..5fe8736c7b472 100644
+> --- a/net/ipv4/igmp.c
+> +++ b/net/ipv4/igmp.c
+> @@ -2381,7 +2381,7 @@ static int __ip_mc_join_group(struct sock *sk, struct ip_mreqn *imr,
+>  	err = -ENOBUFS;
+>  	if (count >= READ_ONCE(net->ipv4.sysctl_igmp_max_memberships))
+>  		goto done;
+> -	iml = sock_kmalloc(sk, sizeof(*iml), GFP_KERNEL);
+> +	iml = sock_kmalloc(sk, sizeof(*iml), GFP_KERNEL_ACCOUNT);
+>  	if (!iml)
+>  		goto done;
 >  
 
 [Severity: Medium]
+The socket record is charged here. What about the per-device group record
+that __ip_mc_join_group() creates a few lines later?
 
-The mode switch still happens before the request is validated. It is only
-undone at done: if the request fails. While the switch is in effect, can
-other code see the temporary INCLUDE{} state?
+	rcu_assign_pointer(inet->mc_list, iml);
+	____ip_mc_inc_group(in_dev, addr, mode, GFP_KERNEL);
 
-At the socket level, ip_mc_sf_allow() runs under rcu_read_lock() only and
-does this:
+____ip_mc_inc_group() allocates struct ip_mc_list with:
 
-    psl = rcu_dereference(pmc->sflist);
-    ret = (pmc->sfmode == MCAST_EXCLUDE);
-    if (!psl)
-        goto unlock;
+	im = kzalloc_obj(*im, gfp);
 
-inet6_mc_check() follows the same pattern:
+On leave, __ip_mc_dec_group()->igmpv3_add_delrec() creates an IGMPv3 tomb
+with:
 
-    psl = rcu_dereference(mc->sflist);
-    if (!psl) {
-        rv = mc->sfmode == MCAST_EXCLUDE;
+	pmc = kzalloc_obj(*pmc, gfp);
 
-So group datagrams that arrive inside the window would be dropped for this
-socket.
+Neither allocation uses __GFP_ACCOUNT.
 
-At the device level on IPv4, suppose this socket holds the only EXCLUDE
-reference. The forward ip_mc_del_src() then drops sfcount[MCAST_EXCLUDE]
-to 0 and switches im->sfmode to MCAST_INCLUDE. ip_check_mc_rcu() reads
-this without a lock. Would traffic for the group be rejected for every
-socket on the host until the rollback runs?
+The caller picks the group address, so each charged ip_mc_socklist can pin
+a separate, larger, uncharged ip_mc_list (timer, lock, refcounts).
 
-ip_mc_del_src() also calls igmp_ifc_event(), which arms mr_ifc_timer.
-igmpv3_send_cr() only takes pmc->lock, not RTNL. If the timer fires inside
-the window, it looks like it could send a CHANGE_TO_INCLUDE{} record,
-which is a leave on the wire.
+In a user+net namespace with igmp_max_memberships raised, a socket could
+hold its optmem_max budget in charged records plus several times that in
+uncharged ip_mc_list objects. Join/leave churn on an IGMPv3 device also
+builds up uncharged tombs.
 
-Even if the timer does not fire, the rollback is a second device-level
-mode change. A call that changed nothing would still produce qrv
-CHANGE_TO_EXCLUDE records, or MLD change reports on IPv6.
+A later patch in this series, "net: multicast: account group and source
+allocations to memcg", charges the IPv6 versions: mca_alloc() for
+ifmcaddr6, plus the ip6_sf_list entries and tombs. It also charges the IPv4
+ip_sf_list entries and tombs. At the end of the series, though, the IPv4
+ip_mc_list and its igmpv3_add_delrec() tombs still seem to be uncharged.
 
-When !add and sflist == NULL, the call always ends here:
-
-    if (!psl)
-        goto done;	/* err = -EADDRNOTAVAIL */
-
-So that path never needs the switch, and it is always rolled back.
-
-On the add path, the window includes a GFP_KERNEL sock_kmalloc(), which
-can sleep in reclaim. Allocation failure under memory pressure is the
-failure case this commit is fixing.
-
-The commit message says "the EADDRNOTAVAIL case keeps the EXCLUDE filter
-and the group is still received". That does not hold during the window.
-
-Could the code fail early when !add && !sflist? On the add path, could
-the allocation and validation run before the mode switch, so the window
-goes away rather than just getting shorter? The same applies to
-ip6_mc_source().
+____ip_mc_inc_group() returns void, and __ip_mc_join_group() ignores its
+allocation failure, which may be why it was left out. Could one of the
+commit messages say so, or should these allocations be charged as well?
 
 [ ... ]
 
-> @@ -2585,10 +2596,30 @@ int ip_mc_source(int add, int omode, struct sock *sk, struct
+> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+> index 82573260b7409..89394f8d963f6 100644
+> --- a/net/ipv6/ipv6_sockglue.c
+> +++ b/net/ipv6/ipv6_sockglue.c
+> @@ -748,7 +748,7 @@ int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
+>  		if (optlen > 64*1024)
+>  			break;
+>  
+> -		opt = sock_kmalloc(sk, sizeof(*opt) + optlen, GFP_KERNEL);
+> +		opt = sock_kmalloc(sk, sizeof(*opt) + optlen, GFP_KERNEL_ACCOUNT);
 
-[ ... ]
+[Severity: High]
+This charges the buffer where setsockopt() first allocates it. Can the same
+payload still be copied without any charge?
 
-> +	/* update the interface list */
-> +	err = ip_mc_add_src(in_dev, &mreqs->imr_multiaddr, omode, 1,
-> +			    &mreqs->imr_sourceaddr, 1);
-> +	if (err) {
-> +		if (newpsl)
-> +			sock_kfree_s(sk, newpsl,
-> +				     struct_size(newpsl, sl_addr,
-> +						 newpsl->sl_max));
-> +		goto done;
-> +	}
+IPV6_2292PKTOPTIONS can be set on an IPv6 TCP listener; the getsockopt()
+side is even limited to SOCK_STREAM. Each child that completes the
+handshake then copies the listener's options:
 
-[Severity: Medium]
+net/ipv6/tcp_ipv6.c:tcp_v6_syn_recv_sock() {
+    ...
+	opt = ireq->ipv6_opt;
+	if (!opt)
+		opt = rcu_dereference(np->opt);
+	if (opt) {
+		opt = ipv6_dup_options(newsk, opt);
+		RCU_INIT_POINTER(newnp->opt, opt);
+    ...
+}
 
-This now returns any non-zero result from ip_mc_add_src(). The matching
-change in ip6_mc_source() does the same for ip6_mc_add_src(). Both
-helpers also return -ESRCH when the device has no entry for the group:
+ipv6_dup_options() copies the full tot_len:
 
-    if (!pmc) {
-        /* MCA not found?? bug */
-        rcu_read_unlock();
-        return -ESRCH;
-    }
+net/ipv6/exthdrs.c:ipv6_dup_options() {
+    ...
+	opt2 = sock_kmemdup(sk, opt, opt->tot_len, GFP_ATOMIC);
+    ...
+}
 
-Can setsockopt() now fail with ESRCH in cases that used to return 0? That
-would affect IP_BLOCK_SOURCE, IP_ADD_SOURCE_MEMBERSHIP, MCAST_BLOCK_SOURCE
-and MCAST_JOIN_SOURCE_GROUP.
+That copy uses GFP_ATOMIC with no __GFP_ACCOUNT. It also runs in softirq,
+where current_obj_cgroup() would not pick the user's memcg anyway.
 
-This looks reachable in a few ways.
+sk_clone_lock() also resets the child's budget:
 
-On IPv6, without privilege: a socket joins G on interface A with an
-explicit ifindex. It then calls MCAST_BLOCK_SOURCE with gsr_interface ==
-0. The idev comes from ip6_mc_find_dev()->rt6_lookup() and can be
-interface B. The pmc loop in ip6_mc_source() still matches the A
-membership, because the ifindex check is skipped. ip6_mc_add_src(B, ...)
-then returns -ESRCH.
+	atomic_set(&newsk->sk_omem_alloc, 0);
 
-Before this patch, the socket-level filter in that case was committed and
-still enforced by inet6_mc_check(), which matches by address only. The
-call returned 0. Now the call fails and the filter is not applied.
+so every child passes its own optmem_max check.
 
-On IPv4: lowering the MTU below the minimum and raising it again goes
-through inetdev_event()->inetdev_destroy() and a later inetdev_init().
-The socket memberships survive, but the new in_device has no group entry.
-Source operations would then return ESRCH.
+With one charged listener and N connections, does this still keep N copies
+of up to ~64 KiB each (in ~128 KiB kmalloc_large allocations) outside
+memory.max? The copies are held whether the children sit in the accept
+queue (up to the backlog) or have been accepted.
 
-Also on IPv4: __ip_mc_join_group() ignores the result of
-____ip_mc_inc_group(). If that allocation fails, the membership has no
-device entry. A new IP_ADD_SOURCE_MEMBERSHIP or MCAST_JOIN_SOURCE_GROUP
-would then drop the membership and return ESRCH, not ENOBUFS.
+MPTCP (net/mptcp/protocol.c) and SCTP (net/sctp/ipv6.c) make the same
+uncharged copy.
 
-The commit message says:
+The copy runs in softirq, so __GFP_ACCOUNT at that call would not charge
+the right memcg. Would closing this need a charge against the listener's
+memcg instead?
 
-    Return device-side allocation errors before publishing the socket filter.
-
-Should only allocation errors (-ENOBUFS) be returned here, with the
--ESRCH cases handled separately?
-
-[ ... ]
-
+>  		retv = -ENOBUFS;
+>  		if (!opt)
+>  			break;
 > diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-> index ecef55f261890..0d982f7d29cda 100644
+> index 0d982f7d29cda..ede1f0825bad5 100644
 > --- a/net/ipv6/mcast.c
 > +++ b/net/ipv6/mcast.c
 
 [ ... ]
 
-> @@ -403,8 +404,9 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
->  		}
->  	} else if (pmc->sfmode != omode) {
->  		/* allow mode switches for empty-set filters */
-> +		oldmode = pmc->sfmode;
->  		ip6_mc_add_src(idev, group, omode, 0, NULL, 0);
-> -		ip6_mc_del_src(idev, group, pmc->sfmode, 0, NULL, 0);
-> +		ip6_mc_del_src(idev, group, oldmode, 0, NULL, 0);
->  		pmc->sfmode = omode;
->  	}
->  
+> @@ -435,7 +436,7 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
+>  		} else {
+>  			newpsl = sock_kmalloc(sk, struct_size(newpsl, sl_addr,
+>  							      psl->sl_count - 1),
+> -					      GFP_KERNEL);
+> +					      GFP_KERNEL_ACCOUNT);
+>  			if (!newpsl) {
+>  				atomic_add(struct_size(psl, sl_addr, psl->sl_max),
+>  					   &sk->sk_omem_alloc);
+
+[Severity: Low]
+This is the source-removal (!add) branch of ip6_mc_source(). It is reached
+through MCAST_LEAVE_SOURCE_GROUP or MCAST_UNBLOCK_SOURCE when sl_count > 1.
+With the charge added here, can an operation that shrinks the socket's
+memory now fail?
+
+If the cgroup is at memory.max, the charge can enter memcg reclaim or the
+memcg OOM killer. If that cannot make progress, or the task is dying or is
+already the OOM victim, sock_kmalloc() returns NULL. The source then stays
+in the filter and setsockopt() returns -ENOBUFS. The error path does keep
+the filter state consistent.
+
+The IPv4 counterpart, ip_mc_source(), removes the source in place without
+allocating:
+
+	for (j = i+1; j < psl->sl_count; j++)
+		psl->sl_addr[j-1] = psl->sl_addr[j];
+	psl->sl_count--;
+
+Could this allocation stay uncharged? Alternatively, psl could be shrunk in
+place the way IPv4 does it.
 
 [ ... ]
-
-> @@ -494,6 +501,11 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
->  	kfree_rcu(psl, rcu);
->  	err = 0;
->  done:
-> +	if (err && oldmode >= 0) {
-> +		ip6_mc_add_src(idev, group, oldmode, 0, NULL, 0);
-> +		ip6_mc_del_src(idev, group, omode, 0, NULL, 0);
-> +		pmc->sfmode = oldmode;
-> +	}
-
-[Severity: Medium]
-
-This rollback undoes the forward mode-switch calls without checking
-whether they succeeded. The forward call
-
-    ip6_mc_del_src(idev, group, oldmode, 0, NULL, 0);
-
-returns -EINVAL and changes nothing when mca_sfcount[oldmode] is 0:
-
-    if (!delta) {
-        if (!pmc->mca_sfcount[sfmode])
-            return -EINVAL;
-
-        pmc->mca_sfcount[sfmode]--;
-    }
-
-The rollback's ip6_mc_add_src(idev, group, oldmode, 0, NULL, 0) still
-increments mca_sfcount[oldmode] every time. Can this leave a phantom
-reference on another socket's device entry?
-
-This looks reachable without privilege, through an existing mismatch in
-ip6_mc_source(). With gsr_interface == 0, the pmc loop matches any
-membership for the group, while idev comes from a route lookup. Nothing
-checks that idev->dev->ifindex == pmc->ifindex. For example:
-
-1. Socket S2 joins G on device B with MCAST_JOIN_SOURCE_GROUP. B now has
-   mca_sfcount[MCAST_INCLUDE] = 1, mca_sfcount[MCAST_EXCLUDE] = 0, and
-   mode INCLUDE.
-
-2. Socket S1 joins G on device A with IPV6_JOIN_GROUP (EXCLUDE{}). The
-   route for G points to B.
-
-3. S1 calls MCAST_LEAVE_SOURCE_GROUP with gsr_interface = 0 for a source
-   it never added.
-
-4. The forward ops run on B. The INCLUDE add raises the INCLUDE count to
-   2. The EXCLUDE del fails with -EINVAL. The call then fails with
-   -EADDRNOTAVAIL.
-
-5. The rollback runs on B. The EXCLUDE add sets the EXCLUDE count to 1 and
-   switches B to EXCLUDE. The INCLUDE del lowers the INCLUDE count to 1.
-
-B would be left in EXCLUDE mode with a phantom EXCLUDE count. MLD would
-report EXCLUDE{} for G on B, and device-level filtering on B would accept
-all sources.
-
-S1's later leave works on device A, because __ipv6_sock_mc_drop() uses
-mc_lst->ifindex. So the phantom count would remain as long as B's group
-entry exists.
-
-Before this patch, the same sequence only left a phantom INCLUDE count
-on B.
-
-The IPv4 rollback in ip_mc_source() has the same unchecked pattern. It can
-be hit when a socket membership has no device entry of its own, for
-example after an MTU drop and restore or a failed ____ip_mc_inc_group().
-Another socket then has to create the entry later.
-
-This also seems to conflict with the commit message's claim that
-failures "preserve the previous filter and membership state".
-
-Could the rollback undo only the forward operations that actually
-succeeded?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1795102467.git.x-professor%40outlook.com
