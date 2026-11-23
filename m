@@ -1,80 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98F1606A335
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 20:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18821606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 20:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=msRudmS1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nWCnlAlR
 Received: by kanga.kvack.org (Postfix)
-	id 99D836B05B1; Mon, 23 Nov 2026 15:45:02 -0500 (EST)
+	id 1DA0A6B05B4; Mon, 23 Nov 2026 15:46:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 928186B05B3; Mon, 23 Nov 2026 15:45:02 -0500 (EST)
+	id 189026B05B5; Mon, 23 Nov 2026 15:46:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C7ED6B05B4; Mon, 23 Nov 2026 15:45:02 -0500 (EST)
+	id 02B6B6B05B6; Mon, 23 Nov 2026 15:46:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 325816B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:45:02 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7BA9AA0A1C
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:45:01 +0000 (UTC)
-X-FDA: 85467563202.26.0E1F51A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B7A1916000D
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:44:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=msRudmS1;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C67686B05B4
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:46:15 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4C50B809BF
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:46:15 +0000 (UTC)
+X-FDA: 85467566310.17.95879F4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5619E80006
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:46:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nWCnlAlR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795466699;
-	b=TAqVC6i1BfyiBCCjNj/jfXvXRbCDk0wqvTzjAFwbsf28R/j+acORAV+aR09WUqDcfU2pM4
-	eG7E4zRiAjOB6TkR4hhdLvhhu7qk7z5U3kFM6CvboX5dnEr+kYMAI2yYfhBFxFyuQcloeZ
-	axGWNTgfRpxH5uyQxqzayjCwu33iBlo=
+	t=1795466773;
+	b=K/KsYRLOJuMHLlNl6psvdykjg+pJF5seYhOWSTRNo1osPWdSNYe7tDiln24AlJl2jekPUb
+	KzAewFhAaT6ukjkgmnLzJhEWJbVhSMvni68z8MxgEG+feOeNSbz6ofw+3FQ0z8p6cyMzFI
+	rbjl6kM/ld+IO3YPNnM95jSbBVqK0FI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795466699;
+	s=arc-20220608; t=1795466773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y+OCxwI9lwKAuuqKZI6U557wp+tJEVNdQ059Xmhr2uw=;
-	b=CrfKQCUW7VXG1wufygTzbODqpl2NyUInezdGl6nbU9R6zTvR+ueNEw9iroW5yKC2NQQ+Ev
-	NhbTNAC5zgbppnsiMkKMQuNBUBfLpt4WWBZ9SdimfraUuMzqufdyNQVXWd2v54Hgn/sK32
-	dazOSjHaYAIIXOMBZ7A6FQ2rQ/He+Ps=
+	bh=iE5vwZ52FCrf/Yf1bfaqRjLKYFiqG7NiHPUuhaY2RUE=;
+	b=IJ0vc7SIESVW1fjILioeaHmOJNiejeHL08ckZaggBD3HfSHvIgo4Pot3YeMs9MVlZmCO3K
+	/9Y07o/KJ2UxsxNG8B4VKvx15xIpuOcsWCMgtjsfaK13HjntHOoi9UAEIKwvUn/yOzI4CI
+	xT9hB4MhTGUaKjpLksWWtaUXDSh0hEs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=msRudmS1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nWCnlAlR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B9C46243F;
-	Mon, 23 Nov 2026 20:44:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7D71F000C4;
-	Mon, 23 Nov 2026 20:44:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B4F442A8D;
+	Mon, 23 Nov 2026 20:46:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0B51F000C6;
+	Mon, 23 Nov 2026 20:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795466698;
-	bh=Y+OCxwI9lwKAuuqKZI6U557wp+tJEVNdQ059Xmhr2uw=;
+	s=k20260515; t=1795466771;
+	bh=iE5vwZ52FCrf/Yf1bfaqRjLKYFiqG7NiHPUuhaY2RUE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=msRudmS1+Jot4KjLYg1anHYSSlhnwYw8ctVrwkYkz0l4hAZ5g8NYT56kSS+Rlqd8b
-	 fDm2jo1E06w/mxDg/E4WZw7U/ZSZwOvYUgiRyyKy/sV/NXo9vcAEACVnHARFy/gJFS
-	 fAmBUuIx/oodveQtWtpXlmvFKfzbDaF63gkY+nqcdiD9POMATbk1UlVzPeH4Ftptuv
-	 bWhL8rbNOB3SA3ek+c9ITMyIXdgVcjcx/4fsjM579SchHtTJEafWXe5xbT/i+SBkTp
-	 QRBeTdwt2sHLmPO7/Hy4XBwphKFi+/prPjY9ANW12/QzIukjcagVrlli0k8KPkYQbU
-	 yYJ/XpcgFIKsA==
-Message-ID: <2cb3ddae-9ece-4d91-afcd-9adc3251fa35@kernel.org>
-Date: Mon, 23 Nov 2026 21:44:45 +0100
+	b=nWCnlAlRSrYcmt1N3LrIiGlo7ITb22rQ0nLhDggE4JyA9gyFUmf0xEchJxTiQf81h
+	 ZKeHd/THIZR+7txgcGVcMCSAdaw132w0xi+hd0jYuZ3RA5RkRL7eoWiC950+y75oMa
+	 QffL8s8c9SZLIB9S0vLf2qfARj514d/3iDOTf9YHKBBxPgRFW6QTLTPwC46ftjXX7m
+	 TvtnSOoBgL+pZXB2nslP3BBlw6ZsrvQP10v6dgDRmrFPDkMpKoY6iOBwZc6REEg6ml
+	 bgEROSIxRGuzgZF5K2OTXwczXczOKpb6tBNBnblx/tvLEm8L5/feIq+gMu22x8Niwu
+	 sbBMzLhbCKpug==
+Message-ID: <a590ab03-da4b-413b-aca4-1072c0669d2a@kernel.org>
+Date: Mon, 23 Nov 2026 21:45:59 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/huge_memory: use NOFS when allocating while
- splitting folios
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+Subject: Re: [PATCH 2/2] mm/migrate: allocate destination folios before
+ locking a batch
+To: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
  Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
  Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
  Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  William Kucharski <william.kucharski@oracle.com>,
  Heiko Carstens <hca@linux.ibm.com>,
  Alexander Gordeev <agordeev@linux.ibm.com>,
@@ -85,13 +85,13 @@ Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  Gregory Price <gourry@gourry.net>, Ying Huang
  <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Miklos Szeredi <miklos@szeredi.hu>, Joanne Koong <joannelkoong@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Miklos Szeredi <miklos@szeredi.hu>, Joanne Koong <joannelkoong@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
  Chris Mason <mason@kernel.org>
 References: <20261122-migrate_reclaim_deadlock-v1-0-83c56185b0fb@kernel.org>
- <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
- <awSgk1VTUsiVQOAT@casper.infradead.org>
+ <20261122-migrate_reclaim_deadlock-v1-2-83c56185b0fb@kernel.org>
+ <DN2RK7R9T87V.1DLJWTHIM19Y5@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,21 +138,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <awSgk1VTUsiVQOAT@casper.infradead.org>
+In-Reply-To: <DN2RK7R9T87V.1DLJWTHIM19Y5@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+X-Stat-Signature: 1spue6he43diqaxeo38wgnp4bydtw6wk
 X-Rspam-User:
-X-Stat-Signature: xu6jeg94mm8jmf5ez1otgpxd684ouosr
-X-Rspamd-Queue-Id: B7A1916000D
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795466699-645782
-X-HE-Meta: U2FsdGVkX1/S5m2AQeq28p2YrcVDB7NPIOZBQMJr4s8lEC15ULFNRZTcvKZS+ccntCIDun7+UJdW5TQ6IYxt81BdCXde7/af6riKVyfhIB/yOcR/qmCaicXq4qjmqAR0AkxBN6vPBeQUsLi/itsyO3Jx0GHAdmGJgdpr9r4mJOpJQ18TTHWCucXNHnNkFra496ASfYBu6p3+lFhCZNJKk35kgMUpwC5tbFih9StkHil2Rt6uTsbQcLTosyAD/YsJzLR6wDqUn+4d4Y4kBz3UUTmsGsaL7g4MY73fpCUX5NbVxECPZ3rp4bxMjFxpIXyj2ymqJx/qfQ3lQn1VI+BL3uULs8eQTI/GRAylO5IKdgwv4jxqeMYTk/W5ats5s0XsZGNiqs2CL3QFoWofrhU8xQIE73SaYbrC58hQEO0CaKdFwkugYYbcVuTCvfGUkiLIqj4sBZ+MEqNSwQozFqMUguIlgTXUzclwRAWlHBgnVMjt/1ZtwP43IIELMbm3MsiGo7tjjcx4sghRSs+6pc/lzF5cUrHySNSJQfvAvtNGWQZnLtMx2yw4JfWyVd/qq9R4eKv8EGo92IJBBvSGsgvprsWccKK3Zz26QGzFchi3NsbO3QO0/30AYbR8cFYKoxX+8b0RT11243EtOS6URVMigl2v8vfEgYx1fKpEPONzYXQBsn2yPgGZELDdlT1hwKHcEHp8Ed54nBiZyTWYQzdKNorU+7T2zLxyeQZDu2KEIhDBbc2wQV32iPI+MwK3zrERM18jbWKImOD8WyDT9Xan9h6Co3jeWO2jwQAEsh53rCceORmYjdURClAMGC1tUhVpfSSI36xzP0AU7RKjBrhhUVeb9CNkm9lT/LavCZorFUy76HDMcnWXGDzz/mZ2usou1wyaMOSDtiP2MJO3t9JPbVUWj7t+W03UmIjYmnv4CFk+tfd828KxP5kfNplgyWRAKrEFM84YnxAgqxE70Y+
- Z02MR3u7
- 7Sc9YGe5lgB1rtSoTV3YxkU2k0RbV8yqvY/oANcouVUx9z2QkpmrH3udl/frCWv3KNuxta3S4DNZd4q5ZAqePlBuNms3yRJ4tNeutF5qsRQIGF+TXRt6u8ntnAO6ovytyMwsTLY535oC0LXA6+jy7Gj/tmyVEu4OPalXaCQqVGRQlyfndZNaTLg3+zgMwONHm8OHKhbuL6MNXgvdSgK6lhvau7Q/ojY430cuhjj9JKh0Gd/ejGcl9G77IiIe9154JPMNH5wooC5o9zO6tNDmbjv0w1pUM+tt/EWUTiI5FlpheHj5+rEJAc0qMTAqKk3Gbmhm+d4UQ/EiFMwifdZ+hUL308TTccGKGSffaNtriAIk4weOYWindLsjxUxSjmi/Z3sl9CCbbGExgr0HeVo81aUFVAjbNsSnZjFFTyY6gio6lezQ/+l5e8tHfhzS4DYfjQELPRfWLvJH09aB8iPd64hOtYxypSyW/8J6PGMh6WDX6WHVFbFX5uAbDePuM+7VWiSFMgECI1voRFXZ3or/vecZqd90vR9L1zDpvf2Xdxv1sL3gMfB6rAQQk27T0RvEB8FKEGUco54AFSUdagGrT0JmmtCDvF5ODxwh2+LQLogixMslb8t5d6X/WdfsQ97XZfaMw
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 5619E80006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795466773-951187
+X-HE-Meta: U2FsdGVkX1+z0slPHJHQx7G97ULt7rhHHtWY6/pWhYrGXxDsX7uNAwo0BCUDDuvDzl5VVJQdGA89bBs19IHLBFIjohkHAp9tdmvf/oYGRpqM4vObPpf/aFbgpe+iTT86PslOkq8ioBzhJ/QDPNvrSKQtrdVlNTJbXzJxTbrd+YA9qyPsB8y/0kazhcmX4GrevcWzlyXpajXLE8ASFHGuo5g90FLvazozDAooGPDS/XVD2s9b6h4CIjS3ZaoUIl1L1x28rKaCc2Xg57kxOGWCXMo07Q29q5skbPL5+VIQI+Imkpn4T83uylPD+/q0miUu2NvOhoS7LiUAnvn1axqBj18hhXZXzS0LY+NuVKfw27ak+LuAYEQUqkVItjyF6foy1bkgs8oh4Sm6kJDEd2b/T0L/16fmK9OLLzMjQxrD3NMe3azAPf+TwqIQQZOE+4m7u923qNoZa3DrWEU1wiBXJ3B6oDLJ1A01msiXTDOER5qbvCQQg5yhiV2fiXFbT9vlqU0BYjYZQZ1kT0vzkoPpyNq5g5mP1LtpheM2fBp2UJVdfOXmrTbkdjotNXSE7qGOXVhvTmjlxBpkAIb6H7qhmxdC/x/YXmIFRvgYmXGQ7zEMNeHZiOo/D6gaSNfQGxBjC2jivNIR5VEfHhOzShmawQVfiUbyfEXnV+KWsKwMaRZy/7gu+ERVDGf/OzRDnw7jgXK5ZMlJpojuRlEFUvvUHxRQzXYdbomdeGMccu/F4Jdkf+UMkcg3e81Dg6KJ0Gb1klw84tUwtBJCSK5xg4LT2sAJDKkebqYjSh63eN0oOEcoy5BDRbMQWn+jDndXGDiPyQcwPXe5p7QqRoPiQPoOGjY9d6AMr7EzpFPXxQbCXYhqZxNc0liygGVXAnx8MMmsTr+CQiHczCzIw6NaSLUtnu1OCcPHS7Inq/tg9pjdom+mm1E2O4RMrB1Wtn66fxaE+2ncuiGPbHdHDPT7xDu
+ cF2gY6W1
+ mfmw0W3q0WbVZwPO4fcVdZOkE6lIeyfo/QZ53+dZPVDIUq+YMRHo3c3dI8jT8s9HVMTtWL2BlhHbT7JA3SpXtRNntl89KQlT5KsQ34qr+os1+1ffbBJ4ch9GJ7JDu3VrPB03dzCh3pQGhktFKUJkaq+RNv42pVTi7AodWj+3Z4O/t4T/G+XEJb86kwPhhoKcnAbHw2HI25KRzzcSmrejWaAVYmDXeCutL4pjAN0FA6R9+9yneyhe8MlmD0EvnPFitPqS1xQ4nRgZTDRQc4IYQW39l/ANMbSMKOlI0wMjXPJv/ri2XVnbv9iwpI7pkiXi6qekkFfAH0aJFUYTHbAxOnreOyVvdE7IVwSYaEoHttqBfPffSoQx6q7wFFDSnYFdslvgAuTqquzraRP+xZ2WWNuXR7z4T6sLfsFx3PnC2DrCiAIEbOv4H9NUQjwgM7z5VI+dEXp5CRwwWbbLLcWxNo0lbYCMdy4nEvkPK7x6Y+Rivn9l0vTK7DgY5875aBEJx1h4MCBALUD0E0KAOrmMpsUF4pGAhRcfGVoIeOmNoq3mtgTjulv2ur9L6i1JbqEM6+a02737BkcywgNk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,20 +162,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/23/26 21:22, Matthew Wilcox wrote:
-> On Sun, Nov 22, 2026 at 01:42:17PM +0100, David Hildenbrand (Arm) wrote:
->> Various callers (migration, memory-failure, s390_wiggle_split_folio) split
->> locked folios without holding a reference on the folio's inode.
+On 11/23/26 18:24, Zi Yan wrote:
+> On Sun Nov 22, 2026 at 7:42 AM EST, David Hildenbrand (Arm) wrote:
+>> Migration locks folios without holding a reference on their inode.
+>> migrate_pages_batch() keeps a whole batch locked while allocating the
+>> destinations of the next folios. If such an allocation ends up in direct
+>> reclaim with __GFP_FS, reclaim can evict an inode through the dcache
+>> shrinker, and wait in truncate_inode_pages_final() for a folio that we
+>> hold locked:
 >>
->> Splitting a file folio might allocate memory for the xarray and call
->> filemap_release_folio(). If either ends up in direct reclaim with
->> __GFP_FS, reclaim can evict the inode through the dcache shrinker, and
->> wait in truncate_inode_pages_final() for the folio that we hold locked:
->>
->>     try_split_folio()
->>       folio_lock(A)
->>       split_folio_to_list(A)
->>         xas_split_alloc()
+>>     migrate_pages_batch()
+>>       migrate_folio_unmap(A)
+>>         folio_trylock(A)
+>>       migrate_folio_unmap(B)
+>>         get_new_folio()
 >>           try_to_free_pages()
 >>             super_cache_scan()
 >>               prune_dcache_sb()
@@ -182,43 +183,68 @@ On 11/23/26 21:22, Matthew Wilcox wrote:
 >>                   evict()
 >>                     truncate_inode_pages_final()
 >>                       folio_lock(A)
+>>
+>> This requires that nothing else holds a reference on the inode, and can
+>> be triggered most easily with FUSE, which evicts inodes on the last
+>> reference.
+>>
+>> Consequently, allocations under the folio lock are dangerous if we
+>> cannot prevent that scenario through an inode reference; and we want to
+>> avoid grabbing inode references, because we might then drop the last
+>> one, and would have to evict the inode from migration context, ideally
+>> without holding any folio locks.
+>>
+>> Allocating in a NOFS scope would be one option, but it would have rather
+>> bad side effects, such as direct compaction not migrating file folios
+>> and the OOM killer not being invoked.
+>>
+>> So let's fix it by allocating all destination folios of a batch before
+>> locking any source folio. Now, we no longer allocate destination folios
+>> while holding folio locks, which also avoids holding these locks during
+>> direct reclaim or compaction for these allocations: an improvement on
+>> its own.
+>>
+>> We keep the destination folio of a folio that we have to retry, instead
+>> of freeing it and allocating a new one. If we would have to allocate
+>> while already holding folio locks, which can happen when retrying a
+>> failed split for longterm pinning, we leave the folio to the synchronous
+>> fallback in migrate_pages_sync() instead, which migrates folios one by
+>> one.
+>>
+>> Note that nfs_migrate_folio() still writes back the folio while holding
+>> its lock in MIGRATE_SYNC mode, which allocates memory. As NFS only
+>> evicts stale or unlinked inodes on the last reference, this is unlikely
+>> to deadlock; this must be sorted out in NFS code independently.
+>>
+>> This has medium urgency.
+>>
+>> Fixes: 5dfab109d519 ("migrate_pages: batch _unmap and _move")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Chris Mason <mason@kernel.org>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>>  mm/migrate.c | 134 ++++++++++++++++++++++++++++++++++++++++++-----------------
+>>  1 file changed, 97 insertions(+), 37 deletions(-)
+>>
 > 
-> The "holding a reference to the inode" piece is a red herring.  We can
-> deadlock even without it (although maybe the AI can't see it).  If we
-> don't remove __GFP_FS, we can hit this path:
+> <snip>
 > 
->   folio_lock(A)
->   kmalloc
->     alloc_pages
->       try_to_compact_pages
-> 	compact_zone_order
-> 	  compact_zone(MIGRATE_SYNC_LIGHT)
-> 	    migrate_pages
-> 	      migrate_pages_sync
-> 		migrate_pages_batch
-> 		  try_split_folio
-> 		    folio_lock(A)
-
-Quite nasty, thanks for these details. I was aware that memcg v1 would run into
-deadlocks whenever we would perform a charged allocation, but sync compaction
-triggering it is even worse.
-
+>> +			/* Remember the source folio until we unmap it. */
+>> +			dst->private = folio;
 > 
-> See this discussion:
-> https://lore.kernel.org/all/20200214065504.GK31689@dhcp22.suse.cz/
-> which led to patch f2c817bed58d in June 2020.
-
-Thanks for the pointer.
-
+> Clever to use ->private, but I wonder if we want a new field name, like
+> we added migrate_info, to clarify its use.
 > 
-> So yes, anywhere we're allocating memory with a file folio locked, we
-> should enter nofs scope.  Perhaps we can teach the AI that rule?
+> In addition, it will be great to keep migration info for each pair of
+> src and dst in an array of structs to avoid the ->private being used for
+> different things at different migration phases, but allocating such an
+> arrary will cause headaches. So this patch is probably the best we can
+> get.
 
-I have a couple of reports here regarding memcg v1 deadlocks, so it's not
-completely aware of the issues yet.
+Right, this is something for stable that doesn't get to wild, but we should
+clean it up further on top.
 
-We should document the rules of what you can or can't do while holding the folio
-lock somewhere, yes!
+Thanks!
 
 -- 
 Cheers,
