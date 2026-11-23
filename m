@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC7D606A68B
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 05:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AC6606A33E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 05:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=I9gqIGc9
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YP9ffkaZ
 Received: by kanga.kvack.org (Postfix)
-	id 44B3B6B05B2; Mon, 23 Nov 2026 00:47:57 -0500 (EST)
+	id 513D66B05C4; Mon, 23 Nov 2026 00:47:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 423C96B05C4; Mon, 23 Nov 2026 00:47:57 -0500 (EST)
+	id 4236A6B05C6; Mon, 23 Nov 2026 00:47:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33C2F6B05C6; Mon, 23 Nov 2026 00:47:57 -0500 (EST)
+	id 3137C6B05C7; Mon, 23 Nov 2026 00:47:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA4D26B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:47:56 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69A901407CE
+	by kanga.kvack.org (Postfix) with ESMTP id F27D66B05C4
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:47:58 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 753EEA7C6E
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:47:58 +0000 (UTC)
+X-FDA: 85465302636.06.75400D5
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 917E41C0004
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:47:56 +0000 (UTC)
-X-FDA: 85465302552.04.EE88B28
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 98218140004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:47:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=I9gqIGc9;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=YP9ffkaZ;
 	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795412874;
-	b=Xph3aY+BSLb2Kl4cASmrM7VhqNvAAfeKiqKoWu9sIApbe7SFaya6WrAseEXimWOKaCsktV
-	3IZKqxvYdbw/hoFpWjPEqVlLQXYcBfx97RsLt4fFPWpE1k0+QXP7qqXVIBE6dUoncWcZXQ
-	fxRBjV222IjRb29NLmbyr+nEjIvBpJE=
+	t=1795412876;
+	b=dges4diO1V7alsgs5w0yafB96buEyg+jON0c+Zv0IB4GXn3PvUPOz3B9giDxM6QoDYajr9
+	RFtBzAuhiMuRgW56ouuKhUVfss8LI4E6e/QL6zDPIXXF14+nMeZIUYCLgEbjC5nP1Nixe3
+	+pbDdMhomiRcKQynnHKCbXneyewieK8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795412874;
+	s=arc-20220608; t=1795412876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KVYLN2+U6McWuEiDknSvpcPzmASCRN8tM6SVo97GcMM=;
-	b=ae5ADTKGaE5bt6x17+6cHrtfDDm6pNXns9sYraYhs1JSUPl8qpkmzb8yZ5ptT8G2x+PvDc
-	BsuyXosFbVTgrPWlS3N/q291m33UAXUBTladww9OLlxGs7Uto1fsA4Qqq1Xr6hd0nfHj3r
-	Lj9rA2hy96RX/x5CC0oyt3z4p4RWQw8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KnMxzhHOEHpbsDB95jN4ZokxNKIXrj2a5/W65iB8kpI=;
+	b=EbXydBpSPsGORJgklZ73Q1MOAEcEgy6n5kjJQ4Gi3Zd4cgWq66ZQdqWQ9P0T/CmiUh2/BZ
+	FOiHBpxYUDyB2xwckTh6rHwl9uHctmtR6kOB+ID7+Vuk1t1yoaIv5vK1jL1jsj47WXqEYZ
+	WOMFVUXNlmniCF4JHbTcEnLf4JfSnaI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=I9gqIGc9;
+	imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=YP9ffkaZ;
 	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2efddf749e5so15730805ad.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 21:47:54 -0800 (PST)
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cdadf7e248aso1127183a12.3
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 21:47:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795412873; x=1796017673; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KVYLN2+U6McWuEiDknSvpcPzmASCRN8tM6SVo97GcMM=;
-        b=I9gqIGc9Ho5OCdMsBBb60fnmrcqcEk85VF2mIUZPk7jBApC4DOhjOzW7o6Pcc0cbwN
-         Y7b33jcn1t1Y7yd19X+kjn9AvajNym5SYHgsXPPI7Gk+dPn+E76rpO3XPT3IW39gvhFV
-         Lh0hONiwN6y5iFTQEDpmhOngADRiaNNOm2eo4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795412873; x=1796017673;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1795412875; x=1796017675; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KVYLN2+U6McWuEiDknSvpcPzmASCRN8tM6SVo97GcMM=;
-        b=fd4SJIjjkVVk6VUB7fbPOlYAkKjNMPARmQ1dFiO5I6DPKusmi2jKSrBIvJeDo69gyX
-         +HzaUMI2+illg8IcX0ayEltnAOXSss4vMVJn9sspqlW6cw5TimSvnRhAMoNvq7zhuw15
-         10k1yRNGrP1ID0FM0a7dOh4uvSbZqYG9puw+wYsID4jNQIU4iuRYevDkenj5k3rHD6xA
-         ujlbtEOObkCQ3eUe+7jgig216nOMlfSqeYIld6BGD6ry5Zff4Kd4/B7lCLzqcbEvSA5i
-         2417iifbR7ChDWXkCS56QgXAeGH35NYazK/+0PCbyXMm98T7X8JMzIK56hzhchNhnEMf
-         piMg==
-X-Forwarded-Encrypted: i=1; AL+hErF3iNWn3v1lTFFZWWkWr61SmnbNi/9FoqqfX6ji5iVSwul3D1zFORQtIflRT3ueQemI6w8XLSbzbA==@kvack.org
-X-Gm-Message-State: APuU4Z8rPZXe0Qg9I10jFul5VKzcf/O0EanWUnyWRb3aF1I/6oYzNdil
-	nrsza28zADs7gLVseoOnJCQUUyJ0A/IQ4gNrb+9Zs1SwovnXoy70pXxhACDJXT4DHw==
-X-Gm-Gg: AZFdTZdptM/2YAvhIcByLPSGO/0IP+2aXBXZMlU5E4ry9VT4uigG6Gl++zQwwfpCf9g
-	lN+9E8Utn8gOdvi0JOoPvmn/WxMlJZgBKpd3aaADhZ41mweZprEToFqU89RdPJhBi8quZLTbYLx
-	Byx4IXYanrxY9gPbkLvc/h9pMVtX8TtUiBGHcwAeH0+XsfuwF6JwpN/hLrSdqN7veNAGWQVyPXK
-	RwMB+5SF2aG17wqksfn+b5QmBpkc/nbXeX4EQGOmC1curE0AyhrUP6p8C3ZFLQGcJI9OtC5BIio
-	IHLDK82RAfYXu0vjD4c4zZsR5z9Hgr7R7DEVWIGpqOSiwyizz9kpo6uESO8ghkwm6x3iBKNLfwI
-	tTyNkD5kLqF5LpEsOI0fSoI3Zym7ShpzPP+clBcxfiAHumQVfasUVTd/jtRFU439aPoEvHVVx+W
-	FJOm5fe+XuuvgOp/G+mdh/3GcFu/31GcCendkp8h0/jrlZHvkPa3kf7v59tqtZ4In1zo6m1v+Q1
-	R8AB9CU8f+jACPMYvTjreV8UV4SY+1Bib9lDrDUkw9Hkx/x/exKLGdhQGfkbYbpLdVNCY3+HLwa
-	9fiKXgH+8KCv0s0ET13BsNrf8IQM3I/KjCSHY5UFpP1NwXcQxjq/jkagMAnZFJ+iKzTfzo3mdJ7
-	vvJKZAiwrGiQhnOOk9yc=
-X-Received: by 2002:a17:90b:442c:b0:3ab:8288:b8ce with SMTP id 98e67ed59e1d1-3b41c92c161mr6622325a91.24.1795412873376;
-        Sun, 22 Nov 2026 21:47:53 -0800 (PST)
+        bh=KnMxzhHOEHpbsDB95jN4ZokxNKIXrj2a5/W65iB8kpI=;
+        b=YP9ffkaZVp5iQTcPZI1XbtAw8A8kX3aiGmtQOdpKhmxr24pMCyjDRwJp9UwH/c4AgY
+         YRz6CxRrvUddYV1HkgCsdcz6Ex8dFw4IossL2gqaSak+Q67oLl4K4oSUmxfAs13tUTLv
+         KbMw0N2iSG9CTKY9XPH7CebGex7k8uc8HiDAI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795412875; x=1796017675;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KnMxzhHOEHpbsDB95jN4ZokxNKIXrj2a5/W65iB8kpI=;
+        b=U2HFGBEvVAdJ0CnXMe56/VGX03xRhbNzDhwb3jxoGOkdmUsSqt4f55w2YOYZVFyOcG
+         6BgQvr5asEjjWs4g0FQlI21bt+TttGXbUVD9KoqTpkmODvc57iEQ48pyl1ac49CZ9bdi
+         WSd+uviGORUONjvVUtvPJ3gu5CLn226fzoXhnOcQU3HILlpe5MHlpyUpE+Jsa1/ihhjW
+         r/8ZaTRy/MMJMLF70RC7uGSohXCeNVG/BteL65qawkImUpttF/jK7Z9sm+xbLdPxubKX
+         sQC0DlNgwX9Odc+aJxzz+SXL5pR5Go+JtOHJzNghzQlK9KxPnGsmp3wssXk8OyJQG1A4
+         72QA==
+X-Forwarded-Encrypted: i=1; AL+hErGASiZpTkhqPJu882GrZqUvkgJBP30nJsI2p0iw4e1ZSYW8vTPj6Ov/Iy9RGkQ76cPPAkmWEew16A==@kvack.org
+X-Gm-Message-State: APuU4Z+6zsY9+E8hAucvfdTjo5TUhNmk67/6j+C0SAfDhTKL0ekbwRhw
+	YW4x2dmat1Wv2e/JM0R5qn3auLkt3E97G4K0zXABAeuzT9qjd5UAmRQkO6mNzazjCA==
+X-Gm-Gg: AZFdTZc+IEpEOUwbznDf4iAA4W/TzWz5HSVb3dCmW69Iuv0rTIWT6c5VGYxd9JHPEvM
+	JjgajG3xOCLVeX6yM5G4LP0CVHGrAeT2uXEyJudFPXm0vVZGvr7XOapDQXuAei1kENvzy5VaS++
+	WeA9c0tM16vXwf9+vaODQCHqMdTS2iBND0GscKjlC0Mtqn98pnDmFSn6roCjNW2YRxlalAVhBCR
+	4jCvj+wvjiY5eAEAdIpId/rKIYCf19lRJr5OuXOd9d9J4sszxVjwnA5i4fqDi8cXYrSqg6Nfydl
+	dMfAslWpkKYsEZepDl4TMOhOvx1xz02aHOISJA5MmDBWfEyXMhd+7lvJtlSBxzYLfggNcR5sZyO
+	izk0Q2vWuy3JfE2z6xmNX7LToZgcOB+NAux1rDPtWIZT85e3Uxqh/15hOyWLNOAeuO+KCW/IwdL
+	KWKdmfmPXqLtB66lnzWlk1eFmyN89KwCUgSZvCQjdqznGZH1z7VAgiu5I8Pbw5PFnA+oUv1Qtxs
+	1v0Hq9mnbnZmhYJ8YBY8jrKAYiVTN5I21Rzlv+jaZ5p5zrkfUrOBNl6Od40SS3kPF5XcfmHtMU9
+	6TaVtHdNLqR5hBXw2lA2dnB6g7T8mH9Mu+6ZMsNtE1JORl1ZE34KRr6Q2ZbUBK/4RHcobz8nJ8g
+	LdR8FRDXwBsPN+ZQRdg==
+X-Received: by 2002:a17:90b:3f0e:b0:3ab:1481:69e5 with SMTP id 98e67ed59e1d1-3b41c8ffb06mr9953948a91.11.1795412875450;
+        Sun, 22 Nov 2026 21:47:55 -0800 (PST)
 Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:d8fa:c511:e415:e0d0])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad92c07sm16240267a91.13.2026.11.22.21.47.51
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad92c07sm16240267a91.13.2026.11.22.21.47.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 21:47:52 -0800 (PST)
+        Sun, 22 Nov 2026 21:47:55 -0800 (PST)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Nhat Pham <nphamcs@gmail.com>,
@@ -97,25 +98,27 @@ Cc: Nhat Pham <nphamcs@gmail.com>,
 	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v3 0/2] zram: zsmalloc: speed up zspage free path
-Date: Mon, 23 Nov 2026 14:47:35 +0900
-Message-ID: <20261123054746.2579253-1-senozhatsky@chromium.org>
+Subject: [PATCH v3 1/2] zsmalloc: free a zspage's pages in one batch
+Date: Mon, 23 Nov 2026 14:47:36 +0900
+Message-ID: <20261123054746.2579253-2-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+In-Reply-To: <20261123054746.2579253-1-senozhatsky@chromium.org>
+References: <20261123054746.2579253-1-senozhatsky@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 917E41C0004
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 98218140004
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: a1y3tfakiezmphd6yixymucg65h5g6iz
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 6wmwj8b58af9t9pjwyd7cwiyczug6aqq
-X-HE-Tag: 1795412874-988045
-X-HE-Meta: U2FsdGVkX19oZ0s04+cuRcqB0E6u5RUmi4IEq3SkMEFDYwfbUMHCVdIUylo0kLwuoAB2LEU0C9cDb3lqoKZO/vdhDLjYNhTLZ+E568A8Wr2M5sNziNumgnPG7puQufqEly4feg/S81cct8BEgg6O/QKjdjtFSDrNLILsOEGqDAuV2KW1iP1WIRmxSelLzT2aieNMOtEj2LTlL69ArS87JSWzjP/O9o5LIbbzyu94J5m6d3LQ4p7DExV60/4luAy4NYLNa2auxY8OhT45fahzOFJHO7WXglANjmgyY6Ci6AFM9vCr51HUdoW09WjaJ0LGRTE/03W2YcEGbJwcod2KfQZ/6UkugiIyF6jMCLXG0VyeXIejuvQkb7Yrg3pEEZDSisd+fa2yyvFwKR4ahjKYzMnxXaFxRSDRGbNscstYYav3h1dCxCRDc8E8bFlj2pfKiyUzG6MMRZMQDqZEfXG5dZUAQcL1WGkpuhbbDXjRyvr8mHK7YuF5okz1lyuJIGMdT5pvieMyi7TK55fGbtJnejZ7EmWpW7hSDHacbkMXbPnhHjJIr1dvMrnWKbHSMuNYdsMQO3RKW8PPWUE3/ioHA9wb4YsOlo1K6gSl4HfF8hVIZFBW/znZcxGbNluaz/t2LRG147Ia6a3qr7oeQXBiTMNXfo9jrcEw0LCYMFSj/eo/4VhZNO+/xUZu43GjEkoErrBQYgGj1oI8oqKFVT4iWymQZ780mMYHpayh96YDjiC/7LhcbkJMGzWGa2MjHUgofUTfgEYNZfLcGpu3MvQmVBnZZcpP4psRVmHOjnl8/BETie3m911KNBJD36M7Hv03jcYtnLusvdiYqXwS1C8yzChMiPj6ZQtXaFSQLOeWZr/9Q8UPUJTLVtLyCFXAnxoCeMIhWUoiAUT2360eQKuyaZuyCCoqjC3u3UUs0pu1ZhsPkwD+rC4NvUY4aoa5YcE8CVA9GBjTTM4B4ShpxVf
- p2OMp5IU
- B2jLBWYDUonPBtZwfaSnSetw1kSSH3WbJtllng9frs+ZzZzuMhPfdnOb8HfS4CFLo6UYmbGhD4RWAxqZvK5CuIHO+tH40dnw07lbkBSsOyI44IWVZcNauG5WrkJ3k4ggb2QcJDknKpT1hKz2tu6sT/6ScJEpMijepsCfEP/n6wCfUaZ5Z9PvIulO+ugpAzgA5dsa79zlyuQWK+0/CsNEZ93rjvH0/lpPBsbnXoas22NbujCaDRax/Ap0Ska7uXIZ/y458mpqE/g68rQNiRR+NGTQSZ2z5Bm29Y17nmVdMrkE7DqCoZ6tEyWbh6Y+0iuK5A3fbqRBiakOP+FgVJQDiHCcAlnADs1IVHZ1R2fI8eXy97Io2mmenfbFL+Y3ovwPaQuDHmof5DOb0Yc/UTF49r78tsDKbr3/Ioxe4JwRWhNOEDvzdEX6ZjchshVQfsk0QaLIdM2gHzN6H68qr1ZwBGD8iSluxj63W2pb+KCf1ujBvfKFKH5Z1n7o3dcz/Goj3nSND99QKZF0aqm6GfpwipGYCxePihWzQ+2whge0swvBUw2lN2Jqdn1r2oJWivAH9nBc+85YV9u4Ftny4Sn98aI0Sig==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795412876-925694
+X-HE-Meta: U2FsdGVkX18PNXiD3n4UUg6w/gUTk8cD8ErRo7AH8ACQUFSJErOc8uk3lFsw0ko1h52DrulBF7KVAzmfoeUZ6NDr+/6522YZ7XlWQHhM/sCIikxQF8HCCaQ9td9exe3EURCrv8mZufBU3mlySol8+QoNEXVHfE5gaepkuDk+vd78kXULJEJ5v+qc//SZ1lXChPZDelIPQhZzNgG/BLjh5fu/uaHm192/OWS+1xgNSmiy/dkRiqmDZdig/F3lAWb5PCIUX0lIrgqu41DcUFBMTBqH64zMQAlGaZQi3hdjLsF8WJroagEvI20kITAwg8cA/3q1oMQ6nO2Zjb7hPLapp//IwpuxDGMLRxWCXD/+jVgY5Th094BzC2zBs0P+8aik1VwXzKPNAxnK4gYfMBM0FmWAQpTp5paeaMGWBJYe0atHJrzQQzUivwSOCqjWdmd5xTW5UvJq+0/0QlCx3kTVGKM2T7lMb2/l5gKTbSftpYp6S/nHDlmhbQEOuVsARj2luLk7EZyYjUJMK5qZxqE7bmDpRPoIxM/zNliIsr0PYnnGjHBhe9v5i60JJkExB48yIi9o2q4Hv0Duuk9b/YrCdw4kuRxRSWOov0Qk6WRT3zZ8i32L0FR4KlfhG0D5obZlhOJ8dl58P49w0IfHf3rV49f0NMueqHqM1y1peAJLYUWuQE2QA3d07pIsXMDVHU97RPy3+I66o3j7GvDMLDE84RhJb2ixYau5fT4hiacFll7kR5jd7yoMzlEp7cuKf6prypD6Y/d44zti+VU9EnN/nMLjTK9KLDh+kP0oGAU5eQ2tb5xRKzJmTTMf0bD+YI7R/JL/e1ztbEmiQmjSRKHGAGn01yjruGcnGGlEAHYnZ5yq3zR41KK5OsLK6bJxiqEsOhpPzjx4I1U+oaya5E3Qbtw3HdxmFYZIDHwOpGf1vl6ArdTOkVzBVm9WwwT8/lImM2FFuFdjobx2LG/D2Zn
+ 0lZD9eZx
+ MqC0myr5UbpNhTDFbvTKJHiBKIwlPvw3t08p8c85mJYMSHG2XpgEUyZGB9u9xQ+OOFzo0+ZoIGRoz2f6ycadpXzzfsLsaWwOv/NAqbxDnKMAPhEPtU7gr9XlqljuBLDXvarSMdDPyCQpCkscjVzJCV0LgEZGMxmZReZxP1tvqDy9Oy5CrZ7jPu8VALV0PgdBYy0tVPpAf41FLjCZS/AaMCISH1ueeZyXEd2OqjPQj7Jmn92VLlopQVPisJTYc7jP+7xUJ5wxtQtNyoydjrED+HDOALbDCcV3MajG5MkYtTgm8qidFkz6jTU/mI+aTa0u9cDxwZJ0k9AF8MY56IX785GUWe4MO2KVO1vl1BYUCmHO864Ppbj8OyLNMVRsDJo85uUwrx3i3sMerk4PmUuZXTVTWEAThv06NUmRE0R83BL3394GuGhQ518G2wa7vIz/nVqTwdFUW+FtoTa5OUtSb0X8y4zkcZDCCS1jy85SRruUIEcPww5HyrWC17yI5sjjZLurHtEChq+56wWL1Np+izPhcjxgagbFyYaTjnUresInb8VUFkUvrBvCGYjCJ9pxHhOfkRUxMfbyEVe/HZOe9KXNI0BrVGKP2KcFE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,29 +127,118 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This is a followup on deferred zs_free() discussion [1].  We cannot
-do deferred zs_free(), at least not on the zsmalloc side, due to the
-fact that object handle is now stored in-place on the client side
-(zswap/zram entry).  There is still a possibility for a speed up
-tho.  One is batching of zspage's pages free.  The other one is
-moving zram stats into per-CPU area (as was suggested by Hongfeng
-Chen), which reduces cache lines bouncing in zram slot-free
-notification path.
+__free_frozen_pages() and dec_zone_page_state() take about 22% of the
+profile [1].
 
-[1] https://lore.kernel.org/all/20261016120927.3191690-1-hongfengchen@xiaomi.com/
+Collect the pages of a multi-page zspage in a folio_batch and free
+them with folios_put(), which takes the pcp lock once per run of
+same-zone pages, and update NR_ZSPAGES once per such run as well
+A zspage never has more pages than a folio_batch holds.
 
-v2 -> v3:
-- clamp negative stats to 0 (Sashiko).
+Single-page zspages, incompressible or power of 2 size classes, use
+the current inline path.  There is nothing to batch there, and
+folio_batch is not free, hence the batch path lives in its own
+noinline function.
 
-Sergey Senozhatsky (2):
-  zsmalloc: free a zspage's pages in one batch
-  zram: keep the hot statistics per CPU
+munmap() test:
+                    next-20261119      v7.4-rc3
+  256 MiB           -2.0% .. -4.1%     -4.4%
+  1 GiB             -2.8% .. -4.4%     -3.8%
 
- drivers/block/zram/zram_drv.c | 99 ++++++++++++++++++++++++++---------
- drivers/block/zram/zram_drv.h | 26 ++++++---
- mm/zsmalloc.c                 | 52 +++++++++++++++---
- 3 files changed, 139 insertions(+), 38 deletions(-)
+[1] https://lore.kernel.org/20261109105957.2577351-1-chenhongfeng0212@gmail.com
 
+Reported-by: Hongfeng Chen <hongfengchen@xiaomi.com>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ mm/zsmalloc.c | 52 +++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 46 insertions(+), 6 deletions(-)
+
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index d5f313754934..a1b6161fd237 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -37,6 +37,7 @@
+ #include <linux/debugfs.h>
+ #include <linux/zsmalloc.h>
+ #include <linux/fs.h>
++#include <linux/folio_batch.h>
+ #include <linux/workqueue.h>
+ #include "zpdesc.h"
+ 
+@@ -837,6 +838,44 @@ static int trylock_zspage(struct zspage *zspage)
+ 	return 0;
+ }
+ 
++/*
++ * Free the pages of a multi-page zspage in one go, see folios_put().
++ * Not inlined, so that the folio_batch is only set up (and, with
++ * CONFIG_INIT_STACK_ALL_ZERO, zero-filled) when there is something
++ * to batch.
++ */
++static noinline void free_page_chain(struct zpdesc *zpdesc)
++{
++	struct zone *zone = zpdesc_zone(zpdesc);
++	struct folio_batch fbatch;
++	int nr = 0;
++
++	static_assert(ZS_MAX_PAGES_PER_ZSPAGE <= FOLIO_BATCH_SIZE);
++
++	folio_batch_init(&fbatch);
++	do {
++		struct zpdesc *next = get_next_zpdesc(zpdesc);
++
++		VM_BUG_ON_PAGE(!zpdesc_is_locked(zpdesc), zpdesc_page(zpdesc));
++		reset_zpdesc(zpdesc);
++		zpdesc_unlock(zpdesc);
++
++		/* NR_ZSPAGES is per zone: one update per same-zone run */
++		if (unlikely(zpdesc_zone(zpdesc) != zone)) {
++			mod_zone_page_state(zone, NR_ZSPAGES, -nr);
++			zone = zpdesc_zone(zpdesc);
++			nr = 0;
++		}
++		nr++;
++
++		folio_batch_add(&fbatch, zpdesc_folio(zpdesc));
++		zpdesc = next;
++	} while (zpdesc);
++
++	mod_zone_page_state(zone, NR_ZSPAGES, -nr);
++	folios_put(&fbatch);
++}
++
+ /*
+  * Three free helpers, kept apart here:
+  *
+@@ -855,21 +894,22 @@ static int trylock_zspage(struct zspage *zspage)
+  */
+ static inline void __free_zspage_lockless(struct zspage *zspage)
+ {
+-	struct zpdesc *zpdesc, *next;
++	struct zpdesc *zpdesc;
+ 
+ 	VM_BUG_ON(get_zspage_inuse(zspage));
+ 	VM_BUG_ON(zspage->fullness != ZS_INUSE_RATIO_0);
+ 
+-	next = zpdesc = get_first_zpdesc(zspage);
+-	do {
++	zpdesc = get_first_zpdesc(zspage);
++	if (get_next_zpdesc(zpdesc)) {
++		free_page_chain(zpdesc);
++	} else {
++		/* Single-page zspage, e.g. a huge object: nothing to batch */
+ 		VM_BUG_ON_PAGE(!zpdesc_is_locked(zpdesc), zpdesc_page(zpdesc));
+-		next = get_next_zpdesc(zpdesc);
+ 		reset_zpdesc(zpdesc);
+ 		zpdesc_unlock(zpdesc);
+ 		zpdesc_dec_zone_page_state(zpdesc);
+ 		zpdesc_put(zpdesc);
+-		zpdesc = next;
+-	} while (zpdesc != NULL);
++	}
+ 
+ 	cache_free_zspage(zspage);
+ }
 -- 
 2.56.1.750.gf70dc682cf-goog
 
