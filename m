@@ -1,62 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07282606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 08:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A98606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 08:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=o5FD5QSx
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Emlf2w73
 Received: by kanga.kvack.org (Postfix)
-	id 1BD566B05B2; Mon, 23 Nov 2026 03:58:17 -0500 (EST)
+	id 5B4016B05B5; Mon, 23 Nov 2026 03:58:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16C726B05B5; Mon, 23 Nov 2026 03:58:17 -0500 (EST)
+	id 58A066B05B6; Mon, 23 Nov 2026 03:58:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 082736B05B6; Mon, 23 Nov 2026 03:58:17 -0500 (EST)
+	id 4C8CA6B05B7; Mon, 23 Nov 2026 03:58:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CBE526B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:58:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50CC5A848B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:58:16 +0000 (UTC)
-X-FDA: 85465782192.22.F1FB022
-Received: from mta0.migadu.com (out-195.mta0.migadu.com [91.218.175.195])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CED7B4000C
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:58:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o5FD5QSx;
-	spf=pass (imf04.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.195 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 266A96B05B5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:58:25 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BAAAA1A0735
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:58:24 +0000 (UTC)
+X-FDA: 85465782528.29.814170F
+Received: from mta0.migadu.com (out-198.mta0.migadu.com [91.218.175.198])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AEBF4C0004
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:58:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Emlf2w73;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795424294;
-	b=6u2QGMiegyZQW15NEAC+vHEQALHp0pwurWcllCF+omzHqExcw4hq3OmQZ0jvbVO5v+vH3X
-	Aaf0fnT8khuqM5kz2c/ccLV39Wi7cme5Ial+EUarede+o3WjF8CsvllKpmuJQqzFbqYhxo
-	XYsJ2VP7LioUEvI6vfqzEDrCLveHeGo=
+	t=1795424303;
+	b=16/kr+Tm1JsDerrhQVGgBeQ2ui8K277rCYeTm6shWzx86W8NJpVX8wjRH56xa3oWizWriw
+	3gJCMkLXvu6VRIl048JM0PiNPdMAmqcYcf1EFqPvWSKadg3d59uOZdGGM/+lRping64IJK
+	k++QuACmetLTVuYF5nAhZ/vew8zm4rs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795424294;
+	s=arc-20220608; t=1795424303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=IY4cRX3FUxOIUmhZmjuPYAgtEsWKkBHZ2j4hqum2+cM=;
-	b=YI3vQ6X5YLRTn6xlJ5v/Zu/QN4IF7+8AWeRyDTlCMRMBc+L9wS9kZ4EGogwwtlWscUJO4x
-	3iXnFl0xLbIeCWCRgu0fxqIS6ziKUnFB/v/UaEvX1TEcURLlH7ExIi9Wc4XNx86w75t0Vb
-	ymXF0G+g6w7E1xDmgXqFe6T3pg2pfv8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qy7buhtlte+VKS5usa54kVNmWbFO/1e3c+JI77Qdp8E=;
+	b=hUeC5RkksL+ZupmrmLankLqDcHvwErGgvBpo5TWnMnDeRCRtQiXHtiLBd2uU45Y6TvV7t4
+	TCC9We8jk1+GZcNhGZ4g57H3dzwS4Q4L9mqvlPQX/LeJ/bKFmbcupBWZ+G3gISnNRc23Mj
+	flB3bVrtpdJ3zJ8gByD++WuGawhuLR0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o5FD5QSx;
-	spf=pass (imf04.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.195 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Emlf2w73;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=JBSwwgI2Zpd/AEU/EG0T3MJZy8FWErChazvstQzfvok=;
+DKIM-Signature: a=rsa-sha256; bh=5dUTyanq4G0dIqJC6TnX42zmwEskLk3jE+BRGLfSw+8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795424291; v=1; x=1796029091;
- b=o5FD5QSxvwaOJZGg7TKKEPWfo6/6nEhkQCz9rBi+ymsjClV/D00wKxilkM7MVey+xOtl29EF
- y7TefEvis7c4mFmCfTvBWmA/iS2YHXdTDUDQhhc+4Ux9CFytaVn0F6wiOO3eELpjBPOSPNkU5e6
- ZK8HSiljfZNhvfFQL3PzHZmI=
+ t=1795424301; v=1; x=1796029101;
+ b=Emlf2w73Jg+yHuqqBk8ANCLmB2/BfLDFx8hQ6qqnOgNt1kplRCXl4nI8CKGzfjObQMTtd3OL
+ ckpxb5CFqlzUcPtqKQSmFKgLodUM0CzMh9XFllsQtoc9+MA8AVurMBZFzU9LT/QT1ftdoLqh2U3
+ jN111mzSppaaOpeK/hGEu9cw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id d086ef5e6cafc22e;
-	Mon, 23 Nov 2026 08:58:11 +0000
-X-Mizu-Trace-ID: d086ef5e6cafc22e
+Received: by mta11.migadu.com with ESMTPS id 1bfd051bc4c1f62d;
+	Mon, 23 Nov 2026 08:58:21 +0000
+X-Mizu-Trace-ID: 1bfd051bc4c1f62d
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
@@ -70,27 +71,30 @@ Cc: david@kernel.org,
 	yuanchu@google.com,
 	weixugc@google.com,
 	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev
-Subject: [PATCH v5 0/4] skip empty PUD subtrees during aging with a PUD-level Bloom filter
-Date: Mon, 23 Nov 2026 16:57:56 +0800
-Message-ID: <20261123085800.981256-1-baoquan.he@linux.dev>
+	baoquan.he@linux.dev,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: [PATCH v5 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+Date: Mon, 23 Nov 2026 16:57:57 +0800
+Message-ID: <20261123085800.981256-2-baoquan.he@linux.dev>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261123085800.981256-1-baoquan.he@linux.dev>
+References: <20261123085800.981256-1-baoquan.he@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: CED7B4000C
-X-Stat-Signature: 445syrpbupdawmk858fmuh8c9rksrtuc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AEBF4C0004
 X-Rspam-User:
-X-HE-Tag: 1795424292-750051
-X-HE-Meta: U2FsdGVkX1+vwjb0hW3abcR+/Y7te6SFYwA++SPSOB7eiY+jigXwZ4jiuUXujcEIzHRyCBjy3JOQB8G0yY2Q/wMDEea2rri/+EppWGnKz946Py1hHgizbLZu8ST3cqQclr5255ivG7T9S+O62Cv40wRtjj1tqG2gs8RGrbSdiKdIOOqgwvKznW3cxx54V05PIDzJt/neslq/e+L7/NCO+W56nXmwcg2TjbDq2uOnTX/iQ//e8MyBedlKutdo6UbRn2J1TgecJPISl2+Q7Iz7Hq0U0c9uZCzATEIM2XjU4xYir01hW0BAwHs4uvfwVsdQvNy7UKVKX+hBaBgZd85707PGCrs9rvM8aOANviP396fgR7AuXYwAoGv29tKZaH1JpR5+Dk2F+TktJeHwYtVdYCkiwAa7DGNrHYXW/7f7pwLsHrxSo3P9Sjc/NyP8Eog6V2nuw3lWD/q9iFu9xge08QQg4UAS9CjAjC6EO0Uc79JRi41yB220wqQ9gGgF6hP48D99HfwMIjZce7gcuwKqHHnPLqVOXV3rQDEJJmKpkxzYOExPxcKgTtY2zSqnnMIj18iEkiPCQnjXXTXUdYP8ya0aL5ITTy5cc7MKGKlLFtskmWc3lm4wwl8WNbELRt3Wc8djGmQXF8hLfK0fWyK1szYe63xDfRFqHfJSSLrWxl6R+OyTtSr5k9B+hPXpcKdtxgh7fNtJzBrIdYUjv1H1HgRl9ukvWTqRUAAR1BdGGD6BZxrQFWLSuD5y2+eRCa3H8pDCPEzG/Ipjm34jy3ULAl54EzKtLOdNdEXS2udlBHRy2oQ7RcD/HEfZIzXWZ47LbB/VVD0KBUzkiloZUJYG/ppAS5b93fFeFajorGmRLEZBouWjd8Wu2u1AFTN6Dec+n6Ud2V5G48aLcRNcUv+BwTx7c4HId8mi9/6TX3lcEILnnHeGSA8htUX/NQjL5panX46hZXGv6IOS0e2G63U
- a3DkWTz5
- HjXTWf4rN0Jq4tKln3j1AmhmO3lwZVZ09ByKkm9XLkgkcccFZslTClOyeTy0WoSkLQrKgEWXs01QpmUpmhT/FQkTmkkOEK9nW41VJshbC35wCyPXor/7aj8I0tMayXF0NNcS6CERfb9bmNmB1FqSMxz+M9QKtLcg1IV4qYZLZH+FobHtdmgTfrkNIAfkRaQEgNsy4lUOrS7U5Dtow1b+MHdEECMYo4rFcNTp/zCWQWm4N2+cEkIcyr4vh25rq5dSIhCpAK7VXvW70ilSjuzUsiAUIsOpr8C+hoVFsTq36Pm7sN7LPfRruJ4iQbEeKz0ubs0yFlD1IEnDhoHqCgto7CRvdxM6qwmcEMnfm/D+Mrc0oWx5AZSyStBHy38hKteA1UWmOVy4Jr1jpwMG1UL91Mhj1vV0DwoqafWD57COQseLIGk4eVZhkdxjVev5omJxPNL/3
+X-Stat-Signature: bk8o77h5pibunz7yejs16bj8xqjd9pms
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795424302-299553
+X-HE-Meta: U2FsdGVkX1++NIvzpbhfUJM4wNBVa81UJDonwc2bgPHDTHiYRqFZ2zz2BiS1bhQErqF1DpyPUi0fEXkSOm+duxqvVjLcaDLhHKUbGnqn5ux4urlK9rheEx7zjFzrMDNfbYmCXwYlIGslBmFSypuBUIeLMUthfM2B4CRUEVtGsSz2gFMJI81ke6xIonKdsyECCQA9+o/jdDJKGQXNkE/x/hfVhwXV5axKPMWgHKUbXBXxytk2fL6xnpXtD9BsXbsofDMo3evbi3i6akhbCVS2gSXfStuZAIg5I9NADHdJ6P8v6nx2R9ZN1gaZicw4dXP6icErq2eKlPyTVYr+qhg0p5uMmY8aVnhWVzJDoYUlPkfz7FYPOQiGCn5IHQwc1R3PAqMpAb677Kv46vETXbkaxz0JdlgZl/IvGiKURrrl2DSY0JefWbtxfBO/vNNucNbM4BLdj0hIbuSnmhWgv3LL9A/y6huoK0GQxHR6g6MLmMDMbSIP7MfDTQ80voqofCWaXKBEM2OytrxjIiEr4/ba+KcE9j3a6+awHgZeaPBkgufabgr6Dd2+i0GXf/k63QjAjthvPyx9pShdI8mAvMxB2hibwNDrpNGWavCUly4egespDKhZ8p8G7Ncj0gAmU/n9jCT4mhbUTLQUAnmxKe/1bSwfSjNpagkKcDqj+EigIsxfVquidlGfiVxa62n5HP9ez8vqcv8QT/nNPDTIBxlanIzGKr/Qg7tT07jqkXcA8oPem2s5OsQb9yCSBWiZdkpTgwdDvOVZNuDi3ahVhJ6oqQWiMZEkx+vWkB97avvzLjJIpmwDL9FmlMdbONxTOb8sOK3Efuv/uEBTDuJRmijEKjEj+lqo5GjxowNLV00TL40vVCchfH+KqDKWZ4vihjvBHXYM8Ftig859nYWs9lk5MWwwji7zamiP2ujvYpWFhO1v1/vv/hR+Az7sJy+5cRFIJPioaVc7BSzwbyCLIBW
+ 38tvL58q
+ xi9dNV1rp495yqaZhxE/hrxLDeT+6NltGMfOY8UsO77PQG4SM1F5f26089N1SEVgj6jJQpz1gTNgx+qV9M22Lpkf2GAx/wCm0vFvQNqE5VGc0WiUJGDchWmGhqmueUfBWNSDh9JOWGf6d51E+/3HV5Sa5F02arcwz8DA2HOHKAIvA5A0oYLcC7M5GBsWVrvtxD/dvaDww0zbGbZLyaT3hHsLGy3bZWFHJmRWbVmc/zgOJkKHPeWBxiM0VjE3G7Wntc6NDti5OhVb+M2RJHp0PKk0cxYta0sfvHqTXvpaiHu4Tzgu3Jugdhk/Q5xwQthVKz3JDBwd9T2G3wgH3luhmYBPnx9yv07/+w+fLE5lojtSThxYiX+ZoKxudWMld83wuP8ZTwcYA1Wim72gl/48cgz4AOET3IfnkLuRIKsPhaw85ea8l3xd7Npy2u6u1LE33kcI70R8efEutBPPIJOyvSbfBJauGYtJwGF/6aAyVgV3vIzM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,165 +103,143 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Problem
-=======
+From: Baoquan He <hebaoquan@kylinos.cn>
 
-MGLRU's aging walks every PUD of every mm in the mm_list. For a PUD whose
-512 PMDs all fail the existing PMD-level Bloom filter, the walker still
-descends into the PUD and iterates all 512 PMD entries. When an mm has no
-pages on a given node this is structural waste: lru_gen_use_mm() sets
-mm->lru_gen.bitmap to -1 (all nodes) on every context switch, so the aging
-walker of *every* node, e.g kswapd, direct reclaim, proactive aging walks
-the same mm.
+Add per-walk counters to measure empty aging walks, which traverse an mm's
+page tables but find no young leaf for the current lruvec (node+memcg).
+These are common on multi-NUMA node systems because lru_gen_use_mm() marks
+an mm for all nodes at every context switch.
 
-On a 2-node KVM guest with the workload pinned to node 0, node 1's aging
-walks of those mms scan 1,362 leaf entries per walk while finding no young
-folio for node 1's lruvec, and 94% of those walks are entirely empty.
+New counters (accumulated in mm_state->stats[]):
 
-Approach
-========
+  MM_WALK_TOTAL        - page-table walks completed
+  MM_WALK_EMPTY        - walks that found no young leaf for this lruvec
+  MM_LEAF_EMPTY_WALKS  - leaf entries scanned during empty walks
 
-Add a PUD-level Bloom filter, one level above the existing PMD filter.
-The walker now:
+A walk is empty when MM_LEAF_TOTAL > 0 and MM_LEAF_YOUNG == 0.
+MM_LEAF_YOUNG already counts only the young leaves whose folio is in this
+lruvec, which is the condition the PUD-level filter of the following
+patches uses.
 
-  1. Tests the PUD filter before descending into a PUD subtree.
-  2. If the PUD had nothing young for this lruvec last generation, skips the
-     whole 1 GiB region -- avoiding 512 PMD lookups.
-  3. walk_pmd_range() reports whether it found anything young;
-     walk_pud_range() records that in the double-buffered PUD filter.
-  4. The rmap feedback path marks hot PUDs, so regions whose hotness is only
-     observed by eviction are re-examined promptly. This is done for both
-     mapping types: lru_gen_look_around() covers PTE-mapped folios, and
-     folio_referenced_one() covers PMD-mapped ones, which never reach
-     lru_gen_look_around().
-  5. force_scan walks bypass the PUD test, so manual aging and newly added
-     mms always rescan and re-populate the filter.
+The new tracepoint mm_vmscan_lru_gen_walk() fires after each walk, and the
+debugfs lru_gen output ("TYFAWEE") exposes the counters.
 
-The filter key is (mm, PUD-aligned address), as suggested by Kairui. It is
-a stable identity of the range on both sides of the interface: the aging
-walk computes it from args->mm and addr, the rmap path from vma->vm_mm and
-the address. So the feedback path needs no page-table walk at all.
+Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+---
+ include/linux/mmzone.h |  3 +++
+ mm/trace_vmscan.h      | 28 ++++++++++++++++++++++++++++
+ mm/vmscan.c            | 32 ++++++++++++++++++++++++++++----
+ 3 files changed, 59 insertions(+), 4 deletions(-)
 
-The double-buffered filter flips each generation and force_scan bypasses
-it, so a missed re-mark costs at most one generation, and reclaim is still
-safe for a wrongly skipped subtree because folio_referenced() consults the
-PTE young bits, not the filter.
-
-Change log
-==========
-v4 -> v5:
-
- - Rebased onto the latest mm-new commit 7d1a16abe4cc.
-
- - Drop MM_LEAF_ASSOCIATED: an empty walk is now "MM_LEAF_TOTAL > 0 and
-   MM_LEAF_YOUNG == 0". MM_LEAF_YOUNG already means the young leaves of
-   this lruvec, which is what the PUD filter needs, so the second counter
-   added nothing. The debugfs columns and the tracepoint field are renamed
-   to match. (Sashiko)
-
-Test
-====
-
-8 GiB KVM guest, 4 vCPU, two 4 GiB NUMA nodes, 7.4.0-rc3 with the series.
-"base" below is the same kernel with the filter disabled (patch 1 only):
-same .config, same workload. Each result directory records its own cmdline
-and per-node meminfo, so a wrong configuration would show.
-
-1) Cross-node empty walks. 16 workers x 128 MiB pinned to node 0
-   (numactl --membind=0), so node 1 owns none of these pages. 100 aging
-   passes, both nodes aged, 3 runs, median:
-
-                                        base   filter change
-     node 1  leaf entries scanned      1,243      107   -91%
-             walks with leaves            17     0.67   -96%
-             PUDs skipped                  0       51
-     node 0  leaf entries scanned     12,926   13,155  +1.8%
-             young leaves              9,228    9,167  -0.7%
-             worker RSS delta             0%       0%
-
-   The base's own three runs spread 9,133 to 9,248 young leaves on node 0,
-   so node 0 keeps its young leaves. The filter marks young leaves in
-   exactly the same place it did before; what it drops is the walk into
-   PUDs that had nothing young.
-
-     forced pass, node 1 leaf/walk
-       before the filtered passes   1,359-1,371  1,363-1,370
-       after them                   1,361-1,371  1,363-1,370
-
-   A forced pass bypasses the filter, so it costs the same on both kernels
-   and the same before and after 100 filtered passes: the filter is a
-   cache, not a state.
-
-2) Correctness, 11 checks, all pass: a cold PUD is skipped; touching it
-   does not revive it; force_scan re-marks it and the next pass walks it
-   again; a munmap + mmap at the same address shows no stale suppression; a
-   1 GiB range migrated from node 0 to node 1 is re-scanned by node 1 after
-   one forced pass; no premature reclaim in any of them; dmesg clean.
-
-3) A PUD that holds only PMD-mapped huge pages. 1 GiB is mapped with
-   THP=always (AnonHugePages = 1 GiB, 262,144 of 262,144 pages resident) and
-   aged until its PUD is skipped (S +4 over 3 passes). The memcg is then
-   put under reclaim pressure (memory.max below the current usage) and the
-   range is touched again, so folio_referenced() runs on PMD-mapped folios.
-   The next normal aging pass walks the range again:
-
-     leaf_total 1560,  leaf_young 387
-
-4) Reclaim pressure.  Four 512 MiB workers in a memory.max=2G/swap.max=1G
-   memcg, at the limit so reclaim never stops; each flips a 256 MiB half
-   every second. Both nodes are aged every 0.5 s for 600 s. Rates per
-   second, because some runs stopped early on both kernels:
-
-                             base                filter
-     pgscan_anon          23.7-27.4k/s (3)    34.6-35.3k/s (2)
-     pgsteal_anon          3.95-4.10k/s        3.74-4.63k/s
-     pswpout               3.94-4.10k/s        3.74-4.61k/s
-     refault_anon          3.95-4.10k/s        3.74-4.63k/s
-     oom_kill              0                   0
-     hot half resident     262,140-262,144     262,144
-     node 1 walks w/ leaves  2,812-4,544          4
-
-   Evictions, swap-out, refaults and residency are the same. The scanner
-   examines 26-49% more folios with the filter: a folio under a skipped PUD
-   is not promoted that generation, so it sits in an older generation a
-   little longer and takes more scanning to reach. Extra scanning, not
-   extra reclaim. The per-walk statistics cannot cause it, nothing outside
-   lru_gen_seq_show() reads them.
-
-5) Aging cost on a single node.  Per pass, 200 passes, perf stat and the
-   median wall time around the same fork-free debugfs write:
-
-     shape                                base      filter   change
-     2 procs x 32 GiB VA, 0.2% touched
-       time per pass                  1,577-1,596  1,278-1,392 us  -15%
-       instructions per pass              5.79M        4.27M       -26%
-     20 procs x 3 GiB VA, 2% touched
-       time per pass                 9,889-10,097 9,563-9,775 us    -4%
-       instructions per pass              29.6M        28.1M        -5%
-     20 procs x 64 MiB, fully touched
-       time per pass                10,294-10,579 10,167-10,411 us  -2%
-       instructions per pass              30.06M       30.05M        0%
-
-   The leaf counters are the same in all three rows; only the skips differ.
-   The wide shape has 34 PUD regions per mm and skips all of them, so it is
-   1.5M instructions lighter per pass, about 22,000 per skipped PUD, which
-   is the 512 PMD-level Bloom tests it no longer runs.  With 5 and 1 PUD
-   regions per mm there is little to skip, so the other two cost nothing.
-
-Baoquan He (4):
-  mm/mglru: add MM_WALK_EMPTY stats and tracepoint
-  mm/mglru: add PUD-level Bloom filter state and generic helpers
-  mm/mglru: skip cold PUD subtrees during aging
-  mm/mglru: count PUD subtrees skipped by the PUD-level filter
-
- include/linux/mmzone.h |  20 ++++-
- mm/rmap.c              |   5 +-
- mm/trace_vmscan.h      |  30 ++++++++
- mm/vmscan.c            | 169 +++++++++++++++++++++++++++++++++--------
- 4 files changed, 189 insertions(+), 35 deletions(-)
-
-
-base-commit: 7d1a16abe4cc5dccd21e3d6262e44433a5885d27
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 6a2ad0cff795..8aabe0f23e60 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -579,6 +579,9 @@ enum {
+ 	MM_LEAF_YOUNG,		/* young leaf entries */
+ 	MM_NONLEAF_FOUND,	/* non-leaf entries found in Bloom filters */
+ 	MM_NONLEAF_ADDED,	/* non-leaf entries added to Bloom filters */
++	MM_WALK_TOTAL,		/* page-table walks completed */
++	MM_WALK_EMPTY,		/* walks that found no young leaf for this lruvec */
++	MM_LEAF_EMPTY_WALKS,	/* leaf entries scanned during empty walks */
+ 	NR_MM_STATS
+ };
+ 
+diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
+index 9dafdb5bd3ce..b0c2af65c1ea 100644
+--- a/mm/trace_vmscan.h
++++ b/mm/trace_vmscan.h
+@@ -508,6 +508,34 @@ TRACE_EVENT(mm_mglru_aging,
+ 		__print_array(__entry->nr_anon, MAX_NR_GENS, sizeof(unsigned long)),
+ 		__print_array(__entry->nr_file, MAX_NR_GENS, sizeof(unsigned long)))
+ );
++TRACE_EVENT(mm_vmscan_lru_gen_walk,
++
++	TP_PROTO(int nid, unsigned long seq, int leaf_total,
++		 int leaf_young, bool empty),
++
++	TP_ARGS(nid, seq, leaf_total, leaf_young, empty),
++
++	TP_STRUCT__entry(
++		__field(int, nid)
++		__field(unsigned long, seq)
++		__field(int, leaf_total)
++		__field(int, leaf_young)
++		__field(bool, empty)
++	),
++
++	TP_fast_assign(
++		__entry->nid = nid;
++		__entry->seq = seq;
++		__entry->leaf_total = leaf_total;
++		__entry->leaf_young = leaf_young;
++		__entry->empty = empty;
++	),
++
++	TP_printk("nid=%d seq=%lu leaf_total=%d leaf_young=%d empty=%d",
++		__entry->nid, __entry->seq, __entry->leaf_total,
++		__entry->leaf_young, __entry->empty)
++);
++
+ #endif /* CONFIG_LRU_GEN */
+ 
+ TRACE_EVENT(mm_vmscan_write_folio,
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index bc7579d47f9b..a0cbbbb2ff00 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4158,8 +4158,32 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
+ 
+ 	do {
+ 		success = iterate_mm_list(walk, &mm);
+-		if (mm)
++		if (mm) {
++			bool empty = false;
++
+ 			walk_mm(mm, walk);
++			/*
++			 * A walk that traversed page tables but found no young
++			 * leaf for this lruvec (node+memcg) is pure waste: the
++			 * PUD-level filter will skip it next generation.
++			 * MM_LEAF_YOUNG only counts leaves whose folio belongs
++			 * to this lruvec, so it is the condition the filter
++			 * uses as well.
++			 */
++			if (walk->mm_stats[MM_LEAF_TOTAL]) {
++				walk->mm_stats[MM_WALK_TOTAL]++;
++				if (walk->mm_stats[MM_LEAF_YOUNG] == 0) {
++					walk->mm_stats[MM_WALK_EMPTY]++;
++					walk->mm_stats[MM_LEAF_EMPTY_WALKS] +=
++						walk->mm_stats[MM_LEAF_TOTAL];
++					empty = true;
++				}
++			}
++			trace_mm_vmscan_lru_gen_walk(
++					lruvec_pgdat(lruvec)->node_id, walk->seq,
++					walk->mm_stats[MM_LEAF_TOTAL],
++					walk->mm_stats[MM_LEAF_YOUNG], empty);
++		}
+ 	} while (mm);
+ done:
+ 	if (success) {
+@@ -5804,14 +5828,14 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
+ 
+ 	seq_puts(m, "                      ");
+ 	for (i = 0; i < NR_MM_STATS; i++) {
+-		const char *s = "xxxx";
++		const char *s = "xxxxxxxx";
+ 		unsigned long n = 0;
+ 
+ 		if (seq == max_seq && NR_HIST_GENS == 1) {
+-			s = "TYFA";
++			s = "TYFAWEE";
+ 			n = READ_ONCE(mm_state->stats[hist][i]);
+ 		} else if (seq != max_seq && NR_HIST_GENS > 1) {
+-			s = "tyfa";
++			s = "tyfawee";
+ 			n = READ_ONCE(mm_state->stats[hist][i]);
+ 		}
+ 
 -- 
 2.52.0
 
