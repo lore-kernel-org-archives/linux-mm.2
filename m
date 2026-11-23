@@ -1,37 +1,37 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2768C606A32A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D99B606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zs2rFukl;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=PrBaN3N0
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=2BRs8kNn;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=orqM62jb
 Received: by kanga.kvack.org (Postfix)
-	id 3B1046B05C1; Mon, 23 Nov 2026 04:37:33 -0500 (EST)
+	id 66F856B05C0; Mon, 23 Nov 2026 04:37:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 314D96B05C2; Mon, 23 Nov 2026 04:37:33 -0500 (EST)
+	id 5F8EB6B05C3; Mon, 23 Nov 2026 04:37:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3696B05C3; Mon, 23 Nov 2026 04:37:33 -0500 (EST)
+	id 3AF106B05C0; Mon, 23 Nov 2026 04:37:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E833D6B05C0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:37:32 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96BF8A8333
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D5EC6B05C1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:37:33 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A08471607AD
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:32 +0000 (UTC)
-X-FDA: 85465881144.15.0F9DD7D
+X-FDA: 85465881144.19.C0F258B
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf05.hostedemail.com (Postfix) with ESMTP id ED75F10000E
+	by imf28.hostedemail.com (Postfix) with ESMTP id EE4D0C0009
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:30 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=zs2rFukl;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=PrBaN3N0;
-	spf=pass (imf05.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=2BRs8kNn;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=orqM62jb;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf28.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795426651;
-	b=GrhhdCz+8ntTdXAGRAVdZ1ro5IgsR8Sp1Vzk0UjQ0fxvI73/wePEzTqZsvXrJWFTu2FsqA
-	yH3K2Pk4KtYZzqS4h1ffeMIfOhyYuQfKuVWBqXjyM0nSVUU5tsdDb1K4ye6jiSHRTOqmT2
-	EfJylmCPdjDMKhwGh/Oxk3c4SuJQIWg=
+	b=vtsX+pZ54CCq8MNb1M33hqMGiTUw0qMdLtqki4FXQ+cjohQmsdNQyNDJvlyYkEV2Um/pGu
+	ThNwRupkdpyqvbqDMY79oxVVDhdX4LPfgIQm9DI5ptIyNA6Z/couj2UC9rCCtoSvE56lXk
+	vVCRTIPDb6PjJC7y32lgsB5S25NYgEc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795426651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -39,45 +39,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8XqI/ovDzkmrLY2+2cJN8n7p6UWRDilYHLPeAY+Yquw=;
-	b=FPYJgQCPF8WQ+RqZX8n/mu0WeSdkhlN4HgP6Oe8NsMcvBYbhQlCJaU1QH0Sx5wjtHO+7hG
-	eoPfWdmNXLpzh21CefTU14M2THGQSxpdGQLoOso6SMcbjybUsJ/kj32zhz2sB36OKAxDF8
-	ErRs9sdDl0vv/VppxX1/c8IaGncUoMI=
+	bh=dQUU5u79vuDftzZPq41mVfEGZTZsxAT4nxqA9JHwFwM=;
+	b=arRNb+913zjDxUf8N1as7rwan11qau7AbiHfrQxW0C9hesVxliJchRpO/Ok6CAL/Kx5ig0
+	gaLeJGdnwEX5axrDzB1RwuEIhfVQBclcf3MFgYWds5yWN+Q0bdTapNhF7l3Q3onz4hNq9Y
+	t+eBt3l3RIK4H7wn7hF+TUiaJpra83o=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=zs2rFukl;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=PrBaN3N0;
-	spf=pass (imf05.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	imf28.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=2BRs8kNn;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=orqM62jb;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf28.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795426648;
+	s=2020; t=1795426649;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8XqI/ovDzkmrLY2+2cJN8n7p6UWRDilYHLPeAY+Yquw=;
-	b=zs2rFuklTxUZu5QUQvubGD+p6Pyzu9fQaaPPpeVicdMWD9WrOngHzV4/XzWZBGRHsdJ3cc
-	quUxa+FO+MT7Qm/1zSlCXev5I2WGMZIh/fLeXdR2vba6jrhmd5wv+j2JDbGxOR8rDRUZTq
-	BrS2u4u2bVtIG6e9i5XPQgNb5b0xiqfa7c6Hy/FALHoQLbQ4PissJnR0w7x8W5wTyO+xDz
-	W93AeGkWa+PBh71o7o+hiHRXY5BimtaJ7OVjOnYimFgvPF1vB7Sw1JBQRyGxXt9skYIxqX
-	1OCyPLXO09TENfB/JZxU1yGMr5vNBBFPKGZp4DoiSMxG8+jwAwxfZJtkcpfl7g==
+	bh=dQUU5u79vuDftzZPq41mVfEGZTZsxAT4nxqA9JHwFwM=;
+	b=2BRs8kNnJh8jUvFne0pup0kjd56RKwfZQoVTswB8jaQkT/1+UC3J0057egOH4HK7xFJAqA
+	HqCywtOh7slUrHcQGQvefA6eL7zyv5hsSA1zxFFvN/6ge8RI/bO/4bG9ak1pAwLXjgZqj6
+	iGcErJRTwGr5nVvFFDPmW/Nm8laVaZu6XMnvCEkeIwUojmTfuvrSIQyqYv8EdmwCWWVV1W
+	ki1aQCBFjitTjq+qvrPiLfH9aOLweh50rgCPL57R9s9qzuuIqDA61unszxi5VtgurELgBe
+	RanufkaLmGxg3YO/o8/JlKLnrf6Pe3A3XF6OnxlZIDqBXd9EKN0qE98NapY4hQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795426648;
+	s=2020e; t=1795426649;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8XqI/ovDzkmrLY2+2cJN8n7p6UWRDilYHLPeAY+Yquw=;
-	b=PrBaN3N0mDSUo7jZ1zD0BdxjTZzR+Nlue0EyvgR0thKd8gbwBgsxQQULaCNGGe53D7j5Fj
-	BqzY9hdcO8uUC/AQ==
-Date: Mon, 23 Nov 2026 10:37:10 +0100
-Subject: [PATCH v3 05/15] x86: Remove AT_VECTOR_SIZE_ARCH from UAPI
+	bh=dQUU5u79vuDftzZPq41mVfEGZTZsxAT4nxqA9JHwFwM=;
+	b=orqM62jbjJv4cXHhrjV4L7jD4t6CApiSqCiCMjGa0zhR8JXKvf+tjoeh2jm1k5ccyk1y6u
+	4vDc7mLpel0lpJCg==
+Date: Mon, 23 Nov 2026 10:37:11 +0100
+Subject: [PATCH v3 06/15] arm64: Remove AT_VECTOR_SIZE_ARCH from UAPI
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261123-at-vector-size-arch-v3-5-d342dae9e843@linutronix.de>
+Message-Id: <20261123-at-vector-size-arch-v3-6-d342dae9e843@linutronix.de>
 References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
 In-Reply-To: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
 To: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>
@@ -88,25 +88,25 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
  linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795426640; l=1994;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795426640; l=1590;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=AMxMWB4XLAUF07GFQRf/ET9aUWKjGb7vCuCYUiBHLok=;
- b=zxx6vGGdxpYVQVUw2UCdVcTPBGb0aQyLdwuRLfgrOIr0g0B+Y9UEJYR4JcBJhIcNn1mnVle0L
- jMOLDNcao4zATn0M7hA6ZDAZUGDgHq+8r7fL+5MoLrHIByaxlnXij9k
+ bh=y+NTI479tyoHV6O0h6k1NetFm2TSA10tCjlo/HGZYvg=;
+ b=R4duhjDRQUXysUPjCyGoikenj+2lzks0w9tUzNKNfbwsEci78RXNuIVq9fOyG8pXBz36DsOCf
+ bTSsZCwaQ+5AeQSIEa48ysbBSHeolzWma3r0l38rQVQGcphJQ8frdez
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Rspam-User:
-X-Rspamd-Queue-Id: ED75F10000E
-X-Stat-Signature: kkxsj93z8enbsjkownfhtkbnoouojrfk
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EE4D0C0009
+X-Stat-Signature: 9bq73qt4tohzgp9n7dw38i1sozcrjonn
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795426650-80469
-X-HE-Meta: U2FsdGVkX1+uxRrDk0V32pUfwDGVI2O01zpyaHBsDsaG/yZFiHvO/VVVsiUnJDVO3XpozF4bjn+G0BTtA0/vD8/rxxilFNq6ctyAeAlob0B7RqyWe8CNBz2YIWWMhtOBtLp7OChEaqjnzwzcZi/WLWJAfvex8FflaTKa4p6CvwYeX8sYVTK077UZJ9c9eWtgaFdmcKNpsizBS1zlQb2pvlfnxljzMqtmbES2vaiLnV+WlvJNGc2WOEEioM9z4is5FVjlPFG1Ko//HqR+DI8tuvzOrm4tzvY6nCqpxSsIIu3A1Sm/6zdGdY6/+UWON2tv/JnkJZCnBA5FDXbgXygFZPZfHd7eKBLg73Y8cFPoF2DeECybUMuiDvuq/d5kjxvJa7LZrCFuIa8kvJMarevhU3qXMBvqXWcVwAf7oj6X+z4WIjGdYIbBcEnBq4tSabvJTjDUXWzGKto4F/sXeQPkpxcx0Of1NjyV906YRjsEsyGUEoACZT4QkVPFcVXlhZGBuUZd27HcvACjmj7TSDyTGKJWif0dcTJxUxjq334PMDWdRKeXETqUE00/7nOzqoKEzPL6MmMdkpgX4qofeYVZsw4j9RVKJC9OJPz6deI4Tk9i12csX/C6FvsdhrVzJixuMgXDIoROf38y2Ay1s4ALEuwr3ftn5o1Ea7hOn2qBN/jVlz4Xh55pTxZTuNGz6jmNjtxMO5fs6euoEMycNgYpIiBZr6N1jVUzWBLXXcNzSYwQ2xxohKQEPrJOjl81NCu4r/Ramp3KzVEfjxKsf4g709oBSLF7m+u7y8fWlE8y5Wz2v8MZlGHIdLaInntZ097gTDHk3T+HIN/d3L4n1mZ/KRLfBM8EUhZ6nl1XRMF0IwrC9MrlSS/EfnQbrgojPo0t+afg3IkWsXGpMa2HPpTLcHRj4kCE83h/3LZrqQlVVp9qIrdtLF2Li+TlsNYemXi60P2mfjq2GpsRQeXORSk
- crhw4yjY
- EUp4rMNW+DQFSlu4oUS9R1cqk46rffrKJXzJfBrIWtWlZ8IAvCdIRH8wL/P+ikh/ijbL2BU/mRC7gVQdQ11z4ugeUZi7l5y+aqKMdwJmNu2EHYf1ENJXFpNIg13y9A7WhYexwuEGVTFT2H7JVzSg+jRIDyV3WY664nfWuuCODI8F5O5fwaAX5exR1UhWdTEbt6a76dCTOMWi5FztJp5VMz+FA51z8FbeZhKQQF/jqSRJgns0W4Q7qGs5n013stxTBRDvEEXsv8wd8ttHfI3/GIuD3gZSNqYWTi01B1n4MPW3aXPFZG1tUrOQr+B2o9fkFhq6Uf+P4vJp+OrMA1GbJ2oJnCh1mfxZxQY8R4wRduBNabr+bovVhWqI5Hu6fkLMugAU8JgpQMsoDr0GhSgS+blz8dTrFCTmdbCHhOKlKmndvBFjTlgOK07BJqXfKVFn7EKbXNR2vXIMgNtBpYMJK423/l5aQOiAIPWIUMH8jXguGJ+aEGQLQVMZxfb3a2J+f/lXn7uPvds6kzrprcWneps8/Si8VDIKklZOifzrBB76ar4kbsyJh5s6Ht/aDoii8EirM+cbxeKeLdGlRZ00rhdT9nnTlYSaiam1eBN5pvw6lIlU9xH8WXQ0DdrELyTsbHVID7RA4AYDmrBXqyLps44e8gQPpJKtjUiwMjHUohZWbB99zbott98zvC7Ii/QJOmbGg
+X-Rspam-User:
+X-HE-Tag: 1795426650-793128
+X-HE-Meta: U2FsdGVkX19dEOLEtdhnRl8oSHocVS03PZ56dmivvxHW1Bwryjxb1h5SdrCT8GN6OUFQrk99h0Z6n0CbmGQPhN+YkyqiArUjPZ2qInNTiofYQSPL0yMvscUhPkNG216NaPfwiA4D3Lnkv/vyPfgEjovknAjK8zjng1+uPUInihE7zyx2RK/dMkfU3I9/kBOQQ9g3B+7WJeB8ymP9FX6YAKqrWsJ8Zo5J5VATB4BzelKermF3Q413IZM0JDTWMWaEsI3lS9nZ6DcYjAI/Z41pIb7eQ3MW8woVau2Q/T443XtEPK2M6wVIRMmVuExYxFhH0y5SAtkRp2vamMMlmps25AOlEzNrk2uPDMQY76fmbT2TWSqJhWHRI12t6A015MY5Kxd18urMr+vtfqa4f5yLHND61VLb/+aEoHvnGsWkqhdNNS7lPTIh0oWDac4M7/VuwGABeHDeQD1lgAZA09NeaQ4pjrr2PxBVQ0uLim1Vn0D1to/7ARx8bNugOB5oDfF5QmZHGVKp+kUah5TbR8qXOHO2EKLDzh6oVfNIM+2xxNroaYMGJcJtRtAUnyiDbwvv+rDWKW7FEpi36c0RtC0rHnxgB5n84ELuunj6CXkY5P+T2H02LcwfopdupCB/DN5tnOVigfJwV79p6I1caejmztN34BNgy/2Z0ZXequ5SPcKx1n5wqLtYQM/IUt7fjeUBgfgDq24Qn9lQ+by6EJEHkeqzdMxdj7CknbJRaGPQNcrbR36a2jvHB9+iv4F2GdjjQukbxRI0yeK6p5+BjlTHKXD/mqOeRnen809H1/as2k0NbVaN40ei5wbRvOcvPVxZpRJnAx0sxvBm4qSQMIy9pldj5RMdndwCKfCNFfzx6LHTge+whI379+4iaNNA0XIb2POP7z82X2lJwFH46VuiLDKRyZbCKmYK/MaXWuFZMqumxn3fuy2QufltM5V+n148Nw/1uZMahYUJD8m2S8S
+ ufRlPSvh
+ nRAfHqK0fNvxW7OLZS3g/A9TngjhXbkzGp5fu1SY6TtUxQJHMpXvrChDtCMR/Sc+2DzkHQf/ZlviDyMRBqsoB+Ja7EhQfKaUKIztiHKijiFTQHZAL5NwWQO8hh9ShqouupOHN+82vJ5atoTIPmF75EueDzKoUr+oqih0E54BcE1/ZVZoKCYsOQ7D+v8P8ho/OWItvIb07ko+QE/NSQec5i8K4b5Z8/qt0E4HPNsiUrIsn6zq7W9WeSDmlI19AoPDvE5V8iElj5kfFmhMA8a3i9vIOv6XGvxPcoXix55JDRhZXbPTdlG0G6ytxSeA8Gu3EQfASw+rZWnQRBbr5yzhhes1+XO11gRyYt0fTTgXYKsdkDOekoYET4kywwVhbNE2CiU1RbtPbLGQuPsfc13eZNn8bHm96whhUh2gbEo2hC+gmaA4lh86CJ7D6Uq+q3ZFm/LtKfs9Eq4vf9HyANwUUnRMrgLZId2ESy8w92mYtOjTikH52g8feeYD+oEM8gu+wtlS4JcRXCxdXL/ZRDw5rODeRjmhkFFZ2tO5hKDE1i9oZPKVVAt9RNyeTQ7rfclV4yA/gy6d8enT7lqXuxqQ0Kb7jqua5isSHo/1FQFeMhsDnHIFfTXxid0Ux6zbzBjUGA1brpjggxaIlugkRXtT8owUqcBnfKUehXPdnGCx7BEHIrzte3lfBRwVRS/+28PFwajyEIcgApa+1k0Ljg4x02vOQgxKOKg5AZmOL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,54 +124,43 @@ Move the symbol to a kernel-internal header.
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: Kees Cook <kees@kernel.org>
 ---
- arch/x86/include/asm/auxvec.h      | 12 ++++++++++++
- arch/x86/include/uapi/asm/auxvec.h | 13 +++----------
- 2 files changed, 15 insertions(+), 10 deletions(-)
+ arch/arm64/include/asm/auxvec.h      | 7 +++++++
+ arch/arm64/include/uapi/asm/auxvec.h | 6 ++----
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/auxvec.h b/arch/x86/include/asm/auxvec.h
+diff --git a/arch/arm64/include/asm/auxvec.h b/arch/arm64/include/asm/auxvec.h
 new file mode 100644
-index 000000000000..ed26ad09f3e3
+index 000000000000..de24eaaa06e2
 --- /dev/null
-+++ b/arch/x86/include/asm/auxvec.h
-@@ -0,0 +1,12 @@
++++ b/arch/arm64/include/asm/auxvec.h
+@@ -0,0 +1,7 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_AUXVEC_H
-+#define _ASM_X86_AUXVEC_H
++#ifndef __ASM_AUXVEC_H
++#define __ASM_AUXVEC_H
 +
-+/* entries in ARCH_DLINFO: */
-+#if defined(CONFIG_IA32_EMULATION) || !defined(CONFIG_X86_64)
-+# define AT_VECTOR_SIZE_ARCH 3
-+#else /* else it's non-compat x86-64 */
-+# define AT_VECTOR_SIZE_ARCH 2
++#define AT_VECTOR_SIZE_ARCH 2 /* entries in ARCH_DLINFO */
++
 +#endif
-+
-+#endif /* _ASM_X86_AUXVEC_H */
-diff --git a/arch/x86/include/uapi/asm/auxvec.h b/arch/x86/include/uapi/asm/auxvec.h
-index bdde9e18f94e..6677c9ace117 100644
---- a/arch/x86/include/uapi/asm/auxvec.h
-+++ b/arch/x86/include/uapi/asm/auxvec.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef _ASM_X86_AUXVEC_H
--#define _ASM_X86_AUXVEC_H
-+#ifndef _UAPI_ASM_X86_AUXVEC_H
-+#define _UAPI_ASM_X86_AUXVEC_H
- /*
-  * Architecture-neutral AT_ values in 0-17, leave some room
-  * for more of them, start the x86-specific ones at 32.
-@@ -10,11 +10,4 @@
- #endif
- #define AT_SYSINFO_EHDR		33
+diff --git a/arch/arm64/include/uapi/asm/auxvec.h b/arch/arm64/include/uapi/asm/auxvec.h
+index 743c0b84fd30..fb51e906813a 100644
+--- a/arch/arm64/include/uapi/asm/auxvec.h
++++ b/arch/arm64/include/uapi/asm/auxvec.h
+@@ -14,13 +14,11 @@
+  * You should have received a copy of the GNU General Public License
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+-#ifndef __ASM_AUXVEC_H
+-#define __ASM_AUXVEC_H
++#ifndef __UAPI_ASM_AUXVEC_H
++#define __UAPI_ASM_AUXVEC_H
  
--/* entries in ARCH_DLINFO: */
--#if defined(__KERNEL__) && (defined(CONFIG_IA32_EMULATION) || !defined(CONFIG_X86_64))
--# define AT_VECTOR_SIZE_ARCH 3
--#else /* else it's non-compat x86-64 */
--# define AT_VECTOR_SIZE_ARCH 2
--#endif
+ /* vDSO location */
+ #define AT_SYSINFO_EHDR	33
+ #define AT_MINSIGSTKSZ	51	/* stack needed for signal delivery */
+ 
+-#define AT_VECTOR_SIZE_ARCH 2 /* entries in ARCH_DLINFO */
 -
--#endif /* _ASM_X86_AUXVEC_H */
-+#endif /* _UAPI_ASM_X86_AUXVEC_H */
+ #endif
 
 -- 
 2.56.1
