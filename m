@@ -1,111 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC9D606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 20:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE802606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 20:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=SieKh/wJ
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mULKN0Nu
 Received: by kanga.kvack.org (Postfix)
-	id 99C6D6B05B7; Mon, 23 Nov 2026 15:23:00 -0500 (EST)
+	id B346C6B05B1; Mon, 23 Nov 2026 15:31:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94BCC6B05B8; Mon, 23 Nov 2026 15:23:00 -0500 (EST)
+	id AE4276B05B3; Mon, 23 Nov 2026 15:31:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83AA36B05B9; Mon, 23 Nov 2026 15:23:00 -0500 (EST)
+	id 9AC1C6B05B4; Mon, 23 Nov 2026 15:31:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A6DB6B05B7
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:23:00 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8D11409F1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:22:59 +0000 (UTC)
-X-FDA: 85467507678.08.BDE8063
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9D180A0004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:22:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="SieKh/wJ";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795465378;
-	b=Cort9wf6Z9/zbTMLaAJHVnjAgotMPXYS+ccxaapoumEyn5MPdcxe9gU7F3OLm2RsQqTgVY
-	9i/Uk+lUvOI0w6TvUEoz8D8Bv8e8GGF34aVBQYQAXRLIMxzrRHXXR54ChP3j+tLOkY6d0+
-	PxFe3pWXalLTXiEk5sC13/VRks1hNBE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795465378;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 50D356B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:31:59 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 63424A0A3F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:31:58 +0000 (UTC)
+X-FDA: 85467530316.14.EF151A0
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 549E840008
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:31:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=mULKN0Nu;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795465916;
+	b=u9stZanQcC1g+CpE3959z1FafmTRyhAS6bWapsNR7+0s3IGM5fXrcUMGFa6jC6YoGBWgvw
+	jJznarFPfnmQy70Qot9uKda2m1aIEahBeIxADurU6HwH6e3Iv5qcI4ZBJic96NYn7beZ7H
+	PkjlYxz/ghNZFEicK2axzINxgOKQ8Yc=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795465916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KKXZcV8cKb3Lg1UagSAM58C/qQq0Byjz97EepSOcDvY=;
-	b=pWYqjepiglL0Hv4QHc1jez43AUVzAlbUJS3sJHEjOHlI+3GgagWkTUjnbafxWgu0EW9zM1
-	MSSm0zj3APWnOXqmOmK4AbZ5+nQGwEsIuYxcJC06pgVDvf+ws8WAuJzR/crlFfNQIjDNqz
-	4c7r6LFEm6MtKGa47ktYB585HMXBho8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="SieKh/wJ";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KKXZcV8cKb3Lg1UagSAM58C/qQq0Byjz97EepSOcDvY=; b=SieKh/wJ1aTov+gaxl5hmOcwwM
-	hFQ5mZXaNyF0dzEWsPJp8agfyi5mQ0Mrrdj8JFcWrv8xBio/0j2WBcKLTPq4Bae0HPPak6s0+oX0K
-	3mheKlnmLI13Izk9zBqmXoMp1i5bll9H9vBHbSNkQzkpo0LQvY5yxokAU+nXiGcMtIP+8HBnDOZ6d
-	9EzE7POVu380aSAOXnTRCxAdU2CGbHfizSz2n+C+224iWNTU1MOt5vFOduTuSgKgkgipe8quFeUJ/
-	2D1jLEKpcRSt3+AnJ4tEN4mW7pduiThuU0WBiTYlNGTgYprHtra6kNVPwy0nMG2IHfnJwuXGrBcO7
-	0rOglfAA==;
-Received: from willy by casper.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVaYl-00000006z5F-1ZU9;
-	Mon, 23 Nov 2026 20:22:43 +0000
-Date: Mon, 23 Nov 2026 20:22:43 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	William Kucharski <william.kucharski@oracle.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH 1/2] mm/huge_memory: use NOFS when allocating while
- splitting folios
-Message-ID: <awSgk1VTUsiVQOAT@casper.infradead.org>
-References: <20261122-migrate_reclaim_deadlock-v1-0-83c56185b0fb@kernel.org>
- <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
+	bh=IJsNI40Oc4odODK4rCh9CibKGkLzE8LmGw7dcdr4rMY=;
+	b=qdzNHwn19WiBAygX4B8LBLVb23Lf3rwZWtSz9ewXnvYaxfSlQSQDULdj4EN54gg3A/6LPI
+	pFHrOUW0iZahqQc4iixFDlaHF8JvLUkjJSEpY6J3jsNhSWOeMZiw+LycBhAUfUNCJxHRF2
+	ZKMz98X/Lm1ENsBcg26oiDqOdzUzHW4=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=mULKN0Nu;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c516a574bffso269455866b.3
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:31:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795465915; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CtGxiugHwixF5uEt5EfK0xQTxXCvUGf0wtm0Nl8QxTZJb305iBE5+zthZuPiMh8NLE
+         PdQstiuXiv9gnfb4L5AgDOcCcFjJVSmYtzYAJmH2+tHXH7GAqrlf+q/ijVa6sx6YmBuh
+         f3qfkKBGyVtz0Bf0xT5ue5HuoocHjsk0btXdp+BtFCrzyKtdt3T+5ngu+SMsLjSf6/zR
+         wKVVVNrS7XupLf3tDl7r52ePPBVlOy6VMVu3JaTjElUK1HyEyiJrRhNMcbwKvBOmAgr/
+         5/VL+FaiR/ZLa7Af9P2LWyaogDzE3C+wrMTW6Jf6qw1CPAmTmy5Toxzr46Kcr8y+4YFa
+         ZlZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IJsNI40Oc4odODK4rCh9CibKGkLzE8LmGw7dcdr4rMY=;
+        fh=YUT3+lThAoEWd8pAg0g9LNm50yGAMafDDtsx6Gx6b4w=;
+        b=oTfpaBjRXeOi5qRsszcFOrl+WiAj716mIfIteDPWK1monelFz65T7ge8upwXhWl9Mi
+         935wd129rZxW7FfDjrPFz9LjBXbMaREib3CLEluPS0tvI4Rhf8zJhaTZTmmQSay8UwD4
+         q72guAt7AVAWUwKw6Gj8Dr4/ahF6wUGiVbKhSlMSQY/evmx0Un7TDDwHyW8kUtezBahU
+         RRZESopnqSpWPr4f4F+A13ffmNUO/z28mF4HmsiWmE78Hy/JrKbYuQTQGlYq2WoJdHLw
+         xsMDsKQ2gME7TElQJm4qqEcSTa1J7orW1wK29hGGDnkVpbosRi9J31LofdoKM+a7sjMS
+         aoLA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795465915; x=1796070715; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IJsNI40Oc4odODK4rCh9CibKGkLzE8LmGw7dcdr4rMY=;
+        b=mULKN0NuqCjFJMZtJHLdexVdjmZU7tZQuzxW/e7xVjA+oxxdqmNzvkL/011yPLzHUg
+         KGTuvg6zGT9r+sZqe2zb24mhFzElM4tBFkZO6AoNK24w0y9U3FezT0AAX+3ocunf/zkC
+         co7YUj5w3LDAujMsau7fNl+tJ0ynYZJzlYvAJ+bQJTochXrEYT3rOa8IjuS5t8OFBDOb
+         aiUQ2iESccFGhdUaJCAbWeYpzJ8DK31Bp8//9+RiZXSzwMbvz2N1QtBXZ/ZSjQHINrVB
+         +gzb+kguc2SpUSfgx57GcoI2x6BOxVa/Q9usLTDPT6SFAern/cjFHpdogXWuw4vNmmxF
+         9veA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795465915; x=1796070715;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IJsNI40Oc4odODK4rCh9CibKGkLzE8LmGw7dcdr4rMY=;
+        b=rP5o1hFFIa4dsKFT2Hz9TruFxHPZDwYEU+lAIk4KsllbePvEbcos3QEsQI4eBXeLzJ
+         TLHwL0rYnOgl0iDFW038Fgx+jiuBSxbAqWEoNX9DK1u3AoKiy4TJw3ZDVLvNjbsvcaqM
+         zxk1FWhzSEKb0UAXp3HX1wmTwELx4F4RaaTXITrwxcsOpWjWgMosa6kM7szTpvQBrMW0
+         E8jByq1isEMXmdMDsq4FWv07F4YhSAMgvk4H0JJMu8+YgJfa6UO8JFSJqlI+61I1LFei
+         UUBwzPtRcvprimfVhM1nwbV0v4j7dOM5kFODb6cX0bZ8lQWQsv3msBLAftmihrlrBIdR
+         STrg==
+X-Forwarded-Encrypted: i=1; AL+hErGLlCtNg9j9kTSUp1tOFKK6DMsuelnOglnApOtZkAOzA6OdOrQUScNj3QyD+ufHvtXFvBf3QLuIsA==@kvack.org
+X-Gm-Message-State: APuU4Z+jfsSTjZgdCMsKJna+6TFEgfbPqR7AnMGSr02L8YEuX5rUDegX
+	M4k997CPIxj6Iir8QKr0lSx2eyUOzgTuJDOr6sdDbp5D9KnV6TIH6Cfwak6/3a598cDzsOuFP01
+	hzA2QMYOn7m4/GiyfeD2V/wyaxZqh8k6UW/ZR4tHf
+X-Gm-Gg: AZFdTZcJ4urrBgCytBMqEmi0dOINCSVmbIjWNBnBjYeaAlClOFII/7E2jMVCObvqmHw
+	6VyjWQPnvy3n46wvtBwK6b4LDpYkLO+ac1v7ndr3VYSaQuc2LmlnwFg3+xH/5td3e6/7yOp2X3U
+	93bIBZfjYjv/G8moULY1bu9TEaR9xuZe8QOQMwcp5CFcRE+RGtfTqACzaCC1erhk1q/zCK4xAH4
+	E6gzc1ubKy5VtQFQ2JkZyIbS/FTk1WDS55JzEX2ksTNpkvN6vc6ChQWwzOdYFtZQhiZhEFdOIHv
+	6yK6LEk3Zdzo6i5oslE0ZC3rSOeTomorYl0BjiyvHqaIPGwflpRzxkiCbibR2FuYUKsoREuhoo0
+	zNouN7n8ilaBFPVwTjU/rH2i2WvALphV7Mn5Rhvg5GdLslGWxHN2YQ6DWgtO6ZhaJwtdYD3i37q
+	eWrEDYXYypyIF0mX5jNjfSk0Ph7YV3L9EvXNEOqY9wfmNWbz5wcVY=
+X-Received: by 2002:a05:6402:2347:b0:6b7:d1a4:fe1b with SMTP id
+ 4fb4d7f45d1cf-6ba37ee380amr9483450a12.43.1795465914250; Mon, 23 Nov 2026
+ 12:31:54 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 9s6ymso6naxhsbxgww3zcb54rj74mztm
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9D180A0004
+References: <20261122184453.2668189-1-jthoughton@google.com>
+ <20261122184453.2668189-6-jthoughton@google.com> <C1CC6F31-4F75-41D8-89D8-CE43465FBB6C@linux.dev>
+In-Reply-To: <C1CC6F31-4F75-41D8-89D8-CE43465FBB6C@linux.dev>
+From: James Houghton <jthoughton@google.com>
+Date: Mon, 23 Nov 2026 15:31:17 -0500
+X-Gm-Features: Aa3M54rAEjsqVff0l9eelHjmiyUD7j4I6mswdsQtcR5CMMtlUyAnlGvfFa0vdJQ
+Message-ID: <CADrL8HXemwtmL_URg-WNOzdw1YCVxP3HVxX67yd=pLRGAuFyVA@mail.gmail.com>
+Subject: Re: [PATCH v3 05/19] hugetlb_vmemmap: Allow architectures to
+ dynamically disallow HVO
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kefeng Wang <wangkefeng.wang@huawei.com>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
+	Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	David Hildenbrand <david@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Nanyong Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>, 
+	Frank van der Linden <fvdl@google.com>, David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: it8rwswh78giizb79tbcnguq4k1gunxy
 X-Rspam-User:
-X-HE-Tag: 1795465377-233964
-X-HE-Meta: U2FsdGVkX185VmM7qTAb7SyRdL3UthU2e2afJwpJ+tG+790gowEMWfWhl/wJLbNbJosDo2T1cQgf5A4iaOSRG0vq/v3cQX32jmWjq8wXz/if04FYSkh3SyoXQQdXe58FYvWqXren/UMs2Jre2s3z3PxpS5YZj6b5YBn3o/Ro7tg0fN5Rs9UJXMQ+MYFzBhGSwnVAW930MuWRps4R6y6kXX0h2thIlPwDAAcYlpJ7qz0Vu8D2Uqe7JQLcHnya/kkbuCU4QD60yXOkuAVMZ8ONm5x7Ck6WZ0tu5uzqQH7pjhgstX3WC0tVR8okdNL9Zkv1sJeWYu7uAXWO3N8xAJY3sLlDkyhHJTzPAX0P9lCdDR1rXwAUfpSJdPaCci/p19yKOoF+ZNOQOzHV5qCviTrMyjajrohWwcjIPTiiw9YKDmT41xvZQrQDMXFFDBNHIf3QTjPE9tvAwFx09k3ol6w/516eBXbgJ2RDc/h4zaGI6uOCGhL2OgtW//bmVKBEZeRiK09HJyWME3qFo41ww4uAvNfCFmRDl8/cKWZONx3NeoWmB+d/DdZa8eea5rxXm0O6DlZbSgxQGwukbjBUyWKvBzSXQLsVcgR8XXK6O0+gEKL9XIkLFJaNP3H9gl13+Pa4EnxXOH9mipp4tUs8jlt0/rwlCIS+JxTx+PKCKOlkn2Wnvj7UvNdAM77K1dXvV5GI4y3FBM6bLi4FxU6m7BwN/kRnz80Y7/ZeSuMVTbh4V16/2oRaR+BnpDqvTAepOVoFQ8roqhV+yFgP0lkVL47XHYsll/B+tBvVT4xx/B/hINAPFDEsWTDUCW89HkxVTTYCXeV1LSXdB5R7MESCcKJOfz4gOWq1IisooOtzJpT2lUp6GSbc6v4FswR73VoSmqJvkm7PZyS8wkXUjCsOylYgzX7PhOpIV7rSlePBnOQJIYFklSFwpkba8n+OsDbC8MPKD0V0JFvJToLleg1yR4H
- 3IZ4N2FP
- YG7Sx2zt9t/Bsh0NfaknG39fhoFsd4X04aL3VpblYKnJfGLOE9djIqcVYgW4oHiU0gnsn3L+KAeKlPQ0Jwr3nlwcitVqrnSk9w9WkP/RGMFBdWF+CX0crxoCxEw+8dU8YPJt1dxYUxSOwuvc3AMF+IQAiwspwQkDXHBENPFyH7taBdBwPIwa/c1qUUPOSBhzt1p0CLNvx0aao31d09zKRkd53bV6q+w+ilcN5BF9d6vUjQprdWfkEslp/dzF8y9v/K2UsTE46oyVZM2SySsPJVuaa+VGDf6ofZY6OifQrEHl6fVXNdx3KG3NaaAy5TS4jdVg5COsMZrGavemnv6sJZswgUrMu+/XhDnLSPAyHRwh0B/FtIM1h8k1CpTJCgwDO5Mk2phPq/BN1WXs6Lx+NI7zG+Nhb3NV3THbO3tjSL46Bptik+n2Ij66Kkm03iRUYKORvxAn+xDxFDUN1qNLlt7k4Uhe/Ve8WGKzm+/4MjCjZA7DE5hkKaRAoFHNUFrKhRGV9rcJWjkvLtsyKBGTXhEBAGDlyLY4/DGNq
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 549E840008
+X-HE-Tag: 1795465916-818766
+X-HE-Meta: U2FsdGVkX1+QEkuHCqaeM+xrzhqhH2IsGJvZdy//aLS2bpESHX+yUdCkNGuXim9shrZ+yLbUOHGr3NAcesD3KoXhg5lMcKUfATysNbwxmnTkRRl+K1DjF3IsqMYP1yF9FoZJi806v0C56a0PRL4OVFptk4sBeirHyoiD7C2yWLp5uEwYit5aS4mUDeGfFim+XWVFAWDxEwrFaWED6VSI4jWASgsB1iWbG4JdDcrYaP4YI2AtgCGvvAYn8nUPXZ4NRBXCzeLF9ohhH7jYVTZCshe/JyLO5hb7JsotxD64E/02UXxNjRILSkIJwMxiUDUUYcLztEhVK16zYQEbomxGL9eF4p4tr2rVcguEMKDZbE62dNhrr3599oR/c/Ofv7tmQIA5OK779z/jS0mhHOmQST9k5gkZoLKEiiFGtuSZgW4aM0RApDZFnMBLSNZgO0GYtwMtvgVJmrH99ZtB5/3XxxZF9yYbjf46dPbd4JNkRr8/OQtQhwVzA9qzDDZlgqelzEgCieqTTvl5beS1Wdo58mMaaYBOpcOE+rcWFcQjRPIYcv0DijwLJeWaMCcqqV1xEzapkjybcm1gGIfgCiETtdKvJqjWtKgdaWi4uBngHobLx71ShnoKmUfEH9OaqhAeQdcFTssuBsHCXlyLc6jMdxytw/7PG9zKth3jXiSyj3BDhom/XDK5+GdI8ZUWx2p4l2DBZ64MrlIFjHXr+6hc9WHNb/MHP18+K9g0lwqVTaEsh+CZewD2o3kE51llIP6K/LHpOMMmIZAgfvK/EEbaAl/SU95FsYiAiZDRqFi7YOUZGSJyMHO5rScoenE9qgpXkUT4F1rrfA0JOPZW+LovVQgRTQUS9zHkBmoVUdM+i41duEiM4GaGe5GMBsVDbzdvXULOvD7yhAkq0pX1KYlwAtvVEEFCnbYSi9tN0TtAEaMKFkgfiNfCVTB1/OQURMhYavFbW2zaLUMVJQFz6Lg
+ Q2Fpq//d
+ 4T8RX7AOoHuU7VA1pKTkBELx+pHU+JL9zm5XDq5nzbFq9jDt6zKaVtmL53Za4UbNCJcFcZEKMITT72KriOfTf+NZMjsXlZ47JBMavRpVK2UyxBka+51feK+jxbmLLOHuw4gOb53S/XF1isER2g2VaSTiE0ftNOi54Bwqo1bbCQ12C7cotSVCe+fHci7g5Yee9LKGlPHBVESZrVut/V4Lg4vOcBWBd+TlfhngrkYtX8BmoC9aC5MF27VLcT+ZXqxXVz85s1jYo0PayAZqgt/b3ySDvjwuPJNe9C+yBn8Pyc2ePaaOQFpEjfY3FBokwHwA8yAVo6zHivFcO+wMXopyfUgVucPF0NOcJLFIhepy93TziUoQFGgzt9IRpNpY3kU4EZvqN0txH5b2oWnRbNi+vr3iz56XhnLFr1O54qS3VhM9cb814/MaTw+gEcIlhl6xmiclCYGkiQ5jXjgF0kvPkboOudFL8pt1hREa0eXPcU2Sorv4sBAk2qdVE3poMOHOBjlMX+qfgePfpX+QFQTM/jVtnDsVl6v7LogdM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,47 +153,126 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 22, 2026 at 01:42:17PM +0100, David Hildenbrand (Arm) wrote:
-> Various callers (migration, memory-failure, s390_wiggle_split_folio) split
-> locked folios without holding a reference on the folio's inode.
-> 
-> Splitting a file folio might allocate memory for the xarray and call
-> filemap_release_folio(). If either ends up in direct reclaim with
-> __GFP_FS, reclaim can evict the inode through the dcache shrinker, and
-> wait in truncate_inode_pages_final() for the folio that we hold locked:
-> 
->     try_split_folio()
->       folio_lock(A)
->       split_folio_to_list(A)
->         xas_split_alloc()
->           try_to_free_pages()
->             super_cache_scan()
->               prune_dcache_sb()
->                 iput_final()
->                   evict()
->                     truncate_inode_pages_final()
->                       folio_lock(A)
+On Sun, Nov 22, 2026 at 10:01=E2=80=AFPM Muchun Song <muchun.song@linux.dev=
+> wrote:
+>
+>
+>
+> > On Nov 23, 2026, at 02:44, James Houghton <jthoughton@google.com> wrote=
+:
+> >
+> > For arm64, only some platforms support HVO. Add an arch hook,
+> > arch_support_vmemmap_remap(), to prevent HVO from taking effect if the
+> > architecture lacks support. The hook is not HugeTLB-specific, so it can
+> > also be used by other users of in-place vmemmap remapping (e.g. FS-DAX)=
+.
+> >
+> > Check it in hugetlb_vmemmap_optimizable_size(), so that hstates are not
+> > reported or treated as optimizable (e.g. by report_hugepages() and the
+> > HugeTLB allocation and freeing paths) when the architecture does not
+> > support HVO.
+> >
+> > It may be the case that arch_support_vmemmap_remap() returns false at
+> > first but eventually returns true. This is the case on arm64, where
+> > support depends on a system-wide CPU capability that is not yet known
+> > when bootmem hugepages are allocated. Such architectures cannot pre-HVO
+> > bootmem hugepages, so they must disable the section-based vmemmap
+> > optimization in their vmemmap population path with
+> > section_vmemmap_optimization_disable(). Their bootmem hugepages are the=
+n
+> > optimized when they are gathered instead.
+> >
+> > Signed-off-by: James Houghton <jthoughton@google.com>
+> > ---
+> > include/linux/pgtable.h | 15 +++++++++++++++
+> > mm/hugetlb_vmemmap.h    |  2 ++
+> > 2 files changed, 17 insertions(+)
+> >
+> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > index ab33df268955..8cf44120e2ed 100644
+> > --- a/include/linux/pgtable.h
+> > +++ b/include/linux/pgtable.h
+> > @@ -480,6 +480,21 @@ static inline int try_update_vmemmap_pte(unsigned =
+long addr, pte_t *ptep,
+> > }
+> > #endif
+> >
+> > +#ifndef arch_support_vmemmap_remap
+>
+> We usually add a 's' to 'support'. Like arch_supports_vmemmap_remap.
 
-The "holding a reference to the inode" piece is a red herring.  We can
-deadlock even without it (although maybe the AI can't see it).  If we
-don't remove __GFP_FS, we can hit this path:
+Oh yeah, I'll fix that. Thanks, Muchun!
 
-  folio_lock(A)
-  kmalloc
-    alloc_pages
-      try_to_compact_pages
-	compact_zone_order
-	  compact_zone(MIGRATE_SYNC_LIGHT)
-	    migrate_pages
-	      migrate_pages_sync
-		migrate_pages_batch
-		  try_split_folio
-		    folio_lock(A)
+>
+> > +/*
+> > + * arch_support_vmemmap_remap - Whether in-use vmemmap mappings may be=
+ remapped.
+> > + *
+> > + * Vmemmap optimizations, such as the HugeTLB vmemmap optimization (HV=
+O),
+> > + * remap vmemmap page table entries while they are in use. Architectur=
+es that
+> > + * can only do this on some systems may override this hook. It may ret=
+urn false
+>
+> "Some systems" is not clear for me, How about rewrite this sentence with:
+>
+>   May override this hook based on architecture-specific runtime condition=
+s.
+>
+> > + * early during boot and true later, once system-wide features are kno=
+wn.
+>
+> I think the description should be general, so the last sentence I think s=
+hould
+> be removed.
 
-See this discussion:
-https://lore.kernel.org/all/20200214065504.GK31689@dhcp22.suse.cz/
-which led to patch f2c817bed58d in June 2020.
+I think it's important to clarify that the return value can transition
+from false to true, but not from true to false.
 
-So yes, anywhere we're allocating memory with a file folio locked, we
-should enter nofs scope.  Perhaps we can teach the AI that rule?
+Okay how about this:
+   * Vmemmap optimizations, such as the HugeTLB vmemmap optimization (HVO),
+   * remap vmemmap page table entries while they are in use. Architectures =
+that
+   * can only do this under certain runtime conditions may override
+   * this hook. It may return false early during boot and true later. Once
+   * it becomes true, it must not start returning false.
+
+What do you think?
+
+Thanks!
+
+
+>
+> Thanks,
+> Muchun
+>
+> > + */
+> > +static inline bool arch_support_vmemmap_remap(void)
+> > +{
+> > +     return IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZATION);
+> > +}
+> > +#endif
+> > +
+> > #ifndef __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+> > extern int ptep_set_access_flags(struct vm_area_struct *vma,
+> >                                unsigned long address, pte_t *ptep,
+> > diff --git a/mm/hugetlb_vmemmap.h b/mm/hugetlb_vmemmap.h
+> > index 8b28063d78cc..440477288d19 100644
+> > --- a/mm/hugetlb_vmemmap.h
+> > +++ b/mm/hugetlb_vmemmap.h
+> > @@ -48,6 +48,8 @@ static inline unsigned int hugetlb_vmemmap_optimizabl=
+e_size(const struct hstate
+> >
+> >       if (!is_power_of_2(sizeof(struct page)))
+> >               return 0;
+> > +     if (!arch_support_vmemmap_remap())
+> > +             return 0;
+> >       return size > 0 ? size : 0;
+> > }
+> > #else
+> > --
+> > 2.56.1.809.ga0b61035b5-goog
+> >
+>
 
