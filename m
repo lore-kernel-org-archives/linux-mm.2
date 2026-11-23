@@ -1,81 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7C0606A6B9
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B72606A334
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LsR2Wh+5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJvImX4Z
 Received: by kanga.kvack.org (Postfix)
-	id 6AC3E6B05B2; Mon, 23 Nov 2026 14:38:44 -0500 (EST)
+	id 6E0446B05B0; Mon, 23 Nov 2026 14:45:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65D776B05B3; Mon, 23 Nov 2026 14:38:44 -0500 (EST)
+	id 6B7416B05B1; Mon, 23 Nov 2026 14:45:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54D356B05B4; Mon, 23 Nov 2026 14:38:44 -0500 (EST)
+	id 5A6866B05B2; Mon, 23 Nov 2026 14:45:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3074F6B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:38:44 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C3FA7A7ECF
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:38:43 +0000 (UTC)
-X-FDA: 85467396126.28.9A78676
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 262A36B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:45:47 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 95686C099F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:45:46 +0000 (UTC)
+X-FDA: 85467413892.19.611F23D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 04A72C0007
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:38:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LsR2Wh+5;
+	by imf25.hostedemail.com (Postfix) with ESMTP id BAD2CA000F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:45:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJvImX4Z;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795462722;
-	b=kK9BXUAwVpoA5C1E9raSeiX/KzmF1sPbEx2lvwrQDcLBMaSQFJQkoGLG+KslCjKAoXRNuQ
-	hRg9xN82YpdDaRT6/Vuh+cT8z4hOjX0u1fgBpEqRqV2bVjJuyuy3nMe0Wp3Gl66w+PMmrC
-	oJP2Ti/JMtCsnam/UCZxMmJ+Yj1WcoY=
+	t=1795463144;
+	b=ecZK3LdjmcvHaxWLJ+PYiKMJ6eZsfG0v8ad9jrGAtwryeWNU1uys/CeT8NDQUBpPZK1t5s
+	oKl3et1Pz29ld85xJFnDREBsDluimgFgYgHVGTkuZbxIrN9n7gTbXEBqDhyubuVAYrm572
+	U5IdMTtXJPMpEJIzF5CZXidcYBNGs/E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795462722;
+	s=arc-20220608; t=1795463144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0DaLrAjJERB9nEFU7eyItkBxKjBtjK0prxAqaKWShPw=;
-	b=wHQElsgTNmA0MXH3zC/PE6MsjAq5xcCjOe9RU1RRT0cWPJouZ1rQuQQ31sVbhvTwDX+edw
-	rA7WA8zhzyKp4hMAKUXFYHMj3UMdb8vXrAICcgW4vwaE0H9x5R59LiDvp4MM1dq3X4M0Oe
-	bOufAWDRHFl0Ep5V1eyijyroFG5sE6g=
+	bh=pD6s92k761c1Ji+Edgu0dOlrKizCHM30TIfkHtFjL/4=;
+	b=WddwOmYOst0fSMHFp3rKjzOPMNiNvVLc/E1AvxHrhWkMc9eN6SGwWbhcJ5ND7Q13OWFHWb
+	zaItJ6Fdj/hU+aFHpqw0MFt2SCWm+OvkqD1suS39QUkENl+9OELeyvEvGM21Hrsberi3A6
+	Hp1waoZh23JoR2vJ+e4PTAZQ+Mjabgw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LsR2Wh+5;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJvImX4Z;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ECDA841AA3;
-	Mon, 23 Nov 2026 19:38:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019511F000D0;
-	Mon, 23 Nov 2026 19:38:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DB25F41AD2;
+	Mon, 23 Nov 2026 19:45:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820D21F000C6;
+	Mon, 23 Nov 2026 19:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795462720;
-	bh=0DaLrAjJERB9nEFU7eyItkBxKjBtjK0prxAqaKWShPw=;
+	s=k20260515; t=1795463143;
+	bh=pD6s92k761c1Ji+Edgu0dOlrKizCHM30TIfkHtFjL/4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LsR2Wh+5JU4k7rgs/Pxd+WRv7lmJ7zsASZ+wbZcpBeBuS2ShH+1SXGW2ZVCuSv7Za
-	 +m63aZ1smrwrwk/ajOfbjQs3Knr136/sZ9XM7brd+DHdevDn/rONMER1Tk54o0MSM+
-	 ZsBG3yS0AzDvZhImULsg9eFVbw9hddxVBGSYS9TySyA++XoKrQJbMSYPbvO5GgUNWF
-	 ueumWEOw7W9d3EZlZhikorcZqydHztD/F/0K33LA7lBQhZ7k6cdX+0PQMh4oabAFVK
-	 ZOt46kv/GnuUx2JAsIMNV1oLlG002sm3xGPZfKQOYCsSppBkj7dORmhmFL8ROPFF8L
-	 P+FaWNW7Cn2aA==
-Message-ID: <98acd21e-a97e-4299-a206-639ed9fd29d8@kernel.org>
-Date: Mon, 23 Nov 2026 20:38:34 +0100
+	b=kJvImX4Zp2Shrp12IX87KJgXNh6vruJzS2+IdBsJBQxCX+u4DeeB/9tWE+h7aB9fh
+	 nfefktlwJ8uFLFmSBSfZZwW9AQjnjw3xWsf2+d+zwx2MNP/smC0cpGbFf/6+nExeFP
+	 ADiRMC0uXVKynZrTDFhWDThDOuUoTGi4Bn5JNVFkotaTk32iAJkmit98MQCVrcDebL
+	 hvUBydB5yLLvy+cVOtIJKQJLLMwDTxRrKD0OLm8+LMdWtpJKc8fAOgCYrI9grDDxAc
+	 ZGbmn8pqhwoGtBpIMth/Bj5gBOnme1T2NjLuJTQlC38jMpOTUZG/Sffhvq492vFYoD
+	 T7vGRinp3VvGg==
+Message-ID: <89037847-8875-4d8b-a8f3-d77a59aaddea@kernel.org>
+Date: Mon, 23 Nov 2026 20:45:37 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: don't drop a folio whose swap write failed
-To: mt4022@columbia.edu, Andrew Morton <akpm@linux-foundation.org>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Kairui Song <kasong@tencent.com>
-Cc: Chris Mason <mason@kernel.org>, Chris Li <chrisl@kernel.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, Tal Zussman <tz2294@columbia.edu>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261123-shmem-swap-write-failed-v1-1-41a0115dfbf1@columbia.edu>
+Subject: Re: [PATCH v2] mm/memory_hotplug: don't offline a hwpoisoned page
+ still in the page cache
+To: Mani Tofigh <mt4022@columbia.edu>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Gregory Price <gourry@gourry.net>,
+ linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tz2294@columbia.edu, stable@vger.kernel.org
+References: <20261105-memhp-hwpoison-pagecache-v2-1-029d35634d42@columbia.edu>
+ <d4812513-6cfb-4865-8636-b83dd92c23a0@kernel.org>
+ <2e11ba52-b5c6-463e-a5ea-c165ba935704@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,21 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261123-shmem-swap-write-failed-v1-1-41a0115dfbf1@columbia.edu>
+In-Reply-To: <2e11ba52-b5c6-463e-a5ea-c165ba935704@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspam-User:
-X-Rspamd-Queue-Id: 04A72C0007
-X-Stat-Signature: 97abgdskq3ba79q6ba16cnck59pc56jb
+X-Stat-Signature: xk1om3eske945jfqf9tx1dzkrsm6jxfy
+X-Rspamd-Queue-Id: BAD2CA000F
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795462721-580350
-X-HE-Meta: U2FsdGVkX18Yi6uDpUCFyeXmEL0uXLImhG23xiTI8utGFUEi3prhxEEbSiRI2m8a5slRb8pvksFfMrS/5lvoWdtz7d+KOHVEoRr5UTSiqRR0g+zZZxWObd9FHSmpM7r6msuD7a6RG1zW1iYfrOjzG/llGoAhWQWlwFikxId68M7+q6NBMNCVI3aYx55ysGF8kO1w0y1bXDb2htxMim8TC9v1Gad3ANPozj1jzpx1M7ww5hs/geaI4BWtd2z0h+/lsor9tyyUdtvUV8PS1aH6KpHnMesNfKt/2iYaQ2QhlhizUnORDFlRH0S+ivdEfXj0J4gXx3YurGPGp64ZCPQAV4nAc76VCUaEjxp8jUMl4Q4cU+3vIaJNKpDUXKXOXZDzAm3THVTjT145R5x6DbFhLKX30PH0AYyuyiVYL7cVVLlbXwno/PedqHVHS8DEjXLwi26/AF7VA5NUw8ysJLzvQs8AcMn6Nu+2327EKLKBb1hewu38BEXWtq/YzXgHHet+KJJvGlDSDryLZ5jjNWYQ0BEsZz7ykIb+v7fpBYmlJKZ8shtLhoFPx8cRwr+Z27v1GhSvhe/MXtQ+7sHh7LlpMxvhb2J5qOm3j+U/j98n+LaD0EFkkbCZV5tmToBakM3EBMgzz+GzgKeG8ICA/BzGU/g+Oul75v0bZYILW4QCv41HRgw28euKVVQNt62/UfwuQD/27SLRsRSCmLHUQxRusta4L9AaRm09IPYQ/LgXXhZv+zQ2LuxItDILbQJKXDc8LUIDVGQBVZgtgQY/HVoY5j8tCvUy+0QYcWPXxyihLzZHYpINrsgdp8jqmu/QXTGEaCzdDkOb6fZTQJg19Xz49kcOtNt4W1e5E8EBLrk18inbt4H3rfV9t1CRjD8YO9JgD8NVH+/FFZ2YTVjO/8MRkOd7qHuWYvW8pw6iFxOqIkOR6FmJZhq9diocXuQqECpU5PBA1ZyKnMscYnWYyCt
- MVa41TAz
- 2ILvPzea2e0Gxjkn3564AvGGFhiPdMDLrbWf9DKX8DRK+mmpMkuSijzB0BtrP0AWa0/BxzTcbHTvaJbLLnJ/lYxvmwMmZ6HIhQHB/fcs2qgDeT6O+uBOBf8OQZbG1fb16onzz1VietuoHq8WJ0VoTIMSeu+f5+5Gef2aqT/ENuGTlPSd+oqbXeBqttRD2C2/2ec4mdjNEecgk2IPKYVTGZhgwcR8l5b17GAbkNQ6gSRUZnzVGu6ACFcV9/9zQeljK7Ns2mLHdhJrEYQP1NlLPc4DvS5A3eCA8mBCc4EryZyuOeh7cdMpnEqI9ExpbceHirMT0EJG32m9nuRadgJogjcA3eErlRzYwxOakCkCm0lOrPJQ/lNsLCkp8GEB8f+mPsBZf9orjnNQ4VvBMm3HsVil0gwoGYvhAot09GYig3m41FYbAaxwoGen+d9eA8Bfg8WgxDkQ2c9WZVeVLUyGawedarZsNwFGfKUEmhT80RMqlbi4zVzU4Jvd44BBFxbCPmhbB
+X-Rspam-User:
+X-HE-Tag: 1795463144-823386
+X-HE-Meta: U2FsdGVkX1+V0O14Nj3iaGr5dD2OJN4kh3YM7kivOyKZbLY5Ymi25YB1++Ifu3kXFDCDaV8FTW60yIQcleOXiJyNVK/f9HgzwUKlO2suw7y0CBgDbTZCsy576QodyFXXhZpz/E6PRVXm3wY0qvkt7h1zueXu0Auz+dASWLnZBAZA5XFU+5KpdQGr+qbAAVmTg7wdKH6qkKUmR0rCGPbTl8JC+8yNOxCaM5J1aKkTxxSlOf6yrTDNayC6TP4l3Nns3cW/o942im4OSPMX40BJXRdjX+zhFAmBTkGV1DA8SJc7HvueOyU7gOcsLu8+GopHeK1EH5ccmz5TL36iXdIIwft4uBjNJL+LvEkBHFv82sMACgzU1nmVsz8c9bf4gNlEfntbHyeTfqtpcWcboavTZAZPcp3XdXQOadtiXt931MF6/TRSwk9q9jLBA80zdJFf39jfhBrTgaq5D2fvomz18D2xe0Bfz/cKGKXme6JiubZeE1lE/AnQCXAUkZ+FPSzcjl3v4JsbvvBIMrzqzPgreRSDIn1Eu+mcU1dbVdyIf/oLK1j+rU0pTX3knYizoTmBqdD8jLEfZ/zYPDSw9sDMK+V6/IsRtTR7iIkb9WE5sZvJs2Ox7mfGwLBV4Ym0sWqn31y0MYJm9n6CIXw3ntHemrs5mzPlbquHYk/9+9KYe+K5hTHsXxj1n/0BVgGJq3bKcviuTX2bOnagcJfHrHer8n7yMrJAUs2Sm+tOpx8c5zXMVA7jUVRzdQiIPB8/PRzX+AzUMbXRYIBakiIIGORd5WEqvX6JxOWKPq9yyK2BaZq9pzatC8q3bUDZdDdH8M3HRvBivGrNC0MTwqEGfXBfXg3FNxC7g/P0ofE0jGXYCOmeiAZ26p87CJTIiOTWxLz+46tDzaNY4GryU9YHMTNId/u4AO97V6sljfEwyP0FQggMfVbVuGPU8TP0AWrFOztHjzSaa3bCSrSivo0bwsf
+ EPhPanPh
+ VsAFVm917Y1gWJp+w5JCSmPAWAqVxlAsq1IF166kXCYIk5ovYqQt+fdhWOeOlnN1YtGShMwIuur7jMsNPlLtIY5jLxF1J5ZXtcPQj8RDhjIDeUaqjagSU3xJ0addndN134UmPKNmvNcc7zfn2vkIL+tKC5Xmyw+3yNSF9h/Uk2ERuQWtScc1od8DkPMvjxGPLA4yBIvRpR0aGChKpsYIl7ahDUl4d/KONQaFMYitargMOlKgFPGYoEPA0hOalPmqM3e5F2EE5K62kEffqlG4XtCv7rqZgIrutCJ/pihVbGqqKr7J4zPlySyzGr3os7kgzIj/gAiNNFrKjBS/TN1rBNhNoAUBPSwHKh6bsR1pdWaopWH9dQ7v1vOQrk1kbpB57LNgZu+mvPwA2sVCjKAKFL/iRhInPv//1WOEhuZneSGWYCtsB16iJ/+P78FdL//HtfrS9/13bn2BShckOmryBV1R4Dk2k9ZuKxqjuN/ZuUBdr4qGV5Bcs+8ukYus9brWDciWdODEtwNK3Gg8Evr6BKj0YWBD7q3Onh+ErB/6X63K1PvSkJbKY0470LIo8faFhKc33YRuarNED6rXF4H+0MGQmBQX1rLEalmgpei6N9+ruYuY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,43 +147,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/23/26 18:21, Mani Tofigh via B4 Relay wrote:
-> From: Mani Tofigh <mt4022@columbia.edu>
+On 11/23/26 06:46, Mani Tofigh wrote:
 > 
-> shmem_swapin_folio() drops a large folio that does not fit the mapping
-> from the swap cache if the folio is neither dirty nor under writeback.
-> The folio can belong to another file and be under swap writeback, when
-> the swap entry was freed and reused before the swap cache lookup.
 > 
-> Swap write completion does not take the folio lock.  On a failed write,
-> swap_write_end() marks the folio dirty and then ends writeback.  Since
-> dirty is tested first, the folio can look clean and written:
+> On 11/6/26 3:58 PM, David Hildenbrand (Arm) wrote:
+>> I didn't understand why just checking for the refcount is not sufficient. Can
+>> you elaborate once more (and please not send a new revision before the
+>> discussion is over).
+>>
+>> Memory poisoning must grab a reference when setting the folio hwpoison. Any
+>> other reference (pin, pagecache, swapcache, mapping) keeps it alive.
+>>
+>> Why can't we build on and?
 > 
->   CPU0 (swapin of file Y)             CPU1 (swapout of file X)
->   -----------------------             ------------------------
->   shmem_swapin_folio()
->     folio_test_dirty() == false
->                                       swap_write_end(), failed write
->                                         folio_mark_dirty()
->                                         folio_end_writeback()
->     folio_test_writeback() == false
->     swap_cache_del_folio()
->     /* X's data is lost */
 > 
-> The next swapin of X reads the slot whose write failed.
+> Right, but memory_failure() doesn't always hold that reference. It i)
+> sets the flag before get_hwpoison_page() grabs it, which waits on
+> pcp_batch_high_lock that offline_pages() holds, and ii) gives up with 
+> the flag set and no reference when get_hwpoison_page() fails (e.g.,
+> a pagecache folio briefly off the LRU). In both cases the pagecache
+> holds the only reference, so offline can't tell it apart from a
+> page memory_failure() already handled.
 > 
-> Test writeback first.  Both flags are in folio->flags.  If the
-> writeback test sees the write ended, the dirty test then sees the dirty
-> bit set before it.
-> 
-> With the fix, a folio whose swap write failed stays in the swap cache.
-> 
-> Fixes: fc2c19648d68 ("mm/shmem: fix swapin livelock on a mismatched large swap cache folio")
-> Suggested-by: Chris Mason <mason@kernel.org>
+> So I think if we move zone_pcp_disable() in memory_failure() before
+> setting the flag and keep the reference when it gives up, offline could
+> simply treat any poisoned page with refcount > 1 as busy. That'd cover
+> pins too. What do you think?
 
-Nest to make that a Reported-by:
+We'll have to find a way to make that reliable. Everything else is just hacking
+around it.
 
-I'll wait a bit before I pick that up. But it will be a v7.4 hotfix.
+Why can we block concurrent offlining through get_online_mems/put_online_mems?
+But I hate these functions.
+
+Or alternatively (better?), have a memory notifier that block concurrent
+memory_failure() by grabbing the mf_mutex when MEM_GOING_OFFLINE and releasing
+it when MEM_CANCEL_OFFLINE/MEM_OFFLINE.
+
+Needs some thought, but if the problem is that these two mechanisms don't
+interact well concurrently, then we should make them mutually exclusive.
 
 -- 
 Cheers,
