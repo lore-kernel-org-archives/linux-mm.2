@@ -1,109 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC3A606A32E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 02:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8D9606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ga/B/e0Q
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LbxX/HfA
 Received: by kanga.kvack.org (Postfix)
-	id 6FCB16B00EF; Sun, 22 Nov 2026 21:47:55 -0500 (EST)
+	id A46BF6B00EF; Sun, 22 Nov 2026 22:00:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 687166B05B0; Sun, 22 Nov 2026 21:47:55 -0500 (EST)
+	id 9F7AF6B05B0; Sun, 22 Nov 2026 22:00:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54F4D6B05B1; Sun, 22 Nov 2026 21:47:55 -0500 (EST)
+	id 90DC26B05B1; Sun, 22 Nov 2026 22:00:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 21EB16B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 21:47:55 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1412616075C
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:47:53 +0000 (UTC)
-X-FDA: 85464848826.30.B9DBE23
-Received: from mta1.migadu.com (out-195.mta1.migadu.com [95.215.58.195])
-	by imf09.hostedemail.com (Postfix) with ESMTP id BFE18140005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:47:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Ga/B/e0Q";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB8E6B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:00:28 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 724EE1A0758
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:00:26 +0000 (UTC)
+X-FDA: 85464880452.27.5DC49DD
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 935E8100008
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:00:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="LbxX/HfA";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of bsdhenrymartin@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=bsdhenrymartin@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795402071;
-	b=rUFjPAlRZPPbA64pNpEQxW+gfGvR0MHPJVfHUN2Brms5lxfO9IdcDtixJoYbxIty2o3pjt
-	vnJpR88HB0z8YeLOQiGxFwl120CKR26qZGNf+5e8qnb8H8rKwSmGJ6gZ83ri9ezNJlGeXS
-	5c8V9Ib3dW2ECBXvjWPONnHCWs6sM8I=
+	t=1795402824;
+	b=PymtfLLUqMiaLnYYk8W6GR64ALWaEeKr4heFtkgMtj+Zqp2H2hNJ3xGnRe8Xpzg9zplHej
+	2+Ojiqy5OG0UVciS17gBv8cq0sADV/FoQ3YYwka/4CvkwG1ri3MIQwXERBhDNhbh0CEEdw
+	VIcJl9OFjEKV5/if3UawLpxn4sQbEmc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795402071;
+	s=arc-20220608; t=1795402824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=keQB3M+G/U6WjdBKTwroAHxhrPCNUChEnSJ8dtIR1rc=;
-	b=S6Z8qkIvs6FHCoCipbxWD5fvxYjfjvKdap3W5ZV1WZTmQdLH1xU7DHBpYldwp1S/JbbYcF
-	y93rvJeI5+PsoSHJdmj29wr/7529/T8O+AMZSsAc8LTGKYAfJSdJgursk70wr4IuDDA/uC
-	MD4Bqeg4NiNG0IsclDfmsOYXc4A++8g=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=+FgxJSlCMhr6jcW4y/MvZaUC1tSRD2CiwZ7Xb0DzK+s=;
+	b=PSHtXx/gxanLjyuanBrGC8SW+M2sECLYM+OPxpV4IdlHJ5+ATq7NHktNqLqx8fj0ogHzMh
+	d7N0h5Xi6iFMAeGRTbnv1mYf+YVxNtRZheW3w84DIPIrGpD6fhE0ZbYgm6xbln+kpqfOp4
+	Z3S8X83qhLlUi2IPYJ/SKXLWIMAgZvc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Ga/B/e0Q";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=nnvohv3LVojod6b27B4KpgPlDmXt/sOZCq2yD9lZsww=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795402069; v=1; x=1796006869;
- b=Ga/B/e0Q+iDrVW4V4INlBxV/wc6ryReoF+UEJYDF38S6ftoZJzuySM5mmqv0TU2km5+hymL2
- pNuSvl+z+BTMIJLKPVqqVD0S/UVrDUCkYfAyerQiDIIrfOA+L4kWpD07WEghtTqjYVC9VS6Rra1
- fRCRFY7TqCMjED8li8u/Y16U=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6a387cbfdc5f01e9;
-	Mon, 23 Nov 2026 02:47:48 +0000
-X-Mizu-Trace-ID: 6a387cbfdc5f01e9
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="LbxX/HfA";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of bsdhenrymartin@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=bsdhenrymartin@gmail.com
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2effa00323fso12263205ad.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:00:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795402823; x=1796007623; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+FgxJSlCMhr6jcW4y/MvZaUC1tSRD2CiwZ7Xb0DzK+s=;
+        b=LbxX/HfAh9aaXImmvISpOWwy2U4OZU5DkcbPCkr5pK8VsDZttV5+/ole0S/H+zjCPX
+         Q2Pq8NOFTEsflbpM0QfxTOzD+aSQrPg04UnxFW4bSolhFXraZPALt96s9pm0c00/xOlC
+         t2xNmaMe41D89VSkZR8WItKG5YWz66KQWAiusi07/kiXG2HO+D56bnj4GdbSm9JqJY3K
+         tIoscKBUAKR1ZI+cwk/uRVBUwxxRHn3jmGAnOY7hCLnTAgu75N6kbOUE6xJhjPaWAyBV
+         7mLXtWjFG3oagNxBhs3IG62KxNK0+ZqtVJSI9RsjeNXL9JS1AO4Otm5r/Z8ZfSS1gVQ9
+         Nq5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795402823; x=1796007623;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+FgxJSlCMhr6jcW4y/MvZaUC1tSRD2CiwZ7Xb0DzK+s=;
+        b=Kp8oFuqghpdeRzrfltLLaOEmADBMRz7VXxvP/yquscpw39QQol9XHaRi+RloAMnwbf
+         Y2+vE3vOh34fjGtZmRkOPEVCbpXqoBj8vrxkxXtzqX4B6oIuambPpHJZXQkpIWKBysE3
+         +N80aoEf5dtP4j5wgtVBEHFBZ1Jspn538Ldz5iNzqcnaDzp6RCMfKu77V43N+l3q4U4g
+         kW1gsZr4c4X1mF96ohwRUUc1N/KSOlnUThAkmAlZvb/UStmg/BXZQexX+GBbLIX6nzVQ
+         loKcLfcyKnW8bCnTJV6SuGxpaiiR+DQE2O9AimZYTcKwRg+pbcffVIeC5Kjift8GLO8s
+         EOZQ==
+X-Forwarded-Encrypted: i=1; AL+hErH1F9G5sHTalQJd8zGPNC+mQJqWesvn1fimzsXpveZvGL8f2PTO8vACLgAzw/cRCqG5w70fBViuog==@kvack.org
+X-Gm-Message-State: APuU4Z/KabBSJOfLFjpfDtPhSJ64JJDEQmLcId6bqS88D9+IWJJWTZ6U
+	9K46l8kuYkVoSeSR41axghjroEbKWgdTQsEgAt8ErraQ8Xw+wRxnlzsg
+X-Gm-Gg: AZFdTZeEWuXYiMzWnda7ev8h8S8A6jUk9Q1FjAMWzQaNtrNCi+BdrALUzsc0sTlFl0K
+	XIBucyGOiaEqs6WJP4N8aFYpFVrxB7ImgLk89jROdIi5hh90ghKGlQ0lLx7TVetlPZDgCVjR32H
+	1vjGHEWFKmCObtH0g+jR5VGuBUm+SGj4sejuzD5lBZHrBstMNyZz2QKwrXPV1GWVpq9JzZSH3/J
+	HyyPguznjz8l8A1baF+CwNoqimIpFpMxlrn6qqvtVSvzV6ObzJXSum1FhRpgrwFO96PK2lGSXiB
+	dd9KA2EMQfaWAU2cFQhl3p17TzFPPCll4vu2REWu24HAgnKPMOKzJxVUgPJGGGOgsI+TBXfxVzr
+	9UBSlagl+r2RnrOa2LuSn08r0NKee0iAFhWFs80sswsmYTrPWFVaUF6IOQHNfEJr+JYz2LLoUJ6
+	7oz7kpJIrc+7zWw7fzZLu5HJ+V4s54FpbaZdnQPHWUb29LnCfhap56uGa6iekFQpapWhOUKcT3Q
+	usYTxgDcNdcnM8rwHTzXOB/y4XhEabSPLJEFNOlOXWj4/CBURiRkKuLitP2a3hW8qseSP9EzYyz
+	TxENmJ0juo25aExwn8SFB7A4Mohvme1VLJkxH/Kv+qEyPGtMLd0g9SDwE0YBTtFGJxfSyfnaiwM
+	=
+X-Received: by 2002:a17:902:f603:b0:2e9:6788:9381 with SMTP id d9443c01a7336-2f03f0c1f04mr95101065ad.7.1795402823169;
+        Sun, 22 Nov 2026 19:00:23 -0800 (PST)
+Received: from BSDHENRYMA-PC1.localdomain ([43.132.141.16])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f070a12491sm21615055ad.8.2026.11.22.19.00.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 19:00:22 -0800 (PST)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: fix cachestat NULL pgdat dereference on DAX mappings
+Date: Mon, 23 Nov 2026 11:00:14 +0800
+Message-ID: <20261123030014.3116755-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3 04/19] hugetlb_vmemmap: Use try_update_vmemmap_pte to
- update in-use PTEs
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261122184453.2668189-5-jthoughton@google.com>
-Date: Mon, 23 Nov 2026 10:47:33 +0800
-Cc: Muchun Song <muchun.song@linux.dev>,
- Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4508589C-2E30-4DAB-9465-73121835D0D8@linux.dev>
-References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-5-jthoughton@google.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BFE18140005
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 935E8100008
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 1i6n9mej8arym9wribo53ia5cfjjnxtd
-X-HE-Tag: 1795402070-60931
-X-HE-Meta: U2FsdGVkX18RohcrFlks5ulPNeXW2NiSkpYVXiPOg67AoxHnat8KAFozFiqWTd6m0ol4Eb/DSOAL4sW6BlyDLPtRpf6AWde0fEO3NLMDEnbIgNKO/LwI3P1059el0cixSdFSzEI91IIqZNetXqoDa4NmvQ2UOTtalG1xoOSXGCEEc3PbrADtpe5HU00B8ma9IVxZrpaxbYLLVGHCyrtxRD/KBdOXeNKWPOH2Zr4/J9NVMVkBVw3E0DWMAgUTZfL4HVmQVIgpRmh/u8Xz8P2zbCkt8LYfl9Q0jUCYgQiDQgmw5H9TJJ0VWSBnUMnWeS2hlLv5T+RkR79kJQwg15KYavcvTdxhvVA7lyDXKIDAszw8yrCz5lNMAUxF6oO4I66hFaki8dfjBCN4kHSyBzgOCSOEjuGbaCYICcKq+odfLBVSKY+Zk2aUgghzpzkz7mDFgJEo3lsfPUpaOBWkMO9NKuQNemrsV7MSSpzqyAECthW7KYqINdS0SL7bj29/VcDjMsMGmqcsctjStHwA1niqGgLdmn4u7insVcpWagtmG89PGeROhsLr1EZd3T9+Kmh2bcUfc8NsW5o1t0QxD/jdBwHlEv7Lf0fwPlYcsfqvLnfZsmkFIgVkksQa0WmbRPFeiXqkhl3TfmxDvo8KXL7i7rVLNWVTM3rWt2aMfLcSdWTclANsxGgB3NnjvFkHrbO+/gtx3hamlSsnPFokK/ThgZdDdUTCw2/T/BOR6ecmJmMwb2EzGlfm4YCzVzNfXAjXwSDFD8FdEd/EEfFZWAwVVas0byD7MjCUYPYRoh6eTfsOBXm/x2Y6vR6/TFPLPeylqEvmWNvroW61KWGorH5ArDDjpRBtGe7ev98dVWBZdaYQH/UDktnsxKS6RGAme4SZz58kTlLh0q/PRgsyqOrJHYTVi1kLiRlUVI7lKmhBnj2X34K8VNoY0Dxk2fzHjBK46s90ty1e/4Jbaeb7CQH
- sXT5Ohca
- xfzAKTsNe2BgVw2Bw/p9oHe1kq7Thc4kwnqtr+uGgwI1zGDUU9irJmwv3AYGrRNtVL0Zb4pRZIYzkd1kFgrMIuVuJocO+rCrm2/XL9+C7KcxOhtIOHFKVEpzIVS6Ou2YqnHRKe2J2VgTtcMf20nYN32+vgQL3p4ZxugC570UPDf3xYNaaeY//H1nJSA7M5eufl4mDx0SKFvKh3yriPGdNWUkRLD/39Dw+eGHEGrqwi0KdzxtrUqKji7FONSjZX8RCl87YvhOTlM/MLq+GzJP23lJX0CcTHQVC7/95PemkQUs66XiTzs01TTF4uA0fm+t1mqy/rUmOhNx4DeZQEiiQohpAYRcwwqJsKvngzIOOyP8dcaTwKbvXIHoRV3Wqr86WhRgIJALSp21/PKNJBnHTJHaBRcaG5PjE33YDhfilC/XRVHbXgtYFhm0zD3YcTrMhL3dM2aCH+OZ/bW+x/t74dFJtH8iYzG8YjBm70sQ7JhA21/LP8ybczLdHeQxBegt9XAJgrZFYoR68iVDkuePFNjOqpjJWQcOC4AzQLxSCxZknRrM=
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: i63z1aeikajngcjoxq7t6xsq4ns4uya3
+X-Rspam-User:
+X-HE-Tag: 1795402824-556109
+X-HE-Meta: U2FsdGVkX181s8fJR3S/rgdA4hxiEp/QGqVz4JgcRxybh4ZZrgAg+2llHj1rj4QX3AA9ffMQ6gq+dNdWPRcz+SLwamDBAtOvqEKaPVgqLmxgx9wTI8ZnjbX9SAB5bj0j/0/3UuzhWZcPRxpi8x84CGCPSjltd46/eJN2RMzY0dmq3tRdZ4MqQitH6jFYeQktk+WUMAThyBNjnnKkemn3agud/oRxz4Ez6w4uKEB2OqOeYf8s1gKwwArxQaBtGnmNJvTJoUjOKEprNUOpm36Ry/T2VvmT1pTrtYr7YGhQc1TQrV32TFY1UxIqKXoBWVaTObgRzfEMf6vKkWOKVWEFfBWRMj+oQ2YX1ZlCfBuLrWrXxAbiq4DjKVwPC1MtoD/l6C9EwxbH2bk2/rPjUOwjNhZRyKZvASvfhFBjO7oXqbtPs73DEuVNbPO9STLN3L0tnR7r4ZkDKkBTumCCX0tvWlL/ZuFfHdP3h9/KBjgqlPTNcV5a9uGZh8vIoiRFx+NcyZmk5aBvODawwe+rSgbILrrXDZU/obIwGkbSv23nqEW72unp9LmU/TSDr1XwqLshZmKuuYW064hDchwMmsg/NFJmHwkZN4o82wXyjzyQlojy9ckDSt6n/xvJ5XLcWbJyTZTLzC45ywvcyS2r8BHzh97O3fXQ1kRbY9j2D4nqT7/YfEjloYgoVBl+9+i27IOJ+JfjKnGa6HNGiwULZcNNNu1mCEo4aPh8DcSTG83JhkpvTSJO+aBuBvyOXMmOpIR8eBfEvpLJ5hZAAAu0TX4wy1iYTCai4fNEvF0EzUtix48efP9rz9vlxw+SbDrf5ptfK4ERy1thngRYOD8w1zop94atdYoHP0LnHTW6LC0SzdrA8GHUapEBufjY44TJuS59zuH3tnj6Av9hBQ8sXnx/o+L/FBL6QJynyK3HN5Xaf4y8+XPog7INtDNNbODQY7kpzfWQ0+cTOud73K7Ax5N
+ 0l7eB1+1
+ DO2nibTV7j3Jq6V7N992K/ZNK4oGIya5RZVfBkp47sK0aRDZoNRnVW88Pr0jFDAVqpUGwEhe4Z/bA/8oSq1QBs8AXefZDVx43q/C0zyX8yMUqxMl27TN7/oKyLDxjwK2e2v7dh+DApXkpShDVQdS4SpQo/+KgDPAw09EJUhXmzx5Vl6FYEFeV8oF10Gi9vwCZpGL3vv59rZLr2uFAwQrIiLp4bRGaS6U0+NcyV3YySxWdHPgLMIMqxf2JuJmlQ2aiGEpRf5loOsfiW0xY1xEcOhMgK+V5qXyzeCeabSFNjc+wlvyHCyItnFb2TSv0hIeLH7En+h+JSMbOOwBtqLoxrMgG+cjEw/3mW+2kGmfRXrvBD1ZzSqyfwwPs0rYZG8PpGJcpR83MC4UCEQ78T6gd4ngjfE1es9WcWtSDBzWOpfrmgqqzHvVdKjAoGzr22L1nKfDmVy3C61RXMR8uuYetuUB94DeWi2djD4/4fAmgg+1OlgwEMilKNucCkWx6Ce9js29CrHnkRXOCgSxjSkXidtad2E9avpz/L3biK1/qTNed0N0xiv4nSHf0+3ZG0jc62SL6wFVrGTAthDNY/j7ARxNjI0I9W2+Kz+3xnZsTiVjuLRueSOYmtMXKUlGYAc9RsBDb4r82uEise9eCAvIXzzm0jA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,247 +127,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+filemap_cachestat() treats every xarray value entry as a workingset
+shadow.  On DAX mappings, value entries are DAX exceptional entries:
+same value bit, different bit layout (flags in the low bits, pfn
+above).  Decoded as a shadow, a DAX entry yields a bogus node id;
+NODE_DATA() for it can be NULL, and lru_gen_test_recent() then
+dereferences it:
 
+  Oops: general protection fault
+  RIP: 0010:lru_gen_test_recent+0xde/0x300
+  Call Trace:
+   workingset_test_recent
+   filemap_cachestat
+   __x64_sys_cachestat
 
-> On Nov 23, 2026, at 02:44, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> set_pte_at() cannot be used to replace in-use vmemmap PTEs on arm64, =
-so
-> replace it with a more specific routine, try_update_vmemmap_pte().
->=20
-> try_update_vmemmap_pte() is used for modifying page table entries such
-> that there is a guarantee that no fault will be taken.
->=20
-> For the generic implementation, please note one difference: set_pte()
-> does not invoke page_table_check_ptes_set(), but set_pte_at(), the =
-call
-> we are about to replace, does. However, this is a functional no-op
-> because page_table_check_ptes_set() does nothing for init_mm PTEs, =
-which
-> vmemmap PTEs are.
->=20
-> Signed-off-by: James Houghton <jthoughton@google.com>
-> ---
-> arch/loongarch/include/asm/pgtable.h |  2 ++
-> arch/riscv/include/asm/pgtable.h     |  2 ++
-> arch/x86/include/asm/pgtable.h       |  2 ++
-> include/linux/pgtable.h              | 22 +++++++++++++++++++
-> mm/hugetlb_vmemmap.c                 | 32 +++++++++++++++++++++++-----
-> 5 files changed, 55 insertions(+), 5 deletions(-)
->=20
-> diff --git a/arch/loongarch/include/asm/pgtable.h =
-b/arch/loongarch/include/asm/pgtable.h
-> index f87603135131..123eda3f6035 100644
-> --- a/arch/loongarch/include/asm/pgtable.h
-> +++ b/arch/loongarch/include/asm/pgtable.h
-> @@ -633,6 +633,8 @@ static inline long pmd_protnone(pmd_t pmd)
-> #define pmd_leaf(pmd)		((pmd_val(pmd) & _PAGE_HUGE) !=3D 0)
-> #define pud_leaf(pud)		((pud_val(pud) & _PAGE_HUGE) !=3D 0)
->=20
-> +#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
-> +
-> /*
->  * We provide our own get_unmapped area to cope with the virtual =
-aliasing
->  * constraints placed on us by the cache architecture.
-> diff --git a/arch/riscv/include/asm/pgtable.h =
-b/arch/riscv/include/asm/pgtable.h
-> index 2ebd5fa5adc5..c8d05bc12cc8 100644
-> --- a/arch/riscv/include/asm/pgtable.h
-> +++ b/arch/riscv/include/asm/pgtable.h
-> @@ -1172,6 +1172,8 @@ static inline pud_t pud_modify(pud_t pud, =
-pgprot_t newprot)
->=20
-> #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->=20
-> +#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
-> +
-> /*
->  * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs =
-that
->  * are !pte_none() && !pte_present().
-> diff --git a/arch/x86/include/asm/pgtable.h =
-b/arch/x86/include/asm/pgtable.h
-> index 000fc6c1ca37..271cdc61de3a 100644
-> --- a/arch/x86/include/asm/pgtable.h
-> +++ b/arch/x86/include/asm/pgtable.h
-> @@ -1372,6 +1372,8 @@ static inline pmd_t pmdp_establish(struct =
-vm_area_struct *vma,
-> }
-> #endif
->=20
-> +#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
-> +
-> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> static inline pud_t pudp_establish(struct vm_area_struct *vma,
-> 		unsigned long address, pud_t *pudp, pud_t pud)
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index bc1353f03b08..ab33df268955 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -458,6 +458,28 @@ static inline void set_ptes(struct mm_struct *mm, =
-unsigned long addr,
-> #endif
-> #define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, pte, =
-1)
->=20
-> +#ifdef ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
+Any writable file on a DAX mount triggers this once an mmap write
+fault has populated entries.
 
-Why not ARCH_WANTS_VMEMMAP_UPDATE_PTE? Then x86, loogarch and RISC-V do =
-not need define
-this macro in their ptable.h.
+DAX entries track present pages, not evicted folios.  Count them as
+cached and skip the workingset decode, mirroring the dax_mapping()
+split in the invalidation paths in mm/truncate.c.  PMD-order entries
+are counted as one page, as value entries carry no order information.
 
-> +/*
-> + * try_update_vmemmap_pte - Remap PTEs used by the vmemmap.
-> + * @addr: Base address of the remapped PTE.
-> + * @ptep: Page table pointer to be overwritten.
-> + * @pte: Page table entry to write.
-> + *
-> + * This function is only to be used to update PTEs that map the =
-vmemmap. The
-> + * only valid transitions supported by this function are: leaf-level
-> + * (PAGE_SIZE), valid-to-valid. The pfn and prot bits may be changed.
-> + *
-> + * Implementations of this function must ensure that, while the =
-update is taking
-> + * place, CPUs will not fault on the remapped virtual address.
-> + */
-> +static inline int try_update_vmemmap_pte(unsigned long addr, pte_t =
-*ptep,
-> +					 pte_t pte)
+This issue was discovered by Tencent CodeBuddy Security.
+Cc: stable@vger.kernel.org
+Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
+ mm/filemap.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Please rename it to vmemmap_update_pte, all HVO-related helpers will be =
-prefixed
-with vmemmap.
-
-Again, I still recommend having this function return void. That will =
-make the
-overall code simpler. If we actually run into related issues in the =
-future, we
-can add support for it then. I don't want to introduce unnecessary code
-maintenance now.
-
-Thanks,
-Muchun
-
-> +{
-> +	set_pte(ptep, pte);
-> +	return 0;
-> +}
-> +#endif
-> +
-> #ifndef __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
-> extern int ptep_set_access_flags(struct vm_area_struct *vma,
-> 				 unsigned long address, pte_t *ptep,
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index 2e9cf8d39c89..b4d0311bcc4a 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -218,15 +218,19 @@ static int alloc_vmemmap_page_list(struct =
-list_head *head,
-> 	return -ENOMEM;
-> }
->=20
-> +/*
-> + * Copy @src into the first page on @vmemmap_pages and return it. The =
-page is
-> + * left on the list; the caller must remove it only once it has =
-successfully
-> + * been installed in the vmemmap.
-> + */
-> static struct page *vmemmap_dup_page_from_list(const struct page *src,
-> 		struct list_head *vmemmap_pages)
-> {
-> 	struct page *dst =3D list_first_entry(vmemmap_pages, struct =
-page, lru);
->=20
-> -	list_del(&dst->lru);
-> 	copy_page(page_address(dst), page_address(src));
->=20
-> -	/* Ensure updates to @dst page are visible before set_pte_at(). =
-*/
-> +	/* Ensure updates to @dst page are visible before =
-try_update_vmemmap_pte(). */
-> 	smp_wmb();
->=20
-> 	return dst;
-> @@ -248,6 +252,8 @@ static int vmemmap_optimize_pte(pte_t *pte, =
-unsigned long addr,
-> 	const struct page *page =3D (const struct page *)addr;
-> 	const struct folio *folio =3D page_folio(page);
-> 	struct page *src =3D pte_page(ptep_get(pte)), *dst;
-> +	bool dup =3D false;
-> +	int ret;
->=20
-> 	if (likely(vmemmap_optimizable_pfn(page_to_pfn(page), =
-folio_order(folio)))) {
-> 		dst =3D folio_vmemmap_shared_tail_page(folio);
-> @@ -255,16 +261,27 @@ static int vmemmap_optimize_pte(pte_t *pte, =
-unsigned long addr,
-> 			return -ENOMEM;
-> 	} else {
-> 		dst =3D vmemmap_dup_page_from_list(src, =
-walk->vmemmap_pages);
-> +		dup =3D true;
-> 	}
->=20
-> -	list_add(&src->lru, walk->vmemmap_pages);
-> 	/*
-> 	 * Map the shared tail page writable intentionally. A lockless =
-get that
-> 	 * read a non-zero refcount before the remap can still do its =
-cmpxchg
-> 	 * after it. The refcount is zero, so the cmpxchg fails and =
-leaves the
-> 	 * page unchanged.
-> 	 */
-> -	set_pte_at(&init_mm, addr, pte, mk_pte(dst, PAGE_KERNEL));
-> +	ret =3D try_update_vmemmap_pte(addr, pte, mk_pte(dst, =
-PAGE_KERNEL));
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * We successfully overwrote the vmemmap PTE, so the page that =
-was just
-> +	 * unmapped can be freed, and if we mapped a duplicated page, =
-remove it
-> +	 * from the list so that it doesn't get freed later.
-> +	 */
-> +	if (dup)
-> +		list_del(&dst->lru);
-> +	list_add(&src->lru, walk->vmemmap_pages);
->=20
-> 	return 0;
-> }
-> @@ -275,6 +292,7 @@ static int vmemmap_restore_pte(pte_t *pte, =
-unsigned long addr,
-> 	const struct page *page =3D (const struct page *)addr;
-> 	const struct folio *folio =3D page_folio(page);
-> 	struct page *src =3D pte_page(ptep_get(pte)), *dst, *tail;
-> +	int ret;
->=20
-> 	if (unlikely(!vmemmap_optimizable_pfn(page_to_pfn(page), =
-folio_order(folio))))
-> 		return 0;
-> @@ -291,7 +309,11 @@ static int vmemmap_restore_pte(pte_t *pte, =
-unsigned long addr,
-> 		return 0;
->=20
-> 	dst =3D vmemmap_dup_page_from_list(src, walk->vmemmap_pages);
-> -	set_pte_at(&init_mm, addr, pte, mk_pte(dst, PAGE_KERNEL));
-> +	ret =3D try_update_vmemmap_pte(addr, pte, mk_pte(dst, =
-PAGE_KERNEL));
-> +	if (ret)
-> +		return ret;
-> +
-> +	list_del(&dst->lru);
->=20
-> 	return 0;
-> }
-> --=20
-> 2.56.1.809.ga0b61035b5-goog
->=20
+diff --git a/mm/filemap.c b/mm/filemap.c
+index a1b2ca5b933c..caad0adde792 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4694,6 +4694,16 @@ static void filemap_cachestat(struct address_space *mapping,
+ 			void *shadow = (void *)folio;
+ 			bool workingset; /* not used */
+ 
++			/*
++			 * DAX exceptional entries track present pages, not
++			 * evicted folios.  They must not be decoded as
++			 * workingset shadows.
++			 */
++			if (dax_mapping(mapping)) {
++				cs->nr_cache += nr_pages;
++				goto resched;
++			}
++
+ 			cs->nr_evicted += nr_pages;
+ 
+ #ifdef CONFIG_SWAP /* implies CONFIG_MMU */
+-- 
+2.53.0
 
 
