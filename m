@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5920606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C7A606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armoriq-io.20260707.gappssmtp.com header.i=@armoriq-io.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Izd+3302
+	dkim=pass (2048-bit key) header.d=armoriq-io.20260707.gappssmtp.com header.i=@armoriq-io.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=k9yfWnte
 Received: by kanga.kvack.org (Postfix)
-	id E5F796B05B0; Mon, 23 Nov 2026 06:44:57 -0500 (EST)
+	id 167386B05C0; Mon, 23 Nov 2026 06:45:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E36E96B05B1; Mon, 23 Nov 2026 06:44:57 -0500 (EST)
+	id 13F746B05C1; Mon, 23 Nov 2026 06:45:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D26436B05C0; Mon, 23 Nov 2026 06:44:57 -0500 (EST)
+	id 054FA6B05C2; Mon, 23 Nov 2026 06:45:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AE74F6B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:44:57 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5388CA83A9
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:44:57 +0000 (UTC)
-X-FDA: 85466202234.11.4306881
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 86212180006
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:44:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=armoriq-io.20260707.gappssmtp.com header.s=20260707 header.b=Izd+3302;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D1DEC6B05C0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:45:08 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62777A089F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:45:08 +0000 (UTC)
+X-FDA: 85466202696.02.1A3499D
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 96EAD40004
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:45:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=armoriq-io.20260707.gappssmtp.com header.s=20260707 header.b=k9yfWnte;
 	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of harisudhan@armoriq.io designates 74.125.82.180 as permitted sender) smtp.mailfrom=harisudhan@armoriq.io
+	spf=pass (imf04.hostedemail.com: domain of harisudhan@armoriq.io designates 74.125.82.169 as permitted sender) smtp.mailfrom=harisudhan@armoriq.io
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795434295;
-	b=ZVCaDJwkvz+qH8Bn0HNUEXg7lP60SS28mZzKrqnqO6wr36MdfsWvitWcS3uyii6ZTAGFW3
-	e/godfz45q4+tebLt+dLIPTFZhT31wALqygKY77/OGgghqjE5/Zn8/Y4HsYmXVfWs7DBOS
-	zP1TSIueeF5xLS8Kz7PigobkCZn/iPE=
+	t=1795434306;
+	b=q6Hm4qsM836+Dr5ixtDMYlggVIj3G3AObilyiivnm1FTo4qGZXyRdDkIaMHIosuqqxH598
+	12NxwSghl/mBORDwjoewSGoVF5r0fX5RsOISdK1NnO6D8pJJp+MEdqE+7WsqL1jXGMCUoM
+	pTRukZt+mHMNif5sJYFJxrJfcDSiFJQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795434295;
+	s=arc-20220608; t=1795434306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wao1lDLNbUFd8H98o11hNOXj6BtvvuLII7zQ8aDHCoA=;
-	b=UbtEE0q7Oy4qD7nu/FGGKLA/p1f6jyUVGahcuZi5+TTTtlQKDyt61RVuKwzwfuBZNtXW5Y
-	SmY6MCauk0Ry/hphcqA4BSRSWUScuHb29LH6gy/c+q+deKYZLnblbnjucSzhzxa4JFInfp
-	ylMge8/82PIQmzrkm251hkFtIL42Mug=
+	bh=pVqS5lS0RoTOTBL4CoDpn/qs9ZBbwa0oy02KVDKJZu4=;
+	b=z9x8tIThdnvpP1n5PO2k+PyRWfqQc0U3CZox4NF4zifXi5Alz9+3rDk8XjM0G/a0F2X/H/
+	Qhbh1q8BIFzkv1OgIvm41JTITjpNwc9mSpcA0HzCaj/Zpi6xoMFGvqM8QawgbJCkejSLu7
+	blHKNPraoRfNVlFlImp5t+3QtgYEcU0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=armoriq-io.20260707.gappssmtp.com header.s=20260707 header.b=Izd+3302;
+	imf04.hostedemail.com;
+	dkim=pass header.d=armoriq-io.20260707.gappssmtp.com header.s=20260707 header.b=k9yfWnte;
 	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of harisudhan@armoriq.io designates 74.125.82.180 as permitted sender) smtp.mailfrom=harisudhan@armoriq.io
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-380b40312e2so7721977eec.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:44:55 -0800 (PST)
+	spf=pass (imf04.hostedemail.com: domain of harisudhan@armoriq.io designates 74.125.82.169 as permitted sender) smtp.mailfrom=harisudhan@armoriq.io
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-3869f03af6aso2269727eec.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:45:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=armoriq-io.20260707.gappssmtp.com; s=20260707; t=1795434294; x=1796039094; darn=kvack.org;
+        d=armoriq-io.20260707.gappssmtp.com; s=20260707; t=1795434305; x=1796039105; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wao1lDLNbUFd8H98o11hNOXj6BtvvuLII7zQ8aDHCoA=;
-        b=Izd+3302tUQ1sL5CZvPeLjbUfmQaXAPw/OMDA69UHjHAicr/VpUkIH5Z4MryCPcKM1
-         RDevj+qlbpHWL632GIif+6K0KGHKJXWjUCswfwIpo+ZReCXOYy5/ZuPTnUVHopAqUmCl
-         81UKRNrk4M1sU0zRSsf8NYTfekkJq1H/WMqt2b8vquDGptIFsRUDaKQS9/2EBxffWjnD
-         LQUBZP0LnMKLTTCuwVp2u7YwtBwaA8f/i9XGnvcHvtyllQiWX2PDkZgCpyLATb86mZme
-         nG4pAAfumsfKfxNbhsrJowerf4kL1gLRtUIrHErzjnR0wmnfbAzxuUmcGlhf28ftUptN
-         Ql2w==
+        bh=pVqS5lS0RoTOTBL4CoDpn/qs9ZBbwa0oy02KVDKJZu4=;
+        b=k9yfWnte5qHP3Zx7Ce7k9KM+fSG+xeYYGN3/ZwHlGwKkeWY3SGCn2cwskCjNwNAUiX
+         O8wXpK+qXvKvgq2XxrDBUCKTZ2cRLbRfit86k99DUlrNntIeMmXRgoJW1NgUzjHwDE5P
+         Z8Kry9u+41Ahc4zZJ7kX4g6HZxRHGaQscC1U/v3MWItEE555cWSCF5GecgYIxYKCSSOr
+         AuqNcIjEHmwW6oGRkL4qgtYCcSfOd9O5LZD+dKyLBAHqiR4AWeOUBOhDzYfG8n3wmdWc
+         YELjEg6hMyd51sW7wNfMAFtu2TSYZV7ArK0Fx9vspMQSiuLYc1SsKy6LyQZowD8kxL/w
+         of4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795434294; x=1796039094;
+        d=1e100.net; s=20260707; t=1795434305; x=1796039105;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wao1lDLNbUFd8H98o11hNOXj6BtvvuLII7zQ8aDHCoA=;
-        b=M7+yM88R51vLrpVvVLnzXNxgOnaEjICNbLBxuNqiCBlYDbK4jZx5SDns3bO4Dumcvq
-         wdXX64ChUsnhXY+R+4AShIJtkbhYYXxcJHjtU3S7LRKYCe+lM5kHm8x1DEpOnngMnwyn
-         habX3+qfuKliQw7ma3bCsfmKUqG/WbxQAlSr8Roq582C5uOCm/gl9HqJj4SdKw+GwPC5
-         rUouOlO/8JYVwnY/G2eBQbmKu0AJSFFSDjHyoPOW/N3ST7Uvie3Zv/nDgkMPuA28XXGw
-         FbcsqpbkeGcIHHWaEkSeYqq80AHfRfTSP6gveHRghLNuJTRHD7e/z19YPvIzJsW9N6NW
-         IOdQ==
-X-Forwarded-Encrypted: i=1; AL+hErH/iIPefUKYwPtNN1WDzjCzNetFFIgiePGphwP0gOaW07gP7vbSQAWCB2OIGyXW+0QTG0i9ENc4HA==@kvack.org
-X-Gm-Message-State: APuU4Z/M1dLWyJ6ZUG0vPD0rjvG0Z+4xyz4W8muxkMzEtHHCuFihmwbt
-	+8iySai/kJ7ZIFuuhkUKeTlq2ircovriF5+kG8C2QYurvvQ4y4w/GViNIKGmuGnOq6GN
-X-Gm-Gg: AZFdTZedYfO545ob5Q2fj7l8ssoc6BEn0M9HjQHCoNgCVa9kk4a61Q41+euPIAZDTiC
-	ZJ9MNULRUfsT2S6UJ/Wi/iyjTgTPGnUNuvYM+ALg2SNchxSnqFxBNQhWrWzSf0FnovTTnGPumGy
-	jwgafD9ANphFWgL8xpTHa9Wan4cxzhEWXQRnMTU+MRhadLYwAYIVLC+PLhLSOt8kWl/ZNEtoWUx
-	bc4AnhU7rAhlN20oY94ILNeGtD1cB9lwTU3XcxHslrUnBAGovS2Pa8ErRUGMt7WSPOQAUEOQROO
-	twFXFbYke6toO4Bg03YNdI0Cru3pvyo1ZYN/pMcK6nOJURyF70xZVeIh6j4Da9Q4aSXDjgh8dUP
-	AvRlf5Z1z+ARLTqrRY0KLYE82Xt/VB4EXsSdDN0LLNiVU4BL3g/XThGk+b16expz8v8BVaFEKBP
-	pslZc2TROvhMfSbVgkk8CT8QMisqlbduEc9qb4SYVkl3iT/SBOsFt+JZ1OXpgwOPT9urk8NMIRJ
-	SPT9g6vQpWd37GgZ+PbikmqXkFXynTk0UI8mWIoZBNbtlY/4OvKr9nq6C28CfQvc3R5Y+An0Pnx
-	VwKfLSorXcwqxyTxlwaC5F/C+XZI3PBCeTkFtfK1YJS9UV5HpiNDlxtqnLvfzFwQMMuYdy2tKco
-	TF+aa4sHjxfYdNXoU5sYBt2N0AbQB/K3ugcL0/6Jqpy/LkGVmHUyQZg==
-X-Received: by 2002:a05:7300:f797:b0:386:95e7:848c with SMTP id 5a478bee46e88-38695e79009mr9525592eec.7.1795434294209;
-        Mon, 23 Nov 2026 03:44:54 -0800 (PST)
+        bh=pVqS5lS0RoTOTBL4CoDpn/qs9ZBbwa0oy02KVDKJZu4=;
+        b=xh1RWAoE1Sy61EU29wy6htMBlIUfduCp3GR4YdhcfZ9XR1+SPN62SwGzUoDqmItYd4
+         XXf03i23kOvjUgTlEEglacPgY5kROnhvXMcHCSCVblJsfDTOko+ujFN7/kStZkufKeV+
+         bI8o9ZBjTmn1vZH9m2FcqaDNOaajOSH3b6IY6+79ntH8OjYHfOwm8X+8FEr6Yt2ZSgQy
+         C78rjmWnapjQKLTND51OB4SCVmeR2QUBo6J4cfTyMLGNlf/gvcvviC9jp8V7v8OZvnf3
+         Qz+6VonHQ/qtGO9YPB04gQ2X40d4G9B88U40KowcI71p8GdpQjSBWG6m2X52IeKVnrLb
+         xFpQ==
+X-Forwarded-Encrypted: i=1; AL+hErHD9jtTOhv/O9C69WeH+lTW23p4+Xqbw2+yV+Y26CJnoZx5f2mUXAS227FRCW72SJyy5I64QmaBPA==@kvack.org
+X-Gm-Message-State: APuU4Z/XjnbZLGULzLTxQkLUZyILlkw/KhtS9FFN/BEk0dLNjBeXVw8Q
+	Orpslz42NCs9+iMmUhZFFRzGGG+h2KpD16G6FF17SeShoi3Dxi3W9SHdEQvk7RsJiPRB
+X-Gm-Gg: AZFdTZf9yqseImOTIwd1ohJ0W5K1/a8swJo4I2xTh+jEgD0iimHVu2YilPxjM6kuD4D
+	Hmc90syH7qIiSGgq657h3evIBJ8Pd/NArxIzbUpULCV1LnUbh76R02CA8Mv1SV+D9XoRmhp6BKX
+	2wuzd+6HsMExxD4hnIuZg4kHIEPAXhf+HIW4WSQkV/9MQo0VuXqhaehaFJUeF45BjDzOkyuB/9q
+	pVEii9C4q0959ndHwaPHXb9pIN24/VhidEYlrVxsOZcBwtGfXSTnNJ/PFnfVFd3uwbFwCI91aZR
+	b6ZKxp9GEDS2IF+3qNdvyZi3tCP+9bMCEKnJ2NCBcXdg6JfMcV0cr5nIHaSINMnzVX2lWNZ31N2
+	Z2XNOn65eF7pADxMyW0b6ngOGgLjpud06malJPU/sxFV6FU8BPUidzLoE74kbdQUm/avNZIiMdL
+	kNJ5VVECV+KOzGN88tPzDZcl0jLK6hZpmdCW7rpz+II2uK8TCOJ0nEtJIoBBI/Y/9Q1lS3wg5XQ
+	Okx1Xo8OY9BEzjFusJM5pd1qiG6In5XRUUBACEZdjy+pX8GHTlAndPP2IUIj+PsaKW6u6WLzW51
+	TtbN58dgnLuV0IPpr0wj4TV4FizpIdjf1Hz/1YvYB2giCprc2ts+MVyW1+rmEE2oV5bO8m3R3/+
+	5wFlw+oBdZLfx4v9WXuxQucUDKTWAw1Kg7RrKZsAfsI3PkcfJpCTCcA==
+X-Received: by 2002:a05:7301:4283:b0:386:96fb:28c with SMTP id 5a478bee46e88-38696fb2022mr9810486eec.18.1795434305311;
+        Mon, 23 Nov 2026 03:45:05 -0800 (PST)
 Received: from localhost.localdomain ([2409:40f4:14e:94e0:654e:d7ff:13d2:447d])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38566cd40c5sm41943583eec.10.2026.11.23.03.44.43
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38566cd40c5sm41943583eec.10.2026.11.23.03.44.54
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 23 Nov 2026 03:44:53 -0800 (PST)
+        Mon, 23 Nov 2026 03:45:05 -0800 (PST)
 From: "HARIHARA SUDHAN. R" <harisudhan@armoriq.io>
 To: bpf@vger.kernel.org,
 	linux-doc@vger.kernel.org,
@@ -123,27 +123,27 @@ Cc: "HARIHARA SUDHAN. R" <harisudhan@armoriq.io>,
 	Valentin Schneider <vschneid@redhat.com>,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Vlastimil Babka <vbabka@kernel.org>
-Subject: [RFC PATCH v4 5/6] kernel: add KAP checks for unshare and setns
-Date: Mon, 23 Nov 2026 17:13:07 +0530
-Message-ID: <20261123114308.8103-6-harisudhan@armoriq.io>
+Subject: [RFC PATCH v4 6/6] MAINTAINERS: add an entry for the Kernel Assurance Plane
+Date: Mon, 23 Nov 2026 17:13:08 +0530
+Message-ID: <20261123114308.8103-7-harisudhan@armoriq.io>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261123114308.8103-1-harisudhan@armoriq.io>
 References: <20261123114308.8103-1-harisudhan@armoriq.io>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6eqjkfwug6beezuidp6i6z1zjzsbhjme
-X-Rspamd-Queue-Id: 86212180006
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 96EAD40004
+X-Stat-Signature: mmuqnsm1srcbj5j6w4sqeqkozjjcsqs7
+X-Spam-Status: No, score=-21.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795434295-563388
-X-HE-Meta: U2FsdGVkX1+qkKmNUME5n81xa5h9f56TQsgt6+mZId7aq1pbWzpBcYBTKFENDhLshJBq8NX/xw5pB3EEEFgiVt5ZuXvjD8dkWswZd7U29F5+tZZAXAK/nzLensAYnAlFRGr1TWmTbF0H4dSvjjtGbzAQGUlRvXK/rdQyDni5qsTP4v6DYoNoqGkeE+nB6mJPhGTE0iUFmEqdTWEs4eymoewYp110+Z21oiI0ZZN2vDVOp1Jot/hXyZFo7GJMMsoHUuLOZm2lKySdONyj4mYxfgKt3uFTDisyK3CSqzkq2O3g5F/40HyLv+hOkMngXFuU51tqk46delKA9FUuuDpMFdx66ON94YwBw94oJnjCC4so2epc+5OAe0v7VCqvWcxaIVNKSs1364XmEQc8070V7ZckDrVUqkt6fcjsFIbO8zlhz+/EtYniF6+KYLHE6s5oPObPmcnVItdwAH19d0aPK1BavIkhS+fGx+8sxyEMjsF/1umpegsNMpE0Me7WCTB2/qHlPOjBp+gNe0Y2lMpFbfo4/rKDXCiZ5pGzImONotq/cfnMRgp5cEqg2kCjeBgbVsA/e4PE4lYS1T4qedTCbCTg9z3NTEvzA5Dmb0Ld6oKee9TPMwf9X6gKMj9jzH2KoNdfgyVkkG3qaJbaoZMIecu3wxiOhmBs+IaOImK4N+nQdDerY388v0hc+/kMAtrDoGCe34MOkAhLNpPQ6NP4njMwaLzVKra0tqUcMcQsNLgcCGApAwl4euJUiChpxzgy4yUqoYHQYkbhPoF76K5TzrKlkmCUjqpg9B0Czkx3OHNhtROUIUnGIpFqKFNJgcCl93CB2GrkNo4kQTmGWD9gMA156p3suAMjOe94TecyQ30eZ2gZb43ud8c6Xz2sK60HaJn9kbiFwSQa6xiHrsE3FpEXfdaVs8wZDfThnP866kEZ98XJtgh8nzXDCrnvY8Cu4WqOeVgNwTFkUtBOXRn
- Ou2P7WsG
- huA6gLSwdaPHiNENSi/Kcfegjme4SpUAZDGXRA3moddCDeegkH3l3qhZQRkkB1psB6TW3jBvQA3/w0xf1Cd4MqW7y5XS8T+HLAvg/z6ery9ZT5e0cPN5dt+WpnSwgMfrfQERLgsAD3D2RkA0EQzLbcZ9HabeLQr+GLuKjprnvv6Rc8gk27AHXj9aWD1hWWP+f/y12qjU+EZaDSPknuhiJqtRNujqnd/ni3675gpBl94+UkYtnOsvwddPlMzgP7982382mFFQKAc1qnR9WN67xSj1B3S6vB4Hpe3LMX1KcYDNrqOnLFf+jx4zYJJu5W4YeIRmddXmMJZH5KCjo1NbZvAdcIymw0LMXpOsP7G+ind2tKfo+UY7OUSKTYTXw1PCwIkGSQ9FnKMny2foSocHpYKid9VOQbfV8i/JOTjrg0N/YD9awC1L+d+OEctVhr2uSOyJI2Jf2ECFwYc2xYnw7P9MVBnghnjmloMEVE0ot/Pt6Q/Y2s5bZeuQv8EKIn1GTECGny37oGfeedDXH1Euv10kj5bB6UKcRCxAhytv1hT8ls6uTKtWes8c2jq7cWPt0zPkvBHzWkEEi2gbXedqFLmdVZQ==
+X-HE-Tag: 1795434306-360523
+X-HE-Meta: U2FsdGVkX18jOB8Qfe5nNseaXA9MHggT5hMFSBDlxhxuvpi6yurI93yuGzWwNS3ZnHQwEVVSoYy6ByklN8nKKoDuMf6e3QZ4lxix8ilvhr98gBXj7x9fwTE57FsLNPFS5c35Z+E/aOYcsm2NefoQFS/wTnCPJpfb0fK8IPIPjshG6CtXDs9VzxUucBwN6x4mBQVoEAEivqTAF+knwOKFD6ToZ766vokwJ3sl3va8SBr7s9Inx0nNNkgExuIzoHjMjyoCW0BcTP9XVClnKJldF/knUo+SolRChTobYFuhi87HPylfrfcP3Eq72QPg8gpUTeMYMNeSPTB5ai9usRRf5bmuIZQtEICQfzEbP1fmhGwFCgoeI3Wx/LcpgbB3U6e2iyom+yKQ02B8DG1yxMFpkjdAMWObM+XPqd46zvFuWElbOTP0yWQmom3p5XICHx01PS2ruP4CDj12zaKDC65hfNOw4cMjposH5qBVAv05+8TQpsuEunlyPONtoU30s1Zm/JSBfh4JqN7Fx8QojMFzzBhHiyivNT9EJZDmN/W73+FEPVy0c70jiYq8vkH2RFG30TOZ9Z2tzb55gUrieYYQkFlyZqTDG8/cx7dQfNPEyZCIUxWKr3HeJUr9n57db5rIoYpCUZZkPEMKZ/Gwhr4hrf7au8LbGyz3WrhAMOAuPAAg3/YPTLmDPC9QdZqwkwz1nqiWy8I6bCczR6pRJVF3qWQ6MkSJADU1UZQe9438J4436O5V4i/frDEDKvZ0hKGXoynOaS5bAqvrLTgIBQ0tbz2tHpCk+jsXmCQfrE6yrzxATigWu00SWXZzvamDbDEymEKcoVFPfa9kUvOqFJxRbcMPZsqq56AoRFZL8UaJgGsfvCGzYqmruzV0U2UvzMH2/VZJ+CAX27ZSHKidEYVveff2SsuCMB4jjuGkY4aqsJfpi0YNcW+TspdD7fodG4EXpsngqWdolgfnjPLS2Jm
+ LWEkLjl+
+ yYXKULP51J7uko2nx3tJi6eAa1vPez/FkU8ac1JuaNdfis6Cp0J6MsTEP/ycKT2lHiTJ37/6gWxHQw+jK9k43oeZIjwlEhLttZ71/25SKoTjxXA+xMSy0qIRM9r2EMMq/Bda7I+5nkYkgZ6cv6A+6WM50h5beXhvw6Gf3InZV+oy1/xo2g7UdaYDMWmHpr91UXv7dF5gCGuWy0ZbzZon8UkrZcHx0e09TZrxeXia24ZqgHFFiBMp/t42mC6Xg4g8AWla7PYepJJiovpLxPzhvjUheewnlYPRQrV8f6fT64+Ql/CTX7plsXDp52kahOeKWGYSjseUYRdVeR4CSEf+0iHNBT1s7FjKs1XPd0Mxf4j52wgfkm19MznBJuqkqmgRqpNdo7/JEsdEOllXz0NnHHmtlNa+xJ/bOpwZny53krTgWYryTQUkLNMs4OWsbmFMnP7dOEs9ab8vV4rs4VIzU5D25FXM4IwlMrxg4iW2+170MdWrjdznJMxGwv2EK9lFBT0ZEhloEeQS+H1qUz+aLuCfccsLmc6bryKvepJCgiqvMIcx9ZJuHtG5uc5BgDf+qOuD/nrU44BK3HDUri4yKMB1nbXGLV0VsOgu7kp/XrfLXUXoparv06kBy9u3h8NWhokfKeklcX4XLfrAYTjbCnjB3FjsK3pHxZc0whKzK1aWMToYcTFbNtTqHIEDnPmULgF8E6aK/BRhORElnmzo3wjn5c3Mgx8MIAw+VNCT/AcPl7v4AW+v20jE+S6hqfDsUfOID
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,66 +152,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Check unshare and setns against the bound task's authority. Neither
-has an LSM hook, so they call KAP directly. Every namespace type is
-checked, and setns checks the type of the namespace it is given.
-
-Unbound tasks are not checked.
+Add the KAP maintainers and the files they look after.
 
 Assisted-by: Claude
 Co-developed-by: Ketan Bhardwaj <ketan@armoriq.io>
 Signed-off-by: Ketan Bhardwaj <ketan@armoriq.io>
 Signed-off-by: HARIHARA SUDHAN. R <harisudhan@armoriq.io>
 ---
- kernel/fork.c    | 4 ++++
- kernel/nsproxy.c | 5 +++++
- 2 files changed, 9 insertions(+)
+ MAINTAINERS | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index eb198c8df..4216a2de3 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -52,6 +52,7 @@
- #include <linux/cpu.h>
- #include <linux/cgroup.h>
- #include <linux/security.h>
-+#include <linux/kap.h>
- #include <linux/hugetlb.h>
- #include <linux/seccomp.h>
- #include <linux/swap.h>
-@@ -3276,6 +3277,9 @@ int ksys_unshare(unsigned long unshare_flags)
- 			 current->fs != current->real_fs);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f53047aa8..0946d151e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14118,6 +14118,16 @@ W:	https://linuxtv.org
+ T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-keene*
  
- 	err = check_unshare_flags(unshare_flags);
-+	if (err)
-+		goto bad_unshare_out;
-+	err = kap_check_namespace_flags(unshare_flags, "unshare");
- 	if (err)
- 		goto bad_unshare_out;
- 	/*
-diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
-index 3fb1595a4..d41d7f5e9 100644
---- a/kernel/nsproxy.c
-+++ b/kernel/nsproxy.c
-@@ -25,6 +25,7 @@
- #include <linux/proc_ns.h>
- #include <linux/file.h>
- #include <linux/syscalls.h>
-+#include <linux/kap.h>
- #include <linux/cgroup.h>
- #include <linux/perf_event.h>
- #include <linux/nstree.h>
-@@ -589,6 +590,10 @@ SYSCALL_DEFINE2(setns, int, fd, int, flags)
- 	if (err)
- 		goto out;
- 
-+	err = kap_check_namespace_flags(flags, "setns");
-+	if (err)
-+		goto out;
++KERNEL ASSURANCE PLANE (KAP)
++M:	Ketan Bhardwaj <ketan@armoriq.io>
++M:	HARIHARA SUDHAN. R <harisudhan@armoriq.io>
++L:	linux-security-module@vger.kernel.org
++S:	Supported
++F:	Documentation/ABI/testing/securityfs-kap
++F:	Documentation/security/kap.rst
++F:	include/linux/kap.h
++F:	security/kap/
 +
- 	err = prepare_nsset(flags, &nsset);
- 	if (err)
- 		goto out;
+ KERNEL AUTOMOUNTER
+ M:	Ian Kent <raven@themaw.net>
+ L:	autofs@vger.kernel.org
 -- 
 2.43.0
 
