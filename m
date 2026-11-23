@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5038606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795CE60A261C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sym98uDI
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oEIIGS9K
 Received: by kanga.kvack.org (Postfix)
-	id 5426F6B05B1; Sun, 22 Nov 2026 22:43:26 -0500 (EST)
+	id 826C66B05B3; Sun, 22 Nov 2026 22:43:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E9F66B05B2; Sun, 22 Nov 2026 22:43:26 -0500 (EST)
+	id 7D0A46B05B4; Sun, 22 Nov 2026 22:43:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4270B6B05B3; Sun, 22 Nov 2026 22:43:26 -0500 (EST)
+	id 6E6716B05B5; Sun, 22 Nov 2026 22:43:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A7B36B05B1
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:43:26 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 87EE1A8427
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:43:22 +0000 (UTC)
-X-FDA: 85464988644.18.DC1BF6D
-Received: from mta1.migadu.com (out-200.mta1.migadu.com [95.215.58.200])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9A83140006
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:43:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sym98uDI;
-	spf=pass (imf04.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.200 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EE756B05B3
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:43:48 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFF8B1A0782
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:43:47 +0000 (UTC)
+X-FDA: 85464989694.09.5DBC343
+Received: from mta0.migadu.com (out-218.mta0.migadu.com [91.218.175.218])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AB13E80002
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:43:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oEIIGS9K;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.218 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795405400;
-	b=yqYptutWn/Aynn9HJaFF2re8GmNzAn5s3vzlMR0CejSk6K10YldiWQM+fU8DJy4R6/MAcR
-	x/RvnHKISUiTR8+iZNR6z/C9H76vCDk90WpRBRs0eRfWuEK7k7YNTDrzCKD2YRPqhVPRMv
-	53qbmsL2DQ6Vtl8nX+1PEf49heHmBrw=
+	t=1795405426;
+	b=fTyBaoWlFN4DgUbxYLhUppOjRIno5AcGICMHthh+Xw0jpMG+zelqhVWi5/DrwBasMlfstY
+	g5Kiac11ncOvuqAlfOCVFcMP61yZnKOq2vlRW4VB94cBhsP0zKeWyBM+D9gnrGLPLCpaon
+	yg+HDQSoPg5mvMeE6DAssEM8XxxoZ+c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795405400;
+	s=arc-20220608; t=1795405426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
 	bh=u/dSSnvt29VXMuqEAAa81mXAdbrbhqEv++QT9+xRYhg=;
-	b=CSC59AmxGTPKMUqPOdF0JUBo50R1OgkG455opYHAU28pTKb90q9tBQuryz9f+25FDy9sya
-	sFbJRkcTuJWDTO2EYYhoOQkzlajb8KhYRrJXBKecMc7RL4rquoxexXRVCA+sB8rzcuKR/w
-	+wGQmOW6tdC+KY9aw3uAxOy39Ns8Plo=
+	b=Fhml5TI6BS8NaE268AJcWnsFtavKk6pTzlvVbs9WlSPNGfcOElVJe2pI+soKKcb68+wlia
+	OFzIgs0uhtTayzqRVIOe+j0yNPWnsln3b8S8qOB9RmFI7SbA34XC6Y40ykdAnP7TSh9nbP
+	RKNZHGhoXCPCAW9+c8+a9Bi7B6O7VPg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sym98uDI;
-	spf=pass (imf04.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.200 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oEIIGS9K;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.218 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
 X-Envelope-To: linux-mm@kvack.org
 DKIM-Signature: a=rsa-sha256; bh=u4K0EQqDi4+xhHfJPHjH7LQ7MYMicDcjgwVFleEBNuM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795405399; v=1; x=1796010199;
- b=sym98uDIogUQEVzQ57BtWFFt9Lo0yVdauWGeKKZLwDg6jJADX1S8k4zgKh5ONHgbDFhurkMK
- n23ugOKub2PpV5+WNX0IZz83zQ0Q6CLMi5FsPRTiOi4sV9uGT8ZKJz8Vq0vQeAAG9l+Mf8rx+DV
- ZHFqO7Q4VPkh4Ai1On/OOOAg=
+ t=1795405424; v=1; x=1796010224;
+ b=oEIIGS9Ka5spYlhYLlfawa+ZXJ12Zna0ZEFeJEE7giXqmS3hI6VfU5abnWm9O5dKcBXdhDr3
+ chFS9abhBmm/TkSVGVES9Fbe9qxxhndJ2h06+g34MMv9B9xjfE5uGLlQjOAPDphORiVdJwtVHXf
+ T8NO827T1NAkp4Q7nbd81vvk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id b23e18659fa0a669;
-	Mon, 23 Nov 2026 03:43:19 +0000
-X-Mizu-Trace-ID: b23e18659fa0a669
+Received: by mta11.migadu.com with ESMTPS id cec765d6627a4390;
+	Mon, 23 Nov 2026 03:43:44 +0000
+X-Mizu-Trace-ID: cec765d6627a4390
 X-Migadu-Flow: FLOW_OUT
 From: "Xu Xin (vivo)" <xu.xin@linux.dev>
 To: xu.xin@linux.dev
@@ -69,8 +69,8 @@ Cc: akpm@linux-foundation.org,
 	stable@vger.kernel.org,
 	Karl Mehltretter <kmehltretter@gmail.com>
 Subject: [PATCH v3 1/3] mm/ksm: do not inherit ksm_zero_pages counter or PTE markers on fork
-Date: Mon, 23 Nov 2026 11:43:07 +0800
-Message-Id: <20261123034307.236032-1-xu.xin@linux.dev>
+Date: Mon, 23 Nov 2026 11:43:31 +0800
+Message-Id: <20261123034331.236509-1-xu.xin@linux.dev>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261123034136.209410-1-xu.xin@linux.dev>
 References: <20261123034136.209410-1-xu.xin@linux.dev>
@@ -78,17 +78,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Rspamd-Queue-Id: 9A83140006
-X-Stat-Signature: cuooshpc3zy7n4fqckxnk4y3pkrsx35a
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AB13E80002
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795405400-668144
-X-HE-Meta: U2FsdGVkX1+4NSSw2eKsxbwgkqK6fS0lqmCG3NZyYubnlmLWPG5ltepuf80jXj50GvHJyGS6YESwOZXSx1/RGJ9HaMdeZtH+XGVt5HldD+sl5VB+81PTdohK8varFpXDCO9fcA98VyXrO434vAVtNHDbtxoidGvk4qjnOXoWICdZyZ5dfdGYGwXccFCrwc/zE6nSeXGqJzZpPe6Nzc+4i5IsQhUbwWufZm6u8i37i2pxOSwBAIRusfandfVjT0IJnA/LZuKMzx53XNn12hS5zEPq3cDkBVpZ99IpksWjXloLgqGBs5Hi97yPeHKbMeRPw0Wy4bmryNX2aKysiWxYqGh0CY5nPVwqZn7wS3HVsFYweHghyyQJKKzp8f5GPQhx3ncTENDW0ijZqiYzzyOsA79NAe+4Ql/WNyN9+t3Zsguy8YpKohAg/OvZRquttYn9LTKr0XwsgvEHAz/WE/XfSIR0gwFyhSXMVF5yR54eO0Z5HILBqSp9yylITOdRPfWA340mpv1gvwNoTJ6rZc4YXLMs3MCpBb74Ygvn8bVJFRjWmpK42AhCcQOxil6DgjgNekH52Y8zgAQb572OEzjlDp0StGLCwElK3rY0texbV7xeuEi4HeLlU2cnIWXUzgTsIEX3HhNLiRZaSulv0oB5+DayUCtBFDCF6EhU6kUM1Ie05AShH2N0M4yP4j8Kj2xGIBO2SijRntRmI82zsEc47uyVflPj3KRRf5TC7HwuUQrsKunXSuHWE8bz4X/xyebluodXPhO8+7iO7MajaTziIr86cJAkZVd3MyMBbVILHA6i6ZdfFaTCjqkG/VlVn5duHGsvRTPe5szcfIfThUpfpTAls023potTxY1/VW3bZMHV7dKShehkKyyj3+1PvVMMoKgHS4IdmKt6MV8dSIk7oAK6imhRCSgiIGcurzVndxcw6QNpi/t66zW7WdYpzppJPqY3yfl5kgmmC+7wgNt
- vL+1PM8+
- hl13JmFE/hG3WZag70h8iqMC9v49gYjZPMepE0M6kXHQbSmWOdyB5ZWOKbc7mgh6f5PLQFKHXOQWssuuXvcGRYZ1dPdYHUtLQ33WscV6ArPWEN9mb1Ia7z5zx9+KS9Iv+yKuTWYAsXRbzPDYN+XtE2RTd5h62aUxovKTRYdSSZ8VepS1P6XGHIWIUevfNeSAQkW72SXnYAg1GewXCzAmeQ9wRzr8qb8hNrXyTswv1cvnd1bOUbGCG1f0E/9bRGnFfK+D788ITfx83K9BPfOaUV+KTO99MXItqAPCUddBwAUEHZGkY1wjgcXNYCeTtccvHOdxp014LH1Dd1iROAdaRrIyD7RX2/dFjJy31KuQfmn9970vmoVuCV4ZOR5+0zgNv9klCMGLU0snOyQUGJdvMjpS9j+G47++WNyB2YRCbE9cyxhvSJpUMDAma6bxt2v6eKh/HkONTVRVGvcFkKorA8mULRFKHAgwuoKpSi7RsuAIrpKnoSx5RLeT+kvXTevX1KB/Emr58Vc/gnVqEn5eqYi28UJQnNSqqGo/0Q/cXXImEZvc=
+X-Stat-Signature: cuooshpc3zy7n4fqckxnk4y3pkrsx35a
+X-HE-Tag: 1795405425-276703
+X-HE-Meta: U2FsdGVkX19S/U2B1Y1OH/YPXNs1lMgY6qUymtduR75IVGlydeLMK9pxIYhaCyWY++d+ACpsb+uP/ohKLsjapvWheE5WbEIr75w4OfPw6rpHEZITdRbA6fJEggSjmW7OFhVhTX8X0jUV56xt7GlgMGLp0r3wlp6FSDqTSHM5k2LLjeAhPJDtK6m0IYXXO2ipYXzns8HNT4Bq9RVDzozimPxNfE01GfiJ0Ftips39nNwqah66/zRcF8RmWjECWz/dfw4xoOUWzkYugc5wqhflKzXaZL7h6ZGcR+FmTKNd8O1ZeHbrpxOdz44VeAOQQT6CpGIvkJHFwfMw31Fn8L0vY280DyzKH7rjWaC70oinyAJudoTtvlX6dAN2sjDVDt+VA13BcX9Dr/t/xOcKYHi9+WiiZ0H97EvbW+I3dFX9aykdid+dhq7nRlwXDnUEZkV8iNJ02S1OVO6stFIObCW2pWkKuyen2UhHsgE5BO6b0sE1S4pFtm+xnfBHAG1KfkAzaa6/iH2LB4N11P36b5oJ40p4QYnEf/OuKKVcKDydFxuD7OTLDPuOzGDM0jPfo1rjZYzkCNOmlRHIP1dqZfMhz+pGZYp3c9D9AGupxHdnFc4RSsu7ekRPH1FmUwWsELaXY3r4euyj60XnXd8ETJlEp+FxPKziThteWpBdA++x3qj5zapnTkN1tU0AEfWGWKXXy7C5bxJ2PQDFXJpnOeshSoQLSo6vmJHXcPpFPsglEXsG3pCeMDUVJXqO9psGM1Dhe2tFU3hJzdazfHUTZyIoX9bSHkkipZAcbgfVo8+Olm44GL6ATp6avWCD5F+oG3sfibC5pHOdybmwrzE5uCoooN1Uj7+GGRt3jn9rWV1XNDPL4gmVF2pF+bbjSztxK0TArHRTk/y5vu8bcqLCptSZ+M+bQeLjz640Q4Z7WkTGpnC6T7YHqtFttBXg3MdozXXnQLgNM9Cqys3SHF/fk6v
+ 59vOdgXZ
+ nMqWea785C9ux2f2OGYnu8U3HnFh4/NAj2I8NDe00qELPX1t0JQZIElzCxjTLDvMakt+hrKtalJBbmt/Y1t7phjFYF9yFVT70EqNkIiqEKCUm7fJw1bbiO6oWq2jjQ9DNomVpyYjfh1BYrAnho3SPQptoGAA50kcaeyJv20cv8js9fcs/OUVuI3z9du5ygPL52Yket4yMxLjuIuNUt5lRyML/TIFb06zqAA1p+x0kIFnpIFE/bGXrcojyd6Vc66vo60YzSvPwSsD2+jzK8RfqAFWVEkFG+Du4vCR206TkadVPCNYeg8+4qPU0MDjF0fOpCTYA/hT0MZ9qXnHBON661ULallAAr/Ef/23C/joVXldpJyrBp1P6d39f4lWL8sN/1zT3MkutAvVX8wcFFXQHFGlMxgRhsBQUXfxFp7KBDxEACyb3d6rhNis0NOBAKM1vCpE1rYCx6aCr9gpe9PIuI1Zlsfjx5CASSAfdElDhNyNmantIN0xe17ZN5EgGl3jib30Itam0cMTXeKyuTxdZsXD2BLVYFTATmftUsZvHvAaHsaI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
