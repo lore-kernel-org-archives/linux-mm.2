@@ -1,143 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0148E606A686
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BD9606A6A0
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rCXDMhbM;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Vihz+OSm
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=id76RmPg
 Received: by kanga.kvack.org (Postfix)
-	id 49A5A6B05BE; Mon, 23 Nov 2026 08:51:43 -0500 (EST)
+	id 02DD06B05C2; Mon, 23 Nov 2026 08:52:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 471AC6B05BF; Mon, 23 Nov 2026 08:51:43 -0500 (EST)
+	id 006516B05C3; Mon, 23 Nov 2026 08:52:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33A466B05C0; Mon, 23 Nov 2026 08:51:43 -0500 (EST)
+	id E372B6B05C4; Mon, 23 Nov 2026 08:52:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 010E26B05BE
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:51:42 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A1E51408B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:42 +0000 (UTC)
-X-FDA: 85466521644.07.FA2DBA6
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CAD5A40003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:40 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=rCXDMhbM;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=Vihz+OSm;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf07.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BF5366B05C2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:52:07 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 592464088F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:52:07 +0000 (UTC)
+X-FDA: 85466522694.15.3BE8C98
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4095780006
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:52:05 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=id76RmPg;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf02.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795441901;
-	b=jR/6h1UXIVV+n7/uu2Rq+wvNGE0G/DmHndjLfFdphRvbPu5+eIs/rQx9l7tsTnj7JJvrlM
-	i9aXSUGinL0rwYv3CYiIOe1V0Vojp41liQNzZaSJzxHn3CNMEUtqgFQyaHJE4N420+fmvR
-	mDKDdwPxqizB7kHReXB4nLorwp1sztY=
+	t=1795441925;
+	b=1ONNQG2FPLdULL9Gua/yOioVXH3E/Vvh2aPo33QhNrc3+fdk4iNbLihwIJyfkJqzqP1Ckf
+	UKSacztZiuGJ99MzRSSQf3VEdFQqiJAaTg3wBuBg16luMJN8RgaYTSUlPZcJbV7PW0pIH3
+	76CMRa219iDdNW8BGQuKnwS8Th3Ftr0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795441901;
+	s=arc-20220608; t=1795441925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPmhvZcQZsMI6w6eJvQYmGXP4b/7L7ItLiKaLRPpFiQ=;
-	b=09kG6ul1qVC2xghyd7wBcFFJSNqVws12xiQpvPMAim52PelP9nBdxbpxnq/J1qI1FHfp5k
-	I/d6O5XLTizGFsrva5LTqrcSf09RDZxliJ7COE2EjJ27EK/ZyAc+dscK4CjvZvunGwsbSe
-	RnYXYMrfkvfzd2uYeVMgSc2RL5ft6Vs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fPiZCMrGxeemf1W8hSc1ZOEaUK9xMjW2agUNdF2P2N4=;
+	b=PhfPLIyq3UEFAS2czgGR5sGZkk7tt1UDK3x3bolYj4vZxm3xoFwf03bd9nYu/kMW7N3UfH
+	NKipLBrRNSfXOmuwXOqy2H0vyxUG4DopUzNu0g1inwxEWiXKcK+TkTMXOQY5AZ5KJJDNnv
+	vj2issdyTUS+dnvkgyJAHbO6rqcz7GM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=rCXDMhbM;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=Vihz+OSm;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf07.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795441899;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JPmhvZcQZsMI6w6eJvQYmGXP4b/7L7ItLiKaLRPpFiQ=;
-	b=rCXDMhbMNovmfoO6qyadNrRk7f6HVHBen34hmO8c2sCJxmWlrI+kuN6Fu1RHeKKsk6EY24
-	E0SacrConMBbHsRxfbnnA1QmrkSNG5ig6+9Hj82q0+fcZzQog4JMvSX6BdBkvLPKAZY09a
-	cmajQWcX84aMnEYYUqKcjQOYaLNnWLHV9hW4r1F+KoYJyRFvRAAJZbR87Cv1533ZENWlNL
-	1IH3b3cUootBgp4GSIrRdqXPpBA39+LY1KQmZGiOE+gUNUvfwW3zvseTDo78nzug9YZv0c
-	Nf0/IEvGQ27iEzT9+d3kiH4e7e72aytWDiOonz7mndTpsY7S1mpQeK4PjYtpeQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795441899;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JPmhvZcQZsMI6w6eJvQYmGXP4b/7L7ItLiKaLRPpFiQ=;
-	b=Vihz+OSme/gaZLLhdpsDZx8NOwH494utLHXdBxi1jGqiwVH9qbyOTU05x0YmhKAKY4MP4H
-	F0xPTtLbZf0pAzDg==
-Date: Mon, 23 Nov 2026 14:51:02 +0100
-Subject: [PATCH v6 11/11] vDSO: Automatically enable VDSO_CHECK
+	imf02.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=id76RmPg;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf02.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4bb85e07aadso40558455e9.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:52:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1795441924; x=1796046724; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fPiZCMrGxeemf1W8hSc1ZOEaUK9xMjW2agUNdF2P2N4=;
+        b=id76RmPgBo1MbvaMrl3TxqhFg6OZd40OkrKt7Sv6wfEQcy3YdsYdfGxVbyCHDSwsig
+         Jg+pSJsAtQyQ+CE8Q/vilUx7qMgqoAjUhwRm/Qn3wPU5pn97UOR+AkfDQ8bhbaPA/scr
+         aCf+PUVc3V/5tg7ySRARddnxyEjv0TFQj/yHIOFFSb8UfYA8JWjmbRnvq867VBleV4DW
+         d0O8/QbhCeWwUev4o/HL/lAFSje+X9ZUUGId4Z8H0w75U4lKdfVIZT1axWk+r62bZkBL
+         Y+vpm8kQ4DRhKF9TDmmPAPJzXQ6kH4ay+Y/ALLqsNQdkQgPQ1naFqEwYqTkQ3pHL2oKG
+         Va6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795441924; x=1796046724;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fPiZCMrGxeemf1W8hSc1ZOEaUK9xMjW2agUNdF2P2N4=;
+        b=ME26ptlCDQKGEGK3QiH56x0VGSPnO5WXKr1ySdlM+YnrzWDJSYq1astpmqTfJPq9WP
+         4yl+lq7cvx7YUTRPi6OepBXNCyGFRTpEEUMrwq5qWZ61KhahUwSwr7pZvms0eYhYhVvr
+         4MlxaXJQVA537x7lQMnapEi7ZxpMbDGaQWCuc2rsFmxN/FMvnl7C2iQbM7Jo/QlAUky5
+         z5oXXpkqAFq00OJiKun5y3ie3yI9fg4YJsyXB3/xmM7E47gEzc5Rcc8e++hr5EI9PQBx
+         SQAxsSnYZOUiw5i7p8K5JSTb203AULvOSl78Iq8B3/bvwAu5tT11H332hqkYQXIrNn62
+         KXlw==
+X-Forwarded-Encrypted: i=1; AL+hErFvJu0U/2qAfhUQ13GoO/UoTghVMtiAF3eIwTkzwx5o5eCeUvNofJVSOt4mdwJfDWHYL3bIXWEm2Q==@kvack.org
+X-Gm-Message-State: APuU4Z/9r3TioEZki3UqNkj5h8VBk06xLm4BmIrCO2NTq6BNRVKB1mMb
+	V/ChMp/ipnlvLQL+iMZQOgS2J3BNS+cXGAzfeeiC8jjPXz4WH/tN2US8Q5l7FDZmstA=
+X-Gm-Gg: AZFdTZe3iViMj4CMxdyQH6rkY1nYZl0KjuITNjtUoWWpLDyGs7tbEokSO8xVoNFTCzT
+	WpFDsV+uAl5WD6CfLVUlzvSBSmgnz7ll08XsZIO+juAm3/ZQQmFKbW2dKLOyd8yN7Xfw6HAeVeA
+	6/LwvrslZ9HhBelG73UuQ493Oy1hCWXtyAgqEIzFNISQIWWgcXwl52zNw6aMyqFkZSqAh/n3Rqu
+	VEmDtLUl+q4YacPVuhikbnprISgZJX0Ph36syslNml6GdaOXnjVN2sgYmOcsUj1UPZoeUB4jlkc
+	6c8czJKCAnEwcOHJepaxl9pZKEsB62IwKM4/DQU2mpSNngJOw3rLwvhPJhPYfZRoNdefi9/o/qP
+	5o+fBr1L8hj+w7njgKLdX645OxGOijO10AVF29xIVlRXTgST3u6IztgG6ave8aYJFnLcHuGG8SO
+	GkSl76vD1quPTkFVysgrqQjC7654flxhvvK3OH6LIWmDQa0SN0STwQ5Hu3Z5Ua9ptc4W+6owDE9
+	BkG3DU9Gn06yzbs5ZFs8XkMLwjdw62Gb/5T3olZfwqhqtMUH3J2L3YbWL+16aEm0US/wXpMnSQI
+	fz+h2YEs3i4w/AgeJUksvMrAJ95flhmKfmkCx193FjWMevHU0/kIxNRWkOfQi05GlSW3Y380jrW
+	y47OcaukJadY57WZhzDSriwcqpK7ObQ==
+X-Received: by 2002:a05:600c:64c6:b0:4a3:598e:e7a8 with SMTP id 5b1f17b1804b1-4bb887c2c98mr222234725e9.4.1795441923736;
+        Mon, 23 Nov 2026 05:52:03 -0800 (PST)
+Received: from raven.intern.cm-ag (p200300dc6f1b7800023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1b:7800:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb906817ccsm169279215e9.5.2026.11.23.05.52.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 05:52:03 -0800 (PST)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: akpm@linux-foundation.org,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	hannes@cmpxchg.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rcu@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH v4 0/5] mm: multi-gen LRU: reduce memcg rotation overhead
+Date: Mon, 23 Nov 2026 14:51:55 +0100
+Message-ID: <20261123135200.4086519-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261123-vdso-absolute-reloc-v6-11-161e218dd217@linutronix.de>
-References: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
-In-Reply-To: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
-To: Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Andy Lutomirski <luto@kernel.org>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, 
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
- Johannes Berg <johannes@sipsolutions.net>, 
- Russell King <linux@armlinux.org.uk>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
- Christophe Leroy <chleroy@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Nicolas Schier <nsc@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
- loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
- linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
- Arnaldo Carvalho de Melo <acme@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795441872; l=4650;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=tCXUwkZUh4Hl18kwgGqhcWJoeos+T/6rMQq0M5SHQdY=;
- b=gvQ6fSLlDUp8t1Kpx0/BBIhQ7AihqhesygBcKjwQL0dpVUoOyS5DoqWuOa59xHy5yVuHPzbgt
- Z/t2kJ3fm0ZAJfn4xh2H2o29XKP0jwDQOX8shG9Arg4eFHtoqbgV9U/
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Stat-Signature: o4o7hx1yu498gwcsq5pd667zw17hcuoa
+X-Rspamd-Queue-Id: 4095780006
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
 X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: CAD5A40003
-X-Stat-Signature: wapbgxzyay9t5jffexbo7uu7p6jdqxaq
-X-HE-Tag: 1795441900-183010
-X-HE-Meta: U2FsdGVkX1+opKJGpCqS3TqDhdrxBkIaxRuW47CxA7pzSY3/08fYcQi8RVMOI06rrWMoyacfMMHmPywWUzEF7bt6MtLEzm8605PnIPpxiQIFLTeP2d+Zy8jmjyba0A08+HAfNSHPKe0563WljdURptdmVQ+UPcYt7Fw0f7by0FFYXyBr9NWqQlSDeby19RfHazhcqvIJWVrHdW9l+0vImZelcYQ1DuqYrP46OTUEq2mCox9XDzAApoIJGI8XRWW5Iat1KKgafy/5Yxe3BsvsiXEkeX3UJtStc4amWDY/aqRz6jmKQPxd8S/6cfFtJR6TYrDTOQh8ykxZgVaxIVcNqhwb4lTzoJ6V3RLmr0Wm95VXk9yZV/fZ5XzhtxuL5mNNj4CC3/GkYSEwJJ2yvgBHPwJ+3xO0scz70IH9XngSVZfum37TbG94V64rBZw49yCFFwJ8Xq7AZvxxpzVQcgixqoBULlLHt4HF+XIIHu0OvZq56gQuiknDvUJHL+9YmXao+RBX2EIHCqv84krGd0xNJJBzLfvNeZF9bC/hBDFMHyG5GtobSPxhYXWPuAZBbOPWa6WsL7mifcY6M/c3lQRYvQQcz9MoitIeX48WNGlNmr5Q9zqq67LQWEdtuN5FWOqNpsrJ7ok3aVVrFvCAD6BP0rjuG0//RDukm+yFJWTTzsb7t0acFsZu0etBOD1xuT8BzEUExf2T7gANQAfXYb6+BOGpdjRhugDycNcT0UOFhxFco3EaJnEZEi9wR+1YczlDMU/3jRdzQdZI97Ex1R2o1arlDVbI8afrNFuG0og8IdErRL289BbZQ5Og71hV/ZdaJkdjNcNUizV8cTRWdNwn9jYJ6Xww/g905VJaRbVEiX/Bt5qU+e1gj53PYVq2GDRZA9QMzp4lKehn68OK866JIL+yCdWZlKmlFXJTmCQXLfaNsqGgqAOsyJK/El377jHbFkiIXf/9Osm1Ld10FJs
- u0apW04c
- P16hMXSbGNEV3rmQKv6aNc/zivOr5EhEKyF+9/iz0Jcd1wqIfljy03LgZGtEUNZHlEnkfLbuGBpmpRQkNZPLSoVGwqUpYLHqeGKBCe/VbKc/tYywtaSbh6OubnqJSxzoyFNvP4Kjt6mzy3MgTZvUI76J43qc88zcP6ojRboASefEQAIgePYGWOQpxsLjGyz92aUTgeUQ9St5qPrXYuhpW4Gk3wO/mbSFRcNW2YDRdvCwBTobfVG/eHPMjEjwTxVCi9OhQscBlWlplSEN7wOMJQBweKTx6fxl41Udq8tJl8wv42NYkHg7jFvSzDKdoHUhAfJrfyd6fwZkdtxS0KL318z7AtBl5KMidBk9OMUD/s3svNE/DkXl0IyQQ9+uotUz2pdKGCOnFaTSZ2ZfaWe9cfVqfDvaxoeuJzr1OdTEe6LQYR7F2XXoVjtKsEzI5FPzPjfUZe4hxj/VgH57/IZu3Qxe0OkzcsLQn3RNcApE/Q25rV/jt5unD1WO7Wd00fDvfB78EXTv8MRhi4BZ2C/IpEz2GTr/2uyeZ8nN4PhAzhl60S5cFrnIXpnFFIcBkbxx2QK9POLI+vIDEois24oAw6IHsOgCXxTyQNpJO6GB9ORpcoUGuHj0OoVZ30oWdO1ovSwtb1UHPjdKp5YjAPWlVxkQL7i2GLAmKUc3cSNK3DuMaiOeJw+JZzGF8Fsjv2rpyfShFM13FtUa07DY3eurtW+3WU4o2IqwY4EsiBP+VX4ez//SRmJs6Fxo+DqtH8HZ/2cf+kfQDItBGSZGmubAjyHYnhMe/Z2bsmk28+yiq4qC6frfAU/ildAoqQZY5GFMp5QXCsdGPvyyfooApUOAV+tkm+8sxpXesVnX9
+X-HE-Tag: 1795441925-98795
+X-HE-Meta: U2FsdGVkX1/VE4ZYL1UJDzmuATWuhAXXAUKOP6AL085aCnnBWX24FiXV90fLiyn1x8V/KI/iu8itsyLZc7AI1rHn7JgPe0OH9byB1SGQI1iERLYV4hVJncecMWSOZIoQBdJpVhqFQmiE/UXjr0ncu9Su/Dt0dq0D4wtGkhubhqvFGSGi6SsN/ObXOViW07AXHdEzWOA86mkLTN7Hf39vj1iXNVaSV5Akcmb1m0SAKSzb0sK1lAW6+SEzMVvJ6wWhTMpX51dLGU2FgfJY2h7zWS1Cnqu07XPofEIb19ZiXhbpa2x+hSV/oon0BG4ef7/0R0r/2gOttIqL16EMJOfJHk2SOc9ZrzPYaG15HsxQpqW8vulVFF0wgw21LICASWntay3kwLy0RlWyJzpWw23+yBrKT8aK3NwFqRYb5iJuEcj5oUwaA9LKszd3RQzeb944OdKLDergkAfbPL1YRJQOx3RtVRPaa0pXsTRNISzX45RFjRBFkGwCUSZLJC6bO1OsZ25nA/6UUHFmQsauJpiEQXbvvI26jKeo4cr9SYInBoHcy0Ior+rLrSvbu+8LC0G7u/s8AezlYbgcCybW10F6jTUs3kEyAB95mBCrXSanxX+LKn7vsrlzwETzMmhHxLRGX8FM4GEwxkK7v8Z2xXa09/Ml7AS7nMalAQUyWi8gNKjzOJH/Ma4xtCmNoyKTI7D32+mN6rfjulBKieUJgYWfKaNCVxDuoc2KkjijThRfXQThw3GoOmVQ6JggqLIUqqM4KU8hUL8r61Yrlv/xTkV5m0Z9mgZiDHtfR57iklVtthHx3iieDENzTniSo2wlEMpxnED6g6JlE0/sL2am2UWPhvUwY9dMkzR9gWxJyog7QPKBdbuZYZY0CznY0QAdcBNw6lcpfu+M1Betyw0vUhfV5vdlXgKZmB8/Z3oRVmfpbDe2sQKPDqDJ/lFjV2oS+Yf+cNIE6YFP2292UvQGICh
+ iRe9kllI
+ mmoO/g/5TBh76p8DCZuICjSD5NpBrxI6QnFmQvq4rTjTyJ9BJ/GS9SpH7mCAN67VJEw1eHsS0qPSpFuUyuSHuWB/I8lrKsQ/zpJf8zlr0YVe4CPZ99Y/c448fxYq2zw6fkf0XdSFT8775KYkXnzZTYkUMlFaWvmQ+xsTcirHy586SI3xu1dAhZrOzYFCOEjcrdeW2a8qiEGn4xVyty0vhDpuFRzhF8TrDhGWTyMNi3Xxlhu2gaX/irafh7XocOdioZAeOrRP2Da50ZGqxQeT/y2cwN7b2Bbd7cNBcymQ1HvhiyYYxEFzzvQrP5j4tvMxABvpNC5Hn4R9q7rDwLwxDs2+C1/I/Mqa7sS/ezNWKkTNtNOmAc7VKG0A1ksuasilE4UYtzo7iChapTRaOEwDRXZaukVM0masqDBmOZyL911l9oi4MFOOSoBnGbJpuvq96k4xv4O8XujUTz2jrs5tnbb4SPU7qWy9ZZxCGgPvUcBIuLuTfq/SoN0L8rA09jtQPSSSeKS34eYG5S0kZPxvqRDf3Kqo9TuzKw8YVQCRQ12P8Tls1JqN5YVSV6M6hczxZCDIIQ8OgA30qkcM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,153 +139,144 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-All architectures using the generic vDSO library should enable
-VDSO_CHECK. Now that this is the case, enable VDSO_CHECK automatically.
+This series addresses excessive time spent rotating memcgs during
+MGLRU reclaim on systems with a large number of memcgs.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+On some servers with tens of thousands of cgroups, we had repeated
+soft lockups and RCU stalls:
+
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         60-...!: (1118 ticks this GP) idle=ca74/1/0x4000000000000000 softirq=140067260/140067260 fqs=10
+ rcu:         (t=2101 jiffies g=180256409 q=94266 ncpus=96)
+ rcu: rcu_sched kthread starved for 2073 jiffies! g180256409 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=53
+ rcu:         Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+ rcu: RCU grace-period kthread stack dump:
+ task:rcu_sched       state:R  running task     stack:0     pid:15    tgid:15    ppid:2      task_flags:0x208040 flags:0x00000010
+ Call trace:
+  __switch_to+0xc4/0x108 (T)
+  __schedule+0x2b4/0x978
+  schedule+0x2c/0xc0
+  schedule_timeout+0x7c/0x110
+  rcu_gp_fqs_loop+0xec/0x4e8
+  rcu_gp_kthread+0x12c/0x160
+  kthread+0x118/0x1e0
+  ret_from_fork+0x10/0x20
+ rcu: Stack dump where RCU GP kthread last ran:
+ Sending NMI from CPU 60 to CPUs 53:
+ NMI backtrace for cpu 53
+ CPU: 53 UID: 3758108211 PID: 4052395 Comm: php-cgi8.3 Tainted: G        W    L      6.18.52-i1-ampere #1203 NONE
+ Tainted: [W]=WARN, [L]=SOFTLOCKUP
+ Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
+ pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : handle_softirqs+0xa4/0x2e8
+ lr : __do_softirq+0x18/0x20
+ [...]
+ Call trace:
+  handle_softirqs+0xa4/0x2e8 (P)
+  __do_softirq+0x18/0x20
+  ____do_softirq+0x14/0x28
+  call_on_irq_stack+0x30/0x48
+  do_softirq_own_stack+0x20/0x38
+  __irq_exit_rcu+0xc0/0x100
+  irq_exit_rcu+0x14/0x28
+  el1_interrupt+0x3c/0x58
+  el1h_64_irq_handler+0x14/0x20
+  el1h_64_irq+0x6c/0x70
+  lru_gen_rotate_memcg+0x210/0x280 (P)
+  shrink_node+0xb14/0xcc8
+  do_try_to_free_pages+0xd0/0x508
+  try_to_free_pages+0x11c/0x230
+  __alloc_frozen_pages_noprof+0x4f8/0xe00
+  get_free_pages_noprof+0x20/0x60
+  ceph_alloc_readdir_reply_buffer+0xa4/0x160
+  ceph_readdir+0x248/0xeb0
+  wrap_directory_iterator+0x54/0x88
+  shared_ceph_readdir+0x1c/0x28
+
+The problem was lru_gen_rotate_memcg().  Its memcg tail insertion
+walked the destination bin while holding the per-node `memcg_lru.lock`
+with interrupts disabled.  With so many cgroups, the lock duration
+grew too long and thousands of concurrent reclaimers were contending
+for the spinlock all the time.
+
+Reclaim can also repeatedly promote memcgs that are already in the
+young generation, and scans of empty or protected memcgs can bypass
+the rescheduling points in page reclaim.
+
+This patch set contains three parts:
+
+The first 3 patches add a cache for each bin's tail to make tail
+insertion constant time.
+
+The fourth patch skips redundant YOUNG rotations when the memcg is
+already in the default segment of the current young generation.
+
+The last patch adds rescheduling points between memcg reclaim attempts
+and at bin/retry boundaries to avoid potential remaining soft lockups
+under extreme pressure.
+
+I ran a micro benchmark on branch 6.18 on a 12-core Xeon 5118: 8
+concurrent workers repeatedly write `1024M swappiness=0` to the root
+cgroup's `memory.reclaim` for 60 seconds, against a previously
+prepared set of 1500 memory cgroups.  Each worker issues its next
+request when the previous one returns. The test measures request
+throughput and latency under concurrent MGLRU reclaim.  All requests
+returned EAGAIN, indicating that the requested reclaim target was not
+met; the reported throughput counts completed reclaim attempts, not
+reclaimed bytes.
+
+Results:
+
+                  Requests/sec  Mean latency  Maximum latency
+ Unpatched               4.56     1739.85 ms       4083.55 ms
+ Patches 1-3            43.42      183.53 ms        393.15 ms
+ Patches 1-4            59.22      134.03 ms        393.44 ms
+ Patches 1-5            57.80      137.63 ms        412.72 ms
+
+Constant-time insertion increases request throughput by 9.5x.
+Avoiding redundant YOUNG rotations adds another 36.4%.  The full patch
+series improves the unpatched throughput by a factor of 12.7.
+
+All requests returned EAGAIN.  These results measure reclaim attempts
+that did not meet their requested target.
+
+I did not measure scheduling-latency improvements of the last patch.
+
+This series is very similar to an earlier patch by Chen Ridong which I
+was not aware of at the time of writing:
+
+ https://lore.kernel.org/all/20251119083722.1365680-1-chenridong@huaweicloud.com/
 ---
- arch/arm/mm/Kconfig    | 1 -
- arch/arm64/Kconfig     | 1 -
- arch/loongarch/Kconfig | 1 -
- arch/mips/Kconfig      | 1 -
- arch/powerpc/Kconfig   | 1 -
- arch/riscv/Kconfig     | 1 -
- arch/s390/Kconfig      | 1 -
- arch/sparc/Kconfig     | 1 -
- arch/x86/Kconfig       | 1 -
- lib/vdso/Kconfig       | 2 ++
- 10 files changed, 2 insertions(+), 9 deletions(-)
+v1->v2: rebase after MEMCG_LRU_HEAD was removed by d5d1712c5928
+  ("memcg: remove lru_gen_soft_reclaim()")
+v2->v3:
+  - rebase on mm-new (MEMCG_LRU_OLD removed, too)
+  - mention Chen Ridong's earlier patch
+  - defer the get_random_u32_below() call until it's really needed
+    (suggested by Barry Song)
+  - rename hlist_nulls_add_behind_rcu() to
+    hlist_nulls_add_behind_last_rcu() to avoid confusion about the
+    function semantics
+v3->v4:
+  - fix hlist_nulls_add_behind_last_rcu() function name in [1/5] patch
+    description
+  - move get_random_u32_below() back to before the spinlock is
+    acquired (performance regression)
+  - added VM_WARN_ON_ONCE() to [3/5] (suggested by Barry Song)
 
-diff --git a/arch/arm/mm/Kconfig b/arch/arm/mm/Kconfig
-index 7f55ed37f464..41d7b495ec45 100644
---- a/arch/arm/mm/Kconfig
-+++ b/arch/arm/mm/Kconfig
-@@ -943,7 +943,6 @@ config VDSO
- 	depends on AEABI && MMU && CPU_V7
- 	default y if ARM_ARCH_TIMER
- 	select GENERIC_GETTIMEOFDAY
--	select VDSO_CHECK
- 	help
- 	  Place in the process address space an ELF shared object
- 	  providing fast implementations of gettimeofday and
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index df22b4ed5e29..1075bc661833 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -258,7 +258,6 @@ config ARM64
- 	select TRACE_IRQFLAGS_NMI_SUPPORT
- 	select HAVE_SOFTIRQ_ON_OWN_STACK
- 	select USER_STACKTRACE_SUPPORT
--	select VDSO_CHECK
- 	select VDSO_GETRANDOM
- 	select VMAP_STACK
- 	help
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index ad4cafeddbb8..b5ed4881d3c0 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -211,7 +211,6 @@ config LOONGARCH
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select USE_PERCPU_NUMA_NODE_ID
- 	select USER_STACKTRACE_SUPPORT
--	select VDSO_CHECK
- 	select VDSO_DATASTORE
- 	select VDSO_GETRANDOM
- 	select ZONE_DMA32 if 64BIT
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 31c247c2faeb..ed17c9b1624c 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -106,7 +106,6 @@ config MIPS
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select ARCH_HAS_ELFCORE_COMPAT
- 	select HAVE_ARCH_KCSAN if 64BIT
--	select VDSO_CHECK
- 
- config MIPS_FIXUP_BIGPHYS_ADDR
- 	bool
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1c4a75c3a830..c3b6cd655606 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -327,7 +327,6 @@ config PPC
- 	select SYSCTL_EXCEPTION_TRACE
- 	select THREAD_INFO_IN_TASK
- 	select TRACE_IRQFLAGS_SUPPORT
--	select VDSO_CHECK
- 	select VDSO_DATASTORE
- 	select VDSO_GETRANDOM
- 	#
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 2a0f5fbcd7e3..e7891a2a89da 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -226,7 +226,6 @@ config RISCV
- 	select THREAD_INFO_IN_TASK
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select UACCESS_MEMCPY if !MMU
--	select VDSO_CHECK if MMU
- 	select VDSO_DATASTORE if MMU
- 	select VDSO_GETRANDOM if MMU && 64BIT
- 	select USER_STACKTRACE_SUPPORT
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 71a614832886..7138d923d86f 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -289,7 +289,6 @@ config S390
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select TTY
- 	select USER_STACKTRACE_SUPPORT
--	select VDSO_CHECK
- 	select VDSO_GETRANDOM
- 	select VIRT_CPU_ACCOUNTING
- 	select VMAP_STACK
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 90df77235184..742ffff8c37f 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -114,7 +114,6 @@ config SPARC64
- 	select ARCH_SUPPORTS_SCHED_SMT if SMP
- 	select ARCH_SUPPORTS_SCHED_MC  if SMP
- 	select ARCH_HAS_LAZY_MMU_MODE
--	select VDSO_CHECK
- 	select GENERIC_GETTIMEOFDAY
- 
- config ARCH_PROC_KCORE_TEXT
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 09d3aa04ee82..58dce0b66179 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -302,7 +302,6 @@ config X86
- 	select HAVE_UNSTABLE_SCHED_CLOCK
- 	select HAVE_UNWIND_USER_FP		if X86_64
- 	select HAVE_USER_RETURN_NOTIFIER
--	select VDSO_CHECK
- 	select VDSO_GETRANDOM			if X86_64
- 	select HOTPLUG_PARALLEL			if SMP && X86_64
- 	select HOTPLUG_SMT			if SMP
-diff --git a/lib/vdso/Kconfig b/lib/vdso/Kconfig
-index 559f5534831e..741de1abe923 100644
---- a/lib/vdso/Kconfig
-+++ b/lib/vdso/Kconfig
-@@ -6,6 +6,7 @@ config VDSO_DATASTORE
- config GENERIC_GETTIMEOFDAY
- 	bool
- 	select VDSO_DATASTORE
-+	select VDSO_CHECK
- 	help
- 	  This is a generic implementation of gettimeofday vdso.
- 	  Each architecture that enables this feature has to
-@@ -21,6 +22,7 @@ config GENERIC_VDSO_OVERFLOW_PROTECT
- config VDSO_GETRANDOM
- 	bool
- 	select VDSO_DATASTORE
-+	select VDSO_CHECK
- 	help
- 	  Selected by architectures that support vDSO getrandom().
- 
+Max Kellermann (5):
+  include/linux/rculist_nulls: add hlist_nulls_add_behind_last_rcu()
+  mm/vmscan: move code to lru_gen_{add,del}_memcg()
+  mm/mglru: cache the last memcg node, make tail insertion constant time
+  mm/mglru: avoid redundant rotations of young memcgs
+  mm/mglru: reschedule between memcg reclaim attempts
+
+ include/linux/mmzone.h        |  4 ++
+ include/linux/rculist_nulls.h | 36 +++++++++++++++---
+ mm/vmscan.c                   | 72 ++++++++++++++++++++++++++++++++---
+ 3 files changed, 101 insertions(+), 11 deletions(-)
 
 -- 
-2.56.1
+2.53.0
 
 
