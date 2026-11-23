@@ -1,96 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E94E606A337
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FE2606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kYNrN/cR
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ADLjvpxs
 Received: by kanga.kvack.org (Postfix)
-	id 122046B05B9; Sun, 22 Nov 2026 23:09:02 -0500 (EST)
+	id E93816B05BD; Sun, 22 Nov 2026 23:12:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D13F6B05BA; Sun, 22 Nov 2026 23:09:02 -0500 (EST)
+	id E1D986B05BE; Sun, 22 Nov 2026 23:12:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 010406B05BB; Sun, 22 Nov 2026 23:09:01 -0500 (EST)
+	id CE8926B05BF; Sun, 22 Nov 2026 23:12:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C36B66B05B9
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:09:01 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBB4A140325
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:56 +0000 (UTC)
-X-FDA: 85465053072.18.8597541
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2180F1A0003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kYNrN/cR";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BA766B05BD
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:12:20 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E126F407E1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:12:19 +0000 (UTC)
+X-FDA: 85465061598.19.86955DD
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 42D1C40007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:12:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ADLjvpxs;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of 3IL0DawoKCAkwruj74jr1qpxxpun.lxvurw36-vvt4jlt.x0p@flex--nilayvaish.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3IL0DawoKCAkwruj74jr1qpxxpun.lxvurw36-vvt4jlt.x0p@flex--nilayvaish.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795406935;
-	b=kya7r4jfdEReITI6CN0kJsbFTyOGeS7tjw70QzMREz//SwYpy9l1D+hApFXJuh616iVV1e
-	XkJWxnq3jOSa6LoLiIPjxeBGlmYog7ObPdmIy6fh/roG6sT97hTR3KH9OCp0bCPbnznrt4
-	yp7p4a46glJF/Mx/QAtRG8+isfrK/vc=
+	t=1795407138;
+	b=tP2LzXVAJqKR724WpJrNMq73SvpdgHIvVemwB0q6qRz5wbH2IBIbLoDnLxnX+jbL3j3s6k
+	r+kRqubBzS9cZ2JQdiYoqY+VqHEm5P87X7Ft+Vf2CVyNFlpiJnvE56EldPOX6QX9qcfYhq
+	K8kqV9NhXzQpYZitNBcD+tNLUhq6MA0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795406935;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kkB6AqmsMab5b2ZWWO69wff8bL46ujVgMLlY72Z6qGQ=;
-	b=PLPYBpc/KwUryxIq6Q5Cd0D3CbejOUP8iK3SILBQ5dUGRrliM1bkONKKLJV74oigL1iqLf
-	0QV/op0BXWRSJfcEFtrA9eu2kkADSBC/zZTSPUW3BccdfBXANgQ5687kyuhuP16UQeYtbX
-	qYwWlXfUqyLioNGr2I3Bf/dwI/IntK8=
+	s=arc-20220608; t=1795407138;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LOCdAV3cJyqL6wWWxU6d+kY0++FuazKUY9a33GDOhyg=;
+	b=xe+P4AJQ47horDSfYkr4kObZrKWQ1vrXR8md9O/MacrwaQ4dmZme2PxCW8SeDJNPtcB8zm
+	77pi19NOLPVzyEfsG+wfA4CsvQWWu2Du+curJvdmpjlhL+t/aqDOQ17RkOSwdGxLkhqfch
+	DKwKrPg2CyC7TVyFiI+dtIHPMV28Lj4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kYNrN/cR";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C042360D60;
-	Mon, 23 Nov 2026 04:08:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6858D1F000CF;
-	Mon, 23 Nov 2026 04:08:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795406934;
-	bh=kkB6AqmsMab5b2ZWWO69wff8bL46ujVgMLlY72Z6qGQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kYNrN/cRj45aVGlGCLxboueqzMoyf1foncKVwiqqs4jE9AxuRK74A415aUjAXtscV
-	 Fy2fWC28f85AHH29Eeno0eHUGtyvg5ePB81pxNfHJHl064/niRJXXYcAyqX255Ysae
-	 +JdfXjHEx2sxqsataIDUrMNZoB35Cy97S/6jJ4nRV0TRzREg5S+43hVKI0sE6J45Ms
-	 0C8PbULI6+D2lLmKCBiSBXY1xkx7tYinlmFuS4R7kLWKgeIwYvkCADNQcycev5VmLS
-	 dwgeIU58+SiFJZRrjnmSNj1nSsVBFYXBwwMiKxCixe4/fe8UF9Kc5+/rsuZDxGglFF
-	 maUHxeKGIGKXA==
-Message-ID: <sashiko-outbox-228643@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 14/19] selftests/mm: Add HugeTLB vmemmap optimization
- stress test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "James Houghton" <jthoughton@google.com>, "Will Deacon" <will@kernel.org>, "Catalin
- Marinas" <catalin.marinas@arm.com>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
- Salvador" <osalvador@suse.de>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Kefeng Wang" <wangkefeng.wang@huawei.com>, "Nikos Nikoleris" <nikos.nikoleris@arm.com>, "Linu
- Cherian" <linu.cherian@arm.com>, "Mark Rutland" <mark.rutland@arm.com>, "David
- Hildenbrand" <david@kernel.org>, "Ryan Roberts" <ryan.roberts@arm.com>, "Nanyong
- Sun" <sunnanyong@huawei.com>, "Yu Zhao" <yuzhao@google.com>, "Frank van der
- Linden" <fvdl@google.com>, "David Rientjes" <rientjes@google.com>, linux-mm@kvack.org
-In-Reply-To: <20261122184453.2668189-15-jthoughton@google.com>
-References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-15-jthoughton@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 04:08:53 +0000
-X-Stat-Signature: 1qpt57aoty85jwsx95a4iyx15cj8jn5d
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ADLjvpxs;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of 3IL0DawoKCAkwruj74jr1qpxxpun.lxvurw36-vvt4jlt.x0p@flex--nilayvaish.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3IL0DawoKCAkwruj74jr1qpxxpun.lxvurw36-vvt4jlt.x0p@flex--nilayvaish.bounces.google.com
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8a01e2962a1so2315077b3a.2
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 20:12:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795407137; x=1796011937; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LOCdAV3cJyqL6wWWxU6d+kY0++FuazKUY9a33GDOhyg=;
+        b=ADLjvpxs8XcgpV/jRnkQEgC/OPFKx2bVKxF2wnT3hQbs8Y1fIOrhH4L8+0+XfiD6yc
+         LmqtxiWrrVJ9cTqmzWvmk4/KVarAT4l46x833DF3jxwG5wYZIQVpsoUEnCgp8c7aRKyN
+         IK6L1jd5obWzIyp0iJLEu+H4RXpFTtVMOllH647W/ZNxNjdHrS9z5EfOykeZqg17c4ld
+         oEc1db8+rTb/DO+LplTGyXHvrtgwlxG/BKcqCQ0XM99UtDUKeOrzSKsL7qsnft0sbvV1
+         Evkw1NcPtfgyqdaMFO58NJFKkmcshDVvLSuzQMmu64g57FjRtO6CPA3fiRConsVxMBW5
+         CWzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795407137; x=1796011937;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LOCdAV3cJyqL6wWWxU6d+kY0++FuazKUY9a33GDOhyg=;
+        b=yPRNliQtOAMMlf+uIap1s/MUwATI+PlpsY3Yqdz4yPb3MaWnC2A7iEtOPdW1V/8De4
+         iIQPPnNMmJ9E1212GPRm7SrOw/BFd+w4zaxRK2jFYDup1ac7XqfH5khwGq50uZKCPmb+
+         wakex0nBBvrqrATQFE5A1qjvFN8oN3Fw8Br+n2FQl3rMsfdpuT5NitUnvO4MCcvR1ubT
+         NB/mPsNPR5E5hjwaRpdPXOv+tkiIPZmeawOn156+irPTthhsGWGUyIISIQLAeYz8AAoI
+         94F5Kz2LeB4awL+0IKVIjWQhVJR8PS3isIFa9JoTsWVgD8I/i8irOAEcSiuHKet/Xmxn
+         jBPw==
+X-Forwarded-Encrypted: i=1; AL+hErE5VDp5QvSH4OHYJhkONSY0Yon4Pt2jkM3mK7emAtOmU1PDy0dbjRXmOzy90asuQVyTEu5uRH7bjw==@kvack.org
+X-Gm-Message-State: APuU4Z9Vp0ODRh9bCcLkesGCfNXg1JG7KbB6TYahSOeT47zYy1nNdl1F
+	BgS2d3JcTaxXHjsUdFXAKWzh/NcVCx4cj9+33MdIuet16hv4Eb+Ul9F8pReQ4UfmFBlYBbouCi8
+	hitJAPXPXAtv45c3LwT2Zow==
+X-Received: from pgbj25-n1.prod.google.com ([2002:a05:6a02:61d9:10b0:cc7:8e37:71bc])
+ (user=nilayvaish job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:6a08:b0:3f9:3f64:9b9f with SMTP id adf61e73a8af0-4014d2549c0mr11025809637.25.1795407136652;
+ Sun, 22 Nov 2026 20:12:16 -0800 (PST)
+Date: Sun, 22 Nov 2026 20:12:00 -0800
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261123041200.3239570-1-nilayvaish@google.com>
+Subject: [PATCH] mm/util: fix off-by-one in snapshot_page() retry check
+From: Nilay Vaish <nilayvaish@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Shivank Garg <shivankg@amd.com>, Luiz Capitulino <luizcap@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Nilay Vaish <nilayvaish@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 42D1C40007
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2180F1A0003
-X-HE-Tag: 1795406935-859441
-X-HE-Meta: U2FsdGVkX19l680j49mzMk87Pm9AqJSxOfZPyhcOAOseFEb93sZZ6kvsCl2faO0nJDplYlcQBRuSOJJ26jHBsLP2fXsVaQA0WDbXvN/v7shzw6K1uJDjzu+9YROhwtatFDwhsCZ2Xj79H3hI6YAx2VCpdV1JmFMcpSGGFz9M5pHAwT0kL/NptvB+bOcHh5tM1KiSY9M7pIK5zEOX9a4FfnzP5GnwWfBJG7cgY4+f8tcMmHgOtF5r8NijLKdNqMUzy3FTevrnHxHYpMhQeufkVU4K2txxXO8M5x4glGvE6rSf2gf8t8Jrcs+wlFx953G3qxuvMZ8dO/amydZTBERaTCAo8EK8Ewy859cCOPq1ghGrC2RRhR1FSrcIPssK1kdll5ZNCNTNXuIfYdIegv3izj7DVz0BKI0ev07Szt8djcEogqI+yC/U7e9EP8YX1WXUURwTTUOFHfkjAdGQNRkswcA1ifUUDIA73xwjJeyqMsY08w9PjSIv7+oCU4NRrwuQQ7Nj4z6aAxwGSxDpvRU1cHjtZKku0o+qMDQYsyWf4zl/FxBxakmNdWHBAmZlFaYIUMj+O9N4sKxkP/CSaNVm0E33XbGqfNgXzVJQr0vgWG3YFThTdFRa9oISIo5fHswgpBTrvCZ2TVzbSKsqBovD/z+piP5BQKXWktVHmT6nMhBntO+faDJTxEpNKvl7b27VifjbRWc4geWGVDbpyKzxbdW+uASb9dlIHytnYhq88T3FyA1Q0tjxX/QvZOU3IGlDUPusr6OXOCP5UkPcFmxB4NVQAF1B4xz2fK9vD34YqJbfQ4qPbfaOfA1JfcrdDfz8jWlJ1JglMWlFfsHqO9bifgXycJH1LXFHYv4C3Yh8FfoIoyiB+AaXFcl/AkyGn7A6xS9Fa/kHtte3EYJd/OTLRAqkIQw606sPnGyZoW8waFlYQOrV8m4qmLsKYT7FlEP+ujxNrlYgFbxlmS+yuMx
- 4Bj9hk23
- uQKBrTy8ixwkEpMgNREqzLpSCX2wr0v1ofQL4tAMen+ywz0OmOdQrvM913lYaDCMzGJKOrS0LWfQQTIkbJGgslawxJyZXuD+NY2toHr26BV9O956UffK6mT9a6cZSe8XAYgviQHRO1bz1DxMFFQVhnh+JZvZ9HfUnPunP/lWQ+3XrgZv6da1UGPF4TSKK7Wxy/RBhPHk9xNvQniYZprC0YMzNzTjkAZeHHANYNQHox3STrvvEIm+e+7zZh6pPGlC+4uEX+YvQnvy76slM1G8jrr7dIIclM+NIHc+caTfmFuEatKW48lnp1YLMBVbXKzNp6XzdP713jReeg1In50Ez6IlFMA2T5KtsLGVePD+/6hSz1Ly7ae4zwpd0oVaoJ1+1MwG3OyOCxsb7TqdSal1qypx+lPMe0WrJ5YTqWeP+BMR9iU6uHN0YwrRrGae6bKTHptIM1A67l7qmnkr+u4Y8eLSDPHAgYOdu5kMBnW57y9YoPHR/bAuOp2ozMLck2FR04JpMnv0wtvoUA26WNJv5PYTahmpnKgutgTIzpAALm7oKAZJIe3iIjxou5fCPB1hVEGJSAWpj3o3J2lFKgWyJ3rA/iDjZ82K0SPl4aJkJmcDPNhPOC2sh9moq6b06iBt6wcBCN/KP4eYHFHaWb3PSkpIDId/Zf8O1+5bxZR33mmCOpbeTwOdrPso+x1lnwLR00Tn8kvgnE3MtfijHhsutnj7jsQBeuPE9/U+Ol5g0cjRqUzcaTZSuYr4j6ydoJRu6e7nH3sBD18eIat0RpPZDGxmKRGnjW/jDuCvrFc7HwNDvqZ8NV3uWaMLMkQ==
+X-Stat-Signature: edkcr7ge8mm3bawj3151phsce55xw7bh
+X-HE-Tag: 1795407138-410605
+X-HE-Meta: U2FsdGVkX1+IJblHIDqGBWa+rLfDiLv9bDdduaimImyCenK9JH8tjZzWfeaPHYGLHkVZq1UtRSEPUmikgk5kQ3dXBfz3pSKZZD168ZHryZj2exSaqU9OQXyf78dKgrQoot3frb5JNkGO+P94yT1+q9NKLDpTppggZb8xXO2AeO4f64iOvqy9B3gu64ReTtbg0LN0mPfak8mPH935WIjW4BgbfoxlH2f9HV8gXOt85B6eFatjk0KcMx1CIieEqnqDsF9cW7I1EKdDRgJCiKktwB7hPbFp8ZZc/Z7bGyuOVuSz1iWus1+BY+Os0dfKpfdW9ra16gTkripYlrmLedR8G4u7bvSlAB4zO+oe4+XdyYAcIgZRdO8EblmaYgKi+wAZXAE8EakESlD5gfzkCAg68Tw5uY6K5W7wD8JBq/y3dsXjfCTulBmxOVhvA4h/uKs6XzPQpuCLyefbbetuF+9tjbwdnZVdmb6Rqw5LH6uFQus8KCtd4xPfgFz3UyvCkZK0pyBNAaoDPP3xPY05jzJ227VkOL1nHPOlVnndW6BzZmT2U9n05gh4cErPvtV7A1hQZLKn94kxPmXcW4kM3SicvW7KbgcS9fhZ2+HZDzXk5XUpG9BHdffPboX7ad6pyEG5O087AVRDC9z2d0exR/eedixVAybL4SfEAW3dzCAoy6VmodfGbzVJ22VPjUubc3bbrnQBvOrNIoeninTBx55JmLipGRJ8Q9tCgbcLZB8Ejt0eE+wrzycJJFM36VR88g/ZZjCWDWRcIn57eDPvyzLZey07rUBQNKgkh6ZUiB+38k88x9rNIJo8UryB/LbWhYIfVC8Oz/CU7A91jYq2c4+pOamNjXglnbP0pwJDvO/q3k8qKtKSWpP6UshQ12SHthhJh0Kabgq8KcYXVNDXslc6PytEyVUw80K8mQxnlHp7kd4usRdmfxNhVi68zsR+BFosXL+Kls+f9wQUY7VEgyq
+ yttpxBYo
+ oG/iKbySFfa6N+ngy4/hseU6uDU9Wftv9GhUI3SLbcJ91D0eNukUrRI3U46H3Znotw+IAGMcT43zqvAGOQkfuc4ZmQ2boKi5CKgl3QlHszthxQee1mDehoQnm9I4w4lBIAD2f+Q7SbD8QSuP/f/SBfFqPx3IAvAFKH7H0lw/yIRu4mUS3lRdTjuwg94s6+i99u182t0nE38i3h0+CdrWGguGlu4MU9Zhq6y4hyMZ/mkd7jjBsIXS1eTuR35H+yxbx+W8bB+d4Xl9gPNRXLVldysJgd1NUSf64GCbT/6L9dcCiaIlKmq2vegrlWMXquzyxwvLgWbNmtW7Vg8XerNd8nyXKqf+7kek8LGqn1DUTZrta3tqfrtJGVOwc2Ijyql5AyZC5ZEcxAnVCig47GpZwHKBnnBrEi19JNa6nsYEo9kD6BVzrLlD7MN6Fhf24VuR5NvIU4xn+FXcDMXiH0liCurCLjE4MLAt/nVQBuqURGUbsJdts+ZArF+bXJR/Bsnal24VMWyMLWDcupT9EpmNhlDFnP8Q3aJQqcPFBOq0B3FI+C00WHdfH3VTzaBUWQmmfUD9xsAGXZ+X/hRlGzF0Pjw5N+ABDy2ztb/OOsy3jyyr01g226aYEVTI8nTopyS7jFtswnd4vlo26E61DUkfBZCxt24xl1FZTPrcueUoUfLOquTR0NSnaDRe/fvwcgU6zwND7rCSKMR5C/YHGeyxIaGXrm1+0f3vKO/EY7SdmJNNpaeCYDUGtUiPtLh7UjgGdx8ZDAaif7H4GaF8+beP62NsuSCAdA1kzDQLesnR+AcMEqtz9hd3eJtCyadK8fSis381NjUQy1CvUDRv7M2At+Mw8o7RoLRbAj3LD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,140 +110,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] selftests/mm: offlined memory blocks not re-onlined in
-  stress_phase()
-- [Low] selftests/mm: unchecked mktemp failure in
-  hugetlb_vmemmap_stress.sh
---
+snapshot_page() computes ps->idx, the index of @page within the folio
+it appeared to belong to, and nr_pages, the size of that folio as read
+from a copy of its head page. Because the folio can be split
+concurrently, the two can disagree, in which case the snapshot is
+retried and finally marked as unfaithful.
 
-commit 15090370906fbd4c082668bfc18a1ce3c873bcb2
-Author: James Houghton <jthoughton@google.com>
+Valid indices are 0 to nr_pages - 1, but the check only catches
+ps->idx > nr_pages. If the folio is split such that ps->idx equals
+nr_pages, @page is no longer part of the folio that was copied, yet the
+snapshot is returned as faithful with an out-of-range index.
 
-selftests/mm: Add HugeTLB vmemmap optimization stress test
+Use >= so that this case is retried as well.
 
-This commit adds a kselftest script that stresses HugeTLB vmemmap
-optimization (HVO) across accounting, concurrent access, and fault-injection
-phases.
+The race can be hit from userspace. On a kernel with a debug-only check
+for this condition, one thread repeatedly faulted in a PMD-sized THP and
+split it to order 0 through the split_huge_pages debugfs file, while
+three threads read the /proc/kpageflags entry of the THP's second page.
+In 90 seconds (about 181,000 splits), 14 snapshots of that page were
+returned as faithful with idx 1 and nr_pages 1. With this change, a
+second 90-second run (about 138,000 splits) hit the idx == nr_pages case
+41 times; each one was retried, and no snapshot was returned with an
+out-of-range index.
 
-> diff --git a/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh b/tools=
-/testing/selftests/mm/hugetlb_vmemmap_stress.sh
-> new file mode 100755
-> index 0000000000000..b64fdb3ed7614
-> --- /dev/null
-> +++ b/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh
-[ ... ]
-> +orig_nr=3D$(cat "$hp_dir/nr_hugepages")
-> +target_nr=3D$(( orig_nr + nr ))
-> +marker=3D"hvo-stress-$$-$(date +%s)"
-> +tmpdir=3D$(mktemp -d)
-> +pids=3D()
+This issue was found by an AI coding assistant (Gemini) while reviewing
+snapshot_page(). The fix and the reproducer were written with its help.
 
-[Severity: Low]
-What happens if mktemp -d fails here?  Because only set -u is active,
-tmpdir becomes empty and hotplugger() appends to /hotplug in the root
-directory (which cleanup() does not remove).
+Fixes: d863a12108f2 ("mm/util: introduce snapshot_page()")
+Signed-off-by: Nilay Vaish <nilayvaish@google.com>
+---
+ mm/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[ ... ]
+diff --git a/mm/util.c b/mm/util.c
+index 80f6c714844f..f2c23e4551a8 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1444,7 +1444,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
+ 		set_ps_flags(ps, foliop, page);
+ 	}
+ 
+-	if (ps->idx > nr_pages) {
++	if (ps->idx >= nr_pages) {
+ 		if (loops-- > 0)
+ 			goto again;
+ 		clear_compound_head(&ps->page_snapshot);
+-- 
+2.56.1.750.gf70dc682cf-goog
 
-> +hotplugger() {
-> +	local blk state removable
-> +
-> +	while :; do
-> +		for blk in /sys/devices/system/memory/memory*; do
-> +			state=3D$(cat "$blk/state" 2>/dev/null)
-> +			removable=3D$(cat "$blk/removable" 2>/dev/null || echo 1)
-> +			[ "$state" =3D online ] || continue
-> +			[ "$removable" =3D 1 ] || continue
-> +			echo "$blk" >> "$tmpdir/hotplug"
-> +			# A signal aborts a pending offline_pages(). Use
-> +			# --foreground so that the writer stays in the worker's
-> +			# process group and is killed by stop_workers().
-> +			timeout --foreground 10 \
-> +				sh -c "echo offline > $blk/state" 2>/dev/null
-> +			echo online > "$blk/state" 2>/dev/null
-> +			sleep 1
-> +		done
-> +	done
-> +}
-[ ... ]
-> +cleanup() {
-> +	local blk t
-> +
-> +	stop_workers
-> +	for t in fail_hugetlb_vmemmap_pte; do
-> +		[ -d "$(fa_dir $t)" ] && fa_disable $t > /dev/null
-> +	done
-> +	if [ -f "$tmpdir/hotplug" ]; then
-> +		sort -u "$tmpdir/hotplug" | while read -r blk; do
-> +			[ "$(cat "$blk/state")" =3D online ] ||
-> +				echo online > "$blk/state" 2>/dev/null
-> +		done
-> +	fi
-> +	# drain() also frees free surplus pages left by failed restores.
-> +	drain > /dev/null
-> +	rm -rf "$tmpdir"
-> +}
-> +trap cleanup EXIT
-> +trap 'exit $KSFT_FAIL' INT TERM
-> +
-> +# Run a stress phase. $1: name, $2: fault attr to enable ("" for none).
-> +stress_phase() {
-> +	local name=3D$1 fa=3D$2 base after injected
-> +
-> +	if [ -n "$fa" ] && [ ! -d "$(fa_dir "$fa")" ]; then
-> +		echo "SKIP: $name (no $(fa_dir "$fa"))"
-> +		return
-> +	fi
-> +
-> +	log "phase $name: ${duration}s"
-> +	base=3D$(memmap_total)
-> +	[ -n "$fa" ] && fa_enable "$fa"
-> +	start_workers
-> +	sleep "$duration"
-> +	stop_workers
-> +	if [ -n "$fa" ]; then
-> +		injected=3D$(fa_disable "$fa")
-> +		log "$name: injected $injected failures"
-> +		[ "$injected" -gt 0 ] ||
-> +			log "WARNING: $name: no failures injected"
-> +	fi
-> +
-> +	drain || return
-> +	after=3D$(memmap_total)
-> +	if [ "$after" -ne "$base" ]; then
-> +		fail "$name: memmap pages $after after drain, expected $base"
-> +	else
-> +		pass "$name"
-> +	fi
-> +}
-
-[Severity: Medium]
-Should memory blocks recorded in $tmpdir/hotplug be re-onlined at the end
-of each stress_phase() (or in stop_workers()) rather than only in
-cleanup() on script exit?
-
-If SIGTERM from stop_workers() terminates hotplugger() after offlining a
-block and before "echo online > $blk/state" runs, that block stays offline
-during drain(), the post-phase memmap_total() check, and any subsequent
-phase.  When page_ext is active (such as with -o and -m together),
-offlining a block frees its section page_ext table and decrements
-nr_memmap_pages until the block is re-onlined:
-
-mm/page_ext.c:free_page_ext() {
-    ...
-	table_size =3D page_ext_size * PAGES_PER_SECTION;
-	memmap_pages_add(-1L * (DIV_ROUND_UP(table_size, PAGE_SIZE)));
-    ...
-}
-
-As a result, stress_phase() reads a lower memmap_total() than base and
-reports a false accounting failure.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122184453.2668=
-189-1-jthoughton@google.com?part=3D14
 
