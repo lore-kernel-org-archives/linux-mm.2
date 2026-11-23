@@ -1,139 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A84F606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81466606A333
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=M34GVqTx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YvgjBJDe
 Received: by kanga.kvack.org (Postfix)
-	id 1DB916B05C7; Mon, 23 Nov 2026 08:52:14 -0500 (EST)
+	id 909166B05CE; Mon, 23 Nov 2026 08:53:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B40F6B05C8; Mon, 23 Nov 2026 08:52:14 -0500 (EST)
+	id 8E1886B05CF; Mon, 23 Nov 2026 08:53:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C9A86B05C9; Mon, 23 Nov 2026 08:52:14 -0500 (EST)
+	id 7F73C6B05D0; Mon, 23 Nov 2026 08:53:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D4E886B05C7
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:52:13 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6842E16089F
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:52:13 +0000 (UTC)
-X-FDA: 85466522946.08.707A4A9
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 63B788000C
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:52:11 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=M34GVqTx;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf02.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D5C46B05CE
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:53:06 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2F3F1208BA
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:53:05 +0000 (UTC)
+X-FDA: 85466525130.03.4CF6BD1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 38CED80008
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:53:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvgjBJDe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795441931;
-	b=yI35GjvHsA4lJ7BcBAu14wImBxTso8N/tBG+7aglJq1hqbAgvj8H+Jk/HgUGLdPc0Stsci
-	fYAWETkovoHabxQEKzvg1IN/YnjV9vFw2zJYXyBZMuxqbibrQtYuwHsXLnRO9NVeI2qp21
-	+a9BY5tWiLVrDoeXBprA+hxYTbwtG5Q=
+	t=1795441984;
+	b=jhX52Q1cHPJwEZFFCM5tFwyg/iXxAjlxZqs1zSxBEvi+AbKfoBqdBptyI2/F7Ic/wfACkt
+	m/8dlAcYltibZ0cvKzfmfzVwrfn5M25xOmnLjO/Qb282UxxRqqpHCH3Ed+Fis4Vla8EXSZ
+	jfrZvM9NfjyaYdjMA6n5+LHj0P2D/8k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795441931;
+	s=arc-20220608; t=1795441984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t3XbpV7aE8lPEF3WjasnioB+LmUiUo8YbJQhUQP3FUk=;
-	b=v7iNpuUfT92KkO6LduLzz9Jb/QGqEIRPH5J0NNw+7bIrdkmi4FiFmTlbApBhV9JgubM9Oy
-	OtScORB4hS72EobFJFgvaFA1n+p3oadXIxKXoUDzVEIL1TcbTcvF/kWZlWPNlE8M4et69m
-	TBITKsBpO6p5LlF7qoNWzBhHoRtzZXM=
+	bh=w7l6GOVj1ta19VMv5L9sRcj+U6VdIqUJoDJrYzcoSww=;
+	b=Hzfh10/zfAdDg5xTQaHsFxHvgVcD2oH90MR9GcScOXXqQnmD2KJ3lPBhQoh0eEk1258y7T
+	ntfixO0NzPWN7BXb2Z5Piu4Dc5oC/GSkPBzfxDRl5wojBe/a4kGxFHZI9xxQwAAshM/kfS
+	1uVZ3WpHuI6hHD/pj+kKuhxbdsKgDG4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=M34GVqTx;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf02.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4bb85e07aadso40560135e9.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 05:52:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1795441930; x=1796046730; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=t3XbpV7aE8lPEF3WjasnioB+LmUiUo8YbJQhUQP3FUk=;
-        b=M34GVqTxjLAnaMHX9VtYE3ay3dcISxtoYRo95iAmwlwohovlDj/u/lvkTDyrlkLlXm
-         6BBLvsjsoZkminxhF30iV21e7bz+nURpGAKlnV4P5Z322zlNNb+Fxgv4atpX11DQx1X+
-         5W3REqd5JRTqvgW5OEEtm4ZDHfjMWAGAJt40FgWaVU3LvvgyhsVvAPLP2q9Vulh5lH1t
-         VPeerpITc+4yJl8A4l7szEypR9dEkBNfjBvh0hnvBbFfRV8FVSbv4/AEuEJWT/HIfGB2
-         AHt9ZBAeONDz0osMHBitdKFcpaFqhZ++ltGuPSBfFT6D0JrZG8QcCfBI+S1aqYvfneNF
-         uxBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795441930; x=1796046730;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=t3XbpV7aE8lPEF3WjasnioB+LmUiUo8YbJQhUQP3FUk=;
-        b=jbSPQHUM8nPjK0jzWqquaXGgS8FXUNZz2w549zWZWquW9cs2QqxT4Vh+toeMUrWhbS
-         9Vh/X4F2LsSJZRd4cpi00WLY1HBxNsQKNPxbSLS/NA/p1UQzPOd925VHhEonOwW6Y/Ux
-         rHq5LKHHH/8baUPkmHpvxhr0K1caDglyq97vltO5m9XmGSjTMYjWxRH8LkWxuCuhzNNi
-         4gmylbriNuZdr+PQ/Ui/yAha/Hv//TTcFjcxyV3R6vEtxEHoM/WRJ7JmE2fpTNq2SOw+
-         muT3D3bGFd6xJ4rlVqpy5Ub0zQSq5U/b+iCOkA/cZ+LhvROx6rMcizESDVrHvRP7B6dv
-         JPCw==
-X-Forwarded-Encrypted: i=1; AL+hErHwUR80RnDBTrOoJzA0O9lhcpZzKwCuDO+pHChggPTSOYWbGuxAxzSqQ3xsEMe8/AG8uEcmTYsQcA==@kvack.org
-X-Gm-Message-State: APuU4Z+B7P5rQtrN7Kbf08jkDuRxvi5BrXPGE6PSCiXvduO/NVf62nZZ
-	G/xZXQYMVruAFfg4xjv3uxV3wTjf61uYsLIK7pjVqwN/aUmbGwTtgMB685YSlB+YpVA=
-X-Gm-Gg: AZFdTZdUbWRMcZLhgEJfWKUilf5EjoAnJ+DWlFY/X5u7AFhKP8IUogf0vZ3ppLnry43
-	YNc+McHhOw8yg4CM36RbkYIum0DR67u60xqRpn0h3HX3fRQvnAThI6xMcBwJmMVXHS2hENA4Koz
-	c43X7T5srm6hG6wgTRVeKiv8/ynJgwUNZEJa7cJH7/xFwTLHLRlf9n9sWm+ZPtc1Hq5URmEBMJG
-	jv5QLqkqpu+mm+n1ItrRxT9vYs5ALBUa6/3u5XdmtAKHVH55/7AU5glcxDTOBPDpTDO4k6VRvUn
-	SN8MwOxFpPfccJP9j+V/ZIhNd0ltd2SOKSyK9Ki+PNW1ES+PP0q92viEPV8IG2YccbKvrZFlzRC
-	ifh+wGrKEB1F6M0AWnh72Ink+HOMg1nDYR2CiWPgG9uV86dQqcVZaw7KXyYl1Hm7sw5/QdUs8Xh
-	/b3yf8UhWsJzAovBg3cTUuE6dd+es068aupqXIwNwFEzJ3GodybCw8Iw+Iww3+ZKNcOCshS8hUj
-	5IoJqKaPEkbBmUnYSepKuKzjRVhO25gMKQWXounPiX18ufHja0hf/7RqWNVSoxxX1E6/16RBKI2
-	Pu4Gk/wsAMZO8w7LBq850pr/6SIYn4drcRsw1od145+LPimGBuj/ncjsOQstG/pzRPS+IjSYX4w
-	NSNZZ8urGzuKiE7z9ZSw5o7yBWRCIR9vc0B0hy8eApvX/ORtqZw4=
-X-Received: by 2002:a05:600c:64c7:b0:4bb:68c4:2044 with SMTP id 5b1f17b1804b1-4bb887fe725mr225665445e9.11.1795441929971;
-        Mon, 23 Nov 2026 05:52:09 -0800 (PST)
-Received: from raven.intern.cm-ag (p200300dc6f1b7800023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1b:7800:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb906817ccsm169279215e9.5.2026.11.23.05.52.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 05:52:09 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: akpm@linux-foundation.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	hannes@cmpxchg.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rcu@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH v4 5/5] mm/mglru: reschedule between memcg reclaim attempts
-Date: Mon, 23 Nov 2026 14:52:00 +0100
-Message-ID: <20261123135200.4086519-6-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261123135200.4086519-1-max.kellermann@ionos.com>
-References: <20261123135200.4086519-1-max.kellermann@ionos.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvgjBJDe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6EB7840A03;
+	Mon, 23 Nov 2026 13:53:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0C11F000C6;
+	Mon, 23 Nov 2026 13:52:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795441983;
+	bh=w7l6GOVj1ta19VMv5L9sRcj+U6VdIqUJoDJrYzcoSww=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=YvgjBJDeY6bRVM//Ef/CR3wqhigSAXRBKPMQZnFSl5rRLTYBReyZxGh4KYDN8PZjg
+	 e1+q37zjOWNa/zW6PenUUWn4c+VSxL3VGzz/+YMEB6zdCxuNSRKkYB0fP4i+Q14BwT
+	 C/JymHhoTW1bVfQOv01xOXfAgeEuNJ0kuGBFXXQmTrpRqNPhoqIr3HHlAdhY+r4bUD
+	 O/4WA+RiRgRRCs1i/0nEIMC5nXuVPNWyHrrDqCwNAZDqOsUYPVCgi46EHQtaywgH7d
+	 t/KS4bMveDBrIxMGKCwvWZuMAhNU1gWeMuXMmM73wRDtKsvO63AyJoLgR4ttgh5g7b
+	 E3/6pDDp/TlTQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
+ <rppt@kernel.org>,  robin.murphy@arm.com,  maz@kernel.org,
+  will@kernel.org,  David Matlack <dmatlack@google.com>,  Alexander Graf
+ <graf@amazon.com>,  seanjc@google.com,  jgg@nvidia.com,
+  loganodell@google.com,  arnd@arndb.de,  dwmw2@infradead.org,
+  baolu.lu@linux.intel.com,  Bjorn Helgaas <bhelgaas@google.com>,
+  oupton@kernel.org,  alex@shazbot.org,  gle.com@google.com,
+  pbonzini@redhat.com,  Andrew Morton <akpm@linux-foundation.org>,
+  kevin.tian@intel.com,  joro@8bytes.org,  kvmarm@lists.linux.dev,
+  linux-pci@vger.kernel.org,  Pratyush Yadav <pratyush@kernel.org>,
+  kexec@lists.infradead.org,  kvm@vger.kernel.org,  iommu@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  skhawaja@google.com,
+  sagis@google.com,  linux-arch@vger.kernel.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 04/19] liveupdate: Reference struct luo_file_set_ser
+ via serialized pointer
+In-Reply-To: <20261110050202.529473-5-tarunsahu@google.com> (Tarun Sahu's
+	message of "Tue, 10 Nov 2026 05:01:47 +0000")
+References: <20261110050202.529473-1-tarunsahu@google.com>
+	<20261110050202.529473-5-tarunsahu@google.com>
+Date: Mon, 23 Nov 2026 13:52:55 +0000
+Message-ID: <2vxzwlq3zmbs.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 38CED80008
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: d7ecuau3yna7a49kd8dcucrp9ej4pgmo
 X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 63B788000C
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 8ahft3e367d77heftux4jzz93zhprjjb
-X-HE-Tag: 1795441931-34744
-X-HE-Meta: U2FsdGVkX18x3NPOrGXUprJgCjBJFwSbMLs9Z7R/MCIUJWZURPL5t3wrLlV1OxfHL8rSqREXK3GhATBnmg4YUUh1zMCJrDhtI7RbF0Tx//fbI0JJIHgM4o52KgcRwN2GPlY48EK8jyDh0Zl72cL8PL3mF7cAWRUvFxTdVpEXkAQg/+x8K4UbiNfg37hY5ayVqPA1ICdMFCu/h1ZNEIVfj3/At+PXng7OnhoA1A14735CZ/QyqMcnRWAmwmRuyhvxow2jyLKtXE6uRUz0ZskssHJWW1mtFDUc4B95AQuRaC6dG/xvcRe9C89gOWxUuO86eROSSOY5i/cDt4pgv4B/JdOr6Wz6CVMHrmHhlwWRxPPYQxKocFzQ1o3HDMY3zCiEVOPuvtYLKoofI+j916Z65XsFeNL68HJw9OPD0obt3tAbe6HyGRjEEaoBqhdWVH0ZRJSgYEh8BEZGUOW1aXoGDA3fK4rOBDYDUOdvUA/t4TXW93txnJsetLTx/rBqJWFTuM/Lj/qHxzALyFgY/k7VCFUKU5xx0m1eZze/IzYNXjMTHkpIHNcF3mimqTELDmfcBToEchgn/HJ8+KbOOdCUt0AXKR+8Hey+tIDGQkpCvQtmsD8r8cnXjWmIXlxx/P+Fv5AVJ0UztbUxs2hDhszziZAzTgOi54FIhQY5qFXCOHaQmr7pdDrryqc/L+q7BuTdH95lylg54/jzhf5Nlv65ON2SZUeXVwhUL6Mo0uE+KS+vMb20LgP7vaXH+ph9E9n5OzybdLMDvgrfQo5kCrDS6DZXBp4irQkNc3bCHAGqxI8MXdpjfFbPfp1Aeq5lqYKwrqD1tLWfEE8WGj/vT6541tbc+GcsiDeAYTSQ5AEbC9Z5UkwBPjD0Qez0tWUnn5sid3rWyRftpb/3yfaiUiWk2Lh4eRoyGL/4+JuwgDYvBEH34b2p/bP9/52gn+iOtpmHBE4xFrPnvnFUJSTVLQE
- pMS/nQEQ
- tyWdbJFGkGwuFJvUPhthSjeT1WNX0YVjcSjEVCqxY2zq9EXDU+u8HInSXEXZ6lrMfhG8c78xSXIv7u4AuekIwU2ODzC2ZAQSk8YpP/UKgRGrII5FmDRllHQlClhRu+YPUGaKJ8334ladfQfEt8lFF8+6yb5kcOzNlIgEJDAFftWEsQ/A8cegCVG2RaDPKn9Uj7dS1BmdD7gWyoHvznSNrS03TIKHtpp+H2CRvjyvRJ15m1S+Wlh7/CKhmycKko9G9GxaGfxOkRY5JenEOKQwtUktnyWDzcEWvFCmd1elraoeVZwgAJR3sq0B7h6P4vUi8sN6ng3ffOMM1qyjEinAGujdIeGuzy9F6b9rM4OKzsV3kZGe5n8TLngviN9+jrdV1CGoleXDthwcnOgNi0IMTUHZ8cH0MUm8y0Oq+x7kedCTBYh0DwusCRyz7CIi7cCqL5GT3AXfeVAw8FoLH28Q5og97NHaoRM0XfGnv+9kkOjw09Ol7K/nHhTYImz8Cd8+AoEmi28wfKiC/9rt9H/kiV4GGOY/U/oGP1zyfm1GYgP3kXWhnivP3XE9eA4MRKljs3+MYvLVwfPkgVeAZ1vyQUg+OTYrOtZdPktn9
+X-HE-Tag: 1795441984-813817
+X-HE-Meta: U2FsdGVkX19vdQXKBa6dZ5q33jnbEFY/I+uv/JgSg8DMwOoO11Kv39xCpOma/rowBKn4c8YiOOqY6HBDEsnX5G6V9tgbUQ2YC1/ekePtf7AMQLwh248PBixUBZBBfG55xfsjKWcXe3IOXDSglFD3RJNCOMCQvAtNg9JB1NltgVKFq9CTaow2tWEltoUJovJbssaZsgq5ISprkJpeXSChTb1WXZYyYilwpLnaz8ETP/xwf2A1r+Z2gv25oTaD6o2QM1xqrXRDcL1+4vXQ7sgoqiuwoQaAUgP+gPVxjeXD6IKt007s3ZxHsR0Ru7D8R/bhJKEW4p2nLwR8M2CML1fivVhhD4qgwGS/rVK+f3I3xHDAUOT9aPtGW3c15ow8Cn+mqm9nReRK1eeFIf9cDdIzGllZ91wKI12tXT9ah04ifAzUxZpbtbVgyoT0d1K+1j2R3DN+vCVU4xkNlJzgwky4DQIE8XnMF9arXqGtm+Yf+U7BvOUsXrNkUxOBKFWk5zGq23tS/rdZPVu6yHt6RYCKI79Fipe7rq5IfKe5/Hz2JXhRcxynYpcFh11hA9S9WnzOaoNTQ6b0mRZwkTcLHL//FPZRkphqkF4Hx9mP2NFgZoM1BlgVWpXOPbrjex2/1Q6DhYb/hAioBbipbP8+fWfVyv49rCaH8NpUfOG85xkBZcKFTXksGrYxQF4o/ytCP174ClDoKaZLzbpTiDMVIQuAWgfsuCJBgUz8/8G/h34KiicHbXCMb9sXDdPPYspFpVptlnz1vxwVm+0ASEEH6Y7PDVCxLPjyNTXshdg3U62sDs8q12pFtr87iN+eO8hQxVSbFrg5UAcIFNsFYoAgDrSkbu5I7+kiz6W2UOsyB8jYZ0X5Sw1zWXSCrR8edDyS0axYn1J7IAlq2Zw5gfxLsW6+SGGZyd0VMMaF6t/7sV0EmFPQiGu72a9r4yEdv1ADBsaG0k20rNFLBTdMoCuoigV
+ KwPzZRxk
+ +bfg6XsyOkVUnVUNyegAxuoMk8GnRLnaSEwg5eM+birwhQRPxgmW+f3cXi2MzP22fS7LjpJXbFlkjBW2Dr06V9ekM2jPwma4juaYKk+QVlsiBGbgYF1o8bwy1rpKjovT6gj56OK3gRnR9iYE+OA4PNtFKShRgzj/EOs0LhyfRQb8uVb47KIx3W5AaXR4oM726TQAZ3ZJaAKXMsj553HOu9AxAIMDrQE0OuKTlIypBI+oljtxf/msd0x8eOzXuc0VAt+5oQIkAuzgzfu0dZwYZc1qmDqaYVUl6jsp13g5s+P25REIEQKNm9hVhykJZ6zcd3OGtZa5JdFah5tJUE3A9ULbCpJ158iG/csjekCNcwfDroPX7F3k1lnl0ZNsvozBUbnyKdAl4HmbzmXETBNhKCOK8o5wSLI3X3+B9ccvfGMHz1prMIYC9EE+wUXMwmENchewAWW57SQqFGGqZJ24q52tbZUOAd4AUrKTLn3AIha5YDBryl6xglzx2le/dToopq8abDAvlJ1yBw3hWnwMOolZqUgeBglMYqVpQwEEN+6Xk36dyANePUsDO9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,53 +109,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-shrink_one() can return immediately for empty or protected memcgs, and
-try_to_shrink_lruvec() can break out before reaching its
-cond_resched().  A scan through many memcgs can repeatedly rotate
-entries without giving other runnable tasks a scheduling opportunity.
+On Tue, Nov 10 2026, Tarun Sahu wrote:
 
-Call cond_resched_tasks_rcu_qs() (as the existing shrink_lruvec() loop
-does) after shrink_one(), while the memcg reference still pins the
-cursor and before reacquiring the RCU read lock.  Also call it between
-bins and nulls-marker retries, covering scans that skip every entry.
+> struct luo_session_ser currently embeds struct luo_file_set_ser directly
+> by value. Embedding struct luo_file_set_ser couples the session layout's
+> size and field offsets to struct luo_file_set_ser, preventing either
+> structure from appending fields independently across kexec.
+>
+> Convert struct luo_session_ser to hold a DECLARE_KHOSER_PTR pointer to
+> struct luo_file_set_ser instead of embedding it by value. Reserve space
+> for both structures in each session block-set entry, placing struct
+> luo_file_set_ser immediately after struct luo_session_ser, and bump
+> LUO_ABI_COMPATIBLE from luo-v5 to luo-v6.
+>
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- mm/vmscan.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Apart from the static asserts,
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b9715acf2f22..f8259de7f592 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5403,6 +5403,9 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
- 	gen = get_memcg_gen(READ_ONCE(pgdat->memcg_lru.seq));
- 	bin = first_bin = get_random_u32_below(MEMCG_NR_BINS);
- restart:
-+	/* Yield between bins/retries that contain only skipped entries. */
-+	cond_resched_tasks_rcu_qs();
-+
- 	op = 0;
- 	memcg = NULL;
- 
-@@ -5433,6 +5436,14 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
- 
- 		op = shrink_one(lruvec, sc);
- 
-+		/*
-+		 * Empty or protected memcgs can bypass the
-+		 * rescheduling points in page reclaim.  The memcg
-+		 * reference pins our cursor while we yield outside
-+		 * the RCU read-side critical section.
-+		 */
-+		cond_resched_tasks_rcu_qs();
-+
- 		rcu_read_lock();
- 
- 		if (should_abort_scan(lruvec, sc))
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+
+[...]
+
 -- 
-2.53.0
-
+Regards,
+Pratyush Yadav
 
