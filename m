@@ -1,209 +1,193 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E007606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC58606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Vu2hDuKW;
-	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=NMJVvxAE
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pvCGl8AE
 Received: by kanga.kvack.org (Postfix)
-	id 6DDA46B05B0; Sun, 22 Nov 2026 23:00:15 -0500 (EST)
+	id 2F4436B00EF; Sun, 22 Nov 2026 23:08:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5776B05B1; Sun, 22 Nov 2026 23:00:15 -0500 (EST)
+	id 2CC476B05B2; Sun, 22 Nov 2026 23:08:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 555CD6B05B3; Sun, 22 Nov 2026 23:00:15 -0500 (EST)
+	id 193B66B05B3; Sun, 22 Nov 2026 23:08:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29DF16B05B0
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:00:15 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A74680795
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:00:14 +0000 (UTC)
-X-FDA: 85465031148.05.2B78DF6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 028651C000B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:00:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Vu2hDuKW;
-	dkim=pass header.d=intel.com header.s=selector1 header.b=NMJVvxAE;
-	dmarc=pass (policy=none) header.from=intel.com;
+	by kanga.kvack.org (Postfix) with ESMTP id DCE886B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:08:20 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 626C414069C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:20 +0000 (UTC)
+X-FDA: 85465051560.08.0BB46F9
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010042.outbound.protection.outlook.com [52.101.56.42])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 62444160003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:17 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=pvCGl8AE;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of yu.c.chen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=yu.c.chen@intel.com
+	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.42 as permitted sender) smtp.mailfrom=ziy@nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795406411;
-	b=TUGXxuESemT4msuNn6EE5nRklIm1KrMwfZ0RBqYaVR5kAOWTpzXLC5tCutLV79EI8BKZRC
-	bzOuUvOLAz8ofkMyErD9RonIR6Nhoa64zPSN7bjU0YIep41J68l6oD6iNYQz0mREO5hq0f
-	phMHIwkEpVMGZUMbWCej/bhjAHrf9E8=
+	t=1795406897;
+	b=AUE+CnOXktcB3y6t1C4cT6fT99s77Kt7in8wkO4+FrdjLmOms2i+DittdMSNX+TD/+bdxe
+	hDJ1e+7aunMyXmeI4uNN0TER5X/EJUdzEM4sEkgiLjts/Sf9kOA8sqfXF3Pt1m0asi3rnA
+	pkgi3sEvvq5Qywo+/kIc5b0mv+Wdg9Q=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795406411;
+	s=arc-20220608; t=1795406897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Avw8zqjFIIdPu25KeO6U/ae/z6H5PXtKCaAkwRn4Jys=;
-	b=70HjQ2BGWU+KuDu0ZhCNVMf+Rp7a5+S0eI0uh2gjWrHtQcweXFo0mtqlW8W2MfWnoJ/e49
-	/ej7/16WtwZ+Yti90XdhJKtidgglm76MybS/1RaAtoICly1n3n/MOLAkOTMeJuIhoNr8hA
-	56+D7lIXUgEO5HwcezOOVEyABq9XJGs=
+	bh=ZHhahUGeh2Rlwdj42mBZu/QYRQb40s1atRUuomeB++8=;
+	b=dG9TokFl2Nw9wgzfxjinh8giVgBl639BWW2HIza8aah6vb6xubNB5fnn+C2RbH/uUfcR2p
+	EP1bNnWvq/XspMaN5UlnWoE0m/CZLC74lFK6Ouz4pUqV7yyPO9UKXozQ9Gg+7b2DacOjbO
+	16wyEpfZM3hXYw0mMeXLrOwE5HHT800=
 ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Vu2hDuKW;
-	dkim=pass header.d=intel.com header.s=selector1 header.b=NMJVvxAE;
-	dmarc=pass (policy=none) header.from=intel.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=pvCGl8AE;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of yu.c.chen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=yu.c.chen@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795406410; x=1826942410;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=FhO2MJ71j9SsBWoi6AV7L4BXzxzjsC+sDelwQXHzjBQ=;
-  b=Vu2hDuKWY2lcVR8OvBSnh3YSqv2d7um5lsIseW0RUOsO+uWbXF/Yqujq
-   ISZd0tE0tCY+X6ezUQfVtSY2PaGx4B0uz6CbqxZwS0cGwYSCeZ/DfPwT3
-   D1sLzFDLbHSbhqQSt+R15l686xFOOec3CDjtEauWg5aIQaGg1PtT+Y8CQ
-   K6l6GIgZuczCH5z7g0OGnaA0InLxNQptB9yjAsMx22GXzvnHLY1xUyBUy
-   Qe7vs1MoNeAdTAg0dhER4yYzFub8SdUVe6/tHma3pfVCo1Dc0aehTHg4r
-   dHfb7r+yFE2EnZ6gQFFnZkcW1xOGACxKDlZKtwepXYcgYC2RSlq4xr5wn
-   g==;
-X-CSE-ConnectionGUID: oCo5upBLTd2p38hnTeIwMw==
-X-CSE-MsgGUID: eosIB6wwR4KOvz8HGAfeZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4050718"
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4050718"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:00:07 -0800
-X-CSE-ConnectionGUID: LaE9MCySSX2IF9Ar0+m1YA==
-X-CSE-MsgGUID: usSp2XPfRCOF59ZCHnKZZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="13181446"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa013.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:00:08 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Sun, 22 Nov 2026 20:00:06 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Sun, 22 Nov 2026 20:00:06 -0800
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.68) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Sun, 22 Nov 2026 20:00:06 -0800
+	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.42 as permitted sender) smtp.mailfrom=ziy@nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GcVX84U65ldWhkGHYFghVZkUwQPm54l86eledyXeYoqbsBqAXJzuzn7iEzXHTSS//OsAHHfzKnV8NCNa5NCSZGo4hNsTeWxyxtJ2+Co32y4wh+NKAV5f9ersab5uTGyVYXdUisAwEuIaVbo3G5jHWbYH+/UC5qm6qg6APAce4Ke1thFaChly0V7Dq1fPW5WpVcW6DzmfLvgQlvZK/KM6wZeapJoYSrs360pQuzYvOnkusqXhtgqJprUllU5yrh7G1ro+2Cw8RVIiCgJ4zC7YzjryAALrSrzXO/6Un9ZCgPcdgEO7ZhuXryMwkC7dUBBjA0Gz20niYlCzxnN440mE3g==
+ b=ii/RC/IPsYMsxQCU2PanwMyzM8ITVMHwrzOX3KmLp++5RLj5LhgbbpI8JS0MocdPvK5CN8R2hEUYaxCQ9TQIjX77vwH1UioxE5K3BBlS5SdH8cMKjJD71I7swQ9aMN50YzSqHNMl4Pqp/wViu34ojAgUfAyIFka07MveasYwznpDV1KJaAHRmw+cc7NHVbRJpABrYHXjBu8dl5zCZ0HPfqjpmGgpj89Kaa5Gd2PoDTJvw/V+1VYE8Gd69PJJCivyyL8rJZL4SUCtb2JFkv9Wp1VhaqXBjMFryg61U3cunQl+tXo5/YQ51JtXWSBsxzNF4dO+aYcQT0YTovjo4VyCrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Avw8zqjFIIdPu25KeO6U/ae/z6H5PXtKCaAkwRn4Jys=;
- b=YYvRK4Pc70tvNYOaWzc2hSvKwQyFyLN4CgHChnjPoUOCsZoTKFMvww2fOy1rCBMcjZhhcrheeG0JdnG+/a2v2kT/sjK2k3b2w0w3Rbsn9/hIHMjruaMl7B6HYE+995yAVJ4T1YeIU7WyWpUGCbjhVuoZxtSvNvFmjKqhQF0Z/b9ARa5tj9O9nBqAUYt3NoKFRATADk+MAec85M9g0kF0gtwK3KvyQT5LQEpEvjBPPQOoI45j1Fsl53X7SD38/x0KCWR2c4x1qtCG/ZyU7HlxcSSV0Qd/3rGPrU/oZHtqKVrGspXKowTmGSfdakUmqwvR1d/RbGwixK48C+xnnph0kw==
+ bh=ZHhahUGeh2Rlwdj42mBZu/QYRQb40s1atRUuomeB++8=;
+ b=i5IjulkoXZHkriCDk8lPKcBgJoZWk6lDEYSaN+gH2KdSfoThasgCTQMxLiB/fz91R6YNunCD8syJ73+jP4E2VaJCcbZWZlUZgmc1DaXcXySzI/91e9mdb7LJ5/cKToL7YkYBmO+orNQGnqcfg6M0R2KVBBcXSx26H4/qQs3ZSHb0mtD76iyV2dHbObpwYFPTrwqUFGDKWZEOKiXWV3cH6U29oa/kalgmH/91viWGTxHgkMstBOWKDQs7rldIuqkiFqvMCT0paCon2hveKyomcueTUbGqKmULhoKtPXcV7kIRJYbQ4UUqfM37gitm/NBieEbrn2e3+5P+dxniCFT2qg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Avw8zqjFIIdPu25KeO6U/ae/z6H5PXtKCaAkwRn4Jys=;
- b=NMJVvxAENdwSoccps9Gf0Bl+fcTZYGVr6CAU+tsuc+hhGi0bnfMtLfdNs417S+JUPKM0LMw+UiEv/bxurSxc5eMgxwJzD0ZjCMfPIu5K0cKl4dbARX8xLFtwslX23riDCtNt5o+SE4gjX97EadSW27s5IbJd5hGGO+bYceGpY5k=
-Received: from DM4PR11MB6020.namprd11.prod.outlook.com (2603:10b6:8:61::19) by
- PH0PR11MB4901.namprd11.prod.outlook.com (2603:10b6:510:3a::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.639.14; Mon, 23 Nov 2026 03:59:55 +0000
-Received: from DM4PR11MB6020.namprd11.prod.outlook.com
- ([fe80::3058:1480:e4ac:5765]) by DM4PR11MB6020.namprd11.prod.outlook.com
- ([fe80::3058:1480:e4ac:5765%3]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
- 03:59:55 +0000
-Date: Mon, 23 Nov 2026 11:48:45 +0800
-From: Chen Yu <yu.c.chen@intel.com>
-To: Reinette Chatre <reinette.chatre@intel.com>
-CC: <kees@kernel.org>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<juri.lelli@redhat.com>, <vincent.guittot@linaro.org>,
-	<dietmar.eggemann@arm.com>, <rostedt@goodmis.org>, <bsegall@google.com>,
-	<mgorman@suse.de>, <vschneid@redhat.com>, <kprateek.nayak@amd.com>,
-	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
-	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <bp@alien8.de>, <tglx@linutronix.de>,
-	<dave.hansen@linux.intel.com>, <tony.luck@intel.com>, <ben.horgan@arm.com>,
-	<Dave.Martin@arm.com>, <james.morse@arm.com>, <babu.moger@amd.com>,
-	<fustini@kernel.org>, <jedrzej.wasiukiewicz@intel.com>,
-	<fenghuay@nvidia.com>, <peternewman@google.com>, <x86@kernel.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<patches@lists.linux.dev>
-Subject: Re: [RFC PATCH 1/3] fork,arm,x86,fs/resctrl: Fix stale resource
- group assignment vs copy_process()
-Message-ID: <awO3nYazk97csbpO@chenyu-dev>
-References: <cover.1795197419.git.reinette.chatre@intel.com>
- <b2e13da64ca3e41207b5d46fb060bccefaf9fecd.1795197419.git.reinette.chatre@intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b2e13da64ca3e41207b5d46fb060bccefaf9fecd.1795197419.git.reinette.chatre@intel.com>
-X-ClientProxiedBy: SI2P153CA0015.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:140::21) To DM4PR11MB6020.namprd11.prod.outlook.com
- (2603:10b6:8:61::19)
+ bh=ZHhahUGeh2Rlwdj42mBZu/QYRQb40s1atRUuomeB++8=;
+ b=pvCGl8AE5dWZ4UIRMFi2u3re/ruvnP8LDqfBUJnpC5BJHc3w6q3zx6bzvJjfDDhn4/jVu5Mk05UKcUY7yS2hOPegWVwZVUB0oIqQSP3VC5xmAcbeSJppvOmbV8cUkbBXguUg8aUd1970aFEyMJqJ1ydJCqg8UcoNNKxSpMHe1Kbc54d5TPPFKkTxkSAUd+4M20OtZ30Kwzu3Lnd3H0tft3e+4SsGFeRDh7nB99N80gzCft2/lmA6jEsr7498oHBNBzMdGo7fASVSblXCyFbGKHovogsueqDFu8NScgbMMZH8x+E9IEKF1hvIOFcWKlCvKDfHftXBlFzGK98vEUemIQ==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SJ0PR12MB5635.namprd12.prod.outlook.com (2603:10b6:a03:42a::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.13; Mon, 23 Nov
+ 2026 04:08:10 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
+ 04:08:10 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ =?utf-8?q?Cenk_Y=C4=B1lmaz?= <cenk@deepfinresearch.com>,
+ Zhang Peng <zippermonkey@icloud.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Mel Gorman <mgorman@suse.de>, Sasha Levin <sasha.levin@oracle.com>,
+ Rik van Riel <riel@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+ Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrea Arcangeli <aarcange@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 4/4] RFC: mm/vmscan: unlock unmapped folios only after the
+ deferred TLB flush
+Date: Sun, 22 Nov 2026 23:08:07 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <A4AA8719-376D-4AF9-BD12-0F0CCA49F68E@nvidia.com>
+In-Reply-To: <20261118-file_folio_flush-v1-4-e9e739ed14e0@kernel.org>
+References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
+ <20261118-file_folio_flush-v1-4-e9e739ed14e0@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-MS-Reactions: disallow
+X-ClientProxiedBy: MN2PR08CA0005.namprd08.prod.outlook.com
+ (2603:10b6:208:239::10) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6020:EE_|PH0PR11MB4901:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba257448-ee21-4422-1887-08df49163b7b
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SJ0PR12MB5635:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba2bfeb2-527d-4173-b9e4-08df491762e9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|18002099003|22082099003|261009223027099003|3023799007|260925021311599003|260925021911599003|4143699003|10067099003|5023799004|11063799006|56012099006|261102123227099003|261028144727099003|261026140227099003|261026121527099003|261021121427099003|261022075727099003|261022105027099003|260925022911599003;
-X-Microsoft-Antispam-Message-Info: wYrLxelc0R66KPCwxljSMzbZqsiAYjYaS7WaubDN4XExmHrVftypYXjSRQFU2XyJyT6FF4jKIYlOe6gWk1+8fHMp4jIxm2wZki0EpqWpMlOz+Y1yicczigISSDQbGrrXsxi5OwhxhkZCP4vzfNKLgd1QYAlJknqU7H4jYxat5+1CDbRTDox4HZ4LXQ+hRFWmql7FyXV5iRseH2XWe/EE0kht7EdGxATDy65K9GQjahCTqTSpeYAXZ2WN1pe9lJqlat5blfzewE0E6+k0URYHWCWlhNBejJMGUTO7LFGo5axNq8QwybvuGozEGsnXuEcIeYf50jpXzRsx1yDcSj0xweZvlwabS7GDuhXW3tRWoEv7SQUhBf5BDaNG7sMYKxGKjz18T7dm1SOxxxA6l/KmIlJTEvFLHKebwQb4TeAkREEje32MtcF89GnhuCHkQEvmAIcBO3WW1vt9z9P6TOR8Rr2iOL0aCipQkt1u5ftQRfsFjj4IVHRbU5pWQXFS6B8c9bLQLHftf11tf5lKpU3UKwHdXxgx5yX3e/yaivIQaigmuQwJuLlZLUTEXb5GnAlc/BLsElungqhywx5YoYOpCL3gzemLmPhoe6EQE1A27IoRI/nyyEXC170tJfr1HjbwxatZBTtFeU8JIkea94RC0yMxyJKxVGFJrLwzLTeX7N4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6020.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(18002099003)(22082099003)(261009223027099003)(3023799007)(260925021311599003)(260925021911599003)(4143699003)(10067099003)(5023799004)(11063799006)(56012099006)(261102123227099003)(261028144727099003)(261026140227099003)(261026121527099003)(261021121427099003)(261022075727099003)(261022105027099003)(260925022911599003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|18002099003|22082099003|4143699003|56012099006|11063799006|261028144727099003|261102123227099003|261026121527099003|261026140227099003|261022075727099003|261022105027099003|261021121427099003|261021123027099003|261009223027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	7YQfDp56MsF9TpPh4WoGKKZ2TLR8eUhoQbKifpdxNT/eqmthMkKmnlrC58mtCYRQ3lEf4cRUmTQnF7jzCTjy4POScxmcihcXw5T0uUmCt/1aqZ6wSNlryU38wV+OSCM/jkJXMbSmP5wW1hFRr/xEEPWBdzi6ldvfa35Ix9gdzMdVrxb/3+DXsc2pzor3JOr1tfiFnlutEfn09wTKeJe6jMmwM8Kz9lYR4qys8WzqAGJgzAfVSEdxoXKgeezL3+lSCKWB09Z35TN22yfvS4Fq4TsfLxR2fjvJLTuPFwxn8yaGdky1uyy58dUqNdUsHorT5TjVGsPiIie1qoe948s4/YROQ3LpeH3GBImYRxBy4RBZWFO5YhseEFumQrUeCwgijpVANGotTR6G231fvSH6B/KIXGAal9qrY0ksqZEaM7vpFFVQQFrqtPs4e2MzG4ULOtzGBq6C68uebmnZhDwiNseoFLy5SNoZgmp2eRQbmH9tSOOk9yNola6JcrXDcOrnH/qwViutFJrYeP49NtZnTHZ7+6TpT4WiRjLuKBqladYWhJNFn38nFQcTsFLmsxcK9qUoDf6C31DJo1jyx59TbDTLnQX+rnjFX0mrLTx3R6I4GXl/r33kHGYoCq+T9ut4MD+kLbHjiRh2dRQ5xX95PnlxBDChpsysyOcePysz0T4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006)(261028144727099003)(261102123227099003)(261026121527099003)(261026140227099003)(261022075727099003)(261022105027099003)(261021121427099003)(261021123027099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CdO+/ajaLnRvozCMbjedGjTVCCuo/5nRGkOaDt1uzV9jA6NHqDq/abU3kJfL?=
- =?us-ascii?Q?kvY125ltifdfGQxkeQdIkaAk5TvciYCIE23NHDaR8zCFvMLlNL8AUq3Ka9PN?=
- =?us-ascii?Q?jOqHSzKLh/N2DOpLSv5wX+MfE41m3G6XHwvmC7s5Bgd4Dq79izvekrn5CezP?=
- =?us-ascii?Q?CzM7fzRUo77pD72oLSOT+ipQsJhRc+U+l5YNGaUSjGQDETP0brUUMAFF6RZb?=
- =?us-ascii?Q?FLK2dDkMAcwc1mG+i81cIVO860CHSa0o7I3+H3G+gYj3s8iXtg4PPUhZ4zd3?=
- =?us-ascii?Q?js40OSKtkYx202+ucF8I5rd36ICQj1hS7j1wL26qeag3EiZmRpfh4rcvoHra?=
- =?us-ascii?Q?HVsoBsg5R4cQ9V37IypmxB1plr66Nc7LEyoebvqvfFlqK4X1yNTif1eqS5DG?=
- =?us-ascii?Q?TZ3RwX713cnGltCi/lrDcwQfR+Bj+Jppqubqz+nfZ7tMy8Mn/pBrfY6+6PsT?=
- =?us-ascii?Q?3f+z7wlfpMcwhkUIF07iG/whLjod/AX2SZ3xWg3FeTOUwwfy3UGi5kVYX2OL?=
- =?us-ascii?Q?ttVERBeLz5hhT9Iqp8xxADb6gltrg+X6SodFaqRQuGHXYe+K0D+IfsxiYDn5?=
- =?us-ascii?Q?b5GzmhQN/5hGpHvtMxnsGFkaCjvHL1fpe+n2bdTM72MyhY7XLpX12bv13p0p?=
- =?us-ascii?Q?suu3a3m65zVDWmJaa6SxoEQMtL5SXIBAohSkuZwvqrIuTmqoKsYN7lJLrHlO?=
- =?us-ascii?Q?wi7n/23Mm0VrJuFsbNtH7cjxx+KlL2wBcazWjGg/zPrbOzG/9qx6hGKgfyic?=
- =?us-ascii?Q?bwKSRaW5/hbbJsZdbcHGkCnhSkMQYBLTWubRLqEd0RkwjYqK0Xh6aJ5j8SKI?=
- =?us-ascii?Q?HMciYOb5O1uZifYmMIgfvbNQ4UubNhEeD3a4iC7aFo6CSLcdDH3LIcH2NHEq?=
- =?us-ascii?Q?WpRJi6lqrAF4pkXcYlrsEUqPCZnAWzxS2/CH7veJZ0DtbDsYQTboqmHkSiba?=
- =?us-ascii?Q?6CV51EdF3o0Omn3zeIVpA1jRuzWDT4Gl03xHf3Ss3otBJans7+mVKWRRbrev?=
- =?us-ascii?Q?N2erV/zlR9JzmCVaseWIlXTdUIcddPhw1vQVyf+iLE2XVRPX840r6SXQD49k?=
- =?us-ascii?Q?bx+c6a8VRPWHKizE+RbsyeEkUNfm2Z9ggiYQ0L1SRO7N1ImScgp7OhDurGhd?=
- =?us-ascii?Q?ylDiobgNgcpcGhZm0Q3DucjT2EyfsKZHDDNEztNefp9ZpI3pz4XFD7A89coS?=
- =?us-ascii?Q?qcz3pVaC/koXrvgWMsALfkiGgvb/jVnusevl8MN9gVPpCqa6C9loyHqjarj0?=
- =?us-ascii?Q?+HZ6Y/c+lfeWY3CNnyX3TO0ajrNgY8ar7iKXE+/cfGpJVi+Aj/Vs1wfDeu1u?=
- =?us-ascii?Q?Wy1ooF8LfFJXMENjgMt/4z05FuXrAscm2xwwmdZdOHZMKjJBPsUgQL7H7tLL?=
- =?us-ascii?Q?kSXy5B0ZhHnAsizEi+2XAozmkFKN12db7e5PpfI0PIaYSrltLj6rbD0S6a34?=
- =?us-ascii?Q?bO2OQy36Z3/clQWBVDGFaNlDgzlgu6JZ94x5EThGP/gatRh7B4mDtxIb0Nc3?=
- =?us-ascii?Q?1WZSJyW2NpIg1Qs7u4uzCRyaTra6BHbhYvTEbVtZ8kPD16Z/Vc4kqE9DxgSp?=
- =?us-ascii?Q?iVeJywrzdmUxpx3YfP8mD7kKFwiqZUXNymvt9Ixjp5cJosUdReCoOH6Rn8bG?=
- =?us-ascii?Q?sBwKYzv4zpVIubOW/2ISRTw/i3WE1GDmR3/LV2lu+t1jebjsn5eZVR+Ei/vr?=
- =?us-ascii?Q?wA4BgoNObhRMGZnIx2Q1ALy5iHNWJc1EtnxjXpf6HKoAdb+blZ7TweFKijIY?=
- =?us-ascii?Q?4d00sjYTxg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: dI0kc2Mp4rLl+OqKQddvQqkqMcf6HDnvg/f+N8BffhtMMXfJ9qi+NdRg3mgFK81Ev+Mhnx52HW0fdmUqb2d4/JmUutxW0q5XjHiOvjfWkg6JVrtUlLMWcte6qeIKJ5hPL6mioVE85LBeeWJgFYIGib1SQAjj2IrSZvHSFsf7rPIAmnM7dwzmljZWiGMM/Z9bS652TlBTQkAzZ7AqdvxJLIlbDplWX4/lVgf7UO0eiLrt54YfapvvbLJ9CzyYeAgY33Acc4kNDrobZlbd4TPrLLI8GpRtFXc0ka268DB0LlB7/jkMBJSSOyvCgdZsJEaTNuaOnAKdRimPDH9BqpMK+Q==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba257448-ee21-4422-1887-08df49163b7b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6020.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b0FEcXVndGFTWlk1YmxXYzVWWDRBeElscExsT2poK21Na25TSDBhTTlpWWhu?=
+ =?utf-8?B?aGpLaG40WDhaR1ByanFmZTQwQ3RQUktiMkZraCtyUzN6MDJiaWRCc09paWRF?=
+ =?utf-8?B?c1lSQys0N2d2WXdCN0pDRThFSFhvZGVwQ2ZwNzgyMkRaSG9oRUg2NjVOdlBZ?=
+ =?utf-8?B?bmtpRlVockhkS213SmorT3VSMGx4TUZZSHVBdXBoSnB4ZnVhT3ZBSWF5VjNr?=
+ =?utf-8?B?N05VL08vNnppWENaaUsybUY3V3ZXTWdtKzB3U3B1WU9UU1EvejF1Q3VCd0pn?=
+ =?utf-8?B?eUlSNE9mbk1MKzdUeHJWQk1kUFAwcG5GQ2NEOWROdGlqNzBQN2s5dnQwM0FU?=
+ =?utf-8?B?eTkzNEFYb1QraTU2aGMzNndkQ1lIZS9SNGNSZVdyMUJFeldWSGZhRU54aVl2?=
+ =?utf-8?B?MWR4bEd3M0puM2ZHUDd5T2VZdnNiN0xZR3E2NEpTc0NZV2k5VVR5TlNJLzB1?=
+ =?utf-8?B?Y1VaaGhNM3pNMmZ5UTlObXpOaEhvbW9mM1lHSGNzSWJ5T2hjdlB1Z1dKV2FJ?=
+ =?utf-8?B?eGxoNnBFblBRMCsvWGNya2gxVXY4bEFURnhJZ0hwSDhZWEE4NkkzNGpSdi9F?=
+ =?utf-8?B?OFc2azFGM3ZKaGU5dVp0WjhNdU1kU1JZdy9iWmUvbFROdWJxcVJybkJ3cUp4?=
+ =?utf-8?B?U2Rhbll1WkxXb1RtNk9QZ2ZoRE9iN2VzbXUwUmNpZjl1T3dkYlpJMitFUnJB?=
+ =?utf-8?B?NnlqczRZSU9GbkJ4a1l2MDFiSE5KZkJGYWw2bmhxZG5Lckw3V0FYU2Z0aCtY?=
+ =?utf-8?B?TjI0N1h6c0p4UEtQZXRiL2g0K2tmVE9ZZ0RleGFXWWF0RkxiU09PZ3dST3ZK?=
+ =?utf-8?B?S2tZWUdzaEk2NU8rSFBTRWxMS3U0YjZITCtQN0hEcjJiaVVQL2ljc3lEaVJa?=
+ =?utf-8?B?UGw0T29RZlN3Y3c5WXNGd00wOU04Y1NaZjRBNVYzb0RNdVE2TlNnRnpOSTF1?=
+ =?utf-8?B?TCt5Q05pSks0cmg2dnN1Z3B3emgwN1J3Sk9ZMmcrUFpiaEtTSjg1dmZVdGFE?=
+ =?utf-8?B?bERtZXlsV1RTcG9ETnhvbkVJeGJtOXgwZFh4R0JmWXVnN1U5ZGl2R3R3QllL?=
+ =?utf-8?B?UHZNWExMZnVZdUJXMitzVitTTklLcjVFd1Frei9EOTFyRnQ4RVl3QjVUU1VB?=
+ =?utf-8?B?SCtYNm52cytxam10WEdoTmJoOE9wOWtjc0duZlFXNkd1MXpHR2c3bzJSSFNX?=
+ =?utf-8?B?Vk9iaHlVczlHbDJTZlVmTkl2WFRRbWVQYlAwOE15T0QwY1V2S2wydmtlWkQv?=
+ =?utf-8?B?SFNPMmRtVTNSNi9kODZHaC95Y0dOMU5EL1FxVXM3aExqaTNPSmo2VVh0dkh0?=
+ =?utf-8?B?eTA3UFl3VXZEcllZdkF0dml4cVgzR2Fuc1p3eG5LRHlnTHFaV0t1U2M0aFhD?=
+ =?utf-8?B?VlZ1NWh4bzNpZWtzdmlUNHduV3J2RlFseHZLeGE5VXpVVEtFdWJBSGVoNi9C?=
+ =?utf-8?B?cmhwVFhndk55QXZZdDhxOGtCZ3pGMlVybklTcmFqOWVXaU5mQVp3MGRnOVF4?=
+ =?utf-8?B?RjQ2ZUNvNVdVS1dPMDdjMmdzSXB3R3lldFdwVnRjODNDMjREWlJhWitkK2p5?=
+ =?utf-8?B?R3ZNWXkvZ1U4K0ZoY3czVUpMc1hLM3ZZZ1A1NEhjRDJLN08zVm5GVUYzeitz?=
+ =?utf-8?B?VnJsM3hDMmM3dTZreDkrNlJlR1pnS0o4Ky93ZW1yR2tGeWgvSUpkcllRSVNY?=
+ =?utf-8?B?SEpsOXhBV3ZIanhuNzA3dDBrL0pGYXJjVnZlMW9OTFBLb3ZOaVhpcnNnSzlK?=
+ =?utf-8?B?MW84a1RGR2h1V0c4VnhOMnBZbm9URVYxbEJydi93QXBJZUlLSGhPRCtvYVQ1?=
+ =?utf-8?B?TTQ2NDdlTEsxcDhybjUzanFZZWczYTgyUlcxTWVjZkwxT2NWZnFFSmw4NXVH?=
+ =?utf-8?B?L1dIaDBVc1Vpd1Y1ZDUrWUl4MXlpeGc1MFBzY0lZN0pOR0phTWl1b3JDcFpP?=
+ =?utf-8?B?UXlJdkY1aWtWVDNrb3c2Z2NQZkgwOGkxK3NGT2w2UUNHdVQ3dzBoQkZvb0U2?=
+ =?utf-8?B?ZnVJbzZkN3BLYit1NmtBNmFrL2NMcmFweFBPbW5FMzFZcG9YZEdYY241Q1VW?=
+ =?utf-8?B?dTgvRGF1Zm91aVM1b0Y4VTFkNkRkTUdkZ2syZmR4dElnaVRHaThHeWxJNzky?=
+ =?utf-8?B?VnMzRUlkRUNYWGpWN1ZRZmk3ejI3b3daZWg2L3Nsd3E5UmMvYlZCMGdBaFlF?=
+ =?utf-8?B?ZlRyRFdBd0tvSFBZdWZjVnJuNHR0OHF3bmtodmZndlF1V3pXRDRNeS85Rk9G?=
+ =?utf-8?B?ekdaMnl5bm1MNzRPcUNwOGsyb0ZGQTNkeWRGejBvRHk3THdjcWc5ekU3VlJS?=
+ =?utf-8?Q?SmMP/j0COX/m5L/ERJ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba2bfeb2-527d-4173-b9e4-08df491762e9
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 03:59:54.9716
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 04:08:10.3914
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PG+zc8iN/n+MHn1jd5TD+ofgKzi0X1G9yJJvPSy3qrfrLf79sPbWCH3ypD0QPtG8Ao0+uuueGBCHKRMKXpyrgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4901
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: aOKOawyElDB3stQYP0DORghI0V2g0QE9Yr2bbwSWmqHVhLO/uMLP4p4Hs3qYIf2l
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5635
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 028651C000B
+X-Rspamd-Queue-Id: 62444160003
 X-Rspam-User:
-X-Stat-Signature: 6a6xs71zgsjodb4xonn4ohrfs38dnquj
+X-Stat-Signature: 6jazbuyot9q835o4kjpqh8o6y35uby8g
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795406409-844521
-X-HE-Meta: U2FsdGVkX18LQC4wgsT5gJCmnBkPspn9reyAEmCZsKjW9kJsG0o9MTQGzY91lqdSey4oIZK22g4kdqf6UwKV39qNJwwEHvUpjzT/rVc2uoOaaPi8CUPbDL9IrMoGynE6CgKPZze1P8RFAR95r9PSnlCK4+lhe/hzmB3h/w3HjBOo2Q5XWC3Imv1+8Ko3pozsh1jf5yonufwsEP9XVo3Wk2ObvCA0U7pxXCW4J/w1vfs5clA31OQaKeK2yl/upDpi0CGrWjy60OBy6q8jBba9ZlKNJlLLCAh6Pg8IWN8D9hHwJODTbw9TEDMKTOpJdvJ1Y6BPYgCQfMi+qBNpYSCGsYFSrWNpgYdpqEUtJFlH4OKCUfvcD7oamk/1kL3W+adUV5I+ofLxCTtcsW3/mR50WDB4PV0YLGlZr3NTzu22UGfWIvX0TtXlzko0jQYJJ+/ljOOAJ9bhrUjD/77e+F28prSade18KcNqb5Ke65JD5XOE5TLzEf8LYc7C7jSUb1ViL4WZW4ZAeJBcqr6p46ob0ktqOSjbDAmnninvdWiY0jzffHpjko1M+D4pROo0YhDSIJA3ks9QRcAS5h0xIw2aaob7J2m2sv1V8abgLJeUcNicKcvgvbzYrsWmoNbq3xIae2tnu2Wehpp4EPjEJP0OQM0XPsWCi4n8/KQIE8yDZtk287bSeiX/Wsrcc9pZ3LE6HVKuoCUbzmTw66lGhcI0+Spe6xq93Li80IER6iVzmp8ZfQjMtiaBhsrJGTwzlcGH1RQLV6dgHVzausqdV/SMpXhVH+EtGCqppaZQPbjlqjdg5FkDK/Jz3Q/4yU+7rQ2yXdT+P5nRwUGJs9KkFgLujSJ8xTmrngW96MhzqaPjKWXUo3R/qhD0fG6tmArnQ89k4XheD1KQ2D1YzVlLrL3uITY4UjrT4so8JH1i8Wc3BNG9lWv4RZfaWlU/bgsmnjahkGYQVZL9nLEieJCRwlK
- OPZLqW6j
- QFlyw2FEmJsZsOEGe7rtOj/HYnPomkGILsBjtL3iETYBEYNhOesmasWBMGycTsQhe3BQmqYfyzZzxBuH+p3Adrp5ozbqbH0c7QiUDKaYWHQDtzJV2MnyRxJNHrTp7LUeaKRwS2zqWPN1+fjfzeIlRJxlodzmBX10zotE4br29jHSGlFsvHdFPKysrzi0oxFLM8dyzep0o2cDeuL1M5wjGOQou2xPN9xGBbM033Q5ckfD3nx2Hd5zlD8Bf+/o20qa8OlnyoGCQ1Z1rmNC24FVSK5n2Cmjjm/mdX94GryKX2a5hsrie6f4hLt3lMJOWCuh1GegWLGnK9mPl5wHi1CzkMXtBYS7fg3Zl9axNvbWWV9IwfRM59otWmSRpHzrVSrNo4sQNufDzn8e7Vm5KC11CjZimPRZzKPcjHT2qpx/45F9EaCKsMBmleiYutnzc99R4fJNCNAkth+rZsuL505Tabs7dIy+5p0wTcOpBvPV+YbSlBSYtX+5YAlEwkLF3WMfE28sqMatmi8ukiFAzxsWnA/IG+/2wMEa11eLQkvHRCFJpEYkWuzV4LjRSufelWKx3Mz9QD4nibxRXUl/iEh+Wqwpjd0LppfozdrxWcTP37uZISZRdsp7YNcdKLfwIyHazD6WRZ42aEFJi2bhO3C9BISOJRSARnNjj8+c1Trr8satob1d204MOropggVW6wWK90LswdC/dfpcDEtkne7Iym44kXnj/YJcp6jdSkfSDIZn2gVVGBHkgDy4wPI519DLSyzjf
+X-HE-Tag: 1795406897-140530
+X-HE-Meta: U2FsdGVkX1/bs+VIUK6rYZd4i2/ffcHWRVn2UDOzmGo9MuaTk5UnaxkR2TA7YzWlrw4fWtwRVNmZG8AoqNzRVu1VOVpKK6XI/7RVMUozUUKR4neIN83NvYxtbYMZQJk21GgvYt40zjPdU2Bo9ciVqHZ7o0EK8QR/TnxVU770o1YWn8jrrfkZalHCb4LhV54deLJ4EKZEh7iISKFjLxJ5VMo6/X2vxFNfHOZFwZoTsc0xbk09UB7nxcS8fa2ljReMZJx8OOl7x1awsSm3zmx6fh3rJGM66nN2A5ap5pX+xoTAEyHw7kjTHhU4EstLWmx5N4qQyrQ+Fru0hhapRmNI7QZx12/G1/fdawwrW+3MiFES5oxZxxhHrZz+15n+9DOqaC9Nvu4KUu+Ls9XLNK6LQ8HEzgyyAu3VpKGbXJdh76qqmRAO9Ftqm3TK4Kul2oQBoTK5V4t76Z4JHd78ai8ejkYgv8etSepei8WtUysMqDugXYae1UmZ0eLNNChUqo5A/+89lKXIm7YpP/lf6IX8hohddt6GREpSjBoYh29rQUbb+8lOJ52BXf6ATzaCsWJ5Iv5mo+YMjhbrI4S4pTiZmhH04A7Kwy0LD/xgAFe8AIzzu8BAIAOT6E3ti5LSD29Uvx6U53aVKHFC86VDvZA/iu2COQ6I5przmDxIXloFQN/q5V2VM+aglSXL5lhPb75PLy4BhH2ab55+TJp1L76bcYET8kqW3LxGq4Yny2t3+mi22aLYz7I/rAUEOlCgYqcxhV67BvzYIiZoaKph4CdgISGMXTKTiTtCDu+3CGRweJBMBJRPamCJ7KBPKfOP5OgWjG8uv5omhinMOA7LPGxQVDLgfHpkIa0CXZtSmbwIsU9KYPNITr7VL0tBJ7NJ4WokgwKxu2mdwbcpkXKZ72cfzLPe9ET36qNYCVe7dUtIkVcnCNmgJ8u+oxpUvQIE6GZHcdQE2lCpj+3VF8/JtFQ
+ nA9fIN55
+ aaN8AOs8EfLAy42jJqAOEiWYeofCphBS8ACc6XAFO2nIDJZBGzBHjA3Bnbg4uzhpzhFmlwG4SowVfcI0TMJsoxSHz7+Av0iFRmtPfKQVPQdG4I8H7JwOcG7Lr90snTyu7/QNFv9w6yjEZyVHL2kWCuYkTQz5QX9G7vObsGkg7oIoMER7ZFj1GCFu6x5Mj8oNlOPHWnQCarTNXHNEUSll0vuuGzg3psdE+x9nC9H0mag1W+70HJbraTxH/R5SlpZ3m+ZfbHXqjkh70Ntalqj8PoEeM712Dbw7A5+ISYNUmbNnDm0GV6FXnvBCLQ9NVJDffnFXZVvpF6bTtVyu0XBJeeED/YVeHU2M+xd6mxwYTcbrPgi8ywlsoiFSj/N3GM7LQNFMB3WOQDtyKV5cKnRiUD72/Fg+e1ezp5FV+4YlTUr8RJ+H9VqtRvf0duZMfsgPmwF0OLGTxgnqPq354jHdDLDr5lfagypf5XMbDw29v8YCuO81I7FtuAVCwftqu2K9FtAA0H4dq93q3eMJcTcO7DnQdcFvr2rxmAlwQUPrpUZKleQZ/+pgcKrl/MmNyIYIeRCIQeUdb8DAcQ1S8mXndTJlxabgqhw/aReLY5vEuNubXesTbvtD0A9E9AIcMx/7+cZkn894h7oNX4mp90ddt25qI2yuPBBUe0xmq5GgLARZ4fAHwZNxyKvr3W8EzFvIflbPXIB+A3lv+8lPEImZBubJ/7aV5Wmev+sAQ6LgDvR12I5oPNq/BtHbgZ8iASFVb+Sby5IocUAd7vvCJSN6XK9dQXx18aJ+dpeSYYtD3lafnqaUsykLhD7gDWMsnszMSAry7MMskx7QQ+iGJqVzM+PQs/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -212,333 +196,250 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Reinette,
+On 18 Nov 2026, at 4:20, David Hildenbrand (Arm) wrote:
 
-On Fri, Nov 20, 2026 at 10:39:30AM -0800, Reinette Chatre wrote:
-> During fork a task's CLOSID and RMID are copied into the new task by
-> dup_task_struct(), early in copy_process() without holding tasklist_lock
-> or any lock that resctrl takes. The new task becomes visible to a walk of
-> the task list later in copy_process(), after it is linked onto the task
-> list while the tasklist_lock is held for write.
-> 
-> Removing a resource group moves all of its tasks to another group by
-> walking the task list while holding the tasklist_lock for read, and then
-> frees the CLOSID and RMID of the removed group. A task that copies its
-> parent's CLOSID and RMID before the walk reaches the parent is missed by
-> the walk: it is not on the task list yet, and it cannot get there while
-> the walk holds the tasklist_lock. By the time it is added to the task list
-> the CLOSID and RMID it was initialized with have been freed.
-> 
->     CPU0                                CPU1
->     ====                                ====
-> 
->   fork()
->     copy_process()
->       dup_task_struct()
->         /*
->          * New task inherits the
->          * parent's CLOSID and RMID.
->          */
->                                     rdtgroup_rmdir_{ctrl,mon}()
->                                       rdt_move_group_tasks()
->                                         read_lock(&tasklist_lock)
->                                         for_each_process_thread()
->                                           /*
->                                            * Parent is moved out of
->                                            * the group. New task is
->                                            * not on the task list
->                                            * and is not moved.
->                                            */
->       write_lock_irq(&tasklist_lock)
->         /* Waits for the walk. */
->                                         read_unlock(&tasklist_lock)
->       /* Lock acquired. */
->       list_add_tail_rcu(&p->tasks, ...)
->       write_unlock_irq(&tasklist_lock)
->                                       free_rmid()
->                                       closid_free() /* ctrl only */
-> 
->     New task and every task it creates use the freed CLOSID and RMID.
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 
-> The new task and every task it goes on to create keep using a CLOSID
-> and RMID that resctrl believes are unused. Once those identifiers are
-> handed to a resource group created later, the strays appear in that
-> group's tasks file, their memory accesses are counted in its monitoring
-> data, and they are subject to its allocation policy, while the group
-> intended for them does not control or monitor them.
-> 
-> Introduce resctrl_copy_process() to copy the parent's CLOSID and RMID
-> into the new task from copy_process(), while the tasklist_lock is held
-> for write. The walk holds the same lock for read for its full duration,
-> so the new task is either already on the task list and assigned by the
-> walk, or the copy happens after the walk completed and observes the
-> parent's new resource group.
-> 
-> resctrl_copy_process() reads two values that some architectures store
-> separately. __rdtgroup_move_task() assigns them with two stores while
-> holding only rdtgroup_mutex, which resctrl_copy_process() cannot take,
-> so those reads can fall between the two stores and leave the new task
-> with the CLOSID of one resource group and the RMID of another. Assign
-> them from __rdtgroup_move_task() while holding tasklist_lock for read
-> as well, so that resctrl_copy_process() observes both as intended.
-> 
-> Add an architecture call to perform the copy because CLOSID and RMID are
-> stored per architecture and cannot be read and written as independent
-> values on all of them.
-> 
-> Fixes: f3cbeacaa06e ("x86/intel_rdt/cqm: Add rmdir support")
-> Reported-by: Jedrzej Wasiukiewicz <jedrzej.wasiukiewicz@intel.com>
-> Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+> try_to_unmap() with TTU_BATCH_FLUSH zaps the PTEs, transfers the PTE
+> dirty bit to the folio and defers the TLB flush. Until the TLB is
+> flushed, other CPUs might still access the folio through stale TLB
+> entries.
+>
+> However, reclaim unlocks folios it keeps and removes folios it frees
+> from the page-cache / swap-cache before performing the deferred TLB
+> flush.
+>
+> Stale writable TLB entries are currently handled by flushing them right
+> after try_to_unmap() if the folio is dirty, so writes through stale TLB
+> entries cannot get lost, but they are also not batched.
+>
+> Stale read-only TLB entries, on the other hand, are problematic:
+>
+>  (1) A page fault can map a new page-cache folio, or swap in a new folio
+>      once reclaim removed the old one from the swap-cache (e.g., a clean
+>      swap-cache folio, or a dirty folio mapped by clean PTEs after
+>      synchronous swap-out to zram or zswap). Modifications of the new
+>      folio (e.g., through write() or page table mappings) are then not
+>      visible to CPUs that still read the old folio.
+>
+>  (2) A CoW fault in a MAP_PRIVATE mapping can copy a page-cache folio
+>      that reclaim kept. Writes go to the new anon folio, while other CPUs
+>      still read the old folio.
+>
+>  (3) Invalidation (e.g., invalidate_inode_pages2()) can remove a folio
+>      that reclaim kept from the page-cache without flushing the TLB, as
+>      the folio is no longer mapped. A page fault can then map a new
+>      folio while other CPUs still read the old folio.
+>
+> This can be reproduced easily by swapping out an anon memory range with
+> MADV_PAGEOUT, reading it back in, and swapping it out again
+> (MADV_PAGEOUT) while one thread keeps reading the range and another
+> thread writes to pages as soon as reclaim removed the folios from the
+> swap-cache. The first thread will occasionally read the old content.
+
+Who would have thought about it? I also wonder why we never get a report
+for this issue.
+
+>
+> Fix it by reclaiming folios in batches of up to 64 folios:
+>
+>  (a) Lock each folio, check whether we want to reclaim it, and unmap it.
+>      Keep the folio locked if any deferred TLB flush is pending after
+>      unmapping it, otherwise unlock it right away.
+>
+>  (b) Flush the TLB once, and unlock all folios that are still locked.
+>
+>  (c) Lock the folios again, one at a time, to try reclaiming them.
+>      Activate folios that are still or again mapped, and skip folios
+>      that are under writeback or poisoned by now, or that somebody else
+>      holds locked.
+>
+> As others might map or unmap folios while they are unlocked, we might
+> now activate or reclaim some folios that we would previously have kept
+> or activated, which is fine.
+>
+> Keeping folios locked until the TLB flush makes sure that nobody can
+> remove them from the page-cache / swap-cache, copy them or start
+> writeback. Page faults will either wait on the folio lock, or find the
+> old folio and map it again, which is fine.
+>
+> Unlocking folios before trying to reclaim them makes sure that we never
+> hold more than one folio lock while performing I/O or waiting on the
+> filesystem.
+>
+> The idea of unlocking folios and locking them again using a trylock
+> before trying to reclaim them was inspired by [1] from Zhang Peng.
+
+This solution makes sense to me.
+
+>
+> As nobody can start writeback before the TLB flush, we no longer have to
+> flush stale writable TLB entries right after try_to_unmap(), so remove
+> the try_to_unmap_flush_dirty() call and batch these flushes as well.
+> This effectively enables batching TLB flushes of stale writable TLB
+> entries, which is what [1] tried to achieve.
+>
+> We must not wait for a folio lock, a folio flag or I/O while keeping
+> other folios locked, as that could deadlock. So flush the TLB and unlock
+> the batch early before waiting for writeback (legacy memcg), and before
+> allocating swap space would perform synchronous discard I/O
+> (folio_alloc_swap() now returns -EBUSY if allocation failed but retrying
+> with synchronous discard might help).
+>
+> Allocating swap space can otherwise only sleep when allocating memory
+> for the swap table, which cannot enter direct reclaim or compaction,
+> as reclaim runs with PF_MEMALLOC.
+>
+> We'll limit batching to 64 folios for now; the limit mostly matters for,
+> e.g., MADV_PAGEOUT and DAMON that can pass more, or when reclaim splits
+> large folios.
+>
+> Note that khugepaged and batched (async) folio migration already keep up
+> to HPAGE_PMD_NR (e.g., 512 with 4 KiB pages) small folios locked after
+> unmapping them with a deferred TLB flush; migration even allocates new
+> folios, possibly entering direct reclaim, before flushing the TLB and
+> unlocking them. Both also call MMU notifiers while keeping other folios
+> locked, just like we do now.
+>
+> Keep code churn to a minimum. Some follow-up cleanups and optimizations
+> make sense, in particular:
+>
+>  (1) Cleanly separate the stages of shrink_folio_list() (see the TODO).
+>
+>  (2) Avoid unlocking and locking folios again that do not require a TLB
+>      flush. But only if it's worth it and doesn't make the code too
+>      ugly.
+>
+>  (3) Remove the remaining try_to_unmap_flush() calls before freeing
+>      folios; we only free folios that we flushed already or that we
+>      never unmapped.
+>
+>  (4) Remove the now-unused try_to_unmap_flush_dirty() infrastructure.
+>
+> [1] https://lore.kernel.org/linux-mm/20261031-batch-tlb-flush-v6-0-190539=
+839eec@tencent.com/
+>
+> Fixes: 72b252aed506 ("mm: send one IPI per CPU to TLB flush all entries a=
+fter unmapping pages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
-> Note to MPAM maintainers:
-> 
-> resctrl_copy_process() runs on every fork(), so
-> resctrl_arch_copy_closid_rmid() is a static inline on x86. Doing so is
-> perhaps not required as fork() is already expensive.
-> 
-> Even so, I attempted doing same for MPAM but ended up with solutions
-> that do not seem ideal:
-> 
-> - A static inline in arch/arm64/include/asm/mpam.h, next to the other
->   accessors of thread_info::mpam_partid_pmg. Nothing on the path from
->   include/linux/resctrl.h reaches that header, so the definition is not
->   visible to resctrl_copy_process(). Making it visible means
->   arch/arm64/include/asm/resctrl.h has to include asm/mpam.h, which
->   does not seem to match MPAM's intended design?
-> 
-> - A static inline in include/linux/arm_mpam.h, beside the
->   resctrl_arch_*() inlines already there. asm/mpam.h includes
->   linux/arm_mpam.h, so the reverse include would be circular and
->   mpam_get_regval() cannot be called. The copy would have to read and
->   write thread_info::mpam_partid_pmg directly, which no code outside
->   asm/mpam.h does today, and would need a CONFIG_ARM64_MPAM guard
->   because the field is only present when it is set.
-> 
-> The out-of-line definition this ended up with matches
-> resctrl_arch_sched_in(). Please let me know (if this is a change you
-> agree with) what kind of shape it needs to take for MPAM. We could also
-> just make x86 and MPAM both be out-of-line - doing so may not be felt by
-> the heavy copy_process().
-> ---
->  arch/arm64/include/asm/mpam.h  |  6 ++++++
->  arch/x86/include/asm/resctrl.h |  7 +++++++
->  drivers/resctrl/mpam_resctrl.c |  6 ++++++
->  fs/resctrl/rdtgroup.c          | 21 +++++++++++++++++++++
->  include/linux/arm_mpam.h       |  1 +
->  include/linux/resctrl.h        | 28 ++++++++++++++++++++++++++++
->  kernel/fork.c                  |  3 +++
->  7 files changed, 72 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/mpam.h b/arch/arm64/include/asm/mpam.h
-> index 70d396e7b6da..0746e5d7cc2d 100644
-> --- a/arch/arm64/include/asm/mpam.h
-> +++ b/arch/arm64/include/asm/mpam.h
-> @@ -63,6 +63,12 @@ static inline void mpam_set_task_partid_pmg(struct task_struct *tsk,
->  	WRITE_ONCE(task_thread_info(tsk)->mpam_partid_pmg, regval);
->  }
->  
-> +static inline void mpam_copy_task_partid_pmg(struct task_struct *dst,
-> +					     struct task_struct *src)
+>  mm/internal.h |   5 ++
+>  mm/rmap.c     |   5 ++
+>  mm/shmem.c    |   2 +-
+>  mm/swap.h     |   5 +-
+>  mm/swapfile.c |   7 ++-
+>  mm/vmscan.c   | 155 ++++++++++++++++++++++++++++++++++++++++++++++++++++=
+++----
+>  6 files changed, 165 insertions(+), 14 deletions(-)
+
+<snip>
+
+> +static struct folio *staged_folios_next(struct staged_folios *staged,
+> +		struct list_head *folio_list)
 > +{
-> +	WRITE_ONCE(task_thread_info(dst)->mpam_partid_pmg, mpam_get_regval(src));
+> +	struct folio *folio;
+> +
+> +	if (staged_folios_empty(staged))
+> +		return NULL;
+> +	/* Collect more folios until we have enough or there are no more. */
+> +	if (staged->nr_folios < MAX_STAGED_FOLIOS && !list_empty(folio_list))
+
+One thing to note here is that !list_empty(folio_list) can happen
+in the middle of phase (c), when pageout() splits a large shmem folio,
+and the code switches back to phase (a) and folios on ->flushed
+will stay unlocked longer. This is discovered by AI and I verified it.
+
+To make the code strictly follows the comment, you will want to
+add ->draining and set it to true at phase (c) and back to false
+at phase (a) and check it instead of !list_empty(folio_list).
+
+Or add =E2=80=9Cmost of time/usually=E2=80=9D to the comment below.
+
+> +		return NULL;
+> +
+
+At this point, the code moves from phase (a) to phase (b).
+
+> +	/* Flush the TLB and unlock the folios that waited for the flush. */
+> +	staged_folios_flush(staged);
+> +
+
+Now we move from phase (b) to phase (c).
+
+> +	folio =3D list_first_entry(&staged->flushed, struct folio, lru);
+> +	list_del(&folio->lru);
+> +	/* We handed out all folios: start collecting again. */
+> +	if (list_empty(&staged->flushed))
+> +		staged->nr_folios =3D 0;
+The batch is done, we move back to phase (a).
+
+> +	return folio;
 > +}
 > +
->  static inline void mpam_thread_switch(struct task_struct *tsk)
->  {
->  	u64 oldregval;
-> diff --git a/arch/x86/include/asm/resctrl.h b/arch/x86/include/asm/resctrl.h
-> index 8f6edcdcfd87..199ca9af0089 100644
-> --- a/arch/x86/include/asm/resctrl.h
-> +++ b/arch/x86/include/asm/resctrl.h
-> @@ -153,6 +153,13 @@ static inline void resctrl_arch_set_closid_rmid(struct task_struct *tsk,
->  	WRITE_ONCE(tsk->rmid, rmid);
->  }
->  
-> +static inline void resctrl_arch_copy_closid_rmid(struct task_struct *dst,
-> +						 struct task_struct *src)
+> +static int staged_folios_alloc_swap(struct staged_folios *staged,
+> +		struct folio *folio)
 > +{
-> +	WRITE_ONCE(dst->closid, READ_ONCE(src->closid));
-> +	WRITE_ONCE(dst->rmid, READ_ONCE(src->rmid));
-> +}
+> +	bool may_sync_discard =3D list_empty(&staged->unflushed);
+> +	int ret;
 > +
->  static inline bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid)
->  {
->  	return READ_ONCE(tsk->closid) == closid;
-> diff --git a/drivers/resctrl/mpam_resctrl.c b/drivers/resctrl/mpam_resctrl.c
-> index 5468367776e2..7aea58fca85b 100644
-> --- a/drivers/resctrl/mpam_resctrl.c
-> +++ b/drivers/resctrl/mpam_resctrl.c
-> @@ -345,6 +345,12 @@ void resctrl_arch_set_closid_rmid(struct task_struct *tsk, u32 closid, u32 rmid)
->  	}
->  }
->  
-> +void resctrl_arch_copy_closid_rmid(struct task_struct *dst,
-> +				   struct task_struct *src)
-> +{
-> +	mpam_copy_task_partid_pmg(dst, src);
-> +}
+> +	ret =3D folio_alloc_swap(folio, may_sync_discard);
+> +	if (ret !=3D -EBUSY)
+> +		return ret;
 > +
->  bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid)
->  {
->  	u64 regval = mpam_get_regval(tsk);
-> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
-> index 57ab090072c2..ebf780fc5fe9 100644
-> --- a/fs/resctrl/rdtgroup.c
-> +++ b/fs/resctrl/rdtgroup.c
-> @@ -657,12 +657,28 @@ static int __rdtgroup_move_task(struct task_struct *tsk,
->  		return -EINVAL;
->  	}
->  
 > +	/*
-> +	 * Hold tasklist_lock for read so that resctrl_copy_process(), which
-> +	 * holds it for write, cannot read the CLOSID and the RMID of @tsk
-> +	 * while only one of the two has been updated.
-> +	 *
-> +	 * Hold tasklist_lock just for the @tsk update. A CPU running @tsk
-> +	 * keeps using the CLOSID and RMID that resctrl_arch_sched_in()
-> +	 * applied when @tsk was last scheduled in, so
-> +	 * update_task_closid_rmid() below has to interrupt that CPU for the
-> +	 * new resource group to take effect. Leave that until after
-> +	 * tasklist_lock has been dropped: a CPU waiting for tasklist_lock
-> +	 * for write waits with interrupts disabled, and @tsk's CPU is the
-> +	 * one that may be waiting, because @tsk may be forking.
+> +	 * Don't wait for synchronous discard I/O while keeping other folios
+> +	 * locked: there is potential for deadlocks and long delays.
 > +	 */
-> +	read_lock(&tasklist_lock);
->  	if (rdtgrp->type == RDTMON_GROUP)
->  		resctrl_arch_set_closid_rmid(tsk, rdtgrp->mon.parent->closid,
->  					     rdtgrp->mon.rmid);
->  	else
->  		resctrl_arch_set_closid_rmid(tsk, rdtgrp->closid,
->  					     rdtgrp->mon.rmid);
-> +	read_unlock(&tasklist_lock);
-> 
-
-Is it possible to combine u32 closid and u32 rmid into u64 closid_rmid?
-RDT will no longer support 32-bit kernels, so u64 is always atomic. Then
-we don't need the above tasklist_lock in __rdtgroup_move_task(), and there
-is no race with resctrl_arch_sched_in() - but we do need it during fork()
-though.
-
-I was thinking something like below:
-
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1362,8 +1362,7 @@ struct task_struct {
- #endif /* CONFIG_PREEMPT_RT */
- #endif /* CONFIG_CGROUPS */
- #ifdef CONFIG_X86_CPU_RESCTRL
--       u32                             closid;
--       u32                             rmid;
-+       u64                             closid_rmid;
- #endif
- 
-        struct futex_sched_data         futex;
-
-static inline u64 resctrl_clos_rmid_val(u32 closid, u32 rmid)
-{
-	return (u64)closid << 32 | rmid;
-}
-
-And we use resctrl_clos_rmid_val(), upper_32_bits(task->closid_rmid)
-lower_32_bits(task->clisid_rmid) in the code.
-
-thanks,
-Chenyu
->  	/*
->  	 * Ensure the task's closid and rmid are written before determining if
-> @@ -2959,6 +2975,11 @@ static void schemata_list_destroy(void)
->   * If @mask is not NULL the cpus on which moved tasks are running are set
->   * in that mask so the update smp function call is restricted to affected
->   * cpus.
-> + *
-> + * Tasks created while this walks the task list are handled by
-> + * resctrl_copy_process(), which tasklist_lock serializes against this walk.
-> + * A new task is either visible to the walk and moved with the others, or
-> + * resctrl_copy_process() assigns it after the walk completes.
->   */
->  static void rdt_move_group_tasks(struct rdtgroup *from, struct rdtgroup *to,
->  				 struct cpumask *mask)
-> diff --git a/include/linux/arm_mpam.h b/include/linux/arm_mpam.h
-> index 002f56e15362..b605e9771c32 100644
-> --- a/include/linux/arm_mpam.h
-> +++ b/include/linux/arm_mpam.h
-> @@ -56,6 +56,7 @@ bool resctrl_arch_mon_capable(void);
->  void resctrl_arch_set_cpu_default_closid(int cpu, u32 closid);
->  void resctrl_arch_set_closid_rmid(struct task_struct *tsk, u32 closid, u32 rmid);
->  void resctrl_arch_set_cpu_default_closid_rmid(int cpu, u32 closid, u32 rmid);
-> +void resctrl_arch_copy_closid_rmid(struct task_struct *dst, struct task_struct *src);
->  void resctrl_arch_sched_in(struct task_struct *tsk);
->  bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid);
->  bool resctrl_arch_match_rmid(struct task_struct *tsk, u32 closid, u32 rmid);
-> diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
-> index 10dfdca7f4bf..32d8bf9ca9ba 100644
-> --- a/include/linux/resctrl.h
-> +++ b/include/linux/resctrl.h
-> @@ -7,6 +7,8 @@
->  #include <linux/list.h>
->  #include <linux/pid.h>
->  #include <linux/resctrl_types.h>
-> +#include <linux/sched.h>
-> +#include <linux/sched/task.h>
->  
->  #ifdef CONFIG_ARCH_HAS_CPU_RESCTRL
->  #include <asm/resctrl.h>
-> @@ -729,6 +731,32 @@ extern unsigned int resctrl_rmid_realloc_limit;
->  int resctrl_init(void);
->  void resctrl_exit(void);
->  
-> +#ifdef CONFIG_RESCTRL_FS
-> +/**
-> + * resctrl_copy_process() - Give a new task the resource group of its parent.
-> + * @child:	The new task, which is not yet on the task list.
-> + *
-> + * Call from copy_process() while tasklist_lock is held for write. Serialized
-> + * against rdt_move_group_tasks() and __rdtgroup_move_task() that hold
-> + * tasklist_lock for read.
-> + *
-> + * dup_task_struct() copies the parent's CLOSID and RMID into @child before
-> + * @child is linked onto the task list. If the parent is moved out of a
-> + * resource group that is being removed, that group's CLOSID and RMID are
-> + * freed once the walk completes, leaving @child with stale assignments.
-> + *
-> + * Bring @child up to date with the parent.
-> + */
-> +static inline void resctrl_copy_process(struct task_struct *child)
-> +{
-> +	lockdep_assert_held_write(&tasklist_lock);
-> +
-> +	resctrl_arch_copy_closid_rmid(child, current);
+> +	staged_folios_flush(staged);
+> +	may_sync_discard =3D true;
+> +	return folio_alloc_swap(folio, may_sync_discard);
 > +}
-> +#else
-> +static inline void resctrl_copy_process(struct task_struct *child) { }
-> +#endif
 > +
->  #ifdef CONFIG_RESCTRL_FS_PSEUDO_LOCK
->  u64 resctrl_arch_get_prefetch_disable_bits(void);
->  int resctrl_arch_pseudo_lock_fn(void *_plr);
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 5efceb8d58a7..8344e0d27b78 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -105,6 +105,7 @@
->  #include <linux/stackprotector.h>
->  #include <linux/user_events.h>
->  #include <linux/iommu.h>
-> +#include <linux/resctrl.h>
->  #include <linux/rseq.h>
->  #include <uapi/linux/pidfd.h>
->  #include <linux/pidfs.h>
-> @@ -2491,6 +2492,8 @@ __latent_entropy struct task_struct *copy_process(
->  
->  	klp_copy_process(p);
->  
-> +	resctrl_copy_process(p);
-> +
->  	sched_core_fork(p);
->  
->  	spin_lock(&current->sighand->siglock);
-> -- 
-> 2.56.0
-> 
+>  /*
+>   * shrink_folio_list() returns the number of reclaimed pages
+>   */
+> @@ -1166,6 +1251,10 @@ static unsigned int shrink_folio_list(struct list_=
+head *folio_list,
+>  	struct folio_batch free_folios;
+>  	LIST_HEAD(ret_folios);
+>  	LIST_HEAD(demote_folios);
+> +	struct staged_folios staged =3D {
+> +		.unflushed =3D LIST_HEAD_INIT(staged.unflushed),
+> +		.flushed =3D LIST_HEAD_INIT(staged.flushed),
+> +	};
+>  	unsigned int nr_reclaimed =3D 0, nr_demoted =3D 0;
+>  	unsigned int pgactivate =3D 0;
+>  	bool do_demote_pass;
+> @@ -1177,15 +1266,41 @@ static unsigned int shrink_folio_list(struct list=
+_head *folio_list,
+>  	do_demote_pass =3D can_demote(pgdat->node_id, sc, memcg);
+>
+>  retry:
+> -	while (!list_empty(folio_list)) {
+> +	/*
+> +	 * We take folios from folio_list to pre-process them (lock, check,
+> +	 * unmap). Then, they move to the staged(unflushed) list, from where
+> +	 * they move to the staged(flushed) list after a batched TLB flush
+> +	 * and after unlocking them. If no TLB flush is pending for a folio,
+> +	 * it moves to the staged(flushed) list directly.
+> +	 *
+> +	 * We then take folios from the staged(flushed) list to actually
+> +	 * reclaim them, or to activate them if they are still mapped.
+> +	 *
+> +	 * So we pre-process folios from folio_list until we collected a batch
+> +	 * of staged folios, or until there are no more folios to
+> +	 * pre-process. Then, we perform a single TLB flush and reclaim all
+> +	 * folios of that batch, before we pre-process more folios.
+> +	 *
+> +	 * Once all lists are empty, we are done.
+
+I wonder if you want to label the above three phases/steps and
+add comments in staged_folios_next() to clarify how phase transition
+happens.
+
+Otherwise, LGTM.
+
+Acked-by: Zi Yan <ziy@nvidia.com>
+
+Best Regards,
+Yan, Zi
 
