@@ -1,166 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44101606A6A8
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1C8606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Yzqy+haz
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XQ5d6GPD
 Received: by kanga.kvack.org (Postfix)
-	id 605B16B05B5; Mon, 23 Nov 2026 12:51:02 -0500 (EST)
+	id 545006B05B7; Mon, 23 Nov 2026 12:52:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DD356B05B6; Mon, 23 Nov 2026 12:51:02 -0500 (EST)
+	id 4F5956B05B8; Mon, 23 Nov 2026 12:52:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F3286B05B7; Mon, 23 Nov 2026 12:51:02 -0500 (EST)
+	id 3E6156B05BA; Mon, 23 Nov 2026 12:52:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A4736B05B5
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:51:02 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 42F67120954
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:50:57 +0000 (UTC)
-X-FDA: 85467124554.16.CB2C39E
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 24207A000E
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:50:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Yzqy+haz;
+	by kanga.kvack.org (Postfix) with ESMTP id 0021E6B05B7
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:52:15 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CF9E120962
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:52:15 +0000 (UTC)
+X-FDA: 85467127830.28.1CA2D13
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 64E57180012
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:52:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=XQ5d6GPD;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of namangulati@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=namangulati@google.com
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795456255;
-	b=F2+VsIhgvnwXcPw4NBraDub6j9FydvcRhMm36/iWZDaWHjTaK5kfcu/krJv9esr0CTtxKQ
-	2ryiDCaIYqolvI1TmZoqoLFXRmiH2DEa/OPXd5GeExpVP8GbOY7OBqw8kLClmJ6Z3AWumm
-	Wi0fz+tGxK/mIi8G3V41bUkn4f+2+KA=
+	t=1795456333;
+	b=5Al2tzak7VVsQFnBp7uQH24sOlGnhGzVT0y+N744oCn7QQ5m1OgP/YfXTxfRQxkUXwt4fS
+	M62UnkBep0MmWjoF3grStW4XzCJJBRI5vzL/lFffWgtACtMc4TZJjivhHFPh65aFcbh8vf
+	SRkE0NDpIQfFSBoSZuPcFuYRTQfYkPk=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795456255;
+	s=arc-20220608; t=1795456333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ezlDWRMj9kmxxJBJDvLQDaV+rNJm+P/qJAKPI2Vbze4=;
-	b=xt/Lhig04Tz+i/pEW/uR3F5bV859TMzQ8VgvtukbwEvxG6I5rxvQEhz4Lbu6qq7rBykxN/
-	Hx1jNR99o4LU8OG1XsOhP82tu0Dfm5BXtpkqbI2B0wrPCCbmb+z2BcI3P0QOyYVCm6Rsf1
-	F3IJtooAAAYmCWTrhPO+PVzesnufGq0=
+	bh=MG9wth+FgKJUhgMgr0LKB7NofqtOeeE2/Q/8//33IbE=;
+	b=CiASyObZuj7OxVzA625rjVlgt9/kHmJHxFSekqu35q0Mctq1LwvbwNkRFKRC1RtTp5lJXV
+	dHdBAm3vDRmjz2O3BQ1eAw48NA3894C4x+Zf6JUs5fQ8rkf9DF7BV6LfAv/zCewUZLhCm3
+	XXnDyNX1jb+brfg5Nup/U1iuQevfRf0=
 ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Yzqy+haz;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=XQ5d6GPD;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of namangulati@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=namangulati@google.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4bb6860f867so102605e9.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:50:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795456254; cv=none;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3adfcafaabbso29507981fa.3
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:52:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795456332; cv=none;
         d=google.com; s=arc-20260327;
-        b=FbkHkvQTHEBeN2vBrsYVs8YrwH+ZbI9FpMVtiWKgTSBx/WNnDKVnXlm/7YhXfBKcXB
-         eFLdB6qmEBU2Z8lxnBX7R+gGaF3fN6k0YNXmK5UF+0GFyjmU+0SIg29QwSSDWmQ+Chu5
-         nlBmZJSU/VdAmBUQotaJaNl4WhRX/CuhyVHYI/Sx5E65O0GxMLDFAjENpF+X67ZVo2az
-         wATAjwxZsGvP2mpUJXxRHguDZ08nrIrYDu4rxWwFRRxlNJjD8/gY+aDefAZBLUbq714c
-         QYZpUPE2m62Nn2PQhE3yG2Dhz2rDPCPqWjEuPN9g6Eg1SnHozwN1PMAV93B9PnDBDKNT
-         9f+w==
+        b=mWsr1qmRfFTUM5Wz5xm12bI1IPBvQxD4tM5d7p/PQ9TZdEKMQortMwcuMAdNdGABBD
+         KtSl1xYunD6GOxAfP7sgYySa3z1kEodWjybvqKdWotUZEKlPLvZgTvVhtC2/BRhuga2w
+         lndU9r/W1jlV3hsfuHmK2adBAuxE38TsO6BDgOF5rlyWlXUTU+WiEQDI8XzJmQ+TnMi1
+         QgHpApSRPXFBuhj8DFzpYLruR+bEQmKPH/X7wewtGWTvOhJcTWRSxCk3pOXsVPgZjjtK
+         qKxU98p+OfPhwLPE6c6rOX0ag4O1i1FGt4lF2DobhHXQ5fn7IyiFw9vGWaddQrnceUHP
+         7yGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ezlDWRMj9kmxxJBJDvLQDaV+rNJm+P/qJAKPI2Vbze4=;
-        fh=qnX86pBn3V+qUNvw604fcGv5X3pUL1RO1DK5BB3ord0=;
-        b=AZDA4jk/0Q3RCDzTWfT7cyIoMXbknVjpkPCSGNQnzb8ykXRjw/jOYY8qIFhvk0RFp0
-         pUbbH9vwtQMmPBwKpQON2Ot02g2sKAy/DuwCxlbMOL6633pr420ysl6wfc8GofQROzvx
-         kWUgYj2Hu0RP+aJytljanYPfOZ6+jteYv7nGdikiTu8AZ3vZJRvP14Xwtuz4ucPld7Sz
-         jGBdQ3yMpifKn9okZV+ltGZ8QGI1QxJ9peLfz9OOLHX7GJe4OprvOJfdi+TXChQ0TDZZ
-         PBINSR6zsLX9y4oamyHe9wvXJq7RxEQ3pgeJ12cFev6W9WM3jbQWBLQIRkAHT+iTJjc9
-         8Efg==;
+        bh=MG9wth+FgKJUhgMgr0LKB7NofqtOeeE2/Q/8//33IbE=;
+        fh=JTDiT8Pv2kTy4KldZStjj4m+Pn8p4/BJfJy/zi/lH9U=;
+        b=D2e3X+xKeNwp/Q1sFrRs6Nd/Xuf0s8mkgrSr7gir6/KM2KvzW2GOc9lMSE0/YnC/MR
+         SPioKj9z0cHcBDjvRmq6qadEro4Qq0Z/pLGbtVwlzI3oBOVjzx0MDK8yBPP7DoAbgOPt
+         Gd9ElpYFYoEiASvMIFHoRb2gnXunlciQ0ouriskLEw7sybSmM2zDbAfN+h2Lv9lkth3L
+         G1jSvYvB4Ua3AS+Xm8UwDkQuFD65NpO6J3NyWZG0EdCEO8wKUrLRaxJSuqJK2dM9jwIx
+         yzk0iLroaac+tO3yCtekcwDwEXX/7eo9frEcW6QTtj4s0JYA1JIJDhl8bu/9DY+PFMHo
+         nTuA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795456254; x=1796061054; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795456332; x=1796061132; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ezlDWRMj9kmxxJBJDvLQDaV+rNJm+P/qJAKPI2Vbze4=;
-        b=Yzqy+hazPWsnfIgC3OmYRQadAXIgXXK14iWYaXew+Qqfj22EODRFeIYtLEasVp8xy3
-         DPPCHr59HK0paGFZOqUqTkpbkQxf6/pQhh8ioMyBRQW72Zw1p15gqAPBVlI5lsThR3SF
-         9g9JBl8mYrBLn4xruHZctoWgfZlCgpbFmt+9ct+JAChFVdJ1F6ENR6Jpw3St5Rlqb9GV
-         bUXD/rj85cPYQSc6Lb/Y6x54uesym3z7hFpvbykdIr/pEDaa/Ua/yN5f3NEHeF8rZwKo
-         E3FOj6oSDSqRbsaLFV+LjPizBuIjroIK8u/lhJvaTFSdcqOkPAsdpXbTlWPtNkv7rQzc
-         0kog==
+        bh=MG9wth+FgKJUhgMgr0LKB7NofqtOeeE2/Q/8//33IbE=;
+        b=XQ5d6GPDiih7GxEXvX8s91BYkMlossxT180Bd8zzBqfTxK0Vi+ZWelUHfKnO1kRoj9
+         OkIitPAuRIYp62vpz0PRmh+QFbYZZn78TrNa8PZz98PW4zASNqmF+svClR8tXofLPwtt
+         E94uFhGbCEnAi28D7gqfiXzoFPgv1o98fzw5o72FX8Qw3KF10fpgrXH4t1xw7LdMKeOL
+         pMEhyzhx/LGJla0Jb+gYJ0Iwi52NpPmn6H2q5kzP7OQIRXfEyhr5E6VIlxQI74Gg8KcE
+         k7/7xU69jSpg0bNhqb3jUPh9lmAPIQMY7FxJRA+AbpWWZEIk79cTYSTDiX7TUYgrCk4+
+         Xayw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795456254; x=1796061054;
+        d=1e100.net; s=20260707; t=1795456332; x=1796061132;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ezlDWRMj9kmxxJBJDvLQDaV+rNJm+P/qJAKPI2Vbze4=;
-        b=d7ji1ifrsQ+7+9r81/AJzotmkZdfRN1ontA9b7Xx7oLuKthN+rSPqBt30aM3aa/gcG
-         qKrRtLAi6AdfB7EtdD+uVRZCH//B7UykZn5cSolYx1lPPZaC7cScQo7LnhELZOMyXfpc
-         yC0vFtyYFAOPlDeis7bXCWEMvWLMKO6sTwCuurO+gziyazAJZBUUVhBvmE+GMPF2H2LH
-         ka1TYW07kgA90X4xnkWWwlODKssLb1Jm7yBFmD3wpaXdNwonYFrg5tGFY3mTRPf5bdVr
-         7P1CXqZJQ1zxUlU3kmF5FaB605StqnHHoLJkCE1F0KOZiKnkzE+vSLeYyjJ2ioa8b3eN
-         pWLQ==
-X-Forwarded-Encrypted: i=1; AL+hErF72QcJ/n0tgmpIFrPWSt4MWRskNSQ3L/z6Pof0GTsSC1MBYfGapec6AX+o81MEAZ/WnuFHe3mjjw==@kvack.org
-X-Gm-Message-State: APuU4Z/TFoPI3WlhPXGgZ2TrhXurxGKKjoo6GAxWKNGq/+lphAtFMl+n
-	jmrYVDdW85w9EkHms7ntVpZ9v1yGSVF19kpqZ6PjYv3UTbisurTGvDc93eltBiEyQy9woIiwWP4
-	ptIXU1xkJkmnnzPQsPuRKmOJXwernPesWLDmUZOzg
-X-Gm-Gg: AZFdTZeg04KflBVCwSj0hqEl09F1pRoT7SegH9buDAR/1fEBOqu+dyhbJQi9RnT5gEh
-	taed+WvQe5lGJuRyk7Oq/EmJI9+FFHOyFt622tL2jGgscyu/W79kJmz9MPdKh3xAXDpK6w2iLXa
-	O3F/2MpeXbPxEQIvLmiNippAwUOYzIvVm+Mqvz1Shxn+ja9SDE/KcjiC1lAoHsekq8ThX5RTdYc
-	z05nldPIUUdx7u6lRgvhszA/veLzBN0UG0bF/B9a5Ok58+FKwSRBgtAj4VUeUh95nr/kEdDh3Ky
-	5SjvMW3zuGFcDpXaOrKfMwwEHNIeo4WMV4vwjZ97HEgYeOxSRQKLhSXcq8UJSVIlv7xHUM4lCZS
-	o4FVDMMqhfZNOvUYDJ7onRMrTnGDfSwirAkli3lRTc2vQmRvQ8BfDszmSb5Cu0uMjXa4=
-X-Received: by 2002:a05:600c:287:b0:4a1:e368:cbf7 with SMTP id
- 5b1f17b1804b1-4bb909d0619mr1867585e9.0.1795456253076; Mon, 23 Nov 2026
- 09:50:53 -0800 (PST)
+        bh=MG9wth+FgKJUhgMgr0LKB7NofqtOeeE2/Q/8//33IbE=;
+        b=BLI9UyKiUrBS1VjCWxhm+F0yDzO4pWhMD9RsE8Xr3TRRzAyMqKV93kHmFxIejRCfgW
+         dmTPysKEI5Hq+t7E7TUJNoWx6EyLOrU/uysAfeXNyWV3kNtR+gKNpsBdpqdIH5WqAVDk
+         BdqZJw5SBLAF/OYh1A9ufyypKzVgTenT0I02uMcLfUSdKW5QsFcrUvf8XoC/tmSvoa60
+         pugxfoge7Hnbr9SMNuW5P5BI3gtTXsYJa1UEgRSLa6ob9kmHta4NXAZalL/ViqVNLmu6
+         cPnO4/Lp3NpZ0ovgcj7Jl/9yJpIy/1AxQpIAxO2p97Oz831VoJofQ1cSv1MfVE77N/Ic
+         LHyw==
+X-Forwarded-Encrypted: i=1; AL+hErHGKQj4Cf/GjJNVtYhOBGTVZ9eYI9atcbxUpQ9P1argMCmgEdHDWTCGqIuhVtW/yTm+faVTQmGGkA==@kvack.org
+X-Gm-Message-State: APuU4Z+O/QshLkOpG23dF1viNwte9Cim9cixTNSy5Pfb9P00gbiqQUXi
+	SZgtj9u9/I2fM5i/0nqH+f8kMXb1bxlQw2dlp9Yvf4chMsuZQ1zl8V5WpePX+qY901yUKZsJOce
+	/a4dWKMknXX09A/bYrL8/gNMnOvbEP4Y=
+X-Gm-Gg: AZFdTZf3UKztVtL5qK+zyBJlJUSjhCihahUTSAkv2YFYDlX1xoQ6HYdCVz48CMyqIS6
+	9VYxQ3YtsAaQoNxfB3wDFYi64d/CVkxp/sxUzybbfPBPso4FERAcVt59Q2y3+RXPC9cPWTEvLSE
+	5XUyPeXCMzsuSgtKl+9sX3rZ+bLTSMLQUdTwVl3JGiJmj1i43E5qa0+eYp9xS69FUJLDglKiiPv
+	w4zJAulCVnFoT/rlxMP9i0H7yzJH7s28eODNuZnjLpURf6h2RZNX5eGoSGuG5exeGc3a091JUZz
+	85yvi/HsG1YNK6+m0DSIK810CemTVrC3nXcTcVIg5PNdxTJacn2CAD2j4qG3fiK4ODI1TlpCNUG
+	PNSUu+rsKNiruchfWVbQa0LVZLczsbOMwWF9i3YJmi60oD+YORLNFnfVgf+542p3gkhfAR7zthW
+	0tWVIUdORg3e6h1eP3jzkh9XvVt4CJ9YnPKcwPpcgi0A5GqWiBcgsL
+X-Received: by 2002:a05:651c:4217:b0:3a3:3170:5420 with SMTP id
+ 38308e7fff4ca-3ae7f8d44b2mr28562781fa.3.1795456331357; Mon, 23 Nov 2026
+ 09:52:11 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261109182533.3594984-1-lrizzo@google.com> <20261120010655.467825-1-lrizzo@google.com>
- <20261120135013.GO3115493@ziepe.ca> <CAMOZA0LmZ9PFzxLcc1SuS8piFyZu6P=vX_qR2jy-3QRUoNCUKA@mail.gmail.com>
- <1f10002ea9ee16a17087bd06e4a1685a973fdf6e.camel@linux.ibm.com>
-In-Reply-To: <1f10002ea9ee16a17087bd06e4a1685a973fdf6e.camel@linux.ibm.com>
-From: Naman Gulati <namangulati@google.com>
-Date: Mon, 23 Nov 2026 09:50:40 -0800
-X-Gm-Features: Aa3M54qK7IY8ZMBupflhQ8_7jK3YPX7yjpTGqvTp5f5henwr9osR6FHQsicVdiQ
-Message-ID: <CAMP57yVZx=s-JXHfQfd_ouv2jV6MMsJXpxVLkQQHG=7qfFVJfA@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 00/25] PISA: Pre-mapped IOVA Superpage Allocator
- for DMA and CoCo
-To: Niklas Schnelle <schnelle@linux.ibm.com>
-Cc: Luigi Rizzo <lrizzo@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Jens Axboe <axboe@kernel.dk>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Harry Yoo <harry@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
-	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jann Horn <jannh@google.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Simon Horman <horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Willem de Bruijn <willemb@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Joshua Washington <joshwash@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
-	Christoph Hellwig <hch@lst.de>, Dragos Tatulea <dtatulea@nvidia.com>, Pranjal Shrivastava <praan@google.com>, 
-	Mostafa Saleh <smostafa@google.com>, Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, driver-core@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-api@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261123-shmem-swap-write-failed-v1-1-41a0115dfbf1@columbia.edu>
+In-Reply-To: <20261123-shmem-swap-write-failed-v1-1-41a0115dfbf1@columbia.edu>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 23 Nov 2026 10:51:58 -0700
+X-Gm-Features: Aa3M54oC7mW_vSMsZDK130KwbXWLigQruCSyLpfj8hjGPNFnBuMpFbLJ5HWExyo
+Message-ID: <CAKEwX=NSxxQ7DB_CbFXNV9TZD8ddwLJry3Unab1OjnFPQwR6KA@mail.gmail.com>
+Subject: Re: [PATCH] mm/shmem: don't drop a folio whose swap write failed
+To: mt4022@columbia.edu
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Chris Mason <mason@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Tal Zussman <tz2294@columbia.edu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: j4yims5e6ancg5wd3dzqg5i1f5f16q58
+X-Rspamd-Queue-Id: 64E57180012
+X-Stat-Signature: qfyntsawt1nyz9ssnupu35au5zt37hm5
 X-Rspam-User:
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 24207A000E
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795456254-941241
-X-HE-Meta: U2FsdGVkX18lM2qzY5VCxtO74gIJyqNZOZDvdf5XNloEfIyEjhzcdoz+b+fYXYnh6xBD8em2xDp+XhUrHsYEHwFJ/1VXFMOUkNJXqnzBqCHlmbX95UqD7/QwbmEWuC6zmF75qHjatoH4EyapZzgItKougoANsuaaNfcKjWflvbWHfPdpKkN5foiApaUZTi8DfQZneRYCVX1438D2TxEFSTtocfznypOE/qENuutqWG5HELgyCnSvo9TQ82nBsJBHzCgjwUqE/ohkp7124cmANlAAF6NfppmIrmgLwDSezkMQaQvdv2eIHBtZyYuONacdZQwT3sPoC6H6xtUKIyG8qVgLaltqQUULRIMJkK0dvJe6Jq10ZMJ4hwgy5RSKawvCmTDN33E8zSrDOeUprcPngOJu+/2I8m+e9raBEMjrWD50dMw1Nd0Sc6icfCLE8w71spnYgBSriKVoeZGFZWG86+h4Ap3eM7axqGm9uB35eBEwuBMSnrardHD6IK9XMYCnTDlNKqjaL/eJi+EN+C9tXBmYSFceNYDvdPYcrsRw93bj/r8FiGQxuIFTQYzE9THi+Tl819Du3sAE8SNsE2AfiT0zFzWKc/MTZC/pD83bn+GsUbsTRJ6zv8TJXKcF8iYW5bh2FiDeyBr0PYGz4SV6r5IBsEta2yB6pk3zWg3MpTkTtlNToqPJoVbWsSvydpj+WASRbyzAt+MEPUozST6VUbvt+mxdvS0TtVKlWKumzOH8za/ifgIyCn7rUJC+xoy620EcjQh33p7A/pxVr6c3FzDQV+U5gnxvI36I8mnDPOLPHLYUD6alsvA5rgpOtf8Gz4e6QnktgzciRXBoZiNJU4/DvAy6VxSU//MLbVhAoLHDbViFWFVKMjMpTBxqMMZtFKq3oheicBbjiJenFBUE1uad+mF0ogz8x7YxZEpMzUk+kwVc3gKC7II4+2IMZg0ioySfKVRnrN2zNy3cqHH
- 50ZrcD5X
- /k0cT7t2kzMoZ3pPesUWsE48drzrZNxtPVqfujII3ZNrt54Bhvb6tnyCqPE7VTvDoyRPSf0OIs4vZsMF6DctrZZw3bFz3NGvId26CyPFzlu7uJo5IHoYv/XBr77+g7aqCI7pmV405qSDDRTOoRcIKo5l/DawOC/Zur3QuOSsuex6CEz5kDWqQT3Ue6SI3EUsTRzG1nsdBP+6Ila1gw7nVQEEwQzD3kbUPErgXPt92x5j4u14ySu8kl5P2pvaOpOTD9M4akOtznnstSZmwAsJrryW5bwl0CTQbK5qh9j1h0fI8zuz+deN1Yq7lyULswOzZhnUuGHbA/j84u3cSFKPQJ+q//dPnHle+42iagrFd3D3TXch1tON3d6BtuYEtEfXDB5f9JRknB+Yk/n/cac/zMq2DZi8FHsv74R+cjY57dbvyAS6Qw2q8IZRmyUexFZ1OPZxQZGlkqSBJ/zXVIYH4D8c4jKXYbWZ/Yw+EGEGKMBIb4GcLXnsrG2NfRtb8h8WSD9hAkAELd6yOkTl/fGEgwr3t42ZEghbqZ4i22PJiHC8cSomFW6kj3EFlMiOx3GaWgf1mWUv8HeGdWEN4SCk5YkI2wa2vu/Zv9+suZTIh/IhdPSHok5yZnNAQf1dHREtR5iWrpScy69VnwKBHy8dlm0thzDjjxpVm6g64
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795456333-310279
+X-HE-Meta: U2FsdGVkX1+xoV0ydly3sE2BtCpe4/P8hIhhsUGUBav0U/VdEr+W8Lgrqzb7RPVcXua+cK/xJa0LuWHO5vpdHg+FnngXZMnob7LZOzswcG73qCwCIx2SH1SRkFIP9IhEVdliOv5gXGHkmTciBrbyIO3I3/dg1KRFrPGdENYXmFXq1E8AvLc1Y6nTdEeGdlqjIktT/fdBOcDPWJRx+leBTPvR6U2RRSsSHC6Q8iu5TfGOH86Q/524fn5D7c/fhCHvxm5MCBD1G79KsBLeqzfUyR13cFA8Qz905wwtt2zAJeXt5/kdIGzj0JVpxwvLprsJ+UntwPB8oc2qeuHfkYKEwxi7tspXyIeuPfk8KtblCfPG+G9NwWJXpBkwSS7ZIylvb548NF7B+GLGT6akcHDJ6li1IoyfIAX4oBhmz2Z2pXLyelamPfGnKmHOLatduQ/EgExwTFxdCF6i08Lz8ApNy6KQ2M54iqzMuCQ63vTrPpi+6ZbPgIt2oXvu369Z5HORWKAN55IVQblpd5B+NF2mHdIu7e65cnnWwGLwmvBU1pIGXZtBlHmB6M8y0uRfBj+OYb+YaBuO5aD5U7Oj/fNaMKHl0Yyjq7Ule8tkQ45OXIzw6KrR/lf9hjzBfo3R0wBaWu8rfJVvUrqoxOGtMKdT/iUmccwDDioYTArpC4/CyfCq5ZQ7Gw7l02B5FC/ohuHImuolwWocTQ79muUTX7JLcJB8f5U+7DQHYQG2Y90LAtkIl99YbE3aVOnmJI/LzQbUbH7239sQTtbCQzgBH2ime7g86kpOlek5i0mv8FIJ14bzXju772P3UQjwXPgE5zYIKsEKnHZ9pjnT4eT4Fph+vTTkEuTW0WGRScVBBz9eEFlq2SlSXkVPataE0E/GcFgSbPJOqCi7okhuA/kk8LHebKpN495uD1So+F3XDdEU5FWr2IEEmAeF8fuCbv07kwyKqnJ4XJt6zqaN4rVD9E7
+ DLnfyI5f
+ 0VG2kYGJTfwfMYLpr7jWRmWv1F6wbr+hxLhDOTF2ldbEjb0XpWr3Hq8AC31o1dodG6UXoXq2g4oVxexKJ0GAvS0w4PQfbqvrSuUwHA9j6jzzrecHQT8JmPLVtdv8gVQTTd3pQtE3x4c7dnZ+F6wzWPNZ0bTbWbGfCBpIPMVZ5XUJZxgWNf67bZY8wQbXdcy2X4p4xCqfraWZKtcvl/G9VFu8CdAtaSknlNTTmj4PfBNfMHm9reOnreskg1PL/RizTb2yqx+d6pqhojtYID5UuxHXtJaFiWcdiliFWP5iIOjCqw2W+22O7pHfYznz+eBQ6MVs2VtXWKczuh47qm3Bnvib5VMf2dRIlQhf7ffIN0SONbNRZLWdeH/R61th1oWg1tD19BZnMikMDk6HP+CVfd4MZWU57LVf+hHrvk/X2aRMnXyzlRv0GaeQX7rEKdRchY2EsvzX10ZsE33dp5ODAGeRQ9zGG99NpTZlTong04egi9OGGOoM6QeXB+AgJX1zyaVIzUamX+0kHBkhqEOpWk33LC630BL7HfGV4CPXDWXnccz9RQLSwMqiyYwvnwgqtjjuIpNLGFmEdlCnbquT42Y81w4SY4e59Xyq7CInd2y/lxTVKkFyHIYDgfAIrfQaJD7QkWaiG8+rfGOSb98cTVcT2bBzV5dY+KX8r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,118 +149,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 2:10=E2=80=AFAM Niklas Schnelle <schnelle@linux.ibm=
-.com> wrote:
+On Mon, Nov 23, 2026 at 10:21=E2=80=AFAM Mani Tofigh via B4 Relay
+<devnull+mt4022.columbia.edu@kernel.org> wrote:
 >
-> On Fri, 2026-11-20 at 15:19 +0100, Luigi Rizzo wrote:
-> > On Fri, Nov 20, 2026 at 2:50=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> =
-wrote:
-> > >
-> > > On Fri, Nov 20, 2026 at 01:06:30AM +0000, Luigi Rizzo wrote:
-> > > > This is v3 of the RFC previously posted as DMA_PMD [0], now renamed=
- PISA
-> > > > ("Pre-mapped IOVA Superpage Allocator"). The text below follows
-> > > > Documentation/core-api/pisa.rst (patch 25/25), which has the detail=
-s.
-> > >
-> > > I thought the conclusion was to just do this stuff in netdev pagepool=
-,
-> > > now you come with an enormous AI series spread across the entire
-> > > kernel?
-> >
-> > There were surely comments claiming nothing outside net/ cares or needs=
- this.
-> >
-> > I respectfully disagree, witness is the fact that e.g. there was alread=
-y an
-> > io_uring proposal which is smaller, but does not address applications
-> > that want to use the standard disk I/O paths (libaio, buffer cache etc)
-> >
-> > Nothing has changed from the initial series in terms of size, use cases=
- or
-> > subsystems involved. Large files are placed where they should,
-> > the series covers the same three use cases (disk, network, CoCo), and
-> > touches three parts which it has to touch: mm (most of it; it is a
-> > memory allocator
-> > extension after all), dma (it hooks into map and unmap, not a large cha=
-nge)
-> > and net (the pagepool change is a couple of lines; the tx path needs to
-> > touch more places because the current stack assumes all paths have
-> > the same I/O requirements).
-> >
-> > For CoCo, there are very fine grained controls so the bounce buffers
-> > can be enabled only when they don't pose a risk, which in turn
-> > depends on the threat model.
-> >
-> > Specifically, for network tx buffers or disk writes, the user-to-kernel=
- copy
-> > is basically a bounce buffer provided it is used correctly and not leak=
-ed
-> > elsewhere (which is the design; of course the implementation
-> > needs to be verified and possibly fixed so that it matches the design).
-> >
-> > cheers
-> > luigi
+> From: Mani Tofigh <mt4022@columbia.edu>
 >
-> Hi Luigi, Hi Jason,
+> shmem_swapin_folio() drops a large folio that does not fit the mapping
+> from the swap cache if the folio is neither dirty nor under writeback.
+> The folio can belong to another file and be under swap writeback, when
+> the swap entry was freed and reused before the swap cache lookup.
 >
-> I've been lurking but following this series since the start. I am torn.
-> On s390 where the IOMMU is always enabled on our closest equivalent to
-> bare metal (non paging LPAR hypervisor), and where we also default to
-> an emulated IOMMU in KVM guests, the underlying problem is a real pain.
-> We're also in the process of enabling large IOMMU mappings via the
-> generic_pt API which are 1M and 2G on s390. So, the idea of making
-> better use of larger mappings is very attractive to us and I applaud
-> you for trying to tackle this very real issue.
+> Swap write completion does not take the folio lock.  On a failed write,
+> swap_write_end() marks the folio dirty and then ends writeback.  Since
+> dirty is tested first, the folio can look clean and written:
 >
-> That said I do have to agree with the critique. This series is too
-> invasive, too unclear in its layering, and most importantly it feels
-> like you're trying to do everything in a big swoop ignoring advice from
-> the maintainers just because it would limit the scope of a first step.
+>   CPU0 (swapin of file Y)             CPU1 (swapout of file X)
+>   -----------------------             ------------------------
+>   shmem_swapin_folio()
+>     folio_test_dirty() =3D=3D false
+>                                       swap_write_end(), failed write
+>                                         folio_mark_dirty()
+>                                         folio_end_writeback()
+>     folio_test_writeback() =3D=3D false
+>     swap_cache_del_folio()
+>     /* X's data is lost */
 >
-> I also don't think Jason's point is that nothing outside net/ cares, I
-> think, it's rather that the IOMMU and DMA layers already offer the
-> tools and each subsystem needs to use the right combination for its
-> specific requirements. And if a tool is missing this needs to be stated
-> very precisely including how the addition keeps layering intact.
+> The next swapin of X reads the slot whose write failed.
 >
-> I don't claim to have a simple solution to offer, if I did I would have
-> sent patches already, but let me state my thoughts. First I think this
-> really needs an iterative approach with much smaller self contained
-> steps and focus on specific issues. With that, I think this should
-> focus on the network stack, while the io_uring specific proposal can go
-> after the block layer. Also in my experience networking is where this
-> hurts most.
+> Test writeback first.  Both flags are in folio->flags.  If the
+> writeback test sees the write ended, the dirty test then sees the dirty
+> bit set before it.
 >
-> Now, I wonder if we can't start with something simple. What if the page
-> pool could start by allocating in batches of PMD sized and aligned
-> folios of contiguous pages that can share a single large IOMMU
-> translation. The page pool can then still hand out pages from that
-> batch without having to do sub-page allocation but would already use
-> much fewer IOTLB entries and the locality might even help non IOMMU
-> workloads. So, I'd even hope this could be enabled by default and this
-> is actually something I don't like about this series, I really don't
-> like having a tunable when we know that larger IOMMU mappings are
-> strictly better when you have an IOMMU that supports them.
+> With the fix, a folio whose swap write failed stays in the swap cache.
 >
-> I think that approach would also align with Jason's idea to keep things
-> within the network stack and to work with the tools we have until their
-> limits become very clear.
+> Fixes: fc2c19648d68 ("mm/shmem: fix swapin livelock on a mismatched large=
+ swap cache folio")
+> Suggested-by: Chris Mason <mason@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
 
-Hi Niklas,
+Good catch.
 
-I have been working on this idea exactly - extending the network
-page-pool with a memory provider that allocates large pages, splitting
-them into N smaller pages that all share a single IOMMU entry. I
-breifly shared my approach in the v1 PMD series [1]. I'm readying a
-short RFC to share shortly, would appreciate your feedback.
-
-
-[1] https://lore.kernel.org/netdev/CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+=
-BJRVYf3JB1g@mail.gmail.com/
-
->
-> Thanks,
-> Niklas
-> > >
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
