@@ -1,92 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8192C606A69E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA201606A33C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kLhMJccR
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XClddXr3
 Received: by kanga.kvack.org (Postfix)
-	id 9E6506B05B0; Mon, 23 Nov 2026 14:01:02 -0500 (EST)
+	id 1F7426B05B1; Mon, 23 Nov 2026 14:01:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9970B6B05B1; Mon, 23 Nov 2026 14:01:02 -0500 (EST)
+	id 1CF086B05B4; Mon, 23 Nov 2026 14:01:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85F5F6B05B4; Mon, 23 Nov 2026 14:01:02 -0500 (EST)
+	id 097A86B05D5; Mon, 23 Nov 2026 14:01:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FDBD6B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:01:02 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D0CE812098C
+	by kanga.kvack.org (Postfix) with ESMTP id D643A6B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:01:03 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 61272120988
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:01:03 +0000 (UTC)
+X-FDA: 85467301206.12.3C2613E
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2E1821C0008
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:01:01 +0000 (UTC)
-X-FDA: 85467301122.05.DECAD48
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EBA9720011
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:00:59 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=kLhMJccR;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=XClddXr3;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of 3ao0EawgKCPUajXqiXZhdlldib.Zljifkru-jjhsXZh.lod@flex--dmatlack.bounces.google.com designates 209.85.210.72 as permitted sender) smtp.mailfrom=3ao0EawgKCPUajXqiXZhdlldib.Zljifkru-jjhsXZh.lod@flex--dmatlack.bounces.google.com
+	spf=pass (imf21.hostedemail.com: domain of 3a40EawgKCPYbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3a40EawgKCPYbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795460460;
-	b=xBhFwY+wfpH41wn0d4nf9kl3T8H6J3QaRgb1byB0em8p/ODiXTSZ9G7CnaBTvSJc3+Y/tc
-	QLfIExPEpiF/DQvSiSYuCngeHSlxhFS5fw4L/Ac9ZuyZUDLxxXzhv3RY2oUvH9W9HEev8a
-	EwT4YJYCBk9O3bg1nTtS2BZ6ahpuu6M=
+	t=1795460461;
+	b=lsuv/rntM5EQ4t0Y9jS5JH5cV8ZM/D/YlMM3xxyUbrlV83nbiSOO5d4u/1zRBzDa/4DAd/
+	qzoo9Oxtm1rHQBio2kv7rGbJBNf9viACx/AopXCEUEqbIsP5cK1D9xL573ICodJe945Xh7
+	RnzHDbwnVerfhssSDvfhSzrQhVpjWes=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795460460;
+	s=arc-20220608; t=1795460461;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l4CNQ2xoCIzIiOKM0YDrq2t5ezZfH9cmVn2diC4Zwwo=;
-	b=XFBG+8G0Gqf6DcjzowtPvF1CTH2iFiNrqDhhssgUChNnphwWuZlJ+0gYxRCxV7rb/AQcOV
-	Pcg1qRoNDZUWg26tYuDHM4P7Yn4WVmWan/Havy0QDWPykUivW267dyVFuF2ylNNzhQybrd
-	Wlxu+NLCvqFyQLbqYcLeJoBSgTOcWBs=
+	bh=/qPu3il+pjsqwuiugOKKp5YPgP+PXsAspKhyyUg3SNA=;
+	b=NBDOVSmJn+zhGy49r+lG0fF400gfS2q/MxuoMzmF6IYwj9CrDk9E0nM5PGChCzDMPuShyK
+	Nyij76T/6qEJciT6UXzqB1seFgWmL2fb1WIZcJkMv3bh6eivqOHRMzjjGzFhWwlKPzHXOM
+	VUE/t3hyg2u9wWkCkaKcHTlnvyze6fM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=kLhMJccR;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=XClddXr3;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of 3ao0EawgKCPUajXqiXZhdlldib.Zljifkru-jjhsXZh.lod@flex--dmatlack.bounces.google.com designates 209.85.210.72 as permitted sender) smtp.mailfrom=3ao0EawgKCPUajXqiXZhdlldib.Zljifkru-jjhsXZh.lod@flex--dmatlack.bounces.google.com
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-86320da67fdso3914844a34.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:00:59 -0800 (PST)
+	spf=pass (imf21.hostedemail.com: domain of 3a40EawgKCPYbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3a40EawgKCPYbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-57489477aabso4090460b6e.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:01:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795460459; x=1796065259; darn=kvack.org;
+        d=google.com; s=20260707; t=1795460460; x=1796065260; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=l4CNQ2xoCIzIiOKM0YDrq2t5ezZfH9cmVn2diC4Zwwo=;
-        b=kLhMJccRUqCorqvv8wNDhlZYpl6KZSioEJ2hErnsLIcTcrUYvSINdLMYL20af7oIUU
-         gUbGz6jA7TWys1wT8M2Mbdce8lITMdSx9djBNEhE2DqW2jj/Gpy1qGt7uFyeNrlkMshO
-         W1BtQvumj54WBQc7kLdG/LzZDOPqlFv7fJcN2F+Xn9+F6G1didXcCINCUmNR05SiGqHD
-         w1cqslJMM/yJlwcg2yApfulu73dzXHNSDLQqBEi2QnbZOl9j81pibNNCy9OgPi6C3xMi
-         SyAutgfa5V8z8gtfn/c8VqcR3zG9XNpIUzvS3q5WhZI4XIlFvEkc5OsWvDb+x88A+8+S
-         5WWQ==
+        bh=/qPu3il+pjsqwuiugOKKp5YPgP+PXsAspKhyyUg3SNA=;
+        b=XClddXr3qHc9WBkGPS7EjOO0MztkF6CxKrVZxP1ot/1jS+xtE4wcbjUeOHSU4YstXH
+         m0KZUz2r3tdaXOKAliqmbcxGyeSIugkY157gKUbTN20y8HwNoPY92dKeFNbjada94x2d
+         dtr8wAiyzU9dqhBhzr2VUcwMo5JWkxyUJCXFfe/qppzMxouEZiew8AH1UdwBvHaXeDul
+         qpddmnYfEmWBSFSxf+8uOqdVQlZlDqBOVDjh9NHNM8wwwc/57KXOLlesFVw1UAlz+t/g
+         D3t0tWpEiyrqNmtaxmoZ1vyE0dLwGp5Fx/75i5SLL+IBnCup2dnmMApsxtMn4tu9paWS
+         wW0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795460459; x=1796065259;
+        d=1e100.net; s=20260707; t=1795460460; x=1796065260;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=l4CNQ2xoCIzIiOKM0YDrq2t5ezZfH9cmVn2diC4Zwwo=;
-        b=AYVvcP8daNJKiVv94UZl+AXDwV4EGTqBsSs+wtE0RpgFteOlXDX5JSdC6be55+2xu/
-         a/sGIETRGJvGfpGo0dxusO5HQUQXlgg8QnT3mlg7Iya3glF9BGT7M8X0Hvo3JXl5F7yE
-         GUTvubhuSgkRspYzJuf7BQ/Ny3By2cBfF7ijQzz6sOd9gGqZ1BqNIKaNdhvq+PYjxHkS
-         g9ADewY8SllehkG6uLH9jYJfHJJwpm/HTdBEdlefYBCIi4mHcJ8TXROXKTG4B7HiST3h
-         c7+ss/vHOiaOmJUi0LOETv1an/u+oyUmAKaPHFCV5dfIpI3cV08NWIwZRx/G8DXZZVON
-         mJfg==
-X-Forwarded-Encrypted: i=1; AL+hErH/LQcgeWkXjIrWSRZXb40P9Xs4L1I4KBRcl4pWpncbUbMBagWycNWD4Bhaj1AHIn7RXoiz88ZcAA==@kvack.org
-X-Gm-Message-State: APuU4Z93T8K/GuBQHlvDEdBQ6pHhVyPZQ7davHav5BfQWlIrkeFkZBcu
-	xg8bQyO9CEwx6zOb5Aj8x0NdyUH3o909qy96mxhFWJvz1a18N560QouoGdI6mRMAl1YGHXgwjAq
-	WCmxROBb2ot9YjQ==
-X-Received: from ilbcb19.prod.google.com ([2002:a05:6e02:3193:b0:54f:8d15:4dbc])
+        bh=/qPu3il+pjsqwuiugOKKp5YPgP+PXsAspKhyyUg3SNA=;
+        b=rHVEWP3Qx+lcgm14STzvQwJHu474qdMTwW8E2DCsqfcdplOsoQjXuaOg9OYIHYvOHY
+         LEoDWxH9HhiFlZTLGaOLkEVq8O+TWfVXbPA5TG4y6v1lu2GMIiOXTteLNto6bT4hD+rQ
+         imEDNzXjfUiOioyccZPU4lii/nIgPPJ6RTm7VYUhKp6Vccv/PPatdPdVmL3AX98SXQtZ
+         kCWAYADDsId0h+qTuIJndQpEQCS8PyvjQkr+Rsq2glbSl+TPbGzBAtTXxp4K6UFZdMfi
+         Txa3msW3tcLrDILpPl/Yfanooqi2uNwo9It98dmiRHQkuYpwItkE/Jv6wwQkktnr4gyu
+         cRbA==
+X-Forwarded-Encrypted: i=1; AL+hErGvu4ITvFQKbfb4MtpnSfDDsLcFLNIH2kImk8SooYi0Qi2dslJ5veFXHCcw44s9pzhDM2k2vIPRdw==@kvack.org
+X-Gm-Message-State: APuU4Z9LObx7nJM/nRxBO/UnOc7s3EAXNmL/YAIeATvEIdqSLyro8f+s
+	NtjrJdAQQUjwKYBeOjHmwortmF7iChjN+QINGyzPw+ujzptKDUo95UyNbzUgPpxhrlbFSFEbqWB
+	HBK9timoinb0SUg==
+X-Received: from jakj15.prod.google.com ([2002:a05:6638:148f:b0:61c:e96b:9d4d])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:3084:b0:55c:844:98ff with SMTP id 5614622812f47-57a0a93940fmr14754171b6e.34.1795460458168;
- Mon, 23 Nov 2026 11:00:58 -0800 (PST)
-Date: Mon, 23 Nov 2026 19:00:42 +0000
-In-Reply-To: <20261118223704.3286085-4-dmatlack@google.com>
+ 2002:a05:6808:22a2:b0:572:d0fb:ae61 with SMTP id 5614622812f47-57a0a20e564mr12818304b6e.49.1795460459403;
+ Mon, 23 Nov 2026 11:00:59 -0800 (PST)
+Date: Mon, 23 Nov 2026 19:00:43 +0000
+In-Reply-To: <20261118223704.3286085-10-dmatlack@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-References: <20261118223704.3286085-4-dmatlack@google.com>
+References: <20261118223704.3286085-10-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261123190045.2166865-1-dmatlack@google.com>
-Subject: [PATCH] fixup! PCI: liveupdate: Track incoming preserved PCI devices
+Message-ID: <20261123190045.2166865-2-dmatlack@google.com>
+Subject: [PATCH] amend! PCI: liveupdate: Adopt ACS controls in incoming
+ preserved devices
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
@@ -103,19 +104,19 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alex Williamson <alex.willia
 	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
 	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: trfjre9ijodh3entr5kk5tegx6txe97h
+X-Rspamd-Server: rspam10
 X-Rspam-User:
+X-Rspamd-Queue-Id: 2E1821C0008
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: EBA9720011
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795460459-891005
-X-HE-Meta: U2FsdGVkX19NeIsATYyrjmzQGT8/bp7zjwq2btaUWdyIJdfEImW1fQ/74N9ZKR6fAODIy2sVQW8QaSg/Jp3ItOxJdLKVJxplAJR+tL62G3iNPNMZkIF7WxkB2t7E/T+7RCozuXNiHEZ2aALboqe/474xexpnIsoFQVZSAq4eMEIfcmpDhvLXwGKiePWWOaApHFWSysiMR+DnBF+Qo9AK0r/7ANkvNiKPeXF5ody+fpXsOvp+ZRRZiIL7GMbdXiURgP41eFCuZohYKPzR8j1SAjP+V6PF990fDxkz/FjHe2g1YxtgCJXSsbs3nJgXUQpoof8zoQSAnNQU1Bux3tZvXXUqdYh0IiDZyK2oMiFjU+2k4HI5lo3+UmhqXQ04ozWEThpfcWxvd6h1G83pBicO//DGZ+HnncEHsfRqILtjtQDFUAvEtUFk/S6x3JbPZOoohFg+UfsW49lnfx8cxaJUOt9kqBBVS0IGiYCcobXyK3k2uzlwy0sjd6w3cKUwoRaMRRnNR/OmHWcdsHk1EEy3xpuDSPnR8gI81qqeHn8R7ryj6jVOfxTkYJnOhnTyQLiar67IA0Djzzc4I9+dIsrBhJMuaWZNdNzbltGNf81sysJSmbruxRFHOZrhFeK9ShkIBhEqbhwDZE8optmgSz8oo2Pv8EGO5sUWOSGcZUrZmbsXZ20LnEIff8BUjKlZL87sF4ghSBAZZg8Yr3LlSK+wTCefThZ5vui0eRUbSZR9EOXiaYbS8A8WO8/cfBkFQU08bB01tHUhJCylL95QvrfxJqZV4xeUjT6Ecn/CHf7rQseHJVWQJtsuBs2j3HZa0Xet46aU4BXdlFOobzYv3yEIH54SbE4vdwT67zwCu2/opYODvSIKLj0ofqu0x6e3vLN3reIU+bEeVuZkxWyyFN2zHnGQYKMl7aLV660LtnsNLaaaAY9k5uXdv/yv8ROEBmexZ77mGrDcTH1lVYAC2OG
- Vct2+/FE
- E0jjNsjtIRTALQqVD1zlgvZu8Ab1/L8st9AjeBluH8MseI6Exq3hW+SfcppCDb1R//+EzGbEUaVAcM3aImcdWykDmA6hQ+Ng/5/FLCEijs7KtglcEHk8nJcA+GV7elwDqtJFJmKjweGgg2GyPNvXEhAJ81RgU7t0rLUJkbl3JHPi1GTppEGDwhNgKazUNK67MYOH6u7ae/8fJq2IMtUm4T4XoQBc7pbwcLfWUanToubSB+rnVT3F+s5ZO3T9u5RXAGAaef65VV2kJEep6KjHLRLZNV/PnO/2Piiv00Cpl5vLoGfiD1YinnVw3/0bhCNkmQRqIFwMiltj0AlBMsArNuI+5dt/sZGAUe+NjI8nDO8QGh+NsTjFe1Mi7frNOtr6DhZKxQZx8W21F+gnUWF1+OmUYZCEfHK79wexbY1+UCqQaQjm8P/Zl2R6L3Gr5D1bqSju43ql9H8FOncRu7ahTMfe2N+IRszcnygxH0XCFv4Y4NUMTm4qA2RLztxrsi80LcDhgT9CPudRtyEqVXM1BLsSL7VoSAnrB05P7l9I4/ReWCavAWTGyDKPFb8w+FbBqdQwj3jijnlvgFwsq3QCL0DlO8rAx8Fq3DmxkWlMXlgpe1WKFIoEalAEBDOsms8UTJ/6NebTCvAvh7497qWU38dmm2sWEqAk+8gHnZ+KIn4IBXlYDk/1+KDV3VMp/tIC/p30JRY+by0N/2XdcJ1bNr+/r0XkFx6FzCdVI5WkEx8A1WpRXIieUCRWOcUbVMNbbPilyDTFgux3uhBhWKK77ZlRJLjWpx9dNLVCoSpJgYJ7Akbllh/7mbT7An0oPR24up29L
+X-Stat-Signature: d73na5iiyrurxgwo63qqcq5tduimrmxz
+X-HE-Tag: 1795460461-261654
+X-HE-Meta: U2FsdGVkX1/XcddopEYNU29+pTqBpJqXjF0skxyDqAPKr24H1TwJeWgVF5sL6Sa9+Y5fg5hoh55bxRKje0frXXN2kNhk5nyQHk4r0/hOF2XwyjXdNaGaMhwyOFp16cipJQlgLQlXzi7FAq9e7+ONtWsPxiAHrIKidCHdYqfQAuaqcA5cKTB48+LkZWCrAPSmXNy2iQ/icRpf9HVSS84dM7oF1NXlqWvImAAT8yPfg9SUV121jI1kK2tRIk6VQSxqgW74BjwKGcgCtdG6DghHlZ15jefDdPV2L1yNMo7EMNo+POgdczOSFzYDcBYdjhMUDKJc+oUzMvUVnocAGpQDhO9eA6ZHq4gYWtcDkvknHfAnAxPV0dKwZS43TeF8sjvqc5LjWS8rdPb57KhTiNKQKL1BN9DDNyesdYDwPi0K8j4jhix3tDVpKUIHLn8jw30Ir6sik3Aoq1/E88WiGGrt4vzzVRMqj9C8RymmKETbuEfuZsH9OQvMNFr/lNnsXf1pmKQaHgYotcE+fcYdDjPxXksgQ1UTUKiPkAv4VEafHp1LXNhGgH6sdm+hVWRcbNl7k3vuszi88SgAJGyxG08UtMLNoeRXJ+aZQD0IoqFaBYs8QWobuha41ONKawS7WWx2AAGtuPo3twqz7VOY+qixYcOkM6Xvtf2/WheVv1QNtY2lFYxbEWR5MJrXYq/5NxHvz3sV75g3lKnIJA0zM92+D8gmEe/1j1nr6JOiXDbigo2k9aKr8jyOx8oAXz1fS5LZHd53QMbFnlsG5bl2YOuj/I1PLIB9x2EtdjSt9lZsXZDURXd6BkhEaaVbWKUDf2c2qn+uOEoIAPtoxrydcA6Vd8Y7nmSeIszoWcuUHexsXXVx41/Fy1M9rjEpBAAObvOX0Ym7nIszNfMnsSskCeCruksjFRSvN3wRvHk7jcc38+QW2wEIW/EijEsAN3Bbw7JdTPPOBV/1cXxz4RQ1Op7
+ atzgqwCY
+ Jk4Ex3FDAksBWa9POeutJszToPhqwRFlKKlh4nGs4lykvgkoNgB9Dd9yIdq127lf+5qwzbY6mWi+bgpGk17rTKS8g3zhKKt40x650Hj3tbdSV7fhbk9SuvvwxJ09Vbw40+4SZycHd/VtGuwrk0Leg1QMJHxt0tf4BQHbqUcrS+gg1Gj2A+S4quv8YKK+AgpVaVaoINRfCrfSED72f8uDzFeb+eDH6h4+JrpaTMWB0PB5L7GvEvN8vAWdSUrjbWVcPbJRELDocG6dOfwe9+FgBderMl8q6kBefLpT23H51zeX4FI+9b94tHiDrQDQTt2B44mqMjU0XKJXYV6ouzn6kiOqDuqPkIwhCEXYJeYdfHRKPKFr9WZNGm3Wezhf4CgalJFfscVQn8JBCLlXnhQNnEhvt6ZYEs8CNIU3YQZ/tXErO5rYotrLcos3IPlMhZnBYzA3YAsJMr+jRK9VBhl5dVk4kV1dI9tBrtZZVmiHDlZ6FQyVXe2Y2KFooStM3QDTOBu3uX+oYtrzRhQZ5flJbnHaqjkRxnUxgkVB6tYGElX7+1Z1KX8oU9j/YLKsUuYCc4pvQegNhrLDYs3uHR+q69ZT7nWTWrgu93VjmElLBRir8ihY/CGVUp0b1pg72r1Aa1B71GK6FNVw8r+cQ0jFCKZx8PbTocFCmKCl1bbFjSTudnSU55CTBY7eBANbXw4eFK5PhdpYzdiWYZX2bWlWXqmR4j0r4gADRbmKVsesWMluM5G1KO9MH7c3muE9rsE6JhVbJp3NAc0fSTsR+TNy1JHO6NLvx1Nd2Zi2obKi3evg50kK8hP0qfilQDek3+S/qNawNR0hxFMeUro4BpsRcZLus8KPnY249co2QCks5QLQzecFM05FoPh7b+h/Jvz1M9LdnU9eUKp2COCRmzEiQt30SrcRffXhI3SYUtG0SriAkdsao/OlwMx1POh2/HlI1CddbCRtD9vK0JCY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,33 +125,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-pci_flb_finish() logged args->data, but LUO does not pass args->data to
-the FLB .finish() callback, so it always logged 0x0. Log the physical
-address of the incoming struct pci_ser instead.
+PCI: liveupdate: Adopt ACS controls in incoming preserved devices
 
-Reported by Sashiko.
+Adopt Access Control Services (ACS) controls on all incoming preserved
+devices (endpoints and upstream bridges) during a Live Update.
+
+Adopting ACS controls avoids changing routing rules while memory
+transactions are in flight from preserved devices. It also keeps IOMMU
+groups from changing during or after Live Update.
+
+The adopted controls are recorded by the pci_save_state() call in
+pci_bus_add_device(), which runs before drivers bind, so they are
+reapplied by pci_restore_state() if the device is reset. Panic if an
+incoming preserved device has no ACS save buffer, since the adopted
+controls would be silently lost by the first reset.
+
+To simplify ACS adoption, reject preserving any devices that require
+quirks to enable ACS as those quirks would also have to take Live Update
+into account. If such a quirk matches an incoming preserved device
+anyway, e.g. because it was added in the new kernel, log a warning and
+adopt the device's ACS controls regardless, rather than reprogram a
+device in the path of a preserved device's memory transactions. The
+previous kernel did not apply such a quirk, so it programmed the
+standard ACS Control register. Allocate the ACS save buffer for these
+devices too, so that the adopted controls are kept across resets.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Alex Williamson <alex.williamson@nvidia.com>
+Link: https://patch.msgid.link/20261118223704.3286085-10-dmatlack@google.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/pci/liveupdate.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index 493576119a76..520c7530475c 100644
---- a/drivers/pci/liveupdate.c
-+++ b/drivers/pci/liveupdate.c
-@@ -409,7 +409,8 @@ static void pci_flb_finish(struct liveupdate_flb_op_args *args)
- {
- 	struct pci_flb_incoming *incoming = args->obj;
- 
--	pr_debug("Finished struct pci_ser (0x%llx)\n", args->data);
-+	pr_debug("Finished struct pci_ser (0x%llx)\n",
-+		 (u64)virt_to_phys(incoming->ser));
- 	pci_check_all_devices_released(incoming->ser, &incoming->block_set);
- 
- 	xa_destroy(&incoming->xa);
+Notes:
+    This amend! also replaces the commit message when squashed with
+    git rebase --autosquash: it explains the ACS quirk save buffer case
+    (Pranjal) and collects the Reviewed-by tags from Pranjal and Alex. The
+    message already includes your Link: and Signed-off-by: trailers from
+    lu-pci-preservation.
+
+ drivers/pci/pci.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index b5b578355a1b..f3d58b5e7a5d 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1073,10 +1073,14 @@ static void pci_allocate_acs_save_buffer(struct pci_dev *dev)
+ 	/*
+ 	 * Devices that rely on device-specific quirks to enable an ACS
+ 	 * equivalent keep that configuration outside of the ACS Control
+-	 * register, so they are configured from scratch on restore. The
+-	 * exception is devices preserved across a Live Update, which always
+-	 * adopt the ACS controls established by the previous kernel and need
+-	 * the buffer to keep them across resets.
++	 * register, so they are configured from scratch on restore.
++	 *
++	 * The exception is devices preserved across a Live Update. The
++	 * previous kernel refuses to preserve devices that need such a quirk,
++	 * so a quirk can only match here if the previous kernel did not apply
++	 * it (e.g. the quirk is new in this kernel). The previous kernel then
++	 * programmed the standard ACS Control register, so save it to keep
++	 * the adopted controls across resets.
+ 	 */
+ 	if (pci_need_dev_specific_enable_acs(dev) &&
+ 	    !pci_liveupdate_was_incoming(dev))
 
 base-commit: fd54e32f7903199e8acb2762dd2debfffe4501c4
+prerequisite-patch-id: ac616bdf67b652da754c7b00a368613d345ae384
 -- 
 2.56.1.809.ga0b61035b5-goog
 
