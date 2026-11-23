@@ -1,122 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13EF606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF71606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=juETeZkL
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JIM0+eRo
 Received: by kanga.kvack.org (Postfix)
-	id 08DA06B05B2; Mon, 23 Nov 2026 06:53:44 -0500 (EST)
+	id 8F3896B05B4; Mon, 23 Nov 2026 06:53:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03EFC6B05C0; Mon, 23 Nov 2026 06:53:44 -0500 (EST)
+	id 8C9F86B05B5; Mon, 23 Nov 2026 06:53:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E47D56B05C1; Mon, 23 Nov 2026 06:53:43 -0500 (EST)
+	id 806B26B05C0; Mon, 23 Nov 2026 06:53:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C471C6B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:53:43 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5714CA8505
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:53:43 +0000 (UTC)
-X-FDA: 85466224326.13.CAE72AB
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 81B7AC0005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:53:41 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 57A466B05B4
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:53:59 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9ACE120860
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:53:58 +0000 (UTC)
+X-FDA: 85466224956.06.40914A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3D70FC0004
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:53:57 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=juETeZkL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of dingf3ng@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=dingf3ng@gmail.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JIM0+eRo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795434821;
-	b=U/ilItztxmGvFX8ovER9zDPLy66j50LaXJbzlRqCoX/tDZSaWBNjQchfHZfrG1/0H/69x+
-	sm0eQMRIIS3bTBVXOw+aU6PUuOp2wnbUonG6Pgi6MyOdcOEQeBuTRsRlN4YrXsAhrFYTRM
-	vFazgYA3KSw2TXnHRCNMBR/dZGihuoU=
+	t=1795434837;
+	b=Rk3XOb2atJlGBDdoiGihLK6g+63rSdLphzOGYm28T+VMS6KG8TFLzvsIhFMXjKrmYSo95V
+	hmF3fM7dqnbNQOrgrkz7Nhb7dYjkSrvMZiYSZy6o1mQ9bxo5XIsmeyuURVhaYtGF2i0gx9
+	AWoPCJVbiG9ZFPYejnlsxMIpJQhZZC8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795434821;
+	s=arc-20220608; t=1795434837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P4SOrJVAyBEuX0Eflnl6S7Zqf9uLbdiqpI9zpNTKq70=;
-	b=qpMBnLAyLxbw6rshJaI15dYuej66cPxfDo7vYd6bJ3q8h8nGbjZRTRPaLs2Gcta7LIMzew
-	Ov2YWovFh3dWywjG+PTQKgbgDEc/aK5W4yPo6UiRBSOXWJarz9grzfPBGsj1zaFgntulWq
-	7LHkfxwtQ/DzZnqjLjxBvc2NpBGJEmc=
+	bh=rtnqsqXHQKuDC8iW2zmEn4j43knd0EsHyQCpFt+z1m4=;
+	b=my6USsChrXfN27q3qioywLEIog+CyLJCeZIwOxinx5WOpnGHoeZqRr6NCsLCN4SkDTuwqt
+	G5aTRWuJHy3n9cOr7ipuRvGhS9Fbo0RgJrzRGhvO1fekZjbgE+qEZbHriX6CDAKMHWjt7O
+	gmFF5sM7xqDTdEr3jO5ssYYobi4MtpE=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=juETeZkL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of dingf3ng@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=dingf3ng@gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1b3ada81853so3556075c88.0
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:53:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795434820; x=1796039620; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=P4SOrJVAyBEuX0Eflnl6S7Zqf9uLbdiqpI9zpNTKq70=;
-        b=juETeZkL9vH8NyEeTMrXT8F/XY7uy1QaKG9VWs2gZ8mqovyc1Yj8qUni0Dn7y6wIDN
-         h8sNFYZxLMCOPsry4Pae5O9k13TaQQ89O96U7HEFuSGdluj46vQO/MZxzIexzW1rvAa/
-         PA87XFFQBRyoddLhS7VA8xXbOTn81XfZstGEgHsBEGVkCg+1NcCqfyAEPm/BTOwd5l1A
-         m+tDxjSnrueJ4iax6d0iIxyGb1YDxwEctzJ8yNrz9KwQWkudURWQH29MEihXAH577Gv4
-         QybKiNqRyU27NrnidkkuM+qr41fzlMP9NJ5WbKfCQsGpV6mxsczNRXrH3syNgu7ek/rh
-         yvsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795434820; x=1796039620;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P4SOrJVAyBEuX0Eflnl6S7Zqf9uLbdiqpI9zpNTKq70=;
-        b=JxhsXs2C6B1wLvieQxJcwprdmhne+uIcxcKyRvBj1fJV7SEOG23yyzhOLjcLWqfAOh
-         lR17hcGfMUP3SP/9FPciteB6MGECSFlsFmzzr+gO+BO291czWmfRU1QQq9EUX/MUzVGI
-         y71K/Ly3j26s0uNRTX1in15ZJ87HBaxxI3GLC53HtXWzJvW1jT+T6+rAIuw2HtH6L1Ga
-         8nhmnZLdmgdATVHzYiwyRE496N9ShUYMzjb861zGLx1WaEi1zYIzuPEId1mMiGvwRCW/
-         tu+5SGe4Wu7vJLodDdUOh3pawUwgVxoSw/BwUR4FJDo5bace0nPaHtz25YbHcKKMKw5J
-         Pqjg==
-X-Forwarded-Encrypted: i=1; AL+hErHDOIK1Sa1UvjJAUkmfr1Qx8XgsvN0A53oXr2475KBbdqEXtLdAQaIf7mop1XYhqTZ/mRm09y2Ukg==@kvack.org
-X-Gm-Message-State: APuU4Z8z5R1KCjDrzJ/MQAjd8yv7IzCj7r83URbtmOepbRYSTpf9Gai1
-	AmDAyfeH26ROnaMnxcO9AN3DHlS5yxgMz5AF+vBOtIYb88PPduiD9yFJ
-X-Gm-Gg: AZFdTZdNjYpMcLKP0aBMaa9U9g35JK/LZoN+afLejPqc5juzf7Id+rfShMkrJUY6T2c
-	OcgSZUT+bg2iLOWQHUIhq2iL2SWHUlHc7uU6nNY5qkFTYkO0eKRL09MvhS2e/2oTk7+AnSo+VWJ
-	nf4ZGyEKXHzOmWts413i77F/yYjEgSEEu6Sb2P9eO9btN1XgJcUwRuFZRal++3Avr5FQIBSLIm6
-	Dh52HHAg6crfBO/gIZTZB1GJil4LwVIw1G9j6CLdgnkbX8g0HL3S63IlGocc2JxdaKoHn4Vo+xD
-	Nh4o/zPPE/nTA88NoGFK8ZXxe2gCoN/gOuYdnA22+3deq4jLQpYne93hy6xthka26U575wR+e7H
-	aRsfHW9bX6qwjSJlhuCG1WM3tkgu2/DcmBbFCJVkbVs3N64Hh7QKe88m4Q+9DC8QBeRamr7BJYc
-	EuLJq7v/PVtVwyVns3MiUBy1JG53RQsdb5dDep52lDczgXXecJ98pa7FqHjA33CMIwiQba5aohe
-	OeDm2ibxfdXPuFf3vRfSaSTKcfQTrTYhCG9kcrQreD7asWbdA9MAAdG681mKbsdxEDoXdezYGHU
-	vHd79CB+9H2xY8lPMeo+HSnaE1wKvW4LTCxQrC9b3mlz8FDkr4exxhpQf/+ITRMfZi2t8H4=
-X-Received: by 2002:a05:7022:698b:b0:168:3243:c91a with SMTP id a92af1059eb24-1b556865248mr15615178c88.13.1795434820178;
-        Mon, 23 Nov 2026 03:53:40 -0800 (PST)
-Received: from localhost.localdomain ([27.125.146.195])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567ffa8csm32434394c88.7.2026.11.23.03.53.38
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 23 Nov 2026 03:53:39 -0800 (PST)
-From: Ding Feng <dingf3ng@gmail.com>
-To: Hugh Dickins <hughd@google.com>
-Cc: Brian Foster <bfoster@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/3] tmpfs: zero post-eof ranges on file extension
-Date: Mon, 23 Nov 2026 19:53:35 +0800
-Message-ID: <20261123115335.17293-1-dingf3ng@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <c0c81eee-31a5-73e3-f113-deb1cd8a0b61@google.com>
-References: <20251121152246.1023918-1-bfoster@redhat.com> <20261121152706.34523-1-dingf3ng@gmail.com> <c0c81eee-31a5-73e3-f113-deb1cd8a0b61@google.com>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JIM0+eRo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B5C9C601C7;
+	Mon, 23 Nov 2026 11:53:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3C51F000C6;
+	Mon, 23 Nov 2026 11:53:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795434836;
+	bh=rtnqsqXHQKuDC8iW2zmEn4j43knd0EsHyQCpFt+z1m4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JIM0+eRoUDbIDakme8gpu8Dw9+Hw3XPCKCjTUoxiyGyWw4qFYt4lIvhSMKOihxx25
+	 U58hML0Fp6d/RR6M9hj4GjDKY2SRaynGZMNJS21V8u9QMhkaS9jKRQ1HqstRF4xNI0
+	 K8KaoEWXnH7BKtAcR+hUJ1xyGXFjUwltsRAj7Jx7aACtCnMo9TXzI0FZypxc29tofv
+	 r6IjYcYVjPLTQbvgdPXIIcJIvElblOueuZsrsyzehwoEhJyCmqnbwIIiMDti5JFVBm
+	 4zAXUpGx5KQwRjK02CGfjHL1ISOb8RExx95fCZZQXfNYsUIoUAmaICpNTouWn317Zu
+	 6PKo7++42ebOA==
+Date: Mon, 23 Nov 2026 11:53:50 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Qiliang Yuan <qiliang.yuan@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/rmap: flush the TLB once per mapping in
+ page_vma_mkclean_one()
+Message-ID: <awQo2tg9rzMJYCQe@gremlin>
+References: <20261123-feat-mm-mkclean-batch-flush-v1-1-7e998ad13251@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 81B7AC0005
-X-Stat-Signature: q9pwysi86z6acp75rrjb19p3n3cjx9rh
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261123-feat-mm-mkclean-batch-flush-v1-1-7e998ad13251@linux.dev>
+X-Stat-Signature: bbuozipcebwgnojazk65tq4dpx4jus18
 X-Rspam-User:
-X-HE-Tag: 1795434821-745115
-X-HE-Meta: U2FsdGVkX1/0h+hox+txqXxLal6qMNGZvU+kofSA0tIDb2/e0EdeOgI7BhahhqU/rcGAFSXKdAUdHbl3g1J2LpnTV4ZIA/ZTYgoKfImnR89Oz3pj+yaLBbwAigqpHC6E4TWovwRKCfM2hItuuaJw0GSfpl9uhaQmWiC98PKJYL5KnzkpCRIEkLaZH0wS7Dvxwd5r4kaP/a3A83cUr4xehFKN4jlf85bcQZpHXZcYeXGv2IOtwIzIcz7KeaXE+PI0f3TlNgWzTHP0KDSHiO5qKALaYuThCn81tMrP/ULOCMI3DRudWT2FIhIhbKJDQEFRJMciZFOeTIGhH3wOIBy2YXqMqgH4mMmbw0+RRHxXq0mlfQzpOjWBw1Zq/PqadsQiQHjCvGfZiGeMOrikYKczoo+K6tsp2I+FLfX1/ibPxOc5KlkQpkfOxkCzfUUYf9i775UjUq9cyObJWn258VoQAMNAUScIulv8/BhY+gfqPsOoQN4ssKtV1PnIJCsGsi7JEn3GdVSTyBIpMKLnA4fKDxFy4Ue7IfOupyDnoyL+nOQqPPbPKS+J4oC9lzlbxj6rRCAFO1gqHiu4PvAK9yzK7PzXWkXwiMNxLfaRi7sx7GGu3iqhxJXy0IlbBkOHEJQ+qj7tvNEQBabJLWRb0KKFxHTp4bO0fWMaQ0Hld23Febla16QosH3HAUxYX7lf+QKdief5TZvk8l3TprgcYEorv39s7A7j5TfoaDSuTGS7JmY2OsV6+wLJ73eakyqo0v5ok5NgfUC3rQ6HoNv9/wEwwsoPU6uPVS0WjdbPiJrTNnDctAp06U7v0wS3k3PoSNXo4Kk+qBM7dchydBqLf2yxRaiACkeQvIpXDTaNHCj45k90Tl4CzMx1L0aHqW44p3jVrvQZkv1bAfv1wZgsv0ubiVSfk0MmgV/DErSpL1fvQQVYxk4ihQaXCQqrvhCPHEQ8ue1wAyfd4tzdHrqLXsb
- 32JiGm+P
- 7rXHuAe2WuuHtViKy6Pv9nQGhej6VPRvZ68JUb9c0SCC+TGZCTGUPVqKJA8+TVo8QvV/a4yk6SsOeNp7AHYZrpvwSMx4SrTh3ep7tQhKrcwQcxLVCkdziQyzQb0yy052BIudy8SsopvZxIGdeNm7iZQ5D3/0BfnsQ6EZfPVtjZPQFRpUd23WQTcGxjdb7nUg+ZoXFOPm5CWuWyagwgfQHXJ2er7nHCVxFiPf7k6ppmFZuQx/9csXKlHlixjfc09W156HYKpsBTFwwCexORtVr2wbJApPd8m6vZ/8T6U4qw4vWxsHxsUIPj0fV05a1Vyyr1oeGfghtptsRsHe6IW/9gCuooB54fWH8BrJMnbdbYNG8v/zsFp+JeEtpl6Oy4n8vD7wtWW5xmsa7Crm3ZsOcxuQu8f41yVb5Y4fRJkh5ianFSBual1+5FQKnz3HHRZNdCfxrPBIlJyicJ6Z3J0wt/bSDRtRqSvh6s40YzQse4ZnkRPcRlajaDDELxJeXdyKBxMKtnMUBlpSgcKVxGSK1tsNYfBc26dcE4nT4jelvCDXX3JXfnknALs2219Q9QHP+gxT0FQpR7ySh3PUUSsd0MlhBijEr3E60/lzr
+X-Rspamd-Queue-Id: 3D70FC0004
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795434837-921303
+X-HE-Meta: U2FsdGVkX1/UVcJud9sLth4VgQYOVViD3Sif34ixP+NeSYqntbc83RYXHcxRNGhI5l8xoS24mdGbN0+ysH8aRJQhLc/7mgyck0AZ26HPrEwNg9QY1KXL4c/sxy0VL4osORSqFXEghlgNoKvs/9WVTfKEGbE7/fYQwPFwiBQZ/qwWOPm4lyZqZB5pU8wvz+MckKn9GxemdNDnv8Ec6EkKY7Um/w1vU/Sqd/3wC4zUKIBKUy24ePR8Q182GKos+AjVyIXV/1h/XSDzmQ8v4QArAyXpMgqHmdasCf7uor4bo8RJS+jXfVBa4ugI/ZfxkTNEfbySO/9eIvWkDYPNMlTX+uXIuiThjX+urkaGNgviBUyqXKtk67R+kXydQMEMqrmFYhX8oPUwQq8KtjnlgQWDbYYBiorlRjUvhE/fmLxpK+hAgz1L9lkO5W7Tnw737S7Kljjet+f+LqOIa+0r8RY+YEfP/vUBcrJpivuSRJD4A9FKzp0At4Aw92p9zNYY/ucTGdNPHDv64xx1ZB4pNNuajOHpw3x1uBt5ObokdWjaJzRMD/1AYsHs1B34dnhlaTcsbm+iMDm1VjqoS7lHcxCLqic+dKrLyHUHiFcWinNjXaVK22wyW8dmz4s/kJX0RR3/KqeP2SB+vOIwRp0QENklaalFvKskvNr35AcqtE9JXh43ryV9Wz/2Yq4GcJpW8EJwyBVWYr9OZojdnitHpyZnSP0DGQ5URcg0lwecqDK/wpu9X2yqlpQUsY3CC2gSpC+u5OPhjIAJ8Vzu7yweVeSpgbSgO7xEs7ZkuqLRUgzFjBO07CKdlaNC2KVZ4B6Zj51azW6ovgb/Ny99bSXKJD293e5M9Kr7X5WLLbesgh+1Gh19WeDCagHbeHaUOOJD2ks2KSBU9449Tve4tDI2Oob+1EwEtKRLIIcRHYQidKTLUTGRRfYuRJtqH3JVQPezAgpJEX7KVPv4foZ+NBNoIuT
+ 4ZDbBXvr
+ vceSUIGrt4yc2a4ixYDkHdU1B6wf3gUHJ4e7dJ9hWBXBToMYbmD7ttX0fcEA7riOmXrm45YV2iT3n/8JVNfBcd0+DsRjv27ybtiZn0/ouZ5Lqe1XDD/b1YTD7zJfLNIm9gYGwUiqL0A+qqW6sVK+Wx56BqGzeMqeRmR/u6TlwfZiwvjilS2+Cmid1YA+HNRN/ed2c9kX9lqgdkbl4hdjc5kJN3tpio0A1co9CXcGWEyAdTAnKl9WBtTvlZJlfssv75MbTrstmSkYwHY5jzwYIJvPWCgbIH98evgEYw+QkhFlE6WgpuflJI/qzgvBtUT1KSN6JwKMUogwqJje5wf58wtNRWLb8oQ80t7sA4fCwt2hJzNBf/PVd7Yx0mbvEUVuvvHROH4T8h2le3R+Wjajv+0b4nwPUcH5xI1DfEXuXbpwfNp9Ast+R82iykdCY7IRXylUpHeWlkfcLLXafZhfS1FS4nBWg1KA4yMbogUL8sMNM8mpK3X2skEcMU3gSA7viuey074DAnycDst+rp8asNufYAZAREBtieulGtVWGSd2RvIjfGqtc1fjRFXzc0TJJnErv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,36 +97,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Hugh,
+On Mon, Nov 23, 2026 at 05:41:38AM -0500, Qiliang Yuan wrote:
+> Writeback calls folio_mkclean() on every folio it writes, which
+> write-protects and cleans each PTE that maps the folio, so that the
+> next store through the mapping faults and redirties it.
+>
+> page_vma_mkclean_one() does this with ptep_clear_flush(), one TLB flush
+> per PTE. A large folio mapped by PTEs thus costs as many flushes as it
+> has pages, each an IPI to the other CPUs the mm runs on. Writing an
+> 8 GiB file through a shared mapping on xfs flushes the TLB 2,097,152
+> times for 65,575 folios, and the writer spends about half of its time
+> in the IPIs and flushes.
+>
+> Write-protect and clean the PTEs with ptep_modify_prot_start() and
+> ptep_modify_prot_commit(), as change_protection() does, and flush the
+> range they cover once after the walk. The flush still happens before
+> folio_mkclean() returns: stores through a stale TLB entry complete
+> before writeback reads the folio, and later stores fault.
+>
+> Writing an 8 GiB checkpoint to brd through a shared mapping, one file
+> per writer, then msync(), median of 6 runs:
+>
+>   fs     writers   before (s)   after (s)   change
+>   xfs          1         5.57        2.98     -46%
+>   xfs          8         5.37        2.10     -61%
+>   ext4         1         7.88        3.90     -50%
+>   ext4         8         5.10        2.02     -60%
+>
+> Signed-off-by: Qiliang Yuan <qiliang.yuan@linux.dev>
 
-Thanks, that's very helpful. I won't just rebase it.
+You are flooding the kernel with patches, 6 series across 4
+subsystems over 19 hrs:
 
-Rereading v3 against current mainline: on the fallocate path the new
-folios are still !uptodate when shmem_zero_eof() runs, so it skips them
-rather than zeroing them. It does still look up and lock every folio in
-the extended range, so a large fallocate pays for a second pass over it.
+https://lore.kernel.org/all/?q=f%3Aqiliang.yuan%40linux.dev
 
-Here is a smaller direction. A store past EOF through a mapping can only
-land in the folio that straddles EOF, since shmem may PMD-map that folio
-across i_size. The stored bytes leave that folio in two ways: a split,
-where pages up to fallocend survive as separate folios, or swapout. If
-we zero beyond i_size at both points (v3 2/3 for swapout, plus
-__folio_freeze_split_file() for the split), the extending paths only
-have to zero the tail of the EOF folio when it is resident. That costs
-the same however large the extension is.
+Please don't do that :)
 
-I tested it on 7.4-rc3 under qemu (arm64, zram swap, huge=always and
-huge=never). Each test stores a byte at offsets 200 and 1MiB of a
-100-byte file through a shared mapping, then optionally splits the
-folio or pages it out with MADV_PAGEOUT, then extends the file with
-ftruncate, pwrite or fallocate. Zeroing only the EOF folio's tail still
-exposes the stored bytes after a split with a KEEP_SIZE fallocate, and
-after swapout. With the split and swapout zeroing added, all 30 cases
-read zero, the same as v3.
+Given the volume both recently and in the past I assume you are using an LLM to
+do this, so could you confirm your understanding of the problem (as well as
+those of patches sent to other subsystems) and what real-world task you were
+doing to identify this issue?
 
-Does that match what you had in mind, or would you rather I wait until
-you've had time to dig out your idea?
+See https://docs.kernel.org/process/generated-content.html especially the
+paragraphs at the end.
 
-Thanks,
-Ding Feng
+In general a core team member tends to take over stuff like this.
+
+> ---
+>  mm/rmap.c | 16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 65646ed6fc453..4c3d9cb47e550 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1127,6 +1127,7 @@ static int page_vma_mkclean_one(struct page_vma_mapped_walk *pvmw)
+>  	struct vm_area_struct *vma = pvmw->vma;
+>  	struct mmu_notifier_range range;
+>  	unsigned long address = pvmw->address;
+> +	unsigned long flush_start = ULONG_MAX, flush_end = 0;
+>
+>  	/*
+>  	 * We have to assume the worse case ie pmd for invalidation. Note that
+> @@ -1156,10 +1157,11 @@ static int page_vma_mkclean_one(struct page_vma_mapped_walk *pvmw)
+>  				continue;
+>
+>  			flush_cache_page(vma, address, pte_pfn(entry));
+> -			entry = ptep_clear_flush(vma, address, pte);
+> -			entry = pte_wrprotect(entry);
+> -			entry = pte_mkclean(entry);
+> -			set_pte_at(vma->vm_mm, address, pte, entry);
+> +			entry = ptep_modify_prot_start(vma, address, pte);
+> +			ptep_modify_prot_commit(vma, address, pte, entry,
+> +						pte_mkclean(pte_wrprotect(entry)));
+> +			flush_start = min(flush_start, address);
+> +			flush_end = max(flush_end, address + PAGE_SIZE);
+>  			ret = 1;
+>  		} else {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> @@ -1193,6 +1195,12 @@ static int page_vma_mkclean_one(struct page_vma_mapped_walk *pvmw)
+>  			cleaned++;
+>  	}
+>
+> +	/*
+> +	 * Flush the write-protected PTEs once rather than one by one, before
+> +	 * the caller writes the folio back, as change_protection() does.
+> +	 */
+> +	if (flush_end)
+> +		flush_tlb_range(vma, flush_start, flush_end);
+>  	mmu_notifier_invalidate_range_end(&range);
+>
+>  	return cleaned;
+>
+> ---
+> base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
+> change-id: 20261123-feat-mm-mkclean-batch-flush-686d20219b52
+>
+> Best regards,
+> --
+> Qiliang Yuan <qiliang.yuan@linux.dev>
+>
+
+--
+Cheers, Lorenzo
 
