@@ -1,106 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC2B606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4E960A6F5E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jub8/30H
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P9ajy5V8
 Received: by kanga.kvack.org (Postfix)
-	id A0C9B6B05B1; Mon, 23 Nov 2026 09:48:32 -0500 (EST)
+	id C13D76B05B0; Mon, 23 Nov 2026 09:53:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E3C76B05B2; Mon, 23 Nov 2026 09:48:32 -0500 (EST)
+	id BC50E6B05B3; Mon, 23 Nov 2026 09:53:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D3216B05B3; Mon, 23 Nov 2026 09:48:32 -0500 (EST)
+	id AD9616B05B4; Mon, 23 Nov 2026 09:53:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 69B5D6B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:48:32 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 11B661A08EC
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:48:32 +0000 (UTC)
-X-FDA: 85466664864.23.9906914
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 65E10160005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:48:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jub8/30H";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CBEF6B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:53:56 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 985D01C3D5C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:53:54 +0000 (UTC)
+X-FDA: 85466678388.13.5A65258
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0496C18000A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:53:52 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P9ajy5V8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795445310;
-	b=3Jjr5u2f83dIlsr4ZdDT8LP0hMkkmB/utffKbI0wgbJHZo3jU6t882cpexpWj6goZMyRo1
-	AspvDbPKVue0NLqwhCI2pRy82GcBAGzlfKsimT5j2Vzm/kpKQlTiV8B9cQNfEUhUEh/Z9v
-	LHVCZiOkglNBzm1pUv8oPn7z/Cm+plA=
+	t=1795445633;
+	b=Dle9fOenBzyOiWOUywqT9o9X76A1hW5h8a7Bc2vRMCUDMrmmtQj+4KZLi6bzqC1id/nvkM
+	SYTttcUeEdLj2PFnQD3FMIebpl+xJpJfLlRQNpNklN6WNssxiv6ICCf4rC/GczOYTel6gI
+	yHys58nDTTD/XCIsk+zEx2MxPV4Xsbs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795445310;
+	s=arc-20220608; t=1795445633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=COU3p8mhLvRYDZ7TXv24gbV9Mm0T8HfG6LrqY+C2miU=;
-	b=AAXDMFcke/EFzbGhF+DDBiTV6txujMC8ArtTPfK6ZXkttRhVrqEF4DQz+UOBAnPg2dDX3o
-	B3qVZAhGPNDNn9iCqwGUHb/QzQDp/V8MbUtqU49ujvBRHk2fWay1dTYQycrKjUJWbwvlc0
-	iU3/OxF/dEoCoNYnO5ueHAuebezo2+k=
+	bh=XOgaYnpSDCV8c4FBL+2M/FIYjDvQARUxjvg7P2w/uio=;
+	b=aI871a14pAVFT452mWCv29g2jn8pmQp9rEJqDdyKrLoauFBybEmPy2dbPDB8JYCkG/5Jui
+	sisCbw3YgcoX1KSn5ai0AkshARoi3RQ17xCRtrJmvHlkHfm8uIgDSXlugrXpNX07NvhaFw
+	g7JcVgXqCN9vl0WZ6OXOwT5dVk9hoZU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jub8/30H";
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P9ajy5V8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D2DE06223E;
-	Mon, 23 Nov 2026 14:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940581F000D3;
-	Mon, 23 Nov 2026 14:48:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2DCD545986;
+	Mon, 23 Nov 2026 14:53:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930C01F00AD4;
+	Mon, 23 Nov 2026 14:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795445309;
-	bh=COU3p8mhLvRYDZ7TXv24gbV9Mm0T8HfG6LrqY+C2miU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jub8/30H77a+LnJJFaB1btgtBWhm94GK8KHAGpB6a/HGXmRdAq7SAM6x/AM623wMl
-	 Szhxiz/FEmlHWT5Q1O4lyUHYSaVNnO5amh/WWhXeKtL3aP7RBN2kH9vVCIg9Yps6u0
-	 qLJ0TMbfvC1EP4nMOAX04Rt6rjlT9MtKx0rSGR0jisdy+v+qIpzpK1NE9Cbo+d3wIn
-	 h8/3Of/u2wqIBbq0sDikY8sbsamD7Njthic/O+IVOSB3aot1VsERiXetp+oM0GqjuW
-	 bjMf3H7Yw4vJO9WbN1yQBcwPHv852222CzAAWfE9cIg0q2om49UTOx64T03/tk6pCk
-	 zhkUaySt0kJ5g==
-From: "Harry Yoo (Meta)" <harry@kernel.org>
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: kernel-team@meta.com,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Conor Dooley <conor@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	kasan-dev@googlegroups.com
-Subject: Re: [PATCH v4 00/10] replace CONFIG_SLUB_TINY with a slab_tiny boot parameter
-Date: Mon, 23 Nov 2026 14:48:20 +0000
-Message-ID: <179544526762.3606123.14263351659988256833.b4-ty@b4>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
-References: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
+	s=k20260515; t=1795445632;
+	bh=XOgaYnpSDCV8c4FBL+2M/FIYjDvQARUxjvg7P2w/uio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=P9ajy5V8xj1bYJOOCY4ozKOGfNE4jQ+9h7s6ubC62eLgBZ9o9p9s/n6iPFeKSMD8I
+	 ZoChcmgGPzdbfcDkVqrdoO5oMWzGIWBMeGBiULkTRh2jlx7oxwBzZlu9YoBgoBetVN
+	 phKHl+GeDMZHNODGnape4QtIXV53U+URUeAjVsahlv80IeLVkZ/G8AEvadGnzvZc0R
+	 Wupnt74DMLYJhzVcgkW5mdH30whTZFriDo1jSeUBe56A04GnWW4NlgZYuuiR0qdOCk
+	 iGfDly6kVUgOpGmaDLwYRT07NpjRX4YewRcR5xcMpH8Tq7buMLKS+BLu+vXscUN6an
+	 5b5FZFV89I/4A==
+Date: Mon, 23 Nov 2026 14:53:50 +0000
+From: Harry Yoo <harry@kernel.org>
+To: vbabka@kernel.org, akpm@linux-foundation.org, 
+	Hao Li <hao.li@linux.dev>
+Cc: kernel-team@meta.com, cl@gentwo.org, rientjes@google.com, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	surenb@google.com
+Subject: Re: [PATCH] mm/slab: don't set SLAB_MAY_ACCOUNT for
+ KMALLOC_PARTITION_CACHES
+Message-ID: <awRTBHzBQtxDHTzT@thinkstation>
+References: <20261111125628.375624-1-hao.li@linux.dev>
+ <179544526759.3606123.1000047458494853310.b4-ty@b4>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179544526759.3606123.1000047458494853310.b4-ty@b4>
+X-Stat-Signature: 78ku8mhfckkwy83w7zj1k6d1f5yxc86x
 X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 65E10160005
-X-Stat-Signature: wwj3wb4dfeswrwrja6q57hxjhaos374u
-X-HE-Tag: 1795445310-959965
-X-HE-Meta: U2FsdGVkX18UTuCb1CYQHgTFdEdyF2mcrkwIHGcpq2jtZFUXbhO+on3myowQqGbGXEl5oSJY5iL2E/dmTw3hpS30nBHJ6WMfVr0LyIRKZ9IEq3A9jucLhQ4txIziuf4qN9EU/AmrrrSLdlHg3FeYa5cOSXu04hFHgfrtTPBL4C4WpgwiJw4oLJ5NZqKd8FkEzEuSMTQVLguMMBvVE3n1TOIeJjQyY9w371aWhWG9Nw8eeRxN3C+ZNHEZGHiQu5mIQKG4hva2Q9WbUpTnJQbOs6PtXZnp1+3jRdOQVmLbizg9Wk2J7ioP8O8TDIUNhziQDqEI6bsPv6JUEAHe9IrKU1PiXSSbmK79UqoO5n8J+WoIUIFNWnu4+14JRreQp2E3/v53VeAU24gqFmn5WZ4PMn9fIz+oVLcVba1+QdEKc3ZbzWfONIqYHJeBAiN6WUnCZzW343nLnJlE92056FfwxyROaELvbzUt9tIf1imft0kMFMiiQUSTiL61aNAusd2ytlUPBHx3FXQDtYtVPNPULBRMR65qbzGIUHFpjjaiEcteVneFwoyv/AbLWjTDWm08qK+Z+3l1OrD6Y1M64mebXJBCe1R8QzEQYL/dnG6k5wowG4UlZC5F0zC4gBbDHUhr6aUhnWzmNQBe5SfANpC+5BBh2iaZfyixLkIk22LXdOhUI4/tgvzbN86f4ZqiUF+XXFJKCE2q+UcNnMl4tP4kQmq/BO/m58xy6w5W8ktdYBtfV1qzyN5HQrZXP4J+uVUU7xYHP1rrw9fCxofRqcZYXcEmHGyvz4TZmMvz3j9PtWR6juPhjlxNUtQgoiA3h7fgOMJN+n1+2iqCn4Qx1vg4C80M9U6Yzsc3jpkaAztk0PPUgjzYhD/ZPH6j6dtcFxCAkejmVFtm8XNQgIHnZRhDm1Q0G8fYX3SeHMfrCd/KGRxbhmcp9L+7ml84D77bhllzMwUI4r6Rt+9g/i/cA8F
- kCF4LS5I
- LJIpGR/aauNHImeuxLJ2Mpmz+exCuaR4KW29uS+ZMAFLosXhxK8f9T4QKeIm2dNZFvRcbj2PPcz8HNOL/VDG2yMLBkuWA16hZagbKhcoHpYQjtyNT/67n5e15nCaS70DBTzXa5ZhICZ4hnY4TPGe6VLV1WH1QbCUa4X5gE/gUOKL/9A7uQ9Kt9VE+Ouopm0YQAQweb0aoWU7HBG/nbocFBoOV3/LztDuwd4yYlD98xnH64lwB5dGUOWUU5iOJyYPtGjgAxIB0OZ9aXj85wGhf4U10o0d7qbReYM+hcrg+R7dBOmBYXRDjERIhSS287Q6jofFLtU2s/xO4V60SFxAF/Jogyoqo761kWVX3ugMcZXlLG71VVY40FcIe7F6WVDn3OdpwPCL4vWB5aP8bzHv8fY4TDfHRZAe9x8iJ3iLNHimrIng8mP9Axz17fykkUGwEgUFqI5Qf1nA0gDhL3/vnZtSZFTXOwO2RpRiRo7xR3CM9VgJ6dfgyqeaiofbhfkDd6+jqDsWS2lpXuiZLnKzFcUafq1na1LGmopnR0698I9JrI9/BdN9fzRtQIsa9vxEHjmA6
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0496C18000A
+X-HE-Tag: 1795445632-310787
+X-HE-Meta: U2FsdGVkX1/56+oyB6LYh3v/zI/OHoFaAeSmLxmS3gD06gJWwXDpGcYp9HxbsnDKLVp5OZLe+yQKpwn0CttKLuoZDkn1AcTQz1hOdKykQ9Pg/msqMNXP6Dc0B0TPo1cWGQiluSbnkwQxRl4MSK5wT8De9/69HPaoiUEmHHP8LZp3ocum+hSE52vHle3FKwNZRCiIJejFE17ITjw5irSY++T/9T8x1BXSM9UaQqSvHHjP7rYoS9bnUFZvq1nw76x1DqREuChJ3G6z1Z+h+3c1kfMAAceHiEzgCsIM1njhj85LmGmbwLHAIgi/Az1ReL7bRcGM2IUbsU0cAwxn9oVcfUI9Xkd652O8aEJTdnJuQNt+WnY8nxKoP7cEHWhgfn0aKv/Gqqs11zdGAkPLW5Zq3ZGsFH8dSHeOe+vC+LaO5dmRaTkquzoFu/FM+vffXASD1eRcEWDKUIhJTMobhwTqji+j2RVuSlY3FshVynTAv+8wdq2wY/yL6Il64mNYtX+nkcbykQdmcIiKmMJ5YyLyL2o3hmWq0rno+bLhY+wDY78ELcre7WGeGA6Z1qNWRhIyIB2IdpwtmaQHo0upj3xaKV+Pf1PlVbjbepx0+NANfZZNRLqivZ7epsrrVOGjYGfp9cb7a9Y2LA1SofI31/ddpTD2aJ4VZ1U3mBLcm9LwVopzfBH1BpVHSMlXNV7TAvAwrKrji2xgOzT9vhAfJsAZpMUIy9T2G9rOb8x+WhB0kMaL4oh7r87+WBICIZt7midkqT/fpAOzaygG14QR4JaTKPcY/0w2wjMI0CXZbtuvN//L5v8Gb2j9FCCXMpCX3p8ABjr98DiMPJo0XXSnNFId3/PckUNe0RpPdzuckql9hNGAynA8Tzgsv38e+fBPacnxLUVbyttyo68XY6DFeB+AO9/tPUlDBfXWNoI2Fwt356+AxDRLcGsVsteyiyZsZIYtqg7X/5j6SLAMhxsCbUX
+ GqoEBWK4
+ sMsAkZsAR58fNxlNhjgtwF9S7UNSrSINMfgeR64o54zZppPVjPuX17p37hcaT8+nh14iKVhw66jcS+yqxLYjeEHwKjVpsKfH5HmDKU88EXlJqiO+EU6CUgR/O7UIUfCnXXN6K+SRag8P5/krxK73dBwFLcGzpnYM35vzS23UvGQEULtYR8MtCFdJIU38jwNeWCPluzlS0D9TZUw+aGxsncvReBmga+ilfAB69QRs3FbgXbiL6gN625a0yTkNbBcrHuS0xVZJMVMrjf92SY/OxDhPgp6itY5XYI2OwcuZzfpB7C6FW7JE47h0mTV1kpRXFJQKP2wMVBk8ne/4070yguOcRmZWE4psqcd0WBgDbnY+XiYwdibdwQFF2QdHtziSQzLIOpAjhyWwrntb9gWhGXsazq3v1LmCGWsBtWrVMTmx7PZHAcpAeBc0j8FOTP4KoOQSeZERKQezAeU//Vi3fi5g+TLUk3aksGESigFPXkzeogUi2LLlRJWgvJAj++FlZT/Kes28Um20UuEq6Yt7c3lDYgw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,43 +97,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 16 Nov 2026 07:47:08 +0100, Vlastimil Babka (SUSE) wrote:
-> CONFIG_SLUB_TINY was introduced to help tiny systems migrate away from
-> the SLOB implementation so it could be removed. Its main purpose has
-> been to disable all forms of percpu object caching (cpu slabs back then,
-> now sheaves), and being a compile-time config option, some extra minor
-> saving were achieved by code elimination or more agressive merging of
-> caches with reclaimable and non-reclaimable objects (keeping those
-> separate helps reduce high-order page fragmentation but not memory
-> footprint).
+On Mon, Nov 23, 2026 at 02:48:19PM +0000, Harry Yoo (Meta) wrote:
+> On Wed, 11 Nov 2026 20:49:10 +0800, Hao Li wrote:
+> > An allocation with __GFP_ACCOUNT set (without __GFP_DMA or
+> > __GFP_RECLAIMABLE) is redirected to KMALLOC_CGROUP and will never hit
+> > KMALLOC_NORMAL or KMALLOC_PARTITION_CACHES. Consequently, neither of
+> > these caches requires objcg slots in obj_exts.
+> > 
+> > While KMALLOC_NORMAL already skips setting SLAB_MAY_ACCOUNT,
+> > KMALLOC_PARTITION_CACHES still carries it unnecessarily.
+> > 
+> > [...]
 > 
-> [...]
+> Applied to mm/slab.git for-next, thanks!
+> 
+> [1/1] mm/slab: don't set SLAB_MAY_ACCOUNT for KMALLOC_PARTITION_CACHES
+>       commit: ec81fa8f7dbcf89d9b4112544f76f47c8eb5c725
 
-Applied to mm/slab.git for-next, thanks!
-
-[01/10] slab, kunit: pin test slabs by an extra allocation
-        commit: 59cb3f752d7df4badc0ff6caf1b13ba293049b79
-[02/10] kasan, kunit: pin test slabs by an extra allocation
-        commit: b5f4208f057248d96adf876e50e03a7c92cb82ea
-[03/10] mm, slab: refactor slab_min/max_order handling
-        commit: bea9fb71610535595f7d39715ca47248c785110a
-[04/10] mm, slab: introduce slab_debug=N
-        commit: c6fe42e8966e517773fcb41efd02c7cb2eab9697
-[05/10] mm, slab: rework KMALLOC_RECLAIM handling of SLUB_TINY
-        commit: 5e3df3c9656df19053909c4aa70792007c5ddc59
-[06/10] mm, slab: make SLUB_TINY handling dynamic for sizing decisions
-        commit: 0582f36165726165012f66be8924e2123d679795
-[07/10] mm, slab: convert CONFIG_SLUB_TINY checks to kmem_cache_debug()
-        commit: 7d6e6d4e50b91ede6662ea177e25b38b3bfbffb9
-[08/10] mm, slab: remove remaining compile-time checks for CONFIG_SLUB_TINY
-        commit: 0ecb9fa1456b356e604848542787aeb6b87b6505
-[09/10] mm, slab: add slab_tiny boot param
-        commit: 9d83e029638706e283df6079ff4db017e8881769
-[10/10] mm, slab: deprecate CONFIG_SLUB_TINY and reduce its Kconfig effects
-        commit: 3464ad6cacfa65099378798cc0d95c9e5151e86d
+Just for the record I added Fixes: tag per Vlastimil's suggestion
+but didn't add Cc: stable (dunno if Android would need it (due to random
+kmalloc caches), but it can be backported later if needed).
 
 -- 
 Cheers,
 Harry / Hyeonggon
-
 
