@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2F3606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8E7606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MHRRfQJ5
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=avWOfd39
 Received: by kanga.kvack.org (Postfix)
-	id E764A6B05C7; Mon, 23 Nov 2026 11:33:29 -0500 (EST)
+	id 574B76B05C9; Mon, 23 Nov 2026 11:33:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E27556B05C9; Mon, 23 Nov 2026 11:33:29 -0500 (EST)
+	id 508026B05CA; Mon, 23 Nov 2026 11:33:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3C2B6B05CA; Mon, 23 Nov 2026 11:33:29 -0500 (EST)
+	id 3C64E6B05CB; Mon, 23 Nov 2026 11:33:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AAE5F6B05C7
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:33:29 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2BCD4807D5
+	by kanga.kvack.org (Postfix) with ESMTP id 1622B6B05C9
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:33:30 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AA6D140956
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:29 +0000 (UTC)
-X-FDA: 85466929338.16.F2E6E62
-Received: from mta0.migadu.com (out-237.mta0.migadu.com [91.218.175.237])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2F3878000D
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MHRRfQJ5;
+X-FDA: 85466929338.18.78F1448
+Received: from mta0.migadu.com (out-242.mta0.migadu.com [91.218.175.242])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9F31C40007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=avWOfd39;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.242 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795451607;
-	b=ZkkXimGpZFi1mwyAIKvkM7rhq65ddtQ1lIa55KWNxTTv6d/PpN7aTT4LX01hIr2v6Yz8tt
-	pUenQYaPRhTat9m7vL6J3lSO1z47XmRY7NcvFKmkTDtGIykGrk+FngMpypPMFm/PHmgsLr
-	Srbn171U1wamwJuGgtXGhks8EozQ5f0=
+	b=U3Ho4w4J9pyZY1ilHmQndmethuPM4a5Sk7HXNaAEheOXhvjC/uH928J1YLCmCJcxgATOSK
+	ZmEFnGSMfLOVtPMVWpzwHTKzwbYKytHL3t5Q8pZZRYXnkVCdZ86OcFV/EpwF0x7atWgxwi
+	vAJEbykOxhXNOPlwth4wz1MVCah/BZ0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795451607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F9eDeeGHvneVcVHv8eGQt7NvP+yVebJ4M1jCjgOsIRo=;
-	b=kzDI2LGIYBac09VkvhOGGr1r/8g4UeEMQ4A/Qf5X+mrw6eKTKZ3KaIHLA40HXScLu2xsKD
-	0cb+Lcl9Z6+ssqNrudS0lyarwz5zPoKp5TowgLSPuimHWK0zx3Z6Izq1xO/SiLBoCo5leR
-	rLpjAiALB+Q6JWdiAvi4Ud603EKcMbk=
+	bh=G976aLSquKCcdH7Ogl2LQAUo5cChr1sJGUGr2ohKZsw=;
+	b=ywQVBdt0FsB3ZR+aViOcBdAmVaI61g48Xs96n2pvsVOPztuAWa/0JD/UycYGvqBizfKZ4w
+	MZbRLcReQdcNeKE/Q0R8MXJng7rK0puJH5U9eciAwPIN8Dj2SdFfh7tJQyHx55V9h5q1kt
+	+iKrRsq7Kud9jwn24Qp1HZ9nUR4TQgM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MHRRfQJ5;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=avWOfd39;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.242 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FR+hMBYFdGTc92+lBnUmV6i3ZQeVFjYBAQzvw8UUU0k=;
+DKIM-Signature: a=rsa-sha256; bh=E4KTVYZa4EaH7tbY0q+Km6luC5aM7T4+GRj8B16qzEE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795451604; v=1; x=1796056404;
- b=MHRRfQJ5DL0JlWl4tSD2UU5w3myXa04MuxoHRu4N892v1qNS9VlWoVYfjvlqF3B5Fbbivrn1
- 41CYtj7vf8uih9IbM1aWPr0ZYCLG2UHK3Wh3X8i3T+3mpb4hHGypsUVBqAGgztUUdcw1/Yej5u3
- 93aPJZ7FSeipr5x8t2ySBrxA=
+ t=1795451606; v=1; x=1796056406;
+ b=avWOfd39qP9lzharrqkv8HwVHT/fQxcsZsUkIKNgCDSrmwm7bUJYTrFsRtyf8LqRVdD8N5od
+ 2upxCkL/O2fcaTLz7z578VWz+qkyzwWf3TbOhGPmi1z7dCDWKtnzXLwmHY7BhBF2P3p9fU8y6dP
+ LRYs1q72llpk0k6iEA1/9ZTI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 90a87193e6a8bd2f;
-	Mon, 23 Nov 2026 16:33:24 +0000
-X-Mizu-Trace-ID: 90a87193e6a8bd2f
+Received: by mta11.migadu.com with ESMTPS id a33978e7f9751d3e;
+	Mon, 23 Nov 2026 16:33:26 +0000
+X-Mizu-Trace-ID: a33978e7f9751d3e
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -92,27 +92,27 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	lance.yang@linux.dev
 Cc: Usama Arif <usama.arif@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 4/5] fs/proc/task_mmu: don't read young/dirty from a non-present PMD in smaps
-Date: Mon, 23 Nov 2026 08:32:10 -0800
-Message-ID: <20261123163301.1568240-5-usama.arif@linux.dev>
+Subject: [PATCH v3 5/5] fs/proc/task_mmu: account device-private PMDs as present in smaps
+Date: Mon, 23 Nov 2026 08:32:11 -0800
+Message-ID: <20261123163301.1568240-6-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.1
 In-Reply-To: <20261123163301.1568240-1-usama.arif@linux.dev>
 References: <20261123163301.1568240-1-usama.arif@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-Stat-Signature: 4qoe6qzhzqj8krk4j3e6stymkwnd9cex
-X-Rspamd-Queue-Id: 2F3878000D
+X-Rspamd-Queue-Id: 9F31C40007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795451606-536065
-X-HE-Meta: U2FsdGVkX18ZCxzvDVWgr9JYz6iTy3DNKCDurifyiLxnpV+9d3n3cxtKM+bBGk/MsYfVVsdsQ0b4N2OlZ9VKpIttX8FdRBHoLbdUyGlqJC+O49GeBHQWDANlsElDqaF0uF5px4KEu7denxzrq/mfqD2PkiZi1YOiJojpHMfVfJmDjpOk/UlQntXNwSkWl459itiITirWlCt0L3tfsZ/xRdwVZiPq0iDsUQVITCDAcPzz2+ZtG7eIpSNdsxlYPn1RnO8aUBig/jL/HBO6hhC7MxDBAQr0Na+tzQnoLaKJQf9aATCNDq1ZCjk58D0vjj6PGOQP3Si4tRyEgUFoazr/RssZBSTizfJe040MSrU1DXcTczaH+hG7hfblCEp5kQm+Ob4YyEKeZ6e3sK7YcEZJ9fVp4efMCgHFIe3MtGCN4Lpw9Gfl7t20bPg+RrEqYdlqN7xu57fgBJ8BxFC1p6d7sHivIehu9pEyH7WjoJlbKX2Hltq4jjfOE+xS4DogQzmS7MBcJmwO323wlNwb2nh2mwcwZJvldDHCUgo1XctPtE9G/XlRF196bJuGVOh2H1cZ603NpVGnrM8ibPpwxwcqoREwCAecOIVGMAsJIq2s3R0lk2l3yKkguZE6LJ9OF+sbxl6HqjddHPE8kTyGSU9O5ZDhy5NYnJJc/z+3fKBQD0dZlcTEhP+axfNacfxB3jgV7M4XLeM0ikV0zqCCHedAQUC+jMLt/iUKVzKgBUJVL6f6KXZiUqM0HFkWgxN7ds/wol+hkhyoyfwcK2MtcXCUuJq2w0qagFWPoMqDG1aQNB8YGPkjGI1+q+74YBluKqumiQtHKbm4l1uf9hXGxMH9CXYtVOrgFmt01aKQImpEX5kCjJpHbK/vQIKoPclB6jqUpp0l1VkZ08cTxTXzxWpL8QhQThYyWzMesZawhCXZFC/isJSbidOsQiFcsvpPKUVCqYkhdKJ27nIOPmMfBXs
- 4yWZM+Ds
- 4G7S/oiPc3hYf38gt9wJPdVWw2yHsS55YzIsLpEzk1wSBOgp+EtrwAH3xxyZoZN/dj4B4QjmZYUfmzTcDjLsZF8CT7YtAxQlFLBr1A+gn8/ObmNGOiz6UvxH7oLS/A/+um8V09LFfU+wBtWMm6/VsSJADtBMFKsF7D6WW14c76cqh75OGhVQtUI0Nk9cr/SPmHn8oZBmpFPCQ6gJtcrCCameIfAxpFgKgV1nLmrM1e8qoXrmuO9nMDcJ2w90o4iZAUtCZYU2B4f5fieK0ioCEVbGX7fI5jP6ufQWdDD1r4WQnIEnLFDwRbPHVSxetF7ALN+KooeIqb7dPUX7el9tcg4aEdAUfMmKA7hRdCY6Ln/e4PJeLYIfJTcacpoJgsE9hhlXVsLelwGQMg2J+Hgiykkj8WMkrRAB7xKJC3WCdD2s7mcAqwQTBPJPzZ1XY1/RwZVaWpSn4NVylPU/cfk7GS+i4QSrefeBVCN5BtsEtViujJnJKt073/diBYYCK63E+SWxz3+R3qKUyFGOl4C6V9QzPYF9dVYEXgT1vVNT71S3TY9h4Uya/pfmE+CqqHgA18M0QFFwZiQGfDhGMUzp7MjqV2n/pPdSlZ/oqdFKc54HsApNl3MEWJqEM4urdoiARo2KL
+X-Stat-Signature: 1uwyg4666p8qkcq9fcau1zzrxfaafics
+X-HE-Tag: 1795451607-435891
+X-HE-Meta: U2FsdGVkX18HkcfEJrOvnGJy6Mt0CfiJoi4UqNxzINlBb6DuDfIa/gGLk0cLj98vTxKZVP6r+AibwyBnEuJQI8Cu+nk6VBOAvrNNyg5Ri8AJ0N4e8nGRmCAtZLbgk2BdptSeL1rNYrUb8Me2QDurm3m0LL9eo18RhfpJ8aHz7gLSXTlQiRnzg6uQIyPQtXx6HVx+vsXMF9nh4A+p1r7MdDFQaXqotMnKcnRTUFduOMFlHhTZNBSt7ySpOyT+wZYaXCAtjJ+HsW9PA3BCwJv1Ne/YF5B6IwUk5uwTbWmdC8EffmW4soA5pJ6VRq1x8nYA24l0j/InuNZCAg4uyPZX5R10bI57ulsdwcy4m9/SD7zSnW0sIVH5ArvLycFASpp+iCbJKdABql7I613urqQtsILQmDEVvV1pYZzWCHL19o8mIVAnky/Qy1T6VWTSJ5bTA9CJJZ+s0dF2Z4OGpLBe1WpMtviwfTQQ9eTOgSaGwQibEmN4WQqOV9JKOSMunjITpM+XQOg2BhcJapyUun7pqfNDePLz7iA3Hxz8CgdtudSWt+U1Y6Sm+ra76Av3TGkHguVvx6LK0LMVFtnaWk8Qqa8ib3id3s8aZZDfJbfnWY4n7eM+rysM4vV8aH2nXQ4PBPx7usI66lzLexW7GHj0Hpj26qvb/OvfArNC3Ibh3eRCXU1eSUY9ObcdbQp2pmZ1ul+mxwU8ykDn3ozQNbTPvJgzRQAEqoMmtypHjftA/EgD1LYgMvkPI0JmqcpxfrxWAtHVxwS0u4J3+SoDK95atfHayb2TiYtivltjLBHjQIIzrhWbMJO6nGdD2znr6Ds6aItyMtENBGUvNs4D81JmMaca49Iw78aMsw7cI8YQWq7ZWgCMvPX330Thn6y71/w/hxKPNPMtyeSoeOdFNt99FHjvZIO9dsx25FIDzVsVDlceFJN6uVIQhQzT0i6DGtgEPwx2cbm/pirFj4orNEU
+ DP+dgF7E
+ LH617yxhBZHjU6OpID0EsKF7CDqhCDhoyFm15x8vMKzvQcPRAK/jf9JVnswRQNxr8KlQHim722OlTNRPVGbEJmIT2Fh1mgOw7LmprJWEQIKYQct8DR2Pd3/KoAzdRBC2kzHWuOaOkBTKI5kTlVJdTxdivUYOYIazbEtk3NPHog6Tj0kh1tHzrpOWWssCsfC7Zyofk+VpybEuaLyhrz9mMLgchOEMcWPzFy1c1q2CpHbYqmt7ujdfH8N4iZPG7/tAiz3nodeU9TdO6SF7AbYojfhF6yGz+sLCPsq5E+HETkQrtLqzed7SPGKKPHehhkGtPJgAKQTJAIjxXWB9V0R8StdQxJEVvT3ePHjN4zO2lpr1Z8F9CCiuiEznZAvqVyfoXcJVmHPf+bIMx9fEMJvmruY4APbwX/Prtx7qJbmTXiQ03nYjuxyL8peXNZh20b/Sz1tKSkYSaODp8wD3YDh98EjVzhRUL2tbV+rR61nfS5iiuMeogM7yKZXF2k91ZCCCrmIw2kg4H0J5FWOVukLOTof/PctQLwnmba3VveGA14yI+hhMv/OpG+N6JaOP+EtE4Oaas9deJtXptouhWv9HXvAIAalMI9MsuFEvM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,62 +121,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-smaps_pmd_entry() passes pmd_young() and pmd_dirty() to smaps_account()
-for every PMD, including softleaf entries (migration and device-private),
-where those bits encode the entry rather than accessed/dirty state.
-smaps_pte_entry() only reads them when the entry is present.
+Device-private PMDs represent mapped pages, but smaps_pmd_entry()
+passes present=false to smaps_account(). That treats them like migration
+entries: mapcounts are ignored, PSS is charged in full, and exclusive
+mappings are accounted as shared.
 
-On x86_64 the entry's offset is stored inverted across bits 9-58, which
-overlap _PAGE_SAVED_DIRTY, so pmd_dirty() returns garbage: a clean 2MB
-device-private mapping is accounted as 2048 kB dirty, and lazyfree
-accounting is suppressed. pgtable_64.h also warns that the hardware can
-set the accessed and dirty bits on non-present entries by mistake.
+Match smaps_pte_entry() and mark device-private PMDs as present so
+smaps_account() uses mapcounts for PSS and private/shared accounting.
 
-Only read the bits when the PMD is present.
-
-Fixes: c94b6923fa0a ("/proc/PID/smaps: Add PMD migration entry parsing")
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
 Cc: stable@vger.kernel.org
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- fs/proc/task_mmu.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/proc/task_mmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 105c4998eef48f..34aaf80cd46cc2 100644
+index 34aaf80cd46cc2..fd32840a8cd7c3 100644
 --- a/fs/proc/task_mmu.c
 +++ b/fs/proc/task_mmu.c
-@@ -1020,7 +1020,7 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
- 	struct vm_area_struct *vma = walk->vma;
- 	bool locked = !!(vma->vm_flags & VM_LOCKED);
- 	struct page *page = NULL;
--	bool present = false;
-+	bool present = false, young = false, dirty = false;
- 	struct folio *folio;
- 	pmd_t pmdval = pmdp_get(pmd);
- 
-@@ -1028,6 +1028,8 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		return;
- 	if (pmd_present(pmdval)) {
- 		page = vm_normal_page_pmd(vma, addr, pmdval);
-+		young = pmd_young(pmdval);
-+		dirty = pmd_dirty(pmdval);
- 		present = true;
+@@ -1034,8 +1034,11 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
  	} else if (unlikely(thp_migration_supported())) {
  		const softleaf_t entry = softleaf_from_pmd(pmdval);
-@@ -1047,8 +1049,7 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
- 	else
- 		mss->file_thp += HPAGE_PMD_SIZE;
  
--	smaps_account(mss, page, true, pmd_young(pmdval), pmd_dirty(pmdval),
--		      locked, present);
-+	smaps_account(mss, page, true, young, dirty, locked, present);
- }
- #else
- static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+-		if (softleaf_has_pfn(entry))
++		if (softleaf_has_pfn(entry)) {
++			if (softleaf_is_device_private(entry))
++				present = true;
+ 			page = softleaf_to_page(entry);
++		}
+ 	}
+ 	if (IS_ERR_OR_NULL(page))
+ 		return;
 -- 
 2.53.1-Meta
 
