@@ -1,93 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE06D606A327
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00042606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 19:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bZ8cCMhP
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JnKN14oA
 Received: by kanga.kvack.org (Postfix)
-	id BBAC26B05B4; Mon, 23 Nov 2026 14:01:04 -0500 (EST)
+	id 26D7C6B05D5; Mon, 23 Nov 2026 14:01:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B92B56B05D5; Mon, 23 Nov 2026 14:01:04 -0500 (EST)
+	id 15B856B05D6; Mon, 23 Nov 2026 14:01:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5AD36B05D6; Mon, 23 Nov 2026 14:01:04 -0500 (EST)
+	id F3E396B05D7; Mon, 23 Nov 2026 14:01:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 827B26B05B4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:01:04 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F40F2A0A01
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CC40D6B05D5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:01:05 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44507C09FA
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:01:05 +0000 (UTC)
+X-FDA: 85467301290.18.D42F6E6
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 831DDA000B
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:01:03 +0000 (UTC)
-X-FDA: 85467301206.27.67516B7
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 37FF820015
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:01:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=bZ8cCMhP;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=JnKN14oA;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3bI0EawgKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3bI0EawgKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com
+	spf=pass (imf15.hostedemail.com: domain of 3bo0EawgKCPkenbumbdlhpphmf.dpnmjovy-nnlwbdl.psh@flex--dmatlack.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3bo0EawgKCPkenbumbdlhpphmf.dpnmjovy-nnlwbdl.psh@flex--dmatlack.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795460462;
-	b=qKSlgfI3OJJW2KTATtF7q3gOKAu/6D8dHb83oOCl0hdSqtwqHt/kjkgjixQ7uk3/UWuqNt
-	kwncGQ/aG4WyTw43bziEFztJ8bZ3cEB2bYCCzd++GHyFRsu5BuZHXEv0s4I0y+EmPVRVsm
-	7BYovie01kiCfufuFn8Sy03FCsWE7hA=
+	t=1795460463;
+	b=L3EHMVmNikba4xh77HFRyXjVZoA3hq7c2oGyJGG9seFfiu7CrlpPn6M9SCqIKeCVdM2zQu
+	3vVSD0jkj3jyOyzG96G2lWDKD4jeANxSsVARPwb6P1xcndaTmW28k0vAMNVDnyDmS1FOEB
+	9pT9HzcjE0XiWiU3uZaNeKyIL9st4kw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795460462;
+	s=arc-20220608; t=1795460463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pH/xf3kQm7acLfNhYZrfRJLXvU+0NBXvSnbGGfIqejo=;
-	b=PS+cgUcCUfQftGUmwja99tYL+buh68KiB5dakOETzd4IA+EbFHfTs7Jj+t+1QWqV8zvwM1
-	NeeqbvrMYkYPuj6GK7XDkhuvHpoqzZ3Lie0QKYL4S8nSYykYK8e6dS0CNQPVOMxNQbPvLI
-	Ro+AasQWpgPn4oJzVmpnVH9p8T/TwoQ=
+	bh=2BPu+oA30t3CvvayfJGBtOo4KEcsTgY7xbV9OZz0KkY=;
+	b=nRQ3v9S6z6voYmZh/bY66sxko0G4WWqmAc+9LbAjZgYLrCcQqiN4Aoko/kwNhxxHDLXS+E
+	CRCwJlrxbKPhC5M7dxaIuruN1tVvALzW9biSG3tUqJnPammCtMNJFt4fQGQ4ue5SsYMDGB
+	8/mpj+vi2tyXEqmWyfQWX5/vj8ajw4s=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=bZ8cCMhP;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=JnKN14oA;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3bI0EawgKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3bI0EawgKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-574ae6cc614so3836958b6e.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:01:01 -0800 (PST)
+	spf=pass (imf15.hostedemail.com: domain of 3bo0EawgKCPkenbumbdlhpphmf.dpnmjovy-nnlwbdl.psh@flex--dmatlack.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3bo0EawgKCPkenbumbdlhpphmf.dpnmjovy-nnlwbdl.psh@flex--dmatlack.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-5384e381fbbso3291720b6e.2
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:01:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795460461; x=1796065261; darn=kvack.org;
+        d=google.com; s=20260707; t=1795460462; x=1796065262; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pH/xf3kQm7acLfNhYZrfRJLXvU+0NBXvSnbGGfIqejo=;
-        b=bZ8cCMhPaAwU8UUu+ZCnyKRiAEEZsdtYZTGsOF/SckfbugD+vqpY25Xx+MgWYko9Rb
-         Mevy9trcFfVddpduZ9xispeJUZkSUoI6hr/TVYuREqByw4mabGI4JQi0Br8Sbf8qDE2e
-         HaxjTiSCo3bch93hwvz9iBX45ApIOVvyrnJ3wN0XjwBi2P569STxdF7RDHeLZdF2VXJ1
-         ovkQMOUfJM1vuXtB6uKRYnjIEGO3motg3n/9pnssLsmzFYX2CLbAc7ZrYiI/38XkRY0t
-         hR4mib7xsD674U3tXzor3n4Poxu1eZuyyx6fQ6YTC0h6h4bvb+Ka5g8bNHusSj6z6Hon
-         JdsQ==
+        bh=2BPu+oA30t3CvvayfJGBtOo4KEcsTgY7xbV9OZz0KkY=;
+        b=JnKN14oAkOnX1vfPON2YiZqB2kH1CDYvKcTiYMJobKZsPiWrAdHQQlWqoxOBiMpulj
+         c8VWdFwjBH71b6oGnNCLTLAjiM1F3i3rxPwh38XXDWpTiPR/ahJ7yx/jtsqRQWXWHvxg
+         nUJ8ACrhzecASdMFREdbk9hXX1l7FU5VFnpiMYnkmD8BzIulXLJnN+wgeFlP9vieUGft
+         r7rs7kye4hPIOZXot9TajhBRx96VWfGQYg83Cs1nR7Zunsth/I7hadt/QefBSZ6wZ5pE
+         mLevRLR7W+eWTAm7b4kb48Dxy4hFvtqRqvq0bYDWK3P9VxB7Eq3npqudmEGghWUUGJBv
+         +EBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795460461; x=1796065261;
+        d=1e100.net; s=20260707; t=1795460462; x=1796065262;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pH/xf3kQm7acLfNhYZrfRJLXvU+0NBXvSnbGGfIqejo=;
-        b=YBEP/sCJCVINTba0EEkBmUj0E/YOMQSQzjLQwdFdTm1NMBZyFWAlcvejXiFGU4xGbT
-         H9UhYdNfN1ju71pxGJtUQUJe4gKxCeMDp7gcpd+WFRtMOFZ7R/QX4orPtqlAYZ2ccbsX
-         4SO689bnGzwD4ijL7YrPndOn/+k4YxGs/Htm1xy/XI5gFGjgWspP22Il6iWoEjNvhtk/
-         R4prdl0BALj2/Nsux8xV6ixZiqIWAQ5PIGkAbvgI+oON72FjgIY9ePqRQG3+SJLjyKXE
-         Z5GT/OgDraYgNsVO928bmkvVD8MfzQUYzC7lqVE9uGd7fq8IRZvpaVi9hdi+ZOQhLeYZ
-         kmJA==
-X-Forwarded-Encrypted: i=1; AL+hErG9HWSwpQvhOKRfEqC+9eDwvncAcQ98QAsO72xdJse+c3zN9DaOb5mfWkYi/QsG9cWZorikGXv+Vg==@kvack.org
-X-Gm-Message-State: APuU4Z8RHNeAq5Z60bQy6NdUCZ/592ekmpHrSGoPYE821uxtV72flRz5
-	STZWiGkFn9uJCyYkbWvFonqFY+iCryOL09WVQxuamd/ydvkhKROwprA7q/fOdaUNkIKNf6d5AZb
-	z8PtopJk0uNrkLA==
-X-Received: from jajj12-n1.prod.google.com ([2002:a05:6639:18c:10b0:5fe:be7:9ab2])
+        bh=2BPu+oA30t3CvvayfJGBtOo4KEcsTgY7xbV9OZz0KkY=;
+        b=myDPH5LJtU8W0RFcojOosTx/CaIDL4mzege2qLEyC4DXUk4RGHpzisI4dsDNENaQ03
+         8RzJM58YBSpAhh3fPwk3rh6PhKfQ4GzjRV+wFlmeoPrHckmFhpelcjk/RZAopwwuKxee
+         9wBO/oF+znyUstTW3OyH5RBQsaDrL14HlzvGCVUgklHvPJsisP1+2kOOrd4cjUFX1AAB
+         XnTgtRN71F/enNS+YBat93YEBS60KIAwPftqynBxL60l3IoK6fiHccs2/38FmMYGXvWA
+         4sAvpJkie1pnWZwEnu/S1qmU8MKoTFJuVGDlW3qfOqWApEHCcf8bLPw5s+9VYTU//nHS
+         Aing==
+X-Forwarded-Encrypted: i=1; AL+hErHUVkrxjVY40I1qhGujczY9+KnKWylS6V4DOxaABx/i/ySTxZhazx2yKsFm8KGPZXYxAAkfFn4L0g==@kvack.org
+X-Gm-Message-State: APuU4Z/mWXn4rY4xJf8RABSV9N/QSx+2CImvex6mKTVs0ArXROjXkCEs
+	6Cr/VzZFw96GGw8pHv/rANu/zbeZAE+Phg6li76xMIH1vDa7NgpCZx7i6yRItgJS3duJTFg9ZGS
+	XpEaG/s+voDcYfg==
+X-Received: from iobhj14.prod.google.com ([2002:a05:6602:1d8e:b0:9c7:4d20:1320])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:6d93:b0:4f1:5068:b93b with SMTP id 5614622812f47-5797bb9fad7mr10333977b6e.14.1795460460873;
- Mon, 23 Nov 2026 11:01:00 -0800 (PST)
-Date: Mon, 23 Nov 2026 19:00:44 +0000
-In-Reply-To: <20261118223704.3286085-11-dmatlack@google.com>
+ 2002:a05:6808:3514:b0:571:a186:d6b9 with SMTP id 5614622812f47-57a0a30a106mr14736384b6e.13.1795460462155;
+ Mon, 23 Nov 2026 11:01:02 -0800 (PST)
+Date: Mon, 23 Nov 2026 19:00:45 +0000
+In-Reply-To: <20261118223704.3286085-12-dmatlack@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-References: <20261118223704.3286085-11-dmatlack@google.com>
+References: <20261118223704.3286085-12-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261123190045.2166865-3-dmatlack@google.com>
-Subject: [PATCH] fixup! PCI: liveupdate: Adopt ARI Forwarding Enable on
- preserved bridges
+Message-ID: <20261123190045.2166865-4-dmatlack@google.com>
+Subject: [PATCH] amend! PCI: liveupdate: Freeze preservation status during shutdown
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
@@ -104,19 +103,21 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alex Williamson <alex.willia
 	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
 	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 37FF820015
-X-Stat-Signature: z8angxhe4gcireigey74iba9jbaakd6j
-X-Rspam-User:
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795460462-207070
-X-HE-Meta: U2FsdGVkX1+3niC8WCRgTx4yRXWTj9LeHpLR182b1CcaWm8lUW5ye+vDx95IcX3HqPhTPmC0SR4GLpjmgke0KgCOZUYUB7Kw38GSFfa+MbB6aaxhmfTx/70gwVVPRJrEVfrm/AqRMe2cuhuO1UsZXY1cbUDaw3ZfsGVRgClGwoPj552AllZm06k6Ik3EkedYnaqEmSlkkFvmqS11XUlCj6bauvUQ02WSlO40TjH35yeCfmn8ak8FAXi7X/IAsbX9NCN8AqYnHXqjxVp3SOsE3RYLChm+pdX1pjGOuOQqjFfJHNEWtRkTBG7C4p/wX22akF4mLs7TaJeHwAW/Dkwa2DuzdR3OPn1chzA1yVrlD/Qveq1BYLJgHkfQxixSoRRXe7JmNKMVhr3PYArt1/i+6p6FsYb4Zrw715BXWWt8b48CLiTKsHgwxZYN1/vi8HqrHw27m3bj7ioE3+j0fywP0TnByp/TU3m2bOT8lxGz54p+qjLJyf5F12Yq8r3ZqOJ2n2wPMxwI/Zi1Zu2+k2vghG426AiIRsU0Ddns3aVSIY3vqFLC25zlitSqr7RqA9E0Fiz9GOGhEDpic3IcWRxLr/RBV2OFb/+9L5mSxKx2/KBmVpaRdourF+72uMSMGZVwwhL3hL7MQGW5dTFnDD1Vzac039biywMcDPdmOJvsh4flIjKVqC6bhei1fW7yLIVS2jDkr8QgOk0dVIE7h1Mfsqe8zPwxyyqX3ONY3ZmgI5GxJm0zHT5FYJjWVqJNdzZ+SxS4wiDOPkWazRKCw9pq5EIWVVG4/cEQZ+h+ZBErrdLPtyirc2wNtL/dAVoiIqsAS9hIy8qbr8qBKQDB/Zqa2j/wXzy11U4xT/jfBakMJ79CL/FJfNhQUHRQak++Wl86K41ADqNSCnLNw9sTcIOQA3AYDbO7tVSUKeIA/sFLudyvPIAhdbTpBRtlHs7cBRMTciqIAhFpXbASShCPqss
- EpHFAqnm
- doRB+UIBWRWHPo900g9lKwYcj2Wz5tFlPbKyTm4L0jDFppi9x/GAuCkOPoD1JMrcr/zXTtKNkVs5keKoXUyi41XJb/ysaroSbSEbzZk24CfGRyH/5mtGzmva2bnz5g+VZoKQK3siqoo9lJIdZTZzvTaUuVkqBdm9pMJn7w4h+WqDDmOXC7xar5x+dx0paFELKpnzsPC4uSiEx9oe8sEOO3E45DhS79k0Plgy5pSVktzUQyRyFW8igfqQWHV8v0oU/inOs3wXDuv/x/rCuHK4x8I+oxaTydpA4gq08eVrkKIVQkhoaa23SULpksA43bBh8GAddoY1J6haD2FnhHcAAROj4ZpgvzNreAo1lzJMv7xCsBPkx9byUI11RJ8VMNXRmACC5JZ6ikz8jA7MVaoEfFwk4qxkbpGc0nOH+kaKcarwBNJ2yuMfUi1AMdI4CIf6omkykYeVnmvcgwIFUaWVcE1BpMOs+huty7n7tHm12pyjyLa4+sygJ3+Sah+m7h59aF8J9d57VRnxmAEsQNP5u50jmpwhkqZFQM/sdrVAQ6+v9QSb0ufVpu8SXFpe3tqz9WncLr0VZh9TheQiQNwPYiGPbUCZpafuwuQN3Udt2gGW6SaLaglkPeTKFVge6L39qE6bvEWuIV4IfI04tI5UZ+MxJI0CIl15Dwz8/Ei4sOEy7sQoTawI81xP/tZvSm/mvFhxzET+96Eq7k131P7YjeQRNkeb18HyzBGkKvKEZUjrp2sUti9Hg8tk/mftXE1pZbXIJMBlxXsU9jSJVenxhn0yljwtONMdPoFnAclahGROROa+7sgYWlQ70+H3OIOQlmf8Dgjd0UuOYuF8=
+X-Stat-Signature: bifq8dpna444qjni83xcod7fqzed3e1t
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 831DDA000B
+X-Rspam-User:
+X-HE-Tag: 1795460463-415524
+X-HE-Meta: U2FsdGVkX182VfBiET9GVpOQJdAndgfB0t+YmL8miXGr1cvgCLosf6vfNjvoW+hlvaQ+b24qoy27Hv/d8pggOzv7PqJTIW/aKe/2oyqPj5KRFIJDVID04+TkzBOY5+yEHGmav0Jyjl9IpD+jhujye1O7tgo4w4HxusEsUNr6XPVOcP/n+M6+DibrslYxc+VA+pkkgnwZdTEsRzkQnoMtM3b4O7gz0+eWeQUIZYiBhN/0vUsqGmzf7UaDsTVgIsYU433YdxDKeK6JiN99rHSpW9P8mwTFX/SG5Ett23qc9aN0dxN/JpyZWJv9zJO5ImQFbSFYkK/8RNgP2KrZr6a3qgRAx0LvwjyfhQewxlw3Kq0ZFSwnU+8mImSsMHWh/IfvYozDGoQ5cxbsoR5Ov2mV/n416cCJOJzk07m49gCp8fkMjNE2PlmVIMNRbOF6vIIdreXhbjouj1Va6A5YMTGcV7hnXGlV7QBkz0/nM9zfWYGQ8uL5j96MouboX+CBz4WQM41Ep0JCrgNKEsLkXTRpoQEOwsm5pb/dS8U2TKV3OgD7Mwdu7QNekdfu3qL6DQOn4KXUEgSWiipZJ8u9HSDZFWI6ciJUUenFWsx7fAMQOe3ywMxD11LBllYwThb4zlS89x0p7I71pR0T0JxgRyewQBuq1DW1OLIK181DK4q7oxj7dEbvsP1uNdxoPY0t/pT3yg4Uw9J7nAimQhvy/jZCjD/ePYXtso7lqg3zWrQeB+KXKjWAQgvHrY9NrrWjY92GP9Ckod8rHiiX5rXqOk8LaA+bZVjCPicrey2rwhiSZMho3ccYWhh9OEDOUivjgrV/ksWef1eSOkWBicJdUP0BdX1CB/9oHIqY8qSSJd8v+0y2gw9YRaYGoDihO+RdHS4liGjXZ3Qp09spLebKU2p+hdRIpHkNWF9Xwvqf1GWS083zn86wt4ky5S6j/X7EU2kc+2Rud/xD17rXTlC4gNt
+ E+kLuIvE
+ WEtm/VH/yO0ybz8rAgX3x7ygzyowJtEwAKBxo5ByXMgvOni6YGW9FE+LcCunQrnviwXMzZvYatFpS8zXZ/ZHULikaKkScOOXh48DBrD0Tr3kaDSBxTZ3UdR5zv8Lm8iT81DrTtI2NVYIhVHRrn4zVzUp1GrnQ4wqEHSeCAlZgQ95RGpwfnQNUGYxTFQI3rpoexHDufqIoxa1clevAvJ0NJlbACBEl8PNr0eTTRcer071OON0eBq+t3ZHHMdpAZqcmYr6Si1H8WGAmUHdcrrxOc8d1kaU1co03IKIlT3G653B16Pz40d6z/dKFe6z6MD7c8+3zJlFQuqea6uprUiJXyjCe6P0i1HaGAw9cqXMTJC6WAezRtKjGX7rBpFkc1wRoT4Sg70Ukejx4inAfF/4V917KYJdOHdPmVXepyPzb/3q7Gu2qgQPKldjHEv5Z2fY9cLYDA+56qfvX42G7Q4j8rNeB3HlGF0m+fp02SUHqVOcrBHUZZ4EhIzAal5iinhwBwgJ0wdYVYao0p9JC80zOU0APSW8PfkNMd7iq1cNPNxqr8u6hfcBEQ1Qa5MrQ31JLLsktYIx3TUEWo3OoOY/4yniuvZ18Y++tJ4ObcSQVSkp81ablkez7vm3uc0OsrYrM1CL0sAYCvnNibd+H3wHqut9dVz/fxMF7fOANLhBlZpqH6CizDUKqSb+yPHLe37ZV892gMYxti06cQ/Tw5b2HELUp8dQXtcM9eufa3Pa+tbYSaGCeZpNUigzr1bTqOFQ6EVlp6hTSVSlXx/xtVIw7k48jouTglIMBNzHBGEL10/ipNceX81UTSSrfVR5NXHsa9MGQM6KL71x00W8ZX5cuEWB/xkoq7WcVLGX7ZOm1JRQLwxU2rDyFxfcZz9Gc+PurmGLqkm2zksu145mPkJXmedWHHMg+00x8TR0NSgpz4Bp+efAGhx85KD45ygpGPyuoCmipUCjcb2DrEV0V7E3+/2uqkOux
+ M/U6fLKY
+ AoQaZCYlWeDVmlEfHQGR8dgIeMCh7x+921Cz1BOuLHw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,45 +126,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Fix the comment in pci_liveupdate_adopt_ari(), which claimed that ARI
-Forwarding Enable is always recomputed after the preserved devices below
-the bridge finish. That is not true with pci=noari, where
-pci_configure_ari() leaves the bridge alone, so document that the adopted
-setting persists in that case.
+PCI: liveupdate: Freeze preservation status during shutdown
 
-Reported by Sashiko.
+Freeze a device's outgoing preservation status (preserved or not
+preserved) during shutdown for kexec. This enables the PCI core and
+drivers to safely make decisions based on the device's preservation
+status during shutdown.
+
+The PCI core freezes every device in pci_device_shutdown(), not just
+preserved ones, so that no device can be preserved or unpreserved after
+its shutdown starts.
+
+Only freeze devices during kexec. Other shutdowns do not depend on the
+preservation status, and they do not serialize Live Update sessions
+first, so a session can still be torn down after its devices are shut
+down. Refusing to unpreserve those devices would make pci_flb_unpreserve()
+panic because they were never released.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20261118223704.3286085-12-dmatlack@google.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/pci/liveupdate.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+
+Notes:
+    This amend! also replaces the commit message when squashed with
+    git rebase --autosquash, to explain why devices are only frozen during
+    kexec. The message already includes your Link: and Signed-off-by:
+    trailers from lu-pci-preservation.
+
+ drivers/pci/liveupdate.c | 2 +-
+ drivers/pci/pci-driver.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index 520c7530475c..08451452fa54 100644
+index 08451452fa54..76e939ea52eb 100644
 --- a/drivers/pci/liveupdate.c
 +++ b/drivers/pci/liveupdate.c
-@@ -938,9 +938,14 @@ int pci_liveupdate_adopt_ari(struct pci_dev *dev)
+@@ -127,7 +127,7 @@
+  *    Control Services (ACS).
+  *
+  * In addition, a device cannot be preserved or unpreserved once the PCI core
+- * has started shutting it down (pci_device_shutdown()).
++ * has started shutting it down for kexec (pci_device_shutdown()).
+  *
+  * Driver Binding
+  * ==============
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 08b768b9e905..2748ca22e9cf 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -560,7 +560,8 @@ static void pci_device_shutdown(struct device *dev)
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 	struct pci_driver *drv = pci_dev->driver;
  
- 	/*
- 	 * Unlike ACS, only adopt ARI while the bridge is incoming-preserved.
--	 * Once all devices below the bridge have finished, recomputing ARI
--	 * Forwarding Enable yields the same result for the same device, and
--	 * must be allowed to change if a different device is hot-plugged.
-+	 * Once all devices below the bridge have finished, pci_configure_ari()
-+	 * configures ARI Forwarding Enable as usual the next time a device is
-+	 * added below the bridge, e.g. if a different device is hot-plugged.
-+	 *
-+	 * The exception is pci=noari, where pci_configure_ari() does not touch
-+	 * the bridge, so the adopted ARI Forwarding Enable persists after the
-+	 * preserved devices finish, even if a device without ARI is later
-+	 * hot-plugged below the bridge.
- 	 */
- 	if (!dev->liveupdate.incoming)
- 		return -EINVAL;
+-	pci_liveupdate_freeze(pci_dev);
++	if (kexec_in_progress)
++		pci_liveupdate_freeze(pci_dev);
+ 	pm_runtime_resume(dev);
+ 
+ 	if (drv && drv->shutdown)
 
 base-commit: fd54e32f7903199e8acb2762dd2debfffe4501c4
 prerequisite-patch-id: ac616bdf67b652da754c7b00a368613d345ae384
 prerequisite-patch-id: 9c324eb4a47b659efcf7c0c8bb14acfcbf5d615c
+prerequisite-patch-id: a1ec7135c2c0c8f90b12743df9e4620ab2ee2f2a
 -- 
 2.56.1.809.ga0b61035b5-goog
 
