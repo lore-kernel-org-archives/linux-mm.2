@@ -1,105 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9032D606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6833B606A33D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AaLVXHtb
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kPczQ7Sw
 Received: by kanga.kvack.org (Postfix)
-	id 3E2EA6B05D0; Mon, 23 Nov 2026 09:19:29 -0500 (EST)
+	id 62CBE6B05D3; Mon, 23 Nov 2026 09:19:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BA686B05D1; Mon, 23 Nov 2026 09:19:29 -0500 (EST)
+	id 605A56B05D4; Mon, 23 Nov 2026 09:19:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D0266B05D2; Mon, 23 Nov 2026 09:19:29 -0500 (EST)
+	id 4F3F46B05D5; Mon, 23 Nov 2026 09:19:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 090196B05D0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:19:29 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66A66A0915
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:19:28 +0000 (UTC)
-X-FDA: 85466591616.30.2F239EB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BC3A718000F
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:19:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AaLVXHtb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E7C66B05D3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:19:38 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99285C08E7
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:19:37 +0000 (UTC)
+X-FDA: 85466591994.26.925F4A6
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C723B40005
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:19:35 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=kPczQ7Sw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795443566;
-	b=Mt3a/jYMlmwB8DJCKSl8fxw3n+8dZLzdfpFXXmBltSqiN06HxGNXSRM0fRltePeH7jfoLn
-	JvO9jJGYFOcLfFl8WFnsdHzcAZppe0O2jjfGPPXUHXK/hoC1S4kZDuiWK5O0MuBw65Glco
-	UWULQAq7uMCbwPdRxF/EqPBpI5Wu4q8=
+	t=1795443575;
+	b=FodZal/v2P3I9nPlYW8OXLVsFoBlmDiN30u8v654KH4LCzI0J+kgdIravKnrQEmDUIhr/E
+	Vnxv+DujVs79Ba3xO9rptK9OVo93hTqdlFZPttDlgyhAkaxaNUL0xgoeSuAdceX6KQ9yqb
+	Z+JFfHq0k1htNbX4kmWjwyic6Cx3h68=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795443566;
+	s=arc-20220608; t=1795443575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GYUmmEAb22LnKFiDajxYM3OVr0FaSmECDdgEbAZ9rAE=;
-	b=UDV03Vpub0ix4F20/zmVjOaphry0kW24Iuc39HbQL8mj6p9lmtZ2m8f+WuL7h3gSlg1fl0
-	sbUl2qpvBWEyDMnv4WFTBbsUYSeXcdVJJmaWRMfBy61SyLWXIvEoLcT5AtE4+Nv1deyU+x
-	KDM9BuDI5IYwcXz89jNQVL0/UC923dc=
+	bh=ftZ9KCAoOVfHj2aG9QGbjRXPabmKfwf/abxcx+jklUw=;
+	b=NTTZ7E06Ws7E1iAp/rUvXk5r+skpJKit5TZXwN/hoV8yDD8fsZXGyvBu/mfyjGY01ns5zb
+	row26FUF7M96tHq+unigTmiMyAiCfUgFbs6RvV9CSOUOEi8DmoG+/5Wy5agDBcIcb6TdPi
+	eMtjICJSecHMUWDptz2L7w0p0gmwfeU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AaLVXHtb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9C79444CE;
-	Mon, 23 Nov 2026 14:19:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB2B1F00A01;
-	Mon, 23 Nov 2026 14:19:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795443565;
-	bh=GYUmmEAb22LnKFiDajxYM3OVr0FaSmECDdgEbAZ9rAE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AaLVXHtbhSoF5Kp0N7n7e1/qzwNIKpxRTRfbxy4X/KCRSq5u0Dm7EjcZ2MeLid9BO
-	 YD4Ii1u0BRqi+IHBl35rj2kTDey1hEBSDKuESK941QQS5xjXXjV1eq7sVsb0MYTmL4
-	 q5ciDi+Dllfw2U2vISzGBs9dXwNgEmsibenM7OqW4ZcSpIqcM0k2C28rztNb/qIE/E
-	 T/+Px2OaLLuQ7KDeo6/bDFQkvIqDwM12oFhqvDXSj1wfhjpWbQ/Gg9NirHzS7hRsPG
-	 By/Rm52+U9rZkwyhJQzJjgl8y7rlGW+tS3jvIbiJ+6RVmBu1fL4RmPTXAC9XGWHP0Z
-	 UvlsaiSK88xog==
-From: "Harry Yoo (Meta)" <harry@kernel.org>
-To: vbabka@kernel.org,
-	Zhan Xusheng <zhanxusheng1024@gmail.com>
-Cc: kernel-team@meta.com,
-	urezki@gmail.com,
-	paulmck@kernel.org,
-	qiang.zhang@linux.dev,
-	akpm@linux-foundation.org,
-	hao.li@linux.dev,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	rcu@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zhanxusheng@xiaomi.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/slab: restore the rcutree. prefix of the kvfree_rcu parameters
-Date: Mon, 23 Nov 2026 14:19:18 +0000
-Message-ID: <179544354578.3575060.11576418215536505542.b4-ty@b4>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261120083707.296481-1-zhanxusheng1024@gmail.com>
-References: <20261120083707.296481-1-zhanxusheng1024@gmail.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=kPczQ7Sw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-386b8f2f671so404780eec.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:19:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795443575; x=1796048375; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ftZ9KCAoOVfHj2aG9QGbjRXPabmKfwf/abxcx+jklUw=;
+        b=kPczQ7Swopd25u/4MO5y/WO5DvIYSvLkqrlUISc/QjkMfcYETYjqQ2b3BuPwcZh2ta
+         QJD4wAQyHyMPgOzMAuwDJOKLmcrHnNG5D9PnFUE/q9do0c+X0V7ivplOfCXnF/W7dUiy
+         tBjmaYVmfAmbGoJtGEez0bVtVHsMV9pOYS927pfCDx97g/j3k9SKMZazXji4yxn8m3kR
+         e+5v+T7eStx4aHYnVloKJ0H5X+4jJw6h1jo8mRrPkhdIR/V5kq/RGxWacYlTkwyT4giC
+         uWnvA6u7yOZc8uQEfI4ZXFlIdjBuLYCTQ6I7ajV8LceOuZmJZAb9FKsF9zWByzKaORA2
+         wqgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795443575; x=1796048375;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ftZ9KCAoOVfHj2aG9QGbjRXPabmKfwf/abxcx+jklUw=;
+        b=o2mIn03HEzeF3jLvbFnV4dYsJi0qgUPrs+ye2iqOGsjRIKIKrQD/jrSShGaSdo9RSi
+         IyyfnCdgbm8vKGY/3hzVw4q3fljSSu3wzUHdahDm5PFmljIdtEKHLQDZQO7a5485vm/V
+         cIbY2grFVaft30LSgNq1aGLqnA1qLjWBUgep9AvjzfpNh46mvb6w3LWrQ79Wxe9E1TEP
+         FwNV30IxxaiPCx2R95Hl4LNi762oLEZtQMXo2p5O0DUKiL+m6/00Mu1KzJ+1zD0Kb4nA
+         hPb8rEHqj6m8khcdQsFf1COWOuhGo+WK6QJkoFT+IN4T31dwND/G7zgPEz8vBOMZ+c6b
+         1P0A==
+X-Gm-Message-State: APuU4Z++Rqfmlj/o80v5al9Hpo71HPJ6YhrVwQ/HBPbhG0P70njvxsAc
+	mH19ooYWlA6I2xVdOsznGLwOKo7sJGKB+3bM20vJk5mIFYYGRFVM4Jc3eqj618Vt
+X-Gm-Gg: AZFdTZfdTiwg5Ctdfn8VaxQg2bi04r0eTOcdyotSgA4ZfR5mEIy3CaaAl/JtTa2ueBn
+	vV3jv6xJ7nsgzQpPVYm+8aLpx0I7ZPFG8TJrU3VmxuhkznEsAr75WYjDLOEMdn/UH5TODoSgTy6
+	XM0zWA1S+Oik5Z6MCiUN/2+cCT2gn8ScBiO6YUzUtyCfiEV2KF6aERHlIjvSejQV59dPT4jmEfB
+	1NwbOIyTI1KEnWZRvFZstENXmIcdL2pxzjWH5OiKI3TlKYXptLJiDVmfQt80vbikehDRpMSEEHm
+	PP2C8qsaS9mPYphP8CTwqdG0DHJYd96U5Popa4A0m/zUQdFl8XX/lI1/Aa98sgo+cOs/Vx1xajo
+	UNyrTgQxnBmuNNJDOoVZHa2ynhLc+TKO2RxDgbAFBkVPCiyraGj7Ow6ErihXkv/tjDdIOSzJbLN
+	94sKECHgK1TP2dKTCOQwWlWlHC00GyrIQewAYzCIflTMmMa8UoGRF4hAQATmu2IBORIdJv5oIJ4
+	f4vv8+gG4dCV1F+Zmk4xB4HQ2GMzLL4+pwexcbP5u/Hm19yUvJSXEr+gMeVD1GymkjHWCHxN5pW
+	u0RVMNeDytvjkdMZLviMoFQ2pC0xh5V/tpG+1qIyjsYhZoh5ZGGY8gZD427CSDzZ5uja
+X-Received: by 2002:a05:7300:2202:b0:36a:1e9e:ae61 with SMTP id 5a478bee46e88-3857170afa1mr17567764eec.38.1795443574544;
+        Mon, 23 Nov 2026 06:19:34 -0800 (PST)
+Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38567abb870sm30652112eec.25.2026.11.23.06.19.27
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 23 Nov 2026 06:19:34 -0800 (PST)
+From: Lian Wang <lianux.mm@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>,
+	Jihan LIN <linjh22s@gmail.com>,
+	Kunwu Chan <kunwu.chan@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v5 15/19] lib/plist.c: remove requeue function
+Date: Mon, 23 Nov 2026 22:19:23 +0800
+Message-ID: <939710bc5e908b4e30d86aecacfca0524ef11d6e.1795439990.git.lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <cover.1795439990.git.lianux.mm@gmail.com>
+References: <cover.1795439990.git.lianux.mm@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BC3A718000F
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspam-User:
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C723B40005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Stat-Signature: guoudorb4tzuyx9tzemy6snfbckzafih
-X-HE-Tag: 1795443566-411887
-X-HE-Meta: U2FsdGVkX1/tUaF/c0IE5WNOBFjlb0CFtWW6bxrH/xrW1AxJE6BEZ5KPvs4bEBfzsYPRn2lbCM7BZve5njjCsz/Km8iH/ZldDIJ7iHpz8K0Ka9N5NtHemfe6sNW23yY6T86+Q/9XYz3XygKx5zbl4q+6ThFQPJpj6xcMANIN1BnqByD3c8gFfZcrmHxRk8FNEcxynnqyGHYr1K8UsnbEvpzEmU2pHkx/1mSy3vHxNJildaafwrs3DPo9QMoVUtNJhN1+ZrZN/K3v7KTHFrkjxkbnxndvSl2r0Y68bKWtvTAxCpsVHub+uzhFv2Tj3oZLKhBZKwXMXt+FvNUKnsVBKW4W9LDuEw5vVkrLb4tyPFndFMX9RrScTkkS2xMoyw5MO/x1PBCVQBEgadpE7TqqSwU9Iv4FyO4IzjJj+halpJbMcx2p3W3DnAi+3Oo+7+L0sJMl/ULIC3/Sv8c5U8Wm+tqSfwp1fLefGy4bUzmQV80q8d9tgaipRhy4uZ36EJdkpivNZs+P/WkzEJotdZQrXBdTXhhHcU+faekIjQCSOz+klaqSl7e6I/pP4YKNBr3br+b8ONwnltA812yXfWgHjGA0L75jkL3AbosqQQw2JE55lWhWcAOr1QzupZZXeAlElGwkOu1T0dBx/zY1vSNDeHovXzJSFl8QufBov328jHG3PRB4tytZJjwDKerXBI2gbQP+wFbWf3uGBbwfePBFojBlfuhMHP+uBD1q/ZWGkEBBiL4sEZ0dDkbUe6lefwYyHbHX3jzAlZ+eOJxu0Y6jwBmc5p8Gc/KqEHJUubUiHl1w+EjhoeWt73UYW3XwbofJ0ohMqSNI7S74nld4EXH+As3IwHe0nL1kR/gGuHHk9hWfs5qqbrnSfG36g8Zq48xKU+piGGlCVI+1/1r4bbZZbER9Z4YNIbXRNEP7VZRfuR18pdY5Ep0gCQ76qtiLK83oL/3C9E2uk3QpfAZ7vzW
- h5/rJWsL
- Sq6/MLFBet/z7JXx0Ir7FlERRJ06ASQixjZ83biUTkoNkWlept9jVwcjsEFUSKqynRnzUZ6Kb9DnoYE4/PzHAKV4bCp09sQSTOlX7wWH1KBoBZ6OUct2tEbcyw5QVA5oMc7NDCELsfqtVB2HyOhyrKf8ChNtCrZMBBU8vpbFe1l7iYnJay700JpclGM0O84zDOaUEzJII4/CtG7A+xhfcAa3l04a1onYZNFNVXVH/6bY1V4GJTMpVFVvGGkNPnwpHWdVW9Ko+V3JFGyHmFSRCQUEu2+m9YYV18VZfdg/z4G5ifJh+aF1zqwaDrrqQioIF/ytJvfMFYsZ+M+cEl+szIyIzbQBxDbgFiyoTq6SyqcPX0tnyOIAiX0R0p6Wb2k+G700y5jWkDm4Shb/clqEtunXRVcHhwkkfAF4I53dgYlUwH+GZGYhifjmllK4X6pgunQst8PJwTWRsPYC/26mxiNurwEp8kG0mueKKYYLCj+lCEYCCaKmZ48rT4Q==
+X-Stat-Signature: soyd4cwwxj97ob8f6bz48e5kj988f4px
+X-HE-Tag: 1795443575-112143
+X-HE-Meta: U2FsdGVkX19IDkB7AuAf9F6FxOZiF1OyTVHxXh3AhY709VuEuhLbRtmhjdqILfYFM5Evtd5DFv2uVjugdgeJkL/2eT1DFieplm4BX9bxh1ZYWer++fs4JDvRCUTk7lBDwHDif9T8kIQUXT6ISgkKmWC6myk5j5p6igOITySQnwiGb0mPRf2f8+SRfeMywdTswXgY74rKEKpCbkQzMCG//atP8LJiumomJvu7FnvGph6to9/8Bq4NUmszVLezEmNT4gxq+UWDsXUt1Nt4ST7lIwuBnV8XMed9M2UEMPUsorvvZK4hiqER+vbSOHcCcND0Nta3YwgMWZ4njylWajG1SMQugzvcoeVK2AcZkg1/xuNCpC3sPMHarpp+b4SrID+6zf3OS9vL+F/dsYNLbSINYB2zDKkjktAU7mDdzTxw4646V4Kp7o1zDRHqT3tdbE3u6ZtXSM2bVSiJU2wpUe55Tr1w/BWnT6ltJYyW41pCVCcj7mfI94YI5CyxhZY73uXxtZy9ztEwkVILrXKAiEncGxH9C10rPUCe2jN8Z5ptSGILOMlWbc62RjFMBYJbioR/UPZSEUHgP1FiIWnqZ7qnGk6NuB4KrD1Ee97u2l9ONCrfdk0JUy3VIBML7cjw/rMTwJ3yCcfNA6TniNcYRVMJNU77seBJQ3bx3L1nTKEiKmIlrQh7nvApyH7OclrMk4gmXBGbUrbUu/v5JN1kbRJFdTdG/X+HKUfiOL/VM1SWUV0oiAvVTXzk8aMZBl1GpBq452L46AjCBbxj6uNjgvuTMccSOywbHfpLWKYKEwpRaIYzdfNUFP3WKuyGQQleEWGjbidiAOz23wCXzX7Rz9eo1J0dZoi3R0YB39aPrMyypaLT2xR6Rh7yc/RhZIBbMoLS+PO+Jpvbq67D2ub8mjqfaU9rNEiUg3jWDOiA7E4oxyM2V8NIeiLnjiBDobCutL49SI8z7eAZExd0TNH+X4X
+ Iz1dCG3R
+ 5C0Xwg8T1j45Hs55VymK9hR2lLBQdRIOar90gE9SKUVMuimHdypAOfXU6MTrypy0jLd50kh5HOCkQ6N1z5f9nfwSVuxzHsP41T0rdcCAHPAy77aJyZuW4miOsz5qayEv+iQSaq9LnfLYzlwZOrQfpcCSTilo7net2TwmOHRmG2c+FApjaIre7hjqSRHe/3Kf17QC4Yt0jtZLtke2H9v2L3R2C5/nAnSqHKYP+ZUAvd05bMuWHh7azawjMLHg8/kEN55PdGlqgn23OEBxvvMWuYq7eMBCdlwiVaJyxHwau5k9xecIH/A5OZABfSpc0b/OxblEJSzR1pg9K6QXjl6QzoQNbzYqYCvSLqKzwKtBQg26gXT9yWNHIt4xJTIh1fF5+Ge/eWz0qgPn+pzUV8mp2l1V4DZDQ7tIHkzYpojAJiUL5HxrRYKcpwMYUKeeXpfuJpExAqmghTsZd5WYFuEoY+E5Up4R4roenkAg8pDvXYwbnvZvP9FVcFpOikDkMT+egRl/Cu45PC7DvLWNTr7VEVbZXR8u8Xe4kRZ3/WB1LyyAfUYk1IhryNtGAMXioPJDdCCIqWKLMLgd99IAdZhjNCY3MuTn7dqLb0UoWru765e5jBecVwMmLQmGF2KMAYVGxisqVL6lzx2WGffZ9ULOYOAfP9OK6POGC8gG5E9W6wq3hobTa2qiPelbJ1kRu+haPRFd/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,25 +135,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 20 Nov 2026 16:37:06 +0800, Zhan Xusheng wrote:
-> The move of kvfree_rcu() to mm/slab_common.c dropped the "rcutree."
-> MODULE_PARAM_PREFIX, so rcu_min_cached_objs and
-> rcu_delay_page_cache_fill_msec became slab_common.* and the documented
-> rcutree.* names are silently ignored.  Restore the prefix; the
-> slab_common.* names, never documented, stop working.
-> 
-> 
-> [...]
+From: Kairui Song <kasong@tencent.com>
 
-Applied to mm/slab.git slab/for-next-fixes, thanks!
+Now the last user of plist requeue is gone, this function can be
+removed.
 
-[1/2] mm/slab: restore the rcutree. prefix of the kvfree_rcu parameters
-      commit: 2197ea27ed0ff25cb294a3e6656ae6e0a23c8efd
-[2/2] mm/slab: don't queue the page cache work under krcp->lock
-      commit: 0983f88e2d6d734dc35cd9ba4f4c3b4082555024
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Signed-off-by: Lian Wang <lianux.mm@gmail.com>
+---
+ include/linux/plist.h |  2 --
+ lib/plist.c           | 71 -------------------------------------------
+ 2 files changed, 73 deletions(-)
 
--- 
-Cheers,
-Harry / Hyeonggon
-
+diff --git a/include/linux/plist.h b/include/linux/plist.h
+index 16cf4355b5c1..73d359c1a053 100644
+--- a/include/linux/plist.h
++++ b/include/linux/plist.h
+@@ -132,8 +132,6 @@ static inline void plist_node_init(struct plist_node *node, int prio)
+ extern void plist_add(struct plist_node *node, struct plist_head *head);
+ extern void plist_del(struct plist_node *node, struct plist_head *head);
+ 
+-extern void plist_requeue(struct plist_node *node, struct plist_head *head);
+-
+ /**
+  * plist_for_each - iterate over the plist
+  * @pos:	the type * to use as a loop counter
+diff --git a/lib/plist.c b/lib/plist.c
+index b0273533c04d..b05ae7ffea87 100644
+--- a/lib/plist.c
++++ b/lib/plist.c
+@@ -142,65 +142,6 @@ void plist_del(struct plist_node *node, struct plist_head *head)
+ 	plist_check_head(head);
+ }
+ 
+-/**
+- * plist_requeue - Requeue @node at end of same-prio entries.
+- *
+- * This is essentially an optimized plist_del() followed by
+- * plist_add().  It moves an entry already in the plist to
+- * after any other same-priority entries.
+- *
+- * @node:	&struct plist_node pointer - entry to be moved
+- * @head:	&struct plist_head pointer - list head
+- */
+-void plist_requeue(struct plist_node *node, struct plist_head *head)
+-{
+-	struct plist_node *iter;
+-	struct list_head *node_next = &head->node_list;
+-
+-	plist_check_head(head);
+-	BUG_ON(plist_head_empty(head));
+-	BUG_ON(plist_node_empty(node));
+-
+-	if (node == plist_last(head))
+-		return;
+-
+-	iter = plist_next(node);
+-
+-	if (node->prio != iter->prio)
+-		return;
+-
+-	plist_del(node, head);
+-
+-	/*
+-	 * After plist_del(), iter is the replacement of the node.  If the node
+-	 * was on prio_list, take shortcut to find node_next instead of looping.
+-	 *
+-	 * prio_list is a headless ring, so from the LAST bucket ->next wraps
+-	 * round to the first one; in that case node_next is the list head.
+-	 */
+-	if (!list_empty(&iter->prio_list)) {
+-		struct plist_node *first = plist_first(head);
+-
+-		if (iter->prio_list.next == &first->prio_list)
+-			goto queue;
+-		iter = list_entry(iter->prio_list.next, struct plist_node,
+-				  prio_list);
+-		node_next = &iter->node_list;
+-		goto queue;
+-	}
+-
+-	plist_for_each_continue(iter, head) {
+-		if (node->prio != iter->prio) {
+-			node_next = &iter->node_list;
+-			break;
+-		}
+-	}
+-queue:
+-	list_add_tail(&node->node_list, node_next);
+-
+-	plist_check_head(head);
+-}
+-
+ #ifdef CONFIG_DEBUG_PLIST
+ #include <linux/sched.h>
+ #include <linux/sched/clock.h>
+@@ -238,14 +179,6 @@ static void __init plist_test_check(int nr_expect)
+ 	BUG_ON(prio_pos->prio_list.next != &first->prio_list);
+ }
+ 
+-static void __init plist_test_requeue(struct plist_node *node)
+-{
+-	plist_requeue(node, &test_head);
+-
+-	if (node != plist_last(&test_head))
+-		BUG_ON(node->prio == plist_next(node)->prio);
+-}
+-
+ static int  __init plist_test(void)
+ {
+ 	int nr_expect = 0, i, loop;
+@@ -269,10 +202,6 @@ static int  __init plist_test(void)
+ 			nr_expect--;
+ 		}
+ 		plist_test_check(nr_expect);
+-		if (!plist_node_empty(test_node + i)) {
+-			plist_test_requeue(test_node + i);
+-			plist_test_check(nr_expect);
+-		}
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(test_node); i++) {
 
