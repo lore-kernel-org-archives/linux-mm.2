@@ -1,83 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DF3606A32E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5EB606A6B8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 13:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=SiwubxeC;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=PafwDopS
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=m0qrJodb;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=E5RDjo0r
 Received: by kanga.kvack.org (Postfix)
-	id 0C9636B05BB; Mon, 23 Nov 2026 08:51:39 -0500 (EST)
+	id D2C476B05BD; Mon, 23 Nov 2026 08:51:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A1A26B05BC; Mon, 23 Nov 2026 08:51:39 -0500 (EST)
+	id CD5F26B05BE; Mon, 23 Nov 2026 08:51:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF9A16B05BD; Mon, 23 Nov 2026 08:51:38 -0500 (EST)
+	id B9DE06B05BF; Mon, 23 Nov 2026 08:51:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C61276B05BB
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:51:38 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 57A034088F
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:38 +0000 (UTC)
-X-FDA: 85466521476.05.9CCD8A1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 829E16B05BD
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:51:42 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08DBB160893
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:42 +0000 (UTC)
+X-FDA: 85466521644.14.736742E
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6D404A000B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=SiwubxeC;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=PafwDopS;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3BB5112000C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:51:40 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=m0qrJodb;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=E5RDjo0r;
 	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf25.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+	spf=pass (imf29.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795441896;
-	b=17sPjq9JXth+0gFcFPm+BG76H0mzecGBjVTCo1K21ke9hNBzElj+wCWVPlmwEGeaMH7+Ir
-	sl02xoLPdaZ/NDBpe7WcVef4cXSkIELR6ytx9gzOnlEcyPXYzkth9IH2oVVBcXtxkD08Xb
-	jLb1kLHuuSRp9nRJiBJntIbiFlnC0A8=
+	t=1795441900;
+	b=fjbNoFvXba3OeQJvwApMpaDY3rxwKXJT7dGw9HG2eQcJSmRo13W9OUAwC4bRdPj1MTA9I0
+	mBi5wQGGgmevy9R/x8smr/KpnH2ggxfpAuePMLG/kXpkWdLHMJ+Pa08Nh8Wd26cvlih3Mb
+	CyWXUHyOkiY89Xy1tBwHJD8Kc2yAPW4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795441896;
+	s=arc-20220608; t=1795441900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pjaHNfa5Y44gCMgWsYt1z6nK9zr8xQHMwn0hbi1HiNM=;
-	b=3rkylaQtHyotguGbhFkhn+nKq4sxvRRtVwFnqrzMaFINh0VGmz7lT6aavc2PFcbE0fSdRF
-	EEwqRsoJwI615uXiz1MSLdamr7Z2epLLN2Bf7MnwGoLnd049W/cCb2TWL/5xYd3KzPA4Nq
-	kxuo6CQHTAetXHQzAu1wzs4gG3tySOw=
+	bh=6ha/Vi89GXA1dWoPWSXoNX2UQD22cCvUbJLDuPRU8LE=;
+	b=DIDLfSc8XH/VL35iFfMQl+/yPkxaJSPAI1bZNCJP8xpuDrOxPStnzSCF7IAShXCVeTCXPv
+	J1mMrBx+cMLBfpuAYkCrqRCUs4wmoifBjSu3Zq0OQ2gei2UKlh+QqXDt+xTArujQEzDLXT
+	DlMWDl9ikbQPRKLslPOArjxGN5hVlVY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=SiwubxeC;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=PafwDopS;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=m0qrJodb;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=E5RDjo0r;
 	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf25.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+	spf=pass (imf29.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795441895;
+	s=2020; t=1795441898;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pjaHNfa5Y44gCMgWsYt1z6nK9zr8xQHMwn0hbi1HiNM=;
-	b=SiwubxeCodkmCiyMiY0r3O3GYOxwf9QzlLWSX2cpPhBgivhjzkKnYInYXnUPRJ9q1AM6fa
-	9KkieGgGHK4lkoTLljHPihz1R+eHTQWESt5TuMG50onKo49h7JofyUYZZjilfRnsoib5mr
-	Qiqs0Z3BCxBrRWAky4Cn2HdCp/gn12+i0i5+6/PA8n1jhoJpgxx+HlaevhQMaSmZl+G+TQ
-	JsfPuj61DWlLMARl4U0pr8/7yoD0mIcpoVMSqSy6jG/w5ANlrvclfuNYCWounvhNVvu7wn
-	eqhn8B09ZzFesEu1LdSxg18G2PPjAT1Do9Jhxt/FuTIm9kaITu6bjzCFpHdSyQ==
+	bh=6ha/Vi89GXA1dWoPWSXoNX2UQD22cCvUbJLDuPRU8LE=;
+	b=m0qrJodblgSHfzkge/b+c0QCMBHtFhMmCA6Vyr2H7WBleCIYh+lMqmV0IKteG9E2pikiZO
+	y1JjkkjTUm66PulTK2p3QfpFPfiq0Sm3AHnRfHl8yDhGDzYNRHWeqg5cF7tcl78L1RkR/n
+	WPuYxHiHo2IYC4A+sg7EC+/1EcXp3blyHeQ6KRs4nnNNyW2uY1A+PhOCAIi3oMtnZTDkV0
+	NxM1dvYOi001/WyxLtFcc0h9eQpHZI0XWYY8P4cO9FYCbLxOMNPr6OKl3dnlyQMMuZGJAD
+	Te3Y/nY9Wdefcyj10JqyBH/pqn70kpgTO2Xqjlvxo2FDmdYuNvSq8xtqlC4i/w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795441895;
+	s=2020e; t=1795441898;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pjaHNfa5Y44gCMgWsYt1z6nK9zr8xQHMwn0hbi1HiNM=;
-	b=PafwDopSrXMBMvIj+bOD/YaIZDnPhIeNmmxdQxl/A5OHikWrncrLqgZj1zSo7Go0RBz1dv
-	KMFUL9taJSMknzDA==
-Date: Mon, 23 Nov 2026 14:51:00 +0100
-Subject: [PATCH v6 09/11] MIPS: vdso: Enable the vdsocheck tool
+	bh=6ha/Vi89GXA1dWoPWSXoNX2UQD22cCvUbJLDuPRU8LE=;
+	b=E5RDjo0rxSRWJZCsaguvONyxWiePtX/w5e+rniAAAlKK8WxlOgxIrKHbdHR03YakmbzKxe
+	lX7JYjn+2xicGaBg==
+Date: Mon, 23 Nov 2026 14:51:01 +0100
+Subject: [PATCH v6 10/11] sparc: vdso: Enable the vdsocheck tool
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261123-vdso-absolute-reloc-v6-9-161e218dd217@linutronix.de>
+Message-Id: <20261123-vdso-absolute-reloc-v6-10-161e218dd217@linutronix.de>
 References: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
 In-Reply-To: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -119,25 +119,25 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Peter Zijlstra <peterz@infradead.org>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795441872; l=3612;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795441872; l=2332;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=Upl7hsN7pYYITVcy/+9101coWRtl3qz4kkbkOxlORLo=;
- b=1fcEqYJBI/20+ipq+0gDhD2Hd2sHPo/b0TvsKaodh5hN8w9Rzt6iK8kpNsUn/MbwZcKE9qON0
- QkgrCaLMbbZBAsGdd/7c8BYFky+KQdnee/5otFkVjoWKNloGTmEJP3S
+ bh=6Cz0yJ9M9WbiIcD7w4L4KrbFFaP4kbTGha8gKHJR3nY=;
+ b=CILuTEE+Fxr6rbHT12PlkxKHS0mC2FrvmEnB5ZbAm/6ReS1zpHxcD5xSsaLEEMXokqtxppLR0
+ Uh4X7juWCr+B9/J50Tb7NWk5LeUrNQkbxzudL/33leg6I3v7r7q9/fa
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Stat-Signature: rb8aoz7jmzn3syokdsmsdzbjmbrn7b9h
+X-Stat-Signature: kd879q3t7hz7m4rpiiupp7it9utwmwbe
 X-Rspam-User:
-X-Rspamd-Queue-Id: 6D404A000B
+X-Rspamd-Queue-Id: 3BB5112000C
 X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1795441896-795480
-X-HE-Meta: U2FsdGVkX19PrVDSKGcIQGDg9Yg5I1MM25MVN6R99l0AJqEDGiKfTyio/9c/JKtLwKiX53SkSAdMBu8Kw7xBvlb+d0QVEsoKz8tjjE5uBA6XzBNhJyk3zF88cqYzgr+R+lB/e5Ec2RrqDWArxRJZxqxCBY5e2yvWw8NKeRN3cAli/+q/pK0ei/ma9emnjzSg3tiNjS9k6x1VzmDfVUqtyIXFoipOlpEmrnpniRolEZ+FZRObc5M3aQedjU7IiC7l135pgqI+zfPZcGScNI/VFkS3ikE6q2xEjL3Gt/0dX2c7xD6TdiFVSAcClWv/2bY7MrrB6YYJF8WEY4n8WPmT8njzIcljEoJjqnam+JgCvwZ7enNJ5kc2Rw4bufkoI1cEQvSQV/VrRebryq2av3z+1V/QY1k/ho0/lVl6/GF+9MMyiGRTi+WJZocF5aE2MUsce9Nkej7KkDz02A+vieHC4qoNZ+R0i3FdWWU+GEDfx2QcuuDsdGlNlLyCSQogk4UAqLgBRQd5y9cn+LihTlRt5IEvx6eb2cclQVQ09y5fg+E6c++ILx12H1CbTqDXBTL0WDsUWUITBHTKw7UgqJhZDCABUGweuedhWnAeJPxcRVfewiIjIylWuOX0QIeaMwGmy3qg0jitbG9BAmuBOAjPuy/4EUOCp6DP0c3S92cEjX7Ct+sAfCa3gRMCwd4M2v5e7kaKeytF6G5FcpH4TEKsKFUSfj0Whr8Q+Ho2kzkxX2Oz2pz0r7Q+8MhW7OEfegaEEb042iyIXErOqwQoI7XzoQrppQs0iWBqz/4jUhmigT5lj7VPdaNALzy6+CbcJdDdJ4MBIcV/un1k4vKrVpq3JdcTnvivZXEfBO2NDAs6uMy5RF6xE1Eo+GXMMLaMMVsrMgnHWSd2P1z4iWs7J6n3a97UiiincG1ClrQ+P0a3Og+Uyrr29IAVuVFz3BGR8Qt8aSDiHichi5VYP+wTs/P
- RuqrI3p4
- CS55Cv1Vo9JLZpzyrBEAtoID3pvrQI8GMit7ySfeRnA2MCmdPyneoHHDfaZe06sLWOyt5vGZ1JutKXRpbHDdyS/8hdqlfR9hN/WHXY72GCz0nIPix4r+c264V4/YYU7uAoAHYIhs+AgFxeRxUb8/YLZfl3SQOhwNBMIZmuCo4UhF/NMYCq+O7t64QBlu9H6IXetd8sS1ZyCBBloIpOuX3JuT/dYuJF7+r6icNzDOCqoXGzUZ/VlBzb8gKuXH+fIIYamcn+8Lj2rD13Ak9u500zeKmlEcIkMptvC3448r+ranO6CTF9aTUYlWN25NFw1M0W1r83qECXkpkFWGT2aYYwKtxLjK6lBzPs1Gs14ZbPsldrnUhzMY64cOV2StAgdbOVGQYv4bajY+5/4hoVhFh2hNf+Tx4XGyh/PXfrODKlHBwziguEHUO47N6cvXYCzcADWatrcwn0zD/BnH7J12YdkXICDKR7D/kSwu2EybVwuCvp6fDIsuFQKVAMWhv8WWguZpsrAmJ+nGtIcEahM3bXIyI7j7zyMWzr4upe5CIU4BBjocGK4Jef/Hc5d9SicA0O88LrlKYmCCAZOJ16f1EisLNCCnS7aQCB2hY+ycSZnZGvvrDKyjWDq3E+2IDPpfbv/GAdfD9JllRTq495aznfSwHEuO73RXeIAzgVH78YBvACzvuzwUCRwFL0+UfWp9yeKK4CIH7ulC6TEwiemvqVRtJF9QOADcVWm8OPKfn08YzMFZs1h2BNUPs1MCFL0TFPp3m4cAEQIf7Twk=
+X-HE-Tag: 1795441900-408886
+X-HE-Meta: U2FsdGVkX199CskUEDxENODQrX1mV2idU0Np8jAKp8ZePPtqTfjXcxiwayyi+a8yf1vWh4RDRQ0QKce6gpu7fwzDQ4QWOIt7CHktKlWELYHHydbM0oEuGejM1ZkMlRf6HNYtK+jpnFSW8CjCNHvAZx4N+8UkEgT67Fq/hoVa+nE3EXzvAt0AK5BJPSzkujKccGp2PnznQR7xT8MX5aVGB9cxjebp2OIBV8nbUdt+H66cHX1hC4uMHzGRvmPmvEHJAhuqJgcs8BBOyaA+mJTKlPGEUqA5tJUxOZAJsyTeyfrO5HiSrsVccYSaipHIb33d8VcjgR01VMN+c+pKG/SRCVcq5ao/053n+5s+DruWZtPOjA8WCpEPQt7nYbQm3SJDSMP5HHjAaLRvJ6BP/yfhBsvpFd6k+vY/+cmqgKAkSxrZQ05b2n2k6cV1sxswq0gTC5pLblqcJhmkisiIEkqBZtAffIiF6gQrMhQA6PIBLBw6nG+mB4+r0F6nVFjEQG4kJABoFAm8d+oAdPweDtNZ1rARmlRx96xs50o9ui3LTdRuRr72WMhbYYGFnT2BMRRkyysrrHjovfiYcHN7EYBYzJDoxV488zVW6vYeNOjsj53ugeaM6u9P+Q7e6qZfNdMWOKtCRypBY8Rh8gXjmLjKwy4mLwvdBu4kEdMXAXcX0q038jpPn8KNefEjpNHP1dIYnjYgzNzAQcTJHRj/RJ6Gu8+25wZkV0DnldiDvyuIN0C3CrcSnI2YC60cmGQUDtoRgYGbB8VbncQizb/DqqDTkNhg0fiFiPstLpq/PE9vVD+nWKidHein/0tS9LFYmDw73GZZYOErMlcj7GT27kBXpWmNNmnw0VxsRTWtyc5GU42ZUMIiLpGbseTV/HNUAqdyESB6azwTx6sbJLOUBupvFYg9A7BNAXmekw4BLr3W37WKu7mw2ZzI/XNkKcPSRH/mAUbiuRuSqOG1nErfL2C
+ klhEmUCE
+ lXbHhS2OYnPZuHLO4nyHRcvU7xEc05mhcbKIlRV4pZq7HevxEgfD7dclxnOGI9EgjZvmR98KvAQdBVxhLHvG38UjP8HxgKHS2AmS8KLeP1f5vLkpiz4jUTKgsGkCuiJUaBXm2O9Su2UNrUA2gLmX5LiViFpZliRNPhjZrJ435zoR13su33vAEhz5t/GXwr9XS9irlxfvOhAc/gj/tuHDmt0yTYJMEWx3DELUnnOjju2IIyf0Qeu8rXehq6BzoT3LZPBSUAX+cTqSbZrbuXSsAeIMHdA/bC7gL0NJUIitK4NO9lqDrHIhtexb7Us0xBD9c15YW79lnD5VKR5oQ/IjAI+aeSDHH6mz5Y6HNT6n//nt/qQ2cN3OwoYvXlU4oSRm7S6r476Rh5sQhdK8kTM1GVmTvRdoBPC4sC6daUkU8BE6qMfrq5Upy/Tpmrz1FVC0/RbnimczjdNKuh94Q+Zo7Kc+0YP4xanMdbpnP3V8FdyE7BKr0pdL6JiTVW52WRfzQ+yvGZBXWBiZYn6gqFZ+k8ijfsGGAMzCAveu+DYhXU0VgGwzD3JyHi4bxPqBCe68adxovKaN2EgGZaASGSErDx/s4Fcprvr17HlPSqXeJJv9BTxvycnEa+/dSophE6kw1Cmey9t3qlMTJQKzrp71WvBqj/dsBGbHZ444FwDdXTHaWwR7MsgzsxM3WiDKu2RQ6f+okSMhIbbt/B8YAlnibZw3J/XXYq34mZuTs0IgQWwsx8Xmf2LAYx+s5Chi+IhRo4SySHssUPSyfTfQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,86 +154,61 @@ Wire it up for the architecture.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/mips/Kconfig           |  1 +
- arch/mips/vdso/Makefile     |  8 ++++----
- lib/vdso/check/vdsocheck.rs | 15 +++++++++++++++
- 3 files changed, 20 insertions(+), 4 deletions(-)
+ arch/sparc/Kconfig          | 1 +
+ arch/sparc/vdso/Makefile    | 5 +++--
+ lib/vdso/check/vdsocheck.rs | 7 +++++++
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index ed17c9b1624c..31c247c2faeb 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -106,6 +106,7 @@ config MIPS
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select ARCH_HAS_ELFCORE_COMPAT
- 	select HAVE_ARCH_KCSAN if 64BIT
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 742ffff8c37f..90df77235184 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -114,6 +114,7 @@ config SPARC64
+ 	select ARCH_SUPPORTS_SCHED_SMT if SMP
+ 	select ARCH_SUPPORTS_SCHED_MC  if SMP
+ 	select ARCH_HAS_LAZY_MMU_MODE
 +	select VDSO_CHECK
+ 	select GENERIC_GETTIMEOFDAY
  
- config MIPS_FIXUP_BIGPHYS_ADDR
- 	bool
-diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-index 00d3ba2c482a..63060057cd21 100644
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -66,7 +66,7 @@ quiet_cmd_vdso_mips_check = VDSOCHK $@
+ config ARCH_PROC_KCORE_TEXT
+diff --git a/arch/sparc/vdso/Makefile b/arch/sparc/vdso/Makefile
+index 83fb2aca59cb..8bb235c3a618 100644
+--- a/arch/sparc/vdso/Makefile
++++ b/arch/sparc/vdso/Makefile
+@@ -28,7 +28,7 @@ CPPFLAGS_vdso.lds += -P -C
+ VDSO_LDFLAGS_vdso.lds = -m elf64_sparc -soname linux-vdso.so.1 \
+ 			-z max-page-size=8192
+ 
+-$(obj)/vdso64.so.dbg: $(obj)/vdso.lds $(vobjs) FORCE
++$(obj)/vdso64.so.dbg: $(obj)/vdso.lds $(vobjs) $(vdsocheck) FORCE
+ 	$(call if_changed,vdso)
+ 
+ HOST_EXTRACFLAGS += -I$(srctree)/tools/include
+@@ -99,7 +99,8 @@ $(obj)/vdso32.so.dbg: CHECKFLAGS = $(CHECKFLAGS_32)
+ $(obj)/vdso32.so.dbg: FORCE \
+ 			$(obj)/vdso32/vdso32.lds \
+ 			$(obj)/vdso32/vclock_gettime.o \
+-			$(obj)/vdso32/vdso-note.o
++			$(obj)/vdso32/vdso-note.o \
++			$(vdsocheck)
+ 		$(call	if_changed,vdso)
+ 
  #
- 
- quiet_cmd_vdsold_and_vdso_check = LD      $@
--      cmd_vdsold_and_vdso_check = $(cmd_ld); $(cmd_vdso_check); $(cmd_vdso_mips_check)
-+      cmd_vdsold_and_vdso_check = $(cmd_ld_vdso); $(cmd_vdso_check); $(cmd_vdso_mips_check)
- 
- quiet_cmd_vdsoas_o_S = AS      $@
-       cmd_vdsoas_o_S = $(CC) $(a_flags) -c -o $@ $<
-@@ -103,7 +103,7 @@ $(obj-vdso): KBUILD_AFLAGS := $(aflags-vdso) $(native-abi)
- 
- $(obj)/vdso.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) $(native-abi)
- 
--$(obj)/vdso.so.dbg.raw: $(obj)/vdso.lds $(obj-vdso) FORCE
-+$(obj)/vdso.so.dbg.raw: $(obj)/vdso.lds $(obj-vdso) $(vdsocheck) FORCE
- 	$(call if_changed,vdsold_and_vdso_check)
- 
- $(obj)/vdso-image.c: $(obj)/vdso.so.dbg.raw $(obj)/vdso.so.raw \
-@@ -141,7 +141,7 @@ $(obj)/vdso-o32.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) -mabi=32
- $(obj)/vdso-o32.lds: $(src)/vdso.lds.S FORCE
- 	$(call if_changed_dep,cpp_lds_S)
- 
--$(obj)/vdso-o32.so.dbg.raw: $(obj)/vdso-o32.lds $(obj-vdso-o32) FORCE
-+$(obj)/vdso-o32.so.dbg.raw: $(obj)/vdso-o32.lds $(obj-vdso-o32) $(vdsocheck) FORCE
- 	$(call if_changed,vdsold_and_vdso_check)
- 
- $(obj)/vdso-o32-image.c: VDSO_NAME := o32
-@@ -181,7 +181,7 @@ $(obj)/vdso-n32.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) -mabi=n32
- $(obj)/vdso-n32.lds: $(src)/vdso.lds.S FORCE
- 	$(call if_changed_dep,cpp_lds_S)
- 
--$(obj)/vdso-n32.so.dbg.raw: $(obj)/vdso-n32.lds $(obj-vdso-n32) FORCE
-+$(obj)/vdso-n32.so.dbg.raw: $(obj)/vdso-n32.lds $(obj-vdso-n32) $(vdsocheck) FORCE
- 	$(call if_changed,vdsold_and_vdso_check)
- 
- $(obj)/vdso-n32-image.c: VDSO_NAME := n32
 diff --git a/lib/vdso/check/vdsocheck.rs b/lib/vdso/check/vdsocheck.rs
-index 1ef3f240f886..120d8fa551e6 100644
+index 120d8fa551e6..245d8af9f704 100644
 --- a/lib/vdso/check/vdsocheck.rs
 +++ b/lib/vdso/check/vdsocheck.rs
-@@ -157,6 +157,21 @@ fn allowed_relocations_for_machine(machine: u16) -> Option<AllowedRelocations<'s
+@@ -172,6 +172,13 @@ fn allowed_relocations_for_machine(machine: u16) -> Option<AllowedRelocations<'s
              ..Default::default()
          }
          .into(),
-+        bindings::EM_MIPS => AllowedRelocations {
-+            ignored_object_file_sections: &[".rel.pdr", ".rela.pdr"],
-+            in_object_file: &[
-+                10,  /* R_MIPS_PC16 */
-+                60,  /* R_MIPS_PC21_S2 */
-+                61,  /* R_MIPS_PC26_S2 */
-+                62,  /* R_MIPS_PC18_S3 */
-+                63,  /* R_MIPS_PC19_S2 */
-+                64,  /* R_MIPS_PCHI16 */
-+                65,  /* R_MIPS_PCLO16 */
-+                248, /* R_MIPS_PC32 */
-+            ],
-+            ..Default::default()
++        bindings::EM_SPARC | bindings::EM_SPARC32PLUS | bindings::EM_SPARCV9 => {
++            AllowedRelocations {
++                in_object_file: &[6 /* R_SPARC_DISP32 */],
++                ..Default::default()
++            }
++            .into()
 +        }
-+        .into(),
          _ => None,
      }
  }
