@@ -1,137 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927C5606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 18:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF21D606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 18:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ijpVlN8I
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JxX29fLd
 Received: by kanga.kvack.org (Postfix)
-	id B08C16B05B0; Mon, 23 Nov 2026 13:29:39 -0500 (EST)
+	id C4EF46B05B2; Mon, 23 Nov 2026 13:37:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE1136B05B1; Mon, 23 Nov 2026 13:29:39 -0500 (EST)
+	id BDA626B05B3; Mon, 23 Nov 2026 13:37:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F63B6B05B7; Mon, 23 Nov 2026 13:29:39 -0500 (EST)
+	id AA14A6B05B4; Mon, 23 Nov 2026 13:37:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D2506B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:29:39 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 180E9C09E7
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:29:39 +0000 (UTC)
-X-FDA: 85467222078.09.579B5DC
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 049D9100007
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:29:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ijpVlN8I;
-	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 83D3D6B05B2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 13:37:00 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F3FEC12098A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:36:59 +0000 (UTC)
+X-FDA: 85467240558.21.EA44A0D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3A1E51C0010
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:36:58 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxX29fLd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795458577;
-	b=zlx6SGbqu96q9A4DfjWC+RZa9zOtGAYYoonpKZ1Z6dNcSLemK5Y8n6XftvBw5DyYwVInsj
-	PvZgaLSl6WGiZgYeZNzi+Qm4jQ15J+Rc8s1VMl0tUT+U+Pp6hwvDOouqTtHQbhyB88ZJvt
-	fa27E1Ks5cXLh9r0o4gJ91FXAfOve9c=
+	t=1795459018;
+	b=JsSBljNHtJsb3tr/98pSfqHPVFkqsbZrewir2tZ6Dpl5mgWF3N7UxBfZ4MF6cENmVzK1nV
+	wOrG5/Ml6G5TBcuxOtQUdy8zL4F/YG/JiIIhr/D3geAY+b/t8Ag93yw4O/NSOPQO7JZCCH
+	kyoXoYWASksnwr8WECB7fVZTED1LNcA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795458577;
+	s=arc-20220608; t=1795459018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4/j1tVsYjuDomGfTOiRNEufIvsMjxkzCoGFkLJLsf4Q=;
-	b=xld5vEbSxkigMToCCoNe2ntp48p4iODkxR+9o/rYvvrKtWV5kJgpTYjAmy9M0v9L/ihXs0
-	WfuhvgueexLfIGiyoBa3uqdjGNBxMvfVtWlsXTWKBJ7VCK080Shbq9lwIrU924Jz2KfYU+
-	uE5fxcYk7EMZXYyhUNEZm4wFeE5ep4Y=
+	bh=YhTGAVymGoABOYQ9LrlduPrSmhBuyrBLKJwutC/evWA=;
+	b=feC9jnB5xMUQ2lATzW63hQElhceDFru0pr0VBq6Lw4OHLwomQxp59JycLoD6VjCNbpD8Pq
+	9tiKb9wq89td+M7PEoR90Gz/jQgywRHNR+Sdwh0JqeHQPku27d13nFR+dV+uQZxZxkJXuW
+	9EUBuiCTC1XV+QrJdrOqfI6cp/hSxBk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ijpVlN8I;
-	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B72C9143D;
-	Mon, 23 Nov 2026 10:29:32 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E3763F763;
-	Mon, 23 Nov 2026 10:29:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795458575; bh=91rRqWnUFnt98sbMIZIWLen5dQtczci7+M9TkR+C2eQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ijpVlN8I1I3lz+oP0f/Ra6j/FKXUuG6yrg9sGG6aArSc3WgM6d06k0TeBcvheHnlB
-	 +bg049yO3+3oRRTrxvdP291vcWCMxo9GAp2+PsBjvQ08/CJLOgCUEhOoOYk7V5y0sg
-	 lWIn7leu+umSmLK0yR2G0mX6r/H/ZewmLWycrNRc=
-Date: Mon, 23 Nov 2026 18:29:25 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-Message-ID: <awSGBdS1AiFhJzZV@arm.com>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
- <awQd81MwZqi55gf8@arm.com>
- <20261123150041.GB179082@ziepe.ca>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxX29fLd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B753A42B6C;
+	Mon, 23 Nov 2026 18:36:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB4A1F000C4;
+	Mon, 23 Nov 2026 18:36:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795459016;
+	bh=YhTGAVymGoABOYQ9LrlduPrSmhBuyrBLKJwutC/evWA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JxX29fLd9EXO/WvdhYKs3bWauBVI/JHVUlFYP22QwMpVKLZ2Oyg21Maw42HszfR59
+	 jrfsZhmH+ZgrO9SThZxEwhI5Q81bMjS8uiIoLWNlC8f/bgwPXUXkP2lg/gHC7pPSVt
+	 Bu76maG7W1ustwp0zLiS5Np2kcxrw+qf7mNpPpF8jE6turwr47AblmDmgp3IFJkjII
+	 LMIrenVjQj7hOElBEfCpveWr1tWQWgpIIgZrsbQM66nOg5deMgOQ3nExlqXbFnoVtA
+	 /HZ+J21K36imh7DtOsObkPorA/QLTBMgS+6htZl2z5cimT/852YbnIIc2x2y8qO1jB
+	 8eJmLE5Lmz17Q==
+Date: Mon, 23 Nov 2026 18:36:47 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Puranjay Mohan <puranjay@kernel.org>, bpf@vger.kernel.org, 
+	Puranjay Mohan <puranjay12@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>, kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH bpf v6 2/3] bpf: switch task_vma iterator from mmap_lock
+ to per-VMA locks
+Message-ID: <awSELWmIo2LA3bM8@gremlin>
+References: <20260408154539.3832150-1-puranjay@kernel.org>
+ <20260408154539.3832150-3-puranjay@kernel.org>
+ <awGZWsCp6v63H_py@gremlin>
+ <DN267JUKDRNS.2VMV07CQ58R4X@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261123150041.GB179082@ziepe.ca>
-X-Stat-Signature: s8tq5jgpod31ix1ha4wujherbsxrk43x
+In-Reply-To: <DN267JUKDRNS.2VMV07CQ58R4X@gmail.com>
+X-Stat-Signature: g8teimbc9ct7ejn8qnojhzcdh5m6tryg
 X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 049D9100007
-X-HE-Tag: 1795458576-944822
-X-HE-Meta: U2FsdGVkX18PcCSxVzp9Erl7SIGUOGUBDYW3RTR7i85Z4syIj86qpmoA6yOobGGal064tWZakhEoK8ZwcWi6We4RKcIqG35V67Z7hZdVEUtLLwlZEzMxi/ej2bvVA0Y8Dg8BZhHDvFxIqJ/drGV+jE90gThgkzP49Pe2dh8iwTKwXiZQMiYmKnwQSjCaR4jfFHpr6X0/nBYVNtyv7Nlnq6BRA+TaA4WvK7T9tG5BfXYYufPekI9hhGFwl/PhOx3i5kcmzyQ2JVsYxsxhwgtS4mDIk6IYHxJfX10F+txXk/LlwvPCM8XWElGx02DphrviJodaGI7M1nZr2YHNVa2c1a07TVJ6GcLoMnzkE1vY+iiKUjZexf54kl2MavE1mrCu/c8ucuuC44FeKVlv7k1gkz0BGt2V3hdxeLGwbFcjv+ILwRmAv/S0x7g50eD+Z83RgZPdTzdpJDse+xZevJ4+XGKEaF/KSCPW938S19EPKUdtwBm+ybEkuwapjvPTxTsCInvlJ+reit+f2ufv5/GVLmMh4MfZgmwORMTvVX69OdnpvPuQ1GXXUCbWAySYtsoxh6CXsAvnESG6X9gg8oaIuwofCgnRZOGrs0DhZknx9mcugpa3dZNKSLd21Js84F+2NFyzhHa2qVGRRL2k9Y3AQZmP7frhC14Q51+VVPddQHO6Y3meKRv/+XQ5pmbAuB1NvIED2mNvPtWRsomLxVGh/1kZvK+kvWOytWb/gNJRac+gmQPRZ/kxECabWyVzQu00eMYbfyeNUbVzosV4sA3yOewhSl68e+OoghFA3jci3mcjE7zO2aVFJljgG/bK+1nyqa1CGiUz46G2wIELyPMsSi/V/+VTfOxWAxTkutyDm7IVS2qe4rQd+0C8MdmSe6yMJMeYvwKbhMQ6T/14G8jplLdGHxUqhGpt3223QxBw8Wnv1EnHn3pHcWlIPEkIm1c1aqVU1/YRLcC/o11EbwE
- XIMDbZf4
- uFBKrgx0GhPPNzgcMz0Yr3W5m30wuQYydQ+Slw0jNLMiWxI1RGgOpJ6WCJPyoPBlDLRD57S3NnjH8/OU2oexkkMcv6+E5sEOrQQDgTKM9/i7woPcOsvfUkx2LP4NxehNdb2aHS4516IExxjZRuLrMvrUawbQg260fXHKi+AplQZseNL8PVm15X718+fqUYGpTcJsxhJkFtCqcTBXy96i7g+kCdgzGkHdiRKRfTvLAuO68EiL/PfhWSgDCNLYv6QMr3S8i8s0SVNHIVs7EsbcLo7gR7R7VCcFlIMu1UHvpu1oZhmBb4WM18dnDhSLpIiNU0k0G5Uk5cFO5ZPT52Rq9rJp0N+tWy1mJJTVKUbzEAw58gvwx9/uvWbu4HqXjAGs/s3h/KYzyr+pUDE9HCbTTZsqgyA9SxaHAAWjeMBPUr2ZRnmWcWpEb7qX1RHh3USlCb3diAvGeOVIb9EueKES5pokvLFXm+8LZ2FRUqhu1E8kAw9zBpS3S7Okck5OEFfIG2Pf3t87gvscm+y5nbYVO273A7Zmh9eRAiEIuTrSEB30GqrL705nmvIhZOQ==
+X-Rspamd-Queue-Id: 3A1E51C0010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795459018-359873
+X-HE-Meta: U2FsdGVkX1+imnJeYXcC/y8dufssznXD5T+rwP4hGKyvMTe7OJBOE3G4AlEjxDZ9HKdbY8QLmF1/A0UgGoV8C6t76VN41jkCFe1Rji1FeHSOejKAxhkDXG1tPVnlOZNozor3T1tfgBJe2/e57gfxyYlJo3H9R6KPNOx65WyzMjhm7DewxHw65GgWcp9vQpgfAMFQ1/8X8bGEFs4R6ZX9+M9YEH0drb518jFjBIP6FYt4zrFxtKGFfRZx13OfWW7WdQpZ2gdOkzyU8gCxtC6SvHoNq8Vv7/UypadkMHkqEs10DSt1EVotJ0VeHZ0JvP1DanmlCz50Vq14tAxgFVqLrrbjJqNW2jfB7fJQPodfzWjpHxxz9xKfozSOXmhQF7whM/oQ2UDPc12/hVOmKRENH+Os+6iuDAt9L3vYTJysEBhs+nbnSCAWWXyhyoAdQnMNZHz8Iw++nXqSscuE3OzreHsyA37aJnkxGxOsicA34Vz+6Fk5L0tqQV/Ng/3fawxGn+/SLZpwykgxFZ8DGvUwsnpR+9CWP9YhZnS3r7xFv97yXJIYX+kwEEKz3iV9JvTqzJowryGnCBMUWFdj9Mk+L83c6EJrtxYWySnpzSZCaaPFBP5J3ivJx0USByy7Dx9oFGzdprtqtOqCoZhtoFrBM/vaLeWqSmTqth4mqFWmmpBDnA+nkAZdAaY3/xrSoBAK52gvn47GYp9E0nvGAla1R5f54JIHlxhzAGwWbFPsreH16Xjb7kAW8jXl+6yiFUtw7wVf2sjZuyklUwpqfBp1CMStGdogmBvvHkHpEXDoC5Ov9KGwfz/w9lWMuccK8860rLZ1KDD1oW2ypGGOzLa7AoFUvQOJbpx4Ufe+WJu57oWtGVWPIS6NGACAfRZt4uhvsMzcd9WEyUqwmiDNKgGjQFIKpB+olsLugu5E/zHYV9Mn54ijmkvQy5nFTZoCPIZFcZNLZr57UlUga7FktJ1
+ U57t1l/U
+ rDvHklEfUpfnA3XnYVBVa5Zncc12BdIudFgDbcw0K+hWDjqhGRLLjDqO1P+EwBHjYeMXzlEewTEL8sn9D5MLbWLQJ3A7kciMCBPuzgCMsRB6yqtFdOtT7pa9U5Kh3I+ue5uaVjSh+VI4uKTLxSYZ7udhA3ndTENxM2H544Egj445zDDSDyOrPdRmEOMS4JPrKE3N3QWZ5VAHPJ3h2lecg++T7JDXMV5QUsIW241EdrtsFycHXsid+QzQ+dhM4SfNavxuvj+py3nd62uOkqLzqIwa1cmwxcewDFKxONHn54COCMzLoqFBcjaPG82NBn34sthxw2bYY+HiYme34IOQdxpcXoR2SeBLsGDyFk53kEijT6RCgOhDFQxdwejnCF6JE9ENlCvwfZAuOPFwsxZ2QPlF+zHG40gW5OPkEt7UtVOSoQc8pBzPky62dI9CJRAQ4KvgbCTkLO3qWnB4CffHzj7JxQtCfeHzy7ERAiNrbg5ReikHaVQhr/j3QYTJRFaUjlpZ3DB/Nm3EJKIvEfrK00UZigk4geHHjAzG8xNidR8RgCyPXt150EH+hW5eJ1Iuo/qfK2ks+fm6ie/iEjsbuMmqWm61wbDPp4KZr66TMK6G3W9VKhujF10z30g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,87 +104,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 11:00:41AM -0400, Jason Gunthorpe wrote:
-> On Mon, Nov 23, 2026 at 11:05:23AM +0000, Catalin Marinas wrote:
-> > > -	/*
-> > > -	 * If set_memory_decrypted() fails then we don't know what state the
-> > > -	 * page is in, so we can't free it. Instead we leak it.
-> > > -	 * set_memory_decrypted() will already have WARNed.
-> > > -	 */
-> > > -	if (ret)
-> > > +	if (alloc_cc_shared_pages_node(node, gfp | gfp_flags_quirk,
-> > > +				       PAGE_SIZE << order, &mem))
-> > >  		return NULL;
-> > >  
-> > > -	return page;
-> > > +	return mem.page;
-> > 
-> > This part is mostly fine but I do wonder why not make this alloc
-> > function the same as buddy alloc_pages_node() - return a struct page
-> > pointer.
-> 
-> I'd argue we shouldn't even be returning struct page here, do many
-> places even use the struct page? What for?
+On Mon, Nov 23, 2026 at 12:40:32AM +0000, Alexei Starovoitov wrote:
+> On Sat, Nov 21, 2026 at 05:40 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> > This is buggy and can result in deadlock. You need to revert it or restrict
+> > which contexts it can be called in.
+>
+> Yeah. It's a bug though very much theoretical.
 
-I just suggested it for similarity with alloc_pages_node(). It can be
-made better indeed.
+I'm not sure it's really theoretical. Especially given your second possible cause.
 
-> Exposing struct page to places that just want a kernel addr means they
-> have to call page_address and we are back to the highmem weirdness.
+> A revert would bring back an actual deadlock that people hit in production.
+> So here is that.
+>
+> > I'm a little surprised you didn't cc- or even ping mm or the VMA team here, we
+> > are always willing to help and it's clearly sub-optimal to write duplicative,
+> > open-coded VMA traversal in BPF.
+>
+> Fair point. Will cc mm next time.
 
-dma-buf system heap needs struct page for scatterlist, so we need the
-virt_to_page() conversion if we return a VA.
+Thanks!
 
-> > >  static void its_free_pages(void *addr, unsigned int order)
-> > >  {
-> > > -	/*
-> > > -	 * If the memory cannot be encrypted again then we must leak the pages.
-> > > -	 * set_memory_encrypted() will already have WARNed.
-> > > -	 */
-> > > -	if (set_memory_encrypted((unsigned long)addr, 1 << order))
-> > > +	struct cc_shared_layout layout;
-> > > +	struct cc_shared_pages mem;
-> > > +
-> > > +	if (WARN_ON(cc_shared_calc_layout(PAGE_SIZE << order, &layout)))
-> > >  		return;
-> > > -	free_pages((unsigned long)addr, order);
-> > > +
-> > > +	mem.page = virt_to_page(addr);
-> > > +	mem.shared_size = layout.shared_size;
-> > > +	free_cc_shared_pages(&mem);
-> > >  }
-> > 
-> > Here it gets weird and I don't see why we can't have just a buddy-like
-> > interface. The kernel-doc for alloc says that shared_size must be
-> > retained for the corresponding free but without reading the source code,
-> > you can't tell that cc_shared_calc_layout() gives you the same
-> > shared_size populated by alloc. We have a similar pattern in dma-buf but
-> > using the compound page order.
-> 
-> This makes sense, we should not be passing size to a free function,
-> make a compount page/high order folio instead if the API is going to
-> be struct page based.
-> 
-> > We can get rid of layout and mem structures (or at least not as
-> > part of the API). Of course, this assumes that the shared granule size
-> > remains constant for a guest's lifetime but I don't think that's a
-> > problem.
-> 
-> It should be encoded in the struct page meta data, as the order.
+>
+> > It's not really sensible to alter core mm to accommodate this at this stage, so
+> > probably the best course is to disallow this code path for softirq context, or
+> > you could look into patching the x86 code.
+>
+> A softirq check is not enough. A tracing prog can run in task context
+> with pgd_lock held and irqs on:
+>
+>   pgd_alloc()
+>     spin_lock(&pgd_lock)
+>       queued_spin_lock_slowpath()
+>         trace_contention_end()          <- pgd_lock is held
+>           tp_btf/contention_end prog
+>             bpf_iter_task_vma_next()
+>               lock_vma_under_rcu()
+>                 vma_start_read()
+>                   mmdrop(other_mm)      <- last put takes pgd_lock again
+>
+> Equally theoretical deadlock, but since we're discussing hypothetical bugs...
 
-I agree.
+Yikes :) again this seems like something that can really happen, even if it
+might need you to be rather unlucky.
 
-> > Was there a caller you had in mind that needs the common allocator to
-> > share less than the whole buddy block?
-> 
-> If we want this it definitely needs to be a void * based API not
-> struct page one though..
+>
+> can vma_start_read() use mmdrop_async() like free_signal_struct() ?
+> It changes only the last put of other_mm in err_unstable.
+> _destroy() already calls mmput_async() from the same contexts,
+> so the fix costs nothing to mm afaict.
+> We can fix it on bpf side, but below fix is much cleaner.
 
-For whole-block sharing, either a VA or a folio works for me. If the
-allocator takes an order, the requested size and the sharing granule are
-both powers of two. Rounding up to the granule already gives a valid
-buddy block size, so there’s no need for a separate shared_size.
+Yup this is the suggested AI patch also :)
 
--- 
-Catalin
+I'd want to do it slightly differently from that however in some of the details.
+
+Sigh. It sucks for core mm to have to retrospectively address this, but I also
+don't want to cause unnecessary horror in the caller.
+
+Probably then mm doing this is the right way to fix it, so let me have a look at
+this and send a patch.
+
+But yeah, let's also revisit this open code and have the VMA API give you what
+you need properly as a follow-up.
+
+--
+Cheers, Lorenzo
 
