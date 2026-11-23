@@ -1,97 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721B2606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8149F606A330
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XGRrDED2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=an7Onk1C
 Received: by kanga.kvack.org (Postfix)
-	id 8707E6B05BA; Mon, 23 Nov 2026 11:24:11 -0500 (EST)
+	id 319386B05BB; Mon, 23 Nov 2026 11:24:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 821416B05BB; Mon, 23 Nov 2026 11:24:11 -0500 (EST)
+	id 2CA096B05BC; Mon, 23 Nov 2026 11:24:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 710276B05BC; Mon, 23 Nov 2026 11:24:11 -0500 (EST)
+	id 191CD6B05BD; Mon, 23 Nov 2026 11:24:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CE386B05BA
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:24:11 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 96D941A091A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:10 +0000 (UTC)
-X-FDA: 85466905860.12.13792FA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE1466B05BB
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:24:12 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 554488091F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:12 +0000 (UTC)
+X-FDA: 85466905944.07.A2D6306
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EC5C5180003
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XGRrDED2;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 97F2520007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=an7Onk1C;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795451049;
-	b=x9vj9yb1aEUG4/Tq7bsvXmCXoEnBhyQ5xcu+hi4xfejr4eieJqQsp+2XJjznPS0ZL3q8St
-	oJ3Zp1cdJ99JBh1eah4mjQiARS2gRrC2u9SueKb5c32wU7O/QH0q9oCAuSsV8OxBIgDhK5
-	LhGgPZFj1cvHGYAFhYgrALtb3ZVLRKc=
+	t=1795451050;
+	b=aykcYcGZ1sk/d3+drPzA8ZQO2SC4LulW4cbEQ2f2oeB3lCnJUy5rC4epV2bOYbBVWZCOCz
+	Xa5RjAS+Hqx9MdZWFJWZODE/UwBIxr1TIrJntxsVKGAETtAGKwoL9o5CCI8yHZ1dtPjLSQ
+	tVeQBviUFk26K8o18Bqs4OAdLtvxuHs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795451049;
+	s=arc-20220608; t=1795451050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QZXIFYILtCNn6BOcPijM59Qx4+riXxSWUomOV63QZGA=;
-	b=7L9TR+J0V5NSBwKYVNNWELNDujFSsETz8LX5Jwa9PdHITtk8dNFt43oMCKZT1VNJdOIRJS
-	84BIfdG0KF7sEDPRJeYWOfbyWZz9ArqO+XuXgpVvZu/QjQBJ0QrbdBNMlGFNF+YBCW8LdK
-	yTJUS5OaZlKre2V5OFl4miytF4NSSbs=
+	bh=Hocg6r2Db135JYLEsNalRyOeUZY+BqePEKepI9oMCMo=;
+	b=IvnEivE5fcD3MAfzDt+6tErCQCz4lO3D9F4o3L9EnwKrtyWjd66n7fLqPAKEOpOqPmtQ+F
+	+BjQcnzym4bzDpigQevQKPVekvLEg6zxWvkfs+lx4LnEO6rBt219279mcoGQ3Fl3ZCtrLn
+	sYx6A5H8Pmd+ZX5NpfpmMRbItqJsqGo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XGRrDED2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=an7Onk1C;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 62C5F618AE;
-	Mon, 23 Nov 2026 16:24:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C8E1F0089E;
-	Mon, 23 Nov 2026 16:24:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 10D3D61F01;
+	Mon, 23 Nov 2026 16:24:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E474F1F000D0;
+	Mon, 23 Nov 2026 16:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795451048;
-	bh=QZXIFYILtCNn6BOcPijM59Qx4+riXxSWUomOV63QZGA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XGRrDED2jEpYvgE50oiY8fPCgtnMvmLiEjkzS9FnyjwWlK9puHJ6oI7nelee/TFeD
-	 lS1P04iIZVUe4XuZ6aRXAsvEiMnq4K4BOVyDge/J9mFHykpnlc6oIgtBnDp/j/fiZh
-	 quzGh29ASYGTa7s1f3UQwns13EGVLZ4dveF31N4N07R3HzQjlxL2KuI+vVfxJ9VJ/+
-	 1dPbAxOVEL9ztnZEgWbcj5zeFbf7zg5vZVytEaiT4OAqAu5/YHjMMhuHwykzZb+22g
-	 H6OMZuUYsYWivzO6wTf7DtreT/FA6O83v58iowhWEzhtkThRU8EzfIcAF7d9G01N67
-	 rySgow1eEa+KQ==
-Subject: Re: [PATCH net 3/3] net: multicast: account group and source
- allocations to memcg
-From: netdev-bot+sashiko@kernel.org
-To: x-professor@outlook.com
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- akpm@linux-foundation.org, vdavydov.dev@gmail.com, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Date: Mon, 23 Nov 2026 16:24:06 +0000
-Message-ID: <179545104659.3135.11573235607470978138@kernel.org>
-In-Reply-To: <eabf67fe94dc239f6cc59720e8468f2bf9b4cd62.1795102467.git.x-professor@outlook.com>
-References: <eabf67fe94dc239f6cc59720e8468f2bf9b4cd62.1795102467.git.x-professor@outlook.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1795451049;
+	bh=Hocg6r2Db135JYLEsNalRyOeUZY+BqePEKepI9oMCMo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=an7Onk1Cc1CfpDsZVEB0wsZo8ksvn56rk6glWjghs4Mqhpzjh2ULjAGa7KlmnAydN
+	 9RX/fmvdU3Q+TaqO5VoO1ggXJOglJCuDTV0GZER32mC8FZFbME2NELBQ5uD4wJP4Ca
+	 BcNQF1IvWsPRbhEKf1BA7QMisPP4xZqtB/kOdUk8HxzVOipdBT7SKd3vMz2dLnEnI/
+	 dRbhp7hgVvNFDyfsAi8NSPmMNNhQLcjUAD3nbTPsYtIKFfPAEjtV2r48RaV752gkDU
+	 SiZLJyhYTshqoJqDhr/u8sYkiHTcm7U57vBuLtt4myexUN+p+NaxfjsdITdo6p+vOn
+	 fWSQW2qFvmKOA==
+Message-ID: <7639d5f0-3dfb-4446-ab04-51317f604a69@kernel.org>
+Date: Mon, 23 Nov 2026 17:23:59 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: introduce copy_mc_highpages() and batch copy in
+ folio_mc_copy()
+To: Shivank Garg <shivankg@amd.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Borislav Petkov <bp@alien8.de>,
+ Ankur Arora <ankur.a.arora@oracle.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
+ <tglx@kernel.org>, Bharata B Rao <bharata@amd.com>,
+ Hrushikesh Salunke <hsalunke@amd.com>, Ingo Molnar <mingo@redhat.com>,
+ "H . Peter Anvin" <hpa@zytor.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ David Rientjes <rientjes@google.com>,
+ Linus Torvalds <torvalds@linuxfoundation.org>,
+ Teja Vojjala <tejavojjala@google.com>, Huan Nguyen <nhuhuan@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Peter Zijlstra <peterz@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-Rspamd-Queue-Id: EC5C5180003
-X-Stat-Signature: xywun6q95xe1yc7qqfupoykkt3t73fis
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 97F2520007
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795451048-89067
-X-HE-Meta: U2FsdGVkX1+4xCvivIGkOMAMn74Z9mnP+I6aKZfOZY6uebgr0BD/TA6mjcE/AEeecJKIFdRr9TrujMQRvbyJMbID+dHmzeym1W+4g608KphU3fprKKiM7Wf5TJWTpLyuCaS4rK9MyAju8M4PL2xM8N72j8pG8UyXpY8WRKI3SvlfPcEJ8fQXkV+Aq8cCGbK3+ZW1S0N7KCC+h5iw2SsWB0IiahLYMCyIYHNp+1S/X4XEur9Ur0nSWeryFhYLGDXO1+pWQ09f1JB8Tmb/p5Yn2p0zf7ko9Cxlzl+MRinUPQgjaI5JIc0ZpWNsiXJrehGnR9HZKcwUwXiLbCEtlQ5N4ELpvB7Awkqx1PaZrBXpuaktwk/2d/9f25teTbtBZ3SFY2W+2ozE0rYMCmBHIGtM9XedSrfZoYnUfMt8mR4c181bhs1WEAwIXBwdqJXxRevqbA5bX3sD55cw7JpycUHpGqW+vOdnGbQ5/3S+qs5six8Juou2mWAfN+v0HgA//9WuFha6J77ykv6C5q6cXTfAyoHEigN7C49d68yEcF53v11SUkFPAZ1t/Tnw72lF19+fdrTP4ZSqaoui9yzxrdvqmmYwZFjfq27FWJdky+SRMa0BD1U2qvgpkSQY7ZJowEoUsDQLGoCM3zSRJAsXTUIG+pgC9FP/APLMuo9iUwlwEK/TsMIGK+iND4yjJlDrTaxBbNq8w5fzuA7PwJj9MLyu+JtuRRqFKo6+I7SIpvYDOzESEUd9+4mM4nxYHrgIL9EdLLBWtcxEFLwuLkoWtgNFaDj73YYOT9aVX/RWNuIuzKkeax22uSJdQNaMEuf6x1+IjBRV+JglIg2kJOysIrgzOENYwCvcmkbuh1cbCx3056buTE9/KBRy6ioibJpd8Prd3tdWYyKujV5T+7IliDQSG9N3fYsoYEoof3SgNz4Lmwpk3XaKEa59DTJfpE+bX8xH0sxm6J2TVkgSCCSWFPV
- jtNtvr4X
- GbEel1Pzl3iMuIceT/Hp1YLaE4i206f/bgY+ZwKiz8nAXK+Uq10KB358vJqgXkW3goSE3EmcaysWOin/0dAgPvSEMfrfrj3eY9MkeTOeVVFrK3silwKnVQ8fhOL3yC5b6SVkzJFlMt6sgvP8zhGetUTpnlCB5DQRTP41URZuIxvLf1EaCaslA1ST1e3NTh32LrE8u146EZgdQz9W8Xp1xlpL45jm7BjtcE9FSNBG9r4eZIRCzwYJjTYfnduBtpPXUAZBjFDaceJC46hC5ymgGhU0bSEtpYFzJHscT1GpnejXpWVdWudxQ+qqpIWmWOHNaXkjgxMvBcQuGYvRgMfvjNoqNCJjAgSlfQfB6HZiG4rzpl8NVItTN8Vm5W53pWEz/2kTVV6VfIEDUzvsSYhYQTvu43r1pGJGnXBJ+u5vdh6xMhbrh8BE6VtP3IlyZOcq4n9wbqXVPZi2TYSV9DE3sgiU3GUycJOUkYQmr1qV9PrS+PaZ5sm+3BDIUZ1o+02erh1BNxUdFKevRdpiKt8zLOE1ClNwD1wR57XCX2f4C60POh0wz6bpLHsGgioS1pZUhlJ9HBVY4zsffHAocwRA5Mcps5eR4J1BIa7zupkCclL0yl1gwCqJNWZqGvCDNT1vIXGddZkL9fdDJbFVUEEsQDPL0km8vdOL3P4un9f+0gw6H0t9jQtxWMU6M4nB1OIKASKlp
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: nshg156b3rj75prpqdiu8i6rcnbk9omr
+X-HE-Tag: 1795451050-975858
+X-HE-Meta: U2FsdGVkX18novSpk5QpJeRM14jCvLsltJUT7rmzpQrlcHIaLR6ZDvoDoRP4su9bxval5x7p+0ogGc5KOsxmHy58jzRhk3ApFgrSMhpX/RDdoB6KBi8mdeg267DxsqsiEXKWKDYL5kYGrQWz34DaJ3kEXeMVmp/+W4etojyQIGX0CE+5j81zhx1RFx+mexidvtbj1ZFKJd2h090GEMATmUHFekx2QM92wQ40P/Iqvtcqu1HbECEaVMsY4cHWBjxenB9MnORjy1cFYm4AOPpfLcRaH0psXVlnDlQAO+6sLppW+SrHXb9vJxSxpJ6zYfobnF8ARHgDS3cLiKIXvtG8cvIJqhzqZNqpvd+nF3iJmVPIo+tbkEoKy0zRmePCgSfwMiwloisnBVUWh3Bu8v9bh54AZGdm+X3XqGaO6Gq/nj2KJpuFNZkbsUShYP6pB947TrGPBUMQdpFXjlQ65BjyeLO65+OxJI1Sx4BXpZVpWmm6tw3ccFnxeKRThEaTY68NBS5yaOtdxtnJLXxG5dT1VwZAK802t+3aDLovtBnvmHMlPcKqkkZNcOcI1BiwcsYuUXnx1c0stKHPdWyyeADppP5riqwUvnE3w549+D3g9idGEdepPOO2qoG71ezR4K0weFloGSNJaIIRx2aO28FKre6ghqwv9zqqglBowDnuv2EcOvKjRAyLSSEnaCZSr6NBH4YGs+8w7WXyqo8aN+v/+nd8OJM4CuxL0mzfgHqTmaB8rC83yrG9VJb0PmUaABozQlFXLeqXMwDmrI0jfX/p8cZ44v9OFL5OQDt7iwH5cqVELllqlatSMgvTXyNMtSrsgRz5wi5e2iPltLQ7rjK8aQ1kIBJPMxyTM6dS8b/kKEanZkNEGXNG1MQ7AF0B+IMPEpsWKJJ/bJg+rxnNkeNUYAgp8aki5R7cB54jdNg7aAJcZYiMQRDpc0dfcNdux9OvG5gCrzU30YZNbprrXTl
+ 6mMGnmZM
+ vqEV+8u7MfOBV+dCLhogH1gn/U4pe0XGmPw+HTTxv1tllcS0zEHrCq5ulhB4UaqJluAHKtIrNQMdov3N0vs3Wh4p83ucE4I06zSXNViGg8X+PbtXZQOaeA5t216uMBsLswXYf+8lS/UGM75/USf6gVF9MT3bc/7Kh+s0n+eu9ME0io7bJ1KoZzaDRYZM6P6OvWig1Ea2WMIHKjmWAp87fLdnuXv0xPUjyldYqV1HsSANmim8dvWJs2SUDNz54fpyvVZAuO6a+594WfAHQ8Z1dVFhlX8rI0edhdwnZbFhcLEFv19mm8MCyjZw3Zv4OTCK6grVizEiMJnQ4Qazdkl65r5XM0+vQbKhUQ2ztWsft/3YyZKQjxEo2PF242HjXs7FvH1txhDaDbDiTO+TkYEOsO7+gHqsYmbcOhvhzDbNVmlQBOwhtgU96V6h/zN+F82zhEKSTYkT2+NDyNyaeA2+RSxSiuuIRCxXAu1R5j/5qPtK64as9nQZj3yT1uY7C++Km+3m1aGlFavJGxtrcbDv3OvIYmwtkRfNSVL9PErpT5o4Mc38tlQ9y1Rpl0Pkh7erHuDWyF2lI3kFGgzCgEcxIwPpbwOuo6lYPcgjwvgVF38s/RXN64/mLfMK8XjiCxhKCNRTTLznZZanvxbCWUV/bxWuptdPAuxsaPqtarsXgFg+XUyo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,184 +155,203 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix leaves the IPv4 device group records uncharged, even
-  though their IPv6 counterparts are now charged.
-- [Medium] Several IPv6 allocations whose failure is always silently
-  ignored now use GFP_KERNEL_ACCOUNT, so they can fail on memcg charge…
-
---
-
-net: multicast: account group and source allocations to memcg
-
-This commit adds memcg accounting to the IPv4 and IPv6 multicast source
-filter entries and their tomb records. It also accounts the IPv6 live and
-deleted device group records. IPv4 keeps GFP_ATOMIC and adds __GFP_ACCOUNT,
-IPv6 switches to GFP_KERNEL_ACCOUNT, and a gfp parameter is passed through
-__ipv6_dev_mc_inc() and mca_alloc() so that only socket joins charge the
-live IPv6 group.
-
-> diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-> index ede1f0825bad5..e7afe61871132 100644
-> --- a/net/ipv6/mcast.c
-> +++ b/net/ipv6/mcast.c
-
-[ ... ]
-
-> @@ -232,7 +233,7 @@ static int __ipv6_sock_mc_join(struct sock *sk, int ifindex,
->  	RCU_INIT_POINTER(mc_lst->sflist, NULL);
+On 11/13/26 18:09, Shivank Garg wrote:
+> folio_mc_copy() copies a folio one page at a time with copy_mc_highpage(),
+> so a 2MB folio makes 512 separate copy_mc_to_kernel() calls. Each page
+> pays the startup cost of the string instruction ("REP; MOVSB" on x86
+> CPUs with ERMS) plus a cond_resched().
+> 
+> Introduce copy_mc_highpages(), the page range variant of
+> copy_mc_highpage(). When copy_mc_to_kernel() is available and the pages
+> are in the linear map, copy the whole range with a single
+> copy_mc_to_kernel() call, so the CPU can optimize for the larger extent.
+> Otherwise, fall back to copy_mc_highpage() one page at a time.
+> 
+> On a machine check, queue the poisoned source page for memory_failure(),
+> as copy_mc_highpage() does, and return -EHWPOISON, as folio_mc_copy()
+> does today.
+> 
+> copy_mc_to_kernel() cannot reschedule, so only take the single-call path
+> when CONFIG_PREEMPTION is set and the copy can be preempted. Since commit
+> 7dadeaa6e851 ("sched: Further restrict the preemption modes"), x86 and
+> powerpc, the only architectures that select ARCH_HAS_COPY_MC, only offer
+> the full, lazy and RT preemption models, also with PREEMPT_DYNAMIC, so
+> they always take this path. The per-page fallback calls cond_resched()
+> before each page, as clear_contig_highpages() does. Other architectures
+> keep copying one page at a time.
+> 
+> Switch folio_mc_copy() to copy the whole folio with copy_mc_highpages().
+> 
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+> On a Zen 6 system with CXL memory, move_pages() gets ~1.4x faster for
+> 2MB THPs and up to ~2.8x faster for 1GB hugetlb pages (numbers below).
+> When demoting to CXL, kswapd uses ~31% less CPU per GB demoted.
+> 
+> Changes in v3:
+> - Copy the whole range with one copy_mc_to_kernel() call only when
+>   CONFIG_PREEMPTION is set, otherwise copy page by page with
+>   cond_resched(), following clear_contig_highpages() [1] (Pedro, David).
+> - Handle the machine check first in copy_mc_highpages() (Pedro).
+> - Rebase onto mm/core.git for-next.
+> - Link to v2: https://lore.kernel.org/r/20261019-batpagecopy-v2-1-d75e7d0dfaae@amd.com
+> 
+> [1] https://lore.kernel.org/r/20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com
+> 
+> Changes in v2:
+> - Drop the folio_copy() changes as there is little to gain here.
+>   On architectures without copy_mc_to_kernel(), copy_mc_highpages()
+>   falls back to the per-page copy_mc_highpage(), which ends up in
+>   copy_highpage(). A batched copy_highpages() could help there too,
+>   but I haven't tested it on those architectures, so that is left for
+>   a follow-up.
+> - Add COPY_MC_PAGES_NON_PREEMPT_BATCH to limit how much is copied
+>   between cond_resched() calls on non-preemptible kernels.
+> - Rebase onto mm-new (2887e63d2e8e).
+> - v1: https://lore.kernel.org/all/20260427142036.111940-2-shivankg@amd.com
+> 
+> Test setup: AMD EPYC Zen 6, single socket, NPS2 (nodes 0 and 1 are
+> DRAM, node 2 is CXL), with and without this patch.
+> 
+> move_pages() throughput
+> -----------------------
+> A single move_pages() call migrates 1GB of anonymous memory, as 512
+> 2MB THPs or as four 1GB hugetlb pages. Mean ± stddev (10 runs each),
+> in GiB/s:
+> 
+> 2MB THP:
+>   direction         base            patched         speedup
+>   DRAM0 -> DRAM1    19.57 ± 0.17    27.51 ± 0.78    1.41x
+>   DRAM1 -> DRAM0    19.44 ± 0.12    27.33 ± 0.27    1.41x
+>   DRAM0 -> CXL      18.66 ± 0.18    26.90 ± 0.51    1.44x
+>   CXL   -> DRAM0    15.38 ± 0.59    16.60 ± 0.24    1.08x
+> 
+> 1GB hugetlb:
+>   direction         base            patched         speedup
+>   DRAM0 -> DRAM1    20.34 ± 0.13    53.88 ± 1.48    2.65x
+>   DRAM1 -> DRAM0    19.10 ± 2.65    53.78 ± 0.55    2.82x
+>   DRAM0 -> CXL      19.53 ± 0.08    44.10 ± 0.19    2.26x
+>   CXL   -> DRAM0    16.41 ± 0.07    20.89 ± 0.06    1.27x
+> 
+> kswapd demotion
+> ---------------
+> Node 0 is limited to 16GB of free memory and demotion is enabled. A
+> single thread bound to node 0 writes 96GB of anonymous THP memory, so
+> ~80GB has to be demoted to CXL. Median of 10 runs:
+> 
+>                                base        patched
+>   kswapd CPU time              4.25 s      3.44 s     (-19%)
+>   kswapd CPU per GB demoted    63.6 ms     44.1 ms    (-31%)
+>   demoted by direct reclaim    14.1 GB     0.46 GB
+>   allocstall                   7427        370
+> 
+> With the patch, kswapd keeps up with the writer, so the writer rarely
+> falls back to direct reclaim.
+> ---
+>  include/linux/highmem.h | 51 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  mm/util.c               | 14 ++------------
+>  2 files changed, 53 insertions(+), 12 deletions(-)
+> 
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index d7aac9de1c8a..a79e9d68359c 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -484,6 +484,57 @@ static inline int copy_mc_highpage(struct page *to, struct page *from)
+>  }
+>  #endif
 >  
->  	/* now add/increase the group membership on the device */
-> -	err = __ipv6_dev_mc_inc(dev, addr, mode);
-> +	err = __ipv6_dev_mc_inc(dev, addr, mode, GFP_KERNEL_ACCOUNT);
+> +/**
+> + * copy_mc_highpages() - copy a page range with machine check handling
+> + * @to: first destination page
+> + * @from: first source page
+> + * @nr_pages: number of pages
+> + *
+> + * Range variant of copy_mc_highpage(). On a machine check, the poisoned
+> + * source page is queued for memory_failure().
+> + *
+> + * Context: Process context. May sleep.
+> + * Return: 0 on success, -EHWPOISON if a machine check was handled.
+> + */
+> +static inline int copy_mc_highpages(struct page *to, struct page *from,
+> +		unsigned long nr_pages)
+> +{
+> +	unsigned long len = nr_pages << PAGE_SHIFT;
+> +	unsigned long i, ret;
+> +
+> +	might_sleep();
+> +
+> +	/*
+> +	 * When copying we want to operate on the largest extent possible to
+> +	 * allow for architecture specific extent based optimizations.
+> +	 *
+> +	 * copy_mc_to_kernel() does not call cond_resched(). That is fine on
+> +	 * preemptible kernels, where the scheduler can preempt the copy at
+> +	 * any point, so copy the whole range at once if copy_mc_to_kernel() is
+> +	 * available and the pages are in the linear map. Otherwise, copy one
+> +	 * page at a time and reschedule in between.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC) && IS_ENABLED(CONFIG_PREEMPTION) &&
+> +	    !IS_ENABLED(CONFIG_HIGHMEM)) {
+> +		ret = copy_mc_to_kernel(page_address(to), page_address(from), len);
+> +		if (ret) {
+> +			memory_failure_queue(page_to_pfn(from) +
+> +					     ((len - ret) >> PAGE_SHIFT), 0);
+> +			return -EHWPOISON;
+> +		}
+> +		for (i = 0; i < nr_pages; i++)
+> +			kmsan_copy_page_meta(to + i, from + i);
+> +		return 0;
+> +	}
+> +
+> +	for (i = 0; i < nr_pages; i++) {
+> +		cond_resched();
+> +		if (copy_mc_highpage(to + i, from + i))
+> +			return -EHWPOISON;
+> +	}
+> +	return 0;
+> +}
+> +
+>  static inline void memcpy_page(struct page *dst_page, size_t dst_off,
+>  			       struct page *src_page, size_t src_off,
+>  			       size_t len)
+> diff --git a/mm/util.c b/mm/util.c
+> index c9c3dc4b490f..1277daa3ccd6 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -776,18 +776,8 @@ EXPORT_SYMBOL(folio_copy);
 >  
->  	dev_put(dev);
->  
+>  int folio_mc_copy(struct folio *dst, struct folio *src)
+>  {
+> -	long nr = folio_nr_pages(src);
+> -	long i = 0;
+> -
+> -	for (;;) {
+> -		if (copy_mc_highpage(folio_page(dst, i), folio_page(src, i)))
+> -			return -EHWPOISON;
+> -		if (++i == nr)
+> -			break;
+> -		cond_resched();
+> -	}
+> -
+> -	return 0;
+> +	return copy_mc_highpages(folio_page(dst, 0), folio_page(src, 0),
+> +				 folio_nr_pages(src));
+>  }
 
-[Severity: High]
-The IPv6 socket join now charges the live ifmcaddr6 group record. What
-about the IPv4 equivalents?
+What bugs me a bit is that we are not tackling copy_user_large_folio(). So this
+looks incomplete.
 
-__ip_mc_join_group() in net/ipv4/igmp.c still creates the live ip_mc_list
-without accounting:
+There, we still have this. That keeps this process_huge_page() machinery alive,
+and a special case for gigantic pages (copy_user_gigantic_page).
 
-net/ipv4/igmp.c:__ip_mc_join_group() {
-    ...
-	rcu_assign_pointer(inet->mc_list, iml);
-	____ip_mc_inc_group(in_dev, addr, mode, GFP_KERNEL);
-    ...
-}
+Meanwhile, folio_zero_user() moved to a range-based approach and abandoned that.
 
-____ip_mc_inc_group() then allocates the record with
-kzalloc_obj(*im, gfp).
+Can we clean all that up as well while we are at it?
 
-The IPv4 deleted group record is also left uncharged. On leave or close
-the chain is:
-
-ip_mc_leave_group() / ip_mc_drop_socket()
-  ip_mc_dec_group()
-    igmp_group_dropped()
-      __igmp_group_dropped(im, GFP_KERNEL)
-        igmpv3_add_delrec(in_dev, im, gfp)
-          pmc = kzalloc_obj(*pmc, gfp);
-
-Its IPv6 counterpart, mld_add_delrec(), is switched to GFP_KERNEL_ACCOUNT
-by this patch.
-
-These tomb records stay on in_dev->mc_tomb until crcount counts down
-through IGMPv3 interface-change reports. crcount comes from in_dev->mr_qrv
-or the per-netns igmp_qrv sysctl. igmp_max_memberships does not limit
-these records.
-
-Could a user namespace root in its own netns raise igmp_qrv and the report
-interval, and then join and leave distinct groups in a loop? That would
-pile up uncharged ip_mc_list records in the same way as the delayed MLD
-join/leave reproducer in the commit message, which this patch fixes only
-for IPv6.
-
-The commit message gives this reason for charging the IPv6 join:
-
-  "socket joins already propagate allocation failure to the caller"
-
-That is not true for IPv4, since ____ip_mc_inc_group() returns void. It
-might explain leaving out the IPv4 live group. It does not explain leaving
-out the deleted record, because igmpv3_add_delrec() already ignores
-allocation failure the same way mld_add_delrec() does.
-
-Should the IPv4 group records be charged too? For example, an accounted
-gfp could be passed to igmpv3_add_delrec() on socket paths, and the IPv4
-join could either propagate the failure or force the charge. If they are
-left out on purpose, could the commit message say why?
-
-> @@ -770,7 +771,7 @@ static void mld_add_delrec(struct inet6_dev *idev, struct ifmcaddr6 *im)
->  	 * for deleted items allows change reports to use common code with
->  	 * non-deleted or query-response MCA's.
->  	 */
-> -	pmc = kzalloc_obj(*pmc);
-> +	pmc = kzalloc_obj(*pmc, GFP_KERNEL_ACCOUNT);
->  	if (!pmc)
->  		return;
->  
-
-[Severity: Medium]
-With GFP_KERNEL_ACCOUNT, can this allocation now fail when the memcg
-charge fails?
-
-For requests without __GFP_HIGH or __GFP_NOFAIL, try_charge_memcg()
-returns -ENOMEM in several cases:
-
-  - the current task is an OOM victim with MMF_OOM_SKIP
-  - passed_oom && task_is_dying()
-  - mem_cgroup_oom() makes no progress
-
-The relevant check is:
-
-mm/memcontrol.c:try_charge_memcg() {
-    ...
-	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH))) {
-		ret = -ENOMEM;
-		goto out;
-	}
-    ...
-}
-
-mld_add_delrec() returns void and just returns when the allocation fails.
-In that case no deleted group record is created, and the MLDv2 leave
-state-change report is never sent.
-
-A typical case is an OOM-killed task in a memcg that exits and closes its
-multicast sockets:
-
-ipv6_sock_mc_close() / __ipv6_sock_mc_drop()
-  __ipv6_dev_mc_dec()
-    igmp6_group_dropped()
-      igmp6_leave_group()
-        mld_add_delrec()
-          kzalloc_obj(*pmc, GFP_KERNEL_ACCOUNT) returns NULL
-
-The tomb allocations this patch changes in ip6_mc_del1_src() and
-sf_setstate() look similar.
-
-In ip6_mc_del1_src(), when dpsf is NULL, psf is still unlinked and freed
-with rv = 0, so the source removal is never announced.
-
-In sf_setstate(), this check drops the record:
-
-	if (!dpsf)
-		continue;
-
-The IPv4 tomb conversions avoid this, because GFP_ATOMIC includes
-__GFP_HIGH and the charge is forced.
-
-mld_add_delrec() also hardcodes GFP_KERNEL_ACCOUNT, but non-socket callers
-reach it through igmp6_group_dropped(). Examples are __ipv6_dev_mc_dec()
-called from addrconf, ndisc and the bridge, as well as ipv6_mc_down() and
-ipv6_mc_unmap(). On those paths, isn't the deleted record charged to
-whichever task happens to trigger the operation?
-
-That seems to conflict with the commit message, which keeps GFP_KERNEL
-for:
-
-  "ipv6_dev_mc_inc() callers such as address configuration, which may
-  ignore allocation failure"
-
-It also says:
-
-  "A group created by address configuration stays uncharged"
-
-Would it make sense for callers to pass a gfp into mld_add_delrec(), as
-igmpv3_add_delrec() already takes one on the IPv4 side?
+These look like excellent candidats for using copy_mc_user_highpages() as well.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1795102467.git.x-professor%40outlook.com
+Cheers,
+
+David
 
