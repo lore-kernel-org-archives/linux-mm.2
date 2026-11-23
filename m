@@ -1,108 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7806C606A32C
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256A9606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MbmIxTcQ
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=o4SwRy01
 Received: by kanga.kvack.org (Postfix)
-	id 7FE5C6B00EF; Sun, 22 Nov 2026 22:22:49 -0500 (EST)
+	id 436C76B05B1; Sun, 22 Nov 2026 22:25:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D3A16B05B0; Sun, 22 Nov 2026 22:22:49 -0500 (EST)
+	id 3E0406B05B2; Sun, 22 Nov 2026 22:25:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EC1E6B05B1; Sun, 22 Nov 2026 22:22:49 -0500 (EST)
+	id 2F5E16B05B3; Sun, 22 Nov 2026 22:25:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 41EAF6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:22:49 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0859712079D
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:22:48 +0000 (UTC)
-X-FDA: 85464936816.25.29980FA
-Received: from mta1.migadu.com (out-4.mta1.migadu.com [95.215.58.4])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D2E1F20002
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:22:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MbmIxTcQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.4 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1011C6B05B1
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:25:24 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 962031C41C3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:25:23 +0000 (UTC)
+X-FDA: 85464943326.23.94B2789
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E1A03C0005
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:25:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=o4SwRy01;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of raizudeen.kerneldev@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=raizudeen.kerneldev@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795404166;
-	b=Hrg1/eCUnUTRzEL26UkWeWPGVnBsbeU47lHa7wDMXos2oKECslquXLJ3jV9HKjdd+7V7RS
-	grHAcudH/T+sgJduWUw9GDO7PsSHr543Jr3Jx0wH63PgLdgfRvJmRMkVug48a2/SpiuhRM
-	3WZlm/9uUSSQ89cDRrsryRBJmaQ2oYk=
+	t=1795404322;
+	b=6PVXh0SIIkmLvjE1Dcs1727dZac4udyQ/nJkJHikdqce3nFaiziAxW4P/UvG3w0SBNsF+3
+	CKCWJc0/XXwM6E/uehMS0dnXBO7Moj9aYEBUmuK6N4RGdsknm2bbftHc82+yR5+xw7ryB0
+	hxiaonSaIBmJxXfpoPmGQR+u8gLhnRU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795404166;
+	s=arc-20220608; t=1795404322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mmVRvdK02N6AgoL3Fkb1Slsd4s0/SBaF5vDPeDu6iRw=;
-	b=aTgOqaCoFN+SskjyoqAUlX54jkJwwyFUzLoFB8f11umk3MhiqAqvLGiJi+nMtpeuVEqdTL
-	Xblm6KOBcOp/m/bFKfjIO5uzNvjYRWXnRo+PTRGxFQ2c8Pdi5AW4pFUbAsQN15CXetDgrq
-	QReUTB2sh8tBC62e9rSPPVJTLjREpYE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Hjsx441+A3L3gxU883GSqRGMok4wbhrMVBrQT8f02Ug=;
+	b=8P+0yMNKnQ2tfdlxAOHvXs24kH6mEBD9wVdX0z0JKlbA1dWPanufEEjZVjE3Fq8ArxL9ij
+	D7xAEa/S/k0GgAYSbrlwujR1QOcN95TXhFnfSFbV/3BOi5LA859G/tP1zuofO8DI42NBwY
+	dn8+SezaLjBMTyXggIqAR0sW87uPaS4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MbmIxTcQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.4 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/mnPk6TbiEx963fDemDdeJymjABb+Fn9UESDkxFlWro=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795404164; v=1; x=1796008964;
- b=MbmIxTcQ3G8tt5wpa6I92LbDuMVfs1806E7cCC5PBI2vMou21aB8rNHj0nuJts8H03VVD2PI
- 9TAupc99w0fWffVFDQy168Kz8ejfAY9iYpPuItzqQ6Uyb/Izcz9NyUgvR3SABuMbZKKvSgRXEae
- vJQh1W78cvOAENKbObhR4Edc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a40b5ee157b951a8;
-	Mon, 23 Nov 2026 03:22:43 +0000
-X-Mizu-Trace-ID: a40b5ee157b951a8
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=o4SwRy01;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of raizudeen.kerneldev@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=raizudeen.kerneldev@gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-38431138772so3624258eec.1
+        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:25:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795404321; x=1796009121; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Hjsx441+A3L3gxU883GSqRGMok4wbhrMVBrQT8f02Ug=;
+        b=o4SwRy01c8awoSnjgOqRELZBe9aYICfKpFijVElfb8KKWOEvKvkRt365/oBWEeFUBx
+         pNiKe5RZ0EhPXF/gOTlbv8yoq8Reb3GfddpWHJgyXx3jOMSzCtuAsxxY5rlhlfgkftOa
+         R5HtCJ7Qgta5n6pDdQS2Y0+3jNMh/1AqKtlFKPBQFhIDDekHmwIklKqf3UEl7P/wCdYj
+         mj9PLKRveMrMwUQ1QJkXiavlfFp+8OMA5tfZQqwT/eHgSU2tlwzZ5y51bvJ0raznkjCd
+         WqdTuFwkGIyu9H0wxsmoMjD8QKjCaZ00z3wKv3T1gI/Xyr97597fu63l/HwvVIH3ueBq
+         zuFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795404321; x=1796009121;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Hjsx441+A3L3gxU883GSqRGMok4wbhrMVBrQT8f02Ug=;
+        b=aYHTt3jf9EYtIc8pEAKF44vW8HAyKCJMD6GU1Ss4WLdvIgExSXeYC0z35F0xellvGc
+         z6qaFaEsnZL/+15BwPINWKwtQbWXWbzaqbhe/Vu1/PkjqKZc/OUPGqRjur8KKg1jvAoh
+         wL7w8bVsXr7IONgxHtCKZrg+QGrlW3vsYB92MpqamFOJHJa+8U5M/4rLn6sWz+VV5Zqs
+         s8KJtXiPASj69q3oCy8/t8c69OI+SewE14sKG/zznYGf+8TfVppgsEEtiCrhAB1UOGzE
+         tXEtjDOup7uFSAVDieczkVqbpLDAOHipJOoO5yrR/jEVica42ADfm8VfkTK76nG8nhV+
+         yjGw==
+X-Forwarded-Encrypted: i=1; AL+hErEGsKOvkvMFEscV6PFNYg4h4B2CFsaQj+X/dyP8OiliA/AX8CwKXid2nl9mjsU0WstOzK7jKyYrcA==@kvack.org
+X-Gm-Message-State: APuU4Z89LsXY/WuPu5s284gKRKVp9AwpV46hfEL7SJja+mwYxWvuzlRr
+	2cRNBjH9mNnnaOiYT9kV5cydNYkvETtODgwGEK2M8OcE96/vp1sNpgDl
+X-Gm-Gg: AZFdTZePQ0Curjhc/g/SwfjR4FJIT32+8lFzQedmsvGMkWsJ+E9vX9cMNJiVzFX1i3Q
+	d1NrtfPV2SoiMYsA0tl9CHcbwnorrxrqhDB2lLpIZYp9aV8mOI6tuRocbecGduzqSUVFrjKrvhb
+	vVoGG1uRbL1NuYLtC8fb4GN9zr0d8FTaWZhmSS6c6h3c0BQGdiZIPrOMVCxjN+pgqe+F7cuOoAx
+	PDxti75z7oI5RrXsAXSAY3lH7trj3TqCWPhLHhjmVLd0Q4pb33cgbtvmg/QMPFR7a3z5Kj4o0qa
+	kdWgtjqDpyPcN5Ygpw5YHtvVOU5tm+Hp/ABC3WlQb1hbHbocINgP8RML9+yFJZy2aUlJTuyCerD
+	yktdPc8GEAzS0LqP27n4QXS5654pECHwrYiwSwE/8fAobmLUhmVPK93GjNcqInROT+ToJviBxdf
+	uT5Oi04oIAllIXuyQ3R7dKuBYTrjQP3x2MdL+G9rGByppj3jZ8GgjpDMyId3T4ZxRgKgbdqUlf7
+	LVzWYXZbU913wbDZdBdEw+HdVFSdnBdlfh5rSkpJpdDH2eoDNOCE4qIJ+OPDjwWexritqtjuKDA
+	ezJ0JUxdSpd44Ee34MXseHlEWLaenIoC+njZhoP5hPO38KQm
+X-Received: by 2002:a05:7301:1a02:b0:376:b957:c08 with SMTP id 5a478bee46e88-3856fe5acd0mr10396229eec.9.1795404320560;
+        Sun, 22 Nov 2026 19:25:20 -0800 (PST)
+Received: from kernel ([103.219.206.95])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385646633d0sm52822820eec.3.2026.11.22.19.25.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 19:25:20 -0800 (PST)
+From: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
+To: chengming.zhou@linux.dev,
+	yosry@kernel.org
+Cc: hannes@cmpxchg.org,
+	nphamcs@gmail.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
+Subject: [PATCH] mm: zswap: remove dead length check in zswap_store_page()
+Date: Mon, 23 Nov 2026 08:55:12 +0530
+Message-ID: <20261123032512.6119-1-raizudeen.kerneldev@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3 11/19] arm64/mm: Align vmemmap to maximal folio size
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261122184453.2668189-12-jthoughton@google.com>
-Date: Mon, 23 Nov 2026 11:22:18 +0800
-Cc: Muchun Song <muchun.song@linux.dev>,
- Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <ED44F18E-E7FF-4B53-9B5B-3201F1100154@linux.dev>
-References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-12-jthoughton@google.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D2E1F20002
-X-Stat-Signature: ofg5b7qk345ce47ars3b94j3icjrourc
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 88nnpk5fais6jzh9sx1bupy8ux15fnwx
 X-Rspam-User:
-X-HE-Tag: 1795404165-576488
-X-HE-Meta: U2FsdGVkX1/LFev3A8tfimzTEFSbGj1o9hLSmgRDsSno4zmyIa3+3FGZdKumF0b5B0IvxofCxYrJfXqv4c3wNmukEOeld2sORgKivwPf3mRh48jygZsMkBzEhjGr4gR/0eMR3pjxnQfqBd9MBHjQM5d7y5eeJaV065tA60SwR9JyHCmCe1/BRzW5gRyjRSsok55UxjvhC56ndXmgOq2WTNrQSdbxPMi1C4Kjl3JUcxm19aXJFj0ALEzsvkbhA3QbltFLxcXFn7b89ezr99BABCn2WitKiy5z/fUeGE6pt7CzNC8yIH4yGSfSZoKFgUAaW5moR/b90WbPb7tO94ziYnS3m4bmX750WKTsSsngQEp8qMi0LpvdqYVmES89D6XeLukkdEjijJTyTqp3f7BzaRRNi6oDBrBddxbV43yaoiv4crgfTHoC0EANAIo+BThbi5gJQfBS2+p+mns8LbRsvEGi4TSxwUs/5+DEnL6fMR+IUVdXUomyDjrZh3ASIo46qsbbL25FODJ+dICI0l6SzeFtGyCLoehcxD87c3z7ezLITzCYK+rHlYMYH36SquWl8nn8uPEfIvww0hCLKyhpTH0Tx6qNs3kkkEjD16CG64ACPxkK6zZMGvrBfXd44lzpnK11IfvtC5xXsl/1p59fvs3HgcmCXbRJFebeXe+KOn5nSnHut6HS7+MXOa0rYYKHQOebZmk8TpGVSWG1YKfw0j2RxueWdNBWLfJAiDikYjPXWbfe7Hmcs/h22KkLNyFQT447hf6spAmba4+pgLTHI6dqKKktvMCm+QU50SALn6E3qh3u3M/mO6XH0vjYGKyl4ERgjgq4V6LZAVyotsIw3qrA+P/3TNdlDmUFFGh/3EIc1FQxJ47ah1AT43F5C8IdyoFi/dHc6J2UIujjTi+8k1kk4omdeU5De1wYxcoSogncu6n05QBfHTZvRThdhQY+PB8u/5wFMU4mUbCt2Un
- pWpEpatx
- +I2OGht8YrD34i8cymR6EV+R5C0o8rsjzvWKTleGCR4oC/1M5mQRX03ZSMOEUl5WKqs817Nj6IVM6f2ubQ5DmdEUW+o6jZvX6Ip3CTnM2EhL5hJfntNvJwkFiYlUQNcb1BIgr0DSHkCCU7SxbLOjsb6IbrhYLC01lpCFENusHAkrigkyV/RO0cgeiSFrwoBJPpwsLWQ36RX8ZrXo/tHeyEwaAKkvGRLFs5xbJgaV96bPU2i0hjUdjtnt96+NuzoT2SRLj2/+woJZOe+Fw27sEvRBuZzEcen6cfqdI3Kj87eo+3umyWpBMBGKappqB8vdEiy5DMgMYJwVmMD6gXAbyFQTiEN4unVhQv84N8+IBnkxygZCKJMsEEBegvp4xL4ye0GJHC8S1O7vSHkfQfmXhzZf2LeBjl1MZG79WY34BF5KGs0C7XkSuNLpOrEGA2Y9BJz5Pjp9IFlRdEIMbhO92AF3qSSG7WwdEL19D/UrqvtJ8gX7vbRzcjF3GzA==
+X-Rspamd-Queue-Id: E1A03C0005
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795404321-901738
+X-HE-Meta: U2FsdGVkX19lAH+mcF73RNJRjFde94cEd3zzLhg/gyeZ4wjZA8OK1t+BUernUFjP/qVBGglY6xgtHzcn7nHD8mbYj+iS6KQhVmCisIRWpcBy9Ur2e0LLEQot47dY+DiPWHQ8A64x77l4DUPV/m4ipewgQgGRp35qRO9uUnPHv/41/ZioPEOnWDzZkNo7dutOIUceJwfRYbNXRZahhxze/5KIVB7q4/aumGsLvSr3Bf7y1nCBC3gfOpXMwMtExQ2S0bdYacBgS/N+1JkyLS+OACmFY8aW25uXi/omvS7zLc8vwTUMp4sBuICmMF76XC0hjU5dvUtGtbKtfFosnsPUXfTQX0JreodaMy8Z8PlAuA9ZbUlp6O/sVyvspfFMTiCOWKsWeBmvYP8JUGhNfoc2ijICVB/edsM5uMfVW7NqGxZe3kTfWTJT84jnk+3GHaqWxOeD6eLhJEvNWdSiGIq6BDxC23McX3RgOSAf5DQoZeZz4/BDOTXUYEU7xkUIvjydpRA6ZvUGyDq+TzYewfBZavPgP54Z1vZLGaf8CWWO26oVZmhoMX2lNOie+hHFO8asasRMmyFGsAaFm3kFmQ8yTpqsVudjfdhHbzHWppY9JwIFz28UFzWIBFXS9bZZWIPSxhWzVaBYzVF3CwokfA1xcpFRPU0wFh5PhyA9CjAQX2TuorM1Ps032JLvyfGx6flNX9fWM1Q79e5pt27MO/xeM7vUztLkBXN0+R6zvF/QqBIdfvQ8+KVAiYBTNc7pO1Zliz7ZEY2Y65lo/j+fkB8dtAdjdOfOqztLABrRGErbZV1IUu1oK2G/Itd7Woxz+AONCRNVb3/i4nQFOGTdv+UPD4EdOf1pLTqm6S4FxzWl12o9hhKFD3UgXm8Y9dICeWT66LkwnHT90aTWh8Js/fLMHW1WKYMkrL/aLUyR+OuP0xijUd4EyL0QYS/07meR98Iwlx9ChA9s5XwKRLf1ge8
+ Xo8UIfkm
+ xoRHyCIEkMNRsJndf5yAlXjgN06EedHnrw+pFGwJBOLH0rK59rj98sFZvu6au81bR+FiC5i3LI2B7ptVcUChU/ejI0bEt52EOURSU5Wkw3g9Of86uEKOhmETOq0poUV1kgcCNcXBtdRDW7P6JNLuM7khGEUaoi0mOlHGXusnqDIylebSCD7F3IuIU1xGIQLmQCRGQN1/squkmQfZhowfTAcXEaJOWAvf4uKW4Pypaiotx0yJYBkBtBq9tXUlDIh/9AkR0fh1s+CIDDzHuACYP8CVFxmuqLqoFc/lU2BUeGXLRNvLZSEivJTP0mHi9XGfEaSjpvhuAW8tfGArKSorf8zZXU3Q1+coobFIOAgCm6oNu69xoVkWeuB+YYgL0WxyXsRhAlo/8V1HoYSNXTtrq5XdV063DEyC/QAaK/EvDRl8kwa10Y9QCn8k/UEr94u/XUlvm7k4aiZTBv4uU4iaJhv+N/1cvIBQ091u47c2AMcYKwANkUGVKfI2QF3GHPmnjauocF1r6oSbAh+3Q4RjXW7uVKtWQM0cGFrwzuF79/cGBXWCTWNF7hxFCSD5tw1wcdak+FGj+FMq79m+59MfQX3SWE3vMXDA6rVvTqdpNAfSgAhpNGufZAR2V5SnXRED+7xDgQtxTiTeVG+ogBmsK+dgQpR2bHUnzFmZ0YhrTnlgNw79qGSdtvOAHzfINQ19uWdxpEfTYOzvEbEpuv+NZBpRwEefBc8PuE250nxnzs0aF8f7cEg0aBRiKYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,100 +125,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+zswap_compress() never succeeds with entry->length == 0, so the
+condition is always true. Remove it.
 
+Signed-off-by: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
+---
+ mm/zswap.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-> On Nov 23, 2026, at 02:44, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> With CONFIG_VMEMMAP_OPTIMIZATION, compound_head() derives a tail =
-page's
-> head by masking its address. This requires the head struct page of =
-every
-> folio to be naturally aligned to the folio's vmemmap size, up to
-> MAX_FOLIO_VMEMMAP_ALIGN.
->=20
-> On arm64, the vmemmap is offset by memstart_addr, which is only =
-aligned
-> to ARM64_MEMSTART_ALIGN: as little as 512M with 64K pages, where 16G
-> CONT_PMD hugetlb folios exist. VMEMMAP_START itself is sufficiently
-> aligned for all supported page sizes and VA sizes.
->=20
-> Raise ARM64_MEMSTART_ALIGN to cover MAX_FOLIO_VMEMMAP_ALIGN, and =
-assert
-> at build time that VMEMMAP_START is suitably aligned. This is a no-op
-> until arm64 enables HVO, which selects CONFIG_VMEMMAP_OPTIMIZATION.
->=20
-> Signed-off-by: James Houghton <jthoughton@google.com>
-> ---
-> arch/arm64/mm/init.c | 18 ++++++++++++++++--
-> 1 file changed, 16 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index 4e7682dfe366..7186d86afc41 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -35,6 +35,7 @@
-> #include <linux/kmemleak.h>
-> #include <linux/execmem.h>
-> #include <linux/arm-rsi-cmds.h>
-> +#include <linux/vmemmap-optimization.h>
->=20
->=20
-> #include <asm/boot.h>
-> @@ -92,11 +93,22 @@ phys_addr_t __ro_after_init arm64_dma_phys_limit;
->  * in the virtual address space.
->  */
-> #if ARM64_MEMSTART_SHIFT < SECTION_SIZE_BITS
-> -#define ARM64_MEMSTART_ALIGN	(1UL << SECTION_SIZE_BITS)
-> +#define ARM64_MEMSTART_BASE_ALIGN	(1UL << SECTION_SIZE_BITS)
-> #else
-> -#define ARM64_MEMSTART_ALIGN	(1UL << ARM64_MEMSTART_SHIFT)
-> +#define ARM64_MEMSTART_BASE_ALIGN	(1UL << ARM64_MEMSTART_SHIFT)
-> #endif
->=20
-> +/*
-> + * With CONFIG_VMEMMAP_OPTIMIZATION, compound_head() masks the =
-address of a
-> + * tail page to find its head, so the head struct page of every folio =
-must be
-> + * naturally aligned to the folio's vmemmap size. The vmemmap is =
-offset by
-> + * memstart_addr, so memstart_addr must be aligned to the largest =
-folio size.
-> + */
-> +#define ARM64_VMEMMAP_OPT_ALIGN						=
-\
-> +	PFN_PHYS(MAX_FOLIO_VMEMMAP_ALIGN / sizeof(struct page))
-> +#define ARM64_MEMSTART_ALIGN						=
-\
-> +	max_t(phys_addr_t, ARM64_MEMSTART_BASE_ALIGN, =
-ARM64_VMEMMAP_OPT_ALIGN)
-> +
-> static void __init arch_reserve_crashkernel(void)
-> {
-> 	unsigned long long crash_base, crash_size, cma_size =3D 0;
-> @@ -218,6 +230,8 @@ void __init arm64_memblock_init(void)
-> 	/*
-> 	 * Select a suitable value for the base of physical memory.
-> 	 */
-> +	BUILD_BUG_ON(MAX_FOLIO_VMEMMAP_ALIGN &&
-> +		     !IS_ALIGNED(VMEMMAP_START, =
-MAX_FOLIO_VMEMMAP_ALIGN));
-
-We already have a sanity check in spares_init(). Doesn't it work? If we =
-really
-need a check here, I think we should use compound_info_has_mask() for =
-the guard
-instead of MAX_FOLIO_VMEMMAP_ALIGN.
-
-Thanks,
-Muchun
-
-> 	memstart_addr =3D round_down(memblock_start_of_DRAM(),
-> 				   ARM64_MEMSTART_ALIGN);
->=20
-> --=20
-> 2.56.1.809.ga0b61035b5-goog
->=20
+diff --git a/mm/zswap.c b/mm/zswap.c
+index ae19e301fced..9590f333d83f 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1509,10 +1509,8 @@ static bool zswap_store_page(struct folio *folio, long index,
+ 	entry->swpentry = page_swpentry;
+ 	entry->objcg = objcg;
+ 	entry->referenced = true;
+-	if (entry->length) {
+-		INIT_LIST_HEAD(&entry->lru);
+-		zswap_lru_add(entry);
+-	}
++	INIT_LIST_HEAD(&entry->lru);
++	zswap_lru_add(entry);
+ 
+ 	return true;
+ 
+-- 
+2.53.0
 
 
