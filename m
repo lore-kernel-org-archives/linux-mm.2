@@ -1,102 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78CF606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF737606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GDGEYtL7
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dQVJfxbn
 Received: by kanga.kvack.org (Postfix)
-	id 13E0C6B05B8; Mon, 23 Nov 2026 11:20:26 -0500 (EST)
+	id A94106B05B0; Mon, 23 Nov 2026 11:24:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 116116B05B9; Mon, 23 Nov 2026 11:20:26 -0500 (EST)
+	id A6B2C6B05B1; Mon, 23 Nov 2026 11:24:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0057F6B05BA; Mon, 23 Nov 2026 11:20:25 -0500 (EST)
+	id 981266B05B2; Mon, 23 Nov 2026 11:24:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D55406B05B8
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:20:25 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D2361A090A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:25 +0000 (UTC)
-X-FDA: 85466896410.23.3394909
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 951A2100011
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GDGEYtL7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795450823;
-	b=gPzR82p7dT3FEtd5r7nP1A7ywYCwJje80zy3B6Am9zKMZy9ciXvIIAKLKhvJpcvlBUYQlt
-	E5852G3n5JaZ1kJUZnp7osAILl5C241fvr7Mojume38cDr44cyVabUMDaE3W8jfj2hljB8
-	Q0/JADpouMs8bApRo7nCs4w2f9rqH1Y=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795450823;
+	by kanga.kvack.org (Postfix) with ESMTP id 269326B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:24:02 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A097F1A090A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:24:01 +0000 (UTC)
+X-FDA: 85466905482.02.F96F6AA
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 98C2C18000A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:23:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=dQVJfxbn;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795451039;
+	b=WcTR7N1T3Lbv3uAxEvFJfaSIfYXqgh9i6vQscUwMilq+DJUQTaO9YPqtKhybzT8Q4b7eUH
+	Q90Ds5SA45lAUUJ8hSgcBVVlvAvsgHpFHt7C/UuWxz4+9uJtWE1jCY1L6Nb2YFs6br1DRE
+	25HgUyFabL92QOJMPyIr41/E6eeQuZw=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795451039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VMHCwMuWqOW4JKKsOO+FUuvLN27CPePpxu9ZaOnKa9E=;
-	b=LDz5MGiySt4vz+sclaPGCuDiEvAhpZZDAcHG1iws68q3lCUyq0KpGXU2lMqwLj4JMmqXSA
-	TXS8X7OGH+rqoFe40YcTVGVfWucAsdkFX2BJrlUr58M/kQH5yiMiLh8YImJ1RVxkTgywmy
-	o79Pvobmvd3w7uz3R6hU+Dsd5WukjAw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GDGEYtL7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D62C141919
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCD01F000EF
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795450822;
-	bh=VMHCwMuWqOW4JKKsOO+FUuvLN27CPePpxu9ZaOnKa9E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=GDGEYtL7lELpnekg2dZtA0noURTy7b8Qqb2t8Aco6KI9yGEey4fOdVST0kDaZmm9D
-	 qC2767n5fEM+SF/OXeH1t9cTXTP/JKvCy756skEqRJ7Eg4CN972uwQAZN5ovDno7CI
-	 mUXd5gPHzP9IfCpfhvbG4S17C48Rz5PdKk+55UH3coS0CP5YCH3+3lbgoDbVUytG7b
-	 qm18Tkjao+EplItC6lP/zxbj2jul7amNgqUtJk95OK+gQNITt1B7pUJsqIpJnLfwWb
-	 8zyOFDaA2eQUm1tuXM8bC0l8uJdybFb3+6sKhiu/fmashydUuDYBl8Tu6PI7ZP4QsG
-	 sm3I0pw9V8XpA==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c515319dd89so395826366b.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:20:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEAvdKBJlcnQ9YDoK9l39/fvfberrA2k8z2TmNkR2fvvjRquvv4Qc2u2K1AQ4Vb1Tj3xd1NpBKpJQ==@kvack.org
-X-Gm-Message-State: APuU4Z8R5iFbaizvKQUfjBNlowBKnAsvD2ujyboD/n0h+mZ8vadSTg99
-	7gWojpWm7lPYrdZEZDRahGd9K12DYvPOP023oH1KP3/SnaavY5PCXH//A5mUM3VknKr6PEO+oun
-	wpQCnDcu+YQ+Jhp0GA2DSJrrTp4c6EOs=
-X-Received: by 2002:a17:906:7b48:b0:c26:1648:a062 with SMTP id
- a640c23a62f3a-c513a9ae0d9mr693411966b.29.1795450821212; Mon, 23 Nov 2026
- 08:20:21 -0800 (PST)
+	bh=vsXwjKBnoZqeiXMuVVDpDy/CmbHWkBJEaAM3FjaXc2Q=;
+	b=ty+tSYl4NcE96X88XRP4B/1bsM1CrubqcbR+RHkOZ8cGBFDttZOEAX48u5iq4jdhLnWim1
+	dTzpNikjQzEIc0gQQs9tqJRYeVLmG3eBjx9Ak1pjLXp8M0QbmWUNO0qXq0x74NxZYlgtdE
+	YC4atq32dZ0awGcVAy/sc4BNoODGO30=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=dQVJfxbn;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-55be673e029so441591cf.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 08:23:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795451039; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jabE8bsO3vY3xHAKHwRK3P0cAb278jEht9/ZdIJ4U0FQi+CjG7dktQpzoDz67Tc5cQ
+         Ssy/TeYMlFjjx2ulKDS7PRR6OXMEgyBKAPWOsZKkXV6P7wwXGXoTfU0uQZOgmlmum+sC
+         uHZLMVWQDErrpoqPlfTXOO7uwEEOeKHzBAiyr46q90Vp+5osN19CXNz6QEmTr51O4Fmc
+         GBg/AKJlnCvRg+PrY9k74KksZdNxW8Ziw9RALgqjr/sjudCNqzuxggqe83uqq1wpW12B
+         r6yO5h+0leEhalRkQSrPCyquykw9+bW3T0XmF7HhaYYA83LoKKlhb7ekHP9RqhEI7r6V
+         NnPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vsXwjKBnoZqeiXMuVVDpDy/CmbHWkBJEaAM3FjaXc2Q=;
+        fh=eCiSCyCEjTS+MRxznaYY0eJcUw+csBF3/fjlXvcPQuE=;
+        b=lH/R1ft6j9poxM18ZocC9GCkHyI7OlG6MCl8+ezQ9EU3yfZTifKUMfORLY++zdQJna
+         6mCouehOgnw0K8tZ0uMrA/gpdIwFfGdKgJdptRbqWdU0/CzFe5zDn1B9E0LJ/rvfZ24E
+         5ptFAC4SVLaJmQYqV+mgX+u6Pk104ZFpUYg9XHfbADihDeRftfDzyZR29r5N78mmrAmd
+         ZuYzLDd8OdkkQP21a4w+b+Ydzu+l6qVeEchvyV0blQe8FqIpaEYlnf++mLShlFYGYgbF
+         5kRklsfekL9pa+zV+aOgqCJtgzS3Jw3C+k9wLdi9LjmZf3VmTIXGwrpH2LFWVwsLNXix
+         foZQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795451039; x=1796055839; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vsXwjKBnoZqeiXMuVVDpDy/CmbHWkBJEaAM3FjaXc2Q=;
+        b=dQVJfxbnzvXl4cBXRYM7fXdGZCWJqwL1m6VdkoWlLWYHnnE2IlG7MIW5VmJwlUKoCd
+         hMvsVUC40o0Ukgmn7bj9ULJB3lMwoh1fLFQwsPq03HHhLVaCaYb4CeGpstof5j8k3xLS
+         SWM+P1Nia3ev+QJLSsdP4HQmYjjw2RPK56Dm+bho/QdfjRj3eR+T2SOfHwiEdllLY67D
+         X1tMd9w+1QzuWusbm47RzFaClkrtK9ieJlVIDuwHVT81cYrx8uTa4oAOY86rZt5Cxc93
+         ZSDVdFOQpudBbsiiw9KqiriHw6ZxgqA61FHkB3zh122A8/4B22vt7XjJB+vmrTo6fQKa
+         IsIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795451039; x=1796055839;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vsXwjKBnoZqeiXMuVVDpDy/CmbHWkBJEaAM3FjaXc2Q=;
+        b=epaocmx3iUkrjLZbuE97J2eMLuxqcpEI5bVj6ERZVVkm6GpM50MWbVBvurEAKCPiWm
+         jOVHu0///ifsEjKWJxWhczfpnbYzB5V4sjVYpZ0iMqy0QAcr5+eaiG+i5/LdXltUW9fN
+         WNM/LMh6C8j+rmLXY58GeR8vD9xQSxB1KFPG84SlhODdM9ffr1CnvrhN1KlPd9Gw/duk
+         psvwRzafadDuXnC2FRa3uEzBzVAD0WZ+cPINdaCxUwytI2bwJtfsxLw1OjEq0w9Mism7
+         CDVgR+cDlZQtzgxtaacYARTMJLP74Y8x6AcUnR78JaqASrY6Eoed+ywlBPQiUCiAwTho
+         HPPQ==
+X-Forwarded-Encrypted: i=1; AL+hErGQw4jdmi4iiA3KUGs5nqkOucFVMvb/aefN71D7yelC4vy9HXNDbc02wwajNBlDmpiURZfEPacGPw==@kvack.org
+X-Gm-Message-State: APuU4Z+aaQ1+PYXrQ1BKj/MPDFJ++QpQj1gDCbWA55FVhQKaF1mkSG9X
+	LYCy8dioRKDvTLLtMZg5kNCt8L9jYwRAIU+uTiVqkrcyL+j6To9gVBy8oO/X5KICVl+bMvkFoKM
+	q4n2BtS66rPZtYcUHzoXg9aty+gpUUrL6DL7nvEDx
+X-Gm-Gg: AZFdTZfemiJAzYh2YFtue1/OghKvHYx3+c+2XUL9YEKaLEncA+xuizVNvlI65Z7GiY/
+	HiFNKTw6TIGk9vXoHMdinA4R7mnEXlxxeHgts177EBBM/q7SjCyNEqAWDYx+UkwwmyO0dCc6YCS
+	EMRXiDaaB3Vu+8ocBi3casnKieCIKK8gh51LUkaxlvkgdFskRLdzJNYCA30XjtJDNUHRS8L3xZ0
+	7a1Gvk8hsOGyvhHxpkLlUEG3DJdkXbdx2UwcL/U3yXhMVKNjyYnoypkBq6SomuNU/jRrOChQLID
+	p4SrLy30Diwuf6if2jVyVeoKaMJTKDgbBlzEN065nKpICgkkH/hIkpBm7eNulSIbLr4GLKKpLyO
+	d0MY7TM8eFebCWvpczlPzQGXxjP81JerJFaDnvAr+YTcqoVMd+PbOdGhvPCTsjKAS41Iav3t3SE
+	WVTpdiTsOlIne3IGKy
+X-Received: by 2002:ac8:5cd5:0:b0:55b:d494:187f with SMTP id
+ d75a77b69052e-55d881708admr36121241cf.5.1795451037939; Mon, 23 Nov 2026
+ 08:23:57 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261123032512.6119-1-raizudeen.kerneldev@gmail.com>
-In-Reply-To: <20261123032512.6119-1-raizudeen.kerneldev@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 23 Nov 2026 08:20:09 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zMhvpiD6JXBfd=KCVfHxQ3=VgmsVpcoydC89Kyj37thJQ@mail.gmail.com>
-X-Gm-Features: Aa3M54pyWRX5QSV5IVnMsgXQsdYhEWxByyxSD0tUw2dlim72dadxdTz936Q7lRk
-Message-ID: <CAO9r8zMhvpiD6JXBfd=KCVfHxQ3=VgmsVpcoydC89Kyj37thJQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: zswap: remove dead length check in zswap_store_page()
-To: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
-Cc: chengming.zhou@linux.dev, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261123-fix-rmap-lock-ordering-vma-locks-v2-1-11b04646abe4@kernel.org>
+In-Reply-To: <20261123-fix-rmap-lock-ordering-vma-locks-v2-1-11b04646abe4@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 23 Nov 2026 08:23:46 -0800
+X-Gm-Features: Aa3M54r8I6SgrrT7SXUxZTPDg2iuNTzqihC88BGRoF_BhP_IlsfH8qQxtpUWWUs
+Message-ID: <CAJuCfpFzd4kKcyUVewacpt-jxPn9tfwWzf=NdDVvaeV_AZckEg@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/rmap: correct VMA write lock position in lock ordering
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 951A2100011
-X-Stat-Signature: sarif3di715mxqkuc1bh4bygxbf1tejx
+X-Rspamd-Queue-Id: 98C2C18000A
+X-Stat-Signature: ggexp7dptbmqmziwhbqibkofahtj9yur
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795450823-28175
-X-HE-Meta: U2FsdGVkX1+L/jZetbAayBiHVveJhWyUsNp1UmcxY2azeFOYK870yAT64BwGaEjePR1A0in1lmohjD+gf9ogyFZS6ZYNczAEAvXBKlKOM4lKvEZKcDQvGVgTB2iFZ38RHsVRdc0dmu/v+A7bsCGMC18M+o5oPzdbkkFfkjVyx7ejRarJV5M5O/8JZ3msN58QKfwRlRLuWfY4S/vIYp21gsZ6jBKXoTu+2ilAVWlkH3gAGn4DwwKZ6U/lUScvKPF2dhhkgeD2D6OEeID9U4wsOGzGS/tEwPOrwpnLadkYfENg9K40h+fQMBzmYNmfuNmokcoEPy559xO6JlI+IMGkOKqEhM2Q9VJ9KJizNvltuOuhFUEDiIMB/MPElQNyjdNg9ZcJu9bNDGzEIQirtk7EKHNMs939TYkblhWTqTdOAtgfcLc7z/j0ods+V4inbil7IEXjhW3J3eg9mBDjg+e8jNXCuL3IBdAENGBmwxS4MD69g0ibKIwO+dLi+OfhnhbsJpKIhxLQiYAZ+1mMYqx4qI/0rKlihhfomd2Hz2oKlkaCteeeLUgQHP+yYpIyorRVhOhMld20o8cfgJv1sve/WnGXMkpnghaNrGijjbOOxIQHMM888FIoohnYlQ0543GZ6wdaFGHLGdvlw5pRC94vMK+pTuvFbN1nFcEm+ODayKXwvonmSRzbwHEpTpafQW6sfCMAPcRIpBT2bLn3sry/sC0qUEOddGumTV4zZk32nW9/MWvUoxALMockbtKF+xidlyAmM8AhR9b7S/jdHUQDRnkhT3mmNGPZa8WDj1YHKeTncWALvaGhksMIDDrbHvs8+JRyaAuAWyTkpjnzvFOnnZK6RO5M1fEwiNSWD+Rrw0B+X/sj4OYe+S9KxIoMhzyWHGueGT4oHafP9c8x1Rj308xF0L2EFbv7CBwWzyOSc7+etphDsyE8LIdjzYnbxJxZLKFTaswMBmubbmhEx6n
- bsMo4NdO
- mNUJmzrcXa+MYQ5OXuijspiZGQiOg50RMjNSaae1XavFn/sirOF7PlDF+ec7oxVAOWj1nmvLqpF4U6iUwRo2YiRpGnO5yQZwYvdm4V89qiFvuCMN54lkB9dWOgHzB00Qc9IRwWWOv5uqpY2TLnP4p40AdhvkjkiHg8T58HZnqpVL5wsydxwFlXnfrRDmZB/n+V9kBNd/o4NjCZf1RPDEVsyOrbEQsHplatAjPx3cx2Nk9hNO1BOvEMqDaRjNQEREqs3UtXdOcqIMuln0V3CQcO1m9IPaAxap/TIlty6+9jgzI1E5k2U2MX/OII9MNdFbhwPA1Ql26IV3MeE/Gd1Ly1EEr73uLAS2+w1MSWFcFL4xWcR7YcOjl8HwDmKvmykHEanHp5X0c3kxlCmHc8lIkio0ZoiCCEh4AsTVN0dOyEv8OhjpIAP2b36n6+vohOKNnVu4QmWp3p24dMeaO8YWcvu+dyyGnBtkJvPLAOYCk1+pBvTIyd8h9UPZJr5PLIv9Pxdx04/vIoDwwBFNfS1PEZ2/Sgzec72HEnGcaAPLel7MrorLg4mDD9W2rnKSTXqrueIAVj0XmHGxVm/VTGt7dppq6cQAnKEdTU+Zpvt4xQIw1ehJz9XIlgxEUstVtaszjE5//EaTFYpCm2BPQy7R4XNdcFT13BPV7AW5CCZbuCQarCuA=
+X-HE-Tag: 1795451039-161961
+X-HE-Meta: U2FsdGVkX18CxsyLaDUwadkYgfUQCtUlt7CovKzX2YYrZLF1C2a26evFbME3ufMKMPDQ9wc/xP+yZZNbbP8dq0igGUaTp77VGo7D2VluQG5JimfI9mknpIvg1jnrrLADeH4E+qZNKw7O/fxQyoYJXYdkctQXwg41E0+RJVmYrurHnB+02rfGc2lLpkqrzWEQGM/QHGK8xv3/rqtyUdcb1hnVLgNYqXU/AOe1Q5gBtBKTZHXUUb9yYNIzMnZmBrIxlQ+9gGIyX/Se3Xn2H5JtwrW/9qGWPR1FiorPtuTujkxPHZXCtNH8cL5XV7yuhLoxuFJHYjl0pKVWg1U7stgt5ThSPgk5YrBSt1Jb5WIWcNYtXYpRINOXlYemDhFc8wqqda4s1vI9HOjYubi7raPereVQGovnNz/RnLOW4+rCMLdUYBvrxG1R5xbYWmzmzaU3M1cT/5M/h0D/kVbcyAlLEejtUjO07JeSZaoHh6Jxt4ZgEgWrIkFrK/6yVcuRxydL36g23832tGn8y3vuf1jNgdWr7bNaQ5GE1j9YaKypG+ig4ZYqWrThG2VDSar63i2V4q+toBt0ilB8YBZHOtcjrmbOxIFjfikBGJz8XP4P5d/exSOW8X2SINHeOJ0N9/ywJ2gp+K6iFDoQ8lb4a8NnI2L7XIJuZtDgC9Zrnr9xYF5RSf1A2NaLF2f90tpdx82kzWY2eLM6zzMQ8tzBHdDb+n1y6+3zXNfE+n7DQPVU5tgw5sF3f7oJgYFc5WBahXtdHzDGNn+LoPHYQ+ISEvJHySOzMkyOU3ZbiLJmMeIQpdBYhU5Fzhx8+hdRuxaY+aR2npr4g2a8dPZV7wREVKKNm5QYWPWcjRXu5ux30omGlpWbvlo7e0vhTZKoNKyO4GLng4VfZg4sGexTYG+/BORBMUC/n4bVDhheWX4MLTNEaxjLZg4oFLLVDEjbx2npCDgKe+vzjbPaCI7Ws0XG7ns
+ J/seLh7C
+ 9B/l+HkcteOi8Idiw5262phDrCs2DICn6FH4MObTmk0P7IkWJbR7DLm/4cqDDTETdaRBOgOs/OB/OPecPaE/Gd1CyjxteLHpSn+piICv87XR8J7XHjQGWCGTyw9tRABP3ERD47vWz6AXEJJUHfhH0p6OUa4/XscLHP56wdxp/xH2lBnMRSeKYlw4Gu4oAGZ+0eOyzUjOZEfJNtVQq5MLyoHlRsR0xmNdfFqlEPiqwgn1s2B2KL+ep2hhV78NoVTPNU9b4791cEdkaqtnNER117CKcKltiu38mibYhDikDRdn7DOCZcoQOYN64kMc7LFw0+Hl4vSRZ9+iiTx3ewPlBQtKV6dZb2IJt+cvczmFa/I4xIzASjo36w9ol0AkSf74kCR50I4ji25l2o79x4gGiKPyU20DOqFxicpGFvUR2WsAV5qNvWFAOVykkZaB9AAlxxSI8LEZBtravc7+ZtpNqneT7tYrgp/vAAkTNQuMbY5/oQQ0jKnNcP8K+vZPKmo7sRMSD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,43 +150,109 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 22, 2026 at 7:25=E2=80=AFPM Mohamad Raizudeen
-<raizudeen.kerneldev@gmail.com> wrote:
+On Mon, Nov 23, 2026 at 8:10=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
 >
-> zswap_compress() never succeeds with entry->length =3D=3D 0, so the
-> condition is always true. Remove it.
-
-It's probably a remnant of same-filled pages that was not dropped in
-commit 20a5532ffa53 ("mm: remove code to handle same filled pages").
-
+> The list at the top of mm/rmap.c is taken to be the canonical order in
+> which locks must be taken in mm to avoid lock inversion.
 >
-> Signed-off-by: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
+> However, VMA write locks appear to be misplaced. These were added there b=
+y
+> commit 55fd6fccad31 ("mm/khugepaged: write-lock VMA while collapsing a hu=
+ge
+> page"), which was focused on expressing the dependency of locks after VMA
+> locks in the ordering on them, disregarding those prior to it.
+>
+> Of course, a VMA write lock requires an mmap write lock to be held, so th=
+is
+> leaves three locks to consider:
+>
+> mapping->invalidate_lock (in filemap_fault)
+> folio_lock
+> hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
+>
+> Each of these locks is either downstream of a VMA, or is not able to
+> acquire a VMA lock at all (e.g. in an rmap operation).
+>
+> This is because accessing a VMA's file (thus mapping), traversing page
+> tables to a folio, or interacting with hugetlbfs requires the VMA to be
+> stabilised in the first instance.
+>
+> Nothing in the kernel takes any of these 3 locks before a VMA lock, and
+> indeed in each case that a VMA lock is taken it is taken before - so the
+> kernel is already violating the ordering as-written.
+>
+> So fix it. Also add [_killable] to reflect the existence of
+> vma_start_write_killable().
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 > ---
->  mm/zswap.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+> v2:
+> * Updated docs to reflect change as per Suren.
 >
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index ae19e301fced..9590f333d83f 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1509,10 +1509,8 @@ static bool zswap_store_page(struct folio *folio, =
-long index,
->         entry->swpentry =3D page_swpentry;
->         entry->objcg =3D objcg;
->         entry->referenced =3D true;
-> -       if (entry->length) {
-> -               INIT_LIST_HEAD(&entry->lru);
-> -               zswap_lru_add(entry);
-> -       }
-> +       INIT_LIST_HEAD(&entry->lru);
-> +       zswap_lru_add(entry);
+> v1:
+> https://lore.kernel.org/r/20261121-fix-rmap-lock-ordering-vma-locks-v1-1-=
+952c0dd5bc3a@kernel.org
+> ---
+>  Documentation/mm/process_addrs.rst | 8 ++++----
+>  mm/rmap.c                          | 8 ++++----
+>  2 files changed, 8 insertions(+), 8 deletions(-)
 >
->         return true;
+> diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/proces=
+s_addrs.rst
+> index 04b649818cc1..40be3a46a521 100644
+> --- a/Documentation/mm/process_addrs.rst
+> +++ b/Documentation/mm/process_addrs.rst
+> @@ -418,10 +418,10 @@ ordering of locks within memory management code:
 >
+>    inode->i_rwsem        (while writing or truncating, not reading or fau=
+lting)
+>      mm->mmap_lock
+> -      mapping->invalidate_lock (in filemap_fault)
+> -        folio_lock
+> -          hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs b=
+elow)
+> -            vma_start_write
+> +      vma_start_write[_killable]
+> +        mapping->invalidate_lock (in filemap_fault)
+> +          folio_lock
+> +            hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs=
+ below)
+>                mapping->i_mmap_rwsem
+>                  anon_vma->rwsem
+>                    mm->page_table_lock or pte_lock
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 65646ed6fc45..55367e7d3eec 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -22,10 +22,10 @@
+>   *
+>   * inode->i_rwsem      (while writing or truncating, not reading or faul=
+ting)
+>   *   mm->mmap_lock
+> - *     mapping->invalidate_lock (in filemap_fault)
+> - *       folio_lock
+> - *         hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs =
+below)
+> - *           vma_start_write
+> + *     vma_start_write[_killable]
+> + *       mapping->invalidate_lock (in filemap_fault)
+> + *         folio_lock
+> + *           hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbf=
+s below)
+>   *             mapping->i_mmap_rwsem
+>   *               anon_vma->rwsem
+>   *                 mm->page_table_lock or pte_lock
+>
+> ---
+> base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
+> change-id: 20261121-fix-rmap-lock-ordering-vma-locks-62593469bf59
+>
+> Cheers,
 > --
-> 2.53.0
+> Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >
 
