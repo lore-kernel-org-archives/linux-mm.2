@@ -1,94 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0B6606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8143F606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=rph2yaNB
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NhD/xOlx
 Received: by kanga.kvack.org (Postfix)
-	id B085F6B05B0; Mon, 23 Nov 2026 11:02:13 -0500 (EST)
+	id 6D0666B05B2; Mon, 23 Nov 2026 11:10:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADF806B05B1; Mon, 23 Nov 2026 11:02:13 -0500 (EST)
+	id 65BB06B05B3; Mon, 23 Nov 2026 11:10:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F5E66B05B2; Mon, 23 Nov 2026 11:02:13 -0500 (EST)
+	id 521B66B05B4; Mon, 23 Nov 2026 11:10:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B03A6B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:02:13 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07FCD160927
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:02:13 +0000 (UTC)
-X-FDA: 85466850546.29.C7D0657
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FD9C6B05B2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:10:31 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 980A2808F5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:10:30 +0000 (UTC)
+X-FDA: 85466871420.28.C490D5E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1D61680004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:02:10 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rph2yaNB;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id BCB6A14000D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:10:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NhD/xOlx";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795449731;
-	b=ORgWkhQJvy2U92PS5g3zkoZK31rdlz113+Rv/MWqnRZTiuOmrepcj8fU6n6NhPL/Aqxvt8
-	desq6nh9JsHdfQr1zCjd0rtdl/QMCRg1qIhnvElStovy12Y0XhI4zGctfNhte7F5m+fg9l
-	w1XSK1yJBU5jL7/TkZritkPeYjCN5+4=
+	t=1795450228;
+	b=oaFvcsl/eI2LpLqmIYl03RMlAL0Ypg4dWz+ZWrwjn1cdaKv09ZN+0/RJCURvhBu4lhXfPq
+	kmeDeHuF1Dz9mj/iz/0Iv07siK5p6mCdxS+OwnwqcU4bJozRkf93S/oASwV4WSWcOl86wQ
+	EJCPqVdU+mNDoxRInBQK9SiIMAKFDfQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795449731;
+	s=arc-20220608; t=1795450228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WKGG8yQhQluo1jeMgy5Pk2aPts9Q3V6ZRR7HGYPBxOI=;
-	b=6B5n0SO274/s3++E7JJmIOhklTQ+DF6iAvXulpSlIeFmG6C4UwO4RK4kJH2ORVWB7kFdHp
-	+InZvOwJgBQGz1eItngQdB3zwGP8zgj3xGpuZ63LEtS3/S28TH6eFsAullopUtO4qKSxb9
-	6eeb1e5ZY+HoUqre7EZ3YUqN6MhYJwA=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lfsfc1WMfSC0QgUpwbLULjOQXGicAPKLtwLK5uI441Q=;
+	b=uJ9ZmMe7GxUJQuE9R6tPNW8XX+16D0TS61QO75q8JZ2LQNCjQTLaHl2ew6AdYAT9g/Urok
+	Pp80xMpw25oNpfwBj2BkXL8CiA07cVi8wlJ4o/mHLahMEoFBgrPq676JtSvAYq1XHA+Gmc
+	rRW/EwX6jbUP/ODNWZeh+1bPmNe2MtY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rph2yaNB;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NhD/xOlx";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6048F44D50;
-	Mon, 23 Nov 2026 16:02:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAED11F000EC;
-	Mon, 23 Nov 2026 16:02:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795449729;
-	bh=WKGG8yQhQluo1jeMgy5Pk2aPts9Q3V6ZRR7HGYPBxOI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=rph2yaNBXwJZOPhwxVMX/y08tuzLhPa5ch2uDrK7AJv6bHG1kzodt90Vkh6UeFKA7
-	 aDABcvWiZ9xOhXE9RCvUFpSkj1oVc0yf6PncX3YXBEK3Mcn8mkMYciWBipsRgplNeP
-	 uRyk2prYaNa6KQdYVE073xUFv8Qc3V+RKoLGqK9Y=
-Date: Mon, 23 Nov 2026 08:02:08 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kurt Lin <lylin1023@gmail.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, David Hildenbrand <david@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko
- <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Muhammad Usama Anjum
- <usama.anjum@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: skip hard dirty page-cache test on FUSE
-Message-Id: <20261123080208.b84bce7a706a0351aee6aead@linux-foundation.org>
-In-Reply-To: <20261123150459.2211177-1-lylin1023@gmail.com>
-References: <25ecd9ad-7c5c-16ff-5197-5703622a88b1@huawei.com>
-	<20261123150459.2211177-1-lylin1023@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id A73B540A71;
+	Mon, 23 Nov 2026 16:10:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8501F000D0;
+	Mon, 23 Nov 2026 16:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795450227;
+	bh=lfsfc1WMfSC0QgUpwbLULjOQXGicAPKLtwLK5uI441Q=;
+	h=From:Date:Subject:To:Cc;
+	b=NhD/xOlxcASeAudQuKlMZ5sD5z16j33iIQmWBQdrZ1Ow2Nf7X+7PfO2DUkpTg21R7
+	 nI/DOR4DG37WrAXucBV+4HOr35ErWqSjeoGz+MaPylglqsCDsP/ce+LF590mrE0XKK
+	 tp5beo3JoCjT52hiBgqbCBkgqM/BCEO78gNWk8axoKED1j3Pv47haxy6oux2MagLnm
+	 3uDj7LBiga/vtH4LX2Y+OiNVc2Oa38GclNbw60zKndLhA+WJS328ZNEu3Q2gYtzDwU
+	 WG7oULkRLPJYfERHt+jeRINzYumS0C3FBBPBjBNP+0rzGWUj+gX3C014V6U24hTUL3
+	 uQv6yk7AcazJg==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Mon, 23 Nov 2026 16:10:15 +0000
+Subject: [PATCH v2] mm/rmap: correct VMA write lock position in lock
+ ordering
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1D61680004
-X-Stat-Signature: 7yeh7oegs1wmuz4i6dgi6yx9gj85q79t
+Message-Id: <20261123-fix-rmap-lock-ordering-vma-locks-v2-1-11b04646abe4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/5XNQQ6DIBBA0auQWTuNYDHBVe/RuEBAnWjBDA2xM
+ d69qTfo9i3+PyAHppChEwdwKJQpReiEqgS42cYpIHnoBKhatVIqiSPtyC+74Zrcgol9YIoTlpe
+ 9JGOrtGnurRlGbaASsHEYab8Wz74SMFN+J/5cxyJ/+ke8SJRotHK193pwjX0sgWNYb4kn6M/z/
+ AIMNe4M0QAAAA==
+X-Change-ID: 20261121-fix-rmap-lock-ordering-vma-locks-62593469bf59
+To: David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
+ Lance Yang <lance.yang@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, ljs@kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3465; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=JFN3XXJROK9z0GHrDq6eqZSloqOW75UtPvr8ButN3P0=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZUrN9Epjj/UR614id1zhvIph3tpNPeIV2Gr+kot9s6
+ /idX552lLIwiHExyIopsjz/Ir4/SCRsXucFfzeYOaxMIEMYuDgFYCIbJzH8U36SlhZUujN8o9fs
+ zoeXjywVMLlj6e1468eaP/tO3k4+as/IMF/5pnXQ9yzbJ5t/rBbZcezXETn9+//Dyjd4rZ5lmWC
+ WyQwA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: gribguepk3jt8jcpwpidaarn1g83sznf
+X-Rspamd-Queue-Id: BCB6A14000D
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795449730-108710
-X-HE-Meta: U2FsdGVkX1/lxQxxY0pzBIJy5mQ2mQUNDavCnctP3ggJTeUPQETMMQ6HWkm4enw3RzcaFVgM+1oNWO8jA4X6Xi5ISs5I9OQcPiRSSacEPi84wqL68KBd+exTkp6C4NC0PUcuOOuYId7zfXS90f3rZGm1bqxrP97ckF6wAWdKqzhnIlk8gbG4yo15iEoUf/IkFDamKpEZsFLdWD9xxDLISm7oMrxY1uLLYHqA1dZHLHGXceK64ZeojjvRGFFLkTaTGTSuvbJAfSRxg877u3q4yrHPrCtDv9cihGNbn4mfq4dHjfFj/wNb6yfi+N0O/uiSLD6BzMK8ws4HFnkmlWRGwu//C9kIm0z2uBI54AMZ/BtjNiTBonodF84Wnt9rkcv+4WUpkWs6iVRpDAAqpVjerVO1W97QETlGxCxIyq8kttqofwLmvJshfHqrxe9Qcm/1TCCAgWWLNQ+asLHhBsZ3VQXYxy3EffIipTVVcbrdXm0e2ckPCrgrtMgZObqxnpvUE0nNd3U2cdEKxCp2W3Q3S3VcHBXp38ztlQbjneg95CtX26ajlb05VEOaJBArqwmMRkbUOM64kBjTF3Aib2OrUAan8uem8u2ePxaI+dGIunudeBrqaIwgeImKD9dHsueSQfuYRI19EctNbg/dHesPIVf6TxmzvtmTSy1ULL+phFpfGhJrP7yu8UXsHAt5JC8Gda1fB1hYl+M14Bni+G4Bi52W1BPC3IN/xIYR2m+eI7KqaUD/KbL5ayZYU1vlxs9KmwPNEajg3dPksNe4ADo5UC83Og+WDWWbUz0uhQ+LBGS++Mg6Zsh9fswMGJlKVTAvZQfilOf+Ozsd9yPwALxRkCJQP3bzdYsvLL5QJHfIK1G/fBygs8MwOsQE4HFZ/6PqYIs4NwcYf1nH7nkIDSFlP1lVIrwp5kKlzKuunVITsXs8rba2CxAwTZwA3jMHVmqSbM5nmJhQbpOc11iVqf3
- daROHObg
- 3RUDU4PrEY5eJ5uLlNADJWAtX+D/ENM1PivHTOQ+7IPDgfp89+3HKimM4SKzTGLKp7OiX/Zj5tZGMwSGRTZzYGuOrJOZK2mr+rdMYfJ6FmKpDXsJIQPEgF6CuXdNNR3/0k6ER+uuLM+jOuWjytlnZ3SRuRM1liOC+EZ07qp2cmnhP8poD+Wd2CMvNxrwFked+gyumlGvoq4BplkTPJmGDt2XhwCRhsSkLagHWPCW4ab8UJv+C0J7L4vZCiyrQEgehZ5BldBhWyuvUM2JrfDWwCZL5ir8fje2tck6CM/mVjkhcf9IrV7aWD/2Jja2mmWxz6UH8BuWLY+l7RD3/GSWuMxjm2YzLswnfCBdUN2YtLkfy3gtxzYGbafVX2AJQX8j/lLdprLUlPEhutxMw8/v1R3vw8weADcStHWEa8Nmgl0gh5ADHoMP/1w4JpqP/unW4/nzmm2Ibxc1qt3nL7VLCLWdirarTUQ+OVplPmClfYl8DKc9SVOTgGrYOU8wAXD7rp29f4JZFCkzkBexr6GJE+jFOwg==
+X-HE-Tag: 1795450228-893511
+X-HE-Meta: U2FsdGVkX1/2V0Vbn4pe+Na6K5BN2zLtAZtKrtYRcVZqOgjySjyu627JnxZ/FGFfBYv82eoHS2tXF13/uPj9U5d8eAL4h3uetI5XCBuKZogz4Zm66y3CsTbYwBhYoMy6gLF99tXWs4+gtjkCwZm2nA4e5bFqasUIxZUINYRwALK4vnhKvMd8HXnMJSP5A3HiyWlL88Y4D05mfyq2Ibf9i6TjwbL487O9f50caYUUNWtUFla0LpY0HExSYsKvxRc/EmNCZza3TYMNutCkCgOnTOnJsE/hPq9kc+DxCFe/yKw5pW9hV7/AHgiPKlNK+9d/yBkLsfsY/5b6f9+j0xoJCwwIuL4oFjiDu2P8Cs6IPRF0FEo8ovQHkn6o7DcEJD3S9A5dlqdMSjcJPGzKBd9lLZaaUfODneXHjWX9l6B85B4OE83kfVvalL73mTmA3BfexoQzwYZdVPQeH2UixzlsAtJ+jILyKuUzqfwsHQJ1BlRtER4wWtOLikBfTGNHi3DuJE7JpuZwmKXQAzozkt8QH+WLmgKhyUCY5ymFyfkcXqQOXND3zuRZBSeE4dZECKbEdjGV+WJM6nUeAPGJg0xUSKR5a4C7mcJESMp0eIb6Z+5jnhX5yJ2FK13u5n6VGDHnI4GI3ZtqlrFTRlfmFji3JzG8cL11WHgHro+3MB47b2RmiXKVEwYmATUWH2/touyT+2817KFUQ8z6YHFakY9WkbUhPa8XgmOKODLEjYwA7o+Ha+dwcb+DsuCqMuYwLyW3JiRGzjOYoMWP2b1bWfhPr4aoePfXKfIift0TyiJ0E4otXudP4yVEYMXZ6i7PRerMFqoN67JFh2F9bZeLjFwcvVuk+EnTN4jUPFGcV+I3XBe08gSivy7bho08PXUgl3ekksDVt4azLZmbzeJOwFAmV4OjW+NBM0LW3Ov+eu7rhq+skdQNJ29lY1kDR3F47FMXPxeiUYml19F9NbEeF44
+ mNx7uU9f
+ 8AC/WCLyLn4t4IgEJxYe860TWu116/EJaoSiZEDt3dUPMYGlo0aR1xf1JrudzYbuBkzwaBCnfCs94y6UfNP7bnRCHHTywHS7IsSp2zBGJzlYBOV4OZ4DpWhZYd8i4Vi4vdpKfHvnPnnI8TXY+T/p0wfwVc6NJeESVjEYeyoicEFKJG45mtKVPe3jvWoEgXZbl9HmDCq+3o3SXkaes6t/iMd1BLCMdfWaazKBbnaNFlL2+ycq6wdJDWtVlkk0s/8McodtufRRXZn47kkgKbiBei2oFtLBKT3WCVKQ/qXEyVdZdCx8HEiZyB5OSNx80HLUFJBu4ZvE8S9ys0u0XMU8adIHW2gzsMrfW281ZunAoMwt6lHzuftvpYNGhD53ih67h9FVz0WTczr66GVKgV8BvEwDPMqW74s2U8aFetnHVn5FTN6CPFZ2u/2gLzvAwJ8imvBnC/EqDwDxwaKeICbxDn2nvIxsu/GdnGDZd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,30 +113,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 23 Nov 2026 23:04:59 +0800 Kurt Lin <lylin1023@gmail.com> wrote:
+The list at the top of mm/rmap.c is taken to be the canonical order in
+which locks must be taken in mm to avoid lock inversion.
 
-> On Mon, Nov 23, 2026 at 11:06:45AM +0800, Miaohe Lin wrote:
-> > Would it be better to add a helper? I doubt there might be more
-> > unsupported filesystem.
-> 
-> Thanks for the ack. There are more (CIFS and orangefs also report the
-> error on close()), but Andrew has since replaced this patch in mm-new
-> with e747ed2c3418 ("selftests/mm: check that fsync() reports
-> hard-poisoned dirty page-cache"), which needs no per-filesystem list.
-> My patch can be dropped.
-> 
-> I tested mm-new 87cdbd9bd631, which has e747ed2c3418 and 44191f78d131,
-> in a virtme-ng guest. memory-failure now passes from virtiofs, where it
-> failed before, still passes on ext4, and 50 runs in a row on each were
-> clean. I did not hit the unpoison -EBUSY on virtiofs even without the
-> ftruncate(), so that part is not covered here.
-> 
-> Tested with the help of an AI coding assistant. For both e747ed2c3418
-> and 44191f78d131:
-> 
-> Tested-by: Kurt Lin <lylin1023@gmail.com>
+However, VMA write locks appear to be misplaced. These were added there by
+commit 55fd6fccad31 ("mm/khugepaged: write-lock VMA while collapsing a huge
+page"), which was focused on expressing the dependency of locks after VMA
+locks in the ordering on them, disregarding those prior to it.
 
-Cool, thanks.  Yes, that's a work in progress, I'm drafting an email
-but not quite there yet.  I think I have 71 filesystems working but a
-few (cephs, orangefs, afs, hpfs, omfs) are fighting back.  
+Of course, a VMA write lock requires an mmap write lock to be held, so this
+leaves three locks to consider:
+
+mapping->invalidate_lock (in filemap_fault)
+folio_lock
+hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
+
+Each of these locks is either downstream of a VMA, or is not able to
+acquire a VMA lock at all (e.g. in an rmap operation).
+
+This is because accessing a VMA's file (thus mapping), traversing page
+tables to a folio, or interacting with hugetlbfs requires the VMA to be
+stabilised in the first instance.
+
+Nothing in the kernel takes any of these 3 locks before a VMA lock, and
+indeed in each case that a VMA lock is taken it is taken before - so the
+kernel is already violating the ordering as-written.
+
+So fix it. Also add [_killable] to reflect the existence of
+vma_start_write_killable().
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+v2:
+* Updated docs to reflect change as per Suren.
+
+v1:
+https://lore.kernel.org/r/20261121-fix-rmap-lock-ordering-vma-locks-v1-1-952c0dd5bc3a@kernel.org
+---
+ Documentation/mm/process_addrs.rst | 8 ++++----
+ mm/rmap.c                          | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
+index 04b649818cc1..40be3a46a521 100644
+--- a/Documentation/mm/process_addrs.rst
++++ b/Documentation/mm/process_addrs.rst
+@@ -418,10 +418,10 @@ ordering of locks within memory management code:
+ 
+   inode->i_rwsem        (while writing or truncating, not reading or faulting)
+     mm->mmap_lock
+-      mapping->invalidate_lock (in filemap_fault)
+-        folio_lock
+-          hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
+-            vma_start_write
++      vma_start_write[_killable]
++        mapping->invalidate_lock (in filemap_fault)
++          folio_lock
++            hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
+               mapping->i_mmap_rwsem
+                 anon_vma->rwsem
+                   mm->page_table_lock or pte_lock
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 65646ed6fc45..55367e7d3eec 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -22,10 +22,10 @@
+  *
+  * inode->i_rwsem	(while writing or truncating, not reading or faulting)
+  *   mm->mmap_lock
+- *     mapping->invalidate_lock (in filemap_fault)
+- *       folio_lock
+- *         hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
+- *           vma_start_write
++ *     vma_start_write[_killable]
++ *       mapping->invalidate_lock (in filemap_fault)
++ *         folio_lock
++ *           hugetlbfs_i_mmap_rwsem_key (in huge_pmd_share, see hugetlbfs below)
+  *             mapping->i_mmap_rwsem
+  *               anon_vma->rwsem
+  *                 mm->page_table_lock or pte_lock
+
+---
+base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
+change-id: 20261121-fix-rmap-lock-ordering-vma-locks-62593469bf59
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
