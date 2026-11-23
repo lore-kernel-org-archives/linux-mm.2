@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE70606A33A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23D5606A338
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 14:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lwRxR/zw
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nhdmM365
 Received: by kanga.kvack.org (Postfix)
-	id BABC06B05D6; Mon, 23 Nov 2026 09:20:17 -0500 (EST)
+	id 0B0466B05D8; Mon, 23 Nov 2026 09:20:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B839D6B05D7; Mon, 23 Nov 2026 09:20:17 -0500 (EST)
+	id 088A96B05D9; Mon, 23 Nov 2026 09:20:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC0E96B05D8; Mon, 23 Nov 2026 09:20:17 -0500 (EST)
+	id EDFFC6B05DA; Mon, 23 Nov 2026 09:20:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C2186B05D6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:20:17 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E7731608CC
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:20:17 +0000 (UTC)
-X-FDA: 85466593674.16.E016B98
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 640FC160011
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:20:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="lwRxR/zw";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D11146B05D8
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:20:30 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6CE9A1A08B8
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:20:30 +0000 (UTC)
+X-FDA: 85466594220.10.6B32247
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9E0C0C000C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 14:20:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=nhdmM365;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	spf=pass (imf22.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795443615;
-	b=kFtz/e92wdTeR8WnSFNdsQZekdOh87rgvUs5aLcQWbH+TOyBW+5iQcqa32ltmdQgsqHFgf
-	ocQ+soAJACTOBNZYc6F5z7Rh0zz4l6//fw2mYZcBF3eb+2T7nmhr3+ABzrU7X35m49+09E
-	6t9KPDCSMuLKu1ZLsJh+sR8AZDL+YiA=
+	t=1795443628;
+	b=ajh5ExOcru6XI5gezUkJSKL6pjL1xEhG3cb5FFn73rS9P1oQUJbg29PzbSVKs6q7gPydBs
+	2i+hXIlVk2/sv/hHkIffnPuN9u5V9Dq8AO4jW+8/LfPt8BvEw80F7vtiu5HmEWAZu18ndN
+	rykCzgrHIf7jWTM2rgI63V+oc183plM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795443615;
+	s=arc-20220608; t=1795443628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mXV6+GG0z8PCuL6UAZBUPBZ1GbikKdS6r0oEptKGfNs=;
-	b=ABwjpX84/s1DxvU1PMhc4INLf/axpvzMUvgqM69uRhkiV5NWNlXWaqLBK7wO7wNX7JecvH
-	2VMvcBqXI5mLGljAn7+nXV3SemFmOGubHkgJF9uYf/LXSnHVAYtrD0cT+788yDXEr3Y2Gz
-	WkQzgzXBqvZSVp274fn1BFdDJMH3iw8=
+	bh=IAzQq1DJpSBO+XxRF6Vp7LxmR7KfxskrkHM0HAoL/tk=;
+	b=X94ZD7kGl4LR0U2L2ps1P4xsI11j/ko+vabDp9eWdBpuWv1eu1PiAvNH63z7PTUuy7Xyuk
+	PCxeg0pPuqIJCWt3HLcJiS/kj+ybizpt1X57lNYiRsMiJafxqWUJmO/xupqDO8gaMc9L2Q
+	TcvbtBzYWh3Mr98rmfjfGGTj23S+Nwo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="lwRxR/zw";
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=nhdmM365;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-385d8a00598so4608572eec.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:20:15 -0800 (PST)
+	spf=pass (imf22.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-385d8a00598so4609108eec.1
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:20:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795443614; x=1796048414; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795443627; x=1796048427; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mXV6+GG0z8PCuL6UAZBUPBZ1GbikKdS6r0oEptKGfNs=;
-        b=lwRxR/zw1wjkSktTs0q8kbCdliv64d0xs5oK8gAEdNoh2OWMjvp4x97zKkH+I+u24y
-         lQBFZwcC53rCbThfr0VPz8i5meSlZGVxmF8/b7i0LqPCEPOZZoyb3OrybKYGWpk99+A5
-         Bk6PNI/YWin8fH1Q5gBcficc4akRqlsyNVHro2gIR/mbQCCZbDFxYgfrknG/XJHC8u4v
-         hEDdajfVlYUaal1xjsd+q/698CXPvEP4gOxsDa+a2SHlc1Zs9ZFNE4QOJSPFnTyQ1xo7
-         awujC6R+CNW8Z1F77zO1ynet8xWnBn4f9bzOuMgKN5GVkAe+kXnWov0CaTQAKB2yElwR
-         AG0A==
+        bh=IAzQq1DJpSBO+XxRF6Vp7LxmR7KfxskrkHM0HAoL/tk=;
+        b=nhdmM365yKgedQl/9MbPFhM4BtdZTIXMu7Zj2pbxmYAGBNYhPIZxYjlYK+V9JuALyO
+         cnSdOHVHlQ2kLGljuy+PkVO6gySICGfPssnuLkzf4sAcMJS2hOdI7wx9s5utl237wrxn
+         CxB2fuiRx7A0t6RJgOmP8yVPHlpvL/bjnu2/l/pVMtGIEOfOWcyPDETWUg/n2yK1BkYM
+         bd58hcKubtUoBGsvy0kkuGZh1TmBr7Iwovb97jWj2fitqomFyb9hb1uFEK0N86oJyyqT
+         J2dboeFZV0Ub0eVms6bpoIGs6revAll558hslaEjpvzVWSFRSLwlXqGwtkChoy3wATRb
+         YFQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795443614; x=1796048414;
+        d=1e100.net; s=20260707; t=1795443627; x=1796048427;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mXV6+GG0z8PCuL6UAZBUPBZ1GbikKdS6r0oEptKGfNs=;
-        b=XAIv/e+pWS0IokdyF1pLPbvjURgMhBwnkce+xR+wkiBlj0u19xwvKoUBTnLykhhBSB
-         IijpS+hoyZYq5/M7F88KF6qsQ+hAfJLuPkKE5tS8QgLErf1DpVsRehazGUSuiHM1tBa5
-         R+C3Y6pqngxAbn7o8v/goU7mcuZ19mOp2KzilpprxczUvOgSDfwYKsYRu++bi/wu1I1H
-         U0Bh+SzWKycaKXGPrwwibkPoqfONTRmOSRawhHLpjWA77HhBNgAw19X06tV3N+L7bVYz
-         LJpIcsGJgQjK/TlxKYbCf2u4HOsVGw0CZ9p0g6xFnGjRUsJplyjaWy3ZpDxvMtHh6Lda
-         tksA==
-X-Gm-Message-State: APuU4Z+OpCXR0aRTjFx5LdZ7jzG/HQItwi9EDgqLUel61JvNTBRcMIqr
-	k3fwPIry9zdDT4IpOInOaGwu2iIPGapJGzriG5GMtJgXsLg5B7puaYVq7Fiqge4i
-X-Gm-Gg: AZFdTZdJE3GRFSoU09+MZ97Kiv2quNfIIUWBf8ftnt2kq9Cy0TgSZE6WOha6Ykf45Hf
-	xS/rkj0TNuFDBOWvfh0JjijEveIvuwhlb/TQHeZ6woELE92mp1PpB304gRoAIxToEy1stP+/H8L
-	ql83Rz6sa2MPz+cK/9tvJTCCeC9aTIVInF9gFIN8qR/zzdm1tX3AxV0QOajCCmdyl7MMLuvTR5h
-	qq8hyiUD50GVsbKn0PQ/uymg2IMHalnXz4p3EA/ZAseOKAwR+58AXFWPV/v4WOThdQ/qaGAYNko
-	VJjwGxsTbKtGmYGt7xdCWgofeAkNfPoymVU5Ma2SJqjds/7rrnmluG/F6ymqdIwVuj+ev3PKdbu
-	mGf54JDK+XJx+4QopI4OpIAqPiTUAWnJBmfXofWRlH21SUnvGmLtOfpnTzBONhcPOq5lA9L6tBl
-	qkXL8MxlujzeLwGTeSHtAKVAwMblnbXMeXB0V/mfg6Ay4YQHIzfQE+XAXGri0xF3y1aNkxl16om
-	3QCyubBxJpdEXdui738IYBgcTeug35YoNAmYrcOeF7bnSqWEnYoV9ovhy8yZbSFm83+AANWxhIy
-	zEGFB0ZTxRUzUQNojWiTmBl82Lv+cV9a8D0624PZl0NEvuSOjbwdnAg2qGYV8fTJTYHX
-X-Received: by 2002:a05:7300:8282:b0:385:af7b:d788 with SMTP id 5a478bee46e88-385af7bda3emr10643390eec.2.1795443614142;
-        Mon, 23 Nov 2026 06:20:14 -0800 (PST)
+        bh=IAzQq1DJpSBO+XxRF6Vp7LxmR7KfxskrkHM0HAoL/tk=;
+        b=JrIpatm9a2PWafO9BC5bxkB3/xJrbDxro/yNeZTg/8bvM90hH71OJISr0YE8A/YZw2
+         lplL/wK/Oyv6P2VqYVw3snYxtukG1kk4fqpKM8ptIm2NZFx/hwWADy/VZo6e0CtiR+vt
+         q6FVAv2Dsw5mkCPdlOJIyPyPvrSTT/8T5Ef2eXkLkYCW3DyKZcbrlc34Yfy0vfzETqKH
+         fOWV/KXL49pIBL1C+kgutWRzYV3uGn5gEaE45yG8EZ+4cSBy56wEdKzNjrYUtb0UQHjH
+         F9W2cf9O3RvDf8w3MBKein1f2TCuMo1sYOseK8eNVFwveMmqm9QDZfqlCO67bW2Xsy0X
+         2VqQ==
+X-Gm-Message-State: APuU4Z/EPYcgh8+3DfqbmNh9IORwLgTCm+brW8gqNUgxSrBY5HkfcBVY
+	5tNwRkAFetUtNTQB/tPs05GyFjDeLTHXuKKHIhwCIGCJ2IRByTzERA3iF0z7D7DP
+X-Gm-Gg: AZFdTZeBl9EG59o9Y/4gW79mDk2s4LFVOBi24B/wYLz3z+NIfzal4txtvO0BLXkwD7s
+	6sjp0MRHI6ibLN0nTvihg+xExzTxGREb/RajWCbWzrbDeAo0bAOKHB9Xl037kvgtWAobIMZ15Yw
+	Fwn4dWpC9os4AlYZMN0zalOiMyAJbDqE3zv13F9pcwYaNuYaZLm+eCJh3B78aIl52Omrn0TfgoE
+	aBgLILwKvOSy9VgnlANvLoKL/EaYK8Pc1FiXYozXDRDa/E7GThtRIslapXMb0xexf/zEpp65lVn
+	6lOZshLWHWG1sQRotZICQYwET3VfCxWMUCwyTnr0tB3crfXPuf1iIj5YCNwydGNJ5DMdHMwA5AA
+	f83936VzqBCI9DZjhbp5l5PMUj5+ubt1Ef8T7LnpdX3RRxH9f4CSfRwtBxl2y7CeqGnJyHJmVDU
+	3WyRQDygPiOr6N8XWP1eBTndwRDMQ3F9gLURIO8Ik8dwAFZr0OLDOQsdKaw121l/cJdlQdZBijG
+	2JBFvais618xM2cf0SrI4aDCuWXZWO6IcrrS1Xbp3q39gyLk3OeBtAeCqrpXgmIFDUWsEisXnGP
+	JeJTjmFuSrMu29JCuCvFDe8XdeSKjoXZGqFCvS818gEZ00/vlvGkCFk+ILD4lZD43Tqa
+X-Received: by 2002:a05:7300:6881:b0:386:9ffb:33b4 with SMTP id 5a478bee46e88-3869ffb51abmr7378341eec.33.1795443627312;
+        Mon, 23 Nov 2026 06:20:27 -0800 (PST)
 Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38577214c2dsm35579857eec.17.2026.11.23.06.20.05
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-386b9bdafb5sm3091208eec.9.2026.11.23.06.20.19
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 23 Nov 2026 06:20:13 -0800 (PST)
+        Mon, 23 Nov 2026 06:20:27 -0800 (PST)
 From: Lian Wang <lianux.mm@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -105,28 +105,28 @@ Cc: linux-kernel@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Thomas Gleixner <tglx@kernel.org>,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH v5 18/19] mm/swap: skip reader rotation for single-device priority rings
-Date: Mon, 23 Nov 2026 22:19:59 +0800
-Message-ID: <e2a77e8a6c81c5cf56694b18f8e27b038055ddd4.1795439990.git.lianux.mm@gmail.com>
+Subject: [PATCH v5 19/19] mm/swap: redistribute queue readers after membership changes
+Date: Mon, 23 Nov 2026 22:20:14 +0800
+Message-ID: <fc69968abaa133c855fe71ee4394251e67b5d905.1795439990.git.lianux.mm@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1795439990.git.lianux.mm@gmail.com>
 References: <cover.1795439990.git.lianux.mm@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 640FC160011
+X-Stat-Signature: rdobwxqjuthrngrttkxnj1xbz1qstnpc
+X-Rspam-User:
+X-Rspamd-Queue-Id: 9E0C0C000C
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Stat-Signature: kiarai9y98oboexqmeejrbzqd56dpe3k
-X-HE-Tag: 1795443615-161009
-X-HE-Meta: U2FsdGVkX1841/X6OO/Br/rWoG5gInvgRF4ZRmsQdWMI/duddkOMp/X+xtfRzw7r8XSq9s8Fhu2mARCNGQ0wrPHJOzVR9OUmT8sYACOGtfur7nbKD1n8eOeTFY2nlYgYeok30FGSObC5X4t29WFb1RPvWvU7NjGuXaBsjDHxeWF4vrDTkrSf2tFdxsOPVWgtkuFwsYhVLDfl4qI93wmkIbhR9N0gMmGr5+lS3MDOjZtXSMieWg6dMvgoo9QUDFAdEbA0y3VE8NOOeoVuL60EhMKZ9NSdE2ggGmeexBThx6Ux0uVVMOfoaCZBqTUBgdQiZ0Sr3VVkhLgpu1mYZB6IvB5aRlUBM3eaNqYV0r3bI+nCKV5e+hIWXCjsDPc+G9iyvkKWqIrZN7Q0bmBs0aVax/h2p+8v9y3aIwqLHVErJKlt7f8gY/vg08WRCpNlL8BfJGOm47g8KP0ymR1UThUG+6jy5l2rWwQOooSL4xB7cmnLHlGrtp/7EntvaSKuE1fgyyPxRsiq4OAhDxn/vntrH1HqXgj0bJyZu0PF4buk6IBx5yKNLh92mNW04E4/DdVWoIRPch3Y2b1LR90ifk18wNfiz4fNkywGjEJmARN2BuFzGV6RhczdJp9WtPoEMU1BIl7YEeB3yRjGOfdxcs5TAajD6Vqp7OpBeKvHKciIvG77rhJMY7MCU9sja4A1jNytZ2SLVRIlipYxmW/G8dbPDRBvFiUG03ZajGbiSBSa+r8znYUNSXKXu+Hb+Wa5U2h/rxkf5az+vv0eBIBtf9AkHioE5rQ5hpXqSCWf8khSW0ZpXEmBvMo5wIoNGuh2iYap3HrPvAwaqn7NJgFu4D7LNh6OjdfVBXiYKgqZam3VO/SExuo1AN07jLFpyEdcTB/T3zI6xitRuDz6DmK3CKN1aN360ACSizbnsLPWtfXPpzgn4z/OoYbdZpErHiSGhusaFTjSALZn2BNNZb4pGex
- QqJEGclK
- M9zfme9JLbQELbJEbtEK3SGyGuMYYFAzPid7yn21LIbNAbe4chrzEau25lmiijcj2WH9HKCDlf/lMyEpY2lRvVJpyCTIbClrVgr1MrV5JdQxFRNMSy1v62sRYjI2sWh7EhT9v+bXtkq1nzIO9y0re86DjBTArpkvDBqFOx5v4IW3UanDisYyotLLKNo6dwfvXsayipIohjb/LpKoyzq4NuYZoA3vkoIZt3ik9o/vxp6qOEH+okcSyKRjr8ThFd1ilMzm883voikJfWKpZKC0IuvKVKyOyB5EKSRWeo+d9Kpf+BsUZ3a6Fur2iNP0u6+SLvh/gM4kAbYKoPnXAX4KOOvGmX8L2xfHkp0vAjj90ejt/QFisc6d8MbX0DPeiY4deRV2u/j8zsn2+v0xrwNn/XhK30lyDXCoBAPL6W0muomDX4FrRXFzkRTWk6vvQbizIHGx3hALcGJU+AtukgjUGW2EJGjh+7BZQdZBrYKbs+fi5575KuU35T4ErXWsOO3ylt/Y9SKYM0CYC7Od+NY4RjKKL0xv0pSceMXt1tY6l7iw6lJc7eOJvm/nDm6woPNx7ULpi4oYPQfoqTAWKLxVHKC0qmmxeXnkZ2oTe2XoQTYWHmsmEefgpTllT43a5zPJuTQ19XGwK1vSkRka3jgY9+Xy/4mM81ogFHbJj
+X-HE-Tag: 1795443628-646978
+X-HE-Meta: U2FsdGVkX1/jF3eElpzNgz1pcyoPtoh1cK7tpipI4M9UCASyrq/V0UMwnjkrByHvV/BMoOSGVku+MaMUVQVo3bMzTvHHv27Pn3tdBxEi3W6mF/y4exTeMkoGgPhMgLZBkpWbzJKSWsd8WXcKtgQCgGXOyJ/B6giKbdkXG7zkhhMtw2KZMIdSlQCRh8VxFEleMXTXutr6MknMoWqgG1Cz2XF1lU+i/vCD/OiotFBVazo3CnVkksXHWE0xf4XLLsXdLjQhCkPIT8rwXXkPTN6+un9qG4iFGp3/6PJwCJpPpZNYDLneNARMR2eHljJQB+EhvcU/8TaFCKCYdfWbS3ih5UUDcA1p+YAt7pDjt4l8JFcqM8ZOAv6joemZ95A3nbRl/Vsp6QQW3ABNTXkYPiNllhVGOYYw9OrfUKw3o0RaV4VlbT+oPynAtNy6UWlC9+J391nRxdj4Ncf4fi5hJpoO/4ohnUaT5dawpWG+Z/oMzt+o63YrLqBkKBagMpkv2rsI40mKflW5EXGgtpcTjTZNwjEYRBXSE4e0E+FoV4JvxEvGN+tBCSL6MgOXRlgwuwC7uQuvWAawk5RQmXVfHdhIv4r+tsQrZmw2yhVvjtTToGqsIutsUfOXrUh8y1e++58rpKPKAn9uT6z4v3+tGOtiNuXuOWd/rAyV243k04JznxToO9LGIDHy+fxjLRWyGYaJr/A2KAYuG0pngAwoF6Miz3TSJLX1PQbn8FuQcLgLpABNBEuZzDNiOz4mDSJ+Ot4CiYFKIrdt4+xAjpEF9BKwQmDFt9OqwkAnstFHzasyFQeYwSzEZgH0Px0Ux77WDHNSVRKLeBiZ/nCPmZbWEBEk92EfOq0rpNUfVCyU/x3ZScfv+bk44OpyakRRdnymh8bnwDCOChZgAaj4/+6Vj+ID0qR5/ipCIDM8NgSceKxtSBG0+sy3o3wc9/L2qvji5F6VbE3z3bJhhHG4aXIYZ4z
+ rkfnp2Lz
+ 1cI0CKJpavnQRLHiZxPYToOG/MaF60OtpvQo3bGxp/rWko00o4RWYo8nglhjWpMlsFqpAuoIIfDfj1pGoFq3ihlxg4aRJgT6z305fM3CX+kX3i0v+zFiEaO1eiVLcjld+oXZqljtD/GeZGPzj6+56hx6i2VUzqFHbQoii06Yz91FgxtcXB28zzfHNZGBti9YUHwbieVVZV4QY0GP9FZHQu0gJ8wJv0B4JCsCcBsHDJQDJ9GndYFJF+9iNG3n3BmmO0Qd38o2gqDMa1iVh3kWNj+mDUuv8L4Tu4kUxqghbib7AG3GN+TT4+iRzBe8gLBlZzRetjsdqyn8Eh7R5dkMdqhr2wwuaFTkce2IWh3DBnoCEuHyIBMQzyXbVVIc0f03QJSCORU8KWurz8qBZtjR+9fFkuL6XELIgUOTtyp6vEgCQnd67wLoo2sukcqAyvEETo9qO/K5U/GnBQq1d8Fsc3sAdu3whuIW47wQSVIarp3wdcC5GpcCAMeGmCiXAA9ZOB2P8JHxuL6wbJ3ZixPwLsd5gkFgFAKBIGFNu11vZjlWecl75T+UZJJEC7EXK2X0PVwW/v2Ra1HWnbrb5s7Z/XE7Lyn1e69oTfNZfmUkajMBJzx0SPKPWRBJugG60LzhABj13NgEP3hjWFxZpAt746JSzaDwrbaHG6L5+TJP4uhy4BLfCF6vsNUqSx65WW6lyNlF9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,46 +135,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A priority ring with one device cannot benefit from rotating its starting
-offset or maintaining a quota. Read its only entry directly while the
-caller continues to hold the topology read lock and migration protection.
+Adding a device to an existing priority ring reuses the per-CPU reader
+storage. A ring that previously contained one device can therefore keep
+every CPU at the old common starting offset after peers are added.
+Deleting devices or rings can likewise leave offsets and quotas that
+describe the previous membership.
 
-Consume the cursor attempt and check the full/disabled pointer tag through
-the common path. A masked singleton therefore terminates or falls through
-with the same bounded behavior as a multi-device ring. Keep the existing
-large-folio same-priority failure boundary.
+Reset the valid per-CPU ring offsets and quotas after peer insertion and
+every nonempty deletion. Run the initialization helper under the topology
+writer, which excludes allocation walks, without allocating new reader
+storage or adding selector hot-path work.
 
-This removes reader-local state updates for the common single-device case
-without bypassing device lifetime or availability checks.
+Use cpu-id modulo placement for a fresh best-effort rotation across all
+valid rings. This does not move existing slots or guarantee strict balance
+for every active CPU subset. Mask and availability transitions do not
+trigger the topology reset.
 
+Reviewed-by: Kairui Song <kasong@tencent.com>
 Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 ---
- mm/swapfile.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/swapfile.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 5a8663e9f954..91de93043500 100644
+index 91de93043500..f6a6df8c2595 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -333,6 +333,11 @@ swap_queue_get_device(long nr_alloc, struct swap_queue_cursor *cursor)
+@@ -495,6 +495,7 @@ static int swap_queue_add(struct swap_info_struct *si,
+ 	spin_unlock(&swap_queue_update_lock);
+ 	memalloc_noreclaim_restore(noreclaim_flag);
+ 	kfree(old_ring);
++	swap_queue_reset_readers();
+ 	return 0;
  
- 	/* Consume masked peers too, so every walk remains bounded. */
- 	nr_iter = cursor->nr_iter++;
-+	if (ring->size == 1) {
-+		si = READ_ONCE(ring->dev[0]);
-+		goto check_device;
-+	}
-+
- 	local_lock(&swap_queue_readers->lock);
- 	head = this_cpu_ptr(&swap_queue_readers->heads[queue_idx]);
- 	/*
-@@ -361,6 +366,7 @@ swap_queue_get_device(long nr_alloc, struct swap_queue_cursor *cursor)
- 	si = READ_ONCE(ring->dev[dev_idx]);
- 	local_unlock(&swap_queue_readers->lock);
+ failed:
+@@ -567,6 +568,8 @@ static void swap_queue_del(struct swap_info_struct *si)
+ 			swap_queue_install_readers(NULL, 0);
+ 	}
+ 	spin_unlock(&swap_queue_update_lock);
++	if (swap_queue_len)
++		swap_queue_reset_readers();
  
-+check_device:
- 	if (swap_device_masked(si))
- 		return ERR_PTR(-EBUSY);
- 
+ 	kfree(old_ring);
+ 	kfree(old_queue);
 
