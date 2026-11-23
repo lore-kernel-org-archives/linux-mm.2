@@ -1,104 +1,182 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F52606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB1F606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KHG0DSDK
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=e84uq7aT;
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=ezjc5d4i
 Received: by kanga.kvack.org (Postfix)
-	id E3D666B05B9; Mon, 23 Nov 2026 12:27:11 -0500 (EST)
+	id 82C206B05B0; Mon, 23 Nov 2026 12:32:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEE356B05BE; Mon, 23 Nov 2026 12:27:11 -0500 (EST)
+	id 7DDA36B05B1; Mon, 23 Nov 2026 12:32:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D04766B05BF; Mon, 23 Nov 2026 12:27:11 -0500 (EST)
+	id 6A5496B05B2; Mon, 23 Nov 2026 12:32:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A7BAF6B05B9
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:27:11 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2913CA8106
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:27:11 +0000 (UTC)
-X-FDA: 85467064662.29.38C0A0E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 73405100008
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:27:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KHG0DSDK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 322BA6B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:32:11 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9344A12093F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:32:10 +0000 (UTC)
+X-FDA: 85467077220.26.0559CA8
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7C25E140005
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:32:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=e84uq7aT;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=ezjc5d4i;
+	spf=pass (imf09.hostedemail.com: domain of mt4022@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=mt4022@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795454829;
-	b=njCZ7n+xJNBsFNbUW032ccmR5rOchEqTQhGcHyl69bDYnxyC0qMIICEOV/t6wtvFwlh0GE
-	rTo9G1Biz1PulsTNbKIFRLLQxU3Mzc87xsaAPQnruZKRhfFHWbgW1aUSq4ha+O75KL/kKg
-	AkM2pwSa4u1WWf60/cTnwrdReFe5oFU=
+	t=1795455128;
+	b=31Yb9Zf0bUcqHgvXdo2li6D8SijY0upeEn1zb/kAhKt1whJ9WaHNrC7EQIGKKB+W2hhn8J
+	Psu0z2r4PNZtmTxIwT4Jm185zy0KV/itktrk4P8LM3I7/I+1GcRUTq7ko4qfNh8Qdl2/OX
+	cuLGyo0dqQ7JpAZ95ZDucjlCJh2OXno=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795454829;
+	s=arc-20220608; t=1795455128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rwO0qR/5dA2BfbWBM6Y4o8lfCur4ww/twWJTPGcgLzQ=;
-	b=URCDFOcy0kaEn7sImLJmH8/mhqkevn0wnlU+eHmQYrl2gRhlyK8KsTh8MCO1TxP1/nwKJJ
-	Ih6kYDxOo3vpwcTDhv3JK3J3a4WU1ts/YsY/298M/PUUONmvdwHzwJM+xn8vF+SGOjnBaP
-	FvIjpd7IHYm9pncQR30R3eQmxRHinzI=
+	bh=1a4TM24Bx37KhzPX0EKcngcxqi/da9ANdKbxr2maRdo=;
+	b=KVUj2xS02HJAdjdATuXOJJ5aZPCt9M/QaKVOXLKHVZujNsnyocodwYfCv7Q4juadRSnzSR
+	gkQ4kZYIcE61rEStgeJSQ7VUNxyNzANUgWFVnlJffV6lLx7oOP9mst1Pd/rQ3WGVKlXEmF
+	J7pA+byZ7twJ/9LnSpVcGVmCxf2o2Aw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KHG0DSDK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A69DC44CBC;
-	Mon, 23 Nov 2026 17:27:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECDA1F000C0;
-	Mon, 23 Nov 2026 17:26:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795454828;
-	bh=rwO0qR/5dA2BfbWBM6Y4o8lfCur4ww/twWJTPGcgLzQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KHG0DSDKmw1s9Nld6eJQBGskQxG8+fGTfS95ZXpiCvzSvsH1WR5GDMuTbP4yuvTqb
-	 53THpea6CtIlrN+S8vwrcuVZQbjJTfTwzn15sm4B/NhslGZtmZRvwhi7/PphkfRRgP
-	 z4uiJdMAGxS+AsEYtm49AzUp7LCEV2LXBWsuRg9eaoBPyRzuV6Y1Ncx+pJvT1gQW1F
-	 +gitMGVoD9V/qvRIdqZHfmk9fmWjQAi5Spjv09gQES9NRAZyFz+N2VxxrT8UpWT9Dj
-	 XSQEy+w41yKaJAw7w2hgwyhk6WNnVMGODwVNKEnA02f00qhxSh0HmnV7vYvqrBx8p3
-	 5ay1qBdDu4svA==
-Date: Mon, 23 Nov 2026 17:26:57 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH 1/2] mm/huge_memory: use NOFS when allocating while
- splitting folios
-Message-ID: <awR3IxFld3ms836N@gremlin>
-References: <20261122-migrate_reclaim_deadlock-v1-0-83c56185b0fb@kernel.org>
- <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
+	imf09.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=e84uq7aT;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=ezjc5d4i;
+	spf=pass (imf09.hostedemail.com: domain of mt4022@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=mt4022@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ANFXhGB1229217
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:32:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=1a4T
+	M24Bx37KhzPX0EKcngcxqi/da9ANdKbxr2maRdo=; b=e84uq7aTN+paLgiRpBNO
+	jFpZrFwSkNAZb0pLrPBFBMpeq7xY5VF5Ke74YGVhQQhgB2XMzCUH3wtB+DektBiR
+	qPo9ynkIbzCzlLUmkih4RkrbewMTNmaLvk6XxPhBoaZ8L4ukPmaKxPqpWeBbJLLc
+	uelcoHkyG8W6GveecAnwBSg3Yp8SkpLpDehjKoA99YhreNu9TwIUWlL5Tbv8AAM7
+	bQOYm9/5nWyXZcsZXTj1dP+reEx73v7sueTzpgokaO7URE3kspWKIKGZsluDsTH3
+	+sZgnA+tjE6t19HGhCCmkFQBefGvug9EszN1p4Ts6fdQLWzQIgVR9TFNWu/q/bNX
+	NQ==
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com [74.125.224.72])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4j4h32uxpp-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:32:05 -0500 (EST)
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-67c58f18a42so6480227d50.3
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:32:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=columbia.edu; s=lionmail; t=1795455125; x=1796059925; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1a4TM24Bx37KhzPX0EKcngcxqi/da9ANdKbxr2maRdo=;
+        b=ezjc5d4i4YJJhW7JmEC1DARc6CSCQtGzn6KHRsnS2NBq4CLWIXvkMExlqo1GX+XCks
+         ByfgoE74HKz+Y6um4eQY4cR7QhzPqRDjFtvBPQqLeQvnwYjpnSQgBja2Z8srqZXebHm4
+         ADXJDnr+ZFvfuHrJ5TqhxI8+psSXweRtI5W0Ae9ehuOQ7j99KTGzkBhzW8eBqIpAczrQ
+         1xXCgThT1UxsgfZ80lE1ddisHAQgYHlXllEBPOoT8fip+dR8EkMOLneqDa76AaRb6Dq7
+         Bg9xV56ywkW7ofB2T+MRKXGimDjTZJ7/8Os0WeKZ6X4x+qt7E841klvpXCmk5Sv3xqAf
+         Gs/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795455125; x=1796059925;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1a4TM24Bx37KhzPX0EKcngcxqi/da9ANdKbxr2maRdo=;
+        b=GVEJRDnslneTZXcGAAXiXbHD1ZJRlW2B6R/1QBrK3SRpaKa6SQj3y22Sv69Hg6XHYG
+         qTGTT2jk7iClmxLscsd+V/iKs7Cn6kpfyGTLGmNy4FiyNpDFSJJVbKXZisVxhuwyzLSR
+         +3NyS1fyYZcYjmOU9nPMAuEi4GyGBhmaSfkRKuy2Vqro33uk+KCso0A8qRUWsbg+P40C
+         JJH0W5j1Kv+h9aEDG3JwVoDai4O8s7UkPKK5oqZYldDuOUFAJD/P7XDYiQG+tOMnfxFI
+         PrjnsL7E6XpZhh0O1BnRarcbrY0vppZctVjPVi2Ahl11ha3lC2Nlo7yh6O6mhgq1X7di
+         f2hw==
+X-Gm-Message-State: APuU4Z/EPEQYM45nfIQJZMy09JRQ97HKOZI1Cl8ogQRwhGMHRFJ4VXNL
+	t09+OGEt+4eOJ6XgOGvd1/VXmgRPgOGF29qImX8H9fxi7Z8OxDRorYrEDWrjNtjSq9kfLGGfSpn
+	11seax7iCC1JjRO2IYMzKpwgYpnBaXmjKQ8rKULC93G871Ow4
+X-Gm-Gg: AZFdTZc7cT0rA/d+mUC8K6iRjCiRF6PGTtKifV0//pgWD6rY8TCkjk5Wnmai3k7SfBK
+	zv51mPDoObGNi/IW6XWeAr5mQl4AdtTJE0sj+66rbGM0Xdwa6fN62hpMjP24u724pR+5SYSTjeo
+	cIkKF9hbO7xTdSYGBKLMG8P70b2ebbvBQlWMr7aMQL7Gs68kU+RpaG3QFUG4KaxTT2UFb7b5T+F
+	mjNqr4GJkGdwQjyt1O1NeNznhxZ0j/okWbn4DBTpnIMzehtTbyDjKWZEd0KJsfa+I6rbsOiZ55m
+	lwAsVPI2iUO8g0wz29zUTPr046dhkSKUQmtdzmgW7rU7a5LmAfyPd3OnyCotq0xBZ0sWsNkKPaw
+	G4Jl+rkFXTdRqCBOWijoCxw2LVfBqfmzcET5ZlMqQbVkfnAzmVxGQToPt3bnk494jI5gUxF3HIi
+	2/yZmnWTul1+JInwAu9cusCqlnM7McdB8Hw0SkuL6TLzF/TVVg2eSs62r/30Tdt1b33KWVLqZwN
+	CYoEewCo4KC721kMIihcoMveLTAyLL8JAL1S9fpiaZQoJoE99iJoqS5vLaIDX6k/tE=
+X-Received: by 2002:a05:690e:1209:b0:67d:c588:e55c with SMTP id 956f58d0204a3-67df42cdb00mr3845658d50.5.1795455124704;
+        Mon, 23 Nov 2026 09:32:04 -0800 (PST)
+X-Received: by 2002:a05:690e:1209:b0:67d:c588:e55c with SMTP id 956f58d0204a3-67df42cdb00mr3845632d50.5.1795455124303;
+        Mon, 23 Nov 2026 09:32:04 -0800 (PST)
+Received: from [10.206.149.246] ([129.236.230.139])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921349f2186sm113214946d6.29.2026.11.23.09.32.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Nov 2026 09:32:03 -0800 (PST)
+Message-ID: <625b9f25-9d9c-4445-8920-b8a4e549127b@columbia.edu>
+Date: Mon, 23 Nov 2026 12:32:03 -0500
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem: fix swapin livelock on a mismatched large swap
+ cache folio
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "David Hildenbrand (Arm)" <david@kernel.org>,
+        Hugh Dickins
+ <hughd@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu,
+        Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+        Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+        Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+        stable@vger.kernel.org
+References: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
+ <3c61a49f-6a0d-49eb-8682-aece4e7e7226@kernel.org>
+ <4af8b7ef-8028-4b98-ad21-5620f8b92f42@linux.alibaba.com>
+Content-Language: en-US
+From: Mani Tofigh <mt4022@columbia.edu>
+In-Reply-To: <4af8b7ef-8028-4b98-ad21-5620f8b92f42@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: BzDRf-orLWTmdioNnpeGKDNb0Nqwgq1r
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA2OSBTYWx0ZWRfXwS1DPBT+mYhQ
+ Sp18rnSi1URg4RdrAtpCITROJ1vnagE5Tk1GtrVRbsjJZkI5/YipJt7o702YXXfBrLNiClC7MOB
+ 6Yx0N9Bjp+CHlWEbL7W/9OpYdwkLjdQCvR/F22JMi0oRjIpuTPJ8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA2OSBTYWx0ZWRfX0rAKa0DFgBzi
+ l8JAuN9JNoyE/FMx17axeRKrFy/r8Tv/au+ub58eNadTfDUExBQ/+VyOTY3UWSFUXMbBoudRi0u
+ Eqez9NfQth1VHhUgyStXoDKV8vcCB9AiNKM2nnZueKuxnyvN9FXmdTLxf2C1JrWvuagSSOo2x5c
+ Y7eTc4/bcFf8g+gmYYM9FRCQOUVL5KTcQIFp2oO26Of6HW2bdBxTRkfwkyCbn84nOgQvKsJq0qL
+ y9IzZe34smMtYQsQRrgSXfZujP+uXZfhfvepwc9sotlEREcd6DgYFrFzKlRtcLP1++6pZqpwZoo
+ RlD48d93aScJ/zIer576Uq2AcLfNDMfsQP1fSBDIhar3LssW2oRtvkACWe00BaAh0+1yM3kzjhT
+ 5q0O/ZLzDc9r2m0newMXcsFCcQVI7yBTJyhOXK3JT11eWTS58aLM6iTmhk0zQ50lJC3q4bYPNYA
+ hXm70dEvWgF0bxXkwOA==
+X-Proofpoint-ORIG-GUID: BzDRf-orLWTmdioNnpeGKDNb0Nqwgq1r
+X-Authority-Analysis: v=2.4 cv=HeeB3SE8 c=1 sm=1 tr=0 ts=6b047896 cx=c_pps
+ a=VEzVgl358Dq0xwHDEbsOzA==:117 a=0AiHgshebfoioin7TVvpCA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
+ a=VwQbUJbxAAAA:8 a=EcUMADH1NWUpQPqG1_UA:9 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
+ a=uujmmnXaIg8lM0-o0HFK:22
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11975
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=10 lowpriorityscore=10 malwarescore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 impostorscore=10 phishscore=0 clxscore=1015 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611230069
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7C25E140005
+X-Stat-Signature: t7io1ezb5gq6smhqa4cn7hakzrxn1p8e
 X-Rspam-User:
-X-Rspamd-Queue-Id: 73405100008
-X-Stat-Signature: d43pbm33bketxzsyi8a1xx5a7f5ixnow
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795454829-408862
-X-HE-Meta: U2FsdGVkX19OUDWqkP3Gb8YVzWl+1e4OImeZbA7mhysNUKjO8gX4FvvrteFXDxivdXq7ows6B7w3RHRjrT1QvD7vpnFwUgsnzSTekbOx8y4Fvi+yr1LK16miN75c0uEnb8cv1a9u1IC135D4faSDZU2Mf665uJGp3VD/CFbWd8IgJunc1YdYYO+Xx6/qL2bdde1wWuyQKVvMg1fCkxZAqnnoZOJKyjIULL3meeyZTHVarV3W3Cx2oXQ4r5nelTcQ4xWt1kzVmngStIfsKzQEdwwx0jnaLSAPQKiJuvHz+roCKgzt0O+ihj2KcgID1q0ZG/Kp841pviymucDB2/VjrFFeW0GyaqZKHDBwYrtxDgh/0/5uqWr8PpgbH6LitI/7jIemu/MsbToJVHFcJdkgxndcuIys+9G6/NfeBrAoqneOYcvdrn9RPtdgtb4c6XATx+ha45zA822jeMQxmOqn1e4WNeNUlZiZy95uftVoG5PxyBYyyen/DuzIwgGlGg6EwnwiJIqVYEVOPTIhkajm9AquHzfNUjWfxcl9Qo1YGCEDWXcW3JnvNAaz/YszZGvIGosl42ww+MiFocWK6cgh3u9TpG5GzJRKrCSylxzWnx8lsluSSkp9v0pXXdvjRRxOTNCW1zXICFpJUXl136ZhCMv+/Hal/2L3Aw3vNp/hOf45uLts0VXMstgXNcvxqeqR0jL8zpgH9NIW7Wy70LZyTxOhlsbqhC/P3DQW3OQp9o/5fqgs25j+gtb7CuU7T2dVJOmdj1/a2ICXQn6ZgUHP6xe/UZrUlRn5O2As91XwaZBfwckG2N6v5QSW6xzwBLTaExUXvbYqpq/L61v4mEoKQu8F9iHBptehNIspA4zY5RsHVkSne4UEadpKe7H16J48E/0iu4VUJad50XEtCPQnL2CrN++DR53bbMkrxKxZqsYZQ96RrDjZ+IcCH0YqZBQMYTfQPx2xK43jU4qrU1k
- +Dfayq7H
- QkGBrs3jpiMIT2XroZ5+D54krRexxM3+Dzbzsr89ae5yftsWjZE14+VQEuKXMc7Vn0a6qTTVvAP+0WQbI3yvSIXpGI5resQJXOMLn5D/0jCTx4zPAvlWW+pTerUIunrHqm9SOycnfw+s9yauF5+5vPjhsxW8JCcBCCA9j0qMGoqMSwv/mDByrxlccugU7OGVMNEZ6HiPj9IXMvgKKwgfmMokmsQsRnpRc2lrVZXrZyabdb2dv++yt4nXN9agp1xUdNG9HTjhoTQmHwaWzO+HhjEUarhy2sUfLn3uUwHEuRU4kaLHOgKjJrDWAfruXInf4T6QCOULvh1I86rl2aWgW1cDkLT8tfgm9vu5LGFZ8wl+C/SIui5AjxaWxRuODRkIVyaoLemLevcvSPlQX2ywLpwlRtCnsESj/yxi5e6EF402rxVH88O1tt70K2Ga5/idYiVGYrtf+AYU90cUW6RdnvzRKnNlpxgx7rf5gFIRqy0yRTD1mfS5w5TeqTfRphRvmmszunnxKLVMH8OiF4KL4OVHzlcRnmdOUJwACxnJayj87j8CzbBbAYCj3ImtfZmK+oEdRtCOjBDXS7Z7FnhTNnH5M6VCNuH1K0pkSSlY3/inSeLqHF2dX//3y5g==
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795455127-981307
+X-HE-Meta: U2FsdGVkX1+Kt+uMOczGq8PcqF/AMDAuPjuWPbciDyRsSdYs50Mre7dnW+EcTSmlFH19uGIb+AcfBDzOVbrH8ha5kwuz86/2+PCIlwOWkFC85qyByRG8M+C8/YRXYajix+HvpcF4Nhgg8q8ek9PzIxzcm1UAGFdKENvgNavuc5p2HmfipMuIEDv9tSW1l/fE2iltRhESzojox25Qrq+7z6bxeOOgKc3BkssU2ic8FtnoZBZTE4CaMGDkwJt1lzZsSMy9OkvpmhSxMuz4RtQ1sl4FgyYWpO5WGw9kh4vLA0lYZrj9fPtrtXePvNXjaCL/VS3JzjHN3qZ89PX8RChyGYfiaBlRDFS0V1XaWGbR9qAe4zj9ncighPWdIeMbmTGeKo36+bAkWn+0vCV9ZYNhb07UxRDolgYS/liouqt8AA3lN8R2Fsf+5lJuWjgWYYrb/hfykBJRgIiZt0cPCUw2B0DbsZIaIomkn9v82/PmXlkBHBotgLEEcZj9mrisFrGWzsLGokWB1kXmuHUApA2EqzHJzOd21EWcuj/q52xUiB9x7I1maSDC6oYWtg2ReFUMm4Z3TYp0Wo+eSEfxEDKPNbyRZ/EOarwZUW0bsXLaHnMVBL67Wqy8PCm5rgERMWPY2zvTHNnk3RwFRsfpRinqlc/iOB9LSF6ZkwowHc5atyWQpmuzR2CKOfSpRuA/Eg7HEv43vb6IvloWj6Qp0lFHe8FIgTaF4v77erQSaW3SgywFlov0FeTB3rqra+lTro0GDxRMnnx4gSvQKJsdcOdNppjB4fgpkN0dJI2BiiLSNUq/EQrW1b/3qsy6zDzmNzHkr8YqvOrBxkljxUfsoN2SJ+jxZXt1adtKZYG6Y+l7pBsmwxVBwbV2MIgYWK9OparfMKpnoEXMVjJKGBsEQ+GVL9GZ1VNUrPtKMvNLNpNkAbr3PV2hMuEV04VGhSeTdxDaDdP8233z4mvblJKfRLF
+ lI433c3B
+ MkDwAtI/t5mQYKUly/eflnabV2tK4JL8KnbY8v0F2V9k29DiCaGm0/0T53JNn0j88hM8rQIYsM+Ds7VtnJze+AmqORddanWNVG0TDj5whPAAaIpsAJ9dk0YL1AeKB0Bqe/dyFC/peMPResd9SfSvfJBKYLt2wDpDKx6pr0SEIR5cwiHmdzW/wHkXAO/otBmu4lLv0Swp0E8S+94UYbN41+v8vKV7Mu1nF6ak/4MxWTlZEoB2ZhZnOvi4ABk5rQa0ySLy86QCTfb4+23UbixrqoJ61C+0BbqqZUufxbxJeBLMxV5Z8ph90ybfIYifGuHWeIg0RiUvcagolGnzELvHIMxGXi2p/q5duEiWEDMzIv6YhrtR8o/BgY8qgg+2ePfxoh0Aq9ieLwxN5PlfiSwZD4rlznImucuzMH0e3LzABa0wsr3TPvKj/RWwVqp95BmxmyC+h0Nr8KfwFrwZHeVsLrgUvzad2cSQmTETPdtWiMpXdlRjQaxlyyCrPD4iSu16WhSGaImQXHZQASwdz1n4CR59xpJ+2an1ce4J76bKcN5UCY6RQWoP48LuOTOVq4HeV0XosZW958WFdE51a1p7t/Z4iqrzWmLw0DUmdMNBSgnJYbq2XvBOWEKMGqp32cm2TIlbMPCok2fqO6Bet2nflhNSGX7Ze0E3ECk5W++mq5sgCNbViJRxyHJBwMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,106 +185,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 22, 2026 at 01:42:17PM +0100, David Hildenbrand (Arm) wrote:
-> Various callers (migration, memory-failure, s390_wiggle_split_folio) split
-> locked folios without holding a reference on the folio's inode.
->
-> Splitting a file folio might allocate memory for the xarray and call
-> filemap_release_folio(). If either ends up in direct reclaim with
-> __GFP_FS, reclaim can evict the inode through the dcache shrinker, and
-> wait in truncate_inode_pages_final() for the folio that we hold locked:
->
->     try_split_folio()
->       folio_lock(A)
->       split_folio_to_list(A)
->         xas_split_alloc()
->           try_to_free_pages()
->             super_cache_scan()
->               prune_dcache_sb()
->                 iput_final()
->                   evict()
->                     truncate_inode_pages_final()
->                       folio_lock(A)
->
-> This requires that nothing else holds a reference on the inode, and can
-> be triggered most easily with FUSE, which evicts inodes on the last
-> reference.
->
-> Further, xas_split_alloc() charges the XArray nodes to the memcg, and on
-> cgroup v1, memcg reclaim waits for file folios under writeback if
-> __GFP_FS is set. That can deadlock if writeback waits for a folio lock
-> that we hold, for example with ext4.
->
-> Let's fix it by splitting folios in a NOFS scope, so callers don't have
-> to care. A NOFS scope also covers allocations that filesystems make with
-> their own gfp flags, for example in filemap_release_folio().
->
-> On NFS, splitting folios with pending writes or ongoing writes to
-> fscache might now fail slightly more often, until these writes have
-> completed. On netfs, only folios that are being written to fscache are
-> affected. All fairly irrelevant.
->
-> This has medium urgency.
+On 11/23/26 2:18 AM, Baolin Wang wrote:
+> That makes sense to me. If Mani has no time, I'll take care of this fix.
 
-But medium-rare tests best!
+Thanks Baolin, I was actually about to send it this morning (and just
+did!) And yup the race is real and the patch fixes it. sent here:
+https://lore.kernel.org/all/20261123-shmem-swap-write-failed-v1-1-41a0115dfbf1@columbia.edu/
 
->
-> Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
-> Fixes: eef88fe45ac9 ("s390/uv: Split large folios in gmap_make_secure()")
-> Fixes: 789763523fb4 ("xarray: honor XA_FLAGS_ACCOUNT in xas_split_alloc()")
-> Cc: stable@vger.kernel.org
-> Reported-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-LGTM so:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  mm/huge_memory.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index e22daf846dbe3..c4f6c642c2620 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4425,11 +4425,20 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	const bool is_swapcache = folio_test_swapcache(folio);
->  	int old_order = folio_order(folio);
->  	struct folio *new_folio, *next;
-> +	unsigned int nofs_flags;
->  	int ret;
->
->  	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
->  	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
->
-> +	/*
-> +	 * We might not hold a reference on a locked folio's inode, but we might
-> +	 * allocate memory under the folio lock. Direct reclaim could try
-> +	 * evicting the inode, or wait for writeback on cgroup v1, to then
-
-Ahhh. Cgroup v1. Of course.
-
-> +	 * deadlock on folio locks.
-> +	 */
-> +	nofs_flags = memalloc_nofs_save();
-> +
->  	if (folio != page_folio(split_at) || folio != page_folio(lock_at)) {
->  		ret = -EINVAL;
->  		goto out;
-> @@ -4478,6 +4487,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	if (is_pmd_order(old_order))
->  		count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
->  	count_mthp_stat(old_order, !ret ? MTHP_STAT_SPLIT : MTHP_STAT_SPLIT_FAILED);
-> +	memalloc_nofs_restore(nofs_flags);
->  	return ret;
->  }
->
->
-> --
-> 2.56.1
->
-
---
-Cheers, Lorenzo
+Sorry for the delay!
+Mani
 
