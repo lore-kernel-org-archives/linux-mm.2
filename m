@@ -1,91 +1,209 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E925606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 03:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E007606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BpDzTjQn
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Vu2hDuKW;
+	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=NMJVvxAE
 Received: by kanga.kvack.org (Postfix)
-	id C54656B00EF; Sun, 22 Nov 2026 22:55:42 -0500 (EST)
+	id 6DDA46B05B0; Sun, 22 Nov 2026 23:00:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C051B6B05B2; Sun, 22 Nov 2026 22:55:42 -0500 (EST)
+	id 6B5776B05B1; Sun, 22 Nov 2026 23:00:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1C7B6B05B7; Sun, 22 Nov 2026 22:55:42 -0500 (EST)
+	id 555CD6B05B3; Sun, 22 Nov 2026 23:00:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7449A6B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:55:42 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F063C1C4044
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:55:41 +0000 (UTC)
-X-FDA: 85465019682.11.749BEDE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4B68440004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:55:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BpDzTjQn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795406140;
-	b=lA/pCVeXQJgBJm7s2aRvDCptfM1hll+NzqBsejDEHqTvCEO+aqC6hOYO0dhvRi80kNZacr
-	w+8zObm7TwLTwUzxyhUMQIQ0ItcmMEcU4zYa8GKIfI3hS1bgXfPzhtA9L5nbp8A3TyMXOa
-	tXN2egkbN0TG3JT/213Gj+xt7WhOKjM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795406140;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 29DF16B05B0
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:00:15 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A74680795
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:00:14 +0000 (UTC)
+X-FDA: 85465031148.05.2B78DF6
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 028651C000B
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:00:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vu2hDuKW;
+	dkim=pass header.d=intel.com header.s=selector1 header.b=NMJVvxAE;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of yu.c.chen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=yu.c.chen@intel.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795406411;
+	b=TUGXxuESemT4msuNn6EE5nRklIm1KrMwfZ0RBqYaVR5kAOWTpzXLC5tCutLV79EI8BKZRC
+	bzOuUvOLAz8ofkMyErD9RonIR6Nhoa64zPSN7bjU0YIep41J68l6oD6iNYQz0mREO5hq0f
+	phMHIwkEpVMGZUMbWCej/bhjAHrf9E8=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795406411;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mDC7GSL0dchLiVXwsqrj76NMRK83jS7U69Gwx11vmZE=;
-	b=rZIFl43ovOCQLIZOiiBSd/IB0tX9HGpBxs/p/J+8C1Vds8PyZi3LlQXRq5SWgo3kUbOeDT
-	8mceMdImcM+91vCggMZfPvSvLyCEbSRvSB3FXgAPNtQ7D7bwwbFNVpRhTMPnA6AqXooKMM
-	itMuHRnH/ACMadAcaNIAXk63cFyglj4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BpDzTjQn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 194D141413;
-	Mon, 23 Nov 2026 03:55:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1001F000C0;
-	Mon, 23 Nov 2026 03:55:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795406139;
-	bh=mDC7GSL0dchLiVXwsqrj76NMRK83jS7U69Gwx11vmZE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BpDzTjQnbQWequB7HY5NLNfdfq4NmRyIkQIYV+2IuL8nLxWNMXJ32e2FlAmYOJz9K
-	 7QmyF3Ct/C3iHPeLOr7m5Wb7CyGZpzhOVfX2pCxMKf0pfIZ+Fr0RoDCoiGhohSOoAw
-	 4oU4FRj+qJ9CE9UTNfBjlE8vB3LbE1Lu2+2rMNmfK6i/4P2REAByqauZO7B9LS4q5u
-	 D61kASmEONOzMQNDb0KTjz4z7nmJC3/DfRTkR6QxFOId/elUZhDsDA9W/hI4R4+0KN
-	 tImW0R9jRZ+OxFvclAzi/fkKqtafR8r4lwwAPJBznjCaF7/rYEgBYKsxomD/zZqkqy
-	 pcPr1gEkfy1kA==
-Message-ID: <sashiko-outbox-228621@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] zram: keep the hot statistics per CPU
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sergey Senozhatsky" <senozhatsky@chromium.org>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Nhat Pham" <nphamcs@gmail.com>, "Yosry Ahmed" <yosry@kernel.org>, "Hongfeng
- Chen" <hongfengchen@xiaomi.com>, "Brian Geffon" <bgeffon@google.com>, "Minchan
- Kim" <minchan@kernel.org>, linux-mm@kvack.org
-In-Reply-To: <8f0ec29c0e4230d10db088d29f79bba17c3ee6f0.1795403342.git.senozhatsky@chromium.org>
-References: <5666c1c8c04998784c81fc8fe751e35aa40af578.1795403342.git.senozhatsky@chromium.org>
- <8f0ec29c0e4230d10db088d29f79bba17c3ee6f0.1795403342.git.senozhatsky@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 03:55:38 +0000
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4B68440004
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: ko3jifx7ripz8xy3ormfrtmoe5cim45w
+	bh=Avw8zqjFIIdPu25KeO6U/ae/z6H5PXtKCaAkwRn4Jys=;
+	b=70HjQ2BGWU+KuDu0ZhCNVMf+Rp7a5+S0eI0uh2gjWrHtQcweXFo0mtqlW8W2MfWnoJ/e49
+	/ej7/16WtwZ+Yti90XdhJKtidgglm76MybS/1RaAtoICly1n3n/MOLAkOTMeJuIhoNr8hA
+	56+D7lIXUgEO5HwcezOOVEyABq9XJGs=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vu2hDuKW;
+	dkim=pass header.d=intel.com header.s=selector1 header.b=NMJVvxAE;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of yu.c.chen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=yu.c.chen@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795406410; x=1826942410;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=FhO2MJ71j9SsBWoi6AV7L4BXzxzjsC+sDelwQXHzjBQ=;
+  b=Vu2hDuKWY2lcVR8OvBSnh3YSqv2d7um5lsIseW0RUOsO+uWbXF/Yqujq
+   ISZd0tE0tCY+X6ezUQfVtSY2PaGx4B0uz6CbqxZwS0cGwYSCeZ/DfPwT3
+   D1sLzFDLbHSbhqQSt+R15l686xFOOec3CDjtEauWg5aIQaGg1PtT+Y8CQ
+   K6l6GIgZuczCH5z7g0OGnaA0InLxNQptB9yjAsMx22GXzvnHLY1xUyBUy
+   Qe7vs1MoNeAdTAg0dhER4yYzFub8SdUVe6/tHma3pfVCo1Dc0aehTHg4r
+   dHfb7r+yFE2EnZ6gQFFnZkcW1xOGACxKDlZKtwepXYcgYC2RSlq4xr5wn
+   g==;
+X-CSE-ConnectionGUID: oCo5upBLTd2p38hnTeIwMw==
+X-CSE-MsgGUID: eosIB6wwR4KOvz8HGAfeZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4050718"
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="4050718"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:00:07 -0800
+X-CSE-ConnectionGUID: LaE9MCySSX2IF9Ar0+m1YA==
+X-CSE-MsgGUID: usSp2XPfRCOF59ZCHnKZZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="13181446"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa013.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:00:08 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Sun, 22 Nov 2026 20:00:06 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Sun, 22 Nov 2026 20:00:06 -0800
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.68) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Sun, 22 Nov 2026 20:00:06 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GcVX84U65ldWhkGHYFghVZkUwQPm54l86eledyXeYoqbsBqAXJzuzn7iEzXHTSS//OsAHHfzKnV8NCNa5NCSZGo4hNsTeWxyxtJ2+Co32y4wh+NKAV5f9ersab5uTGyVYXdUisAwEuIaVbo3G5jHWbYH+/UC5qm6qg6APAce4Ke1thFaChly0V7Dq1fPW5WpVcW6DzmfLvgQlvZK/KM6wZeapJoYSrs360pQuzYvOnkusqXhtgqJprUllU5yrh7G1ro+2Cw8RVIiCgJ4zC7YzjryAALrSrzXO/6Un9ZCgPcdgEO7ZhuXryMwkC7dUBBjA0Gz20niYlCzxnN440mE3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Avw8zqjFIIdPu25KeO6U/ae/z6H5PXtKCaAkwRn4Jys=;
+ b=YYvRK4Pc70tvNYOaWzc2hSvKwQyFyLN4CgHChnjPoUOCsZoTKFMvww2fOy1rCBMcjZhhcrheeG0JdnG+/a2v2kT/sjK2k3b2w0w3Rbsn9/hIHMjruaMl7B6HYE+995yAVJ4T1YeIU7WyWpUGCbjhVuoZxtSvNvFmjKqhQF0Z/b9ARa5tj9O9nBqAUYt3NoKFRATADk+MAec85M9g0kF0gtwK3KvyQT5LQEpEvjBPPQOoI45j1Fsl53X7SD38/x0KCWR2c4x1qtCG/ZyU7HlxcSSV0Qd/3rGPrU/oZHtqKVrGspXKowTmGSfdakUmqwvR1d/RbGwixK48C+xnnph0kw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Avw8zqjFIIdPu25KeO6U/ae/z6H5PXtKCaAkwRn4Jys=;
+ b=NMJVvxAENdwSoccps9Gf0Bl+fcTZYGVr6CAU+tsuc+hhGi0bnfMtLfdNs417S+JUPKM0LMw+UiEv/bxurSxc5eMgxwJzD0ZjCMfPIu5K0cKl4dbARX8xLFtwslX23riDCtNt5o+SE4gjX97EadSW27s5IbJd5hGGO+bYceGpY5k=
+Received: from DM4PR11MB6020.namprd11.prod.outlook.com (2603:10b6:8:61::19) by
+ PH0PR11MB4901.namprd11.prod.outlook.com (2603:10b6:510:3a::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.14; Mon, 23 Nov 2026 03:59:55 +0000
+Received: from DM4PR11MB6020.namprd11.prod.outlook.com
+ ([fe80::3058:1480:e4ac:5765]) by DM4PR11MB6020.namprd11.prod.outlook.com
+ ([fe80::3058:1480:e4ac:5765%3]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
+ 03:59:55 +0000
+Date: Mon, 23 Nov 2026 11:48:45 +0800
+From: Chen Yu <yu.c.chen@intel.com>
+To: Reinette Chatre <reinette.chatre@intel.com>
+CC: <kees@kernel.org>, <mingo@redhat.com>, <peterz@infradead.org>,
+	<juri.lelli@redhat.com>, <vincent.guittot@linaro.org>,
+	<dietmar.eggemann@arm.com>, <rostedt@goodmis.org>, <bsegall@google.com>,
+	<mgorman@suse.de>, <vschneid@redhat.com>, <kprateek.nayak@amd.com>,
+	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <bp@alien8.de>, <tglx@linutronix.de>,
+	<dave.hansen@linux.intel.com>, <tony.luck@intel.com>, <ben.horgan@arm.com>,
+	<Dave.Martin@arm.com>, <james.morse@arm.com>, <babu.moger@amd.com>,
+	<fustini@kernel.org>, <jedrzej.wasiukiewicz@intel.com>,
+	<fenghuay@nvidia.com>, <peternewman@google.com>, <x86@kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<patches@lists.linux.dev>
+Subject: Re: [RFC PATCH 1/3] fork,arm,x86,fs/resctrl: Fix stale resource
+ group assignment vs copy_process()
+Message-ID: <awO3nYazk97csbpO@chenyu-dev>
+References: <cover.1795197419.git.reinette.chatre@intel.com>
+ <b2e13da64ca3e41207b5d46fb060bccefaf9fecd.1795197419.git.reinette.chatre@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2e13da64ca3e41207b5d46fb060bccefaf9fecd.1795197419.git.reinette.chatre@intel.com>
+X-ClientProxiedBy: SI2P153CA0015.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:140::21) To DM4PR11MB6020.namprd11.prod.outlook.com
+ (2603:10b6:8:61::19)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB6020:EE_|PH0PR11MB4901:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba257448-ee21-4422-1887-08df49163b7b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|18002099003|22082099003|261009223027099003|3023799007|260925021311599003|260925021911599003|4143699003|10067099003|5023799004|11063799006|56012099006|261102123227099003|261028144727099003|261026140227099003|261026121527099003|261021121427099003|261022075727099003|261022105027099003|260925022911599003;
+X-Microsoft-Antispam-Message-Info: wYrLxelc0R66KPCwxljSMzbZqsiAYjYaS7WaubDN4XExmHrVftypYXjSRQFU2XyJyT6FF4jKIYlOe6gWk1+8fHMp4jIxm2wZki0EpqWpMlOz+Y1yicczigISSDQbGrrXsxi5OwhxhkZCP4vzfNKLgd1QYAlJknqU7H4jYxat5+1CDbRTDox4HZ4LXQ+hRFWmql7FyXV5iRseH2XWe/EE0kht7EdGxATDy65K9GQjahCTqTSpeYAXZ2WN1pe9lJqlat5blfzewE0E6+k0URYHWCWlhNBejJMGUTO7LFGo5axNq8QwybvuGozEGsnXuEcIeYf50jpXzRsx1yDcSj0xweZvlwabS7GDuhXW3tRWoEv7SQUhBf5BDaNG7sMYKxGKjz18T7dm1SOxxxA6l/KmIlJTEvFLHKebwQb4TeAkREEje32MtcF89GnhuCHkQEvmAIcBO3WW1vt9z9P6TOR8Rr2iOL0aCipQkt1u5ftQRfsFjj4IVHRbU5pWQXFS6B8c9bLQLHftf11tf5lKpU3UKwHdXxgx5yX3e/yaivIQaigmuQwJuLlZLUTEXb5GnAlc/BLsElungqhywx5YoYOpCL3gzemLmPhoe6EQE1A27IoRI/nyyEXC170tJfr1HjbwxatZBTtFeU8JIkea94RC0yMxyJKxVGFJrLwzLTeX7N4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6020.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(18002099003)(22082099003)(261009223027099003)(3023799007)(260925021311599003)(260925021911599003)(4143699003)(10067099003)(5023799004)(11063799006)(56012099006)(261102123227099003)(261028144727099003)(261026140227099003)(261026121527099003)(261021121427099003)(261022075727099003)(261022105027099003)(260925022911599003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CdO+/ajaLnRvozCMbjedGjTVCCuo/5nRGkOaDt1uzV9jA6NHqDq/abU3kJfL?=
+ =?us-ascii?Q?kvY125ltifdfGQxkeQdIkaAk5TvciYCIE23NHDaR8zCFvMLlNL8AUq3Ka9PN?=
+ =?us-ascii?Q?jOqHSzKLh/N2DOpLSv5wX+MfE41m3G6XHwvmC7s5Bgd4Dq79izvekrn5CezP?=
+ =?us-ascii?Q?CzM7fzRUo77pD72oLSOT+ipQsJhRc+U+l5YNGaUSjGQDETP0brUUMAFF6RZb?=
+ =?us-ascii?Q?FLK2dDkMAcwc1mG+i81cIVO860CHSa0o7I3+H3G+gYj3s8iXtg4PPUhZ4zd3?=
+ =?us-ascii?Q?js40OSKtkYx202+ucF8I5rd36ICQj1hS7j1wL26qeag3EiZmRpfh4rcvoHra?=
+ =?us-ascii?Q?HVsoBsg5R4cQ9V37IypmxB1plr66Nc7LEyoebvqvfFlqK4X1yNTif1eqS5DG?=
+ =?us-ascii?Q?TZ3RwX713cnGltCi/lrDcwQfR+Bj+Jppqubqz+nfZ7tMy8Mn/pBrfY6+6PsT?=
+ =?us-ascii?Q?3f+z7wlfpMcwhkUIF07iG/whLjod/AX2SZ3xWg3FeTOUwwfy3UGi5kVYX2OL?=
+ =?us-ascii?Q?ttVERBeLz5hhT9Iqp8xxADb6gltrg+X6SodFaqRQuGHXYe+K0D+IfsxiYDn5?=
+ =?us-ascii?Q?b5GzmhQN/5hGpHvtMxnsGFkaCjvHL1fpe+n2bdTM72MyhY7XLpX12bv13p0p?=
+ =?us-ascii?Q?suu3a3m65zVDWmJaa6SxoEQMtL5SXIBAohSkuZwvqrIuTmqoKsYN7lJLrHlO?=
+ =?us-ascii?Q?wi7n/23Mm0VrJuFsbNtH7cjxx+KlL2wBcazWjGg/zPrbOzG/9qx6hGKgfyic?=
+ =?us-ascii?Q?bwKSRaW5/hbbJsZdbcHGkCnhSkMQYBLTWubRLqEd0RkwjYqK0Xh6aJ5j8SKI?=
+ =?us-ascii?Q?HMciYOb5O1uZifYmMIgfvbNQ4UubNhEeD3a4iC7aFo6CSLcdDH3LIcH2NHEq?=
+ =?us-ascii?Q?WpRJi6lqrAF4pkXcYlrsEUqPCZnAWzxS2/CH7veJZ0DtbDsYQTboqmHkSiba?=
+ =?us-ascii?Q?6CV51EdF3o0Omn3zeIVpA1jRuzWDT4Gl03xHf3Ss3otBJans7+mVKWRRbrev?=
+ =?us-ascii?Q?N2erV/zlR9JzmCVaseWIlXTdUIcddPhw1vQVyf+iLE2XVRPX840r6SXQD49k?=
+ =?us-ascii?Q?bx+c6a8VRPWHKizE+RbsyeEkUNfm2Z9ggiYQ0L1SRO7N1ImScgp7OhDurGhd?=
+ =?us-ascii?Q?ylDiobgNgcpcGhZm0Q3DucjT2EyfsKZHDDNEztNefp9ZpI3pz4XFD7A89coS?=
+ =?us-ascii?Q?qcz3pVaC/koXrvgWMsALfkiGgvb/jVnusevl8MN9gVPpCqa6C9loyHqjarj0?=
+ =?us-ascii?Q?+HZ6Y/c+lfeWY3CNnyX3TO0ajrNgY8ar7iKXE+/cfGpJVi+Aj/Vs1wfDeu1u?=
+ =?us-ascii?Q?Wy1ooF8LfFJXMENjgMt/4z05FuXrAscm2xwwmdZdOHZMKjJBPsUgQL7H7tLL?=
+ =?us-ascii?Q?kSXy5B0ZhHnAsizEi+2XAozmkFKN12db7e5PpfI0PIaYSrltLj6rbD0S6a34?=
+ =?us-ascii?Q?bO2OQy36Z3/clQWBVDGFaNlDgzlgu6JZ94x5EThGP/gatRh7B4mDtxIb0Nc3?=
+ =?us-ascii?Q?1WZSJyW2NpIg1Qs7u4uzCRyaTra6BHbhYvTEbVtZ8kPD16Z/Vc4kqE9DxgSp?=
+ =?us-ascii?Q?iVeJywrzdmUxpx3YfP8mD7kKFwiqZUXNymvt9Ixjp5cJosUdReCoOH6Rn8bG?=
+ =?us-ascii?Q?sBwKYzv4zpVIubOW/2ISRTw/i3WE1GDmR3/LV2lu+t1jebjsn5eZVR+Ei/vr?=
+ =?us-ascii?Q?wA4BgoNObhRMGZnIx2Q1ALy5iHNWJc1EtnxjXpf6HKoAdb+blZ7TweFKijIY?=
+ =?us-ascii?Q?4d00sjYTxg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: dI0kc2Mp4rLl+OqKQddvQqkqMcf6HDnvg/f+N8BffhtMMXfJ9qi+NdRg3mgFK81Ev+Mhnx52HW0fdmUqb2d4/JmUutxW0q5XjHiOvjfWkg6JVrtUlLMWcte6qeIKJ5hPL6mioVE85LBeeWJgFYIGib1SQAjj2IrSZvHSFsf7rPIAmnM7dwzmljZWiGMM/Z9bS652TlBTQkAzZ7AqdvxJLIlbDplWX4/lVgf7UO0eiLrt54YfapvvbLJ9CzyYeAgY33Acc4kNDrobZlbd4TPrLLI8GpRtFXc0ka268DB0LlB7/jkMBJSSOyvCgdZsJEaTNuaOnAKdRimPDH9BqpMK+Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba257448-ee21-4422-1887-08df49163b7b
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6020.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 03:59:54.9716
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PG+zc8iN/n+MHn1jd5TD+ofgKzi0X1G9yJJvPSy3qrfrLf79sPbWCH3ypD0QPtG8Ao0+uuueGBCHKRMKXpyrgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4901
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 028651C000B
 X-Rspam-User:
-X-HE-Tag: 1795406140-720502
-X-HE-Meta: U2FsdGVkX19ZA+kJhml7NauOsQVBfFR1v7pfAmgHVKs9eGade9lud3cXNfTlz8kpaNN0Ymj9DmcB7TUMD86/5SvmafqqrPpjNUoNfeDgSf5GuOFIHkxeI34lEweTX2b/Eu4kWNq2Q8eOIZa2+ZPnwoVsvrez18Lnav5sRi/cps8Z529UUMU+yPTkanDzgSzAZksQ3VJqhJRcVc5IaozeB8AD3hf5Tw7ilIHxujNfKQlLhfhXUoIbMzXGj7iLUEyaShGhZBDrrUYBzWQBcJeVEjKe41cCMGWIFJuxKnp7wxGVParX9bMlWpAl/LA8UU3btEnHAPOiNFWAcaDKYqY2tYVh/B/cG1JUVgkVObEMDxk4QssZKhTVsWjHmU/fXnZYwPcrJ01EKQaf0YuK3ZMoma2Ga1pVxFjy1bj8U+FKddYe4Uzt270SCN3qG5ub0OmIpKRhP7LRNVZHznXjdG63L+eOas7NJ0u6RZOYBrOK6PB0gQg/6wEtrU5SzKNty7Eks5YzAuYsL4BNVaiMbSRhnNCgDNyKQGa5kMIdcheQMZDILDCR80ADJkV8OJHc1hA6JytYtif7JGR+ycu8MIroh01vohhYP1w11OTmWdZWHC4cF2P8hCDAz3zwrISWmyQ5KyhUuVPET4oPpNTEVS/uIx9NWy+/3YksNaLZTwQ5o0QtLM8UkWwjd8yYr5yEz7c5yT0wGWxRSd6x7ts7W+VhGLnRlVhvQUgxpFb2k5eTrrV+pdXujOar8/RiqFMOs2RK4zjOLDAX2hk61VB1YWg3D+cLrFfDJT8/6FDID4kLhiC+K4yqg2W/ujDMlrloz3MbYZTuj4spDkjrqMrig3mJSXtSmLRBRKoaQUpMSWi4GwaS80sM5ppRzFUrs2jGocI/TdrjXdaoGytwIEk2VKta7Nn9Njg2ul7+EZpoxkauJC1kwsVNmqylXAJ8MPrJnC1TcYgNC58XTgiez85PjpO
- pS+esfC5
- yv4Duj3/pJYFC4gb5Sbho+aW6bVjMCdWRPms5iyAdP4xRs/W5ccOHA5lPVDJL5xY2f4KuNC92sFgfHyK9xA7qvIm72WUPgKDr1unP1Zr3FJ9OgVhAUCa5qtxWeF1YRVr7X8IowrfdAaObtUvnNK3rW0LropOoILRBQi5QpQ73SvczhqzaL5o2MR//1+/5vDK2EkwDD6RJ8HquhZGehix0dyQzlwIwhCd3aHFpVerYgTj93Uqdg0VXwBKZBICmRlQbmDlzK3je+GYc5sdZE5vnJxZBe1OpWdl4dkdwVnyHHDsazfMdSOm5+Rrqz1RI4cK3BmleduX0me8HNDQMJND1yjUZRzByoCVz+g+B72QgCVP+GDftBA91sOfM2XC7ph1aTT+akweDDFZhaHS1LvrmH+qpya/9JhD5uSBiz07A6hcaGE+zimqKaBrXE7xPr6x89VrHeAhR79nLtNPMle6ZlX8jMNrZfQVHq+DpncUfso77CtQRzMgGr0a8wIw32H3DfYktX7mbYs+jhVmt+njpdItOua02DAXcKD6XzdH1R1Q6op/L0fXt/h5ttGbUuyaFThsaVtw/h3LxMsvUCsCgxHs77lEReRX/Aa9x3/WlXNwzHoGyEteXRrAWikTEbmRd3wmHCMJx12v+YsCZTjmqfTMpVNScm8gszpzaicr//I02bID7h8IFfL4F9BNj8EK/cwwm2gsSSV48Jm64wNpY/WGmPEe9M598aB3bTIzkEfBApShpJZN98h1f9dpwazvmapVznm73klUIQAJ9mpbsqT3Av8Q9qsyO3OFn9i1fe7wsosa/eB7FRav0RfRcs7n1sH7WYcvd1WPKu6q5Q+Us+fqQdcGZWXLVFlxquKnGvJFlF3k=
+X-Stat-Signature: 6a6xs71zgsjodb4xonn4ohrfs38dnquj
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795406409-844521
+X-HE-Meta: U2FsdGVkX18LQC4wgsT5gJCmnBkPspn9reyAEmCZsKjW9kJsG0o9MTQGzY91lqdSey4oIZK22g4kdqf6UwKV39qNJwwEHvUpjzT/rVc2uoOaaPi8CUPbDL9IrMoGynE6CgKPZze1P8RFAR95r9PSnlCK4+lhe/hzmB3h/w3HjBOo2Q5XWC3Imv1+8Ko3pozsh1jf5yonufwsEP9XVo3Wk2ObvCA0U7pxXCW4J/w1vfs5clA31OQaKeK2yl/upDpi0CGrWjy60OBy6q8jBba9ZlKNJlLLCAh6Pg8IWN8D9hHwJODTbw9TEDMKTOpJdvJ1Y6BPYgCQfMi+qBNpYSCGsYFSrWNpgYdpqEUtJFlH4OKCUfvcD7oamk/1kL3W+adUV5I+ofLxCTtcsW3/mR50WDB4PV0YLGlZr3NTzu22UGfWIvX0TtXlzko0jQYJJ+/ljOOAJ9bhrUjD/77e+F28prSade18KcNqb5Ke65JD5XOE5TLzEf8LYc7C7jSUb1ViL4WZW4ZAeJBcqr6p46ob0ktqOSjbDAmnninvdWiY0jzffHpjko1M+D4pROo0YhDSIJA3ks9QRcAS5h0xIw2aaob7J2m2sv1V8abgLJeUcNicKcvgvbzYrsWmoNbq3xIae2tnu2Wehpp4EPjEJP0OQM0XPsWCi4n8/KQIE8yDZtk287bSeiX/Wsrcc9pZ3LE6HVKuoCUbzmTw66lGhcI0+Spe6xq93Li80IER6iVzmp8ZfQjMtiaBhsrJGTwzlcGH1RQLV6dgHVzausqdV/SMpXhVH+EtGCqppaZQPbjlqjdg5FkDK/Jz3Q/4yU+7rQ2yXdT+P5nRwUGJs9KkFgLujSJ8xTmrngW96MhzqaPjKWXUo3R/qhD0fG6tmArnQ89k4XheD1KQ2D1YzVlLrL3uITY4UjrT4so8JH1i8Wc3BNG9lWv4RZfaWlU/bgsmnjahkGYQVZL9nLEieJCRwlK
+ OPZLqW6j
+ QFlyw2FEmJsZsOEGe7rtOj/HYnPomkGILsBjtL3iETYBEYNhOesmasWBMGycTsQhe3BQmqYfyzZzxBuH+p3Adrp5ozbqbH0c7QiUDKaYWHQDtzJV2MnyRxJNHrTp7LUeaKRwS2zqWPN1+fjfzeIlRJxlodzmBX10zotE4br29jHSGlFsvHdFPKysrzi0oxFLM8dyzep0o2cDeuL1M5wjGOQou2xPN9xGBbM033Q5ckfD3nx2Hd5zlD8Bf+/o20qa8OlnyoGCQ1Z1rmNC24FVSK5n2Cmjjm/mdX94GryKX2a5hsrie6f4hLt3lMJOWCuh1GegWLGnK9mPl5wHi1CzkMXtBYS7fg3Zl9axNvbWWV9IwfRM59otWmSRpHzrVSrNo4sQNufDzn8e7Vm5KC11CjZimPRZzKPcjHT2qpx/45F9EaCKsMBmleiYutnzc99R4fJNCNAkth+rZsuL505Tabs7dIy+5p0wTcOpBvPV+YbSlBSYtX+5YAlEwkLF3WMfE28sqMatmi8ukiFAzxsWnA/IG+/2wMEa11eLQkvHRCFJpEYkWuzV4LjRSufelWKx3Mz9QD4nibxRXUl/iEh+Wqwpjd0LppfozdrxWcTP37uZISZRdsp7YNcdKLfwIyHazD6WRZ42aEFJi2bhO3C9BISOJRSARnNjj8+c1Trr8satob1d204MOropggVW6wWK90LswdC/dfpcDEtkne7Iym44kXnj/YJcp6jdSkfSDIZn2gVVGBHkgDy4wPI519DLSyzjf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,114 +211,334 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] zram: unbounded retry loop in zram_stat_read() when stat sum
-  is negative
---
+Hi Reinette,
 
-commit 2681914a77de11b7b626f04e6fc339b3a441683c
-Author: Sergey Senozhatsky <senozhatsky@chromium.org>
-
-zram: keep the hot statistics per CPU
-
-This commit moves six hot zram statistics counters from shared atomic64_t
-fields to per-CPU local64_t counters to reduce cacheline bouncing during
-concurrent page stores and frees.
-
-Link: https://lore.kernel.org/20261017031542.3504947-1-hongfengchen@xiaomi.=
-com
-
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index 4f479d9051426..df7fbb844b888 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -101,6 +101,47 @@ static void slot_unlock(struct zram *zram, unsigned =
-long index)
->  	clear_and_wake_up_bit(ZRAM_ENTRY_LOCK_BIT, lock);
+On Fri, Nov 20, 2026 at 10:39:30AM -0800, Reinette Chatre wrote:
+> During fork a task's CLOSID and RMID are copied into the new task by
+> dup_task_struct(), early in copy_process() without holding tasklist_lock
+> or any lock that resctrl takes. The new task becomes visible to a walk of
+> the task list later in copy_process(), after it is linked onto the task
+> list while the tasklist_lock is held for write.
+> 
+> Removing a resource group moves all of its tasks to another group by
+> walking the task list while holding the tasklist_lock for read, and then
+> frees the CLOSID and RMID of the removed group. A task that copies its
+> parent's CLOSID and RMID before the walk reaches the parent is missed by
+> the walk: it is not on the task list yet, and it cannot get there while
+> the walk holds the tasklist_lock. By the time it is added to the task list
+> the CLOSID and RMID it was initialized with have been freed.
+> 
+>     CPU0                                CPU1
+>     ====                                ====
+> 
+>   fork()
+>     copy_process()
+>       dup_task_struct()
+>         /*
+>          * New task inherits the
+>          * parent's CLOSID and RMID.
+>          */
+>                                     rdtgroup_rmdir_{ctrl,mon}()
+>                                       rdt_move_group_tasks()
+>                                         read_lock(&tasklist_lock)
+>                                         for_each_process_thread()
+>                                           /*
+>                                            * Parent is moved out of
+>                                            * the group. New task is
+>                                            * not on the task list
+>                                            * and is not moved.
+>                                            */
+>       write_lock_irq(&tasklist_lock)
+>         /* Waits for the walk. */
+>                                         read_unlock(&tasklist_lock)
+>       /* Lock acquired. */
+>       list_add_tail_rcu(&p->tasks, ...)
+>       write_unlock_irq(&tasklist_lock)
+>                                       free_rmid()
+>                                       closid_free() /* ctrl only */
+> 
+>     New task and every task it creates use the freed CLOSID and RMID.
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 
+> The new task and every task it goes on to create keep using a CLOSID
+> and RMID that resctrl believes are unused. Once those identifiers are
+> handed to a resource group created later, the strays appear in that
+> group's tasks file, their memory accesses are counted in its monitoring
+> data, and they are subject to its allocation policy, while the group
+> intended for them does not control or monitor them.
+> 
+> Introduce resctrl_copy_process() to copy the parent's CLOSID and RMID
+> into the new task from copy_process(), while the tasklist_lock is held
+> for write. The walk holds the same lock for read for its full duration,
+> so the new task is either already on the task list and assigned by the
+> walk, or the copy happens after the walk completed and observes the
+> parent's new resource group.
+> 
+> resctrl_copy_process() reads two values that some architectures store
+> separately. __rdtgroup_move_task() assigns them with two stores while
+> holding only rdtgroup_mutex, which resctrl_copy_process() cannot take,
+> so those reads can fall between the two stores and leave the new task
+> with the CLOSID of one resource group and the RMID of another. Assign
+> them from __rdtgroup_move_task() while holding tasklist_lock for read
+> as well, so that resctrl_copy_process() observes both as intended.
+> 
+> Add an architecture call to perform the copy because CLOSID and RMID are
+> stored per architecture and cannot be read and written as independent
+> values on all of them.
+> 
+> Fixes: f3cbeacaa06e ("x86/intel_rdt/cqm: Add rmdir support")
+> Reported-by: Jedrzej Wasiukiewicz <jedrzej.wasiukiewicz@intel.com>
+> Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+> ---
+> Note to MPAM maintainers:
+> 
+> resctrl_copy_process() runs on every fork(), so
+> resctrl_arch_copy_closid_rmid() is a static inline on x86. Doing so is
+> perhaps not required as fork() is already expensive.
+> 
+> Even so, I attempted doing same for MPAM but ended up with solutions
+> that do not seem ideal:
+> 
+> - A static inline in arch/arm64/include/asm/mpam.h, next to the other
+>   accessors of thread_info::mpam_partid_pmg. Nothing on the path from
+>   include/linux/resctrl.h reaches that header, so the definition is not
+>   visible to resctrl_copy_process(). Making it visible means
+>   arch/arm64/include/asm/resctrl.h has to include asm/mpam.h, which
+>   does not seem to match MPAM's intended design?
+> 
+> - A static inline in include/linux/arm_mpam.h, beside the
+>   resctrl_arch_*() inlines already there. asm/mpam.h includes
+>   linux/arm_mpam.h, so the reverse include would be circular and
+>   mpam_get_regval() cannot be called. The copy would have to read and
+>   write thread_info::mpam_partid_pmg directly, which no code outside
+>   asm/mpam.h does today, and would need a CONFIG_ARM64_MPAM guard
+>   because the field is only present when it is set.
+> 
+> The out-of-line definition this ended up with matches
+> resctrl_arch_sched_in(). Please let me know (if this is a change you
+> agree with) what kind of shape it needs to take for MPAM. We could also
+> just make x86 and MPAM both be out-of-line - doing so may not be felt by
+> the heavy copy_process().
+> ---
+>  arch/arm64/include/asm/mpam.h  |  6 ++++++
+>  arch/x86/include/asm/resctrl.h |  7 +++++++
+>  drivers/resctrl/mpam_resctrl.c |  6 ++++++
+>  fs/resctrl/rdtgroup.c          | 21 +++++++++++++++++++++
+>  include/linux/arm_mpam.h       |  1 +
+>  include/linux/resctrl.h        | 28 ++++++++++++++++++++++++++++
+>  kernel/fork.c                  |  3 +++
+>  7 files changed, 72 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/mpam.h b/arch/arm64/include/asm/mpam.h
+> index 70d396e7b6da..0746e5d7cc2d 100644
+> --- a/arch/arm64/include/asm/mpam.h
+> +++ b/arch/arm64/include/asm/mpam.h
+> @@ -63,6 +63,12 @@ static inline void mpam_set_task_partid_pmg(struct task_struct *tsk,
+>  	WRITE_ONCE(task_thread_info(tsk)->mpam_partid_pmg, regval);
 >  }
-> =20
-> +static void zram_stat_add(struct zram *zram, enum zram_pcpu_stat item,
-> +			  s64 amount)
+>  
+> +static inline void mpam_copy_task_partid_pmg(struct task_struct *dst,
+> +					     struct task_struct *src)
 > +{
-> +	struct zram_pcpu_stats *stats =3D get_cpu_ptr(zram->pcpu_stats);
-> +
-> +	local64_add(amount, &stats->stat[item]);
-> +	put_cpu_ptr(zram->pcpu_stats);
+> +	WRITE_ONCE(task_thread_info(dst)->mpam_partid_pmg, mpam_get_regval(src));
 > +}
 > +
-> +static void zram_stat_sub(struct zram *zram, enum zram_pcpu_stat item,
-> +			  s64 amount)
+>  static inline void mpam_thread_switch(struct task_struct *tsk)
+>  {
+>  	u64 oldregval;
+> diff --git a/arch/x86/include/asm/resctrl.h b/arch/x86/include/asm/resctrl.h
+> index 8f6edcdcfd87..199ca9af0089 100644
+> --- a/arch/x86/include/asm/resctrl.h
+> +++ b/arch/x86/include/asm/resctrl.h
+> @@ -153,6 +153,13 @@ static inline void resctrl_arch_set_closid_rmid(struct task_struct *tsk,
+>  	WRITE_ONCE(tsk->rmid, rmid);
+>  }
+>  
+> +static inline void resctrl_arch_copy_closid_rmid(struct task_struct *dst,
+> +						 struct task_struct *src)
 > +{
-> +	struct zram_pcpu_stats *stats =3D get_cpu_ptr(zram->pcpu_stats);
-> +
-> +	local64_sub(amount, &stats->stat[item]);
-> +	put_cpu_ptr(zram->pcpu_stats);
+> +	WRITE_ONCE(dst->closid, READ_ONCE(src->closid));
+> +	WRITE_ONCE(dst->rmid, READ_ONCE(src->rmid));
 > +}
 > +
-> +static u64 zram_stat_read(struct zram *zram, enum zram_pcpu_stat item)
+>  static inline bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid)
+>  {
+>  	return READ_ONCE(tsk->closid) == closid;
+> diff --git a/drivers/resctrl/mpam_resctrl.c b/drivers/resctrl/mpam_resctrl.c
+> index 5468367776e2..7aea58fca85b 100644
+> --- a/drivers/resctrl/mpam_resctrl.c
+> +++ b/drivers/resctrl/mpam_resctrl.c
+> @@ -345,6 +345,12 @@ void resctrl_arch_set_closid_rmid(struct task_struct *tsk, u32 closid, u32 rmid)
+>  	}
+>  }
+>  
+> +void resctrl_arch_copy_closid_rmid(struct task_struct *dst,
+> +				   struct task_struct *src)
 > +{
-> +	struct zram_pcpu_stats *stats;
-> +	s64 sum;
-> +	int cpu;
+> +	mpam_copy_task_partid_pmg(dst, src);
+> +}
 > +
+>  bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid)
+>  {
+>  	u64 regval = mpam_get_regval(tsk);
+> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
+> index 57ab090072c2..ebf780fc5fe9 100644
+> --- a/fs/resctrl/rdtgroup.c
+> +++ b/fs/resctrl/rdtgroup.c
+> @@ -657,12 +657,28 @@ static int __rdtgroup_move_task(struct task_struct *tsk,
+>  		return -EINVAL;
+>  	}
+>  
 > +	/*
-> +	 * Other CPUs keep updating while the values are added up: a page
-> +	 * stored on a CPU already summed and freed on one not yet summed
-> +	 * can make the sum negative.  Sum them up again then.
+> +	 * Hold tasklist_lock for read so that resctrl_copy_process(), which
+> +	 * holds it for write, cannot read the CLOSID and the RMID of @tsk
+> +	 * while only one of the two has been updated.
+> +	 *
+> +	 * Hold tasklist_lock just for the @tsk update. A CPU running @tsk
+> +	 * keeps using the CLOSID and RMID that resctrl_arch_sched_in()
+> +	 * applied when @tsk was last scheduled in, so
+> +	 * update_task_closid_rmid() below has to interrupt that CPU for the
+> +	 * new resource group to take effect. Leave that until after
+> +	 * tasklist_lock has been dropped: a CPU waiting for tasklist_lock
+> +	 * for write waits with interrupts disabled, and @tsk's CPU is the
+> +	 * one that may be waiting, because @tsk may be forking.
 > +	 */
-> +	for (;;) {
-> +		sum =3D 0;
-> +		for_each_possible_cpu(cpu) {
-> +			stats =3D per_cpu_ptr(zram->pcpu_stats, cpu);
-> +			sum +=3D local64_read(&stats->stat[item]);
-> +		}
-> +		if (sum >=3D 0)
-> +			return sum;
-> +		cond_resched();
-> +	}
+> +	read_lock(&tasklist_lock);
+>  	if (rdtgrp->type == RDTMON_GROUP)
+>  		resctrl_arch_set_closid_rmid(tsk, rdtgrp->mon.parent->closid,
+>  					     rdtgrp->mon.rmid);
+>  	else
+>  		resctrl_arch_set_closid_rmid(tsk, rdtgrp->closid,
+>  					     rdtgrp->mon.rmid);
+> +	read_unlock(&tasklist_lock);
+> 
+
+Is it possible to combine u32 closid and u32 rmid into u64 closid_rmid?
+RDT will no longer support 32-bit kernels, so u64 is always atomic. Then
+we don't need the above tasklist_lock in __rdtgroup_move_task(), and there
+is no race with resctrl_arch_sched_in() - but we do need it during fork()
+though.
+
+I was thinking something like below:
+
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1362,8 +1362,7 @@ struct task_struct {
+ #endif /* CONFIG_PREEMPT_RT */
+ #endif /* CONFIG_CGROUPS */
+ #ifdef CONFIG_X86_CPU_RESCTRL
+-       u32                             closid;
+-       u32                             rmid;
++       u64                             closid_rmid;
+ #endif
+ 
+        struct futex_sched_data         futex;
+
+static inline u64 resctrl_clos_rmid_val(u32 closid, u32 rmid)
+{
+	return (u64)closid << 32 | rmid;
+}
+
+And we use resctrl_clos_rmid_val(), upper_32_bits(task->closid_rmid)
+lower_32_bits(task->clisid_rmid) in the code.
+
+thanks,
+Chenyu
+>  	/*
+>  	 * Ensure the task's closid and rmid are written before determining if
+> @@ -2959,6 +2975,11 @@ static void schemata_list_destroy(void)
+>   * If @mask is not NULL the cpus on which moved tasks are running are set
+>   * in that mask so the update smp function call is restricted to affected
+>   * cpus.
+> + *
+> + * Tasks created while this walks the task list are handled by
+> + * resctrl_copy_process(), which tasklist_lock serializes against this walk.
+> + * A new task is either visible to the walk and moved with the others, or
+> + * resctrl_copy_process() assigns it after the walk completes.
+>   */
+>  static void rdt_move_group_tasks(struct rdtgroup *from, struct rdtgroup *to,
+>  				 struct cpumask *mask)
+> diff --git a/include/linux/arm_mpam.h b/include/linux/arm_mpam.h
+> index 002f56e15362..b605e9771c32 100644
+> --- a/include/linux/arm_mpam.h
+> +++ b/include/linux/arm_mpam.h
+> @@ -56,6 +56,7 @@ bool resctrl_arch_mon_capable(void);
+>  void resctrl_arch_set_cpu_default_closid(int cpu, u32 closid);
+>  void resctrl_arch_set_closid_rmid(struct task_struct *tsk, u32 closid, u32 rmid);
+>  void resctrl_arch_set_cpu_default_closid_rmid(int cpu, u32 closid, u32 rmid);
+> +void resctrl_arch_copy_closid_rmid(struct task_struct *dst, struct task_struct *src);
+>  void resctrl_arch_sched_in(struct task_struct *tsk);
+>  bool resctrl_arch_match_closid(struct task_struct *tsk, u32 closid);
+>  bool resctrl_arch_match_rmid(struct task_struct *tsk, u32 closid, u32 rmid);
+> diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
+> index 10dfdca7f4bf..32d8bf9ca9ba 100644
+> --- a/include/linux/resctrl.h
+> +++ b/include/linux/resctrl.h
+> @@ -7,6 +7,8 @@
+>  #include <linux/list.h>
+>  #include <linux/pid.h>
+>  #include <linux/resctrl_types.h>
+> +#include <linux/sched.h>
+> +#include <linux/sched/task.h>
+>  
+>  #ifdef CONFIG_ARCH_HAS_CPU_RESCTRL
+>  #include <asm/resctrl.h>
+> @@ -729,6 +731,32 @@ extern unsigned int resctrl_rmid_realloc_limit;
+>  int resctrl_init(void);
+>  void resctrl_exit(void);
+>  
+> +#ifdef CONFIG_RESCTRL_FS
+> +/**
+> + * resctrl_copy_process() - Give a new task the resource group of its parent.
+> + * @child:	The new task, which is not yet on the task list.
+> + *
+> + * Call from copy_process() while tasklist_lock is held for write. Serialized
+> + * against rdt_move_group_tasks() and __rdtgroup_move_task() that hold
+> + * tasklist_lock for read.
+> + *
+> + * dup_task_struct() copies the parent's CLOSID and RMID into @child before
+> + * @child is linked onto the task list. If the parent is moved out of a
+> + * resource group that is being removed, that group's CLOSID and RMID are
+> + * freed once the walk completes, leaving @child with stale assignments.
+> + *
+> + * Bring @child up to date with the parent.
+> + */
+> +static inline void resctrl_copy_process(struct task_struct *child)
+> +{
+> +	lockdep_assert_held_write(&tasklist_lock);
+> +
+> +	resctrl_arch_copy_closid_rmid(child, current);
 > +}
-
-[Severity: Medium]
-Can zram_stat_read() spin indefinitely (or livelock under a real-time
-reader) when a writer is preempted between slot_unlock() and
-zram_stat_add()?
-
-zram_write_page(), write_same_filled_page(), and
-write_incompressible_page() populate the slot and call slot_unlock()
-before calling zram_stat_add(), whereas slot_free() calls zram_stat_sub()
-under slot_lock():
-
-CPU0                              CPU1
-zram_write_page()
-  slot_lock(zram, index)
-  zs_store(...)
-  set_slot_size(zram, index, len)
-  slot_unlock(zram, index)
-  <preempted>
-                                  zram_slot_free_notify()
-                                    slot_trylock(zram, index)
-                                    slot_free(zram, index)
-                                      zram_stat_sub(..., 1)
-                                    slot_unlock(zram, index)
-                                  mm_stat_show()
-                                    zram_stat_read()
-                                      sum < 0  <-- loops until CPU0 runs
-
-While the writer on CPU0 remains preempted, the true sum across all CPUs
-is negative, not just a transient artifact of racing with the summation
-loop.  Any reader in mm_stat_show() will busy-loop across all possible
-CPUs with zram->dev_lock held until the writer runs, and a higher-priority
-SCHED_FIFO reader on the same CPU as the preempted writer will never yield
-via cond_resched(), livelocking the CPU.
-
-Clamping negative sums to 0 in a single pass (like
-percpu_counter_sum_positive()) and moving zram_stat_add() before
-slot_unlock() would avoid the unbounded loop.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/5666c1c8c04998784c8=
-1fc8fe751e35aa40af578.1795403342.git.senozhatsky@chromium.org?part=3D2
+> +#else
+> +static inline void resctrl_copy_process(struct task_struct *child) { }
+> +#endif
+> +
+>  #ifdef CONFIG_RESCTRL_FS_PSEUDO_LOCK
+>  u64 resctrl_arch_get_prefetch_disable_bits(void);
+>  int resctrl_arch_pseudo_lock_fn(void *_plr);
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 5efceb8d58a7..8344e0d27b78 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -105,6 +105,7 @@
+>  #include <linux/stackprotector.h>
+>  #include <linux/user_events.h>
+>  #include <linux/iommu.h>
+> +#include <linux/resctrl.h>
+>  #include <linux/rseq.h>
+>  #include <uapi/linux/pidfd.h>
+>  #include <linux/pidfs.h>
+> @@ -2491,6 +2492,8 @@ __latent_entropy struct task_struct *copy_process(
+>  
+>  	klp_copy_process(p);
+>  
+> +	resctrl_copy_process(p);
+> +
+>  	sched_core_fork(p);
+>  
+>  	spin_lock(&current->sighand->siglock);
+> -- 
+> 2.56.0
+> 
 
