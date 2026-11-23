@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CAB606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A71606A699
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cCSzGCIE
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DVoUES+r
 Received: by kanga.kvack.org (Postfix)
-	id 303066B05B2; Mon, 23 Nov 2026 11:33:10 -0500 (EST)
+	id 442976B05B5; Mon, 23 Nov 2026 11:33:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4146B05B5; Mon, 23 Nov 2026 11:33:10 -0500 (EST)
+	id 3EC7A6B05B6; Mon, 23 Nov 2026 11:33:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A32A6B05B6; Mon, 23 Nov 2026 11:33:10 -0500 (EST)
+	id 2DBA06B05B7; Mon, 23 Nov 2026 11:33:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E7C3C6B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:33:09 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1FFD540983
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:09 +0000 (UTC)
-X-FDA: 85466928498.11.1946F19
-Received: from mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0E95510000B
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cCSzGCIE;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B5D16B05B5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:33:15 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 97DC0160907
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:14 +0000 (UTC)
+X-FDA: 85466928708.04.567D6C8
+Received: from mta1.migadu.com (out-102.mta1.migadu.com [95.215.58.102])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7DB27C0016
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DVoUES+r;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.102 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795451587;
-	b=htIhPPymflJd7gJO0kvxYEVUkqQ13gnuRhUydM7xk/WZ0wLgtNe9tG22U7ahiEaQ9ewnVt
-	Wsyg458io2J1J4MG8K25KBiLycqkHRBIzSMZviTiejeY+jyl4mHQ5oLRAc4CpCnP2OrRQq
-	XM8qNZy8fg+IEtJPqYlon+wxS3KjJWU=
+	t=1795451592;
+	b=fxOTMBRrDmW8ovQtPO/0lNwZSckInXQSd0Q3z+JWYuIUWValaiJtAdh1w3ZyOU1nwhgG4C
+	t8t7LeQgfmMX11PGTbTWnxqDkvO8Hhjvfe/aSB9M8hSF2x4pYV7IrGOP4guyQOVTyOeYz/
+	9smgGMF2y29kusxilmqp875xw/iTKKc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795451587;
+	s=arc-20220608; t=1795451592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Yxw4jJMrXMbkk4luKeDVY6n7aca2oniv7pBaMvqCZZo=;
-	b=gto2t4YD5vBCr//gvkLNg37xb108ICylMoFsSTAzzZ3SLmih+3EjZULV3wDqS4bP2w2r73
-	lpUJQP5DjEh2PIF4jhrjNz8QyXoStmn9zYpkhmNCibj2qWweWhMdMXnaosswpoOJrxsmWP
-	aTZd1Y70JmfKWV69YEPpZMRMP1cX3Kc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fwWiH4TsPLewrmvX2AV6vJSDmcGS5DTBi3bpUFUWZos=;
+	b=CPYoWpkyFyIubWJYuv6dSjO6jo2idPczHsyhelDhHrzbSMOJDYfT940mFqWs8JviespD2y
+	UCX83qcZ2UwI/3sLYXl7TdK5FrBr3w/gg8/ea1YykrLpLfI2Nwj3nAwNv0JROlYm9tuzh6
+	LJicoJz+eeISiLfrKY6gVbU3QAQDUIg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cCSzGCIE;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DVoUES+r;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.102 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6YY+UofGcLZaF/R74H86RLjvpi/i0YIea2eJqVNxlwM=;
+DKIM-Signature: a=rsa-sha256; bh=jZKaGu0pxutsSN80ekzFiD3bJEXetF6Gf5LZ+jjPkrg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795451584; v=1; x=1796056384;
- b=cCSzGCIE/QjLliANYvylQEWazlGZm9EVizcQ4xXViyPxaB99uhPwmAHJ6wJ1UzoKk7HH3Bth
- FW3/DeedHockO6KXBwAI+A/ofoRvPLKtInKiis4G1wgy87EdbGEK/e97qPyxYpBApfOT0SJN6Yr
- VNyEovSYKItkcZr9WBeuk4NQ=
+ t=1795451590; v=1; x=1796056390;
+ b=DVoUES+r/i8B52JHyStfl7du2iLFcOUFHmLbKUJuEhCNalaBU1bCmj04h9PneYT6NM5PXYoI
+ iWslqbj8qfiZjfROTe3tpUydS6wuTwi9gBPzEtPP8rWvKcMTEEKUEeLTakQ0MNEg0xyZ4sSziLF
+ ecfZl2XYvwpFdk/Gkv8pU3EE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 3c27a325c15f0747;
-	Mon, 23 Nov 2026 16:33:04 +0000
-X-Mizu-Trace-ID: 3c27a325c15f0747
+Received: by mta10.migadu.com with ESMTPS id 9be87c2e82eba38f;
+	Mon, 23 Nov 2026 16:33:10 +0000
+X-Mizu-Trace-ID: 9be87c2e82eba38f
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -90,26 +90,29 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	dev.jain@arm.com,
 	baohua@kernel.org,
 	lance.yang@linux.dev
-Cc: Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v3 0/5] mm: fixes for THP migration, swap-in and device-private smaps
-Date: Mon, 23 Nov 2026 08:32:06 -0800
-Message-ID: <20261123163301.1568240-1-usama.arif@linux.dev>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/5] mm/migrate_device: avoid leaking folio references during THP splitting
+Date: Mon, 23 Nov 2026 08:32:07 -0800
+Message-ID: <20261123163301.1568240-2-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.1
+In-Reply-To: <20261123163301.1568240-1-usama.arif@linux.dev>
+References: <20261123163301.1568240-1-usama.arif@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mth5gaw8jphxw5sowokzxwpi3g6m7x59
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0E95510000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795451586-690753
-X-HE-Meta: U2FsdGVkX1/9QLEqmUea8h0Ok4EaCLD60DJxyiEx5+5UTaeKoTuVGH6WkfP/MsBPliZsBj12lT0qDPyEzcpBsHCCWBsbEzMcnpbPMu3kJRO6/ctHRdPWLkmVGufAKPrnkRw0GQcMexxqecZizIkdYyBTcs8o9RDvORimScITOiv5/o2ud2QJn1m+/IsXoYbDbITM6w+itZpaisoubm+ep3qlvFy4xPSYNKEhHUKk/QA2PCxZYE2HtWFCK3MX2EE1S5UJ/uCPdLEk5l2T+ydR5uf7bqNlRPyPMngbmOt+dVQ2QF4i8k5V+mHNULDj7Jhe9BsryV5Zslq2QpdoufTZtKLc/pguMkiYIQDc9jdDDxnmwfn8ngg8d1PKxxJEQ9/5fQZlEKOG8jWl1NHGc5F+4BiZip3bn3/dhOdlttto+xspIHoCYQnpINRfXyzOm4BtvFOwG+vGSh5Tp2CbJjTeAdlEqIRLljHNWK8B8mZhHKVX3TT1+17P/lj/prmigocYMCvTbxxwgsXryEaRMvQTE3yo/XvYqKjuwr/d57ScIxDaJISl3ADyxTjTJvy9RbwoLiVFiriyHhBFV4iIv3N+3y6Rio9dqbUewQWmee/WyaJfW3RN6BXqaqBGt5a+8wCGOf3I8F9Le8vTr0voPczShoLaD2GVxD9uH8UPsiz9LZicUDh2OxsgUaNos6MFexR73p36ple7l0h1dSTuc/caAN/0Nv6H8/RVJWFeFCJzV09an5C6/ijnnv0TNCXbR9/+Cs3I5ys+xkswAOCfzre6+yfuuvmqrT+tg+S8ayzh4Z3Ojjw43zoPanx1L1yd4Rh+l3BqejVMRXNExVjVwkBXo6+7GXMXA5xVd47TXnw8q32gPjoAm8mtoCG8R+ajPV3RRNjx/td8Wfhc1VRSZo/NWn/RDKlNOhCIzJB9wVT4rr++qmtGA/h8x4YuU65tWoIldZWSA2D224pmVlQAteD
- 0+AANfqn
- 0PdqEuEbwbs0XpeFlkcRpzlrSM1XaJx+0Hx3+PCyReIsGJWafHkisMXWiFbmCbJY9iu7t0A8hcIgyFxG0w2Z+lzAp2WWuBJiGEOS6r5VEy9EgCPt3SIvbf64cixsoG4slcAQ44JDumwkeeXS5SlG+NFuWF/9UUPqZNLtz9WH2BvVLZP44OYFcLGF5CDJ8qltv/C4pXKhxkuSSkfO1U/QzB07G6w10hHkaw4iYurS4UkStAxHlMNRjwu4a5DA7sUuIxOJKlIDScfNrUD+2meDIPaoisV3Y41cmVl+ISNUs1MuEGqHvWAC7VFbU1up8cJ/8gQHia63UMi8atQGy+v5qgZT8drnhzzR4a6h0KV02lYgHXfvJCgDOH40xZKXBWgwHxrTuO/h6aE9KfEmlipcSvDEhfgqLCVLFpNp+JixfwHee6Xg4NIOfmc4ps94u9qW/37gubWQpyrGjuIu0HqA5xqmBg80GiCpqQWZq8QEuM2v6/fd0W+cU0T84DuNNTALSsD6Id839nm4mw1f40Q0s1eTy2HZeX/rchyYB
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7DB27C0016
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: t5m3jdgyg65hxemmbwgtnkhu5impu3yr
+X-HE-Tag: 1795451592-324404
+X-HE-Meta: U2FsdGVkX1+2Jj3BJX70XsGPfKDl15qsr3sem9Ykc2KgtdYRqbV729zlewWzR8zNegOboWy+wjgY3d0IFV5FP60msv3GJzU/wpxRjFyMD10NEq9F9wEfON9p1HpRIC3eQ05dcTHz9T+rrG2eGMPVJIOGK883Atw4KIcZ6MgTwy0lu5QRVf/sfcdxIuUXeep2YPjdvlny0SgZ+414lUvCvPtp7gaZ6fB++R8Eqny0zx0knGjAj8TPpLKvNmwhjEPtKnKZLH4w1CZeVvP6ryMTEQSz0qNHKYCJFrP6xn+4uRORNA5p8iqpJZG+VeNUmhdfsUQpGg2vZq81fDtrNH9Sdd2fLfWuX6EK9+F7ERIuA5i6IUmJUgkL47etGHtS3Ytkgctx/LG/oVtuEupNNfpKDEHfB0y9fHFUu441hzgZ3Qou+Z9heqeRV38G+cSNwvt+AGegSDhD6i3dNCkOnn39Rkr7fawVk/tF15NM0K0aciOrBcjvMmHqwwoLynL1bYFz9ABbBET+lO72k7Yt0pL5Y1Yw3B7PkrTU5UmOECOEYSnI/aLMhzli4ZPSPT8A3+0CzsxGBR90/eJJpGWnMJM6eSAoM5/8/FWf1iD7lbzIpZ9ziJrTXXwYpf/ZHEHGXm6wwYbhUciVhB2wAwqvC7xoW8dARsmM2oTu2zLM2G64l689EWflOf9F/g8jvRySHJ2pA9d2f9yFRHZlFhtS2cweSlZNHdTZEBFias4vi6U4CioNWVbcUk0JDRslnVK2mhJ9McvBjHxMzlA+HtYTJcyuyGILsOfngK4MFmPGbRir2fdlvtyuumuduBGVsQer8RLPuE+GJ3ozygGC7pcWgC9GTSFB/MPqAYoYGaLIl1aq2DuRQdXQsH3woOlH218GECA/Cn/41+cya05LjeT7l4GSvcZ0n91EAAFfsXRh1IsGnLnQcxR90YI25KUc/NxcuOKoOSm8egwNY0zbYYfG4YH
+ 2BOSlSGy
+ +RoGmyTUyZuq18zRXuZfh24x/JIPalk+jwjRrpm82xwqOF3HFQzUCzJDCq+a2GvmmQVOigApUOn1LbUfbhryaxdr1nMhyg3EdhQrMxHMJenwdfk9z/yhepD1VJpwT15DnzkpQl7YZp0YNNHzzsaaxumRDRKGMX5A2uPbp6tTPV3HhyqXH8kcvJayJ49odRgPpK6OyjG4eOF8PrF2svnXAoUwTaqvcKXUJhrZnM/eACraeJyXqcCLzyLANFLpmI0/glfK9xFzKzAe2rZYF+JZAkr+hxCjP6Dc5GgJyjgkHVUuGJchxPgcq1sktpatUtNR6Xq3slGU6BX/9W51DDAir6TtxWHEJu+VLMzb+RKpMkz0R35zxJRfErgagJuTnmOZZlxpD61ML84PyA1MsQMRxmEE6WabwROBnWr02dGzZI8m2qKKiJWWktMHTnb2u2gmJgr5MX1RC+xSm557UscxWoCD3CoYsUnnjSZX6RWdgybXnCAPZUDezbQo2s+uXPM20/pPp6TsnJRrymnXuypqWLiLCQO0C1iGos5cuHzNjUgD+rg7AkjY/OddL+LGPWrsI+TqdmL2aa4BoSxlMwwPwU5x3+lmORhi+G5nV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,63 +121,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series contains four fixes for existing THP migration, PTE swap-in
-and smaps paths, plus one cleanup. They were extracted from the work on
-PMD swap entries for anonymous THPs [1] and can be merged independently.
+migrate_vma_split_unmapped_folio() takes an extra folio reference because
+split_huge_pmd_address(..., true) drops one when it splits a PMD.
 
-1. Avoid a folio reference leak when concurrent MADV_DONTNEED clears
-   or splits a migration PMD before the device migration split helper
-   acquires the PMD lock.
+However, migrate_vma only holds mmap_lock for reading. A concurrent
+MADV_DONTNEED can clear the migration PMD, or split it into PTE migration
+entries, before the split helper takes the PMD lock. The helper then does
+nothing and leaves the extra reference behind. folio_split_unmapped()
+fails with -EAGAIN due to the unexpected reference, and the reference is
+never dropped, so the source THP is leaked.
 
-2. Prevent PTE swap-in batching from mapping a hardware-poisoned page
-   of a large anon swap-cache folio.
+If a THP is faulted in at the same address inside that window it is
+worse: freeze = true replaces the new folio's mappings with migration
+entries that nothing will ever remove, and drops a reference the caller
+never took.
 
-3. Read the PMD once in smaps_pmd_entry(), the way smaps_pte_entry()
-   already does. No functional change.
+An existing migration PMD is expanded into PTE migration entries even
+with freeze = false. Use that mode and remove the extra folio_get(). The
+reference already held by migration keeps the source folio alive whether
+or not its PMD migration entry still exists.
 
-4. Stop reading the accessed and dirty bits out of a non-present PMD
-   in smaps, where they encode the softleaf entry rather than
-   accessed/dirty state.
+Reported-by: Zi Yan <ziy@nvidia.com>
+Closes: https://lore.kernel.org/all/DLZ48KMS7YG8.3BTM0UUU8CTU2@nvidia.com/
+Fixes: 4265d67e405a ("mm/migrate_device: add THP splitting during migration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ mm/migrate_device.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-5. Account device-private PMDs using mapcounts in smaps, matching the
-   PTE path. Shared mappings get proportional PSS, and exclusive
-   mappings are counted as private.
-
-This applies on top of mm-new (87cdbd9bd631).
-
-v2 -> v3: https://lore.kernel.org/r/20261116063624.1382944-1-usama.arif@linux.dev/
-- Patch 2: move the hwpoison check to the top of the batching block, so
-  the two bit tests run before the page table scan rather than after
-  it (David, Zi Yan, Kiryl).
-- Patch 3 is new: read the PMD once with pmdp_get(), so patch 4 only
-  has to move pmd_young() and pmd_dirty() under the present branch
-  (Kiryl). Patch 4 is unchanged in effect and keeps its v2 tags.
-- Collect the Reviewed-by tags from v2.
-
-v1 -> v2: https://lore.kernel.org/r/20261111113904.650722-1-usama.arif@linux.dev/
-- Patch 2: use the existing folio_contain_hwpoisoned_page()
-  rather than adding a helper that scans every page of the folio
-  (Lorenzo, David). Only skip batching for anon folios, since
-  falling back for a freshly read folio frees it with the poisoned
-  page in it, and the retried fault can get the same block back.
-- Collect the Reviewed-by and Acked-by tags from v1.
-
-[1] PMD-level swap entries for anonymous THPs:
-https://lore.kernel.org/r/20261002095503.3585565-1-usama.arif@linux.dev/
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 9e19fadfa65c67..3286bb8a4b73ee 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -920,12 +920,7 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+ 	unsigned long flags;
+ 	int ret = 0;
  
-Usama Arif (5):
-  mm/migrate_device: avoid leaking folio references during THP splitting
-  mm: don't PTE-batch a swap-in of a folio with a hardware-poisoned page
-  fs/proc/task_mmu: read the PMD once in smaps_pmd_entry()
-  fs/proc/task_mmu: don't read young/dirty from a non-present PMD in
-    smaps
-  fs/proc/task_mmu: account device-private PMDs as present in smaps
-
- fs/proc/task_mmu.c  | 21 +++++++++++++--------
- mm/memory.c         |  5 +++++
- mm/migrate_device.c |  7 +------
- 3 files changed, 19 insertions(+), 14 deletions(-)
-
+-	/*
+-	 * take a reference, since split_huge_pmd_address() with freeze = true
+-	 * drops a reference at the end.
+-	 */
+-	folio_get(folio);
+-	split_huge_pmd_address(migrate->vma, addr, true);
++	split_huge_pmd_address(migrate->vma, addr, false);
+ 	ret = folio_split_unmapped(folio, 0);
+ 	if (ret)
+ 		return ret;
 -- 
 2.53.1-Meta
 
