@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DB8606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4780606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 04:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9tKdHo1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dovYivkZ
 Received: by kanga.kvack.org (Postfix)
-	id 7B6236B05B3; Sun, 22 Nov 2026 23:08:48 -0500 (EST)
+	id B80AD6B05B4; Sun, 22 Nov 2026 23:08:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 737926B05B4; Sun, 22 Nov 2026 23:08:48 -0500 (EST)
+	id B57AA6B05B5; Sun, 22 Nov 2026 23:08:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6019A6B05B5; Sun, 22 Nov 2026 23:08:48 -0500 (EST)
+	id 9AA2B6B05B6; Sun, 22 Nov 2026 23:08:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 411856B05B3
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 804576B05B5
 	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:08:48 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3CCE1C3D28
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:47 +0000 (UTC)
-X-FDA: 85465052694.04.1CE7EEA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 33BBBC0005
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 751CA12078E
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E9tKdHo1;
+X-FDA: 85465052652.19.7D3BADD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DD1DA140003
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:08:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dovYivkZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795406926;
-	b=2pVuDghsO78C4xY8Hmh9TisoKP71CXL7AnFc2R4Uh7tFmYHwNo4ACo0Ejcl/VPH4OrBh/k
-	POR1Nj4CtCgkvIQOLEluGHQNnZXLLbhGWiQfI9c2qFklVU/Y5xNh1xHIV7Ji/wCAs/+zkT
-	cndSRrpKPLveI1/UX0uzcZakU8e81Tg=
+	t=1795406925;
+	b=4lVQPrWeYz5tJMU9CMw+hh9YKsdI9iN0yrxMm8KjwLYh4tvJ3CSeG31H1NAVsOvPS/NYTD
+	gcih2SD4pLLM6HzSU84uzfJiPlZBkvLpqt6AmxrjGmlKOzorfcfE6j54JK9Fowgcm5GpiX
+	LYkYXTDMUocaaWOE0zAUCmWJ7HwIkkw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795406926;
+	s=arc-20220608; t=1795406925;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GXZgiao497vjuQEWO66dlbufdTEtnO1vM80+2ppxcsk=;
-	b=tzkNumYlIMZ7NXena+zJECY2u+YjuAswSlrIpGHTA7vKCWvtFiDUXaYF/gulL/eZrvSItq
-	xDmBjQaNp5cr1LJjSdI40cbJf8qlQlBLCqO8+Sfgh5eKc3ksJcsD5DfV+oA/GhtZBSB08A
-	ZvpVNI7DE92PaN0k9PKcaAnIah8FW6s=
+	bh=BqpT7dCr9qlveBIEzUUp39PFxV19LPx9fvtVDpWayE8=;
+	b=m71R7Nik1c25SgyRq80S9uImM0GgLIvCJQyngi8vU0AnMpd1pAJyq36dQgeEZW4I9fz1sy
+	OyxdwFIGn4NIm6MBHPOUsjmQtyrE6sRn/rYkGoEEzDmeQKZZ/Is7Q4sp177zVh0KVW1iPb
+	TIPIZaKntk0i5bdnp8IXV4mXb4moov8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E9tKdHo1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dovYivkZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C246360D5F;
-	Mon, 23 Nov 2026 04:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCB71F000C0;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5329F60148;
 	Mon, 23 Nov 2026 04:08:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5E01F000C0;
+	Mon, 23 Nov 2026 04:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795406925;
-	bh=GXZgiao497vjuQEWO66dlbufdTEtnO1vM80+2ppxcsk=;
+	s=k20260515; t=1795406924;
+	bh=BqpT7dCr9qlveBIEzUUp39PFxV19LPx9fvtVDpWayE8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E9tKdHo1jsJVazYQHH8dgT4LgnFRYApg6WfM6nRHNwXuruJKJcpREWfOy/sdEQ0+z
-	 AHMnnN6By3ihifyJ4WUt4XC80GeZkfosWwW2V/8y7mZxane3asTSZ2VMp/gxndXkch
-	 JdURfPpQpORIK2yxU5SRF63IZOvrJQh4kVELvxnfZ9dFn12QDv4M0DtMfyESRHsJTT
-	 wWlidAlcogObFMqoZxG4nsLGSStu1H1lz9GATFlDecIk7ftxvzbwTP64by/py427wN
-	 Zww11HX17PKFTsR29koFlXg+KwNwnkca8brBX4STLAHXw0gLj0ZuzlbNnrzGxl2/Vz
-	 SEehTRrolUfuw==
-Message-ID: <sashiko-outbox-228635@kernel.org>
+	b=dovYivkZsu51SYF9i+8+KggRj/B0Son63O9nj+DpR9KT7n8e6Jgoj5+rvfsYpdiVp
+	 gQdMoJwmRTFOx4g8ZBmYxHvMRTabAFofSQcNwOmZbxKsnGNGIg8MQsn5Cwxx4Ci95G
+	 Qy12QTRD7YzzgkeWJbFri9ih0gKCn5e2LIV5hu9u4IKAKvknsJcahEhW37UjfGQiSf
+	 Bu+vHRh4Vhbh1nOxVNGW610u8oTTnMjNYk8RAeeGDs2uyMWPfY29C+g1rDNgtCSTnH
+	 Lxaow4oPgZcf1rWvkxFyUDFEDMVWek+AR2s437MKidj1COEXGEfYzxkU6WJ8k0wyEM
+	 +ZZ+ZAP07FTbg==
+Message-ID: <sashiko-outbox-228633@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 06/19] hugetlb: Optimize bootmem folios that were not
- pre-HVOed
+Subject: Re: [PATCH v3 04/19] hugetlb_vmemmap: Use try_update_vmemmap_pte to
+ update in-use PTEs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Houghton" <jthoughton@google.com>, "Will Deacon" <will@kernel.org>, "Catalin
  Marinas" <catalin.marinas@arm.com>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
@@ -73,24 +73,24 @@ Cc: "Kefeng Wang" <wangkefeng.wang@huawei.com>, "Nikos Nikoleris" <nikos.nikoler
  Hildenbrand" <david@kernel.org>, "Ryan Roberts" <ryan.roberts@arm.com>, "Nanyong
  Sun" <sunnanyong@huawei.com>, "Yu Zhao" <yuzhao@google.com>, "Frank van der
  Linden" <fvdl@google.com>, "David Rientjes" <rientjes@google.com>, linux-mm@kvack.org
-In-Reply-To: <20261122184453.2668189-7-jthoughton@google.com>
+In-Reply-To: <20261122184453.2668189-5-jthoughton@google.com>
 References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-7-jthoughton@google.com>
+ <20261122184453.2668189-5-jthoughton@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 04:08:44 +0000
+Date: Mon, 23 Nov 2026 04:08:42 +0000
 X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DD1DA140003
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 33BBBC0005
-X-Stat-Signature: xma4h7rfh1psr6k8jbuesupibc1af9sz
-X-HE-Tag: 1795406926-287249
-X-HE-Meta: U2FsdGVkX1/HAV1l5a6aNgwncJpzaMztNkVP1nQipQY3wg14xsxxbxDp7Zj1DqqqcpLZh0SlVIvcBzZn6Mdy3GHPD0czxYNFH3Aofxtui1VXsJTgIm1JKp6/Qm6kKbSG2miLQi6IcDFGw025ggc12V/SKoc7h0PLez8Smpz63KshRKlP4BpcnGKhrnIcX/CEB5wEsR2oDfQdNX89vanbEnLZ31Xu9cZWKyueLeNheCEMvkueeT9OaakBSbUOVMs9JKLW47qlEzR/zkpf9fpP1hOZyaLxT1UJczP7AUmBTnTN+BGdfeUIPek64ATwBUxkScLpl/kXfrDvNMBK+Rwjqx2uGLIRbW/VVVCKKNxO9A8P2oVW/DJ6mcMThvZ+t9gU+m8z1a2QAfpraVayxSvmhp27ePnmAV5o8dTSdZgcMW3UuSa+sLJtyp3QKCodvlyg7cZcIU3/We4c8C3z4jPzBKzSQF86VPgU4/qLhoUCWM6gD4nM6HEMqoNtZojBauprhn9nfMWUIuX7FZyNdJavT/+/oNntCNKvXMq1ExKdefUW9YyAonVBEPCjDLFpOfcShd+W1CjvFFkSiX7IvV6VxNlzGxPEMMeTLaFGDG2SQ/JwzUK08YoEJQL57IBWEGhwBgpwOmQEywtaLMvn24jhw94S1GOCuX+kMt3KQERawL/TiSPavMAtVejpFbZAv+KV9Dpj6GERRHWxny+cXiKWXSyaeV4wS/XaS9OrF88+gyUd0z4m6E5TsKjeyg/C0iwt3f15XjYklboGyCOz28awMlEW8IIFZBui5P0/q8JTop53RMadzBiFR2qSmk9XSueq3O5BZxuJ7ZR6GcKE/clmYZd5bD8E62wXlpnuTzahj3hmCG90wImNtf5U8veSgT3YiuJzPQkuyhxTdiXPrx7j+V5wVzxEUSncfq9cIeBob1nzqPaNlpIQVefYFj0l5Im74h8qIquDgsUx/LqzOm/
- uM92WVFn
- Y/n6u+3QTCXHlui4ZGta8imF4egsn09D40yeESVhLEMAloCJpHGLL6sz1Q9OuqxXoD6MLhCb+ERJj/Y42v5Zv2A3CUbRQlFLO0Nh2xOjiRZCgpI09UoThSIryAsxtvtA4RNiVNJsWdMkyq+2NhZMitXWE8BYqo6IIFDSe32h6AEPiTtd6jkQmtcaGMJZUq1gRHrr4nYRjdKwclJVAcG+/mPfGZilMuEyzJ/dU74jeAFiTAallYTzKgVlE1oVI2Sjunkb5BiqUzux9GyWmGmWf6zSFPQlJFXVh6VJb5rxoThmxO47R2XT8cjULWvGSCUXDaHgiMATbsuTZo/7Rb8lNTWCV+ZxtyYRx0k2LIvaYflpWSXxkgWN3D2a+n4ve1fax8MGuhky7I5Wwd2XTxQ25o4bgvyhGxvqfjrWN4J8srD1Jk+v49bJzbbVHYK+f3WLj9yhegSa1ocQwoW3SUrK2l1U9nawr/TWGcszOYY8kQtac60AqkMkZ00F//CGayNy1/uGt8sMZ2FOz/yqoD9Sg9o4z4YHWY6uYAYoyuTQAUltpJLNURFVM0qMuOosgSut36uq6Qs4SwOJOH5x/1xy3GHeIH6Tb3/BUrZQ/5gCCR70XIMNpkgMwOg6iYN0WhJRp7VtHYtR3/ebw6JGVU4GOOwGbqUz7vzwQGJsqm8qpSbV0vXV7oKJFMNhQOHecVbuswbYUwsou41gPtnlHSLTjiRIrrXbqM48grMtaerp6CV2n99fIuP6HiUNrQ+OoePf8EHlx+GvtYXxeibxfeBAWEfOSG1Q2bvrIIBdO9+JWtOpGUBG/sb4LF0G9ug==
+X-Stat-Signature: p3jfjq6kf9ek1uj8pmrc3qdz4pdaziwq
+X-HE-Tag: 1795406924-781691
+X-HE-Meta: U2FsdGVkX19l7a43wMGD2+0pbOhQIREbvd9XsnR///YuuD10p7ckB2VlJr/tfnZalDUhvscY1URNUG+OK9CoFX9epKMe1ZLZl91pF3uY55upiXwgVwgtmbENq7EXY5b/eswKNSfOTDkXSr3diRvcJyGQ8z2zfnMo8t46aEhcME+amL5N2HhZyeAgLcrcVTlAXEF9h98VB0JSF1pjxEw6VsnkLU2zuTrJMkJ1oIuUE/kNWZkyfTniiYGSRH+FVUxW5QYbl8tjVY2ML9TuhZSDjE+3pKROnqX/OE99J2CMhHhgTzvSFCf+oBCJT4nEQ+8QO+EEYa1i5bWCR4JF2+uo+iONzhXVxer8vbi112LQf6v3YSvON84yjfOZ6BRZvnkIsAZY/+fNCNoiTi3RpN3NinlTCATkcLbdlokiLajCr2JmWjG/8dK1ua2dXebFwDQX3py20g47K1+CqdmZcjVk03tGFzhx/PdEp3/JwTm7RozxiCes5yHxTlSsshTgJARcK9hmvaQyocG10TzSUo1No/KpGH6yXS8XBcb039texNmv7teVt5762qRZEDOyRobC41E9aexo1Jpww1hwLx+2mVq0qMNcCnBHCZst7WwXI44fLNzVDtJ0Rx7F12/7w3FS8fPTtMBuDNjOZmd2XZuO8Lmch403xYBfw8n1H6piX+i4Ea8pKKv8CyDrIltEHlkruzIXbkTloLM9HCrzN16slyMZAr7b96jc7JSisvmNgg4iqRD5WCTz93c58OappulkzFLy70paPvTt2wVzqZ1rJaz+y4gYOEHDxtj80HH66fgf7G9UQDgYUwizEqfPoWq4i5zG28FkN8/tBdvfOPb40NebfyjaiP+e87GaUTzw9Y/g3B1kJWe1MieCfix9zjFjNQiNiCNrc1Onyw3J3gZoyYzeyRU993RDNg5DWzfTiRC5tx/FO51flEyp5Myytlh4Dk1gzdI15mIE4EMGXvn
+ VWS8SzvU
+ UOr7TY9kzqqfFZFAVgHPkthf8v/uxZI7xuL16ImJi3j7LMKSYxGehHLeAXQ3v9v/x69di4tFVx5q0P/Pw+hJ7M2GDKumAZMl9PkU7amAbWywtoR4k0jVq7dRf99PEtT3Ipn6rtpzucxMVzxh7JK3FMHuRxk54WNpjmGdwaUft37Zdmc+z3Mykn4XfjTYdvv1PowlCp1DpBMPJ8YdmEPoxr4WDDXwp0Tf3ZwXTS9gx5IzvbOM7fjnPBYEmpx0P03f2nsDArkPPMFVfBe0MEobU5bwCDQk6y+U+4VXD/r4IZpouyTY5tIh5V1hbeYmUQvFoBvOqP2QeHTpT5oLFTKFVHAQBm816i0QUMZCeka+tZe9taFkDGKXOStnN5LWlx93Nv6Gi/XQTQfwfCOSJnywGsSB16Y5WQW/gNcGf+u3trEYsWANxNwQcBVpQie1nJW8l+7lvMwjjEHrjqK02VHeeE2xC7+YF0/1hSb9e7urW+evmxkHpeBtszzrv3k1s8QZI5vBJSpjCpEZBTbAEaLMKU0jhiJ6haTHsL8sUvQ84KWM52LA5aYkW7kTrFBC62dqVtZAU4rBD143rUd8EN9e+cVzoubLtvJ83GGMfezMnE257VYbRNUwZI30SI+j90X69/ATBiFLD9t+NyPK+blpSUxo+UGjANMkfTv/+BdtdOYmfSDfpVk9SN9pH9OaL80UqJ3hMW8mxpZB9xX1ncmIvoXXDwTgW/Ixsja5ESZuEieBzBntzINdTiT7FLng08C6tZOUVNBMrEJZG26a6mQJZn3apRQhOBsScpCORpYV0LhJPLVVPqNHkzCI34EKR1xi4SuJE63JIjWzUw2AD0RSregFFtWck8PalRn0JmFk4C6aQw0g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,66 +102,72 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm/hugetlb: avoidable TLB flushes in
-  hugetlb_vmemmap_optimize_folios()
+- [Medium] mm/hugetlb_vmemmap: missing TLB flush on partial
+  vmemmap_restore_pte() failure
 --
 
-commit 5763c0ece0fd843280e0e8e1b6561cb66598d64b
+commit 8b77f3aefb06415df030fdd341c5e065dabec71c
 Author: James Houghton <jthoughton@google.com>
 
-hugetlb: Optimize bootmem folios that were not pre-HVOed
+hugetlb_vmemmap: Use try_update_vmemmap_pte to update in-use PTEs
 
-This commit restores calling hugetlb_vmemmap_optimize_folios() in
-prep_and_add_bootmem_folios() so that architectures disabling
-section-based vmemmap optimization can still optimize bootmem folios
-once HVO support is determined.
+This commit introduces try_update_vmemmap_pte() and uses it in place of
+set_pte_at() when remapping in-use vmemmap PTEs during hugetlb vmemmap
+optimization and restoration.
 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 72839e98f998e..8756c0206922a 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3325,6 +3325,17 @@ static void __init prep_and_add_bootmem_folios(str=
-uct hstate *h,
->  	unsigned long flags;
->  	struct folio *folio, *tmp_f;
+> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> index 2e9cf8d39c892..b4d0311bcc4a2 100644
+> --- a/mm/hugetlb_vmemmap.c
+> +++ b/mm/hugetlb_vmemmap.c
+[ ... ]
+> @@ -291,7 +309,11 @@ static int vmemmap_restore_pte(pte_t *pte, unsigned =
+long addr,
+>  		return 0;
 > =20
-> +	/*
-> +	 * Bootmem folios are normally pre-HVOed through the section-based
-> +	 * vmemmap optimization. However, an architecture that can only
-> +	 * determine whether it supports HVO after bootmem allocation disables
-> +	 * the section-based optimization (see
-> +	 * section_vmemmap_optimization_disable()), in which case the folios
-> +	 * were not pre-HVOed and must be optimized now. Pre-HVOed folios are
-> +	 * skipped.
-> +	 */
-> +	hugetlb_vmemmap_optimize_folios(h, folio_list);
+>  	dst =3D vmemmap_dup_page_from_list(src, walk->vmemmap_pages);
+> -	set_pte_at(&init_mm, addr, pte, mk_pte(dst, PAGE_KERNEL));
+> +	ret =3D try_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
+> +	if (ret)
+> +		return ret;
 > +
->  	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
->  		/* Subdivide locks to achieve better parallel performance */
->  		spin_lock_irqsave(&hugetlb_lock, flags);
+> +	list_del(&dst->lru);
+> =20
+>  	return 0;
+>  }
 
 [Severity: Medium]
-Does calling hugetlb_vmemmap_optimize_folios() here cause avoidable
-vmemmap_remap_rwsem contention and two global flush_tlb_all() broadcasts
-per NUMA node when all folios on folio_list were already pre-HVOed (or
-when HVO is disabled)?
+Can a partial failure in vmemmap_restore_pte() skip the TLB flush for
+PTEs that were already remapped?
 
-When 629d87ed65ef ("mm/hugetlb: drop boot-time HVO handling for gigantic
-folios") removed the call from prep_and_add_bootmem_folios(), it also
-removed the nr_to_optimize tracking and early return from
-hugetlb_vmemmap_optimize_folios().  On architectures where
-gather_bootmem_prealloc_node() already marks every bootmem folio with
-folio_set_hugetlb_vmemmap_optimized(), each node worker in
-hugetlb_bootmem_struct_page_init() now serializes on
-down_write(&vmemmap_remap_rwsem), walks folio_list twice, and runs two
-unconditional flush_tlb_all() shootdowns without modifying any page
-tables.
+Previously, __hugetlb_vmemmap_restore_folio() could only fail in
+alloc_vmemmap_page_list() before modifying any PTEs.  Now,
+try_update_vmemmap_pte() can fail after earlier vmemmap PTEs of the same
+folio have been remapped to new writable pages.
 
-Restoring the early return in hugetlb_vmemmap_optimize_folios() when no
-folios on folio_list satisfy vmemmap_should_optimize_folio() would avoid
-the extra walk and TLB flushes.
+When called from hugetlb_vmemmap_restore_folios(), VMEMMAP_DEFER_TLB_FLUSH
+causes vmemmap_remap_range() to defer the flush to its caller, which only
+flushes when at least one folio was fully restored:
+
+mm/hugetlb_vmemmap.c:hugetlb_vmemmap_restore_folios() {
+	...
+		if (folio_test_hugetlb_vmemmap_optimized(folio)) {
+			ret =3D __hugetlb_vmemmap_restore_folio(h, folio, flags);
+			if (ret)
+				break;
+			restored++;
+		}
+	...
+	if (restored)
+		flush_tlb_all();
+}
+
+If the first optimized folio fails midway through vmemmap_restore_pte(),
+the loop breaks with restored =3D=3D 0 and skips flush_tlb_all(), leaving
+stale TLB entries pointing to the old shared tail page for the already
+remapped vmemmap PTEs when the partially restored folio is returned to
+the hugetlb pool.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122184453.2668=
-189-1-jthoughton@google.com?part=3D6
+189-1-jthoughton@google.com?part=3D4
 
