@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD19D606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78580606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YdmdSugz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CN4+/0Gn
 Received: by kanga.kvack.org (Postfix)
-	id 938F16B05BC; Mon, 23 Nov 2026 10:01:12 -0500 (EST)
+	id 345BA6B05BD; Mon, 23 Nov 2026 10:01:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E9576B05BE; Mon, 23 Nov 2026 10:01:12 -0500 (EST)
+	id 31D3F6B05BE; Mon, 23 Nov 2026 10:01:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7607B6B05BC; Mon, 23 Nov 2026 10:01:12 -0500 (EST)
+	id 20D386B05BF; Mon, 23 Nov 2026 10:01:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 525156B05BC
+	by kanga.kvack.org (Postfix) with ESMTP id 0179A6B05BD
 	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:01:12 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B9B4C1208E4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:01:11 +0000 (UTC)
-X-FDA: 85466696742.13.B02C689
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7945C1208E4
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:01:12 +0000 (UTC)
+X-FDA: 85466696784.28.796E3D1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0A7541C000F
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:01:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YdmdSugz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id C428A40018
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:01:10 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CN4+/0Gn";
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795446070;
-	b=TUY6bB3ZRUcaAWcHsummKe1HsGvu6wA/8STDuW9fuJYgyjjZRhvWvsPQ1c+7+V5UYKhG+1
-	1PgP1A2EMhU1QGHE+qHRuwvofPnYpmKtwqLwu23fG0wKgwzMWBmJOPWa3iYH5+SBlHDdPU
-	emhXPl/DMASojJsyRLzxGbuQGpPp3Xg=
+	b=tqYRrQlVhaejgaHOfErs/oloip+2zL3jQ+J7/MHWJoOlQZzpxaWPAM496SpBVTuJnxIEqd
+	TPlvUfFO9UuSlap5vC015zAnFwL44qoOorYIPlNBA58mrz8sNEC6Oph9seODOk0rNVgkWo
+	5nPlhkRg1CARA0pveErhZFpHuUhm08I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795446070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8up+ChW7Qsjki9eTuIEICGRZ3EGbMsHsimy8g5WL5tQ=;
-	b=I+4NyL1r43UHM9EV4uNu5Eyii3YctY5vSyI4+hBdMgESQTpPrNkFJ+hGyJ2qk2lqiRunG+
-	Wc+QGNLFSu6+x0B1Y3hVYxg3jhwGy8EEvCiRZRjbjt74Rkx+yMoJQVQo7OWjPx2TLafTzW
-	h+4P4Eb+T4d0o+dErXxuYRbvQR9ICGY=
+	bh=ta1APtJZ3SbnBo9Poepvc+VpghMZSCLjVAvUkbF7mMs=;
+	b=7g7UBbb9Y6/bE0bojCLwzvV4ws1wm/9AzwnQwsZm2CBPm2k541wuy7clsJnvTid7+7p6KC
+	QEMJMak2iBq71YsITzT8pNfGpSoIU8Z5+kqM76fETlFWClQk0kXbQGfPWJXeEWYEhfwInw
+	JElkRCTZxhOv2FxasiABLFt4jXqs2yc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YdmdSugz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CN4+/0Gn";
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B6B56213D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5501762292;
+	Mon, 23 Nov 2026 15:01:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F491F000C6;
 	Mon, 23 Nov 2026 15:01:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D670A1F000C6;
-	Mon, 23 Nov 2026 15:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795446069;
-	bh=8up+ChW7Qsjki9eTuIEICGRZ3EGbMsHsimy8g5WL5tQ=;
+	bh=ta1APtJZ3SbnBo9Poepvc+VpghMZSCLjVAvUkbF7mMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YdmdSugzHZZCcWuN2gDwiGu0jKBzhwbjltPTF1SlrlZ+0UHqirx6FFIS6npuQ6KDg
-	 dJ/rrJ675rVKR4qm0MD9cRxuL2JyJjtBkEa/+pV8s5qdNCE80X2NqxMHdglC4sJEmV
-	 czkuwJRfxnngk0ZHKJLBvJ24AEhvetCIFS2IWbUaf1DeIG9ML7C/87vda2ABPfDVNK
-	 JR8QuFDKDPvYUOXuyw0GAJSFZN2td4EB6uVvnDFytL3uCY+LMbTqcrz8/eNiNr/iuU
-	 FWi7SoPy2tuwp1EGz1js0ohggF11MWoGKvBEXy/dQCAyY4RBCO7wMXrIbo2OqmGdSD
-	 E9dlPWTrdTZFg==
+	b=CN4+/0Gn8La1gLwsgprHfMz/omHDvSNFjCxQwHPhimmlwEacFqD8PGsYCOyFDiVyk
+	 ze+P4xBPSBNDIzhdfquMAInfch8/HX9gdFdCOnlrbU3aDg95jvFDCC4g22pUUMrhqc
+	 j5suvJ7voB+XjPYD68SY1B+Ig+LGY1DEDWUToNaM9C00vjBZ6dfN6O7Ch3p3CHpv+Y
+	 eS/c6SY4084KamWuNC+dCwuQQMKSyPXpVqXVyFEMIUE37iaWrJ7RH8alfiT840gElF
+	 SkRKIxLJqOZ6bT/52loQEAsbEb6xkpW4leeTSqHjWjBPadZC6miIPJHh9uz+7DpDQE
+	 /uGaDvm2SIynw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Yifan Feng <evanfengff@gmail.com>,
@@ -67,27 +67,27 @@ Cc: Yifan Feng <evanfengff@gmail.com>,
 	SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: [PATCH mm-hotfixes-unstable 2/3] mm/damon/core: fix damos_walk() hang with zero watermarks interval
-Date: Mon, 23 Nov 2026 07:00:47 -0800
-Message-ID: <20261123150049.81317-3-sj@kernel.org>
+Subject: [PATCH mm-hotfixes-unstable 3/3] mm/damon/core: do not overwrite wmarks.activated in damos_commit()
+Date: Mon, 23 Nov 2026 07:00:48 -0800
+Message-ID: <20261123150049.81317-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261123150049.81317-1-sj@kernel.org>
 References: <20261123150049.81317-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: b1trdbtgocs8pqgcn65sd7rg7nx9dgh6
-X-Rspamd-Queue-Id: 0A7541C000F
-X-Rspamd-Server: rspam12
+X-Stat-Signature: rohmso4outgp6a8phyxaucdqf837oz95
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795446069-748342
-X-HE-Meta: U2FsdGVkX1+uGL8COXX0FSkcYffbxu5yKpgpuBJTzlAQu9znPy9agBHY3xILgr7mWxUOWONWrNFB2o6eaFP5KA4wmGhZNxcuoRmqTB4bWHAOa1rix/1CtyGMreyv56hrxavUNQCzHZ0ygkblS8qecAHtmNXGNupjF6aiv5cKDbJmW9Stpa0284rLcedHPoaM+dEmTpEmfDIUg7+JNgeBDCs5+tEA2sq0y4vZ+wg562ooTIpzIDLXwDkPsw2bmbJeQOUSiHMzST4Z3XLSqNiz5XCABhH8vBsXXLWQ/VK1HXfqpR2N7SNLJBcYjLLhsotASivN+RNpVnuHSmOe6DN5t++BuEbS/5+PevHDjorZRyQKOza0NfAvkLmJ3hV6szj5Lg3dwPip1Kdf74sPiyMdPfDEvGbcxb3brmjp/yNIDLQ831etLGWxB+7aHbCxWGNdrYtBA3ekPMdHzmidjvfGGoqBS4qgWw5Qhi8IgaOhmlmAjQ/S9N4WdaFzTBpF6yEjt21BPIiXCrsf2u/FjpC7qiVqdjy8oXZ6rVMtkhqs0rYJONrQA1pnQIEpXcgvW+A/lIS/u0a4JtP7Ufsq8gw/k6QtZl8GNT3O5HzPeVM7kAe5qJQoIKVTV1DMJfnWWni4+EjCLTce5HgiQMjweQ6IV+D+fF4jTsCV0U+/iADoiw/ysuvjK7+W5SEs2r42jth5DD097PtrQMLpBB/DC4FZ0jqqyoZJz+BCSn6+dNqFD6I0yR0ihQm6IpM8rqalhh5o/Z389ZsoTp2cV/blXzO1Nizd8qosx5rEbdaLPlvSUT61wIXT1JSoEDb9qCIco0CH7Es3XbNlKDtzmVNKHIRsDCT/2cF6v+B37MHpKR+BXyRPwPHAEFfVDHL9V8f50du9UTCHCyqSRM1nU+509u1QQXH7r3FqL/aZDDSn+VFaOnOwTnxkBle3GjSZbWjuFtDL6H0bEi3mTAqbMmxVpS+
- NzyMpzmS
- w8Eu4UGCGvuk3MuPMx1M9ncL6DwCYiPER6JJSmcvHyaTM66V7Lkzzfd66+iWWvLbw2NSOhHye+/D7bGlvzyjbepfDORO3bxAl8tC9GFYQ9iT+eiUCIh3ebWEhYlMgkLHwycqLUlBErQPladC4WPzGZrQrx/JHeTrdUMFOx2Zm5oE1fg/UTUFHdEurjduqd7wU0z5d92KoDJgaEFwuQQuIgkIxludNuMyxjw4vhMppiBMFGreKmBoO6mHrawHWHRSDT+vrkworKSIlLLapnBm5FbDzHCHDFEoilI0w4MqF6pyjBuWX9eYTd/5KpoPpBuUORf2m/aGNRsbDwOE6KpIY+/G8Y3IIdGIXdX/Esvfk2IvsxcEAv8bgllFQIhIGWYCCOYk6F/ekLscAjXn/0J2uR519KYSpg7v4qPbt9s5Kq4c7RCLaM7V6vgcGFnbFdNHGKZITQQB5lZpMlG9/czanCFoUods5iZg73eJY7TeG4ieo+sTsScK+MDnQVGPKwDPvJMMPNXXp+aXTmYzBOet2ElroQw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C428A40018
+X-HE-Tag: 1795446070-927459
+X-HE-Meta: U2FsdGVkX18ugunnVCOSBEQRANDMS1XMzmAHI0g4y2dmg612cd4JnTlMAgZTKutGzye+Y72K1gGN/3FcaqzaZwl1436mPZKfp/Nft8iznYbGSZz4gg76Oo4OxAKJTte2r5JKXUb3CrugzzfVlSGtzj0saUHIooeBG6CzcqU0EZS5ddhYxR3aIAEKyfp4KnktnxgQ5dWWVSK3gprPldqrzmgz/6nMa5meHdpCHUjWJOnLwLQA0nGGcm4cavGRXBL9Q8W5CUG1qxtP3cLzxqRvTCQE86qquULMXvS6szlfWC+UZphJD+obq2mOgHfV0fpMHRu7kySQrdB8i+mNb70s7di8gfMW3TzmkZpS+GVitdiz0mnuz/Ik//OtWFNbJIjSOK09dbqesPlY/u+lnqxEkll5N+drbC2zvu5q3nYil5eNvNkIYoSwYaGGPPiN+ofmAeUR8HvG4XLOU6hz8E1CVU97l7jrgGMIY6Jf+zdr6CrBdJEniuP+pfJ6CX26VZzjPSjyTEvML/U9cilS20hKTq9qKu/MFy35RA3YfSuP/F2cncwD2rlkOhLoLdZonde1cjgTM/zWz/9GDfVV3tYNoV5gj+08+FOA8xQHCwEFYrMp+oeM9Y5Rj3tOeG8vUlPARHDTAW+e+yRw0WdP+VLewdkk8zyG5tC5rbFoTCASt8JNZwts4hpVZerbPbYuYv0xV3VCoYkidDqvjgIuJ3PHd1t1pdAiSKV9zSY29ZuyyGKIx9u8dCY+mmfFUCnkQBSAbgm7eCtaZLbXhgVT6N75C7nYvtBtA1pc9mSk5tjWxTmIqkZT5Nq/2xJ2sTapXN8aqch3/TsG/1kg32vZe5v234OiHqNigEPhSQHQUt/Y0UZ9rb7cQ0oJjInjOrhIRF/g4Cm251j+7IRmggmoqG7WKlw0jWBIUjeYMU+hCGaqZQ0OgcL3pVKVfdfEaoCYuQbxAZP3MLJJ/ULQ1p782oN
+ XcIeNVTp
+ 6WYyS6Cxavz8JTi8CS62J0vdfvZitHzpEYJEGprHX4GdHO2J3IiX81efZcHS5w/1u8Hq0m5K/lBZ+OJX8aXui+emAS4XIt9spLyLW/egOH9h1lPB0DgR4Tn+IzhLXZUPL8iDPOoxOEf53KtWmCvbsLHdTZIs2xwNJB7QBcLoWP3OTJ8EVzGbFnPfdCEz3TFk3BC6ilM2msStn+FGooKHdmKsAupCC7xHxoqpKuzNvw//KdU5KRc8zh61CekL4l0EmT0obLSVtoBtG2C87/KaGld0N7u32sfIr7IEW2J4tZvpljJGx4k/LzcjgwZscT/NfEqFxzel57RxctTptg6NCGYifRoH0BVSTjaPcuppPCNCOopCPSEqV33Shl1uYEFVphItPAZjdPb7NvqBqAGR1l2cAc8dXn5VHmbMbf87Vx+p6+FedYl1KjQC2a47WELqHOCCl4MjxA2JZrnpKclj01drtc1trjuGnk1FezWRSZO6Qp2tFiNZGBNfBXRV3h3+hobyxTQlpBgQ55ITvr0KIrrA0sg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,78 +98,53 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Yifan Feng <evanfengff@gmail.com>
 
-kdamond_wait_activation() cancels damos_walk() requests while all
-schemes are deactivated by their watermarks.  But it returns without
-waiting when the watermarks check interval of a deactivated scheme is
-zero, which is the default of the DAMON sysfs interface.  The kdamond
-main loop then runs with all schemes deactivated.
+damos_commit() copies the whole wmarks struct from the source scheme,
+including the private 'activated' field.  The source scheme is a new
+one, so the field is always true there.
 
-In that state, kdamond_apply_schemes() finds no scheme to apply and
-returns before it calls damos_walk_complete().  The walk request is
-neither completed nor cancelled, so damos_walk() waits until the
-watermarks activate a scheme again, possibly forever.
+As a result, a commit turns on a scheme that the watermarks turned off.
+If the metric is between mid and high at that time, the scheme keeps
+running, though it should stay off until the metric goes below mid.
+DAMON_RECLAIM and DAMON_LRU_SORT use the same path for commit_inputs.
 
-For example, with a scheme that has the free_mem_rate metric, zero
-interval_us and a high watermark below the current free memory rate,
-writing update_schemes_tried_regions to the kdamond state file never
-returns and cannot be killed.  The writer holds damon_sysfs_lock, so all
-other DAMON sysfs writes including "off" fail with -EBUSY meanwhile.
+Save 'activated' before the copy and restore it after.  Do not restore
+it for DAMOS_WMARK_NONE, because nothing sets it again in that case and
+the scheme would stay off.
 
-Cancel the walk request in kdamond_apply_schemes() when no scheme is
-activated, as kdamond_wait_activation() does for a non-zero interval.
-
-Link: https://lore.kernel.org/20261121025626.75981-1-evanfengff@gmail.com
-Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
-Cc: <stable@vger.kernel.org> # 6.14.x
-Suggested-by: SJ Park <sj@kernel.org>
+Fixes: 9cb3d0b9dfce ("mm/damon/core: implement DAMON context commit function")
+Cc: <stable@vger.kernel.org> # 6.11.x
 Signed-off-by: Yifan Feng <evanfengff@gmail.com>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Changes from v2
-- v2: https://lore.kernel.org/20261121025626.75981-1-evanfengff@gmail.com
-- Collect R-b: from SJ.
-- Rebase to the latest mm-new.
 Changes from v1
-- v1: https://lore.kernel.org/r/20261118235012.14859-1-evanfengff@gmail.com
-- Cancel the walk when no scheme is activated, and leave
-  has_schemes_to_apply as it is (SJ Park).
+- v1: https://lore.kernel.org/20261122002930.98401-1-evanfengff@gmail.com
+- Collect R-b: from SJ.
 
- mm/damon/core.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ mm/damon/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index b8678a53b0a98..2748f91999240 100644
+index 2748f91999240..0e6b361f97ea6 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -3492,9 +3492,13 @@ static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
- 	struct damon_target *t;
- 	struct damos *s;
- 	bool has_schemes_to_apply = false;
-+	bool has_activated_schemes = false;
- 	unsigned long max_region_sz;
+@@ -1567,6 +1567,7 @@ static struct damos *damon_nth_scheme(int n, struct damon_ctx *ctx)
  
- 	damon_for_each_scheme(s, c) {
-+		if (s->wmarks.activated)
-+			has_activated_schemes = true;
-+
- 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
- 			continue;
+ static int damos_commit(struct damos *dst, struct damos *src)
+ {
++	bool activated = dst->wmarks.activated;
+ 	int err;
  
-@@ -3506,8 +3510,12 @@ static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
- 		damos_adjust_quota(c, s);
- 	}
+ 	dst->pattern = src->pattern;
+@@ -1578,6 +1579,8 @@ static int damos_commit(struct damos *dst, struct damos *src)
+ 		return err;
  
--	if (!has_schemes_to_apply)
-+	if (!has_schemes_to_apply) {
-+		/* The walk cannot be completed while no scheme is activated */
-+		if (!has_activated_schemes)
-+			damos_walk_cancel(c);
- 		return;
-+	}
+ 	dst->wmarks = src->wmarks;
++	if (dst->wmarks.metric != DAMOS_WMARK_NONE)
++		dst->wmarks.activated = activated;
+ 	dst->target_nid = src->target_nid;
  
- 	max_region_sz = damon_region_sz_limit(c);
- 	mutex_lock(&c->walk_control_lock);
+ 	err = damos_commit_dests(&dst->migrate_dests, &src->migrate_dests);
 -- 
 2.47.3
 
