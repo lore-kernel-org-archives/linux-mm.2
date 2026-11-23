@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BF1606A31E
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Nov 2026 23:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CB9606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 00:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxq6GTb2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KIPHI3MT
 Received: by kanga.kvack.org (Postfix)
-	id 4328B6B05B0; Sun, 22 Nov 2026 18:50:09 -0500 (EST)
+	id E32076B00EF; Sun, 22 Nov 2026 19:01:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E34D6B05B1; Sun, 22 Nov 2026 18:50:09 -0500 (EST)
+	id DC3CE6B05B0; Sun, 22 Nov 2026 19:01:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D1316B05B2; Sun, 22 Nov 2026 18:50:09 -0500 (EST)
+	id CD1316B05B1; Sun, 22 Nov 2026 19:01:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F0D66B05B0
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 18:50:09 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE3E91A0756
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:50:06 +0000 (UTC)
-X-FDA: 85464400812.06.5A9EAC0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 413FB40004
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 23:50:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bxq6GTb2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A7DD76B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:01:53 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2A3831A075C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:01:53 +0000 (UTC)
+X-FDA: 85464430506.29.8AB22AE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6EF6140010
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:01:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KIPHI3MT;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795391405;
-	b=xqBtD0pj8DYlzFtCrckOQc0py401ipK2TpKk5Eu2VjCCZJ3wZRGrfoeF9lkaRgUSYybssS
-	6p1JD/tpkdYyaWvVaC3/fw1+yshp5192JCRwFVayXlI7RA105KkVulJ/FAodBoeUXNY7+M
-	lIxgJonkXby4Zd8l3dAZ99++CDJV6XQ=
+	t=1795392111;
+	b=gcFheqHSZZHGT7pjRyaqrhmULi94EhzLE59SQ95kmIu08HTIf/PsGXvSTlzr8pOwWq1vws
+	zkTDrIVrS64AKXhBOcZIopvz10R1KfXs4il2UfKtbXMXn8rdUPyAxkgbfJpL/l5hawRz9L
+	bzy/K35hg0fbEsuG86oWvDVwokktHV4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795391405;
+	s=arc-20220608; t=1795392111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+t697FbN3YH1ito+3RCbQXZtdIEnIJ+uIHE/maxp22Q=;
-	b=YkHOdTFUIsHAIQ3QfthOmDmEnS2i5gN34vcx449/ZONwKDSqqJQRBeqUXwKkE10t/6rTgZ
-	gaTy3plqExHipWtLteMhcjt56EJGXvSfomVtGBRj1IqGYPpkns9rPwSI3I/zHzZ4sJHI0x
-	/z/3vKfPVFuNxhv5E3qQrllTh1ggUmc=
+	bh=/RWrU38gXUbEfMF9OTe2TxNpR3JhGadiWn2X6uNIggk=;
+	b=1grr7dRIUfJBMFbFtPTr8LzKdomgSjEDWCsygNnpOKAlACgugD8slbBmVS9mvMPBnMjnRK
+	i9IjNj5LbifZWampFJj2xegA3ua4KjbCGbVnCwUThqFao5rynLHPAae3BxvSCJHvFHo7bv
+	bEmwt67Hx98yujKjc5n75EVDUa33Ba0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bxq6GTb2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KIPHI3MT;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4390F40DE9;
-	Sun, 22 Nov 2026 23:50:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658FA1F000C0;
-	Sun, 22 Nov 2026 23:50:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AED3A601E1;
+	Mon, 23 Nov 2026 00:01:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D211F000D3;
+	Mon, 23 Nov 2026 00:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795391403;
-	bh=+t697FbN3YH1ito+3RCbQXZtdIEnIJ+uIHE/maxp22Q=;
+	s=k20260515; t=1795392110;
+	bh=/RWrU38gXUbEfMF9OTe2TxNpR3JhGadiWn2X6uNIggk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bxq6GTb2xnMBm4ZECuEMDIPVa7RuAdc0BWBCNGRF6IOKhulrMAl6UayEDSf/ZjRFT
-	 u69o//1LLGwNQZRBYKxfe8BtLoq7YB0nVB+P/8zwyiTITuqxr7+yd4tUcUdIHbOyqg
-	 3gMwSsWbSIOepxk7a4yj85b8Gz/by/YgJIdCPQcV2VxKrh69k/7pF1fzmbBE+Mxn1S
-	 mCxRIZrEZoFMubx+unCi/tsnK3igkWPJv7iyzza6hd6qtcHzl4KZmo/p2/KD6673Nq
-	 OTXWlljwt7jHsaTKUgTWeV33GzE9QgGGlIiw7HsXBXPLazxzcjo/qiXkqRS9XtxsKY
-	 yQhrisJcxsRRw==
+	b=KIPHI3MTKVVUFFy/Vr1VTGC9+hivxKCXKVDk/fyU/9wrQHUitb4QpscpXqhJ5L8tE
+	 dvDiuV089DTx5o1X6eidWBL76n78U6toeFz3WJK0mGoDlXFkRgFHSdaMO/PiHOY/jz
+	 Lw/UASQTTMTVP6jTFvvEL3aCiRSKnosuN1Crryu5p10Nb4Y/3nvIQ28zx3jISwmVIa
+	 pBRDb3Cmois9pxwkf68RM/6q/XvaxQTzluuvEtb/5AzeRtwZmxTPCICeB/DBH+LSU7
+	 RhcvdMdmoFA4sTUXYMTK8ph1v8/wg+MVxiiGryMgnkXYygS0Z44BSTZAtOrC0Vpde0
+	 Tr51OESksZZEQ==
 From: SJ Park <sj@kernel.org>
 To: Yifan Feng <evanfengff@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
@@ -69,26 +69,26 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] mm/damon/core: do not overwrite wmarks.activated in damos_commit()
-Date: Sun, 22 Nov 2026 15:49:55 -0800
-Message-ID: <20261122234956.22710-1-sj@kernel.org>
+Date: Sun, 22 Nov 2026 16:01:41 -0800
+Message-ID: <20261123000143.86987-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261122234633.89529-1-evanfengff@gmail.com>
+In-Reply-To: <20261122002930.98401-1-evanfengff@gmail.com>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 413FB40004
 X-Rspam-User:
-X-Stat-Signature: 75o4hg5c7jbz498yzusaub1ho1x6o9wm
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 6EF6140010
+X-Stat-Signature: pkd49ykjwopmucya9hwwp5ekpszfsh5u
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795391405-360208
-X-HE-Meta: U2FsdGVkX1/IX04BZurnQHrVHvjD63nTGTUg5KoSwF0c1/34MPDcV02ejtqtLHIJF+uPKFJyXLuYPF7ejCDG+ohLESEz20wHW1/youOQRJvZU+5hFQuRKjpOh5rlQWC74AGvdNe5lEn0RCOR2wnI3O/3YyjS7IH9kf+t9sZ+5vrKDFKCx25aDQnVw35tXMm1EsJIc14/q3eRmzD9M1F+JJ8+4sFLxqqelVjm9CdreuMQDlInn62czsPq6DSBG7XFri9/IJPeEpAFjJxnYuLQtEbu79Kw17UoUdjCtO1ZXcydk/R5ioKc0ffrF8VO36F9YYK6Me4UZlCe+D/jVUZg1Lz3wqX4hbaoupj26xgxetKUlGrJQLtj54x+OuQO3lLP39aowRljQyNCXVQDdr2LBF0fLDjLN+QxAe34mXTLKk8EexschX3h7gS5OLRSumoWYDUeZvEcTpGNLNX3CeBHg1Df1wIRLUBT3JkAs1TRPnrzkg9dp63KBXjZ9iCh0ZN6tcXKdWTJQhF4m3tYYeMPwvldSYYjfF9kjCa0nVN3xApbVl+oVvNvKQFPzPyUOOWRD4fPphFL37kIgp4yZ4IBMWzMsCpDPdSN48hcBlu+3EFyKJuvSZ63bgQk9oZRCBYKrgbFksnddfiGCA0mx1i0X+8skqPpawAQpr5Z4WmNqJ2k3GqbQpeXx2Bmj1XoZTWNFZlCUJeYNDz4J/nhpZaSt4lPDISFt+eV9kIDkKsH+ltwgd/7yRT+LT5Opp4bkFH0Tw44CTlHbimZ7pF52+Wl/XDNdxnkaNcbZb9eN8GoisenMci9Al34qJdnoj0lmvfC8mXOYtzeE3nVHHk57h8Z78Xxv9T4sTdCRRRiTgrTErg/hWdxKbSCfdDe7+qlbg69LJxdB3gFC375dJ2MogpFOJWiH2zK98TH46xGl4n0xxwzubGrjkoYSQMJR4ASlS1Z3zCmAFQ9VSGpjEfUO9p
- S0yFf9Cd
- ZVTmTw54drYHYk7VeJSUhcP0WSUvdTPHFY4WQCgazNwMoeVUiql67ob7UOxpvC2kMBl3R7wRqnKrRjGFSwmgq3x3/KwubcfB56P5vlPry5QDnjq63G+/DsTpadYmfbcW+a6zNdu9XWp8b0ASSKslUzlBAGHBqj6yf4REOPQgMKlGrmidXAPLxY1LVxTsipA75WMuWYrSqHp3XAuHMDInf+5mJvg0UmaImfh4Ciht96nG2LMxfLn15kJ1j8aVk0BNRMh07phEkPENCF2akXh3MhpXWJx5sbpuls5KqAKCl7wWdmjAdlhlcW9UeoU/lXwhsscctDxbH5oVIjQl2NaSVqbPQFs/IK02kqqROvtaPqoIEbhv+LqloKkY/RQmqQtdH7JrG1JNAAHIeQr9taNT4vn6dhndEfnrdJWa96mW+deSxxXbL70cRwM0jLWxx+rCF7tVJjW22/+BhndQ90Yh0yj3DuV+Qt+x4XGsJECHO1gA4UkQ4nnH2H6WhGq3fJvezmUTYd9r1FFDXiIBKtx2Zcr4SYA==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795392111-449981
+X-HE-Meta: U2FsdGVkX1+3A/oOVVOjtIPxXyAmEUBXMXuO7NLLyhC3UDT3aNzeTC9SM81O8hLr6b1PhE5uOpgdmFrccDBbVgsS9th2RP3/Yv3g0GRs+UNGpqzj//zk5QacVpf7zJL6dBS4PIdBU0bAqm+YgcjxSAHMNw6x548/gZb6OFJ1kdwa3PI05YO/K/JT19XQRYXsvhewxRFc1dMXayhK3G41V3ef1i7OI42TyUyWWH9ns55wpPdQ247gvAl/POLzf20yVmsi0OqLqW5dHFzQcZt3Lhj7m87+TQiI0L93w1cS1feKNbHRHkftAFtHmnKN83ZmtZCgzLSDSxpP6HbiK0wyr95BufhGBYdA0kYYmswZsAdOaNXpoy+rVjzypR7XCnT+c/XnFXyHW1gCV0/a2SHVlK623AdGa7Ct7Gs54K7a2NUCXSKh57fON2MJZUcVVapxt8Yn7zpOquKe+IP+aoaPYJdjcOIQiXxb7QKFR26qEJ9xfls9VLVw6ty06scHePW1zjjoCk/VAaPaTcGvXUZFFdv3k5ZeUlK3DHTUw1jee+InAULwUC9UJUzG6GyanwwM92OKdzK9lZ/Y4Im1I5WjK6bb2Ay9I8PhJGux7e+Lg69uOhT7nrB5FJgrLxBH2VKfR4Ym20JmCzrOv0gFTBCDaIGFytBEXtjHDAR5Pjj1HgS8HEPkS86FsKlTDn1gOjquArXJpldA58tBwpkLvtHZ3M42daoAYt7PCL7+KTVCiLS2Lf7rq2/dyYKNa0q4oQ2h6fu+6fQUXNYcxdJmjIivKPp7YT1UHyGYRipmb0pYBg7GgEjVH0s29ZhMU3DFEFGaeTiLLC4sq6MhtpGEW5TMEYSBPAoPeGfXWwdQK9DxaAmVp55veHo+YmafgPfg8/YU1yPWIkRKEYLav/NubN+9zUeuY1zxqr+5V6+cDYqfydd9YmKE3yXruB6QAEdNcBT3Wi/8/Rv3Y3YXugD/kSM
+ fMUx4lQ4
+ jtqDNDsix+jJ4ylA5O/PzXbmzIYSCp7Uk3l68MvPqlj7mZZRMNeS5KZVjxdAYYpp/cCio8L1vx/H0i4S++SncMbpdW7leqE3xQjMFDDFRd1jnIinhMHatEEhsV45SP0L37Y7dhfuRgkMSrFtYB2JBokS6+cjGW06Fn9Ytb7VcuiwC3Hu0o2urY9YCYe5PymJQkW2LHT7Csu5+BrMNG0IFezjbG7PZOSAH7JeCe+IH7otr26RTMebaURleYJ5BOzluRLeLcHnfutY2fghf2S+K97KKqhCu+gjd/y80dVwPN3YbpUyxnO8iTufm/M5WbJjve/pdsfqIf3U0dpLVy9hJ4w2IPd9HYbuZiLxL3NoQRARgUvlknmBY3E/2sJOrlT7ICoTUpLCJ/M3lMtGB1AGvfPQT/aAm3AsKcWlJJPHZubs8ztNU0QUjYrAd4L1f3Txg9J5bWoUqZ3vR0TmbTAcIm2ftCYpX/wAb5NbAzHgEGRQDrMoHQ6/fwvBGt2F/7N2awp34OZBE2iah9hUSfdVwp+QUSALT2jqQS9Y1/8pQEzriJss=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,39 +97,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 22 Nov 2026 15:46:32 -0800 Yifan Feng <evanfengff@gmail.com> wrote:
+On Sat, 21 Nov 2026 16:29:30 -0800 Yifan Feng <evanfengff@gmail.com> wrote:
 
-> On Sat, 21 Nov 2026 17:22:22 -0800 SJ Park <sj@kernel.org> wrote:
+> damos_commit() copies the whole wmarks struct from the source scheme,
+> including the private 'activated' field.  The source scheme is a new
+> one, so the field is always true there.
 > 
-> [...]
-> > > Do not restore
-> > > it for DAMOS_WMARK_NONE, because nothing sets it again in that case and
-> > > the scheme would stay off.
-> >
-> > Is this really necessary?  If not, I'd prefer restoring it always for
-> > simplicity.
+> As a result, a commit turns on a scheme that the watermarks turned off.
+> If the metric is between mid and high at that time, the scheme keeps
+> running, though it should stay off until the metric goes below mid.
+> DAMON_RECLAIM and DAMON_LRU_SORT use the same path for commit_inputs.
 > 
-> Thanks for the quick review.
+> Save 'activated' before the copy and restore it after.  Do not restore
+> it for DAMOS_WMARK_NONE, because nothing sets it again in that case and
+> the scheme would stay off.
 > 
-> I think it is needed.  With DAMOS_WMARK_NONE, damos_wmark_wait_us()
-> returns 0 before it touches 'activated'.  So if the scheme is
-> deactivated when the metric is changed to none, nothing activates it
-> again.
+> Fixes: 9cb3d0b9dfce ("mm/damon/core: implement DAMON context commit function")
+> Cc: <stable@vger.kernel.org> # 6.11.x
+> Signed-off-by: Yifan Feng <evanfengff@gmail.com>
 
-Makes sense, thank you for clarifying this.
+Reviewed-by: SJ Park <sj@kernel.org>
 
-> 
-> I tried restoring it always.  I deactivated a scheme by the watermarks
-> (free memory rate above high), then set the metric to none and
-> committed.  After that update_schemes_tried_regions never returned on
-> my test kernel (it does not have the damos_walk() fix yet).  With the
-> check, the scheme is applied again after the commit.
-> 
-> Thanks,
-> Yifan
-> 
+This patch is applied to damon/next [1] tree.  I will repost it soon (~1 week)
+as an mm.git merge request.  So, no action from your side is needed for now.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
 
 Thanks,
 SJ
+
+[...]
 
