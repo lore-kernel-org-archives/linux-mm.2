@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2F6606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E31B606A338
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 16:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gH1aRZct
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HBNjAsOO
 Received: by kanga.kvack.org (Postfix)
-	id 7E6526B05B6; Mon, 23 Nov 2026 11:33:18 -0500 (EST)
+	id 4B81A6B05C6; Mon, 23 Nov 2026 11:33:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796BB6B05C6; Mon, 23 Nov 2026 11:33:18 -0500 (EST)
+	id 3C5D46B05C7; Mon, 23 Nov 2026 11:33:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 684CB6B05C7; Mon, 23 Nov 2026 11:33:18 -0500 (EST)
+	id 28D8D6B05C8; Mon, 23 Nov 2026 11:33:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 400AC6B05B6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:33:18 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C12E7C0978
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:17 +0000 (UTC)
-X-FDA: 85466928834.06.6A9E9ED
-Received: from mta1.migadu.com (out-112.mta1.migadu.com [95.215.58.112])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CBC1C180010
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gH1aRZct;
+	by kanga.kvack.org (Postfix) with ESMTP id F33A76B05C6
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:33:21 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 887C5C0971
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:21 +0000 (UTC)
+X-FDA: 85466929002.10.C585765
+Received: from mta1.migadu.com (out-122.mta1.migadu.com [95.215.58.122])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AFE1B14000E
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 16:33:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HBNjAsOO;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.112 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.122 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795451596;
-	b=VWKAyU8Gb+DoIA3dXWClgd/g16I0P6Ieqe498OsE3/guWwuhtWzjH0hfjrY1MOL9ofj5r+
-	OX6Qj5C58LxCPIL/3ln+p/rpGod1tYR5Thjtdh6t76YwGdPiHC9polAdalakaYx577rGSn
-	QQQa9BGOAeE37bXpuOsLPRKuvon0AXw=
+	t=1795451600;
+	b=Wip0H5x8IFEX2+97BlJbzsCQbcVMP/C+XHw8JhdYA5L/OjPreJg8zrBPq5NLGtvCpy1Hgn
+	bjJgrJb3bw3zmrgWFmzK+EhDDoeX4vCGmeTcovQIKtVNlttnActLvUUHVhjNHfQcwmHFng
+	RvWoEOKdnz0MBIokLJvoY2NBPPh5zDg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795451596;
+	s=arc-20220608; t=1795451600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DhQbaSa0CfJ0wCyRhCBz64gdWankS2u2hv2CXXOomHI=;
-	b=IlmSk7RSxNyvffCABQhMN+KytIISSX60p6UttfRpIiBKM+t98/ah2rv22NF5lLB6ViSkWV
-	y4GZn26GCCHUwR50knX+TOLEprvxWPsq1xK7P4toeAVwLupxDxsM/Ohu1ylJtJ5MsCo4qR
-	bfgAKhwAbUqj1TOGDOdz1Djjyvx+LGg=
+	bh=iHqXIb026uSXJYBJhjPjkt86/V6MV/kI2DuMRyyjh6o=;
+	b=0UndNd70N8ls023Wn+mn2HR7QQM+fpPqO5ghIMyreQLGRY5oU6ZFv4bW6saSGxNIQN7jZj
+	tjBoQ08lFZyrN3KP4Vg4TRVkREVvtR/r/n16IoyvgVzXO5RPCbqdKziRk5Vr95hsXwkYV0
+	aSqY+vc8Bh1f81RtnUJgN8UnAZ5iPyU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gH1aRZct;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HBNjAsOO;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.112 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.122 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=st7VKYLVy6A9Ld9OVqz5qlImi+UrV4Mo/my8tn0Ta8c=;
+DKIM-Signature: a=rsa-sha256; bh=/0wwfmfO3rHlK4K6Y0qZ9SSTUSTnaQnx867yqHOwqOQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795451594; v=1; x=1796056394;
- b=gH1aRZcthwWczpHGDLSIGLIEZ46YNc5kHsOggWrOPKYqDwNY8zkGF1CF1LTKLhPzHxFFlfj9
- pI/fHM/b+Xvck/0HtodsKm2FudE3TTDqOnJoPb3zIrIJLdcrJup+W/QqWssjpY8CLvWrep4dr9i
- 4MkF2vSkSqbaLXqiOmVBA/vE=
+ t=1795451598; v=1; x=1796056398;
+ b=HBNjAsOOaPHvdroCzQmNe6NTzDbrPQpVhzQBiXl2pjpCuUueWeUfh3iXjMRP7seoS+zpOfBX
+ w6tLFKQoxsSRcZM03lqSsACdSzS3Wiy4H4wZjHNRT/0LubEl444am3rmwfKDBfDxu5d70or3z2m
+ lCkOfMPBGODGQW+npAwtbBKE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 8a75eed899b12e5e;
-	Mon, 23 Nov 2026 16:33:14 +0000
-X-Mizu-Trace-ID: 8a75eed899b12e5e
+Received: by mta11.migadu.com with ESMTPS id 82a19ca6e1a70be8;
+	Mon, 23 Nov 2026 16:33:18 +0000
+X-Mizu-Trace-ID: 82a19ca6e1a70be8
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -90,29 +90,28 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	dev.jain@arm.com,
 	baohua@kernel.org,
 	lance.yang@linux.dev
-Cc: Usama Arif <usama.arif@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/5] mm: don't PTE-batch a swap-in of a folio with a hardware-poisoned page
-Date: Mon, 23 Nov 2026 08:32:08 -0800
-Message-ID: <20261123163301.1568240-3-usama.arif@linux.dev>
+Cc: Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v3 3/5] fs/proc/task_mmu: read the PMD once in smaps_pmd_entry()
+Date: Mon, 23 Nov 2026 08:32:09 -0800
+Message-ID: <20261123163301.1568240-4-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.1
 In-Reply-To: <20261123163301.1568240-1-usama.arif@linux.dev>
 References: <20261123163301.1568240-1-usama.arif@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CBC1C180010
-X-Stat-Signature: en6eyfo8wkdh8a3r8sp54iurjjoqmptj
 X-Rspam-User:
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AFE1B14000E
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795451595-134547
-X-HE-Meta: U2FsdGVkX1+xAcuEJmJy9HhFArdLOT7him6d/1a1pZfUaT3MmigrUWslyZa9+wHDqlJM2LrkwU0I3q2rxbjYy8nIp334iIBoHySxTk6C+m0XnOydW/c/2j2YKuiRk1U0Hoa66hZcomaoOnxneOOBC3We73i0ecLWxgHMv/NJ4kNJdX36EqSBRfaYMWpRhxIo1n2spd1bPRFUFLzTD6+sFVNzg230E4jnWS4jXZ4lbkhhuMKMkb5T+Ynt/S3dEYJyhzzTHeJ39FZ/xkNmVtRdv297ZVnHujHBAoiYZ4PmB8KwTSwOhcHM1q+gUPFw6QiW/b2I3FEvogapIzXzwSb9G83Nmyhpo5uogImVCDU3MqOiQPbiBQyQakJWtc6UA+tp8gV4aFBJb3Mf3X0ZtOO22O/SV78Gojg0x/GzJaXPNOg8sBnSQrIyYw5fVu/M3FN/wj6yPEm1vXuDVcB/kKdSeaW4wFZ4C0nnXST+6Y2WxMFS0rfLqJNUpPafPlXhZeUv96psCoODFLUqMNsuCeJZB0GPaeQfROnxycls76K6eq7JfG4jEbzcyyXxEoj7RB5B4+Q6v5SDAgNmwa4AVktn3syLNF6ag/LBp8br2G4+WptcyEIPRfcJQ9573wD1iWkWeB52U2olnY7VjY+ARoMbb6SUTNsKI8ro5+8JgT/ClrP6IQbMnz5fC+3BA3ro+XEO62w+lHXBL6Xw++V7wI5bQmnQRl2k94BP49pG+87u7fRy+s+R8WFu++hMXXk/8wbfkdWRqqlOUWpyI1kZPJ1Y4wioj7gJTkjecvHtUUfbgP2SpsmnC3Mg3rtdgJqUWH3TaaA/L6GlXIDSjn8DpnD90uXoPiHRO0/r58A1WmRKSWyB2KqPrMBNKnk8hItrAvLozlyrD153YSHzlpiwtnb19W52DLDGuKLov7Z/lLQEedM4rKkl3VMVbDwDNVnqWwqn/g7QfjUsPSm1WTlGUJT
- 03M73JbI
- cZqylS5JqR2RQQ/glkR4AkubSs/dr4mV7ELY9fTpsnhuL8QOgr2CqDnONq8/19fWbeswvRR2dtdGANWf+WAymHbhNmT6cMZOjZWIisBUZ+cVvm3INIpa5O//firjtIdDS2ZFW2NHSZbL1nJy4yc1XIndJ/WnmNwX0lr4s6KglT/Fm2HCjQH7Uqvbr/Wq0y3KqRtBy3hoWu0+qSIft3iBcWcBS8AtmDDoKbx2HTgWvaCKMVQL4lGCLQTSB9840pjK8tCjbDRGidZPtJnRAw0+2RMmSZxg1NNydzKQFVQ2olBj2p4gLWPvd3Z/xrhAyyob+py4k/CM6uk/OKPn6jOVNao9KNvIXr/igrG+QRKzs8GbJO0/oCcJgdxTVjEX/6tRO05mYMmGw2OytqaR85ecb/3zETAu+E1HRmSgTE4uSES/8OVXy7pqsfHyO7VSpBXH69vofGhoBiix/YhGO8JcrdxkmZmmKcrfOWLsg6lus44artHal6tgG3T3MVj3+VGgCVx1u6lnjWTtpluQmhpsLyCHMrSqLFi6kpuFodOzaZ4BqG7AhBCJA1bWfbPO7DmomU7/Qz3zss3gcX4U=
+X-Stat-Signature: t68buunhucwjcaskczz4smsdnz9wbpzm
+X-HE-Tag: 1795451599-863570
+X-HE-Meta: U2FsdGVkX1+RFQnwkCvB1kMub5RaRmDSya/BCBMvGnFhAkce6BtceTLO4gb4WKitbvxalt8j0LjBYt/x7haoF8A69DxkG09fALPkHEkfQV0Wk4SRMgq1eZqLQiI9cZOYezSwa/BeU+xGy3pqM7p9ZF8gfDQ5Z4ODr+Hbdp/aNt8iwtM9siMVdn7iJNR69WZ/Mu5PcK/eedzlJUfSerzRkMrLPbwTxXsKdn2aZ8WdAsu6LdAlsHwmamqwxpP+IDTcngR2GhGjj3APZnkgZ/tjvyALKre5eTkWW69e2lRchAv/mrv9fKEaBHK+aC/AlQix4j1PJjYVhHhVow4ojWCHkqQq/upLHI+1pCu0UOpZDJRC5TxI6Fsj7BOwKdda8hVEdlPc21mOUZqI0QI9oqdUAyaDjotciEkBi1Ppq6CCp7iGUr6wSXVukEHLEpNyGT+rl50YIlOJpfJNFD8cZnUBHEbxBgShLjJluxwD8rbCRcpy7PQy+f1oQL5NVuokaR2/XVMSoFXmtCho1VPqJqEtqDR+Idc+LGB7PySwARbgniFf1I5MaNyI7bAn0wdTGO140Ui7VmsGRHapZHAk5Rcjeo+CcCMbSJAqY9Hly/FjdhljblzLqMHa0K2aG5uOGLDOvI4aCOVip6VaQlhOzCuCFwKSqUDZlh4AElivo5jTog13zLxgNRFMx3nY38/1wLrEIm94H8I5wvYOKeCcUShKiKX3BbULod6qRxhH1mOQRiOUNqtmZwouFlOe04rQVHvh0wdSqV3PkNRBF9fNj4kblom8n4rEJF+91gWjh7ZPQp5juCQknNQ4wi0zLoZ0jkt98Y5HInrxY02Adzfc18II6wwo6wvNR6Kuc7rkEws5oL9N4FHRjhHvylS1kZTWBflSxF6/FGjEQtjgOvoksLMLnGlkpFMhBGAyrsXkbS3EaGFNZ8cwpK9y+lQMlhBPKRiPgVc2D+jQBrnr9YOGUTC
+ tZvQAYAN
+ mmINc/aqKuKLy0KDkTxfs/EpcBPZJM2kF/VjDY3az+di5iehxubsz4M8o5FfaDQM8wdsHw0EELhj91naDspQWgOZRVm12SjO1KCekiEKs7qat1UJ4c3jVAorfh2GEVan+Ro94P0OYk+Q5BugNOslGxGHrLG6b8gnyO6s+9dhKZf2AX7X9jry5U8X96tc7g0w0YACDYMiQprrekSSP7ZPYYo75NK9v4Y452xLr7E7IIVhD/UkQWldtX/rgxH9ymjI1fLTBl+8kVIhC9rqiPDKdmu8vj5sldkGQCxo54oOqFJszQYbEiTJnNIZCVykA5vbLfI4U4N/Mv6ToLMDX87XiCVki6eBX7+YXwJK7SAH5AJ1VPc+m/8V39M1C0Gxt5YYTgR2jgTrz7IoNHCNt7DU8H62jtoIRdyaicgEmukZ0V1sKhWA485NaaJaWSXvwdHBAnp3ulBBDvG05Uj4/eXODnW4X/T0dD+4VRh4Luys/B6bVj0NcRJ+9fPvCr+OP9OSKTUhvedUKjcZQVHTNOhkz61MkTLXRfTZ2+j/DQexdiMOpeAvp4HsF4hfMePPGABK+aO5U8mFxI3EVgQQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,47 +120,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-do_swap_page() checks PageHWPoison() on the faulting page, but the
-large-folio batching path then maps the rest of the folio without
-looking at its other pages. A poisoned page that is not the one being
-faulted gets mapped anyway, and the fault that would have reported it
-never happens.
+smaps_pmd_entry() dereferences the pmd pointer six times. Read it once
+into a local with pmdp_get(), the way smaps_pte_entry() already does
+with ptep_get(), so that every test sees the same value.
 
-Skip batching for such an anon folio and let each page take its own
-fault, where the existing check catches it. do_set_pmd() already backs
-off the same way.
+No functional change intended.
 
-Leave a freshly read folio alone: it is not anon yet and can only be
-mapped as a whole, and falling back would free it with the poisoned
-page still in it, which the retried fault can then get back from the
-page allocator.
-
-Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
-Cc: stable@vger.kernel.org
+Suggested-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/memory.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/proc/task_mmu.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 282266dd5e5dfa..d7b200e00bce17 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5194,6 +5194,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		pte_t *folio_ptep;
- 		pte_t folio_pte;
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 540c936aad4714..105c4998eef48f 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1022,14 +1022,15 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	struct page *page = NULL;
+ 	bool present = false;
+ 	struct folio *folio;
++	pmd_t pmdval = pmdp_get(pmd);
  
-+		/* A poisoned page in the folio must take its own fault. */
-+		if (folio_test_anon(folio) &&
-+		    folio_contain_hwpoisoned_page(folio))
-+			goto check_folio;
-+
- 		folio_pte_range(folio, vma, address, idx, &folio_start,
- 				&folio_end);
- 		if (unlikely((folio_end - folio_start) >> PAGE_SHIFT != nr))
+-	if (pmd_none(*pmd))
++	if (pmd_none(pmdval))
+ 		return;
+-	if (pmd_present(*pmd)) {
+-		page = vm_normal_page_pmd(vma, addr, *pmd);
++	if (pmd_present(pmdval)) {
++		page = vm_normal_page_pmd(vma, addr, pmdval);
+ 		present = true;
+ 	} else if (unlikely(thp_migration_supported())) {
+-		const softleaf_t entry = softleaf_from_pmd(*pmd);
++		const softleaf_t entry = softleaf_from_pmd(pmdval);
+ 
+ 		if (softleaf_has_pfn(entry))
+ 			page = softleaf_to_page(entry);
+@@ -1046,7 +1047,7 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	else
+ 		mss->file_thp += HPAGE_PMD_SIZE;
+ 
+-	smaps_account(mss, page, true, pmd_young(*pmd), pmd_dirty(*pmd),
++	smaps_account(mss, page, true, pmd_young(pmdval), pmd_dirty(pmdval),
+ 		      locked, present);
+ }
+ #else
 -- 
 2.53.1-Meta
 
