@@ -1,94 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CB9606A31D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 00:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8435A606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 00:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KIPHI3MT
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aIBalDqF
 Received: by kanga.kvack.org (Postfix)
-	id E32076B00EF; Sun, 22 Nov 2026 19:01:53 -0500 (EST)
+	id 603F86B00EF; Sun, 22 Nov 2026 19:10:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC3CE6B05B0; Sun, 22 Nov 2026 19:01:53 -0500 (EST)
+	id 5B5376B05B0; Sun, 22 Nov 2026 19:10:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD1316B05B1; Sun, 22 Nov 2026 19:01:53 -0500 (EST)
+	id 47FCE6B05B1; Sun, 22 Nov 2026 19:10:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A7DD76B00EF
-	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:01:53 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2A3831A075C
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:01:53 +0000 (UTC)
-X-FDA: 85464430506.29.8AB22AE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6EF6140010
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:01:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KIPHI3MT;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 15A636B00EF
+	for <linux-mm@kvack.org>; Sun, 22 Nov 2026 19:10:26 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4A36AC079C
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:10:26 +0000 (UTC)
+X-FDA: 85464452052.05.6F3CCAD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AA97116000D
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 00:10:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIBalDqF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795392111;
-	b=gcFheqHSZZHGT7pjRyaqrhmULi94EhzLE59SQ95kmIu08HTIf/PsGXvSTlzr8pOwWq1vws
-	zkTDrIVrS64AKXhBOcZIopvz10R1KfXs4il2UfKtbXMXn8rdUPyAxkgbfJpL/l5hawRz9L
-	bzy/K35hg0fbEsuG86oWvDVwokktHV4=
+	t=1795392624;
+	b=sjYDAg+vGDbtwV9Vwik0OXXgCtn4+LA8L2RjjyTP0df1U1QqQRUNMA8W72UtncGUnDEOec
+	BYW5WIb/H7Rf0ZJWM9WP4157zYwGJsTpguznqAPwURF9AKffNmMF70aVr8ajU31FY24xAY
+	VOeGUOK3gbuI+K7kJ8jp/q3CTpFnbb4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795392111;
+	s=arc-20220608; t=1795392624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/RWrU38gXUbEfMF9OTe2TxNpR3JhGadiWn2X6uNIggk=;
-	b=1grr7dRIUfJBMFbFtPTr8LzKdomgSjEDWCsygNnpOKAlACgugD8slbBmVS9mvMPBnMjnRK
-	i9IjNj5LbifZWampFJj2xegA3ua4KjbCGbVnCwUThqFao5rynLHPAae3BxvSCJHvFHo7bv
-	bEmwt67Hx98yujKjc5n75EVDUa33Ba0=
+	bh=ZVqAgRNp/806Eu6FhKubSIrbLTDfdOK4rCR11mJ3soA=;
+	b=MqCUFw9a1aK10B64lb7pgKCXVhr8AipeVc7Qa7l9IDgV0q4Edq8OIzBalarL2CvhDEpq7K
+	g7erAT2nfDgQ80D5+C0rKSZYwq3aDJ1OCF7ZrR3igyWZLHbZnsrhgliGDbZijKGT1E5dfb
+	fw2dcIzZuXsHVwrStSMxBabsuRnTMbQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KIPHI3MT;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIBalDqF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AED3A601E1;
-	Mon, 23 Nov 2026 00:01:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D211F000D3;
-	Mon, 23 Nov 2026 00:01:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id ACBBF40A9B;
+	Mon, 23 Nov 2026 00:10:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 574BA1F000C0;
+	Mon, 23 Nov 2026 00:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795392110;
-	bh=/RWrU38gXUbEfMF9OTe2TxNpR3JhGadiWn2X6uNIggk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KIPHI3MTKVVUFFy/Vr1VTGC9+hivxKCXKVDk/fyU/9wrQHUitb4QpscpXqhJ5L8tE
-	 dvDiuV089DTx5o1X6eidWBL76n78U6toeFz3WJK0mGoDlXFkRgFHSdaMO/PiHOY/jz
-	 Lw/UASQTTMTVP6jTFvvEL3aCiRSKnosuN1Crryu5p10Nb4Y/3nvIQ28zx3jISwmVIa
-	 pBRDb3Cmois9pxwkf68RM/6q/XvaxQTzluuvEtb/5AzeRtwZmxTPCICeB/DBH+LSU7
-	 RhcvdMdmoFA4sTUXYMTK8ph1v8/wg+MVxiiGryMgnkXYygS0Z44BSTZAtOrC0Vpde0
-	 Tr51OESksZZEQ==
-From: SJ Park <sj@kernel.org>
-To: Yifan Feng <evanfengff@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/core: do not overwrite wmarks.activated in damos_commit()
-Date: Sun, 22 Nov 2026 16:01:41 -0800
-Message-ID: <20261123000143.86987-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261122002930.98401-1-evanfengff@gmail.com>
-References: 
+	s=k20260515; t=1795392623;
+	bh=ZVqAgRNp/806Eu6FhKubSIrbLTDfdOK4rCR11mJ3soA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aIBalDqFUyBaRSQx3VhqHqWOCy356DzFuoO1chw/cAmHvSXvAodD4MbvPpaj96fK0
+	 7kG77OT80wpmVRWo8hA4UTxfYDOvNNQ+OPKjT8JIHjGfDyoxJ5mHA0oCR5MqNuJz12
+	 sXnZ3AfTd+SHluWBc9scTS910r7uaKlFGTcD3VAMeNTD6CPRRb5C/uuEGDUYWLaxGO
+	 4Xoz8L38hCpwtmo1Nups5A87P+5Uu+QzJzway5aRYJikhauRbI82OjUxnAql+Uzlxy
+	 1vhRp2jijx/G6uOla6NeECNxbmKVss6aoH3MP/Y0bhy+w0it1R8Sn/KeH7uil/e+Q/
+	 Vo6z9i9W8aI0Q==
+Date: Mon, 23 Nov 2026 02:10:19 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>
+Cc: bpf@vger.kernel.org, containers@lists.linux.dev,
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Aleksa Sarai <aleksa@amutable.com>,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Giuseppe Scrivano <giuseppe@scrivano.org>,
+	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
+	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	KP Singh <kpsingh@kernel.org>,
+	Lennart Poettering <lennart@poettering.net>,
+	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
+Message-ID: <awOEa303zNUDrzA3@kernel.org>
+References: <20261122193539.3334213-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261122193539.3334213-1-jarkko@kernel.org>
+X-Stat-Signature: rbebfiwurwukns1h4hpjm1b4tifkuepj
 X-Rspam-User:
-X-Rspamd-Queue-Id: 6EF6140010
-X-Stat-Signature: pkd49ykjwopmucya9hwwp5ekpszfsh5u
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: AA97116000D
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795392111-449981
-X-HE-Meta: U2FsdGVkX1+3A/oOVVOjtIPxXyAmEUBXMXuO7NLLyhC3UDT3aNzeTC9SM81O8hLr6b1PhE5uOpgdmFrccDBbVgsS9th2RP3/Yv3g0GRs+UNGpqzj//zk5QacVpf7zJL6dBS4PIdBU0bAqm+YgcjxSAHMNw6x548/gZb6OFJ1kdwa3PI05YO/K/JT19XQRYXsvhewxRFc1dMXayhK3G41V3ef1i7OI42TyUyWWH9ns55wpPdQ247gvAl/POLzf20yVmsi0OqLqW5dHFzQcZt3Lhj7m87+TQiI0L93w1cS1feKNbHRHkftAFtHmnKN83ZmtZCgzLSDSxpP6HbiK0wyr95BufhGBYdA0kYYmswZsAdOaNXpoy+rVjzypR7XCnT+c/XnFXyHW1gCV0/a2SHVlK623AdGa7Ct7Gs54K7a2NUCXSKh57fON2MJZUcVVapxt8Yn7zpOquKe+IP+aoaPYJdjcOIQiXxb7QKFR26qEJ9xfls9VLVw6ty06scHePW1zjjoCk/VAaPaTcGvXUZFFdv3k5ZeUlK3DHTUw1jee+InAULwUC9UJUzG6GyanwwM92OKdzK9lZ/Y4Im1I5WjK6bb2Ay9I8PhJGux7e+Lg69uOhT7nrB5FJgrLxBH2VKfR4Ym20JmCzrOv0gFTBCDaIGFytBEXtjHDAR5Pjj1HgS8HEPkS86FsKlTDn1gOjquArXJpldA58tBwpkLvtHZ3M42daoAYt7PCL7+KTVCiLS2Lf7rq2/dyYKNa0q4oQ2h6fu+6fQUXNYcxdJmjIivKPp7YT1UHyGYRipmb0pYBg7GgEjVH0s29ZhMU3DFEFGaeTiLLC4sq6MhtpGEW5TMEYSBPAoPeGfXWwdQK9DxaAmVp55veHo+YmafgPfg8/YU1yPWIkRKEYLav/NubN+9zUeuY1zxqr+5V6+cDYqfydd9YmKE3yXruB6QAEdNcBT3Wi/8/Rv3Y3YXugD/kSM
- fMUx4lQ4
- jtqDNDsix+jJ4ylA5O/PzXbmzIYSCp7Uk3l68MvPqlj7mZZRMNeS5KZVjxdAYYpp/cCio8L1vx/H0i4S++SncMbpdW7leqE3xQjMFDDFRd1jnIinhMHatEEhsV45SP0L37Y7dhfuRgkMSrFtYB2JBokS6+cjGW06Fn9Ytb7VcuiwC3Hu0o2urY9YCYe5PymJQkW2LHT7Csu5+BrMNG0IFezjbG7PZOSAH7JeCe+IH7otr26RTMebaURleYJ5BOzluRLeLcHnfutY2fghf2S+K97KKqhCu+gjd/y80dVwPN3YbpUyxnO8iTufm/M5WbJjve/pdsfqIf3U0dpLVy9hJ4w2IPd9HYbuZiLxL3NoQRARgUvlknmBY3E/2sJOrlT7ICoTUpLCJ/M3lMtGB1AGvfPQT/aAm3AsKcWlJJPHZubs8ztNU0QUjYrAd4L1f3Txg9J5bWoUqZ3vR0TmbTAcIm2ftCYpX/wAb5NbAzHgEGRQDrMoHQ6/fwvBGt2F/7N2awp34OZBE2iah9hUSfdVwp+QUSALT2jqQS9Y1/8pQEzriJss=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795392624-546154
+X-HE-Meta: U2FsdGVkX1/f6nk7ReTq8mQZ376QxANaCe7uHTHbOPlqT+OLszG2rHLLbESipAEki7duTx6TUQM1UM8Ws9bjg2i/HfaQ3A8MyjDDGNy07LLMpuaG9LSURuoGD+H1TpnXLSGikVuow1cb6+UY3L3H8QWYOg5uLUH44p3CmI6cizGhuwdpYiA0mYgMll6TCrtajSCaCUV7C7Q/f8f2uiIJm7YD/zuTNp1Zfv8bfgUivENpRu5Be8zvLSkOo5LJy7SfTEDcf0rh1WmaxiYWlsxsppkgzRa6NCA7097ASywxgyAGjfjL7l3iwaxD2j9D8uIk0pS27ZVw/IH86dEec+RZS3EyPCSsNtKp+rHFzIkAo0ox7szVMMqbpt1TbRWKMwg5NlRkSg9SCB9Z8iwD6fNmx4zJNxRyHbpdRKTEnBGtn2nK5IRziHQFJUoRFcCe67C9nWfmRsTRJ5y3QPSRC0pCEV2+7xnrSWLYOTEHp5Jxbh2j81GQ28wkERgMAOr2vKxmeDQR4w3xC5wxOrInnye+w3dEHIfr+Keqc0jx3v2VRvx8G8HL69HC9SVNRKn7+CnCYxK0eeQ/jgjSebo2QJ6HTdv6eMVKjgDrmeJxo98NimnhtAM4WZAxLmOQ+50krFscTah2kioWwBtiN+IcoIcdtKxa3sjHlAGxiQNCDvpXM4XPXCuX8LnRuVYyl3ebwptAwL2PJ2ZdzRGoLYMB6bPuuqedTwQFSocQS8QgFn5fi+VIIQ4j5TN+L1+kjzkfx1i7MyqVAg0Fk3mr4wk6BONnKALGEcEcTOf2DCDGgu/ezQUS9lj2JA8taSuUHXbELqTCnu2/KNjRzsHQDJ4a6tvzyNWjDZ6CCrXAZ/GpkqHINqqhI0RB892MvjF97KmHjyWWj75uUx4Z7NwxqIymgPoAfbb0bJZ9K3MBvhA639vYfO+q2ytZoHMB88Msc4QgKpOyyixRIPrWG9MRQGUyauH
+ AGIRNoXR
+ 76YT2+CPpE6UVjal9oqkSc2HmwVlJTo9Z5dNGkcu4oSoGg++V3ojbZKhhP0V6T7RuI0E8JrbUfqw0QIqtS1d7BVUM9v7AjltLHMm/Q/w/BaDybEkwMmjFPfRm80ZouusMAwJ2WPa4SfmWnowJ1Io4z9VpR7ufMmugOWc07L6AzZ3zsnjBQmJOIhwHey30xv5D52rNkercMgDNvL9fb4XVZM2L0LN97TExzI09drgJc4ZvOSz7mcBy6LdhyF0Cev6+q0ZOzkQsi4Vb/Ocvij+3i2hMyLfsHK5faWXN4088963+n/YjmOPZVR9WFMxwRF4swvcgnDxZ+tD9GsfEYsIVJznSXmypfEi9x3Q0JRzl0MAk+l58BzhviRrAm3D8bxj8zSepKpKjBTE4kLObiablvMdU/7x/vj30IxiFMu3C2iQuVQFmboRt/Gsk0ah/xHXfawrk0ETCFdQliu2WG/BH5tF3ng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,35 +115,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 21 Nov 2026 16:29:30 -0800 Yifan Feng <evanfengff@gmail.com> wrote:
-
-> damos_commit() copies the whole wmarks struct from the source scheme,
-> including the private 'activated' field.  The source scheme is a new
-> one, so the field is always true there.
+On Sun, Nov 22, 2026 at 09:35:13PM +0200, Jarkko Sakkinen wrote:
+> SYSCALLS
+> ========
 > 
-> As a result, a commit turns on a scheme that the watermarks turned off.
-> If the metric is between mid and high at that time, the scheme keeps
-> running, though it should stay off until the metric goes below mid.
-> DAMON_RECLAIM and DAMON_LRU_SORT use the same path for commit_inputs.
+> Two new system calls are proposed:
 > 
-> Save 'activated' before the copy and restore it after.  Do not restore
-> it for DAMOS_WMARK_NONE, because nothing sets it again in that case and
-> the scheme would stay off.
-> 
-> Fixes: 9cb3d0b9dfce ("mm/damon/core: implement DAMON context commit function")
-> Cc: <stable@vger.kernel.org> # 6.11.x
-> Signed-off-by: Yifan Feng <evanfengff@gmail.com>
+> 1. userland_open(): open an opaque staircase-initialized container
+>    object (modeled on Intel SGX enclave initialization with separate
+>    build and live states) with no embryonic state, opting selected
+>    shared namespaces in via an allow-list instead of unshare semantics.
+> 2. userns_set_idmap(): configure all UID, GID, and project ID map
+>    extents for a container user namespace in a single atomic system
+>    call.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+Andy, perhaps a bit too far of the box idea but I'll just throw this out.
 
-This patch is applied to damon/next [1] tree.  I will repost it soon (~1 week)
-as an mm.git merge request.  So, no action from your side is needed for now.
+An alternative to userland_open() would a file e.g., virtual device
+file, and necessary wiring for open().
 
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+Then the added syscall surface would reduce only to userns_set_idmap(),
+and it adds more robustness to access control (e.g. who can create
+containers).
 
+What do you think of this?
 
-Thanks,
-SJ
-
-[...]
+Br, Jarkko
 
