@@ -1,101 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E24606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C747606A684
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 09:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YRmX8ub2
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0j5Gmmlj;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=xKFKMpGl
 Received: by kanga.kvack.org (Postfix)
-	id 361A96B05B3; Mon, 23 Nov 2026 04:36:51 -0500 (EST)
+	id BA67E6B05BD; Mon, 23 Nov 2026 04:37:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 338C16B05BC; Mon, 23 Nov 2026 04:36:51 -0500 (EST)
+	id B77AC6B05B0; Mon, 23 Nov 2026 04:37:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 275EE6B05BD; Mon, 23 Nov 2026 04:36:51 -0500 (EST)
+	id A65EF6B05BF; Mon, 23 Nov 2026 04:37:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BCA66B05B3
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:36:51 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 955E5807BB
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:36:50 +0000 (UTC)
-X-FDA: 85465879380.30.19B455E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 086D240009
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:36:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YRmX8ub2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 857156B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 04:37:30 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 27446160815
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:30 +0000 (UTC)
+X-FDA: 85465881060.17.794888E
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5962B80006
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 09:37:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=0j5Gmmlj;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=xKFKMpGl;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf02.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795426609;
-	b=Z7ClvGgF7lvyISwLm6Jr1dx4SQjxyTh8ap3MkW5vJTRc1+vvcaCJU4VQMhmIDzZa8WThnu
-	RBHhacpE9vlbEU6XLktMygtkLlBMTAfyKziPsidxOq3ZVsvp1FR3mFOtCk2M1JEuzrwKlq
-	EPc1TWeIqvGYbLdyIaQoMnfxNgMtwuQ=
+	t=1795426648;
+	b=BO4tmkg0rJ8YwVDYNclwwzIGISDZyBEA/EjGJqotqs6Lt9k41VLnc5JnTasGMQ6zX5ayCy
+	C+1B5XNA4M/fViEUfL5PqMu3vqV/JLN6ONyX27LsZhAe+92mRkr/y0vqMv74Wh8S4Y3+cp
+	EMbxBcepYXe+6GS4vvGYWdUprv5uw0Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795426609;
+	s=arc-20220608; t=1795426648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TqkCeNdmpN1ojvlqAXaiFOL23olxi6kTQ57V2PF+UJc=;
-	b=O+l3RyK2Mhi1jIf5FLAsYmg4FcJBdLLVqtJSbLRgBJkTJCdl/Xiz6gr4U8J9/8dilQVovv
-	rex5+A+Gs4T56Qmqapl5tVvU+HUma3M4MHQ3J59NcGj0Y3bhLBhOzRzBB+Lfrn/CuLRkXQ
-	SnIituTNAjyY+TiiQlMoNsBISSBrF1I=
+	bh=dDtQZ0VAonHgAXv6V61xlzs7rkDt1P1WSeLVHahPhAk=;
+	b=V59xNdH7NYL+OMR8HprLnLQ/3PEfOtHi02RmoMuN4ypB7XQrWW41ZNucaaJ0OmzmNCmOB8
+	OrrQLpRbB96hmXtBwojr/SxnFkg8sm3Mmf99x9+jKdszsq5a/6gHK10HqiGKLRnmZwqm7e
+	ABgmTwXGmm/35C+YM0WuE9/F8c1E58o=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YRmX8ub2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 509D54414D;
-	Mon, 23 Nov 2026 09:36:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFB31F000C4;
-	Mon, 23 Nov 2026 09:36:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795426607;
-	bh=TqkCeNdmpN1ojvlqAXaiFOL23olxi6kTQ57V2PF+UJc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YRmX8ub2Pj+TiuqJP4/xsZzUkuw2TrzDCQZjQamdF2NNnCHo9SxWIsliqjcbUhDmV
-	 fEeI60qy+Uca+1Ot2mgmeilwWyoIkyxuay06uxV9YP7nx5WnR1RYOpJ6RLBshAAPZ3
-	 qfSESm+OZGpD7/sEkp6okDkN76MvkHJEGSS79QyiU2OKu4HIT5r+2oQXOPbLT6Mhmi
-	 ubLmI3gPuioj8DmH7r5GsPs63dY+zTGgEE/t2jEVoNX31tLW8vUovvIZiZZEuITbwB
-	 A9VMfT4t4a2uzuKUnlto7LFp7QNq2UdDrrUm3RniP2ZNAr62gN9Tl8+Istx4YgW10f
-	 pe/O4Dpzt5WWw==
-Date: Mon, 23 Nov 2026 10:36:39 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Li Zhe <lizhe.67@bytedance.com>, Andrew Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 08/11] mm/mm_init: make __init_single_page() static
-Message-ID: <awQJJ9-V15lLTtEp@localhost.localdomain>
-References: <20261120100856.16929-1-songmuchun@bytedance.com>
- <20261120100856.16929-9-songmuchun@bytedance.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=0j5Gmmlj;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=xKFKMpGl;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf02.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1795426647;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dDtQZ0VAonHgAXv6V61xlzs7rkDt1P1WSeLVHahPhAk=;
+	b=0j5Gmmljkca/E2gltZCv/iUBQbTWeg/kQBkYf9XVAiAvA+qtjrKckZWXQHPA2f/1TeXecV
+	/zE0P2DNvoi8HzN3ElVxpGGiQAEUlNEcd6UGF8hYrc/wSMLNce0GBczPBbKvIrUO5X19RR
+	R1IdOvKig4vP9CGu5Hhx6vXZPUH55eQ55Cmk36Mb44np+ZIxlZSOLnCp0ymuePoAJEdl+5
+	TwmUudfDzyUogJxAH8+mEPtUHitYqGo8y7Cn1b+rbDaEO5y1tmknjd9BzK8UJv7cfl21hY
+	ru0ooQgiSTna2g0imjxfqNWRrK9ENYE5x9K6ykIbUErgd+RZ7TijW+6DyYVOYg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1795426647;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dDtQZ0VAonHgAXv6V61xlzs7rkDt1P1WSeLVHahPhAk=;
+	b=xKFKMpGlecHS7QXXG/FYCxByPNPhxibU2GcZwDKmWF1WUgWqaJk6Gin5FmwBxGa5E4PlWb
+	9bnxn8NrLGCuOXAA==
+Date: Mon, 23 Nov 2026 10:37:07 +0100
+Subject: [PATCH v3 02/15] auxvec.h: Move AT_VECTOR_SIZE definitions to
+ linux/auxvec.h
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261120100856.16929-9-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 086D240009
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: otwpqp61ebddkqt9zrduufx1689nuss1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261123-at-vector-size-arch-v3-2-d342dae9e843@linutronix.de>
+References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
+In-Reply-To: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
+To: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
+ linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
+ linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795426640; l=1309;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=vTIIJIwUFOUw6+gUJjUOc4a2N37x7HojOq0oR0BBlzg=;
+ b=GyKn4Bxu+C22SecrgL0rmVE25rtNo0/nZVqR9YcowgOuG6XWN+hFQ7LVwF48ESsfl68yPNaNg
+ 5OD4YumxPGrDTLDcZ/xMG4kmg7ZscPSTHPCE8zZxHWIbEnZdxHW3/L6
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5962B80006
+X-Stat-Signature: xebzq7uf5jzpd3k1g48mw5ej7iem1y8p
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795426608-744491
-X-HE-Meta: U2FsdGVkX1+uXSGDxLPH2YEeBl4HkpC/sfxB4dkdyB4T1JNOf9Bj9s/FgN/8Sj+EUvkiHCFzSDg7A5T00bFtRpf/ZSosAE8DB3LxSeWWY/VNfhtUuuz0Bfb2V7jBHdaM3DRSmyQuK7wDUN3O+EN9YgCtGPc2Ff5oo0cRcF6iHyv8PPpo6KHs/jGSs7ljyWP5U9Y+e3SjbErmJbVkuT1/fXBuX1yXMjD8Y1vTl+34Bf5WPK+3wMhkBuXVqodDTbzRqnMErav9C7qH2mKmK9IQ076eWVMvE5xwxj2fO1UEo6nzElj3S3MKvF+yZqoVI7p0ugMjbaKJ8nwBXxhG5YPS1v0M9fKnSfbwohhqAsaFgN39dHP6y0vDvSymJfTl6Y5UEUObtRivM7rGdZbjVn3EX/mvWo5yp+Ug+RcVn5vzBumrXEmTUNzMl0X4heO9MkygnzbrRH6cQFleHmx78dVz3GqWAHMOrI3bwRn4ZvPBGgvFSs5x+8hMzY2TR6e0SNu0D1yij+jcT2hJuoY483RtsqczGlcNsOiVog5iDr3Z+HtFvH8ua2l4GkqhnCj8NRt8c6l4gOHELwSbqYhPsDiGBYj1W/hHPCTCPiRLZskjRBAsTxv4TRybjSO2pUzO8U4dQVtJEqTNQeB33C+wLaBIi7429Plmsfp1hmpDCNgv81Y3PU6YmnicYG93LVyYLRoZRVYr5StXhO5fGatbrVM7qpGQlbirkeMKEDP6+U6eJ3i5D48IZgvfxqmX8cAJQ03quN66M0nPl+xW+OqoEj5eB0FPfZmp1JkggZ2lott78oiSUaTKe1smoh545c6bNUr80plz2F0uOtx1Jd+EgPmI2arQkQxE+jnkdjtkfspA0fCRZEQxgvqGWjFCIDY7kBE3gbTxfqnED5/CLsxeQ5+jw3N73QFCIEbcRAZTwAS+YPJmt6FVheOnxwOagW/TfaHLGaFhNXKKFOUWV88RhBm
- fF5n92rn
- 0i3rMMkUg3XmVBhvoGSbdJLw1trScbo0Vzf7CCx7pIdm3EwRULw7W3MK5DrQ+kyDfPeHSk/+U2AeHWo73KxbwzntCPnKT2Iq4sC3q3NVB1fe6d1VRDPpQsY/J+tkjlFFRoX+WisaHPVIO7Uwwt/EVTPRI4uqz7+gvZBmsUqskGBoFoAKSerP+Fhl+l0Jqw3lraPvc4i9haCtT3UPQSIIhQvxtclMB6l4nQ4krCPbv7Yzus7JQjPiTlvAOIsYnUP4f6/j5030mJrTuqRuZ2G8LGEw2Zj8XLKT+te/oB5RXVoHrPZ3ws/jbJ91v3rVv2mRj+W4swDydpidpHQD3bZoIAKwoSmVSkU+i74BzhqKhMbLnSnEVKiEw/Tjq67uwMLF6+AKxr172+IBwvOYwcouDFpr6pj5MIrVzObxOMXeMfzTF6b76mBUjk4bmsYoF2UpjJpQIUPO7FYo5jEJA1QrOJJQ+UUIQ6SGxbtFd7e0ehJXr+2o+Yy/z9fGd5EgqDyoG7gb8IBx7SzdLlk2IpFZ+5gyaSkKp6yT1WR8HuA084q6ULWiL9D89+AH7mQ==
+X-HE-Tag: 1795426648-458792
+X-HE-Meta: U2FsdGVkX19FzQe2xl0E4RFcPNBG4Tk/GKR3syp1TZKfonryDf8FcJmf8iOJrCad/96IUTrrjOqEHo10rRMpqY+67UaqAZJPXNqDQPaz/YsNqOj2J2nDbJ2721VvBAcebZ+irPlMLNMQhFS6lInddIBL0/qGfOOoLedIdg2lC4SYmOTY2TAfgQQD1gP+OpMrFOE1UasC+WkV8fV32S2EmF3UndCLjjmDFIxR1hwq7bJJpZB50mn/yUFSVeIQ5871280/qmhJkIRPh1JWCl6Gmy/n52ZNPRrY0LqPLJpdFJlJybG57+4frVaiQWirAIVU7FhEL1dBRfGbaHKXmWLc+Bv5Sv+YJp+QfKFHVzdL4WZGv1It16waDH20T2WVMDkvKUROHL0R+0jXOaidvGD2VLPs9P73h7/DR9lkD7tUGcXf9pLg1nHKX12M/JeIS0lm7jau4IQMt45RCOMFrWkxYd7mBK0WjUantsbquJh5XSqykqPOAYfALZyQnc5TrmOUQWX6EodV4gFSniNWa/IQiQJOXmSj1s36GtGliPV6jURcPR1tiGGvcm6GB+xVZfqbdsQBy4dnZv9UpNtwgWix/+mMuzRzthqJFOkWRISj9Peje9W4v8KR4PjsA42YjcPukQ99UG+qq6tWuvqimpcW4KMB7/uTXaCCJTj6jaygAKJNxZcg7LgMzj9A5KFU4mykOtInAesiyOzSro/aqgt2PpEGxFEDj12l7UlAdB9U6FNLO1UXYZQ+iH3/4vvh/6gc7DR721O9O2WHhFkux5M47xn0WKXSDyJJ6JDKYZ6G9fHy0AiY6ai5c1/uNUv4QERzW5O2+a3HvfPndeScpuZ/WxFtdKtmXHDnVWFB3MXoJbS0Qkm5l3t7d7yahdYf/XA2hNxRWTWJgZB3Y5RaLUW2bFYSRu+Sqq9002+aOPnwUtInoAxkzBXcoS0TzjX68mx+yWYx9a3Q4Ee+gdWeXrb
+ X7zPrArA
+ Wn4P1nCdSFkk4OH8rvLTKBe3Sc3Uutoo3mL4MGJ7cKZqPSaaj9Jo2kCacLlY5nNOgUNDVkmTTzt1FXPMWxZDaB/b7yBrtbRheYs8yAwfTbgZWGOFKO1SHAaYRZvFzdAF8cVz9CppHyneeALs2au0IfakHPpUHrQIpsu9o5Vrt8mRKYYrYzSYzX/d8Ht5DhbL+oAgl2Bvz1pEf9rNdk5IElkfiOdH3FhOx7IqPByFKONBAA8Cls1kgPiYEVrGwdjNRTXxN4oLkWqNNLnido3g4x3g/4vRBmBPydc/OgrAwJal0eDBD9YjIAFR7TUW7r9LSnmzKTspVdPCZGBcUG6do+tiZkForXxuHKu75FTlQCTJ42YGkIAwM10Acm+a/9WW3njyhQZ0g3ikGE+pU6RlyFY4JwCOO7FbxIeIGCtnjGnm+PDN3RHk5WXR8cjPKSJKC8fSpEex0gmFHiYgB6aBC/OUx899EIU6HZEuK4XJh2d1ashdmwyAuGQxotnk3GQuaY6SgMqCcvwxD8p58onKjOoX71ESARfPQtmJ1Uha0byC53Jm0APKzb+C9E+tCj+RYX1k7Y8WwjTa9Gi2HCetHAN+jRTGxArK+/Qoug5Vwk/pFGbwpFEkjeQzCkDJxhhFP20NlNqRhHr8K8dxHLU1QxWrhA9Mb82HOQ4qAHPgUnyss7Kx+UBw93BHbPpA4RTSDe0fF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,17 +116,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 06:08:53PM +0800, Muchun Song wrote:
-> __init_single_page() is only used within mm/mm_init.c, so make it
-> static.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+The auxvec.h header is a more fitting place for these definitions.
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Kees Cook <kees@kernel.org>
+---
+ include/linux/auxvec.h   | 7 +++++++
+ include/linux/mm_types.h | 6 ------
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
+diff --git a/include/linux/auxvec.h b/include/linux/auxvec.h
+index 8bcb9b726262..4b364e639f08 100644
+--- a/include/linux/auxvec.h
++++ b/include/linux/auxvec.h
+@@ -6,4 +6,11 @@
  
+ #define AT_VECTOR_SIZE_BASE 24 /* NEW_AUX_ENT entries in auxiliary table */
+   /* number of "#define AT_.*" above, minus {AT_NULL, AT_IGNORE, AT_NOTELF} */
++
++#ifndef AT_VECTOR_SIZE_ARCH
++#define AT_VECTOR_SIZE_ARCH 0
++#endif
++
++#define AT_VECTOR_SIZE (2*(AT_VECTOR_SIZE_ARCH + AT_VECTOR_SIZE_BASE + 1))
++
+ #endif /* _LINUX_AUXVEC_H */
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 1ed35d258d2e..c75626c5aad4 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -26,12 +26,6 @@
+ 
+ #include <asm/mmu.h>
+ 
+-#ifndef AT_VECTOR_SIZE_ARCH
+-#define AT_VECTOR_SIZE_ARCH 0
+-#endif
+-#define AT_VECTOR_SIZE (2*(AT_VECTOR_SIZE_ARCH + AT_VECTOR_SIZE_BASE + 1))
+-
+-
+ struct address_space;
+ struct futex_private_hash;
+ struct mem_cgroup;
 
 -- 
-Oscar Salvador
-SUSE Labs
+2.56.1
+
 
