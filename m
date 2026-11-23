@@ -1,188 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECFF606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F52606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 17:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CqZw4Dtd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KHG0DSDK
 Received: by kanga.kvack.org (Postfix)
-	id 02FA36B05BD; Mon, 23 Nov 2026 12:24:50 -0500 (EST)
+	id E3D666B05B9; Mon, 23 Nov 2026 12:27:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006976B05BE; Mon, 23 Nov 2026 12:24:49 -0500 (EST)
+	id DEE356B05BE; Mon, 23 Nov 2026 12:27:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E11606B05BF; Mon, 23 Nov 2026 12:24:49 -0500 (EST)
+	id D04766B05BF; Mon, 23 Nov 2026 12:27:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD6366B05BD
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:24:49 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C2C116095D
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:24:49 +0000 (UTC)
-X-FDA: 85467058698.30.A233483
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013047.outbound.protection.outlook.com [40.93.196.47])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5454E1A000A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:24:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=CqZw4Dtd;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795454686;
-	b=Xagen4nFVJ0G3WlQtHlwFqaH/kvw3Xax5jwcfIxe0Oez1K1RUDSzt4Ha86dezdOl+9A384
-	uD+7JcYZ47SMg0FXUu2Ype8FtEBFSe610Cfh9YHASGddD1trL20xP/tLGObpd1DcCZa1/u
-	/81iBZeRvLFC/t4+NI2eTvflxwjoreo=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795454686;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A7BAF6B05B9
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 12:27:11 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2913CA8106
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:27:11 +0000 (UTC)
+X-FDA: 85467064662.29.38C0A0E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 73405100008
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:27:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KHG0DSDK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795454829;
+	b=njCZ7n+xJNBsFNbUW032ccmR5rOchEqTQhGcHyl69bDYnxyC0qMIICEOV/t6wtvFwlh0GE
+	rTo9G1Biz1PulsTNbKIFRLLQxU3Mzc87xsaAPQnruZKRhfFHWbgW1aUSq4ha+O75KL/kKg
+	AkM2pwSa4u1WWf60/cTnwrdReFe5oFU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795454829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=edA/ZhnYCaOhrpZ324c8HW6lHpQPAiEdl/wZt2/3nTU=;
-	b=uEt5dFUnhbW6EQHZgWIRVRKUwafO3Bjt6uP1/QOVRY7288QI2/fyqyw9sb04H9XELxyQF2
-	EMsxnZ7S6TZ32fWS5y6DbKGG2mXgiAHuDtIAumquNl5LpB6muECdC1v366YgNoJPiTPOuW
-	8HqRHlXNAPYvrl9iN0Ub/ta7oTOeiNg=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=CqZw4Dtd;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S4UH+9kDabtLqdKCLkuwPQzR6IOCx0iSS4LQiqspuKSbHQlsArn84b+bbvv2DxUBoG3vD+zABANxlceXbNDi1Habawcu1PPwQkVutnAVoF1RfAK+8PEjc+7O+Ji9/2dSkvjKCDMTumsEWu2Yqxp/J3z739Gqx5DtrLu5m4cVXOEV2RDXW5OZutYg6hPVnCSICx1gP1ufl0GJQc2xx0Lw2lJMiyH2ZwrrlYTZ4F4mtZCGI8NUTZQXz1lgHSkgGE9GW3TK9wMK5HW9bBEuQDH4Dht80bSlVHS0BZUiOVfSbyV/ti7yHkVNUxD37kDaxxjJLcZ6yAGX/KEqQK7lN77MEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=edA/ZhnYCaOhrpZ324c8HW6lHpQPAiEdl/wZt2/3nTU=;
- b=MP7/6ugDr7j+Q+uLV4W/j1757jI2gd+6BZoqjTLVyLZNmFCstXz7QgnVl8teZxq3+rwG4L/VAXXloRkrOKBl26qJt3hMpgetsV+NSaucKcDhuY80+Nacn0hqWmWLSh6SjS3LlzGKFHlizlAiNRzNKiq9g1Ham1eW3TKuAHXtG1Mgy1PswLM+HUbqww46Aj4MKGQ7NLB9ORq0xuomOMryXWfHAppx0Xm//sGGDHKiKPjWnQ2smfJ5jRfjUgNRalYRSNEitz4/Nytcb4MYFw99O8xe0bMgYKBh/SVUYwu/5L58abNOfsMS9VHNtuEvdlf9QOsXDmwb2QVdhq4nExMvCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=edA/ZhnYCaOhrpZ324c8HW6lHpQPAiEdl/wZt2/3nTU=;
- b=CqZw4Dtd70Dj/oQ8Nzn0txPfVvVoQSXsnHlhf+zGf4Q8ts1aPkRYZICE4IbKkQLkKaFCOMHvYFQHe04UOZu11FbKQUm1bUsbWVDWXtZzxWwYiUA0IQsJM3jor+3qdz71SH5oJSVINk2neW/V+PeZXfwowOFfY2JVRxSHBfY5jtHZS6JnFYcVkOpE8GRg6eJVzavBh73zP+ySFHL9CHa7n2ZTeBa+rP6wrQaOpapYltjqQvlakw8QhMvVZpwAEeTkBUlAU8Vv0vPKKnaKLU47xfM7MGIiSOPUr7yPD3P5cmef5OIPBHbDeDX2LXxd4+v5CY/0sOk9SpnmVZjWaJX+vQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DM4PR12MB6085.namprd12.prod.outlook.com (2603:10b6:8:b3::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Mon, 23 Nov
- 2026 17:24:32 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
- 17:24:30 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Nov 2026 12:24:28 -0500
-Message-Id: <DN2RK7R9T87V.1DLJWTHIM19Y5@nvidia.com>
-Subject: Re: [PATCH 2/2] mm/migrate: allocate destination folios before
- locking a batch
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-fsdevel@vger.kernel.org>, <stable@vger.kernel.org>, "Chris Mason"
- <mason@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
- "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
- Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
- Shutsemau" <kas@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, "William Kucharski"
- <william.kucharski@oracle.com>, "Heiko Carstens" <hca@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>, "Claudio Imbrenda"
- <imbrenda@linux.ibm.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Lorenzo
- Stoakes (ARM)" <ljs@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>,
- "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Byungchul Park"
- <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
- "Miklos Szeredi" <miklos@szeredi.hu>, "Joanne Koong"
- <joannelkoong@gmail.com>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.22.0
+	bh=rwO0qR/5dA2BfbWBM6Y4o8lfCur4ww/twWJTPGcgLzQ=;
+	b=URCDFOcy0kaEn7sImLJmH8/mhqkevn0wnlU+eHmQYrl2gRhlyK8KsTh8MCO1TxP1/nwKJJ
+	Ih6kYDxOo3vpwcTDhv3JK3J3a4WU1ts/YsY/298M/PUUONmvdwHzwJM+xn8vF+SGOjnBaP
+	FvIjpd7IHYm9pncQR30R3eQmxRHinzI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KHG0DSDK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A69DC44CBC;
+	Mon, 23 Nov 2026 17:27:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECDA1F000C0;
+	Mon, 23 Nov 2026 17:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795454828;
+	bh=rwO0qR/5dA2BfbWBM6Y4o8lfCur4ww/twWJTPGcgLzQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KHG0DSDKmw1s9Nld6eJQBGskQxG8+fGTfS95ZXpiCvzSvsH1WR5GDMuTbP4yuvTqb
+	 53THpea6CtIlrN+S8vwrcuVZQbjJTfTwzn15sm4B/NhslGZtmZRvwhi7/PphkfRRgP
+	 z4uiJdMAGxS+AsEYtm49AzUp7LCEV2LXBWsuRg9eaoBPyRzuV6Y1Ncx+pJvT1gQW1F
+	 +gitMGVoD9V/qvRIdqZHfmk9fmWjQAi5Spjv09gQES9NRAZyFz+N2VxxrT8UpWT9Dj
+	 XSQEy+w41yKaJAw7w2hgwyhk6WNnVMGODwVNKEnA02f00qhxSh0HmnV7vYvqrBx8p3
+	 5ay1qBdDu4svA==
+Date: Mon, 23 Nov 2026 17:26:57 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH 1/2] mm/huge_memory: use NOFS when allocating while
+ splitting folios
+Message-ID: <awR3IxFld3ms836N@gremlin>
 References: <20261122-migrate_reclaim_deadlock-v1-0-83c56185b0fb@kernel.org>
- <20261122-migrate_reclaim_deadlock-v1-2-83c56185b0fb@kernel.org>
-In-Reply-To: <20261122-migrate_reclaim_deadlock-v1-2-83c56185b0fb@kernel.org>
-X-ClientProxiedBy: YQBPR0101CA0239.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:66::22) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+ <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DM4PR12MB6085:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1dff6ba8-dcb1-425e-30fd-08df4986a209
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|23010399003|6133799003|261009223027099003|22082099003|18002099003|261022075727099003|261021121427099003|261021123027099003|261026140227099003|921020|261102123227099003|261028144727099003|56012099006|4143699003|261022105027099003|10067099003|5023799004|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	9KCyaDpM03HXT0lwGQBePrQkd9tQu9Wv6oaLUGozOkiz9Dl9GCiUtIgiMU+6g1pL8JdthQcSRVmG37nfJ/4n0jTGpdFNxYePSbvaG/p/iTm9zLk5Y0WX8vRxsQmescC9kkQtt35AJDEb0uUjJnFWf88kQYlytz2g/bH1XvemA1TDGJo67a4043L7rVbwV2+0T2xXuI32OI4y1VvLA8xRFHcOzPQFcurqxlhd9LFCBQz3YleGpU5ZaUWU66wB4LIqVF/KeD7cDDA/qkpGsA5Ce9ovErJJuh3w5q3NTxGgppGDFdvSuhrTn2JcdziWZOpU3ILwvocYVpqKr/D/uoBe8ovMRjw5hT/txo2oB/SKttDqX1RUGuamrtnfsFsts+fklu6HY0jT91OKlL0LytQ7pb5RRcnNEdpDdSi4AF1qMp49xBAjCJC8lwGZWtz2QSmOqnyFo3topG5QvfxPFj5rH08HkOT76ShZHZCaBZ6jLGaqDBJn/0S16P9JeZe84vtSZmwqYr5ySJvcKezes53V3a+/a74lEY9rVuJoE2yud+Feer7erBc0NWitbbxuXcitOGNF8S+PkzeOusZWvZ5X3kQkYKRT6VGl/yaXDo7UzDeT7s9Huzb4HMo5M4HzGQ8EkumEYQEVA1kOX+PBgCnCbwObZokJIr+TBCUnXQp+vxEY3Qw0NjvWst5g8zY2HpFURPWdgbzGHI/ZyYVmjwE9/A==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(23010399003)(6133799003)(261009223027099003)(22082099003)(18002099003)(261022075727099003)(261021121427099003)(261021123027099003)(261026140227099003)(921020)(261102123227099003)(261028144727099003)(56012099006)(4143699003)(261022105027099003)(10067099003)(5023799004)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SWdyeGRXVWd4UjJpWTVOWW9ZaFhxZTFtNEI1Q2U2alFaVTA1MG1aUit5cXFs?=
- =?utf-8?B?SDZjb2FRSE40a1RPVDdubzBtZTN5STA5NHRXa1p4cXdPamtzZ1JtcGFoYUJ1?=
- =?utf-8?B?WXBpbUp3dldHbEdRQmJDbXc0V2Fualc2SHN3VFZ2UG9aTlZkV25VVkdmeHkx?=
- =?utf-8?B?b05oUGpRUFNlT21JSlFWMFRLdFZDbEVGcFNGTWxweStNVm8wbm52KzJQenBh?=
- =?utf-8?B?akdzeFhDWWU4TVdSU2lTc3JlUHAvc2VKUkQxY29tVTJVczQrMW5VdUZKTDJl?=
- =?utf-8?B?S3JaWmNqdGRKVFA3bzgwUElqMnVGb1ZjVlhHMW81bndNemtMNUNoVmhSS1VT?=
- =?utf-8?B?T3lNUnYrY1hTdGJYUTBhT1g5dGlDRnhuUkNKbWh2QVFSM0lIV3pvc1FyU1VT?=
- =?utf-8?B?RG1UTm0rSHZ2cklvbU9JMTY2Wk5OcXNCa2FINjlFemJNVERaemdmL1M3blFH?=
- =?utf-8?B?aVJnRnhDVUx0cklkOTNWWlJMTUhIeHNSZURlYkNKVGRJSWh1ZzZlVXFGaTVQ?=
- =?utf-8?B?cmdmeW5CcmZocmhORGdLaCt4cVVSNlk5UytBVUg5SVV3L0JxWVJMWkNhL1JM?=
- =?utf-8?B?VEhoYmcxWFVITXNhU0FZeSs0YWpGWm5BQllzUDN6Y0VHa1B0cjZmZk90aDFF?=
- =?utf-8?B?T0lRYnZtbWJ5VHpHU0NMZXVTUmtkMEF5OG5sRFhodUttb1R2ek1jd3hoUjU1?=
- =?utf-8?B?emNlNkh3V1hZbW1SRGExRElVcUVtUnNGRW1yMHhQbW1UNm4rSGZ4MUFwRnBY?=
- =?utf-8?B?aGJnQWVPUGViRktGWE9GaUdmN3FlMGNyYkhSL2FTWEJJNXNzQVhEaTFKbzlm?=
- =?utf-8?B?VTh0K1Z4aHFNY2dxWkxxd05RLzV2ejJ0d3o2QWlGaUc3MnExcGNYYmNMWVF6?=
- =?utf-8?B?MmVOQi9ObW1sSkU1OU0xM2h3eklnVzVzOGQ4T0F2MkRTMEM3UjhHK21hdlEy?=
- =?utf-8?B?cEROVFp6N1N1S3dWMG84Zno4U05XTUxDWTlDYlR6QXNsWHh0SFdFa3l6NkxC?=
- =?utf-8?B?NEc5cUhRdGlrKzdqRytSL3NIVnlsNVVFQ0d5M0Y5c29NWkJKSDhSanJSUGQ3?=
- =?utf-8?B?N0E0NStDWjBJVGthd3JySys0a3ppWFNJVm9EYW9nQWg4NXZiSVBxTUgvMHdj?=
- =?utf-8?B?SjdOV2hRejVTbWdmOEg4UC9LR2M3ZHhCL3hXU2Irdk00dUdrbk5UV0dRdHF4?=
- =?utf-8?B?Z0FoMHo0NlpvUlkvTXVidk9ObGpKUFIwTmhnYU4wUnVYUDgyWDRkcDhBUm5l?=
- =?utf-8?B?M3ZPMi9mYTVycHVjSDhucmY2d2hwZEV3bVhkdXNHS0Ewclg1Nm9ZZUhiOU9k?=
- =?utf-8?B?KzVLV1d4ZFlOUWc4aTBKK0d1VTFmbjRkaThVaXNmd1YvWUpydjU4QWV5bnNx?=
- =?utf-8?B?UzNHT2JxUk9hTEQ3WmZrUTRkeU9uNWFPMmdrQUdhVGZLZi8zaFFHbFFKeWJG?=
- =?utf-8?B?WmxNU0lBYTlKOFNXZEI2dFl0S3dOSXNlT3dPWG44Z2NGbFk3ZURSb1RlVEt2?=
- =?utf-8?B?bm8zK0RqMzRyMjRGcFE3ek42cmR6WFVVeEo0S0dPMjNHdGwyQmxYR0RGMnRH?=
- =?utf-8?B?RzUwRnY4T0ErMTBkLzRLSDU2RVE0NjhVMjl3dGJ2ZDh0MkwxWW9sSVJZaTFY?=
- =?utf-8?B?cXo5YjZVaUovYkJPT2xoa3JtcnRmRG5vck94eGxyM3AyN2VNY3A3VUludGNa?=
- =?utf-8?B?LzFwSkF3c2g1NDlWeDFsR2daNnpkVi9EbXBBVVpsNmZ0OXZCNkxLbGNqS3ZT?=
- =?utf-8?B?RjhEbnUrN09BbWNvRW5KdXFEU0Vqa2U4NXVyTXVMQ1NmLy9ZcHV2M291Ni80?=
- =?utf-8?B?UTVORkxqVE1FUTVmeWMvZzNOZTlCK0oyY1NnUThpV2JWRkVFdE9Cbkh1OGI0?=
- =?utf-8?B?aXpJQlluY3NMeFFzQXE2bzZ1aWM2cGpZT0NhTWxFZWpoM0EvUThJMk5JNEF4?=
- =?utf-8?B?REtkMGNBdnE0cllnS1ZmSngyeXZFTjNhbUh3MlhLV09OOWVPVWhWdDlWemFH?=
- =?utf-8?B?Y3J2ajl5a2JhVyt2NUdkS2RjM3VlazliVGVXUXZjam5SUXZLOFl3RjRVZmNC?=
- =?utf-8?B?TGJicDNHSzZtVVp3eFJDTzJnSWJZY24vMU8xK243MGtMQzdmbk9NRDFSWm0v?=
- =?utf-8?B?NldTdHhMOUZMV0w2TTRRQ3RJaWg2dFJpQzF2a3R4QTRhbXdrZkJmWHh5YjNC?=
- =?utf-8?B?anU5NXVDKzkyQmNjTmhSZUo2ZTBUZmQyaEY4Z1krMFRyc09nNWlUTXYwMnMx?=
- =?utf-8?B?ZG5KWEEza01udUV3ZlBiZ2ZxTGp5N3lTOXJDWHd6c0ZtcUwvWDU0dm9mRGEv?=
- =?utf-8?Q?+zUmaytInpSitN5lNr?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1dff6ba8-dcb1-425e-30fd-08df4986a209
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 17:24:30.5781
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oFqwO5UmLg2+XpblNT1py5O3KLeG6mxFeCiZfVaxV/4CAwipe/SJfKXCM6iEpbyX
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6085
-X-Rspamd-Queue-Id: 5454E1A000A
-X-Stat-Signature: qdm67n14yr54cdu7xkyiqw7y4n58t1k1
-X-Rspamd-Server: rspam08
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261122-migrate_reclaim_deadlock-v1-1-83c56185b0fb@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspam-User:
+X-Rspamd-Queue-Id: 73405100008
+X-Stat-Signature: d43pbm33bketxzsyi8a1xx5a7f5ixnow
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795454686-574646
-X-HE-Meta: U2FsdGVkX1+mU6xIQYYkLDY89hyytSgL9n0fdyiCQjPMYhYEHSanU8mxbz2hnY/JUvGv1SZiCLr/HwXMh/WvbYewePSHYFJ868021eRfrynMzXSTqQagScubKGTJA+g3h58u50bpjzNwK4Ew3zRppfK0r1+0lE9ZREyKgztzYgUC9MZvBh9gEtHxP2d23VjLefsdwTorYS2tCWiq38ybH/Q2OxQYaQq5GxeahR5cZv1G5JQcpmE26Ays5oWLiEcNqxEWva4bl7kEdcTy0bJrkEa9pTqZ1edy2Z/Le5UyZbWSScYt52WRb//mDJCcCaiGxmTYGUkO3ITmlF1bG244Jh4JYEtyNG2p9HB1cTOMQyWvr3mRW2JfvxMSNgRUfRCZaVTIBpGkT2vH/c9xmeq/ZYTxHD2G6h9WwCzLIl35asf1Dj/tn+TIRuwOpa+swMsxPH3cSk49HSqVYopv/hqSRYl/2tOq2f8jSWTx0eTKfOyIAJzjNzv6F77HOhngVDGnRHu8RH67MLHwXYY0a40FLbuk8kxp4iYU2FsanCdG5so95ooaA7nsGlCzZStecFAjlUbdY/pTWdu0KJm2nVzCKMciJ3jEwH1zo//HPNaNCZF4Pco0LwiY3M7BvsQwVcFEUgmTtrAFCfYX70o9/FQc9qNsbhgyJ9lDXwlazkp2RtjRyX19yzhfS9sGt6qGZ4J4cA9QXS+z9wSbLRteAxsMNpBTcJ0m7YcWDl0fT+NS0f9AjDvwDrzMepYBfW+UQJvoFfDX2fkS/7CQTXbChkEJgESMbzPxbY+m9byrzoI1RMYeek+CAtO+MOfv35GwcYZxAZCIW1tGAHrPieCAvzlRQVouL46/mCwGnYIFKbAvS8eOGvbsIM3LfHgKcyY0bqMzcUo+prpNaSP5X3vhnUN4BNBQigdih45BXPl7aza0zsp86bQEYk17kNlIUqTB9cQHMvS6gYyt7+pkkcuM9mI
- bGtDBdI/
- PmDCwrP4wSvz/K3Kw7bUV1Lst0HvvU5a9n4IHm/qfxIOusjNsNPBBwwXM1HEN3GXsrOs1fHZF1aKfTpGsJXgajIbbNMr5Mf5R24BOE6tpGRrnE/Lm4byQpYFadb9+AuscZz+vxjxbLHVTNM29v1h0eWV6OKHdmLyaIfYtlYUmqr2VVThM2dQeZ08xAlxYyxxZt/CxPlfCj93eDMQkKiK845pLzC8lwX6XPdt7f4a51jIjrrphWx2OVMwAGkCqHMm8wB3DrF2H6EvFWLaXZUX3kSxAlZkYh4q0vZ+UnJa2PMTsjKO7ut/XKoSnhZV64H5br1wo5J3zNNHdHBcmoIiaL4qejDcmz4BEWYqbgrcrshuGoTURaWgGoTzpS67rNPHThzRHERSFMGEgi6CH7dUP34HUJwlCGYFFwmowom8dETHSab9DHpg4rasZ5Aat77GJDPQNFPixkUEq/XjqXIrFKdk5X8c5eBjAAszH0/6/327fMV/jkmO3i62yDKZrMdv4iVF9tlTz7a5sZQouG4Z/S551FEpCGrfGCXFEsfCu+x6uQENDSzkwRL1xTRC4xPkODhzyECFx2N/xcYjluU9D3PyHhJ4/8Q004l6I+QLZftv9HsnvdUaRTijhv6G2hiM4UIalBlWUoUxwlvEc10RUr3IJzCZXWF4rY+KRSwDYjLQsOEQSJWmmnqdZdv9zmVvxcnEaDsYUKxVSA3wYhrt9RjRcd5isKoUJKNg3jh9uWqZbW8kGsdZ5oiSaAw==
+X-HE-Tag: 1795454829-408862
+X-HE-Meta: U2FsdGVkX19OUDWqkP3Gb8YVzWl+1e4OImeZbA7mhysNUKjO8gX4FvvrteFXDxivdXq7ows6B7w3RHRjrT1QvD7vpnFwUgsnzSTekbOx8y4Fvi+yr1LK16miN75c0uEnb8cv1a9u1IC135D4faSDZU2Mf665uJGp3VD/CFbWd8IgJunc1YdYYO+Xx6/qL2bdde1wWuyQKVvMg1fCkxZAqnnoZOJKyjIULL3meeyZTHVarV3W3Cx2oXQ4r5nelTcQ4xWt1kzVmngStIfsKzQEdwwx0jnaLSAPQKiJuvHz+roCKgzt0O+ihj2KcgID1q0ZG/Kp841pviymucDB2/VjrFFeW0GyaqZKHDBwYrtxDgh/0/5uqWr8PpgbH6LitI/7jIemu/MsbToJVHFcJdkgxndcuIys+9G6/NfeBrAoqneOYcvdrn9RPtdgtb4c6XATx+ha45zA822jeMQxmOqn1e4WNeNUlZiZy95uftVoG5PxyBYyyen/DuzIwgGlGg6EwnwiJIqVYEVOPTIhkajm9AquHzfNUjWfxcl9Qo1YGCEDWXcW3JnvNAaz/YszZGvIGosl42ww+MiFocWK6cgh3u9TpG5GzJRKrCSylxzWnx8lsluSSkp9v0pXXdvjRRxOTNCW1zXICFpJUXl136ZhCMv+/Hal/2L3Aw3vNp/hOf45uLts0VXMstgXNcvxqeqR0jL8zpgH9NIW7Wy70LZyTxOhlsbqhC/P3DQW3OQp9o/5fqgs25j+gtb7CuU7T2dVJOmdj1/a2ICXQn6ZgUHP6xe/UZrUlRn5O2As91XwaZBfwckG2N6v5QSW6xzwBLTaExUXvbYqpq/L61v4mEoKQu8F9iHBptehNIspA4zY5RsHVkSne4UEadpKe7H16J48E/0iu4VUJad50XEtCPQnL2CrN++DR53bbMkrxKxZqsYZQ96RrDjZ+IcCH0YqZBQMYTfQPx2xK43jU4qrU1k
+ +Dfayq7H
+ QkGBrs3jpiMIT2XroZ5+D54krRexxM3+Dzbzsr89ae5yftsWjZE14+VQEuKXMc7Vn0a6qTTVvAP+0WQbI3yvSIXpGI5resQJXOMLn5D/0jCTx4zPAvlWW+pTerUIunrHqm9SOycnfw+s9yauF5+5vPjhsxW8JCcBCCA9j0qMGoqMSwv/mDByrxlccugU7OGVMNEZ6HiPj9IXMvgKKwgfmMokmsQsRnpRc2lrVZXrZyabdb2dv++yt4nXN9agp1xUdNG9HTjhoTQmHwaWzO+HhjEUarhy2sUfLn3uUwHEuRU4kaLHOgKjJrDWAfruXInf4T6QCOULvh1I86rl2aWgW1cDkLT8tfgm9vu5LGFZ8wl+C/SIui5AjxaWxRuODRkIVyaoLemLevcvSPlQX2ywLpwlRtCnsESj/yxi5e6EF402rxVH88O1tt70K2Ga5/idYiVGYrtf+AYU90cUW6RdnvzRKnNlpxgx7rf5gFIRqy0yRTD1mfS5w5TeqTfRphRvmmszunnxKLVMH8OiF4KL4OVHzlcRnmdOUJwACxnJayj87j8CzbBbAYCj3ImtfZmK+oEdRtCOjBDXS7Z7FnhTNnH5M6VCNuH1K0pkSSlY3/inSeLqHF2dX//3y5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,19 +107,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun Nov 22, 2026 at 7:42 AM EST, David Hildenbrand (Arm) wrote:
-> Migration locks folios without holding a reference on their inode.
-> migrate_pages_batch() keeps a whole batch locked while allocating the
-> destinations of the next folios. If such an allocation ends up in direct
-> reclaim with __GFP_FS, reclaim can evict an inode through the dcache
-> shrinker, and wait in truncate_inode_pages_final() for a folio that we
-> hold locked:
+On Sun, Nov 22, 2026 at 01:42:17PM +0100, David Hildenbrand (Arm) wrote:
+> Various callers (migration, memory-failure, s390_wiggle_split_folio) split
+> locked folios without holding a reference on the folio's inode.
 >
->     migrate_pages_batch()
->       migrate_folio_unmap(A)
->         folio_trylock(A)
->       migrate_folio_unmap(B)
->         get_new_folio()
+> Splitting a file folio might allocate memory for the xarray and call
+> filemap_release_folio(). If either ends up in direct reclaim with
+> __GFP_FS, reclaim can evict the inode through the dcache shrinker, and
+> wait in truncate_inode_pages_final() for the folio that we hold locked:
+>
+>     try_split_folio()
+>       folio_lock(A)
+>       split_folio_to_list(A)
+>         xas_split_alloc()
 >           try_to_free_pages()
 >             super_cache_scan()
 >               prune_dcache_sb()
@@ -216,65 +132,81 @@ On Sun Nov 22, 2026 at 7:42 AM EST, David Hildenbrand (Arm) wrote:
 > be triggered most easily with FUSE, which evicts inodes on the last
 > reference.
 >
-> Consequently, allocations under the folio lock are dangerous if we
-> cannot prevent that scenario through an inode reference; and we want to
-> avoid grabbing inode references, because we might then drop the last
-> one, and would have to evict the inode from migration context, ideally
-> without holding any folio locks.
+> Further, xas_split_alloc() charges the XArray nodes to the memcg, and on
+> cgroup v1, memcg reclaim waits for file folios under writeback if
+> __GFP_FS is set. That can deadlock if writeback waits for a folio lock
+> that we hold, for example with ext4.
 >
-> Allocating in a NOFS scope would be one option, but it would have rather
-> bad side effects, such as direct compaction not migrating file folios
-> and the OOM killer not being invoked.
+> Let's fix it by splitting folios in a NOFS scope, so callers don't have
+> to care. A NOFS scope also covers allocations that filesystems make with
+> their own gfp flags, for example in filemap_release_folio().
 >
-> So let's fix it by allocating all destination folios of a batch before
-> locking any source folio. Now, we no longer allocate destination folios
-> while holding folio locks, which also avoids holding these locks during
-> direct reclaim or compaction for these allocations: an improvement on
-> its own.
->
-> We keep the destination folio of a folio that we have to retry, instead
-> of freeing it and allocating a new one. If we would have to allocate
-> while already holding folio locks, which can happen when retrying a
-> failed split for longterm pinning, we leave the folio to the synchronous
-> fallback in migrate_pages_sync() instead, which migrates folios one by
-> one.
->
-> Note that nfs_migrate_folio() still writes back the folio while holding
-> its lock in MIGRATE_SYNC mode, which allocates memory. As NFS only
-> evicts stale or unlinked inodes on the last reference, this is unlikely
-> to deadlock; this must be sorted out in NFS code independently.
+> On NFS, splitting folios with pending writes or ongoing writes to
+> fscache might now fail slightly more often, until these writes have
+> completed. On netfs, only folios that are being written to fscache are
+> affected. All fairly irrelevant.
 >
 > This has medium urgency.
+
+But medium-rare tests best!
+
 >
-> Fixes: 5dfab109d519 ("migrate_pages: batch _unmap and _move")
+> Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
+> Fixes: eef88fe45ac9 ("s390/uv: Split large folios in gmap_make_secure()")
+> Fixes: 789763523fb4 ("xarray: honor XA_FLAGS_ACCOUNT in xas_split_alloc()")
 > Cc: stable@vger.kernel.org
 > Reported-by: Chris Mason <mason@kernel.org>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+LGTM so:
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
->  mm/migrate.c | 134 ++++++++++++++++++++++++++++++++++++++++++-----------=
-------
->  1 file changed, 97 insertions(+), 37 deletions(-)
+>  mm/huge_memory.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index e22daf846dbe3..c4f6c642c2620 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4425,11 +4425,20 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>  	const bool is_swapcache = folio_test_swapcache(folio);
+>  	int old_order = folio_order(folio);
+>  	struct folio *new_folio, *next;
+> +	unsigned int nofs_flags;
+>  	int ret;
+>
+>  	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+>  	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
+>
+> +	/*
+> +	 * We might not hold a reference on a locked folio's inode, but we might
+> +	 * allocate memory under the folio lock. Direct reclaim could try
+> +	 * evicting the inode, or wait for writeback on cgroup v1, to then
+
+Ahhh. Cgroup v1. Of course.
+
+> +	 * deadlock on folio locks.
+> +	 */
+> +	nofs_flags = memalloc_nofs_save();
+> +
+>  	if (folio != page_folio(split_at) || folio != page_folio(lock_at)) {
+>  		ret = -EINVAL;
+>  		goto out;
+> @@ -4478,6 +4487,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>  	if (is_pmd_order(old_order))
+>  		count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
+>  	count_mthp_stat(old_order, !ret ? MTHP_STAT_SPLIT : MTHP_STAT_SPLIT_FAILED);
+> +	memalloc_nofs_restore(nofs_flags);
+>  	return ret;
+>  }
+>
+>
+> --
+> 2.56.1
 >
 
-<snip>
-
-> +			/* Remember the source folio until we unmap it. */
-> +			dst->private =3D folio;
-
-Clever to use ->private, but I wonder if we want a new field name, like
-we added migrate_info, to clarify its use.
-
-In addition, it will be great to keep migration info for each pair of
-src and dst in an array of structs to avoid the ->private being used for
-different things at different migration phases, but allocating such an
-arrary will cause headaches. So this patch is probably the best we can
-get.
-
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-
-
---=20
-Best Regards,
-Yan, Zi
-
+--
+Cheers, Lorenzo
 
