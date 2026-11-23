@@ -1,130 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD95E606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 06:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBF7606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 07:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kupXkdCx
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LFO5kG6Y
 Received: by kanga.kvack.org (Postfix)
-	id EBB786B05B0; Mon, 23 Nov 2026 01:57:43 -0500 (EST)
+	id 54B2A6B05B4; Mon, 23 Nov 2026 02:00:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6C4A6B05B3; Mon, 23 Nov 2026 01:57:43 -0500 (EST)
+	id 4D5016B05B5; Mon, 23 Nov 2026 02:00:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5B3C6B05B4; Mon, 23 Nov 2026 01:57:43 -0500 (EST)
+	id 39BE16B05B6; Mon, 23 Nov 2026 02:00:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B0E206B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 01:57:43 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 41C14C081A
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:57:43 +0000 (UTC)
-X-FDA: 85465478406.28.C2B770C
-Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4DE8640005
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:57:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=kupXkdCx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.128 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 164F66B05B4
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 02:00:20 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6F40C065F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:00:19 +0000 (UTC)
+X-FDA: 85465484958.05.C515BA4
+Received: from mta0.migadu.com (out-147.mta0.migadu.com [91.218.175.147])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 802A080007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:00:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LFO5kG6Y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.147 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795417061;
-	b=Y5s1MErkt2pNeYHkBm1/x56y9Y4sn6NIGAMTHAMGJM9UNIU1O2PLuC6PE4rCkqutXHlprn
-	tIIQ3udJWhPNls1oL2JyHeUgdLZ3Q2x/EVkYRwP1lW3MvE7vfH3FKHm5IJ2+7IEpRZQedk
-	cZ1JVREXMgFW45LA8caJ9ZFRlbJnGlw=
+	t=1795417218;
+	b=68rPfqagp1xcT4jRV/i2ucpuqR8VuaFv04VVZDWt8dgbPUFYcFLkij2eCejn9xzTr1Zp6Z
+	WiMMSU7kJYJQd4f9m2rLyHFeksgtADipY4l6h/HcTZUAUAfOEqDnj1Eec60xLHycnLBcXJ
+	uJeyNMWvtEvX9KG4ATQz2aXqQtWr+TA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795417061;
+	s=arc-20220608; t=1795417218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fQmPDHR50ny9yG8I6ZWZCZxGsKK1lbvYAkLm3ZuJw50=;
-	b=DiTkMq6Cl1KGI2BZJIJm0l6XI5jY4D+SxMAeAtQbXR6VgRB15BnpXU9W19fJaTMLdneahx
-	jVZR1t2xUqbR99brnr7ZE0ZTacrGW0Fm7MYuuXLaVjFKgBdmODiyEuU1yEDGKmjuYvhJ1n
-	nwaRVU3av/KDdIHXkDQBq8SHImtz5q4=
+	bh=wz61PR6m+Hv4KIDjJgpzt68ZFn1R+shrC/4PW4HJ6X8=;
+	b=ZAToddN9FykJ9g1k3ehLivM7i7kWwAyl9fhLTYl6bM67KKfbdFhTS7O6D1vFBsWACgSwwC
+	irSJpJ2H3VU5jbXGuG33uxL6dPTSVtOg2Ps8VpKxGhJ5elO6P0viZB5KahNKHmvYFpDwDn
+	rFioaqsE7Gq8/7hMVqIX6SU+p/dTQ68=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=kupXkdCx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.128 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-Received: by mail-pj2-f0.google.com with SMTP id d9443c01a7336-2ed216ed287so17854255ad.1
-        for <linux-mm@kvack.org>; Sun, 22 Nov 2026 22:57:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795417060; x=1796021860; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fQmPDHR50ny9yG8I6ZWZCZxGsKK1lbvYAkLm3ZuJw50=;
-        b=kupXkdCxp3YyC+eftZC7C1ZSxmroPH7BEYOR0VzhmCvR92T1g3ab/v9mDFg4AIDaSi
-         az4IH8YihfGEbuzK260e1JUjWYC8tPeBOkVlKQ9lpfvBhSHx1ap22RVmO/PRCMbLupOM
-         EDGYxgsonPmjuoHihMRryUl2bfe5kXakoudh62HiFjcGpGptrjYaIDdeporEFhIWO//f
-         /aQl0cXLcM2Tn3r+LQZ3o/JKwGgMEmNS7so2z8dlEWLr89yoUOlIR7H3af9oVSHBwQiw
-         7tKryJPZKLeX5+2HKGuMdB3ga2njLMvmUjXdxPl32e8I4goeoVrZDmFnVspPWh8CPlmx
-         sU3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795417060; x=1796021860;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fQmPDHR50ny9yG8I6ZWZCZxGsKK1lbvYAkLm3ZuJw50=;
-        b=z9sFQf51h9dV++icdMbwoSIyG75kohlfcAyAL+EKgKaC2Oewn60DX0/LJCPc+0ZaJa
-         fBgEIieAFHE7gJhfydgfatfmVu+n27EE7jPkTl9Wc0SFQN2iv+BaI+2KUzLLftx8jESR
-         7NG+NXAh6Bw/SOprPVJ45dFkrxUXFJmdM9DtJguCBNBlwLkjCO7AqNJXf5hNtQnTaBXc
-         vHqAkkFrdTUJAkvtNSCPFCfRX04tG2okQjm7r9HNBcDkrHOCUI9c/T/xO4VGp32cK8EG
-         sk5IH7KCpWAClVrkDdxLrpVUbQDtOW7Gnj+P0FXsp9bm7pYP0XOOAQQcFV8JHK9bF9R2
-         bnvQ==
-X-Forwarded-Encrypted: i=1; AL+hErEizyYKkM1B9IHLFEWoOVIt29cYmfsXP7YydQ1R9iJhR8+6E/v+eavFLedlzaHLoyMW57STUiRGJg==@kvack.org
-X-Gm-Message-State: APuU4Z/rI9ie53rQ9c45tkwd7rs64vhys9IaQSQuzdmdV2peYtfpx+qS
-	j7nYD0qgJSWXjXq93EO+OuDUGFtG5oZSHgq2DIZVG1XFzibTnM+kbTQ8
-X-Gm-Gg: AZFdTZdlKd2CAkE9fQ3ctBefiK26RpnllNNrMBXKawlZ34m5+GnK0fvYtg7GIbFUfZx
-	K2iW8u98mXDaKBQE5RG6M5c1ZFpGhZD7BjlgNs10rxpySnB5yEORJqPAxTMd1aixbuYMSiVcvB2
-	b1jvYnT7Mir/pfi2YpMwK9qs6JxncMTycg+ANdSlOI7xslve7i9Hf5kfWxMn0mzSwfrnU5S2Qc/
-	OJspucw1jZ1dbCyEwzs0KbdmScUe/G0sStsT0CNA9Q9CEePn4jr26eywsdeoa9APlpF2oASQ//e
-	4FCNbON35oe9HRCafrrzUpWLyv5USxQAmHg08/T1yOxzSXUvt2KNYuLUimfzBtVIyzlcFnk4mD1
-	flbXD4yj2CNqZoq9wpXHCCnijVKpbKBkJXSfbG1MnJPlSQjz7SbGeeNsvLcmCqGflvkETtO5Znq
-	pmaIO53w3TSxjqTNf8odWuSU4pYTzjgVKPNMH1zfPPHIMBThi0e2kQiSlBz9dWzJtMcCRqriaJq
-	E+5SclxrHgRsWcnjg3KA//51g3HbjYc6XxGvKx7LEUfp+gon8092kc6+hpqVx8prElDjKoGZ8O9
-	Ej+9reTZhwwnMWLljarsnrs1ha/qsYi/HSkbOUlT5xd4K+RTIwLOMLbWEg==
-X-Received: by 2002:a17:902:ec8a:b0:2ef:e25e:e13c with SMTP id d9443c01a7336-2f03efb015amr114577535ad.5.1795417059794;
-        Sun, 22 Nov 2026 22:57:39 -0800 (PST)
-Received: from [10.125.112.22] ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f1215d7sm46393385ad.65.2026.11.22.22.57.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Nov 2026 22:57:38 -0800 (PST)
-Message-ID: <4eb6d496-4100-42db-8322-2b8f7f4ee36d@gmail.com>
-Date: Mon, 23 Nov 2026 14:57:27 +0800
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LFO5kG6Y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.147 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=y6IFXvtm+aIMH3lUM18yqu4CvE/ZO2f55GMqbnpqCPA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795417215; v=1; x=1796022015;
+ b=LFO5kG6YIw05GsVw8di3zyy/dHt3+da6fDxo6VYUV2g3lNk9Y3crl4iFetc0riIlFd+Cjkyw
+ 4Lx2EBBqCCYLAfy2tL84QauWVI11AOAdVxeCnZE57Qlybmv2sfzljdWAqWCeb3V08klUk+AM07l
+ M4/4WTlLtMW7qkIupbEVPHCE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f0ff690aa2f0d91c;
+	Mon, 23 Nov 2026 07:00:13 +0000
+X-Mizu-Trace-ID: f0ff690aa2f0d91c
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a3add5b9-a69e-4e06-b91c-c23db9b6e1ca@linux.dev>
+Date: Mon, 23 Nov 2026 15:00:04 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm: factor out common softleaf offset PTE batch
- scanning
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: david@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com
-References: <20261120032949.2036731-1-chenwandun1@gmail.com>
- <20261120032949.2036731-2-chenwandun1@gmail.com> <awBnU0jVXCS2hj1S@gremlin>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <awBnU0jVXCS2hj1S@gremlin>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v3 02/11] mm/mm_init: factor out common struct page
+ initialization
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Muchun Song <muchun.song@linux.dev>, Li Zhe <lizhe.67@bytedance.com>,
+ Andrew Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ James Houghton <jthoughton@google.com>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261120100856.16929-1-songmuchun@bytedance.com>
+ <20261120100856.16929-3-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20261120100856.16929-3-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User:
 X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 4DE8640005
-X-Stat-Signature: 19fx78tu5q38eriqea5ysntcshcdghf3
-X-HE-Tag: 1795417061-421413
-X-HE-Meta: U2FsdGVkX195z34ExiTGNxGCVOE7RjqY+ikuMePfl6gBOwr3pJ+bOIAjctQX10tEZ3UFr2VLl7AhT7LCFZ2zaEl0jMAYyqVyD/F609cMRTmN5WhifWc5hPJohMSkqIjxgLMsNtAYDsNMZnB+gk1nW2FwXs3M2G8fHv+DE3ZO0UjG60BIc5qtuCo6A9K3jMt/v0yB1gOuX9HObne3qvCHuOvnV0YSdXZSQ1/mSecITAhdfWP1QP5O2taryaquoZdlXuLA3GZWhJALQ8woldhda6CLWJRAqmEa5yPSVdE0pkMranz9ucvUCPGN3dWHNUcWbAQBEHBOyF/Y6X6e5pY0qdxqpcwSNs6GawLMP4xhMLeFlgJd1vw59zsEl2V5doizHp0gfTJxbKKC/hY7hQ84D0RfoD8uOORAzMtg0y6EDzjBU5KFK/xXq8gG94ENNJnbafwHr/VMoNHbbvxTiB8F3hDMdLPjw3g+0m1BYPJOVo5jK7rdmX1CDSY1z8rosXvlpxE9wPq2MYztmNPlHnYw6z4GWe6K20mHGpEwfiLmFkN2oAcWqKdIcBCpA5I006b1grrt+oEmpM01E65mgLkNK+jj39XwYKr+mX7Zn/3G+TPrjHLA6/Efi1a2cpuvdzQ3q7spgudRRdhJA0oTL65mZgc3y0QmB5GqhAz8EZmDaNJG/35MF7PO+WwjLATsG9uIoS9/eq7tQQkYNUAergYYTGWoE73LijHM/2G6qjEr/8pL2m4JMoNrJvZrQ5udXKPqgYdBt1W+H22pKWlXRCsgICXWuHgk/WVV7kG/gUaUmjC4TRxJWVBC+gu8TZijjPiJqIBJB4EMSomkCOtG0jI849iGexw1+6LEBWuT5OCT/5GQa5qxDsErIAIGzIESsLPGRCez/Fl+4fk/4osEf8DzzTp9nOZ0AoR/nZDRDEqHEBEa22sIwWDKJ0X8RhgbeT6lFNnMz0Xd0ib4QaTyXNA
- dRafvuj5
- hNss8z1T87MWSUHE894csQbLaTchUo9GKNtW/wxhfhzy9bTmhUSNnVfVgwbB5NAPNoStYSJdg/vaKa6xjKAtZRP6YYaySunm8/WK25FgW9DQS2uZTaColKL7v7O34TJiCalmHvKMJaK6HjhZot1L1KDuAsuCWJC/CHLBIehM5Fqcuvo1d8tQTlbO8BcvoQrEmn0+etd4T2pspmMUfkXPnyvXhZ9VxWzwdkbnUsrMCJsjDbapjlyuv6XT9F/zQnsCgwop7f9dgqCw4sawgESAXttysSkwAaKu0hMOX5fbZ7c+ckTKd5BaS86ssRdVPCkiXdV0dt0BwOmWlDxnaZwjI/jOaMDzYkQD1A6yCAdHBjdebJ4BjJaxICtdr42JTUSouPif5pYZinXuc6/DWDwsKStdl95pUZcXze3SymUqQ9OCiywXPLEuzOUR8MZY37bXMLyayKLKAmanQym2HrI2c7J8cb6zFupZ30hNzCa5mfBbDQEBRT+XaKlzseqrqPKvZwJeLw2c7ylsqFls4r8caAvNMn6Dl6apqwj/F57ek/sgtHjmFaW4dUdvToObf30jJWJTGEcywgKk6MT18WP6yK4UWjJ5sK0ZdXId5eZyznOYt6bFwmeUPNfDQLEt8mBgw8t0Jd0h0M6Pj/nrEXQymYiPHAQ/YxV2X317OsssUL3k8UFIENxMQH717nrwg0xG3FS22zHuPDd3oneVr7dS2tYwx82KkQqdYtZ9bBZpy3WC7PfxLgeMdcxbGCLlBikNHyvcSdsy4AFsq2yikR0xB6mUryBhNImWDqDBn
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 802A080007
+X-Stat-Signature: mxbt47dwhi3mr5pks19tuuzm96siatos
+X-HE-Tag: 1795417217-433575
+X-HE-Meta: U2FsdGVkX187SmmuO3Tww+OxMStjS5YqO5HFlqwDAqU8VeSvQdiUl+0UN+e7ut3vP1w1BrMZ3XravsgGVY9XiVMF0I4QLiqoMGKRAXW1ozuAWpr0XjpKIPLzBNAM4cXJYRr0SAt05sfrj4QPSeIvDb3raWTB3Bh3nCQnS+tnSq9HBd5w/7E2YbkRdDk/kBzEr2jizHDe71WdGZ886M9fw33rabZZ7u2YRqmindRy299ADUmnQFMFMuknjch3t1gN3uJYm5TrUXzI8774GVH+2akekUDfHSRH3pDWgKq03PmS1bs29/iZQjSD5cPq9kla14Zf1TD0/3/MSJ3Vj6aY8NS/AiSJW5rBq2DvogA/TIjLWUAJ0tfufPFb/YbU84PGr+ozv0efzUQVYhgDI3Evj9vOCp8dELblNUDNdipMXbSAn2riRVw43gN8s6dS81Yo2SEjuIGib1uwTGg/eybmDv6sSNnn5HGfPsSvIkJ9sItOGTfxv5khNSM7Zn9k3g0hPwtRj8tJioN7+bG3cKdFtop/ccmVyFNFcXmsKOsi2Xv01CwP/55lMC9LKO66HmyCroMSzyQ+4jQv2kjmNH7tYfIOrQ5O+lffCE/HWHOSUjUGrfFl8tFGJ5fEYmZTtMzBWIBt/YN041TKKgEA6Bg/ldWbidKKYX5PpomKWeuN7E/NTOoOdImoeID1wUvEr9etpmA+Ub1cBJojwleOz860vzKWFKc/v0nFH08jTZ6YN6WwHc2oCingCoW/9uYYaeN9zaWRpr/Tw7G6nsPGom4hroGGTXbeE7Eo5EvbVSiFi8/5Qq8UWUG22JKuowzY8g0o6147yR61I5f61YVT5mnc8JfFjR2EySjBgCq/ivQPp4o0UvUETusKRcTI08rR8OoUNF8bp+xlSoj5cAed6HJLIKxVI5XzLm6a4Nxz/J5HjqFE7O1ZdhjC5ftHnaU28fVY/DGC4/TPG3vv0VAtxiu
+ YXCZHe/i
+ BsHcGTjjEDN8Ju5mebF3qKczExUcloaWdHzJEumXV5xNUDh9yFKBYhr568IBUmjvoISVtZLr1mbbBrR6Ybg3iEqjGZ6yD+eN08IJajbWBuJQAfh98yDspQCyaOUs1iU6AH58nauud6eIY2pnGdNxZGk3mbU4k0JRAULAiLRi5QQSFGFAGoDXx6td/3/csoD7WunbPTBz5ubJcp3dqZ8jRrcUh9s4SKszsf786iU5RlfJgQzL6w+yQ5msRYC0O7XS7+eu3sABlHfXpUbd+07hllU8NiTYJDafl5AjLDQtpSqnJ6RmLhKRnY1CgaEtScmhth3VCmmuiPDLRe/f2e5VgOBFido9nUjMKw3GM35usQHqm1QBu5n8Aj0PU9MDd+hRRT9Eo6c3hCaRsQKAshmLpin122cf0499AGFfOjXpcsLCUgQzB53siToCGF6/Kj8ujBxKylfM06bf8R/GfdV5rd8W8tbHoecUVrGgVTwUid/IK4N3elnd9scoY5RbxH5Uq/f5XljVuWKkIal1sy0FIT1VL0KoIdD9e2pdLnOzeNmxM0S4phQWJXVN12A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,116 +106,97 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/20/26 23:34, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Nov 20, 2026 at 11:29:47AM +0800, Wandun Chen wrote:
->> From: Wandun Chen <chenwandun@lixiang.com>
->>
->> Extract the consecutive-offset scan from swap_pte_batch() into
->> __softleaf_pte_batch() to prepare for migration PTE batching in a
->> subsequent patch.
->>
->> No functional change.
->>
->> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
->> ---
->>  mm/internal.h | 22 ++++++++++++++--------
->>  1 file changed, 14 insertions(+), 8 deletions(-)
->>
->> diff --git a/mm/internal.h b/mm/internal.h
->> index 3a1643afedc0..9f78c12882cb 100644
->> --- a/mm/internal.h
->> +++ b/mm/internal.h
->> @@ -512,29 +512,26 @@ static inline pte_t pte_next_swp_offset(pte_t pte)
->>  }
->>
->>  /**
->> - * swap_pte_batch - detect a PTE batch for a set of contiguous swap entries
->> + * __softleaf_pte_batch - detect a PTE batch for contiguous softleaf entries
->>   * @start_ptep: Page table pointer for the first entry.
->>   * @max_nr: The maximum number of table entries to consider.
->>   * @pte: Page table entry for the first entry.
->>   *
->> - * Detect a batch of contiguous swap entries: consecutive (non-present) PTEs
->> - * containing swap entries all with consecutive offsets and targeting the same
->> - * swap type, all with matching swp pte bits.
->> + * Detect a batch of contiguous swap or migration entries: consecutive
+On 11/20/26 6:08 PM, Muchun Song wrote:
+> Several struct page fields have the same initial values for every page in
+> a zone. __init_single_page() initializes this state as part of its
+> per-page setup, while the shared vmemmap tail path open-codes only a
+> subset.
 > 
-> You mean softleaf entries?
-
-Yes.
-
+> Factor the PFN-independent state into memmap_init_page() and use it for
+> both regular and shared tail struct pages. Keep section-, PFN- and
+> instance-specific initialization in __init_single_page().
 > 
->> + * (non-present) PTEs with consecutive offsets/PFNs and the same entry type,
->> + * all with matching swp pte bits.
+> This also initializes the last cpupid and KASAN tag for shared tail
+> struct pages consistently with regular struct pages. Since
+> memmap_init_page() marks ZONE_DEVICE pages reserved, remove the redundant
+> update from the memory hotplug path.
 > 
-> Maybe 'softleaf bits'? Ah I wish I finished the softleaf conversion properly :P
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+> v3:
+> - Rename memmap_init_page_common() to memmap_init_page() (suggested by
+>    Mike Rapoport)
+> - Remove redundant ZONE_DEVICE reserved-page initialization (suggested by
+>    Mike Rapoport)
+> 
+> v2:
+> - Remove __meminit from memmap_init_page_common() so HVO shared tail
+>    pages can call it after init text is freed (reported by Sashiko).
+> ---
+>   include/linux/mm.h  |  8 --------
+>   mm/mm_init.c        | 37 +++++++++++++++++++++----------------
+>   mm/mm_init.h        |  1 +
+>   mm/sparse-vmemmap.c |  7 +------
+>   4 files changed, 23 insertions(+), 30 deletions(-)
 
-Yes, that would be more appropriate, both will update in next version.
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+
+One nit below.
 
 > 
->>   *
->>   * max_nr must be at least one and must be limited by the caller so scanning
->>   * cannot exceed a single page table.
->>   *
->>   * Return: the number of table entries in the batch.
->>   */
->> -static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
->> +static inline int __softleaf_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
->>  {
->>  	pte_t expected_pte = pte_next_swp_offset(pte);
->>  	const pte_t *end_ptep = start_ptep + max_nr;
->>  	pte_t *ptep = start_ptep + 1;
->>
->> -	VM_WARN_ON(max_nr < 1);
->> -	VM_WARN_ON(!softleaf_is_swap(softleaf_from_pte(pte)));
->> -
->>  	while (ptep < end_ptep) {
->>  		pte = ptep_get(ptep);
->>
->> @@ -546,6 +543,15 @@ static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
->>
->>  	return ptep - start_ptep;
->>  }
->> +
->> +static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
->> +{
->> +	VM_WARN_ON(max_nr < 1);
-> 
-> I wonder if max_nr should be nr. Or is it a maximum range to examine I guess?
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 8883b780b76d..d8bafcd92791 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3096,14 +3096,6 @@ static inline void set_page_node(struct page *page, unsigned long node)
+>   	page->flags.f |= (node & NODES_MASK) << NODES_PGSHIFT;
+>   }
+>   
+> -static inline void set_page_links(struct page *page, enum zone_type zone,
+> -	unsigned long node, unsigned long pfn)
+> -{
+> -	set_page_zone(page, zone);
+> -	set_page_node(page, node);
+> -	set_page_section_from_pfn(page, pfn);
+> -}
+> -
+>   /**
+>    * folio_nr_pages - The number of pages in the folio.
+>    * @folio: The folio.
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 0129152b74d8..08d6e47bde22 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -602,15 +602,27 @@ static inline void vmemmap_optimization_verify_zone(struct page *page)
+>   			page_zone_id(page));
+>   }
+>   
+> -void __meminit __init_single_page(struct page *page, unsigned long pfn,
+> -				unsigned long zone, int nid)
+> +/* Initialize PFN-independent fields common to pages in the same zone. */
+> +void memmap_init_page(struct page *page, enum zone_type zone, int nid)
+>   {
+>   	mm_zero_struct_page(page);
+> -	set_page_links(page, zone, nid, pfn);
+> -	init_page_count(page);
+> -	atomic_set(&page->_mapcount, -1);
+> +	set_page_zone(page, zone);
+> +	set_page_node(page, nid);
+>   	page_cpupid_reset_last(page);
+>   	page_kasan_tag_reset(page);
+> +	atomic_set(&page->_mapcount, -1);
+> +#ifdef CONFIG_ZONE_DEVICE
+> +	if (zone == ZONE_DEVICE)
+> +		__SetPageReserved(page);
+> +#endif
+> +}
+> +
+> +void __meminit __init_single_page(struct page *page, unsigned long pfn,
+> +		unsigned long zone, int nid)
 
-It is a maxinum range to examine.
-
-> 
->> +	VM_WARN_ON(!softleaf_is_swap(softleaf_from_pte(pte)));
-> 
-> Since you're getting a softleaf_t here...
-> 
->> +
->> +	return __softleaf_pte_batch(start_ptep, max_nr, pte);
-> 
-> ...Does the batching need the full PTE or can you just pass the entry?
-
-The batching need the full PTE.
-
-For example, two swap PTEs with consecutive offsets but different UFFD
-flags must end up in separate batches, otherwise, some PTE flags would
-be lost.
+                 ^ enum zone_type zone?
 
 
 Thanks,
-Wandun
-
-> 
->> +}
->> +
->>  #endif /* CONFIG_MMU */
->>
->>  void __acct_reclaim_writeback(pg_data_t *pgdat, struct folio *folio,
->> --
->> 2.43.0
->>
-> 
-> --
-> Cheers, Lorenzo
-
+Qi
 
