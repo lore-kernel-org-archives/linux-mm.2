@@ -1,94 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF71606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC581606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JIM0+eRo
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NyeYpXUt
 Received: by kanga.kvack.org (Postfix)
-	id 8F3896B05B4; Mon, 23 Nov 2026 06:53:59 -0500 (EST)
+	id D12956B05B1; Mon, 23 Nov 2026 06:54:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C9F86B05B5; Mon, 23 Nov 2026 06:53:59 -0500 (EST)
+	id C9BAB6B05B5; Mon, 23 Nov 2026 06:54:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 806B26B05C0; Mon, 23 Nov 2026 06:53:59 -0500 (EST)
+	id B8C036B05C0; Mon, 23 Nov 2026 06:54:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 57A466B05B4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:53:59 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9ACE120860
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:53:58 +0000 (UTC)
-X-FDA: 85466224956.06.40914A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3D70FC0004
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:53:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JIM0+eRo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F6426B05B1
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:54:22 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 33166A84EA
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:54:22 +0000 (UTC)
+X-FDA: 85466225964.10.E83841D
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5E9921C0006
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:54:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=NyeYpXUt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795434837;
-	b=Rk3XOb2atJlGBDdoiGihLK6g+63rSdLphzOGYm28T+VMS6KG8TFLzvsIhFMXjKrmYSo95V
-	hmF3fM7dqnbNQOrgrkz7Nhb7dYjkSrvMZiYSZy6o1mQ9bxo5XIsmeyuURVhaYtGF2i0gx9
-	AWoPCJVbiG9ZFPYejnlsxMIpJQhZZC8=
+	t=1795434860;
+	b=FSFQ1UcWp/ucttATS419R2aYP63KKoK0lB8Xvk5dXNoruPb99/Z01IjbklYL0GP1/sH76V
+	i5AjjE+9oU2n39YkoPlKhu9cJVk9NjikOaDkRtTr0tuhpt4dZMGYYElcfgF46YVaYAG2TR
+	zqjwEvLDXCVJC+GiBdQ8sj5/3VzSHrE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795434837;
+	s=arc-20220608; t=1795434860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rtnqsqXHQKuDC8iW2zmEn4j43knd0EsHyQCpFt+z1m4=;
-	b=my6USsChrXfN27q3qioywLEIog+CyLJCeZIwOxinx5WOpnGHoeZqRr6NCsLCN4SkDTuwqt
-	G5aTRWuJHy3n9cOr7ipuRvGhS9Fbo0RgJrzRGhvO1fekZjbgE+qEZbHriX6CDAKMHWjt7O
-	gmFF5sM7xqDTdEr3jO5ssYYobi4MtpE=
+	bh=o4oNKX9YSaQ7zR9YQ0CZmPGolVckVsLjzNRd1vRsTh0=;
+	b=5F3x7NPEJ41PkvZhLSSWUqhkizVbU/9G+og5vtDfUYyR8QWy3d4plVtrn26NJwCC6g1fh6
+	LcbFEgnGdGXJsrMBuz6D49XIDs1vbhmXeNWp0Tmik6qFwwnB6Q8c3KrIOTknrdSkQ+aEbw
+	OT3NBq4bynv8S7lQIG6CTNiR6EgR57g=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JIM0+eRo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B5C9C601C7;
-	Mon, 23 Nov 2026 11:53:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3C51F000C6;
-	Mon, 23 Nov 2026 11:53:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795434836;
-	bh=rtnqsqXHQKuDC8iW2zmEn4j43knd0EsHyQCpFt+z1m4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JIM0+eRoUDbIDakme8gpu8Dw9+Hw3XPCKCjTUoxiyGyWw4qFYt4lIvhSMKOihxx25
-	 U58hML0Fp6d/RR6M9hj4GjDKY2SRaynGZMNJS21V8u9QMhkaS9jKRQ1HqstRF4xNI0
-	 K8KaoEWXnH7BKtAcR+hUJ1xyGXFjUwltsRAj7Jx7aACtCnMo9TXzI0FZypxc29tofv
-	 r6IjYcYVjPLTQbvgdPXIIcJIvElblOueuZsrsyzehwoEhJyCmqnbwIIiMDti5JFVBm
-	 4zAXUpGx5KQwRjK02CGfjHL1ISOb8RExx95fCZZQXfNYsUIoUAmaICpNTouWn317Zu
-	 6PKo7++42ebOA==
-Date: Mon, 23 Nov 2026 11:53:50 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Qiliang Yuan <qiliang.yuan@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/rmap: flush the TLB once per mapping in
- page_vma_mkclean_one()
-Message-ID: <awQo2tg9rzMJYCQe@gremlin>
-References: <20261123-feat-mm-mkclean-batch-flush-v1-1-7e998ad13251@linux.dev>
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=NyeYpXUt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-382f4710a17so5433854eec.0
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 03:54:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795434859; x=1796039659; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o4oNKX9YSaQ7zR9YQ0CZmPGolVckVsLjzNRd1vRsTh0=;
+        b=NyeYpXUtls1xJDhHh+89BGPd0Pl4FAZwmTM1AqNILl/eGbCI61ynr9PlacUK5L0DDQ
+         QWe08sxvKMSsqaeDlNvcOBKq0I7wxmQn3/odgDaig6o2mEao8C7NIxsid/pbrf/RUFbp
+         H3TQNSnaGNZe6GdxHcddnv4UsWCpu0bBIvEK50tdeQ5rWGHzVSkfN5Y1wiu91GKibLLI
+         +eaQvxTYoHB28kCQeyOkFEQxJTxhKEK97Cp9TPCu9H88tba96Cxec6F+NKFK2FteWmXd
+         8YbL6SnDon9Klp9wQPpSujGehEQ9Uceoe5+ZMXOCLPx5r2/Vw1898I7TOJOUBGExoUzm
+         JGxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795434859; x=1796039659;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o4oNKX9YSaQ7zR9YQ0CZmPGolVckVsLjzNRd1vRsTh0=;
+        b=j3etexIJXJseRcZd5ak4M/pArSif5xIE4CYlSEh85d13ahyExMmfYQJsUnpAKe/ykq
+         jq7gpHqhYWo2ZPqKd8z9/4uInBT5BfH3NLT+zfoeoYUfG68AcZ1hs4PrF5fa5u0AAW6a
+         Lf1AuY1pvuf8l1N33t8aQoEtPa5btbYKVHt96yb2NvfTE9FHPyXWLkM8oghH/aF5Vvp0
+         fLDSyXEgrCwtq7yzoNhHOAwIUMye+DmEfOl+u7bF6IlNRiOtMmIKAcUUwGU8rvoTKC9l
+         ECMy1zdk57prkUsbt2qhLGakTmwkVqACjGuqTkzpv62sIhfZInekzOX1Gn7Z+NynTHeL
+         KAvg==
+X-Forwarded-Encrypted: i=1; AL+hErHhXzVHtchW85avLptSyywp6mxM/0vZaJyCwXAws27n+O/maeeFNoWxmHGnfITMEr1635yPRYqBlQ==@kvack.org
+X-Gm-Message-State: APuU4Z9a8h6FH6liyO7JHPh5pPwhUQdmDHxiquS4e+zDQMbim4G8CQeM
+	PffuH8GA9jdl5mTKO1NSu2vzpphl+CxkA9KRH/3jIk8ubdIeVGMhmiK+
+X-Gm-Gg: AZFdTZcswD+hHLHJfpbiTvwumg5veGbUtCi3RDaw0disWxoZXv7Ps2cKF3VPZZ4G6jS
+	nA+f1nug6CWhZg98IOq3kHnpjU8bGm4I8oBedLMcNa+40zwvAkQ3osn3wUQDce7mkC5SRdd/6jo
+	C3x4ULhEfVBBl7PheUK3nuJKOXpsh/h7nD+ei4tFgfaNIeZXVRwIAdtp5UZRL6J2vgmCtpt2Fe5
+	xX3ok/Ay43pxvU1Qh1Iq1yIRFg+I6xBidfhgLxSljPMVnWMd1m3ft8jy88zLOT8CyPODJ1wkqvp
+	oR9DMJCU4eLVvMSz4Qr7EPTQhhBBciiFYqylLnO+FtpM7jQokd6at1HwSVMwTgVSvuOs9AnMC3H
+	dTPQKDwcpTn8TPcCTpLNuu/L3xmJ40xxglAHjKJ3WjIuS4Jr2tUHh7hPwa+o0QtnB2LR9SSAhYy
+	Me31V+fRBJCQ3FS8LDpaXHPd0hF9lJjdoFBXJv1rmA0/8N8kSMOGwHQfvreVeWwqKTeaQvJLIzu
+	OCvy+prSGYs8CH1cUMoQNo1f2gTUDutvjOiu9vtMjW6v3EgV3fsoMx2sUcQGPPepSqkmrCNQCuz
+	bXI64id43DVzT4IHK7W0KAw+c0MKq7jHu7lmu+O7l+OxEffpiMaIXuXjLC3I6d94mzg0
+X-Received: by 2002:a05:693c:8803:20b0:386:9b9c:ef1b with SMTP id 5a478bee46e88-3869b9cf99amr7284369eec.3.1795434859156;
+        Mon, 23 Nov 2026 03:54:19 -0800 (PST)
+Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385677c371esm35476837eec.23.2026.11.23.03.54.17
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 23 Nov 2026 03:54:18 -0800 (PST)
+From: Lian Wang <lianux.mm@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 08/27] mm/damon/sysfs: implement report producer type and state files
+Date: Mon, 23 Nov 2026 19:54:04 +0800
+Message-ID: <20261123115411.8607-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261121210013.130397-9-sj@kernel.org>
+References: <20261121210013.130397-1-sj@kernel.org> <20261121210013.130397-9-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261123-feat-mm-mkclean-batch-flush-v1-1-7e998ad13251@linux.dev>
-X-Stat-Signature: bbuozipcebwgnojazk65tq4dpx4jus18
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 8fd9fndag5cogcmwz6ebmiiuxnk5stm1
 X-Rspam-User:
-X-Rspamd-Queue-Id: 3D70FC0004
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795434837-921303
-X-HE-Meta: U2FsdGVkX1/UVcJud9sLth4VgQYOVViD3Sif34ixP+NeSYqntbc83RYXHcxRNGhI5l8xoS24mdGbN0+ysH8aRJQhLc/7mgyck0AZ26HPrEwNg9QY1KXL4c/sxy0VL4osORSqFXEghlgNoKvs/9WVTfKEGbE7/fYQwPFwiBQZ/qwWOPm4lyZqZB5pU8wvz+MckKn9GxemdNDnv8Ec6EkKY7Um/w1vU/Sqd/3wC4zUKIBKUy24ePR8Q182GKos+AjVyIXV/1h/XSDzmQ8v4QArAyXpMgqHmdasCf7uor4bo8RJS+jXfVBa4ugI/ZfxkTNEfbySO/9eIvWkDYPNMlTX+uXIuiThjX+urkaGNgviBUyqXKtk67R+kXydQMEMqrmFYhX8oPUwQq8KtjnlgQWDbYYBiorlRjUvhE/fmLxpK+hAgz1L9lkO5W7Tnw737S7Kljjet+f+LqOIa+0r8RY+YEfP/vUBcrJpivuSRJD4A9FKzp0At4Aw92p9zNYY/ucTGdNPHDv64xx1ZB4pNNuajOHpw3x1uBt5ObokdWjaJzRMD/1AYsHs1B34dnhlaTcsbm+iMDm1VjqoS7lHcxCLqic+dKrLyHUHiFcWinNjXaVK22wyW8dmz4s/kJX0RR3/KqeP2SB+vOIwRp0QENklaalFvKskvNr35AcqtE9JXh43ryV9Wz/2Yq4GcJpW8EJwyBVWYr9OZojdnitHpyZnSP0DGQ5URcg0lwecqDK/wpu9X2yqlpQUsY3CC2gSpC+u5OPhjIAJ8Vzu7yweVeSpgbSgO7xEs7ZkuqLRUgzFjBO07CKdlaNC2KVZ4B6Zj51azW6ovgb/Ny99bSXKJD293e5M9Kr7X5WLLbesgh+1Gh19WeDCagHbeHaUOOJD2ks2KSBU9449Tve4tDI2Oob+1EwEtKRLIIcRHYQidKTLUTGRRfYuRJtqH3JVQPezAgpJEX7KVPv4foZ+NBNoIuT
- 4ZDbBXvr
- vceSUIGrt4yc2a4ixYDkHdU1B6wf3gUHJ4e7dJ9hWBXBToMYbmD7ttX0fcEA7riOmXrm45YV2iT3n/8JVNfBcd0+DsRjv27ybtiZn0/ouZ5Lqe1XDD/b1YTD7zJfLNIm9gYGwUiqL0A+qqW6sVK+Wx56BqGzeMqeRmR/u6TlwfZiwvjilS2+Cmid1YA+HNRN/ed2c9kX9lqgdkbl4hdjc5kJN3tpio0A1co9CXcGWEyAdTAnKl9WBtTvlZJlfssv75MbTrstmSkYwHY5jzwYIJvPWCgbIH98evgEYw+QkhFlE6WgpuflJI/qzgvBtUT1KSN6JwKMUogwqJje5wf58wtNRWLb8oQ80t7sA4fCwt2hJzNBf/PVd7Yx0mbvEUVuvvHROH4T8h2le3R+Wjajv+0b4nwPUcH5xI1DfEXuXbpwfNp9Ast+R82iykdCY7IRXylUpHeWlkfcLLXafZhfS1FS4nBWg1KA4yMbogUL8sMNM8mpK3X2skEcMU3gSA7viuey074DAnycDst+rp8asNufYAZAREBtieulGtVWGSd2RvIjfGqtc1fjRFXzc0TJJnErv
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5E9921C0006
+X-HE-Tag: 1795434860-779401
+X-HE-Meta: U2FsdGVkX19+RJDgd3OpPFBKhbxBf7kWzcowPPaGTeHbWVuVjE5Kw5w08FHbwhphOTcb8KnnojwXJGFfqyYrPIc8nCEPykWfPEZ189m6NyIKAcfoSQ2qXXZ+/UFDQ/IBs0ivs5wXVXmS9uLUyn2RSI9nsdrvhCCnhsVy52yU6ZK4wdawgcwkRk80JrMnb7UphmBuLgWvigSNed6dX8denNz6ViYpgsO0v/2Z8kYR5A3G74IWygKAONuDayRFizoayFFb95Zs3BwwiVSbI5NuDgCcmS+w+22F82jB8q6agvuUvTyK4XrSSll6MxnR5HD9qpt/nLB10YcXDX+ZEmLqbjRNfHQOh2o8ym3W7+kNufgOmkQRkoH62II7xOFQlvirbNalNjTxCky52ApX1b6Yy7paei1LY/djaCsR9QJVx2AgcRZXfRldwAWKsjK6Eympco/z4m+ZpSrEbmyaO/p8SZhxj5bQ27lqgpdPZuQaaseA5srGKTXFp9OXESXsvMaHdCEj83rqQkPXHDy5lCjgTlR0aFZQUSh9seBCiaQR2EhI50xvwRD7vMBPOPS4YiY1XFMqMV55WZXspPLfedam6nKb2vUW2Cx3X3Q8yyKJfEV+MkLugU5orWf6abVBkEKl/Psic4pXhOV53fvkWJ4qZFvLKC3A4//f7eFFeK/3s0/eBXDScXMc0fQIE2y9CjI8vdSWPQw+gQc3uTIKKRdGhtNbb7gEN8VfWHrNu/nYoaHmfQJd9sV9+jvX+1qTb6VYAqGGGsJCOVCKevuuhsWuTkbFuF45fBgNYUdclwIo8WA5tXGCEmbbD62Ri8ARKzSDjOHmv9TRlROXaGmVXbA22BNn94ivQBEmF7JHXdgfUSdv0F/gLVI2UymQGnl2dU0/GLCp/4q06V7xJ43WzPrynrqkjUo/IQOF8VgKK0uvlIs1I5jlknm1zefkSGLlqnGkDF486XiArHXY0FeQKHu
+ tvIB70sF
+ Zei+5zHylq1KAtFTq4oTGqEMbmEVh8d0OP0wlVa4uWjpIphYy8rDj9NauXcr7Yb9s3WpD7KtzW6bLGcZYYOHL8Ny2PbHA9FNaICg6K8Pu/fM2rnr4C+tyDPQykvz9XNzGqVJwJ7l/toGplNJlB0YkP8Bnnag9TTMeuyR7Qa6D/b5rlc8tKLTNo4wIZdPG4b73CfdhvGrB2K+ROCB1Do4rCIGVumCS0ETUag7jtM7qx57jD5WwilebPv2+wAbTwlJoDTR1ReGmtCX8GQBm8iIqhndpkq7gIP2fKtkSL5wWP7zS/g22FdlTZQp2c0Z9vix4pgF/vWGZcURXizd9VBDLKM94ts7UwCOUmuHFKItkBqRzg4BNwHsqgfoiFthqDkQtDNqL9OJSYuZh66rHynZI6vJmdtItRVJHV66ewvgDTjfnWNThwk8eWG9zCQo/y1EXpcuLmXCC29d4Kj0e17NYN3kijt/iZtSeatQdyR1w2EfPdqPuFRdNoIzdTNTWoXOfQoacCHA5g2UKsOkjH856ygmheJdp/evxjU3YlOIAmRKnu2KTaSzwgUqXRSFW6wKeXimTtx6+DOtPRFcvnrrp1F50sy4eAQhYnmoXQEGooluEpVXjr8LO0QB4A6tyY2FmxzkJFjBB/JrhrxRx5f59+GGZgm+l5TSpVZ7AzdyA0oIXvXOEUsLvXramow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,107 +124,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 05:41:38AM -0500, Qiliang Yuan wrote:
-> Writeback calls folio_mkclean() on every folio it writes, which
-> write-protects and cleans each PTE that maps the folio, so that the
-> next store through the mapping faults and redirties it.
->
-> page_vma_mkclean_one() does this with ptep_clear_flush(), one TLB flush
-> per PTE. A large folio mapped by PTEs thus costs as many flushes as it
-> has pages, each an IPI to the other CPUs the mm runs on. Writing an
-> 8 GiB file through a shared mapping on xfs flushes the TLB 2,097,152
-> times for 65,575 folios, and the writer spends about half of its time
-> in the IPIs and flushes.
->
-> Write-protect and clean the PTEs with ptep_modify_prot_start() and
-> ptep_modify_prot_commit(), as change_protection() does, and flush the
-> range they cover once after the walk. The flush still happens before
-> folio_mkclean() returns: stores through a stale TLB entry complete
-> before writeback reads the folio, and later stores fault.
->
-> Writing an 8 GiB checkpoint to brd through a shared mapping, one file
-> per writer, then msync(), median of 6 runs:
->
->   fs     writers   before (s)   after (s)   change
->   xfs          1         5.57        2.98     -46%
->   xfs          8         5.37        2.10     -61%
->   ext4         1         7.88        3.90     -50%
->   ext4         8         5.10        2.02     -60%
->
-> Signed-off-by: Qiliang Yuan <qiliang.yuan@linux.dev>
+On Sat, 21 Nov 2026 12:59:52 -0800 SJ Park <sj@kernel.org> wrote:
 
-You are flooding the kernel with patches, 6 series across 4
-subsystems over 19 hrs:
+> Implement report_type and producer_state files under the report producer
+> directory.  The type file receives the type of the reports that the
+> producer will generate and submit to DAMON.  The producer_state file
+> enables and disables the producer.
 
-https://lore.kernel.org/all/?q=f%3Aqiliang.yuan%40linux.dev
+Makes sense, so LGTM.
 
-Please don't do that :)
-
-Given the volume both recently and in the past I assume you are using an LLM to
-do this, so could you confirm your understanding of the problem (as well as
-those of patches sent to other subsystems) and what real-world task you were
-doing to identify this issue?
-
-See https://docs.kernel.org/process/generated-content.html especially the
-paragraphs at the end.
-
-In general a core team member tends to take over stuff like this.
-
-> ---
->  mm/rmap.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 65646ed6fc453..4c3d9cb47e550 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1127,6 +1127,7 @@ static int page_vma_mkclean_one(struct page_vma_mapped_walk *pvmw)
->  	struct vm_area_struct *vma = pvmw->vma;
->  	struct mmu_notifier_range range;
->  	unsigned long address = pvmw->address;
-> +	unsigned long flush_start = ULONG_MAX, flush_end = 0;
->
->  	/*
->  	 * We have to assume the worse case ie pmd for invalidation. Note that
-> @@ -1156,10 +1157,11 @@ static int page_vma_mkclean_one(struct page_vma_mapped_walk *pvmw)
->  				continue;
->
->  			flush_cache_page(vma, address, pte_pfn(entry));
-> -			entry = ptep_clear_flush(vma, address, pte);
-> -			entry = pte_wrprotect(entry);
-> -			entry = pte_mkclean(entry);
-> -			set_pte_at(vma->vm_mm, address, pte, entry);
-> +			entry = ptep_modify_prot_start(vma, address, pte);
-> +			ptep_modify_prot_commit(vma, address, pte, entry,
-> +						pte_mkclean(pte_wrprotect(entry)));
-> +			flush_start = min(flush_start, address);
-> +			flush_end = max(flush_end, address + PAGE_SIZE);
->  			ret = 1;
->  		} else {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> @@ -1193,6 +1195,12 @@ static int page_vma_mkclean_one(struct page_vma_mapped_walk *pvmw)
->  			cleaned++;
->  	}
->
-> +	/*
-> +	 * Flush the write-protected PTEs once rather than one by one, before
-> +	 * the caller writes the folio back, as change_protection() does.
-> +	 */
-> +	if (flush_end)
-> +		flush_tlb_range(vma, flush_start, flush_end);
->  	mmu_notifier_invalidate_range_end(&range);
->
->  	return cleaned;
->
-> ---
-> base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
-> change-id: 20261123-feat-mm-mkclean-batch-flush-686d20219b52
->
-> Best regards,
-> --
-> Qiliang Yuan <qiliang.yuan@linux.dev>
->
-
---
-Cheers, Lorenzo
+Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 
