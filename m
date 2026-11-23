@@ -1,135 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC99D606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5EA606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 11:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=cUtfC1HA
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WTrfVq08
 Received: by kanga.kvack.org (Postfix)
-	id E9C786B05BA; Mon, 23 Nov 2026 06:14:34 -0500 (EST)
+	id A5A316B05B0; Mon, 23 Nov 2026 06:33:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4CD66B05BB; Mon, 23 Nov 2026 06:14:34 -0500 (EST)
+	id 9B44B6B05B1; Mon, 23 Nov 2026 06:33:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3BBC6B05BC; Mon, 23 Nov 2026 06:14:34 -0500 (EST)
+	id 87C336B05B2; Mon, 23 Nov 2026 06:33:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B00DD6B05BA
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:14:34 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E086C086C
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:14:34 +0000 (UTC)
-X-FDA: 85466125668.08.1AF576D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6C39A80008
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:14:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cUtfC1HA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 57F0B6B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 06:33:02 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BDD0B16083F
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:33:01 +0000 (UTC)
+X-FDA: 85466172162.04.D86F2B4
+Received: from mta0.migadu.com (out-41.mta0.migadu.com [91.218.175.41])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 70BA8160007
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 11:32:59 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WTrfVq08;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.41 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795432472;
-	b=0ReGnMW17WtuASZyi718gxgDC7MSfrphv9F9ZgnrkPi2XgkEG8bfr41wrlmgMjPNIPu0wX
-	9xIihtKM4J7Nxse2EOxcVSGhVoDwxPHJ+2MPRb8aQmvhdW0PB++tNq7klcgk8tFtTeMo1j
-	WeXuaJOjB+fDgOuhtpRvzEGyNgeKRvY=
+	t=1795433580;
+	b=Oz/GKG1hbHhfitZ/vS41POpVbdMhAE/Y/sF6t9uHhVhWMtcy2aBmvxSC37KDul4mGFDx7T
+	ld/Swgr9SoKXnhoe2hygOIkzmxu88T0xZCCGD64tQdMzOZ3OsmNmVC9VRs1GRzRE9YXp4t
+	QrFR8wolDlchu6cCE9HDQjnXdC1Eo3A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795432472;
+	s=arc-20220608; t=1795433580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M8BgEwiMtUwRuCgZnUVMTSSA8VV5wT5wVfxb83hMYt4=;
-	b=cWDQwDV1Q3NhyPGFeBsipLXQswRrcZiX5Zbrwj1QJPBILjSUBQnEvW8oOc0nUDTSi2fZtE
-	w3SZFMCnhnEx7RGSI7dXsVpyiNDbECKl4CLQCQRJ2kJDaaPcn97ePLyrUU+GhQYTKqoj7W
-	y+eFTgo8BD80YDpWd6mi2/BJG0jdXo8=
+	bh=g/yjtbcg5So+54TQQrwZaOAyU8C7v2qrotK0MDLGBlk=;
+	b=fRN4yFLN/vUsk0A4V80Pv3vgcUiYBqlT7qHC1DJsvnJefCftierGDJH5xMvPau2fDt43xL
+	Qot5Kw1x2DtJiQroD0MAyaU+XRvFz0K2llXfR+aSPHx9am6JaYlrhb0ghHmMd07WWvRvPL
+	7xRN2pwO74GZZuzg7MaCYzd+sxx+U20=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cUtfC1HA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7CE821476;
-	Mon, 23 Nov 2026 03:14:28 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1BA2F3F882;
-	Mon, 23 Nov 2026 03:14:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795432471; bh=4UDMjdKhEafTSrkfoMvLUzagh+R4A1yL+W6+zxTSE3g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cUtfC1HA2CZBX5GdLcjS9Fv5iD/xcSaWNNdEjaMRUj8xf0cmPTKcKav27v+CAPLkC
-	 w1bkGxtfk5N0ExzhPBYejU8PO0+4gtg8l1F7GJM4V1zbhqzbrPWAA1+BjvltqwmxMn
-	 LE7OlN/w/0fHifp9euPk5nQuLJbtKZlIitJWjJvE=
-Date: Mon, 23 Nov 2026 11:14:21 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 01/13] mm: Add an allocator for CoCo shared memory
-Message-ID: <awQgDYK2Bq0QGpNU@arm.com>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-2-aneesh.kumar@kernel.org>
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WTrfVq08;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.41 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=EJgnsJKgFUNVuWQixFdvu+2zJ14nbsStpxGkd+Wpnts=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795433577; v=1; x=1796038377;
+ b=WTrfVq08LkZEOI1ZPNilLy/If0IKJhvvY/gDlg1LlJiC047SiyuW7EevjWWerKUAaXJb20BW
+ cnQQ5/ESEek/bGeynjCYTAHQulDaSQ+WXJU1qH+7/+981YeFj8iUirRy0V1hvXtHOB3ex+OHPgn
+ r96lyXxIb4XkD4p51F62HMNc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 6b58d3fb24c8c492;
+	Mon, 23 Nov 2026 11:32:57 +0000
+X-Mizu-Trace-ID: 6b58d3fb24c8c492
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <0e30c5c2-b9d0-40ea-b7f9-af9a8854bd58@linux.dev>
+Date: Mon, 23 Nov 2026 19:32:48 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 09/11] mm/vmalloc: undo what vmap_pages_range_batched()
+ mapped on failure
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org
+References: <20261116071325.263682-1-hao.ge@linux.dev>
+ <20261116071325.263682-10-hao.ge@linux.dev>
+ <CAJuCfpF_=KV3ArFO5LtMjc4EGMr79tX_tX2K=YCG_JTvC51OfQ@mail.gmail.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpF_=KV3ArFO5LtMjc4EGMr79tX_tX2K=YCG_JTvC51OfQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261116091137.94252-2-aneesh.kumar@kernel.org>
-X-TUID: 696EyIiS0JVf
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6C39A80008
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 70BA8160007
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: af8n3pcw1ysqzi6mzomr9cpq17wq4x6j
 X-Rspam-User:
-X-Stat-Signature: rezr76th7cs9g81ydznefixgc5tgg5dd
-X-HE-Tag: 1795432472-94107
-X-HE-Meta: U2FsdGVkX18VHylqEqft11wCwfGf/2RFnxZrypgvUeCV+pcZ7QETF56st3gWVX5yM/kbt7XMzYjcrVXQNJcMqwKm7+C9sUdY198fwym/E6IcQr/xKMoCvNyMbnXdCOGMBcYG15tIjkQ2d5a5C8WXjTnfG4Q7mHDBAH75hmve0Hiltzjeh/I14hz374c8jKqhIFXr2hTavOA65SPmAeFkW3u4ujAkelfczJWdkDMi4KSUKohVPVqBPytY7FmX7gjILHa+7hxQmdfyQhCE8TnvHCdtVk8W1tvgecrv/juGTiaWCYsFP7+iLQcXfcW3uNhXtPs+raHeAfaWmnXlCxR2B84xzTITWGMaUYM6vrgtYpc4vhHpMrBtN4mVpQYCl+RLzQfgrn1CXX7+GnEyRE7hrws4T+aDNVjRyuOvjZei/7gVzeuqqWCpxuprCnWdk+AFi8OKyJ2Lu4oy0erF5Y30AMqxcEYYow25AtmHnDFSqDmZh5QdBRGVf/iicCN3MdYieGNICqtIuXVz1f68f9vrhz1TZd8x7chi/LKDdieaf1IyR+PhsZ1J4rWVORbsN2BkQVxyCYOjprBP2m9lxidSieB/1xzPknveGuRbHE4IDg3AJ4T9Mg2uGYqsApX7zwHwHXhNc4Xqu8xER3RfJUOF8XkSiL+LFVbysdwY66wt6KhDdoPjmV+D+lEsMabtXwgcKxdMJ+eiTjgiJb/mXL2+pV0npaVPoQQIkxKRXMUwr56PLt9juxqnt+6jE/0oKhdDkZBhkdaT+3DVkmxwgNMmTBzUktc/w2+c/JE0Snlp8j7GmV4vl93ArMH+QeIS+IHWmGwT4XLTpd/XUIWPvU6/QdCBUMzxIWHNlbNtD9mAevMmiLrM8/vzb/p8eufXyVOsYurV7Wm7ZGW81l1dtpADh+vEfG0YmWP000OsB3DI1h17cdFC+oncrHhYjo91RUm5tUEloJD33Opp9chbY6I
- Frw3utbf
- SWuPZAj1Mb1SSX13nZoIC7nZYodEpPIlmbTd0KWG2r2aNzgrSIYbUzqqCQyvWKPU/3/yhjtuCASlIxCXobCCrqzlGhUdjOyZVezeWFiE7n0leJyP/VNW/08DVtFotrt7cFRZkCGRwAnPQd3SaPSvuuXYz6e1xUvD64egyiGnbVCcZhGTG02IPdNo8f8vaM+zkKq+GDp39QHT0sIIHnnF7OLEmty6Za2wI/rDGU1h9JH2/2H2u2rR0TQDjdabggH5nLvE2putrOOIlGwPD3fZHKhyomwIHo9zx50Ct/gL8vbBjm65SJlckxJC3A4nRDt6mpSk1phbe74w7AQDie4P6QSrx+4fmhp5B9nmtXKsPCBkmAmZ5FK89ORFs0C/HD0egl+bjq0M7O4a7ZMytveQJh7gMeTuv454621khHOSjl3GlIfkWau8ahws4YvuqdqBk5OK5ceBdisiZ/N0xgHrBy990zS/UjwoZLT7gZcSamQW6KvYhmzmstczZL4eWMYvSHDYMwvk/cpBmr95lYe4BIQrul5XehIgtqDd3ZbJg8MD2HjQizRzxaLbqnQ==
+X-HE-Tag: 1795433579-79470
+X-HE-Meta: U2FsdGVkX18apLGgUeb90ZtGRpn2mG8+mFXdf+8LVYqj8nMpeFypjV38WET/zqLyYpCBhyvx03+ZOpKOa8GdjaEe9o/GBgi/PNRk9M/UoqWOaEJ72aoNJNEvKr6sWpiqjIdQTLTX4uXeUTt2E9BpW6oaD5OOD74V5jKTpM89qqqpH3ghVGuqZN6eoeKpZue2mY7NyT+5XhvjHoJLC6MxhTQC1xwvstDh2TGTejdRru6X2BOrOsobUrzuPAW6R7sdEc1+yEg3cflzqeerhuPqlWMkioo83Rffk1Q6R78/6/f2G61lONBncMjwPvQ0ET6NbMBzsIREDDtypqRkWiAWiTYTgwTtRGtAiqNtXIH+y887CRkqgEC0wZnM8M40qiSPBqhhayULg+uXASAuOI0VQsiaki3aZvxocCxWg8+9rqMcVfd5WoGPjMs2ZuOUD9EBTwnBvyy1DTgcC8sE4pONsi/WDDZRutpB7Rrw6K0KBt2EIJNSdDzT2LrGNVtt/XRRsjp47YsOIIBonkPi8uK/kTCaRtOIPnGR+TjCt+yqM1T828raO6RxnIRmJ59By3EL8b2Uby4hRkv2DJKz42EblwnmDd3wm3QGFXp0Le02MR2eBjmGY7w75QWQuHJc9BWKHZxF5fpRX2XLgC4cQLeZCD/p7LccSIZ3LYVHEuCZPpCpgCmnkJlOugE/Tr7ojJfXWPqNZZCLBIkYgl/CdEQxfiMk8kC69KP7wZ+RqPy7x4r4WPgspa6w8GMTkW1nFRGeqK2wQymHB5Mx4hkliN0A6nSCGgygREe8dg2x0xjrCk4HJrgbViO9DXdUMxh00Cz5lmpQiqmWWm2ZAvnsGO2xn+tUtOQ9Bx7h8441CKc0KqJ+qUeg+l2NVeQsWX7NifBqevkSmwfZyxiF5WE1ITe3SHBVTkrqPoyeFM65+y2JeY6GZVl9Jvph/7sGhrETBxaM3g+BM8ULlx2vzPixBto
+ +9H0iP6r
+ PDliXhw02HC6bT4sMbLVvGxg10SSYhFcjk7gjudisxgfaNgr1MR4G2h5735BGMfp/uHZGibOWEPBs4bna6nRi32RXEUWfTAH8yh3xbL5T58bLnSv7HWZO2A2kn/zCrvv8VFCPSAdjbEiYJnjwdZztR+bUiCh++2RL+78fwtNAq5A0zM7TERiCJ16y0qNRyohZgzaQbcE/mhk/TUUh54BOn5QM4fonj0L54mp9VeKhsvgo17VOdWCjSskXPdUVJTpKX+XZroLdNtbF5DoHOjV3L6Lpiu40M7WBdHuvSiTlJet880/IGzSrPHGqpEE9/AVCVhHs+vzhemPbhxSe8dL2F4V3laJXmE7UeG6EsOi6sRUez9LTn2aevKWyIIty2l0fYNCiu0NjlSij2/LtFG6ShrX74XDAd0InsMK+ujaRgAxLLKs2lT7vbpr7VIp+SZHewGMc+xCqMxly9dKX6GkDMD4IBwbCAppo733Cm+R83umlecvDnWmNAuhwFW3GLifFP7F9zduM0nahsAM6F0oluQj/4P4iBwHLKqtmc/Opc4ydy5t0gn2kUroDzrbypSM4weE4qiQXfaPL7z2CkTWfenZIErgY9WWdY0N1Lh6/Ut8Dp0JYVzHvZuyYYAR3xxC/1LHT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,27 +108,116 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 02:41:24PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3e626e45d432..5ce879ea2ef4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -28553,6 +28553,8 @@ F:	drivers/pci/tsm/
->  F:	drivers/virt/coco/guest/
->  F:	drivers/virt/coco/tsm-core.c
->  F:	include/linux/*tsm*.h
-> +F:	include/linux/cc_shared.h
-> +F:	mm/cc_shared.c
+Hi Suren
 
-Would it make sense to put these under a separate CoCo memory sharing
-and encryption entry? It should also cover include/linux/mem_encrypt.h
-and include/linux/cc_platform.h. Both are shared interfaces with no
-specific MAINTAINERS entry.
 
-I don’t mind who maintains the entry but I’d list both linux-coco and
-linux-mm. We can leave include/linux/set_memory.h out for now since
-most of that header deals with page permissions and cacheability.
+On 2026/11/22 12:13, Suren Baghdasaryan wrote:
+> On Sun, Nov 15, 2026 at 11:14 PM Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>> vmap_pages_range_batched() maps the range batch by batch. When a
+>> batch fails, the batches before it are installed, and the failing
+>> one may have installed some of its pages. mapped_end follows the
+>> end of the last installed page, and the error path undoes
+>> [addr, mapped_end), never past the point where the walk stopped.
+>>
+>> The KMSAN metadata is set up for the whole range up front, so it is
+>> torn down as a whole when the mapping fails, like in
+>> vmap_pages_range_noflush(). The only caller, vmap(), also calls
+>> vunmap() on its error path; the double teardown only walks over PTEs
+>> that are already cleared.
+> 
+> As I mentioned before I think this patch should be merged with patch 7.
 
--- 
-Catalin
+Ack.
+
+> 
+>>
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>>  mm/vmalloc.c | 22 ++++++++++++++++------
+>>  1 file changed, 16 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index 28e65073624a..aa80bc273ec0 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -3748,13 +3748,14 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+>>         const unsigned int nr_pages = (end - addr) >> PAGE_SHIFT;
+>>         unsigned int prev_shift = 0, batch_idx = 0, nr_mapped;
+>>         unsigned long batch_start = addr, batch_end = addr;
+>> +       unsigned long mapped_end = addr;
+>>         int err;
+>>
+>>         err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+>>                                              PAGE_SHIFT, GFP_KERNEL);
+>>
+>>         if (err)
+>> -               goto out;
+>> +               return err;
+>>
+>>         for (unsigned int i = 0; i < nr_pages; ) {
+>>                 unsigned int shift = PAGE_SHIFT +
+>> @@ -3764,9 +3765,10 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+>>                         prev_shift = shift;
+>>
+>>                 if (shift != prev_shift) {
+>> -                       err = vmap_pages_range_noflush_walk(batch_start, batch_end,
+>> -                                       prot, pages + batch_idx, prev_shift,
+>> -                                       &nr_mapped);
+>> +                       err = vmap_pages_range_noflush_walk(batch_start,
+>> +                                       batch_end, prot, pages + batch_idx,
+>> +                                       prev_shift, &nr_mapped);
+>> +                       mapped_end = batch_start + (nr_mapped * PAGE_SIZE);
+>>                         if (err)
+>>                                 goto out;
+>>                         prev_shift = shift;
+>> @@ -3786,13 +3788,21 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+>>         }
+>>
+>>         /* Remaining */
+>> -       if (batch_start < end)
+>> +       if (batch_start < end) {
+>>                 err = vmap_pages_range_noflush_walk(batch_start, end, prot,
+>>                                 pages + batch_idx, prev_shift, &nr_mapped);
+>> +               mapped_end = batch_start + (nr_mapped * PAGE_SIZE);
+>> +       }
+>>
+>>  out:
+>> -       if (!err)
+>> +       if (err) {
+>> +               /* Undo the part the batches installed before they failed. */
+>> +               if (mapped_end > addr)
+>> +                       __vunmap_range_noflush(addr, mapped_end, true);
+>> +               kmsan_vunmap_range_noflush(addr, end, true);
+> 
+> So, you are unmapping (addr, mapped_end) range but removing KMSAN
+> metadata for the entire (addr, end) range. Is that intended?
+
+Yes, that is intended. The metadata for the whole range is set up
+before the mapping starts, kmsan_vmap_pages_range_noflush() at the top
+of vmap_pages_range_batched() installs the shadow and origin pages for
+the entire [addr, end) in one go. So on failure the metadata is fully
+installed and has to go as a whole, while the page tables only reached
+mapped_end and are undone up to there.
+
+I know this looks somewhat awkward. The asymmetry comes from the metadata
+having to be set up before the mapping starts, I don't see a way to avoid it.
+Maybe add a comment explaining this?
+
+WDYT?
+
+Thanks
+Best Regards
+Hao
+
+> 
+>> +       } else {
+>>                 flush_cache_vmap(addr, end);
+>> +       }
+>>         return err;
+>>  }
+>>
+>> --
+>> 2.25.1
+>>
 
