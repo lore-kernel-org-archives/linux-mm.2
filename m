@@ -1,107 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59B7606A32A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2035606A331
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hC7suLs4
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=seJP6l53;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Uu4VCqg+;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=seJP6l53;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Uu4VCqg+
 Received: by kanga.kvack.org (Postfix)
-	id 079036B05B1; Mon, 23 Nov 2026 10:36:36 -0500 (EST)
+	id 07E2B6B05B3; Mon, 23 Nov 2026 10:40:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0505F6B05B2; Mon, 23 Nov 2026 10:36:36 -0500 (EST)
+	id 02FEA6B05B4; Mon, 23 Nov 2026 10:40:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECF276B05B3; Mon, 23 Nov 2026 10:36:35 -0500 (EST)
+	id E60D16B05B5; Mon, 23 Nov 2026 10:40:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CBF7F6B05B1
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:36:35 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 75C751A08FA
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:36:35 +0000 (UTC)
-X-FDA: 85466785950.09.3875C44
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 723D4A0002
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:36:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hC7suLs4;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf15.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C27366B05B3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:40:26 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 538C3C0936
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:40:26 +0000 (UTC)
+X-FDA: 85466795652.06.F5B27FE
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 496BA4000A
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:40:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=seJP6l53;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Uu4VCqg+;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=seJP6l53;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Uu4VCqg+;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf17.hostedemail.com: domain of krisman@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=krisman@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795448193;
-	b=FykI89rtWT/IpEJ6haenWKxoDDOt8AaMbldYHnGO/ouzuajxStY10khcwuJMFd6eG7uwnS
-	51+HDFAidvB1VZwdbwf14BCPqndY+75FCxm/plBy7QiM+9ygDdU5WEieCg/zWzlBEcr9r6
-	F1h4zOfa8mHBNL1vsolteaqc5x+kYIk=
+	t=1795448424;
+	b=aRqJPxQlxNKd74jZ+9EUj7bQKPWr6jan/JGabvkIU9/u9kPXJVeyfQVcNIbIWBxY/YuWK0
+	qy4y9R1WTzvRrZMSX3RtuDREqsmR3G6TTBHNKkpLmpPe+TFrQ6Q0QTJqAobHa06O8B7Izi
+	bm32rzjNnfUXKD+SNghgAk7s3dP6rr8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795448193;
+	s=arc-20220608; t=1795448424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1XFcPod1FFohR6V4AAF/gEfpUeCtMF7v05o2OAE5Wyo=;
-	b=ybOgB8BPzL6zX9IwwR/miAJ9LVkkR2W4nzey5znu+a9F2Ji40ha4EWMwu5LVyQMf8xaiHI
-	Guc1cFOzertxNehRYL9b+gxjcC66ZDNW7Otzi4vceUZBp9lTMSaS9XSx4L2pNw5u9se7OT
-	TrUGwJO0jwURZfMEZbn2+OBMrMjX3g4=
+	bh=TRg73PCpmlZWbc1zT/pf5WUhMtuFRSW1UJ9K9OaWjM8=;
+	b=R2zMXeQZSWLq0Y99uhHe7Nxwa2+flVfkgFUmOVdAtjLcJLukridMx7+8JJNogPxNrEvScp
+	U1aPd89ln+b5yUKVF7dIXfSwF0/XvAUJLnqJYTr6za4VDZIJVvGLZ/yCPymS7QCumjfKZ2
+	Uc/N2uYu5KI2C2m2Wgw7iKKqqlRiVoI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hC7suLs4;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf15.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795448192;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1XFcPod1FFohR6V4AAF/gEfpUeCtMF7v05o2OAE5Wyo=;
-	b=hC7suLs4ROdY+xXNIAly2zmmTULmfjDkxSSWU9bFgnvhfZTmfl+o20dOz4Q/jXMWAd7Wpr
-	jNifNyYYYNfOqeUVlrTZ2xmdC9zgOa72Hz/TQI3hK8D2qJI5PDDZYfUFxJ77mClTP/R76Y
-	P57WsxKHsHf/IoFRKOVVJx4RwBf61NQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-t5uJ-he9OR607hSFGokdKg-1; Mon,
- 23 Nov 2026 15:36:29 +0000
-X-MC-Unique: t5uJ-he9OR607hSFGokdKg-1
-X-Mimecast-MFC-AGG-ID: t5uJ-he9OR607hSFGokdKg_1795448187
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=seJP6l53;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Uu4VCqg+;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=seJP6l53;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Uu4VCqg+;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf17.hostedemail.com: domain of krisman@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=krisman@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C9E21801319;
-	Mon, 23 Nov 2026 15:36:26 +0000 (UTC)
-Received: from mpatocka-thinkpadx1carbongen12.rmtcz.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ECEA53001DA7;
-	Mon, 23 Nov 2026 15:36:22 +0000 (UTC)
-Date: Mon, 23 Nov 2026 16:36:20 +0100 (CET)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: Yongpeng Yang <yangyongpeng.storage@gmail.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Dave Chinner <david@fromorbit.com>
-cc: agk@redhat.com, snitzer@kernel.org, bmarzins@redhat.com, 
-    zkabelac@redhat.com, okozina@redhat.com, dm-devel@lists.linux.dev, 
-    linux-mm@kvack.org
-Subject: Re: [PATCH 2/4] dm-bufio: allow exposing a client in sysfs under a
- caller-chosen kobject
-In-Reply-To: <20261119162819.1627180-1-yangyongpeng.storage@gmail.com>
-Message-ID: <5e21caf9-5aaf-8007-0e71-598d7828697e@redhat.com>
-References: <2033a6a7-b8c4-99cc-f351-e83579a238ec@redhat.com> <20261119162819.1627180-1-yangyongpeng.storage@gmail.com>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C8434220B5;
+	Mon, 23 Nov 2026 15:40:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1795448422; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TRg73PCpmlZWbc1zT/pf5WUhMtuFRSW1UJ9K9OaWjM8=;
+	b=seJP6l5362qfLy2H+0bB24QAjb5CTCS231Rn+mUgJfUtsBD3PaI4xJGDmyuFIaTWKxq3b1
+	3bmTCbZFtbdcgQknNloc49mxgrZKYleR7R6SWqBzoN0Wvow98wQmeATFs+EHoCmtmMoMXf
+	4DkaXl84nIjxl8+tISAfz6oxoiIY5aM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1795448422;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TRg73PCpmlZWbc1zT/pf5WUhMtuFRSW1UJ9K9OaWjM8=;
+	b=Uu4VCqg+7C5pqg8AKtLNMV9QEJah4IND00ADWLDA+JuizHl9q1MoWO9Y/n+R4EveNxywUs
+	dM7t72dkjgGKlyCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1795448422; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TRg73PCpmlZWbc1zT/pf5WUhMtuFRSW1UJ9K9OaWjM8=;
+	b=seJP6l5362qfLy2H+0bB24QAjb5CTCS231Rn+mUgJfUtsBD3PaI4xJGDmyuFIaTWKxq3b1
+	3bmTCbZFtbdcgQknNloc49mxgrZKYleR7R6SWqBzoN0Wvow98wQmeATFs+EHoCmtmMoMXf
+	4DkaXl84nIjxl8+tISAfz6oxoiIY5aM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1795448422;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TRg73PCpmlZWbc1zT/pf5WUhMtuFRSW1UJ9K9OaWjM8=;
+	b=Uu4VCqg+7C5pqg8AKtLNMV9QEJah4IND00ADWLDA+JuizHl9q1MoWO9Y/n+R4EveNxywUs
+	dM7t72dkjgGKlyCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 58F3F1352B;
+	Mon, 23 Nov 2026 15:40:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LUpAAmZeBGvUJQAAD6G6ig
+	(envelope-from <krisman@suse.de>); Mon, 23 Nov 2026 15:40:22 +0000
+From: Gabriel Krisman Bertazi <krisman@suse.de>
+To: Tao Cui <cui.tao@linux.dev>, hughd@google.com, david@kernel.org,
+ akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, baolin.wang@linux.alibaba.com,
+ andrealmeid@igalia.com, linux-fsdevel@vger.kernel.org, cui.tao@linux.dev,
+ Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH 0/2] tmpfs: fix casefold flag inheritance and document
+ mount constraints
+In-Reply-To: <20261123051629.2547645-1-cui.tao@linux.dev>
+Organization: SUSE
+References: <20261123051629.2547645-1-cui.tao@linux.dev>
+Date: Mon, 23 Nov 2026 10:40:16 -0500
+Message-ID: <878q2jeeu7.fsf@cartola>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: R2O4uzBdwZp4BPcsR69jB0fxrhbcak9EV80lTB7KRns_1795448187
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain
+X-Spam-Score: -12.80
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 496BA4000A
+X-Stat-Signature: moiod8ctmk9grgb4naxupg4atod9dek4
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 723D4A0002
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 37pheb6bg19f6tqm5mguaoj7aqsgp39k
-X-HE-Tag: 1795448193-206766
-X-HE-Meta: U2FsdGVkX1+mgmmEf/bZh7B63bpsfXxXyXMOCp3LRM63Zy46r853m2lag42BrZYadTSgPzPQNHqnf9gniKeedrTlk4t8d5TiOofq0p05chTASa81eIKyBKmr1gzuPI5siwvOryEkA5WnCvvjt+G/NhDLhspLwBjk8SXC7eJT1sRDbdxhrL5XDLjf1Q1OzLZzZhaIzQJ/KJGQSghqri5Z75WEAdiGoRL9X0igsoe4TwvvXooHk1B7WxipJLtjLNMKO5GE0dQQZc/7sfKTOlf4VHPp1XtkxE++uIqFuJZheoXz9q8VamaE/GvRPJl5YIyy6ZWEpYLejdEf37p6Va+5nZv1u0KpBeDwoeIp9tys61L8K/IfNT0EWEjZBt7D9KfgDju13hGQ4DdoBSM5ajhDl4zP8Mz/r2hj3a6w4DhAS1MSJ+r78oTtVEL9TaCgO/v0WpQJ8bESZ5AK8Q/BGcpFnPTpW5AJNBFi8paI/IBYkymJ4d+w6frpAaJjOEc4/k1rYEBJcFCeskHkg1qh7/gFHm79WQIRg4uGAoulxfXWNtfov8TCS0HxwF4I9qjl1/JFVRerHzuRBapj3cEEwHfDTW1SLrrDdydUssl5whzq8eUZSa9T6pGODPWEt0+TEfVfmh0sCqGwmLm6T1iyB4JMosvD0M8Y9jlPj1yuXHS7RGQQt89VAKv0jZXyuSsACeEJ1bA+zz/bdp0eEc75g4jolAhNsLovB7qEZaMC10RGiih7a253FiTPwgSgXomO4fuYAXhKw6MxbupNfDtRgSIUD+QtsQ/udBdv/Hzelo08rcWpyhi6wvofRunfOkyqNDd6w5q9Y0WK6PHVaFrm4rcAcZg2wHly0VTZtsC/PUexgDBNraw1JnZaWlDNnOPQ4crNfaNovGJAE7qDX3BMuxLSZDW17hA5tcTObKrM1CQWQwRSV/NkU0x3nBmKSfr7tzV3CMl1x3NUAQ7GCbAmNaR
- UhsznQ5r
- Ym9HzouBUEdS5OhI3OHV7p7WnDX1xZsBpVG4dU1M+1f5PxN1Hr8Xq/jIUuRV7WJ06r89rrTvrY53q46eyoYl06Qb44AnTZHFhD7RY9983vZpspv36EJi5usGxUDAfJN5E6hYWcb7Zt8K41jDgRIo8czbnTM21ftRnA+84LryXOEo0sc98PmTmn3X0d8ijFWF24LxsWg5Gxf53Vj6adv+GvKUW/lBFR/F7jdS7MqEKfjSEgeEDGdshwDP/yRhawmEq1NkE2lUw8CJYrjb7X24tjXpc2CpD7RK4DK+z3dS4oPsZge2lyJTIqXaw7A3MCPxoZOxautu7q8oscoYHhWtZIRgmU5pTtFZKAdiGlM5MADL0VPLLll5WD1vH7lm5iBfpk48C/Tkr5hiTl90w983H3Pec2L9TQzcGTxlBH1YfjoxgQp8j/MbaaO0gH8zkAHAKXWQKmVq3JvSl+C4m0elxoIDuRGc4W6ISy2dPa33sv1LLxt2q1RckwRhSzRHR8hQjJxnW6QinIeDhAD3mdL6Xq2CMI+cu/3zsJbbwohj2bfaf08zKk3uFpn5SYXOh/httHyhcWz/3UWeyhIsZ55vHXfJUsenTG/OWypRuZ3jqmciiruLM0frnwfH5Gw==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795448424-87936
+X-HE-Meta: U2FsdGVkX1/fMvlIX0BeaaHN5D48QiKaOQ9vNDPuJoFwqVbUcguE75dzw+glAHYVtlMH9Esg+OFA/JuADSAZ7DZfWxNQGhpg5mM8anb/H1RBNHj76SFZ/MDEjJjDlqHi0OWJBMfzpOqrijDA6tvbcQPorLTarFCrZjbeyS0rvuhYhaWUCs00sh1+s7xg6gCD6aa0dtlwoRUBwQsPezKo8AesEj3gT/ZoloDEs9LLec5JrgrZhdp+mkEFR77tr616hIAupuPmdFqEa6agJmofvWqVk0Kfvu9E1kD6wV+ZJskcjr9BDLApmyKYfbqF0fkVSSxFV1MpjW8uXlSfNR1sXIMAc3zoyiXpmF7L309OHg1yixFqzaXyIv5XvPcJI9fVE1JX9idO9bRsTqlyjNe/FwgzvYztIkmxYV/9tBU/ogtrs7YbTNCv8g4rkUAMVmVUzOuyNsciZQaXgapgp8UvT+H6Fj03m9jtiIEvZ2VTM3JeshDFevwLe9BRAjuOGtbDTuSS63pCWyNAhoRMESSpfmm5JIq6vs+A49WqeCNeIS56gjQWu1jfCxLZghIqbPtwf3k1FOrUCDzMruG/vj33k7MEnQrAD2gaXAHPyhV4xTxFjUiF/2QnAMzEp8kGe6x3cxztc58A9+olMT8uphzs3jggVSzb8yJO+BlwCjFZzeO+TPyr/PxkpvGN+/rfTXrWM+n8hJcjjTB0OriAx9Ro4aOIWKn/nTJuxm8NwsQL+SZxNOTt+CAL7OnDZToAhYiy/uUcnziF5/N08SnCH/QVffoFVmDmo4dZZYYYnpdvZhEr4ZC5da28/8dADVPrUF5CLU0HADBiog595fyGYdXDiBCb38MvvGE1llwUymEbMZpXkXCDH+eQLy3JI2QmBZ03rJm+dTNndTVHu3v02jYd334qTgvJmz1B80zM1CBU7CGsdLvjt0/sx4asZQqV9C3LTun8+kbj8PpKtYia9AC
+ gEPzsX0N
+ YK+nnFEJZsp39DJX2fgk/IXOiED5GqGID3DeQeM9meUpnzhAfdnWjcVO3D0kthkGLlE4BezEinYMiPqUbVyRYh4FQySjhStHQRE+8DYOJaDFsIQgXXVBjmTEWd1zQ1LJAFjgAgkfl6x5e/Iy9HtMEc3yo2tRfoWAHnL9LQrAWcNktoG/wpmAVnq5g2L361jlK0v0/Yhb8RD+5et55II4ngxde4AjPikPerVr47ndk7MgA2D6VpTLIcv5+utlBFWz+8PtTeZdSvofitP8WIJj0tP3+VUZADLxnYiECQNmMYu8qcGDyqGdpeWl57NMAfDq/ce7Hcgf7X7vVBFc1l8dYKfTuLlSpp6cfAnqw1sphn9YsrhINXK71HdFH9EFl0GBRfdCZLV4usphuQMPxqVs9XeiD1O7JmEg6iLmmo/GmkuATmL+3A+niplvA7LsTQdUQrRz9lbsuyK4ZVhJhL8Q+eLZFoiluxlNsy3EcaxrRSdZbbas=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,69 +140,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Tao Cui <cui.tao@linux.dev> writes:
+
+> From: Tao Cui <cuitao@kylinos.cn>
+>
+> Files created in a casefold tmpfs directory inherit the
+> directory-only FS_CASEFOLD_FL flag, which shmem_set_inode_flags()
+> then rejects with -ENOTDIR on non-directories: the inode records a
+> phantom F flag, so the value FS_IOC_GETFLAGS reports can never be
+> written back and attribute changes via chattr fail, dropping
+> NOATIME/NODUMP from the same request.  The casefold mount option
+> constraints that commit 5cd9aecbc72c ("tmpfs: Add flag
+> FS_CASEFOLD_FL support for tmpfs dirs") landed with are also
+> undocumented.
+>
+>   - P1: mask FS_CASEFOLD_FL for non-directory inodes the way
+>     ext4_mask_flags()/f2fs_mask_flags() do.
+>   - P2: document the CONFIG_UNICODE prerequisite, the
+>     strict_encoding pairing and that both options are ignored on
+>     remount.
+>
+> Testing: on a VM with CONFIG_UNICODE=y, before the patch a file
+> created in a +F directory advertises the F flag via
+> FS_IOC_GETFLAGS and chattr +i on it fails with ENOTDIR; after,
+> the flag is not recorded and chattr works as usual.
+
+The series looks good to me.  Feel free to add:
+
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
 
 
-On Fri, 20 Nov 2026, Yongpeng Yang wrote:
 
-> On Thu, Nov 19, 2026, Mikulas Patocka wrote:
-> > Is the kernel dropping dm-bufio buffers too aggressively? Or is it not
-> > dropping them so that they consume too much memory?
-> 
-> Both, and the tension is why one global value cannot work. Our hash
-> areas run from 0.x MB to 40+ MB: the 256 KiB default makes large devices
-> re-read evicted hash blocks, while a uniformly large value makes every
-> cold, idle device hold memory forever -- and most verity devices are
-> cold most of the time, which is what small-memory systems complain about.
-
-What about improving the shrinker memory management?
-
-The problem with shrinkers is that the generic memory management code 
-doesn't know how old are objects in the registered shrinkers. So, it may 
-ask the shrinkers that have only recently used objects to free memory.
-
-Maybe we could add an upcall that returns the last used time of the oldest 
-object in a given shrinker, select the shrinker with the oldest object and 
-shrink from it? Would this be feasible?
-
-> > Could it be fixed through other means that are more general? (for
-> > example, having a global dm-bufio shrinker and dropping buffers from
-> > the client that has the longest unused buffer)
-> 
-> A global LRU shrinker would tell hot from cold given time, but:
-> 
-> - Our userspace already knows which device will be used and when, so
->   it does not need the heuristic, it can drop exactly that device's
->   hash blocks, precisely and immediately.
-
-Please, show some numbers - how much does this patchset improve Android 
-boot time (if you are prefetching blocks that will be needed at boot) or 
-application load time?
-
-Would prefetching with the readahead() syscall be better? (it would 
-prefetch data down to the page cache, so I presume it would be more 
-efficient)
-
-Back in the era of mechanical disks, there used to be a daemon that 
-prefetched blocks to improve boot time. With SSDs, the idea was abandoned 
-because it didn't provide any advantage. Are you implementing something 
-like this?
-
-> - On low-memory devices we need the memory back quickly, not when
->   pressure finally ages the buffers out.
-
-I don't see how shrinking bufio should be different from shrinking page 
-cache, inodes, dentries or other kernel objects.
-
-Maybe you need to tune /proc/sys/vm/min_free_kbytes if the kernel is not 
-shrinking memory fast enough.
-
-> - Verity, thin and cache clients share one pool with very different
->   access patterns; a single LRU lets them fight for it, while
->   per-client floors keep the shares apart.
-> 
-> Thanks for the review,
-> Yongpeng
-
-Mikulas
-
+-- 
+Gabriel Krisman Bertazi
 
