@@ -1,134 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332E4606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8129E606A32C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Nov 2026 15:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PbW4Dq0f
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ie1STN6V
 Received: by kanga.kvack.org (Postfix)
-	id 37D216B05C3; Mon, 23 Nov 2026 10:10:10 -0500 (EST)
+	id 9EB286B05B0; Mon, 23 Nov 2026 10:13:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 355BF6B05C4; Mon, 23 Nov 2026 10:10:10 -0500 (EST)
+	id 9CA506B05B3; Mon, 23 Nov 2026 10:13:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2456B6B05C5; Mon, 23 Nov 2026 10:10:10 -0500 (EST)
+	id 9003B6B05B5; Mon, 23 Nov 2026 10:13:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F063F6B05C3
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:10:09 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90B1C1C436E
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:10:09 +0000 (UTC)
-X-FDA: 85466719338.07.6E8662B
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9A55340008
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:10:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PbW4Dq0f;
-	spf=pass (imf12.hostedemail.com: domain of lylin1023@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=lylin1023@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C3486B05B0
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 10:13:20 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F238D40930
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:13:19 +0000 (UTC)
+X-FDA: 85466727318.23.155A847
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5C59D180011
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 15:13:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ie1STN6V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795446607;
-	b=hpm7dSdIZvo8itBz4Vth0abywdf23aqbbdFLSAbXFwx0kQXA8Iz8/+cYSk+2p52DpZTvpq
-	wVQTJat5PLW2nqm5tnA+JXsKOKxRuIPQooBLMtA9rw00xQxBPjHSl0B6ArqyzdENuDHTkl
-	sFLXye8bYimuhcilxyBUnH/BueXK8tQ=
+	t=1795446798;
+	b=l2oJ2Q8m9yzpKmsA51oGnBpX8vne2xGYZfNvJcW52XzDnTYgXAVxL84Ip5+cufW3fppHXx
+	nmhoRL+7rcoCC2H9TffYOy5DuzYhSDZ7njIK1++Cz5O5h/Brw+4n9NaooQAxmN8oGAvvoZ
+	s/iYdA8OMpwERs1GVpkxuzL5zkk3tds=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795446607;
+	s=arc-20220608; t=1795446798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dz52cAd06DhrS+w2eA1gjA1iPlJT/ApD0Ocp67pISs8=;
-	b=6vaBadLnbFWNeJQVaeDCfDJn27RIixGFHvMi1VWvb3pCZAtSi7MbzCjk0YN5aOBRMWZsdC
-	7fMBVVojBAXd3vJltf05bPULIkTaIMBFFfs8n/qQcdDjSVOd7ftYW2V/R1Q9OnZWn586ci
-	ohrNe3Ayik4xMHsumW3Nie/C8ytK0TQ=
+	 in-reply-to:references:dkim-signature;
+	bh=Rgusygp+RlAE67y/ngtutPu5kD5yNG5Fz8DTmip9El4=;
+	b=8hRr+CTtC8GayNEaUyTVjlF0iIE5LpIFAMo8JYMAg6Av9KF08tmlv7bU+Yhu5HvQwPUt/2
+	DXDXHNq+Mc+cT4idBJeay0sk7Ept+4Ud7KXpkorZsh4Kq2bV5Buz54AQa4sncU695wn8Za
+	GTniLi6KN5RP7CR9Z4cnUcW2KGCZiAE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PbW4Dq0f;
-	spf=pass (imf12.hostedemail.com: domain of lylin1023@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=lylin1023@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8c4cc85a315so2535676b3a.0
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 07:10:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795446606; x=1796051406; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dz52cAd06DhrS+w2eA1gjA1iPlJT/ApD0Ocp67pISs8=;
-        b=PbW4Dq0fLHTdzpayNlJ9oDAf27eCf0RGOWqZLkBb4ZVsfPN9Tafc4F/h3AronR77+t
-         YHr5ub+itsFRR+FuaPljrQOQqEXFgx88Q4cLfAXSfbBZUieaFSAAhVO22K9OtnvkQ3pp
-         4cqj7aRMtMJodc00Lc5hQGUzdd+eZ1gh9G85mHnirCMnuQIiGjA9qiZOAvJ1i1gg+0UW
-         Fqhn7/B0aeVP70AL7uPY4ezx+WGZqZC6oxuniVKc9crdXo/7g3T0A1zxs84heFGPQgbZ
-         k157Z8AjSwcUJxR4cMpUD05m42arS+x/Oq0bIVDkHiyLR5NJBijIaiPXH4wxUZr3QBf2
-         M32g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795446606; x=1796051406;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dz52cAd06DhrS+w2eA1gjA1iPlJT/ApD0Ocp67pISs8=;
-        b=sBFo0BENP38a0qIbSIxXrH/ErxPyKZUFNElBdh3YCpL3t+lwzp2nOF9/1aaf2lMYNo
-         nAGiXbHeKkSNlKL1lMg77hnSjzYh0XUSOBIeNS66EM34ILKAp5nQylvM7nlry3aUKSiF
-         swx9S5eNDL1+ETn9Kj1wn7vXCh1uSR3u6wyy+kyiOY4Y8gJofG4T3OYLhsWgNisNSBH4
-         BMImlxcH2tPoHtAO2cegYwA2j/MdtmkFHwiWtcgKcvJJyHcM8g+zOsSfOW5UXuwtKDJr
-         o0uAJ70Ccwvy3Yg3Sw7Z1HRNyBW2HKy23TU+/Gor0pk5G3EL4tB5dGGn4z8xzXpU4qk5
-         fWFg==
-X-Forwarded-Encrypted: i=1; AL+hErHvLgDF0p1vxasKFxHUGzFrpVHXPnwmpN88trjXTJtOaachavlr5bk+q6Y+w36uKS8blqmNSFWsPg==@kvack.org
-X-Gm-Message-State: APuU4Z/kGe1YU2XWWx7/W3IplmU10A/SZaZzvzvg3hq4Univ8pd0KSUU
-	FFPj/PruRxjrBCkRp9HV/Rj+rvgM7mQtpuXTIR3wKuyYfSr8fkHdFMl2
-X-Gm-Gg: AZFdTZfNo4K3U8dqWXhp2FpIv0ih/ENl9mGqU5zv5ZqVoBolzJrvzt+D5dAqmXIUS1C
-	9G1dh8w7HCifLnNJazIoUmDQmJ80jLpTkeAYMXMqvfFez5fv4pCr/pWARRZJ1xwVbAqioiCPptl
-	eagpjiHBvyBbKJ1lMQoih2/hNNmMoBAox5TBxIVwSZqi2E/Mn6JPPEqGXmk97rN9D3gPRjwrY61
-	vf9tuU5BrH98U1pFM0ht3KtUPsa0gwiPabnfPBWdkcPQNs9+Po99VnRJI4IljR7r5xce7POtuka
-	M+bac4qPZ82a1qARmTH56G6SVHFXwPC4E3dJwszeB+OClFDqI6aPI9Ln4miPx+MtcCYdz44YjUG
-	Uj/iCxDhSLYnRoOIb7nMqdm4o+QyfKlxtS9zUbG6ZD/rFYXIG6r4fz4cGNhb6DuU4dJkei0SkOk
-	HkvgzV5iAYlYM7Qn2D4d4jiccIyKoou3hbIICWBHKN/eqDtFvrm/q/0S60Wl6nmuLFAHhhQfcDZ
-	5I2DE48Cfvjo0Ts60zayjEfQWNMzLcgCFh7o2ZrXK5epEClsyDQBIL9KzDqEfUi+ieX2IQJdR6G
-	MYxVNhyavzML6eDSrl92d7gxnRn3N54uJxmzejBCGX63FJYyU6hUsIO1T99BHQ0OReoJ9mWdWuj
-	mv6uH7iKRHwfuVOHK
-X-Received: by 2002:a05:6a00:928a:b0:89e:6bef:70f9 with SMTP id d2e1a72fcca58-8c87bfa8116mr10077691b3a.27.1795446606284;
-        Mon, 23 Nov 2026 07:10:06 -0800 (PST)
-Received: from localhost (218-35-178-218.cm.dynamic.apol.com.tw. [218.35.178.218])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c86d821637sm5956464b3a.0.2026.11.23.07.10.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 07:10:05 -0800 (PST)
-From: Kurt Lin <lylin1023@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Song Hu <husong@kylinos.cn>,
-	Mina Almasry <almasrymina@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ie1STN6V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75D37409CF;
+	Mon, 23 Nov 2026 15:13:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3601F000CA;
+	Mon, 23 Nov 2026 15:13:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795446796;
+	bh=Rgusygp+RlAE67y/ngtutPu5kD5yNG5Fz8DTmip9El4=;
+	h=From:To:Cc:Subject:Date;
+	b=ie1STN6VSXka1O5wuIlHmb2D+6VN2EcNXv6egd3sZtpNduYhKEt/3sI8rK2YwKQ9V
+	 FjjIiDBGekIsRy7TiF9wgpxj8EZuar+wU6vXs4hCw9dNwIFEm2WApWuZ728w6Xoz0q
+	 0cqvdn2Ox02VUSJZaJG5Yjv4Vq61qxeX49R8vFzRGTJyxkxrrFswoeC94M/ufSy/M3
+	 f/bIrYcFlRTJbVoKXRi9NgEcnN8q8PwybX2QkSD2/ZFd8BZTctau+LmZZ7aUjIJASR
+	 0UoX81gFt4ylmLkQd2OEaOZ+m41nB6t69/Vh2hDlqC9MSn3GDzeKDaHhUJopqTg3VE
+	 eiTls4YAeRpyA==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] selftests/mm: restore hidden hugetlb reservation scenarios
-Date: Mon, 23 Nov 2026 23:09:58 +0800
-Message-ID: <20261123150958.2212229-1-lylin1023@gmail.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <apqBn7tWDHQeMrzB@kernel.org>
-References: <apqBn7tWDHQeMrzB@kernel.org>
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/6] mm/damon: add sz_ops_filter_passed_last DAMOS stat
+Date: Mon, 23 Nov 2026 07:13:01 -0800
+Message-ID: <20261123151309.82675-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3mrytqdw4ptgxx6f585mh74uubiwock4
+X-Rspamd-Queue-Id: 5C59D180011
+X-Stat-Signature: mayry9cyz788qrooska3ryhm5uej6gtq
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9A55340008
-X-HE-Tag: 1795446607-832329
-X-HE-Meta: U2FsdGVkX19FV96N43/cVeDVWk72vHzFjOHnCgID61RStaqNdiI5XonzE4t+jvfqTXtLiOXeIi3pDUmmpihuHU2Y11CpPCJs1PZlGzcaeqYYb28+oNSm1aUyp+jD4Y7q+WC0Sh5iZqIZN1fceZnz0I+Aj+852Ss6yopFNPcBjnwdjLK8+TII9vENQygK2zX3VE6Yo6IK2HxjJMgnEFEn0hegk3zf0MydUxtS35uMM6gD6rMKvYh1LyBIIy7Ic+lG3RmNje34V2HZhbKN9INh9kURjNKOJ6Y3e72fAaumQYgF3TwKkF0sP7+U9/HkUrTJ5zJvb4ik6MgOqNHxRUnBWpl3XdHyUAwrJSnjm8PASSMCG8Z57e39QKMNE/gxhCo4hX256MfxRtwsHPfE7wsYbHBcOXWgyOfD2Z3cyJLvU/BuzowkEeFn7XGmsEH9NT8mFcCUykfI8m2XxcQaUoYDPiSNRD7PeUrgKH2f78GQ0Vp3ixQv8M4fxkZaQi4X8SVY8hHjBIXJWANcYsWVYuRn4Pj4YhQW9Ii03hHgqYR3Wk2z3fwf0EU3hhxxrg9n1rdtNMhAPBuGwUbs/VM1Hc4n7jirr7LCLuf7eDE5dawBXBDTQSWCdOw4UhJuHYCqi1qH5blZ879sadsC+J6icJ/PR6/9u2sXjanxihaX8q5wdB20qtfj1faw80GVEgsQaLuIHrtydfOZ5E6EpD9AfqemrzQETagi57HtI3hPohwDiLOxwz9jn2lq6RDz0/84lKfBnl31HAJWD48slnpZIEWg/to9LAKSeblly+JdOU9hhSb6gqzBCYgy7+Qg8wDTMOHihb1NU6LwSaVTJJp13XDJwM9lmW8L9GHquvsEup7wIjLKcbll/wobplC63n5apQkQTnIssmhtmqqMw6nDR4qWEFcuL1aR5W4tYyQsYTChGq4xFJbvmGbIa5kFGNcTaUDkwVkwyWFmkbTG5TwDotJ
- XWdFIWXL
- 8NAb09IMFpnx2wmTHW49C9ysmOZi/5GIl6Z7DXHCj9ogUlGHy+S9imEdkFPklx6L3ppNj2Ri9MWtrGkpOpda82sJfMYNBhJj9hcgzecnT6Zwfi+PRJO7TyrYWkH8y3pNgn9iOdkImhzSjq14as6CHnRubO8JLzko+bpEmFixgR6uiip7C6UpUDFPcOqFNeccSmZyopXLk5WF9c6yY0xSXRQc6RklXZNM/7PIWQzBdnWRmGDFVzAFRrv1F+cm4m5aem6IlmpBzzpD0je88fHLTIaI/llQyqE461VE1Tu116ZMibduIp6FmPuYqMOUOZPr4uAcivddein6mHKbS/Z8erImbT0GUgD/nomNRjtLGL8MVdKzZza2SqUNOkOb71JY10QUhOZoQHdR+JZSCfITx+TSbXj0l8UIaY2uojH/IMLksX24rNhugiL1NJMpajMplCA861SjNpw6bOE56tiY1irEExW41/WK1kKNTi7hXYdXgfNE6kRJJRflgiuHYAYspSEI/Vtmfg3GY6WtAviBPzcWsD2CrOiVgCQJsKIXPJOu790BD1OO+m0/6curWU6lJqQGgwm2+/Cr4L/XnPSzyvtAfz88A8o77Ic3Quh/jAVSX5fYDbFLZHz0vmZmrBjfF9rEMRstDXo/t6bETzmBgvjvp03WdIr9dLnl48gXBa0svUAlwKK8VyVvFGQ==
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795446798-339402
+X-HE-Meta: U2FsdGVkX19iEi8qTDH3zHf5r7O2V3Xj6UNerbsAbg0i9+EPgFsaO1XW3zIDIXT4uqlcMP7gXCy3vInTqx/hdZkdCmP9LQKBEfvyc9Agu0svCAz2RAZexMtWNNvHf3BGXfcwkb+RCR6gZQlsQrxvDBEt73JfTmXNnSs0PneBrDg9YMAmVP8I9h4Dv81wBjHVyoh8YXslginkGGXZCPdZPoQZWu6NqfBJ5bt0GcfZsuSxTF2JW3n2lsy+QGp1h/AFCYGcJPMZ654bvKJikvCc5ep8TQoH7/cfK0JBqjfCPzRckv+pFmXnYWynOyTXNM/isCp7iNh2DatWIv2JY6Lms0uWPE2cei/etrgsjiauab8bbf1SPGhOrTmGdUkXVa/oxCza9r//l27MoWASXaqEfeWEnt+WlbkLi3+oW3868W3lujLTdIK67JzfXXPWFXZsCHxj6ndo+Yl1kcIl/9LB69fYUnWiBNrjQzC5VpUmF2Ms+4jaBtt8GNLMTru4R7EJt205kBHVN5ZQusW73ZffyldA4wa51/bpfKsm4W/TWrCY5/kjWX9OHrpoXpdVV+l/hhh/bZjYX0+PCD6NGBtNJR3Py3o5T5jHgFlwR8Rf/uuJpyd6EfGBHhNafgufueBaCs5wq1e1dBiZG57P+YtsZZKN5MOYecq++ryxGNb5hoYbrHsshfxddJ1iTE6c0eQYUr4U1wmXVK4nwpU1n584niEcbb+B4sTH/RJg6F4b4udZcbqHR2gzsRE2vaOrp5OS8uWLUx81t84sztzW+8o7K9Y9oHxu1ocWW6NrE26vUHee6il0Gx8h0WCYWu+fU+OhfdaOp4ASSQOcMoDRiN/kKTGCbqjWcExIXFiwNu/QpW/IyvNvjO5gDfuFEJsJ8RX+gXw/MZhwmfKXgGo94iEwF9gEErz1Dkj4Msp5I0dOWU03w8wGRjVOX0uYMTZuFn4z9iK4rSFp0684lKrfxbG
+ SQfTBEhf
+ 96jF57AjA2o0AmhhPDVxe2XnTIoApiogbO1oOb72FDKWY1PtICxqkADugA7O593CndFS18sUfwhchi1FlPpal+7R9pvKA91E7NIkP8zQSNpwxYSXa4eqvdEJ88urrmz6deeBTJsAJNyCZLBjdlGVlC4jXi6jetcBQo5749SjsmAZtkkCDFP4ydvIXgdlTY+UrvBn8ouPb2peH3AZIBPR5wF6FLzy+Vq9d5/toBkzDga9Nu9pncgbK0YFpKO78pT3pai+Z+Fg8NgBam/KC0gegDjDclmO8ZiQi/aivd5bl6Q1ayIyd6ogC4FRwpJ0OB5h2TU/w611I9/k+R4DgZXu0gzq+Vc5dzj3LHdx5I6Ix0fQcD7gc6liCzS25IXd1IxMkgsm8S5CpYzb4BShwwjKkt+O70zgYD4yI5rmLM1rnP+RFvpYLFVTh/Mm2TFUFhB9ctdsWcjA1ZEKX9rfyyYMBYJL0RgKfHCkirLlCKWJY8XTb0YYI2NGmtKkH0u5Sp3pJBJeyMuQ1dYwlsNjEX2DX3puyVoSqGJGcj0TpE2IchgiOfUe0Tgptzr5m51z+OJMh4nX16clXcC/r9GKQcB6/wjgUYW3aG+Dzc96WJ8R1ymTQNtA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,41 +100,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Sep 04, 2026 at 11:30:23AM +0300, Mike Rapoport wrote:
-> And this code breaks our CI e.g:
->
-> https://github.com/linux-mm/linux-mm/actions/runs/33040981840/job/98414290236
+From: Mattathias Pinchover <mattathias.pinchover@uber.com>
 
-The hugetlb category in that run hit its 300 s timeout inside
-charge_reserved_hugetlb.sh.
+DAMOS stat sz_ops_filter_passed shows the total bytes that passed
+operations layer-handled DAMOS filters, accumulated from the beginning
+of the scheme's execution.  Users who want the amount for only the
+latest apply interval, e.g., the size of a workload's anonymous memory
+that is cold as of now, have to keep the previous value in user space
+and compute the difference.  To know how many apply intervals a
+difference covers, they have to rely on nr_snapshots.  But nr_snapshots
+is increased once per target per apply interval, so the computation is
+complicated for contexts having multiple targets.
 
-With the stray 'continue' gone, the "more than reservation" and "more
-than cgroup limit" cases run. They expect the write to fail, but
-write_hugetlbfs_and_get_usage() still waits for the full reservation,
-so most of these cases spend 60 s in wait_for_file_value() before
-moving on. The CI log shows this: hugetlb.2MB.rsvd.current stays at 0
-for 60 polls in three cases, and the run is killed during the fourth.
+This series introduces a new DAMOS stat, sz_ops_filter_passed_last.  It
+shows the amount of sz_ops_filter_passed increase in the last apply
+interval of the scheme.  It is updated at the end of each apply
+interval, and kept unchanged until the next apply interval is
+completed.  Like the other DAMOS stats, it is exposed under the stats/
+directory of the scheme in the DAMON sysfs interface, and refreshed
+together with the other stats when refresh_ms expires or
+update_schemes_stats is written.
 
-Skipping the wait when a failure is expected, on top of this patch:
+Patches sequence
+================
 
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -252,7 +252,7 @@ function write_hugetlbfs_and_get_usage() {
-       "$cgroup" "$path" "$method" "$private" "$reserve"
-     local write_result=$?
- 
--    if [[ "$reserve" != "-n" ]]; then
-+    if [[ "$reserve" != "-n" ]] && [[ "$expect_failure" != 1 ]]; then
-       wait_for_hugetlb_memory_to_get_reserved "$cgroup" "$size"
-     fi
-   fi
+Patch 1 introduces the stat to the DAMON core.  Patch 2 exposes it via
+the DAMON sysfs interface.  Patch 3 adds a kunit test.  Patches 4-6
+update the design, usage, and ABI documents, respectively.
 
-takes the script from over 600 s to 64 s in a virtme-ng guest, with
-all 56 cases passing (only 28 ran before), and run_vmtests.sh -t
-hugetlb to 83 s.
+Tests
+=====
 
-Song, would you like to fold this into a v2, or should I send it as a
-separate patch?
+I ran the DAMON kunit tests (all 50 pass, including the new one), built
+mm/damon/ with W=1 (no warnings), built htmldocs (no new warnings
+compared to mm-new), and ran checkpatch.pl --strict on the patches (it
+reports a warning and an error on each patch because it does not
+recognize the Assisted-by tag, and four alignment checks on patches 2
+and 3 for the continuation line alignment that the existing DAMON code
+uses).
 
-I found and tested this with the help of an AI coding assistant.
+I also ran the DAMON selftests in a QEMU VM without KVM, on mm-new and
+on mm-new with this series.  On mm-new, 12 tests pass, 2 fail
+(sysfs_update_schemes_tried_regions_wss_estimation.py and
+damos_tried_regions.py), and 1 is skipped (sysfs_memcg_path_leak.sh,
+because kmemleak is not available).  With this series, 13 pass, 1 fails
+(the wss_estimation one), and the same one is skipped, so I saw no
+failure that mm-new does not also have.
+
+None of the selftests read the new stat, so I also checked it on a
+live kernel.  In the same kind of VM running this series, I started two
+Docker containers, each running a Python process that allocates 512 MiB
+and 2 GiB of anonymous memory and then holds it.  Each process was
+monitored by its own kdamond, using the vaddr operations set and a
+stat scheme with an anon operations layer filter, with refresh_ms set
+to 1000.  Output from sz_ops_filter_passed_last was correct:
+
+    # cd /sys/kernel/mm/damon/admin/kdamonds
+    # cat 0/contexts/0/schemes/0/stats/sz_ops_filter_passed_last
+    546385920
+    # cat 1/contexts/0/schemes/0/stats/sz_ops_filter_passed_last
+    2157043712
+
+Tool use
+========
+
+Claude (Anthropic) assisted with the code, kunit test, documents, and
+changelogs of this series, as noted by the Assisted-by: tags.  I
+reviewed all of it and ran the tests listed above.
+
+Changes from v2
+- v2: https://lore.kernel.org/20261117-damon-sz-ops-b4-v2-0-439888fa04ac@uber.com
+- Collect R-b: from SJ.
+Changes in v2:
+- Patch 2: join the attribute declaration onto one line
+- Patch 3: call damos_set_filters_default_reject() before adding the
+  scheme
+- Patch 4: keep only the stats list bullet, dropping the explanation
+  that the stat is not accumulated
+- Patch 5: wrap the stats line in the usage document
+- Link to v1: https://patch.msgid.link/20261116-damon-sz-ops-b4-v1-0-1cffe7227e6d@uber.com
+
+Mattathias Pinchover (6):
+  mm/damon/core: introduce sz_ops_filter_passed_last stat
+  mm/damon/sysfs-schemes: add sz_ops_filter_passed_last file
+  mm/damon/tests/core-kunit: test sz_ops_filter_passed_last
+  Docs/mm/damon/design: update for sz_ops_filter_passed_last
+  Docs/admin-guide/mm/damon/usage: update for sz_ops_filter_passed_last
+  Docs/ABI/damon: update for sz_ops_filter_passed_last
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  7 ++
+ Documentation/admin-guide/mm/damon/usage.rst  |  9 +-
+ Documentation/mm/damon/design.rst             |  2 +
+ include/linux/damon.h                         |  6 ++
+ mm/damon/core.c                               |  5 +
+ mm/damon/sysfs-schemes.c                      | 16 ++++
+ mm/damon/tests/core-kunit.h                   | 93 +++++++++++++++++++
+ 7 files changed, 135 insertions(+), 3 deletions(-)
+
+
+base-commit: 60a393b8ae5d63691c0ea9b21571441911afd81a
+-- 
+2.47.3
 
