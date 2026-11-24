@@ -1,108 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64670606A322
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D033B606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=f0VgwLuR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2dtf538
 Received: by kanga.kvack.org (Postfix)
-	id 7A84A6B0621; Tue, 24 Nov 2026 03:06:22 -0500 (EST)
+	id E39816B0623; Tue, 24 Nov 2026 03:06:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77E6A6B0623; Tue, 24 Nov 2026 03:06:22 -0500 (EST)
+	id DE8596B0625; Tue, 24 Nov 2026 03:06:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66D896B0624; Tue, 24 Nov 2026 03:06:22 -0500 (EST)
+	id D276F6B0626; Tue, 24 Nov 2026 03:06:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AEF26B0621
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:06:22 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9747C120AAD
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:06:21 +0000 (UTC)
-X-FDA: 85469280162.30.FB8EC00
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7654120005
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:06:17 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=f0VgwLuR;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf13.hostedemail.com: domain of 1045704958@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=1045704958@qq.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ABBC26B0623
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:06:46 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 298ED80AD1
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:06:46 +0000 (UTC)
+X-FDA: 85469281212.09.0397124
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6637F180008
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:06:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j2dtf538;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795507578;
-	b=dKEhybf4/jT+Bm4PE9Anfr15vdDaODeR1qK2Hki8+JA5Xkhwy7Af7sWon+B0J3Kh3NEBXD
-	8TVzXPdx9Y0T+P/NmAfEjKedbnryYrhLHvJGhPCaraCZHgtJXxRQnMQgyk2iGz4+0xRnkh
-	JyYCEK6kizoU5T9ePQmjONfWVm3YhzQ=
+	t=1795507604;
+	b=VVrTi0RwZyi8TDIXVp4iEN37kcabCdQr9oLS//GtI83RjiuWDzr4+5Iku0441AXn+r/+1m
+	2D+pEOVYIN1wr8H1KKncpoWWxir9vqxbqiRUQiLRqiwKyj5aZ/B7ucipyX9pGvq2NOVyN2
+	ERhPaPupannv4uGAttR274H9y8PSYnk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795507578;
+	s=arc-20220608; t=1795507604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KEf9xsv+Xy0b4bEOzIOgKFEp/lzfcwuiaMzbGAMUi40=;
-	b=ow8MQTS7R3msmFoM5T54JkTXvGfxH9SCF9efZ9Lb3BI1sLCuGW7zIL4fMgde3QcmqoJQUp
-	w52oZDNSAIt1701umsDrFuTWg4IbcSfGg8wMm5OGrT+MwChqjBcDMbhDccDp0UYYUtwHDB
-	f8aAj9fqFa6sXmkB9IjUGTqh7Kn9NPw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=f2bCC99C+lk6cByNStvrWaJYTderaexjScUT1eLFyyY=;
+	b=OffYWhWMcfULDb8agI/yE1g/b/cIW+BaiCuITNfmNzXp6U3wOfGpDF5jCvCxM1OPIyqP6R
+	E0009JUk3kLIcRG9GrUsGigZSA29DtXZdaj/JcUewMh0TYwCX4kr1BMB4Concfbj3a6Qvh
+	C9KGpGUGY7K44bSp0pFY7zYXlhrj3zA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=f0VgwLuR;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf13.hostedemail.com: domain of 1045704958@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=1045704958@qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1795507571; bh=KEf9xsv+Xy0b4bEOzIOgKFEp/lzfcwuiaMzbGAMUi40=;
-	h=From:To:Cc:Subject:Date;
-	b=f0VgwLuREjP91QgVwycyRmdY6t7wDq24Ayj3sqzvMzw6f8uW9kJUWpAb2LUT7LUMv
-	 07mCdReM087o1kskTX58PTJuY92d6NRraTMEmQnV4tq7Tq/7Pw6U60TjYLqZIh1xHg
-	 LvaNeVQDw2v5nJEcdOyfeSDtqyR3wO29s/g0rhQI=
-Received: from DESKTOP-6LNKCJL.localdomain ([114.245.37.219])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 17894CED; Tue, 24 Nov 2026 16:05:56 +0800
-X-QQ-mid: xmsmtpt1795507556tkbp9b8x1
-Message-ID: <tencent_9D774595101D7C0F5A46CBCE69817B8A6E06@qq.com>
-X-QQ-XMAILINFO: NWEwCzsFJJ7Kuv0IbmjuX6r/80AqKeLaq8kNUZXU8vUuph4VpGYY2jaqG64iWi
-	 CdJLf6lblftyp+H3puR2kfj88fF2ZwRDFm6o44H5tZeEx21hcagCnAHmlf8qY2DnioEuFwn/fy0n
-	 1F0vl+kW/eP9eHMMdOR32E9R9m4DtdoKUhmhd2CMPOZzBo6grM3YGtfSpsoIpaz5ns6j5PrjoM5b
-	 dskr/EgLBzSzzxck1OoAlmCNvD9ohcKC1Q43eqBr+zBt0uK3uIybEcRhXfcYzUFZF3fnJPQL8mgn
-	 X9MY6GL6kymJV5/iqz+u4cazbRqTbjTpFUjqkN2l9+icI+wxLAAB6DWb4Usk1JnV4bmYnQ+zHLeZ
-	 60xGORfpt/fjn4RKrUYeJhLN+SE8AxZ3DDJuo2qFd+5pwTn0tlN/7r+g8R9WAchv8lXeCcnK6EhV
-	 oh3WWxLJMIk30RWFp2hVrfzep/TiBLCRgiAuzYwBPBGAYiyEzl8NPxUWWkQEQgm8+GuEho2iVFJB
-	 V12/ElIBTQlwBILuEZMIxEgKsOp0Z/zv6vkxqFtw836iq+6oAbEY+NCAjMWGjuDAEjRFpJJyKbMC
-	 iE0fIN8361bIQEzol30+tGdwe/z96AYmUT4ibQOZzcJSiaXJrPmQNC6or8iBbfcLlx9p7wgUDMZK
-	 jwNwK0CinpPfhFrx7zzTnrCWxkWxLo0Q4agkT5fryyJZJnRc+htzlEeEU2gLezvarL6yDcQcWY2n
-	 /rsA3FQyDQ1y29sbHMtEa76hr1o1fF+UtrZjgPoFmB2cJCxoI/PTfdUPCCtKifUB3whLu5mPaxED
-	 HHDThL1+hr5Mp5o071jVZoYCZP3fey+PdP7n0o/JJZzvQp+Xnnhv8ESrd3YKrw8182ugIXyOMSiB
-	 O9bXHHyrkOBdf0XIe9TEm9S5QD091MdYxCd2uy/n+ZLeEijXDVVDpj3PNPqiPWIUPyK49CvPW+AB
-	 pwxjalAIPtFG0mTo4Wd0Q/Aj0xE9li40W7VTscIjX6brpAFlTw0dBXXqTDDwQboUjR6+roxaFoxO
-	 h8BdUvdG0sg+I9fDZhPkUV3ufIiNDoREOqa18tMjQIpajXE9TX
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-From: Jingyi Sun <1045704958@qq.com>
-To: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	linux-mm@kvack.org,
-	Jingyi Sun <1045704958@qq.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] riscv: mm: make pud_leaf() only care about the leaf bits
-Date: Tue, 24 Nov 2026 16:05:50 +0800
-X-OQ-MSGID: <20261124080550.616-1-1045704958@qq.com>
-X-Mailer: git-send-email 2.43.0
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j2dtf538;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D658561FE6;
+	Tue, 24 Nov 2026 08:06:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBF61F000C4;
+	Tue, 24 Nov 2026 08:06:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795507603;
+	bh=f2bCC99C+lk6cByNStvrWaJYTderaexjScUT1eLFyyY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=j2dtf538ZvQbD48tnYzf92OiepBTDnl995jnLselJRCMx8WemJcdvFtomDfJ1z0yZ
+	 towmIc+IctwpQclWmW2tFVyxCL0aow67UZrwIl1TL87HckdxbQGoQ0BhgPGctaiqyx
+	 BXGEKByAHORiZO8Cy7zeSW/OmNr90AOirBojH6lwYHW9TRA8yHdGxg9Vbzo2zfxwsh
+	 d6rHe4/7ya0WiiHhdWxOjVmFAkZMyelH5Qs/wz2uxob05X1UjoUr0WghHcbaDtg5k7
+	 xnGR5WxHpiH5hcni6EuOoPGrC3IBmJwZvxe42RNTVmUaVSd+CfNIQ/XzHfCsbdUeyA
+	 lUAb9FExiCO3A==
+From: David Hildenbrand <david@kernel.org>
+To: Hugh Dickins <hughd@google.com>, David Hildenbrand <david@kernel.org>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Samridh <samridh@modal.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261123-samridh-shmem-send-v3-1-afc6a40bc187@modal.com>
+References: <20261123-samridh-shmem-send-v3-1-afc6a40bc187@modal.com>
+Subject: Re: [PATCH v3] mm/shmem: avoid zeroing new folios twice with
+ init_on_alloc=1
+Message-Id: <179550760133.6617.5807645850229041647.b4-ty@b4>
+Date: Tue, 24 Nov 2026 09:06:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: przqwxkzgyfkdoai34frcx5r613zo5hf
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: ig49o65pasunodwzjguhb4rm45zi8kac
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7654120005
+X-Rspamd-Queue-Id: 6637F180008
 X-Rspam-User:
-X-HE-Tag: 1795507577-438249
-X-HE-Meta: U2FsdGVkX1/P2F0uo50DMBYfQYDjZtaGQZbOaeJz8hjCLNR/WRb9iKB7+fEv75uxk9LrSzR3drh9HLsva01FrpkX/hyvS8S8N/Dpjp7mgI/p+Zto2PaPiD5bOiB/dGSgMkNZ9YNIugW7Kjzma7tyo6f2wc3b/IBLxq18XKA2UpDxwyrumAl4fzS4L3R8gNxN9s2Mtv9wIKosQXOdKcC92JwRWLwspZwqe9SEyxB/Tv/iG7G69JaS76V5i+ojs42iomp6xxBcyFJSwIdWr/vppegMOPPZsrlzM/pgLstiZTEuNVzEJ5oXbYbZKKOpTYwUva7X+dQXsuGhf8NrSmxJ1McyPDisQo6DP+osWg6M2hB43HAo7j4E/zXaaPGr0bQC2P7BU8tKAO2UMNBH2Yu2esSPtbqcIKMYVikkjuMag5IJnbZaVxvuCJ2SldqpGm7s5fZRJvTdzUk5ERX90CGfIajHLXmRPWw4zvTVmRwj9p+3ghNn7niXw4nHkVuLbLDYJPPWhXplPEkutuR4K/tLdeepFV1oNdwnZ6FqqD0FjDaK/2XyDucHNtq5uwnUgevxgR9KE2e43ySh2fmiha/JIxm1MxaufkyqycOQVyLLmxzYNiDzZ3tkr/8p8tZ1K7/AWuqBLPDTHUs6kKYHaXHYwo8bJuv2gghPWaMAP4nOvKFs4j57SjP5oiikylNRycHTcmvBr+PYEJle6rKt8lBdYu3K3ykgQA2+4XOFkpjJYGdsgAzIbWfa+gbazMRbdozglh2DJMb8qr+UQpHzY+tmEFMisVt5co+dugFZfRDTQH2a8TqWB0PpiFQI7a0a/rr6YHKHPKh4G1f75qcsCg5TudYuOFoHgr+kfM3rejw+qrqhn9q5l2B1meDA6E8M3Ptnx0xgvjv55vlBMnoHAtAReBwchzcywdqmoHXDm4Q9kJJMNS2OlGCNsHmJEUr53LpiL8FrYoFdkRnk90YLBgf
- jJqwmsYo
- +pR9aIJZy54MZ8eIrfzTZIOWaz+pZKKJ+OzRy9TMQ5ct+bCXxiVJznhsclfhmSqPTkEf1Fost5rrG8Usx0ckprYsXHnovwUxRsPGUTeSXrg3QoVgusi6Znkb2wehif+4BDQzhYHlqWsbr1nkzp7XSoR7JU4mZgF/uV2rLNwpTkK6b86GjCqGnYbO+PSaHWBqiyCUn0e5AqGjNmtOD2IYKcIjvVeeHhIdHSY/7P8tScjlTvJX/t2AICKHRdVyqF4Je2nvRsPL4gqK94M+wKPeLp7ezoK9o+88hlHasFe1APzfuXUqVTfM8hhal5wgu6sR6vOw4Ezn2sqH97YtV0selWFqu7PLzQ9XqZVqb2XzTnFC8uUV/v+js3yuwRfjhACwlmAJcyWx8A3erqrNk0MQvz98327A0SvG/ogGKrexezIluHrfZ74/6boEYTGyR8FI8Kz1hAUIJa2Xfd6t1q18ebAes97BKyA5aj07j1dfmMAFvarP6ahv2vJATb2EZIeA8fgVvPDW88vNI8/fMEsHuS/WQwb5dff1IjRYc+HDVHyBBkv8=
+X-HE-Tag: 1795507604-333334
+X-HE-Meta: U2FsdGVkX19HL2fyfbVYkpaJ4fZJ4w1UAdHF02GeWS7NY0rX2GIHgsj7qpQiBEgnJ3vkQiit/4KV/BmFrFLkCZy+htqKGVByM8pNrXBaVM+kLbyl2JELc36Amyp6hHiGFxjCu+sdC8D6gPYUCa1g8oaQDV8CDZjblWg8+pXQ1a2G1BF0nZHVx4T45NJ4M/1oeoIgumoyig5kASn3SOTPoKBbhDtZoTIZbovMGjOPu94KPrErOYnXOIg/tDtCIAOEurgM27shikKzN+8W3MpGkWFC0jJOfBwcA1H8yPaWc6tHWx59avv/fYMh7Qo2Q9S5kkpsFHMadA3Y2XXrICnE3x9LyVBgh94zbZOnXU/5mqleMvq1S2BcQBGllBxVpkwMxNfQqO5FMJzwOApSykGDfQwwl1Ai96dHPrZXTTs8TLVCr1TiSzUg43c/CnT4JZ5RqAG4aJWX5I+qNSjiY1y1iyJpfaz5BI6PoEjWgpvKPmej2Ird5vxjMuz1LCcwT1eLywkHKdO2zQyzdOWSjZHMFbGBt6xpbBEK79jZZEDpkuLwFsi/cB+gicZfG6/1r3YxSVPHNxeeRgUoAFB3JupToFj1nNP01IQyw5du8ANvOTyWPAyM8tZsKJGJbTkPxQRcWja4tTrA5Vn1iyyKCXE5q/z/iUWdFeOISi6oEu7etvKaEcFwTFJovgsP2clP3SGiJzkMzQcbdG6MdTAzHpUeZ9/fOuqBBXDK+8ljtoPlujDAczBGQwRlLOq1geQmRqO9p8FRZ/eH7kkp3xGC5cLckrs6q2lu/FLDvbului1Eozlr5iUHlNJPcsO5SUBF3xtMTcNelZfxkgm9JLMqDc07zdET36CoXg1FjaSmEwW8wj707bFsqoM3nVonD1cmkq7eGACLfjLKNDB9vEREESWkyXpBpBdR8n4ErSpjJIA0z0xmgPDx6cI4PrkzJkdd+9N4yX4TtybNmIT5tREmTkJ
+ ulo25cV1
+ V+dmvYIREzjBGL8xaHvgT7SaQauMuh1eIMWxgrR4j3VFBm4bB+aWL6/s3r3hgmSauP9y7bojNPMOHGulF3aRRziJt9XdWBaJoIgJIi7XxlJau/7eIBwWqzUTgAoTXA20S2Cz4CgQDdNC6cIwcmOKJKXc+yfDbhosO1eikxglG/NjeTfMJfR3Wk4gQWvWtDzH3MNYis7x+YUg2XjpxczRvpVWGagpT3ohLEtBeZUG6fKPtIaKXdDrvPwKB1RQIsuWd5o4VjwjqHUeGHqhsqL7P2j6Yq3iLnWf3341JCQq6JI6WS6M4cyMtGE4qpYXYEaZNtuFFCyRty0s9K1imzXkuZSMiAcDhRDQWCdNIbwXbghP2p4XSJ4lLFIO9FwPGf8rGgfc0Zrd+s//RIVEsNQ0Jree0Q+nyPH3WZq0MPxCxOD+kxlheiS9oB18KXH+yGEm6hnIfMSGgq4FqPT3Ola8Fw03vfEABV6oFgLHG3ZnaOoqPibQDpBiqg24bEBmrbcCmKqNM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,106 +97,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since commit c3cc2a4a3a23 ("riscv: Add support for PUD THP"), riscv can
-map huge PUDs, e.g. 1G pfnmaps of VFIO BARs. mprotect(PROT_NONE) on such
-a mapping goes through change_huge_pud(), which writes back
-pud_modify(pud, PAGE_NONE). PAGE_NONE does not have _PAGE_PRESENT, and
-pud_leaf() requires pud_present(), so afterwards pud_leaf() and
-pud_trans_huge() return false for an entry that still maps 1G.
+On Mon, 23 Nov 2026 19:54:44 +0000, Samridh wrote:
+> shmem_get_folio_gfp() clears a new folio before marking it uptodate.
+> With init_on_alloc=1 the page allocator has already zeroed it, so the
+> folio ends up being zeroed twice.
+> 
+> Skip the clear for a folio that was just allocated when
+> user_alloc_needs_zeroing() says it is not needed, like anonymous memory
+> does. Folios that are already in the page cache but not uptodate, such
+> as those left by fallocate(), are still cleared, and so is every folio
+> on CPUs with cache aliasing.
+> 
+> [...]
 
-Core mm then treats the leaf entry as a pointer to a PMD table:
+Applied, thanks!
 
-- munmap(): zap_pud_range() skips zap_huge_pud(), and
-  pud_none_or_clear_bad() reports "bad pud 00000001000001e2." and clears
-  the entry.
+tree: mm/core.git
+branch: shmem-7.5.misc
 
-- mprotect() back to PROT_READ|PROT_WRITE: change_pud_range() calls
-  change_pmd_range(), which uses the physical address of the 1G mapping
-  as a PMD table. For a BAR that address is not in the linear map, so
-  the kernel takes a paging fault at 0xff60000380000000 (the linear map
-  alias of the BAR) and oopses:
+Applied patches will appear soon in mm-next, followed by linux-next.
 
-    epc : change_protection+0x498/0xf74
-     ra : change_protection+0x2e4/0xf74
-    [<ffffffff80263f4e>] change_protection+0x498/0xf74
-    [<ffffffff80264c18>] mprotect_fixup+0x1ee/0x32c
-    [<ffffffff80264f96>] __riscv_sys_mprotect+0x240/0x344
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
 
-pmd_present() already treats _PAGE_PROT_NONE as present, so PMD-sized
-mappings are fine. x86 had the same problem with PUDs and fixed it in
-commit 144bb0aee33a ("mm/x86: make pud_leaf() only care about PSE bit"):
-PROT_NONE entries must still be reported as leaves. Do the same for
-riscv and only check _PAGE_LEAF in pud_leaf(). pud_present() is left
-alone, so pud_access_permitted() and GUP-fast still reject PROT_NONE
-PUDs.
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
 
-Reproduced in QEMU (riscv64 virt, Sv57) on v7.3-rc2 and on mainline as
-of 2026-11-19 (v7.4-rc3+), with an ivshmem-plain device (2G BAR) bound
-to vfio-pci in no-IOMMU mode. The reproducer mmaps the first 1G of BAR2
-at a 1G-aligned address and touches it; vfio-pci dynamic debug shows
-vfio_pci_mmap_huge_fault() with order 18 returning VM_FAULT_NOPAGE.
-Then:
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
 
-- mprotect(PROT_NONE) + munmap(): "bad pud" in 3/3 runs, 0/3 with this
-  patch;
-- mprotect(PROT_NONE) + mprotect(PROT_READ|PROT_WRITE) + access: oops in
-  3/3 runs, 0/3 with this patch (the data is read back and written
-  normally);
-- mprotect(PROT_READ) + munmap(): no "bad pud" (control).
+[1/1] mm/shmem: avoid zeroing new folios twice with init_on_alloc=1
+      https://git.kernel.org/mm/core/c/845e96bb
 
-x86_64 with the same reproducer shows neither problem.
-
-The issue was found with a research static analyzer for
-cross-architecture inconsistencies and confirmed with the QEMU
-reproducer described above.
-
-Fixes: c3cc2a4a3a23 ("riscv: Add support for PUD THP")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jingyi Sun <1045704958@qq.com>
----
-Notes:
-
-- The tested mainline kernels (2026-11-19) had DEBUG_VM,
-  DEBUG_VM_PGTABLE and PAGE_TABLE_CHECK(_ENFORCED) enabled. With this
-  patch the debug_vm_pgtable self-test and page_table_check stay quiet.
-
-- With this patch, the PROT_NONE -> PROT_READ|PROT_WRITE case reaches
-  change_huge_pud() -> pudp_invalidate() on a PROT_NONE PUD, and
-  VM_WARN_ON_ONCE(!pud_present(*pudp)) fires once:
-
-    WARNING: arch/riscv/mm/pgtable.c:160 at pudp_invalidate+0x42/0x64
-
-  x86_64 (same mainline, DEBUG_VM) shows the same warning with the same
-  reproducer:
-
-    WARNING: arch/x86/mm/pgtable.c:527 at pudp_invalidate+0xb6/0x100
-
-  so this looks like a separate issue: pmdp_invalidate() has the same
-  check, but pmd_present() is true for PROT_NONE on both architectures,
-  while pud_present() is not. I left it alone here; I am not sure
-  whether the check or pud_present() should change.
-
-- The reproducer (a static /init for QEMU) is available on request.
-
- arch/riscv/include/asm/pgtable-64.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/riscv/include/asm/pgtable-64.h b/arch/riscv/include/asm/pgtable-64.h
-index eb7708e35cf9..1f45ebce8a75 100644
---- a/arch/riscv/include/asm/pgtable-64.h
-+++ b/arch/riscv/include/asm/pgtable-64.h
-@@ -226,7 +226,7 @@ static inline int pud_bad(pud_t pud)
- #define pud_leaf	pud_leaf
- static inline bool pud_leaf(pud_t pud)
- {
--	return pud_present(pud) && (pud_val(pud) & _PAGE_LEAF);
-+	return pud_val(pud) & _PAGE_LEAF;
- }
- 
- static inline int pud_user(pud_t pud)
-
-base-commit: 8d7fe9885c62fc9a95bf55d9db244d9672a8aadc
 -- 
-2.43.0
+Cheers,
+
+David
 
 
