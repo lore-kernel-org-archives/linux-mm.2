@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE43560A3816
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7B460A5BD3
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iHtmG7Cj
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oCh0V0So
 Received: by kanga.kvack.org (Postfix)
-	id AC9FD6B070B; Tue, 24 Nov 2026 09:03:56 -0500 (EST)
+	id 59A2D6B070D; Tue, 24 Nov 2026 09:04:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA0C16B070D; Tue, 24 Nov 2026 09:03:56 -0500 (EST)
+	id 5722A6B070F; Tue, 24 Nov 2026 09:04:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B7806B070E; Tue, 24 Nov 2026 09:03:56 -0500 (EST)
+	id 488FB6B0710; Tue, 24 Nov 2026 09:04:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 72E696B070B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:03:56 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE224160B6C
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:03:55 +0000 (UTC)
-X-FDA: 85470181230.25.4565403
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1594D6B070D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:04:13 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9E9B680BB1
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:04:12 +0000 (UTC)
+X-FDA: 85470181944.10.15C4B70
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3079C40010
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:03:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iHtmG7Cj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id A36781A0019
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:04:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oCh0V0So;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795529034;
-	b=ARWGHh3t1nUhdSiSUU6SrcuzLZKnZpx2CFjlpDaLMJ8YMzFppojA4v6NF5SUSA79SfJFEU
-	7L+0CNaeNsMlnVrOY7Qbfwdzx0liIOLSim4gIYnhUV1LxGXf+nAgxEmbKoUNNmSXG2KF6v
-	6mWAisjZdm7soYdmq4Ozn0Evoz9NmRg=
+	t=1795529050;
+	b=3vVmKovjULIZ++Rd8BtT1s1+JMHyj8Wqo3RXuS7b/uOMjnxnpjmrhrdBl0Ceg6GIm2iF9x
+	bkggSF9VYjTKTmr9Q7A4PLL1IEGqhQInrijOX58fzQwp47j1/LZetLiN74BeEOmr5IZqsd
+	AgV6qKoQuJAdkEKkQGBX23c3tgzaPOE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795529034;
+	s=arc-20220608; t=1795529050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vJUBuFI/X4ybR5TQJo0mpuZGpnhQ+Y28O/2YwIAeUl0=;
-	b=bIN/OnzuPJQWjpBKMqjPAt9Bm2Cm994vcXGsJd84mv0Agt1ONXdM10Ej3+77GDn/XbalmT
-	jViVOo+UhrSe/ZiznV/geh4jpFrARA1INtEs64gIQ8ppt8NEnAFKZxWNLZ87BdYIOJ3CT/
-	o9sOkIXMkgQI8hK64mV9iMQeXA3mB6U=
+	bh=Q5EZNv1hoZNsO5LavIHZOtKGm9yaPJJ0vpR/2Fm0XAo=;
+	b=6sRjTrBfK8JJ2Wsy/+V0a40kyksIDJ03rH+bZarqmCF+0K6ciw4390fkxjfxg+HoqELrP/
+	JbaWasCfSsa9zU145w+5vEugKWxa4rKz6ynGu0pL9kJ9yJxkB6UTZTpxxqA7Rh3kqxq5Ll
+	gYAUkbJVtmSiT1x/AllLPPDVqCV9dfY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iHtmG7Cj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oCh0V0So;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6127601D9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 38DF36266D;
+	Tue, 24 Nov 2026 14:04:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2399E1F0089E;
 	Tue, 24 Nov 2026 14:03:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388EC1F00AE3;
-	Tue, 24 Nov 2026 14:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795529033;
-	bh=vJUBuFI/X4ybR5TQJo0mpuZGpnhQ+Y28O/2YwIAeUl0=;
+	s=k20260515; t=1795529049;
+	bh=Q5EZNv1hoZNsO5LavIHZOtKGm9yaPJJ0vpR/2Fm0XAo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=iHtmG7CjTvXPz3lA7PVVVfcohJ6emKtmjQ2NVdO2YLbIRwOCJfD95zg5jaPopSYaS
-	 gj5YZqmFSdMCB9FUDQv5kkAhrEJtfG0JXoItpXFghN79meSem8VIAhQgIUFZSzsgAY
-	 r4LSrjk7SnXCqTh4BUkrSrsjPXB067ziolwbz+SPR2Ltp0YGJdQcNB/fTa+3srse0H
-	 /GlPyBuULOvYPhH5W1j1efHQ11GpECImbgYnAOTpdtXBpeseeeo4Fqv9cOfTrOTpvy
-	 kwrbQFsHkQGnl4n4jy0umpUo8SNKV+PrXpeTfoo5qbg7WgAkB1/06qMvPYru+IuxNi
-	 f+p2tfqpbV87w==
+	b=oCh0V0SotsrCn9TWTvx54DUqWZ9E5lDYqEYTa/SkfK/tDZ1vzOW7K1B+iPFhd+J9N
+	 IMBPfgrvCJBhLO25ivWueHZaBO3todJlUJ0FWSSUg0jzV/v3Kdf01vHxWwiC8NT3KE
+	 ajXML1m9831Htpg68RVCN87q2izRhoN9KwgCRK21KifWLU8cP4xS+xyd/1jjXEispa
+	 aqVYHhHGm2uNElvmmoTqoOj7YxZlaQQwUJHKVMrL0iBjaGly4K77/on649tqcw+0IA
+	 JY8UEIMdEo+PH7RuljHaB/bfBS1rItq08+6Dk419a5HID7kx4JwCgJhAo1hyslk2fg
+	 PozyX57TBWNCQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 24 Nov 2026 14:02:45 +0000
-Subject: [PATCH v2 02/13] KVM: PPC: Book3S: convert spapr TCE mmap hook to
- mmap_prepare
+Date: Tue, 24 Nov 2026 14:02:46 +0000
+Subject: [PATCH v2 03/13] mshv_vtl: convert mmap hooks to mmap_prepare
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-late-2026-mmap_prepare-v2-2-0b0d99d655f9@kernel.org>
+Message-Id: <20261124-late-2026-mmap_prepare-v2-3-0b0d99d655f9@kernel.org>
 References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
 In-Reply-To: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -114,28 +113,30 @@ Cc: ljs@kernel.org, xen-devel@lists.xenproject.org,
  selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
  op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org, 
- linux-mm@kvack.org
+ linux-mm@kvack.org, Kameron Carr <kameroncarr@linux.microsoft.com>, 
+ Michael Kelley <mhklinux@outlook.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1158; i=ljs@kernel.org;
- h=from:subject:message-id; bh=gtiaF6eQ5l4kQG69nvAkqE3NZUUEizPFbGQry23tGvI=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZZ4oFbmu5VXls3dYr8f7eMuEO344nPNsfMWXNVf7Dq
- qZ7i657dpSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiU0IYGTbVO6rNXJEyv+mV
- +9vcNeFPj7t/YJz3RnHNZ8l9hdoHV+1h+O8ze3Ji1SVFpXAe612GQm+U5O/yPeIyeLxitpextfz
- t+xwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2186; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=JYQK3wK0K9TDfgdH5JvWWtvXfv1ER9V1zmvapkfLQMQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZZ4o1PGpWtp6mWtz06svzJY2dja9sXqWeFlqRVDKj9
+ f9fwfsiHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjICl9Ghr1n6kyr2U7mXtq1
+ vXBDo9yCMwtuvVqu9PjO+TrncsbFO5cz/Hd3+BZswOIzW06xUO7ljlVNq98b5kUcm9Fu0HT10/m
+ DSowA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: gbkuwyfxy45ynxeyhfengyquye1t7bss
+X-Stat-Signature: c6bt76qcodpscikcug961nqwzqezgbcb
 X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 3079C40010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795529034-38089
-X-HE-Meta: U2FsdGVkX18A5jIFfUKC07Tll29IVm8iyVVO28OHw30zbzRDRtzOnLF39xkjPU1Qr1F8JpxVKD2gjcyOVNnVCOBnO3eTBX3aEemfmJjZwZj6w3za8njt5HxD8R5c6P1D2qqZymrLUbJ0ZuY0Ftcl+IcOX7Gm7YWyVilh724CHqPqCRhgrDfN3y/FF0R+IiDY99YB5Amej18SC1ZxNiBMvfy+YZxAEYjZTOVtTDYzY6lM/nXkvQeqct2f6L44nWZI06f7ujSEMELtUd0eTu0wasw2fyjX93x2Z2bkRsTrCbCzYF6Q+bNc0rj+qh0Sc3y8/BZTyouaWamFwmvWuRV+/CCEOiKYODczKvP2nKdEZSKckaBcrfohL15uXVPszpi7q2H/P3KSiYDwMBSOXxURLiDgh+44VB2ohkca4pKAiZhEflnm0+xAAbi6N6Y0Q93YdOabiC/1VzXGcWHZBCtdM3s4zNPvhuQQpycGGIEXmu9wgrsAUdTFn+qir5+RhnwVNKFdcN13uVx88DJ4HF2Zn1oT6J4enb2n6oIu5TPUyxMdZZnUbJpbjRrYNq8ntFmeeOnaKoQJ/2etKmsZQorkPcBB6WsNNSbcOCus4k48IjxOXHKDvC7CeSLDMrCyNZsQ8gtiYPimFPqpAWngg9StqhfDGwM7IucAVI7cGiVlbsjR1WJz43GomAWXVyxXUUhPFW0BqhIzM/UensNL8PFzd1dlyN0cqpJra3rC0d/SqwGc8ZOLDgLk82NsA+qFNKg0pxa9+789vHOS2FRGNAL05bsI/KfdGm9HIPvgs7o/vCQvtSgUNSafQhuUPCoEK13uiEXE+7QKQm921K/n5oXPGI6KGNVb6YSGc57qZGHdH74Uhrti5vMnnN1o11MjnIo7IU9xK+GSzZOwJv0t79co25tWEmAJQDcJ1BxlIjXIbQAv1Q+Sv0KJXFG0CD/UJ5qFw94o/DAgSIXYyPZEFyT
- DXoMheOE
- fyE/5oGZIWhoVqT/HER7vzKB/gYTvBuTEzvCxCzte6jVUi/t1NKwNM0nmIvq4ePzw0cRfcQL+qqpMO2bxbzrCp9KTvy0mIUurm0RhL+8zWlXL3v0QoW9zs4z6dbSYGRCu3sC7LzqT1FMcCB9mXjtQfm3ks4nCfuHfg1boe2pF3rwe9XMuInpMe/pOIEimuXmlLFGhGaNh/YmlOq0yZ0w5X9DylbruqZW5O0q97aHjA7ysrb/5S2MSHytwL0tBUC6tdPq/S23dGYz0uwjUUuct0EVK+TGqrwj5aBHxTbXCLd1sH0ZajUAD3E3Kb7EINtjViDPCI1q8YHyYMpboPxWerGcbEH6RaHCJBmB1AeTF3zq1c1/VLCWRfY+IkFzqTioQ5TZjdMvcQw+5GLG5mWGTMkrbjs/AQ8q8wCXCusHCmAB7VWnaWxZOmNZq9NHhz664ENsmAsmfjvKcEgNiWZsxRCG0oQV//y0R/rgKKfNfE14cf/lEfFJ2wMyoLdRRM6ax3ViRwthyyF/gNdQow+6CaPHcoxJxhSeANA7iOZw6yH4zIVrjQp3wBwdomjCAE97v0AVuRgSglDk/vwI6rvcYg4BDTRs83fzaIY3+f+Xj2W/k4vET7ZeRC85Etx657Krb3opu
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A36781A0019
+X-HE-Tag: 1795529050-836251
+X-HE-Meta: U2FsdGVkX1/TYApYkO7+nba5mqFSEKUD7iE5qttadNvY6qoMLR9nCvJksIM+vE7nyrOIKNJaeZpgJBM5uFexor0++hs2SN1/kaAQWJpE4+ambxDLAyy/4J3CMOdwpPP8EAhQqTIhSaX6vqVK+WQ6a80rOUhUQ482DRaKlKhTAVg1rpRsS5oQi/AiTrqZErNVYd0I2pvIIrTqMqsoKktmTR/snkLGXqrTCRAYCOQH10blrqA1WxdW/89AwyFPZKmJgiihNV5Kx5uMmCOPIZHJ5oFP9JYcVNVM8956S++Z64TMiWuPTJ+i9xiSzOdmmIiAaWP6dmdDJsxmh9TSG/gE5nVy5ZqY7QZcgXN1Zj6WgRexv/dDPRAHO7YfJrhJMrRxB03FyBzLFUTCDtygQI4whmfG/OzZBdAcW0imvu3uIG24Zqo6/HW8MNEWuzI4w3jMrzgOn9X6FrxmFmfAwxkX9e/Mimco/SQXXxagI/OHJKF/gdO7jLtF1wrSQahjbNbMflroi1M/zG+mFeTAax8SJpHzqBg3/CvjeAPDyfiarERcTpqe1UYddukcfip2hR5QVdvAZdr5ttvluYAi57SWiqD69C096SEL3UAdnkfGFKguIy6Tv3TVwue8PtL3N+nMnt49wmzMG7phGyWd5/7yZyzymxe7p3atBrdsrbruljyu7t8VziXQx0WPAzfVlHn5UbV3VEBobprHwqhe8vVJaNX6gUs1Xtkd4te7o69VpPPSS1u4go5HRVBfoXd7vFSWaXPJzZRHuup/+O9zG31r0wlBWJ23v2c+THr5mvBQyuMcHq7x7D6DWYVAKYcMiibeWlJFTajcLjMt/t71+g41f/izA1Amjz44rT7PAWxiudp1hIMYlkGn1MfMEFnhomWWaJDiWhKzMlnm99ehWei9hZgjH/zYmxdZLDEsBFH98Xe7jn1Hd3f4wuxqMDtYfKHZ4bIMKPNJwAXD54Opr1G
+ Yep/ElI/
+ gv0OMQ1O/LsS96zGpBNR7VkYmP6DzhzG7LcNMDGrDkKJiqd+NDnfxT1r/YMwZLrpDJC0uM4ScNqF3cc+W9WRaYluUVtP5MefsNK06RfQIhBpIJl7niLJOp9i8kTAMV1QrdAQd+IVQM9JcioVGTZzBeU2EOuqw/s89A5BN2jlPoKqUAi0OiFR04rUooBuSvV3rVDEe3KlREtUgephpqLTpF3FWLFB/zWSLwaIVOJjP0poxkjSOgHCyleiMe5+/25d1dLGfUMLX6E0UfWHcgovLwqFUr29sdbC435JPK55F57FnHHJS0o0UDxrwxAJE7JFXbVmb+ZpXm3AnJmucZfbnKsF3pzx2xOeaY1/qRsLun2vJTdC0IG5KKQQC/m3a3jO8PdgDpXJO4sYvUJtLGUgEoA+tBtXIQ9IckkpvRpEGW/RBNSoqVP6/G9zw3dNtqbWfJn+IdJUjonqdCAB5+5/meb0f9Zy4Opmg8xmed7lSCRrmQUeSPxg+6epbBQdhKkiFW8HuVgdEY3FKwbteW0iV+rZTLTw0H3vUeUYyEyJjYrvyKems2VVvhDmI//sMGdSHmZSR2RB1evSdYxgEoYIBMpjrt2oed5cUu8l0gGLZg6VnuJUFkXmi+6g51KZsKoPgzfhKb7l6OTnh8hSmfYsgerxGdI1RHvoUfgzVCN8j/65mnho=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,39 +145,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-only sets the VMA operations.
+Move from the deprecated mmap hook to the new mmap_prepare hook for both
+the mshv_vtl and mshv_vtl_low devices. These only set VMA operations and
+flags.
 
+Tested-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+Reviewed-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- arch/powerpc/kvm/book3s_64_vio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hv/mshv_vtl_main.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index c5f3f5b29d89..05f6f2c9a432 100644
---- a/arch/powerpc/kvm/book3s_64_vio.c
-+++ b/arch/powerpc/kvm/book3s_64_vio.c
-@@ -247,9 +247,9 @@ static const struct vm_operations_struct kvm_spapr_tce_vm_ops = {
- 	.fault = kvm_spapr_tce_fault,
+diff --git a/drivers/hv/mshv_vtl_main.c b/drivers/hv/mshv_vtl_main.c
+index 2d4fe24cecbf..9bfe808f71ed 100644
+--- a/drivers/hv/mshv_vtl_main.c
++++ b/drivers/hv/mshv_vtl_main.c
+@@ -873,9 +873,9 @@ static const struct vm_operations_struct mshv_vtl_vm_ops = {
+ 	.fault = mshv_vtl_fault,
  };
  
--static int kvm_spapr_tce_mmap(struct file *file, struct vm_area_struct *vma)
-+static int kvm_spapr_tce_mmap_prepare(struct vm_area_desc *desc)
+-static int mshv_vtl_mmap(struct file *filp, struct vm_area_struct *vma)
++static int mshv_vtl_mmap_prepare(struct vm_area_desc *desc)
  {
--	vma->vm_ops = &kvm_spapr_tce_vm_ops;
-+	desc->vm_ops = &kvm_spapr_tce_vm_ops;
+-	vma->vm_ops = &mshv_vtl_vm_ops;
++	desc->vm_ops = &mshv_vtl_vm_ops;
+ 
  	return 0;
  }
- 
-@@ -282,7 +282,7 @@ static int kvm_spapr_tce_release(struct inode *inode, struct file *filp)
- }
- 
- static const struct file_operations kvm_spapr_tce_fops = {
--	.mmap           = kvm_spapr_tce_mmap,
-+	.mmap_prepare	= kvm_spapr_tce_mmap_prepare,
- 	.release	= kvm_spapr_tce_release,
+@@ -893,7 +893,7 @@ static const struct file_operations mshv_vtl_fops = {
+ 	.owner = THIS_MODULE,
+ 	.unlocked_ioctl = mshv_vtl_ioctl,
+ 	.release = mshv_vtl_release,
+-	.mmap = mshv_vtl_mmap,
++	.mmap_prepare = mshv_vtl_mmap_prepare,
  };
  
+ static void mshv_vtl_synic_mask_vmbus_sint(void *info)
+@@ -1324,10 +1324,10 @@ static const struct vm_operations_struct mshv_vtl_low_vm_ops = {
+ 	.huge_fault = mshv_vtl_low_huge_fault,
+ };
+ 
+-static int mshv_vtl_low_mmap(struct file *filp, struct vm_area_struct *vma)
++static int mshv_vtl_low_mmap_prepare(struct vm_area_desc *desc)
+ {
+-	vma->vm_ops = &mshv_vtl_low_vm_ops;
+-	vm_flags_set(vma, VM_HUGEPAGE | VM_MIXEDMAP);
++	desc->vm_ops = &mshv_vtl_low_vm_ops;
++	vma_desc_set_flags(desc, VMA_HUGEPAGE_BIT, VMA_MIXEDMAP_BIT);
+ 
+ 	return 0;
+ }
+@@ -1335,7 +1335,7 @@ static int mshv_vtl_low_mmap(struct file *filp, struct vm_area_struct *vma)
+ static const struct file_operations mshv_vtl_low_file_ops = {
+ 	.owner		= THIS_MODULE,
+ 	.open		= mshv_vtl_low_open,
+-	.mmap		= mshv_vtl_low_mmap,
++	.mmap_prepare	= mshv_vtl_low_mmap_prepare,
+ };
+ 
+ static struct miscdevice mshv_vtl_low = {
 
 -- 
 2.56.1
