@@ -1,101 +1,179 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E95606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 21:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A71606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 22:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UQYU01VS
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=mfnJGR8Z;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=wbnBnHyI
 Received: by kanga.kvack.org (Postfix)
-	id 180A26B086C; Tue, 24 Nov 2026 16:54:27 -0500 (EST)
+	id 75F236B086D; Tue, 24 Nov 2026 17:02:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 132456B086D; Tue, 24 Nov 2026 16:54:27 -0500 (EST)
+	id 70F106B086F; Tue, 24 Nov 2026 17:02:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0470F6B086E; Tue, 24 Nov 2026 16:54:26 -0500 (EST)
+	id 5FDE36B0870; Tue, 24 Nov 2026 17:02:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D2BBB6B086C
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:54:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53DDB160C6C
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:54:26 +0000 (UTC)
-X-FDA: 85471366932.27.79C41FE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BBF8440006
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:54:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQYU01VS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 390C56B086D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:02:39 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3090C0D2B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:02:38 +0000 (UTC)
+X-FDA: 85471387596.25.6F82E0F
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6EF38A000B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:02:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=mfnJGR8Z;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="w bnBnHy";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf15.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795557264;
-	b=Iq6+F9DXfbkGJqwvMYcmYYMLwQ3TC7Phqm1fQv5+fN/tbSm0OWSxe9sOddGU3PliIN41Wt
-	HdOxko53tDsw95x9Q7d4it7tWzsdG/25mmzq862iLCO7kJ9F93KNZQ9OqTs4PNEsi2wBgg
-	57ADuz1qL+V8B74/fNBGiURvIFILFW4=
+	t=1795557756;
+	b=GZOcZUp+T8YfxejhSNVsanEGOfb/D9wR/eSSycVEJlZczMUWIaATQ5WSNk/5TLdb3A61at
+	Xn1uHCcxysvFG4xWViXfBsX2aoVdm1fDBpICJVC0UPprN0PRWT6KJOc+DqG3LtFAAIYAKx
+	BguthEQtbsHWw3NcrXSeZ8hi2SY0KF8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795557264;
+	s=arc-20220608; t=1795557756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VYhaZ8UGiw+YlICT6cuZY+47kv3MmX1z/3eT4sdMXTI=;
-	b=oADeaUq468/FxXSAosnF4tjGS+yjAQwaRKz/pVKjnvTC+nreSqXyUA6Z5QOtC4ulNkuBJT
-	sDW0FgNYvmSfkSWsVNCvuzPd4XoBuCFjaJpAm10VBVV5prrnTxTpbWnw48o9vSOVBzW+kz
-	vxmm+BK6wIIDOXpOn/rt7H+2XFNPyuM=
+	bh=xqSGxC68OuGq0f3lY+sfYUCqjXoRvtvCw0BSPI+8ZKw=;
+	b=qjqLvglEIqVMrUrjQiGrwsYBIGEX7v5u949hwMB3qy86sHI9OqHekQNAsFkXlnIU5cf/0l
+	0mv/chp7jtTY3zN6CcPvbzWSyVMoUYfIh5auqFy+P1T8Ob3t4f/gGpfqUlOe/KNoVFm65Z
+	XQIP8NmYZbU0RV47OpipPWq8NbjSHVg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQYU01VS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 13816620B8;
-	Tue, 24 Nov 2026 21:54:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0CF1F000C0;
-	Tue, 24 Nov 2026 21:54:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795557263;
-	bh=VYhaZ8UGiw+YlICT6cuZY+47kv3MmX1z/3eT4sdMXTI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UQYU01VSY4vX+sjbQbe4c6VkSB0gsZ2dNNQyUjzPr11h6kxp+XHLGI/piPI+B1UeM
-	 eRUe1De7GTvpy3OMo45cZ6m16ApzRLuHqFmgC/VuI1yJaDOiK87jAkWeCB5Tp+QHT0
-	 vNtZ+nhubzxAPXsM+wKtAucuGu5fwIu3pZ4YjwTQiPzvK+WZGmL1inBKzz4fdOSMfv
-	 dlYLUpjD3/VUOPgS82hY4iy7MAMQd6o+sVnEzBSfpc/ril2HHHOwOGEp1+UbEBJK5g
-	 1RxVcindNxaBfEAQhYfDQ37uW15Pv/CepKQzGQLxhTxMfkTxJqA4HGLKBlSgS3Tvy/
-	 pLHEGkvPsnszg==
-Date: Tue, 24 Nov 2026 21:54:21 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>, 
-	Lance Yang <lance.yang@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Ying Huang <huang.ying.caritas@gmail.com>, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, linux-riscv@lists.infradead.org, stable@vger.kernel.org, 
-	Kirk Swidowski <swidowski@google.com>
-Subject: Re: [PATCH] mm/rmap: avoid reusing batched TLB flush generations
-Message-ID: <awYFSeZKPzqcCvW8@thinkstation>
-References: <20261124-rmap-v1-1-e3dc48a4b527@kernel.org>
- <awXQg94rksZvexZe@thinkstation>
- <1cd2306c-eaec-43cd-9d0d-92f8cb6e691b@kernel.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=mfnJGR8Z;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="w bnBnHy";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf15.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.phl.internal (Postfix) with ESMTP id A51D813803B3
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:02:35 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 24 Nov 2026 17:02:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795557742;
+	 x=1795564942; bh=xqSGxC68OuGq0f3lY+sfYUCqjXoRvtvCw0BSPI+8ZKw=; b=
+	mfnJGR8ZvkU0LMsvLhbkB2aWWyYvVftk34Igv9f+VSyWFZL75F98YRJInsubsg5N
+	ErWkbpwwYR8PYwwytDXrBO4Zv5tmqL7Kcd99KBzFrH3plirHNa3BF91ghYHg1G2X
+	OmIzUeu9alCUMqYdLPe3t6xGqQDeBJFNzjBkCZdXLIRdfSfdGAENAvBoCa2Hd/va
+	6GViewBlkNAzICD3R2R+FvuW+BnNIr3jT+Fl9ot6DTCUyPwgXgiOAE7gr65RUlWF
+	zTV1eaMMqoKhfcdTawq7FOwHVOJ7hDxNDHC9/0HIOAI9uDObbhkabN2JM4I0uCwd
+	iklYqFK06JlPTifavsWnwQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795557742; x=
+	1795564942; bh=xqSGxC68OuGq0f3lY+sfYUCqjXoRvtvCw0BSPI+8ZKw=; b=w
+	bnBnHyIX27rhdSGfAc5H4g5+m7drm11Zac2njlCmzN4mbo2YQ6EhH6D3pD/8PeWY
+	8GHoNQCNetXraVudoAhL0qYFTYu9qtXjJhzOx0LKjAdkofjkzwVdOhVC1J2hwfwt
+	VGDOiyN7FwH93as5zO5o+8QJnGBEUiUslUd724GRZXy/EKfZPjLZu/8oWwovMRB0
+	gqyKbJtAxmz5Ye7KI5rrGabmlFjzzdpLjwI7iCre5OXCavuM7GUe/YusH3YuhrsM
+	tEnsRe06oXURbQM9aMsO08wVojk5ODAx8uWqDju1VwkBgXeAY+UL/ydC1j0YZtCu
+	KfHp2BvZEv/a3sOge7mDw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795557742; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:AddWXMmCSTgYSmMmCsYnpf6pDyMHmjE+sFZxQUF55pCOlBa
+	Dl0X90Xt9tyw2ilPEXNER7fstwzSMFMGx3+Ysq5J5UGOeYFx/BwYbhKhGdnLhQbu
+	KD+7VmqfGxiMzrRYd33BCVJcW9c4WvwrNDdr6SZCZeKnkV1WXgOo28etmDMsK5tc
+	bgF3nZD+fO9YVMLUnEdYLFPVysSPm8ye/p6ApzOfT6S0Sx8FXJcwNAHoSwQGhSyz
+	2LPJh/MnU0xBGIkN73+HatXM/0wI3raLAYqjnDiHxoS5msAKb4RusbaAfxSXFaa9
+	cw8FsKoKJa12smOCBC6Yu05pnfzZNuBAf6AHcxQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:Y1L9ZRjDVf0ae1O5OLJmIEMJoJINj3g0qWcfqpumaM8=:uV7HNzlAfzr4LTvQgcdWBWGhD8P70PVpTMD/LBLagBw=;
+X-ME-Sender: <xms:ZAkGa2S1qU5q8Tt4P59rLUZLMDcdcz9MhGSLBcV29aA_t5jwHSVpFQ>
+    <xme:ZAkGa2nn-MLHHH5bsIrtUn53Bm6dbM7HMZKuIRmjk9pvX9DAb9jnrJeBrNTX2ODRl
+    wAAtRHYTqQ6S0lkRVQTlORopD_RQ-qt5BuiOtcQDZFWBrRtGC248laJ>
+X-ME-Proxy-Cause: dmFkZTFRHh3IY7AQpE2sOB2PLJi3AuimKZDL9H1tXPiO9loafbcw/DGlO/Xoejw+8P82CU
+    LZtGPx5Dw2fehVmppW39nh7aiKQqHD4K4dz4hhwMbfJ/rvud1uNRBqKqwpOM3ItmC7aGg2
+    A+GKbJZ0q/HAUhCKq8KTriq2kSTLiR4BY395K6QXzmGZqOgGBQCeI+/qZ5DjTPzrKb+KCk
+    fWxNoXXTvO6/Q9umpMuH+R2tl9qmfexdyWMyjNVwhUtZI0siPxAVzMuaiN62cXkT1LxPsl
+    ivdDM2jUMgnHoUAdJkJTv2Cd0wNryoNWCgNqfkM9sF+PCCJ+n2SVasPPSYcFY35/BtjUi/
+    TlJok52x6K/qFFOH5y2f4B3BhSmPbdoGhxzStq5W26pndjLaCuALLGrZUSxDowPZL8Uxm9
+    tq8OcCqqLGoNK4Gz1S9oU6o18yltNNQA8ylIOP1GM8y9zFzH4ACeaKMpbIKk59CrU6mG5p
+    r7Vqugsc+zPL78L05eqJ+Dv566UPYEBjuKKkv+Kuz7Ek+Vcjrk5P3BBEWeI5xh7lI87c+k
+    EGduRPaTIxc7VwNPWY7uJsLAvKDYRTBcjLlbz5kr2cdl14XqqH/o219lKVdPi2m4ANFlMt
+    HKT2MGXWfnbkl4Zcq1AAqLM5PN7cFVRnArfJggG7bcTT8iycB6wsrFxURFsA
+X-ME-Proxy: <xmx:aQkGa5ADK0kQBKydW-jsYQL2owm6ypApuRcgesYyb9gfGqwkudPKNw>
+    <xmx:aQkGawu6ACeRQkfy1MUQnkSHymWoFOBsVAuxGxAvsiDY-MRkdjhslw>
+    <xmx:aQkGa41LhutcH3hl071xdqmfJ1-SyaJRtJWCEsdFZTLgpNQKlsyu9g>
+    <xmx:aQkGa5jbcusQENaD1VV6mJUEOIOUF73AiAns-Bfib3Jpb0Xg437OxQ>
+    <xmx:bgkGa4awIhQYBbKzBAjp50sAI32cG5KibTRETI3OZH4oHKFRGLB2KqwC>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id EEB3B32A009C; Tue, 24 Nov 2026 17:02:11 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1cd2306c-eaec-43cd-9d0d-92f8cb6e691b@kernel.org>
-X-Rspamd-Server: rspam04
+X-ThreadId: AUJ1OXWu3nCJ
+Date: Tue, 24 Nov 2026 23:01:51 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "James Houghton" <jthoughton@google.com>
+Cc: "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Pavel Begunkov" <asml.silence@gmail.com>,
+ "Alexei Starovoitov" <ast@kernel.org>, "Jens Axboe" <axboe@kernel.dk>,
+ bpf@vger.kernel.org, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "David Sterba" <dsterba@suse.com>, io-uring@vger.kernel.org,
+ "Jim Mattson" <jmattson@google.com>,
+ "John Fastabend" <john.fastabend@gmail.com>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ kvm@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>,
+ linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Chris Mason" <mason@kernel.org>,
+ "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>, "Michal Hocko" <mhocko@suse.com>,
+ "Ingo Molnar" <mingo@redhat.com>, "Martin K. Petersen" <mkp@kernel.org>,
+ "Namhyung Kim" <namhyung@kernel.org>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Sean Christopherson" <seanjc@google.com>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Thomas Gleixner" <tglx@kernel.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>
+Message-Id: <1a99e5fc-129e-41e3-8420-101bcf04b366@app.fastmail.com>
+In-Reply-To: 
+ <CADrL8HX5vb1PGDpWzp-eR0rNfsMCVUhFa9vp_WZZx2eJZ+dfXQ@mail.gmail.com>
+References: <ac22215d-3e58-4aab-851e-47c30836e058@app.fastmail.com>
+ <20261027231728.1466446-1-jthoughton@google.com>
+ <32fad21b-5bad-4640-97df-ef0f638cd9e9@app.fastmail.com>
+ <CADrL8HX5vb1PGDpWzp-eR0rNfsMCVUhFa9vp_WZZx2eJZ+dfXQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
+ current->mm is NULL
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: yg94sfgg3g8xiximh9h1wmt6y59ugj4r
 X-Rspam-User:
-X-Rspamd-Queue-Id: BBF8440006
-X-Stat-Signature: mungnrxifzh7obexcixrgb5ono45myso
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795557264-756043
-X-HE-Meta: U2FsdGVkX190NqKszw0hvwqKG+t2EnRHlermGFt/QBxsh8uASELhiXMbEhGtjSrEjFPkWX+OSoASCHg7wExsbohILWERuhBlVqyZGZWWrVhrOAW5gCHVcWHYtQcKUTeMMSbX2CUtcVeLdyQJPi+PtYo8QJEDqpSYVqtqmPCZiYK8TbpsYXaBueWGE8DfMfKDc4auO6m4rC7IbnkamL/AFc///8gdqGpyOvZ03reY+zywlXMJMCXEUVKxZkinODDqKYWnRRz/yvZF2MiQFpbar7gfTcza72Kz7Ix69qf1w5KGZuC2GLNQazVb/rWY8f1um66g+vWmgXnazyu2b9CYYn+NOG7V/YROp1ggEcb+HTWPXVKLEiNrHeqvSf95v0RNc6zz8tunsC5/omH/ScWB8lJ/45vuZYQKpw3Gz39gjAhm2pwI7UxQxs7gAbHM+A1NagBwo9lsKOa3Adek1WmM4vnSWkp2AuGC0kRhDcUDpiQrJEMC5ROL4a8qpUpEM9IhlBOd7NHSgNEkWZ0DEzFkDiqgUzG0kOXcTmhRPVZT/3HwIpI8jpZmt9zsHXWJXhOXqpVHBBXO8VknMzhNDSqxcgOBFFxXp8N71GvJJ/cShdheKaNk8QgNm9SoGyMtvR6DP4whW+Z1Z9WTh/8kuUlm2gvXk8DgoHqdZMH/040bsCm+IisHBb0amlFNW/sCrfBnYWybpV2r8xLBTnSzEtf7S3JFt+7Yw5CLHqWa2/hZy+92mQkwh1HZKec/ukwL421AbohYPOh4Ico1qNu/H7i43hn7YUQN/o1KraqymlzHU8x7Nr1r8pkqVT1nD99cVLSxpPwtfqUYhUhBRtSB56XoFECuh5vq7xtlVVo3D4HhIZJ9lHbUugZJ5wnIdG6Qn8qtEAoHKY//WlsTSQcPyMNm1qXn7bl/eVxA6btpbUfwZSGBMU929c/FXMZqzreH2rvsqyR/5OdgsnXap7cR9Fw
- V/AjpF3o
- bSWH6dqH9p25Iwt4F4HBCk0slIPHIz/ivmPaUYZWFCWEcweUN79dnKgsD34mDZPzte+rFxygOU4Sm8FjpDPP4zNd6ExDdVhoZu55mkf+IV9n/8r9qHshB/XOd//JgFA8w9z8GVzCNUKc6FToCABhkGzjqAMWC91EeVTasuhQAtEQfb/A+wmzGes3+wYMNMUsv5Ivf1Jqgo+WjI1XXOafSag9M0DW+nA0ju0oheJKR//m6TZyEDCN9a8oTpdYP5K16/A4PoPxQZEn7hilgcjxfWX2+4a0gTLrd3lwX5zmzCBl0Ij5ViLFeQWOaNFevv1aC6taV+PeFI7bX7HO8GyGhmr/ZmqDPTKcyL5nIPZgu9tSujTkHsCqx9zsKXLnFdOR+Kfr57bQXC6RDFnhDQaLesBJ92WxQyBKhXXDGpwWPQ1oMY21jkoFC24IckhUBqo6OYpnRoveVMv60QTPP515sXongCZdDzY1rayv/dYR8aP8lFPNynAlOdBkgMqd1Llj+6+IWAz4JO/IGlX239DxMTHX4/oTP3QuthrBqbu9x8ruccEs=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 6EF38A000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795557756-878877
+X-HE-Meta: U2FsdGVkX18nUdvhvTNfapSFXVYaFyY5BNSprOEddxHV5gWW7A5rRSzeeqNmlAqB174jiLLZrmqASCnY7euC0/9KFbEJ8/k6yy5jherA/MVGamLUSGPE86cs7Bzkc7qBnc0/Ib0ngaE7lY+bBgFn0QELxJ0ojeT9cRm2UchQhK20sWDrWbBJGKA98xiXqcdu2s/RSMXjl30AqzW3/nEyvwOSx123xAOJN5DRmFldbxW7jzgBv2sX9IZ+9X9nGhj3JSMVUbFhf27S1gRTTj18/dBIO7PU8SJDmkLJm/vpN1ra4HE/+s+UI0hturtejcqo2Vsg1E1s6a8yP8ivq0dzE+23HJWpJXJ8qpqeZWbT9ucpp25ipNHRRAzVVcznJWSgSeOCbP6w9GqeXbQlLLf7bjx4qblapfT3Bhnq4Gs8pcUrq0o+4wuc4rWit6xJcgMjNluvUZG8kvRrVQLQPTJtJnxmwD1Xco5SDVoOu9wlU7ND7G87EN/7PWiwpXweoOmWAStS1ey1iCaBPhgB++MA/5mNsRP9Di8Ht+kX4wFrfFghciXearXK1M+Uxw8PchPHyhnnA8XyNgsTuPUCAKlIB7sRnPAn0UiVqcIJuQfWBBE4iVjouHRroBI2PW2n9LGsQsekb8PngCrL+iiG0NFsVH5Z2BaDbNkO2wQzhEpgEPnGKqsI+9iqqbZ/rLfAjgJmxI3gdl2bOogsWMNOAVnRYpV6U43l7mdRKd8LKnkzVujuiMr2n+gMAA+Bh8H01rWfHzkRrOqii4OJy80I9sSHrQ72LWy/PezjLO/Ur/msFCYfoxDZ/gu3CFl8SaSwEl+15YTDHIb9aFncTk7pQLF1MFAMOILllx0ATRKBdEymgxSGcdB3oD8aTlDCkgAz0OdMJbCor8cHJffKfLvKiacvMpliANfEVxzwzcnVGeGqZUhM2z4eOVDrS3eaLms2HIxfLzpjhAIrA2NGYiIsxq1
+ H5A/m1DJ
+ UJ6cYiR1u+vGIgNqIfFMz0n7dPTb300+3QjefhhddpT0MGbpwFhojv2o5b8yTRggNrDLR9Fic9T4JUsHH751NejivOxvHK7SMK2jUCI48Et/wbQH8IiDRuo/6/fKANu8mfW9Ap0Cxc6BkgLSZwCNRF/kcR80Jf56mWUYM0zHEaXEWKKICFVMCFUPL41m8cWu9OVszFERGh6RieqkY7i8T9TKwAkmBlrzua9r4Yc0bRzb7XvyjrdKaUvJ/1WmvlyB9d2HxvDZwk8nT1KxxSaY9DSHIP2A2CyndE0djNbFzkLCkXUlZM+Wcic9tgeXyzCHrbotHjduK23esFpPDCba4XI8xvd8hH50rW1N73ZuzlYzuuuLBx7WmGS274qZDXQKtb3sSKtbQcagEQfFUroieAg+AbOJfzFFXQjbPjNzfcOo99KRlTddpiemntsTE71r5UWF4vtXqOFPN3uA0twkPOty8LgBEQk1Rki0eqCnqiRG95SDUAJC5Y82UpSK3iOHYcyfL88xkofVQzEx2Z/fmOW6mtwuld/4Hc7kJzLyfqpU5Nl/rxazEZPbbqLgOnuTpLzb0+xv8m24w955KEyj0EYzVWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,73 +182,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 10:16:25PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/24/26 21:50, Harry Yoo wrote:
-> > On Tue, Nov 24, 2026 at 10:39:11AM +0100, David Hildenbrand (Arm) wrote:
+On Tue, Nov 24, 2026, at 22:10, James Houghton wrote:
+> On Wed, Oct 28, 2026 at 7:14=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
+wrote:
+>> On Wed, Oct 28, 2026, at 00:17, James Houghton wrote:
 
-> Hi Harry,
-> 
-> thanks for all that effort!
+> So now in v2, the _nofault() helpers themselves do not check current->=
+mm.
+>
+> I've uploaded a draft version of v2 here, in case you want to take a l=
+ook:
+>   https://github.com/48ca/linux uaccess-v2-wip
 
-No problem, thanks for looking at the issue ;)
+I read through this now and it all looks good to me so far.
 
-> > Uh, I spent a couple of hours to review and make sure this is correct.
-> > I thought this is correct but then my claude flagged a race during fork.
-> > 
-> > dup_mm() copies the counters with memcpy() and it doesn't know the
-> > ordering. When flushed and pending fields sit in separate words,
-> > dup_mm() could read them in two separate loads, but in the wrong order.
-> > 
-> > It's especially problematic in a very rare (IMO) case where
-> > flushed == pending + 1 becomes true in the child (which means the first
-> > pending flush in the child might not be flushed properly).
-> > 
-> > fork				reclaim			another process
-> > memcpy reads pending = X
-> > 				pending++ (X + 1)
-> > 							truncate()
-> > 							-> flush_tlb_batched_pending()
-> > 							-> flushed = X + 1
-> > memcpy reads flushed = X + 1
-> > 
-> > Maybe reset the counters after copying mm_struct?
-> 
-> Resetting sounds in general like the right thing to do. Ugh, this copying of
-> random state is nasty.
+>> Since in principle every user access should go through both
+>> access_ok/mask_user_address and current->mm check at some point,
+>> so combining the two as much as possible should help long-term
+>> maintainability.
+>
+> You're right, and v2 has been restructured like this.
+>
+> - The check is in access_ok() itself: the generic version, plus the
+> arm64 and riscv versions. __access_ok() remains a plain range check.
+> - The callers of mask_user_address()/masked_user_*_access_begin()
+> check current->mm explicitly. There are about a dozen such callers.
+> - The unchecked accessors, __copy_{from,to}_user()
+> and__copy_{from,to}_user_inatomic() (and arm64's
+> copy_from_user_flushcache(), which also relies on an earlier
+> access_ok()), keep an explicit check for now. Once their users are
+> converted to the checked versions, those checks can be dropped.
 
-Indeed.
+Ok, sounds all good. If we get more than handful of mask_user_address()
+and masked_user_*_access_begin(), we can always revisit that interface
+to make sure the check can't be skipped, but for now this seems
+like a good tradeoff.
 
-> The child never ran, so there isn't anything to flush for it.
-> 
-> So what you say is that the first deferred flush in the child will be missed.
+> Compared to v1, this also covers get_user()/put_user()/clear_user() on
+> arm64, powerpc, riscv and the asm-generic architectures, and arch code
+> like signal frame setup that uses access_ok() followed by __put_user()
+> or unsafe_*(). user_access_begin() no longer needs its own check.
+>
+> What's still not covered: x86's get_user()/put_user(), which do their
+> own range check in asm, a few architecture-specific paths that call
+> __access_ok() directly (e.g. on alpha and sparc32), and arch code that
+> calls __get_user()/__put_user() without access_ok(), mostly trap
+> handlers for user-mode faults. Probably best tackled later.
 
-Yes, I exactly meant that.
+ok
 
-> I agree that it's extremely unlikely, but we should handle it.
+>> There are probably few enough of these that we could address them
+>> by either adding current->mm checks or converting them to use
+>> the full versions instead where that is an obvious change like
+>> that usb gadget driver.
+>
+> Sounds good. I'll send a separate series converting the obvious ones,
+> starting with the usb gadget driver. I think that will be useful.
+> Let's see how far I can get; hopefully I can drop
+> __copy_{from,to}_user() completely.
 
-Agreed.
+Ok, perfect!
 
-> We currently have:
-> 
-> 	if (unlikely(pending - flushed > INT_MAX))
-> 
-> So I guess an alternative would be:
-> 
-> 	if (unlikely(pending - flushed - 1 >= INT_MAX))
-> 
-> 
-> pending = x + 1
-> flushed = x + 1
-> 
-> (x + 1 - (x + 1 ) - 1) = (unsigned)-1 >= INT_MAX
-
-Oh that's subtle :)
-
-> But yeah, let's just initialize it during fork(), thanks!
-
-Sounds good, thanks!
-
--- 
-Cheers,
-Harry / Hyeonggon
+      Arnd
 
