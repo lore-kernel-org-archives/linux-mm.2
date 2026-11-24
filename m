@@ -1,145 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E704606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627E6606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fLdXTVBD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jqYKCbF0
 Received: by kanga.kvack.org (Postfix)
-	id 5336C6B08AA; Tue, 24 Nov 2026 18:46:09 -0500 (EST)
+	id 586CB6B08AB; Tue, 24 Nov 2026 18:48:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50B2B6B08AB; Tue, 24 Nov 2026 18:46:09 -0500 (EST)
+	id 55DDD6B08AD; Tue, 24 Nov 2026 18:48:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FA776B08AC; Tue, 24 Nov 2026 18:46:09 -0500 (EST)
+	id 473886B08AE; Tue, 24 Nov 2026 18:48:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1417F6B08AA
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:46:09 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 90C95120CD1
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:46:08 +0000 (UTC)
-X-FDA: 85471648416.19.2158908
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9DA841C0009
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:46:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fLdXTVBD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf21.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795563966;
-	b=jLo94+hAL24dV0ys7/ja6029IT3rg8v/SUWkKkockaqgStyI8YQ3mJR1lEUQfDe1Ub7c5H
-	Wa5ZK5SeH8X1qUjEilbZqWwSXNEj/8z18BoTav6f3hoC+eMdyIRiRiPkGEYhepZftdwq0g
-	mgHUuM9Yp8TXD7jXUFJ8AO5bhg+J9mY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795563966;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	by kanga.kvack.org (Postfix) with ESMTP id 1B3716B08AB
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:48:17 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77C8F120D11
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:48:15 +0000 (UTC)
+X-FDA: 85471653750.11.E196AC5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B10A1180009
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:48:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqYKCbF0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795564093;
+	b=3ASV9cWzFRoyAHP5d3jZmPwHq4QE7Kora8t8NK6ADFrhmf/UVKvicjT0ReWjddqTPxslbV
+	f0e8RuQbUR5ZaYVpX4RfV8rIbLdXXGCPmtmTXj73V4skkr1pRY+b4oSifKCuSfiEfzDaa7
+	Zlm4FaunUnAUTCRI1l9VtX9O8/k6iUg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795564093;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bj72kE5VzukIZwPRd6gELH0mmyFkSQ8C1WZkrm6cOpE=;
-	b=FbDC8fK1lY5F5bcWmIb8Hh3CBpUw5xycjCoyIzGvcjeHaz7/QfU2n+6RA/bJUUI9EdKV28
-	J7ZAKLlgqY78j/eJTQyLovf6S6uij0Quq8TBP1IxwpYU4WrGL4ooL11tJqs7rk0TOxcxRP
-	V8WP0/OkIMFhgRKAsz+t/sb904/iqf8=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fLdXTVBD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf21.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3ae25dcbd81so45343431fa.3
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:46:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795563965; cv=none;
-        d=google.com; s=arc-20260327;
-        b=swTw+yNVxmWAzZTnS7gJuvLX2eF3gYRznVfs7R5uzL4zGECKgimVhYCmc+ONT6L4vk
-         uIidOOEXaFrBW6HEX9eGOMb8k+vgkAdjXHrG29wQpJPia5as0FKtt2Da7i48C9UH4k4n
-         yCII1cWvbbdFoq3skguxRQba+Vff3Mu2pPmFucaPYaK6uI4NvLqrWJ2gmu+ULrxTfiHf
-         gTzYYqAdJx7nh9V6rciStjKrnbv7YfECNzI9D3mcG+kqGRJSMQPh66+yaf+WToT1Isvi
-         gg9Nkupz/N14FyIbi73zY+Bv2HkJf0JoY3g9dYgBHwllV94cWKLRpRTkE/aB0yCZ4CQ4
-         DmXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bj72kE5VzukIZwPRd6gELH0mmyFkSQ8C1WZkrm6cOpE=;
-        fh=xmI7GIy35CSutxBK2dXMEX590Du9Ig2srKhPbap1MTw=;
-        b=cLk1XszvKOMXvQeHYt0cHs24sXaQVz3xsqlUvKlNscHVKf1s64Xxq9IXvA9YHTPznP
-         /L9tm+ZfAfuxRta32LA04jFzxUN+OjF5GQ1bAuGEstloSQOntHMTrclW+mwazIBHZdBi
-         9OS7FsZNN7PTI903XIOsQnzrd2n5XocdH3SDozJc9Fv7IWZvlY+3ApyiE1qw39pmRqQS
-         +92LleP3KBCGltQvgBzYsJQZ+SUvBMppAlaSIUGWKg/Mg0s43yWPVLxRqlN9YL4T6AqU
-         3NzTzlDvnuqZgXU1DhiLrjYYkP5QG9rbli2STyQ5xV0qVCiovJ64bTJ/BcjwppySI8gN
-         l/Ng==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795563965; x=1796168765; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bj72kE5VzukIZwPRd6gELH0mmyFkSQ8C1WZkrm6cOpE=;
-        b=fLdXTVBD35CxaIUGCow8ZaePAgfihxwxsjz2+cagCApYh0DXkOxOMequ7rZiCQb4zH
-         YRinrUk0N3AQj2WHNpGbMLjo+ZuFFewTlZlMOnjmE+t7Z5+iXb8G6c8Bin4NrHU0bPcI
-         xkbBFmggg6g0DcXw+c4HQ1CLGP6/9WqxzKSjDGVoHILJ0W5VSY1+gffsgSqpvvvIJYTY
-         z0Z3iDbnzqdpJ00TXgF1NiJifP1pwmITcrXstk/DqQPlCcCoW+4IpIYfjiWl+LGtKFU8
-         zz22Y+ZKbLBEJpLq8mcZLNjOd0xFBZQhUZ6EramGfR7S/FRyVFt7HFipSMW/OV/XVmEh
-         HyXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795563965; x=1796168765;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bj72kE5VzukIZwPRd6gELH0mmyFkSQ8C1WZkrm6cOpE=;
-        b=kUqzR+folNGpW0Zsh6MuS0bHrZtMWbHOjhBm29KYYq43kBzPFyIVGdWGQa8I1dq9jh
-         D6t3FysFqJavKgS5lyWurIteviZ4P93znFLz7CfPw4D7uhE1agrPgXGrdqx9r/hEYNeA
-         80UJpVW1OjVOQ9uMCpuXgWA3fb60AF9RqAq1PJ4SLAtVaRnSfyOjxsF01UfxCOjiAxA1
-         2xHxZC7k/CnrYD1kNV76QRvNH2PC1dYNf6SbFuoqNAiuyU2/yVqpWjuYD0hjZnoJiL0+
-         VxsWUCVzPo45lbpth7FAfyCGAKPJUP8ogr0FxLHZ2S6Za9nGuleQYHIvmXEQpPB1TprM
-         mr5w==
-X-Forwarded-Encrypted: i=1; AL+hErGQwjF571VbnuyNb6IiXvxiX7LHz+Jm/1REVeyHDfH0eIixi29jv/m0w/eBqBOOH6HSALour+hCqw==@kvack.org
-X-Gm-Message-State: APuU4Z9/r9H7cHxlCWFc29ln9r2AbGVDzfPETF+8eQBzJ1aIRDlVhIVD
-	EChk4c5OecBfholsCnKBis8Hd9nqXcBQFreZ1mW3QBBk6bHMB1ZIgoGKc6BO7pXQMo0IDgDH4ob
-	llQoUVsZzQgEm/nlN2xiO4xowDI+HQ60=
-X-Gm-Gg: AZFdTZfRXi0/8zMU7+4hYWPJJAobCBkWxPwlSobq1ScUbIIgX5rrnj+7jrmWrp2XD9z
-	2nwWngiXJc+zaJQLshx/755zx7AZg9tKlR5DIMRwiKnZe8G8ZS17IRqEy5RvouDLRxz73Yltqu8
-	MKhmn6R/PQ3mkY5B0lNJFW86AbbGutPsa9ggCTe/pBYE7gkJtmPj8+f42RSKT+/kpYk6fq74iaE
-	OwWESXcWhxmRb68TUweiaW7UDlI+78xW7z/+Ad9pX+0ZcBa3rbJ6d+4rVAHwMttLwW7+wyT1GjB
-	f86R0RjXAPJp5LW9fD1AE+fP5HBz90E3dBGi8kJ23LfnDMFKORxmDMQuTCNozWF78cwJ81c4Gr/
-	0TdCtNRIw1dG/WCM4dioOrONrutLh7G7J5PRf
-X-Received: by 2002:a05:6512:a819:10b0:5bc:f29b:1a5c with SMTP id
- 2adb3069b0e04-5c1bc7d0b80mr3077117e87.23.1795563964504; Tue, 24 Nov 2026
- 15:46:04 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
- <CAKEwX=MLrDn55wmVKKba5=PcU+qFpkEbMmN2SjGTfTBiFKX8cw@mail.gmail.com> <awXr6iHBR54wBB05@google.com>
-In-Reply-To: <awXr6iHBR54wBB05@google.com>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Tue, 24 Nov 2026 15:45:52 -0800
-X-Gm-Features: Aa3M54qHuVeAHaNbCxo4wz47haXUGhMN7-gFVY621Bx4vmN82u_-P6KIceLACFk
-Message-ID: <CACpmpodH3UUDLEze8=5v8LWgKnZWQVrQBhzSGJFY-PwEYmHEzQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/8] Batched zswap_store() framework with compression batching
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, hannes@cmpxchg.org, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+	bh=x3MJzrZxWtNJBKkoxKkXdy3LcJvsbWutGHSCpDKZ3ao=;
+	b=m3+QwLcSinBf+SdOMiMf96qMrJUFu6SnM8I1p05BX6g538ewkORG/cf9zAWcCsvR0bZtqI
+	ZXmrafAU52WdRV5GLRRvw/qhaqsqgTrx8jxKE5n0I8LF6I+SGclVdoqj4oT1dHROIgknK2
+	28NLlgYjxhKsmUkGHU2eq7m31TbM1HI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqYKCbF0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A9F0D4234F;
+	Tue, 24 Nov 2026 23:48:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413D01F000CF;
+	Tue, 24 Nov 2026 23:48:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795564092;
+	bh=x3MJzrZxWtNJBKkoxKkXdy3LcJvsbWutGHSCpDKZ3ao=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jqYKCbF0PlRw+T183XyiDDeQMA9gFsm27TU/hnB+mfFhD/ScjiVDSVz8ZxGwCKTDV
+	 3Og4OsE8htv87a5B8mziTQyVeRy8bPs5s6AKgtkH7+FQ5iRU0aWia7cCX2ApP+2WNV
+	 AeDYvei6ciqwheb3PPso4jefNDmopqbrIJVSILIMglPhOMDbr7MXJoJocTcjpl+jJo
+	 bV4qQJZXM/dWa/k36SehNVn72Eobpr9vF2rhuJpg5fsjkMlHELjR+a9dIp1Do6JPZ3
+	 VJ3TGBh3BipG5kn4wMYJXN1RfuwVRpiXXuzQEqODE8kZ4zfZqBwMFz1w/2ajBdqiHj
+	 RFxMHePyK+Y0g==
+Message-ID: <sashiko-outbox-232248@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 11/18] mm/shmem_luo: Retrieve tmpfs files into a file
+ created by userspace
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Matlack" <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
+Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Baolin
+ Wang" <baolin.wang@linux.alibaba.com>, "Christian Brauner" <brauner@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Hugh Dickins" <hughd@google.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Liam R. Howlett" <liam@infradead.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Michal Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Pasha
+ Tatashin" <pasha.tatashin@soleen.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Samiullah Khawaja" <skhawaja@google.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Suren Baghdasaryan" <surenb@google.com>, "Vlastimil
+ Babka" <vbabka@kernel.org>
+In-Reply-To: <20261123233924.3970932-12-dmatlack@google.com>
+References: <20261123233924.3970932-1-dmatlack@google.com>
+ <20261123233924.3970932-12-dmatlack@google.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
+Date: Tue, 24 Nov 2026 23:48:10 +0000
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: pmiyed6dmo7nw1pb3it18pnt855d3nc5
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B10A1180009
 X-Rspam-User:
-X-Rspamd-Queue-Id: 9DA841C0009
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: ypbskjj85u6eujhs3zamnzcq8wunuo6y
-X-HE-Tag: 1795563966-127009
-X-HE-Meta: U2FsdGVkX1/4kfG0R6XZIk3zOq49+5lwXFc5l0UePW0d5U1cd3InUCa0Zw/51nnHxIkwjhzQcj5d5AiDoFITwoycIit6W3tTmsuGMNkUmGuE7ovjRgJV5YltpOVxynJrrbDW9TjfeY5iM6t2szIemQRiyPDajQnPejJ36EzvrkuvU7maUoPBUNK7a+FOcO3AXmF0dusBmXZmKN1Ng9aZw4qvPPbaGLfCoOc3U4TrCGkGVeYz3SNS0OKrBJqJL9VvjJD3c7om6zEfBCWoO9G5PHlCXraoi1hsd1dEEllQcXlD76sBeljC4rXr7fm6DyxWSGsvBO1Xj1vXUhgfz03OUSZzUc1Zb9qOIdDKOqoY2LdKdn/JL5WABVLiwbqDZk0A8xpmLgYvlUxIxcejTnMfr6qjykpzVP2ngZ8umoyVxPsLuedE0pSPse7jh/lGOVamyn7x7ZHWBG+DSIwBNFXHN4QguLyAgevuq+cDA8UnFfD3lsY+5yFhzxqIHnmuATtWL6ne0vqWg1t+VNtgRfc0zWh0slL5tdM9bUFLvOhDeM7yPOvT8gbbjZGeGSdVvDpVaSloafi3oP9XNLfTjeHSNzWTWfk54lI/Uvhg6q6cjxRN7U00YTzi7Hr2hPYlcJ78GqCek9EVVTB8oSbH0O5+GX+jSl5N9ApcvI3us7neOKwnUEOCWAg8ur9gFkVwbfDTvO75A79LsDlJTjrId2jUv+hyHAIntjaUk/75qOg6KJIwPivUpf1dUi3XL8Lw5GIjcEz8SJRYFtQR8lsjtwhcSEx/JOr2FREzAhKEGP3i/NtM+TvkzsDeFsAie8Fi8xI+Q8LE5yRyZHqEr2dDBIwjI6JnKIhhAk16klTGLJXDN3WCk7+Oq2xnIdRfDHr8u1uEGJcGnddDK+7T5BcCL2KP5iAjJAcUZ+VW/PguJZMeqNYz0IahSO20WNgg711afPW37d3NBUDOVHT/nLqnZAC
- wjb5fw4o
- /V2qbcUM1yY0ENeJhS+r0e2hEgnaQuGYXDUZixu+GBgQtJbYuvNG05/UMrgU98xNuipQtsguZJ63viOKns75lZ3trfkkttXD+fzQn9ZZV28dUkG8a6ifuUn9mEJPTSn830eACppOEmnlW9IBaF7NKI9NLj5fjKSDFeZ6M9Fma/qIpRkE5hVAXSRYpeKUyXJPt3SFQ43/Clx8s05F8iyBoM1EySYcFDnhjY6YS4Cc4qFnTPa+LBd1rcBzbif9McOoxxzI+lfzY5UmA+qvZZkYIYIUKn4qkAtrUDKGWhgwdlIfe6w1nVdV33U4mlOZbCvdT01KqgwFOtXadeMunfBAfLegPZqq5kSUyfVT1T4ILNzLcqPk2GztywD11kFTnF49dvfOWT6w+uPdsU6lPgcItZ3ohbbFuyPqjVz+VvUvmHx4c3H6S0Sso3TRrRPZd2Y6KuVvRE64HfUafIFv/1J70D7LbF3CjLToNyviDbsBFIedmHNjSLoZzUf6+3hjkX80pG8MO8VBWmLAnLfX//qScJubyaeyLE6CQH2mWyCkP6sQiliIiFCXckmUMByRGXTEANRBrjG2gz5Id95hmJNRkjb2HNR+Zfy2M8RloxjFT44JJ1FE++31gNN9pca8xND3yb+Tm4ZWahOxraFyhdD5g8aDa6j+boMo0bkbeIwmbddFZ2VEzTAn0Zgr9Rg2OqvDu2wyXwQB0pMjYsB1ebtOskASddEmaYgdCyA6R
+X-HE-Tag: 1795564093-143410
+X-HE-Meta: U2FsdGVkX19mFemHoGPlHLm4a8P2iuv63/mTh6n1sOD2O5v5DBuERlSjq9wnoEa5Gr9HrYLthGadDJ5UXoN3w30g+w/blkq9/L7PrCxSOxaMc0wKI4nmZLWYAcVX7Ikh0Aex38tbM3SQ79tU3mhJVAIzPyhknnfo4W+TMZZGFr5YDt/Ef3V54nvLJn7f//P1h1deuJOqsseRPVtARO9veEguIYAK5zDgO42W0PiJ8P2jqwbkfI5TsEt1mkZNHgmgNjRDiP77+i3i8tR2PzLJXAV8paqk4s82nESyaxMcNSUnobzxV/L5gOmBKFbdNe5LymiKAjS0D020OZb/XUaJctdFNwFdOgRpy8F5G7KR4o0CcMVC9v10wcxQrlR7a7SgtUJXOCaD4TT20wl9O8T6+KKw2z0MJShUKQ5B5ZfeY6eMDP0uaZC+0uS97CQZzRXPVqGRuhXXVI2sNbeTopISJD55kQXSGI3bagRRLl8C9c0IaONzsHxV75v0ygfkgzKj0RKvGqYXPz7+85mDVSqI1LlWAMp//pCF4dDJntY3dGOBtRt0KzY0w7QuO4hj00JyYtW+yq/60Vt4IVJYOH45CLonlYCtQewo5tAu3Spmw7FAe+0wtlKK16G4lGYhFd+U0V3n02pxgstAkZTh/sPw2px/+T/WLzZ6ZdX0TIJ9RQNAsUozfCunpxFeoIRsXpCoqqrxigvNTNv5nChVY2nk4y0Kkq21f3QIHLwjUpC8cZEm2Y4XJXMCsGFpOMPVUmBmFlCbgIqx2jUNMrLspQO6kJbjC8vF9/iUKhne6DGIiDYtgD0PkqYbjSzi6C7sg0NWKGyVK0f5bifc38TnKN5LpNrbjIaGFt+SAKUFAHT+JB2QIyKmu9FPIiMO9F8fU03R8SaGoksPV5mtRPQngiFQ0U3mpv/E0FXrkNeArmt1iQKMY2wqZXoZxKguFPlpmTAGWqxEhKPxuZrIVKriGoS
+ hdFWS4kU
+ F+KGwPjQWwa1H0vVZfRNICQCKZUhsgVMI6/H4u41s4iXU1zifCn4ByBls0jIDoqXzRLsRlLdUx3IVg/fyoRY9nnes5BulGxhL9Rv3MPHgcZyp87y/oXFAiD4Q03/flwuZNyT3CzgwZ3VHAMCfgDntpgNVgQabBsZomwoMKR0aoCTid7a9fWHwhb9YQg2O74z2PNpQZLjf5dpqGAjMM3CWFI/5hiXFbgDWUmOCnC77jNb+Vlk1J0Xp9Uq0oDf76+FE2/wJJf8poT+s8L/ZnTl6Oe5lt3wo7l7qHJdmWgoxBFzzKMP9u42CcG4VcqxBAAnwy7n1rrn/G96bxX55k9yVULjQnpAM5m757SNHN8xNcjKQ1tjyIuY64WXFx1bHqpE3Wif5fyIcqV0eh6lwHhGWaAV+T0GUhb9cBLZ0bOWP+kGWI+n28/mBM9HzcleYxsaMvJjDy2mLBSvvtynQ8au9i6jMK3t9iuajwnkzSeAy03i2U6Sipn445KcbDAQtgJd/DW6yS3eWN7fjXY187uNHRA+MaQv1YZ7TWLZzyiGJDB9E6hfvnIFs+O6Wu+O+zR5pDpOqrXv/yBMe80Q/c5OfyupJvoMI2bX4S44Yn4fnjXBZQneiKGhZ2YOaKX1+H5wSszpmTVkohHMK/oUr8Vq23VmJHfpZVq7bW0WjRt/n3Gwy0WPk4GKx0S+IdYCoBN1FO2FQ5D9vVMgrlseJhQg87IK53XtH7wBEThurhYtjaeEQdbr3dJXdDXsqvve0yPQKYlpf4NBlARWz9XcwcwE2lLdyowutf/Q/t0VPJ7PTNmjMLqRh5436FQbcx0ZMMFlUFFa4Zv3nhOB6HnUIwORDEBl0ibBxBNNU5BPa1DojwMy6d3kdzhIlkQzJL4fWL4/AlY9T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,102 +100,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue, Nov 24, 2026 at 12:29=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
-te:
->
-> On Fri, Nov 20, 2026 at 03:16:32PM -0800, Nhat Pham wrote:
-[...]
-> > Have you tried perf-ing the store path to see what was the overhead
-> > source (before and after this optimization)? I'm curious.
->
-> So I was able to reproduce the usemem30 sys/wall time improvements here
-> on a Sapphire Rapids machine (both in a VM and on baremetal), and I
-> threw my LLM at perf-ing to figure out what the overhead was. It's
-> important to note that the sys/wall time improvement I observed was on
-> the free phase, the write phase / throughput (which involves zswap
-> store) didn't show much of a change.
->
-> Batching made more consecutive pages that compress to the same zsmalloc
-> class more likely to land in the same zspage, so the freeing path gets
-> faster as the zspage and metadata are hot in the cache, which alleviates
-> contention on the class lock.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] mm/shmem_luo: leak of preserved folios on error in
+  shmem_luo_retrieve()
+- [Medium] mm/shmem_luo: race between resetting fallocend and
+  __folio_split() drops pages
+--
 
-This is a real performance gain with batching, correct?
+commit a56e31ee7bf0ce9b4eb0f3ed9175bc42d7abd83d
+Author: David Matlack <dmatlack@google.com>
 
->
-> I think the memory allocated by usemem all compresses to the same class
-> size, which makes holding the class lock in the freeing path a
-> bottleneck. I confirmed this by a hacky patch to shard the class lock
-> into 32 locks, which caused the same usemem improvements and the series
-> doesn't improve performance anymore on top of that change.
+mm/shmem_luo: Retrieve tmpfs files into a file created by userspace
 
-I think we all agree that vm-scalability/usemem is a
-microbenchmark/standard. I am not sure I understand the value of these
-"hacks", when my patch-series posts data with the standard mm-unstable
-and my patch series with a standard usemem microbenchmark.
+This commit adds support for retrieving preserved tmpfs files into a
+userspace-created tmpfs file passed via struct
+liveupdate_shmem_retrieve_arg, and marks tmpfs files with
+SHMEM_LUO_FLAG_TMPFS during preservation.
 
->
-> I also tried usemem with Silesia to get realistic compression data
-> (similar to Kanchana's testing on previous versions), and didn't see
-> similar improvements (because the compressed pages get distributed
-> across multiple classes). I also tried a kernel build and the munmap
-> microbenchmark in [1] (which Sergey quoted in [2]), which also didn't
-> show improvements.
->
-> That got me curious tho, and I had my LLM explore other optimizations to
-> the freeing path. I think we can get similar improvements in usemem
-> as well as the munmap microbenchmark [1] by batching zswap entries
-> freeing. We can batch both the zsmalloc object freeing as well as the
-> LRU deletion. I am still looking into it and I might send out patches.
->
-> But I think this series doesn't really move the needle on realistic
-> workloads, as I previously mentioned.
+> diff --git a/mm/shmem_luo.c b/mm/shmem_luo.c
+> index 854a49cd0aaa5..2ea161fb00fc1 100644
+> --- a/mm/shmem_luo.c
+> +++ b/mm/shmem_luo.c
+[ ... ]
+> @@ -554,6 +580,108 @@ static int shmem_luo_retrieve_folios(struct file *f=
+ile,
+>  	return err;
+>  }
+> =20
+> +/*
+> + * Restore a preserved tmpfs file into the file that userspace passed in=
+ the
+> + * retrieve argument.
+> + */
+> +static int shmem_luo_retrieve_into(struct liveupdate_file_op_args *args,
+> +				   struct shmem_luo_ser *ser)
+> +{
+[ ... ]
+> +	fallocend =3D info->fallocend;
+> +	if (ser->nr_folios) {
+> +		folios_ser =3D kho_restore_vmalloc(&ser->folios);
+> +		if (!folios_ser) {
+> +			err =3D -EINVAL;
+> +			goto free_ser;
+> +		}
+> +
+> +		/*
+> +		 * The folios are past the end of the file until i_size is set
+> +		 * below, so reads, page faults and memfd_pin_folios() don't see
+> +		 * them, and they can be removed again if adding one fails. Like
+> +		 * fallocate(), raise fallocend meanwhile, so that splitting a
+> +		 * large folio doesn't drop its pages past i_size.
+> +		 */
+> +		info->fallocend =3D ULONG_MAX;
+> +		err =3D shmem_luo_retrieve_folios(file, folios_ser,
+> +						ser->nr_folios);
+> +		vfree(folios_ser);
+> +		if (err)
+> +			goto truncate;
+> +	}
+> +
+> +	i_size_write(inode, ser->size);
+> +	info->fallocend =3D fallocend;
 
-Your statements and hypothesis based on the kernel hacks don't explain
-why I see 6.56% additional Sys time savings with compress batching
-over the gains observed with store batching alone. I am not sure how
-to interpret your statement above without your posting any data.
+[Severity: Medium]
+Can a concurrent folio split observe both i_size =3D=3D 0 and info->falloce=
+nd
+=3D=3D 0 here and drop restored pages from the page cache?
 
-Did you get a chance to see the usemem/ZSTD data with/without compress
-batching that I posted in [1], and my analysis of the breakdown
-between performance gains from store batching vs. compress batching in
-[2]?
+shmem_luo_retrieve_folios() adds each folio to the LRU and unlocks it, so
+reclaim or migration can split a restored large folio without holding
+inode->i_rwsem.  __folio_freeze_split_file() reads i_size before
+info->fallocend:
 
-As per the data I posted, compress batching of PMD THP with ZSTD
-yields an additional 6.56% Sys time savings and additional 1.12%
-Throughput improvement over zswap store batching. Combined zswap store
-+ compress batching yields 13.87% Sys time reduction and 3.85%
-Throughput increase over mm-unstable. I think this clearly
-demonstrates performance benefits to a well established
-microbenchmark, run at scale, using upstream kernel git trees and my
-patch series.
+CPU0                                  CPU1
+shmem_luo_retrieve_into()
+  info->fallocend =3D ULONG_MAX;
+  shmem_luo_retrieve_folios()
+    folio_add_lru(folio)
+    folio_unlock(folio)
+                                      split_folio_to_list()
+                                        ...
+                                        __folio_freeze_split_file()
+                                          end =3D DIV_ROUND_UP(
+                                            i_size_read(inode), PAGE_SIZE);
+                                            // reads 0
+  i_size_write(inode, ser->size);
+  info->fallocend =3D fallocend; // 0
+                                          end =3D shmem_fallocend(inode, en=
+d);
+                                            // reads 0, end =3D 0
+                                          // drops sub-folios with index >=
+=3D 0
 
-I would appreciate comments from Nhat, Johannes and Andrew on these
-posted gains/analysis:
+In addition, on 64-bit kernels smp_store_release() in i_size_write() does
+not prevent the plain store to info->fallocend from reordering before the
+i_size update.
 
-[1]: https://lore.kernel.org/all/20261120041906.5785-2-kanchanapsridhar2026=
-@gmail.com/T/#m33e586ec89ed46790da284e7a2f6d99b50c9f935
-[2]: https://lore.kernel.org/all/20261120041906.5785-2-kanchanapsridhar2026=
-@gmail.com/T/#m51d7d13809d508a9116904c01bf3c94fdf2981dc
+[ ... ]
 
-An independent replication of the gains posted by me in this
-patch-series, using standard mm-unstable and vm-scalability/usemem
-would also be very useful.
+> @@ -565,6 +693,18 @@ static int shmem_luo_retrieve(struct liveupdate_file=
+_op_args *args)
+>  	if (!ser)
+>  		return -EINVAL;
+> =20
+> +	/* Make sure the file only has flags this version supports. */
+> +	if (ser->flags & ~SHMEM_LUO_ALL_FLAGS) {
+> +		err =3D -EOPNOTSUPP;
+> +		goto free_ser;
+> +	}
+> +
+> +	/* Files on tmpfs mounts can only have F_SEAL_SEAL. */
+> +	if ((ser->flags & SHMEM_LUO_FLAG_TMPFS) && ser->seals !=3D F_SEAL_SEAL)=
+ {
+> +		err =3D -EINVAL;
+> +		goto free_ser;
+> +	}
+> +
+>  	/* Make sure the file only has seals supported by this version. */
+>  	if (ser->seals & ~SHMEM_LUO_ALL_SEALS) {
+>  		err =3D -EOPNOTSUPP;
 
-Thanks,
-Kanchana
+[Severity: Medium]
+As reported by Pratyush Yadav on v4 [1], do these validation failures leak
+ser->folios and all preserved data folios?
 
-> Regarding the bpftrace
-> measurements, I couldn't reproduce them. I think one factor is that
-> probing both zswap_store() and zswap_compress() makes the zswap_store()
-> numbers different based on how many zswap_compress() calls we make
-> (which are less with batching) due to the overhead of the probe itself.
-> When I trace zswap_store() without zswap_compress(), I don't see
-> meaningful changes in latency.
->
-> [1] https://lore.kernel.org/linux-mm/20261016120927.3191690-1-hongfengche=
-n@xiaomi.com/
-> [2] https://lore.kernel.org/linux-mm/20261123054746.2579253-1-senozhatsky=
-@chromium.org/
+Jumping to free_ser while args->retryable is false only calls
+kho_restore_free(ser) and records a non-zero retrieve_status on the file.
+When the session finishes, shmem_luo_finish() returns early because
+args->retrieve_status is non-zero, so the KHO vmalloc array in ser->folios
+and the ser->nr_folios preserved data folios are never restored and freed.
+
+[1] https://lore.kernel.org/r/2vxz33sv3ef3.fsf@kernel.org
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123233924.3970=
+932-1-dmatlack@google.com?part=3D11
 
