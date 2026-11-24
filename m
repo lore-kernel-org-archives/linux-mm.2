@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89B0606E17F
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE79606A339
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mQ7IdyS4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2oxXXw5
 Received: by kanga.kvack.org (Postfix)
-	id B62926B07E3; Tue, 24 Nov 2026 12:10:54 -0500 (EST)
+	id 856346B07E5; Tue, 24 Nov 2026 12:11:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3A2A6B07E5; Tue, 24 Nov 2026 12:10:54 -0500 (EST)
+	id 82DBD6B07E7; Tue, 24 Nov 2026 12:11:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A501F6B07E6; Tue, 24 Nov 2026 12:10:54 -0500 (EST)
+	id 743FA6B07E8; Tue, 24 Nov 2026 12:11:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 71A936B07E3
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:10:54 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD8C61A0C44
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:10:53 +0000 (UTC)
-X-FDA: 85470652386.27.9037E79
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6779C180019
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:10:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQ7IdyS4;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F01C6B07E5
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:11:12 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D9165A0C3F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:11:11 +0000 (UTC)
+X-FDA: 85470653142.25.F45D9BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 11568C0009
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:11:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j2oxXXw5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795540250;
-	b=uOI4MtGBx9ie2wZCYvBNOhYFRqv4ej0jV+DsBmKA+QaLdXSAkNYlormXIgFxMRnHP36YND
-	S55BHX0lCvNh9AnS8xsVaks9UppM4vKikGRbXcjzcqpdzHhKJ6fDsAXuUmOjIjjPqIQdHs
-	QZXErE/m3i4+3ItVcFCgySF9VDjJXHg=
+	t=1795540270;
+	b=3L1lg1pJWwyxL5AL1GhdAelOVi6g62EjC+5AvKoIFgbz8yNmQbpN7vInlAYJF+MWjQOC/b
+	t9JhPeHBSdtD/voqohGwjATlxYpw2WfDT2mLgFS3TNj9BBNVd1uIqzomW/WMnvVBjiTS8m
+	Or1BSv+CYsj+4NecPICb1cP4r6r5KtI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795540250;
+	s=arc-20220608; t=1795540270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hoi6ZKqF0rWP2dY8L9fi70WXIdQ16OJirLzXOK8DLeI=;
-	b=4DVhOAargQ4kLIg+FJdcj/Ze9r1Tfng6bXY9vCkzUL4r0coQYTkbsdwrhaFvYJwoGzhRfc
-	yHLrJAQQKhKNE5aGOPvMbRo7A542nnvmEaKvzqGg+MJiQxzGgucy4jqO8Iz1hG6ZigRSPW
-	6oaoIqJbshYS4S1zfdIn06KFPWmip6g=
+	bh=kZ3jLbZRJ/VHth5eaJGnJSAc1BSxLfXRApAmbg64kWY=;
+	b=SmD0/dWizqHntX4W1tJ23Iigu8ReXac4cvapbNF9aDfFiRn+/wEoBvj0xyzfPC0PoA46va
+	IrE5G3hNo7yswHuqrl7XUi9kigEoCM4pCULLiWqCQBc42lnszoDT/qIHIC+8DaUeyH4ItQ
+	4ERCv8FYclBlqIigg7b6VnQ+Hl51LSU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQ7IdyS4;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j2oxXXw5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE9016280F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A9104429A;
+	Tue, 24 Nov 2026 17:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB03A1F000D1;
 	Tue, 24 Nov 2026 17:10:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBC21F000EC;
-	Tue, 24 Nov 2026 17:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795540248;
-	bh=Hoi6ZKqF0rWP2dY8L9fi70WXIdQ16OJirLzXOK8DLeI=;
+	s=k20260515; t=1795540269;
+	bh=kZ3jLbZRJ/VHth5eaJGnJSAc1BSxLfXRApAmbg64kWY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mQ7IdyS49AENVW+aKfDJc1YLjA04/p8tIxN7YRDMM8ueVAsZNqc2KIWGDZ3TZPGty
-	 gXMLycS92SL17oxb9pNQUQLbr9BYnh+cML/2JQxhWGRdxcCNG34TvnqPHj++AvZRcI
-	 o33kofJHgb0IFg9vyzDiBYV4hAn0XY/Sk18425ehbjJVVj28odQrfwj5Z8yO+gQjhE
-	 KLpLeuZ3Il5hlLlMZ1Kg/+btvjNwhLcNVBzd1kF8lsjFQZ2wOGGFFNyNoK+HoQrcGj
-	 deyGUfLK3i0oz1rS4zwVcXps7U2kHgDwdvxcey8H2XvzU/DYFD7/9y1q9N/5mNwN4R
-	 BsRMnajdG7pUQ==
+	b=j2oxXXw5aycUKNOMG1/DLAxgqIp8Sjh0cy1uPDzj0VsLoLzP39KcAhPEhZa91ZbU0
+	 H8EWAkRDjjvmeMoDjewdq6ZKK544u5JaiRV4qMMeZJmeHaFIEPNj1UH233/FuATQZm
+	 Qdf1Uax5gYT0AAImCi7AZH6Q0Clf8dLZxDGQwMxBZAX/hKNmSBFqQKHZIoPnOSnDDQ
+	 2GWVFQHmnLVbUFRtgsGjd/DH82/mDkeubJc+OBMpeUry1qEzZkDHUC8IUi2lj+GwtX
+	 dSxYVPdtOe0VauPrsUWxIhV2mkMwY71xKEtg+G7v5M5SGq9FeEfJfWTcp474LhBtqb
+	 b5DXkSHEmddVw==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 24 Nov 2026 17:07:59 +0000
-Subject: [PATCH v2 07/11] perf: convert VMA flag tests to use vma_flags_t
+Date: Tue, 24 Nov 2026 17:08:00 +0000
+Subject: [PATCH v2 08/11] selinux: convert VMA flag tests to use
+ vma_flags_t
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-late-2026-vma-flags-v2-7-bf3fade93064@kernel.org>
+Message-Id: <20261124-late-2026-vma-flags-v2-8-bf3fade93064@kernel.org>
 References: <20261124-late-2026-vma-flags-v2-0-bf3fade93064@kernel.org>
 In-Reply-To: <20261124-late-2026-vma-flags-v2-0-bf3fade93064@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -128,27 +129,27 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4026; i=ljs@kernel.org;
- h=from:subject:message-id; bh=q20FVgbTncUenAoabJhU/UxTd+TaqPmkjn0LMdXaCOg=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZj+RF2V0qzp2xM3oL74zmDK+Z+RnTxFOPPFVP9luzJ
- jDCKeRXRykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACbiq8zwT+vOYc6+XYVPrHo8
- OWZ+OPZ28utjqd2p/7Z4WG7T+u1SE8jIcKHchD2gyiI/9KzN/XOBF34rtFxkrHpYcjxYlL2Z392
- AFQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1924; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=Uj1h40qu7RJJAsenD1k9bntx12XC9vbZ3RhmualmjYU=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZj+SFmM5Y1Pzgkp2azP5dryY4Rs/LY1tiWxhjPEPJc
+ SdLquGfjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExk5VaGf5ZFPTIJ1j1MqvNL
+ +sNOd9kt+LBAykL2/5nEi1OCDskHyTMybJnstzHxS/78s/cuWP3pjDfnLdNZL3TE4PfRJ3/ZN0S
+ /ZAcA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6779C180019
+X-Rspamd-Queue-Id: 11568C0009
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: itpxyzfuba4taeraw6cwghjg41g1xizw
-X-HE-Tag: 1795540250-482534
-X-HE-Meta: U2FsdGVkX1/GxY/JFS3zhpcOn3b5dB72RWDZEd/Lt/IcpIKk0htHMcSdZ9LO5WrBha2/OHd5HwrIkpiUbcaju9NNg+PQUOPqCvhYnH++vWm2TCpqorUzXqdPpxSskEakItGEtsONo50b205Gv6pmAgz395+8nhpxhhXExjblY68jGOnWfLXPmhAMkThrWcujXN5gI0GlvZPZKxUYu3wAlcBGRN5W5I4imzDLeQeOxC30o6z0IdSBQo70YehnBsx1knQ/EBuw41v+R57aOX9lwfD19C2Mlm2gWfLWFJ5fzus63FihTbBonBMfelp9vkk4iAsnABdUbW9s+Yumb7kQIJAJgnxDxmvy5Q3E81jIwdXM02cmnFOtEn6Ny/T2CTRaxLevzTYnLLhPL49sCCCaeU524wFTqPhx7eDlUyiEKmRX4f48pJR1rVJl8bqbpTVRbvPyfpomhN8agDXtKDbRWqmfAKQ8lGHxa1RkHtwaV0NdWFXMGy3c3ZyHrjrCWL0X01WlvFZ8M+o/t3BIqU0WoNyDw0ETXBICDtKUxk3vgdjZoo0GJGUFDIkC6qAci5m0MSiqUZvhPvkruVLbJrTtsnUrACMYxalhB1EKXhWEZJCgG+gJrr3la06ThaBVInzJ4tAsd2paKXbpVNFiV4YO8gW8udEbt2XTGhgsMASglRwUDRJoGBIbpAlzAAH7dzQq7fpMWt3a+C+fK6CX9+29WfrvNHJ9sOJ+62wclGUsObrj63LiimjhSoSD+1IlKKm0tyrsBOwPRiZ5OCjFO10OxQ4YlcwuXQMeAC6jwvaEgBCyldCZS6CAGXkfSIRI5PP7fTTUV7sntIx9VDDtnt1pAyUB/is7LiwdKfoDvvfhcOpL8a7206IDk0S38ZSDjTxl0fKte/Veyu9FSJeurTVRqF5XXjZIgpgfCuVnZDZPCnFneF2uvz49gWMm3/+TENw/1eGCCafK9LdZ36vTWt9
- Ayz27rNz
- Wp0un2zDzosLViN3jIscI9fIq3KMxzToFEs8MDqDPBUlmbzZqSjRHFD7LsLBq6U7nooKyu9z35N9HFrfX/Rp2YLXcRoiJzItSOQpCZL5yQaiicdTbgPXaBtDmWoDItnjZfEKw9f+i3gQ/uCU9liATHw3X8Nd/XgqOPJLDNCBxIQmHzC0aMLykze6dvy8XN0hg+QxcEOmfWA+EtKuxQYmINisBXttPIKS46USuRoqELIWcOAXVOWVq3fLQ6wfqMEdzsjiyMbMwVNirV/AnNOSkMg2JLwmS8CusJAgT9TS3TYeGX1KJXg7M6w3WQm5NzPsJ6adb7nc2c+ARPK49JGy3bYYBLPcR6kpHsBu7PfkrUUNBWtytt0NhCdz6Qfa849KBHP1aDSHy5oSDOW75HRNk3xLntm9X4NouoYF3RFQz77qkynJoEN+qjqWp3YDSOz7LrWnsVMqYOlE3pggAmVIQb7bUXjm4MJuaAUYcwZ9O6iWcgxViwZN54AUP9fLh0VEd4YmrXnnmup3JdzcEfZdRpISS0l5hwy5DL0YhYOIBcNhiSEvHRFVoxYkp/rSsXk3J8e39oON4pTdHNRVkazb0hPqo3A==
+X-Stat-Signature: dpzo7i8yy99wkz88ccnu7h67tznahast
+X-HE-Tag: 1795540269-322423
+X-HE-Meta: U2FsdGVkX1+ETEtQSuvuUJa0t/2jt4PlkOERmq8h3wrMtA+dsdpwVMZqMghr9BWm3GM7M43Ua4fXI7u/gqHj8clrmGCaE2ZGB2qYuZ08ElneIdjQbuWdIcrJjul02yRbqZFpXBmMI0Oz/B+p653shahOHp3JTj1lw2Ct3G65xU7gh41hzje9PLm4aedor376wgHQcMB5Q09JvQBu3KAOPdpwEHWSTa8bJXJS14qIYwWhcCGmUAf9hDn4/3G+wrroo3QtTi0Qu0mN/aDDYHWROVHCLup9S823a6tT5f66ZkMh+/Vbd95zuCCvajpeCVrLiSyixTzwA0n11fHm90asV8l8VlYv1rfKKuZnccVODTf+OGkD4sn5Qid+3IVlYSfBgahlG1fQy8y87UztoMjxWDjk2YqqLMbS3iryQs1vaxzarbTBUBgLLPjThLy7p6DrYISfdeXUYwPAgbn/HEQWx1dnhN4tvhlke8BtFrFxWloqg5Qd6f6NWj1OpcgcqEhDWNbSb8GIWq4OCWD/P23dk7QQJbHyLZ6yJ8ERup+Dz8eLNnX9UKrr20rHzy2hjrlFRugEQkRm9NFoKDdmZ2cEenz/eAoYAwyO2I8jZ8nUrQr82xilNwPSYDtoklb0h2HUDVpIvrtHYF/rR/xiQdEgtFgcKNljxhEIdWl/wgtVXYHFr+2YjkWM8k9U7aVCug8v+Ce67E9VkGOfx6VkbMRTzpOsmD+bGt/YsI1AYOOaRiwRWmZJc03ZFMR9S6RDxKffmZDRqizHF3lt6YbeNb0XUrnQSBms8Ocv3LAU9gXHOmv9UJuVWwvBlRdVZQOELRgmlC1SE77REmlORWafeUwGRWIZu8HYfoDRO2GcZqMrxlrsDm2tqbZ1Gvf+FtS0ox82KMc6OGqWUj7YTX+P0bimBAScKAopi+OfW10d0PsZ5oOS2xFqnH8rqf1c8ycOp9jHoirbFjrWJrz2o3Q03Ih
+ cKLhHGAJ
+ QsoZlOusUeTWHlPVVyTv2NKb6ZMH2M5fcTgnY8NPEa2mxLr9mFM5LCUYwGpr7Ifm+NmR3hajLbBXw3wsIgbiVftVO+8Xt5EGi1XLeNjmDcKFNNIPP/K/fNnLYjdWsntl77cJRKtRuX45HLPwBjI+JT4GWWO2iZbSvkC2Rabwx720HmNK5WN3UBJkGx7j+O66v5Ev39FEa/ETptCFxDjljGBi7Fbwal2is7g1DyW67jzxsUqbMAEtdfb0/V+NnB7frWewdewOifylsSbTQP/8n6k8ochBYdtxBzjbmDFUAvrtoWItxP1f6TDCSYO7x1RlwZuQ+D3k4x0gPRS+JxqC/A1L/8rsR0ADCcTBusrHgVmvUlu3YLEQCkPlT6Pszup7Ctv1N62fR4DohSbbKR5v/QeYjQWQnw2Cv4S+1aAzE/86WAET27f1JwHXNpayUey51kCbjACKc7ChhYSIv7MHAxCBP1H9AKNG2BeyU2b4X7sPXHJsAb9nS9h8njCSKk9c5XsZwOa81x/Y7vWDsjjBiDVVGQ4hlXj1iRAViyRr3aCuO7AIWVyhh+C4Oj8faIpau1GER1pvT0zRx6H0W5piOBXgzAE5eeddngFT8ngF3HLQhI0s3+aNH+R3hBm2Pb/0t6jetrOBiXAs2yZI5/2UYkCjDkw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,89 +159,28 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
-perf mmap and mmap event logic.
+SELinux mmap backing file and mprotect LSM hooks.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Paul Moore <paul@paul-moore.com>
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
 ---
- kernel/events/core.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ security/selinux/hooks.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index e870f12c3ad8..219b7af9a632 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7234,6 +7234,7 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
- 		unsigned long va = vma->vm_start + PAGE_SIZE * pagenum;
- 		struct page *page = perf_mmap_to_page(rb,
- 				vma_start_pgoff(vma) + pagenum);
-+		vma_flags_t vma_flags = vma->flags;
- 
- 		if (page == NULL) {
- 			err = -EINVAL;
-@@ -7241,8 +7242,9 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
- 		}
- 
- 		/* Map readonly, perf_mmap_pfn_mkwrite() called on write fault. */
-+		vma_flags_clear(&vma_flags, VMA_SHARED_BIT);
- 		err = remap_pfn_range(vma, va, page_to_pfn(page), PAGE_SIZE,
--				      vm_get_page_prot(vma->vm_flags & ~VM_SHARED));
-+				      vma_flags_to_page_prot(vma_flags));
- 		if (err)
- 			break;
- 	}
-@@ -7360,7 +7362,7 @@ static int perf_mmap_rb(struct vm_area_struct *vma, struct perf_event *event,
- 	if (!perf_mmap_calc_limits(vma, &user_extra, &extra))
- 		return -EPERM;
- 
--	if (vma->vm_flags & VM_WRITE)
-+	if (vma_test(vma, VMA_WRITE_BIT))
- 		rb_flags |= RING_BUFFER_WRITABLE;
- 
- 	rb = rb_alloc(nr_pages,
-@@ -7441,7 +7443,7 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
- 
- 		WARN_ON(!rb && event->rb);
- 
--		if (vma->vm_flags & VM_WRITE)
-+		if (vma_test(vma, VMA_WRITE_BIT))
- 			rb_flags |= RING_BUFFER_WRITABLE;
- 
- 		ret = rb_alloc_aux(rb, event, pgoff_start, nr_pages,
-@@ -7476,7 +7478,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 	if (event->cpu == -1 && event->attr.inherit)
- 		return -EINVAL;
- 
--	if (!(vma->vm_flags & VM_SHARED))
-+	if (!vma_test(vma, VMA_SHARED_BIT))
- 		return -EINVAL;
- 
- 	ret = security_perf_event_read(event);
-@@ -9848,7 +9850,7 @@ static int perf_event_mmap_match(struct perf_event *event,
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 9950f89dfaa2..5198a66b624b 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -4205,16 +4205,16 @@ static int selinux_mmap_backing_file(struct vm_area_struct *vma,
  {
- 	struct perf_mmap_event *mmap_event = data;
- 	struct vm_area_struct *vma = mmap_event->vma;
--	int executable = vma->vm_flags & VM_EXEC;
-+	bool executable = vma_test(vma, VMA_EXEC_BIT);
+ 	unsigned long prot = 0;
  
- 	return (!executable && event->attr.mmap_data) ||
- 	       (executable && (event->attr.mmap || event->attr.mmap2));
-@@ -9881,7 +9883,7 @@ static void perf_event_mmap_output(struct perf_event *event,
- 		if (use_build_id)
- 			misc |= PERF_RECORD_MISC_MMAP_BUILD_ID;
- 	}
--	if (!(mmap_event->vma->vm_flags & VM_EXEC))
-+	if (!vma_test(mmap_event->vma, VMA_EXEC_BIT))
- 		misc |= PERF_RECORD_MISC_MMAP_DATA;
- 
- 	perf_event_header__init(&mmap_event->event_id.header, &sample,
-@@ -9932,19 +9934,19 @@ static void perf_event_mmap_event(struct perf_mmap_event *mmap_event)
- 	char *buf = NULL;
- 	char *name = NULL;
- 
+-	/* translate vma->vm_flags perms into PROT perms */
 -	if (vma->vm_flags & VM_READ)
++	/* translate VMA flag perms into PROT perms */
 +	if (vma_test(vma, VMA_READ_BIT))
  		prot |= PROT_READ;
 -	if (vma->vm_flags & VM_WRITE)
@@ -250,26 +190,28 @@ index e870f12c3ad8..219b7af9a632 100644
 +	if (vma_test(vma, VMA_EXEC_BIT))
  		prot |= PROT_EXEC;
  
--	if (vma->vm_flags & VM_MAYSHARE)
-+	if (vma_test(vma, VMA_MAYSHARE_BIT))
- 		flags = MAP_SHARED;
- 	else
- 		flags = MAP_PRIVATE;
+ 	return selinux_mmap_file_common(backing_file, prot,
+-					vma->vm_flags & VM_SHARED,
++					vma_test(vma, VMA_SHARED_BIT),
+ 					true);
+ }
  
--	if (vma->vm_flags & VM_LOCKED)
-+	if (vma_test(vma, VMA_LOCKED_BIT))
- 		flags |= MAP_LOCKED;
- 	if (vma_is_hugetlb(vma))
- 		flags |= MAP_HUGETLB;
-@@ -10110,7 +10112,7 @@ static void perf_addr_filters_adjust(struct vm_area_struct *vma)
- 	 * Data tracing isn't supported yet and as such there is no need
- 	 * to keep track of anything that isn't related to executable code:
- 	 */
--	if (!(vma->vm_flags & VM_EXEC))
-+	if (!vma_test(vma, VMA_EXEC_BIT))
- 		return;
+@@ -4228,13 +4228,13 @@ static int selinux_file_mprotect(struct vm_area_struct *vma,
+ 	u32 av;
+ 	const struct file *file = vma->vm_file;
+ 	bool backing_file;
+-	bool shared = vma->vm_flags & VM_SHARED;
++	bool shared = vma_test(vma, VMA_SHARED_BIT);
  
- 	rcu_read_lock();
+ 	/* check if we need to trigger the "backing files are awful" mode */
+ 	backing_file = file && (file->f_mode & FMODE_BACKING);
+ 
+ 	if (default_noexec &&
+-	    (prot & PROT_EXEC) && !(vma->vm_flags & VM_EXEC)) {
++	    (prot & PROT_EXEC) && !vma_test(vma, VMA_EXEC_BIT)) {
+ 		/*
+ 		 * We don't use the vma_is_initial_heap() helper as it has
+ 		 * a history of problems and is currently broken on systems
 
 -- 
 2.56.1
