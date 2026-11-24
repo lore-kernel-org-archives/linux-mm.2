@@ -1,135 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332B2606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A838606A335
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UK+E+WZ4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W8FJArd0
 Received: by kanga.kvack.org (Postfix)
-	id 440866B0751; Tue, 24 Nov 2026 10:32:42 -0500 (EST)
+	id 6E3776B0754; Tue, 24 Nov 2026 10:36:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CAFF6B0754; Tue, 24 Nov 2026 10:32:42 -0500 (EST)
+	id 693206B0755; Tue, 24 Nov 2026 10:36:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BB8C6B0751; Tue, 24 Nov 2026 10:32:42 -0500 (EST)
+	id 5A9886B0756; Tue, 24 Nov 2026 10:36:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E5C006B0751
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:32:41 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E93740C32
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:32:41 +0000 (UTC)
-X-FDA: 85470404922.18.FBDF937
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 91F3820004
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:32:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=UK+E+WZ4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of mbkchelofficialdev@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=mbkchelofficialdev@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3B7746B0754
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:36:48 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D3B3D40C1F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:47 +0000 (UTC)
+X-FDA: 85470415254.27.CB657A6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4ACC014000B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W8FJArd0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795534359;
-	b=QCFKuQx8ZzxTPAgvOujfKxpfm1TwfGgjqNqrP7seCRmdz8VhYOZKBfjtb84HwGIiV+FoVP
-	mO8HUJcbd9d6iO7iyiCER7OtHKwOQ8qA3cACDiPUI6r83mpVr8nQf6kmRQ5orS3HoSCEuP
-	rZLoXgssGdWZSs3S404NHui2taBszdU=
+	t=1795534606;
+	b=0zsSax5v/50q01RbfO/NaF2MJ5uLoOQzul0Ym2cc+icbP4cXggCCIAigPENYxK6aoWPcRt
+	WwskngP9+H5yG31T2v5CrVm46ug8OejCh1kpt0rRyBQ1QfT9LhM2CZp6mBKzJ05332ODrg
+	+wKqd5Z8iKZ5UPos207RiVsc06yoQK4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795534359;
+	s=arc-20220608; t=1795534606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DViz0C7Vglsfa0BWA31WXXyBe46zwLDFGwOF1Bp/uI8=;
-	b=w04fc4FQ4NTS0OmwCjed0xXltsRyV9apDAbHNP1/d/8gQo76Pw7IuI7LyNNuvuVS4kxqrw
-	NPD5y9nL8q0RoNkZDJK+hmax5Wy23Orff+QI6D1VFZvlo3+wzk9UP304EetfUxmo046Ju/
-	YvhHKP9h/3Ceph3HXdyezO2nhkx0seg=
+	bh=s4WULBvjRFLiiJiFHBxE8QngaPERSKMf2wY3GVjljHk=;
+	b=FN9trndegjq7X300VIUgvIwS2UJkU0vR99C0ZMEJNSb6f9sI0xVFuxGTYZmsOKJXKLVpjL
+	OTwZKhV/83us8V3asZAvXgP7umdbO8ml8dQZEy6w78CLrwi69btT7AJqPqG4eHmMezgu5e
+	wxtbxcldxfgqxzRw5MHygVPj48UZM7Y=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=UK+E+WZ4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of mbkchelofficialdev@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=mbkchelofficialdev@gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3adfc004920so43712641fa.3
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:32:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795534358; x=1796139158; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DViz0C7Vglsfa0BWA31WXXyBe46zwLDFGwOF1Bp/uI8=;
-        b=UK+E+WZ4ElUodH7N/nZZ+fIZgKlEhQr2HnzX2j2UNgw3CaHAGRbcBlHKsfIFJFYb+n
-         PiFhr+voorwrDGEuL0zZ5MGNwibJAHe4OUHhUFVdgkMvNp6aPvI9tlJMsf1Q6GkEd4Jr
-         lJSZ4srNufPzXd95fgQkGl12W1hjTO8jweUT7nGMSFx5qPge4d0woN3oIBBK4SuTOI2F
-         pGdnPY6GQRwlJmCV+b+TMwTieedGSFgfXKqxyJSlKnUjLreSpjpSLTWXBgq0XOfIvZso
-         wZNjvLh/2GJg2/srQNeQgcorDwEOuIr2vIQ/sJ2Mqw4rM1D0yFoW8+oJAIKlPDA0RmBe
-         BZ5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795534358; x=1796139158;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DViz0C7Vglsfa0BWA31WXXyBe46zwLDFGwOF1Bp/uI8=;
-        b=v2v0LOQ+zeZphRq5P5mgNSQxkdBo8UG/5oGcarCxVFpsk/hCQ/8Mx28eZNsa+8USNX
-         Z3sK7neOPEGyno6mFfejsvUJqFEFdbKgv93ZgM9z4znqjPVFLilvj26sERbYvYwf1UNp
-         u/wLr9lOX5M+B7I29d86rXfj6iFy50hRW2Pa5S2IPtnhSsC5kVE1+SnI/o7UWHs25n1x
-         AbqDnRAGoGbxpm874jqm251mHSXfFCsZpSUchk2EeDkZhaAmlPj/bDX/JZFE8DDRq/6z
-         5UHUf2CDymP+eswC8d2728yB0nzeLTZhmYNMnX93StjkOMUyTD0mqmOR4aVwI3vOvBDf
-         ObUA==
-X-Forwarded-Encrypted: i=1; AL+hErEqzIyiAvox5kF+Qo70OHIjkR+EJ0AUiNuQloxx9p9hx17+ZNlUhNkgZNbKp0FquDdFh0DMWeIevg==@kvack.org
-X-Gm-Message-State: APuU4Z9lPDY+C3YEhgOFn642a1yRGmrcwp6GfMEx2bzo0j8opKT7fQNk
-	tO6OZYyOvALqNQudEjRjL5AmSEODGYXEKNEmTgVSc+ArLS/erXDt1vhY
-X-Gm-Gg: AZFdTZeOrHmtB3IyYVb6agcgb8uILYLxMJcqUqIbrQf0JW3DG1qa+S8MqEQjEFuhihm
-	excUYiWdYJbv3pfkul6fiZzCuSid/tGCHU4I2rAMNG/3O+XuiJGpZ1WSJOh5e+KjDYv8qAm5TxF
-	A7YhOdtxXF1jDaRtydRxv7DdgDcoZLmq9kICfXckXW39di22yIss0EUIDSofaQlXQqYEZcbby9j
-	2+qMaTg100FVgDvV/Fzq83/VIHIAS1qlF0OurNvwiu8tabi7U93CiubB4Le7RE654e5cxcFF9nT
-	2dxQ29ldykleq6sEBvc1U2l9YnwZM6XznYDnSq0sD7YBM358W4XCxk365wOXvRm08u4lRTrA5gx
-	GAQOyjf0Od80UgLniRhIrRiEWnqQCOF1NlVOeio+IL1Q0aopU1JTo3uxdAWnJj1+jIwg89eNse1
-	Bx1DkU+6JcOmoermJXitgLRLBSlOQQl2Uy803N3EI/ko0R60wxseGXi6v9ep3WSnJKpkUYDFtoa
-	gKvJJR0q7LAdEydnNixaUFZhN2+gOAExvs3oGAnD4H6BhhdS+fUkXlmBQT83WF8u2iQ8UpRG6Mb
-	AQkmdGzpWqfyBj42pdM+kGVsi7JgBYpHTtfB
-X-Received: by 2002:a05:6512:3086:b0:5c1:ac37:caf8 with SMTP id 2adb3069b0e04-5c1bc7c3b81mr4720023e87.10.1795534357650;
-        Tue, 24 Nov 2026 07:32:37 -0800 (PST)
-Received: from archlinux ([194.28.181.64])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bcf33312sm3925086e87.4.2026.11.24.07.32.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 07:32:37 -0800 (PST)
-From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: "Liam R . Howlett" <liam@infradead.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W8FJArd0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 77489443F0;
+	Tue, 24 Nov 2026 15:36:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F15C1F000C4;
+	Tue, 24 Nov 2026 15:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795534605;
+	bh=s4WULBvjRFLiiJiFHBxE8QngaPERSKMf2wY3GVjljHk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=W8FJArd02TjjV267Axt6tnCzEbxh0b1lW8/BK+9BgzBpnnE570ian47fnlAsLTDpX
+	 i7oSZGWwPHsUZGtZoexTSnfwYVKENPVEiYKDVg6LDu+stI7CbGpVUfkEurKanNZgcc
+	 IR/BmwetXIC/3m4YDhMJW522/nmB9DVV3fm84n8HusMj5ykRt12EKizZASralzAlfA
+	 PzcuPGEqbUUbjTZf9u6eFPOp781Lqwteg+6NomNY1Q/7C2slRMCWmgbtoarzamLWPM
+	 i6y7k72gKdZqJjHamUgKLxaD4S8TgQlCvOvrtEoeKmlWimkQH0lLUf6VXXQAmpJCWb
+	 uu784NNzfpwBQ==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org,
-	Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-Subject: [PATCH v2] rust: mm: warn once on invalid VMA range
-Date: Tue, 24 Nov 2026 17:32:28 +0200
-Message-ID: <20261124153228.134723-1-mbkchelofficialdev@gmail.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261124132609.101657-1-mbkchelofficialdev@gmail.com>
-References: <20261124132609.101657-1-mbkchelofficialdev@gmail.com>
+	Aveline Noir <jm5905938@gmail.com>,
+	Lian Wang <lianux.mm@gmail.com>
+Subject: [PATCH v2 01/27] mm/damon/api: introduce struct damon_report
+Date: Tue, 24 Nov 2026 07:36:07 -0800
+Message-ID: <20261124153636.91854-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261124153636.91854-1-sj@kernel.org>
+References: <20261124153636.91854-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: qnri7dxswxhkck69kx4e3c8nig3p5k3h
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 91F3820004
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-HE-Tag: 1795534359-933819
-X-HE-Meta: U2FsdGVkX1/pQpMzYzz0NEdCZmF+td9TYrCgizkdtDP3gss5LFNMZtur+WOgs6Jf2TO+rOl6djs/bajt54YG/YeaEzsS5qlKcZMST0U+wyTx1nlQbsBFgyL1BjaC17Q5yFBKXMcabNPaMcgcs1ktnPIAwvb6MlMU2M8wYSIiz5AYFZdWKkyt02SHoECCXPLpFzeP32misxQd004GnHkzc0DRPPXG4Vm2VnZCWDpKZvBiayH8qjli8JbhwojwRnMEpIPf9A0qmeYCjlMGXGVnk+al5drt/lmVORTzfXcdFBwrl5C/WgPQZ0lnAUM5QPycMIDEIoVwKEonb0R37ObhM8x4whscPYKIigZjPf6Ztfyu3NAy9xxZN8chK7RxosmykQ2IJNQYoAlSgCl37EkbIijnzgRRBWkLDY4F4n9MVI/cDdcFs1wIVfbgcDenjBZnB1rqbco0a/tfJ2Xpe3WykAtbweiliQmD+TrBUXJTdvwNo5gD15HOnTLHfmTXpG5t95WqMtGQPf/28KFvn9GBAu+qfPr968Uhf+JoxhrfWiaYmNPJElxpkOZzpA+75gktUylRwY6PeuIaJbs397qMAg2HCD2OZsIoMyte+2wueDGrrdr/xsb+merrmAoTWcud01m/JukK27Y05c3S97Cm1kcwfmqSr1ZIyGUgpfiY+fqLGNETP2y7ftOCwSTlMdpLMg28VaJoceY/HYWtzpBNBixuFCqgS74vHlIMttMdHuneePlA8iWolMtXW9SIEsdKrIMrZ8ovAXsOVRywJGaeV0VhezpdPlLepbdsiPaODo3cNGJWX6aXxelTNLGo4Y41yU0ngAlO6HjO8ihswLFrVokkkZtE2StaUkb/vIa0ULEE/zL2/zJW/SyjnRqTqwcGmv2Tb4caEw/DyzgtGYkS/IATzfDMShNVjIMlAvNW8+ImdxpgIdgR3CZJdaJCg2vKt3LtNOZ9rSAjmyjCoO6
- uVXizoK9
- Xh395r4LK8xzvQ9GDpKvdU7nwIZCJm6UMxmjLbhTxTEjj6JToLIUrVGHXVjQD9rQrpO/jMU19XiazCCnt+IaydXpI+JOKRKQHpU7nj6S0xN755oyz3TYFe8o9KWQqMY2rsbrq3zoY39KvjAXxvGqCj7KhRTKvyYYRr8JmwNKzgTHPNfqZaorbJmOT3gwOyRt8lEIDFfdhaGVP0w1JuyO8as8TUi5pJHGOzJz2+HopG7oR3/hMehyKTyQq6Uqd1xXM0UEH5TBAM8/yPutKhm3t3d/Kmg2IGGEeGptybFOcwhLEfCCAY194PKlYobJUU5r/jaDVlOugCussCpnI+jZdMarOnuQDcZ+0oJey3/N2AANlDJCAagVu9F5jQbAw3yXnIPUH1oyjIUsYwt5o6Q5wFlyruN8vjqMzyz/g0/EJQtHldLx08JFaFecXpnPaedckNgcVBdy2X68ZUSiDkGaEOxltoxYv4yMokRfM4SX9dyyBA0I9cM9Mv/dN9PBdciGWMWm+Wn89qLhBhu6M0aDSWoLQ0tYFePmlF6sWPydOcrM/TLaew5cgf0g5hH3RSYB7FKxK3pm4czdxCiEc4ijMZlkf4zbhOyzOnMWe53x2h0pCVc/Sjhnph3S+iIzCPnDjGt1tdH4SjIKjm+YPO9gRcfHbd631o1iJeLa9dMfdYRzCa6BvnYHyZVsNfvXr+JESPp90PP+h+AOMDWQ12KBd1+pLmVv7nQUeYaLMtCDG9hETgjE=
+X-Stat-Signature: f3wxcqmau3e3zu36j9ks9k5y6tjesekd
+X-Rspamd-Queue-Id: 4ACC014000B
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795534606-840873
+X-HE-Meta: U2FsdGVkX18wpWGXo2YI8nByJnAm81QChMkYoJ5b8ZkZeCUBUIQdIdrCahoM7WhSP9xLkLdvNhhyM5kqp7e+xvmu6lOnTRmDiiOL9Xip/AianjRnYncTibMZ6u0SLOOgy6vZMlD9jpJwOAH/+/2Py7Lu1um/hI9lqEmMrFapJBwAWUusXdkaHT+ErDzOg5aWK9kR1SghmXzyukM5CTXbxjt7vL9aY+DlLZhCZgyjX+aEDJIwrvbRi35DQV1aAdI5h/DOLhm5dh01cKOSU4yP7a9mPcF6DE4A0QXzRARuLS6lCN001OwoY77KjCla64pkylWX62Cxkfva1exj/GKFP9ve4zoVsyslJZvoZ6NxRJAzjJQX0ZRXsp66W5tnj4VYnqeSOXqBS/DfQ+FpZV07mT6NVh0jmQvBe7ma33L5+yz1jTiSQrZxcesrgCQDmlK+TXu4lYLVajkZMpX1fI6LAI1vGUSsicYHkRm7/ptEozP98H24+Aodz0Kt4TePoNoNtuFvS3D1IlMjDHMp2/nfuStVpt0sKgvxYZ0/LHN/JEgJafN0IWm89ogb9Dwiy4ypDf/f8Xl2KJ/BDD8O4PxEMnfaOQ9bm4GKuipuGmV9KKLDY87bpgK8xJCF410rClplFGMsBjrgYGCGuuXeLilNu07AwLkRcA0vEB4fHeiI0qpSMb3tEi1OkRhtYqOf0tAvupiOyIQo+AXbCP2FtJJ+SQN6Q/7VJgqi+7mNySVmxrb6lfMf2N+x7zkqJfnAHvRTmIfC6/cm4zZfyTgA++i1nEfxGprV5nel45QZJLFlppCdk18P/iUkdslUtuf5Wr1/0QdBIcL6af22FRCfjCjmf61Q1i7TPBfOiFcSjtWRdndi7TQ1pNox8TlpTPJMVbKEH6bBOU9ueMnIPqKWabKwqwK1+8jOEA4UwwdE9A1F4TPlfCReWQjtCPTS0IL1voY+Wgn3X89wz1ODdXL1nIX
+ c6hRNvKI
+ WcNPCKVHnq1JJZ1JcLW3kCqPcsK9+7Hftu0F4dy5n87d+zele0HtK4C9ZNrpBO3dZhqI6duVbfNVuIxdNeEW12FVJLzib9vbEJJ2f5OpMo8MCgaEL+/89u7yfLRmUJG2r0uqlevI3EFgbXZIvmlkxXZTTa8/BFo/Q4mbjPanR0j3M9JGs5bsKwNW9mdh1G5onQBz/Lree7VpthfeLYLO+Xm6NwkzuxL0ac7I4fqLWf4R1ZCauCajzhTH+ErZ/+rUArApjvg661um6RbHIvLQNI2vRWr8J2fIHVmSFgWHoF/aVJbGQGVxVvon7xB/nDiW4nyNK4/scTStelMeDwT7X/0ec8/F7yjLyu/Nrin8JhuE0KAaLwTXFMl9G1EPfXJS7kgj2ttMh+oT49VsdRN8ngbCeKCpTShYJVxkfTbSmomcL2ezAw7/euyN36k9SXjlMcEsw9O2Y+02Fy5USc51LHH6c6PuyNNZ/NnBVYIxniZ55ODIIqPc9bCccZ6Hx19shflH12m0g8/Q7uiRrgDF5jFBXJL03hirjp4BGWREPBJJY36zDNs8yn5xb85hbJl756vqn6BU8Dd+KfVX/XBpgJXmwgo/LwyKk52XG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,34 +96,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Use `debug_assert!()` and `pr_warn_once!()` in
-`Vma::zap_vma_range()` to report invalid ranges.
+Define a struct for data attribute report.  The struct provides public
+fields for the type and the memory address range.  The type field
+represents the type of the report itself.  The address range is for the
+memory of the reporting data.  Data attribute producers can format their
+report using those fields.
 
-Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+It also has a private field representing when the report is submitted.
+
+Reviewed-by: Aveline Noir <jm5905938@gmail.com>
+Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Changes in v2:
-- Drop the `warn_once!()` macro and its KUnit test.
-- Use `debug_assert!()` and `pr_warn_once!()` in `Vma::zap_vma_range()` as suggested by Miguel.
+ include/linux/damon.h | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
- rust/kernel/mm/virt.rs | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index 63eb730b0..1a3a990c9 100644
---- a/rust/kernel/mm/virt.rs
-+++ b/rust/kernel/mm/virt.rs
-@@ -115,8 +115,9 @@ pub fn end(&self) -> usize {
-     #[inline]
-     pub fn zap_vma_range(&self, address: usize, size: usize) {
-         let (end, did_overflow) = address.overflowing_add(size);
-+        debug_assert!(!did_overflow && address >= self.start() && self.end() >= end);
-         if did_overflow || address < self.start() || self.end() < end {
--            // TODO: call WARN_ONCE once Rust version of it is added
-+            crate::pr_warn_once!("Attempt to zap invalid VMA range\n");
-             return;
-         }
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 3aff5c525132b..2520c036306f3 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -757,6 +757,27 @@ struct damon_intervals_goal {
+ 	unsigned long max_sample_us;
+ };
  
++/**
++ * enum damon_report_type - Type of &struct damon_report.
++ */
++enum damon_report_type {
++	NR_DAMON_REPORT_TYPES,
++};
++
++/**
++ * struct damon_report - Data attribute report information.
++ *
++ * @type:	Type of the report.
++ * @addr_range:	The address range of the memory to report for.
++ */
++struct damon_report {
++	enum damon_report_type type;
++	struct damon_addr_range addr_range;
++/* private: */
++	/* when this report is generated */
++	unsigned long jiffies;
++};
++
+ /**
+  * enum damon_prep_action - DAMON probing preparation action.
+  *
 -- 
-2.56.1
-
+2.47.3
 
