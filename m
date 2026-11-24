@@ -1,149 +1,155 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17CD606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50345606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LewI+WEa
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MhpbC1X2
 Received: by kanga.kvack.org (Postfix)
-	id 0D11E6B080E; Tue, 24 Nov 2026 12:40:27 -0500 (EST)
+	id 63C8B6B0810; Tue, 24 Nov 2026 12:49:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A8A86B080F; Tue, 24 Nov 2026 12:40:27 -0500 (EST)
+	id 6143B6B0811; Tue, 24 Nov 2026 12:49:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFFD76B0810; Tue, 24 Nov 2026 12:40:26 -0500 (EST)
+	id 52B366B0812; Tue, 24 Nov 2026 12:49:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CB0A56B080E
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:40:26 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 469A5C0BC7
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:40:26 +0000 (UTC)
-X-FDA: 85470726852.19.870BFEF
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 46FFD160003
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:40:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LewI+WEa;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E5456B0810
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:49:30 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AEE8580B7F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:49:29 +0000 (UTC)
+X-FDA: 85470749658.01.FF523EB
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C146240008
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:49:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=MhpbC1X2;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795542024;
-	b=0nxNeBtNSpAsBHQ0vP4D2KugbP2TpbrQG+2D9CIMHb3TSgynsROYCXafJ7V97RINuJMUS3
-	/F2Y4NtQterajwJNmLl3GOIFoky8AVWcS+vjOkIC+ojwdU5A/wP0k6iP3LuUkYQrQvxhzK
-	M5PKZBt1wTnkThXrmb3mlZ6EV+ynEos=
+	t=1795542567;
+	b=MH39VDHsvhd5nll36MUGokeTNN5cQ0ZDJ0O1L3vsxBx1joIohmzwZPaGX7UeXFzlK/IQH8
+	uMxCc+CUptVRst4mP8Zugr4s798h8K6+77IMFny8pUYAXvtTNljLOiePkS/MXGoA+TNUYf
+	OlR0SUZUPGIW3BCPOGgJNac3OQvx3N0=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795542024;
+	s=arc-20220608; t=1795542567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZyMW0Suh0lL3Bzt0NE42D1NOyP8/ltJQBT/Rp/e1E1o=;
-	b=B4pjK1IMdfOuqn2nA8xt2kDP4GP3a0mUAcx7s/P+ybJIyWGClMwUUMjTa/vxyR6yDA4VOP
-	B4QkmQVzzqQ8RVx2/W8MxK5/R12jdXiUAL72ds6pvN21DcyY1W4l6VKeJEMarx1jDzBjJo
-	xM0Zw9MEdawvY51WJpIs4f5P3ahy8ds=
+	bh=rZpsKsMasCu0VG55k4IFjBDsARDNBPmeWnpoFmnC3rQ=;
+	b=mcHDuYkwOt3gN+xPV1gznkX5XiSEhUZ+yfJjYNVaJJo5j520SF+UyLYoJxFvBifOSSD7UV
+	A8e5lI976bZxorQUH9Tu8pZTb1+u8UFlyduvmkKVRap94Hk753fSrelWMWV/U9fF1mY05p
+	s45QdbTUVFRocr1X+NzAgZtIA6Q4IMY=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LewI+WEa;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=MhpbC1X2;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c4322d310e7so246833166b.0
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:40:24 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795542023; cv=none;
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-533202fe429so983081cf.0
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:49:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795542567; cv=none;
         d=google.com; s=arc-20260327;
-        b=akEglrte2cA38iX40RKbQ3V839FsZRuSe4WQcg/h5Zjb7OqFWnLosbOLP+5G6crvG9
-         0Ne2ytcpUZsrW3Afk8UCJIqxQEwMv1jmzfmJr4UkzDTdFzS3o/Wrp5e8zdqF94LhPOe9
-         aUGvRey4icCwYJ833de/4w+u5k3Y8ypfYUKwtYgbB+neLMrpOAa1Z0NUHH1emxjM2wqA
-         yxQAzoX2hVXYuKIYvY5ZyeUMiRYLacHTU1Nj9KpMnXb2kE0SC6sDUKauVE+Drt3a/f23
-         P4XPs7y9ZHIxqjuQv+aaroYAASSRxL5oJLU0zJ0Kakyr2GKEAigGwx//0qDf+J8ELaAd
-         zV9w==
+        b=Yj0alC5hfY6zVhGrDl6e9jS2Tu5NFwSVNsuaTfHdmOMIRP4/WJ6RJ/xv4AD1hASJ6P
+         zf0MISaBDyLl5VfgyW2X5ZYr5yV/ddVwon0Qa1gSQ5gYRR7prdGEBSzphjL67/ratGA5
+         ia65HHQmiYdGSlAzZOIHnCIbicH1MqOeH54kW4E8k7evDPmZR8UN5wy0rGw/WlrHPJio
+         vFbtMHho/J9VGcNH8SNP9G6ltwRiJXzqM+nyPrgeEktgDSY2m+3Q4m7/e9MliZk6PZTA
+         bDe0mwmRwpD9Tg2pA0nrNWnO7Oy6JwdE9fof7xA+w/j4vHiY7saShVl0TLHXaZ0O00HG
+         47bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZyMW0Suh0lL3Bzt0NE42D1NOyP8/ltJQBT/Rp/e1E1o=;
-        fh=hC10eKYt/j5xplRzRs4PACA7xTIlXFvPmCk1z1fTghU=;
-        b=OOUFJ1IV74WLacGaSxmGtCCYmitcGRCWYgd1pxgwH7SUYw9m6D92Bd7//57LibbN/p
-         E3EWFrTatEqxV0/KMF0jwDf18SrpsBAH9MqUdbuJ1xsNEDmJdflk0MDsTAyZIa9IGuQR
-         8h8f2xqiT5CxC2RFS01Pl5+2MgA51uFTogEKSk+Z/CYqYZ/RAO/LwaWfu5xmR7GqlamC
-         s0SQQeKdst9Wj6pMaQSK7rWqe5hedM5712veIAq1A2Ood0/y01S96G6NvCleDdazOemE
-         8jpMogmZHYXm3kfYgBnxYHoX8Vyc3Ztz6dVORw7PkcDR9GC05Wnrvy8bs1yBqMkb8lzT
-         BVpA==;
+        bh=rZpsKsMasCu0VG55k4IFjBDsARDNBPmeWnpoFmnC3rQ=;
+        fh=yAb4Gh015Jj+ObJDoRnT8/lnjvMwB0aiD3yuGaJiqgM=;
+        b=MNCmF22+32L3lIXrYXbeT3OnJR8fXYvWQQvzz6Id/ERMvi9rVmlgyLf0uKzu0dRy6X
+         BRmwizS8nhx+hrxwKAI9JoKuUsaUW5uA7933+VEgfqXxnPljLE5qUC9EGSyKh6D9H+Om
+         0eLo/tV+imP1QHCMBGX5a5+IlqSjeq2zOLUSgkW5MCnzv2SB692H7VJN8tgxjjUukVzg
+         B031Vk/Mn20AQzNYqhr9ijC2eAzNvmSzr6iRqnDdQKAHshUgvQSj/MYQ4NbORqvvCjEG
+         OSsC5gAlio4ButhWiYXmB1wX5CiLQQ8NTWn+DK5iIPn86cQPzJl42cGTAIXCZEQ5m11A
+         x+Mg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795542023; x=1796146823; darn=kvack.org;
+        d=google.com; s=20260707; t=1795542567; x=1796147367; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ZyMW0Suh0lL3Bzt0NE42D1NOyP8/ltJQBT/Rp/e1E1o=;
-        b=LewI+WEaOBrYfCdgD6rPOK4GeCelymN5lN8tqfrokRdGtQ5ZSNsLOUFrZxcBE8+aBk
-         gkyxQt885lBSAFhJfJrxss7NrQLW7DgbzwjS9iRm16ugZW9qhfxEMU3y9rMfPAUgkdTe
-         JbWI0eau3kDNAVmvb6rA+LeFdUd2peLXE6D4k5zbu2oDyuE9OGNDNosvJZ8EyB45oN2/
-         Qr8Fg8LPWDtG3pZXFTA+CWCaov49+ITgQ1rCbAkTOnCSFr2gClCvdKgD9XV0d29hH0fQ
-         jvYAEMZafvtVdy4zIleBM21DKxxfrQ2W79QjkYPkAIPQhZ4hM7BX9wpe5A+So9pndEDL
-         sS2Q==
+        bh=rZpsKsMasCu0VG55k4IFjBDsARDNBPmeWnpoFmnC3rQ=;
+        b=MhpbC1X2dKom2cBZJuQAFjuti7BFjlBJMtAG92J5/eF/E8mDxwIdrc06k6ok+VkXpV
+         38SLwoIZcLIWpXqorjja6oa/m5N98a32MmLEUepferkBhxy+/utMQ1/LAo/uy4IFsuA/
+         54cjbe2uafcVKAV2/AoR5MzG+BGVqs0e8uw85dHL82ZHatQ+sPTF1dNpzEucUmfO2k0R
+         HH/H09ztg7qutCTitAWvIA7+aOqJrjRmnaRtKIdVTyCygiS4E6XyqfcgG48h/qc4GZ8X
+         x2kilYWsvAy3HxeYQXoEj9r0EkuG0P1WFxa6oCQfv1txVUIG/0HQyacZ78HoLdmMAKIN
+         QKfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795542023; x=1796146823;
+        d=1e100.net; s=20260707; t=1795542567; x=1796147367;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZyMW0Suh0lL3Bzt0NE42D1NOyP8/ltJQBT/Rp/e1E1o=;
-        b=FxM/Nq2W8/gWvdpvlkGzlP4iyOfF4QoKqnLt2rGRzuW1YNAvxzlzdr2GgfUO97Z0o8
-         N/M9YvcNZh8k7m7wvSkPXaS80190k8FYGbiAPsREakCIk+Za4HBEZgS9kER4FvP5CvYN
-         sPOHYZYCbXZsm45NCMf765wUNV7PNhE3uTQdXPfMip03nhG1gvMHRxmqsRg/p0PcgYuF
-         xqQVU39k4kJl7Ooek1J723G+8VjD6y17FpTFVLSBkgu4PrWc7xZMXKLLVsfuqPJIxX0g
-         WxqnsQp5N/QrP4AcrcDLoMVxA8xgpc2b73ZKurpib1Y3mVVcp4b2XzjtoWLwbpgcTkLY
-         Nu3g==
-X-Forwarded-Encrypted: i=1; AL+hErHslUO+kri6KcMimTQQnlpqNH4qgWN613T4oEeb+FFHcWQERftNxm1kb0v9OAtQqiGacXDE2oqa4g==@kvack.org
-X-Gm-Message-State: APuU4Z+IKyARaa/hqfXlVRIFf+kwxVY54Gp8Xqw6RorGgVYV1kEk+1hX
-	lO/vxx4vfWdot9qeEmBqzgAO8T1/WD95nmAEWuL96btn3CLSAOncV9B0p0Xp6K2AAdjwVN6YWxX
-	2puIiJT/U/HxyZh5zaqoBffPDs2rg+4S66EolWSo/
-X-Gm-Gg: AZFdTZc2eKcegOphLStl7hpr1cFL6FrmBo9UxcVpFBNrmk894zHCw0yH8aYilZJ6FIC
-	DjQOIW/+Os9tC3MCBqjRPr7ea9yJAE3MRtAhYI3ZpjCpx+Xqn5V1DbFwyDUTTrvZK96UYDtbjw7
-	hf/fchSYkBeM5iIW9JVFT5HrkmOPqFEPp0ob3ukWJIpmjaf6S8wLsYKmLvG0aPB2kjGOvdIOKht
-	sF4xIKRRbUXeEJtAAkIVqj3a4ZZdoMZvPeacJK4SD+m9h8Q5sixgZsuJc+KcKd+ISy+DZ22MxV7
-	4USilIeX1PkzvA6+5YvwgzPCIbPGpCHFbiKVm8/4TIFlCuMpGLP/0Q3S8y0blWVkqv3lhUpexcS
-	ygqAPr9wP6Rn2d85G9GfJ027b0B3zqvRgCDV4QqknudQ5A02g4QnjwKwJUAAyV7IPBMwTRG4VgJ
-	W8S2P7TSbhkubtXm0PrfAZFlSiYjbz7U3ptrUklRMdBRL39B7PTGE=
-X-Received: by 2002:a17:906:7f01:b0:c4d:2867:281c with SMTP id
- a640c23a62f3a-c513a89466dmr986155466b.1.1795542022434; Tue, 24 Nov 2026
- 09:40:22 -0800 (PST)
+        bh=rZpsKsMasCu0VG55k4IFjBDsARDNBPmeWnpoFmnC3rQ=;
+        b=OKDPNePlLhyIou1Z8F1r3oGF7KTNH6wH8RVXRLsPUF1avocAzuMWQbBqdKS0tApMmA
+         JaJacXwL2NcrzObd6ovEYns4aWH47KZGmxslPtCPX4b5n+mS0vwCasQFkAUOWPyDUH0u
+         aAOlH+AiO2GSGCX5OE/fMlHibBD+LQ1+V4jLPYoh6/uQ48QFUDFuc7VmKLiAwiyUanC4
+         T0LFtNrX2+ZrS2nquUwiw7d2UKvP0IBUpZ1+UoJrPpvu8LrxdFWwiTeYYOGWA9w/op+l
+         GiTznrktWPzAjq149dGksfRoxwZr0psbY4MwKI3ZIit4bfUnR+D5kfqa93dDDhTvYv4V
+         B2QA==
+X-Forwarded-Encrypted: i=1; AL+hErFyoBZFa/f4SpyNVDvyUu8sPPtPoCh1nsFJQd+DbbZOzFQPhL5Nvr9qSnoh59Mg1/gGctBini/M0w==@kvack.org
+X-Gm-Message-State: APuU4Z9NuZEqSOs+QoBgPjrgJ1FDQpIzGlB8ahpfX287lbUazU87AH8S
+	EXtFEg3SE4kGySvRuuGgTAOR4aLOEsBxuQjUJDEXoRw2rzAESUwSZPcWB+yVY7NF37AYjKduM6F
+	GRb7/eCDqw2i7286Ayq8RTaZiyntO5GcQlWv+J2zP
+X-Gm-Gg: AZFdTZdm1HoCbdx5ylsmt6v+6pQiiutA87A9I4qlvzlyI4bKJl4dMHt/6Z0GaYLdzlU
+	I8twXUK3v+GZBy9Fchaa9m5KqLC+g4EN9zWMlN/9cq6iGjHvZW4NuOCaqzsntxgvilzBGTrA9g6
+	gb06Qf/9PNTcPqbGozccuvVHKn6aZzafNUa8nvFkRI0gST4P/l75/aRqElxp78EEE988FfDjHWe
+	LbBeTBQ1+jH/hgu5smy2jK9ikVRATsL1FU/Xb+2t2Y8VYZMo0AFPKfsLS38PUlHtMCcHGXLU5zk
+	xapocu7Bi4a9Ow3pr4kAxpTk3oY/ddE3uAnKMdrc8Px2xriXsazQKjGLUrPyMQNxXUe2FGyGoHy
+	+/8erCETATXQLT1JpzqFIIiiIHsJqxD1SpGXCdKNzQpPWtUPeHaFkNuJ9oHZbbAraEsu/bkboHN
+	vsesnjlKc72Yz5GToUfakwUyvVXlvE/6fEW3XNU7UO2cwXTtr5
+X-Received: by 2002:a05:622a:1f14:b0:545:7949:80a5 with SMTP id
+ d75a77b69052e-55d890663bamr62644371cf.12.1795542566115; Tue, 24 Nov 2026
+ 09:49:26 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-17-jthoughton@google.com> <sashiko-outbox-228645@kernel.org>
-In-Reply-To: <sashiko-outbox-228645@kernel.org>
-From: James Houghton <jthoughton@google.com>
-Date: Tue, 24 Nov 2026 12:39:45 -0500
-X-Gm-Features: Aa3M54raiLEh1ZPrKo5WkzdnZfyJOdcj_tuB0KWZ_ie6g2cLD_DMBgOrKleBNf4
-Message-ID: <CADrL8HWNAByKifcNgre_YAX3M+bwAW0BgMrfPmWHubOEs+AfDQ@mail.gmail.com>
-Subject: Re: [PATCH v3 16/19 DO-NOT-MERGE] arm64: Implement
- try_populate_vmemmap_pmd using AF trick
-To: sashiko-reviews@lists.linux.dev
-Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kefeng Wang <wangkefeng.wang@huawei.com>, 
-	Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, David Hildenbrand <david@kernel.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>, 
-	Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>, 
-	David Rientjes <rientjes@google.com>, linux-mm@kvack.org
+References: <20261124-vma-read-lock-mmdrop-async-v1-1-257f99f551de@kernel.org>
+ <awWLCZ-jBjSD7V3M@pedro-suse.tail5790ac.ts.net> <CAJuCfpGk6eYK43Unxo+O4ML5=GM_siZ9owp6oa9fO0ipZXVg-g@mail.gmail.com>
+ <CAJuCfpEd1rz3P7fB7W_mHkyzbpq9TscRE+QNwvHdYME=WJj6cw@mail.gmail.com>
+ <awWz3nc_b8x3mIXq@gremlin> <CANk7y0gAxY18Ew+6j5YsqrOsf5Dx+v5M78r7_8JLXh5RHZj4qA@mail.gmail.com>
+ <CAJuCfpFuDCUPTUi3SuAhmbtw5tubRZ0+YEY3PotjyJ8Or8pdQQ@mail.gmail.com>
+ <awXHR007d8MlhJUC@gremlin> <20261124093328.3ba2e066e5d5081c69e0e667@linux-foundation.org>
+In-Reply-To: <20261124093328.3ba2e066e5d5081c69e0e667@linux-foundation.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 24 Nov 2026 09:49:13 -0800
+X-Gm-Features: Aa3M54rJtgRgH_rcKNgpafDHAbKng8SpV3uhoRslOvIjTwkRWkSfaO8JY91K7G8
+Message-ID: <CAJuCfpEmFEX5iqLw_c94a97rVrC+xBWpKnO4rVpeDgkUfAPq7Q@mail.gmail.com>
+Subject: Re: [PATCH] mm/vma: drop mm asynchronously in vma_start_read()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Puranjay Mohan <puranjay12@gmail.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>, 
+	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 46FFD160003
-X-Stat-Signature: q9qkzh99tiicjj63og1cpswwwxoeem3z
+X-Rspamd-Server: rspam07
 X-Rspam-User:
+X-Stat-Signature: dax8ic5h7uqzhb4x6tg837pszakp8ief
+X-Rspamd-Queue-Id: C146240008
 X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795542024-353457
-X-HE-Meta: U2FsdGVkX19Ph4/qLu+/Liv398wvBT+IEjTyKXRrU4V8HKMbOMQqsFcqpfEEeQvCfYmXocfK0OGXz5KvyyhwaF92ZC2w84+hu1ubBO7tam9QrIXIC9iFUnMNNcknNxvuF2eU1iQJGwKxwMYYYYRhIM06aMGnV3Zr5GyfufcIeYGuvJrk97oSKYJMwyllE9q99qug7xs++Hlf0JiEAoWou0BDwJPK5XFLHBix/ov0GhAnuQW8g+0yVPx4LLhLCymCmjawbsMefyt07TES4W+CWqeJ2S4fWwhniQN/XAZ/7M0ZvUcS/ssKuBRhC5KlFcbqHEFCR9ani+uLz/7uCX4iR/a7y2AvQShNow9IZcUt8kRJx3DWMJo0ejcc4bCQ5bYEPRIH/puXddQ26Anl3mz7j86ZahBVINUIT3FaqXZGpiOncrX3b9nGl082enqP4xGvcVDRtNoeB8JVBxHshsMhqnxNvWYc1128ICtOj5n+ViN4Ag/sNZTRR+3iR9J5mnp7MdJ2cV6iqfsu/ruqgKPp1wLOyo+ZEH1tjVecwdUAeSFEs7v6d1oy0LyGvuUJeIycf4CNPK+LPh6gRTKjj8Ydq1GbRC5e0/QExWrqZowsK8fhwYAPCCaHKzTYh+y4WXpeT+tM6sLiatRm9OusRRlOmlxrddD8Xuu3DRTssSgbtgzVu2hJhzJoSwVxVlfz0zpNsTp9dyxpjeDZNfWMjUmM6WcinyptkKP/Q/Kq74QZ1SYKUB1xXaMdMCEfnTGAwUWJT0x24I90T/Td0i/+UzdIEKvfIzZDuGnYLhXMIYL+0OUFJ82DOXNNnFn4YZZEc2UpTBss8jCVQsU9LsJfqzLN9NsRAr99FFw0JbxyJpvYVQp0OaDF8eNsDd0D+HRAhSoU074ZR2mKGL8ue7MbjQwZyA8nRaS1m/KrMkhB4YKg2VEQBAPPRMlFyegNWG9w0S0S3PW22LEZva5u1BIRjMO
- mARrgdfV
- bmbCoaTzqEsLM+5ReM2rvFIHNAcI8cGehCdi+ZEf9SP9VN5ZqXv/gmHGcdmVGnwLPcduHGnsKoWV+7wirzVcC68ygC9Bvu5xV+WzqhgK7RAGXpEW3yJkMR7a1WUELli2s+NpYOQ/62v99Va8KKetPXpeUaMRMU2gh0fDFZriUDKJ81dQDor+eTXEOf2HEHmp+/c+y1Uh9d4ijiVRdVdnolA4AAbTumGl7IJlY5Ts8OqTBl6tAeReKOkCZp1YlDEaNvFZE54eP0XlMj9ooDBKmWcw2OfQ97BfF7QdSW+nRgUa7PuOG74Mgx7+UTgzWCZWfTQXpmcM2x5Fu3Eg5NACh43CaVgn57Ajl/CDrksBLO2fdDCFozieBUbigM7tcDysYcn44oc5G++dyGXYM1lfaJ88Xbj35BFYDWlJgOIejZDlmhaaGmejp6poUl7sBm/4jmVhEJqm0Ta2l+FS8seu36YVgbD91+GJp0yWJn/oOREJf1QwCGEy4DA2iBXqZwzuKE1kRKeXNnUKPMIRUbLNewYzonqwy/pVyAwTAAAb8eFOYTtastEyz3Q/wum7QYHkzThrJ75FxMsoU614L+awfco3SO5GJGy6yoqpvDjK0lXknAlI3COVVRAlEnJqPDhk/di8/ZCxxkZf0bmYwwJhtm+/J3ZW092PRMMrbjUbENkCfCw8=
+X-HE-Tag: 1795542567-71310
+X-HE-Meta: U2FsdGVkX1/ylnaYntBDq57eQtj167bJL5LJOAL3bd9CQqHUt0m2XG6X5b9+YZK521uDiSAmorxnjR7aKsQdkAwZqihnTjDQ5cfzVtioA+PU0dcytq9GubAOPwHhB7b/g0T3jiVjyb3kvAJLeq32JvyzFVo28EBNVDH9jXktEfbJCM9TmmFFnwRUPHmkl3f7xmpGM4mM7psXI89NA6wYFmRztRLpIAitMujzhnSwLf6l5KZ3wKB3COkqtpgyIJicaLEz1InD3Hgc+OX/LInYbHiND9sKlUiJSa+Ni7lZAyTuYOy+6x/aJzkYnp0D/R95Rvw6m7MHCW9YYrQQU2e6PbNkW8/WZln/CwCBfZkLZF98DcYSU5vlAPr7oF1kGwJ01RoW29SWVDzVl2Va6DqJaXP0J3hL0rrOBZR118yO9NInJv3VjLtSw6LtYMSUmSW0P8cGeaKCEprTA6dl2XlodUD2oek97c+/GF5G3kkLyfQBlB4AQkmRuAb2250AIoobKWSI//rOMcHSIiTNOYYL65g4Xveqqgg7+FNPju0KurghydwjDoxAg1y3qfbOxqoA+BmRAQUlvxEwP0Nnje7DnEKIPEiCuIKmIA5VLEMP8ElMNHkrSU4rNeLFeMRVTnwOfGuBSbjxRL97KX7afwiLoWxo+MXv9A6wUGamBSkba7bxJUTVgMXDqG4FEFcJxiiV4pwGtZRz2Mf2K/Lf50hK6FA2Znpw8ksbJdrbBLWWj6IKZIS5HKwVoFKgTRG6WIFvI8+SKzDtizoss6mhUpm03fJrznqRSq3RimYezhgHbhPtFVRitEdXoxcyiDd+uF0iGoc8qyca9599/lvG27vVY/UnXnhh8aKhtHzbulXcRtUvcZl0rGIhhxqzSOfyKAsaYLmVBD8DDUyBaVaeGvmqjTogqPm0Fsv3RaP5o/pA+L5etSemYeit+AxyYi7ri2tDIfVqVLhnoCGU0eIHIq7
+ I0uN1aTG
+ KQv+D2NMLSM1eIiYnlgDDOWLgIqU2JZpyZayLePiKXWkkPOHTlieARdAOdVchZSmGqrQP8BFcMtV4WxhgCB3QXvb/GrlKrLI9LlL0+xTZf4TqNXvoiPyF5q/gNz6gX9rgRtwGWQsLcpyVHIFBkK/CDINuLfkyWCeUdF+Lx6RtGi4ehHSMelOimEibS2Ileu+CLC5b5drFzDNc/Pr24KUlVem6d9iEmlMUcZvk5ygw9Zcq9f1kOgWJVOI6VKsl5mibrwOl08vmfcAogcXDVQ7tJwjQbQnmtaXue2O0geOUKvH/WO6u8Nsr/TCxK0aL+WVbmBQZulWTBg4GDN+zyd9mLBWXOoiGTHjj0G1Co2t83lbvRJCivzIOQwtEfyuHGNMAKYNoqoGsfodY/zXWw9qI8mTACQFy4rBpJagsQaIItQxE0wEeGYerz6n4yBGculOC6yai/pVWrIQsPqAHRzQJk9tZwWDlNpvsXJjGe/AIWVlQd8EHfmAuauqNZQOWbI1bREEQ/DEaXFLGHrRcnGrnY2+d+08ewApjmKtp+xcjbBpSwagECnD49GXRkWqS+SLRuT5mNaZtqNeN0ud9NYLFantTxEZJmHkOgqsMwtqxvY3pfP0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,125 +158,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 22, 2026 at 11:08=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+On Tue, Nov 24, 2026 at 9:33=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [Medium] arm64/mm: over-broad TLB flush in try_populate_vmemmap_pmd()
-> - [Low] arm64: direct AF=3D0 block-to-table transition in
->   try_populate_vmemmap_pmd()
-> --
+> On Tue, 24 Nov 2026 17:23:35 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.or=
+g> wrote:
 >
-> commit 1319c4a7862ad5f3b810c4beca866ee98bd48fd7
-> Author: James Houghton <jthoughton@google.com>
+> > On Tue, Nov 24, 2026 at 08:34:40AM -0800, Suren Baghdasaryan wrote:
+> > > On Tue, Nov 24, 2026 at 8:06=E2=80=AFAM Puranjay Mohan <puranjay12@gm=
+ail.com> wrote:
+> > > >
+> > > > On Tue, Nov 24, 2026 at 9:28=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@=
+kernel.org> wrote:
+> > > > >
+> > > > > On Tue, Nov 24, 2026 at 07:51:42AM -0800, Suren Baghdasaryan wrot=
+e:
+> > > > > > Actually, VMAs are allocated from a SLAB_TYPESAFE_BY_RCU slub. =
+With
+> > > > > > that RCU unlocking move you don't need other_mm copy and the co=
+mment
+> > > > > > that comes with it. VMA won't be freed until RCU lock is droppe=
+d.
+> > > > >
+> > > > > Yeah but they can be reassigned? They won't be _freed_ until a gr=
+ace period but
+> > > > > they can go back to the slab and then allocated elsewhere  right?
+> > > > >
+> > > >
+> > > > Yes, they can go back to the slab and become a different VMA.
+> > >
+> > > Yeah, you are right about that. So, we either have to keep the RCU
+> > > unlock in place to keep other_mm comment valid (my personal
+> > > preference) or update the comment next to other_mm to explain the new
+> > > reason it is needed. Either way is fine with me.
+> >
+> > I think let's just change the comment?
+> >
+> > Andrew could you change:
+> >
+> >        * stable and can be freed in the narrow window after vma->vm_ref=
+cnt
+> >
+> > ->
+> >
+> >        * stable and can be reused in the narrow window after vma->vm_re=
+fcnt
+> >                            ^
+> >                            |
+> >                            just this freed -> reused :)
+> >
 >
-> arm64: Implement try_populate_vmemmap_pmd using AF trick
+> np.
 >
-> This commit implements try_populate_vmemmap_pmd() on arm64 to replace
-> in-use leaf vmemmap PMD block entries with table entries by clearing the
-> access flag instead of using a break-before-make sequence when BBML3 is
-> not supported.
->
-> > diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/=
-pgalloc.h
-> > index 0263329fb7b30..7e304f01ce6d5 100644
-> > --- a/arch/arm64/include/asm/pgalloc.h
-> > +++ b/arch/arm64/include/asm/pgalloc.h
-> > @@ -124,9 +124,54 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pg=
-table_t ptep)
-> >  static inline int try_populate_vmemmap_pmd(unsigned long addr, pmd_t *=
-pmdp,
-> >                                          pte_t *pgtable)
-> >  {
-> > -     /* BBLM3 is required. Its presence has been checked. */
-> > -     pmd_populate_kernel(&init_mm, pmdp, pgtable);
-> > -     return 0;
-> > +     const int max_attempts =3D 16;
-> > +     int attempts =3D 0;
-> > +     pmd_t old_pmd, new_pmd;
-> > +
-> > +     if (!system_supports_bbm_through_af())
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     if (system_supports_bbml3()) {
-> > +             /*
-> > +              * BBML3 allows block->table transitions if the PTEs unde=
-rneath
-> > +              * do not conflict with existing, potentially cached
-> > +              * translations.
-> > +              */
-> > +             pmd_populate_kernel(&init_mm, pmdp, pgtable);
-> > +             return 0;
-> > +     }
-> > +
-> > +     new_pmd =3D __pmd(__phys_to_pmd_val(__pa(pgtable)) |
-> > +                     PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_UXN);
-> > +
-> > +     old_pmd =3D pmdp_get(pmdp);
-> > +
-> > +     do {
-> > +             if (WARN_ON_ONCE(!pmd_valid(old_pmd)))
-> > +                     return -EINVAL;
-> > +
-> > +             if (WARN_ON_ONCE(!pmd_leaf(old_pmd)))
-> > +                     return -EINVAL;
-> > +
-> > +             /* We should never get a contiguous PMD here. */
-> > +             if (WARN_ON_ONCE(pmd_cont(old_pmd)))
-> > +                     return -EINVAL;
-> > +
-> > +             if (pmd_young(old_pmd)) {
-> > +                     /* __ptep_clear_young() returns the overwritten P=
-TE */
-> > +                     old_pmd =3D pte_pmd(pte_mkold(__ptep_clear_young(=
-(pte_t *)pmdp)));
-> > +
-> > +                     flush_tlb_kernel_range(addr, addr + PMD_SIZE);
-> > +             }
->
-> [Severity: Medium]
-> Should this pass addr + PAGE_SIZE instead of addr + PMD_SIZE to
-> flush_tlb_kernel_range()?
->
-> Invalidating a single non-contiguous PMD block entry only needs one
-> overlapping page-granular TLB invalidation, as in
-> unmap_hotplug_pmd_range().  With a range of PMD_SIZE and stride of
-> PAGE_SIZE, pages equals PTRS_PER_PTE (MAX_DVM_OPS), so
-> __flush_tlb_range_limit_excess() returns true on CPUs without
-> FEAT_TLBIRANGE and escalates the flush to flush_tlb_all().
+> --- a/mm/mmap_lock.c~mm-vma-drop-mm-asynchronously-in-vma_start_read-fix
+> +++ a/mm/mmap_lock.c
+> @@ -300,7 +300,7 @@ err:
+>  err_unstable:
+>         /*
+>          * If vma got attached to another mm from under us, that mm is no=
+t
+> -        * stable and can be freed in the narrow window after vma->vm_ref=
+cnt
+> +        * stable and can be reused in the narrow window after vma->vm_re=
+fcnt
+>          * is dropped and before rcuwait_wake_up(mm) is called. Grab it b=
+efore
+>          * releasing vma->vm_refcnt.
+>          */
 
-Oh! I didn't know that!
+Sorry for being pedantic :)
+There is also this comment later on:
 
-I will change it to PAGE_SIZE instead of PMD_SIZE in v4. Neat!
+        other_mm =3D vma->vm_mm; /* use a copy as vma can be freed after
+we drop vm_refcnt */
 
->
-> > +     /*
-> > +      * Translations without AF cannot be cached, so we can replace
-> > +      * them without BBM.
-> > +      */
-> > +     } while (!try_cmpxchg_relaxed(&pmd_val(*pmdp), &pmd_val(old_pmd),
-> > +                                   pmd_val(new_pmd)) &&
-> > +              ++attempts < max_attempts);
->
-> [Severity: Low]
-> As reported by Catalin Marinas on v1 [1], this rests on an architecture
-> detail the review could not confirm from the kernel source: can a CPU
-> walk cache or TLB retain information from a valid leaf block PMD
-> descriptor when AF=3D0, or is a TLB invalidation and break-before-make
-> sequence still required before converting a valid AF=3D0 block descriptor
-> into a table descriptor without BBML3?
->
-> If it can, skipping flush_tlb_kernel_range() when pmd_young(old_pmd) is
-> already false or directly overwriting the valid AF=3D0 block descriptor
-> with new_pmd leaves stale walk-cache or TLB state active while a table
-> entry is installed.
->
-> [1] https://lore.kernel.org/r/aoSJcAFMNJ1nPl2H@arm.com
+That should be replaced too with:
 
-Yeah, this is why these final 5 patches are marked as DO-NOT-MERGE.
+        other_mm =3D vma->vm_mm; /* use a copy as vma can be reused
+after we drop vm_refcnt */
 
+Again, just replacing "freed" to "reused".
+Thanks!
+
+> _
 >
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122184453.26=
-68189-1-jthoughton@google.com?part=3D16
 
