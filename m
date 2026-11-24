@@ -1,146 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1F5606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 18:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802B9606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 18:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XV4ByG2X
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EutnZELA
 Received: by kanga.kvack.org (Postfix)
-	id 5BCFF6B082F; Tue, 24 Nov 2026 13:37:49 -0500 (EST)
+	id 5007A6B0831; Tue, 24 Nov 2026 13:40:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56CF56B0831; Tue, 24 Nov 2026 13:37:49 -0500 (EST)
+	id 4B0CB6B0833; Tue, 24 Nov 2026 13:40:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 434786B0832; Tue, 24 Nov 2026 13:37:49 -0500 (EST)
+	id 37A546B0834; Tue, 24 Nov 2026 13:40:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FE046B082F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:37:49 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 779701A0BFD
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:37:48 +0000 (UTC)
-X-FDA: 85470871416.20.0E6FB9D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A261410000B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:37:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XV4ByG2X;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 05C8E6B0831
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:40:55 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12787C030D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:40:55 +0000 (UTC)
+X-FDA: 85470879270.02.0BDA452
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7707720006
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:40:53 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EutnZELA;
+	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795545466;
-	b=cH6PGgssstFxj2pH9Nu2d0UuLEJjwYM2eSSmaHeDvEJUYLZpC/JMzgWh4FmwzlaFAz5UP5
-	OcseBzoImkAtITy9ePBY3ugbHAG6iXX1h0yy7lCIzYhzwhhXP4M082gjp0GE+quqy5OhIw
-	0DwPNYIj7EcGgGPI3JJrG6EvZncwI1g=
+	t=1795545653;
+	b=Ew8rsLFOK/wLak9rH5nm8o2VBB/zRiPaAw8PaeW+wgsDtbYIkxynP5ySgF2TjWIQjNNFMc
+	VIZKWuHkrJo1RE1eOC4Q4kViEvZTAJLds5zTntSm1kZfQXtwDqX5P/wrrt05yXOW89DK6U
+	DG/S3RtlrxOkg6Akru2ljen3s+AgiLI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795545466;
+	s=arc-20220608; t=1795545653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1zoOCvzXXxSjQ7psF4Sy29PKoeBfrrhdMZ3HpFuOxUw=;
-	b=E42tKnQ6A9j5hKDL/vRMtk8X6lcbEf9cqpK5YexFtioLmNQSbnHhlejsA/OZHY3/eYwTEk
-	w+JJ397NbhuSCGO7GlmIoSbpxiH4mQ6EI6PYZvtuBQTMpzvi/NgK2WwcrMQqcum4I5PIzP
-	6vJORj8h9fLAv2XmHqjoOzGMMBYD3M0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rI9Ljt1hZCdQWyBk4/FIgQxeJTvHvzUdhg3L9ItkrWQ=;
+	b=GV38TTzVbUYDz180BI5k6v+pj9jwdMMsS9pYca2Fh/CuUyuwkhYUThL9AqWxesGIlZmhKW
+	6jzo3kkAMFztQ7EWM48x2HIA9Qia0uwH/tVUpN8E+TO+ag6cOLKNMhU/8T/8WLbsHpeMZa
+	fssCuo6MZIXreLnpCh+Dep07/hKa9U0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XV4ByG2X;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EutnZELA;
+	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13F7F4036A;
-	Tue, 24 Nov 2026 18:37:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913561F000CF;
-	Tue, 24 Nov 2026 18:37:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E57C5613FD;
+	Tue, 24 Nov 2026 18:40:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D5F1F000C6;
+	Tue, 24 Nov 2026 18:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795545464;
-	bh=1zoOCvzXXxSjQ7psF4Sy29PKoeBfrrhdMZ3HpFuOxUw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XV4ByG2XuzrRqRUkVee62FtVwtGgTWPmdUBklGJb424G4LLlpAtHqrmXf6s0G3W+A
-	 Q3NrSDu7uJHYRw5azuUfvjpsjI8bgbSorFLdlAJSfNw45tvlIcrrFVD38ufggAp4w8
-	 VG2xL/O5+lREKTAZu+jda5NIwR8XVt8/6JgLaZR3gdh12O0AsG9v6faZj4zUQninYN
-	 y20o4UKbarZ+wPITdIarifBBNF7cZx59m44UsYvivZPDArXuZD9cAyTxM9snwDeDsE
-	 Y9lMggrHiyjs07iCopzSQIdIEd8e/bHVww0DWHMUVP++Ey2MvhqfafsQRlgjPWrhvP
-	 H2JsNFWKnROiQ==
-Message-ID: <5e26dc91-37e9-4c29-b88a-bb3a3358709c@kernel.org>
-Date: Tue, 24 Nov 2026 19:37:38 +0100
+	s=k20260515; t=1795545652;
+	bh=rI9Ljt1hZCdQWyBk4/FIgQxeJTvHvzUdhg3L9ItkrWQ=;
+	h=From:To:Cc:Subject:Date;
+	b=EutnZELAWvdU6/l50m2Cr97OQ+mkxOIX0HVOC7RfR5z+j4+JSAR/1MseBis20mMjL
+	 yG/jmcoHZ/l3AqegFm7uyz8AVenPQfyQUx6pANpQcS1w9jkIGmls9u6SEMmt7Z/QGp
+	 fTfgQMwOfBv3zAhjfc9UZ852rcxLfzogazIFyeDVxl9u6DiGeNHq0pGJKIrC6Ysl91
+	 uf/uDAyhqu/FD36K9VdvPoSxCsdKT4v+U6o/Q64SnQ4ivtSZkv8IE3b0m6loH1wycU
+	 uEG73pdoWxwLwxD6xIRGDkbRX+2IGj+7+4pDL3LB9MFdfxdb18vnVdzHEOGfyCT+lN
+	 W3pEMSQfrynkg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v4] mm/memfd_luo: don't use memfd_pin_folios()
+Date: Tue, 24 Nov 2026 18:40:41 +0000
+Message-ID: <20261124184042.1823277-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.56.1.831.g720f3f5937-goog
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vma: drop mm asynchronously in vma_start_read()
-Content-Language: en-US
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>, Kees Cook <kees@kernel.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
- Jann Horn <jannh@google.com>, Puranjay Mohan <puranjay@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-References: <20261124-vma-read-lock-mmdrop-async-v1-1-257f99f551de@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261124-vma-read-lock-mmdrop-async-v1-1-257f99f551de@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7707720006
+X-Stat-Signature: 64igsobrx8ndod8o9nhgtht7h6sbksqp
 X-Rspam-User:
-X-Stat-Signature: p5rjqg3r7onsug5kkwpuczizipy1m8jt
-X-Rspamd-Queue-Id: A261410000B
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795545466-623741
-X-HE-Meta: U2FsdGVkX18j8jJXPYqVqVcAD1SG75iGKBdNXLlICcYVpkP1Xkp/HKcCsuDdtXuIhPXG9k9dK2ENG5+jDdI6ryt4IcTmZTUDxgLT4QTzfSDJkQ/PlBWD0ZmwtQHuHw1hDDGRjgWoTOwGJFlNIRmvlHuGM60G9fi+wKNHfSXjfeoc316aAZb+dINiff5zypUVgxfxfpq0Ouq4nKjall4Un+2lYdD0Ldh08dFEJODJQ/D4dQohZGXv2cxBy2AmU1ejboM778GfmortDGFO6IEV7YNx0nySGZcwla4YWSwxTqj89IlcOLcP+XK2A5T8DxN9kwDwkoSVWY8Hyz7YGArG05Cw1wal/GTbH45fgGHStwq1Sld3yMs1+kgIOmhna25WzsoWDpNbEEFm7nf4e2P6cS0Pm3/C4s3bhtXx4Q6QDxuoePe2iDxNux+ewaby5UpTPYzKwEWPjcGhS8tCVZxkmFdJFt1XCLx4ZzcNjRtKIy8tEaMEau96l8VQKnIk+35QZuBcXYRX5Fcr8q3P6fF+/F8MT0XpNrsiMd/wJgvRnPpT+UYZnTn3jkdLKI/2bXHSO+jc8Q68WgoznbDrrlzaJilkIIdTcrnFAcFelpL0U3A+zI8eP6dxU/yvRb9qnKqIP0C0JBZI7rNLdfaS2NcoshSTvLKOso+Lg90cw4DvJYR6CTcflq0LvEy8dyIpIfa+hBZGML4RZhF0+6iLzGK0IpxTZ7nb08XLdhi/NDwCfofZy5kB8mprH4pfMxNYmnCr+i5JhB5EbmdBy1niYq3G7xkMLWdJ0sqxzSaVmBOH9sbUfAw8iBnpymqpZguR+bi1WNis25LBE6k6ImMtIHzwlpG3VYrbGgZste2Umch3J8MTBrnsG3XCm2KOg55NB8BmYEog5kvIENVR8ZG9CdUt3J3Sj74wnE/H3xhNoOXiIGs8SNtZEyD6JpdC4yGS2ioKR/rOukEoP6b2KsnDYpf
- f6A3Q2T6
- vKwlewPeQAyySZCW7KlGsMCVuQGggMOVfAr6idFaMT309VGi3GVLFSssyw1k+OeoXBj0D5FvZQsqVnOQjSNb61PizRXPDuzAuvxVzkfRC6qnpwBKUe9bvHRicKhdZ0+COKbVNg77YlmNWemsjkoJKgWr2BXnwR8uuydJwnUMxjjS3QOLZzXjNH94p0yySGO6AYWxdYAddOsAQkUDi2ofFZVTfch2PdQjohy8ZRP6009+lRVZ9ZG6ggEJCOn37vEjwaWFqdyXalmYv27/6LnpMZUfCHM2NODWlIw6dCrlnzPXpCg5FWxSnnrFdbN1j/jGGJ9x3gQsfo5u/WJ991mA9mAT2wGyuAZ5ZWExS9PAsbQhcM/X+UDnzd61eu//5DQCtcWfPzMmZcUKnsDePuv1iuWfM0ouSEFw2NsWsyXCXeS0FniIdc6kDUBlIL0/trLpPv/224aEr1Ag8iZpw2koA7HSwIXbzx+zj317WgE1RXgw92m2ihcyotk+DrNnD4ozdwhZfVEXMIA0aAG62w+Fg68ShBwai06H/AObbG+a858eTxl+p5MSNdH0AqkUL8wHd1uDRkv+N6XYPIW4=
+X-HE-Tag: 1795545653-807476
+X-HE-Meta: U2FsdGVkX1+PJZ8Y5jacNv+sKFsyLMftDjJfhABx/PdFaoV+u+0mxchmdCtkZ0BxKYpU1svUtPdXnL7UG6yA+hAdwygyk0TpggJuzQmaDAQs6vbO2kJbXVOqdH/MQK4iGRGkFK8+ZUq+5VTSKsL03htlf1kmP3KPEW63aS7WqurP2Q+Us/IS/eio/MR5p4qFk55hfXulgwU1I7rQY3Hx/PWILTGKd7/V48FreyQtd0/yBCaQKs1dQha6gmaA3CU8knZDfCuUOA98sKMdl6+2qujiW+jhmguu6n3cnfTAW428bt0FxQLZf2f3asvZPSUWsH5f9VkUfwRpI85kujWbB1//0USUl6+4fCSlygT4+loyKfWtz0dU7m7sN+5R5yzjN2ic/wdfmlamAg8vNRcT9ILeRLGkkka+B9/HOHV/7RQaDS778p2TpwpUp7zfMQm8VoHJJZyOeABmcE1lgGsCxlZosvSZFjFJPXx45ffPWAR+gNeQ4nAMQ92be234eDrOCeAk3wgJ7I3jJpv5m11YSYGavI8ZmgRWUK7tSWCwvxcogzflEHP1SEKDbMOf/b2Bf2n0PMnB5XUwaIp3zHU2fACQUf1zt102iaWMbLWrbpjj+xo0aDRuMu1U1cs08m8uwSFTfqXd2Aw4rJD+2cuocMV4shj6D9C6Ekd37CI+J4XSUcEoMDvVUjDm2AfsD8kKvVa2ysPemQFzNrLixO4Gps4B+SlKuI8hkZbyL7VNV9GC7qUgfHQErYqxqtuvKJUPSO+S+GAmMoSHFNMJxwRObHcBSQIK3kt0ibcaXUzJkXmQEtn9Zwx61LtxTdLHXgomYJYHlmv7SYeJxBdl5jg+BOvqelC/Fm0nV0YkYgEckNp2e7jjR9rTg67Qa3N/ey/F+yJ3szFdLxlOppQnHQl+NfU8HtjvaEY3VNRi4XB0VYn6KBd6k4OrVm0DD6Uy64Q1+u0CVjLai9iOPZzrSy5
+ 7t1yzfTR
+ +ULTPV1+2MoDFUH1/rR39NXZcSc38GlHYUNi4b0xZGkudCOPgHWv8AzGvnopXDfsG3OxLWFrJHG7/W4FD7puvMFlDdqrLhlYSGPRo5poH6rsEG1kY1vOMFw0k5KcpYIbcifkJEbbuW9V01SagshRTfu1qylzfViXZvXt/tWpCd0FdJEV/nDg9I7gj074xnQEwHPDpQ86sLCInF/JuhWKkXBajNjA200VdXSTGijx6cf/1br40D2FJF6MmHow2YItJvqEH7mRiWeRkw5lcoKLHrDLJ3MpnQUMo0a8lT83Jo7RD6mJ6uNzKTiJ4Rk/1hqJn27cuHztN9/w6ygDACjxbqSbbdwwh0tgQ/EbEQ7tNkRMQDEKNA7cZe/5Yq+Z9qxm/71wzySIHbvqtl6Bxo39vYbtkDsvplO5i+CdS1wNsX10AQ1ytJs8NBmtCPSGsQZUurhBjjnY/mwL5yp9oYFYZ3pZilLoV2LaAf0t1S9LLaiTR9mxsAaroHTU7rC4dedyS1djxiYdKFnR2yNr9W/0UNQ0P6THyVxDaSJkNRl5nMAbCFjjQ3p63dXpS7ccH9NpU5UBGMxr5nUiHFWTEO4GYvmBQNKVEqEU8W+v7JAcUdtWe4ig=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,170 +96,491 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 13:26, Lorenzo Stoakes (ARM) wrote:
-> Commit bee9ef4a40a2 ("bpf: switch task_vma iterator from mmap_lock to
-> per-VMA locks") open-codes a lock_next_vma() implementation that does
-> roughly the same thing in bpf_iter_task_vma_find_next(), only without
-> fallback to an mmap_lock.
-> 
-> This is because bpf_iter_task_vma_find_next() can be called from
-> non-sleepable contexts.
-> 
-> However, lock_vma_under_rcu() gave no guarantee as to which contexts it is
-> safe to be called from, and indeed it turns out this assumption is unsafe.
-> 
-> Since commit 9bbffee67ffd ("mm: fix a UAF when vma->mm is freed after
-> vma->vm_refcnt got dropped"), this call chain is possible on x86:
-> 
-> lock_vma_under_rcu()
->   -> vma_start_read()
->     -> mmdrop()
->       -> __mmdrop()
->         -> mm_free_pgd()
->           -> pgd_free()
->             -> pgd_dtor()
->               -> spin_lock(&pgd_lock)
-> 
-> Thus, a plain spin_lock() can occur when lock_vma_under_rcu() is
-> called. Since bpf_iter_task_vma_find_next() can be called in softirq
-> context, this can deadlock, for example:
-> 
-> pgd_alloc()
->   -> spin_lock(&pgd_lock)
->     <softirq>
->     bpf_iter_task_vma_next()
->       -> lock_vma_under_rcu()
->         ...
-> 	  -> spin_lock(&pgd_lock) [ DEADLOCK ]
-> 
-> Alexei Starovoitov also pointed out that a BPF program attached to
-> trace_contention_end() can similarly cause a deadlock:
-> 
->   pgd_alloc()
->     spin_lock(&pgd_lock)
->       queued_spin_lock_slowpath()
->         trace_contention_end()          <- pgd_lock is held
->           tp_btf/contention_end prog
->             bpf_iter_task_vma_next()
->               lock_vma_under_rcu()
->                 vma_start_read()
->                   mmdrop(other_mm)      <- last put takes pgd_lock again
-> 
-> Resolve the issue by having vma_start_read() use mmdrop_async() instead of
-> mmdrop() so the work is deferred to a work queue.
-> 
-> Make mmdrop_async() an internal mm function, defined in mm/internal.h, to
-> avoid abuse elsewhere (kernel/fork.c includes this header, so still retains
-> access).
-> 
-> Commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU lock on
-> failure") accounted for the fact that the RCU lock had to be dropped for
-> this operation, which is no longer applicable.
-> 
-> For the sake of a backported fix, retain this behaviour, however drop the
-> RCU lock last and remove the now irrelevant comment.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: bee9ef4a40a2 ("bpf: switch task_vma iterator from mmap_lock to per-VMA locks")
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/all/DN267JUKDRNS.2VMV07CQ58R4X@gmail.com/
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Given how it should be rare to actually drop the mm here, it should be fine.
+memfd_luo takes a snapshot of the folios in the file's mapping. To make
+sure the snapshot does not go out of sync, it pins the folios in the
+file via memfd_pin_folios(). The pinning also migrates the folios out of
+MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
+region.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+memfd_pin_folios() does not lock the folios. So it can race with
+shmem_writeout(). A folio returned by memfd_pin_folios() might already
+be in swap cache. This happens to work but is fragile. memfd_luo looks
+at folio flags and index on a folio that isn't in the memfd's page
+cache.
 
-> ---
->  kernel/fork.c  | 16 ----------------
->  mm/internal.h  |  3 +++
->  mm/mmap_lock.c | 21 ++++++++++++++++++---
->  3 files changed, 21 insertions(+), 19 deletions(-)
-> 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 5efceb8d58a7..4d5866c83481 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -744,22 +744,6 @@ void __mmdrop(struct mm_struct *mm)
->  }
->  EXPORT_SYMBOL_GPL(__mmdrop);
->  
-> -static void mmdrop_async_fn(struct work_struct *work)
-> -{
-> -	struct mm_struct *mm;
-> -
-> -	mm = container_of(work, struct mm_struct, async_put_work);
-> -	__mmdrop(mm);
-> -}
-> -
-> -static void mmdrop_async(struct mm_struct *mm)
-> -{
-> -	if (unlikely(atomic_dec_and_test(&mm->mm_count))) {
-> -		INIT_WORK(&mm->async_put_work, mmdrop_async_fn);
-> -		schedule_work(&mm->async_put_work);
-> -	}
-> -}
-> -
->  static inline void free_signal_struct(struct signal_struct *sig)
->  {
->  	taskstats_tgid_free(sig);
-> diff --git a/mm/internal.h b/mm/internal.h
-> index de4593b3e3b6..cc95019c7e4b 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1671,4 +1671,7 @@ static inline bool can_spin_trylock(void)
->  /* char-mem.c */
->  bool file_is_dev_zero(const struct file *file);
->  
-> +/* mmap_lock.c */
-> +void mmdrop_async(struct mm_struct *mm);
-> +
->  #endif	/* __MM_INTERNAL_H */
-> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> index 073c5125b424..28b387fe543a 100644
-> --- a/mm/mmap_lock.c
-> +++ b/mm/mmap_lock.c
-> @@ -306,11 +306,10 @@ static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
->  	 */
->  	other_mm = vma->vm_mm; /* use a copy as vma can be freed after we drop vm_refcnt */
->  
-> -	/* __mmdrop() is a heavy operation, do it after dropping RCU lock. */
-> -	rcu_read_unlock();
->  	mmgrab(other_mm);
->  	vma_refcount_put(vma);
-> -	mmdrop(other_mm);
-> +	mmdrop_async(other_mm);
-> +	rcu_read_unlock();
->  
->  	return NULL;
->  }
-> @@ -560,6 +559,22 @@ void __mm_reset_vma_seqcounts(struct mm_struct *mm)
->  }
->  EXPORT_SYMBOL(__mm_reset_vma_seqcounts);
->  
-> +static void mmdrop_async_fn(struct work_struct *work)
-> +{
-> +	struct mm_struct *mm;
-> +
-> +	mm = container_of(work, struct mm_struct, async_put_work);
-> +	__mmdrop(mm);
-> +}
-> +
-> +void mmdrop_async(struct mm_struct *mm)
-> +{
-> +	if (unlikely(atomic_dec_and_test(&mm->mm_count))) {
-> +		INIT_WORK(&mm->async_put_work, mmdrop_async_fn);
-> +		schedule_work(&mm->async_put_work);
-> +	}
-> +}
-> +
->  #ifdef CONFIG_LOCK_MM_AND_FIND_VMA
->  #include <linux/extable.h>
->  
-> 
-> ---
-> base-commit: 913390e679e23e3a45643028ee7f992889094051
-> change-id: 20261124-vma-read-lock-mmdrop-async-ba417cd1c1f0
-> 
-> Cheers,
+In addition, memfd_pin_folios() needs the caller to allocate an array of
+folios. memfd_luo does not really need that since it will vmalloc
+folios_ser and store the information there anyway. The folios array is
+unnecessary overhead.
+
+Finally, memfd_pin_folios() fills in holes in the memfd. This makes
+preserving sparse memfds very expensive in both compute and memory.
+While this patch doesn't yet stop filling in the holes, it sets up the
+infrastructure to make it simpler.
+
+Fix all this by walking the page cache directly using shmem_get_folio()
+with SGP_CACHE. This returns a locked folio with an elevated refcount.
+memfd_luo holds that reference until the memfd is unpreserved. This
+blocks compaction, migration, etc.
+
+There is still a need to migrate folios out of MIGRATE_MOVABLE page
+blocks. This is because those might be CMA or KHO scratch. memfd_luo
+will hold a longterm reference to the folios so it will block migration
+in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
+
+Also factor out folio unpreservation logic into memfd_luo_put_folios()
+and use it from memfd_luo_unpreserve_folios() and from error paths in
+memfd_luo_preserve_folios().
+
+Since shmem_get_folio() always returns uptodate folios, drop the folio
+zeroing logic.
+
+This change also improves preservation performance, shown in the table
+below.
+
+|------------------+----------+------------+-------|
+| memfd            | baseline | this patch | delta |
+|------------------+----------+------------+-------|
+| 4K pages, 32 GiB | 748 ms   | 600 ms     |  -20% |
+| THP, 4 GiB       | 0.59 ms  | 0.59 ms    |    0% |
+| THP, 16 GiB      | 2.99 ms  | 2.61 ms    |  -13% |
+| THP, 32 GiB      | 4.83 ms  | 5.21 ms    |   +8% |
+| sparse, 32 GiB   | 8695 ms  | 7269 ms    |  -16% |
+|------------------+----------+------------+-------|
+
+Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+
+---
+
+The diff is unfortunately hard to read. It would be easier to review the
+patch by applying it and looking at the final code.
+
+This patch is picked from a separate series I sent [0]. It is more or
+less an independent change. It fixed a race for that series so I added
+it there, but since that series might take longer to go through, I think
+it is useful to take this patch separately.
+
+[0] https://lore.kernel.org/all/20261027173031.763213-2-pratyush@kernel.org/
+
+Changes since v3:
+
+- Fix memfd_luo_get_folio() returning -EBUSY without looking up the folio
+  again when the last migration attempt succeeds.
+
+Changes since v2:
+
+- Reword the comments on memfd_luo_migrate_folio(), memfd_luo_get_folio()
+  and the allocation comment in memfd_luo_preserve_folios() so they no
+  longer say folios are "held until the next kernel". Instead, say that
+  preservation holds a longterm reference on them.
+- Use a bounded for loop in memfd_luo_get_folio() instead of an open
+  ended one with a separate busy retry counter.
+- Collect tags.
+
+Changes since v1:
+
+- Add memfd_luo_get_folio() which combines shmem_get_folio() and the
+  migration logic.
+- Collect tags.
+- Rebase to v7.4-rc1.
+
+---
+ mm/memfd_luo.c | 313 +++++++++++++++++++++++++++++++------------------
+ 1 file changed, 197 insertions(+), 116 deletions(-)
+
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index 6b68220275eb..38584ecfa70b 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -77,26 +77,168 @@
+ #include <linux/kexec_handover.h>
+ #include <linux/kho/abi/memfd.h>
+ #include <linux/liveupdate.h>
++#include <linux/migrate.h>
++#include <linux/sched/mm.h>
++#include <linux/sched/signal.h>
+ #include <linux/shmem_fs.h>
++#include <linux/swap.h>
+ #include <linux/vmalloc.h>
+ #include <linux/memfd.h>
+ #include <uapi/linux/memfd.h>
+ 
+ #include "internal.h"
+ 
++static void memfd_luo_put_folios(const struct memfd_luo_folio_ser *folios_ser,
++				 u64 nr_folios)
++{
++	u64 i;
++
++	for (i = 0; i < nr_folios; i++) {
++		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
++		struct folio *folio;
++
++		if (!pfolio->pfn)
++			continue;
++
++		folio = pfn_folio(pfolio->pfn);
++
++		kho_unpreserve_folio(folio);
++		folio_put(folio);
++	}
++}
++
++/* How many times to try migrating a folio that is not longterm pinnable. */
++#define MEMFD_LUO_MIGRATE_RETRIES	3
++
++/*
++ * Preservation holds a longterm reference on the folio. This would block
++ * migration in ZONE_MOVABLE or CMA. Move it out.
++ *
++ * Must be called with folio unlocked. Drops the reference to folio. The caller
++ * must look it up again.
++ *
++ * Returns 0 on success, -EBUSY if the folio could not be isolated (e.g.
++ * because someone else has it isolated right now), or -ENOMEM if migration
++ * failed.
++ */
++static int memfd_luo_migrate_folio(struct folio *folio)
++{
++	struct migration_target_control mtc = {
++		.nid = NUMA_NO_NODE,
++		/* Not movable, so the target is neither in ZONE_MOVABLE nor CMA. */
++		.gfp_mask = GFP_USER | __GFP_NOWARN,
++		.reason = MR_LONGTERM_PIN,
++	};
++	LIST_HEAD(source);
++	bool isolated;
++
++	/* Flush per-CPU LRU batches holding the folio so isolation works. */
++	lru_cache_drain_for_folio(folio, 1, NULL);
++	isolated = isolate_folio_to_list(folio, &source);
++	/* Isolation holds its own reference. */
++	folio_put(folio);
++	if (!isolated)
++		return -EBUSY;
++
++	if (migrate_pages(&source, alloc_migration_target, NULL,
++			  (unsigned long)&mtc, MIGRATE_SYNC, MR_LONGTERM_PIN,
++			  NULL)) {
++		putback_movable_pages(&source);
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++
++/*
++ * Look up the folio at @index, allocating it if needed. Preservation holds a
++ * longterm reference on the folio, so folios that are not longterm pinnable are
++ * migrated out first, giving up after a few attempts.
++ *
++ * On success, returns 0 with *@foliop locked and holding a reference.
++ */
++static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
++			       struct folio **foliop)
++{
++	int err, retries = 0;
++	struct folio *folio;
++
++	for (;;) {
++		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
++		if (err)
++			return err;
++
++		if (likely(folio_is_longterm_pinnable(folio)))
++			break;
++
++		folio_unlock(folio);
++
++		if (retries == MEMFD_LUO_MIGRATE_RETRIES) {
++			folio_put(folio);
++			return -EBUSY;
++		}
++
++		err = memfd_luo_migrate_folio(folio);
++		/* Someone else might have it isolated, retry a bit. */
++		if (err && err != -EBUSY)
++			return err;
++
++		retries++;
++	}
++
++	*foliop = folio;
++	return 0;
++}
++
++static int memfd_luo_preserve_folio(struct folio *folio,
++				    struct memfd_luo_folio_ser *pfolio)
++{
++	int err;
++
++	err = kho_preserve_folio(folio);
++	if (err)
++		return err;
++
++	/*
++	 * A dirty folio is one which has been written to. A clean folio
++	 * is its opposite. Since a clean folio does not carry user
++	 * data, it can be freed by page reclaim under memory pressure.
++	 *
++	 * Saving the dirty flag at prepare() time doesn't work since it
++	 * can change later. Saving it at freeze() also won't work
++	 * because the dirty bit is normally synced at unmap and there
++	 * might still be a mapping of the file at freeze().
++	 *
++	 * To see why this is a problem, say a folio is clean at
++	 * preserve, but gets dirtied later. The pfolio flags will mark
++	 * it as clean. After retrieve, the next kernel might try to
++	 * reclaim this folio under memory pressure, losing user data.
++	 *
++	 * Unconditionally mark it dirty to avoid this problem. This
++	 * comes at the cost of making clean folios un-reclaimable after
++	 * live update.
++	 */
++	folio_mark_dirty(folio);
++
++	pfolio->pfn = folio_pfn(folio);
++	pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
++	pfolio->index = folio->index;
++
++	return 0;
++}
++
+ static int memfd_luo_preserve_folios(struct file *file,
+ 				     struct kho_vmalloc *kho_vmalloc,
+ 				     struct memfd_luo_folio_ser **out_folios_ser,
+ 				     u64 *nr_foliosp)
+ {
++	struct memfd_luo_folio_ser *folios_ser, *shrunk;
+ 	struct inode *inode = file_inode(file);
+-	struct memfd_luo_folio_ser *folios_ser;
+-	unsigned int max_folios;
+-	long i, size, nr_pinned;
+-	struct folio **folios;
+-	int err = -EINVAL;
+-	pgoff_t offset;
+-	u64 nr_folios;
++	u64 nr_folios = 0, max_folios;
++	unsigned int pin_flags;
++	pgoff_t index = 0, end;
++	int err;
++	loff_t size;
+ 
+ 	size = i_size_read(inode);
+ 	/*
+@@ -113,98 +255,65 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 	 * Guess the number of folios based on inode size. Real number might end
+ 	 * up being smaller if there are higher order folios.
+ 	 */
+-	max_folios = PAGE_ALIGN(size) / PAGE_SIZE;
+-	folios = kvmalloc_objs(*folios, max_folios);
+-	if (!folios)
++	end = DIV_ROUND_UP_ULL(size, PAGE_SIZE);
++	max_folios = end;
++	folios_ser = vmalloc_array(max_folios, sizeof(*folios_ser));
++	if (!folios_ser)
+ 		return -ENOMEM;
+ 
+ 	/*
+-	 * Pin the folios so they don't move around behind our back. This also
+-	 * ensures none of the folios are in CMA -- which ensures they don't
+-	 * fall in KHO bootmem. It also moves swapped out folios back to memory.
++	 * Preservation holds a longterm reference on the folios, so keep newly
++	 * allocated ones out of ZONE_MOVABLE and CMA -- which also ensures they
++	 * don't fall in KHO bootmem. Existing ones are migrated below.
+ 	 *
+-	 * A side effect of doing this is that it allocates a folio for all
+-	 * indices in the file. This might waste memory on sparse memfds. If
+-	 * that is really a problem in the future, we can have a
+-	 * memfd_pin_folios() variant that does not allocate a page on empty
+-	 * slots.
++	 * A side effect of this is that it allocates a folio for all indices in
++	 * the file. This might waste memory on sparse memfds. If that is really
++	 * a problem in the future, this loop can be taught to skip empty slots.
+ 	 */
+-	nr_pinned = memfd_pin_folios(file, 0, size - 1, folios, max_folios,
+-				     &offset);
+-	if (nr_pinned < 0) {
+-		err = nr_pinned;
+-		pr_err("failed to pin folios: %d\n", err);
+-		goto err_free_folios;
+-	}
+-	nr_folios = nr_pinned;
++	pin_flags = memalloc_pin_save();
++	while (index < end) {
++		struct folio *folio;
+ 
+-	folios_ser = vcalloc(nr_folios, sizeof(*folios_ser));
+-	if (!folios_ser) {
+-		err = -ENOMEM;
+-		goto err_unpin;
+-	}
++		cond_resched();
+ 
+-	for (i = 0; i < nr_folios; i++) {
+-		struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+-		struct folio *folio = folios[i];
++		if (fatal_signal_pending(current)) {
++			err = -EINTR;
++			goto err_restore;
++		}
+ 
+-		err = kho_preserve_folio(folio);
++		if (WARN_ON_ONCE(nr_folios >= max_folios)) {
++			err = -EINVAL;
++			goto err_restore;
++		}
++
++		err = memfd_luo_get_folio(inode, index, &folio);
+ 		if (err)
+-			goto err_unpreserve;
+-
+-		folio_lock(folio);
+-
+-		/*
+-		 * A dirty folio is one which has been written to. A clean folio
+-		 * is its opposite. Since a clean folio does not carry user
+-		 * data, it can be freed by page reclaim under memory pressure.
+-		 *
+-		 * Saving the dirty flag at prepare() time doesn't work since it
+-		 * can change later. Saving it at freeze() also won't work
+-		 * because the dirty bit is normally synced at unmap and there
+-		 * might still be a mapping of the file at freeze().
+-		 *
+-		 * To see why this is a problem, say a folio is clean at
+-		 * preserve, but gets dirtied later. The pfolio flags will mark
+-		 * it as clean. After retrieve, the next kernel might try to
+-		 * reclaim this folio under memory pressure, losing user data.
+-		 *
+-		 * Unconditionally mark it dirty to avoid this problem. This
+-		 * comes at the cost of making clean folios un-reclaimable after
+-		 * live update.
+-		 */
+-		folio_mark_dirty(folio);
+-
+-		/*
+-		 * If the folio is not uptodate, it was fallocated but never
+-		 * used. Saving this flag at prepare() doesn't work since it
+-		 * might change later when someone uses the folio.
+-		 *
+-		 * Since we have taken the performance penalty of allocating,
+-		 * zeroing, and pinning all the folios in the holes, take a bit
+-		 * more and zero all non-uptodate folios too.
+-		 *
+-		 * NOTE: For someone looking to improve preserve performance,
+-		 * this is a good place to look.
+-		 */
+-		if (!folio_test_uptodate(folio)) {
+-			folio_zero_range(folio, 0, folio_size(folio));
+-			flush_dcache_folio(folio);
+-			folio_mark_uptodate(folio);
+-		}
++			goto err_restore;
+ 
++		err = memfd_luo_preserve_folio(folio, &folios_ser[nr_folios]);
++		index = folio_next_index(folio);
+ 		folio_unlock(folio);
+-
+-		pfolio->pfn = folio_pfn(folio);
+-		pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
+-		pfolio->index = folio->index;
++		if (err) {
++			folio_put(folio);
++			goto err_restore;
++		}
++		nr_folios++;
+ 	}
++	memalloc_pin_restore(pin_flags);
++
++	/*
++	 * Free the unused tail so it doesn't get preserved. If vrealloc fails,
++	 * the folios_ser is still valid.
++	 */
++	shrunk = vrealloc(folios_ser, array_size(nr_folios, sizeof(*folios_ser)),
++			  GFP_KERNEL);
++	if (shrunk)
++		folios_ser = shrunk;
+ 
+ 	err = kho_preserve_vmalloc(folios_ser, kho_vmalloc);
+ 	if (err)
+-		goto err_unpreserve;
++		goto err_put;
+ 
+-	kvfree(folios);
+ 	*nr_foliosp = nr_folios;
+ 	*out_folios_ser = folios_ser;
+ 
+@@ -215,15 +324,11 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 	 */
+ 	return 0;
+ 
+-err_unpreserve:
+-	for (i = i - 1; i >= 0; i--)
+-		kho_unpreserve_folio(folios[i]);
++err_restore:
++	memalloc_pin_restore(pin_flags);
++err_put:
++	memfd_luo_put_folios(folios_ser, nr_folios);
+ 	vfree(folios_ser);
+-err_unpin:
+-	unpin_folios(folios, nr_folios);
+-err_free_folios:
+-	kvfree(folios);
+-
+ 	return err;
+ }
+ 
+@@ -231,26 +336,11 @@ static void memfd_luo_unpreserve_folios(struct kho_vmalloc *kho_vmalloc,
+ 					struct memfd_luo_folio_ser *folios_ser,
+ 					u64 nr_folios)
+ {
+-	long i;
+-
+ 	if (!nr_folios)
+ 		return;
+ 
+ 	kho_unpreserve_vmalloc(kho_vmalloc);
+-
+-	for (i = 0; i < nr_folios; i++) {
+-		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+-		struct folio *folio;
+-
+-		if (!pfolio->pfn)
+-			continue;
+-
+-		folio = pfn_folio(pfolio->pfn);
+-
+-		kho_unpreserve_folio(folio);
+-		unpin_folio(folio);
+-	}
+-
++	memfd_luo_put_folios(folios_ser, nr_folios);
+ 	vfree(folios_ser);
+ }
+ 
+@@ -287,15 +377,6 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 	ser->pos = args->file->f_pos;
+ 	inode_size = i_size_read(inode);
+ 
+-	/*
+-	 * memfd_pin_folios() caps at UINT_MAX folios; refuse larger
+-	 * files to avoid silently preserving only a prefix.
+-	 */
+-	if (DIV_ROUND_UP_ULL(inode_size, PAGE_SIZE) > UINT_MAX) {
+-		err = -EFBIG;
+-		goto err_free_ser;
+-	}
+-
+ 	ser->size = inode_size;
+ 	ser->seals = seals;
+ 
+
+base-commit: 4209b08181c75ea02164832cd8f47526de28d40c
+-- 
+2.56.1.831.g720f3f5937-goog
 
 
