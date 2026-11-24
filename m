@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93F9606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E74606A692
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoYetZWl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fgRqWS/R
 Received: by kanga.kvack.org (Postfix)
-	id 237496B0887; Tue, 24 Nov 2026 18:00:04 -0500 (EST)
+	id 962D96B0889; Tue, 24 Nov 2026 18:00:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C1176B0889; Tue, 24 Nov 2026 18:00:04 -0500 (EST)
+	id 89DFB6B088B; Tue, 24 Nov 2026 18:00:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 088A86B088A; Tue, 24 Nov 2026 18:00:04 -0500 (EST)
+	id 78E7A6B088C; Tue, 24 Nov 2026 18:00:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C81ED6B0887
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:03 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53BA480D34
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:03 +0000 (UTC)
-X-FDA: 85471532286.01.2C3FE85
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 408256B0889
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:08 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B89E5A0DB5
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:07 +0000 (UTC)
+X-FDA: 85471532454.08.4882A1A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 72775C0009
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:01 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hoYetZWl;
+	by imf23.hostedemail.com (Postfix) with ESMTP id E392714000D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fgRqWS/R";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795561201;
-	b=E13fMRNrxvPQuR7kYnoPlluvVb+XYebebpjTAZf4u34NT88grUyc90BP23VIDUf2qQKx9E
-	ulvNDf2nVMLGTqSzQp+E/DCzkrJsEnO/ZgS1ga2Kn3XKxeXC9cyjYrTmfL+ZHbJeNzJcDp
-	Qu6/QyK1PSiExkMTTTmng4qVgTeblX4=
+	t=1795561206;
+	b=yXKZfPL/kVm/q0Oo6TR7cO8xH3GRIIicW2LhKXdpKY6c9htITerolV0FeXAnaiAbRrxHY8
+	2zQRkJF9pBSqkx0Nv2yhUopPGFJRK9kHKIUkGwAGxWmTBTbABaSpDa4F1cvfEpV37t1VOM
+	/ZKMQvx9dEsj84sHJn0QYkIsZvA1B9w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795561201;
+	s=arc-20220608; t=1795561206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2C+rk0NMFrbNe0MIF80ZOVKYf9Ba1s/rRNRNQryPHiI=;
-	b=B21jqpVbX7Jw/SLQw8Nd3WHDY8CXo6pPZ125I+t5++DEHU7IPeOaDBvSN7oVvlZCBmip6W
-	dHywDpYXHk14ESrCoz4NX+PancHY2zgqJN+kHb1TfDFYXh+WOu5F9TG1YhXVQdjS3tAyFI
-	w6v95myzkVt0zkQYrwP5gBqM8hqJAyw=
+	bh=F5doYQdvM7x6zP0318TAtNMatVTO+WEyVEwtQ807FWs=;
+	b=bRjkfodrGO3EabvVdUcst/7ZTb2MQvwSoyEyS2G7HALnhXyO9OFtUDtHXJFiF+G3lnfjiV
+	StNiqVu5PO16+JXxaVl+wU7NOC1dOrWD3K/1qtwKTr+eZ/nXlxl75esMbAyQA8TDdY0cR0
+	EirNkm8zwCMPLp+6f1p1u10yCfVQ7PQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hoYetZWl;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fgRqWS/R";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF476413DE;
-	Tue, 24 Nov 2026 23:00:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAAFD1F00A03;
-	Tue, 24 Nov 2026 22:59:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4458940A30;
+	Tue, 24 Nov 2026 23:00:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAAF1F000D1;
+	Tue, 24 Nov 2026 23:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795561200;
-	bh=2C+rk0NMFrbNe0MIF80ZOVKYf9Ba1s/rRNRNQryPHiI=;
+	s=k20260515; t=1795561204;
+	bh=F5doYQdvM7x6zP0318TAtNMatVTO+WEyVEwtQ807FWs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=hoYetZWllIRpmPQF74b7ybaKlEXv909X9hNNs3Vh3+uUBNryWcSAREVRtA2X8aGQK
-	 R+B58C1v8sVQBTKcBmlfOmtFmKAHG8mh+5r4Z1GT4jzelIBRvs9r+JQwOOl6BVrJJ7
-	 DNthuig7J98GenpKv0/mReuEIadEb9NPzjLLg+wYCQiMIZVDMBr9do2cKIK3toXV3P
-	 56Y5TToG+R5vWWB67rigS/Cgv+m3XyBNFZ5qXSvLJD+gSQ4AD4pq+ECkfedjLOIYzQ
-	 ZKCFxfnRWVYUFVURfD2npzjWd3OurLpzmkAlvrSy807UQlFpMqYch4YAvz20Pv9nai
-	 V4uxt/vinYcXA==
+	b=fgRqWS/RyLrns3jN+wA/5OmKRdxgLSO3trncjc81KZ5ov18DCGO98Gs9axvycn2XS
+	 4Y0ol1aKXkDKgt3J/KhdMPy31sSwTsXcl33oag/r/+GdA8f5Jix+7JIupGapnlv4Ce
+	 cAYkQJ73iqp+0kXuQTnM27EDLHd6zSoM+touSDWMc/UE3zmt/baERD5l6gqdET8/ur
+	 ZsccUsFE81VBgHVfU7ohhhVHne4JCKo4jxS4gp/n0pQBf6ew3qbf1sg2M/EmK4WhS2
+	 ZJ82d9RVuRfe51EeazEm6ep9EubANzsp4a43lSQJvVushzvGFleTUvRRyvCQOyP5DX
+	 VfvKGq2XH6mdw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 24 Nov 2026 23:58:31 +0100
-Subject: [PATCH RFC 08/19] selftests/exec: test exec with a shared signal
- table
+Date: Tue, 24 Nov 2026 23:58:32 +0100
+Subject: [PATCH RFC 09/19] lsm: add security_bprm_revalidate_files()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-work-exec-update_lock-v1-8-e489035395b8@kernel.org>
+Message-Id: <20261124-work-exec-update_lock-v1-9-e489035395b8@kernel.org>
 References: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 In-Reply-To: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 To: Jann Horn <jannh@google.com>
@@ -79,28 +78,28 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  selinux@vger.kernel.org, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
  linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com, 
  David Hildenbrand <david@kernel.org>, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-04696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9968; i=brauner@kernel.org;
- h=from:subject:message-id; bh=llT2zgJ1sk7ce873wnC1YeARhaC2FQU0cnTsE6LZXFk=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSzie2PE47dV/bx2BTe7uYVVjOtjOQW+3rzuSy5uYXN+
- ZnNvIb7HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPx28nw3ydz64Pc7LnzDSJ9
- invWGixn/rbaOTqXLWnfQ7/X340zdzL803h4stxgCf+RQykSz4xL93x6o3ZwVzeP286ePu1pMYs
- EWQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6414; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=WEDmOf8hqdpHNRkJ7SSWpynxC2G5RY7nFMnrQtHIpLs=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziR249U4yTquddcPpvToOl4PWfgg9WeSbt7to5T2rf
+ W+izM6s7yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjINX5Gho6qqM/Xz/XM7lJZ
+ 03p/ZbXLnNe+/Px8hk/PbLOROTPBToGRYUFB6aMn0vt49zC0aqSf+MVkJbJy98dmrfXPLq2rM3X
+ 2YwcA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 72775C0009
-X-Stat-Signature: y16awezu7soe7e1c6bg1husjgmjhchi6
-X-Rspam-User:
+X-Rspamd-Queue-Id: E392714000D
+X-Stat-Signature: renadnqhxd5up8wkhmgzotpqz3ja5bo9
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795561201-850518
-X-HE-Meta: U2FsdGVkX19s+YaReTIzve/EiUwvbVFBL76SJZeCNxwmuk27y8j7i/YyVohSBs6vwLev81CkL8Ossj5tWJtDL9Eizf/C+cO6Ss4qkH8aEIfLj0l5ZyXkGsx9qvxpihdczFh21NxrjBSmbegQkfcQGjdqbxu4Xa2+6hFX4XVmCV5LcjdTFm9H+mFmXOBQHnqlKYycYufTRIgifrqiVkJKSsLG1PZ2++E8bNDFzNFm745pR8fkFrMXW9xa/rQCDs6jOrZABbn1fiYh5TUUgzTtFszVVsqYhWyR6VWdMjetD5kmrLse0faxKQhGub+aHLkSU0tWIAKKYgbkQtElYu08qhz8vPm/Xm9mOXY9vSsJFWM3o5tKsNtdixVgiRfKAgnHMl5Ij8EkMxkfz+qYH4WeELqZu6yvlOqnmvHycJEqRH2oUz8HWCg0PxnMtydo3TjqisoIk8XTF1YVTb8Q4UREeWvGqhLSY5UEAqdHXDeBEav0bBTC3U4FGUcUyj66G18tcFq/LW9ledFACrMGNCgkIWdXNG4wimxnjkzhh8YuoWWXACcJc4u5CofkO9ET1Z4juJ5Zajwu8oxiD8mFF2t/TowBN54nuS9f9jIihTzxHmFXbHy2E8Ew0JiAMX5lwcRlGGN21xT3dii691zLeWXQk4XdyW+20RMMuQTgnb8dmQvn39nSRXuJdHpRvBTOzKBODN+eUILFMeXhsOSjBqPMAYDMMOtaRH2i1w5hcOtwOx2v0TlQQGPY++R27YaM/S0ECsH3aO3sYp1/eGCxOqN85UuXzsOsJE2WTcLG6jI5cTd65G0wTOuEbHN6TasaeGwb0GG6U30PwdDH/TO7z6NWwshKcUw6VM4423/qhBUt3SiEgmoOhAbsmXNpU6ZBJT9nFLzPwEHFdbLVDC82p04il1RrR6/Sy24rVcIQYcfo2xe8A81z4lxWgeT2iwDDKEnSg/TsBAYYrWLtOV9exzy
- 5A9TvbxM
- Io/hotmM+kpKcTMaIR8K1q68in3ZAGXaoZBdzLjSyU2kPMupcun3zXNtJmsLBIB+BVbegFWLG6bv3yEDjJYHffIyhDBarvuIBg5VZIIynEQOg7Bk2Fa3VCWIEOp5y5r61mo07jQmtEY16L0aQChmWWbz9FRRnuYV9isnJfTe7oLkXEcIdGbbfAzh633l6TtCk6yirtS3apMl7LF5S/hxeWhBn3MjzcwjlJJpZOCYVgDvjinDHGxaTQpcpvmFb+0J4r2jqIwYzrH3GKfKbU59ndPrOwqNdKyptIiTXAvqTyhYcbFqATRwhYjaisquwsLXzE0iDdYZsNoPmk4PwSzRFHkwQybAZ+fpY5mK3IXH3vxpYbHATaYLY4v/WnTADwBDasySWp7bElPThHznuGIPusR5OdGMtxHm6w0/TNCvPXKL/drthLsyzMmSPKgIz/eD80VqHq2eSNNGdsXeHCwm6QqMHo4gR3AABabuE
+X-Rspam-User:
+X-HE-Tag: 1795561205-948300
+X-HE-Meta: U2FsdGVkX19q2s7DWpwvQ2l9HuKVLQj14CFgOCqufVz99VKLHHYHQ/w3bh1f0/ig29OT6cGDImnvVK2MgKCxB2D6+ivXynzccug7uJvW/Vc84iS27dfOjWxaRjAjHdE2AhJN4d/mDBF63r22WqwS9WUBLbbLGa15RQ9Q8NRllDq6iUtjXN+otb7sKQ8XaYFaACtT/+4CjFVhDdY1tWjOG3y3RSMLR2DnjGDhNu1JF7hJ0/9VoqCWDJA2dbbJiOKeqie7Y1pD+Jx1uPC9kg7dqQ6RI2u97nuPf5eHWgE0rgJ3VUOZNdga67rFnaax74HMLHHsFrE45lJLqbP9OarJfZV9TNFA1SOFmaqL3b44Fpj3TAIkj6t+kCq9zzWREVsHhBxQMMlge7O61xwJUs4JVz/OBaQrZ1IpobU9qFk9JFMIjEBYC6j/lxFk/Fzs+on65Xna9DdIwRkH0lZ8SArJ1JNBOWcxvQBmKBuQMesHBfAQbmfhWO8Ub7fwhsSUjQxpQsKsXiK+dkBqN7CHPM8iJIehHqpohXxQbBg028srd3lAZdPuw3RTLW3OerOd4XYTN2N5gVIO5mAmQ+mDBjbYbFoEgqjJ09+NJL0pF06t07RmBMo59LcAO24Wa80mzB/Fq2sE3Pan7XGPo/zOz3tAuWmUFIe9MBJsN4SYnCj6j48yuywf2MmBz3YKvUUftl9WuEUQU8CAcZltr+dnoKIfZJGIhhFNMNQKDqQWlGJFNnmbnpYyMbLdtqXZCsNICdky4HuBLh+R552KZI+aFSzGgm6vQGra424rddm6gXeKRFExBAvC2dboYzL5oMUNCFDdcuw2JbCuuRectDDrQ39P6abFN+Aa58zAUf5KaQCYp3QboAkN65wy3NJXJhZYw8MqAajutdJQJstBZbB3+4SsoWVzdwCFPgA8/ecaRH4hIrvfZILvaLzHyy0lbf4Xz52equzxYP9mrxnm9DgWOBq
+ GQVLroIe
+ rPqDeVxRyDNA9t1WIbk70h1aWUngNp+/F1ihmz1EWESFKth11IFZpOF1eOw8X9OFihxhM7alBtryuIIB4CQPcqwBarE9pjuoIrw6j6nxe5PavIlYNOHrve0twVrzQeFgdHcS7ygN9X321UhVlwOknpY0wkVKSnq0Ak1u3BsNo2wbwlKCvYfHfxXkA26MKDMGGIgVVycxbt4OyaqpRpNehvDob+Y+V2RY0KU3IV3MS0pq95DoEyhOEVa+8SV+fyYf0zEXde+EQ4NuMh4Xd5Ngw9IJNAw8Mcf2EeRfEu4rRZa/PsNf8b0ypYXU7nDcG0rFc453eVFDZvCYsBhnN5PvDNJ2WyZMgzKfYhZZuSyB1xzBKgvcQSuuIh8oQpdCEN3s2CV7WhXBswnM03ncjhuVmxEr+N6j+Utyylde4m2RvBOQCxnplTCnMZWQo6TfQLkInBai5P0YzZbpMurTXGxuCVzPL0MkgviB9dX3pZoH80QzNOs5nL7rF5Vx6KQxbLeCCdbWPRZuor//qTHO4ca/LcRbsWLuOpzxySH7jYjaJgfepads=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,304 +108,134 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Test that exec gives a task that shares its signal table with another
-process a private one:
+SELinux and AppArmor revalidate the controlling terminal and the
+inherited files during exec when the security context changes. Files
+the new credentials aren't allowed to use are replaced with the null
+device or closed and a controlling terminal they aren't allowed to use
+is dropped. Currently, they do this from the bprm_committing_creds hook
+which begin_new_exec() calls with exec_update_lock held.
 
-- handlers the processes shared are reset in the new image
+Closing a file calls into the filesystem's ->flush() method and that may
+block for a long time. For the same reason commit e780259b54e6 ("exec:
+do_close_on_exec() before taking exec_update_lock") moved the closing of
+close-on-exec files in front of exec_update_lock.
 
-- an ignored signal stays ignored in the new image
+Add a new hook that is called right after the close-on-exec files have
+been closed. At that point we're past the point of no return, all other
+threads are gone and the file descriptor table isn't shared anymore. So
+nobody but the task itself can install new files or acquire a new
+controlling terminal until the new credentials are committed. And
+nothing between the new hook and the bprm_committing_creds hook touches
+the file descriptor table.
 
-- the other process keeps all of its handlers
+The hook has no users yet. SELinux and AppArmor are switched over
+separately. Note that bpf lsm programs can attach to it like to any
+other LSM hook.
 
-- a signal the other process ignores right after vfork() returned isn't
-  ignored in the new image
-
-The task is created with CLONE_SIGHAND but without CLONE_THREAD so it
-isn't taken care of by de_thread(). For the last one the parent runs in
-a realtime scheduling class on the cpu of the task so that it gets to
-ignore the signal as soon as it's woken up.
-
+Fixes: 6650527444da ("proc: protect ptrace_may_access() with exec_update_lock (part 1)")
+Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/exec/.gitignore        |   1 +
- tools/testing/selftests/exec/Makefile          |   2 +
- tools/testing/selftests/exec/unshare-sighand.c | 236 +++++++++++++++++++++++++
- 3 files changed, 239 insertions(+)
+ fs/exec.c                     |  3 +++
+ include/linux/lsm_hook_defs.h |  1 +
+ include/linux/security.h      |  5 +++++
+ security/security.c           | 27 ++++++++++++++++++++++++---
+ 4 files changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/exec/.gitignore b/tools/testing/selftests/exec/.gitignore
-index 4613c68537395..b27f4db42f87b 100644
---- a/tools/testing/selftests/exec/.gitignore
-+++ b/tools/testing/selftests/exec/.gitignore
-@@ -16,6 +16,7 @@ null-argv
- !load_address.c
- /recursion-depth
- /set-exec
-+/unshare-sighand
- /update-lock-fault
- xxxxxxxx*
- pipe
-diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
-index 3756a250f9591..70f090a5f7648 100644
---- a/tools/testing/selftests/exec/Makefile
-+++ b/tools/testing/selftests/exec/Makefile
-@@ -21,6 +21,7 @@ TEST_GEN_PROGS += recursion-depth
- TEST_GEN_PROGS += null-argv
- TEST_GEN_PROGS += check-exec
- TEST_GEN_PROGS += update-lock-fault
-+TEST_GEN_PROGS += unshare-sighand
+diff --git a/fs/exec.c b/fs/exec.c
+index 87b78fce609de..855437c352137 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1203,6 +1203,9 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	 */
+ 	close_cloexec_files(me->files);
  
- # binfmt_misc must not be reachable as an exec source or as a stacking layer,
- # or an 'F' entry can pin the instance that owns it. Unprivileged, no bpf.
-@@ -117,6 +118,7 @@ $(OUTPUT)/binfmt_misc_interplimit: CFLAGS += $(TOOLS_INCLUDES)
- $(OUTPUT)/binfmt_misc_interplimit: ../filesystems/utils.c
++	/* Let LSMs revoke inherited files the new creds may not use. */
++	security_bprm_revalidate_files(bprm);
++
+ 	/*
+ 	 * Must be called _before_ exec_mmap() as bprm->mm is
+ 	 * not visible until then. Doing it here also ensures
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 87d9d06710cb2..c1bb7501d530d 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -52,6 +52,7 @@ LSM_HOOK(int, 0, vm_enough_memory, struct mm_struct *mm, long pages)
+ LSM_HOOK(int, 0, bprm_creds_for_exec, struct linux_binprm *bprm)
+ LSM_HOOK(int, 0, bprm_creds_from_file, struct linux_binprm *bprm, const struct file *file)
+ LSM_HOOK(int, 0, bprm_check_security, struct linux_binprm *bprm)
++LSM_HOOK(void, LSM_RET_VOID, bprm_revalidate_files, const struct linux_binprm *bprm)
+ LSM_HOOK(void, LSM_RET_VOID, bprm_committing_creds, const struct linux_binprm *bprm)
+ LSM_HOOK(void, LSM_RET_VOID, bprm_committed_creds, const struct linux_binprm *bprm)
+ LSM_HOOK(int, 0, fs_context_submount, struct fs_context *fc, struct super_block *reference)
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 40831fab54709..e1a85b2f7005e 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -360,6 +360,7 @@ int security_vm_enough_memory_mm(struct mm_struct *mm, long pages);
+ int security_bprm_creds_for_exec(struct linux_binprm *bprm);
+ int security_bprm_creds_from_file(struct linux_binprm *bprm, const struct file *file);
+ int security_bprm_check(struct linux_binprm *bprm);
++void security_bprm_revalidate_files(const struct linux_binprm *bprm);
+ void security_bprm_committing_creds(const struct linux_binprm *bprm);
+ void security_bprm_committed_creds(const struct linux_binprm *bprm);
+ int security_fs_context_submount(struct fs_context *fc, struct super_block *reference);
+@@ -753,6 +754,10 @@ static inline int security_bprm_check(struct linux_binprm *bprm)
+ 	return 0;
+ }
  
- $(OUTPUT)/update-lock-fault: LDLIBS += -lpthread
-+$(OUTPUT)/unshare-sighand: LDLIBS += -lpthread
++static inline void security_bprm_revalidate_files(const struct linux_binprm *bprm)
++{
++}
++
+ static inline void security_bprm_committing_creds(const struct linux_binprm *bprm)
+ {
+ }
+diff --git a/security/security.c b/security/security.c
+index 4727b8347fc4e..f340880ce77ff 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -834,6 +834,25 @@ int security_bprm_check(struct linux_binprm *bprm)
+ 	return call_int_hook(bprm_check_security, bprm);
+ }
  
- # --- binfmt_misc bpf ('B') handler test ---------------------------------
- # The struct_ops bpf objects are compiled against the running kernel's BTF.
-diff --git a/tools/testing/selftests/exec/unshare-sighand.c b/tools/testing/selftests/exec/unshare-sighand.c
-new file mode 100644
-index 0000000000000..425b46d4d5c9c
---- /dev/null
-+++ b/tools/testing/selftests/exec/unshare-sighand.c
-@@ -0,0 +1,236 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test exec in a task that shares its signal table with another process
-+ * without being one of its threads, i.e. CLONE_SIGHAND without CLONE_THREAD.
-+ * The exec has to give the task a private table before it resets the
-+ * handlers so the other process keeps the table they shared. If the other
-+ * process waits for the task in vfork() the task has to have its private
-+ * table before that process runs again.
++/**
++ * security_bprm_revalidate_files() - Revalidate open files during exec()
++ * @bprm: binary program information
++ *
++ * Revalidate access to the controlling tty and the open file descriptors of a
++ * process being transformed by an execve operation, based on the old
++ * credentials pointed to by @current->cred and the information set in
++ * @bprm->cred by the bprm_creds_for_exec hook.  Files to which access will no
++ * longer be granted may be closed or replaced.  @bprm points to the
++ * linux_binprm structure.  This is called after the point of no return, once
++ * the file descriptor table has been unshared and close-on-exec files have been
++ * closed, but before exec_update_lock is taken, as closing a file may block in
++ * the filesystem.
 + */
-+#define _GNU_SOURCE
-+#include <pthread.h>
-+#include <sched.h>
-+#include <signal.h>
-+#include <stdbool.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mman.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include "kselftest_harness.h"
-+
-+#define STACK_SIZE	(64 * 1024)
-+
-+/* Makes the exec'd image check its dispositions. */
-+#define EXECED_ARG	"execed"
-+/* Makes the exec'd image check the signal its vfork() parent ignored. */
-+#define EXECED_VFORK_ARG	"execed-vfork"
-+
-+/* Exit status of a sharer that never made it into the exec'd image. */
-+#define EXIT_NO_EXEC	127
-+
-+/* Handled before the clone. */
-+static const int handled_signals[] = { SIGUSR1, SIGUSR2 };
-+/* Handled by the sharer right before its exec. */
-+#define SHARER_SIGNAL	SIGTERM
-+/* Ignored before the clone. */
-+#define IGNORED_SIGNAL	SIGHUP
-+/* Ignored by a vfork() parent as soon as it runs again. */
-+#define VFORK_SIGNAL	SIGINT
-+
-+/* How often a vfork() parent races with the exec of its child. */
-+#define VFORK_ROUNDS	16
-+
-+/* How much the thread that holds the mmap lock has to work on. */
-+#define WRITER_SIZE	(1UL << 30)
-+
-+static void handler(int sig)
++void security_bprm_revalidate_files(const struct linux_binprm *bprm)
 +{
++	call_void_hook(bprm_revalidate_files, bprm);
 +}
 +
-+static int set_disposition(int sig, sighandler_t disposition)
-+{
-+	const struct sigaction sa = { .sa_handler = disposition };
-+
-+	return sigaction(sig, &sa, NULL);
-+}
-+
-+static const char *disposition_name(sighandler_t disposition)
-+{
-+	if (disposition == SIG_DFL)
-+		return "default";
-+	if (disposition == SIG_IGN)
-+		return "ignored";
-+	return "handled";
-+}
-+
-+static bool has_disposition(const char *who, int sig, sighandler_t disposition)
-+{
-+	struct sigaction sa;
-+
-+	if (sigaction(sig, NULL, &sa))
-+		return false;
-+	ksft_print_msg("%s: signal %d (%s) is %s\n", who, sig, strsignal(sig),
-+		       disposition_name(sa.sa_handler));
-+	return sa.sa_handler == disposition;
-+}
-+
-+/* The signals with a handler must have @handled, the ignored one SIG_IGN. */
-+static bool check_dispositions(const char *who, sighandler_t handled)
-+{
-+	bool ret = true;
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(handled_signals); i++)
-+		ret &= has_disposition(who, handled_signals[i], handled);
-+	ret &= has_disposition(who, SHARER_SIGNAL, handled);
-+	ret &= has_disposition(who, IGNORED_SIGNAL, SIG_IGN);
-+	return ret;
-+}
-+
-+static int setup_dispositions(void)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(handled_signals); i++) {
-+		if (set_disposition(handled_signals[i], handler))
-+			return -1;
-+	}
-+	return set_disposition(IGNORED_SIGNAL, SIG_IGN);
-+}
-+
-+static int sharer(void *arg)
-+{
-+	/* The parent only gets to see this if the table really is shared. */
-+	if (!set_disposition(SHARER_SIGNAL, handler))
-+		execl("/proc/self/exe", "unshare-sighand", EXECED_ARG,
-+		      (char *)NULL);
-+	_exit(EXIT_NO_EXEC);
-+}
-+
-+TEST(exec_unshares_sighand)
-+{
-+	char *stack;
-+	int status;
-+	pid_t pid;
-+
-+	ASSERT_EQ(setup_dispositions(), 0);
-+
-+	stack = mmap(NULL, STACK_SIZE, PROT_READ | PROT_WRITE,
-+		     MAP_PRIVATE | MAP_ANONYMOUS | MAP_STACK, -1, 0);
-+	ASSERT_NE(stack, MAP_FAILED);
-+
-+	pid = clone(sharer, stack + STACK_SIZE,
-+		    CLONE_VM | CLONE_SIGHAND | SIGCHLD, NULL);
-+	ASSERT_GT(pid, 0);
-+	ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+	ASSERT_TRUE(WIFEXITED(status));
-+	/* The exec'd image has the handlers reset and SIG_IGN inherited. */
-+	EXPECT_EQ(WEXITSTATUS(status), EXIT_SUCCESS);
-+
-+	/* The table was shared up to the exec and the exec left it alone. */
-+	EXPECT_TRUE(check_dispositions("parent", handler));
-+
-+	EXPECT_EQ(munmap(stack, STACK_SIZE), 0);
-+}
-+
-+struct mmap_writer {
-+	pthread_t thread;
-+	char *map;
-+	bool stop;
-+};
-+
-+/*
-+ * Hold the mmap lock for writing most of the time. An exec that waits for
-+ * the mmap lock of the old mm after it has woken up a vfork() parent gives
-+ * that parent all the time it needs.
-+ */
-+static void *mmap_writer(void *arg)
-+{
-+	struct mmap_writer *writer = arg;
-+
-+	while (!__atomic_load_n(&writer->stop, __ATOMIC_RELAXED)) {
-+		mprotect(writer->map, WRITER_SIZE, PROT_NONE);
-+		mprotect(writer->map, WRITER_SIZE, PROT_READ);
-+	}
-+	return NULL;
-+}
-+
-+static int vfork_sharer(void *arg)
-+{
-+	execl("/proc/self/exe", "unshare-sighand", EXECED_VFORK_ARG,
-+	      (char *)NULL);
-+	_exit(EXIT_NO_EXEC);
-+}
-+
-+TEST(exec_unshares_sighand_before_vfork_returns)
-+{
-+	struct sched_param param = { .sched_priority = 1 };
-+	struct mmap_writer writer = {};
-+	cpu_set_t cpu;
-+	char *stack;
-+	int status;
-+	pid_t pid;
-+	int i;
-+
-+	stack = mmap(NULL, STACK_SIZE, PROT_READ | PROT_WRITE,
-+		     MAP_PRIVATE | MAP_ANONYMOUS | MAP_STACK, -1, 0);
-+	ASSERT_NE(stack, MAP_FAILED);
-+
-+	/* One page table entry per page, all of them the zero page. */
-+	writer.map = mmap(NULL, WRITER_SIZE, PROT_READ,
-+			  MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
-+	ASSERT_NE(writer.map, MAP_FAILED);
-+	madvise(writer.map, WRITER_SIZE, MADV_NOHUGEPAGE);
-+	madvise(writer.map, WRITER_SIZE, MADV_POPULATE_READ);
-+	ASSERT_EQ(pthread_create(&writer.thread, NULL, mmap_writer, &writer), 0);
-+
-+	/*
-+	 * The task that is cloned below runs on our cpu and, as the policy
-+	 * isn't inherited, not in a realtime scheduling class. On a kernel
-+	 * with preemption we run as soon as it wakes us up and it doesn't get
-+	 * any further meanwhile. Without the privilege for that only an exec
-+	 * that sleeps after it has woken us up is caught.
-+	 */
-+	CPU_ZERO(&cpu);
-+	CPU_SET(sched_getcpu(), &cpu);
-+	if (!sched_setaffinity(0, sizeof(cpu), &cpu))
-+		sched_setscheduler(0, SCHED_FIFO | SCHED_RESET_ON_FORK, &param);
-+
-+	for (i = 0; i < VFORK_ROUNDS; i++) {
-+		ASSERT_EQ(set_disposition(VFORK_SIGNAL, SIG_DFL), 0);
-+
-+		pid = clone(vfork_sharer, stack + STACK_SIZE,
-+			    CLONE_VM | CLONE_VFORK | CLONE_SIGHAND | SIGCHLD,
-+			    NULL);
-+		/* The task has its own table. This is none of its business. */
-+		set_disposition(VFORK_SIGNAL, SIG_IGN);
-+		ASSERT_GT(pid, 0);
-+		ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+		ASSERT_TRUE(WIFEXITED(status));
-+		ASSERT_EQ(WEXITSTATUS(status), EXIT_SUCCESS) {
-+			TH_LOG("round %d: ignored after vfork(), ignored in the exec'd image", i);
-+		}
-+	}
-+
-+	__atomic_store_n(&writer.stop, true, __ATOMIC_RELAXED);
-+	ASSERT_EQ(pthread_join(writer.thread, NULL), 0);
-+	EXPECT_EQ(munmap(writer.map, WRITER_SIZE), 0);
-+	EXPECT_EQ(munmap(stack, STACK_SIZE), 0);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	struct sigaction sa;
-+
-+	if (argc == 2 && !strcmp(argv[1], EXECED_ARG))
-+		return check_dispositions("exec'd image", SIG_DFL) ?
-+		       EXIT_SUCCESS : EXIT_FAILURE;
-+	if (argc == 2 && !strcmp(argv[1], EXECED_VFORK_ARG)) {
-+		if (sigaction(VFORK_SIGNAL, NULL, &sa))
-+			return EXIT_FAILURE;
-+		return sa.sa_handler == SIG_DFL ? EXIT_SUCCESS : EXIT_FAILURE;
-+	}
-+	return test_harness_run(argc, argv);
-+}
+ /**
+  * security_bprm_committing_creds() - Install creds for a process during exec()
+  * @bprm: binary program information
+@@ -842,9 +861,11 @@ int security_bprm_check(struct linux_binprm *bprm)
+  * transformed by an execve operation, based on the old credentials pointed to
+  * by @current->cred and the information set in @bprm->cred by the
+  * bprm_creds_for_exec hook.  @bprm points to the linux_binprm structure.  This
+- * hook is a good place to perform state changes on the process such as closing
+- * open file descriptors to which access will no longer be granted when the
+- * attributes are changed.  This is called immediately before commit_creds().
++ * hook is a good place to perform state changes on the process such as
++ * resetting resource limits.  It is called with exec_update_lock held so it
++ * should not block on a filesystem.  In particular, it must not close files.
++ * Use the bprm_revalidate_files hook for that.  This is called immediately
++ * before commit_creds().
+  */
+ void security_bprm_committing_creds(const struct linux_binprm *bprm)
+ {
 
 -- 
 2.53.0
