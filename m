@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48EA606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 16:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE412606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 16:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VyKVdbNh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZoQr7SUV
 Received: by kanga.kvack.org (Postfix)
-	id F32A06B079D; Tue, 24 Nov 2026 11:01:36 -0500 (EST)
+	id E22C96B079F; Tue, 24 Nov 2026 11:01:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F09D26B079F; Tue, 24 Nov 2026 11:01:36 -0500 (EST)
+	id DF8F86B07A1; Tue, 24 Nov 2026 11:01:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E472F6B07A0; Tue, 24 Nov 2026 11:01:36 -0500 (EST)
+	id D0EA26B07A2; Tue, 24 Nov 2026 11:01:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1D8D6B079D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 11:01:36 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A6C0140C59
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:01:36 +0000 (UTC)
-X-FDA: 85470477792.25.BD84C0E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0ADEC2000F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:01:32 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VyKVdbNh;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF3296B079F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 11:01:45 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A7B640C48
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:01:45 +0000 (UTC)
+X-FDA: 85470478170.01.C477F49
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6D28840006
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:01:43 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZoQr7SUV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795536093;
-	b=dnTkWmUAQrW/LicjcNERZ/c1/XnxnMQXR3B4AaxTkTvOmCUumZtcSCoGXFqRpO+ECFk1i5
-	z+ucsv63aGIj1EjMNE+UUYFu60IrCML7UYfCrKrBDNHFE1ePSy280CKNLaFR+hN/Fo9wr9
-	3MxfkosvxElulCRoP3GlclPEP4FJf+U=
+	t=1795536103;
+	b=hpzl1B/fPexf/1ylv4V00tPIwNvRoJOBMNzs9bhyBJr7zG9T47sCNJYJ3eQPRMstqAKEzI
+	IuO/wkmGtEkUjdd6olCMA4fVRo1jpPE1xTvA+ixCUV+i+hPyPIoY5aDapeEycF/DweYZre
+	dd3OlZ1JXAOHu0XDdeyEpVm9ta+bPdQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795536093;
+	s=arc-20220608; t=1795536103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=q9AzOcx7lT/GAxuFckU0BqUnqN5Gf6MdjD8AIDI3n7g=;
-	b=K9wQ7IvbjGjA9PYaPHTfgrFqr5Sj2lrxmRKJTpdFIir7ovg7SDaceWNAunxLa69m3DubTC
-	Ou8YrSIAYl/pHZNk9LNV//CDDYgxD5Aos1aCBACb29KDO17pijEc5eQpNE3uSTkkGfk4Y+
-	Uz9Va7IW4sYS+86AhZkXRPr+0irqYgM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9mWj74VB0kUOTyAfecmTtKijm9c/bCkxbRVrYTWR0WM=;
+	b=vXJoayXa/WxT3IsO0PIsHt/67Nbyh0BegzzCONVwLGLRQWpHHrw4Eu2MVHGSsZvvDUDmue
+	V4QTHAdLtWU9KlCREl8Z6Kuu+svqKuwjOH0yT2g3TCuTirspdCYgIU4zWevUlCqyCWwAfu
+	NTpc2FB+cCKDaecpdLg+D1A3d79CjGs=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VyKVdbNh;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZoQr7SUV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EEAE640A62;
-	Tue, 24 Nov 2026 16:01:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEC31F000C6;
-	Tue, 24 Nov 2026 16:01:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E4EC862753;
+	Tue, 24 Nov 2026 16:01:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83CA1F000D0;
+	Tue, 24 Nov 2026 16:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795536091;
-	bh=q9AzOcx7lT/GAxuFckU0BqUnqN5Gf6MdjD8AIDI3n7g=;
-	h=From:To:Cc:Subject:Date;
-	b=VyKVdbNhhNwvY2U4T2D2HYlO9FeOrSAMOP7NjSY3IrbQntMzm6T+dbybYTGx7ypXk
-	 4dsrslN9SyjdilOwkCNyJ2RCjmzOLD3EInnSHJNZwPi4XfOpvLO6TGpDi2xJqhzFGX
-	 Ay7K9jIKM5abcBUIv4JRAxeQ3yfuJw+9X9tWsfQrlEYRywpCZ/wYokMOyp1y6pCrMt
-	 Dgwy1S8FQIXk/lCcr8ehMcK/e6ncqN6pA6JLTmBjcuT3Ue20/RoGLGqFNB365nvlBA
-	 vB0wv5xyLi0cEFXRO8Jqm7lANlFV8vzZPDlyutxmtC1xsjmFQbTaxEfTecgEvGfTbb
-	 kLD8UKERnHgwQ==
+	s=k20260515; t=1795536102;
+	bh=9mWj74VB0kUOTyAfecmTtKijm9c/bCkxbRVrYTWR0WM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZoQr7SUVcRQap2yuBvwxxP4A34h6k+ANMkLkPjL5sA2i6pfnV13DEyi5+Ss5PLYDD
+	 0GNC0XD7zsu4nTh7zUHwtTAo8axJhTRADXECfqbXMWAPyS8Wr0NjBsjTAYeaBd26er
+	 9YHRorqiAzHtdO1RtRjfoCE/aLkdtJr3KnGQhIF5ksN1lM9zYRVirAS8x7INfdp28w
+	 V3FuwQoiR0j2Y56JkNaV5xgeefwk2CTvUTR4a45EenvTEM1R6oCi00lwCZtGl9EdIo
+	 eiCk5S/jLrKFHZM/0wWSxpHCT/of3pcq5mWnUwo7BS65fqCgct/sElpSl+x2kkaW7f
+	 coGoeL1iVXWcw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
@@ -68,27 +68,29 @@ Cc: SJ Park <sj@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
 	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH mm-new 0/4] mm/damon: update documents for mm-next onboarding
-Date: Tue, 24 Nov 2026 08:01:18 -0800
-Message-ID: <20261124160124.93482-1-sj@kernel.org>
+Subject: [PATCH mm-new 2/4] Docs/mm/damon/maintainer-profile: use damon.git for patch baselines
+Date: Tue, 24 Nov 2026 08:01:20 -0800
+Message-ID: <20261124160124.93482-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261124160124.93482-1-sj@kernel.org>
+References: <20261124160124.93482-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0ADEC2000F
-X-Stat-Signature: b1gtqtnhjnpkba8h8ao9m18jdqipsa5z
+X-Stat-Signature: 6k6cionc1kugh3ntjjrf69ei1dco5nin
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795536092-689919
-X-HE-Meta: U2FsdGVkX1/CkWW9iuK/VDsKAmiUjqQLyjxps5eBoV+BC0Mq4J9elM0ObTh5fQvsmFyUj+kh7G1NzornShsKyUvE4BNnYiaRaWLkrbM8NO/QAsE9POPqQr7lADCzuj0Ll0yn1uwk4RlAVfrYrSd4aJWz/xRrf+96ZQ+yMR9G0f/eHPxHS0W5+VcQnX3RrqSXf8X2FuLFEQwakpQvTzyJYN2ml5wISBS42eiyxXOeBUmvRLmvtlAlmsGIAc2QwcJ0jXNoGmFaGqlJc4PGuwPEIqzI/WtlxlcIQZKTj9EM6Y42MNGzmU/B4mwFnd4H+bPbBImuyscoNjPma2swtIRBO+mh6jFkaJDj6bTb9jPwvY1H2pCObaavffnDtAoVrR3trkbsJVsF3htMtMCJ/PcooSgjXp8rnT7Q1DCcLGIGRmJZZF1LNfUjp+ETy+8uLIEOS0JzEdGEv9qQveZC9Anz+SQMX+IqD4w42YcaYyc8q3cdO6Eo4PSTlG8sAIv+LxVOTvO8xqHzkociuu/7Kni+NLGn86+a7QUw9O0WNJRp50CfPvYcYE6zyMBTi9GgUC148Kgpa/X8tcQRu/S2RRfj+o3E4tIFblOzQCu0A1UHt2JoH69MD9COhlm2qaNZbSI+bJpk1mwh2hF4SiAbaX40LV7XxrY2ZJNcc0j+R/CwiKUWJeTKmB6NcOZOBC2n3NmeUb/L+/5xWnVK9Mvv1QEWMQNyl47FAuRHPs+dc4mEDoPfNOvdgCZlee8BmwSdqJun5BJfleaAFEr4YF6X41E1LZJV7mJC2WFY2XxWRjh2c71+InvFjBP/gfhRW7rOinZT8goenJSGmv7YsiCZXTPU6ghI/8FPVXsd9muH9G5wynEJgF+aa9AcCT5I4BOZJcL2B+GOrV4aNlrJbdgHCK98UdbcBE6asVtZt71FNn0Ax7tjczqp3jGs7vRkQQLAgvBCv6QVJjZlS6pukT6Uhcp
- 3Wy3h8Mt
- DoxZMq/98ey7qEkFGl+TkIH3HF4HBfnvrGJ1DmnFMod5W0iDbMf3N75/zX55AoPUEBXIpcC+K5uC7ERqW7zEDGEen8kr8lHpbB6jYyMAUxrDwRPJHMwDjHiuBMRmGuIAZKCajgcUMM0KTTRJPqpeaNN0Hvngj3QHzV3rxifCUkM41+nogCD+pRI3Gds1eaNNTffBfgNXbsWcLolZkz5Rb9UbUIB1WJ/ww5Nrx9QjOp8DlO6IQNoWOMykp5wA8z7IGVbth1ofPNbxarAHvpl6Ekgeyp0OFZE2Qv4o4ubrd2ZnfzlRrUe5hJ3q6VCwh28MUUMzqyo0Rz2zMNn53xhmV9bmAqZkmagOKisjGXNUM+JcdJtY2dIu+5lzhc5cxJW5qJ8dWZycyPDZkmd9xaDGKZ9gKyTeZUIgN2gbEac/ntBlvBgdU6HoiePehykTndFXJGIHhAG1qk49THmk=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 6D28840006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795536103-43973
+X-HE-Meta: U2FsdGVkX18rYsz4dwVzsygMQ02G1rxTqDpQPkKEOklO0O2M+WZT9NCJjcy3KO+G05HlsG8I0BhQHfw7wFajnsNp8CykpT+0Muqes8M47M4rXShxRayR1qwXW+In8m3Jm47x868i5k98hy32gk37tRr2N98rdiu67yI2GQF/Hd0Uft60GCzt3SjC9VhRUUVDcaotE12/COG8KaK6m4fNECh8ARVbKs35JsJFa4NHb/uJm6c7mLHdG5g61DzSiSHi2Ptum8FeouyzVd7p522oWaAFs32B8T6rSvrUnPk5u5FQA76yTO9HB2XMSSFwlR7XBfhDTgxgV5XxOwZwLmiseJj1DIrsJDJ9RMmNqSf7w4XKoaArAuyETetOwJhSzaUQ3iMkKwTMZpYfXKkjwAMpH73AJHKLwZ36BB5i/pyOkxZrS1iWQQPtPuXfq7qtP5lpsfGmguFKir0MT2GLIzCFy1z4ac4MdTU2yWoDsgvrjDMmPYGoQXDp+EbPUPgKnM1prK2jrWdhhjzLdiCe3Hj22HKdHYmziHVJTIQ90WKT0y6LONYungOIZRmIREHYjTCqbyoM028Ylkg/VmrMyS6wXo4XSsE7DmagWLlplpWt1eZCryL9EpoA3uf6SGFXDAo4pfixDMj5EC2bRNML0Zzd+adjqKn2cV7GAWSLye0noXg3RkBdseirbMS0UO9DnBqOlAqrqvYSz1nwE+SLntuwKkc3Cq4gtwo0GPgPX6L98gMxBDT2TXVQIiZB6F8/DPt5UZCii+ingeS9lV/PYznoVTyIdaH6NaaN9eSIn034N1m15o9qOaaSqmc4e++nH/Ok0tiz4fUVd0djeURokDAj2Qg6JDMriWHQh2NjKAdGRc30lsUCDQRR84a7y6h5hnKPfF3jKRVlRegQZnL4OVfy9taNOmQoGW38102GjwWVrSo97r3BfSThe6qXvU3TWs1l+leI5Znu9QYFHZyBr7R
+ mGzxGjNO
+ 3CsdHLFMAg+EkClnBMI2qTywONAq7feZ1GiMmGeIT+cr5wOnSXWRGtj9EKyQG+uMywHaAIH+yrpzG/FLva/VW7j8J2d/VJul/d2elMECd2tzQmbet4f3vYn2g31mPvVoWO75guWLLhpM0YlfofMIsbgpcH4sfyBLgUlgHCioQ5wFOdHAc09NnRx5Lvi0Smuq5VHPlhtwSM9u3/43xZ6iy8uZP+9CTlCwhxIZqM/H6/kOtorXWL2JRGH0Fwm/taL12YLbwdFquakU/diKgkGSeR/s4tO2iknrRnRQF0oSEATZVJCKD3oQbcpQTFpLvJ+6unPi+Ld6l0UJxi2fc7QlsL4rZDb1ukoCBWmIjS5NT2N58J5FKDjJ9JAjFY1hs/o6xufGRW7Rox83xwZcjS/NvZ4NpUfE0Oiyud0GOVsbtGIDe19RCJCLw0gbu5URjUNYnaaD2yDHhExhba9N2MlH5B+Bkje2TacRbKCaLkRY/zHdvmy3kz+pYSS0MFvL0efxyJ3e0VkESzpsKXeo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,40 +99,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Right after the 7.5-rc1 release, DAMON will onboard the mm-next
-transition [1].  The major change is that it will use mm/damon.git [2]
-and mm/linux.git [3] instead of sj/linux.git [4] and akpm/mm.git [5].
-
-Update MAINTAINERS file to capture the change, via patch 1.  Further
-update DAMON maintainer-profile document for the change, step by step,
-via patches 2-4.
+Right after 7.5-rc1, DAMON will onboard the mm-next transition [1].
+Update DAMON maintainer-profile document to suggest using damon.git [2]
+for-next and for-next-fixes trees as baselines, following the mm-next
+process guideline.  Together, update the DAMON section name to match
+that on the MAINTAINERS file.
 
 [1] https://lore.kernel.org/bed81e01-7303-4957-bd7d-38e3a094e96f@kernel.org/
 [2] https://git.kernel.org/pub/scm/linux/kernel/git/mm/damon.git/
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/mm/linux.git/
-[4] https://git.kernel.org/pub/scm/linux/kernel/git/sj/linux.git/
-[4] https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/
 
-Changes from RFC
-- RFC: https://lore.kernel.org/20261121193331.108587-1-sj@kernel.org
-- Update patch 2 commit message for DAMON section name update.
-- Rebase to the latest mm-new.
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ Documentation/mm/damon/maintainer-profile.rst | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-Huge thanks to Andrew for his tremendous mm.git works that raised DAMON
-up to the current state.
-
-SJ Park (4):
-  MAINTAINERS: change DAMON SCM tree to mm/damon.git
-  Docs/mm/damon/maintainer-profile: use damon.git for patch baselines
-  Docs/mm/damon/maintainer-profile: drop 'SCM Trees' section
-  Docs/mm/damon/maintainer-profile: update key cycle dates for damon.git
-
- Documentation/mm/damon/maintainer-profile.rst | 57 ++++++++++---------
- MAINTAINERS                                   | 36 ++++++------
- 2 files changed, 46 insertions(+), 47 deletions(-)
-
-
-base-commit: 39902b38a4f121b7b3c847622585858cc8070c97
+diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
+index c482690320249..cc6b79c066a64 100644
+--- a/Documentation/mm/damon/maintainer-profile.rst
++++ b/Documentation/mm/damon/maintainer-profile.rst
+@@ -3,13 +3,20 @@
+ DAMON Maintainer Entry Profile
+ ==============================
+ 
+-The DAMON subsystem covers the files that are listed in 'DAMON' section of
+-'MAINTAINERS' file.
++The DAMON subsystem covers the files that are listed in 'MEMORY MANAGEMENT -
++DAMON' section of 'MAINTAINERS' file.
+ 
+ The mailing lists for the subsystem are damon@lists.linux.dev and
+-linux-mm@kvack.org.  Patches should be made against the `mm-new tree
+-<https://git.kernel.org/akpm/mm/h/mm-new>`_ whenever possible and posted to the
+-mailing lists.
++linux-mm@kvack.org.
++
++Non-urgent patches should be made against the damon.git `for-next
++<https://git.kernel.org/mm/damon/h/for-next>`_ tree.  Urgent patches should be
++made against the damon.git `for-next-fixes
++<https://git.kernel.org/mm/damon/h/for-next-fixes>`_ tree.  If there is a
++reason to not use those branches as the baseline of the patch, please explain
++the reason and what baseline is used.
++
++Patches should be posted to the mailing lists whenever possible.
+ 
+ SCM Trees
+ ---------
 -- 
 2.47.3
 
