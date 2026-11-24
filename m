@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12812606A338
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB525606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=drQoINnV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ma/kTwrb
 Received: by kanga.kvack.org (Postfix)
-	id E46C66B0893; Tue, 24 Nov 2026 18:00:26 -0500 (EST)
+	id 7B7416B0896; Tue, 24 Nov 2026 18:00:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCED36B0896; Tue, 24 Nov 2026 18:00:26 -0500 (EST)
+	id 740006B0897; Tue, 24 Nov 2026 18:00:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC53E6B0893; Tue, 24 Nov 2026 18:00:26 -0500 (EST)
+	id 5BB046B0898; Tue, 24 Nov 2026 18:00:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A2EBF6B0893
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:26 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2811D6B0896
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:30 -0500 (EST)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A880A8C12
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:26 +0000 (UTC)
-X-FDA: 85471533252.07.A8A0F36
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 31BD614000F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drQoINnV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC17B1C48A9
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:29 +0000 (UTC)
+X-FDA: 85471533378.07.90B2F9D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B5887A0017
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:27 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ma/kTwrb";
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795561224;
-	b=olS4QvucwQiX6GaXdgnB9i0107963g7CZ2THv3D6rjNzj65nUcVK5lsFz4BxHE3/4IRXHW
-	5+Lq714ZR1NgqxWhFYL2sQvqk6Krdeh9xvW6idr7jj6XxgJhDyqwMxWulnL3e6Z2DFfsQG
-	Mnb7stHjgRd6nv2OJKs6CKqRkXjt3cQ=
+	t=1795561227;
+	b=YTPG4POWeXyHpGCTDarz8A2CoPlF6kWuzQECWH+BV/u3Z8DRTnJUOL44sE/ArH4S/LqLV4
+	NYendaTFONsNLGtO6ehz4teFguPevRpuFbYFeUYkgBr0gcdGg3Ss210YyXOcqAdtuwtTDR
+	n01KzghwIXFdsoJ2q7Lnjrx52aJmJPM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795561224;
+	s=arc-20220608; t=1795561227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5wcVGG20arn5AtILXYsS1QLVQzh9zzWUG/JVb/Qxc/E=;
-	b=SM+bvHDXeFOgYCCGgYEUhlIIFdSfYhw8IPY3qM5TUGL1okWoVlKvmioTWpBDbx2OuxS2CQ
-	tDUj+R6Uzo+NtpdhL45C1xtKYhJfbsV8mXPlBM+fojf58wuuDr/mzHEIO/g31C2lgGYcpf
-	1PEvmhdQ2jQmVD2kl8UQEWmyW1re188=
+	bh=WThBmHMF1JHqTiDTsb9DdVdc8rlMyonCV9j9R+vsC04=;
+	b=N1b7uzP4gG8c9WiKDeWOp+8x4jopAAwviiNaEtfVsyI1YnYkXRcwcBsnVFLBwBiP8HK+aC
+	YjP+tyb9zZPYnGDcDIJ2rHHDwM0OzbWSK4UTVjJ7E8uA/daInv/PDwfuEgD7jJ+oiz5bhR
+	/1tNe8tWzDr3yjT0epqc8QhcyjQMl8I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drQoINnV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ma/kTwrb";
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92985625D0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A5164172D;
+	Tue, 24 Nov 2026 23:00:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36191F000EE;
 	Tue, 24 Nov 2026 23:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E861F01566;
-	Tue, 24 Nov 2026 23:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795561222;
-	bh=5wcVGG20arn5AtILXYsS1QLVQzh9zzWUG/JVb/Qxc/E=;
+	s=k20260515; t=1795561226;
+	bh=WThBmHMF1JHqTiDTsb9DdVdc8rlMyonCV9j9R+vsC04=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=drQoINnVOrBqHfexqbEvYA54mjyKAoEib0sv0wCWzg9cPAvIlkExX4lM5E1KU+9aq
-	 M1AzvH+frea1crPg9+BkhsXbcfSqtdfSloQ5tC1Eehb2nRGZt2hCnKWbtgSo6T67qK
-	 8TdqUvBVFpLZwGUDWZZBYXsc6FxFN06J+vaBCCJayEHtDub5XbRQ6JcBFmRZOAQSeg
-	 WF1rGIqF0xfM/ZUTJPATESch5gxdicfwjVz7sd0RCtFhNNhsBNQUG1qnLwcFzgXUBS
-	 kR7+Z1Dp1AfpjXNXa8EQzR4x4Mcv6VS8pfFYYj1NhGglz6CapdjxBOrSqkhrOXGnTM
-	 TOh4E+95DiKTg==
+	b=ma/kTwrbgGWzl6OUDPxm2b1uvUfXED6heMx8/GAQ+TmwPMgDj7YeoL/vAd9wCP14m
+	 YUZbBVmtGEuPOEoshmuDdvOrDNpUVZQhBQB2aMYPssgViwryjxnFVE/Q/zmeaDwIs2
+	 wod02cIxg6wwY1IVnd4xkMfiSKIfktKeUdlwtuNVDi8LXMENXJ4d9qrgKf9pbivd2v
+	 QUK0rdG9zH+Z8iDtQ7zGZ3WIiBpe67f31nO3orUxPKFV5klrVIWWtYsM7fTwsAtWJ0
+	 PZI5K5UuFXnRY7B/k+vfb0knWfUlCHh89/lspfwvzMI2hwae6n/TPZqvq+Dz87Hqb6
+	 kK1SWsuobrxAg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 24 Nov 2026 23:58:37 +0100
-Subject: [PATCH RFC 14/19] exec: switch time namespace after dropping
- exec_update_lock
+Date: Tue, 24 Nov 2026 23:58:38 +0100
+Subject: [PATCH RFC 15/19] exec: don't take the mmap lock of the old mm
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-work-exec-update_lock-v1-14-e489035395b8@kernel.org>
+Message-Id: <20261124-work-exec-update_lock-v1-15-e489035395b8@kernel.org>
 References: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 In-Reply-To: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 To: Jann Horn <jannh@google.com>
@@ -81,26 +80,26 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-04696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1623; i=brauner@kernel.org;
- h=from:subject:message-id; bh=6xDuRr9GOZ8Vkh8V9ig2bxnMakSdmbVhjN6OQ6k3qL8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziR0t47uSNEV/4vY3n17blxnJV5slJVYWTC5IWcrBZ
- PLqXmhKRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwES0tRj+Sh+PS/DKebHpq55C
- mPFXZn7jk1of7TJnqB4zbcgKzrTawfDfvfHbukx2Wds58mU3Ar/fKLh16brBrXdqRxcl3bpw43A
- tFwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2065; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=114ewuP1qi1vzBdxjYYmwU6Ys2yZO4jjwhrnzG8rjnM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziR1LinzlUrRMoahenMHOausTpuyoszPeB6+/Kb5T9
+ k7UlIrbHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABORjmRkaP3H8G67EPe8xgN7
+ b2mlpDUdzKqfLFSR/bojZvIrJ/6Z6xgZZtttOBW4e2XAT3fdoECryuVGT6obVnlFfViRseDT0h3
+ 3+QE=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 31BD614000F
-X-Stat-Signature: msbsr7eqkbcjkek81zu5qp97rank7yuo
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B5887A0017
+X-Stat-Signature: mairjxp4fmr48rkjxads7js4e3d76fis
 X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795561223-113740
-X-HE-Meta: U2FsdGVkX1/heBpI0/7FNH6Mi83pgOv1k7HgNfl8nm7IdBgZibswCEqNLSw2nHen+PwRThBy601Nj7cJYlM/ujOPDeErOvG75YbucH2HbgpyFBDMRrDNG/bSSd683ejmNLVxLo1JQaJXU/CZ9Gn7+8+XPMx7wNhYLapbIHVXC0eThr8kCvfbek9X7/Az/Q5Fg0ldezo+KqkFYIuhOPv978bANgXIturHNpIt73B0/F65qDPli4wKGpSq/5c/ftsR4BGXCei5bMRI125R3pOmUqhIsQa/XZ5AIWCP4CHi7QuAVLifXbOzS9n0RskpzKhg+TYUWdxqteOp734/epM2Tw5xacI+gYvCoaGiCOr4hlqeoKXdkv3GVE17WJTJ1ibXqfPgHwMGKsFV9nnnoMjj/pXj8EHEnQLtba5ixjUaTqU57Tl2U5ZEmKUlmAK0oVTl7lTZtoXtC8GoN5m1TiqP+riZIFimeRdlhf0M6FeBIBjK3FOKH5iyB605I0AEwZ9b2bko0c/8e5dczCDW8wjI39tec5BmE/v1NzpRHi0tnGivmQA6NurrF4rzyh0xJI+HX3gLATTkf+1nSci6MOKHVMhpwoNh1RH41rq6rKgGM+EXYMV0OsKKD+ZmvL7OFKGVZiSrHttPr6rBM7AQfR1R4rxrhesoFCi0iFYdrXUpYiC6rlAYxJ5MQrOiMAYXWzOoeT/QiYXu63TzFWXCAiyJiWQxx7ZDKLqw5uXfaRlXW3xAXkNIK9FbK6wLNB5FPmE7o3uPNEhs4TThe9mu3TcgoWRubvvBdG0k+8tncUuFxDHdY7tZtcDlgrMUyoXc1RLU+FpsPlAw26ffnPkYZxZvGXUhxqC0QSNCbeernof4ecwIIst51qYlWG3vjpJLCV25qUBXcan7rROjEVCdfr1V3HOjhi63kq9z3bJV4qpgmQcJMa6lXGnAC3ZwSQXt95+4PuPiOu3vgk7N3iprsRq
- y/8ad16L
- v8mrbTtPh/l8ELKuJcHelNDR/P3ZaycBJkqDis+Xpk5/Zhwcp3+E0gxI9BVr+5FMzuLwrUAaP9gJvN0C19yCSa9S64qrIvDoD2nvtJOBS4OTYsodxjsQVQmR9c6SKeQnK6bLxxRWWgkukWhKfthPAr2Du5gwP+tFGLJrokB8lrD5uGBR2qUcg0YjLWkj4CjNs6PYB6M9NF70esBA0fd81WXBbJY081VTfNg83F4S4tBRfYYq8ub0NqOXb2DWGUmViOkTTutu+VAd06TkNuRDH6ffbJPKLG3/Vrd1Gbp/7ArlN8Sp0rxcQ2773VopTK27oj3OgHn/StT7upy2JaeuhQq1LWLV6p53GXLfajvS7jWNe8Jz2frtetAtW25c0tHi09RwDVzoUurM60reS4WgYn3gQRgswKaXI419WpN+2MG6DdkooK3t+/OMVx8wUDLRCLhuJgLSjluF8NTGkdWLc6R1u3VawSr/hweoevTnqrjDbaro1L/zKquJPTi6TYbm59wxRObBJlP2L3oOB8yN0fcXAw1s1M9cdbxrw
+X-HE-Tag: 1795561227-120294
+X-HE-Meta: U2FsdGVkX1+VfMzwstI0JoNilaPvZKXgrvwXdbEj1OquUAXvB3N5Tf9OTH5uBKtF06oZacXtiN95YV8KvJsOFv/5MzIjUpK/a84oa7OZ0HQtfBdK65JA1H16lixHlBFKeuckpzu09TyRiiEn9uQVjdG+AsTIb73pW7X/CvmCNvxjoSeNDm98fBSIBEnHMY/RNMbj2tyMtDyU+WGj+iRV0JM6kKL+kVvMkAJ0Cv8sLGGJ8m8L9mHaQAG5Nm/nREQ5yI1CgEDPuxbdtdhtrnacdGrQkNu902bLoQ9rsYINdS4U14FV89KwpokQkVcrcokjzgGCh7KHwpGn/e/rT8KCELpIFD5u5JHeMn9Xw6gZNJitRodR9zJGFVuYVGOJbMk0l73ZWT7NvLqIwXBn2dL51bR9CmX9i1OBDuO1mQTMNSWu9hZOQVkmmJRHH/wCnAlGrKTg0iUHEPgv/+sZuyGcHBlCFfXtvt9f/dLCO9hm6FyfMomsBlicasuZJ71oO9IyNifzA+JNVaUN2BRYNbZZ2HvFWyxG9cn245IEpeGImPb/x0Rq4yOF+NJE9roUoI1tqN2XbeyFi9stvTGuQSt+/SLQ5+YXcekJy79QJO7X6Blr2VLyW68FxdD/Z1oo2ddzkx06icTdEPwtTohIaGLluVtRJNm9yDBFCCGPIMfraEimv+lgELZ2P1plztZWvDHk/q9/DMbN9kHFsfZUCTP6gfrmLFJcuEbZMTBZo0Uz3Wv8ka2Fx/ZzxxCtdZo4XGxYuPeMo2XA9+2Z0xOLZBYZ7QD/gMINQHZ5t8j8XplbXsHC4ATpZeugjD/beKxKBXlLBzpQVAEZVzDYmw5X+1XdxDoLZhXlYRnZXOJNcSUtJNCUNLSJCI+mpaT+rYuU2ETXoiGJGYlVtBgwMqHfPdbLvMk4iQeCyuZwxhEsopRS4UY5DemLbpvougaD14ErncBw2k+ChMu3aX8Ivt5Df96
+ HN1dXtpG
+ JlLlGNctc+boyWWAQciNBHkRi1gvAKV/PkUac3GRq3spOJfT6+f+287mqAR2solBRvgyinQL6w8C09wRz6++sikuECbot8MiPctnr2TUQeyRiT/0ZFYhaG755Tr7gACk29yR0YSIQdueRdMRBU7l6E3RzNwbNWUkmkaQ0eOUCmBJ9odfErJLZrlmLoOLsXN0vlieTmE6L5HB/q6L5BjNbGcZT4Zxr8m1CXnjkPziBgwAKty85OR6vtfj5vPPstJ2vr1hK7Ha9iQeO+BojvOOU8nED8nXtV+f3fXId0kPGn042UbIXWvZkY+78HIinbHsK8qQ6415u1lmZ/HkENklywsvpSz8sDdOv+OwPgi73eBTAzm+C/ZCdwietSEe67fLJrs9ffOrmmZNdp+nQiQ/OX4p/njNmJIPb5uTyP031C4fPpo0csEosIYV8mOZeKjNgd7vZBGw+lHPDP+X8EtS8wr3UIi8ZyLhCELlHCtpz8b0ZXIc0RQok584NXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,50 +108,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-If the task has unshared its time namespace then exec moves it into the
-new time namespace as it's getting a new mm. That allocates a new
-nsproxy, may take the timens offset mutex and the mmap lock of the new
-mm to switch the vdso data and may drop the last reference to the old
-nsproxy. Currently, all of that happens with exec_update_lock held.
+exec_mmap() takes the mmap lock of the old mm for reading while it
+switches the task over to the new mm. And it does that with
+exec_update_lock held for writing.
 
-The time namespace switch isn't tied to the credentials changing. So do
-it after exec_update_lock has been dropped. It still happens before the
-vdso is mapped. Call it after security_bprm_committed_creds() so there's
-no failure between committing the credentials and telling the LSMs about
-it.
+That lock was only ever needed for coredumps. The coredump code used to
+take the mmap lock for writing and then killed every task using the mm.
+So exec had to check for a coredump in progress under the mmap lock
+before it left the mm. Commit 7e3c4fb7fc19 ("exec: Check for a pending
+fatal signal instead of core_state") replaced that check with
+mmap_read_lock_killable(). And since commit 0258b5fd7c71 ("coredump:
+Limit coredumps to a single thread group") a coredump doesn't kill
+anything outside of its own thread-group and doesn't take the mmap lock
+to find tasks anymore. An exec in the same thread-group is serialized
+against the coredump in de_thread().
+
+Nothing else relies on the mmap lock to keep a task from leaving its mm.
+
+exit_mm() takes the mmap lock for the same historical reason. The next
+patch removes that one.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/exec.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/exec.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
 diff --git a/fs/exec.c b/fs/exec.c
-index 7b261b0a5f33c..6120310f3fbab 100644
+index 6120310f3fbab..78046ed839646 100644
 --- a/fs/exec.c
 +++ b/fs/exec.c
-@@ -1232,10 +1232,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+@@ -864,19 +864,6 @@ static int exec_mmap(struct linux_binprm *bprm)
+ 	if (ret)
+ 		return ret;
  
- 	bprm->mm = NULL;
- 
--	retval = exec_task_namespaces();
--	if (retval)
--		goto out_unlock_exec_update;
+-	if (old_mm) {
+-		/*
+-		 * If there is a pending fatal signal perhaps a signal
+-		 * whose default action is to create a coredump get
+-		 * out and die instead of going through with the exec.
+-		 */
+-		ret = mmap_read_lock_killable(old_mm);
+-		if (ret) {
+-			up_write(&tsk->signal->exec_update_lock);
+-			return ret;
+-		}
+-	}
 -
- 	me->flags &= ~(PF_RANDOMIZE | PF_FORKNOEXEC |
- 					PF_NOFREEZE | PF_NO_SETAFFINITY);
- 	flush_thread();
-@@ -1334,6 +1330,11 @@ int begin_new_exec(struct linux_binprm * bprm)
- 	 */
- 	security_bprm_committed_creds(bprm);
+ 	task_lock(tsk);
+ 	membarrier_exec_mmap(mm);
  
-+	/* Switch time namespace now that the task has a new mm. */
-+	retval = exec_task_namespaces();
-+	if (retval)
-+		goto out_unlock_cred_guard;
-+
- 	/* Pass the opened binary to the interpreter. */
- 	if (bprm->have_execfd) {
- 		struct file *executable = bprm->executable;
+@@ -903,7 +890,6 @@ static int exec_mmap(struct linux_binprm *bprm)
+ 	task_unlock(tsk);
+ 	lru_gen_use_mm(mm);
+ 	if (old_mm) {
+-		mmap_read_unlock(old_mm);
+ 		BUG_ON(active_mm != old_mm);
+ 		/* Defer teardown to setup_new_exec(), outside the exec locks. */
+ 		bprm->old_mm = old_mm;
 
 -- 
 2.53.0
