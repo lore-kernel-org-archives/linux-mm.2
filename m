@@ -1,160 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4CE606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038A9606A680
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NRrXzMPm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bni2B9pu
 Received: by kanga.kvack.org (Postfix)
-	id 3D8FE6B07CF; Tue, 24 Nov 2026 12:03:34 -0500 (EST)
+	id 0A8AA6B07D1; Tue, 24 Nov 2026 12:06:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B0696B07D1; Tue, 24 Nov 2026 12:03:34 -0500 (EST)
+	id 05BA26B07D3; Tue, 24 Nov 2026 12:06:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29EFE6B07D2; Tue, 24 Nov 2026 12:03:34 -0500 (EST)
+	id E63E36B07D4; Tue, 24 Nov 2026 12:06:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 032C46B07CF
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:03:33 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09BDE40C90
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:03:32 +0000 (UTC)
-X-FDA: 85470633864.15.50A0667
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4D19A40009
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:03:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NRrXzMPm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BCBAE6B07D1
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:06:00 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2C560C0AD5
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:06:00 +0000 (UTC)
+X-FDA: 85470640080.22.DD1CB78
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 80225120010
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:05:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bni2B9pu;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795539810;
-	b=2t1Ybk/gRKCT+g4htMPZmyOuqAAVPhyy+3Ut5nVb5jrTgoKqphn+Rl2hUkewQsgNxkweF+
-	TCswuV7lDJWMrWZ9IFMRS5pF5/a2zL4c2S9R9T1SKLEZPmr58Wi2vKL/HwhKnzyqcWOxR1
-	VT+vsJN1k0Sh2V5cwyrjMsGrQTKq20Y=
+	t=1795539958;
+	b=Gvkm2+ksyNmJOWXfVJ7xvCBiIjVt2ux6nQiS+MU7ev+cpvcUZZrb+f7oR4VA8tiZ5wyH4T
+	NxNocIdlJjuJTPh68kgEZ2fiJUSRroqjp3oACme70S/+CfeOw/JsWwzhUBtAgwJrn0AXZv
+	4z97+7kafYfb5lf+B3O2y9s+uhBWybw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795539810;
+	s=arc-20220608; t=1795539958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jHHJEpclenvhL4xmnZUmc9+yes2wNXZb3V1dO29rWao=;
-	b=TI4KS4Km7q9vGpSvssUtPX0we1uO1jPPwazjMv37d7gRfX998qRlt7MmiuLlbFEInZEZ2z
-	L6SHTlNEnzwlPGSaoJQwRZD2ARKt6v3uCntQ8mMLGUiuNeL15t+ACXOwY0wdhgREVfSh+3
-	bshCvDIQwChlg8sqwxXzhEf1+CtxuwA=
+	bh=cEp/cXDtvYTiH8Vp1GK2CqYt15Bi6PXi0it+ySjQOVc=;
+	b=mYo6GV2+RPBe54HWUhUP9zhAtg/ZmB8Fs1A5v3LwIBUXjeJv/nx7xKgaFyH9oGP4/hvWdD
+	86x39ZhNbFhQ6PvEUgtA7y5TFj0OzIsz47738Xh6tjLoIJkZ2JJqnaM08oFdVGDKdeo+rO
+	gETXm/lscDD7zwljtw+seomDThF0QkI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NRrXzMPm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795539809; x=1827075809;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=jHHJEpclenvhL4xmnZUmc9+yes2wNXZb3V1dO29rWao=;
-  b=NRrXzMPmVY+utehI/XFJjaNxIUrp6VT6Lo/7TCtTFugcDvOqgcch/3c9
-   fNAAwEp6h3Mbejb2Wt8hAEcxibGGSdxURWlsnGZUvVoM+/i9uM4tvNeDB
-   kKvieBzDHPwzwB0Itno/ezOVI4ASwqQiLqfyhxMIwtJ+v1+HIb9NUrI0R
-   klnndEtO5cgVrUSBJKeTBE5FxOIMP5R6ZerW8jK/Soh+bHGdwxjqQHNxC
-   L73Y16uVrw5As6VDtaQsyDLkj5IqiLUYDWZ2MCBonZJb67XL4OTQ+0EH3
-   lsMRRvjAVi2R4VBlNVJqLMiZFYIQhEXLm8kCAeRJOeWSCDXZH09WLKLF3
-   w==;
-X-CSE-ConnectionGUID: Yrn0Bu31QFizR0tdPqMZ2w==
-X-CSE-MsgGUID: 9XyMqHP/RGuKjWnn1MqD+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4393391"
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4393391"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 08:41:15 -0800
-X-CSE-ConnectionGUID: 4POPJdNPSY+//fLB9GhGBw==
-X-CSE-MsgGUID: q4Y3RdbdT9SCvGtwj9x0Qg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="11727878"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.20]) ([10.125.110.20])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 08:32:04 -0800
-Message-ID: <96be8f5a-8f65-48ff-8263-1d5d5f706354@intel.com>
-Date: Tue, 24 Nov 2026 08:32:03 -0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bni2B9pu;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C6D862572;
+	Tue, 24 Nov 2026 17:05:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1346D1F000C0;
+	Tue, 24 Nov 2026 17:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795539957;
+	bh=cEp/cXDtvYTiH8Vp1GK2CqYt15Bi6PXi0it+ySjQOVc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bni2B9puF7kfV9Am5t1Ov8WQVRWkWZkohYhFYaAOCp/DQ8YyK4hiNB/6DDEmutNnx
+	 9DItMmeG9wGbsSnTa/2g6Bc+qZD0MoOo2QOCjGO0RuxOqF3Tm1xaa1EZJ9bnO6HeVo
+	 aY1UKSh6mwdd27HE+ANXhvMJYuMadmQYUspZ9MtLopcJo2kqu6TZRKLJOQ+VmUeRA8
+	 BHSro9BNahirHyqaXlAUVp75XTw4Ei0heRmarVboAGmlnTryJvfEdsallK7L2ZowDl
+	 Fuw7NBHUoexrLNsU88p9DA3WymGQjoLqXzSxY/kk/t5a2Ys6NENMpuN8WNAadIMoey
+	 tbOkOgbd3/Bhg==
+Date: Tue, 24 Nov 2026 19:05:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
+ with ascend order from PGD
+Message-ID: <awXD4i47F-VAG1tD@kernel.org>
+References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
+ <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/3] x86/e820: Ignore memmap= and mem= in confidential
- guests
-To: Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>
-Cc: Pankaj Gupta <pankaj.gupta@amd.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org,
- Pankaj.gupta.linux@gmail.com
-References: <20261124133241.221719-1-pankaj.gupta@amd.com>
- <e08f2321-749e-40f6-9ed4-3dba8e1625ba@intel.com>
- <awWzrkLxfQ2_ODKe@kernel.org>
- <2dd40d0d-2e1f-4a7f-ba65-2cceccd82028@intel.com>
- <awW31hUpXuujSAXA@kernel.org>
- <c0e82936-9436-45e4-a8b6-07bdaa9680df@app.fastmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <c0e82936-9436-45e4-a8b6-07bdaa9680df@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
+X-Stat-Signature: y5dch5ig9uzmmium51gyk5jcge6rhzps
 X-Rspam-User:
-X-Rspamd-Queue-Id: 4D19A40009
-X-Stat-Signature: p1gffdb73yhoz3xc4ry8yukuzd5gfnr5
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795539809-748843
-X-HE-Meta: U2FsdGVkX18YifoNR7gAI3T5H19PEMV8tiAsDPlqP+v7D9Wbepc5qnQB4Fxwaen5g3/yO7KMpPqkfJbuuCKFY42Ts0ftzlGMj92TE6wQum9J4c5q0awvU/8WiTeo0n8qIJbrPu/bKJIZKDujjiyLMgIpaFreeUh0ghFZASKUI5evVZf53gpZ+xvyZJhHuWk8MfUmNdPY4FJa1Yedknuwkhpk8lcbM8D92gJYbqkvvK3zFkWzqjHG6fJyNtKlyPPOvzkGpVEumGNl4GcgR+TQo9hyJqL+THBdC0/i3yK3gMm2WzYpudXTgQdXVmTqv1bc9Zb2et6P19nTtXaKMrlEALm9ZdX3DGUIX/GdNVDs9XwcJv9pwtTGRpsnPC6c+6VfFy+pA/NMvgfk/jMwdIhrkVUjsS5+5pomrGNW2mUUqvVozlNH1T02eLWluFWeQDhfmy3FNhgkyfMjMAvkKNfL3y5scoIZXl+3Y3jeEUQivtta6kdreMn+oENpX9vvuvmOKpdZHBGw2R/IYS4IPalgXCMH/Fzawe9RQ6pdExUZPsTR212qNRAEcU53c39fOGs6ZBsEREecSeeP6K6TNhjnC637DR2MI5EGtXO2yNV1dboVG0OYX9YZoFkEPRBzznEpm2xKlN7+3ekNAQpNheaZBVw9LaXRDsrQOiyQL8kRKF1bIBrkXoVyuHTK6uvMTQ+ubU7/0kodLOWHp1d6T8xAAiRsRTLdTtGTuI6HUn599xDMpBZOKmyIo7mipvqIxbgf4+nlGU9U6gPo1s2LdFGJOmRYC05ZDIN+A5Acq4WJtn+XCt68XSaCfw6762/O6nGzrN9gQF/u7yR+VyJGgoxwVojww20o/qVv5JDvDG3QMlil3uEM1UxQdOP4hnb4d+2MMaEyryTEKE3o4+cBSBl0L00tKU04snU2xiULGrNmzLXPCAYXr4vck5rqYReAM008KikFmaR8Oc3rXntgXld
- 7y56EdXc
- OKcsXFoQYxqIrj2sa8CXHRreEZ/v+UqdxZX2MiAeGHgilHZ3EclY+yjaJcDtgdIBm0tAwC1FU5P9zG1s9lJ5mD3AfvKa6kI1gZShB95kNLVVPiRC1OFK8wLOd5GNilOBmK6E3z7+Gyi6fXyyomX0YwLePczgqiXwma/MFUribqpxPNI7KbRBFD0R8FiqPeYLLIr9p4HVbNcbL/tVJjsr71RgEK+twyjGJD/OrhoFmt7c+eE6ciYo7Kf8dw0Ef5tCkmZqEwDP0VExj4FKyOIBhTlBXiAvqSIBrodCtW/R78BwjGPMzsq4SY71lj5ac5V7OtUqiIACmkAo8N9i6c0GiCuuuHTYQLd5H5CHuNCdjlFnjEsV6gVkg+XlSa/dspfWCB/oTiK8rXXRmPW7XNmK0xyu+Gg+yNih7kFlRivIprzgCJ6q17SJ2GzyoyXXymtKSKKC4wtFpQv991w4+0yiVcZy1GA9zBlijiuFS0yPquIAoPvaSherDEqAHFo55S5CXo28tmIGOFAyTnuo=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 80225120010
+X-HE-Tag: 1795539958-973890
+X-HE-Meta: U2FsdGVkX1+2adspp4BgpOPKZGliyNySE1MVN9Se2BHegm9g2oYb65wGQ5aUcg7NzJBCKX7FR7B5OztEVZ98rjAO2HnfxsiIVHsKhZ6KBa1vkGYXNYzJzhKZbMdMEStaDK03hT4Uq7l+y9cQoAJWTGAtx72vW/MJ4ucJrdof2I/g189pwLBthKDzn75VzZ114yC+c7b5NtHcxUXkdW6YFnzpuIbYXjWJ6E7/2jwJmE/XPuwbLILHIvC0yknuGUr+HxkLC6jAWYrl/UrSJsc/SG6e9J6f5k3AorhfPb4d0q6l6Sxidt01XGgbDE2oN9hvh6II4FDVy/lWvmUD3ctXWKOxAGn+3ILdeqg7n8/FmE17ncAPEpcCDimbFndTgiRqgRO7ZO6L6HT2ebUQDKOO9uMomEIAot2xaYMPs7arUkclfUPzscR3BiWHm9eW5nAaFOQQoVjv+mWJhJfAyp9y/65XL51mXn/hhNREtsJT/xrqUx0jDwxcBNaDt4xVZhCFRDGRr0L/fdAeJihVJ0c1YC1IU5DOMloNaIv6efGdI1M60LQXp+OdRSZFRc75lWPoDg+7T86WfsJH9ykpsL74aitTx6zV+E98x39Qqb1hfzu/uMomd0ip7hp+wZXnFS8u/MD4q2bcRsZHUi1fsNzOgP1SCybmmIixDujKT5FhjRbOu/kULDJfIa4x+FIx1YBGZYoeIwMXKxgWBhJU38MvYnPPdKN3xEKfj/Mr6Pqw8PjBiCMaySP4AX8FzfiWUuXcHV978C3M92h+PdkD1VYXAsTbAtDEQINMxG395f0oDXsJMXaVNpQMv6cZ3sa52T9YtSaGhC7so6fR1acqALnEeRxkON+51E8d4bM/Zio2JYVRZBMpaHUGjRwwiLnkaOWQSsyBb/BF78xARGbkyAW1X5xByi6N7MYAxaPWOjHpJDt0EW+gXUCDXigZ5UW3Aa2VF9DizGVnY73u5mV32/H
+ Fk9SlRPr
+ Q4Gnswvkyh/duAEOe6BfXb2Exv6N7aXpje1JqW4SVMlvbvxaAFlmY5V3KY7l+yr0JUykveM3/mEMRrBJZqi6Q0F0wmeVtjOU5XXWpHqdykN2S8MMC+y4a7OB3vc6wXZcphQjjc2vV8h1XJ0mW6gbttbK0qeEnTltzTyZMK4hUEnzgzKYHqN+NFuVfZI9MJ70TL2dyBCzfXYDN35pNbhMmmXizy4nha42i69H5L9OQgddC3Xb16+oS+R2ftg9h9D7/yMqNPwZi6CRMeL3VAkalIhTdmng/70d3VsDLs7/Nb3UQaba4ChkKc4+rQfHRdSUdnEURpKwqYUPmlOkVQRr1jhQUfdS4CCCr44pgKEzbNlTT8wcMEVJNyVJOP9XGuV7Rxjq6dH6gJ2lifXfYFeGP7QLQ/ivvZnALpM+SySwA4gOdzIuAAfkyVf2MYub/IyRC6n8Js0UfGOlGtucC3rM+pfP1os/gslU0TT0gRfYZ5f1hr5lyO+9DF0GKdDeA+GSSzUKLzrIpd4i4eQIw1wpMIW2DHANZSAXbEczh3XPzuOA5cuQLfQabB0w1yEcJL2qf1+P0ChinADH7rJ9czRJfwtqI9C52qeldF7vp93vOSamFPnA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,15 +130,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 08:26, Ard Biesheuvel wrote:
->> They shouldn't but you can't guarantee that.
->>
->> But I don't mind letting them crash if they do 🙂
->>
-> I'm fine with either approach (i.e. disallowing it or doing nothing
-> at all), as long as we don't pretend that this is something that is
-> expected to work.
+On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
+> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
+> from their intended usage.
+> 
+> Intuitively, higher page table levels should have smaller enum values,
+> but PTE is currently assigned 0.
 
-Yeah, it's not supposed to work. I'd rather document "don't poke the
-sharp stick in your eye" versus trying to make the stick less sharp.
+That's not what x86 thinks :)
+They even expose it in /proc/vmstat with smaller numbers meaning lower levels
+
+$ grep direct_map /proc/vmstat 
+direct_map_level2_splits 152
+direct_map_level3_splits 4
+direct_map_level2_collapses 0
+direct_map_level3_collapses 0
+
+Just an observation, I don't mind either order.
+ 
+> For consistency and cleanup, reverse the enum value ordering.
+> 
+> Since there is no current user relies on these numbers to be ascending from
+> PTE->PGD, so it can be changed to be ascending from PGD->PTE, in the
+> direction of the page table walk.
+> 
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  include/linux/pgtable.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 780fe849ff8b7..a032f95943357 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -2288,11 +2288,11 @@ static inline bool arch_has_pfn_modify_check(void)
+>  typedef unsigned int pgtbl_mod_mask;
+>  
+>  enum pgtable_level {
+> -	PGTABLE_LEVEL_PTE = 0,
+> -	PGTABLE_LEVEL_PMD,
+> -	PGTABLE_LEVEL_PUD,
+> +	PGTABLE_LEVEL_PGD = 0,
+>  	PGTABLE_LEVEL_P4D,
+> -	PGTABLE_LEVEL_PGD,
+> +	PGTABLE_LEVEL_PUD,
+> +	PGTABLE_LEVEL_PMD,
+> +	PGTABLE_LEVEL_PTE,
+>  };
+>  
+>  static inline const char *pgtable_level_to_str(enum pgtable_level level)
+> 
+> -- 
+> 2.43.0
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
