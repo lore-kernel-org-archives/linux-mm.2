@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427D2606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 22:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBE6606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nN+bXffD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AX8myc6P
 Received: by kanga.kvack.org (Postfix)
-	id B85B96B0882; Tue, 24 Nov 2026 17:59:52 -0500 (EST)
+	id 8C6D36B0883; Tue, 24 Nov 2026 17:59:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC0B16B0883; Tue, 24 Nov 2026 17:59:52 -0500 (EST)
+	id 84F486B0885; Tue, 24 Nov 2026 17:59:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 989986B0884; Tue, 24 Nov 2026 17:59:52 -0500 (EST)
+	id 6F5406B0886; Tue, 24 Nov 2026 17:59:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A3676B0882
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:59:52 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 422AE6B0883
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:59:56 -0500 (EST)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B91381A0CC5
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:59:51 +0000 (UTC)
-X-FDA: 85471531782.08.C8F07D2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 040311C0008
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:59:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nN+bXffD;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC6D1C0D60
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:59:55 +0000 (UTC)
+X-FDA: 85471531950.08.553AB7E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DEF5240016
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:59:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AX8myc6P;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795561190;
-	b=ep8IPh1dXe4OVeEtthUMD0Ee7CvpEzPQRpMYJs4ZULWlT66lmMPBHcoXrmq/rOMp4eldu7
-	FSZqiR+zu5DnswfuTtAIgeviFTQTBdlFQzm8SePEkmJdxkh+30ugCVniBIyxhAQjSSOmYD
-	ABkvPqY5QdwPchq0d8T55XwFFSF/JQI=
+	t=1795561194;
+	b=h7T4aeRH8xwXuBz7cgfcEnAc3S5owMp2pk9iyMmptq7UJNjS6Uko18yywe/8Fc4JQ01WSO
+	s08KZ7Q1bATYpKflZ9pDilXdo5btVvrkck6dfi9dqCKzoTu+RyvuIhepTM/me7Ll0Rf30O
+	s7nlStPI2aCKEHp4LSJc6DwUb25LpQM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795561190;
+	s=arc-20220608; t=1795561194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zmxU8jlcQAoOmz9SVXAVr4svm8Xhliz6+CM8YIPXeGA=;
-	b=ETAKUOdOUuZMFT5TVv7WSfxoY4oiqsUMmrUIZr/O5cJv8z/p7GhyRTydEAith/x5GWFWn8
-	rYFd3Eti4tJykkf7CnA24IlejCnBYE+XgRexo+YC/EbtTZ0wOsCnMP7Qv7O+PLtZw+0pYx
-	tu+owrmU+HgPpXMRtJ5rNAQwDQS3ENk=
+	bh=LXmAmGdBNLLBP4R6S0ZfcTIok2405TTTPIbQrdyiZZw=;
+	b=TggvuxH1p0nH3aqZmw87KdYAOBhGMamvHsIeBZSGjtxL7MieW8Ms4WdxB4faIN63LKOBYG
+	lSk3HxtGzfp2JqF/qT9/ansZWWrzJSJzIRBQC9C55ckVwA43CE/13OxmJSA5Jxe6nHs0qS
+	leR0djqs+ZJ5O8nOLP/o4+kQ/3k2qLI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nN+bXffD;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AX8myc6P;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A3CAE62478;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D5EF43795;
+	Tue, 24 Nov 2026 22:59:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1744F1F000F2;
 	Tue, 24 Nov 2026 22:59:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7E11F000E6;
-	Tue, 24 Nov 2026 22:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795561189;
-	bh=zmxU8jlcQAoOmz9SVXAVr4svm8Xhliz6+CM8YIPXeGA=;
+	s=k20260515; t=1795561193;
+	bh=LXmAmGdBNLLBP4R6S0ZfcTIok2405TTTPIbQrdyiZZw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nN+bXffDCKcamcRSHOh5LpKsvzSpQ4Oz6YaZpVhZycBqOy4qNra1dIBQPQVbRwKse
-	 gyrbI74wweoIfmrfNK8rnMlkMEfh8lf22IdjZwG41fENFIJiGE0/NmlfZ0Q02U1eaS
-	 G2/wrQNK232sNjP0Efb3USghHe7mRkOAlVzuvorzInur9xifSP3mrUTUAH6pjk8Sci
-	 l0g+ssPoT6SVPzdqWZu00+5IDx7U0H3GOa+aQY/QCTbI8Xox1hOxxpD6YgmVMS44dA
-	 bXG0qdWyrE301cHq8lu657MvuUMAGKO9+EAhtOhmZIpmEJ5a5sVegWi7/mcwa2PnJ7
-	 D0dqKukkyizSQ==
+	b=AX8myc6PK9Et1np5YJLmjrgno2cX9NsDytcEZbZlB9OZmyITi41GUplWWvz5coWZ/
+	 oKMVzLU57myhtd/Z6GnvQ37v8ruIRBVvTY8ziFcWwnKzcymwdOcUtdt2wOjAiFPbc8
+	 XzF84LtsDOYDEHJuhSCyAB6HKq41AZskoDTl3zSdf6wAMc1MESsyvFnnVoWTrxylqb
+	 p4ouxxHAZK7TquvbrphpwIoOspozvJMVfR/F2vH1afymmxwSJ5ydlzlu9vHbtsdQtv
+	 CIjVYV9iT/ZDAkkmmFLqU0pKLMX4CCiBHfJdSa8LBkxoildxpoySNtAUArjfOZc5Ql
+	 pv4qTDO95TOUg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 24 Nov 2026 23:58:28 +0100
-Subject: [PATCH RFC 05/19] selinux: close inherited files that can't be
- replaced
+Date: Tue, 24 Nov 2026 23:58:29 +0100
+Subject: [PATCH RFC 06/19] exec: move unshare_sighand() before exec_mmap()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-work-exec-update_lock-v1-5-e489035395b8@kernel.org>
+Message-Id: <20261124-work-exec-update_lock-v1-6-e489035395b8@kernel.org>
 References: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 In-Reply-To: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 To: Jann Horn <jannh@google.com>
@@ -81,26 +80,26 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-04696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1883; i=brauner@kernel.org;
- h=from:subject:message-id; bh=TCu0Afse6zxwaqsM5MKt1enhe1sRx5apMR0b/GxRpJo=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSzie02NNi+8c483o4E8+/B6jW3rr7Trn3++k+o6Eeju
- nal15laHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABP5kcvwh59P//HztS8EZL3+
- G55I/Wl6JehfoE2aCLcsy5rbUk/YjRh+MQend/Fkpq3bFT2vPFTqyqk45/D5E4PvFHVs9tt1e3s
- xMwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2206; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=M1m34MDED+Y6PEKM7nEMrksy4d72guGeEChTZo/u7p8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSzie3ZteW3aI9x60n9Pe/OvhHLVX4e/j414rvz/g/1v
+ LyJbYqhHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPZWM3wP3Hes+TLvJtzPuu4
+ d3+TCL79Y///gOMfF8rcnfA+6rHSi2UM/2M/B31rL375oV3m107F6i2Ky1VZ4/gm7N2z8mTcr6/
+ vT7MBAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam07
-X-Rspam-User:
-X-Stat-Signature: zipnu88pknmf55ut3ee8bfkgmrnzwzsj
-X-Rspamd-Queue-Id: 040311C0008
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795561189-567579
-X-HE-Meta: U2FsdGVkX1941RPDlujbBfn+aIyPmQ7Z3vvtcrdoFxaIIEig33tQ9BVV35uAHxnwhAHTXL7H/V7P6x/8kqELkE5qVElP7+RDWKsSPAyi+CusrQvdB+j459C7hOp2GEpJJbfPrHYyPuENwTQ0tQqlSMmV9kH7m0vIuSd2A5r0UbEcW5FH10BzZ5omXj1wTxCRr+QgTQbhsZYClY8rffYJLfgRpy/SNPO0f3eOHAjLjbhjNV5TGCd+GpdpgzP4YKGrGeHv8HgGFDV4JRX+FujyQudJskz7xUid6PAD02csxtfxfSfQOCZWQxxxOv9KV0uNtsP2mTZxppb/2xlv1XxyQXHxYLdn7UbhdyV9dm6BhQ3pefj/ttyczbS/KpCcfVd1zxniBoRxkb6KQgVHu7BMHkOOelEcgx2G6To4+p9I8sUyi5J9+trF/DPH0mJKovelbYta07S3W0qLkOPMY3camNG9EqI4oIDd1v1U5GWhKcmPzo8sDfEjLBOjvq9kEZuJ9r6Ht6Z/+kJfg0/0cC8FZUfV8YGf46cGL45xsgBSgUf5+v1p3e19j7v7NeaJ5Ar2S9vU+edyw01tVKeEwZc1TK8kQiZadfM2royoZLJLGYr5laPB9PuuZFQUgMilHMVR3ohHxvu7i9rm8oohKJmu4meuVEjhXUQ8MYaP+NG3kjW7A2332QLSOcCRs8oMjpO7uwrTnwePaLiq1MmJaCnQduvSII2Xuvy3vumGglDI1G9tJtucGENJAjglUhBumdUWmm6LVBF+HCdJnxsM5Ov0xOXlyeQ7QyJcA/zYya2XRm109BUN0doBq356MuEc9F3NjYloGyR7gLSVPVMkANO4l8bBv3o6XmT9TQPVRZgsknDN+7z9eU1KRHFTlTOj8o0keVhdBS49L8OGDKsCO73ISC3ukKADQCvrTE8Hrd5uwOCDK6c2sL17Kk2m4SFInmJlu0p2HUJFQ5DGlJZ0LfP
- aJqUCa8B
- +2rQy0+wz5WOv2S0MHUkQGQhHP3uqcukE1Nycn+HZ2uI14nWj34CMMXQdMLg9M6ZmudzEe3BGOoo1KWuQwUIYJq04S2Ugj//FWDTI6WHUv/oq2TvXgwaQdVzo0ETHsA0TV+bzrTrYPH2nNfXskO7YeXKnZBkRCjtdMSVL0qsmebXHNMa3Z2frZYm5H7P7LLNDevGW1JSDo3eSnrBWngwfBhifYld+iDbIUCZrPe/mpyfiZG0Uw5VIlZdSW4wxlfeUMYRwI4tNTBn6b0Ku8vquGEXrk+FDSDH/WOFvUIOGcQe1C6yyuRrLExz8TFpbkX+8bzH0YcrfQ+WPxdVxYrJ6WDOGn9TbY0nqloJgsovYUFSeMBZoVbZBAou1iu5l4skxxysCw+rjz8uy09gAk1wHt1OiRYr51bov5QPqSWJUVkDiC0EFszGxCv25Dhk827yafyj4l5QY424CppkqRHxDnZ4XLg==
+X-Stat-Signature: wzb3e8q636inzrix1qha1tkuusemesrg
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DEF5240016
+X-Rspam-User:
+X-HE-Tag: 1795561193-627671
+X-HE-Meta: U2FsdGVkX19gH6K7Zh3e5QEL+dep0ONNwK8PWIQrhN5mdABNoZZ29yF+cEkE1fGj5xL0mQHkaU15ou/w258OW6h6w9tdHjjczI97tcmydE37xIWtT0XGEEOVpktO525CsXlRRV/SeT1WYR4eYrVRIr/BzxQ3vWtfmTZGwYLU6xj51G3URooZWSFVDUzgYJOM5+XiaJBq/N67OBiNYPv8VV74Y+DU7oz00C4ChaFPevl+S8lQ5I4yG6LFSaejlwlAb8f+Hk3OzWdTR8/tknekMCWomgLU4NH6vjOQHpugHmpn9cUoHh8CF7vcsvWnjHb9okYbVPEMyRYhd/4Uv8THgFQ7Mo3+/NF6Nr95pQq9QLSF+bANJrvB5qwhykDTEIvP7byDIl5ML6UwJUKVBwnNSqKtXdk0p+em+wOp7CfOvjuJzdoZVgH+SEw0Fv2ueElRQmUYukTKhRcS0endEfs3kyHON5U192+DSBlvYxXcez0ifYwdmwiqnqLEV04AEBW8DWeGneJBDnq9bfXJChIhxePt6Z9GUv9vF6ONjQZ+9vWyNAZu1D1+FjM/Ph/OwVaIpmtUvpGAgZbtDGJ1nEUKe/0EO3mGdK2n8iBxPvXLaa+YCGZBTHcncVnz7s+hIKoMIDt6kHv7m4aD5LGBOiVdFGnaRUyRQ5I+LWZ3onpBvrx/7PdQu5pwvliuL/6bA2LLoOfAjM76tOPgvupGe/u+2bjdzv67n/yywK2g6sKGZkWKrjpzEckU86iNYURkS1ElnrU9UzhuN4G6jeDN581VkVJzk7Nh5YlP0OMvzWZTl8FYCxmoQ1+H6/wxCqBSbbiykv+MyYmjC91kIVjMAtHZfV815cqmk12z2ZxZkiAX2bKiSAWJVYZ06ZT3rPoNTdzjuYdFVMe9RNJSb6Fh8ht97CiMthp5pfF3qSsVGH4nuOLkgrLw8FopfxLEP57s0+e0Lkurh+KrT5jPf7MxlyW
+ ASfqr8m2
+ 3S85FS4/iETIZ/uhpE8yZZiy6YKDcCMmPbmlrrQQH0GSzdz90q79ClVirKGBYgvoOnr+mWD3TFOXdBZsSgiYJiBzKJ62HMn+mJ98QoJei11AaUkM6Wa8yp8uWs99DJ8fpqn3iGkACHug1e938cZRDGNcDOZHMIYpBUAZTRqRVixlFgqyMD3OGe8S9hAGzTO6ecFd/FGQGkP70jb56JBcJMLGUTOgUTmV6wfZTsQxvNTT4dFh70QMXSVoHGE1HoD5z9tAtHCN6V7GlQ4yZjdOWNOEjDcF+z4Hx5/c98+XTqD+9Q/lvUd04wcDpjjTaP0qXQXGy+2+XRbBxl0gUURb8cbLAaQg0IIpIpqr4R9mmjeruHFx/wb8uCuD34ygmkzIvUpqbyWzokUrYdydbLqZwRCiTSPm4y/FcV9MNnhSNGmnV50M48tCoDCrNSdSblkbVoe0UwghYIz/2uwKM8TzsbsTvN+tvUQE2SSZU7oiymC7wyLAfhM5+3FOAMcqRtwpAOLYfE+YOfvWZpoAZpZekTdQUC4qIFMyzgsiT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,52 +108,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When an exec transitions to a new SID flush_unauthorized_files()
-replaces the inherited files the new SID isn't allowed to use with the
-null device. It uses replace_fd() for that and ignores the return value.
+A task that called vfork() sleeps until the child has released the mm.
+During exec that happens in exec_mmap(). A child that was created with
+CLONE_SIGHAND shares its signal table with the parent and
+unshare_sighand() only gives it a private one after exec_mmap(). So the
+parent runs again while the child is still on the table they share. If
+the parent ignores a signal right after vfork() returned the new image
+can end up ignoring it as well.
 
-replace_fd() refuses a file descriptor at or above RLIMIT_NOFILE. And a
-task can lower its own soft limit as it likes. So a task that sets
-RLIMIT_NOFILE to the number of a file descriptor right before the exec
-keeps that file open in the new image:
+It used to be the other way around. Commit ccf0fa6be026 ("exec: Move
+exec_mmap right after de_thread in flush_old_exec") moved exec_mmap() in
+front of it for two reasons. bprm->mm was to tell whether exec is past
+the point of no return and everything that can wait for userspace
+indefinitely was to sit in front of the lock that became
+exec_update_lock.
 
-	fd = open(path, O_RDONLY);	/* 3 */
-	getrlimit(RLIMIT_NOFILE, &rl);
-	rl.rlim_cur = fd;
-	setrlimit(RLIMIT_NOFILE, &rl);
-	execve(...);
+Move it back to where it used to be, right after de_thread() and the
+posix timer cleanup. Nothing in between relies on the signal table still
+being shared. With that the table is private before the parent is woken
+up. And the new table isn't allocated with exec_update_lock held
+anymore.
 
-The new SID still can't read from the file as that is checked again on
-every use. But it holds on to the file and what isn't checked on use
-like lseek() works.
-
-Before commit ee97cd872d08 ("switch flush_unauthorized_files() to
-replace_fd()") the file was closed first and stayed closed if its file
-descriptor couldn't be allocated again. So close the file if it can't be
-replaced.
-
-Fixes: ee97cd872d08 ("switch flush_unauthorized_files() to replace_fd()")
+Fixes: ccf0fa6be026 ("exec: Move exec_mmap right after de_thread in flush_old_exec")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- security/selinux/hooks.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/exec.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 9950f89dfaa23..4ec9ec723cacc 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -2521,7 +2521,9 @@ static inline void flush_unauthorized_files(const struct cred *cred,
- 		devnull = NULL;
- 	/* replace all the matching ones with this */
- 	do {
--		replace_fd(n - 1, devnull, 0);
-+		/* replace_fd() fails for an fd at or above RLIMIT_NOFILE. */
-+		if (replace_fd(n - 1, devnull, 0) < 0)
-+			close_fd(n - 1);
- 	} while ((n = iterate_fd(files, n, match_file, cred)) != 0);
- 	if (devnull)
- 		fput(devnull);
+diff --git a/fs/exec.c b/fs/exec.c
+index 8d2b14e1d455c..87b78fce609de 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1171,6 +1171,14 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	 */
+ 	posixtimer_exec();
+ 
++	/*
++	 * Make the signal table private before a vfork() parent that shares
++	 * it is woken up.
++	 */
++	retval = unshare_sighand(me);
++	if (retval)
++		goto out;
++
+ 	/* see the comment in check_unsafe_exec() */
+ 	current->fs->in_exec = 0;
+ 
+@@ -1223,13 +1231,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	if (retval)
+ 		goto out_unlock;
+ 
+-	/*
+-	 * Make the signal table private.
+-	 */
+-	retval = unshare_sighand(me);
+-	if (retval)
+-		goto out_unlock;
+-
+ 	me->flags &= ~(PF_RANDOMIZE | PF_FORKNOEXEC |
+ 					PF_NOFREEZE | PF_NO_SETAFFINITY);
+ 	flush_thread();
 
 -- 
 2.53.0
