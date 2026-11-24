@@ -1,147 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71023606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2B7606A33B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jCqxzAJj
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=TP7ACaWA
 Received: by kanga.kvack.org (Postfix)
-	id 920266B06DD; Tue, 24 Nov 2026 08:30:27 -0500 (EST)
+	id 7EC0D6B06DF; Tue, 24 Nov 2026 08:32:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F7926B06DF; Tue, 24 Nov 2026 08:30:27 -0500 (EST)
+	id 79D346B06E1; Tue, 24 Nov 2026 08:32:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E7216B06E0; Tue, 24 Nov 2026 08:30:27 -0500 (EST)
+	id 68BFC6B06E2; Tue, 24 Nov 2026 08:32:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5643D6B06DD
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:30:27 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5EEB140BB3
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:30:26 +0000 (UTC)
-X-FDA: 85470096852.29.738A164
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 36BA240008
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:30:25 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jCqxzAJj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795527025;
-	b=ryFpN+uQfP4j1LM2DHiZu4bj6VV20rkDErhUmoKNjMyShj9TJZgX3un7oAIeigLkyE9k5l
-	QDInzGFByyB7YaCgd7DfLVuwYAZTZxT3Rzdp4Wz1IekHsf1J6bx4q6XvtHmUcO+9gElzXo
-	n0O2ALj1Ed2NTJypfGmZUiXYfEdXCCI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795527025;
+	by kanga.kvack.org (Postfix) with ESMTP id 410606B06DF
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:32:51 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4C845140BB3
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:32:50 +0000 (UTC)
+X-FDA: 85470102900.10.77EB8F6
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013034.outbound.protection.outlook.com [40.93.201.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 40950C0003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:32:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=TP7ACaWA;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf28.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 40.93.201.34 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795527167;
+	b=EtkkuVEnv2nEZBQmhC2DYtvDSbmzsAVwHQKVK+YTSSSswCAoAj+RASKNlmkmFifCoc1COP
+	JrGEptGKAh7/2Fs5H9kkT88IV3QrxtlwXO1JqDhIQJFOkgQXaH2aT/0U7w2GWN5Sn6IOyr
+	tovmzu8migRkl7YZHLyonU92puA64FI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795527167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5dHp9HTARdoHtxKAu6nPHPSzmPEU1mRqVl5Dy4Gq+ko=;
-	b=Dz5A8a22N9scuGHZpk7qLPkAHMk3PZG5XoffBdThfFifonlM/mf76AaH+l0o7QUC6g1og+
-	sasRwoWK+McE3XDXcNGaSYYEC1peKoKj3GIb5jyBifAr78k/Aqw4rfVEy3dDll7trxal2O
-	4S+te3QjLV1jk5rwKO7Rn0Dl/t9PrcI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jCqxzAJj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 90F60623A5;
-	Tue, 24 Nov 2026 13:30:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1429B1F000C6;
-	Tue, 24 Nov 2026 13:30:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795527024;
-	bh=5dHp9HTARdoHtxKAu6nPHPSzmPEU1mRqVl5Dy4Gq+ko=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=jCqxzAJjVpIJjwovRyqxRWcIP/1B3dGdfwKBWeMKdR8HKyUrkxtLFRbPDJMQLyrXb
-	 owAqj3PB6cKHqac2gb0IwSUnm6Jz149LTaGXvIacdGk2W381ux3zvZoZXbN+neKPF3
-	 1PHEsfLA8kEDrjmujBkqVkHmbA0E8gDIOIkjgM6J5C2vcD1lMEU6JiYCBpy8r5CFJo
-	 cdhDHzPASzOI9GYVDMxu8Q3IH3tHuhugE5hCwGZ29K+jacyTfw/E4MwfT2i06O/AFL
-	 R4B/E6tiODpZWkUSH2LaCdCMjaXBhI2MO9cxeHkKmawVLpMcJRxhf31tfzXIRXcjR3
-	 N/DAqTlKmk0CQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian K?nig <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-In-Reply-To: <awQd81MwZqi55gf8@arm.com>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
- <awQd81MwZqi55gf8@arm.com>
-Date: Tue, 24 Nov 2026 19:00:00 +0530
-Message-ID: <yq5aa4mybbmv.fsf@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=dofZdROUMZPu7dFW3u4qdC+7Fdjz/G7X4RZlyzhURoo=;
+	b=TtHCRE9irT6TD2Xyvhz9DbapfUpOisGSASXc6GXwTo4Lb4zAtG/A++zlVcQ+acDmsyfeh0
+	CwgUdX7ajJRnqHc4Tb6/lTUX7FZJ4jQs0k0z0T6Ah+Ibn3+2pC8gjRsxAez8Wkg+5I7Jzf
+	4Ky/zRhIUg96FCCRbrRy7b0foE/1yOg=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=TP7ACaWA;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf28.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 40.93.201.34 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LeKvpDJ0/6Gnq29D7ZT12l0fjAHIHX1XVCozu9DBSweXKLU9pjpncc4C9fgharkns0smbvHZgNEuUaPS3OOdIqDSiZZF65UNgPDYW14A37EIisvfE/p1Te7zvb0qKSCO5A0BGlWRMV2Nm0Lfgv1Imrbk0IyurjyCYwCEKfXv4o1h2TDS445NYjIsBWDD1FHuoCNKScGYHby8KEn+svKPRcMIYikiIdyygJoPoGztZcL8KpCPWs5iWK5Zu6H2SJepxiA2og9MzR4kU+Izg5s4pZpIkLjOzQrhdl3p4xTyc6a9BJ6ckSFNP81TL7bR4kA+97UasFEUUNrR3WOiTvNB2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dofZdROUMZPu7dFW3u4qdC+7Fdjz/G7X4RZlyzhURoo=;
+ b=h8ceNq5eOMw7aQ36Dsv8FANh6roC1haUA4SWjmVGdcCULCPahrXMuhvsnc6/S3qo4w/w2vMDgp7jz1431TOxPOnmxVTH31GhZCf4xQAsVpiOuE+DxqJ1Z0NbldbqQ1dYR/6eMuK0lDbotgvj1FAEXes7dMCxuKf5wXE+NBttiA4+C4cmwBCytTtZlhVo4/xqJlBSenU7W2ETw4TFACEjxcMIsgzgqiASgycbFONORwCa2r8JVyqWfdUzy5YtTT+01k/Mbof9MHEd+i5FV6mdttMR2X/rDXPe1eTQO59kdka4tSWki1ydY9FfCaGYggBruXwtYvjZwkA1gGDPCWaC/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dofZdROUMZPu7dFW3u4qdC+7Fdjz/G7X4RZlyzhURoo=;
+ b=TP7ACaWA8tS06brQJ83Eh9dOmiZO3opdhZE33sMacn9x/Dvem/4kUSJ7AtwqDscsTTDOlOasIVLKINlXBZg3k309cMSGeldLKBu9RDJGXf2Cva2B9kEUjAeryHuYbGWG3hVS6GanjXhiJjmINHLqNYe23fyWc+dbe+MFP3qd948=
+Received: from BN9P220CA0012.NAMP220.PROD.OUTLOOK.COM (2603:10b6:408:13e::17)
+ by CH3PR12MB8307.namprd12.prod.outlook.com (2603:10b6:610:12f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Tue, 24 Nov
+ 2026 13:32:43 +0000
+Received: from BN1PEPF00018546.namprd05.prod.outlook.com
+ (2603:10b6:408:13e:cafe::6f) by BN9P220CA0012.outlook.office365.com
+ (2603:10b6:408:13e::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Tue,
+ 24 Nov 2026 13:32:43 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00018546.mail.protection.outlook.com (10.167.248.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.662.3 via Frontend Transport; Tue, 24 Nov 2026 13:32:42 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 24 Nov
+ 2026 07:32:42 -0600
+Received: from pankaj-M75q.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
+ Transport; Tue, 24 Nov 2026 07:32:41 -0600
+From: Pankaj Gupta <pankaj.gupta@amd.com>
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>
+CC: "H . Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, "Ilias
+ Apalodimas" <ilias.apalodimas@linaro.org>, <linux-kernel@vger.kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>,
+	<linux-efi@vger.kernel.org>, <Pankaj.gupta.linux@gmail.com>, Pankaj Gupta
+	<pankaj.gupta@amd.com>
+Subject: [PATCH RFC 0/3] x86/e820: Ignore memmap= and mem= in confidential guests
+Date: Tue, 24 Nov 2026 07:32:38 -0600
+Message-ID: <20261124133241.221719-1-pankaj.gupta@amd.com>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Rspamd-Server: rspam04
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00018546:EE_|CH3PR12MB8307:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96d9d5ba-4e80-4047-f5bb-08df4a2f6ad8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|1800799024|82310400026|376014|7416014|261026121527099003|261022075727099003|261102123227099003|261021121427099003|10067099003|11063799006|56012099006|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	Iv/nkqYAZBvwK5QFN7x05U2QMx7FIW4ZGKoaXWL49Rf7ui4mDGte40cY9wShD2wDRKXFZMwjRAw7+3h3Xv4LI1SNExSTKYU5gF5Fp/t4iqgUvsWxOdvq90gOjkbrE2nQv8/n3eGD2A178v1X7O1ofgw5ctJqs01T4NRmW8+z0Wgw4RplmGGWfbHLxnk2ik+iNsaeE/Ajittg8PE9WT1Ammo13BulS9pLd7WAwcS8fjIUcloHiYQ3mxOFEjcXO6JgoXAEG10qbbEdsPp6zyZN32tiSkWl+EcZWgm9U6PqNQ+p15JFo5N2lLjsrszFpovd04Uyw5kGfxOd3SII3LmNuaV/rFG0Q2W0RjVPKWue03kJHj5C64CqwdTsL1/KXahM5KWflxCmCgZ2OSBffseH0xP601tffAjI5gTzWIy7TftBzIEBY9nvOurIaeyuddevxdXo+OiHYd/J3nVJdgfPlhfMDorNO6dG9ghRNV2b5xI85Le6W9tcDrP2h34xsePudXBuKHqBMmjU49XOwnE4klheDdN07bspDkiv9Iv6CEf6/rVBRKH3tabKXNHW+tXDdQnVUWFnVS5rNtr3vUY+Vagql1F2XTPXxreqVFeKPZpdiFEY0VKhJqynSsdjMvZfj6nsVXhzjJixVmnU7zUm0s9jciezudi/Ngerdgl29FE=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(1800799024)(82310400026)(376014)(7416014)(261026121527099003)(261022075727099003)(261102123227099003)(261021121427099003)(10067099003)(11063799006)(56012099006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	IhBXbntBtOPPZuLsGCYS40b/KkOLYPbVBf0rN8t2sF+ShJU/dN9/WU3FPCKaVKc+yPX8L0FKYlws6gPk5i2KdFnanUNLSqbudnQwUTYx4T73fMt3Ywe75j7Y+2UBQNPwbCBhz9sQDl90QUwrFlzeqC13Gi/valGdEttmiPr1GGSngc8xAzfxuzmUm6qn975u/RumjWev4I0fPfUmtX2TngOK1DKvwDzRFGDKaIyHdYWFlnBfVydzXL+UxUcEhdjr9pUtwIHSz7qrgvUiGmMUzUcoTykH4it4EsHmoTjWqK/gt0LrdFbn+INcu2yBomcFm4IO84J7DMRIB0RrM072W07vJ7geLMTeLqXOIRRQxoP2wI2UVFsFtt5EWQY+ReSdn9Wk3CpqTnRz4CRhAtElWhtFtMwU3ET0LBV9Vo3X/TCE0RAVHAA8Zf/QFQ3FauoU
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 13:32:42.5915
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96d9d5ba-4e80-4047-f5bb-08df4a2f6ad8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00018546.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8307
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-Rspamd-Queue-Id: 36BA240008
-X-Stat-Signature: 16p4yzj1hhi56g3rug7ng7c98mad5pnz
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 40950C0003
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795527025-409982
-X-HE-Meta: U2FsdGVkX1829PnE/J9V5St9mrrYRX6BIYfqX+fvQLKXvmWWqh2rvUG4gfX+WhRIH4PJIGkbOOLpWzV6GMGL5TgrGriCp7cqFUH6b0htIK6GcMClcUEHGqIHNrv6Migzb9dC4TKVZnu5fBfyzolqb52aofjzbECuWGzcEl01P5J7fH7/QACXFw8WIbRrBv6D9bensUQUauJ1zBMLxWLMLY9W+HKBnC4eRxGvBorSg4ux3wZaPe4CcuXXzgVT3qneAK2d3mQ9ywq3/p7wuuNcUKa2Y/aGiCF6E8ALAs8XwMZQhkA87SYmAqUmJ3+IafDpYg14TBplgMzpKm6vvlLOUP1KKvD8ZLQKDBPPA8bakf7iConawp3vXSK7LbSUvkfWHTXamAXN9yE/ROabJ5Pulj4bnyN6xao1IhYmIOFcLqhZTVKeyPMOU6VAFW7yD3Ou/0Pd+9EPuQsvgLIkEL1KyRl4k/Zc+WFkmNag4Yx/N5DEEuGx+8o2CGxmYEkF5CgUr9Ldi3R+Jc1PYzps+vsmw5g7Vj2hdpkENCQe4FBXSPg5Fzkta48fN3PuDgK77b03TrCx/QyAENXFz2Td7Z+SrDn1PrW1vDimrX5lXriloMH80JMMrpZvTE6NFTw7gqdfJdgwqEZUcWJ7Izuh5t6sYNrGDM5nhmCZnItJEuMo6pB6vq/uKMcnSJcd9jSSQvmG1LGxwNioRI6paMsmswNx70Y/iKZGe7Vu8ocyYsVfbBdnh1ZZ5mYdLZJ/OmO8hv2SRhPrrEF5cvbzIRMWkajfP0Eyvs5N0ioic919aMaku3uxinMdO8uooq85546BFvtZy2l+tla7bymfUwMVQJ3ejyHFyZKPEBg/bfBGIKw6vXVmXZv7uJMnSGKsSY8b8Mkl1yztj6YNa3l/TCTlRfQqlF9I74s9QerYdgE/gjrBL24+dzYZXguNN37oUBEuVoyCBSyUGM2gsxyk3mudvIy
- rAdIK0G1
- W6b2SVYBIcX4vvL/rijju5Q2Xwl5548/dWZveiFop630r1kltAmoK6dQRFyUIapO2N4jWASOXwcus1G2Xmp2zpLZHNiR6VzmPjgOMEwczcsod8UqUWfufejJzN/2N4mSbag7WjFrHX9SHc8LzfysmabluSRCNJwS5zaYr/kRWXd7w9F+/AyrY8a/1eXtKyWvyrdeP92fEBV2017oUq1AEb/zUikpvw5IMnrPIBfFwVomhZmCRtZPn4WissL3LoWfKIKSf30dMzmJ8fJw0ZvIMPPs9UxBB0PbNve2TpnC0jrgc0BxPaM5QsO806iA/AIdndno/Sy+w5xpEwo22d0JLkQShw2kxJ/JSU8D3NhPipQ3DUJ3Xkm/LOeXf2OVsYYPldpll3c39XLDnUSddVPFdKJ3rgglgiTLv3N8BYPgrLZFdvn6QYBpT6zaIaAMzApLINdsVCX3sYdXm4qRwpEPNko/+0orENG2ZHm5F+gpdBs5Jd6ZqYNE7clrcWC6MGYpc+1lkU9ZwrIg07D+T5oRXlvAAQ0tKtrYtI/G5KMR/atsHPTV96MS2M8/tPP71jWSJOKyh
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: ejzgjyj5to1jpjxf9uaqetg5saazor63
+X-HE-Tag: 1795527167-390649
+X-HE-Meta: U2FsdGVkX1/rABUSET6D1eBpQ3xPctly0qXQUUYd3/Zx+cZNbiuocNFzuggYv2M72f1r84+BSup/ldeaJRhPczfN+FcEB851ZwUFOt07TbI0Nt2AMF4tYsohGmdvHQOprQXUuiekZDrbOv/kM37cisOEX4IIyzSGgS19t7RhXJ0+ddRpH/GkBS+eSKyeFZN4gN9sZwWQ73j1EmwUFNOS5lw088qahBHxI1qtghNZffYXwT5aKXDvo5BYOwnyuIdQ0DoJsi0fqoOpeU0x3b11FX/2kAHf07rVDrPEurpANYEgMkIyYsv5KgtyaMtIEPyE7uQz6/6qM2zbKX+SslWJTmzj/ho0wwNpqrt1yPuYOx4rT6llEoTgx3sGCixuSIij6jOQcMCKb8uS4+9PzjNcvpd7JZviaH9zEE4EzavCxJnWiFF1YDgTTVDn1wI4qzzLNg7x9Y+sP1NfLQtMuXjAeNU8dp98d1A+VWVD1PLcA0pPWXSbJQAn6uIXpvsVqJ6XMq55eZOMA9ByQTDEF5fl7HPyxWKHp3pBOrTDMdtpnAI6r/GIZWAomXA/m0viwT9v8fVjTcisBEWg4Zy30tRF26b3InpglHRy+60diV8QW/A4boedCoSyiFHK+03aquzuerIyh/aI8/PHGQSGYOTas0plv6ZAvQELWz50+Nz3r92ueunMkxUd1EnupqH74cDz2z3Mal9AkFXF0t5K0lICUxzPlCOzPG7+sUnRjTF24EYcou47mcm4/gjoM1WIZzQEvfAOCrtyn039EUDpesTOS50m3I4iv/FdPnSYn317iN7oiwuOOh4eFTwsyl2gxtcXD0fqXVzoflzojWmMJsKb9xBfTEez2LYUiSbdkus2rTf/J+EnC8VsubbKFQba2dsy3KeqkS3AXxEwgFDJL4Wrc5B+U8tWgwFLMA+Mixl4BVNjZn8puW58eGXOQn05B2t0CtTNm69K9pLXZuRhs8G
+ SXeLqCQ9
+ LQzpeti7Wv/yZ16sQo+unV6jTb/DQLxOIrgsTKfEMLrIh9z0GTRwUMGsH3JNL3xuzK1y3faGkBFE1m94b4H/VrR5okuBVQKkvss9ArJanWRCnu3KLwhcVdLAMT9CVUxbaF8uGpZ+/c/hlLmrH7utwTzhZi5AsYN8BSlPQ4EoIdbUu2mfRjr+ZVluqGD13DaxItKCz9oXH2wDGJQbRm+8IXaLjKV4W84UIdSW317fvGwwTA2uklcRX3Qgw/jaSUfSitHUKXEnTVVN07Z3gpX9qg0e8WBhdHNnoZsE5B16AT5pQi+UzFNce/QYhVKmOtYzSB4t7qHWXc18nCUwEmDONjog+IUYrnaE2WGovI75EF0K5WAXSRR0hv2oQ7qvDyg4HRZktyv3NWRHU15SBCPYi80OxIla+bgcM9m5bAsi2Q9NQFOw1+0CBrmsaSY/TQi+JdAEmvidovtmJO+ljDqjrIhQEptGbmsCIy9br0IkYd0viFtA2EjnO6F5+cwVudtJlZSpnMM5qdgDMehboOqZx5u06ntoeHl+4HPr11Hg6xoyAy6PvHSUKL/Our2AVVbQHzqSnKSNSoaXU/eKXzCEK9txD/NfDtyt/W5IRphAd0ozLQTNgG8N6hNiZjPfurMtnCqWkXmhSLGy2uavGtic4nR7N6v0a+qlwna3q3Vp6aseUz7ToGjQlf9c4bXwzzOaBo0d9zpxakFzCrzGS9bWcyeJSjuPrkNfiuimC313jpWED/lnPwkLhgGqmRMtdtf23BfQF9UeCCsc42ZY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,126 +153,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
+In a confidential guest (SEV-SNP, TDX) the EFI stub builds the unaccepted
+memory bitmap before the command line is parsed. memmap= and mem= edit
+e820_table only afterwards.
 
-> Hi Aneesh,
->
-> I'm replying on this patch rather than on the one introducing the API. I
-> think it's more obvious here why I think we can make things simpler.
->
-> On Mon, Nov 16, 2026 at 02:41:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
->>  static struct page *its_alloc_pages_node(int node, gfp_t gfp,
->>  					 unsigned int order)
->>  {
->> -	struct page *page;
->> -	int ret = 0;
->> +	struct cc_shared_pages mem;
->>  
->>  	if (node == NUMA_NO_NODE)
->>  		node = numa_mem_id();
->>  
->> -	page = alloc_pages_node(node, gfp | gfp_flags_quirk, order);
->> -
->> -	if (!page)
->> -		return NULL;
->> -
->> -	ret = set_memory_decrypted((unsigned long)page_address(page),
->> -				   1 << order);
->> -	/*
->> -	 * If set_memory_decrypted() fails then we don't know what state the
->> -	 * page is in, so we can't free it. Instead we leak it.
->> -	 * set_memory_decrypted() will already have WARNed.
->> -	 */
->> -	if (ret)
->> +	if (alloc_cc_shared_pages_node(node, gfp | gfp_flags_quirk,
->> +				       PAGE_SIZE << order, &mem))
->>  		return NULL;
->>  
->> -	return page;
->> +	return mem.page;
->
-> This part is mostly fine but I do wonder why not make this alloc
-> function the same as buddy alloc_pages_node() - return a struct page
-> pointer.
->
->>  static void its_free_pages(void *addr, unsigned int order)
->>  {
->> -	/*
->> -	 * If the memory cannot be encrypted again then we must leak the pages.
->> -	 * set_memory_encrypted() will already have WARNed.
->> -	 */
->> -	if (set_memory_encrypted((unsigned long)addr, 1 << order))
->> +	struct cc_shared_layout layout;
->> +	struct cc_shared_pages mem;
->> +
->> +	if (WARN_ON(cc_shared_calc_layout(PAGE_SIZE << order, &layout)))
->>  		return;
->> -	free_pages((unsigned long)addr, order);
->> +
->> +	mem.page = virt_to_page(addr);
->> +	mem.shared_size = layout.shared_size;
->> +	free_cc_shared_pages(&mem);
->>  }
->
-> Here it gets weird and I don't see why we can't have just a buddy-like
-> interface. The kernel-doc for alloc says that shared_size must be
-> retained for the corresponding free but without reading the source code,
-> you can't tell that cc_shared_calc_layout() gives you the same
-> shared_size populated by alloc. We have a similar pattern in dma-buf but
-> using the compound page order.
->
-> What's wrong with a simpler API:
->
-> struct page *alloc_cc_shared_pages_node(int nid, gfp_t gfp, unsigned int order);
-> struct page *alloc_cc_shared_pages(gfp_t gfp, unsigned int order);
-> void free_cc_shared_pages(struct page *page, unsigned int order);
->
-> Both alloc and free take the original request order and perform the
-> round up internally without exposing the details to the caller. Alloc
-> shares the whole resulting buddy block and free makes the same block
-> private before releasing it. We can document that free takes the
-> original requested order and releases the whole allocation. Partial
-> frees aren't supported.
->
-> We can get rid of layout and mem structures (or at least not as
-> part of the API). Of course, this assumes that the shared granule size
-> remains constant for a guest's lifetime but I don't think that's a
-> problem.
->
->> @@ -278,7 +267,8 @@ static void *itt_alloc_pool(int node, int size)
->>  		if (!page)
->>  			break;
->>  
->> -		gen_pool_add(itt_pool, (unsigned long)page_address(page), PAGE_SIZE, node);
->> +		gen_pool_add(itt_pool, (unsigned long)page_address(page),
->> +			     cc_shared_granule_size(), node);
->
-> Here we can introduce:
->
-> unsigned int cc_shared_page_order(unsigned int order);
->
-> and just use (PAGE_SIZE << cc_shared_page_order(0)) for gen_pool_add().
->
-> Was there a caller you had in mind that needs the common allocator to
-> share less than the whole buddy block?
->
+accept_memory() accepts whole 2 MiB units. A memmap= hole that is not
+unit-aligned is touched when its unit is accepted. On SEV-SNP this faults
+early in boot and crashes the guest (e.g. memmap=1M$0x1ffe00000), because
+PVALIDATE needs the page mapped and the hole is not. TDX works on
+physical addresses, so the hole is accepted and the options work there
+today. The same option therefore behaves differently per vendor.
 
-No, I don't have a caller that needs to share less than the whole buddy
-block.
+This replaces my earlier fix [1][2], following review feedback from Ard
+Biesheuvel and Kiryl Shutsemau: the firmware's view of memory must match
+the OS, and a bitmap unit cannot be half accepted. Instead of making the
+bitmap follow memmap= and mem=, ignore them in confidential guests.
 
-Taking Jason's feedback into account, we could have the allocator
-request compound pages and recover the actual allocation order with
-compound_order(). That would avoid passing an order to free:
+Patch 1 warns and ignores memmap= in confidential guests.
+Patch 2 keeps memmap= in a kdump kernel (elfcorehdr= on the command
+        line), as ignoring it would let the kdump kernel use the memory
+        of the crashed kernel.
+Patch 3 does the same for mem=.
 
-void *alloc_cc_shared_node(int nid, gfp_t gfp, unsigned int order);
-void *alloc_cc_shared(gfp_t gfp, unsigned int order);
-void free_cc_shared(void *addr);
+[1] https://lore.kernel.org/all/20261102113127.161823-1-pankaj.gupta@amd.com/
+[2] https://lore.kernel.org/all/20261113105554.199912-1-pankaj.gupta@amd.com/
 
-Alloc would round up internally and share the entire buddy block; free
-would recover its order, make the whole block private, and release it.
+Pankaj Gupta (3):
+  x86/e820: Ignore memmap= in confidential guests
+  x86/e820: Allow memmap= in a kdump kernel in confidential guests
+  x86/e820: Ignore mem= in confidential guests
 
-As you noted, dma-buf would need virt_to_page() to obtain the pages for
-its scatterlist.
+ arch/x86/kernel/e820.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
--aneesh
+-- 
+2.34.1
+
 
