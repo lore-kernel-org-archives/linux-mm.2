@@ -1,149 +1,172 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E042606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958D1606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=lco/hl8N;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=alZaJIH1;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=GrSTaFhB;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ctYW/Eio
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Ot0RHZs+
 Received: by kanga.kvack.org (Postfix)
-	id 7821E6B06E7; Tue, 24 Nov 2026 08:37:53 -0500 (EST)
+	id A54A16B06EA; Tue, 24 Nov 2026 08:46:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75A326B06E9; Tue, 24 Nov 2026 08:37:53 -0500 (EST)
+	id 9DE116B06EB; Tue, 24 Nov 2026 08:46:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 649136B06EA; Tue, 24 Nov 2026 08:37:53 -0500 (EST)
+	id 8A5F56B06EC; Tue, 24 Nov 2026 08:46:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 39AC76B06E7
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:37:53 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C3B29140BC3
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:37:52 +0000 (UTC)
-X-FDA: 85470115584.01.B4B17CF
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A3A8D1C0004
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:37:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="lco/hl8N";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=alZaJIH1;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GrSTaFhB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ctYW/Eio";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 608346B06EA
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:46:26 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFFBDA8637
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:46:25 +0000 (UTC)
+X-FDA: 85470137130.22.18E7F4C
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D45F0140011
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:46:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=Ot0RHZs+;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795527470;
-	b=weu9UMb/fXx6WkhMwGNJIT57glkKrEh9rw7rXCCs59K5a+CqnWd4L6OrUrCfSLS9CGwmdw
-	psS5pKIAc9c04+j4H+x0KRJsXmHlDQrY0/i0Fud1m2qcjixg4YSo0g5KOhDF9VZ6z5QFxL
-	RPNDSwvwTfwQm0Ivzcne7zTIHwnNtd8=
+	t=1795527984;
+	b=0/kbuyZvSNy1T/5xHAhjASwDyT7+4itVOVox72KuwtOsmjgGIfKSfY/gbgWNVYJxKMPmBD
+	dIPBcimsI/fFkh3V1pnthYYDeFQ0RgJTJnZvTwopmAVllfoqcnmD5aonbnwlzq2WsMEEib
+	ltIJSDKozS3VLjG/PhFzXEcaSyTchc8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795527470;
+	s=arc-20220608; t=1795527984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qoBXvSkKFB/hg52/Z3aOD/B3EVltr1cS716I45qk3To=;
-	b=uH+rFaJB+iXtYYp9wMez8+YnZE084OQxpb0Y+3o4LFK8Sn4rKQILJgE6EYl+6bzeu0MGID
-	vVBQ1RCWEewEB9q/wf0y0utTFpAWeS/cofw68B4zhNelsaWHfZfjoB4nyVqLsnFHR5SwG5
-	lGiEvne5+nB74DXUp/J47/nS3aWL/RM=
+	bh=Zc7zKgD/SDYnIbkY4MVpBd0Jo9DiJTva6Dv7og4GVfM=;
+	b=FokTjnSJ6DKzZUrk1HCiV4o7Etkxlifh02wCwYaK9zFqlzmKyUCzldbRo6eiKV7hNk+CZW
+	62no5EFDBCXcmkJdJ5lB0KD6Qx7xzbgPuc1K1k4bEuipaf4dKknUZkonMTYUwshNV9oAQt
+	xms45dX1tlcONLf2col6VFUGJ2ZtrJY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="lco/hl8N";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=alZaJIH1;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GrSTaFhB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ctYW/Eio";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 406AD22045;
-	Tue, 24 Nov 2026 13:37:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795527469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qoBXvSkKFB/hg52/Z3aOD/B3EVltr1cS716I45qk3To=;
-	b=lco/hl8NuT52rOMTnhNPzkjxpgpMKgl5c3r+lYMfoziPUpXwuaQx+YQB23RIMuyWSJoVfU
-	TUOGfqMXf4Y4pJvrqFDCf/IsBODVwW5Uu53J8OeC9k4Z+RFDuT7q/cVpWQPmHdwv9erbgi
-	zajCwIL9kCHg3J+pIg8O76WcPmWTXjs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795527469;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qoBXvSkKFB/hg52/Z3aOD/B3EVltr1cS716I45qk3To=;
-	b=alZaJIH1IM9U6rlVlGHsk+Nm/4PIyn5M2HQasw4PKpXD7H47cw09mbtw4MdzByNUE8L6qc
-	scbWYIb+TmQeX8Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795527468; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qoBXvSkKFB/hg52/Z3aOD/B3EVltr1cS716I45qk3To=;
-	b=GrSTaFhBy00Ek0GciUVJgmyZIVu/eK/cYxonxQUwIRdDtq6VMbDnZh37Ab97BSn1RmQI2+
-	FZnIXV5iW8EatUHjUF+mDKTWJgrZ/lHOdKnZoHJhSgHxDtXUcfRl9beaLWkphKKt2baAjS
-	e6tcTJQNO2u7VK1SyExVAA2Bl/Hnwco=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795527468;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qoBXvSkKFB/hg52/Z3aOD/B3EVltr1cS716I45qk3To=;
-	b=ctYW/Eioa17vHbXnyPyrRNPD6yw6zFKUA5N6TmPXc7/uSEQumQBUZg5I8OHCCD+uGU7Odw
-	RqDRkTlHGnYqB0Dg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D1B6B13505;
-	Tue, 24 Nov 2026 13:37:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8+SPJimTBWuuewAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 24 Nov 2026 13:37:45 +0000
-Date: Tue, 24 Nov 2026 13:37:43 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: John Hubbard <jhubbard@nvidia.com>, 
-	Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>
-Cc: David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
-Message-ID: <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
-References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
- <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=Ot0RHZs+;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-55d2f5f1e26so51198961cf.3
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:46:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1795527983; x=1796132783; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zc7zKgD/SDYnIbkY4MVpBd0Jo9DiJTva6Dv7og4GVfM=;
+        b=Ot0RHZs+Y0nFBCc8bJAciht3oFRFnITo6Yh7o1hBaPYjTtv8e4Nl1UwvWZ2HkgIVC1
+         ncG3yFW1kInAk3TrfJnzNmfMuhwoz9nGhN/xWKL5KNGpCl71QrufRHBX2jOY/fzQPXZ2
+         2n3463Ge7ll9eQO8wja3F6qb3LKVGcLyTMYhLfaIMF5Fs/bmp/4wPDmlV4dwtHxOjXMA
+         fjT8Z6ASuUw2gScsbV5EYFts/aeeJKR2OPnr1Ck6dtEzCbkXXyjDvtn8To9ov21Ofvo9
+         L02QJ/yepUKzufLGOLv5edlv1RNY8uHziViU/ozTC1wT3zy0c+KSkJh0SAYE5OToZYi1
+         tHlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795527983; x=1796132783;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zc7zKgD/SDYnIbkY4MVpBd0Jo9DiJTva6Dv7og4GVfM=;
+        b=aDQn2NmvVsaMrfUnaqDaa2iFkuGt1KXyP4YIG45ZO6M9U3BY8Rmv8PTTBX3Er9cwpT
+         reVrb5rEl2A+/UgXE/Av7UQz8WkGgpsiEDO1LgOUVHBv+X+SDYrQPrGFb6rtRMTM0NiM
+         3YyA6f9PbZvbq+6zkQnDGayhYLl8k/F2Wuo+5M06g/WibDXMpfcL+vL1MXJc21kf0qCG
+         7IMktORmfzTTm2Y7SHG6cijmMpa4OS+5RT+Ikjcdtjn+9OkvF/0dhUoucSeUPFPbxRU3
+         n0jQbgGK7153kErU1caulL5u16eXyjoGxSdb8ZcV+BCiutCZAPX35yOw1ElElF9SIGOa
+         kH9A==
+X-Forwarded-Encrypted: i=1; AL+hErGRd/pmGGLqCn90mITtTiQKVMIzfWnH+33GrFo4+uKnLOBNoBV9BZax/L+2VvhO1/D/UU/14NAeNA==@kvack.org
+X-Gm-Message-State: APuU4Z/R3wGfEIcP3cm2ZSWoOYO8mkvw4i+ur4Fki8EQjQ0hBYG7OTV6
+	GFPPb7qC3ZplxLRkQxK088DZ3bh0iQtVhjfWLx+lm+QQw/1tfEnAUXi0WkLcqMAs6UY=
+X-Gm-Gg: AZFdTZdodf9mtXh/p0cU7MCTVi1ha1c2bE3nIC5Ak848IuZUf57f/I1VWmh4GZ0uzhp
+	7yJCbCKokSRmK8pv6k4AJBdbaiWaJlU2cul3CIaHRf9/D3jBIsLVZNp115qMFV38SW5GBOHp967
+	LHlTj3epCdvGHZeTHbyXaGNf+9rJ2jNyLksWKaCwsoPBnj5wmANQHyxxhePxVQQbTcd3+vdOwHu
+	TVZcPD+jveARpADVNCvxttUdjm6Q+0caqtGYu7Fs/PvwMIeaAGWBGgV0uvT+BDMM9IYO2nbxDBR
+	9S4uLGQ53PX30Rbioth5uw8gUpycpaYyarJLAZCagZbmJ2IOe9ia5fwi25f7NKwkZ+Ym4LiU7fT
+	4l68XySK3NrlMd7OLB/5A/wwTwEplkg5lmtesLMmYy6gu2bnlvulRRdt9IxxZ4C6Za3tmSYlnli
+	gOPy6v+SnZO8GpuGs9oPfKCjMdOcAnn45c+puHdQg1A1ZMlg9gGBrR5XSQUczN/P79BWKg5yeMp
+	zKUZ+JC6JW5DNCwJh6dXUVam+VeCGwMu0+3gs3PFlrZrQhAUxBJXXxbTUiqkNQAEg3Us/MYiesK
+	sXugcQ==
+X-Received: by 2002:a05:622a:120c:b0:535:a5f9:752e with SMTP id d75a77b69052e-55d76aed568mr264410241cf.77.1795527982900;
+        Tue, 24 Nov 2026 05:46:22 -0800 (PST)
+Received: from ziepe.ca ([142.177.118.84])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d78451407sm128368371cf.2.2026.11.24.05.46.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 05:46:22 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xVqqj-00000000QIG-3EJB;
+	Tue, 24 Nov 2026 09:46:21 -0400
+Date: Tue, 24 Nov 2026 09:46:21 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-coco@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Christian K?nig <christian.koenig@amd.com>,
+	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	linaro-mm-sig@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
+Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
+ using CoCo shared memory allocator
+Message-ID: <20261124134621.GI9566@ziepe.ca>
+References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
+ <20261116091137.94252-5-aneesh.kumar@kernel.org>
+ <awQd81MwZqi55gf8@arm.com>
+ <yq5aa4mybbmv.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
-X-Rspamd-Action: no action
-X-Spam-Score: -13.51
-X-Spam-Level: 
+In-Reply-To: <yq5aa4mybbmv.fsf@kernel.org>
 X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Rspamd-Queue-Id: A3A8D1C0004
-X-Stat-Signature: pqyy938oi96i348b7crd8mb13zqsf8cw
+X-Rspamd-Queue-Id: D45F0140011
+X-Stat-Signature: ftnddbasxnjqmumwcfxjn4pdji9dgnsz
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795527470-73734
-X-HE-Meta: U2FsdGVkX1+mXMetZjnzgArOGvnDghjg9oo0NlKem6ZBz8qUmvffdYqCojtOVv4EW8tWbK/scKL4Bs5dTldYaouLa7SVLm/bsvP6ceP18PjnQE741xqtLLfPmPacwl8LgkgzTSXZnsT9rPz4q+BGsFy0n8GY3Ve0r7TOFXEmrhVIJLCn3wyTcYbYWHDQvRtcUT/7f1UfkaQfR+wESN/zn47RmJ9FG7ymTGoJR6fFesASF/W3TJqpt21VAO2x6g2MOujyp/Fc+xM4mD8FZN1loAehyQcN/lFIJVD3omyHq5kGv6ZF2ox9VoK12ucVYXZWMXE+Ha5tX9qSj92GeedhcV80BKMAnT6vqkVwj93oD0BSzf5WgHACntQP268cVjR35uKh7AM7ODmB5tJj+v61SVmGdt6G6xTB7Zizfbvxj76oxW85ip6Q0l/y960HjnnkP4prfeYy/+lcCEeqsBObTaejKmIKJUuJwDGJ1Z22p77jgEUTbc4Fs9g9a8s4uoRQosrSNXJ8eR5mrDEWD9CAp+l88Mzg3Ei40m6nrHHLHzaZuSoY5fjcx5mFTj0iapy7Tesrgzn0QEWP4UdIv0qhvoIWjqhLooTSW9IWMnEP63yo8dv7ma/tNBXUhxQXSxhACoKnf4h9gjlbkuw2SXcAJbdogHs94vGRVHFLRz0zBF/JwLvUNMmFTrZmhrskd5NmW85D+QqIsU3LWOaBG+3eBlubSzSI7qal9t9EF+thq1vjWnUm0v8rl7WCa7NtePdHqF+6yCYPTgALeegixhn8qw6nZ3FeONmKMYMFqDfCGKYQzA6x/KK9f1Jt4wKMiMY4RDHoXEfHhcdYrHYDlY9pndJObYerBBPSjrYuaU30NtUv0WTdUWVX01x8qMZz1rR0xV64nzk6f54em8iHmT36qeijNqwqRqlu8uxLKFLpyZ9w2FnKFI9cIEuat54B3GhFIa9Il3mKIpnEaXGHXRB
- keusXLZv
- Vnf6G9QDzPnrYb57KEVshyCTDF+yHlwKn1pZ7yZznbmq25h7grOpS0fJo+P4L1BDMeolG6xUC6eWp5DCyDE1ReVAwKA2SfOZ9Q5d1mZpxmwe6g49zs+wS6OZ7b1ga1Eu+Z6Zm+qm7BoTGQzGhf5wL1FjE5JRj+4dI7bRLO2AzSJVS0XLRjr+75FAV5q461KatOmbtNu6PgqeizthC13So/HTPKpF0+ttW3fkzfLQhgSNOJKZx9rahkxa9lME2Vc0n5fA6NpfD3NJBqVqNgYWSNQ5wlN7E8nNv2HZ9dFKCZ3aukZNJ2fKASuFaX659+QWsvijqjEFLvzgJsHizfLbHkpvEQXtUA1iQ3GdVi2WRqbeWPYSMSPSeOhiEDY/gEGx+cPS/DqZ+r0J1RH/XFKKZpk5RlPIJAcl7sZ9CouW8y2qkUlknPUZDkrzpwD+wujWKtAaXA8bJqz7xfxsMyQMEE+lf6tJXmL5Yxb9gZI1Z87hofSkxDIGPtp6xY4+VYP5k4D6LCWdg2XAHloO14S1sq8ZJZ2GfPdv4EOfFybu6chb65EmwW3ZROSjcvRKMTYlMINO8ZNLMcqkVlZHkoYNBmwc3EyTgZrl+dZDO+Bp9m5dHvbTdeQCE8CNIUwMVUsZ9qMcHcmKLeD581zc=
+X-HE-Tag: 1795527983-231399
+X-HE-Meta: U2FsdGVkX18o9ylKRXW4WiIyDqmE+1R2ZsStlI6/2271+zCy86H6IByiB3xftyTskppfHDQUX1ySmTzzygTPLvAjZvpKgtxr5ko21+OzKJMTfqTzuKCyHq7nfczMdLbdmPPNvGHSXQ+JfDdaf5FDRVwRkgbWQI/50l8MmLBqOJnQx+UJihdcRXj4vMb8hPjZmfuJSYE9G+Qz7ZGpgSF9qcjEWnW89xNbgcPVRU19A8/vMvnYhEzjY1B54h8X57tbZx+6l3jEEvyKTY9ch/+2LdJxGv7vYp5WiWT+BZ3plmBWrtdusQ98KtNU4A/tEBNAbmn+JcDVqZu/6x0rkQRF+kdsiRmIJXMOkNZnUDuol7ni1aYd1MF7h9AWyKLHBWHW1VRHonD532K4tJkVHmvb6vI+aqFr53rV31wwbaCw5VyT9jlv/5BWimU9NZ/xF6EzZb0cI05IPA8z35wMDsOTgGMCJdzqE2kOQKNTusSUrinAg2F4lFyHHg+Q+NciAitcaBRBBjmHHlDlPLSjUE7YwGQPi/UkdrGg2Zbyt0G08YuXT+Yx3O3QqEQk+jg48jym9Dz8EL3aIwOLxAX7cy7mVXxGHIGr4egVZyP2GNh1d7l1cYMLE1LIfqf+s0Qol3AppKfrXRfqNlRuu5a16+1pCxKOw0jjSEvihrQCP6ZBpvNbo9xjRQeOVKO7fLGlo/qoOl9Lc/zA0AcmbVlYHdciogaV4VxwAognmrlm6ojlBUVKv/BQK882ngd3vCBPSedhbjK3BxumvEOv9d7JhWcgzraXWD0GJm1Tw/5QAUdUREuMbrJgKTkeWlTzXgAEeF6l1Jd26mJoQUwFjoCDizYna1ae9NMYNj3OOLs+vLKvFRi7kxsMVsTimmp7fVGPOjxKkNBO/jdH0ukwIVOZy8lE5g6KCPRq3iMkYkiUXjTkb9RGrlEZEGS93pLfrYgqwhLmsyq1edrjQpbXrJTOwmi
+ GWHZQSo/
+ lJJxjU20wC7HEqVrCEZVU/yHryCUh65VT10g9jVAnXc4/IFLetFcCBUfXV675UyvXsGtiNkzviecBZKoRrEfI44aOKgM/V1vfdPeVtt9eJSHuSTtqUsxWfAX6oAp6kS8P07PjS1JGNokwxhDz00DYKbb6EUVyWXwHI+djJwZhS4CYUWrA//x783X26OUGEWq27zt/hH2YnXOoyUDaZt0SWIvLig1Gy7ZnyOjS2VfliiUrWycUN/k5Qkg22mJAGf+CRnUido7sdgaTHQuq8/xiWZuYRP7vBqPQEcgbEDGNMPYL5uFRdOMb9b3aSd1BWz1Q1Ao22yGSbdIVASDwp1+Ykrm463ty+idxXyH7urSsyxGdCcVqhrL0Pu9FIMI5r/I2pk3H7/GTCKwX623sMPeBLlfEagZMOnxijdHGDy8OZgCXVvar3mdtU0uoOHszCkZZwOGydoE0MADvnbtnulyvfxwNfE3vGp1OqnJ4gDbSKgjUGgUcOvlH2KuQOfFUdvHT6K7KbUr3crLnOQ5JR8/2lSpsEPK53vKHbA1aoBlLZFq1xStvyWPAJkpvmJah1+OtwX0GSQ2n7GDulviLNr1K0PE6wg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,110 +175,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi John, Christoph, Jan,
+On Tue, Nov 24, 2026 at 07:00:00PM +0530, Aneesh Kumar K.V wrote:
 
-Thank you for your replies. Since you largely share the same point, I'll
-combine this into a single reply.
-
-On Thu, Nov 19, 2026 at 04:55:30PM -0800, John Hubbard wrote:
-> On 11/19/26 12:10 PM, Pedro Falcato wrote:
-> > Sooo.... It turns out GUP dirty and ->release_folio() interact really
-> > weirdly. This was initially reported by some AI agent, and David let me
-> > know.
-> > 
-> > The basic issue is:
+> Taking Jason's feedback into account, we could have the allocator
+> request compound pages and recover the actual allocation order with
+> compound_order(). That would avoid passing an order to free:
 > 
-> The basic issue is covered in a series of LWN articles that span 5 or
-> 6 years:
-> 
->     https://lwn.net/Kernel/Index/#Memory_management-get_user_pages
-> 
-> Probably good to read and absorb that. There's a lot.
->
+> void *alloc_cc_shared_node(int nid, gfp_t gfp, unsigned int order);
+> void *alloc_cc_shared(gfp_t gfp, unsigned int order);
+> void free_cc_shared(void *addr);
 
-Thanks. I was aware of some of this, but it's good to take a fresh look again :)
- 
-> The problem remains not fully solved. pin_user_pages() is a building
-> block, but we need to fully coordinate with filesystems in order to
-> finish. It's good that you are looking at this.
-> 
-> >  - ->dirty_folio() relies on buffers/IFS/etc being attached to the
-> >    folios. It _cannot_ attach them itself, as dirty_folio() cannot
-> >    block.
-> >  - certain MM paths (reclaim, khugepaged, folio split, etc) are very
-> >    trigger-happy when it comes to asking filesystems to release them. In
-> >    most cases, barring any dirty folios, buffers, it will just drop
-> >    them.
-> >  - there is no problem in usual IO submission, but issues start to pop
-> >    up with GUP, where the code flow (roughly) becomes:
-> >         [get_user_pages(), etc]
-> >            ->page_mkwrite() called here, or before
-> >              ->private correctly populated with whatever the filesystem
-> >                expects.
-> >              folio is marked as dirty, initially.
-> >        *write finishes*
-> >        folio_lock();
-> >        folio_mark_dirty();
-> >          ->dirty_folio()
-> >               dirty_folio expects ->private to be populated by
-> >               ->page_mkwrite(), ->write_begin().
-> >        folio_unlock();
-> > 
-> > What happens if any filemap_release_folio() runs (and succeeds) between
-> > the initial dirtying (plus eventually writeback) and the write to the
-> > folio completes? Welp, it's unpredictable. ext4 for example will
-> > WARN_ONCE, and likely drop data (see ext4_dirty_folio()).
-> > 
-> > So, what can we do about it? It's complicated, hence why this is an RFC.
-> > For the possible solutions:
-> >  - ->dirty_folio() attaching this FS information itself is not really
-> >    possible in many cases. ->dirty_folio() can't block, nor is it even
-> >    guaranteed to hold the folio lock while being called.
-> >  - Can pincount help? Kind of. Things like folio_maybe_dma_pinned() are
-> >    rough, and don't deal with the usage of get_user_pages(FOLL_WRITE).
-> >    pincount itself isn't available in the common order-0 case, and not
-> >    available on order-1 as well on 32-bit, but who cares about that^W^W^W^W^W
-> >  - Could get_user_pages() ban FOLL_WRITE? Mayhaps. I would not be
-> >    opposed to that, but that's probably a larger change than ideal for stable,
-> >    and I'm not familiar enough with GUP requirements to decide to go that way.
-> >    This would require migrating all FOLL_WRITE users to
-> >    pin_user_pages().
-> >  - Can the whole system be reworked? Probably, but not for stable.
-> > 
-> > This patch series is really rough but kind-of works. Instead of using
-> > folio_maybe_dma_pinned(), which only interacts with pin_user_pages(), I
-> 
-> pin_user_pages() was specifically introduced for this exact class of
-> problem. get_user_pages() is now meant for other, much more limited cases.
-> I've attempted to document that, here:
-> 
->     https://docs.kernel.org/core-api/pin_user_pages.html
+It probably shouldn't be order here, that is hard to use. Just size_t
+len
 
-Ok, so I guess you want me to drop the hacks to make GUP FOLL_WRITE not
-screw itself over? To be clear, the rest is still broken, even with pin_user_pages().
-It just means we get nicer looking fixes, and I can drop patch 3.
+And round up internally
 
-It's unclear (to me) whether we care about any straggling get_user_pages
-FOLL_WRITE users. A quick look around doesn't find me many; most seem to have
-been converted to pin_user_pages() (though, admittedly, I don't know how many
-of these are converted in stable; do we care?). Perhaps piling on a patch
-to simply disallow get_user_pages(FOLL_WRITE) is ok? Giving Lorenzo's idea
-a go again :)
+If we ever want to do some kind of slab sharing scheme then the API is
+already set up for it.
 
-FWIW I asked my least-favourite chatbot about get_user_pages(FOLL_WRITE) users,
-and it found me a couple of cases. But little enough that it sounded fixable.
-But, again, I don't know if this reflects stable, or whether we really care
-that much.
+> As you noted, dma-buf would need virt_to_page() to obtain the pages for
+> its scatterlist.
 
-> > ---
-> > base-commit: 9663aa0da7070d958e333477ce0720512e9fa016
-> > change-id: 20261116-gup-dirty-what-b73da748f5d1
-> 
-> A git alias to wrap "git format-patch" with a sed(1) invocation is a great way
-> to avoid accidentally "leaking" gerrit change-id's into a posting, fwiw.
+I think that is fine, other places working with kalloc/vmap already do
+that.
 
-I appreciate the advice, but this is gunk that b4 adds to every patchset ;) 
-
--- 
-Pedro
+Jason
 
