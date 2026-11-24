@@ -1,97 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D4F606A32E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0735A606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pLjM4hBp
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bwd3SkJ7
 Received: by kanga.kvack.org (Postfix)
-	id 3CADE6B0643; Tue, 24 Nov 2026 03:34:28 -0500 (EST)
+	id 2568E6B0645; Tue, 24 Nov 2026 03:42:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37C166B0645; Tue, 24 Nov 2026 03:34:28 -0500 (EST)
+	id 22E8F6B0647; Tue, 24 Nov 2026 03:42:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B8186B0646; Tue, 24 Nov 2026 03:34:28 -0500 (EST)
+	id 144936B0648; Tue, 24 Nov 2026 03:42:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F29A06B0643
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:34:27 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA0CC14097E
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:34:26 +0000 (UTC)
-X-FDA: 85469350932.03.53753B9
-Received: from mta0.migadu.com (out-146.mta0.migadu.com [91.218.175.146])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 89C34180003
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:34:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pLjM4hBp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.146 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E8F996B0645
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:42:19 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6DE24160ABD
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:42:19 +0000 (UTC)
+X-FDA: 85469370798.16.24BA726
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A1D1340007
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:42:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bwd3SkJ7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795509265;
-	b=o+Za/HwdFEMhlg45D10p7mcow2//mV5a7iC+zLTW/Ny6DedCZ5pvjEF12v/XqO5TlgG7qo
-	kmkVNqPSL4mG6CASH8HnvGEAKATR6PGAfU+UeLWzGyj7t4lvGCx9o3HGe7vNbQYlLxNXxx
-	Mtv3TmjGfb6/6OlZbSWJCdxAwiQ+ggY=
+	t=1795509737;
+	b=6OERw2mAcTE49MuQ9ciXl8r7BFNCg208+HdW55Hl6Ko6/cTGspxJFdxyWjHP7RJ0H9ninO
+	lrAyTa+nrHzJUfLXU2oM7tCT1EZAzqNYhd3D73SwAasfhY1LAey0ZGurNxi/Pr/cYMenBr
+	WqWc8AIQyFKl1z1Sq6GR+NW7WDvQJd8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795509265;
+	s=arc-20220608; t=1795509737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KiVmxcFE4X1AS/dj3Y+jSeRqEGkTDYD4KqKrXIC4USs=;
-	b=On4YSmbX4J+SkZUynPptEd5w+OLyRPF69de15SsnDgTK0CoYE07Y0Be+6jNQbQGWwFzChA
-	QrYiuhNQx59gjlns5ucHIV6HFjW0J3eWkpxa0Nk15yCmC80U5PblLTOy7xtcxY1kDqetBE
-	xlFTKPMNt2YniJ40q1SVKaXIjg+/S7Q=
+	bh=0nMeElnKRibqtyS5IiENRQlfWIoBjOd/mPlC2beLlZM=;
+	b=Z9IIlbQjGLtTHyfbhqco8mCx6cAw8sGVfYAqnuMUUzystiIra4BuMAjksB94qVq8g9IQd1
+	LoSC0Y7FwCug1RFgbsgmZlPxav0X6WOxHt881n6j8VvredGIBea/7U8LC7HaESUpLQBbPp
+	VUNefS2eAUWXCYmU/uQNLLC/CQnBagk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pLjM4hBp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.146 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5JJmSg68DrRJ70easqv1Ad4WfbubqNBenKyplETxRFc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795509263; v=1; x=1796114063;
- b=pLjM4hBpAwJL6xEzflMFy9VQHWAJEMEgDKCr0yoCRmdJ/6Ns/daVkfsiY27OU+QvITqhbrYx
- zbH1y/eD/pgkp24dDFcTkZnjkqNYPVVNiMLYdSII5s9HdJTGpMmuq4xZ3L6DSsU090A3e2Pz8gB
- /7q/C0KSSbwuOo8aI7wCQrPI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id e39605e69979267c;
-	Tue, 24 Nov 2026 08:34:23 +0000
-X-Mizu-Trace-ID: e39605e69979267c
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 24 Nov 2026 16:34:07 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org,
-	kasong@tencent.com, baohua@kernel.org, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com,
-	baolin.wang@linux.alibaba.com, Baoquan He <hebaoquan@kylinos.cn>,
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH 3/4] mm/mglru: skip cold PUD subtrees during aging
-Message-ID: <awVL_81P_oujI3Ct@bogon>
-References: <20261120085806.781225-1-baoquan.he@linux.dev>
- <20261120085806.781225-4-baoquan.he@linux.dev>
- <sashiko-outbox-226850@kernel.org>
- <awVGycKHzXzW5OF1@bogon>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bwd3SkJ7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C5D3E60DF6;
+	Tue, 24 Nov 2026 08:42:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8371F000F4;
+	Tue, 24 Nov 2026 08:42:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795509736;
+	bh=0nMeElnKRibqtyS5IiENRQlfWIoBjOd/mPlC2beLlZM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bwd3SkJ7haIZ/Cr8gWQ11dH5pwy1TUoJm2z6wMy0sZn6MstoyKpI0XBlYB84j1iH8
+	 CZU7anzWQ7ozDIr84f0soz5d/FonYA8gqPtYpF4j2cUfrS6PM7ZW+RdkBQcaU0CE1M
+	 jY4KCFjXYKyu8rLsXVi7HehMMEAectNQp1CxAiiZ4TUJBfMXLrg7Y6F61lXo/eGjoh
+	 uUdP+cbjd4kG+lwesez4t+XE3XPY/hWxnDiB0pyb5DRJjqoQpzRk3qdAYX/f3oi78a
+	 29zx+BkYiV/a2nxg7zg4fI2uIQuk2c4j/qVN7NWALVE+hmmh8lRQrKpKHQLes5Q6YL
+	 5faz20hdUSIgQ==
+Date: Tue, 24 Nov 2026 09:42:11 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH] mm/hugetlb: fix NR_HUGETLB accounting for kept surplus
+ folios
+Message-ID: <awVN4-v3zZ5fTkI8@localhost.localdomain>
+References: <20261124-for-gather-surplus-v1-1-231e5660f3d8@kylinos.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <awVGycKHzXzW5OF1@bogon>
-X-Rspamd-Server: rspam10
+In-Reply-To: <20261124-for-gather-surplus-v1-1-231e5660f3d8@kylinos.cn>
+X-Stat-Signature: n8113bprz53cjq1dyo88up3uewytdzjf
+X-Rspamd-Queue-Id: A1D1340007
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Rspamd-Queue-Id: 89C34180003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: rr55wntkfdyk1qi6wz6cnc99dzup9haf
-X-HE-Tag: 1795509264-523361
-X-HE-Meta: U2FsdGVkX18WxNvWadWs5D0aJFwRY7FT8aSJD7Szcnv3he7XmH3yWp8gTww5rrP7eCPEhMKa8oj8LUAYpgafydSlpWJZdB2bBCdvHCFqKkaBBOgAqs1X/5TVuoFlj0UmRn6RQw6gwDuZika5kuCnQAbnf19aogyudRUGhsPOjgTLB6m33vxB/vUO2wK/s5+HrQEsVHi5t3HapllmFiTyYrMHoP2p6CQCybUftZXuJAL1Od6JdbR+PbcwruQF9xPdigF2jgdw7kzgafCzB8pi+rl7grdx8eQ3PT+oZdcB2ROr9EuG/GLRuced3unaTnEyrFcjcOvKIGQmTyca3+Gjah5dTyM/xLL5QcROz9gm3r2K+qFetewUVXZe+VidnutKemxRSGcuo6pC5v26qYBTTavyucvLHznE7WizBE55AScAN9OaoKYypjY6qWsnD8KRO7toz71SUZfWhF6EwaXZ8C8W3iosXpR2VJlgBI3B7KQrHZOEGNSB199vVB5NfcSUp9dkpbtZqWNb/Iq1cYGiYC/E7BiuQ+YCW1VwR6pa01MnO7SJkmhyPyeqo9JAh52wNHRYnKAyH0jJJHK+BDViJOZs7y7FJhXAZOdMH4jJPZqEslz4km+LIkEeI83Um3jCKjDCjr3YGziq6I4UrvxLIPF1VRsgnvlUmx2g9HAW4Ro5isUhjv5tUqwsVlAttEy7MnOTli9+HSYzNOCiSyqfFaj79pQ00qsErADrCHj8YUaAe6inBb1IyT2yLKh95/2xJtSzT43aUaDLz6dig4UQEWdKcEEZlfttEJo8DVP2V8GaYdb87JpPsFkUN9lYce/12zYcSZXr1AVl08ifPddZ3d6f+WcDkCxHH0qBBLL4qnLz8CEuwxJSjTCGZAPHofd+R/WsTPhzv8aEsa00zOemjTyMP08VUJEiwQOBSTQgb5gZUHvrO7r6WqHFXILuETgr1JpC7yxneYylq3UgSg2
- Jp3zCTup
- JcdaKlPzmNXO1kHUJvhzd5p/QwgvkJQ4PeSLSkz4PBbWFAS6Iv4ljPH+xVufoN2YeHVMKADlGKWslPYX/VG6evQb5orvRRczBeMSsAY1oOiP3nOLoksTyFrBwYk3FePTJhRfd37jAzUKhjqMHtp4oRes2oisuoYmr5Au3GzMl6I3R365bwCvMeC2zPZsNIQ5au3tcvCPu6AWHHvhVqArVn4vxI+8us8ERFKjo/GgDfa16p+vVtgCwNkRfRMhFsJTHOvxWiY58yhgdxSWAhyxrIO+9EAIXyCMTKbZqGBe9vx+f6VRQSn94VHBFW91GFIVka+IoIHIBDVoLelPCz5WCjslkbKTMh0madSMEmmmp4ysrkZA3yfmrNAae5rz2edY41iKQdTfHvInB9FfmfH9YhAr8r+sxVJz7kYTIaoOQpZ65KEPWqLpbTqGI7wwT1XCQFMSOLhF08rLZ52KwHDpcFCRqmTMshzLdjUXlcpmooKbqvjaqNU6zQcYHoxSasAb129aZa7V9hDhe64MbQy9ouaH1nbEFmTkQv3geTP/6s+5vB/Ra7csB1If3nxqSXnB1E7wlzTsHBZhcNUrhc6eUu8OfDg==
+X-HE-Tag: 1795509737-797315
+X-HE-Meta: U2FsdGVkX196uG6sdmREXCyMVltHntzqzz4T/jEflgBfGADB5nUhsBm1WUzzsvwZEAbLlDDfxmnCMfOWuMYQmXvCkPtr2+qT+vEq7v39SqKaQOWdJowK9L2FdCTJBYOjBrOdUzpwyGnA7FeMe9Aa3MLilkfnozXE71KDJ2V0a7oLYoTKCE3MgE/yPshZp/jDKSV/yg1vCIto1NH5dmja+MAhPz/R53Exv2qgkTzP3PC72ZN1iX1ieTPYIEJCUYQcqp1qRIzbvWJNc5aqjYOGP/R75Lp+rMWtPjSAmo33lkH9mTbl7F6hsw1Dm0QGLSCmvD3MruDy2VtvfVMpbp2dowDlSniJQnNYX9EqNJGz7MSYbQyzHSZi3WGXLmSqI4sgr3/p3G2z0b+uPSwpCx0s87CiXk+2EMci78xDwIDry021g4rrfOmA09+6P06wWdw3dgWKibLtWm5mZBs0wUJbF4f5ai3d59sxf1pqYHH9a8PmuLwOiI8YW63VXP/6TdDtj9fj1YFZk2pJzazZHB8eaT4cFk0XB7EAZtqZL20moXmC9ugfBkdFkw907p4eCOMzoiclYel6AshzR9kPIxFgspyG16vVVOsmNCvpSebyxgmOhXZvKCnyTjX32tIxVn+blQFZSCZtVBl41mgA+O3E08V5uGLtzBV/HAmP2foSk+9gVsqA+rT615LC27xOxs2DoAbDEVJOCoK6WZ5YSRUdn4NYGz7rzOLvNEKZijk7hIcVkoOEZECWkLtHlhJRq7PeX7HVUleG0ezAUNAv7JbgQacHKVC5g3+X0jjM3i5CKpk+gk62arSJGJhN84v2h7upnMhymJNdkyYPDJZXch2j1os/gsbJevc9Zfsg1VaCjFACiVfNprJnIR6BSwi3eV/6wPHc14+n76krDx1UNF5oHkWIoVxuEeWGhUZxUOfwk9qSdrhHXO0/Mo8HrdzvUOd4GGc76ZDZlcrmDyTxEi/
+ EPPuCX8Y
+ YTVeu9JvhM1Qg71xKVKdVyhSCv94dZi9xH9tD1QfONHB07LAe81DDElp72fDwPtgsG4Hp56CsQpVDlsuL0O4d0eBG+jgaggm4XFuOQ+9Ib7MYOKj+8olPtCwKZpCs5fQWspyoOtJv5TrE/144nQ6AVzFDwHPbBBPPj2JstOiVE/4VYBEdwH5BzAsbkfZxV4R1oxQlbexDLzOztb2KdPbKk9fUdhvfCPRSzBEVawNy3jYlK9GWPQxukAjcTxDJPfNSmVoU+3NOSCpjs2GRCjsJDv1Klovn0tJM/zTuRhfAMEqgnUypR0oc5dWUZIoLOG95C2cs89j2vAHf4CiJmhwkc/n+b4EHq3THdelS9cBeBRyVYlJVZ1V3gh2Ey68nEP40olSm2f8/Vecqpk6Up8obW8/JIZsbRAoGaPwSBYg5jr2Hms7ycZul9/c20psXSCJ00FNatpm4tDtqqX5FV3EwW4rtYDwfJTuCXwySjsg411cEgW+WQPZ0LX5MikFdGM5IirQF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,124 +96,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 at 04:12pm, Baoquan He wrote:
-> On 11/21/26 at 08:59am, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue to consider:
-> > - [Medium] mm/mglru: walk_pmd_range() drops young status of THPs flushed
-> >   at non-leaf PMD
-> > --
-> > 
-> > commit 807f1bc14298f872f3bf880156eb7f9c34a7f570
-> > Author: Baoquan He <hebaoquan@kylinos.cn>
-> > 
-> > mm/mglru: skip cold PUD subtrees during aging
-> > 
-> > This commit introduces a PUD-level Bloom filter to MGLRU page table aging
-> > to skip 1 GiB PUD subtrees that had no young pages in the previous
-> > generation, while updating the filter from the page table walk and rmap
-> > feedback paths.
-> > 
-> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > index a4c64a1903912..2cd3f28f74288 100644
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > [ ... ]
-> > > @@ -3626,11 +3637,12 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
-> > >  	return suitable_to_scan(total, young);
-> > >  }
-> > >  
-> > > -static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area_struct *vma,
-> > > +static bool walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area_struct *vma,
-> > >  				  struct mm_walk *args, unsigned long *bitmap, unsigned long *first)
-> > >  {
-> > >  	int i;
-> > >  	bool dirty;
-> > > +	bool young = false;
-> > >  	pmd_t *pmd;
-> > >  	spinlock_t *ptl;
-> > >  	struct folio *last = NULL;
-> > > @@ -3644,13 +3656,13 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
-> > >  	if (*first == -1) {
-> > >  		*first = addr;
-> > >  		bitmap_zero(bitmap, MIN_LRU_BATCH);
-> > > -		return;
-> > > +		return false;
-> > >  	}
-> > >  
-> > >  	i = addr == -1 ? 0 : pmd_index(addr) - pmd_index(*first);
-> > >  	if (i && i <= MIN_LRU_BATCH) {
-> > >  		__set_bit(i - 1, bitmap);
-> > > -		return;
-> > > +		return false;
-> > >  	}
-> > [ ... ]
-> > > @@ -3755,7 +3771,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> > >  			walk->mm_stats[MM_LEAF_TOTAL]++;
-> > >  
-> > >  			if (pfn != -1)
-> > > -				walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
-> > > +				young |= walk_pmd_range_locked(pud, addr, vma, args,
-> > > +							       bitmap, &first);
-> > >  			continue;
-> > >  		}
-> > >  
-> > > @@ -3777,15 +3794,18 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> > >  			continue;
-> > >  
-> > >  		walk->mm_stats[MM_NONLEAF_ADDED]++;
-> > > +		young = true;
-> > >  
-> > >  		/* carry over to the next generation */
-> > >  		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i);
-> > >  	}
-> > >  
-> > > -	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
-> > > +	young |= walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
-> > 
-> > [Severity: Medium]
-> > Can walk_pmd_range() drop the young return value when batched transparent
-> > huge pages are flushed at a non-leaf PMD?
+On Tue, Nov 24, 2026 at 12:41:02PM +0800, Hongfu Li wrote:
+> From: Hongfu Li <lihongfu@kylinos.cn>
 > 
-> This is a real issue even though very corner case. I thought it won't
-> happen when making v5, but I was wrong. It happens when all below three
-> conditions are met:
+> Commit a11a13ebbc5d ("mm/hugetlb: account restored reservations before
+> freeing folios") reworked the free path of gather_surplus_pages(): when
+> the pool was resized concurrently, folios that are no longer surplus
+> are kept and enqueued directly instead of being freed.
 > 
-> 1. at least one huge page whose folio is in this lruvec is queued in the
->    batch, and it is young;
-> 2. the call that crosses the MIN_LRU_BATCH boundary comes from the
->    non-leaf branch, i.e. the PMD 64+ entries after *first is a page table
->    with its accessed bit set;
-> 3. no other PMD of this PUD sets young on its own, neither before nor
->    after that PMD.
+> However, folios on the surplus list are accounted in NR_HUGETLB when
+> allocated in alloc_surplus_hugetlb_folio(), and every other path that
+> returns an already accounted folio to the free list decrements
+> NR_HUGETLB first, as folios on the free list must not be counted. The
+> new enqueue branch skips that decrement, so the folio remains counted
+> while on the free list, leaving NR_HUGETLB permanently overcounted by
+> pages_per_huge_page for each kept folio. Nothing corrects that later,
+> whichever path the folio takes next.
 > 
-> Fix is quite simple, take the returned value to assign to you too for
-                                                            ~~^
-                                                           typo s/you/young/
-> non-leaf PMD. This will be done in the coming v6.
+> Fix this by decrementing NR_HUGETLB before enqueueing the folio, as
+> done in the other enqueue paths.
 > 
-> > 
-> > mm/vmscan.c:walk_pmd_range() {
-> >     ...
-> > 		if (!walk->force_scan && should_clear_pmd_young() &&
-> > 		    !mm_has_notifiers(args->mm)) {
-> > 			if (!pmd_young(val))
-> > 				continue;
-> > 
-> > 			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
-> > 		}
-> >     ...
-> > }
-> > 
-> > walk_pmd_range_locked() buffers up to 1 + MIN_LRU_BATCH entries in first
-> > and bitmap across loop iterations, returning false while buffering.  If
-> > earlier iterations queued PMD-mapped THPs and this non-leaf PMD call lies
-> > more than MIN_LRU_BATCH entries past first, it flushes those THPs and
-> > resets first to -1, but its return value is ignored.  If no later PMD in
-> > the PUD sets young, walk_pmd_range() returns false and walk_pud_range()
-> > leaves the PUD out of BLOOM_FILTER_PUD, skipping the 1 GiB subtree on the
-> > next aging pass.
-> > 
-> > -- 
-> > Sashiko AI review · https://sashiko.dev/#/patchset/20261120085806.781225-1-baoquan.he@linux.dev?part=3
+> Fixes: a11a13ebbc5d ("mm/hugetlb: account restored reservations before freeing folios")
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
