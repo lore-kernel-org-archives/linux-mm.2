@@ -1,93 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11ED606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28CF606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cIkS9woo
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HJQfLE1G
 Received: by kanga.kvack.org (Postfix)
-	id E32466B08A1; Tue, 24 Nov 2026 18:09:24 -0500 (EST)
+	id 9608C6B08A4; Tue, 24 Nov 2026 18:16:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE34A6B08A3; Tue, 24 Nov 2026 18:09:24 -0500 (EST)
+	id 910FF6B08A5; Tue, 24 Nov 2026 18:16:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D20546B08A4; Tue, 24 Nov 2026 18:09:24 -0500 (EST)
+	id 826FE6B08A6; Tue, 24 Nov 2026 18:16:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AE4656B08A1
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:09:24 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 58B806B08A4
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:16:53 -0500 (EST)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C7E5140D72
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:09:24 +0000 (UTC)
-X-FDA: 85471555848.11.F9ED1B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7614940002
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:09:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cIkS9woo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795561762;
-	b=cKDIVkbvfaLRsHpXSd8MZPz6g09AGr5LAod7gQxD9hxGQZGTBetcUapybsGLokzBG4TOQg
-	zmt46Dt6nRhwEM6gSqglqEhST1REq2CL222iv1H2F7S2kGD+vwEhPbWul+jAOkS8KRupCj
-	yqsfOzEzrchqLNorStq8UEcpTb4Lklw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795561762;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5AFCB140D66
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:16:51 +0000 (UTC)
+X-FDA: 85471574622.11.1E9D53A
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 35640140006
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:16:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=HJQfLE1G;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795562208;
+	b=vSQtSC/T5PRRYICWRS6lqAIlrqO2g4wYINHxF3FqhbhRIn/dbSX3IniGHQ3AhzD70vC5WH
+	CGoOt8rjWS+tF01uKj9XZu5SM2OXBaME/8xYyBjHwG4c+BMShTKpyjZYHuQzfTYsMj9EYz
+	hTzJzcNyRmO2edpDl3EKOahqBOhZyTI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795562208;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V2OmqIyRYNn84fTcJ7B76gimFKbuWcXbIw+xjPcSzkA=;
-	b=gpbSBkTdvJ8SGsHiizp0A7PfBglxqgNLFX+PePWPt2uuFeRoSFp+5FobbJHnBP2ThEufby
-	ue497cxJuQDMahh29L4f+E4y8lirIwoTMlFXwYUUmYDg7inNOAZNCcfhYRcDwNjJ3TUVUt
-	hi5dK7e/GClnxANskGoXaVAox7Jo5Uk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cIkS9woo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 148A4400CF;
-	Tue, 24 Nov 2026 23:09:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3601F000C0;
-	Tue, 24 Nov 2026 23:09:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795561761;
-	bh=V2OmqIyRYNn84fTcJ7B76gimFKbuWcXbIw+xjPcSzkA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cIkS9wooJ7ryPDd26vHC20ZQO3Zxtf7rslQEkHJ0huW94PgSBPlsm+VyL2xH6uOOS
-	 NTSb/OxkWuteyzM3VHtDUuv2F3lvni1lP8dAafx1caQsoOshGwiSpQLFB8dg2f+OKp
-	 OLWu+kzZv1jW+JToXxr6un6lL2zluzmSel+vueb2JaA7IxqNqHIEM6WSR09t/7X3Co
-	 m71At3Z+MPGdE84VIuQw0QHM6DoAisaW/V92zsAjnhqB9RPDa1WXZOfEnyTWdyE39L
-	 ES/JAyWdJJA10/OhROMGYeAhaS/Z37rjyD1qgtLTdNEoGxBjeHQA3+5eswrsji95XN
-	 hDJnULqenHi2g==
-Message-ID: <sashiko-outbox-232207@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 17/19] proc: look up map_files vma without
- exec_update_lock held
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Brauner" <brauner@kernel.org>, "Jann Horn" <jannh@google.com>
-Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Arnaldo Carvalho de
- Melo" <acme@kernel.org>, linux-perf-users@vger.kernel.org, bpf@vger.kernel.org, selinux@vger.kernel.org, "Kees
- Cook" <kees@kernel.org>, linux-mm@kvack.org, linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com, "David
- Hildenbrand" <david@kernel.org>
-In-Reply-To: <20261124-work-exec-update_lock-v1-17-e489035395b8@kernel.org>
-References: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
- <20261124-work-exec-update_lock-v1-17-e489035395b8@kernel.org>
-Content-Type: text/plain; charset=utf-8
+	bh=ZoFyEnud89IUcB6sarqMzo8JRRy8dWijZef5NdeWRGU=;
+	b=Wp7rhol8agx2zh0s4Ya2SG1Gw+dHHRyLJno9iG52hing01mG+LbbnRP4cclGqD6U4W1ZeF
+	mIyET/en5KoYBU4t6e6vWzh7sQmAJgv0kFrsdPNo5DlUOMx7cr8K2c/DJG1kzAhIGLVWav
+	6gYDpv0KEsTl08kPwctUfO0ZH9iQ1f4=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=HJQfLE1G;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-492f0a1b685so3510942f8f.0
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:16:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795562207; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SUHsWpSSox9XDyaeeHkFElnw7sleh2fshAHN6JOKsWY4MZ/UyT5SrjG/n7rMjpnrD/
+         7W2GqUfSiNnSmhg1hk1XKyrINasp5vJYPmjpg3qn9i/GbG5/+/eocXbJCT4LO/wjhm8i
+         v3pvHBjY7rPQ96s+Et+dJXzCtnj1hcKdieFVjE+lNx+VMQfkPw4MmXVF74bFwAhXffbc
+         RC19U31r/XDM+cMoNRdNPoP2XQLA1G+4Zn793Mdcev+GEqt6ccAO15bqWNwyp+ek6QSO
+         wWMr7hULGF5OAcu2ThQmHjf1g+CK+8VdaNSNKVYfWvnDTBSxU2iCJApXZ66VdWn7C5Pr
+         e+hA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZoFyEnud89IUcB6sarqMzo8JRRy8dWijZef5NdeWRGU=;
+        fh=BXz04T8IcjnKx3//hW2r9uq39LKxa50HihAbhAAAd4s=;
+        b=krKkoL6XhcOqarTZ1Z+/7EOFCzj5cxLkVvNGTNrnCXvynOJKoFuvUOPEPbqVTre98+
+         Q9gni1A8xCFgQzWncEM3c+TxHsAEZIzK3OISNKaNPGkBwby3TtpNgSduBNjo4MfTxIVD
+         0eA3lZuwY0tV3HRl3LuB5mqjnuwdrkf6bwwR7DyH4VCvcb91hHHHGKQUNc+mDlOl6d1Z
+         Usgplm48fwDXs1X6FPbBRXTc40fUGipdsJZ6p8fsDxr+AMHJvmk5NU6NvaqC4+YOnVnp
+         vr5AQdhc8BiZDq+OIt4KhAjUXjM894jXy7byXFj+uHhiWIG4xGTzSdoVSqbkzQy1GaLi
+         V6GA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795562207; x=1796167007; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZoFyEnud89IUcB6sarqMzo8JRRy8dWijZef5NdeWRGU=;
+        b=HJQfLE1GisU8gM8htsywIpj865LTsCMYM7/AfnsxV0qQpFjYiYW6uNyr8Aq2C90ysV
+         Fu/wYsLjOtxpJgn/bXGQJaklT/UQ3SXnJKpffPzy0xuUTm1E60C/v244jid0NOd98626
+         wW0HU/OyjfT6t+YuJd3oNjKyBiU8FfSdVnnaEeA8B1mnMHllGyflaDHNoWKy3IZ+iZqq
+         kkSFk9wY5KUZGw2QQkzHW0KHKghZ9snV16C+vK6OHAvisw00N2xC8bmrIX93YYU+3ttI
+         kKeHSr9XFV34q+43tsAV16yDd81aRh1yuQ7CIquzOEseoWXZF0VimL9ZpGngIh1R6nIv
+         oFWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795562207; x=1796167007;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZoFyEnud89IUcB6sarqMzo8JRRy8dWijZef5NdeWRGU=;
+        b=hQcFh5yS13HFPA+B/mTXmgYAa11uPvGjoI4k5JOGN1eCbM6gCZ9f5YUEcNO7eiU7H0
+         l2YOSbH5eWx/avAfARZbnsXLUUwryOlukpT5bS1P6jWTegzUsi1g5TMFaUrgawx/ae72
+         xAptTBbEiePj7O+0G7sSoxzBm6KFGBEKX+TJRACDb3h7Kqq+O+/MO62lPTpNUK2M39yW
+         sF3lFr4D9HjuFm2jEWzac4B2DgtEGpaWhMNi82TaNmmr2thwjyxKos1g8L93/if/NsWc
+         GBiv8PfVNQVNHujsghI3wArlj9gVAS+dBO9e1qBAMuDaEKm0i7QPN2boH7eCVTbfGNP7
+         qHWA==
+X-Forwarded-Encrypted: i=1; AL+hErGwaG/Xlh7lFMkNqZYR1sDwDdcuBK0ymzZQDRPV1BjECUDve4f4RWNADuBhySU4NCLC4tRfQVU7jw==@kvack.org
+X-Gm-Message-State: APuU4Z+4rlV+zi9Flq099IS/qrdHqXsr66szS7/olkH1dNldnhx+yUni
+	DqIpdw0nox8Hoz7XG2MNXVBrMK9fhtuBlAQ3vYnRuL3tFPVY0Pnyr9LGqZRhgf6opW04fdwhKCy
+	0K/NFj8v2+9e57R92UG4d2MqLcq2pTog=
+X-Gm-Gg: AZFdTZeOvff+kpNb1x9Fj2b/tVSkfCD8ZUZPPUylAt308y421gacnndxMtdILIDGJmW
+	t29byQjejFoymuXITcxk1I9CssTrzRQr1spSwjmwjwvf6lOLSynU3tRj8PUumguImSr92bkzmu9
+	POf/ebvnz1wfdGi/JzSriSPycXyxh0+flCHnnzBRUtStAU2ZE26Lf0v7vjB64bmlnXLFSoFlQIf
+	iJ1ADgEVfDBqmkkPWRNGqDhvChUTKL8MUdh3FDZwux1m3Esp+/nM2hV9gGsQzAlSEzGuJpP/H7p
+	/Nj8pkGKgLSC17ThUbHimrPm6+tkrsEs0F6Wz7sO3m8AoKjOqYwKlzNeW0kePXTo0muwq9VOLfs
+	dlOjuuGZ72txbF1RpqcEBkjlUnARnPnLM8t3PDKOmXvfMd8Jp/WekFQVZxpufu9K6F1Ljg58pri
+	4AB1FgKLGcDOz49UrsyZLjz1Vk191Y4Gy4KJFqUxRtMY8O6w7tH2mC
+X-Received: by 2002:a05:6000:290b:b0:4b7:8363:682 with SMTP id
+ ffacd0b85a97d-4b7836306d3mr6416284f8f.16.1795562206537; Tue, 24 Nov 2026
+ 15:16:46 -0800 (PST)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+References: <a74aca7a3d27333972782b29786c7b33861a56f1.1795412161.git.senozhatsky@chromium.org>
+In-Reply-To: <a74aca7a3d27333972782b29786c7b33861a56f1.1795412161.git.senozhatsky@chromium.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 24 Nov 2026 16:16:34 -0700
+X-Gm-Features: Aa3M54rNAfJPEtIYBNS8z0FncYPJyb1XKCgONajpLzKwfERL2NRMGTo5_-rczOI
+Message-ID: <CAKEwX=MJJVBfdE+LL-j+jwfkNP=OHaV21XLJxEOBv4XwsBLiiw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] zsmalloc: free a zspage's pages in one batch
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Hongfeng Chen <hongfengchen@xiaomi.com>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 24 Nov 2026 23:09:19 +0000
-X-Rspamd-Server: rspam07
+X-Stat-Signature: b8cfuwf3taoznhhzqarragjrnpi8835g
 X-Rspam-User:
-X-Stat-Signature: mk1ifwxu8kkc4hnmhki9koe7gf4phhei
-X-Rspamd-Queue-Id: 7614940002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795561762-599516
-X-HE-Meta: U2FsdGVkX19VWDEdo/v8cAmgKPkrLy4Dybi2KgIbzhCyKKWz1Ap2mKBp3MhPED2XJNJaSt2F44crNsc1a0lyXfty9YlqEqaLhhaaj0zie3rYZTdj8K+aOPbbVWT4fRxtaUx3DwqBvR3XtbhdZoIccxUQTIgOybhPb/hHzFxBnyHaMiJTZq6FZJdMD42oZAWUSzK1j6C71X23fKKkArDnhg1AfMWmnGzzD5hqaS5KOoCLFq6v12FKC8jiQ85AOisR4DLcks8Lt3dwqT6QdVard4EGvRGEtjpiZ2s9iYEmzOFvY4DiE4vIt8U9MOfTo2rV0GKLrBNirJ3iM6l908GEzTgTXE19FEwkqkfR9NE7ObiS80omwhRYDfpyP5GysjGl6t7j5K3SVcLIBvGwPUUvCcXXbLQ69KBlhHFa5rcxg5G3imVhDGOlr1YSkivSgOMD4LV4wLZ0QBV5VH9AMJwlCPDURt8Zbh/1naeW5iRvk8uJVWAWP5P9TvXjf/DEPmZbKcDopEoFa8/G4heLMBwnzDgLvGpTsX61aSabo3SGP1b1kLUILCf3AKhuI+i/rmW33DcXPaio1YG916p4eRXEGS5ZsdFxemlGMn9Xb1j+thJyPqzNbH9Ka+agXs2fiRBEAQpxoV3yPSnsIAmHryDUoe+4x8l44SpGE6fPFGy/Inn4Gg+07COjeCjd6X8dtv7yhz5c/yWYC8e7q81NzvcbDNK7f/2tDqygN6DVwgRGY91rWw7bzkSyks5iXebWEJwDRk6mn0F4+uGZxJnkw3mArNq7zWz4DfW6c491VbItpKKu+rX1wkt8RbCqP+7SC1601SOFUewoOSkTrfYS3pVFJx+0SEpTfVdnwMB1nBbggtZ1jB7/M17t4+P5dY7Ixx7yT8MeSoPSf2Puc0hXFcVPvXIJ0tOsczMzc4g/fAx3Pq6o/CHKlKWl7ZbXPQhTLiOwT3dRp+ijpP1BFL4U0bA
- jX6G1rKP
- kkhJNBHtbBAEJGjmSa7IgUFTooIcNprqoz7j6PiJheyvx/E86nY9dEzEhiAI0k/vHsw9GsWe29KteSp1Yrm3esgL9WoIVvvZfGp46+6e/lIQcleqceaXiUJnWkXii2s1WCp4R2FVyq2xpAHowBEzs9E8x2pnaPg9vSeZq8GlyESi79aIYH76EfUvRZjEvfFkCxKeFVedj5OH3hvhIHmpbEqFqM6h3uc8tdk1jL2TmmygiZqMridQfi8+pBubGBPcSpq1/qy0XTf+ri3gJdQ9Dck+QRT+3I/sxwe5fZxwSGUdNICzSMYClZ/ZoNuuO/HQ17zLhyEYVHGjg23VX+dlBFZS2seFcZwPnVDf3JRRNEf98INf1yyDmG0nCOVkOJqtiKkpLbnby1i/2e3NumQKRpWTS1bbM6zLOwPIDLwbOrh0masLjV3r2UpzEKwceogIdYHOpuAJHJG4wBYt9cUngmb3JMLuh6FI6Jh6NhZWzlhuZp7Lk1KnujpP6BDWmEnuS508BFLiyeNbNOMElm6Uphq5s36le7Zm5ZI3FyRZLL+tyP2joO94VFZ6dVd0vohMEUmM8x7de9mPyze2tRdmHAHmZ872EgadW/NqsRt9bgiKrK3pJkg7Gz7kPTTX2E4u7fWfB9QW1PyKB7BwTeDB5pLsO4e7Ksq9h8vOEWmHj2FLDMCqzmQTdMYidL1pXjPmhgIeemEsaLgPjE+qabKQf58J5QEax8Yt1NhE1HMoz03y229kMGPIxNUQkBWd+WNgO15zbSUfBlJzxF7YqBtgKBuTPjVMwX5ncRR2bk1AVBfyBarR+tMYJHgt86szMetqhtUjp/13ZOLPYINJBljRxIkePa2mMrNkESGQ6kuQ6OIp6vaY=
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 35640140006
+X-HE-Tag: 1795562208-437234
+X-HE-Meta: U2FsdGVkX19j5Yl5+yjGO5Be3FvpLTx6z7M0oA2nxyKiSBHBY1oGnkNnQQnCSJgET1sVM9xv3lijMkJVR/OMNeFZAN11IuA75V93NORwr2sgbAIhBntiAimn8MGNADoRP/oKrVIohuDHazr/NfgdwLhMBj68JA6I+CoFVITUP7hxfYxHs1NiJhnxkxY5xFOGvzudcv6bieC57Xmbovak8hzO6Sok4r3ettYk9mSFX6sepYGeoFcej+/cN48/AJfUOxtq5iZwQ1YW0UaLLk1HNpH77GMYA2d7ROM3uDWGpLtUpmAn9Nw0b/g7JUs68psR3L7e6PJOhaoQ1YlBFB2Y/KtrW212iU0PWVLIGwss1vP1i+HeDu+p8eIlyAhG9tfPDQSed2WxSAW01h/H0c0tir9jhDtzeUEoYCp9yA2iXElpDTIs9xoPaoB443J8H2zuHivXQxTnnEiWi+SUmPNCymXu78t0YUkH9p0kkRzk9FUjPJk406L1vZ1BDjcH6l9IctchzUDPPzftlB3zAVfQFo4l7bNRuPwHrQBGPYEVK6l3EzSD+3xGxYzVXpbABOrPygqVYNxuS3nFLPF9xA5RjpNOPbCoDuwWjczqjmgq1ajC5hxztjFwlFFsYJ5fWLsPFMjYBfQLu6XTnvPnRD9wxOOhEDWbDQQge3ZxC6Ua1gtAKFxxM9B/lL6KbqAnqHChkSDGtJUwidCz31lpP6ronTYjdI1dHI81c/HeJ3o484LpkZQvQL7iyMzjZmrt2NGY+9TNk1k2elqCiNa7/BnYfV7lFTvuZIeBw3M6QfKbPdAUU4T2UVmMLg5gt01xiJVjCrcJizCR/bjXwwBFR2Uz9qR2kFFKUAIpTrvOz85UMYmPPjw5ctJNtcxvntpdewcwkygd6RZPO9axavhunQcfUJZpj1s9mWQSklcmXia2+y5LDZdStj5kTlEw73RlPsb1CgUlFzzD9EtAHDvk7Yh
+ m/TbrmkB
+ UBS5gO3P8Q0XPfWMXB6Qq4iL81lobF+xK1W4hyZY71kHwDtOAiQPlGgM0ZEUkzjDsC93DtXgl3rX+yMGst7/1FCiRg4doAwk/AxylxVOw32olRIIpszHroz+V2dKFOyvObYrBFJ9TebnqyLKr6ZZTuBdrtrZDum74/srZdl9cFttk3dI+WXXhmSCFtgeuW+Z15JA/4kRGRlvSxQ0LAoz/wY2QVCeIZ2WIRiHVCLFq0LeNfq3AF6qrHrYrXjfkZ1gwZQg3WH06CmY8gxfXdm0uq1OI/rYloNhQV1fZYnTppp4ZPjiib5gKI0WaMCipTpJeV3pJQg9UNt73W32NZc6PR+gCs44S3ZDLqgDmGLQ7CYIRClWVCJSSroV92sWLjqEWt9S3Ivs4P4JSk5IYtTRHZomlRpKm8xtpjrmTRW0J5b8UrRBlT1qnz5WWZ+DdXZaquGdQtiWhlegTGznFcSEv4c8kCDkS4F+VqY6iWoeMszwmtu4yBUvKP85rhLGtFVp1W24sG/WR8kw/ZblaNEdqkNf9+0bzpePfLYfKVrty51Afl9Wi4yoTsBLk2YKen2T4Eq7Qq0Juv/7BLaoNhZj5J1cPmqKo3LtDQvZTXERlrlOIITTH9KWFrDDQfaRu6oZfYK59quF3YAYUz9w+AhcLlSsizkWC0EsqICbdlV8CTZV/jpDLGM5v39sBx8ip33l+2Uc0uVDWq8u4TDAmrZYSqS7NqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,49 +145,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] proc: separate __free() declaration and initialization in
-  map_files_mm()
---
+On Sun, Nov 22, 2026 at 10:36=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> __free_frozen_pages() and dec_zone_page_state() take about 22% of the
+> profile [1].
+>
+> Collect the pages of a multi-page zspage in a folio_batch and free
+> them with folios_put(), which takes the pcp lock once per run of
+> same-zone pages, and update NR_ZSPAGES once per such run as well
+> A zspage never has more pages than a folio_batch holds.
+>
+> Single-page zspages, incompressible or power of 2 size classes, use
+> the current inline path.  There is nothing to batch there, and
+> folio_batch is not free, hence the batch path lives in its own
+> noinline function.
+>
+> munmap() test:
+>                     next-20261119      v7.4-rc3
+>   256 MiB           -2.0% .. -4.1%     -4.4%
+>   1 GiB             -2.8% .. -4.4%     -3.8%
+>
+> [1] https://lore.kernel.org/20261109105957.2577351-1-chenhongfeng0212@gma=
+il.com
+>
+> Reported-by: Hongfeng Chen <hongfengchen@xiaomi.com>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-commit 6e8b44b478838f53cfc44f13f68cf03b45a869ce
-Author: Christian Brauner <brauner@kernel.org>
+That's nice!
 
-proc: look up map_files vma without exec_update_lock held
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
-This commit restricts holding exec_update_lock during /proc/<pid>/map_files
-symlink resolution to the access check and mm pinning in map_files_mm(),
-performing the VMA lookup after releasing the lock.
+[...]
 
-> diff --git a/fs/proc/base.c b/fs/proc/base.c
-> index 7685660c36241..b28bd6c57e1d8 100644
-> --- a/fs/proc/base.c
-> +++ b/fs/proc/base.c
-> @@ -2228,18 +2228,40 @@ static const struct dentry_operations tid_map_fil=
-es_dentry_operations =3D {
->  	.d_delete	=3D pid_delete_dentry,
->  };
-> =20
-> -static int map_files_get_link(struct dentry *dentry, struct path *path,
-> -			      struct task_struct *task)
-> +/* Check the access and pin the mm with exec_update_lock held. */
-> +static struct mm_struct *map_files_mm(struct inode *inode)
-> +{
-> +	struct task_struct *task __free(put_task) =3D NULL;
-> +	struct mm_struct *mm;
-> +	int err;
-> +
-> +	task =3D get_proc_task(inode);
+> ---
+> +       zpdesc =3D get_first_zpdesc(zspage);
+> +       if (get_next_zpdesc(zpdesc)) {
+> +               free_page_chain(zpdesc);
+> +       } else {
+> +               /* Single-page zspage, e.g. a huge object: nothing to bat=
+ch */
 
-[Severity: Low]
-This isn't a bug, but per the cleanup.h convention, task can be defined
-and initialized with get_proc_task(inode) in a single statement rather
-than being initialized to NULL and assigned right after.
+I wonder if it's worth keeping the old logic for incompressible case.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124-work-exec-=
-update_lock-v1-0-e489035395b8@kernel.org?part=3D17
+>                 VM_BUG_ON_PAGE(!zpdesc_is_locked(zpdesc), zpdesc_page(zpd=
+esc));
+> -               next =3D get_next_zpdesc(zpdesc);
+>                 reset_zpdesc(zpdesc);
+>                 zpdesc_unlock(zpdesc);
+>                 zpdesc_dec_zone_page_state(zpdesc);
+>                 zpdesc_put(zpdesc);
+> -               zpdesc =3D next;
+> -       } while (zpdesc !=3D NULL);
+> +       }
 
