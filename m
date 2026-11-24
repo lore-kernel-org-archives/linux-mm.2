@@ -1,126 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05727606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17CD606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mAW0sb8c
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LewI+WEa
 Received: by kanga.kvack.org (Postfix)
-	id 1DCBC6B080B; Tue, 24 Nov 2026 12:38:07 -0500 (EST)
+	id 0D11E6B080E; Tue, 24 Nov 2026 12:40:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B4736B080D; Tue, 24 Nov 2026 12:38:07 -0500 (EST)
+	id 0A8A86B080F; Tue, 24 Nov 2026 12:40:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CAE76B080E; Tue, 24 Nov 2026 12:38:07 -0500 (EST)
+	id EFFD76B0810; Tue, 24 Nov 2026 12:40:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA4026B080B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:38:06 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 06FBD14055F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:38:06 +0000 (UTC)
-X-FDA: 85470720972.02.82889D1
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0E3F2120006
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:38:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=mAW0sb8c;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CB0A56B080E
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:40:26 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 469A5C0BC7
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:40:26 +0000 (UTC)
+X-FDA: 85470726852.19.870BFEF
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 46FFD160003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:40:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=LewI+WEa;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	spf=pass (imf08.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jthoughton@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795541884;
-	b=OwHrf7BnyKLlmYOvCdt+9LQsowd8ZUlaOcMejnNwjqs+5D47UmM+XZDOe0OLeifUFEcCbB
-	56jHMWto8TMDCQsUZnrJWFp4fqq39lNd/HT5vCtStt9UqSzmUB7e9E8x+bYqx0Of1XCy+y
-	bpB8qzjluFRgla+CNyKQ/562oUWt348=
+	t=1795542024;
+	b=0nxNeBtNSpAsBHQ0vP4D2KugbP2TpbrQG+2D9CIMHb3TSgynsROYCXafJ7V97RINuJMUS3
+	/F2Y4NtQterajwJNmLl3GOIFoky8AVWcS+vjOkIC+ojwdU5A/wP0k6iP3LuUkYQrQvxhzK
+	M5PKZBt1wTnkThXrmb3mlZ6EV+ynEos=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795541884;
+	s=arc-20220608; t=1795542024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=27zYXXgABty8CUqGukpLM4c2xVBftF9tF/4zdE571W4=;
-	b=JQO+6s2yiIOX8DMg5gI/sv48DREjLhzJZOzp5S4EFOnpvbSmRYwLc5wdxChbT7THT/NXR6
-	c5h7NR4XIE21v3iSaouHLzXE/t+LO//+ocEElCiI2lDdign1nKwW2BAar9rh5NXB5Q2qoG
-	v8NJ5KQ0OJzImjGKCAIAuv8sCa0jlCU=
+	bh=ZyMW0Suh0lL3Bzt0NE42D1NOyP8/ltJQBT/Rp/e1E1o=;
+	b=B4pjK1IMdfOuqn2nA8xt2kDP4GP3a0mUAcx7s/P+ybJIyWGClMwUUMjTa/vxyR6yDA4VOP
+	B4QkmQVzzqQ8RVx2/W8MxK5/R12jdXiUAL72ds6pvN21DcyY1W4l6VKeJEMarx1jDzBjJo
+	xM0Zw9MEdawvY51WJpIs4f5P3ahy8ds=
 ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=mAW0sb8c;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=LewI+WEa;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	spf=pass (imf08.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jthoughton@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c50aaad19fbso534918466b.0
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:38:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795541883; cv=none;
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c4322d310e7so246833166b.0
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:40:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795542023; cv=none;
         d=google.com; s=arc-20260327;
-        b=EvBkCX846eQTxktfH4AZzH+h3SgPQWZuY94F3JHjfFI+vPx+hit6ZAuRtZzvWsIJ+F
-         xPsoFBB/VDCS7R21ywDcPSFfEcta+DmBid8ggb1yeMWfUJSLgBcA3e5rTjzsdBxL4G7X
-         vcy16aFJRk/d7FRoQxrhNmhvIRySH08z1wK/mBCy0zfLYlCreuGu0l1KIdy5DaNaWbec
-         wAwhrYtldyGjBxeBng9XGmRCOQqaywgyc2vOA9CN/mHliOXzn404tpqPVxkr1ra0yueX
-         i4XRGQNuJy+qp5buSjCBIOvBtndFi8R0G1YCtCDJOs4sw3vu1G+EJKXOkf+TmjX6oDor
-         wexA==
+        b=akEglrte2cA38iX40RKbQ3V839FsZRuSe4WQcg/h5Zjb7OqFWnLosbOLP+5G6crvG9
+         0Ne2ytcpUZsrW3Afk8UCJIqxQEwMv1jmzfmJr4UkzDTdFzS3o/Wrp5e8zdqF94LhPOe9
+         aUGvRey4icCwYJ833de/4w+u5k3Y8ypfYUKwtYgbB+neLMrpOAa1Z0NUHH1emxjM2wqA
+         yxQAzoX2hVXYuKIYvY5ZyeUMiRYLacHTU1Nj9KpMnXb2kE0SC6sDUKauVE+Drt3a/f23
+         P4XPs7y9ZHIxqjuQv+aaroYAASSRxL5oJLU0zJ0Kakyr2GKEAigGwx//0qDf+J8ELaAd
+         zV9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=27zYXXgABty8CUqGukpLM4c2xVBftF9tF/4zdE571W4=;
-        fh=6fu7TTPnxVv6LUucP4M7Eg+4vY+LIeeHqmBxrMxap5Y=;
-        b=XaWP/t4H4OSL2fbX49aU8AUQx6oizcSzz4QdBVPjpAzfVKKveCgdIZzA0HRAuXLuA5
-         fyyPQIa9y7DbDvi2iZCxvU33kVAJ8jlKgSqhnpkF8+J6PYh04yg+9rps9CFP0U0BCM87
-         47/bxKnQamT3sCW9GjL9YG5xPBgt75ATXXtWBMXAfW2MVpLhJSraOh2WqOkecyXYwMLS
-         O9ab1oI2YNq3rtKsZDlxLQ2LYktWLDeMBeWDMfc3Qd/q9wXfzArAbfWYcE8ZhcGdCEEp
-         u7kzxvWoKJOF3Pi6H1CjP2jx2hkQgUWkhtUHRrdGremPN/gF313vj8HZvKwQATJo7na8
-         p6CQ==;
+        bh=ZyMW0Suh0lL3Bzt0NE42D1NOyP8/ltJQBT/Rp/e1E1o=;
+        fh=hC10eKYt/j5xplRzRs4PACA7xTIlXFvPmCk1z1fTghU=;
+        b=OOUFJ1IV74WLacGaSxmGtCCYmitcGRCWYgd1pxgwH7SUYw9m6D92Bd7//57LibbN/p
+         E3EWFrTatEqxV0/KMF0jwDf18SrpsBAH9MqUdbuJ1xsNEDmJdflk0MDsTAyZIa9IGuQR
+         8h8f2xqiT5CxC2RFS01Pl5+2MgA51uFTogEKSk+Z/CYqYZ/RAO/LwaWfu5xmR7GqlamC
+         s0SQQeKdst9Wj6pMaQSK7rWqe5hedM5712veIAq1A2Ood0/y01S96G6NvCleDdazOemE
+         8jpMogmZHYXm3kfYgBnxYHoX8Vyc3Ztz6dVORw7PkcDR9GC05Wnrvy8bs1yBqMkb8lzT
+         BVpA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795541883; x=1796146683; darn=kvack.org;
+        d=google.com; s=20260707; t=1795542023; x=1796146823; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=27zYXXgABty8CUqGukpLM4c2xVBftF9tF/4zdE571W4=;
-        b=mAW0sb8cTZypoTUt7YN7Bao6VcUpPN8EWcDaJFlyoK5n/LFXd8bo4D17J5iAqguhJY
-         ANCaA8PbpGSCx5rMhotZqOQ/VfPFnqpBNyek2K+Moc88bhTSV1r7PEoemj2+IlkyftTr
-         CCwKga5IagiMCHoeRSufr6NJDxml9Gtm2gwzuKqY48k16p9oSe/F54/muCJ4NfY3YWOG
-         afwNhYor+5xUJaryiN8tkA6Nw0e3bQCJI3X2HKr2k38sg7BLLpU/VqZ9GooEMtPy0CcG
-         miXAe8KydmDiPorb1wcCELtjN3j8Wuqd2LqTBKycS3W9F2JxhYvXFXjRmth6k1RER2VP
-         dnVg==
+        bh=ZyMW0Suh0lL3Bzt0NE42D1NOyP8/ltJQBT/Rp/e1E1o=;
+        b=LewI+WEaOBrYfCdgD6rPOK4GeCelymN5lN8tqfrokRdGtQ5ZSNsLOUFrZxcBE8+aBk
+         gkyxQt885lBSAFhJfJrxss7NrQLW7DgbzwjS9iRm16ugZW9qhfxEMU3y9rMfPAUgkdTe
+         JbWI0eau3kDNAVmvb6rA+LeFdUd2peLXE6D4k5zbu2oDyuE9OGNDNosvJZ8EyB45oN2/
+         Qr8Fg8LPWDtG3pZXFTA+CWCaov49+ITgQ1rCbAkTOnCSFr2gClCvdKgD9XV0d29hH0fQ
+         jvYAEMZafvtVdy4zIleBM21DKxxfrQ2W79QjkYPkAIPQhZ4hM7BX9wpe5A+So9pndEDL
+         sS2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795541883; x=1796146683;
+        d=1e100.net; s=20260707; t=1795542023; x=1796146823;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=27zYXXgABty8CUqGukpLM4c2xVBftF9tF/4zdE571W4=;
-        b=uMMlawfdO1Rjf8nIdgArIeXoTWktAaSoKi1mw2JWkiqtIb0snmQNk0JzuwKql66g+2
-         IfmHRnkv9Lqq7dwM3tYn+TofpNmElyUHaZkvjOv52uQdqDaLHwDtOSTzK6EpabvBrN47
-         pDC/G65My+uQoysLeISmwfSt8Te/+XNANrir+D843kh460dZsp75GnwidGfVCxmZoI1g
-         icXM506648xcNRYmjbdgwLOBXY7KNsTLEM5J6CuHbzIug52bd4CeVZQ5aOOYbXOYU3KT
-         c1f9Rlnd9ROtJGFsDOAldJoFgnJQIb1RfRBB/EyetIl0n+1s6NFXPXhLAUWM/EcZNRX7
-         V7Tw==
-X-Forwarded-Encrypted: i=1; AL+hErEX4nWbft3VK6BWo+nTzSGNxZRrimsWoRnPpdBcKSuMhpquHjjlcRBSOiJIv8cAjuW2QSKXhF0FWQ==@kvack.org
-X-Gm-Message-State: APuU4Z8QD2eQlWMUvm/HGuM0ieSwGICgSnzTxzgVGs0/YRVv/eXPKnm9
-	yaP7JF6CbNODtbwNaCSIK8sB557kMRh832GwlDFr1INNgzNSblEZio/0TIC7L/AxgHcpfuZhU+G
-	FSjvTEqchZMistc7qB6UKM7MSmUKTnCLlLqsMrACe
-X-Gm-Gg: AZFdTZcRYkZLep+WBPYynCYZM+C+Dm7wRzHeTQUg1e6ILii2cT6T2SyuoePB40k8q2U
-	GKiXEnEYbgAg5vH1jtA2QyBhefol0GGrGif2Z6ulse+I3gbr6gw3U+c73nqDZEfd/E//cuLfJAe
-	v6Q1YoIROCgWqe1hny4AjRlV91yFkWCv6ms+nKMIPnz79/seIegX9vYv9Z92J4H1kSIUzSv5thj
-	emY9nfPfnX7OpnA0xKz0+h5Y3oHFqfAFcIb6D8l06aSAEZsoVgk+3RgfhXwAuJhLqgcpqy1BCkM
-	kF6okc6h3EYOl+VjgC0F2dDgbSueUsXeTG0Js1I/yauqvyabXd+qK4sak4gnzv5Et6HQqBMSope
-	pt19HA9ekE3+i2ti9+H2+3XMlHhzqFSsTcoXP6iWsUoSRy24mydn2DsWqlZrShfTDD37bEGktY3
-	i8fTlyWf01FXu6D+6mQE9V+q/Yhb+dK1hl1yB/fvVH3BaFVOLiAd+YtOQ9pVp6CEeodbxsULxu
-X-Received: by 2002:a17:906:1b45:b0:c4c:f85f:aa2b with SMTP id
- a640c23a62f3a-c513a817fc7mr933423266b.24.1795541882037; Tue, 24 Nov 2026
- 09:38:02 -0800 (PST)
+        bh=ZyMW0Suh0lL3Bzt0NE42D1NOyP8/ltJQBT/Rp/e1E1o=;
+        b=FxM/Nq2W8/gWvdpvlkGzlP4iyOfF4QoKqnLt2rGRzuW1YNAvxzlzdr2GgfUO97Z0o8
+         N/M9YvcNZh8k7m7wvSkPXaS80190k8FYGbiAPsREakCIk+Za4HBEZgS9kER4FvP5CvYN
+         sPOHYZYCbXZsm45NCMf765wUNV7PNhE3uTQdXPfMip03nhG1gvMHRxmqsRg/p0PcgYuF
+         xqQVU39k4kJl7Ooek1J723G+8VjD6y17FpTFVLSBkgu4PrWc7xZMXKLLVsfuqPJIxX0g
+         WxqnsQp5N/QrP4AcrcDLoMVxA8xgpc2b73ZKurpib1Y3mVVcp4b2XzjtoWLwbpgcTkLY
+         Nu3g==
+X-Forwarded-Encrypted: i=1; AL+hErHslUO+kri6KcMimTQQnlpqNH4qgWN613T4oEeb+FFHcWQERftNxm1kb0v9OAtQqiGacXDE2oqa4g==@kvack.org
+X-Gm-Message-State: APuU4Z+IKyARaa/hqfXlVRIFf+kwxVY54Gp8Xqw6RorGgVYV1kEk+1hX
+	lO/vxx4vfWdot9qeEmBqzgAO8T1/WD95nmAEWuL96btn3CLSAOncV9B0p0Xp6K2AAdjwVN6YWxX
+	2puIiJT/U/HxyZh5zaqoBffPDs2rg+4S66EolWSo/
+X-Gm-Gg: AZFdTZc2eKcegOphLStl7hpr1cFL6FrmBo9UxcVpFBNrmk894zHCw0yH8aYilZJ6FIC
+	DjQOIW/+Os9tC3MCBqjRPr7ea9yJAE3MRtAhYI3ZpjCpx+Xqn5V1DbFwyDUTTrvZK96UYDtbjw7
+	hf/fchSYkBeM5iIW9JVFT5HrkmOPqFEPp0ob3ukWJIpmjaf6S8wLsYKmLvG0aPB2kjGOvdIOKht
+	sF4xIKRRbUXeEJtAAkIVqj3a4ZZdoMZvPeacJK4SD+m9h8Q5sixgZsuJc+KcKd+ISy+DZ22MxV7
+	4USilIeX1PkzvA6+5YvwgzPCIbPGpCHFbiKVm8/4TIFlCuMpGLP/0Q3S8y0blWVkqv3lhUpexcS
+	ygqAPr9wP6Rn2d85G9GfJ027b0B3zqvRgCDV4QqknudQ5A02g4QnjwKwJUAAyV7IPBMwTRG4VgJ
+	W8S2P7TSbhkubtXm0PrfAZFlSiYjbz7U3ptrUklRMdBRL39B7PTGE=
+X-Received: by 2002:a17:906:7f01:b0:c4d:2867:281c with SMTP id
+ a640c23a62f3a-c513a89466dmr986155466b.1.1795542022434; Tue, 24 Nov 2026
+ 09:40:22 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-15-jthoughton@google.com> <sashiko-outbox-228643@kernel.org>
-In-Reply-To: <sashiko-outbox-228643@kernel.org>
+ <20261122184453.2668189-17-jthoughton@google.com> <sashiko-outbox-228645@kernel.org>
+In-Reply-To: <sashiko-outbox-228645@kernel.org>
 From: James Houghton <jthoughton@google.com>
-Date: Tue, 24 Nov 2026 12:37:25 -0500
-X-Gm-Features: Aa3M54pJqG_uJJ6nSsmIk2hsh8SZo2wXqFjyOnO5jM3lVaei5N6Moc8ra8UgiVo
-Message-ID: <CADrL8HUHT5aSwXHg2z4hFqn7gaKNFavKOzKW974T84BapHXYUg@mail.gmail.com>
-Subject: Re: [PATCH v3 14/19] selftests/mm: Add HugeTLB vmemmap optimization
- stress test
+Date: Tue, 24 Nov 2026 12:39:45 -0500
+X-Gm-Features: Aa3M54raiLEh1ZPrKo5WkzdnZfyJOdcj_tuB0KWZ_ie6g2cLD_DMBgOrKleBNf4
+Message-ID: <CADrL8HWNAByKifcNgre_YAX3M+bwAW0BgMrfPmWHubOEs+AfDQ@mail.gmail.com>
+Subject: Re: [PATCH v3 16/19 DO-NOT-MERGE] arm64: Implement
+ try_populate_vmemmap_pmd using AF trick
 To: sashiko-reviews@lists.linux.dev
 Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -132,18 +132,18 @@ Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
 	David Rientjes <rientjes@google.com>, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0E3F2120006
-X-Stat-Signature: kz8mtfyk4pm17yej6acn3i71buieoqab
+X-Rspamd-Queue-Id: 46FFD160003
+X-Stat-Signature: q9qkzh99tiicjj63og1cpswwwxoeem3z
 X-Rspam-User:
 X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1795541883-202096
-X-HE-Meta: U2FsdGVkX1/vDhhJejFQK85gqPO5yK3P8oYUzXe8+cofFm8F62OENqKLZf+TIPxEW/Zr9Ai5fYw6olzukGGfEcDFBvCNqjg86KorwEyfuuZU91dmOkrhHc3g+haN2AXCPcUvz9YI6fDwCz2NtQ/F11aTYlZo+qArckBIKZax2VtM09nqAh4sixTlNLZPik8SDHrpNB+N5FOJAgEDf/6naR9/e6zXWavmnc4RWRtXPO2/llwqbLtiwJCbQmKjdUSIku8jkIorz33FbUAbmVQnVLQD0p1NCXhNYBV0qRvPfszjJ+zvvrwd94rmUnaDWaptJm7fWqM8huQTMl7PHfcwSIPA1BJMnJhwlBOt7UwiWeuxCQ5bEmLbAvbSq10CVdhjuHt8pWMYx4n0iEDPQoUAILv1EPzV3lHL0pH/JfwwkRU/f7ZlDcpa+hd1WaTnYt7CSRJ7j6F9+Ezy9qjRQqWj/OPfgnrtOBFYw+VQohqAKcQesJDevtwG/rH0I9JfBBLrh+NvRJ3RbZAecPD/WaGPe7sHKXD3CBbeQdroUciH2dt3mfmuJ6fWlR3mFRwfXbRTrOtBgsxFVGVrNgWucnbssEYnEdwceJJunwpOJMlkEqhnwQBzJ56YIaPLK9b3WE9R9kkkQDknGqQZjFX/+lBMAKcbVTSkp1Nwm5kKKkTIq4HwpiJdPjg0ELY2doIp8JImT9ddGFnRj45Nnjp5R4D8sm8Pfc/02/Wt6qM4hXPTYjQpuZm1i+edwtLMZyEr79VR83aeClJTkrmm7UFaaXTnjC5vHj3Sgex6/OdHa4cAk7Dc5R0Sir8tWN9Pf9tKhVe3OZoQnIZyHFu1kIk9s25Av/eBYCSF3rL5gQ43cCbucTm0WmAqR4AnT86a1NR3iPAncnH8IMZgeqI1psxVGg8HNogFuov8QDMgFueetQl+RZysXKK04319vdeEifGqZu05t6BBiLGjx4SuOo4gJqh
- rk6Nr1iS
- bzG0eqEzrvwcNlmhLy8bvdMirZxpSP7W5oLfXfeU0DcSjTrQeQyBln0l0wKsFOnGMqeMe13WyFbkDfQCOxapBniobPbcodevu0opwjWNiaAdMrOd0Qf00nE+KzwFsH7SNRmoyYn5uIYdnp8Mtn68jWOAMhCfAmWbVi1lmuT3sDs76Ayq5c18r7yuZJOzA5qvtUGhV3h9gNK3HLFknACkqmTYg5LQhCp5tpFgvArHWAnHrWJyF19B3MRUkNSDvT8EWj9zYStBmgwdfP/fCL5e7oaZGvHFn9qRiEVjq84MapPzxN7xobIcHaaPter+xqugPHMIiYQTySQ3acymqLdpSb5l7hqNHHdYm2EPwOSZbTy/SRiinAOxP0rztRrbMjAdbAF6Ix0eysDN4yanCG8ndyiSyz6EaSmpK51dM7w7h0VPJibDAPcYhQe7aMZIV3TvfU/ZNVm3PVSSw+A3uh6nIFkRW4QGzyV65n653BAr77Sxac6nlXRh9FG53xBrwD/QFu3/XhqHYDeOwHPtKKiJpdUh7e3mtv3HEzxtaRkQolvPqe3Jk5WP9+ZvagkvqN+/GGg6n
+X-HE-Tag: 1795542024-353457
+X-HE-Meta: U2FsdGVkX19Ph4/qLu+/Liv398wvBT+IEjTyKXRrU4V8HKMbOMQqsFcqpfEEeQvCfYmXocfK0OGXz5KvyyhwaF92ZC2w84+hu1ubBO7tam9QrIXIC9iFUnMNNcknNxvuF2eU1iQJGwKxwMYYYYRhIM06aMGnV3Zr5GyfufcIeYGuvJrk97oSKYJMwyllE9q99qug7xs++Hlf0JiEAoWou0BDwJPK5XFLHBix/ov0GhAnuQW8g+0yVPx4LLhLCymCmjawbsMefyt07TES4W+CWqeJ2S4fWwhniQN/XAZ/7M0ZvUcS/ssKuBRhC5KlFcbqHEFCR9ani+uLz/7uCX4iR/a7y2AvQShNow9IZcUt8kRJx3DWMJo0ejcc4bCQ5bYEPRIH/puXddQ26Anl3mz7j86ZahBVINUIT3FaqXZGpiOncrX3b9nGl082enqP4xGvcVDRtNoeB8JVBxHshsMhqnxNvWYc1128ICtOj5n+ViN4Ag/sNZTRR+3iR9J5mnp7MdJ2cV6iqfsu/ruqgKPp1wLOyo+ZEH1tjVecwdUAeSFEs7v6d1oy0LyGvuUJeIycf4CNPK+LPh6gRTKjj8Ydq1GbRC5e0/QExWrqZowsK8fhwYAPCCaHKzTYh+y4WXpeT+tM6sLiatRm9OusRRlOmlxrddD8Xuu3DRTssSgbtgzVu2hJhzJoSwVxVlfz0zpNsTp9dyxpjeDZNfWMjUmM6WcinyptkKP/Q/Kq74QZ1SYKUB1xXaMdMCEfnTGAwUWJT0x24I90T/Td0i/+UzdIEKvfIzZDuGnYLhXMIYL+0OUFJ82DOXNNnFn4YZZEc2UpTBss8jCVQsU9LsJfqzLN9NsRAr99FFw0JbxyJpvYVQp0OaDF8eNsDd0D+HRAhSoU074ZR2mKGL8ue7MbjQwZyA8nRaS1m/KrMkhB4YKg2VEQBAPPRMlFyegNWG9w0S0S3PW22LEZva5u1BIRjMO
+ mARrgdfV
+ bmbCoaTzqEsLM+5ReM2rvFIHNAcI8cGehCdi+ZEf9SP9VN5ZqXv/gmHGcdmVGnwLPcduHGnsKoWV+7wirzVcC68ygC9Bvu5xV+WzqhgK7RAGXpEW3yJkMR7a1WUELli2s+NpYOQ/62v99Va8KKetPXpeUaMRMU2gh0fDFZriUDKJ81dQDor+eTXEOf2HEHmp+/c+y1Uh9d4ijiVRdVdnolA4AAbTumGl7IJlY5Ts8OqTBl6tAeReKOkCZp1YlDEaNvFZE54eP0XlMj9ooDBKmWcw2OfQ97BfF7QdSW+nRgUa7PuOG74Mgx7+UTgzWCZWfTQXpmcM2x5Fu3Eg5NACh43CaVgn57Ajl/CDrksBLO2fdDCFozieBUbigM7tcDysYcn44oc5G++dyGXYM1lfaJ88Xbj35BFYDWlJgOIejZDlmhaaGmejp6poUl7sBm/4jmVhEJqm0Ta2l+FS8seu36YVgbD91+GJp0yWJn/oOREJf1QwCGEy4DA2iBXqZwzuKE1kRKeXNnUKPMIRUbLNewYzonqwy/pVyAwTAAAb8eFOYTtastEyz3Q/wum7QYHkzThrJ75FxMsoU614L+awfco3SO5GJGy6yoqpvDjK0lXknAlI3COVVRAlEnJqPDhk/di8/ZCxxkZf0bmYwwJhtm+/J3ZW092PRMMrbjUbENkCfCw8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,148 +156,121 @@ On Sun, Nov 22, 2026 at 11:08=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
 >
 > Thank you for your contribution! Sashiko AI review found 2 potential
 > issues to consider:
-> - [Medium] selftests/mm: offlined memory blocks not re-onlined in
->   stress_phase()
-> - [Low] selftests/mm: unchecked mktemp failure in
->   hugetlb_vmemmap_stress.sh
+> - [Medium] arm64/mm: over-broad TLB flush in try_populate_vmemmap_pmd()
+> - [Low] arm64: direct AF=3D0 block-to-table transition in
+>   try_populate_vmemmap_pmd()
 > --
 >
-> commit 15090370906fbd4c082668bfc18a1ce3c873bcb2
+> commit 1319c4a7862ad5f3b810c4beca866ee98bd48fd7
 > Author: James Houghton <jthoughton@google.com>
 >
-> selftests/mm: Add HugeTLB vmemmap optimization stress test
+> arm64: Implement try_populate_vmemmap_pmd using AF trick
 >
-> This commit adds a kselftest script that stresses HugeTLB vmemmap
-> optimization (HVO) across accounting, concurrent access, and fault-inject=
-ion
-> phases.
+> This commit implements try_populate_vmemmap_pmd() on arm64 to replace
+> in-use leaf vmemmap PMD block entries with table entries by clearing the
+> access flag instead of using a break-before-make sequence when BBML3 is
+> not supported.
 >
-> > diff --git a/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh b/too=
-ls/testing/selftests/mm/hugetlb_vmemmap_stress.sh
-> > new file mode 100755
-> > index 0000000000000..b64fdb3ed7614
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh
-> [ ... ]
-> > +orig_nr=3D$(cat "$hp_dir/nr_hugepages")
-> > +target_nr=3D$(( orig_nr + nr ))
-> > +marker=3D"hvo-stress-$$-$(date +%s)"
-> > +tmpdir=3D$(mktemp -d)
-> > +pids=3D()
->
-> [Severity: Low]
-> What happens if mktemp -d fails here?  Because only set -u is active,
-> tmpdir becomes empty and hotplugger() appends to /hotplug in the root
-> directory (which cleanup() does not remove).
-
-I will fail the test if mktemp -d fails, thanks!
-
-> [ ... ]
->
-> > +hotplugger() {
-> > +     local blk state removable
+> > diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/=
+pgalloc.h
+> > index 0263329fb7b30..7e304f01ce6d5 100644
+> > --- a/arch/arm64/include/asm/pgalloc.h
+> > +++ b/arch/arm64/include/asm/pgalloc.h
+> > @@ -124,9 +124,54 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pg=
+table_t ptep)
+> >  static inline int try_populate_vmemmap_pmd(unsigned long addr, pmd_t *=
+pmdp,
+> >                                          pte_t *pgtable)
+> >  {
+> > -     /* BBLM3 is required. Its presence has been checked. */
+> > -     pmd_populate_kernel(&init_mm, pmdp, pgtable);
+> > -     return 0;
+> > +     const int max_attempts =3D 16;
+> > +     int attempts =3D 0;
+> > +     pmd_t old_pmd, new_pmd;
 > > +
-> > +     while :; do
-> > +             for blk in /sys/devices/system/memory/memory*; do
-> > +                     state=3D$(cat "$blk/state" 2>/dev/null)
-> > +                     removable=3D$(cat "$blk/removable" 2>/dev/null ||=
- echo 1)
-> > +                     [ "$state" =3D online ] || continue
-> > +                     [ "$removable" =3D 1 ] || continue
-> > +                     echo "$blk" >> "$tmpdir/hotplug"
-> > +                     # A signal aborts a pending offline_pages(). Use
-> > +                     # --foreground so that the writer stays in the wo=
-rker's
-> > +                     # process group and is killed by stop_workers().
-> > +                     timeout --foreground 10 \
-> > +                             sh -c "echo offline > $blk/state" 2>/dev/=
-null
-> > +                     echo online > "$blk/state" 2>/dev/null
-> > +                     sleep 1
-> > +             done
-> > +     done
-> > +}
-> [ ... ]
-> > +cleanup() {
-> > +     local blk t
+> > +     if (!system_supports_bbm_through_af())
+> > +             return -EOPNOTSUPP;
 > > +
-> > +     stop_workers
-> > +     for t in fail_hugetlb_vmemmap_pte; do
-> > +             [ -d "$(fa_dir $t)" ] && fa_disable $t > /dev/null
-> > +     done
-> > +     if [ -f "$tmpdir/hotplug" ]; then
-> > +             sort -u "$tmpdir/hotplug" | while read -r blk; do
-> > +                     [ "$(cat "$blk/state")" =3D online ] ||
-> > +                             echo online > "$blk/state" 2>/dev/null
-> > +             done
-> > +     fi
-> > +     # drain() also frees free surplus pages left by failed restores.
-> > +     drain > /dev/null
-> > +     rm -rf "$tmpdir"
-> > +}
-> > +trap cleanup EXIT
-> > +trap 'exit $KSFT_FAIL' INT TERM
+> > +     if (system_supports_bbml3()) {
+> > +             /*
+> > +              * BBML3 allows block->table transitions if the PTEs unde=
+rneath
+> > +              * do not conflict with existing, potentially cached
+> > +              * translations.
+> > +              */
+> > +             pmd_populate_kernel(&init_mm, pmdp, pgtable);
+> > +             return 0;
+> > +     }
 > > +
-> > +# Run a stress phase. $1: name, $2: fault attr to enable ("" for none)=
-.
-> > +stress_phase() {
-> > +     local name=3D$1 fa=3D$2 base after injected
+> > +     new_pmd =3D __pmd(__phys_to_pmd_val(__pa(pgtable)) |
+> > +                     PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_UXN);
 > > +
-> > +     if [ -n "$fa" ] && [ ! -d "$(fa_dir "$fa")" ]; then
-> > +             echo "SKIP: $name (no $(fa_dir "$fa"))"
-> > +             return
-> > +     fi
+> > +     old_pmd =3D pmdp_get(pmdp);
 > > +
-> > +     log "phase $name: ${duration}s"
-> > +     base=3D$(memmap_total)
-> > +     [ -n "$fa" ] && fa_enable "$fa"
-> > +     start_workers
-> > +     sleep "$duration"
-> > +     stop_workers
-> > +     if [ -n "$fa" ]; then
-> > +             injected=3D$(fa_disable "$fa")
-> > +             log "$name: injected $injected failures"
-> > +             [ "$injected" -gt 0 ] ||
-> > +                     log "WARNING: $name: no failures injected"
-> > +     fi
+> > +     do {
+> > +             if (WARN_ON_ONCE(!pmd_valid(old_pmd)))
+> > +                     return -EINVAL;
 > > +
-> > +     drain || return
-> > +     after=3D$(memmap_total)
-> > +     if [ "$after" -ne "$base" ]; then
-> > +             fail "$name: memmap pages $after after drain, expected $b=
-ase"
-> > +     else
-> > +             pass "$name"
-> > +     fi
-> > +}
+> > +             if (WARN_ON_ONCE(!pmd_leaf(old_pmd)))
+> > +                     return -EINVAL;
+> > +
+> > +             /* We should never get a contiguous PMD here. */
+> > +             if (WARN_ON_ONCE(pmd_cont(old_pmd)))
+> > +                     return -EINVAL;
+> > +
+> > +             if (pmd_young(old_pmd)) {
+> > +                     /* __ptep_clear_young() returns the overwritten P=
+TE */
+> > +                     old_pmd =3D pte_pmd(pte_mkold(__ptep_clear_young(=
+(pte_t *)pmdp)));
+> > +
+> > +                     flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+> > +             }
 >
 > [Severity: Medium]
-> Should memory blocks recorded in $tmpdir/hotplug be re-onlined at the end
-> of each stress_phase() (or in stop_workers()) rather than only in
-> cleanup() on script exit?
+> Should this pass addr + PAGE_SIZE instead of addr + PMD_SIZE to
+> flush_tlb_kernel_range()?
 >
-> If SIGTERM from stop_workers() terminates hotplugger() after offlining a
-> block and before "echo online > $blk/state" runs, that block stays offlin=
-e
-> during drain(), the post-phase memmap_total() check, and any subsequent
-> phase.  When page_ext is active (such as with -o and -m together),
-> offlining a block frees its section page_ext table and decrements
-> nr_memmap_pages until the block is re-onlined:
->
-> mm/page_ext.c:free_page_ext() {
->     ...
->         table_size =3D page_ext_size * PAGES_PER_SECTION;
->         memmap_pages_add(-1L * (DIV_ROUND_UP(table_size, PAGE_SIZE)));
->     ...
-> }
->
-> As a result, stress_phase() reads a lower memmap_total() than base and
-> reports a false accounting failure.
+> Invalidating a single non-contiguous PMD block entry only needs one
+> overlapping page-granular TLB invalidation, as in
+> unmap_hotplug_pmd_range().  With a range of PMD_SIZE and stride of
+> PAGE_SIZE, pages equals PTRS_PER_PTE (MAX_DVM_OPS), so
+> __flush_tlb_range_limit_excess() returns true on CPUs without
+> FEAT_TLBIRANGE and escalates the flush to flush_tlb_all().
 
-I will re-online the memory blocks after stop_workers() in each phase in v4=
-.
+Oh! I didn't know that!
 
+I will change it to PAGE_SIZE instead of PMD_SIZE in v4. Neat!
+
+>
+> > +     /*
+> > +      * Translations without AF cannot be cached, so we can replace
+> > +      * them without BBM.
+> > +      */
+> > +     } while (!try_cmpxchg_relaxed(&pmd_val(*pmdp), &pmd_val(old_pmd),
+> > +                                   pmd_val(new_pmd)) &&
+> > +              ++attempts < max_attempts);
+>
+> [Severity: Low]
+> As reported by Catalin Marinas on v1 [1], this rests on an architecture
+> detail the review could not confirm from the kernel source: can a CPU
+> walk cache or TLB retain information from a valid leaf block PMD
+> descriptor when AF=3D0, or is a TLB invalidation and break-before-make
+> sequence still required before converting a valid AF=3D0 block descriptor
+> into a table descriptor without BBML3?
+>
+> If it can, skipping flush_tlb_kernel_range() when pmd_young(old_pmd) is
+> already false or directly overwriting the valid AF=3D0 block descriptor
+> with new_pmd leaves stale walk-cache or TLB state active while a table
+> entry is installed.
+>
+> [1] https://lore.kernel.org/r/aoSJcAFMNJ1nPl2H@arm.com
+
+Yeah, this is why these final 5 patches are marked as DO-NOT-MERGE.
+
+>
 > --
 > Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122184453.26=
-68189-1-jthoughton@google.com?part=3D14
+68189-1-jthoughton@google.com?part=3D16
 
