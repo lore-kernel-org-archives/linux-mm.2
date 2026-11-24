@@ -1,144 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B2C606A335
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 03:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964DB606A6AD
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 03:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=DB52Qu5D
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aTy5+RVI
 Received: by kanga.kvack.org (Postfix)
-	id B46906B05E0; Mon, 23 Nov 2026 22:58:26 -0500 (EST)
+	id 8ADE96B05E2; Mon, 23 Nov 2026 22:59:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1CC76B05E1; Mon, 23 Nov 2026 22:58:26 -0500 (EST)
+	id 860406B05E3; Mon, 23 Nov 2026 22:59:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0C106B05E2; Mon, 23 Nov 2026 22:58:26 -0500 (EST)
+	id 79C676B05E4; Mon, 23 Nov 2026 22:59:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BA1B6B05E0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 22:58:26 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D327E8072D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:58:24 +0000 (UTC)
-X-FDA: 85468655328.26.A3E85D6
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 30778180003
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:58:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=DB52Qu5D;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf16.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795492703;
-	b=6BI/0MXGrbCyk3G5ngbmFuY3gNadAaSX9Ta+jMye5SBOJn9WN+ig36knapJ3UHQy+UhHyH
-	+9XlG9Tv+MkF2ilMAOyDswOtjTAl+NU4aD4vDWfDrCbjXCwJZ0I7G4LbNrqCF3SmltpFuE
-	TBF6kh1Fvc3veX3hmgQKOS0gqyJ+zoo=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795492703;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 50B296B05E2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 22:59:01 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C87E61609F3
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:59:00 +0000 (UTC)
+X-FDA: 85468656840.13.F3B144C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2FC26C0003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:58:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aTy5+RVI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795492739;
+	b=rolusGOlYFemTNh4BC9UV80lZKc+vJ1hhWckQkHR4JsGEXqsZCYZNk7wqSJuTWRk/NECUh
+	a9L5j1LJtpm+t559oew2xHS2WtbDcCx03eLQ6SSmljAVNvxq3J3rDDB0/fL/rPxWfFMLSQ
+	zbabO42zvOdzSsl91TF8Sb5g7HR06QI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795492739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gv4uJJGyzmSUG7P381t7O1IG6z0LrgKIDZorRLIr+gM=;
-	b=NN/8sVtJhowrDlmMJdpJY2o9nwGpgnx0CO+30+lQdCrOy14fCcr/mqsmsc9l+55CVboWRK
-	QNr8Fm5YhCfQy8yKFuW/s/msDbQbaFNcY/Y9nxf95nYHc3ttR/oKcsFySh5FE6ikgeqHuP
-	P8evE4tzzEDYtfQKY1X+CQ3MJMn5IGc=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=DB52Qu5D;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf16.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-67c0ffaae1dso4204766d50.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:58:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795492700; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RNCzmYXK5BACwZMI1sSAISjZCp8Nmdr85bGGF/euiKsd80YIcomtaCLO4x7XqrfoWi
-         5Anr3Qp3HV8wo3vp7xyzgFAraFChDB7wCVj0Cea+qHRapIf4khaS5CgG+u2pxKMAoTAm
-         2EYyujtze0SvrQonYpxZwISX92vjBSb7bMQTLsUgEyMOG6xgMJNcOfglgKCqrgZGCThW
-         KNXh14o+59UAUrfNYBnm4vEFDsGnJGGDK9F31wBGhel3j5F1UbFnnzGF/OQQ/0b34lPv
-         dAAtRyga/0KGqbitjKVtvZck6PIsV7MPy5/x2JZl772Jm2nFlBUY31Gg3TH9VU7ooll3
-         JYZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Gv4uJJGyzmSUG7P381t7O1IG6z0LrgKIDZorRLIr+gM=;
-        fh=2JIuCu6ZB72FmcqsvzcSf22QdclULhVt2mV0g99Q7N8=;
-        b=AK4KzRGhUS7F1XvdKu9Gc7IJjq4M+cy1kE/AgxaYhnzEcjji4wtSvYuLjcz0b69pFR
-         MJkn3gQTfid/JnfGPMTIBBwoKEkk2R08cCT+A8wd8NR+Vr65XXn7ZsS5lQNeWP+cHHVn
-         Ns5O/Rzvj7H6r0cLVETNqP97WVDIqqnUZ+SXy2nrfWfyk1y+9XzhauWjxhAKrEg51Qth
-         OVBHLzx4Lmw/BW17juP4Qnror/L9jykP1l9AcjAnhJod0aizK9wFEbGtHJNXOah+PhGv
-         DsPqyHGJ1xoM3W8VGZpxhM3wBPNMl4NBZ8JkveyuXs4+AuH59Q8QmQFUYo4s8kVsw6K0
-         zinQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1795492700; x=1796097500; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Gv4uJJGyzmSUG7P381t7O1IG6z0LrgKIDZorRLIr+gM=;
-        b=DB52Qu5Dd4eGCRDIebXqN1ZgDXabtDydc9MT+nqhfeoPDkCaStvHULv3B+tQnCjtsl
-         9Y/sNM5HlZkffbb8LCopZDV9kSzd6j0uPEP3jT8n8os930x03eIBTjCcl7xDkk7+UayS
-         vgokJtkx5fj7Hf8ZNmgFpvLlEPsxbBh9KKbTs4/qT9iRpmNF+KqMcyx6A2OazdCyUVGM
-         J0kwk0Dbp9/SPxGxEhjhQhChua0e4ugZ54RK9XtDHwJLUzUkbWCQqMo14EDfNTomJfkO
-         G7nGIy05CM3W9tfdOcfGQ6KCZdAiKEgUSBu2UAAuWOvbtcYk8EuLiwrzIz/UiwoV4swX
-         64Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795492700; x=1796097500;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Gv4uJJGyzmSUG7P381t7O1IG6z0LrgKIDZorRLIr+gM=;
-        b=IYanPUNcOFTA7VM1VbwDP17DUDhfAapptsO/9UNNuEYOxLxr2mqE+d4DY/stcoDxXn
-         TWvSc1anQ6hy+TGenG54TFDMtFY8AgReEqwOKig7Y/swQAipOkX8l3S0HpY612RHp+LJ
-         0TVW4bs3/wanmo/xUfXYUZpXl2JGb8v+p7SnlGS5EYcQfh4qxIplqvKnnpEXZfLhgv9T
-         He5+vWan9MPD95avxix5Y48g717FL3rrLvBG/pN+s3DgwR1JoeVlyBGi6kuHkkYVem9+
-         IX0OUtDk8yXuVEmu92e8f1niPOqUDkOu/xjEvperi1+bUBn1haGpldaGrYQQFK9NqEVo
-         3IoQ==
-X-Forwarded-Encrypted: i=1; AL+hErHWqRvIVmTBd3GUM2EDJHfDP+/A97Ju9Va6NxG0lDoD+tdOq1lbCW3ZUD9sHgVRPbayMYopDqQR/w==@kvack.org
-X-Gm-Message-State: APuU4Z8sMMJGY/mMVSwS4pIzDkthRTaxaNeVjZONpvBwcwFUHkqyODWL
-	rVO+JIL5hOCZFmPON49I2DMsOuI6LZFRwIs407grqOrI6M/MOWLwiTqVIFJmzz3P6s2q2cF0rTW
-	4ddCfSSRLrnLUmKg6v6ftlzRGVuQqTWEaG5jui5s5DQ==
-X-Gm-Gg: AZFdTZfjI1KoMSBqNrIpHLrqa7QM81QlM3+aOg+uNYqKPrClZ/9cHM/CcLhMAVrRbkx
-	7i7ckxXfJynmGxaO9JajmszuXjzWJ/whAT2faDgig/V7QjBO1QuKOFGjT4NSHRdPGUrWD3dRCF7
-	Hz6pslt+IiRfnCWWcguUGUHiXGquPuTaay/eM572X9vII8HhGlr9Bs8wXYjHEqtbxiskG7wGeZH
-	1HYEUYv92Xhp+zSvT44N1nDc3vW0oFkmlii90gPJ4rHqhQZef+BRIxLwhYuExdinFB+Ar2ACI15
-	WezKjmSGM6rHcGAcLGGOHdZfLiZxLP4noHM9TbJJ7ow6KU1G9nHEBisjFsC/7AMylPMSG81KMCI
-	5FibO8G61hrp0WBlnakpdxGMRzin3rP3qx7NX
-X-Received: by 2002:a05:690e:440d:b0:67c:1c81:fe59 with SMTP id
- 956f58d0204a3-67df44077c4mr3119996d50.12.1795492699638; Mon, 23 Nov 2026
- 19:58:19 -0800 (PST)
+	bh=NS45uIMLO58QIZFdFsRqQwpuveO9a35GIgn0ekSZke8=;
+	b=IBy+8qNcla2cwMXG6sAZpk31kQaVyg6do6+LU39dLfX90wyMCw9lDmpAuD4ZwvcB/sKcU+
+	TXhdHqXI9pty8yimFwCAZw8u4cp5kd9YifgQa7EvWTMPMnco84FoDjOniEsnPAOND1rOao
+	wsqiJnGNVIvbz8hrwlmZBItQHHnIvcA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aTy5+RVI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 1281A44FC4;
+	Tue, 24 Nov 2026 03:58:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0A6C91F000C6;
+	Tue, 24 Nov 2026 03:58:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795492737;
+	bh=NS45uIMLO58QIZFdFsRqQwpuveO9a35GIgn0ekSZke8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aTy5+RVIdr9BQCwJGNCU+JGZNyIuBkeW2PKcNU22mYFHbK02ep8bNci6jVvu2FCjC
+	 mWD0vUNBFxa16W5/KVosNO/h3a9BHaXz88hq25B1gm3Zqah/8hjvcSRZXUfBfkLoGd
+	 Lq2QZT48f80Cew+fSSoIoW7VwpGEA5V5tWetW2qZ5rC3QM8ebIt3fnGNCa/k9PNyiv
+	 NjXdmCWJsT+P2rZTLcXiveeiQayLn2A4pDDsqdPMUVibLOmgdiSguA2lhUHpOS/zcY
+	 Mob1v+oAmz4/cXBraQV7HBSKGBYGrScyIJwnm6LX73iBJi5oQWeFb2pivVAFOqfaIb
+	 Ue3TCbDSwse1A==
+Date: Tue, 24 Nov 2026 05:58:54 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: bpf@vger.kernel.org, containers@lists.linux.dev,
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Aleksa Sarai <aleksa@amutable.com>,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Giuseppe Scrivano <giuseppe@scrivano.org>,
+	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
+	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	KP Singh <kpsingh@kernel.org>,
+	Lennart Poettering <lennart@poettering.net>,
+	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
+Message-ID: <awULfmZR-pESj2EC@kernel.org>
+References: <20261122193539.3334213-1-jarkko@kernel.org>
+ <awTmJIErjasO4lqq@kernel.org>
+ <awToL2PFNKVgIfqs@kernel.org>
+ <awUGkYoyDXp4P5LJ@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <202611230851.6AN8pFDD065900@mse-fl1.zte.com.cn>
-In-Reply-To: <202611230851.6AN8pFDD065900@mse-fl1.zte.com.cn>
-From: Muchun Song <songmuchun@bytedance.com>
-Date: Tue, 24 Nov 2026 11:57:43 +0800
-X-Gm-Features: Aa3M54osbbQsBQ30OQPILu59VKnjdwijA1lNndox2VeAUO0QbDMk_0iqr7KJXdU
-Message-ID: <CAMZfGtWxmbASYdVBVhLFRDmQGqCunuUS+OqxPVzQpCT9n8pqYQ@mail.gmail.com>
-Subject: Re: [PATCH v2] riscv: mm: allocate split linear mapping page tables
- via the standard page table allocation APIs
-To: li.hanting@zte.com.cn
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 30778180003
-X-Stat-Signature: r3eby15ynjsn7j4unqhybzxqa1kbr7gi
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awUGkYoyDXp4P5LJ@kernel.org>
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: nkfj4n6m3q14dakqrpome6rxqmq7dwtr
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2FC26C0003
 X-Rspam-User:
-X-HE-Tag: 1795492701-567305
-X-HE-Meta: U2FsdGVkX1+fpbzi6IQytT+lBnQZK6YkTYRLi3gaSoeyRUeNyvn1SPlGkDVY/z6zorrXbUFzNkyvJLIrDpp/kTXkfiU0m0xtY5dmzvXkHBrllf03SM+Nrn87NsDc9jecbD8N5n3c38DqjMSfdfisxeo7SgXEQG0DwZTRFu4Ve8ouM+ZNT9nKp23AoxudS7blkNQOnnA5jqSWLs+NqUJA5WsZeKXgvLTQmIWVUnWvOQZJu8YQQWGuG4LEnt+Lw91pCdH8NtH52o97reRVimpcMuAduhZNmiY93Mzex25Zt6j1RbgC922Sn95EUJ8dCYYygkdTYUEosRA3Bv1TMPrebZWj9NKNykXWdGzA4Qte0q7yU7R1J3cZ/fAuJVIC0jkkF/gHMT+GW1GIStXDwX5im8mlR4drvnX6AAUVSCl41g52zlhBASIgozyP7+haSABHtodaPViqfi1oEsG0wkdBpxPD5mpA5dlDp3uceNCnKb1DzWA36FH7n20IlihxzCkXaNC39FxrrmlbFW4tHy98LpKXzNnjvnMrob/kz2ncYdL+ZJh86jgaj7yjDtDOGXkHN4rDGNPMvWzXcfZrCWdX4I9X5aFNyeaOl1t2FUIE8RmRF+3jGxhQCThNNIEZ1v7FuPlZVhJOjFn0QlPJLhkXLOthrOxwrT/MFrQc4PYFMKbcVQc50N11JJihQZw9Z6G6nLD9HG6mlUywfLolbJ1lalYSqsui0rcN4tnSzy8FtO3fzMEzVxH8lE4zYd9lCsWhW9MgZUQsfmQ+40EZnaZE20W6q90RIp9ITPmQJ8aJzolX6nKvcEaA6gsjGzNsrbBrb3aEa3XQpqga5aPDJu3+JNuQbBQ9hdqvgrzNQRB6/+sK1PscY9mwkYV4VCjR9jKbLlFbWvHqvg82bfu695V0LkOZ2ywbNVEOjXhVZY7LunsdIPY0zfyLSdUYYvddM0XDkmNsP7zJ++iUiBqkyHa
- oc6g0T88
- Y7rK3cxU73DR/Oqb5gBy+yYJn0Updz3bxVjV8MKfkKnzKy61AtkFGBYWYcqMlUqnQUj+zrOTLKva/15rWDQshH/zgxqT+I3vU72m1OHHzcAhVFn8Tq1sq1CEHScZVUxM0n7LeueWKngyBVXgzP9JqXNQrfSNX6yDwlxMji57RpeUDg2jRpapbDV8su7160p48Ame2oIY0WvC4n/evnDUsndfrek+SX8WEI5N8hpqX9QNEMwUMk+zfKf0uisxpAbRa7fJHp5hd5LoV0lbNsDUS+pLP47O5u6d4nRNT2+WSU7R5cqryLOsflVSldNja/MXgCCQKArlkW1rdcKFcLG53M8lx2mXVQMpd9/q7R7gH5CBR6PBpuNBbbGyzHDN8G9e7HLXPnM+KshYgZ4XlyZGzTTn22leUHNCPW4ays7lcqPruloLMf7QHX9knuzeMHTOBMO1FU4Xe+KKS78gQPlYYVrvss34vLdq/p0Uyn0r1s1H6+yavtVKs6Vdg0RglSp6BnGc8eud+KV+/qbrO5/pNy1/l+UrI5N6vHUY80t6bZBsC9RBfAQjfUTHFnx+emKPBoOalMMHrDk9zmBQ=
+X-HE-Tag: 1795492739-843906
+X-HE-Meta: U2FsdGVkX1/zaCUsoPREAee/OjnjS+q/i6q9Yo3Tmh/0DghKgYmLzRhSUm9Llpu9VcE6Ai1HoOjcEumrcVELLZyy0pITgib+oDtqF4Z2RkVzMRuNs/T0yTbw7U8a/ZdRcEDs2thLs7sikdmZE0LMNfQiKkiHSnxp/50Ux5xwFxXfINtUukFvOPAc/Gv4PdJCVFmL01oNL7jUrP5pAUV6EYvGbExhjmbJVEOybgRyOWs8TSyLet1I6+QI2xPNe14xLEFlIxNNDfY/cCGH+ieYd2s/B0m2pCtyMb4Xt+/xIQNFL5O/Gpklm3uv/NE8XD4k3ISDXSAdnpdIl+dJTCYE9zvJwM8eHtspn7GTHneTsuQXY+/zJyF1hLfnXi1aeuOA+qpMPCfe0iBWk0qO64LgJWix0Y/02UqG/PlyjscPeepcQBW009lHqmch8ttkw8P4Djj5vyTsHdhXxxWlml417O2hlVw9rBcbH9YlR8glmuuZFmCvTkVYJXZ9tsjTy9/+FivXxbMPo4ChcPEpkIP18TnvGU6EW0fmlMHY2Q6bQ9I4y+gMfsXmHh7/UiiiudoGq5sb0Vuui350XuKcwRXYJj+zvnAoCExHCqe02CbcCfQBj5Zs98WUPs9NQYbxpwZaB/sqsY7TWvRB7c8w+lwwOhQJ6xv1aigzA74vxJvBn7AVnORss34BlIJwriOpueqxSVf8GXjBrBP8t+M9xtbgU9NtroVCJ1xLj/hFDdQ1bMfk7OxYQ0eiOZQbar+3C2nOPKyVwRInIafU7ekPxnCo4Qq7B0BRtWiC8ADNvhPZMmqz+FZOkA26Tu1KSsnERHDQaIejyCrQSrhf8xZe+RAcgXPtIIicNcYm67ZRJkcuAQ/srwIIi5QyszdzrQ1ExXSxIuxT70uh92iwTcUcBp0xBtAfoYpmi9zNPeAujBz5FhwX6kE2p2LC1VoaAKd5r0CeSQCkEhxZfdAez7wCPHP
+ ZdIeJ7Hi
+ fh46t5/4Y4pTbnmyvONEaVtnRFuX/TNdaHpTwjBoe8zjc0wBlEW9xQnhmxlR1lmX87oGWTB02yCP8cFuqX5Ds6xegpHOV8QuWhHt08j78jEqotB4GOYd9ZXw1U8Dw6REkjcb/taUnRflqKiEUe2HnrqKUiOf9qZzhZq3AJuj80mF8UA5VAacx1/3/fCnHPigbWXCnB7FD/NZkF8k6BwLGexGPlkDxKGTyHpuOJFxJP9mDXGtfZMYdIYMXJhmkT0VDt/1BOjB55f3VGrKd7mgfRtp8067m5IWCyPN7gT+C/pAQql2Cevb9YgxP1MkeCzr33z3t1ysTmWwM15pmfJSh7k9xtHez/xmZ6e1L3LdJh75QjaZoGFePfU5FIMZl546gzW6dPFb+nBpzXkqLryY61KY4NXJleh6WXG13TdNnK1aTTrU3Ju6MadLqB43lCtzehJ1qTR/mYEEoEaE8jCqzZVqy+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,256 +119,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 4:51=E2=80=AFPM <li.hanting@zte.com.cn> wrote:
->
-> Hi,
+On Tue, Nov 24, 2026 at 05:37:58AM +0200, Jarkko Sakkinen wrote:
+> On Tue, Nov 24, 2026 at 03:28:19AM +0200, Jarkko Sakkinen wrote:
+> > On Tue, Nov 24, 2026 at 03:19:36AM +0200, Jarkko Sakkinen wrote:
+> > > On Sun, Nov 22, 2026 at 09:35:13PM +0200, Jarkko Sakkinen wrote:
+> > > > SYSCALLS
+> > > > ========
+> > > > 
+> > > > Two new system calls are proposed:
+> > > > 
+> > > > 1. userland_open(): open an opaque staircase-initialized container
+> > > >    object (modeled on Intel SGX enclave initialization with separate
+> > > >    build and live states) with no embryonic state, opting selected
+> > > >    shared namespaces in via an allow-list instead of unshare semantics.
+> > > > 2. userns_set_idmap(): configure all UID, GID, and project ID map
+> > > >    extents for a container user namespace in a single atomic system
+> > > >    call.
+> > > 
+> > > I played on patching systemd and userns_set_idmap() alone does already
+> > > a lot of good. I'm figuring out userland_open() integration next.
+> > > 
+> > > For the test implementation I probe the opcode's and dependening on that
+>                                             ~~~~~~~~
+> 					    syscalls
+> 
+> > > use either "userland path" or "fallback path".
+> > > 
+> > > This auto-probing is done so that I can commit the patches to my kernel
+> > > test harness, which already has systemd, and try them out when built
+> > > against userland-enabled kernel (via LINUX_OVERRIDE_SRCDIR):
+> > > 
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd-test.git/tree/?h=main
+> > > 
+> > > The project builds a hybrid ISO, which is a bootable bootc/composefs
+> > > based operating system, and has toolbx bundled i.e., a reasonable test
+> > > environment for all of this. It is also device-installable via "npx
+> > > @puu/install"
+> > > 
+> > > I had to level the harness up a lot so that I could realistically test
+> > > lockdown-hibernate but it is is also pretty good emulation environment
+> > > for any possible container features.
+> > 
+> > Kernel is ukified and systemd-boot is used as the boot loader i.e., for
+> > kernel testing purposes corresponds to something like Silverblue except
+> > not using GRUB.
+> 
+> Experimental systemd patches:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd-test.git/commit/?h=main&id=e4d6b15da3376ad09c0c575cedf467f69db32a52
+> 
+> The patches are layered per syscall feature:
+> 
+> - 1-5: userns_set_idmap
+> - 6-10: userland_open()
+> 
+> Virtual device would add path/mount complexity and generally dependency
+> to mounts i.e., I think it was an awful idea. At least initially this
+> feels fairly lean way of doing container things now that I've trialed
+> systemd-nspawn a bit.
+> 
+> I'll update the patches over time.
 
-This is the commit message body, which should be a bit more formal.
-You can place expressions like these after the three underscores.
+"userland_open" is just a name as I don't have anything better for the
+time being (perhaps <something>fd() e.g., containerfd(), would work
+better).
 
-The subject is rather long.  How about:
-
-riscv: mm: Fix split linear map page table allocation
-
->
-> Commit 9e4a3ec3411b ("x86/mm/pat: Allocate split page tables as kernel
-> page tables") recently fixed a latent inconsistency in the x86 CPA code
-> (assigned CVE-2026-97525): __split_large_page() allocated the new PTE
-> page with a bare pagetable_alloc(), bypassing pte_alloc_one_kernel(), so
-> the page table constructor never ran and the resulting page was neither
-> flagged PG_table, nor accounted in NR_PAGETABLE, nor marked as a kernel
-> page table.
->
-> RISC-V open-codes the same pattern when splitting the linear mapping on
-> behalf of set_memory_*(): __split_linear_mapping_{pmd,pud,p4d}()
-> allocate the new page table pages with bare alloc_page(GFP_KERNEL) -
-> three call sites in arch/riscv/mm/pageattr.c, introduced by
-> commit 311cd2f6e253 ("riscv: Fix set_memory_XX() and set_direct_map_XX()
-> by splitting huge linear mappings").
->
-> As on pre-fix x86, the resulting pages live in init_mm without the
-> PG_table flag, without NR_PAGETABLE accounting and without the kernel
-> ptdesc marking. Under CONFIG_MEMORY_HOTPLUG, hot-removing memory tears
-> down the linear mapping of the removed range via arch_remove_memory()
-> -> remove_linear_mapping() -> free_p*d_table(), which releases these
-> page tables through pagetable_dtor() even though the constructor never
-> ran, underflowing NR_PAGETABLE on current mainline. Muchun Song's
-> series "mm: Fix page-table teardown during memory hot-remove" [2]
-> fixes the freeing side by skipping the destructor for pages without
-> the PG_table flag, but the root cause remains: the allocation side
-> still bypasses the page-table constructors, so these tables are
-> unflagged and unaccounted for their entire lifetime.
->
-> Align the three sites with the standard allocation paths:
->
->  - the PTE level switches to pte_alloc_one_kernel(&init_mm), exactly
->    like the x86 fix;
->
->  - the PMD and PUD levels switch to the generic pmd_alloc_one() and
->    pud_alloc_one(), which already handle the init_mm case by selecting
->    GFP_PGTABLE_KERNEL, running the level constructors and marking the
->    ptdesc as a kernel page table.
->
-> No functional change is intended; the observable difference is that
-> split linear mapping page tables are now properly flagged and
-
-This is slightly misleading because the accounting, PG_table state and
-hot-remove destructor behavior are intentional functional changes.  I
-think it would be more precise to say that no change to the resulting
-linear mappings is intended.
-
-> accounted, so /proc/vmstat:nr_page_table_pages no longer under-counts.
->
-> Fixes: 311cd2f6e253 ("riscv: Fix set_memory_XX() and set_direct_map_XX() =
-by splitting huge linear mappings")
-> Signed-off-by: Hanting Li <li.hanting@zte.com.cn>
->
-> ---
-> Changes since v1 [1]:
->
-> - Switch the PMD and PUD levels to the generic pmd_alloc_one() /
->   pud_alloc_one() instead of a local helper, as suggested by the
->   Sashiko automated review. The generic versions already handle
->   init_mm correctly, which also resolves the first open question of
->   v1.
->
-> - Correct the severity discussion. v1 claimed these page tables are
->   never freed; that is wrong under CONFIG_MEMORY_HOTPLUG, where memory
->   hot-removal frees them through remove_linear_mapping() ->
->   free_p*d_table() -> pagetable_dtor(), so the ctor/dtor mismatch can
->   actually underflow NR_PAGETABLE. Also pointed out by the automated
->   review.
->
-> - Add the Fixes: tag and move the discussion notes below the tear
->   line.
->
-> [1] https://lore.kernel.org/r/202611091101.6A9B1Nf3015337@mse-db.zte.com.=
-cn
-> [2] https://lore.kernel.org/r/20261008073021.2512665-3-songmuchun@bytedan=
-ce.com
->
-> Hello,
->
-> One discussion point from v1 remains open:
->
-> Since RISC-V never collapses the split linear mapping back, one could
-> argue for deferring this change until free-path work actually lands.
-> My preference is to take it now: with CONFIG_MEMORY_HOTPLUG the free
-> path already exists today, and taking this now removes a trap for any
-> future work on the linear mapping.
->
-> (Note: the generic CPA rework series "[PATCH RFC 00/18] arch, mm:
-> create a generic set_memory/change_page_attr core" would eventually
-> replace this code entirely; this patch is intended as a small fix in
-> the meantime. The series author has said he is waiting for such fixes
-> to settle before posting a non-RFC version.)
->
-> Comments welcome.
->
->  arch/riscv/mm/pageattr.c | 41 +++++++++++++++++------------------
->  1 file changed, 20 insertions(+), 21 deletions(-)
->
-> diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-> --- a/arch/riscv/mm/pageattr.c
-> +++ b/arch/riscv/mm/pageattr.c
-> @@ -3,9 +3,11 @@
->   * Copyright (C) 2019 SiFive
->   */
->
-> +#include <linux/mm.h>
->  #include <linux/pagewalk.h>
->  #include <linux/pgtable.h>
->  #include <linux/vmalloc.h>
-> +#include <asm/pgalloc.h>
->  #include <asm/tlbflush.h>
->  #include <asm/bitops.h>
->  #include <asm/set_memory.h>
-> @@ -109,23 +111,22 @@ static int __split_linear_mapping_pmd(pud_t *pudp,
->                         continue;
->
->                 if (pmd_leaf(pmdp_get(pmdp))) {
-> -                       struct page *pte_page;
->                         unsigned long pfn =3D _pmd_pfn(pmdp_get(pmdp));
->                         pgprot_t prot =3D __pgprot(pmd_val(pmdp_get(pmdp)=
-) & ~_PAGE_PFN_MASK);
->                         pte_t *ptep_new;
->                         int i;
->
-> -                       pte_page =3D alloc_page(GFP_KERNEL);
-> -                       if (!pte_page)
-> +                       ptep_new =3D pte_alloc_one_kernel(&init_mm);
-> +                       if (!ptep_new)
->                                 return -ENOMEM;
->
-> -                       ptep_new =3D (pte_t *)page_address(pte_page);
-> -                       for (i =3D 0; i < PTRS_PER_PTE; ++i, ++ptep_new)
-> -                               set_pte(ptep_new, pfn_pte(pfn + i, prot))=
-;
-> +                       for (i =3D 0; i < PTRS_PER_PTE; ++i)
-> +                               set_pte(ptep_new + i, pfn_pte(pfn + i, pr=
-ot));
->
->                         smp_wmb();
->
-> -                       set_pmd(pmdp, pfn_pmd(page_to_pfn(pte_page), PAGE=
-_TABLE));
-> +                       set_pmd(pmdp, pfn_pmd(page_to_pfn(virt_to_page(pt=
-ep_new)),
-> +                                             PAGE_TABLE));
-
-Now that the page-table pages are allocated through the standard
-pgtable APIs, could the parent entries also be installed through the
-corresponding populate helpers?  For example:
-
-        pmd_populate_kernel(&init_mm, pmdp, ptep_new);
-
-and similarly pud_populate() and p4d_populate() for the upper levels.
-That would avoid open-coding the virtual-address-to-PFN conversion and
-make it explicit that these are non-leaf entries pointing to lower-level
-page tables.
-
-Thanks,
-Muchun
-
->                 }
->         } while (pmdp++, vaddr =3D next, vaddr !=3D end);
->
-> @@ -149,24 +150,23 @@ static int __split_linear_mapping_pud(p4d_t *p4dp,
->                         continue;
->
->                 if (pud_leaf(pudp_get(pudp))) {
-> -                       struct page *pmd_page;
->                         unsigned long pfn =3D _pud_pfn(pudp_get(pudp));
->                         pgprot_t prot =3D __pgprot(pud_val(pudp_get(pudp)=
-) & ~_PAGE_PFN_MASK);
->                         pmd_t *pmdp_new;
->                         int i;
->
-> -                       pmd_page =3D alloc_page(GFP_KERNEL);
-> -                       if (!pmd_page)
-> +                       pmdp_new =3D pmd_alloc_one(&init_mm, vaddr);
-> +                       if (!pmdp_new)
->                                 return -ENOMEM;
->
-> -                       pmdp_new =3D (pmd_t *)page_address(pmd_page);
-> -                       for (i =3D 0; i < PTRS_PER_PMD; ++i, ++pmdp_new)
-> -                               set_pmd(pmdp_new,
-> +                       for (i =3D 0; i < PTRS_PER_PMD; ++i)
-> +                               set_pmd(pmdp_new + i,
->                                         pfn_pmd(pfn + ((i * PMD_SIZE) >> =
-PAGE_SHIFT), prot));
->
->                         smp_wmb();
->
-> -                       set_pud(pudp, pfn_pud(page_to_pfn(pmd_page), PAGE=
-_TABLE));
-> +                       set_pud(pudp, pfn_pud(page_to_pfn(virt_to_page(pm=
-dp_new)),
-> +                                             PAGE_TABLE));
->                 }
->
->                 ret =3D __split_linear_mapping_pmd(pudp, vaddr, next);
-> @@ -198,23 +198,21 @@ static int __split_linear_mapping_p4d(pgd_t *pgdp,
->                         continue;
->
->                 if (p4d_leaf(p4dp_get(p4dp))) {
-> -                       struct page *pud_page;
->                         unsigned long pfn =3D _p4d_pfn(p4dp_get(p4dp));
->                         pgprot_t prot =3D __pgprot(p4d_val(p4dp_get(p4dp)=
-) & ~_PAGE_PFN_MASK);
->                         pud_t *pudp_new;
->                         int i;
->
-> -                       pud_page =3D alloc_page(GFP_KERNEL);
-> -                       if (!pud_page)
-> +                       pudp_new =3D pud_alloc_one(&init_mm, vaddr);
-> +                       if (!pudp_new)
->                                 return -ENOMEM;
->
->                         /*
->                          * Fill the pud level with leaf puds that have th=
-e same
->                          * protections as the leaf p4d.
->                          */
-> -                       pudp_new =3D (pud_t *)page_address(pud_page);
-> -                       for (i =3D 0; i < PTRS_PER_PUD; ++i, ++pudp_new)
-> -                               set_pud(pudp_new,
-> +                       for (i =3D 0; i < PTRS_PER_PUD; ++i)
-> +                               set_pud(pudp_new + i,
->                                         pfn_pud(pfn + ((i * PUD_SIZE) >> =
-PAGE_SHIFT), prot));
->
->                         /*
-> @@ -224,7 +222,8 @@ static int __split_linear_mapping_p4d(pgd_t *pgdp,
->                          */
->                         smp_wmb();
->
-> -                       set_p4d(p4dp, pfn_p4d(page_to_pfn(pud_page), PAGE=
-_TABLE));
-> +                       set_p4d(p4dp, pfn_p4d(page_to_pfn(virt_to_page(pu=
-dp_new)),
-> +                                             PAGE_TABLE));
->                 }
->
->                 ret =3D __split_linear_mapping_pud(p4dp, vaddr, next);
+Br, Jarkko
 
