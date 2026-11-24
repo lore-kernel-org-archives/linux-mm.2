@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BB5606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49926606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Se4qA6/1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RUt25NHq
 Received: by kanga.kvack.org (Postfix)
-	id 29DB26B0779; Tue, 24 Nov 2026 10:37:02 -0500 (EST)
+	id 29D616B077B; Tue, 24 Nov 2026 10:37:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24DEB6B077B; Tue, 24 Nov 2026 10:37:02 -0500 (EST)
+	id 275136B077D; Tue, 24 Nov 2026 10:37:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 163F26B077C; Tue, 24 Nov 2026 10:37:02 -0500 (EST)
+	id 1B21C6B077E; Tue, 24 Nov 2026 10:37:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E73456B0779
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:37:01 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE2236B077B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:37:02 -0500 (EST)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 83C5D160BB4
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CEFFFA8831
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:37:01 +0000 (UTC)
-X-FDA: 85470415842.05.81638E9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DE54E20004
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Se4qA6/1";
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+X-FDA: 85470415842.05.258E9E5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3CB56160010
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:37:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUt25NHq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795534620;
-	b=fHXWVAe8TgVjli7eJaNeFzD/Hl4KoKju0ekXLKj3JqNPhXpuYUY6/vWMhnH5ITgPYf3ceI
-	HFPJmzxCrJgIYUMqXgHtwrDL/d5EaW/fwArrSdeEgItAa6kyW7yDAffKSY3RaR9j8i9kIS
-	0BMgEdlt09bIru8fra5/cQzFfvoaZug=
+	b=zykad3weCCE4/eRHPvB0WHbqkoc9ezDi694ZFPAaGlocJLcKFWKqOfraRKXcPwNK/+JAKG
+	CNnwcpUaDDyX+26VfLE+KPw3BpBhP8dp60TdBAS7ZqEUUIaFYKrz1kNuAkCp/ZBlDyA4G2
+	bnCRPr9AWNI/dxASLHOgbicZ0dxX2dQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795534620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xyKk+lwXs/oM322dL7s73a7m8XTJBc6Hdzh0EajUah0=;
-	b=Gx4LSKxjNUZE4a2wVT06j9idzviYJJnubt0CtdbN5vDJHaPNT9r34QV8QttpEgH/P5UefQ
-	9L1V65gA4EiGAHGwShJzCQvvR224/oouXOaNrWv7N4JpOrew/x7ktz1Uuz912lNBi4wMAl
-	TG/F+FXtqcPD2LxCeENtwT+4bWTFSxM=
+	bh=bV7wk5atgqZx3K8k8thuwxM/GcO61onakPYDAERNzzc=;
+	b=aWJA5hoSYTrSdo3gF59Hi2MPf2attPeltTPwrzi8Hl+S6PB0YxomV3AEfFn5v92XtZ11t/
+	yhA11Zx57/kfngzjQfQi1a7AVI/nX2OtHWz8K7c51VpAWOdCXnyb5wVczNRYn2JiB5i2gs
+	bhUNv/IEOlGrK5mcwlfh1sfm770uu6c=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Se4qA6/1";
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUt25NHq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 385DB40369;
+	by tor.source.kernel.org (Postfix) with ESMTP id D374B624AB;
 	Tue, 24 Nov 2026 15:36:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C861F000CA;
-	Tue, 24 Nov 2026 15:36:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4447E1F000D1;
+	Tue, 24 Nov 2026 15:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795534618;
-	bh=xyKk+lwXs/oM322dL7s73a7m8XTJBc6Hdzh0EajUah0=;
+	s=k20260515; t=1795534619;
+	bh=bV7wk5atgqZx3K8k8thuwxM/GcO61onakPYDAERNzzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Se4qA6/1wIQAd9itRWEClMIA5gqCifzwXUYzX6n8sW6lQuEyulH9abK+8aj/IWiL8
-	 SoVZ7GXpmTME2hGzrCvDVw/sZKjW4EDUOd5hrNMpSxUfMe07HQ6u8FebCiRM03AMBk
-	 jgi1WctP/gREyVO8KpuH6UH32vMBoA3wI07pikumvok7I3e6jCjfTTwB2JayF9Om8K
-	 LVYGhX75IywdOuzVaFzumdAffWfyPJU1he8iMwUruJJVZxPa8Vo27/ewLQKV1mGink
-	 AWFTOCtRyxOsgJI83E7SvAubTbGFrgk+MjqYWKmqlkYnmdS0gG4NRuY0UtAQ+TPQui
-	 wVVNtR53UfySQ==
+	b=RUt25NHqsWpO+D3tSnNCsehd7GAOO5VIeFCOff/Fw/iRUJn+MwrwrPF5GGmMJY42o
+	 6MKq+8WUD1exqec9knCN1yC9l4U7r+cf1JhLm954XUOlxPAP6c34/KQY6ceCdeNQTW
+	 sRmc02IDOCSXkGBitklVyQYg4heTnnIVzLbH7dmjXkSaF4QkTJF1+belh+tAwfqxpt
+	 Hl4xnHZpXkNVGA4XdKF9T5ZV+RNyiTz+R7BkPewou4aZfzWG2U9Tkk7//WYHnxIbQK
+	 v2lU7gAtkCQPmqcDiSeIVYrfk7oqXESZgdrSVuaJxqx8zAhrpGgeLfxf5vUscjVGrX
+	 MQoV+60evlxxA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
@@ -67,27 +67,27 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	Aveline Noir <jm5905938@gmail.com>,
 	Lian Wang <lianux.mm@gmail.com>
-Subject: [PATCH v2 19/27] Docs/ABI/damon: update for REPORT_MADE probe filter
-Date: Tue, 24 Nov 2026 07:36:25 -0800
-Message-ID: <20261124153636.91854-20-sj@kernel.org>
+Subject: [PATCH v2 20/27] mm/damon/api: introduce user_report report type
+Date: Tue, 24 Nov 2026 07:36:26 -0800
+Message-ID: <20261124153636.91854-21-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261124153636.91854-1-sj@kernel.org>
 References: <20261124153636.91854-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DE54E20004
-X-Stat-Signature: 8j5yb6xrwfkkns7zk5q3ecxxmnqfnfp9
 X-Rspam-User:
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3CB56160010
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795534619-991377
-X-HE-Meta: U2FsdGVkX1/qsEYOckh1phvllK0xlZ40lZ/sxCXFdwuzn0q/qpJKQ5iKy6TIBzzqdba7+GX2Y5Ryuz88RZocrOYSNd6DzR7oRcAlXgSPKpGAwwGb2AbwNJQcixXNQVHTO0dHlBRKa6Cl6aLV10ZJ+UYki6tdw1mXK9vrKd0fLpA4Axq3+L1ovSncgc45qNUH7UIW1hsXbR791G2lsOjJnKyT+7oW9CiSdUKvpwJCguZqGeVGzH9MrtDniBh0gTtNS9gWFeb2uLM15GFcL924Bu+cLjD+9u6kqlxoK1UzJ9eQjLS1sYWfDfL5a+wS96F5lOH5vlxJMPC9u0R2gdIcPg3miJx3GLf/IsfNklLhueje8Kz7w2dCgXJL+uVZ/igIpcgYP0BBblHO6Z4NYRr2cQ4a+5u0IxKvhDVGTUKwuvR5M3suqDBuJ0NTl0hXvgphKTelCXvaTUwsUnIlZdN5U01JDKb9bEBzwaeTryo8t2yRfmQEB12CrDz7C92svDGJsl6oH2pxSo9FOVWX6hV3+MItLMq7TfEJ/CYb2X1KVFxnndZtRwnPyL5PnQYt3Jl0cyngvhzR5VBNg8Rrt6qiG46UmIcHok6go5exRgh5ZdLN/G1XpGufaOpP1zgbj0eMFqyXeJAtOUYJUKuoY8lpEGMxDiJYUIe3qpRLh3P5njXdyJcrNf8nGRLyxN3cY+UnbP8WK06E9LDh05W/kZpU9fvBduAu7r2ZVpWF4WYlZupjUixIX8dmly+pAxp1oJmAO+PcDiuTEDnvZw7uc4ZQXg1r5RprcRhl6OGR0s2GRdw1hXR21y3uSjr2Ll/8NkkRuu32vLgikunmE/8GKUNXQb0DWgDU1QnEF8wrzTdqtwag6OzHich11pa2NC1E+1sU18nWXaB1HiPh98gGoq+oyAaFWTs7miy0HSkx65rdXqX8d9qfr3ZMrWcFOoqxksNCycVcqvu7z6FTHbabSHy
- G4tzjFoj
- 8BkXzFBtjMCrXgSu25VuEIU6EmIuJIWHfPmKZUb3x0JdxCwfspszGofVZOdi0n5xbg/v8HhTno+BV1/9dAeneXyer0TEUPTB3JB59blDad9nZ0/cehIjhHpBVN2XX743Mn7eQRUM6I6R969YriXpNXn8fxn8/BcWd3NcSWrBkk+NeNusEuhrfZTLV2jNCD3Qt9G9kxh9ueJVZ0ZEleGlvZGEuO1Uf5n5LsGJ0f3hmSCbqAifMOZQMVY2oC4LJiIEyg8vD0ZkVIaShV2Jc1SdJiLTZ8G8kWcumQCIe0B03c3q7J3UYfBHnZD5bIoOGAkk9viZWTkWi/5EIptx1V4jd2xP0W114P/JNBaiaLse5zjv9ot9aL4kcKw47xRgn4w7R4vgBVuAds2XXzuYD1NYmUVmJRFicBQuXIrQFoBcxUVjerdG4STXq6z9lwxFdcloxenniX/CUjgZkWPmKOHyhpGkEpDfETnXI3YwDUsMUOLCxZnJgnJcE1SpxeJCS9p0EEEAm3xmurFt5izz9sqL2jAouRFDaOd4nMEqLNAKo9h8naAtLb2HPCY3cM6gb2VqdXRwaeuL01VIj80RfQ6jrCvHNzl0wTpkomn7I
+X-Stat-Signature: juays16uwjgrtafemruyd6iii9nktms6
+X-HE-Tag: 1795534620-810222
+X-HE-Meta: U2FsdGVkX18VbTlCoQ//WtCC4tKTQO0b271GBIKGLv7MkOMMqk25+2FMpqPQGZt5VXkwGQS1QBjODlrWuYtU4ovWzBXCA31zSiDak9fmbb25R1IEhtgRrv9kvoaoSaIj++g8G/iQhQZK1UDQOxHpB5gt9daRLvGm9lZIADAobt+9KyuWdUoAyVySktI35+KYQHn4TxDuNCGPVoR97f6nJ7I3s5mYOG1R2RkB+cPLNxTCkp6npnhrVAIFDydQcLLIcQXStzawzEL9GZwY5RFjkIudzhQiSyeT16d6qfsLRd6Oc+H7n6ELnpbY2ce/hxKWdqrjHlGZM4yCcqNCGOzQyvXCckeoXOn3Fr1NRNbA3su8gOiLhTdTCm0RQXvHIbjHgz8DvDoRre6FI3fzOFIkalMC3Z3Ekm/040do+YjmTkaBSYZRQjpxQj3YtWPtaov1770CEj9+8zQON6Ww2MnbqH2xpf3xhyNDA2DH0Y5Fvb7TPIBn69o1hccALIEuTgZ2mXndn66KYYjSOwOdsQJb9adIUa0tMnFARzTOv2i8MDJ6qI5ELPTDrXUvFkHyroQa8YRFU6vYpbPsk+3AaC3QdOJLr7Peg4055oY4ZJbiSmrHNc/SWY3VzaOujEnQY9dv6w2eMzM2IdNZmf4kVppDACnv7DdxP1fxeWWTSfdYjd9LzgIBn2zPOL3ndn8DkIr3ymLYmCtlCPdfAtkD2YRLi+70c9/ZBg3DDBJlxezVfR2yGdy2FZ1OVz4tHsBYYLw2JZDDfm9reg5gBKo/yq5HxNiqpzknwpLvLLnB+HDYHw2lsCCApptgnqX0As7CAEynlNAh5j8x5AHp2aXHbvIl6kDq5ifa2+tJbgECjIiDKuLIZ0EM+0RFIXu5zFADSG/NROCOQkJnVF9uTQLQRVCIv0eaL+wBFbEuBaRFh2PFS4TIWV3NcZ8/Oz0bxritc7Ljjzo14mDdJCD0ASssJ34
+ 8jKJghKs
+ TEWaNv1hE7uR95sUVG2begpvXDJAQKvCUaGfoladro/OlfILzQN0O4AjrtqOqFN1VlCFpuNkMsxleNsiuFLirUAknOlgcbpPn/HVpLzfoPG+8wMblMNxXQFQ3N6TdFP56kuLMciWYKLxhV3KGXIOjwvPNJErdkSUwyo+F8y7Eu2EvWjH6RvW4tGtIooW/SmkH9X0NM6u7cWaIFwDvolyhSabU8PxevF9jEQ2a1m+jpIOtrGeOr8evYe7LuupDqpseXnL3MuQYBF286KsrQbR61Yihq5OkBF4mw3aSwd/jSps8snuBr2KvzDD5WfQaEJMpl34iEJSnmr0DQavL34sncczjO6GOEj2prCi7EwlPHmczG0B//hFJ2XUUGsUAJdSmYoW29SeI6K1ypbwe6dX2wS6wW6hAzgtGVJH57RZDKdIU6Kryp+sxKWk80yPwHMCeubElNs/M8dLKFXmoxR/9749PwDW9riZvTRF2dT/g8CgFnN9Jqca7TjD+n2LiPbb+4JEbfOLTnJpRuewmgGzA+oWk5xXi5TqEJS9aShRCxtdiIywkQ6XxXuH8AAs9AgZ5u2PL8jFhk2Axxo1gfB2Rz+KiwQ2geOnAXBtZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,34 +96,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Update DAMON ABI document for the newly added REPORT_MADE type probe
-filter support.
+Users could know some data attribute information and willing to provide
+that to DAMON.  Introduce a new damon_report_type,
+DAMON_REPORT_TYPE_USER_REPORT, for such user-provided reports.
 
 Reviewed-by: Aveline Noir <jm5905938@gmail.com>
 Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-kernel-mm-damon | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/damon.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-index b5e5004ec9fb7..692827674a773 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-@@ -233,6 +233,13 @@ Description:	Writing 'Y' or 'N' to this file sets whether to allow or reject
- 		hitting the probe for the memory that satisfies the 'type' and
- 		the 'matching' of the directory.
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 38efa41b3d1ab..45c82f536da59 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -759,9 +759,11 @@ struct damon_intervals_goal {
  
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/probes/<P>/filters/<F>/filter_report_type
-+Date:		Nov 2026
-+Contact:	SJ Park <sj@kernel.org>
-+Description:	If 'report_made' is written to the 'type' file, writing to and
-+		reading from this file sets and gets the 'report_type' of the
-+		reports that this filter is working for.
-+
- What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/nr_targets
- Date:		Mar 2022
- Contact:	SJ Park <sj@kernel.org>
+ /**
+  * enum damon_report_type - Type of &struct damon_report.
++ *
++ * @DAMON_REPORT_TYPE_USER_REPORT:	User-generated report.
+  */
+ enum damon_report_type {
+-	NR_DAMON_REPORT_TYPES,
++	DAMON_REPORT_TYPE_USER_REPORT,
+ };
+ 
+ /**
 -- 
 2.47.3
 
