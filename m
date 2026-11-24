@@ -1,100 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CE2606A32D
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AD5606A33F
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=boqD8Jr5
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ep6nvdu1
 Received: by kanga.kvack.org (Postfix)
-	id 4F3A76B063F; Tue, 24 Nov 2026 03:27:18 -0500 (EST)
+	id 307846B0641; Tue, 24 Nov 2026 03:34:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47C686B0641; Tue, 24 Nov 2026 03:27:18 -0500 (EST)
+	id 2B8186B0643; Tue, 24 Nov 2026 03:34:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36B886B0642; Tue, 24 Nov 2026 03:27:18 -0500 (EST)
+	id 1F5086B0644; Tue, 24 Nov 2026 03:34:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 137DB6B063F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:27:18 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A47611C45E2
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:27:17 +0000 (UTC)
-X-FDA: 85469332914.15.1B02755
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 13E622000A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:27:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=boqD8Jr5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F09C46B0641
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:34:22 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E14D5A0B22
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:34:20 +0000 (UTC)
+X-FDA: 85469350680.16.F4B3DD2
+Received: from mta0.migadu.com (out-144.mta0.migadu.com [91.218.175.144])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A8F5C100002
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:34:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ep6nvdu1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.144 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795508836;
-	b=1TyEWxU9138ukWa5/nlVrVrrB1LemQii0whHaf80b6D4RX1SHM5Pa5Hbbs5KQpBSzE1PYc
-	j8MntrjbSTqSja9WZg3760eULJwgRPdbQn2Jxsy1J0o3/6paH3+clWo8Q0204W43+9JPKb
-	Jd/fks5+fLtZCTJzpypj03hjfo14UJQ=
+	t=1795509259;
+	b=fdM3hV9FJ+5gE6fQ2tkdhXufzAgtVZEfJa4btN9bcUNzfCM3QirIALPu2WTPThMklHJu6T
+	/9VqZTHb6ZPdLJNbpQY17ckKzalxGuv/nFaVqdhKZdrhYYLp4HNPKtywZl4lBnLw17mhJI
+	LL3NEUosmXZnboWOD2sRWwzSX5m0DFY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795508836;
+	s=arc-20220608; t=1795509259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hQcy+J0Q27okHFSIG61ZS/kukvTSiukLlG4lterpEAo=;
-	b=JAZOk9Pdx5BrKyR4WFGijmmlBxZAVqvzFeskVScWDqT0lq3yttpB/AjQcgJZYHCFrEC6Xr
-	eJ8M+fhLypnOVVHHve6oF7uUgRhAvqnuMDa9s11gva2uW4N+nMavH57FOVdbb4P04SB6r5
-	b6fgWz+BFP4O7aFdzUC1rk0NtnPKjos=
+	bh=K7WfdCMMRCOuD5ycNmdQ5yCGlPPSWFzHbHH6Cd/QbH0=;
+	b=3Wah0gXYq5ED053Uhj1h5Umvs8BW1wpugyeVp7PLDnVGGe8Pjx4VJgrxQ8Ts59ZgsyN7db
+	8lx9RYWumbkpCMO0Ub+EaCqOUfpV24ljQxgbqfhmCu53oGvIJV3QFQT5Leavv2zxVoQYZs
+	XDPXZ5cgMLzFGHuiw+u4hLBjJ+A1i7E=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=boqD8Jr5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 740C560A55;
-	Tue, 24 Nov 2026 08:27:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DAC1F000C4;
-	Tue, 24 Nov 2026 08:27:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795508835;
-	bh=hQcy+J0Q27okHFSIG61ZS/kukvTSiukLlG4lterpEAo=;
-	h=From:To:In-Reply-To:References:Subject:Date;
-	b=boqD8Jr5nch2TD31AiMaSKkiNroCZ7mGESH2QHNH1pMQIBTB7IjBLEY0KHG5M1pxB
-	 eU6QsNYc8kyUeB5Txid6WdGM9bfbY7YrwX1vOsQ4mg4OQGzL7qgcMiVrW1ngX8kCSV
-	 leaVcrqdGsQg659aCaZeKyEtIpztAqu1sTbUTNUo8gR8mfYPcLVv+J+UluoHqUe0eP
-	 duvXvnyVzMsIoGa3zV+fYRHXjii9S1nF+xAJ9lInKZxuAqBk1u0jxP9TjEK0pIkCqS
-	 nJZbIHMb6ROINwVN6glswsVpjyH6Osi6shRQYbpggQFa/8xTljk9JhGIqh/aT9/CZj
-	 VVhUksjBT1e9g==
-From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com, 
- byungchul@sk.com, david@kernel.org, gourry@gourry.net, jannh@google.com, 
- joshua.hahnjy@gmail.com, liam@infradead.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
- matthew.brost@intel.com, mhocko@suse.com, pfalcato@suse.de, rppt@kernel.org, 
- surenb@google.com, vbabka@kernel.org, ying.huang@linux.alibaba.com, 
- ziy@nvidia.com, kas@kernel.org, hannes@cmpxchg.org, riel@surriel.com, 
- shakeel.butt@linux.dev, kernel-team@meta.com, baolin.wang@linux.alibaba.com, 
- Nico Pache <nico.pache@linux.dev>, ryan.roberts@arm.com, dev.jain@arm.com, 
- baohua@kernel.org, lance.yang@linux.dev, Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20261123163301.1568240-1-usama.arif@linux.dev>
-References: <20261123163301.1568240-1-usama.arif@linux.dev>
-Subject: Re: (subset) [PATCH v3 0/5] mm: fixes for THP migration, swap-in
- and device-private smaps
-Message-Id: <179550882470.7632.15364862356979603217.b4-ty@b4>
-Date: Tue, 24 Nov 2026 09:27:04 +0100
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ep6nvdu1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.144 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=qoHhrk9Sl3EhFD+MHGeYcSOXmqUjqg0h5hTx5ClbPdc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795509257; v=1; x=1796114057;
+ b=ep6nvdu125Y+SWS4EygrYlF4UkJIQhlLmKCYXAu3v3dUyX+iffpoS77NN+4FiO+Whf4sEtza
+ jw9kNX2wENhqiuiAMJtgDSKy6YrR2M5QN3rU4pzW/v2kIgf2BQ9kMEWPDUFm4+E9FVJiaujvJlL
+ 8sGNpNa7LG0MnkFf0qZYs4Vo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 23c9c215f8cde8b8;
+	Tue, 24 Nov 2026 08:34:17 +0000
+X-Mizu-Trace-ID: 23c9c215f8cde8b8
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <d5b7be4a-0137-4fe7-88ef-5cbcc23d0855@linux.dev>
+Date: Tue, 24 Nov 2026 16:34:08 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Docs/mm: fix stale split page table lock references
+To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, "David Hildenbrand (Arm)"
+ <david@kernel.org>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+References: <6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Stat-Signature: db8ysui13x7cuoo1d3f5suw4wiswafwq
+X-Rspamd-Queue-Id: A8F5C100002
+X-Stat-Signature: hbp6pqdzm43m93wypjpnr8o8heo6zbjq
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 13E622000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795508835-940429
-X-HE-Meta: U2FsdGVkX1/IiMChdNEsSdKZoCeWLQSURWYONm/W/hpHq0iq32RtENhVhxJ45tMcLBWj/TZnyt3OQYWLFGEAtRzscz5RtRus94Xm99n3TkwEg3Wkp8ywI3JHiAKXS4HF/+yBed6v7cyxLKXz+73oiRYCziVa7q5ae0AJ1rxiGBPOVOwUR2Q/qMRla6NZmOtDCzZaY5SRO3J+n/lZldBOuUaIO2A9T+ei3QCSW9QmU/6GKToTLX21jrdxnAvH48fWUMYvUE1XPRUWd7qSWZzKB6irIxwbZZRtRKlfhP/w1oUfvogH/l9PpfElIvj94ndaJCIiKUuUXleIgf4g2pIwRzeq02RNZaVLGMx3skb52E9n8T47gB5albp77kTWoSrlIU9wS5OcYCE/ZKFspwVAjbs1C8eWaN6gYhmejT5KtYyi280+52kVRPapfY/RqDbvtHm4uJraJHVjSbTnAwPGp3A2qI5x/Eya8sgoprkQ7KRDfoj5heTyApwqvybIwD8pLBETnGCFwVuBqnrxuzDed45LF/VYXUeJo4rdQ4HUD7NbGnykkbBTwwoUYrS75qjiMNSYFcw8TJ7/w29y8Avfmv4XTvJNm3Ry8fA/5l/UTCKNRnwB07yHx4BI33IsAED4BvD77ftoeOYKkrIs73KReIBztHb0MoSzAeCnZLIZ/sh8UfQWzyO5OJFlGFKQKUIeVSaSA57H2kl2DJNfHS4Z7cF3hnGG4TxTP7ZGjZwT88gSljqmlVQ/j88HLKV2esMUW+j9oZ2qdriEnITiO0jAT35AIcy5PSMEVS1QHhWnKznLeh1rRZZ0YxxsR6GUd+Cy2vL5BPuJ+Ff7itsoIZQPJt5qi+CDF6ODqhMkhJls286UlFpvqbEoBRW+6nBHLn3m5Efcupev9RNMlPzCfYd9FfgMJ9Ex1ISgSV0LqIYBxkcc92axgklOIHTNnAPzpmVel2BWu+9/67mAVApTZss
- 9ITIHtqe
- x4z7N53Do6jgNR2ht4CxrYsc7nnRYnrE4qJfr95+yFLiQe3RMiK7oSi8FwFMukjNcFDMbiYKeuq3R2rWlHt8B38TOgD0ruzXIWtSEZCVfT+3yHGc/osjdPCu62FhwA1uWP1/X9TB9LcxUvlyQJej0bbrlLiw2ThenaRhAn0EuIaf5DvN4K3hf6jybrOTuIHi6k6CjeMijrgG0o+jNca/A9tM+1t4mIvzFSUHdQZgpFRAALSiprJF787j7llPVSe5Fp/RrcoNglz1fBud3jNMKijEs/Pu7fHAWTXaGbEJTJ+p/bjontlJR7SfoFNQRZq+D0HsE3zs1ZVvLaTW0oUoVukVjK9hf3bCKt3ikPaTROpLC4EqglNIg/eU1OYRSLvg2k3kHAGoNI+oesFc3PO8JRi1FRCpVty3TrdmQ3O6ub+rHTJ6WyGBAtFMHOREpCDDJAgi1KZbMCPNGRxH/D7WaO4c84PqE9dvqm1da6LXn1cETgjGCmKOOagU7+CNmR0oKnVFlPkKTElHyIn3LYpGV+FdBbTlxT1NNPL/Z
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795509258-767915
+X-HE-Meta: U2FsdGVkX1+HsSEcxHJAvXNcCaq95oVudZFk81rQWIfVE16x/4FNWmZbMcPFAUpZf8Zc012wFDvGm4dDDAYfJsl+J1sMzwAF23OvxJnSDZIYcfomBXQAQbPyChpxuUOELWJckKQwJcCPqfzULJECHoBgkSkNXQ5hS+rFM0AFTsmFc+iq0o4y1ecqckjJlJ9QRmbg1bvXa3JYV/9pmll+YPY0NHX0QaUE0SkRI3Vk51QgzFHJw9+M4FhupKiZpIKM9r/fftx6jpxmBvXm1h7dZBzZivIafpJUyIGDu7/glVrK42qf264r/NGPDxxhNtjgwJ3ATzOb04hb/gkMf7t6uSywDCPk2wMfBSGzVNW+/SH9q+FcLeh8y69GKTIzwwKNOGyA2nWmz3C679/WJxhUj06PG4tLMQJoK3kv0b76dfqDVAgmo9jYfGQ/K9wWXvRfgrvgPhXsgRxeEJr5JPFTi2LTcqWXQ/j8VetVAnfBdr4zyq9GE27jV6lTpQU17t/6WIKA3j326oK9I+Z6Gepio6TUTLfLxgqmeAMwrf+e+Fz5H+BHazzoFETD8ajV9GYPBfFRF8Y1wsAfeIWWEtoRnT41RzZbO0/ZPrjfhsmDE9qXQaouQ7fEnaMQAqx3J+HOD0CHkBpUVe0x8Mgn9zfJVKZ2YM6hqMGnQGFgMBA0CNlVEqJHkOY5NMEn6PBOFz/MmlsBJpWhSj524Xn9yYkw+r3DGQD0C6TlT5ceG5jyKTwKfz7OEpcqn6HEnMgGqNKBJIBQAYUzQKJX5EGijWOV641JHlDa+kkX5rzGeSdlUYfaiKfCfyyTvyhZ0ReOCqcssavEpcNVO3+vi+htoKATRYmHsbzEw6S387dv+G8cG6KudMjUHPiM8Lr6EELmIMPsFe8Q0gpC2RbfeEXrZ3FKKPdcKNl0M0AxKZxK2FKjt8kp+iOpcrwHrouwschpHDAXp2B5VbcjZaC+aTk2+9f
+ KisWx4jN
+ nB4IF9Riv9ibVK+a2QaK0E7wWkBdFBzmMdQE0vyS0m0JOtngbMfaUdXcQsr4rjhHUb82ORXer0lC4tEzO4wfNtxyk38ij6TpeJSHIN0AdSFCeJ/BZrJyuesGtkFx3jtyr2z2sDsAl5Lt99BnrCaXatW1mm8ro6fJjq3q51CjhfYbJ58TOARtCIjc39lQe6af1ZG6QVBC7dMTrmhVdAeC8wnBUM3NsCEUi0O+GxSspL50pOQ29/Ld/tiVUQkSP0T0bujQG2CTTAr71And/SWQ61DlnjBL8BQL1iAJEdTwWn2B6jybGAUxKD63G+zY3uUldLZBjzbuL3soR15hYumRPzZryaomyy2O2cf2gowiT+hLIZCDP+xwlVF+1jfOtT2iD6dpjvCoQeaT6RPyL7J2v6XwHhUAJNGH3vnfNGaeNMuweqhKhIWkRHUXH9b5LlNba7vDkUTLpOgEwh5CSVxZYq02oA8AJ8SR9Gc+5GbmSNCwnI8/voWneYT6td8KLNb5kPd6EX4YIDe7MubZF8ByclhcGKsIi5Xg9PdTP1WMqwvMq6322REdJfnKdh2ESWrdiXW4a3SMRfkEUZr6Qkz0yXU9VDMRBvGOyTpykSIuxU8oMKi9As7EXF2fkLmjWYmDBUvX7LzSEZKt8uNtOBMLIsVJ/9gdgpgmx+Zz+6Yc1qY3DmN7nveNBdaSoQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,41 +102,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 23 Nov 2026 08:32:06 -0800, Usama Arif wrote:
-> This series contains four fixes for existing THP migration, PTE swap-in
-> and smaps paths, plus one cleanup. They were extracted from the work on
-> PMD swap entries for anonymous THPs [1] and can be merged independently.
+
+
+On 11/23/26 11:09 AM, zhaozhengzhuo wrote:
+> The USE_SPLIT_PTE_PTLOCKS and USE_SPLIT_PMD_PTLOCKS macros were turned
+> into Kconfig options, and CONFIG_SPLIT_PTLOCK_CPUS was replaced, but two
+> Documentation/mm files still refer to the old names.
 > 
-> 1. Avoid a folio reference leak when concurrent MADV_DONTNEED clears
->    or splits a migration PMD before the device migration split helper
->    acquires the PMD lock.
+> Update both references.  Point readers to mm/Kconfig for the dependencies
+> instead of restating information that can become stale.
 > 
-> [...]
+> Fixes: 394290cba966 ("mm: turn USE_SPLIT_PTE_PTLOCKS / USE_SPLIT_PTE_PTLOCKS into Kconfig options")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+> ---
+> Changes in v2:
+>   - Point to mm/Kconfig instead of restating SPLIT_PTE_PTLOCKS dependencies,
+>     as suggested by David.
+> 
+>   Documentation/mm/process_addrs.rst         | 2 +-
+>   Documentation/mm/split_page_table_lock.rst | 4 ++--
+>   2 files changed, 3 insertions(+), 3 deletions(-)
 
-Applied, thanks!
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
-tree: mm/core.git
-branch: core-7.5.misc
-
-Applied patches will appear soon in mm-next, followed by linux-next.
-
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
-
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[2/5] mm: don't PTE-batch a swap-in of a folio with a hardware-poisoned page
-      https://git.kernel.org/mm/core/c/37d4eb7d
-
--- 
-Cheers,
-
-David
-
+Thanks,
+Qi
 
