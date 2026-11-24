@@ -1,122 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815D9606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 21:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E95606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 21:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GjUlXU4T
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UQYU01VS
 Received: by kanga.kvack.org (Postfix)
-	id 9B9176B0869; Tue, 24 Nov 2026 16:34:30 -0500 (EST)
+	id 180A26B086C; Tue, 24 Nov 2026 16:54:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9916B6B086B; Tue, 24 Nov 2026 16:34:30 -0500 (EST)
+	id 132456B086D; Tue, 24 Nov 2026 16:54:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A6E76B086C; Tue, 24 Nov 2026 16:34:30 -0500 (EST)
+	id 0470F6B086E; Tue, 24 Nov 2026 16:54:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EE706B0869
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:34:30 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D2BBB6B086C
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:54:26 -0500 (EST)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E094DA0BC6
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:34:29 +0000 (UTC)
-X-FDA: 85471316658.27.2A9DCB8
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2D0B7180006
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:34:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=GjUlXU4T;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of heyheyco@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=heyheyco@gmail.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53DDB160C6C
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:54:26 +0000 (UTC)
+X-FDA: 85471366932.27.79C41FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BBF8440006
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:54:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQYU01VS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795556068;
-	b=yLX8Y2JcX/49zax3Jot+m7DrQnWrzk4KeJg8SIeBDYHVkvQCtloO08RJSjxfUVRyMRJU/p
-	eVvvRTYMv2oUfbVfXlEHnHznDezvz77zKbNYvdFKrFxxXociP0qk9I+iEaMsRe6zl7nVpo
-	Bl42Wg9zKDTCFtll/7Ih0kd1KHWKKRY=
+	t=1795557264;
+	b=Iq6+F9DXfbkGJqwvMYcmYYMLwQ3TC7Phqm1fQv5+fN/tbSm0OWSxe9sOddGU3PliIN41Wt
+	HdOxko53tDsw95x9Q7d4it7tWzsdG/25mmzq862iLCO7kJ9F93KNZQ9OqTs4PNEsi2wBgg
+	57ADuz1qL+V8B74/fNBGiURvIFILFW4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795556068;
+	s=arc-20220608; t=1795557264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=O9lMyeWaR2AVa49Y0bfc4zD6I2/RGDgVBYEZU7qaCoU=;
-	b=KGws1KfhqbDsqpPPJ5lyNHRTduRoYDJbNggPJ9e9i1ikSVl4xH+pawcpvW21fZs7rYXYK4
-	1kmBI8D6XqDwc1YsZHtNIZMlbYbhOzKiY9xHfB1PO4qQ5s2XF6HpV+i/3LE1dn3hQW8oT7
-	Z61rSZ8o1H6IpzQK/3vBEW18xwRgq9s=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VYhaZ8UGiw+YlICT6cuZY+47kv3MmX1z/3eT4sdMXTI=;
+	b=oADeaUq468/FxXSAosnF4tjGS+yjAQwaRKz/pVKjnvTC+nreSqXyUA6Z5QOtC4ulNkuBJT
+	sDW0FgNYvmSfkSWsVNCvuzPd4XoBuCFjaJpAm10VBVV5prrnTxTpbWnw48o9vSOVBzW+kz
+	vxmm+BK6wIIDOXpOn/rt7H+2XFNPyuM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=GjUlXU4T;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of heyheyco@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=heyheyco@gmail.com
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-386c71feeeaso1214946eec.0
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:34:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795556067; x=1796160867; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O9lMyeWaR2AVa49Y0bfc4zD6I2/RGDgVBYEZU7qaCoU=;
-        b=GjUlXU4Tte5mV8JIBEUk0nomdgXyHLgbMnfzlMmpYGxrbYPdjdifRet5YXvklhdEUg
-         Ca/zRhqgJes+JIgacSZacgEcAqKhCOoQfADHJ6k2FsIN1mc1h/H0f6xfuie5XaqLB9OI
-         JH7rODb16V5vVzcaQNoCe+3zXSfo66Eetn2s0VBamZwJXSXtBk79oow/zN7FXt+2AZLR
-         8yFjhUkhlupW6IlDFf/PdOtR+63QZ1syMmDMlhECeKXY6IGw3p8ViPSkhYN+eldhp4pE
-         fHs2ZV7s+wIXvr+gTyFwV1wt50JzcgVuXEEjiPs+CrwUbN7pdaGNTUNm3w5G3PjJFDU0
-         6F4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795556067; x=1796160867;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O9lMyeWaR2AVa49Y0bfc4zD6I2/RGDgVBYEZU7qaCoU=;
-        b=njjuSZyF/MOotE319O5VQWyukhqnWCZRhBOvSUj2tm62UgvgF/669J83xulpq7Jyvq
-         3/aCRAQ31uGIiMTHbI8N/S9wrtkj3aeWK8FhAqW3GjRFh0/rFd8sg/Wsso0a+HCxZ/Jm
-         asbgHiYlGslf41ACnfpDxh9JXD83AkYSOdZP9/OYJuBJ0+VeTNORSXApNZHJgn/bp1A1
-         R05ngxFmoTDUWjbEQ9X0cLwhJq3qozAhbK972FGVe9I8TR1KP7wpEgNGTAHFHh2cmbJY
-         hf/tQ0u60vSJnpFW+evAS+Y01vJfISNq0tiJ4jdfhZCKYCvTvkxarN6T13+Ug4ZPtbSd
-         xV+g==
-X-Forwarded-Encrypted: i=1; AL+hErEV9Vx9gJj+A/eegsNWzgqeXeB//4QPSCs552HMGfxfbx2AyEnNGnckCi8QPoDDlICIiyvklAF4XQ==@kvack.org
-X-Gm-Message-State: APuU4Z/s/RfUmWElZLPB/b1wzPD2L4A1Iy2/BEYwoECMsU4WNgKbTQyI
-	5MHC8KspHXDtWzzX0keY6VwOIr0gZNDFN0kRc/tXWWO04O74oECSpXfF
-X-Gm-Gg: AZFdTZdOrorAGYpTP4EHBe7wO0BHfnykPofT6FkUkPLXUobfKCd6qFoIq97oy96mXMI
-	ytv78G8bOddisDVjyjoC8p3W17Eos3mJj4r8LKaJmufjBsOC7RLFYCQm2EPL7ChtVFkzIxLPXg1
-	6EVWFnWoV8leN88kmUpkBkN1cU1Lx2EJyc3XOz+7MhZEibw+K6xrclRs4ahQv8tXv3Wiw+Z6hbJ
-	4Z+GW6obZGFiDuXrNL/Z4WJb4KJIJ2oyrC49YIfyLYNatNEg4fqtW1TyDZ/GDrgVbR5SxM0ckWZ
-	bXT83d18lkgl++4rkORJ67nXLILPVSPGT1DbKivLdjdN4hNzOya+vXeR4taeA2fXP0lSKSXIXHg
-	fp3t+KxVMqZ7I/rzb/sNQeIMRtL8O8y/7HBe1R7wojHvOR9VIYlwGyonVz2VAURT7/E5Fb0ZhbA
-	rTqu1Gqg3uqScD9KcQmHAb4FGVwQluqprpINCId5FfLuLJ+SCNczkQc2s5IGe6ekKJ5qYkdrqla
-	+dYKESDFLMs+mvTqbvliZ34xvYok1l6zVWTOhKytFRuq2GHXHBu1uPYR0Hdwvdm78ZquJHsfFNa
-	POyU8dG0Td+NFtbFhhI9EP3sengfC8f0CmKosEB+QfYKYmNLV1epFb6K/V7f4FCrFV64P7W9r/K
-	gOff1uczmqJVX
-X-Received: by 2002:a05:7300:e91e:b0:384:2780:8757 with SMTP id 5a478bee46e88-38570a3e793mr18231095eec.22.1795556066685;
-        Tue, 24 Nov 2026 13:34:26 -0800 (PST)
-Received: from dev-oss-0.tail8d7c7c.ts.net (c-73-70-201-200.hsd1.ca.comcast.net. [73.70.201.200])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385666e7f59sm49448857eec.6.2026.11.24.13.34.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 13:34:26 -0800 (PST)
-From: Qian Xiao <heyheyco@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Krystian Kaniewski <krystianmkaniewski@gmail.com>,
-	Qian Xiao <heyheyco@gmail.com>
-Subject: [PATCH] xarray: fix index jumping backwards in xas_find_marked()
-Date: Tue, 24 Nov 2026 13:34:24 -0800
-Message-ID: <20261124213424.2224554-1-heyheyco@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQYU01VS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 13816620B8;
+	Tue, 24 Nov 2026 21:54:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0CF1F000C0;
+	Tue, 24 Nov 2026 21:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795557263;
+	bh=VYhaZ8UGiw+YlICT6cuZY+47kv3MmX1z/3eT4sdMXTI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UQYU01VSY4vX+sjbQbe4c6VkSB0gsZ2dNNQyUjzPr11h6kxp+XHLGI/piPI+B1UeM
+	 eRUe1De7GTvpy3OMo45cZ6m16ApzRLuHqFmgC/VuI1yJaDOiK87jAkWeCB5Tp+QHT0
+	 vNtZ+nhubzxAPXsM+wKtAucuGu5fwIu3pZ4YjwTQiPzvK+WZGmL1inBKzz4fdOSMfv
+	 dlYLUpjD3/VUOPgS82hY4iy7MAMQd6o+sVnEzBSfpc/ril2HHHOwOGEp1+UbEBJK5g
+	 1RxVcindNxaBfEAQhYfDQ37uW15Pv/CepKQzGQLxhTxMfkTxJqA4HGLKBlSgS3Tvy/
+	 pLHEGkvPsnszg==
+Date: Tue, 24 Nov 2026 21:54:21 +0000
+From: Harry Yoo <harry@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>, 
+	Lance Yang <lance.yang@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Ying Huang <huang.ying.caritas@gmail.com>, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev, linux-riscv@lists.infradead.org, stable@vger.kernel.org, 
+	Kirk Swidowski <swidowski@google.com>
+Subject: Re: [PATCH] mm/rmap: avoid reusing batched TLB flush generations
+Message-ID: <awYFSeZKPzqcCvW8@thinkstation>
+References: <20261124-rmap-v1-1-e3dc48a4b527@kernel.org>
+ <awXQg94rksZvexZe@thinkstation>
+ <1cd2306c-eaec-43cd-9d0d-92f8cb6e691b@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1cd2306c-eaec-43cd-9d0d-92f8cb6e691b@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Rspamd-Queue-Id: 2D0B7180006
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Rspamd-Queue-Id: BBF8440006
+X-Stat-Signature: mungnrxifzh7obexcixrgb5ono45myso
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: mby759bmgkikhd6o6r7bbiemexi4zocr
-X-HE-Tag: 1795556068-379038
-X-HE-Meta: U2FsdGVkX1//PSAj/MXnJsho5Q1GQIyQUsD1RSxGSHDJy8u7zqQLLV8dvmECkO6mYQlxT+u/XtG4bDRW2NC4WRtXHIFgyJGQ9KCTSDpEjn4czPLKw6Yto8X6TSfFuLHri9ED8XuJ+wtRVpyr519NsJzHxrA5ofKuq/efeuO8ZvkQQF1ImEQhzcQyoM8PxBX7dCoRIYpVky6iku2fIlUD1yP687Jlgd2D5VIggRxiZrtgnFQEMhM7lG3j2B4R8ZMF02eVJvldk5MqHDXxfUYziPolvOzny/D9f4jeHFkIoufvtR39Tye7R0RSRgx9uAoPWclTGHGTrB9s7Xyf9KYR0s2Cncg014UzF9tD9niusDCEezhjKXmjeN/tgOM2Xts+i+/Vb/NJV2jmy3mWjv5E51Q6VovgV1cdqaQ9B9wvT/ULfVbR7VZwqfHyYDbOiIwlm/XXmQSUh8QVDIw6w618oMlz1sUYxkt+XtMN03O1GKqsjX+AAsKJA3DaFS10p1yDB6p/dE/p5e442cutfWoIuz+4bJdnPGiBy2F3r1HjQ9OwStP1qthaNRjRJi3sBXx234kSw78EbIM21MWcS6CekxSg503+LdSgpQlHNrpPiA5l1e0x79NNgir61x5Ohrd+akquWEpjp5M17g84nKA7U9v6n8tbs/jpzLDNDfWt1D6kfcwJ1wppAEwHH7k5JFx9UuAMX4kps/2JagIbcCo5MnL5U3t6PsyVCIs57QnP/eEgowI+KqKZ/Stn9ubAcMcCsNKAxqoFFBFd7kwBwxAwfj+99LIPz7IQHnDzuvyY24KueSso7UKPLOh3U4vXDSMB2SrysdZ2ARrlo15NoQBUhorlOipmKxmwBQBfx/x9RNYdO7Q5qDN3WDDxg+MGLtGVPF2ctsnaU0rZYAqG+i9e4rA3J+ceVwnoLFw5qWqfw/sCFEoRiIiBjZ0hEM9e4icv0rwVb0taeaRUpSyJkbM
- HNsh1VKE
- EsgtPSGMP34/zaY2SkTAfqbvXe+dyapNJkilDYa7L1XKsIJDuf2vxCRY3259c20iZuyLwjshcc6IVqNAlwaqL5HlxW44vk55qpguZ6wRwun2z0fc+5V2erpwlq8c5CD/I7sxTeocklfUCj2o4HGAaeYZVcDtE2viYGr0ioDR0OvuWevyMZA2PVqC/7j25XdmZnJDa/APSTyw4XDoa2thvfb/S8cJIMX6+31HLT5/fM0lHDm9X1zg+RR129894O6fdV6qh/fIXSdDqD9oABSNK3OSJbyM7fjYGSa7y6j8Gt3mN4TnbtpO22ZKzvXEr6dAkJREEA2D0i1TG8omkrZxliIF5AEM3AYxv91l2M6DvmA+r7S7dnsP7Lckinb9AIW8TDauRqa1f5gNzQUMUEB1s02vMe1GxwU7odTGCwZHhrCJQ1ZvVg8pxm+MMJJLJ92QQ7x2uo+D6+1TH7ms8sbgmxMJ8gtbOzhQxvJNuESX6SaYrYlUyhGKU5xCoccl4xEuscBGJ+2jXFTD4idSPDlpy7sOq4hobtm9CZ3RYgb4h3bUg6pfTelcG/G8iyZCDd0vAx/P+L/I6DNIy7Jy2Vl3wt8qZehTn3FRKiDUpE1/wuhSQT3uar8XYYnttjv/erhWLC6/KeLe7I36NEISIVZyeb0foFTFVp1ZlVqNK2E5kNnFj3QQqxkQ+/iWrTCjGo0XC57UK
+X-HE-Tag: 1795557264-756043
+X-HE-Meta: U2FsdGVkX190NqKszw0hvwqKG+t2EnRHlermGFt/QBxsh8uASELhiXMbEhGtjSrEjFPkWX+OSoASCHg7wExsbohILWERuhBlVqyZGZWWrVhrOAW5gCHVcWHYtQcKUTeMMSbX2CUtcVeLdyQJPi+PtYo8QJEDqpSYVqtqmPCZiYK8TbpsYXaBueWGE8DfMfKDc4auO6m4rC7IbnkamL/AFc///8gdqGpyOvZ03reY+zywlXMJMCXEUVKxZkinODDqKYWnRRz/yvZF2MiQFpbar7gfTcza72Kz7Ix69qf1w5KGZuC2GLNQazVb/rWY8f1um66g+vWmgXnazyu2b9CYYn+NOG7V/YROp1ggEcb+HTWPXVKLEiNrHeqvSf95v0RNc6zz8tunsC5/omH/ScWB8lJ/45vuZYQKpw3Gz39gjAhm2pwI7UxQxs7gAbHM+A1NagBwo9lsKOa3Adek1WmM4vnSWkp2AuGC0kRhDcUDpiQrJEMC5ROL4a8qpUpEM9IhlBOd7NHSgNEkWZ0DEzFkDiqgUzG0kOXcTmhRPVZT/3HwIpI8jpZmt9zsHXWJXhOXqpVHBBXO8VknMzhNDSqxcgOBFFxXp8N71GvJJ/cShdheKaNk8QgNm9SoGyMtvR6DP4whW+Z1Z9WTh/8kuUlm2gvXk8DgoHqdZMH/040bsCm+IisHBb0amlFNW/sCrfBnYWybpV2r8xLBTnSzEtf7S3JFt+7Yw5CLHqWa2/hZy+92mQkwh1HZKec/ukwL421AbohYPOh4Ico1qNu/H7i43hn7YUQN/o1KraqymlzHU8x7Nr1r8pkqVT1nD99cVLSxpPwtfqUYhUhBRtSB56XoFECuh5vq7xtlVVo3D4HhIZJ9lHbUugZJ5wnIdG6Qn8qtEAoHKY//WlsTSQcPyMNm1qXn7bl/eVxA6btpbUfwZSGBMU929c/FXMZqzreH2rvsqyR/5OdgsnXap7cR9Fw
+ V/AjpF3o
+ bSWH6dqH9p25Iwt4F4HBCk0slIPHIz/ivmPaUYZWFCWEcweUN79dnKgsD34mDZPzte+rFxygOU4Sm8FjpDPP4zNd6ExDdVhoZu55mkf+IV9n/8r9qHshB/XOd//JgFA8w9z8GVzCNUKc6FToCABhkGzjqAMWC91EeVTasuhQAtEQfb/A+wmzGes3+wYMNMUsv5Ivf1Jqgo+WjI1XXOafSag9M0DW+nA0ju0oheJKR//m6TZyEDCN9a8oTpdYP5K16/A4PoPxQZEn7hilgcjxfWX2+4a0gTLrd3lwX5zmzCBl0Ij5ViLFeQWOaNFevv1aC6taV+PeFI7bX7HO8GyGhmr/ZmqDPTKcyL5nIPZgu9tSujTkHsCqx9zsKXLnFdOR+Kfr57bQXC6RDFnhDQaLesBJ92WxQyBKhXXDGpwWPQ1oMY21jkoFC24IckhUBqo6OYpnRoveVMv60QTPP515sXongCZdDzY1rayv/dYR8aP8lFPNynAlOdBkgMqd1Llj+6+IWAz4JO/IGlX239DxMTHX4/oTP3QuthrBqbu9x8ruccEs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,187 +104,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-xas_find() keeps xa_index when a lookup starts inside a multi-index
-entry stored in a non-leaf node, and aligns xa_offset with that index
-before advancing. xas_find_marked() still does neither.
+On Tue, Nov 24, 2026 at 10:16:25PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/24/26 21:50, Harry Yoo wrote:
+> > On Tue, Nov 24, 2026 at 10:39:11AM +0100, David Hildenbrand (Arm) wrote:
 
-Walking from a sibling slot to the canonical slot calls
-xas_move_index(), so a start index such as 127 becomes 0. After the
-cursor has been walked, xa_offset can also stay on the canonical slot
-while xa_index is inside a later slot of the same entry. The next
-xas_find_marked() then recomputes xa_index from the stale offset. If
-the entry is split, the call returns a marked entry below the index
-already reached. xas_find() returns the following entry in the same
-situation.
+> Hi Harry,
+> 
+> thanks for all that effort!
 
-Resolve the sibling without moving xa_index. Before advancing a cursor
-that has already been walked, set xa_offset from xa_index the same way
-xas_find() does. Keep skipping sibling entries at the return site.
+No problem, thanks for looking at the issue ;)
 
-The userspace XArray test suite passed. The kernel was not built.
+> > Uh, I spent a couple of hours to review and make sure this is correct.
+> > I thought this is correct but then my claude flagged a race during fork.
+> > 
+> > dup_mm() copies the counters with memcpy() and it doesn't know the
+> > ordering. When flushed and pending fields sit in separate words,
+> > dup_mm() could read them in two separate loads, but in the wrong order.
+> > 
+> > It's especially problematic in a very rare (IMO) case where
+> > flushed == pending + 1 becomes true in the child (which means the first
+> > pending flush in the child might not be flushed properly).
+> > 
+> > fork				reclaim			another process
+> > memcpy reads pending = X
+> > 				pending++ (X + 1)
+> > 							truncate()
+> > 							-> flush_tlb_batched_pending()
+> > 							-> flushed = X + 1
+> > memcpy reads flushed = X + 1
+> > 
+> > Maybe reset the counters after copying mm_struct?
+> 
+> Resetting sounds in general like the right thing to do. Ugh, this copying of
+> random state is nasty.
 
-Fixes: b803b42823d0 ("xarray: Add XArray iterators")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Qian Xiao <heyheyco@gmail.com>
----
- lib/test_xarray.c | 104 ++++++++++++++++++++++++++++++++++++++++++++++
- lib/xarray.c      |  12 ++++--
- 2 files changed, 113 insertions(+), 3 deletions(-)
+Indeed.
 
-diff --git a/lib/test_xarray.c b/lib/test_xarray.c
-index 615f7730a5bd..ddc392d42d29 100644
---- a/lib/test_xarray.c
-+++ b/lib/test_xarray.c
-@@ -1316,6 +1316,109 @@ static noinline void check_multi_find_4(struct xarray *xa)
- #endif
- }
- 
-+static noinline void check_multi_find_marked_nonleaf(struct xarray *xa)
-+{
-+#ifdef CONFIG_XARRAY_MULTI
-+	unsigned int order = XA_CHUNK_SHIFT + 1;
-+	unsigned long next = 1UL << order;
-+	unsigned long start = next - 1;
-+	XA_STATE(xas, xa, start);
-+	XA_STATE_ORDER(split, xa, 0, 0);
-+	void *entry;
-+	unsigned long i;
-+
-+	/* Multi-index entry in two slots of a non-leaf node, both marked. */
-+	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
-+	xa_set_mark(xa, 0, XA_MARK_0);
-+	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
-+	xa_set_mark(xa, next, XA_MARK_0);
-+
-+	rcu_read_lock();
-+	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
-+	XA_BUG_ON(xa, entry != xa_mk_index(0));
-+	XA_BUG_ON(xa, xas.xa_index != start);
-+
-+	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
-+	XA_BUG_ON(xa, entry != xa_mk_index(next));
-+	XA_BUG_ON(xa, xas.xa_index != next);
-+
-+	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
-+	XA_BUG_ON(xa, entry != NULL);
-+	rcu_read_unlock();
-+
-+	xa_destroy(xa);
-+	XA_BUG_ON(xa, !xa_empty(xa));
-+
-+	/* Split the multi-index entry after a lookup begins inside it. */
-+	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
-+	xa_set_mark(xa, 0, XA_MARK_0);
-+	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
-+	xa_set_mark(xa, next, XA_MARK_0);
-+
-+	xas_set(&xas, start);
-+	rcu_read_lock();
-+	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
-+	XA_BUG_ON(xa, entry != xa_mk_index(0));
-+	XA_BUG_ON(xa, xas.xa_index != start);
-+	rcu_read_unlock();
-+
-+	xas_split_alloc(&split, xa_mk_index(0), order, GFP_KERNEL);
-+	if (xas_error(&split)) {
-+		XA_BUG_ON(xa, true);
-+		goto out;
-+	}
-+	xas_lock(&split);
-+	xas_split(&split, xa_mk_index(0), order);
-+	for (i = 0; i < next; i++)
-+		__xa_store(xa, i, xa_mk_index(i), 0);
-+	xas_unlock(&split);
-+
-+	rcu_read_lock();
-+	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
-+	XA_BUG_ON(xa, entry != xa_mk_index(next));
-+	XA_BUG_ON(xa, xas.xa_index != next);
-+
-+	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
-+	XA_BUG_ON(xa, entry != NULL);
-+	rcu_read_unlock();
-+
-+	xa_destroy(xa);
-+
-+	/* Nothing marked past the index already walked. */
-+	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
-+	xa_set_mark(xa, 0, XA_MARK_0);
-+	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
-+
-+	xas_set(&xas, start);
-+	rcu_read_lock();
-+	entry = xas_load(&xas);
-+	XA_BUG_ON(xa, entry != xa_mk_index(0));
-+	XA_BUG_ON(xa, xas.xa_index != start);
-+	rcu_read_unlock();
-+
-+	xas_set(&split, 0);
-+	xas_split_alloc(&split, xa_mk_index(0), order, GFP_KERNEL);
-+	if (xas_error(&split)) {
-+		XA_BUG_ON(xa, true);
-+		goto out;
-+	}
-+	xas_lock(&split);
-+	xas_split(&split, xa_mk_index(0), order);
-+	for (i = 0; i < next; i++)
-+		__xa_store(xa, i, xa_mk_index(i), 0);
-+	xas_unlock(&split);
-+
-+	rcu_read_lock();
-+	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
-+	XA_BUG_ON(xa, entry != NULL);
-+	rcu_read_unlock();
-+
-+out:
-+	xa_destroy(xa);
-+	XA_BUG_ON(xa, !xa_empty(xa));
-+#endif
-+}
-+
- static noinline void check_find_1(struct xarray *xa)
- {
- 	unsigned long i, j, k;
-@@ -1440,6 +1543,7 @@ static noinline void check_find(struct xarray *xa)
- 	check_multi_find_2(xa);
- 	check_multi_find_3(xa);
- 	check_multi_find_4(xa);
-+	check_multi_find_marked_nonleaf(xa);
- }
- 
- /* See find_swap_entry() in mm/shmem.c */
-diff --git a/lib/xarray.c b/lib/xarray.c
-index 48f440d114e1..4d943791a7b4 100644
---- a/lib/xarray.c
-+++ b/lib/xarray.c
-@@ -1495,6 +1495,14 @@ void *xas_find_marked(struct xa_state *xas, unsigned long max, xa_mark_t mark)
- 		xas->xa_offset = xas->xa_index >> xas->xa_node->shift;
- 	}
- 
-+	if (advance &&
-+	    xas->xa_offset != get_offset(xas->xa_index, xas->xa_node)) {
-+		if (!xas->xa_node->shift)
-+			xas->xa_offset = ((xas->xa_index - 1) & XA_CHUNK_MASK) + 1;
-+		else
-+			xas->xa_offset = get_offset(xas->xa_index, xas->xa_node);
-+	}
-+
- 	while (xas->xa_index <= max) {
- 		if (unlikely(xas->xa_offset == XA_CHUNK_SIZE)) {
- 			xas->xa_offset = xas->xa_node->offset + 1;
-@@ -1507,10 +1515,8 @@ void *xas_find_marked(struct xa_state *xas, unsigned long max, xa_mark_t mark)
- 
- 		if (!advance) {
- 			entry = xa_entry(xas->xa, xas->xa_node, xas->xa_offset);
--			if (xa_is_sibling(entry)) {
-+			if (xa_is_sibling(entry))
- 				xas->xa_offset = xa_to_sibling(entry);
--				xas_move_index(xas, xas->xa_offset);
--			}
- 		}
- 
- 		offset = xas_find_chunk(xas, advance, mark);
+> The child never ran, so there isn't anything to flush for it.
+> 
+> So what you say is that the first deferred flush in the child will be missed.
+
+Yes, I exactly meant that.
+
+> I agree that it's extremely unlikely, but we should handle it.
+
+Agreed.
+
+> We currently have:
+> 
+> 	if (unlikely(pending - flushed > INT_MAX))
+> 
+> So I guess an alternative would be:
+> 
+> 	if (unlikely(pending - flushed - 1 >= INT_MAX))
+> 
+> 
+> pending = x + 1
+> flushed = x + 1
+> 
+> (x + 1 - (x + 1 ) - 1) = (unsigned)-1 >= INT_MAX
+
+Oh that's subtle :)
+
+> But yeah, let's just initialize it during fork(), thanks!
+
+Sounds good, thanks!
+
 -- 
-2.53.0
-
+Cheers,
+Harry / Hyeonggon
 
