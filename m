@@ -1,155 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D55606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 18:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9FE606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 18:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RAp7n2bW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YGNhEOdl
 Received: by kanga.kvack.org (Postfix)
-	id 40BA36B082D; Tue, 24 Nov 2026 13:35:52 -0500 (EST)
+	id E43606B082B; Tue, 24 Nov 2026 13:35:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BC2A6B082F; Tue, 24 Nov 2026 13:35:52 -0500 (EST)
+	id DCD006B082D; Tue, 24 Nov 2026 13:35:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2358E6B0830; Tue, 24 Nov 2026 13:35:52 -0500 (EST)
+	id CBCEA6B082E; Tue, 24 Nov 2026 13:35:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D90596B082D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:35:51 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E7910C0C9B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D7896B082B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:35:49 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3DDA1160566
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:35:49 +0000 (UTC)
-X-FDA: 85470866418.30.99076E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1E4FF10000A
+X-FDA: 85470866418.18.7AD72B0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8E8738000B
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:35:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RAp7n2bW;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YGNhEOdl;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795545348;
-	b=Ta1OKs6YQt4eUPm7x18jNcwvBTbBW+PT48fVNEibOb40kxrBxLqtrBMekahEfdSDawQj8E
-	3Yz10/D7tfWG4nqGdh5OiB9kxbFYVomZNNo4B5PVwYyXfz1OYqNkXvlGqSYRsomo9k0D3o
-	DClnrhxxASNhAY8HDmclJ4zxodSFY+w=
+	t=1795545347;
+	b=kWJszdd++IW4Rf1QVlcq738oxH/bgo7aZB/TTq7/S9ADfng6IhoU710gdjE6r+iyiT0R1k
+	BGPUJl8TdFK0r3Fy13WTPrhFqTxV0+CPXecVEWJsYPrCaUOEmpw+ehoEIPkNfXzKRMUJ64
+	c4gjMCrDLorvZWczuNBtszMzKRG9sqY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795545348;
+	s=arc-20220608; t=1795545347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AKrIa0DcMNjfh21UT4XypKvXywHSQ8okdo6wgugy/pw=;
-	b=xrF0FCwkh/G6dmGp0NrXtRYMY00mwzKc19Q9ffYi5E6fbIE4yARNKViKd0YxpGpsOsdQgb
-	2kbf63lU9Rdcif4pTolhDaKq4K43Ha2my3bM9/VryZ4cdYz7Ny2LbHfakvRs+DBNPUDbrj
-	2/M7cf7IEWK7pIdNHyt5cr45+UsIIik=
+	bh=NH+LCPbT58VTTOKIoQohmGo8BCrcjnPK+zFjIzwgB7Y=;
+	b=gBSaBubJ1BiQ9i7gUsPJaJIHujq0y7IZXb5RmhL96d1c9ixd3xIUxSziu4vjvnV0aTTKYp
+	2Ln/ASTkVxvgckQLF2tW9l8VVAYddfM80YZ/iu1/m8VQH0rO7MhPJSElGe68yjq/upjPFM
+	euleMRF+0FtxrvOAq8F1LCYPUfGHhok=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RAp7n2bW;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YGNhEOdl;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3737D45CCF;
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 09A5F623C9;
 	Tue, 24 Nov 2026 18:35:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5BC1F000C4;
-	Tue, 24 Nov 2026 18:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id CA1681F000D8;
+	Tue, 24 Nov 2026 18:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795545347;
-	bh=AKrIa0DcMNjfh21UT4XypKvXywHSQ8okdo6wgugy/pw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RAp7n2bW0wpzGNW7Ui2V2k+V9GEl4idrfP1qC2x1iSrh+5xHXbdyy0CJ1wfaoC+Te
-	 txOnY9OxeabOYdbKiIA/7LqfM+X1YqOhn78nH6CeCW5v5IT/3p0k4XKT/A5iatNZPs
-	 W5+i3LLZ6T7eUzNi7mRtEjDb4PP/wZ3B1WKIS202LxyIZwDnwBx25hJIDsDL/UutmS
-	 W/cqup74eq7M+6UP1UVZudi13ylv+WROjXpKegblCYYHoVEBqo7Iv3GjPdvBgVdwuN
-	 67ns6lvHHraDemZFXGte0ZKTYNPsz+O2Ak0t9QB6KDs5NQ95iTFoYVc6WI3yKaZNDo
-	 9IVFAC/iSNvxA==
-Message-ID: <498284d2-70e4-4b6e-978b-98a2b9e1e74d@kernel.org>
-Date: Tue, 24 Nov 2026 19:35:39 +0100
+	s=k20260515; t=1795545346;
+	bh=NH+LCPbT58VTTOKIoQohmGo8BCrcjnPK+zFjIzwgB7Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YGNhEOdlnPN871G/X9PPWV2KDkNfg6lDAYL74NQ4uMZDrqBjOHxooLjxN6J9DJyuN
+	 epQrEamKS5eGTLTDPRfDiX5spXFiq6j1WSiqUG/PtKfJ1tZSmLYqwKylZQhk9WPX7B
+	 bEM8oPgYlXgUet8cYtuVzgh8rRxJEj8ZgkcD4hk3pA4UHghl4N8J0BPQIsCsPCZAFd
+	 +kJTyztWJCLJ50m3BrED2g/opMxeaUu7STWXnyQ8A3/RFw4OBjGhmM9kNWyBlQHyvc
+	 cKvYRL1apD8f0X5RwzYPerXPlVzxh1JZGzc30tc5hQHHP60AIzOQqgM3p4OYptBszq
+	 3eYlMbouXqYYQ==
+Date: Tue, 24 Nov 2026 20:35:42 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: bpf@vger.kernel.org, containers@lists.linux.dev,
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Aleksa Sarai <aleksa@amutable.com>,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Giuseppe Scrivano <giuseppe@scrivano.org>,
+	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
+	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	KP Singh <kpsingh@kernel.org>,
+	Lennart Poettering <lennart@poettering.net>,
+	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
+Message-ID: <awXY_gKSqi-L5V30@kernel.org>
+References: <20261122193539.3334213-1-jarkko@kernel.org>
+ <awTmJIErjasO4lqq@kernel.org>
+ <awToL2PFNKVgIfqs@kernel.org>
+ <awUGkYoyDXp4P5LJ@kernel.org>
+ <awULfmZR-pESj2EC@kernel.org>
+ <awVInf04kGC0uZZo@kernel.org>
+ <awVRz8XC54nfevtW@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vma: drop mm asynchronously in vma_start_read()
-Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Puranjay Mohan <puranjay12@gmail.com>, Pedro Falcato <pfalcato@suse.de>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>, Kees Cook <kees@kernel.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Jann Horn <jannh@google.com>, Alexei Starovoitov <ast@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-References: <20261124-vma-read-lock-mmdrop-async-v1-1-257f99f551de@kernel.org>
- <awWLCZ-jBjSD7V3M@pedro-suse.tail5790ac.ts.net>
- <CAJuCfpGk6eYK43Unxo+O4ML5=GM_siZ9owp6oa9fO0ipZXVg-g@mail.gmail.com>
- <CAJuCfpEd1rz3P7fB7W_mHkyzbpq9TscRE+QNwvHdYME=WJj6cw@mail.gmail.com>
- <awWz3nc_b8x3mIXq@gremlin>
- <CANk7y0gAxY18Ew+6j5YsqrOsf5Dx+v5M78r7_8JLXh5RHZj4qA@mail.gmail.com>
- <CAJuCfpFuDCUPTUi3SuAhmbtw5tubRZ0+YEY3PotjyJ8Or8pdQQ@mail.gmail.com>
- <awXHR007d8MlhJUC@gremlin>
- <20261124093328.3ba2e066e5d5081c69e0e667@linux-foundation.org>
- <CAJuCfpEmFEX5iqLw_c94a97rVrC+xBWpKnO4rVpeDgkUfAPq7Q@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <CAJuCfpEmFEX5iqLw_c94a97rVrC+xBWpKnO4rVpeDgkUfAPq7Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E4FF10000A
-X-Stat-Signature: y9jbjkepjn8afsg7mqefm7of6qdmkapc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awVRz8XC54nfevtW@kernel.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: piuw6rd6y8ftmpphcjxezdowqdostb6w
+X-Rspamd-Queue-Id: 8E8738000B
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795545347-58865
-X-HE-Meta: U2FsdGVkX19nnohe4JtlcEAMgk0qnKoUYOo1XLlq7p5yPlBM6f0hykMtQJXeAfs/xlAHrmpiOgxVa6n2UMztIX7j+2QqwQO7GV1qMSfCttiHgWRQlqfl45YpioOzE4vGaDLerVqRGtohudmtLWMRklzItAUz/1Pjg4VrHEF/+g3dYudi1WyuaYcooqgOvPIRATrsC90lpEVJpuLLvsFJ9Xc6AH5YzTfs/PNBaWbDjcRqYAN6HygdBP/uN6cOIHIM+Yhtv86j+G6EaubUy8Zp0ZfsRUi0L4JRQxtoF8BE5KdxENFXwNE6FxDO40iUHJ+Q0pebtpnACPWCzZrB8le5vhd2Tla708poOb/Mx9xmf34DUGGwcAU1VnxlWS9zt00Pqv3rpGvYPTtNyhK6/stABMB8YhBlTq0jvs+trnFMnLUYTYtNZCby42ssF+9CFxjDvIEF0uVRXClRVcimg4Ue0p+JhaoD2i1gEw4aP7DbKcL2jWtjxM5p51Hw0ILeBuBgSl1et3Bu91VE0nKRRS18gc9bZ9Fc/umsffSY/Asw0WZGbPqCXFaCbBmwr52kA43TbyhUtJ0N6rakZlHmV9DwK3SOO7Uy4l62nDnQZ5+a9sUW9Nfa567nZeIIz5of0Glm5kPVhDJPaP9Mi7TqOQ2gekEDiEZ7Opw8ep/NubYuhOA4FzY28tTneSlA6GBSJT6hWZTQ1A+sOvqc8lZrC3KJQOPLaWLw6WH1OSzSU2fakbQ2kizaTMw2TtqNUrEd6Wfxmbq0r0Orbc17tfBpoKhShRCBSo8s/DvB2UVd/BiPEDZ0wKJ4sV5agDC3CcBFZ6tWgtAOqfbi5Kf9r4k6YMH549r2KhHqR5r5QBGUuH1m8U+Sv8oF/LcjTqEE7QHlkjdwguU6oM1cT3h22c8dEgZyJYlJh5mt2xOYVQujF9jEINLDirIIAHT/Ng8jSi4Gh5p7hPA0bDPBf3CSvvnKFwF
- NbnMixbM
- TBXnBumwiNwUCI6sAEDH4mYQN7Csqit5wo0S4khZM6YthifSqXYdQC7HQYi1FJbSS2JGvNfouwIfX21ZHKgzHZu8atXCTGp3Bs2R5UhrYaeXZTWr2kuccju4RFxLqV3jZW7yp29pLcPZpLQNHcqAKaBU8N2x/hoXnuB7xxo0YbXY+BtNL8uDrDBiLmfvoB2HfVBQjjdpEwbNHf8hQVQck08+s3+pUBXeBGZQO9EctlsOGf9i5xaaN1VA8SVMQJfcQXLyF7zMc2ZixbRYBWfJnjO08ka/8uMmi5NqvXBrqS/oo4RLdAlTV2RW1iHCzKGkGm8Dh5MyPx5w0twP0w2etGK2y/mKig87ZlfplTQhIS91CjgYmzno083L6Z6zIm/ColWYV6eZySJ+qCPquZih9LEpEBhNdgpz9ISWsC2MJLk2/mbjFhdQAXFXUNILb2CwiStQp94pr/bQjUk7pwijvhl4Z13mo/H+2FM+9tMQR5nB/K8nKapG6jJ185dMuDRO+2Ww5n7hjswW9zs2qsro8AfBHKKox1iu3T20tn22be04Yz6WKOMhT75l1B2qlQ2MCKRuVq4WxFVvUNDwmwX4azMICGDSKgHg5NiTD7rIs3xLsvXg6e426t4nCzzCpkDYbRyR6cs/eZ1HjunseWTdMW3Xwq7i5f+xqBhI/
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795545347-664352
+X-HE-Meta: U2FsdGVkX1/PLYrj/hTfOhGYm5eAjJiv78ET9iFXMlkKpz9EcqY8TbGb4lDfhSo2RQJoLc9S4GKdhlzlIejaWc/9kHF8dImVOW4BI1WeMwj9+SUCbC8IuB1K+5u21byiMt+sNNfX4i3owDJRzdNzDaN0Mr/AvzwdKKeg0f8qdg47z/aZVJ/QOElKj1ylWrRamhbrlSBTFGqXOK86l9mRgcmDI6+/Lgjhc2OetZ5I3zYi8gzW+TeAuC2MXSQuCW8xEJFHC80/7gGcoqhBBdhjgWqOnQ2eJsaaYjAuCJk08A9j8DDJdTWjBRUYHIbrqpnB5XU0PVTW7eAOU8J88mozVKptjJ67GHzXgLdHZcRaG96JerpmZ4Vf2GCF7zgQ/r3/hO5YdAsaKkH0uAp2ddeCnxQIHijbSLvm8i4HgZuvsaIA0S7iVmOd/dbXIPmG/roXH5NnADdKri+ghxrUZ6LbmTFZPnth+IgJSQ7VhRessISZ2kmk2esuiroW3P5n7rYEYRD8LhkibNj5TDLX1GAjbFbXan/JuxDsqKEY1mid4+U1rydsFCiZ8hMZMExKzQUAE+/3YiezqLwfrdGSLBsR+eyybOgehGWGPY+uhRBa4gNRjiCOH9YWiducCERBK8k4wLVKBfdi4bUOKJCW9n7ONiOwLKkiiISAytgu8WxXeNhu3ppp53xK9bdfav5+Mck30NlaiC0SMqXORwupQBrjCp71OeqfNliw+E17WlXTNig4qkuAjTHB0/h3sVK4JsG6f31ZdKU1ttxhYitFhvKN3TA4tdSxUJg6NZBLOYCz8eKNkGKELN4BEril+4sEeHoVEU4JYy86WBIBw3/elOyi4Z7KuIT/3PtmOA8oaSSYPXvhKYl959DLXmhGZeaCR3ZQy4bEDU9Nf/DlS8Dmgssj3QpOTETDL6syJ0HKuXommiRqAJ+v31uY6VWnKnLHciJz4MrkBu7a+1thTmW2mWb
+ cUKdglEv
+ Fm0LZ61kjuE2naNc/TeLNq/aUoEyQ+2/egZVRGFAt+Miqjih1PqtSPp2BYvfaHL4p6LhMqpXujZexPcrypiMfeQcbVVYcZ0h4XpX/MOAkvNC+bhUnuuFjHE2cUb+I2yrRjnZ3G1C2DttX+OaoFm9j48pebpcPlOtPBFsoNgHGFXK8FAIZ0kpiERst1x5VhUQvchkvgTErtHnf2FzQMZ6P4ZD6Mtxy9bkEhXTJi6+uRj4dkwJvsLcZGQvYN+UFDiYAopQRcLwPkaVUsvdrqxUaRcsLDC+mcgMojDTI+c71FExl8Y3j4UJ2KTyOLdbmTxsXEtGSbeX0eFCDTZXi0IlfmIxVJwkh8kZqHXCppDOL3Y/Fn5xK/RFOObTae1eOUH0quZdLLq+9lEFf/wT4sHxTFNoxR38NP5miTJfKyq5lKJIoJNXrFhw5yoXBT0nNUU9AtMQ6j2R591wKDSm2Jw+XYKMDcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,84 +122,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 18:49, Suren Baghdasaryan wrote:
-> On Tue, Nov 24, 2026 at 9:33 AM Andrew Morton <akpm@linux-foundation.org> wrote:
->>
->> On Tue, 24 Nov 2026 17:23:35 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
->>
->> > On Tue, Nov 24, 2026 at 08:34:40AM -0800, Suren Baghdasaryan wrote:
->> > > On Tue, Nov 24, 2026 at 8:06 AM Puranjay Mohan <puranjay12@gmail.com> wrote:
->> > > >
->> > > > On Tue, Nov 24, 2026 at 9:28 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
->> > > > >
->> > > > > On Tue, Nov 24, 2026 at 07:51:42AM -0800, Suren Baghdasaryan wrote:
->> > > > > > Actually, VMAs are allocated from a SLAB_TYPESAFE_BY_RCU slub. With
->> > > > > > that RCU unlocking move you don't need other_mm copy and the comment
->> > > > > > that comes with it. VMA won't be freed until RCU lock is dropped.
->> > > > >
->> > > > > Yeah but they can be reassigned? They won't be _freed_ until a grace period but
->> > > > > they can go back to the slab and then allocated elsewhere  right?
->> > > > >
->> > > >
->> > > > Yes, they can go back to the slab and become a different VMA.
->> > >
->> > > Yeah, you are right about that. So, we either have to keep the RCU
->> > > unlock in place to keep other_mm comment valid (my personal
->> > > preference) or update the comment next to other_mm to explain the new
->> > > reason it is needed. Either way is fine with me.
->> >
->> > I think let's just change the comment?
->> >
->> > Andrew could you change:
->> >
->> >        * stable and can be freed in the narrow window after vma->vm_refcnt
->> >
->> > ->
->> >
->> >        * stable and can be reused in the narrow window after vma->vm_refcnt
->> >                            ^
->> >                            |
->> >                            just this freed -> reused :)
->> >
->>
->> np.
->>
->> --- a/mm/mmap_lock.c~mm-vma-drop-mm-asynchronously-in-vma_start_read-fix
->> +++ a/mm/mmap_lock.c
->> @@ -300,7 +300,7 @@ err:
->>  err_unstable:
->>         /*
->>          * If vma got attached to another mm from under us, that mm is not
->> -        * stable and can be freed in the narrow window after vma->vm_refcnt
->> +        * stable and can be reused in the narrow window after vma->vm_refcnt
+On Tue, Nov 24, 2026 at 10:58:55AM +0200, Jarkko Sakkinen wrote:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/?h=vault
+> 
+> The key function to look up from here is spawn_userland_container():
+> 
+> 	https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd-test.git/tree/br2-external/patches/systemd/0010-nspawn-Start-containers-in-an-experimental-userland.patch?h=main
+> 
+> It demonstrates an initialization flow that ends up cleanly with
+> clone(). userland_share_host_ns() demonstrates the ioctl I added
+> previous week i.e., USERLAND_SHARE_NSFD, which is used to punch those
+> host namespaces that the guest actually needs. This is the allow-list
+> part, which is usually the favorable principle over deny-list.
 
-But this is talking about the mm, not the vma, so the motivation to change
-that was wrong? (it's not a typesafe cache). Moreover...
+This proves that bootstrap ends with clone3(CLONE_INTO_USERLAND), which
+the most important property to prove at first.
 
->>          * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
->>          * releasing vma->vm_refcnt.
->>          */
-> 
-> Sorry for being pedantic :)
-> There is also this comment later on:
-> 
->         other_mm = vma->vm_mm; /* use a copy as vma can be freed after
-> we drop vm_refcnt */
-> 
-> That should be replaced too with:
-> 
->         other_mm = vma->vm_mm; /* use a copy as vma can be reused
-> after we drop vm_refcnt */
-> 
-> Again, just replacing "freed" to "reused".
+The second part is "hotpluggability" property (hmm... is that even a
+word). I have early local patches for this but they ares still unpushed.
+I need to test this again with real hardware as I did in ad-hoc manner
+previously. I don't think QEMU is acceptable for this alone.
 
-Nah let's not overthink this. It's freed back to the allocator first. Which
-naturally allows it to be reused, yes. It doesn't matter if the underlying
-page can be freed or not. UAF is a UAF.
+However, it is not really rocket science with these tools, and it would
+require effort to get these completely wrong, especially if they are
+stressed even slightly with bare-metal hardware:
 
-> Thanks!
-> 
->> _
->>
+	nspawn: Hotplug device nodes into userland containers via udev
+
+	Defer absent /dev bind sources when starting a container in a userland,
+	keep the userland mount namespace fd open in the supervisor, and attach
+	an sd_device_monitor to the supervisor event loop. When matching device
+	nodes or optional API devices appear, update the container scope's
+	DeviceAllow= property, populate the dev node and /dev/{char,block}
+	symlink via its root fd, and attach the device mount with
+	MOVE_MOUNT_T_MNTNS.
+
+	machined: Allow bind mounts on user-namespaced containers
+
+	When experimental support is enabled, bind_mount_in_namespace() attaches
+	mounts via MOVE_MOUNT_T_MNTNS without entering the target's namespaces
+	and refuses to fall back to namespace_fork() for foreign user
+	namespaces.
+
+	mount-util: Attach live namespace mounts with MOVE_MOUNT_T_MNTNS
+
+	When experimental support is enabled, create missing target mountpoints
+	through the target's root fd and attach bind mounts and dissected images
+	directly into the target mount namespace fd instead of forking a
+	setns() helper process. Fall back to namespace_fork() when the kernel
+	does not support MOVE_MOUNT_T_MNTNS.
+
+They are variation of the same pattern, and pretty obvious even from the
+descriptions. When they are known to work, I'll push them.
+
+Br, Jarkko
+
 
 
