@@ -1,72 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83980606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB97606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Np6jz+Pz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fXcOS09F
 Received: by kanga.kvack.org (Postfix)
-	id 5643F6B0629; Tue, 24 Nov 2026 03:09:16 -0500 (EST)
+	id 27EE56B062B; Tue, 24 Nov 2026 03:09:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 514C06B062B; Tue, 24 Nov 2026 03:09:16 -0500 (EST)
+	id 22E8B6B062D; Tue, 24 Nov 2026 03:09:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42B6E6B062C; Tue, 24 Nov 2026 03:09:16 -0500 (EST)
+	id 146B66B062E; Tue, 24 Nov 2026 03:09:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EDA486B0629
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:09:15 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52667120A7B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:09:15 +0000 (UTC)
-X-FDA: 85469287470.20.EA7FEFB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 77BBD180005
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:09:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Np6jz+Pz;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D260D6B062B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:09:24 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 167ED40B16
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:09:24 +0000 (UTC)
+X-FDA: 85469287848.23.2E293C3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4223E12000C
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:09:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXcOS09F;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795507753;
-	b=8LIEGhlYvuroqyVe11AptNHjb1Ee6XrClRFyh2r6IVdoxDyWy36bHLos268gBCPA46Q/FE
-	rHVyMd+o3SI1xRi95+MectEbmZpsQVOoVl+Aps8pU4I15J6KMztY4OY5TQGGhoDsdCJZux
-	cdE3wrn3FBNohLHohAx1VV/7x/jokCY=
+	t=1795507762;
+	b=pXBxPv625FOnXiunVDsfs96JNH49vjAo8hHPFfz75CuCClVXeniKIs3JYIqnxx57axL4YJ
+	AWT+Ys30/RaewKLZ3+ihR/qiqNaDplL+Xryf5nbMYygzVeD8Yf7LnOyOEdEc6+VD6b6PlJ
+	pSrF/En7LiZnDSOdzkRZ5ODg1J5r8PI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795507753;
+	s=arc-20220608; t=1795507762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SNa0jI0FiSQSesqDcSvYF2AIe3+V2OGkbaEUbg4vgtw=;
-	b=tRvGz6XJc3874XX78Onxdv0P4fXDkK/piFqZg+FLJ948yVEnquEVS5G5MVmeY7tdKeTW9Q
-	YvvL/5Y7y6aDRM8aYeEvNo7ghKW4UJKQ3JLMcn6y8cSpjrUKtEFyg6QHp9k/lYxNICRFMy
-	44/RAZTUTffovPudBoJui1MrKttwSIc=
+	bh=pgJJhQTIQiKQaa8Lw1i6CYXbTQ1mnofot/VGVFKwdRw=;
+	b=6vYq7QW9/HLL64kK0L7r1L9+VtDRWJBT54P50hsJw59k9SMgsy/y8vG6k2RDi1pbKYfZvT
+	CR4/4j9X9qGce9aHRCjNG5WxSgfdmLtyOgfyNtwSs9I/5QE11IJ9mgEbwRxYQ2sWQ2Eje7
+	dydiBR9HQ8xp2TdKXK/Ab60WS1YCdoI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Np6jz+Pz;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXcOS09F;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EF58960A05;
-	Tue, 24 Nov 2026 08:09:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412FC1F000CA;
-	Tue, 24 Nov 2026 08:09:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7102240628;
+	Tue, 24 Nov 2026 08:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BF01F000CA;
+	Tue, 24 Nov 2026 08:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795507752;
-	bh=SNa0jI0FiSQSesqDcSvYF2AIe3+V2OGkbaEUbg4vgtw=;
+	s=k20260515; t=1795507761;
+	bh=pgJJhQTIQiKQaa8Lw1i6CYXbTQ1mnofot/VGVFKwdRw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Np6jz+PzAWLACWRJQadcKkpHuWvjrXsDqYPVTdx8Okon3l+0HK1YwRx1yTUB/ht29
-	 2hb4c7sLr7Wd79ciX0oIq88GezZe2NojqjsVL48OSECAezNKEsRzhHYhvGA0i5IjX4
-	 uLdRne31MEAhS4XtgviY8yLfmg+EHN1Kb/kfHJ+wufa6yRXLRw2/LiJrdMDDmYxDZc
-	 Zd86Yaou/FN8u5MAbEjMRh+GXFv/1cVdml3zRWE0NRRw4ZRErBPxVZyiFHgWhPeqqp
-	 sA2XoQ7ZbjzYdANMt9IB7F6jHLUFysQpuvuCOD05rsqWjH+n86T2HnhdXUG2wt+6F7
-	 jt/PGiOhLdHWw==
-Message-ID: <702af94e-4447-4b09-b7f4-4e4cb32c95b7@kernel.org>
-Date: Tue, 24 Nov 2026 09:08:59 +0100
+	b=fXcOS09FthIT/38JvcjvxPU6RSSDx1u/VEC8iAvkDl97tS63XAWF5eynuhlEGy2Ph
+	 Z2MK9bvbkta7+uQdnziGBhZ701VCuvkXuww6ANgEQ6pJxpWhiEdE3sJ2mLIUhoEw6M
+	 5Q/RQ5o1DLhAN6Lt+o5cZYlgWqSF7jrC8lHkuUw8McV7KBwUx4rUuiVQSGYwLPGwfr
+	 DZk4o+p9g7byxQPhq6mPR16RvEMh9i0wjaMArxgxO1wKNBeXiN/RLRGphJNe7T860O
+	 Tetp2SgzldBebdxocTN+OdFxbmMKcIX7ydtid3rPxVPj+kaZDGMiA0ubUlRSsfN0Vy
+	 zZgocxgHXk/QA==
+Message-ID: <c1f92faf-2a8d-4b4a-bc28-1750938b5b57@kernel.org>
+Date: Tue, 24 Nov 2026 09:09:10 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] drm/i915: consider vm_pgoff in vm_access()
+Subject: Re: [PATCH v2 3/4] powerpc/spufs: consider vm_pgoff in
+ spufs_mem_mmap_access()
 To: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
@@ -87,7 +88,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
 References: <20261122-access_shite-v2-0-808d8d2aa700@kernel.org>
- <20261122-access_shite-v2-2-808d8d2aa700@kernel.org>
+ <20261122-access_shite-v2-3-808d8d2aa700@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,22 +135,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261122-access_shite-v2-2-808d8d2aa700@kernel.org>
+In-Reply-To: <20261122-access_shite-v2-3-808d8d2aa700@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-Rspamd-Queue-Id: 77BBD180005
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4223E12000C
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: jhrsyphesw6r5yyxmahi5w36q5ubs6pp
-X-HE-Tag: 1795507753-900597
-X-HE-Meta: U2FsdGVkX18xTaE9fVyYiGWPpVr73Z5+Vb/BJLCeX5/OJkw5T3xXSSOJmG7EXAghncffeCtO5tQbnLxUPECv0ZsFOYl+V/4X6HP9tDG7PmxZa87EmIUCBnmzK0FYoAJOxotQ+1I53/sBTVmtDovFqjVWKdtFtenBWlKn+WGg2+fv035oJvGtGqO5HIFHZibFZvA9YNjsk8rcGL31pdd5ZtxlPqUgPLVCtrdY5cMv66GTinh2IrVjIPFXLdQectzfmlj+H+qVECfgVHGQPH+tjP6L6bxNkySn2ha6is8WvKTeKv/Q6sTKcsI83zvdRtAjRqFcm3ILKJ44NwJ/N9c25ZAxdmCiLW0TkhHH4JdH0LVn6vc8Ef/BKovrEj+c5tlOJXh0WMlDRH0qzdC6xKEhRczJonX4MlnmYmY24ZCuv4sYE/9zPNCMyPNEzfrffEjg++uT4Zn63fSbt5NIbbrXPqMDPnr/ATqgt0Nzr4S04SUyRs4gLa+/rp5tJKixHgQenpOGDtQ5VsfFSB5zdWZQecGUANcotr4cqItMNH2dTRUlJChXCNCG1BwzFtbpl2D+K95vwRyw9YMAtkGGSOjaIVfyNK8k9P5m87OyI7sLWU2ysvW3l/3te0N2zEH3PKbHavPnoE84HhpdpzAzjuaZzrQsKLHcYeYvRw7FjrYF2uzZOHXWf0u8wgV9foSSPxfFpGDiBUyuPioYdHZmyRffBFCGaWb9WC+EcC0a9379VSv1SsJJKf6UFrMr+VLAFXeipE/el0GEguWNFf1NpxC1t/YjLLxajurFC9wNP2Lv/7Wn4gkjTjKqPTQhRX+W+RPdl1nSzyPIhqgwo7eQKu7RialM2OdAEtcKPGyBfKYQfwcner902Ud8fRHm7/URiF8LqJ7WOdl7WpHvDps+XkZkYZ2RHxg+wMn2d9fkoXVCDo7KUoR6oKbawI9lYQfhVK0yYDxxEVmwgzIh/rKeJgg
- 6Zu9Onoi
- DzQ4a2arB/CnH/7/txfzHqObxVEAPnQIN0LEoGXUazguqnQQEQz5EmsVN3OpffwkmghXtO/VtqO9EtlGpgyjcyrtPJXGO3mYXS41wrvJ/0fw4ZOduoKrPpHtMoJsu0GZD2CHe40WmUdfQNI/tsKCAh6bMNk1Yr2nwaBwJ5xK/YkgfHRAL9yQO35nsKrTG5RdaiCm49XtHna9lrP1JAfBAgR/8kMxTAqHMB4U6RU/G0v9tSRg+aoLRfjKl455KJVzNEy6bysPP5nkrNjV7qoB+rk9Oybc+YRAmBkyz1OqkQKUJEGHhyFl2NNITLcjPexzjwYLbFXwnh/t17lUvoMPLlFkHTEgiRxC5daeJENAdCtEWdgisZS5MMuGqEVdVf746PiN2bZ/nQ7hJiuNIvHCWqiaK7LU4YzUXKWTrnq736c3KnJx+/Y2Jz6+U8vvWQ9tV/mlrbpxJZaKBVEOxuTKw+2dOtvvgZWaPklEsn40wQLZM5HoUL6D7B4TDoLaCvX/D0D+alUd3Uu7dg0SGoFmAmTXCjagxaXHPqe+G6QsSLMjwJ3QbmFnKToDpINc8M5cD/7eeiD0EEwcukrK8nWt2kIbp07ZJWC81UJj8X9kscmp+YSsC/oJhIAhYBMwNGIWv7E2r
+X-Stat-Signature: b1e8g6fwzhqbktniemkswb3gmmt383y5
+X-HE-Tag: 1795507762-913767
+X-HE-Meta: U2FsdGVkX1+GoPmy58SUd7aF+KeyWx31wJZfPXWYaMQVrvWQZ9Ix19BE0iueeximovTnDy1rW9V/AdwaS4+7s2bxDbctsUpbs13bvS+9DM1kQMiReI1iIUOzTigXPEVpRQl9Ss1pQ7j5Obq8ZYJHmLFi9Ja2mN0xqzKzi4vX65BnFL5JCxernMeqnqbZV3FD9NqGGuRDNt9dvd5WhYdgYT9AkwZVCkOh374iRDgTmhv+gGP2pos91U0mcRb9BrtlPm+/le5FKA2q5qEHJ0RUCxGk9KbZvOhPZlwNQtN4ArqQjSA7LqENp0jA/3X+gH7tvKz9Tx0exYnMiR17sKLqvtVm5TpA/O5+MW5yjLqyAPFzKgQJqM2iS7tsunj/qKjSXVJ9m+7Am5Rr2b7wZ5y+al+/QOMafi5p0znD8aigKgR/9GgDVs8BY97wDKZG6XCDG3HiAvfNYWIUDXBnma/NdsNEyKy+Ne/QNycR/eRH5He2SWEHh1ASy/BKOZaWS6E0zlmpLDT8ffgOExw8iskzKBFrgHtHyP5Bu/i/wIOdegN3b8G89rdyYPKMKsQvNpTLUFwLnjOIE1yWqMB6ZxLUKUgVi+Uv5OCzyjksU7xXB15MxN/mD9tQv+aSmzbJ0ZF+OxCmaQUisjECsFAJj4NHq8HaL2FCxexW7H+mF6j6k6rLPCTDn5rc21FCSdnn6s42bEZ1YaSczthYZYjP+2Mot2fBrnZLoCGH3TSBWFZ3i+7eYDjcVehz0pM3dkXbQ/tvsMKoJCisVrURB5zo4uj8XIjje6+seHrD6zUduJNbCJomZmJt150GIatAjry8L4CvQkJAziZ8z7JT/Qhy7bGRWN7qvXsY/brV99+0s6Fgj90GNkyOg578ihHXbCBhYo99Hoc0ebwjJpY5aAhMRI9Osd69jxfsGA8PcNNTyQgPLhvgqcEfFyRwn4RN9ReNUPX2IKvpHuFnx1pJAPc6MKw
+ DDEzNk1q
+ lU6tQ4ZPR2MkOpkdmM/C8j7vGMZ2LQA/zskYMcGOtC5pPj4EDgld8CjBJPEdbCsem6GwqbTXN9p4nuXa3/g+QcTY0G+4jGgSPEw/5cPjjQYCq+i7ArOwXvUrskMcllhRXlWJbYPFlZMyJeLcjmop2hdVNuFBW+kbW2tRFJ8CoeIa0spfWMrlsMmD0Ikgypa/hgm419S/IXgEhrsCtNeuJvT3ZKSvu7EPDPZiYg4J/O+ZZIzRIBZqSPAjffz6PNCchMOIRTPbfRyqdkXHipzbwOZstQ2hZF0678GLZcBhsPWOiMa4UJVZhPncuVg9s2AGtS9+WHCkvBIlojo5HvbUKL1B6VC2MdevF5a9Rlz5Jvt8E0h068JhYjQXjmbwOWa7gzy3s1yOISUPrgeqZ6iMp8akAQ3vynbCbH3dDEs6z6IGiS+rKPZqJ5VLZoqc9UlR2xl4GDOKKxKz/fym0UoR9cPlbK6Za0Cp6qvZah8uZcx92/RUB3LntJ4+eE4tvM4JPOqQnkavXFuUkpv2T6RrUNeLSzMwleWQenuFO3RqCDJ12fcdkbVjufQ50gCLMx5+A5FbdTxRlwUWB7NljBlMt+jSCnZCnjA74wC9/dUC1unqk0wBn02TK5WGaVEmGl98767w1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,42 +160,36 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/22/26 18:55, David Hildenbrand (Arm) wrote:
-> vm_access() treats the start of every VMA as the beginning of the GEM
-> object. After a VMA split, vm_pgoff identifies a later part of the
-> object. Debugger reads and writes through ptrace or /proc/<pid>/mem then
-> access the wrong bytes.
+> spufs_mem_mmap_access() calculates the local store offset relative to the
+> start of the VMA and ignores vm_pgoff. After VMA splits, debugger reads and
+> writes access the wrong part of the local store. Mappings created with a
+> nonzero file offset have the same problem.
 > 
-> Properly consider vm_pgoff just like the fault handlers already do.
+> Properly take the vm_pgoff into account, just like spufs_mem_mmap_fault()
+> already does.
 > 
-> Fixes: 9f909e215fea ("drm/i915: Implement vm_ops->access for gdb access into mmaps")
+> Fixes: a352894d0705 ("spufs: use new vm_ops->access to allow local state access from gdb")
 > Cc: stable@vger.kernel.org
 > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  drivers/gpu/drm/i915/gem/i915_gem_mman.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  arch/powerpc/platforms/cell/spufs/file.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-> index 6b337684dbfe8..e3b24dc8e94f5 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-> @@ -511,13 +511,15 @@ vm_access(struct vm_area_struct *area, unsigned long addr,
->  	struct i915_mmap_offset *mmo = area->vm_private_data;
->  	struct drm_i915_gem_object *obj = mmo->obj;
->  	struct i915_gem_ww_ctx ww;
-> +	unsigned long obj_offset;
->  	void *vaddr;
->  	int err = 0;
+> diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
+> index 98c47bafaf678..0a46d6f7178ab 100644
+> --- a/arch/powerpc/platforms/cell/spufs/file.c
+> +++ b/arch/powerpc/platforms/cell/spufs/file.c
+> @@ -248,7 +248,8 @@ static int spufs_mem_mmap_access(struct vm_area_struct *vma,
+>  				void *buf, int len, int write)
+>  {
+>  	struct spu_context *ctx = vma->vm_file->private_data;
+> -	unsigned long offset = address - vma->vm_start;
+> +	unsigned long offset = address - vma->vm_start +
+> +			       (vma->vm_pgoff << PAGE_SHIFT);
+>  	char *local_store;
 >  
->  	if (i915_gem_object_is_readonly(obj) && write)
->  		return -EACCES;
->  
-> -	addr -= area->vm_start;
-> +	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
-> +	addr += (obj_offset << PAGE_SHIFT) - area->vm_start;
->  	if (range_overflows_t(u64, addr, len, obj->base.size))
->  		return -EINVAL;
->  
+>  	if (write && !(vma->vm_flags & VM_WRITE))
 > 
 
 If I can get an ACK on this change, I'll merge it through the mm-core tree.
