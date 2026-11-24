@@ -1,113 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFCE606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 01:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDCD606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 01:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FpgAv4k7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f+s2Utow
 Received: by kanga.kvack.org (Postfix)
-	id 9D4D76B05B2; Mon, 23 Nov 2026 20:19:39 -0500 (EST)
+	id 93B6F6B05B4; Mon, 23 Nov 2026 20:21:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 985BE6B05B3; Mon, 23 Nov 2026 20:19:39 -0500 (EST)
+	id 8ECB56B05B5; Mon, 23 Nov 2026 20:21:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 874496B05B4; Mon, 23 Nov 2026 20:19:39 -0500 (EST)
+	id 801E76B05B6; Mon, 23 Nov 2026 20:21:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AE0A6B05B2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:19:39 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B40601C4526
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:19:38 +0000 (UTC)
-X-FDA: 85468255236.12.9341259
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0F1EC160005
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:19:36 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FpgAv4k7;
-	spf=pass (imf08.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 480366B05B4
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:21:35 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E091160A3A
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:21:34 +0000 (UTC)
+X-FDA: 85468260108.19.0EA9DFE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9ABF7120004
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:21:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+s2Utow;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795483177;
-	b=6wW4VCRp3BhD02yyCFXiWRbZtT62mE1E8V7bZ26C+/CnU3FEw858khlEo2bTjq03Cv/wdd
-	9f1wMMON5gMacwxMADn8S/eEIY7tJMp5/I3+ShWpespi0K6JQP2hr3MbynxQgBFW75xR/T
-	HCp/wAGi6P8viRDkkQhtageXChmmAaY=
+	t=1795483292;
+	b=lksfEr398yWMmC6P42+F20LJauyhYVw7hx95nYoExaMEhekQQWixD8ZLF4Iu2EAHQb8Ue6
+	doO/GCmqTR4t3oRKx2HwSzqh2H+EVgVLjmBlHXPEaThQzG82fVEq1XLyUiuiC7fvRDp6Jn
+	q/KzNHtftskjj/eIeeXmchLwARMz5Hs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795483177;
+	s=arc-20220608; t=1795483292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TqTFyo2p9NHEAlnK/bLSQvmwgpmG1lbV/jfBCx+FnUY=;
-	b=29CV2y8nm+ZO94MKcV3NuS+aPSSIp+0x7OhzVYErVjxIwsowZsqBa6jzrgvImcVzTrqyre
-	lZ1k4pT1rUrYNno6DBmHNN3zwhKUoYgDOAIj+0qkCJXwMYorohkydFI6/6pFAOSf2ARgAR
-	1BUIY/Jehok9bHeeqj1QPVAEdBbmUfQ=
+	bh=IAXmygWx+MtzlQfD/THE5tctNVDaMp12YBsy1SVW570=;
+	b=HTuNBtrvxFpmBv1hl7tQ3HKm273HJtVKDMVxsCG14O7svdZC9T6kjJOb/aGcF/hf+9hCJm
+	KzSHyTrsrFiPqj+zpFzNFzRHg3gNkHC1JyTG67B1xPiwllmgvR6Qqo3R9R6SrmsEgrlotQ
+	cOcUrqstwBNOwGhkU3XWlaKYbGAmK6s=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FpgAv4k7;
-	spf=pass (imf08.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+s2Utow;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 6FD8260207;
-	Tue, 24 Nov 2026 01:19:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5602A1F000C6;
-	Tue, 24 Nov 2026 01:19:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2A3C945676;
+	Tue, 24 Nov 2026 01:21:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B627A1F000ED;
+	Tue, 24 Nov 2026 01:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795483176;
-	bh=TqTFyo2p9NHEAlnK/bLSQvmwgpmG1lbV/jfBCx+FnUY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FpgAv4k7DgTjREaE3kro0UZn3XG5jzdbXdwUqCiY0H/lFIyxXhzxKdUjGfewSzdRJ
-	 AQv/xvoOKqEm+aHsUnmXP7PwlobCZQd+uY7uHAZTyThrK/+fCSfOgXaaTDk8zdtC9V
-	 uZXFUa2oVY74if4PpQoYMmsWfcoAzHvkyUqGZf4VbXQZrql0SqEm0LqqOBNr8pf3Bk
-	 ChIpk1dvOQ0+H9x+KeXwb+c+0oJ0CqAHmhymiEOisQGz0RmR6YY6DWkqMqZDxnuKqj
-	 pQYz9w2/bOPD5gPpVIjBUGn/+/+YICibM0voCPOItGdwtQz84KoY3IMZqMK5FJtKgJ
-	 uPDRW+LVkgcSw==
-Date: Tue, 24 Nov 2026 03:19:32 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: bpf@vger.kernel.org, containers@lists.linux.dev,
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Aleksa Sarai <aleksa@amutable.com>,
-	Alexander Mikhalitsyn <alex@amutable.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Giuseppe Scrivano <giuseppe@scrivano.org>,
-	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
-	KP Singh <kpsingh@kernel.org>,
-	Lennart Poettering <lennart@poettering.net>,
-	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
-Message-ID: <awTmJIErjasO4lqq@kernel.org>
-References: <20261122193539.3334213-1-jarkko@kernel.org>
+	s=k20260515; t=1795483291;
+	bh=IAXmygWx+MtzlQfD/THE5tctNVDaMp12YBsy1SVW570=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=f+s2UtowwOrLJ3ihcP60KU1bKjQQFLBXgytIHqewml1nnZ/HXEb2s/OJgGTPNUsnv
+	 HuWJPxNI1i2G8yyC01UzU2ozv2+3qWjD+NGmRloMEMGoFDTvUKpckLtSDJagu9MLEU
+	 UjKsLgHhJs/iEmx85YvcgISXLJGW4E9ZZ019YNeOj5dcmla6Ic4xAr2ipUXfGU2ih2
+	 PTSz9wnth/XnpLl5mspXgWCpgSiU1Dbhd9UgubzqNAzsNYSIoajJQxRjzlRjOK7cjT
+	 mPmAqxbhJQVL5DBqbMHEcWEJiFEDm6jgoRaGk9bUl564Eh00hQqEVubLpeMpA/Gchq
+	 1xO+wQ1jTTDEg==
+From: SJ Park <sj@kernel.org>
+To: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	chengming.zhou@linux.dev,
+	yosry@kernel.org,
+	hannes@cmpxchg.org,
+	nphamcs@gmail.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: zswap: remove dead length check in zswap_store_page()
+Date: Mon, 23 Nov 2026 17:21:22 -0800
+Message-ID: <20261124012123.94517-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261123032512.6119-1-raizudeen.kerneldev@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261122193539.3334213-1-jarkko@kernel.org>
-X-Stat-Signature: u9yc7yqbkb3aw7dhuspwtkg18gg5y44t
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 9ABF7120004
+X-Stat-Signature: d4quaf8ofd891hdx58m93qfau9yzyuj3
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0F1EC160005
-X-HE-Tag: 1795483176-55076
-X-HE-Meta: U2FsdGVkX199/RMR+ptgZE75IPYdmN3gUecsLON210LkmBxMZsgdRjIIT4uUal1RI7Zpvbq8GyQN5QoeSfV/iP+NSrwpj6AiR48m8L4JPCOT2EUj2ru0QyGuZhxrlVQCrx9uGz/XiEAO8ByhWbFYkdEfOMLHlPEF+rFIwI5Q0McoR9LeCybeW8z9MxQ5Kc2i9K86MDCdtN4NHjcejUHZ/XxZKgVLAyNI+RxV6tpvV8b8UyrK81MGEM7PjW8gmWLI4kaOwNyBzxYRCcyG8IBvYsfiyE1yC1b3PrsyijQhXQ59hbYdboW2qUR8s5QNRr032iwiHadA7sjVpS48mspWl+NfCN5Pu8WptwQKrSw7It4m1yTPypQS0zamizkj2jATleJ1TN2q30ubnki3bTMG+VF+h1WdD4wYa8GA+czK+oY2uiMB8bL1wMqYgL+Qe0Z5sRxhxCxKx42CcxTmd9N5uxm5bCe8vqKcAuTe2w3B75yd/j1SSgqhdQu76C2Dpkxm8v2YNL10Q42mB1MSPquBydGZCkwU+wwhxm/VYDuEJn7s4QkAjEtslA2FLrSoSSnxbXqXJa8+/WxP0Lf9bpGZLJcBVKbYWIjZt+rPe2GxePSVDdBQAKHb7fkff5D8UddqCEt9OF9rRPL/OLODxobXyKIUsj7DWWktV8Qa2uOzmQt1/5SpmmiYjU0i9VdyVW6Z+QcISn9xZCjOPfeniJtTcJQtjzWGQB3yLMtj5lCzMTFcxV5RZGKZ3/sTLDn4WmIZXU2IRGSUXwOWKHLgXsrfI6BBCmwn9AMWTSCUBKwgh8eSrcHK0B3L86hAsQCHlhc67eC4DILhd2IzNfOeh6g5k2TROLsEXhrKy8iRWe9U32QAPUk6H9RT2cus86Ric2f/IS0jIJjrDl9kHsrc/X+HCeUbwZFIajqEN1mzmRpvHTfWnKuJ4SwfNp7C7PnkvtlvwBhrZTC+C9ID4ltUO8w
- tTpVA8ef
- q9JV6jyr4on4q4T+Xx1XGI9sgE6QtS7tSXPqzVEtAnWTjyqKEUlL3aGC1onnJg/YUGn+b4QNyQzt3EOY/R3eqPfKj4bHouqwhdeav5JnNlBeCg+f/0o5XbFLv5Ka0klJ6FNjo5+fhbUGuipjx3C68PjJ5l7XqeqU8QseAXG59qQp7C+UDwVdcTXQBO24daRm83KNChSt1lOZDm5mBd24A/iIL2eY4fdFAM2mEiQ1USCI2VUhExRbqc4jZXfUGDy6auV9WXyPimR3Vlm6PRQ016JHY7VbkuVv9IsqAtDQcJfhhh2CpOfT0C9t6Sjmj9ekrnb5dH1a+seDG0+1iXcwFYEf1rKWAfDHQZ2+CtPzeZ9Lm3GURTinS4lHfqhEZYhygevqjx8SlS+BLt+aiF5Xgc6zFJSHfb7S/deBHVPqXZBJ/FJAbDefwlMwkNwMn/TToFJ8RkKKZ8peB+jv1UPuXTGs8VQ==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795483292-645099
+X-HE-Meta: U2FsdGVkX1+mMSkyAS9DhPsdtBYGqx7k3mL39LWV+/qVyXf/DSCflM0ythG7vFkHMYWllCLxybburP0kNU6jHQUg/TA6ww7IwNhk5b6TuYwy/MZWAd6fw+p/86S1TFaoZ4+8WIJoGBnwDSlbxzPd4Z6qKbynnJv1Eumn9/BANkeZgHcw5emuHvVvsBI0WDJEl8J8aQEnoV8MkBsVSSByDyqElB2HhURFqrwzrpotvwlGox2Ob7EdCFKlPQ1MHc6CI3D0fgPCkxMuGFV1PZKNCbNaUW75EfvNgly52I9vsT+pwE+9npbRpDDlRa0avt9hZ2B1ofP5CNTZ7SM4Wzb2SC0hLYrJLo0R5T7j39DGEXbwqECg5vVF/YF1G8v6gDa6ttNxNSAzo1srp5rQIdVLxbtPsEyIubXEuxbmeCAmQAkbkdtIG7JwMUncfkB0tEp/G7fbNMudkkuxjv+tO5YfKGz7PtLauTdnaMX1dl/TU4nqOVxzXBnDUVn2ttzhdVz9+BihRXGaeA07wPYQCQnf4IRUTz3Bv+JIwfhr6rjQBItPYDIXfjnAVu+WEFFhjmcRpshzN4Xoe1ackc3lUkYh7CS4ZW+HQ+3sDDGlvEmBfMf4+cCxOkdqMx9AhohTcQOlRuN2jJ1D3SgkgRnRzh3zHYR3AwGj9ngp7Sm2zEEiMbWXj1qOqbk/v0GlJI5mEbKhZkvSskbfIwyyNTFNEAXbxTgEQJFkG2Sucya8L+mdpht/vUqBg6FJqg2H65Kv9UmhKaeyGH6qWYVSYNZwuTwm/Ljmg0vs8Fpt6SRVT0nEPE8fPAIxJtzK/tTbche4uCKXmL8pWBQ80r+X4Lm0vPfmGclm4gNSXoV1OQLhF48/73uDDD//d8GbztM7Wg82URIPSFpCNvCcUNXKHhb91jXELWANEJhr7pIMBoDe5P5oXno3eS7Prena2N0jCYHBxKfQ/Do0vRvskwfCotpw+d6
+ OThpAkN+
+ ljGBGhYtXGgrkl5Wkgk8JUpfuPeVEIotR5E1vn+Y7kk6WIZimDmOXNmzmlFOW88LTKWRKG47cZecwPJ8GXV5Os4zeY98taAAipJQbyh0KAzv7CtG2zxrMFFDLuydDvvHbM03UQyFYJOqCDuLneRSFa98DFc1jNl4txe9/bKVWpDEWDe9Udv9oJOCA7nYlHViDx8TMyxTdi6KJufDBm4eiNlrjoHE8KFdMQ9Yb2+gx5BrKgXd7Nt7l5tzCCDHuBPXxyBZrCC1WhdU9RTCOuKIVe386evNFFsNaY2qe+cfSSr/sxDEJzo0iTh0zofUCCQg1iPr3jgn8fM2qfz7TIior2OILpUNrIBeTVi3ULhkb5Na0MVuuUfbjBsEojh+5Z0R3/kXqSSt4TNPE+i8R29Ri59PCeFQNuDp0AXiCvn7/ZM/HQGE2AgP4uc8LzKvWPw4XljnQ6at93I498yUkOKwIpv9yC63GhxFBvw1krmw/eqUHF23r+kPdHjx7GRIukpdY+eiQfsmI97tbWLvS5zYZNOvm8ejK3TLq2Tq3faVhLlhh4UGi38UL77r/9c0Lu8c6Y5toOC2K0LgrpUpo+O5oIrBNqMf3DmoQmURz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,40 +99,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 22, 2026 at 09:35:13PM +0200, Jarkko Sakkinen wrote:
-> SYSCALLS
-> ========
+On Mon, 23 Nov 2026 08:55:12 +0530 Mohamad Raizudeen <raizudeen.kerneldev@gmail.com> wrote:
+
+> zswap_compress() never succeeds with entry->length == 0, so the
+> condition is always true. Remove it.
+
+Makes sense to me.
+
 > 
-> Two new system calls are proposed:
-> 
-> 1. userland_open(): open an opaque staircase-initialized container
->    object (modeled on Intel SGX enclave initialization with separate
->    build and live states) with no embryonic state, opting selected
->    shared namespaces in via an allow-list instead of unshare semantics.
-> 2. userns_set_idmap(): configure all UID, GID, and project ID map
->    extents for a container user namespace in a single atomic system
->    call.
+> Signed-off-by: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
 
-I played on patching systemd and userns_set_idmap() alone does already
-a lot of good. I'm figuring out userland_open() integration next.
+Reviewed-by: SJ Park <sj@kernel.org>
 
-For the test implementation I probe the opcode's and dependening on that
-use either "userland path" or "fallback path".
 
-This auto-probing is done so that I can commit the patches to my kernel
-test harness, which already has systemd, and try them out when built
-against userland-enabled kernel (via LINUX_OVERRIDE_SRCDIR):
+Thanks,
+SJ
 
-https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd-test.git/tree/?h=main
-
-The project builds a hybrid ISO, which is a bootable bootc/composefs
-based operating system, and has toolbx bundled i.e., a reasonable test
-environment for all of this. It is also device-installable via "npx
-@puu/install"
-
-I had to level the harness up a lot so that I could realistically test
-lockdown-hibernate but it is is also pretty good emulation environment
-for any possible container features.
-
-Br, Jarkko
+[...]
 
