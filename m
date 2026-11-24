@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3619606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB432606A68D
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eQEsgeQl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nfOdu1v0
 Received: by kanga.kvack.org (Postfix)
-	id 51E766B088F; Tue, 24 Nov 2026 18:00:19 -0500 (EST)
+	id 8C7056B0891; Tue, 24 Nov 2026 18:00:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A4DE6B0891; Tue, 24 Nov 2026 18:00:19 -0500 (EST)
+	id 850F16B0893; Tue, 24 Nov 2026 18:00:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3209E6B0892; Tue, 24 Nov 2026 18:00:19 -0500 (EST)
+	id 655996B0894; Tue, 24 Nov 2026 18:00:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 058F96B088F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:18 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 90B36120CE4
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:18 +0000 (UTC)
-X-FDA: 85471532916.28.418FB1C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 283146B0891
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:22 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ADA0DA8C19
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:21 +0000 (UTC)
+X-FDA: 85471533042.06.7027D66
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B34AD100009
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eQEsgeQl;
+	by imf18.hostedemail.com (Postfix) with ESMTP id E2A921C0010
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nfOdu1v0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795561216;
-	b=qhzFGjiHcrAfyBa4aqExpXbCzPHbk0XwD6Wdf7pWcETlKTNx+FIL8KCtN8DMFn5La+qrOX
-	kjqLLLW3/fn/xhrZ+M17A9ZL2ZHrpMQ+duZJ+oyrtjSo2aRXGezOTZRM+GZLXgKC3N+6qf
-	H5YGBOTOdL8J5LyqLA1mrhGfgSe+5J0=
+	t=1795561220;
+	b=MuvddRKjO3Ex7FC7RJ/IU/sdFkzi30TOYY9JhuAa7DbANeFyDFKrpbGcMalX0bU//EOFjZ
+	kJ7du+QApVQJJmaKgoOgWP0VzaO26jpy1vNERIANy8LaJoCjlkaaNY0mw59MSg6zEv9SlG
+	WY/RXX+qPZ4KKKl0x/hlnvetKqLSWE0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795561216;
+	s=arc-20220608; t=1795561220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Inv/5JWsEP4k2v6xGmPklM2ArEUXCVNMCujFrTY3N8M=;
-	b=uBZGbybLCKyi5Upy8loIlBGrsMOEsWEE5arpgbWnEOKeFdJUS2+jhId60FYIDHNmHQHP3Z
-	7t4qolZJSHjLzmMTisQAzKHqn37mkztSqNJxcAGbZewC/v5CWjr2kb+k1USl2EqYHzksT1
-	D9VYH4r+PljxUeM2NxifmxWWt/a1/8A=
+	bh=SesqWwEYIrLAk7LUaH2F/GrCcE41BwCyBk7+l2i19rE=;
+	b=W9EP34AycqN6x5FgrAeAh0X3rcBoscfCsf/IQiIs1aeOedfxmJrPt+GUYfJVE0/hHZlg/A
+	J23PhCNEdCVWz1xsSQyCPm6I9wW24zmTMeoHZ6X/NQdNzeaeyHdWrS/4z+govUaX0ZwmGu
+	UklzFVukU3rfSMT9und4/4n6ABuD7gY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eQEsgeQl;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nfOdu1v0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5094B628DA;
+	by tor.source.kernel.org (Postfix) with ESMTP id 7319062453;
+	Tue, 24 Nov 2026 23:00:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFDD1F000CF;
 	Tue, 24 Nov 2026 23:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196D11F000CF;
-	Tue, 24 Nov 2026 23:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795561216;
-	bh=Inv/5JWsEP4k2v6xGmPklM2ArEUXCVNMCujFrTY3N8M=;
+	s=k20260515; t=1795561219;
+	bh=SesqWwEYIrLAk7LUaH2F/GrCcE41BwCyBk7+l2i19rE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=eQEsgeQlOdwurtJVQEblk2buji2Jm+OMq6monolWC6s/2fqcP1WFzzvIzBbprfybF
-	 BZbaVwcVpZfRPZ9366EmgON5grVifrWvix+FOvzNMnGwVzVXJevc6M5lE/lARWHVYd
-	 ctZq/bxTH1PvbstQDf0+YGzo6O9YojErOnTA3Kwta/W0sr3gcfyW0rt4WEDHMYw8jI
-	 V/hiSYb1CYMmJbZU4I9FfbVU9MymXCpv7xyPCWgvluQq7lhU2nxilpkQkz4L1KtMuL
-	 cb3T876CnjPNvBZhzBVnSyb3JuJKO9l8lVXuD/0aFJVEPprsiORY0u0HFi5MQbqrSa
-	 sciFjGNhlNhEA==
+	b=nfOdu1v0khcLDCGYwPEHg9rvh6RvtNLFPV4iIvUaRQxDF2wkCWDS0QaIPNaPO3I/J
+	 23mCBHsxJt4Rj75yipDCz0lHdZIM5fgflfrsuFj6Y+a23ugisFgfFbDnVzzx4LgMGx
+	 BKZ2BdNE+NZVrxGVK0NrI81Pt+BD7OtnuLPOOXf0dgFz2VS38VYGFA01hgvBPFa9mi
+	 O52Cqb5uODOKwpF/7MkltAJhQYypZeX9HARLBmIiUi+fYdR3fOaojIg5li9tO/2+fb
+	 32zjKBPIn8szhiJgbjXynXZDSCy6IK34GvgCFIws0T+igbNtCGMSFVFYnszQnU2jF2
+	 VCe6ZFqovLUVw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 24 Nov 2026 23:58:35 +0100
-Subject: [PATCH RFC 12/19] apparmor: revalidate inherited files before
- taking exec_update_lock
+Date: Tue, 24 Nov 2026 23:58:36 +0100
+Subject: [PATCH RFC 13/19] exec: drop exec_update_lock after the
+ credentials are committed
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-work-exec-update_lock-v1-12-e489035395b8@kernel.org>
+Message-Id: <20261124-work-exec-update_lock-v1-13-e489035395b8@kernel.org>
 References: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 In-Reply-To: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 To: Jann Horn <jannh@google.com>
@@ -79,28 +79,28 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  selinux@vger.kernel.org, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
  linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com, 
  David Hildenbrand <david@kernel.org>, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-04696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4840; i=brauner@kernel.org;
- h=from:subject:message-id; bh=uBNxf3lHU7b7V8ajO52LXjgXzg1M50Ep3+2UIaiyZ1U=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziR1+vjCC800t147wFavdHucENbUZ2qiuKS2y6zxwQ
- p/l0qdfHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPZu5Thn76K1E3B/prz63pt
- LCd5lF8wPzVR3Uma+ehm64k/V0z9PYmR4ebvb/e+eR9Yr8fjYfGvsDIiegl7Tw1X25f9bncb9zP
- q8AAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6170; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=w8H/mL2hr2FVO6SiS+e5Foymf12MZxmOyvqwbpVrNdA=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziR0pf1D0qek5l5yWb0/VK4fOchHrA7Z7CnPXc02P5
+ rf5u9Wgo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCJqNxj+GT+ZqpU1t+uLYfjF
+ I4dnJe/je9xU7Xfj/U5xkTWWjzPvaTL8d9g990bznsfuFUf+H/ENSBU/vszawFOi2HXp4v3Hj81
+ cygIA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: ngufgz6daa9q5maac5ucugqwuaodogy1
+X-Rspamd-Queue-Id: E2A921C0010
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: kru9bzz676russ58dpj9zdhpfmog51qy
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B34AD100009
 X-Rspam-User:
-X-HE-Tag: 1795561216-22564
-X-HE-Meta: U2FsdGVkX1+8XSD44EmeZZ551r4rvDOOt10x4lclMzV0UDkY7kLRTyN7fdoFLYWn0cHqxNp2Qjoz0ur4pq8WECn0BoqUC6kDTgTUIIBRYkCfhk3gAZp8vzrDe/QpU78MxvOH/70rFMPzxAfuaqKuhbXTg0YZkXKaYpdQpBZmZ28geCNFNxftFIXQLNGSuRZDzpnKt2Czxq1wnqwnLeMHhuutuF27HN7H0RtRKWKvbGrwu+62B90ZrSUgo6G731NirMjSl1XsEXSo6/ccRrufGr740UAabAvLPf3NkpjK790S+Z7XV9ar2QTqtQdU5M7BUU4P+8OJvQaHS3ZYPfURaBtlwo//3dkKYLY5YZWehTokedkmJM+LVc9Wo0vMQZ4+BN/AoDEIxZgXcEBbeenu7c9HFMmzry4efNzLUtFeKFqtrgatf6y1vjgEK83UTyurOpFzOBfFZAptGHmjWWA6RkcBvIzyMMhVYyUytWh6lt7mVMquGgiHPFaUJtAHdYyPgTiBjcL9zN/ZINQktfsO1hKefLtCFfbVL/l/FdJH7cwAH5fINeex+K7RQdc7eyXWy5vrTTbMQ/IZiz+V7rv7zXzkyGIcj5dS+6PbDkLJ9CDAFmGg0LNyhU8yetWclqx0PuME2rzOwZKg/QtNHXBfgFiFNCvCKTpTzWdHSEEGkfBrlv+Glbi/0KyT3c1oAvigGjDjDXutGaBuXgsNTnNtqE6RQMVzIUf9qy4gqrO0ruOhZuQN7wdz9SDxRENvE5+OZONla4QK7N59HX0cpUrYtBm+mU8kwAgbd8FxUxglEtbRuroE2h9rBFClz5718CjX12Bj4l0WedFbEQ1RpZ7KN/1ZQ00MJsdOsZ03iJP5OvRpztofaGvEClDxRTp1EPVU3P+DtiIuu9fk+ZA5WW7LEQb1sF8hpjMA+jWSh7iidhURvvLU3QIwTdlQsf5lq47sNQWFAacy8dRehCgql8M
- BRdrVz5Q
- 3mAx/5+cSe+NAwPDTc9XTzrxvto6xdMXArK9ZcjlCRad2noqrELZHrIxK5Qq071oF3Pp2QRzkBitEq44qfzP3o+2fP6bQ0cxTzeKxxckjfNWXbYMMU0l3Jc5FR6xNCd+4Mmq49uy8ZulNEzeJjcA+VrvP3jBPXUxcB2ORPcvfcEvFnAE0ieLyHDF1o1iLfuFMKKGTrZSzbJMK1NrlPiJLyySIKXq7Zu25Yr2JOzvvBkWaD+juKPzqXeYhMZJqVskPkQnfUHeGkVoTC8KCTWv64KZaxaLXaf5RyyLyy8yeDM9Eh0+p1GfqBd1MHdb7pKuzJRpzXJ3wTeagE6w1jm0w104SamwKDYec4AK8+FS4AIvBZQLJ0WFbnWsUBRt+QnGXr8EDYfkvutKlBxQMu0abBOPQJOjeWO1NphettAnK8qLjZDS2Xs+Z8rRo5OsLHI4apzo8u5bPKmvs8ZiTHkXBAVwgu1VOqaZ7sJae4/QrkBYKPpQTphODKM649v0Aub19bukBYwE6xlaPeRxCLNqZwSZALg6TUR7DMN1D
+X-HE-Tag: 1795561219-700930
+X-HE-Meta: U2FsdGVkX18Rq8nZrBByRJ8BH8khw60KCYe62xG1LuqdIr8hkhrCTas8X+SJT5cPqgmD1QMOQoudVLcJgV5RfhL7TcQOvQx2eLb+y6AXqGvpGOnQTnvOFQNTot6nBOQSJ+5GBcbKEq33PKqn39GxYzRQodf4LNg+6pkKTmsjzkPtXCfz32DkMZ9teuYuQfbywBNcIlUzuPu/KcT1lgPE2xl8GshVokKApw98birW2jC2GdFprfHmkQeltZQ3VtwwvlwXlqaH0+cOzeWCJGWEq1uTbbyRy43lZQ+7SS59trcH4SMi78574cY7jtrYpbSxkd00Kh4qKwdmAtxKmQNSy2BUtMx9cAt5t4T7lsYihLsMPhmUy2j/m8IZptZVNNHZaX8U8WyVeexXNYiehTQY94Tare7QAvuLsm4SRmvStyyUA9olzcIPvMLDan5lVRpf17rgg0lbstmZ/9+lTMjGJIeIFqT3VyoOuDPV6kGfAsHiowuiLGnKeRdFll3OHl3mVSfZ7WvyEQmwyhv6H0CpbhAFflFfc3MLtXLrWylBUBQUdgrYSrrnYP8FL8Ov9BqtSwdd04Wc8cLOvusxF2e0cZwAgVJjpkRuyvRQm0qMJjvkzUvChXciW5QYCPZ/QjQCbKLRTkrJ6aO7hXGfiNw0ZE4y1GrYnlnlVJQNhqRK0jV5KyclbKGAdB9xqdWt5TZnhOHJL3H/PY8aBtVFYKH5RZI90RhIXPz4fnn4m++j8EGqNLdxufcRI9FeRuXWir7a5lPkZusQbSxBb1GKYDbMdxwFdt/RUvbxQ6GnPpw3ElFjp+moRSflFkrgWwtUIPMCmRJyVEQkwXsRFlgDjzdW2o0hMnLIoZoXd/lkdFFH73foyzEAl9KlIoQwabyWll7Die6o8B1oXSqmqcI8isgfKokuMhcRHz5TAAgC5GOUf2GYNdUthQMdSGH33JSr8oqHmcOcUX8/kT3ckuf7xEq
+ ZONYGISY
+ RD8MOkfzr0NFSkw0/Kvn5rbadoMjJ1uDQoQHkP0OSVdqP2Rfayg+rrOfRjhtAeFi+C9PQgITSyU+JqiS5bhS69Vv5NAxe6kMDs5I5u2ACsW2CxDTiJ25jXdPMiFy8j9YcbmqQ4Y6lnkP9scH2KPp20E4tdpcuZK8GIabNUp//qE1xUQBywz0yNcDEXEKEknCyBUBX206m8SDty2nfzBCqsuvUEEp9phd2C20BC6+HQEY+mTX+FpiN+7uibKt957QoT3ieBvj9RpGbhGanIIDV/n2U3xmc0fQr3o8phh8ALK+57ZPpcJ52Gg56X+l3rAWfjoQE1ms2P7jPvBTJrdADzubtsa9oolf8zIKKi0mgs0QVVpIAF49KcB9MGktF3W+HlXLcBbrUlAPjbstVOlO5Q1FvzolCCLsuSXqzsVo+IZ4ZVSyLvMkPFDmcLBfV7EhrPd4cNCL+DI96JPBw5K2HL+7R+roLlFQKZ4h4O7K1YwS0/13xbwNUFHRMln18ivlsVP3DzWXiKSzt3vtdwSzhcsor/tICwl7ueXVv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,135 +109,165 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When an exec changes the profile aa_inherit_files() revalidates the
-controlling terminal and the inherited files against the new label.
-Everything the new label isn't allowed to use is taken away from the
-task. This is done from apparmor_bprm_committing_creds() which runs with
-exec_update_lock held for writing.
+exec_update_lock makes sure that nobody who takes it can see the new mm
+together with the old credentials. It is taken in exec_mmap() and
+currently held until setup_new_exec().
 
-Taking a file away closes it and so calls its ->flush() method which can
-block waiting on the filesystem. So a hung filesystem blocks everyone
-who needs the exec_update_lock of that task. And a FUSE server that
-looks at the task it serves the flush request for deadlocks:
+When it was added in commit eea9673250db ("exec: Add exec_update_mutex
+to replace cred_guard_mutex") it was dropped at the end of
+install_exec_creds(), right after the new credentials were committed and
+the LSMs had been told about it. Back then the personality and the mmap
+layout were set up before the credentials were committed. They only
+ended up between commit_creds() and the unlock when commit df9e4d2c4a53
+("exec: Move most of setup_new_exec into flush_old_exec") moved the
+credential commit into flush_old_exec() and left the unlock in
+setup_new_exec().
 
-  exec                                 FUSE server
-  begin_new_exec()
-    exec_mmap()
-      down_write(exec_update_lock)
-    security_bprm_committing_creds()
-      aa_inherit_files()
-        replace_fd()
-          filp_close()
-            fuse_flush()
-                                       do_task_stat()
-                                         down_read(exec_update_lock)
+Once the mm, the exec state and the credentials are switched and
+perf_event_exit_task() has run every reader is checked against the new
+credentials. But we still do a bunch of work with exec_update_lock held:
 
-With a FUSE server that reads /proc/<pid>/stat of the task that sent the
-flush request the exec hangs until the server is killed:
+- security_bprm_committed_creds() which is a sleepable hook for bpf lsm
+  programs
 
-  task:aa-target       state:S pid:98
-  Call Trace:
-   __schedule+0x53e/0x13f0
-   schedule+0x36/0x100
-   request_wait_answer+0x1a9/0x320
-   fuse_chan_send+0x110/0x250
-   fuse_flush+0x1af/0x1f0
-   filp_flush+0x33/0x90
-   filp_close+0x12/0x30
-   aa_inherit_files+0x191/0x2a0
-   apparmor_bprm_committing_creds+0x61/0x90
-   security_bprm_committing_creds+0x19/0x30
-   begin_new_exec+0x6dc/0xf90
-   load_elf_binary+0x12a/0x1990
-   bprm_execve+0x39d/0x870
-   do_execveat_common.isra.0+0x165/0x180
-   __x64_sys_execve+0x38/0x50
-   do_syscall_64+0x110/0x600
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+- installing the execfd which may have to grow the file descriptor table
 
-  task:aa-fuse         state:D pid:97
-  Call Trace:
-   __schedule+0x53e/0x13f0
-   schedule+0x36/0x100
-   schedule_preempt_disabled+0x11/0x20
-   rwsem_down_read_slowpath+0x186/0x5f0
-   down_read_killable+0x78/0x1b0
-   do_task_stat+0x87/0x10c0
-   proc_single_show+0x67/0xe0
-   seq_read_iter+0x11c/0x480
-   seq_read+0x127/0x1c0
-   vfs_read+0xd8/0x4a0
-   ksys_read+0x7c/0x110
-   do_syscall_64+0x110/0x600
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+- the binfmt setting the personality
 
-The flush is a forced request so the exec can't even be killed while it
-waits for the reply.
+- arch_pick_mmap_layout() and arch_setup_new_exec()
 
-This is the same problem that commit e780259b54e6 ("exec:
-do_close_on_exec() before taking exec_update_lock") fixed for
-close-on-exec files.
+So drop it right after perf_event_exit_task(). The LSM hooks don't move
+relative to commit_creds() and cred_guard_mutex is still held until
+setup_new_exec() so nothing changes for ptrace.
 
-Fix this by moving the revalidation into the new bprm_revalidate_files
-hook which is called before exec_update_lock is taken.
+While at it, fix the comments that still point to setup_new_exec(). It's
+begin_new_exec() that commits the new credentials, changes whether the
+task is dumpable and calls perf_event_exit_task().
 
-Fixes: 6650527444da ("proc: protect ptrace_may_access() with exec_update_lock (part 1)")
-Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- security/apparmor/lsm.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ fs/exec.c            | 39 ++++++++++++++++++++++++---------------
+ kernel/events/core.c |  2 +-
+ 2 files changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index eaebc3c60c5af..e40619b0f4ba9 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -951,10 +951,13 @@ static int apparmor_setprocattr(const char *name, void *value,
- }
- 
- /**
-- * apparmor_bprm_committing_creds - do task cleanup on committing new creds
-+ * apparmor_bprm_revalidate_files - revalidate inherited files on exec
-  * @bprm: binprm for the exec  (NOT NULL)
-+ *
-+ * Called before exec_update_lock is taken as closing files may block in
-+ * the filesystem.
+diff --git a/fs/exec.c b/fs/exec.c
+index 855437c352137..7b261b0a5f33c 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -837,8 +837,10 @@ EXPORT_SYMBOL(read_code);
+ /*
+  * Maps the mm_struct mm into the current task struct.
+  * On success, this function returns with exec_update_lock
+- * held for writing. The replaced address space is stashed in
+- * bprm->old_mm for setup_new_exec() to release outside the lock.
++ * held for writing. begin_new_exec() drops it once the new
++ * credentials are committed. The replaced address space is
++ * stashed in bprm->old_mm for setup_new_exec() to release
++ * outside the exec locks.
   */
--static void apparmor_bprm_committing_creds(const struct linux_binprm *bprm)
-+static void apparmor_bprm_revalidate_files(const struct linux_binprm *bprm)
+ static int exec_mmap(struct linux_binprm *bprm)
  {
- 	struct aa_label *label = aa_current_raw_label();
- 	struct aa_label *new_label = cred_label(bprm->cred);
-@@ -965,6 +968,21 @@ static void apparmor_bprm_committing_creds(const struct linux_binprm *bprm)
- 		return;
+@@ -1191,8 +1193,8 @@ int begin_new_exec(struct linux_binprm * bprm)
  
- 	aa_inherit_files(bprm->cred, current->files);
-+}
+ 	/*
+ 	 * We have to apply CLOEXEC before we change whether the process is
+-	 * dumpable (in setup_new_exec) to avoid a race with a process in userspace
+-	 * trying to access the should-be-closed file descriptors of a process
++	 * dumpable to avoid a race with a process in userspace trying to
++	 * access the should-be-closed file descriptors of a process
+ 	 * undergoing exec(2).
+ 	 *
+ 	 * This can block on filesystem ->flush() and ->release() handlers,
+@@ -1232,7 +1234,7 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 
+ 	retval = exec_task_namespaces();
+ 	if (retval)
+-		goto out_unlock;
++		goto out_unlock_exec_update;
+ 
+ 	me->flags &= ~(PF_RANDOMIZE | PF_FORKNOEXEC |
+ 					PF_NOFREEZE | PF_NO_SETAFFINITY);
+@@ -1303,7 +1305,7 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 
+ 	retval = set_cred_ucounts(bprm->cred);
+ 	if (retval < 0)
+-		goto out_unlock;
++		goto out_unlock_exec_update;
+ 
+ 	/*
+ 	 * install the new credentials for this executable
+@@ -1321,6 +1323,10 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	 */
+ 	if (task_exec_state_get_dumpable(me) != TASK_DUMPABLE_OWNER)
+ 		perf_event_exit_task(me);
 +
-+/**
-+ * apparmor_bprm_committing_creds - do task cleanup on committing new creds
-+ * @bprm: binprm for the exec  (NOT NULL)
-+ */
-+static void apparmor_bprm_committing_creds(const struct linux_binprm *bprm)
-+{
-+	struct aa_label *label = aa_current_raw_label();
-+	struct aa_label *new_label = cred_label(bprm->cred);
++	/* The mm, exec state and creds are switched. Let readers back in. */
++	up_write(&me->signal->exec_update_lock);
 +
-+	/* bail out if unconfined or not changing profile */
-+	if ((new_label->proxy == label->proxy) ||
-+	    (unconfined(new_label)))
-+		return;
+ 	/*
+ 	 * cred_guard_mutex must be held at least to this point to prevent
+ 	 * ptrace_attach() from altering our determination of the task's
+@@ -1339,17 +1345,20 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 		if (retval < 0) {
+ 			/* The reference was not consumed. */
+ 			fput(executable);
+-			goto out_unlock;
++			goto out_unlock_cred_guard;
+ 		}
+ 		bprm->execfd = retval;
+ 	}
+ 	return 0;
  
- 	current->pdeath_signal = 0;
+-out_unlock:
+-	up_write(&me->signal->exec_update_lock);
+-	if (!bprm->cred)
+-		mutex_unlock(&me->signal->cred_guard_mutex);
++out_unlock_cred_guard:
++	/* free_bprm() only unlocks cred_guard_mutex if bprm->cred is set. */
++	mutex_unlock(&me->signal->cred_guard_mutex);
++	return retval;
  
-@@ -1860,6 +1878,7 @@ static struct security_hook_list apparmor_hooks[] __ro_after_init = {
- 	LSM_HOOK_INIT(cred_transfer, apparmor_cred_transfer),
++out_unlock_exec_update:
++	/* bprm->cred is still set so free_bprm() unlocks cred_guard_mutex. */
++	up_write(&me->signal->exec_update_lock);
+ out:
+ 	return retval;
+ }
+@@ -1391,7 +1400,6 @@ void setup_new_exec(struct linux_binprm * bprm)
+ 	 * some architectures like powerpc
+ 	 */
+ 	me->mm->task_size = TASK_SIZE;
+-	up_write(&me->signal->exec_update_lock);
+ 	mutex_unlock(&me->signal->cred_guard_mutex);
  
- 	LSM_HOOK_INIT(bprm_creds_for_exec, apparmor_bprm_creds_for_exec),
-+	LSM_HOOK_INIT(bprm_revalidate_files, apparmor_bprm_revalidate_files),
- 	LSM_HOOK_INIT(bprm_committing_creds, apparmor_bprm_committing_creds),
- 	LSM_HOOK_INIT(bprm_committed_creds, apparmor_bprm_committed_creds),
+ 	/* The exec locks are dropped: release the old address space now. */
+@@ -1414,9 +1422,10 @@ EXPORT_SYMBOL(finalize_exec);
  
+ /*
+  * Prepare credentials and lock ->cred_guard_mutex.
+- * setup_new_exec() commits the new creds and drops the lock.
+- * Or, if exec fails before, free_bprm() should release ->cred
+- * and unlock.
++ * begin_new_exec() commits the new creds and setup_new_exec()
++ * drops the lock. If exec fails before the creds are committed
++ * free_bprm() releases ->cred and unlocks. If it fails after
++ * that begin_new_exec() unlocks.
+  */
+ static int prepare_bprm_creds(struct linux_binprm *bprm)
+ {
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 5f648e00ae661..10612214e89cd 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -14871,7 +14871,7 @@ static void perf_event_exit_task_context(struct task_struct *task, bool exit)
+  * When a task exits, feed back event values to parent events.
+  *
+  * Can be called with exec_update_lock held when called from
+- * setup_new_exec().
++ * begin_new_exec().
+  */
+ void perf_event_exit_task(struct task_struct *task)
+ {
 
 -- 
 2.53.0
