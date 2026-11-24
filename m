@@ -1,147 +1,161 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8762D606A685
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 10:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D68606A334
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 10:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=j2pscP0x
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=NUQP8SMT;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WVtOEF13
 Received: by kanga.kvack.org (Postfix)
-	id 943636B066F; Tue, 24 Nov 2026 05:17:53 -0500 (EST)
+	id 130746B0671; Tue, 24 Nov 2026 05:19:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F4226B0671; Tue, 24 Nov 2026 05:17:53 -0500 (EST)
+	id 108506B0673; Tue, 24 Nov 2026 05:19:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E3786B0672; Tue, 24 Nov 2026 05:17:53 -0500 (EST)
+	id F392C6B0674; Tue, 24 Nov 2026 05:19:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A26D6B066F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:17:53 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F63714060E
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:17:52 +0000 (UTC)
-X-FDA: 85469611584.23.C917AF8
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 60BA140002
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:17:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=mojatatu.com header.s=google header.b=j2pscP0x;
-	dmarc=none;
-	spf=none (imf11.hostedemail.com: domain of jhs@mojatatu.com has no SPF policy when checking 209.85.215.181) smtp.mailfrom=jhs@mojatatu.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795515470;
-	b=vAH5UZHiUSBI3AZSQH8RmIswVh4m2DoTQ5wZk+UJ4qC1NZRjlWWDvdxpsUrrKyD7EV3sxg
-	CZ13ndNIwUYx2Mo633PWH+qjxOUQEOmaXbta5o2gWZE4JcO7bHKAHO4XXaCG/75nJ2A2wc
-	6R8vSDcLm05hTzLvp7elehft3+ijT74=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795515470;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BDF786B0671
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:19:07 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E6221A0AB5
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:19:07 +0000 (UTC)
+X-FDA: 85469614734.11.68FF143
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EF1EF80004
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:19:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=NUQP8SMT;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W VtOEF1";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf02.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.152 as permitted sender) smtp.mailfrom=arnd@arndb.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795515545;
+	b=Kl15WQDSflrncDnGQQjzLir7r4STIuv2DOOMdZNZOrw7ezD6FPayqOEDmvBtubxpBmJ2wf
+	+tP/Joq905jtj22Dhg7CO3M6CfMIc014l7JGqZ2QFeVYOZQSIkuwUA5EcW+r2cjmoOI8Md
+	eKc1LAu401ISbvGp5LqwkblQAyFynRU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795515545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cDR7cjV4IRioJgp9xWXyZAeSRy7CXHNvvQiffZPND/Q=;
-	b=njNIFUFbhgCNnNZJT75fAmtSFIf5uCDte4KowuHELc+wyezLanKmkcducLKfGfKX/Sl6Zn
-	afAyrcENlLif/8ISUZwUs/1fC/mZSBjKu3Ey8FC6UYs3/oA7FZhAqQVVcUrWnoGzBLwKV9
-	ExY+fmZvIHeAOlGymNh5KJLEy/+I/Hw=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=mojatatu.com header.s=google header.b=j2pscP0x;
-	dmarc=none;
-	spf=none (imf11.hostedemail.com: domain of jhs@mojatatu.com has no SPF policy when checking 209.85.215.181) smtp.mailfrom=jhs@mojatatu.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cd61cef87f1so1819402a12.0
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:17:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795515469; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CU2SLkatvRQtIbWaFBf9gY/MNFh+L5BUS5kzcl1lHIVi7vUU/h96wbLPqM11FTwxz5
-         GXvm6jDs5UeFFNhRzvyZk2OWud3ijVo+siIq9rngwJ+VragI4EBlX2G+KqOMs5AuzUEi
-         i4XRypXMZrfYfcH+KPvYlCwqgVGPb+c7xARJz6HmbYojX4V/uE+8Lc4BD3rUCTWSPHMS
-         M99JEelrXZ7lBAmN4bhOHrJJ4OjoyLecinBiucM/0RMndlNCNpDlEMDvDfkYpRfVpQCv
-         3qangichUroKKMHKlzVhvpizSiMc/SB6GWq/EPII4Gev+G5rvPeTqQpIw3Gg6mtbvR7N
-         05kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cDR7cjV4IRioJgp9xWXyZAeSRy7CXHNvvQiffZPND/Q=;
-        fh=S1EouJNwPqhN5Rsi7ge5/9zOy91hZ95U3J3ZJ5G9qE8=;
-        b=d0V2duPYWbwDBPR/JtfFknT7XbV9tMSoebxeA+FwEev+TwTunSUStcaSwfJEha+v7G
-         r0fVlP0kCXwMEYhO6tE0jzaAXsUq0drCbUM/bCA6Q4ctUn9qQ9rRAMOAcsCptJK4KH53
-         Iqn4rwzF8AYp+sQ3WD6cVR1NJCmDXeydQhWPVShQIHFfoyDyYTBsbS4PUrX6u4WPcBen
-         IrNY9Zg7WPgQp39mFg7LVFaLPbu5y0PZ3GdDvhawIeAvJSWCiEtGhhR6fkiLMFP7X0aI
-         XfZcORG3r0TCnPwZov2n/zdE210p4VpR/YyaPNUxWl5zW981+Bzgu4LcB4+YTZCessy6
-         eB4Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1795515469; x=1796120269; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cDR7cjV4IRioJgp9xWXyZAeSRy7CXHNvvQiffZPND/Q=;
-        b=j2pscP0x6YbJAklxkn6Wry+g6DVpP+uNO5pKNX9vlwQNpjaKktbyGS5HeP3EnsOk/x
-         +XgcyPhkljNDgt8If4HRYfn+UhKUqSFr+de0veX2he44K71Cot+8cACNA8x7JMBkiByH
-         88Y6+ZcyiixhzIcv33Ryg2aH/7MxijP7OFpy0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795515469; x=1796120269;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cDR7cjV4IRioJgp9xWXyZAeSRy7CXHNvvQiffZPND/Q=;
-        b=btaUbc9XXIBg1jWUCLeOxXSQThRKKGQjV3o+ZQA/+UTbKzfyNF6uQiuC1b2Z8m84V9
-         nFXCVfBljBc8zuIzLMQt6ykdyq5xWLSAib3xYlg94ekQsrRAL02POOW4eAE2Le86nQ00
-         6NGfgy6l68+zQvql1gTCPE0PKs/iZSOcl6pNVXR2km3itDcXaJ223pJ2swKQStr+Lggz
-         N9dwThMydjXGXX2o1H065kvpG2heaNc+x8unHK5PHu4olicjbGIwb5LlE6bzZaUQKpOp
-         +Q0umxB+528SYQpVNMHEeA5h2w56zZW+yG/B1LSWSIzGlRuHREz0ksoCh9Lw5aMwQOjU
-         nH+Q==
-X-Forwarded-Encrypted: i=1; AL+hErExj0BwUQGqUlCeBmWkO69AzKZFnnjL/WpXZ/WtOCkJNu0LF84QCtb6SbeLGcfzwgBqbt6lIUrdaQ==@kvack.org
-X-Gm-Message-State: APuU4Z8h7VofanOH+mcKxjSYcG0DKk6NUHSo1HPp/sSMMOX44r9QA5Sk
-	USgFvs5j9mF9QS+Y+1nAvfsse0H+rjuGZLpSO32Zb5+xZvi8QxH7nsavxjl4M2zOrm+kG/JV3O/
-	aHKpDccgJEOrtXNXbnco+Nf+lOiRRdKFnZR4sAeQ1
-X-Gm-Gg: AZFdTZftawgSCa5Kn4xaFzB1XDxb3qQ/CZlu+jZ2VXiyJrv9JrSDHGRlf2j90H5nE46
-	zxFXmb5g47P09HEQmtaR9DmJ8EBJURLMIck6A7DSFp+ndYvg3sDka4JPsPIQ+6GAQu5Rt62c2Ev
-	HtL3jIJTEubjhBeDEn6cNfZ70sZk2UTsaLxbLjliKaCe6QKmH5xwqjhzuUgLqv8NYRrhuz+paW+
-	KSOkzJBN4WE/UckjGTveCqlpjmDnQO+i8OiQheVTM/5k9fdmndil69rLVhLZgV9Bj0bcYxecquS
-	x8DsUX+WWR+Vyd6KhC9O57eB3aqtTIaQXX+QBJr6BlPQMC2Fu8RJdZ4UR1ThAOQ6UIklqosQTSV
-	dSbOGprSIZS5p6WWi/TZDy/xr33hJvgv/ExpR4dxbpy5oRGj5rdJ3wvWbIf1Q7D98vu9dOh3HwZ
-	OdEXBCb2Yw+RuO4q/ijDGD
-X-Received: by 2002:a05:6a21:4a8c:b0:3f2:acd9:132e with SMTP id
- adf61e73a8af0-4014db57e24mr12442219637.61.1795515469040; Tue, 24 Nov 2026
- 02:17:49 -0800 (PST)
+	bh=7gjY4lDtLDfFEG5jJ5KcBJdaWkzeeLrZAoxzAjd597Y=;
+	b=cajCIha9ulSqMk/9UH0+g+/TgkCSR3z9uM0acUei41nHPVBfFofMX7pEbsgH/Yf5MvP/4U
+	Bwe9ZLK8NDaKpw+02KxNzs+bvSo874XtfR/QmFaevKHKDlwosEPaB8lyxe+y0As7cJ892y
+	H/kIR+1pkOAfvMUd5sYI0XJS3rX57t8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=NUQP8SMT;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W VtOEF1";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf02.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.152 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id F3F3E7A051B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:19:03 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 24 Nov 2026 05:19:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795515540;
+	 x=1795601940; bh=7gjY4lDtLDfFEG5jJ5KcBJdaWkzeeLrZAoxzAjd597Y=; b=
+	NUQP8SMTJJO2xYrI7tEgPVG5raOGrS5KJO/y1UVzLLDu++nNkEPWcYYIpHFz5CHH
+	Bt06yni1WxTSSj8M9iC7u6QRMoX39AGxyk48nCNCotTqNb1hYQ20IZ2FZWgPg6sE
+	ce8pyABeVwGBzJaePWfQnm6N5QoROCoLuD0a0ix+cieFQt5rVfCsmyJuvKdQ2TGM
+	5gkFzMOw2BzMdFQRPg2p/yQLQlOv13whwIafgnqBhwQjwgRKYkkckZqe/uEDosMv
+	/tiWfi5+A1osgfTCTGXA5L9C4okJGA4Pq0x1fZkzKvPRe9a61hRUDt2nn4GSZHpl
+	6RbrEVDJka3GNJUBvgccbA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795515540; x=
+	1795601940; bh=7gjY4lDtLDfFEG5jJ5KcBJdaWkzeeLrZAoxzAjd597Y=; b=W
+	VtOEF132H5uWki6l2Ru28rRWg4vWi0XKaGCDnGOLFJcIHoiqjPSDbGIxfJwcVUka
+	Sb7w4L5K9gf8qAb9Xf/kOvCvFU6fSptTAHbvRRLxCWZFNC1sM5IK5ksLACM/aXuH
+	cKFWihJ4zPYTLUu+SVE4XkevJQUPZw1RfOPDWZ+iyZp7BStaBoxJSAJQGUrDRHYE
+	UMlX1OIZXn2sVVPdA8z6gixM3R0uzu0TNTzYPgpXL6QtjzZe3BLO9nk5HS35PhMR
+	CXkosoGvZDkGIeikhiar3PZXBhdT7coTol6DHTs8IYk746XdPwGSJpuBTtxYnj37
+	+AzTKqxsICbcHbCIQkgCA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795515540; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:nhr3gpZrpCcwZC4bpxAoAbuyH1yn187feTOkAuPgCsAJrPo
+	FzAuwZITf4PO7vPZ2uZr6ooDMF2fAeHn8tmkYqBIXkop2X8a/C5vrp6KOpuSS36W
+	OZBKoTbhn+VQeZAf0EXoh6DwnVWLYOnq7dvx/3B94YjHLvhDZ1xQ7noVEIpW9SeD
+	8oHXB4DEDCeUpQbs4IsCyBOwjRINUGGFg8QUobw5K19jCTxZbSSri1cyKF67uIeO
+	0mW0WGQFhi/8OjYYzY/RRfhFs9KceyTxjgeCh0CSlelS3stUSIppneE8R0UX+G8L
+	0g0ywtG8MOWwf+Zl4JaAyPFxBRMFzWfEeQwhyqg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:evu2coAKmqt10MejIF/MF6J1JUOAfzXa2aFUsNMHDfo=:8EAuTrDt+pUZRs4Ox1H9GsvUkNKrKWTAO4Nvlr7LLpo=;
+X-ME-Sender: <xms:j2QFa-exXqcv-ie1Eimjrwaj3K2VLfOJ28HYUmgmezGh2SWOHvlbUw>
+    <xme:j2QFazAdqoUPfL43hGoH9E92CyAXFQSJ40mqWfGWOwnkXSAlG7k0X2bkjIkkimcZp
+    l4Fd_qZ4UhXYYQLmcAaevSo7CaKr2fzDPRB2wD-dVgPzRdCow1RX6I>
+X-ME-Proxy-Cause: dmFkZTEqiB9KxNkD/hivQQxMU5DgBt1slxhzcdhbvgIORfhac26QuPWf63hf1/R++71Pim
+    5azqrwqBfB1py4LmV722M7QD6PFyEk6Ixdjn/QflFqoqWipQwW6kJN4sYp01yaYHgVD7K6
+    Xa8a+ILm7gJWEFw40WRO+GG/s3KSd1yb6wOgkmPcZLKldWLvmGbR6dDuEO3odqVSlY8rpv
+    uVclCjY4Ti51XLLxmrS+jT4f9qoQVpsHdcT/zSSmTOvLCzuCV50WMc+fnUN3yi+I3Epgns
+    qZvq9gjumcathY/Wuxt4dhuKutl4hLM3BWabseitw6P2tKQ29LSg1T2ecr0wTFj8pwXQsx
+    mZP+RrPvqUwdWJNTNuO+8Krq2Ye4nXZJYIHXvuEc+bHS2TP4nOCbAevlcWHCUnYdaADXjv
+    l8W0iLhHlw7/RtaXn4jV/6HqWU9wwyrLVBSv1lItvQiNTf5plD5XQzy+0nAMHax3hb3VPB
+    BIeMiefIrH5uy73Wvqa6I+2ruS9stNLKqfP4nB6fEX7jnoZePsLhCGOx0JPF6RUlU11s24
+    6UvHB27mJhLSI+o2DNgX0jsF/L5dbO9PM2z4RdnwL243/jwf5yOmyb9H6rT3dbvXoLXYOW
+    4Ni/txbPBGcG4ll3RckBUwURTeDt09Jeh9s1sFBDz4WPubRKbEEU0mcqUAVA
+X-ME-Proxy: <xmx:kWQFa6kHDoQWVP4PWHxgWE7-q7WRBbD-YxNoJPOfbqaps0O0Pvacvw>
+    <xmx:kWQFa9qD2C-KW7tWeGWQUtxUPdNfZiHGNlXAZi_t7X9D9eXKrRArwg>
+    <xmx:kWQFa0A570bfVYCqGLpqhN-CnVqxfxBwu6TKpYeYqGNpjrireVhrAA>
+    <xmx:kWQFa4Ed-ZoKV6-E_N3e60gxeNDoN2mgf1QxlUxncg191eicvwEJRQ>
+    <xmx:lGQFa3W64BKTLBDlmNJ3Yj1c2IRnuCSE2pi3dSgENWny66Cks7aEu6y3>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 2BF9232A009F; Tue, 24 Nov 2026 05:18:55 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <6b051681.58b41460.7037.0590.GAE@google.com> <DN37NBGPJJG9.2DSVDCKS3UYTV@gmail.com>
- <CAM0EoMnVa=xGD3uiZKuzMfFL6oZNd=Umb0U7+_QUrTK7Ej-BYg@mail.gmail.com>
-In-Reply-To: <CAM0EoMnVa=xGD3uiZKuzMfFL6oZNd=Umb0U7+_QUrTK7Ej-BYg@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 24 Nov 2026 05:17:38 -0500
-X-Gm-Features: Aa3M54oAhgDu4a3QN-cUvm8ntTPorq0ToGdV6xzEFC1H8I-IekXAnPLMj4fFDqA
-Message-ID: <CAM0EoMn=ZghG5KFu2Nc=W-=KjDv=epspFHZVDY4ww5a9GBUaHQ@mail.gmail.com>
-Subject: Re: net: act_gate bug. was: [syzbot] [tomoyo?] [mm?] INFO: rcu
- detected stall in security_file_ioctl (9)
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: syzbot <syzbot+b6f8640465bdf47ca708@syzkaller.appspotmail.com>, 
-	akpm@linux-foundation.org, andrii@kernel.org, bpf@vger.kernel.org, 
-	brauner@kernel.org, daniel@iogearbox.net, jack@suse.cz, jmorris@namei.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
-	netdev@vger.kernel.org, paul@paul-moore.com, 
-	penguin-kernel@i-love.sakura.ne.jp, serge@hallyn.com, 
-	syzkaller-bugs@googlegroups.com, takedakn@nttdata.co.jp, 
-	tomoyo-users_en@lists.sourceforge.net, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 60BA140002
-X-Stat-Signature: zuxkw3g5ac4afbjbdh6bdb1kiejrzscp
-X-Rspam-User:
+X-ThreadId: AzzadY2dYG8o
+Date: Tue, 24 Nov 2026 11:18:19 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Finn Thain" <fthain@linux-m68k.org>,
+ "Bart Van Assche" <bvanassche@acm.org>
+Cc: "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "kernel test robot" <lkp@intel.com>, oe-kbuild-all@lists.linux.dev,
+ linux-kernel@vger.kernel.org, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Linux Memory Management List" <linux-mm@kvack.org>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, scsi <linux-scsi@vger.kernel.org>
+Message-Id: <f0ec2845-245d-43ac-9c96-242e0d1d11ea@app.fastmail.com>
+In-Reply-To: <85e103fe-acca-0880-1be3-cb1e7f79f9a4@linux-m68k.org>
+References: <20261121034304.2dPxVKzk-lkp@intel.com>
+ <0b947a72-7a68-9bde-8b0b-adb539f09a8c@linux-m68k.org>
+ <CAMuHMdUxYwD2t8zrqs4QBCtATOtf9xE83Djo0g7qbNFGSCWAQA@mail.gmail.com>
+ <669b9ce8-bb33-f7ee-1087-88c1e9d3b610@linux-m68k.org>
+ <8a0f78e3-5483-42a2-ae27-473bbb6de915@acm.org>
+ <85e103fe-acca-0880-1be3-cb1e7f79f9a4@linux-m68k.org>
+Subject: Re: include/linux/compiler_types.h:631:45: error: call to
+ '__compiletime_assert_433' declared with attribute error: BUILD_BUG_ON
+ failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) !=
+ sizeof(*u)
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: qsrp77ygwzasupgi1xh7cupdd6b69jmb
+X-Rspamd-Queue-Id: EF1EF80004
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795515470-267305
-X-HE-Meta: U2FsdGVkX186s4mwyxk41hA+49KJG+DtdvZ2A6ZdE4OXx9d0JinVOLht/xKVTPMOKO32vKk82M9VUuxe/o6m0ae+SDGTZWWJb/cPUYRP275rvNKqCnBvCNP4c0FclqygN2WX9cwSupMZMcazm6yGxLZKoE8jkgkPkNy1rENdU+A/mwQFjTa3z7GQNieDPV7YmSUwB8ghGd0U+OJ6DIrnBkCqa3lDihdMZAx/mAY1XWjxwIRmQgcVqmXeYHkw5W9VtXPj0GMvkeLO05EGWyeFROc1olnaDiau3easpYx8lYOMdbgByn5gKNEAKPBx3kfrU5vwVNnuY/m6RIg6VvMeVZ/xmjJ69ilEfrSFnWTcBerifHRyvGnritTI83YEtQGJzceQ36WLJYylU62+pLof4zjhbozcF79c4t5Tpblg5Uq0PSEiKo8C9wBy9Csfvn1yMowEojEHizAoWGqzE8McBleB+8sdsQtQD6tnxTtvme5dQuexKfPhvlkdRYO8O2CEaNZl/9rKYAWiBpbX82Eq28yAuh3MRwt4cJDNu0G70fS8fcZn93G/j71Q8e14WwdXP85AYoUTv1MphCFwFsspOZi6p8HDPRMUa/8VHydYq9t1J9ApE3oydvR27sZgGF5gTEYJmXGWNX6ONaBLHEFoz5n1oSMvMmA/0+XrO5xoCXDQTCAJrnaXZO3r6FGajkgXLFACNKXu9Zwzs/FYNS5a8ynegScIt6526hWjHAaK8rdPRx2jxoPhCwCIkqiqIAhrJUNUG82lVhMMvJwzw6aNGfi8iEMjwE6ZYgfW3Ew9mlzyoB8PhC5NPzd6/kpfKZRHvSV3XK4n/otb8fyk0nJvchKh9AK0pEMum5f9kgwau7x5rkzGr67ntKz7Az6LY/gE39Jj5ShPTLXuYbNEafvrQjF/GgDtZYafiKMjvLHCko7pKm9HPZq53p63PW4BKjyJaBvYsTZNhhGndJy3d+x
- 3sesSD2i
- S0r9W9lDFSBvcF9cjDlraZBDTHuk1dZCMKhz6rPCrVQt8aoZmONPc8DTNVretzLn2cKPVvCcM5/FJ4EmzYdztZufSFDgGLGHsSHVtbPxunJH8m0uIAGI90orKFMgl0yzzSsu0eikHu7+hv8lfJknyMUM+uoZTs6p4T/J/YwPpstVVeA85mNua1b3mxfztJNtjDyvrb3eKm4hGeUu516WtzuKHBoAq1VrNF7Xpcval1qniKC3+vbDtaK4+GPleOfI8vNfNvWSRDfe2eV3Q8sL5fM20y5aUfzeOsvFKk6hUqNt9vHXiwaSFGfK6DWO3WjYCTNvwc+vRWL1arvWvN8lmm/b7Oz96a67eFgk3udTlqjowtdfdE9Eq7lWGsh3YHuzGnvASuliqE6MaQyfdz1+VDkCJOwasOBMYpnQLE7slC8Da2qslTjLhQxrU5xP47vfK1zwqFwHZM9L5SlCoB6LukGHb/O1M5zuE0Rd0nzCIXTSysVqTgTHCoOe3tOAPdI3HkS86NKRIGEYAJrVVIc47/jAOT1ZKI97bYJ0CpWt4uP0HqgWQgtSHY62kq8m1tlaUe97h11f2V7xFNPOzD7s62/q/27m028Iasbo7g3xZWWAubQQCsz94IzFGMw5sxElMKI4VmV8Pe84eHiYpub5+r18mcVm9t9ROFMMV6K95Nlk1xVFrUNojEvQ7JIGY5xouYBF8xFhP9LZOZDE+QbMpR0u23V0dfOphnj/WBWDBsAHC9VTbIEAw2qFRKylQY9lR3xM65emKxbVaHbpjIJ1aTjS1y6K5PRrm+iP7IV7sVjvpYRo=
+X-Rspam-User:
+X-HE-Tag: 1795515544-129853
+X-HE-Meta: U2FsdGVkX18WjD38PwRCwIUQ2ynK9jLj9hPJMkcf5GyVdZeqPYZ6gZu0yTR56y7/sTbidLMrSuzfvAW6PWN82kot5k3628jWXTvC3sWwSZsYgayphwn/Kc39Rn2tLWuUF1BTS0GJJS/zph85VoLLTIgIzp9WZAYLSB6oMqSWz0voCG1B14CJGY0RjMo4ttsKA3HzkRWy6loHSkN8oOa47hCCf04o/gLeoE+hgh1wARGj3YBCAWjUGw2Dc72hcslQ6lCKkkoI+MJ5IaEvy6S+xlUtLjFAiSB0HhQhhgIs8A3veBC7NmrBrSr12UOULQrZQYjSLazOzpsS4yR0awiMUeM7PvkZbOismdpTsnM7bsEUrTiTlhKvQuctchM3babZHFPmcp+yG4R6JzRz8gfav79h/EdE6lcrF/X7zaHf5sH697BPHeVjhHj+xY+KRZFxhNX5IVjzrXqGlzgLRB2B6FQ5atbsMExSIKQCOUb6GNfBgMCL4rOFRmaqn/pw02tr2Nm4fr0DSU5kWIpmfZ55pzCeE5pj5HsXakNzTMWRtHb3zpXpqM4+rJrfP5EtSg1gXFkYTB/hispkXgZXSxDrhThMlwpLnkotFTMFZLgyABK+Oa3NhvZcuqr4TX5r1hZt7xv+3m37rCQH1ZkyRejmaUKfpfRXTIEMzCqvKSn2/v57uS3hN2NIKwUw+yVqJuaOO+DL4VK+oIeQjf95c5lXS+1wZFmN4NngBL8kevdEp47iRPhwm/WOsza6eJ4o0fLumkUiOsMwVvB/EQ3pW+x1Mt9PEoaAtTvAp+AG3gCiXz6kIhINMz6d82UNFvYoGAoZR4RJ+fCvksA78YYU/YaLTDxOGNIpPVApCG3XKUbqYCCCixgk/kh72XkYjLmWsZiHg+iMd4g0duKMBN/GY2/u9BUu80vBDlZkvztHvqqmEwB9DaWGJ5Za80+TVDlPPzJ4eY+h8cvsk4Tdmu0rn95
+ TvcoMXjL
+ XIHNQgAUvUUZn3/rql63MulqXWt15nLU+8zb4xRHVdLwPEV7+d0EWEVRKPrrs36j02sn0E9yl/fwvi83LhPqoHRsVxPG9UPpTKTZFhOCiJW/OxBaeWe2HitGZjR7VL/tN4cGE2DiX91Yz+rbADhkiWSAmoGoMEgRVQzUyXTHFKztUJbZvOJoLiU5r0w0sTxN0DkXW0Y6uZGO+eobXHvMgC3iOvdJ1+RVqJ3x9FbdvpJxO5i3nzTTuc+l8GACGVA2iWk2jCmArPhhD720CPitvyvRuPktt5StFrPTdG114F1Hgd5kQlNMer4xyzztYQ71i2X2egNDNdeAd8o5QgxoboSEeXdhMWENVHjsz2XZT5ycNAGFspvmHbO+fItSWZo8M1rQnZOqBXuFW3U1CkFq+qTOnqAxpTm7yUqyIQgxm4navoWrb/7adiLXNNNo+u5Mc9cRIcX8jGENq7Q2CtTBD9fvHeRoOO5dMCROxhGe7nwGFTb+6zMibODh1edl2NQtbhd3scV58rSiSpkdz+gH3O4epEiwu8C/xX8dHkIJaVT97OwMUztHY9svr3MrA+SWC/g63opW4S2up/sMkFahQ3W7H0M80f1ZC4nM2K4OtoxKUpyvikczH2M4v/O6+UVCRmmFx+bY9MQkSjcbIFmaiq5bxY51KErQdw4CIpAH5+P0sXb73IjaO0w1aiqZosjMY+ZBdc9oCYB4m7iuijU+AWUxYoNKkoEqVxQ8BhaA6xt8/2mrJm+RGUZy5Lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,118 +164,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 5:03=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
+On Tue, Nov 24, 2026, at 04:31, Finn Thain wrote:
+> On Mon, 23 Nov 2026, Bart Van Assche wrote:
 >
-> On Tue, Nov 24, 2026 at 1:00=E2=80=AFAM Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
-> >
-> > On Mon, Nov 23, 2026 at 08:45 PM syzbot <syzbot+b6f8640465bdf47ca708@sy=
-zkaller.appspotmail.com> wrote:
-> > > rcu:           hardirqs   softirqs   csw/system
-> > > rcu:   number:     5264          0            0
-> > > rcu:  cputime:      138      52351           25   =3D=3D> 52490(ms)
-> >
-> > It's not tomoyo, mm or bpf. Looks like act_gate.
-> > Zero new softirqs in 52 sec, so one hrtimer_run_softirq() doesn't retur=
-n.
-> >
-> > > RBP: ffff88807ed35538 R08: ffffffff91be1bbf R09: 1ffffffff237c377
-> > > R10: dffffc0000000000 R11: fffffbfff237c378 R12: ffff8880b8228600
-> > > R13: ffffffff89fd0480 R14: ffff8880b8228600 R15: 1ffff1101704514a
-> >
-> > The registers with lockdep struct sizes:
-> >
-> >   reg       value             points to
-> >   --------  ----------------  --------------------------------------
-> >   R14       ffff8880b8228600  cpu_base
-> >   R15 << 3  ffff8880b8228a50  clock_base[HRTIMER_BASE_TAI_SOFT].seq
-> >   RBP       ffff88807ed35538  kmalloc-512 + 0x138, tcf_gate->hitimer
-> >
-> > act_gate has the only soft hrtimer that can be on CLOCK_TAI.
-> > bpf_timer_init() rejects that clock.
-> >
-> > TCA_GATE_CYCLE_TIME is an unchecked u64. In gate_timer_func():
-> >
-> >   n =3D div64_u64(ktime_sub_ns(now, base), cycle);
-> >   close_time =3D ktime_add_ns(base, (n + 1) * cycle);
-> >
-> > With base =3D 0 and cycle =3D U64_MAX, n is 0 and close_time is -1.
-> > The timer restarts in the past and __hrtimer_run_queues() runs it again=
-.
-> > It's there since
-> > commit a51c328df310 ("net: qos: introduce a gate control flow action").
-> >
-> > Jamal,
-> > taprio's INT_MAX limit doesn't fit. tdc uses cycle-time of 600 sec.
-> > The diff saturates the sum instead.
+>> On 11/23/26 3:05 PM, Finn Thain wrote:
+>> > Yes, two alternative solutions were submitted in March (either remove the
+>> > assertion or rework it). The build bot reported the problem again in
+>> > September so I resubmitted the "rework" alternative. Sashiko-bot didn't
+>> > have much praise for that*, so now I'm leaning towards the "remove"
+>> > alternative. I have been advised to keep re-submitting, and I will do so
+>> > after a suitable back-off in retry rate i.e. 2027 or 2028.
+>> > 
+>> > *
+>> > https://lore.kernel.org/r/93e35f60-e465-7f76-0043-f997fe2ec8c7@linux-m68k.org
+>> 
+>> What an LLM came up with after I asked it to fix 
+>> https://lore.kernel.org/lkml/202603030747.VX0v4otS-lkp@intel.com/ can be 
+>> found below. One of the comments of the LLM is "This is essentially Finn 
+>> Thain's "Rework BUILD_BUG_ON() assertion" patch with your two review 
+>> comments from this morning applied". Sashiko reports "No issues found" 
+>> for the patch below. No Signed-off-by from me because I think Finn 
+>> should be credited for his work instead of I.
+>> 
 >
-> Looks familiar - i will take a look.
+> Thanks, Bart. I'll take that as a vote for "rework". There is an 
+> associated risk though: I can't test the patch as I don't have access to 
+> suitable hardware. (Perhaps someone with such access will volunteer.) 
+>
+> Whereas, the "remove" alternative doesn't require testing as it doesn't 
+> risk a regression.
+>
+> I have a question for your LLM. Sashiko-bot said, in response to my patch:
+>
+>     Similarly, get_datalen_for_atio() accesses the array out-of-bounds 
+>     when len > 0:
+>
+>     drivers/scsi/qla2xxx/qla_target.h:get_datalen_for_atio() {
+>     ...
+>         return get_unaligned_be32(&atio->u.isp24.fcp_cmnd.add_cdb[len * 4]);
+>     ...
+>     }
+>
+> I don't understand why the patch from your LLM did not raise the same OOB 
+> access concerns.
 
-Ok, found an abandoned related thread in my list:
-https://lore.kernel.org/netdev/tencent_FAEDEECDD478AE6DFC2DE96D389440E96A0A=
-@qq.com/
-I will take it from here; it looks like your patch is still needed and
-requires a fixup to the abandoned one as well. I need to reproduce
-this first.
+I suspect that is just from Bart specifically calling it out in the changelog
+already as a known limitation "Do not modify the memcpy() call in
+qlt_queue_unknown_atio(), which still writes past the end of the 'atio'
+member.".
 
-cheers,
-jamal
+> Adding a flex array to struct qla_tgt_sess_op can prevent new struct 
+> members being added in the wrong spot in that struct but can't prevent new 
+> struct members being added to struct atio7_fcp_cmnd. Neither does the 
+> assertion. So the "remove" alternative doesn't have all the disadvantages 
+> that you might expect.
 
-> cheers,
-> jamal
-> > Here is a potential fix:
-> >
-> > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-> > index 711cf24..5422d60 100644
-> > --- a/net/sched/act_gate.c
-> > +++ b/net/sched/act_gate.c
-> > @@ -45,8 +45,9 @@ static void gate_get_start_time(struct tcf_gate *gact=
-,
-> >                                 const struct tcf_gate_params *param,
-> >                                 ktime_t *start)
-> >  {
-> > -       ktime_t now, base, cycle;
-> > -       u64 n;
-> > +       u64 cycle =3D param->tcfg_cycletime;
-> > +       ktime_t now, base;
-> > +       u64 rem;
-> >
-> >         base =3D ns_to_ktime(param->tcfg_basetime);
-> >         now =3D gate_get_time(gact);
-> > @@ -56,10 +57,9 @@ static void gate_get_start_time(struct tcf_gate *gac=
-t,
-> >                 return;
-> >         }
-> >
-> > -       cycle =3D param->tcfg_cycletime;
-> > -
-> > -       n =3D div64_u64(ktime_sub_ns(now, base), cycle);
-> > -       *start =3D ktime_add_ns(base, (n + 1) * cycle);
-> > +       /* cycle is an unchecked u64, the sum must not wrap into the pa=
-st */
-> > +       div64_u64_rem(ktime_sub(now, base), cycle, &rem);
-> > +       *start =3D ktime_add_safe(now, cycle - rem);
-> >  }
-> >
-> >  static void gate_start_timer(struct tcf_gate *gact, ktime_t start)
-> > @@ -107,15 +107,8 @@ static enum hrtimer_restart gate_timer_func(struct=
- hrtimer *timer)
-> >
-> >         now =3D gate_get_time(gact);
-> >
-> > -       if (ktime_after(now, close_time)) {
-> > -               ktime_t cycle, base;
-> > -               u64 n;
-> > -
-> > -               cycle =3D p->tcfg_cycletime;
-> > -               base =3D ns_to_ktime(p->tcfg_basetime);
-> > -               n =3D div64_u64(ktime_sub_ns(now, base), cycle);
-> > -               close_time =3D ktime_add_ns(base, (n + 1) * cycle);
-> > -       }
-> > +       if (ktime_after(now, close_time))
-> > +               gate_get_start_time(gact, p, &close_time);
-> >
-> >         gact->next_entry =3D next;
-> >
+This is probably just a difference in perception: atio_from_isp and
+everything inside is clearly marked as a hardware structure that is
+meant to align exactly to the 64 byte cacheline, so it would not
+make any sense to change its layout and add more members here.
+qla_tgt_sess_op on the other hand is clearly not a hardware structure
+but an in-kernel one, so it is quite unexpected that one of its members
+extends past the end, especially when the other three instances of
+atio_from_isp in data structures don't seem to do that.
+
+>> @@ -227,7 +224,7 @@ static void qlt_queue_unknown_atio(scsi_qla_host_t *vha,
+>>   		add_cdb_len =
+>>   			((unsigned int) atio->u.isp24.fcp_cmnd.add_cdb_len) * 4;
+>> 
+>> -	u = kzalloc(sizeof(*u) + add_cdb_len, GFP_ATOMIC);
+>> +	u = kzalloc_flex(*u, extra_cdb, add_cdb_len, GFP_ATOMIC);
+>>   	if (u == NULL)
+>>  		goto out_term;
+
+While this does make the current implementation more correct by having
+the correct length, I'm worried that it just ends up establishing
+the complexity more in the sense that extra_cdb extends both into
+the padding and beyond qla_tgt_sess_op.
+
+If the driver is still actively maintained, it would be nice to
+reduce the complexity instead, in one of two ways:
+
+a) make atio_from_isp naturally aligned by dropping the bogus
+   __packed attribute, so it is actually at the end of qla_tgt_sess_op
+   as the driver was written to expect. Note that having the
+   outer structure as __packed but the union and the inner
+   structs as aligned is itself problematic and can lead to
+   undefined behavior, if some code ever takes a pointer to
+   one of the inner aggregates and expects it to be aligned.
+   The only effect that I see from the __packed annotation is
+   that it forces expensive byte access on dma-coherent memory
+   despite it being fully aligned.
+
+b) rework the driver more broadly to never actually do any
+   accesses beyond a struct boundary and make it work with
+   sanitizers enabled. One way to do this would be to
+   have a separate isp24 atio structure that is not in the
+   union but that encloses the actual maximum length.
+   Not sure how this would actually be done, but it appears
+   that the current design keeps causing problems, see e.g.
+   091719c21d5a ("scsi: qla2xxx: target: Fix invalid memory
+   access with big CDBs") which adds more complexity around
+   keeping an extra copy for it.
+
+      Arnd
 
