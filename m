@@ -1,106 +1,187 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC470606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716EB606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rgt3qNyH
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jdmxpstl
 Received: by kanga.kvack.org (Postfix)
-	id BEC546B0739; Tue, 24 Nov 2026 10:03:18 -0500 (EST)
+	id 743DA6B073B; Tue, 24 Nov 2026 10:11:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B76BC6B073B; Tue, 24 Nov 2026 10:03:18 -0500 (EST)
+	id 6F4D16B073D; Tue, 24 Nov 2026 10:11:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A17AF6B073C; Tue, 24 Nov 2026 10:03:18 -0500 (EST)
+	id 5BCEE6B073E; Tue, 24 Nov 2026 10:11:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BB226B0739
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:03:18 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B485C0BF8
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:03:18 +0000 (UTC)
-X-FDA: 85470330876.13.AF7153C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 706BC1C000E
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:03:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rgt3qNyH;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 317CF6B073B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:11:14 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BFC89120BBA
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:11:13 +0000 (UTC)
+X-FDA: 85470350826.07.49B1618
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 16F2440012
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:11:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jdmxpstl;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795532596;
-	b=iqJxuHgxNDcw1NW/Rdz2Vd79daFucHW6B09uBXtew3yLGGyGSKshP0X8aWoNyDzqQq2w1u
-	LWj85yUrZSsaWFtiTMRHO7MNVpRgvSofa1MFJ18iOBQm5rn8GwoGOgBeqbl3GuPfrj2gzY
-	z6xTSWNJILDPMrQ2//nzsX8LDrHoewM=
+	t=1795533071;
+	b=wa7fFFImo2niAe1eme7yrs4IkkDij+FxCW454QEqSUiKGe6dK7aQKacgqsTGJsr82NdAUn
+	LLCzHJn4MdL1fzv9ot2egIKfbSRFcEcIU8c8XHbrC2k/6fFKktUe6FJ0J26taM2EIv7vqa
+	t2qg1db79FPO9XLXDQetFy8YrxkvmT4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795532596;
+	s=arc-20220608; t=1795533071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=REPVVlJkeD+ZeFzs7zAo1+Ptfc+JAlFq2umyUtgb25c=;
-	b=Adz5Mh92Np4EXs6sGh6iZK2akZlHAi3TDX9//YEr8OOd7J45z3aZwykeZBB60VPOaK83jC
-	5pTYd/lzj+oSn8JS6So4XuRoDKjac4Aub6tiZ8I7cxV4dKV4nW9DAJXlgXbqZqgIOY2nUw
-	P5M1nyJioGz69oOw56uSZNu4GFzIEn4=
+	bh=4i9A70D1gPOP4oksoFqIZyMS3O6430jvP/+79vhurdg=;
+	b=lDj3pxX9knBc62/c2YGti649LPYA1bQyGOL7LxdSPqcxQYZVhUojm8wKCgVnYcA0LEP9+K
+	JVZPuh83GIhxZ3zRBhapQL08+jgykSiI6uDyRWBIIuNoq/096kWI8OVwgAUeFU6FZncVWD
+	4losdHlViEwCQpKNVsjwquBsQX/JfQU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rgt3qNyH;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E2D9460F86;
-	Tue, 24 Nov 2026 15:03:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33E51F000E0;
-	Tue, 24 Nov 2026 15:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795532595;
-	bh=REPVVlJkeD+ZeFzs7zAo1+Ptfc+JAlFq2umyUtgb25c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Rgt3qNyHPCldkjic2773LwWjg9d3P/FLq5Qu1r0gEa12eaPtA6b7aA0ONNNWg+Q16
-	 3MfPbdPUHrYiiRtHBN8UHBcbbVwSQH6Nxwtr4Vauzk0jdXWVWTNwZW2Q0U1jAkSg/I
-	 a8jjMCJFLDOGujcH8zGjkxrbasfDekPP2ucvZ2rPiNWCHHS73zxGZWYhlzEVmPdvTb
-	 YIAZGT5zRos71jgHCl5iotePibJWLcBWeFVNhUyF6P8IitYK6Ilzkdb+nYWenk4yzv
-	 ZiLUWimuKPUmIfOmwI2kpapgw9Kn5gUqxdpMc4Swk2LhTfMzrU4jHWJNAuXbSZC2te
-	 G3U/5Zf2x/zRg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "David Matlack" <dmatlack@google.com>
-Cc: "Pratyush Yadav" <pratyush@kernel.org>,  <kexec@lists.infradead.org>,
-  <linux-doc@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kselftest@vger.kernel.org>,  <linux-mm@kvack.org>,  "Alexander
- Graf" <graf@amazon.com>,  "Andrew Morton" <akpm@linux-foundation.org>,
-  "Baolin Wang" <baolin.wang@linux.alibaba.com>,  "Christian Brauner"
- <brauner@kernel.org>,  "David Hildenbrand" <david@kernel.org>,  "Hugh
- Dickins" <hughd@google.com>,  "Jonathan Corbet" <corbet@lwn.net>,  "Liam
- R. Howlett" <liam@infradead.org>,  "Lorenzo Stoakes" <ljs@kernel.org>,
-  "Michal Hocko" <mhocko@suse.com>,  "Mike Rapoport" <rppt@kernel.org>,
-  "Pasha Tatashin" <pasha.tatashin@soleen.com>,  "Randy Dunlap"
- <rdunlap@infradead.org>,  "Samiullah Khawaja" <skhawaja@google.com>,
-  "Shuah Khan" <skhan@linuxfoundation.org>,  "Suren Baghdasaryan"
- <surenb@google.com>,  "Vlastimil Babka" <vbabka@kernel.org>
-Subject: Re: [PATCH v4 07/19] liveupdate: Add helpers to track the files
- that LUO manages
-In-Reply-To: <DN2SLUVNO0L5.3NUHFPC0J7QTG@google.com> (David Matlack's message
-	of "Mon, 23 Nov 2026 10:13:37 -0800")
-References: <20261111002358.1842967-1-dmatlack@google.com>
-	<20261111002358.1842967-8-dmatlack@google.com>
-	<2vxzbj7j3ga2.fsf@kernel.org> <DN2SLUVNO0L5.3NUHFPC0J7QTG@google.com>
-Date: Tue, 24 Nov 2026 15:03:09 +0000
-Message-ID: <2vxz7bi2z2z6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jdmxpstl;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795533071; x=1827069071;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NxeC1Wybb77mO9Kjd+nB0CN+fae9IJOOQ1ybh9mDWzM=;
+  b=jdmxpstlIex3Ja4vTb3OsFT4KVnoN4JAQi9MOOxxoAVfBUwEXfqq50Kr
+   mIfdJ1PEgpPAnEvYbZu4XtrVMe/9jdEuXFpbv1J1r25T1lT8QKjBsKeMx
+   ffX5HozHYW07kuoaI5vNEBs7MmkV40rQ/ARpLY+vnhmcEiwqnAPj3HRqx
+   MTW5GmwO6leGRThQ32K3L6SMkPNTBtaobrHjEZL1fsgflKRGFmyguOUKa
+   HL6c3OvPzU8jiwwXmVVu46ojWafp4i6Yg8egUgP+1QY9RUPS3gk9VHAf3
+   VXzjgXFcu/pLP1p87/F54k99YXrEDMORX4RdsZsaZls/Kc/mNeW173+bc
+   g==;
+X-CSE-ConnectionGUID: uf9jWujKSY2HcbBgGug0FA==
+X-CSE-MsgGUID: zBjGVPxER6Ox4iOoxBV5Dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4270712"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="4270712"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:09:40 -0800
+X-CSE-ConnectionGUID: rYqzc2CPTh+6pvl8qSuViA==
+X-CSE-MsgGUID: GXBH/9peRMOWfKr0EK0fKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="11709101"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.20]) ([10.125.110.20])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:05:04 -0800
+Message-ID: <90346f3d-6b46-4786-9d57-3f39b6fdd7b5@intel.com>
+Date: Tue, 24 Nov 2026 07:05:03 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 706BC1C000E
-X-Stat-Signature: xref8wytr9rmmb79ty6bb4z3rjxaq3ue
-X-Rspam-User:
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/13] x86/sgx: convert vepc mmap hook to mmap_prepare
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
+ Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Ryan Chen <ryan_chen@aspeedtech.com>, Billy Tsai
+ <billy_tsai@aspeedtech.com>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+ Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>,
+ Scott Branden <scott.branden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+ linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+ netdev@vger.kernel.org, linux-mm@kvack.org
+References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
+ <20261124-late-2026-mmap_prepare-v2-4-0b0d99d655f9@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20261124-late-2026-mmap_prepare-v2-4-0b0d99d655f9@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795532596-332288
-X-HE-Meta: U2FsdGVkX18/P4rKGgYiI5cnCDZ9vwsFbSfy9wdkn+tEJATHN3fzT1ukfjFVM7sSLmpHXbn2to8WkZxs883JiyYKOO9mMuLuA4FK0kPq86ZfyOyYpJbKETZbNuWTc+aYiXqCJvU+z01kIVH5TiBMHKmbhOhjtvyRhk6FuP7eQ5bDitNC2xRV/qFV8Atm13oXp8o077UsYbRitKfzN4upl/5dBALbOU1w0hzAuiZA7bTKc/n7uRYSoJwKihcN2Qev1nSDtzhXbjYheYA1mwADozcMKGTGQRLPh8GTC1m54Sj3cZKtK6cp2VKm283nbN71LNi9pcc3BZMBSI4VZsRoOB/1BHVPI7t6TPbH+MJeY4hYtcrdZh7toEJWx2KaADa+xJj0G15viey55QdMWO/2LpXtk/XRjXgkYc9R36eu0T+g6ajNd8I1U71LwTVuRg3Wz5xW2khpsx4+QC0uvTCHLAI4gw5NlXUMUGfkJdUMygCbc6Xak66WJrvALgT07X3RqIdu/LHjtpRdxCJrYKLcJG2OTO6P9hzGKAnY/sQbgu2WEsFbiGn6wsoGEopyH970x1jb5xxptx3uAa0zDM6Hb1+8CuOrO9BD0U+82ho6drsPLusYfsZzYo7SXdjugfrFtsLRi0Xb+eIkYj7kLlSTPPA7O4SQd8dw1VWVSOUuMJrcP2wwNs98gO+uvZg9DR/BN6ozUlx54ytbSCZdY9TlWpEPk378gPktcrlJKfPt8/mAvbcqkaQFz5luSyQ+phRm/mRAT9bYi4pFSh5ufsERT9o6l3ddi74fAiocOs4yvmc7MEnoHyPOyuciMN+Qjyr8gXs+Am0mgRS6E/TP+ZXsHlen8lI8ZaRXX50H2upP4gCc5KRk4wro7gq2pIImGg+afCZTKyjOh0n/Lv0/2HXQdRjGzxk8d6FoK2kAI/vEP4SkKhU5dE1lOe5Ehl2FQ76+sS1DHDbMdpbjSYN7lbU
- ioPrhIVt
- wuOazmtRI89bFEA/a5VZxoxIz2lyDqEq2GDkrheE/j1hD5NwSpg4AitsHcoOrTlYuW2mFpTJbeIFkhkJTXbk8W/3B83WHMo/3iFvXNzy1ccWA6yHk2qspqM/WKv+FXxaTCMf2vOfHelcEaQrOrD9ttPu15Rn2rpE/v/aTdtsGLIaNlAlRR8A0bguOphGFvljvJKl+hNkCJ/80Xj56umDNuZrzcIuYwisIu2dfUAl57XTs40KHFWAdlMDYdiqSdapEjPDhdO0hcgBxiB2/vTwTXRXoMUs8noEegc0hYH3p34/S4nEShEh+oRAFAkHeRTyNT/0R7DmjH/aXLXlCVxDIPYqf6nRYC6et2x5gC168vX4IN/1n4hWPVWUGSpkAJ4EIyywcHAnwxzR0AcLkY+HCHjeNhrcZYn0cv8XdRTdAcYii/pYKJM2XOTn+Cw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: o438wqowea1enokgng86i314ueqi9p6e
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 16F2440012
+X-Rspam-User:
+X-HE-Tag: 1795533070-226435
+X-HE-Meta: U2FsdGVkX18EB+/KWuy88vX9PD4lSw3+zM0tOUCmN/tXosC/ZDsbqgOEC26wjlJCoSnVzBDyiBBv+Bn496dqw58eeoKOzKNtUokK/qqM1oSUbz/qk7qVMegaBjZcxj+mbVIoPi1yCccXx59233msnrviJHGcIIW/eu4iAJWeQkH7F8Q3ZW88vndm7WoJLLonR3KF2Dd16dZrbnexdRdZvGcMXrSrWZnc+NuWjzF04OmcD3FtBtTCxssgdcS66yolqHBw4DnhsBtFr7DP+BZ1IfwD6jiU3hnLw/CMqQOH3wtWq2KbWTurr6eO1dxK5/3TOHSNffvLLhodGwxNSNeelU/uT2AQQDS/okJRmCFPecQbP4RzhgPj5TO/VJ+QbvL9FDnub6/8Hb1Cqf8eHS2pSXwPWoz4DPiHWi4QY9nGzL6lEBBl7Vhub0rmKX1RQ7ITivXyeIjLRyP1O5TAzvtE2L0PFhdZ+AbJxr3TFEsS7jcsZ8OjjguiQfu6gpGgAtH1Q6CKdHgItGdwExcG7DZkUL7dtD9LgWc7D6EqK3Cbk+dh2V/Avfc5W7zKGgxKBhE3AinVcBz/laqgrhz8A1eLq1bdJWmiq1Z6LHx8hRKDDdcffJi+3nLZcvWJQxOiQiNrX7aYxSaJ937XK5DZRfR6RrJfPxopI1I8PoTREdCxzzwZEzrq9FvQgQxgaAeaBtVEiFNuz43jsZkPBDkJ+ncO85Fxf+NQARavMgsvva6CZCignWjkcKjZuDesGJrt9dXFbLiNr8E5QzhrRL65gmhYl6ij4P7GfpWbdSB/MpduMFkJI9vb+Uak1/odMTZcqvNF1nFah5GQhj/rUK7kxHNgEbWWTJ4bqTNGxbymmjzmpbJWiSAkDqVApQSIMR2KQ8xa/2midJJVuFCY+1BvLXIbhd8d8mSf0gvi+QV4GF8K2OLlB5Qv8fwLVPz3n5DihNATKmyVi0tFG3io+ZKfDps
+ zoYOFW3t
+ ZhLZymu36G5W3r7Qmiv2NtaOFP+Q8E8KzZlpt72Qfsfbz2xeIUky8GddinVDB41PUZitGlwiQDWjWE3MX3iSVjYrJfgV3H6Vy05xMk9ZKl21gYZ8YUruRG/nXRRiC4FtGSM4joFnR2ihlF/IDJtlU/c5cBsvkfheeDB/uO3kdnoOs8i5wG4L+tNRbZ6FLz0ynm4p8mEyzKFE0BLgUznnoaDzDi8qn986qX0gOXndxwpM/d3GKSrQrs1nFLokTOGpwULLkVQ9eURi86hwrGVmXdZbZXRtKIjC1nkvEY+z+I2m+QxsKsKa/+s4Mu+WKUqGXxUYxS79Se6GGwk2mKrIdcXtXk6IE9uaNjkrOlok6KieBZoXUoqGvIZd2+4MuVpcy2xQrOqw9WG7sdN08GtVYXj3/C9qcHJTs8ViY8WHTzWtwJAuvgJPmR1MUjmop4Cs1IhbW1TFqY5K7who0bc2JjafcVWLvt3N7wxS3Lap9Ztd7zCOBMzg39f7hullTd7UMtAgLYzKkLbS0rnwkSH91FN/LydoPfLQT/uNUsaWGaD87iPmS1x8f5gdptJmeeMzVZefLxdr/grDkERlogNCRlU3og/DWZ3+QrnfqF+V2JUgrIIri708zMM3Gjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,53 +190,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23 2026, David Matlack wrote:
+On 11/24/26 06:02, Lorenzo Stoakes (ARM) wrote:
+> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
+> only checks that the mapping is shared and sets VMA flags, operations and
+> private data.
+> 
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-> On Fri Nov 20, 2026 at 3:15 AM PST, Pratyush Yadav wrote:
->> On Wed, Nov 11 2026, David Matlack wrote:
->>> @@ -788,8 +797,7 @@ int luo_file_finish(struct luo_file_set *file_set)
->>>  		luo_file_finish_one(file_set, luo_file);
->>>  
->>>  		if (luo_file->file) {
->>> -			xa_erase(&luo_preserved_files,
->>> -				 luo_get_id(luo_file->fh, luo_file->file));
->>> +			luo_untrack_file(luo_file->fh, luo_file->file);
->>
->> This looks dangerous.
->>
->> Since the previous patch set luo_file->file when xa_insert() failed,
->> this will trigger in a failed retrieve. Except, the file was never
->> tracked to begin with.
->>
->> While I don't see anything that actually breaks because of this today,
->> I think it is a bug in the making.
->>
->> I think the below is a bit better. Although this change probably makes
->> more sense in the previous patch, since that introduced the problem.
->> This patch should just replace the xa_erase() with luo_untrack_file().
->>
->> 	if (luo_file->file)
->> 		fput(luo_file->file);
->>
->> 	if (luo_file->retrieve_status > 0)
->> 		luo_untrack_file(luo_file->fh, luo_file->file);
->
-> Good catch, I'll fix this in the previous patch in v5.
->
-> (But luo_untrack_file() needs to be called before fput() in case the
-> latter drops the last reference.)
->
-> So:
->
-> 	if (luo_file->retrieve_status > 0)
-> 		luo_untrack_file(luo_file->fh, luo_file->file);
->
-> 	if (luo_file->file)
-> 		fput(luo_file->file);
-
-Right, makes sense. Thanks!
-
--- 
-Regards,
-Pratyush Yadav
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # x86 bits
 
