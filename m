@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51D4606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2C3606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QwblkD/w
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DFskeiZS
 Received: by kanga.kvack.org (Postfix)
-	id B00836B06F7; Tue, 24 Nov 2026 08:53:16 -0500 (EST)
+	id B4EFF6B06F9; Tue, 24 Nov 2026 08:53:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB1916B06F9; Tue, 24 Nov 2026 08:53:16 -0500 (EST)
+	id B25BD6B06FB; Tue, 24 Nov 2026 08:53:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A01E6B06FA; Tue, 24 Nov 2026 08:53:16 -0500 (EST)
+	id A3B596B06FC; Tue, 24 Nov 2026 08:53:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 61A8C6B06F7
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:53:16 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D8879A88B2
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:53:14 +0000 (UTC)
-X-FDA: 85470154308.19.C566425
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 34A85A0005
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:53:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QwblkD/w";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 618B06B06F9
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:53:18 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E780EA0C30
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:53:17 +0000 (UTC)
+X-FDA: 85470154434.16.D4A4EA4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5327B180003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:53:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DFskeiZS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795528393;
-	b=rjfyFeHpes+XNuES86iTL5uld3Z7yM/4WxrEzoS7UFGeTK210K5k44edlDB5t3X4uhc/cA
-	Q/ao3+/vO+gAZcqmBQ+qEkSkPHLvwkWp19q8CvgRd6fICpeyJ652qpt3P5NnOob1QxV4yw
-	xqrJdHw9JEwmzybx5HwTWP30U8NW67o=
+	t=1795528396;
+	b=wQjoeybaTVYxkTWwuU/Rj8wkg3Yreude+OS96Xrt3QLpQeM/LVhbpjVeLLr8kGzqKY3EyP
+	jJ8aKE9EtZ39bKji5Rdoev5Gd+5+u6nrEHRotf9ES2YSVdBScf01NOFPbqR4GCGLfmR+XA
+	nHgU460JxZKE8DxNq0D5azBKwcphqdU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795528393;
+	s=arc-20220608; t=1795528396;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CGzthS/oSecoEAl06XI+zoE8510Hx1H6SJxp/B0Wigw=;
-	b=4hPEn1WhTzUTVKBRzP7X71FAIzPaWiEm3HyDx6n4R7H9tugKYi6ZmlAlBcIpHnPIPnZfDo
-	8fNX06MHptfqDUZ0Iq56EE/9tPuzAaGxm7ohkd+lk8ctJkAHnv18LCX82Z42VF7qqSdA1z
-	K3Uiwxcpd2GU5aTiqr2r7T3Dhw4fa08=
+	bh=j8VuKYHsB4+QDN1OuGMMGRMKrc7oMUOuGmeu/s/80zI=;
+	b=nJCbjx1AziLOObFni2qdhkd26Q58TFHsJsq8RdtDc/PiNOURrTY5bYcGUqRx4Qcfef352K
+	6CRQqP48MB1WdUU1e2fSelUsZ7KXFt7Lj5lHmjTls1ITc3lijdTiMqk+Emb27X4VCMONMC
+	CDoTt+TIxoszSiA3HM/TG3zIIU5Yo4U=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QwblkD/w";
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DFskeiZS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78EFF41350;
+	by tor.source.kernel.org (Postfix) with ESMTP id DE7D2620C2;
+	Tue, 24 Nov 2026 13:53:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72AF1F000C6;
 	Tue, 24 Nov 2026 13:53:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F6F1F000E0;
-	Tue, 24 Nov 2026 13:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795528392;
-	bh=CGzthS/oSecoEAl06XI+zoE8510Hx1H6SJxp/B0Wigw=;
+	s=k20260515; t=1795528395;
+	bh=j8VuKYHsB4+QDN1OuGMMGRMKrc7oMUOuGmeu/s/80zI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QwblkD/wTsvFPj9DlvP2mZak8aRfXqeZm5me6PO0oOZM4v7hQ+bxkWPFAxoTT8mg/
-	 jPQKnCFDs6oQ+u2ArzzEJMMkxxxN7S5/31PRC+NxBJhk+i/mN0UZiiFurEgI0yrabr
-	 xBc1K2ffMcX81w503jm/uF13WHY63tIJmd6ehI6b5aMn77wcmWwAVOoOdon1K/X3ME
-	 Nr/C0qQ1Si1PAXsCyhJVerrJ9fQtHu4nmbflZzvvVgRw+OoWcrIK0+tkkocYShM9H3
-	 x23H90UQ1Tou2N9SxgJYvycDUUMBxofLaItEWKOUdmHqKpTNAg5P3GB+lD5QxZSjBd
-	 TsgEvyY+V845A==
-Message-ID: <sashiko-outbox-231259@kernel.org>
+	b=DFskeiZSZSaGoVbhpd1h3zBuer2BkhTy9kP95ojqLHs3nKCQBWicJh9tF6KyPkWf+
+	 XlSd6oKg8IeYUa5xajwCcuWokix5WhDP3kooszRlH3u/5NoTgLfUGRT2qH95ZX+V78
+	 X+/4yGjj2RSeqaHDGJax6zw9DrGJzkZaCZ9V7HpXn1gRvvF/Vf+2pSFlICI81whzlO
+	 1MwDZESPKvsL/4r0G1AqEme4Cdqh+d6xr97QPXqKolLAcGbahgTbJLsqxLRXDoD1bx
+	 D6/TtT8mlZg7Q9OZ0eR+uyKSdR/NIC1iLyqKiQ/qFAg9pLjF0TzkCO8VuZfgT2F4Zw
+	 Nb5b7OJDff93g==
+Message-ID: <sashiko-outbox-231261@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 05/11] powerpc/vdso: Enable the vdsocheck tool
+Subject: Re: [PATCH v6 07/11] LoongArch: vDSO: Enable the vdsocheck tool
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?VGhvbWFzIFdlacOfc2NodWg=?= <thomas.weissschuh@linutronix.de>, "Paul
  Walmsley" <paul.walmsley@sifive.com>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert
@@ -91,24 +91,24 @@ To: =?utf-8?b?VGhvbWFzIFdlacOfc2NodWg=?= <thomas.weissschuh@linutronix.de>, "Pau
 Cc: linux-mm@kvack.org, linux-s390@vger.kernel.org, linux-kbuild@vger.kernel.org, "Jan
  Stancek" <jstancek@redhat.com>, "Arnaldo Carvalho de Melo" <acme@redhat.com>, "Peter
  Zijlstra" <peterz@infradead.org>
-In-Reply-To: <20261123-vdso-absolute-reloc-v6-5-161e218dd217@linutronix.de>
+In-Reply-To: <20261123-vdso-absolute-reloc-v6-7-161e218dd217@linutronix.de>
 References: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
- <20261123-vdso-absolute-reloc-v6-5-161e218dd217@linutronix.de>
+ <20261123-vdso-absolute-reloc-v6-7-161e218dd217@linutronix.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 24 Nov 2026 13:53:09 +0000
+Date: Tue, 24 Nov 2026 13:53:12 +0000
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 34A85A0005
+X-Rspamd-Queue-Id: 5327B180003
+X-Stat-Signature: 1j4mwou6wrfpuadrb7cbdsa5wnzwwf3j
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: cnikhnosnqe8n66x43r7kfks9iudx1me
-X-HE-Tag: 1795528393-595348
-X-HE-Meta: U2FsdGVkX1/ICyQGY5irda5d3HlOwyBGElRXt0gVGw9H390zkfF73e/GOg9B+SDe6McyNpDwZOlmIdBuu/TZEaSRdGqMr6GwqCYjL2zMPwbDdGUQaSsdl4I5dwKaG6El6svq3LAXkY6O8X6gtgOQsFK5y6nYeK//3Xe8WL0DRhPPl93Ats7ONMPEIlIO/O4RdBMayu3TLTRX1w/HajV0kuQX5Xzhg2ol4BC7FhkX/g3ctkzQblpezR2KfmRZugJX36YuzPXCaediZkmyohD8AGQauYg5Hsn4h07nEcRc1s1VLAUpFSaxC1R9l6XGdGLPH0Wz3hoKJaAMtZY08fAsHgrujZx8lixCWQlnLleXUX8tMtGeRl8AXqWZcq+aw4sN2DBh1Wksp6cfpIj4N8Yw1Wn1YK/6A0YcffTZnNDk3SAEBA4ZgK+jRtAEX6v3WggM2XilhIHP+Dn6kycbrdEPfBDVO9xozm3khL5RTyuPrbeq0x4ijDeYdmNOx7uLVviOKv5qkIBI+pJMoSvV1+PhNqkzLymfcHt2ugPWkN+61/kFlTn5tq01w3imG5VoK/egEGBkPK1V0qKHhQEeRpfjewPPYxiTOgrdM8SG3eB46vcj6LwxMMRSfvicCPlL7BsRR83low5wcy+jMBdTqCExcxFg15aBDeuMR5fSQb/vnRgkbyo/saQ5qR2Ok9PUZx8wRkF3qeuV+LUuq44xSdPxPUwPS2v8H5/jTOLpoiCbq5xz4R1ZvjgzV5GE41YkIqIUHxTKZCbEv3KTzU5Wybq6dY+9utiu5UAMK8Ynddx4Fb87AXDjS8ZKUv8K8aSiEv9K7xlD27eckLUtoxbbw410Vk1KKUaLRjy9RCEKJT5HUxwWsRscqBsS1Pq2F9pMEOjz9gYRQWqtqA2pUNiQSKh1MEXHJnqimvHzCMcn+gTIWUuh7KgpJLcoqYh/kB6HFmhNjVmuv027c4QOMhlvcQw
- NxRi6WyS
- V3nfhbtYsJ6/J6YhmSLUu9le8AglVuHSfL5wNf7TKGW/k7xHK9bypqXnYpdl3bKMh0G5VW9YbTb33fZYP+VlAYyvztfst9Lpd2p39lwEbfcL9NiCO0/0/f+3V2llwsVHnmTXYAYsj/WvKj7dBU/Vdp43sL3gmNZw+y/yE3x2Cw8u/vdbOWn0TPAMb2yvzmm5469zKMvNldX1KL3hltCftUfLb/z3Rx9p0g01arglqXno2ssYNj18A2Ll64j8hNItvECkpQi4/rs5t6/tdYc/xDV0H+6R9djN9sybN5nS7Ojbs6El0XY4pz00S47H51FsAZF/vbkOclH1HzH6dlda6K2IU5b3B/x8xP+1Xy3+jZbBdbqZdjt1TXODOT5e/voKx5jbmTZyxjMaTVCVu2rjG+Vz9Gm45yQpsblKEvPTigA3+UOaZkwx9t/gVMNgh3pq27AnJMyVziWXohxe5LPFbaA3L+C44Z4fOPfIK6RzgRGRxt8uyxabydv315LCT8JcWZobXI0Q/aycBJUC3ZdSSNHUQujSIidq8Q7bTgJrixgvOdDYW6BOHSS1n6pJFWZNKVzAH0QFAf95Y2E1PH+pMH0qus14E3b3I6q1PQpbLSJCRLM5leh9ZCi1ORYUuNDfcy+xV7GX71CGvU9YME5JswA9lG6gR2K+rLW/wgVay6COXRHQeO5rF8waiL01Xmc+sfUnOl31z81zZ5VyMBXrdLZkL+yvhkT5pCrj2fNZx7OzirZ2/AIFltRoujaGyiNxOVTRuaF6JJkBUp5fP872zIyIb+4i7LOAeuOyZjL71HnpmZq13NsQze4LkfevOk0KqGmbeY2HdIKI2GQ3V7qVyCD33gGjhvtp8/rpP+oCYYL2419TNg29aCCkMuxWT8bkRN4hq6nWyzZARzRT1gdYCFZWnhQ==
+X-HE-Tag: 1795528396-137085
+X-HE-Meta: U2FsdGVkX18S4Qn3kf4T32FGp5B2tZ5QYME8J5CQPedD3O3D+nzc1jQpmnx2gylAv/XkZ/pvfOFsMcrFDpQOhnKc3pJDmg6qRDjJ0wL2Slef1J0DJX+aBoiSuSFATqUR3cgTljFYhZviZoA9M9/e9ba3UNdQD1q+GcQOdS53DGo8wOQqW9Rs9J0Uv7HLjWYbbhJ94JlfUlqaHLzwico7VvhRq9NvLgaG9KgBmiwhoTMu77wHPCu/0Mx2oevkj3cBk6wo1Lulkdzji5l3ojUcG4/WuY8dCTC4Yi5vySw5JTtyfXkO+fUyhSTw0irIa6qeaJh/V44Y/CUCzI9VtYP513dqfY4y5Jku48GHqKrfng8DgrJ/D+EwL883lf1iHc6+YdXhe851b8ixX/a0J6QZfaW2sVubKAGcsDVoU9tIsx6pJ2JLl79PtK1tp20Mc8+r3gNWBSYtqIK1/Tq8UPK69hnL8c1YyJxEJtpnJa3JEpUsoJ2M1JnHTT1TuwkQw2aSMNIWCyYMJycr/flX9QxtpQClScnOa5gp5wg46xuaN6mXRlKGVGdaQF4+JcqFhIfeZwHBqdWjryT1yZkq9o519/IqE8m5oFN6VHFO+RjhYLgMyD6VwVeRQQol6EF1sILztdyhvVfjmFwJc0hjTxxr5ttORoCJ5V9wE0TXjnRK/vvh3sx9qc6XZo4irRORZ8TlWF0e13fwyKgF1dnciZGCOGmStf2tAXd6BA7dI6nDBiD/Hfh6B3tbT7uA3Kk61Yxp9gtCxTMa/pRITXU0PCARUvxXQuDHbtkIBPGmCoBS8/FOg2R6dnytcclirtn714isVYAlxz37Nkx9MYPYlpF2jrDBF2UzgwzUDsKI5+9mc5wJZ6nnSExakcYQrLsvudBqRFj+n596/Pxw6z9d5xfdvGmFGEfmDS2UF3Z5m5ZfY/q7zZt0uvZzLQARtnVxXdXnimWjJh0SDJKu3v7WVP8
+ TGr05bxT
+ l3e8CQAPUWC3jJsyhwaKRYC7MNBrgI6Je5hG1gVbnIePJOQQjvHP33Ynmyw1hs37mK72WHtj164oI/Y5IMkK7NvNWE9Bvvy6aB7raDUaE7eA+mIMrXRqveSvf0vsNCu/9ZoUxXZ8fT4lyal6cvZehgOvnzIVSegzcYG8BPvI1+gfRbi1QrCht6StvnaSBqwFlLJTIxPhMf7vfNV//UHfUmvtuKBbX5JdQyNmHQR9DgTphMPv9reoC3sjAA05Fvs8cpGS7zc9crQBkSZbUK20HtkcZlncs4B08vucMzwis0yailF7tMXdVrBIeE0q9hzC76ZGJJpjI9UjELnubz2bjMqLNOQUn5S5BBW2XIJkZ81JFroIJ5sqsJHzJ+/IwhPrPC6orWwwBx7mzqYjY29Ofmqf5w8qDJqsqktTo6U9N8a8kkhSDPpTDUjq2agSpTIu+WRjsHHD6d3UVUZI5h4aZoj/Z+dQqPZwB7dOk85F5Wt5XWWC1OimlhYCiWx3hOfFLmFMTt6tFXMYuWEfi7TQ1xbaOidcBpaAG/qSR/ilegf+NBoj8twL9miyZoF22ku9G7YbnAbq8Edq1xJ4d9duLhLT83o30ZSsfXHfHn77+E/OaO8p7u325mXAvh+mwIIK6/oQPCf0wUzaRZ+jiGaacFLXwAwc7vCfln5nOmxhEuxfqf2Mh/2lfppIJYWgILmHviE9xD2NkUEXu0hr0495tWEjWszAfr68mfAtZIV9H+Mofo8a4UvefPHNFBSq0VmgKkM0nadDYV0nfWrSCSLumh8sj96mifplheDM38tN9/676G5GNmcDmQds2sDjqFc/6AGPgl1a0VUCzRJwC5ZzDor84radmMEsADwasqtJ6mrKzY7hXUhFBxv+bhxvSV3rDq1bMvn/lvvnl4us=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,84 +120,73 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [High] powerpc/vdso: missing PCREL relocations in
-  allowed_relocations_for_machine()
-- [High] powerpc/vdso: unignored .rela.opd in
-  allowed_relocations_for_machine()
+- [Medium] LoongArch: vDSO: wrong R_LARCH_PCADD_LO12 value in vdsocheck
+- [Medium] LoongArch: vDSO: missing relax and eh_frame relocations in
+  vdsocheck
 --
 
-commit 52616a4e4f7df565d936b44f34a023f9e1864af3
+commit 2fb850dc718e09234a1d0b974829df4ce1c9ae9b
 Author: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 
-powerpc/vdso: Enable the vdsocheck tool
+LoongArch: vDSO: Enable the vdsocheck tool
 
-This commit enables the vdsocheck build-time validation tool for 32-bit and
-64-bit PowerPC vDSO objects and defines their allowed ELF relocation types.
+This commit selects VDSO_CHECK for LoongArch, wires vdsocheck into the
+LoongArch vDSO Makefile, and adds the allowed object file relocations for
+EM_LOONGARCH.
 
 > diff --git a/lib/vdso/check/vdsocheck.rs b/lib/vdso/check/vdsocheck.rs
-> index 0d5ceaca34d7c..da58ff220eab6 100644
+> index 37455d3261109..7952ad6ba72b1 100644
 > --- a/lib/vdso/check/vdsocheck.rs
 > +++ b/lib/vdso/check/vdsocheck.rs
-> @@ -69,6 +69,33 @@ fn allowed_relocations_for_machine(machine: u16) -> Op=
-tion<AllowedRelocations<'s
+> @@ -122,6 +122,32 @@ fn allowed_relocations_for_machine(machine: u16) -> =
+Option<AllowedRelocations<'s
 >              ..Default::default()
 >          }
 >          .into(),
-> +        bindings::EM_PPC =3D> AllowedRelocations {
+> +        bindings::EM_LOONGARCH =3D> AllowedRelocations {
 > +            in_object_file: &[
-> +                10,  /* R_PPC_REL24 */
-> +                11,  /* R_PPC_REL14 */
-> +                26,  /* R_PPC_REL32 */
-> +                249, /* R_PPC_REL16 */
-> +                250, /* R_PPC_REL16_LO */
-> +                251, /* R_PPC_REL16_HI */
-> +                252, /* R_PPC_REL16_HA */
-> +            ],
-> +            ..Default::default()
-> +        }
-> +        .into(),
-> +        bindings::EM_PPC64 =3D> AllowedRelocations {
-> +            in_object_file: &[
-> +                10,  /* R_PPC64_REL24 */
-> +                11,  /* R_PPC64_REL14 */
-> +                26,  /* R_PPC64_REL32 */
-> +                44,  /* R_PPC64_REL64 */
-> +                249, /* R_PPC64_REL16 */
-> +                250, /* R_PPC64_REL16_LO */
-> +                251, /* R_PPC64_REL16_HI */
-> +                252, /* R_PPC64_REL16_HA */
-> +            ],
-> +            ..Default::default()
-> +        }
-> +        .into(),
->          _ =3D> None,
->      }
->  }
+> +                47,  /* R_LARCH_ADD8 */
+> +                48,  /* R_LARCH_ADD16 */
+> +                49,  /* R_LARCH_ADD24 */
+> +                50,  /* R_LARCH_ADD32 */
+> +                51,  /* R_LARCH_ADD64 */
+> +                52,  /* R_LARCH_SUB8 */
+> +                53,  /* R_LARCH_SUB16 */
+> +                54,  /* R_LARCH_SUB24 */
+> +                55,  /* R_LARCH_SUB32 */
+> +                56,  /* R_LARCH_SUB64 */
+> +                64,  /* R_LARCH_B16 */
+> +                65,  /* R_LARCH_B21 */
+> +                66,  /* R_LARCH_B26 */
+> +                71,  /* R_LARCH_PCALA_HI20 */
+> +                72,  /* R_LARCH_PCALA_LO12 */
+> +                73,  /* R_LARCH_PCALA64_LO20 */
+> +                74,  /* R_LARCH_PCALA64_HI12 */
+> +                99,  /* R_LARCH_32_PCREL */
 
-[Severity: High]
-Does the bindings::EM_PPC64 entry break 64-bit vDSO builds when
-CONFIG_PPC_KERNEL_PCREL is enabled?
+[Severity: Medium]
+Should EM_LOONGARCH also allow R_LARCH_RELAX (100), R_LARCH_ALIGN (102),
+R_LARCH_ADD6 (105), and R_LARCH_SUB6 (106)?
 
-With CONFIG_PPC_KERNEL_PCREL=3Dy, CFUNC() appends @notoc in
-arch/powerpc/include/asm/ppc_asm.h, so cvdso_call in gettimeofday.S and
-getrandom.S emits R_PPC64_REL24_NOTOC (116).  In addition,
-vgettimeofday-64.o and vgetrandom-64.o are compiled with KBUILD_CFLAGS
-(which includes -mpcrel) and emit R_PPC64_REL24_NOTOC (116) and
-R_PPC64_PCREL34 (132), causing vdsocheck to reject the object files and fail
-the build.
+arch/loongarch/vdso/Makefile overrides KBUILD_CFLAGS and KBUILD_AFLAGS for
+$(obj-vdso) using ccflags-vdso and cflags-vdso, which drops -mno-relax and
+-mthin-add-sub from arch/loongarch/Makefile while enabling
+-fasynchronous-unwind-tables.  As a result, toolchains with linker
+relaxation enabled by default emit R_LARCH_RELAX and R_LARCH_ALIGN in the
+vDSO objects, and .rela.eh_frame uses R_LARCH_ADD6 and R_LARCH_SUB6 for
+DW_CFA_advance_loc, causing vdsocheck to fail the build.
 
-[Severity: High]
-Will vdsocheck also fail the build on 64-bit big-endian kernels using ELFv1
-(CONFIG_PPC64_ELF_ABI_V1=3Dy)?
+> +                128, /* R_LARCH_PCADD_HI20 */
+> +                128, /* R_LARCH_PCADD_LO12 */
 
-Under -mabi=3Delfv1, the compiler emits function descriptors in .opd for the
-global C functions in vgettimeofday-64.o and vgetrandom-64.o, producing a
-.rela.opd section with R_PPC64_ADDR64 (38) and R_PPC64_TOC (51) relocations.
-Although arch/powerpc/kernel/vdso/vdso64.lds.S discards *(.opd) during the
-final link, vdsocheck runs on the intermediate object files first and
-rejects .rela.opd unless it is listed in ignored_object_file_sections.
+[Severity: Medium]
+Should R_LARCH_PCADD_LO12 be 129 instead of 128?  In
+arch/loongarch/include/asm/elf.h, R_LARCH_PCADD_HI20 is 128 and
+R_LARCH_PCADD_LO12 is 129, so any vDSO object using pcaddi-based
+PC-relative addressing (where the two relocations are emitted as a pair)
+will be rejected by vdsocheck with an InvalidRelocation error on 129.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123-vdso-absol=
-ute-reloc-v6-0-161e218dd217@linutronix.de?part=3D5
+ute-reloc-v6-0-161e218dd217@linutronix.de?part=3D7
 
