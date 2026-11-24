@@ -1,98 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627E6606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1577606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jqYKCbF0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IlpI7jOH
 Received: by kanga.kvack.org (Postfix)
-	id 586CB6B08AB; Tue, 24 Nov 2026 18:48:17 -0500 (EST)
+	id E62456B0600; Tue, 24 Nov 2026 18:49:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55DDD6B08AD; Tue, 24 Nov 2026 18:48:17 -0500 (EST)
+	id E12446B060B; Tue, 24 Nov 2026 18:49:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 473886B08AE; Tue, 24 Nov 2026 18:48:17 -0500 (EST)
+	id D28656B060D; Tue, 24 Nov 2026 18:49:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B3716B08AB
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:48:17 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77C8F120D11
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:48:15 +0000 (UTC)
-X-FDA: 85471653750.11.E196AC5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B10A1180009
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:48:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqYKCbF0;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B6A846B0600
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:49:12 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F4D0A8C47
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:49:12 +0000 (UTC)
+X-FDA: 85471656144.18.E439FF8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BD4B8A000C
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:49:10 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlpI7jOH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795564093;
-	b=3ASV9cWzFRoyAHP5d3jZmPwHq4QE7Kora8t8NK6ADFrhmf/UVKvicjT0ReWjddqTPxslbV
-	f0e8RuQbUR5ZaYVpX4RfV8rIbLdXXGCPmtmTXj73V4skkr1pRY+b4oSifKCuSfiEfzDaa7
-	Zlm4FaunUnAUTCRI1l9VtX9O8/k6iUg=
+	t=1795564150;
+	b=8pWJFM6eQV1COqG3PZILBvtx9YZxrP+1fsW8daOk8Sg0EfovCCboSMdduYNmzyBjHpi7Uh
+	MZt0LM/aMrpVaoN2FIRpGusFP1O8ZgcMqntU0PHHO+Z24tcznzWvuQA+VjF1Y2f7jPFiMy
+	ooUfnRZYq/c8roOqBWyVNL/RWs4iJR0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795564093;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795564150;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x3MJzrZxWtNJBKkoxKkXdy3LcJvsbWutGHSCpDKZ3ao=;
-	b=m3+QwLcSinBf+SdOMiMf96qMrJUFu6SnM8I1p05BX6g538ewkORG/cf9zAWcCsvR0bZtqI
-	ZXmrafAU52WdRV5GLRRvw/qhaqsqgTrx8jxKE5n0I8LF6I+SGclVdoqj4oT1dHROIgknK2
-	28NLlgYjxhKsmUkGHU2eq7m31TbM1HI=
+	bh=lKDulksU0CH8kWxQ0HqONqWmjOATVYmG6DnvF0rQk9k=;
+	b=XbW7qOe+NwJzV5lTL/7EXgqeMymMf8SJeJmeQfue1sI0SiJB9ka7SyHJFgr151WvFb8U8v
+	H+L559yA4QM2UK4xTbwZ+fVeJoc2gpnMQvjc0pmVqosRvQ3Az6DuFRiXmklTBeZ/FfucBb
+	1/zy2XkbrbE4+HhtR46LHxYrBSsY96g=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqYKCbF0;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlpI7jOH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9F0D4234F;
-	Tue, 24 Nov 2026 23:48:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413D01F000CF;
-	Tue, 24 Nov 2026 23:48:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 12FD160F21;
+	Tue, 24 Nov 2026 23:49:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1521F000CA;
+	Tue, 24 Nov 2026 23:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795564092;
-	bh=x3MJzrZxWtNJBKkoxKkXdy3LcJvsbWutGHSCpDKZ3ao=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jqYKCbF0PlRw+T183XyiDDeQMA9gFsm27TU/hnB+mfFhD/ScjiVDSVz8ZxGwCKTDV
-	 3Og4OsE8htv87a5B8mziTQyVeRy8bPs5s6AKgtkH7+FQ5iRU0aWia7cCX2ApP+2WNV
-	 AeDYvei6ciqwheb3PPso4jefNDmopqbrIJVSILIMglPhOMDbr7MXJoJocTcjpl+jJo
-	 bV4qQJZXM/dWa/k36SehNVn72Eobpr9vF2rhuJpg5fsjkMlHELjR+a9dIp1Do6JPZ3
-	 VJ3TGBh3BipG5kn4wMYJXN1RfuwVRpiXXuzQEqODE8kZ4zfZqBwMFz1w/2ajBdqiHj
-	 RFxMHePyK+Y0g==
-Message-ID: <sashiko-outbox-232248@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 11/18] mm/shmem_luo: Retrieve tmpfs files into a file
- created by userspace
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Matlack" <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
-Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Christian Brauner" <brauner@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, "Hugh Dickins" <hughd@google.com>, "Jonathan
- Corbet" <corbet@lwn.net>, "Liam R. Howlett" <liam@infradead.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Michal Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Pasha
- Tatashin" <pasha.tatashin@soleen.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Samiullah Khawaja" <skhawaja@google.com>, "Shuah
- Khan" <skhan@linuxfoundation.org>, "Suren Baghdasaryan" <surenb@google.com>, "Vlastimil
- Babka" <vbabka@kernel.org>
-In-Reply-To: <20261123233924.3970932-12-dmatlack@google.com>
-References: <20261123233924.3970932-1-dmatlack@google.com>
- <20261123233924.3970932-12-dmatlack@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 24 Nov 2026 23:48:10 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: pmiyed6dmo7nw1pb3it18pnt855d3nc5
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B10A1180009
+	s=k20260515; t=1795564149;
+	bh=lKDulksU0CH8kWxQ0HqONqWmjOATVYmG6DnvF0rQk9k=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=IlpI7jOHHg6tzDJtT7dUsw9yL6fpvZ9HKK1m6TkLc2LiZZ3UD8SsdCYQOPTGUoh4Z
+	 NipXRVpiqDCGW1FPX4Aj+JWvOWuaH7yh47kJrzJMMgWYxRGBiXlzu1T/MZUWUC4g0W
+	 vMNK/n0rsVJnt4+MwUB+9ab95GUxpkKWlaQFELGgsxYF/A92uqHyYjG81QXhlUvaqv
+	 UyJ18+lF5X1JslR+TZbpCj/oUXLo5lcdp3gbMbe0ryI4vzplir4QZl2zv7zCVHIKE6
+	 KKnfsBtZ25FkDGwWmWDCI+A50sHcwbB23XU+Xd+0/5dBGydMv0HgkDtdDiR3r5CDs1
+	 IEQtda9ZYTz+A==
+Content-Type: multipart/mixed; boundary="===============2510359726493679342=="
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Message-Id: <fd2115bde2e78440a8c28b057e22f7a7a3064cb74e9030b92ee2f4498ea6046a@mail.kernel.org>
+In-Reply-To: <20261124-work-exec-update_lock-v1-18-e489035395b8@kernel.org>
+References: <20261124-work-exec-update_lock-v1-18-e489035395b8@kernel.org>
+Subject: Re: [PATCH RFC 18/19] vfork: wake up the parent once the child has left the mm
+From: bot+bpf-ci@kernel.org
+To: brauner@kernel.org,jannh@google.com
+Cc: torvalds@linux-foundation.org,linux-fsdevel@vger.kernel.org,acme@kernel.org,linux-perf-users@vger.kernel.org,bpf@vger.kernel.org,selinux@vger.kernel.org,kees@kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,apparmor@lists.ubuntu.com,david@kernel.org,brauner@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue, 24 Nov 2026 23:49:07 +0000 (UTC)
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-HE-Tag: 1795564093-143410
-X-HE-Meta: U2FsdGVkX19mFemHoGPlHLm4a8P2iuv63/mTh6n1sOD2O5v5DBuERlSjq9wnoEa5Gr9HrYLthGadDJ5UXoN3w30g+w/blkq9/L7PrCxSOxaMc0wKI4nmZLWYAcVX7Ikh0Aex38tbM3SQ79tU3mhJVAIzPyhknnfo4W+TMZZGFr5YDt/Ef3V54nvLJn7f//P1h1deuJOqsseRPVtARO9veEguIYAK5zDgO42W0PiJ8P2jqwbkfI5TsEt1mkZNHgmgNjRDiP77+i3i8tR2PzLJXAV8paqk4s82nESyaxMcNSUnobzxV/L5gOmBKFbdNe5LymiKAjS0D020OZb/XUaJctdFNwFdOgRpy8F5G7KR4o0CcMVC9v10wcxQrlR7a7SgtUJXOCaD4TT20wl9O8T6+KKw2z0MJShUKQ5B5ZfeY6eMDP0uaZC+0uS97CQZzRXPVqGRuhXXVI2sNbeTopISJD55kQXSGI3bagRRLl8C9c0IaONzsHxV75v0ygfkgzKj0RKvGqYXPz7+85mDVSqI1LlWAMp//pCF4dDJntY3dGOBtRt0KzY0w7QuO4hj00JyYtW+yq/60Vt4IVJYOH45CLonlYCtQewo5tAu3Spmw7FAe+0wtlKK16G4lGYhFd+U0V3n02pxgstAkZTh/sPw2px/+T/WLzZ6ZdX0TIJ9RQNAsUozfCunpxFeoIRsXpCoqqrxigvNTNv5nChVY2nk4y0Kkq21f3QIHLwjUpC8cZEm2Y4XJXMCsGFpOMPVUmBmFlCbgIqx2jUNMrLspQO6kJbjC8vF9/iUKhne6DGIiDYtgD0PkqYbjSzi6C7sg0NWKGyVK0f5bifc38TnKN5LpNrbjIaGFt+SAKUFAHT+JB2QIyKmu9FPIiMO9F8fU03R8SaGoksPV5mtRPQngiFQ0U3mpv/E0FXrkNeArmt1iQKMY2wqZXoZxKguFPlpmTAGWqxEhKPxuZrIVKriGoS
- hdFWS4kU
- F+KGwPjQWwa1H0vVZfRNICQCKZUhsgVMI6/H4u41s4iXU1zifCn4ByBls0jIDoqXzRLsRlLdUx3IVg/fyoRY9nnes5BulGxhL9Rv3MPHgcZyp87y/oXFAiD4Q03/flwuZNyT3CzgwZ3VHAMCfgDntpgNVgQabBsZomwoMKR0aoCTid7a9fWHwhb9YQg2O74z2PNpQZLjf5dpqGAjMM3CWFI/5hiXFbgDWUmOCnC77jNb+Vlk1J0Xp9Uq0oDf76+FE2/wJJf8poT+s8L/ZnTl6Oe5lt3wo7l7qHJdmWgoxBFzzKMP9u42CcG4VcqxBAAnwy7n1rrn/G96bxX55k9yVULjQnpAM5m757SNHN8xNcjKQ1tjyIuY64WXFx1bHqpE3Wif5fyIcqV0eh6lwHhGWaAV+T0GUhb9cBLZ0bOWP+kGWI+n28/mBM9HzcleYxsaMvJjDy2mLBSvvtynQ8au9i6jMK3t9iuajwnkzSeAy03i2U6Sipn445KcbDAQtgJd/DW6yS3eWN7fjXY187uNHRA+MaQv1YZ7TWLZzyiGJDB9E6hfvnIFs+O6Wu+O+zR5pDpOqrXv/yBMe80Q/c5OfyupJvoMI2bX4S44Yn4fnjXBZQneiKGhZ2YOaKX1+H5wSszpmTVkohHMK/oUr8Vq23VmJHfpZVq7bW0WjRt/n3Gwy0WPk4GKx0S+IdYCoBN1FO2FQ5D9vVMgrlseJhQg87IK53XtH7wBEThurhYtjaeEQdbr3dJXdDXsqvve0yPQKYlpf4NBlARWz9XcwcwE2lLdyowutf/Q/t0VPJ7PTNmjMLqRh5436FQbcx0ZMMFlUFFa4Zv3nhOB6HnUIwORDEBl0ibBxBNNU5BPa1DojwMy6d3kdzhIlkQzJL4fWL4/AlY9T
+X-Rspamd-Queue-Id: BD4B8A000C
+X-Stat-Signature: fi8g9t3rb3r9eehe9hh96xaf1k589azo
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795564150-67628
+X-HE-Meta: U2FsdGVkX182G8UcdCtbg5nUJWKGJr3lIZEcVXYS9Kw/tRjSbN+HEWWeGnfa473ZkFbrSzisb8IYbSpOuYjKst3RHdKhoL1p+559ZXg6oYWh+RJa1F/ELClbuIAPYQMWe5BAyfUWvQUF+C8ZT8Mmfqma9LbtnBTw9rqzZQIBFemcI3HJPTFJah9vuNqWvcZrLBQr6ad5LnhkZqeqjts7/kLjYfPhZQxKGozTgYhbRzpNtKi9bSpNsx4oCAeSXMKYDkoPUfGZN8KcYQj3dKsaDzwha/ZIo2YBHjQs9aqqtdbOJPCfwKeDxlB5cqEH3nZ9R33n94W4o/UMc0Sy6lWedrr7C2uiitr/oBfkj2F6F3+n0LsfDLkmbmjL1/+ri7tq7i+83DuqhKFZGu7U5FFD0yygTBrCO1COMkJO8g+TuHswngKHmgjrisiLDmn4o+vXSlX/kkKh1K5Q1ry8IEJRZ48OMqoa2nKz0A8tdLfyLOtDKcnHI7MmPuDKWwZ5wFlOwzA2Gj6IK4oigTCMESXwbimj5C8e8UfxH/3o5K+Oo/+o74qbS5BJ0m7ELdVJwZ+KJFsRPciu2ObAvM12FhYcZAhK+goG2DvKGbqMozReUW8lkujksjR2/L3MQMxo7tuHEPWu0U5DJ2h75mU6hT6ugMU+5H4YTn4XHYystVywZHiuN9b7cQbhx7+u6crq0H22QvRaJVkFkFwWT1rXQnpHEDMlO/SnY0cj76Dn4bzkLVB0n9FpcbNSyv5Ilri8US+2vhPTVqH/j4fV5dNJo2GdjQ6ZR5ivX5xw3wizTZsYqsJvbB0gOctnVj2TnknOozuQS1Xlo0mIFCHsdgs9PEraDrnUK7SVHn3qWMvemmAZxpBHjF5NclCh8KOZIeFEBLjZfi7HEzWXbove1HXb/ZYqbwbhRH5K3565b7d7YWiio2+BxTSnxFhAhNx1d/lSU50cibQMApnYsEpwEvWLZ+y
+ Dvfn4zgG
+ 5qumF/oftMGtTYfkHhvl0KcRstGdsNjFHQyGHfem+TmWXU050eHS3z48CTMi94sXCrVm3nm2pw1G3w+9wykBW9kexpzEQAVLLrZ3c1YQWLn/hvZ/8USB4RrQK5wIiLfQrpxJTvQcQS2w2E+vRKSvibMWIBpknXkNUDr4bdr6OpLR4Ul073BSALvwrbOiYOy0oF+5tEcAd/CgdnKzv3frTc/Ff3FPdI/v4DUFpT2Nt69TTIXxgwR/8NbsaHwV8fZX/Gub+vO3kwQuVo3NiqO89A3jdznJidRaHnPI5KVxgYlpuIl36FsAVWKKYDiN6Af/ORvEDz5y/UDv6qe9DZHlGDSHhsrH8NYlPwvO0eppsy+4h6/J/jFvkKl4H6Zh7NLEGlGoy9UdPZEwnmKzcTZYVuln2ceVQfHf/ZpsNzxDe+QtsYUnzJV6jg4Z+U4vuxJyufDoyugSoc3kIozPfWXaxdQu8Qk6Udqe9GfMlje1uWxQMGFkCbhIltTIHya9BrPgIzTqd6Q866CIll2zsfGojq8PonGfIm9GtUgCyWIJJ5xgpgQrr754B35UU0fZN2a0IrIl1gWqQo3caYEpXezLOWR/YRitTKzMgL2ABtNMKWr0p2KloUri3E3/an9Svw3sxplGPXFM1n1YhfB2Bi2SLl+PvTDlgRhsyONqK2gB7K1lyTGj6hYtNbsDr2J1/MVa6DKOPFoHzCvzwJK2iwFwE1S6heVpULhkPdbTjzrVUxOVT0J4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,142 +90,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] mm/shmem_luo: leak of preserved folios on error in
-  shmem_luo_retrieve()
-- [Medium] mm/shmem_luo: race between resetting fallocend and
-  __folio_split() drops pages
---
+--===============2510359726493679342==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-commit a56e31ee7bf0ce9b4eb0f3ed9175bc42d7abd83d
-Author: David Matlack <dmatlack@google.com>
+> vfork: wake up the parent once the child has left the mm
 
-mm/shmem_luo: Retrieve tmpfs files into a file created by userspace
+TL;DR: Commit message only: it cites "[1]" for the 2.5.56 change but has no
+matching link; the review asks for the history.git URL to be added.
 
-This commit adds support for retrieving preserved tmpfs files into a
-userspace-created tmpfs file passed via struct
-liveupdate_shmem_retrieve_arg, and marks tmpfs files with
-SHMEM_LUO_FLAG_TMPFS during preservation.
+>     vfork: wake up the parent once the child has left the mm
+>
+>     A task that called vfork() sleeps until the child has released the mm in
+>     mm_release(). But exec_mmap() releases the old mm, then waits for
+>     exec_update_lock and only then switches to the new mm. And exit_mm()
+>     releases the mm and only then drops it. So the parent is woken up while
+>     the child is still on its mm.
+>
+>     It wasn't meant to be that way. When mm_release() was added in 2.2 it
+>     was called after the task had been switched away from the mm. exec only
+>     moved it in front of the switch in 2.5.56 because deactivate_mm() and
+>     the write to the child tid address need the old mm (cf. [1]).
+>
+>     The release has to stay where it is as it can sleep in a page fault for
+>     as long as userspace likes. So take the wakeup out of mm_release(). Wake
+>     up the parent in exec_mmap() once the task has switched to its new mm
+>     and in exit_mm() once it has dropped the mm.
+>
+>     While at it, fix the comment above mm_release(). It hasn't been called
+>     after the mm was removed from the task since 2.5.56.
+>
+>     Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-> diff --git a/mm/shmem_luo.c b/mm/shmem_luo.c
-> index 854a49cd0aaa5..2ea161fb00fc1 100644
-> --- a/mm/shmem_luo.c
-> +++ b/mm/shmem_luo.c
-[ ... ]
-> @@ -554,6 +580,108 @@ static int shmem_luo_retrieve_folios(struct file *f=
-ile,
->  	return err;
->  }
-> =20
-> +/*
-> + * Restore a preserved tmpfs file into the file that userspace passed in=
- the
-> + * retrieve argument.
-> + */
-> +static int shmem_luo_retrieve_into(struct liveupdate_file_op_args *args,
-> +				   struct shmem_luo_ser *ser)
-> +{
-[ ... ]
-> +	fallocend =3D info->fallocend;
-> +	if (ser->nr_folios) {
-> +		folios_ser =3D kho_restore_vmalloc(&ser->folios);
-> +		if (!folios_ser) {
-> +			err =3D -EINVAL;
-> +			goto free_ser;
-> +		}
-> +
-> +		/*
-> +		 * The folios are past the end of the file until i_size is set
-> +		 * below, so reads, page faults and memfd_pin_folios() don't see
-> +		 * them, and they can be removed again if adding one fails. Like
-> +		 * fallocate(), raise fallocend meanwhile, so that splitting a
-> +		 * large folio doesn't drop its pages past i_size.
-> +		 */
-> +		info->fallocend =3D ULONG_MAX;
-> +		err =3D shmem_luo_retrieve_folios(file, folios_ser,
-> +						ser->nr_folios);
-> +		vfree(folios_ser);
-> +		if (err)
-> +			goto truncate;
-> +	}
-> +
-> +	i_size_write(inode, ser->size);
-> +	info->fallocend =3D fallocend;
+This isn't a bug, but the changelog cites "(cf. [1])" for the 2.5.56 change
+that moved mm_release() in front of the mm switch, and there is no
+"[1]: https://..." line or Link: tag anywhere in the message.
 
-[Severity: Medium]
-Can a concurrent folio split observe both i_size =3D=3D 0 and info->falloce=
-nd
-=3D=3D 0 here and drop restored pages from the page cache?
+The previous commit in the series, d0c33c04297e ("exit: don't take the mmap
+lock in exit_mm()"), uses the same "(cf. [1])" form and does end with a
+"[1]: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/..."
+line.
 
-shmem_luo_retrieve_folios() adds each folio to the LRU and unlocks it, so
-reclaim or migration can split a restored large folio without holding
-inode->i_rwsem.  __folio_freeze_split_file() reads i_size before
-info->fallocend:
+Could the history.git link for the 2.5.56 change be added here as well?
 
-CPU0                                  CPU1
-shmem_luo_retrieve_into()
-  info->fallocend =3D ULONG_MAX;
-  shmem_luo_retrieve_folios()
-    folio_add_lru(folio)
-    folio_unlock(folio)
-                                      split_folio_to_list()
-                                        ...
-                                        __folio_freeze_split_file()
-                                          end =3D DIV_ROUND_UP(
-                                            i_size_read(inode), PAGE_SIZE);
-                                            // reads 0
-  i_size_write(inode, ser->size);
-  info->fallocend =3D fallocend; // 0
-                                          end =3D shmem_fallocend(inode, en=
-d);
-                                            // reads 0, end =3D 0
-                                          // drops sub-folios with index >=
-=3D 0
 
-In addition, on 64-bit kernels smp_store_release() in i_size_write() does
-not prevent the plain store to info->fallocend from reordering before the
-i_size update.
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-[ ... ]
-
-> @@ -565,6 +693,18 @@ static int shmem_luo_retrieve(struct liveupdate_file=
-_op_args *args)
->  	if (!ser)
->  		return -EINVAL;
-> =20
-> +	/* Make sure the file only has flags this version supports. */
-> +	if (ser->flags & ~SHMEM_LUO_ALL_FLAGS) {
-> +		err =3D -EOPNOTSUPP;
-> +		goto free_ser;
-> +	}
-> +
-> +	/* Files on tmpfs mounts can only have F_SEAL_SEAL. */
-> +	if ((ser->flags & SHMEM_LUO_FLAG_TMPFS) && ser->seals !=3D F_SEAL_SEAL)=
- {
-> +		err =3D -EINVAL;
-> +		goto free_ser;
-> +	}
-> +
->  	/* Make sure the file only has seals supported by this version. */
->  	if (ser->seals & ~SHMEM_LUO_ALL_SEALS) {
->  		err =3D -EOPNOTSUPP;
-
-[Severity: Medium]
-As reported by Pratyush Yadav on v4 [1], do these validation failures leak
-ser->folios and all preserved data folios?
-
-Jumping to free_ser while args->retryable is false only calls
-kho_restore_free(ser) and records a non-zero retrieve_status on the file.
-When the session finishes, shmem_luo_finish() returns early because
-args->retrieve_status is non-zero, so the KHO vmalloc array in ser->folios
-and the ser->nr_folios preserved data folios are never restored and freed.
-
-[1] https://lore.kernel.org/r/2vxz33sv3ef3.fsf@kernel.org
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123233924.3970=
-932-1-dmatlack@google.com?part=3D11
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/45508356147
+--===============2510359726493679342==--
 
