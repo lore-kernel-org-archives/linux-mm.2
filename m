@@ -1,111 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFB9606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 02:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD68606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 02:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iYxLxCy3
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=GGBKfwJ1
 Received: by kanga.kvack.org (Postfix)
-	id 21B806B05C2; Mon, 23 Nov 2026 21:31:32 -0500 (EST)
+	id E56656B05C3; Mon, 23 Nov 2026 21:34:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F4F06B05C3; Mon, 23 Nov 2026 21:31:32 -0500 (EST)
+	id E070E6B05C5; Mon, 23 Nov 2026 21:34:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10F5F6B05C4; Mon, 23 Nov 2026 21:31:32 -0500 (EST)
+	id D1D676B05C6; Mon, 23 Nov 2026 21:34:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA8466B05C2
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 21:31:31 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A44E1A0685
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:31:31 +0000 (UTC)
-X-FDA: 85468436382.08.9C2AA15
-Received: from mta0.migadu.com (out-243.mta0.migadu.com [91.218.175.243])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2AAB1140007
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:31:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iYxLxCy3;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A41766B05C3
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 21:34:40 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0E5BFA87A9
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:34:40 +0000 (UTC)
+X-FDA: 85468444320.20.25ABBCE
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 66B6FC0007
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:34:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=GGBKfwJ1;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
+	spf=pass (imf10.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.135 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795487489;
-	b=S470jt3DLWioz7G+0ptLhUfRikvnsCIRSF1DwyzBPBcIs2mKoFQqmqqL4NVzXbc7IFnPyV
-	sx9No7skPy9sGlxzzGAHoMYBCFlgqSLysdnp+lVc/ptvnBhkc8MtDUeazxq88wPZLQKdob
-	4zG0j/FgkoWJ+mtlMBK2ODj2pxuDUuI=
+	t=1795487678;
+	b=xTpR0ra3Yy0W7l7WTw5XB1a8BDbzCbI2obUT4kA9kpCSVwsR6Js03avmZ6Zgt78h/SN7dP
+	xGu78nbfVPwFXxgt4DSHwG2bvZKQ05lqW90vMLMVqGCvY49BscqSD6RWTO4keoYnsJsgPa
+	vakfP3HYgwUKrdkEPbLR7RnuJmG4Tzc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795487489;
+	s=arc-20220608; t=1795487678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I6rKiuxs3a0MpULM5n+IvwORKN/28E+DHpxd239HqJY=;
-	b=eiO/jGOXAe6w07HwjJ6BjlOLTA0MRl7oLGPq/J07p6k/yuVLv9cAgoSbK9qNA4zCVyeKBd
-	/D1UG5k9Mi337V+CS0hrffCxknlSguM8JIbtxdDSmRPBtkFOoOOwLM0KaCWVy2wZr0my5n
-	m7m/w2cH3zg0XvmammQEGINcjt0ItFg=
+	bh=PDSJtqkuWTb7jjV+6GtDkG38BVcoc48PFTSPKenEMac=;
+	b=cCX8HKyvusALZAewz072Mw8j1kmpB9cHJql6xC6q5Dj0CjpAewiS1/50EOzhnRCsFBGSeE
+	3xHu9YIgq63yJG6Z5VRPOMika+hifJQCjbiiKoxXgztUKMtO1pQNWPcr/UbG5VemoASc4E
+	QmGuGiH156wcz7q3W1KoCuTwNUFJ8AU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iYxLxCy3;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2EfP7VkiOHBjYmA3RrR9cYpETF6cn3Mh2yOE+dyeiAs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795487487; v=1; x=1796092287;
- b=iYxLxCy3t2iEF08iafMovc2K4VHY8fKBUZ7VF8edFul8A80rRelpSlaztFb9LX9t+/62a9Nq
- 94Xq8OZUeH02HKres8yGNe60O5Igqrgxs6tTXYcoTpYutO88nTPfX4xWYR5DdC23eX5hdbPtaN/
- gtRZSjnF6p15ThHeievvt49g=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3d25bf20d01f7445;
-	Tue, 24 Nov 2026 02:31:27 +0000
-X-Mizu-Trace-ID: 3d25bf20d01f7445
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
+	imf10.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=GGBKfwJ1;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
+	spf=pass (imf10.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.135 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=GGBKfwJ1lmS1+Hvdq9v6tApYxAHnlXiIaAhNuTN5iew8jxkAa/LO9tU7+H5OxxrxTyDFn+BlxkBmY
+	 xAprAIwQTYFiSv7pD/4kzx56RQoxwLQKNkY+KYuEVDCLpKSTmNTArpfREud7115Np3K0Y6nH+SP/iV
+	 P0QuBeizPJcfFGeY=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36b04f7b7437-0e623;
+	Tue, 24 Nov 2026 10:34:32 +0800 (CST)
+X-RM-TRANSID:2ee36b04f7b7437-0e623
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[124.156.110.139])
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66b04f7b7e63-0ff79;
+	Tue, 24 Nov 2026 10:34:32 +0800 (CST)
+X-RM-TRANSID:2ee66b04f7b7e63-0ff79
+From: Jiahao Xu <xujiahao@cmss.chinamobile.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+	Jiahao Xu <xujiahao@cmss.chinamobile.com>
+Subject: Re: + mm-gup-add-file_is_memfd_compatible-helper.patch added to mm-new branch
+Date: Tue, 24 Nov 2026 10:34:31 +0800
+Message-ID: <20261124103431.427705-1-xujiahao@cmss.chinamobile.com>
+In-Reply-To: <20261124013855.98B111F000C4@smtp.kernel.org>
+References: <20261119163531.788514-1-xujiahao@cmss.chinamobile.com> <20261124013855.98B111F000C4@smtp.kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3 05/19] hugetlb_vmemmap: Allow architectures to
- dynamically disallow HVO
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <CADrL8HXemwtmL_URg-WNOzdw1YCVxP3HVxX67yd=pLRGAuFyVA@mail.gmail.com>
-Date: Tue, 24 Nov 2026 10:31:12 +0800
-Cc: Muchun Song <muchun.song@linux.dev>,
- Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B1DC7C6D-7E3F-415B-A0D7-3F355499AB78@linux.dev>
-References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-6-jthoughton@google.com>
- <C1CC6F31-4F75-41D8-89D8-CE43465FBB6C@linux.dev>
- <CADrL8HXemwtmL_URg-WNOzdw1YCVxP3HVxX67yd=pLRGAuFyVA@mail.gmail.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Queue-Id: 2AAB1140007
-X-Stat-Signature: mwhmg9i9zbt3js3jh34dfnpzkx73uw75
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-HE-Tag: 1795487488-128982
-X-HE-Meta: U2FsdGVkX1/lDJKEXuohgjpgRVxnF1awivxVwLm4b2Zywo3IoahKP6RVKy8sasshshQe6GXW/1HVUNVnDxOD9QA2iemoZ6QCswmJg9VORBs0IFjiUGHot9weYBN/y3aZVE4zHEH6kvgG/NbeOTjcDvgYKv+jOWDryBMJsnyKEtjpg1SFyQjl3eLqtheak0TNFgpUyLfyiJVQ/h4rOBAhxy1waqHIY5J8d9ccMm1UT8EmjWWNvozibercfaVwvxp8ojDR1hZJ8O46bqe8a7IqelHhxXipYduGmkUQf3yu/Cpbl08mVtbkEnhLca6L8plBXel0pr6SAlS/cxOcWSB1RRM86w8L1YC6wUJP7apQYlSBTuEh7LQ2m2iFTblhB0lO7Mi96mn0S4lt7PGSpiWtDMhmyMusR2sUg3JdZXYjcckfDC6E+gpHlUIBmn0LHwuqMQW3pLQEskkAuMYOgemM1/0rHQa25k5ZO9hWGF6rqTKX+WmSajPkpWUlOhx2Ug71aLZ62cP3AfiAaXmbEUUMOPMoODjeQC0Vl4liD+yb8YG++wRqwWv5528IDTc4lAXkFmlaFvEWIbgwbQWim6UkR7XblmVUUWiP00mVinVQGl2XZ+bGGMtLtkYC7psb1rLrMDZ2QFeq5A6ZRH/g6qnh9Rvcj7tGwHA/O6e0tFfr3isMOWlblMHRSUvG4fsC9dEbJpayNAZwZi9mGERM/xntsq/9iSx9s0Mono9ZXJB9f3U93Cf0ipKacbmFPmZy052Ck7wDVzu8AY0ZMUKucbqNA4iHTZ5y8C6rv+BeQuA9J6PqORkb7ztXbRozm16s6p2f5CVzl3T1c/ecWxmBd6lzTXW0JEfmiz0CETmnBHMWvWhYSZsn2Zah/hSIN5XpmcC6fzPNHk7urdVyw7S071YCKzexX2fLmquyaOxhaa1DwE0XdRjezOPvEN+tnEJ0wWf9kuvWLSaj9pp8onOeAzi
- n4cR+0hr
- PiRtz8NaWPIrQzVQujicZRkgWJoBdrZ4uIIFOezmeCZ03uniaoIpZcn+eTac8RsKqF0V3rqTnur7MfX/Kijj0YsiBzOBEzx0bKg37/u/CAls9qMrW9p7zYWefeferajiZDVCr4ZYHhmGrikdptePz+7Rob/GmhAYAgsESe47QESeHcpo/BR4t3k8ehUBxrLwKpXgbnP2OTJe0G5UkKvmEHhce0wmsEcDZLucVQaf+oMyd8HBQlxJ7Qf9apTIQV9zfwsDR2hURKCXbdPpc75viT0QwUT2cTuUHA77FLHn66tcIDRfpMcM00jWve4vf12++UTYEOdPde05qINOnYdXl1WIYvPITe8SfSueRq2hWChYV/ZeN/trXNSdr+OBykHTH4wCFrhfdGXhsps+DSu6IjEzI0IEMzm52edd4tjhsuvKt8IKcnzLF+i8pBxEJjoIC7VKia6hBH0sSQTXfyxMGEBDqkv0sVnlW13MpXZeArf1W2NmIkWfscr+GPiez2xxsxMPPqJ2UcQcRLF8Hp//AQmYAlKxSC6/rudpXK//EvMHyzu1M6MLxH0oI+F44EiwWq2uOc0yKksEVIAc=
+X-Rspamd-Queue-Id: 66B6FC0007
+X-Stat-Signature: hoojtmtc6d1e9rqq15e91tesb6w9rusq
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795487675-336051
+X-HE-Meta: U2FsdGVkX18N5KkYlQa4btl9rhN06w+TNIq/giPgMZLBcTP4c5px2f5XDedRQ7FmqraS3lqzrq9doZ4Qzrrlnfwube7oaUddCK52XR4ZPYU/nLRzZju58NqnrQl6AgP5Jjh5314JE57zsr87b8/dHE4xPHv+dI4vjReGP/vWzCOLTN8BHePCISRtfD47RA5m+L0C/fVv+N3h6a/5D+XzrONyjL1VCkR18mErYdWtjnkqBscto/5K/p1guBx+9YNh9SLWT9Zo/oo29d09EV1ucF2NX9dtUVt6PXhBs976NJ3eztlRHHSUY1Wd46tItf8qpEBe8vDDVPxx45WbIwNp1Fci0zGMxm3/xak2wq5DkYGchDmzYKxw2lR5rs+dimblZeiHJlbRiufc2yVsTnGZcaMxex/Bl74cV+12O9yiytqe5c0L5D6IYP+k4rT+n+tZyGt+2cDAZqiGZlcyfQjvHSWV5Qf1YNJN1XGB9R15sekXsm9lT9/84fSPv1lfZEnizKuV5foTwklf2vM6Lt8Sa6G8HppU37thusGvqaiwLPbEQQMru1ZAzH1DMzZ4NowWEeZZtBiMDn5gDtjzYhMC5qcSnQ4Uj5gqy/Kl85D987mhCqEE45rOFe2oIEyPQdGyjyENSr6PxQMXFuRJK2PxWmv7EyTf4hfodrBszL8ZhmC656QMZywJPvDhUs80X+cTON8mG0GWsSVc7VqROhRor+XY3YzNQDADxMfMQK9ewWNH90L3dd4SrAB6SCdTInGhfWNXNcSpMherKy6SM4kB55bA/J6wsmMUiMGoain8zeoqQpgmXqZVjqKRfFBtYubQbM8BdanqjLZprGfcJutJ4TofRZ08deAK1c53+jrsQehaP8F3j97ygUXYNn0vNY9ZpWn3DpD7UKyX9nK0y28Fs0XA5IQ8+w5VsQTCBmD5lfu0AHVCdg3q+1+OHo/hdxJGijW1rcCmL9yoAKI+k+N
+ cbP6Am7B
+ ppiIdRuXVibEqAPrKjlau/mcOECHy5NUE5MpEKOS6X0ZzrY480Pjen/NnEUyYg+oLMNwcmiwg/Y6h4//Kay4kyKydYCaf0KDFoV8jRQYEmv+/XVyXYT4eHX9sWGJsrUxd79PJCAfNbJZtI0HJda6SgdTSEePrbZ/t6nKH8LkB2dndPsF/PxXH8THfyl069UBOmrJ+AsDoJaPcf8RnCcYpm9dQ+VuM6R3N0RyZype2XojEriY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,144 +98,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Andrew,
 
+Both patches of this series are already queued in Jason's iommufd tree:
 
-> On Nov 24, 2026, at 04:31, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> On Sun, Nov 22, 2026 at 10:01=E2=80=AFPM Muchun Song =
-<muchun.song@linux.dev> wrote:
->>=20
->>=20
->>=20
->>> On Nov 23, 2026, at 02:44, James Houghton <jthoughton@google.com> =
-wrote:
->>>=20
->>> For arm64, only some platforms support HVO. Add an arch hook,
->>> arch_support_vmemmap_remap(), to prevent HVO from taking effect if =
-the
->>> architecture lacks support. The hook is not HugeTLB-specific, so it =
-can
->>> also be used by other users of in-place vmemmap remapping (e.g. =
-FS-DAX).
->>>=20
->>> Check it in hugetlb_vmemmap_optimizable_size(), so that hstates are =
-not
->>> reported or treated as optimizable (e.g. by report_hugepages() and =
-the
->>> HugeTLB allocation and freeing paths) when the architecture does not
->>> support HVO.
->>>=20
->>> It may be the case that arch_support_vmemmap_remap() returns false =
-at
->>> first but eventually returns true. This is the case on arm64, where
->>> support depends on a system-wide CPU capability that is not yet =
-known
->>> when bootmem hugepages are allocated. Such architectures cannot =
-pre-HVO
->>> bootmem hugepages, so they must disable the section-based vmemmap
->>> optimization in their vmemmap population path with
->>> section_vmemmap_optimization_disable(). Their bootmem hugepages are =
-then
->>> optimized when they are gathered instead.
->>>=20
->>> Signed-off-by: James Houghton <jthoughton@google.com>
->>> ---
->>> include/linux/pgtable.h | 15 +++++++++++++++
->>> mm/hugetlb_vmemmap.h    |  2 ++
->>> 2 files changed, 17 insertions(+)
->>>=20
->>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->>> index ab33df268955..8cf44120e2ed 100644
->>> --- a/include/linux/pgtable.h
->>> +++ b/include/linux/pgtable.h
->>> @@ -480,6 +480,21 @@ static inline int =
-try_update_vmemmap_pte(unsigned long addr, pte_t *ptep,
->>> }
->>> #endif
->>>=20
->>> +#ifndef arch_support_vmemmap_remap
->>=20
->> We usually add a 's' to 'support'. Like arch_supports_vmemmap_remap.
->=20
-> Oh yeah, I'll fix that. Thanks, Muchun!
->=20
->>=20
->>> +/*
->>> + * arch_support_vmemmap_remap - Whether in-use vmemmap mappings may =
-be remapped.
->>> + *
->>> + * Vmemmap optimizations, such as the HugeTLB vmemmap optimization =
-(HVO),
->>> + * remap vmemmap page table entries while they are in use. =
-Architectures that
->>> + * can only do this on some systems may override this hook. It may =
-return false
->>=20
->> "Some systems" is not clear for me, How about rewrite this sentence =
-with:
->>=20
->>  May override this hook based on architecture-specific runtime =
-conditions.
->>=20
->>> + * early during boot and true later, once system-wide features are =
-known.
->>=20
->> I think the description should be general, so the last sentence I =
-think should
->> be removed.
->=20
-> I think it's important to clarify that the return value can transition
-> from false to true, but not from true to false.
->=20
-> Okay how about this:
->   * Vmemmap optimizations, such as the HugeTLB vmemmap optimization =
-(HVO),
->   * remap vmemmap page table entries while they are in use. =
-Architectures that
->   * can only do this under certain runtime conditions may override
->   * this hook. It may return false early during boot and true later. =
-Once
->   * it becomes true, it must not start returning false.
->=20
-> What do you think?
+  94494921b628 mm/gup: add file_is_memfd_compatible() helper
+  5b370585dc72 iommufd: only hold references to files memfd_pin_folios() can pin
 
-LGTM. Thanks.
+in git://git.kernel.org/pub/scm/linux/kernel/git/jgg/iommufd.git for-next,
+committed 2026-11-20, with David's Acked-by and Samiullah's Reviewed-by.  The
+code added by the two patches in mm-new is identical to what I posted.
 
->=20
-> Thanks!
->=20
->=20
->>=20
->> Thanks,
->> Muchun
->>=20
->>> + */
->>> +static inline bool arch_support_vmemmap_remap(void)
->>> +{
->>> +     return IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZATION);
->>> +}
->>> +#endif
->>> +
->>> #ifndef __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
->>> extern int ptep_set_access_flags(struct vm_area_struct *vma,
->>>                               unsigned long address, pte_t *ptep,
->>> diff --git a/mm/hugetlb_vmemmap.h b/mm/hugetlb_vmemmap.h
->>> index 8b28063d78cc..440477288d19 100644
->>> --- a/mm/hugetlb_vmemmap.h
->>> +++ b/mm/hugetlb_vmemmap.h
->>> @@ -48,6 +48,8 @@ static inline unsigned int =
-hugetlb_vmemmap_optimizable_size(const struct hstate
->>>=20
->>>      if (!is_power_of_2(sizeof(struct page)))
->>>              return 0;
->>> +     if (!arch_support_vmemmap_remap())
->>> +             return 0;
->>>      return size > 0 ? size : 0;
->>> }
->>> #else
->>> --
->>> 2.56.1.809.ga0b61035b5-goog
+I am only flagging it so the series does not end up applied twice - please keep
+or drop it in mm-new as you and Jason prefer.  If it is dropped there the fix
+still reaches mainline through the iommufd tree, since Jason took both patches
+to keep his tree building (patch 2 needs the helper from patch 1).
+
+Thanks,
+Jiahao Xu
 
 
 
