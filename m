@@ -1,149 +1,171 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6A7606A698
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 21:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC439606A32E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 21:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gQTzeSyk
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=kSOSSptg;
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=cFhloFwM
 Received: by kanga.kvack.org (Postfix)
-	id 3C6896B0863; Tue, 24 Nov 2026 16:16:40 -0500 (EST)
+	id F36976B0866; Tue, 24 Nov 2026 16:33:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3768B6B0865; Tue, 24 Nov 2026 16:16:40 -0500 (EST)
+	id EE7586B0867; Tue, 24 Nov 2026 16:33:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218126B0866; Tue, 24 Nov 2026 16:16:40 -0500 (EST)
+	id DD5BE6B0868; Tue, 24 Nov 2026 16:33:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D961F6B0863
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:16:39 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C31CC0D1F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:16:39 +0000 (UTC)
-X-FDA: 85471271718.30.B0A99A4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 79594100006
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:16:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQTzeSyk;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B3EBB6B0866
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:33:52 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3596B40D30
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:33:52 +0000 (UTC)
+X-FDA: 85471315104.11.B686493
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 41765140009
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:33:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=kSOSSptg;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=cFhloFwM;
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf23.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795554997;
-	b=lue7wShVDmrYlnmnLEcsF9elnlGGnlY05Ts2ZN04W9BaQYKVfFs8C7OFfaJ/4AzclCmmsR
-	fO/7//fAmc+lfrDt43I2GVZ98yRUc5dRHAZbiapgsXDd0fA+XoLLVe/shpdlufqdVI2Vv+
-	oYsiXy+hptZw4k/bHtfYBP2ibsmrEoA=
+	t=1795556029;
+	b=axBb/dOR46B1kzKIAJbwL+FideiBYbFcNYNthq5CvBgZV3KiE4zhZeHFJlBGBd3LPoPWuR
+	LyUCZmV/OnswjOGkQEohjWWNa/VE/194sz2NllsJzx3huGLKJc+7lSUHRDEuITY9j5N6cJ
+	ZrtJOKelhzSzQo6KcnL3ko0gtCNOD70=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795554997;
+	s=arc-20220608; t=1795556029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p59Yk/QLF4MSm/aC8y4m8TuaMf9wPFWKLeRdyn1kqHI=;
-	b=ABSv89FV+qbDoQoUh/8AmQEnCNbEIKczQH71zvjtTyvZYK/YAwNYCubwMNcTpRPLNPFxJI
-	xSDIYvRxgZ5jy0QRTh9mwpwk5QWvcoevSKhlC3/wXmYxhq6undMSlyJeSF0//ZtyMDGLY9
-	3OjUY906XE5W+Q0mkZHPdegzUQASdhc=
+	bh=rzs3vXtV1f6glRfCbRyWQ0qJwRwJG7R79LUnSb70XXY=;
+	b=Y/acXAOkMkwhW8QHSwz4FO7bsAfXCHnMmVpEedPSbOMLy2kNvld6ozxwoN1qShbt1WbTeh
+	D3H9ZPFPIQYrvTZkkyceo80rIKTXLpE8J++wyltFznlcqldnTGjfocWsKJ+C295RmKWOpQ
+	C+hnoe5KBhr8Q9X7eeqaDBhn+ZiW9Rg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQTzeSyk;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A440D44737;
-	Tue, 24 Nov 2026 21:16:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C018B1F000D4;
-	Tue, 24 Nov 2026 21:16:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795554996;
-	bh=p59Yk/QLF4MSm/aC8y4m8TuaMf9wPFWKLeRdyn1kqHI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gQTzeSykakbGUCaT+St+9tb66OJ3G2JvazoUw9UhkN/B4/snj+/VDxy8E9q8i4X+L
-	 IzAmZ0pkupaXIm7SOInKIJIOLpzHXdIi0SxCi04aB8tKxcMhb7o1cMCiQvknlnY8GO
-	 xRWkvtRZxwdoXvkPZt70V7m5dZ/yhC8aTmTLVBySU8nOjeDcqG3f/+3OpBMYI1xpcI
-	 4ajerP2qY4CvBvAwivPrXb9DKBLpGvgbqJ9DDB6zeiXlpJyWeZAwFRwWJtRHIYxarB
-	 b72I28hKMgAaTzdeEBFwhNld6rSe+WJXfi85jj4CzUK3wKkMSbNL7D2p0UM1W8FY1I
-	 a481eMCbAA2IA==
-Message-ID: <1cd2306c-eaec-43cd-9d0d-92f8cb6e691b@kernel.org>
-Date: Tue, 24 Nov 2026 22:16:25 +0100
+	imf23.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=kSOSSptg;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=cFhloFwM;
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf23.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+Received: from pps.filterd (m0167070.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AOLXPbD2445250
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:33:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=rzs3
+	vXtV1f6glRfCbRyWQ0qJwRwJG7R79LUnSb70XXY=; b=kSOSSptg03PNAGft46fI
+	0u8m3JFtsUQBmcPW8Y2leohVFkOf7foSZk95k8rFf/kFtHUSanpwx0t/ugSl9SFN
+	c3NNzsoNngeXMT4KbGM7h/y1CMr1BLNUsVadlTTnbuOhmKJVAByccPWBiccHzYAy
+	UBiWEXUXVzizUoT7E/zrXakX7q9pkGSLZvkqJW5lf6WKPWEWacErCcZASbtOzPGG
+	3sW9wy3xWsbOtSDzEIKjUFed5DLQACMV1FRPeQrbWfaq/zMqO1sKf5F+zJqOUanJ
+	NrIcQp/xzTCKhsNEK/0cB521vEVFeeNbqNYBoP1BGFWbwqpN+sk0j9ZqLi5SNEIz
+	gg==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4j5famsygh-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:33:47 -0500 (EST)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-947a607ec40so486128485a.3
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=columbia.edu; s=lionmail; t=1795556027; x=1796160827; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rzs3vXtV1f6glRfCbRyWQ0qJwRwJG7R79LUnSb70XXY=;
+        b=cFhloFwMVz85OhL1OSs3YN+WfMZyPxOUfUcXHuXS6wYo+eQCjrm+l+idES3qx2gxgu
+         Ji5Rkz7TWw9LfIpamfn1r+Wovb2japuYk82fKdfucV2PJ6QnFTl+G0RcowTUmmmxRloc
+         Et8VEjsW5wXna/7sZOBFmGSnxcU0YMEWf5x6pQfey8DHIl7T4VDtwm8QAMlZksbmf0NX
+         eWhnfW8nd5ZdZTs1GCulLZTefRHZxKrtXs29ELAzsZRzjvT10FXUU81y7iWAqj2Uf09c
+         4LOPm6ljskZilIUg6bpF1hVF945PvOtM6bEFLhKVBn85vwr4SNF/U4xrqgdQNU8BkroQ
+         g6Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795556027; x=1796160827;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rzs3vXtV1f6glRfCbRyWQ0qJwRwJG7R79LUnSb70XXY=;
+        b=GMmD45D/758P/4IdEG+GbZXHhfncHNRKiGqFI/bwqEyQRyjwPLCacz983V2m+6YIxC
+         hNeXh4OByenlqw+uWidDNBW+jYGfEMzCQgGhFZI13HqZipCs47sZpEz8IRyjoDRmHyOo
+         FiJBXg6/O3DJUPon1Kvtu/VuG2MAXtOAFD8h6jT0NQqFlE9DiopkJFx8AcI17w4mhecT
+         oKubXDc+HXw6vLPsKcazDY32ZHVZc50aqZ+s+WSufkGZ6F1Wv+u62SEuVigaXMFZ7rDq
+         BuZlmeyzVpCzV7xjikuuZRrBb/ZeDFpp/uZd84j3vNKk3KWFTrQGyhdaE1RH8YR4CpC7
+         jBdw==
+X-Forwarded-Encrypted: i=1; AL+hErGAFLZFweRrd5vt9+9HNcGSEKeijsegFU2HMCDWpVg4LB1PEHckL/0cYbOT7uTAYjGIxnIiEx+Fhg==@kvack.org
+X-Gm-Message-State: APuU4Z9xXxyJ9TOWRuGHRwyACljAwSjbFeNm8CUft7hr5YA9Ptj5LE0d
+	pJ38endKwWyQAzupee/TfV/XFaJlvowLp1rg+7csEDMG6R9up+HirsmdDU140bzVrTAKj02pWE1
+	Mi7PZ6bcMLV1NGV+QuQ7p0q3PnV0zHg/34LlgCnocpzi5jYd7
+X-Gm-Gg: AZFdTZdObh9/m1680EtVPWEZtcVKxORLIHKrL9tTzU81QyTHGGvId6AgBuXq5jjFQjL
+	z3ItQHjR3aR0i4s47WUDj/B33fxS+6pNWv9zoSeQFN1/ZgQ8Qg56yP0o1N3NxXLahuTlP3v3hil
+	bkcYMfgJqvNiPyFme3yW/2zbeRF/KvSxjZ07Bg2BTIg5OeEM9eNXuSqQyItc0QTTGqkqF4LoQZa
+	OWayh5+iLebiJ4WYuYslKPEh4qjgnp+Bd46YWpHqZ8YJ9890cHYFMW8YJGfyXcP8ErUHzdfxn3H
+	AL6gRDEYpyObnR3YYAHRXY28KzXzXWUcLf/V9O/R7wkTGViecGWBCIS8bnnimHHutVpFnFcUoPt
+	CYydWqDd19XOgngoOv06YPKb8QziJVT2T9Ku7vSNO7xiO/C1Zhs6sCig+6l4WSosdYg==
+X-Received: by 2002:a05:620a:46a4:b0:949:70f1:de35 with SMTP id af79cd13be357-949ba825d86mr2914938185a.7.1795556026858;
+        Tue, 24 Nov 2026 13:33:46 -0800 (PST)
+X-Received: by 2002:a05:620a:46a4:b0:949:70f1:de35 with SMTP id af79cd13be357-949ba825d86mr2914934585a.7.1795556026424;
+        Tue, 24 Nov 2026 13:33:46 -0800 (PST)
+Received: from [10.206.101.158] ([129.236.231.128])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb40efc4sm1138097285a.36.2026.11.24.13.33.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Nov 2026 13:33:45 -0800 (PST)
+Message-ID: <da1f8a21-9250-42cc-bf87-072eb28ce475@columbia.edu>
+Date: Tue, 24 Nov 2026 16:33:45 -0500
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/rmap: avoid reusing batched TLB flush generations
-To: Harry Yoo <harry@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>,
- Lance Yang <lance.yang@linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Ying Huang <huang.ying.caritas@gmail.com>, linux-mm@kvack.org,
- linux-rt-devel@lists.linux.dev, linux-riscv@lists.infradead.org,
- stable@vger.kernel.org, Kirk Swidowski <swidowski@google.com>
-References: <20261124-rmap-v1-1-e3dc48a4b527@kernel.org>
- <awXQg94rksZvexZe@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH] mm/filemap: only drop dropbehind folios on uncached reads
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, Tianyi Chen <hi@tychen.cc>
+References: <20261120-filemap-dropbehind-read-v1-1-a373ac3fd993@columbia.edu>
+ <awDGsqkIaasAjaNB@casper.infradead.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <awXQg94rksZvexZe@thinkstation>
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <awDGsqkIaasAjaNB@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: swb1qooemqby5jhj5onouxi9drmf9bhu
+X-Proofpoint-ORIG-GUID: -862fcL6LkRMd8Vy0HQLrMDvE3qZ1Rhq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDA4NCBTYWx0ZWRfX1YiJJoqJivwn
+ ZFWQYyUcz3cTuzuQhgSIlQk2wyYKHlwwoIym0mV0T64O46BOwkgOaj361XW0Y8wRXnIzztQKQty
+ qJLjpG1mcT3NtbhsZesAe+LRdj5LqEeF/0au029MbJr/IKhIFQY+0UuH11MHqWPNTx9wxMAv9Tb
+ /sR1lHzTfGfZVWK55bXHssZHt391vGkEeu1hz7+YCajKjZrhOednNjbcQi6xeY1u3UtdstkT+OB
+ 2U3jx6CF45Ox6hpnGfn6MPRxkp72CfRqX8Y7Baey/NKp9V5UzO4AIkpH6uwciQ3XozTq9kk403+
+ 3aQfQOUMhGGrtss8iFCjxFQ8z6/sCghcXvEwiRBO8Vt3alCP4Au4JbGPamf/6QkAqCiT6DDQtfl
+ tT0y4DSkv6v4JcRgY45e+flhfv0M0VNZ6x+aL19EQb7/Xg4SF4VLJdPdBwTsc8dojdMI5MEb/iu
+ zRX6C6l0eooEcAS1/3w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDA4NCBTYWx0ZWRfX8Y05sfmDrGrK
+ RohgdaIUbwQWJ1WN9rPwAinIn7YZQxeD0WDvuSB60MY50mTw4JvW1PaNxAKewf4uoiTiTNhENNr
+ Ly80mukAIv24iNTYG0YthXxqBFzlCR1n85GSenzxawHqCoBPvcEv
+X-Proofpoint-GUID: -862fcL6LkRMd8Vy0HQLrMDvE3qZ1Rhq
+X-Authority-Analysis: v=2.4 cv=OoHaWC/t c=1 sm=1 tr=0 ts=6b0602bb cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=LNQXEAmb7IHcZyFqmLK0PA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=svvvyxlR1OQQkelhaPoB:22
+ a=jlrA_JLHis1J6U7XA0UA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11976
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=10 adultscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ impostorscore=10 malwarescore=0 suspectscore=0 phishscore=0 bulkscore=10
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611240084
+X-Rspamd-Queue-Id: 41765140009
+X-Stat-Signature: o16rm7tcmxg4io5wgbbb8ws56bx5d5h8
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 79594100006
-X-HE-Tag: 1795554997-582358
-X-HE-Meta: U2FsdGVkX1/oQoodK5HoWL/dPUuv+OiIVMvV1gamFmdam9YOcAb2PCjJjQo4EO2d4ltbtEOW+y7Jr94mTHOarUPSfc2/GvZZ6xcXeiFoiU6h3SZphIDHF9PKn5LJM80pLdZPNAHydzDrq5BuN9EU+xz9LmUyGONDEePwMLYCcnUipgWWIkUdE6xCv+Fb34bHoq6DzFsj4z4dUl4lILt/xitRPONeeBwEiMMMgjkRo9hDho8XBs16N/bSqq5XrCqo7PMIMrDG8B47N7+RACD1F9L5EwfZ8+hu+VgCt0/fXLXedfNoXtT5WCN1d5qxgbEvxDi22nnJA7h8X0fZ3scvnwlqcmxbBSM/7vC4K3CCSVaTDoifZLBfYGWAWuBLomGCd8csldt7i4nW6RlbNuyutTxo37fwkKkz2pGoYRtwInvj7GlZogGNTzLfI2/LQ56XL1oOnAt4/ONykKhwNYhtb0US5P89tFP38hIgyPxiAdY4i2CnrHOfIYwJ+kdGP/x60nWYF6GPVFoQjw04qcQeD56fF77wjSEIM3k66CqdXZnvPSM6x8+nHn6yC/HwllGeagxMesP6Z64qP/XkKN0TU1ZiQMTES4ivAvAzJYqhv3r4aC3YaT3nft+C0W61Tfrh0JSdKVHDqwnosHUDqNwzPETDWpJnbO+RxntgLaJCgygwftgT5oaGaL1jhqWor9jo5DhmPcRlrxFNnWEe2O48zRoA11roNjSeerWqbEC7AM0KlxvVOxUs/XsSkbB+QixH9D3/6BCzBsMiv+yrZPtp+2yzM1DAzruXDsDgHn4/rIDOkYgIEzoOcLMIu3WreRC1ZukPdLZkEK+6bPUL4qSBVh2JQ+ADwk2GmO4XGHU3mCe0grXXX0Nzhyj7IL2NpcPBWEiJkVgc7j32NTJcY5WK5pm4qUxhXEwDk0NeSnekqlCBtVEBRQ+mjjeXIV2ml8h1jscq+VmQMFV7vP+xa9t
- mpD90UBv
- EI35uuDSUonrJlmHbm1VYgwGNWUCAFM+LULOnQ+Pe0W9g5OIjQ+UryGB1KGOMRjWQ64OaOfoLIxAJ9B43OiaQgZuCLvoNerAuR9/Bisn1jwckQLCXkvwtW3SrbVobYpccFoNz1F0o0zagr0ZIEtnuJF58YbjzIrz/pIQuiSUQfv66o2JG9Stao35KJDFgLVTYcZyHsV1Xo9GZ4Z0lw4eDZDDdwuueQRCZkSYiV7Hn4eKka/18J4aa6lMhz/50ZOFOewU2oD/VkDbs+jC+QTMreqXy8042cx2gUnskWWGteKcx7HGgqeGNtmnogL7v9vRjPl/8gAMxsEyIsahiaVT15wJe+luFM09IbVc9guqrWc/g9HmHYd0ydOBcUL5v4tlrjh2IJ4K4XOobcnltOYd2+qLi2fu/QsV2prCLZeWjrAiD+n4LxPtkfYecvtjkRH0vxQG74jwM2qVPm5pc3sJDGqgtGtfN6sv6QQ3hLLekwNMu1xQwhnvH1mi533LtTNc5pFxZH+h2+qL1UsmQDsgB8XjFkjhu/eU1L6QcGH3lLwPKTDeMmOyNL2m78+TGGzNaPLOD+g8WB+ejpKRy49IbD92geRvUgj4FpND8GWOjaqugWyLiuwAev2WtIhVXnrs6i4ppTdSQZQDTvo2ZPEzYQBl7W3yWUEwTBc+m
+X-HE-Tag: 1795556029-165190
+X-HE-Meta: U2FsdGVkX18m9eWd9M/sL0SwP8KDL6sf8KZxZAp6E7BQfJhbu0TQj4kcewh5biTP5IzVi0I1L/9lj/Y4elKI5TjgsVwqN34BHuiLt6ddVOgGRb+9UWd0tam95A3sF1XRuQxTdpCL2E8eJUFGmTImIqS/XuWAxica2xdfOwQ7m3mQT4RWV3nCFF4MGMZERh5Q2d+jORAvbTMVT/7x2p50IYRakRuXrDJfMTnnsdkyB69S9r1Oao8Dj0mtdIlqoZu/HYi0dgtR2BOWyG3kZ2J7rH6AqUP9HgOpiv5KBdO4y1Q3atmykGQDNBcRaR4x40pV1WSzo561cXGTD4JErZAMbjFkOY1JjH007yrVfxMEhZ2lEF49Qu36wwEWHAt3SMZWl/Pchs7UM1DxExMM5lmErP2U9d0wK3wTizjGxH25s/zsHRHcj2gf0z22LqQ2F3umESyDvvEpkgUQ9K8w70N8mgqjGqfDgEjF1c6JAEH5onX+uyaR5aL//vRrpiXvigwIx+PBdhKsP017biK8ymJATryN3bMd+9a6B8yj8w6i4rWNDda8g10LFqizW0St76hzGWjdSKB86YbHdjaEVJkHW0r8FTivOE9tRdhVKW+aITMBnmG/5vI77mJNv3UlRrtHXxm8ld2zH70KZ9yX7FGOrFTK1QToxl1VdymRIFHhrMj28mUWXjP7yC0Jyk7aISAdAcNsLwgZzvF5gyMY461KRpyrCEnV30hfueRR1dEMERSuoKldFV6A7ubii6gBN6Qb7LsXLCdBNb473n/yC0DbdH9xiZ692iT7kTVvdp7/joQc6T6VAVXQESKHDDIEMW02bYA0a/jMYQDDXa5hIyCHRt29UQSj1thXD/kEPoG0WdPYrphXAJy6ArTDxc+b/YzDYmJ522Jsm8+YJ90VxsiFaLPUKGb2iqaYFWIh9sWqhQinahaznLz5pzegJ2Jc/jpOFio5uWF8oUJwdQtjxZZ
+ b2RjkEpo
+ ga4nvj3emGdAUS25i/QeliPbaeaD/wSjQGYfpTYst2qC270xB53IqBQ+x6QLcEZP45lTD4SEtxb+Wd34lpVCtECJ0bj+sz9I9N2lP0xneR+bHpW8DXc3DeZkx5OFItEUUWFRVLmpwI/teUqxhk7OLZxa6H8l4UFucO3pYXZ4ehYEQyG7qzH/0yXS99MyEaZ4NBjHsSJTXbyWxCCp9Bk4CzXdTtbOyydxs4tbWypzRCFkJZ2LHc/RVjz2UpB8AHYKN5iIXGXDPWOzftuJXADHiuvB+2yvkA1rtOISrzjokr9BbBV7nEGTe33D9/5+e8cCfJKY9Z/kjW2Zp+4X7qk2SbUTPyixRwDfH0Euagu+FiEOcVapm9I4zmxBY/Yk1kYjWCBZG0+F59FExkLe0826YmU4kZ4eH0e2UwIbP6N4aYUit9IXisSJVQ//Ia4dxRafKKk5e77+FxMvnLm1vgc8uI3yXWHycAf7UyG8peWceVsaxw3AyzYJpqvXfKa4qcQEQmkTrlpH4cqj3pRid8rXczeI/XbSzisR2w7uuZJb6PC+bKRH8MMF9UBa5TzTQKcd/ZoZOkJCeHq8qb4Eg5O3EfTv9R5PKtzVJ/qB/785AhYULrj+uFp+4Oa2KEyIVV3F7j3Y9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,115 +174,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 21:50, Harry Yoo wrote:
-> On Tue, Nov 24, 2026 at 10:39:11AM +0100, David Hildenbrand (Arm) wrote:
->> mm->tlb_flush_batched packs a 15-bit pending and a 15-bit flushed
->> counter into one atomic_t, and resets both once pending gets large.
->> flush_tlb_batched_pending() updates flushed with a cmpxchg() against the
->> value it read before flushing.
->>
->> If the counters get reset and reach that same value again while
->> flush_tlb_mm() is running, the cmpxchg() succeeds and unmaps that
->> happened in the meantime are considered flushed. A later zap can then
->> skip the flush and leave stale writable TLB entries behind.
->>
->> Use two separate counters, never reset pending, and let the flusher
->> simply store the pending value it read before flushing. To keep pending
->> from wrapping around to flushed, pull flushed to pending - 1 once
->> pending is more than INT_MAX ahead.
->>
->> Preventing the wrapping is primarily required because
->> try_to_unmap_flush() as called from migration and reclaim code does
->> *not* go through flush_tlb_batched_pending(), as it does not iterate
->> MMs. So if nothing in the MM triggers flush_tlb_batched_pending(), there
->> would be a problem.
->>
->> As the separate counters are no longer read atomically together, we must
->> read "flushed" before "pending" (acquire/release), so a reader can never
->> pair a just moved-forward "flushed" value with an older "pending" value.
->>
->> We'll leave the barrier() between clearing the PTE and incrementing
->> "pending" alone for now: it should be a smp_mb__before_atomic(), but
->> existing arch code (x86: inc_mm_tlb_gen(), arm64: dsb(ishst) before the
->> TLBI, riscv: fully-ordered xchg() in ptep_get_and_clear()) imply a
->> barrier. This should be cleaned up or documented separately.
->>
->> Note: if a flusher stalls between reading "pending" and storing it,
->> while "pending" advances by an exact multiple of 2^32, the counters
->> could compare equal and we could miss a flush. The same applies to a
->> writer that stalls while moving "flushed" forward.
->>
->> That is irrelevant in practice: both hold the PTL, so without PREEMPT_RT
->> they cannot get preempted, and wrapping within the ~20s soft lockup and
->> RCU stall timeouts would require more than 200 million batched unmaps
->> per second on a single mm, which is impossible in practice. Even with
->> PREEMPT_RT or long vCPU preemption, we would need minutes of unmap and
->> refault churn while the stalled task stays off the CPU, which is highly
->> unlikely and not a realistic attack vector.
->>
->> This effectively adds 4 bytes to mm_struct. However, on common 64-bit
->> configs it fits into the existing padding, leaving the size unchanged.
->>
->> Fixes: 5ee2fa2f0636 ("mm/rmap: fix potential batched TLB flush race")
->> Cc: stable@vger.kernel.org
->> Reported-by: Kirk Swidowski <swidowski@google.com>
->> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->> [ david: use atomic_t instead of atomic64_t, adjust description ]
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
+On 11/20/26 5:16 PM, Matthew Wilcox wrote:
+> On Fri, Nov 20, 2026 at 02:51:17PM -0500, Tal Zussman wrote:
+>> An RWF_DONTCACHE read marks the folios it brings into the page cache as
+>> dropbehind, and filemap_read() drops them from the page cache once it
+>> has copied from them. Readahead can bring in folios past the end of the
+>> read, and those stay in the page cache with the flag set.
+> 
+> I like your patch, but now I'm wondering whether RWF_DONTCACHE should
+> trigger readahead.  Yes, I'm sure we want to use the ->readahead entry
+> point for filesystems, but I think that an uncached read should not
+> bring in pages that weren't specifically requested.
+> 
+> Something like this, maybe?
+> 
+> +++ b/mm/readahead.c
+> @@ -590,7 +590,7 @@ void page_cache_sync_ra(struct readahead_control *ractl,
+>           * readahead will do the right thing and limit the read to just the
+>           * requested range, which we'll set to 1 page for this case.
+>           */
+> -       if (!ra->ra_pages || blk_cgroup_congested()) {
+> +       if (!ra->ra_pages || blk_cgroup_congested() || ractl->dropbehind) {
+>                  if (!ractl->file)
+>                          return;
+>                  req_count = 1;
 > 
 
-Hi Harry,
+Hmm, wouldn't this badly degrade streaming reads with DONTCACHE? Readahead
+wouldn't bring anything in, and reads larger than a page would be read in
+a page at a time since req_count is set to 1.
 
-thanks for all that effort!
-
-> Uh, I spent a couple of hours to review and make sure this is correct.
-> I thought this is correct but then my claude flagged a race during fork.
-> 
-> dup_mm() copies the counters with memcpy() and it doesn't know the
-> ordering. When flushed and pending fields sit in separate words,
-> dup_mm() could read them in two separate loads, but in the wrong order.
-> 
-> It's especially problematic in a very rare (IMO) case where
-> flushed == pending + 1 becomes true in the child (which means the first
-> pending flush in the child might not be flushed properly).
-> 
-> fork				reclaim			another process
-> memcpy reads pending = X
-> 				pending++ (X + 1)
-> 							truncate()
-> 							-> flush_tlb_batched_pending()
-> 							-> flushed = X + 1
-> memcpy reads flushed = X + 1
-> 
-> Maybe reset the counters after copying mm_struct?
-
-Resetting sounds in general like the right thing to do. Ugh, this copying of
-random state is nasty.
-
-The child never ran, so there isn't anything to flush for it.
-
-So what you say is that the first deferred flush in the child will be missed. I
-agree that it's extremely unlikely, but we should handle it.
-
-We currently have:
-
-	if (unlikely(pending - flushed > INT_MAX))
-
-So I guess an alternative would be:
-
-	if (unlikely(pending - flushed - 1 >= INT_MAX))
-
-
-pending = x + 1
-flushed = x + 1
-
-(x + 1 - (x + 1 ) - 1) = (unsigned)-1 >= INT_MAX
-
-But yeah, let's just initialize it during fork(), thanks!
-
--- 
-Cheers,
-
-David
+If the goal is to avoid having uncached reads bring in extra pages, then
+the forced read should at least cover the whole request. But I'm still not
+convinced that we want to completely disable readahead in this case.
 
