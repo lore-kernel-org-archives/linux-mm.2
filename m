@@ -1,93 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598DF606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 10:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48424606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 11:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gWN1l1qA
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=MD2yQ8mo
 Received: by kanga.kvack.org (Postfix)
-	id 707B16B0674; Tue, 24 Nov 2026 05:42:03 -0500 (EST)
+	id 4F37E6B0676; Tue, 24 Nov 2026 06:06:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6916A6B0675; Tue, 24 Nov 2026 05:42:03 -0500 (EST)
+	id 47CC96B0677; Tue, 24 Nov 2026 06:06:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5591A6B0676; Tue, 24 Nov 2026 05:42:03 -0500 (EST)
+	id 345056B0678; Tue, 24 Nov 2026 06:06:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 31BA06B0674
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:42:03 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 048A66B0676
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 06:06:34 -0500 (EST)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2BEA1160AA0
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:42:01 +0000 (UTC)
-X-FDA: 85469672442.12.16EB189
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 897EC40006
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:41:59 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWN1l1qA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0EFE8140B2F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 11:06:34 +0000 (UTC)
+X-FDA: 85469734308.12.7FC55D4
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 45CED10000A
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 11:06:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=MD2yQ8mo;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf05.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795516919;
-	b=LLVO2vNj98DbWr/6IAOJsVk+TUkjnw6tiQUPspy7VV9LaQLdw2p7cDHYmcLkkK0ZQqnq/H
-	Z7rjqQpgbamRT8ZMxoLGe/hgBpSppiP325QrprJL5X9nl03ssg4KZcWZDxn8026UIEY9Dv
-	6WxmeDr72i4KOoA4MZ+Y9RKH86uaZfo=
+	t=1795518392;
+	b=NMDRqojiu+G533U14QYyE42f97j6DsvyoPbPu2oC0TMJ7oVSb+s/yIMYAJA9jvJXxj7Q7T
+	//PLdiSZOdluNhMg5wfv0J6t4TmTtwpMF6QqBtabmy+p7mvwR+WduAheo/err8qbJkcxSo
+	BJZlOeYw3QC5kQpOtN2FiSn4cYQ5e1g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795516919;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AE0vJk79CKTdMFw59CFTsMKuZIheJA+GV8fGWrg4mNY=;
-	b=QmkyAEaRvXjPnbUFLzbhVrEIZwLP+uZJNw3Z9isc9SpWWnuxUgaj0XFeQJUvphRVdw8JNI
-	+pcc3HwUzFGb28LJuSy8HgmJUzxnTXNyFfupFVs9gbcfSUy08gB0pYijpIr6dqR27o+kl4
-	lvthUwVMmibsLSlEujFVfRgIJQ7CeQo=
+	s=arc-20220608; t=1795518392;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jvR3C0Rm0Iwfz342yu15wIbrtblehpCvbwmdKPZLj90=;
+	b=LNQ4WDj3rt2KossqQnDU1CQx7oWgtRRyRGU6tJ+83It8dM2+431vAnyCHBZTDGdwlQgFh4
+	gHU13/HQ48bRLFtWLwOglYwGJEsZQBBAAJiOznsPFXbYcdxqK7jpmIBR23NMHJfH05b5ia
+	uat6cnezwheQMJTi6hZE+uHwCAql85A=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWN1l1qA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 95E87625E0;
-	Tue, 24 Nov 2026 10:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DBE1F000C4;
-	Tue, 24 Nov 2026 10:41:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795516918;
-	bh=AE0vJk79CKTdMFw59CFTsMKuZIheJA+GV8fGWrg4mNY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gWN1l1qAlUPy5kx9vhm4ibgqUyn7ct+n9w4cKw5PMHL9MzHUiVwYdfD8Cv/odv3lv
-	 LBw93svZxkQdO9x+aL5w1wCO23lRoxWGdd3wI682vlF3BifTjPwMyWMom8S32ZZ+Pr
-	 fo1KvsswECXHcrzluqwhqKW1pU+VY/sVXB2TlFdXb97DB10j79mMLc9ZYXJ2udwRX+
-	 XulQybbDYLxa0szYEdiN94mip5xlUCNv7MwZ9qo/wdif+72F6COeq0IGSL2kc4aE+s
-	 3oKmyOd/pDJOlCKjPPJxuwsCIEG5LBe6X9rqws4F992+XlXmCyI+rnhOpdQVqMqtVE
-	 HuX2ocJU1SZYA==
-Message-ID: <sashiko-outbox-230973@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/rmap: flush the TLB once per mapping in
- page_vma_mkclean_one()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Qiliang Yuan" <qiliang.yuan@linux.dev>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Rik van Riel" <riel@surriel.com>, "Liam R.
- Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Harry
- Yoo" <harry@kernel.org>, "Jann Horn" <jannh@google.com>, "Lance Yang" <lance.yang@linux.dev>, "Andrew
- Morton" <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox" <willy@infradead.org>, "Kiryl Shutsemau" <kas@kernel.org>, linux-mm@kvack.org
-In-Reply-To: <20261123-feat-mm-mkclean-batch-flush-v1-1-7e998ad13251@linux.dev>
-References: <20261123-feat-mm-mkclean-batch-flush-v1-1-7e998ad13251@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 24 Nov 2026 10:41:57 +0000
-X-Rspamd-Queue-Id: 897EC40006
-X-Stat-Signature: mhtta18r5qxqzjd4f14g6x4omesfzmxc
+	imf05.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=MD2yQ8mo;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf05.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2f04bea9a93so37113995ad.3
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:06:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1795518389; x=1796123189; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jvR3C0Rm0Iwfz342yu15wIbrtblehpCvbwmdKPZLj90=;
+        b=MD2yQ8mo/cHsSkZVjpy2zsYiHAVGnUWp9ntJ3xlmYVbLjgEtCnyRHhRHAKRYM2HmbA
+         F3LuFLMTE6Jt7tU8R/9QQiy3O9Iy2iaL1YmRn8YmuXMGlnkZm6GBCsSq3LNSYB/wqTVb
+         UnN3kAS7EeyHxmuOrejO66BVVdc2n5OewSKxmkflQniSH8T6tusYDcg5l0adT+zwy5zD
+         /fdsqdVITp/Hb6eToFl3R19S+8/JSeYJzGdH0BI0HhpjI+cwVTQFDxCYG52QFpfZXMmw
+         1S4iWTjpChq7F+tsA/WXKgCrWmgUp6VY6z7X1OHvs0D5IVl3NiRXwSmR+EvczgIKcMoT
+         IU8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795518389; x=1796123189;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jvR3C0Rm0Iwfz342yu15wIbrtblehpCvbwmdKPZLj90=;
+        b=ScMqxrHSYXSbYT6QH167QdI80YI7EUpUt2xqek82FvjCokQrFoevGfUX75RLfFMf4a
+         LEuCObSyOuBATXHjCSQpzdtWDhoPu0ef/5YAwMQV+kEvthfkK1EjNrHirDzy8P4FSEhf
+         1YGut/ARO3XRN/fzP2D0S1KWmGMqU+E6lZfswfaR9lYTUpfREHmB9Ov3i+YI/2SilRJ0
+         tmrfv7eX5f54L8oOuwNifn04mmPyjWV9J9QfuCK7Zj6BlbBiPOyfSooqJmOvWzRCs2BO
+         kUGp12+7kGHDrzep8jibW5/dSre6f32HVxrq9loljkVFRShpYP+nEWlH9tp3ao9taGm1
+         jggA==
+X-Forwarded-Encrypted: i=1; AL+hErF2KmOfUGvsRVoKn63O0rONaKLTsZYTubIRTh28CeCzyxS6ev+2nIVq2bml5KGm8mW3SxoHXci5pA==@kvack.org
+X-Gm-Message-State: APuU4Z/93UuiawhvwXhO5PzLQ+n3TqKS1qX+DNHHNErIN2/HMhjcz2CA
+	HPz6nlamDVUHYjm7zg996GcPVB4Bp3sTvnCthy7JsuHitPKPP+NaSgPtPThIPs/7NxU=
+X-Gm-Gg: AZFdTZe0n6GuCPXEd81jxuyq/xCjRg6g9xixuk3ZQMniZ9LbG0JblpSTeh7eM2WoHPK
+	ci/erLUI4OCVIFhC0pj0gwRrW11pB2hwB+GPxr7RaT9pV3vHYHsPkDbDeWFbPy93YBvw2LEg98f
+	IdVmfwfvgjdo1OIulc2lzLZROuuq77VCh3lVyFsi7NLP019UpWYhNdvqgYmJ+30xdZ+2EK3YR6a
+	Lx96RdBguZIFtcnASXI/kXcfXc1a2XlDRQBMZeWXS8EBYoZEB1vqnj/Lkg31U9wGz2ZV880cWip
+	7D4BaBqeeaJKN6v98P/qKb8oTb7FkqMA0ar7PECMVKDev6ZpOrP2IsdCQMFeAJLC1Ix29KE3N9c
+	mbCSi87GOWAe6y/R2q8oHW4h0YdtUpTJVTO2mpLSzzpYJS9uh2yfSUlQxlcI/bzQYL4itnl4Q6U
+	OQ0YqNtCe2nY3Dxy5n9tu05eTrzxwHPcsVSS4nOA4mOGpmH4v6loK9PPLERmwwscQRPkutBzUXF
+	g3StOds5GhFlL/e+xJraTZbi1KPbkDRtYFP4oq0HZ8ZLT/kk2DBsw9cLv2ynDtoANINyNm/PgkQ
+	vFKTwi5kBJGOXfRstQ2StQr/3wqANqBXUpI9I5VwBf8UqTVK4g==
+X-Received: by 2002:a17:90b:4483:b0:3b0:9deb:d991 with SMTP id 98e67ed59e1d1-3b41c92cbb8mr13417925a91.35.1795518389329;
+        Tue, 24 Nov 2026 03:06:29 -0800 (PST)
+Received: from n232-176-004.byted.org ([36.110.163.98])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad0a33fsm22909735a91.6.2026.11.24.03.06.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 03:06:28 -0800 (PST)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH 0/6] mm: Simplify HugeTLB vmemmap optimization code
+Date: Tue, 24 Nov 2026 19:05:24 +0800
+Message-ID: <20261124110530.3004071-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kcn36fhnqb9rrh9eat1brk5b47rmg8gr
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795516919-378646
-X-HE-Meta: U2FsdGVkX1/SeXzHZAxO4g2ayheyW+aXXRVSZ4J6oDKs3nSWW1aPYI20MlZm63+UoPSsP9akmwIEDDFqER7yfa/xyEXcLFpxBpDkEf71LGd151pZbHYHSqWappf2WwVbEItAplwQKhrLpogqbMjKnhu2eYxLajA1TDc7eAlvLCJqHUgnbgqTc0uUhPFOKmQxG+SE+5NcPC1yLVgUGdEbcczLfwZwXUhyfEoG9Llzb7OJ5GAFNwkW5pLmcxe34WDqhgWFLJ7DNy7rxpVN88FLtkfUxRZnud6YovgY5kivNVhDWiUjhHeiAnApXRc0/Zgldfg2UuOGcIhbB7rB0c39Hmb/907jhxAywacYZ2X/+//GpZpVvfkwXu1KRKcS7k3srkf8ix+BRqN5nDNKLokmEq5J18ZMt0ylBSJIB+ypxncwIZmBU/Oaqur46I75htWQWdh6C2f71FT7cWvDeSB3X8sKhbDO3eYwQ0MLvZ7OehkbJV+Ns5T9yWM/19L+DgUd003cFzA224SbXJfuy/1OM6c9FIKW4jdH4RIT0fUXZMQiLnP3e7KlHtISUNMg87JrFuPJZ46KM4wbzdQHesJEK74FXuP5aBD1jev4+R6RkdIulyNcqEOjWEQpi78oMzzi9qGL1Md3t8icT8FxRlooFvMS4tvvBVTGB9YOglKUn3g5668tst0UbN93a8CwUrdIah+H3tZWZCteY0H3b9O1UlVu3437cP560xfDP4XjTNkhbt3+8DXpXzV4Nh+leBSdJd3mRvFdo5H94/o6lC4rOvRa/vOG5IxgRJZgApteYclz1Rr3HW9qNs60BpnzcofgCWJvInr0VOHVHtbMAbITx6bFCzGkwBC2MIskDrwqOHLHd8u9BG73WkCIL1zXJYgT/pVVSbYmxfKMv4tbzptQA8XosodtHnFt/IiSEc5iZGEORa1kBUdfX/itNvzMtdbRpISswgjrZdYQsXqRDWS
- iusLKxXG
- jTfN7GdWyxih6GkPVz88gWZRZky3en2GVVp+lETIrV2MoylC90y4IhHzqgkew8KnyZ9v3Qsu/DA1C/e+tVA3w09cYhtODoaUu7h339BdhOy5MykBk1rFs0TXt7HL8RRrjMdA8QijGUCk9zfEBm8to07Yl6iujBq4hESVPBBuEo3CN1JwmhxTSnV+k6UMEnMHFveKf2GkS9n78WDu89BgRtEFRXV32RjOXCMmqzBrRBy8wsF3eLLVjqeozn+J352Lo8UrBhedOcyR93mA9HyRWS0gEOhpwaBEstC9SLw3WxB4AnedRbxYH1ZCHNScbGcR0d/QMZH3Aq12NRQsx1VCgkC8zhqFmJeGuvNRRx1uJkEMnq41E9gvGxyUBTOzrDICMNEqW1QlmN0IrgC634KQ3397iaqtcIeIvcdvHR5XgUreiNgHrgm2yhSG0v75mnhbJS7TxeyaJXxypUwNx+tQLKIgFbLeH9rDLCoVLsNirWvTbzc8Ie+hZY0HjFLiR92nF4roct8eYQQY/7TMvC7VsRnuKtaWW3Q84I3/qaRiWlFqAQxQNhYu0R2HubN1autarNWvu1Wyy0HJEWfQChZ0jJZHaFtWGVb6w0DmnnuFFdSgB24no1Ytk2KRzTp041N+505UKoq5ijPO+mEAjkWg5Dym4zlpUBYy0WhlLYb8NGJoB65sOrW19VD/JhCdWpK88D5rv1QTVyFNBUiWwWtj7VJ4BMfnbg6HgWThwKCcodWTgQBog1xI27qiDGWtjIqeevnzOHmcJIlkoEoSB5GG8qxoFHyLpp7mdQ3YpEHwgMQXteTHqtntmkQKGgJWpqy1fOzlnIJzjODixfwM=
+X-Rspamd-Queue-Id: 45CED10000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795518391-864743
+X-HE-Meta: U2FsdGVkX1+XBzu5DTD5RhAG6gpwQC4XlXNX8maAcjzyivzfWBZUGOmjMuG1sTpRksnGXXFMRieYvvrn7uv46qluBETMNRNRCytWtbEzXDfTcZKHewgBSMe+sHToF4ZLU6URJ7tUMUefqRLPSke2UvfgPJpEczxp6DK2HOe4I6uPw1ojrZTp4mgXC3jI9MFOaHKuSkxO85xZIhlY2EGOjdfHuF7WMRXRLxaEDcnD01JJ9FBRY9secgxLsqYJS8XM/fZh4m3VlwfJ8rDLxWFzKJQVzqWhO3Uzv4KnMs+DMHZwhA9uhYICorlC9uULzrgwWl0akQkSIsiKMCAFqiykraF9Jnd9BaFyUh3ld+jPfjdZiPNPWfZyNLcKgaa6gYESOw9OjjXRSNGdXpfdVYeB37ez4CeqjS7m48OGiCEUkD4KB1bD9WsFf/I7I6N2kv+a8XHYsM5fXf8REcbLon1CjQdwDVpkEWcT+7Q3TkCfoADmVcQJBhtUSCi3jSUGvQqXPKb2nAWDorsaumrfDJL/PW4Fref8A7GZHsZBDmfD8HT38o7nwY/9v5slNb6IYeus1Z+QCGE17vnFwr3VqgLW1QPagXvI7zvGnAT+PbzQFHeW6Q12t9LTN0/h+7enVY8odpRg91GXiRq3HufFPVNjhIEbPeM1noYdwc8zOXhqmpgVuBdQtSxWwtnYxqaxu4+pkKNnkSkpWIAYv315UPESgfFLi5xdtW20Eh1yR2bza5Qw7YwwSxvL1d4aV0dj4Bm7xHYUkI+APS1gIrGorZWmFoUWwdcXaiW/7apy7qoJx5nSHrAGr+eQ/Zgx2ACDP/5VROYmvNs1NeN3UL+wpZYq5fZFekXsLJhBrIQG6zJGvsY32JWEYS/tcVAwkxBjv/BkaWsvbrQvwMqwRuR2c2IB6++dWZJhx1dw1jEu++iADKh6JSvs8me3gdkqZksFp+0Oq/NL8nth04nEEnW7SZp
+ hdGoUnQE
+ Y5XDo2QkKh89WeEE/m3BGXoStxkWbRaTElHcv4Wsr9CBEgNSKcUuEZUXVsDenIb9wuVKH3z9ZPvnN5I92pVFZXN2mltyNQwMPXLZKuqtk+3skXI7sjd+HDDqXNAseXqdHAvA3nQQEn4MilgSk3CNJHkOyFXJi2KwA/1iIlNM/pKnUJ8ZgA6ZD4BJHZujCnwqSDP7I7E0RyHZPfJPw0UohlzycKrUnaZMjQf/voeZ6hbmgnBwLkwn378ArsMq/OGXzcAB12hECi6z8sgr2RhL1T6XCb2NU5m3UV1WpDjZpLf4YSbcndBaHbvKn72eeM+09rmLZm/r06TUwK9XJOTO2CMOe7Lg3gW6KR8sSMqsMiYqaU2EMs5Uoz2ZvwAVa2i/SU5caGoHyCZy3V0plWzUS7EoAQOZekIPze0kUWZ/IDecihId+RdZwoDuVmyrITcRl1cO2vyLy78Ol6xHVXduU3Os+YqfaJKFPEdIlPvhlYYMqMHjgD1w/U0i4cBbg63xo/Cd9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,148 +124,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] mm/rmap: ptep_modify_prot_commit() fails to clear PTE dirty bit
-  on Xen PV
-- [High] mm/rmap: missing tlb_flush_pending tracking in
-  page_vma_mkclean_one()
---
+Hi,
 
-commit 5d94fc7a1fe6fb48da4ff29187b2f51e4ede88a8
-Author: Qiliang Yuan <qiliang.yuan@linux.dev>
+This is based on the mm-new branch at commit 87cdbd9bd631.
 
-mm/rmap: flush the TLB once per mapping in page_vma_mkclean_one()
+HugeTLB vmemmap optimization has evolved over time, leaving obsolete
+and duplicated logic spread across the implementation. This makes the
+code harder to follow and obscures the contract shared by HugeTLB and
+the generic vmemmap optimization helpers.
 
-This commit replaces per-PTE ptep_clear_flush() calls in
-page_vma_mkclean_one() with ptep_modify_prot_start() and
-ptep_modify_prot_commit(), batching the TLB invalidation into a single
-flush_tlb_range() call after walking the mapping.
+Simplify the code around that common contract and align the HVO
+implementation with its current behavior.
 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 65646ed6fc453..4c3d9cb47e550 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1127,6 +1127,7 @@ static int page_vma_mkclean_one(struct page_vma_map=
-ped_walk *pvmw)
->  	struct vm_area_struct *vma =3D pvmw->vma;
->  	struct mmu_notifier_range range;
->  	unsigned long address =3D pvmw->address;
-> +	unsigned long flush_start =3D ULONG_MAX, flush_end =3D 0;
-> =20
->  	/*
->  	 * We have to assume the worse case ie pmd for invalidation. Note that
-> @@ -1156,10 +1157,11 @@ static int page_vma_mkclean_one(struct page_vma_m=
-apped_walk *pvmw)
->  				continue;
-> =20
->  			flush_cache_page(vma, address, pte_pfn(entry));
-> -			entry =3D ptep_clear_flush(vma, address, pte);
-> -			entry =3D pte_wrprotect(entry);
-> -			entry =3D pte_mkclean(entry);
-> -			set_pte_at(vma->vm_mm, address, pte, entry);
-> +			entry =3D ptep_modify_prot_start(vma, address, pte);
-> +			ptep_modify_prot_commit(vma, address, pte, entry,
-> +						pte_mkclean(pte_wrprotect(entry)));
-> +			flush_start =3D min(flush_start, address);
-> +			flush_end =3D max(flush_end, address + PAGE_SIZE);
->  			ret =3D 1;
->  		} else {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+The first five patches simplify the HugeTLB-specific implementation.
+The final patch centralizes the support condition shared by HVO and the
+generic compound-page helpers.
 
-[Severity: High]
-Does ptep_modify_prot_commit() clear the PTE dirty bit on Xen PV guests?
+Muchun Song (6):
+  mm/hugetlb_vmemmap: remove the vmemmap savings boot message
+  mm/hugetlb_vmemmap: fold vmemmap_should_optimize() into its callers
+  mm/hugetlb_vmemmap: drop the redundant hstate argument
+  mm/hugetlb_vmemmap: open-code free_vmemmap_page()
+  mm/hugetlb_vmemmap: drop obsolete restore refcount warning
+  mm/vmemmap-optimization: centralize the vmemmap optimization support
+    check
 
-Per include/linux/pgtable.h, ptep_modify_prot_commit() updates a PTE while
-leaving hardware-controlled bits unmodified.  On x86 Xen PV,
-xen_ptep_modify_prot_start() returns *ptep without clearing it in the page
-table, and xen_ptep_modify_prot_commit() updates the entry with
-MMU_PT_UPDATE_PRESERVE_AD:
+ include/linux/hugetlb.h              |  2 +-
+ include/linux/page-flags.h           | 10 +--
+ include/linux/vmemmap-optimization.h | 14 +---
+ mm/hugetlb.c                         | 14 ++--
+ mm/hugetlb_vmemmap.c                 | 96 +++++++++-------------------
+ mm/hugetlb_vmemmap.h                 | 45 ++++---------
+ 6 files changed, 58 insertions(+), 123 deletions(-)
 
-arch/x86/xen/mmu_pv.c:xen_ptep_modify_prot_commit() {
-    ...
-	u.ptr =3D virt_to_machine(ptep).maddr | MMU_PT_UPDATE_PRESERVE_AD;
-	u.val =3D pte_val_ma(pte);
-	xen_extend_mmu_update(&u);
-    ...
-}
 
-MMU_PT_UPDATE_PRESERVE_AD sets *ptr =3D val | (*ptr & (A | D)), which ORs t=
-he
-existing _PAGE_DIRTY bit in *ptep back into the committed PTE and undoes
-pte_mkclean().  Leaving _PAGE_DIRTY set on a read-only shared PTE allows
-can_change_shared_pte_writable() during mprotect() or NUMA balancing faults
-to make the PTE writable again without a write fault or ->page_mkwrite()
-notification, and on x86 clearing _PAGE_RW while preserving _PAGE_DIRTY
-produces a shadow-stack PTE encoding (pte_shstk()).
+base-commit: 87cdbd9bd63174de47ba16555bfe9800a8f3da07
+-- 
+2.54.0
 
-Clearing the PTE first with ptep_get_and_clear() (or
-clear_young_dirty_ptes()) before installing the clean, write-protected
-entry would avoid preserving the dirty bit.
-
-> @@ -1193,6 +1195,12 @@ static int page_vma_mkclean_one(struct page_vma_ma=
-pped_walk *pvmw)
->  			cleaned++;
->  	}
-> =20
-> +	/*
-> +	 * Flush the write-protected PTEs once rather than one by one, before
-> +	 * the caller writes the folio back, as change_protection() does.
-> +	 */
-> +	if (flush_end)
-> +		flush_tlb_range(vma, flush_start, flush_end);
->  	mmu_notifier_invalidate_range_end(&range);
-> =20
->  	return cleaned;
-
-[Severity: High]
-Can deferring flush_tlb_range() past pvmw->ptl unlock without
-inc_tlb_flush_pending() allow concurrent page-table walks to skip their TLB
-flush?
-
-page_vma_mapped_walk() unlocks pvmw->ptl when crossing a PMD boundary and
-when finishing the walk, before flush_tlb_range() runs.  Because
-folio_mkclean() only holds i_mmap_lock_read(), a concurrent mprotect() or
-folio_mkclean() on the same VMA can acquire the PTL in that window:
-
-CPU0                                  CPU1
-page_vma_mkclean_one()
-  page_vma_mapped_walk()
-    spin_lock(pvmw->ptl)
-  ptep_modify_prot_start()
-  ptep_modify_prot_commit()
-    /* PTE is now clean & read-only */
-  page_vma_mapped_walk()
-    spin_unlock(pvmw->ptl)
-                                      change_protection()
-                                        tlb_gather_mmu()
-                                          inc_tlb_flush_pending(mm)
-                                        spin_lock(ptl)
-                                        /* sees PTE already RO/clean;
-                                         * pte_needs_flush() is false */
-                                        spin_unlock(ptl)
-                                        tlb_finish_mmu()
-                                          mm_tlb_flush_nested(mm) =3D=3D fa=
-lse
-                                          /* skips TLB flush */
-                                      /* returns to userspace with
-                                       * stale writable TLB entry */
-  flush_tlb_range()
-
-Conversely, if another thread has already marked the PTE clean and
-read-only under PTL and released PTL with its deferred TLB flush still in
-flight, page_vma_mkclean_one() sees !pte_dirty(entry) && !pte_write(entry),
-leaves flush_end at 0, and returns to writeback without waiting for or
-performing a TLB flush.
-
-Bracketing the walk with inc_tlb_flush_pending(vma->vm_mm) and
-dec_tlb_flush_pending(vma->vm_mm), and flushing the full walk range when
-mm_tlb_flush_nested(vma->vm_mm) is true (as wp_clean_pre_vma() and
-wp_clean_post_vma() do), would close both races.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123-feat-mm-mk=
-clean-batch-flush-v1-1-7e998ad13251@linux.dev?part=3D1
 
