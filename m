@@ -1,106 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3D3606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f5jCebnE
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947A6606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:05:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 657566B089D; Tue, 24 Nov 2026 18:00:45 -0500 (EST)
+	id B1C8D6B089F; Tue, 24 Nov 2026 18:05:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 609CA6B089F; Tue, 24 Nov 2026 18:00:45 -0500 (EST)
+	id ACC6E6B08A1; Tue, 24 Nov 2026 18:05:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 481B96B08A0; Tue, 24 Nov 2026 18:00:45 -0500 (EST)
+	id 9E2F76B08A2; Tue, 24 Nov 2026 18:05:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AF7E6B089D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:45 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A7FB0A0DC2
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:44 +0000 (UTC)
-X-FDA: 85471534008.04.7084519
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BE34F20011
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:42 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f5jCebnE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B8CD6B089F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:05:16 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18C3B160CAE
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:05:16 +0000 (UTC)
+X-FDA: 85471545432.23.4279421
+Received: from insect.birch.relay.mailchannels.net (insect.birch.relay.mailchannels.net [23.83.209.93])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A31D61A0003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:05:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of brad@sim.vu designates 23.83.209.93 as permitted sender) smtp.mailfrom=brad@sim.vu;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795561242;
-	b=GTDQM3FD/uiG0dsvgH0E4Ml43XnrmDo9YfRkhF91dwziAI5JCWM9fd+Q+pc/LaEy5z6LHP
-	9gSLplj7V4aJxxd/tdvqt2HAr97Glj8MADBWjcDcwug3txFQJ4ZHKdtUEXBC4Aw64rUDne
-	2iacQrE9LRHSQV6pfpnQTkfTpy3YwA0=
+	t=1795561514;
+	b=IEipg40TI+VnZWqUGQHszdEyVi0WJsFwbQDkQws/Me0ZAZHxGtvFPkG3/MIc8TzukaFwIB
+	GyK+2kErhoJIRcVOR5qZb+zdmNR+LfIIEQs0fXLiNbN/uk1+mQ4TcjjxYc0GRwijK6SZIi
+	BE+X5uxXa0OpTN0JHUFPyjqV0gr1MJU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795561242;
+	s=arc-20220608; t=1795561514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ygA0Yd5X995bialEzx8ph89vbNS4OBjVFHHzxvAT62g=;
-	b=BkmNQQojsgFzLXp1vYuIzwMySrw5yLJfh8PaGyHgKoPoWaD0T1Tox2x6MPd1e4719w2UN8
-	DZkQQTHvgiZWjJsTld8Ck1kK6oQ7/zwwj021LppEV1zzuuTMJze5cstmdW7l5UTMV+L2iN
-	fAZ/+uYQARZ3SFw693pwP0+/cXkNH4c=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kp/deucgwzKBnen3+3AgwDCnzUqKLXSpu8EfTUn6Izk=;
+	b=b6qTduAnbEkGBR4rsA9oIyChDuNTyb4vNYDET0VSsx0UXH+i24wQgV065n85auJEM1MOC1
+	Pg4zAT+N2l83N1m1awnCWFTVqT6DLNxPUUhJAgAymNFbAWL+ANwAUDju3jx6XHPI4m9JNM
+	EjdzHYUSlZhpnAz348CQCXbvQpavjVs=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f5jCebnE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2443641214;
-	Tue, 24 Nov 2026 23:00:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75721F0093E;
-	Tue, 24 Nov 2026 23:00:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795561241;
-	bh=ygA0Yd5X995bialEzx8ph89vbNS4OBjVFHHzxvAT62g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=f5jCebnEhbqXaTHxAeFw3ecgVwpAFmn9cbYjBd4tKLNU3UPDj3a7ISD5l2MFpkoFu
-	 TI//e9PLV4D4bSuUEEeSeCiEEthjXPMpsJb6pVvzYCyL3aAH4tEyRr8UnbIQ/r971r
-	 bOAIRFZ7wRvFhjWuYVOr09Zmgx+rui8BDAL8wEA/1gwLpg6/jHcjrQh0Bce55Af/aq
-	 QBZWfQwoJBNAUCejGhSnNL2LC1DgHeFJWSt49UfOwpSBRihZF+Yf3kTpoY4byVYFTw
-	 G7gZQau9G7RsjBePu7VYvZt91cZpN0y2DK775Hz41a5AeO002ABTFFQRaxBZL5a8Uc
-	 mB7mIwZwLGiJA==
-From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 24 Nov 2026 23:58:42 +0100
-Subject: [PATCH RFC 19/19] selftests/exec: test when a vfork() parent is
- woken up
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of brad@sim.vu designates 23.83.209.93 as permitted sender) smtp.mailfrom=brad@sim.vu;
+	dmarc=none
+X-Sender-Id: instrampxe0y3a|x-authuser|brad@sim.vu
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id F0A55642983;
+	Tue, 24 Nov 2026 23:03:00 +0000 (UTC)
+Received: from cpanel-010-lon.hostingww.com (trex-green-9.trex.outbound.svc.cluster.local [100.97.173.43])
+	(Authenticated sender: instrampxe0y3a)
+	by relay.mailchannels.net (Postfix) with ESMTPA id F13E2642996;
+	Tue, 24 Nov 2026 23:02:58 +0000 (UTC)
+X-Sender-Id: instrampxe0y3a|x-authuser|brad@sim.vu
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: instrampxe0y3a|x-authuser|brad@sim.vu
+X-MailChannels-Auth-Id: instrampxe0y3a
+X-Continue-Snatch: 32cdd8697f597c43_1795561380886_2841758545
+X-MC-Loop-Signature: 1795561380886:1204463361
+X-MC-Ingress-Time: 1795561380886
+Received: from cpanel-010-lon.hostingww.com (cpanel-010-lon.hostingww.com
+ [18.130.191.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.97.173.43 (trex/8.0.2);
+	Tue, 24 Nov 2026 23:03:00 +0000
+Received: from 162-195-230-196.lightspeed.wchtks.sbcglobal.net ([162.195.230.196]:53986 helo=epyc.attlocal.net)
+	by cpanel-010-lon.hostingww.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <brad@sim.vu>)
+	id 1xVzXL-0000000ANIw-1Adt;
+	Tue, 24 Nov 2026 23:02:56 +0000
+From: Brad Hawthorne <brad@sim.vu>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	david@kernel.org,
+	surenb@google.com,
+	shakeel.butt@linux.dev,
+	linux-mm@kvack.org,
+	thehajime@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/nommu: keep the maple tree in step when mremap() resizes in place
+Date: Tue, 24 Nov 2026 17:02:34 -0600
+Message-ID: <20261124230235.859633-1-brad@sim.vu>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <awXMCqK5H2TOlvtf@gremlin>
+References: <20261121083139.803682-1-brad@sim.vu> <awXMCqK5H2TOlvtf@gremlin>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-work-exec-update_lock-v1-19-e489035395b8@kernel.org>
-References: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
-In-Reply-To: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- linux-fsdevel@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
- linux-perf-users@vger.kernel.org, bpf@vger.kernel.org, 
- selinux@vger.kernel.org, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
- linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com, 
- David Hildenbrand <david@kernel.org>, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-04696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12235; i=brauner@kernel.org;
- h=from:subject:message-id; bh=GmT4sHxTP/A7S4IU26xSgSWBzeaKz2RMQhkeZET1OPQ=;
- b=kA0DAAoWkcYbwGV43KIByyZiAGsGFsugFPbORXABfWEG7AK0viSfw4y5YXethbiY8xPFcp9uM
- Yh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmsGFssACgkQkcYbwGV43KJp6AD/SVAq
- /vsoIIuO2HFmO7u5m04z3aEAxT+ygO4eOMSMiPEBAO37mYKnlpsSvX5+godnjIhpDKUxR3BnKP6
- MtwLA+9MN
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 9k1kpjo5tzn8chez84w6j4cbia1b4q6c
+Content-Transfer-Encoding: 8bit
+X-AuthUser: brad@sim.vu
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A31D61A0003
+X-Stat-Signature: 11triy17qoc8zffbq6ujnxkayxp14m4f
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: BE34F20011
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795561242-623606
-X-HE-Meta: U2FsdGVkX18LR/nIqYfMfVX+KuCfHQ5ke0rKbTB+UeUyPxoKGLsaOuwMePBecQREXBIRyMfIaC6P6bvzjZRQJPMFOFRCkzzXIgpcKT8GMBrhR73Hc9uQb9ZB5Lk109xeZ54RhdUJwyVxGpIW8GfD6dklbHgEtS2n4dj06kklf+ZV+sJjVKNMYJaL++6mDQPIHBn4X6sxw4vQwaEJUaU7jOj0tPX+izJfXpNIyhsFgWrFy0SYUjFhyO241RPB6skw+QrL3Wrime3qgZ487Jg+O2ILHzmGj3JY14CCWiGo1h4MwUNJWe1G/7vDFCKp33UyfKBYs9ocbl19ur/quj2L8K1NbBXR4lwxvHG6/j0IpAwRsGwtZK2aODULHyq0Qi2Pj/YdviRU0Lf2Q9RAVthmOnddjjmxtG51/nqtkrC7H6hOHJgySGLe0EprKiMr9RBXXqkBwDyH9/JZXUByzcxRPfC54t39zPo2qwW0UMlD4OOUijDVzGC8oS64Y4vy2qXP4BRCTtIUyD93pzW9jLW+LIez63q+pxRel8d6Vx2bpNzSjzi7hjTVO1amyUN0A73P9+0kiEfBlMNAesBOsEKhc5VxLoJs29nLN3sUdLxc6T6eFg5JDwL4aCHhdqZGSTi4x513K6bvU6ftmO2vrKkKo/ULVzOjaZ88Eb3TqRX57YefUoYaRzjExKpZGwLLdioqgL0rVv+4bJMW4MBG905sPMOcOfpU9V0PIDjPXaMl3qznYa7BZMtcMS+GuV19BF2sKtzUyN+EwRj+G4CW5dDmCXoOZ0QIsoNWELTiXgx2RywYKyqAR3XiuQGoSfQ/bI1xFW3v+NLTebwSdPmOgmUSFI6TkwIx9O6/Or/O7BhcCsJ/YCCUweFt3qm1iKKxp8bZS8cFvNJGLQsbflYwe3bhigTPpz9MjHwnnnSNiASnkwqJxXklsC0G1jNpq73/iRFwdhqzfh3bWDhk3GNhF6v
- 8xQu3P7c
- i1iDX5PMtJUtIUlqdlPCcv1qRcLfoXUnoZD2QFke4QbdQE7tn8ehBZQqQFJmo8Mogam5exWwVojsMr51iks+/BMbFtp31rQwktf1CLae/JadY7ZGO45Om6PH7WfxCrwSRX8+RmFiKeXPsl4cleQ1sliV+dVbv03mkR7+YmrFtjUv+XplebsTmsn3Z+HxkvxExbFkNWBfCQi/mOwIjkPLHq2RCRbzCPc8yDmchwNvAfXIuVy4Y2cPk9Gp65lGE3Zsq+11UbjNjdnPitSQJVdPAUn88VJWYVsJHPbsM/+C3wfsa0hbJFzxJhdf4SsauKqDk5g6icz6lD0mvJMuWdRy2/0uBpbnF4JKTNVhU5T9+Eul2Y7Rh+6mCpEiQbHrryLPFebY643LM4tgMnLxl0cEnPqWgrjVmzSG54k3joEGyEGd/AUAE18+rTCCjLIfxBlO3ps1kcseqEvCFvPFJ5opoXTgJZgU/QLZebphmmr3su5YhglGx2/zQiHRHqA==
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795561513-73836
+X-HE-Meta: U2FsdGVkX18xMKxoh7VqEBnrv4FuNy0LkoZSWNIT9vN9dg9E+V5RNeIuKlgVSXTuI+ywxoIERHK8Yrz68SJEv87MCGL/szbahA4p4sPrU18fs1CowYj+6TW6SfR326DjwJWps2WxW3XbzCufm2L1Ac43OmIdelOoCB7OAVlhxG0+5EDLjF1DZsie+oLbblpy4l26/l/9MFXAm5xXpGiHMSUk65VtgjJNk27VaOecRM2OhoFJpTnrkyBxUhT3tkYINQS/AxCA1mVsW8q+++MpaZrPE/epICIxWpm/v5hfy/Xzgnkzt6NTmfSgzBhyDYXbkSX/FMHy0TWw2ysXUlqd+fqstwu+iSVN2IjEw8GxOt7Vrb+V/WECjKbJT9ghRNk/9QXV7/PL931/glkrZRBzoLJy0zty3Np2NLWphqpRrowDX46fOPX5M4wdzH2LUEvrkM6pLgAtJzzIzL121YJZPtcPqCPOGfCulvtFazfv8qcw7GPqiPjQ6D2fbqLLZrZq6eVd1Tu4zbBmyRCZeWmxU6iFoIDCznf8N29R12Q2MetZTqIVulF/BB5ekwsiKo4Fr4i0bm1ewVmcR2LVI4LlI8tu2pI95Sp7E+NYk19y6ApajdqUuhszkXUlObzXkYv++9gBOmRauK/jCbA6ua+zoTFuWyNacxPPAabqis0LCIQoSVJZf7ogGUVM7DtY1mstp8n34URwggzFLBGsv6SBxsxA/0B7z/Kf667YvCdCnO2MEBKNSHtbW4xR4jHNGFPBV5z+1F9Z2qc4DbKx9dRl/bMDJ20sFX/fDdEvv+Fzo2sSMK9ALo8F2BUIZ9J4bET+vLG4FHUd5xg/GaZqCqutdzHHOr2OaMh4N+I/5qWFq/YG2phWDA9sh2AE3ecbcPcsqvcUwXzdzEh7tv3Yhgkg5l7hcmJfJxOB72NY/tLbthARwI6Qh7sg9iFrTfj3zKDxAxxuR447T/2SSSU82t3
+ fz1giRZx
+ 8Gkqh2MeLliTqFRRoaZPs9fo9Sg9UOx+Y59sWuqye++vElzCGEu2TGlVeFwQrmmh9DZPCVYKftFA/mLo02c70mfmBGf3grZjT+9rk8J2blTqlgc2sPhyUVA0odT1HkPqLW/QdGJtcquezNgzf5vmaN/ndFnqprYRaWxDoKy8yqgThQx3KcQY18bNNQxrLLkQ6njxM6qD8AVjGzzeXoBqKSjx6t2ZIkD/ob1YEIV7g3SaXObpLlw7iUuklz6Ple82CLuOny+c2HMkDiNv7FxO0+zIZVqEHQSKeTFphTCQA1BLGTrf/84WaMZuakhFvrCWNM70e9PxMOuP1RWOSmoQH0vyQpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,428 +111,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Test that a task which called vfork() only runs again once the child has
-left the mm:
+Thanks for the review, Lorenzo.
 
-- when the child execs
+On the points you raised:
 
-- when the child is killed in the middle of the exec
+- The comments: agreed, they go.
 
-- when the child exits
+- The unused iterator and setting it up twice: you're right. The
+  iterator can start at the old end, check for an overlap there with
+  vma_find(), and do the store, set up once.
 
-A parent that is woken up too early only has a few instructions to catch
-the child on the mm. So the parent runs in a realtime scheduling class
-on the cpu of the child and preempts it as soon as it's woken up. That
-takes a kernel with preemption. The tests are skipped without it and
-without the right to use a realtime class.
+- The preallocation: there's no lock here that forces it. A single
+  vma_iter_store_gfp() would do.
 
-To kill the child between the release of the old mm and the switch to
-the new one it has to wait for exec_update_lock there. So there are more
-readers of its /proc/<pid>/stat than the cpu they share can run and some
-of them are preempted with the lock held.
+- The casts: they follow the rest of do_mremap(), but they aren't
+  needed on new lines.
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- tools/testing/selftests/exec/.gitignore |   1 +
- tools/testing/selftests/exec/Makefile   |   1 +
- tools/testing/selftests/exec/vfork-mm.c | 363 ++++++++++++++++++++++++++++++++
- 3 files changed, 365 insertions(+)
+- Why the tree is updated: a shrink has to clear the range it gives
+  up, or the tree still points there after the VMA is freed. Once it
+  is cleared, a grow back has to store the VMA over that range again,
+  or find_vma() misses addresses that are mapped.
 
-diff --git a/tools/testing/selftests/exec/.gitignore b/tools/testing/selftests/exec/.gitignore
-index b27f4db42f87b..24f8f80543df1 100644
---- a/tools/testing/selftests/exec/.gitignore
-+++ b/tools/testing/selftests/exec/.gitignore
-@@ -18,6 +18,7 @@ null-argv
- /set-exec
- /unshare-sighand
- /update-lock-fault
-+/vfork-mm
- xxxxxxxx*
- pipe
- S_I*.test
-diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
-index 70f090a5f7648..7d61203d6547b 100644
---- a/tools/testing/selftests/exec/Makefile
-+++ b/tools/testing/selftests/exec/Makefile
-@@ -22,6 +22,7 @@ TEST_GEN_PROGS += null-argv
- TEST_GEN_PROGS += check-exec
- TEST_GEN_PROGS += update-lock-fault
- TEST_GEN_PROGS += unshare-sighand
-+TEST_GEN_PROGS += vfork-mm
- 
- # binfmt_misc must not be reachable as an exec source or as a stacking layer,
- # or an 'F' entry can pin the instance that owns it. Unprivileged, no bpf.
-diff --git a/tools/testing/selftests/exec/vfork-mm.c b/tools/testing/selftests/exec/vfork-mm.c
-new file mode 100644
-index 0000000000000..43cdae8e1e7b3
---- /dev/null
-+++ b/tools/testing/selftests/exec/vfork-mm.c
-@@ -0,0 +1,363 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test that a task which called vfork() only runs again once the child has
-+ * left the mm, i.e. once it has switched to its new mm in exec or has dropped
-+ * the mm in exit, also when it is killed in the middle of an exec.
-+ *
-+ * The first field of /proc/<pid>/statm is the size of the mm a task is on.
-+ * The parent has a mapping that is larger than anything the child ends up
-+ * with: an exec'd image of this program is a lot smaller and a task that has
-+ * dropped its mm shows 0.
-+ *
-+ * A parent that is woken up too early only has a few instructions to look
-+ * before the child is gone. So it runs in a realtime scheduling class and the
-+ * child, which is on the same cpu, doesn't. On a kernel with preemption the
-+ * parent runs as soon as it's woken up and the child doesn't get any further
-+ * meanwhile. Without preemption the child gets too far for the parent to see
-+ * anything so the tests are skipped there.
-+ */
-+#define _GNU_SOURCE
-+#include <fcntl.h>
-+#include <linux/futex.h>
-+#include <sched.h>
-+#include <signal.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mman.h>
-+#include <sys/prctl.h>
-+#include <sys/syscall.h>
-+#include <sys/utsname.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include "kselftest_harness.h"
-+
-+/* 32 bit architectures that only have the time64 system calls. */
-+#if !defined(SYS_futex) && defined(SYS_futex_time64)
-+#define SYS_futex SYS_futex_time64
-+#endif
-+
-+/* Makes the exec'd image wait to be killed. */
-+#define EXECED_ARG	"execed"
-+
-+/* Exit status of a child that never made it into the exec'd image. */
-+#define EXIT_NO_EXEC	127
-+
-+/* How often the parent looks at a child. */
-+#define ROUNDS		16
-+
-+/* What only the mm of the parent has. */
-+#define MAPPING_SIZE	(1UL << 30)
-+
-+/* How many readers of /proc/<pid>/stat share one cpu. */
-+#define READERS		8
-+
-+/* Size in pages of the mm @pid is on, 0 if it has none. */
-+static long mm_size(pid_t pid)
-+{
-+	char path[64], buf[128];
-+	ssize_t len;
-+	int fd;
-+
-+	snprintf(path, sizeof(path), "/proc/%d/statm", pid);
-+	fd = open(path, O_RDONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		return -1;
-+	len = read(fd, buf, sizeof(buf) - 1);
-+	close(fd);
-+	if (len <= 0)
-+		return -1;
-+	buf[len] = '\0';
-+	return strtol(buf, NULL, 10);
-+}
-+
-+/* A kernel that preempts kernel code says so in its version string. */
-+static bool kernel_preempts(void)
-+{
-+	struct utsname u;
-+
-+	return !uname(&u) && strstr(u.version, "PREEMPT");
-+}
-+
-+/* The child only gets to call exec and _exit(). */
-+static pid_t vfork_exec(void)
-+{
-+	pid_t pid = vfork();
-+
-+	if (pid == 0) {
-+		execl("/proc/self/exe", "vfork-mm", EXECED_ARG, (char *)NULL);
-+		_exit(EXIT_NO_EXEC);
-+	}
-+	return pid;
-+}
-+
-+/*
-+ * Same, but the child tells whoever reads from @tell who it is and waits to
-+ * be told on @go. The kernel clears *@tid when the child releases the mm.
-+ */
-+static pid_t vfork_exec_tid(int tell, int go, int *tid)
-+{
-+	pid_t pid = vfork();
-+
-+	if (pid == 0) {
-+		pid_t self = getpid();
-+		char c;
-+
-+		*tid = self;
-+		syscall(SYS_set_tid_address, tid);
-+		if (write(tell, &self, sizeof(self)) == sizeof(self) &&
-+		    read(go, &c, 1) == 1)
-+			execl("/proc/self/exe", "vfork-mm", EXECED_ARG,
-+			      (char *)NULL);
-+		_exit(EXIT_NO_EXEC);
-+	}
-+	return pid;
-+}
-+
-+static pid_t vfork_exit(void)
-+{
-+	pid_t pid = vfork();
-+
-+	if (pid == 0)
-+		_exit(EXIT_SUCCESS);
-+	return pid;
-+}
-+
-+FIXTURE(vfork_mm)
-+{
-+	char *map;
-+	long pages;
-+	/* The clear_child_tid word of a child, shared with the helper. */
-+	int *tid;
-+	/* The cpu the parent and its children are on. */
-+	int cpu;
-+	/* The cpus the test was started on. */
-+	cpu_set_t allowed;
-+};
-+
-+FIXTURE_SETUP(vfork_mm)
-+{
-+	struct sched_param param = { .sched_priority = 1 };
-+	cpu_set_t cpus;
-+	long size;
-+
-+	if (!kernel_preempts())
-+		SKIP(return, "Needs a kernel with preemption");
-+
-+	self->pages = MAPPING_SIZE / sysconf(_SC_PAGESIZE);
-+	self->map = mmap(NULL, MAPPING_SIZE, PROT_NONE,
-+			 MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
-+	if (self->map == MAP_FAILED)
-+		SKIP(return, "Can't map %lu bytes", MAPPING_SIZE);
-+	size = mm_size(getpid());
-+	if (size < 0)
-+		SKIP(return, "Can't read /proc/self/statm");
-+	ASSERT_GE(size, self->pages);
-+
-+	self->tid = mmap(NULL, sizeof(*self->tid), PROT_READ | PROT_WRITE,
-+			 MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(self->tid, MAP_FAILED);
-+
-+	/* Too many cpus for the mask: the helper takes any cpu it can get. */
-+	if (sched_getaffinity(0, sizeof(self->allowed), &self->allowed))
-+		memset(&self->allowed, 0xff, sizeof(self->allowed));
-+
-+	/* The policy isn't inherited, the cpu is. */
-+	self->cpu = sched_getcpu();
-+	CPU_ZERO(&cpus);
-+	CPU_SET(self->cpu, &cpus);
-+	if (sched_setaffinity(0, sizeof(cpus), &cpus) ||
-+	    sched_setscheduler(0, SCHED_FIFO | SCHED_RESET_ON_FORK, &param))
-+		SKIP(return, "Can't make the parent preempt the child");
-+}
-+
-+FIXTURE_TEARDOWN(vfork_mm)
-+{
-+	munmap(self->map, MAPPING_SIZE);
-+	munmap(self->tid, sizeof(*self->tid));
-+}
-+
-+TEST_F(vfork_mm, exec)
-+{
-+	int status;
-+	pid_t pid;
-+	long size;
-+	int i;
-+
-+	for (i = 0; i < ROUNDS; i++) {
-+		pid = vfork_exec();
-+		/* Look before anything else. */
-+		size = mm_size(pid);
-+		ASSERT_GT(pid, 0);
-+		kill(pid, SIGKILL);
-+		ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+		/* It didn't exit on its own so the exec didn't fail. */
-+		ASSERT_TRUE(WIFSIGNALED(status));
-+		ASSERT_GE(size, 0);
-+		ASSERT_LT(size, self->pages) {
-+			TH_LOG("round %d: vfork() returned with the child still on the mm", i);
-+		}
-+	}
-+}
-+
-+/* Take exec_update_lock of @pid for reading until it's gone. */
-+static void stat_reader(pid_t pid, int ready)
-+{
-+	char path[64], buf[1024];
-+	int fd;
-+
-+	snprintf(path, sizeof(path), "/proc/%d/stat", pid);
-+	fd = open(path, O_RDONLY | O_CLOEXEC);
-+	if (fd < 0 || pread(fd, buf, sizeof(buf), 0) <= 0 ||
-+	    write(ready, "", 1) != 1)
-+		_exit(EXIT_FAILURE);
-+	while (pread(fd, buf, sizeof(buf), 0) > 0)
-+		;
-+	_exit(EXIT_SUCCESS);
-+}
-+
-+/*
-+ * Kill whoever shows up on @tell right when it has released its mm in exec.
-+ * It only stops there if it has to wait for exec_update_lock. So there are
-+ * more readers of its /proc/<pid>/stat than the one cpu they share can run:
-+ * most of them are preempted at any time, some of them with the lock held.
-+ */
-+static void killer(FIXTURE_DATA(vfork_mm) *self, pid_t parent, int tell,
-+		   int go)
-+{
-+	struct sched_param param = { .sched_priority = 1 };
-+	pid_t helper = getpid();
-+	cpu_set_t cpus;
-+	int ready[2];
-+	int cpu, tid;
-+	pid_t pid;
-+	char c;
-+	int i;
-+
-+	prctl(PR_SET_PDEATHSIG, SIGKILL);
-+	if (getppid() != parent)
-+		_exit(EXIT_FAILURE);
-+
-+	/* Any cpu the test may use but the one of the child. */
-+	for (cpu = 0; cpu < CPU_SETSIZE; cpu++) {
-+		if (cpu == self->cpu || !CPU_ISSET(cpu, &self->allowed))
-+			continue;
-+		CPU_ZERO(&cpus);
-+		CPU_SET(cpu, &cpus);
-+		if (!sched_setaffinity(0, sizeof(cpus), &cpus))
-+			break;
-+	}
-+
-+	if (read(tell, &pid, sizeof(pid)) != sizeof(pid) ||
-+	    pipe2(ready, O_CLOEXEC))
-+		_exit(EXIT_FAILURE);
-+
-+	for (i = 0; i < READERS; i++) {
-+		pid_t reader = fork();
-+
-+		if (reader < 0)
-+			_exit(EXIT_FAILURE);
-+		if (reader == 0) {
-+			prctl(PR_SET_PDEATHSIG, SIGKILL);
-+			if (getppid() != helper)
-+				_exit(EXIT_FAILURE);
-+			stat_reader(pid, ready[1]);
-+		}
-+	}
-+	for (i = 0; i < READERS; i++) {
-+		if (read(ready[0], &c, 1) != 1)
-+			_exit(EXIT_FAILURE);
-+	}
-+
-+	/* The kernel wakes us up when it has cleared the word. */
-+	if (sched_setscheduler(0, SCHED_FIFO, &param) || write(go, "", 1) != 1)
-+		_exit(EXIT_FAILURE);
-+	while ((tid = __atomic_load_n(self->tid, __ATOMIC_RELAXED)))
-+		syscall(SYS_futex, self->tid, FUTEX_WAIT, tid, NULL, NULL, 0);
-+	kill(pid, SIGKILL);
-+
-+	/* The readers go when we do. */
-+	for (;;)
-+		pause();
-+}
-+
-+/*
-+ * A child that is killed in exec after it has released the mm doesn't get to
-+ * switch to a new one. It leaves the mm when it exits.
-+ */
-+TEST_F(vfork_mm, exec_killed)
-+{
-+	pid_t parent = getpid();
-+	int tell[2], go[2];
-+	pid_t pid, helper;
-+	int nomm = 0;
-+	int status;
-+	long size;
-+	int i;
-+
-+	for (i = 0; i < ROUNDS; i++) {
-+		ASSERT_EQ(pipe2(tell, O_CLOEXEC), 0);
-+		ASSERT_EQ(pipe2(go, O_CLOEXEC), 0);
-+		*self->tid = 1;
-+
-+		helper = fork();
-+		ASSERT_GE(helper, 0);
-+		if (helper == 0) {
-+			close(tell[1]);
-+			close(go[0]);
-+			killer(self, parent, tell[0], go[1]);
-+		}
-+		close(tell[0]);
-+		close(go[1]);
-+
-+		pid = vfork_exec_tid(tell[1], go[0], self->tid);
-+		/* Look before anything else. */
-+		size = mm_size(pid);
-+		ASSERT_GT(pid, 0);
-+		kill(pid, SIGKILL);
-+		ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+		kill(helper, SIGKILL);
-+		ASSERT_EQ(waitpid(helper, NULL, 0), helper);
-+		close(tell[1]);
-+		close(go[0]);
-+		ASSERT_TRUE(WIFSIGNALED(status));
-+		ASSERT_GE(size, 0);
-+		ASSERT_LT(size, self->pages) {
-+			TH_LOG("round %d: vfork() returned with the child still on the mm", i);
-+		}
-+		if (!size)
-+			nomm++;
-+	}
-+	if (!nomm)
-+		SKIP(return, "The child was never killed before it got to the new mm");
-+}
-+
-+TEST_F(vfork_mm, exit)
-+{
-+	int status;
-+	pid_t pid;
-+	long size;
-+	int i;
-+
-+	for (i = 0; i < ROUNDS; i++) {
-+		pid = vfork_exit();
-+		/* Look before anything else. */
-+		size = mm_size(pid);
-+		ASSERT_GT(pid, 0);
-+		ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+		ASSERT_TRUE(WIFEXITED(status));
-+		ASSERT_EQ(size, 0) {
-+			TH_LOG("round %d: vfork() returned with the child still on the mm", i);
-+		}
-+	}
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	if (argc == 2 && !strcmp(argv[1], EXECED_ARG)) {
-+		for (;;)
-+			pause();
-+	}
-+	return test_harness_run(argc, argv);
-+}
+That leads to the question that decides how small this can be: does
+nommu mremap() need to grow at all? If not, a grow could simply be
+refused, and only the shrink half is needed.
 
--- 
-2.53.0
+Understood that it won't be looked at this cycle. Hajime is working
+on nommu mremap(), so I'll leave the fix with him and test his patch
+on the board.
 
+Brad
 
