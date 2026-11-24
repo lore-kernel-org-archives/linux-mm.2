@@ -1,144 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275C0606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE71B606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lIPDOfLv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VSnrQyfZ
 Received: by kanga.kvack.org (Postfix)
-	id 400B36B065E; Tue, 24 Nov 2026 08:54:59 -0500 (EST)
+	id D0A5D6B0704; Tue, 24 Nov 2026 08:59:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D6A76B06A0; Tue, 24 Nov 2026 08:54:59 -0500 (EST)
+	id CBA5D6B0705; Tue, 24 Nov 2026 08:59:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2ECAB6B0701; Tue, 24 Nov 2026 08:54:59 -0500 (EST)
+	id BF7C56B0706; Tue, 24 Nov 2026 08:59:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB6526B065E
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:54:58 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E307160AC3
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:54:58 +0000 (UTC)
-X-FDA: 85470158676.16.DB8058A
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 740F54000A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:54:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=lIPDOfLv;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of mbkchelofficialdev@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=mbkchelofficialdev@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795528496;
-	b=FsRy3TaVVKnq5qBijHEDQY8ph4EuhpoSqOmGCz7X9qmdHjDkNiVU+c+budPLMllfdXIpBc
-	sLJyjPb3a1a/GN8U58mQjk1whjfCm2hzXx1zoHOH8+dsaynb9oMxZzxWbmJIHvvlWXMzt2
-	0sMnKa7+AzUo2mYDOM+WTJA/NYOl4l4=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795528496;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 988926B0704
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:59:37 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4B837C0BAF
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:59:36 +0000 (UTC)
+X-FDA: 85470170352.07.8A7F2B7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A06D810000A
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:59:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VSnrQyfZ;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795528774;
+	b=1KU6npzZaWMOq6oa27Y0+zsivRIuVq4hCYhd9hwnB3XFEE0SjH6QOFQlX5pqRRUlV7t0qj
+	IILOndk7Ks/TNmPJLKV64rwF8VjBjR3XevdUW309HqlXvTmV2rlp3Xiv+PpqWpXt6E//RZ
+	ngkPFov/GrSp3P+5NEZjeWxdvqOatd8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795528774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hskKhJvrkK2XwN7uok2JUgMgn3MP3IgOcFWu+hlmAzk=;
-	b=4jJeKxOr07hpgNV9xn1zfF+n9fUct2Q69tHa0q/kGLFeqCLyP+7Aa+m73ZSAEnPxiucOrL
-	YsbO1BSUKcXifE9ifo1iiYrKQViFgGfTK+MXFqwmpE7qey6GIjXVsPvB2/MFTn87TQ0lf6
-	IdBeJ8s9OS+FeE6wOoL+vrPoB918YFw=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=lIPDOfLv;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of mbkchelofficialdev@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=mbkchelofficialdev@gmail.com
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-921375f52b8so48863266d6.2
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:54:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795528495; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oocj2hGNNWkxSJrAJadYOClDEhNLfRiAkMSa3LQsCnpLawh+3k+juVpJ1zhwetRFUp
-         r2zySE2nOv/EexSHpw7V6zjmdnZjtFwexarrUOPrnJIaFAfpnqcex6E7LKFbeNt1X2gK
-         eDnpPKqoYYZXhAP0q5sPCIedBEc9VQ2EXyi2O9O7xtJaOty2AHJnA52EnkG0w4wzZ3nF
-         bnfNlQhuRjWV79pLB9hZB/UcK8HR2VHcumtyamLigCstJl/pa8h4hZ2MLXaySA2QbxkK
-         xYL13VEnQjCXu6xvZbzlYbGIJRBPu2syLIq0obxH24Gs8WNybQSQrtWelLqNXQHELqYg
-         oaXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hskKhJvrkK2XwN7uok2JUgMgn3MP3IgOcFWu+hlmAzk=;
-        fh=xUq2i8zwsqNElCWC66WxGbNuIHDNznaGEv1hpEUmh5Q=;
-        b=gxILn1lr0x2Pc74z/Y1AvF4OasqZ8oF1mhqFDxlDiS9mmvbknEPUNRmFI74TVTARZU
-         V//XYKS0nIz/pBGHOAqfX/DshcXa81hC71L5wle1e+FtCbR4XSQzX8S4qPxt2ylR5W6E
-         xrcHha0m/i9Vg5zkMVwCsYYe2oTkK9pRytQOM2MQHqHnI8NT74D4Sy6rgmN0Ize7+5HW
-         xhqEIMztuRPXJz3HOjNhuljTn0fwSbY48uQTyIUwAXkDJw9N859h/gkJQ+QgiJKejHu5
-         BjkEPCEtEYUI4fuV2zc5UYBG+F42ZzNfaVM1ljxb9uiKxENJ/JVUdjLKqVQXbNoOEwpk
-         hVbQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795528495; x=1796133295; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hskKhJvrkK2XwN7uok2JUgMgn3MP3IgOcFWu+hlmAzk=;
-        b=lIPDOfLvlBtGHdorUoWf2vxtdwj3ZgKy5+/ShqH0BC6ns7Tf3mymmq0gTQvEvFo8sN
-         CmTZL29XLuynmTNI2y5uTk4m6QW2t0Jizw0yGEvwSaHVysg1xtkTfUW9Wmb190O2M13q
-         HJyxUpjOJkkdoPOYZFcpVApu4+BdUaw7AQ/ViBrvGZt3GZ31NpDagGxKzfaXGh7mWoeP
-         hYYw7iWNEid5O66IWAOGFRUh70kiAZK91RsvGs7HmWmhs3YWkA/fqiC3yJFuX6YRtLLT
-         Fwe6Hr894u8y1pK49t36QUq9649FEaCTk/G4sOe7ggRxAd+5ypyynxgppM6x6jafYULy
-         uCog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795528495; x=1796133295;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hskKhJvrkK2XwN7uok2JUgMgn3MP3IgOcFWu+hlmAzk=;
-        b=NPwQVKans8j15bRYdQu7dvASnq5JLEYULtLgj6rZ2Maakgomqf6pTrzxV8AoKtYIzX
-         eXb68ptdNxD4KsLVRcnlXWUhzBmMqPXjMp3+en3OH819gbWL2aSuCR/vYjrTecKxZP3l
-         0hpD6IGJ/rx156bZ+JkggAOVua3GJvNV+n8KuYz1JlDTAq0wiSEkvO6AjVoag6js2DAG
-         Gqq/wFhEZzQHLLCZLGLrJcu+11UPMNwJfXxzbreb+I21hzhM83mYiCed8zcPipMeETCv
-         v6ec/bhw6tmiG2nNTqYnxFM2G6hjlWDKa5OH2XMMYkSKTUZcZ20qZIRKnMyYQvx5DTB0
-         rygA==
-X-Forwarded-Encrypted: i=1; AL+hErE++08hOvtNHhj+NUVNKU2WKZ8SPJr+lUnl3WVAOYxrnISOsRww34Pm1uMS9hoTITM8R+DUrpyGlA==@kvack.org
-X-Gm-Message-State: APuU4Z+lxc8D6uU2QwfB7EbSfVSzFsBXMfetSOjbGgQBw7SZnGMI4OIV
-	ezjsj9kionKVvuCgErMP+Jgchlp/Zy2sxnyguuOoKRuGEi8FXXLttrJL6sPSP5vkfa3MJkLbbC9
-	9L479HhO2aCrNeK7FOI4B4z3XQNumYE0rKjDsTkEd8NxD
-X-Gm-Gg: AZFdTZcPtEMInLghMc2GMSw7jfhBOlTZ5ikUUk4nl4OyQ6Y7wT7foEeGD4drnHI3ruL
-	02aywralu4U4WkDL4w2FaUIE7YXTqKzhCcKs0CaLdeSc1vetqQlxK8Cn1QfybHsCtCOJPQirqLW
-	8UtPFi/czS3KjzySjLRrBexlwNNeQo/Tdk09IH5zQJ/7NUGdSr08AV+1mcADX+aXs8O3ak36d7M
-	BjxxTyfYc29dgNIphDpXb1hJ2qKqfPazD6EhZ4uPsbXOaiVS0xDaLJaqhgSukAVIK53WBsTCoPs
-	b3jT85gXlZkrpRoCwfMhx4mVuxKZf7UWFe7bUBRVnZN8QeYAJwC6b0jMRY5m1WqTWhX8ocATLnE
-	7bovKmwDVXZG8l4APYZ/9thtFtTodMscnV6xw
-X-Received: by 2002:a05:6214:6012:b0:921:2569:3a61 with SMTP id
- 6a1803df08f44-92134ab82b1mr217590136d6.10.1795528495554; Tue, 24 Nov 2026
- 05:54:55 -0800 (PST)
+	bh=kvsfueMHEyVjE37oaEUJidZMPTJVXlpVOUA/4h72CTE=;
+	b=hZBbYnLcY+5ijxkKCzf9DYgQq1IJlU8x6TFK0kdVk50anLpXLbZeYYKmYUkkKjrgRXNs6W
+	YvCos/69kxSSBGy69gsj6r59fftCBM8Xv0BlMHsMCMmRV5ZYHLTLvRZUZpIAdjgGnzAC8p
+	KQUTsfloYls9TCRxtsncMuJhIUfCEv8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VSnrQyfZ;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1F61D60F85;
+	Tue, 24 Nov 2026 13:59:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596401F000C4;
+	Tue, 24 Nov 2026 13:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795528773;
+	bh=kvsfueMHEyVjE37oaEUJidZMPTJVXlpVOUA/4h72CTE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VSnrQyfZpr4OAwsGrcz8BHCW4/klS/ONxfDAooEDvS8hEw0h8ATzx6RRag7GaRbUZ
+	 PdCzu2czJSsynBun1Xe2QTv6o9kwzFJ2AmPJp1aZPCrtokFkcSv4FeIFv9pmKChNzK
+	 5PT2q2qOophF71Z2WpnE5nLRQsMCLxPoDPEJkAuyNfu7NIlSUc9Wgxi3He8tHJc9H4
+	 /kokeiWu0iDvJ21O7BPsMsGc+LdOqVpgH3DMJJuJhMaqBpbTKo6iE+qyzLBXOct9b1
+	 m909zcbnsZXi6tODHQA5YzLCtB4tz0No6fKbf4ksBR2o/vVOSbqEkq47hKdlg1oY/B
+	 cK+Ku5T+1/oyQ==
+Date: Tue, 24 Nov 2026 13:59:31 +0000
+From: Harry Yoo <harry@kernel.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Emil Tsalapatis <emil@etsalapatis.com>, bpf@vger.kernel.org, 
+	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, daniel@iogearbox.net, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, linux-rt-devel@lists.linux.dev, 
+	Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, 
+	David Hildenbrand <david@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next v1 1/4] bpf: Add call for selecting kmalloc or
+ kmalloc_nolock at call time
+Message-ID: <awWRZ9xCzWLnj_R6@thinkstation>
+References: <20261124060357.11700-1-emil@etsalapatis.com>
+ <20261124060357.11700-2-emil@etsalapatis.com>
+ <DN38HGVL8JHQ.2ZVZQCKFXVA9T@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261124132707.101769-1-mbkchelofficialdev@gmail.com> <20261124.225103.2152350984946270550.tomo@flapping.org>
-In-Reply-To: <20261124.225103.2152350984946270550.tomo@flapping.org>
-From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-Date: Tue, 24 Nov 2026 15:54:44 +0200
-X-Gm-Features: Aa3M54r5lRaC6s6ZVOyblge65-Tre7sMwzRlPmQ59ty0THQcri0vIs804l2d-88
-Message-ID: <CA+YDrKAv1_Ot0pmPuzpFuZR97pSbBVQW88RBs=DVNQ4W0OWwhg@mail.gmail.com>
-Subject: Re: [PATCH] rust: bug: add warn_once! macro
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, boqun@kernel.org, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org, 
-	acourbot@nvidia.com, work@onurozkan.dev, liam@infradead.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 740F54000A
-X-Stat-Signature: 39ypw1y9rhgqgpsnumrb75cpbt19cpbo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DN38HGVL8JHQ.2ZVZQCKFXVA9T@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A06D810000A
+X-Stat-Signature: wfhdg9satrtdbf3qfeeb8xt15mz6wz8t
 X-Rspam-User:
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795528496-597189
-X-HE-Meta: U2FsdGVkX18bWlU9Uh0WVb0b7bEa3f1U1NCi8OpLER3JnbiaBw+mhInHbzrhPOjFXwcNAUQUC7y5T2vRza+pe12mMSgaTWkQu5MDslEzoiqPBnnxG75C+8J51SZ6DHacMVxWykXtzhDnUC/lDxQIQ7LSPnLwGiNIZfrhOX/ztF6ieNNt3FtRSY/ubCBhvQSPvGXk5Yk8RnfV/NZsOOq7n3dONMDzjMXm6j3Yknh49WkykTLae95s8GwDpM040TES2XQ4I8tGZM7VSJgVpbuXeeKNgZaJG40Vu72eNga3370kbN5lRRf8mRCrjmR0bRTkPFZbUS4aEhcqAJnsFpXnpXDoYa01MUZdIH9cdccOPXT3g4goEE/PCrvWoz8HSLsf/LGiywDwyS7QzbxCJpxODi5hxCrUC26ltfA65g+i3LJxJ3WZS86uf0NbphwcRCtxizXYXy2AA6v6fDOrOxJAoVFHLVqSxe7Z2zrXMKPXIpE6yAtMYAf6vqF0w0CKK3sr2N5KS0Z+AvLmN/b3ugFqvcJJNMxGR3lSx8m2iJI9kfxMopiV00GOwz2BzmxSYJT4z5qoAU/lHA84TvoAwI2cJInL+UGY+bypGUVsPu79J1RZo+6h4CPNIzoBOUIy6uG0q1HTl7pk1YrFYzclM72TSjniu8jXo6IPAcAV9QFsRJyQ7LM8W2UvRdwhl/Ill70H3pJafR6jOFclUVCRRdlCnicLKdo73HfmmEFHdZbCRWOlEaMxLhrPmKbG02fUJuPKjTFQCTYlIiV3ECgZ+/Ui3P0cgxbgFnXeyAnc+bfbI7583S94ajf44wWy4UQGCruKOJjuKW2oN5kz2NUVzTqYdUXibWXwY6gO9RSYUO9qTY81dfQYkYmspOovShC2g4G/hQmC7UDQ3pgXmXrhExpmRSfr1l2bHTWI3Bqiot5XVdRUDvfz6/0p2Kp7klfyErq+1K01sWO/RVmlNcHVsis
- g2NW5aDj
- IEtqllNTEjcCsfx9WFVSuoFNPM7zcHoeH9wAx1LSnW2lDczAQs5sb9WswPPDMAwBF2hlY0xHvzmnRSWumYw98MlkyjW3gHWKNVh90c6QG+M/WgdDzhLU1l9AZm11MfqLkxEXvmHSon1x6GVoAKvcK+aibT7je8+ikPGh57jh0GgU+X+9KfIrSxcqeNdxMk+aeM3knHx7iy5jO8+HjXjaa/RZ3ah7OEYsI5r0XIUJ+bc7R833BFKQDTnHLpeYI/2nSlCoIz4T3pYwLDRG9HXNHu+Wqyun7+mt3fX30pA9AdSvCE+3H3ThX2mp9SEqsNVmcAtY8B2S9emQzzbPE1kGm4lucCykSLWV3FCGHzo+FQUgKS8x60VqZ8fpLGsgR0+o9FwrlWQoBscF34fbP7PhREX6vzxPaDoAb2s1+GoIK+lCz5HiPINkBJVHT+2NFkx6fK2rjXreZpFoTKAQxW4XGC1BQEDoNEZ5zTfQhd+/zosIS+Qyw4Z7YZ3d7xEF5YPVF/RcacBrFjyrf24qvdM5ZI2HOymEav24G4lZ6EC/sD7qtoZQyIfne++DbnZGScJUTdVWeuGfbNlQmHgon8QS6SzvkNyU9SnsBUhewgPi5kO+zEhJnkp84IKRYfGdRpHq/gjTjyFeuYC2u5xxfm1J9EBp+ObGXKh5vTkUYyyHQcXJfKo2wRYoYStb2zO8/nxRLs7N9tfS29SJoc6S6AAtxuo8Lvb0zq7ptFISxthImedGEJjdKmHQh3F1j7a9dg09RwVFoPbE3LIPwr71GMQkyWYqZD7bt86CiqvmwtM6awTWYbRXA+V8jYWesZWkAx8weyXq4X5oTObYJyJbh9QhQAieZOOrF85uYC/aoC6hPNoFweSNN3A07XOaGLCum3zBDybiNT9jLrUdnh4gJltYyvn0k3Ahq/efurEi0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795528774-837520
+X-HE-Meta: U2FsdGVkX18I++Wk9jfFsiIqD/Jx5R+WE8A8/ltzeCbNY5PhU+2PJJNuEpQEBSh3Ux+Je87nubwQVR3GM219HSRUDhBovLYygdM+BxzSHDdgAfLfqFszLkrYr5cINx8r8idm8wihyZJxosTd/RP7StJxInqyIuuVN5vP2Vq5UOpw5bGSd1DkFKk18A1IYMhDq3KvR33GC9rkpZ4Fnxk3c7CjGcqJlcbcguCgqEEzYQJr7En3mgtRL0+j+KkSE21SxrVf7CaHLHjzPnS6ZeAUHKoXChldLXxgECJR730pGsez8jb50l5A6pzhnYyXx0l4udKn6Q2wLu3Key4c6hIeqPEkJHrhpRvzJ5CnILQPQewRZmJfDSfWFf8YIaLqMQFuy1qH08ycL1m0PI6OxccGJxliuuh10a/waqWsC4AlzGBR54GdtNbKlYkXbKmaaJfnogWE/8MbEzBe7PXh6a7KDyB0Y/3jEgb3l4ui084P8L/f6H7UjZPY2/Yk/Q4rRBI1dU1QoLM4ujIzWs+sHq/Qy4w9wF916G5JBD85W7sGYSROKHGqc068tRErSvb9RhLPXPtjJj45ZoKvWxlxJ/hGUBVt38Ia8w7y3G7M2N178j/oHBYTxaKPtWNdDCUtPnz0qIWEl18BUoawi9yViGRwj+0AiJDS2YolaazSQDKZzcuBOSlT0w+YDFNtxPvEqVhRtJu3We4VNZ0HAPDPe/jJ7Na+Y+YEBAyDDdF9YZeMx2YQuzq+8KJndWTEvXUvipCSs4wFs5iDbOfFK/skm7DqxNeEkSHFkvsj+5w3YKvTlSm4qVq1mDaKqSFSOL2gms2VnuXOQTyWDNxPr7kU9c/AirRmfm3ouizx0U7OhToBcBUPvolhGDyKXYVpVFruyNrGwJc+6qhAtMecfSzAXEih4s4sMtbhIYslZpMkJvV3YFHt7aWQrsr4VVgIMEVqdegbO7dOAG7eE7Yy0YkPYbs
+ 9iDr3tTu
+ s1GyKDnGmPQVcB6GRENJMXR5kXPG/sk1iRiJHld59YhQbI99e19P2LUAbg92AcFD9Pefpo2krx4ojlBY39DvkXAjFhOTaQj0l43Os/0PiF54alb6uKkOAU9CDVfRI+hi8zYt7OnFm9OKppR+dCyUJe0QE4mfL2BswED69dZQlW/fj8Am8Rz0Kai1BvA8DDi7kjbP81VEC6BQyBOOzdB42fulmbN/6cVG1jLl5HOGNdAjL/WzwCN7ccBYua45NWNsLAwc0zsQBZiHNL72mS/RFYU8t8HYZT3OC+OMAS1sPUMLz1XzFB8Fs7TKqleYIO2XGOM2pCfMz2mkBMYtDW66Q/6p97jePo1BbR7deVjUJTodGwoK73Vx/ByvfBa51/gjRcWp2SKCxdkvn8OuWWtiqp+qxMW1pwwgRb6YRzh9HV4bqE6xWa8bRlPolzFVsC/W10NWb73cQgkjtyKfWxMTr8dMCxhaz8ydrp+QaeqmFZ3GzSlaqEJw4TpBm76g7EX9EwI7EYRCQX6LWvYe5kcXCIVR2t9z4ZZhzoQusADrM+Fhob2G/qlcVkK9kgrgnpBrOAGfvvRAJCQUHFK7RymNOeUCuP4JxZOjPnAQGPhljxw8QlRwbw3QrG1Bb3aBq57WEEZGMH4d0srLqlOtakeKre8qWng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,62 +105,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Fujita,
-Thank you very much for the quick review and explanation!
-Please go ahead and post your warn_on_once!() patch since it properly
-handles all architectures including UML. I'll drop this patch and look
-into updating Vma::zap_vma_range() using debug_assert!() +
-pr_warn_once!() as Miguel suggested.
-Best regards,
-Ivan
+[+Cc Relevant folks]
 
-=D0=B2=D1=82, 24 =D0=BD=D0=BE=D1=8F=D0=B1. 2026=E2=80=AF=D0=B3. =D0=B2 15:5=
-1, FUJITA Tomonori <tomo@flapping.org>:
+And a bit of context on the underlying problem.
+
+kmalloc_nolock() could fail when there is a contention on locks
+shared across CPUs (e.g., n->list_lock in slab, zone->lock in buddy),
+or there is a decent amount of memory pressure. It's more restrictive
+than GFP_ATOMIC.
+
+Unconditionally using kmalloc_nolock() in BPF local storage is
+unnecessarily restrictive when the program can sleep or spin, and
+Emil's patchset teaches the local storage whether the BPF program
+accessing the local storage could sleep or spin on a lock.
+
+Answering the question "Does this context allow sleeping, or spinning
+on a lock" is extremely tricky in the Linux kernel as BPF programs
+could run and call kfuncs almost at any point in the kernel code and
+the "context" is usually encoded in the GFP flags or the process flags.
+
+Tracking whether certain locks are taken by current context is not
+ideal either as it adds unnecessary overhead for everybody.
+
+On Tue, Nov 24, 2026 at 06:40:11AM +0000, Alexei Starovoitov wrote:
+> On Mon, Nov 23, 2026 at 10:03 PM Emil Tsalapatis <emil@etsalapatis.com> wrote:
+> > +	/* Only try the spinning allocation when preemption disables are tracked. */
+> > +	if (IS_ENABLED(CONFIG_PREEMPT_COUNT) && can_spin_in_alloc() &&
+> > +	    size <= KMALLOC_MAX_CACHE_SIZE && !(flags & ~nolock_flags))
+> > +		ptr = kmalloc(size, flags | GFP_NOWAIT | __GFP_NOMEMALLOC);
+> 
+> It works, but I after a bit of brainstorming the following
+> might be a better fix, since it will address the root cause:
+> Pls run it by Vlastimil, Harry, Sebastian.
 >
-> On Tue, 24 Nov 2026 15:27:07 +0200
-> Ivan Tverdokhleb <mbkchelofficialdev@gmail.com> wrote:
->
-> > Add a Rust counterpart of the C WARN_ONCE() macro. It behaves like
-> > warn_on!(), but additionally sets BUGFLAG_ONCE, so the warning is
-> > reported only the first time a given call site triggers.
->
-> C WARN_ONCE() takes a format string. This macro is the Rust version
-> of WARN_ON_ONCE().
->
-> > The macro returns the evaluated condition, like warn_on!(), so it can b=
-e
-> > used directly in an `if`.
-> >
-> > Use it in Vma::zap_vma_range() to report an invalid range, which
-> > resolves the pending TODO there.
-> >
-> > On configurations where warn_flags!() ignores the flags (UML, ARM and
-> > LoongArch), the macro behaves like warn_on!() and warns every time.
->
-> C WARN_ON_ONCE() warns only once on these architectures too. I have a
-> local warn_on_once!() patch that does the same on all architectures.
-> I can post it if needed.
->
-> Also, this patch does not build on UML, and test_warn_once fails on
-> x86_64.
->
-> > --- a/rust/kernel/mm/virt.rs
-> > +++ b/rust/kernel/mm/virt.rs
-> > @@ -115,8 +115,7 @@ pub fn end(&self) -> usize {
-> >      #[inline]
-> >      pub fn zap_vma_range(&self, address: usize, size: usize) {
-> >          let (end, did_overflow) =3D address.overflowing_add(size);
-> > -        if did_overflow || address < self.start() || self.end() < end =
-{
-> > -            // TODO: call WARN_ONCE once Rust version of it is added
-> > +        if crate::warn_once!(did_overflow || address < self.start() ||=
- self.end() < end) {
->
-> Miguel said that "Erroneous Behavior" cases like this should use
-> debug_assert!() plus pr_warn_once!() [1]. Also, the C side uses
-> VM_WARN_ON_ONCE() in __zap_vma_range(), which warns only with
-> CONFIG_DEBUG_VM.
->
-> [1] https://lore.kernel.org/rust-for-linux/CANiq72=3DtKVD13GD2Bzmt_LnC4Si=
-OX1nkHQPcz2BS=3DP=3Db23e0Yw@mail.gmail.com/
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 2fef409..4368ab5 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2536,6 +2536,24 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+>  	return NULL;
+>  }
+>  
+> +static DEFINE_WAIT_OVERRIDE_MAP(zone_nolock_map, LD_WAIT_CONFIG);
+> +
+> +/*
+> + * zone->lock is always held with IRQs disabled. A caller that runs with IRQs
+> + * enabled is not nested inside of it, so it can wait for the owner.
+> + */
+> +static bool zone_lock_nolock(struct zone *zone, unsigned long *flags)
+> +{
+> +	if (IS_ENABLED(CONFIG_PREEMPT_RT) || irqs_disabled() || in_nmi())
+> +		return spin_trylock_irqsave(&zone->lock, *flags);
+> +
+> +	/* The caller may hold a raw_spinlock_t. */
+> +	lock_map_acquire_try(&zone_nolock_map);
+> +	spin_lock_irqsave(&zone->lock, *flags);
+> +	lock_map_release(&zone_nolock_map);
+> +	return true;
+> +}
+
+I'm not sure this is a better solution unless this could be generalized
+or abstracted further.
+
+>  /*
+>   * Obtain a specified number of elements from the buddy allocator, all under
+>   * a single hold of the lock, for efficiency.  Add them to the supplied list.
+> @@ -2550,7 +2568,7 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+>  	int i;
+>  
+>  	if (unlikely(alloc_flags & ALLOC_NOLOCK)) {
+> -		if (!spin_trylock_irqsave(&zone->lock, flags))
+> +		if (!zone_lock_nolock(zone, &flags))
+>  			return 0;
+>  	} else {
+>  		spin_lock_irqsave(&zone->lock, flags);
+> @@ -3237,7 +3255,7 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+>  	do {
+>  		page = NULL;
+>  		if (unlikely(alloc_flags & ALLOC_NOLOCK)) {
+> -			if (!spin_trylock_irqsave(&zone->lock, flags))
+> +			if (!zone_lock_nolock(zone, &flags))
+>  				return NULL;
+>  		} else {
+>  			spin_lock_irqsave(&zone->lock, flags);
+> 
+> pw-bot: cr
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
