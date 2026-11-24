@@ -1,94 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B39C606A336
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 12:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EE5606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 12:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=T5ZFw6v8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ODYY2RNK
 Received: by kanga.kvack.org (Postfix)
-	id 6587F6B069D; Tue, 24 Nov 2026 07:18:27 -0500 (EST)
+	id 72E1B6B069F; Tue, 24 Nov 2026 07:26:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 630E86B069F; Tue, 24 Nov 2026 07:18:27 -0500 (EST)
+	id 6B80F6B06A1; Tue, 24 Nov 2026 07:26:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56D5E6B06A0; Tue, 24 Nov 2026 07:18:27 -0500 (EST)
+	id 57FA66B06A2; Tue, 24 Nov 2026 07:26:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 306786B069D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:18:27 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C9AA80B3F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:18:26 +0000 (UTC)
-X-FDA: 85469915412.12.E18B820
-Received: from mta1.migadu.com (out-123.mta1.migadu.com [95.215.58.123])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CF2B9180005
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:18:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=T5ZFw6v8;
-	spf=pass (imf24.hostedemail.com: domain of enze.li@linux.dev designates 95.215.58.123 as permitted sender) smtp.mailfrom=enze.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EA176B069F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:26:35 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B28E81A0B44
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:26:34 +0000 (UTC)
+X-FDA: 85469935908.23.957398F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D43DD140003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:26:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODYY2RNK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795522704;
-	b=p4DWqGa2IBYUvDiPZZUhXCbnNnGcFvzeCazYdRPLD8kS2i7zVMRnMh0p6Wty0VQl9BT3Tm
-	3z0kfkbuj1Bob+Aaz7o355LVSoRYXp8OT4so94uk7ejgeo5IBts68NXi0MPYIW1QkMAsSW
-	3agQ2ucd76VBacEePMKswm8g60czRKQ=
+	t=1795523193;
+	b=0chYF/aT2TaTc3u8X7kMSlAXkVIHhGh0driurCQvn/J3znIBjOX7aiEFnvS5IM2P1EwwvJ
+	gys1/II7wdkBybVsqvFzxNTdLHx3yisoejdME3/FJoKkuwGat21BMsFkh3UzOqjEvj7jkB
+	VkIPmK4o9vm/20+UyXhDnvt0MsaXYYw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795522704;
+	s=arc-20220608; t=1795523193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OUGXnl29oqUu50SqEIurEsM4e0cyju2OZ81JkZSaKRk=;
-	b=KazV0Eb/j6sw8VFLfkYeosR1zYcfNMcqf9Kg0qbhy0IJGIBoT/QzfOOgY1sf5npc2nM2z3
-	D3Tt9EhBgUmZKuy8R1duYBePio+pe04eDMH3xbZiXR3eMCxKjrmPHwn8vsYQzORVJXVqjB
-	Zced5Ds/elpUYKNH5JgOlR5tL5Cg9Yc=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=hFysRZm2paHUdFhCRfxcIIS3foCC4VVjBtTGE4wazrs=;
+	b=f1Se4BMFUgsTPtGZcNThhUNtDqV766t7u5LAcqpohIg167g+uM5v100jDjwoLOW4wKS4Qx
+	PI1JAq3zF58kiW8MHCYBENSq3j+er2u/i4G7GvNbW/HoMj+EFYU1Ps6OtAkyDO+uSmokSh
+	CbN25TRFW1ikuXl6c7UVSjSx4XIzFKs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=T5ZFw6v8;
-	spf=pass (imf24.hostedemail.com: domain of enze.li@linux.dev designates 95.215.58.123 as permitted sender) smtp.mailfrom=enze.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ehJyS5om/OyXbT78ohfS4FBoNaPuj5iCwpL3QhfmKIo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795522702; v=1; x=1796127502;
- b=T5ZFw6v8wsEa7QywSdH65t93/gWh9DH9CgfPtP+4oziIND3nQ3zrdrr4MNNbBQoPlJs1p1s4
- Ud+ohf5cCk6WfCdKVIuTSAoslrEqUayzgZCQhNX28juHtUip6jzijvY7GcluP3vhggBj2CbSAQL
- NtwlcFSkEMhL4I9DJxWe85Yo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c9fbbaba589b1890;
-	Tue, 24 Nov 2026 12:18:21 +0000
-X-Mizu-Trace-ID: c9fbbaba589b1890
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <1739306a-9fa7-403c-a2da-b44f623b9445@linux.dev>
-Date: Tue, 24 Nov 2026 20:18:19 +0800
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODYY2RNK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D72784399F;
+	Tue, 24 Nov 2026 12:26:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE851F000CA;
+	Tue, 24 Nov 2026 12:26:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795523191;
+	bh=hFysRZm2paHUdFhCRfxcIIS3foCC4VVjBtTGE4wazrs=;
+	h=From:Date:Subject:To:Cc;
+	b=ODYY2RNKjzu8jIgwkOLEBWkI77tStWgeqsEe6+Fug+OOqm4I+MnvOdewXjZ01AdNR
+	 rGEacdmM7g2Rlh+Khr0lENI7/5lPw4OJS0sA0ukU8opq2iSTzH6quEaYJvtwDqD5kZ
+	 y7LLmpFR3CsNqMKxwOs7tdDfQ/nV0TECOu02fyC0A63QUMymFsXJhZj4k0HYTJ9rhv
+	 Jfyrw6b+L90rtNr56yIATV4IGxnIO+5TiOfNIXy/cm7cdrbt1mSNMBCjiqTrHyrQjW
+	 mIu/dw4Ql2YSTDmpIjwbcsfUO0STGJV3EaqfK9LUKOQmG8Bhu5HMuU6DCXj44bZYc+
+	 oDW+jQbBuu2Ug==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Tue, 24 Nov 2026 12:26:19 +0000
+Subject: [PATCH] mm/vma: drop mm asynchronously in vma_start_read()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Enze Li <enze.li@linux.dev>
-Subject: Re: [PATCH] mm/damon/sysfs: skip registration if DAMON core init
- fails
-To: Aveline Noir <jm5905938@gmail.com>, SJ Park <sj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lian Wang <lianux.mm@gmail.com>, Dawei Li <set_pte_at@outlook.com>,
- damon@lists.linux.dev, linux-mm@kvack.org
-References: <20261123-damon-sysfs-init-guard-v1-1-a2a6ca65693a@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20261123-damon-sysfs-init-guard-v1-1-a2a6ca65693a@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CF2B9180005
-X-Stat-Signature: rfgy5brrhn7cbrh787g1ns7ed6whx5xh
+Message-Id: <20261124-vma-read-lock-mmdrop-async-v1-1-257f99f551de@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/x3MUQqDMAwA0KuEfBswRRz0KmMfWRq3sLWVFsQh3
+ n3gO8A7sFtz6xjhwGabd68FI/AAqG8pLyNPGAHDGGbmMNGWhZpJom/VD+WcWl1J+q8oPWXimyZ
+ WXkYcANdmi+9Xfn+c5x+YxNA5bAAAAA==
+X-Change-ID: 20261124-vma-read-lock-mmdrop-async-ba417cd1c1f0
+To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
+ K Prateek Nayak <kprateek.nayak@amd.com>, Kees Cook <kees@kernel.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+ Jann Horn <jannh@google.com>, Puranjay Mohan <puranjay@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ ljs@kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5120; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=lD6iWKFGqf6N+AjnDoi6ykJCOhX6nhAXibYpUbFGOlA=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZmwq+8LBPaZ8ZXcf0QiFoasyWXyqcPqelREUYmqR/X
+ GOa0WzWUcrCIMbFICumyPL8i/j+IJGweZ0X/N1g5rAygQxh4OIUgIlYtDD8FSnwOv8uqWPe8S+3
+ k2wj+dmmn2Dma1u98+IJB/+w/TXnkxn+GcvvdDoqdXSTtEcG++foH9Ps7i7NuesU9U2U5+3JZcr
+ tnAA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Queue-Id: D43DD140003
+X-Stat-Signature: 3fgewjf8mkq9j5mdt9bon41c1awkerhe
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795522703-636977
-X-HE-Meta: U2FsdGVkX19z8knZyBfgjQ8OQgo51laQ3TYeGSJsW00p79EaN6Gq67+ki/uApuX8oRDtE5esUPsmZzp8mxEdc6Bkh6zF0hOXMVgEPZy5ugR2ghmP64axAvB8uH5MJ88vQZCqc55O+0+y1pcq02rn3VEpD4Fru4MyYY8HZUSKsdeWzLf9AwAX0eLzwRaXIYrfpTh/cq2jbb5upq8HQ3i/p+NGEhEGfGt4dTN3Ozqu/DfMk4nz0bLexAuIIukKcyY1QU4NCck3OmgVG4qYMMKq3cVlTy475jZgSH7v7y1NDedqBzoUWUp/dG7t6HHDZyCFv5imR3iTWovfayCcGrbDNjQ1oMW4rNc15sjN5qAq8rkXzIeYZHOAwyVEiyHcYjwoCbme0a5hWSGa1XDa4i/sTZgqpEwqQBFpvGfwf8Cpu3RxMKsj/OFEsz1gk4PSlggGA4dmrkaYlXH7Wt97lapjYhnbrguauratEIdtqBlCz4UUZDVM+qgMJc2EIm+tkp9v6XrqGkam+W7y+Zl3mdJHV6hWnDPmUWqIz1K/TijKRSVdt9VHqsL+aWukhdK3fIDfhaQHFlaVe5Bb2wPbVaikDPXy9wXxTu0kVx+TZqWC4urAWzh20Agit2Oq18MoCyrx7HEgExiuJ3z8aOyn8f17b8lfAszoT1xzJoovqW/htEG3BSREivNJIdjeDGt+PMSr2geyFc3W05TPRapMUm/7iPGaGfWVm+kZZMBg1JgAvCq1+kw0t867xZjwYN1z8A660nc8mCetPf2Qohe+YW3PtQC9U9UCn9VGB9d38E4501gRgPaWHjsT75kSCZ8O7j0ckd1BDaKJUiCIY8dJBVImSLKHcEuybsOQGwc0tDWLHc0VP9vrHL5bySEfppb+dW/yGSNVktv7CswYV2mcab3DBnBwCPbh8aSF5dGWroKSy/R8BuS3UdzZm1h9IqfmRT5cr3xt8LA2wgUfRhlv3OH
- BpSUbxX2
- hVbkeDRFggE0YfNoWcRQRgRNU/CB/ZjA1/7algnjzYPOvfcgt6y/+oplLUB+fvTF4Jj9M0U2lpxGNeIXf3pop8XsphsIlYZbuOkLczc+kFvSdWPGwjDBz98Fuq9UxJDbWFGr/tFCw61Ytq0EMs1ISoXdE6NreljP1A0cjh84BnFsn2g6BUIm2afvgRDUHwZpg83X5YCJDtduVGFuQ67rUBnghajkn1roCMkMoIufvmOjdQBjFIVHY/L5Wmhg+OjJi73lX/bEgYZ8n1tCDjjTsDBojnl6cqZhsiRBwiXM0spJaADPrhbGPeuF3+L7dn6F93VblEczkruWU5Xuy8ZqutpaI2HAWuvP9sw2mmx338xH59SkWJVczkP6bCv50Np49rAGinC9nUtYeaWXukq5144GyPEVkO4+L9x6bXvBVtv98+6sFkNVlBWAEwtWJFRcXY/KcgHCP0oC4ALqxjiWfzaq6+p4czqd6YNqEHvMB5z6Ypd/p11hpOkiKbkJgWXwepgZy6SGOybfLxp/3U5yd84xxf3krOLkdKdCN/+dL4ocpbg4xmvqWnYbdXpdRZnkog2jn1TKb+MhlahxKvPtPManOx3GWZhi/sbtH6c9mQSMcBFaGLiMSWFqFRfvKmPqOzVq5wEelsxmkDZk=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795523192-962526
+X-HE-Meta: U2FsdGVkX18eEv1RhOufB7q0EBttihodPcbzn5X1Bz8wO7Ss6Wh8wPzZ/s1tIO+bpEZo4YnYYbSETCfswBzWDMvya87iooXgpruSj5oA2aIxByktFNVrkJIObNVzbOBbyvfJtDEMUNBkUh6QuH0OmEuTJZjFfZP5N9mKXrrYz8e+t+PfJiOBBwbz3ecI/RnwyFv2E6SW6WJLeDcUis3GzFpcxTcPGoMjvA53qTC3nMrrcDi58A8yGMbxQngNtnFCQGjd2jVSjClxvOTmXRQSFImcL11PNpr7FjjppniRHzQoybaNcQ37Fsli6OhK2PIcjXs/lWeIgKZ+D3TZankgfRAhyfnCytvcHTLp9USh8T/ePulDe9IFtFszCffaZkqt+5lVXkhAAV3TfJ4yeLGF98iDDfSySpm3wG754YfR+DutYxHkCQ7ProhwasMBDbVeAZ5cSAq77mh3IdImPLe+g44RgepyCF5wNuCjbagoIXX3GXD0mp75p7xCRCYHOgZsH+RZMwd+Nt0OOuQ1dEeZ6rmlGHSYn4OrlH7RWXWOGvto/VBS+iF4ogjQ5KpSIOTfTjOCv5V0l0kHk+0Gn3/av/KDhe5JwzGwmxY1eLsSAztv1S6snEAbZ8CMp0ofN+JjaOkksH+EVZePDrKWj1rKggu+oJHwJD7gXszjURnFuhWsE9fGu99F+0ceoE5xTuBpk9UxGD9LMkqnpehX+61Yztj4cFk4dyQ0M2+9WwSkzWaXlB+uL8+asDS3L3XAlLhU39MkrV1KugBCw5ok3evLYf+idE11FVjHujf6P4f152iPzLaCIRHvBBLSyudpWcRzz78xZ6MttXH/WhGeyDuEJrtlMr2zNNZjLkhyCAPXX1Gl1eD5x03/djvo5S5Z8UUbsZmnI6MBwdmGtiEK3I49p+klXXNyOqKo/My0gESNPDxJjBJiwWebEy77Ux2rcfuwZgH508eP7jXAlfS00Mo
+ U2KSYfQU
+ SaIXnoot4n0iMeAzfPuoEBYubV36A1d0QXR5GCZng4sJyaNXeQiJfAoLVndVCF+D/bcG9N3BNCZCcTgNEUviDWpHqrQj3V9izxh6yS/6aonBnN2hgYgoDCEvMTPJ1H4cPk+Yt040/nx/P9dhHg6HOargHgIKrb6SAiTB09ZCDBNrxsgmOzJy37pDKf0bd0FJXsLzwRmXw5P8cHofVa2/L2izPzG5TGemnwfqq/D5DSnb2ZUjKKkc/PZvPjeunDw5WjQx8lfXK4c6BTeM0GuLxD/anqiF7wLZ+WqKzgSSPIDD7mYxjB4PTy1IpmTFUL801wNiWYNkhKS7Jvj/lGNHhPah1jvcJWxY7v9gex0xfvZhJ0H5VNDEv/64J2zvIktpk5fJLRWZVa+XeFSuTZoiilhgliRqbVIp+eEnnbNavX6PfpuyYvEQuN1t8ixQewnI2hGHYgTWzVuxTqytPzLqWR9cPGH0zLuVCn8RIKVKcv30mU9vtuVNdiHIia9B0EjJap4mvnI4S9tNWWYRDVoST/0ClUpAytYXydsqJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,97 +118,166 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Aveline,
+Commit bee9ef4a40a2 ("bpf: switch task_vma iterator from mmap_lock to
+per-VMA locks") open-codes a lock_next_vma() implementation that does
+roughly the same thing in bpf_iter_task_vma_find_next(), only without
+fallback to an mmap_lock.
 
-On 11/23/26 15:51, Aveline Noir wrote:
-> Hi SJ,
-> 
-> Here's the sysfs fix I mentioned in the report queue review.
-> 
-> -- >8 --
-> 
-> While reviewing the DAMON report queue series, I noticed that DAMON
-> sysfs still registers its interface if DAMON core initialization fails.
-> If damon_init() fails to allocate damon_region_cache, starting a
-> kdamond with an initial region can pass a NULL cache to
-> kmem_cache_alloc() via damon_new_region().
-> 
-> Check damon_initialized() before creating the DAMON sysfs directory and
-> return -ENOMEM if the core is unavailable.
-> 
-> Fixes: a18709442869 ("mm/damon: improve damon_new_region strategy")
-> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
-> ---
-> Tests passed in x86-64 QEMU TCG guests on 9f004372ebeb.
+This is because bpf_iter_task_vma_find_next() can be called from
+non-sleepable contexts.
 
-I gave this patch a try and it works.
+However, lock_vma_under_rcu() gave no guarantee as to which contexts it is
+safe to be called from, and indeed it turns out this assumption is unsafe.
 
-I forced damon_init() to fail with the following modification on an 
-x86_64 VM,
+Since commit 9bbffee67ffd ("mm: fix a UAF when vma->mm is freed after
+vma->vm_refcnt got dropped"), this call chain is possible on x86:
 
-8<------------------------------------------------------
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 986404b547eb..194b30731572 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -4313,6 +4313,10 @@ bool damon_initialized(void)
-  static int __init damon_init(void)
-  {
-         damon_region_cache = KMEM_CACHE(damon_region, 0);
-+       if (damon_region_cache) {
-+               kmem_cache_destroy(damon_region_cache);
-+               damon_region_cache = NULL;
-+       }
-         if (unlikely(!damon_region_cache)) {
-                 pr_err("creating damon_region_cache fails\n");
-                 return -ENOMEM;
------------------------------------------------------->8
+lock_vma_under_rcu()
+  -> vma_start_read()
+    -> mmdrop()
+      -> __mmdrop()
+        -> mm_free_pgd()
+          -> pgd_free()
+            -> pgd_dtor()
+              -> spin_lock(&pgd_lock)
 
-then ran `damo start paddr --regions 0-10000`.  On the unpatched kernel 
-that immediately Oops,
+Thus, a plain spin_lock() can occur when lock_vma_under_rcu() is
+called. Since bpf_iter_task_vma_find_next() can be called in softirq
+context, this can deadlock, for example:
 
-8<------------------------------------------------------
-[  461.012857] BUG: kernel NULL pointer dereference, address: 
-000000000000001c
-[  461.012881] #PF: supervisor read access in kernel mode
-[  461.012891] #PF: error_code(0x0000) - not-present page
-[  461.012901] PGD 139e4f067 P4D 139e4f067 PUD 124048067 PMD 0
-[  461.012913] Oops: Oops: 0000 [#1] SMP NOPTI
-[  461.012924] CPU: 3 UID: 0 PID: 1610 Comm: python3 Tainted: G   E 
-  7.4.0-rc3-new+ #2 PREEMPT(lazy)
-[  461.012938] Tainted: [E]=UNSIGNED_MODULE
-[  461.012945] Hardware name: Red Hat KVM, BIOS 
-rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[  461.012956] RIP: 0010:kmem_cache_alloc_noprof+0x16/0x400
-[  461.013083] Call Trace:
-[  461.013088]  <TASK>
-[  461.013094]  damon_new_region+0x22/0x60
-[  461.013104]  damon_set_regions+0x38a/0x4e0
-[  461.013112]  ? damon_sysfs_build_ctx+0x32c/0x400
-[  461.013123]  damon_sysfs_build_ctx+0x391/0x400
-[  461.013133]  state_store+0x30e/0x3f0
-[  461.013141]  ? __kmalloc_noprof+0x292/0x590
-[  461.013151]  kernfs_fop_write_iter+0x14a/0x200
-[  461.013160]  vfs_write+0x25d/0x440
-[  461.013170]  ksys_write+0x6b/0xe0
-[  461.013178]  do_syscall_64+0xc4/0x570
-[  461.013188]  ? __x64_sys_close+0x3d/0x80
-[  461.013196]  ? do_syscall_64+0x101/0x570
-[  461.013205]  ? do_syscall_64+0x101/0x570
-[  461.013213]  ? do_syscall_64+0x35/0x570
-[  461.013221]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  461.013230] RIP: 0033:0x7fbdeba26a02
------------------------------------------------------->8
+pgd_alloc()
+  -> spin_lock(&pgd_lock)
+    <softirq>
+    bpf_iter_task_vma_next()
+      -> lock_vma_under_rcu()
+        ...
+	  -> spin_lock(&pgd_lock) [ DEADLOCK ]
 
-With your patch, /sys/kernel/mm/damon/ simply doesn't show up when core 
-init fails, and the same damo command just errors out.  No Oops, no NULL
-deref in dmesg.  That's exactly the behaviour we want.
+Alexei Starovoitov also pointed out that a BPF program attached to
+trace_contention_end() can similarly cause a deadlock:
 
-Feel free to add:
+  pgd_alloc()
+    spin_lock(&pgd_lock)
+      queued_spin_lock_slowpath()
+        trace_contention_end()          <- pgd_lock is held
+          tp_btf/contention_end prog
+            bpf_iter_task_vma_next()
+              lock_vma_under_rcu()
+                vma_start_read()
+                  mmdrop(other_mm)      <- last put takes pgd_lock again
 
-Tested-by: Enze Li <lienze@kylinos.cn>
-Reviewed-by: Enze Li <lienze@kylinos.cn>
+Resolve the issue by having vma_start_read() use mmdrop_async() instead of
+mmdrop() so the work is deferred to a work queue.
 
-Thanks,
-Enze
+Make mmdrop_async() an internal mm function, defined in mm/internal.h, to
+avoid abuse elsewhere (kernel/fork.c includes this header, so still retains
+access).
+
+Commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU lock on
+failure") accounted for the fact that the RCU lock had to be dropped for
+this operation, which is no longer applicable.
+
+For the sake of a backported fix, retain this behaviour, however drop the
+RCU lock last and remove the now irrelevant comment.
+
+Reported-by: Chris Mason <mason@kernel.org>
+Fixes: bee9ef4a40a2 ("bpf: switch task_vma iterator from mmap_lock to per-VMA locks")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/DN267JUKDRNS.2VMV07CQ58R4X@gmail.com/
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ kernel/fork.c  | 16 ----------------
+ mm/internal.h  |  3 +++
+ mm/mmap_lock.c | 21 ++++++++++++++++++---
+ 3 files changed, 21 insertions(+), 19 deletions(-)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 5efceb8d58a7..4d5866c83481 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -744,22 +744,6 @@ void __mmdrop(struct mm_struct *mm)
+ }
+ EXPORT_SYMBOL_GPL(__mmdrop);
+ 
+-static void mmdrop_async_fn(struct work_struct *work)
+-{
+-	struct mm_struct *mm;
+-
+-	mm = container_of(work, struct mm_struct, async_put_work);
+-	__mmdrop(mm);
+-}
+-
+-static void mmdrop_async(struct mm_struct *mm)
+-{
+-	if (unlikely(atomic_dec_and_test(&mm->mm_count))) {
+-		INIT_WORK(&mm->async_put_work, mmdrop_async_fn);
+-		schedule_work(&mm->async_put_work);
+-	}
+-}
+-
+ static inline void free_signal_struct(struct signal_struct *sig)
+ {
+ 	taskstats_tgid_free(sig);
+diff --git a/mm/internal.h b/mm/internal.h
+index de4593b3e3b6..cc95019c7e4b 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1671,4 +1671,7 @@ static inline bool can_spin_trylock(void)
+ /* char-mem.c */
+ bool file_is_dev_zero(const struct file *file);
+ 
++/* mmap_lock.c */
++void mmdrop_async(struct mm_struct *mm);
++
+ #endif	/* __MM_INTERNAL_H */
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index 073c5125b424..28b387fe543a 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -306,11 +306,10 @@ static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 	 */
+ 	other_mm = vma->vm_mm; /* use a copy as vma can be freed after we drop vm_refcnt */
+ 
+-	/* __mmdrop() is a heavy operation, do it after dropping RCU lock. */
+-	rcu_read_unlock();
+ 	mmgrab(other_mm);
+ 	vma_refcount_put(vma);
+-	mmdrop(other_mm);
++	mmdrop_async(other_mm);
++	rcu_read_unlock();
+ 
+ 	return NULL;
+ }
+@@ -560,6 +559,22 @@ void __mm_reset_vma_seqcounts(struct mm_struct *mm)
+ }
+ EXPORT_SYMBOL(__mm_reset_vma_seqcounts);
+ 
++static void mmdrop_async_fn(struct work_struct *work)
++{
++	struct mm_struct *mm;
++
++	mm = container_of(work, struct mm_struct, async_put_work);
++	__mmdrop(mm);
++}
++
++void mmdrop_async(struct mm_struct *mm)
++{
++	if (unlikely(atomic_dec_and_test(&mm->mm_count))) {
++		INIT_WORK(&mm->async_put_work, mmdrop_async_fn);
++		schedule_work(&mm->async_put_work);
++	}
++}
++
+ #ifdef CONFIG_LOCK_MM_AND_FIND_VMA
+ #include <linux/extable.h>
+ 
+
+---
+base-commit: 913390e679e23e3a45643028ee7f992889094051
+change-id: 20261124-vma-read-lock-mmdrop-async-ba417cd1c1f0
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
