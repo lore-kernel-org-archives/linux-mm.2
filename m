@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62095606A6BE
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012B960A6F78
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n4vHYK3h
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dmOjMgq1
 Received: by kanga.kvack.org (Postfix)
-	id 8326B6B070F; Tue, 24 Nov 2026 09:04:29 -0500 (EST)
+	id 218AE6B0711; Tue, 24 Nov 2026 09:04:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80A416B0711; Tue, 24 Nov 2026 09:04:29 -0500 (EST)
+	id 1F0536B0713; Tue, 24 Nov 2026 09:04:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7201C6B0712; Tue, 24 Nov 2026 09:04:29 -0500 (EST)
+	id 105D56B0714; Tue, 24 Nov 2026 09:04:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 466896B070F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:04:29 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D13F2120B93
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:04:28 +0000 (UTC)
-X-FDA: 85470182616.14.9AFB06D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DB1506B0711
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:04:44 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C02C140BF3
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:04:44 +0000 (UTC)
+X-FDA: 85470183288.19.91EC488
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E529E1C0012
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:04:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n4vHYK3h;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8EB2DA0012
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:04:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dmOjMgq1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795529067;
-	b=yCetihaAggNiNKhPb3ggmJQZhyMt11yuxL/ZHd8BAYxEDVytc29jHsEAUavBA352H4gBIG
-	CzNUn467iv6OYrBAdPm18tdMu+I+Dx4hiiwcd4fmgBiBAE0cjmKahb3Sdis9efO3tID1It
-	kOOyqnHQXUfaFyxuMgHmKJ9kuyYuw38=
+	t=1795529082;
+	b=6N5scGxOtLz2js4ny0AdFISBP7zegpMldJBggnAoCDAIMZZAA0vJItiXHjpwFGikBFJd7Q
+	8RWdfy0YG1tZtxaSRkRXZMlcBvcfvkrXvBlo6QZqe0EuZrDygfO/Olfje/wvhlBeu+HT1c
+	CLxSborG1sb0h1wdc4c7jNCzEn/Cz7o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795529067;
+	s=arc-20220608; t=1795529082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uFq9iZYwqLr+1Gr6UEwgMrMnckIbLB1v4c17MlJoT5g=;
-	b=c13A8lKooKFcFG8nj7KikUZxNdCP24nTL3D90whIgmhvvP8rq378SepbcKpsr54Lo2+LuU
-	iFXRnHQaGzTM3iBU6RehqFd0ET7wzi/Zdn8ZyxsvnypNHbakoQwmueVm5OYM7ihYHBJi6Q
-	jEoxOS1QWIBpgJm6GJOkCnhZCsK+tEE=
+	bh=BK9UkUpVXySdPSUWL4MtzIhDYD5JibSz3LW4sTSavdk=;
+	b=YiSLJTcSY2UJ6YZjaBYANAZSuA61zQOwgMU+iesWelgGdANhaJlx93/OTQodb3d7JbsfXS
+	VuB80bsyA1MJMnoY87wvVT2Un9y8UTIh18EO3feAYh0VeGTIFU1k33IxEWdzKQoMsUK0wt
+	qwZBM3+Tr1vX22gSbwE+klDqnbplQPo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n4vHYK3h;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dmOjMgq1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 097AD41826;
+	by sea.source.kernel.org (Postfix) with ESMTP id AF00344E7A;
+	Tue, 24 Nov 2026 14:04:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729F81F000E6;
 	Tue, 24 Nov 2026 14:04:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2F11F000D8;
-	Tue, 24 Nov 2026 14:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795529065;
-	bh=uFq9iZYwqLr+1Gr6UEwgMrMnckIbLB1v4c17MlJoT5g=;
+	s=k20260515; t=1795529081;
+	bh=BK9UkUpVXySdPSUWL4MtzIhDYD5JibSz3LW4sTSavdk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=n4vHYK3heastXfUTv5ny6Odmn4GhFeJjsWDMvoOM4rq57czIeBM1uX2HwsKI+5Of6
-	 cWfdqCZutIWrR6o55wcXmgJrwrdNSktSGUMRKVoh80VBsF4YY+clnUFeJleIQ5c0MW
-	 0+b9p1+KSNZLSUsm22avuAek7Op1+S83SkVZMJWwhVOyCJY32gIwdaPgwZ+ALwflXa
-	 gqUlui6d+xapAgBLj1odarv5GFRZCzZgdga7a5+A2vYj1SnTurtnVRV//J72baeZNd
-	 hnTATXOXy01iGcgrYea8kx6/WiYu5rZpkGu5B1iSu0OsY2oRoN9yYVGK42FF/VOfnw
-	 Vxw0CovUU3hTA==
+	b=dmOjMgq1AGHQhoPvgdNne8I7eN2qrY76RiZVstLKlFppxRHabagSB9sep/9K9mZdE
+	 nLLP7Q1FHCs2qRhYXPNt7ChclwrhqGsgnsOq1hYmbff+3OXzpBVOP4lsBE/sUuHUR5
+	 uirkuvsCi7X4GqoSdB+en4U8Sy13oV7G+ueSmZOKRFtSyxsrhQTzXalDfjoMEQzpYq
+	 3CRMtpauYGtg1jGfdjwxhVQCpbVNX0J90S++nN1X0ja0iCJE8Ir4ZdH7W3hfRB3z0g
+	 WN+4j5cGNwx6NimhARjK2ljToDaJ5E58eXVt1V8hwmzVZxRVA45LfwYQ3rGzZq7dyN
+	 LSyPS1qyImMjg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 24 Nov 2026 14:02:47 +0000
-Subject: [PATCH v2 04/13] x86/sgx: convert vepc mmap hook to mmap_prepare
+Date: Tue, 24 Nov 2026 14:02:48 +0000
+Subject: [PATCH v2 05/13] udf: convert mmap hook to mmap_prepare
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-late-2026-mmap_prepare-v2-4-0b0d99d655f9@kernel.org>
+Message-Id: <20261124-late-2026-mmap_prepare-v2-5-0b0d99d655f9@kernel.org>
 References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
 In-Reply-To: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -113,29 +113,29 @@ Cc: ljs@kernel.org, xen-devel@lists.xenproject.org,
  selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
  op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org, 
- linux-mm@kvack.org
+ linux-mm@kvack.org, Jan Kara <jack@suse.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1716; i=ljs@kernel.org;
- h=from:subject:message-id; bh=otXI3L6hiu1+e3GUvlFZNkY4uUSscpdDKkVudqTwPU8=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZZ4p/3pO/9eQqxrjic48NLedd6HjU0Ze0iJ3x4YSX9
- xZPYfpv3FHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJ1OQy/FOan/Ss2I01Z1aq
- Tm3p8tSlu2uX/HXc82DW92nefIvKc48y/BXZvkmrJpdhwW+N/IYbwZ+n+Uc/yGi/WXC21+nEKm1
- 9X34A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1204; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=URnAKhKjrnC9kDrA9QpmKilue78LSAEztCmpaQ/lqmk=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZZ4r3PzDca7/h2XGXyeIC/WJhW86nv0u95Kgds8nDO
+ kLC/vOzjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEyEI5nhF/P+cqnP57MPb+5/
+ 5XUkdfMc4d8ZmdM+TvrjEm8uylFV3snwP8qi/v/7juApxftyPktMul/zaIXBPPuQggQu3009C++
+ YswIA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E529E1C0012
+X-Stat-Signature: mac5xcfkbuyyexcpz6nzfrybimd9opte
+X-Rspamd-Queue-Id: 8EB2DA0012
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: ggrqhuowzisuc31djdihn5aqhzqznhhg
-X-HE-Tag: 1795529066-506974
-X-HE-Meta: U2FsdGVkX19ms9xqxvciz5X7z5fCwjYKjMrUS5qQhjmSplzF66npbQdZOVnvji7DeD+UVITcDvesUSsd0pYmM5LRGiJ/abYya0rWj1fdbNLYikrAKpjHypwyyRf4yX7IXUQSlz6QKRrepe/H44w+AC2Jye74XUerm8EMfz411ihS8SvTaxefs8Dv4Z/YaBAuYq5AZThxxLjt4lNedhlSDz41MTt/u1MHqojZH52/C077oBrz3lAS5OZZP2r8Pz45yQ1fXp4wgQchS2PBPOPPumRH0rccReQBASgJD1sa+ySHZSJ9zWv2hbjFAvkGTCxvygQjuy6EzuJ/F6ywdXUKjcjWThBEL/IkfP04z6KYF950hQjwQe9YdC/TkFkkcWN9LSjYPGjDA1bfQQ1/7PAtsBfm0oUSv3lv5N8w2p4uVizCdtuxeIyZnti1dAeDFcWKzKFfTaJ2K7w0cmIe5oxQSZnep4iUVYb7xsbmPjE3bXZ6HbTM1kQnrbMdmZIWW0comr6EQU90rLq4GRGUTJYoPvNRytjj2k2OGX+gdoOa0TDolUdyXigv1XPEIw8DVIdh3hpxRvNG7Tsbn1ZPQja9TQYLSUVhqKFM74Hn73PWWWPhdxw6fFMgss8bbgPmzms8qn3kngxE8pskgg+Q5MFpXtzJZIM4+OKItiB+AT92NTJ1s2CSq1/LxokqMKjVhIPat5Ey8zC0ZxeLwnFcX7YjQd3JDvhD8nYyULRLvVPngcyf0lPJdwCb9WD01JieFepilYALEtEdDJeUFVkFC1oi9G2zuCmREw4+LPBxjXymzD/4+otWdZZiwczsgl9JGZJJvCxdlgy3Dw1sRYgWdJQsAMt/hIgKMs/ii2layv2bgaMpAfgeNb/F4dZVzir2YlXdt3OjgzVlHhM50FOXI0czuCty4+gUwKu00b4oxIKTRh3jg9pQNc9Z7E+iA/2vfDaF+Q0ZsmgI/U+FHnhMCSe
- yADew9p1
- JqrIOa4LOxFaBCWGFpf93AGI9gn4m2SVuZ0PLcaE9Pbt3mq7xxwU0RZUiTaarO17J8eesGBeNFDyiZEL9QWsgcIjLhYvyhMsbfKW0kzF2Gnk03wPR6yX2pCPzUASd9tNTluZoCr0oIZVEXsQbe64atetdE8Pnj2o7VsLnOuHuTf/6RXA6XcbD6mKpNtORq/Ih1w+OCTJZOLWQJjEgtjECYIzS8p4tc3u920AXpHQbpkyO7iVOdHyMLAZhQdqYq6etBJnwF/jHYaaFChqJae6d06VN0TC9w53ggZokQEJu9zQJgqUxdIQas7buMt5x25OgMeFYZIZmPI5Uzz/ALSuO3jDqG6xg44ora29JrbT2YCSzQG900wDHeLww2+wRt4hqS7k51UoTXT1zxAo3/4KhrO8SV8lrVaAAaxE5ESzYaTF5krXbcutslkiyWplbQSRR7EjnSYiZkEnG6VjWU+O5ExPG6kinUGPOzZDovhD30VwQA4e4NjBma0bz8En0Ty13h8FEiveDf0YkHlI8X4aH3/UilLLkppTK5s7HudsjECs2HExC2WgrDp1xOkxR+4ExTc9jeyu0NvV2LcWHSzx0JUz+23f0PsC2hBrVTrK0kDdqrrhJBjhIP883dEnF0LwU4dyS
+X-HE-Tag: 1795529082-870307
+X-HE-Meta: U2FsdGVkX18IuYCcC8XA87s4e9k44hM/GSgIQ0RB/qhYV1z64XtuU09AcYTdgiHLHXEA9tmM6+PfVIHX2y9R+s8F+nMwpRNNnpWGZiQudBxH/qrGIJxAEn0La0zqUdncC34rUVP9LtLDDBpO+mHX3NORQTFoqJRgCCzdi5eXCBzzv8CtkB/Bu+1LCW3XDnLgiYpoJD4t6oPGr0dCDneSGsdlOtdGLP9m7M3CwEIfZ6yB6oFqy5HXvkNVcdMEGqYav3CIDxc8/DYq4haFGGRoAATTsu0zlN7LDBnH8Vnzkw3lI8+RA6GUfQuAJxJZNarnE/wD//xYmfuAuI1KOU0ltrr5GgVRkxrIcJoi2Q+lEKZWYPQsEM26kHwvOl5gpUCkBd9Favu7XkiC9FQgj9rChWdWeSPWNFBIl1KeMopJI8Q6m3L0x+Phg+66L6YEi6kh5uqcIkHVu5BXLsmuxtT009kZfmCA9fOx9Unee5zG7y9ixiKKw7or6RHSSerZ87joJ3wUOERcRRF1+k2tvSXW3BG8tQoOqXbT8FUFgaFWZL1Ngh40RbkO0UIUsaZVzX0z6W6UQ/iL1arWi/EOxucILZhaPtHlBqAhXRdVVQCJFOVhGKJd+JnBg2zYrXkPrwg695kCY9w9tlzMBq7eN3LseFmfTm5dD/yYDRAMgHh1+SBRuisGw54XAREViRFDcfpnVdsCVbSTUD8nGgiWZtr3abeAMDsL33jnc7ZVyMaciUOBD9OX4iJU+faewhsWYp/SysD3lC+ky4BguHREfmgpqB9PfFXzewVLQ7G8BVbxhOY77jOBP101iv9YdNgHfOfxASdYrtrjMsAJxPKVdRpBEW4469KHUPniUV0HxoEpwtJWg0SyPmE2tGmmjYip6bCFa5W1Z3BDkopqpF7by73Ag7dTR0Rl5pkbRecB78b8QhpDlzS3xnl/Rrdvj/wVUIpwlVm29O7mAhU2EwQiKdb
+ 9qXeh3gL
+ 7FMheTTAhXgEM8Nbucz4DzQehmr4K6uNhBsaGfgbTKE8FTmacNoA19BI2kwR6OPZNLu65rEXC7Wx9Y5oBKfJaWumeJxp7m/Ll5QUE5sEM+Fji/JiZ0OHU50DflPmytqj03565f3RJFdxgB3nRnpnqmZaxlkYMMDAj8Rj+zJ0UPaf2n/IVbBTNspoAEoy4aXHcTBk2DL6PuC31L2a4wd1ajz1DRXDHVqGi0C0ocCWRUIp8mEFc7lVyt+sDLOWaldgU7BwrXCpSFk1piyknTEElWKtZp3sx+RKbsskmAgdOFoUMNr/oUtnm/PXFTe4EDe4DZkJYN6hG96zPGZIHjGZdYM+eNjF+woGcev+Q/Ju0aiJdwP8g0SqbncVbfltLF6hWoYWvThP3rfHNXc0EeyUx2q4cBDVg72/oGoBIKQ0rfr7bOw4vIYrzjKHdB7b0TFd9leX/xPuR1mB3PNPhcnTddPWxxliuY0MGjvp11sGmdiL73ovLs1RLppbmmvojDkOhywgz9SZ84Ms9Br/Ad8MhfHLbgA30oYOGEqhLdfmLg9xXRGRglwvnaXLNjo+SFjswT1FebzeV5Ohih4+Ih1sRt8fmM+SE+gH9rUfomaDoPFaTWcYgVa8EB1bYjxSf3/ILqJXt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,53 +145,41 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-only checks that the mapping is shared and sets VMA flags, operations and
-private data.
+only updates the access time and sets the VMA operations.
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/virt.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ fs/udf/file.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
-index 6a1933ddc6fc..850990519ca5 100644
---- a/arch/x86/kernel/cpu/sgx/virt.c
-+++ b/arch/x86/kernel/cpu/sgx/virt.c
-@@ -98,17 +98,18 @@ static const struct vm_operations_struct sgx_vepc_vm_ops = {
- 	.fault = sgx_vepc_fault,
- };
+diff --git a/fs/udf/file.c b/fs/udf/file.c
+index 02e9314818dc..d5e80c6cae96 100644
+--- a/fs/udf/file.c
++++ b/fs/udf/file.c
+@@ -190,10 +190,10 @@ static int udf_release_file(struct inode *inode, struct file *filp)
+ 	return 0;
+ }
  
--static int sgx_vepc_mmap(struct file *file, struct vm_area_struct *vma)
-+static int sgx_vepc_mmap_prepare(struct vm_area_desc *desc)
+-static int udf_file_mmap(struct file *file, struct vm_area_struct *vma)
++static int udf_file_mmap_prepare(struct vm_area_desc *desc)
  {
--	struct sgx_vepc *vepc = file->private_data;
-+	struct sgx_vepc *vepc = desc->file->private_data;
- 
--	if (!(vma->vm_flags & VM_SHARED))
-+	if (!vma_desc_test(desc, VMA_SHARED_BIT))
- 		return -EINVAL;
- 
--	vma->vm_ops = &sgx_vepc_vm_ops;
-+	desc->vm_ops = &sgx_vepc_vm_ops;
- 	/* Don't copy VMA in fork() */
--	vm_flags_set(vma, VM_PFNMAP | VM_IO | VM_DONTDUMP | VM_DONTCOPY);
--	vma->vm_private_data = vepc;
-+	vma_desc_set_flags(desc, VMA_PFNMAP_BIT, VMA_IO_BIT, VMA_DONTDUMP_BIT,
-+			   VMA_DONTCOPY_BIT);
-+	desc->private_data = vepc;
+-	file_accessed(file);
+-	vma->vm_ops = &udf_file_vm_ops;
++	file_accessed(desc->file);
++	desc->vm_ops = &udf_file_vm_ops;
  
  	return 0;
  }
-@@ -315,7 +316,7 @@ static const struct file_operations sgx_vepc_fops = {
- 	.unlocked_ioctl	= sgx_vepc_ioctl,
- 	.compat_ioctl	= sgx_vepc_ioctl,
- 	.release	= sgx_vepc_release,
--	.mmap		= sgx_vepc_mmap,
-+	.mmap_prepare	= sgx_vepc_mmap_prepare,
- };
- 
- static struct miscdevice sgx_vepc_dev = {
+@@ -202,7 +202,7 @@ const struct file_operations udf_file_operations = {
+ 	.read_iter		= generic_file_read_iter,
+ 	.unlocked_ioctl		= udf_ioctl,
+ 	.open			= generic_file_open,
+-	.mmap			= udf_file_mmap,
++	.mmap_prepare		= udf_file_mmap_prepare,
+ 	.write_iter		= udf_file_write_iter,
+ 	.release		= udf_release_file,
+ 	.fsync			= simple_fsync,
 
 -- 
 2.56.1
