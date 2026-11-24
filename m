@@ -1,96 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDCD606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 01:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350BA606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 01:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f+s2Utow
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=xJodKaL2
 Received: by kanga.kvack.org (Postfix)
-	id 93B6F6B05B4; Mon, 23 Nov 2026 20:21:35 -0500 (EST)
+	id 2D81D6B05B5; Mon, 23 Nov 2026 20:24:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ECB56B05B5; Mon, 23 Nov 2026 20:21:35 -0500 (EST)
+	id 288DC6B05B6; Mon, 23 Nov 2026 20:24:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 801E76B05B6; Mon, 23 Nov 2026 20:21:35 -0500 (EST)
+	id 19F266B05B7; Mon, 23 Nov 2026 20:24:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 480366B05B4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:21:35 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id EB0006B05B5
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:24:10 -0500 (EST)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E091160A3A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:21:34 +0000 (UTC)
-X-FDA: 85468260108.19.0EA9DFE
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D3621C422F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:24:10 +0000 (UTC)
+X-FDA: 85468266660.19.77A6042
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9ABF7120004
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:21:32 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+s2Utow;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9C7541C0004
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:24:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xJodKaL2;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795483292;
-	b=lksfEr398yWMmC6P42+F20LJauyhYVw7hx95nYoExaMEhekQQWixD8ZLF4Iu2EAHQb8Ue6
-	doO/GCmqTR4t3oRKx2HwSzqh2H+EVgVLjmBlHXPEaThQzG82fVEq1XLyUiuiC7fvRDp6Jn
-	q/KzNHtftskjj/eIeeXmchLwARMz5Hs=
+	t=1795483448;
+	b=4+KZkhRCTWphHjJhvcrPhwOhbLp3aoKlTGKO1VDJj4RJ94zC2UHn1ppSVT2S4EzEVR6bo6
+	cY3eYNGat8qg3ncHwQ0a/7fq9Mh42tOlRKnVXxKk4HO5diG+hw2n2SQVXS50ueBfZT/7vH
+	VyU0OrMvhUD8pauOLiEJALVNDe/oOcc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795483292;
+	s=arc-20220608; t=1795483448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IAXmygWx+MtzlQfD/THE5tctNVDaMp12YBsy1SVW570=;
-	b=HTuNBtrvxFpmBv1hl7tQ3HKm273HJtVKDMVxsCG14O7svdZC9T6kjJOb/aGcF/hf+9hCJm
-	KzSHyTrsrFiPqj+zpFzNFzRHg3gNkHC1JyTG67B1xPiwllmgvR6Qqo3R9R6SrmsEgrlotQ
-	cOcUrqstwBNOwGhkU3XWlaKYbGAmK6s=
+	bh=W0t5pbVANwul/1wsHrhSmkJyfXGa5C6Z5SFFtj9nFfM=;
+	b=Spneo7e2Euq/4428RFuY07aGPLHezuuuE/GUAolkNR0TNlCU7de5c2w3Ax1WSB0MdXnEqP
+	X9JDN0aLql2MYxf7isS8AxVO6rcNXhfR76W7m/gb1/2FiDH8PncKGb6rLyreGYSM1PHDD0
+	9IWg4NUCNugHJhJxya3/rbkgvFKH1DY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+s2Utow;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xJodKaL2;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A3C945676;
-	Tue, 24 Nov 2026 01:21:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B627A1F000ED;
-	Tue, 24 Nov 2026 01:21:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795483291;
-	bh=IAXmygWx+MtzlQfD/THE5tctNVDaMp12YBsy1SVW570=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f+s2UtowwOrLJ3ihcP60KU1bKjQQFLBXgytIHqewml1nnZ/HXEb2s/OJgGTPNUsnv
-	 HuWJPxNI1i2G8yyC01UzU2ozv2+3qWjD+NGmRloMEMGoFDTvUKpckLtSDJagu9MLEU
-	 UjKsLgHhJs/iEmx85YvcgISXLJGW4E9ZZ019YNeOj5dcmla6Ic4xAr2ipUXfGU2ih2
-	 PTSz9wnth/XnpLl5mspXgWCpgSiU1Dbhd9UgubzqNAzsNYSIoajJQxRjzlRjOK7cjT
-	 mPmAqxbhJQVL5DBqbMHEcWEJiFEDm6jgoRaGk9bUl564Eh00hQqEVubLpeMpA/Gchq
-	 1xO+wQ1jTTDEg==
-From: SJ Park <sj@kernel.org>
-To: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	chengming.zhou@linux.dev,
-	yosry@kernel.org,
-	hannes@cmpxchg.org,
-	nphamcs@gmail.com,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: zswap: remove dead length check in zswap_store_page()
-Date: Mon, 23 Nov 2026 17:21:22 -0800
-Message-ID: <20261124012123.94517-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261123032512.6119-1-raizudeen.kerneldev@gmail.com>
-References: 
+	by sea.source.kernel.org (Postfix) with ESMTP id B6C1040AB4;
+	Tue, 24 Nov 2026 01:24:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0701F000C6;
+	Tue, 24 Nov 2026 01:24:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1795483447;
+	bh=W0t5pbVANwul/1wsHrhSmkJyfXGa5C6Z5SFFtj9nFfM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=xJodKaL26ux++MU142EpkwBQYMd759R+F9d5x54S+kLJs3LTewJu5uOO3wmhHmdoq
+	 BYBnrGFpOVVJ9Q+RIWl/boIROE6WFw+rCefsVgUWRqT7973fKssc5MhE/ChU6I9IQt
+	 cyLqxTJh91A/PzSRxKBDsCEEsiRX4PaBacoEjBXY=
+Date: Mon, 23 Nov 2026 17:24:06 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kaleshsingh@google.com
+Cc: kernel-team@android.com, android-mm@google.com, Kees Cook
+ <kees@kernel.org>, stable@vger.kernel.org, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry
+ Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-mm@kvack.org,
+ linux-sparse@vger.kernel.org
+Subject: Re: [PATCH] mm: swap: make swap_header badpages a flexible array
+Message-Id: <20261123172406.a89eea9c1b5124d5389ce0c6@linux-foundation.org>
+In-Reply-To: <20261120061750.2973004-1-kaleshsingh@google.com>
+References: <20261120061750.2973004-1-kaleshsingh@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Rspamd-Queue-Id: 9ABF7120004
-X-Stat-Signature: d4quaf8ofd891hdx58m93qfau9yzyuj3
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795483292-645099
-X-HE-Meta: U2FsdGVkX1+mMSkyAS9DhPsdtBYGqx7k3mL39LWV+/qVyXf/DSCflM0ythG7vFkHMYWllCLxybburP0kNU6jHQUg/TA6ww7IwNhk5b6TuYwy/MZWAd6fw+p/86S1TFaoZ4+8WIJoGBnwDSlbxzPd4Z6qKbynnJv1Eumn9/BANkeZgHcw5emuHvVvsBI0WDJEl8J8aQEnoV8MkBsVSSByDyqElB2HhURFqrwzrpotvwlGox2Ob7EdCFKlPQ1MHc6CI3D0fgPCkxMuGFV1PZKNCbNaUW75EfvNgly52I9vsT+pwE+9npbRpDDlRa0avt9hZ2B1ofP5CNTZ7SM4Wzb2SC0hLYrJLo0R5T7j39DGEXbwqECg5vVF/YF1G8v6gDa6ttNxNSAzo1srp5rQIdVLxbtPsEyIubXEuxbmeCAmQAkbkdtIG7JwMUncfkB0tEp/G7fbNMudkkuxjv+tO5YfKGz7PtLauTdnaMX1dl/TU4nqOVxzXBnDUVn2ttzhdVz9+BihRXGaeA07wPYQCQnf4IRUTz3Bv+JIwfhr6rjQBItPYDIXfjnAVu+WEFFhjmcRpshzN4Xoe1ackc3lUkYh7CS4ZW+HQ+3sDDGlvEmBfMf4+cCxOkdqMx9AhohTcQOlRuN2jJ1D3SgkgRnRzh3zHYR3AwGj9ngp7Sm2zEEiMbWXj1qOqbk/v0GlJI5mEbKhZkvSskbfIwyyNTFNEAXbxTgEQJFkG2Sucya8L+mdpht/vUqBg6FJqg2H65Kv9UmhKaeyGH6qWYVSYNZwuTwm/Ljmg0vs8Fpt6SRVT0nEPE8fPAIxJtzK/tTbche4uCKXmL8pWBQ80r+X4Lm0vPfmGclm4gNSXoV1OQLhF48/73uDDD//d8GbztM7Wg82URIPSFpCNvCcUNXKHhb91jXELWANEJhr7pIMBoDe5P5oXno3eS7Prena2N0jCYHBxKfQ/Do0vRvskwfCotpw+d6
- OThpAkN+
- ljGBGhYtXGgrkl5Wkgk8JUpfuPeVEIotR5E1vn+Y7kk6WIZimDmOXNmzmlFOW88LTKWRKG47cZecwPJ8GXV5Os4zeY98taAAipJQbyh0KAzv7CtG2zxrMFFDLuydDvvHbM03UQyFYJOqCDuLneRSFa98DFc1jNl4txe9/bKVWpDEWDe9Udv9oJOCA7nYlHViDx8TMyxTdi6KJufDBm4eiNlrjoHE8KFdMQ9Yb2+gx5BrKgXd7Nt7l5tzCCDHuBPXxyBZrCC1WhdU9RTCOuKIVe386evNFFsNaY2qe+cfSSr/sxDEJzo0iTh0zofUCCQg1iPr3jgn8fM2qfz7TIior2OILpUNrIBeTVi3ULhkb5Na0MVuuUfbjBsEojh+5Z0R3/kXqSSt4TNPE+i8R29Ri59PCeFQNuDp0AXiCvn7/ZM/HQGE2AgP4uc8LzKvWPw4XljnQ6at93I498yUkOKwIpv9yC63GhxFBvw1krmw/eqUHF23r+kPdHjx7GRIukpdY+eiQfsmI97tbWLvS5zYZNOvm8ejK3TLq2Tq3faVhLlhh4UGi38UL77r/9c0Lu8c6Y5toOC2K0LgrpUpo+O5oIrBNqMf3DmoQmURz
+X-Rspamd-Queue-Id: 9C7541C0004
+X-Stat-Signature: btycyekinfmfy7wxrm9jpjz3hcr4cbq3
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795483448-839898
+X-HE-Meta: U2FsdGVkX1995dhOC03L+wfFL1qWdp65nUvA/EEU2yoUtbpcApOEAohFZ8jtjRSkcoMpKncyXn+TbhTdHJYG4EPTEREl8h9bwJUyIKkcKZumZFZuUuwmS/bpZtiEeBQn2F7CaxwOWa8LeWdpqcgImfzEkDbJZBK0TFusaxyZR7rJ33NM6ZEdGKG74tZ1mOwaY640ed15ZaKxj8UPTD6yF8ml9Gb5pWEVeOZ2wXyils1cccp4sDtTmu2JMYJxX/xqJFYv7jFTgFQgEsyAnjH58Jfot+aFDeKIdufBc1Ytdj+VvYPkvQDSbpGh4/xZc+VQqDzZh3dz0tUab/1N4cIw0PcjHoeVC0Iym0M+PWeo1GRpNrAFG6iQLysx7E12LOxUYJLARnTCx6qJkubG2W7WbDYcjhEG33uyKvfV0q6++ZT95vMuSild6hJqCCVfjjMwyt5KsRd1Ai2ruMedfZBZZT3HlWJge0zyxlGu3IWV2NX1fwa5fLihcVVo67gCFkBVX94dfM+RQ3T691Yh46ONE4MUQQSkD5ec3jcid3SxSUDKx31fKsosb4FGAGpuh95ZsRXacVE4ocNMUqLTaQJk/Uql7EosEvsByl3bQVAndj6Eqh0tKWk8pOw9hvuv1sAgR36bf0U7aO5wBGf53PnP36tBRmeyiCsmkP//plNc+CT/XFXv6mw2BR5wGaAECEZyZeulAUevNhk0wH/awdM60VeMCMGAPt13EgckvwrV1541dULna9+xx0/jAyjij5e5cvrvqIeNkIYkXevJ6woMjz0KSKPAC1O2+atnIRR5e3rM30BB2xi6w1jpgoIk2mFv6tMmM71U8cz0sFcxGQ8OMO7+Yihzzt+rxh1lLM5akEkJJNUh85zKi/+bYfumgVSq2ftb0/3iVbZpddNRMhCRukoysylFLAlbp+hL6ScMnnJhqx5z1KEvpGKsMaQ2Tnkf+Qs96k8HwV9/Ed1Rmex
+ Fwk0zmdl
+ OmDIwV2IRsS6Po83HPaGVxBORsdmGsU00ZIvc7aPvf3GqgvKWjotvfYtHdyQCjtcqqnUhaLuFv+RfC44HfAmpEBzULZVFw+6TGXfbJojnz93r/x00xNSQFb89wYqb1n/oWAFq1Y3R4WrlvbQ8t5h8dyIR+YNnDKG/f9a7jr2ShLS1dyQ8cdgSPgvbw93+W7R0KZds4kPnCt4kZYvkuJVkZvl4BmyeeAtOk+mq1PhpBawLRdUOuLMPtarDdTDlPu+CBQD6eezwAibNxvQ45zPWt6D4Bee8/SPjDGImWNlQ9HcpIa+OU0oocouSf15XLxepsIQxwasicKDMXPIf2eqCBD/XJ1CF57lWGgpiCPDM8aHokn7WzfkTcclDYJrzQ0mUyi4YrkrevBHTHZjSibpt6gwoPMx6mdi+y4LBwW7jgpznjKilJmrAafY8HapYB1sYOCDGheraU3GvH15wZTHxhracXSsbw//chbRYmjXQwFepDToM2dxmjCkQ3TJBeOJO0Fp6QsrGE+cjtRKY2yP7ZIet7x/W4EnJKpyRYQUBqADLzPtowRoeRAlLPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,21 +97,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 23 Nov 2026 08:55:12 +0530 Mohamad Raizudeen <raizudeen.kerneldev@gmail.com> wrote:
+On Fri, 20 Nov 2026 06:17:49 +0000 kaleshsingh@google.com wrote:
 
-> zswap_compress() never succeeds with entry->length == 0, so the
-> condition is always true. Remove it.
-
-Makes sense to me.
-
+> From: Kalesh Singh <kaleshsingh@google.com>
 > 
-> Signed-off-by: Mohamad Raizudeen <raizudeen.kerneldev@gmail.com>
+> The swap header declares its list of bad pages as a one-element array,
+> even though the list can fill the rest of the header page. Since the
+> kernel is built with -fstrict-flex-arrays=3, the compiler takes that
+> size literally, so with UBSAN bounds checking, swapon() of a swap area
+> with two or more bad pages reports an out-of-bounds access:
+> 
+>   UBSAN: array-index-out-of-bounds in mm/swapfile.c:3674:26
+>   index 1 is out of range for type '__u32[1]' (aka 'unsigned int[1]')
+> 
+> Kernels that trap on UBSAN reports and panic on oops, such as Android
+> GKI kernels, crash instead.
+> 
+> Declare the list as a flexible array. The layout of the swap header
+> does not change.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+OK.
 
+I worry about these flex_array conversions because there's a trap.
 
-Thanks,
-SJ
+The conversion is safe only if nobody copies swap_header.info using
+assignment or memcpy(..., sizeof(info)).  Both would have previously
+copied badpages[0], but would omit it after this change because
+sizeof(info) shrinks by four bytes.
 
-[...]
+I couldn't find any such copy operations (didn't expect to) so we're
+good.
+
+However it is a trap.  Having a static checker warn about this would be
+helpful.  And afaict no checkers we presently have will pick up on this.
+
+(cc sparse peeps)
+
+Can sparse warn when a struct containing a flexible array is copied by
+assignment or by memcpy(..., sizeof(struct))?  Both will copy only the
+fixed fields, which may silently omit flexibly-allocated array elements.
+
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -129,7 +129,7 @@ union swap_header {
+>  		unsigned char	sws_uuid[16];
+>  		unsigned char	sws_volume[16];
+>  		__u32		padding[117];
+> -		__u32		badpages[1];
+> +		__u32		badpages[];
+>  	} info;
+>  };
+
+Thanks, tossed onto the mm-unstable pile.
 
