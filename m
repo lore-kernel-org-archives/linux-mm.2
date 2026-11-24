@@ -1,140 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645FC606A322
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E4B606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kmxMMbTg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FTcl0jLk
 Received: by kanga.kvack.org (Postfix)
-	id 8436A6B0637; Tue, 24 Nov 2026 03:22:42 -0500 (EST)
+	id 9CAC26B0639; Tue, 24 Nov 2026 03:23:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81AF56B0639; Tue, 24 Nov 2026 03:22:42 -0500 (EST)
+	id 9A25A6B063B; Tue, 24 Nov 2026 03:23:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7304F6B063A; Tue, 24 Nov 2026 03:22:42 -0500 (EST)
+	id 8B8556B063C; Tue, 24 Nov 2026 03:23:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B6ED6B0637
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:22:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78407C0A15
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:22:41 +0000 (UTC)
-X-FDA: 85469321322.27.2599874
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BAAD6B0639
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:23:11 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A87F40B01
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:23:10 +0000 (UTC)
+X-FDA: 85469322540.14.41DC5D7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 528951C0009
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:22:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kmxMMbTg;
+	by imf15.hostedemail.com (Postfix) with ESMTP id C2BCFA0005
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:23:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FTcl0jLk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795508559;
-	b=T/NsyW4Axd+VJx6LTtiNvh6BSoF0JdF7t6ddJ94BQ4bjWrYQt72lkTWAcefasDdVTcWPy+
-	vrVQqkjTq0R72Ay+zD21KFOTSBgDpT7PrXGtb6MkxL7K4TS3KOnhPj2OFHRLtGeQNdB5Vr
-	6eTLQTPkPgN+Dev84iCuVzqEfRUkTi0=
+	t=1795508588;
+	b=i3vB6C67GsJ8iRxd2JOf7u3NNGj6iLG5Qj3bJ1FaCqidbbPooqGBpzOH5jtOnbnW8pE53Q
+	p9q90dazOmur/y1lHHkztSNJJ64K3KCPjVkuqEXMoDcXjV33FsDgpj9rctFJ0cQFJbHxUx
+	enV1TWD0Gx27o0dy4A7AFKwtKflYl24=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795508559;
+	s=arc-20220608; t=1795508588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kv0XCIwgkvWUuyx/4DBxRlpACpywnFccpNNeXHlVO9I=;
-	b=zPNltEXatLBHC9fcAXLCWtSjzBHc3CYfP+yVS1hg/kPdNsAavFr7ymXYV0hG8gv3C0ZzrK
-	rifHpOyjJLz1D359Hv/VKZxEAToXC1Mvmwmq5s3QjnqXtEwGDiniVk1hRbFT9rap9sv4gi
-	I6QvLGcVr/PhnBk5mhgqA+JBHkRsrNM=
+	bh=85ylmbeALAYwawIKijj0hXBlUEBRMQLc81ieNVbxchc=;
+	b=GMB0qsUv61ibEdeN6fXeygils7zjuD3vHs2caPGhT81x97IDPuY6XeQ/xioJvp/K73PzSQ
+	PLPz+HqbsMcXvp0YfXcFeLusq/XzYPDkGb1s6z/MnrcFWSRL9ehQj/O2Juky5xvlF5mHLV
+	ixZAQrdAXycJhpqiacsIYULt7xKGHDA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kmxMMbTg;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FTcl0jLk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2EB19444F6;
-	Tue, 24 Nov 2026 08:22:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6F61F000CF;
-	Tue, 24 Nov 2026 08:22:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1AF1044D39;
+	Tue, 24 Nov 2026 08:23:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C3D1F000CF;
+	Tue, 24 Nov 2026 08:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795508558;
-	bh=kv0XCIwgkvWUuyx/4DBxRlpACpywnFccpNNeXHlVO9I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kmxMMbTg+dP7ZjGNrpgw8we4BkdQzMkfzf3LSzxLSIDfCmMymJiuPAfseij5pI3Nz
-	 aR1JWtdFA8k1W4PVqvzhp/MVXQcCbgGs9six8+jGWhTukQ7rKUqtKt5mF2cZIesde6
-	 II+Ra2PkBz8I+PTKdByTo1hEXyHG9yx9Ao8FEMPVU4cRG9UBA1dKxTRUsjDr+mIHc9
-	 YXOPmJh2a49RvdrwNloPu5p1pvL44dLbX/Fr5OOkf9ddX3pVOAdxYFxVlOVQ/BP7t5
-	 PdemkCa+MC12opRpDH0TYN23bik9SK7//d5wr7GUfCutPd2cWuQWLG44oVjdaqKA58
-	 pppwXa2gZXR1Q==
-Message-ID: <8691815d-1c62-4519-907a-110b2d12b9b5@kernel.org>
-Date: Tue, 24 Nov 2026 09:22:33 +0100
+	s=k20260515; t=1795508588;
+	bh=85ylmbeALAYwawIKijj0hXBlUEBRMQLc81ieNVbxchc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=FTcl0jLkzHHNyCJMixZj3pcRaGFGdP5oXwfaEOZ0pcUeTE00z20ZJTr3DqtaTzusn
+	 bu2Z+p/Jirb6BNooVKLPKwPwc3VcgHXhceJ+dYepddjDYR/oZA+ZeoJ3696ZrFRkPx
+	 /6nJJtsubVIAZDvm/eCXe3qYyF7ulWd3WtAX4VaEdBhcO+OldPtJMVmNJ4U+aFHGlZ
+	 /JzOB9lXIlEyNXUmFWEG6ah/5IqZbsyDGdsymZILsq5J0eSQyFWThGFHPXf78hsZSR
+	 CL/TieEXgsX2Wb5nnC2KaJzMyn8W/PI3/ow+MvLi2JRF8XuM80sa8BYdJcjDEDhBe2
+	 nq+xnQaizMqRA==
+From: David Hildenbrand <david@kernel.org>
+To: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+ zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Cc: linux-kernel@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Qi Zheng <qi.zheng@linux.dev>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+In-Reply-To: <6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com>
+References: <6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com>
+Subject: Re: [PATCH v2] Docs/mm: fix stale split page table lock references
+Message-Id: <179550858346.7182.6655589672684235643.b4-ty@b4>
+Date: Tue, 24 Nov 2026 09:23:03 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Using In-reply-to: <patch posting> in mm-commits mails?
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, mm-commits@vger.kernel.org
-References: <9ba54069-3dc4-422f-8cf6-f81cb806e999@kernel.org>
- <20261118212538.7e6f11f0553d548a03c9c456@linux-foundation.org>
- <b7474fd4-eb88-4472-9e8f-26ef6c646694@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <b7474fd4-eb88-4472-9e8f-26ef6c646694@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspam-User:
-X-Rspamd-Queue-Id: 528951C0009
-X-Stat-Signature: u15g9gw6mxp9bkp3nbuts3n8zpaem6un
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795508559-774724
-X-HE-Meta: U2FsdGVkX18ZhVRfxVbjTobDD9mIxYFy2Hs4OX1cARweVsicAzupDwhtEKxhe0dE8LWsmlxwHhxK+XbF5YrnpiC4u/vp5pK7j90l9tp3d9G582qhKTbydAXMmL01Rx+Sec+6osa+Xy19OlfsIymVf1+NPi7fc8ikANOx4NMLugfJvsGXEtHFwwFAxJJlUFa+tmPYFi6wJfrJlPgRxmW35NROABDaU12/mPWDtulsQA3uvVfItrFsfcDtu+Lylv7+YJ7Rh6y2dP4w+6edrdTHIdzpycmOMYime677boek5Xmzoy1J1KBrExhbjwYirv4aPPHaaLM4CWpg9rut4e8Q2vAGo4X8dZCWoJhz5yE9SiwVYrjvyxarR2K6Hwp9c8f3/T9PeVGCURP8bWPG4azhn5N36qVqO/WGQNkGQENWG90gcPmT/+Q0dcFfNNcL7N8jrSYqlL/PwV2kKN6Plcu2SQQ2V5itArmSCDmOI5TqKTs3G4MOtO7w2wFWHODU/1dCUim5tVEkW4uA6F1XEy9r0ru8od81dImPqe9MhmEsaQjN/hTa+PDyT2cHBKtClRI9+ZLBVEFEKVgk+DUJHL+FXOLILdtzx9zT2WO+ixWhI5F+d6NQYlVuI1ACPTibyD456Y0nT7zknOHv/0C+BeyfGCs0gzoAPCp1zEaos9P+ixklX8x0BVwxxIg9WKzgHXb6RskN4aBiW9EXfrnY3WrRygezJYtC4yANT6hVIAOi1rpw0nF1zaX1BsLor3FHTkPrdaRn9VVrIGZN1KmzEIvVhV/670vaRBiCdR4MXQDIqXOdxL9+nTrcUZV29fB9oAzyl5XKU9yFZGq+KAFONRazraIsRlSa9g8vCtFtq4Fx/4DRRU3IWShGAdHfjNOmPoQHcAgDa5VM8JJTDsinmA3wp/wiH0rAbT0Zrw8PA7sj/LSKlbO48hvkCozMp239ePBHkTX6AXEZLsjnY+ryXj3
- ysIs2nBx
- bFUg35TpAwxigvaq4PPot2uqelbAj/JK4N1DVRCd9O2WQIZozbtiIH6dWmaGpq/HMny0/h1KzzgWtCTRYC5khOFzcq6lLbs/Xgvig+grdTITSY2cJnAF6VMHUOJ6ZUgwc/TVPS1G3JXQ9rUwVaF6zTjYw0k6qvbjT2/KgC7aSejE0+s23zpO5GU9njWnX9gUOxrEueFojz6SugI9wGsq+Kt0huWAXAvD36ffaX1WQcJGW64E1qjD1qpI2xkptbDxVDxQ+6I2iG3Ha9I4fTXEgpU8LSQzPC4AKBVRlZIdvlWYtMLvIgHkWVFu5m5WbcOJFu0RYadbAWhaHcNNtIqjsUHz/4IxvCdOWiJEwKQdYn/+IZ86agUFN/5r6xHuP4/mTJZVAJtmwdfZQlhfTG9rqSGrFxNUSMgJoScEgVDwj6l8AxB6NhlfbMZ16mIgfwbXiWZe0ujJaHW82ZFbAqKRBAWdWBezPLU6WcD0q+a/kaffJEsWS+vMQ6JRYAjDzgbl4jySPVVEfX77MrDMvCR33Yw/Bnsa++CVo2tD5kki4N9hgqS47aGPf3W0hpNZQAqAFTmSlabpusAr8LjZqIfVNvDkd35NTC8rXO6yo7E+i0FebU2xFJ9UqjUxnkPYWDoYUhKjPB7/5Yb6MFmRawhIYw0R7NAPwqqhjth3xmMnNegfkEjA4+fq9dEUYxfXdo6ucqPbVP8cZcfGc65KLp4fKlvx4FGquy0ngj4lYZYQJ/VsiK952a8lRjG4gLTiPzepPOd3VXQ8X05sUF5y1PoOb5bEO3UxiZ6QF55262PHFX1dcYDxlX35XNDHGL0jynx4biDVcnurxzhIr6rYF4iwwVpsTI6Sa00FuVDsUJdoIPxfweRWU1YxPYh5FpA==
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: wybgxoq3bas4occcobf1jqw71urtbf9r
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C2BCFA0005
+X-Rspam-User:
+X-HE-Tag: 1795508588-261166
+X-HE-Meta: U2FsdGVkX1/d3c/xNdWSof/S5lojiUIITInjzEK2XjOG2EPZTORB0Wx7b08JM/u/i9JmiYQ/G2CyYTO+nAhjstmQoXe9PIcAdZGRbCdeVpv7TloZeI+gnnvaltV7RhplBHNTit60NiVCnhEN6PwWKLzaB2AY1di8U/taTbJc9Cjjq18ELntpC38es/jKao6vm30VUaOMPGiLtvoAEegoK+csTXmOW/rgZzvD+hgehZr8s7LQsApuXDoy3WQMXARN+VLLzfFHdeOIAchFp3czzzHRQcdpRYal//B/OKHAMb4plufG0WjyDeN4F6BrAPK2q4RI4QrwAgSilg0P46eo7oLAO5ptEDGHc+YlsFarTDB9RQJaIt20TXP1DytFKoi+flc5iirmLktaRGCc10HXdUt0W9L5RF+PwtAfri5BhqdR9KWVDk6fr0XVitv3uT2K2BAnjL2B4Ec3k37h9UYXyKiDWHWtsv3NpAjT4xL/Fd/QyFBOKFjqeyC2QE4VF4scaG4+TesIMP+UfLt97kLm2H3SLr8HoAXIImXx0IlhLpxflsBPvw7jL9hvUZhR4RQezoC7l708AUasMB5+b7Mp6isRiMplyUmdxzrPbqwevPGbYk2SwUBEU4bJj07bLFQZHwnR1z7lgT4fD3Vo2SslRWSlQLO1ljvXFuCqOmjQx9U2U0Sj1CZ5dTpZL1IwVfC4b4AIDjuEA4asFubvz2SgrnhU9kMHzdIm13iAdIAmB9vTn8U7g2SzLlV3k+pM0Bp4KsTLMAx5sas9q15YKD5HT+vIDZcGTPyzC7FXBYIBRFL+Wrpa4+B3QZURYy2ZKurOulf38OdKcBCMqST2+FCyVcc5OvNiUc0dlehGUK+UdpAdo3Yuh0tVnhjIi+pef7F20l0gcmaB09LoHk8I0TizH6juJdwLRC92Pr8mDGLfRDsQYMhSg9AA6R/xb69ArCwayEtiMQSsaBovjy4JGTv
+ Fix6AmBj
+ 4cupky5rSvjAqjrIAqPnB21o0oJYEDnIfDeI55HgWKBjbM2XBCUQhPSVS3omRfqX9BObu+tXlBo4e17i1jchdbW07UPyAexKEOFJH5pkyRD1Hqxg2jKtjqHoXjH4/2o5yebctfiZlBar/PNQMUkuz07OT8kPXEoxY3fG3b5TanOqFTYZhp8d/a8nFKt0kOvQmqHY6TsRvfOdlcpkrphL30bHmcdeI5LG16jVM1gpM0PLnsnxQFjS+UcciBzWiu3L0GNRj30lPjd8hpZr9M8G/MHQJUHy1X2wWlan1wTtxuZF+cgJ0jj8HpeSaet+4RIoyGyqO2s0RpbmpERFoG4R1q0AiE7fu4VpwJHXMYrao3e/P6vl1Y8BDkjH+g/JuGaEJeOGHvT3LMh/Jc4Eej9F8V3fNXmabV5c1wBhxDean4gszKC1Gc5uOYxGvUAUZ8UlnZ2MYEwwlFIiT73Diw99zy+bZ63SDnJGqLZsskLbI8OjruziEdWp8NQgbEjSyLXs2efx8cBlZIB2/QYPHBx4eXdVvWa92Mh/POqrrGtDojDkTJaHELdTjtg0CbBMgpr51qCgng/C4X5ixZjA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,85 +105,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 11:07, Vlastimil Babka (SUSE) wrote:
-> On 11/19/26 06:25, Andrew Morton wrote:
->> On Wed, 18 Nov 2026 11:21:47 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
->>
->>> Hi Andrew,
->>>
->>> during some chat with Lorenzo, it occured me that it could be useful if your
->>> mm-commit mails (addition, merging to mm-stable, drop etc.) were replies to
->>> the respective patch postings, which would put them next to the patches in
->>> everyone's inboxes. I think Lorenzo started to doing that on his receive
->>> side with postprocessing.
->>>
->>> While I haven't checked your scripts, I naively imagine it shouldn't be hard
->>> to add that In-reply-to: <msgid> header. You already have the msgid for the
->>>
->>> Link: https://lore.kernel.org/<msgid>
->>>
->>> part. Maybe it's tricky when there are more Link:'s than the patch posting
->>> itself. But actually after Linus initially hated these automatic Link:
->>> additions, he later settled on the Link: https://patch.msgid.link/ template
->>> as acceptable to him. It's sort of documented in
->>> Documentation/process/maintainer-tip.rst too. So changing to use that
->>> template should allow to easily grab the right msgid to reply to even for
->>> later actions on the patch, than the initial addition.
->>
->> np, that should be working now.
+On Mon, 23 Nov 2026 11:09:03 +0800, zhaozhengzhuo wrote:
+> The USE_SPLIT_PTE_PTLOCKS and USE_SPLIT_PMD_PTLOCKS macros were turned
+> into Kconfig options, and CONFIG_SPLIT_PTLOCK_CPUS was replaced, but two
+> Documentation/mm files still refer to the old names.
 > 
-> Seems it is, thanks a lot!
+> Update both references.  Point readers to mm/Kconfig for the dependencies
+> instead of restating information that can become stale.
 > 
->> I switched it to patch.msgid.link for just the Link: to the original.
-> 
-> Yes "just to the original" is what I meant.
-> 
->> Konstantin's
->> https://lore.kernel.org/all/20240619-docs-patch-msgid-link-v2-2-72dd272bfe37@linuxfoundation.org/
->> was helpful.
->>
->> I hope patch.msgid.link is durable.  It's owned/operated by the LF so I
->> guess it'll be there for a while!
-> 
-> Yeah. After all, the same is true for lore.kernel.org :)
+> [...]
 
-I works but it makes b4 go nuts when I try to pick something that Andrew picked (too ;) ) early.
+Applied, thanks!
 
- b4 shazam -sl -S https://lore.kernel.org/r/6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com
-Looking up 6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com
-Checking for newer revisions
-Grabbing search results from lore.kernel.org
-Analyzing 3 messages in the thread
-WARNING: duplicate messages found at index 1
-   Subject 1: + docs-mm-fix-stale-split-page-table-lock-references.patch added to mm-unstable branch
-   Subject 2: Docs/mm: fix stale split page table lock references
-  2 is not a reply... assume additional patch
-Looking for additional code-review trailers on lore.kernel.org
-Analyzing 0 code-review messages
-Checking attestation on all messages, may take a moment...
----
-  ✓ [PATCH] + docs-mm-fix-stale-split-page-table-lock-references.patch added to mm-unstable branch
-    ✓ Signed: DKIM/linux-foundation.org
-    + Link: https://patch.msgid.link/20261123053858.BC7241F000CF@smtp.kernel.org
-    + Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-  ✓ [PATCH v2] Docs/mm: fix stale split page table lock references
-    ✓ Signed: DKIM/uniontech.com
-    + Reviewed-by: David Hildenbrand (Arm) <david@kernel.org> (✓ DKIM/kernel.org)
-    + Link: https://patch.msgid.link/6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com
-    + Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-Total patches: 2
----
-Applying: + docs-mm-fix-stale-split-page-table-lock-references.patch added to mm-unstable branch
-Applying: Docs/mm: fix stale split page table lock references
-Using index info to reconstruct a base tree...
-M	Documentation/mm/process_addrs.rst
-M	Documentation/mm/split_page_table_lock.rst
-Falling back to patching base and 3-way merge...
-No changes -- Patch already applied.
+tree: mm/core.git
+branch: core-7.5.misc
+
+Applied patches will appear soon in mm-next, followed by linux-next.
+
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
+
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[1/1] Docs/mm: fix stale split page table lock references
+      https://git.kernel.org/mm/core/c/51626ff4
 
 -- 
 Cheers,
 
 David
+
 
