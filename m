@@ -1,160 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58683606A693
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 21:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6A7606A698
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 21:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=A2gpJzet
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gQTzeSyk
 Received: by kanga.kvack.org (Postfix)
-	id 604FD6B0862; Tue, 24 Nov 2026 16:11:29 -0500 (EST)
+	id 3C6896B0863; Tue, 24 Nov 2026 16:16:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B5306B0863; Tue, 24 Nov 2026 16:11:29 -0500 (EST)
+	id 3768B6B0865; Tue, 24 Nov 2026 16:16:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A4386B0864; Tue, 24 Nov 2026 16:11:29 -0500 (EST)
+	id 218126B0866; Tue, 24 Nov 2026 16:16:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2166F6B0862
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:11:29 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 931C0120C99
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:11:28 +0000 (UTC)
-X-FDA: 85471258656.24.7DD3F40
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8AF70100003
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:11:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=A2gpJzet;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795554686;
-	b=uhA9Nfbs4jj1+DKt7InzBWXfYFMmZZ+14nmVMv4QdD54UtJrCA897MMrihGQG0/S98Bxhw
-	CpO7bCLabz3PfSUaTFbzOxYu7Qm4TsfQrcMVLb9mCB4hj4hkK0HKAxsR4lzVK0hPe7nC9u
-	GwVKVVCUAxc0eiZNlqsu1zvGsuqxUcY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795554686;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D961F6B0863
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:16:39 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C31CC0D1F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:16:39 +0000 (UTC)
+X-FDA: 85471271718.30.B0A99A4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 79594100006
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:16:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQTzeSyk;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795554997;
+	b=lue7wShVDmrYlnmnLEcsF9elnlGGnlY05Ts2ZN04W9BaQYKVfFs8C7OFfaJ/4AzclCmmsR
+	fO/7//fAmc+lfrDt43I2GVZ98yRUc5dRHAZbiapgsXDd0fA+XoLLVe/shpdlufqdVI2Vv+
+	oYsiXy+hptZw4k/bHtfYBP2ibsmrEoA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795554997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R4pw9DcpdnMYeIxEUYnbnv91ThzTvTrm2VVYBrvrMnw=;
-	b=2tf7AHk6EPBmOJtJn6mDHAlVvpxUDnEO4edEbRlETmSok3oqaHab4s0gwjfBfRwuV3RUiH
-	yIuTNzJOW+T60L5jRFvKN5k1k/YTQ1VzVwnzn58ufKTJ3kB5+iojhptrHZ+4x5N9rj1Vkk
-	CyaXtS2hc1+2hoYzUTA6LkplZB52YVQ=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=A2gpJzet;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4d2b741ed9so820852866b.2
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:11:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795554685; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pCvh4ZOXJFEeFmL2dhtf4Nj54AsxL4sO1w+RTvg+8CbyOOFvoOkorg/LBQl3bwgHO6
-         gmEtukeJPi4s+fTLVZZE2fPhc/ZXSBcuOX3uz3fKbuH/ph+R0R3gSVK5cDxj4T6iVYiP
-         KpOUY4RdkHZMTjvj9bcj70oh6qC4h7GxLFpL5l8Fz0KFAv3QDSpsqxSDZT/phczOMclH
-         +wygrLnQQ746pklFVkcPPMx3dZjt3JggNhgeZiSozeGKBzM2lWUFqDIcUmz5hyTk/Cse
-         35HjCzSzVxkaDH28cPx8R5VIR+G0lM36haCaQWdDJXVCy9ViJ0PEZkMPPMtu00V4PUSX
-         +ULg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=R4pw9DcpdnMYeIxEUYnbnv91ThzTvTrm2VVYBrvrMnw=;
-        fh=g5TJ3YTSkqbXEsqgFLDVeCMwUNUytijxI8q7K7+rj9Y=;
-        b=chKB5EoIW+HV+dAJ52MYzV8AuBjXqSzZ8gACLInR4yxM5NfWBIlGF7c+Le4x/J6C5l
-         LR6pcJQ7YQ2iF+hbInoXVeQ8YC658u8Uy9YaKIX82cxEV9RQT50VXkSHzI+TR2wmAAkj
-         iym63D+32eyI4yYUsJEGUZp3VOG1YStezR3VSLeTtUCBLmXtnAP+EL1R2Erigbg8LJ+u
-         +HtZNj4r53+7M9KTrOGv2cWK3y9sDqdbnpg10jeB2NVNViI54ux1gF+LPTR9QqUEohqe
-         1SsPba/jaa/+2N2WvR/8EVTg3dCw/1Y0xOWCOX++d2lgFfhEjY8bk7aeUeuDDyPJDOdb
-         ExSg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795554685; x=1796159485; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=R4pw9DcpdnMYeIxEUYnbnv91ThzTvTrm2VVYBrvrMnw=;
-        b=A2gpJzetOG3a7IJ93Mue5TMrYzEiB3h552R+tOfir4dbEh+PDfhWLs+/sIFZ7ZiLJu
-         VJGl8Uy2ixoPm2ODre1AaTvOW5JL/d4SwjTLYtxK8UY38PNzcj2kgcuK91gxW6Y+Mt4x
-         ID0lptA2eXS079ZRM7gxsoS/YnjFZ501y6K0xB4wzGsT8Yidpe3vMFSGb+bd2/pcgXcD
-         +rRmg7PZGZQtNC4BnNyicLNAAyzkHKodOniD1HfEBmPh6+OChtX+6KIvoYcH+sxBbnz5
-         oaBV0Rpi2DPGd+lQamVyMNMoiGXM03u6fPnL4mnU1ZZnqnUHHx6Z/S314PEJEGM1LvPU
-         BmLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795554685; x=1796159485;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R4pw9DcpdnMYeIxEUYnbnv91ThzTvTrm2VVYBrvrMnw=;
-        b=mIcnsW7Pl2Vao8oj3Q1XwFD0in69PeQ0uwfijs/Hnl97EpuI6PHteW8y54K8FbWTiB
-         dX7Qw9q5K0D3FIo6xOTeHweGpNv34AbEEViN7VTt80qWm7HPNtERF57mAnFWUlhUBI+K
-         ohA+BlYyPDyvJDx6Cfn3hCoJQZwy+b1VRBmt/VlvbbId0QdbI1o+pGHRC4imImwSWyZY
-         u9WSObJMS+pzxylhw4QkoJIil3nVPc6E/ISLA48MqalEoqt73stDoBjND1TtUEE635Ag
-         KYnfR9nGtroZakLWOU3xcf/CP+mrPzN6iWR6wYHVGtQw557gxNBLkEzw/TsLvfR0zHiQ
-         N7Jw==
-X-Forwarded-Encrypted: i=1; AL+hErE2B8zxrsAa4n9lW3vyleNzTBsX2UUBMVZAS9tYhYpgOhBu3AiV3xGZxYwUGQdjjvQL/YgF7oMqWA==@kvack.org
-X-Gm-Message-State: APuU4Z8wijVIP33DeHjUzAS2i6D8/chOixgEPucVZN1XKdRavPpPoQFB
-	J7fgkVFnB9M6UueCwYCU/V/uPSyU/aLsfHXdWKKJ46VoJv1tXLcWmpjZsLVEScE8/t8z2Yl5Fte
-	JI3j0V2gKyVUtr5I9ZGwFoqNd8Bvc+t4uygw1LCTT
-X-Gm-Gg: AZFdTZe1yYPmpkVk4+stpRJSzKIwaiIBQuA7a07cAJjNXM+07Bul85MEOxt49Uvy/gr
-	sf0KO8PiNQdXGnu6hbLcc3SgUfUvx/UcmXfnwSTSXZ7otNs1praWyfWuWgnDOON5mekMCnhYcDd
-	yGqvyljDMgz8GlZI49dKsu5sU63Kg7LQLrkbHFClgdots4uT7HhFpxb9qdhgzeWSSfg6C9fxvaH
-	4qg6E6AUFf0q9BqufQWj5pMgpuEDDwN9MxPU/W7mIrMec0epxTxr1PtfBGGS8z9WPt+gi3KOFRE
-	SnOydCH0m1P3dgmJSSDIR/Q8uOyypd8zEdbWJNFGeEym5eoHjnZy4yvwGb7S9tGNK5kSAFGsCEE
-	buehNypK0JJrB8+e8iCR4cNK/RAqVTMRFQU4Ir2npfm6iKe7IaO8g/1H49F/As7JQUWfnxTDtML
-	1mazU7e9zPrz5QssWvEWNB3bT/x5CcQI0K26xhaXwuGg+bRRWde+U=
-X-Received: by 2002:a17:907:8e90:b0:c50:5186:a428 with SMTP id
- a640c23a62f3a-c513a87d9edmr1227142466b.27.1795554684471; Tue, 24 Nov 2026
- 13:11:24 -0800 (PST)
+	bh=p59Yk/QLF4MSm/aC8y4m8TuaMf9wPFWKLeRdyn1kqHI=;
+	b=ABSv89FV+qbDoQoUh/8AmQEnCNbEIKczQH71zvjtTyvZYK/YAwNYCubwMNcTpRPLNPFxJI
+	xSDIYvRxgZ5jy0QRTh9mwpwk5QWvcoevSKhlC3/wXmYxhq6undMSlyJeSF0//ZtyMDGLY9
+	3OjUY906XE5W+Q0mkZHPdegzUQASdhc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQTzeSyk;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A440D44737;
+	Tue, 24 Nov 2026 21:16:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C018B1F000D4;
+	Tue, 24 Nov 2026 21:16:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795554996;
+	bh=p59Yk/QLF4MSm/aC8y4m8TuaMf9wPFWKLeRdyn1kqHI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=gQTzeSykakbGUCaT+St+9tb66OJ3G2JvazoUw9UhkN/B4/snj+/VDxy8E9q8i4X+L
+	 IzAmZ0pkupaXIm7SOInKIJIOLpzHXdIi0SxCi04aB8tKxcMhb7o1cMCiQvknlnY8GO
+	 xRWkvtRZxwdoXvkPZt70V7m5dZ/yhC8aTmTLVBySU8nOjeDcqG3f/+3OpBMYI1xpcI
+	 4ajerP2qY4CvBvAwivPrXb9DKBLpGvgbqJ9DDB6zeiXlpJyWeZAwFRwWJtRHIYxarB
+	 b72I28hKMgAaTzdeEBFwhNld6rSe+WJXfi85jj4CzUK3wKkMSbNL7D2p0UM1W8FY1I
+	 a481eMCbAA2IA==
+Message-ID: <1cd2306c-eaec-43cd-9d0d-92f8cb6e691b@kernel.org>
+Date: Tue, 24 Nov 2026 22:16:25 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <ac22215d-3e58-4aab-851e-47c30836e058@app.fastmail.com>
- <20261027231728.1466446-1-jthoughton@google.com> <32fad21b-5bad-4640-97df-ef0f638cd9e9@app.fastmail.com>
-In-Reply-To: <32fad21b-5bad-4640-97df-ef0f638cd9e9@app.fastmail.com>
-From: James Houghton <jthoughton@google.com>
-Date: Tue, 24 Nov 2026 16:10:47 -0500
-X-Gm-Features: Aa3M54qLiZYW-OI4p5Ie96tNauNpwSe6qBub2eVFZl5dz1FgCFOseL6mdcwJEy8
-Message-ID: <CADrL8HX5vb1PGDpWzp-eR0rNfsMCVUhFa9vp_WZZx2eJZ+dfXQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
- current->mm is NULL
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Alexei Starovoitov <ast@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	bpf@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, David Sterba <dsterba@suse.com>, io-uring@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, John Fastabend <john.fastabend@gmail.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>, kvm@vger.kernel.org, 
-	"Liam R. Howlett" <liam@infradead.org>, linux-btrfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Ingo Molnar <mingo@redhat.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mike Rapoport <rppt@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: efub88bto6yhmcdktx6rh37q9kxbqqda
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8AF70100003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/rmap: avoid reusing batched TLB flush generations
+To: Harry Yoo <harry@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>,
+ Lance Yang <lance.yang@linux.dev>, Andrew Morton
+ <akpm@linux-foundation.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Ying Huang <huang.ying.caritas@gmail.com>, linux-mm@kvack.org,
+ linux-rt-devel@lists.linux.dev, linux-riscv@lists.infradead.org,
+ stable@vger.kernel.org, Kirk Swidowski <swidowski@google.com>
+References: <20261124-rmap-v1-1-e3dc48a4b527@kernel.org>
+ <awXQg94rksZvexZe@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <awXQg94rksZvexZe@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: swb1qooemqby5jhj5onouxi9drmf9bhu
 X-Rspam-User:
-X-HE-Tag: 1795554686-560966
-X-HE-Meta: U2FsdGVkX19WCAo+Dp5YzdwPgc32tVPbkHcRT+bxgGNZxoAmGXajHHRZ5F9B5prsjU3+sJwKadqT0+nViQ6xiqQOBXQYYENW+SzFdBpJiNwASBtdJDjPpfPz2mtTnYmiDfHPKeoDCGxqpGo0OZctTX3B8eHkIlzI/Nlqh3dZxJC2x5zu1gDwMNTp7DYtLzbUE3EH8uQgqk5k3qJSjSBzE0mVrLos2zHrlgCO1QcgWTmsQfga1FVYX/VFHQLajZMvo2Gkvefw/fmBtyqeVd61iCcLYuBhRGuOQksPVLj2NskThlWKzq/wWIP/SJIQaaRffj570k5BQq0S/nPrSCbhx8THehVa6rbqQ9js3MX++71VlyEkThYIcdsCpZYcbL8P7A+zsPXNoJAZv6hDjvnM6YPdE4CLaAbdYaAy5685L1erR2VLn8+svEt5bJ/wmeF3SMQJV7tZ9ae+y1Kta+rPDDeulYpMMkIIHUN5WEEUghopVhmqEfa7NQuY3tF6TTdbcPpBR0HoUaKKN5fXdCTRZ1HD2hvaanZLpR4jGmg2sa+UoNbU6lwYt061JaHxc69o1Sx21ZbiSww/ezeRuJUkJ9dWbeFVBYMapV6+CbfdmaQTqKVE/MPNB0VQB/8FpA3k+fG2DsH39TLQfJ1LUUxmHCTif+uhnUTbuBZl3ffLEMf41x92qeahmPda354bxITFCfL5vIOVB0inRVhjQbnO60Pc/tBZgTxx/tKx//trzFPcqELFyPSYU1gJB4sP18N1H7FQQT7ITCCDB7c7M9n0cXRzO2c1ODdtW0cHxv5eOFg89/9dIv+FdkbhYUch2VO4biA44pQhRK+j57GNxGpRN3Y9zRSaInOZIXqrutDevzA/DMfEDh97IcRdAL4X+mZMNM+jXlAeP5a4ypttSvQK4Ltm2/p1uyv0T7H0DyovmBn72BIuSBh8I+ylrZVJ0fM6mhV2dOcyIEzpmnmAooo
- qEMCh5nm
- SId33erv3/ZOO62ssc6VYkRNr2+sl+q7Jv2BLlCBDGwEW1j4FYGO2WN3Pt+gjCaCWWMwoL69KcZ4MITOb2Svjsni8WjAbw+dgZfyf2fD/cJjSw7Q7xBUgsKkMbYwmz2LoPbrPP+94SXc2LAjSsFzKEyxP1hsJnRsxOM+D9m/tDWNb0JCTu7nmPHqJ5hSd3UyGKpZm4kV00E8K9HDtDP6mK4RIQPhGWiKr8e918cbSqaokxNxFfO4QlaCiThhOOWtKDAoV/0MhA52E2kTs/F7/Hg5QdviJqy3jZ50vfRTsT0KmJVtCrcgdB54zTMmIJERcIbW08CeTUtwCfCihcvSgP3G02C/6s6eVi/O+a6Jas1yCz/6DjehdHnnY83XxkBeig7mQywk3K3mtVhvB8ibzF6/uHt8HD9VlR7p01JVXj3+Dhr0QdAmZtSh4JQOMTEsQy+iXlglYz0IoA6Fj0yjqvrwmsij31nTv8Nu7cU34QWOJq1hWaeWcR39SxSvlaQPPB22iiQCYVVxKKElEtS9Sl+8pxU1KC7JXgpH+KFk/DOw7ogVS6jya2e9Rkw==
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 79594100006
+X-HE-Tag: 1795554997-582358
+X-HE-Meta: U2FsdGVkX1/oQoodK5HoWL/dPUuv+OiIVMvV1gamFmdam9YOcAb2PCjJjQo4EO2d4ltbtEOW+y7Jr94mTHOarUPSfc2/GvZZ6xcXeiFoiU6h3SZphIDHF9PKn5LJM80pLdZPNAHydzDrq5BuN9EU+xz9LmUyGONDEePwMLYCcnUipgWWIkUdE6xCv+Fb34bHoq6DzFsj4z4dUl4lILt/xitRPONeeBwEiMMMgjkRo9hDho8XBs16N/bSqq5XrCqo7PMIMrDG8B47N7+RACD1F9L5EwfZ8+hu+VgCt0/fXLXedfNoXtT5WCN1d5qxgbEvxDi22nnJA7h8X0fZ3scvnwlqcmxbBSM/7vC4K3CCSVaTDoifZLBfYGWAWuBLomGCd8csldt7i4nW6RlbNuyutTxo37fwkKkz2pGoYRtwInvj7GlZogGNTzLfI2/LQ56XL1oOnAt4/ONykKhwNYhtb0US5P89tFP38hIgyPxiAdY4i2CnrHOfIYwJ+kdGP/x60nWYF6GPVFoQjw04qcQeD56fF77wjSEIM3k66CqdXZnvPSM6x8+nHn6yC/HwllGeagxMesP6Z64qP/XkKN0TU1ZiQMTES4ivAvAzJYqhv3r4aC3YaT3nft+C0W61Tfrh0JSdKVHDqwnosHUDqNwzPETDWpJnbO+RxntgLaJCgygwftgT5oaGaL1jhqWor9jo5DhmPcRlrxFNnWEe2O48zRoA11roNjSeerWqbEC7AM0KlxvVOxUs/XsSkbB+QixH9D3/6BCzBsMiv+yrZPtp+2yzM1DAzruXDsDgHn4/rIDOkYgIEzoOcLMIu3WreRC1ZukPdLZkEK+6bPUL4qSBVh2JQ+ADwk2GmO4XGHU3mCe0grXXX0Nzhyj7IL2NpcPBWEiJkVgc7j32NTJcY5WK5pm4qUxhXEwDk0NeSnekqlCBtVEBRQ+mjjeXIV2ml8h1jscq+VmQMFV7vP+xa9t
+ mpD90UBv
+ EI35uuDSUonrJlmHbm1VYgwGNWUCAFM+LULOnQ+Pe0W9g5OIjQ+UryGB1KGOMRjWQ64OaOfoLIxAJ9B43OiaQgZuCLvoNerAuR9/Bisn1jwckQLCXkvwtW3SrbVobYpccFoNz1F0o0zagr0ZIEtnuJF58YbjzIrz/pIQuiSUQfv66o2JG9Stao35KJDFgLVTYcZyHsV1Xo9GZ4Z0lw4eDZDDdwuueQRCZkSYiV7Hn4eKka/18J4aa6lMhz/50ZOFOewU2oD/VkDbs+jC+QTMreqXy8042cx2gUnskWWGteKcx7HGgqeGNtmnogL7v9vRjPl/8gAMxsEyIsahiaVT15wJe+luFM09IbVc9guqrWc/g9HmHYd0ydOBcUL5v4tlrjh2IJ4K4XOobcnltOYd2+qLi2fu/QsV2prCLZeWjrAiD+n4LxPtkfYecvtjkRH0vxQG74jwM2qVPm5pc3sJDGqgtGtfN6sv6QQ3hLLekwNMu1xQwhnvH1mi533LtTNc5pFxZH+h2+qL1UsmQDsgB8XjFkjhu/eU1L6QcGH3lLwPKTDeMmOyNL2m78+TGGzNaPLOD+g8WB+ejpKRy49IbD92geRvUgj4FpND8GWOjaqugWyLiuwAev2WtIhVXnrs6i4ppTdSQZQDTvo2ZPEzYQBl7W3yWUEwTBc+m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,227 +152,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Arnd,
+On 11/24/26 21:50, Harry Yoo wrote:
+> On Tue, Nov 24, 2026 at 10:39:11AM +0100, David Hildenbrand (Arm) wrote:
+>> mm->tlb_flush_batched packs a 15-bit pending and a 15-bit flushed
+>> counter into one atomic_t, and resets both once pending gets large.
+>> flush_tlb_batched_pending() updates flushed with a cmpxchg() against the
+>> value it read before flushing.
+>>
+>> If the counters get reset and reach that same value again while
+>> flush_tlb_mm() is running, the cmpxchg() succeeds and unmaps that
+>> happened in the meantime are considered flushed. A later zap can then
+>> skip the flush and leave stale writable TLB entries behind.
+>>
+>> Use two separate counters, never reset pending, and let the flusher
+>> simply store the pending value it read before flushing. To keep pending
+>> from wrapping around to flushed, pull flushed to pending - 1 once
+>> pending is more than INT_MAX ahead.
+>>
+>> Preventing the wrapping is primarily required because
+>> try_to_unmap_flush() as called from migration and reclaim code does
+>> *not* go through flush_tlb_batched_pending(), as it does not iterate
+>> MMs. So if nothing in the MM triggers flush_tlb_batched_pending(), there
+>> would be a problem.
+>>
+>> As the separate counters are no longer read atomically together, we must
+>> read "flushed" before "pending" (acquire/release), so a reader can never
+>> pair a just moved-forward "flushed" value with an older "pending" value.
+>>
+>> We'll leave the barrier() between clearing the PTE and incrementing
+>> "pending" alone for now: it should be a smp_mb__before_atomic(), but
+>> existing arch code (x86: inc_mm_tlb_gen(), arm64: dsb(ishst) before the
+>> TLBI, riscv: fully-ordered xchg() in ptep_get_and_clear()) imply a
+>> barrier. This should be cleaned up or documented separately.
+>>
+>> Note: if a flusher stalls between reading "pending" and storing it,
+>> while "pending" advances by an exact multiple of 2^32, the counters
+>> could compare equal and we could miss a flush. The same applies to a
+>> writer that stalls while moving "flushed" forward.
+>>
+>> That is irrelevant in practice: both hold the PTL, so without PREEMPT_RT
+>> they cannot get preempted, and wrapping within the ~20s soft lockup and
+>> RCU stall timeouts would require more than 200 million batched unmaps
+>> per second on a single mm, which is impossible in practice. Even with
+>> PREEMPT_RT or long vCPU preemption, we would need minutes of unmap and
+>> refault churn while the stalled task stays off the CPU, which is highly
+>> unlikely and not a realistic attack vector.
+>>
+>> This effectively adds 4 bytes to mm_struct. However, on common 64-bit
+>> configs it fits into the existing padding, leaving the size unchanged.
+>>
+>> Fixes: 5ee2fa2f0636 ("mm/rmap: fix potential batched TLB flush race")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Kirk Swidowski <swidowski@google.com>
+>> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>> [ david: use atomic_t instead of atomic64_t, adjust description ]
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+> 
 
-Sorry for the long delay; I am finally able to get back to this
-series. Thanks for all your feedback so far!
+Hi Harry,
 
-On Wed, Oct 28, 2026 at 7:14=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
->
-> On Wed, Oct 28, 2026, at 00:17, James Houghton wrote:
-> >>
-> >>  - does there need to be any compile-time configuration to skip
-> >>    the extra checks and/or the warnings?
-> >
-> > Since patch 10 moves the warning out of line, it costs nothing on the
-> > fast path, so making the WARN configurable wouldn't save anything. The
-> > question is really whether the mm check itself should be configurable,
-> > and that check is also what makes the access safe.
->
-> Right, makes sense.
->
-> > The text size increase seems manageable[1], but it would be great to
-> > hear other people's thoughts. For the runtime cost, I'll do some
-> > performance testing. My guess is that a load of current->mm and a
-> > well-predicted branch per user access will be negligible, but I'll get
-> > numbers.
->
-> Sounds good. I agree this should not have much of a performance
-> impact, and for the size it is probably as good as it gets without
-> a major rework of the lazy mm switch.
->
-> >>  - are there any cheaper ways to make it safe than to add a
-> >>    condition on each user access?
-> >>    E.g. the original lazy mm switch was intended to avoid
-> >>    expensive TLB flushes when switching to a kernel thread and
-> >>    back to the original task on 32-bit x86. On modern CPUs,
-> >>    the MMU can deal with multiple ASIDs cheaply, so turning
-> >>    off user access in a kernel thread may be cheaper than
-> >>    adding code to uaccess depending on the architecture.
-> >
-> > That's a fair point. If user memory were inaccessible in kernel threads
-> > and after exit_mm(), every such access would fault, and the fault
-> > handler could WARN about it (x86's do_user_addr_fault() already has a
-> > !mm branch), so it could still be loud without a check on every access.
-> >
-> > I'll look into disabling lazy mm switching on x86 and doing some
-> > performance testing with that (like comparing the per-uaccess check
-> > with the added cost of non-lazy mm switching).
-> >
-> > Other than the performance difference, I see these issues with making
-> > uaccess safe entirely with the mm switch mechanics:
-> >
-> >  - It only helps on architectures (and configs) that implement it,
-> >    while the common check works everywhere today.
->
-> Yes, this would probably be opt-in by architecture, unless we decide
-> to give up on lazy mm switch altogether and pay the performance
-> penalty for that on CPUs without ASID support. Either way it is not
-> be something we can do right away but that we can still consider
-> in the future.
+thanks for all that effort!
 
-Agreed. I haven't collected performance numbers yet; I'll try to do
-that before sending v2.
+> Uh, I spent a couple of hours to review and make sure this is correct.
+> I thought this is correct but then my claude flagged a race during fork.
+> 
+> dup_mm() copies the counters with memcpy() and it doesn't know the
+> ordering. When flushed and pending fields sit in separate words,
+> dup_mm() could read them in two separate loads, but in the wrong order.
+> 
+> It's especially problematic in a very rare (IMO) case where
+> flushed == pending + 1 becomes true in the child (which means the first
+> pending flush in the child might not be flushed properly).
+> 
+> fork				reclaim			another process
+> memcpy reads pending = X
+> 				pending++ (X + 1)
+> 							truncate()
+> 							-> flush_tlb_batched_pending()
+> 							-> flushed = X + 1
+> memcpy reads flushed = X + 1
+> 
+> Maybe reset the counters after copying mm_struct?
 
-> >  - The fault handler would need to tell legitimate faults apart from
-> >    bugs, e.g. copy_from_user_nofault() from BPF or perf in a kernel
-> >    thread is fine and must stay quiet.
->
-> Would it be possible to move those checks into the individual
-> callers that want to avoid the WARN_ON(), with a comment on
-> each one explaining why they do that? It feels more consistent
-> to always warn here, and I would expect that for most of the
-> _nofault() users we do want the warning, and I'm still unsure
-> what is special about these.
+Resetting sounds in general like the right thing to do. Ugh, this copying of
+random state is nasty.
 
-Yes, I think that is better, and I've done this for v2.
+The child never ran, so there isn't anything to flush for it.
 
-The _nofault() users really did need more scrutiny, thanks Arnd. They
-are special for different reasons, and they differ in how we should
-handle them.
+So what you say is that the first deferred flush in the child will be missed. I
+agree that it's extremely unlikely, but we should handle it.
 
-1. They can run in any context. Many of the BPF functions like
-probe_read_user*, probe_write_user, user dynptr and bprintf helpers,
-etc. are like this; a user can just attach a BPF program to places
-where there is no mm. So we should fail the uaccess but not WARN on
-it.
+We currently have:
 
-2. They run in process context, but use nofault because they can't
-take page faults. btrfs's tree search ioctl is an example. In these
-cases, a missing mm is a bug, so we should WARN. So v2 will fix these.
+	if (unlikely(pending - flushed > INT_MAX))
 
-3. There are three cases where it tries to read the PC while handling
-an exception that was taken from user mode. In these cases, it should
-always be the case that `current->mm` is non-NULL, because we just
-came from user mode (i.e., when user_mode(regs) returns true,
-`current->mm` should always be non-NULL and pointing to the correct
-mm). So we should WARN if current->mm is NULL, which v2 will do.
+So I guess an alternative would be:
 
-4. powerpc's BHRB decoding is a special case; I'll just put this in v2
-and we can discuss it there.
+	if (unlikely(pending - flushed - 1 >= INT_MAX))
 
-So now in v2, the _nofault() helpers themselves do not check current->mm.
 
-I've uploaded a draft version of v2 here, in case you want to take a look:
-  https://github.com/48ca/linux uaccess-v2-wip
+pending = x + 1
+flushed = x + 1
 
-> > The series handles that today by
-> >    checking current->mm in the nofault helpers (patch 6).
-> >
-> > The two approaches are mostly complementary: if non-lazy switching
-> > turns out to be cheap enough, an architecture that does this will have
-> > better defense against uaccess bugs. But I'd still like the common
-> > check so that these bugs are reported on every architecture.
->
-> Agreed. My main remaining concern is about the number of functions
-> that need the additional check, if we want to avoid missing
-> any of them. If we can have the check in access_ok(), that would
-> cover the majority of the functions you are changing right now,
-> and it looks like we can deal with the corner cases individually.
->
-> Since in principle every user access should go through both
-> access_ok/mask_user_address and current->mm check at some point,
-> so combining the two as much as possible should help long-term
-> maintainability.
+(x + 1 - (x + 1 ) - 1) = (unsigned)-1 >= INT_MAX
 
-You're right, and v2 has been restructured like this.
+But yeah, let's just initialize it during fork(), thanks!
 
-- The check is in access_ok() itself: the generic version, plus the
-arm64 and riscv versions. __access_ok() remains a plain range check.
-- The callers of mask_user_address()/masked_user_*_access_begin()
-check current->mm explicitly. There are about a dozen such callers.
-- The unchecked accessors, __copy_{from,to}_user()
-and__copy_{from,to}_user_inatomic() (and arm64's
-copy_from_user_flushcache(), which also relies on an earlier
-access_ok()), keep an explicit check for now. Once their users are
-converted to the checked versions, those checks can be dropped.
+-- 
+Cheers,
 
-Compared to v1, this also covers get_user()/put_user()/clear_user() on
-arm64, powerpc, riscv and the asm-generic architectures, and arch code
-like signal frame setup that uses access_ok() followed by __put_user()
-or unsafe_*(). user_access_begin() no longer needs its own check.
-
-What's still not covered: x86's get_user()/put_user(), which do their
-own range check in asm, a few architecture-specific paths that call
-__access_ok() directly (e.g. on alpha and sparc32), and arch code that
-calls __get_user()/__put_user() without access_ok(), mostly trap
-handlers for user-mode faults. Probably best tackled later.
-
->
-> >> There are of course few enough of these left that I think
-> >> we can consider doing the same thing here and turn them all
-> >> into the checking version:
-> >>
-> >> $ git grep -wl __copy_'\(from\|to\)'_user  drivers mm virt
-> >> drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> >> drivers/gpu/drm/i915/i915_gem.c
-> >> drivers/gpu/drm/i915/i915_query.c
-> >> drivers/usb/gadget/udc/atmel_usba_udc.c
-> >> drivers/vhost/scsi.c
-> >> drivers/vhost/vhost.c
-> >> mm/kasan/kasan_test_c.c
-> >> virt/kvm/kvm_main.c
-> >
-> > Agreed, I think we should clean those up, but that can be done
-> > separately. This series already adds the check to the common
-> > __copy_{from,to}_user() and __copy_{from,to}_user_inatomic() wrappers
-> > in include/linux/uaccess.h (patches 7 and 8), so the KVM path is
-> > covered without converting the callers first.
->
-> Right, if dropping __copy_{from,to}_user() as global interfaces does
-> not help add the check in a consistent way, that can wait as well.
-> It looks like we are very slowly converting away from them already,
-> as we have about half the call sites left compared to v5.0.
->
-> There are probably few enough of these that we could address them
-> by either adding current->mm checks or converting them to use
-> the full versions instead where that is an obvious change like
-> that usb gadget driver.
-
-Sounds good. I'll send a separate series converting the obvious ones,
-starting with the usb gadget driver. I think that will be useful.
-Let's see how far I can get; hopefully I can drop
-__copy_{from,to}_user() completely.
-
-> >> As a quick fix I would probably start with just the 'if (!mm) return f=
-alse'
-> >> bit here to get something merged while we still discuss the other
-> >> details.
-> >
-> > Making the same point as Sean[2] but with a little more detail, I had
-> > thought about making the change in access_ok(), but:
-> >
-> >  - On x86-64 and powerpc, the masked user access paths don't call
-> >    access_ok() at all. That includes copy_from_user(),
-> >    strncpy_from_user(), strnlen_user() and every scoped_user_*_access()
-> >    block, which is where many of the converted __get_user() users ended
-> >    up.
->
-> Ok. Apparently there is some of this on arm64 as well, using
-> __uaccess_mask_ptr() instead of mask_user_address().
->
-> >  - __copy_{from,to}_user() and __copy_from_user_inatomic() skip it too,
-> >    and the KVM bug followed exactly that pattern: the range was checked
-> >    once up front, and the access came much later from a different
-> >    context.
->
-> Arguably this is itself a TOCTOU issue and replacing
-> all __copy_{from,to}_user() with copy_{from,to}_user() would be a better
-> solution long-term, if we can do that.
-
-Yeah, I agree, that's another reason to get rid of them.
-
-> >  - access_ok() is also used as a plain range check where having no mm
-> >    is fine. For example, copy_{from,to}_user_nofault() call
-> >    __access_ok()/access_ok(), and BPF and perf legitimately call those
-> >    from kernel threads, so a WARN there would fire on valid tracing.
->
-> These at least could be easily worked around by just skipping the
-> calls to copy_{from,to}_user_nofault() as mentioned above.
-
-Yep, and v2 now does this.
-
-Thanks, Arnd! I'll send a v2 early next week. I've kicked off
-syzkaller against the new version too.
+David
 
