@@ -1,102 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDC6606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 02:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F56606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 02:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HeJxvI1c
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YT0/6zfF
 Received: by kanga.kvack.org (Postfix)
-	id 808E56B05C9; Mon, 23 Nov 2026 21:50:24 -0500 (EST)
+	id 531696B05CC; Mon, 23 Nov 2026 21:58:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BB596B05CB; Mon, 23 Nov 2026 21:50:24 -0500 (EST)
+	id 4E38D6B05CD; Mon, 23 Nov 2026 21:58:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CFFA6B05CC; Mon, 23 Nov 2026 21:50:24 -0500 (EST)
+	id 3F7FF6B05CE; Mon, 23 Nov 2026 21:58:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 40D666B05C9
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 21:50:24 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C751C1C4502
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:50:23 +0000 (UTC)
-X-FDA: 85468483926.19.4FB9266
-Received: from mta1.migadu.com (out-114.mta1.migadu.com [95.215.58.114])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3B5F280007
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:50:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HeJxvI1c;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.114 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 149976B05CC
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 21:58:36 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 099F81606A7
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:58:35 +0000 (UTC)
+X-FDA: 85468504590.16.D505B03
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 60288140005
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:58:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YT0/6zfF";
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795488622;
-	b=K+gWNVKTV1vahMffk+PbEXOymi35E5DASDdaRhtVAFYZBq2P6LdxIxiSyvSi/KjX4jpzA1
-	u3W6ith4FCMaaFKBVk2i2Euh3XPXkpoojepJGFPd4D9SV/5SDxV7Mepka500KikcvPYlxS
-	xdHY5GJO5MuKCbiAVwkn2hWD4vsM4Mk=
+	t=1795489113;
+	b=QAK1k1oyDdMidLeolsDF8KM7V/svVuJ+F3Lc2+gCPna8Hub0Vt02GgJxw6KjiSPf/qMshp
+	PeW9ds0GNTZcbwmIPhLMKLrzqMHaVOgSQib6nvn/gzM+804KSS86/jINXuFv2iKH0t63Wi
+	FQL53m5X8tOoBCnPaM+NhbFScQ3XtuA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795488622;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795489113;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FF+rLemNvQli8Y0SC/xA9vPWVsbRgVrCInJrQ5eKDu4=;
-	b=aMExSn5oYiqA67FN23Q321bNiRCohBMmuKBv93VtEjhyhpjfFCxGDiJSuIDyQShJ9TeCft
-	/2TQKghV3/RHzLNgGrP8JxBG0vNEqmTQqj7tI0mcvy2iVJFtX043whqO7yRbQQRQKAXjFL
-	LbFb2nSb43FEf/r5ByK2ULQHSvsJ+lA=
+	bh=3cKmPnbh3Asj7wY0nGQjAWSFwz0N9DszuqGSRPlzi1s=;
+	b=ACkftPUe5NQiJcfHu3WhATCgdaesOTLINI/pghBJasfg/0Ar+McqBAi5+8j2Nxw5Y76sDS
+	+jL9T8rn5l//6EP658RNpQyPvjARdeMgHIHbD9vDakMBcgvosLvG8Ux77SXe1GH1ple+i+
+	hSGjFHSsuiR4MMVVUxdp14FHgbDvrEs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HeJxvI1c;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.114 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=czFmZtebk+h8PB2klgzex5BMJY4BT8CV+nACYRQTDOo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795488619; v=1; x=1796093419;
- b=HeJxvI1cZ2wtHMS3o/BQsChKQVcXS9w8/EbKIcXEtW2rwMONJuEk9KLtUkhkkxtKBsD4S5qs
- SmVyaoUeaZKXHe6sUDpas8eqpiA/4dtzEQ5EFrzLVyE+xUAHcc54aa5HSZuUvMIuTJbN0s9odwA
- s1InIO7EZYASZJvrWPp8VhLk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 41f9a57973e118ef;
-	Tue, 24 Nov 2026 02:50:18 +0000
-X-Mizu-Trace-ID: 41f9a57973e118ef
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH] memcg: free the private ID of a memcg that never comes
- online
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261124000439.967403-1-shakeel.butt@linux.dev>
-Date: Tue, 24 Nov 2026 10:50:00 +0800
-Cc: Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Tejun Heo <tj@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Michal Koutny <mkoutny@suse.com>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Meta kernel team <kernel-team@meta.com>,
- cgroups@vger.kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YT0/6zfF";
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5ADE140B3D;
+	Tue, 24 Nov 2026 02:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992C11F000C4;
+	Tue, 24 Nov 2026 02:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795489111;
+	bh=3cKmPnbh3Asj7wY0nGQjAWSFwz0N9DszuqGSRPlzi1s=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YT0/6zfFM8qoNZM7+AU/RpaxJ+xexGpK/KQvZpiAuMzFQJ/y6cCpihfvCd+EQLFQ2
+	 ZdJLnjUWVezOUuT/bQ/wOGdwUvtM+QniIz1VxUtZ0rWUV2SlVrAK5FFjz4ypdGcpzX
+	 uEJ/xOq85MCzxAa+aW8bFMQAKGmCIX2P7dJQVzb+8uANMAyanpUh0/FJstSncZ71Af
+	 nq3he7bMQnb7VHt7/tU8mbggP9euEwIfEaojTo88qGFQ5EKcscWEWkYM9w5KcbDn54
+	 DIcy4jYKESUh5a6i00AzvqT7z/0vL/0gElrem0vCDXQ6ej72ykq2tGiqMHNkK9WbT1
+	 nF0HQScW5oDVw==
+Message-ID: <sashiko-outbox-230432@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm: fix cachestat NULL pgdat dereference on DAX
+ mappings
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Henry Martin" <bsdhenrymartin@gmail.com>, "Matthew Wilcox" <willy@infradead.org>, "Jan
+ Kara" <jack@suse.cz>, "Andrew Morton" <akpm@linux-foundation.org>, "Nhat
+ Pham" <nphamcs@gmail.com>, "Johannes Weiner" <hannes@cmpxchg.org>
+Cc: linux-mm@kvack.org
+In-Reply-To: <20261123030014.3116755-1-bsdhenrymartin@gmail.com>
+References: <20261123030014.3116755-1-bsdhenrymartin@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <F39B4A81-BB17-4C5D-851E-2740EBBBBA8B@linux.dev>
-References: <20261124000439.967403-1-shakeel.butt@linux.dev>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: aej1xm5rubqt1iw1hdfpmdyiux8jtwfm
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3B5F280007
+Date: Tue, 24 Nov 2026 02:58:31 +0000
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 60288140005
+X-Stat-Signature: kdhutc9y5j6dxtegqe8kxgwaj53qw5eh
 X-Rspam-User:
-X-HE-Tag: 1795488620-950584
-X-HE-Meta: U2FsdGVkX18T0pEAEjaqjIMz2YyS0k3IdJk+4LbiKoX6s7aX6zdG0yL+iJ/k5nN/y9BbWTQvk8sTggNs5ruzkCWWYyUUFvd8hBFTF1Q+nB3LBqIP3uVY6t0VVDynNjF6Qm/5nPqyzyZQIqeeas/n31BOIXyFCS9XtXX95WfLzaBX5XLtQJI89xTxin2P9Ya8cE3oygjsHrr/8+y5dWKG6CPpHlQQSI5mi/2U7fi2IyUtuXbXilqHyiqk1gjPcpRvAh5or/OmDnov4wkeBRs74wkiqOP3bNyqtxOQaVEMeIAqN1Mc4N7KqUVCXuB3LB6i0T2EWoYP6oh6Mxkq0D47ooX9YxO0yrJaVzHL+V6MmNfxEXuf3Pc1bVdEarLma0zeQjGvTD4StSbPLEO7MR/wZ16JneDaopBTVKzVRZQx9JLhOL1lw80JQz6+T/RGhZ4W2OBTc2QkjBs35ljNDfU0Bb99anBBTtaiDjP4NDFQWE/43vKl3dQLJRhhY9sTB7OhDSlS+PeDFpPC1S0qbZ4K3rGBNrrZtiZjPMlrfFHNtwMMkunBqWV3QoDsn7WwuluOB9jS18eeKyJpcp5ngt+K/mNUd7iFzwVoeknJs7/nCzw5/K+J+9FzbmrgXzy5sWVUXbNCsjKFdVrWKPjULcIpqkodCmprCtftWRpEAisoIWMvSZBZr7NeIaFRv+vJ7pkNB+xhLGIS1Hz897peZYTohOG+ZBvmLt4zOEs2Vud0O0BY4i2+5zAaqFhm81kgI5Z0v5SHv2ieQ00wvNVH4Qygt2a/YayRReJK9kiTWtzmp9x59lMX04haoCtpFLZqCwcsk7jsiLY8yH42aT/ZWDR4OpCyeT6OICEEUK0MSWLMBgiJ3R8sGvWD34FUQlXY59yj4qDwbjoYvKufTuDJ7b0Mu6KG8P8Opxgh0DgxYFwXTcojD8SJiOi77GN9eeeyfVukhPt+/i2L1qs2DO4TVPt
- ftL8STTA
- pwHUmZp8PhyZD7N08qXTC1SLsv5X+9AESSLQAq1KAlbOdvUcWwDbTfPDzeGu0VKV1l2vnk6zkBQgDtc41V7JaLvJqPcjNNwad8KDUGAp6lvDAw+VSGvsXsrcm53KEFxaGBKhu1U+rPYUi5XETJ9iqRS3KvoDtQygTrnZ6CXC6+caFZc+E/P2SKxAbp/BgaPpfygPPibS2TKNYiJYpQ9rIxfRoLOYTQq9DRS6Fd68K0fHSL+SLusJskTTq7quzmpy8xbbrwRHBr6u3LOPEX9f2u5eIcNcpjEp8nLCFu9+kipzngY7t7BKItP95THz6Vrx9biMvhILqH+a1dHStLeR8um1aegMIYQ8JtVP0rM5W7C1vdoqa2/X9LtymavtspUXVvmvTYHivTg28FZK+AxBMyAiGhc73ITWfgWU89wEnDKHnKqiqz8moZMTvgjrtU6sIlWXAmar2HuMWJLpVVYT+r5Kp3vOz9PUBbRtq7Xb50p2sx/wp9lbKUUaL8Erm0RzsgreIT26xeiAMvTxkIXbqdNfq1g==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795489113-354705
+X-HE-Meta: U2FsdGVkX19YYd445495e/zNAyIq7v6Zx6Ts/AGakW4S6SyPYOjydG3zEWY0vFbO/2TE+Mp2x7+R1wrtxQFIjltpccMuFSbdmTrPInlONU46vyO4aVBa5wlSOR7KefT7tQNSxOK4Kz0Gpvnb/eoB4RpWv/jEKeyg5NrQOvtIBpUAUZ9mS27gjGuLtYJXJkjw9zP2C1hppIGUWL5O0BE6rsFIRYDGfvj6xVCVNiVigzgSPJ2dCK0Caf/T/Z9WZ2F+SRtXfEUpsDiKpHteopo0Tf3ZbKa4lToz2ppjgdif00yDeJoweFMeoUCILlAX3qklzOIfQBlWu1hcppPD18CBHC0x4HRUnXYd4SIEsZ03SDSGvJPECOZJfVJPdK4EzbdDyQnXOUX6HJOIOVnXnKLl9QcYk/62uOx2xI5JQr19+aLT3aeTkQEp4MbdqMJx9Af7G2yxHVGso+DswytPKyJ6c9KjaM5bS9jwSy9xi8gHLhhwQ6B21cnYZ0M8c6kVL8zANrUo5klTGdrtN1i3VEtng/go9thZetb9uverg76see5lr6eifSgNCPdTjQKY9xJl8ZRA38XwDva21wyKcIvS9p0RWKemObY16JkALBK7jHBSNfzwUyeYiUUYY//bxBmsNfoRSU37ZcluHo5tneS818Aw7k956zFaHucvEevYyrieGQ5WKIdjHRNIc9nTuFDVt3gXF4lD0ZR1oEkj8wQRtwt45J+yUepjWlxRbUyR+QUzxF71BqlSrKbY0ilueDNd+KP8o4TAVHGniFEVTpCauw6LRQ8KnNxGd2UtbKEODwkzFv6G3lue5UCCXTqWjsVe/ONIX7KXepKAXdH2N5zUVWnIXD9akCVCC/1AL3xeKTikF0yVPFnjdXgem8EctDNN8m6lztEhmy7z65jW2akmkMd4MmJhW5/fMEHirYbiY01prGahO+cC3ksZSQvN2ugvj18DYXLr+lIqKXn/oj4
+ fkzky7a3
+ 7O+YCmY1l3p0sqT7fWWHeCmpyrUTXYZiz2+Fy7FHL4wa0r+RFZcJ2k7c4laB/qQYmx2Si9/hVlBP1Hp3VXVPD9zud+QJ0Q3OIQLGPNBJbCg3JQymWIeBo2qToIPys9jUX+mqCPpSa3trRUXLAzqOoyCJsW6fd9agYAS9bU4QEiR5lH6m483XfK7buVCr77s8Fg+X3C0rGpK6xXSzid2fRYh7niRZ87dWXwO4feoy9y6Xc7hXMbB4sq/dDb1dlnhlNUEFd2razr+RB0gn+Z9ceObpi524SzZpeDtFXiYLjBkWtTnUUrRgRN2OkbfCo+r/Q9x6dRHLmVZXV11wR1DNlYwCc6pNRkEKmdvAhpuHYkUGA/cx++boA/wtUZJcvr2Gv9BOUu3qh1vLuVilQIucdH9fBLCDskRL/oOwhULow7d3hz41bIZ/QhXZrXZdssrAXagp/2pf8AYgK/u8zyFp8qqkiLDwg88mDn/V4atzfljjqVbKYtrkRe1+JIwR5COND2HYXHZIQi4Zb7tgObvlrmKP418LwmlmBVnNsPnTQFTgyU1ZfDsb6oxas2bXCTtli36bFH+0tsbqeI21OupTuUBFZwlDw/Mi71PGwUmWddgOP8fkx/XZ2f1+7suSniCrObl8viy+cw+prwW0hPdp39rKuFUiDNh1B0C+3nbKzGKh44ZnXjqkMpH9kubUP3HzuJbgpeohW8+FA7+miGHB3AyMeaKNeuFBErPi2yr/mqvQMd8r1MvKFrgOVMZi4VqsK1CiLjNndMUvtPUjEuCdpVSsVG4TPL4ZErav2fYYiPkpCb5nmo1VFkZLQWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,102 +93,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] mm: skipped dirty accounting for DAX entries in
+  filemap_cachestat()
+- [Low] mm: inaccurate commit message claim on PMD-order DAX entry count
+--
 
+commit 00a07291e64203188f9848c4b4c587fb6f5215ca
+Author: Henry Martin <bsdhenrymartin@gmail.com>
 
-> On Nov 24, 2026, at 08:04, Shakeel Butt <shakeel.butt@linux.dev> =
-wrote:
->=20
-> mem_cgroup_alloc() reserves the private ID of a memcg when its css is
-> allocated. The ID is erased when the last reference to it is put, and
-> that reference is first taken in mem_cgroup_css_online(). The failure
-> paths of mem_cgroup_alloc() and mem_cgroup_css_online() erase the ID
-> themselves.
->=20
-> But css_create() can also fail after css_alloc() and before
-> online_css(): in percpu_ref_init(), cgroup_idr_alloc() or
-> css_rstat_init(). The memcg is then freed through =
-mem_cgroup_css_free()
-> without ever coming online, and nothing erases its ID. The reserved
-> entry stays in mem_cgroup_private_ids for good, and each such failure
-> takes one of the 65,535 IDs away. With failslab failing radix tree =
-node
-> allocations during mkdir, 1,500 mkdirs leaked 6 IDs this way.
->=20
-> Erase the ID in mem_cgroup_css_free() if the memcg never came online,
-> which is when (memcg->css.flags & CSS_RELEASED) will be false: it is
-> only set when an fully onlined memcg is released.
->=20
-> Fixes: 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure =
-after many small jobs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> ---
-> include/linux/cgroup.h | 5 +++++
-> mm/memcontrol.c        | 7 +++++++
-> 2 files changed, 12 insertions(+)
->=20
-> diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-> index 2afb4cb2bb4f..123c713dcc91 100644
-> --- a/include/linux/cgroup.h
-> +++ b/include/linux/cgroup.h
-> @@ -449,6 +449,11 @@ static inline bool css_is_online(struct =
-cgroup_subsys_state *css)
-> 	return css->flags & CSS_ONLINE;
-> }
->=20
-> +static inline bool css_is_released(struct cgroup_subsys_state *css)
-> +{
-> +	return css->flags & CSS_RELEASED;
-> +}
+mm: fix cachestat NULL pgdat dereference on DAX mappings
+
+This commit avoids decoding DAX exceptional value entries as workingset
+shadows in filemap_cachestat(), counting them as cached pages instead.
+
+> PMD-order entries
+> are counted as one page, as value entries carry no order information.
+
+[Severity: Low]
+Is this statement in the commit message accurate?
+
+dax_iomap_pmd_fault() and dax_insert_pfn_mkwrite() insert PMD entries with
+XA_STATE_ORDER(..., PMD_ORDER), and filemap_cachestat() derives nr_pages
+from xas_get_order(&xas) before checking xa_is_value(folio), so PMD-order
+DAX entries are counted across all pages they cover.
+
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index dc0ceaa58a0f7..5d12230de32d9 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -4706,6 +4706,16 @@ static void filemap_cachestat(struct address_space=
+ *mapping,
+>  			void *shadow =3D (void *)folio;
+>  			bool workingset; /* not used */
+> =20
+> +			/*
+> +			 * DAX exceptional entries track present pages, not
+> +			 * evicted folios.  They must not be decoded as
+> +			 * workingset shadows.
+> +			 */
+> +			if (dax_mapping(mapping)) {
+> +				cs->nr_cache +=3D nr_pages;
+> +				goto resched;
+> +			}
 > +
-> static inline bool css_is_self(struct cgroup_subsys_state *css)
-> {
-> 	if (css =3D=3D &css->cgroup->self) {
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 091401cecf39..e7dfc96fd1b9 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -4545,6 +4545,13 @@ static void mem_cgroup_css_free(struct =
-cgroup_subsys_state *css)
-> 	irq_work_sync(&memcg->high_irq_work);
-> 	cancel_work_sync(&memcg->high_work);
-> 	free_shrinker_info(memcg);
-> +
-> +	/*
-> +	 * The css_create() error path bypasses normal CSS release, =
-leaving
-> +	 * CSS_RELEASED clear. Drop any private ID that is still =
-reserved.
-> +	 */
-> +	if (!css_is_released(css))
+>  			cs->nr_evicted +=3D nr_pages;
+> =20
+>  #ifdef CONFIG_SWAP /* implies CONFIG_MMU */
 
-The leak analysis and the fix look correct to me. However, using
-CSS_RELEASED here makes the private ID cleanup depend on a generic CSS
-teardown state, and adds an accessor solely for this failure path.
+[Severity: Medium]
+Does jumping to resched here skip cs->nr_dirty accounting for dirty DAX
+entries?
 
-The private ID is not needed until mem_cgroup_css_online(), so could we
-instead reserve it at the beginning of that callback? Failures in
-css_create() before ->css_online() would then never own a private ID,
-while failures after the reservation would continue to use the existing
-mem_cgroup_private_id_remove() cleanup.
+DAX marks dirty exceptional entries with PAGECACHE_TAG_DIRTY in
+mapping->i_pages (via dax_insert_entry() and dax_insert_pfn_mkwrite())
+until writeback flushes CPU caches.  Because the in-cache path below only
+queries &xas and never dereferences folio, guarding the evicted branch
+with "if (xa_is_value(folio) && !dax_mapping(mapping))" would avoid
+duplicating cs->nr_cache +=3D nr_pages and preserve cs->nr_dirty reporting
+via xas_get_mark(&xas, PAGECACHE_TAG_DIRTY).
 
-This would also make the private ID lifecycle more explicit: reserve and
-publish it during online, then drop the initial reference during =
-offline.
-It would avoid both the new css_is_released() helper and special =
-handling
-in mem_cgroup_css_free().
-
-Thanks,
-Muchun
-
-> +		mem_cgroup_private_id_remove(memcg);
-> 	mem_cgroup_free(memcg);
-> }
->=20
-> --=20
-> 2.53.1-Meta
->=20
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123030014.3116=
+755-1-bsdhenrymartin@gmail.com?part=3D1
 
