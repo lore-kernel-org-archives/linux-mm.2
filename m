@@ -1,95 +1,155 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386E2606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0030F606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YnmUMNd0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PD2N07i4
 Received: by kanga.kvack.org (Postfix)
-	id 5E12E6B0743; Tue, 24 Nov 2026 10:26:10 -0500 (EST)
+	id 0B0866B0745; Tue, 24 Nov 2026 10:26:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B7AD6B0745; Tue, 24 Nov 2026 10:26:10 -0500 (EST)
+	id 039E86B0747; Tue, 24 Nov 2026 10:26:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CDE56B0746; Tue, 24 Nov 2026 10:26:10 -0500 (EST)
+	id E92D66B0748; Tue, 24 Nov 2026 10:26:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D3E86B0743
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:26:10 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C3FCE6B0745
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:26:25 -0500 (EST)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5E3A61C4708
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:26:09 +0000 (UTC)
-X-FDA: 85470388458.23.7075A83
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B707B14000B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:26:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YnmUMNd0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B8F2140849
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:26:25 +0000 (UTC)
+X-FDA: 85470389130.23.7200F99
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7EDF516000A
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:26:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PD2N07i4;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795533967;
-	b=k63EOECAMyzDacl7zVz4AhQjkVWA7UYFBpDV8jzDoo+rzA/riCWxXOGwosIsn291+4pKHW
-	m3fV4IysFsNj6Y+JQXSuk2/o6BqA9Igr+HsT40GI+1kcfUBqkvXQv6To94eFrUAC1f4RIw
-	z05zqRJe6OXvskdcynMR2WY7HBtiO1M=
+	t=1795533983;
+	b=jSFO7oxCdW8Eh0XqQbIYAdJxZ8TQis8wypIUyOR/gt22F2wqlFjs011aQ+qICVn7dAisCP
+	mBiIo7LN+N5bcagFqy8xCIJ6Z772ri86IZJBJ61qlZ7RbeVP/pEHAEnC1DjX0VkdgFRAGR
+	kzZretiIUIiBM3RlXaV4/v/76CcT+X8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795533967;
+	s=arc-20220608; t=1795533983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KXih1WZAZkIstn+6lWF6B70S60ZNK5hxr3a/V9kUdq8=;
-	b=Sgs1pBMbfrW3QBzYbWefCPQAnbm1e+oFAcPmxgW5Zqx/y1Ql5s0EDXVv/lN8gJfmtpQhnn
-	5LJNxxRpBcggOH+XcasVffzSnk9XF3v6FhMJ+CBdUm65u737taQsG4MqRL3tUQ+7vzw80h
-	0+y0Cy5Dg4cKxZoQ/c/vfGEFT1QtoRo=
+	bh=tYvYFivkhMSGgLZ9Z/6lp6JqgsZ5tsHXQICYdELcDz8=;
+	b=3jYbVMcrHP0ayUqN52NfmzGaXDheYpK7acAbHoVAo0aBVPhVXbzgNzXh887tYz5ryTq4t0
+	PhQyDiS5WW61YUXVywOIppVGBgk89x61nYfuOHEl3mD/tAV2j0m8SFq3fV/sY9GtNdzNl9
+	7zgbHD3fUZCdx8hVBogJH7HAIuc8gO0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YnmUMNd0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 03A7C42216;
-	Tue, 24 Nov 2026 15:26:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D471F000D8;
-	Tue, 24 Nov 2026 15:26:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795533966;
-	bh=KXih1WZAZkIstn+6lWF6B70S60ZNK5hxr3a/V9kUdq8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YnmUMNd03FVBwCygi2End4XljhMQngJcvukA1YboBhvs9lvrFT7GB0wwo13w9olrY
-	 8+BOUVRmfTO2fD8Xn0gHIPP/kNlWYS8MakZ9k/myC3Xml85T14unBesAnkmaVdUs4e
-	 DuzXQ1NjPj5hcf96iLkyXRlAu3LpLlUgfF9kn6czuQnhtU96L6mdZfsiwhI8KeMkOM
-	 Pd9t5EUHmZpZdL45C/fNCK+8spzjAJDJfMpy7+YYDzp/gge2wFnHjfimema3+PZlfA
-	 NSKKt5D0ZkjozusYa1622jDFoggb59Inx7Qoz1o0H6870OlpSPWqRkRGfzUIzvSgZH
-	 at2ZkYz9a7jWQ==
-From: SJ Park <sj@kernel.org>
-To: Enze Li <enze.li@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	Aveline Noir <jm5905938@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lian Wang <lianux.mm@gmail.com>,
-	Dawei Li <set_pte_at@outlook.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon/sysfs: skip registration if DAMON core init fails
-Date: Tue, 24 Nov 2026 07:25:53 -0800
-Message-ID: <20261124152553.89020-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <835e8def-f4cf-4422-849f-08ad42f47c8b@linux.dev>
-References: 
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PD2N07i4;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795533982; x=1827069982;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tYvYFivkhMSGgLZ9Z/6lp6JqgsZ5tsHXQICYdELcDz8=;
+  b=PD2N07i47bUO86aur8uCAN5AQnsymfmu1f7l1VM1GSi4S8Uvw2XpL7zp
+   uC8cXXejREtqoy87jDNtLzpCOQ8AfRxFkKPpfZ0zn8ZI/xyZXIWfQgS3C
+   li+JtSdACYrWGrOr9w4bLgNUG4kkm4nyUPL75r8AP+ODs/TUpy4qDbQ8a
+   mPZeT2pFS+qXrtiMOCvf0gOIpNnn4RpRUBhGA1aXjTkTV/JCb0UGnBBkp
+   2MXzrN2ApIbbjAPkBY9hsncoK8lDsEN9FPjAo89yh+m1OUFimhsKajAFc
+   aLz7ZgNW0+LsEKU1xS0rp2WybiaM3O/r0Ns7E247ir487koR2E+NzEHB5
+   A==;
+X-CSE-ConnectionGUID: wz2bMXqUREGT6q/x5LXWKw==
+X-CSE-MsgGUID: BpfN2V3fTjOSNIiUYkuKHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4401691"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="4401691"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:13:26 -0800
+X-CSE-ConnectionGUID: Qa/1HRaiQmePlyH13PIKTw==
+X-CSE-MsgGUID: MA/px6TYTcqdq7oX817u1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="12023784"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.20]) ([10.125.110.20])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:09:45 -0800
+Message-ID: <e08f2321-749e-40f6-9ed4-3dba8e1625ba@intel.com>
+Date: Tue, 24 Nov 2026 07:09:42 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/3] x86/e820: Ignore memmap= and mem= in confidential
+ guests
+To: Pankaj Gupta <pankaj.gupta@amd.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Kiryl Shutsemau <kas@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+ linux-mm@kvack.org, linux-efi@vger.kernel.org, Pankaj.gupta.linux@gmail.com
+References: <20261124133241.221719-1-pankaj.gupta@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20261124133241.221719-1-pankaj.gupta@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: y6ybdaia9y9kyy8qfkcd753uh9y74res
 X-Rspam-User:
-X-Rspamd-Queue-Id: B707B14000B
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: jb7fuhhspksc6usnzx487o7inkiyj4qu
-X-HE-Tag: 1795533967-323485
-X-HE-Meta: U2FsdGVkX18EGBF8NdiCEJcsh36CemT+DuOffw7rYzKdvLoa/PnO+Ap40M0fL6kV+vd4EP1l+PZBgt6GSx/HESYHMzD6iAAZ+WXxzBkpNJT+WbiCn3JjMRsww/qSpvmvXX1XixoooIfoK227XsOKDw45WuR5KX1mCvYRzty3KlwlVbh56NhYOtamC8158QWXF9DFxmQgedusNT4PpfCkhXBKra2PkXeqAo6wVj2MUvrWYVbG73P5wiXFJi8YVgNy+VzV8wqs+JE/eO5sgDitFpPENjBoFDcZncOu36f1c1UQwIfwau+7eEy0giE6Dr76GCQ99aXVf4cD9uv63hhg00vf02Tcsse7aF0fb39V96eGKFwY3Wto2KNcbOsyCHj3XAiZ7ZqXQ2BTHuIKBky6aeAuf+QdoSKiuxx5WTVHCcPFx5asanQGnGWPHTupwlAdws42VpAttofR5fmE5C35Z0X0c3QPbXZ2BWvIv7AViUEh3UThjvO8iQGpkp/+Hsw2XFkU3/KtZZBxNtkWdpO5EytUfIyQIJi1JYOlDOKD5i3RB+evmZGeupeGxTS67D/XRPIvGNQA/byShauM4RLf6xClCWbBvRFfbAfviSt3t937Bs27iXYsbjmp1o1SplDGLuUF8Dv3R2SfRfvW9q7UPimowdn1NBZ/iCCYCgy1zI/qDNXv1avnRHLPQld+8mERcL0nEhyOwx15UBC52J7b2ToBmeDGzRxeJwQaC+MwOFiG5dhiBTeft0c1KmRWii3o5nshpz8cv+CN95ZyBpT9he/zBfa1Mf79cGYgh4p2sJ3Z+wlJGWP7c5VARS9NUstRvMXVMyFipwz2E4F0os9rGihxW28lgkli70Ya6ZQt0woC++gejoy3f4xFF/Po2lI3tD4xzAw1bDVYYQAeaRezQMCeiaOUoAB+F+IXZPvj7OfUC87foHZP+odVHsahvmQJX245qNbyXiBrfD0f4CH
- XXn5xqWO
- 5F75YshVEh05oOD3iTjVi3Ox3wiXtwezR6WUMEkfmm8XTIwmk6pAFLsji3Fhm9zSKbwUIwcNjkksbpn6Vh2ZpZT6kBuNJNkj8twL/ehHprr2SBNc1s7N1yIsC8PfPVFeHaBAPC/dbJSMk7WqmFZvk2DJMDr7o7ScQpI4HLTfwLl4YwurLzgTeWb7jS/xjCZpl5CU9IGvmDO2rwXSTZTmV+N7a0J83VxEaiWWted26O3J7Hqql+WfhW2NkZ8DMn8S/2IsUHzPqU0ofrxL1PnUE3K8Idu5+DndkzQq31ZmE+Uq8lpnrtQfmAgNeH6BlMwzlusbGVKzHVX5lB0Nwv/jcKg28O+RROqPZiX7RiCU88MvUMsXrlzvFYWyB8FKfwBUqM5rKxYntJ84/jbNj4jCWce/b/HBlmT7B2O9bLEMbKaRXzh6oOPoUY3HAMe7V9YjA69Am8xgc+QCAKgM8yfGFmGVrAK/jVCd/O7Nd1TGAXW3g0hi9ZCWM+a0TURyXDWXF4ILSDQzRHARP3eOiIYomrzWn4zxLIvDiWoi/
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7EDF516000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795533982-649354
+X-HE-Meta: U2FsdGVkX18E4+ILXF8O8D3INXkDt78fEVhf5n6sZVsjq50nDCIOAfBiZauyDC+rBXOmxB51JF4l3BEUUsOfyJAALsaD8YD32aQuQ21dCgD8PzGAjC3R8FizaN051QTYbwr+woZQUIn6wn0zenICQl97+zz3cOtrS1NTDspcXXKnf7RXVTsRK87DU8K6noIMFkTfC9zc5p847G8cVp8j12yHxEV02PZdhoEwQJ5zpo+rtHCnDoY5xgqKJ5wjLDigHcEBzTwEdh2hR57n/uWYCs+1+N9axqc1+iVTs21Tepfbo0WGCArK3JsdUhQh+FsXRgY8ELjLfRMjycYhBbuI8A8hx8DbvmEbmp40Y0eYEdimh9RmGplSqMJJch8G3RVyVXzPyn8gxNugLPoDFoyOn0+Ly7CDTnDb77KPqpl5WzKgDRslSpFaDjZzCVUgvd0B2LntJP2DQwHUkIfiJQpYzZfV8XEasc4WUtslY4voSjPPhWjHhcDXr3DsUY1ivG9Cx5ChGVerJ0N8/36QoFlkQnflg6nzTTtXfk6B9lx199Is9jqNuKP3j0ko2Md2H/WfaBXKKMSDOwPSORyDWZXLQ/ZVU3PdtX5YhXwOxbZ3IrQvpWHyr3mP7rNu+eP1Ao7BgYJDrxIgIMFYXURpzhtk6lDxbrkVBMo/VAOB7+xOXNJccDhuStVzI8uXij5qDQT22BRZp7gbtINNRWNsnKLOCtznmmk/1W0oYPwCx6FTOkjAeFrIqrSC6C1/bXZmZfgjSKn+CnNpFg6h+t6z48Cuwsf0+TnI/zoYvxFHHoACUPjRVXkGR4IjG48qJDjprSIyQwodEGcFe5hemRpTLKDFySqCeikyHxFRIjkZyc38XFbDE4b2grvRYlcOjmpDQre6WiCxl5Vc/jTTmgdxRdfly3Qzcsm4a3CXI9ZsdQPcdUGPjlCpJ1eKM7xPOQwKp7o+ia1wowM4p9XrLfqouG3
+ 9oxgyFi8
+ ZSkLXQIxEOfolYwZ2yaCJvwz8YtAFpUaF52nsgQ+dJJTkjGwqh1CTQBjWmq+CfwpFm1/fbfMDEbhlEL7kipdjw7dan6JZ0jcVgg34EMS3pvvVnGDy9KzD9hWK5AV7NdqDpSi/rTFfexCkZSQXDSOIgdozBn15X/JoLjaxOcr+N0d1G/KYbkNAIxpHVztisghUvNDc73LL8E9pZDDdkkMSj+XKIc3BYURj/bG+G80HP13lDvbiiYuvhy0hTSN0vqoQh6Vhrx56ehhM7gqwJH7idOvpB8B//zjAhfM+B+5AraGRWEOrJux/0duys79zAjKljNaz2uExPrdf2kuItwV9LUrD37OrDom7c5PrA1dy/FT2Hg1lvL/cFpHbQE2EUHatUW8EVxtJsZWbdkhLpRkmBqajrMJERBk7up151bbWZBHBeQYwvSH+gIBV8tr3UnAbiAmM8WfxqScAYQS1h4+YyQh+/UkqwGvRFB+kWD92WiTHnurTQo+5s9luSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,26 +158,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 24 Nov 2026 20:31:46 +0800 Enze Li <enze.li@linux.dev> wrote:
+On 11/24/26 05:32, Pankaj Gupta wrote:
+> In a confidential guest (SEV-SNP, TDX) the EFI stub builds the unaccepted
+> memory bitmap before the command line is parsed. memmap= and mem= edit
+> e820_table only afterwards.
 
-> Hi SJ,
-> 
-> One tiny thing in the commit message you proposed, pls see below,
-> 
-> On 11/23/26 23:36, SJ Park wrote:
-> > On Mon, 23 Nov 2026 18:51:45 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
-> > 
-> > '''
-> > DAMON sysfs registers ints interface even if DAMON core initialization fails.
-> 
-> It seems to me that "ints" should be "its".  Other than that, everything 
-> else in the message reads good to me.
-
-Thank you, Enze.  I will fix it as you suggested.
-
-
-Thanks,
-SJ
-
-[...]
+memmap= and mem= are debugging tools, right? If you use them, you get to
+keep the pieces. Why add complexity for this?
 
