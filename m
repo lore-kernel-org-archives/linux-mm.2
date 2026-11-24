@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C227606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345D6606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j1j0LVS7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VqexezKr
 Received: by kanga.kvack.org (Postfix)
-	id F20A16B0760; Tue, 24 Nov 2026 10:36:51 -0500 (EST)
+	id D24956B0761; Tue, 24 Nov 2026 10:36:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED1296B0761; Tue, 24 Nov 2026 10:36:51 -0500 (EST)
+	id CAE986B0763; Tue, 24 Nov 2026 10:36:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0DAA6B0762; Tue, 24 Nov 2026 10:36:51 -0500 (EST)
+	id B76B76B0764; Tue, 24 Nov 2026 10:36:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B84FA6B0760
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:36:51 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 506A4140AE7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 931B16B0761
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:36:52 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99896A0BC7
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:51 +0000 (UTC)
-X-FDA: 85470415422.25.999263B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B71EC8000D
+X-FDA: 85470415422.07.0E882B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 190D540010
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1j0LVS7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VqexezKr;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795534609;
-	b=J/cLc8nYkJstCyQH5M5TEgd/jlR9WhNSXAfMFGEBnoffzguegm6cp/KFL3d2PPa0K3n7Jo
-	8ZiuyDK7GLNDyJfxAld97qus8UQPEaFxC4Z4zQSHb44Jjl3SZrBM2KVnbkc8tE/W9+/Wi1
-	zCSYvJalGggz756lR53Nt4vFzfE81rE=
+	t=1795534610;
+	b=o5X5Xbv428KBrXecDl+jl2LCqhwt/+k449/bbIYqgnC4tZHVhoxlr9LuQdEqh98aQG1+gE
+	m1LKzO5+KiO9BGLkEZlRKLKk7TJpRGy6oywu37/J+JqeADDWh5BbTNBSLs23n8dzrSUeFV
+	T+Vae67nTi7G1+xn6ZVSMgDo0PCsHNk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795534609;
+	s=arc-20220608; t=1795534610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8oM0h67SAKmFyTFD9nC0NrJmlaLbWaTm6qMeGXdW4+E=;
-	b=Fu3R/+KsFbNCnNkH5whvsNFp4I9VFWlfo8/bU05Xs/sa1vOpM3BqBVxKHj9lPlyRZm9SML
-	poLvVyv09zqtOzFNJGrUQddLNOwMCAZ0Fe20+fvw0dhMhwh4XMJvcF4CSKL3emdoSF5ecy
-	/y1CGKnD7XBqCy/9LjeWeYSDl+hj8Ns=
+	bh=Esn01hvGsm300THww7Bwi6euyaSw8hSdi0zfeBrrMo8=;
+	b=y1qbgn6WzabLXfXSY6oDGU8MMZQuh1/x46qaCgOhLd2t5ZC5rN8dS15JWGQtzR9TmwIJHR
+	rLl25qNZ5Vff1e6vjqS4Rowk3x9RtklnLkijPobrzh1bKwpiGLAnmFpMeAI4lKosAxv7Gz
+	FJntsWjoEIcnq9OZiwY7d+ojhye5bK0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1j0LVS7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VqexezKr;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13E0642378;
+	by tor.source.kernel.org (Postfix) with ESMTP id A67C162719;
 	Tue, 24 Nov 2026 15:36:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A9E1F000CF;
-	Tue, 24 Nov 2026 15:36:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E97D1F000D8;
+	Tue, 24 Nov 2026 15:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795534608;
-	bh=8oM0h67SAKmFyTFD9nC0NrJmlaLbWaTm6qMeGXdW4+E=;
+	s=k20260515; t=1795534609;
+	bh=Esn01hvGsm300THww7Bwi6euyaSw8hSdi0zfeBrrMo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j1j0LVS7s4HyKVUICEvLqjmnPEZgCbfK0q2A5F70gjZ42p6kppPkJogURG55isoOh
-	 R9ZDDnRqHDSMJbzy9H/O2ocxGLrG2vtbFcszYbXGjpGLYJcscg40dDScm2VZHXRz2J
-	 kdCOdEXtytNWu6cdH9zgpbXLTwcObGBXmHY5k/ce+7eUOrXv1aBvjgsXNVoUeY0VvK
-	 NM9zWcn3z4Jr6ME12JfIzLg3AOcN6WcaqbUfVudRnSTk6b+q7ihOZp6+Nq9cArRmQB
-	 +hlPp/lmH15NFMBqa3TQ8LyTHnx8Lj9zqeXf+86vRMB7NQfl2MpJsZZs9U+NQd6veT
-	 zplhL9HcS73tw==
+	b=VqexezKry5v9RKTJdbErdeFMxRZsYbu6SutiAqud4X9hU+HWOeAN3o7FWq+2uZbK/
+	 ALxTeDWlk8pB1SAm9fKFGyfIaVi7Yc2jFA7EzQM/ESVBQatzq1BcZ7lIlLdke/h+ee
+	 jJd1MjLT4eKWcUlDwDcKkT3ilJ1o0WCC/BPj7QGFPQyO/ribYE2JAJxRwN7idORPfr
+	 998+WDF9nUPqs0QvTqHizX3bIlzhh11opWTIuYfLSfkbRS1Yr2cXz0GNXQ47QGy2cm
+	 A48xQxmTeMFLMciiNpUVFcqK9ltBPSQbCXjAUGyEowmVdJJOxRV6G6ZP/3SPhwcYdn
+	 ILvi4dh06VXOA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
@@ -67,27 +67,27 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	Aveline Noir <jm5905938@gmail.com>,
 	Lian Wang <lianux.mm@gmail.com>
-Subject: [PATCH v2 06/27] mm/damon/sysfs: add producers/nr_producers file
-Date: Tue, 24 Nov 2026 07:36:12 -0800
-Message-ID: <20261124153636.91854-7-sj@kernel.org>
+Subject: [PATCH v2 07/27] mm/damon/sysfs: implement report producer directory
+Date: Tue, 24 Nov 2026 07:36:13 -0800
+Message-ID: <20261124153636.91854-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261124153636.91854-1-sj@kernel.org>
 References: <20261124153636.91854-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Stat-Signature: 7mnbo16zxeuwhjzmb48diay7r6xsgiis
 X-Rspam-User:
-X-Rspamd-Queue-Id: B71EC8000D
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: do6r33tkc56bj93it4sow47d4k6yb1ra
-X-HE-Tag: 1795534609-696217
-X-HE-Meta: U2FsdGVkX18wQHpH946GOO8jXgUX1N8CAczupcniIR0wtCBixyg1y14EhW+ZVxzIJf4WMM4bCzAX72g3Vh1Pc2CLUbp3yUofKgu16JggAOLQ1U2AAOW3OcJsaAtEN/44tyPSZwUJwqH7nGV8Rc8M7slO9zJj0sxxFwfO3+GQ7imQI3+M0+eSTAWlTHq+TPgGWToLWUp7fhtTTkeeurw0cfm0/1UrlBx48eleYutF5Sr3emSnqeacY1zWADXw3U9ggK39Qal6+/mG4UzyQPKDWHYmPkQ+Xd1VdBmH74Nh1txJ8tqqW+w4yOl4lenxarosB29qBipkr02Dxaupvs9aOERndTHO9/3ZB6oyhIvd+as7/ta+Pc3htowKE7OWNP0K5N4LJxlv6M1MEjqhet+4EFumsS5CkBC9n7feeJRyLwDmkxAv3NXy4C+ETMBo4U+cGGbpBBQrzclahGt0w0a3fGypeTLFvlviomC3OAqA6Wutd0m4K6cQURdBjyNBRcESo2KJ5k6tmLtpVZzEOWx3anOPRMRqV1LfCHNEpj6K5B0jX6GC1NC91eDmeJw816We3ZzS2GANA2q6XRu7XsS7AcP8iB8Z2Q8baqrY+ND1JjrS/55ZjF3ib/WlKpJ4JNKvHL+C2aP/hhVypotPBuGNFE+pHzmObbjHL2FL3y+fMiIPnHuXp8NN4MV7ELfCPfnTuxi286bBPTPq+d0jUo3211XipVXbAGsILJQlC50qbAF11AchqTjRytjkDIVcv+Vwdepqe5D4X1mW5HC4gdU2eUOjz+B3Wdjv+D9m+y2t0/ZK7b5EE1Ofxhs2CP3BGU/ovokLxCAA8aHG0Y699j5kGA+P48tKCSpcGv8WeJpt8jXyGI+h2NdnN+pgxw5nwu5BADRICVyBcCuLfu3vUYq+/sScxwxlyGd7PEJGqbS2FPn/4SG7/Vu+wBcZ91WXSm7upQA/UV+CKbt+Fa1PLxR
- Xl0DJ0ZK
- NrZT/7mDSF+WQ3NX2cFWvcycTLEWZBh0PAtYx0QmMzDENEB/JM0chLLIG+q8PomZAZaq8X0lvisOY5B5hcPS9Hi2UOQNePxj95lRj/1Fht9GDxTMGDtQvtpEu2LsHU/4atf8AHm9HmJiuNooKhYwpAL2vaEUdztKxdU4txWEWfFqO5g22Z7wAavViZQX5CzeHxiT0qVgB2wBQFPVtWOSAn9p+vFsF9tgoy3MR3TUOpHucrT4EZ9+ytuaVyBbA0ywkwKMJmiDoWBzSS26lXxXLOCEQaOadDDmE7rhrnfrUFGKVT4fzZRIBhcKtD638k56Ww4ZWnmCfmalEsLwMPsuk60ZIpObZClY9/d6But0CcayqiQc7qrR1NlH2S6iD38JtLwOejA0Mvd6NU+cPbwJyazBZk4L6IQoapIxf2cgk1nRitZjTCy0RFDH7r6ly2wHbTbOQNd988aYIkWfNexf2GpYlp8rOYfK/04rsRtjgw939tIoB74UinfT8DigDRlxpLjpsTO+ianzH7kYJApnDRoWj9ws4b0veXrQTYmuSjpyEet8ZiKXE54198JX8cBbEEbDF98jr2+a25/Va+Kf4oK0Gw/qQB7D3jhtX
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 190D540010
+X-HE-Tag: 1795534609-681778
+X-HE-Meta: U2FsdGVkX1+AMPkDnsw5wG7ozLdWcz7CmikAnnVM4ekreNoBkgDYsk1we0k0mWeq8MQrmzcwaSYYhj6BvbwHx7PLQlq5kcj5D0XosLqnxe+/JH5E/rwzYzjnspVtHiAJlA39l0WDgARbQZRce/rcAy4RzmjHZDPoe8+eyeuzmNFL2UxuQlkrXOxpoyDtSyC5zrE1lwhKvJ0u9LU9Khp/XZyYbKmjojxp7WTA9VCUYCMPtvVm6ZmTh53QK0ZaEq1232QalXhgEZ6UqTxUOvR+QSxkMZ2ak/AkdsJOhnvJUM9D/gx9aVcG8GvSWdtwhHgIUpBC+oGFnj2EgLoYst7rP3dxzC8mpG2qHeh4W4JOaD2+oPd2GmDhHpB61LuU23GFNqit8VNcGlgFuWlIZLvoG9WxNKZhs6hSBGb2JbgAfAyNDejpbAvBlGl2+712w3L22UZHkC1tVLHFo77dkBTloH8afCiJFtlfQnkWRnglZ6eQces26tBD5rxAs12zXFa/6BEGmmNhAVsrc9egXWTLm+9FwfX+oTPfRVMkBH2ShBnui2GjJR7IrykKz9t1AMeOrnWXOQlt5DoaIuDMnxMkCXU1/gqp6/WIlcU/ldg2z/i1jmwCM17BgweHSF49NIV3DqK0AgDrJSu4ScHOxeX6/Vyy4GNzcsr0w4oUce/opWPJhvc8WptNyatCLkHoMpRXNOo3miCAtFD+aP0LkmmbAx47A1YzRzzYgbkWOfeTBzBuDYqrQIIfavE8HXDDjzujZFYdfVokU9kH1JnG20XrEoZQFFIDRYSrdIbVAd8LcmyfqUL2Njii2T7U9Ui7sRPmFcePiaMzyx4qjksWaiLsFjL6p9v0huLeQI7R7keP9cioPFFKj1JTYv/9AYnCBGkSF5jn1roDoNf0lthzdjNSi8kXWJbFMaJXcYBJ6Yzu1Hu+PcgLt95vqJIE6LKiDtT1V9EN/3Mz3ZWnNolBYxb
+ FWqVsuku
+ 2z4lqiuwWQApVnfdGZw7blITd0NA25LWx1CKlH9z4pI9j0ddssWV3ioW7/M17Smk1N7i8t25Zp23bydcUTxoAYpZcmg9jzfyBozfU4XCZywpRR4Olgz1ivfBBGTDRERgD3gs7zEFIN0KcoOyG/LImvbOydecfxzjgsC2L3PZ65U8Saciwexvd800TfB1jfV6FBM8oEL2NZdaSw+nlUYoETcHv6SoGyWQKSlx33F+sUbu2Z2Xbuc8k3nnq6NTiKKdw+fh0DIbJEMzCdaMUhd1CF+bAV5Dn/ujCc2KFh2q8dtZ/v3ArSqyQE5WjNg4IcEH+FMWf4Kq30OUZzBSLw+2RyfsNIzJENDteFrCgKv7SwNMGyxlpPJw0L6HAwuOwpQbpxYj/jKdyMCR85nyHmyQUjpegrZzCegNbkT6hr5RDp3nq/qLW7jW4tFfKzTwp6TK4FKhzeex2C/9DLZMUQj1hKc0Q1JCddL8rMGs6QydtojsGWUFryP42Rp84eCPKwzvCTIbkmrGAz0VtDe2OjGC3XTaqJlBfIhizrRczBIDG4G/VvH0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,92 +96,118 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement a new sysfs file, nr_producers, under the producers/
-directory.  The file will be used for generating directories for each
-report producer, in a manner that is similar to the nr_kdamonds file.
+Implement a sysfs directory for each report producer.  Create and remove
+the directories for reports/producers/nr_producers file writes.  It is a
+placeholder for sysfs files that will be used for controlling each
+report producer.
 
 Reviewed-by: Aveline Noir <jm5905938@gmail.com>
 Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ mm/damon/sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 70 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 75701ed662222..d3a7cb170975a 100644
+index d3a7cb170975a..7c6bc30c12125 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -2983,6 +2983,7 @@ static const struct kobj_type damon_sysfs_kdamonds_ktype = {
+@@ -2979,10 +2979,40 @@ static const struct kobj_type damon_sysfs_kdamonds_ktype = {
+ 	.default_groups = damon_sysfs_kdamonds_groups,
+ };
+ 
++/* producer dir */
++
++struct damon_sysfs_producer {
++	struct kobject kobj;
++};
++
++static struct damon_sysfs_producer *damon_sysfs_producer_alloc(void)
++{
++	return kzalloc_obj(struct damon_sysfs_producer);
++}
++
++static void damon_sysfs_producer_release(struct kobject *kobj)
++{
++	struct damon_sysfs_producer *producer = container_of(kobj,
++			struct damon_sysfs_producer, kobj);
++	kfree(producer);
++}
++
++static struct attribute *damon_sysfs_producer_attrs[] = {
++	NULL,
++};
++ATTRIBUTE_GROUPS(damon_sysfs_producer);
++
++static const struct kobj_type damon_sysfs_producer_ktype = {
++	.release = damon_sysfs_producer_release,
++	.sysfs_ops = &kobj_sysfs_ops,
++	.default_groups = damon_sysfs_producer_groups,
++};
++
+ /* producers dir */
  
  struct damon_sysfs_producers {
  	struct kobject kobj;
-+	int nr;
++	struct damon_sysfs_producer **producers_arr;
+ 	int nr;
  };
  
- static struct damon_sysfs_producers *damon_sysfs_producers_alloc(void)
-@@ -2990,12 +2991,62 @@ static struct damon_sysfs_producers *damon_sysfs_producers_alloc(void)
- 	return kzalloc_obj(struct damon_sysfs_producers);
- }
- 
-+static void damon_sysfs_producers_rm_dirs(
-+		struct damon_sysfs_producers *producers)
-+{
-+	producers->nr = 0;
-+}
-+
-+static int damon_sysfs_producers_add_dirs(
-+		struct damon_sysfs_producers *producers, int nr_producers)
-+{
-+	damon_sysfs_producers_rm_dirs(producers);
-+	producers->nr = nr_producers;
-+	return 0;
-+}
-+
-+static ssize_t nr_producers_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	struct damon_sysfs_producers *producers = container_of(kobj,
-+			struct damon_sysfs_producers, kobj);
-+
-+	return sysfs_emit(buf, "%d\n", producers->nr);
-+}
-+
-+static ssize_t nr_producers_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
-+{
-+	struct damon_sysfs_producers *producers;
-+	int nr, err = kstrtoint(buf, 0, &nr);
-+
-+	if (err)
-+		return err;
-+	if (nr < 0)
-+		return -EINVAL;
-+
-+	producers = container_of(kobj, struct damon_sysfs_producers, kobj);
-+
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	err = damon_sysfs_producers_add_dirs(producers, nr);
-+	mutex_unlock(&damon_sysfs_lock);
-+	if (err)
-+		return err;
-+
-+	return count;
-+}
-+
- static void damon_sysfs_producers_release(struct kobject *kobj)
+@@ -2994,14 +3024,53 @@ static struct damon_sysfs_producers *damon_sysfs_producers_alloc(void)
+ static void damon_sysfs_producers_rm_dirs(
+ 		struct damon_sysfs_producers *producers)
  {
- 	kfree(container_of(kobj, struct damon_sysfs_producers, kobj));
++	struct damon_sysfs_producer **producers_arr = producers->producers_arr;
++	int i;
++
++	for (i = 0; i < producers->nr; i++) {
++		kobject_del(&producers_arr[i]->kobj);
++		kobject_put(&producers_arr[i]->kobj);
++	}
+ 	producers->nr = 0;
++	kfree(producers_arr);
++	producers->producers_arr = NULL;
  }
  
-+static struct kobj_attribute damon_sysfs_producers_nr_attr =
-+__ATTR_RW_MODE(nr_producers, 0600);
+ static int damon_sysfs_producers_add_dirs(
+ 		struct damon_sysfs_producers *producers, int nr_producers)
+ {
++	struct damon_sysfs_producer **producers_arr, *producer;
++	int err, i;
 +
- static struct attribute *damon_sysfs_producers_attrs[] = {
-+	&damon_sysfs_producers_nr_attr.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(damon_sysfs_producers);
+ 	damon_sysfs_producers_rm_dirs(producers);
+-	producers->nr = nr_producers;
++	if (!nr_producers)
++		return 0;
++
++	producers_arr = kmalloc_objs(*producers_arr, nr_producers,
++			GFP_KERNEL | __GFP_NOWARN);
++	if (!producers_arr)
++		return -ENOMEM;
++	producers->producers_arr = producers_arr;
++
++	for (i = 0; i < nr_producers; i++) {
++		producer = damon_sysfs_producer_alloc();
++		if (!producer) {
++			damon_sysfs_producers_rm_dirs(producers);
++			return -ENOMEM;
++		}
++
++		err = kobject_init_and_add(&producer->kobj,
++				&damon_sysfs_producer_ktype, &producers->kobj,
++				"%d", i);
++		if (err) {
++			kobject_put(&producer->kobj);
++			damon_sysfs_producers_rm_dirs(producers);
++			return err;
++		}
++
++		producers_arr[i] = producer;
++		producers->nr++;
++	}
+ 	return 0;
+ }
+ 
 -- 
 2.47.3
 
