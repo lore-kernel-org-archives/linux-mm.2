@@ -1,96 +1,155 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2966C606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C40606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=j9YW9C3L
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=PVorD37Z;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=UtwWEvoZ
 Received: by kanga.kvack.org (Postfix)
-	id 0F61B6B0728; Tue, 24 Nov 2026 09:14:21 -0500 (EST)
+	id EC1806B0729; Tue, 24 Nov 2026 09:20:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07FC56B0729; Tue, 24 Nov 2026 09:14:21 -0500 (EST)
+	id E98E66B072B; Tue, 24 Nov 2026 09:20:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8A186B072A; Tue, 24 Nov 2026 09:14:20 -0500 (EST)
+	id D87C06B072C; Tue, 24 Nov 2026 09:20:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BDB0D6B0728
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:14:20 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF60AC0AA6
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:14:19 +0000 (UTC)
-X-FDA: 85470207438.14.C22A17D
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8A1554000F
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:14:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=j9YW9C3L;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf11.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A86106B0729
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:20:51 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29CEA40BDA
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:20:51 +0000 (UTC)
+X-FDA: 85470223902.26.5607758
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D50D3180012
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:20:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=PVorD37Z;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="U twWEvo";
+	spf=pass (imf16.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795529658;
-	b=p6GzbbZQyQOy5cFuvQuVyE+eJrIzeH2aH0Alqsh2josHHCLUorlnV0UwqgV9rkOcplJFFc
-	Q52bhlg9U1iZ3bXskMJ+zVDVTEgFnZG6TYOdMLva9JTTghK46q4o/lwEC82iRjIcy7uoJf
-	BOnoKdfDWzgjP3/tdw07EuvshSG3YIo=
+	t=1795530049;
+	b=YYjtrOlI23VqlxnRu5LdMkQ40S/t6EYBfPQLnJ6aVS8vIF0znpEQSzI499Ssm9tYaS0VEP
+	SVsaEdy8gVVVmXhhRMnPB8qkFK34iZy35bYJupvM456ENrFc/0gYUF8vFdKrEawiDAxReS
+	KJ73LUBZLKev93b9TK4pZ7bnU0DxrBc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795529658;
+	s=arc-20220608; t=1795530049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3tGwmEPNnZKcIeVBveDBfvH+PJuYnDW44W3GOjoj51g=;
-	b=rU/WnEbmH/8c/v/+FMHc+LdotPDPLPbRCGd4QsPrhHtWMTheIeyl7RIn5BCK+g1EiDTMYS
-	wVrztgR4NUg6No1iIkxwshnCKcNKL+88eIkbUZcN9KMYjrIeP5dDUaQy45rJklBTtAJYyY
-	5WhD6ZYH8PdaFNZXDa52jfQE7aecLO0=
+	bh=u3j6+1vDkkUdepekjgVOAW7Wo6iXb2x00XUTpjNkTgk=;
+	b=6prr1QZ1mv86bE8NTNXajnlKW17rvz5zHZGx2M+w4U4Bns3a4wUKoVClXkq2xYvYc+aP2F
+	qJVDoqvAhkpnZAkQS4DQZ1BpbuUKtymSRPRbDp2j4BPbdvw6Df9VClAe+5X/BPncyGLA4K
+	MRQOdCGKo92OGZCcMxUkzCpAFNIYKvc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=j9YW9C3L;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf11.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3tGwmEPNnZKcIeVBveDBfvH+PJuYnDW44W3GOjoj51g=; b=j9YW9C3L10YmUzDHGReZ4Lm/jq
-	l+zDfsrMdSjW3IX+v8yQ/XIfUiSFpS40DN9RKKEToUv0i4XgIMCB2k01JckxokiGfrf1yOAcOZKPd
-	xWA6VPbVatx79oSFjXiDrxfvp1rO8yS7SFzt2g3PWhoBPvM7WDvmsDvuAYKO+zwqmApP2JNj8x9Vp
-	aRSER4Ar552YvHDItXA0cpHb24zsr1QpoUrlDkQbBbMOSQwOVexUncwTrDBQ/s7dz11dYxQr8lYEN
-	sUMp2nV/6oBCaN0PyiNSmDgfBXr1MWtw3vd7K4CsmraXLhsKVVXRxZNGtDbOtmHmhkByojTwqV6Ic
-	k9vBzGoA==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVrHj-00000006izt-2WBF;
-	Tue, 24 Nov 2026 14:14:15 +0000
-Date: Tue, 24 Nov 2026 09:14:13 -0500
-From: "Liam R. Howlett" <liam@infradead.org>
-To: kaleshsingh@google.com
-Cc: akpm@linux-foundation.org, kernel-team@android.com, 
-	android-mm@google.com, Lokesh Gidra <lokeshgidra@google.com>, 
-	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 2/2] selftests/mm: uffd-unit-tests: filter required
- features per memory type
-Message-ID: <7kat6qajo4td4zelsmc4s2wdmkhvmlshbe3odar2bjmaucxydf@4tdhsa2gntp7>
-References: <20261122082020.1255434-1-kaleshsingh@google.com>
- <20261122082020.1255434-3-kaleshsingh@google.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=PVorD37Z;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="U twWEvo";
+	spf=pass (imf16.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 1624314002FC
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:20:48 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 24 Nov 2026 09:20:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795530047;
+	 x=1795616447; bh=u3j6+1vDkkUdepekjgVOAW7Wo6iXb2x00XUTpjNkTgk=; b=
+	PVorD37Z9jDNNC1k6/oiHqSM9Vf6vAHLVrm073XtVk2Sqijo6xNw1XCQ74urOwyU
+	wp32RSngykH2l0sDAh2UeJQ/0NqUEJ0cSg2UiTmsikF7UxKL0FDGs54oGa/uKUR/
+	Y5HCPegh230snV9Oe6SsSD0k/vP77CspXv9Kcj0/1rKXCWu6X8QK+sdN8FDt5B9V
+	B4aVxaDPKqXsjV7HtNdaeYBjoNmaJGZw0u04abomRKWieufOV1PL7rXmCmrDB/xW
+	9Ltg7R30nDDMXYz7Ay1Ju38Egdi8kFVJFF19IGZkriACuav3qGT/9Iacb8qfOBuo
+	pGMp+1s9iCq7Klb9lHrCyw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795530047; x=
+	1795616447; bh=u3j6+1vDkkUdepekjgVOAW7Wo6iXb2x00XUTpjNkTgk=; b=U
+	twWEvoZRg5cdcif8ONh/tL3K+fVsXGM2+q1a2BkmIZ4q2edlu5335tSuhRjETho1
+	/jgu+dstWjejJTtO1W/dn0UgmzlVnSFzBMntGGNYZ+4rJS26X/x0PnVSsf8kH9OQ
+	Br/okPX4lzQcGusHYKPJVBf54q8QkRDLPKot7zSIU0dQcy2qpHqWtAD56SFZMgXM
+	5Qr1iqNyakiw1VwjEOKycG1yxLjBGj7JnzPZkO9WB8dL8MIOeQKJoGlMv7SlbBOT
+	FHrDzvFcu6TotkHxHzxbd9TvcjVy0m8dvXI/y52rmlnul1r5g9mgIoRKZDr0tQv7
+	qaslpR8HS3W9rRhYb5e7Q==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795530047; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:NCx25rJAMo+ykk5ah/lFIJLdOcJvBauZgByKZ1psUH9nqG2
+	NCYBgIDwGvLYXOC72R7Bvps1yY1k4LpTbV2I/TH5+N9qJICsTjHE4V76LNeMJn72
+	vMzrzsutgVfwm8Z4RPQpVi61gFvFMlKfyCQ91xvonP5iy+ycCvYIyM6jSCaDC3Mz
+	zjEt6T7/yA3idtJVXuf87qinBuPY4gIUiUClmfhvC8XZT/rf6qB6k/s3Vg6MQ2Wi
+	pLhmBGgeQ82M0sG3cBDWkTC1WUGKQ1DsqYdsFXYZgyv+mwP96Ez0lk+7UaG8wJ3J
+	UBoU+0/VGkNIzBiGr3j2XIZrAXvHJFcL6PKDtTg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:QWI2uJx9uKHNEkI5ArHbcx6fT0KmIPMlK1h+9jS7NII=:1r9tw/j/3peIDWcTRzPnQcmEJg6r6Mi5hMfjZtJnzRU=;
+X-ME-Sender: <xms:O50Fa4H5xcml6H14agoXxF_92vPFDiJwsMdeCK35Mhc8jWjY2vwySg>
+    <xme:O50Fa8L174MX3mda9fHYCSd24ThdkkBuj_YqyfUXradE-itBeqF1bAmEvjlEk5jR_
+    z8AnK8IKZ0PNsfjPgI_vSaTlCqL7x0bNwFODdxLV5CjbYk2xelLP_E>
+X-ME-Proxy-Cause: dmFkZTEzcLHzUbygVSoohLJKupEtfEaADKNynBPP+A79ygbUcaBEdyY3/dAANqKmhrkblO
+    Jrae/KV3GLY+RywD9rqxWs2jej9mhDb2TWInKeQNn+yEiA4oO7214aCWGh1pWRuSHLG4lz
+    TdoLSFYKLGnO5oj5ojEc5oqP6D1a7M2XWTfL1XsEmO58G94E7SVDAZz/i6TAwTuQMjP1/F
+    5TPW0GY754A7e2ys/CGoidT/VBp7upqptqyunqjvfPBeie53CuSfAlSGwR8bN5F1FaHKno
+    AL0ThjRjo5RR2bV/aqsZJpIOYawl2HGcD5gns0fAQQl7C8bRBC9pk5vmzfbmO4suSI0JLC
+    Lpnyz46cCf9anYpgPOg04vL5NcAu6B+CbaR2p64ylCE9OtchHxU2/sFYPcab5dF9SQic1T
+    BtTBN/n3FXbeW+YhdOtF2TiqcVWW+UCyKEwYNr0+0wID7jJERGyGaBXfVxI6mN4AgiYtE2
+    JVmX/mSt4BfYY9CVVhhTpiBQDd1fQ4eIcmYyJAqYjSizSp5IOLOxbulU+HP7chDG4+IgQx
+    tLfqzihdnyFfP/VLwltW+V7URcNCtlCG7nXuYoJ37Nl2M7LxoSQSNJMUHDFEjvJ6qhcJM4
+    aLxrpi/j53kJgPy7MYlmKNBhlU8/wRwzhf4dPLTZksm211Bypt/ItkogSTYw
+X-ME-Proxy: <xmx:PJ0Fa7oXw8zeiTB6BEkz_IJr2ffUf9voVAf6yWLsKISNXdWNaYrCYQ>
+    <xmx:PJ0Fa3NziNSlPzrCjYnUdLQrWercCpl38axITNNSqTwnWDtmvi-lDQ>
+    <xmx:PJ0Fa3cQYYQmZXBYGTHLHk9XzsuScY7a3-S3oPDnnjeV1DXc1ZsURA>
+    <xmx:PJ0Fa1W-0RzqLaNULftEzcNXQaRtqI2WYpcneTTueorUeu18kw4qMQ>
+    <xmx:P50Fa9OGGACUrFWX6Voa9pbaKsrtI08gEVmULLqFPTSsI5WRDzPWvBMs>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id E4BE132A009E; Tue, 24 Nov 2026 09:20:42 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261122082020.1255434-3-kaleshsingh@google.com>
+X-ThreadId: A-w96cgpwkaV
+Date: Tue, 24 Nov 2026 15:20:22 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: sashiko-reviews@lists.linux.dev, "Kees Cook" <kees@kernel.org>,
+ linux-mm@kvack.org, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>
+Message-Id: <5de01709-19e6-4664-b91e-7cf35b843d77@app.fastmail.com>
+In-Reply-To: 
+ <20261124145907-12f830e3-70ab-4e58-a330-2fa974be1a25@linutronix.de>
+References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
+ <20261123-at-vector-size-arch-v3-3-d342dae9e843@linutronix.de>
+ <sashiko-outbox-230870@kernel.org>
+ <20261124145907-12f830e3-70ab-4e58-a330-2fa974be1a25@linutronix.de>
+Subject: Re: [PATCH v3 03/15] asm-generic: add an in-kernel auxvec.h header
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D50D3180012
+X-Stat-Signature: ihxnabuubb9o7epmisdchse9rr5s9dys
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8A1554000F
-X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: giidmctyy81mpg1efrmhb1b8axxxzify
-X-HE-Tag: 1795529657-932448
-X-HE-Meta: U2FsdGVkX1/NqixYVUT8Xf2Gw/wTzGA9xLxbq6ocAwohMv6WTItdei/Q+u95WGuWEeBFy1aj2xeFnKkptcXzaOfEzSNEF/Wy98LF2RLdUCE8Qv/Lf+LK5qyMmYoYQGfAfLbFVQDmNzjzzNTCNKyt1igZZAkrvQZEFNpHxyBOTwMrmTnV9nRFe3nG2trYVlyDWp6GRyXPznPr76bq0GbDzLqfe4DHmtrNBSSbLqGipBcNuryLy1J6hJOVpeotdVq+1S2BaDAXXwIIu1I13ko7oVe1xBOfXup8zOQY+PA1QjEJocxdrEWAFRS60d6GrgNsjxcU+krAV6FIsqI2asuMj1oWtVRQk0FN0piHdGyce7iu1dGZKn7yZMSw4uZhsylpsxKQYWVopp6vaTc6NnQoH1iE0DA5iHF/aySHDZsbmRHn9uzihO0+E4tJhpCgfObNC+2CJb+OfynqGny97bIIktPwXmyNqcE7yWpAwNJFJ0hevIhj+JG5xFcnfa7p/UtelR4pqnWX0gTSqUS5Gaebz7vX5NCWgBB1gwADfzDn777PesVLkvhSEWkGoaLEK0i62MO1zkg4J/mZsLEIWKBmMTUkVJpyBHco8V8VFcr0XWvo/bgtVHuXYd6Z9kLoEH9K7PFHC7BmeNf/B4oBSeSlBrUxokBX6OaEU7MhXVt+7CYMDTLCLy32kt1Xb7Wif76G4HIHbW37r/zoaFGM3DKgVR+Y9IIFw1R0ZIZywt4xcLOB87quQA9sJ/iiww42qHoEJ6GgNFavGpUQ+Xd50Q4T0AT/eHloDzM1GUuOoV4eHbzU1d/NM0l40gcCt1dj9VTo8+tRTY/Z22lybQ8Pj4OzF8wTwfeki6sUnhALktr/eDu3PDoEPliri374H7MJOCEeBg6+9NsOCkhZG4VUFs+HT9TzCX9SpCONWsabBkyoRUicN/ClwwtLZ7i2w6d+Z94grcqKR5p4DGoCeNKoTHh
- rX97Hk4X
- QlfIWY23GpqBCgmehXjlXYskTFo+ohdHYhKO00e5+ezk6AoW+jXSIxwkCJ6lhzIaaGEc4oEPbQhuHGVQQTV6440vXf2jFkeH7JHFgBy0OYCEwXZsu7H1Bqec0N7NaYqpTFC5SUo6n6LrRaAsLmhL2iB8qMFEQ53VSkqueHu8HfNh+BG4Tta/2xf8IOe0ySAdPW4mW+jS+ko/WWHN6Ahet7bjybmOlg+sf6qtDaWeSRcCd1lh1+c8BF0IzuMLlGxnDNxKaY7JYPN6PLf7F1OhU5vwl6HvwSICVJcWEww7E//6iMYlxuEUwChvb0TgxZbBQ4CheQDJskNiljcsz3Ebt3z/pMBhgEK6rp0ZN9W5MkIl4LgwZbwgE80E67CKqICJCdMSFOgk5ErgMtYqkjhkS7mlCAjDlONrK67ea3WI9pC5wGkbZXKTpWW1INfBqYrM7MtvIjK6d8dsK+Q6eVCe626dZNxaUe5dx0Nc6ZkxsvRmcuFJvpRwDDXJGmhDjY6sa0silNGByRzEzgF3kgjUpdY7A1sqGRWp34HD80JNbulxmfjV7DX1DxoHgPIrIQunynf+R
+X-HE-Tag: 1795530048-498260
+X-HE-Meta: U2FsdGVkX1/LteA40P4YxECfM2iS+NIam6wiHP0LqJbVbNOH5p+T6MZLYSng6IAOot7Bz1MCq93AgmFsWQ6nBChW4rLPG0LKB9Cy2M9uanz2/dxONcup8hB3rVxut6WyGHVSldGpOl/OavItGrfnOiyIaBBwuyvWzluDH3E0Vkna3wtLphf7w3zNtl76ERR9UN1FTTF6xJ6FVvigUDMv+qgnu3jXFn9yvzM6hSr5weOETeqSZcIEkTvAcwZf+xeGM5FoOds1dN74KnDsQjJPTuxwDaQCid7ISG9YtLoijvAWWI7snVIZd3bLNmvWfyQjzLleMDkIdS3+dX4Q6AFtx45UdMSWndPIxqfRuE1ATGG2JpFYadiv5t9VVemIFcp8v+Y7tBJEmD4aIlxGkX0oO2MrETbjb9AnrdHiH0T9GlHTliQ3Geb3oWlECGdfGCWo/b1vFNmTfiwLfwwA/2BmMhrZnd8o2PAzldiP+LgqJd/OcQO8RqaGhCq3pAHh0gMdBvr+1z+jmQQq/be4Wz0azyynCaBbgzOBNbtl1v+7oKu3dBpk8LRsKGtKBvLLpC6Bat9jItXdVp+XtybynyzNU0/hf8uL3Ay/oM1rhTAsZXhTmv6OmA6h6nE4ETwThnVGYZxCchPRjMtkO4X5ZWoy/7k3t75mraEQ4qQ0cPp6TvTdIMTXkJjdpbWtDLQhvLqyW6+2mYAQY3OpyuLZJNzTh5woywlvdPUE1ilJKR4BT8PT0oThlmb7cEdOdk4UCrt9Ce1qedRZSaD2XFwIGr9MU8+XGTiZ9su1kjN73HL1qp+RoQyTRsFzEH9CNpGIafgVVYGR/TbD+zjDZOK89hASrgJSKFjbGKfP4UBPPaJpWFGScJAo6OKkPbxVquSle8cX9I+X3cprnGg77tYx9B+ToAnEVSYz8v/30Mia4rHsTI3898ustgdKVVmsNOg6OIHvf6yEsi5EyEXSmqBaxBO
+ RGqDyH/1
+ zR1SlP+qLwCCjssroxNffQl9rHD5lFbz8jYUlCrt29b9lIKhY9sx3ORuPD0vGXDmhS1MhT3gDSk7RsLBY6STdgYjludiY0zOSbmbexbAz1iKuk1XE+ROZAGmxUnmgpOgn0pLvpV7EhYcAEFgYy3pI4oMfEs8rhRVAeh1+Lcd3ruVFngKz47T9/jq2+riDzy8IXfTrTLUNN+14Ev6+8PgUak2g8Oetv5efVLYOqE/RSOhtgiO+nJWpx6Rm+HXxpACQdc6hqNJ2t4Czp/92ewWLH10biJF41mc3Wm1/HlfHXRygttMelcT+Zl8Q2gEd5gC0CtT/6qd0GZZwsFPCVaXqTKGjCTRRr3MfOjVrMyu6sdhU9MjPDbNk8GbtDjcERY7nZ9g6gjQP8cKt/7uQJJi0ZNOy2C1+ePKzUkyeKSrb26luIgYMqnEjItinVJUgT8i8zVkFZHrxDPafbUiBqrcg7t0w0AD+CpXFRp6fOxJ5xUmMVRmvskcNQTk+bqlJGpnot8YhNVWEOWcWKbYMV1gCX6rWjUSPnhlKJoa/UzREi5INzICqviZiJVpgVdtlru2AlABthjSD0qhLD0BZ4DECbM93Iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,116 +158,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26/11/22 08:20AM, kaleshsingh@google.com wrote:
-> From: Kalesh Singh <kaleshsingh@google.com>
-> 
-> CONFIG_PTE_MARKER_UFFD_WP defaults to y but can be turned off, and
-> userfaultfd write protection then works only on anonymous memory. The
-> kernel still reports UFFD_FEATURE_PAGEFAULT_FLAG_WP but no longer
-> UFFD_FEATURE_WP_HUGETLBFS_SHMEM.
-> 
-> uffd-unit-tests checks a test's whole feature mask for every memory
-> type, so the tests that run on all memory types and require
-> UFFD_FEATURE_WP_HUGETLBFS_SHMEM (register-ioctls, the wp-fork tests,
-> rwp-wp-exclusive, sigbus-wp and events-wp) skip their anonymous runs
-> too. Check and request only the features that apply to the memory type
-> under test, and make minor-wp require UFFD_FEATURE_WP_HUGETLBFS_SHMEM,
-> as it write-protects shmem and hugetlbfs.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lokesh Gidra <lokeshgidra@google.com>
-> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+On Tue, Nov 24, 2026, at 15:03, Thomas Wei=C3=9Fschuh wrote:
+> On Tue, Nov 24, 2026 at 09:49:24AM +0000, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential
+>> issue to consider:
+>> - [High] asm-generic: auxvec.h unconditionally redefines
+>>   AT_VECTOR_SIZE_ARCH to 0
+>
+> This is indeed an issue. Not sure, how I missed this, especially as I =
+thought
+> to have sent this through 0day.
+>
+> @Arnd: Could you drop the patches?
+>
+> I'll prepare a fixed version, probably for the next cycle.
 
-Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
+Ok, done,
 
-> ---
->  tools/testing/selftests/mm/uffd-unit-tests.c | 42 +++++++++++++++++---
->  1 file changed, 37 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-> index 2a97ba1d6feb..d0dda2ec48fb 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-> @@ -176,15 +176,44 @@ static void test_uffd_api(bool use_dev)
->  }
->  
->  
-> -static bool uffd_feature_supported(uffd_test_case_t *test)
-> +/*
-> + * Filter test->uffd_feature_required down to the features needed for @mem_type.
-> + * For example, UFFD_FEATURE_WP_HUGETLBFS_SHMEM (gated on
-> + * CONFIG_PTE_MARKER_UFFD_WP) only applies to shmem and hugetlbfs, so anonymous
-> + * subtests should still run when it is absent.
-> + */
-> +static uint64_t uffd_test_features(const uffd_test_case_t *test,
-> +				   const mem_type_t *mem_type)
-> +{
-> +	const uint64_t shmem = UFFD_FEATURE_MISSING_SHMEM |
-> +			       UFFD_FEATURE_MINOR_SHMEM;
-> +	const uint64_t hugetlb = UFFD_FEATURE_MISSING_HUGETLBFS |
-> +				 UFFD_FEATURE_MINOR_HUGETLBFS;
-> +	uint64_t features = test->uffd_feature_required;
-> +
-> +	switch (mem_type->mem_flag) {
-> +	case MEM_ANON:
-> +		return features & ~(shmem | hugetlb |
-> +				    UFFD_FEATURE_WP_HUGETLBFS_SHMEM);
-> +	case MEM_SHMEM:
-> +	case MEM_SHMEM_PRIVATE:
-> +		return features & ~hugetlb;
-> +	case MEM_HUGETLB:
-> +	case MEM_HUGETLB_PRIVATE:
-> +		return features & ~shmem;
-> +	default:
-> +		return features;
-> +	}
-> +}
-> +
-> +static bool uffd_feature_supported(uint64_t required)
->  {
->  	uint64_t features;
->  
->  	if (uffd_get_features(&features))
->  		return false;
->  
-> -	return (features & test->uffd_feature_required) ==
-> -	    test->uffd_feature_required;
-> +	return (features & required) == required;
->  }
->  
->  static int pagemap_open(void)
-> @@ -2417,6 +2446,7 @@ uffd_test_case_t uffd_tests[] = {
->  		.uffd_feature_required =
->  		UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM |
->  		UFFD_FEATURE_PAGEFAULT_FLAG_WP |
-> +		UFFD_FEATURE_WP_HUGETLBFS_SHMEM |
->  		/*
->  		 * HACK: here we leveraged WP_UNPOPULATED to detect whether
->  		 * minor mode supports wr-protect.  There's no feature flag
-> @@ -2636,6 +2666,7 @@ int main(int argc, char *argv[])
->  	mem_type_t *mem_type;
->  	uffd_test_args_t args;
->  	const char *errmsg;
-> +	uint64_t features;
->  	int i, j, opt;
->  
->  	while ((opt = getopt(argc, argv, "f:hl")) != -1) {
-> @@ -2711,11 +2742,12 @@ int main(int argc, char *argv[])
->  			/* Initialize test arguments */
->  			args.mem_type = mem_type;
->  
-> -			if (!uffd_feature_supported(test)) {
-> +			features = uffd_test_features(test, mem_type);
-> +			if (!uffd_feature_supported(features)) {
->  				uffd_test_skip("feature missing");
->  				continue;
->  			}
-> -			if (uffd_test_ctx_init(&gopts, test->uffd_feature_required, &errmsg)) {
-> +			if (uffd_test_ctx_init(&gopts, features, &errmsg)) {
->  				uffd_test_skip(errmsg);
->  				continue;
->  			}
-> -- 
-> 2.56.1.750.gf70dc682cf-goog
-> 
+     Arnd
 
