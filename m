@@ -1,94 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFEF606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28064606A69E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VsZmc/xP
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V075qPJp
 Received: by kanga.kvack.org (Postfix)
-	id 5C5966B078D; Tue, 24 Nov 2026 10:48:47 -0500 (EST)
+	id 531136B078F; Tue, 24 Nov 2026 10:51:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 576586B078F; Tue, 24 Nov 2026 10:48:47 -0500 (EST)
+	id 5082F6B0791; Tue, 24 Nov 2026 10:51:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48CCA6B0790; Tue, 24 Nov 2026 10:48:47 -0500 (EST)
+	id 3F7986B0792; Tue, 24 Nov 2026 10:51:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 196576B078D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:48:47 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B65340C49
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:48:46 +0000 (UTC)
-X-FDA: 85470445452.06.663BCEA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BEC841C000D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:48:44 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VsZmc/xP";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795535324;
-	b=M+IUZy9IA0utCpARXQC4l4dcFReUpGZaGTpI+fWTbDSFzqFd1y4fdcsioyS8f31uCFK9mn
-	ADCxqatHqXcVW+4TjBEVBXNMxhP2vOihjuXL0pIG5KnV24c12faOOpOSNWhkXNjGUq6VG3
-	/N6MpGlz6JcEddHzGTI26xbsS8nzn/o=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795535324;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BD256B078F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:51:58 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9389140C12
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:51:57 +0000 (UTC)
+X-FDA: 85470453474.05.F2CF7F9
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AEA4D1C0002
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:51:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=V075qPJp;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795535515;
+	b=yjJVYxqdo+xCaRs+Uby1gSANNqr+fy7POEmw062rUkVqAMLB/fbwoTg87iFT4WQRXGgwIR
+	+Ab7ZxWQryajvXk2dDqmheZfQrxEHNpzzVqyd5UCIA8TF1/ybjswxTEMN67wAd6l3MN/eX
+	h869e4ypAlIaRjxbU4dOm1Djbpx5B9E=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795535515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8PNwOatqkWi3DPeRMW9K9Ow73UFN06+ullfX1MwBzgM=;
-	b=vW8ZzzGEOALOdNkurB8IlqEWiGHj78xIx2sZKejkvKqSvMVfR6jNTWKW5uyNwdOuqJ7tHj
-	v4w4XQ/KUCEyTRgE605oI+8fb3mWXXZb4OZSXUuuUL6IbLzNglm/rWn8Wzwg0sdFYTMS/l
-	VbCxehkeLqgB9RKf10IgxDSr7SuNLhs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VsZmc/xP";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A720543C85;
-	Tue, 24 Nov 2026 15:48:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3FB1F000CA;
-	Tue, 24 Nov 2026 15:48:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795535323;
-	bh=8PNwOatqkWi3DPeRMW9K9Ow73UFN06+ullfX1MwBzgM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VsZmc/xPWo1bSNHT2LcbJkJ5aAZGo5Ex6MD6H/GmFufKL5/hFTFMTSWogzAlFSxaO
-	 47Az5xBblVfrqyoIh1VpztG6IImhzve5VramGyXB0UaKyDKWaNMcDq9q/nYBr3Yy4+
-	 sumWDRrl+hTXqT5gLqTTvgVxUVc8zn+V/YXda8G82gkbNMMR/+Jo1x7bGXv5pzV/Ju
-	 sDBYG+9232JroSunsVFT6JLR11m6BK2Afz+vHmum49tYGznGjfbnOZsrdMRL+PpK8B
-	 /zFkpCBcVrMjt6kCu+d8fuEsHL0hiQHmKZNDgFXoWaSz4KQyC5uyB+lt/t9w8AXv97
-	 bs17euuowrjcg==
-Date: Tue, 24 Nov 2026 17:48:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3] mm/memfd_luo: don't use memfd_pin_folios()
-Message-ID: <awWx1YnA0PcB2RaB@kernel.org>
-References: <20261123130115.4021199-1-pratyush@kernel.org>
- <179546369651.425130.14155931836758567682.b4-review@b4>
- <2vxzo6bez3hs.fsf@kernel.org>
+	bh=7151zgqNmppt1FWLTyRdRTu2s96pKFEly/RuS9gjWeY=;
+	b=4AYcS/CqY9J7S6D+77G78P1ey1HJPm3iWevKZABzBbfi6XmdRz//EtkYqppE2rKoPvmm6X
+	pzzy+MMxDgcGfybQOem295QpDJjusg7M94I4HCkW+Dst4pjpYexLETuVE1oTT9eCxhSxZw
+	6YYS1xZ3iVUzfb7owx0MJ79foyaHztU=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=V075qPJp;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-55c7445cf85so844491cf.1
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:51:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795535515; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SClqopECLK4/x/eZKe+gL+RUVfakSMKsIirwTwGbMC38y/y7UMvtxsggjokkCd7fG8
+         q9+83mAezUL8I4YtY4sB6BOZQENH3jWrTS72H0JbRY3trMATyilp5VqO15v/alrmXxqX
+         O/9nuw4VsVAD5I/2CIiZRAAGA1H101JY3UCgqYWYVZpomJSfLR2mIFaamw6ztOW4v6I6
+         YA7/1SMlFHsR1EnXlzXihva6+dTRIPTHrRMnlpx2mAOGeZV9SnuCp80nH7vjblL48tMo
+         YUtMckNqBU5OilwrBHmldRA21KK5fdFfhqeCNDFphTcN97aW6TPyU7Ak2yCLqGwV2RET
+         chyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7151zgqNmppt1FWLTyRdRTu2s96pKFEly/RuS9gjWeY=;
+        fh=U0wXPmtrkLfWBtmrb5klj/7rztludWURGayVzLBBcxA=;
+        b=i6TH1ZpRvZeHPHQ3e4M6W0upBGOxdHVMim2XgSUW6PMbHCBHSuR6LxEiZP1MrduxCE
+         F8nNthNN6GplXCkgWEsrsmU5cUa63qrnfvDLMD66HeQ33wZoeWiVzRb3y7ZEMkqXnOAh
+         iEXaLR5HTvU9SghN/t3HvSSj9qOTMytwbkKNE/iNhbHE+oITnnJnvJkcL8r5cgr/kAHQ
+         PmNqZ3B+DPceMAOScmo1ElXEUoDj+jfRbDsOO/IM9yfKbG+odt1FmRb5knBwtXZQeEOC
+         zrQb2VWwOca48gIbaczfLtu/cqXhxrUISmPa/ZyBm2Y/xzg3cjAgsvqj87jqTRs9gDmg
+         8VCg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795535515; x=1796140315; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7151zgqNmppt1FWLTyRdRTu2s96pKFEly/RuS9gjWeY=;
+        b=V075qPJpC1bNS1Sjb3DZdEyhMNokYtuFuhlM6Bt83PqVs9WKKrVjLxt/ZQkzrVyUys
+         JddO+LFfTri4Vc6buePw+dH9oafRa1Bm1AWxUuYZj1eQcahMEqWNE2oo0POWUJgY9Q+q
+         RXDsvZZEF0jVZKVAVtTHU3QT/9lStXsnGTQ8KIzyGL0hqmhoq7b3e/IAc3RW7HI6hSp5
+         nGKcLQUVaBzadJhwK4SxQbMk1/DKpyhTY8X5l4u3Aam+tv6GCDTQnCe6geYx9eL/czAH
+         Jn4/W34TlQ3ZW27JloMtLTkf5BBwXqGav9/EvuotsX+CSi4aMUpHrmEdO25ODSyQWh9q
+         itmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795535515; x=1796140315;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7151zgqNmppt1FWLTyRdRTu2s96pKFEly/RuS9gjWeY=;
+        b=ZRWPR4jaUxvThuYEaTIrm/r+rOHiEsQ1ZHnigdS1n3iGEA0YCenOumI34H49GSBGx+
+         H3S7MdnyUHYZtHLsrnfGFpE3wmyWC/ZCgRMqpkXNsDyo6+DXyjhdr/zto8EjxC6ZCHpu
+         Q0s4SyoR+dlgFvgdSsKFVUGXLGbUJc+EYX5CBpvj1BAcIRzhI0yEsJN9VfJ7OpsX9CA8
+         dSftww7BmAD7evk5/7BCTWMcGCK1kV9nvIhPtVmJ6VqgtXx+FfJ0Ww2hhkXXveO2gwst
+         o94cRguYuR/OMyzX/vj3+mDvv+qL0ZgbmV9cE5WS2hJt7mXxnSHmZbRnc2XzC6tinhY/
+         EAzQ==
+X-Forwarded-Encrypted: i=1; AL+hErFZPyfUSTqQrETYRzFmZ2pV44z/VHN+8B1lIlXHdlEBW8E+t7xm8JTdtIk27D983zNP9ynFJ0WGkA==@kvack.org
+X-Gm-Message-State: APuU4Z+p9p7HT2Jl5gwXUS6XemENZvOpt0KHAuIwrRlT/M/ORM35dWej
+	5c/UcpUguywTNTusZxB8wW9A+vMLZJcV8cmSwt5cJ/w2ggsmV6J4hkYw5rqO7iEsGBLsJ4jrL8h
+	fk0twrH6F6ExBVuD0WEkl2hpJoCfS0stXghK81tIh
+X-Gm-Gg: AZFdTZfCTcWSVAw+FGc6h6izUQTaaYhEaKOtLaUtc0Vi7ZwNV0CNd4+OP7v5YhjsPvG
+	x0mKDNG8BA61DbnGldTw4ndJRNquq+ThgvsrLgTaeEwM2f8/Ca9oMTn60AZfnaRRxXvt/k/lW++
+	vJLcPyG6l7poI36DjJ0j0U+d5WPkt+PH33ueZit12L+Jyy0Nq+2yPScnXEXk4C5CLHYJDu/53NM
+	VZVshLbzSGejIr/WCksfDPlzFHb0YZulUvaWDEyfhiU5pAIfeiS3n2xemgp6fOga82VK+XnJJJa
+	NvTLZoOy3dNs9353ex0YxL0QIN7DtU00ck1ce62NMoI/w7lW/Gdr+O6h9ZlQJkIJFEoiyGsk10l
+	yanCBuSCsVyKpJRaWW1e84yPyxL48SCMXY9PGAQbqJDvjY+SS938Y801z/8Cxk0Y3FhnBpf3QeD
+	8sP3uVTPtj5O9Gdc6El1KF6YjY7eE=
+X-Received: by 2002:a05:622a:4819:b0:54b:648d:9ab5 with SMTP id
+ d75a77b69052e-55d8903863bmr55786151cf.11.1795535514050; Tue, 24 Nov 2026
+ 07:51:54 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzo6bez3hs.fsf@kernel.org>
-X-Rspamd-Queue-Id: BEC841C000D
-X-Stat-Signature: ocba4cswirtww9m9sme7jj4xnhpcfbeg
-X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261124-vma-read-lock-mmdrop-async-v1-1-257f99f551de@kernel.org>
+ <awWLCZ-jBjSD7V3M@pedro-suse.tail5790ac.ts.net> <CAJuCfpGk6eYK43Unxo+O4ML5=GM_siZ9owp6oa9fO0ipZXVg-g@mail.gmail.com>
+In-Reply-To: <CAJuCfpGk6eYK43Unxo+O4ML5=GM_siZ9owp6oa9fO0ipZXVg-g@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 24 Nov 2026 07:51:42 -0800
+X-Gm-Features: Aa3M54qQPEWg8Xv6M1FeAv2Yk0G2ClZoOWgLEIXc3iRWC6ZsNwo9TmRawceulIU
+Message-ID: <CAJuCfpEd1rz3P7fB7W_mHkyzbpq9TscRE+QNwvHdYME=WJj6cw@mail.gmail.com>
+Subject: Re: [PATCH] mm/vma: drop mm asynchronously in vma_start_read()
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>, 
+	Puranjay Mohan <puranjay@kernel.org>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795535324-130733
-X-HE-Meta: U2FsdGVkX180driVs/lvrpR+ELmCSmRg+wh531vJLJFdwYUsNHRJTQ/4tp1mWgaPWgzK8vRXJSmWB5m6BMMg8hukC7duM025Wj+86aaTC/EBT0Qkb9lhw1lFiVzohrbiMD1ZO/CJGUCQ4WgBK+iN6lLarHa0LhOcz7BMd6aHltG1+sdCt3sMoy7xy3uNxj53CqKNMre1yjAhzYX40bKt97zkUp0fHNTJynop4NORGmbAJRA6j0BLFuXPRJUx3iaSaE0W++mf6U39fI2v8B1uLqgtNK9PYJmw0489dOMPvbVATgX0wOyw4NxRMyFCruYbrQAGnUmzEHS1LaRIDM4/6fkdqTL9qd+NjWnHpnBjlebHAHWem8HYyYGm3Pt/woD/di6QSBXCcIJVdfYqjvG2w0xX8Ss6K5ljfIz/FOTCsRJlx5MoB+iQjSywhWePuHR74nKr+FXYeAqigEmt00RgCLehyJCv/XzLE9qFHb9TdgFoE1jQJUJ8PgzUz/qPj8Pqa39II8hFTfUEXqeY1SwxU3UF7cGPs2xnf5O3e2R/y8ICUMtdHIeIJuoyHBp5LgoBSNlZscCxqW72T3BVxzHistaC8Ut5BtqIorHNBNnw3Ly5AZyd6HSt0WObsSfjR4DUW+JNiB+s+BCaOFEyfV7NMPwueiSsMaiYZg9IXiXSC5FP6zPs4h2rjeoECWtTAT/8JELJrhjdhqHdKrGGRVYZOztcw4UELb6eQpUIVdstr8J6ekN+agCcgNkh5PGFwNSEUt+bzNCUS/d7p7s8L6jZ1sdfCfgUAxVlMIwDBM1MyrBllHd8ySoNfOwLVQOmMQKfW/bw2bJWM794nhdKo5YyKvUZ97QwQxeyU3zA3hjwhRmJa4zXyQn737LdISiIjcOdJF+Em+sGY9ybywQ1KYOQKNzbSf5knv5t9ERmFhUlQmJyPyeygWbhGQCJecgqjpxyyr3sl2LCI15XOxtEoJH
- WgrXLs1C
- zoS1nP5d1kswPELYEgT8aCLHLTxlNUeJa3VNV2+IUcf6Qi7QhswqnIlL7l8AGM+WF0LoriUDpeIdXvuPxhe2UWhY0dsrWhQLb3aBhPXne+fbMoes3JDUipB76liX0loLp06pRimETep8nVvzbSEHiPadia5zgDS48OVArM5Ck2NecY8iuXGnK9uyOTC0AsOWeCDN3QZTq2YTVgZ/ormU8xu6gOtCQxZQ87oO1mTFDblnJ0vBOjlZtuTeNhMyCtWa2XuRAKzz6FakwAZ0mFiRdv30WStZshLk7ZIoZfVwy8Ewh0q8Anjx82xRg//Nm8eIWsISLBnhJ/H42LJz9Hp3EHjxBDsO2mkc8sTNBg3r60QwObsYo4KvvJpeVwNNYRoiW2lsBNooru69Xx377iXbpA7r0Ue5GLaOfhFPtEV6PqlaLEnlraFKq4vlu3phZQeenyST3j8I47KFAquK3JsCOXHqO1S2NiczJTaecUXeweKjErpOCF2NiMpIf8R9XA7vGY9QXyS8S7A9foJLRWRTTuooE7Q==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: wp49ohxbrnuikabehyf4sq5ygfnmygt7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AEA4D1C0002
+X-Rspam-User:
+X-HE-Tag: 1795535515-93955
+X-HE-Meta: U2FsdGVkX18XAcFbT1z5sItGQibQ7S2Lu/UDQwa7YhSuN18GhAkD4VsCwnU/wjDuTCHudTlZ+/NCLX/8lirKxR2c93+nIDujYQKCdc/6fCZJ0wC403Dvk3gZg/wgUzHYhT5tvkwoflRGn6L7zgGftfediBiBOXQ6gxUwvHN1hRNmvVx+V37JU12kZuz42RH7kmq6lRLE4iHIMjZp/TUvp0n2wHgc/CWcicRrdK2s0TvLNgIXhX2KvVCWuNknN57v5VH5KH52BUz4msV8s9Z6jUZdTxLETiW05tQGdn+IT6IpGnZkJlZ5FksD/S8wCrR8piBMtmKAsMr4esKzw7Owt2cNBgKYz+qeSiuikt0skEoWxlzk0sOFbui8F2r71n8wBpVrbVGPYz8GAQvgQ8CyHPysEUOkng/KsvI8sBd08C8rVgVMH0KkR0j+Mp1my66HoiJEHUhzUhQ74bJywPjAzA0w9OnPkhkaMgTX5iK8dlFhCzBpE2h7+pLOIw7wsr/+j13JIQh3/PEYUPfNs0tnuS1v1jNDOYa5P+SIE/s8dY0CeL1cxV5d4+bfKfmc36IQraPuB/vENdQagKQk9zLhoiw2waBeu4vjgW1Zaa3R8MhibCOdOd3eJSw1pFwJNxmW5rx3bMOyOjst06agleiXCvzqHhbgvhRCp7qTKQxiCg3AFrk5paaT9pQQteFoYSbwLYwjmBTzfRBZAbsoHzf5G2IzMff2mqvY33SP848ITAGeExhL22XSs8yjlvqBTCuFnAKLO5LRrCGsMCRcnJmTU5vSSTVw4hsb++IAwMpbqiTMtjoneTv5KYaKcev2t/Rt3Ib9Ch5sv0mEE8ds6xCTUC5AXk05TpOPFAjXWbJYqkIVktgHPupM7VAoBDwwtZmWGsSgDEwOyK6994QJhghlmvjiCo7XFyvdyRFkazDw1nPu8nFRoQyjyzK59XOAWASsy1Z6mPSLyn6ZXJYAjyT
+ qUmY5MYu
+ LRKG5DY3wRP83UFt8yUBDn3iLIzHbg3CxK4fIXGBRLfR8WdQyP4uC6lxbdHaonL1XnuCK6nSflY8LxqC8dMktwvUA3b3SqaORI76eKDQplYZ0naxhpnjJk65CRsySGJn/zgz7aMX1alCryUp3dxUfK81WLwoYZupVtCsmtjWZkvrCcR3ExCFXpqmt5vvQWSGufGHdgQ1WPhH9EVRzKUyb5MamdbtTk0ovgAAOVfqlxasoH/2LYPz0jS5JzHlvdu1tttDEFyDjTiP6qTlf2rAgAxzkS6/sdlPl0wHwYop7XC0q4nViWLOBdyVJshL46cpYVCV5S3FKbq9XNXdkZx4DWlW0YMILk3nfm1/I6LsNrwubBulnGGp9aWsjHxTg2fx2+ay1JzLzAdvRzxAw2N1i1szxSP5joSMlLDHgTnSLqialy2AkQTpYFUSGJbr4WjrftHUrHs9bqLeb74O+gwAqH+xqaVZJteM6gGjstEKUNKFJYYR7FCF9xPk4jDi3UtopZmz5ijccNObPRr4Xs3ZjfitpOYYjv/7pHUiZnEE7QoOING6UhWPyEFIP9aFiy2VH9Be64jRGAzhEaG0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,163 +155,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 02:51:59PM +0000, Pratyush Yadav wrote:
-> On Mon, Nov 23 2026, Mike Rapoport wrote:
-> 
-> > Hi,
+On Tue, Nov 24, 2026 at 7:46=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Tue, Nov 24, 2026 at 5:04=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> =
+wrote:
 > >
-> >> memfd_luo takes a snapshot of the folios in the file's mapping. To make
-> >> sure the snapshot does not go out of sync, it pins the folios in the
-> >> file via memfd_pin_folios(). The pinning also migrates the folios out of
-> >> MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
-> >> region.
-> >> 
-> >> memfd_pin_folios() does not lock the folios. So it can race with
-> >> shmem_writeout(). A folio returned by memfd_pin_folios() might already
-> >> be in swap cache. This happens to work but is fragile. memfd_luo looks
-> >> at folio flags and index on a folio that isn't in the memfd's page
-> >> cache.
-> >> 
-> >> In addition, memfd_pin_folios() needs the caller to allocate an array of
-> >> folios. memfd_luo does not really need that since it will vmalloc
-> >> folios_ser and store the information there anyway. The folios array is
-> >> unnecessary overhead.
-> >> 
-> >> Finally, memfd_pin_folios() fills in holes in the memfd. This makes
-> >> preserving sparse memfds very expensive in both compute and memory.
-> >> While this patch doesn't yet stop filling in the holes, it sets up the
-> >> infrastructure to make it simpler.
-> >> 
-> >> Fix all this by walking the page cache directly using shmem_get_folio()
-> >> with SGP_CACHE. This returns a locked folio with an elevated refcount.
-> >> memfd_luo holds that reference until the memfd is unpreserved. This
-> >> blocks compaction, migration, etc.
-> >> 
-> >> There is still a need to migrate folios out of MIGRATE_MOVABLE page
-> >> blocks. This is because those might be CMA or KHO scratch. memfd_luo
-> >> will hold a longterm reference to the folios so it will block migration
-> >> in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
-> [...]
-> >> +/*
-> >> + * Look up the folio at @index, allocating it if needed. Preservation holds a
-> >> + * longterm reference on the folio, so folios that are not longterm pinnable are
-> >> + * migrated out first, retrying a few times if someone else has them isolated.
-> >> + *
-> >> + * On success, returns 0 with *@foliop locked and holding a reference.
-> >> + */
-> >> +static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
-> >> +			       struct folio **foliop)
-> >> +{
-> >> +	struct folio *folio;
-> >> +	int err, retry;
-> >> +
-> >> +	for (retry = 0; retry < MEMFD_LUO_MIGRATE_RETRIES; retry++) {
-> >> +		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
-> >> +		if (err)
-> >> +			return err;
-> >> +
-> >> +		if (likely(folio_is_longterm_pinnable(folio))) {
-> >> +			*foliop = folio;
-> >> +			return 0;
-> >> +		}
-> >> +
-> >> +		folio_unlock(folio);
-> >> +		err = memfd_luo_migrate_folio(folio);
-> >> +		/* Someone else might have it isolated, retry a bit. */
-> >> +		if (err && err != -EBUSY)
-> >> +			return err;
-> >> +	}
-> >> +
-> >> +	return -EBUSY;
+> > On Tue, Nov 24, 2026 at 12:26:19PM +0000, Lorenzo Stoakes (ARM) wrote:
+> > > Commit bee9ef4a40a2 ("bpf: switch task_vma iterator from mmap_lock to
+> > > per-VMA locks") open-codes a lock_next_vma() implementation that does
+> > > roughly the same thing in bpf_iter_task_vma_find_next(), only without
+> > > fallback to an mmap_lock.
+> > >
+> > > This is because bpf_iter_task_vma_find_next() can be called from
+> > > non-sleepable contexts.
+> > >
+> > > However, lock_vma_under_rcu() gave no guarantee as to which contexts =
+it is
+> > > safe to be called from, and indeed it turns out this assumption is un=
+safe.
+> > >
+> > > Since commit 9bbffee67ffd ("mm: fix a UAF when vma->mm is freed after
+> > > vma->vm_refcnt got dropped"), this call chain is possible on x86:
+> > >
+> > > lock_vma_under_rcu()
+> > >   -> vma_start_read()
+> > >     -> mmdrop()
+> > >       -> __mmdrop()
+> > >         -> mm_free_pgd()
+> > >           -> pgd_free()
+> > >             -> pgd_dtor()
+> > >               -> spin_lock(&pgd_lock)
+> > >
+> > > Thus, a plain spin_lock() can occur when lock_vma_under_rcu() is
+> > > called. Since bpf_iter_task_vma_find_next() can be called in softirq
+> > > context, this can deadlock, for example:
+> > >
+> > > pgd_alloc()
+> > >   -> spin_lock(&pgd_lock)
+> > >     <softirq>
+> > >     bpf_iter_task_vma_next()
+> > >       -> lock_vma_under_rcu()
+> > >         ...
+> > >         -> spin_lock(&pgd_lock) [ DEADLOCK ]
+> > >
+> > > Alexei Starovoitov also pointed out that a BPF program attached to
+> > > trace_contention_end() can similarly cause a deadlock:
+> > >
+> > >   pgd_alloc()
+> > >     spin_lock(&pgd_lock)
+> > >       queued_spin_lock_slowpath()
+> > >         trace_contention_end()          <- pgd_lock is held
+> > >           tp_btf/contention_end prog
+> > >             bpf_iter_task_vma_next()
+> > >               lock_vma_under_rcu()
+> > >                 vma_start_read()
+> > >                   mmdrop(other_mm)      <- last put takes pgd_lock ag=
+ain
+> > >
+> > > Resolve the issue by having vma_start_read() use mmdrop_async() inste=
+ad of
+> > > mmdrop() so the work is deferred to a work queue.
+> > >
+> > > Make mmdrop_async() an internal mm function, defined in mm/internal.h=
+, to
+> > > avoid abuse elsewhere (kernel/fork.c includes this header, so still r=
+etains
+> > > access).
+> > >
+> > > Commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU lock on
+> > > failure") accounted for the fact that the RCU lock had to be dropped =
+for
+> > > this operation, which is no longer applicable.
+> > >
+> > > For the sake of a backported fix, retain this behaviour, however drop=
+ the
+> > > RCU lock last and remove the now irrelevant comment.
 > >
-> > In v2 we did another shmem_get_folio() after a successfull migration,
-> > now even if the last iteration migrates successfully we still return
-> > -EBUSY and don't update *foloip.
-> 
-> Argh, right... Good catch!
-> 
-> How about this:
-> 
-> 	for (retry = 0; ; retry++) {
-> 		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
-> 		if (err)
-> 			return err;
-> 
-> 		if (likely(folio_is_longterm_pinnable(folio))) {
-> 			*foliop = folio;
-> 			return 0;
-> 		}
-> 
-> 		folio_unlock(folio);
-> 		if (retry == MEMFD_LUO_MIGRATE_RETRIES) {
-> 			folio_put(folio);
-> 			return -EBUSY;
-> 		}
-> 
-> 		err = memfd_luo_migrate_folio(folio);
-> 		/* Someone else might have it isolated, retry a bit. */
-> 		if (err && err != -EBUSY)
-> 			return err;
-> 	}
-> 
-> 	/* Should never get here. */
-> 	return -EINVAL;
-> 
-> Or, I suppose I can go back to the original implementation.
-> 
-> What do you think?
+> > Is there any particular reason for unlocking the RCU comment last? afte=
+r the mmdrop_async().
+>
+> Yeah, I think moving the RCU unlocking was unnecessary (unlock as soon
+> as possible is in general advisable) and we could just remove the
+> comment. Both versions however seem correct to me.
 
-v2 was better I think, but it still had that
+Actually, VMAs are allocated from a SLAB_TYPESAFE_BY_RCU slub. With
+that RCU unlocking move you don't need other_mm copy and the comment
+that comes with it. VMA won't be freed until RCU lock is dropped.
 
-		if (err == -EBUSY && ++busy_retries < MEMFD_LUO_MIGRATE_RETRIES)
-			continue;
-		if (err)
-			return err;
-
-which I don't really like.
-
-I came up with a variant below that IMHO makes things more explicit:
-
-static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
-			       struct folio **foliop)
-{
-	int err, retries = 0;
-	struct folio *folio;
-
-	for (;;) {
-		if (retries > MEMFD_LUO_MIGRATE_RETRIES)
-			return -EBUSY;
-
-		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
-		if (err)
-			return err;
-
-		if (likely(folio_is_longterm_pinnable(folio)))
-			break;
-
-		folio_unlock(folio);
-		err = memfd_luo_migrate_folio(folio);
-		if (err) {
-			if (err != -EBUSY)
-				return err;
-			retries++;
-		}
-	}
-
-	*foliop = folio;
-	return 0;
-}
-
-It does an iteration more than v2 with the same MEMFD_LUO_MIGRATE_RETRIES,
-but that's not really important.
-
-Your call really, I can live with either of them.
- 
-> -- 
-> Regards,
-> Pratyush Yadav
-
--- 
-Sincerely yours,
-Mike.
+>
+> >
+> > >
+> > > Reported-by: Chris Mason <mason@kernel.org>
+> > > Fixes: bee9ef4a40a2 ("bpf: switch task_vma iterator from mmap_lock to=
+ per-VMA locks")
+> > > Cc: stable@vger.kernel.org
+> > > Link: https://lore.kernel.org/all/DN267JUKDRNS.2VMV07CQ58R4X@gmail.co=
+m/
+> > > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >
+> > Acked-by: Pedro Falcato <pfalcato@suse.de>
+>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>
+> >
+> > --
+> > Pedro
 
