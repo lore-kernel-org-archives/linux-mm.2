@@ -1,102 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AB0606A686
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C7C606A681
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=O3LNbgj8
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=aq4t5SwR
 Received: by kanga.kvack.org (Postfix)
-	id 54D506B073D; Tue, 24 Nov 2026 10:13:22 -0500 (EST)
+	id D66AD6B073F; Tue, 24 Nov 2026 10:14:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 524DC6B073F; Tue, 24 Nov 2026 10:13:22 -0500 (EST)
+	id D3E836B0741; Tue, 24 Nov 2026 10:14:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EC7D6B0740; Tue, 24 Nov 2026 10:13:22 -0500 (EST)
+	id C2D886B0742; Tue, 24 Nov 2026 10:14:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0186F6B073D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:13:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77F0740979
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:13:21 +0000 (UTC)
-X-FDA: 85470356202.04.874C6C9
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4FA9E14000D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:13:19 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=O3LNbgj8;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf09.hostedemail.com: domain of jgross@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=jgross@suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ABE96B073F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:14:26 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E709120BB4
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:14:26 +0000 (UTC)
+X-FDA: 85470358932.29.B730AEE
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3ED631A000D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:14:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=aq4t5SwR;
+	spf=pass (imf19.hostedemail.com: domain of jgross@suse.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795533199;
-	b=pgdNv5Fe0bbQN6lEaNTLZynInZ8AaKGF+GKReAAPiXIrrSJrSoDqIotsfkMwTL61V0y9Bu
-	4Wl60MDGswRyLrWT2BDPpTJItcZ+QTKi/SeMZoJ3///vcaaUvlnVVHZpfaM9Lqxjutgl06
-	ll0xO0ACiR5QWSpNAANnvm5RvLdSfNQ=
+	t=1795533264;
+	b=RZvYpN0dnUxmK22F1a4Xs705p1w8c8YiUAcX5mXGAn3m9W6BtZgZD4tYmM/od+BKwjBgJK
+	sqLgHTpEexFHM3qABhoW0T/5pOqDt9/2s+dkjJ/K7SodznKMDrrZY08x9ElkO2ypYWNJnS
+	y2XYWyz6kaEvIg9vxjseuByBfElZ7/A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795533199;
+	s=arc-20220608; t=1795533264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OavKAVZv+OA0pfYHqsDmPh81k4IRaCsSuMGSaPHhIPw=;
-	b=Be0uGX2zaUjwSzOGWgN0ApulpidLC7uES1ZbIDknzczL9kOhslogJ/I6Z5XkLB/FUbxdVG
-	CCgb2bYa0XKeYx7H/L90XJgYBhx5JfOLTvIDn7PsfGHFASw6Yr8/TArAYErl5oy+0dCnKR
-	8+tWcZwpMjm15TAIaVuCL2J978B6C2M=
+	bh=PVJS6gkYs1IOy2J1QEN8soh2l1ljp7ZJVoiYPlTtrQ8=;
+	b=D3DytjPy1K4t83BSlmX6BTAAbKaIeqcxF99R7lPNfIyqZBKj8O3SRno/cfIMq67lzAsd+/
+	jO8zwGW1pYkwcLMaMrBqkIbfkwsqRApIV7TmVTOYb/p/s43G3d7JW7FCEWlGnednhMqGtm
+	5iFsZriXODReJKNGfhZ8aD7he3v3xNo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=O3LNbgj8;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf09.hostedemail.com: domain of jgross@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=jgross@suse.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c5118deebcfso684765266b.1
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:13:19 -0800 (PST)
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=aq4t5SwR;
+	spf=pass (imf19.hostedemail.com: domain of jgross@suse.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c4395d31228so790311866b.1
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:14:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1795533198; x=1796137998; darn=kvack.org;
+        d=suse.com; s=google; t=1795533263; x=1796138063; darn=kvack.org;
         h=content-type:in-reply-to:autocrypt:from:content-language:references
          :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=OavKAVZv+OA0pfYHqsDmPh81k4IRaCsSuMGSaPHhIPw=;
-        b=O3LNbgj8gD2hSsflHB9iaPZStjRUxOsxhboaiIc+fRLp2eqnteIHdr+V4j4fsttDu2
-         LJheFQoMb7VeysSTZltCzYlFkkKlB4fF9IR3GKqdWZJFDeBPfbzWEa4Nm5yxv6PiavJK
-         V0taxIUJLMUlq8Xgm6ZUtlUgU5TtJ9idjiIQY4hGKSz9zzlDc3bdPgi7KEtTeauRMoP7
-         mFInuUjt9PF6kLOSXvx4X4rU8/IyUMvItEoUQRVMkN8M14AbxeEG1YBMf4p0Vq0VbOc2
-         3qKqkgZ65NUd7m+7gY9uW1ztGiMZ5857FuMChdYiM7O+gOxdyWViktRv8QTp84EolAuX
-         0Hew==
+        bh=PVJS6gkYs1IOy2J1QEN8soh2l1ljp7ZJVoiYPlTtrQ8=;
+        b=aq4t5SwRg0EWfe6et4PEls5XT4rW/dhp5DRGA5mb2on6xXvfr8rq14g8bsNmLgupmM
+         svVEWqCizsIcgtHYaRuEdTj8joCvVzduHSXfZW5XF+ZoNJUz1gf/Ef8+BXA2/8GiFa0S
+         dGmLHTBE+3tKT1tKb8XBIXcacITblLTmeTpmDDH6GLk8ZfFaxqydMLgH97i7508EqZXn
+         tGhVlRtODnC7Wzt9CNqdKfXKN2d9q62LBKIo6sM75d3tQwbfwe69q2HIc+OACCiLeGTW
+         qh95Sz4PFFEtzdO5W9hQkxrwrQBt6g9KpKiI/VrMG/z5ETyrAbE96GKKH2lGVrN+DXx3
+         dxAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795533198; x=1796137998;
+        d=1e100.net; s=20260707; t=1795533263; x=1796138063;
         h=content-type:in-reply-to:autocrypt:from:content-language:references
          :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OavKAVZv+OA0pfYHqsDmPh81k4IRaCsSuMGSaPHhIPw=;
-        b=pHhZ57iyI4gms1TQpYQfD2Xapnjkb33ckp8Gn7RgMuUMKYhyZzDhvwBdSDlfNo3M22
-         xr5LWG7yNMX1VVOXwXO7XSUIOXo8fYZWmg//MhW3dLKdEzZ+3wiGyzBPqksFll8vqcMx
-         ZzmkEAqfoP4DyAw1MxQ1EGwJrSVKQL7CQHUlvcmd2WJ1Tv3k+wJGVbomr2KIMx9p7iJT
-         vraz0qa/vDuBjUj+l36pFy9hs7iBsn9lwAR7wg0S2Ga8SmXspHlpV+dcJwdw2qK8+uyx
-         7Ik8Oqi6AEGR3YlG44tP81/KaIVZIwI6Se41C+j8Fs2TFvGzhipR6vpxmnoJ0DG7TDAg
-         99eQ==
-X-Forwarded-Encrypted: i=1; AL+hErGnUnfhIUbEw7ocmkHMFGGx5FEp4jDW5ZWr3gBeeE7OT3vfrRtHbdK7NBiIoGY4AF85JlaXKEwIMg==@kvack.org
-X-Gm-Message-State: APuU4Z8cm0AtXz5p7XhCURi/oLwFTdviLyEQ0b848Tw1XWPDRhUCNWyE
-	zCsp15+PZ6TpgdskxThp5anchOq1FpnfDO5qxfHsRgb1cjdJo9W+neFOJ4pzxTexCNg=
-X-Gm-Gg: AZFdTZdZkdbR87VvQD6F1pXoYLDzUZy5xd6magmdVX+lB8BrMFSRB5c4WlZ3ubpafDO
-	bmc2ZtXC52B37533ngLJv9jHgI3tloSa6KPaIuQ9Jtz9vDw0PvRjUSS2BhGNXimNusDIBGX7I5o
-	ADpf1gQ5ZwXNUpgswaIA6uqJxe9grmVXQgqCY0lBkNinP1pPZawNhRJSgxlHPxaolYZlKiu21t5
-	F/ClZx02ZX9cqEzsAhdY4zUSO/WND2aqf8CfJDnzj2BNXQ5pZkwmiXTzKtQDktyMtolkk/deUL9
-	EnZpcAWhg262x4mXm/gtOH6mTVaJFuYPfWSAa+lEuwjyVmfVsx4x8rzwW1OPintL1pnEY0ayAUx
-	I2qd0xERG6f100/1UFqWxmbLNQE88+fPmcg0fa6Y8NxnFI+VyDRFxf2yJjzj+GbecB+62Blnv+d
-	nlkGPhdIV9oPf8ue1N+FhsNKBbSPd7Tz2WhuCqNBw+898qwAQuUvXbn/9rbAlW6PYZ5ZrMaBQg0
-	9knXDg4YRDauq8Ae8+cYPf73RxFAAbINmVKZmNMKUe+qf1KmP30oADDj/tQKiapLdYHitSz1d4T
-	wt5ego9f4RM58Z5oPKhkxXH8EOkMJEKabmp6tnfi50UYF98nFsCnz/YRLmWVb5vyxXcTHI+Rz6k
-	h3uMshTYQnV5lq4+82CdjtWMXcwg6QnhOcQX6V126SPZ29tCkUg4=
-X-Received: by 2002:a17:907:e00b:20b0:c4d:22e2:1a2b with SMTP id a640c23a62f3a-c513a47e2ffmr818303866b.1.1795533197737;
-        Tue, 24 Nov 2026 07:13:17 -0800 (PST)
+        bh=PVJS6gkYs1IOy2J1QEN8soh2l1ljp7ZJVoiYPlTtrQ8=;
+        b=HN2H7dRwTPh8KY/dJZR49h+/muqD1Wz0LZTcd8u6dV7r2DLp8G1+HAKxF1n5pTnffE
+         Zr/OC9JpkqNDAXuEYG693MvMBouLnPgjF5P/dQG2CT77pDkuVcgIrcxXoLMXnagXOJTJ
+         F8hFZdh+sLeJsUZVn/N/CWXuyR04yQ+SP+g3xvf/bFIahgQrphQS7WaddAS9vpGuKr0l
+         rFRJGJjiVGWNc6bN36LgMDWd3SgyeNPpJTXE3dS87KhdGRggt0TFi0xLAlJGWVsR0b6Q
+         C4CyP07Jr5XCz0WH6qxhGFiD/z9wwjcu4T8T8XYUEw6RA84ViCccw6V1WgjTUDK7EcfN
+         1ieg==
+X-Forwarded-Encrypted: i=1; AL+hErGafbuJ21fYkKohZssCZ4ed7LON2cyjjqU4FNkjQnDcJFWFyvuMrXL1fSUx7CsRitmJDX1WWkBY4g==@kvack.org
+X-Gm-Message-State: APuU4Z8hkym4CczYnAr3mNXWFRnUIVGmRVLZCe8IxG3c80iHtCOFqi2v
+	4qNYfyatmd7JWPDlUL+y001roQr7eWB+7R6UfidCh3gLGF3FakuNTw4xAqxXWc39WV0=
+X-Gm-Gg: AZFdTZefBcfqZaeiGo46iUQrKQ/OPlSqZrJBkeLr65IOUEFgLqmJuXyAwkfZfsJnw+H
+	AiTrOcFkwOfi04B/nau1TFeyEuzCWBZxNayvEmESUhSvRBxWdevWT06Ksqn7fvUddeK3bTtbGMU
+	yQtS/Y/txPdtnkat0OlA3RAP0RHQQKCY4eY05fVP1VSOyhNXW4nkPQB9uaWbiaDkhlEasb8W9Mm
+	VvGxU74Om/yVIKy+CtHzagpb0UczXAE78hsOzIwBkRFIIqZalJpv/9+v82osVqbR7QADXOQZDCW
+	Ss+SyJV9Wb2SXpg/vaubYysuX0H1vmWYsL+7+HG+BaG9U4RhGXyx23zXM0u51t/610xmOW/kICw
+	ycS6jgt7yYURtRmO5wC8iQvcvVKdRb/swfI+No8gsFiNHzE8tYcnxgXHzCg9Iq/BKcgyxYWnSE8
+	CXzPZi9YiT26D38ACkTZLSCvEA0GWtZ4yRXibDu9YKO3XYkGkvtctsPK0KMUqq6ScbfQzn2IuIL
+	LD470y2jF3BlmhzajX+UE61jqbpBykqoF5DjB6Z1YMg+GUCcduHesjrTx7rtL0hAPjm0C8dNHsG
+	D/qlR3LDRSXvHcm6vNoQEIZ4FiWR4gLTpRyHl+jnnrpjhjlwSVEfKCukE1k1fSIZ+hmb9ZBdYPf
+	F23tUAtiTky4mjOY5ZO8OhX5aXs7icfdu9x3qUWvVPEVYqcl6qpU=
+X-Received: by 2002:a17:906:c14b:b0:c35:babe:ab44 with SMTP id a640c23a62f3a-c513a1e0076mr1490288666b.0.1795533262820;
+        Tue, 24 Nov 2026 07:14:22 -0800 (PST)
 Received: from ?IPV6:2a00:12d0:afa3:c01:92cc:e257:77ba:97a1? (2a00-12d0-afa3-c01-92cc-e257-77ba-97a1.ip.tng.de. [2a00:12d0:afa3:c01:92cc:e257:77ba:97a1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513ae8d0dbsm543097066b.31.2026.11.24.07.13.16
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513ae698ccsm534442066b.26.2026.11.24.07.14.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Nov 2026 07:13:17 -0800 (PST)
-Message-ID: <f9ddfaa9-9a78-4fcb-a142-6c466d215492@suse.com>
-Date: Tue, 24 Nov 2026 16:13:16 +0100
+        Tue, 24 Nov 2026 07:14:22 -0800 (PST)
+Message-ID: <589d567e-912d-4913-9949-ee28dfd7f719@suse.com>
+Date: Tue, 24 Nov 2026 16:14:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/13] xen/privcmd: convert mmap hook to mmap_prepare
+Subject: Re: [PATCH v2 07/13] xen: convert xenstore interface mmap hooks to
+ mmap_prepare
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Stefano Stabellini <sstabellini@kernel.org>,
@@ -139,7 +140,7 @@ Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
  netdev@vger.kernel.org, linux-mm@kvack.org
 References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
- <20261124-late-2026-mmap_prepare-v2-1-0b0d99d655f9@kernel.org>
+ <20261124-late-2026-mmap_prepare-v2-7-0b0d99d655f9@kernel.org>
 Content-Language: en-US
 From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
 Autocrypt: addr=jgross@suse.com; keydata=
@@ -165,24 +166,24 @@ Autocrypt: addr=jgross@suse.com; keydata=
  HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
  QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
  ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20261124-late-2026-mmap_prepare-v2-1-0b0d99d655f9@kernel.org>
+In-Reply-To: <20261124-late-2026-mmap_prepare-v2-7-0b0d99d655f9@kernel.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------q205G5Arex3sh2KHaxisqvnr"
-X-Rspamd-Queue-Id: 4FA9E14000D
-X-Stat-Signature: 7j4wmziuu8phx16kpf1koxamqugbpmya
+ boundary="------------rZw0QHKmzMvHx5VSPSOUKur0"
+X-Stat-Signature: 37punm3ik6rk6fm35gwryxpa89mmxpeu
 X-Rspam-User:
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795533199-514524
-X-HE-Meta: U2FsdGVkX18pG6A+J2KtmtBZdYAbzLJ6+g9kI34fuvnesMbTHuH1ZfyZajg7ajjxgAgVIR38/8svWJZvKKISN4dlkHru/OEggXoCkWuPZrjN6fZVAjz6PNtW7t4qVEEOqJZgiSpETaguoB41TTr1eaDSNFmdSuqTbnfActvtvaSl3EZ0aXfpIYkxbWzqWjc3bjOH/VgI25Af8O4XumofMue4S8eudpoJL3E0F/xG/ga+HM70WsnDzGkCyOiQCFPMTmRdTrbWVn6oGlpI54LebnNHgHJFYcClKUPHFbUiI9HHdGAXqG/WwbIE4ewYmXuQmAc28iGJKPBTIM1mMcxeCoa0SZtKK+mTRhWQg+QhMsqqguMrN8Au1YM3TRZPjdQAiBCgyhr/Q+W6nXVlswdmhyNYptrYwiQApxE5OhTVF3y0fTfxXZTTFxHw2DJ/u0iNneuTLvUY9pJI9YqdvKCo3MA+jZYyc51ViFhyD0q9ujVCXO6egA0YLCjdfjb8nWbHwPCdTRU53lV5snACcFQxsRL61UdceeHtBUj2Cyi/6AjCilXEnIh+npQqLzodz/PvX3GULLvm35STbaxYaYh69LFhQQRfImkXc8R8ZmLDD4fw1jw+RaNiWgY8n9np3x4VVabOZlCRf9lqeKWD6zAsCR379Jia3TUyQdp1CuvF817DIkNvRIqjnxUN9ZiVOe+7XON+gHtEBDTLpwVgKbWy0yXdGjlsR4kIkbcQZUP/n+aNAvjtZ/BiOE5YEooOWhhkplvV1mKFCuSQWCLTvO4SW4iGi8AhQeGpn1aS36SwQ5ymPl3oWnbxtX3EF0xlgPJP7KMEt3aOPIcJKtzJSqdfjlA7F3DaUZtx08KJHEXXf8/wxoLrDzJFKT46uoAk2yYRgC/Xdp2TcnNMq+sbKKFpRWFRaJ0qhL4+b8FWJHqwbHmc9tTULYRqI9Lp3LQJ8t2LhHoc92pW0uC7VNFuU6d
- UvJt/7y2
- EfwTna/J/T8Gzb9igRIVvj2M6jVsXuTn3aNL3GwNGajLTp4YhrH+2kwr+p3GSG41WoJSz+B6gCKLSs185omQRAZ8UhrP1wwKrJXaoKsoT9AX02EcPGNouDttMnGhc01VF9Y1kQBhA7XdyOg9D9F5BA6cRhxxJM/5ulTAFzYG0NRXR3/LD6emHICa4koe9gn1n5R9SueCzmAe1A1MLDYR4REwmoSAVMNiY9N6DRDlK4xB9gVC49+taZ3pwKK2KokNp961GdbGkkt5mgxQ5VLc2A0aAjjCRRH/iHk4Ie3yYiKGWkM3cYUS9WwTJZqP2pDer4thlB9aiwh1SnJY+n3/K7x0ubUF/0AHENLTN9CDeAcfw0dGAsxyLuEtHN1wjRAiDPJpgRrZ4pAcgVndsygIJxgkoxFGGEyp62lYjt8FJoV1abgAcbao7DFjI8Q8VUunk3fX3AMaiFkZdfpwfQEBKbIzSisvUZofwOrreQNMm4FZ8uu8FTZjio9CGhUgI0yohqGVmIuA1GzeXgQCnWwbiZtoFYjSCO4YmHzf4SUC5dCTlJUVAYmJgc2sSgEXPWkq+dy+YyJ4jR3uFk55A4bFGnkzTf/JO6DhJhtI2DeidYOBMvTHv6+yx7+lBJn4VvWh7jM5g31xN9jXwRU9e53uy4CTKSFQT94BSpMRDKKl0WTCL1v1V0vAnculGmXWZLkBL7KkeoLEJiUO5cp/YK8MPJjy3CPflUm5q37D3L8CMa/r2Fprr6hbsnzPdsd0zLVhWgAnI2QsBJjULrq+iqCfjr8YKXzipDCimuzhjCbGKpYDkRcf4KAAC7GI+EC17FujksPJANMPUzXOSSVpbxfoIoUqUSHy8veBpMcSXPLcTy3A8yyoP2oA7+Zh8DfY5J8Fv6QpKY6d5PsZ+PpynhJK+NxNY1DbU+lkJeDc6APrbOLIeqSc5iBsY/dWUaacOP1aagI5srV6WQCiUJVlnNym+C7FRytgZ
- x1QjrRGM
- HEboC5hc15tVhXJlXuSGE/kMWVmmaCP0Xsvxn5oqscDXmJPWXX5Bd8Ta6kIXah8RboV91KvWDebKtsu+j70ap3DF4CU71/JElqfNlHfCWrK2jOQiIFmhkw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3ED631A000D
+X-HE-Tag: 1795533264-75787
+X-HE-Meta: U2FsdGVkX19vHly1KNz7bOb08XKnhqXvb53ULoyEPiTSiKY0oLK6bZEQa6VnZzlxpWGNqGlPAab7Nlj1QY0q4L/6Yj05vFj7NCl8LIjsA9aKrZxW8N2JSEG7A1qDTHk539GdCUlyDGtzibolp8NwiL4J/om3MBXInmJPXjdNqloqJMEYurClgjfThXawS0SZZLd3KcPXMwKo2yluTWOeryG3fd9MLIGYI8qnDIoT6DutrdAX2QXERwHDLcoUtX2Rk6kQPfN6klHyU/ipUTLj/YyPxrOHgUaA4Y1mEDQexWGZH/ipOeCekNPJ3lBAHz9kc35ErK1kYht1TbO70B7SpahpJrY2w5yy9OPJVOwEoTdh8divHkaDrYq9SFo53EKQFt4z9YKuzJYEQalQqaPxDkm/+Lhb1BevM24jX9CMebUeovxhTVPC51N2qnedS7JEOrNXAmHz0F+rpsNr+rTBSLh4EbqrijHqL/Bed46qQx75Ulm/VcVO/a4uO2fdgaIA3j2k0or4Hn3w72kDd3vaUhLFyAYdKzRCLoGJltK5CD6kkaNM5SD90DRWfaxSpFVG8thgCvEq6JnTBqF/koMyNHj6+MfbGRnMFwm3qNareM55t0g7Uvd/46NUJYKxyHUYjGYLOKfLjWQrYlcYoHVvMUU6il8RGbdgE64tPAH7z9kg+GhByZxvFBCHJSNQ51kPua4L+jP8am0ZcYjfjgOjTO23mfPg/56KBIMZkjDhlQzJci4s4UQ/tfilNPO9wEa7SyBOre+0O2DRyao2f06VB21EH5ALgWxiGwWeooizamMMBGDt2Iw6SD6CoykUeY2UUFvyQbTElTQTGWH4dlcaYoM0p28H3iZOd8O0numukgs7B/ZdYAKi12BoTb3UggLkMzk/SViLTq2wxAG3ncdHLs+j6PJLPFGzaslJtEPLtcLWLg31gpxR3XSrKB9sUxho9WgS1wAV+x7zI5m/tmC
+ QiMIOe0a
+ pbvXUM5iARPLVJbQKBABylpRBtrEXVWJORNYGsX8/G0wmrjsqEpNUYJKsP2D4dKBinS4KZqwzb7t+pPFcdnW3fuAv7pHmVuftieNct4mBNJnIedWwrlOcR4F4BmSwJVw22U7eVhLdrHkF06Aq7R1ZhNwfb5LiPpTMyxi0cPeJ+MqxftrMssIIqJ/8noIaVqRju9mx/j1m1RGpgN4dAJxLcN48S/MIqx18whU96zUfnmGty8rqqjshtGW7Y4I39JtxKzEOWg++miGvgBgZCA1+7bZnFp5vpKmuKDpoAwOKuWTlum5hCLnB9DSRDkq1sPTuixl/hrJ+JU+OcFpfR6WfWuuvQpmItLbUlYSqK6OslDKLzYCvfd1Kqc3Dr9c2wGIIMWeR7kN5H/R7qw8XwHAWF6TOgYNmoUEOFcBgyebI1E8+iCDJNxfzw2VajMMYVsqpbvdG33sMk+DWP00qmoWxcdyMJmeGJZI+wq1xz3L8ab6k6LvkfI+Jy339P6J94d4reTaV+8NZmIxdYxG7Adj7cARjNEW/7xWU5zuNuqL8u6Z1y+0dMPDoXcHYGCe6aw5tw/lqjQqZOtsc2mqqsZ5zXx4wo0UXZdTFw7Gcku6vEnwfSJe+AHzeYJhUyeezt9w1X7euQTkNtPxINtTwx4y/kP94ZkBFBDz3uzwJldp3zy3UWR87+tVH8Jjo4DkxreW7oUNe0kEvFnjFgl4YAr4HYm+Ejbs+BtXZRrkVQblIzgvgeNMvJCx7rGkeSYukcXaau4KUE18mOBF8hnz+AQGETK1cT9Q3roSsukt/AR+ba3reT+Z71VY8lyOtq3a3wETBOzk/oZJRw166JlVcLGyloHx+xKjO0FAkLVl9CBVLzIpfKR1x2aXD8TcVHPFAWmE5EUHU5+Fi4D7xqr2p+NtImtMfdSvtsjcfePc6PDYuzwDNXR8IaimK+NmzxReZmwWFVfKiHekgbCJU8GbI/8Ua8YRKfw4b
+ sF8g2yFL
+ h5onCZx1ahzrvWeX+xuH9IX7w2yUbutCyWn8/p895TUHV5uXJHAMgFKuO46J1jsCre662m6zAGrlWOqityTxuDO0O05xdgUYMcPbvTpmobT6w03C8E7vkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,14 +193,15 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------q205G5Arex3sh2KHaxisqvnr
-Content-Type: multipart/mixed; boundary="------------AjT5XFhC0OM07fDCW0uVTora";
+--------------rZw0QHKmzMvHx5VSPSOUKur0
+Content-Type: multipart/mixed; boundary="------------1hIkmj8WyEEdRHjB5CXVAQ0q";
  protected-headers="v1"; hp="clear"
-Message-ID: <f9ddfaa9-9a78-4fcb-a142-6c466d215492@suse.com>
-Date: Tue, 24 Nov 2026 16:13:16 +0100
+Message-ID: <589d567e-912d-4913-9949-ee28dfd7f719@suse.com>
+Date: Tue, 24 Nov 2026 16:14:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/13] xen/privcmd: convert mmap hook to mmap_prepare
+Subject: Re: [PATCH v2 07/13] xen: convert xenstore interface mmap hooks to
+ mmap_prepare
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Stefano Stabellini <sstabellini@kernel.org>,
@@ -242,7 +244,7 @@ Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
  netdev@vger.kernel.org, linux-mm@kvack.org
 References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
- <20261124-late-2026-mmap_prepare-v2-1-0b0d99d655f9@kernel.org>
+ <20261124-late-2026-mmap_prepare-v2-7-0b0d99d655f9@kernel.org>
 Content-Language: en-US
 From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
 Autocrypt: addr=jgross@suse.com; keydata=
@@ -268,38 +270,39 @@ Autocrypt: addr=jgross@suse.com; keydata=
  HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
  QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
  ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20261124-late-2026-mmap_prepare-v2-1-0b0d99d655f9@kernel.org>
+In-Reply-To: <20261124-late-2026-mmap_prepare-v2-7-0b0d99d655f9@kernel.org>
 
---------------AjT5XFhC0OM07fDCW0uVTora
+--------------1hIkmj8WyEEdRHjB5CXVAQ0q
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: base64
 
 T24gMjQuMTEuMjYgMTU6MDIsIExvcmVuem8gU3RvYWtlcyAoQVJNKSB3cm90ZToNCj4gTW92
 ZSBmcm9tIHRoZSBkZXByZWNhdGVkIG1tYXAgaG9vayB0byB0aGUgbmV3IG1tYXBfcHJlcGFy
-ZSBob29rLg0KPiANCj4gVGhlIGhvb2sgb25seSBzZXRzIFZNQSBmbGFncyBhbmQgb3BlcmF0
-aW9ucy4gVGhlIFZNQSBwcml2YXRlIGRhdGEgaXMNCj4gYWxyZWFkeSBOVUxMIGF0IHRoaXMg
-cG9pbnQsIHNvIHdlIG5vIGxvbmdlciBleHBsaWNpdGx5IGNsZWFyIGl0Lg0KPiANCj4gU2ln
-bmVkLW9mZi1ieTogTG9yZW56byBTdG9ha2VzIChBUk0pIDxsanNAa2VybmVsLm9yZz4NCkFj
-a2VkLWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+DQoNCg0KSnVlcmdlbg0K
+ZSBob29rIGZvciB0aGUNCj4geGVuZnMgeHNkX2t2YSBmaWxlIGFuZCB0aGUgeGVuYnVzX2Jh
+Y2tlbmQgZGV2aWNlLCBib3RoIG9mIHdoaWNoIHJlbWFwIHRoZQ0KPiB4ZW5zdG9yZSBpbnRl
+cmZhY2UgcGFnZS4NCj4gDQo+IFVzZSB0aGUgUEZOIHJlbWFwIG1tYXAgYWN0aW9uIHRvIGRv
+IHNvLCByZXRhaW5pbmcgdGhlIC1FQUdBSU4gZXJyb3Igb24NCj4gZmFpbHVyZSB2aWEgdGhl
+IGFjdGlvbiBlcnJvciBvdmVycmlkZS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IExvcmVuem8g
+U3RvYWtlcyAoQVJNKSA8bGpzQGtlcm5lbC5vcmc+DQpBY2tlZC1ieTogSnVlcmdlbiBHcm9z
+cyA8amdyb3NzQHN1c2UuY29tPg0KDQoNCkp1ZXJnZW4NCg==
 
+--------------1hIkmj8WyEEdRHjB5CXVAQ0q--
 
---------------AjT5XFhC0OM07fDCW0uVTora--
-
---------------q205G5Arex3sh2KHaxisqvnr
+--------------rZw0QHKmzMvHx5VSPSOUKur0
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmsFqYwFAwAAAAAACgkQsN6d1ii/Ey9P
-6wgAhB7FWWxaGPhKVeHejmUgx+jnN5sGJc29B5zeOJ/udOQfrpojRJR0JMaTJNeJ8g/QXkTWmCZt
-Zd6lRhkVQVMmVrlatIREKD6+lx0mr154pd31nTm9ffbjdyAK9RPk6czEHFUxkktbU/9vv+pBcZEa
-4SaEbJuidUtK7Vgek2j0JKYNWpqv8R80d+nRsMU+RX0YbRKCuT8Jtt3uB/TLb76UL/eK81vzE7j3
-bGBh83GA0cSOumIzSg72te0PCuz4U9UgccJbDbwLIPRkV2Gx83sLPaLOj5968cz/vyT0qZwJ5LfI
-2oGgirhriBPAdLJrm4WtpkDGIWO5CaJWyZf5I3zVZQ==
-=Eyqx
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmsFqc0FAwAAAAAACgkQsN6d1ii/Ey8U
+agf9EKmbZX8l548UDsdyJg6oJvCYHOXjuS/ExKBuNpmGhFgk7GREMY+3u3PwwH5i8jr55bbeWohR
+PQZmJLsVx91G2Go2UnTECf+ux5hcQK/L88QRCcbKXHLPL5o2jl4qSVtCpjc4+Zq8UulQYIwYP35a
+OS34bD2osQ81MOzn9C89cW+1W2vyw6436TybryP/f0H8AtinZ/cTr3yFyQO/tR2V2NBHtEzwqslP
+jNDjxr1xdpiDdCL4jZ8rdh7WfCE5cgGr89hzbDR9ZyzH4ka8x2ICUX++Mym777GSOuxLf3wzSPuW
+OkTRlKQEHsYqdVjYj7TAHGOBC56IwBlTfAmWefOR2g==
+=vFml
 -----END PGP SIGNATURE-----
 
---------------q205G5Arex3sh2KHaxisqvnr--
+--------------rZw0QHKmzMvHx5VSPSOUKur0--
 
