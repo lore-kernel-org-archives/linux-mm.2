@@ -1,125 +1,156 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6721606A33A
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29068606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=ERnNt4hW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=emjy8tAd
 Received: by kanga.kvack.org (Postfix)
-	id ECAB76B064B; Tue, 24 Nov 2026 03:52:31 -0500 (EST)
+	id 476EA6B064D; Tue, 24 Nov 2026 03:58:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA1B16B064D; Tue, 24 Nov 2026 03:52:31 -0500 (EST)
+	id 4283B6B064F; Tue, 24 Nov 2026 03:58:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDE9F6B064E; Tue, 24 Nov 2026 03:52:31 -0500 (EST)
+	id 2EFE66B0650; Tue, 24 Nov 2026 03:58:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ADF006B064B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:52:31 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45CAC1A0977
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:52:31 +0000 (UTC)
-X-FDA: 85469396502.01.DBDCFD2
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 262BD140003
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:52:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ERnNt4hW;
-	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 053266B064D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:58:31 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 150AD1C44C5
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:58:31 +0000 (UTC)
+X-FDA: 85469411622.13.A529E06
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5A3732000A
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:58:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=emjy8tAd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795510349;
-	b=DDVTpJ7MlG0rtPlrNdc3QIEtDOSYVRo1UjZo1o0gnUCES66+sBFeuZ3GiflSXx3ofPxyew
-	wo6Kc1HR7DP37HGJaT9mL6eD5RjDpidD/z6G6Be21EXIW1GIzDKAD4O+/p1Bkfp6rd7iCl
-	ON3G44h/bEsJEgfnbG98IFIdjranW74=
+	t=1795510709;
+	b=nwdvUInr2zBMgom/oR9xGXApnZC967VPsbsRnmxCd3AGwSEadZLduMMAiil5ukxPDCDKMD
+	FWD3vrUXwRESVvxbYh70ht4Ev3QhnkZXkSCWCKmiaYDAurR29JJ+Tn79VnouegjzYieSCW
+	+RPNBLD4Igw+LMu401XtLjJjLihyOYU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795510349;
+	s=arc-20220608; t=1795510709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R4vZ6P/pxgMeaZu3yTIBPWC7zlioL2LZflk1ZvJYOpA=;
-	b=laPItlnGrrmxMGhJA2wMYf4zhBK0jLB6sqmuRUKjUs4QPM/o8z2Vt3ONC4kwlMMdcj4ZMv
-	SMHGoqzSO96IdIwGqwBsDo5eDXkjevyoHtZ70Ztm5Zfu7a77ULMBccqyl4bHAjdMB8Sosf
-	Jxo6mZNzgoVThRa87v7HUc4k7RWICuM=
+	bh=CQi6hoontomE15bKEUcwScQR8pAG9bqNClfmENXV8oY=;
+	b=RznNY5lgBBrhOg2U5QQ7Y6H1WRXrKqSJSnE94yqCuUUZzndnw/AqDpeBCWbjWLfraAMIHJ
+	easMh8ypZItLspNXQnGWfdQoQFZlkbCmbdkPcJ0+3ASLHMS+9vnHGrurutWDVCNWMWi1Oo
+	O3z/tMeqp/qLBulLgc5mQ16GREwfdps=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ERnNt4hW;
-	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-498f5fa5103so2490627f8f.2
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 00:52:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1795510348; x=1796115148; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=R4vZ6P/pxgMeaZu3yTIBPWC7zlioL2LZflk1ZvJYOpA=;
-        b=ERnNt4hWpwm6HhvLtgtkf3uKBIRT4aoozkiCzwyMzIUP7HVrtFHw4HqpRADD3+tRzq
-         TD3HG783MEKBckYpbNOcM4Fyi8NYc+mPhYIOSCsvX6fV7HbmLN4Y/UQPdpaFWTmYCsh4
-         Zr4BMvENTgjFV0omAptVjjaln6FiQ5dbL/NIa37dGc1iGyTzg9kONLlVz0Ww6IpvZ3oq
-         WmnyqLT403BUovPBNdoEyzjEheuvU8KsRlkIsfa/0YFfWyg4uOPBP/WFphxnEB9DkpK5
-         uEBRA3zOiTWuVizBtjJPcPCNkZdYvhi8NnLeg9w4XqOdJOyEzVddiErbpLzbv9wqLEId
-         zbDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795510348; x=1796115148;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R4vZ6P/pxgMeaZu3yTIBPWC7zlioL2LZflk1ZvJYOpA=;
-        b=WMRPxhTtskOPGKxHvhV/0ZlX+nTxJgPknOzULeuW6EzCUn884QTVPV1XGHtEfmIOVe
-         9x2jQyeUCQmhVSzQ8Ag9MBHUtuanNdOmSHJFRXE4GMfbtkh1kEnJwGdVSRmlxJYfumKC
-         gkBMDNhS5vL/ve3dNjAdtBUpkD7lYVRPyO51kpOnbao9yvx8k62+1HhlyKhDXXdcgGBJ
-         PbyPkmGdL+fYPmkTNPi08wfb2TQx+UsXKwKk9Vrjmk0mDFNgpwx6qZggo1MOweqorCDE
-         c+m646o/ygHI9h5+fJXJNzG6d81IidyhBVfUGTAPgtAm2Yz9qQZFv/ElJgT2T8+Ap5Xs
-         Owyg==
-X-Forwarded-Encrypted: i=1; AL+hErF8FoI+pFwZ/AA5NO1qqfOEgrELizWMHpCjsvM2YZpucsmsBnn1RPH0W7SObEWWv12mGubNkT2mtA==@kvack.org
-X-Gm-Message-State: APuU4Z/v8d2XSfMldq53UwjAxXno+KZQs6ps3qzrzT51dqPtzAgDdV9k
-	pEXrSN9BVLC8PzEB/V6Zkn9ebFIHL+FkriERqaBVpMzmrOtoWRK/eX8BAk1txOM/XEQ=
-X-Gm-Gg: AZFdTZdy2hn7BUnCGfuJOLuv36bYrBYJ1XBvtKZ/kHI2/qqcfCnFy/pCxdhEXDgUqMw
-	99WHGOmMwhgh+N4HxpS+MSglKcEu233AcukV9wJynQs1RKqahWiToca46DRjuQEZ7egtHXIoz7g
-	A9J8UAK0lZ+zvXUJTDvPEta5nLqw5bOn0Ls51wQKOr9Ji1L+PZo7+28X9mOFAyQ2ugjshlzOx7j
-	w4VEoRbiBT0DP24ywvS1J4co2WFvzr+WapldUz47tPrbjdmpqUjVHmoOetFxStnSmG2iABZoFpT
-	M7MZRUctQJy2L+5Mom5eRLnJ5u0sTfJmgHC+0oeDd9GDVfm4wVD7x13R8Cw+Qye9hrZG+sWptPL
-	RZ0cQ3naS5px+rpWrEFVK9kLpNslrOzg+CFFRwxbv7qq5MrTYJQ5xoETGR+PoXAyNIQifE+qJmt
-	uNlY+6WPYzbAkKPg0G8HwQ7fTLkjdmm2GVlT7wPPeBZGHLWFaysZ0SnlNql8XnKbyXYFb8gS7xO
-	HgGUtrYhv7hOrjStZZFCk7mmbu6jWGTtBex3ak8myLwoydOxFySXKlzr1b5ZdFbHQBKUDMx5DA5
-	bmFAQIVe/t8khHX/q/hIWkvSn6NoytsQPjd5rTh2Pm7UYM/widWJdd/dmlZbDw1t
-X-Received: by 2002:a05:6000:26c1:b0:4b3:b495:d5ad with SMTP id ffacd0b85a97d-4b3b495d6efmr9273447f8f.23.1795510347681;
-        Tue, 24 Nov 2026 00:52:27 -0800 (PST)
-Received: from localhost (109-81-82-199.rct.o2.cz. [109.81.82.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6bb989eesm26747447f8f.50.2026.11.24.00.52.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 00:52:27 -0800 (PST)
-Date: Tue, 24 Nov 2026 09:52:26 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Koutny <mkoutny@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memcg: warn when memory cgroup IDs run out
-Message-ID: <awVQShRRwF1IfEws@tiehlicka>
-References: <20261124020800.2313930-1-shakeel.butt@linux.dev>
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=emjy8tAd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D73456021F;
+	Tue, 24 Nov 2026 08:58:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463B21F01565;
+	Tue, 24 Nov 2026 08:58:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795510708;
+	bh=CQi6hoontomE15bKEUcwScQR8pAG9bqNClfmENXV8oY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=emjy8tAdwKD4yxcwMD6fg4GmIvmlHGr8Orc8OYl5PT3gXO0VJpjQEiQG8uW/DIKH1
+	 zR6hkD8w296aViWjJ1F07LPDrNKqMwQd6YSf++heu7Bf2uh1SvC0J0Hg8vticjmQuR
+	 Uz82fgdyye11tgq13Y23tFMwDMq7Yqi7bd+5VOVexuBy/mt42ufjIqEwwkvjvU9vg2
+	 X4h8dLQFNh+HTkRjSHDZDWLmt4AljDrjpjswqUK9mW1BMSSdU8SfTBe7P00mO334M1
+	 jvzHfnOUyYnMm9KGuhCrK8VpletGVW3SND6OLWNng/LWjN8mAjvnnUATeMjSuOVkVz
+	 7ej8vBseMTy+w==
+Message-ID: <3027f79f-aaa3-4208-86d8-e6f01a8e62ea@kernel.org>
+Date: Tue, 24 Nov 2026 09:58:18 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261124020800.2313930-1-shakeel.butt@linux.dev>
-X-Stat-Signature: icwfs6irr7z649mnyffd59gc599xa5ye
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] powerpc/spufs: consider vm_pgoff in
+ spufs_mem_mmap_access()
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Willy Tarreau <w@1wt.eu>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Chris Wilson <chris@chris-wilson.co.uk>,
+ Matthew Auld <matthew.auld@intel.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Rik van Riel <riel@redhat.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
+References: <20261122-access_shite-v2-0-808d8d2aa700@kernel.org>
+ <20261122-access_shite-v2-3-808d8d2aa700@kernel.org>
+ <a4b839a8-b710-4dc7-8b48-847d0526070b@linux.ibm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <a4b839a8-b710-4dc7-8b48-847d0526070b@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5A3732000A
+X-Stat-Signature: ccoy6hrt5dznf9148jzff8oebbhtsjnr
 X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 262BD140003
-X-HE-Tag: 1795510348-318013
-X-HE-Meta: U2FsdGVkX1+yjNlMfS8vNWGI5SM8HoY9cwWCjn5A4c3padQtbx+1uo1z0FLkAJHYwzW7Ec8oPWqVkW2QDazfEJ7na37KCKutrBpqmVTW9esp7Oe0KXSxUCKHF8Xndcj18pgLq8fAMTm8rjGs53F103SlPXKa60JJGW/+mn31q+x+hyFsrvIUOUXhWchRU+9e4Xdm3tAxZRS4/046Zgt21NdFpH3a0O3VwCNwxZ3p6VjK1NLyNUve3vwcgxTGKb6EGgzkmOiTt6uDVQ0aWc7unz1yqzTkMaoTsQxFQym7v5pg6PNmmKjd3GFQVT75ANiAgSB1yQ/qbA455LB5MQ4lNvKVt4Iy2ejNzk62YQU678qULwxvtE9lBcpnews1xPcgQkxJQZtP8CDwbCrCQjE6JyMYmuhpJf70JI8echNBwhAeEPOxGh2r4BTWCeSW6dO4VnqNkcA71XrUe0mVg6CStc3oync0gGKaDRk4AYaETl462kYoiaAFUWBztC+OArYZ2We/hSLCwYdK0U02We31WTF8WmZ63+y2NJRMuBXYcjpaYob1rQ2HXweDsLZvT8ye4LoC8mtd9jQ3BBDannsI2R4Sm115rysGyQboYHA/6KFBY4odlx306tQEdR/vuoVuq4gwwv6fDiSj4414vJ+y7w70KDy1XGVdNxXQWyq1Mae/68q5sKwl8sNj3awytf9RzTKzP8uxjcGdd65L/3Hxf6dXnVj5AjWKqwDA6lhKeBrCSjjAGnoLRCZG5BQg+HyLV3DMKUn8BF9u+fC4hU9iScKcPR5q5r3Wd4QL1pJ3P0ZWPp2EHymv46uhtky4xkPpER5sQClRwhgn+2JiZvBLb5+Ch5j4rTX7p+rfqbtnDKkJ9KTsy4EtXV4sPpGHuIZ5A0rnn6/eg/wvE/LP6vhuUqg7m987gbDOEHMAYgsno+MGP2mh0Sai178GzAMdVNFrGIn4ptan6LEvkzIeKuR
- ydHU6zIM
- v9w82Rvx0KinL1c/NNU7zHUkIjQt4yjjeFJdBcuAmczNip1mYF5SzKEs1fr/HNM12IYh5h1cDvqDyuf0BJntDdLA2Z/7ck685ugZphqSn6c5jrAit5cR9odTF39IVTSEApjGa5ejWyafT+eEm2pOEffGtOf3vQhhLo6jpleQV3h/7S1xheFSqb3DcN+mNX5DfEG73yrIPth05NXoLFeiKrdY/BtPNB+sUp8qtMdpfLrLnHgLXWtYkB1vzUSi1Ck8OshbWPh5EdQv+LhxUK5Gtw1dxJYDoInvDSyUCaF8sBSfXca5B1NHJq4PREJ3drMmMj9zf1mp/KWUQRMv8M9AchW7ai8Tw293qoZzs/CdNCVYm6OAVZuuEaIFgrchbX3n+TyZOiPq6CgULIdM2J9ePvXVlTRRPh8+ZBxYA3HqZy9JRp4GpJhG3xHSPsGQCIFi4ZCPfO2cZbjNAiOrwf2rXZBRaG/f+UXG1mr4sjIGnyWLcLUg6YktKRvhD7ib8Bv2/hvsj4WFHdHb209V10mDYX2imhlLT05brEw50N0H+OKbDkkDVWtcd70tcl0shrLs7vZezIQheOVfaBZU=
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795510709-392066
+X-HE-Meta: U2FsdGVkX1+UhxIeX6Cq7pkOw8P8fsYrFrgd7ZWz+n9IJU44WTEZddpZR9mtLwPE3yjtU35vyInZgz5cXsmUnozSOQVg42+vZNjN37Bi02QKof+YzcUq1b4fX+1uuk9asFrtSwO3l61L5J9WCbrgjggWaOPLL+QJJdwa8U/WDBc/uBirqXI76Yfep+KYW7nk3s6Uh8jZBzEcHcnMoJyULK58vM/fFmCnak8m++KfyimcAzmLSl8PR5sqh+PNP7Tb9ToL/beQSzUxPM1MTRA9wTvfzRlC4LzFa8WF/8o9GrmGtA7S4rLz+86WbeyWXfLbYtzQUGQD1Puyg0g5JoGsYEqYRiQQoGhVvx1/eID3TtUcHgmKC2rs7bw8szYUKfzHSWuNei9oP29mtu+R6LJvG4vDnx0Hw7n7ApOIkgWGb140G52S5+HSozp5aKS+CNFQJe0tfJ3vz9Ung6ARI5/QgjoapV1hRHMc8vjWhs3m0M14BX8Mlob78+cyWiOxGcqylirtBvCHvRdxbtKr8E8ZQTxQTH1katue0x8VYRd8oZk9CAI0a4MsJeu0D3DtjweNgZ+xMo+obzTI6+GK4Idj79zjWD1P9OCe9zZePH6OFPVesnUv4Hs6Wk4fUIcOYWKvNvHpotnoS5pDPMHFCFLRuXdQ5V6t6vsgTQ8YxPXU7PzytIc7FLL4KKUB8NJGDFG+qOO6znD9USJNtbBVhaOnIL+ZrQMAtcVvIla3tcvxkgo8zJ6rIfdU9bH/RL5LmH1JMM0UHjYPOdbDP7JBYMOtUTMfnOSCEJHYnKdN8+8VBuJyT6o31Y0v8z7tVcstyoSBoPujp5PXX0vb8Hpumay4iWkvypWRdyfisFnUzbYtYgdjs1B3H12aspBAm7H78BI7td1iddhXx9utjDcamOlBDCaTm06TOH1iAmZyRjE9Vi3Vabi5IKY8vM4OnXUx8RUns6lhdn5Pma/6NgOgYV0
+ YY75hMUC
+ Drsv0m8ZdFgoxoEnbDP8LvIV2U3Fqq8OqjeGmR2N4LRnig0NWVDnaDl7O14abSSker90x9SrthO8q4C7/QRObc4t+KeyRSzSFSAh1fO1q5cdSqKKfEFSPhQ8zLfUzvRlqnveDx9i+SVTcpr/L05fLPbCTYO2J8Lo1/RLSDDl1x4/Jg8nINTKGedjg+k3fdbA+MrLJ80pwE18x6+/XHwrA55WyFv6XDlGY+90brs22UsAZIJHhg/JgQOG78Slf4JM1qm4ZEfhJXETT9J0t5xSeWqwYkwAMr/kWGS/8v6u2wh2bO7xbZcWlfSOK936E9R2LwtcBe3yy+QOLWuoo3LExYovZhejEj7ImedZpkd8qPkVqJ4TTDMNz2qYOWvANwshsNBvSQ5EWwKZy6PTuXDRFqzChADUbPUur9DBsa9gorWqLyEwTF83kkIYJ5pJN+K/2vM8f1bVx/fOUgVAso5+SLUqMkBjsy1LZvIutETsItbF9S+5gdLWtKA1lGFQs+n+RrA6h0w5fd1ab05a2bb7nZryeSU2pgXG4QQ3mmDDJmj6Vj0TwFXvzIt0ZKdRrtL+oiItEEk4wiJq1QLHkdpLwYfwFnJhp7TYgQ1vsb5bnwtyRH1y66hzXWqXo4Jj+U6EILb6ZTw89bkouM66sUyeIBk1qd3IpU4KGCgiABZDK51kLz1U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,30 +159,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon 23-11-26 18:08:00, Shakeel Butt wrote:
-> Every memory cgroup gets a 16-bit private ID, so a host can have at most
-> 65,535 of them at a time, counting dead ones. A dead memcg keeps its ID
-> as long as any swap slot still records it. On Meta hosts that create
-> many short-lived cgroups, dead cgroups held this way filled the whole ID
-> space. After that, every mkdir of a cgroup with the memory controller
-> failed with -EBUSY: systemd could not start units, and container setup
-> failed.
+On 11/24/26 09:41, Madhavan Srinivasan wrote:
 > 
-> This was hard to see:
+> On 11/22/26 11:25 PM, David Hildenbrand (Arm) wrote:
+>> spufs_mem_mmap_access() calculates the local store offset relative to the
+>> start of the VMA and ignores vm_pgoff. After VMA splits, debugger reads and
+>> writes access the wrong part of the local store. Mappings created with a
+>> nonzero file offset have the same problem.
+>>
+>> Properly take the vm_pgoff into account, just like spufs_mem_mmap_fault()
+>> already does.
+> minor nit:
 > 
-> - Nothing is logged when the ID allocation fails. The only sign is
->   -EBUSY from mkdir.
-> - Since commit 8290f45995f5 ("memcg: move memcg private ID refcount to
->   objcg"), a dead memcg is freed even while swap still holds its ID. So
->   nr_dying_subsys_memory in cgroup.stat can be 0 while the IDs run out.
-> 
-> Print a rate limited warning when the ID allocation fails because all
-> IDs are in use.
+> subject can be
+> "powerpc/spufs: Fix local store offset calculation in 
+> spufs_mem_mmap_access()"
 
-Not that I am against but isn't the issue clear by observing EBUSY from
-mkdir?
+Ack!
+
+> 
+> rest looks fine to me.
+> Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+
+Thanks!
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
