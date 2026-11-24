@@ -1,152 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C33C606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE26606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=nf0t66nR;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Jz7+1GsP
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=BmAQhhA5
 Received: by kanga.kvack.org (Postfix)
-	id 57CEB6B06ED; Tue, 24 Nov 2026 08:51:15 -0500 (EST)
+	id E0C946B06F0; Tue, 24 Nov 2026 08:53:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52DE66B06F0; Tue, 24 Nov 2026 08:51:15 -0500 (EST)
+	id DBD2A6B06F1; Tue, 24 Nov 2026 08:53:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 423426B06ED; Tue, 24 Nov 2026 08:51:15 -0500 (EST)
+	id CABBC6B06F2; Tue, 24 Nov 2026 08:53:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 140336B06ED
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:51:15 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F3ADA0BEC
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:51:14 +0000 (UTC)
-X-FDA: 85470149268.11.0A06088
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5E3ED80009
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:51:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=flapping.org header.s=fm2 header.b=nf0t66nR;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="J z7+1Gs";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A43F66B06F0
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:53:02 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A0A880B90
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:53:02 +0000 (UTC)
+X-FDA: 85470153804.12.B6E1525
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3DBC4140007
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:53:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=BmAQhhA5;
 	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of tomo@flapping.org designates 103.168.172.152 as permitted sender) smtp.mailfrom=tomo@flapping.org
+	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795528272;
-	b=IrABrn+QT47m0rGQO8FZuI4qoQXp2DKBf9PL8FqbMLvuEJkc2USVK9fh8sG5BaPdUfkCag
-	o8GxBlSyN67PJ7vtJr49796v3cGFsLhdaGwVIgJJTaRglwKa7lJTt46dgVVmPKV5VgzV5D
-	FFWZjdpBnJJK4YSThNT4u9n/NfTfsHs=
+	t=1795528380;
+	b=FUfHFfwkiw0QRq6rLlH1GWDk1ksdjWTzt7Dc7E2qxDonGBdkDBYC/XLGpU15cxRqDKL1MX
+	0BqNyMvEXvaAm/59hw7ySQIxqmQ2Xbxm+0VsD4t+XTM3jlBEiGMKCTTcQgCCOMdYd+GnWT
+	muv+dorgdcA4JhNsNEypGyBw1j0JpaA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795528272;
+	s=arc-20220608; t=1795528380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f2leS56IQnLIsej7oHG8g76IpquyYA4RYdbGUPkRAZU=;
-	b=HIup+fJKo9DpoRotwVu5GjZYD9cWB1xxwzpRtUKCoWIyXmtR3PRKv9Xm5UmhXF9Z08lVOg
-	3dVEcoL2uNiUHXAnv4Ik+5qFAQR2gaBTi0ez1610AxOLazpAx2eu+f4+MqoOJn1TxP5qCc
-	Kewtak/HDY27xGj3jtAREQHSo/ceN3s=
+	bh=ervTDQvCqZVrcHY/akwPcAXB3ZloIorGLfgD/yjQ628=;
+	b=hUURN8rgbkgsBBnydUFM37j0ufDWSyXDq7tMkOBUcvI453arRPxx+ErIOnsCtXdJJ+bt/6
+	gWZrvcx/qzcLjQM+hiYcSEk0nkQSB157kjpDtFc73cJkg/STgyaH6703/xPjaSCHN0L/D/
+	88A5iFQ0FNYQBmI0vbRE6hdir/R6KVk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=flapping.org header.s=fm2 header.b=nf0t66nR;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="J z7+1Gs";
+	imf23.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=BmAQhhA5;
 	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of tomo@flapping.org designates 103.168.172.152 as permitted sender) smtp.mailfrom=tomo@flapping.org
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D5ABD14002F9
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:51:11 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Tue, 24 Nov 2026 08:51:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795528271;
-	 x=1795614671; bh=f2leS56IQnLIsej7oHG8g76IpquyYA4RYdbGUPkRAZU=; b=
-	nf0t66nRkx45Py3pEDTxf0Wkn9DTsmkoc6D69PO1HxEr8V39+k8heveqlX2POWRA
-	qMRFCKLuuTTo7QtHW0zqsNyVX/Xudn48DEFTrZWzCeN6Owy6tk/gPr+s2txHYRWD
-	wN1UebBYnV4fU6kR4KS2bxwwt9p8Xjrjg0PqCY0iFFPiPkgVUg/C6/V7jHfVaw40
-	H/tdG6m33ZYuJuiTkjd5nZSxQ4yEQki+NdjKpLMR0FANIuMtF0XXp6dqqXgC20G4
-	DjPPS9K1gFJrZ+LhOZFxxtX3LyF8QdM8HPAwChxCtwY2jUgcOxf+ZNksIjtDIqt1
-	RlXT1eFikCzxUGsCD9GGmg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795528271; x=
-	1795614671; bh=f2leS56IQnLIsej7oHG8g76IpquyYA4RYdbGUPkRAZU=; b=J
-	z7+1GsPzOwwbUcV3Mq59+PLaklhQvlyPkbv9zOTJmA1KVEFbTezA+nEbfCQT3Gt7
-	OhHgNeuMq1a0IuUhFWHaBXjC1mDGmRh4eMApahBRt2/vy54ZkMN2I0aO8LOTzFqd
-	EjqNW7AMhI38VzeyMHLQa4UZTxRpDAeEaHqeOEkw8TXmuLhWqrZv3l3tkOGriRyF
-	ohr1Bqk2K50RnxrpItP0iEIf3B4Ds+QSI/rxE84lyny2RBMWIWh6l84mnlEGcK/l
-	zZtfmxk82iBaSf4RcsyaVhsHH5dGvGpnwlUe7TZ86tUkTrDWZhyM9FPSTmrs0FZO
-	opep8IiwiKTtnSj/mPs3w==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795528271; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:NNbX9ZQ25f29nV8YGbU8OQ7QjGpnGihJmC1cPgtp4/3TE+M
-	8U98HQ9V3g/voACLzQuAGe2ZnUMk6LLH8Lg7F+A34Dsg90tcfU19Elsz1NLoSmat
-	5Pmff4zKt+v0/husNlv98LZQuRCo5aKcOEHnxOCGL3jYsubXOwZ2WRgPbq2BmWw5
-	9xSIgOYO6s2rf77C6xqfAw5IvR03QUlBqUAzCBaMz/+e0Bg8w5Zl8rYTjHq7BRwd
-	SRJ6OCtjOLdzDqJzhU7Vjz4WkFYiXfVI/ZVgLqzKAH/IydLAeENdvlpw6Q3KlCfE
-	p3f3xC1tpIKjDHBxmQA0yAx9i0KTZ+UTOH0NMoQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:D9JpEVSw3+CaR+/zAG/ZtKGfb6Hnu8TQl6NWW5YBUvw=:TpaMJqXcfF48sXXko0Y3mvjNFyU+4RRgqI8f/QjKVmY=;
-X-ME-Sender: <xms:TpYFa95o8FEErg5eeixvlLNQhy8VYGa7yeeWVFDeF7Hdj7ltPkvLaA>
-    <xme:TpYFa3Pkvb_JYoLbHMdzuTb6L-LOCHABhxyACmWzIo4yf0N1A4RcNb8N6lrYFFUol
-    ut2yAdPAuEbZJBlFItYyP2vTnhhTo57Ttv-Uan-h-t8p6MHF3X8DHBm>
-X-ME-Received: <xmr:TpYFa2E5E03mncl9WGaiVx2jUtbttJTUM1CyUc_vqFX6QmUjyB_C3qgGsgSRerag2qEyPoKie1Cjp8DNOmu-4tiW>
-X-ME-Proxy-Cause: dmFkZTE0UfNEf42WvoOd8/pMDjanKDvg5ggA/8QYZRpTGyDZE2iDpDcj9KwaiWeySkT2v/
-    +aab0vcJ5y0oFBP/IXHAgtWEeZHg7rPCCA5goQnjqn4feSL/EiBX+RnggQ+fl/B6gjXjaJ
-    5nEsXSgiSBnnwRmmzZzQl4oidB2qprS8eFrj8Srt58NVWKLh06NrorS8NT+cXjVbczW2l/
-    NA7Ym43EioB90BMmvsX/HgeYgbw001WC4rQ7tRnihNHnQl6HY3aNyG6G/B9Dkubtdy5nre
-    i0uou/iVtJmT70jTxboR/OgLMHGCgnk+1WBlA5eZvYPMCxknt4qx6xMeA8AoOLmyElsEH1
-    uUYKJJ3aY1Zgs+cnBqGMGh7shIBCdhNkkoYNCd74+dMKhKVODkIeqp0ShYkmO/zaj8xH1l
-    Tj6CFw0taOCrt/sWGL8T5BNcFN96DOL7vQ/EhGR8A18vZO4uu7o+6acvD6DcHp1NprQSLg
-    zZf1RCxnINvxX2aAxptI5kNvdgyJm+c74OdBexAWY4EdQAK/fCKnA8dW1YQhxTZym6UFw2
-    Dft2VqTF7AgdGRWQ1hWGKDrjuXVjg9nFkww1x3tfoT7Rvsb6NExqNgWgGY2qW4Kwxo76NT
-    DJFMLZTU1BAfOTLbK8BLMzkdGexY4wLvdh+BjaMOV3LgYlCS53i5Gd6TYH0g
-X-ME-Proxy: <xmx:TpYFazRTbWOVpr4HJPoEDtEjiLJXoT9Qr7lWP_kcCc8zC1eJ4AZI7w>
-    <xmx:TpYFa2TBHh0H4DSamR_JLhXP5Ja3D5bD42zQhjeOjE5vfPiB8S5i9w>
-    <xmx:TpYFa2cIrioyKWRStKVarpAUCWt0Tj4JVyfHAHqZb7lmPCiiLOwlww>
-    <xmx:TpYFa6fQWaVwHO7_BE6lIqfj3Ac7mLyCkrrun4yBSrMrB08LVdr1Vw>
-    <xmx:T5YFa3Hj5GuoO_IfSI0PrZKYoRkEIVEEccQBLsAv_rKZFYqhF2WY6LDs>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 24 Nov 2026 08:51:06 -0500 (EST)
-Date: Tue, 24 Nov 2026 22:51:03 +0900 (JST)
-Message-Id: <20261124.225103.2152350984946270550.tomo@flapping.org>
-To: mbkchelofficialdev@gmail.com
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, boqun@kernel.org,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
- acourbot@nvidia.com, work@onurozkan.dev, liam@infradead.org,
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] rust: bug: add warn_once! macro
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <20261124132707.101769-1-mbkchelofficialdev@gmail.com>
-References: <20261124132707.101769-1-mbkchelofficialdev@gmail.com>
+	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-921318b2eb8so60523216d6.1
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:53:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1795528379; x=1796133179; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ervTDQvCqZVrcHY/akwPcAXB3ZloIorGLfgD/yjQ628=;
+        b=BmAQhhA5p8Ag/jsDT01yHs9u4r1hT/29Q01z60oEcuC2L7VCLryO1qr0ZA5b3rDE0U
+         fn+P8KxV572tgFN7qnqjMBwloHsZ4Ej9i+OODrlGL0+P+R1upw2goLTOYCMWpAuV8152
+         VEKhj+jXcG14qAig0r+JOe1UMVlxaqiMPZNJnNc2ng4B1G/CbClQ7jsPAJhtr1w1Ei4v
+         +pkvJXpxZNQSx/ok25i94ruZuOf/q47r49BLYBku9kg0+TqUIkbF0juGB9PN7mKu70Oh
+         uuy4URy7s3mnaMLmzGEjE1R1J+6lKgOpO1nKxPVIxOPnMByFCawfYe51w7ppIAcD98eq
+         EbSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795528379; x=1796133179;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ervTDQvCqZVrcHY/akwPcAXB3ZloIorGLfgD/yjQ628=;
+        b=eHw3LE08AuZ9ZuRD4JVEspeBjSaPwoly0TlYVF8of4zDutm+QYn9FdzMy3YGH6lKuO
+         UXG1cvQ3sVKyew7TGqLp6KfnMnaN4plnSxE0wFDpYNd7LMDfRtHOSQccQPXrWZn2pZ68
+         TNODzqrmwXcYjW7HeLGrsTrEyz2uyKlv+W3lZhEXvX9RQFbep3gvD3gmm2Q6WZo6N43R
+         IEuWywlpZS3/W02PBwsvziUxI2qMGVLALkhCc2rTjxXJgUA7qb4dtxIRFiDgHJdWudXq
+         okgwtsl5OdyE/04xZTl1sGCA3AYN+jTxgu7VJqBOCun+ZmqLiM8S64Qvt4v784KPNTAM
+         Y4+w==
+X-Forwarded-Encrypted: i=1; AL+hErFZYvS9GefaYwI4DlCmD29Xd2u8TIKxHMeQn745UWRM+xW22ukJ3gIyrgLP+gkhFZ0FirU4ZKLJ0A==@kvack.org
+X-Gm-Message-State: APuU4Z8rHrpC9CPX71i3RtrIAhp4T/JygxQs4EsmBfLV++kx8n2pSekZ
+	NgEQSeDpwbANKNDEbdqAyysS79VWc5zcU2MiLQgE0E//UUU5lMxosuzJ1V+U6BbluUk=
+X-Gm-Gg: AZFdTZftoOXLy40qF8Fs/VhdE9Law/L59jUXxp8/9qgdcbi2oNXE60lQnnbcBG/bpd0
+	WGQDjq5cSnDppPJK2T8K5ejMlEEL0bOoDUmbqVWFlrAnVXL77j5FF25eHm/y2gB9wJdzyq3Umd7
+	uke6/W4c6JStrQlYw90UhIHaD5Sc3RSk3/PUSfJNkPv6Yg5Fpn2r/V6n0BcnWuSiDp/Ap77PgsO
+	kefT25so0pay+lu6FGsHH9rB7o1cO/OIAisROrk5HgD38wTcyNDngPi8HGll19KuzWX9NiOwu2N
+	kyn/vwR4EAO7ZZUCanoDS8GGYFGDAAf3sLDONggG4j7oPea9z8lUcP7GVMjEZok3eiSFxR0V6aC
+	iAL7CVmInF8NLsYm0MwfaKK2ZE1b4oBmAXIdJSY3hjDwnRKD+VkZ8iMrvggm32RSkVujYYhexPk
+	4iDArKPU64wijjSRhJH4oVApMyPBNX049Sx6IsPKl6O/Y6tTfCrkxt9jukRnz/Yer9HGfsIVLBQ
+	rBTA2RKpQ/TMDX9sQGfFvXQuZs1KlEXv7eQyNq0L7iJD4u1SstOE0yZRqvPD/z9yl4daIWANg2p
+	PhHN916blMiGyhTSvzOnvdzXrt0=
+X-Received: by 2002:a05:6214:1d03:b0:921:4c11:f6ef with SMTP id 6a1803df08f44-9214c11f800mr175124426d6.1.1795528379371;
+        Tue, 24 Nov 2026 05:52:59 -0800 (PST)
+Received: from ziepe.ca ([142.177.118.84])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92134796288sm133191406d6.6.2026.11.24.05.52.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 05:52:58 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xVqx8-00000000QWu-1KcY;
+	Tue, 24 Nov 2026 09:52:58 -0400
+Date: Tue, 24 Nov 2026 09:52:58 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Guanghui Feng <guanghuifeng@linux.alibaba.com>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: alex@shazbot.org, alifm@linux.ibm.com, ankita@nvidia.com,
+	dakr@kernel.org, fengchengwen@huawei.com, kevin.tian@intel.com,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mattev@meta.com,
+	ritesh.list@gmail.com, xinmengs@nvidia.com
+Subject: Re: [PATCH v2 2/2] vfio/pci: Align BAR mappings for huge page support
+Message-ID: <20261124135258.GK9566@ziepe.ca>
+References: <20261124073048.268988-1-guanghuifeng@linux.alibaba.com>
+ <20261124124004.457441-1-guanghuifeng@linux.alibaba.com>
+ <20261124124004.457441-3-guanghuifeng@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5E3ED80009
-X-Stat-Signature: xbzptnoreuhjep56z3wunndat6m6itx6
-X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261124124004.457441-3-guanghuifeng@linux.alibaba.com>
+X-Stat-Signature: icoyyz8p6wweeodn1z7q4qxad9r9cdz7
+X-Rspamd-Queue-Id: 3DBC4140007
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795528272-116306
-X-HE-Meta: U2FsdGVkX1+imRT1jpXg1oGpvm+VJzy6CViFid4NMgI2UmeOYnuzJwwoUbb98iogzUAaT7pFznnJjFAZ8dXvxEa87d1xvfBLt1e50iwA/zwPirjXoWOqFvmoA6mv8+Jy1kIT8paT3yRmHROnUEgPfc5q0x0rwH4m7v9jmolD27Qogl8SF2Cx/tC7vOpz1qUawbBmajnKOybA5ZeMQ/B1xkwOffdtM8zsJgMWTb0JSk2UhfyGPbq6TSgNQMvE+GRwnm0hntQDkW/fyIAAtQaHd9tc/+WTK823VEB9KCgfNQAa3mOZX5RgJ63KTJ/NgDpXuhqsMZ77EViGXr41aEJsvO1CcVwfu7eIZhqQk+lTEiUq8XsYpvrEapi6pRWjCab1HUtfgC7cP4zNzwDjlPmNtciRSRC5lQIGfqxsl4Ym2enESxVMnvIZkP52yadEQUQf64E2MDclQY6xvBMIGg5IXAl2r+ESSLmXc6KOq9jWeNE3MouRgWvhfX4nxazxkyHzkBJpOznKXBRf7J+hZxNrnRahnkqlJGfE/bMVBwu8e97ApuHOdrUgZ9KD+D86eOZ+Y5gydUHZjOn+x/Ho7vf80qRqxmVYfyRE2glOGVMK/PCoGuyHET/Zl4Ugl+k9XIIyAmQspmrGLoBGg0lnYExUDJNQxhQWud1akPqfDsRfSyUC3y8bava7j5D/4RTUMCRstk91Qi3A4MaODelmclJ6TueEMnnvAwZpYdtCXKDxd1r4TMj1IKjc0Lyj7uaEeCPyCtx5JMmAnuHMhGNeTDOICwTeu2HoOl/UUVbsTq19Xtg6fFD4tIXIsXWmQdWVLm1ycuHRWNkS3SxThZjDMV2LjzUxPluU/l44wkBfRlxnyFSzxMBHwVL+1k+iRjM2G2hB+8KUByT7e8qcv/QkAtMcF4S+C3qA7aJPtBV+b1+kHAI4oaZoLmiE6H+l6qzVFV4k/DIIJjCSkYpY/x9HjNd
- A8Lt8dYf
- NhF5zODJLHdkrKUWKV2ipXonFP54XuofJAxLsvGcxyKAZTubc+LgbG4LpB8V2IM5kvsRILlaLQtZY+21KXrUPFsaHLLiE+8+wG3x5t3VctTo2BkgOsPvj3NU9ZvGlTmpV1rF3IxccMyPlwDExStDM4dJ14go/mdrFKQP6XTvKaMVUE+7+KZie0L11bQ9RCPTCIJHGyBT5JOJB0+2r2EZwxLGDYPoq1sCdBdGQJB31zryHELSNuUz/OpOpeFvKRtkR1pyjFH/qj11/UDxIY4ZVUF4BMTKJrhXtvxMOwv3gXNOvVlGQtU9NrnQ1ABE9S92vMa+vvdydgQjoOU5WBMujqPHMn8Zuy3tFgnKEBw5aiisIxWJybnfyz2dcHbDka+9hy6f2cCvPVJ3Il/q4GN6bq7lxzKfnfny4+5HbdcVhx9+6IJ32nO49ng29UlkyyZ9Tn2YMlzDNDdcVQDX2G2aRr01y8A/sjRxJFMksGV5vRVnwED05OmltQuSq6H4kNV291WcwW8DgxqvRiWIGuajszO8s20bfSc6a0RHmqznnSwdSA2XKKu/5mnJMxtYWZsnCdWOnR2Nv/i5LorKdGvV8jGZs59xGao5vqviA1ARTu3l9Cy7e/jPUapbjpsOtHGcVp0sdPomd+itbF6tySNy8exwBwEWmDLOWLXF09S1oFvoUW2UrWL14ZxE9sZnTMaMizipx6YjOhb+z5jQ7ruEzD6Ts7cMQZWNZdHyf2Um4mHqKKaSewDsAeTP17i4odb5wH8VxZ/KfDNtMj0w0Sm5+gzuQyI3QRuTky90SsEb2kOXw5PW56e81TVXTgvLdWLpCTPCYfXEzuQLBIkQ=
+X-Rspam-User:
+X-HE-Tag: 1795528380-373456
+X-HE-Meta: U2FsdGVkX1+sdAbjCkWFSUyTIAURdXfr4MQN54F8xsJO1VJ2831tJD/JjJRMYusJr/JiPn/Jv0CfQEuTBfng3CgFjlquAw9kmXqf8kX8BFuXc4JMb45jGo569qSuGf3xEaLXKw3hHbQNGuvKsous8lqdUnFEaKLq4jSngYd2aTNWXVWxSdnrmAMcKjteNtC5nAHYKUXFXs8ioH2Jk9sOZlj8/LKgJ918scyeFTCAG9VSns+Whxnh4uFRKWq9Y5MK3e92BxyFPmt1xLqnAYYru603iN0KXlv1P337pBFWb3Uew8Rs1TA/zRQB5GrXF0l0veCkmuC7+tR//HxPWicE89vKHtA62c4c2M207LemRo2MFEBBDXjQCMDs61hMN26SZguDoxa+cWbFNMm50fLuw1pj8LrZ8keAt74UEf0CjzQMkY0UYmgepuJJlsnT/mbzUThTh0aHdhJuo4PNSLfFz8uky/b8xU1Mi6MD4sq8c22Q1y0s4gCqoMtamqGRPPdct9JQq7j8IcbAZoCU8Yp5wEfn/CfgMOHfJnXDvLgsM+GrxYwMdjS5DOuJuyiQ9v20gqpZmiNz3R/FL6z67WFIrgl3oDm4lCQNtCn9/OchoTVrN6CuwstXEOvYeqaY8MxwsWLhHFrCeDltGizmuiUngTJiV5qBTWEMDLqT7vQn78caLo3qZ9+DLYviVSsXlRbyFE/Ei9qvUg/6p8vsYLC5VutGbkbS+FLpTfrlaYDo6ZH44OIhwVz5X0cp76cwG3UeYhvo/1uhxxDN55lls0uaKrgeOMr0XROa2x2/E9YBk50aTJSMDRmMH5gIp/uOWtQEwC5UA6cBrNN00FYB+rgt/aZtBXVDcoRFnkbWGz6E8LRoz37jT2jmOe9VBRi+ijue2ehL3Q/DVJBImHqFi18/fl/10ZE2zWI7kjS52O4ITFTNUUNlA7Vi89B50YpzOfdCFYupC73Qmo5v4XexVhx
+ PcuuZ2Is
+ fOuXfYOixI4TzlkJxsLg9ADiZJJq/uM2vzZspdG9cpzJ8wdqLviIIRyIbTOhaEunLEHrOktscVFlNvkSrvk2Y+kA6t7pdz8E4wxqq4icBmUUqh9JgSjxU31P6wqub+0OIFwvptOZsJU9rnYVdro6o4z7nksE386C3Cq9RG+1WXgIgf1mh/vCYPPLf5cejwfc+19b2z5JqiLDE0Y/ojunS1QSbsfS2b+DWFff4Z88YX06MmeKqi1eOqj1aGptJQY1XT34Qa2oiS1dgH2hFLqAn3tNkTqldYSgNDa/H3DiPU8EdYApD2tSQycdPAC6L6LKshM2HKoy0xKgjb/+/1Pfo036n9I/bqX40hobafkTvoBPC7dv1T2LxPWK/oArDkI0Bs4LVEvMzDUXtEweOIwI9o8XLzmlOOmKf8JP9Hm6ERb0jO4Qh1V5JeX20d8qgCB2oBLWK7S6LDaMwT6Hrxp/EVOlGxZLTPXn1gA56KIe28NGwYx+m1ruhc4Of3kyYg3tZXbXs6y4tfzPj32y+mdCzTA/nva4ZArUTn8Xx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,46 +132,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 24 Nov 2026 15:27:07 +0200
-Ivan Tverdokhleb <mbkchelofficialdev@gmail.com> wrote:
+On Tue, Nov 24, 2026 at 08:40:04PM +0800, Guanghui Feng wrote:
+> +unsigned long vfio_pci_core_get_unmapped_area(struct vfio_device *core_vdev,
+> +					      struct file *filp,
+> +					      unsigned long addr,
+> +					      unsigned long len,
+> +					      unsigned long pgoff,
+> +					      unsigned long flags)
+> +{
+> +	struct vfio_pci_core_device *vdev =
+> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	unsigned long align, off, off_end, off_align, len_align, addr_align;
+> +	unsigned int index;
+> +	u64 bar_len;
+> +
+> +	/* Don't interfere with explicit address requests or fixed mappings */
+> +	if (addr || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE)))
+> +		goto out;
+> +
+> +	index = pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+> +	if (index >= VFIO_PCI_ROM_REGION_INDEX || !vdev->bar_mmap_supported[index])
+> +		goto out;
+> +
+> +	bar_len = pci_resource_len(pdev, index);
+> +	if (!bar_len)
+> +		goto out;
+> +
+> +	/*
+> +	 * Select the largest huge page size that the BAR physical alignment,
+> +	 * mapping length, and arch support can all satisfy.  Only PMD and PUD
+> +	 * orders are supported by vfio_pci_vmf_insert_pfn().
+> +	 */
+> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) &&
+> +	    bar_len >= PUD_SIZE && len >= PUD_SIZE)
+> +		align = PUD_SIZE;
+> +	else if (bar_len >= PMD_SIZE && len >= PMD_SIZE)
+> +		align = PMD_SIZE;
+> +	else
+> +		goto out;
+> +
+> +	off = pgoff << PAGE_SHIFT;
+> +	off_end = off + len;
+> +	if (off_end < off)
+> +		goto out;
+> +	off_align = round_up(off, align);
+> +
+> +	/* The mapping has to span at least one fully aligned huge page */
+> +	if (off_end <= off_align || off_end - off_align < align)
+> +		goto out;
+> +
+> +	len_align = len + align;
+> +	if (len_align < len)
+> +		goto out;
+> +
+> +	/*
+> +	 * Find an area that can hold the mapping plus the slack needed to
+> +	 * shift it up to the next aligned address, then apply that shift.
+> +	 * The shift preserves the relative alignment of the file offset,
+> +	 * which is what makes the pfn alignment work out.
+> +	 */
+> +	addr_align = mm_get_unmapped_area(filp, addr, len_align, pgoff, flags);
+> +	if (!IS_ERR_VALUE(addr_align)) {
+> +		addr_align += (off - addr_align) & (align - 1);
+> +		return addr_align;
 
-> Add a Rust counterpart of the C WARN_ONCE() macro. It behaves like
-> warn_on!(), but additionally sets BUGFLAG_ONCE, so the warning is
-> reported only the first time a given call site triggers.
 
-C WARN_ONCE() takes a format string. This macro is the Rust version
-of WARN_ON_ONCE().
+PeterX was working on this previously and last time I was not excited
+to see all this mm logic open coded in drivers.
 
-> The macro returns the evaluated condition, like warn_on!(), so it can be
-> used directly in an `if`.
-> 
-> Use it in Vma::zap_vma_range() to report an invalid range, which
-> resolves the pending TODO there.
-> 
-> On configurations where warn_flags!() ignores the flags (UML, ARM and
-> LoongArch), the macro behaves like warn_on!() and warns every time.
+I was hoping to see that the core mm could provide some helper scheme
+for drivers that already know what they want to map to get a vma
+alignment that is optimal for the architecutre.
 
-C WARN_ON_ONCE() warns only once on these architectures too. I have a
-local warn_on_once!() patch that does the same on all architectures.
-I can post it if needed.
+Peter had a design that seemed like a good exploration at least..
 
-Also, this patch does not build on UML, and test_warn_once fails on
-x86_64.
-
-> --- a/rust/kernel/mm/virt.rs
-> +++ b/rust/kernel/mm/virt.rs
-> @@ -115,8 +115,7 @@ pub fn end(&self) -> usize {
->      #[inline]
->      pub fn zap_vma_range(&self, address: usize, size: usize) {
->          let (end, did_overflow) = address.overflowing_add(size);
-> -        if did_overflow || address < self.start() || self.end() < end {
-> -            // TODO: call WARN_ONCE once Rust version of it is added
-> +        if crate::warn_once!(did_overflow || address < self.start() || self.end() < end) {
-
-Miguel said that "Erroneous Behavior" cases like this should use
-debug_assert!() plus pr_warn_once!() [1]. Also, the C side uses
-VM_WARN_ON_ONCE() in __zap_vma_range(), which warns only with
-CONFIG_DEBUG_VM.
-
-[1] https://lore.kernel.org/rust-for-linux/CANiq72=tKVD13GD2Bzmt_LnC4SiOX1nkHQPcz2BS=P=b23e0Yw@mail.gmail.com/
+Jason
 
