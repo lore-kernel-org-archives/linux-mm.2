@@ -1,126 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E74606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 16:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5C0606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 16:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RIXpG4xO
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SYM9uFM0
 Received: by kanga.kvack.org (Postfix)
-	id 3043F6B07BD; Tue, 24 Nov 2026 11:38:02 -0500 (EST)
+	id 996DD6B07BF; Tue, 24 Nov 2026 11:40:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D91E6B07BF; Tue, 24 Nov 2026 11:38:02 -0500 (EST)
+	id 96EF86B07C1; Tue, 24 Nov 2026 11:40:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EF706B07C0; Tue, 24 Nov 2026 11:38:02 -0500 (EST)
+	id 85D296B07C2; Tue, 24 Nov 2026 11:40:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EFA4D6B07BD
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 11:38:01 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 86A7880BC9
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:38:01 +0000 (UTC)
-X-FDA: 85470569562.09.06266B3
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 885D9180012
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:37:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=RIXpG4xO;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4ECC86B07BF
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 11:40:24 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E23C2160BCD
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:40:23 +0000 (UTC)
+X-FDA: 85470575526.07.63DF641
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E5BAD1C000E
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:40:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=SYM9uFM0;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	spf=pass (imf21.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=jthoughton@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795538279;
-	b=FAplyEVtJiPpsZDeUU39lfxZ6IcWBV9fMensXtVCHDQUygfb5j8SPqWbeWP1kYO6YfVrw5
-	17+36k4TsxDn05ozon5H3vwR+SgTHBOrTBIGI4sNeKezsWJGTr7AZu6776cxDNqCcTtRgg
-	hFhiZdAFGagHrpuSEEjRbkEqS2AX/+4=
+	t=1795538422;
+	b=hiIMhwfbCHNZAIVYpXqJJNUnrwj2zspNA6nGG6uM7uQ+ZkV1oeHYs5nY48OXRO7kwUDKyw
+	O64NGq2BWwx12vvvGEpSkblRfLNpMznRjzU051prs77OAiYNj1Zw538FHHojlTPYIti0cf
+	a6GPclXh9UalKf3xacHlpcfLl6AVzWU=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795538279;
+	s=arc-20220608; t=1795538422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3lrjCyd3ylni+VlZA6CzA7gna3TSOAbXroD0aGLUJ3s=;
-	b=Oj7nGT0PVKRtFnPeh+GZW+eI1RLRUDSAc9QQpkRPNzl4kFlwaqQpHdKKZTONlRxB3zVVvW
-	n1Y2BzRtRWJLBj5ndnNgg08CMCxL0BVlUMbImgvdsp/D3ys0u5cXij17ntLmBOt9at29BU
-	28eG2YUL5XQAieB2MUSyZMIG/iYQx+M=
+	bh=3wWnkq31yEF0IxUL8QXEbwU3zdf+25LYM4lO1Igg8kk=;
+	b=qxPTQn7XzHQPbdKlYadVE47BlF0xEXTuX7m1FQiLI0S2JcKnR/mzn0zaLiXYGdXgmgepW7
+	m+tHyVScOVTV4IYmwQbyMAHPZZY2l3X05affV/KHbGBvgSAWQGeAFeT+KfD6kjddey+G8g
+	JPFWJdXbOo4xhG3qFe1FNCuKPBIWpHk=
 ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=RIXpG4xO;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=SYM9uFM0;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	spf=pass (imf21.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=jthoughton@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c4d21051042so767737966b.0
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:37:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795538278; cv=none;
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c516a194350so292125566b.3
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:40:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795538420; cv=none;
         d=google.com; s=arc-20260327;
-        b=nWtpAoEezBJ1PpiAVsYYY/ejYuOMIL5oc5nR1vBd0faEWEFM6yC2XuCbKDUjsK/kIj
-         PWrsNfFDMYVkaLEN/BvDPO/5/1Tcp8X+CIOhi5nj1wfsK5CMeRXvcX5I2DQNLc11MIgD
-         7MugaJ3pj6SI+tP6gl6x27yabPq9nRIXHE7Tz7v64uvfVHy6YsI9M1DAVOd8wxWK509Q
-         5Nd5dwIalDXDhZroMdOJyZ1jQrpEudQm5ZOW6YH8dxEYi0hQjppgUTI8k7Wdw8C476cn
-         Nc981DLp1SSoIHK4pWGE/HPtPa3bO5a1pGs81k5x+5yIo7UmaQI3lTt4GEkM07e5lbCE
-         T65g==
+        b=SxD04gBD5nid+IgzSQx0WEXabb+qq9owkpE5H8vjhXHeFlwNXDghnOl9ioqxM6cxik
+         XdSkSMKhO+oSnMlaldY0gftvUQTQ76Y6KbX8TWfHmCMG+1f4PPTMPLkE4EP3zcP1IxiB
+         0/vzggXTk82rPZFV0+JSL6RWS27Wg091J+4n5lJx1fVYeDSJD2WCjPuKPn5J1qusy4sT
+         nQ/Lc4WiR+rPD0gZ29TrGuKxnbCuLis7QFGV/IatgUbdp46ix87ocmUgjwKm8MC6hEAR
+         uyRD+TawMsi+3WvT2dxBy46O7zr8F0MYDRsGFtgc/EjluLqaH3tPIY7xnLtBF6XHVkJb
+         CBng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=3lrjCyd3ylni+VlZA6CzA7gna3TSOAbXroD0aGLUJ3s=;
-        fh=RHaav3uuI8t39Vc3snuMqHXGV6AQySCGb+jksEerTTc=;
-        b=M8Jxb0imoNLyV+c1bRtBo5znx/nVDx+hnrIifMeo7Et09eCSjtjKPlNjKq7UuQwiFR
-         Ob2j7SAInyXLhMiE0Jltj/zxl5cu7QtWkeJ5PrwXwe8B76GMeH28p1kv8e/qRPfeIvzN
-         qZpONCde2MGHMR8sunQhflKoRBx7XhTGa9kCoM1nZRvdsNL64MxFQd+EttZ9I9J/aEW2
-         BITaOCT/ZMod4DNrseY03ljYHgyp+9b5Ji4LMkp/themZwG4zrRYyNJsQEuiBhtVp8p/
-         xOdcDoae5/HBmPkEoI71CRyyYSeO5ZMGtdvDwu5l0Sqstz8QCOkOrez5P+yLcJ0hAiUb
-         FQcw==;
+        bh=3wWnkq31yEF0IxUL8QXEbwU3zdf+25LYM4lO1Igg8kk=;
+        fh=S/VjDwp2RxmFf0GAZw1mLQQ9G3rKFqTI1TqomalcEvg=;
+        b=W2sCgPLdf5hgO54PtkReLbZr+Fq9kFH7YKr7dDRgueqZqt27qOVVM42PO2XF+onn59
+         PdRGrt5p52BiE5+7NuFlW3XiV4QPvFcD1Zqc6p8o8GnwcMnhfa0ZGwweHx8Bco+AhShb
+         OLaPJrq7HqW8hbwTCsNg+qGY7X0L5P/+7PeeZfLoDWRZunFBGVACE+6spfa/UQNMLE6O
+         zdLWDawCKUg9Kn6Ivw70wHX9kdBpU1rtWx26oGTlnv3Yjh5coC3j/OOd0rikhl46o/rS
+         +rBmdLo+0gAK7uu/hJ0rCxNmq06pLBKeUJ21x6iOF/SqoaSBldM+1K81Ga7Kb7asr8r7
+         rMdQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795538278; x=1796143078; darn=kvack.org;
+        d=google.com; s=20260707; t=1795538420; x=1796143220; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=3lrjCyd3ylni+VlZA6CzA7gna3TSOAbXroD0aGLUJ3s=;
-        b=RIXpG4xOi1Po+1RnGkli3VZFBUIV6be2lzre59llEkWAKtAncQAuxQAy3DzAvP9Rns
-         DwZ9U+htK6VnAeRXrpVVXi36bQJc81xAeuvlSHh4vX1TNh1SP5x/3lI+S6ks3sXwJVYf
-         TNbFqDwcb/5s0kLdna8NeAVkxoDRvVC7pE9h5Z/ZeiI5SCv4uW7/uiMR0aBmwZuBTYlf
-         QKCW/QJKsli+kMM59b0ke8PlPY6vw7YYj4a6fADexibHTg4UvM9su7ONurpdXVnhL7rH
-         2VgX+nkl8MkHsklynXoZpS9nUnTUHh+Wrw8fFDE7DiCAM+TRndvwY2hIjtMYzK7sS8mT
-         u/uw==
+        bh=3wWnkq31yEF0IxUL8QXEbwU3zdf+25LYM4lO1Igg8kk=;
+        b=SYM9uFM0G3wEfUfiuhbpvgWXEZjmiyQld+NsLJ5qSLyVshU+FZ9Oqkgb8yy5XwwYzv
+         dJGVnOjqXPjoL8e3Jrfx6rgg26R0CzmibY0tqtXXaH+whiZKeToxo+ktsnVpG97MBFeZ
+         tB+ViehNSQEUXxJc4GEbaIzlDScNqpvOChFEItfDJpJaidHMhgBQYEh81mw1Zi9oHcFk
+         qIjw4CTZxsrBdDdpJYcibn1Z/rEC0bpemUq38IzmkFodCIpF01lCER+/4bYdtWQuozTv
+         7kAIg+BWl8DLi1SYRtxbSIL0vi4m2xYTsnq//Tb0emKvMIZEFtbrDyn/wQ+03l+pyF9g
+         EXyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795538278; x=1796143078;
+        d=1e100.net; s=20260707; t=1795538420; x=1796143220;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3lrjCyd3ylni+VlZA6CzA7gna3TSOAbXroD0aGLUJ3s=;
-        b=DiA9kSP0qG8RrTL78AXChMsYKc5bGrWTISNmlJ1mbondm31bHmQVZxdvgBqMsaAiUH
-         zACUnF8nxA7vS3ZupV6ATBgIey+2Jwdv5L+VuU30wGBN0hL4TPtfPUIXqovHkoFAOz2X
-         fI/VEq3Bg2ui0qwMOCz/U0RJPIYz5PSfBVXbW8msjuPHsQldrYf99u2wGDXNCIJD9N+R
-         RCICB8Mj0NlRVHFjcv/wH4iPgGWjMgCssaWHh2OsMbx2khzqjhbZByBf6cVkDY2fm3ar
-         DoSiWBnKl/9fLlzWv+0Kvu+vFOm8n/YozNihZ4JpPPPKKrFOnKh7jtTCvMTR35zDv67Z
-         A+/w==
-X-Forwarded-Encrypted: i=1; AL+hErEVsHTYeLhIYT8bEJgHa7C8P7640f/z9cFX3eIDHzCX6xkNaQtX4HJvp/jHwHDVopWps5LSBYti/g==@kvack.org
-X-Gm-Message-State: APuU4Z+0mO+UGdAKftq92RwK481uml8PUSt9iG4dOEOcVcDy5cmfSc9g
-	hXx8G2UVNn0+CLuqZyETkuieAe1GC1ODETwY7nU46JYVT3SwlOjRTdKjMEe4kGn1995H4LN8fBS
-	R5wyDFq6FifHDaZ9qc6XfzzdMKK5AvlEkm4lyVBEV
-X-Gm-Gg: AZFdTZeZTI4/vwBJbmVMvRP4cijWD2a0zhMkfqgsjrV0STVfoJsil/Zvn8vCiMFtVjw
-	wbImdyWQbQYe0Wvcl6X56YLtlkQ8MGNpH8gQoe7/Un6dQmAyiGBTU7IazfhrwIqwTboh6Tj1agT
-	MNrOJlmBNP8qmdj2JW+lBSG4xJnfSqJCkL69P58+fq49rVt/i5NVEZi6QDP8p6jkonUC1V470lX
-	rWBR0m2+hp0PXZCgnDUzL1ARILWROlZUTac9pIcCZ2BFNEFwRvJZLb20nTYWc/IlOHe3D/4an5J
-	vzwfHR0lFtr1xImivrV4fA/Av6tXwb6iO9IZ6Zn+6MjfMdaz9QVA14jUqTfDeRXvpx2eQFZAPcT
-	C0Y77K4VSqoKhnE3v+tsryAx5qa57DII1uD7e4gKPgX2g53fxRfaJn8tkx5rdUx6ErfNbjZCvfi
-	eN+NK3Knc/IhAhIjBuTmYYgqA02p5gSvILoebpjmoiYC0Jf07KcJQ=
-X-Received: by 2002:a17:906:da0e:b0:c50:5186:6dc2 with SMTP id
- a640c23a62f3a-c513a84a4b7mr889148966b.24.1795538277335; Tue, 24 Nov 2026
- 08:37:57 -0800 (PST)
+        bh=3wWnkq31yEF0IxUL8QXEbwU3zdf+25LYM4lO1Igg8kk=;
+        b=B6onE3u5iAl3cAlq6BRZlwavBQO51uXsMJnfBu5DDS5e6iLyaOXW+yTAtbOxKOBhD1
+         bwufk56fopHus8fLUKNK31xMWWvKcjawMoKTczJTRtwIyHnU9PyyofQTbhlAI2m37rxy
+         qbGw5ERQ9Xcv6oZ4H8+8rXZ7IV0mcwwwizuRrIYx4mYluL5Vu0BXxH2DziUfuwpQbRjc
+         eeCJ0lySCsJo0K+AWAB/1fYYVWr4MjUTC19JT2qhKV5fHi8VakZCcKKiPZGkX7vS0QnV
+         KJimvNmLNxqwEpconInjH1h2w35NmJCFjpNqBSMsV0MLdIwJO4kwdDiN6IXFKEX5PMUj
+         Iurw==
+X-Forwarded-Encrypted: i=1; AL+hErFGQ31seiVOgIyM/JP4iD7qz85XEPyddtQIN0iAAuZIQOAkJx0Wi45Nqg9nVxquw88hjhUTVljZCQ==@kvack.org
+X-Gm-Message-State: APuU4Z+Xr/qCB8+aUjGyBpmK3YOyMlOVnGfs01ubARgHmBBnJg+ZZDWC
+	WxsQqiNMdVaa76lnhJbbsQw9ctZAYj3eillIPrCsX8mLmN7zmGBXwnaN0TnbYJb5xqJ3BYWsn9c
+	bjGTpVJjIvMtwKfIPPJC9/iOYptW4mFqEqlDeplyw
+X-Gm-Gg: AZFdTZcKE8gfzJCK1cRJhQ+4yEDraGepnmKHxh2JV/dPFhST07ERChnnauiMjwOu/4u
+	PJt47pTpjzhL7/m5n92/4eUX38xMTsLBRkPM+KXbQ9yfOORKwc09ds0zHkMEEX6BcttiKWu2SD/
+	dEQJSBdFESA4F6QJqnQGs2lwmsrx0Acb28nGLaaYp1kqYHhs3nZuxnBkC1cKwN0bmEp0nil8O4/
+	m8oz6R/vF4Dm1CK1AMNFltjsJuVOcCSL3LIFS+O+48CzpvHDFRaBKU7uKtVFDbR57OD1TPHKoRU
+	CYGVro1iOFgm9cvU1VppEayzMjk01ZpAJN6gdrrs1l1gl0DeJ0faT9pMKwpI/keAMkOJisEvWqG
+	kM+4Feuchvt9JxTgwNmv5/AbEzjX94WzU31rckmqK1L+K83smdBlp/riJoZgwx5JFjHmsHg+R92
+	pqfHm7VOaDSReR7nShN2UeH2b7yMEfQCO6u5TgWchY6iSFmK3G2ks=
+X-Received: by 2002:a17:906:7d91:b0:c49:a539:aa45 with SMTP id
+ a640c23a62f3a-c513aad1ab4mr1075079466b.42.1795538420109; Tue, 24 Nov 2026
+ 08:40:20 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-3-jthoughton@google.com> <sashiko-outbox-228631@kernel.org>
-In-Reply-To: <sashiko-outbox-228631@kernel.org>
+ <20261122184453.2668189-5-jthoughton@google.com> <sashiko-outbox-228633@kernel.org>
+In-Reply-To: <sashiko-outbox-228633@kernel.org>
 From: James Houghton <jthoughton@google.com>
-Date: Tue, 24 Nov 2026 11:37:20 -0500
-X-Gm-Features: Aa3M54perRENbQqBcvqMB0T0l__zpVfhY9WhyMOK84YMmPr-DpW-cRt3dY1naHw
-Message-ID: <CADrL8HV0artLopXqsRyEfxRd5FrAKKXnSotwrTYV+7Wcd=D9mg@mail.gmail.com>
-Subject: Re: [PATCH v3 02/19] hugetlb_vmemmap: Always flush TLB if needed upon
- PTE remapping
+Date: Tue, 24 Nov 2026 11:39:41 -0500
+X-Gm-Features: Aa3M54oepgUn4X8OBlBmCHpzq7qyxHfiRu28mAUeA1WpcH_3XcJmtKTuvSjLHXI
+Message-ID: <CADrL8HVxnyNniotcEG+CMBAs4EVLihuU4bcqr5rLZWT9dUxNCw@mail.gmail.com>
+Subject: Re: [PATCH v3 04/19] hugetlb_vmemmap: Use try_update_vmemmap_pte to
+ update in-use PTEs
 To: sashiko-reviews@lists.linux.dev
 Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -132,18 +132,18 @@ Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
 	David Rientjes <rientjes@google.com>, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Stat-Signature: rmigzmnb1wxt9ex6cbrhz5oaugdngtfh
-X-Rspamd-Queue-Id: 885D9180012
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E5BAD1C000E
 X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795538279-494190
-X-HE-Meta: U2FsdGVkX1+02r6OlbMDx4UTs8IPNaErtJyWAhqC8sX9ZQHXBz+0LBhAuMZJxvYa7n76eVUln5KX3EXr1cusziHfyzXPbfEGwMSJpcdzCORhtY5nAOTrOYkeDyRIPaZuE0XD2zjeMSM5VyeaazpOwylCCorKp1YcsAgiSGozLTKFVwzwLc3RaJHk4VT6UE1VttOD33Xvoht/93r3BMJKe9LfOld7IDYMu729a8XzKIeWyUkmNeko097hiAgcEg5OAea+vGAZT8qsi0X5eOqAo/DACjAM6+vNCa3XYmN6/bUCDZCk4890QdOZ9gwqCDnDGTDZQ6VnmbIHM+6eFF9ynFTVJ0h7Ki9Iw8CQ7a//hYb//tnW6t959drOPWD0BKO5E/Dnv9M11FI9kZG1yQnh5zVa5WI3vSglJCOks/AouUKa4yayTJMdqmil6xe/GS4SBeC0J2bui3dh6AfSGFYytdX9CF0UKpZCjT8UmW6BeLXt7FIT0SbwDNG7/tjm85fvL85rXkC/hoxK7AiRh4vQ/fdw/4Vi2ZPuw/zU6UxUn3L5u+J8HQS7wcE51iK8e43ZEdZEC3CjENqOkwk9i+hUa9UhnKCsWFiajzl2h8P6lW19VU32EEB7JEITjlC/++pE3OMSgJ50tkKlSE3bWdBev/9rNfPisycgIriaSodLZKfuYLH7bFCHCgL8B7O/1c2E9QGpcEWjI5LLp1QqTt/QtMnDwj1UwDQDIc/fDBbXc2uX2/bnXYeyUk5nlcm+5fmWt3YYudOL3tb5tDlHPExqNltVGz2Iz8IclZXcdlaxwh3taz+uoy4CQTZIk8J5/jJOA53Og6JqJFMTBOhYoPPAMWQuTJMWieU7YVCu81jL3nsAfxjqtlk6HfwlL7iC3sbRM9lewskpq75+bYAPkLaXQD/e3QizhUdvos5y3nIdgYXO5GK8Z56PEFOs1+FkAb3lcJP/hFjim5ILPw+qe7p
- PRwWM1Ub
- dQ5tUKfZrQja2UAlz54y8Hywu0Wc6WW7Z/hCVxtRIYgaSAp+upMlKbuRd/9PkwiTmnEJcsUWw9qhd3TPW+eegFmq5sItvJX1aGPywLFiwIHi8CJhFc2n/BU4BGeo6A4n/jiQGyEF4TqZwuMhlKdG98K+kCe/GDauvFIH1dUiHdTNxq4VoePWDYQCAvW1REX1eFl7q1RrdFMtwl7BWbszZAzyG0yguzvdYXbIVHc8pvklFPzIvL7We90m2ELwEJ/JT7zVxkWoypUQc+OGKVRKZtYt3od7PAWiYNE0RbjqKx71NtCqE/3+Kn83Idj0GgKMIlfqgEKOevs6CqK7aC7XwDjZhP5w5XoebQ9hRF1girBX1rY4DtMV6rj7t7J4hPVP9iNfnbDQZM6vlj79oMKdMClbOoeFo2kFoddyTTxdD5cr+TTTGkwoxTuz8nT1mPBles6URygD3wp8TnQLzda8P/Lks82RcRHjVwb0uPZE/+qwZ3eNpSpRVe5YsVrOPkiHBayG7Knpr8edx2a0vH3nPRSkJvETRk206FOvRP9bs+F37ZGgeGwrTlk+MZg==
+X-Stat-Signature: q1f8k55uhgi4izwcfxfxyur81obqyoyo
+X-HE-Tag: 1795538421-212925
+X-HE-Meta: U2FsdGVkX19cwLRBk/ZYLSC8w82I1UUk8TqRLrQWDRPHUqYKn3n4/BVKWfqpLfW8PQuoDqH89WeAqgFPP+Jrlh3vngWMQ+SJjb2p4ecohmPtlwwP0Bw0XLG5UayklBFrI2/uZdLqNKNGURokIUY3eJ4FKlwMRbjdgDzR5RU61EudESivGHTNMhxFu7n+2UVHEf3dgTRXl70nEgxRunoRA8eNyiQoJGc2IIjXoUL8WoB8GLVPxa7K3C/1ZHe3PPmSS1migwubs0oj0TreXEOs+tFzQoYS7Ngl/q+QbsjmN8FCqHLZ/jliTLGCkqBnJQFc06aTIPq0GFZQJjmCS/SewI3uq8Hz2HR+BCbC4ReetTx+9wGsLBo829Zj3QWTBpTsNjW2JcW7xiPiHtfYsfYmsKsl3sp67NPNrH8lFrJP55v0xk1d5L9K/aULJRttL252+F9QpCN+ngGnPtjuJW2n+XVn5o71WxNalRqEOdGWlnlF9n38L8LHHpGnWdJn40aoi9/KLvICQpgYYqx44+dy5fBjNLfJIaKzauT80TM1JA9xaEmUqUxkgHyGDNObYa5bVpQx9CSMdgJngHfsljS4oqCIgsfQLxzawS99q+8U6gVDpSoAwD8E/vGkfEbGRknUV+CT5KoUzEnS/3SGab1lMvxL/xINr4ZKVIk+ZOI5qiWOhrbL2HfVPQPQNbsJ104oal/cFjbHgkq34psaNg7aMJwK7SXIIiZ2fmCCWvFmhg8WCQarnN1/fQUHYr3DvrWNvnv6Wq7Vohf3GXDRvt7PWAyEluQ/8CMnfHy8fXu6RNNyOO/yZlIIGm9r0EiNgsnCIcRgfZPEbkgFiuEWa2l5/LqKdyCKszH7G96vTkuZuGYX7yv3eLqhX66UlWBi53NZoujZKZq2ZoG+HX5Qxmr84W1ppQeqkpaAJEeH4g1yVF8JcbwP7LI6BGfBC4kbwv3Vx9J2BTC0iWMIW9FPItd
+ 7h5oyK+9
+ tr6M8mUEXF3pKzNSQOaJZoAvDUD0+uHaHQkkfaTSzZQtCbjYqfPKi8sOmMTp1THx2hJG0KNa12RpmnzLZQXVz1dMl8dN49mclGJAMu4C/gg3bgpxKAtP+nXU/YP3vRaiweodSHpFttlUBSMLwKjY+KK8EfRdW/d2UJ7Bl51DbiXVEe8ZF7kdbFbUJXRXToTHJ+052UQjVNqQjtnn4qW+8rFVFd1c2sVpFwIo7blm8o6ZLbNreI4uBxI05BlHshKFyo6vTfBkxfMWhQrDTHtUlJPXn2hBsc5THUHq8u+B/sxyb+VT8yR6uPxnrtt/oE9e56h5qxumdNkT0vp/YD3PnciNUk389LLgxSBeywHfYEpGCkLw2j4nxkx0IG1K7XyC7IkV+or6gt78HBKUvJe8y97ySgzWY0PqCHKki1ks9tu0FkacbdR58SkzfoLGAzEnJucGFGQcBg55iQ4mqiRyJIBwJssDskg5bt9PFBXfRMY/S2FjjD4e8XMJBdcpZekRwfgciJPRQ9ZIx050WTxglib+WVRqHM4GFHzTkKNBTQrSZwPlFNFtZHktNkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,74 +154,77 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 On Sun, Nov 22, 2026 at 11:08=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [Medium] mm/hugetlb_vmemmap: unnecessary TLB flush in
->   vmemmap_remap_range() on error
-> - [Medium] mm/hugetlb_vmemmap: partial HVO state retained in
->   vmemmap_remap_range()
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Medium] mm/hugetlb_vmemmap: missing TLB flush on partial
+>   vmemmap_restore_pte() failure
 > --
 >
-> commit ec5d75eb023f87eb7c8518a7fd62d721c52bb9db
+> commit 8b77f3aefb06415df030fdd341c5e065dabec71c
 > Author: James Houghton <jthoughton@google.com>
 >
-> hugetlb_vmemmap: Always flush TLB if needed upon PTE remapping
+> hugetlb_vmemmap: Use try_update_vmemmap_pte to update in-use PTEs
 >
-> This commit removes the early return on error in vmemmap_remap_range() so
-> that flush_tlb_kernel_range() still runs when walk_kernel_page_table_rang=
-e_lockless()
-> returns a non-zero error code.
+> This commit introduces try_update_vmemmap_pte() and uses it in place of
+> set_pte_at() when remapping in-use vmemmap PTEs during hugetlb vmemmap
+> optimization and restoration.
 >
 > > diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> > index 09b9fd83c1985..7be08c68c2f18 100644
+> > index 2e9cf8d39c892..b4d0311bcc4a2 100644
 > > --- a/mm/hugetlb_vmemmap.c
 > > +++ b/mm/hugetlb_vmemmap.c
-> > @@ -163,13 +163,11 @@ static int vmemmap_remap_range(unsigned long star=
-t, unsigned long end,
+> [ ... ]
+> > @@ -291,7 +309,11 @@ static int vmemmap_restore_pte(pte_t *pte, unsigne=
+d long addr,
+> >               return 0;
 > >
-> >       ret =3D walk_kernel_page_table_range_lockless(start, end, &vmemma=
-p_remap_ops,
-> >                                                   NULL, walk);
-> > -     if (ret)
-> > -             return ret;
+> >       dst =3D vmemmap_dup_page_from_list(src, walk->vmemmap_pages);
+> > -     set_pte_at(&init_mm, addr, pte, mk_pte(dst, PAGE_KERNEL));
+> > +     ret =3D try_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL=
+));
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     list_del(&dst->lru);
 > >
-> >       if (walk->remap_pte && !(walk->flags & VMEMMAP_DEFER_TLB_FLUSH))
-> >               flush_tlb_kernel_range(start, end);
-> >
-> > -     return 0;
-> > +     return ret;
+> >       return 0;
 > >  }
 >
 > [Severity: Medium]
-> Does this issue an unnecessary broadcast TLB flush across [start, end)
-> when walk_kernel_page_table_range_lockless() fails with walk->nr_walked =
-=3D=3D 0?
+> Can a partial failure in vmemmap_restore_pte() skip the TLB flush for
+> PTEs that were already remapped?
 >
-> With memory_hotplug.memmap_on_memory enabled, every runtime single-folio
-> allocation via alloc_fresh_hugetlb_folio() -> hugetlb_vmemmap_optimize_fo=
-lio()
-> hits PageVmemmapSelfHosted() in vmemmap_pmd_entry() and returns -ENOTSUPP
-> on the first PMD with walk.nr_walked =3D=3D 0, triggering a full
-> flush_tlb_kernel_range(start, end) despite modifying no PTEs.  When a wal=
-k
-> fails partway through with walk->nr_walked > 0, this also flushes the ful=
-l
-> [start, end) range rather than [start, start + walk->nr_walked * PAGE_SIZ=
-E),
-> and vmemmap_optimize_folio() immediately flushes that prefix a second tim=
-e
-> via vmemmap_restore_range().
+> Previously, __hugetlb_vmemmap_restore_folio() could only fail in
+> alloc_vmemmap_page_list() before modifying any PTEs.  Now,
+> try_update_vmemmap_pte() can fail after earlier vmemmap PTEs of the same
+> folio have been remapped to new writable pages.
 >
-> Should the flush be gated on walk->nr_walked > 0 and bounded to
-> start + walk->nr_walked * PAGE_SIZE?
-
-Yes, I will do this in v4. Thanks!
-
+> When called from hugetlb_vmemmap_restore_folios(), VMEMMAP_DEFER_TLB_FLUS=
+H
+> causes vmemmap_remap_range() to defer the flush to its caller, which only
+> flushes when at least one folio was fully restored:
 >
-> [Severity: Medium]
-> As reported by Muchun Song on v2 [1], does this change and the follow-up
-> patches in the series still retain partially optimized vmemmap states
-> instead of preserving all-or-nothing HVO semantics?
+> mm/hugetlb_vmemmap.c:hugetlb_vmemmap_restore_folios() {
+>         ...
+>                 if (folio_test_hugetlb_vmemmap_optimized(folio)) {
+>                         ret =3D __hugetlb_vmemmap_restore_folio(h, folio,=
+ flags);
+>                         if (ret)
+>                                 break;
+>                         restored++;
+>                 }
+>         ...
+>         if (restored)
+>                 flush_tlb_all();
+> }
+>
+> If the first optimized folio fails midway through vmemmap_restore_pte(),
+> the loop breaks with restored =3D=3D 0 and skips flush_tlb_all(), leaving
+> stale TLB entries pointing to the old shared tail page for the already
+> remapped vmemmap PTEs when the partially restored folio is returned to
+> the hugetlb pool.
 
-Yes, this is intended.
+Yes, this is accurate, thank you! For v4,
+hugetlb_vmemmap_restore_folios() will flush when
+__hugetlb_vmemmap_restore_folio() fails.
 
