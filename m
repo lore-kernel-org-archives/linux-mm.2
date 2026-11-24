@@ -1,109 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D02606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8F2606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aIER/tK9
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XBzzZwm1
 Received: by kanga.kvack.org (Postfix)
-	id 195906B07F1; Tue, 24 Nov 2026 12:23:48 -0500 (EST)
+	id 3BAEB6B07F3; Tue, 24 Nov 2026 12:24:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16D0B6B07F3; Tue, 24 Nov 2026 12:23:48 -0500 (EST)
+	id 391F96B07F5; Tue, 24 Nov 2026 12:24:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0838A6B07F4; Tue, 24 Nov 2026 12:23:48 -0500 (EST)
+	id 2A8576B07F6; Tue, 24 Nov 2026 12:24:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DA9F56B07F1
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:23:47 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 853BD1C3FE8
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:23:47 +0000 (UTC)
-X-FDA: 85470684894.02.C3F14E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CA9D640006
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:23:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aIER/tK9";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E606B6B07F3
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:24:56 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 76365A87B4
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:24:56 +0000 (UTC)
+X-FDA: 85470687792.26.2613732
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8D37510000C
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:24:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=XBzzZwm1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795541026;
-	b=Hx7SFpGtSKbZP7Jy1JjncP2sfn5nRyKU7ksG/EW/K2vL1Y22ys3CohfbXHNkM3ZZmm1CIv
-	PYPdOqpz2frH5a2SeD/ORfmokx4niLYh/wHwL1kKhbx+zhrlDU+KomV2T215rXMXFt5jFy
-	lZsCNa27fX9LG5y4ompcSHj+/ODyNOg=
+	t=1795541094;
+	b=wBXyD4scTdx+rA3FuQIUSoCFdLz0Ad75TMsMmZheKm14TFLGhwvue3hklorPKFnQFrgBck
+	WkotZd8Gf3DmBQJg19l+HV1L3CJ6ZLr20sSki9gjf1msfHSZqRcRdM89I7Jv3yTS1tJeJC
+	QugdIiPMDKpPc2iI4NeoQtTlAMK5Nfs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795541026;
+	s=arc-20220608; t=1795541094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fS8UX0zOG7y5HTbRfTEb+A5QmGIQnuTVBZNrsVPO3QA=;
-	b=X75FUrnU5KCNxaz6jzEO7KcEW233psnVFwlTWY9RKhQ6+KgFS75EZa9crgQZWLemQXKGrZ
-	qj+c0uQzniFzHEU4QBZmv84Bk6jaPPQlcRh0/+KAaY1KWWW5K7hzycK+hsFPVsLPoAf7KR
-	e/d++PZ9tg/7SE1p4FAUzi4TSKkGHBY=
+	bh=ozTidCXqTzSwi9dcCKWD5fJGGI9rCJsLQ/Ov08gLSsk=;
+	b=7Onbxpfw48Z3QqDp2+YFkVcv85lGsu8z88rR1sb05q3JPPRT7eI3mc+IPFmp8RFiULK0q5
+	YVCgf9zae9j3iXBaMnlcD/IPpxa+EDvag6Zyw/Xxc6m3mBoqZohiRrtGf0gb1ni6O/mAv7
+	TXI1fdug0FEY2t6ObwAlYdBKQRPt8cE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aIER/tK9";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0425D43A39;
-	Tue, 24 Nov 2026 17:23:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F0E1F000D1;
-	Tue, 24 Nov 2026 17:23:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795541024;
-	bh=fS8UX0zOG7y5HTbRfTEb+A5QmGIQnuTVBZNrsVPO3QA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aIER/tK9Xj9J7xTkM7cNMYCpdtYq0gOZ2/0BrOQlgPEO6oQ5XstyYWIMiG9xBv81o
-	 dW0o2fsXWJ7a0R3kzyAd7SW3xgwAyK/lFagJBx9SUiAJivswcb77/aFDQis9KITn4z
-	 2hQCWdu8XGvvjs6cR7zxu41TDaqS1fRg7RPlbK6qgQsdkTQWIKRav9VBIUJDloU4/S
-	 T2qG0m0Y5nYwqLVJD7Bxbjy8GBYXbO+AkFaxmZ6p4feLXekf2YjojAswcGcH7TtM8d
-	 Zjm526349OF6EKBgApdu6YcK8jHdyS6sID2wuiZijTsgye75nh3feB7scItYNrqYsZ
-	 zfI0e9bBZJN1g==
-Date: Tue, 24 Nov 2026 17:23:35 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Puranjay Mohan <puranjay12@gmail.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jann Horn <jannh@google.com>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, Chris Mason <mason@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vma: drop mm asynchronously in vma_start_read()
-Message-ID: <awXHR007d8MlhJUC@gremlin>
-References: <20261124-vma-read-lock-mmdrop-async-v1-1-257f99f551de@kernel.org>
- <awWLCZ-jBjSD7V3M@pedro-suse.tail5790ac.ts.net>
- <CAJuCfpGk6eYK43Unxo+O4ML5=GM_siZ9owp6oa9fO0ipZXVg-g@mail.gmail.com>
- <CAJuCfpEd1rz3P7fB7W_mHkyzbpq9TscRE+QNwvHdYME=WJj6cw@mail.gmail.com>
- <awWz3nc_b8x3mIXq@gremlin>
- <CANk7y0gAxY18Ew+6j5YsqrOsf5Dx+v5M78r7_8JLXh5RHZj4qA@mail.gmail.com>
- <CAJuCfpFuDCUPTUi3SuAhmbtw5tubRZ0+YEY3PotjyJ8Or8pdQQ@mail.gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=XBzzZwm1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2f04ad2c46dso28517855ad.2
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:24:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795541093; x=1796145893; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ozTidCXqTzSwi9dcCKWD5fJGGI9rCJsLQ/Ov08gLSsk=;
+        b=XBzzZwm1p2e1MIBUWVs34UuL7iTbKvl4GJ/ehBfrvHjiiITlKFCsqY9+fp2uBXVNsb
+         +U/ZOkOavLIzFUOwC7x0g/rbshxno/UJLzi8/pDCCMyBmatuuWeldUUjdKZ3vgEV4dxl
+         ASOYm7Z5i/sBe6aSRHdvU4kfaYnGO00ztj5VYEVZcOObdhnTm9nmjz3ElR9Z2syiHm+M
+         L23Sbs7BBsYEYEvxCsTtFrGx0x3jDyR+nnxfNGLlWRef6Px22saKh+KCSVBWKEAPS8xU
+         85kaAVxDko20QE6a4KH28jqT1exPfVqdmr1K7q8FUNw8pArql229olABKl+E3prBfkLy
+         8JCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795541093; x=1796145893;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ozTidCXqTzSwi9dcCKWD5fJGGI9rCJsLQ/Ov08gLSsk=;
+        b=gGN7OlJytY/Q0Qj/XNEvJiwWYjEX+2fuenFYzHtvVfznWqGhaX1iAydYtvJeHj/mm0
+         A9x7gkovyAbKfYYrtoiQ1+1b8n9s6Ikh8LqtaijBymyKxKNlNxvyrkmzlFZIwEmrKet8
+         5jiDjc+7iHROw1exZy5Xfy+bPMBvHYfHc+tT0aMTS9KlxijgQ7LAjk2PBLJPeRJSDLyi
+         Y2kuUIzNcmBddFlz0b7IE6ds1YvhPEgHatQbFB1DDv980UEkvBURknnZ8IWVSfDpU6Z+
+         UFhqjaBcLBu3h9ujbccJiV5l7KiO+jmC03XClPCn0yukKr+LrJnyAEQL1iVZ+tEmKkfy
+         fA9Q==
+X-Forwarded-Encrypted: i=1; AL+hErHma01ekBh6oHhH2qoOlZGX9rAFzGD8UuEzNgz2CD27FlOK4BZSDu7QRXopU1fZ5XrHQ7vN+P66lA==@kvack.org
+X-Gm-Message-State: APuU4Z+o5KeuevKAKFVRmNT8SeT8TEEwA0uCIlFazVfzw0zw17RiHtIs
+	qhqZQoexGjctreBAVXY1Pk5p8EZTj/7Nn/Z+Seif8SXeIkpRM5mIOzaN
+X-Gm-Gg: AZFdTZfyjKmZbKRghLl+Zhkc3FcoqXpzJK9cFCzr4dk072d0oM1qiwn2345Ckdsi+c9
+	hzSRAOgemcj8xKyfjbKGQTZL7jwF9XLJdGGAVOjrDGW1/8dczhHrQqrDBL44VjFWdjl80/rfzTT
+	Yh0b+/WeemhViWOXjM1gBskrSjjDocbyttTf8fy0MyfS+43NU7ExnjsP84rkjkihGZKr91Abseq
+	uhnmUy39VVNur0+oWsQqOXdJlYaKj+4hm4JVd9mWhRwUUt5248IbXuVooAQR5/wL2qmW8v8A4aS
+	dOfXlpwnaVqjGRiCI3Ze+/d43AoDGyZXHMUXX47UdzbJ0OiuVPeLEaN8kJTG45ILsOQuCTkYUQU
+	9rnZFTXaNSt6i0CrVhjsNIToM8bflcmMP9al+XkGUVYXCJrpPpJPLyOHLIfQ+diUsOVtjIncedI
+	cYVGAJJnfnktmQ5hT2hV4Gyi6zATSMsz+ONMPzXeZSwtGEBlJrgL1JByPghnQSjggMOkDKhSeT4
+	8FmgyqyoieoxpjQFKisNF5iqQtoW6cQ4G+b5dqMOe1q78ingiiGzngebZgL/ZInHaGybtA014zD
+	Oa69WDzchf3MJwCNq37kL+Bgmv5/aan+cy8HO/6KpM2p4XTi320rUxKrwHp7phmpPzDnleg=
+X-Received: by 2002:a17:902:f647:b0:2ef:e130:1505 with SMTP id d9443c01a7336-2f03f17d196mr143597245ad.10.1795541093208;
+        Tue, 24 Nov 2026 09:24:53 -0800 (PST)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f102fc4sm72406805ad.43.2026.11.24.09.24.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 09:24:52 -0800 (PST)
+Date: Wed, 25 Nov 2026 01:24:38 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: kasong@tencent.com, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
+	Hugh Dickins <hughd@google.com>, SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Tal Zussman <tz2294@columbia.edu>, 
+	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
+	Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
+	Joanne Koong <joannelkoong@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>, 
+	Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev, linux-doc@vger.kernel.org, Tianyi Chen <hi@tychen.cc>, 
+	Ridong Chen <ridong.chen@linux.dev>
+Subject: Re: [PATCH v6 15/18] mm/huge_memory: mark folio as accessed more
+ accurately on split
+Message-ID: <awXABa3dYhEN0YEt@KASONG-MC4>
+References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
+ <20261124-mglru-fg-v6-15-8ffea39934a6@tencent.com>
+ <DN2V8E26C4EL.2TU52TEVLUFA@nvidia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpFuDCUPTUi3SuAhmbtw5tubRZ0+YEY3PotjyJ8Or8pdQQ@mail.gmail.com>
-X-Rspamd-Queue-Id: CA9D640006
-X-Stat-Signature: nzt7tfw17bdtjepfbyisxkcapwp135hj
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+In-Reply-To: <DN2V8E26C4EL.2TU52TEVLUFA@nvidia.com>
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-HE-Tag: 1795541025-527999
-X-HE-Meta: U2FsdGVkX1/XrXEqP/YSC6T8HNTkhoGW+QybAVpWbN94Lvhddg74PQeSkb8IQXWwYTYEZAeofTtcQFpxQoEagu6i49y64o7PA6ABgi+PETKWR47ie6QyrqdEKGSaTiNnLgkLsRm3OC+EXWyPE5ayHrPJlyBwKAnaFvNysgbaNqUWdcOHTZjl0NzG1OXSDtl0YHQ6w2Yz5VT8gGk93qR92/2B2r4uGSFC1Jewug5INrGt27TA8JWbPTmHQCBqy+EzplzS7SW+neN0o3FUEwLWDKR6ehLYYpe57xn3S3BKPdadgCjkMIqxczUfyF/XoZ1+741w8LABILgCNFYnYyUUE2bQh4teVbsqxdb9ofOBnOzzt/GtOq/gRSE9Xi26sD0LZ5++OSN3T+fIZR4uoW7orviG6QvKJuHWMfJSW6zBpuUU3iC9aCSTTvnvjuxCxA6FnT2sr38DFduyzYgu/5YIb05BljbVMnN8p32izgTZlmXtJD7wWn2Aw2Fd/xU1rSO4z7c2wKGZk2334bIgdXOINcA5QrSjq9oSz+fJy6P6DuSt2wu/Ovpe7YLXBBOI3DgwJzRP9zZZU668E6vg3IaRwBb0PkOdFvwoPLWqbx9MxUHNqF1zijkTHRvxdv3UQbyvWa1LDGzhZaelOHtFTdkwZdVq9hs99iKMMmpoXU1x5DJ+RgoX/zR+gkJa0qFapqceYLGel8iVvXhrIWkOT9lgwJdAc7zFgYdTMqZHrEMBFZjRaC6ftyMpDV22E0l61i+9Cv6uIydTm9J9U5uqqt1nwImWO9ttZiMe2bQgENIl2RkdLZ6yfvlfer7NkAtWMszE6v5FpNBb/YdeNGKbjz/JflVq0pjazTm2LU6MER3XiOEryxnR/Mi5SD8DaD89CSWJVdV2acc+TdFW08ytZr0JQzsVRSCBDtTJA0Q0UUhslgkPfaXo+qsk1UVnoodqrzXxhJYrV6f3ChGhiuJ0kET
- wW6uwyxG
- hiIqWDvLbgGFrNHakjofdKzlzROjaNsmxucjmnF368tT4H+tXZthY9h+2eeIcowsCOCN66kZMl3IYDIOR4GPambjykvTi741Zc9w0BPt9IikA6DZ5ew6gFsD8UL8giT809Zq+CpfWsOvtCZZfF3lnSK5layNxuCe3IcDWERYITZ+VomS89HHphd6UfTNlIm5KQdhK12o/Gx7ZHwwklaIvls8wFPF71yB20DEHe5v9A/Qb4acNufLDUJDhV2GEotzVzMEUxl7aFXDE9gmfBPVyITX+xw0fLFHkiTiqyCYI9THoq2nsFKM0Nvkhs3d0RamZATro9fZxu1RULc1ErJwyl+KSG3DW5SWa39zY9cQEddvI0ZKPeEEIMeLkgkk51HwcI7BxQkzfW9X+JAgq7zJqKlS8do5Gko8KoK0BkIME5aPBQHRPDwjDOywg7p/N5uUeCjHI0pxdOpHruphNUPfuLQMdNkTrfegN2H5ZJ2bhtZTil7FMlmkW5HqcDvzWoat91C3SqiQLRv2GUAw2Y1MmhKOO92vWFMKYs72ZuWj6kQyaUOBZtaGLwUqGfxmkMW6UmUhr5Er0NhnAYg5WjAHGU7MVRHK2sMB2rFfk
+X-Rspamd-Queue-Id: 8D37510000C
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: sunffi58su1fsj3rpzfawtf6crt73xh4
+X-HE-Tag: 1795541094-784044
+X-HE-Meta: U2FsdGVkX18XZ2KTq5sndwNeH2lrigDrnfa3Jt4MlNE8rtw9PGHzNi/l5cU7bFOBUTgz55MFE+RI5GProq1iM446b+gJItQBUKwW5+DNJkAoxSHeB59tSE/WNkSt8hwlQAKJ+FN1QQl/a3P6SJ3a6vxUR4pvlEivPdxCwsozm8b3AIMZlWej+rUgv/6GJi90yNb38y7mZUVTqacFA9iz+bcoAgGb/93jdco/D87RnpuFJlh3up5zpnSacUhIFjdvgS3K0gGtX1tUYGMjUEzHN1SLEIJAwqWSAGyBupRXjWgz1tKB+koxmzcgXPE41cBYYdr/sVLA/U/Xz+mQO8KBFPAA/a6+00gE/uj9aNtzFEN/u4L89V8jq/M/HLBdpyNXyP9FNneQeNbLE2p7haFv8cTuAxkXo4RwYpePMBn92OMg+4I2yhZ/LV52NS56zU5l+6Sx3G1/AnE/LIWNibk36TaVT5DJNBqftNAu2AzBziI2rxccgxfFH9A3iaKmSvQz4QEsLd+8qNLH7CeH4NMCmlLlpK0/aAo3rRiDRikAY62bSwr68+IUrqY9wMXZGPVBMJ6SZIUIip0ZXCmKK0+KSWhHfkt5EwUjnXyAuONi3JDXJO4FwQnu9KkLbrVQOZbyctch9iMNTuRCqGM1peqX0lw+FJo24fuMKEbqjaMx/Pwlk1eChskUvTKNtnoTxTxWVxObW5HcZk16toMLTsJlwzlJxBPX/qBIjH9ei6vJPS1wQCAqUJ5fhVYcGCuW/L03WOwpR86ogj3UL+I9R+Avp/oblGyMi2/hToa2Hd4FCTwkMyp/sIgI4W16KUjM8/Yoh3xWnACzWL1I13Jxt+sgVbT9M9IEyiyiDH742Ucx+F7yg5c1T0JxMlWXSMSSzCX0xKf4gBxpy/4ga/GYwnxlRc3vHI6vLpE21xbafjH+y/QXtH/pXqOckVQ0kJVGE/p1BL0fEh1pzhs1H5sNdPe
+ AZOQTq6J
+ tv1xkgeorf1Te5bYOb5j8SzqijOywnmgNqORQmGWSpkR+HyiKSOoj+7a6ZD3+dATGopOyjFhtdKTSFNv9ATFYDtOAc6FxNFKCixjBoPijJv9JZYdz7hlSJZf/zSXU9TiddegSZxrStUgVAbDs2MfLJj+N0kkSO1TBuPsmzrmz9LVCpOUCDFr+SlsNM8GM7bmdGccs6aEsMZgNuD7ZJzSFwosPYZZrV02VZkOF4tucDbM3xuCC23x5SK4RVK7i8fNk1z6FK0bbFXSuDAFTkanuzzs5GHHGFaPsTe2ti4XDJVK/SAgIcAChhTFiAs6QhLe2UKL2l4+KvUyqBh3mB1xaKa2/AmIeMI5qk4GfevDR+5XfDdGcjBQf4zikDRjZLhf9n1Hon++CVTmKQfSzgIWxnpFIXUkuVmgIwu6mgHJTd03hul/eyw5Tns7mR/0EHo+haWfRIq5uIfhlJWgO4IgKQ8xY6biFWMZGOr8BMFEcnDldPJoxv8V6J+jNmLhxYjX0M7JEdOF1pktbRhgObJg03Xqb776Pm/x4TAArNWx07f+ZelY6eWZ0slb8HyM1igFK+B99b69fman3Dsha+2sxZTbYFKHupCVN1j1u9o3kVhPP1ZoiSKga7JM4tOUhvn2HR+gPkx7C+JQZ80cqSPfk6R/AVFz4+fZe+cRbln+B9zfcPUb8a5SqGoEO5bNOjEcHKb57PXNN0RCttScOSo/bnKxqw2G5yAWliRtPOj9jDkTwyF8y6sXd9rULoTJyUHjGArA8/1x02kbwjln1jDXp9dCu6BwLzMAd4GLhioV5seZT0h8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,42 +147,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 08:34:40AM -0800, Suren Baghdasaryan wrote:
-> On Tue, Nov 24, 2026 at 8:06 AM Puranjay Mohan <puranjay12@gmail.com> wrote:
+On Mon, Nov 23, 2026 at 03:17:05PM +0800, Zi Yan wrote:
+> On Mon Nov 23, 2026 at 1:53 PM EST, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
 > >
-> > On Tue, Nov 24, 2026 at 9:28 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > >
-> > > On Tue, Nov 24, 2026 at 07:51:42AM -0800, Suren Baghdasaryan wrote:
-> > > > Actually, VMAs are allocated from a SLAB_TYPESAFE_BY_RCU slub. With
-> > > > that RCU unlocking move you don't need other_mm copy and the comment
-> > > > that comes with it. VMA won't be freed until RCU lock is dropped.
-> > >
-> > > Yeah but they can be reassigned? They won't be _freed_ until a grace period but
-> > > they can go back to the slab and then allocated elsewhere  right?
-> > >
+> > The behavior of updating the folio's access info isn't consistent for
+> > huge mapping splitting or ordinary unmapping. The page table's young
+> > flag has to be translated into folio's access info.
 > >
-> > Yes, they can go back to the slab and become a different VMA.
->
-> Yeah, you are right about that. So, we either have to keep the RCU
-> unlock in place to keep other_mm comment valid (my personal
-> preference) or update the comment next to other_mm to explain the new
-> reason it is needed. Either way is fine with me.
+> > Right now it only checks and sets the folio's referenced flag, which isn't
+> > enough since folio flag updates on access have their own rules. Ordinary
+> > unmapping (zapping) calls folio_mark_accessed(), and it also checks
+> > if the VMA has recency to avoid false updates.
+> 
+> Can you elaborate on why vma_has_recency() should be used? "false updates"
+> might be too vague.
 
-I think let's just change the comment?
+Thanks for the careful review!
 
-Andrew could you change:
+Right, maybe I shouldn't say these are "false updates" indeed. But it
+makes sense to do so, will reword that paragraph.
 
-	 * stable and can be freed in the narrow window after vma->vm_refcnt
+The young PTE becomes folio hotness via the LRU refs to help improve
+LRU accuracy: telling the LRU that the folio is accessed, so it should
+be protected as it is more likely to be reused soon.
 
-->
+But vma_has_recency() is the app's hint that these accesses are not a
+recency signal: MADV_RANDOM expects "page references in random order",
+POSIX_FADV_NOREUSE sets FMODE_NOREUSE, and MADV_SEQUENTIAL expects
+pages which "may be freed soon after they are accessed", which is the
+opposite of what the refs mean. In all these cases, marking the folio
+referenced from a PTE access hurts instead of helping.
 
-	 * stable and can be reused in the narrow window after vma->vm_refcnt
-	                     ^
-			     |
-			     just this freed -> reused :)
-
-Thanks!
-
---
-Cheers, Lorenzo
+zap_pte_range() and folio_referenced_one() already ignore the accessed
+bit for such VMAs. The split path is the last place translating a young
+PTE into folio hotness without it. So while converting to the more
+useful folio_mark_accessed(), also add the missing recency check to
+avoid wrong promotion.
 
