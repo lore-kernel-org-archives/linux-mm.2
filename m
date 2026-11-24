@@ -1,105 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929E8606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6721606A33A
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Biz/pg0z
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=ERnNt4hW
 Received: by kanga.kvack.org (Postfix)
-	id AF53D6B0649; Tue, 24 Nov 2026 03:50:42 -0500 (EST)
+	id ECAB76B064B; Tue, 24 Nov 2026 03:52:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACD526B064B; Tue, 24 Nov 2026 03:50:42 -0500 (EST)
+	id EA1B16B064D; Tue, 24 Nov 2026 03:52:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A09DB6B064C; Tue, 24 Nov 2026 03:50:42 -0500 (EST)
+	id DDE9F6B064E; Tue, 24 Nov 2026 03:52:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F7226B0649
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:50:42 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C00E40B08
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:50:42 +0000 (UTC)
-X-FDA: 85469391924.28.09551E0
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf31.hostedemail.com (Postfix) with ESMTP id A685120004
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:50:38 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Biz/pg0z";
-	spf=pass (imf31.hostedemail.com: domain of xiange.pi@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=xiange.pi@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id ADF006B064B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:52:31 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45CAC1A0977
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:52:31 +0000 (UTC)
+X-FDA: 85469396502.01.DBDCFD2
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 262BD140003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:52:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ERnNt4hW;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795510240;
-	b=72zvza3QzpJ03JVSJr2Xks96PPoDHSKQLubNkBvePVrv9Cr6M7ddekVNDdpy8KgcEFevfz
-	xd/sDUM6S9vepE9GSpG+mS0HM/oqkXWtKB+e7+lWLz31iFQXUv3y8yt5eEAH5G23IQQUs6
-	SMdT9N2beCFD8y4eIG8sulcmYwx1Ncs=
+	t=1795510349;
+	b=DDVTpJ7MlG0rtPlrNdc3QIEtDOSYVRo1UjZo1o0gnUCES66+sBFeuZ3GiflSXx3ofPxyew
+	wo6Kc1HR7DP37HGJaT9mL6eD5RjDpidD/z6G6Be21EXIW1GIzDKAD4O+/p1Bkfp6rd7iCl
+	ON3G44h/bEsJEgfnbG98IFIdjranW74=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795510240;
+	s=arc-20220608; t=1795510349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pZxSNV99eQQD7nI0RHK3EiKTCxoH4Q/YUIR/xnmC9yM=;
-	b=Rflw3bujCRvJenmbowJfM5et5VDP07YJgI9E7ilLq2XUG8E5WytfrkqZgoi0d3VAyjUydE
-	4s2QF3wlCmJUCQXs59kjqsmrlyKpyKsqf80n7O+RcGv6BTu3KAvbNnlz8bC5j3dmUu2pUU
-	pcz+qjWJvSt4XzacDe2qaNw52GPHC/w=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=R4vZ6P/pxgMeaZu3yTIBPWC7zlioL2LZflk1ZvJYOpA=;
+	b=laPItlnGrrmxMGhJA2wMYf4zhBK0jLB6sqmuRUKjUs4QPM/o8z2Vt3ONC4kwlMMdcj4ZMv
+	SMHGoqzSO96IdIwGqwBsDo5eDXkjevyoHtZ70Ztm5Zfu7a77ULMBccqyl4bHAjdMB8Sosf
+	Jxo6mZNzgoVThRa87v7HUc4k7RWICuM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Biz/pg0z";
-	spf=pass (imf31.hostedemail.com: domain of xiange.pi@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=xiange.pi@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795510239; x=1827046239;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=1fRo1a0dLF78exZbhSV0DUhDGiKNw/pnDJfveyQyjwE=;
-  b=Biz/pg0zXhr0rqvxPk70aC09U5BQGC2qXZp1SO14lVnJ6JWwgjUHj3dt
-   VndP/txLFUfDHYCOU0VcTDW+Ks/wWluW26YilDtMxET6J+W690zTzOdL9
-   PcxQCAAIACDt8SXAG9gs9FcpDPxBiRXPNA8/3tvKRKsHX1Swv4UGV1F7V
-   IbDvhjNyuEyimt/8BfYEsMLZABALyVrSM+cu+U2/kcLMtkopx1YamNKXa
-   qp6ntOyCisUwHgZTXxkgDTLLg8HxVdA42eMGntDlPPPF6HdgpEoEXLAKh
-   JtYhApbiG9MhS5yswfR95Vl90BjUCifo1IfYiABG8ff9SqatJU4IouNG0
-   Q==;
-X-CSE-ConnectionGUID: R3Dmu4vLSVqOfXQbH4lOZw==
-X-CSE-MsgGUID: 8bZ0ObsVQmmGdPSMc8xB6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4377198"
-X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
-   d="scan'208";a="4377198"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 00:46:36 -0800
-X-CSE-ConnectionGUID: Leh/wT4iSS2fbKldD79aCQ==
-X-CSE-MsgGUID: qYBeCo/5QjSHPyzSn0XYww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
-   d="scan'208";a="11892453"
-Received: from ubu2204-pxg.bj.intel.com ([10.238.152.105])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 00:46:34 -0800
-From: Xiange Pi <xiange.pi@intel.com>
-To: Kees Cook <kees@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] exec: annotate lockless tsk->comm update with data_race()
-Date: Tue, 24 Nov 2026 16:38:48 +0800
-Message-Id: <20261124083848.1430527-1-xiange.pi@intel.com>
-X-Mailer: git-send-email 2.34.1
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ERnNt4hW;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-498f5fa5103so2490627f8f.2
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 00:52:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1795510348; x=1796115148; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=R4vZ6P/pxgMeaZu3yTIBPWC7zlioL2LZflk1ZvJYOpA=;
+        b=ERnNt4hWpwm6HhvLtgtkf3uKBIRT4aoozkiCzwyMzIUP7HVrtFHw4HqpRADD3+tRzq
+         TD3HG783MEKBckYpbNOcM4Fyi8NYc+mPhYIOSCsvX6fV7HbmLN4Y/UQPdpaFWTmYCsh4
+         Zr4BMvENTgjFV0omAptVjjaln6FiQ5dbL/NIa37dGc1iGyTzg9kONLlVz0Ww6IpvZ3oq
+         WmnyqLT403BUovPBNdoEyzjEheuvU8KsRlkIsfa/0YFfWyg4uOPBP/WFphxnEB9DkpK5
+         uEBRA3zOiTWuVizBtjJPcPCNkZdYvhi8NnLeg9w4XqOdJOyEzVddiErbpLzbv9wqLEId
+         zbDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795510348; x=1796115148;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R4vZ6P/pxgMeaZu3yTIBPWC7zlioL2LZflk1ZvJYOpA=;
+        b=WMRPxhTtskOPGKxHvhV/0ZlX+nTxJgPknOzULeuW6EzCUn884QTVPV1XGHtEfmIOVe
+         9x2jQyeUCQmhVSzQ8Ag9MBHUtuanNdOmSHJFRXE4GMfbtkh1kEnJwGdVSRmlxJYfumKC
+         gkBMDNhS5vL/ve3dNjAdtBUpkD7lYVRPyO51kpOnbao9yvx8k62+1HhlyKhDXXdcgGBJ
+         PbyPkmGdL+fYPmkTNPi08wfb2TQx+UsXKwKk9Vrjmk0mDFNgpwx6qZggo1MOweqorCDE
+         c+m646o/ygHI9h5+fJXJNzG6d81IidyhBVfUGTAPgtAm2Yz9qQZFv/ElJgT2T8+Ap5Xs
+         Owyg==
+X-Forwarded-Encrypted: i=1; AL+hErF8FoI+pFwZ/AA5NO1qqfOEgrELizWMHpCjsvM2YZpucsmsBnn1RPH0W7SObEWWv12mGubNkT2mtA==@kvack.org
+X-Gm-Message-State: APuU4Z/v8d2XSfMldq53UwjAxXno+KZQs6ps3qzrzT51dqPtzAgDdV9k
+	pEXrSN9BVLC8PzEB/V6Zkn9ebFIHL+FkriERqaBVpMzmrOtoWRK/eX8BAk1txOM/XEQ=
+X-Gm-Gg: AZFdTZdy2hn7BUnCGfuJOLuv36bYrBYJ1XBvtKZ/kHI2/qqcfCnFy/pCxdhEXDgUqMw
+	99WHGOmMwhgh+N4HxpS+MSglKcEu233AcukV9wJynQs1RKqahWiToca46DRjuQEZ7egtHXIoz7g
+	A9J8UAK0lZ+zvXUJTDvPEta5nLqw5bOn0Ls51wQKOr9Ji1L+PZo7+28X9mOFAyQ2ugjshlzOx7j
+	w4VEoRbiBT0DP24ywvS1J4co2WFvzr+WapldUz47tPrbjdmpqUjVHmoOetFxStnSmG2iABZoFpT
+	M7MZRUctQJy2L+5Mom5eRLnJ5u0sTfJmgHC+0oeDd9GDVfm4wVD7x13R8Cw+Qye9hrZG+sWptPL
+	RZ0cQ3naS5px+rpWrEFVK9kLpNslrOzg+CFFRwxbv7qq5MrTYJQ5xoETGR+PoXAyNIQifE+qJmt
+	uNlY+6WPYzbAkKPg0G8HwQ7fTLkjdmm2GVlT7wPPeBZGHLWFaysZ0SnlNql8XnKbyXYFb8gS7xO
+	HgGUtrYhv7hOrjStZZFCk7mmbu6jWGTtBex3ak8myLwoydOxFySXKlzr1b5ZdFbHQBKUDMx5DA5
+	bmFAQIVe/t8khHX/q/hIWkvSn6NoytsQPjd5rTh2Pm7UYM/widWJdd/dmlZbDw1t
+X-Received: by 2002:a05:6000:26c1:b0:4b3:b495:d5ad with SMTP id ffacd0b85a97d-4b3b495d6efmr9273447f8f.23.1795510347681;
+        Tue, 24 Nov 2026 00:52:27 -0800 (PST)
+Received: from localhost (109-81-82-199.rct.o2.cz. [109.81.82.199])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6bb989eesm26747447f8f.50.2026.11.24.00.52.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 00:52:27 -0800 (PST)
+Date: Tue, 24 Nov 2026 09:52:26 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] memcg: warn when memory cgroup IDs run out
+Message-ID: <awVQShRRwF1IfEws@tiehlicka>
+References: <20261124020800.2313930-1-shakeel.butt@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ctdbjjsigh5qt3q73mzpo1sfej33e161
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261124020800.2313930-1-shakeel.butt@linux.dev>
+X-Stat-Signature: icwfs6irr7z649mnyffd59gc599xa5ye
 X-Rspam-User:
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A685120004
-X-HE-Tag: 1795510238-869126
-X-HE-Meta: U2FsdGVkX1/3YMsf9bn00kBxUhM1yF3zgkjlK8Ki0J8g+7O3hnhXkSRABfQXjmlvDCzA1kbYUC45UZFxUqHNjTu2PuPGr7s8JcnOSHbI1qH1uXG4gjSNVC5tor+a24xWmp6dCRP8Jsl1NvR2QuayN0rzcvbK02rpJOCXjOOmwabnCWJowjn0ZvbOSI5lLtOxOPi/7B4MzgWx0YIR8n3EFPX+xJEryUVa9VmGEVmBQ9Q/3SpMcxUVfAn+fNA8udReDKJa59yPz4HN2aUyipfXrRWSWdshaw+So4MDT0RojQOEgb5tisL93V17W4hHXDeWYS+WGhtFd0MfFdwGc2khC4uQUwB7eAER+P1CpHKugle5vYhWtB8zhZyDEXBVSBsVCoLZ9tHEtrTWtuJP/hSAb38ZTagWfi2YExYjEDjyaQJZX5sA2vuKYVvecN1Q/C+DxU4q1TDFHlUo2asfddJANLfe4B7TlsKyWCsfiEl+FfI+aZ28lDCc8cUY7j+jUdrwOeSskTjp6OiTY2EsUme+exzLiKn4OwTYuNiuXg+7G7944GkEugN611/SQyjb8ioKMmwG9WKDCGZqwzXciRtCFR9IlkjMHxyeW22e3T5yb8qhJhr2/fLnTkKP1Jvha6HRvTstarFBjwO1w2A8+7YERfDTy86YBY4tz6YaJn8LWytECXE/APtUasXReAwcElDaD7PQ0YG3nmhk7aj5bI0yqmxyb27GB9aYoniTDooyz0MPcOWUUKFXLHPmaO8KLPlUBKg3tJiF9ZPsfNfiKq17KYMz1/ObhFxsgbdNYiogCh7h+Iov7q4sAHuNwo/td3nc8ZRfBbH5VrPbbiCA+pmIoZ9JeDhD0aDGKDSDt0ZyfvDzCekZvJ5rR8/ufeRd0qOO35ICuPsZPF22TfegPrAber8KQzGdDxq4zey8KtGbq9X5ODcSudVwE77+PWzMi665pxR2Mmg2MDi6EYKwaOG
- VLIdxMTr
- Pc4woK506ZjvePfpnXt5y0szGJ5yqZPPLEacqE8PB7C43/oFVAtmiZDqVTPAj8DYldbl7yxsrJf1PaXGVlaBu+pwNF6C9t6ZXw4jO4sXtrqzRHLc0WvYUoHQW3szil4Qm4sogThOvfZ9s2opzT3TyvheASkjozDi62BkvRBvWBbo4+DAZDQhDig9MPY3o+zCVrjeNaDM/pxy4FkASTUu4d0jVDjBH7F4jDoRb9gX5deBeMvtlwPkBpTTU9Il72dxbhlLsJBmA0eb93gvs79U4O4PGc+ptMqjRVFJYvVOShb+0RtITGmJOvGUkoltopHXRDoyJ7kHmzkneBvFbmRbrG0TQ7PJyRr3afonklKB6FhQ/SJkuMeUxtHPrOoT5qZm411a1nWg+VLyjMJeok8TsvEMxnejK/4ZxzTmoPDAkzUwhIG9fWPSx/1Q1fZKzS3rg3vpFt3yIUeVtbyqQ28eSu65JM4abJuJk7IknW/dBuLmSdKAs8mRcMaSDHiw1Ha1RzIwF65LRCHfoxn2a2X54iWbc1lsQyYusCe/4C9QMdOw56qgYgMG8iDyDoDXUDK41/eN9xg7QRC7DaVE=
+X-Rspamd-Queue-Id: 262BD140003
+X-HE-Tag: 1795510348-318013
+X-HE-Meta: U2FsdGVkX1+yjNlMfS8vNWGI5SM8HoY9cwWCjn5A4c3padQtbx+1uo1z0FLkAJHYwzW7Ec8oPWqVkW2QDazfEJ7na37KCKutrBpqmVTW9esp7Oe0KXSxUCKHF8Xndcj18pgLq8fAMTm8rjGs53F103SlPXKa60JJGW/+mn31q+x+hyFsrvIUOUXhWchRU+9e4Xdm3tAxZRS4/046Zgt21NdFpH3a0O3VwCNwxZ3p6VjK1NLyNUve3vwcgxTGKb6EGgzkmOiTt6uDVQ0aWc7unz1yqzTkMaoTsQxFQym7v5pg6PNmmKjd3GFQVT75ANiAgSB1yQ/qbA455LB5MQ4lNvKVt4Iy2ejNzk62YQU678qULwxvtE9lBcpnews1xPcgQkxJQZtP8CDwbCrCQjE6JyMYmuhpJf70JI8echNBwhAeEPOxGh2r4BTWCeSW6dO4VnqNkcA71XrUe0mVg6CStc3oync0gGKaDRk4AYaETl462kYoiaAFUWBztC+OArYZ2We/hSLCwYdK0U02We31WTF8WmZ63+y2NJRMuBXYcjpaYob1rQ2HXweDsLZvT8ye4LoC8mtd9jQ3BBDannsI2R4Sm115rysGyQboYHA/6KFBY4odlx306tQEdR/vuoVuq4gwwv6fDiSj4414vJ+y7w70KDy1XGVdNxXQWyq1Mae/68q5sKwl8sNj3awytf9RzTKzP8uxjcGdd65L/3Hxf6dXnVj5AjWKqwDA6lhKeBrCSjjAGnoLRCZG5BQg+HyLV3DMKUn8BF9u+fC4hU9iScKcPR5q5r3Wd4QL1pJ3P0ZWPp2EHymv46uhtky4xkPpER5sQClRwhgn+2JiZvBLb5+Ch5j4rTX7p+rfqbtnDKkJ9KTsy4EtXV4sPpGHuIZ5A0rnn6/eg/wvE/LP6vhuUqg7m987gbDOEHMAYgsno+MGP2mh0Sai178GzAMdVNFrGIn4ptan6LEvkzIeKuR
+ ydHU6zIM
+ v9w82Rvx0KinL1c/NNU7zHUkIjQt4yjjeFJdBcuAmczNip1mYF5SzKEs1fr/HNM12IYh5h1cDvqDyuf0BJntDdLA2Z/7ck685ugZphqSn6c5jrAit5cR9odTF39IVTSEApjGa5ejWyafT+eEm2pOEffGtOf3vQhhLo6jpleQV3h/7S1xheFSqb3DcN+mNX5DfEG73yrIPth05NXoLFeiKrdY/BtPNB+sUp8qtMdpfLrLnHgLXWtYkB1vzUSi1Ck8OshbWPh5EdQv+LhxUK5Gtw1dxJYDoInvDSyUCaF8sBSfXca5B1NHJq4PREJ3drMmMj9zf1mp/KWUQRMv8M9AchW7ai8Tw293qoZzs/CdNCVYm6OAVZuuEaIFgrchbX3n+TyZOiPq6CgULIdM2J9ePvXVlTRRPh8+ZBxYA3HqZy9JRp4GpJhG3xHSPsGQCIFi4ZCPfO2cZbjNAiOrwf2rXZBRaG/f+UXG1mr4sjIGnyWLcLUg6YktKRvhD7ib8Bv2/hvsj4WFHdHb209V10mDYX2imhlLT05brEw50N0H+OKbDkkDVWtcd70tcl0shrLs7vZezIQheOVfaBZU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,72 +128,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-KCSAN reports a data race between prctl(PR_SET_NAME) and a lockless
-reader of tsk->comm such as the sched_stat_runtime tracepoint:
+On Mon 23-11-26 18:08:00, Shakeel Butt wrote:
+> Every memory cgroup gets a 16-bit private ID, so a host can have at most
+> 65,535 of them at a time, counting dead ones. A dead memcg keeps its ID
+> as long as any swap slot still records it. On Meta hosts that create
+> many short-lived cgroups, dead cgroups held this way filled the whole ID
+> space. After that, every mkdir of a cgroup with the memory controller
+> failed with -EBUSY: systemd could not start units, and container setup
+> failed.
+> 
+> This was hard to see:
+> 
+> - Nothing is logged when the ID allocation fails. The only sign is
+>   -EBUSY from mkdir.
+> - Since commit 8290f45995f5 ("memcg: move memcg private ID refcount to
+>   objcg"), a dead memcg is freed even while swap still holds its ID. So
+>   nr_dying_subsys_memory in cgroup.stat can be 0 while the IDs run out.
+> 
+> Print a rate limited warning when the ID allocation fails because all
+> IDs are in use.
 
- BUG: KCSAN: data-race in __set_task_comm / strlen
+Not that I am against but isn't the issue clear by observing EBUSY from
+mkdir?
 
- read to 0xffff88800d1787d8 of 1 bytes by task 3929 on cpu 1:
-  strlen+0x19/0x40
-  trace_event_raw_event_sched_stat_runtime+0x5a/0x150
-  update_se+0x14f/0x3b0
-  ...
- write to 0xffff88800d1787d8 of 10 bytes by task 3417 on cpu 0:
-  __set_task_comm+0x78/0x180
-  __se_sys_prctl+0xcb3/0x13b0
-
-The race is benign by design: since commit 3a3f61ce5e0b ("exec: Make
-sure task->comm is always NUL-terminated") the last byte of comm is
-never overwritten with a non-NUL value, so lockless readers see at worst
-a mix of old and new name. Annotate the writes in __set_task_comm()
-with data_race() to tell KCSAN that the lockless access is intentional.
-As nearly all updates of comm go through this function, this covers the
-lockless readers without having to annotate each of them.
-
-Reported-by: syzbot+98baf51f5cc36dcbe2f7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=98baf51f5cc36dcbe2f7
-Signed-off-by: Xiange Pi <xiange.pi@intel.com>
----
-Test environment:
-  - Baseline: torvalds/linux.git (git://git.kernel.org/pub/scm/linux/
-    kernel/git/torvalds/linux.git) commit fc1c25014ff8, with and
-    without this patch
-  - Kernel config: the .config provided on the syzbot bug page
-    (CONFIG_KCSAN=y)
-  - Method: QEMU guest, running syz-execprog and syz-executor with the
-    reproducer in the background, plus a script that enables the
-    sched_stat_runtime tracepoint
-  - Without the patch: "KCSAN: data-race in __set_task_comm / strlen"
-    reproduced in every run
-  - With the patch: not reproduced in 10 out of 10 runs
-
- fs/exec.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/fs/exec.c b/fs/exec.c
-index a5269b5e00df..4b03bb2fcb95 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1100,8 +1100,16 @@ void __set_task_comm(struct task_struct *tsk, const char *buf, bool exec)
- 	size_t len = strnlen(buf, sizeof(tsk->comm) - 1);
- 
- 	trace_task_rename(tsk, buf);
--	memcpy(tsk->comm, buf, len);
--	memset(&tsk->comm[len], 0, sizeof(tsk->comm) - len);
-+	/*
-+	 * tsk->comm is read locklessly by many users (e.g. tracepoints,
-+	 * printk). comm[TASK_COMM_LEN - 1] is never written with a non-NUL
-+	 * byte, so concurrent readers see a bounded, NUL-terminated string;
-+	 * at worst a mix of the old and new name. Mark the update as
-+	 * intentionally racy.
-+	 */
-+	data_race(memcpy(tsk->comm, buf, len));
-+	/* Same as above: lockless readers tolerate a partially updated comm. */
-+	data_race(memset(&tsk->comm[len], 0, sizeof(tsk->comm) - len));
- 	perf_event_comm(tsk, exec);
- }
- 
 -- 
-2.43.0
-
+Michal Hocko
+SUSE Labs
 
