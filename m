@@ -1,95 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5813D606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89079606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q6oNJZB6
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A4kiSoWN
 Received: by kanga.kvack.org (Postfix)
-	id 610E16B0747; Tue, 24 Nov 2026 10:30:33 -0500 (EST)
+	id CF0226B0749; Tue, 24 Nov 2026 10:30:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59B7D6B0749; Tue, 24 Nov 2026 10:30:33 -0500 (EST)
+	id CAE4B6B074B; Tue, 24 Nov 2026 10:30:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 489026B074A; Tue, 24 Nov 2026 10:30:33 -0500 (EST)
+	id B3F376B074C; Tue, 24 Nov 2026 10:30:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 212506B0747
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 83ACF6B0749
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:30:33 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 853F0120BD9
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2A13A0C8D
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:30:32 +0000 (UTC)
-X-FDA: 85470399504.05.F8E7A4B
+X-FDA: 85470399504.01.7E4F347
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D3B6D12000E
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2846C20017
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:30:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6oNJZB6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A4kiSoWN;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795534231;
-	b=HYdrd/pWwOtXGEEaYF8+cdHlsbI6108F27DTs9yxfs5X5vzgVTswP2RyJkUZjKp36e0CdQ
-	bGMA+wo2C2MEzcqu8fHMWq00czxJCiOSAmUNKjtEhEXtzaiBvy1lNIiuWvE8QCvqM0z0cB
-	z3lsdIw4oc3lMUZ+H/J8YHO9Q6ZMh6s=
+	b=BDMGtdXldQ4eJz7rZjQiPuUBU9O5T4xg1J1DXGA5jgdUXqD4cRa+3p2yJ3pksXXEPcvpFD
+	MHwzSLciNWbWnQPr8mcC/9xlwaDgujqaGBoZL5JOXHpRa5w0f4DZS9dPdZ80MzCi21hco1
+	iU8maevLx3dqO4ljISUa/PBx7/TygNQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795534231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DIDV2NuLNU9URutPUbTqr/fH+wYU5tnhotuywFh00ro=;
-	b=wi1DDR3NHJlH2yWiG1Y+l7u7NJDsukZFfoGF89ndXn4LGYBbHrwiG1LmC3+bm8H3iHhu2/
-	f6AmcZcvnJdU02qSmeW5Iaj7f/LF/02aHaEr6RJXa/19BFlr3RZFdp23m2i7Z9N9xL+LNo
-	TTPSOADSJoHMVprJGpfGNi4Sy6FbqXE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vtGnH1j+k8K1i0C8+rWDE5CfsWDYKesCWpGj2PsQngk=;
+	b=odfsK+woDjYcUGsaQglQTmXBuQFboi0yaSrGDMmycybrXt6MtW/rRTXjYGJlEY4Khf0p67
+	INy2WHoU+Wi9f25PTnMANbsIWH4V82fioTAXf+f9dqdZ8mWlg6t5HyhPpN4L8D4V4U9NR/
+	AJ6yMDRy9EsOZTUGMVTmd8iYlvcQ268=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6oNJZB6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A4kiSoWN;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 07E88424CB;
+	by sea.source.kernel.org (Postfix) with ESMTP id 61402447BE;
 	Tue, 24 Nov 2026 15:30:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381151F000E0;
-	Tue, 24 Nov 2026 15:30:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116CB1F000EE;
+	Tue, 24 Nov 2026 15:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795534229;
-	bh=DIDV2NuLNU9URutPUbTqr/fH+wYU5tnhotuywFh00ro=;
-	h=From:To:Cc:Subject:Date;
-	b=Q6oNJZB6U7VElNu+N3//UjOfVMkguuC8Hslg7dqk0nXMHbSCUsY37asAo2n5/gMBc
-	 xMW5QXfvxGtAB2gpJh/ahyFb+HNU0YIZRV/mOpHPCN4Zf+SUwBYSW3d50VuzYzWXqT
-	 EkImSxO9p7KC/nLMgcbC+1FdZbBg93JkLGRLaU0mhtCYWhrYBxMjD9Ey/iu0kE0Ose
-	 jc6ssCjLlI7OqdWA735y544BhZb8sxFQKZPG00zJZYsAJG3LROulLT+0ev3gV+t5do
-	 KBIJgD3OeoXn/m3YeoqulnjVv8Unj55QRA7D9/27yT9YH91V1z+jGS7jxNEhHeCkLq
-	 g7IQZEB5CxO2Q==
+	s=k20260515; t=1795534230;
+	bh=vtGnH1j+k8K1i0C8+rWDE5CfsWDYKesCWpGj2PsQngk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=A4kiSoWNXQe9RE7ah6INVKCZhCr9v/oYj+yH5c+YKcRFU4Q5Hl20XtdjchLw2Wpwg
+	 lFurLsHrl2ZlsERTDsrTXbKfb+7FSUA/Jl6KmQImydd6LRowqNBpwnbxAMls6k2c+R
+	 ieJrolvXUXnk9lWsr1AM06JgHExkq0/iq7IQePjZYS8HJLXIWXozi0EXAyTjHmkbp9
+	 QCXQRtOUevM/Wip6RzkYg+sJV2EM4WFgpCIRO8cnBBvcu9/nSLf53C/c+prihMKCKT
+	 jSb17tZVK4gKfnyBcDu4iM9mYoS1H5zJ3ITe9e+NJffmuPCZQwAYmlruCM4ZExfLGD
+	 ggDlLNXGTwc1g==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+Cc: Aveline Noir <jm5905938@gmail.com>,
+	SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 0/4] mm/damon: improve efficiency (paddr, core), fix a selftest, add a kunit
-Date: Tue, 24 Nov 2026 07:30:16 -0800
-Message-ID: <20261124153021.90142-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH 1/4] mm/damon/paddr: skip non-LRU folios as a whole in pageout
+Date: Tue, 24 Nov 2026 07:30:17 -0800
+Message-ID: <20261124153021.90142-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261124153021.90142-1-sj@kernel.org>
+References: <20261124153021.90142-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: g5p66pe8qtzf1pc4upixmgmzatuwdmbf
-X-Rspamd-Queue-Id: D3B6D12000E
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2846C20017
+X-Stat-Signature: cp7ti5adxopea15o1j9ma835yin5xbdd
 X-Rspam-User:
-X-HE-Tag: 1795534230-270550
-X-HE-Meta: U2FsdGVkX18NHdf2HmjL62UKS8i1DE6atkFeblIebQOJMCExLVWW0RLwaAQv49PZiHxmrzcjrGnxaDlTlT/1aiJYKuhl+z9Ld0YwHYwh47wB5L+d5FzcWFmC5Gu/cOtbA458n3jpPmvuP1enYYilPz1z+Kim7uEgnnvdHpKQUwxhbY9uV0Zt1I3NPVj+vthzgN7MMTXS3leRWr+twxli1UYbV90mrDus0bNZ5V6S3ufgs9mvEEh6Bitx27uDS3z10udG40SQx+mgiFywWjdXamtH9imodbOyDkS4SqpSRwLgUAhd4+4Bbimlqka0JU5c3cws1kffW05833T/FJ8pD++X6pp/DOhpFHNSefk03CDzrOrFxCshh79D1bifCAgzvhys46uKZ0iT5ZbVNnMix0lcgDQZPVGEtBE2tXfVF1JujKwaX/LhDHYF52vGPVtEc7pb4eGafmfQlPA6gOYf+2NDFeNBCT5sL0P4vAxpQkq15PkPgDSbirXKF4LfGisXtWVadDfrsM6A/ReSEGV8pZrZUl5myifUT+KdAlX7mW/quJnBc2W1kosxGhbYYUwgvcjYzrWnf3rDh2CMC7SbAn0qxk5NyTStoKE/NymaH0LrGdR12RFxQl7jktfLAuNHxGZJ1qi0v8TPfLUNJmQR6ot7wNARBHnqyHMnYXWe2pz0HFoWw1/7fyQODhKi4fNif8Nrk3eGOhAeMyGP2p/T3nZFXhP2g+FSF3Oa8FzP+8XQVHajE0wiqRCJXJyDlMJ9G2edpGrKPLsXeXI1/4hGQkVHwI5BDQAUb4B2iesR53oZvhdE3wPJ/S/UZ0aM1f3ZiX2Grw68t2DkANqngkUhAC1Gj+xfNny0xIDpOfllPV77dwfmi2XTRESJN44Ws7g1l6GQq6totfWXGAG1cCzyaXdDgqZEK34/+Jhq6jz8WsQbxj/+PdjxIpExSqRxd15VvN3a2W89fIi7DEYPGgy
- YWZyupyv
- TeLPYIMAgHnVd5ZtKnuPDZ+xginuS6fM1UJCb2dhlB7TdTTWmUqM/8ciVF8lqiDHlKsDi/GvDyIFp+MMEr9Ud9NrhgDNU0T/LUmOY0+AI3ljTr71Msd4sKD/LR/i7YtWPxSnZX96poz0IdjmKIpe4EJlw4pZh4RTD/1B1gz6DHShwMoSJtQoBEJHcqh+7lGioJySazC+uS3VZZtSC8W0gdTBYvurnlyyf3nmYJeMV+VVQiVxyLXdGzUm13vDGW5wiPSsg+fwh0RRbAmDWgcVsLYFQ+Z25vw4A1xdnBNGSnr8BgOdITNQdgjlvFydM/oHZCrs/deRpJaHVft1L8B9xjiqq+PQ0asgYhJut0R6EzgSDx+/zWKJNjBEbyAEesh22rRb+GLn8nJNe0qE7k/FZ3bNypxGrjjucAEuAm/Aj0e4MFw+hbLHijXTqTA==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795534230-181524
+X-HE-Meta: U2FsdGVkX194AIMosk2bFyrXHHLubxa4PJ7QAcPluAEvupHXntW5cSAjPYrmExSMZDhDvt1+TctRCVHE0OlRWU5FVQpdbz9mh2eqJk7dfJp8+EmMh1hNlz3C2Gd5Xn3bUgOmAEx4aklfjbI5LSCCaVIg9dy/C2EuQeKKX93+ZOpMuAJzD0RXZFnLBNOXuTkDSZBo9dbRT/W2bGZGzQzLskl8Y52DfccSQbUj7vvsk+6zW0Pg43vdW732Eq+Dpsy5kklbjF2pp3+kqERUyEUFkxuGUu17Ra9JkAcnpXDwqcUNgKsD5N44+XSiywwitKnOwh9GnMbE5n779OOS4maSnZxebaKxFY9IceVwqvatc/TmjqHLKMRZw6FQzMmHw+AJZjG2Ya82pMzn0G7Gbbr00RcbrnR7d3YEEuqgMOogUv7pqjNRy7413vaYCE8cFQnpex7P1X/rVHyYBPJ6AIIYIt5iyZh5GliL+weR/t7hA5Oh529kBoKpARqgmJ9l8OiTKYDzoDmNJj4Y87npcKK/4wWkFFR08B/iYTvmMyy/+FLWqWJXhQ7Q3VLkR9vlJK2cVfVtK7rovehqNB+lSH3N7IgE7/4BA4VvwfrAQLlE80PuQoX9LzyohzsCSjYzquk0EFlrdoK5JdGFHE4ikp+5fpfdmjFKyWZx7eR06TF4WUTWBTeTfB9mLD8UHebJBC0eQalxwzEdVxFUDFWI2T3MKaNGRLPcHyFv8eHJ8yu5pGExQgi6uVseD37UP56e3Uu0b3ZMd6eYzHp4WRSPLtijeCJr/AdJOp4CiKVngSejUFOWvN+H1oFJmZW0ZaKItTiriG8g7hFuHDFGOxnfzbIb6C4zqpF8X9avjPbwSUPcRvxjn+DzBy6h9/cLjCAc1rBBxSULnXlciwZtftJ+6j5UglxsyEZtfG5BUyD51+vVXIBfNHZTGtQUIJ8/pXk/EsJDuDcTpFe6ez/ow+xY8wq
+ yH9XK1oi
+ a6dLS7Rs99OM7TdcBZTGd86n5SPFcUdNj1iUpJK0txNwahnKPcdwZ3bQcF/FX7J0+Q8uwaj4biNM+v6imIGoKc2QXc1Na6mB8xtjhcWSGMl5YvtKSC/vaCBhhnt13uEY39wJWE8rfaugGM+zJ95bWTpNzXl6Opt0H+O2+hOfiJtaAEVM0+/Li3Rtfhz+1W8yXs2HQwWNP1g/cjk3SucC1gftg89pmoKwoSI0BUVCVxs2GHeQlbkTfPopM8jlxmQtqFVtFDvaGyoI6k1RnVjbl4CH5/En6tZXmYWmbFoum6Lvn1AoUlFVwMCGJnWOgHWVo3+Poqqw2jkSWxTYDSoC7SrJBa8otbIEen5o1HZ94l1wJ9zMkDAB/wc1nW1MhzxgtgICe4Xu5WfSJcQRrNO4/6y1ojaECRW6FCjUAUGhG90qXK19hrtQhAgTAK52JACYcuZ/aHHDe6H/tZwAN/BsBUuuARLWOG/W01reC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,33 +96,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Improve efficiency of DAMOS_PAGEOUT in paddr and apply_probes() in core
-by skipping unnecessary operations, via patches 1 and 2 from Aveline
-Noir.  Fix a selftest for a false positive failure, via patch 3 from
-Aveline Noir.  Add a kunit test for damon_call(), via patch 4 from
-Sailesh Nandanavanam.
+From: Aveline Noir <jm5905938@gmail.com>
 
-This is a batched reposting of separately posted and reviewed patches
-for being merged into the mm.git.  Refer to changelog on each patch for
-changes that were made before this reposting.
+damon_pa_pageout() uses damon_get_folio(), which rejects folios that are
+not on the LRU.  For a large non-LRU folio such as a hugetlb folio, the
+loop then looks up the same folio once per base page even though
+pageout cannot reclaim it.
 
-Aveline Noir (3):
-  mm/damon/paddr: skip non-LRU folios as a whole in pageout
-  mm/damon/core: skip apply_probes() when no probes are installed
-  selftests/damon/damos_quota: skip the last sample when counting
-    exceeds
+Use damon_get_monitor_folio() and skip any returned non-LRU folio as a
+whole by advancing to its end.  Do this before the filters, the
+accounting and the last_applied check, so that adjacent regions within
+the same non-LRU folio are not walked by base page either.
 
-Sailesh Nandanavanam (1):
-  mm/damon/tests/core-kunit: add test for damon_call()
+In an x86-64 KVM pageout microbenchmark, traversal time dropped by
+about 99.7% for regions covering whole 2 MiB hugetlb folios. For
+4 KiB regions within hugetlb folios, traversal took about 1 ns more
+per region.
 
- mm/damon/core.c                              |  2 +-
- mm/damon/paddr.c                             |  4 +++-
- mm/damon/tests/core-kunit.h                  | 22 ++++++++++++++++++++
- tools/testing/selftests/damon/damos_quota.py |  7 ++++---
- 4 files changed, 30 insertions(+), 5 deletions(-)
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+Reviewed-by: Enze Li <lienze@kylinos.cn>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from v2
+- v2: https://lore.kernel.org/20261118-fix-damon-hugetlb-pageout-20261117-v2-1-547a65a3206e@gmail.com
+- Collect R-b: from Enze and SJ.
+- Rebase to the latest mm-new.
+Changes in v2:
+- v1: https://lore.kernel.org/20261117-fix-damon-hugetlb-pageout-20261117-v1-1-054ef8760a92@gmail.com
+- Drop the redundant hugetlb check and update the subject and
+  description as suggested by SJ.
 
+ mm/damon/paddr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-base-commit: c2b9a116bd15d6afa6c3d032e97136fc67f06970
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 411e1d557ba3f..83bc173c30504 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -268,7 +268,9 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
+ 
+ 	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
+ 	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
+-		folio = damon_get_folio(PHYS_PFN(addr));
++		folio = damon_get_monitor_folio(PHYS_PFN(addr));
++		if (folio && !folio_test_lru(folio))
++			goto put_folio;
+ 		if (damon_pa_invalid_damos_folio(folio, s)) {
+ 			addr += PAGE_SIZE;
+ 			continue;
 -- 
 2.47.3
 
