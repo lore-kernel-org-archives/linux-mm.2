@@ -1,132 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E3F606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 03:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6C1606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 03:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RZGYkOeP
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hl37Zxfq
 Received: by kanga.kvack.org (Postfix)
-	id E03726B05D9; Mon, 23 Nov 2026 22:36:07 -0500 (EST)
+	id 04A766B05DB; Mon, 23 Nov 2026 22:38:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8CB76B05DB; Mon, 23 Nov 2026 22:36:07 -0500 (EST)
+	id 022F56B05DD; Mon, 23 Nov 2026 22:38:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C55806B05DC; Mon, 23 Nov 2026 22:36:07 -0500 (EST)
+	id EA1586B05DE; Mon, 23 Nov 2026 22:38:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F9EE6B05D9
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 22:36:07 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB6A2120A45
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:36:06 +0000 (UTC)
-X-FDA: 85468599132.12.0AE5965
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 19E62A0003
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:36:04 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=RZGYkOeP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id BD4A06B05DB
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 22:38:01 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CE714120A44
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:38:00 +0000 (UTC)
+X-FDA: 85468603920.09.AA04EE9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 209B340005
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:37:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hl37Zxfq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795491365;
-	b=H1X59fs2ZVCwbTcwKNMgYV9Mp34ga754M3Cx9kdlECW6ftvVmaLpNFdb35MzMRLGzMi/4a
-	aOQv2BeiCe869yfkMGawKDgPmw8ALLmWVbRdwPuN7TSZhQxK9aYO50W0Q8m39eD4gWKaHy
-	3M87RyQQDJmLi6IjFkH4gmOO4EkLbXI=
+	t=1795491479;
+	b=M1uv38+vKgPqefvrU00dHG+gEd3pYOdIhIJIb2j+l/vHxRXeI1XGlXvf0M/s1YF/cbBzde
+	XKJ+3nDtf/mw/eC70dOztDoaCM7LB9wWQl+/3v/ZSX6/NQ8ITVeHQ7JHEPyq5xrluoTL04
+	tnwBS2N9qU+10xInAVweqi6f8AFAg2M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795491365;
+	s=arc-20220608; t=1795491479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tPwzcSn9YCtkUcYX05pvK2PhOcLN5eFatEAbk1VC3Ao=;
-	b=6dQRnOy9dxm+fUX7/PVlfoaG7KsA2IPW5KhoOk9v1ilRwlAfreRSsxmLFjrvcEU8XZsqmC
-	fVG5hed/IVpOIO6myUW3cujY+fqALFTVCBCukJ1qEGkFeSntBzqFy+4HBBnR+8NBOFwt/c
-	WIDhjZlemOKva2b28TeM5Y+wK8NF4E0=
+	bh=+eRa9i7CtmafJcWw1IGcHObp/3OCLe48VR0aUW22rk4=;
+	b=3mU2hyqhnI4mxIHttwOnke3qS7VB6igQY6CbLhhfWSPNN6z2hliXHZueHi9wCaBRF5U4nm
+	a0ZJXiZHwJ60Ko3bxkMZNJLF+B9fokcbpJir93eavYgIn4vW62/jsqc5U26inr0vQq1QJs
+	3+HOk8kwJdCyEwYoydoCKqMtx7WlRXo=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=RZGYkOeP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3b41e627cadso2423360a91.1
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:36:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795491364; x=1796096164; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tPwzcSn9YCtkUcYX05pvK2PhOcLN5eFatEAbk1VC3Ao=;
-        b=RZGYkOeP/JxulWBHwtaoNs8tCY4fXQo8iRvUdSwMaLctrMjI+/Z4AzkNmhrIPoej16
-         octoltR2JfRZZ2zdvE3HBOcsVk9Ow7rv0KxOn2nRnIBICFXNOtlZ3RRPCN/DWxxl5vB6
-         9QWdekpUNUxMripXkP/UVUW4I4cDRR3y7Y0qPh7YjKF08tOYMurw/Z5OjBApKyhUsh14
-         hiC+PvTKlWK2eQvbchbGv8WzFvc8CYDfr5z2SnNTSwWuONlN5V7aQat+SzV/spwiJD70
-         HU7aaNPOoAwwWpRZy2AsUEm2yKwpTJKhd1stwFCZiPFzZJ/uC4wyyzIYyi4jLOUjkK76
-         Vz+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795491364; x=1796096164;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tPwzcSn9YCtkUcYX05pvK2PhOcLN5eFatEAbk1VC3Ao=;
-        b=duTpkjAKnU9S9IUV54I3WuUSdEaJOQHzmhMeL4OEhlKlCejkNZOzmIAEsyZWTynBFS
-         SIBtDej6ljgR72eHz7CFZ06eQnjZ75rSQ+ID81xbto+jUKxp0gnWOxU+axceC/33/Vzh
-         +z8LPxIY017nCSwDbMpv6UDfX3696bC/uBoqYEDyFUkBMeefOQkQvpqUGlnzKh4gYuNP
-         1PQRQJSiF9fDGhMCGNl8nYrEehsdzs5eXEUYdeRarfEOhBfwSbU2EXYjrQ6x5Q7gikeF
-         eyD+vJtQ7uq6YKuD1cLWXNsDax8WV341hvSLYhH28MCHWxW/jeIz+bcWY7FbVg1fEY9Q
-         WVOg==
-X-Forwarded-Encrypted: i=1; AL+hErFZTt2hwdWv0927jh+zP7SWNYCUpngg+6PthlvXO9eiLnPpfW2SlDgQ1Q58gu1CT2g8949glhPt4Q==@kvack.org
-X-Gm-Message-State: APuU4Z9nAcHDHM1+tPpzXRo+XLVmGnnwanYFPYHCApn5s4Umc8YVdSAe
-	lAzg4zXw8E0Jv/bSOgM68ZYBd6aGBGNdSs27It4LOK3PczvLI+cKMDce
-X-Gm-Gg: AZFdTZcb5AZndPVMwRzWFxXK4TBwQ736HDb9t6E5WWrf4Bi+65mpK51plaKZxH/3DDC
-	R0ID81penE0ltOjKUz4f+HabSCQchTCm4FyNl+jBXCHKx3xxEvfW3Vnw5sh9yGVIXTzVxakzNia
-	joKecxS7HDkGmh0CJc7JqbiOoTMY4NvQUXRALhkAIY0ki1VYVPPu3yaD+ydK7UweHYwah7UPPQL
-	d5IAXgm3kiLK5YIu7ZHOPod25Q/D2sAP0XiFNrSv8e/vJKHvOkcSiAEuZvjSFKMemt/vNyoX4k+
-	txf7UQ8zwBOf35JAEK3ZtsL6cN8dRM37aAV7F1KRLK9mSaquDKYyiyhygjNgWfuBaClrDnF7jyQ
-	iDQQ3JVyPv66Qe63UqaMwGvrfaLVWRoccHHwGLXokN3h4Z6QxwOkgImv+dgoNRFUhwLTih0UknS
-	G+cM+w3vBfRg3i7PFWFSzotegA4SZ5Th9nu96b3dQArxzbRMdQPJVD4epIEd5y3DoPC/FnP9Dg+
-	bMmyxBQriRikLiJ61CKARAQYQifYMk8VarAPIcy7TRtveuGaHhQuvmQCDdpjK/sxS5XusCwXY4r
-	oja93zdkAP3jQs+bn3Kpys6LH8fQ+f5oPr0LDHe5KUGw5hPgKHSV4XaKl0ZN90FcMhw=
-X-Received: by 2002:a17:90b:4a92:b0:3b3:fd13:683a with SMTP id 98e67ed59e1d1-3b41c995b82mr12834105a91.59.1795491363557;
-        Mon, 23 Nov 2026 19:36:03 -0800 (PST)
-Received: from osman.mioffice.cn ([43.224.245.178])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405ecb486sm23397939a91.16.2026.11.23.19.35.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 19:36:03 -0800 (PST)
-From: Zhan Xusheng <zhanxusheng1024@gmail.com>
-To: tj@kernel.org
-Cc: hannes@cmpxchg.org,
-	mkoutny@suse.com,
-	mhocko@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	akpm@linux-foundation.org,
-	kolyshkin@gmail.com,
-	chris@chrisdown.name,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	zhanxusheng@xiaomi.com,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] mm: memcontrol: find the OOM group of a process where its threads are
-Date: Tue, 24 Nov 2026 11:35:47 +0800
-Message-ID: <20261124033547.2373352-3-zhanxusheng1024@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261124033547.2373352-1-zhanxusheng1024@gmail.com>
-References: <20261124033547.2373352-1-zhanxusheng1024@gmail.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hl37Zxfq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 44D1241915;
+	Tue, 24 Nov 2026 03:37:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id CDC1A1F000C4;
+	Tue, 24 Nov 2026 03:37:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795491477;
+	bh=+eRa9i7CtmafJcWw1IGcHObp/3OCLe48VR0aUW22rk4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Hl37Zxfq1YEb/KW6XeaIPjFuYb4guOvBMUFj3yJB/7niV5bf4UPy09XENiuDlE9Ro
+	 LAgxCwk64dt6h019EHmRmYSy46uw6JBtlDnXyxDEfQX2za1Sme7AvkduutqDAAccg9
+	 O+Dod/5SGwPR3ree5ZExwPLvTmHgQeo/k1s9iYM7Rj72CZFTed3+mVRzYLxvI0gfY+
+	 l4vATV8jbRU+l6KcJ25ccKrWiDViDDYUk+XZ25WsEq+cE9ZhnAmulrMGJH7do/ALdP
+	 xRi/t7qoD6nkbm8NsRwRO0e3p3o3XyK9D2KYBactsLrtGTZB1RIpE1U2DD9tJEzf3j
+	 OOlFdDsneTPpg==
+Date: Tue, 24 Nov 2026 05:37:53 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: bpf@vger.kernel.org, containers@lists.linux.dev,
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Aleksa Sarai <aleksa@amutable.com>,
+	Alexander Mikhalitsyn <alex@amutable.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Giuseppe Scrivano <giuseppe@scrivano.org>,
+	Hugh Dickins <hughd@google.com>, Jan Kara <jack@suse.cz>,
+	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
+	KP Singh <kpsingh@kernel.org>,
+	Lennart Poettering <lennart@poettering.net>,
+	Neal Gompa <neal@gompa.dev>, Oleg Nesterov <oleg@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
+Message-ID: <awUGkYoyDXp4P5LJ@kernel.org>
+References: <20261122193539.3334213-1-jarkko@kernel.org>
+ <awTmJIErjasO4lqq@kernel.org>
+ <awToL2PFNKVgIfqs@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awToL2PFNKVgIfqs@kernel.org>
+X-Rspamd-Queue-Id: 209B340005
+X-Stat-Signature: dpn6uhurf5fzw34jpnw1pims4rqdchrm
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 19E62A0003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: uah148a9bzxdd5c5co5y1bt6asdezgtz
-X-HE-Tag: 1795491364-893951
-X-HE-Meta: U2FsdGVkX19UB+9pMVKiR1UkB4NnjYpId1kqOi+RqJDjY0/maP5zbrzMeo0mtxUUrbaaSvZ8wQd7+OpPKLYldIwzDb+JdIGun76qzY7sXbDkX+e3bdQAmbfK6nwS4CT6Rc7Y1a3Zl8Bgz76bM+7q7Ds6nuNQFZowgTR2XkcG0x90i2AGZhkNhOgN/cBPnpRIfQvv2LlJGYvMeg8fawd3DnhY0/Zs0mEEM+n16CE6LuWcDMNkD/1nhpFGKnXWYfULL1GqvEy0rCuX8gCd7l/M4Qmm5H3Oc5VeiuhXLLS+DYw5/P2U4m1UZC2gv6XFvuI+WW2im79R9b6q4lcReTRP2+cFAQVZxKEn+Q7jO8EUWnVrq6sPT2vi3ANbRDxyPSC6WhHEpFUxUBAHIBaQKOGwnZjnRXcDqXLEYgZF/l30p0QAenL/2v3RRYxJknK/3CCmgsPYz2fSyfqLrNqWR9zcWGTpGSL128EH59PSqI5lGUYtgYnT7O4Jz/ffhXxECNfktdoDzpu688Te0xB/JsE3yHfgzV5etLs/h9hqXzI08XB5wknQB6C4GTEmSBjphcn7pfIfpWCF6USYiY3eK0iRAqGW8REXlrb485kuIwawycd+d1tC33D3LxhaTxzc9gUJBYCRBgAz/iwKFe5Lit+5qTzr2ySjdRh10MRalC8Njw3GTL2HZKsXUZxDihFwkI6rpjyTijHcOVopX1qp4Y5o/fLdzKWtdZJzjR+q7Ms/jbyoqwEAWsdJsoSsIw+P/OG2tHYXeJwGFm9MZ8i62ImlH1pTVj8wTY8SvqkWatFT8E973hkIGw8GheG3CAidzwBVRXu8pPBFR7GJl8HfjBtojNqe7q6vJMo7dGXQyStitdoxL+OwDLkUHvnQC8dMXXuaCTtHAhHV7GbumAfOva1MWH23VWp8GZNJhy7aM7YPJuEU4ZvpDaiwUWvPg//KPjiG/D5+OYBFR/nQYxEE6No
- 8cZYQi2C
- UZko//1+nSlEFDRo8Ibb+zMXC8JAszE11xVcjn0exiR8dRxfM4yW98fyoPUERnr558KvSqYwNQguGYGAnA8E3bIbqP8dh+WRlOxkb32o4xZLkr88QIcq2aDicDM9R0lFvyEjEhjUn511ZtfMuPN/Ayl9ImsBtgcPREvpvsI4bOtTZ6i9CXgXpwccKeR7LqlBlpbHWUmniWNmTYMVZBxVnJM7IaBwDUnurUp+lMjNKakW0XnM+INRIHb2hO9fezcYXKISEgz15qCv05kYqlR408LbdulFfxxlUM9CRTl5jO3+dTCnwXCYosyhYh6dxtyQGPSBmpohPFFKFYNZhQ2Hv7P4Z9ZH2wS2ic0GYGNIJ5IJ8cjZLSt1hMvjeDRVDq1QVi0tPNr/Obivdmo4VRJ7kPJC7aIFyfXjzDvxore2GdnG4Vbcn5c85WLUSBem/dokycMJPn9RlorqmFrxyUTXX5FF1SdYKYe4nOIANC/s6Cefjl06tZgoH4mQYCUu2ouC1/31ew6baf6fzLmsmWMYOBiKHWxZFXKvWTPdBexVE6jT6Yy17YWvVe3utFR5ev6kC3Yv2UUZHQrvIj/65hFb3QwpMpyjYexi5uDjQf+4UkLz94Gvrn4ApIvIkkLBLMv19I9cfpH5B8HuKI8MlSuzf+uUwbD723gNZV8rVrraJ/PUueYhIEHOoou0mAg==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795491478-365205
+X-HE-Meta: U2FsdGVkX195GE1zLT7FXatfSca9krudtFl4rLmuQhX2JQRrUhFfwgGcXO6HBD4X0bta7M+2ERyArAQcbgQlnMJBKTO3R0k/VmD/FxClWrve9wKbK88LL/TgOz3nt48Nyk/u9JOdmqMgsr+ta3J6Q8I9HaPGRiT1LlPP0Ahdl1Wj/DEsIb/7Nobi8kQjiUHHRJXRFJmX0sdrKnShuDlsOIEvnV0zOGZdkXZQCxeGFbszYih0Zfp4KF5I9cPSFmkWUkfM4OVLBQaVcLLkPyuLRrtSyaKKXSS0cQBnl/sV+KLWKTwPnuwiw8DQZ9JSP3oLFT7G929EChvs0rvisAKsiZtqKBJPNozMAOf59FSEIC4VjtUljxNxFn8ZG3ONlstbLHOVMEoC2tZX+/vvJphe9QxyQjxGjU0gjgwJ3SyBP9v6f+NqhzJGybTBsmQL//I4p6uWd27Y9mGuIFClaUzWrokeior9QrURn5X9SW7HhXJIa/R2/sSQjCGanzjx9SlrdVQvQZODqRyub4WT4SghMce7wqoZX4OHS82/bjJN3ryBW0eMwgY1h/yqxodr10rudcBhqgqLltvayqcroTL/Jt8QfoCywenO4fsgqfF0ywf+T+hhyDRL1WfWO/aJpIe046x9FPwsPobVpBhPeCwbrBzXJEMCRRoQ4ZL2yGJqyg/7QXHlD0beSYj0VcurGhDiL9wfzZcD5QKOg3qHcPX5wYDvrQlc+GRVZ8XtpDSRfhUa/sG4SRRxr7EY4lFIjKsJ6ixWG1De/w9ylF7/syOercbclJvFFwqLa8csF7rRR4ytVXmRN0oLfY+KZ/cFWKsmEynT+JcdUC4nwBOMmQyyYiV8FJrMVf+zNW+WRyEwf7hhZ3c3BpOoQfDstPVhQrNKETbQ6JqRg4TIcGBzgPhfOYFGTWy9G3DQ9DksM44PF1O9TzStQFO7yTc+mHOkk5fUCG4mHb3FeXqR0PTXjt5
+ lZmm+13L
+ 6YNsAnKR4azHdhLLIoYaC0NwMTuQKuqx8FaDvNY/kR3wImqHO/izmMns0vG6Bm0sQ5TKiz9ocAZ5c8eYHNGpmH8qPzyY8awZlgDH45Xcjf+xfl2egEEQEH0iO+DwaIFKvnFRFUXvT8JegG2fz7USuQvGOliQzJO2+7wy7bzUWOZfsImS//xpqsuvRI0280KkMuYhy4GFbfHkXa2ApKhPXZfAChdielWYSYjeUQX6Q6L3TGDOLK2dJX5jeKuliZh2B4r2MYSF2AxJ6VNhVed+45OKU+mqeAjI/1MtA3K2YfuMZeOL52aFT0o9xFxNHXBqNYhJDUHSIyDej631SESMzkGsFALfDMUWLiZVn5tD3wgGfk6/8T+bL6Wv2/jMP/TikrcoogmA28RwM11BcONEogQDFLilJiL0HTWX4ZCBukthc2TMrqHBm3x2+frU27QVlFUpESv6BEVVpdmcLHnLryOT9RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,93 +118,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
+On Tue, Nov 24, 2026 at 03:28:19AM +0200, Jarkko Sakkinen wrote:
+> On Tue, Nov 24, 2026 at 03:19:36AM +0200, Jarkko Sakkinen wrote:
+> > On Sun, Nov 22, 2026 at 09:35:13PM +0200, Jarkko Sakkinen wrote:
+> > > SYSCALLS
+> > > ========
+> > > 
+> > > Two new system calls are proposed:
+> > > 
+> > > 1. userland_open(): open an opaque staircase-initialized container
+> > >    object (modeled on Intel SGX enclave initialization with separate
+> > >    build and live states) with no embryonic state, opting selected
+> > >    shared namespaces in via an allow-list instead of unshare semantics.
+> > > 2. userns_set_idmap(): configure all UID, GID, and project ID map
+> > >    extents for a container user namespace in a single atomic system
+> > >    call.
+> > 
+> > I played on patching systemd and userns_set_idmap() alone does already
+> > a lot of good. I'm figuring out userland_open() integration next.
+> > 
+> > For the test implementation I probe the opcode's and dependening on that
+                                            ~~~~~~~~
+					    syscalls
 
-When a cgroup.procs migration leaves an exited leader behind, a
-CSS_TASK_ITER_PROCS walk visits the leader at the first live thread of
-its process.  A memcg OOM walk of the cgroup the threads were moved to
-can then return that leader as the victim.  mem_cgroup_get_oom_group()
-takes the memcg from the leader, which is still the old one, so
-memory.oom.group of the cgroup the process is in has no effect.  With
-memory.oom.group set in dst and a second process in dst, an OOM in dst
-killed only the moved process.
+> > use either "userland path" or "fallback path".
+> > 
+> > This auto-probing is done so that I can commit the patches to my kernel
+> > test harness, which already has systemd, and try them out when built
+> > against userland-enabled kernel (via LINUX_OVERRIDE_SRCDIR):
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd-test.git/tree/?h=main
+> > 
+> > The project builds a hybrid ISO, which is a bootable bootc/composefs
+> > based operating system, and has toolbx bundled i.e., a reasonable test
+> > environment for all of this. It is also device-installable via "npx
+> > @puu/install"
+> > 
+> > I had to level the harness up a lot so that I could realistically test
+> > lockdown-hibernate but it is is also pretty good emulation environment
+> > for any possible container features.
+> 
+> Kernel is ukified and systemd-boot is used as the boot loader i.e., for
+> kernel testing purposes corresponds to something like Silverblue except
+> not using GRUB.
 
-Add task_procs_css(), which gives the css of the process a PROCS walk
-returned, and use it to look up the memcg.
+Experimental systemd patches:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
----
- include/linux/cgroup.h | 18 ++++++++++++++++++
- kernel/cgroup/cgroup.c | 11 +++++++++++
- mm/memcontrol.c        |  2 +-
- 3 files changed, 30 insertions(+), 1 deletion(-)
+https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd-test.git/commit/?h=main&id=e4d6b15da3376ad09c0c575cedf467f69db32a52
 
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index 5dfa915a630e..cb05808f2172 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -548,6 +548,24 @@ static inline struct cgroup_subsys_state *task_css(struct task_struct *task,
- 	return task_css_check(task, subsys_id, false);
- }
- 
-+struct css_set *task_procs_css_set(struct task_struct *task);
-+
-+/**
-+ * task_procs_css - css of the process a CSS_TASK_ITER_PROCS walk returned
-+ * @task: the task returned by the walk
-+ * @subsys_id: the subsystem ID of interest
-+ *
-+ * The walk can return an exiting thread group leader that a cgroup.procs
-+ * migration left behind for where the rest of its process is.  Use this
-+ * instead of task_css() to find the css of the process.  Must be called
-+ * under rcu_read_lock().
-+ */
-+static inline struct cgroup_subsys_state *task_procs_css(struct task_struct *task,
-+							 int subsys_id)
-+{
-+	return task_procs_css_set(task)->subsys[subsys_id];
-+}
-+
- /**
-  * task_get_css - find and get the css for (task, subsys)
-  * @task: the target task
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index ab442f94e29d..0be7f96ce074 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5237,6 +5237,17 @@ static bool procs_stand_in(struct task_struct *task)
- 	return leader != task && procs_live_thread(leader) == task;
- }
- 
-+/**
-+ * task_procs_css_set - css_set of the process a PROCS walk returned
-+ * @task: the task returned by the walk
-+ *
-+ * See task_procs_css().
-+ */
-+struct css_set *task_procs_css_set(struct task_struct *task)
-+{
-+	return task_css_set(procs_live_thread(task));
-+}
-+
- static void css_task_iter_advance(struct css_task_iter *it)
- {
- 	struct task_struct *task;
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1271d390b617..5704e4415a16 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2003,7 +2003,7 @@ struct mem_cgroup *mem_cgroup_get_oom_group(struct task_struct *victim,
- 
- 	rcu_read_lock();
- 
--	memcg = mem_cgroup_from_task(victim);
-+	memcg = mem_cgroup_from_css(task_procs_css(victim, memory_cgrp_id));
- 	if (mem_cgroup_is_root(memcg))
- 		goto out;
- 
--- 
-2.43.0
+The patches are layered per syscall feature:
 
+- 1-5: userns_set_idmap
+- 6-10: userland_open()
+
+Virtual device would add path/mount complexity and generally dependency
+to mounts i.e., I think it was an awful idea. At least initially this
+feels fairly lean way of doing container things now that I've trialed
+systemd-nspawn a bit.
+
+I'll update the patches over time.
+
+Br, Jarkko
 
