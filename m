@@ -1,93 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AB2606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 00:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46573606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 01:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=wxtmXz91
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z8Bu8fNF
 Received: by kanga.kvack.org (Postfix)
-	id E8A8A6B05B0; Mon, 23 Nov 2026 19:54:56 -0500 (EST)
+	id 3A0A66B05B2; Mon, 23 Nov 2026 20:05:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E14C16B05B2; Mon, 23 Nov 2026 19:54:56 -0500 (EST)
+	id 350006B05B3; Mon, 23 Nov 2026 20:05:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D04726B05B0; Mon, 23 Nov 2026 19:54:56 -0500 (EST)
+	id 267006B05B4; Mon, 23 Nov 2026 20:05:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 962546B05B0
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 19:54:56 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1889C160989
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 00:54:56 +0000 (UTC)
-X-FDA: 85468192992.15.5216998
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4D70BC0004
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 00:54:54 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wxtmXz91;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E15116B05B2
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:05:19 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B6C8F120A2A
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:05:17 +0000 (UTC)
+X-FDA: 85468219074.16.86FADF3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 22E248000D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:05:15 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z8Bu8fNF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795481694;
-	b=BVxnGYi3FAn4hMSWWvGyshwTE0gZ4ZAkxRwnOZPb1fgxjnE1v4g598aPAY8vd6hzvDnwgd
-	LNxDGi+ihWPWfppbOjO48pqDI2U3nkkZhcpvXA0kTfZe3fFz9/KtlW9hxOPLpJ8ZCIUPgL
-	GGc5qZDPJvROIisx7bRWAmEMIyG8uiM=
+	t=1795482316;
+	b=47tDldGBSj+1+U3yk09k0l0Cb1sXNxSUeWCgVM2nuQrS0F7iwyk7JtPM8TMx6NNlGDkxd5
+	ribl01lYHHPtcEbypBoSrUfSDwnwLPi02d9ut7lm+4QIgXusBjxWcB5lBwN4PmUEH5DQ0c
+	Dt5BNVFD+mu9imsROmU0zKvri8u3Exw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795481694;
+	s=arc-20220608; t=1795482316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ViN0eIHvL0Nbs3ZKsf4/7g5sSxQBxyYI76K+CVQYXQ=;
-	b=U0yulOaUBdjP/8wcjiL/AOkaDbJh4aYu4+Y+HaPZJiLxjyTFd5vTUyaIb8jev3XwXVGIfC
-	Rt3cc5Sy8MISmobWE4E6bZBQU6ZvIcaclLRN4O8oLo96bb0k7SJZ6qTfP6AxQh2DRXwmt6
-	Taoof1Jp+EnGt2ZumsV1ZrOoWfMIkvs=
+	bh=KENda9nYN/y7XIiHiZ/NO1fdbgQMsJasxhpRCd9Tv5c=;
+	b=lVe2C7kgiXJV7HvQOvWtJMC5cKuUpaoHQT4skbEKToj/AM7WPiKFMo3ErKj6FWul4dDOxN
+	u4K/nHv8i6U850vErG9+OMjmh4aazU8mCTDiVyp8Uv54v4wJTxhtNPqqPRepIjg6PV6rH3
+	QI8m4jMso30hIEsbPSExmhty/h8jdqE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wxtmXz91;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z8Bu8fNF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 252DF43705;
-	Tue, 24 Nov 2026 00:54:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052871F000C4;
-	Tue, 24 Nov 2026 00:54:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795481692;
-	bh=7ViN0eIHvL0Nbs3ZKsf4/7g5sSxQBxyYI76K+CVQYXQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=wxtmXz91k/hp5vtf2YQn9xalSkOczmFrqpABLN4i4Q3Gi9PQpFSuF1/+2vfingqVP
-	 mhcfj4CwpU/NSHMIifdFjYGR7yhN1HdYKoejPXpDmTPTU80nx7nlRWYyJUmxu0Pr98
-	 UnIl8Bmc7ZZyjA+avslw/J69aEnmuWliDoYBULdo=
-Date: Mon, 23 Nov 2026 16:54:51 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal
- Koutny <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Meta
- kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] memcg: free the private ID of a memcg that never comes
- online
-Message-Id: <20261123165451.8c30df036f95995316e15047@linux-foundation.org>
-In-Reply-To: <20261124000439.967403-1-shakeel.butt@linux.dev>
-References: <20261124000439.967403-1-shakeel.butt@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by tor.source.kernel.org (Postfix) with ESMTP id 87061611DF;
+	Tue, 24 Nov 2026 01:05:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969EB1F000C0;
+	Tue, 24 Nov 2026 01:05:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795482314;
+	bh=KENda9nYN/y7XIiHiZ/NO1fdbgQMsJasxhpRCd9Tv5c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Z8Bu8fNF+KXKJP9X9cs7klKU/PMw6iRImxz2/KDQQ5DvZBSk9iTuE3dOl3FlZ2FUJ
+	 CZYSElfbv9T6BFnFm15N5jNkoDXCPRxffVy+zmyWsdS/kqOdnAQWNql1NTW6fthNvR
+	 kWracD8cuMVhdssm/s270lZU9L7lzPgD/xcAuwmRnA1oQ5YTum3gzgi4YVqeokZO0N
+	 92ayQ26WsGGVRFiPYD8xzyMdhopNVfSyMTORqWis2lFLrNCprDvhtcg68sN04+rC3V
+	 wPfkhjCtGapWX3+iur44c8F5rAb7ysYTr804cCxGFxf0CbtIrY4ysWm02xs8V7O/H6
+	 gI/bZE3WdhI6g==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Lian Wang <lianux.mm@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sashiko-bot@kernel.org,
+	sashiko-reviews@lists.linux.dev
+Subject: Re: [PATCH 14/27] mm/damon/paddr: support REPORT_MADE type probe filter
+Date: Mon, 23 Nov 2026 17:05:07 -0800
+Message-ID: <20261124010507.90151-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179545322647.4.683470932650691650.b4-reply@b4>
+References: 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Rspamd-Queue-Id: 4D70BC0004
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Rspamd-Queue-Id: 22E248000D
+X-Stat-Signature: r3hssasno7jfr4gu9n6i7gj3y5dnaq16
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: ouf868m4eyyywrx6jfjoozj9bigxnp6n
-X-HE-Tag: 1795481694-744138
-X-HE-Meta: U2FsdGVkX19dwxD+2XLTqUFPTvfIrn2/4bAoGOoegXqS2k6i5i4eGbL0oeEpdlMPJFtAOaQ36OT7iGSvOvKp6eHvvmMoBehqUcwzIoYLiF1HT3FcXvtmkGtClcRCW2vXrHqedlEDW+F2JdGedJRQN2GaieeA08vAU3bhwWSUwpnCYG0/+LqpmYSaTa2LH8old/DUcelPXnNBZSh8fDNwtwI1g8krTVjBBLAPZOI2Dz86sVPz9Q42TUvrfYss1k/laFHXmSp2HGlGabthS9fKojvkWavZhwFwnIaBHdhhL+JEAmNeo0UQVEhVNUHLoV7NueMU0v/8bW30+G35ttxUd0/u7qRthc6mJvWwRHJNfSxcKPHONAFFr7J56la8z3G8FUm5P+RyZXnx1Z7505HXLtDiEa2LAOqjn4fTUEn4zsIlY4eW2R/MFahddT9luVXXSvQVWyfxwQcm34o/GuEuxBzamfpJA2GLjktVt51+4VG9he59RxODwhkH5+TVJdZdqczQl5o76mutQkfLv6yeHC8PBjDboj1wk6a1AOcjrWT0pCSXyWpt8MD/VMu2+ZRtJOLwWzd+FiajpKfy8Tas62bztRrQk9o4g93N3mm2kyxIz4zgmd9QmNZZLy6+Wi2VJ2KV0KpvRB6t5uhdEtmer418yenFeefd19NxA22ZeHfjLgo20kDizTEFbUa9oaj82IJl9aLYj7urxowrB+VwfR+p8OX9yiftD5Q/sRCm1VZAiILucG6QwscbKNOJzyqLxG63PNlLi/SQ7OAy1/omY7J4iRiz44k0g5Tv6RBQyfPMRrhp5d2rTTVUvxWasw3BlZDYUvOq9HMgMKOyKb5CHs3qRWJKqXjVIWoyce2ZOyfV01xeLx9VtClFBYlPmrLUG98ID8t6PWJaOINaA5izG5A5JhntumNAJIJsX5/GgeYx92agIkBpZeRx9zC9VgKHyhXlHKXXffeovz7AMcA
- ynQpzk5I
- tW1zwqrXr8DxEG3Hz20qWCZceBUWqHW9Qwg9d8yEzL1tg0sVlbGX7BHr5ouBtd3MjLeLpZ9s62B6Zvk9E/Zr76sxflcJskyF0qDCZF1yYFdWH7/Rf1vGy3IzeevsNjW2I3X3qMProlmqaYpd3lLwASHR4PsBrX1B2abkup06uO92qhTb3/19g4k4EKSD4SbgjvwLbBrgL49U/jd6u9ZppbbxsTpDVogZ97FGFJZeCevCRT7Hxxji1D9+qbwSRFBJTKsxoRTTDqeFI8BH6/cXFmNrZI9vIhBhbmxWw5/z7PPnIlK6nuWFFHPhJFblVcVZqIG5c1B18AVoMuezn7RoqibDh0Ah7RAUyJ6bzYeLYUSSuK3I+xdEtWe/DozES82MV6jbNKMvUZ4Zjd6fpRRre1QcCqiy7fzIKUcMwZlxOUd7xr1oOJkLXMl12TdK87DrcrdPFe8yPZBlqE3Y5/ZQmYXeGefJkeravIU60LTKOs2juHaM=
+X-HE-Tag: 1795482315-875393
+X-HE-Meta: U2FsdGVkX19H+pU6WS7geLZBrVf8i505YoBmoQcHxOInOnI3ynb9g6FetT0ICoaHjtuRzZ4Xs1wdxtbPD60+93zxWhGJRZZGGJba5gWr2/+DF8heC6Jdn+6I42ZEcYkgfMlsK+WDv31Pcr/fPWZJ/LbErq01Fu8+S8cik4naS1/tmz8vB1zFbHL9yh9G2nw5SUMiJRzXGNSj5QH4nunnaJcV7o4N5rtCavPf0dTkiGCkQYC6DOlJznY+620boQMGrzuvlV/iSUf4iDYmjPbX++MjHuPEzhssxwpqYkQiwzl4sWFB5wLcJnXxeLYT2TNNSK4YHevmzYBOFgLg+6e+IFAbvMKxu2cF7d1NiW4sMWfKNVZMWb7bHbDeIJKIvPZzy81F98wVbh9GN19vqrWeI4i1VRuv7DVUdyT1G2hiAl32zF9hD5UYyUWj+SSEY0bM5wHmDeVLzEoTYLX7lWNK4ksZZxSOngCyEOxnOqi5m0MPraN/JlV+6HKb/XCbZFmL80rvGvibkZTyXiUDmHqqc08ZHGXMPMS6Dwg4kztbYtRHdgqPkXxkvzB8cLIOBIbbkcsLiXpgnJIQ09uKTci4/3HjP/GFFeowdxO50w7qmNkCaIBZ3yWYGwIAxoGNDrI673+spB6LvViS8AYBsE2TIO1IP1WBkja2Oal2ji7E007p6ZjpzZTNacP2HpwVXPMXvPMnrROtbdN/mOi2tOn4OBTUey6sAxUiRn6i/LC71cCVi30nzxZM1K6n0hChkufOoxLbP/zOphORiQ66pIkcKXy1X5stJ0rRH/0lLA3xNrh/qpqmqDVdd9hPJ633KZEJ+rV9pDTN8v0ASp+JzNfCOBAyJgXRHfvOaASJ7NvRovRoQXegBHthKiPqpa5/3+5QFtxs+RoPOo3s7Ut8MKkIgpGc6oJTB/M7YUV94tKbXuFK2w66JY83H5jJSIDwKr9rYzXsWY+6R05b6idFb0b
+ I3fGe806
+ 1P9S1pSpLh5RlS3F1IhOgZ8DbAdDqV+h6CfBuULZAG6dbaBVX3eNRHCkt2IoXSmN/m6xbtRL3ECig+Uu1A9U+/ZR1TIaHbnYADDPfPtffVX/P/A0kGga0qcusrtWCYf0oazESrLQvM3AnFlk3SLGuevSQ9i4SOWkeZoAyMKMxXnFetm9i2bJJdJ59pRpY4you0RUTTXyQGcXqpN3dPMmN7aZ27mYyCpEOleGwgnf8AwFw1xtypEX9/6c34+2Jd/pIjgVyQ59LBss7MZC2IVAPxUCFjwzaL2hoE2UChKYxm9N+YOtmYpj2+QXAlAI27oYeRR304JVCLobsKEAcsnRE1PetNcYYtODE2wwh5dnz2MmV4nkWzIuPZPtts1dNi9HYSrJC78maAK+GgRywuN/YE4+KvmTf2R1QFnUM287k/fDLMkqpOcb+jAQ6Q31mMva+uRP6QuxZfQzLaklgfGHRHzN6TEPuEgGJjypUqe+pws96CiDVIiBh7fjNEOIGAP3+oUBMTzpApDyYIhFihQPV1bPAkfpgOqAfYUGBFUZWLFcJi9Mfcei70EUuIOB1THWxsoD993RlnVZQRoU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,45 +98,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 23 Nov 2026 16:04:39 -0800 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+On Tue, 24 Nov 2026 04:00:26 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
 
-> mem_cgroup_alloc() reserves the private ID of a memcg when its css is
-> allocated. The ID is erased when the last reference to it is put, and
-> that reference is first taken in mem_cgroup_css_online(). The failure
-> paths of mem_cgroup_alloc() and mem_cgroup_css_online() erase the ID
-> themselves.
+> Hi Lian and SJ,
 > 
-> But css_create() can also fail after css_alloc() and before
-> online_css(): in percpu_ref_init(), cgroup_idr_alloc() or
-> css_rstat_init(). The memcg is then freed through mem_cgroup_css_free()
-> without ever coming online, and nothing erases its ID. The reserved
-> entry stays in mem_cgroup_private_ids for good, and each such failure
-> takes one of the 65,535 IDs away. With failslab failing radix tree node
-> allocations during mkdir, 1,500 mkdirs leaked 6 IDs this way.
+> On Mon, 23 Nov 2026 20:00:02 +0800 Lian Wang wrote:
 > 
-> Erase the ID in mem_cgroup_css_free() if the memcg never came online,
-> which is when (memcg->css.flags & CSS_RELEASED) will be false: it is
-> only set when an fully onlined memcg is released.
->
-> Fixes: 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after many small jobs")
-> Cc: stable@vger.kernel.org
+> >  		addr_range.start = damon_pa_core_addr(pa, ctx->addr_unit);
+> > -		addr_range.end = damon_pa_core_addr(pa + 1, ctx->addr_unit);
+> > +		addr_range.end = addr_range.start + 1;
+> 
+> With this conversion, each paddr context looks up reports in its own
+> addr_unit. Producers submit to one global queue, so two contexts with
+> different addr_unit values can interpret the same report as referring
+> to different physical ranges.
 
-hm.  These allocations are all small and they're GFP_KERNEL so
-cc:stable seems a stretch?   But whatever - stable people have bigger problems
-than this ;)
+I agree such interpretation will happen.  But I find it is hard to imagine a
+purpose of such setup for real users.
 
-> --- a/include/linux/cgroup.h
-> +++ b/include/linux/cgroup.h
-> @@ -449,6 +449,11 @@ static inline bool css_is_online(struct cgroup_subsys_state *css)
->  	return css->flags & CSS_ONLINE;
->  }
->  
-> +static inline bool css_is_released(struct cgroup_subsys_state *css)
-> +{
-> +	return css->flags & CSS_RELEASED;
-> +}
+> 
+> Could we define a common address unit for reports and document it for
+> addr_start and addr_end?
 
-todo: switch css_next_child() to use this new helper.
+I'm afraid if that will add something that we need to maintain long term,
+without clear use case.  I think we could revisit after we get such realistic
+use cases.
 
 
+Thanks,
+SJ
+
+[...]
 
