@@ -1,99 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E18F606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 07:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B0B606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 07:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m8asuU4n
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EtRK0xDX
 Received: by kanga.kvack.org (Postfix)
-	id 49E5F6B060E; Tue, 24 Nov 2026 02:19:31 -0500 (EST)
+	id 715376B0610; Tue, 24 Nov 2026 02:21:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44EBE6B060F; Tue, 24 Nov 2026 02:19:31 -0500 (EST)
+	id 6EC5C6B0611; Tue, 24 Nov 2026 02:21:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33DC06B0610; Tue, 24 Nov 2026 02:19:31 -0500 (EST)
+	id 628F96B0612; Tue, 24 Nov 2026 02:21:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DB156B060E
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:19:31 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13811A86E8
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:19:29 +0000 (UTC)
-X-FDA: 85469162058.17.C593B96
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6994F4000D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:19:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8asuU4n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 40CF66B0610
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:21:28 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C3AE340944
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:21:27 +0000 (UTC)
+X-FDA: 85469167014.19.78B1868
+Received: from mta0.migadu.com (out-125.mta0.migadu.com [91.218.175.125])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 99F47A000C
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:21:22 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EtRK0xDX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.125 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795504767;
-	b=Qj+bdeZzW/rM7vOo9URrdcVmei8QxthZXB6imXhg1ZNAelag96EYLH5Ab/s7OlRqW/B4bO
-	R0Mif/EyJ3iB12/dHgJMeRM8BONModw/gA+GUGrEwIwMihtjwrilERxrEmUaRr4OxWcfhV
-	UbM715MvCkjn6ud0If0T8Vqp1W8qZDc=
+	t=1795504886;
+	b=kJvpYzTbaij8gCxGuxPmFRm0YQuzc7d7dTsWoV6ee/f3PCHUIozkusJoKe7NhKBmzcZ/yx
+	+NibJWoiUt9F3QT1zrDFItJLo/aq322SIaZNXN7TG7SQuMF8RPEyz5VEQRY/50RgU1wRt7
+	WRIG+EFDwCftRpVECpXSPty7tl6C7H4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795504767;
+	s=arc-20220608; t=1795504886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iqEGW7YrXkG1u5nBLzxdbiaTFloAHoNSMLITrHG2DkA=;
-	b=YVOGeF3yqfnf8mUESz9YT4Vcibd6BIZghmTdS2768jzkL16VPAfbdZRfC3bTlq/k63jTD4
-	6WTCaC1ktReQWA1l+EElgLu/5bktEq0h8nR08Egs5+SvHOOLXSo5ZmQ5lEmTsb91PP3nxp
-	djd7rbJKLlIp4Cz+tK27Na5BkZhPtA4=
+	bh=fuY33GUF0eUP0SwseynPFkH435CSn9417a8iUr7BK7k=;
+	b=KxRkEslkdzHhOC37SmDYuUd87sJngMwgCMTWnvxUXoQE5GZVt7esl+hXn2vNRFPf1NxwRC
+	h76KBMiczRTqY7mzF4dx7goKgwJg/CvLV//ihPopvfMGPU77rg/7MOQ5pk4C4DJMYns13c
+	TFeWHlBj2p/vw/3L399PIUTSU5Ww6kU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8asuU4n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0FA5B609FB;
-	Tue, 24 Nov 2026 07:19:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6BB1F000D0;
-	Tue, 24 Nov 2026 07:19:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795504765;
-	bh=iqEGW7YrXkG1u5nBLzxdbiaTFloAHoNSMLITrHG2DkA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=m8asuU4nq8UldY+Y4KSPoTLuU7iU0LyPs9C2HSVxikOL79jBA6D0zp5HmX9t0bukX
-	 udEQCVy5QC3MHftfBfOHGsNHsoNYQYICMXxUteMwIdsSFRph9lqSixG35OK12GBf2m
-	 oO2HGzkeuXHHatek2UuZwKso4tm854cmT/mfLSLSrmRoM/c2Et3g3o8Kwztj4uxjCt
-	 etsXcoyHI35pUmmc21TkPHCPcNXpW+55xCqCSj0fH426s5bzGCjHRSObR23a+IpacQ
-	 /rNuKnT3Mgyn21MCifeA8o58iAPB3AeBL78Uf1lFiGediLBErQwJI7flJEQqdLUWzK
-	 1ppPM4CPFCYcQ==
-From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Mani Tofigh <mt4022@columbia.edu>
-Cc: Chris Mason <mason@kernel.org>, Chris Li <chrisl@kernel.org>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
- Youngjun Park <youngjun.park@lge.com>, Tal Zussman <tz2294@columbia.edu>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20261123-shmem-swap-write-failed-v1-1-41a0115dfbf1@columbia.edu>
-References: <20261123-shmem-swap-write-failed-v1-1-41a0115dfbf1@columbia.edu>
-Subject: Re: [PATCH] mm/shmem: don't drop a folio whose swap write failed
-Message-Id: <179550476098.5668.10320150453441389834.b4-ty@b4>
-Date: Tue, 24 Nov 2026 08:19:20 +0100
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EtRK0xDX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.125 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=dsrRPagJG7IpTBUtHaN37ZSV+UIhydva5xu3fPf5Il8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795504878; v=1; x=1796109678;
+ b=EtRK0xDX48aYVGns5qZl8sf1U4gRqygL/LQNdOk6NK/48fwI9CtxppbezuodiaNUOk9Jdh2o
+ 1+9FffH7K8rFvsxYYcCiY5q5PDTn/a/vV7ThX65V3Ye76zWWzqH4EPEcKxGw1vxQav1W7ak4O4H
+ 6QiNWSga/nNj4sHyQ/epgPcU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id bb0ec5bee1dfc514;
+	Tue, 24 Nov 2026 07:21:18 +0000
+X-Mizu-Trace-ID: bb0ec5bee1dfc514
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 24 Nov 2026 15:21:08 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org,
+	kasong@tencent.com, baohua@kernel.org, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com,
+	baolin.wang@linux.alibaba.com, Baoquan He <hebaoquan@kylinos.cn>
+Subject: Re: [PATCH 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+Message-ID: <awU65FQ4XGGdwMpG@bogon>
+References: <20261120085806.781225-1-baoquan.he@linux.dev>
+ <20261120085806.781225-2-baoquan.he@linux.dev>
+ <sashiko-outbox-226848@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Stat-Signature: 8wroc16cgjsrok4hbxuiin7xpqubntqd
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-226848@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6994F4000D
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795504767-337168
-X-HE-Meta: U2FsdGVkX1/Hr61hpgabaaIxmQukf4ri3CbpBRQlJTy8VvWF4gNq1T+9whFausJzNYDjCX3IFnncYSHl2VdtiH7cM5Pl7/1G9e7Vz+8gkuexzhsVoU/1QNlXgI3+2n9JhpHuHisxvQNCTmVhdKkX/+t9HF6Bp0kDf8MX3hw6a2hlLrE0UMPY6lq9A5d+y1Ekz7TRnTfT7ccHqj+9EKjoo56izNWk/CMdbmqx9IzWkE+99ZvkuS3z38yBBeA+2fh6ujlhtaValae/Cns1LtOQ5ZVyJQJa0kjfY5mTb0m3P/jv53+wUlM9bL0KkDu45MV6VJoSUnuEKZGnrgZZm304pX4tZ14Aa2phBjcpoeBiONqcXqAXugeGLF6TqqRVkjghggYV0thW1X5O9if0hDHoI8XyBg5BBn4q//yyBPQrxb3Rk3x1IVacr1BFuIyKmXrWewiC7UsRLlANfvZ4XDS5JUC/nyqdcvZHyRTtZmTp08NbO3y+21b+QHIsTauSNHlCTM4rq5diGh+foSPmAkYOg98o9WZBZl6N2KB4L3QcX515hrol1ucRkVlBK+XG4tBmQc7PhgQDD+lRgE2tatzTpZ1I+N2bdnlYunL2nmVyqcACX5Z3Ie4GMMOCnSh+do9lCZDyPAlAi5wd9U76MF6JvUZuODaX+qDPwaVYF83WTA3SoK0H3qIX6SqJObbV84dG0oT+EUHYHu9gdLjg0Yq0XNihrN7IlRiZpEXAentEvihUwmsbymf/REXtv0rjZ1vzZIzG73pxMv4yVNsc4ZPKDkj9cs1Am2J22DbgH3eCWiP3SBggp417KslPZZ+D0TA3QSIkCh+KdepGdNpy82xaLhcKOE7QYRTmL94ex8PuZXQa5onrGhnKvu4JZ31KzzueXgqzFncqDpuObWUDAqjvrvOXE0tziDOMwkh11EjfLqxDJJNVmGfFFwpehOYAqXGBxQ4AvwWy3tNIYhVder+
- 7ELLhsQX
- 4cKdwuHKXQaU6DSyRed7HH+KLf4X/VDD+EshAExkgXM9P3yLMb2BxNh/zS1ft2fDLHhoG3DXuAUBcPytCRkWiYvyhmpYY+BVcSxPf4lkesNXlxu4i3m22chcOk1Rz6y9adAnDBRYpbxSiqpgwLlLxVejHq2yRINcmFLoS3JCmcSprT2LNOFkd+FSobIH5Gr1gr1JfqSWtXQ52mx1m0XIl9R0r8Ns/NYDKbVF15FiB3Ku73UF+1lRw5G2J+0WZ7hqobpnMTG3NhC69bVjBw1PT6tQhnwQyOyWedeQSRiUegq+THIxV+zSw4tokNAt16Lr+6pZ8sDMI1XxBoKGeTQMBQJ2CvEDxNLllLVqlUoN5obth2QI2uEXRo4ZXdT9dLcuV7GRycfaCjMaDJIAfwUveGJN51VoYIHby6BInN/oI+W7jTuPbNQmPAdcZcsPkp90RGITLn3W6q5hlm/sVB0PWJQL3pA==
+X-Rspamd-Queue-Id: 99F47A000C
+X-Stat-Signature: isw861bs1od7gtkcpkmgggmq8uouh91e
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795504882-708717
+X-HE-Meta: U2FsdGVkX18Rsuy9sJZJYidsJdVeWF18jZ6yP0J9TXPaphaVQPXpdf96ddfDoYp/p1aiuTk6VhiUcNGZJnCFIOhN7o43Tps/bYCxb4gpfFsRAjtEkMgR7s3W7JKT6vdaH1aRqCw3iohDFfdvs4x/7mJXy13vp04esXdfMxaHTuT7PjNJhlczWW4iexzj89OTxYxpDXoAl5E4w38uEjb9kTdJFUPy/h3ZrDQt6KQ6zJstK9giv7hfUE2lSDOtOZn0LPfY8/SpGqTQxLOPY9csPhdmA8pxIdLSe5vFOWStur4t29DN/Zq7rnMoDsz6osRhitWR9kRKEv6kAIB01F5+CuF5Pzg/8n/+VQWmsGMtC+lREwMlsDlN9kigmqA4e50WV68ty+bVPuEol4kkSjdkq5aAga9lsOYrIk4L4t9XEumjMAren9FNFmla7NY821ZF+Nmf2VcWhIMjTm9Y9WFg6ww7A0cWip9n897pGWowrnXURCybkH0MEineKpSGcgrmx7xeq2qm/XaeMdIVCiTAgRLzVisD6qUBmJ7nbnSdckODqc+pa27UdgkZMvj+DacYJ3VWBIBtfhTTbIQQRHuLuEPN1sxAs0MGiHZCviJgf9dAJC9nHVHOpjApWjEAim4MXE2GNqV4WTzfLdje0AgUXlCTdg/SAv61ytZvgxLI5yNyPn1kUcOWRC1eno8NXRoMnQ+fAz/2EIC6BjrGNQDf+14OurUfctE5Mcj1/Mk0tW6DbQHoqiOjGymoPmCxqc0Nr3LnDxIVN1iVzzfdUAv37g9EBNMZ5mXDrZVz974EVMYRCM4r81xTC2N8QF/tNxgq2o4+6qHGLdMnCQ8Lihc2SOdO9ZPhpY3Rpso4VQoa05LeoJiAvYvF4PDUXSV3qjht3qT+sl1exR7hqbd4hxTIee0RpwhGsqh7AHy4tg8UDNhffVyBzwP6kiff1HBhfs3ytMR1iq4FAV99Ulk0jWp
+ Aj9ZHYTR
+ q8gJf+yg1AzdoPfAGUKwcFMRpWJAyJ2cl2ZEvh/U4iWgXKEi195JbT+jxGJI7oFhaJQ686YWkS3gPPYam7pNcPHkbR8ji3hQ5SHLYB07DcosDX+MvPYlasa+WJ1nnQiWbfdDc880uUgt13r48fXJl4Q+kdYhgfRhmwclFmFdRWbBBduGqwJJQCr1I96B+dT2MPXEMkOv/NJPnSpEwtel2kr17oTIVOG8Gbk7cocESaL5FH20u3NsWdZ7NNSCz2YblhWgyoPW3PmIvP71Q5nl3fmebqTdhcwXX1s7EWhNRrKmk4h8eUZinGfbmJ995tp5w4aH64I5kdU2RGHQUmNkjXBXbIk3Px6UFsvlOgMXUfb/ISNx83QC6oFIgBk88iiAKynrYUDF4JuLA9bNN7RkhpInYrj+l8XqUXAEEyrKx8DN9sGFj+BlocBhr5yMoBE4cz8+INChyloADY+EKpuS0SUGBJJ42NYJUXcbIO01VrhfDgpP14X1edbdtpRyvc771G1SgA/tzYf0PchDrUsUqsgtNszWo6Z/vzPzlNKS/p8bx1gYvQsiOc5kKMjZ257zIwxY1E0DcJ77z1BtJfkO8DGBcgmS9M3NB2CiR4IkT0IvpSQawFxumTjPLyX5PUaDfdm0g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,42 +98,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 23 Nov 2026 12:21:34 -0500, Mani Tofigh wrote:
-> shmem_swapin_folio() drops a large folio that does not fit the mapping
-> from the swap cache if the folio is neither dirty nor under writeback.
-> The folio can belong to another file and be under swap writeback, when
-> the swap entry was freed and reused before the swap cache lookup.
+On 11/21/26 at 08:59am, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Medium] mm/mglru: inconsistent MM_LEAF_ASSOCIATED accounting across
+>   mm_has_notifiers()
+> --
 > 
-> Swap write completion does not take the folio lock.  On a failed write,
-> swap_write_end() marks the folio dirty and then ends writeback.  Since
-> dirty is tested first, the folio can look clean and written:
+...snip...
+> > @@ -3682,6 +3685,8 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+> >  		if (!folio)
+> >  			goto next;
+> >  
+> > +		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
+> > +
+> >  		if (!pmdp_test_and_clear_young_notify(vma, addr, pmd + i))
+> >  			goto next;
+> >  
 > 
-> [...]
+> [Severity: Medium]
+> Does MM_LEAF_ASSOCIATED count all leaf entries belonging to the target
+> lruvec (as described in the commit message), or only young leaf entries
+> in the target lruvec (as described in the header comments)?
 
-Applied, thanks!
+Agreed, and the counter is not worth keeping. MM_LEAF_YOUNG already
+counts the leaves we care about: it is incremented after get_pfn_folio()
+confirms the folio belongs to this lruvec. So v5 drops MM_LEAF_ASSOCIATED.
 
-tree: mm/core.git
-branch: for-next-fixes
-
-Applied patches will appear soon in mm-next, followed by linux-next.
-
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
-
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[1/1] mm/shmem: don't drop a folio whose swap write failed
-      https://git.kernel.org/mm/core/c/e3464357
-
--- 
-Cheers,
-
-David
-
+> 
+> In walk_pte_range() and walk_pmd_range_locked(), get_pte_pfn() and
+> get_pmd_pfn() filter out non-young entries before get_pfn_folio() is
+> reached whenever !mm_has_notifiers(vma->vm_mm):
+> 
+> mm/vmscan.c:get_pte_pfn() {
+> 	...
+> 	if (!pte_young(pte) && !mm_has_notifiers(vma->vm_mm))
+> 		return -1;
+> 	...
+> }
+> 
+> When !mm_has_notifiers(vma->vm_mm), every entry that reaches
+> get_pfn_folio(pfn, memcg, pgdat) is already young, so MM_LEAF_ASSOCIATED
+> is identical to MM_LEAF_YOUNG (which also only counts young entries after
+> get_pfn_folio() verifies the folio belongs to this lruvec), and an mm
+> with old folios in the lruvec is still counted as MM_WALK_EMPTY.
+> 
+> Conversely, when mm_has_notifiers(vma->vm_mm) is true (such as KVM
+> guests), get_pte_pfn() and get_pmd_pfn() let non-young entries through so
+> secondary MMU notifiers can be checked by
+> test_and_clear_young_ptes_notify() and pmdp_test_and_clear_young_notify().
+> Because MM_LEAF_ASSOCIATED is incremented before those notify calls, it
+> counts both old and young entries when mm_has_notifiers(vma->vm_mm) is
+> true, giving MM_LEAF_ASSOCIATED and MM_WALK_EMPTY different meanings
+> depending on whether the mm has MMU notifiers registered.
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261120085806.781225-1-baoquan.he@linux.dev?part=1
 
