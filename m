@@ -1,124 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF27606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AEB606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=Jbpt0Pia
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RZ5IEUFm
 Received: by kanga.kvack.org (Postfix)
-	id B976F6B06D5; Tue, 24 Nov 2026 08:16:15 -0500 (EST)
+	id 397776B06D7; Tue, 24 Nov 2026 08:24:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B700A6B06D7; Tue, 24 Nov 2026 08:16:15 -0500 (EST)
+	id 36BE26B06D9; Tue, 24 Nov 2026 08:24:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A87176B06D8; Tue, 24 Nov 2026 08:16:15 -0500 (EST)
+	id 2337F6B06DA; Tue, 24 Nov 2026 08:24:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 859916B06D5
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:16:15 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 176F6120B60
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:16:15 +0000 (UTC)
-X-FDA: 85470061110.12.0821187
-Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C887C40006
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:16:12 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Jbpt0Pia;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=7818f1f3e=farbere@amazon.com" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=7818f1f3e=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E9D8A6B06D7
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:24:27 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7968B140B86
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:24:27 +0000 (UTC)
+X-FDA: 85470081774.16.F924A22
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8F53440007
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:24:25 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RZ5IEUFm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795526173;
-	b=RYEEKlkMvfLbCCxUrqnTVo0Da+tKFg5vyvXa5QZ0OCHZa7A6qgGCZsOzpukAR4j7pIjgsR
-	1BfdW3YcvAlO8/g3a1O68dwxdBzVD1CMgARqpHjAubSFJNyQEGy3izWeeG8yzH1eYNQgIT
-	A3VkW7Jp0rr872Ktxnct8VKcuFk38z4=
+	t=1795526665;
+	b=VDSsVCRoN54VTK4zg+I/LyNd/Hcukc0hEgSjJD95h18LRcmxLgCfbhVURzy3ld9XrWSH1r
+	3MFobhLur1tWMPvAdpLFA0Wo/+MPmpgOk8LmPdjc2Rs+Fw5eTJdRDZEm9J/GOHxEw7L/1w
+	FGCjCZCTx2y1e1dt2u7Buuyx8XZ0X2I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795526173;
+	s=arc-20220608; t=1795526665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E71K9DAZXuBW6FMEeF8MHMH1GEx0nXMOaIwtkSO4oO4=;
-	b=zPWdPs2bR3yXfFkIcLYKNIIBAPVxIyKGSE4ikedubUdwWhzY89D0synxXJgglHr8I2cVJS
-	eFxgioO4WxC6VGhg2fx/U7ae7dk/A5Y8nV3pMHX75y54IQDy+KVEaSUBWRLKGoyh3GlxKQ
-	2MqFTBFOjIHshJzDvoKJGfxNdELJifA=
+	bh=j2lGOfpuqWA9c5CeS3NsQ/3TJJfRuyj6wTBADsS42iU=;
+	b=1IxGVpKNB7hQTh9o4S+8jyNOJhuConitqmMXycM/fL9ErrAeomUGeYm8RHB4l3gBu8z8HM
+	jWTwIpfQTAOc9945iXlptEOeGqfgnGV+bAuQ0aEjTgYBvlzYZgSUYA6HIoRG6dZrS18per
+	KnjE6orw4WOJBvHut76RelDhffKvR5Q=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Jbpt0Pia;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=7818f1f3e=farbere@amazon.com" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=7818f1f3e=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RZ5IEUFm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4bb9d8e8e90so16232605e9.3
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:24:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1795526172; x=1827062172;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=E71K9DAZXuBW6FMEeF8MHMH1GEx0nXMOaIwtkSO4oO4=;
-  b=Jbpt0PiaYS1yqxsTxXSguE6wuyQv53jsutws1B8U7b1mXKYZL3EKu010
-   kZgW23MAW7N5EDvbFtG3fOwdtDobsomkscl4O2NtSvWmxmKrSXrw0MnSh
-   DFjrccCRd4jlZuvrDRivA+UNjQm0H+/u8u2HnEHVU9devz5t3zjR7undd
-   sHrLD2QCkMzwccoMCo1JGgsH82/7MWCsjBC4zhMZISw62Sr2U9Vy7XFdb
-   lWZwM+ZaCXQvpsqwtL9z5VsruDp4kDO4BlHrizWn18YJDL0ubTNl16VQW
-   l40fmMd7G6f2+xGbf0l5XCY1H8giMyEPipjM+a6urIvU+tf1gfCL0gWAH
-   g==;
-X-CSE-ConnectionGUID: O1fAtBCZTdGajmGIvDFTPg==
-X-CSE-MsgGUID: jsTgNV2RTlmvzzgACpj7Mg==
-X-IronPort-AV: E=Sophos;i="6.27,230,1787011200"; 
-   d="scan'208";a="34918374"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:16:09 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:12528]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.116:2525] with esmtp (Farcaster)
- id 0700fbb8-9e13-474a-a14d-0a1c8bebf46f; Tue, 24 Nov 2026 13:16:09 +0000 (UTC)
-X-Farcaster-Flow-ID: 0700fbb8-9e13-474a-a14d-0a1c8bebf46f
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.57;
- Tue, 24 Nov 2026 13:16:09 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.57; Tue, 24 Nov 2026
- 13:16:05 +0000
-From: Eliav Farber <farbere@amazon.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zi Yan
-	<ziy@nvidia.com>
-CC: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
-	<jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, "Ryan
- Roberts" <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
-	<usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Eliav Farber
-	<farbere@amazon.com>
-Subject: [PATCH v3 5/5] uio: implement huge_fault support for physical mappings
-Date: Tue, 24 Nov 2026 13:15:10 +0000
-Message-ID: <20261124131510.38745-6-farbere@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261124131510.38745-1-farbere@amazon.com>
-References: <20261124131510.38745-1-farbere@amazon.com>
+        d=gmail.com; s=20260707; t=1795526664; x=1796131464; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j2lGOfpuqWA9c5CeS3NsQ/3TJJfRuyj6wTBADsS42iU=;
+        b=RZ5IEUFm660XU5GoZPdOs47bz6mTpWdtaW/khwnK2YF2MDRkKHSQVLGyYk7As1XeJh
+         u5d4qFEvC8zy8D79tM8DIhRrjoYHVwUk9krDy4e2OenCQtAzJHDgPqX8bDG/qzWHQ1i4
+         /vwtwxpN7oMyjLPCH+SOpTbedlJvwKtTnw3yRu3RIM+owS7m0ZNuyI6tAZBgXTV1JG9U
+         1CZ/53Cc7Rn0gsa73p4s31HFnmm1XNvrCjV3jSH255GIwOUUPXo/T2RWraYeA2EH1BNQ
+         S377Kvd0VTlcv7Edbqedb4CMgb3aJbmPMS9vYHYrT3IkzSO+ihnW2TwCKhhEVJmdmWQh
+         205w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795526664; x=1796131464;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j2lGOfpuqWA9c5CeS3NsQ/3TJJfRuyj6wTBADsS42iU=;
+        b=tJ0Wa1i4t45b986aHKM2MweKz4q51mh9oSocDkC2vH6p1Noh37pdV6lWQZfp3bunBX
+         FlwW700O67bqsPUzhtunFKvqxNkaetmJ3IK02j8xH9eE18jir6AMU27voYFR6gQR/f14
+         QY3qIzSopmjnX/82DTJaNd8FwQDSHB2iUC9MLVakaMDuJIGmRuUvpPJrGFPxF0OMKDZw
+         dYWUnrPKb2iY//ztB9Wt7O0vvADtFyZAmC3gr8OhjUpc+DzJVctA9NyIMA/XISDVni/G
+         Fy9RyycsaIhWRaNg+U3XQRpNxhqok0iOSNBMx/Kj6bwH5xJrCCtmmCbPzXrKwvJzFrIY
+         GdQQ==
+X-Gm-Message-State: APuU4Z8fjPLzGwYZ/32yD0QI7lioZhsfeDOQcLG6XTmQDB4I74tTqzc/
+	AYawn0Dx7GE3O/lFuijdX+mrTMBpu/pyAPG+lZQKfX+m50A0hP7uwKwf
+X-Gm-Gg: AZFdTZdLrx6oltto8Qy3W/kVE/bsfoiJ+4+v2ahAmbQgNiSTO/+IELU0WJiOfRdySaZ
+	p3JD3sptr0cWuh1LL0AKw0RtJEntBdZhcNVYfP2GaRgiX/0pFzVd5UE3XpeKa9esjmccsrBaI4U
+	zlq0vDW8MZ8JzSBRbY6/IZuJAaPLvafXo4zBy3ph/FhAKzXlsjGJUi4Z3oTzD4uzSm/Z28DOPmw
+	F2upOOHn1IiyoWip/C9ctjHviUrhsDpGAuvqeq/AnIPtE5bBVKED3u9ROnAU47H4bU9S8Jialtf
+	18SB+Kuo1AGzhF8ks+m8nKfDv+OXoItW/rKSnaDp/nw/ixsLStB+3ngxqoAGQk8P8AZF+Uweona
+	oiDtChG23GMiQn0mXExZehE6KnTXZMIq0xf2ztBBhlgmBvw7MKKbB3otv9TNhZsCNLxHJSaLRd3
+	Ev0uRUiwhmNYcnBuUlDK1W0jZ/t4PuYD4Ml9eA9qEYv9gtQ14YWUVWiACO/jp7x/IFs32WycBm1
+	U5MBlZ25jzBSx9io3blyxi3ufkNHurtDjve4L1Av9VzohT3hYVAUbxjKPtyEgOZivzIt6g+T41B
+	9saUpf1/OxXRFduxjFuBvYO31Wn8/0eQ25YjSHyKaarfyg==
+X-Received: by 2002:a05:600c:64c6:b0:4a3:598e:e7a8 with SMTP id 5b1f17b1804b1-4bb887c2c98mr274938815e9.4.1795526663725;
+        Tue, 24 Nov 2026 05:24:23 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6a67f281sm26298695f8f.22.2026.11.24.05.24.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Nov 2026 05:24:23 -0800 (PST)
+Message-ID: <7465de57-8d97-4952-9daf-d95bdb4b7e78@gmail.com>
+Date: Tue, 24 Nov 2026 14:24:20 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C887C40006
-X-Stat-Signature: 1ctwnz7tuq3eoby197jg7d4idsmih4oa
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] mm: fix deadlock on the folio lock when migrating
+ and splitting folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, "Lorenzo Stoakes (ARM)"
+ <ljs@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Miklos Szeredi <miklos@szeredi.hu>, Joanne Koong <joannelkoong@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, Chris Down <chris@chrisdown.name>
+References: <20261124-migrate_reclaim_deadlock-v2-0-03cc147e1e36@kernel.org>
+ <66e5f9e3-17d4-4635-8919-c67ed562f9f0@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <66e5f9e3-17d4-4635-8919-c67ed562f9f0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795526172-367426
-X-HE-Meta: U2FsdGVkX1+T6ieBdLGG3hwukL7tMOnYbzirdVbEOGZjTVqE3PhCxXZo+VW/q1yDDWe9UKwGjmvgpZ+0t+u+wn5AQQ16x5ty1xlyFZ096+71fQJFL6XXDr6eyI4R+1mtj0VZ2tcVVPoaV9aqLjbGu3BKNmdxVOn5TLqq9H5vaoYxk6lzVoEKBOmRzLL5UDleZXyH4PH7qBC5dPDY60e9rf+f5qIzX7KNtBT/7+Nf9kElTNfG/Yur4sUZU9SJpP9DvXFR+C089+JB7HpE+pmoJzRz+0EWTijyhGVsVmY2xTuDHOpOpBQGLdgVwLavUEDr8N+jgNdc/ruZvHYcIJIjSIRErIln7ZHZt0QAKKGa4EfhQhI/Sqc6pQItqZGI3wRIoMGHf6oYPpUZkyVGDSNipIHMQwauTreujQXynEhs01fYs4dJsPZi6zRbEDmuZu+ZlJrXfmCuAn379EsD1nuuE4/ABlD2PXaUnafLhDTYlQeNQpC/QGIoD7eBEDSgMI4rpfRG3xpE1j8AFQ2Do8Y9uHNCW5wDrlPW9rssTWH2e0p5etrj6vbv8louiSwWddvuNrPGparnq/2PpDSZZLaB/Hc0j+yhqxAYgQ+ESvx35BnP01OnzB9CTzEg1ka2mjIHeqVSRQBOkCu4fN0+Z6ieGT6PeVyUhxqj7L5YEgqZXEyfMeVBfw5oUOYCxNrJTl9JGHFXx7tjfH/jkJC85GWuqwUdnTCCqEvuOpPfhwBFghJPqcJlxEtkbdgPcC0yCJy455TXuw79ttlsZZdtpaMbeFEWjSwtV0UgrRBpjhilYAtfi8CwETfoNO0oFhZwala60kJpTp2h9dSwZ++QuHxdBHyzNcxDkHAiXCKLQf3jiUuXEGQxl80DudcGkIllwK8tXJCVTSlDW7nMDomSHsC4PxMNVfGP+57Wjv6vnNM0JqKy7S9/nse6R0bLq0pq+EhrbdPfcg4BciKckmNK6K4
- 2SlRdMwg
- Ggv3k9B91m/YYxMiJhz0c+iJQ1E0Jvy3Pl6qVSnL1rVbUqjlMGUJQJBWRotYO86fCKX/apeu4Q3cuB1yZghp2kRhrWN8PE91WqU5Rf0Ui7RMbSebk9w3r/4o1CA5TIbxqKWw1E8GTeDBzibwrO6Eu2eK5kGVFjaLNeBjn39esBkASLUEGHtKSDK0Xee0zWaBrTbQvgxEgGtXNSonu+xIMVYvx57CLLnGFF4nN+LiaSXhsqY9h/QDT7pLhONcn2Boq1QGHW+YOsEnK7BNz1Y8sbt1kbhH2E6KSwgcGL6Cmg44nT93CG6LqsKAjVCyQgnKoJgVe5AIfW64QOk+0bYQnCDD2veZyNPO6s3wXArxTxIYU599S+jdvpYjZzgV1U6ZEyLpnWaqVglOtsqCailBeaNtZ2qWs/GKfstkf61ID9AEI8lKhCcBkxFwaYmqTklxRt3wmrGzwDDsi8xJX0e2Udt//rEaOtu+4OBweMTVRtXVtbEH9wfJ44LOx4qGbx4eHxF8m9oh/BUWC6XZCMSXaNig6dy7Dl4DmH9UrcQmuWfiUUsPelX0VaAV5Hg7dtsbx5t1OgIYEldr7j63gMBy8BowBmf8eY4sWPs9zM9i0DHO0jrVB6NXC91zpOmUUnr6cQXkvgybq47QudryZ0yJV6o3SW4CVdCpnnt/putz9D3i17q91C+81dQGuG7B6CSntrezPnJ2tNcfAYv0A6y0iXu00MlAO5w70HbtEGKo9eQoElXbzt+ZzJ7ni+N5KS2rXHupfCb0dbESi6zSufu7NfNqwOLEZrL4PEO6bjNiOS4/Dxg2s5C3HQk4R8uys9/pkSvqshFEhivvxG8BYe8QrPWn1Gg5eF2pyunuSkxKBJgrdQQhGC/mfyGQIQSn+qlpkiUE/OpQwVnUvKlMAZGR87Bg0Teg/juHdI3Rr1dNtETtJu9PjLskROh0Qr5wwruZQVUnMmtD119PqbcJuAl08zhR68b8L
- E1Xudays
- 2MUwICZmnGg=
+X-Stat-Signature: o4nynw419oobxrc1ic51i7cmf9a558mx
+X-Rspamd-Queue-Id: 8F53440007
+X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795526665-49510
+X-HE-Meta: U2FsdGVkX18YnkUvNjt7GgLB2Ty5Ym4NGxB8G+/F/o3kynGXiIgMChPKXfAuNGbRCBwRsgisuWlrRgNAW+ugJxc0PxRtuzQMT2/bat4L8Nvf+ecpNbiZVfHB658iburT2Qx0kE/9z05bzWEsBljtcNUMDw7mX55y0dXDnPnoj+abpYijqZLSDlOE37aUanBRjS4IaT2im0fINGOXWhY09fo99BCPR7kVA6k6dHvAMkOdta1mYQYxt62HueRxjGAGZrWjyow0fA8WTmfpwI6+m6Yt8+V9Wm52BLFl8ItsPSLgf86DcIZFinBkEq/kZrHehKL2F98Ty5rGLP7K+pmoV2MNiyGTAAv1aLbXZxfo4Kz2HUZSYBZS6mjNLOBOafWtrT5Gl6EnWLBRFQWYh6y2OHe5/a5oqVzsS2VmetibQaIYU6SRid3VmlqQpJXKH09EY+GXzigSl4GQrz2mo9u9ZX6nZUuBBj7R4K/Bq7Bjg5aD/tAPte32oCn/vLzMtV800k1mfQ/C3UMInLQ9P1hHNA+unqhYdxWJlw0Yb8224CTkAoqR26qLn9shKcsYs8CMEhFtACchj15yTZbQdpxufwlKPBvsQvbfXsqL1r/cKbG/FRq1AF8qQgd22aXps2pm622XpUx9txRQ07JEEAscbPSXtEf/6PthdFX+63EEJ1S0W/98CSnspveat+wRd7XWp1fQ8vb8ADHQXorip47VDkU1fcOSLdIuqO8Pq8gjdFIegsIJwiejDuLgSqE5ELQg+hchWIeCT83lFd1UHSjHuGvPhZTmvTJegE2ZC2IVGBkPSAJg0JnSj5m+ecvYYzck3gMLDjVh3po2ygLNkNkBM77XnTZJVzB37crcX3soJ7GlM/aLdLn/QFXFe3OOf8pScI6NmVKR7Mp2ydVlMCMaj0nweQRdvyOlr29fKRYy+lY8Mm4K6twh32IIX7XI6/b6k3s04COa9ozReSrwdbs
+ V1kYoa14
+ P5WCecLXvAUSiS6JRK72hvbsfj7oVVU1iJL36bDAn6SgxbUzG1+ZBzHkFR0fZkG7Bgbw0AbEFj0VEcfR8hG/uvVrLKz1lz6mmmaYV1PtoG0rLfBTLX5SVPuoL7lcfeyiSkYIka/N3spvOkDCIAan5uvY60Xy7PW7pncaMH5+vfY+TukTm1zBofI8wUtobqX5eKPar++F6HKoetfMF7EcOfng7+ohK11z85wm9MMjOl8nbKWTSLUZSnH4c9J6KE/kEuSicpWFI45w6EiN3RnCMbUAztiYsUhqHSJA5Sov2v/0ukiuG01Xaihh3SldMUzrdcaQymdP8mJW20dZWJ+1cHswJqBP5rk019K/EzocVOdBLXGOptWo3OwwxzYBk/uGbSqCfEP4fN+MFvwLPhIM1kwHFon1cq8SUqYjOl61Ld+UaKTnIW/rk+KxQ3nR1yKWi3KIhthAYdrNrWdX4zt3byyQEoO0XiXDtbkLR6EJNll/ug4Dt/lKFm/K8rnC8q477wAZ1xWjaj1HMpxY9+My4wC/gBOEuk0C5uu51VUkKD8SNMzVzkpK7ssXWm+/cPFdfe/sgcmBkMCpCIUjpyYNqEI3sRi3L8FPd1+VJaKL7Hye7ljHEgv3/XjnKG/v2XKtoM1zs7N+Zi+RMomJ3Y6A91HB0C/OQ25FkoP+2K228JfnDszzAvFnvCawVcDjwpZC0Fxqyy1yFhIcUG5/GrcDjJ067J9yS1I7ZlMLMUBzM3Nk+D60=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,172 +148,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-uio_mmap_physical() maps UIO_MEM_PHYS and UIO_MEM_IOVA regions at mmap()
-time with 4KiB PTEs, however large and aligned they are. Populate on
-fault instead, as vfio-pci does since commit f9e54c3a2f5b ("vfio/pci:
-implement huge_fault support"): call track_pfn_range() rather than
-remap_pfn_range(), and add ->fault and ->huge_fault handlers using
-vmf_insert_pfn_order(). A large enough aligned region is then mapped with
-PMD or PUD entries.
+On 11/24/26 10:47 AM, David Hildenbrand (Arm) wrote:
+> On 11/24/26 08:56, David Hildenbrand (Arm) wrote:
+>> Whenever we allocate memory with __GFP_FS while holding folio locks, we
+>> can deadlock on the folio lock when triggering direct reclaim or
+>> compaction.
+>>
+>> For example, evicting inodes with a populated page cache takes folio
+>> locks, and if we happen to need one of the folio locks we already hold,
+>> we'll deadlock.
+>>
+>> FUSE makes this example easier to trigger, because it evicts inodes on
+>> the last reference. A similar deadlock with FUSE was recently fixed in
+>> FUSE [1].
+>>
+>> Let's handle folio splitting by simply running in NOFS context. We only
+>> perform small allocations, so it doesn't really make a difference.
+>> Interestingly, this also fixes one of a handful of possible memcg v1
+>> deadlocks.
+>>
+>> For page migration, change the code to allocate destination folios
+>> without holding folio locks, which is in any case the right thing to do
+>> to reduce folio lock holding times.
+>>
+>> Some of this might also be fixable using Jan's work on deferred inode
+>> reclaim [2]. However, that is not stable material, and not allocating
+>> folios while holding other folio locks is an improvement on its own.
+>>
+>> Unprivileged users can trigger this deadlock with FUSE and
+>> mbind()/migrate_pages(); however, it requires multiple NUMA nodes and
+>> quite some luck.
+>>
+>> I reproduced the original deadlocks with FUSE and made sure they can no
+>> longer be triggered with these fixes. Further, I ran the usual migration
+>> and folio splitting selftests.
+> 
+> @Jose, could you find and fix other cases where we allocate under the folio lock
+> with __GFP_FS (and direct reclaim enabled?).
+> 
+> I think at least do_set_pmd() might have a problem when allocating a page table
+> through pte_alloc_one(). And I'm sure there's more.
+> 
 
-Like uio_vma_fault(), both handlers take idev->info_lock and fail with
-SIGBUS once the device is gone. COW mappings keep the eager remap.
+sure, I'll look into it :)
 
-The fault handler needs the base pfn, so vm_pgoff now holds that instead
-of the map index, as remap_pfn_range() does for COW mappings.
-/proc/pid/maps reports it as the offset of these mappings.
-
-Once the device is unregistered, an untouched page gets SIGBUS. The
-eager remap used to keep it mapped. A remote read through ptrace or
-/proc/pid/mem of a mapping with no VM_READ now fails too, where the
-eager remap used to leave a present pte.
-
-Signed-off-by: Eliav Farber <farbere@amazon.com>
----
-
-Changes in v3:
-- Follow track_pfn_range()'s new signature.
-- Return fixup_user_fault()'s error from .access instead of ignoring it.
-
-Changes in v2:
-- Give COW mappings their own vm_operations_struct, rather than test for
-  COW inside the fault handler.
-- Corrected the L1TF claim in the commit message.
-
- drivers/uio/uio.c | 99 ++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 90 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/uio/uio.c b/drivers/uio/uio.c
-index f8fa20522660..00f58b68d504 100644
---- a/drivers/uio/uio.c
-+++ b/drivers/uio/uio.c
-@@ -733,12 +733,78 @@ static int uio_mmap_logical(struct vm_area_struct *vma)
- 	return 0;
- }
- 
--static const struct vm_operations_struct uio_physical_vm_ops = {
-+/* Populate UIO maps on fault, huge where the arch and alignment allow */
-+static vm_fault_t uio_physical_huge_fault(struct vm_fault *vmf,
-+					  unsigned int order)
-+{
-+	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
-+	struct vm_area_struct *vma = vmf->vma;
-+	struct uio_device *idev = vma->vm_private_data;
-+	vm_fault_t ret = VM_FAULT_SIGBUS;
-+	unsigned long pfn;
-+
-+	/* An order-aligned addr below the VMA would wrap the subtraction */
-+	if (addr < vma->vm_start)
-+		return VM_FAULT_FALLBACK;
-+
-+	/* vm_pgoff is the base pfn, not the map index (uio_mmap_physical()) */
-+	pfn = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-+
-+	mutex_lock(&idev->info_lock);
-+
-+	if (idev->info)
-+		ret = vmf_insert_pfn_order(vmf, pfn, order);
-+
-+	mutex_unlock(&idev->info_lock);
-+
-+	return ret;
-+}
-+
-+static vm_fault_t uio_physical_fault(struct vm_fault *vmf)
-+{
-+	return uio_physical_huge_fault(vmf, 0);
-+}
-+
-+#ifdef CONFIG_HAVE_IOREMAP_PROT
-+/* generic_access_phys() needs a present PTE; a lazy mapping may have none */
-+static int uio_physical_access(struct vm_area_struct *vma, unsigned long addr,
-+			       void *buf, int len, int write)
-+{
-+	unsigned int fault_flags = FAULT_FLAG_REMOTE;
-+	int ret;
-+
-+	if (write)
-+		fault_flags |= FAULT_FLAG_WRITE;
-+
-+	/* unlocked == NULL keeps the mmap lock held and the vma valid */
-+	ret = fixup_user_fault(vma->vm_mm, addr, fault_flags, NULL);
-+	if (ret)
-+		return ret;
-+
-+	return generic_access_phys(vma, addr, buf, len, write);
-+}
-+#endif
-+
-+/*
-+ * vm_ops for a COW mapping, which vmf_insert_pfn*() cannot populate. Must
-+ * exist even when empty: a NULL vm_ops would make the VMA anonymous.
-+ */
-+static const struct vm_operations_struct uio_physical_cow_vm_ops = {
- #ifdef CONFIG_HAVE_IOREMAP_PROT
- 	.access = generic_access_phys,
- #endif
- };
- 
-+static const struct vm_operations_struct uio_physical_vm_ops = {
-+	.fault = uio_physical_fault,
-+#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
-+	.huge_fault = uio_physical_huge_fault,
-+#endif
-+#ifdef CONFIG_HAVE_IOREMAP_PROT
-+	.access = uio_physical_access,
-+#endif
-+};
-+
- static int uio_mmap_physical(struct vm_area_struct *vma)
- {
- 	struct uio_device *idev = vma->vm_private_data;
-@@ -754,7 +820,6 @@ static int uio_mmap_physical(struct vm_area_struct *vma)
- 	if (vma->vm_end - vma->vm_start > mem->size)
- 		return -EINVAL;
- 
--	vma->vm_ops = &uio_physical_vm_ops;
- 	if (idev->info->mem[mi].memtype == UIO_MEM_PHYS)
- 		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
- 
-@@ -764,14 +829,30 @@ static int uio_mmap_physical(struct vm_area_struct *vma)
- 	 * up above in uio_find_mem_index(), rather than an
- 	 * actual page offset into the mmap.
- 	 *
--	 * So we just do the physical mmap without a page
--	 * offset.
-+	 * So a COW mapping is remapped below without a page
-+	 * offset, and the lazy path overwrites vm_pgoff.
- 	 */
--	return remap_pfn_range(vma,
--			       vma->vm_start,
--			       mem->addr >> PAGE_SHIFT,
--			       vma->vm_end - vma->vm_start,
--			       vma->vm_page_prot);
-+	if (vma_is_cow_mapping(vma)) {
-+		vma->vm_ops = &uio_physical_cow_vm_ops;
-+
-+		return remap_pfn_range(vma,
-+				       vma->vm_start,
-+				       mem->addr >> PAGE_SHIFT,
-+				       vma->vm_end - vma->vm_start,
-+				       vma->vm_page_prot);
-+	}
-+
-+	vma->vm_ops = &uio_physical_vm_ops;
-+
-+	/*
-+	 * A VMA split adds the split offset to vm_pgoff, so the map index
-+	 * stored there would no longer find the map. Store the base pfn
-+	 * instead, as remap_pfn_range() does for COW mappings.
-+	 */
-+	vma->vm_pgoff = mem->addr >> PAGE_SHIFT;
-+
-+	/* Tracking reserves the memory type, for PAT conflict detection */
-+	return track_pfn_range(vma, mem->addr >> PAGE_SHIFT);
- }
- 
- static int uio_mmap_dma_coherent(struct vm_area_struct *vma)
 -- 
-2.47.3
-
+cheers,
+jose a. p-a
 
