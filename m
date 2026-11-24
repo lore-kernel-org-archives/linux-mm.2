@@ -1,175 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBCB606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183B4606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=kjgDuUMB
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=rb5wOvWb;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EeUYJByg;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=rb5wOvWb;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EeUYJByg
 Received: by kanga.kvack.org (Postfix)
-	id C96A56B06C5; Tue, 24 Nov 2026 08:07:58 -0500 (EST)
+	id 301DB6B06C7; Tue, 24 Nov 2026 08:11:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C470E6B06C7; Tue, 24 Nov 2026 08:07:58 -0500 (EST)
+	id 2D8EB6B06C9; Tue, 24 Nov 2026 08:11:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B35E06B06C8; Tue, 24 Nov 2026 08:07:58 -0500 (EST)
+	id 1C8CD6B06CA; Tue, 24 Nov 2026 08:11:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A7CE6B06C5
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:07:58 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0540C80B71
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:07:57 +0000 (UTC)
-X-FDA: 85470040236.24.83BEB5F
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0FE6D1C0013
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:07:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=kjgDuUMB;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id E9C956B06C7
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:11:20 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 07EF5140B80
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:11:20 +0000 (UTC)
+X-FDA: 85470048720.17.B6B7A15
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EF4AB8000E
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:11:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rb5wOvWb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EeUYJByg;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rb5wOvWb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EeUYJByg;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795525676;
-	b=JPM39KdgW6sqeGmz5ypggknE1gfjfFCv1Bt+bnTAvBli0cDkptouvye1LBSto4WUtWU+xt
-	k/9DStjlSiBj/qseZSyzeJWcjkiPg3GAVWFb0BVdFZsjhu+42hT8Up3E9PlOXlCbiidTmA
-	5xB0hGVyloyodl1iTUNtWtibBu9pv9E=
+	t=1795525878;
+	b=i20/pZxx5Eb7y3PQUKaye/kYAbKTx/MIXse/ZxiSTOmhIjwwEMdoqmNO2Aaof4l1yN6Hl7
+	MKeqW6QC4iWHk2goM4gLvnC7VoPXvkOTRXPMnObnHHUQf/pMfzXa6w0qQs5yNpiEFmMj+i
+	7xf63b29Z2xLM4TjecgOocXbe4XECc4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795525676;
+	s=arc-20220608; t=1795525878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Jqv6h2U/zwufJIWy6q7C5BzrR7eGEBWyzupif8ezko=;
-	b=CQh60vDjwaIhYhw6bOyOnNKnMUsDcLK8IE6x7UJ4oGPL3uic9jlCiPoxUZDJVI8Nfkj4kj
-	2jolJDzbtN572V5xtAE+Qyy0MqGin1AFviHxPcousiw/F0ilbwhjkRKgeMV5BzyuBdYZ+4
-	rBhlamcpw2r98vdbINhJyB85IrV8y4U=
+	bh=Un7OFeotv/cgwVEZk3ji5A5Uvj3bLR4SzF33G0c+QYI=;
+	b=8Gu0h3vC/h7kv3+rXzq+ZEouhMa7zZJpmYBHfUt3vt6JkGJUfUWX+4R/YI17JTsdeTxDLp
+	C6CR5+t7Fp8oXdK1dDZ9iyAfcdblTOhILtEY9PtI1ljEvCNUNzu9noUMIEFWO8tuiHzrom
+	uWc3XvCtYWZ02e163r+C4FAvytUpGg0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=kjgDuUMB;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-9497a167a6aso659104785a.1
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 05:07:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795525675; x=1796130475; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2Jqv6h2U/zwufJIWy6q7C5BzrR7eGEBWyzupif8ezko=;
-        b=kjgDuUMBe/rij+96ctbdbmq8reuPhcaKj0/cO+QxAUzAT0vEiQC9nij3mQmdsSoYCR
-         tFAAqs2a8kEMU7MD+lFhOqohstHkGBdt8PpevdExWcKrGhyn2McfgiUQ+a26FLuMWJ5r
-         PpD+4srIrd7x88SL32pVqYBc1yabMMDG8kYCByZzixJlqBThU1j6SyS1iCyWIua8eE7h
-         HVyoQ9tWOpvq5fiwUlVhLyRwJCPB12mpkgnAMzRU/TbCnzoPKu227Kq0nq6E7xPNGwml
-         rkqCHnICF6ceCsLUXr6bMKqbkE9YDeOQ+gZSG7FTAOoGzW74Tt7st9jNDg15LUFujaMY
-         f89Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795525675; x=1796130475;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=2Jqv6h2U/zwufJIWy6q7C5BzrR7eGEBWyzupif8ezko=;
-        b=jI6oB7OQMERJ3qU5m/SUixzNNTLXRWx3KlXlPc2euWcplA095uuzJvIAY4iY1QUgxd
-         MjQyhQ3MWDcek6/2XWH2SOACGFstDO7Qj1VD8t5jIU5+jedQbd+LM8pmEyE+SK7Am7r1
-         pBunLj1eQ3nGp0yI0Yq4cgtEoYxYtA3OV9f4+qLKF+Pc9zv4JyIWI/h2iYotcVAiBSbI
-         9k2cC10imslOrMwPTX+SrA310pUihMODLbhftAEiOwtZHyG2cIpkrIoJCgJ4LHKK0Cfz
-         rdv4ZDQAtPME+nNktReQpQe+fPMkEDNLymJdp6smdwBvMzIIZlT1IrzxFtAdXO+zE6cs
-         6HTQ==
-X-Forwarded-Encrypted: i=1; AL+hErEhDL1CdLmonzKACMYDiA7ukx708XalScpzZ8mKRh+ULAtr2YSIIigjDInLXZjOFokaBtiX46CWag==@kvack.org
-X-Gm-Message-State: APuU4Z8Br+oj/Swdb8/dbRWXycxL9urI+b28tY5KrtGVenJM0I99ashm
-	Vp0KwHpn4/Lu9C5FS6GI3ZeRawyc3ton7Ig6K8PHh5RLcgQmpWiamqRJ+gc7lTjsdj4=
-X-Gm-Gg: AZFdTZcLvN8X4qTkvZtyEaRbRD7GMPg7i8Qwu0NhNpkZNUBZ87canHFfmL2W8SA24Lj
-	8Dr3B1u288ZIGRMYzWYkw1i2RPM9ZNf7Pq2uesxmaUF1r+yTuzizq7r8LpyVGo984et17zM62pR
-	srbh2H3D/Q4IKWxgyt64Av3w4mFxy8Y8PxkAYIo+2Gw0N35ja5+qL7nF9vDe2mAkXqDavMJPA/l
-	QD02RcwFmsQBHXof/N0PD6rSu0PyjVEoiS2zRoPG7HV7C8UAsXS8XsUH7qLgW2H8rkvH+wyKCH/
-	Kj415maS902p52v/O/H5vt4McCS+bvuPVG3GfwcJhH6GJATyhE8fxiO2ussNp4rd3j+z9cuIRn5
-	79I+SPWIwK2UVYE4pNJ9TlYXv3zpqLXFnMqyx3idI9kB3pEbWdzaWNgdmHXZhul0hT0DR0u0jCF
-	CgzsX9dh42GfPW/1IxWmooih8lN3JQAimh+AyZYQkl3lI1uaIZ9waHWWbRetH4g1UOZyahuwRQf
-	9+GNDaCVIFtQ/kSKhqwPH1BA8tv+RSueldRIsk1nwWGv/yZDPjCfNlZHu0lBjoojTL9S0d3ENfB
-	N1Namg==
-X-Received: by 2002:a05:620a:2705:b0:949:8ee5:6faa with SMTP id af79cd13be357-949ba818db4mr2224332285a.4.1795525675010;
-        Tue, 24 Nov 2026 05:07:55 -0800 (PST)
-Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb4219c4sm1034879485a.41.2026.11.24.05.07.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 05:07:54 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xVqFV-00000000OKe-3ac5;
-	Tue, 24 Nov 2026 09:07:53 -0400
-Date: Tue, 24 Nov 2026 09:07:53 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-Message-ID: <20261124130753.GD9566@ziepe.ca>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
- <awQd81MwZqi55gf8@arm.com>
- <20261123150041.GB179082@ziepe.ca>
- <awSGBdS1AiFhJzZV@arm.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rb5wOvWb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EeUYJByg;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rb5wOvWb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EeUYJByg;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9F40C21FDD;
+	Tue, 24 Nov 2026 13:11:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1795525876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Un7OFeotv/cgwVEZk3ji5A5Uvj3bLR4SzF33G0c+QYI=;
+	b=rb5wOvWbiiQFQufaaSQ6BhFGSvCEohd4nZR+CQo4KfMnxUX/jKgoquVwMwELJj2awY61aH
+	siLKadWiKTIL8cEQ1IA5VX1COpvGbtTnMb/YwAc698svrqR3Ex6JetzQyK1eq26CquRo+x
+	kTqpmWj4804vqch1ZhSuPS240hA90po=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1795525876;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Un7OFeotv/cgwVEZk3ji5A5Uvj3bLR4SzF33G0c+QYI=;
+	b=EeUYJBygel5fY8HrGoffaBTuMuyzXz8uIOK6uwho7Wcybt9v6VWfU/4ukG+s5rFwn4sayM
+	3KpicyNzRDxErmDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1795525876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Un7OFeotv/cgwVEZk3ji5A5Uvj3bLR4SzF33G0c+QYI=;
+	b=rb5wOvWbiiQFQufaaSQ6BhFGSvCEohd4nZR+CQo4KfMnxUX/jKgoquVwMwELJj2awY61aH
+	siLKadWiKTIL8cEQ1IA5VX1COpvGbtTnMb/YwAc698svrqR3Ex6JetzQyK1eq26CquRo+x
+	kTqpmWj4804vqch1ZhSuPS240hA90po=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1795525876;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Un7OFeotv/cgwVEZk3ji5A5Uvj3bLR4SzF33G0c+QYI=;
+	b=EeUYJBygel5fY8HrGoffaBTuMuyzXz8uIOK6uwho7Wcybt9v6VWfU/4ukG+s5rFwn4sayM
+	3KpicyNzRDxErmDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 016BF13505;
+	Tue, 24 Nov 2026 13:11:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Imu+MPOMBWvkMwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 24 Nov 2026 13:11:15 +0000
+Date: Tue, 24 Nov 2026 13:11:14 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yi Wen <shicenci@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [BUG] mm/gup: WARNING: mm/page-writeback.c:2678 at
+ __folio_mark_dirty on v7.4-rc3
+Message-ID: <awWMsf-5RMa-TdGu@pedro-suse.tail5790ac.ts.net>
+References: <CAPHJ_V+_=Av8pAM+N+oc4JRmtqBjhcimh3B_pSy_N+5qecm6Mg@mail.gmail.com>
+ <f8cc1652-7577-4ace-97ed-081ecd65a031@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <awSGBdS1AiFhJzZV@arm.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0FE6D1C0013
-X-Stat-Signature: d4stmhahqbqsuido4a63buxtatk3yaxy
+In-Reply-To: <f8cc1652-7577-4ace-97ed-081ecd65a031@kernel.org>
+X-Spam-Score: -13.30
+X-Spam-Level: 
 X-Rspam-User:
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EF4AB8000E
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795525675-390710
-X-HE-Meta: U2FsdGVkX194DX7pOKxX293w+m4cRoLZBCccKaEFC99gVtoVEVOjhPWjuRZEaE0/XPxZPla74Lj1PFnmrEBzEfmwzNtAGZ0oxMkAhh1wAFyHZtiRUR+LMj76UDxqyjOGr0yUpqCEDqZH8zQS10TBEVkmRixbrxCM4lk4RI6kTrs5hUfDDZjZd+YJhoRya2qEiFm7pTsyD9QWgx0T/q9tQ4ndTLS/bliVMhcFaMEmIgKpaE9kGofVREVAGTZofzPbOBpHLVc0cKP1GixgbW6LiBXhaBH5uiKC/cCelpDiG32l4AV5gFDxLwy/suPHr0QqlglBfYAqp0oK8kqVghvP/6KR0oXL7u8QaJ7XQN31pzhZIosd5ANL/DT3o9L2A3GMhHuSR2Xd0JMNYxEm3BfiUm+R7U2n40MnNOwinW1Nt227zNh3NsF6CnPUP4WtkE7RNHezCDPByUgZLosxypgGJucw4XwTF3XKBJ8oamMHL1vhcDW6sy5Y68f9VhiNIm2zjyUDB8fOGOO7KokzwjOYR2mE6IgA1NDvS7yObiHInxrDrEVSrPKyP6rIiufz7M9OLdDg760DZH1x8fCdTzmdpxZZNWJaylQeNrwtqD0o2ngB0E3JhqSifkp4OgG+hWKCod/rYOPzIqtYW2M4Xel9ACf9wz6tqdD0GNKGRZlOXrVDiz3xNh2sf+1lE3fijMPlrdWgU2tzX+te0SWW/rqJFzww9gaQlyn8cQoxOlyM5FUNyZ4e43j3C7laCKZYsCBBUMAU8cdS3TguGjenS3EbxQbspBGTN5C4MxoiGOcSSianKqN7crSytZUQ2F/0G6SZVaDtzlpzhzLCm5ZgC8EhRI/9kynTzGJsUiEy15ZmRW+oV45sJquEACVt0KUW3P6WWHgw3AmW/a6DznvORYY9kKQ1xyWLVTvRUDnapLnGgLk5BjkhrNVttyQOQo37I+AiO5VvczQl8iXLzLjZXsl
- pYCEf6iy
- TIQP0y5uj8HNDzqjV4sUQAkZyN3SeUvYS+ur/MJG2GBUVIXCLktt4brGypjEi8CCvHQK04QyBZdFwFGK1NcgnW4Uq34gLsv+bhIb+wo7r9YYjQJxKbN4S1Rml+RjfLRPaBGQJnPOtc1xtnjRYrVqr7R8HK+bJ4M1GbdV0XGWLKWlnHspAC2IH6AKlnj+eXJrBxmpXLMMVKy2C0GlZqER9rwPZsvBKGzbAUr8pIBxAf5m7+g6bKtvTN0u/uXzwzz8yRaMifw9iYkIwawKNM3pPc2osVXKYtlll/QxfGwlrL6phgBIdOnN88xZditVkI1SEvb3Sgd0hTnv0ZUsIVqjklnVBymARYkfccVyJg2LtTY0A8R9zmvDskBWwfClGtUFONXlVfIsaVHZDLz4O1YQDgOl0y592q+sUH+mkHdI+vZI/8yLvSJeLQwaf1vGwup5vdrEN7MKodP+ocMh68ENCXFpu/ETVrcEKMNop0BZoe/Nvy8/vkzgTdU/to9vEcnZBTkZRda1ZZ8/5djhSKDnNXySu4/1LwU35nEzufHKFQfzem2Cc5dRY8UKF0Azr6Xk0RHRl
+X-Stat-Signature: f8qsybhjsueoxiuaprwfhh4c4fmggr7s
+X-HE-Tag: 1795525877-263390
+X-HE-Meta: U2FsdGVkX19fvAP3E80QcCuE5PJA8TZRyumIiMW2g76CS39P382KuTjPeeb1YBxtDfaqUBNpUD+SV4LRjC6u9WKlK3eIk6+rtuxa6you+JEfOFIiQjw+5dRCPLbMMRNVNNnaRT/wj6AynzdQ3y2/G2LR1SNZ6GxS5PIvPMRVsOJnptb9Emsq7PxvpRexIPBjnJ/Zf752zzP3jVNGiFziePqpi/8u1PLjlk5JBiknP5hyE/22iFCFnAauFy2KmUpyxjqBFXe+xXrWPmRFdTTj7iQhuefoP7I5YfcX9ICwePkM7QEqk480B7dm2IO/dZpNFcBbqjXxp8pUjYcAUoIr7MCud7vb2fK850RWRSQLTYhHuqRqR156a4tGiMv9jQmcRLM+qO8mT7vtvPVctyfibKH7XhxiOEMU7/3ws+VRu98znkg+Vc5z3CO1CGgfh2KbT5WqJjSfWCsTTnkuuyTpJMIzC93EFfxlOCnB+EPxSdjeFCGadvTVJqwD9OYb36oIMUm1uHpwoDEuzMBXcs+m+1qhI/3+O0SROV0c9ToSKUE3ucIeKQAWW8W4TerOhAVzEizD+vM4g23y4cW9anwdBxkH74Hj1Rbv7yg18KDqa0JkqlcD30H3ADujbWgv2cCXACMCUheQENUa/POgXNPRhqggGA311FGfPY2yNpUiblayCpH8Ehr8LlmrVU090hv8UZzPDPQ/f5/al5SV7xFzEooHAoVzlcveBlLotJVKIZbut/PlYmo6rt2PuMQnEWfEGzyAWPSUkXqegKveImyF0P5UdTYsi1oPTpC6huSdG4SFj0aFL0iZUMucZD4rNgySQgzuBmgWho9Pqr6FNhe+1G7NyU+9R0fR8m/798MVxaI7pj/MLvxHW+0XICqMakWLk91TqfBT/zzt6oxg4GQjVqgx0zxZ73cLSzxNgiI9mWNIebNKLSD053mlONZEESUsyZo1ZiDZqqGgtwO7j7G
+ AgusrxiP
+ MnJ4XALHziY04cf/6r0EbJTiAEoisqdsVPPkM4/bDMG9fwsIcn+FXeEiuylCPhZsjfGJ79XnA3djK5tUDD7GFSU2zKUWoK8hqun58UH8CURARUJ9dAUI2QLRj4K4NWayFAZoF6qUhIq/ZczjFKOm7LUacQ9OIInn2iaEmkwvOJSTSfcFUSncvOcDTC5Ezn9dwMZJjI1EJKPvuXSAUO6hGc5+ZFwKADmMoG/6J/v1gDK7F7QY1YqcabtiQq7aupJZafGaAE/B73zPmNjxQCYaqfxJE5F+2OoiJa+GKtWJol8irwv4t8BL7K2KBmZqyL1yhtq8wFOFMc5SPDbSHCm2rBycvcbVc2LLVCYRfu+UDD0aODXwyXGh7GvzcYNLF3qUhGAJfdoE/AHXve6i614YTpmCaj/VqSee8+9K+onas/za5dOBi7siFx9xlT4dfuOz2TBPsFvSDqQo2fpK6NGWS4DbXjP5ALLooKXEyIJjDkxNWjv31f3EtDFsKQ71fxeG+moGQtjv4HUaIR+Kza07H/70qv3wmY5rLV/VehwnlGQem+rDCV3sxS2olpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,30 +140,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 06:29:25PM +0000, Catalin Marinas wrote:
-
-> > Exposing struct page to places that just want a kernel addr means they
-> > have to call page_address and we are back to the highmem weirdness.
-> 
-> dma-buf system heap needs struct page for scatterlist, so we need the
-> virt_to_page() conversion if we return a VA.
-
-Yeah, but if that is a one off I'd give it is own API..
-
-> > > Was there a caller you had in mind that needs the common allocator to
-> > > share less than the whole buddy block?
+On Sat, Nov 21, 2026 at 05:44:34PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/21/26 15:49, Yi Wen wrote:
+> > Hi,
 > > 
-> > If we want this it definitely needs to be a void * based API not
-> > struct page one though..
+> > I am reporting a kernel WARNING triggered by a syzkaller reproducer on
+> > Linux v7.4-rc3.
+> > 
+> > The reproducer triggers a WARNING in ext4_dirty_folio() when
+> > process_vm_writev() writes to a file-backed mapping.
+> > 
+> > The call trace shows that the warning occurs during the GUP page
+> > unpinning and dirtying path:
+> > 
+> > process_vm_writev()
+> >   -> process_vm_rw_core()
+> >     -> unpin_user_pages_dirty_lock()
+> >       -> folio_mark_dirty()
+> >         -> ext4_dirty_folio()
+> > 
+> > A second WARNING is subsequently triggered in __folio_mark_dirty() in
+> > mm/page-writeback.c.
+> > 
+> > This appears to be related to the interaction between GUP-based page
+> > dirtying and filesystem-managed folio metadata. In particular, the GUP
+> > dirtying path may mark a file-backed folio dirty without ensuring that
+> > the filesystem-specific metadata required by its dirty_folio()
+> > implementation remains available.
+> > 
+> > This may be related to the known issue where GUP-based page dirtying
+> > does not properly notify the filesystem through page_mkwrite(), as
+> > well as the interaction between GUP dirtying and
+> > filemap_release_folio().
+> > 
+> > Before these warnings, all four ext4 loop devices also report delayed
+> > block allocation errors and abnormal free block accounting. These
+> > errors may indicate an additional filesystem inconsistency and are
+> > included in the console log for further investigation.
+> > 
 > 
-> For whole-block sharing, either a VA or a folio works for me. If the
-> allocator takes an order, the requested size and the sharing granule are
-> both powers of two. Rounding up to the granule already gives a valid
-> buddy block size, so there’s no need for a separate shared_size.
+> Hi,
+> 
+> thanks for the report.
+> 
+> Did you only find this through syzcaller or by the help of an LLM?
+> 
+> I'm asking because the timing is interesting; this should be one of the problems
+> discussed by:
+> 
+> https://lore.kernel.org/r/20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de
+> 
+> CCing Pedro, John und Jan.
 
-But you still will need the allocator to use the struct page metadata
-for its own tracking information, so it shouldn't be exposed to the
-caller..
+Yep, looks likely to be the same bug.
 
-Jason
+-- 
+Pedro
 
