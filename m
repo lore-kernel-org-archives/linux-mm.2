@@ -1,143 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59D0606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64670606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFe2Ckdo
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=f0VgwLuR
 Received: by kanga.kvack.org (Postfix)
-	id B25516B0620; Tue, 24 Nov 2026 03:05:00 -0500 (EST)
+	id 7A84A6B0621; Tue, 24 Nov 2026 03:06:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD6A06B0621; Tue, 24 Nov 2026 03:05:00 -0500 (EST)
+	id 77E6A6B0623; Tue, 24 Nov 2026 03:06:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C5576B0622; Tue, 24 Nov 2026 03:05:00 -0500 (EST)
+	id 66D896B0624; Tue, 24 Nov 2026 03:06:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F30A6B0620
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:05:00 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47E78160AB3
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:04:59 +0000 (UTC)
-X-FDA: 85469276718.17.C5C54D0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7B4AFC0005
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:04:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CFe2Ckdo;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AEF26B0621
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:06:22 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9747C120AAD
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:06:21 +0000 (UTC)
+X-FDA: 85469280162.30.FB8EC00
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7654120005
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:06:17 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=f0VgwLuR;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf13.hostedemail.com: domain of 1045704958@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=1045704958@qq.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795507497;
-	b=IrOhEFbmNdjz0Jt4TxbbRnteAFoIbEVb9OV6E+ebWDxlwmDXkGwj7BWb8ofM58NoI4XXDS
-	/mDC9lFSp10f6aePMyZVjAwFW6CtFimp4lQXXBNIMKhEzSkqdudaxD52TbNGeW3z4WqITe
-	KoRkRgwUYGvnS/SxM3TW44IfNgNSx3I=
+	t=1795507578;
+	b=dKEhybf4/jT+Bm4PE9Anfr15vdDaODeR1qK2Hki8+JA5Xkhwy7Af7sWon+B0J3Kh3NEBXD
+	8TVzXPdx9Y0T+P/NmAfEjKedbnryYrhLHvJGhPCaraCZHgtJXxRQnMQgyk2iGz4+0xRnkh
+	JyYCEK6kizoU5T9ePQmjONfWVm3YhzQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795507497;
+	s=arc-20220608; t=1795507578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hs9uypOQfbHnpPTNW01WGbHmNfbbsXyvVNcORTX/v4U=;
-	b=Pf/cQQIiIdn/j3qTDCbI1/82TrEMahBySnLSgszFmx0Opp2t8/50692TwbEFWpT6+hQjIN
-	9us6fhWqr6J9hNy+OaqOUINujlQug466NSf0LuG/jgkbmdQ5Kk90KG0kJiawxIiYHF07Lv
-	ObfGlnLYYiGkgRYLd7aKBsEyd0OiL7Y=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KEf9xsv+Xy0b4bEOzIOgKFEp/lzfcwuiaMzbGAMUi40=;
+	b=ow8MQTS7R3msmFoM5T54JkTXvGfxH9SCF9efZ9Lb3BI1sLCuGW7zIL4fMgde3QcmqoJQUp
+	w52oZDNSAIt1701umsDrFuTWg4IbcSfGg8wMm5OGrT+MwChqjBcDMbhDccDp0UYYUtwHDB
+	f8aAj9fqFa6sXmkB9IjUGTqh7Kn9NPw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CFe2Ckdo;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A18B3611D5;
-	Tue, 24 Nov 2026 08:04:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994DB1F000C6;
-	Tue, 24 Nov 2026 08:04:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795507496;
-	bh=Hs9uypOQfbHnpPTNW01WGbHmNfbbsXyvVNcORTX/v4U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CFe2Ckdo05q1ECZMujaLOsgd95d45YaQcTFQjQENKNZOWMloqihcy4iIcN9C7Gq+k
-	 RD3lbkHVphvpE39yR5DHEofBUlYLbLvm3Lb9B+7EX5HwMJj2xmNb/3WMCPXPCylXCZ
-	 SkKnV1X6dv0b9abphEgwbPKztrMAtNrmJBGzH4sn5tzqjYVotq6hYDgErV4MUwzFB0
-	 fiw9Z3wdVQxhZUoauY61BLbBVAhKRBY1MsjEQZABlB6K0N7H1UEXl3n2x6Kb2wiGD7
-	 cC8B/cFFDrTJ3RiQ36WZnqJrEaeJiTSUfb/DgrKAErk45XfLJsipmq/HBFbVAbE3oW
-	 gI9p7mB0NmQwA==
-Message-ID: <c4f270f1-3196-4ae0-8a7c-7b61155285ca@kernel.org>
-Date: Tue, 24 Nov 2026 09:04:51 +0100
+	imf13.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=f0VgwLuR;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf13.hostedemail.com: domain of 1045704958@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=1045704958@qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1795507571; bh=KEf9xsv+Xy0b4bEOzIOgKFEp/lzfcwuiaMzbGAMUi40=;
+	h=From:To:Cc:Subject:Date;
+	b=f0VgwLuREjP91QgVwycyRmdY6t7wDq24Ayj3sqzvMzw6f8uW9kJUWpAb2LUT7LUMv
+	 07mCdReM087o1kskTX58PTJuY92d6NRraTMEmQnV4tq7Tq/7Pw6U60TjYLqZIh1xHg
+	 LvaNeVQDw2v5nJEcdOyfeSDtqyR3wO29s/g0rhQI=
+Received: from DESKTOP-6LNKCJL.localdomain ([114.245.37.219])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 17894CED; Tue, 24 Nov 2026 16:05:56 +0800
+X-QQ-mid: xmsmtpt1795507556tkbp9b8x1
+Message-ID: <tencent_9D774595101D7C0F5A46CBCE69817B8A6E06@qq.com>
+X-QQ-XMAILINFO: NWEwCzsFJJ7Kuv0IbmjuX6r/80AqKeLaq8kNUZXU8vUuph4VpGYY2jaqG64iWi
+	 CdJLf6lblftyp+H3puR2kfj88fF2ZwRDFm6o44H5tZeEx21hcagCnAHmlf8qY2DnioEuFwn/fy0n
+	 1F0vl+kW/eP9eHMMdOR32E9R9m4DtdoKUhmhd2CMPOZzBo6grM3YGtfSpsoIpaz5ns6j5PrjoM5b
+	 dskr/EgLBzSzzxck1OoAlmCNvD9ohcKC1Q43eqBr+zBt0uK3uIybEcRhXfcYzUFZF3fnJPQL8mgn
+	 X9MY6GL6kymJV5/iqz+u4cazbRqTbjTpFUjqkN2l9+icI+wxLAAB6DWb4Usk1JnV4bmYnQ+zHLeZ
+	 60xGORfpt/fjn4RKrUYeJhLN+SE8AxZ3DDJuo2qFd+5pwTn0tlN/7r+g8R9WAchv8lXeCcnK6EhV
+	 oh3WWxLJMIk30RWFp2hVrfzep/TiBLCRgiAuzYwBPBGAYiyEzl8NPxUWWkQEQgm8+GuEho2iVFJB
+	 V12/ElIBTQlwBILuEZMIxEgKsOp0Z/zv6vkxqFtw836iq+6oAbEY+NCAjMWGjuDAEjRFpJJyKbMC
+	 iE0fIN8361bIQEzol30+tGdwe/z96AYmUT4ibQOZzcJSiaXJrPmQNC6or8iBbfcLlx9p7wgUDMZK
+	 jwNwK0CinpPfhFrx7zzTnrCWxkWxLo0Q4agkT5fryyJZJnRc+htzlEeEU2gLezvarL6yDcQcWY2n
+	 /rsA3FQyDQ1y29sbHMtEa76hr1o1fF+UtrZjgPoFmB2cJCxoI/PTfdUPCCtKifUB3whLu5mPaxED
+	 HHDThL1+hr5Mp5o071jVZoYCZP3fey+PdP7n0o/JJZzvQp+Xnnhv8ESrd3YKrw8182ugIXyOMSiB
+	 O9bXHHyrkOBdf0XIe9TEm9S5QD091MdYxCd2uy/n+ZLeEijXDVVDpj3PNPqiPWIUPyK49CvPW+AB
+	 pwxjalAIPtFG0mTo4Wd0Q/Aj0xE9li40W7VTscIjX6brpAFlTw0dBXXqTDDwQboUjR6+roxaFoxO
+	 h8BdUvdG0sg+I9fDZhPkUV3ufIiNDoREOqa18tMjQIpajXE9TX
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: Jingyi Sun <1045704958@qq.com>
+To: Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org,
+	Jingyi Sun <1045704958@qq.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] riscv: mm: make pud_leaf() only care about the leaf bits
+Date: Tue, 24 Nov 2026 16:05:50 +0800
+X-OQ-MSGID: <20261124080550.616-1-1045704958@qq.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] selftests/mm: verify ksm_zero_pages is not
- inherited on fork
-To: "Xu Xin (vivo)" <xu.xin@linux.dev>
-Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev,
- donettom@linux.ibm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20261123034136.209410-1-xu.xin@linux.dev>
- <20261123034548.237302-1-xu.xin@linux.dev>
- <16d172a9-bf5c-4a69-93d1-b48cd53b67b2@kernel.org>
- <awT6Yc/rFuyp2r13@dgvxl46587.localhost.localdomain>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <awT6Yc/rFuyp2r13@dgvxl46587.localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7B4AFC0005
-X-Stat-Signature: yh9ghhnw6ywo1r9i771kedoa4qyhfgde
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: przqwxkzgyfkdoai34frcx5r613zo5hf
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7654120005
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795507497-701209
-X-HE-Meta: U2FsdGVkX1+/ljIlMgrMAUVd2whoru2my4C0VM78BFKXmoJEvV1odiTkyzelBcVZI+PZmglQYtGlruc/3RKgRmG0kwkSVxDm8jNPQ5W0P/em4n0fLd0rKw5TYKOGbAzPBLRVnBMr1/hWZptaMB6PUvGPR5iyZR9MqQpwlbR9Y7oFnY26454RxzhqLCdvWcK6q8sz5qYGrgR/pHn3RJaln74k2eAnf8FWSjl4lInr41ZjS2S0uDPiwFPrCVkeaeZ6zf/MT7W6swlA5nr+4rF6i+Tir/o7g0sGowrZeWrqeUQmzxvrdLoKOghFLVWpaRkzz4F35ViHghvFqY+B+j13Cv56E0c6BdmeFabqgWty8m0v/kikFxbzgT/JSEuaUtIGRk3BQS+a5rRxRDyiJFdEdqce6LHdHzrn6M2KuS8PqcMWt6U39tr5QDjGT6uM3bMLEuxI6skDg/cTVwTDTBk8xxHisEe1Mt6p4E+TxaGF8rybHhjp/cCNvfW8ggNGLM1ragZ1T5XMAls+n5/fHzFhCGH3meAm1MOjqOD2Go7N8zUhiNPaJacJXkdzGR5k1bhIbYukhvTskoHymdMKDu4XklGUbscD5GCyZobSnrGK0O87X68txtPSx6qixdGxoUSJFxHkBtMp7e1DoQyqkm9iDjXZh+qH+qyQm29exoaKArKdJDp68EtGSwnwRTmMPvqNrXVAuUQlw+uwCo6jl0eO4fpLGJH5JqEr4qpNx9G7uwiXIKgGP/snBuEvtXLl8hFj5dC0JwIqt/pdQx6MOQ/H5n/tK7YAEkM8k8c8ku5KDopdADvIbb8mfAbmXLMj+8NPCdH0/xEw14oNq4y4QXvOJ/GdkFf72XcjeBW6nzAxQUAo8Qa1I33ggEw4h8G1uTp+NxDl/JmGrb2Gc91lv2wP6lZVKMeHYj1I8gNrYTUhf71Ms312l+fAG4bYn+wuozL+881gQj8SYxVrkm8oxV6
- OTof0qMO
- rU0oRL4Mrg3202KoHcDiMKxDMv9nP6d3OsiOWBgb3BsCD8lZmcDknWnUGGPEuJmERT5hYBu7mRQO1ql2bz8xZlz0owDrPJuIaaeyKqTytKp9dog6AUTG4nV8cTHujL4QrsCDFgBmFg99CVF7FjvLbicBuKOd9mFGnQh0fczidrruGrom0Q86E7GD52LTUGLMPo9UUl8QJ5jIiH99d1WJN40qOH22LIteKdOwr7YKgdlZPCaQA//xyzh7scIBhk2kWd7f8SB4gqj2cg2bPaLsjdi5qSZC2vm1TUMGDDy66PLuWlSPX5uVTSvmo/BIh/LBU8MxNa21GOjBY+0bQ53uNQr9VQ5pJCjAfTY0dkPU+OyJsbSGT34B/AFUgsAf88bde/im77/gnchv3EWwT06+v/H56ExFQvijW3o05c/Vrc9Ugo8iwVP91esAe2p/8ZHG1zs8/wErNM4CEUGlAJi/KxB7F+f6jfyJwYrYeYHPQY3T0CBbZmAf+RLQIgf9yyX6kGDhCV0qtZeSbuNqz6iichJp5PQ==
+X-HE-Tag: 1795507577-438249
+X-HE-Meta: U2FsdGVkX1/P2F0uo50DMBYfQYDjZtaGQZbOaeJz8hjCLNR/WRb9iKB7+fEv75uxk9LrSzR3drh9HLsva01FrpkX/hyvS8S8N/Dpjp7mgI/p+Zto2PaPiD5bOiB/dGSgMkNZ9YNIugW7Kjzma7tyo6f2wc3b/IBLxq18XKA2UpDxwyrumAl4fzS4L3R8gNxN9s2Mtv9wIKosQXOdKcC92JwRWLwspZwqe9SEyxB/Tv/iG7G69JaS76V5i+ojs42iomp6xxBcyFJSwIdWr/vppegMOPPZsrlzM/pgLstiZTEuNVzEJ5oXbYbZKKOpTYwUva7X+dQXsuGhf8NrSmxJ1McyPDisQo6DP+osWg6M2hB43HAo7j4E/zXaaPGr0bQC2P7BU8tKAO2UMNBH2Yu2esSPtbqcIKMYVikkjuMag5IJnbZaVxvuCJ2SldqpGm7s5fZRJvTdzUk5ERX90CGfIajHLXmRPWw4zvTVmRwj9p+3ghNn7niXw4nHkVuLbLDYJPPWhXplPEkutuR4K/tLdeepFV1oNdwnZ6FqqD0FjDaK/2XyDucHNtq5uwnUgevxgR9KE2e43ySh2fmiha/JIxm1MxaufkyqycOQVyLLmxzYNiDzZ3tkr/8p8tZ1K7/AWuqBLPDTHUs6kKYHaXHYwo8bJuv2gghPWaMAP4nOvKFs4j57SjP5oiikylNRycHTcmvBr+PYEJle6rKt8lBdYu3K3ykgQA2+4XOFkpjJYGdsgAzIbWfa+gbazMRbdozglh2DJMb8qr+UQpHzY+tmEFMisVt5co+dugFZfRDTQH2a8TqWB0PpiFQI7a0a/rr6YHKHPKh4G1f75qcsCg5TudYuOFoHgr+kfM3rejw+qrqhn9q5l2B1meDA6E8M3Ptnx0xgvjv55vlBMnoHAtAReBwchzcywdqmoHXDm4Q9kJJMNS2OlGCNsHmJEUr53LpiL8FrYoFdkRnk90YLBgf
+ jJqwmsYo
+ +pR9aIJZy54MZ8eIrfzTZIOWaz+pZKKJ+OzRy9TMQ5ct+bCXxiVJznhsclfhmSqPTkEf1Fost5rrG8Usx0ckprYsXHnovwUxRsPGUTeSXrg3QoVgusi6Znkb2wehif+4BDQzhYHlqWsbr1nkzp7XSoR7JU4mZgF/uV2rLNwpTkK6b86GjCqGnYbO+PSaHWBqiyCUn0e5AqGjNmtOD2IYKcIjvVeeHhIdHSY/7P8tScjlTvJX/t2AICKHRdVyqF4Je2nvRsPL4gqK94M+wKPeLp7ezoK9o+88hlHasFe1APzfuXUqVTfM8hhal5wgu6sR6vOw4Ezn2sqH97YtV0selWFqu7PLzQ9XqZVqb2XzTnFC8uUV/v+js3yuwRfjhACwlmAJcyWx8A3erqrNk0MQvz98327A0SvG/ogGKrexezIluHrfZ74/6boEYTGyR8FI8Kz1hAUIJa2Xfd6t1q18ebAes97BKyA5aj07j1dfmMAFvarP6ahv2vJATb2EZIeA8fgVvPDW88vNI8/fMEsHuS/WQwb5dff1IjRYc+HDVHyBBkv8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,63 +111,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 03:45, Xu Xin (vivo) wrote:
-> On Mon, Nov 23, 2026 at 05:49:30PM +0100, David Hildenbrand (Arm) wrote:
->> On 11/23/26 04:45, Xu Xin (vivo) wrote:
->>> Extend test_fork_ksm_merging_page_count() to enable use_zero_pages and
->>> merge zero pages alongside non-zero pages before fork(), verifying that>
->> neither ksm_merging_pages nor ksm_zero_pages is inherited by the child.
->>>
->>> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
->>> ---
->>>  .../selftests/mm/ksm_functional_tests.c       | 44 +++++++++++++++----
->>>  1 file changed, 35 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
->>> index b871d5656688..0e128c579d5c 100644
->>> --- a/tools/testing/selftests/mm/ksm_functional_tests.c
->>> +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
->>> @@ -655,45 +655,71 @@ static void test_prot_none(void)
->>>  	munmap(map, size);
->>>  }
->>>  
->>> -static void test_fork_ksm_merging_page_count(void)
->>> +static void test_fork_ksm_statistic_count(void)
->>
->> "statistic_count" sounds odd. did you mean "statistics" or "counters". Below you
->> use "stats".
-> 
-> Yes, I meant "counters" (my phrasing was inaccurate). I will rename it to
-> test_fork_ksm_counters() in v4.
-> 
->>>  	}
->>>  
->>> -	ksft_test_result_pass("ksm_merging_pages is not inherited after fork\n");
->>> -
->>> +	ksft_test_result_pass("ksm_merging_pages and ksm_zero_pages are reset after fork\n");
->>> +unmap_zero:
->>> +	munmap(zero_map, size);
->>>  unmap:
->>>  	ksm_stop();
->>>  	munmap(map, size);
->>
->> This ordering is odd.
->>
->> Why stop in between?
->>
->> Also, I suggest using a single label, like:
->>
->> char *zero_map = MAP_FAILED, *map = MAP_FAILED;
->>
-> 
-> Agreed, the ordering was just kept from the original code and looks odd.
-> I will unify this into a single cleanup label in v4, unmapping both
-> regions cleanly before calling ksm_stop().
+Since commit c3cc2a4a3a23 ("riscv: Add support for PUD THP"), riscv can
+map huge PUDs, e.g. 1G pfnmaps of VFIO BARs. mprotect(PROT_NONE) on such
+a mapping goes through change_huge_pud(), which writes back
+pud_modify(pud, PAGE_NONE). PAGE_NONE does not have _PAGE_PRESENT, and
+pud_leaf() requires pud_present(), so afterwards pud_leaf() and
+pud_trans_huge() return false for an entry that still maps 1G.
 
-Thanks!
+Core mm then treats the leaf entry as a pointer to a PMD table:
 
+- munmap(): zap_pud_range() skips zap_huge_pud(), and
+  pud_none_or_clear_bad() reports "bad pud 00000001000001e2." and clears
+  the entry.
+
+- mprotect() back to PROT_READ|PROT_WRITE: change_pud_range() calls
+  change_pmd_range(), which uses the physical address of the 1G mapping
+  as a PMD table. For a BAR that address is not in the linear map, so
+  the kernel takes a paging fault at 0xff60000380000000 (the linear map
+  alias of the BAR) and oopses:
+
+    epc : change_protection+0x498/0xf74
+     ra : change_protection+0x2e4/0xf74
+    [<ffffffff80263f4e>] change_protection+0x498/0xf74
+    [<ffffffff80264c18>] mprotect_fixup+0x1ee/0x32c
+    [<ffffffff80264f96>] __riscv_sys_mprotect+0x240/0x344
+
+pmd_present() already treats _PAGE_PROT_NONE as present, so PMD-sized
+mappings are fine. x86 had the same problem with PUDs and fixed it in
+commit 144bb0aee33a ("mm/x86: make pud_leaf() only care about PSE bit"):
+PROT_NONE entries must still be reported as leaves. Do the same for
+riscv and only check _PAGE_LEAF in pud_leaf(). pud_present() is left
+alone, so pud_access_permitted() and GUP-fast still reject PROT_NONE
+PUDs.
+
+Reproduced in QEMU (riscv64 virt, Sv57) on v7.3-rc2 and on mainline as
+of 2026-11-19 (v7.4-rc3+), with an ivshmem-plain device (2G BAR) bound
+to vfio-pci in no-IOMMU mode. The reproducer mmaps the first 1G of BAR2
+at a 1G-aligned address and touches it; vfio-pci dynamic debug shows
+vfio_pci_mmap_huge_fault() with order 18 returning VM_FAULT_NOPAGE.
+Then:
+
+- mprotect(PROT_NONE) + munmap(): "bad pud" in 3/3 runs, 0/3 with this
+  patch;
+- mprotect(PROT_NONE) + mprotect(PROT_READ|PROT_WRITE) + access: oops in
+  3/3 runs, 0/3 with this patch (the data is read back and written
+  normally);
+- mprotect(PROT_READ) + munmap(): no "bad pud" (control).
+
+x86_64 with the same reproducer shows neither problem.
+
+The issue was found with a research static analyzer for
+cross-architecture inconsistencies and confirmed with the QEMU
+reproducer described above.
+
+Fixes: c3cc2a4a3a23 ("riscv: Add support for PUD THP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jingyi Sun <1045704958@qq.com>
+---
+Notes:
+
+- The tested mainline kernels (2026-11-19) had DEBUG_VM,
+  DEBUG_VM_PGTABLE and PAGE_TABLE_CHECK(_ENFORCED) enabled. With this
+  patch the debug_vm_pgtable self-test and page_table_check stay quiet.
+
+- With this patch, the PROT_NONE -> PROT_READ|PROT_WRITE case reaches
+  change_huge_pud() -> pudp_invalidate() on a PROT_NONE PUD, and
+  VM_WARN_ON_ONCE(!pud_present(*pudp)) fires once:
+
+    WARNING: arch/riscv/mm/pgtable.c:160 at pudp_invalidate+0x42/0x64
+
+  x86_64 (same mainline, DEBUG_VM) shows the same warning with the same
+  reproducer:
+
+    WARNING: arch/x86/mm/pgtable.c:527 at pudp_invalidate+0xb6/0x100
+
+  so this looks like a separate issue: pmdp_invalidate() has the same
+  check, but pmd_present() is true for PROT_NONE on both architectures,
+  while pud_present() is not. I left it alone here; I am not sure
+  whether the check or pud_present() should change.
+
+- The reproducer (a static /init for QEMU) is available on request.
+
+ arch/riscv/include/asm/pgtable-64.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/riscv/include/asm/pgtable-64.h b/arch/riscv/include/asm/pgtable-64.h
+index eb7708e35cf9..1f45ebce8a75 100644
+--- a/arch/riscv/include/asm/pgtable-64.h
++++ b/arch/riscv/include/asm/pgtable-64.h
+@@ -226,7 +226,7 @@ static inline int pud_bad(pud_t pud)
+ #define pud_leaf	pud_leaf
+ static inline bool pud_leaf(pud_t pud)
+ {
+-	return pud_present(pud) && (pud_val(pud) & _PAGE_LEAF);
++	return pud_val(pud) & _PAGE_LEAF;
+ }
+ 
+ static inline int pud_user(pud_t pud)
+
+base-commit: 8d7fe9885c62fc9a95bf55d9db244d9672a8aadc
 -- 
-Cheers,
+2.43.0
 
-David
 
