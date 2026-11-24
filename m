@@ -1,126 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7FB606A32D
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 18:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD343606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 18:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Ns0ocBa9;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=VyCHGOD7
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=BRs+t4ks;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Vx/K0IlD
 Received: by kanga.kvack.org (Postfix)
-	id C96E56B083D; Tue, 24 Nov 2026 13:54:16 -0500 (EST)
+	id B860D6B083F; Tue, 24 Nov 2026 13:54:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C488D6B083F; Tue, 24 Nov 2026 13:54:16 -0500 (EST)
+	id B5DE56B0841; Tue, 24 Nov 2026 13:54:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0EC06B0840; Tue, 24 Nov 2026 13:54:16 -0500 (EST)
+	id A4CDC6B0842; Tue, 24 Nov 2026 13:54:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B6BE6B083D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:54:16 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 262D9140CB9
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:54:15 +0000 (UTC)
-X-FDA: 85470912870.05.67A69DB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 75D806B083F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:54:53 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 11109C0CAE
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:54:53 +0000 (UTC)
+X-FDA: 85470914466.03.3BA4A7B
 Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D773EA000B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:54:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=Ns0ocBa9;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V yCHGOD";
+	by imf26.hostedemail.com (Postfix) with ESMTP id D0B5D140003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:54:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=BRs+t4ks;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V x/K0Il";
 	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf25.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=arnd@arndb.de
+	spf=pass (imf26.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795546453;
-	b=qhnqT/uPALAgrOr/hWXMlPStszlx+1/Pt75+bIniRwxfdEHbh9yIcWDlgMN/4EKSEy5FgU
-	MPxlYYSP6NYGzbVlgixgNNLyNau8nnon8NWnd8ymx4BpOgK/1YsFhVSGX7G7xtRTr9Q9EG
-	2ESmpbQCbAYCrCFRQ+yqSI654CaW0Z4=
+	t=1795546491;
+	b=RpGjV+h6k8iMS+VV1oJIXTKBdvsQ5yGizyhc5hg+y8n3qIqaiiUnNT3RyVMSwweP/7Vqns
+	XBZiCdHNFUqZJ3Rr1lR1ar6EpbPeUwqWGqG6NqEA6fpxmWxouO1prLCmKCxmoZSuI2p94q
+	WWDDodN/ZQZH0OA5aaJih4zs2Svec1U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795546453;
+	s=arc-20220608; t=1795546491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=;
-	b=vlkFL2Ppy8AwAXUYcl/pUzQgZrKavep+30JXoV+mVf4QZmgEZ0ZUril3By+wLTVfehMekh
-	IU1lrYq6qtLVHwMl87hHEAz8ZNnMueojPagj/mJdCqZoM+bGDJF1XBV+H7ZxvNlJeo0A1F
-	yzIC5acfPNIMj+PguU3m5JuXFIsmyeo=
+	bh=zzADWq2A9f6U6Ncm9LM291Imr7Nwrsax19gq4eW/i1s=;
+	b=CjBAP22axt4XM9EewWCLkP07ct+8ZnVzuVquqnu/LYNxk3IURzKwHqBAnFwc/cIWMeuNXt
+	OPhbpJulpQj3X0ggLzSoH7B0sWX6H+VJkXws1IjDQ+X5ULYeTvzfwEmbIznFouIrZ1TCx/
+	iiRLOE9A3FanCY0Fur6Qloe3Ict4hz8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=Ns0ocBa9;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V yCHGOD";
+	imf26.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=BRs+t4ks;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V x/K0Il";
 	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf25.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=arnd@arndb.de
+	spf=pass (imf26.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=arnd@arndb.de
 Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailflow.phl.internal (Postfix) with ESMTP id 0734A138029C
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:54:11 -0500 (EST)
+	by mailflow.phl.internal (Postfix) with ESMTP id 2B9B51380873
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:54:50 -0500 (EST)
 Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 24 Nov 2026 13:54:12 -0500
+  by ams-compute-02.internal (MEProxy); Tue, 24 Nov 2026 13:54:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795546436;
-	 x=1795553636; bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=; b=
-	Ns0ocBa9uuJQNTtG3QfiU8sUxKT2BVab79oK6XioPic07HNY7BbGUro4492vDSKa
-	taWSB3j0rahIlRO5r8ZoxMAmIeofQrkEd2O7X1OMQEOOEmHkNvuaEYSDts/UAM8w
-	fED4InNTr0trVvSv57ETj3yHni+DAOQy8IgrUckr5I1xjqbrfGUxOwoJi0smwrAp
-	nxVmvZkiOxgeZLtuxZuUgSTF8HOJ38Mrh+Szpuf5yDk9lzFD74nKhq2IZnhfVZN/
-	vyB/Gl1S/ltyMKRNSc+WiurJ6LH/MJ4UcyvYBvhtsIXVP/k06hqmaXkoDI11XeA7
-	wlXBDaQ5dfB4kxGI+OVvoA==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795546475;
+	 x=1795553675; bh=zzADWq2A9f6U6Ncm9LM291Imr7Nwrsax19gq4eW/i1s=; b=
+	BRs+t4ksTqnTtE1oYjJwDc1C9K5jlphfaup5bA8IjY07JdlXNr3LnaRbvngocT+l
+	0s8mpcGjn2w5BH00n8m4unx2HOzBIssG9G0cRWhbuMv2TLmdp1NalygFp5oxuPtJ
+	wTAJP5SGdhazfnxYVfevwxTV6el91PqN32OZosleJtIwlS9tg7bn57xISyTR2cV2
+	w8mchKYS54UTYuQdinubggxyt/E11YV+y1DBfPwx09QgOMJyBy4X/e1dzVXEdCLQ
+	UfkpU0yQ7iyBQzG/lrKYkD+WJELv9rYSdR8XNg8Icg5Xi7DvSz7qRf9OXV3LCBtL
+	CSzbMSwdg5Yc27rprTFHxg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795546436; x=
-	1795553636; bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=; b=V
-	yCHGOD7HZXf+kTkcfTRyN6yTdKP309423KicUoIMqFh/OtFm+5uIv1vysvBFedjV
-	XJFPWePPRM0CnxRFksiKelXDd4qxik7aQ3mMcyBCJjLxhyAF1/B4D21N2RNJubIz
-	u5cBy+nZv7B/NkDxHFeW1hHCDPsd2Yncp7NFyXICp+R3pT0Y5ellhwQTcSjOD4Is
-	qcejxkzW8ihZzqAnjwKGNkFDJQStwnjJ8vVNe8gpcx5sVF8NLwPxyCUUnJOe3iXr
-	77Djsuz/1kfq3wwkXcMCZm5S41gIGVWAkWq3DEPG3YLiO4EDE4ry1FhRdzsZiw+Q
-	+pL5WKOI4leoxTvwkIf/g==
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795546475; x=
+	1795553675; bh=zzADWq2A9f6U6Ncm9LM291Imr7Nwrsax19gq4eW/i1s=; b=V
+	x/K0IlDvDMzIOh6ytEGzD9KXK48W6+PlY63Pkk5C4LqO8corTR1AOL6M3C0HEOEt
+	RnYztbOsrj/0nf6VZ7GNoKO3ESw2hQALr88flIWiz5nE2Vis9yZo/Ns4DfYzZ8gs
+	HGrNVlz/fNpZlQyjnvQnlw9skxNMOmJEBOYaR4LGyOZQhwF7fyOi5lto72PKc/d5
+	FXgv4UzC3YmDb9P8JTElHIgUuk8lUDGbXOVIkdWbLNNQrV65HVYiNE+VAzlmo2Mr
+	249vwFX/TxOavA6UatGb13UOmLI4UeYjVkP4zkYTEoRL1UdTk0BTJTgoKHcSuG8k
+	+lq6xcKwaH/EuXoPJowQg==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795546436; d=arndb.de;
+DKIM2-Signature: i=1; m=1; t=1795546475; d=arndb.de;
 	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:ex4GwVdrTw4qGTsP7NUGh5apjW2u6/iaoezL1BztTD1UWCa
-	RgY++yyfFypOCAgXxAWEwQ29VWBG1Rtsf8DRCYkf6gtfReNRRJf5oTSonHd12MHB
-	hxmscrQC4zFycHZDK9EQxz7LkGDUCLjm+GOxp20m8KPFX8hK/qTnd68hFtRRefVr
-	K/USrmkBwnkTy2065h4cQUAYN1Td7XpEo5MnkTv2N2R109y4IpGab6WZm8JFxPiW
-	veWvpMo0tKqpID6bCQICiZKEWwG6qAkCu2tTdABjMdFa3YdqniKnbX2BI3ngzY0E
-	v2Z5IjkVSeDb/xz+zm2HYV0p1OGUsqedO0j5gzQ==;
+	s=fm2:rsa-sha256:MDWRP2Bj+m9RharlLo1iWK5wDzJazUYB+Gld7wS5t7k2JTb
+	fKjxXiwLjgXoO/CC620G3RfCm+CG2cJLBp3bfLo0AepCtClycfqX6uEXK92buQtu
+	LlHJHA6m40iM6Vl6Y+yfDD0XLMxpOmh2esIWJTVlJzg9nVsmBW/nzjbM9AhHzle7
+	wMXEB6HOUupZoBmZYh/59zC6Zl6TLoV2hIVrUtLoJ0Ex5mR0wVW/H/dbbepx+d60
+	PilHP+MK1KALZkzRiNRKs1lOxHMAJ4RdWf2WwHo42uQsfCPO34L2ysA/u9bFV4Ab
+	+m0+V5F+oUbJ46OjFASLaEYpZHk8CRVkP+qj8ZA==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
 	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:JE9Pf+dIuvBMDyw467eQ/Tr4tyY4SBvJ9vbnWlDmBbU=:iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=;
-X-ME-Sender: <xms:NN0Fa_Dh16pBjRQMtmAQtpYpz28UEZAAlNWef9QDlR230iNPWwpgaA>
-    <xme:NN0FawWnt_cU2zPqxwlF3kn6lXR865LwUWDq-4TBjsqjqIqfahALCgQWW-0jyO7G3
-    I2uTFidD6Jk0Jt_ZRZrrybQhsZmf0PkwLrG07cX5Ey9rp4FNHu-UqM>
-X-ME-Proxy-Cause: dmFkZTFsQKpYLoHX3KE6zope7Xly27EYv6AQYyIF3Qau4aRC0vSHzWA0jMBeGZ/9+uCniy
-    PTkF5Fmn4ClSCnUsMdxXtnQhtPNPNvOPsMvdctlUYyw6p+0jhYlfcnMwYC+ka8/fLSpuKw
-    3YLhivPgri0MvBEeHeehNeV5wiFAsJv2bcNaHD7UboTSW+RjgcB42VuUlh1hahI0iQExPr
-    +XuV8lAvetVw7YfrG+rkJKl9bl6k1+Pc6YG1mdIQsn8HBaASQD8dGrUNem4yjy4NNXFr2o
-    l0vAJfxG5EW/9uTEMy9av1oYJYPAqHBvhuaThuRz9ZxrEhJBnZZaNefPyOfbd5a857jzji
-    xS3AH0yNi27nlGbP2enOJqlf9wVeoOUs7OcWrHRUnaD4wGX3BucglKw1DWVVHUPxhfMt+c
-    yYMsv9QYzlu0IncPWVnqsNMz+WiqY0HZprQifxi/zsPZ8ChkJiSCAB7jX698jdmSQw7t0Q
-    wldIOTkPNxc4rzT0CMfulFrj4Rm5L/cie4t1IvZQrqsjE2CBRn8iUu7yiZ0dS2UrGJdlIv
-    HMXP1d1uGpGRgLQ/rxCRTkol4EEsKGIX1Iz0tWkHIV/hA4OOaUelQC0/ml5S6Hx7O/VRRR
-    HHsnZozZEW2a8iAqfQuYUL98uV7rqteWCN+bZ4WQQO+0dMzPuH8W8HlVGiTA
-X-ME-Proxy: <xmx:PN0Fa_OfkSf0I2gz53d1q87MSYiyija7o2MtMOioAI-ZeTkir1jV5A>
-    <xmx:PN0Fa6p4AcKgvKj7Nxl2i9GHjEd2VbenjcJEjgY_FbTxdjTIKHGJeg>
-    <xmx:PN0Fa5WDuMRF3QKr7uInN4TtUt9GYOr8jpLSEeuwpRljz5xEyg6WqA>
-    <xmx:PN0Fazu29G7Wm_IQCdCnlJY6WRkfF9-85rVjBcVYL-WZQOkOQNyjOA>
-    <xmx:RN0Fa7HuB9LonHDmNq2kLPdcfAnhX1Syf3plWTxAvus5eCvT9QG1bsct>
+Message-Instance: m=1; h=sha256:LzM4tAbzweW+mDyb/1r3509G6pq6a3/4tE8KTO1Vt/k=:zzADWq2A9f6U6Ncm9LM291Imr7Nwrsax19gq4eW/i1s=;
+X-ME-Sender: <xms:Xd0Fa55FOfcfIgivK7gDT2s90l8T2iyzgndSBP-plhfJtABFXfc8Eg>
+    <xme:Xd0FaxtsJcVSGFN5HVXn38MtsB8YALAp-Wx8fFhFezYcs-M83HeSNrRFesiuboQoW
+    5UfpbOJWqvvpnAVz9GZ53DVxThH7R3ev1eLeyVj0ZpYxdoXqLzoT860>
+X-ME-Proxy-Cause: dmFkZTFIFQbDkqPixxG6ZmbrNqWja0iBmS0t+/2OXw3Hr68jTmofYge70Jd2C8rdOHxiEX
+    pUSI1QmY8wa8hdAn9aHQtwJQbrzJ92rRcp5Lj4ZnT7lqds2vmNLcn0UUOnmmP8hv3V6w+/
+    4jmHwhmrL8ACMwHSGKtRy9Vnn1gbC9jBuNuwnrpPjs09zdYgYnDdJ7dHlbs8/Vq3FaRIg2
+    harjfzAY/2DUVwFrNAo5sJTbPVeYuXkjeFTXI2vNrndIhUaMB0WHtTD9Snytzp1zPIggcK
+    0Qu1xi+ImflvZSyP3jJ4f+Pj22kJds4yfs5MDHkxWsLhkYz/NB/2cV/kiMtdUnvlRqpyL2
+    pa8DmP1PV2q7BXbNlBMb0LKR9J0cg5zWatj1ewFm/B4wUeq2NcKYG3p/wiHSLf/7MZkJPo
+    55VBqztvGKRmqQhHsRaalq/b5qWlczTjuaCR4KHYJNMSuYr6Ue5sGaBM73CTNL8k5C+HeS
+    6yw7flTH1KDfWZ2D/nTRJ3KwclHeIC555NIo/fbXlsIZrqs/aZ2GTd67CpM9d+D1a0dou3
+    PxTyuQMHWomu85N198NFQNJkn2rRVPia1CBEDpS4YilQB2ja7EgRCyk+GRsdfBsMdfvj61
+    iX1Tevck3x163pXwovYHvcc+KWnNS+6vzDYjKokt0XM2OTPlrT2Sqf+0nrGw
+X-ME-Proxy: <xmx:ZN0FawFxheCN-x8-0Vbv0XSt5auhNbm68w5nEL_E_IUlqy9inlE7gQ>
+    <xmx:ZN0Fa_SMlpnS-VL9ozFnJwNMSJnC9TJbQVcM28ytDW_qtr-tXAFROg>
+    <xmx:ZN0Faz1H8jdefJwCblcNEhWmtX8FBEPKunscTBgHdHefzx5f7AFpNw>
+    <xmx:ZN0Fay5HgQNFfUBXh7L8tyhCYUmn3ZM-G7JVXw9IVM5_sFauYfaajA>
+    <xmx:a90Fa4VKd0seXJsIkfqSaHH9e6lytGZcnkXlwXg5yWyhKLyy-Iftp9hP>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 4968232A0099; Tue, 24 Nov 2026 13:53:40 -0500 (EST)
+	id 1964B32A0099; Tue, 24 Nov 2026 13:54:21 -0500 (EST)
 X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Ai76fMdDSoMo
-Date: Tue, 24 Nov 2026 19:53:19 +0100
+X-ThreadId: ADzkAynZlS63
+Date: Tue, 24 Nov 2026 19:54:00 +0100
 From: "Arnd Bergmann" <arnd@arndb.de>
 To: "Lorenzo Stoakes" <ljs@kernel.org>,
  "Andrew Morton" <akpm@linux-foundation.org>,
@@ -168,27 +168,27 @@ Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
  linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
  linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
- Netdev <netdev@vger.kernel.org>, linux-mm@kvack.org
-Message-Id: <3208cde3-c5cf-4888-88f7-c77d7b0e5940@app.fastmail.com>
-In-Reply-To: <20261124-late-2026-mmap_prepare-v2-8-0b0d99d655f9@kernel.org>
+ Netdev <netdev@vger.kernel.org>, linux-mm@kvack.org,
+ "Jens Wiklander" <jens.wiklander@oss.qualcomm.com>
+Message-Id: <9a87f9a4-4299-4a9f-97db-578d7687a848@app.fastmail.com>
+In-Reply-To: <20261124-late-2026-mmap_prepare-v2-10-0b0d99d655f9@kernel.org>
 References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
- <20261124-late-2026-mmap_prepare-v2-8-0b0d99d655f9@kernel.org>
-Subject: Re: [PATCH v2 08/13] soc: aspeed: convert LPC and P2A control mmap hooks to
- mmap_prepare
+ <20261124-late-2026-mmap_prepare-v2-10-0b0d99d655f9@kernel.org>
+Subject: Re: [PATCH v2 10/13] tee: convert shm mmap hook to mmap_prepare
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspam-User:
-X-Stat-Signature: 75fgcfo8twjdjm36hb4shc8fiorp51ba
-X-Rspamd-Queue-Id: D773EA000B
+X-Rspamd-Queue-Id: D0B5D140003
+X-Stat-Signature: rcyqb7hptzkhixka8wj7j79hb53ytwdx
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795546452-868809
-X-HE-Meta: U2FsdGVkX1+qKLoxf2U4r4LE/5KTwi6HIo1aLMHrCNhNilkXqcZc3JgSX2IgfPSGOV5x9gIZlFKJ6iq7/gziuMkDuJeKBpfO12X42V9ab00Tqc3x35FC0Lm8Q6gmA8LdMU/OuuHxI7FeTP4tJVBnpiztjOS+5jjQu1CV0nQeoVqCbdFXqD3smsQq8Innm/Z3/FbPOMhPZAMZMXYDIRpyg8AtpaOeXVbv9fc4DPI1pZp5p5jF6iK2FZ56UWec8tGOiclp/zRZsnJam5kMEIC5JJ3aTYtU2sDPfy/AyaIiu466A8uJaDIVIZWUPKM/QQ7sQJnvr9HkT6w1gjGXtbus2/HvFoD8rrmk2O1r5maGJDdtEGHg5Jr/dHahGzKfRaBTfdo38gCxOE6kjMgmrg+O9IqoDslKVSEE0eZVn4YQQ8u8JccqvaK1pUwnTYNgDrf8PDox0GQZuG1wOVe1YwAXfPoHo/g584i7hLvwTxavhN3awSYV2rVQrHOvPnOP76I1A8k65GLSx5LxJZtqcFPod7/SORDit8ztlwu/eGPq2MljMmZGMfcIb9P2AYS1dbpE4B9dz3DFZ1fSa6wiC2NM33DjwaNgQ2uF7hnyRiUCZCh01ifRO7L5QCeTfmpQiomwA+XOMqO6RRg7eMkrpXplaMAYIGpkICsmzFxsJArnKrX2e9pgt8XJ3RzM7f4HJBjbJB7/fFC/VllhIsWs665X7CavV2EOG4D4dISyMz1fQNtJTgkQyhKT4RZ1RKQSzFuoiVZlEhXGIbKUk05ysh4q+4KEfB2Yi7/9na6bx1mllWG0oOq1h+9EzLILyEhs87U0WIuI5doOdoGNpPjRonVIheLdyKmiO8yS+AgGs2wpRBm+Emmaj6CLjYa3cViwXgCEmbTNxxt9DQb963O6K4nmOM0RQFskYe5BCKmAy1qMTliA4PprRt3aQksFPB5aj3UadH056CSKE4kOj3qf4Yu
- dRcKgz04
- g1Vwt3GSG2cqacYJGOUgwW473Qnf0oDIWL4N0+d7/wrLBftpARRQoT3W9RBm52zK3SSRvL5+6xt21w1xkJOFIhwULQlB0S4kIMsS8TM7KOCAdL/G8cS5zOM39RRrTw43qmE6Az3yMbwOC7v0QixhZ8ATdk4jmr9YK6XbFTRlFaZiaD1WVo3x5ut3vXQ3tipy7kwYqO34LSv8thJw+w/EANhilTSGYbicZbvT8D6xzobSLJoVhaZNsBrKJLnsXcb+bANNEC2yM9ftRbuDocFXGXQWp/X/l3V1vyOvqOBzE7+nQT8u8KRZs6yjp+6WJ32ul83Pa/dA462tWxfAsYNuQDnSFUq3qhwp510whozSYlhcRa6t1SyMU0vxn7a9Kxx0XO3TmUq3Kj04E5nMyQ7ITjzZYZYYFxNQcNdWeudnogDlXKppUDS8HSML6TqyyiZNJyZd3F82nXAdo0VwgLCuBg72Q/1TkF7rl+VRZlxL7YIEb9KGaXFhb+3JvmH1ezpCY/m/N1qWj7cF6KYtWA7z4XbZpvpXQEX8ltk4/oVVVV/xwujqsAOYDvKTIGbkJXQPTf8At7vUlg++t6pO/jkYYEW7LQ8/BKjLVpRPNXnW9vZJBS3OmuV/niOv5vbtahCsXqPx247Bv9Suze7qZpvut4WvGJU9T9aVYD9LBygU9IFCzxmLLYAJlX/jeN7rj8E0FiFqojjTO8Q4rhX6UFUqPGO97j4OvVYLzBK+K1GR8DGZvwIpAizz3LPkGZqWHulYrSp+C
+X-Rspam-User:
+X-HE-Tag: 1795546490-2718
+X-HE-Meta: U2FsdGVkX1/Nf/ntmYDzDg5nK5WqRwZ+AZUzl8tMOJ6lsHYg0Kp/YpVEaiTvDUjQoEU6RxZN0iYXBpEmbXfwX1P9X4BWVYAt47wtgRv22xXdl9Mc/qnUBMlFuCnKEiCrAkwH+G2KLIgvbxH3juV2uWuRbmkH2/9TDr2mma9pkHzZamo3JawvpPjfUEGayIiWH/63NwgNnZ/e2mAMhUg1qPqmOZ+/tjKNih7SuT/xCAwJrJDa9QaZxFuOsXs1Mos1kQ9mIGaCsPIora1rHDaedflIUsHiniRdRWuuaG6dNTu4mTuHHZghTY1BAWuzkmnI4vc8RKX+ZKbCcG/7g0PE8J/YbiaKoVO1+/Rvr+iMZB6z0JPHdsTkFQlU8/1h7sHZvEfLqqpmSGjXn0u8XUUOI+rmDUKza/A3UAqV873UzoUAwenlD4j3tspmDEeSvvAITUrGcJgh2oYt4PrZqhjSvi8J/q37aIZAFZyVroGsEawCi0UgcRTN9D91YzIjiJyd+MAUVmEhDD4ZVEKf6gmPGRfapM3KRvLxRGFzaPQyOyLkuVSnACUmE279giwMTlYmt/yQgkn501M7bYE3M2gIUQKqpA5rky46eYzBjitrjwcNmNoQtXnTJ3cHSuRvsJ55hrPHjyfSXHegB9caIal7/zEbSo1iPpVH2kRaUvZRSDNrCeuz41pY3+nhgDV3dhXQ2dxr0cc6HsTPwk6gjlbqta06N45RMAqtkWTB49EMWu+ktp4H27coHFK5zYD0Y2tSlbcYDZIvAg3NG4bkENspoWInpssAKno4BYXbM9YwtRWb7NoVVmwBYRpAOlzPqWWrPx8aZvwcr8wDxoxS8CnkLZ/mHy4u5IjuvdOa5FGx1ZkiNofa053aZ66dPpuARdE4yG4u25HbkkL3J9g5/xNhScnjFq36Nj745iIGKf5xgjoPZrsrJ4NHwk6Mi3IaA+/MLAm2NBX+QSVGgoMHjZp
+ dB0q3qmz
+ FiNknrVL+lpzWH9NFDMtKZbKqg+JRUPomDkxsppxzUDtpH/2MpqNPRitznOXcmDJyft40Sjuuh9Mr0/VyW+2QPadWM+Rfxwt5XZxkcFfGd9+obwHYBj5GJ+GisS/sFbS0St40tkzLIwPQhyFs8B3itbuv7BYVd1kKoYqk3aSUfGfVMD236mlz4AkVrwmfsAwsMf1ywfWYO7TIYPJqjOeUFsE7/7s1iU+b0j1PXWZp1Ezd+1GFd/2Kr74tlQvQqVwoWdRCMEZuMtsT2AjmFTJUbN2RXsX5NF0XIVH85d9CzXKkO9mPvN+8HuWICSZQ7xr9Cf2vmb8K6+x2ZtZAvM1CBpZpqhNttITfpvKkOh9kUTK602jejqvE5ZOjfp9XC7iiRqeN6VxkTjpNhoSHdc05B5o9aUnTpRnNHQM9489z1SHeA3N+wdGVKCRjLHqEltcwFeN35dT5P6yZtzbmzAsUYYjvAgsIyJfYAuqz19w9h1iaPGYHu9jxrY+ncMtyFr7X1a/OimSc73tlF8HBDyWycGlQ7/QSY/u/QueIH00ba3utduJTm1LAn4fSYkqH2hGkSWZf+Ll42Ojh+jG4K5V0Av5qfPJ9UdWNNerHvd5hpzx95uKxIBlOAG+LNF6j8V7ZM8PqO3j75p9LzgRSsGMe2Jx6M0hsigw7eiZLgObUMSMo301nyQISXeSMF8g+ZBixrrHRIpYXmfnE9Vy3WtPMUN/WM7th/ACiojy52Cp97D/Pt7O5W9Mw67c9dPj4lXv95Vj6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -198,14 +198,10 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On Tue, Nov 24, 2026, at 15:02, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook for both
-> the LPC control and P2A control drivers.
+> Move from the deprecated mmap hook to the new mmap_prepare hook, using the
+> PFN remap mmap action to map the shared memory.
 >
-> Both remap a range of their reserved memory region, so use the PFN remap
-> mmap action to do so, retaining the -EAGAIN error on failure via the action
-> error override.
->
-> Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+> Reviewed-by: Jens Wiklander <jens.wiklander@oss.qualcomm.com>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 Acked-by: Arnd Bergmann <arnd@arndb.de>
