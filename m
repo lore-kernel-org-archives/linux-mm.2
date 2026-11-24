@@ -1,88 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1577606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB177606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IlpI7jOH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JWH0qSAZ
 Received: by kanga.kvack.org (Postfix)
-	id E62456B0600; Tue, 24 Nov 2026 18:49:12 -0500 (EST)
+	id 11C2F6B08B0; Tue, 24 Nov 2026 18:49:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E12446B060B; Tue, 24 Nov 2026 18:49:12 -0500 (EST)
+	id 0CC866B08B1; Tue, 24 Nov 2026 18:49:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D28656B060D; Tue, 24 Nov 2026 18:49:12 -0500 (EST)
+	id F24666B08B2; Tue, 24 Nov 2026 18:49:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B6A846B0600
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:49:12 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F4D0A8C47
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:49:12 +0000 (UTC)
-X-FDA: 85471656144.18.E439FF8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BD4B8A000C
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:49:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlpI7jOH;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D4F576B08B0
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:49:16 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65BB1C0DB2
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:49:16 +0000 (UTC)
+X-FDA: 85471656312.03.53F01B0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B56BB40003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:49:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JWH0qSAZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795564150;
-	b=8pWJFM6eQV1COqG3PZILBvtx9YZxrP+1fsW8daOk8Sg0EfovCCboSMdduYNmzyBjHpi7Uh
-	MZt0LM/aMrpVaoN2FIRpGusFP1O8ZgcMqntU0PHHO+Z24tcznzWvuQA+VjF1Y2f7jPFiMy
-	ooUfnRZYq/c8roOqBWyVNL/RWs4iJR0=
+	t=1795564154;
+	b=IrH/fRXVggFFMcv9VWxIroznoThKBDtjSTeeYKnN8fzg2Gk/2zgbgyxsveGERUhcqeKg/g
+	3eYpfmMOOUJ6w9uuLi20Mq3fBON5tLySKarIKvip76YH2ib02qXmx23XrxT3MMdZyxySGX
+	iKvafLs853PTVvfztf2ZNlnp6U5HAT4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795564150;
+	s=arc-20220608; t=1795564154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lKDulksU0CH8kWxQ0HqONqWmjOATVYmG6DnvF0rQk9k=;
-	b=XbW7qOe+NwJzV5lTL/7EXgqeMymMf8SJeJmeQfue1sI0SiJB9ka7SyHJFgr151WvFb8U8v
-	H+L559yA4QM2UK4xTbwZ+fVeJoc2gpnMQvjc0pmVqosRvQ3Az6DuFRiXmklTBeZ/FfucBb
-	1/zy2XkbrbE4+HhtR46LHxYrBSsY96g=
+	bh=DzVCyim1+gn9POglvsFKaOvJSiB4wTMgOv/rH14HWB0=;
+	b=EBb22JLv+JSZTbWlrJbaRD2WleFSLJbGkWseKpGUwVq81hi8GFr9eXBzgMWAtYO44CpRes
+	JV5d4QJ3juTFeHAizft4AT5Bm1aX1cPxZHk5r9UQPr3mN7rq+/QxOA1QmAwHV8FzwVed04
+	d4mdyfWRigpOOeoqrUzOxMPhdTzvip4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlpI7jOH;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JWH0qSAZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 12FD160F21;
-	Tue, 24 Nov 2026 23:49:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1521F000CA;
-	Tue, 24 Nov 2026 23:49:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DD4EB44145;
+	Tue, 24 Nov 2026 23:49:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878B41F000D0;
+	Tue, 24 Nov 2026 23:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795564149;
-	bh=lKDulksU0CH8kWxQ0HqONqWmjOATVYmG6DnvF0rQk9k=;
+	s=k20260515; t=1795564153;
+	bh=DzVCyim1+gn9POglvsFKaOvJSiB4wTMgOv/rH14HWB0=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=IlpI7jOHHg6tzDJtT7dUsw9yL6fpvZ9HKK1m6TkLc2LiZZ3UD8SsdCYQOPTGUoh4Z
-	 NipXRVpiqDCGW1FPX4Aj+JWvOWuaH7yh47kJrzJMMgWYxRGBiXlzu1T/MZUWUC4g0W
-	 vMNK/n0rsVJnt4+MwUB+9ab95GUxpkKWlaQFELGgsxYF/A92uqHyYjG81QXhlUvaqv
-	 UyJ18+lF5X1JslR+TZbpCj/oUXLo5lcdp3gbMbe0ryI4vzplir4QZl2zv7zCVHIKE6
-	 KKnfsBtZ25FkDGwWmWDCI+A50sHcwbB23XU+Xd+0/5dBGydMv0HgkDtdDiR3r5CDs1
-	 IEQtda9ZYTz+A==
-Content-Type: multipart/mixed; boundary="===============2510359726493679342=="
+	b=JWH0qSAZTjFl6LjnHlO8g82S70LK9uxvihtFlxNyDhhs5nY326gdIHYnixSjHmfaj
+	 8Vd+Cbxr1IGXcnzxBME7sk4u4ky3aYbDxOzVkOdcqxsDaymjVYRqMXQadD05pB9kV8
+	 2ez1Axbs/sYM180DOmkFOSY5XTSgMglcfSs+Qnaevf7h+kmZZW2hTEuMBPTaTumHht
+	 fat1cYvsxmv5C8j+TzgeGNHb/kcNZ138P5eZgLX+3d5UTChnqU1MS6oNG03z1vZDy+
+	 OIZK4tk7e015n63m+Nb2xcSnz6tIcKV+EQisMwZYd7Tkc39xqCcfnYhcpXU/NrC7uP
+	 PVSxLH3y9+AEg==
+Content-Type: multipart/mixed; boundary="===============4896982406480640730=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <fd2115bde2e78440a8c28b057e22f7a7a3064cb74e9030b92ee2f4498ea6046a@mail.kernel.org>
-In-Reply-To: <20261124-work-exec-update_lock-v1-18-e489035395b8@kernel.org>
-References: <20261124-work-exec-update_lock-v1-18-e489035395b8@kernel.org>
-Subject: Re: [PATCH RFC 18/19] vfork: wake up the parent once the child has left the mm
+Message-Id: <cd715ed46deb14d0a7becc6defb029b6862024758c2392d1cd203e806446fdca@mail.kernel.org>
+In-Reply-To: <20261124-work-exec-update_lock-v1-11-e489035395b8@kernel.org>
+References: <20261124-work-exec-update_lock-v1-11-e489035395b8@kernel.org>
+Subject: Re: [PATCH RFC 11/19] selinux: revalidate inherited files before taking exec_update_lock
 From: bot+bpf-ci@kernel.org
 To: brauner@kernel.org,jannh@google.com
-Cc: torvalds@linux-foundation.org,linux-fsdevel@vger.kernel.org,acme@kernel.org,linux-perf-users@vger.kernel.org,bpf@vger.kernel.org,selinux@vger.kernel.org,kees@kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,apparmor@lists.ubuntu.com,david@kernel.org,brauner@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue, 24 Nov 2026 23:49:07 +0000 (UTC)
-X-Rspamd-Server: rspam04
+Cc: torvalds@linux-foundation.org,linux-fsdevel@vger.kernel.org,acme@kernel.org,linux-perf-users@vger.kernel.org,bpf@vger.kernel.org,selinux@vger.kernel.org,kees@kernel.org,linux-mm@kvack.org,linux-security-module@vger.kernel.org,apparmor@lists.ubuntu.com,david@kernel.org,brauner@kernel.org,stable@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue, 24 Nov 2026 23:49:11 +0000 (UTC)
+X-Rspamd-Queue-Id: B56BB40003
+X-Stat-Signature: i6s5oihdzgkfz96nnigfn86ptcf6ri3m
 X-Rspam-User:
-X-Rspamd-Queue-Id: BD4B8A000C
-X-Stat-Signature: fi8g9t3rb3r9eehe9hh96xaf1k589azo
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795564150-67628
-X-HE-Meta: U2FsdGVkX182G8UcdCtbg5nUJWKGJr3lIZEcVXYS9Kw/tRjSbN+HEWWeGnfa473ZkFbrSzisb8IYbSpOuYjKst3RHdKhoL1p+559ZXg6oYWh+RJa1F/ELClbuIAPYQMWe5BAyfUWvQUF+C8ZT8Mmfqma9LbtnBTw9rqzZQIBFemcI3HJPTFJah9vuNqWvcZrLBQr6ad5LnhkZqeqjts7/kLjYfPhZQxKGozTgYhbRzpNtKi9bSpNsx4oCAeSXMKYDkoPUfGZN8KcYQj3dKsaDzwha/ZIo2YBHjQs9aqqtdbOJPCfwKeDxlB5cqEH3nZ9R33n94W4o/UMc0Sy6lWedrr7C2uiitr/oBfkj2F6F3+n0LsfDLkmbmjL1/+ri7tq7i+83DuqhKFZGu7U5FFD0yygTBrCO1COMkJO8g+TuHswngKHmgjrisiLDmn4o+vXSlX/kkKh1K5Q1ry8IEJRZ48OMqoa2nKz0A8tdLfyLOtDKcnHI7MmPuDKWwZ5wFlOwzA2Gj6IK4oigTCMESXwbimj5C8e8UfxH/3o5K+Oo/+o74qbS5BJ0m7ELdVJwZ+KJFsRPciu2ObAvM12FhYcZAhK+goG2DvKGbqMozReUW8lkujksjR2/L3MQMxo7tuHEPWu0U5DJ2h75mU6hT6ugMU+5H4YTn4XHYystVywZHiuN9b7cQbhx7+u6crq0H22QvRaJVkFkFwWT1rXQnpHEDMlO/SnY0cj76Dn4bzkLVB0n9FpcbNSyv5Ilri8US+2vhPTVqH/j4fV5dNJo2GdjQ6ZR5ivX5xw3wizTZsYqsJvbB0gOctnVj2TnknOozuQS1Xlo0mIFCHsdgs9PEraDrnUK7SVHn3qWMvemmAZxpBHjF5NclCh8KOZIeFEBLjZfi7HEzWXbove1HXb/ZYqbwbhRH5K3565b7d7YWiio2+BxTSnxFhAhNx1d/lSU50cibQMApnYsEpwEvWLZ+y
- Dvfn4zgG
- 5qumF/oftMGtTYfkHhvl0KcRstGdsNjFHQyGHfem+TmWXU050eHS3z48CTMi94sXCrVm3nm2pw1G3w+9wykBW9kexpzEQAVLLrZ3c1YQWLn/hvZ/8USB4RrQK5wIiLfQrpxJTvQcQS2w2E+vRKSvibMWIBpknXkNUDr4bdr6OpLR4Ul073BSALvwrbOiYOy0oF+5tEcAd/CgdnKzv3frTc/Ff3FPdI/v4DUFpT2Nt69TTIXxgwR/8NbsaHwV8fZX/Gub+vO3kwQuVo3NiqO89A3jdznJidRaHnPI5KVxgYlpuIl36FsAVWKKYDiN6Af/ORvEDz5y/UDv6qe9DZHlGDSHhsrH8NYlPwvO0eppsy+4h6/J/jFvkKl4H6Zh7NLEGlGoy9UdPZEwnmKzcTZYVuln2ceVQfHf/ZpsNzxDe+QtsYUnzJV6jg4Z+U4vuxJyufDoyugSoc3kIozPfWXaxdQu8Qk6Udqe9GfMlje1uWxQMGFkCbhIltTIHya9BrPgIzTqd6Q866CIll2zsfGojq8PonGfIm9GtUgCyWIJJ5xgpgQrr754B35UU0fZN2a0IrIl1gWqQo3caYEpXezLOWR/YRitTKzMgL2ABtNMKWr0p2KloUri3E3/an9Svw3sxplGPXFM1n1YhfB2Bi2SLl+PvTDlgRhsyONqK2gB7K1lyTGj6hYtNbsDr2J1/MVa6DKOPFoHzCvzwJK2iwFwE1S6heVpULhkPdbTjzrVUxOVT0J4=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795564154-553301
+X-HE-Meta: U2FsdGVkX1+3M2AqynSi4We6ViYmeqwhALaEDOZGM/qqZrCrtvImD8y4dn8mRldJSoosmY6sYHXRhh1oeIP4VWzeFlbaNQ3nDsrDoLtCB5DQtyF9nPXPi2byMSWkbiGTUxbuoa72kHySYDlA0YPebSEK/HI78YlVf12Pri8jQdToVIYBe0OTe1sZkZ6eP/FYb/Z9qnFIJsfj8kwgKVW3qAbY7oIk3c15iYPWNtDGVS6mkiNRiVaqMuqBPe2Fgm8atZq+bKvOhoa2Rs1dUsDpzp12U32YaDnZHgfPZb2HruKa6Ekc4K0Gb3vtx+QduvmKFB5lE272ICY//qOK37z0XT8ahh301dKR/xzt01jlVekAFlCmNw9C+03aZLVW9AtMDULR9U4a+d9n5rZQnl65hLJrSL5IYl+sUMPlYADfozHCgKUAzdRI3e3hUgXiR0ldQyyy9SiadIj7Z1PnCDuthZBNods8uOtr1b5PrMByIOGUooEjAXPt7oMw8SE1cGvQ5p55GUQUK94DLxEjNBX5FgDSFIZ7fGL2ifgIf8JWSX/ZmDjIrxYHKiDnBfA9Pp+NXZ6w/pF8st3EpQk3IRPCl5ihRJHbNwiPUc1VueCJCCdGUvhR1Svma2K6Zus8ShwxJ+VsnIT9boCLNq4V14AqGkyOkQqweOoRu5eJa99qMLwu5GlC3cPKeucobQqeVxUHngGOtBQBLxW6DX+PcDAxxi8HbIgCFORVUBMmnPQ1ceT8iLYwAekJ1ZHLRPEunYemp9+xRHXjWqLp2yQJNM4yZcTYxCXpqqu8Urj3+esNL5YbzmjN32fbD/mzycoP0ofzliOi7nwvTG2JusKpXuPmVLGiixXTxhRFKexrJK1WEjSRIAVBhuS/NcMpoqLjzou9S4TxW40vU53v1DxgXPvh/PX6bLUKn9iixoSWMXXYJuz//9B/nM6LzZE4bNn2g6xDeexrdtZrMA+xqxpY8Tg
+ fnNWGkqv
+ qcPP1j3dn/6PhbZgIB4nXHkurhbLNI4dZBdV/LhpnH11kcz/uuwLM1+L65lnk2GS5NFQHVEOS2uDXbWXqH5LjoruYVPpRMVLF/LL1So7/zzIt/hUPssNwDjc23OcAiVfw2hdBX4vdj3GxE1LDoqL9Rr5dAGQlfkgjklMfb6BiPadmDy2gkWDORkqV0bOnPRXnplSBtvJHWDXgPaDgBy+iwbjJbZOhb8m+3fVc9xb65bkvGbgx5eSpsBh5eiWfey4HqDNk4VDfRcEKler/x6fFejIlyWVSCC4fBfYbblm6LRV7lyVVy8Q5f0RnHdSL/Vi6xZNemB/ZHYCjUZUKMZ08CDgYUSCDxQ2ZieQnSlTx3wtLJ6bw/PcO6bSpqmj8cc4MQAS30oI1JgzWxIXEC32xxX2LWmtnIuwe2W8dl6jnuz8YCE3XMtsGxc0ioig9lLdZ/Ha1AFQW6YoK4WIAgb/hSRNkINJQGaYLy/gQEJZHIuFns8TSpkkol50n51Jkunn8luyBS6MlrKr3/1oq/xzhEnyNkW5c8Y1AIrEINh7jbJFU0EdHLXHm2pnAciqfxPi5qyB6ARCqWas5UY/06BjnjVdXtrgYXLoCzYXC6Pl02UacDWELY5OcRSvPsMKUDXw84K+eeHUNWJJJA0LJGSm0HjFWHWcKLX3p5wtH5p/kd1xM+B4Ee2btT2QeXD4dDCuG/DD30pYQZh83I7I18aXEU94kqdC43AgYkvDgiuh69xlwnRweBr6AE+Fsh4f8H9uZ8Qc+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,49 +91,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============2510359726493679342==
+--===============4896982406480640730==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> vfork: wake up the parent once the child has left the mm
+> selinux: revalidate inherited files before taking exec_update_lock
 
-TL;DR: Commit message only: it cites "[1]" for the 2.5.56 change but has no
-matching link; the review asks for the history.git URL to be added.
+TL;DR: Moving flush_unauthorized_files() earlier changes the comm logged in
+SELinux AVC denials to the pre-exec name instead of the new program's; asks
+whether that is intended and, if so, to note it in the commit message.
 
->     vfork: wake up the parent once the child has left the mm
->
->     A task that called vfork() sleeps until the child has released the mm in
->     mm_release(). But exec_mmap() releases the old mm, then waits for
->     exec_update_lock and only then switches to the new mm. And exit_mm()
->     releases the mm and only then drops it. So the parent is woken up while
->     the child is still on its mm.
->
->     It wasn't meant to be that way. When mm_release() was added in 2.2 it
->     was called after the task had been switched away from the mm. exec only
->     moved it in front of the switch in 2.5.56 because deactivate_mm() and
->     the write to the child tid address need the old mm (cf. [1]).
->
->     The release has to stay where it is as it can sleep in a page fault for
->     as long as userspace likes. So take the wakeup out of mm_release(). Wake
->     up the parent in exec_mmap() once the task has switched to its new mm
->     and in exit_mm() once it has dropped the mm.
->
->     While at it, fix the comment above mm_release(). It hasn't been called
->     after the mm was removed from the task since 2.5.56.
->
->     Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
 
-This isn't a bug, but the changelog cites "(cf. [1])" for the 2.5.56 change
-that moved mm_release() in front of the mm switch, and there is no
-"[1]: https://..." line or Link: tag anywhere in the message.
+[ ... ]
 
-The previous commit in the series, d0c33c04297e ("exit: don't take the mmap
-lock in exit_mm()"), uses the same "(cf. [1])" form and does end with a
-"[1]: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/..."
-line.
+> +/*
+> + * Close files for which the new task SID is not authorized. Called before
+> + * exec_update_lock is taken as closing files may block in the filesystem.
+> + */
+> +static void selinux_bprm_revalidate_files(const struct linux_binprm *bprm)
+> +{
+> +	const struct cred_security_struct *new_crsec = selinux_cred(bprm->cred);
+> +
+> +	if (new_crsec->sid == new_crsec->osid)
+> +		return;
+> +
+> +	flush_unauthorized_files(bprm->cred, current->files);
+> +}
 
-Could the history.git link for the 2.5.56 change be added here as well?
+Moving this call changes what the resulting AVC denial records contain.
+Denials from flush_unauthorized_files() go through match_file() ->
+file_has_perm() -> avc_has_perm() and are formatted by
+dump_common_audit_data(), which logs the program name from current->comm:
+
+    audit_log_format(ab, " pid=%d comm=", task_tgid_nr(current));
+    audit_log_untrustedstring(ab, get_task_comm(comm, current));
+
+Previously this ran from selinux_bprm_committing_creds() in
+begin_new_exec(), after __set_task_comm(me, kbasename(bprm->filename), true),
+so the record carried the new program's comm together with the new
+scontext.
+
+The new hook is called right after close_cloexec_files(), well before
+__set_task_comm(), so a denial for a revoked fd or controlling tty now
+reports the pre-exec comm (for a fork+exec, the parent's name such as "sh")
+while scontext is already the new domain.
+
+Is this change in the logged comm intended?  The commit message does not
+mention it.  If it is acceptable, could it be noted in the changelog?
 
 
 ---
@@ -141,5 +149,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/45508356147
---===============2510359726493679342==--
+--===============4896982406480640730==--
 
