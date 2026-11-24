@@ -1,95 +1,182 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE921606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF08606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 17:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K0VKDCfv
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=BXsujX2M
 Received: by kanga.kvack.org (Postfix)
-	id B71546B0811; Tue, 24 Nov 2026 12:51:36 -0500 (EST)
+	id 906096B0813; Tue, 24 Nov 2026 12:54:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B22896B0813; Tue, 24 Nov 2026 12:51:36 -0500 (EST)
+	id 8DD896B0815; Tue, 24 Nov 2026 12:54:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A38776B0814; Tue, 24 Nov 2026 12:51:36 -0500 (EST)
+	id 7CC086B0816; Tue, 24 Nov 2026 12:54:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 665906B0811
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:51:36 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 50F146B0813
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 12:54:00 -0500 (EST)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B2E12120A9B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:51:35 +0000 (UTC)
-X-FDA: 85470754950.20.D0573D6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 18B3B4000A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:51:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K0VKDCfv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CCE5CA8B1C
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:53:59 +0000 (UTC)
+X-FDA: 85470760998.20.A85891F
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C02DA140002
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:53:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=BXsujX2M;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf23.hostedemail.com: domain of nik.borisov@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nik.borisov@suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795542694;
-	b=AACTwRqJe/fXSB1h8Rs85s9Fap1L/Ur/EShmgDhq16NV1MTDuaK5pJemDG1jK4HCZ/P2cB
-	T+bUmvC7yEd9F1sKozwKbigTtc8VWk37xPn2PYyG+5t5guvZuBEhnpCmhctvlrwiadStQ6
-	18DafzafV7sp6p2Tpb4NjUL7g0nPMXk=
+	t=1795542838;
+	b=agFlCGVTr3GaWqeq3wEh3maI4qfc4Qcy09Tju1aL80bn6uv+r05evI8EUqPLolqoubPkRJ
+	dtnZ695Zu7cU73jepkxzkzRcaCeH3XxTIRsYcx6Qsy8BUV8APccwlTnMfo8QHNFCUlfa/w
+	z8EvOwpj7HY5qWepVLl0ydharIlO7wI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795542694;
+	s=arc-20220608; t=1795542838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SkbRJ3BICaStaQpwyrBwVvkQ+2k3l99JSuWqhVYJ7js=;
-	b=x6B3IQ3m3MWu8lhQ7l6rQdPoZtFXKXw0+vu2DmnWG8LZO2YXSsgw1NT05ZZBRJmtga9bWu
-	uhh4z9WgthC/+HghYAc+nbc6dLUh+2zQWFQQz2ldl0GqUlQGUjtrvGE2SmjeweS6INJ/N8
-	ApPuiYJbWGaQpPTiPbPmdJSjJ2nNl7k=
+	bh=29+XiIufhNHRKilLwg1As5CARzR+PGkJ4UIDPlIl84M=;
+	b=BHvEPkLyJFXfPVlw+G/69cE24Ko5kyO6QSCg/IlLeFncgRJQJrzUpPIIwzZGYDFwKX9o3y
+	tb2CUd8VMOa+FWr12IHnXFKcuL05WoTXApthM4I53pBt+eQtcXuxckUDWMa+LBXsU6HX6s
+	qiZQspy3rtRkKXWNfiRJhdJvycpPQ9g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K0VKDCfv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7025062888;
-	Tue, 24 Nov 2026 17:51:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB9D1F000C4;
-	Tue, 24 Nov 2026 17:51:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795542693;
-	bh=SkbRJ3BICaStaQpwyrBwVvkQ+2k3l99JSuWqhVYJ7js=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K0VKDCfvlDIfrnTyVFYmLMBRLCc0IoK9boz/D+vjMKZgAXHqUDOf44RmzhrWQf08d
-	 wiFBnIgPICA4wyb+azfEtvl7xtkuQsb2fVS98+wqcMmtpY2mYYyhtV1XkG8fd4JfSV
-	 U4zCZIWU9UIpwqon/qarS/CmT8ibKD6FBy+OmolAWRm2avKRK5NGwyefuB4XFDSiIC
-	 F9t6GnPPdhuCCIhLEzzTpFkSTXHLG8IZOXVEZgZyBkPlJ2NDHqn/Ds3ek6WVZYZOBU
-	 UxplVAlrajs5RBpqUj2HKnyVew82BHCOqBsplM3RhlnqKcTBEgI5WZDpyfolhwwt9q
-	 IWsUxu2wW7O5A==
-Date: Tue, 24 Nov 2026 17:51:26 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Brad Hawthorne <brad@sim.vu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, Hajime Tazaki <thehajime@gmail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/nommu: keep the maple tree in step when mremap()
- resizes in place
-Message-ID: <awXMCqK5H2TOlvtf@gremlin>
-References: <20261121083139.803682-1-brad@sim.vu>
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=BXsujX2M;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf23.hostedemail.com: domain of nik.borisov@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nik.borisov@suse.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4a7b8abe209so3729098f8f.0
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:53:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1795542836; x=1796147636; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=29+XiIufhNHRKilLwg1As5CARzR+PGkJ4UIDPlIl84M=;
+        b=BXsujX2MtJg+kibtKwz/tctLFCp8EbfobzjqF/JeBdeAmBcMqvqAY2CsYNDQ45EIss
+         4ATUKurdPzP/QBmkXe2OjdVD+jthFfN96VkYYMXkF7YWXocOUPIFFrLZ/J50EHwV07Zm
+         D4PwJMgp+trQ4mC64t2yN6yuRkaX09cVAuIfx6ZUFkkaWN/MR0G84x+PPUbaxaW2mJmV
+         zXH8ICqJLwAM7L12MLpG09Fmjs2Yxr2bhhc4E4c6BHSNu97lgcKRENsaS+d6g+c6ZvgK
+         Z0qt9J/xHWmHmtI9pHR97zuCZbnqcF1Sop3Nfvkt2w4TtBS4D69YtBclQFWyXLjKZofE
+         J4Vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795542836; x=1796147636;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=29+XiIufhNHRKilLwg1As5CARzR+PGkJ4UIDPlIl84M=;
+        b=Mpv4Bm3f0TZ7W2B9LZj/XcNc3Ot/heFTzsRlUoDC0JxwoCaSeArZVcEanvSJYWuCCQ
+         lu5O+Rs7PNXOMUNc3r34YzbjYczzWShMY/bp6uO88Ge+uE152gFgPBB+F6LsS40jtfm7
+         cL7VqTBY/TYXtMgEm1pFcKiS10nqHhHr9HPEsqBNvegrHrEnn5jp28QHztvdZfNtRHc/
+         wzDC0YsG5BaUxWCBgRQvkUnCaDDSLB3WayJjHcNSn20LgHZ4aHOhG82ltPoRciDquRCQ
+         ipDKM9AiZfHTC9fOMn2wmLogJGV2cOTknycg6eF4XFpvvSzE/0o7QqW3/35RyNiNrd7O
+         NrnQ==
+X-Forwarded-Encrypted: i=1; AL+hErG6/LmP3YKKA5eXg5tNNLGAsp+hSbN05tL7vdWNw/071jlP59Smjyn18nJOCMYebSQRwLq2t7cr3A==@kvack.org
+X-Gm-Message-State: APuU4Z8Dce4Oj2FqLhzKR7JvoNx/G2/9wE/vFw5Vd/646HhweOJUUVdB
+	HGHFZJ7T8L3/AueNQ0a8n0QqBk4HFpUzPHJj32s8pbR7GB3v/ZKB/1id1VXJgObK5+E=
+X-Gm-Gg: AZFdTZdBC/MnPoINP42oEKtxlv+c6WaFkYPKXSn+tDeR7z6E7x8npwgpnDxI35XifMa
+	mD9dJ4Br0QVbuSviISTVgljhfDrSTeC7F0slGuFNXsBL6uYDB1yO5GbTAM8gRvkY8RNkB8A1enw
+	a3TmkPmhvYahzTMc65YWPj+2TusUj+DB31VxbjmTlFCoEn0qVkSrBUKMgCS6E3AsiEfikjXCfc4
+	V+1yRJMhdy2+KYmJCp6cvxxFzK1pWBwU9sCVsFBluTlH4K/ctRm/cWWjK0+JVVlZZ2GQVAJWynt
+	lJKGpKMh5CR/gULeCDfyKGoCCSawawPCDXXot9TfT/7eK1nqSv0qX7Nd0fUO5tygHqZpnmjS/O2
+	KbyZnmlJn8Kcf4h8rZPqRH8TCsY6D9RG7oX9avGzVyAbTnWq/Htm4q5wYcwwWjfNldu/9detncm
+	u0yf3KFwjnPm746IcM5jwgJ45Hre9v+Msp4ZpvlFBF2M9YqHNqCfj1UiNfp5rEKEpsPD28roDVH
+	6JO1fvHapcfoRk+ndjZjYl1Lm9aCS5G4TBUcoH1tRtIGBJyvUbejH/62rdTAuVLAueYLAjkF0Eh
+	KGB6BjULhw5FkX4bYiuL/iTIEOw9nQ1G
+X-Received: by 2002:a05:6000:4616:b0:4a6:d298:832c with SMTP id ffacd0b85a97d-4abb31ae4e9mr28436124f8f.31.1795542836258;
+        Tue, 24 Nov 2026 09:53:56 -0800 (PST)
+Received: from [192.168.0.20] ([212.21.133.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b9add26sm29661068f8f.44.2026.11.24.09.53.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Nov 2026 09:53:55 -0800 (PST)
+Message-ID: <15d9c032-a8cd-4469-9272-0964e8d9ac9d@suse.com>
+Date: Tue, 24 Nov 2026 19:53:53 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261121083139.803682-1-brad@sim.vu>
-X-Rspamd-Queue-Id: 18B3B4000A
-X-Stat-Signature: 9ut3dmxeop5rqkh81oitu4gkwck33tfc
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH] x86/devmem: Drop /dev/mem access for confidential
+ guests
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: Dave Hansen <dave.hansen@intel.com>, x86@kernel.org, mhocko@suse.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Kirill Shutemov <kas@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "Naveen N Rao (AMD)" <naveen@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>
+References: <20261124160025.738362-2-nik.borisov@suse.com>
+ <0dc6759e-ada2-461c-85de-809c170abd6a@intel.com>
+ <awXBtrPSHfs51Y2f@pedro-suse.tail5790ac.ts.net>
+ <2026112404-hyperlink-widget-ff36@gregkh>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <2026112404-hyperlink-widget-ff36@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-HE-Tag: 1795542693-815336
-X-HE-Meta: U2FsdGVkX1+wbecSSo3qKsX3ohJIP/R6SS2vpoxkICB6ls6Xl3Rw+QBdOayTcdq+1/n9euTaK55a2gZebAFn2WElxBiBlasWoWeHlDoBiO6JuNqIZk6nnpoSQss1eTJxudnX886Ox3duDNWOU5qdxbNPgdkNBoIv7RsiUcheAb9qjMyyilNnDfFJSaQi6aQqpnBnvZ/K/cYaQ7sh9MvbwbLvDATnkKg62bujoQO3Fn1TyPEKBiRotdMwZMChlTKY7UQDt5BqFTr4F9twwVLmbs+wO+x/2YWOr876Dayh9Etyn+o/sOv6T0k97/7tFbPIxkrA2T2l+rz6ZdGYuXPzEBqDgRxrmdZkm9rmGTrctYe8ncCLy4myogZRHLf0h0MdsoD5uweI2FRrhT8L4BLBaTAa1Yf3opzpbythaME6zGlfizRofXxyU+XwdXyOP0/vMY3oGGn5jV96ggxodUK/gW6B8ySnq3JsSFZcodJNgY1m+rYk2T6O5945uwUyAe8ZF3+GdUq7SzAHaWN6cB03uEHk6xYa0XWn83Bvi0v+byOhNI+v5fMCJFpFwTmqsQfhIiWZCbI2rQuZ/gj481uLG90Sp2D/6O0TBW1kxh4y2pDYz38w2fOHu/4P7YpqFWMxaVHhxPXM7BvuUM1Ue5uSDO5BEJeQPwTOPpbdTB/9VGGhjN0Xm4HGWE4b/oPy8He1bGvL4fSpdt52Fsko9d7Lh0ruKVCf1iUSMERmv/KUnXGtRdEbmLmAOcDl6kv9TjYOE9iqtC+oyk10ZYENBGjkdieKW0x0anWDVKTWYLj0qbxqUzi6pVanAdVBTXpQM6QxLzB36/QuYu5DZCNDBFfGKreTCb2jTl3240r4KRMkkfK7lLS7TznG++qZgy2piBJV5iGgkUqqbrJhPcRDY8vEwymRpN2HwTAUlvQs0NBCH6Q8gfmIe2FOMbepB/8tBdQ1p5pLdPKzBy9P022AIsq
- NqrMcb08
- YYgCYOiemv29LPbQ7mowZsRv70bk63d4Jw97sne87DitgTSyAwEcck3dWJ7FeANK9WrO30iBt4g/C4wN3nSOUWsOGwBzIui2tzwM2y6mIBcJynzCyml/ClTMGiJ1mqbhdgfYsKtDvBSlbMmBW0+ZKdeJXJdv9neYN7POK39EHhEr8mbKUAQYMy38V34aQ3N46ZCrkwtcMAtjeOv0aFHSjSOHxjyfGfRL94WdNpsdKPyoGx9bHJWgfmr5GZPqomd/u9LbF7CgSMX5ZI424aEPJfaCw+kUBiuXLfUILtZGHOCp6FBEbwAlHjtkhNr4OOJN0RETena0CyRlhLxNW2W9J7b2R9leNGBldpSMNPYUTOq4iTwOHjmo0k0k8m+9QIQPDVOSTaosEzv9FMls9zMxKI1Ufrq8CU+rBjTxp1RtIBanUHo1vVLo0P3p9iLud4mCrt8/FCi1w0USpSX8jioz78vUHnjl373hCGGM+a0ai6zBQHIlvM8IMdWnpHp84oFeFZOctrnNbJoUX8Iq+sH4x7tUicl+HetVWX91EcDu0VCKOAtv8rpkPRepNG3E5O3A1er7LWYOtxeKj99w=
+X-Rspamd-Queue-Id: C02DA140002
+X-Stat-Signature: ftizux5hwi1ef11mfhduzf7f9qxtacy9
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795542837-20041
+X-HE-Meta: U2FsdGVkX19mmJNi2YH3YfOjfOSGSJrBkJzXmXIKECiGrm38dgJK3ssq5dqUlpMySH0bCdwBcmJbUKDE0tgnFcJEsG94DGP3yXfT4RVIVLrKNOG2WS7jGIxGh6GMOJanry6fClhnpq1HBqUPUlExrMy1KEEY4RIpBRDNhw6WKAz/1XEPRdTd+2FgKiF4LAEu5H7myv+T3C7mNJ9R1O3RG7Pj6lo8lUxC/ACUmlFEpDPav7l+YRwm6D4Xk4nTIZb44845TF74Uxv+F++L1k5E2zp/IiWzP6tusECeecSD3RzeAM0PGXEv4UU2M5ZL8RDTw4ebkrCCEZb2Vg1q805IFcm5syhdSvTlv7E6RL2ADw/ALeC/uIWzO2nz2pDMQrprFgF9y4HhHNqYckN0X8ml73v+lv7blX3zWqhCT4NJnh6JHlMiLr3oOUrgIgSo7eausgAls3Y3WZH+CGeOsToUmkJ83kcFnXvK2rdlPz3oNdDi2BR+k5dXyZq0qGMrzx8MP4lKyvXH+YNinEOhhHO8vlyiSN87rLNGtjZgItSveM61nLZ8HKfcRrid36pbxKeHgAnfPV3mhlIm7FkkG4WEAKQZggK1GJl2U5JZyWgtxX/L/evpHkY8v9dcNfK3utzb45qwHsH72HCfezWllBCvBunGax+A293TM+Jb5M80MqqSoC/VBOfam9ry6mxmLjZa1B3HZgWUcqvUbRU3MjYAo8p1qx1LrWyuNXYI0sS7wRWdncq0KT6SGthHyWOMq4jlzZTGKMCFj4XAnuoHTPHaqnS+AhP0DpQ5O3eDrpIaZ3cdFTFfszRhGpSsUq7SLeI5hCN3GuQ16uiI/1tA3OJVpxbganCuKho11NN0VTBQVW4U1uT3fmjKh6huwIbsfR6zsY0q3WibQlGecY7lCDcdnhUw+P4/K2/AVKkck0x6pAuahiX8oLQq9n01WbeQNvBao2GAzUYQVl2wT+J9WYd
+ qb65/K7I
+ R7lQIizOTtQ52gWzOdUYOwN2aPUmSZ29P63vYf5PUNLYdWNCKfnSTOdfqeQnVY0TC1wOqo/GLnLTiVHCiRGSGN+yyAC0JHee9Z6BSSYZhx6tDmy6IRATdt8D1M9Z6w4R2fpH7SzQfg0z+RMlnDt2LPxjMa/JBmxZxGP5LH90U93Fv6eKo0T5LLs7bPzgfmLghoH0BF+MS3lRqCzI6NZjYZgNgALy8IaAJSt7RI8tkM5h19ad8ifrz4I7uXuXK+NVkH4pyFTG63VxAMbNzX/bMjOecPyodA958g+ruAhV1+krHqlBwrY6VxDsuPsN7+jwZtTnkTskeN1uNIFfk0ZrsUl805jASmnvcMalXsm15DLB1KMcaxP3qRgpI5KB0tYHKekDrmhRyuAAikxIPQYBcUSeEVXBKu4v9Yjbjsdqkwpe6F50SJlOu9DQ/tLC1Z0A1qjtxDROKeB3KeHkRVdmKZlzuGr/wC9hU/PuchbFlY4l8G67c4a4vAxtOIIFKYpXW4jTL/GeGW65t8VCnRoGYHQ1iF+KbAxd/1BujjqssYKGSTkCyLwskw3+uGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,202 +185,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 21, 2026 at 02:31:39AM -0600, Brad Hawthorne wrote:
-> On !MMU, do_mremap() resizes a VMA by writing vma->vm_end and nothing
-> else, so mm->mm_mt keeps the old extent.
->
-> After a shrink, [new_end, old_end) in the tree still points at the VMA.
-> When the VMA is unmapped, delete_vma_from_mm() clears only
-> [vm_start, vm_end), so that range survives and points at the freed
-> vm_area_struct. Lookups in the range then read freed memory (after the
-> munmap(), /proc/self/maps still lists it), and exit_mmap() frees the
-> VMA a second time. An unprivileged process is enough:
->
-> 	long pg = sysconf(_SC_PAGESIZE);
-> 	char *p = mmap(NULL, 8 * pg, PROT_READ | PROT_WRITE,
-> 		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->
-> 	mremap(p, 8 * pg, 4 * pg, 0);
-> 	munmap(p, 4 * pg);
-> 	_exit(0);
->
-> It was first seen on an Adafruit Fruit Jam board (RP2350, Cortex-M33)
-> running 7.3.1. There, three rounds of the program's mmap, mremap and
-> munmap leave the process's vsize at 2133 KB instead of 64 KB, and the
-> next exec faults the kernel, in vm_area_alloc() or __kernel_read()
-> under do_mmap(): the double free has corrupted the slab. With this
-> patch on the same kernel, 11 of 11 runs keep the vsize at 64 KB and
-> the board runs on.
->
-> On mm-unstable at the base commit below, under QEMU mps2-an385
-> (mps2_defconfig plus SLUB_DEBUG_ON), run as uid 65534:
->
->   BUG vm_area_struct (Not tainted): Object already free
->   Allocated in vm_area_alloc+0x10/0x38 age=0 cpu=0 pid=20
->   Freed in do_munmap+0x2ec/0x2fc age=0 cpu=0 pid=20
->    kmem_cache_free from exit_mmap+0x7c/0x8c
->    exit_mmap from mmput+0x2a/0x74
->    mmput from do_exit+0x1f8/0x520
->
-> Clear the range given up on a shrink. Once a shrink clears it, a later
-> grow back into the region must store the VMA over its new extent, or
-> find_vma() would miss addresses that are mapped; so store it there on a
-> grow. Shared and overlay mappings are refused above, so the region is
-> this VMA's alone, and the grow is bounded by its size; but the range a
-> shrink gave up may since have been mapped again, by a direct mapping of
-> device memory at those addresses, so a grow into another mapping fails
-> with -ENOMEM. As before, a shrink keeps the region's pages, which is
-> what lets a grow back reuse them.
->
-> With this patch the program above exits cleanly, with and without
-> DEBUG_VM_MAPLE_TREE (nommu has no tree validation of its own, so that
-> adds only the store's warnings). A shrink, grow and partial munmap()
-> sequence also passes, and fails with the shrink half alone, which is
-> why the grow half is needed.
->
-> 524e00b36e8c is where nommu find_vma() started trusting the maple tree;
-> the exit_mmap() double free above follows from 8220543df148 ("nommu:
-> remove uses of VMA linked list") in the same v6.1 series.
->
-> Not changed here: a private file mapping's place in the file's i_mmap
-> tree also goes stale on a resize. That predates the maple tree and is
-> left to a separate patch.
->
-> Sashiko's review of Hajime Tazaki's nommu series found the stale range
-> in July, and his fixes and RFC since then cover it [1][2]; review asked
-> for a minimal fix-only patch with a Fixes: tag [3]. This is a minimal
-> version of that fix.
->
-> The consequence was reproduced and this patch drafted with an AI coding
-> assistant (Claude, Anthropic): it reviewed mm/nommu.c, wrote the
-> reproducer and ran the board and QEMU tests; I checked the result.
-> Stable backports need adjusting: 6.6.y and 6.12.y lack
-> vma_iter_store_overwrite(), and 6.1.y nommu uses the ma_state API.
-
-Thanks for acking the AI, but this commit message is unreadable slop, sorry.
-
-I just can't gather the energy to try to decode something this dense.
 
 
->
-> Link: https://lore.kernel.org/linux-mm/20260710021028.892645-1-thehajime@gmail.com/ [1]
-> Link: https://lore.kernel.org/linux-mm/20260813063401.1786548-2-thehajime@gmail.com/ [2]
-> Link: https://lore.kernel.org/linux-mm/an77pELeQdW-sTEi@lucifer/ [3]
-> Fixes: 524e00b36e8c ("mm: remove rb tree.")
-> Cc: Hajime Tazaki <thehajime@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Brad Hawthorne <brad@sim.vu>
-> ---
-> Hajime, as you asked, here it is as a separate patch with you on Cc.
-> Earlier note, and his reply: https://lore.kernel.org/linux-mm/20261120221021.789792-1-brad@sim.vu/
->
->  mm/nommu.c | 34 ++++++++++++++++++++++++++++++++--
->  1 file changed, 32 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/nommu.c b/mm/nommu.c
-> index df99495c8..9221cd241 100644
-> --- a/mm/nommu.c
-> +++ b/mm/nommu.c
-> @@ -1575,6 +1575,7 @@ static unsigned long do_mremap(unsigned long addr,
->  			unsigned long flags, unsigned long new_addr)
->  {
->  	struct vm_area_struct *vma;
-> +	unsigned long new_end;
->
->  	/* insanity checks first */
->  	old_len = PAGE_ALIGN(old_len);
-> @@ -1601,8 +1602,37 @@ static unsigned long do_mremap(unsigned long addr,
->  	if (new_len > vma->vm_region->vm_end - vma->vm_region->vm_start)
->  		return (unsigned long) -ENOMEM;
->
-> -	/* all checks complete - do it */
-> -	vma->vm_end = vma->vm_start + new_len;
-> +	/*
-> +	 * All checks complete - do it.  The maple tree must cover exactly the
-> +	 * new extent: a range given up but left in the tree still maps to this
-> +	 * VMA, and once the VMA is unmapped and freed, to freed memory.
-> +	 */
+On 24.11.26 г. 19:35 ч., Greg Kroah-Hartman wrote:
+> On Tue, Nov 24, 2026 at 05:10:21PM +0000, Pedro Falcato wrote:
+>> Holy cow the CC list is stale.
+>> Fixing some up.
+>>
+>> On Tue, Nov 24, 2026 at 08:36:45AM -0800, Dave Hansen wrote:
+>>> On 11/24/26 08:00, Nikolay Borisov wrote:
+>>>> Resending this with the hope of either getting it accepted or
+>>>> arriving at a consensus what exactly is missing so that I can take
+>>>> it from there and eventually get something merged. As previously
+>>>> mentioned this results in real problems for confidential guests both
+>>>> on TDX as well as SEV-SNP.>
+>>>>   arch/x86/Kconfig |  4 ++++
+>>>>   mm/char-mem.c    | 10 ++++++++++
+>>>>   2 files changed, 14 insertions(+)
+>>>
+>>> I'm still OK with doing this.
+>>>
+>>> But I didn't want to sneak an mm/ change in via the tip tree. Any mm
+>>> acks or naks on this?
+>>
+>> For what it's worth, I don't love this fix. Yes, it fixes issues in /dev/mem,
+>> but it:
+>> 1) skips any other potential problem spots (I don't know which)
+>> 2) open-codes random CC checks in mm, which is kind-of regrettable
+>>
+>> OTOH, it's unclear to me why that CC check is needed. If configs select
+>> STRICT_DEVMEM and IO_STRICT_DEVMEM, shouldn't it Just Do The Right thing?
+>> in iomem_is_exclusive, etc. If not, could the CC awareness sit there
+>> instead?
+> 
+> Yeah, why is anyone letting a CC system access /dev/mem at all?  That's
+> ripe for abuse lots of different ways, so I really don't like this
+> change either.
 
-This is a super schloppy comment. Please just drop that.
+You are missing the point, this pertains to /dev/mem in the guest. There 
+are a bunch of libraries (libhd for example) which reads the first meg 
+of memory. This causes the CC guest to shutdown in both AMD-SEVSNP and 
+TDX world.
 
-> +	new_end = vma->vm_start + new_len;
-> +	if (new_len < old_len) {
-> +		VMA_ITERATOR(vmi, vma->vm_mm, new_end);
-> +
-> +		if (vma_iter_clear_gfp(&vmi, new_end, vma->vm_end, GFP_KERNEL))
-> +			return (unsigned long) -ENOMEM;
-> +		vma->vm_end = new_end;
-> +	} else if (new_len > old_len) {
-> +		VMA_ITERATOR(vmi, vma->vm_mm, vma->vm_start);
-> +
-> +		/*
-> +		 * Shared and overlay mappings were refused above, so the
-> +		 * region is this VMA's alone and still holds its pages: the
-> +		 * grow, bounded by the region's size, stays inside it. The
-> +		 * range a shrink gave up may since have been mapped again,
-> +		 * though: a direct mapping of device memory can take any
-> +		 * address.
-> +		 */
+> 
+> thanks,
+> 
+> greg k-h
 
-Again this comment is just horrible. I don't want to see crap like this added to
-the kernel.
-
-It's classic LLM - ridiculously dense noise that doesn't help in any way.
-
-* !shared, !overlay
-* pages belong to VMA
-* growth bound by region size, is within the region (!)
-* a range that a shrink gave up may have been remapped
-* a direct device memory mapping can take any address
-
-I mean seriously, wtf.
-
-> +		if (find_vma_intersection(vma->vm_mm, vma->vm_end, new_end))
-
-You have a VMI, but then don't use it?
-
-> +			return (unsigned long) -ENOMEM;
-
-These casts are pointless AFAICT.
-
-> +		vma_iter_config(&vmi, vma->vm_start, new_end);
-
-You literally just configured it above and now you're reconfiguring it?
-
-> +		if (vma_iter_prealloc(&vmi, vma))
-> +			return (unsigned long) -ENOMEM;
-
-Why are you preallocating?... You usually do that outside of a lock that you
-can't allocate under?
-
-> +		vma->vm_end = new_end;
-> +		vma_iter_store_overwrite(&vmi, vma);
-
-I'm seriously confused why you're updating the maple tree here like this.
-
-> +	}
->  	return vma->vm_start;
->  }
->
->
-> base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
-> --
-> 2.43.0
->
-
-In general see [0] I don't think we can really look at this this cycle anyway,
-but I'm not really confident you understand this code (see [1] especially bit at
-the end).
-
-I'd really want to be convinced of that before taking a fix that gets
-backported.
-
-And I imagine this can be done with less code. I'd suggest thinking about this
-without an LLM so involved.
-
---
-Cheers, Lorenzo
-
-[0]: https://lore.kernel.org/linux-mm/a2f584f6-e382-4876-aa6d-d5a34de6ee59@kernel.org/
-[1]: https://docs.kernel.org/process/generated-content.html
 
