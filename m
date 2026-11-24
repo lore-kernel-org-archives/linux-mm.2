@@ -1,141 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDFC60A5BDD
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A938B606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R1t75HIV
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=t9WnOT/l
 Received: by kanga.kvack.org (Postfix)
-	id 837F36B0721; Tue, 24 Nov 2026 09:06:52 -0500 (EST)
+	id 33A0C6B0723; Tue, 24 Nov 2026 09:11:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 812506B0723; Tue, 24 Nov 2026 09:06:52 -0500 (EST)
+	id 2C3D96B0725; Tue, 24 Nov 2026 09:11:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 725F36B0724; Tue, 24 Nov 2026 09:06:52 -0500 (EST)
+	id 18B826B0726; Tue, 24 Nov 2026 09:11:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B0446B0721
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:06:52 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C62A21C46B6
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:06:51 +0000 (UTC)
-X-FDA: 85470188622.03.3D7F3D7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA6376B0723
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:11:53 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8EC11A7DFE
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:11:53 +0000 (UTC)
+X-FDA: 85470201306.17.F9BB0EC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EC1DA10000C
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:06:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R1t75HIV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id B6F12120011
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:11:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="t9WnOT/l";
+	dmarc=pass (policy=quarantine) header.from=linuxfoundation.org;
+	spf=pass (imf29.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795529210;
-	b=6S3RCQjec5VFKucFu0HKJlnL7/TIqN8iwkghGl9XkPgAqaE8ZyNWUs+1UG/EFV9wJPWWM/
-	Cb+TVteB0ADAKTSk4uVdvOd/cVbdOTGR65elvEAj8dQ78ZTREp5LQtqcXQMIb5BlUMqcpU
-	wEs0AGLBzxNJw97Ukal6eMrThJzict4=
+	t=1795529512;
+	b=Slqkr0Oqy/x9c59BOxYODrL0TZn1zhdHWHog1kOZTY6NNN7pyOF9LOFy6W9JLU4DHyIb0X
+	ByOTXZJ4YivuFfMnwpFM0NehTDHmaLSU3N0sFociNIGOh228Z4sk4sXjInnpusM/ZXQML2
+	KT4ZuQ87njyPyYPUZf2ChWr7jcgm8N8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795529210;
+	s=arc-20220608; t=1795529512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ome7MtfDmJxUwg0IIJcuaL9s3WvpoOw/F+488/56/Hk=;
-	b=z7ZZpTZWGsyWCFF8nfN1UZXBkzH4NK0/RzviHFegqwAajVWozzl4zH2PHI8rBUjyIUiwOZ
-	srsH1Lk2WEq7GZ3974kkBgHn5mHwxK215jkyBa/fcE/u7W6VHdxu/yzQIPmKGEto/zdme8
-	gvfQbwjzsdYvW+TFPiEeVPzmKzWFUh0=
+	bh=rdhE7rZLDvGkNusxDbiDfsrpFeB7AZZOY+HkmAjee4I=;
+	b=Axt6+WhLsHS1gMDcLvoaD5tWAdjlVjknqLsHWBtNl/mOyI0RyMzqNUoqyM2i+P1adVWf90
+	TtgTj0tc/9mpsXY4TGFGT2Qnqt1Xk/Pagxg/ErvCAC8yw7uSsfIKltoAxkqDH9gxIBwWbk
+	XzBCQL2WCB8BDHy69Q8GIclAKXd9arU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R1t75HIV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="t9WnOT/l";
+	dmarc=pass (policy=quarantine) header.from=linuxfoundation.org;
+	spf=pass (imf29.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A6BE4485A;
-	Tue, 24 Nov 2026 14:06:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4731F00AD3;
-	Tue, 24 Nov 2026 14:06:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795529208;
-	bh=ome7MtfDmJxUwg0IIJcuaL9s3WvpoOw/F+488/56/Hk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=R1t75HIVUgGwed4MxVH03XMPsKv2JqX+GHESlBjGLx+mFrupW37TcwLtpW/IA6nyy
-	 /GFmTHsaPp9jqeignnTYbg8XAcb71Zl5d/p+/LAhAPYbtvE2tXJtRSJM+KmOhA23xo
-	 b+0f+BFZK7TG8t5hljheItWqdjAzmcymj4aeA0igJZQkzHalY4cmxSLLwwaJ+kOvbF
-	 nAwp7tHpgVZ6SjGdt2vXASSIAfiPlHOInPOc+nSrJhCgTdzUl6o2H9Fj4JbZnGQWfo
-	 SbOpJ4PyEg3keLzdMV05PlznAg+UhjGJw7KHRudCO04Qr3OYwNZ7lVIq8rdOofismK
-	 Vd3gRU0Moj2oA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 24 Nov 2026 14:02:56 +0000
-Subject: [PATCH v2 13/13] vhost-vdpa: convert mmap hook to mmap_prepare
+	by sea.source.kernel.org (Postfix) with ESMTP id E0F2741A87;
+	Tue, 24 Nov 2026 14:11:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59C61F000D4;
+	Tue, 24 Nov 2026 14:11:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1795529510;
+	bh=rdhE7rZLDvGkNusxDbiDfsrpFeB7AZZOY+HkmAjee4I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=t9WnOT/lpp3Ut2M0J1XMz9tDKU9Z4D7OycyFFXgwDMy+IwRJq29FXuH4yLomyNA4o
+	 HANE+JYrQrzclYZiEbZHGTyx2wGFk3tl5cpNcXEYXA9aybIPID426k8dXdsC0tXoXW
+	 4zWD6cpHbUWiiv/WDFVzJt+vpyXilPRECrLEFz9M=
+Date: Tue, 24 Nov 2026 15:12:11 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Eliav Farber <farbere@amazon.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 5/5] uio: implement huge_fault support for physical
+ mappings
+Message-ID: <2026112459-oversold-suitor-c527@gregkh>
+References: <20261124131510.38745-1-farbere@amazon.com>
+ <20261124131510.38745-6-farbere@amazon.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-late-2026-mmap_prepare-v2-13-0b0d99d655f9@kernel.org>
-References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
-In-Reply-To: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Juergen Gross <jgross@suse.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- Shrikanth Hegde <sshegde@linux.ibm.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>, 
- Paul Moore <paul@paul-moore.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Ryan Chen <ryan_chen@aspeedtech.com>, 
- Billy Tsai <billy_tsai@aspeedtech.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
- Scott Branden <scott.branden@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: ljs@kernel.org, xen-devel@lists.xenproject.org, 
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- virtualization@lists.linux.dev, linux-sgx@vger.kernel.org, 
- selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
- op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org, 
- linux-mm@kvack.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2537; i=ljs@kernel.org;
- h=from:subject:message-id; bh=N+qzvarBReEV4cRJsAvEDjekSINy/joij8VQmMMnGpQ=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZZ0o8vLegK9dikmDZFhbDbGFDrSavY3cUZiWJFNvpx
- 5wXv8/SUcrCIMbFICumyPL8i/j+IJGweZ0X/N1g5rAygQxh4OIUgInEJzMy/PW8eWna9yvXPQW+
- +SxatMug7PudZW2LD+n8j3n/ocB19StGhukFquFZRov1Eu9xR6lFvWh5yOKQHaIvv8GK//TBGYm
- lPAA=
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261124131510.38745-6-farbere@amazon.com>
+X-Rspamd-Queue-Id: B6F12120011
+X-Stat-Signature: ykwtjyb5otmhrmx4uo6y35uh7p3u9p85
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 69ncfxnfcrid491u6fkse75kkh4eyxcz
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EC1DA10000C
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795529209-779090
-X-HE-Meta: U2FsdGVkX197N1g9g7qiDSPbUnyas28aCJO0nBS5yN2HkUvQe1Il6XF6uX7ML5y7KN07W9XydOOuIhrYpzY/oPzwCf3HxbwX2C8HzasFW31UZz6X7lrP3gYuLQVe+JV+Xx1hjyyr/4NZLMpKi5NHQdggejiPODbcVHdjt45shb8MmsgUq6hTVFIp+n/GMOBFmAtUE79JGd/2WK2VOyhBFemMrpfIFAQ4D0JjLqZJ4VcvOrF9XcHygyVpEzanQI7/Xqwv54WtZIOGxh+ED+e6lT2U1DCbmQVPUteSj/E83JwE7e9vB/9si/uBlYRQenHlNVW5NAyTRGcUvCfaAXIk5Hul03DgljNsPenldEwzwe3fHG0ThlZaQF60KbDOriuw5pJ61/3O0hJFT2WlfWoHG3X+fmoJ1K2mRN2m6m+rWd3qmlV0ps1QyM5lOyDw0VONP1tnumdRf8FA1k6YL6ue6QZkcIwzhQplDwUrBgQhuSwDd+pR1vhAIURhrZhY0CuWr/vBarq9Kiykl1A9cJCMx2wSRMBmfTsEVjIagE9/bMn0s9yI3yoLhypGFj+yau7q+DwQvfwavr3mWTrX4TfxfHV/y9xcf9/CdHYUjkBKQCHSK2TWNQPMqhCw9utPMPf1hxZ6rfdh6hjk/nMhKzxhZ8JZW1S/fNc2PrrAYGmzf4G3HsOW//YoXW5LDbm1+KW1cYBAhPIwNH5zz0L+TOhjIDt61Tn/Gshuse8aAE2+M51e9SX9qpI7Dr4X0RFvxxSz7IJ82qtqzSkCAiTceAy1rNdzhu+kvsIBv81rbmYOoDLg9o2GFED1wj2mqergryngrOg2KsxNsAyEPT2L3A0hOZT69q0ywi1/P2rVThajbjA3IuPYVJy2wWFM40mpJcmKvVC1wdEtPUB4tMQqEG9IGwJxCFl36YnaZrIveIOa6Kxms+93rEcmsCuktcnYUe+uQP0KxHu/AOf9ELQ+lng
- 8lvgMwwj
- VezI4QwsFKOIRyFAEsYjruf5A3/b2Zd5BRS2VE4dY5KzCavBKbdmebu5h0BUKYIVhqCqArhORrReio+9XMKDPaVTT9IKzlPaNb5bv3FA1cpQJ5X7xLzd+OU7WQashKj8iJ4rrnI4jf47ip7VW4ZQTcRlO1IHgKeVJXjeqENg801G8T4xCY6DUBYHBVyLW81l7zYy5aMxM3jfdBCQDJOAts/oseVU9SnDVXHOPSKKftg0TV9eqAl7ql/wae6oHSkKA/I+o0ahyod05c/K2CW1w06JyKCw5eqIFuQGw0mronALjnZBSjNrDL6hOQLo1+1Byy5LrQjw80xgd275FAclmv2ZyYtZu1HzrEjwh7jupBa1baaWeh/J0kX3CEh8NtGdEFFihqKJozb0ZR82/lEpesY4cLvJTvl3NU0YeZ7f3gkQHJ5yRc74t0wPiefsRH3b/mR5nOn/Yml5xHiKv2rZybYNvtegbnEGRjStpXsdLOzpbd4K2GmAkR/ixQj+mf09zjMJ7rImIhjjXSPEkoKRhJgTb/Ft8kcdnLxRnYYZ0ougMbvG7dt5ffPOEOOfTnXnD7bHFH3ZlugDgocvTBrRlXCW8KKpJN6wLDAQNmukUMrZI/cbyQCXBRXJOXbQ/VrEhMMiX8a6CL7rQWTF2DrzhM3sh7w==
+X-HE-Tag: 1795529511-644221
+X-HE-Meta: U2FsdGVkX19pGTAM9eqZq9s2ZddbYCW/PmxqJvLM43VcYmHqmwm107lQLazE/c50UVmiZ+bIqvW/faONk0W58MlkyaeIq7kqgmkyhiMF1S2Vb1Z7FgXDCegekZ3BiqyGei1cyrgHWClvE/kV0+AP9Pnn8FvXje3SmPxQPMM4aQlTC0MYQOxWByjgVGw5yAYtR2UJ0xXCWdkoMgTQZ0cWJ9CByoaak6v18jOotM7u3LS7Bd56/2Zd4Tiy3WblLpQFG3VLBlze93U1WxHZZS5o0W/hMM4Oh/rPh1puLIi0tUwL0dfIWuUUsLSd8SSaDEjx8fBIC+z6oYxIRkhDnckw4B4Y2BfcSlhpIrpLyAvPyw1NPYdtOwI062M2Q5xiuKwy/umNtp/XvlCdpYHB0G3pc2rSusqLu1gdeOQdmzt2SMjO9cHldZkHMJJpa+ZWsVDxSblKfgbQ86o2WwovqcwEP8ZWBQ9g6rQprzlh/bATcQ5U0JG0HgKsb6iNvq3D9qAasoFNWD6td6fByKSh8Z3uOjU1T8aaHjKJj0npieFJiAbKGjDeY4kowrLoc/VJ/zkoK2iz+Ig2LsP5LyDthhUg6RLHPnJNlHzlM0Mn9JbgLNOHZ7KKdDIaWxoewlKzHqNLRpvuGZGBge9GBmAo1cZSrr+WHVZ9An4CTukHy+CbCl32VkcVdaxYs6g5NsbhmjzAG4rAMxLeZ6wzyVv4QAoP7jHl94wxsWWzySuIZLwsVgO4xEXAIr8fyDXAU2P1EZN7S8WBwVfZcfGB0jkftpe2+QBuUyUNsDLK924cwgMN32sMSc4eqrG79/B91zkLwQcHUhRRz6sB/ceout9R9ga561RxD0AW81MfOnvhnD4w3zRIsJQhhtP6i/GF3L9kbISHkkxWeNqPam1y/WYfIu6tgNVyfdiFFaK9i+cPBehjidg3fN0+Zn3UUhpOaw9H/4O7FESNeJ6Hd5Yj1QMQggz
+ GjIUAEPp
+ m9DUTT6sVJXgnq0JDK4JLB90SF+Z8MTKwVEsfVYXSciLIvuz2/gsXRM73jGWV6oVPRQRFecjqJpzDorqxlbzOooCMjwZeWSI0VjHr+SU/K6st63OoIIL6EDJ/5CISOvy8eCMWC3+c3zJzCfKW1qqKfbAASHIkueQ3b0vxtINMSrOhSTkhImuJr60oGISZ24bUIVY6RgIz8byNJIU1ytY/u5rHh2eeJ+pDjpK/TIj2Pktfhh5IwQpHwdUNytgqHIXt3N07l+MiDz9IG8EM4pM9TsLpGL3zXP4k5CTIQLlrJfDiGtw94hT3fCqsafHG2EgDfk4vz+vWSajbvxPC6oMlouPI4NlwjnTBt+BAiQWt8pyCXDnRp1Vv1BXgibaLmOoOysk6rd0mvdMS7AtJ+Vji5arIwpqw3sI+VCPOWTF6BJtc+9yxkOho6PXWv/1so5aCq/8AjhnzHqUCxciMzSPXwR3LIb5HpEoH7tRtscqWSlyJBqc3Ak8Yq78sPBXtMAbwNPlEN9k7oyoqaaTtNRkoxqb0OoFW1OOBx6zbHyVCaf+lLRdL9SOppQocqQpyRI4H8msvYaN787h/Yt89L+QOVAZtf71rrEJl6eNr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,75 +105,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-only validates the request and sets the VMA flags, operations and page
-protection.
+On Tue, Nov 24, 2026 at 01:15:10PM +0000, Eliav Farber wrote:
+> uio_mmap_physical() maps UIO_MEM_PHYS and UIO_MEM_IOVA regions at mmap()
+> time with 4KiB PTEs, however large and aligned they are. Populate on
+> fault instead, as vfio-pci does since commit f9e54c3a2f5b ("vfio/pci:
+> implement huge_fault support"): call track_pfn_range() rather than
+> remap_pfn_range(), and add ->fault and ->huge_fault handlers using
+> vmf_insert_pfn_order(). A large enough aligned region is then mapped with
+> PMD or PUD entries.
+> 
+> Like uio_vma_fault(), both handlers take idev->info_lock and fail with
+> SIGBUS once the device is gone. COW mappings keep the eager remap.
+> 
+> The fault handler needs the base pfn, so vm_pgoff now holds that instead
+> of the map index, as remap_pfn_range() does for COW mappings.
+> /proc/pid/maps reports it as the offset of these mappings.
+> 
+> Once the device is unregistered, an untouched page gets SIGBUS. The
+> eager remap used to keep it mapped. A remote read through ptrace or
+> /proc/pid/mem of a mapping with no VM_READ now fails too, where the
+> eager remap used to leave a present pte.
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- drivers/vhost/vdpa.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+Why in the world are you using UIO for this?  Why not do the right thing
+and put your driver in the kernel in the kernel itself if it needs to
+access large mappings like this instead of hacking around the
+"limitations" of /dev/mem and uio?
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index c912ac40ca37..c729efd108d0 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -1617,19 +1617,19 @@ static const struct vm_operations_struct vhost_vdpa_vm_ops = {
- 	.fault = vhost_vdpa_fault,
- };
- 
--static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
-+static int vhost_vdpa_mmap_prepare(struct vm_area_desc *desc)
- {
--	struct vhost_vdpa *v = vma->vm_file->private_data;
-+	struct vhost_vdpa *v = desc->file->private_data;
- 	struct vdpa_device *vdpa = v->vdpa;
- 	const struct vdpa_config_ops *ops = vdpa->config;
- 	struct vdpa_notification_area notify;
--	unsigned long index = vma->vm_pgoff;
-+	unsigned long index = desc->pgoff;
- 
--	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
-+	if (vma_desc_size(desc) != PAGE_SIZE)
- 		return -EINVAL;
--	if ((vma->vm_flags & VM_SHARED) == 0)
-+	if (!vma_desc_test(desc, VMA_SHARED_BIT))
- 		return -EINVAL;
--	if (vma->vm_flags & VM_READ)
-+	if (vma_desc_test(desc, VMA_READ_BIT))
- 		return -EINVAL;
- 	if (!ops->get_vq_notification)
- 		return -ENOTSUPP;
-@@ -1642,12 +1642,13 @@ static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
- 		return -EINVAL;
- 	if (notify.addr & (PAGE_SIZE - 1))
- 		return -EINVAL;
--	if (vma->vm_end - vma->vm_start != notify.size)
-+	if (vma_desc_size(desc) != notify.size)
- 		return -ENOTSUPP;
- 
--	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
--	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
--	vma->vm_ops = &vhost_vdpa_vm_ops;
-+	desc->page_prot = pgprot_noncached(desc->page_prot);
-+	vma_desc_set_flags(desc, VMA_IO_BIT, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT,
-+			   VMA_DONTDUMP_BIT);
-+	desc->vm_ops = &vhost_vdpa_vm_ops;
- 	return 0;
- }
- #endif /* CONFIG_MMU */
-@@ -1659,7 +1660,7 @@ static const struct file_operations vhost_vdpa_fops = {
- 	.write_iter	= vhost_vdpa_chr_write_iter,
- 	.unlocked_ioctl	= vhost_vdpa_unlocked_ioctl,
- #ifdef CONFIG_MMU
--	.mmap		= vhost_vdpa_mmap,
-+	.mmap_prepare	= vhost_vdpa_mmap_prepare,
- #endif /* CONFIG_MMU */
- 	.compat_ioctl	= compat_ptr_ioctl,
- };
+Do it right please.
 
--- 
-2.56.1
+thanks,
 
+greg k-h
 
