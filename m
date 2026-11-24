@@ -1,91 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB2A606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 04:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A679606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 04:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=tGLPXVpU
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=r1e5CRtK
 Received: by kanga.kvack.org (Postfix)
-	id 6A4F36B05EC; Mon, 23 Nov 2026 23:56:03 -0500 (EST)
+	id 229846B05ED; Mon, 23 Nov 2026 23:59:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62D896B05ED; Mon, 23 Nov 2026 23:56:03 -0500 (EST)
+	id 1DB486B05EF; Mon, 23 Nov 2026 23:59:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51BE36B05EE; Mon, 23 Nov 2026 23:56:03 -0500 (EST)
+	id 0C9906B05F0; Mon, 23 Nov 2026 23:59:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 073556B05EC
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 23:56:02 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C24CBA882A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 04:47:40 +0000 (UTC)
-X-FDA: 85468779480.12.948B6AB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 00D941C0004
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 04:47:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tGLPXVpU;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id CB3146B05ED
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 23:59:17 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B937C806F3
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 04:53:04 +0000 (UTC)
+X-FDA: 85468793088.20.5AB3341
+Received: from mta1.migadu.com (out-75.mta1.migadu.com [95.215.58.75])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BFD08C0003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 04:53:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r1e5CRtK;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.75 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795495659;
-	b=rsiJJrqNcJAE/q53Qp170cML/R29paM0LBjWeY9x36iooDa2V7JPlDFQ+SlRzFP/aM+x/l
-	ye8h09p2Q+msWWWiwEetHRs9be4IsxAsV2hxmKzFw2RIM+gUd1EsOAG+jbwYocey1qzlvR
-	ITV9ICVZHprk1GgYUEtUsQFlAcY7IpY=
+	t=1795495983;
+	b=BdogRdpR+S6I/UB0rXObzjF3d1KaETx64nTUaIfu8CV11xpKfVE8myCc+zw2xQuOQ/4yX4
+	C0cca2URg9rYq2CMbLrK3B+L/VrJLjjRkIJk1codM5pUdq9Iuc8zQvHG4f3lzMUxC7owNx
+	BNa1gTAvqdRbKzkao5eQlX7wLAVdiww=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795495659;
+	s=arc-20220608; t=1795495983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+dBdLwXuvBtAqYO/mIODJrfHtm/S0fTflYlFI1FK4y8=;
-	b=AYV66ufyX0xAH/RLobLaYbPnocPuTIr0OtKYoOXGZeO3Cy4NoC8h4NcVMwrLcFDNvr1OYA
-	T9fqGiInDn55UjZCWHwg0sWh45zEaaT5o4jYiuTNVLBar7RRix7HzWxGBWlc0qilmGivji
-	j7B8MQf1lgTCv4Qa02AQGIXM9X96nOs=
+	bh=OiIzwEHdzzAJR7e70QGL0R+/3Yj1cTamKyRrwNi0fyg=;
+	b=xrEh/Bssr23ot+UMMjnqet8Sq44i9vZnP9UbU2itXlnKVA7IzRqualIhheiprkZBioEMJf
+	XvyoWsaVO/ucQXK3TBpQlxkamLbXC0JoxvcsPyRPHsvMZCaSDF72XBOvbdlrNNY3xQYOuj
+	lvuIRegxLzyxvt/wNK1uNMnvbp5jJ/M=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tGLPXVpU;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 46415414B8;
-	Tue, 24 Nov 2026 04:47:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988EF1F000C4;
-	Tue, 24 Nov 2026 04:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795495656;
-	bh=+dBdLwXuvBtAqYO/mIODJrfHtm/S0fTflYlFI1FK4y8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=tGLPXVpUl4u42q9fk/8lONyEyXIDbABSX1gcBXlFmU1cRnnppM5YdDZBxeKnN5BAw
-	 6ZIxpKyiKvlGJs8svY9SWtSGmv14lz8mGfSl6q9rcxXSUL2uYxU7dRw5Z146ywci5v
-	 QASZSaFY70uEp3rlKcy9JWjIZnlMsV2wQOJDeBAo=
-Date: Mon, 23 Nov 2026 20:47:36 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jiahao Xu <xujiahao@cmss.chinamobile.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org
-Subject: Re: + mm-gup-add-file_is_memfd_compatible-helper.patch added to
- mm-new branch
-Message-Id: <20261123204736.666767fd39a681fd3d528d65@linux-foundation.org>
-In-Reply-To: <20261124103431.427705-1-xujiahao@cmss.chinamobile.com>
-References: <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
-	<20261124013855.98B111F000C4@smtp.kernel.org>
-	<20261124103431.427705-1-xujiahao@cmss.chinamobile.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r1e5CRtK;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.75 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=s/slY6o6wSEczfY7MjDTmcG9POL3RXKg4WQAsPd+j7A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795495980; v=1; x=1796100780;
+ b=r1e5CRtKl/EPAtOKOj3DJ1DMGKukAqhyex1TbxxaiNzdZxxU3HVDvqqoFiclT7D+iEUsqXnj
+ EDXH52TtiB9Ee+HL55KmQfuKvW4DRTnbU723G8Gedi++KFVbh1k1XlOcecSs/LLUm+OwiAKqArt
+ ny/YDiRvcp1MtYCCbkCYJK60=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ca530465533cab93;
+	Tue, 24 Nov 2026 04:53:00 +0000
+X-Mizu-Trace-ID: ca530465533cab93
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH] memcg: free the private ID of a memcg that never comes
+ online
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <awUTKy9tx8nWJgXf@linux.dev>
+Date: Tue, 24 Nov 2026 12:52:41 +0800
+Cc: Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Koutny <mkoutny@suse.com>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 00D941C0004
-X-Stat-Signature: 3bbnd8amtfz4shbg88cskj4jpzctod1t
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Message-Id: <2FE2D209-FB57-4191-A324-F179B2394DB1@linux.dev>
+References: <20261124000439.967403-1-shakeel.butt@linux.dev>
+ <F39B4A81-BB17-4C5D-851E-2740EBBBBA8B@linux.dev> <awUTKy9tx8nWJgXf@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: rjmaxf95eaiaiusd1smwczepjf9njksp
+X-Rspamd-Queue-Id: BFD08C0003
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795495658-739343
-X-HE-Meta: U2FsdGVkX18BRCHmifSzuj/D1FONGW2eRg2vISsRkATJ4dxsRuG64MIMJC/LYMbJ1TehvfarcP1tOxz+07HVTssru5yiQwHeeaq5bGYR4IC65umpaAOOTq5++W59mENpii+TOQP7eMMB9QTKfljQVFTcE0cWfz1gfpL0iY1cxEIpHJedjH75+UKfm+FLstvXDESChx1FRBIOXcK8MUPw/vAw5E9DTJRcco9Jgs6LHkCguFlgdiXqV5ETt4HPDqpkxXYNs11ffmahNbKb6z3EL+3EATGIOmDaACTh6+nnRo6ZtAnZHyRnIRwj6s2SjoSzNJjzKq879Y59GeG8IbDhpLehFSriDBrx0BpNFeTGSKiaFpW70m6N9ign0vYECMtY6WCRv1XNa6rtMSwc3hD7CfjPn9HqU/M911EdmaxfjHYMAIEIE6W3jAesAc55HfQ4WTFLrkxPc5/iMIfjc0f3wsMxnxAcJi9U6UUsxM782NioHURh3jxQ8D2icTw3ciE6sCrqbw3jPjPf7sDRnRuJIIa9lhryk1SQpyo7wIrakhpLT2lgERAY7ltgs+1WswQDy42KJkpRS1untH0kqYSmWcoTrgxbk65h7VnB1ZhY+P4OVr9WKDgg+YqOn53XLvg1ZO2ImZjynGUvD0AZxLeJBfrb27TgJiYPfEtqsULBG9C6k/7W4+jDpg5/keOeXxScFNJPwe43wghWiezsQmXK1w4k5zNXRbRrSgRghXJfpreDhgBu8gRt4eZA8BAjd4lmtZCKC5o7cZnrxBzjEAvVTF2SvABm38g07xex0EaW1MxztQLfT8ZxEFYQrLgdN6x1dI/3/b7UqKownsC3FaN42fMZ6wAKy/SC6g1WCuR4gl0SCx2SnUpoFxATy5LVPP4tCQBbp9/Ar4aZ/dvt0le5s/vtlaR3YaCkP7bJizYupVnyoBK993M3BsGnvxZ+VwgkxgKP3z/G8pPW5xZSYNd
- vSTBIT3j
- aaSgV50AXUYH0Uw91Rw2Fiitn73D2PxgXb75Dz3jxr1fIgk7ML6QRlr5eage3PlbO8TZThfKT12jyk4mlrPD7K9NjmRxHFa4mNENqUsabi3p9uANrAmE1GHQ4YErRPWa6qdXw/82swPFceD8pZFA0htz3E/Rdy8G4lUQJukx42JlJcbOXA5bQVMNFw5f2l52DrHwhs8T8RS1d+Q5szSpz4aQolGqjYnS0YIwYobvAsZhv4bi9uO9tP/maWma6A6rXctTXVfn6giMZnxKh8UvSzUKLKwKuUwyINq6oD7HsiFo3zapcmy+3CIofxBlFU4QBiyIQ6dyMIxyds55sVqzUvSCe6300zB4nhaTYWLynObeolLmzPjF7wXU0joZMhZSrxkIam4HgCCblOr50IMXOsVpYgL3h09ZvL2WN/4+K0yzdhQJli/UkJLzUYr7mecbzKbIvtraWCxMIMaB227g/J11pIo6Jt93tKe08AdFK543PIcKPaS6gnKdK6oUj5JHnOiax6pzO01oeuVw9f9rFqSCOJQr+Dd07jiO/7EBQ1IWfGzE=
+X-HE-Tag: 1795495982-36350
+X-HE-Meta: U2FsdGVkX1+9/5eH8D4MaezmynZ3hNNWx4lr7e/GlfMtKbnlX55s1Y8d5pi8f3MqLMNOxpplVFwj9i/v1BuNRdqe1t//cV6XkAEwdAw/NEaS7ziJsEvLd+wvd4kGvsh5VtsFmxJKUVEq+3dFCFOQePyn3NsK9yqxSplJVAVgEh1bfjiu7830n5JD8mnEKKkJpXsJVpQrhD1dHNSYQVKu3y510yFnQzOyLkacOUF7d4q5NGXl3Pkljfw8Omf+SQ9d8sgcxKM5csIxuf3iqiy8RxxTXuTy9LpQb8cnf+Yfpneo8cRx0/gch+6/79oSLPP2VXZ6apVGIsX1Cf3XdkghsjZCQGUte8/cKe3vpJ6bsA3Hlpu4C1RZGuLzDtiyQM5kmn9le8heiSnxuclOyfz3Eww5nY3elocD0fwX7JXDFK08sSevvS5iyGl7uQEm/mB3XwM/iEBJ2SgI5OVzwxNLfTGCsToRXafG8/giWhejEK7ypcaJKwAz854qMoOnJ5rEJjgdLtRto1zaiKib5w2Sp8J372Wwulua4vFb51eDf689BSqs0H/CR7tMJtauDZ/LGfeX3vJBVrUyrulDl+F2hw7jC3X8BjOUGO3S6IqRvs9NVTVZe61CN0IEqmojkEVg5P0Ys6vE+UfqYx2exeDvVUcy1K7s+05I0ZApzgLbKlRDYGmhku4PdI5nwqboRu3Kj3of/dhaz2sHSYkG6cTW77k6XYKQ14EMT4DH3cPJ8On5HWFr1Tu0Yl3bavsyibi0mMOQX/qKUkOKia2S6sFqKCd3CpAD5zlVggS1sgJgZkogzalHthnvf3o9hw63er2sl4CEc7qQUB4Qv1b+m31X/TIWXagZKX4AjE1tdqVSBxwQPxSUYQpgk2HuU1gSJB0tMsgHSyN/qKGBrFAjO1+YGuKNsJgD822ZIG3vC3sppSmA9PzQTHI0m+X/rnEOYqFmqCyAz9jmV/vAyZnW9C/
+ 6xqgff1t
+ 5tjI8ZAjXQ79RuRLbDlNdNjrV5LeIqrfZ5XdWv5QCUIEIUry31/MlPDTw6xQ1SDHIc2M/ydr2pEDvphnGa4SmJxE63+OHY7NjrPj/Sb1AZDzGzeCAgKTNldNq3Uv4n1bOfKPn/feHYIegB9lJZWCEsZPdScUULF6kElHIKWQOUTlAr41P1AVXconkaHe7d+rRkf1k/zkX+0xCll8YS/rhiY00d0EOx5SBsmxoAWa2Q336vkCtPSudDnqzsWg3FH9byXBU2kizQv8hlRCFkE3YFERmfk1b96RDr3vGSUkhk7WgLdCCNGEhsn8DehMpPCJVjgqTh1dagTRQq5eZOlwQ9rdbeeoOqdpEqu2bo1cyi4bRxHDowJLoLvOiTVtJklp9GKkPpooamt8U6m23uZyKGwE9i/QC97JH3kW2k4x9oeIJCBuqrCiU6F2ef+tPT3Aj4frATi4s4EPdrwFCLM4HFSEClFkpFIkvGVaXRlXDb6icqlm/z/A+WbWI1MUeUVkvtIpv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,25 +106,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 24 Nov 2026 10:34:31 +0800 Jiahao Xu <xujiahao@cmss.chinamobile.com> wrote:
 
-> Hi Andrew,
-> 
-> Both patches of this series are already queued in Jason's iommufd tree:
-> 
->   94494921b628 mm/gup: add file_is_memfd_compatible() helper
->   5b370585dc72 iommufd: only hold references to files memfd_pin_folios() can pin
-> 
-> in git://git.kernel.org/pub/scm/linux/kernel/git/jgg/iommufd.git for-next,
-> committed 2026-11-20, with David's Acked-by and Samiullah's Reviewed-by.  The
-> code added by the two patches in mm-new is identical to what I posted.
-> 
-> I am only flagging it so the series does not end up applied twice - please keep
-> or drop it in mm-new as you and Jason prefer.  If it is dropped there the fix
-> still reaches mainline through the iommufd tree, since Jason took both patches
-> to keep his tree building (patch 2 needs the helper from patch 1).
 
-yep, thanks.
+> On Nov 24, 2026, at 12:33, Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> 
+> On Tue, Nov 24, 2026 at 10:50:00AM +0800, Muchun Song wrote:
+>> 
+>> 
+>>> On Nov 24, 2026, at 08:04, Shakeel Butt <shakeel.butt@linux.dev> wrote:
+>>> 
+> [...]
+>> 
+>> The leak analysis and the fix look correct to me. However, using
+>> CSS_RELEASED here makes the private ID cleanup depend on a generic CSS
+>> teardown state, and adds an accessor solely for this failure path.
+>> 
+>> The private ID is not needed until mem_cgroup_css_online(), so could we
+>> instead reserve it at the beginning of that callback? Failures in
+>> css_create() before ->css_online() would then never own a private ID,
+>> while failures after the reservation would continue to use the existing
+>> mem_cgroup_private_id_remove() cleanup.
+>> 
+>> This would also make the private ID lifecycle more explicit: reserve and
+>> publish it during online, then drop the initial reference during offline.
+>> It would avoid both the new css_is_released() helper and special handling
+>> in mem_cgroup_css_free().
+> 
+> Thanks Muchun. Nothing needs the private ID before ->css_online(), so
+> reserving it there would work. But it moves the out-of-IDs failure from
+> ->css_alloc() to ->css_online(). By then css_create() has linked the
+> css into the parent's children list and css_idr, so mem_cgroup_iter()
+> can css_tryget() it and cache it in iter->position. A css that fails
+> online is freed without ->css_released(), so
+> invalidate_reclaim_iterators() never runs, and the free does not wait
+> for those references. Today memcg's ->css_online() fails only when a
+> small allocation fails. With the move, every mkdir on a system that is
+> out of IDs would take that path. I would rather keep failing in
+> ->css_alloc(), before anything is visible.
+> 
+> To drop the CSS_RELEASED dependency, I can test the ID's own state:
+> !memcg->private_id_objcg means the ID was never published and the memcg
+> still owns the reservation. Let me know if that works for you.
 
-Better 2 than 0 ;)
+You're right. I missed that the css is visible to mem_cgroup_iter()
+before ->css_online() completes. Using private_id_objcg to track whether
+the reservation was published makes sense to me. Thanks Shakeel!
+
 
