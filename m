@@ -1,94 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB97606A322
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6E5606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fXcOS09F
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nTnIoYeC
 Received: by kanga.kvack.org (Postfix)
-	id 27EE56B062B; Tue, 24 Nov 2026 03:09:25 -0500 (EST)
+	id 36D856B062D; Tue, 24 Nov 2026 03:11:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22E8B6B062D; Tue, 24 Nov 2026 03:09:25 -0500 (EST)
+	id 31E0D6B062F; Tue, 24 Nov 2026 03:11:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 146B66B062E; Tue, 24 Nov 2026 03:09:25 -0500 (EST)
+	id 20CB36B0630; Tue, 24 Nov 2026 03:11:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D260D6B062B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:09:24 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 167ED40B16
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:09:24 +0000 (UTC)
-X-FDA: 85469287848.23.2E293C3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DD3916B062D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:11:13 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 080E7A8685
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:11:13 +0000 (UTC)
+X-FDA: 85469292426.20.01E1D84
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4223E12000C
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:09:22 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXcOS09F;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 33631140007
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:11:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTnIoYeC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795507762;
-	b=pXBxPv625FOnXiunVDsfs96JNH49vjAo8hHPFfz75CuCClVXeniKIs3JYIqnxx57axL4YJ
-	AWT+Ys30/RaewKLZ3+ihR/qiqNaDplL+Xryf5nbMYygzVeD8Yf7LnOyOEdEc6+VD6b6PlJ
-	pSrF/En7LiZnDSOdzkRZ5ODg1J5r8PI=
+	t=1795507871;
+	b=xeZBN1MnGMdPTse8XG/JVUEporTaLXrXuuXat2WnEk3aacAzJPYBpInPKNhek4lVB6GeYT
+	pGgeGGul+VHl3Zfqp+PyEkrSwvap2aRVIMoNhfY7LbgLhZsnld96UD9P2NlQ1Z7WCN1a5C
+	2ZMxB7jKeXFn85igdT4jOyrubUCSAMU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795507762;
+	s=arc-20220608; t=1795507871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pgJJhQTIQiKQaa8Lw1i6CYXbTQ1mnofot/VGVFKwdRw=;
-	b=6vYq7QW9/HLL64kK0L7r1L9+VtDRWJBT54P50hsJw59k9SMgsy/y8vG6k2RDi1pbKYfZvT
-	CR4/4j9X9qGce9aHRCjNG5WxSgfdmLtyOgfyNtwSs9I/5QE11IJ9mgEbwRxYQ2sWQ2Eje7
-	dydiBR9HQ8xp2TdKXK/Ab60WS1YCdoI=
+	bh=HT0r4HcDbQnSXCvlZ/RECDLVWuKCcbSUYpyd1IXB0iM=;
+	b=6EPjH1yg+jxdCR5kayfhQrguFZEXZLL1FyZp96ys8/rMH+JNL4TkE6wvdtbjts3F1NJSHT
+	p/Sur6OlME/+DI+WLWVFTWmDXivzV6uM4a2TrCHnapkSw7iD1HolmjEMn0KMNgXnsqHqp0
+	sIqt1akpqOzWJRldc+36ViEBJfmKjB8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXcOS09F;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTnIoYeC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7102240628;
-	Tue, 24 Nov 2026 08:09:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BF01F000CA;
-	Tue, 24 Nov 2026 08:09:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F5844434B;
+	Tue, 24 Nov 2026 08:11:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4B61F000C0;
+	Tue, 24 Nov 2026 08:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795507761;
-	bh=pgJJhQTIQiKQaa8Lw1i6CYXbTQ1mnofot/VGVFKwdRw=;
+	s=k20260515; t=1795507869;
+	bh=HT0r4HcDbQnSXCvlZ/RECDLVWuKCcbSUYpyd1IXB0iM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fXcOS09FthIT/38JvcjvxPU6RSSDx1u/VEC8iAvkDl97tS63XAWF5eynuhlEGy2Ph
-	 Z2MK9bvbkta7+uQdnziGBhZ701VCuvkXuww6ANgEQ6pJxpWhiEdE3sJ2mLIUhoEw6M
-	 5Q/RQ5o1DLhAN6Lt+o5cZYlgWqSF7jrC8lHkuUw8McV7KBwUx4rUuiVQSGYwLPGwfr
-	 DZk4o+p9g7byxQPhq6mPR16RvEMh9i0wjaMArxgxO1wKNBeXiN/RLRGphJNe7T860O
-	 Tetp2SgzldBebdxocTN+OdFxbmMKcIX7ydtid3rPxVPj+kaZDGMiA0ubUlRSsfN0Vy
-	 zZgocxgHXk/QA==
-Message-ID: <c1f92faf-2a8d-4b4a-bc28-1750938b5b57@kernel.org>
-Date: Tue, 24 Nov 2026 09:09:10 +0100
+	b=nTnIoYeC7NpBkbQZJv/CMbaZo4bkDmpeccQb9Gf4juySQf3zaSYGjjOQDpfz3LVoA
+	 7gwFR0TIw3+Qi4g6ZkX3nIy5l/JZi/nqwsTpj6sOz9qZnoMMmswBQnZ2wXtRq4ZBf/
+	 7gjIDylfQXm5mAOGeOq8RX1pOp8dELAb4tSY/t3s0QKPMTiZAPXi794iYxQBvdrNF6
+	 zcMf37Gev3dZOOKtngRQWB58H+LAYVTmGUJV5sgnPAZbj0/ULKYX7QPyJ6MExILy5r
+	 7VqhHRw649o6ZE2jl1sU1ZxMRnK9E6W6Cu3NhrwzXtedpDQZWP9XUv9nQFCi9qWjNi
+	 E5IfY33x8mH4g==
+Message-ID: <7ed1f755-5759-4b5b-ae00-a814f16b7903@kernel.org>
+Date: Tue, 24 Nov 2026 09:10:53 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] powerpc/spufs: consider vm_pgoff in
- spufs_mem_mmap_access()
-To: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+Subject: Re: [PATCH v2 1/2] mm: kasan: skip KASAN for GFP_HIGHUSER
+To: Jeff Xu <jeffxu@chromium.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>, Willy Tarreau <w@1wt.eu>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Chris Wilson <chris@chris-wilson.co.uk>,
- Matthew Auld <matthew.auld@intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Rik van Riel <riel@redhat.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
-References: <20261122-access_shite-v2-0-808d8d2aa700@kernel.org>
- <20261122-access_shite-v2-3-808d8d2aa700@kernel.org>
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver
+ <elver@google.com>, Boris Brezillon <boris.brezillon@collabora.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Chia-I Wu <olvaffe@gmail.com>,
+ Dev Jain <dev.jain@arm.com>, Ian Rickards <ian.rickards@arm.com>,
+ Jann Horn <jannh@google.com>, Jeff Vander Stoep <jeffv@google.com>,
+ Jeff Xu <jeffxu@google.com>, Kees Cook <kees@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Peter Collingbourne <peter@pcc.me.uk>,
+ =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Tomasz Figa <tfiga@chromium.org>,
+ Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Miklos Szeredi <miklos@szeredi.hu>, Baoquan He <baoquan.he@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Allison Henderson
+ <achender@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ fuse-devel@lists.linux.dev, kexec@lists.infradead.org,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
+References: <20261123033111.2349160-1-jeffxu@chromium.org>
+ <20261123033111.2349160-2-jeffxu@chromium.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,22 +146,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261122-access_shite-v2-3-808d8d2aa700@kernel.org>
+In-Reply-To: <20261123033111.2349160-2-jeffxu@chromium.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4223E12000C
+X-Rspamd-Queue-Id: 33631140007
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: b1e8g6fwzhqbktniemkswb3gmmt383y5
-X-HE-Tag: 1795507762-913767
-X-HE-Meta: U2FsdGVkX1+GoPmy58SUd7aF+KeyWx31wJZfPXWYaMQVrvWQZ9Ix19BE0iueeximovTnDy1rW9V/AdwaS4+7s2bxDbctsUpbs13bvS+9DM1kQMiReI1iIUOzTigXPEVpRQl9Ss1pQ7j5Obq8ZYJHmLFi9Ja2mN0xqzKzi4vX65BnFL5JCxernMeqnqbZV3FD9NqGGuRDNt9dvd5WhYdgYT9AkwZVCkOh374iRDgTmhv+gGP2pos91U0mcRb9BrtlPm+/le5FKA2q5qEHJ0RUCxGk9KbZvOhPZlwNQtN4ArqQjSA7LqENp0jA/3X+gH7tvKz9Tx0exYnMiR17sKLqvtVm5TpA/O5+MW5yjLqyAPFzKgQJqM2iS7tsunj/qKjSXVJ9m+7Am5Rr2b7wZ5y+al+/QOMafi5p0znD8aigKgR/9GgDVs8BY97wDKZG6XCDG3HiAvfNYWIUDXBnma/NdsNEyKy+Ne/QNycR/eRH5He2SWEHh1ASy/BKOZaWS6E0zlmpLDT8ffgOExw8iskzKBFrgHtHyP5Bu/i/wIOdegN3b8G89rdyYPKMKsQvNpTLUFwLnjOIE1yWqMB6ZxLUKUgVi+Uv5OCzyjksU7xXB15MxN/mD9tQv+aSmzbJ0ZF+OxCmaQUisjECsFAJj4NHq8HaL2FCxexW7H+mF6j6k6rLPCTDn5rc21FCSdnn6s42bEZ1YaSczthYZYjP+2Mot2fBrnZLoCGH3TSBWFZ3i+7eYDjcVehz0pM3dkXbQ/tvsMKoJCisVrURB5zo4uj8XIjje6+seHrD6zUduJNbCJomZmJt150GIatAjry8L4CvQkJAziZ8z7JT/Qhy7bGRWN7qvXsY/brV99+0s6Fgj90GNkyOg578ihHXbCBhYo99Hoc0ebwjJpY5aAhMRI9Osd69jxfsGA8PcNNTyQgPLhvgqcEfFyRwn4RN9ReNUPX2IKvpHuFnx1pJAPc6MKw
- DDEzNk1q
- lU6tQ4ZPR2MkOpkdmM/C8j7vGMZ2LQA/zskYMcGOtC5pPj4EDgld8CjBJPEdbCsem6GwqbTXN9p4nuXa3/g+QcTY0G+4jGgSPEw/5cPjjQYCq+i7ArOwXvUrskMcllhRXlWJbYPFlZMyJeLcjmop2hdVNuFBW+kbW2tRFJ8CoeIa0spfWMrlsMmD0Ikgypa/hgm419S/IXgEhrsCtNeuJvT3ZKSvu7EPDPZiYg4J/O+ZZIzRIBZqSPAjffz6PNCchMOIRTPbfRyqdkXHipzbwOZstQ2hZF0678GLZcBhsPWOiMa4UJVZhPncuVg9s2AGtS9+WHCkvBIlojo5HvbUKL1B6VC2MdevF5a9Rlz5Jvt8E0h068JhYjQXjmbwOWa7gzy3s1yOISUPrgeqZ6iMp8akAQ3vynbCbH3dDEs6z6IGiS+rKPZqJ5VLZoqc9UlR2xl4GDOKKxKz/fym0UoR9cPlbK6Za0Cp6qvZah8uZcx92/RUB3LntJ4+eE4tvM4JPOqQnkavXFuUkpv2T6RrUNeLSzMwleWQenuFO3RqCDJ12fcdkbVjufQ50gCLMx5+A5FbdTxRlwUWB7NljBlMt+jSCnZCnjA74wC9/dUC1unqk0wBn02TK5WGaVEmGl98767w1
+X-Stat-Signature: h8ss3ojbijuknp7mu3y5yng37ar3cwi9
+X-HE-Tag: 1795507870-903687
+X-HE-Meta: U2FsdGVkX1+J8twmGeQ/TBnUdE8oBpM7knpAydRlwGP3+rsAiXFYEzG6bNepNfafytdRjPk5qkNJE7IgxGoI+aWjTKZfZ7BY0efWebwTp1OXvgPLdff3fcsXg6xo/zZtIQte6wJrXO/l3oE7abcOepgCVf2gABSPaHWFPkHuNX41xOyOKbdzf3GA/BdPc86HWOY2zGgK65jCU1wz3Uz1JZi38YGAT66uju917VBXHysQrFXsF3ICmjPEdAECzSudAkMeOQa1t0j7g2jI5/gKoNev9O5bHS/t2f+eeluJrhetaKBxMLAC6m9KSuUkR26IwYfbxEtoid0ae7gjEQ/+Aah9T7RrJZqsaTL3wriRfBW9/mLaSWnkBSaEL/X+LLXFLsYxXH1T4QcsmqDrgbsOsisM3H00wMvvwZzk5FDz9Kzv9ghpT98tpejomT8anA+KNO71esdGi+ELXmfZanMkC24PfpgD14BsySxr/fSLyqwVcUkKBK63jG6528d7zAJSz5LJZkLkpVsigukcAGBQFTVpYzhRQcmw0ZJ421+31QL54sW/8JdjIm5KIqVSy200TRVjDHKO5ClkCW8yELIwODeRRiNlrKnjXSGdnZIt0qkDwKBBydpUulfQAXEecA50Oc4twz1RCFsBxc0TtMu0J1RGOKBs4+68OFEIZLOn9ZKCtFdt7WwpvYpcidghUQCenUimxIDecYDIhXTCLebEX8Lzc4G60bJI06XrMhJ/kUQbBsq1j7tqmH0JzPeoRHrGQLuNKyS7oduupQ10DuSzccbgIzdg2UwwV1SafqHE/luDduG/HnCc7jion+kPyCah0Gdux1BjUG7eZSNXm7t2FF5ahGWzL40eY1mQ0lWh0cahBI59bvnEmIApvl6YIZ4bs5n86csOcTuX1LlaAjnMHNQ+n7TsiKyBvplsC+Za/YcV1iubjQDwe2X5XgkoKDy3DpYIeDn/M3IwHWWTZs8
+ 7akq6SfG
+ cr7gArOZKl9PPk2ZKu2aiMGKHjrb0dq/WbdSgKqjP+82Dx/++Ty7w+GEruhrxu6f7iY1zesakZEtGcZf3aHIZutrreZZWnGoG8MUg1mv3kZQ1IrhQBZjGE3jDWG7gNGjB6PO/bivwovnnOoU3ZuVZMDa9h5rsMMh+aEh9SpMhzO8kUUS9vV759RPny+BRKK7vHKHas3CTJDwvFR9/8OWSUntrFzL/2ttF39zbfPbz9m4gXZ9U4JL7umwQeJfn4eVav1opYiHHm9+H3wqCF/M/bdKQe8MEdqyld2MfQTo3gYzLSoaaatVBQnJ8Ma3Svi6hAacDdcFLv/21uMeW+BS6IU+Ij1YyiHJCOJ37epZScD3VpqrmNeo2FZE4MULlGPBfXBjlfoos1gVcEgMtZrXvLuKCIeOKMnT0L9Ddf9WKhysrRbyroOoTFA55RDpyH1S2ZkzaFkLn6elyF+6kw10YOSdJJKv6gQL1lSOf7HJHjTxPGEHUOGT/9fHJfcca3XTdci3GQTNYczDdn60ROmk94Sqs6OyGeU42YW52DL3ljGtUJJNRMW9pC4hZp0JoWwsgkAlA3mREPeZOnUPNG2TFaEE7D0HBAJZtP2kQxCx7uERXRfok3CkfxEe43A+9n9YBVw5Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,43 +170,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/22/26 18:55, David Hildenbrand (Arm) wrote:
-> spufs_mem_mmap_access() calculates the local store offset relative to the
-> start of the VMA and ignores vm_pgoff. After VMA splits, debugger reads and
-> writes access the wrong part of the local store. Mappings created with a
-> nonzero file offset have the same problem.
+On 11/23/26 04:31, Jeff Xu wrote:
+> Move __GFP_SKIP_KASAN from GFP_HIGHUSER_MOVABLE to GFP_HIGHUSER so
+> non-movable userspace page allocations also skip KASAN tagging on
+> allocation and poisoning on free under CONFIG_KASAN_HW_TAGS.
 > 
-> Properly take the vm_pgoff into account, just like spufs_mem_mmap_fault()
-> already does.
+> GFP_HIGHUSER_MOVABLE already skips KASAN because user pages do not hold
+> kernel data structures and tagging every 16-byte MTE granule on
+> allocation and free is expensive. GFP_HIGHUSER has the same contract and
+> differs only in being non-movable, used mainly by DMA-BUF, DRM/GPU
+> buffers, and non-movable HugeTLB.
 > 
-> Fixes: a352894d0705 ("spufs: use new vm_ops->access to allow local state access from gdb")
-> Cc: stable@vger.kernel.org
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> On an Armv9.2-A device (6.12 kernel, kasan.mode=sync), this reduces
+> 32 MB /dev/dma_heap/system alloc+free latency by ~80% (~59% alloc, ~98%
+> close) and improves an app-loading OpenGL benchmark by 15-23%.
+> 
+> Callers that access GFP_HIGHUSER pages through kmap_local_page() or
+> page_address() (such as ramfs, pipe/FUSE buffers, kexec, and RDS) lose
+> HW_TAGS checking on those pages. None of them store kernel structs
+> there; this matches the trade-off already made for GFP_HIGHUSER_MOVABLE.
+> Generic and SW_TAGS KASAN are unaffected.
+> 
+> Signed-off-by: Jeff Xu <jeffxu@chromium.org>
 > ---
->  arch/powerpc/platforms/cell/spufs/file.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  include/linux/gfp_types.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
-> index 98c47bafaf678..0a46d6f7178ab 100644
-> --- a/arch/powerpc/platforms/cell/spufs/file.c
-> +++ b/arch/powerpc/platforms/cell/spufs/file.c
-> @@ -248,7 +248,8 @@ static int spufs_mem_mmap_access(struct vm_area_struct *vma,
->  				void *buf, int len, int write)
->  {
->  	struct spu_context *ctx = vma->vm_file->private_data;
-> -	unsigned long offset = address - vma->vm_start;
-> +	unsigned long offset = address - vma->vm_start +
-> +			       (vma->vm_pgoff << PAGE_SHIFT);
->  	char *local_store;
->  
->  	if (write && !(vma->vm_flags & VM_WRITE))
-> 
+> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+> index c1331bf0b239..bb54c7abfb02 100644
+> --- a/include/linux/gfp_types.h
+> +++ b/include/linux/gfp_types.h
+> @@ -376,8 +376,8 @@ enum {
+>  #define GFP_USER	(__GFP_RECLAIM | __GFP_IO | __GFP_FS | __GFP_HARDWALL)
+>  #define GFP_DMA		__GFP_DMA
+>  #define GFP_DMA32	__GFP_DMA32
+> -#define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM)
+> -#define GFP_HIGHUSER_MOVABLE	(GFP_HIGHUSER | __GFP_MOVABLE | __GFP_SKIP_KASAN)
+> +#define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM | __GFP_SKIP_KASAN)
+> +#define GFP_HIGHUSER_MOVABLE	(GFP_HIGHUSER | __GFP_MOVABLE)
 
-If I can get an ACK on this change, I'll merge it through the mm-core tree.
-
-Unless maintainers want to pick this here separately. Patch #4 might make it
-easier to trigger, though.
+Can we please add a big fat comment above GFP_HIGHUSER, explaining why we use
+__GFP_SKIP_KASAN and which security impact this has?
 
 -- 
 Cheers,
