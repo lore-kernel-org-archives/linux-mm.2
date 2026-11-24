@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EF3606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 22:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA1E606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 22:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LM514mES
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BDqwfhH8
 Received: by kanga.kvack.org (Postfix)
-	id 7668F6B0879; Tue, 24 Nov 2026 17:59:37 -0500 (EST)
+	id C487E6B087B; Tue, 24 Nov 2026 17:59:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C8C46B087B; Tue, 24 Nov 2026 17:59:37 -0500 (EST)
+	id BF8CA6B087D; Tue, 24 Nov 2026 17:59:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 590BF6B087C; Tue, 24 Nov 2026 17:59:37 -0500 (EST)
+	id A9A426B087E; Tue, 24 Nov 2026 17:59:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B27C6B0879
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:59:37 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 742CCC0D5B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:59:36 +0000 (UTC)
-X-FDA: 85471531152.27.1F95BE8
+	by kanga.kvack.org (Postfix) with ESMTP id 6A2AD6B087B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 17:59:41 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B826BC0D57
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:59:40 +0000 (UTC)
+X-FDA: 85471531320.17.9699F95
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A145920003
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:59:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LM514mES;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0089540009
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:59:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BDqwfhH8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795561174;
-	b=JQkuDfv997p0kokj4zUG+CybNmrWAD3+YvUVAOOtcXzfutiJOfc1F+XjEw1vgl4TaXeGi+
-	a3PQRbjXsT3T/MBHm8cUT+VonDBzKZts3QCwXuqAqgIoKEVjtlPhC3jnpTq9nnjVPue1Xi
-	hudRq2adQtYppxP59BaNM174evAlhNA=
+	t=1795561179;
+	b=avmR2TmdaqYAMuR8ohBqb2NK6glLC/GoEFNHg5iJn/v3cIULWEB8yYezyHh++dzpglKbvk
+	lR0eASaYp/HhZvv/QM7UjYo1Zg7u4wZfGmhY86QO6isiUN88M6AT5dKjDsLjqCnPZ6xIod
+	lLJA5ocIbJ7OXNKxq+VIP43JtAdyiuI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795561174;
+	s=arc-20220608; t=1795561179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ap7gSe/kuNeWblDe+ZfPxsux2kFQeqvhMXOEp+llOPs=;
-	b=EYLT+W0poD0wJLY45mkH6Ab8b99i5aFX8QnE892+lFXSrWFfY3nGxF+NCXIRPyfrxVQjw2
-	bF/8ZXJQIffPSoejiqHS95f9rBK4Cazzq0FYwVLpIBZS4EHnLVOpHD8U6mAFwxWt6H7fqP
-	p3NZXgMP5ORaMt6cGsXMZoRvu+LDb0o=
+	bh=7dhdMAikSNSHWYSj5gXK3zToTZetL3KpIeQO1xIoCkw=;
+	b=2hW7w1tXYpnyO9bhpvg3ioLvVnIPe/gX13Nf++4JLXGL56SoJMR05laI5F5isESogWKS2P
+	rI+CSoQLL6bnqtRqYGDVosE7z9Gel0d69oTP681Jobjxrrnc84vhwy3JuefojERVvDE9fW
+	PgiEk7Fg4+mFZHpxxO8DR+uY+yTyYLc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LM514mES;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BDqwfhH8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4A0FA6126F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8B2D9620F8;
+	Tue, 24 Nov 2026 22:59:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA151F000E6;
 	Tue, 24 Nov 2026 22:59:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1245F1F000CF;
-	Tue, 24 Nov 2026 22:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795561174;
-	bh=Ap7gSe/kuNeWblDe+ZfPxsux2kFQeqvhMXOEp+llOPs=;
+	s=k20260515; t=1795561177;
+	bh=7dhdMAikSNSHWYSj5gXK3zToTZetL3KpIeQO1xIoCkw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=LM514mESwwt6WU10mCghINlN5okJv1Fb2bAXW+OkNtX+LBAJNrQeDTtw4fFARY+eU
-	 Vm9Rpqo+5ipsesZC93l8C6m6f8S9wKRHx7FroRQPEdAcaWs1HScN7GTkIXaCWVKwm9
-	 tsMjYFHzmig78IX5VyZuxHaCllmSJu3ysTB7kpkyj9GVHCR3HxmtDNS9Jot4UZ2Fi+
-	 BgHfdp/CUnXllRhT8F2a9csbix1k2nMEOGDLtA7HJqJlDnOBys87ZBdV+JNrq9d3lT
-	 LZb4S7Zlcq9EmjUIlwqGORUysPd84a/mSy3/qzI09h92rl3C9OeE2sspA/7SiJnrpC
-	 D5MJY8lnoH68A==
+	b=BDqwfhH8VAYrOQskOqhCbYxoxwoaFIke6MbxBeO39QiygukfmZCNNiURz6oN87aAq
+	 Z+bImWA9N15x2Pc5N+pWDM/e3l902aU2T5UAz1p91pu4cYBaGYoVzYLPY1VeQNLbz3
+	 dUyPtA60dTnzRv5dNFbfnHpyEk6D4RErJ3axJ4vmeAVJG/BP/fe1lFhm/DTWiQoks2
+	 4uCr5sVqgY7Zq+YspnVhwtO3CGTd6zXtnqpMvid134R5e13kOQJEv/Gg0WXcznoifC
+	 3uMHQsrqdsFtspCc+eUZXzALA3/Wi4No5RHfcX2Ucxyltgtzt9ALOqhNTJTZic73wR
+	 GzRBNJhGSW+UA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 24 Nov 2026 23:58:24 +0100
-Subject: [PATCH RFC 01/19] proc: copy namespace link after dropping
- exec_update_lock
+Date: Tue, 24 Nov 2026 23:58:25 +0100
+Subject: [PATCH RFC 02/19] kcmp: look up epoll target without
+ exec_update_lock held
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-work-exec-update_lock-v1-1-e489035395b8@kernel.org>
+Message-Id: <20261124-work-exec-update_lock-v1-2-e489035395b8@kernel.org>
 References: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 In-Reply-To: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 To: Jann Horn <jannh@google.com>
@@ -81,25 +81,26 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-04696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2802; i=brauner@kernel.org;
- h=from:subject:message-id; bh=lGDUzty6NPq+z3GYcxQr0PrIQZY6uMG00NxetEmFkDY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziW2TOKQonVvLlloyv95ovkQhFzfH5uo67VkRq5PMH
- uecVvbpKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmEjzTkaGT/sFNvGf+FNq3Mnc
- xWbE9Fj6S0NauUpDVLRM/e60QJ8aRoZ9Ua/YeALSd97rPe/jKOKwm6nw5hvrGVyMPFnLGjyF85g A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6236; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=yRIldja6dQ5xpXwyVGOr9K78g5q5kSFyqhkHsrppIv8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziW2/1f126/VXj1dLGkyf+tH+n1DMVBuZlEg3nw031
+ 3T0rtna2FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjARR1VGhlNTggs23LLe67n1
+ NXf+2eVnzsyc1F34v8HHX1SSzzoioo2R4Qar99pvCoKS9ouuvtNlrWts/vvU+80DNoE09qVzCyw
+ c2QE=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: A145920003
-X-Stat-Signature: a1eygaj9xrgh149y49iwkfepmu7uxfdo
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam04
+X-Rspam-User:
+X-Rspamd-Queue-Id: 0089540009
+X-Stat-Signature: xh6dep4mtkex6jtit4s1ziud6bdjst1n
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795561174-501020
-X-HE-Meta: U2FsdGVkX1+rMExHmYBVSflL67VvSUMtaHPIOOHo8Ly0GWB49wd8QU+/QtEMuLzn5yrTVUxZU+klJpZj01OautX7ZNFixLlTvQh1vNTSOM7puTenDn8+a18zKcCMYpZxR5vpuvYEV81Y/oW4g7kZsMEZCEopM5wwCpnBM0bVtonZGgJiGNBbIwV1HkXnpX36HyRUEuP3JE+ghyoyMjJthlegxGZxuAossqorVeZ2vAcHaeZ0eBfGyf7mWmZXvqfzXh8IHwmUrU3BBmwNndR7n+omsXhy9Md0Bqp/ZTs5RdRisOSHjV+w1p2VHYPDKzXZDS+hjL8oYnfTTxTqoU14gb7tZU8NZcF+yKpB4hE2lQeeTEP34rZHp1ZhmT/TzoykhLXcgZFEY/EHsQYrgiOc4MBf9ZkgLtWd1lY/SVebRjiVBqNLdmcmAHFIJuhz6vDC8ApGcfMfPeyVl52nmWOxSsm7Y39ppskxkKnkk6AgzpIqAYdhVIwJrVnrQArKiz1TF+8nmJMO1U85zNopfPNd3g+YKfeAHjWqJnNEaPrxa2NMzc33YI1ERwW2MX8lccUgWq5+TkTvBBxK2VXJtBTidc7gI/o1z0oV/hc079mFvg+2jEL8mDK6BBAeSv1vSSxK2Kib1Fb7pUweHtRhtObzXZp0tLQpCR2WmxIdj/qEOl1JLlxomCCJrT9qE7Zg3aRvFp3HfeFpc94V8PeH5oDxJYD+5v87kZ467uSrI6CfxU4s0GPOKfRVisZN5XxnLtXhvTbJotIZbx4in6Anud8f5Uz9fIVVaX3xg2LiSHgOe1wyFZK9NLuVtrf84sedENMbSUUGs5+9jsOReMefAZ+d+o17v3RrghFFCTJiDd/ZZT4d2fw6F7qcd7qyNbjV4Q/JNOolp7TQAv0Ad5+ecnK23rZ8ujNqwWYjTfv4sC9qlYw4GG0wgLk8Gbu0DH65U11997Om1mvkrWxxE5bCYbm
- FdXYWeCL
- 2dPSM0BYdMx6GXrLdQzwJkMuFn6F26SUGPs7oAzFBhZuw7x0Ary8l5RLHQSd4BiM/rAEO7IAoOVNe+YQN/G0mqGGqNLX5KjkGvTniWHeRyob171EAmf2kUGS/pGR0QLgFaqEd9lwAyAOo/FRD7Myi+cVsbMtJ6KzfAVbGe+ZUnskVaZF5RvC8lPYfvpqjQp4ePGagVkxd9MAz/eMsf4o/LADKb3ewBW7QENATko48xJvLAKBuY0InBZNc1ptP8ge0vWTHzA3l+8M92NEIH04WTTmxhTk92u3mRMOxupKnkccJUPtDfcHWAan8SiBTRgE14CKLEBywsu/BUZjSbfj3fIBO02R0LtalYvIb84PQtfMfH1IEq2BKdGLvxZBmEowPm3vaWdXgpDnDbJfFwNmVgA300Qrbgb+5pVTfhhwYtFrsfK/mWkFsnH2cirtjtn6EFrQ2V9UltZvFK10ebMd4OedCOdGCCXkGHkbdS5bzK8KSVwDWlW4vus9Ry6/CimocQrMdHOkwNXxcRUs=
+X-HE-Tag: 1795561178-730224
+X-HE-Meta: U2FsdGVkX19WPLRvaNMscw/jFzO1WWG2L0hGH1zyn8Xn8N2bGlyRN7DljGAZJuQ85N6oLLtV9BEUiMo0lTFFUo2VbnIE+k3Vmj1KwljylZ0CawO0TJc/nf1KwdLWM7ngR4k30JOegfGRDPReRVV4P23BtgREtbaThBEKha/J63Hv7v56wNWb8xQ1zVdWC2yFxba/hMWbaV41nF+D7LVOtK2gKLncAnltLUcmlerzjoSa3JNWMIFWmVSpsZaHvEjXbEBXaf3iTFlo5+eBvGaJZq1Eg7LLZouMCD/9PUlFnXKzKecaDbRY64GTNg/yl+JEeMIE2dlHd1EapgnGImKDR0j6GWaVo3BZpLZWMgOpgnTHOhlypbzxoKuunA61L6aKpd4ib+Eszy0GjfqRLOjQ5AkAN0PaEOjw5mHHqAle/y+q6j0Z0DRvbF1v6+N1FQiy84VSFy/Bp6wvY2y1NoGosDubG7AOS+HwAds32bjm23j0xsWxD928jV7e7nOKqr8zDAzyGLcolsoSIOVU3wcgoXdkkY0kTj9mttKxlOJsWSeELbjL3K2X0dud4xW8ZQhASzahUh2jXnE8ciNJfVtdsTHuLXhtaGOfQ576z/4ExqpO9JELy+GFfj7t/Zo1RSmGe/v/2wCXZd53dgYFEwEwZC1XhvPCgjEnbUmXachRPik36hK6q2gHmxjjozzmHTffuiPwMOCEJ5Vy3W9v16sgIcQpUB+pjDkBbdMdZkPNNsEk6I41r3mwJ+Zwk/srBrrOrr+46BuYgvf2RCo/X4tyP7r3uff/oWrmotspuYZSvN4Q8CtZxRYXx6YDT7xlKk0T/ROaF2DSl93G2YMVeT2i/ILMgFi6uk5/I6vEo2Dgykla4a7QAPOBuFoQTv1Mn6LZthiFUl6eb638LlWy1ayVC2BNtSusDqlPUT6AOO6UsQkC0n8COLd+qlA2pC4zzEKwSpCNkIwu0BzLL8UL59T
+ djxPJ14q
+ aVAH7IVZC0RoMLqKF9gRCsMKyM0cpOOEL/2q1jans/H1WZy43bRrgkTF2ZYQP9IwfzidD12YRlYFoCsFKyOPJvmTO8sJ2p5/KQql1Av5VJDh5exOCzH6USJydZs/MKl5iJ2DMNeHDw9rgQmpu598UGaRuNuGCN59JOs9Nih3rv3P8ACDLywH/I9Sjpyfg3WaKOyhjMZswTQutY2cz2HuQR6026n3T0PeGAY5qKUFQ80F09RZ5O7Cha0LnGJmM6Jr8nkwdbU2jHGUyj1kxe5eIidzrxZ7wQTDDlqqxEV13ySO/x6gRddh2/iFlKw2tnqjJWDbo2ozBH8pPyB9vQ+/PwUK5/mv0xb/nKwPL+I+UhHijviUdefBagyqBLdpCDIA5WteH89f+QjpsezBoIF6S1mv06PEqZZ5NBBNNDZh8uERIWmkeI9jWqU2iK554i2RxqpkBmNCg6Y/lLtw8sbKIeOpqUUyyEUQEQHLh3FUGCwacIbUIr4ptY3FPNqvZ+Q+uou5DG9z+34aSOcA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,21 +109,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_ns_readlink() copies the name of the namespace to userspace under
-exec_update_lock. If that faults the lock is held for as long as the
-fault takes. With a buffer in a mapping of a file on a FUSE filesystem
-or in a range registered with userfaultfd it's the caller who decides
-how long that is:
+kcmp(KCMP_EPOLL_TFD) holds exec_update_lock and two things both of which
+are susceptible to page fault induced, userspace controlled delays:
 
-  locks held by ns-reader/230:
-   #0: (&sig->exec_update_lock){++++}-{4:4}, at: proc_ns_readlink+0x180/0x340
+(1) cpy struct kcmp_epoll_slot from userspace
 
-In the meantime an exec of the task waits for exec_update_lock past the
-point of no return. And everyone else who needs the exec_update_lock of
-the task queues up behind the exec. So a read of /proc/<pid>/stat hangs
-as well:
+   locks held by kcmp-reader/233:
+    #0: (&sig->exec_update_lock){++++}-{4:4}, at: __do_sys_kcmp+0x2ec/0xb10
+    #1: (&sig->exec_update_lock/1){.+.+}-{4:4}, at: __do_sys_kcmp+0x210/0xb10
 
-  task:exec-task       state:D pid:229
+(2) takes the mutex of the epoll file to look up the target file.
+
+   locks held by epoll-waiter/236:
+    #0: (&ep->mtx){+.+.}-{4:4}, at: ep_send_events+0x10a/0x9f0
+   locks held by kcmp-caller/237:
+    #0: (&sig->exec_update_lock){++++}-{4:4}, at: __do_sys_kcmp+0x2ec/0xb10
+    #1: (&sig->exec_update_lock/1){.+.+}-{4:4}, at: __do_sys_kcmp+0x210/0xb10
+    #2: (&ep->mtx){+.+.}-{4:4}, at: get_epoll_tfile_raw_ptr+0xa5/0x190
+
+In the meantime an exec of either task waits for exec_update_lock past
+the point of no return. And everyone else who needs the exec_update_lock
+of that task queues up behind the exec. So a read of /proc/<pid>/stat
+hangs as well:
+
+  task:exec-task       state:D pid:235
   Call Trace:
    __schedule+0x1691/0x4b00
    schedule+0xe0/0x2e0
@@ -137,7 +147,7 @@ as well:
    do_syscall_64+0x110/0x600
    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-  task:stat-reader     state:D pid:231
+  task:stat-reader     state:D pid:238
   Call Trace:
    __schedule+0x1691/0x4b00
    schedule+0xe0/0x2e0
@@ -153,38 +163,145 @@ as well:
    do_syscall_64+0x110/0x600
    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-All it takes is being allowed to read the namespace links of the task.
+All it takes is being allowed to kcmp() the two tasks.
 
-The name is formatted into a buffer on the stack anyway. So drop the
-lock before it's copied out.
+Stop that and copy the before the locks are taken. With the locks held
+only take a reference to the epoll file and look up the target after
+they have been dropped. The epoll file is still taken from the task
+after the access check and with exec_update_lock held.
 
-Fixes: 6650527444da ("proc: protect ptrace_may_access() with exec_update_lock (part 1)")
+Note that the target is now looked up a moment later. So if the task
+execs in between and keeps the epoll file the caller may get to compare
+a target that only the new image registered. The caller still only gets
+at the epoll file while it's allowed to look at the task and all it
+learns is how two files compare.
+
+Fixes: 0791e3644e5e ("kcmp: add KCMP_EPOLL_TFD mode to compare epoll target files")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/namespaces.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ kernel/kcmp.c | 72 +++++++++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 50 insertions(+), 22 deletions(-)
 
-diff --git a/fs/proc/namespaces.c b/fs/proc/namespaces.c
-index ea6ec61a0430b..4c91ccbed21ef 100644
---- a/fs/proc/namespaces.c
-+++ b/fs/proc/namespaces.c
-@@ -92,12 +92,11 @@ static int proc_ns_readlink(struct dentry *dentry, char __user *buffer, int bufl
- 		goto out_put_task;
+diff --git a/kernel/kcmp.c b/kernel/kcmp.c
+index 76476aeee067b..8102e5825efc5 100644
+--- a/kernel/kcmp.c
++++ b/kernel/kcmp.c
+@@ -94,6 +94,34 @@ static int kcmp_lock(struct rw_semaphore *l1, struct rw_semaphore *l2)
+ 	return err;
+ }
  
- 	res = -EACCES;
--	if (ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS)) {
-+	if (ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
- 		res = ns_get_name(name, sizeof(name), task, ns_ops);
--		if (res >= 0)
--			res = readlink_copy(buffer, buflen, name, strlen(name));
--	}
- 	up_read(&task->signal->exec_update_lock);
-+	if (res >= 0)
-+		res = readlink_copy(buffer, buflen, name, strlen(name));
- out_put_task:
- 	put_task_struct(task);
- 	return res;
++static void kcmp_unlock_tasks(struct task_struct *task1,
++			      struct task_struct *task2)
++{
++	kcmp_unlock(&task1->signal->exec_update_lock,
++		    &task2->signal->exec_update_lock);
++}
++
++static int kcmp_lock_tasks(struct task_struct *task1,
++			   struct task_struct *task2)
++{
++	int ret;
++
++	ret = kcmp_lock(&task1->signal->exec_update_lock,
++			&task2->signal->exec_update_lock);
++	if (ret)
++		return ret;
++
++	/*
++	 * One should have enough rights to inspect task details.
++	 */
++	if (ptrace_may_access(task1, PTRACE_MODE_READ_REALCREDS) &&
++	    ptrace_may_access(task2, PTRACE_MODE_READ_REALCREDS))
++		return 0;
++
++	kcmp_unlock_tasks(task1, task2);
++	return -EPERM;
++}
++
+ #ifdef CONFIG_EPOLL
+ static int kcmp_epoll_target(struct task_struct *task1,
+ 			     struct task_struct *task2,
+@@ -102,18 +130,26 @@ static int kcmp_epoll_target(struct task_struct *task1,
+ {
+ 	struct file *filp, *filp_epoll, *filp_tgt;
+ 	struct kcmp_epoll_slot slot;
++	int ret;
+ 
++	/* This may fault so do it before exec_update_lock is taken. */
+ 	if (copy_from_user(&slot, uslot, sizeof(slot)))
+ 		return -EFAULT;
+ 
+-	filp = get_file_raw_ptr(task1, idx1);
+-	if (!filp)
+-		return -EBADF;
++	ret = kcmp_lock_tasks(task1, task2);
++	if (ret)
++		return ret;
+ 
+-	filp_epoll = fget_task(task2, slot.efd);
++	filp = get_file_raw_ptr(task1, idx1);
++	filp_epoll = filp ? fget_task(task2, slot.efd) : NULL;
++	kcmp_unlock_tasks(task1, task2);
+ 	if (!filp_epoll)
+ 		return -EBADF;
+ 
++	/*
++	 * This takes the epoll mutex which is held across page faults. So
++	 * do it after exec_update_lock has been dropped.
++	 */
+ 	filp_tgt = get_epoll_tfile_raw_ptr(filp_epoll, slot.tfd, slot.toff);
+ 	fput(filp_epoll);
+ 
+@@ -153,19 +189,16 @@ SYSCALL_DEFINE5(kcmp, pid_t, pid1, pid_t, pid2, int, type,
+ 
+ 	rcu_read_unlock();
+ 
+-	/*
+-	 * One should have enough rights to inspect task details.
+-	 */
+-	ret = kcmp_lock(&task1->signal->exec_update_lock,
+-			&task2->signal->exec_update_lock);
+-	if (ret)
+-		goto err;
+-	if (!ptrace_may_access(task1, PTRACE_MODE_READ_REALCREDS) ||
+-	    !ptrace_may_access(task2, PTRACE_MODE_READ_REALCREDS)) {
+-		ret = -EPERM;
+-		goto err_unlock;
++	/* Takes and drops exec_update_lock itself. */
++	if (type == KCMP_EPOLL_TFD) {
++		ret = kcmp_epoll_target(task1, task2, idx1, (void __user *)idx2);
++		goto out;
+ 	}
+ 
++	ret = kcmp_lock_tasks(task1, task2);
++	if (ret)
++		goto out;
++
+ 	switch (type) {
+ 	case KCMP_FILE: {
+ 		struct file *filp1, *filp2;
+@@ -203,18 +236,13 @@ SYSCALL_DEFINE5(kcmp, pid_t, pid1, pid_t, pid2, int, type,
+ 		ret = -EOPNOTSUPP;
+ #endif
+ 		break;
+-	case KCMP_EPOLL_TFD:
+-		ret = kcmp_epoll_target(task1, task2, idx1, (void *)idx2);
+-		break;
+ 	default:
+ 		ret = -EINVAL;
+ 		break;
+ 	}
+ 
+-err_unlock:
+-	kcmp_unlock(&task1->signal->exec_update_lock,
+-		    &task2->signal->exec_update_lock);
+-err:
++	kcmp_unlock_tasks(task1, task2);
++out:
+ 	put_task_struct(task1);
+ 	put_task_struct(task2);
+ 
 
 -- 
 2.53.0
