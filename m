@@ -1,102 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE71B606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 13:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E6F606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 14:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VSnrQyfZ
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=TsFM2UqX;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=xAU2/Slp
 Received: by kanga.kvack.org (Postfix)
-	id D0A5D6B0704; Tue, 24 Nov 2026 08:59:37 -0500 (EST)
+	id 808586B0705; Tue, 24 Nov 2026 09:03:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBA5D6B0705; Tue, 24 Nov 2026 08:59:37 -0500 (EST)
+	id 7B9ED6B0707; Tue, 24 Nov 2026 09:03:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF7C56B0706; Tue, 24 Nov 2026 08:59:37 -0500 (EST)
+	id 6CFA86B0708; Tue, 24 Nov 2026 09:03:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 988926B0704
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:59:37 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4B837C0BAF
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:59:36 +0000 (UTC)
-X-FDA: 85470170352.07.8A7F2B7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A06D810000A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 13:59:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VSnrQyfZ;
-	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 370B46B0705
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:03:16 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F39F1C46EB
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:03:15 +0000 (UTC)
+X-FDA: 85470179550.12.837A442
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DD4701C0002
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 14:03:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=TsFM2UqX;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b="xAU2/Slp";
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf21.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795528774;
-	b=1KU6npzZaWMOq6oa27Y0+zsivRIuVq4hCYhd9hwnB3XFEE0SjH6QOFQlX5pqRRUlV7t0qj
-	IILOndk7Ks/TNmPJLKV64rwF8VjBjR3XevdUW309HqlXvTmV2rlp3Xiv+PpqWpXt6E//RZ
-	ngkPFov/GrSp3P+5NEZjeWxdvqOatd8=
+	t=1795528994;
+	b=DTFyb84BBUHBpSGvwvLp2DX3gwd5I2J69vVvp7SYoS7QtA1gkfrilpDCNtFl4OPc5cGITr
+	UeNH0i1BfWECYlvAcN08zZikumtCyNIxeG2khaELnEqkCZg4QLauNlcocZ/NOwxGrHuFb2
+	RbNvlo7lLK0esN55zf9YGP/ugteX9QQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795528774;
+	s=arc-20220608; t=1795528994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kvsfueMHEyVjE37oaEUJidZMPTJVXlpVOUA/4h72CTE=;
-	b=hZBbYnLcY+5ijxkKCzf9DYgQq1IJlU8x6TFK0kdVk50anLpXLbZeYYKmYUkkKjrgRXNs6W
-	YvCos/69kxSSBGy69gsj6r59fftCBM8Xv0BlMHsMCMmRV5ZYHLTLvRZUZpIAdjgGnzAC8p
-	KQUTsfloYls9TCRxtsncMuJhIUfCEv8=
+	bh=JVwSuPPW9LnMTHGbyC/LWwKgzpeuxTVxDYf7431PF50=;
+	b=Vky6DU01Wsaa0oWBFmy1+u5SvFzjX1N9GTe0514Z1kmmDzuV/tNy0MaCRSz9d7ElgmLwXT
+	NS0sju6Uqjl3kc9k0LBbXPbKMdUNGHsjXH7R4iSbali83yEkSfU4o2v4p1uPFzxAE7aOG9
+	HCz/LO/xMPxPwUWfZWqagvYJWO/am3w=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VSnrQyfZ;
-	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1F61D60F85;
-	Tue, 24 Nov 2026 13:59:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596401F000C4;
-	Tue, 24 Nov 2026 13:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795528773;
-	bh=kvsfueMHEyVjE37oaEUJidZMPTJVXlpVOUA/4h72CTE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VSnrQyfZpr4OAwsGrcz8BHCW4/klS/ONxfDAooEDvS8hEw0h8ATzx6RRag7GaRbUZ
-	 PdCzu2czJSsynBun1Xe2QTv6o9kwzFJ2AmPJp1aZPCrtokFkcSv4FeIFv9pmKChNzK
-	 5PT2q2qOophF71Z2WpnE5nLRQsMCLxPoDPEJkAuyNfu7NIlSUc9Wgxi3He8tHJc9H4
-	 /kokeiWu0iDvJ21O7BPsMsGc+LdOqVpgH3DMJJuJhMaqBpbTKo6iE+qyzLBXOct9b1
-	 m909zcbnsZXi6tODHQA5YzLCtB4tz0No6fKbf4ksBR2o/vVOSbqEkq47hKdlg1oY/B
-	 cK+Ku5T+1/oyQ==
-Date: Tue, 24 Nov 2026 13:59:31 +0000
-From: Harry Yoo <harry@kernel.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Emil Tsalapatis <emil@etsalapatis.com>, bpf@vger.kernel.org, 
-	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, daniel@iogearbox.net, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-rt-devel@lists.linux.dev, 
-	Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf-next v1 1/4] bpf: Add call for selecting kmalloc or
- kmalloc_nolock at call time
-Message-ID: <awWRZ9xCzWLnj_R6@thinkstation>
-References: <20261124060357.11700-1-emil@etsalapatis.com>
- <20261124060357.11700-2-emil@etsalapatis.com>
- <DN38HGVL8JHQ.2ZVZQCKFXVA9T@gmail.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=TsFM2UqX;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b="xAU2/Slp";
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf21.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+Date: Tue, 24 Nov 2026 15:03:06 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1795528991;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JVwSuPPW9LnMTHGbyC/LWwKgzpeuxTVxDYf7431PF50=;
+	b=TsFM2UqXj5b+V3/3KG4PfYS0lJNbWBi4ZtJFudmyjLsy5pNIYarTh0tMz5+qpiSEDIi1xS
+	HyrxXGzCQXJampyFbYOhVPHNR0EzLY86FTeFG6FZD0w4bIGAwEvr4CnvR2tBqmvfdP0Jqj
+	ABrv9AM+Zl1RRFdb2qAqPrxpTtptABWGfulBb7/sSoDC3yo156pcTW9t6JksZHLYhIImiO
+	FE7G5/5+goHgIN5sgm+L5r/zBFNwItCrE75jN4VU2ZTDRzJkY4OIKz1kICZEQgNgvFoNQg
+	lCD+QeV82ITKpmTIMtDIReW4yGPGAIAylgjo7X3eIFqpkmxR300nw4Cyd2ZCcQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1795528991;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JVwSuPPW9LnMTHGbyC/LWwKgzpeuxTVxDYf7431PF50=;
+	b=xAU2/SlpVCQkMOYGKKQKfVe4HuUQTiCOuOagdD2hmbXtwhmh0KbeBZnsCI/iY1oyjBa7XN
+	Is50/oIaDKTJS6Aw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: sashiko-reviews@lists.linux.dev, Kees Cook <kees@kernel.org>, 
+	linux-mm@kvack.org, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: Re: [PATCH v3 03/15] asm-generic: add an in-kernel auxvec.h header
+Message-ID: <20261124145907-12f830e3-70ab-4e58-a330-2fa974be1a25@linutronix.de>
+References: <20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de>
+ <20261123-at-vector-size-arch-v3-3-d342dae9e843@linutronix.de>
+ <sashiko-outbox-230870@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <DN38HGVL8JHQ.2ZVZQCKFXVA9T@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A06D810000A
-X-Stat-Signature: wfhdg9satrtdbf3qfeeb8xt15mz6wz8t
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-230870@kernel.org>
+X-Rspamd-Queue-Id: DD4701C0002
+X-Stat-Signature: gkuwccpixn5hbuewc6eyxmxbxm7bcuts
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795528774-837520
-X-HE-Meta: U2FsdGVkX18I++Wk9jfFsiIqD/Jx5R+WE8A8/ltzeCbNY5PhU+2PJJNuEpQEBSh3Ux+Je87nubwQVR3GM219HSRUDhBovLYygdM+BxzSHDdgAfLfqFszLkrYr5cINx8r8idm8wihyZJxosTd/RP7StJxInqyIuuVN5vP2Vq5UOpw5bGSd1DkFKk18A1IYMhDq3KvR33GC9rkpZ4Fnxk3c7CjGcqJlcbcguCgqEEzYQJr7En3mgtRL0+j+KkSE21SxrVf7CaHLHjzPnS6ZeAUHKoXChldLXxgECJR730pGsez8jb50l5A6pzhnYyXx0l4udKn6Q2wLu3Key4c6hIeqPEkJHrhpRvzJ5CnILQPQewRZmJfDSfWFf8YIaLqMQFuy1qH08ycL1m0PI6OxccGJxliuuh10a/waqWsC4AlzGBR54GdtNbKlYkXbKmaaJfnogWE/8MbEzBe7PXh6a7KDyB0Y/3jEgb3l4ui084P8L/f6H7UjZPY2/Yk/Q4rRBI1dU1QoLM4ujIzWs+sHq/Qy4w9wF916G5JBD85W7sGYSROKHGqc068tRErSvb9RhLPXPtjJj45ZoKvWxlxJ/hGUBVt38Ia8w7y3G7M2N178j/oHBYTxaKPtWNdDCUtPnz0qIWEl18BUoawi9yViGRwj+0AiJDS2YolaazSQDKZzcuBOSlT0w+YDFNtxPvEqVhRtJu3We4VNZ0HAPDPe/jJ7Na+Y+YEBAyDDdF9YZeMx2YQuzq+8KJndWTEvXUvipCSs4wFs5iDbOfFK/skm7DqxNeEkSHFkvsj+5w3YKvTlSm4qVq1mDaKqSFSOL2gms2VnuXOQTyWDNxPr7kU9c/AirRmfm3ouizx0U7OhToBcBUPvolhGDyKXYVpVFruyNrGwJc+6qhAtMecfSzAXEih4s4sMtbhIYslZpMkJvV3YFHt7aWQrsr4VVgIMEVqdegbO7dOAG7eE7Yy0YkPYbs
- 9iDr3tTu
- s1GyKDnGmPQVcB6GRENJMXR5kXPG/sk1iRiJHld59YhQbI99e19P2LUAbg92AcFD9Pefpo2krx4ojlBY39DvkXAjFhOTaQj0l43Os/0PiF54alb6uKkOAU9CDVfRI+hi8zYt7OnFm9OKppR+dCyUJe0QE4mfL2BswED69dZQlW/fj8Am8Rz0Kai1BvA8DDi7kjbP81VEC6BQyBOOzdB42fulmbN/6cVG1jLl5HOGNdAjL/WzwCN7ccBYua45NWNsLAwc0zsQBZiHNL72mS/RFYU8t8HYZT3OC+OMAS1sPUMLz1XzFB8Fs7TKqleYIO2XGOM2pCfMz2mkBMYtDW66Q/6p97jePo1BbR7deVjUJTodGwoK73Vx/ByvfBa51/gjRcWp2SKCxdkvn8OuWWtiqp+qxMW1pwwgRb6YRzh9HV4bqE6xWa8bRlPolzFVsC/W10NWb73cQgkjtyKfWxMTr8dMCxhaz8ydrp+QaeqmFZ3GzSlaqEJw4TpBm76g7EX9EwI7EYRCQX6LWvYe5kcXCIVR2t9z4ZZhzoQusADrM+Fhob2G/qlcVkK9kgrgnpBrOAGfvvRAJCQUHFK7RymNOeUCuP4JxZOjPnAQGPhljxw8QlRwbw3QrG1Bb3aBq57WEEZGMH4d0srLqlOtakeKre8qWng==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795528993-587036
+X-HE-Meta: U2FsdGVkX1/Wvbpa1xARwC/Z13ZGMzIP4FKF2Q7cD0ceNUiUUyeMMda9zgXaUDKiudjeHFnbJ82gBFi6nfHM0QQLVm2853cru/Q6Gr6hGUP9JO1D0JpYdNlbIzHkmvZa74upaKONjbeAYINXUj1DhrEI99CxYoXeKBsT74XJpJ4AdHk6oe22/tXvgBSt28y2e1XiKGkumeWYlIj5wVuYJM2GL2poySD89VBuQ5ZhcpP1O99j9Nxpcq+RkbM0bguZIXm0ynhNnoR9JHrNC+Ie1qr9k0StK1c/Na4AEhHw7i08XrL4jrXZIhORRsKRfYd7nBTOAfXIChMXbL8iDnXvVn7NoilguyflMV0QSTK2Ry8qmsb38fU6CwogqVexp3rmiYQ8x+jEicJmIStwda9VsDvq2+64hy6tt8NYvuPRdbn9tDapHdRLFtWK8dh4K5zhcLt1Tnk1K4sS3Lpqr1Do+vvaNAYYMDMmfY+hju7MzdCVf7LY/mJq153SSo427yofSP1FxC03EwAh2JGsjdqUvBOceBNfwckciBbmuZgf+SZ/aOxPSnFRdW8S9Ge9Eul1+dUQv05xBs+3IX05OcUHhLaust4P0fILGzwHs3UXdL3NKn0GZXVfz0J0MBqxk/Y2E4HA+30MuLjgCxwW+EzJEOpOeemhMfPkgX2v6Y+T1dL5vHEupjIv7lYN5eSmZLx7h8EtRK0+v9nwDGvrchvk3C06/5LokhFb68FrcExh0TK2B0Sp+RHwNkTwjTl5l7PobCSCSV1ec/MzHetoIXQ88xBSyofIXeoIA+TmnYwvxUS0Az9Og5PI2+z8mn3OG7YaBkx5n9AONOI3P3Qc7cnVmMx3ldCtU5Q7vNVX1Lqy4c8tfJ3Qh91Y4pN+wS5IQfQ3jDwVSq1YZosHiMhFVyxrmQBVdZ0+itVtkAiZxMqT8bDxhHNsZjUpMkxj5Lq8ael2NzHryNL4hwAk3xCWNNd
+ W8VU4drP
+ 1K3qdGvBEmat5upyG1QKc1x13TwsInoRQyVegTfXosVnEjWJOlZuwMnIcrlP6Oft1CvlzrcWO87rLnyu2ZbUccLBoan0yC7Sk3pKVf6gE7zgPAUhVSLUGQXwPCTgW/dbUOCXQ6sitgD9VItX9qf2KtZvGgrlYl6Tk/IT/bkXTOOMesJule3sWCgDZCvPgcyp9eoNmCpxJXt22sbe0lF6DXcQ7sKPhWezarwicZVmfs52XPZzFRXwLyu9sX/6y0q+h4uArA/wAvoMIhn71Lnz3AA6lISZSVymbaRtFFX4gnij00XXJztMGIJTyzvSh7gk9EMvmNpyxSn//C6iP/z41/LrEAXIGIaGmJb+m2FMCBYHexK5/jQPr4wiIejRk/ShmCnpTPpvlC4I2Ieo996XmM7vPpFkp6GeJujXr9+26Oo41gD2PC2XK0KdQeZA+NQQAbu7bkJxK0fAWqtDfyuf/lO/zVQKCFZCeh57Wgrb6HEcZ0Sh+tJLykW2z4T9Cq4jeA81xJ56GogNvGhQH3quV3zesxLgMNG6VhSUlaMbIkaXEboYYEwhr/ycMxzQ+8ITnTMWHevtoL8zzwG7mno63Dvd5PQ85Viv8neRKWzQNbVmk5rIk4HrlqjqDVm8QtTkkG15hFBs4tsZ7VGwOhENfPZ8zUblCNHAN95r4pwwbSZpMkrgNcvSn21SUoqHrL8+SxlA5XSxyONiVAqJYaR7usUI5SG+3w0x+wGotsA5iYyYUikQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,93 +108,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-[+Cc Relevant folks]
+On Tue, Nov 24, 2026 at 09:49:24AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] asm-generic: auxvec.h unconditionally redefines
+>   AT_VECTOR_SIZE_ARCH to 0
 
-And a bit of context on the underlying problem.
+This is indeed an issue. Not sure, how I missed this, especially as I thought
+to have sent this through 0day.
 
-kmalloc_nolock() could fail when there is a contention on locks
-shared across CPUs (e.g., n->list_lock in slab, zone->lock in buddy),
-or there is a decent amount of memory pressure. It's more restrictive
-than GFP_ATOMIC.
+@Arnd: Could you drop the patches?
 
-Unconditionally using kmalloc_nolock() in BPF local storage is
-unnecessarily restrictive when the program can sleep or spin, and
-Emil's patchset teaches the local storage whether the BPF program
-accessing the local storage could sleep or spin on a lock.
+I'll prepare a fixed version, probably for the next cycle.
 
-Answering the question "Does this context allow sleeping, or spinning
-on a lock" is extremely tricky in the Linux kernel as BPF programs
-could run and call kfuncs almost at any point in the kernel code and
-the "context" is usually encoded in the GFP flags or the process flags.
 
-Tracking whether certain locks are taken by current context is not
-ideal either as it adds unnecessary overhead for everybody.
+Thomas
 
-On Tue, Nov 24, 2026 at 06:40:11AM +0000, Alexei Starovoitov wrote:
-> On Mon, Nov 23, 2026 at 10:03 PM Emil Tsalapatis <emil@etsalapatis.com> wrote:
-> > +	/* Only try the spinning allocation when preemption disables are tracked. */
-> > +	if (IS_ENABLED(CONFIG_PREEMPT_COUNT) && can_spin_in_alloc() &&
-> > +	    size <= KMALLOC_MAX_CACHE_SIZE && !(flags & ~nolock_flags))
-> > +		ptr = kmalloc(size, flags | GFP_NOWAIT | __GFP_NOMEMALLOC);
+> --
 > 
-> It works, but I after a bit of brainstorming the following
-> might be a better fix, since it will address the root cause:
-> Pls run it by Vlastimil, Harry, Sebastian.
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2fef409..4368ab5 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -2536,6 +2536,24 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
->  	return NULL;
->  }
->  
-> +static DEFINE_WAIT_OVERRIDE_MAP(zone_nolock_map, LD_WAIT_CONFIG);
-> +
-> +/*
-> + * zone->lock is always held with IRQs disabled. A caller that runs with IRQs
-> + * enabled is not nested inside of it, so it can wait for the owner.
-> + */
-> +static bool zone_lock_nolock(struct zone *zone, unsigned long *flags)
-> +{
-> +	if (IS_ENABLED(CONFIG_PREEMPT_RT) || irqs_disabled() || in_nmi())
-> +		return spin_trylock_irqsave(&zone->lock, *flags);
-> +
-> +	/* The caller may hold a raw_spinlock_t. */
-> +	lock_map_acquire_try(&zone_nolock_map);
-> +	spin_lock_irqsave(&zone->lock, *flags);
-> +	lock_map_release(&zone_nolock_map);
-> +	return true;
-> +}
-
-I'm not sure this is a better solution unless this could be generalized
-or abstracted further.
-
->  /*
->   * Obtain a specified number of elements from the buddy allocator, all under
->   * a single hold of the lock, for efficiency.  Add them to the supplied list.
-> @@ -2550,7 +2568,7 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
->  	int i;
->  
->  	if (unlikely(alloc_flags & ALLOC_NOLOCK)) {
-> -		if (!spin_trylock_irqsave(&zone->lock, flags))
-> +		if (!zone_lock_nolock(zone, &flags))
->  			return 0;
->  	} else {
->  		spin_lock_irqsave(&zone->lock, flags);
-> @@ -3237,7 +3255,7 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
->  	do {
->  		page = NULL;
->  		if (unlikely(alloc_flags & ALLOC_NOLOCK)) {
-> -			if (!spin_trylock_irqsave(&zone->lock, flags))
-> +			if (!zone_lock_nolock(zone, &flags))
->  				return NULL;
->  		} else {
->  			spin_lock_irqsave(&zone->lock, flags);
+> commit 0c922d7a496b0d1a5af6ec9787042de6d54ad285
+> Author: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 > 
-> pw-bot: cr
-
--- 
-Cheers,
-Harry / Hyeonggon
+> asm-generic: add an in-kernel auxvec.h header
+> 
+> This commit adds an asm-generic/auxvec.h fallback header as mandatory-y
+> and includes uapi/asm/auxvec.h and asm/auxvec.h from linux/auxvec.h.
+> 
+> > diff --git a/include/asm-generic/auxvec.h b/include/asm-generic/auxvec.h
+> > new file mode 100644
+> > index 0000000000000..b5f73f35e21ce
+> > --- /dev/null
+> > +++ b/include/asm-generic/auxvec.h
+> > @@ -0,0 +1,7 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +#ifndef __ASM_GENERIC_AUXVEC_H__
+> > +#define __ASM_GENERIC_AUXVEC_H__
+> > +
+> > +#define AT_VECTOR_SIZE_ARCH 0
+> > +
+> > +#endif /* __ASM_GENERIC_AUXVEC_H__ */
+> > diff --git a/include/linux/auxvec.h b/include/linux/auxvec.h
+> > index 4b364e639f080..de1c33c4a2560 100644
+> > --- a/include/linux/auxvec.h
+> > +++ b/include/linux/auxvec.h
+> > @@ -2,7 +2,9 @@
+> >  #ifndef _LINUX_AUXVEC_H
+> >  #define _LINUX_AUXVEC_H
+> >  
+> > +#include <uapi/asm/auxvec.h>
+> >  #include <uapi/linux/auxvec.h>
+> > +#include <asm/auxvec.h>
+> >  
+> >  #define AT_VECTOR_SIZE_BASE 24 /* NEW_AUX_ENT entries in auxiliary table */
+> >    /* number of "#define AT_.*" above, minus {AT_NULL, AT_IGNORE, AT_NOTELF} */
+> 
+> [Severity: High]
+> Does defining AT_VECTOR_SIZE_ARCH unconditionally in asm-generic/auxvec.h
+> redefine and clobber AT_VECTOR_SIZE_ARCH on architectures that still
+> define it in uapi/asm/auxvec.h?
+> 
+> For any architecture that does not yet provide its own asm/auxvec.h
+> (such as x86, arm64, riscv, powerpc, s390, mips, loongarch, sparc, sh,
+> and alpha at this point in the series), mandatory-y generates an
+> asm/auxvec.h wrapper around asm-generic/auxvec.h.  When linux/auxvec.h
+> includes uapi/asm/auxvec.h followed by asm/auxvec.h, AT_VECTOR_SIZE_ARCH
+> is redefined to 0, breaking the build under CONFIG_WERROR=y and shrinking
+> AT_VECTOR_SIZE and mm->saved_auxv[] when built with CONFIG_WERROR=n
+> (which causes create_elf_tables() to write past the end of
+> mm->saved_auxv).
+> 
+> Later patches in the series migrate those architectures out of
+> uapi/asm/auxvec.h one by one, leaving intermediate commits broken for
+> bisection.  Since linux/auxvec.h already provides an #ifndef
+> AT_VECTOR_SIZE_ARCH fallback to 0, could asm-generic/auxvec.h omit the
+> AT_VECTOR_SIZE_ARCH definition or guard it with #ifndef
+> AT_VECTOR_SIZE_ARCH?
+> 
+> -- 
+> Sashiko AI review ∑ https://sashiko.dev/#/patchset/20261123-at-vector-size-arch-v3-0-d342dae9e843@linutronix.de?part=3
 
