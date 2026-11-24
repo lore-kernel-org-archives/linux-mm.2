@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A57606A33D
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7D5606A32D
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 23:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YiRvZG6T
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GIkuXiXe
 Received: by kanga.kvack.org (Postfix)
-	id C49FF6B0897; Tue, 24 Nov 2026 18:00:33 -0500 (EST)
+	id 78EC56B0899; Tue, 24 Nov 2026 18:00:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFA416B0899; Tue, 24 Nov 2026 18:00:33 -0500 (EST)
+	id 718C06B089B; Tue, 24 Nov 2026 18:00:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9B716B089A; Tue, 24 Nov 2026 18:00:33 -0500 (EST)
+	id 5B9836B089C; Tue, 24 Nov 2026 18:00:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CFD76B0897
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:33 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ECF9B1C485A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:32 +0000 (UTC)
-X-FDA: 85471533504.15.26E2E0B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1306A12000A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiRvZG6T;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D81B6B0899
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 18:00:37 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9882D40D96
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:36 +0000 (UTC)
+X-FDA: 85471533672.14.B2AF5AD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C1D991A000F
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:00:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIkuXiXe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795561231;
-	b=m9xFlVI5g5EZlkHJnR1pKEoeXm+lmrQ7ba6GaISVY/KhOGtJmIRZoMYyhbJlGinmxY61HC
-	MX4Xw/roe/C1JkEN+YaCK2GUlutDees0vjpzBuZnR9maVUpG9BdFc2a0vMfsXh/+elDAgA
-	XLd+GEXnsGCL5HZpYYZIyIYfGYWLu9o=
+	t=1795561234;
+	b=R4MUM7eqjHXCmY6BEwOyBTPvLUWfUkBpY3LgWrti9xRvXYbRP0CwxiE5Ng3yboQxMskk7N
+	mBwT1S3maREftYqPd0VjIvVlEWWUVXDTlvZdTrFYIHwnAlHqaCG9pcUY6Ps2wNeZNfQhpP
+	lVD5Wm5r7nlkmWPH48wW/AGohmCxN6Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795561231;
+	s=arc-20220608; t=1795561234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EHvZLsq7hnOdbwruvamY5wZBBT+mrqtWqcUuR58rX6E=;
-	b=wgOQ/dl+y8RkJ+E1zp3gFqaZTCbAUYhEvXKmww88MYKlbKw/tDa27jbIAt+/izF4KmGVxO
-	RsUpcSkKEtM4ehIiKSnYPzExps3RdqY589+TJep5gjOBPcRMK+m3D7lxRO3d3sRi73WpRk
-	ZGmi0Mq38QXMkVZ2zotIlEzJqnogI+M=
+	bh=eNV8rJH4Kk9+o13rpAbYwrbNyiuK+XJchQZ6VUpEriQ=;
+	b=hUh0XuIrIozVTyocOy2WG+YreQa1Y7XaTc/IhYU0mXsg66aAN+XDW4pfi06eE54+7AJfTz
+	kLMvqT9lcCvdFHHYMNZxEhh7neBREkEIgwUvPF2Re5Y6BSMbPwUU/5bE6UvVM3d+TK4Gzx
+	RL6Qfc5w9t62ybuVRj3t6wc9d65EI18=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiRvZG6T;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIkuXiXe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A776862692;
+	by sea.source.kernel.org (Postfix) with ESMTP id 11B5142E1A;
+	Tue, 24 Nov 2026 23:00:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2405E1F0156C;
 	Tue, 24 Nov 2026 23:00:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EC01F00A3E;
-	Tue, 24 Nov 2026 23:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795561230;
-	bh=EHvZLsq7hnOdbwruvamY5wZBBT+mrqtWqcUuR58rX6E=;
+	s=k20260515; t=1795561233;
+	bh=eNV8rJH4Kk9+o13rpAbYwrbNyiuK+XJchQZ6VUpEriQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YiRvZG6TgJBgOXVrxFjDs+ksGEIcjXpNrKPbX13/mo9kua/NCHghksmb/JUm1k15y
-	 vH7u1PKWjrZpU+jtK4RA7TvKUAFYbLHNWXX5TvHdyjnSkKkqJ+ut45fLwud0Sug3oY
-	 ep3NQ9Om33EWI7Or/2aZLvcYosHjEP0aexLZ6d6rmQIukr4zngnndFJNNNMRU1gEJU
-	 S+9w/cyBRvtn0zc67zXpCOPcrxc2Mb4lCY8txBTkdiXkZT6Wg3isd/PA9tANYZ0cmp
-	 YUNXw8jKMtfJjFE5wiEO8mDECdcEwURpQHbOTNfyWleaNutC0Au6RlWJmUvVps1ZSy
-	 Tzj/SNfCtk7zw==
+	b=GIkuXiXeLvYf1n/C5+5N/d5eZjBkiqNux/gyQkp/+9VmYKXhbEjjLjdnxAFAi95mt
+	 hNn98Mxho2aVW4wsAkYiZ14NHRv08FXyDzzobCk9qc2EXsfb/h6AQJ8uGTV0ZQ4ghV
+	 IKw715rUHNztCMHH6uurR1xfSDlUD6L/nhhl/98PicsPX4oNyfChyzlLmijosxr4oU
+	 V6MHG9ejkFn8lg114adbkEN9bbOLz4QwR76VVRfLCzCiHwcn9+v1eXUYfAbCqpBoFF
+	 t0QamGt2Sp51vUsfBWuK2ROeTXyuYafbdeW1UHWGzr43WrBMX9tZCuJUYuNKpmpwNr
+	 1mM63G/Fr6H6Q==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 24 Nov 2026 23:58:39 +0100
-Subject: [PATCH RFC 16/19] exit: don't take the mmap lock in exit_mm()
+Date: Tue, 24 Nov 2026 23:58:40 +0100
+Subject: [PATCH RFC 17/19] proc: look up map_files vma without
+ exec_update_lock held
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-work-exec-update_lock-v1-16-e489035395b8@kernel.org>
+Message-Id: <20261124-work-exec-update_lock-v1-17-e489035395b8@kernel.org>
 References: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 In-Reply-To: <20261124-work-exec-update_lock-v1-0-e489035395b8@kernel.org>
 To: Jann Horn <jannh@google.com>
@@ -80,27 +81,26 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-04696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1832; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Bhh6F2ZX7wE8WDQ567dVS5J6fGn2WThh0ZTBWQRLCj8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziZ1oNb4f4PPk/bPlDfIW195V3LnaGpSntOCxun/6o
- UAlyUtTO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACayoYLhnyUjyzGJIuWK2ovq
- ym0u02R7FtXkvNxjc/p875QPElc3WTMy7GxgmnVfIuBISsfFXWd5bGb2XWkWZ/k1fULguhlBMb/
- 82AE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4361; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=cECZa0eQtjLytpPlR2SBCNYBSmdlP+dulEopZzDPwU8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSziZ38aPZaYe2ujs2Lvi0+foDN9Mb8v8p/Rb+kPJhlo
+ M70fUnKpI5SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJNGkz/I95dT/wwE3Hks9r
+ FiyIXfTs1blSaT7OZxcPpZ24mbxqd1ECw/+sO1WZodnqt+P0nshFpbAc92RaceuQgcafZwue3Vn
+ IuoADAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: ekdna7ffpmp44js53rcfhypyhpj4uoun
-X-Rspam-User:
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: C1D991A000F
+X-Stat-Signature: iemddt75gu8iz3fs65e8wzktxcfkusea
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1306A12000A
-X-HE-Tag: 1795561230-821841
-X-HE-Meta: U2FsdGVkX1/2lRzlav05GDA0KhBTv4M0qVRMsWPlUAr0TuQAjbVGTNnhjs/ksxWymrRKVwXDsXZZoxVWQK9w6nzfGSju29uQZmcjYxj5J/VWLsduAoOdiOmUKiAEbkA9CYGmYLV/Ab41FqdIKtES7gpMIkTWKS1kdFb6oy4+PuZ+bA0rm5TC/sypNDwf9IUWa1kyBsBeOcVPDggjiyU1d/3lLLuHHDXBrws1gVNRwA3PUDEjZQOwHmlE0nrCt7RThdPTH0Ne17IeHmQyVBYgsIy3yh3qMmfq7hjDYvhFCdfQ+jUhM8H+w5A2iHNgTDtECbkG736cAAINIwGiEYbLLBOJYVARtC0jicIVmH3OT5qdTxz2HjEK2ZXeJ19lmWNqx94nOUtCkNNbB0dJG+/DMKXUl6zKH0ar5zDAwq/Mzh9zyDWOX4T2x/hKCooFjLsR6bPSDPnT1t+raLURHZQ41r8OtGsyBI5JQcDkFuRGjXkgZJoqX5LJ581ejlIkgSEyzY4ADvfGYk62/WLFCFzRbfvwrIEbrC2ZrJVrcljz+TcPbP46o4C+V2RZU80FJTiwY25TQE/gZHB/PrPOs1SrjDLQRgDRDarlUOWbRWa7rTDUuJtvsjOJYgxs9nwlvfWrEgD9qKxebZtVIJZJ498Fgr1rALuFaRxoToEi52gqIuTqxwhAg+bmAitd6cE6kYnfbCrg6dantXHaw3sK+fPAoYSNfaPNyv2f3eG4auniPzpStE7NkSig0drEZ3mO+cp3bO67+gZBvPX8kXenjuEFmpo4w4k0lO9Y7AkzBX6pe4odMJmCnXOkQ7fkX+3ZLovUMfacahh121WSZ21Xpsy5o8g/92tS6q/pm8n8jZfFxOl2CRT37eucMSkkCEkIFKjrNy+R/CFU37JfHMDz2zPBq7oKMLE80bypXJO12tb9X3U30xBGfwFHaIRhKCiBbmKxkrkO/1ERF+8UOKMnF2w
- gsOC7GoJ
- DlUTuv7nvNvdoNuTPx6qjriStw/WOjpDqLM67Nnm+pHTmts3f35MreABxi9USxcZCkNJlOMYKw6wELZCtXLN0avwKB1CFoYBXHuf/v6xTFtfZFi0jB7wCN4Zaa/T/mIdGWmooGK/woTeXKNX9zs03XtxYsySpSRXOh6Pl0itbVAkbIqDyg5UHPcn4z8tXSJLlQmYM/jXPwaubrr6Dpp1cJYEyt57tKfCYk6sOQ1xYy/O6fcBMd9xM6I5u92Z2Zx861JC+ghAjX7/SQUOmHeCiWgSoN68hxeV3GD5zDJzss/+7w4KfexF6oPxJ2MUMhXXdOKOKoTqL80I+VTcakg9Gr+MoYwgMq+e6BZB5/6KHB5j5vLeurYpFJuzBYU0K+dlATeyiqBul7RTadPG6L8dmzUEnuFUCiBRW9KS9z+XtPWPRokHjEuY3Whkmj1H2i+55G/F4ToOlNnZRF3dwnJ6kkbv2UH0hKEjDLSkFKZ09gHrx1ORkESRSLT1GE+1CrG7kMAtbTOLCsZqnL1g=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795561234-199255
+X-HE-Meta: U2FsdGVkX1/uucjkkKFfcpBEztxGCs8KXG5hJ/POTM5kCrs1WtKsbkzWdgKn1jgz4RMM10VGrAzjsaKLy39HHrlvB/MPDIyf1TFvnCay48KQi7ht49/Ptl216Mx4pRw9guz/u8HzJyFlyyWGPNBsiZ8WkEFvxtEVnhy9I12Q7RpjSvWp/XJl7tQt/dDNODdDqp3NyxnS74iOs2Vp4fGOye4TZ544S6mrNRXWaNz/GVSZF5U3qausAKsla2zA7P8J5oC/GYz7kkHO5QdU5fe59VG3CVFqm+2ws9rzb2gz1xvkmGjRG/GVj6i1oUZ/Jnxd23EAudAOiZMcZcppZmraPv4+/u3gOCV6oDgoKyNhvD4BAx7t1X68+30ADgn7Kji7aBlO+Ykn8xgoD6UkRV4kIBSupV2V9IyUkyrkKUN/VU+c4pniXCY5eQcP9AOeD4d54Rk5P7t7XsLggLuxd7/mjkq5iTGH46r806F5J1EnB1vt4UdeSykOBTnjQtuziPCjMYGvWnluIJluxh0/4zO7esjmxORrL4y4l3bzgc2EVbg7G0Gl2ygM68aoYa0MNS4xy3Gq+3Zb3HXNtpKhc/AFJpAcAyocKvjlR+RAd6XBR5RKp0F8PXNqcvnHAuWm/9m3U07iH1CPjPUyFhuP61vHZgI4oiaYV1Mh22RMX8C8V9WbAV6TgyHW+Wxt6SUjyXqcCL8wdWJnIOXNluYi7+HFZcY+ofjIsSOGtOOITQkZ2gGEiYOMiZ0GseDqvk6IhmZ3z42veAboWI3dr9P7huZ4VTvyJbQj51nXlTcLVDDtXtYe323iDMnlxonNIY4x02m/1qINpdU7E6cu2WIljEPw4usmZOKEJOY+MvcZwfA+voRTgW8KVXNvGhIBtY1Nv0n3M+AAI2JmT022Z+fNaMjVI0axZeDr6U0rIyPN6ght1cEECCnnrzLjyx++7D0SLHj98vWJpaoS5RUxDyee5KB
+ Muks8tub
+ ijPU8Wu8WIv/0uGplG5jAuYtZ58jmYC9NSrKd8EBlyVjAe3ohgtFWcsdD+foXefBJUBK30ctPtT8AjWSkwFKCgHN/2fuvQwov7xchQHZZm82ELMnGtzUihiD1+kM4DHHrj/OcJCXwt+gNEtjkWGpdsj1GzfhD/SQk153DZiSWMcykp14Zniq9bNf8Qc7twwgeMMNnk9MU74NwX8uRdmbq/z6Qy5jFh/eW/w8Wk/IniIaJK8zlqpQmPgbMdl5BjxwJ+nIwzDkiyRdQNT7c94VVwtzkMJskI4/DC5vXwhVRmKrLXb8kElmR//7SS/pHVxsWnOGwFBTeGZ6iqpVwPf8tAe17Is4TD7xLoyKx94+3coJJyxqPIPdB/Ye3udYwMFJhQSEGbtbJ/GKTtGFRBa9h19TVz73qjmaTYNaEGEyxW80auOL1eq+dyJ5LM2H+lFIud3K5+ykkhIdhwd+sX3/a6AUYL/AgELZ+2hORl2dCCfmQmq26qbrg/znqimFhiQyWBP1r5siRgvojS8IYfkPf6uD27cfQD43JhsrKLtlUDv4dVg4aArykjNxKGiQSqOIyISE6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,55 +109,148 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-exit_mm() takes the mmap lock for reading around clearing current->mm.
-That goes back to 2003 (cf. [1]). A coredump took the lock for writing
-and counted every thread that had an mm in mm->core_waiters. An exiting
-thread had to look at core_waiters and clear its mm without the dumping
-thread getting in between.
+Since commit 6255da28d4bb ("proc: protect ptrace_may_access() with
+exec_update_lock (FD links)") the links in /proc/<pid>/map_files are
+resolved with exec_update_lock of the task held. To find the file
+map_files_get_link() looks up the vma and for that it waits for the mmap
+lock of the mm.
 
-Commit 92307383082d ("coredump:  Don't perform any cleanups before
-dumping core") moved that check into coredump_task_exit() which runs
-before exit_mm(). And commit 0258b5fd7c71 ("coredump: Limit coredumps to
-a single thread group") moved core_state into signal_struct and the
-check under siglock. Since then the lock in exit_mm() doesn't protect
-anything a coredump looks at.
+So whoever reads such a link makes an exec of the task wait for the mmap
+lock of its old mm although exec_mmap() doesn't take that lock anymore.
+And everyone else who wants to look at the task queues up behind the
+exec.
 
-So don't take it.
+The lock is only needed for the access check and to get at the mm the
+check was made for. So only do that with the lock held and look up the
+vma afterwards.
 
-While at it, drop the comment that calls task_lock() more a memory
-barrier than a real lock. It's the only lock that's left around clearing
-current->mm.
-
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=99365bd4725d431255ff4bdd51fb3dca60c47322
+The links don't go through call_proc_get_link() anymore so they don't
+need ->proc_get_link().
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- kernel/exit.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/proc/base.c | 68 ++++++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 16 deletions(-)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index d5e7bc2af804a..38de318a07aaa 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -559,10 +559,8 @@ static void exit_mm(void)
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 7685660c36241..b28bd6c57e1d8 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -2228,18 +2228,40 @@ static const struct dentry_operations tid_map_files_dentry_operations = {
+ 	.d_delete	= pid_delete_dentry,
+ };
  
- 	sched_cache_exit_mm(current);
+-static int map_files_get_link(struct dentry *dentry, struct path *path,
+-			      struct task_struct *task)
++/* Check the access and pin the mm with exec_update_lock held. */
++static struct mm_struct *map_files_mm(struct inode *inode)
++{
++	struct task_struct *task __free(put_task) = NULL;
++	struct mm_struct *mm;
++	int err;
++
++	task = get_proc_task(inode);
++	if (!task)
++		return ERR_PTR(-ENOENT);
++
++	err = down_read_killable(&task->signal->exec_update_lock);
++	if (err)
++		return ERR_PTR(err);
++	if (ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
++		mm = get_task_mm(task) ?: ERR_PTR(-ENOENT);
++	else
++		mm = ERR_PTR(-EACCES);
++	up_read(&task->signal->exec_update_lock);
++	return mm;
++}
++
++/* The vma lookup waits for the mmap lock so do it without exec_update_lock. */
++static int map_files_get_link(struct dentry *dentry, struct inode *inode,
++			      struct path *path)
+ {
+ 	unsigned long vm_start, vm_end;
+ 	struct vm_area_struct *vma;
+ 	struct mm_struct *mm;
+ 	int rc;
  
--	mmap_read_lock(mm);
- 	mmgrab_lazy_tlb(mm);
- 	BUG_ON(mm != current->active_mm);
--	/* more a memory barrier than a real lock */
- 	task_lock(current);
- 	/*
- 	 * When a thread stops operating on an address space, the loop
-@@ -581,7 +579,6 @@ static void exit_mm(void)
- 	enter_lazy_tlb(mm, current);
- 	local_irq_enable();
- 	task_unlock(current);
--	mmap_read_unlock(mm);
- 	mm_update_next_owner(mm);
+-	rc = -ENOENT;
+-	mm = get_task_mm(task);
+-	if (!mm)
+-		goto out;
++	mm = map_files_mm(inode);
++	if (IS_ERR(mm))
++		return PTR_ERR(mm);
+ 
+ 	rc = dname_to_vma_addr(dentry, &vm_start, &vm_end);
+ 	if (rc)
+@@ -2260,7 +2282,6 @@ static int map_files_get_link(struct dentry *dentry, struct path *path,
+ 
+ out_mmput:
  	mmput(mm);
- 	if (test_thread_flag(TIF_MEMDIE))
+-out:
+ 	return rc;
+ }
+ 
+@@ -2280,17 +2301,36 @@ proc_map_files_get_link(struct dentry *dentry,
+ 			struct inode *inode,
+ 		        struct delayed_call *done)
+ {
++	struct path path;
++	int error;
++
+ 	if (!checkpoint_restore_ns_capable(&init_user_ns))
+ 		return ERR_PTR(-EPERM);
+ 
+-	return proc_pid_get_link(dentry, inode, done);
++	if (!dentry)
++		return ERR_PTR(-ECHILD);
++	error = map_files_get_link(dentry, inode, &path);
++	if (!error)
++		error = nd_jump_link(&path);
++	return ERR_PTR(error);
++}
++
++static int proc_map_files_readlink(struct dentry *dentry, char __user *buffer,
++				   int buflen)
++{
++	struct path path;
++	int error;
++
++	error = map_files_get_link(dentry, d_inode(dentry), &path);
++	if (!error) {
++		error = do_proc_readlink(&path, buffer, buflen);
++		path_put(&path);
++	}
++	return error;
+ }
+ 
+-/*
+- * Identical to proc_pid_link_inode_operations except for get_link()
+- */
+ static const struct inode_operations proc_map_files_link_inode_operations = {
+-	.readlink	= proc_pid_readlink,
++	.readlink	= proc_map_files_readlink,
+ 	.get_link	= proc_map_files_get_link,
+ 	.setattr	= proc_nochmod_setattr,
+ };
+@@ -2300,7 +2340,6 @@ proc_map_files_instantiate(struct dentry *dentry,
+ 			   struct task_struct *task, const void *ptr)
+ {
+ 	fmode_t mode = (fmode_t)(unsigned long)ptr;
+-	struct proc_inode *ei;
+ 	struct inode *inode;
+ 
+ 	inode = proc_pid_make_inode(dentry->d_sb, task, S_IFLNK |
+@@ -2309,9 +2348,6 @@ proc_map_files_instantiate(struct dentry *dentry,
+ 	if (!inode)
+ 		return ERR_PTR(-ENOENT);
+ 
+-	ei = PROC_I(inode);
+-	ei->op.proc_get_link = map_files_get_link;
+-
+ 	inode->i_op = &proc_map_files_link_inode_operations;
+ 	inode->i_size = 64;
+ 
 
 -- 
 2.53.0
