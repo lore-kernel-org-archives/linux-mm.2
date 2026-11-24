@@ -1,91 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29AE606A33E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 03:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96897606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 04:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ewmwo10n
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EChO5xkU
 Received: by kanga.kvack.org (Postfix)
-	id 071306B05E4; Mon, 23 Nov 2026 22:59:35 -0500 (EST)
+	id 8C8826B05E6; Mon, 23 Nov 2026 23:33:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 021F86B05E5; Mon, 23 Nov 2026 22:59:34 -0500 (EST)
+	id 877DE6B05E7; Mon, 23 Nov 2026 23:33:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA21E6B05E6; Mon, 23 Nov 2026 22:59:34 -0500 (EST)
+	id 78E066B05E8; Mon, 23 Nov 2026 23:33:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C359A6B05E4
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 22:59:34 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2CBC114062D
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:59:34 +0000 (UTC)
-X-FDA: 85468658268.21.4D567CF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 391DD80005
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:59:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ewmwo10n;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A3846B05E6
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 23:33:42 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC4B0A0AFC
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 04:33:40 +0000 (UTC)
+X-FDA: 85468744200.23.4DD41CF
+Received: from mta0.migadu.com (out-215.mta0.migadu.com [91.218.175.215])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 183FD40003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 04:33:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EChO5xkU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.215 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795492772;
-	b=fMJoWesjXjEOOM/VyZDZG4nb4MR1/xC8tEY7ygrs98qSsihdRK6l7PMM46Wae1HH4OYsje
-	bntg0nIBBR1ZEvFZ1DJpqWazk5rzPZ0QlPEEPaP3FbFmxWb8rtO2IFb3s3QcLR5bBhdkBj
-	vQycUkpfqRDyZFGhsxnJyazLXJU/0pY=
+	t=1795494819;
+	b=Gm2ULpc2kEksZgCDhBkeu+2xIsE0CAnzG89qxGD9syYM1P2IYrnU5Ywui9U0qZv5fou+jb
+	vdeeA6m9Xsrl50wHFp55lEyW6Og7IfwRfb4knkL9Bw+P1FJfVXRn6/62nesngkJFgXdmZ0
+	2wMVUcjNnBtFYlPR7IO83hKLmmq+m/4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795492772;
+	s=arc-20220608; t=1795494819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nA83iQvRyaruX6IzmNJzRwewMB28MahrmR9i6SAS/Ug=;
-	b=8RF+3zH0W9V912qHV9HCIztcyoT+bwT7H/FtMJUGCvK/ipPJtU0NS5Usq7n0oBwwrlIWq2
-	ytCM6erAHgg9Tlhus/+UKLt0cyeNcFOA5sWsWGTW6YUAWmmR8m8dzS/7bpS6e7mRcRGuQh
-	hnKbH7IYTSkNttD7qsXjw8i3htX1WcA=
+	bh=qeS+Wqldyca7IlFeTqWB+yHVGIRNOofJMih/xkJzWH0=;
+	b=cwjJTV5oH9pP9z2PHzMhbFxO/cvhjhlpuI4BzpKX0Q7IlKDH/UwiL+C8csS4sDD7szUJJ2
+	BOtmjRSPTMeJdM6ocdwmx8nIDXIF6w5vuIO0m1m8iA28f0RHl0L/viRh4I11dERj6ESIcQ
+	9aKLiiC/2JNJcQ4Y0px1abCPGAuHuM4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ewmwo10n;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 47E90339;
-	Mon, 23 Nov 2026 19:59:28 -0800 (PST)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6F05E3F86F;
-	Mon, 23 Nov 2026 19:59:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795492771; bh=Lplv50F+7kFs92k3xJrhQB0vZA6BC/BFMbC8nKa3qaQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ewmwo10nvaWDPRnZDHJF9g3hyp3eiP7ZSNUjF5yJL2oz5MplNK0k3yrgpsLUJPBZd
-	 u/CaRD4d9th4lGwA8M5d5PnIHZnbmrPM++yc1Ayr91UPjwRP9zP87WOp/sKrTulWT+
-	 3X3krAWS93i/6rmQ6DyblMNt4p/Ta/Cr0B0jlPEs=
-Date: Tue, 24 Nov 2026 09:29:27 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, 
-	will@kernel.org, Ryan Roberts <ryan.roberts@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH V3 00/14] arm64/mm: Enable 128 bit page table entries
-Message-ID: <aqcypbxidjbmjhuiujg2krseuy7v4lofrlq3upl4s7yjiq6bh2@3s4jqisdrkgd>
-References: <20261117070613.1183243-1-anshuman.khandual@arm.com>
- <20261120190525.GC1133597@ziepe.ca>
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EChO5xkU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.215 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=XrJqniAxtYnOjs6qtgcphsG7K6LdaIDb/mHKEP/nTBc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795494815; v=1; x=1796099615;
+ b=EChO5xkUCstUOXGGiv9FCZ+/EkSHyKCcChaKP++g+zGEeyhOUnEGUMZvsDHJpcs2y2dHouLE
+ b0RxfeAV6fIkbBQc0izTiZA/u8hLON+4WUir1N5L37zz0r5EwLjvahELnjzlOaM76zpU9suNOdu
+ JLzoHdnuzLhmAShdbG7m3ZKE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 40e2dd995e1bde24;
+	Tue, 24 Nov 2026 04:33:34 +0000
+X-Mizu-Trace-ID: 40e2dd995e1bde24
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 23 Nov 2026 20:33:33 -0800
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Koutny <mkoutny@suse.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] memcg: free the private ID of a memcg that never comes
+ online
+Message-ID: <awUTKy9tx8nWJgXf@linux.dev>
+References: <20261124000439.967403-1-shakeel.butt@linux.dev>
+ <F39B4A81-BB17-4C5D-851E-2740EBBBBA8B@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261120190525.GC1133597@ziepe.ca>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+In-Reply-To: <F39B4A81-BB17-4C5D-851E-2740EBBBBA8B@linux.dev>
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: j9ab6scgtyscu6mgtx95nmzew5uhaauf
+X-Stat-Signature: ifnnge719jrny57c3p8949htezieb53y
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 391DD80005
+X-Rspamd-Queue-Id: 183FD40003
 X-Rspam-User:
-X-HE-Tag: 1795492772-86907
-X-HE-Meta: U2FsdGVkX1+thPX0ntiCVW6PYnsWU1a12a8aKP16lLLOFDLCaaALB7ffeUwmxhlZ6lHSvvNhGTI4bf3/XWgNU8MschGSrCreH/12X7E8HPljjYv32I830dmUmwDR/qdm17ZihBrJ+MGttZA+p7aysz6tJ7dRhGVdkIKWfh5U3D2y1fjXP++OeYoQ9K+2n9wI2JGyAOveE6zXysUs3d6gXxscw34m8rS8aGM3OmbK3Hiu0iRB0uyNrfEgbXYeXSHFgMrH4Cjg11TlmJVUqFsI/RZgOAivYSMqZB3qXCGV46zIUgjFvrcENyUQviC74H50yIJ332OvvHb5DVKKv2ShxXBkmUSPMpFxBMW2Cv7BMnLU57Q41S3F+ySQHkUEVo2XT7QHbbXizeLdvefvNCoJMNBHZkIHEZLKEyUTgqQwTG/tnlr1dm/mxf4liViqb1ilBkEoCUk8aGtxqWg8KVfvIzT8gHcbTia2/CnEYJepgzIR4w9d/QxtpOsL8N9XUo2qQXr5GBGhmkYqsa8CHohdFPizyb1im0qG1tf0Kju47LXjYM4PFEOGLgte4O8Hd15jqDPvPxaH4peLYdBvoenKRRGPVswXZXO2DQqtqw6iGFwhFAf2h5yf2FVYfiW9juuVxHCiK4fmytkC9TVl+FRbnQ78O5RF6JBrA1CegxKeHNPnHwv1OhYDZLPWr+BzQdnzwdB81vdc9sas+FC4C7Dqb14ED94QqeEfR4dwTbV9oZ6eucDHaQ18a9hYR5djuFJzrfVWYtC9ysLbThN930+YnGkqIXTMlEeIGNMMLUmBMHUZsaNcMKS2VnbcLi89XkkleQk7MgMDIrrM6NQZFL5GcMCbnesgy3Gu34JjasCG2IKtuLuk+FqfJU3biNK0uQyR8Kk85E0t9hMt0UABH+PEv2hZuC8r1c7Tsj0ZHjKFaME1NRL+ks+KDKdu51kG8UZiyGILVFJMB2D1VX05Wnd
- N+EMaaIg
- sB/FqC+NqTLtLFx7v7xOu3tbRXiQkf1RtxwPnMKV1LeOdj+L0W0xAnxHeAuzhr4bjEPfwhwCkjc/83E1gbWkO1zDxpiuzJx9Y6drPBY2fFn1NIYYxwjCl5IR96j/H4dmaSCHihg/TI4lcospGvZ7SbAb/lLMhI9fzSw1LVvU4TN7UhtIL6BFjn+4/IZWfz8gHuHDUT65u/xrEipfuOTnHdUub5n5hiPpHSC4KQjDHCAoga6CQ8NoRVLwuc5ruiEvYONQ76bw5sTeNb2ADWeFOcRvH3KJ70RWiEV5a8HiwN/DnWsnnnk4IQdFJUTRHOap11vyhYLUWAwEKY7N5eq364SGDGrRZyfnlqhxYHOq0H1aruPTG1bB1U3zT64tCFNa2SdvEpGaQgYbLCOAhrrPuJZ3AMqEFRrgg9oHxGQIJmpWV0q1MWAki8Bk30dEl8NuVuemcsxpBbps+cNDkmpu+EfohC4z28DXJs4e/6kFzvcZyXtxEOW8vOUUozuX8eUE6Ne34
+X-HE-Tag: 1795494816-337969
+X-HE-Meta: U2FsdGVkX1/p0EnIh4rimiqY/47nsXpjrB5GckTfPmhRzcrNxcLstOwTj25NK5VEpCXaCjc9tN7utRpQKib2odKEwPhrDY9I7ouqpMPE98f8ZHBzzr0QrHAL16jPUWIM6uDzrWW93jcwlb7B59XvikAyxnZWtpJkop34VwRN6nkVL6O5eCRPbtrBxPSUs17R9NspVcANKf5ptuLWsruYvyUDMklJYxkPnou+qvpX2FiKP3j0xh9ulWKMFDrocGU6IQHZ8Du20CguoqgWsVt+guS1xrAo4Q0T01TJa+hd0AUGStnwJwNwRWH6iODF25HMqkd62rAOa690hZEO6/TCqzZeTyc2hmMWzRa5EKgWWLwWY0fVGkjYv6m7VrjAzPFa8yBlEpuIa5DOj7jalxb+snv7ous4Lqj0ehTGX7GmNUw1Z7mJgG7GUMeew/+AtCOlGixD+idTIHiTnF8gcOD0tBbmgEkhNT39OlB4GCeccQaw2iSNMLubZSU1ex6hqohNq5vzSbGwawsIbql3oLMpdp9CTvaMQhAUTtpcsmGW1nZtLLWOlXEOzKN9Azns5iQGSQP8RlpPg+qFyuZrmRFmscfdeBsYZY1vZTx8B8aTYZu/eYqjfJO1DLbS7MQyriZetDAm7/q++FarLHgfCr85ztEcOX23unCwyhEN187tY9gTYtiooQUCbDUsXKTqf4Qyc5g6Oi4f8cwwiSr3pw1hL/damAkLfK3pga9hyEfJvIeJB9PkKOq50dAjs8FJ7wvXRw24YZPYNOVmr06+KoEeIYzE6i/0ZXz01YLB0vbtOKX6DnxUtcw6bMaJJMdUmlmcJiIO9r0PA6lJKaxeZ/XjN/JYb52nSYzDM4Az879JAT4jKQGD/x3KncIijIGvLAPE5ZRm2nx1ohCMlYXktYlJmZfQohhFMgDzrfnF2s+7z8BojwlvKv5ps4sZFb93Rs6AEgg77u/kl/v9pC8KmeV
+ WIDenS7y
+ K4+nKqs+Ut5/wmOVug+j7lLtd4nSSY81Q58BB/jjlUDJoeUPeAzzTP6yUhYLOCWeeznq+jv8TnBi8+VbnFj+UwOdV3KkTvI6y18KXWlT79zuwh1L5/NmPr1sdpo5w2q4CYD9VufnOd/Jr8QYCLXGPH4/5AGPYSD9pIMgnhlc1aVD8+vFbgiO/TuZMY708fc+tfKN4WMN9TRPX6ir/VvSsoevu7Agyq0QJuxMs9Itf2Vi7uurK3pM3Kvv0mE9BcBcH/SSyNRv0nlrkfs6BTiVdP3GkfNzQcZj5tsGm9r52NI9VV3Zb3EJVG9LiW9MIat9BzyDs7vXXs2m45azbfm8MZo+4GpuE2QcQbzC31aFxHZFeCXZCb+MidIuo7Jewz97dHAWBv91LXi8MytLrhMrb5lLyuCaP687OSPG4+ZevzhBMDv4mH2ex7laBAYS+rvDPLdHJfDQeAUmmupL6D5OiD47wfLahdKRFJ4EwBJJiDqq1lvRuGdI4VTccdCqKI5G2K8B4aAKQvgoftQY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,31 +96,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 03:05:25PM -0400, Jason Gunthorpe wrote:
-> On Tue, Nov 17, 2026 at 12:35:59PM +0530, Anshuman Khandual wrote:
-> > FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
-> > translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
-> > arm64 platforms with FEAT_D128 enabled will now have two different memory
-> > translation systems i.e VMSAv8-64 and VMSAv9-128.
+On Tue, Nov 24, 2026 at 10:50:00AM +0800, Muchun Song wrote:
 > 
-> Please don't forget to update arm_smmu_sva_supported()
+> 
+> > On Nov 24, 2026, at 08:04, Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > 
+[...]
+> 
+> The leak analysis and the fix look correct to me. However, using
+> CSS_RELEASED here makes the private ID cleanup depend on a generic CSS
+> teardown state, and adds an accessor solely for this failure path.
+> 
+> The private ID is not needed until mem_cgroup_css_online(), so could we
+> instead reserve it at the beginning of that callback? Failures in
+> css_create() before ->css_online() would then never own a private ID,
+> while failures after the reservation would continue to use the existing
+> mem_cgroup_private_id_remove() cleanup.
+> 
+> This would also make the private ID lifecycle more explicit: reserve and
+> publish it during online, then drop the initial reference during offline.
+> It would avoid both the new css_is_released() helper and special handling
+> in mem_cgroup_css_free().
 
-Sure, thanks for the pointer.
+Thanks Muchun. Nothing needs the private ID before ->css_online(), so
+reserving it there would work. But it moves the out-of-IDs failure from
+->css_alloc() to ->css_online(). By then css_create() has linked the
+css into the parent's children list and css_idr, so mem_cgroup_iter()
+can css_tryget() it and cache it in iter->position. A css that fails
+online is freed without ->css_released(), so
+invalidate_reclaim_iterators() never runs, and the free does not wait
+for those references. Today memcg's ->css_online() fails only when a
+small allocation fails. With the move, every mkdir on a system that is
+out of IDs would take that path. I would rather keep failing in
+->css_alloc(), before anything is visible.
 
-Fow now will disable SVA with CONFIG_ARM_D128 enabled but later it can
-be enabled back with SMMU_IDR5.D128 feature. I will probably fold back
-the following change in the series.
+To drop the CSS_RELEASED dependency, I can test the ID's own state:
+!memcg->private_id_objcg means the ID was never published and the memcg
+still owns the reservation. Let me know if that works for you.
 
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-@@ -205,6 +205,9 @@ bool arm_smmu_sva_supported(struct arm_smmu_device *smmu)
-        unsigned long asid_bits;
-        u32 feat_mask = ARM_SMMU_FEAT_COHERENCY;
-
-+       if (IS_ENABLED(CONFIG_ARM64_D128))
-+               return false;
-+
-        if (vabits_actual == 52) {
-                /* We don't support LPA2 */
-                if (PAGE_SIZE != SZ_64K)
 
