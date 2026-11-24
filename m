@@ -1,110 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C61606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 01:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3104606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 02:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BeBksLU3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eCyaknUD
 Received: by kanga.kvack.org (Postfix)
-	id DBDF96B05B6; Mon, 23 Nov 2026 20:55:10 -0500 (EST)
+	id A27AF6B05B7; Mon, 23 Nov 2026 21:05:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6EC36B05B7; Mon, 23 Nov 2026 20:55:10 -0500 (EST)
+	id 9D8856B05B8; Mon, 23 Nov 2026 21:05:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C861F6B05B8; Mon, 23 Nov 2026 20:55:10 -0500 (EST)
+	id 8C7C46B05B9; Mon, 23 Nov 2026 21:05:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C75A6B05B6
-	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 20:55:10 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6E0AA8813
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:55:09 +0000 (UTC)
-X-FDA: 85468344738.24.E3B5322
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0279640002
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:55:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BeBksLU3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795485308;
-	b=uzsNJzHNTEbwN30Ba9hxFauSERUl+GxGNTfl8Gfvz+vH24Yt68Td04u31565VZilCZJmkJ
-	O0upP/j1igtpPV5C+74gByBsOk62dXre9F+t8i2ms2YoDZM4TMRcJuZQ51brXf4BJhYGoF
-	Hhmths7TOos9rPjjP7YeOYhw/2ny7a4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795485308;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 525936B05B7
+	for <linux-mm@kvack.org>; Mon, 23 Nov 2026 21:05:00 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B148E40853
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:04:59 +0000 (UTC)
+X-FDA: 85468369518.17.9CF8339
+Received: from mail-oo2-f8.google.com (mail-oo2-f8.google.com [74.125.231.136])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B895214000B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 02:04:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=eCyaknUD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.136 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795485897;
+	b=jx8yPzDvl6b1acdc8NGM+1ppYA84k0IodD+OGhxI+SEizqoUPy6IOwuyUN/h3Fz4sg2lM3
+	oJ8wYrYBWyqN405IvujvIsWuhPqOUF9tlm7xLOO80USTnyNeQNFMZOuNTYwSl1KqglBvt6
+	w+qszYGZP3dQiDTnmNyk7hrT+COSa6A=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795485897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RmaZSHkB2kjGwMfFvm2sUv0i4VpyVAZ3eFDNTley6TY=;
-	b=V2qEftNzQi11717R42t9WR47Yyy5U8mvBbJzDz6Wo43zoibOwZ5N4kRLLr+HvtUhAAVB5r
-	5InmhkWSSnaUWbua5ZEr+5n/vp83CC6un/dkUJPpj1pXPFuP979NiLA6Xn9n5gmbI43waV
-	PpeagXLgKTQ4crjRmz/9FYHu6RDnIUg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BeBksLU3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 24F5744EB7
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:55:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB761F000CA
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 01:55:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795485306;
-	bh=RmaZSHkB2kjGwMfFvm2sUv0i4VpyVAZ3eFDNTley6TY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BeBksLU3Q+fISKiOAHAwfyJOyBDe1qlqCcbqi/Uo8UlvUU80qob7bblRrmT2jqzND
-	 BdxfUDNqrKYWomK3yG6z4GWTTm5rSZCihalbWoM4z6CqLMO2rsknTXy0H24ghDTN/s
-	 ktQFrqybAKqzW0kMgxQq1l/Vs38+3b3L4l1VyEPnhg1BCyCiLDCiwwtZieM0FQ6vKc
-	 6FXk+UvtOe/T9OJBOyyUSOFk+T3nt5G49Fz/FrgwtFbPUy6G10nftNo1L8p/ti0EJM
-	 k9S0QMp3ua5gh0Px6NNsEdYWogTAZFBFV+TFwSKG9lo30W5WuhSHN+OedADltqvo12
-	 D8BerunXqQa/w==
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-55d2dcbb905so14818321cf.3
-        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 17:55:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEuvLkr7cxtnI+dSTqHIw4iZBGeWISaZhKQMdEy3pYmiEedV89hKw2n49CEPTJuo03GgyVeBV4Jiw==@kvack.org
-X-Gm-Message-State: APuU4Z9iMpgtglFvdaWDr+FgZQK1wVZCrj6Jif9RTseR8lYA+12USBCX
-	5ii7khphibKwfjdp8tSnUB0U/7aXe2aeWzvptvH9X9Ey3L16Ypv/JoV8L8R57dIX4xcMgQTNTBZ
-	7B0RkwfKxp2TIbllxUKdroN26Qh/3ysQ=
-X-Received: by 2002:a05:620a:4713:b0:93c:a468:2db1 with SMTP id
- af79cd13be357-949bab11618mr2384111585a.58.1795485305808; Mon, 23 Nov 2026
- 17:55:05 -0800 (PST)
+	bh=SsF+tVR2dZZjjdYGZuSRze/PIAMVBGDvDbNbw1sJLak=;
+	b=T3WAqvJygOjQS1Q8emDUoFkKLoNgVRff+Ly5CXVL5/Fy17/Nc1I7enYfHDC28y99FjDCAa
+	Ss0a2bNX6TtVXwMADr3hqN9qeCK8lpw+OknO21VDe754tTuhaNOaTbBXHKxBZwZMKnGOa1
+	b3VKf5Wk/Jz9MgLoQNPtcxxmr4ZtwHM=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=eCyaknUD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.136 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-oo2-f8.google.com with SMTP id 46e09a7af769-860f0ac44a9so1558008a34.0
+        for <linux-mm@kvack.org>; Mon, 23 Nov 2026 18:04:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795485896; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fD7kJvFl6GUxDoFqLEDC36MqOIfg/1FkbvG3U3Yk0zh8z606D8WCdxkbKL0DO8PrIh
+         Jr3tI93tScqXcRG8SmoyZTH94t01M7R3eoIDvoK+5yra8BCwM/xusONjj+ZiQMZRBcHO
+         VvGQH0E1jhsppIOj3WAtQlrdXN/re7HlcYsz9vQ/DTf41XqSIwbhvEpi5LOgNTc+ySLU
+         GLcc05zRjCV9kG2lf/hZdG3nC1gO8ke2rtO2lH1zRMcZ3J898TeRZ1KFg8HrfAd8l26X
+         lb8LWWpe3nZn6HZD/3fj1sXfvMUx9Xr6xpyEJK7FSsvZbL+tPDR3oHihoDjGG1om/yWX
+         t8YQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SsF+tVR2dZZjjdYGZuSRze/PIAMVBGDvDbNbw1sJLak=;
+        fh=m0BATRmMb4TASuYQOAFQmruZWcnxjwGRffou0sLogps=;
+        b=CnQQk8PRklLN9A2UIbD+g1KaunmBIFVfcTRH4okp1VGf1Klw37X2xyBOReK0z/geYP
+         9ABIJiy3lqPnKVYaDtypTgcEy+OdZijV01oTDtpcXNEK1Yy7yqkcr3LHyvjL1PMmxILd
+         DFEl562LPnbqGNqdpBr0c8I2WVmJxynF9rNM7L8VDVuSCoaIeaqk3MTGrucMcrzYLaaM
+         sKh2K+OomgDXGoyPUPK85p71rpSbVU71ed5JvAUZxmHz42+zB5Y0EFtTHUKsdhzRmi34
+         vC7sTBmG1eRw4zsDVXjH/WyIui+xlt+DSHe5mXFQhZjmOgWRQfC47/azQB1ZQN+78RW1
+         jCOQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795485896; x=1796090696; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SsF+tVR2dZZjjdYGZuSRze/PIAMVBGDvDbNbw1sJLak=;
+        b=eCyaknUDzHIhA4D14/a1JwJqv1FiVLPI0qbQ+VHSfHbrmEdPrnBgD914ClBnLeXKtZ
+         NqOAZsdG2QsgqPeI9GEaVa2wfIsN/miq4NWcl2kVlYkZasAkCdYBJ+sKepe/+SLOMGie
+         /CPlQd08urIONOI8uxIAgttMU+nZ20qLrWxhZjRMUwd1DpJtOPHsVVQmU7jetp9KutAH
+         nVFgeDbec+INi6SS4Ly+wWFRyyc6UnYhUCfVuMogdwkOUz5i6qhssMcDjoZfl+M4D2QM
+         weva/FJsTzfktYgUMDIztezjy95UnYWBUfXiVXNYRgbucWasGdmULKUZgdyGRK7prLwG
+         eurA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795485896; x=1796090696;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SsF+tVR2dZZjjdYGZuSRze/PIAMVBGDvDbNbw1sJLak=;
+        b=h/HkNY9FXTZ4Lc45c7jVSeNWCdZyPaDL/d4150CZ5EVYBqyhYdJIhNTPQo0F25w3IN
+         xNEcQGEFog/7kjmOYTWyGkpVaFXLoG9bDxGKHN4VLu/IeW6k02gEBGsa2VGxQ4MX6RWP
+         JHZVvc6tFMpxM+aEmt6woF1gXPKu2H+LXSMymF65Q80WGZGHE1JiGzmq1gFbok18Lia2
+         czRNKHOt+028yCQ+lzz01/Qq1qR2KVdrBITxBNIMdZn9oE0Vq52B7YL4QPJSP7kjFSeF
+         vhMsREurd80CyUfRhhXpAd0PT9bSVNOUsPevLwMqC1tcmdcg8prVCDXMIh6/JVejM1lQ
+         88Og==
+X-Forwarded-Encrypted: i=1; AL+hErEMqgVxC4KInzdJQpaYqh64YRV68bXUNHTwUr3pkoS1wySRFQEeeVCCHOOz8AgANimosJ21sVvD9Q==@kvack.org
+X-Gm-Message-State: APuU4Z/0V89E7El00rOBJXwXKdI2IB/pPEhZCnsRWGoXXOj++tyaKPGy
+	BB0fbVqowrEXBMJXfLPInidwikH2JdpTmLiNaYP/B62tuHmNPlOhSiG/HE+10Uf/TJSFyxpSzUi
+	TagtUcvhr5qYY9iOvOf/qopGi2Vm5SzU=
+X-Gm-Gg: AZFdTZelJfFnrH23KLxpxpSLVf/masXyS7KqJiap/ywELkesklQscKRQWUuhFLhbebq
+	OFyGdtLMvInN6suztkNf7s+GUnxCk61s5u3j56yenXMENe6w6gr+V4JW39vyHo4BuRoJqL+N7/I
+	fdcEEiqZIU5wNlVMpG/dIjUQKrr/vx1x/Yo1oqphxSRpNhVpnyBCOtWQ/rZGVke0qjveEJ1/9Sh
+	4barlfDcl3I8/nJ2GyEmRfkmDfbc0RHn99UvarS288XPcHufZaTGMJRZ4Prx63m1r0hDegalPe0
+	jWCQUyXd0JX1u7BEaxrsOyhD+EQVq0I0TGBPWq4dstWGq1OqRtrrZ4lGfBVUA6LpQyMsDa8qtrb
+	/0WJm0FEaZWfFY6Kl6J/tAtb3XuSg2rDxmlk7V6ScaiwNWEUTnypganyxqA/u3WYgOllPOqyHsJ
+	n+0PQ/lsNimm3beBzW6w0KzXrpJ6U1
+X-Received: by 2002:a05:6808:448b:b0:573:2541:1804 with SMTP id
+ 5614622812f47-57a0a20ac94mr14111097b6e.19.1795485896484; Mon, 23 Nov 2026
+ 18:04:56 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261119134740.514632-1-ridong.chen@linux.dev>
- <20261119134740.514632-2-ridong.chen@linux.dev> <CAGsJ_4yiSji++3BPgFUWDp0SGJkFj13qjEfkjNZu7ak1JNozSw@mail.gmail.com>
- <76ab403d-2e4c-4aa3-a638-830971c13669@linux.dev>
-In-Reply-To: <76ab403d-2e4c-4aa3-a638-830971c13669@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 24 Nov 2026 09:54:53 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xdjbO6DW9j2n3CokGstqDJ_zm9guvPBQQ1Tb7FOr9Q8w@mail.gmail.com>
-X-Gm-Features: Aa3M54qll122BoEgthLcu1bUxMAUqp87FXhwAVclTAkfj_wgPdfNzVgIvBiiN6k
-Message-ID: <CAGsJ_4xdjbO6DW9j2n3CokGstqDJ_zm9guvPBQQ1Tb7FOr9Q8w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] mm/mglru: pass a seq range to lru_gen_add_folio()
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
-	"open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>, Ridong Chen <chenridong@xiaomi.com>
+References: <179545322647.4.683470932650691650.b4-reply@b4> <20261124010507.90151-1-sj@kernel.org>
+In-Reply-To: <20261124010507.90151-1-sj@kernel.org>
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Tue, 24 Nov 2026 13:04:44 +1100
+X-Gm-Features: Aa3M54pb-4ILmEklgmD1c2iD062twsVtwMwCSlytUWUvsxSnv-_pzV9-1H4xjJs
+Message-ID: <CANOyQmFCkqfgQLda1EUADP2fVx_o6g+w8RuTAV5ugJ_sP3OkyA@mail.gmail.com>
+Subject: Re: [PATCH 14/27] mm/damon/paddr: support REPORT_MADE type probe filter
+To: SJ Park <sj@kernel.org>
+Cc: Lian Wang <lianux.mm@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	damon@lists.linux.dev, linux-mm@kvack.org, sashiko-bot@kernel.org, 
+	sashiko-reviews@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0279640002
-X-Stat-Signature: j5gw4ztpw85bxskqhnd6a3zmwmcicqk4
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: zgqmkkiogsyxhytrzztzgtji91ncq5yt
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B895214000B
 X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795485307-388075
-X-HE-Meta: U2FsdGVkX1+r1O8uDU77AFpM+8VKurvEOT/kYkTPdOQsxLAYH2obpPcRaafNyhQzYnqjgNiQgAxwsbiqCB8vy+ELN4SVK+BQOnbARUdQrr6Iu/RtRrQPCXdhemP9ovgR/F0dJSuAPprMTFkPZiYaKIprUvdo4D4dnbHxAUOfcXL/dji3hrF260YOD8O2XvzI+rFW1g0BSOg9lA/hJBeK6lGdFnwEIf4aWLQf28fL8LDu9B2OC726+LkK+7e3/yTDSnryDY3CNjBOgpykMKCprw9MsMEOOPWR2eI/eQHIWL5yNEAVn+bVbo4G/F2T4bLPm0HUyGDwFdYPjiVZkRn7BtkyFpve+6NyqEr0XMQY3GNU9X99PCbQIPb9hV6b+jF8EaR2RnlKlrl8rT/7RrUKaXWiNkxeMR+Ko9GJ9UWSXA3j0U09f2uMDWgd2VyXxGyd8J1Uqd8arYAxQ6L2+5gXUc1maDOE2UPBOCYszq9enx4HI1987gBD/Vlg8HN2FMyZvp2snDkID4vyIMOtENMSzzPvk7u8SJ1orwkJBIdac/F486l1EDOVhJ4qp95c+Co9A925D+Vl2BgfM6vQK0UuvmYi0ISLCGE8mRF1hPFQ2vuBDUarqDeBe1rMxKggwPb7JMv/7gEsrkxYve/yoMbWecMBd0W6nMBzttQYBtbQXUEUYMsk3RcVcKP4EBhoog5zwnQKQDFrlPDxWDypjIR9glcZR4oD2Syh6e3qCmUVsMdW+VIpsMH/62ZpuUYIwfQ/QhI0nhuTQwm/yfxmhWeIcsBJjS/7H1uVJFCd6ouPZb7jQFe1dTDMp/TtXfXKf9hLHnUSctfUHnccHZrnFQz83iHkeLachA+DInSUz/gFHIBPKJ2mz3go5ss/zfwwY/H66YQh0+4qZA5SxSSA2fy8F4U9bfUHCYtP2b/erFT0bJQNbfSj1eKFP8UzPEH9SFlNmJdaRXGjXB+qCH+Z9/s
- v5O9LGj5
- WGNMdxFzk6Prc+tJNSFW1y072bH4NUDsnPzQxnx7R6aKNWRj/67xSbK3UE7N93l/JiNVKDGcb0625SindwcjMS7nJ+PCb1I7M73IGIfv+MmolpnSCb9ckE36i3cEpibBare9eOsFk+TsUChNlrSXxzTIbzB+Kq7uIUHiDxuPzCEUWc8YtB8chx9EW9O97z3tPu6N7U+QFGwL8S/Sv28DqYchFQN59xZoQk3DsyHmlqVvFJMIoexC55V2K25wSvF3fm/v/Ch1bnDbcEgaUM1BlMDKJ80lwIgwfg4+zIiDOcp3IsnVUQNI5ivFIKla7eWjADYX5hJfAZGQPhas8nHNVEnHHNOKE46OE9m0FVBp4aWT2eYg26d6+KCEkPWtE0H4CnjYE95Lto9LblLzhUEjINDNvN/R4H/LIBGD339K/aGnjc37hSX6pVNOZ8Wwktt1ODAJDQg/hxL1a/MRXcdWSK4hMpXxUzEcZp7O62Oj9riZx/LJz2gEWCKli2IfEFxl0ZpUAw214JfQ2CqfO8SvnNMjr8N6bz5QIvC8cDk1EYBqnS4qS+qgJIsmHJw==
+X-HE-Tag: 1795485897-309565
+X-HE-Meta: U2FsdGVkX18Z7vCmByS/4xos/JYqeEoMeh4En9lg6sb3QlVqJ1urXSO3cmZRHE54rWom99LcXy5uLi6x0d7yXmn5/0Nv7wUyxdQ4t5Rzn/4YwY4ZKeTZjR7zhbPcQVFpK7zkT5fZABTRD76tPasTSrOL50lYhy6rfjdBtjFZz+Id2S/zoL89q4/8tqiCUbnnGPBuE0bLDDpaAs2Z+9QAi4cEfL+fLUwIDUaYIToG+KW24C2ptQs4xxR7GeQZmWhM/yaXH/UeNhGgJSH5K9WI9ooXKtkVYodvTF5I6q+HUGdsb0KfkYxw+9nIbMiOwEiBLFVAj/nj+85MvR4BHkIjN4+WMz63u43VubEjGLj0PlDQN5yNOTqIxW0QDQjtVjQsSdx8MX3j+BTiExJMm/ECnyYqhRXhGyE+tLTscR9k5C4gxN3MUl0yKIcQo8Cqoh8SP0xghkF1gIo8BgKZ32pqhlkYSJAfjB9iCs8yEeavegXamGWWFkcrwWDPOui7M+mQwCnps8Agz1BgXc01CLbaAY/AO2YyjGuOPBQoQ7TxcHnyBI6Mub5CV1G75SobV6n8idXRbva0gntAKYoBakJjzS2VY3oPng3R1hojCJEM4mVthjtMJSejHjIi7bPBiawBbpWwU4gufZAR3ISOcCqLKtcfpH0xnHrA4zdsuXuYP5sBl5HCNawPHlrbFkJeZjkBDTOXJ/Es/MNr00DjwPmRK//jDfjqoen+6A/RU0rvKBj2BLFUm4NvrOttybeEucI1rorDQiyHnpkfitNkd8WBpBP1zm/LYL8RvuEuL4yLukhFYmrn5Cw4dbTZ0o/WRaQwrKj4XxtbXjXc313Fdzbew0+rs47WCMxCH2zfox+fDxrsZ49GdHSu6mTVHUPjBsoQ1fO34k7dzZ5RBnvv8lido+JH+fyw22rMxX7qXipQ/gYIL5p2SI2IIYSUGgkjda/FNUfcBw1VWM7XjBlR3e5
+ wv+0b8vF
+ uYHXYGR3k9TAvPpACbgXqZY34ZmGjY98N479M2gEozoRnrOe1RclO+aMbalakLKnZldSdH9xX5oxhBfXL1QksLA8nRz+g0hQjsYRGRIZKWRdY2V9Ghr0qfE/N5WhOvxRb+MCrLEEpM9tVThqEYPcrssNOvW/lPX0yv0+ZxX38iLsj8FZFPey1SG672OOov+GS+7srIw1VZzmKBDlNBExt3xKBDb4+TCF6N9fuyRAHslVQSunBKqwn/yaa0dWlLtOrSHR0oC+/kv/cvj4q++O+4OoRWbnNyfZwT0LpuxP7QsOJuJDkS1PZTM+4dGt+CCiRkDHGWx22AvZgSuhSRvUX4LZgtBxZAyRMS9MeUOnRQrUD1PjtbWhmzyg7PjwnTMg2btjOR3h6aAmUCsIITzdRob7k8SJxWyBUonZqVf+b96TAG0Ht/q8kDhQa4HmMDy+YJhFcG0YnwbI7pHO9qbOXx1WSNBZ0dfKZUKDAAyGLLLXkAfMWtFrMsFEFuuQbu/oNi5zWFKdJshPl7x9j9NG3UisaH8GGbqWlzm8ZYEo7MRPpUUEfzzcJUoOVB0ExJgHjJ4aYP4S+jCWuUgdm+FzBXdeRwwK/Tdtss5hi5/xeknEEhCUe4Ii9uc/UD3AUWgbn/jdB5GPtxCtACzpuY8dsphpml3vFk8MZKRJiUNqfsFh9G6L0m4TKFQ8qZd9FEOKXpUj6lzEacLfdHisLicKz7nzXC4HAl/8WC8Y8BarHsbFv23Hu1L2dWKaaO883iBq2NeeL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,83 +145,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 9:48=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
->
->
-> On 11/24/2026 8:43 AM, Barry Song wrote:
-> > On Thu, Nov 19, 2026 at 9:48=E2=80=AFPM Ridong Chen <ridong.chen@linux.=
-dev> wrote:
-> > [...]
-> >> -                       /*
-> >> -                        * Borrow reclaiming=3Dtrue to place inactive =
-folios in
-> >> -                        * the older gens.
-> >> -                        */
-> >> -                       success =3D lru_gen_add_folio(lruvec, folio, !=
-active);
-> >> +                       success =3D lru_gen_add_folio(lruvec, folio, -=
-1UL, -1UL, !active);
-> >
-> >
-> > I'm still struggling to understand what the two `-1UL` arguments mean
-> > when used together. Could we use meaningful macros to make the code
-> > easier to read?
-> >
-> > For example:
-> >
-> > #define MIN_SEQ_UNBOUNDED ULONG_MAX
-> > #define MAX_SEQ_UNBOUNDED ULONG_MAX
-> >
-> > Then the call becomes:
-> >
-> > lru_gen_add_folio(lruvec, folio, MIN_SEQ_UNBOUNDED,
-> >                    MAX_SEQ_UNBOUNDED, !active);
-> >
-> > for other places, they are:
-> >
-> > lru_gen_add_folio(lruvec, folio, seq + 1, MAX_SEQ_UNBOUNDED, false);
-> >
-> > lru_gen_add_folio(lruvec, folio, MIN_SEQ_UNBOUNDED,
-> > lruvec->lrugen.min_seq[type], false);
-> >
-> Good point, thanks. I'll add the macros in v3, with one change: I'd
-> like to define MIN_SEQ_UNBOUNDED as 0 instead of ULONG_MAX:
->
-> #define MIN_SEQ_UNBOUNDED       0UL
-> #define MAX_SEQ_UNBOUNDED       ULONG_MAX
->
-> Both are then identity bounds. max(seq, 0) and min(seq, ULONG_MAX)
-> leave seq unchanged, so lru_gen_add_folio() can drop the two
-> "!=3D -1UL" checks and cap unconditionally:
->
->           seq =3D max(seq, min(min_seq, lrugen->max_seq));
->           seq =3D min(seq, max_seq);
->
-> It also reads more naturally: "no lower bound" is 0, rather than a
-> lower bound of ULONG_MAX that has to be special-cased.
->
-> The callers then become what you listed:
->
->           lru_gen_add_folio(lruvec, folio, MIN_SEQ_UNBOUNDED,
->                                 MAX_SEQ_UNBOUNDED, !active);
->           lru_gen_add_folio(lruvec, folio, seq + 1, MAX_SEQ_UNBOUNDED, fa=
-lse);
->           lru_gen_add_folio(lruvec, folio, MIN_SEQ_UNBOUNDED,
->                                 lruvec->lrugen.min_seq[type], false);
->
-> Does that look OK to you?
+HI SJ,
 
-Sounds good to me. I'd be happy to see the two if statements below
-go away.
+On Tue, Nov 24, 2026 at 12:05=E2=80=AFPM SJ Park <sj@kernel.org> wrote:
+aid if that will add something that we need to maintain long term,
+> without clear use case.  I think we could revisit after we get such reali=
+stic
+> use cases.
 
-+       if (min_seq !=3D -1UL)
-+               seq =3D max(seq, min(min_seq, lrugen->max_seq));
-+       if (max_seq !=3D -1UL)
-+               seq =3D min(seq, max_seq);
-
+Sure. That makes sense :)
 
 Thanks,
-Barry
+Aveline
 
