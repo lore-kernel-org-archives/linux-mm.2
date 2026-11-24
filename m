@@ -1,114 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77782606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 09:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6959260A261F
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 09:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YTbgr2mb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i16rhzZa
 Received: by kanga.kvack.org (Postfix)
-	id 78F476B065B; Tue, 24 Nov 2026 04:39:27 -0500 (EST)
+	id 7C2786B065D; Tue, 24 Nov 2026 04:44:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 767156B065D; Tue, 24 Nov 2026 04:39:27 -0500 (EST)
+	id 79AAA6B065F; Tue, 24 Nov 2026 04:44:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67D666B065E; Tue, 24 Nov 2026 04:39:27 -0500 (EST)
+	id 6D7046B0660; Tue, 24 Nov 2026 04:44:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C4736B065B
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 04:39:27 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C6D5B40B01
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:39:25 +0000 (UTC)
-X-FDA: 85469514690.08.C390CB0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1048180005
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:39:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YTbgr2mb;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 434AE6B065D
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 04:44:52 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE831C0704
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:44:51 +0000 (UTC)
+X-FDA: 85469528382.05.805E8E6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 138C3C0003
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 09:44:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i16rhzZa;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795513164;
-	b=qUDIiRmMMpzqUW/2HngVJUwRc2NBgROmr9rip6AgGr0pIL2dglpXMOkUHkAfQw9UXMHVLj
-	llxK9od2LgnZyQXiRF6p2utqwlbwU5g81B9CLgrhfVf6Sj77yhaAE01R5VZPGFCbHum8+7
-	KoSolOGeKldX4AnsCkrqTOpAdKGvCpY=
+	t=1795513490;
+	b=JL13gMc/UG+1nvIG8VERkRKPrSxCRjXi5nyhi9Q8+fSJp+34HRjUREtItrIZ0QYDGtv2xG
+	g1v9L988Fd8fp6vAIjJv3k8yiiWakMgfILFQmHk4TspemHJ3W5kcRvZnQCO993I6Su9oR9
+	QC6Lt+PwSZ1ACwEpkMI3Im3U39+HdXM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795513164;
+	s=arc-20220608; t=1795513490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=i1zYmnYkPR+QppMSA1qkt8iIgekTBwLhdACmYiJ7duw=;
-	b=QRr40n1yngZYu+CpED+s5qDFDVdxICFHGFxa1oeGegWb4bABvwWJgCn5XfIeDO9aVEbL7V
-	7WFxukHrL0LHeqA6x5Ae+TwzrK6VbrM72oyd9ObDWwY2eqIpoSAkQAKy3exloL8UNIhfb4
-	jzUe7NVmtEg4yfI6vw3fO9RIgG1u+yQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HnOzN3LRaQDuRBcHI+MdzqsPJwreZ1a5NnvrvFAOgeg=;
+	b=bgRjOeFZGonKaWI1G9qxCC/uAvcdJ47jjEyr0hOdWdfNx1W6S0cSkljTmIeFo0k6k+SwaL
+	RfovBTeSIoN/Wq8eYDe0gWXcXP2dY73Bc9OICr0bWTOt5dm/E/uvOcjyO3CDsEhh5Skk86
+	QaNA2a4K+yvVARImgxr1rC1KWTLd3Vc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YTbgr2mb;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i16rhzZa;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B7AE6022F;
-	Tue, 24 Nov 2026 09:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748031F000E1;
-	Tue, 24 Nov 2026 09:39:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B1104571F;
+	Tue, 24 Nov 2026 09:44:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AA01F01566;
+	Tue, 24 Nov 2026 09:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795513162;
-	bh=i1zYmnYkPR+QppMSA1qkt8iIgekTBwLhdACmYiJ7duw=;
-	h=From:Date:Subject:To:Cc;
-	b=YTbgr2mbFQvtLcFWiluIvcnSj4YXF/9Ynu1yYHUTLZwPE9myGc33zyIRazXZ0f4PT
-	 06PotWNIX2iR9SGG/VoLRmNxHClPqsX4FqflHL3IBGgCPIWe2YzY/jv5xeaGpdMG5f
-	 KfJaDY15bycehz6Uo5z3Vuc0xltqsQCnlmtnxSGgxa4idg9oWACxxNvUS+a4EQJmaA
-	 tlUO5EQfHDkxZhCLR0pg5HHtNFIKFiLkVXM6DYE2miSDWq/1nzmeT+Mm33YyTJWRiH
-	 NCdSO6jcvXZPHwDcE6ot1lEzA6MTtCtUTAgA9is/7AskW3C5+klmR+QKMuCG+Walmf
-	 KvdJWKSExn4dQ==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 24 Nov 2026 10:39:11 +0100
-Subject: [PATCH] mm/rmap: avoid reusing batched TLB flush generations
+	s=k20260515; t=1795513488;
+	bh=HnOzN3LRaQDuRBcHI+MdzqsPJwreZ1a5NnvrvFAOgeg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=i16rhzZaDOXQXkpizc4tlDKvcbJo4VByVRMpaOqLeoOQMaCjgI+O1aVoy51/KRs5K
+	 D9nCmDf9T8vWCXHIH7ceQvYNVozFeB3lT9jSCgYMCl5UP9JG+2qNR2HOr/xvfuXcLU
+	 0YC3CXaaM7ZLyk17cXbzdvRCR/HnHq454CLmphFbjnryChzWmkLFGqZ0Yi5u+UBGQE
+	 zdipP2XVhwOUipfHoLk7U4jvpka/4KLcXI6V0Zzryr59e1FYcaoGy3OXxeSIZbO1tp
+	 APAaEO2nJyQaEvdlsESW1fnlRASwKGXZrb3066fumaTPEHuHI662cCbeFPm7gK5VQd
+	 nJDpxZxe3GtXQ==
+Date: Tue, 24 Nov 2026 09:44:42 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, david@kernel.org, akpm@linux-foundation.org, 
+	kasong@tencent.com, baohua@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	baolin.wang@linux.alibaba.com
+Subject: Re: [PATCH v5 0/4] skip empty PUD subtrees during aging with a
+ PUD-level Bloom filter
+Message-ID: <awVcG_YxoL78TycT@gremlin>
+References: <20261123085800.981256-1-baoquan.he@linux.dev>
+ <awR-UsoEGg733fQA@gremlin>
+ <awUuwi7Jwt0BQfJs@bogon>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-rmap-v1-1-e3dc48a4b527@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/6tWKk4tykwtVrJSqFYqSi3LLM7Mz1OyUjDUUVBKz
- kjMS0/VzUxRslJQMjIwMjM0NDLWLcpNLNC1TDJJMklOMUqzsDBT0lFQKihKTcusABsTHQvhF5c
- mZaUml4D0KtXWAgBhcZqhaAAAAA==
-X-Change-ID: 20261123-rmap-9b4b4cd2f886
-To: Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
- Lance Yang <lance.yang@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
- Ying Huang <huang.ying.caritas@gmail.com>
-Cc: linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, 
- linux-riscv@lists.infradead.org, stable@vger.kernel.org, 
- Kirk Swidowski <swidowski@google.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7781; i=david@kernel.org;
- h=from:subject:message-id; bh=lrNZviMbe0mYa8sui1Fk11Z8MN9F/3GTeY2Mnv2bxIg=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJZox2f8vTHc91ay1G54XNV7N+dM5MVJb83v0qdu+hR9
- YlD271fdJSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCRplpGhlfXtd2lPuUdO/5C
- 4O+TxXb/cw7MYzD9osJUw5c4Ubvw3xGG/wVHL/uni5cJyF7/a/e9JrDn/mV/q91zdj60YytNfxB
- jyggA
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 1048180005
-X-Stat-Signature: yypabzcx8iwqha85cadejj31az8eqr4x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awUuwi7Jwt0BQfJs@bogon>
+X-Rspamd-Queue-Id: 138C3C0003
+X-Stat-Signature: u3sdybatyzptjswacmged3uj3ky1z3pa
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795513163-54396
-X-HE-Meta: U2FsdGVkX19ZX6i3+MOJthb+Sg/ZRxQY8vat91LdTYv0uh/xmGsubvLD1REN7EKLDGQ5xq30l+U4eDcbjHW6W25Kf0zyCFVLzgmFpyeHdgx8rnupxe3yimqtLn4sG71cqSfmuV/9JWAxU2h1UlAhGALFzo+FtrXh7UubJEwBXy8WHQbVk7KnrVyi2iFvmWggN63bna5ud3FnnFH/blPRO4bN8WEo0FrazMWDwguUnvLjixSWF8kxls4MTLhlJ8oIuTbgYzLJOIDe3WAw/i2ITqHvhmC8uZZC6fRr7de0y0KEQ7iL7eFlHYKFHjqpcf+mxl5GGLpGvlqIWp46D9iozDuEXTztX0HGFf7GiSu2RCLJpOzSlPM8S70VGjhRP7gOkwyxBY3o6edZO53rolnhRO/h3I+81OoYOEdmrPP3lWxK3oNw8n2A2Ww0kdOa+2Zlf4jzSnY2mVRDIbcGgatvo550+vNWX4Pf8rAFzc1sfK1QMHg/YTwHGNsZn8pj4NW6OPHkuF6fvgKe+GNK9WzBGhtydHgtjZK354ESW58dXzTGPDTAWizWmNFxP8RtMn5mbxhWNqL5St5uWps8tLcUThFCPUSTS5rJ9Y4XWc8pHlPCHdYuy19UTnShJsQIMw6OQuqoyP8MML+J7ISACuCLTuT4oa4sZ6x+RhX+spHMfExk4D9gJm9BUrozViQCRYJQYe1HzG+ZoWzDdtPZSiifUK+w8FZWmkzjYlCqlPJwYCI1QubDBInY82S5OXfqJZ8cwE8a/pHvmin6wO+o5faId+vaLUaCQPbWep4UTyD0fKvDzKFkcm55TDp3IEhcMVBGrCOw7E26wZr7y4Q6ntJE51knRHgzcC36UzUo6tHT1w89WUJk79c0gowo4qrT523v3vYzfiCwGFpBxP6mmiG0n1zk85CbfUZSTHfchg8fC5aNxZSTvrTDXLdGpqCbdOInJmfN6A03Yzwmeye+ipf
- wbXCR62S
- iR6Qa6CwuNUa3DIIhMTvmPZ2AtJKtOD7okMqfpSTA1EpEzHEZToFLRXD8uGosswuVqtvzaMaIjxiQ71oC/hmwdjPq6SAiUA7h35x7KcORQU8X/L4G6U/bNE8md3BMtoGfXohWvN8020tVS09Utguf/CTltji3gYXSmFSPEEqhxPTttS0wAacf/yCBfSKr2D2bycj2zcAxHoO70m/l0M+xEEEysWMEKlF/22s8UmuHnQ7/CIBxNQoGHSkeybfxmx7VHZIiCLAKDJVtA1YLmgOgubCujCW+RSbFz4nuUld8W9eN6lg99XCNjq8FhbM3nKiqK/WkvVfdJtxfBsNXP533z8L22n2Rw9gS5Tks3jlmvniZQbaG9xrVpTm7o9eGBnffPQ/AlmDb2BqL+L+3QDXRI45GMIxi2ZdR31FHxe/WvLsagFcf78QkfD/UHFdqzDkRC+jfOdR6Uj8ApUwwnrW4MyGiEbYKa9Ijzt8PNiwSQxlugovqq295X1x8MuDHzp8aiTqgJ/KkSwsfTkYb2G3jtSBv5uapzAQASsQ3Vmw/zE7/rfQDsMCBxH9k6+iU82t+ve9FGyTKZmNxUw8uhoV/AuAIgjiRrWGQC/hCUKGBRq2uD8SGPR3hpNT0QQ==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795513489-182615
+X-HE-Meta: U2FsdGVkX1/Jdh9cLx4DWpAOMliZgM8Kh9JVJKFyA57CZ76cmEDHZK1USgyUdfuACVY96hdZ2+XD9CBc0JRIFarRh64ia4rz26LxF1mPO7PDIRAKdsJXdgihvZ/7mPxVz6FfZAldlmEHeuUuqyi4K3bda0iLqZALFa9p37etxOrxhyzSHbdDS9J7SaPmj1EsRItNBfTIRsV6VU+IavzE8gzkRI3XIuLFfml72S3oZT2e4GGJBy1vQmsS4MQuxTf49Z+mTY5xMwkP4nGqfBuP0O87o8aFLyk5g3TaW3WL+FpQQ3XEnNoHHbBtKN7wnJa1YYrbxfWJy7PppMtPn/S7MX1eFlxckY3IbYPqyTq0+31K69RyLT1NTE50SjCwdx2R0b66ZgIjOcOUrfK8WtzHX5k+E7yeh3B2kwq4PsB084jZaVW41m7PPMXfglu+VcrsG+tc5043MnmvhJ7lXb/HDb1HCCRQy24f5WKq10p5h8x7brp+ZZ6di70bONgvb4ibTQmtVXnBlTcHs+ZG5NguOVz7gyYjnMPh81JnoMDNMkgSUzMcyplLcefR70jxLsqmA1XnW7UyIsF4FuFFdhEubFrWqkuh3n3ear24n+ZTV0AwZ6yRTCLiE/3tpfCrOiH5ygstVvy4XefFtABkXeClYX+W7ja7dQRG6imqpgNkarMH7FrU8+rKgOc7Ps09xr4gJHpFXtTJWOKR/1ie1WUHCp3tj+4MP4dz8dV3KXdDuoXVJSj3RL6OK6NinoJyNHRO2vKIAa3B7Rqlwqn/iWIpUAWiP1wPEAWnp57/w1QneUarsKbwk2PXTLxAtakxaI/qY6Pi9a/PU3Qjc/Ab2tnF89yBkgzXzwzq5qGR46TwfawqYHlVv0KMgWSStM5cey70I+nVyKRjabZXMNxjctfTJ6KK3A02x6z8gLRyA9yhtqobc9EPkVQRHgCYjY12IkjW8dwghqnXl30jjffi9TF
+ WfKX9TRV
+ sJ8kXwyT++Yejm02uQmlP0kwyEPKhQPp0flTBCFsh8V+H5DQpS36Uay/xV2HLIxdNbtl13dMDdwJZfVVtd8ylOFZJPeZSX+JNXmm/Ga2mTvA3wqH5HfFcWLS6Sm66q07GSFn1910DrbkJVHc3nQekZ937K33v5F/uw40gMnvx3pb5p6yH2JKwEl4qPo1MZ5xUeUjR4en5R4QpFYjFMDNZ/SjKgxt9ZgnPE5VjUH4HM684BAZDMD8fyhZ6Sl0MlqkpoF02FH5snxe9bKGSqF4p1XxrvOAve2D/FZ2FPUvethw0J/S/vsZUYEcO5vT6PtnXWas6TJrq9dHqIv1MHdWqj8SX+WCLIgH/Y/BQuEJSGbkULC0WJ0viumsfcqiKOpMKXAW3Emfz044/SfE72BJNLQ5w8uL340Gr6l78ResLkYgadn22M7QQdMYsICmKpAvl/tb1PPB2E1CxNXCTUYGd4Mp3hmhH53ClrIv/abZVnkN58bCiuLwp/yAOg7M2C5gCSvZR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,193 +98,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-mm->tlb_flush_batched packs a 15-bit pending and a 15-bit flushed
-counter into one atomic_t, and resets both once pending gets large.
-flush_tlb_batched_pending() updates flushed with a cmpxchg() against the
-value it read before flushing.
+On Tue, Nov 24, 2026 at 02:29:22PM +0800, Baoquan He wrote:
+> On 11/23/26 at 05:57pm, Lorenzo Stoakes (ARM) wrote:
+> > (Got a script set up to detect things not cc'd now)
+> >
+> > On Mon, Nov 23, 2026 at 04:57:56PM +0800, Baoquan He wrote:
+> > >  mm/rmap.c              |   5 +-
+> >
+> > MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
+> > ...
+> > M:	Lorenzo Stoakes <ljs@kernel.org>
+> >
+> > Please cc- me on rmap stuff, thanks ;)
+>
+> Sure, will do next time. I should have used scripts/get_maintainer.pl to
+> collect mail address, but not copying from the old thread. Thanks for
+> reminding.
+>
 
-If the counters get reset and reach that same value again while
-flush_tlb_mm() is running, the cmpxchg() succeeds and unmaps that
-happened in the meantime are considered flushed. A later zap can then
-skip the flush and leave stale writable TLB entries behind.
+Thanks, email-for-development continues to be... fun :) though I do very much
+recommend b4 (i.e. b4 prep, b4 send), I resisted it for far too long, but can't
+live without it now, it just makes everything super easy.
 
-Use two separate counters, never reset pending, and let the flusher
-simply store the pending value it read before flushing. To keep pending
-from wrapping around to flushed, pull flushed to pending - 1 once
-pending is more than INT_MAX ahead.
+Like:
 
-Preventing the wrapping is primarily required because
-try_to_unmap_flush() as called from migration and reclaim code does
-*not* go through flush_tlb_batched_pending(), as it does not iterate
-MMs. So if nothing in the MM triggers flush_tlb_batched_pending(), there
-would be a problem.
+$ b4 prep -n name-of-series
+$ ... do work ...
+$ b4 prep --edit-cover # Write cover letter (b4 adds a dummy commit in tree for it)
+$ b4 prep --check # do checkpatch etc.
+$ b4 prep --auto-to-cc # automatically figures out who to send it to
+$ b4 send # and off it goes
 
-As the separate counters are no longer read atomically together, we must
-read "flushed" before "pending" (acquire/release), so a reader can never
-pair a just moved-forward "flushed" value with an older "pending" value.
-
-We'll leave the barrier() between clearing the PTE and incrementing
-"pending" alone for now: it should be a smp_mb__before_atomic(), but
-existing arch code (x86: inc_mm_tlb_gen(), arm64: dsb(ishst) before the
-TLBI, riscv: fully-ordered xchg() in ptep_get_and_clear()) imply a
-barrier. This should be cleaned up or documented separately.
-
-Note: if a flusher stalls between reading "pending" and storing it,
-while "pending" advances by an exact multiple of 2^32, the counters
-could compare equal and we could miss a flush. The same applies to a
-writer that stalls while moving "flushed" forward.
-
-That is irrelevant in practice: both hold the PTL, so without PREEMPT_RT
-they cannot get preempted, and wrapping within the ~20s soft lockup and
-RCU stall timeouts would require more than 200 million batched unmaps
-per second on a single mm, which is impossible in practice. Even with
-PREEMPT_RT or long vCPU preemption, we would need minutes of unmap and
-refault churn while the stalled task stays off the CPU, which is highly
-unlikely and not a realistic attack vector.
-
-This effectively adds 4 bytes to mm_struct. However, on common 64-bit
-configs it fits into the existing padding, leaving the size unchanged.
-
-Fixes: 5ee2fa2f0636 ("mm/rmap: fix potential batched TLB flush race")
-Cc: stable@vger.kernel.org
-Reported-by: Kirk Swidowski <swidowski@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ david: use atomic_t instead of atomic64_t, adjust description ]
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- include/linux/mm_types.h |  3 ++-
- mm/rmap.c                | 70 +++++++++++++++++++++---------------------------
- 2 files changed, 33 insertions(+), 40 deletions(-)
-
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 1ed35d258d2e3..9f51a0ec67451 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1407,7 +1407,8 @@ struct mm_struct {
- 		atomic_t tlb_flush_pending;
- #ifdef CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
- 		/* See flush_tlb_batched_pending() */
--		atomic_t tlb_flush_batched;
-+		atomic_t tlb_flush_batch_pending;
-+		atomic_t tlb_flush_batch_flushed;
- #endif
- 		struct uprobes_state uprobes_state;
- #ifdef CONFIG_PREEMPT_RT
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 65646ed6fc453..038435994b99a 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -731,22 +731,12 @@ void try_to_unmap_flush_dirty(void)
- 		try_to_unmap_flush();
- }
- 
--/*
-- * Bits 0-14 of mm->tlb_flush_batched record pending generations.
-- * Bits 16-30 of mm->tlb_flush_batched bit record flushed generations.
-- */
--#define TLB_FLUSH_BATCH_FLUSHED_SHIFT	16
--#define TLB_FLUSH_BATCH_PENDING_MASK			\
--	((1 << (TLB_FLUSH_BATCH_FLUSHED_SHIFT - 1)) - 1)
--#define TLB_FLUSH_BATCH_PENDING_LARGE			\
--	(TLB_FLUSH_BATCH_PENDING_MASK / 2)
--
- static void set_tlb_ubc_flush_pending(struct mm_struct *mm, pte_t pteval,
- 		unsigned long start, unsigned long end)
- {
- 	struct tlbflush_unmap_batch *tlb_ubc = &current->tlb_ubc;
--	int batch;
- 	bool writable = pte_dirty(pteval);
-+	unsigned int pending, flushed;
- 
- 	if (!pte_accessible(mm, pteval))
- 		return;
-@@ -755,23 +745,21 @@ static void set_tlb_ubc_flush_pending(struct mm_struct *mm, pte_t pteval,
- 	tlb_ubc->flush_required = true;
- 
- 	/*
--	 * Ensure compiler does not re-order the setting of tlb_flush_batched
-+	 * Ensure compiler does not re-order the pending count update
- 	 * before the PTE is cleared.
- 	 */
- 	barrier();
--	batch = atomic_read(&mm->tlb_flush_batched);
--retry:
--	if ((batch & TLB_FLUSH_BATCH_PENDING_MASK) > TLB_FLUSH_BATCH_PENDING_LARGE) {
--		/*
--		 * Prevent `pending' from catching up with `flushed' because of
--		 * overflow.  Reset `pending' and `flushed' to be 1 and 0 if
--		 * `pending' becomes large.
--		 */
--		if (!atomic_try_cmpxchg(&mm->tlb_flush_batched, &batch, 1))
--			goto retry;
--	} else {
--		atomic_inc(&mm->tlb_flush_batched);
--	}
-+	atomic_inc(&mm->tlb_flush_batch_pending);
-+
-+	/*
-+	 * If no flusher ran for a long time, "pending" could wrap around and
-+	 * catch up with "flushed". Move "flushed" forward to prevent that.
-+	 */
-+	pending = atomic_read(&mm->tlb_flush_batch_pending);
-+	flushed = atomic_read(&mm->tlb_flush_batch_flushed);
-+	if (unlikely(pending - flushed > INT_MAX))
-+		/* Pairs with atomic_read_acquire() in flush_tlb_batched_pending() */
-+		atomic_set_release(&mm->tlb_flush_batch_flushed, pending - 1);
- 
- 	/*
- 	 * If the PTE was dirty then it's best to assume it's writable. The
-@@ -805,25 +793,29 @@ static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
-  * if required. This will cost one additional flush per reclaim cycle paid
-  * by the first operation at risk such as mprotect and mumap.
-  *
-- * This must be called under the PTL so that an access to tlb_flush_batched
-- * that is potentially a "reclaim vs mprotect/munmap/etc" race will synchronise
-+ * This must be called under the PTL so that an access to the batch counters
-+ * that is potentially a "reclaim vs mprotect/munmap/etc" race will synchronize
-  * via the PTL.
-  */
- void flush_tlb_batched_pending(struct mm_struct *mm)
- {
--	int batch = atomic_read(&mm->tlb_flush_batched);
--	int pending = batch & TLB_FLUSH_BATCH_PENDING_MASK;
--	int flushed = batch >> TLB_FLUSH_BATCH_FLUSHED_SHIFT;
-+	/*
-+	 * Read flushed before pending. Pairs with atomic_set_release() in
-+	 * set_tlb_ubc_flush_pending(), which updates flushed without a flush.
-+	 */
-+	const int flushed = atomic_read_acquire(&mm->tlb_flush_batch_flushed);
-+	const int pending = atomic_read(&mm->tlb_flush_batch_pending);
- 
--	if (pending != flushed) {
--		flush_tlb_mm(mm);
--		/*
--		 * If the new TLB flushing is pending during flushing, leave
--		 * mm->tlb_flush_batched as is, to avoid losing flushing.
--		 */
--		atomic_cmpxchg(&mm->tlb_flush_batched, batch,
--			       pending | (pending << TLB_FLUSH_BATCH_FLUSHED_SHIFT));
--	}
-+	if (pending == flushed)
-+		return;
-+
-+	flush_tlb_mm(mm);
-+	/*
-+	 * Only set "flushed" equal to "pending" after flushing the TLB.
-+	 * Racing flushers that store an older value can only cause an extra
-+	 * flush.
-+	 */
-+	atomic_set(&mm->tlb_flush_batch_flushed, pending);
- }
- #else
- static void set_tlb_ubc_flush_pending(struct mm_struct *mm, pte_t pteval,
-
----
-base-commit: 1c1815d259fc11f14cfd80f8cc37fc067bf6c69e
-change-id: 20261123-rmap-9b4b4cd2f886
-
-Best regards,
---  
-David Hildenbrand (Arm) <david@kernel.org>
-
+--
+Cheers, Lorenzo
 
