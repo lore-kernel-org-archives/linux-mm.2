@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9CD606A32D
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1201606A329
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CXKLwLOT
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HIWzwWnS
 Received: by kanga.kvack.org (Postfix)
-	id 8DF486B0771; Tue, 24 Nov 2026 10:36:59 -0500 (EST)
+	id 13E196B0773; Tue, 24 Nov 2026 10:37:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B6A76B0773; Tue, 24 Nov 2026 10:36:59 -0500 (EST)
+	id 0C80B6B0775; Tue, 24 Nov 2026 10:37:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F45B6B0774; Tue, 24 Nov 2026 10:36:59 -0500 (EST)
+	id ED0A06B0776; Tue, 24 Nov 2026 10:36:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BD5C6B0771
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BF1B36B0773
 	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:36:59 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3EC1FC0C02
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:58 +0000 (UTC)
-X-FDA: 85470415716.01.3F233FB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 95A4B100006
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CXKLwLOT;
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CDD940BF7
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:59 +0000 (UTC)
+X-FDA: 85470415758.22.EE266ED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6CE321C0002
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:36:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HIWzwWnS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795534616;
-	b=GodostTfgSShwDgGriAa+pjhzdUVmAQsikZE7k2Yti3V+k7yqLU9VBd8ugQiQ9cYkQMmh3
-	dtu1wmMXQqlHFqd+Q7nQgTsTMAzdK+h8luq1F5AC0RbCD/5U09zsOIGVUhH3yTyaelV+pH
-	P8XCDIF9+6WltuL6EnCmnf5dMNk4Cn8=
+	t=1795534617;
+	b=jhyonCNTwyvbu+hKtEnnD5+Bm4TI6Y6qmiETDus2ImeAxMuS9UL2Kurr69SszXHhnujxV/
+	RDPu9CbM5FezX1AfiUo2COmjtzR1BSlugnJ7yfVqhtg1pDKlGWQ3ayLI3bkOweWJh3g+yS
+	9FWFWfbQd3ifVHMWJImeO5KyTngZSdY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795534616;
+	s=arc-20220608; t=1795534617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ev01uXrsK+5BPeS58A2Wm9kvysKqjK5H8CmDZBBMICs=;
-	b=t3MZf12dL3QgbXsre4ESymQTryWW+sLwbUNuaRTUldFlxaNYU2MYvaUjwVBXyXD6P8KOZc
-	NstOMmNruMoW61449HJxY5tZTLs30fzffAoyUEbr0DYH0B3NeR5EnZgrkCaMJBCzP+aQZv
-	72L0SJhlNg1LqvCniN9fdDbpI7AmtRg=
+	bh=aVB5moYYD0/ARci2kYFlEjA1B7l4e+j1avzj4BHQvUQ=;
+	b=B85P4x0LpYlODBAGBApEgetmCMVYdUR+/0bB/ojebumLMF+xGkpr3bCpcY6bVue6DD280E
+	WGe1wMi1oDjcDoJSnyIWvyWibOvsyCIXrQIcVRAH8EGH+6XGvCfvjwa/cM/SQ7Df3KKvIk
+	rq39G50fMNreqnVzYEOMlCCNOcj1hdw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CXKLwLOT;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HIWzwWnS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2ABF66243F;
+	by sea.source.kernel.org (Postfix) with ESMTP id B06D840166;
 	Tue, 24 Nov 2026 15:36:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4520C1F000C0;
-	Tue, 24 Nov 2026 15:36:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A741F000D1;
+	Tue, 24 Nov 2026 15:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795534615;
-	bh=ev01uXrsK+5BPeS58A2Wm9kvysKqjK5H8CmDZBBMICs=;
+	s=k20260515; t=1795534616;
+	bh=aVB5moYYD0/ARci2kYFlEjA1B7l4e+j1avzj4BHQvUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CXKLwLOTnkbtXvzsB/W9j2qzLQC2WWtBFDvNnVZXkcpnzWbgSFQvj53IwkApTm8as
-	 ylSfb1OSjpdK8y3daUrvKrmjWBLZBWVF/QNXjtd7R9wiX360sUhNbGe0+1xksyvHUD
-	 tnhlcXm6b6LVQE1VQajibUFYOOV2kl/3mcWJEHLzVqfrHOD+rrpG36itQPDjiVd0Eo
-	 xHwx1OJgIun5UAukHk1XWJQ8hW71aHFOr4racF93+ZrO8hYGhpLRwAY65ijBzyW+KD
-	 h5Jdyqdhl7/XNzVPuNIfL7+PRzFzY74xTNHlPuIoQWSujRoQfyNL66Fu/siKVDOnIa
-	 Rw+J7LI3mOW6g==
+	b=HIWzwWnST2mFJ9q87F1y433mV9g1P5frkW0/lgnv5+vQLyKUzWJAstgRvZA+cJ6MK
+	 eH12Tk5Gce2xJy/NzJb2SmUOvHQynWWgOH/OMb8z20Zj4qWg5YPCzHjD+oPNKnBbjd
+	 0q1NCzsOpvvoFYsdrhbpMUzycfXW1OjN1A5YcqnkZOOsJcYfJ/J98LA/7jjRhFCJ38
+	 ahlg6QT0f2ILf58YNKxUOf+tPrGts3IlLT/XX/3PvIpBchaT804gweSonasaB6nFXM
+	 ljDgZzmmEJ/Orwx/IyRLngbX15GAqoC7VLrXUve3LKFKqQPr+brMOQSFT1pp0+bcRR
+	 lsnXoQUl6oWrA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
@@ -67,27 +67,27 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	Aveline Noir <jm5905938@gmail.com>,
 	Lian Wang <lianux.mm@gmail.com>
-Subject: [PATCH v2 15/27] mm/damon/sysfs: add filter_report_type file under probe filter directory
-Date: Tue, 24 Nov 2026 07:36:21 -0800
-Message-ID: <20261124153636.91854-16-sj@kernel.org>
+Subject: [PATCH v2 16/27] mm/damon/sysfs: support REPORT_MADE type probe filter setup
+Date: Tue, 24 Nov 2026 07:36:22 -0800
+Message-ID: <20261124153636.91854-17-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261124153636.91854-1-sj@kernel.org>
 References: <20261124153636.91854-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Rspamd-Queue-Id: 95A4B100006
-X-Stat-Signature: gtyo7m3miau8fitw39xjupg9sjzimu38
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6CE321C0002
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795534616-557703
-X-HE-Meta: U2FsdGVkX1+kUVoyAs55j/xfmAI341x8SeU5gatXIdjzjQpgRVu3ErUkB1aZBxvokSyfw7CRw//HPWj+pWtNesbH5n2zcVtRz5kXlty6BPrLfrn5cQskiv7q/oCURQqSGElgIdjyX4tGzbaL2p/vAOykKhBF1QDB52vV5dqCVy/JLmnC5FOujr4CAZe6nNFsdeJY+vsZ73O7zSAN0O67PAFo9gHBfaZ3aI0WSeW2bqixUXmKvEPdnlLZwWAgTSQ7X8Z4NSe6061HXcvsMuVQcX1qVG3KvLw6/HjK+msv4rx4d2Of1e+XTmZ8WIpQ8VHyuWGK+LyUu4HPJJEVfwWjW5jvFxPdQvfN76sTCdakHxAYeSXbJ4iPYtCO7BVLevlI0Cq4Xy2BGxQoeQ2fIaqKztke8j4jBtl814f5oY8ybIF+AGjzGMRJay8hqrDZWXBeKD+8kN+FcEvAbcLxAflr2FxBhELvtPgfJwjA3rR4Mp5mXCrurQq2bTeEfg6nKABR1jUewVnsI9SDLG8r4lk6kHnC4hjtZnnqhjeOOXmqXowtmcIKFUduaFPoeP9QVLXfgci2iKOAQaoOrVoGmvRTCd4XYk0kn27gzBg4BunTsatWRUh6OF+EYeR+DWaINMO73kDZB12fcoUAP0e8jJ8nVyoezlxyRHXgncX8AeGxmWSTe+jfziApLIUxhTL3E/SbZfskB0H1B1irE03qeUj+yJ0AZgroGRzSpoNJs0E8ahoeRChUytsqEp3uJ6+9YnsDQ/destS3C/uQ1WxwLq6yRPJZLzjHQajdwXe+YIqJi9pFAFbacRl/66mW2+XFKrGiSbbkXfC05bEosTvXHVI29fdCYMm77vGpBQjFNaOwdbzoljPocQGXoVpmIpmZyJKL8qFRs5YsFj9eDIlBM1UtQtRPLbys88PcUKhk47TmODdJvYRMDRqR0jICqkSwBV8kTrAPYLtDSIHErueDvnV
- qti7szRe
- fR1ql2kMywGOm0pu05rYfGNoUufOdUirb3VpXE2uO0PU2OMV5pC7uv6rNaQPFJe6onD7SbwC+RQCSilFbketwrEtaQndSkU3jJ0dXabG08X0yQqnh9kQFr8I9tm2Tj//ZavK/OE+yze+EeWCMDdgjIiAFPMYCOPXMj2ExUqxWvkKnAoJdnL7hRUHXSol0I8pG7dlczw0qw0l2F6/Yao+22MBPntLfMpWl0rImuG44s70Kqs2LnKnbNL/TiAIg5l+k6p1oliQSDKgI36fEgbkQ2yT4yHn0TC/DTY53lUYOw0N4RCvN5yMNaJSC4ZfLUVYNxPZe5tUTp95OF70XrQkenOCfR8Vezjg7+6UMiTvl5zm3cPD3bt8ENqtekrvmvW8Sebp0wnMbUnH3uUWFawdaq+Us7gtJcHEskRI8cmFVet0Z6dgLpqeo3nob7MvbdKpGRhCbI2VIVPDuMzoBvrvvRXAVY4FfZEDWVnOXmG5ToUBiXrmktVsFUVKERMvNdUDuGAbxgoUv7eiweChMc9KdAxG3PQMWaSANomWIkrRSLnp79fZkeEiLi1XPSp2j1bNg2Qn7vG8Be9dSgNd+NC/qcB90nmtAcNuyGiZn
+X-Stat-Signature: n19nscz6x6euejfxjha1gxbdiprbp886
+X-HE-Tag: 1795534617-858031
+X-HE-Meta: U2FsdGVkX1/70itLJx7VbEixrR7n6psrdOm/2rbmoJyIEWnXeLrbCWft/soN9H5X6qjbp3MH/nAJoZpJ8DOYz0YtineU2GgYGuVKi9nfDKoqDNrRXqOzcdLP/5YUTa9GdbBHEyvnD5lDlBtC3/R30Jh2uL8sMEfYmK0KWQpptwAfQJdx+l+8XzbPm/gVYonETSeYAYQubeLVPJIomllP05m4bn2QF00GbxXczzO+RL4KNUXfJH/CWO42lg91uopeC4MQwWWh7yZ3DWuHfmvEnO07Z6kL5CTDMfY+SjG9vMC9OTHdhMhckLSZFF2qB8LPTQhT3yOKdmaHbGKIotC1t53qFrMwaSJHVJK6v7EnF50LttzzKFYUMKTs5cLz8B7RYYJIfamKaHbj1JarATfHogfsFH2Q9I3BBjANtgTAgykMAwFfwhcSLfkebBPHeQZtWHshij9T0mFPHTzGtBh6lujIpRvvQYL2cXMSSRQzrd3tqVSSrjr1AMwa7hWC6PM4fMfFB6w6zmL4HgvPFDJw5EgBkqNUD/wOZCvHUb6nDv+qKJ9e2gbSgJ6FTK0w00M4jWWBYSN7U9zpUPy1w67QxlSa2jXBIjqSDzmqe3MMDFCREfOvX9Lp+6EPQZIIIseV4FvHq9b5eW4WKLrZnW7FsoaUc44+oudU9DwIzaZwD4D6PgXyGZXWEs5cQWgnXRpYBUdWXhxr1QG5zBepN34ABDMHiix3ho2FkRKqiNBkgPIveXDBLPfAvXJUvErjWk3ONVpxFU3vBZZk2k1E5eqglV6qBoTB31Cphcgeek764eonfdMBPQUSHzD3Jv+bR/3MdE26Jq9HxlSum3VmwoZzxTYRWBDWvWTp3fHJJR5OfBhhVoM3LoBbVgFQxrBKF1t1RyJafQZHP86VU9fqbaN9bbvIaY4WxUrFGvjatXmGRZdPn/EqJwljF11gw+qCZ+aIqcPEbtfdILNKcVoBDQI
+ CQZTD2Uo
+ LKO+xoFFfRjZYQUxwp/YnDFbF2GbBdq60qRt3ygCX3OcAGHWJijQ9lfBtrkvE0M8zRPxP/6cZyKCBEmuJBXFQ0HcB6kPxzULV8a1jwxKTYyd+r1KNSwR95vrj10zvMthmUF7JhqgkjHIaKPqG7YAODbh6Sxsgr+mV1GiYg++bYl0TGDdCeAFaAw/A69jhXUI0rv2UhTLq7LZfkOH67unKeetoGqlehskoojAusKldcGxGYG0vh8U5PHz/0XPjzpGgsGjLqw6y19qDKfhpy/u9AdhSyKcC+oo+En9FHynWOydm8svfwrrN5nRP6V+7AO7WPdAQtawMvJH7M7gwelI24XaLXstVm+W9G5nyRNFxYnpmwR9iSkRb4CDZbwrpayPccbViu4vqWAQ09XAHcpYI/pgngQz7PxZscIyTW7HPrcMnYSh4pJDN/oPJ0E2B0s3DMk/7MXYwl/1ZT+NNm2Vq7f4tVbOP+EM2jt7sBmzwrOy5mPvgy+qfulvT9nu1VOa8v6aIWJTnbHa97ERmP0fpAnjSbI7+vHw24MZngiGNSEaZwZXOimeZcgb8XZiTRuNZM8iNIPmbmVGuvSQfQUByZDT1rDXb6CmYBK8ruWiTjcN+0KadodTY/ADjOutL3xi1CwZV9/dFe1fQzkA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,119 +96,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add a sysfs file, filter_report_type, under probe filter directory.  It
-receives damon_report_type from the user.  Reuse
-damon_sysfs_report_type_name struct for user keyword matching.  Move the
-definition instead of forward declaration, as the code change is small
-enough at this stage.
+Accept user keyword "report_made" to probe filter type file.  Set the
+damon_filter->type as REPORT_MADE for the input.  Setup
+damon_filter->report_type with the filter_report_type user input.
 
 Reviewed-by: Aveline Noir <jm5905938@gmail.com>
 Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 61 +++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 52 insertions(+), 9 deletions(-)
+ mm/damon/sysfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 7cdbe2fedf7d8..ca971cf1dcf6d 100644
+index ca971cf1dcf6d..1c171af4590a8 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -977,6 +977,7 @@ struct damon_sysfs_filter {
- 	char *path;
- 	unsigned long range_min;
- 	unsigned long range_max;
-+	enum damon_report_type report_type;
+@@ -1016,6 +1016,10 @@ damon_sysfs_filter_type_names[] = {
+ 		.type = DAMON_FILTER_TYPE_ACTIVE,
+ 		.name = "active",
+ 	},
++	{
++		.type = DAMON_FILTER_TYPE_REPORT_MADE,
++		.name = "report_made",
++	},
  };
  
- static struct damon_sysfs_filter *damon_sysfs_filter_alloc(void)
-@@ -1175,6 +1176,53 @@ static ssize_t max_store(struct kobject *kobj,
- 	return err ? err : count;
- }
- 
-+struct damon_sysfs_report_type_name {
-+	enum damon_report_type type;
-+	char *name;
-+};
-+
-+static const struct damon_sysfs_report_type_name
-+damon_sysfs_report_type_names[] = {
-+};
-+
-+static ssize_t filter_report_type_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	struct damon_sysfs_filter *filter = container_of(kobj,
-+			struct damon_sysfs_filter, kobj);
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(damon_sysfs_report_type_names); i++) {
-+		const struct damon_sysfs_report_type_name *type_name;
-+
-+		type_name = &damon_sysfs_report_type_names[i];
-+		if (type_name->type == filter->report_type)
-+			return sysfs_emit(buf, "%s\n", type_name->name);
-+	}
-+	return -EINVAL;
-+}
-+
-+static ssize_t filter_report_type_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
-+{
-+	struct damon_sysfs_filter *filter = container_of(kobj,
-+			struct damon_sysfs_filter, kobj);
-+	ssize_t ret = -EINVAL;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(damon_sysfs_report_type_names); i++) {
-+		const struct damon_sysfs_report_type_name *type_name;
-+
-+		type_name = &damon_sysfs_report_type_names[i];
-+		if (sysfs_streq(buf, type_name->name)) {
-+			filter->report_type = type_name->type;
-+			ret = count;
-+			break;
-+		}
-+	}
-+	return ret;
-+}
-+
- static void damon_sysfs_filter_release(struct kobject *kobj)
- {
- 	struct damon_sysfs_filter *filter = container_of(kobj,
-@@ -1202,6 +1250,9 @@ static struct kobj_attribute damon_sysfs_filter_min_attr =
- static struct kobj_attribute damon_sysfs_filter_max_attr =
- 		__ATTR_RW_MODE(max, 0600);
- 
-+static struct kobj_attribute damon_sysfs_filter_filter_report_type_attr =
-+		__ATTR_RW_MODE(filter_report_type, 0600);
-+
- static struct attribute *damon_sysfs_filter_attrs[] = {
- 	&damon_sysfs_filter_type_attr.attr,
- 	&damon_sysfs_filter_matching_attr.attr,
-@@ -1209,6 +1260,7 @@ static struct attribute *damon_sysfs_filter_attrs[] = {
- 	&damon_sysfs_filter_path_attr.attr,
- 	&damon_sysfs_filter_min_attr.attr,
- 	&damon_sysfs_filter_max_attr.attr,
-+	&damon_sysfs_filter_filter_report_type_attr.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(damon_sysfs_filter);
-@@ -2992,15 +3044,6 @@ static struct damon_sysfs_producer *damon_sysfs_producer_alloc(void)
- 	return kzalloc_obj(struct damon_sysfs_producer);
- }
- 
--struct damon_sysfs_report_type_name {
--	enum damon_report_type type;
--	char *name;
--};
--
--static const struct damon_sysfs_report_type_name
--damon_sysfs_report_type_names[] = {
--};
--
- static ssize_t report_type_show(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
- {
+ static ssize_t type_show(struct kobject *kobj,
+@@ -2336,6 +2340,8 @@ static int damon_sysfs_set_filters(struct damon_probe *probe,
+ 		} else if (filter->type == DAMON_FILTER_TYPE_HUGEPAGE_SIZE) {
+ 			filter->range_min = sys_filter->range_min;
+ 			filter->range_max = sys_filter->range_max;
++		} else if (filter->type == DAMON_FILTER_TYPE_REPORT_MADE) {
++			filter->report_type = sys_filter->report_type;
+ 		}
+ 		damon_add_filter(probe, filter);
+ 	}
 -- 
 2.47.3
 
