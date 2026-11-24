@@ -1,142 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3C9606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 15:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500E3606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 16:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uaLCeXAe
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=aB2KrtcG;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=a/D28pZ0
 Received: by kanga.kvack.org (Postfix)
-	id 6F05C6B0799; Tue, 24 Nov 2026 10:59:11 -0500 (EST)
+	id 51F196B079B; Tue, 24 Nov 2026 11:01:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 678756B079B; Tue, 24 Nov 2026 10:59:11 -0500 (EST)
+	id 4CF186B079D; Tue, 24 Nov 2026 11:01:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 567636B079C; Tue, 24 Nov 2026 10:59:11 -0500 (EST)
+	id 3E4CA6B079E; Tue, 24 Nov 2026 11:01:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B6956B0799
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 10:59:11 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F941120BEA
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:59:10 +0000 (UTC)
-X-FDA: 85470471660.20.79C6DB9
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 080574000A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 15:59:07 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=uaLCeXAe;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795535948;
-	b=xKu1u26DDQ0RjuE8y7n5N6m6kBA0rJBEVYpiQehRE39sL7ACt9aAUegFarHkTScCdVHJ/E
-	aEMTFIM3HRiADFmiYev1fTeUcJM5VLhmrC/wRXHTSo0XPcI8zprCeNiT8eN3nHN7+LSzNC
-	e+lkJ7rqmZBsOWEbW4duPmSuv3SEl8E=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795535948;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F2F4F6B079B
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 11:01:03 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80AEA40C38
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:01:03 +0000 (UTC)
+X-FDA: 85470476406.04.E3077FB
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 417862000A
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:01:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=aB2KrtcG;
+	dkim=pass header.d=suse.com header.s=susede1 header.b="a/D28pZ0";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf03.hostedemail.com: domain of nik.borisov@suse.com designates 195.135.223.130 as permitted sender) smtp.mailfrom=nik.borisov@suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795536061;
+	b=i+yYMSRepV6oxYfzrJMEQGbcNuX++cr/ulwnQdm5bUZDBeZ4L0jwQICUSo8qGpK5l2j7e5
+	DRnHxtcBBHkTnJkB4TPZK4x1s1FM7RMBMnn2dez5L+xbhFQGVbqKpZ/JB/d41d992EdStY
+	8NTkjQbwu96VCUrqPOtel7r3uAFP4QE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795536061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/74Ri30W6oVFNU4eqK6RxVx2Up+VW7ByxGiC/VStVG4=;
-	b=mFDbt7IMVEhWeeOEDfLpJ4cyJ39enA02kn/OACMexr522LO6LiZONNHcx68NazHXiPI3IX
-	zMjJX7e9Qc2xXaBpOidsCeNVoov/0tA1gN7GG7lNn64yehfns/R5QLZYnVsmYEOcTmL0vJ
-	Q/wSLLBM06PS6CKYYGX2TH1/VY55HWs=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=uaLCeXAe;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so37765975e9.3
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 07:59:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795535946; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UWS3/BMfxBTS5D+w5H3qojXL6GekWY3V1DmYiVjXU8U2seNLnfyr4+Dn/AlMU1e2XQ
-         QZ3xFqrjPUTv6XfNWTQVTosml3z8Oq7gvvT+6Ew13hI+jzusze5GebZ5wtjR7Ilrugk3
-         biSF8R+RbbyIDpvx4Jt2Kq8u06mxTSWUommaNRrp3yrBCOhEAaLzDoNhhR3UGyRrnS2R
-         azhRmomWXpgFTriWDL6GRBqzLiVgkh7mB/ZnjIyOwdt9MSR3JIU8H4L9PvJtB/Qtn1N0
-         6BzVfRAWixTO0Bf3mDh7nRr2nC29TMFUO4hVkywViK06JUyIZWD/t2PQ3k8kWHika1su
-         d+Cw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/74Ri30W6oVFNU4eqK6RxVx2Up+VW7ByxGiC/VStVG4=;
-        fh=OA2F8qMwfzTgXs3gxhkLWWtrcRBDb6RGAZm++tvjRXM=;
-        b=eo0E+HRuemB2xwYrQaG9V8s+iLUn1y3S7BUi9TM++WeBmcPnHYysvtg2d85AGenQu5
-         rf86b/OD13+ok691WAXp+NfN/x9Mzv421tZxgV+/I9mPVg9aXfXti8P9FOPwNMqzoxDE
-         Mjox/sEdrR/9umFQSEa0GGo835wfAAM6drxhVeVCJkiM5mzcHG0qqb5qooP/4Izdx20e
-         v/ug1HYskyl7sGeRyrQWgOUtnGU3rkNCD1IXi8oFrFFhVk6TuRwbf7RJSkhKaVPSisNC
-         pfFHKnDETnjQJfK5WGPN5Da8vuJL+KUNkECJeeBkyfRtrbABns/mvbrwIzHaR+YHQwVy
-         pswQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795535946; x=1796140746; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/74Ri30W6oVFNU4eqK6RxVx2Up+VW7ByxGiC/VStVG4=;
-        b=uaLCeXAet85rJRX4ia9ZBZfhC+U7RmnhZn8V3Y2aBo4UiWOh6Are3Wm903k92TIxWq
-         V4zR/ZYjmpyi/ZNpikUm0s09lYqnsUYO+tNpLEM2Tt9SHBscqtHoloOvEPB59kYZFMZR
-         Sl3wFTUo0G3TO+YuSQpngsbKZ+ghBHKGMAQTuLH4rMO6KltZFfxPZO1miGlU79k4Ox8H
-         9NFRMP0P07RxxLYB/Bs846m1PFfnfFFBdRbL3eSMh/XUT3kxU63LjWLmCzt1RgORMW/J
-         7MHlF1BXGdl992vXWGA+zv99VivxKe3qL92w3FumU/A3qgQDIC8Dn6K60MwyjHrDFIkj
-         LFKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795535946; x=1796140746;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/74Ri30W6oVFNU4eqK6RxVx2Up+VW7ByxGiC/VStVG4=;
-        b=lZjing60As2FISB/HxNZm1cBoS4wgdtPxzqsmcrQDrjOxSrfkjTcZ1awpQfgCutBIn
-         H8RRHYU3A868Lo1OxxbI+r4h+AX8ABW4TGJqiot9Ye54V9jWS2sEqp5Lua4VOijaveaj
-         HjWky+snRRDeATueKzUn9IQshHRXCocWa7+9tXLHiR6KJ7gxi1OUbK/tNeTFRk3OLnpM
-         2x33pDYTeFGsxvfDYY+jOp0sn3G/ZZmDSLHAtQCN9x8vBovL+X7pdQ894dVb2kdCQKRx
-         mI3uN52MRlEn9fx18wFE1QaNGloB+GBe6JtlhgFWIlREBnDMeDAFTavp3x86uTaVHSzc
-         PKZA==
-X-Forwarded-Encrypted: i=1; AL+hErHyEdiq8IyX6Zhrb7UqI1gHQY8kbACw7PMpbBoSzX2h9a8AbnUYU6KwQKntnWr+8HwIxas12elVPw==@kvack.org
-X-Gm-Message-State: APuU4Z8340kqJtjNslnmBYzi+WqAfpWs+StpSKCMniLS1Wj+tZXtLFlm
-	o0O0QWOxnKtLB1tHPExX4sGBeioIxaH4J4jx8bcWoiYOw9z/uzGE/sPB94bLILxufngO1IRUlve
-	H1WuWSZJJ8jp78gFg6dF1A5Jf0GdLI1U=
-X-Gm-Gg: AZFdTZd6i2YqJeuYI/9Pb+nhGoBmbZQIyOybhLG85Ygj+O5rt5BVlOfEbWsWrISEoRO
-	NGUWZPJ4F/+tRELCwUa7h7eB/bTvcRopc6Jh189XY/6tikdxeXOzypZ3OFQoQesnFnyGMI3nbhn
-	7DWhaJVhe7b8+FlS29etyal6ZR70IfgtC7j53u/OAYa9pgBKZ95BkcflpqyOBwKEyGE0rIcEqV2
-	Q/p7faQIxcjC9Rh9oM0cawP2afbqyDM8I84fqASvlZ2vtUvIpdaZEbM66Tfkjgrbx3bWReHZpgW
-	HNrb6y76YzXecqt3D7C/7z4r5YsEkbgoEJICgJQxzc/Nd1HsgBhkfSrhoc8KeuP2xmudUDlaU8T
-	PWHtAyi4dt4TDCTxPxJSF14VDLFVnC7I6cAjiDrvGP1hjtmEHNuRHB04ubttbVErNxmiogIE7e9
-	3/jkS6fuN2YyvMdFTJeuETH9+XI0e7BIezD/5EoRI9bapJkB1330z1
-X-Received: by 2002:a05:600c:83c3:b0:4a1:7e77:c382 with SMTP id
- 5b1f17b1804b1-4bb8880ad68mr297552635e9.5.1795535946309; Tue, 24 Nov 2026
- 07:59:06 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=P/DvJ2vRZ8dB3FMLgxRKtDBnTYkrprwbvvpqR8tcuSw=;
+	b=ABcA2qBYsKCnywvnQBVjTtZEgjrmE6j7MT6mdgssLUxlI1PhKuDngZYINMZtBJtGUDXqSN
+	SvFwrioWb0ltnLqJtMQjyQ35RGxhCZ1izCHJbWoVaY4qQd9PlYBIrnj5fas5A0lKNiMPgt
+	Yu8d77DWUeXKo+C6zm30m6jj9XTcyj4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=aB2KrtcG;
+	dkim=pass header.d=suse.com header.s=susede1 header.b="a/D28pZ0";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf03.hostedemail.com: domain of nik.borisov@suse.com designates 195.135.223.130 as permitted sender) smtp.mailfrom=nik.borisov@suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 78EBB222F2;
+	Tue, 24 Nov 2026 16:00:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1795536059; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=P/DvJ2vRZ8dB3FMLgxRKtDBnTYkrprwbvvpqR8tcuSw=;
+	b=aB2KrtcGZmdfhOtzISTeDeGJTe01UbsyW0wJL0IPhgq7v7UK77pyiAYdbYn31kRRpTOem3
+	mG7Bt+U9ohTQBE5t9APKJaN8heXJ14JHdGtFCiu7H8fV0bhIAI/VNlRIeWj5UakAn7zC7q
+	ZCijryk8MP035APcnTqMvfDWIHhE/yo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1795536058; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=P/DvJ2vRZ8dB3FMLgxRKtDBnTYkrprwbvvpqR8tcuSw=;
+	b=a/D28pZ0961G7Xu9Ipa0/ic+tmNcAK3Fe5Sj+vYcF/ksv0Yq1yl3Kn01oOZjEDhYKjsJm6
+	SEmDly5OCotCuMS/mpXq8XwRJ5yQ/tqEErKwwzxm+iJ8T5wnyJcvo8pF26briYOhggNJ8Q
+	GThBJmvtfkObkUEW7mfdOxuaXNmMHG4=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8493A1339F;
+	Tue, 24 Nov 2026 16:00:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Pi4gFrm0BWtKEAAAD6G6ig
+	(envelope-from <nik.borisov@suse.com>); Tue, 24 Nov 2026 16:00:57 +0000
+From: Nikolay Borisov <nik.borisov@suse.com>
+To: x86@kernel.org
+Cc: mhocko@suse.com,
+	kas@kernel.org,
+	ljs@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Naveen N Rao (AMD)" <naveen@kernel.org>
+Subject: [RESEND PATCH] x86/devmem: Drop /dev/mem access for confidential guests
+Date: Tue, 24 Nov 2026 18:00:26 +0200
+Message-ID: <20261124160025.738362-2-nik.borisov@suse.com>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261123030014.3116755-1-bsdhenrymartin@gmail.com> <lh4cnpy2kw3tdtmhubwhhvim25kxpqxo6xttt7sihyx7x5hqdf@3tvivew2qh7m>
-In-Reply-To: <lh4cnpy2kw3tdtmhubwhhvim25kxpqxo6xttt7sihyx7x5hqdf@3tvivew2qh7m>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 24 Nov 2026 08:58:55 -0700
-X-Gm-Features: Aa3M54pAoXL7yvOyF5JJv7RxaB2ypj1vzahwa9xON4kuYDyLqPQLjNR71spFULE
-Message-ID: <CAKEwX=Py7W0vOwxKdWMCZu3d=BbF2OkgDt6Tu_AHhEJZ06w0ew@mail.gmail.com>
-Subject: Re: [PATCH] mm: fix cachestat NULL pgdat dereference on DAX mappings
-To: Jan Kara <jack@suse.cz>
-Cc: Henry Martin <bsdhenrymartin@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 080574000A
-X-Stat-Signature: mtw5i4t86y4x3s3e58i4h3a1bsbtt8r4
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 417862000A
+X-Stat-Signature: gzp1sh7w3d9j486kqb8bn7drqhrjru3u
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795535947-827895
-X-HE-Meta: U2FsdGVkX18CkLFA9w8gcCzig28QRSaEsou3xZHcMzL0rP6503yFcoYRxkd602cbOIJ3Q5/4kXUqpB1ty2ziDwd/FHdEmAY9s1nzMK8cUujp6HtPgHVYmrN+gVoEk49wXNE6YZEXXzx3HHP3cOFG5lIr8zDEPBNunBnX2UjUM14qX3pG7T3r+I4Ez2cF//KXNSFTnVGwLdmb09jjhSTfBYcXQBXCay6uqcGJXMKImaV42DeWNo3X2IXQ7gNlYped75jYO6sSMhjOlJ6AIK+goyeurHYCV6VG3/36sRMuF+PdhpisFuYbKCsnsOfk6yTxi672sa8kMcPn0X1lop1HfBRaPvxgIHfEAI5CWF6r2qX9Agy8J/9J7gGxnLFTOi4BeMpzzzjzDsBd5EsXRIjBcx3ZaNu1lsw6v9poSdEadkLtJZ5Wj8YlSq9l1agOrh7pZpM94i/8t4kaPGYI1YQ60oVdKeY712NvT0QIVyDAghIJYQnFE15+CjwIXxK9Kyua7yi+KHM0LGwOb8G4OgcGp5nyIjDIYN09kfFD64NLURdXrNQwJ1OWRAU9v9ay8f6O+KK+rwPecGEcIphMtnoeSW9xAQgrCVslqTg4yu9zU59dEgEzeFySvY2mph7HqPESnYOQ9fdgdcIbdmcQC4AHYOzmNibU/4RVRE3IuI37zP3x9xupxcfKy4klKV8V4IalzLUR5vHPJ52EAn/nw/VOXMoD2yw/4jcAHXV6QjvofTz3rKGsyWvWbWC69AtAQnxZmcCCKkGWrloWJbd3RhxlR52B5WYd7/z3cwFBeYyt5JVAjRNF0NzAwWO19RJ5IGtmNIBkm6bGZxmWBinm1DC6LfK0RPQVAYq3zSgj9otlZx9Y3s1fDz4uNX7IEh6zwYWl3pD+T1FnNjZsJCtfDw8xBXAX8o4Rg3iKL49Y3cNuzP55/dHsLN3a4L+gaaHGktQ30//BedBS+rnQ43UcRTd
- i7FMy7Zn
- B8AlwuihdaQ22mtwAnLxdPbAcDPk8Fa1FoHdN/kTvb45xxDFH4kUhG7742rt0N+0SF4bTSJSVNLXIuTSjP3mIIfUf4Wg0QVY3c1Xg9aA80S3iP9HyKm2eVXyvI+ikiPSUbyIna1SM5aaAMuPPmwG1V/iNRjes0mWOMCI0AzeyogPifXH3EhyIUpjkWq0w/Yzge6/Y4D2YUhFM2eiJ91HkpEgHvM+XPSwVN3YHn0BValaYTMlpJX9juit2qT+o6cIq0IEkpTzcf9sZYGu9JtI/ziZ6+s9/I4chBhQMkSrq2cEkokGwqMUSO8qvcmJFU0iduHgQ1Fn1QF3xNW0/cHLP8pun9ebLaO1AfbWONCNjxrAxrmJNShuPg9hVs9m1HU8F4gylY1Rli8SznKpViyZ1iD3plBvMeXPUsOYA7XJ+DahwXzFQTWg5vY/cu/HJjAScxyiLaDIH4BWeCVRT6yk2EKgy8vrHBeaK209x7wfQeJffGvk3/AqtRgKJWzCRpIp3TqT5Vh3Nwg4RREsRns3v1ciR9lsH3bZPjYNu4XmE5G14y5Q1qfBRtJTPbCo/JplhW1xlQsiRujGPFxmaW+UwONzmx6f4PEebdcqvezooMr87xV0EJHG1c5L+Ousu86dXBUupbmx1w/b3T4LThaxyTqHb4jwB5HEL5yAs
+X-HE-Tag: 1795536061-413262
+X-HE-Meta: U2FsdGVkX1/w+RKSE9hbmU5P/bnnpiP9UaJzot7chxOTnBmFb9v7R/Iscss5vDQ7j9yat3cXbycM2t1XqlCzt8a35pHyFyr6jYFgLPOuiAApVM88l7jbOImdAk63FQNFnPT+QoJUlG0Khfi2Q4C68uKe0U/G3qMUUBAqNis2H6BySOJUPbTR/z2+xYtbi4K2p3r5U2HfaicGmEEK9y4Tj/5B7bXNAJ9DFUhczqfUZfHX/+mnjkgKh39Z/I6tiUEH0159qFuGPPf49VyFpA7+J/LOkR4jR0sC4mqiv2dgZU3JHgx1T8AyQ6AD6QOrqSopUwLWMCbS7jXPYhFNe+8ggc9Sh9qbKlHeMmuYZu/Fyuw7YNsPtwtAvUHB1p5+s69+ZoNSqnvTx6Njd1gadU1RuPmunGTqodmkbFohT5WMKjw2RTZR0OiNJbgVvDeEKD/sgHw2HqlUUcmE+P8kTxbzKo7nFjTOLQaxl3TwS2rKkFdZh9OeodFj9HV+GDuRqrzutolZRsjxYdxyYnKCJwDAYsJkAmskinVG/BrN03tG511gW99Kv89Bsrp/o+k7aFh5tSH/d+K+Rw5mY05adG3IgThBGp0I6A3ztCfEfoUPkM46byzKqPAMHDsrwE7T2tLR+Pd/yi7U/CPk9wZQmAUVL1CSWKK9Rg3V1MhGsyheumq8kzVLmJXp0m/4XwpJ0gF1LCgyKoLt6aZb4jKQ8kFuDeEHhZKtMGuHkLwUxLpyWVJXOeKFYD7zEFVJeg3lLw20fvo3e5eEdbAUf6zOdS7NGM0w88dL/S6ygxguK4dTU4OHGYExfLRvCnHzVGvlm4GAIOvTsLJ9Z/vEUoOwvS+I2B3ZxEXPlSv9JQni+LyApYvJd5WSZvRQG3Y+kqQqIXTTaSus9jZy1l+OPyA8RUYo/pFsLHkpsT73T2B0Z4IGqFh/delrZquhn8wB35LaqnyVlbO55zJ3/AW4Tl2xsCu
+ FPV7K7lr
+ 7SXzGvVQQmlLNCVkI86FQdjcD7Wnd0dBdW0Be6/DaV038/fu0u2Y4X8iNv+L7i5zquDEsBN8lpBMygD5IjZBvdT1yLWiYWE3T+oT04Oq94lgwxZdX1ahHxc4d5PuQ4yvODaYOUq4luYWX8qNSMt23VB6B+Tgh3/TvSk6oVpqBqHt7XDgehyNa5jLmy1fnNXZq5hCLFdpujLeTbmHplqtMUOc8nDylEIrGy/7LdPFlROba/Er7vzfZCJ/obeZzb/xMYPIxY8T6PO/lsq0e1Gr9NlwEhUVqkjdbWcPBDz2OuoM1WciTeXky+h6jrqDJ9L+P7GgVMHyDwGcp31N2uEtiAhucf0HhCW/AVn+MeL0oPVG+NWUySiZjNJBx6blQoQm1vWOrpj2wtNbQVz7wparWm4Icax0CM+Gpc2fQ916qXI9ZopRKL+zCRPHzW6vgLn3WBFinol4HtoyTb1JEsAcozSG54MeWKQC7U3O8H2t8es8n4zsXo0gZMwhth6LT8JW11x76jd5DXqnAIpyq7IDeSlPfh3aOit2LOyK3miXTaT2ZvUN6qL6oLXgeIDVuUfjVxkN5qmIQoKo3EBaSreJHCwqJHb+OlNxaXuL/8A1VuitCWw1cc088ZR/DttJJhJMXTeRMtdIu/rfUyUOel1fj5qjCpv5vGNTBf+F6nz+677town9nOQcgVJbbmKk/ceWdV8Dkp+FNZKCrw0AytO0RUZji+wR1KNMZx/aL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,46 +127,129 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 5:42=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
->
-> On Mon 23-11-26 11:00:14, Henry Martin wrote:
-> > filemap_cachestat() treats every xarray value entry as a workingset
-> > shadow.  On DAX mappings, value entries are DAX exceptional entries:
-> > same value bit, different bit layout (flags in the low bits, pfn
-> > above).  Decoded as a shadow, a DAX entry yields a bogus node id;
-> > NODE_DATA() for it can be NULL, and lru_gen_test_recent() then
-> > dereferences it:
-> >
-> >   Oops: general protection fault
-> >   RIP: 0010:lru_gen_test_recent+0xde/0x300
-> >   Call Trace:
-> >    workingset_test_recent
-> >    filemap_cachestat
-> >    __x64_sys_cachestat
-> >
-> > Any writable file on a DAX mount triggers this once an mmap write
-> > fault has populated entries.
-> >
-> > DAX entries track present pages, not evicted folios.  Count them as
-> > cached and skip the workingset decode, mirroring the dax_mapping()
-> > split in the invalidation paths in mm/truncate.c.  PMD-order entries
-> > are counted as one page, as value entries carry no order information.
-> >
-> > This issue was discovered by Tencent CodeBuddy Security.
-> > Cc: stable@vger.kernel.org
-> > Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
-> > Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
->
-> I think that for DAX mappings, cachestat should just return all zeros
-> because none of the fields really make sense there. There's simply no pag=
-e
-> cache for DAX mappings.
->
->                                                                 Honza
+From: Dan Williams <dan.j.williams@intel.com>
 
-+1. This sounds good to me.
+Nikolay reports that accessing BIOS data (first 1MB of the physical
+address space) via /dev/mem results in a "crash" / terminated VM
+(unhandled SEPT violation). See report [1] for details.
 
-Henry, would you mind sending v2 along this line?
+The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
+unencrypted mapping where the kernel had established an encrypted
+mapping previously. The CPU enforces mapping consistency with a fault
+upon detecting a mismatch. A similar situation arises with devmem access
+to "unaccepted" confidential memory. In summary, it is fraught to allow
+uncoordinated userspace mapping of confidential memory.
 
-(and maybe add some documentation).
+While there is an existing mitigation to simulate and redirect access to
+the BIOS data area with STRICT_DEVMEM=y, it is insufficient.
+Specifically, STRICT_DEVMEM=y traps read(2) access to the BIOS data
+area, and returns a zeroed buffer.  However, it turns out the kernel
+fails to enforce the same via mmap(2), and a direct mapping is
+established. This is a hole, and unfortunately userspace has learned to
+exploit it [2].
+
+This means the kernel either needs: a mechanism to ensure consistent
+plus accepted "encrypted" mappings of this /dev/mem mmap() hole, close
+the hole by mapping the zero page in the mmap(2) path, block only BIOS
+data access and let typical STRICT_DEVMEM protect the rest, or disable
+/dev/mem altogether.
+
+The simplest option for now is arrange for /dev/mem to always behave as
+if lockdown is enabled for confidential guests. Require confidential
+guest userspace to jettison legacy dependencies on /dev/mem similar to
+how other legacy mechanisms are jettisoned for confidential operation.
+Recall that modern methods for BIOS data access are available like
+/sys/firmware/dmi/tables.
+
+Now, this begs the question what to do with PCI sysfs which allows
+userspace mappings of confidential MMIO with similar mapping consistency
+and acceptance expectations? Here, the existing mitigation of
+IO_STRICT_DEVMEM is likely sufficient. The kernel is expected to use
+request_mem_region() when toggling the state of MMIO. With
+IO_STRICT_DEVMEM that enforces kernel-exclusive access until
+release_mem_region(), i.e. mapping conflicts are prevented.
+
+Cc: x86@kernel.org
+Cc: Kees Cook <kees@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Vishal Annapurve <vannapurve@google.com>
+Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
+Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+---
+
+Resending this with the hope of either getting it accepted or arriving at a consensus
+what exactly is missing so that I can take it from there and eventually get something
+merged. As previously mentioned this results in real problems for confidential
+guests both on TDX as well as SEV-SNP.
+
+ arch/x86/Kconfig |  4 ++++
+ mm/char-mem.c    | 10 ++++++++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 3159852fd6b3..1490e0019c71 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -901,6 +901,8 @@ config INTEL_TDX_GUEST
+ 	depends on X86_X2APIC
+ 	depends on EFI_STUB
+ 	depends on PARAVIRT
++	select STRICT_DEVMEM
++	select IO_STRICT_DEVMEM
+ 	select ARCH_HAS_CC_PLATFORM
+ 	select X86_MEM_ENCRYPT
+ 	select X86_MCE
+@@ -1490,6 +1492,8 @@ config AMD_MEM_ENCRYPT
+ 	bool "AMD Secure Memory Encryption (SME) support"
+ 	depends on X86_64 && CPU_SUP_AMD
+ 	depends on EFI_STUB
++	select STRICT_DEVMEM
++	select IO_STRICT_DEVMEM
+ 	select DMA_COHERENT_POOL
+ 	select ARCH_USE_MEMREMAP_PROT
+ 	select INSTRUCTION_DECODER
+diff --git a/mm/char-mem.c b/mm/char-mem.c
+index c5761ddedbd7..5d383befd87d 100644
+--- a/mm/char-mem.c
++++ b/mm/char-mem.c
+@@ -30,6 +30,7 @@
+ #include <linux/uio.h>
+ #include <linux/uaccess.h>
+ #include <linux/security.h>
++#include <linux/cc_platform.h>
+ 
+ #include "internal.h"
+ 
+@@ -609,6 +610,15 @@ static int open_port(struct inode *inode, struct file *filp)
+ 	if (rc)
+ 		return rc;
+ 
++	/*
++	 * Enforce encrypted mapping consistency and avoid unaccepted
++	 * memory conflicts, "lockdown" /dev/mem for confidential
++	 * guests.
++	 */
++	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
++	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++		return -EPERM;
++
+ 	if (iminor(inode) != DEVMEM_MINOR)
+ 		return 0;
+ 
+--
+2.56.0
+
 
