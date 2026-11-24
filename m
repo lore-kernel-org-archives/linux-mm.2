@@ -1,105 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6362C606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C815606A32E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Nov 2026 08:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jDfksFj9
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dQ4HpzP5
 Received: by kanga.kvack.org (Postfix)
-	id 6FF5C6B0632; Tue, 24 Nov 2026 03:18:04 -0500 (EST)
+	id 9C18B6B0633; Tue, 24 Nov 2026 03:19:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B1F86B0633; Tue, 24 Nov 2026 03:18:04 -0500 (EST)
+	id 972536B0635; Tue, 24 Nov 2026 03:19:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59E626B0634; Tue, 24 Nov 2026 03:18:04 -0500 (EST)
+	id 8889B6B0636; Tue, 24 Nov 2026 03:19:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 282886B0632
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:18:04 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A27C28064E
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:18:03 +0000 (UTC)
-X-FDA: 85469309646.21.EE34B16
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D2C731C000A
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:18:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jDfksFj9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 591F46B0633
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 03:19:29 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D38F2140B18
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:19:28 +0000 (UTC)
+X-FDA: 85469313216.08.8DE3381
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1686540009
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 08:19:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dQ4HpzP5;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795508282;
-	b=oKUfzlS4eEAbZFGXJDAVZHM50ccEKOybwZPMwMpqG6llkUKAdnb6pMwyC9pMIOqOteBes9
-	IqFlGYKWseEUW/z3SJkx1XVElL2VfK2ata5WBvx0i2aQF7HiL1mrSNZGE3gMadB7MFEv66
-	WaNsC6Lo25meAJLHbORlgkV1iC6VyOg=
+	t=1795508367;
+	b=zzSr//qeEPRfy/6mYqH1JiFUuHMgtL/YhqEtLUoxgEvObhn/M+7ngKAOrmSOzJESLlSGai
+	R0IxBazWFJkGgEIRbwrHw7AiDcm6g0ro1WPvuXuZ/TWwLBE+6isMMohUVsyO8eh8hwCUoZ
+	qoPZxdzXdQoQj/MJP3bxGsxi7cgVjEg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795508282;
+	s=arc-20220608; t=1795508367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FXF3amYK4zVK9HrsHP25oSXQsLclmm6eVoNLKiPVVAk=;
-	b=rmd8jTx37QUyOgZYW6jqxCAiiQeE3lSZcQbNrS0U9WIQn+eExnfZem1NRCqrr1+hJoRBuM
-	Zc0PwcHZB5ZFUBjsNFiVKWzj4AZK6wVcQCZwi5TkPuoj0hKPhFcCCwJJCvMAcMd3x9p8N7
-	3IDdz1MXJdotkD6vB/Oy2NEm+lycr8Q=
+	bh=7t46GtfKYZs2wgNzk1b5xHB67t1z4sEYiK0JuNv6pys=;
+	b=QY1AMjHkFfy7qcM4FJBQ3d4jkTmMuwu6Bnjyslqc5wvzaOl4EG4zmtpjQ38lr++J0oKSo0
+	s7I8Zhg8cUnuqShgxglPaZ5p2+a+sFD5NciXC/SW92mjX6STT2ajLCD04ye19dqg4T0TSl
+	Ub24xPaY/rFr4xXgbdEk6s2Cy4tz4YM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jDfksFj9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dQ4HpzP5;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 527C760A05;
-	Tue, 24 Nov 2026 08:18:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B505E1F000C4;
-	Tue, 24 Nov 2026 08:17:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 384324169D;
+	Tue, 24 Nov 2026 08:19:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67431F000E0;
+	Tue, 24 Nov 2026 08:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795508281;
-	bh=FXF3amYK4zVK9HrsHP25oSXQsLclmm6eVoNLKiPVVAk=;
+	s=k20260515; t=1795508365;
+	bh=7t46GtfKYZs2wgNzk1b5xHB67t1z4sEYiK0JuNv6pys=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jDfksFj90RJuUYMvQl/D3DcouK7J4WV7mZz3xt4Ni+IJnZVhJeicGKcJbs7h1ClSc
-	 umDt4lfTGeLUThRvmvaMVMkyL8DZ1vNmwfedc0zwkDaEcBb4yw3Np6ZLJ35arCmyW9
-	 A5ZgWhVN6lINi9/7peguLU5acV7966donpMgCZXSUxFIYAQTH8GwsoiEg5phANvA8P
-	 YrQzrNCR8FajQyg8aCkJ4ufXQMkJeC+OfUeruoDxyo8N45lFVUks5DGI9X0RGYp3H+
-	 I2vgTRhcthwLELfGV7udxRMB5gHre/OVC9exQklOIYSZxpUkrtjtwlBPTHbkrzxi/B
-	 6d73Z4BcdjGqQ==
-Message-ID: <74dd67a2-eaff-4bbb-8105-4481fbbdd016@kernel.org>
-Date: Tue, 24 Nov 2026 09:17:45 +0100
+	b=dQ4HpzP5ss/BkmY1lgajd6O3tC4evTSFEHoMJeRIfTep1a6UGDkcE4cXVSypPbqM8
+	 uFB+NFcTZzy4uFbRwizrG/3PVyHmCAWaPInmYgg+env3LCr7A8MCo4zvRXHqjuTw6U
+	 wwAb4HIT8GXewLyiRDAdULX9puLybQqkt3snnvg1CwRncf4lcwSpSpvEcJzOc/+/+j
+	 85FKwE3UFDw8fNvhfjtzoOM+l1oQOw/CzMYz8a/wzJm+D8TdklcE2kg6TucqwRP13o
+	 JBi+Tfl4f2WzjP1aGneHbxukSMjX9x7pjoNEIWF2JD1C+HK98alOiF165GbBz16A7/
+	 HO3lqBHcPLKSg==
+Message-ID: <a85333a6-761c-47bd-9d79-e1309acd8c00@kernel.org>
+Date: Tue, 24 Nov 2026 09:19:18 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/kasan/kunit: add page_alloc_skip_kasan test
-To: Jeff Xu <jeffxu@chromium.org>, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver
- <elver@google.com>, Boris Brezillon <boris.brezillon@collabora.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Chia-I Wu <olvaffe@gmail.com>,
- Dev Jain <dev.jain@arm.com>, Ian Rickards <ian.rickards@arm.com>,
- Jann Horn <jannh@google.com>, Jeff Vander Stoep <jeffv@google.com>,
- Jeff Xu <jeffxu@google.com>, Kees Cook <kees@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Peter Collingbourne <peter@pcc.me.uk>,
- =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Tomasz Figa <tfiga@chromium.org>,
- Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Miklos Szeredi <miklos@szeredi.hu>, Baoquan He <baoquan.he@linux.dev>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Allison Henderson
- <achender@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-mm@kvack.org, kasan-dev@googlegroups.com,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- fuse-devel@lists.linux.dev, kexec@lists.infradead.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
-References: <20261123033111.2349160-1-jeffxu@chromium.org>
- <20261123033111.2349160-3-jeffxu@chromium.org>
+Subject: Re: [PATCH v2] Docs/mm: fix stale split page table lock references
+To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+References: <6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -146,22 +125,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261123033111.2349160-3-jeffxu@chromium.org>
+In-Reply-To: <6E11B4A6A6E0DCF9+20261123030904.57369-1-zhaozhengzhuo@uniontech.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1686540009
+X-Stat-Signature: c74t4icfpozppcdtmfsfjqrreng7t6bh
 X-Rspam-User:
-X-Rspamd-Queue-Id: D2C731C000A
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: qmwnsu5cro5tpbii9cospwje4zb1nkpg
-X-HE-Tag: 1795508281-262074
-X-HE-Meta: U2FsdGVkX199j61VrQfePss9rhCIHsnxcu8+TBJzV+qsti6V2LqjI9Hgdm7Bp9Sm82S3WKYUdoCaVhZSVFWd4WFbC3xEWGm9N2yVSa1/HR2GdThSBGqWcnfkOsB0LoTxOdMRqdpwauufy+c+Idr6P41RQqY0f78BfEORGtLYbAQFRDPmuM6MEhnHg23qYo5t1xWD8fQsB5p2NimNgsWqCdlAH4PBnmL8xyefA+r1PF5qRuJwt/ddsxLXjdO5+mXkwGqepDRSO/zBOt0FTWlESq11SfiQr7mI8JibgiUOFdeDSvvZzzh/JZabq7tnykVcf0hjr860CXNQekOZUJDyHMdHX2Tyt8GH11skF/+Og+Cvl4wWQ79VprrTT5XI3NroRmSftU1PrPGVQ1mEgwKdFl1yWjN0kfbDbeVyVFY1zkS7Lv2tzy2mTO17UJlmkoG6TO3OxzU57nB0vnnrYSldlWgtYQLIznl4lmU+LovuyeRgb9LjfSfn2sJNpTKw1CmlrtRC88ubu2SsJUB+BtqNcxmH5VAjB7ReZ4k822Q3i67CwaxR886pdPQtw5kM3nnBQGJ+ksGY2QTVctyvBAaPgfF2fO+5fZYGzjRRnReZc/oymLtOeMFLtcyYAnzfjE+k94P1h2/JCjaN3a3UBZbXVuTSmn4CykDoCzq42PzWzcnM+7JvDnS/U7sE0qoYo6sX+bx4Gj3ZHwZPepMymyr0NJtJJeWzLEzi5+3+QTmzDCOSJl+SLzI6Zo98CEuC6brW+1vSvjluoDhOAFYgfq4+oGKHzyOsmysvDMrUPtqerT7JnFi6boU64NH1CTAM0FfE3fM1kzzRO2lqunyLACEdyeeFDcvp+kMWtCGvOBtLnK50Woobxq1NWO67ZpRJYggVsT9pPdWQCnFiwSpu2g4lgvjW/geKCTJyx5HOusOzcQDch2P9tG03daObSyPGgy6Y0YtrrvzKhk+7VaRd2F5
- aDHs6fRz
- g0hi9jD/vHqEQz4TKbJu+zUHeI4CccRbR24A6fOYLgOWN8ZvBb6Oj1MTS46ScEz9lEo/10Qtw7UMmO07zKjpMAf6LAejmRgKb5+EeWhVSjEMuWH34vhmTgV82x5q0CgC54zZGr44Xma9EMGkv80hEUP3q3cJ/hcTbYbNA0gGXelgPvdTTHICzFSyXEHlQ6uHDuzb5twqYsJajk2v9+9rqXFSXlHqxJ1j8uQDJbd9QIei4OlZ2qfyP31y0CuTAU0Y68AA30kuzcrhyhEUrQKDam2Dh/FxKfTbbHr7Cdg3UqOFyromEVDrEgy+dm5yHwRATBrjRta+VC/l2JZ3vVZfcCaVARPVOdw6+8Ft/qIzVm58wsOYydeMMhbTBWNY0mMiqcfQ/Pjl0xY//ZkGELA9kXGpFM8LmguDBCGIMTiAUemPL5CtTLyR8SHf7LyHtYgturPQ8lb1/90ZXqeVZDQUyvZ3tXawgKM1H7Rj3CnwhMbUGgrYGjfOfXgZMvy1d/4H/RNcJ2B2TTBXJ6l7YyvlGPbVg/1IONEVQ+vSC8pE6BarMFrnxSyGgrD+Qb19vhmI/hVMIWK6KUPZIkb218vbsSr6MQ7H7xlsEpHwBAsVvOqYBiZdyQS8hzEl1fw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795508366-721062
+X-HE-Meta: U2FsdGVkX1930BGz81pmmoEuidd79BPUKYl2V/YYLNIs8raE5eI5VZFqm1uNsrPgiI1eM9njMshHimBxlqrNfYNyfNjbNK6N5jrrqAqeLULAzpD1yvM2yY/gb0uBS82d2igmg7ve5B8v4XEf8qfC8H53/nUetL3gu0+TBcw0mApeP3LY1VYkaX/Ql6y4PeWlduSMAF4vIEPRieg2etDfZNipGR+oQLa08HIpMQsahZhUK35jY8/KlDV90e9srSPzN2rXAHgo46K6dsCeLXlrQa6A+q7+O8ORt66RXdjppumr0kfLu1UXQuwVKJeK3QDDLQJNXlBh2U8UmCoEeq+wdX8oIsbcC6iGJzk5dYoAa8SjjZhG/eyA1/MSqQijwB7/ac4oI1amrZDc5FFW/Bfie30bgqejIiGeUvceVGDQ6XsV69lIuv7RFC0RYRnkqI8EDNm8TVt+jwWUrNY03l2+9mJBPCXQWNfWKxPCbbnloQJbaLQemleAkeMTnRb3o4tvEEvjAvhVNIHGN8sf1NXyqZ+YywTWHDLV+CbQXLR1viBInfbQpfoUTsUMCNiM92KgWlfPwjy9zd8BVOVJC1tD3YhafWrMt7SR6+iEbxAprd6BiHSmrRseWeii511voYGxIgeMTmw05qsDgRpw/jb3EKOo6C4VKqsp/XZ0E3QjJz9f88LGpPgrpdNwnpUVwWt/3p6ujOglhttzVQnx/Ep7baC7g90TAGzz5m/7WYDnK6cBnavUnmGY20OvCgUzijp1MHQF48EaIe9wvA5CuHcyLDGVelRemZYCEzmlRa0zIChXF4TzSO8tOZdj55PZ2kx/BvUdj5h/3ag9Ni1xmJX3Kkx9OS5Zxy/iRUTPZunJauXDs0vvhaj8OYZr9zWtZrglkmH92EHveFkqhtElBKh5cF6Dba6smOoLGP88/nAGDLxxwWJbKIbW9ZRgAjY0QxNUVVyejQHSQv+n59p0An+
+ XSnJ9Kk3
+ wF3z2THKsZpdmAzwjWvMf/AX1Zf9huUtCcHeusY/lv49dNAutpieRVGN/3zF+IiBBBBoVz7YhuBP2fA1t/l4WjpOqNG473NaF7jQWf1WKYkssdyII8tux6o5+pP32Ujzs6VfPgq5aCWjWWopKyYtPTD+Hgtk/W4cLKWEYOtfkLmW4TmIdwEHOvkOz1ZEzt5dR+gI8GYPwzRnyqOU/LSlulLM2uAhtZjfP4Xrud4dF12MnLMASNfzNhYE31FQebi0nmLvw780g73mrPJhhsbV4HNQmij1WgQZFgQbXsI8/ddvCEcgrjEQ635C4e6ILU+bJ8csYxExb92Mr5vHCRAUuBE6O2IaAIwYsZb23D2QiKOBveY5M05yuUxMkstqiwtZ4hl954+gjbayYDPBLDetuWpphDon5DuRmlCrJ1OaKh+5XevEkO0X/+A1BBG+2a0z/boMeurYNC6OSHdklSX0mTr8JLUmwdtvyc0Cvn3lqhCvKuE2LBlssS8XfqeR+IjtBnRW7WDEIkmLXRDjK+pAUOp2qvLXdWRQ298WfDUV2s7ObCtBL9jDwDCOPFDPG01lccdE9LfoaqEWrjJ/tOP8II3kJqg+/ryvWth7fOuyKJLtVQNWziXsDv2s6pFchsEncpvc3yb2mnKY51B29nGOr8Z27yL9gGl1qBnj1CLBjuoUBfrQ3gYXqvur/bg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,106 +148,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/23/26 04:31, Jeff Xu wrote:
-> Add a KUnit test (page_alloc_skip_kasan) to verify that page allocations
-> using __GFP_SKIP_KASAN (GFP_KERNEL | __GFP_SKIP_KASAN, GFP_HIGHUSER, and
-> GFP_HIGHUSER_MOVABLE) under CONFIG_KASAN_HW_TAGS:
+On 11/23/26 04:09, zhaozhengzhuo wrote:
+> The USE_SPLIT_PTE_PTLOCKS and USE_SPLIT_PMD_PTLOCKS macros were turned
+> into Kconfig options, and CONFIG_SPLIT_PTLOCK_CPUS was replaced, but two
+> Documentation/mm files still refer to the old names.
 > 
-> 1. Reset page_kasan_tag() to KASAN_TAG_KERNEL (0xff) across all sub-pages
->    of a high-order allocation, and
-> 2. Return a match-all (0xff) linear-map pointer from page_address() that
->    does not trigger a KASAN fault even when the underlying physical
->    granules carry a mismatched tag (such as KASAN_TAG_INVALID or
->    restored userspace PROT_MTE tags).
+> Update both references.  Point readers to mm/Kconfig for the dependencies
+> instead of restating information that can become stale.
 > 
-> Tested on arm64 with CONFIG_KASAN_HW_TAGS under QEMU (virt,mte=on) with
-> kasan.mode=sync, async and asymm.
-> 
-> Signed-off-by: Jeff Xu <jeffxu@chromium.org>
+> Fixes: 394290cba966 ("mm: turn USE_SPLIT_PTE_PTLOCKS / USE_SPLIT_PTE_PTLOCKS into Kconfig options")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
 > ---
->  mm/kasan/kasan_test_c.c | 44 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 44 insertions(+)
-> 
-> diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-> index f34163e19bd6..72342137bb18 100644
-> --- a/mm/kasan/kasan_test_c.c
-> +++ b/mm/kasan/kasan_test_c.c
-> @@ -380,6 +380,49 @@ static void page_alloc_uaf(struct kunit *test)
->  	KUNIT_EXPECT_KASAN_FAIL_READ(test, ((volatile char *)ptr)[0]);
->  }
->  
-> +static void page_alloc_skip_kasan_helper(struct kunit *test, gfp_t gfp)
-> +{
-> +	struct page *pages;
-> +	size_t order = 2;
 
-Why magic value two?
-
-Should be const.
-
-> +	char *ptr;
-> +	size_t i;
-> +
-> +	pages = alloc_pages(gfp, order);
-> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
-> +
-> +	for (i = 0; i < (1UL << order); i++) {
-
-"1 << order" is sufficient.
-
-> +		/*
-> +		 * __GFP_SKIP_KASAN allocations must carry the match-all tag
-> +		 * in page->flags, and so in page_address(), not a random tag.
-> +		 */
-> +		KUNIT_EXPECT_EQ(test, page_kasan_tag(pages + i),
-> +				(u8)KASAN_TAG_KERNEL);
-
-Squeeze this into a single line.
-
-> +
-> +		ptr = page_address(pages + i);
-> +		KUNIT_EXPECT_EQ(test, (u8)get_tag(ptr), (u8)KASAN_TAG_KERNEL);
-> +
-> +		/*
-> +		 * The memory tags of such pages are arbitrary: stale poison,
-> +		 * or tags set by userspace through PROT_MTE. Accesses via
-> +		 * page_address() must not fault regardless.
-> +		 */
-> +		kasan_poison(ptr, PAGE_SIZE, KASAN_TAG_INVALID, false);
-> +		KUNIT_EXPECT_KASAN_RESULT(test, WRITE_ONCE(*ptr, 0),
-> +					  "WRITE_ONCE(*ptr, 0)", false);
-
-Why do we care about checking HW behavior? (match-all working)
-
-> +	}
-> +
-> +	__free_pages(pages, order);
-> +}
-> +
-> +static void page_alloc_skip_kasan(struct kunit *test)
-> +{
-> +	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_HW_TAGS);
-> +
-> +	page_alloc_skip_kasan_helper(test, GFP_KERNEL | __GFP_SKIP_KASAN);
-> +	page_alloc_skip_kasan_helper(test, GFP_HIGHUSER);
-> +	page_alloc_skip_kasan_helper(test, GFP_HIGHUSER_MOVABLE);
-> +}
-> +
->  static void krealloc_more_oob_helper(struct kunit *test,
->  					size_t size1, size_t size2)
->  {
-> @@ -2369,6 +2412,7 @@ static struct kunit_case kasan_kunit_test_cases[] = {
->  	KUNIT_CASE(kmalloc_large_invalid_free),
->  	KUNIT_CASE(page_alloc_oob_right),
->  	KUNIT_CASE(page_alloc_uaf),
-> +	KUNIT_CASE(page_alloc_skip_kasan),
-
-Don't we have to limit this case to having actual MTE-capable HW etc?
-
->  	KUNIT_CASE(krealloc_more_oob),
->  	KUNIT_CASE(krealloc_less_oob),
->  	KUNIT_CASE(krealloc_large_more_oob),
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
