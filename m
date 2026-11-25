@@ -1,99 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B059A606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EF6606A32D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 14:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eassQ+eh
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=HLOmayJZ
 Received: by kanga.kvack.org (Postfix)
-	id DC4516B0A24; Wed, 25 Nov 2026 08:52:22 -0500 (EST)
+	id 538526B0A26; Wed, 25 Nov 2026 09:09:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D74DA6B0A26; Wed, 25 Nov 2026 08:52:22 -0500 (EST)
+	id 50F996B0A27; Wed, 25 Nov 2026 09:09:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8AA86B0A27; Wed, 25 Nov 2026 08:52:22 -0500 (EST)
+	id 425056B0A28; Wed, 25 Nov 2026 09:09:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A3D7A6B0A24
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:52:22 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19827120E59
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:52:22 +0000 (UTC)
-X-FDA: 85473780924.09.CC56B9A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7C08E80010
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:52:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eassQ+eh;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 195BA6B0A26
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:09:17 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A78201C475D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:09:11 +0000 (UTC)
+X-FDA: 85473823302.24.79112C4
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 75496180018
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:09:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=HLOmayJZ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf24.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795614740;
-	b=M362qcS7SJp5UnpOLCH7AfbNE5owJgdy/jozQwD9GC6PxfSBKPV8UBXXH/xvj+7aXOWjLb
-	NHEYMDuRkjNTzFgsZ7VRpvu0FsNMk76GFMLgmCX/0TKT6JWiyw4dvi5XRME0/WcaQ+Oexm
-	930BtEZFAwlYdTMmbq8ISFm7rCBsU6Y=
+	t=1795615750;
+	b=YRaa8pSWgzNBY6BmkiK5S/vqzlMm1ZYviOAGm3BUWqCRLC3+bLHuOcQfxkLdaF6Qgw8E4q
+	EwALPcGLSFhPknVPIxLm9mJD5n9RaTbafVlleUYfau84VsX6Ko0zLAnvM+RyVQRdO0Zn0u
+	FKbgtHMWh72rPGa6/Io4drSaHsMJHpM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795614740;
+	s=arc-20220608; t=1795615750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ih1VDTrU3FeJ2fsbtiUZSy/fzpLqeBrB/3Ho1Q8Vksg=;
-	b=UYSTbgf5OsajJZu6iojpnspO1iW0JX2E7eTc0q3ZqRkMnC7xWMmC4yE68VI6ZmLySh0e9X
-	ZqU8N2pMFbMCgxd9ANgR9B/aorHgzyq22n5AbMgj+Cg6OcFQ+ytHbtkjE9welJMZcSqvUv
-	6GSEmVinJBkvIZYkPyd3o8bdGPJd0jw=
+	bh=OJfj0NWZLxmiap02Jgv9y6mBQfosM9khI8VQAwhpY5c=;
+	b=JQkkSAQqRwidh5FB9mFhtKXfKMnd9KTo7r335vwkHLkbvBCntPVZgxkq19LUo+Gz2K/tD0
+	RwKz5A0keSKbT99dGzBiRkSI/3zcCf3qm+GOiurY4uSdOaBNcOgl2BKnjwwFlf/i77RG4V
+	xCnRwIyneqEljrjj8f3rubqf/PWGoGk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eassQ+eh;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CAFB2623E0;
-	Wed, 25 Nov 2026 13:52:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21D61F000EE;
-	Wed, 25 Nov 2026 13:52:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795614739;
-	bh=ih1VDTrU3FeJ2fsbtiUZSy/fzpLqeBrB/3Ho1Q8Vksg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eassQ+ehtNlIg7BCYm6d9K32YvY8qw6Lw2o1T2KIXMP1nElqmQXlEYtZ3auoJRGPs
-	 RuPLl0AlZn5mOfaiPEATfDF5yS2c9jSNMDDvEc2aB3teBrAHDvhqvQ0MilTw5woUrX
-	 r+0qd3DgUr8J04D3fhgoVd1Mx84QADjJiEWYndLt5edAv7x6+DpeHV7Vl+aDd+IcQh
-	 1ojyxYxC1kYLPCYAitx6iV/dJHFlHDlAbFcQmP57isDtbEc1BaI4smiZPDCiSmq5VS
-	 ltAC3lonKaXHrHdjEBqyBOf1CebpOHDeQUX4mcBbO+VEv83fNq1eCllKZOuRXUuBGD
-	 YyMs/2wdpZIAg==
-Date: Wed, 25 Nov 2026 13:52:17 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>, 
-	Lance Yang <lance.yang@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Ying Huang <huang.ying.caritas@gmail.com>, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, linux-riscv@lists.infradead.org, stable@vger.kernel.org, 
-	Kirk Swidowski <swidowski@google.com>, Huang Ying <ying.huang@linux.alibaba.com>
-Subject: Re: [PATCH v2] mm/rmap: avoid reusing batched TLB flush generations
-Message-ID: <awboAcnWHZfsy8bg@thinkstation>
-References: <20261125-rmap-v2-1-0ba817662eac@kernel.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=HLOmayJZ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf24.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=OJfj0NWZLxmiap02Jgv9y6mBQfosM9khI8VQAwhpY5c=; b=HLOmayJZkdjmUcSo04fNYiJZ+F
+	iuOcY/vbBOs7dUr1USwUAgETw2iJRkCXAb4zbYLJWrHC3WdrMh0hRKm6cbzkctZ33FtIMF3UbqamV
+	lfulBT3qwftheBZI9jUuNiHYSb/CAexRFMIcHIHIePn/PM2FGT2Xzfm8Ex9gbwZ3577im9HaOCuQp
+	EO6f8P1MAwM2LMF7+4K7DdbOh3BJG58TXUNqO2FWUdFV8PzNHKMuGvIPM9gAtb4Q+PEVJ3+a+MkRD
+	lY9sYRYO7EkLhaHmTL+YpkUgZ7yNNP/ohxd6aFksxkzhoeN2Z63iEYrIVQSfWtTmEswM2oOxhh4an
+	Bd/m2EIA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xWDgG-00000005O70-0o3R;
+	Wed, 25 Nov 2026 14:09:04 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id B818F302186; Wed, 25 Nov 2026 15:09:02 +0100 (CET)
+Date: Wed, 25 Nov 2026 15:09:02 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Harry Yoo <harry@kernel.org>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>, bpf@vger.kernel.org,
+	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
+	daniel@iogearbox.net,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-rt-devel@lists.linux.dev, Vlastimil Babka <vbabka@kernel.org>,
+	Hao Li <hao.li@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next v1 1/4] bpf: Add call for selecting kmalloc or
+ kmalloc_nolock at call time
+Message-ID: <20261125140902.GE2668804@noisy.programming.kicks-ass.net>
+References: <20261124060357.11700-1-emil@etsalapatis.com>
+ <20261124060357.11700-2-emil@etsalapatis.com>
+ <DN38HGVL8JHQ.2ZVZQCKFXVA9T@gmail.com>
+ <awWRZ9xCzWLnj_R6@thinkstation>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261125-rmap-v2-1-0ba817662eac@kernel.org>
-X-Stat-Signature: g6kqyuck3fn4b3j5dxxbrgwdbydybgas
+In-Reply-To: <awWRZ9xCzWLnj_R6@thinkstation>
+X-Rspamd-Queue-Id: 75496180018
+X-Stat-Signature: armi9z587eua7rzcsfdof84yj3x11oye
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7C08E80010
-X-HE-Tag: 1795614740-811338
-X-HE-Meta: U2FsdGVkX1/VnRSZd9/dGVxrRaa+6DPRmEbREm25fcKcVD/IhYVl41ln1kHUxcZj9vA0rkOYlDbQCzlUIk/h92y3iowRxM/RPqW/qwhFiDaJSIQMElIsCDhn+k9Ko5e60go/Dz6gkaRiYifg0bJop+Z4bbliJkpu8T3d6GIZb0wvmU2yMoV6vDKyfniOn8loZacnvxXd9MI3dZgd/3n+b3W/x1UvVrnnp/6eL1nB0/UX5wGbHs9tQrKq+SyQVfK3HS/P5HuqzO1m6Os3LvngtvURj4wq32dAsijjU8jyPZwmrAx/n57hoeW34A9nXYD8jlXyZ4jasS7VlbN3xnMcBC7pF4GptfekPORvgt1l622F69nsQQ0Y2nsnUqfOObmw0wdAdt/6skkIXDTvXfVZNSlKdvNLQ4qV0gSNTbW1bDxpCWk1KXbeRSJetcCPqjuqV5iNkkCAhCx00SZS42UOZ8PfO5pANzjafYpVI5t72kPF+z/JRh+SBJpiy0qDkJsR+8GL2rfXExT3id4p+lCSgJ37lamhqFH+Yzs+A6534Ey6oveP19Fl3za89qYBWLNXeyMjZkMRrbHYuE3lSXmFGKR6FlmT8t3QnYUBLZtJs9NHq+ZaJdKIbEmZmEkqPCg+UoWx9x0MWMx9gZd/K78+jWcdk9Mg+h4Z7+Q89OMsf2oFMA9xvvDVesVfo4JwHEw4D5R4FctH5TuddTYWp8s/LcgE4lgBEXOIGmBs14ywF6Bn6qrsnowpl0N9W1ZMtajD0FvWe9AxwL7E8Pb9xYnCVCbXbtpwg/MGcT0qkr7HC6KgPwmoFM9m9PcqNoB1nc8kyHEiFsipDqs4npjOFCsP9cLdflsBQq8Aq1hXZWGbVQ50mnkuL8S4xzQbh3vxt/X6R4Yenbk/CCnjzAZb6m6YoJL1XjArr8jnH4DkwPhjG4PE60pcRQ4jckIvf1kmY4rFqt9bQSg1RWMnSGaKX/z
- HdBb40kI
- iII81pkseUUz/ibEWWjA4bOc0MuNoj6mMLhvEcTeh/vz7/huLdkvOKzqJRUbN6z+1xxyGCtbqqlqCp9LdwpiCigGN+SLc81S6X6SzMsiU/KUSe2200iHlBJRd9/8sxCvXttAkhT89iH3ZWKKurBOX55jYj9ghDBLlMohQS9+JR9nyWBfZaRp/pnJFCT+CwsNA0HDNSpBK5rypO/htT4dwURkETrEz/6uEht+vcbMBly0w4JUe76+0SGNfrdzdTAxoueLaj0qKbg9RfeYP2vEIcqELQfItSVdlylCujlSu9FsmfPaOX8tgn25SQKxb6OHpDknLDSkCuDfLuolyGmMY3YqFLMXgM3wiGHGOwncSBRMld7w09C8Z+pmVPvRyBc7xFu0vKiPetQWBTVrghj4HRY4NoepUkKd/xwVyTV4lObb49vcRJH5+mm0pjXP6KALlLv35KJuoeBOkc8sEvT/ixCapdt0qwr5GL+xxHlRS34rVjjxP0xdjwfkQLgc9cpjUWPBhYw9OoFLxMzgnGqEoC/mQtNToXzpNKwaUbp8C23TT/1JUla7BobxV2ynxiQqtiFQyUxBFPfoabixxtXfDXS9neHELlQh9ResNGhhzHfsOT+30mqa219tXUo2Ze2ffc8V/REwROPvUBlo4nsPRj50e3W9jmkhaCcQap3NVjLTFM6A=
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795615749-697514
+X-HE-Meta: U2FsdGVkX1/WKxK/10VSCBE72S8HAyR0d03/le9j2rRpHOlamV0LvmChdzSd2huBNyciX8N0br9bhqgq+zufU6SRrmQqxPJhuy4fy151+rufmNDySsqdPRzO8OwxhLzMMhCd5x4l83KS7NnxGhUecJAKY9JRgP5omkj9cazaomnqHtxoUPnKjYbyAVQcNk4WWYOd26fGlpn6XiOoWlH4+/0em6rddgLC4IP+1c7iwznchWbDXJGr1Ex/GrVkZNTXT/sTNsgvRKUpa9tGFHwp4VkHpk88hd3UXpROI8mTTz+654SDolW2DECFE7HauCeMXjXeDIy6WpAWV4aEtNo2XmSuGi9s19BGGRJA9Xr6IAXOLY97S4ymrCD0cDDbNoZhElsM9tDD+DrQ16xdWx93sDRxHl1aKAzF6N0srAi50ndFY/8o77y9CtefGaG4AZK2PvVAXgmzt8NjGm2WOTmPASUuw5xz4A+0xxQKkM0Em/Pf187vUA5scqRsurEUcf79mlycbrIzlEEnwEckxZmp8A8IIiAXrHM3Vsc6mCbhzcjLwXfVeW51bL0xakJxYP8oRCO0CzjkaMuZOLL9e/4rwC+EYpgBjABGpmxQVa/PlIxNOebZbN35LCNxOTUZT6jJi8Uj+CzoQ0GhXRhgu/aOrSgV4wsqS6z3KAx7/rEq6qbbJ9yhiMvNarF9faWypLgp5zwU7OIM5R5/upgNR8Go6H6waHBvInytC19Vg6wm3ipL+O2lqsqCa4iLqCN2XWoW9WnrGYy4//3iPYdvQsggPs6oyzswp1N9f0D5NHfKrfJasRV+NLZf1HdXLalBlKHwjmV2ByGFNGUkGSvNTruqY8+hk1PwUo2c65rl21F9CSj1+P8dSLImg3+5gAElSAKyyDyZEe0H501KvmcJqSwf9NeIMeA9xQmYkAxdmPSQkaZBt97n7Ty2ZvcAaxIs+UHXtpd/EEZ50NQWpdsVgHB
+ VE+MOkAJ
+ ZakGt8bWDpZ1u/fKoTiJRyfk9not4ZgeM4eEdJjzDnFD/e/51PB+2aYGWLO4lsVfqp8lbDxqj5WiOTDUpX+2xCRr+4xyDbEL3GQ4Wl5npFQhX5AB8cjfwD0TxgJLAfLecYVpdC+lUR+rcdEqeOUB6QV4PBP9af8+OomjWKHTjTisSt0TC2/HeP2CU8N0gV0Kwn+Li3dh+MgyKjgeaP4zXM+5jBWVPYbZDL45WChneYxRYBVNKQMPJbKHat2q6n2T7byHmSFBu5u0T/sL87RMUAg7spRC5Lh8lMOJpAzbQl7OGlGaKMJ5JQAdeLVfr/YlM2UstmOHwE09v/12frXCaIW+jSgoeChYywQH5wID/JFm4rQ/Me+4SYVfFYDWLHua+2JItGkTv7ucMk2KExgzOBuo8Z4+lRIpgqIBgakutNcGspeBUg6o3qPY7F1slqHVZ8KVvCg4v7OjtPMct44mMxztx1LUy2r1l37inWuARjL3PlVvb9egvkUiDiCozO1WqtGAagpScMz33ZvM+LDKgKhSDN5idVl5gyPvi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,77 +114,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 10:34:46AM +0100, David Hildenbrand (Arm) wrote:
-> mm->tlb_flush_batched packs a 15-bit pending and a 15-bit flushed
-> counter into one atomic_t, and resets both once pending gets large.
-> flush_tlb_batched_pending() updates flushed with a cmpxchg() against the
-> value it read before flushing.
+On Tue, Nov 24, 2026 at 01:59:31PM +0000, Harry Yoo wrote:
+> [+Cc Relevant folks]
 > 
-> If the counters get reset and reach that same value again while
-> flush_tlb_mm() is running, the cmpxchg() succeeds and unmaps that
-> happened in the meantime are considered flushed. A later zap can then
-> skip the flush and leave stale writable TLB entries behind.
+> And a bit of context on the underlying problem.
 > 
-> Use two separate counters, never reset pending, and let the flusher
-> simply store the pending value it read before flushing. To keep pending
-> from wrapping around to flushed, pull flushed to pending - 1 once
-> pending is more than INT_MAX ahead.
+> kmalloc_nolock() could fail when there is a contention on locks
+> shared across CPUs (e.g., n->list_lock in slab, zone->lock in buddy),
+> or there is a decent amount of memory pressure. It's more restrictive
+> than GFP_ATOMIC.
 > 
-> Preventing the wrapping is primarily required because
-> try_to_unmap_flush() as called from migration and reclaim code does
-> *not* go through flush_tlb_batched_pending(), as it does not iterate
-> MMs. So if nothing in the MM triggers flush_tlb_batched_pending(), there
-> would be a problem.
+> Unconditionally using kmalloc_nolock() in BPF local storage is
+> unnecessarily restrictive when the program can sleep or spin, and
+> Emil's patchset teaches the local storage whether the BPF program
+> accessing the local storage could sleep or spin on a lock.
 > 
-> As the separate counters are no longer read atomically together, we must
-> read "flushed" before "pending" (acquire/release), so a reader can never
-> pair a just moved-forward "flushed" value with an older "pending" value.
+> Answering the question "Does this context allow sleeping, or spinning
+> on a lock" is extremely tricky in the Linux kernel as BPF programs
+> could run and call kfuncs almost at any point in the kernel code and
+> the "context" is usually encoded in the GFP flags or the process flags.
 > 
-> We'll leave the barrier() between clearing the PTE and incrementing
-> "pending" alone for now: it should be a smp_mb__before_atomic(), but
-> existing arch code (x86: inc_mm_tlb_gen(), arm64: dsb(ishst) before the
-> TLBI, riscv: fully-ordered xchg() in ptep_get_and_clear()) implies a
-> barrier. This should be cleaned up or documented separately.
+> Tracking whether certain locks are taken by current context is not
+> ideal either as it adds unnecessary overhead for everybody.
 > 
-> As dup_mm() copies the counters using memcpy() while they can get
-> updated concurrently, a newly forked child could end up with "flushed"
-> being "pending + 1" and we could skip a later flush in the child. In
-> theory, this might have been possible before (load tearing), but two
-> separate counters make that easier to trigger. So let's just reset them to
-> 0 during fork(). Put it into the existing init_tlb_flush_pending() and
-> rename the function to make the name better match the wider scope.
+> On Tue, Nov 24, 2026 at 06:40:11AM +0000, Alexei Starovoitov wrote:
+> > On Mon, Nov 23, 2026 at 10:03 PM Emil Tsalapatis <emil@etsalapatis.com> wrote:
+> > > +	/* Only try the spinning allocation when preemption disables are tracked. */
+> > > +	if (IS_ENABLED(CONFIG_PREEMPT_COUNT) && can_spin_in_alloc() &&
+> > > +	    size <= KMALLOC_MAX_CACHE_SIZE && !(flags & ~nolock_flags))
+> > > +		ptr = kmalloc(size, flags | GFP_NOWAIT | __GFP_NOMEMALLOC);
+> > 
+> > It works, but I after a bit of brainstorming the following
+> > might be a better fix, since it will address the root cause:
+> > Pls run it by Vlastimil, Harry, Sebastian.
+> >
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index 2fef409..4368ab5 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -2536,6 +2536,24 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+> >  	return NULL;
+> >  }
+> >  
+> > +static DEFINE_WAIT_OVERRIDE_MAP(zone_nolock_map, LD_WAIT_CONFIG);
+> > +
+> > +/*
+> > + * zone->lock is always held with IRQs disabled. A caller that runs with IRQs
+> > + * enabled is not nested inside of it, so it can wait for the owner.
+> > + */
+> > +static bool zone_lock_nolock(struct zone *zone, unsigned long *flags)
+> > +{
+> > +	if (IS_ENABLED(CONFIG_PREEMPT_RT) || irqs_disabled() || in_nmi())
+> > +		return spin_trylock_irqsave(&zone->lock, *flags);
+> > +
+> > +	/* The caller may hold a raw_spinlock_t. */
+> > +	lock_map_acquire_try(&zone_nolock_map);
+> > +	spin_lock_irqsave(&zone->lock, *flags);
+> > +	lock_map_release(&zone_nolock_map);
+> > +	return true;
+> > +}
 > 
-> Note: if a flusher stalls between reading "pending" and storing it,
-> while "pending" advances by an exact multiple of 2^32, the counters
-> could compare equal and we could miss a flush. The same applies to a
-> writer that stalls while moving "flushed" forward.
-> 
-> That is irrelevant in practice: both hold the PTL, so without PREEMPT_RT
-> they cannot get preempted, and wrapping within the ~20s soft lockup and
-> RCU stall timeouts would require more than 200 million batched unmaps
-> per second on a single mm, which is impossible in practice. Even with
-> PREEMPT_RT or long vCPU preemption, we would need minutes of unmap and
-> refault churn while the stalled task stays off the CPU, which is highly
-> unlikely and not a realistic attack vector.
-> 
-> This effectively adds 4 bytes to mm_struct. However, on common 64-bit
-> configs it fits into the existing padding, leaving the size unchanged.
-> 
-> [ david: use atomic_t instead of atomic64_t, reset counters during fork(),
->          adjust description ]
-> 
-> Fixes: 5ee2fa2f0636 ("mm/rmap: fix potential batched TLB flush race")
-> Cc: stable@vger.kernel.org
-> Reported-by: Kirk Swidowski <swidowski@google.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+> I'm not sure this is a better solution unless this could be generalized
+> or abstracted further.
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+This is absolute atrocious shite. You cannot attempt a spin_trylock from
+NMI context. That thing might be a mutex.
 
--- 
-Cheers,
-Harry / Hyeonggon
+This should not work; if it does, that is an accident we need to fix.
 
