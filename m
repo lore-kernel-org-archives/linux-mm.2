@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E27606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C8B606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=csHVXRqO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZLxiR+T+
 Received: by kanga.kvack.org (Postfix)
-	id AD8196B0AD9; Wed, 25 Nov 2026 16:39:12 -0500 (EST)
+	id 7A4826B0ADB; Wed, 25 Nov 2026 16:39:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAE976B0ADB; Wed, 25 Nov 2026 16:39:12 -0500 (EST)
+	id 77B4F6B0ADD; Wed, 25 Nov 2026 16:39:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C54D6B0ADC; Wed, 25 Nov 2026 16:39:12 -0500 (EST)
+	id 691986B0ADE; Wed, 25 Nov 2026 16:39:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 762E06B0AD9
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:39:12 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C259A8EFA
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:12 +0000 (UTC)
-X-FDA: 85474957344.11.272CDE3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6674912000C
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=csHVXRqO;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EA8F6B0ADB
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:39:23 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C59581A0106
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:22 +0000 (UTC)
+X-FDA: 85474957764.26.A6D8D0D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1B785A000B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZLxiR+T+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795642750;
-	b=53zJbqBjzy9WBu+nOkslpkwXHDwb4IFPIBepBLLslb1dl1qOTbmpydWzEjs2jbt1YY4llt
-	neKM9d3Q3NLY1ZxwfSa73AZ2iZ7F63RYU7GXDlUvXFM25VygNjhuwyhABpl3FTmFvQ+kqA
-	7l5PFkJVnjCHK7d0eb1h1odihApMrhM=
+	t=1795642761;
+	b=w+ZYz/E5oxf40ISSkS0H6iw5frj6NGKIQLzh7On944QaBFxn/IYZBjALMWKL/2lDUtoy3z
+	kKlCPcZXuNAHr/pTxEfwLtukBR8vbqe7xe613K1GQsl+mi+JdDI/1AtKPZyLk0mk+RocV/
+	3wwkMYMJ6FlLGro5dkmaIm1wYoudwU4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795642750;
+	s=arc-20220608; t=1795642761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rUM6DDgN644lwBMuVOf8hCvlUKG7RqWtFvmySpiCJP4=;
-	b=U63ez4ddCgEAw4Nq5dEX+eakql4F9In7OHJqCWSHNjAlGg4AbPfI+/rX9BSqoAxABRQEcA
-	yan1pdPfOatcY/LkDNGrzhlaIkrj33BTnN4GYkLHAUxLs76gN7OjDZ/Mt7R6UGzvTEii4k
-	wkFYwWDJX9L1w+2wKICJ637KNeAmDeE=
+	bh=dJBjtHj/U35Sno9olpkCbmU3J1nhzHn1TeUoFt7nUEY=;
+	b=sfhyU59aPhb7wHiz+4injkuw++ts6w+X28Pyuis70dkApGluNQIsGp3Ue/HGmCqJhVG0FY
+	NbBJte3W81jUa9TULtM1+QkJgq+ekEbc2wfkWilFKhuqNLlGSX8W+IAmI6zVcE6Y6FcxES
+	ch7iD7jfWapBT+mHcX+m42atZq48+Sk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=csHVXRqO;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZLxiR+T+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06D41612BD;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1071F430AC;
+	Wed, 25 Nov 2026 21:39:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9A51F000C6;
 	Wed, 25 Nov 2026 21:39:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3346D1F000ED;
-	Wed, 25 Nov 2026 21:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795642749;
-	bh=rUM6DDgN644lwBMuVOf8hCvlUKG7RqWtFvmySpiCJP4=;
+	s=k20260515; t=1795642759;
+	bh=dJBjtHj/U35Sno9olpkCbmU3J1nhzHn1TeUoFt7nUEY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=csHVXRqONzw+Zf2W4mIiRNX44yIJY5CyRbFbcCR0+M/3R+GAiOMw3psRBPN1SgjKG
-	 e3zbCETZaMq3pe/kSpHAtZiGstZ7Nel3amY5pdz9XV8gqjeM1AXeDT7jpyIny0bOe9
-	 SuomrZaO2RHa2qG2CVi5VaWOYXyVZrW1FAihaRpWfvGCbxdLN/suOU+Wc2dERbKl8o
-	 boj2OWLoGU/PW20RgzAeGTnGgWZWL7274PUZOHFuSASuVtqK5eYFytXfIwSwwoOCk0
-	 g7EEMg5orzdhHYvJnZxuXFqRuBz9YUo0FhIUT/VJHPoRhMgzSPogevaDBmoXEyezPE
-	 LcFWpym+IE1LQ==
+	b=ZLxiR+T+BsSHG3qnraIpxEnw1AKOgXqd27CskrcQcAzCnBPEROUGkHQ8M0dOTuEF2
+	 v+HG/9GIvXXDfUR31xFyycfQ9BqVveug3KmxNw+/KUHejD9Dw8OxWGOT7AkAbAYqaT
+	 Bs21TaIArqigX5/IgmXaw3xKR13el4OxMviNGy8OOXCDyLAW+ABLAZZbBJ7r0stztO
+	 4ZEv3kwQgp8dwDKSvLjxBmW1Ewm+SI2tnMzo2CVHfUk7ACK07Kg7xPgzSFzRuheuRW
+	 ngbOq2z34xaqRnUG5TtsT/BktFuqrdfK3SdlzvKrnRgA7O2Oxvd1C32/9p3Wcuxnu5
+	 EZnqfS6cvgYpA==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Wed, 25 Nov 2026 21:37:09 +0000
-Subject: [PATCH slab/for-next v2 08/14] powerpc/mm: specify
- SLAB_MAY_ACCOUNT for pgtable caches
+Date: Wed, 25 Nov 2026 21:37:10 +0000
+Subject: [PATCH slab/for-next v2 09/14] iommu: specify SLAB_MAY_ACCOUNT for
+ slab-backed page table caches
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-8-7c680f02a734@kernel.org>
+Message-Id: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-9-7c680f02a734@kernel.org>
 References: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
 In-Reply-To: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -104,21 +104,26 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
  Johannes Berg <johannes@sipsolutions.net>, 
  Eric Dumazet <edumazet@kernel.org>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- linuxppc-dev@lists.ozlabs.org
+ Niklas Schnelle <schnelle@linux.ibm.com>, 
+ Matthew Rosato <mjrosato@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, linux-arm-kernel@lists.infradead.org, 
+ iommu@lists.linux.dev, linux-s390@vger.kernel.org, 
+ linux-sunxi@lists.linux.dev
 X-Mailer: b4 0.16.0
-X-Stat-Signature: 9gj9f98k9gsesospumy9zdnkbwh6qzpw
-X-Rspamd-Queue-Id: 6674912000C
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1B785A000B
 X-Rspam-User:
-X-Rspamd-Server: rspam03
+X-Stat-Signature: 966apmxmoefrmt4bqskxf4jqaxt1ttc1
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795642750-820545
-X-HE-Meta: U2FsdGVkX18xbr/Zb1ZArWmxVHvCHejJRCRBocw5UiMyHh1F64AyT0BCikaRwH6duHmt9W8+5uE5XOjr3JoDatblBvYawvpDseuJlN1i76FKasHxTMoKFzdwM0NM0hfGNRXLp2QJTQaHsXfUYHRC8mUq8jjsr5a/Uib4sGx5oS1WNNDGqzVynOu8tHU6mmF9RwZLfYfZwz3wSXmLGYAoBHZJRmHQ5PlWh6S5m0BtWOatJfE4IHg2jEAZVTeDVVyp/Nkw3gK+8jRGrma29p/+X2sSsNe92FqgbJj4v91W4UQE1jduUZeicSSivAWcmw2/RITqhxSHjwJJ4ne1xa0orGGH69+sUP7iSFm+IV8FNIMiKwrDSUQ4/JPHXompEwbwY3ISvcrT74OOkgQYnJNXicRob4fPpvCqYoEA/tJcpwcubQMJdVAjxzQIwsM45nLVdp5ipxvRqRMGjO4/QIFklEqzFfD3a5+LiOwEYAnhfSOQM0akhktChui9z5bRJ22LbFwl5Gzn15Ss/fxCIBxlaZjk+RdMhA+2Jrbq8/UxoGuQLpVvP0Zyt1bExvEjgU0dApanTz/Ws1a1UqnBnRy5k5OkaunSaMORG6d5NL1uZd7vf7KqrwJeZ0WO7S5BNIpi3PPNmRUPZr+gfs3l6xzkY2pfg4MdkQCizmzVEfI803Gg6dX68obDtHejgjAzCeCuWm0bbXAIPoMpEGpXcZNoT+S36CX5OUf91AdlVuycySbLNbglqAj9fZ7hFtDy/l5nX/FpT5+OEtzHxPy/Rr1LL11TktnWkDpz7NO61ptmhAZ89nNVtII4+LwmjCkV+qvzaIxCKD+DPy0uSa4Lzg3DH04Exv5pzRuDb0PoAi7ysKHu6V0K4UqJGGpYpreU9+SesB0QEbSnPRdaOKwwaLiD4VhBNw2T4qr+HkdCDimHBVVX3J0S1rAE4KhjBhs3DLKpjDO+idALxjDw29mDs/F
- j2i92uXu
- qPtHk2r7Vcta/mWG0S9I48LbjlJyfh8l15c82GOGW0cXlCNWos7xjo+J7d1DocsQjqfWYSy2pi/+gC4kiO2mIN5s4GlUM+JyqqCe+SEDIt7fOyUb4NGqDvJfSdyAGi///CZr4GPC1Ouv6Fe3p6buaUR1AJnzypk5EE9ubyTaXfJ2M3xs6s0XunoOq2YtQ6j+wc4DMxwFh647Agf3mIkdcGiMIwk1z6AxD0owqHVPTAd7UWGpJ6FA3lft4Lbmp4jyeb8PVhYIUMcHbcnMYkOn9pu+txx5bkRyDW+oQvUklNlR0oHcmJBZK0/LcRS+UBLhik4aFfs1/hj3VA7LM4NFVSrOR2hLNG0lxWIpPZMMkYixthc2TD672tc/QYnF0C/5/7GY3UoG5qIgSfIckrrmQZuPpw0eMmRilRPlYEhnh/9AdQ6yf0/9WJKagVPvCmRBQqzkcpYq84xfA+HYC4oxOZiW/1P8kn/+5LFkq4S/2E/zRy0bokBVCEvCWL5WFw7v6oxgDPCL2PLUa3ax6Aw/U3wF8zEoUDKMgk2cbBK/Oj9TOvXMJSKntUQuJpCn4HswHi/319/QqJ7ZCKP072cC6CBEYaVKccbnc0Ao3jusK5mEvDvifjqTXtCZG3w==
+X-HE-Tag: 1795642760-16456
+X-HE-Meta: U2FsdGVkX18cNoL16dmYRlo3y/yDLbWKXxArl8yptmsF1SwgopZ5UWU9AZAL9FhLU0msDKHPSZau3TZvzpyC6rU6RI2pxwPZMQYeYgHLN//dV4RqPn3QKNBQLkPSwKM/3dvwaa1eZ+zFrTN9TttUapC/+n/diztUAjlkEdTQ4ZMWriiXwqIEeFctUDEw2k1LRal1jfEEND13TY3yFSO97XALQvM4TqUsnMrpA38zS8M/WvLdMwS9Al4TyAQ19AsoUfrmM6ijAetbdgN8Sg/3tL2srEIYXe2qNQFZFSxxYSUOh5XhBO/n7A9rQSx78wy2ZTjlo+wrBHQ/Ph2TS65yE9zONu2EgggPZX4xkHts03MCIJIYxV0Fid9GfY4gAM6H2SceTbnExWjooNWfoae9hRKfB6Fukod5PWmib0cnqNByZqsLW2BhrisjqEF7nct7BLN7yfTjn40mgZ9PeqIUEtAV7hR/DmH5NFu3I580otq8W3B9+YxfWcXFGIbeo0xBul1Wz6zn23V5/KKbV3ZO0xJ/rzGy2WsM0h14tVi5vPXDRPdUBJwiQ6cZZRxqER4Xe5YcG4AFWpuzjs2MoOKbGz3+bEVLagIbwSrqXE0294TEVOStXHLEzzxEMn0UoY9/AYMu0T2VKqMaLQPB4ZhMIbfhaDyB1E/9rC4wB48WjeNBcmPuKPNhWnbG82xaprymBmx/zcVzhrzhFaFJyqFudALiXnoYib9sN8SPCiS6n5v3X0RCOV+KZoEzim7GoB8SiucgfsHw6bwYq4xzWCbTtD2FBgCuQdLTK3LJI0NkiAa0MSa6g6BsStBtEtMH8u2YFIEcJtW79WH70fDlOb2p1KhvDm6NuUioJI3sp+VyHAdTspr0LIuZpPNYdJHLsrWGcghiVCfEq58TRy0fBTgfyVquZ8oougysaaUsI3XWJkdZHcYPHiTVe5uLd8xWgKO1o3wr3WSMtUClkILLdLt
+ TsU5CRS0
+ foE4Q6vPxyvghOLZkJNLHierAVa7p5cbL50qxLvB6UXIrM860DNUrY3UmcDJR+dno+bfY1kXOMUNkc0kg2CMSSFOhLeyblQEbF3W7owUCdwPYr3XjQtrbVJ9KiOlxCXPIvXyWxWZe4Vyn7+NqaZgWMjC4x+L5gKV72vtlvhj9/9q7Bm7GMVcdjpcimtShAYszBgTX69AF5+8GVwb1M3Zq3h39ErCawByqou7oJr0ajRjA42TwvduKaZ3flPswpax4f2KoNxLzcZyscE99O3mC/S8QawurVx8H7LEE5TgFO8I4jp17IchRXlNYtrfh+y+qmubKTo4csk9JnRYnMuhCAVvXZsQGYawg7prkumxCIugHaHP1WERf9sdoOSIo/68R+lJuaKgzcyDEIFHatWdKqEJ7rRi3Acj/CE3KQ5WPCfNb6e1msdkKGWy6PRclpxsky3U71F+29+LDq16admpWP+e/X8SVOpOTQN3Nhq193FKJ4fGCVVmBlSZMWC+/ECZQAevePqmoGwhTiSq9t6CZ54hnMFqxURKweuUPcCMi+ttj3e/QjI4vZCXz+V/eV+XuNhvSmvq7JLv1RDNdyVXHgXQKPKqontU/tBEr3DoFezfjnfbcvO8umj8vm7s1uu59uQi5WaqZL4gc4m6+9zLe3QMiz+jfEG0fO2w/mJ+a1WWK7bZ4cttQJruB8F4v1FE5GzYK/J1OBNEBY/forGew+vEnNfbhPD/RHpn+o54YHl8eUvN0pic7QBEjW/C6AzJcrcisA2ieuhXsMNTIks6NleJJZmBa6fu1Wkq33an5We0+zx23+OfLsHcOme2B4IgXH4y52lOrZsXGuKIQd3mHmpb9yQYNBkq2PaNl/+wjUaCSnprtCqZvvTaMBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,39 +132,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-User page tables are allocated from PGT_CACHE() with
-pgtable_gfp_flags(), which adds __GFP_ACCOUNT for non-kernel mms.
+vfio, iommufd and vhost-vdpa call iommu_map() with GFP_KERNEL_ACCOUNT
+and the gfp is passed down to the drivers' page table allocations.
 Specify SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
 __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
 
-Path: copy_process() -> mm_init() -> pgd_alloc()
-  -> kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
-                      pgtable_gfp_flags(mm, GFP_KERNEL))
+Paths:
+  VFIO_IOMMU_MAP_DMA -> iommu_map(GFP_KERNEL_ACCOUNT)
+    -> s390_iommu_map_pages() -> dma_walk_cpu_trans()
+    -> kmem_cache_alloc(dma_{region,page}_table_cache)
+  iommu_map(GFP_KERNEL_ACCOUNT) -> arm_v7s_map_pages()
+    -> __arm_v7s_alloc_table() -> kmem_cache_zalloc(data->l2_tables)
+  iommu_map(GFP_KERNEL_ACCOUNT) -> sun50i_iommu_map()
+    -> sun50i_dte_get_page_table() -> kmem_cache_zalloc(iommu->pt_pool)
 
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>
+Cc: Niklas Schnelle <schnelle@linux.ibm.com>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Chen-Yu Tsai <wens@kernel.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: iommu@lists.linux.dev
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sunxi@lists.linux.dev
 Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 ---
- arch/powerpc/mm/init-common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/io-pgtable-arm-v7s.c | 2 +-
+ drivers/iommu/s390-iommu.c         | 4 ++--
+ drivers/iommu/sun50i-iommu.c       | 3 ++-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index 745097554bea..72dfcc559630 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -140,7 +140,8 @@ void pgtable_cache_add(unsigned int shift)
- 	align = max_t(unsigned long, align, minalign);
- 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
- 	if (name)
--		new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
-+		new = kmem_cache_create(name, table_size, align,
-+					SLAB_MAY_ACCOUNT, ctor(shift));
- 	if (!new)
- 		panic("Could not allocate pgtable cache for order %d", shift);
+diff --git a/drivers/iommu/io-pgtable-arm-v7s.c b/drivers/iommu/io-pgtable-arm-v7s.c
+index 1dbef8c55007..b544e5da237a 100644
+--- a/drivers/iommu/io-pgtable-arm-v7s.c
++++ b/drivers/iommu/io-pgtable-arm-v7s.c
+@@ -706,7 +706,7 @@ static struct io_pgtable *arm_v7s_alloc_pgtable(struct io_pgtable_cfg *cfg,
+ 	data->l2_tables = kmem_cache_create("io-pgtable_armv7s_l2",
+ 					    ARM_V7S_TABLE_SIZE(2, cfg),
+ 					    ARM_V7S_TABLE_SIZE(2, cfg),
+-					    slab_flag, NULL);
++					    slab_flag | SLAB_MAY_ACCOUNT, NULL);
+ 	if (!data->l2_tables)
+ 		goto out_free_data;
  
+diff --git a/drivers/iommu/s390-iommu.c b/drivers/iommu/s390-iommu.c
+index a280ad4f63b7..467b97ec18dc 100644
+--- a/drivers/iommu/s390-iommu.c
++++ b/drivers/iommu/s390-iommu.c
+@@ -198,14 +198,14 @@ static int __init dma_alloc_cpu_table_caches(void)
+ 	dma_region_table_cache = kmem_cache_create("PCI_DMA_region_tables",
+ 						   ZPCI_TABLE_SIZE,
+ 						   ZPCI_TABLE_ALIGN,
+-						   0, NULL);
++						   SLAB_MAY_ACCOUNT, NULL);
+ 	if (!dma_region_table_cache)
+ 		return -ENOMEM;
+ 
+ 	dma_page_table_cache = kmem_cache_create("PCI_DMA_page_tables",
+ 						 ZPCI_PT_SIZE,
+ 						 ZPCI_PT_ALIGN,
+-						 0, NULL);
++						 SLAB_MAY_ACCOUNT, NULL);
+ 	if (!dma_page_table_cache) {
+ 		kmem_cache_destroy(dma_region_table_cache);
+ 		return -ENOMEM;
+diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
+index acdccb7c9eef..604a357cc1fb 100644
+--- a/drivers/iommu/sun50i-iommu.c
++++ b/drivers/iommu/sun50i-iommu.c
+@@ -1011,7 +1011,8 @@ static int sun50i_iommu_probe(struct platform_device *pdev)
+ 
+ 	iommu->pt_pool = kmem_cache_create(dev_name(&pdev->dev),
+ 					   PT_SIZE, PT_SIZE,
+-					   SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA32,
++					   SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA32 |
++					   SLAB_MAY_ACCOUNT,
+ 					   NULL);
+ 	if (!iommu->pt_pool)
+ 		return -ENOMEM;
 
 -- 
 2.54.0
