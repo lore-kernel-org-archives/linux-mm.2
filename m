@@ -1,106 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40DB606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 16:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31D3606A332
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 16:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UtOFRBsC
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i/sjixNX
 Received: by kanga.kvack.org (Postfix)
-	id C92956B0A6D; Wed, 25 Nov 2026 11:14:19 -0500 (EST)
+	id 6EF626B0A6F; Wed, 25 Nov 2026 11:15:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C43A36B0A6F; Wed, 25 Nov 2026 11:14:19 -0500 (EST)
+	id 6A0086B0A71; Wed, 25 Nov 2026 11:15:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B321A6B0A70; Wed, 25 Nov 2026 11:14:19 -0500 (EST)
+	id 5675F6B0A72; Wed, 25 Nov 2026 11:15:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 89F686B0A6D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:14:19 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2C0DC1A0ECF
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:14:19 +0000 (UTC)
-X-FDA: 85474138638.25.30F3ECA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BA4381C0005
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:14:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UtOFRBsC;
-	spf=pass (imf18.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 25F526B0A6F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:15:19 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AFA7080F8A
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:15:18 +0000 (UTC)
+X-FDA: 85474141116.07.3B37649
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5A7DE4000E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:15:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="i/sjixNX";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795623257;
-	b=HrwQrHaUhx3/ds4PSrFbQ2GmIVXV/Z8sVgzubMjvehlZbSyxvo2nBb/pJGkpMvPAPrDZZ0
-	+3rYHcK4uyh9VZ2QeONtnt1BdxhZZsOvAT3ovrlXjuK/joQ78KQ+a/1RcsfSVrKh/iZx/D
-	iMTm7sKdXAWcpC5iIgC2e01K32R4TQ4=
+	t=1795623316;
+	b=zSebqflZbgbWM83KaK9EFDxvnQMSISzlEVuAqgDdoweBc3JJP2vO7lUOe0I6iur/t8M86j
+	8ishtfa+WQvjKco0SuCiAp+r9lgTeFvmB4/k35IwPzpv0nD/0Z0rwtK54zNcMqKSjB6iTe
+	pxCFHY3mqykFnN7IamJ7RyZWvNakvoU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795623257;
+	s=arc-20220608; t=1795623316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LdER2mkFO0wbjr2+rc/aRUmp4/Sc5QyLtaG22Ye9JSE=;
-	b=BVns2YeFx3QxOBlLKpfKwFzF8Ti3ATBR7ZAPbj47Ca9zmy9LC2FIgtN3VPyZeJKN72tm/5
-	AhXfPDs9IYB2R12fUpoEfR9XwHZt+3Jd2IneRH9TzaDu6VSHEtd8rYzQ8qpahqnwuP2lCQ
-	N32gGlZEJJ5ATQl6OI1H9rytTmkVjAo=
+	bh=ikIAQDWUd4oIdUiwPTrXqLa3Yct6IL/NQnfK5N4xiCQ=;
+	b=Ek5vs5sV/cFY4xnQwLJjTXxym8s0izqN6xdnRDKaqsToxD0H+2QYyjx0umfFJ0LIZiemir
+	V9bJOsqC10cPXwo7oU14PKWZqLWEMzCaVSmjwsrtWd4k2lIWmCFJa4zHqjarF16Az8z1Nf
+	9ebZw5Q85msrABv5zYQnekqTiOGIlRU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UtOFRBsC;
-	spf=pass (imf18.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="i/sjixNX";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795623256;
+	s=mimecast20190719; t=1795623315;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LdER2mkFO0wbjr2+rc/aRUmp4/Sc5QyLtaG22Ye9JSE=;
-	b=UtOFRBsCKAK3E8Bsu3A8rziiu4/aqAhE/qioSN+enl9xu6asu7MYmZxBpWnwgM6JAJ10eH
-	GeuaMt0x+rQF7dmkSzy8byorSs4CqhqwSkdzDKJ4NU36OhlMRXg42v6WqTsD7ri9JlJGwU
-	zmrSWBx/pnkzJtxscC6RhgstvSiYf98=
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
- [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ikIAQDWUd4oIdUiwPTrXqLa3Yct6IL/NQnfK5N4xiCQ=;
+	b=i/sjixNXl3r5GPHHEFkXv16gfjzbESzfNVL+ELEJP8IXgC4d6JItv2XIW99mQrRl1Ae7EN
+	JpqjHWOAZU4a5Fjkiq1+rNwD7BhIuQYI6HNj5I8e93fBjbpdisUya3eIamMnAxo9zgMC4z
+	OdS6ezqPxtWPhICnw+5EVyI9KbcLxNk=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-443-VSs_GyTwPhO7JFHqdApumA-1; Wed, 25 Nov 2026 16:14:14 +0000
-X-MC-Unique: VSs_GyTwPhO7JFHqdApumA-1
-X-Mimecast-MFC-AGG-ID: VSs_GyTwPhO7JFHqdApumA_1795623253
-Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-492f39f29c4so6266123fac.1
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:14:14 -0800 (PST)
+ us-mta-668--itD0hx9MkO4zYQYDVScjg-1; Wed, 25 Nov 2026 16:15:08 +0000
+X-MC-Unique: -itD0hx9MkO4zYQYDVScjg-1
+X-Mimecast-MFC-AGG-ID: -itD0hx9MkO4zYQYDVScjg_1795623308
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4e937c5bd4fso5072251b6e.2
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:15:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795623253; x=1796228053;
+        d=1e100.net; s=20260707; t=1795623308; x=1796228108;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LdER2mkFO0wbjr2+rc/aRUmp4/Sc5QyLtaG22Ye9JSE=;
-        b=mdCDTg8I2oDtPXv5Go70I/2ns4OMvltUX52MEBTvW5jU2FtlJrNAQKdXRlKAeAZfEd
-         so8OeEh/zJRecrdk5dC+65CmI2oZ10ytb7kmevQc+iJwf3aga5Py4XMkJjKibHpycVgI
-         UfhEfSAHOmua1gCuyy4a/zNC+N4DYSvWryfjJBj0PYh+yhVTeyOoFsgBpY3amFlCzoxB
-         6wBfKpPc+oaqN9csXBauGNBg2V3a3H1VqGezP6LcqHnkOimsDGuETbtWCrosR0zhZ2qz
-         AyDRdHUVW3HITLgdyATOrv2njHon6ixFp15oFzQt3aKJ6OJyDsciw9GMrli0a5aFxewU
-         Aoxw==
-X-Forwarded-Encrypted: i=1; AL+hErHOUXu+bSP8N8qKsKxRRDqurA/W/DJxv1smnRFg9bsnolRxxDKE8DmNUf3ZFuVEiWZ5eGS8g+3QFg==@kvack.org
-X-Gm-Message-State: APuU4Z/m8aZgkjDloc6CCRsqkf7lcHZnsWrHbIk0I2IU8XxBVmEmOHR2
-	6FHTc5dKVl3ipE42kXkyy9mXu/Q0e2pPg76rcxStZe/sKDhV9q6tV7cfI0JR/9BYbTopWXhEnJI
-	Myj6G+bhrlMoPg/9xZN8JZRgSw8KpsD/yfRQAWFmMGWXPqyqaHK7pdtsBY8F3OJWPY8N73cKWrs
-	t4Rv26BT5HB0LMBT+QKrWJnVoU8Sc=
-X-Gm-Gg: AZFdTZeem5c6xOrVDtQSofbQdLGFd2OF9WD9SSfETnzm6B95cpB9AsrDTEWyeVNI8TG
-	1/fzjXnCoJHDYvhnawdFBUMX6T35a+3cOriMc/OJewaOLzCaWrq4eFQBg818i23lU+BTS3HZUp7
-	MaV9RbFxQSOdrrTCR3dAa7x/gqXOCm2GXf6jjU0armx2Kw/ZSlMHyXZHzf
-X-Received: by 2002:a05:6808:c3cb:b0:577:2888:47b3 with SMTP id 5614622812f47-57a0ac33d63mr20058857b6e.44.1795623253378;
-        Wed, 25 Nov 2026 08:14:13 -0800 (PST)
-X-Received: by 2002:a05:6808:c3cb:b0:577:2888:47b3 with SMTP id
- 5614622812f47-57a0ac33d63mr20058815b6e.44.1795623252854; Wed, 25 Nov 2026
- 08:14:12 -0800 (PST)
+        bh=ikIAQDWUd4oIdUiwPTrXqLa3Yct6IL/NQnfK5N4xiCQ=;
+        b=gS6UiHCA/Yoy84xt1TW7S4wt7SilUT5jSLJmUAkblURaNArEKjKmT+FiRqEy4PpiAS
+         HhuhGUCkTZbCtJQAlZrYLG/rtn7TpSHWGSzNIySZeuj8O7Xx7SDUIQXCU3SdIe50dSaR
+         50oMcCPlHDq2LVeEwtmFo3wggYRCdPzjWwKiickO9cVG60UcO7SvAQe8RdloTinMT8+j
+         mWWAjWJ02ukcBgbSw84cnL2r7zkRbdGuNljvxP6wB92SvRG004G4bEwE4f5ybz+2JU0Y
+         PwHkc6Kykq8KZGnGUSpOEDrPH/jThpldaW18X8RdiEDuSWGP6G5Ct8eVQxLj8Wz/HMRg
+         65Wg==
+X-Forwarded-Encrypted: i=1; AL+hErEakM64tJd7kwiTCPlSqMaiJfwz+bnRKD9DObqJJg5JTU29O06eJXBwTRgiOCdyfV7LkpxDm20LBg==@kvack.org
+X-Gm-Message-State: APuU4Z+YZaz/rkL3BnzeeOKHotQGp/fr/ebibKM4wd5MQZWAGX2iMkrt
+	Wcw8lueWoN+HkxE91DsD6WL2R/OipQGxNXSVSBmT5PfNP953Ko707RzdQCS3//Vt18+96dh/AZJ
+	o6XoaqzgnpjAXu5D3oWd+j/r6YSr/uZT4aK1ee3Gs/R7Z1PcgQiLILtWBsh8YPSBkwZdBBp41Lb
+	fi5KjedG1qorGkPCZnqO7PmMkybgw=
+X-Gm-Gg: AZFdTZc/bzIMaPl/OqhL+oSaKq4sGQOnrYf4wah7wgg9NoVjjSjjTTwJjunr7+r/99w
+	ZZGfZ+8zhSm29ECxmB+zDt/4FKZnJofi9DpFniiHdRqWzr8RrYBRcKODC976xkf8BeXt5D32wy4
+	2bx3RuIslK4tY7/OGhLRXRlUKU12WP7KbRHtnMUTXx/L/AKDg1di7A7o1Q
+X-Received: by 2002:a05:6808:1a10:b0:564:48f3:dfa8 with SMTP id 5614622812f47-57a0a111c93mr20349873b6e.11.1795623307672;
+        Wed, 25 Nov 2026 08:15:07 -0800 (PST)
+X-Received: by 2002:a05:6808:1a10:b0:564:48f3:dfa8 with SMTP id
+ 5614622812f47-57a0a111c93mr20349798b6e.11.1795623307221; Wed, 25 Nov 2026
+ 08:15:07 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 References: <20261124-v2_20230123_tjmercier_google_com-v6-0-dce12fa03ad6@redhat.com>
- <20261124-v2_20230123_tjmercier_google_com-v6-2-dce12fa03ad6@redhat.com> <sashiko-outbox-233444@kernel.org>
-In-Reply-To: <sashiko-outbox-233444@kernel.org>
+ <20261124-v2_20230123_tjmercier_google_com-v6-6-dce12fa03ad6@redhat.com> <CAJ2a_DeDF+9pbLKS9pcX4Tot4xZZ-K7HydKnDjW6TWC5bvREzQ@mail.gmail.com>
+In-Reply-To: <CAJ2a_DeDF+9pbLKS9pcX4Tot4xZZ-K7HydKnDjW6TWC5bvREzQ@mail.gmail.com>
 From: Albert Esteve <aesteve@redhat.com>
-Date: Wed, 25 Nov 2026 17:13:58 +0100
-X-Gm-Features: Aa3M54qC4BhV46Zvi5xNNVUyWvQwOqnECHDuj67-iKiUZ4P0AUQ6JhGMrN001Kw
-Message-ID: <CADSE00KEAYZ+saAoTY81VNhNyevsWFD_nSDNgsPVfvvLBsE5vQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/7] dma-heap: charge dma-buf memory via explicit memcg
-To: sashiko-reviews@lists.linux.dev
+Date: Wed, 25 Nov 2026 17:14:55 +0100
+X-Gm-Features: Aa3M54qg8B1tVY9MI_hj21-3fP47U-BOsj1Lrj8qIxJDIaifgpgCHqLTs9bOP0k
+Message-ID: <CADSE00JMSXm4Vi5aH=k3VgLL__EsdEZgg_PqkSkK0LQumj1SUQ@mail.gmail.com>
+Subject: Re: [PATCH v6 6/7] selinux: Restrict cross-cgroup memcg charging
+To: =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
 Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
 	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
 	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
@@ -115,27 +115,30 @@ Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
 	Stephen Smalley <stephen.smalley.work@gmail.com>, Shuah Khan <shuah@kernel.org>, 
 	Randy Dunlap <rdunlap@infradead.org>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
 	Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
-	Philipp Stanner <phasta@kernel.org>, airlied@gmail.com, dri-devel@lists.freedesktop.org, 
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org, op-tee@lists.trustedfirmware.org, 
-	echanude@redhat.com, mripard@kernel.org, media-ci@linuxtv.org
+	Philipp Stanner <phasta@kernel.org>, airlied@gmail.com, cgroups@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, op-tee@lists.trustedfirmware.org, 
+	echanude@redhat.com, mripard@kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3THFiGd-3ZF_QkEpul2z1atpdTIbTR5mpZCRTjf_mgA_1795623253
+X-Mimecast-MFC-PROC-ID: _vIiQunWgDsNfihPzI4Cf9hamsfbHWSOCW0caNBzlpc_1795623308
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5A7DE4000E
+X-Stat-Signature: csncoiwh7wxt5aiu74zcmhmf4u9kyeiw
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BA4381C0005
-X-Stat-Signature: n1d5afc11ffsce4yooq6sc5yy3xmqypy
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795623256-920300
-X-HE-Meta: U2FsdGVkX18JXN0elhgl+b5zHv71IwP6wzNRZUi5FDNshNx3+4UqUezRgy5WssxHKX3DTjrtixrKKZL3VpqPanvHT5E44JSFYpKYn4lpflPk3Q+8z/l1d550/Afx15SqMgl60ATHrYt+g9xb/q/liEWFykh9PDXZgEtyrddg5HofKNkjvVqs28jcf83D3elEFcpnoePD11JihX9GKo5I0ImPJJoKiMeGLt5o3vwFTVCqqXkZ4jbFMXksVXSe6wry33sv3Gl5weexFsv7K2ziyneewgGRRGADxQnl31Zd6PxSHxTU+oyrqOK0yEMpO0c91N8jg5JiZlFPK5ggDqi8RMoBOK5PjiFTlErMLgzihaHopRgbVXd/6OK7hKSebfWHh5gHeIMK4iezBSEfbSp/RL7iriq52JFduV/WDJTFp9IMJFK/tt36KzeDGLDCEODfDqsPpnYVbZISeWJb9Np5m57N5IWRCqx5UWO4Ba0jDreod0xtEqJdHhGRKaaX030U/SIsSNueoPZAoKPfQDDN2rUYj1TLJf4wzlmWYZdYH3qcCqgmFUKwQynjaiGNLh6SQr0DEzdNALE/HJn8qIX+BooyuMI0IlA7przMdj+phqNWitCjblILXDOz6D47fluoMWJ5aqPV1NrQAM8H/XxyDIb2WY/P0wF5FSITFOg8ScwSat8BfSCc6gkl7s+FjQwbgplbk0b2e3X/VjLNzgWzSNY6lZP9wWFsBxlzt1bLkftlBg6DvNOQUfkevH/1QRaun/ZPuZbS9A2GDMbolpWTdIGDYn3SyQ39O5hIVQeLnoqr0+VIlEAn1GzY4GTStDWBJvhaHipuX+tYNBsih9G8fEUsZqJBWJRf7PAXx+vh0Hk5KhLez0fppbUZBhf/ovZUgyfgR6Z/0qoUH/WPrtCNr0rQ4R9KgXXgn2RzxPxxEYf8vo9doI5WGpNXPG5VLwexK7TJtR0zIqWrWuKkccC
- 2rbRqvUx
- fixp8g68m3fg4zl0womf5f4vp8VnhWrUw62rKolxVmcEx0a7BfNBFkndZRERyzAUecwVKzGogKD9tYSWxmKoC/N5ZESeK7qGi+CjPdxj3L/5bHuKLPKyn4OUX6RNzUMx2Z4wgR4iuBhB/qrCT9gnHg6RioUdR3XofS0xlR5PX8DCetncRSnSKVw7NV/MUaqn0z0ktH3dKn/9K0XyTLeLsiwBJrqP9/qkmDPpHi1AlI3nG0iSYXEvn1txTYNFocUhysmSvdK5sATH5pP3MHBbPPuZooxq/WRVs7kSXfkruGi1aoLS9C/17Mp0YpTIdalGXPqpq+CWlc40+JRVFSQKzeDUJfpVE53feTf5nv8eAB/1gh+wLvkzaF2jVH6NI5yjv+wAgABU+KfqA/XH2cCga9cnxMFZ2R0GOvdE1D9ea68wHPhkFuvCfdBOFYM6FhcduTUcKjfqdrgaqpUPM8ac5wKCNwv4gUyjZdXhsa5Ffc7cLKOLIlUjbVIW6A6Xndq4Zlyabsjn7spKx1JPSdLbgCFshv1oqDWmg1L5VbZD0j1+JXE0sJ0ZAAp+bm8GpM06Z04kzEIByYbllSo3bkYyq7vEd6htHB9+UXzFZxD48N3eVj4o=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795623316-831253
+X-HE-Meta: U2FsdGVkX1/q8Ql4sLe6ytpVl7bFqxKVdFi5GmXBUNd4KSSOCbxW001eXsBiBDNpXdtGrNEnKRW868e95WGfRsG/rSneXH9lXpn4L2u6JHGTcY8VyQ2oGSV0C42PRgN0M9B1bD71jzyIU1dcJIvkB4fomd6jsFA0t460ob/tciUXRHqMu0MRlzJfaPFDHZdnwOksRcKLu6PfFeJfvZOkvyP9KvH0Ddffk4crjwekyDqGGJ8j/7KRIhjVcu56Hrp2P6OiFTop6lL1ereTNZOKu2rKp+WK+xrhXRxWYdMHgiw1k20V9yLUrfF/SG/NFpvb6Fmu/640VfXE8l9tJk3AkoMV3GmiaWiTLoxKnZ6n6pqwtjObshN71teNyX5waQ7AGOGnYc8F3f5MVpaI2tJIZqFyWdIE6t+5V/y90AQkejb7oZhc4XvWeym0Ltjrc/taFY0MFeyFwTNm0hdQ/9Enkvdd3T5Ctn2wMgz0ATm4bu467FgJVQ/enrvY5o8Kar4u6xOwtbxR7fI9SCTFAxZzBhfy0P8Yobs/gBkaDg49lIW1IJyXIGQdwAEBl0oiyK91amlrJsNJEYQjExt8hvQWYM3E7OZXNipSOCTWwRFhgxTCDgilOyiyjW1ER48k/zL33uINm/EIBHXhHBXEEJgXUUg87C7rfNej7tNLniIce++8kQPGfMncgA609kLiiE0INpKoyFQeoB8rPUo34FghAvEDHRNssCKJWVVIyAIxBzni3e8yVtJFJSEqbV0CXqXolGAmVDYQreyXgGZSxdgCgIQxEZ/Ecd8SYTprRePYOyEsn64AT2MAYlpRnzJCtj8IT24BR1Jc6OXBnFhjQdqURa34aS1EHRaXMn2cP0R54CPjIX/MYfzViZwqYInSNqyoJ/WV+xN0BpetbcDHXh4Mde+42861nHb0RyEAnmA3HjOPlbAXfUQ1hzOV47kSezrh/62w4UKPJKA/bCBX/M4
+ hhu7XSjW
+ c+bqRGBFdnB2r31IVyIqs/wSfZun61RiVrbx6ij8ykd8BhYiD6NIfWTjc/LXUUyCQQWs1Woi26MaIr+2FkHyeum1RCvzZ/n3J3oYlE13OKDm5xDNFpRRtkz+2eh+NOHhhGlpcRIv6m2y/qB1Q9S9HevITeDB1JQKZCFQ1ZnHio93PNrDtz88M/H4UHxmIGS9+atxJTUswlhjpvx5m75Oxhyzg6Ky5XzPE8G1Hqa04L76AMMZ4sF2N3XIyGkCbgJ4CjQofm2CZUmThlk1cWkoX3hLG7NHdfEKWJsTJMWynQvwUPk7yMR3ZFZiKisgb8567C+Xaz4w2xKpYPxljYAz7X7nbgIWRNfvimTM9OT3fNn6ktDSHnQgI5P8PR/q55iJHJ3umSuiFyPfbRnOTSHKRrU1EFjX+vLDf8DMmjxy/5GZs0HSwwnPOHu7ge40BeO9CzlOM7bhbh955xPGLV6Qa9MbTVzfbin8EohrojJ2iBiAH/0GBdz8wUHMHjNzMdJjMv4s81wuBZRnSCZkj7IH1Y4Bte6vuPMip24x//MFf9nLN8M0wd2X+1wDsrp7btFOySgvJLrl7ZBSEOsfxOmpKaufkpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,117 +147,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 2:05=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+On Tue, Nov 24, 2026 at 2:50=E2=80=AFPM Christian G=C3=B6ttsche
+<cgzones@googlemail.com> wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Low] mm: memcontrol: task_css() race with migration in
->   get_obj_cgroup_from_fd()
-> --
->
-> commit 62e5304eba9bb9d84f6229eddf1a9273649483b8
-> Author: Albert Esteve <aesteve@redhat.com>
->
-> dma-heap: charge dma-buf memory via explicit memcg
->
-> This commit adds a charge_fd field to struct dma_heap_allocation_data so
-> DMA_HEAP_IOCTL_ALLOC can resolve a target cgroupfd or pidfd via
-> get_obj_cgroup_from_fd() and charge system heap allocations to that
-> cgroup.
->
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index e4a9af2fdaa3b..7826bc21bea9e 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> [ ... ]
-> > @@ -3171,6 +3172,88 @@ struct obj_cgroup *get_obj_cgroup_from_folio(con=
-st struct folio *folio)
-> >       return objcg;
+> On Tue, 24 Nov 2026 at 14:05, Albert Esteve <aesteve@redhat.com> wrote:
+> >
+> > The security_current_memcg_charge_task() and
+> > security_current_memcg_charge_cgroup() hooks allow security modules to
+> > control which processes may charge or transfer memcg memory to another
+> > process's cgroup, named by a pidfd, or to an arbitrary cgroup named by
+> > a cgroupfd, both passed in charge_fd. Without a policy implementation,
+> > either hook is a no-op and the restriction is not enforced.
+> >
+> > On SELinux-managed systems the only limit is CAP_SYS_RESOURCE. A
+> > domain that holds both dma-heap access (today's only exporter that
+> > opts-in) and that capability, can charge memory to any cgroup outside
+> > its own subtree. Since the capability is all-or-nothing, SELinux
+> > policy cannot express which targets such a domain may charge to.
+> >
+> > Implement both selinux_memcg_charge_task() and
+> > selinux_memcg_charge_cgroup() using avc_has_perm() with a new cgroup
+> > object class and a new charge_to permission. Both charge_fd flavours
+> > ultimately charge a cgroup, so one permission covers them and the
+> > target type keeps the distinction: for the pidfd path the target is
+> > the referred task's SID, as there is no cgroup object to take a label
+> > from; for the cgroupfd path it is the cgroup directory's inode SID,
+> > which comes from the genfscon entry for cgroupfs unless the directory
+> > is relabeled.
+> >
+> > The checks run when the charge target is resolved, before the
+> > CAP_SYS_RESOURCE baseline is evaluated, and apply to every explicit
+> > charge_fd target, including the caller's own subtree, so policy needs
+> > a rule even for self-charging. Policy authors can then grant
+> > cross-cgroup charging selectively, for example:
+> >
+> >   allow allocator_app_t client_app_t:cgroup charge_to;
+> >   allow allocator_app_t cgroup_t:cgroup charge_to;
+> >
+> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> > ---
+> >  security/selinux/hooks.c            | 19 +++++++++++++++++++
+> >  security/selinux/include/classmap.h |  1 +
+> >  2 files changed, 20 insertions(+)
+> >
+> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> > index 6c4c64d6e904..76a714107ae4 100644
+> > --- a/security/selinux/hooks.c
+> > +++ b/security/selinux/hooks.c
+> > @@ -2204,6 +2204,23 @@ static int selinux_capable(const struct cred *cr=
+ed, struct user_namespace *ns,
+> >         return cred_has_capability(cred, cap, opts, ns =3D=3D &init_use=
+r_ns);
 > >  }
 > >
-> [ ... ]
-> > +struct obj_cgroup *get_obj_cgroup_from_fd(int fd)
+> > +static int selinux_memcg_charge_task(const struct cred *to)
 > > +{
-> > +     struct cgroup_subsys_state *css;
-> > +     struct obj_cgroup *objcg;
-> > +     struct mem_cgroup *memcg;
-> > +     struct task_struct *task;
-> > +     unsigned int pidfd_flags;
+> > +       const struct cred *cred =3D current_cred();
 > > +
-> > +     if (mem_cgroup_disabled())
-> > +             return ERR_PTR(-EOPNOTSUPP);
-> > +
-> > +     CLASS(fd_raw, f)(fd);
-> > +     if (fd_empty(f))
-> > +             return ERR_PTR(-EBADF);
-> > +
-> > +     css =3D css_tryget_online_from_dir(fd_file(f)->f_path.dentry,
-> > +                                      &memory_cgrp_subsys);
-> > +     if (!IS_ERR(css) && !cgroup_on_dfl(css->cgroup)) {
-> > +             css_put(css);
-> > +             css =3D ERR_PTR(-EBADF);
-> > +     }
-> > +
-> > +     if (IS_ERR(css)) {
-> > +             if (PTR_ERR(css) !=3D -EBADF)
-> > +                     return ERR_CAST(css);
-> > +
-> > +             /* fd is a pidfd */
-> > +             task =3D pidfd_get_task(fd, &pidfd_flags);
-> > +             if (IS_ERR(task))
-> > +                     return ERR_CAST(task);
-> > +
-> > +             rcu_read_lock();
-> > +             css =3D task_css(task, memory_cgrp_id);
-> > +             put_task_struct(task);
-> > +             if (!css || !css_tryget_online(css)) {
-> > +                     rcu_read_unlock();
-> > +                     return ERR_PTR(-ENOENT);
-> > +             }
-> > +             rcu_read_unlock();
-> > +     }
+> > +       return avc_has_perm(cred_sid(cred), cred_sid(to),
 >
-> [Severity: Low]
-> Can the pidfd lookup in get_obj_cgroup_from_fd() spuriously fail with
-> -ENOENT when the target task is concurrently migrated or has an exited
-> thread-group leader?
->
-> Between task_css() and css_tryget_online(), the task can be migrated to
-> another cgroup and its previous cgroup offlined, causing the one-shot
-> css_tryget_online() on the stale css to fail.  Also, pidfd_get_task() on
-> a process pidfd returns the thread-group leader, which in a
-> multi-threaded process may already have PF_EXITING set and remain
-> attached to an offline css even while its obj_cgroup has been reparented
-> to an online ancestor that get_obj_cgroup_from_memcg() walks up to:
->
-> include/linux/cgroup.h:task_get_css() {
->         rcu_read_lock();
->         while (true) {
->                 css =3D task_css(task, subsys_id);
->                 /*
->                  * Can't use css_tryget_online() here.  A task which has
->                  * PF_EXITING set may stay associated with an offline css=
-.
->                  * If such task calls this function, css_tryget_online()
->                  * will keep failing.
->                  */
->                 if (likely(css_tryget(css)))
->                         break;
->                 cpu_relax();
->         }
->         rcu_read_unlock();
->         return css;
-> }
+> Small nit:
+> `cred_sid(current_cred())` could be simplified using `current_sid()`
 
-Valid. I will apply this for the next version.
+Nice, thanks! I will apply that for the next version.
 
 >
-> Using task_get_css(task, memory_cgrp_id) before put_task_struct(task)
-> would avoid both failure modes.
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124-v2_20230=
-123_tjmercier_google_com-v6-0-dce12fa03ad6@redhat.com?part=3D2
+> > +                           SECCLASS_CGROUP, CGROUP__CHARGE_TO, NULL);
+> > +}
+> > +
+> > +static int selinux_memcg_charge_cgroup(const struct file *file)
+> > +{
+> > +       const struct cred *cred =3D current_cred();
+> > +       struct inode_security_struct *isec =3D inode_security(file_inod=
+e(file));
+> > +
+> > +       return avc_has_perm(cred_sid(cred), isec->sid, SECCLASS_CGROUP,
+> > +                           CGROUP__CHARGE_TO, NULL);
+> > +}
+> > +
+> >  static int selinux_quotactl(int cmds, int type, int id, const struct s=
+uper_block *sb)
+> >  {
+> >         const struct cred *cred =3D current_cred();
+> > @@ -7683,6 +7700,8 @@ static struct security_hook_list selinux_hooks[] =
+__ro_after_init =3D {
+> >         LSM_HOOK_INIT(capget, selinux_capget),
+> >         LSM_HOOK_INIT(capset, selinux_capset),
+> >         LSM_HOOK_INIT(capable, selinux_capable),
+> > +       LSM_HOOK_INIT(memcg_charge_task, selinux_memcg_charge_task),
+> > +       LSM_HOOK_INIT(memcg_charge_cgroup, selinux_memcg_charge_cgroup)=
+,
+> >         LSM_HOOK_INIT(quotactl, selinux_quotactl),
+> >         LSM_HOOK_INIT(quota_on, selinux_quota_on),
+> >         LSM_HOOK_INIT(syslog, selinux_syslog),
+> > diff --git a/security/selinux/include/classmap.h b/security/selinux/inc=
+lude/classmap.h
+> > index 90cb61b16425..1f1f2fc4d35d 100644
+> > --- a/security/selinux/include/classmap.h
+> > +++ b/security/selinux/include/classmap.h
+> > @@ -181,6 +181,7 @@ const struct security_class_mapping secclass_map[] =
+=3D {
+> >         { "user_namespace", { "create", NULL } },
+> >         { "memfd_file",
+> >           { COMMON_FILE_PERMS, "execute_no_trans", "entrypoint", NULL }=
+ },
+> > +       { "cgroup", { "charge_to", NULL } },
+> >         /* last one */ { NULL, {} }
+> >  };
+> >
+> >
+> > --
+> > 2.55.0
+> >
+> >
 >
 
 
