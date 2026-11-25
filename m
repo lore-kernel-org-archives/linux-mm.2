@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE264606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF6E606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cnxwhmZD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JJ7DXGEs
 Received: by kanga.kvack.org (Postfix)
-	id 0C7366B0ADD; Wed, 25 Nov 2026 16:39:34 -0500 (EST)
+	id 5D0436B0ADF; Wed, 25 Nov 2026 16:39:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09DBF6B0ADF; Wed, 25 Nov 2026 16:39:34 -0500 (EST)
+	id 5A70C6B0AE1; Wed, 25 Nov 2026 16:39:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF5986B0AE0; Wed, 25 Nov 2026 16:39:33 -0500 (EST)
+	id 4BD996B0AE2; Wed, 25 Nov 2026 16:39:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D222D6B0ADD
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:39:33 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D2A61A0144
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:32 +0000 (UTC)
-X-FDA: 85474958184.15.218B4C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8158214000A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:30 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cnxwhmZD;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D23E6B0ADF
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:39:41 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C13858011D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:40 +0000 (UTC)
+X-FDA: 85474958520.09.03C65DB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2F56B2000E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JJ7DXGEs;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795642770;
-	b=f/OX6SyneuESGOF2w7/gv/HlN/gmxAQgPUv/IvxCPml2TukyKiO7Do51sz6pz6G9+6h2BD
-	WwahIdtkpaJNE/iPoXia2QzTjO8Aat6YZbAZ4E+fNpQ8xVn/M81jNnWb6Gy31q0Oq8Z4kS
-	7HX0wNxhIbndUcnCgmX4S1MmxIKxxcg=
+	t=1795642779;
+	b=My68/mrowOU6GVnNMJGC2zK2QDY4tDxp1itjVVJ77FimqSHvUsB6IYyDWVJw9O7873rs6R
+	PjlkYvdkhy2uY7G3QnxMe5+K97oERbjhD0FYyRtjDCJhyvUlWaWJpx3hRC1E4+0mCcFcul
+	sNxhd0CLGaghEWcIkjSfNT4PddbEQTs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795642770;
+	s=arc-20220608; t=1795642779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uchKMQEbun1KGuNSoqThhgELpVgiokvVWjr9mK1k/A4=;
-	b=B3SWkCuppC+LJ+VdW9gUpa3sIMJFqx3ITkew4VJ/22c4SS+UOcHYdR16DhN8DduH5EO+7G
-	/tBxpYaPI22m5kHpf6I72DWMdHBLVtwgLRQ7xZGnZtgPQDWv/wG6Rqgc3sM57gaO7XnW6X
-	+5lv/JxUUmGOwuKDqof18ktoFAzLkdY=
+	bh=vEcqqNm19OuH8f10/Y2MYPCdnWCdxBstah0njeHlZsU=;
+	b=3Hv1n66ghKiHnlASO0hTkA8MFd8DOr9lfI25Ez/qYFTgrtR+ZwHVOqoD92+BWCmmI6SIZx
+	ZJssD0pl/uuGddjMibRSW3NXrnxdwwG6Nw+M+f+QoCwiTEhA0lcBzcIuqyGPD+aCxj0a88
+	QUY9DCHS0aRdioFOIlae7LsAsMvo0gY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cnxwhmZD;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JJ7DXGEs;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9C5AB43870;
+	by tor.source.kernel.org (Postfix) with ESMTP id A4AF460230;
+	Wed, 25 Nov 2026 21:39:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE611F0089F;
 	Wed, 25 Nov 2026 21:39:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC941F000EB;
-	Wed, 25 Nov 2026 21:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795642769;
-	bh=uchKMQEbun1KGuNSoqThhgELpVgiokvVWjr9mK1k/A4=;
+	s=k20260515; t=1795642777;
+	bh=vEcqqNm19OuH8f10/Y2MYPCdnWCdxBstah0njeHlZsU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=cnxwhmZDXM+Gsf0EhyO5VD88+p/C9GrSlfOXwoM8uURHlT5OqfIyp2Rk5t4izPM3P
-	 UUx1iGYMBxTWs0cL3dCa2FA04NGRrpI4ftwFOBvtbII2klixx84KhPEvfJOjk+TwJo
-	 DFc6Qi1OlbLb6T2cbEG1CRPNtaCZk/R58jMv+IibTCsr8BptHZoUgMiJ2jnJbsExBK
-	 Q+MoCouRcesMmoAwbmZrOxAbLuJxUupraT9lUd2s7+j6/4EPjYtXHaUu0/aXvLlyvR
-	 SEBhBNJRRsmdB4Q6buLNKRmyi35fpFhzWJhgqoKVgCyvDfHsSFNTIFHNt4CE5+GaCp
-	 TsEGvbU9H6XSA==
+	b=JJ7DXGEs5MKX+mzY34S5pcC47lEO+Z3xW5ExnajvXeyp6B4cTkEBKBLKwRfYJ30Fz
+	 lLNpO7huIkAceYpnk7nrSIDfc3PjICL3cqJQOiLMp7p5bm9TWqZxiN8Ef/M95VULzT
+	 fHuKQo0NOfAybTCSxsCbnnpdX681msyNEwt4gK3mAOyU7j1c+c+DPuJH8a/Ket8aRT
+	 gbr4kXFfaBWZDxC3OE8WLPrq1UI42pL+JEsiyxGoNQ/cgvNany+6roREwPJkRXgvWA
+	 wEQW3ZqS1Ng6/z3Q84rN0+87qHe/dj7XUTNrb7i4h4TviMkgm/tk1TPgKT9zYetvzs
+	 wkLns7a/xnjJA==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Wed, 25 Nov 2026 21:37:11 +0000
-Subject: [PATCH slab/for-next v2 10/14] fanotify: specify SLAB_MAY_ACCOUNT
- for event caches
+Date: Wed, 25 Nov 2026 21:37:12 +0000
+Subject: [PATCH slab/for-next v2 11/14] smack: specify SLAB_MAY_ACCOUNT for
+ smack_rule cache
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-10-7c680f02a734@kernel.org>
+Message-Id: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-11-7c680f02a734@kernel.org>
 References: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
 In-Reply-To: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -105,18 +105,18 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Johannes Berg <johannes@sipsolutions.net>, 
  Eric Dumazet <edumazet@kernel.org>
 X-Mailer: b4 0.16.0
-X-Stat-Signature: qdabhmq9xehy4gs8u34a9shti3mya5zs
-X-Rspamd-Queue-Id: 8158214000A
-X-Rspamd-Server: rspam06
+X-Stat-Signature: hef99cnaa1yjkygz8b41mnd678rxskfx
+X-Rspamd-Queue-Id: 2F56B2000E
 X-Rspam-User:
+X-Rspamd-Server: rspam03
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795642770-763997
-X-HE-Meta: U2FsdGVkX1+HI5E7j0sP9nWFwjmhKtX+w79zDoN/RP2A5YbZy7dyEFY+aa2w9WnIowMgHEYRXtrWj4k2Kag8JGLAL5Sl0UmS+qFb3sSEmT3T7UdmirEizk1uHJB6wW9FETKD+JGGuawpezdPeKucCofzsjX5ZgexHMCGeAiddS3X0CjPBrOIMnKlbsI6Cal/6nb/Tm8CasrHLkgW2iau9GF4eLyNrJeB4TIAH+y/Un8eGAwUSzmdEDmN53upLMskj09J1K1XcWinmh+HWk30lCfafiRP5aY4yiDbzJCSRcYhN1XlM3TIvpTZzz/trd+YJCQC+GwjNOTMbhYRZ4qG4C07arMLS27gd7np1EZkJj0WNQtjrWXiG5vbolz+omcEmlt/h3XeMf73qZ7xI5a1fnpRB8/JaOnKa+vkrJgexLLo++vAC4ghLHgGEth8klu+7y/1+5fJPFIDnwj3ug+bVvKFaMKjeX7B0kG6GSLu4V8uGznUV/8DSbLJLnjb8VSPCC4sqByx7EbkxQ5H+Hr+v+fMNXPmJP4KwQN/3RYujuiu3nBe4TqMpTUcYWi6Onj9Dfp2pdYEmpxonqGVtlkgBB+Z06g6pQq1XU7yUcdGDOTm12JzchoYBHgWEeG1wJUHHNoMsHnhZKhaiNmLHndqG24KiGqu4CLegwoHBOvMc33yzs9XNElDqSgE7RPJIuVM8myVc5AblT7DyZa4Ya8jxGKSqdseCIyYbe5LGXVVpQNGi5KbLlHYvXMLTkusyTveMo2bnj7cLCUwA3E9pB/ulOw8Oi3Xt5gTYGF51RSBpPjgiaMOFB+P6gtE+7BlYk3zksWZi5mZGuSMnnPKbVg5l7Uig1tt+6cx2ifcgoHoOxxc9MKURjNHix8sDucXcy5XGOAlmWTS09ilNwFKzZuVDKeNUCUNwG8TNrqxN7peLCGbtNxJitiT517C0fA9yg0cxqzcRdObezXM49lVVt+
- tzoXU+1Z
- DSERaNGNBhVZMigyYYyIiTVyEMqF1Slthg2Bdyi3xL6QQY1X7bO8epC3zMZtQu/GMkbvbBDTNAnU4gUEhmcEDVzlnCXrTyCet4oGnIw4kquC7ExqMZf8d39pv8w8BH5sD1S1qnR5ZtjZJjMSlFGQvXDauboLgJhDdWGx0n4+rxftr5LR+XRXAoi1zyZWs8S3ffvoG9xbi+/EIfL90wrJbqtDAb9UVTLXXbJxp3XhQG8zXs7j7d0Q5Aupu4brLah+UibhIEm612F6zdpbjcKDluKJzJAqx9ePUk2IIGYkao+M1+HIQp4XSN7I/3oRMwqyS6XNVwktHOY4vPkTbsVZ9MzJ/T2MTznI7aX/tn48xpJNBgHeYyFTKoOo0uOWohbmXer8Qj/5UinuvBSXV9by3Txx0rf97KED5DZCU84aYyHIF5QyXACCZZpcIXr+9/f5jeCx3PL/iNdRFjzYs2F1Q6sujg/KcKdusT16bFglAaNBH/XY6/Zs1h3arswD6TeNdN1Qo4Us/e0KNunbMqNI8dQXOEOi2qbgaLxUO
+X-HE-Tag: 1795642778-637653
+X-HE-Meta: U2FsdGVkX19BS2C9JwwaEYGZuziTKQp1uoXvzIagfVOdK2jwK4R3oNNeohyl0/2pLXvAM96KATuboQXR9kckj9Mut/X0/+jBNKxBMwvy+yHTeftbekFNnCKcfdI1gqOyXf5hSTldRRZbxvHEbc8fxsvKMVm+xaoGiJbqwCL+exYv8kGkwQKvx/lWhMs/ZI0FTNeIRu2t9lRN9rYCqX55QZ+4JSejtirfH/EY+I6lRkZjBaSvamPn3BWn1F9OC3+l7b8ATM9VBwXrurRTDkv/4gb22IHfgI8fYdTdimR4tUjt08iCaracdTHmDWFFVpYNTi42DDbm2J3zOl+n1xXRoG26ihoqnXmCE35l3cPRqt63h396s08wwJ0py9HSnSffbcbFA4/4fO8qxUIDDkq7u8J82Rk3HUncAqJTPPsmGgkQBDrAysENUEALGAtsXDRHaictAHxAfs7nVA7VEmr4dWczR39d63uXgx9/Cc1abIqvnpVw/9IMKdWazmHWvCJvr/3+KruQF444gwTp5cqU9lTJpv/xJDyi8EhCcfvKpNHzt6wNIi90gJhZSgQgsclwnvHc4KhvYHHIYYRiBrzmA5D76jQVNe/UTHhGAOyieT26sMKZoclt/AkmON2tHs6ITJuucJv9MOV6l+870ZkzYUPZuq7UuCz+OgfIEQ49aH+E3/cHFBFenWJL60YRNKGerfETGmRvhr9fmN3sJNxky+njqMouSakL5hh6ovndL0jOs5Pq0aJkbQYZD+meUinRL1BnuiGuehds/oOlz2PY6h/nqAnGHChTBHGL5fzfmTJF78rn3n2d5JzUDqeA+lxEj8I2kHhmAVGOcVVH0Vcrz1v8fkdfh7swmlYA5spw7cZdxFmLUOcxtzZLDkF+5EByjvs8T0D9xutyLqEMFRe92o5JUWBn2vVUmxFSu4jgU7aHivGhot/HM2Y+9f9Mdt27rpJr9vx0JP7u7atSjgY
+ U8KeXcZd
+ XMOdTIqVD6LX/Ac9pb76kjsZHztaAd66iwyKgV2eExUGSODIH+8dFrWJpXUavXRcExsyt/6U14cUM33ygklXGgMyDLvVj3UerdSvq80Pspmz7a08Uqgik2xtOIclqpnwxeEEUBn6poLWj81ZIQN59GTn1o3hKCc06nbD0nsHyooaE7WDczUsSi/hhpyUFqJUd5AV2x18I48bVBIDUjx5X8MzrfxmbnUkJZQ1+ORDvaj8mW/hv1Z/qQyNSJkU3ab9cWbmyy4FocA1mOVRVlUAVfIFidzZ35e5VSiTt+bgraiQmnpAKeJhe4GwwduNzZhQUgyIzGFaXJ78KeqwjyOEW3HOZMd9e7r+G8iBbhCe/O+rkmz3G+khaiAXm2T8O3B2MdNINUZOtZxQUX6KzqsEmgY4nZWYQa/C2CW8UMgNeKGHEq1xjFNuFku0jusdCilXBhMN7VcJCX3GB0g/b+ovwJtmM1I+NgDfhdnTHpPch7SBULywBoMygUVtWERmnKFIN82cWHWJg/GJjr6RNbtKo1I/drh8xdDboa+T/rFMq5ktuPMj1j5Q0e1kXJTac/LWbB1BgkKw3KIMfHrq0ktgOVUU2OPfJbyoJhc6Zo9j1GBYi6oiFXpinFGk/hv3v4fVca1leAyrfqW8v2kpYHRfu9AU+Bw/2fD2+PkSMEVkMwOjPRs4HevSzmMyAKGd7ojArhmNCEia4Y2jvKwM6n5c0Y+pOdnO9vofVasQKKKXw5yIvfqKTRnOdXgHaTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,48 +125,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-fanotify events are allocated with GFP_KERNEL_ACCOUNT and charged to
-the memcg of the listener. Specify SLAB_MAY_ACCOUNT when the object
-may be charged to a memcg. __GFP_ACCOUNT without SLAB_MAY_ACCOUNT
-will not be allowed.
+smk_copy_rules() allocates rules with the gfp passed from
+security_prepare_creds(), which is GFP_KERNEL_ACCOUNT. Specify
+SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
+__GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
 
-Path: fsnotify() -> fanotify_handle_event()
-  -> fanotify_alloc_event(GFP_KERNEL_ACCOUNT)
-  -> kmem_cache_alloc(fanotify_{fid,path,perm,mnt}_event_cachep)
+Path: fork() -> copy_creds() -> prepare_creds()
+  -> security_prepare_creds(GFP_KERNEL_ACCOUNT) -> smack_cred_prepare()
+  -> smk_copy_rules() -> kmem_cache_zalloc(smack_rule_cache)
 
-Cc: Jan Kara <jack@suse.cz>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org
+Cc: Casey Schaufler <casey@schaufler-ca.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: linux-security-module@vger.kernel.org
+Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 ---
- fs/notify/fanotify/fanotify_user.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ security/smack/smack_lsm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 63c9759fc3b0..3575c681abc1 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -2184,14 +2184,16 @@ static int __init fanotify_user_setup(void)
- 	fanotify_mark_cache = KMEM_CACHE(fanotify_mark,
- 					 SLAB_PANIC|SLAB_ACCOUNT);
- 	fanotify_fid_event_cachep = KMEM_CACHE(fanotify_fid_event,
--					       SLAB_PANIC);
-+					       SLAB_PANIC|SLAB_MAY_ACCOUNT);
- 	fanotify_path_event_cachep = KMEM_CACHE(fanotify_path_event,
--						SLAB_PANIC);
-+						SLAB_PANIC|SLAB_MAY_ACCOUNT);
- 	if (IS_ENABLED(CONFIG_FANOTIFY_ACCESS_PERMISSIONS)) {
- 		fanotify_perm_event_cachep =
--			KMEM_CACHE(fanotify_perm_event, SLAB_PANIC);
-+			KMEM_CACHE(fanotify_perm_event,
-+				   SLAB_PANIC|SLAB_MAY_ACCOUNT);
- 	}
--	fanotify_mnt_event_cachep = KMEM_CACHE(fanotify_mnt_event, SLAB_PANIC);
-+	fanotify_mnt_event_cachep = KMEM_CACHE(fanotify_mnt_event,
-+					       SLAB_PANIC|SLAB_MAY_ACCOUNT);
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 3a4a33568297..f4454dc8e232 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -5359,7 +5359,7 @@ static __init int smack_init(void)
+ 	struct cred *cred = (struct cred *) current->cred;
+ 	struct task_smack *tsp;
  
- 	fanotify_max_queued_events = FANOTIFY_DEFAULT_MAX_EVENTS;
- 	init_user_ns.ucount_max[UCOUNT_FANOTIFY_GROUPS] =
+-	smack_rule_cache = KMEM_CACHE(smack_rule, 0);
++	smack_rule_cache = KMEM_CACHE(smack_rule, SLAB_MAY_ACCOUNT);
+ 	if (!smack_rule_cache)
+ 		return -ENOMEM;
+ 
 
 -- 
 2.54.0
