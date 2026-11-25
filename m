@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C00606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205C1606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hrqSbBaF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RU7VdEp+
 Received: by kanga.kvack.org (Postfix)
-	id 6C33A6B0987; Wed, 25 Nov 2026 05:09:59 -0500 (EST)
+	id 3E11F6B0989; Wed, 25 Nov 2026 05:10:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 675376B0989; Wed, 25 Nov 2026 05:09:59 -0500 (EST)
+	id 3B7BA6B098B; Wed, 25 Nov 2026 05:10:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53C006B098A; Wed, 25 Nov 2026 05:09:59 -0500 (EST)
+	id 2A5F56B098C; Wed, 25 Nov 2026 05:10:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3066F6B0987
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:09:59 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9708580DDA
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:09:58 +0000 (UTC)
-X-FDA: 85473220476.19.21BC6B2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 043406B0989
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:10:47 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82E12160D90
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:10:47 +0000 (UTC)
+X-FDA: 85473222534.14.270FA24
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D08441C0002
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:09:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrqSbBaF;
+	by imf15.hostedemail.com (Postfix) with ESMTP id C4FD5A0004
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:10:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RU7VdEp+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795601397;
-	b=2GccBmSxmUQ0qm9eoOE8UpE27+1kqodtKMsn+UkoSvgCbD4QqjcbtPPxsS/y9nGcj+6SaW
-	BfBXVwhm681zSWCHCbakeyO3ltim3qOwvdS6fKfSP8FkmHhPfdYE7+BZKy3P8LOSbOx5pc
-	ia2qPZjZP+lbXEjUYO2yD0UaYGmqx+g=
+	t=1795601445;
+	b=biGsijstak/BdO1sEE86bxqAPKMshnZ3nF93o3T7i9OgbAnZEoREqpAJuJCOWGTezWHONq
+	d/5hV+lzOx0bDqLErSC8ugjwtYfqKbcv3hxOZJNoej5eNMVT6iQO2fVW+bC4at1Y5m7r07
+	v/6vvZEb3zeo581eLUvdYaWWWG04qWE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795601397;
+	s=arc-20220608; t=1795601445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fRTq+AvY8ISbuT9KG/JFr78txoqaHjxW4VA3cGzv+3c=;
-	b=Nq7Xy0AzCNCUtY7E50vGIMXp2UNfciBQwZfJXo5xVhk/sIXGI7ev32o/LzkGI+ovm8Vhdu
-	uKSj+xRp0PybCTkkMYEZDJFyzi7xZBFG7MKS7i0LFsX2TAaaI8YL+r1WxoW0hxdj7VRH5/
-	QTGdZejMUldxy5coCP33mRBLNsHM93U=
+	bh=mu024QmHDvgvYMUVNzXnXivyqSL4wI/j3FC6aH6IbZ8=;
+	b=6zLQeHzyOMGdP26AmWEnw3ZyoFiEiDf5YDzWgQ436BJ0stakRbw+gxksPM9EGsr+6+2oFH
+	7IB5Co9iQAOFosBg5t7dNMBe3xKPveuNb5wnY5STlw1Q7WUxCTCLV6wgwHqJQsorvk563x
+	t0MGxlt/SPrwwd3wMSlGXC2e83R7OrA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrqSbBaF;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RU7VdEp+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5511962557;
-	Wed, 25 Nov 2026 10:09:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6DC1F000C6;
-	Wed, 25 Nov 2026 10:09:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B15262557;
+	Wed, 25 Nov 2026 10:10:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CB51F000E0;
+	Wed, 25 Nov 2026 10:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795601395;
-	bh=fRTq+AvY8ISbuT9KG/JFr78txoqaHjxW4VA3cGzv+3c=;
+	s=k20260515; t=1795601444;
+	bh=mu024QmHDvgvYMUVNzXnXivyqSL4wI/j3FC6aH6IbZ8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hrqSbBaFPjP8G9n1TEpjd1nBDvi0kQZJPz2xrVHr15XyRl9owNVJwfef7a1Yj3Vtq
-	 hMbwF70XbF4FHg0XftOd5SE0U8cri7N7kzR6ueyonVnqIPAYlJTqfsAr5SOmCtsi/b
-	 LWsyq5YR+auu4GxdhholkFMxCQvDSCFOsafIs3vOQBdXmfO3jS7OzpT+eTicBotJvX
-	 SLDtmESfq2cKhB2yHNwAEaUDqqsMgpw5es9IrjvQ2f8US4vF3f+DKAI6TgtUgOdgu/
-	 wIirgCJP4tzsSKbnG4ctC58tWlsYPSCCv6ccjzIZ6JymdiuF9weLIVkzEI4AknvGBm
-	 BVYqPJf4XXMMQ==
-Message-ID: <fc51ad85-16f7-41fb-8eb3-2b8ee595e711@kernel.org>
-Date: Wed, 25 Nov 2026 11:09:37 +0100
+	b=RU7VdEp+uQaJQTpx4ry0WTeOcxTev6KoYGQJYDB+lzjlmCfZPn362tXFwosYKRSkf
+	 dpUd4KPHR1KjAlpkI6+3pZhUBWdCC0oo9t2ne/xLDTNvZWvBQ+ryFsAhP2sq2bMxUh
+	 vewss76bYYnlC2qfeKk45o43f30xxCXaBatgNH4XNeubPGRA7rA6pAdqgVkVJbvflp
+	 Bi97DX6JK36dRAQdZj4BnREXCiNqMn85w998eS0D2lyJehBFUC7yiEkN+8Vra5hDqY
+	 6mDdC82jp1UZLmbZ75glZCe1YpTameE1o5BOkX/xojSGpLbwLc45H98z30LjJpTKZx
+	 H5Wm5zJYDBKBQ==
+Message-ID: <fe08f69a-0e62-4e4c-b87f-d4f3f9fb2a0b@kernel.org>
+Date: Wed, 25 Nov 2026 11:10:27 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 15/18] mm/huge_memory: mark folio as accessed more
- accurately on split
+Subject: Re: [PATCH v6 14/18] mm/madvise: adapt for LRU refs based operations
+ for MGLRU
 To: kasong@tencent.com, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
@@ -98,7 +98,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org,
  Tianyi Chen <hi@tychen.cc>, Ridong Chen <ridong.chen@linux.dev>
 References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-15-8ffea39934a6@tencent.com>
+ <20261124-mglru-fg-v6-14-8ffea39934a6@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -145,11 +145,11 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261124-mglru-fg-v6-15-8ffea39934a6@tencent.com>
+In-Reply-To: <20261124-mglru-fg-v6-14-8ffea39934a6@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eosdi5idnaut9g6itzyrpzocd8ptob1s
-X-Rspamd-Queue-Id: D08441C0002
+X-Stat-Signature: y6cozjq9j7owkcbyjtqtoqnf76rkqwaf
+X-Rspamd-Queue-Id: C4FD5A0004
 X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -157,10 +157,10 @@ X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795601396-161159
-X-HE-Meta: U2FsdGVkX1+mfdDPprhzinFTMANgwxt+iVgOui1xEBR0FMJ0iGRbUqYz/vFtQ0oWyX4mwLNoh1r1U/upMMASZmtoylSvOWUDCxW2GF8Rh0x2T54Md1/J/dMHFYyAYvOjfYcM/x92vG3hs5Y/evPRuKqGpErLohgPN4A8hehg38Kgemig1aQSlZr9GkYaOBAoGc/P3loo6meiJg6W/W+i/8d9k9/jnQs2k9cWcOQnwKVQxbOzsyGQ0P54MiB+vz2MueSACA4Fk66C7Rx2Oucm12eH+3nCydKrCYy/30CcELcvYNUjyx5b0+apSrRuDQccSjx/Hk06TD/TxoQu/jF5LqiMNez6rqK2HUDZR3QBO3WHD1OHBqbRFbyYx/5YrIhAlkTeqqMAjr4a1HPN1IEIv4zp8lw+EoGKO89UjD83zxl4ITXvpHcFFwT/Epzsfrv7ewGJp6VBVQFQzXdgbHXezyyP0/2wW4Z+IR6h3HQQnSolMrIBPM3jecpV7yPyfEhNtPF9JawTrQYhsg74/MOJ3YlUYS3PbIY4QkR/P9uQFPrLPoLMOrH+E1xFiyIjoi8gOkIzcM2BkrdY/9pTAcYT6yXtSZ8xD4NLCb6XQ9jXYZlg6rHr68PRiaEXcQgggxxKT24Rdn9UTwiSAMbbXlCz7hmRGihn1Ob39CnfNPrC9yumhUM/JQL01ExxTDo2irK0GtU1zUi7D74MjVYUlXVd96tAmE0yS52eNe6WJIix0LSIu6mKemyhcbMHhQUWGbyG/5X0DEY4TW/8W26R9TUM19LDHLuKJ3gmMfu3YBZ2PW4x1EGnBWYoVT8brPpqazWEkHoMIaXMi+nh7GD4SV2S6hxKzgAxGm+9FoiNrChaobz9w21B4KL0kpOUoEz+X+zAyOgGnD+eEabvnlEvZR4kVXxlS60vO+tQuxVO5lE8dWvmz1bx60IGfpd1gEfWOhnrtVRWdq2kBLl4X2ivBLw
- yjOwl5dh
- jfk2jzIEKlNNJLOYNitQZE5PughtbBccYhLybx8u5OgvmkrLpglRuPJV3bYxSq6vGLeYAROrQtmUyZyArXZ4Q4XyKIWWi2+1waD+TQll2YhdSq006Hc9c8RhLWYbRtB5+9kbGpR9YN46HIQYf4ccsZ+r/gnh2/QMerJ/HblY38RuKjmh3bONmLveGFzHv6N1P+oHr526Lkyxox4sG2mw7KaHJSBYQZ51ackYe7dedod1nipFyawn3jtOGPsONKcUpgdTI5v/5ksTnfVGO2Zg2qac0I11xY8/9uhTEkfT7kj3oCxx4n/n0+xpN//ud1IA3ozbdEjbCoBeXJAMTeQhSrUq49orL1+l4tGFHUNv9DL0tImFz0r6fJ7N1IMnyU8z0VDSzA9Bngh+9echBTpGDeD3soMcXhDH2hnZZUIzD9MOeKOV8+jm4QSSz+69oQmP0mU+wq9QZV0wiRKC39rDCmmjLg3+YRmxMi7vIOPWrYS2bflp/1gwJpOkmww8JKJTlZZWzBaZ815IZfJibm05nl8xQhFfzGEJELrYBviHsndVEe1GqubSQplIChmbzmWfMdrTkPGzH9qOAvG5TBRrr+FUPNIQQQT6x3XKzBupP/amnWlkXqiGrwGAXqmIXqLLtrqx5Qg+avHf28yebGLMlub999v0zFLh1HntPF2ek6vlOibj2yCCeRAxf5hicUdM92YRU02ygq1aG4bi52aHCNwiyFseBn97kJFDjR2yVloMs+TSjH4BQuTOqqoPx2ipqNyN2sR9mhrxKuAk=
+X-HE-Tag: 1795601445-566613
+X-HE-Meta: U2FsdGVkX19j4/I7S7NYY5Xu/F94htelAHBg8XL1uoik3dBGzT4zo4X5HrIGSXrdQ8xf6lfnyxKoxr3ngg8wGfsVL9Y2YAZm5484YLNDtkUR/lxBPlf5JSlYSoTY/zb+DBug2LD/Jd0p7cY8FPj1yIjaX0ilk1rbfSB9scNONdoCBdqf6q+9fliEFPCdBOkix7FWzQmjib2bUYiSVKUpjXoq4GCtsrVqlUHCOW5Q5j/gSUmZhSv3NDCRfFSEFeC8zjLtF2hpt/wBv3aBki7ExFj2Xo5qjronOzGJ3OXvoa9vU8jbf7kCYqQ9cFnwS+JR0W30LEBWvg6BnAwrIGapzIVtNzMB+vDxLwV36iBaYOWrE/5iBu2bVm47jf2AxJhW8WwlG0BvvGX4/rOVmk2+khI7Dk0fiGVQZMfPLHk4dWi6liYQplLPJpNzIHAdIOJ+QQH1wzE4U7G70WMOl/UB6XTpFYMPD5cOzz6FlxfJZtmowEz622T9ybL9eXUBjcNhwJoWv/WKhiVx6HJVqxaRKiSygzbTRtlU6L7TqsZytxY6vnG44tDzWCd+Sg2SOUfo/8ahX3lLzGn92dyFIyASQnFWw+MSw6ilTAHtvvN3wBCP6BFu+jLDCSCBHqaZJHaXFTboYC2gVu605pOgBEfMA0jbU/edn7K+yiiJe4X+FcapDnDaX0zgbTL8egCefDHQ8sQkG1PmB/cxZ9uwXCWlfZxKIkroJ39NGbyXB7c4VpIPnRE8cqXvgoDDL92/TBPXIQqV1QTROak8G8WihkVmehlUfzpXL/y2UGfTRZ9TpUy561o8nwIM6I13rRJICKV4keXVo2kZ9G7YlJByOx/N0ad/wOQR3GjHIDdeHP7iL6Br9y4RDtWtFz4oipejVhRtWQAZHmGZbxED9Pfvl09HvkENkAaLt1MA5WXGi+P2TOHvBITSzhLzYyXiIwR7T4Dts0CvCXqb29s8EwYjTPb
+ 7Nv1wHtA
+ pRoVsUwGkEERCV2mMJxfNLOEvDE4ZiTI99LdhhcJJbsNom93wjg5dBtUTiUtmRIMNcgjtlqHY59GiEzdqdxPd4jokI3Wp+9yLAHSQEkAU+km6c6nnOKZ0g7ksqjss0O4yNOau3nETmOzX7fui5GSWuUCMopyIA9/47V9murDe2y/IG+9jr48W0upFCcdElI+3wl6s3qJJJJEjThMh0Qc+a2yfnguNJlR69EYwvh7LFiXWySrufoSI+DFvxbol5mY2QRSWJQp80woiF+2XCZx6zOwprlDbSLL7OsOG2Iyo3klM7fyhLVLoHUicKbCBiWMyzdHvN8J0e4OQXGaelF6SkiTPs1Uhicjh9IGEW+UgOamioTPyPyju7X8oRzLZQ9W1sBl1YuWzZNeS3pvXxyjrLnTPLxAuQ2KufAPE50oQbuCfXaFliK/ITV5POwpeNUqeeqd1TAb38RUpMQ+7B62gh2wA5WhKBnkgztgZZXpqLZiD67VYsTjFWGTVAmHz9DfWwPNfQKS++/lh4b2XqG7jC26llihbB7lBVHiBg/ogU8moyTs/+F2vmEThTVkA86i9FD6QC17aecBIH8xX63V7rBFJvoqLKkiBveC2qTVECo5d0CFoVh1iXIqeDjOyHxM5a2yb39rvQo3mzDhgpQiVSf/9C1vwKZ0POkhH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,42 +172,68 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 11/23/26 19:53, Kairui Song via B4 Relay wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> The behavior of updating the folio's access info isn't consistent for
-> huge mapping splitting or ordinary unmapping. The page table's young
-> flag has to be translated into folio's access info.
+> For the active/inactive LRU, madvise clears PG_referenced so that one more
+> access is not enough to reactivate a folio, and keeps PG_workingset on a
+> folio demoted out of the active list so its refault is still accounted as
+> a workingset refault (PSI).
 > 
-> Right now it only checks and sets the folio's referenced flag, which isn't
-> enough since folio flag updates on access have their own rules. Ordinary
-> unmapping (zapping) calls folio_mark_accessed(), and it also checks
-> if the VMA has recency to avoid false updates.
+> MGLRU keeps that history in the folio's refs count instead, which now
+> lives in PG_referenced, PG_workingset and LRU_REFS_MASK, so writing to
+> those bits directly corrupts the count. The two hints want different
+> things:
 > 
-> So first just use the right helper here to be more consistent. Keep
-> accounting the young PTE as a cache access, sticking to the current
-> behavior.
+> - MADV_COLD resets the count in folio_deactivate(), which also requests
+>   deactivation.
+> - MADV_PAGEOUT clears non-workingset refs and caps the rest at
+>   LRU_REFS_WORKINGSET after isolation, before handing the folio to
+>   reclaim_pages(). The hint marks the folio as cold, so the
+>   eviction shadow records the capped count and does not inflate the
+>   eviction/refault counters of the hot tiers that drive aging, while
+>   folios at or above the workingset threshold keep their PSI
+>   classification.
 > 
-> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
+> PG_young is cleared for both LRUs as before, so the referenced walk does
+> not count stale history as a recent access.
+> 
 > Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 > Tested-by: Andrew Morton <akpm@linux-foundation.org>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  mm/huge_memory.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  mm/madvise.c | 54 ++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 40 insertions(+), 14 deletions(-)
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 75e8641bf9ff..fa9f6d21e786 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3122,8 +3122,8 @@ static void __split_huge_pud_locked(struct vm_area_struct *vma, pud_t *pud,
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index a36cfe98dd81..7e562e78d52a 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -360,6 +360,42 @@ static inline int madvise_folio_pte_batch(unsigned long addr, unsigned long end,
+>  				     FPB_MERGE_YOUNG_DIRTY);
+>  }
 >  
->  	if (!folio_test_dirty(folio) && pud_dirty(old_pud))
->  		folio_mark_dirty(folio);
-> -	if (!folio_test_referenced(folio) && pud_young(old_pud))
-> -		folio_set_referenced(folio);
-> +	if (pud_young(old_pud) && vma_has_recency(vma))
-> +		folio_mark_accessed(folio);
+> +static void madvise_cold_prep_folio(struct folio *folio)
+> +{
+> +	/*
+> +	 * VM couldn't reclaim the folio unless we clear PG_young.
+> +	 * As a side effect, idle-page tracking loses recent referenced history.
+> +	 */
+> +	folio_test_clear_young(folio);
+> +
+> +	/*
+> +	 * For the active/inactive LRU, a folio demoted out of the active
+> +	 * list should have PG_workingset so its refault is still accounted
+> +	 * as a workingset refault, and the referenced bit always needs to
+> +	 * be cleared even for inactive folios. For MGLRU, MADV_COLD clears
+> +	 * refs in folio_deactivate(); MADV_PAGEOUT handles refs after isolation.
+> +	 */
+> +	if (!lru_gen_enabled()) {
+> +		folio_clear_lru_refs(folio);
+> +		if (folio_test_active(folio))
+> +			folio_set_workingset(folio);
+> +	}
+> +}
 
-Can we just have a helper that abstracts that? We pass in vma, folio and young
-state and it takes care of things?
+These are all not things that madvise.c should have to worry about. Can we have
+some call into folio/reclaim code that will take care of this?
 
 -- 
 Cheers,
