@@ -1,90 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A2D606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8395606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hhmt6zbG
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=VyXu7E7Y
 Received: by kanga.kvack.org (Postfix)
-	id EC5AC6B0941; Wed, 25 Nov 2026 03:50:50 -0500 (EST)
+	id BBB566B0943; Wed, 25 Nov 2026 03:52:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E75CB6B0943; Wed, 25 Nov 2026 03:50:50 -0500 (EST)
+	id B92CF6B0945; Wed, 25 Nov 2026 03:52:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D65A96B0944; Wed, 25 Nov 2026 03:50:50 -0500 (EST)
+	id AD08D6B0946; Wed, 25 Nov 2026 03:52:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AFA316B0941
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:50:50 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D22AC0E42
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:50:50 +0000 (UTC)
-X-FDA: 85473021060.24.ADE8C92
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8EB6D40005
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:50:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hhmt6zbG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 840456B0943
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:52:08 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14273A8CC2
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:52:08 +0000 (UTC)
+X-FDA: 85473024336.25.DFB59D1
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2E637C0007
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:52:00 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VyXu7E7Y;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf10.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795596648;
-	b=2m3WKVx6B2WmCb2XdjZQ8IMFrPHGSD4jmh4kitsrRYp4oMNzPClLYXuResBP/2hfp7bAUw
-	v5YcKpMOVEzswALOHog29rcXX15x9Zg+Q+y827hrNDhm/WQGoTWODuZi4ekk6v/4d5Rdx3
-	UU+iu48CWyL3YLmRo+IM8Wpv+3gMH1I=
+	t=1795596726;
+	b=j149b2v7GXk6Qc8l2n0rnrDRovYWpQtkfLCppIW5GeJXFxT+y/gJRE7ye78ZmyoIaoxfKN
+	9E+C7WOnR0QbGxISPhvvras6bN8NF3O+T3vRoeJ6hwBVPpYrYnSeaZW3qDfAA/cv65aip+
+	ZfLpTaQUvPudaNLbXJZC3wr7IShELl0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795596648;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795596726;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aop8Hm9coxwBkbW5nc/zazX+lOXSS7NOm8lx3A0fuCc=;
-	b=6c0qArIopzn79T1qF0Ih/oTWHfglWx8HWtjAs60rH5/ArMOBsgaTrcp0JLXPv3DP3hrllq
-	/fFdR5Sc+jY/h/oY6diLH2s2C9gS/C2I2HK5vkeva2ReB2s6uJNrxFK3vx0fUqSHqH+5sg
-	Y4Nctif9hEUI0qlYhn6iGAJSA9HL46g=
+	bh=CpS23/nwi76U/xfd1RwGp9LbeXJvRV6wntw7x0C4i80=;
+	b=3qfV+7POWfaYGGFcRijLpBdVr3ju4fOS+iktKl95iW9weGHUbczxbxwsuLGn/zDXMCpJ9h
+	4zILMMnFgnEj0sb2qbGLlC4l5jZ0NgnSKZc7FJEswhQ+KnyYr/H7+7rKlUDQ0X3xKag8lu
+	YL6vy9SVSDJyVdVY5DKoEuTHFhInJa8=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hhmt6zbG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0D8E4624FC;
-	Wed, 25 Nov 2026 08:50:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4091F000C0;
-	Wed, 25 Nov 2026 08:50:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795596647;
-	bh=aop8Hm9coxwBkbW5nc/zazX+lOXSS7NOm8lx3A0fuCc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Hhmt6zbGLpFrHsWJOXEaH70BVtI1UVogbg3D89kLhq8qn2lo34eMwZSW8L2iqIJ8T
-	 ALtKSQjWPyVI0FKFQrxU/3/DMjP7OniEIZcIClch4jew5zf/kTNGNo4dzQEboZw03R
-	 SNnAaiKtompZYlrXS6L/TbUQIBOHXghH8DU7klroStPYUJevncG+QCiXe0DUVWdTZ6
-	 0gXgQf5AFYneDTbp9l3WtZdoZk4VAb6D1JRvgL3807yTQm8IMyxIxLeBxLziViEP6M
-	 9f0bwqMu60IGLUfXtS10FcWPXINgQrA5XEZsWgvFR1kECS0VvNiO64hb+Uv0yCqny0
-	 eGFfclbt1KWMg==
-Message-ID: <sashiko-outbox-232945@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] exec: annotate lockless tsk->comm update with
- data_race()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xiange Pi" <xiange.pi@intel.com>, "Kees Cook" <kees@kernel.org>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>
-Cc: "Jan Kara" <jack@suse.cz>, linux-mm@kvack.org
-In-Reply-To: <20261124083848.1430527-1-xiange.pi@intel.com>
-References: <20261124083848.1430527-1-xiange.pi@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 08:50:46 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VyXu7E7Y;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf10.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795596717; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=CpS23/nwi76U/xfd1RwGp9LbeXJvRV6wntw7x0C4i80=;
+	b=VyXu7E7YuJlZETQw94qjHcothUquMgs5+gNKvHjPaNQQvKQVkdlNNDBb2ppmfVN8w6Xdue3A2SkZds2JVIdJDeHlV81tjFzOIkHrwGK9EQzTxAk2qgFIP2vGBGoqRKe9knAYR4h2SWhXOlYE9Yu7NfXTxxXeE1oNQIf2vntzx2A=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R911e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0XFR2tqg_1795596713;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0XFR2tqg_1795596713 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 25 Nov 2026 16:51:54 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,  "Liam R. Howlett"
+ <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>,  Mike Rapoport
+ <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko
+ <mhocko@suse.com>,  Rik van Riel <riel@surriel.com>,  Harry Yoo
+ <harry@kernel.org>,  Jann Horn <jannh@google.com>,  Lance Yang
+ <lance.yang@linux.dev>,  Andrew Morton <akpm@linux-foundation.org>,
+  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,  Clark Williams
+ <clrkwllms@kernel.org>,  Steven Rostedt <rostedt@goodmis.org>,  Paul
+ Walmsley <pjw@kernel.org>,  Palmer Dabbelt <palmer@dabbelt.com>,  Albert
+ Ou <aou@eecs.berkeley.edu>,  Alexandre Ghiti <alex@ghiti.fr>,  Ying Huang
+ <huang.ying.caritas@gmail.com>,  linux-mm@kvack.org,
+  linux-rt-devel@lists.linux.dev,  linux-riscv@lists.infradead.org,
+  stable@vger.kernel.org,  Kirk Swidowski <swidowski@google.com>
+Subject: Re: [PATCH] mm/rmap: avoid reusing batched TLB flush generations
+In-Reply-To: <20261124-rmap-v1-1-e3dc48a4b527@kernel.org> (David Hildenbrand's
+	message of "Tue, 24 Nov 2026 10:39:11 +0100")
+References: <20261124-rmap-v1-1-e3dc48a4b527@kernel.org>
+Date: Wed, 25 Nov 2026 16:51:52 +0800
+Message-ID: <87a4mxthsn.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ascii
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: zpp4gwc8zfefanjqsq7q6m3m45sgow8s
+X-Stat-Signature: ectps178m9ykts164hapo8hai8t3rktf
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8EB6D40005
+X-Rspamd-Queue-Id: 2E637C0007
 X-Rspam-User:
-X-HE-Tag: 1795596648-494791
-X-HE-Meta: U2FsdGVkX1+Q8U8zPwTfP07dzyBWMZyFvwd6CPp6oauJrGBiJUD4HUEtLmS2xExsexMqjkpGxV0ADv1MNjB4tfIVHWWGnDUfYNdMlHeYJ3l5lv3QOVgvAMK7xJYsXo7sG/6To6SFaBsoU3L3aRNihU1KbdF2AgEVKiJFd0AvbHLGzNx2GI7IOFhCYOYpsFjruCQO/tO5gEvqWiG2fDSUVrowCncuaPIQkaXXz7XWnmd0Qx6OIx/KRfSfC+0HQcupOtmavQ/CZA6Ru7IH8PcszaGad0FWt6nRfmajMJOWfFGLdEi6Iz1jz/0z0nG8vAJzFBsgIChzuMMLfBEI0AwzOaf4Xi6O2QQBwBdcPxbZ4N+5u1tr7dp3QXkhbk56h5DlC0JCY1fPzJnnhlRk6gmxCQjSB3xiEpuvUWPtzvQOD9xRswEzre4nsGua5rmuO0TOj+W+MjCACECOnn7qnyxBRR1AjZAj86OIevA3i4ZScFD+o0on2CWLl8JgT96+nL1S/dyBZe+SN093roR6xZ6HDUzCUnpJCHplRkiC4R/VMH6olwx9zJZSQFgHPwaCfOOwNZkeahZhKrUY5KbptApGgn+sEdVCH/yfeQn128ijgi7R9lTKmH6Tuf4+FwUzapMbtxP0RCB9iJ2P8ZkO2QeWCSoXObf0fkk8DrOZIAnzAl0klXXObyMvWYJqXDWJ1I0Q0/S9D0cf2UIx6ZA16b1RRrKC1qs8hxxusb8JdetS9g3z9LMYQPrp/z2Dv8ghpjojoUR7XeRWJWeCje8RhAdZACflmj7unVPbi6G0kPpgUyvqqqemtUwMvGSPunxOq8dWa/kIk8ZKe4D31uE+Ov2TgavQtXp9svQ0Qzzenio57TcjBgPGRpNYHXeOS/SNGBOBVsRdlYdsSF2Pj9+hjERYy9NYz1+NKGmpZwSSdHg76TaoF5eCFdyzhwH/hw2nr7LaXIkbULlxHyrEoSfSDuX
- 9w6yN8AN
- qK21ElL7TwSZ5H1cD9L6bvCezgj+P01RkjZG/VuHcc/xAUF5mhtQqw/rHy1XDvztrNHCiGryOZ1WapQI3nilagG6i1YGWHUtOgbdR+30RJ+NYkMMuCDyFX1M2Nr4BBBL75U0LCYKJxel9CIwxNQ+HdS5U/fFJw6DTIK4hvjciS9DjjX7mEVEwVyIf1plyj9le9JM8Ic9F+Pr5WniTQt/XKZA2/pJxc3ihqnpaFoNHgzKNTbYkOkRet8htnWRplLPZqnJVCBxIdQb8Tfa8QuDxq8KB60xlCJDqBxGWaoxjledzMFwtS40yvqA/gHuDEMFZWkGDRamd11G/ukM+4hiJDTtzLMV3nQkHaeiK+2iZzD5mGP6QrgWUHrTe4v2MGleJ/gBQGLTR9JtMz+C7ZnRHyDaXUH7YIJJeE5qkUq1IMXzXhNWTEt/8GLGjCTV/29boiaCz+YomujJPfJ4iH1jGdYEjIlKbq5F5WWBVvKb3okaagr6CHilXi8tiyMl2Vi+Wn8/LQITz2IO8E7LLUNnY0KISVEw6EKkU4bTMWNYh1CVUSLwwMwhkgLRyCzpIsE4ke5GZahvK1HU4tSbQUMyCb+yIAn9zvgLTAJH4oBlLktRnqYs0gJhdG+lH2qEYor6fEwzxOPZVOHm/nkYPhIjhldu8ZUyq8nDfTI3Hz5/wGVWbJgUU5uajfSIk6QYZct1lM7AUVznqjWBC9Mc/MP1Gt2bz5BsoE8o+ZDOyfpDPtq0DWURcKBTRQErHsGeA/h+06prVSqGnl/+8rkPn66A3m6nGKM1mr5pOGhvQ6wDG1Fv9nXv8SL0F2yG0gZJwcPsfsuzILwm5W7S+X3BquPn35vBrNtIsfk4vOyJ/XTByr2Zrle8=
+X-HE-Tag: 1795596720-821428
+X-HE-Meta: U2FsdGVkX18K8R0G23CaPJb/4fVtdsmZajaSScbypaxEYzOEwZUFYv4HHXiy9fqQEmAzQWL+4dg1hgMNHlwSJ1P1AnO5+Y72yrjEMQJQhrPXTklRehhPgihUJlbhDWTWrZHjPX0z+1d/QsRQTOfCiwtIr4XEFJZG2Erpsa5xdDt6IrWZ10qk7Q4ozFPm7jOTRPLRTtxJE+6ZfVD9lLk/CPgUevMuGu5zMaajf1aLqqj5ozdJeqYU99so4iRnNgn47XUSwaWrGERlv54RNNTpfPfcnVp7LELrcTaHx4Qw79rULbd8UdhFlor9Ew7Qo2IPISsVI3CegXkF8sdXybMpFlE+rVb8TNTHd9r7CLVA59JzSK/7IHqYF5UxM8Wxa9WjFSDKZth8RtZjkL74AIG847icHSSobwg34xOhWUl2bBpjCtPmd0vFgRnHLgwSlaKY+4CGV4gf4n1tkPZgvV8HHcFCjJrxHFCXul9UJdccwI4netxErhUyoM4ia4f38BX5R7FItobR7oLaaz0YfFoMpn/IqXZMkNVv4gifl5RAGVmFqwEnrJ7ENlV3mfbi3HDkLeVa0+btKbtU4g0pnJbZRlQa3Id7BC5fELJYP/rrY7EdtGEC8XUBmy6wlJPb25r4OZ65kjPsgDcQ1nDALMx4GYAZon/O/0FOc5v6E/lqfwT8BzQMxw0vJ/jY8BB/hMYvPF/kycoU1SsqduKF6MVsVyBsLjbne5THqrxNoO/nLUUMc7FC6hgVr7VLWl+7kj9uV8Auh0VvQupKup1MozF3kNC58inUSsY1LJTp2Zc01mkLpUCDIdp7VtUqFT7d+JTNavhmYmIMBX/Ij+CLldq2qdc6yK2JhOx5m20P7Pib4NvnM/dnKiROW8oxQOPwkRybgDx0WTIZEVls6yCiDUjBB1d9vWbolzVd+Apbw+ssQzsuHnYH61IUf50PZgDSJDpn4zkHmpu3seVGRxMV5dZ
+ ipoKokkN
+ XRHmg86tFhvj8vjQ1REWxTKzVwQj/38AUkYVRPGxCWw3jWSqXzlNXoT4LcB1cMFKfkiZhiD5DsQ87uuM4s+5A91n/wfViJyv5+SVstvV8wxbbRgCxduj5s46CQatiPIAhlU+w6DQanJr+fIo4z7XLJJGWQte/cUORSVWd9e0AjNT86VNH/1uBNyyogOXKe9ttM7sFq8ES8QXyBU9O1G1NiDO3xPLEP2Z7sj/sCQr01GDNa08s3lNZPbER2EwhczNiNibQZRpymYpIROQq9RH8keQZNozps4dI0/tX3ZeLXdtNfxCEQ2LdZ9FGSf+uvcTW/Z7l2OiW9HwwQgRHtyHAcqsKXu/TaGQ7pHZzzGrlllq9KCc6XaSiOyRpbKqOHaVFDhCdQ4lDJti2gdqaIbTWbPx+rl3b21eYkCPXmZZlUA/jDqgJ0EOobWgAFrl6cpiToVu3/qc4bTIxd/zuhFtoUUSrC9h64ndHialAQgoV+dO0EE+e//ucuguHOFqeEsMLXGV1vPex92oEdy6ecUwMA3xfoXjBelGK7UXt7LDmzbV+ZC2Ls6WMM5ttWoFIVoakE5AWrHtSAbP5kD9XV/hc1QEwbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,72 +99,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] exec: data_race() in __set_task_comm() still triggers KCSAN on
-  readers
---
+Hi, David,
 
-commit a04284363b9bce90bc6367728fc880cc5b2fd84a
-Author: Xiange Pi <xiange.pi@intel.com>
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-exec: annotate lockless tsk->comm update with data_race()
+> mm->tlb_flush_batched packs a 15-bit pending and a 15-bit flushed
+> counter into one atomic_t, and resets both once pending gets large.
+> flush_tlb_batched_pending() updates flushed with a cmpxchg() against the
+> value it read before flushing.
+>
+> If the counters get reset and reach that same value again while
+> flush_tlb_mm() is running, the cmpxchg() succeeds and unmaps that
+> happened in the meantime are considered flushed. A later zap can then
+> skip the flush and leave stale writable TLB entries behind.
+>
+> Use two separate counters, never reset pending, and let the flusher
+> simply store the pending value it read before flushing. To keep pending
+> from wrapping around to flushed, pull flushed to pending - 1 once
+> pending is more than INT_MAX ahead.
+>
+> Preventing the wrapping is primarily required because
+> try_to_unmap_flush() as called from migration and reclaim code does
+> *not* go through flush_tlb_batched_pending(), as it does not iterate
+> MMs. So if nothing in the MM triggers flush_tlb_batched_pending(), there
+> would be a problem.
+>
+> As the separate counters are no longer read atomically together, we must
+> read "flushed" before "pending" (acquire/release), so a reader can never
+> pair a just moved-forward "flushed" value with an older "pending" value.
+>
+> We'll leave the barrier() between clearing the PTE and incrementing
+> "pending" alone for now: it should be a smp_mb__before_atomic(), but
+> existing arch code (x86: inc_mm_tlb_gen(), arm64: dsb(ishst) before the
+> TLBI, riscv: fully-ordered xchg() in ptep_get_and_clear()) imply a
+> barrier. This should be cleaned up or documented separately.
+>
+> Note: if a flusher stalls between reading "pending" and storing it,
+> while "pending" advances by an exact multiple of 2^32, the counters
+> could compare equal and we could miss a flush. The same applies to a
+> writer that stalls while moving "flushed" forward.
+>
+> That is irrelevant in practice: both hold the PTL, so without PREEMPT_RT
+> they cannot get preempted, and wrapping within the ~20s soft lockup and
+> RCU stall timeouts would require more than 200 million batched unmaps
+> per second on a single mm, which is impossible in practice. Even with
+> PREEMPT_RT or long vCPU preemption, we would need minutes of unmap and
+> refault churn while the stalled task stays off the CPU, which is highly
+> unlikely and not a realistic attack vector.
+>
+> This effectively adds 4 bytes to mm_struct. However, on common 64-bit
+> configs it fits into the existing padding, leaving the size unchanged.
+>
+> Fixes: 5ee2fa2f0636 ("mm/rmap: fix potential batched TLB flush race")
+> Cc: stable@vger.kernel.org
+> Reported-by: Kirk Swidowski <swidowski@google.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> [ david: use atomic_t instead of atomic64_t, adjust description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-This commit wraps the memcpy() and memset() calls in __set_task_comm()
-with data_race() to suppress KCSAN warnings on lockless updates to
-tsk->comm.
+Except the fork issue pointed out by Harry, the patch looks good to me.
+Thanks for fixing this problem.  Feel free to add my
 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 8d2b14e1d455c..9a47cb27ce5d0 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1100,8 +1100,16 @@ void __set_task_comm(struct task_struct *tsk, cons=
-t char *buf, bool exec)
->  	size_t len =3D strnlen(buf, sizeof(tsk->comm) - 1);
-> =20
->  	trace_task_rename(tsk, buf);
-> -	memcpy(tsk->comm, buf, len);
-> -	memset(&tsk->comm[len], 0, sizeof(tsk->comm) - len);
-> +	/*
-> +	 * tsk->comm is read locklessly by many users (e.g. tracepoints,
-> +	 * printk). comm[TASK_COMM_LEN - 1] is never written with a non-NUL
-> +	 * byte, so concurrent readers see a bounded, NUL-terminated string;
-> +	 * at worst a mix of the old and new name. Mark the update as
-> +	 * intentionally racy.
-> +	 */
-> +	data_race(memcpy(tsk->comm, buf, len));
-> +	/* Same as above: lockless readers tolerate a partially updated comm. */
-> +	data_race(memset(&tsk->comm[len], 0, sizeof(tsk->comm) - len));
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
 
-[Severity: Low]
-Does annotating only the writer in __set_task_comm() actually suppress
-KCSAN reports for unannotated lockless readers of tsk->comm?
+in the future versions after fixing the fork issue.
 
-data_race() disables KCSAN only on the writer thread via
-__kcsan_disable_current().  Unannotated readers such as strlen() in
-tracepoints or get_task_comm() still set up read watchpoints on tsk->comm
-in kcsan_setup_watchpoint().  When a concurrent __set_task_comm() modifies
-a watched byte to a different value, kcsan_found_watchpoint() on the
-writer returns early without consuming the watchpoint, and the reader then
-reports an unknown-origin data race under the default
-CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=3Dy:
+---
+Best Regards,
+Huang, Ying
 
-kernel/kcsan/core.c:kcsan_found_watchpoint() {
-	if (!kcsan_is_enabled(ctx))
-		return;
-	...
-	/*
-	 * If the other thread does not want to ignore the access, and there was
-	 * a value change as a result of this thread's operation, we will still
-	 * generate a report of unknown origin.
-	 *
-	 * Use CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=3Dn to filter.
-	 */
-}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124083848.1430=
-527-1-xiange.pi@intel.com?part=3D1
+[snip]
 
