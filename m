@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18F7606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DAB606A329
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CPs0bHRO
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cBqN/ScR
 Received: by kanga.kvack.org (Postfix)
-	id BFBAA6B0A08; Wed, 25 Nov 2026 08:05:48 -0500 (EST)
+	id 12AD46B0A09; Wed, 25 Nov 2026 08:08:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD2FF6B0A09; Wed, 25 Nov 2026 08:05:48 -0500 (EST)
+	id 066646B0A0B; Wed, 25 Nov 2026 08:08:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A73AF6B0A0A; Wed, 25 Nov 2026 08:05:48 -0500 (EST)
+	id E97F16B0A0C; Wed, 25 Nov 2026 08:08:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71BFE6B0A08
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:05:48 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE41A80E9B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:05:47 +0000 (UTC)
-X-FDA: 85473663534.19.A2CD8A4
-Received: from mta0.migadu.com (out-18.mta0.migadu.com [91.218.175.18])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CE78C40015
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:05:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CPs0bHRO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C3EEB6B0A09
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:08:02 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53676C0819
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:08:02 +0000 (UTC)
+X-FDA: 85473669204.21.403647D
+Received: from mta1.migadu.com (out-30.mta1.migadu.com [95.215.58.30])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C5799180012
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:07:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="cBqN/ScR";
+	spf=pass (imf06.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.30 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795611946;
-	b=z6IQIly4bv80UZZXPSUJcVcRuttSxXhawMgsXs75la3H4zFcdiRoG3zTBu86wIJ5pWq99s
-	8W+OTd7kL9+ejR01UlC89fkd6Sh4ZhRs06CYqVopRTe9QovSdtbtTjG2MHewv51MRFYXXo
-	4ZmStsozeCftB1IghCqH0AGFH7iuL2U=
+	t=1795612080;
+	b=LqAlpyje/ItLgJVQK8dys99v3dWlRFrRAHPc7BfIXk7D0Oyx74Ldh2Ha7x2wt59t9CEIuc
+	C5Vys39+x2D+aA8+CbtXRyVIt951ybLsbH2+lcpRqm9tm7D3roICb2/oGKvtsYrfEIr5Yz
+	8MwLlSTd2BzpUPv0vAbbY7l18HEoYW4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795611946;
+	s=arc-20220608; t=1795612080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LU+lZMJ7C1LRaiuMHqC0yX/sKSPUmOi9g87GKed2nkY=;
-	b=75L1IluogQmnyeX5pt6vExRVoz8SbKLC9exnQbeowzNYz6UE25iPeRnXSwLDBmTFCgUNLx
-	iAAvJfSO/Wvn/vrSaPaOyvVFpTeJvELEpKG9xKOvQlxP/YTtAd+SK+Q+avVILSPdZSkaOt
-	bqU/q09rSHR61PvU4UFpONYN66LUXXA=
+	bh=q0DEdpN3ojeKgoLctDTUtNsR/rNFWVH2tWR5Eb+4pvc=;
+	b=GlP0SW93qgBNJk0MwXRpcpRqJH05R5LHqxlpbawnZY1uBC8HU7A1VAb5x78R0KewI4RcoJ
+	upqjBOsKGFfJdvyCK3QYYgT4VCbvZt4NAIpDz8ouXs2fOCRrH1LxEA8pALVAI7dmMHm+rY
+	C+oX9s6XW73+cvBWs5aj6225AhkZIhs=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CPs0bHRO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="cBqN/ScR";
+	spf=pass (imf06.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.30 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Y5XrY5yN2GLoPwf0NATfst7wtuL8/+fZic3NtYnstlw=;
+DKIM-Signature: a=rsa-sha256; bh=KavEao8O84ypd9lQF6n7cjGolI9drRYJL3+xCTQEsiw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795611941; v=1; x=1796216741;
- b=CPs0bHROZyEzt8IgGkxomZpNGbjPJxaWSrv3NIxhvh8k2MjdpmRcROKUAqeUtS16ZQuur+z+
- SI8bTWTNCddfMmSSPvVoVtpiuLvpDSGaP16wIWo55oItIUVozvTc36Xt5kYTRNYTPd5cM0OHONA
- S4HrfugSFtcdo3113rDgyVcw=
+ t=1795612077; v=1; x=1796216877;
+ b=cBqN/ScRkVwyzquPAkuANMSGbAus36I+6jwrY2z5grU4XCfAHE+gM0MOs+gBKh8S6VChz4Oh
+ rXAqN0H2gDKkbMXrnzyuP+gWVsuiQCzOMwdm+D2vik+Y9wa4+7fDUFWn+EUb6uiecTuOES6VNs8
+ WqK9m7fEG2AP+vgHPrUl+LoM=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4cf78b17849a4a84;
-	Wed, 25 Nov 2026 13:05:40 +0000
-X-Mizu-Trace-ID: 4cf78b17849a4a84
+Received: by smtp.migadu.com with ESMTPS id b2a14b8d26fc06d9;
+	Wed, 25 Nov 2026 13:07:57 +0000
+X-Mizu-Trace-ID: b2a14b8d26fc06d9
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <47d6cfe5-f2a7-41d7-b397-df30429b216b@linux.dev>
-Date: Wed, 25 Nov 2026 21:05:28 +0800
+Message-ID: <c76bc990-e5e8-4058-ad80-3a766a162b0c@linux.dev>
+Date: Wed, 25 Nov 2026 21:07:45 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 14/16] mm/mglru: Avoid prolonged anon reclaim with
- swappiness=200
+Subject: Re: [PATCH v9 15/16] mm/mglru: Make swappiness=1 file reclaim more
+ aggressive
 To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
  linux-mm@kvack.org
 Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
@@ -78,24 +78,24 @@ Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
  weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
  zhuhui@kylinos.cn, sidchintamaneni@gmail.com
 References: <20261114200803.23129-1-baohua@kernel.org>
- <20261114200803.23129-15-baohua@kernel.org>
+ <20261114200803.23129-16-baohua@kernel.org>
 From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20261114200803.23129-15-baohua@kernel.org>
+In-Reply-To: <20261114200803.23129-16-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C5799180012
+X-Stat-Signature: 61ain4mfqusxkdmhm3jdfk5z1qfc4xbq
 X-Rspam-User:
-X-Rspamd-Queue-Id: CE78C40015
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: dsffbe4c6x7zf44ppoqf5pae6ogxpr6j
-X-HE-Tag: 1795611942-621295
-X-HE-Meta: U2FsdGVkX1+McCSAg0KP8hGDJTcosN1HckOrg/ufwV6UB9yeBVNMLJooryWeb4LRDxYEC/BT5l/hwHWfoeEyl4tfkVDGSU40fCgZo0MlNvMGfVwluVprY0/bmH++ZzVWJvrx/ddqLmaHQgYdwDbz09RqXeKFKXQL6kEwku0XGNXklMZyr3y57vQfC9SsB3u9yvbv5EzfPfrdL4z5S1FfXBPY38ZE5/mfZfm0vgGC6uafBVe2ENqPSvyepk2JWSIj/0mYwntbS/dxQeD5Yr6+9sQPyTsyQ8k4ibnD8yQrjJ2dTWB2SyQdzQ9BhR6N2NiHSGjfIrV8urBMX94t5PuZxpm6INuMfu7OVzn+/rHWlZ1iIVx3/8kK1JlVS//PcShX5vi+AsPhxpwv8dxbckpNiV0jLi4x0Mx1leiI95mTnhEyj10SFNLKJpSm6EbWgr1aRvMBvZ8QYUS0mnNakea7bem2fXgaAh2sxBZfyXzG8/UR397azmEv3ofTuZ07i0HKwD06KQdyTnx9mZ7HoOTmMNiEoaUe7MuxL6NMrylRNBMfFDU03K8o3WKN5A6vxFDlCPIQ7Ill6lLrnWm42eLTTKOFc0TlLYUwzVhq/XphpmbxB85UuNfYb8R4w+mAevWDllO9NxP9q933BxvFRqNwMo6BgEHMaqO1JC0k77Hg4KNEtuUlk0svLCM5YWDE+FSfRFMNgPgOlq57ZKEAW4n3m3fnHPKT0GtRpyzhJdcRCbylTgbC4yYvllyrZccKl27yvC7bVAibGtuefWt5GnuIZ7mfVwsMmnJYP3x56eXv7McufdsXpAxOqQiThsv35Cr1221ZENeReC4VR94Wa0o4u5efisarThylYvm/4jAPMVQPKqBR9rgG680USHf23PORC3wSjPKXuBIY7/fKxbe+YTcF08c9YWpBunHsNswdGGDIr8H0m9wpzxLSOlTgTdSvSEkH2VbYsboG7oP8Fl1
- DdwtQAsH
- 6OLqGHT8TRUrPUz4fvmo3xyr9VGxTZvnQda3LozzgAQz+cSTO4USnZz6yIMFdmFvww8DBvAYJ5KBn8osukvMoy9sL3G1OMuWXmkyl5eaO9/egQTVgix/ahnpYlpLTvtKMtJnvtn6A0Z2m59Iw/15KoScLHnVlY9jPFj2L1MH4PwGOwwkYN2zUhZjKFjIXvPc7dw00/22KdHIr/qCrqW25op6XFjWHInf6rmlj9ipzjQ6UmNoRnJNFCpzkzmrMdNg/V84xYGdZpQZ6UBdmOReV8HrrbZD8IPVbsY4hcGxUM4u9zHvLmrDSk0rFC35anDd48bqkW2lATl9P3N6+YWLSaqPV5W3RmPKSGPB5xSxABzA9lCujRHRpIgpZCqQbh9wm+OmDbqLNAfDbYbXbyRoHYqv+IzcYEGrCRUJTQ49FoTgz3WSXTN8Gre6W7toP59yOGAoNL3uzoe37TL0xR5dPYimFQ55tdkTlw2HpdbT2yL5rcmPLLn7axV/N6dU2CLDGxipKO4FDyctOXCFLh/+Va7GcgrqiV6fKU5cyIomvUaSxqZAfsQrgAzAaUHS+AH/Sj/pJUN8iJ2IczPYXYCy8As6ZQf7RzmQnjNJOyAkdLQNoN+g=
+X-HE-Tag: 1795612078-380003
+X-HE-Meta: U2FsdGVkX19sp1nwMvxNvGG3PKbN4NjvO+Sw7A8HWtFOvq35tc4WTvqxBXH97z5fBnVLXZflVK9UGQ2gPKOZXyCgfpLvTGMLr+XbyYWV8lMw/YSCY/kQjfE31dQz7jSerAfRNP/PCfsgwf4tm3Me1TxmBzXofUyo5R0Ks0UOBCy2FSu8iKxGEX+grNq3fCqSedOR6a5PxoZkqE/+XZMjDZtWOtEzEI9R6klIZsE9x2jXX59vnWPmS39RpkV6DJYlwzkKGD1kTSaMjISuLFyLsOegwD10FB83HStIddz5IN211fgLKX/gUk/GI7ixfX6g3WRlYggSQSPoJLTZZ0rFgJcrz7AUIAVmEOwDNvic0BYM8BmBFSF5SQEaNl+UXeaAa07h+8+FFzTdbzlIHATyQ3INuQhfMc9kzNIN18fMagqh6QfnyAPzlhaNsGG9ZMST7OHUvj7GAIY/bshm8qmWTRGwkfGn7usKujtdhzIZSEnbNsGMEPB6dalN5cN0wzHZ63LfLLNH/IB7jbG1siAhh7VUP9arx4LKzl9MoejRADekzowEfT70DIUjwH+/fBcQRVTuaEpdbnzqgCBgEzYpOiF3eGRvi7xGnQhngt3tKpXFC6nO19J9gpSmGfkwL6egIYFiwouHD8Wmm2luVuiS2d0H+nj1IDlA31zs9wvVE4NMibBt9Y3kUlUAEUg23z6yIL0hZ8QAZLapv+FuWPfmHRsi3f7smpSX7Bftgu1yF8IchMVhfIGP+2tbIASwpgcW1DLJWYSB4PGey8exavBPfy2J638BCxh8t1RRenTVvu3EPyxiBeT/SlTejsh4SohsrnYj2dxQ5QOhZaqbIEBNbvX+53FAcRJtLypNjveExHbR7WfEqM/NUy3CF43vsp2i0M+zkxJIKNQYi+h7gXcSq8kd24L+lqw2wUCKJ3XTFTK4jAlptzPICsKTuQf6zkegPoa5sZ5rlj9NGLlPcJo
+ 6FIPmE6g
+ deC4J8ZhHMM4Cu+0n+z4GFACgT+6OUYfiPxgfgYgR582x5nSNvYBVpxKNbsLtbP7E/HhfXgXmdM/PU+tiWjQpoYZbXOCH2LBbKfD66DJTfieEVvuMFqeclv8RzY06TtW0Fy8BBX/yv0u52ZBLihPkeDar08y6U7O395oeu1VNsX6I25i/KoItBmEGRd16bV6n573FyAzdik7hV683OgePx1NG/kjZwpkfYHiyLEesionPqJZ9VQVuSYDQm7tl9IluVRKZOPJqgKU3G4MzcVJaeG4VDnGNglNWdQykNFAJRDIlRImue53mObZphPlCBc8BXx13SRj3yY1wd3wbEHB48m/RZgESFx1E+/C0TCbUPgRR1BCw1dRmA30Z0PpZoDs3Q4igytBuQ5jSTFhQVB06Q11ZnE7DCRCjPmOekQZkv0l6FyTeBWoR1hXRKpbN6rLML1WQSgK59298+PZibCRyv/WV/+LVHrGlfxuWE7MbH54ApaMAJI1EjyS15sUKMaDMLz5V19SvTe9fKTezngXpLlaAF66favkybAc+R/qJtYg5i9SnXXYpy5pPM7R7lNUM7gP6CKPLSfWvhF2AfIee7GIcgxQL0BBeRhi7YkEfX0CXe8CWD7S81bo9bQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,70 +107,47 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 11/15/2026 4:08 AM, Barry Song (Xiaomi) wrote:
-> From: Gaofei Lyu <lyugaofei@xiaomi.com>
+> In MGLRU, swappiness=200 favors anon reclaim, while swappiness=1
+> favors file reclaim. Swappiness=0 allows only file reclaim, while
+> swappiness=201 allows only anon reclaim. Thus, swappiness=1 and
+> swappiness=200 are counterparts for file and anon reclaim,
+> respectively.
 > 
-> It has been observed that swappiness=200 can significantly slow down
-> reclaim on some machines, with some workloads running 3x slower
-> under MGLRU than under CLRU.
+> Before this patchset, get_type_to_scan() always returned
+> LRU_GEN_ANON for swappiness=200 and LRU_GEN_FILE for swappiness=1.
 > 
-> This is because swappiness=200 currently results in file_factor=0.
-> Give file reclaim a small factor at lower priorities, for example,
-> when sc->priority < DEF_PRIORITY / 2.
+> For swappiness=200, file_factor is set to 0 at higher reclaim
+> priorities. Similarly, for swappiness=1, anon_factor is set to 0
+> at higher reclaim priorities. This makes the two settings behave
+> similarly, although the thresholds differ slightly based on
+> testing.
 > 
-> Signed-off-by: Gaofei Lyu <lyugaofei@xiaomi.com>
-> Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> This allows file pages to be reclaimed more aggressively and
+> benefits workloads that prioritize file reclaim by using
+> swappiness=1.
+> 
 > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
->   mm/vmscan.c | 15 ++++++++++-----
->   1 file changed, 10 insertions(+), 5 deletions(-)
+>   mm/vmscan.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
 > 
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 6cb905162cba..abefd91f5b95 100644
+> index abefd91f5b95..a9b97d23838b 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -4898,8 +4898,8 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
->    * We don't calculate the scan cost. MGLRU uses lazy promotion, which will
->    * cancel the scan budget naturally.
->    */
-> -static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
-> -		unsigned long total_scan, unsigned long nr[])
-> +static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_control *sc,
-> +		int swappiness, unsigned long total_scan, unsigned long nr[])
->   {
->   	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->   	u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
-> @@ -4956,7 +4956,12 @@ static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
+> @@ -4955,7 +4955,11 @@ static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_control *sc,
+>   	anon_weight = nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE] / size_bias;
 >   	file_weight = nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
 >   
->   	anon_factor = (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_weight;
-> -	file_factor = (u64)(MAX_SWAPPINESS - swappiness) * refault_rate[LRU_GEN_ANON] * file_weight;
-> +	if (swappiness == MAX_SWAPPINESS)
-> +		file_factor = sc->priority < AGING_PRIORITY ?
-> +			      refault_rate[LRU_GEN_ANON] * file_weight : 0;
+> -	anon_factor = (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_weight;
+> +	if (swappiness == MIN_SWAPPINESS + 1)
+> +		anon_factor = sc->priority <= AGING_PRIORITY ?
+> +			      refault_rate[LRU_GEN_FILE] * anon_weight : 0;
 > +	else
-> +		file_factor = (u64)(MAX_SWAPPINESS - swappiness) *
-> +			      refault_rate[LRU_GEN_ANON] * file_weight;
->   
->   	/* Cross-multiply the ratio above. */
->   	anon_scan = mul_u64_u64_div_u64(total_scan, anon_factor, anon_factor + file_factor);
-> @@ -5144,7 +5149,7 @@ static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_control *sc,
->   
->   	total = apply_proportional_protection(memcg, sc, total);
->   	total >>= sc->priority;
-> -	lru_gen_balance_scan(lruvec, swappiness, total, nr_to_scan);
-> +	lru_gen_balance_scan(lruvec, sc, swappiness, total, nr_to_scan);
->   }
->   
->   static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
-> @@ -5910,7 +5915,7 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
->   			return 0;
->   
->   		lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan, sc->reclaim_idx + 1);
-> -		lru_gen_balance_scan(lruvec, swappiness,
-> +		lru_gen_balance_scan(lruvec, sc, swappiness,
->   				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
->   
->   		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BATCH, NULL))
+> +		anon_factor = (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_weight;
+>   	if (swappiness == MAX_SWAPPINESS)
+>   		file_factor = sc->priority < AGING_PRIORITY ?
+>   			      refault_rate[LRU_GEN_ANON] * file_weight : 0;
 
 LGTM.
 
