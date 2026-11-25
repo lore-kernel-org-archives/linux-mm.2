@@ -1,144 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01048606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC394606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fF39pGtq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z4iRM4Ao
 Received: by kanga.kvack.org (Postfix)
-	id E92AE6B0B1D; Wed, 25 Nov 2026 17:40:45 -0500 (EST)
+	id 0163A6B0B1F; Wed, 25 Nov 2026 17:41:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6B166B0B1F; Wed, 25 Nov 2026 17:40:45 -0500 (EST)
+	id F2F116B0B21; Wed, 25 Nov 2026 17:41:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7FF46B0B20; Wed, 25 Nov 2026 17:40:45 -0500 (EST)
+	id E45BF6B0B22; Wed, 25 Nov 2026 17:41:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD86A6B0B1D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:40:45 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 799778014A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:40:44 +0000 (UTC)
-X-FDA: 85475112408.18.C457AF0
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C0EC16B0B1F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:41:55 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49DFEC0180
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:41:55 +0000 (UTC)
+X-FDA: 85475115390.16.F058807
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B6F9B1C0006
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:40:42 +0000 (UTC)
+	by imf20.hostedemail.com (Postfix) with ESMTP id B45241C0004
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:41:53 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fF39pGtq;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z4iRM4Ao;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646442;
-	b=02t7UdwfnUlvKkXdbsKWSabduWryGz0z1qTLjKLGObxICa24dlmUAlGHXrnmWYUuSN5caV
-	q+Nq81mQSPngeit9An1A0pAm6X0AKPLVJDni55z7QAi545kQc8f/OAejO1a5DzW3EwE/r2
-	AfjWiebP6K/IHdTM1qNFojPQPJtfGt8=
+	t=1795646513;
+	b=ZElePzlUlvNyJQi8cVjVnH0axKSUFyhvRFhoWnhI5KvY9sr4cq4GQ8+u9a9JXlfnqVNoGs
+	jWyXwFgJrI+BmKM8N7sFUfojJWKRA9+psPFISQgqgFu3+1aBnH369NUVhbOpZepqprml1T
+	GUQDPSb9sjSD+cn6gmkLiuoHfq3EH/Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646442;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795646513;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HFEO3+Zpc0o9i9tlrP3rTUdlR6T3RFfXFEfEcMTXpBc=;
-	b=O+2Ywzej0ZZgAyUDNP4ZnSZdlX+KqPb6+asaXdfQ/odhV6wRAt0N97r8mjMrbJlBWTeAAC
-	fVroHhtDGdd8J5DtaQ+eag5XXS1vgIN1KQmtdyAjEUMP8Q5nVBFDoU5J4CoIaBvFZyBaNa
-	2lJ5x9feQdVDKgerJL2axYzaUTV2vd8=
+	bh=ED0uK9gSgMRdaztBMPwhRS1wrHxALrpPXBMM2eVrwvY=;
+	b=x2LhVqBqO51VdBCth4lCwDDw/DHmAVsD5hjgliVwnXzSoPk+/7DioVUHty6txaiuK6XnEH
+	rffe/1am4PspojLnd/sAQzxug4I6nVLrSFwOAa+P4OExwWKo57EorpCOqDdF+5t2hDIC5Z
+	HANPuiDklUcNluyfnKW5BTUgecl/oZc=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fF39pGtq;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z4iRM4Ao;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E824C62526;
-	Wed, 25 Nov 2026 22:40:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02C51F000C0;
-	Wed, 25 Nov 2026 22:40:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3FE8262526;
+	Wed, 25 Nov 2026 22:41:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AAA81F000C0;
+	Wed, 25 Nov 2026 22:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646441;
-	bh=HFEO3+Zpc0o9i9tlrP3rTUdlR6T3RFfXFEfEcMTXpBc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fF39pGtqxxepy+KP0PC+Y5OKcM1qbgbvQ7TJG1E7JQ1LbKpysFsiO4+v8/8SzJf1w
-	 CwsMtXjhKZYoN1dD3aJN2guDN3cw5Dznx4xjInTNJCFHq2bKJcBeVKeaFX5Rk7LKVP
-	 cYSHh1VQdh2C4FAW/3az0ia3b9J0ilS0+xym14vm2ErXaZGbuupCVmH/grvPI3gBt9
-	 DMDfqHie2T45umUwG0j8L4KHIe7dUHIRbaFRM9+qQ3qNDnF8tg/sXkbSJjDMnSAwoI
-	 rGjJR1e4Wgf9wcRUhgXTja5yXcvjS78LNDqT7CBfsYHk9o5q+zPtm/bUjPUNXOF/lh
-	 56G1y+0j7M6jA==
-Message-ID: <6afabd96-1888-43d2-9ccb-73ca6702a004@kernel.org>
-Date: Wed, 25 Nov 2026 23:40:32 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: check VMA end bounds in insert_pmd() and
- insert_pud()
-To: Elkin Cruz <elkin@google.com>, Zi Yan <ziy@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- irogers@google.com, stable@vger.kernel.org
-References: <20261125221911.1425213-1-elkin@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20261125221911.1425213-1-elkin@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1u9nax4kg479smf5z4nfsf7mfkb14dd5
-X-Rspamd-Queue-Id: B6F9B1C0006
-X-Rspamd-Server: rspam06
+	s=k20260515; t=1795646512;
+	bh=ED0uK9gSgMRdaztBMPwhRS1wrHxALrpPXBMM2eVrwvY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Z4iRM4Ao0AM/MyCyxG/3LFCxRNrCzEmTe8ckWG1T2Mt4/DpmBWCzMiHAL4z4ktZPT
+	 Y0HFxSGxCmWXo17GqhLUyuovUbGiioMw9V2XW64+ZnwYbqHZjaxtj6JOVpYDklIPMa
+	 t9XtdgJdoBVA7Zq7iOUO+5di/o4hO47X8cWP96DdG08qyCt3j3xxu6KmDgWt/Ua6lq
+	 gPVSoWdjVqa6wzLJJtG70SuRJTnsljgLGVawim/IYlw3yeF++AxD7bes5BZu/8a4Jq
+	 Z5UJvDzpRbkQJh4l7+63INXkbZtFWNzDoinAlUFuHcfxl9HyoZ1PHEW+HEIcm9vJQ+
+	 K9SxUVEpZ0STA==
+Message-ID: <sashiko-outbox-234265@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] docs: filesystems: update filesystem type,
+ superblock and inode documentation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: mohamedalibouhaouala@gmail.com, jack@suse.cz
+Cc: corbet@lwn.net, linux-mm@kvack.org, rdunlap@infradead.org, skhan@linuxfoundation.org, willy@infradead.org
+In-Reply-To: <20261124223841.45091-1-mohamedalibouhaouala@gmail.com>
+References: <47rkrhjkulqvgfkp3ssvgrrmsfmeof6adtjrght2fcmq6ykbn3@dis6c75io7ri>
+ <20261124223841.45091-1-mohamedalibouhaouala@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 25 Nov 2026 22:41:51 +0000
+X-Rspamd-Queue-Id: B45241C0004
+X-Stat-Signature: tqqwzj4cmkfsuueyjn16qwhwfs7p75ob
 X-Rspam-User:
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795646442-858
-X-HE-Meta: U2FsdGVkX1/TYeRxfmoplsIJHiJaieNOn2rdzMT5A2Q6VZVyeS0UCe6hs75vVkBkpX/cHN08Uk0THiMjZ2T0bfJi+lds4OLkr9PAGg/avCOUv8QDLeXfuP151jvPu9qRZ+q9w9JTaBEPJAjSCFNc8bZ4ZBsHiPKTlYx6N+p6q3HSwyiAmLU9oKbI0iwaklMXvgIuhiVXINH/IJV21HAqc7cjtN+E16CuefNpIl9Q3hkGdNixAEJSZsTCLnNFOtpzy/JMjvuHCJ3exhg5FCAje6ysduhtxGw73DTS3HvwgVhFJEOBYvThdd3ETOoHkg/Tl2USrTOnO36mBaEEWAsWg/6C1cA+XY4HR5CyEZ787ej/PgbB+dBdmkQzjqyPze310lF3CeqKo8HAWPcCpymB5cr7JJYfeXkITr3yNcr/1K2YSRPjNzhUnEtGcEFVgr1veBMqCzHGe44UWT9A4Ry+tv1xNP0GFL7X3pvdjfz6x/n2+LyjaSfPRXO53ftrpeu/fE9HTCuJJwGFqzy7f1GTjN3n0G8GLSfO//MZv2Pq9L8oV8xBBs9r2GObZTkB53U+zXjAXvEFQkwU8DKU0ffxM+pZBlIkaM52MqvmvyEmKwitJtuAaRdzD9Kiv5LTvAE1j2S5r3HdqORngJyG9wcliiowK3KD/IuTYxSUQ3mNtGnU8lTDQuYdgcvzrlJNo8FIlAx50d1blWhD1b5j6v+9YtwuK5+dvqhFwGSNS9ddtesOWht4JnK+GFUnuo44FKwEdb1yuLtykht9SgvOSiyyOwxGG5oQAPwxsPzgLAZAeErErhYC/rKKgtfRhJFRWFyetPki74OTvVjbtnaDIF68iATkgqak259naoQDSlroB4N31IfwY5lBs5cJg8f+FrPi1A1jeHVk4vwdm4L0duEBV5cyrIFFrRPEE7lIa4faDB0p6AsfqCkAoTap4QKEwvvOsC/hATHxhI8a/fLBR5s
- gdJt7kLH
- sJtIlTSVPBP5flaHtysI43zGqSLy1iwl3s76D9sMmdxLacV3VtiuOFwtJiDhtvcHVu2t+F8p3V7t/izITOAZFGusSC8Mt7U8fw2x+J+p7cXGnNvY6GuYsongPICkXsNIrrOXP5VI4oWm/JMpIz2/u1aEBhRFUsvI3Ql8a1i2YffUqZAHJ5pGHQ4Xwc6AIPcC9O5IrkKKVss0QZLNej6RYidl5eol3hHYCToOJpRMjwpdSouXhUp+8MQ57/NXdbGSRiZr6a2Qd4bCYSunpLfkwak7FDUTBNwYo5jrTL8HiGnqGTuWeWXo4BkHGrpizS4QdfalPMFLx6y4zrUzzpZ6/Xi5X+xWWYPrWFheDKk7hDd5MCL3n0FykWWAcLGmuc7FIsCwZYSuiS49Pu7xX2sr7R79w5ssuVzklXYtf0XSTsw29jZzeOPrU/GS6TzWwu6izhJvKnWRxUKDXdh5DkYHA1d4aTn9XcCctUv0IlRpEJpdnimckjPs3oOFwUKRN1732nsM4gOKEnwGIlXUSH/ZEGd4Pqw==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795646513-568173
+X-HE-Meta: U2FsdGVkX1+Hj9rAugY1QTinq/SxHjQ7Rxj73C75rhU35uYn1L6HXkCRcwC8RvcCMdxHDcK9LAN9Llxz9DAhvyVErU9sSkR94Wb7RPGCFArdAQgkuTHi5M+Vh+GukePVsEXgsDDWjOMdGL6K5Iy5rE42OZeyn3d/hGg508jZS/vlHr9EaY8p+VbWwel0y36kerTOXDcyj7e0wrfin0nEqZTFqYsg1W983Tb6KWCRnfzyNYpGqWmByPtdj2j2hS5z4W97U3ZxwsPY5/CPdMbS9U98l3HaAfEZQe4O1p/fcr54G9xNZ4LLmmlPAryYlm5JDbBAeNt6cjtWb9EQYcnGgsgNrh3h6Nj4O5oAs7cBLGpr+e5Tng5HB6x14lYqOtWSoVC0ymV438Ir6MD4TQEf9VjCBToKp4xbVVhz21INCJu0lXGuf5cgTUN1n8+AgCVkXoFWXCTB2N00WTwThEldZp+rbZkPB9lfBdJVNFntKErqQGHIts8h2p9If2KevZwXepo6BKo8L7Sn5qQqv7CqpwlG8GPV2O2xaQt0d8T3CQ+D73lCnIF2K0A4O8LfSHLRwDejsD/rf3TUyiTdNEuzyfN5bALPsiRjZWvp7HM0TQNaOjoDgwS2YIWGbkD79mHIKsYzozK6a/aZoTZDfkoX00KSPeU2tOjVHgySVaZVLAyh0XfWAWYUxDxH3sXosKEG738EoQrBRPmYV0Okl208pZtydl8KuqMxw9Tha4GE/sRnFq/5HTPq4FHUXhSrHhgiHB4czvAuM7bfeUHoK9hmO78pmQY7spTMIc6WXLFzF+AVW7YgDPdnZDH7whSyi3LQfSehpyiHAt3+/LJGxJxfuudIcMZVPZ41lE4gwUIzdGcGG45hAf7nEKMOHfcUKmnyc37nAhmKzGxc4ZRFFIVUnIC6+9s2XQtKqz191bjQyyJ7H99//gcIQf8sDQ21p/NatSFL0Cka8hSX7Zc0/vK
+ dnukCvGi
+ EwkTqTRsXQEVOXd78i+/ihlAeCqlAtWJcMhXWAvBQkISXMOd1a9BKkefn0Z7UI/x+S/sxuDhfzqX4itTPXwogSUlEaQyjmus2Uemvxvahxyky82Egtgjchw5X5htsERxghmbf/OOLfsiWolY2MMzefVu8Prq0hF0raNiGjmndqOYrAuzWqtCz5CHu38s+nae0wBJFB7IbOGm4/jMNKx8z4VxZzR0e0wSFFbQuerP+y+IQNU9gFwjwVQ089bPcPHS80YSLAfdHb9SeDBmXnWJWtzOz6Lis1YEES6orr6kp1OV+wJNifhjwprMMkunjeBMESqi0ycXuRJOO3xOqZLehnwIyaZzzvfgtAUpmVqKX0kP5Dig+vTZj4duT7OBZ/12ek4GYTF8XBkrCh71hLFiDrkZZ5WwbsKXwhiwNUKqbf1kY3A98uptpw2+84uT1EzZRTxD71zqjL7yrSLTfuYxWGNVmBsOTamnCmo8ObkhfSBuoaSXgUYrCKX8O2AJ6hFvZIzV8ZpX6N0kazM4s3/AO0feYd24/XjDV2KI7e3jl+Xd97xJOkAc0YG6QmFOjCvl1f/0UGK55epmqKijm0lLnBsbalSAQg7GbCcloZ68LYL+K6J0bVUgqdhPD3Jzs0hVVDlnNV0XjFUhpGhU714tlCtLQ9b9631qUofoM8QhlarADrgMU7xlkLz9BCNyBY9qLsXJU91Mwlww5rfSHLN6Oqj5oLxtKEsTwNkMLanT/0ws94czHRMw01Hgix0CUDPPfrnPQYQb45uwr4UJaFQsCnbODlbsJ4AZLQ8SaSbZaU5x5/U3CJOeAFBg2/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,24 +92,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/25/26 23:19, Elkin Cruz wrote:
-> insert_pmd() and insert_pud() only check that addr lies within
-> [vma->vm_start, vma->vm_end) without verifying that the full PMD or PUD
-> mapping fits below vma->vm_end. On a VMA whose end is not PMD- or
-> PUD-aligned, inserting a huge mapping at the tail straddles past
-> vma->vm_end.
-> 
-> Require vma->vm_end - addr >= HPAGE_PMD_SIZE in insert_pmd() and
-> vma->vm_end - addr >= HPAGE_PUD_SIZE in insert_pud().
-> 
-> Fixes: 5cad465d7fa6 ("mm: add vmf_insert_pfn_pmd()")
-> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] docs: filesystems: vfs.rst tells callers to initialize
+  hlist_node list to NULL
+--
 
-Which users in the tree trigger this?
+commit d7e2903820e76954308c4fadd359952c7070652b
+Author: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
 
--- 
-Cheers,
+docs: filesystems: update filesystem type, superblock and inode documentati=
+on
 
-David
+This commit updates the VFS documentation for file_system_type,
+super_operations, and inode_operations to match the current kernel
+definitions and callback semantics.
+
+> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystem=
+s/vfs.rst
+> index 1824462a43711..da4aefb1cc90f 100644
+> --- a/Documentation/filesystems/vfs.rst
+> +++ b/Documentation/filesystems/vfs.rst
+[ ... ]
+> @@ -156,14 +158,14 @@ members are defined:
+>  	for internal VFS use: you should initialize this to THIS_MODULE
+>  	in most cases.
+> =20
+> -``next``
+> +``list``
+>  	for internal VFS use: you should initialize this to NULL
+
+[Severity: Low]
+Can file_system_type.list be initialized to NULL?  Unlike the old next
+pointer, list is an embedded struct hlist_node, so initializing it to
+NULL does not compile and callers leave it implicitly zero-initialized.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124223841.4509=
+1-1-mohamedalibouhaouala@gmail.com?part=3D1
 
