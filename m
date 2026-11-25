@@ -1,126 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A79606A681
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 15:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5974B606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 16:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eZ4tYm+S
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GY/6JvUl
 Received: by kanga.kvack.org (Postfix)
-	id 53CB06B0A63; Wed, 25 Nov 2026 10:56:01 -0500 (EST)
+	id 76CB76B0A65; Wed, 25 Nov 2026 11:01:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4ED9A6B0A65; Wed, 25 Nov 2026 10:56:01 -0500 (EST)
+	id 743F56B0A67; Wed, 25 Nov 2026 11:01:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B5596B0A66; Wed, 25 Nov 2026 10:56:01 -0500 (EST)
+	id 681006B0A68; Wed, 25 Nov 2026 11:01:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DF266B0A63
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:56:01 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 94DB180F16
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:56:00 +0000 (UTC)
-X-FDA: 85474092480.12.3CB605A
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8ECE2140007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:55:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eZ4tYm+S;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of shalasheg@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=shalasheg@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 43CCF6B0A65
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:01:28 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C62E8A0FFF
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:01:27 +0000 (UTC)
+X-FDA: 85474106214.09.AA8D3E8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id ECAF5C0010
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:01:25 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GY/6JvUl";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795622158;
-	b=21zSM3OGFla8Q3TFC8eatFq1xkH/pdJIvrOIjPnL96BUOh42yxQ1o1f33J1W614tW5+sjy
-	i92yLL/6qZKN7KlX/Nkf92Y6RnOXfUVwtBYcXXvydm8tT88qYB5fxePlK4LcpYXntp8oor
-	LfYygil0LlTN1YVklBDWZMowFK4dl10=
+	t=1795622486;
+	b=AD+AGaoZfC9K5Rbw5M63t1uovft+le8PTdWwWbBgmT4vb//WEu35fOBIJFUA+esXxJZViF
+	5YFqqt6DvyM4u94aYAjDahIU6TMuw/cbC7b1Zv7DjlVqyyEsbsJR/ym+0KxHietfAm8VGT
+	ZCDu5NxgwNTIZAdnFiCa+XJfBi9t+8E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795622158;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795622486;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ilZkP46cGSi8xAEGGltwn2YY6bly9+EZHVBMEUvniWk=;
-	b=KiLOC/dgOXRwBbO7I8jrSYChLK7y4Qq7N72/bvlobtNEoo9xoIUWIy19XkWlerKvyFnrLH
-	N0+Vfb+tAnz+HnwYNZqjHJ1GzmsbqRMPC/RaMfYs+alVlqbLQvkDLAnb96AdB1D40CADc7
-	L2FJlZ5y3oo63hT3qSSOTa8f93Bw4+g=
+	bh=JJKWVw1mHimfCQu8lU34qXadL8opeU6DRxhW8P4L9IA=;
+	b=I46RXMedcnPnVLGMry6p1eACmSRcq2K+1fV2D6jj6qyjuyZ0KKdpU2wMv/J+p5WgSF9H3y
+	9Zmplh67nsjM3GUuLBkize5eC6DKDNaMWgyB/+dF6tUoGqvTMEOHb5cTdxrSyxzHSlgM0i
+	S8WuA/6jp06oZieLfPHMBM8gv41Tbwo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eZ4tYm+S;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of shalasheg@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=shalasheg@gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3adf87fc0c6so51830821fa.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:55:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795622157; x=1796226957; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:cc:to
-         :references:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ilZkP46cGSi8xAEGGltwn2YY6bly9+EZHVBMEUvniWk=;
-        b=eZ4tYm+Sosxna1P3M15wIdA15rqK9wWreplf/HMVRZoKSnev+W1UopuXR0rm1zq85z
-         gqWoKkisibsQTHHmbt72O+gz8Xa3g8adyjdTkZUjNc1aOZO724/h7+tAwITSh8HflEW+
-         LRrIOwSWmP1DJV482nqvbXvabJFu3csWJY7Avm1fEgvFE/A/3S4NoB2Kn4ziNAQpCI5x
-         NN88JLZUQ+OurF+52UtayH6DvmpCbR9PUrGbMNHtPLW9fYLNy0kJimnkItqQlW/pDAeN
-         emSsnY/T055Ti8ojyrfcXPE8n3GJKp0kjVXgCx5cnqeYYOJf9WtiQKKiesgrq2R/XrAl
-         2q6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795622157; x=1796226957;
-        h=content-transfer-encoding:content-type:in-reply-to:from:cc:to
-         :references:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ilZkP46cGSi8xAEGGltwn2YY6bly9+EZHVBMEUvniWk=;
-        b=dLww0rh6NkFFeJQdi+kiA3IBq2dAlkwJlkj5fYAWarODNBgsZMcgTX6wYqBWKMIxZt
-         sZvFpF957WBwmYxnvo0BLpRfUqk0sJdJNK4b3zfPh2ODgnUydICOM4SVWCIlIJ8HBunW
-         USTsQCdD3gXB/tAA6wlN7Ocm8MC5hkZtD6ZaXbVPUTZP7Qo7/d50i0Oq8xXAfi0UOByv
-         FsssUlscBZ0vUAFFiVFp58cM9gAYElENThHuX+oRANRqOhgeFoh/uTmnxERqgPjko7Qz
-         pv/UofnLws/GnzQPfHEQV7JJArVGhiv8qtX5tyoQfKaGfbiWte8EMoArgRzzhKDeGQaO
-         lYdQ==
-X-Gm-Message-State: APuU4Z8+Zvf7vYqKpIq5I2oLUIzB6E3pYqezaWMgmLk45XjaVxxDpXrO
-	SVVhTJvIoDAaRCwCxIUPIJWFo4sSFfXl5ZZyUccv+dJPr5XOGOZKugsd0YXjlqOwvQI=
-X-Gm-Gg: AZFdTZcDU2mXsRWIwz5Se7iARMU03FEsWR9VcXrjBob6g1Q7aJF2D5oDub7Gc5PK3iB
-	iK7jpXwKvkDQF9FdKkRiYSJqC2skfVC2hiV3HKZNTIAXfd4x/BKvSX/FZ4B9mYHUKPwXtZ5HjFY
-	xHoitmYqVs+8CT/lpG79NR6Fvu6YAosxRRkjehgi/EFq4gAOeJSdEPOFGPJUsuNFicNa038X3Zo
-	iLbRbM4bbJzr8/pIbA/p//PxNQBmBEY2h2MAQvFibP38l1nvFK2bRjiworGA0V9UphD92rwVug3
-	lqVdB73A1kIBzlXMbEk8c3hgkeYCw91IBQoDTHRaSEotZFCi4zh1F0DNkMAspwt1xO2uSeiecTh
-	Ufk6X7ZS8kupGRt4IngLMhG3hCmXLyGfiCclB7DhIO7lUzd6IBj6UwnwQ/73WAobOVnmV0Zp9fl
-	B6pSnMCf/NRrLIGa+M16HoTiW6Ms0tBCVcL5Qh5iIsCQ6CQgyMcSV5zNnTIo5JI4VMmqTuMQHl2
-	LlxTpj+qwoPvcTnEF/W+A9EhrlTlqzpl3v7Z9wlrG3vRwdsMZZZCF3u9aO/lhACHr1trubSd/zA
-	+sFMCrkIijXv6k5lViy/PxKGEBqo40sxIS6v406IoSk7MDczTcuXFJ5jLnRjz47mSm+/mLbYE1b
-	+98iJ5Ws=
-X-Received: by 2002:a05:6512:3b08:b0:5c1:b29a:1ba3 with SMTP id 2adb3069b0e04-5c1bc7d5ce5mr7526450e87.29.1795622156730;
-        Wed, 25 Nov 2026 07:55:56 -0800 (PST)
-Received: from [192.168.0.103] ([46.8.6.187])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd0776edsm4838279e87.73.2026.11.25.07.55.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 07:55:56 -0800 (PST)
-Message-ID: <6c943754-05b5-4017-9145-0d145766909a@gmail.com>
-Date: Wed, 25 Nov 2026 18:55:55 +0300
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH] percpu_ref: make percpu_ref_switch_lock per percpu_ref
-Content-Language: en-US
-References: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
-To: linux-mm@kvack.org
-Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
- akpm@linux-foundation.org, zhengqi.arch@bytedance.com,
- linux-kernel@vger.kernel.org
-From: Egor Shalashnov <shalasheg@gmail.com>
-In-Reply-To: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
-X-Forwarded-Message-Id: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GY/6JvUl";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 61F4F6335E;
+	Wed, 25 Nov 2026 16:01:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329C81F000C4;
+	Wed, 25 Nov 2026 16:01:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795622485;
+	bh=JJKWVw1mHimfCQu8lU34qXadL8opeU6DRxhW8P4L9IA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GY/6JvUl3stImu68lSohHFhu2ZL/UrMus+gJqIU+OYYfyMjcRYE7/RYkOCuFBsju+
+	 d205sFdwtt1N4C+8XrQ8mC2pBEk/jY+eOj5w07c9rXPpAuKbnNGuKZlmoA9wglQc0z
+	 TuhTP6OIkxEv6J0YZnS6HSZXkPoPFjKmz9WvX2iM8479Vf56Z6dTRVXN9H5W0NoWFn
+	 gjFfliYM3HEu2+/eo/Y/57aY9YwU07ZlIReIT2dz/uaqNeJ/Z9TsXidnkT95HAQnWm
+	 /oND0kIzvJxPZcYMSqiANEx9AMCGK/fIynh03jpjIae/92tlfHnWj2u8LNbBpqgljM
+	 Zp9KQPusr9WXg==
+Message-ID: <sashiko-outbox-233694@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RESEND PATCH] x86/devmem: Drop /dev/mem access for
+ confidential guests
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Nikolay Borisov" <nik.borisov@suse.com>, x86@kernel.org
+Cc: mhocko@suse.com, kas@kernel.org, ljs@kernel.org, linux-mm@kvack.org, "Dan
+ Williams" <dan.j.williams@intel.com>, "Kees Cook" <kees@kernel.org>, "Ingo
+ Molnar" <mingo@kernel.org>, "Vishal Annapurve" <vannapurve@google.com>, "Kirill
+ Shutemov" <kirill.shutemov@linux.intel.com>, "Arnd Bergmann" <arnd@arndb.de>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Michael Ellerman" <mpe@ellerman.id.au>, "Suzuki
+ K Poulose" <suzuki.poulose@arm.com>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ =?utf-8?b?TmF2ZWVuIE4gUmFvIChBTUQp?= <naveen@kernel.org>
+In-Reply-To: <20261124160025.738362-2-nik.borisov@suse.com>
+References: <20261124160025.738362-2-nik.borisov@suse.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 25 Nov 2026 16:01:23 +0000
+X-Rspamd-Queue-Id: ECAF5C0010
+X-Stat-Signature: ggwi5xejdiwnq38et3ubkiy5crt6xado
 X-Rspam-User:
-X-Stat-Signature: bskfigticzgqpus3nu6so3kye9wf6xx9
-X-Rspamd-Queue-Id: 8ECE2140007
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795622158-25656
-X-HE-Meta: U2FsdGVkX1//fZLDisD25xshG3mQ6G8sVleYwVzrBw6QiZXYJZA5/NzKDv6df04iCVaUwVd14maumhuuNkrWqySkjTfuNupEG+F/5vSm92fKjErzSg2IptPqhF8r4FzvJiGfMTpDIoQY+DC36Zs7Ae5C5RKf2yNpUaGIt4WowjPDMNfb176hJWPT79f9WeGem6x9P5+V8axt7kTY9r+xlRMjLkQGVBP33Bi6RsD8/rrx3kAtBQV40ZF3X/ucIjMCsOlgjAsC8leQvNvvc7Y+u2Xc0eSYSNbzzAYVwjfmss4Qj0Iaa6aViRXsuBm5kHIhiVnTXl8UNZGTtJcw7ARLGqlmRYOc38sidxPRLkMcMheUTE+rC9wcc9gN4QQt8aM46YyN3SkhsK7AZxbYpTcCQt8W9Wygd5YMxl0BACVoayr3S+2/ovD6t8ejR5s1tcT2WA7IFyKGNAqxmdfWw6B8Z7mNxjqutzv394ZpCZ2cA2IK0SCIXxrpgJJ34w0nUP5J+qQ/HSLQ2smoTJoDVzvD8YSmltr7FDy6ZD5+JW3E/Mdhm0AI7WEPZQx6w3oehXYgnqqFCwNjqCT1QT1rF6pfCX2KerKCjk6PKt77jcTuefXZk0806ga7G61YsaXQDdjzM/J1DQRde7H8klRu9Y1kfVJPOtVzYWrr/0Dg78SVWcPtL8MNR/W7Nb0XWI3bXv/vs3usPAr5d9cwuYnt70Ed7jFwc1IsRvrdOx9ISj7AN3Ql4hhHaRDEIGw0m4UAm49jVtz++w2vhlDxsSifCd7Kv33w/FjxlollToD1Z6gTikk3AS6mvLVjbGhAXE8nZTEBt1Y1tebB++vzpBT0+6fTH8yp3MUYUle2Y7aid9krNo8ZeHQzOA8LNBS+34EC0y18M1I0ncgm+NMlCvYi6bJvLhhEJIZqUCBxtE4cTnUFyTW/Z1xbS5IZi+58xnzajhC5xcE9zdvA/W0g4TU4Ltj
- KTARcIlD
- m8euUGpQLGzQGEOvMY5d03hMm67kmW+R1bIpeD024GLJ7r3uN4M6nqhock0cgFx5oCWNcIXoAmUvSshQJVFB08k85CvokPP7ERGKjpekO+fZfiMEfwT4nDTZaFEAuyR1Atm9Z5tKr6TJpGGmmDCVKTKhI+9KNS6MZH2occ5u1Qi3R9OTAAfEKy6UyVV80IXdGtZPkLMK3CH6uGG/WMfWk6NaTIP2lHjQyYKoWjisDqm2CFtAxeWqirQjy8thzkBtIFKYPA8mLeelOriUoA9zAfpNdrtJfZu5BJGDhyMPV84G1ExGY8QUThzp9WfvA1L0xk6Scvm91upYTA0impQaCDnub8a0JK8NDFmbtFCNeHmW9lQmcLZqx3EAZltlWNzVBPdkYT/+25V4jKonL8uuq6PsK2JOVehrNow94rLUMle3Z4kARs5hHfE8Td5/IbAd+5ADr0z8bo70MMk0btPbWX3mZ1uDQk+t3w0WSLY8tfynZ1SF2jiMbsxW1F/TFreZg2livZvwdLQy/cUlwtANCQwzxzm3wo7erS9qbqPoIzddeAM0Jj8L+y8Kx7L0/JFS468zd/wRDZ6cikC3Kv8oI9aGGI4y53KYU1hrDuVC4Rpve6fJdxsuI6K56J39bLsNLzn/oSG6GWbFh7q/u+76epPWHQJj0t9RKm1IpfLAPkARR6R8y70GzbR8HbySZ8aVbjA5MZNc4mkxg+lylqpfxuhJvMulx4kbvV14QTHn4NGDNls8QfgeHGaAp6a0FSM1bXHZVWd34gY8qeVTFXbDylEy7PA==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795622485-943927
+X-HE-Meta: U2FsdGVkX18bmmhdTgLk49loFBAa0pL/Zun4iuOe2aCwz6wfRSEz1asNLhkSryQWkwoqxEY1TljNM5iPe5FF3Ong3P9AxsgVZWcTF3Ct0Yk2SRkUZ1gBNzUnEmw9PEFgjDZThboHiUYkk0wS+Gjn25v86hbSjLFVvx5SlxxfR+45zESsdyKD/73ENOln30VjNQSmfvO2WfHUQnpBtqAyvgtLIb9TKfiCwh5v8LHw21VRx8Su5TP4TL3ynfW1DDnYIW9KOEGdu7tCjxRxRzo8Fs7jpqkJ4R/5LymOkr6n0QxAEUUSNHXefvgS/VsR3vumh6wfR3AZAw7HAwPTrWKzQ4Y6sM0AKWyVyR86LBEsguu4t5+Al+JQ9QE9Iuke6QosZl+bngVhXf1NWGrjLaWQjEuqqQSzOlAFiphqZ6iE4wvlf98gzN7nxeMvq2uP/dATiQ6a59HlO/vexxMFOW57HTC9eZv9ghDlU3pERxmB8SKI4NDYgtXTeJX5PUhMiwvdfWxTnyZxli2sQ9RHea88Jvt7NPHlNcnU+QRdYIteiauXJl3CJlqMr+SIUgusX2t2W6GD//ZfMV5LjGGJdV2GO7qh1tH16u+xb0H9F1aCBSdJ2s4p3K35DQtdJuB+LbAg6eNPoNmXsHD9TOagk/0g1H+gPnX6ZDQlSNcnALulssRnvfCX92wfGvMlyMoxh6EVZQb+tftoqbfuAAX6rTOa6DzQiElejcTHTC/VzUwTmZTZyXgyJ2vbp8AszWYk/Z8olVmWNNqfMIjKMV88Q7B6AH5KSMP/3hij/6LbwmpLa18vTU4+NCRVij0ydP43nYazoVTt+wxDR8MvPOC3D58cEKIL26hmUrtRHG7D8XCVsk37PxlWaW2MmDFNprubqsF0Dt2CAgYe+4z05U/UEdb6fEQEwCVJP1UESc6LLylX/C/i2y48zzgtB3P2zpzhitbx0+Use+Uq2K0JEbLHVSW
+ q/LIXbRN
+ 8UmK5Nntgc5vNPZ9MEDRvA3tIAFw+N72ELvtXmNsyFQ51cTT61tZanKaSxn0/cz6O0PA9Wu6ri+wdNo+0EKMYtXO7eewtEHY3Vk8eE1MBdmhja13vM+gE6Ckbzdmuqd1cMchJhq+5tahYw5U4j/B0e10KtgzPrQ0PGxBkoBPC8jx4bHikBUb19w0hJukr8mtiFD52KfXdahtGDj+MkQWW1SqL4VPo4hfucIwyX/lwqa4wJpTH3XLvd9OOz87ItRXfmemdDBZFIJVWDHaTs+WqX5irzGFuplZ3TFPJyFpBPqT3IaHkeX7GmwebldNNjeDdlKXJw9rZUyEdUr0l/1vn+6C019YMIEWQNK+X3TmKSXLGcAXyALpvCK/FUlNBYxSnUkWzx3MsymK3+OsIokR1w9ida0BMv2wD3N/HA7mkj+B91SNm1ml1ZrLu33SA+OQJLYhMVMuutybvUJhwlcl14ackcxozMy/5hhYhmTe0n3QVe3H6CplxhCiWUFKgbKeL/FPFW3Zz+wp876NEI9bH6lWIddutdO27/IMxOOTnRfT0XHibLuEFw1H9mnHgJbyPXIn9Jff0NXM3RywOPXMpCmQJux1UNIR8QoLrWFM594JCq45ZqKjrhiCmZWUUuMJURCkFOu0+XYrgFJjsxDvl2/UhQIltyEbQD0Mdyp7gXaL5xcryfLbJJaJEEyfW05Q0jyhlhW281VNRhbPkIgf6Duq1de+N3jAxkWRXsVcw0rEuJCOSPWQKCOQRlQn5dWH6MMQD3sLpo34G/4ikLdiKZGS7cJj39KaDZuCKYEBpP3eTaHkgMZqp0/gqhLPgz9v5GKLDvCX8RUD80egPobRg4GaBMlvnbkjAYLgTPeBDm4zmRufEMoQENKxzOWYDWwzGzZKUv19uFIidd/J7QrYGuMA9LtEQCN3CdxouBzP2NTes16X7MiAjRqdBIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,200 +97,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] x86/kconfig: unmet DEVMEM dependency when selecting
+  STRICT_DEVMEM
+- [Medium] char/mem: confidential guest check in open_port() blocks
+  /dev/port
+--
 
-Currently, percpu_ref uses the global percpu_ref_switch_lock to
-protect the mode switching operation. When multiple percpu_ref
-perform mode switching at the same time, the lock may become a
-performance bottleneck.
+commit 044352a94dad5df8ad0a8efbc1156eb4b277903b
+Author: Dan Williams <djbw@kernel.org>
 
-This patch introduces per percpu_ref percpu_ref_switch_lock to
-fixes this situation.
+x86/devmem: Drop /dev/mem access for confidential guests
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Signed-off-by: Egor Shalashnov <shalasheg@gmail.com>
----
-I would like to revive Qi Zheng's per-reference switch lock patch
-from 2022 as a standalone change.
+This commit selects STRICT_DEVMEM and IO_STRICT_DEVMEM for INTEL_TDX_GUEST
+and AMD_MEM_ENCRYPT, and blocks opening /dev/mem in confidential guests by
+returning -EPERM when CC_ATTR_GUEST_MEM_ENCRYPT is active.
 
-Our workload maintains many independent percpu_ref instances and
-repeatedly performs kill, waits for references to drain, and reinitializes
-them. Multiple CPUs execute these cycles concurrently on different
-instances.
+Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/s=
+ubarch-x86-linux.c/?hl=3D113#L93 [2]
 
-All these transitions compete for the same global switch lock.
-Reinitialization also clears the per-CPU counters while holding it.
-As the number of concurrent transitions grows, this shared lock
-becomes a significant bottleneck.
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 58dce0b66179b..7a212f8363e35 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -901,6 +901,8 @@ config INTEL_TDX_GUEST
+>  	depends on X86_X2APIC
+>  	depends on EFI_STUB
+>  	depends on PARAVIRT
+> +	select STRICT_DEVMEM
+> +	select IO_STRICT_DEVMEM
+>  	select ARCH_HAS_CC_PLATFORM
+>  	select X86_MEM_ENCRYPT
+>  	select X86_MCE
+> @@ -1490,6 +1492,8 @@ config AMD_MEM_ENCRYPT
+>  	bool "AMD Secure Memory Encryption (SME) support"
+>  	depends on X86_64 && CPU_SUP_AMD
+>  	depends on EFI_STUB
+> +	select STRICT_DEVMEM
+> +	select IO_STRICT_DEVMEM
+>  	select DMA_COHERENT_POOL
+>  	select ARCH_USE_MEMREMAP_PROT
+>  	select INSTRUCTION_DECODER
 
-With a module-local adaptation of Qi's per-reference locking change,
-we observed approximately 2.8x to 6.5x lower operation completion times
-in the measured workload. This motivates using a lock per instance
-so that independent transitions can proceed concurrently.
+[Severity: Medium]
+Does selecting STRICT_DEVMEM and IO_STRICT_DEVMEM here trigger an unmet
+direct dependency warning when CONFIG_DEVMEM is disabled?
 
-Original posting:
-https://lore.kernel.org/linux-mm/20220429133552.33768-4-zhengqi.arch@bytedance.com/
+In lib/Kconfig.debug, STRICT_DEVMEM depends on MMU && DEVMEM, and
+IO_STRICT_DEVMEM depends on STRICT_DEVMEM.  Because DEVMEM is an
+independent user-configurable option, building with CONFIG_DEVMEM=3Dn and
+either CONFIG_INTEL_TDX_GUEST=3Dy or CONFIG_AMD_MEM_ENCRYPT=3Dy warns on
+unmet direct dependencies for STRICT_DEVMEM (and fails the configuration
+step under KCONFIG_WERROR).
 
-Rebased onto v7.4-rc4 with an explicit spinlock_types.h include.
+Note that simply gating the selects with "if DEVMEM" would leave
+CONFIG_IO_STRICT_DEVMEM disabled when CONFIG_DEVMEM=3Dn, which would leave
+iomem_is_exclusive() inactive for PCI sysfs MMIO mappings unless
+STRICT_DEVMEM also drops its dependency on DEVMEM.
 
- include/linux/percpu-refcount.h |  3 +++
- lib/percpu-refcount.c           | 30 +++++++++++++++---------------
- 2 files changed, 18 insertions(+), 15 deletions(-)
+> diff --git a/mm/char-mem.c b/mm/char-mem.c
+> index 53ce0034a4c13..c06970238bf49 100644
+> --- a/mm/char-mem.c
+> +++ b/mm/char-mem.c
+[ ... ]
+> @@ -609,6 +610,15 @@ static int open_port(struct inode *inode, struct fil=
+e *filp)
+>  	if (rc)
+>  		return rc;
+> =20
+> +	/*
+> +	 * Enforce encrypted mapping consistency and avoid unaccepted
+> +	 * memory conflicts, "lockdown" /dev/mem for confidential
+> +	 * guests.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
+> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +		return -EPERM;
+> +
+>  	if (iminor(inode) !=3D DEVMEM_MINOR)
+>  		return 0;
 
-diff --git a/include/linux/percpu-refcount.h b/include/linux/percpu-refcount.h
-index 1e3212e..4582e79 100644
---- a/include/linux/percpu-refcount.h
-+++ b/include/linux/percpu-refcount.h
-@@ -53,6 +53,7 @@
- #include <linux/atomic.h>
- #include <linux/percpu.h>
- #include <linux/rcupdate.h>
-+#include <linux/spinlock_types.h>
- #include <linux/types.h>
- #include <linux/gfp.h>
- 
-@@ -109,6 +110,8 @@ struct percpu_ref {
- 	 */
- 	unsigned long		percpu_count_ptr;
- 
-+	spinlock_t percpu_ref_switch_lock;
-+
- 	/*
- 	 * 'percpu_ref' is often embedded into user structure, and only
- 	 * 'percpu_count_ptr' is required in fast path, move other fields
-diff --git a/lib/percpu-refcount.c b/lib/percpu-refcount.c
-index f8d9068..5d46602 100644
---- a/lib/percpu-refcount.c
-+++ b/lib/percpu-refcount.c
-@@ -36,7 +36,6 @@
- 
- #define PERCPU_COUNT_BIAS	(1LU << (BITS_PER_LONG - 1))
- 
--static DEFINE_SPINLOCK(percpu_ref_switch_lock);
- static DECLARE_WAIT_QUEUE_HEAD(percpu_ref_switch_waitq);
- 
- static unsigned long __percpu *percpu_count_ptr(struct percpu_ref *ref)
-@@ -96,6 +95,7 @@ int percpu_ref_init(struct percpu_ref *ref, percpu_ref_func_t *release,
- 		start_count++;
- 
- 	atomic_long_set(&data->count, start_count);
-+	spin_lock_init(&ref->percpu_ref_switch_lock);
- 
- 	data->release = release;
- 	data->confirm_switch = NULL;
-@@ -137,11 +137,11 @@ void percpu_ref_exit(struct percpu_ref *ref)
- 	if (!data)
- 		return;
- 
--	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
-+	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
- 	ref->percpu_count_ptr |= atomic_long_read(&ref->data->count) <<
- 		__PERCPU_REF_FLAG_BITS;
- 	ref->data = NULL;
--	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
-+	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
- 
- 	kfree(data);
- }
-@@ -267,7 +267,7 @@ static void __percpu_ref_switch_mode(struct percpu_ref *ref,
- {
- 	struct percpu_ref_data *data = ref->data;
- 
--	lockdep_assert_held(&percpu_ref_switch_lock);
-+	lockdep_assert_held(&ref->percpu_ref_switch_lock);
- 
- 	/*
- 	 * If the previous ATOMIC switching hasn't finished yet, wait for
-@@ -275,7 +275,7 @@ static void __percpu_ref_switch_mode(struct percpu_ref *ref,
- 	 * isn't in progress, this function can be called from any context.
- 	 */
- 	wait_event_lock_irq(percpu_ref_switch_waitq, !data->confirm_switch,
--			    percpu_ref_switch_lock);
-+			    ref->percpu_ref_switch_lock);
- 
- 	if (data->force_atomic || percpu_ref_is_dying(ref))
- 		__percpu_ref_switch_to_atomic(ref, confirm_switch);
-@@ -308,12 +308,12 @@ void percpu_ref_switch_to_atomic(struct percpu_ref *ref,
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
-+	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
- 
- 	ref->data->force_atomic = true;
- 	__percpu_ref_switch_mode(ref, confirm_switch);
- 
--	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
-+	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
- }
- EXPORT_SYMBOL_GPL(percpu_ref_switch_to_atomic);
- 
-@@ -354,12 +354,12 @@ void percpu_ref_switch_to_percpu(struct percpu_ref *ref)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
-+	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
- 
- 	ref->data->force_atomic = false;
- 	__percpu_ref_switch_mode(ref, NULL);
- 
--	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
-+	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
- }
- EXPORT_SYMBOL_GPL(percpu_ref_switch_to_percpu);
- 
-@@ -385,7 +385,7 @@ void percpu_ref_kill_and_confirm(struct percpu_ref *ref,
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
-+	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
- 
- 	WARN_ONCE(percpu_ref_is_dying(ref),
- 		  "%s called more than once on %ps!", __func__,
-@@ -395,7 +395,7 @@ void percpu_ref_kill_and_confirm(struct percpu_ref *ref,
- 	__percpu_ref_switch_mode(ref, confirm_kill);
- 	percpu_ref_put(ref);
- 
--	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
-+	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
- }
- EXPORT_SYMBOL_GPL(percpu_ref_kill_and_confirm);
- 
-@@ -416,12 +416,12 @@ bool percpu_ref_is_zero(struct percpu_ref *ref)
- 		return false;
- 
- 	/* protect us from being destroyed */
--	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
-+	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
- 	if (ref->data)
- 		count = atomic_long_read(&ref->data->count);
- 	else
- 		count = ref->percpu_count_ptr >> __PERCPU_REF_FLAG_BITS;
--	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
-+	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
- 
- 	return count == 0;
- }
-@@ -465,7 +465,7 @@ void percpu_ref_resurrect(struct percpu_ref *ref)
- 	unsigned long __percpu *percpu_count;
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
-+	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
- 
- 	WARN_ON_ONCE(!percpu_ref_is_dying(ref));
- 	WARN_ON_ONCE(__ref_is_percpu(ref, &percpu_count));
-@@ -474,6 +474,6 @@ void percpu_ref_resurrect(struct percpu_ref *ref)
- 	percpu_ref_get(ref);
- 	__percpu_ref_switch_mode(ref, NULL);
- 
--	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
-+	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
- }
- EXPORT_SYMBOL_GPL(percpu_ref_resurrect);
+[Severity: Medium]
+Does placing this check before the DEVMEM_MINOR check unintentionally
+block /dev/port in confidential guests as well?
 
-base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
+open_port() is shared as the .open handler for both mem_fops (/dev/mem)
+and port_fops (/dev/port).  Because the CC_ATTR_GUEST_MEM_ENCRYPT check runs
+before "if (iminor(inode) !=3D DEVMEM_MINOR) return 0;", opening /dev/port
+will also fail with -EPERM whenever CONFIG_STRICT_DEVMEM is enabled.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124160025.7383=
+62-2-nik.borisov@suse.com?part=3D1
 
