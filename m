@@ -1,122 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0938E606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 06:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF61A606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 06:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=q5JFsByH
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=aaRG5jvB
 Received: by kanga.kvack.org (Postfix)
-	id 281BD6B091A; Wed, 25 Nov 2026 01:15:34 -0500 (EST)
+	id D70F26B0917; Wed, 25 Nov 2026 01:44:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 258F46B091B; Wed, 25 Nov 2026 01:15:34 -0500 (EST)
+	id D21F76B0918; Wed, 25 Nov 2026 01:44:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16F546B091C; Wed, 25 Nov 2026 01:15:34 -0500 (EST)
+	id C374A6B0919; Wed, 25 Nov 2026 01:44:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E58D76B091A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:15:33 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7BA46140843
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:15:33 +0000 (UTC)
-X-FDA: 85472629746.17.7E2482F
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C82A7180003
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:15:31 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=q5JFsByH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of zcliangcn@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=zcliangcn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E4426B0917
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:44:13 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FA79A0E3C
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:44:13 +0000 (UTC)
+X-FDA: 85472701986.14.48ECCBF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 72E0E100003
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:44:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aaRG5jvB;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795587331;
-	b=5WRHwNnsNRtU5zSKusNI30E3H2lqNyKjaHSgETkjb8a8QLmYHNsLin94B9+ea74CedQ5yz
-	Z1ydPfkCCKZiElOz7vd7NPFyTNdq69HuercZJ5W07DegicA+8GOK+A3ZmFhgfUh4tk2gsQ
-	8Gu9j6Iw5hCdOcj5DJMzp3uI04tsQVw=
+	t=1795589051;
+	b=hRV0tl+akgFqC7x+DsLWT0SuIq60jPYzivnhJ9VI1lEw+iaBQAxagJAp3rsxaLyLTD0taI
+	W/ozfAVIPrNe5gIczQwuGUIF+5XvGKEhCtEZy5pKat0t897VnksjK1z3M2tW2fO4XHhYo/
+	NrseJqmAtJ99wSBt4JcjmWqT317/VVs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795587331;
+	s=arc-20220608; t=1795589051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=GJn83fHmEkvzSXvNUuSjTxCL7XacZsUzXMIbSueFZFs=;
-	b=UngoMIgcc9VfnCgosL8qQzZ51FXq22qIV0L+SVBDBCzefF4CjIckFrw576JsRG7PMstuFV
-	aJguQ3w/Ydwes+zAK8OXDqrGiGB+2JWlpo7NQlQHYFEa6kucgOp1SNGErnD82HnGcBBJ2F
-	AQIZrBbD+ojkRwoROGwglTf0zemq05Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LMQAj09bQbCYq864JFAOM1F6lLxWDCCM05N91L35IgQ=;
+	b=hTy3YfXGSbkgMEBhnJS94o/tk80A9kHe43Jva1eHBR/oNPHff0grIRjuk9XGih8VdV1wj9
+	Anmzw2GmRtezlJ3RcqPKSNSx6yJHESw9Z26BvfoF0+nVeyT36rc+Zxdo2WBJZ/OORtZaNZ
+	j9a5ahB9xAD8l/M5dztCsygW91jgHfs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=q5JFsByH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of zcliangcn@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=zcliangcn@gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-386bd881d39so3737198eec.1
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:15:31 -0800 (PST)
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aaRG5jvB;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B4E14162D;
+	Wed, 25 Nov 2026 06:44:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B741F000CF;
+	Wed, 25 Nov 2026 06:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795587330; x=1796192130; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GJn83fHmEkvzSXvNUuSjTxCL7XacZsUzXMIbSueFZFs=;
-        b=q5JFsByHrIlM7wg6y9vLSWggn3E0C2NxtdZYdMVtREm268Zt9VYWwrG9v9ASx2Fu4F
-         Sm2GAWSQuytxz06cAxsbiiV9eU4dTvVPOkYtpfbmxXm+ep6epSJtQpLEm35JQcC9ZL4q
-         0RQ+ZYL4xz5u2LeXujuSn47d1xqudJUBJGbRN5MS8ReETLz7EhV9SD9clOHHx1EApDCO
-         FSkmcmz8fZzcqEfpt+e55gUN4acvVW63Jr/PEihlzoUUw6d6ujpH0J6FoN8sY/qvyfGb
-         0RgvmM8uoiVQLxldQGFzKzQD1SzyVO5u8DdHPuQNfatTj9Jg952ilwN0q1AKBj8uD9zj
-         h13Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795587330; x=1796192130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GJn83fHmEkvzSXvNUuSjTxCL7XacZsUzXMIbSueFZFs=;
-        b=KqHLw7IyqZnAQmNfwlTOgXlVI5dGgIaWjFCzgiNeuXMKuVzHopTlTxABQd+f2rQpMf
-         +IpxruKqgabseqAjyN++9lyZlJIG0lbq/ELXozALRN7LBaKpfVILDah0TSNzVMvaqkg8
-         VVvafQ7GnHwsMS+WPTmWV8KPWtJzQtH7BbrH7zanw7Zh21Xk8O9TEFOJ9qmJ5ELcPW7+
-         LbByBMmlOTSJK1ovkoSk4NVCpD3ifCcxehjmEl0NIojG7x2028L4Htci9lhdm7ClEVMX
-         TMsNOpqJ/C/nbSglNPzuQd3JtlE8IVn0z2M5hcQP+7881UmVbqIg1pJQv6ZznmmurENx
-         fiwQ==
-X-Forwarded-Encrypted: i=1; AL+hErF8rS3fHdEde6C38Mq+9P8E3VZmPHtYYILFbqGZ+/tzzzjFL5W8+rg7GFNlWJivZ1Vng53eVQ760A==@kvack.org
-X-Gm-Message-State: APuU4Z/tZ+C7TrzPuO7LfcMUOWypibg7ODgV8fnXi+WItkHFXTneRKXW
-	rmpW33DSiXMxXR38bgN41vwFF5F27LjNg9+zNubInjimagy70ddHFoy7
-X-Gm-Gg: AZFdTZcDKiW71vDaLbRWNMRz+xb8GrzKVru/jDat5hHBxw3ov88K/TyVPSvq3GIbtHA
-	nNkRYnkkMRmHQuu30P1VPSkRvUJ3Ui9tP4gQXuMN/+vYSgaZnQ/o8lAjqPxopx6DLf2W2DR+dV0
-	10/6Prsh6ClfnMDJkHZugRD+45w2r65QsLoF+gthcy4RVcoXsoH8lRougSkRspthsSqV9fcg45I
-	Fh4vWX4beJzSGNt9OXzZDy/gsrOrij3Km8dId/83k8PK3ohHMCOSOyMu7HOFiPQJVNCFjWB31xU
-	GQowE+OnOnzXQolLVb7ZzDZL4DVCbHqIObRfaYciv4gKGEYM9PggMQSJLkZROHxtxTnZQSVbB7h
-	CzE6kpXivVyVfybug31bk/TTVi2bB0lLqY+v3xtWO5bQiQUReYKsaZOXbPh0QBW5i8tVlTgly8e
-	S4acQi/2A/lqxru3DGeUdSAP8aET9gXFnpp+YmERP/m+rDb5fIZI0Fwwmkw1h8Lkusk4+IrLjQP
-	MdcNVJefitWNoDCs2UQ4DBRfbuk5sl3cesCMM981wuXTNeA5nwd52mIQVWNyGUf7KnA2Qx2E9S4
-	69404pvpLFotuE8tTdprLHuS8uEC8feu6waqpGKCdGBe8BynEq4yuJnOzMXN
-X-Received: by 2002:a05:7301:4710:b0:378:314:4042 with SMTP id 5a478bee46e88-385702587c5mr16061924eec.14.1795587330274;
-        Tue, 24 Nov 2026 22:15:30 -0800 (PST)
-Received: from kq.cs.ucr.edu (kq.cs.ucr.edu. [169.235.27.223])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385666e99fdsm62468634eec.5.2026.11.24.22.15.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 22:15:30 -0800 (PST)
-From: Zhengchuan Liang <zcliangcn@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Davidlohr Bueso <davidlohr@hp.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Zhengchuan Liang <zcliangcn@gmail.com>
-Subject: [PATCH] mm/hugetlb: stop hashing address_space pointers for fault mutexes
-Date: Tue, 24 Nov 2026 22:15:21 -0800
-Message-Id: <9a97a64f7e7aabc668499c426a2417a77d13a2f4.1795587203.git.zcliangcn@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	d=linux-foundation.org; s=korg; t=1795589050;
+	bh=LMQAj09bQbCYq864JFAOM1F6lLxWDCCM05N91L35IgQ=;
+	h=Date:From:To:Cc:Subject;
+	b=aaRG5jvBSWj5PNceuyAf4rFfTBdAlBAysT2A6X4VVO6wsWN0puOJZr/etsbm6f/Tn
+	 Sx7262mKxmXayfSJXi+2TlBG1qFuOam48b1vC73fcR/l/OCr4C+D4t3d+KKiZiPh6e
+	 EhMRW0NwdgrZsfyDw2TNx27Yscjj9YkavfS2KyMk=
+Date: Tue, 24 Nov 2026 22:44:09 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mm-commits@vger.kernel.org, David Hildenbrand <david@kernel.org>
+Subject: [GIT PULL] MM hotfixes for 7.4-rc5
+Message-Id: <20261124224409.56e65d8ff1f72a1d485450ad@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C82A7180003
-X-Stat-Signature: dwu33f5g1xxmfmwxzocthmzpsbgpfded
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User:
-X-HE-Tag: 1795587331-686749
-X-HE-Meta: U2FsdGVkX19yt6zr1ESyuV/e5b6PUsnX80DCbGtvDCdkDFi+0dHQpKosVMDQncJJp2en0VcMgK55dO9yiwx4RA0FMnsheYZLWzyeNDMn/0+LuQG1o2FyErXRdHcMgUXYzjduxieptrvpM5yBRmjpw3lpeW69rNFdMVtm8KcshfsrJFkglvsZX/A15MqRCpQXTS1xGg2Sp93jJXh+Mm0bzdBgrbiz7dIE7QAsWvdYq6hjIVpwR94+IuFEF4mqgrEBdIcH+mxWHi5JdWU0Cr+TrpuntXvQV/P5xTzNDTjRhzuekFecbsHnUIlDjoZR8Nn3AGCD3owAN5flYmz0/swLLhW5Ak12isHX2BYW2Qy4FDlA1oZr/I1Z6Gc97fEUNyI4O3wC5MeSV7MTKPl0CWIzpnHccxvR/CfKy4EZtYJWDGc/cJ0fvmcHHkndL2OusYsNl9n506IbH7xxWilLmVbgLYfGnzZjLbSnAPirLW9NZjjogmtwzY8SWAct0CvCw2vUbIUGesUP7sRjHaZALolkHa2c3hctt1ZVtBC0OZTnOIPQUHjI9yRV2dvI5SarNgVdkQNqYT0EtPXyMI0fcBLByJ8o4nPYHa9bPo1jCyKAudPnhKQcqwOvAkonoFsaYaLJff/Ln6bxhsEvv2EtseFPEkvxBWlfSVp8TxHc2y7FJUx4sQesGC8XAAKV802DdXSyklCtWUGtKNPjrwO5bdnprXqMl3b1HwG6t8nO2wJcAOcjh0l8PPvxTcmdLk5EThyoYbwlGaW7yInSMJKyAm3ecJrTg+kJzinJWLIXauHumKMNjdWZupeXnpk+79+k0jW7dbPc3Nju022CU/zkT+1DoXH9VkmFm5U+UI0dZUwllf7pJ5WKGS6klwBwPSlf/5K1UfX60KzxbSOt1L+z0pNYC3OmePU3+A8qoxrZQfRMqKDuBwFZGNAiha2OOBy/dvESqtS8BWGKC+OEYwkYH5D
- i1EsW8ln
- VP3qfoaeQAM3trdF/dq5W4B1w4c7TSibMX4RjhpOIFmZmYaEPNr4v2GezOGnOM8YzG4mfRH82fEUuS6NLJGWmuqURe30NvTPG23AUONWMdqshqJ4E5nH6ntuCdmAAwF6HuEK35uCdkyQH0gL+yfEZLfOAeeFNJKy5zEw6SSiOTWRaRomEmSgMwjvaPTSPp6f1lXhfMYOJoGdmTZVdGF9nOz8ZSZZjzCjJZ1+3r9pHqJDXTEvRD7fAdALzf+NfC7x9jWwUHLXuEKtTTHoXnQgaNTdtGNuB1/sXSGltnSznj9wrGI7kZRqmao88WjbUXI7rn+P8/DDpTA9SIFrcMdMn3EE0uUBhvEjs5Pjt6hbliLVijjk0ChlqqCmKr927isUElzk4DMex2T9SetQkzNInpGAcqRqYgcAWRwRVAnN8TKzmb4XtZ+ksKlW13Q8igCs5E3s0EWfHihUCpwK0L9TvBKiuJ9e6ESuFXcKWkMMkUOYpj2hE22e0oaj6pHUa+b9qOcnE7AAvVO+3F3CIMCevK63HoYrWEMkxdVs+B6klpXT9tersdXfmHoHRRuVdoz/q1KA2VKLH/2AdHcU90EoizMIDrGAtIxQkWaM7yMbPSGm+aDUlk/l3c29BYh2QJuZXhXCo3JxDmAH9gJADmGMtob4X+NYMTIdk6kc+kTEYoA9QQbDTJ6N/gMA8ttAhMFC4hq7U
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 72E0E100003
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: jpmj4iojnj5pbbybmg5gowyskehkjsje
+X-HE-Tag: 1795589051-942597
+X-HE-Meta: U2FsdGVkX18u9X/XiKZJTlrPuLGqFDq408IVHyEvTiWGBh0nW6A/RGR+yAVDSIcBqF2MrbGTLrCdvnUS/bmhbddkAKd/goMr2lZAH4uSeqBfy0TNMRd3L61y/SfQPh7HviPxO9noFPmMd66jAHQojQRqMcDRpEnmVLKJajBIXlo2M95s9zu6JDJLugqHDeZNDVxK6jpwrb8q6x4FPWxjhI16byk3qqwvAVerneqJC9aNbTC0MO3xxDtrzbJoBbKO4ouqozkh63DQxCB6WLVfse9CD7z7GAIeGhGoIIzUuu/89zIGkLCMg0CWsxhdN20UQnY3j7sbmmDNiMy6dxIzSNXxqPQEuvwEu0Tq5QQRCrkMGtMlN/6FIadxb1r9vILEAvDU9KG8dMOFu26ia79YIru6yU02nfl2HGSwfHH1RP6moxZG4AV81ShImJ4x0/YWNZp6+14FXmoEsne9bL1VqZJG3+HJ9fU5XBcyDaXwFLxW20fHV1Xgd07evju6VWwfGsjUTPP3rsGZMZoXtOSm/XiExhm5kHz8E06j46HUV26oojtDNlle66H7HBhCpudFV97iE9Kxe+RfIHME1osIwornB5pzfxIAUVjdnTF4qblgMM6oQKitloTEQsj4ixUxt9ePxoZX9xeAVWUjun1JmNz1YcfJuSqj6TZmNWL+1X3hTMxSRLBm00pQGYrLFAl5gu7AE1n7SrV4O+RuhtjCk8c/3Sts3Q8/c7W4EYCiI7lA+6weH14W4j263t3POhw8k8HWUiCT65XLUtPdM7mxef7G8zmrA48YM1wu2q73PyrR2o6+1HnZA1g0AvhdyQ6aeW/skc0vHWNQDyLFUFh9K2sBMhou8VfPzfP0BdAU4CYx88YYTetz5lxMbnlzuSeI4Vk98Ijn4H3sA6QF0G17A+DdDraigi3YJtXEIhYMZB+HFe1W8eJDCArcaMb1jNVQblfc+cX3aviZ0blLXRJ
+ tQ4c4szs
+ RhMKnLGTQisFBoAnf6fl05BGiBoWYRstTasHBTF3rdqQ44Qh5Y1iqBRgtF6EjFAlQer+f2f+ioAR6w2Gzm7AfosuW9va4ZzpIHa5RDBWQwvRxDNviJILmLmU5l2kG1aiFBw97OxBOR160tY3m6hXbXerk2r54v6q9E0DfT5YdqfViYnCtBes/PT10ABkXOfCazmVyYSXz7DSYRiiwwVxNHy8DmjSEKTBsoFxGQVClXUwOktbX9jlCt0e5srAawSGrvD0L7quAVojQPtY8eoCnJCUSHlqAFLw4SQ2A8DonmyxRrbXazB21Zxd9F1E3CriT7ACIEk+gnNGhsR4uA14w7ouzZJhpCgrEQfBboxZVeTTpetjvfghU/IYG7UZvIojVJm3vA2sYm5SRtjpYwHkexwBnCXFUYKpyOfcsnAdGP9FIiKM/0qUYtq7q9UZOfdepUj+2sc0oO3Apaxw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,81 +89,167 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-hugetlb_fault_mutex_hash() uses the address_space pointer and page index
-to select an entry in a global mutex table. An unprivileged user can
-create a no-reserve HugeTLB memfd with an empty huge page pool, build
-contention on one index, and time SIGBUS faults at chosen indices.
-Pointer-dependent mutex collisions expose equations that recover the
-exact address_space address.
 
-Give each hugetlbfs inode a dedicated random hash seed instead, and hash
-the page index with that value. Operations on the same mapping continue
-to select the same mutex, while separate mappings retain independent
-bucket distributions without encoding an address. The seed is not
-relied upon as a secret and is not reused by another hash table.
+Linus, please merge this batch of MM hotfixes, thanks.
 
-Fixes: 8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
----
- fs/hugetlbfs/inode.c    | 2 ++
- include/linux/hugetlb.h | 1 +
- mm/hugetlb.c            | 9 ++-------
- 3 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 558007fa5e88..72a406b97f9e 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -35,6 +35,7 @@
- #include <linux/security.h>
- #include <linux/magic.h>
- #include <linux/migrate.h>
-+#include <linux/random.h>
- #include <linux/uio.h>
- 
- #include <linux/uaccess.h>
-@@ -1182,6 +1183,7 @@ static struct inode *hugetlbfs_alloc_inode(struct super_block *sb)
- 		hugetlbfs_inc_free_inodes(sbinfo);
- 		return NULL;
- 	}
-+	p->fault_mutex_hash_seed = get_random_u32();
- 	return &p->vfs_inode;
- }
- 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 58f755e70e96..61d833b7a76c 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -504,6 +504,7 @@ static inline struct hugetlbfs_sb_info *HUGETLBFS_SB(struct super_block *sb)
- struct hugetlbfs_inode_info {
- 	struct inode vfs_inode;
- 	struct resv_map *resv_map;
-+	u32 fault_mutex_hash_seed;
- 	unsigned int seals;
- #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
- 	atomic64_t pmd_sharing_count;
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index ce9c8e57b8e5..6865ff468343 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6091,13 +6091,8 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
- #ifdef CONFIG_SMP
- u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
- {
--	unsigned long key[2];
--	u32 hash;
--
--	key[0] = (unsigned long) mapping;
--	key[1] = idx;
--
--	hash = jhash2((u32 *)&key, sizeof(key)/(sizeof(u32)), 0);
-+	u32 seed = HUGETLBFS_I(mapping->host)->fault_mutex_hash_seed;
-+	u32 hash = jhash2((u32 *)&idx, sizeof(idx) / sizeof(u32), seed);
- 
- 	return hash & (num_fault_mutexes - 1);
- }
--- 
-2.34.1
+The following changes since commit 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd:
+
+  Merge tag 'mm-nonmm-hotfixes-stable-2026-11-18-00-06' of git://git.kernel=
+.org/pub/scm/linux/kernel/git/akpm/mm (2026-11-18 09:51:04 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-st=
+able-2026-11-24-22-39
+
+for you to fetch changes up to 448293c44d86abaff45d6f6919e6056ad97eaa31:
+
+  mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree() (2026-1=
+1-22 22:24:15 -0800)
+
+----------------------------------------------------------------
+mm.git review status for linus..mm-hotfixes-stable
+
+Everything:
+
+Total patches:       26
+Fixes: tags:         18
+cc:stable patches:   17
+Reviews/patch:       3.88
+Reviewed rate:       96%
+
+Summary of patch series in this merge:
+
+- "mm: fix swapcache writeout and cluster table races" (Nhat Pham):
+
+  Let reclaim write dirty swapcache folios without anon mappings.
+  Publish swap cluster tables under the allocator locks and keep
+  stale reclaimers from relocating clusters being populated.
+
+- "mm/hugetlb: various fixes" (David Hildenbrand):
+
+  Prevent fallocate() overflow from consuming and leaking huge pages.
+  Serialize mremap() with migration before flushing stale TLB entries,
+  and avoid corrupting private hugetlb VMA state during unmapping.
+
+- "MAINTAINERS: remove my reviewerships, add CREDITS entry for THP"
+  (Lorenzo Stoakes):
+
+  Remove Lorenzo's MM reviewership entries and record his THP
+  maintenance in CREDITS.
+
+- "MAINTAINERS: MM updates (2)" (David Hildenbrand):
+
+  Add Kairui as an MGLRU maintainer, move Barry to the top of its
+  reviewer list and remove David from reclaim reviewership.
+
+Summary of the 14 singletons in this merge:
+
+Two list_lru fixes prevent a cgroup's reused ID from making a folio unlink
+from the wrong list, which can corrupt the list and later access freed
+memory.  They also avoid a NULL dereference if a folio moves to the root
+cgroup between the allocation path's two lookups.  MGLRU now moves every
+generation when reparenting a cgroup; a skipped list could otherwise
+remain in a freed cgroup and cause a use-after-free.  Clearing MGLRU
+references before removing a MADV_FREE folio from its generation also
+stops reclaim from repeatedly protecting a discardable folio.
+
+The memcg object stock now flushes pending charged bytes when its lock
+cannot be taken.  Otherwise memory.current could grow without matching
+usage, causing unnecessary reclaim, throttling or OOM kills, and a counter
+wrap could leave a permanent charge.  The memcg OOM scan also keeps an
+exiting victim visible until it releases its memory, avoiding an
+unnecessary second kill that could take down an entire workload.
+
+Swap allocation again prefers free clusters on nonsynchronous devices,
+keeping writes mergeable.  In the reported NVMe mysql/sysbench workload,
+the prior policy reduced throughput by 19% with iocost; the revised policy
+improved throughput by 33% against its base.  The change keeps the old
+nonfull-cluster preference for synchronous devices such as zram.  A
+separate fix corrects /proc/swaps and swapon() size reporting for
+multi-terabyte swap areas.  DAMON's estimated bandwidth calculation no
+longer overflows on 32-bit systems.
+
+UFFDIO_MOVE now clears a stale userfaultfd bit when moving a swapped page
+into an unregistered VMA.  The old bit could cause MADV_COLLAPSE to fail
+or trigger a page-table-check warning on fault-in.  Buffered writes
+starting beyond EOF now check an unreadable source buffer before some
+filesystems extend the file, avoiding a failed EFAULT write that leaves a
+larger file.  On 32-bit systems with 64-bit physical addresses, /dev/mem
+now makes the correct uncached mapping decision above 4 GiB.
+
+----------------------------------------------------------------
+Alexandre Ghiti (1):
+      mm, swap: only prefer nonfull clusters on synchronous devices
+
+Andrew Morton (1):
+      MAINTAINERS: add page_ext.h to MEMORY MANAGEMENT - PAGE ALLOCATOR
+
+Chris Down (1):
+      mm: memcontrol: don't lose track of exiting OOM victims
+
+David Hildenbrand (Arm) (4):
+      MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU) update
+      MAINTAINERS: remove myself from MEMORY MANAGEMENT - RECLAIM
+      hugetlbfs: fix integer overflow in fallocate()
+      mm/hugetlb: fix mremap() racing with page migration
+
+Donggeun Yoo (1):
+      userfaultfd: clear the inherited uffd bit in move_swap_pte()
+
+Hui Zhu (1):
+      mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree()
+
+Hungyu Lin (1):
+      filemap: prefault writes starting beyond EOF
+
+Iv=E1n Ezequiel Rodriguez (1):
+      mm: use PFN_PHYS() in phys_mem_access_prot()
+
+Josef Bacik (1):
+      hugetlbfs: fix unmapping folios from private VMAs
+
+Lorenzo Stoakes (ARM) (5):
+      MAINTAINERS: remove myself from MM core reviewership
+      MAINTAINERS: remove myself from MM misc, reclaim reviewership
+      MAINTAINERS: remove myself from MM rust reviewerships
+      CREDITS: add entry for THP maintenance
+      MAINTAINERS: consolidate the memory mapping entries into a VMA entry
+
+Nhat Pham (3):
+      mm: vmscan: allow writeout of swapcache folios without anon mappings
+      mm/swap: publish cluster tables after reacquiring allocator locks
+      mm/swap: skip relocation of tableless clusters
+
+Oleksandr Natalenko (1):
+      mm/swapfile: really fix integer overflow in swap_show() and swapon()
+
+Shakeel Butt (4):
+      mm: mglru: splice all generations when reparenting a memcg
+      memcg: flush nr_charged_bytes when the obj stock trylock fails
+      mm: list_lru: fix NULL deref when a folio moves to the root memcg
+      mm: list_lru: don't use a new memcg's lists for an offline memcg
+
+Wang Guangke (1):
+      mm/damon/stat: avoid overflow in estimated_memory_bandwidth calculati=
+on
+
+ CREDITS                  |   6 +++
+ MAINTAINERS              |  62 ++++++---------------
+ fs/hugetlbfs/inode.c     |  18 +++++--
+ include/linux/list_lru.h |   2 +
+ mm/char-mem.c            |   2 +-
+ mm/damon/stat.c          |  15 +++---
+ mm/filemap.c             |  10 ++++
+ mm/folio.c               |   6 +--
+ mm/hugetlb.c             |  21 +++++++-
+ mm/list_lru.c            |  41 ++++++++++----
+ mm/memcontrol.c          |  10 +++-
+ mm/swapfile.c            | 138 +++++++++++++++++++++++++++++++++----------=
+----
+ mm/userfaultfd.c         |   1 +
+ mm/vmscan.c              |  15 ++++--
+ 14 files changed, 230 insertions(+), 117 deletions(-)
 
 
