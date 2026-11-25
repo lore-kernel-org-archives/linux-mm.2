@@ -1,143 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0F3606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13C5606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L/X2KpGK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aB9TCN5u
 Received: by kanga.kvack.org (Postfix)
-	id 0BDB46B097D; Wed, 25 Nov 2026 05:01:24 -0500 (EST)
+	id EF3276B097F; Wed, 25 Nov 2026 05:03:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0468A6B097F; Wed, 25 Nov 2026 05:01:23 -0500 (EST)
+	id EA34C6B0981; Wed, 25 Nov 2026 05:03:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDB3B6B0980; Wed, 25 Nov 2026 05:01:23 -0500 (EST)
+	id D90EC6B0982; Wed, 25 Nov 2026 05:03:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C7086B097D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:01:23 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4D89A82F6
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:01:22 +0000 (UTC)
-X-FDA: 85473198804.21.5FA5F41
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 03968180010
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:01:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="L/X2KpGK";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id AD0D86B097F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:03:16 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4CD16A8C53
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:03:16 +0000 (UTC)
+X-FDA: 85473203592.07.0BA2166
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5E35940006
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:03:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aB9TCN5u;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795600881;
-	b=8a/4j+J+gp6GvCU8PGJbosbtzAbQIOjfzKzOTtO0npx8o3h93sxqZWB3XbrM1JMEVImivs
-	QBx9mHg6mu7vfWIbx92U2QKWYCDrG/S8wWWYsveZ5IdLK3OaCMDN6uwUQwxxm0q/Z5pzXV
-	fR/e1Wn82eky5dhBHXmxlQWbvFNrFEE=
+	t=1795600994;
+	b=zZgCxyErUWW4Ag5ZghwIk8vwnzeCyrJ2keE/bTtU0FbK9XdzmaUTd/8pilwqYF4IFBY/Hj
+	hqUmbvJ0cDMXl7HWatfmLvXK4pSnOR9kTnVvG/2bXYyLtutAzZQ92BiR7gMjTWZF3YU6mP
+	+UIZyug/rLdiP9g9/9qwAnPndjinQYc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795600881;
+	s=arc-20220608; t=1795600994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N9xyug7w8UPX5id/mH4z9jTfhNm5yOqqDRPZIS2Gdo4=;
-	b=2411l762ObmGEX0RaQGW6rXfQIoR6Lp0+qq3B3LAR15LHEGVo11mDV51q0xHLcJy7mOQY7
-	9Ppd/tkGWAU6fHmgoLBuPl0IZ5/YhfVGtaMiVYDe1JlpWplrpEaKPV1qe0/Z3XUEeDQdac
-	/Ov6WpGRb+FnVbxeHlQO6gBXyuinaUY=
+	bh=ahAD1nTlJMyKd+Ivy4YWjGLtR4U+tnl+mOngOadx7yo=;
+	b=vEFrRu9taLYJhtmBnsmKEpEhgWtykbpkozDpG507IWLGtvcC3uk9EoVZamknXU3v8qXuGO
+	uEEhn8YecJyc6ij0iKC8qbjmWbSC0nlHKA9CAXgVcwdfPPLTEiQokzMnEYCF6xpkImz1Ux
+	mHTsnzSA+vJHSv5fxUpHYWq0ViFu/+8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="L/X2KpGK";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so44439345e9.3
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:01:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795600880; x=1796205680; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=N9xyug7w8UPX5id/mH4z9jTfhNm5yOqqDRPZIS2Gdo4=;
-        b=L/X2KpGK9nTwm8DIXSq84ieU7ZbVAFuRsipPVZCeMAJGEyT2XQT0tfevbnyx5qRrWq
-         kbH44trMxkxuqFZKyX+mDSJhTUtWL0P+Zy87t20iqDSON4/cteey4y0guuZXKKtQcTMd
-         M6CNoyOdE61atRUUUB9eiUxwU1ZC9DrEVJ/KG1ZWk3LCyg1rugCJTLBjbNVV+Y1KXL5v
-         klKDJVEWuuKmtScG5WWdggykriXtzrIBjwSh62eUbjID2NyyLFc4g2OUMKnnfmA+uVye
-         PFGMGMosfSKqcxqIc2qtoYrQCz1J7kfrL33PemjxvWyC/QKZZkSDxvhmfv7NOKze01PM
-         pLCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795600880; x=1796205680;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=N9xyug7w8UPX5id/mH4z9jTfhNm5yOqqDRPZIS2Gdo4=;
-        b=B0XvXJDh9I8XWObpTr5VG0JciP3zt9lixahfeenxfwDSEt/mTnabe0raOaouJ35RHv
-         PtdXtgEc3OPRjooEvyD3OVF4A5AKgvORCeEsfy6PRrn+Nk9NupzSyIRsHzAfYiB97Zgy
-         z5gT1XJVG2eJNW07k70fo82DXrAaJLQ5zoPc8lZfTfyd9ZsbCzhBBq1ZxWONQ4fV9pBB
-         9EuK3OBA7YSE+sjG+D1fdScPLlBuB8t5rELpzrdz6H3QSyPjPWSERJ6H6SD1Q2vZ5Vun
-         ExMWoMDK6py8sL6vYVq8eoU0B1GJp+gJ2M9vFtNH67CPmd6mTZ64LBymUc36620T7WzH
-         jxKg==
-X-Forwarded-Encrypted: i=1; AL+hErHBXpA08G1p6XZ3pv0WtbvjsAwceZY2ZDo+fNXNyxjyXpkJcLMlCZWqGN29/nh/Qgyc/WcGRlJpZw==@kvack.org
-X-Gm-Message-State: APuU4Z9pB5zrTpXhf2URiGlyvboTk69HAcRL5OBvhF2lgFAANQytO8Qn
-	gKRX3/AMnR8mNtyMrTz3ySGUoaYdK6j8pKsv1Im6a4cT5qg7b3Buo+lg
-X-Gm-Gg: AZFdTZd+Havaz9gwxOhBnRDlixbDW1HAPysjy+IS9KIcsRs+xlY7BPmuzk47YMdu0zs
-	AL5R28YaVkRKlzqC9iN1h8apzKxDQ5sigKhR4OFO070TaaipMPIosD4ScClhewLpjZhjqJvPTFf
-	/sOtYzhWrQt8i+LtE6/plsJ1HhS1Uzyh8BZXnScoz5GMjfI/lsyuwQrbqiWQLY5FrLwD9+/1cUy
-	AkYlK8gYI48/FlTmZt8W7owmicVGGXgheUCUQaG8l7JRsejkUspdvEMtKGf6Ctnr8K4k4ZZZcUJ
-	yIZsCT7l6QuKd0wbxbgoeq1cWTz8g+YqmYBnfRzfQGMeJzK/Fc6RFM5e932dwPORmOz/5LnZinD
-	LDy9wLk+17D+K83vauovKD6xBzb6qqkeo2WsN3WB7pU9P3ET8euhfkbU7oTa3Bu4IIwKzFjMqS3
-	0pmOVHA5nBu28kUygqp8qMuiJRSZAh/YW6c1YBPYjQT+IYxMyeMMibSJ21NkCmOmeQUVS9SKMee
-	noeo0tD80Lq8yoIsJwUbOP4jbLJLBaMu7j9X4InFrawHWHyUi9fvQdGY36uu3D+uUf0jV8Rzi2m
-	VTqE+DsSdPbw/g==
-X-Received: by 2002:a05:600c:848d:b0:4a4:3a2d:15da with SMTP id 5b1f17b1804b1-4bb88812026mr328104725e9.15.1795600879563;
-        Wed, 25 Nov 2026 02:01:19 -0800 (PST)
-Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853a1e8bsm423898125e9.9.2026.11.25.02.01.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 02:01:17 -0800 (PST)
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: David Hildenbrand <david@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <ziy@nvidia.com>,
-	"Zach O'Keefe" <zokeefe@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Hugh Dickins <hughd@google.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Rik van Riel <riel@surriel.com>,
-	Song Liu <songliubraving@fb.com>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Subject: [PATCH 4/4] mm/khugepaged: use NOFS while collapse_file() holds folio locks
-Date: Wed, 25 Nov 2026 10:59:47 +0100
-Message-ID: <20261125100058.15200-5-azpijr@gmail.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261125100058.15200-1-azpijr@gmail.com>
-References: <20261125100058.15200-1-azpijr@gmail.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aB9TCN5u;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8E24545D35
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:03:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8011F00A3D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:03:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795600993;
+	bh=ahAD1nTlJMyKd+Ivy4YWjGLtR4U+tnl+mOngOadx7yo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=aB9TCN5un+FY44DyzDWOfl/JnifH+71Ve+hTPGcSbb5FWibTB8+3/a03RedeyXNtw
+	 Ut9a/5zRNkzIfwPM6/c+S+na0kzX2kwPZHrDCK52XhWFCBtUhcZrVR5Upx3aWadPFo
+	 8NJWiQuMjAfswvt25VnnqVlrijaEO4ceNFKGLCrVfyg8PKFfhQM49xUc4KNORl245l
+	 xwGeI6stLtGCII8QWnG9I6IawEmJ4MBCp6r1t47BEYd7Yu5SmPp38aOviFYzyzKXUM
+	 ZMhk/UIIo8OdYZxxNmfjRj7D5vITgRvSjWY5jFCjjYLxbODxTN94UtKki/yrvlBR7h
+	 59NtENOfSatLw==
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-9496577d4c4so628440085a.1
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:03:13 -0800 (PST)
+X-Gm-Message-State: APuU4Z9JUh5P/vUTFcxrbPSZ39ZuJjK/c2U+qMyINj8/L6BPotq2ci1Q
+	wcX1mnW59eM/ArutmZ5kpEN45/tGm45d9WmIqhZP3n1egvTv5GEkemcxL5ey6WVdDVuMaGxiAx+
+	+mKD4vV2lJ0LAXn0f6rXHnFBoOBqxtnw=
+X-Received: by 2002:a05:620a:4011:b0:949:82b5:402d with SMTP id
+ af79cd13be357-949ba955997mr2986180585a.12.1795600992351; Wed, 25 Nov 2026
+ 02:03:12 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 03968180010
-X-Stat-Signature: stua9tyzd35nnyusikika1eu5oxhynz6
+References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com> <20261124-mglru-fg-v6-17-8ffea39934a6@tencent.com>
+In-Reply-To: <20261124-mglru-fg-v6-17-8ffea39934a6@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 25 Nov 2026 18:02:58 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zuAmNt9xYJdU1dmc06PRsCnDc8H+hV=5vU6oRAyWsSCA@mail.gmail.com>
+X-Gm-Features: Aa3M54rjOxmsiKxZY9PTg72qI_9AeJX3OFX-7i-N7MNLDLDrtS6AQM6YTnwOk90
+Message-ID: <CAGsJ_4zuAmNt9xYJdU1dmc06PRsCnDc8H+hV=5vU6oRAyWsSCA@mail.gmail.com>
+Subject: Re: [PATCH v6 17/18] mm/mglru: folio LRU refs based active/inactive
+ number accounting
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>, 
+	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
+	Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
+	Joanne Koong <joannelkoong@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, 
+	Hui Zhu <hui.zhu@linux.dev>, Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org, 
+	Tianyi Chen <hi@tychen.cc>, Ridong Chen <ridong.chen@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5E35940006
+X-Stat-Signature: h8mbk8fbb4zuebjdhqcd3tzayq3797k6
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795600880-783423
-X-HE-Meta: U2FsdGVkX1+XSUxZPFbE1OfFyRl2JFn2alu1xRkcv44tP1KyIITiIscBbYd5QZdjFnq5BKtV7CZrL+sXIcZLeB/ZkO16bjbXCtnHzgg6xTX3Zq+q3Z1G2SZf1SOf5oQ8xG+f5LfWPj1K4YjNipYVPOHPKyvXZRjHWh/+DeO2VNU9ErgVXFyAlUFy+1nKATmc4VBHcVHuH7IOZojJSGnIgHlZ2y8t2/AgVfjbUXKfpzUJiY+1K8AVqIHdRuIyfozw0eHapd24a+QWQKB4OYkztPoW95XBCQ33pPLfT6PVzMcU0y6P48G/DlW+zrA5Vl2pgtiwv0V3vhTYGAt0S01MY86kMzNohMewjzwmtNb7azwZGt6yPxKaLgOv828RCnu63vX0IlpV2VHr0wwTCVoFDBQ4CJMlvOWx2A65NbDak1XRbXfxy8CwkJrDOmdMOoX6Mol+Q0KS4vJmgDIIAscH0+9LyVczYFqmLpWJC6PFrrAlQpayf3fRvdtwCsZCU5/8OpImNcNz3niAIwS0Kbj4aKkyNpgXG7EvZcnjDvlEr82dH7Nn1kI472RgQjeQi3A2OOifHtsOeli4XtEwqYXnBmrILmjhdefqcHctPwTQ3bb8PHuENaUNuHX52SaVxBpr7dAWoToWaq/QzTv791DxYsdCybA8A9UE9hoBx3/bICFODv8ZPBhoR2bhSNDfk00VtC2/IMFJm0lkgvzvyAfuzt8c+ubcrn4KJVuImeruTPt7nVFVDaz3ozDolyY6bK7yMoSidBCgN+lQlOO/wNZJ2RP/gGrnWV/lroF8fUZIUfFrYxHBZnMrA1+LE0G5xzgZgAFNQ7HV5UnijvysuZul/urftG0DWoBlq5Eva/roKqdevCSDD3K3pDNQe3VsbP3k58b+lOylocbU34/SHE4UsSSmIfThQ4fqntWuxlz6bNdStgP+X/BzfXzqQqbNcQh72cx4oQEwueECbVL1jwg
- qwiXVxJ0
- CJGny2SKK2Likq8GXuGVZZiSrxULg+MZDiqosJm0/UC+CaeYB4/5NmV2gcH86bFIIcOHuZep6fTWRz4aFi4a2dNqrbPVMLOZ4qnqeP0HBepCxD9uYtc9D3sfPn/CItcv3TC5+/2fNOELGSlzBFSnAnFKb/+kfM1VYmxLg95nHktdY+ckoLr5/FbOd0N0+8O8J7QMq97bA0ROWpFwnxiZTehEe8hYRWO7V/kUk0oQXA/d6olYy2UWkSebPjRuY94lRa9uE3NjMEisBzxe8ltrdb4xZqt61G64nloMo5huKxYuDLkqrk40nv6H2oTzJJ1k08zwzO/uxuupv30cIq3dA/2EatjLZBfDN3kEUydYjm5H7vN2Ei6MH2ZZUp9Qqu+3IebAyxTSR54bGgFwTWgXaDBt/0YFC73ZYgejIYz/PCGQ8b8x4HxkFixNYnJtmH3K8glYqlS4JgBJer7CGh35d9mWhjwT4NWhEY2tFTpNlJPeGLlsnyzQ8ORbRJO5qS0Q44CFRUFS3aPBZS4m8od9LLqh6AH/6KzFAfYb7bI1ibhcrdCi8QKf66NEtUyS7um/KosMqH/h5gkoNvYkWk6rN7gYEuFzwSqV4zZPGCD/vK+3+kiSgwJgn4jk86N2PP4pWWkkubkCbew6uDAIvEDnjKemQlh5aPBErQL7+21rF67fWQAM=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795600994-704093
+X-HE-Meta: U2FsdGVkX1/cjrgkr4h+j5TjLrS3L1iebzg+AGdlGLTjy3HKAgcJraDsaec+wm7QlwAKOLspWW5VkU4+tmumBWMAinU4wJCXwjO1k1KJOCpooL6FWyN44nZf5ijQzi7+dWFkrWwPBG2A2HoXEVEt/oGbbasCUAsKprt3clS7AY9jCK45B0sdKq/0BjaB+5foYmjWL/HO3Z3kQow+JaRR6MT40wqn97tUx/BmJ/qPaXwlc4VsQSeQf3xXOUm+1ZseCYzWi+1iZP2dylRWFs+1oXK6pWwTFh1zu5FBb7Ynu342wcuwq/9pXLvSQIEasnDeA1ArFAsILjC0y9w3VcbGrHQLQCRfvKUb9RhNM1mv086yPIJoyHsvqFuI581T2YCGZUUdZs6za2vXa78MuWAwVWvg9hOB6BtNJy+LA4dJtS49sb14ngc7WF4y88buwG2UZ0uYxzQw3VJd2/FxPxrOsAAJJXzD/gupVdV8ICSl4wFNI9DNm1QDKxHR9gWhgHqbkcVNd80Z04nQ69uVYTkdNr+cSp9kUiriSUigdwe5dV4RRyFEJM67ExcbTsPX8Nddycvszqg+pricXHyaflEvk/KVXbi5me8hPURMVgJZdOXTsHfvMX7zFhQa6pOrZeAKrLfE/gFKxDaZcbJPUGeHdx72buArS3cTm8HOz/7AhlZsFI0lBZfaJ1DE9nI4e34ny0BQ/HcBwC8oBy5ljJjjHKjfOuAHpck2a9ffLrSIk9ERt4xFgodsp4v6rbRZJ0qGyoK4N0Q/S8uHTe/sF8eNuTsWixMN1vtPHpFPYU7WGmj9TbJqy1aGXtvI3hE6q0k7x2tigBxEokzIUzHiJjY2PAnUhISZpNJw07PH+avQ0RB8vTeAYdpfT9p/pgpof3srVuxfJyjdRhAmeBD13kKexeReYKAG1O4LFOaciViEFuxsSxKSyrnSyK4oCnd7MLOTo4H2vnoHU2vthD7LqU4
+ BPERN/KA
+ Pw83tcMz+dFmnI4Dg/fXANz0LgG63GX6h5bavp9yZrjkVSo4hvZObd6sCkEjR8x0sTFE02hpPj4tSFibYCJ7i4Dr0YHsj7OAxMsaHHM+FvDlxtkOuDCJ5oBlK0MwGiqlVpzt6xxZG3oEChNCVs4s/8k/AviTpr2amr0LTpHdR+kixFLOhmMkmH5YUepmcoq4DX3WJCgtHQNr6lEfgy4MmGismYkPBYiINXi6wsAXSgOSppqv7batAnUr0d83zBHtw3y5KKat44oWzteZP+E9ZZTB1MELGsqHPPQmwpSrabS4Jc/5MWOb1NJQ1gYvxd41ctKYXREzn30j1zzpiT+CaD9ljcJ2xhUqF50cnfXT3lsTvCLxpekcyUsOOsq9h0dyec/UIYNpglB3bMEgDF5pzpWbKzjgdBGmAqWdxwm4U5llEPiw+GzjmpB/3WwWzH71x33Tzk+CuXGm1kLXEAJr+71ucpeE/dHrzLyQ4vs6ppvs7hWaVb4JkwLQueG1E9COGYNuSx2yhCy2wh2YDltWHD60TBosER66fyUmWajBO3WGTW6pHLkwExMBSp2kOSDaf429lKVg1fYZTj89yRL1RM8GNBFZbLe6Zxz8oYUcgWVGnUWASfFtMAuz8WwNwYxbOuuIO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,70 +127,126 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-collapse_file() keeps the folios it collapses locked until it is done.
-With those locks held, it calls filemap_release_folio() with GFP_KERNEL,
-and for shmem it swaps folios in with the mapping gfp, which includes
-__GFP_FS.
+On Tue, Nov 24, 2026 at 2:53=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Currently the active/inactive LRU sizes exported through /proc/vmstat
+> and memory.stat are derived from the generation window: folios in the
+> two newest generations are accounted as active, the rest as inactive.
+> This causes several problems:
+>
+> - Unmapped file folios can stay in older gens despite repeated use,
+>   so active files can be under-reported, unlike classical LRU.
+>
+> - The reading is jumpy: on aging, the second-newest gen, previously
+>   active, becomes inactive all at once, causing a huge drop of active
+>   folios without any change in use.
+>
+> - The reading is reversed on swapless machines. When swapping is
+>   disabled or unavailable, MGLRU ages anon by moving the gens directly
+>   without walking or touching any folio, to reduce the overhead. So
+>   inactive anon folios can suddenly count as active, or vice versa,
+>   despite no change in their hotness.
+>
+> With frequency guided promotion, hotness is already tracked per folio by
+> its referenced count, so we can do folio level accounting instead: a
+> folio is active once its refs reach LRU_REFS_ACTIVATED (currently
+> LRU_REFS_PROTECTED).
+>
+> On reaching this threshold, folios are accounted to the active part.
+> On forced per-folio aging or PID protection, refs are capped at
+> LRU_REFS_WORKINGSET, dropping active folios to the inactive part.
+> Note that on swapless machines anon refs are not reset by aging (the
+> shortcut skips the per-folio walk), but the counts no longer oscillate
+> as the generation indices wrap.
+>
+> The accounting is now per folio and lruvec independent, so no size
+> adjustment is needed when reparenting a dying memcg: the hierarchical
+> stats keep the counts in the parent automatically.
 
-As when splitting folios, allocating with __GFP_FS while holding folio
-locks can deadlock in direct reclaim or compaction, and __GFP_FS also
-lets filemap_release_folio() wait on the filesystem.
+I'm still struggling to understand whether the local LRU accounting
+is correct here. But if there is a bug, it wasn't introduced by
+this patch.
 
-Run the part that holds folio locks in a NOFS scope, as __folio_split()
-does. The huge folio is still allocated before that.
+[...]
 
-Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
-Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
----
- mm/khugepaged.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+> @@ -4743,7 +4823,6 @@ static void __lru_gen_reparent_memcg(struct lruvec =
+*child_lruvec, struct lruvec
+>                                      int zone, int type)
+>  {
+>         struct lru_gen_folio *child_lrugen, *parent_lrugen;
+> -       enum lru_list lru =3D type * LRU_INACTIVE_FILE;
+>         int gen;
+>
+>         child_lrugen =3D &child_lruvec->lrugen;
+> @@ -4756,8 +4835,6 @@ static void __lru_gen_reparent_memcg(struct lruvec =
+*child_lruvec, struct lruvec
+>          */
+>         for (gen =3D 0; gen < MAX_NR_GENS; gen++) {
+>                 long nr_pages =3D atomic_long_read(&child_lrugen->nr_page=
+s[gen][type][zone]);
+> -               int child_lru_active =3D lru_gen_is_active(child_lruvec, =
+gen) ? LRU_ACTIVE : 0;
+> -               int parent_lru_active =3D lru_gen_is_active(parent_lruvec=
+, gen) ? LRU_ACTIVE : 0;
+>
+>                 /* Assuming that child pages are colder than parent pages=
+ */
+>                 list_splice_tail_init(&child_lrugen->folios[gen][type][zo=
+ne],
+> @@ -4765,11 +4842,6 @@ static void __lru_gen_reparent_memcg(struct lruvec=
+ *child_lruvec, struct lruvec
+>
+>                 atomic_long_set(&child_lrugen->nr_pages[gen][type][zone],=
+ 0);
+>                 atomic_long_add(nr_pages, &parent_lrugen->nr_pages[gen][t=
+ype][zone]);
+> -
+> -               if (lru_gen_is_active(child_lruvec, gen) !=3D lru_gen_is_=
+active(parent_lruvec, gen)) {
+> -                       __update_lru_size(child_lruvec, lru + child_lru_a=
+ctive, zone, -nr_pages);
+> -                       __update_lru_size(parent_lruvec, lru + parent_lru=
+_active, zone, nr_pages);
+> -               }
+>         }
+>  }
+>
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 6d2431a20bc9..c3c733d3a32b 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2302,6 +2302,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	LIST_HEAD(pagelist);
- 	XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
- 	enum scan_result result = SCAN_SUCCEED;
-+	unsigned int nofs_flags;
- 	int nr_none = 0;
- 	bool do_readahead = false;
- 	bool readahead_done = false;
-@@ -2320,6 +2321,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 		goto out;
- 	new_pfn = folio_pfn(new_folio);
- 
-+	/*
-+	 * We allocate while holding folio locks below, when swapping in shmem
-+	 * folios and in filemap_release_folio(). Allocating with __GFP_FS
-+	 * there can deadlock in reclaim or compaction.
-+	 */
-+	nofs_flags = memalloc_nofs_save();
-+
- 	mapping_set_update(&xas, mapping);
- 
- retry:
-@@ -2698,7 +2706,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 		folio_put_refs(folio, 2 + folio_nr_pages(folio));
- 	}
- 
--	goto out;
-+	goto out_nofs;
- 
- rollback:
- 	/* Something went wrong: roll back page cache changes */
-@@ -2744,6 +2752,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	}
- out_put:
- 	folio_put(new_folio);
-+out_nofs:
-+	memalloc_nofs_restore(nofs_flags);
- out:
- 	VM_BUG_ON(!list_empty(&pagelist));
- 	trace_mm_khugepaged_collapse_file(mm, new_pfn, index, addr, is_shmem, file, HPAGE_PMD_NR, result);
--- 
-2.56.1
+The old code also skips updating the local stats when
+lru_gen_is_active(child_lruvec, gen) =3D=3D
+lru_gen_is_active(parent_lruvec, gen), as we skip
+__update_lru_size() in that case.
 
+But we do have some code in mm/workingset.c that relies on the
+local stats:
+
+        if (sc->memcg && shadow_nodes.memcg_aware) {
+                struct lruvec *lruvec;
+                int i;
+
+                mem_cgroup_flush_stats_ratelimited(sc->memcg);
+                lruvec =3D mem_cgroup_lruvec(sc->memcg, NODE_DATA(sc->nid))=
+;
+                for (pages =3D 0, i =3D 0; i < NR_LRU_LISTS; i++)
+                        pages +=3D lruvec_page_state_local(lruvec,
+                                                         NR_LRU_BASE + i);
+                pages +=3D lruvec_page_state_local(
+                        lruvec, NR_SLAB_RECLAIMABLE_B) >> PAGE_SHIFT;
+                pages +=3D lruvec_page_state_local(
+                        lruvec, NR_SLAB_UNRECLAIMABLE_B) >> PAGE_SHIFT;
+        }
+
+So unless the local stats are transferred elsewhere during memcg
+reparenting, this seems to be a pre-existing bug.
+
+It would be relatively straightforward to fix in the old code.
+With the new code, would we need to account for active/inactive
+pages on a folio-by-folio basis during reparenting, or is there
+still a way to transfer the stats in bulk?
+
+Thanks,
+Barry
 
