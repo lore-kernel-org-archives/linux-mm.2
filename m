@@ -1,158 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A71D60A261D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SlO3gQTD
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF285606A68D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 838B16B0998; Wed, 25 Nov 2026 05:19:34 -0500 (EST)
+	id E5BA16B0999; Wed, 25 Nov 2026 05:23:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 811446B0999; Wed, 25 Nov 2026 05:19:34 -0500 (EST)
+	id E0D2C6B099B; Wed, 25 Nov 2026 05:23:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 726376B099A; Wed, 25 Nov 2026 05:19:34 -0500 (EST)
+	id D22A86B099C; Wed, 25 Nov 2026 05:23:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F3936B0998
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:19:34 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CEE4DC0E19
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:19:33 +0000 (UTC)
-X-FDA: 85473244626.16.619D9C7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 11F6E40002
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:19:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlO3gQTD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AD4766B0999
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:23:34 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2EF331C4985
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:23:34 +0000 (UTC)
+X-FDA: 85473254748.27.B78E1FB
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 58310A000B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:23:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=appspotmail.com (policy=none);
+	spf=pass (imf25.hostedemail.com: domain of 3I7cGawkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3I7cGawkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795601972;
-	b=jaJ5p0gY1Cunw2slu8HiKtNAgZp+RhmpaOaqaQPmEvwzxXEOt+X8NdkWrjw6TMCC9qWrso
-	Y0XLweXSFJ7BJ4ThOlE2I6kwFdYquQAAVF95EiF+Fj+FELxVP95GOv2wBrfNU0rMpF5t6M
-	3fH2eq4fBGdMshJLb1MCUMw6LM+kxeE=
+	t=1795602212;
+	b=HFvMCPB2m9A66iZ91jV/tJxzYIxPogYr9pHJ1tJZi6i+Ax5nY/+mVK6VFjZySS2+tUkTJO
+	AbYDuBRv7sGsVj0XTPM+K6Xbd6Uj/Cd1QMjLluE/E0hgOLr5G2Pq943KriqFWi3eQ2B7rs
+	4gYqAzX/Kp8x1JC1n7pLcuMWS50/TRk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795601972;
+	s=arc-20220608; t=1795602212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A8K1+nUfZGzWQoYLt14zgQq+vIWgX6A19PV0LXI1Njs=;
-	b=Z3ijz7Y1siCb7ouv+AqYxh3AcvjO/cUYvHCobs/+g8eN9oHAADNszBrf6+c9nnHieDbDMy
-	NrqpcrMpKXkEc8FsLinZYJ7vP4zEczb3QPt4Ciywql1PMCe0hbVIsajPM+K6d5fms1YKr4
-	2MNLjfFCbrjoJEsMtaNqe+9YoiBs7ew=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=nAwEpdk8W5zOz8dRUea8wq0PG12t8rrSsYABB8slUxU=;
+	b=4bsGjx/ZK+Obu4KXAv5Mnto5uY1zBxkqM7aggGXsMn63jl17QYVjc1uycxHjZUd04sfl/g
+	SqEBOg7gy6f08nIvruNm75wtchaQYHMpSDFKkQJ69SzM9fUlDw6XaZsTmihX+89g/hDqBg
+	lrz5R3xI7rmDtJSKwoxbdtIym72uYoY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlO3gQTD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E6A5609D0;
-	Wed, 25 Nov 2026 10:19:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E540E1F000D1;
-	Wed, 25 Nov 2026 10:19:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795601970;
-	bh=A8K1+nUfZGzWQoYLt14zgQq+vIWgX6A19PV0LXI1Njs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SlO3gQTDfH/XH9oJ5c2qoNMJ9dKcJqXpVbRKfQrSwxJ6fwQY6u5CXqLbH6F9wF21w
-	 5TcmLUPb/AOhs4Z2igIdzvBcj9Xi7PGyTLosQFBj4wyI4h7xSglVnMsj4psh6V2um9
-	 fQDkkIJVU4+Xa1MnFp5BWj3Y5d5QJnh+p5vv+LkcPED7DvSIkkrXqfQVCekobPPrUA
-	 JAWeOaWRYW/Eil2G7j+Ke7Lh9N2olb8Q+SM6gP81YztZrQRhSuLNEhB0FSmwSUT7vE
-	 /G8zqW1eQZa++Xg6zUzPXer1Uvms5vGAE7lstVRwThaOjnukiUxbTSPHhq+fdoa0Q+
-	 MpMSYxs/6mnOw==
-Message-ID: <d088452f-1118-4a06-bc16-1942e523e0fc@kernel.org>
-Date: Wed, 25 Nov 2026 11:19:18 +0100
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=appspotmail.com (policy=none);
+	spf=pass (imf25.hostedemail.com: domain of 3I7cGawkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3I7cGawkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4cbf700ddccso4137581b6e.0
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:23:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795602211; x=1796207011;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=nAwEpdk8W5zOz8dRUea8wq0PG12t8rrSsYABB8slUxU=;
+        b=wXIQxFjnlXAmuLqqnLEobTXcsQ0YQ4AbFYTvSwBQ8Z4SvQflIuBum0lnLNAxTiRviJ
+         YbnDMMzWOCuBy0Ay7Qmrdw2kh2GDvndOlF1fInIH7vu2pnSJe4+MYjq8oEJ/ZHkqRdNg
+         QAWjPtq3jnjwTH/OmLqMNXG0hB4J/5FKFfe3T3HntUJJI65GtrDrF1S1srSmv0cEX7De
+         Z/7Ls/lwvNNxB/AHN3LozO8AdLJuoRYZYQNUqcLC+jhnK0Ma5zi8FVy55JJMtUSrLqTb
+         qrsOymeOYNbMYPLR2AyOsSpNN9H40SmzGgl9tHfK44l9B7JZRz7kayKxcM78Nv/okeHb
+         OEJg==
+X-Forwarded-Encrypted: i=1; AL+hErEynx556rPCLjYCR2UqkJ0tEyfnmir8gBm+8JXJh/qPoSPVk+TYVwC2iwHsysyACuQHJdqfN9cqTw==@kvack.org
+X-Gm-Message-State: APuU4Z8K4iAxSiGe3kZEgLGH2vrB9EyggWOfjVmK8I5TpTl0qc5T1WsO
+	UPp9+/m41LpsaIrk/HtqdwEoA06m9t5kucE2BXOx3kgNRH6ltOS9zoWqYGprORZYPY12stx31Uo
+	NDAyWIX47ZCY/YxYyIlRBTS+0tfaS32EUKKjzYIqPOxbLbrpfzW0czCkrlAI=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, John Hubbard <jhubbard@nvidia.com>,
- Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
- Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org,
- linux-nfs@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
- <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
- <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
- <55114986-0ba1-4a80-8498-bf674d64e01b@kernel.org>
- <away88BuU8ibcTA5@infradead.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <away88BuU8ibcTA5@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: e6enr89kkrujkgexpdj7faqs7fx3b8ah
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 11F6E40002
+X-Received: by 2002:a05:6808:c2be:b0:4d6:90f3:74b1 with SMTP id
+ 5614622812f47-57a0ba5a8e4mr18256405b6e.49.1795602211468; Wed, 25 Nov 2026
+ 02:23:31 -0800 (PST)
+Date: Wed, 25 Nov 2026 02:23:31 -0800
+In-Reply-To: <20261120010655.467825-1-lrizzo@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6b06b723.588a1920.b1e98.0003.GAE@google.com>
+Subject: [syzbot ci] Re: PISA: Pre-mapped IOVA Superpage Allocator for DMA and CoCo
+From: syzbot ci <syzbot+ci910cdb42d3006024@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, aleksander.lobakin@intel.com, axboe@kernel.dk, 
+	brendan.jackman@linux.dev, catalin.marinas@arm.com, cl@gentwo.org, 
+	corbet@lwn.net, dakr@kernel.org, davem@davemloft.net, david@kernel.org, 
+	driver-core@lists.linux.dev, dtatulea@nvidia.com, edumazet@kernel.org, 
+	gregkh@linuxfoundation.org, hannes@cmpxchg.org, hao.li@linux.dev, 
+	harry@kernel.org, hawk@kernel.org, hch@lst.de, horms@kernel.org, 
+	hramamurthy@google.com, ilias.apalodimas@linaro.org, iommu@lists.linux.dev, 
+	jack@suse.cz, jannh@google.com, jgg@ziepe.ca, joro@8bytes.org, 
+	joshwash@google.com, kuba@kernel.org, kuniyu@google.com, liam@infradead.org, 
+	linux-api@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, lrizzo@google.com, 
+	m.szyprowski@samsung.com, mhocko@suse.com, namangulati@google.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, praan@google.com, 
+	rafael@kernel.org, rdunlap@infradead.org, rientjes@google.com, 
+	rizzo.unipi@gmail.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: ing451o3yokx63k13yjepts5g7imuezc
+X-Rspamd-Queue-Id: 58310A000B
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795601971-561014
-X-HE-Meta: U2FsdGVkX1/WI4upzioL99PVW1xV6yCS9dpN0Jx8RS6WXQcIwPwy5YV9MqJX3SjmLKd+g80DV/VJ1UiVXDgs1KP+RdY/6PGcNAkHRwd+L4bz5RIw2Y7U6vwJlp75eRF5spd0LEhrJX/SiMupY+9KEixJL3NCgYw5YNFIEkTstm8AEAv7agvye0Dc2LpRBsng/A7H5crc73jnCttoiXo19vMLrCJc+OfndAAk1HCDMMaS70IEFWHjKQ4DVPmjVHt1FUkBvIq/dEuJMtw6QGxrs8yH5Mwn+8U632xfp3ja/uMvK+G4XrXK4X9X5aioGoB8izbmBH0s0jOQ+y03yVN42JZhioh9vLQdnaY5nVWGjNJpbd/bNjVtUJaK0F6N9Cg+q8O8AbL9ZhbiDEFla83/rLYg3ek1CrYfsTpUfTPje+mEmHGmRVDDSEvXdEyoBwkos4WyHZRGtCAVwD197ofAlItwZAQDHhX21AOD2uPTtwyTWO/0N+ExWOW/Rp4+QKXO+QCUeETUNOC680oeu4AQMMlL0XGpry/iLMmef9KtniMfOqrDlLtwkYS25U2jscHX6RqLXiToElg5LnPQL45hxaMc5nZBZrU2gYtNna/iuM1/OGbHeZ8msS+3kwgE+xmkwpNRtu5PQm1xpj75P2iJE88poJfltzPlLHvXobKIh1P8xeXmbOC8qwhlKiS2wXvRdon/GNcGjZtxUWhbFQQriWJDStowE39vJ5vQXvUsFrWWKv1Qyrg01cx583JehrLW2g2/ZUECHkzMMewg/4eGWL3kEF+CxlUf19MvXv6tgSNaJ/Kp30SYBdlTFU7mONXYWcb1snBoZa6hgRsranq0gTEFIcIIvFhIf9HwHMeTWbKzQjKrw+fWXjzMjIeww/kR9cquoXdhh7KjoramF9360xQTkLk2FNaMWFMRp18C61h+s1G5GjvaSdiKE0lDwLp2KA5K/8DMQ/vIbdW0FHA
- uK0x4Dcc
- aQgGxCn4MzKACKhddZVSP2/TBmuKOV18VQhhNIuT5lV5gpxx8Vieti7VOslnw2YnHM3E/S3kJyvHCJWLSt8DahRlbY5nE84R5QHnMYCIulds9yUpuHoFrmhptXmsYRMAIRsKUIAjZcDNQh4+7rpstgRubt+9SQTNolWMqAoaXbKeRtCl8OOwHQoOgIyIZSuZR9PSqlFVonak81UG0kdpJwClyoiylYFN1rChIWvsyLlE6fo8kc46g74w+TPHPiR6aG6Bz/+oo2ITilCHnfS+WI7hJr9XXDfcJz4PJVMjH/Tj6Sen8rgB/MzKTW7ptphN5jjXTQmWoFcng1+HEniS5BFHPcqzTAFcybDK2XNPjV49/+TIP88/V6nUCZqPuhNmTGhl4QTdTof4fHBhYZ0UR9zy20zZm3dusagLjSIRykjmpIskA5GJQINIALdfdW7gjvSJnnjrLeACSLGDalfHsWXbmcbbYsI6acVJrV4iG1WVlIawDWx54xGPAZOKtimDYKBXo33G2gqlAgbHpWXGxXW1lXw==
+X-HE-Tag: 1795602212-515932
+X-HE-Meta: U2FsdGVkX181AYus8I9Ia6H3ehrNWKMkA8GRZp0Ur6a5V1JVtyHgl0fBIPaTHCP/JdfTaQ9aGECTyE0+lXeLmm75XJD8kkASxLUH+a/wlQeiBxbUsTU8HBxeOtrddys1qK5ByQQ1HTJqy65kQWcqkyTrZJNCH1CTBJMHlm2zNISDrlFB7sjtdC8+Khuthvm+jDmfGsDcCydGhR0MKn5o4uApHRtUdcA2+xPkEJLAOLyar0ZiZ7Au4JziX6wAWLd8KemrIQmRznXTizSl2XGbqs+2yjW/k6hou81I/a+UiYLwWRuArE2nInsFxmMUMs8RBnl5pyZX63ZNSIA8Gg10II4+EiPCq8c081hRpfM8unAzJfy6rvbQPTfZWmR7pl+vnv66nQ2OTRZtZQo6BqTLLKruSoNrmynKyoTgTPwom9qVuogqoLxVS+KXtd2R5SkQlOGGotemAlVv+9EhdabgpmMxh9ixLoiFoVInqc9pXyDdrqSkofyPxBPerDZvORj5z1n8q6pdPpkzGWE6EuV07KNbyfjq8acKB6SZfR96EMERbXw8YSO55/JqTcZnSigra9Qtkixo3GjR/yVmzJf73+xGHijRyQiO9L9oTyjOE05CNdw3lErTCVQkwwszfQ879GoJEwP4Ld045aIsWQM4KJOKrPyf5SGwOK6v2hyt6hZA11SgO8118U0P2bjder4lnVFENxhg210OpGROLkqLaw96umeMFIWmzwWcouqr3XUY2koVFb44k1p1RmVCNVgvLPJo652C6z7/O5F6Tc1Aeglqnu6HkaKrwHhaWmobkazg7FK8KbXZGlE87scwA7MdQhvlkpwby/zeLnL6CWTxImb/7djTQKGVo3zhWiadGn33Y/qg5eR3wX+UY2X4ZTK7cDtMpU/6zMKtJ7X3x+xyQHb0xY8Z8FH9t7jPtYK+jKeDrfTSXgIDFOm56V8mA7181wWA8Qc1oXp6udSYFxK
+ 82FoBsfu
+ uHjl6Y3tKHfPdKhclJ1eKBbwfBE/HuwSak6ABdPOnbJEW37HFtPN97cb2hjX89cFUYP5yJDGCgxAz5gIrKl7teOyuKDlqLK7fWmSZTaMqXDk5IDazyEBleWMbQGsN8TXjSGubXO1X361bWWN14UkzRHfEBDI264t3TPDlNPAyDg552/2k/6PXdO3xI50qjFmaCXuWdBkD2NUW87o6b24TYvMsaTpuPnu2Ras7+SsMyt7LErAYeQx1EmZJtfDzeYn67PjTkTzXZb5CmfrEbMtw3bAemMmUyDQ/c30119bmdcceqR9J0TLACUweYa1QOfAu//dIa3qspFzr/eWg6cxkrXS9KqHcxZT/PQip1B+rLAlvRopRa9bnKCRUWGO1MHNkONQZdGQCKJjvFxx46RE1kHTbl6yxmVAX/Lzy/lXHjIDD6bj9y26PtKeEpdJHjOBkaUzJ5GIH6PocxNpoVUGkA9YYYJZBrNPRcq7tQs56JRzKXNn3GcEc6XgwM7Q05HGVCpg1uolhhoF9vN4yUyrUYMzNf6DHxQpHqzvf45v1BvMwNH5+Pq2kzoYp3cQ4AXHUmxjp3Br433Gm5Fg80RWpU2ryn/odtzWGcOouvrJk/mJ3DnBFpes7sbC2KG/1v13XcBj4O3wHzkwF5nMI4g2c6iw6NoJbJJi4R1fyJ7ToV6dAX+aiuwWjoq7F/40C661G/HkaRHjuWyYUuqBXTtR9R9Wi5QKAVO94Et+/ikdIULt2xhaT9WAJk3oLXRNv8iucl46lz15Va0JlkZK+MC2A9dWY4AsOl6TDoL8tFvbEBHvLEOHCA2yPDUlxiebQiG7c9upETQAhaFRtAkdIqlC5Tt9cApg3udwkaDNyJF2BW9NlYBqbIKEzW7d51kNwLOOUjbBzW1by9sYHJ4dcL3g5UZtis3ckkmkmOpkZ41i4oM2nzZ4esuBe4lwhCF9SK9/K4PgtFzD0DXmt2UreaU0bLBHrT17D
+ OYrpSe8o
+ UYFLZNgcwp9cPzvAk2CFi/T/yjqpkqLzB3Z9HCoqIWqBgONhtlC8G7G2ie/aISOWP3OeZIKtUubUC7zpc4/jYPF6+B2iBtWBCYrmZM334vwLblLdu7/yUG163VQF7cs2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,44 +114,124 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 11:05, Christoph Hellwig wrote:
-> On Wed, Nov 25, 2026 at 10:50:42AM +0100, David Hildenbrand (Arm) wrote:
->> When I looked into this issue, there were some problematic things.
->>
->> We have some odd drivers that use FOLL_GET|FOLL_WRITE, but I am not too
->> concerned about them.
->>
->> But are ways where unprivileged users can mess with  FOLL_GET|FOLL_WRITE
->> references to trigger this.
->>
->> I think the two that stand out are:
->>
->> 1) /proc/self/mem access using mem_rw() -> access_remote_vm()
->>
->> User can write to a writable-mapped page-cache PTE. Then we can race with
->> removal of folio metadta, to then set the folio dirty afterwards.
->>
->> I remember a good reason to not convert these paths in the past (we are not
->> performing DMA).
-> 
-> I don't think that is a good reason.  For file system backed VMAs we
-> really need the pin to be able to do someting sane, DMA or not.
-> 
->> 1) We fix all such cases now where unprivileged users can trigger this,
->>    converting to FOLL_PIN.
-> 
-> We need to, if not for this series then for all the other outstanding
-> issues with GUP writes.
+syzbot ci has tested the following series
 
-Cool, and I agree (that's why I placed it at 1).
+[v3] PISA: Pre-mapped IOVA Superpage Allocator for DMA and CoCo
+https://lore.kernel.org/all/20261120010655.467825-1-lrizzo@google.com
+* [RFC PATCH v3 01/25] mm: Introduce CONFIG_PISA and metadata table
+* [RFC PATCH v3 02/25] mm: Add PISA allocator lifecycle and page recycle hook
+* [RFC PATCH v3 03/25] mm: Add per-NUMA-node PISA page reservoir
+* [RFC PATCH v3 04/25] mm/page_alloc: Extend alloc_pages() to __GFP_PISA and PISA block allocation
+* [RFC PATCH v3 05/25] mm: Add global cap and shrinker for PISA pages
+* [RFC PATCH v3 06/25] iommu/dma: Map PISA memory in a per-domain IOVA window
+* [RFC PATCH v3 07/25] driver core: Add per-device pisa_* sysfs attributes for PISA optin
+* [RFC PATCH v3 08/25] iommu/dma: Use PISA for coherent DMA allocations
+* [RFC PATCH v3 09/25] mm: Add per-CPU block caches to PISA allocators
+* [RFC PATCH v3 10/25] mm: Add background page scrubber for PISA allocators
+* [RFC PATCH v3 11/25] mm: Migrate user pages into PISA
+* [RFC PATCH v3 12/25] block, mm: Support PISA for disk I/O and scrub migration
+* [RFC PATCH v3 13/25] net: Cache leaf PISA TX flags on struct net_device
+* [RFC PATCH v3 14/25] net: Use per-node PISA allocators for skb_page_frag_refill()
+* [RFC PATCH v3 15/25] net: Use PISA for page_pool memory
+* [RFC PATCH v3 16/25] mm/slub: Add SLAB_CACHE_PISA_RO for PISA-backed slab caches
+* [RFC PATCH v3 17/25] net: Allocate small skb heads from PISA
+* [RFC PATCH v3 18/25] net: Migrate user pages into PISA for MSG_ZEROCOPY
+* [RFC PATCH v3 19/25] mm, iommu/dma: Support decrypted PISA pages
+* [RFC PATCH v3 20/25] arm64/mm, mm: Support decrypted PISA pages in Realms
+* [RFC PATCH v3 21/25] mm: Add PISA statistics and debugfs
+* [RFC PATCH v3 22/25] net/libeth: Use GFP_KERNEL when pre-filling RX rings
+* [RFC PATCH v3 23/25] net/gve: Use GFP_KERNEL when pre-filling RX rings
+* [RFC PATCH v3 24/25] net/gve: Use PISA memory for RX buffers
+* [RFC PATCH v3 25/25] Documentation: Add PISA architecture documentation
 
-But who is "we"? Because I recall that "we" wanted to do that a while ago.
+and found the following issue:
+WARNING in __alloc_workqueue
 
-(I won't be "we" ;) Pedro, can you take a look? I'm afraid the fuse thing might
-be the harder nut to crack)
+Full report is available here:
+https://ci.syzbot.org/series/80fa818b-452d-4361-bfc6-33c65f928f71
 
--- 
-Cheers,
+***
 
-David
+WARNING in __alloc_workqueue
+
+tree:      axboe
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/axboe/linux.git
+base:      20eef29b7c8465ac98d7dd6d6f2ac07a8d8056ca
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/1b1679cb-3959-4df9-8546-bc04ba6e5cd3/config
+
+smpboot: CPU0: Intel QEMU Virtual CPU version 2.5+ (family: 0xf, model: 0x6b, stepping: 0x1)
+Performance Events: unsupported Netburst CPU model 107 no PMU driver, software events only.
+signal: max sigframe size: 1440
+rcu: Hierarchical SRCU implementation.
+rcu: 	Max phase no-delay instances is 1000.
+Timer migration: 1 hierarchy levels; 8 children per group; 0 crossnode level
+NMI watchdog: Perf NMI watchdog permanently disabled
+smp: Bringing up secondary CPUs ...
+smpboot: x86: Booting SMP configuration:
+.... node  #1, CPUs:      #1
+smp: Brought up 2 nodes, 2 CPUs
+smpboot: Total of 2 processors activated (11200.80 BogoMIPS)
+Memory: 5553400K/7339508K available (181131K kernel code, 30788K rwdata, 59468K rodata, 27564K init, 120564K bss, 1621204K reserved, 0K cma-reserved)
+devtmpfs: initialized
+x86/mm: Memory block size: 128MB
+Running RCU synchronous self tests
+Running RCU synchronous self tests
+Running RCU Tasks wait API self tests
+Running RCU Tasks Trace wait API self tests
+posixtimers hash table entries: 1024 (order: 5, 73728 bytes, vmalloc)
+futex hash table entries: 256 (32768 bytes on 2 NUMA nodes, total 64 KiB, linear).
+PM: RTC time: 20:32:46, date: 2026-11-24
+NET: Registered PF_NETLINK/PF_ROUTE protocol family
+audit: initializing netlink subsys (disabled)
+thermal_sys: Registered thermal governor 'step_wise'
+cpuidle: using governor menu
+NET: Registered PF_QIPCRTR protocol family
+dca service started, version 1.12.1
+PCI: ECAM [mem 0xb0000000-0xbfffffff] (base 0xb0000000) for domain 0000 [bus 00-ff]
+PCI: ECAM [mem 0xb0000000-0xbfffffff] reserved as E820 entry
+PCI: Using configuration type 1 for base access
+HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+HugeTLB: 28 KiB vmemmap can be freed for a 2.00 MiB page
+------------[ cut here ]------------
+workqueue: pisa is using neither WQ_PERCPU or WQ_UNBOUND. Setting WQ_PERCPU.
+WARNING: kernel/workqueue.c:6151 at __alloc_workqueue+0x1e4b/0x21d0, CPU#1: swapper/0/1
+Modules linked in:
+CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:__alloc_workqueue+0x1e4e/0x21d0
+Code: 18 89 39 00 90 0f 0b 90 e9 87 fd ff ff e8 0a 89 39 00 90 0f 0b 90 e9 79 fd ff ff e8 fc 88 39 00 48 8d 3d 65 52 32 10 4c 89 f6 <67> 48 0f b9 3a 8b 5c 24 20 81 cb 00 01 00 00 e9 99 e4 ff ff e8 d9
+RSP: 0000:ffffc90000067750 EFLAGS: 00010293
+RAX: ffffffff818fa174 RBX: 0000000000000000 RCX: ffff888102aa5ac0
+RDX: 0000000000000000 RSI: ffff888162ab5d78 RDI: ffffffff91c1f3e0
+RBP: ffffc900000678a0 R08: ffff888102aa5ac0 R09: 0000000000000002
+R10: 0000000000000102 R11: 0000000000000000 R12: dffffc0000000000
+R13: ffff888162ab5c00 R14: ffff888162ab5d78 R15: ffff888162ab5d18
+FS:  0000000000000000(0000) GS:ffff8882a77e4000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000000ff48000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ alloc_workqueue_noprof+0xe3/0x210
+ pisa_init+0x127/0x260
+ do_one_initcall+0x250/0x870
+ do_initcall_level+0x10a/0x1a0
+ do_initcalls+0x59/0xa0
+ kernel_init_freeable+0x29d/0x3e0
+ kernel_init+0x22/0x1d0
+ ret_from_fork+0x514/0xb70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
