@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884D4606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2568606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gR7IJgfO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GRSsjREO
 Received: by kanga.kvack.org (Postfix)
-	id 7306F6B0AE4; Wed, 25 Nov 2026 16:40:00 -0500 (EST)
+	id AB2A26B0AE5; Wed, 25 Nov 2026 16:40:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 707796B0AE5; Wed, 25 Nov 2026 16:40:00 -0500 (EST)
+	id A89A16B0AE7; Wed, 25 Nov 2026 16:40:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D4D6B0AE6; Wed, 25 Nov 2026 16:40:00 -0500 (EST)
+	id 9A0026B0AE8; Wed, 25 Nov 2026 16:40:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DC546B0AE4
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:40:00 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 123BD1C496A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:59 +0000 (UTC)
-X-FDA: 85474959318.22.9136A02
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FF2D6B0AE5
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:40:08 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EAB05140109
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:40:07 +0000 (UTC)
+X-FDA: 85474959654.02.67A27A7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 71DB820007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:39:57 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gR7IJgfO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4F2C410000F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:40:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRSsjREO;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795642797;
-	b=umDDxXhvbbQIspdgScsp+DW+le5h1oROgvc9bU4atJU9apmrM7t9A1OhrSUYMd2zsod+HS
-	mRcsdUvJm3fNtgrfxsm2Xd2tncZ0ilRRtigB5lntRTF+6jKBrBK7hhQGeKUcpy9LILjXyq
-	obyVC6/hVqhHrt7tQxU0PCWTGdSLPdk=
+	t=1795642806;
+	b=nfqH7pJy6+dGLXGRIE9Xdj03JPPzdb6KoDOWfeIjisLOGEORy+ipndWiFGjk2wIEC7NlkE
+	HDYYoYXOn2x3AenzVlyr6dxBe1bvdq1+pqJVCGwmvTSEbkKnywdnLHhWyUy1TTbpVKrug/
+	xEsN1bs/rIS9LemyuiNeV49R96JYDhM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795642797;
+	s=arc-20220608; t=1795642806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5x95mFtq9SsOz7VWm3eLFqsSut3QNXOjHk0FlS/OEJY=;
-	b=cj9aazOoM3aG9fNJZUYRSVRB9vGcSycSn3576htPZkvTah62KvhdZS7MrL+zVkwgbq2dMa
-	U5nNgizbIAgk3C7GXjMbi6q2RTaRrcAz/nnR3WhF30F0k8GlEeAI1mRJAaqy+pwDaSXfKu
-	mR4i51YSnD6boHdHOdydqvhWShWLmgo=
+	bh=vTpYbw5ItroGz0DZO7PAjQShiM8iXjTmR55aJhYUH3g=;
+	b=gy6LIYNYI4G4Yz/1VJhq4572m4Ql+QihFaboaKfWMFbHNDHBiVdXl/qKd+V8kjF7Mdwzwu
+	qsjFYr7ZYcyfkta7SUmJgoMS/AQWS46D5uKqMA1LWH7gNsDOyjRrA/smHy0/purbgid9vR
+	SdXcJL1HW4NTzY/4N/FMGqNvBBWOJsI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gR7IJgfO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRSsjREO;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB6A5612BD;
+	by tor.source.kernel.org (Postfix) with ESMTP id DD744612BD;
+	Wed, 25 Nov 2026 21:40:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B041F000EE;
 	Wed, 25 Nov 2026 21:39:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1478B1F000C6;
-	Wed, 25 Nov 2026 21:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795642796;
-	bh=5x95mFtq9SsOz7VWm3eLFqsSut3QNXOjHk0FlS/OEJY=;
+	s=k20260515; t=1795642805;
+	bh=vTpYbw5ItroGz0DZO7PAjQShiM8iXjTmR55aJhYUH3g=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gR7IJgfOkEVQt+Kjd5Lhv9/b2kVV8yRkGEde2GpliNCOVGS04lYkQSSULOJDv53Px
-	 2Jekw39TzKqHcUDkbuoYJCn4S1gmvYLWPkpuJUCpoFdw3elJJ7zWe1+xTfJHApgEiK
-	 P/qQpkx14FJESeSKPtOdFd17NKyU3J6ilRq5E+0WakHtwQXwFkW8NGI4pXgUznisYD
-	 rHkqysyl38T7vPQqLMCGxrCLYc15vSWMv8Mtbx/OlEhREtZmOooXaG3WLLIMn7ebg7
-	 Sv768LnK5Hpwl/Tk+Rc/AyiB0N22eVUhJz1rai3YDYmpTQusukjx69daAQV6QwFd6R
-	 NEmZ1eWYWrp6w==
+	b=GRSsjREOeODhI5QM3n2jnFfutP8TiC2UDlmMdp0c86+anFTcws9MuEdgcZWJgWP0c
+	 5BHn5mQMtmswZRaAL2973a9k4bOpstS04RzDP3QBv4UvxC01O4sXMSXh52Ox23gxTq
+	 VZybPONqkOJfx9yY92XNGRQpyENEFbDh6eE+IgK0Jn/cJaWaySXbOteZhO3hd2ts8L
+	 XK6ADqs3lQJnK9wJgFqKSlSOKs0TDHR1RizgROWdlolXgbucx9A1WlxtnGSYcSb/Xu
+	 5YAZ5xl6hAPVJPR3oCBUPgDbUmduQ8vG6K8fDxNIXc7HR7aR3mvU+/BH/TMQ5YGGed
+	 ADuzLhxw7XKvA==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Wed, 25 Nov 2026 21:37:14 +0000
-Subject: [PATCH slab/for-next v2 13/14] mm/memcontrol: do not allow
- charging objects without SLAB_MAY_ACCOUNT
+Date: Wed, 25 Nov 2026 21:37:15 +0000
+Subject: [PATCH slab/for-next v2 14/14] mm/slab: do not set
+ SLAB_MAY_ACCOUNT for all caches
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-13-7c680f02a734@kernel.org>
+Message-Id: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-14-7c680f02a734@kernel.org>
 References: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
 In-Reply-To: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -103,20 +103,20 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  linux-security-module@vger.kernel.org, Richard Weinberger <richard@nod.at>, 
  Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
  Johannes Berg <johannes@sipsolutions.net>, 
- Eric Dumazet <edumazet@kernel.org>, cgroups@vger.kernel.org
+ Eric Dumazet <edumazet@kernel.org>
 X-Mailer: b4 0.16.0
-X-Stat-Signature: grpqbmm1cfqdhbha8sx16dddhpdbkp3m
-X-Rspamd-Queue-Id: 71DB820007
-X-Rspamd-Server: rspam06
 X-Rspam-User:
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4F2C410000F
+X-Stat-Signature: bfek4cqb1fjdhmnp3s4fign1653ifcne
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795642797-363440
-X-HE-Meta: U2FsdGVkX18nRcaHTySlCPCWM1q0Sti4KCz48CsAJu8QR+evCpEtRpZ578H+YI8lrGYm/I4rla8ARiumcFrxawdeFhOaOUMfdhw6mBvNEduATBi5oupteHuE/hmpAdFXXI0XrGauG0KmWMjvn5DSGV/OuPl4JtTbIqY/KIRW5Mqu11cNjmnn19K0XyefjFFp4Pu5kyisTQeyuOu+e/nZvbZqJc6CunFX5TDZw0GS65ivmlRn7mA55j3MaUr67R1Kj5UHy84TxogaFEX/0fJTKlIQ1/fn+zQCeikA6yohexiY25H9KJeyM600QSv8JAjDJmNWHyfxzHQBdnzkzccmhtM0LW6RAJTTEiK6rr5JUmDEkjNPQIUSvdh3+8qi/+Jh57A9aKxnAMV33oz+ZjbWXKnHdkJhU4c1m/53XZ31VuYMR6qdaWr0vsp065cjoZSoGfBZ/FcXCVPdf+Q90A3Mh/ShsJjSl7Iy936tHP86uEs+yC5DIZw5ZPiH497nJ/X8sLhlXhwgmx8nYCfa0FQf2dmJtF9RykmUhGV4PSyyJVL3oWrVcRtWIxjQMi9qdoEKx/rWOa0FYPnp11ua/CkGyF9XJtz+1hInm4CA4WFK/yknbcbnnXzQyMHLngHY7cYuIAM4a7dx/ZCYoc6bb3UPTNsX13VeT1ixLHIcWbwkz8bEtAyd16pXusk2XgfscUTwLW/ElvsVOo06x9qsOGYGZo31TNHJpKZrGete4sBO76ihjjMJci29J8JdyD52W1Qe9a9suN2EhPswatOlEnq8PPenQHifyXeZwR5nn7uQ+I8xsQiUAJGr+wJXMzaURgvNb+WOmu6sIRYJG3NVYChuDK/riBWTGA7wjNw8+Tcv+SS31BV+dLkj3xMTeCws0K7vXHv/Xsr9TN4krAMgVqfdmuLh+neZ5Zf5ndsQt19DHheCHtxHmGBoniURiwrsDisJMOphHo4RjygBH8ZERK2
- PBX9fVfh
- D8cYYVfgW5GQWoHttKcUs0QcEAJ5WP9QoX7j3AymAyrQ1dvDaLOigQMFAyEfMwTIEhqEkOYk9CCKe4TWeu+/vWpYMRcc6MvQ8xS4PB+zha84CBglD0kACxCznpHo79GNnFo5nmNRUtyR2eLzTSc0Hf3pcsQjRD+U65lu+GvZJ5PdzAzrFgeFtcK2w34FMlNneD9yhwyPoYMbiGpd0yzaMLngq4fgFCFHYl3EHJRgSD6Tt5R4k7BBocUAv/6dnKfoIjo2tNeA6IHiXqC0HxG2ksfNOGp6ditU4f7Dez4b8hb9Xj7CaIlNygSjoPi79qHbCk+JKDiEq7Wqw1uXeukJBIQFY5oR2aYlaWXJn2el1u6CarqYk6tKOxQnbo2d23OkWeNNiHdkrytp38bzKo7qt/cp5BfB3berj44mOb+VqFwZbSXYnAAuj3Mtw+RSrJYDOwxwljuiupw+zjWCWd3FFeLzsikfZ5U4FSL2s0mHGCESxpSVfLOTKB/FKl4J7dScNoFKNnRs8gVfrqCpJEOag8xZ0VtAw5HwOnk3Oi13e4AtklAsUrXcRApWX07DiNx6lS149
+X-HE-Tag: 1795642806-228245
+X-HE-Meta: U2FsdGVkX19hP3S06jVq+zxw3/soWTD/AOGMa4Qb9Grx4QSU2ocJp/jbmZxMvDRh0Hl4GsuUeH4tQQVjX4lCRjTXRm8I/W9XmFfdiSA5Je9Te+TuPw3gJVhhtBm3D0rD3G+/XnffVXTrh1y1Uwvy+F6wlLtXeUFnN77VJ3JXefAwaa/6nSgn27NC8S+1f2KADBJy3WKYSpqktdXI3uNLkISz2b4P2G6bjl5VspTEz/T6s2nX7dEKGIUq/ICiMPJ2coTcyciGYB5HuAvtsikKjJuKBPSLLudChEZ9rsanBTP+SkMrxzDkWlVFNdfx5qiLhlyyQcjO+6cXennPcWlvF8xw+UOu3BYVaN4B0pbreYqmPN/UVB+bSEmtcaqVQThoG2/uXLjU0iVugkhkxsvZY1ATyGtNQxvZarpIESz6Bf9PxhpbhK4ylH2iqYD3aQa9PtPze4A123rEQEZ2ikCk5k0fg029uJ9I+rIWUwStGO3QSGwBC6ufxwUqzPB/xqSz8F2IYnpgQbu6xXGVBDNPhPq0y6tuUpEoNHVDe7Fqb61gMgFlg2xSEy1DPFqN9LikYMgdDelMtlCZJS658jHrZidHOaO8xHLKDtwtlRODieJnN5GrQHWwnKFywT9lcB4BhB40RxHNJUGAhR98LzY9XXfPy3okJ+h+DXQk84ukpcLtMqDY1nzWwwbgmTtopH9H1PbOxGJHbg9aY/DizpTmYG8nXy6Lj4hLLzsSCPDi3ysopemrlRFfnFqs6xfLXFxaS9VomCwg56IXg5eBYBYb60QNcrndgcx3mvjyoBwOoUOn7navfR/1FEZOZcLxm7boT1etnzBHaWGk0UT2GhAocpyJ42dda4HFtVfznOpFFmCnqMzEsLNA9tCZEmLuJnJe7DpiYFBkP4vRViLL7Ds8dugI9e3WFj7O3QiVoZOnNY/gZECRx5SLhL1DRDGvQSWiPhRl+cwYSgdoW1vu7vE
+ u/L+/Mla
+ Kea5BPza+A93uxdjx0koux1AaUbhcftlZ7JDaqIXhn4wL8W/djry3zurW8VF570ZdG8z1L5CNGuLPSd+YPB2QN8E7DN0gnYcXxHbaxO2wWkARVlFnY0Fgqr0FzEW4Ccn4hkZJjxp6VzLljLbEO5uUOw/KCqNiarvG1yu4GIfHMxRfpWCB4Iiyb5x4dLa5JDIg6Yk/TMHjDzszftgOhOwFop6FALNH+fm3jgxG4GO8luL5t7Yc9SqmrZfBMTq4lVY1Y8meTpntpB8OqpLcLCVdvnIQrMCWKGniPuDHQR2H9wii3vo5G9i4oNxZvQHGkg23KnskIq4bcMQQ3bs1iZd5DENl78K0tqsL2S1yho3KsZ843+tiCQinTfjEC3HC99jceH6fWzhPoJCz2cp5w0BTkwNZXotoIRz1byhnPJVIR5HwyltpkLAKO+obJbhVyssHWbuCfJFI+bQ426Xb2QTJ+UpoYcTBpN1JwV0Uyq5zNU5wk4SjsaR6s9yehh8Vr5gMFc87A45voYUE6XE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,42 +125,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Objects of a cache without SLAB_MAY_ACCOUNT cannot store the objcg
-pointer once slabobj_ext space is no longer reserved for every cache.
-Skip charging when __GFP_ACCOUNT hits such a cache, and warn once under
-CONFIG_DEBUG_VM to catch callers that did not opt in.
+Now that all caches whose objects may be allocated with __GFP_ACCOUNT
+specify SLAB_MAY_ACCOUNT (or SLAB_ACCOUNT, which implies it), stop
+assuming any cache may be used with __GFP_ACCOUNT. This avoids wasting
+the objcg slot in slabobj_ext for caches that are never charged to a
+memcg.
 
-Refusing the charge here is sufficient for correctness: an object that
-is never charged does not access the objcg slot again, and the free
-path already skips such caches via slab_needs_objcg().
-
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: cgroups@vger.kernel.org
 Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 ---
- mm/memcontrol.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/slab.h | 16 +++++++++++++---
+ mm/slab_common.c     |  8 +++-----
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a07cc73acfc7..0eddb16173fd 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3707,6 +3707,12 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 	if (unlikely(*p == NULL))
- 		return true;
- 
-+	/* Do not allow __GFP_ACCOUNT without SLAB_MAY_ACCOUNT */
-+	if (unlikely(!cache_needs_objcg(s))) {
-+		VM_WARN_ON_ONCE(1);
-+		return true;
-+	}
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index ad645967a3ee..8525e70eaa76 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -201,14 +201,24 @@ enum _slab_flag_bits {
+ /**
+  * define SLAB_ACCOUNT - Account allocations to memcg.
+  *
+- * All object allocations from this cache will be memcg accounted, regardless of
+- * __GFP_ACCOUNT being or not being passed to individual allocations.
++ * All object allocations from this cache will be memcg accounted.
++ * SLAB_ACCOUNT implies SLAB_MAY_ACCOUNT.
+  */
+ #ifdef CONFIG_MEMCG
+ # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+-# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_MAY_ACCOUNT)
+ #else
+ # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
++#endif
 +
- 	flags &= gfp_allowed_mask;
++/**
++ * define SLAB_MAY_ACCOUNT
++ *
++ * Objects will be memcg accounted when __GFP_ACCOUNT flag is specified.
++ * Requesting __GFP_ACCOUNT allocations without SLAB_MAY_ACCOUNT is not allowed.
++ */
++#ifdef CONFIG_MEMCG
++# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_MAY_ACCOUNT)
++#else
+ # define SLAB_MAY_ACCOUNT	__SLAB_FLAG_UNUSED
+ #endif
  
- 	if (lru) {
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 193b5a03bc47..464695504248 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -367,12 +367,10 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+ 		goto out_unlock;
+ 	}
+ 
+-	/*
+-	 * For now we assume any cache can be used with __GFP_ACCOUNT and thus
+-	 * may need to store objcg pointers for objects
+-	 */
+-	if (!mem_cgroup_kmem_disabled())
++	if (flags & SLAB_ACCOUNT)
+ 		flags |= SLAB_MAY_ACCOUNT;
++	if (mem_cgroup_kmem_disabled())
++		flags &= ~SLAB_MAY_ACCOUNT;
+ 
+ 	/* Fail closed on bad usersize of useroffset values. */
+ 	if (!IS_ENABLED(CONFIG_HARDENED_USERCOPY) ||
 
 -- 
 2.54.0
