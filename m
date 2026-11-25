@@ -1,133 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E515606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 15:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A79606A681
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 15:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PHgvne1x
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eZ4tYm+S
 Received: by kanga.kvack.org (Postfix)
-	id 55AD16B0A62; Wed, 25 Nov 2026 10:51:28 -0500 (EST)
+	id 53CB06B0A63; Wed, 25 Nov 2026 10:56:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5324F6B0A63; Wed, 25 Nov 2026 10:51:28 -0500 (EST)
+	id 4ED9A6B0A65; Wed, 25 Nov 2026 10:56:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 449976B0A64; Wed, 25 Nov 2026 10:51:28 -0500 (EST)
+	id 3B5596B0A66; Wed, 25 Nov 2026 10:56:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 00D866B0A62
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:51:27 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7278D1A07BC
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:51:26 +0000 (UTC)
-X-FDA: 85474080972.25.A5EA66F
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B9A6E180014
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:51:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PHgvne1x;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DF266B0A63
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:56:01 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 94DB180F16
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:56:00 +0000 (UTC)
+X-FDA: 85474092480.12.3CB605A
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8ECE2140007
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:55:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=eZ4tYm+S;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+	spf=pass (imf23.hostedemail.com: domain of shalasheg@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=shalasheg@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795621884;
-	b=a2Z0uK+LxKu6kbEn0JPytE9RS78IQCUMlfqRwSnqKG244O44ipf3ly08DtMgjscp1pHEbc
-	osfNim7BooKk3kLI0ecm0JIGSi6Y/IGQfOIjIc/f8rxxfXR77nb14m3GnaMOqj3pxGokiD
-	lmdW4sSGs8cfIPcQDcoXm3ffpqtfBZc=
+	t=1795622158;
+	b=21zSM3OGFla8Q3TFC8eatFq1xkH/pdJIvrOIjPnL96BUOh42yxQ1o1f33J1W614tW5+sjy
+	i92yLL/6qZKN7KlX/Nkf92Y6RnOXfUVwtBYcXXvydm8tT88qYB5fxePlK4LcpYXntp8oor
+	LfYygil0LlTN1YVklBDWZMowFK4dl10=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795621884;
+	s=arc-20220608; t=1795622158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=VHe5Uw67z1Y8nTKWeloBeO0r936iChXIFhmIiPgc1Jk=;
-	b=rX2JkR9kEUArqpjMu61EvkwYPsbuvbtGVYkg/IhXxewmL+bETQs6SYjxobjcR7xMXuFE+n
-	aENNc8x98m7ehHLtAx4khiXoS5ItO161jOqoIsBaX6LkJVCA9Pn3LNEf5lMhuyWUgjv2o2
-	11O/onG86l9rrgWXQH0zEz3YHjFvkA4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ilZkP46cGSi8xAEGGltwn2YY6bly9+EZHVBMEUvniWk=;
+	b=KiLOC/dgOXRwBbO7I8jrSYChLK7y4Qq7N72/bvlobtNEoo9xoIUWIy19XkWlerKvyFnrLH
+	N0+Vfb+tAnz+HnwYNZqjHJ1GzmsbqRMPC/RaMfYs+alVlqbLQvkDLAnb96AdB1D40CADc7
+	L2FJlZ5y3oo63hT3qSSOTa8f93Bw4+g=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PHgvne1x;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=eZ4tYm+S;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8a05b210703so2855687b3a.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:51:24 -0800 (PST)
+	spf=pass (imf23.hostedemail.com: domain of shalasheg@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=shalasheg@gmail.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3adf87fc0c6so51830821fa.0
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:55:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795621883; x=1796226683; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VHe5Uw67z1Y8nTKWeloBeO0r936iChXIFhmIiPgc1Jk=;
-        b=PHgvne1x0cYNqj8XhB26RDxbi5U6Cf8ExyzawVg9EH63OfSl0Afquou/bqDA+ZDEV/
-         W6L6Fqadceyj7LtNpeFHZVR28BTsDoEXmigJuEfazaeKwjD8GwOJTAtO4D6IpfoJxSsn
-         TkVL1VHnstpz/vFrM0VzEzNzljluNjrqFjC+FHYcU3RkZO1Y3JOOR/WttKmT4MsMxXoN
-         0o/YwV214wQiZC2l1J9d2Zu5yATJLSLGx7vWdgZFeLnZa+ybNZgEU2FTJRTsJq5ymeVN
-         pisN+ZguoKfu0q0dYaJI6ymW+f7KSEi1+Lk/Z5Hr6L/JqwGhAqUe4HSDckg9VDVpCgmn
-         ZMfA==
+        d=gmail.com; s=20260707; t=1795622157; x=1796226957; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:cc:to
+         :references:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ilZkP46cGSi8xAEGGltwn2YY6bly9+EZHVBMEUvniWk=;
+        b=eZ4tYm+Sosxna1P3M15wIdA15rqK9wWreplf/HMVRZoKSnev+W1UopuXR0rm1zq85z
+         gqWoKkisibsQTHHmbt72O+gz8Xa3g8adyjdTkZUjNc1aOZO724/h7+tAwITSh8HflEW+
+         LRrIOwSWmP1DJV482nqvbXvabJFu3csWJY7Avm1fEgvFE/A/3S4NoB2Kn4ziNAQpCI5x
+         NN88JLZUQ+OurF+52UtayH6DvmpCbR9PUrGbMNHtPLW9fYLNy0kJimnkItqQlW/pDAeN
+         emSsnY/T055Ti8ojyrfcXPE8n3GJKp0kjVXgCx5cnqeYYOJf9WtiQKKiesgrq2R/XrAl
+         2q6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795621883; x=1796226683;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1795622157; x=1796226957;
+        h=content-transfer-encoding:content-type:in-reply-to:from:cc:to
+         :references:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VHe5Uw67z1Y8nTKWeloBeO0r936iChXIFhmIiPgc1Jk=;
-        b=K9D2eLZ+LogWHHKByADBa5zk+4CMRDbCmdiu3jj3nG2/EqmVDPy4nUMVl4Lhk/aWOk
-         pXgMkkeOC8W9E/Dd5I40Ve0B8V9chPSf1OK2rLPXZY+UD4r9YW4hrB30cmoHdUo3/OO9
-         ZFSiVIWKXmqVNKZWo1R3aVaiYdCLthHdKoTz8ZDKRp3yFr4w1rO7je0UThUiqrtSlYNt
-         mR9ye/LhaGb7ZHgbiwzftMfPoC/nQM+TCisgulGkDt0lf3CdKUKv2/ppC0iEX6Jy1L+q
-         phMXpggA43ck7b4pKHs2LRuPeChYoE9IiqciLYaWZDGdj6IabS7Ho1TYA10sliRncTaB
-         ZUOg==
-X-Forwarded-Encrypted: i=1; AL+hErE7zRg+Pxahc7aHziHXeAbDXEXc+nvp1SAuAdAwb1QNpJugdw5r8Q49Zdlw5WMsNSqgHtxIMpNrVw==@kvack.org
-X-Gm-Message-State: APuU4Z/PqDPIuo+u2Dk1H23QEfuHfh3W/lE7XXox/4DiewD21oJDr3ee
-	T8DVQtqnBZYfrEXaPokbaTaxFby+/uEDeKamYRjg9cG3b1LrSKCnBaA9
-X-Gm-Gg: AZFdTZf63Xp+YUmnCZYddxjVl9RXOmkEBzxYUAD76CVb+8M+i9tce/xOCmayDOH3hW4
-	mZfULGE7YMiS7LQtLfDOknAm6rEFF7+yhsxn28Qsw97MwZZXkJdHh0iWz36L2CTIfOXzNOZ7NxO
-	ZgSNzcvEn8CaCQn+IK6WC2uhfh4qNIU8NeN8Ud56JMlr6C3n8QrWpiWfgGChgJ58bhz1ZCXnwnV
-	76A9lucySijoMFtti8Yyp2jK8y/qBLzFGjH/i2xHM84DWcxQPWnvySXtUaQkpD4JijCe9DIXbUx
-	soJDJ2fQgTalpEXR6iOLxz4xQoOebBKI14tzQP++T7/hXZazF+HY1NamwUmYZVfpNEUwS3kQd5B
-	uYCW/+Iz9J6UvhFZRJqpPhESr3J/zhevUc9coZFVurjL10XjiZMxhjkwetvZfneNekNAV72tQyo
-	Rnh/uLQ3gQJn5UIdA1Z3sgJyREsIIimsP1zPb15+zGS60J6jWZNX3TPSz9DnV7gKyaq5vjRCQSK
-	OXfJovCk3KQJ9Orptqva721sH6HTsxAMoi1w4k1umDtEPLx1EEh/tiKwhe9rG6b1k25wakB+Erq
-	r6rTPudD4M0ttK4ICyFL/1cjq67FNZ933vhKGHdj9cwluRR+26Yo
-X-Received: by 2002:a05:6a21:8201:b0:3f5:ef59:3aaa with SMTP id adf61e73a8af0-4014ae81ebbmr19762858637.16.1795621883355;
-        Wed, 25 Nov 2026 07:51:23 -0800 (PST)
-Received: from ubuntu ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde6d0818c1sm9058205a12.30.2026.11.25.07.51.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 07:51:22 -0800 (PST)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Frank van der Linden <fvdl@google.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Jiri Bohac <jbohac@suse.cz>,
-	kexec@lists.infradead.org
-Subject: [PATCH] mm/cma: reject long-term pins of HugeTLB folios overlapping crashkernel CMA
-Date: Thu, 26 Nov 2026 00:51:06 +0900
-Message-ID: <20261125155108.24098-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=ilZkP46cGSi8xAEGGltwn2YY6bly9+EZHVBMEUvniWk=;
+        b=dLww0rh6NkFFeJQdi+kiA3IBq2dAlkwJlkj5fYAWarODNBgsZMcgTX6wYqBWKMIxZt
+         sZvFpF957WBwmYxnvo0BLpRfUqk0sJdJNK4b3zfPh2ODgnUydICOM4SVWCIlIJ8HBunW
+         USTsQCdD3gXB/tAA6wlN7Ocm8MC5hkZtD6ZaXbVPUTZP7Qo7/d50i0Oq8xXAfi0UOByv
+         FsssUlscBZ0vUAFFiVFp58cM9gAYElENThHuX+oRANRqOhgeFoh/uTmnxERqgPjko7Qz
+         pv/UofnLws/GnzQPfHEQV7JJArVGhiv8qtX5tyoQfKaGfbiWte8EMoArgRzzhKDeGQaO
+         lYdQ==
+X-Gm-Message-State: APuU4Z8+Zvf7vYqKpIq5I2oLUIzB6E3pYqezaWMgmLk45XjaVxxDpXrO
+	SVVhTJvIoDAaRCwCxIUPIJWFo4sSFfXl5ZZyUccv+dJPr5XOGOZKugsd0YXjlqOwvQI=
+X-Gm-Gg: AZFdTZcDU2mXsRWIwz5Se7iARMU03FEsWR9VcXrjBob6g1Q7aJF2D5oDub7Gc5PK3iB
+	iK7jpXwKvkDQF9FdKkRiYSJqC2skfVC2hiV3HKZNTIAXfd4x/BKvSX/FZ4B9mYHUKPwXtZ5HjFY
+	xHoitmYqVs+8CT/lpG79NR6Fvu6YAosxRRkjehgi/EFq4gAOeJSdEPOFGPJUsuNFicNa038X3Zo
+	iLbRbM4bbJzr8/pIbA/p//PxNQBmBEY2h2MAQvFibP38l1nvFK2bRjiworGA0V9UphD92rwVug3
+	lqVdB73A1kIBzlXMbEk8c3hgkeYCw91IBQoDTHRaSEotZFCi4zh1F0DNkMAspwt1xO2uSeiecTh
+	Ufk6X7ZS8kupGRt4IngLMhG3hCmXLyGfiCclB7DhIO7lUzd6IBj6UwnwQ/73WAobOVnmV0Zp9fl
+	B6pSnMCf/NRrLIGa+M16HoTiW6Ms0tBCVcL5Qh5iIsCQ6CQgyMcSV5zNnTIo5JI4VMmqTuMQHl2
+	LlxTpj+qwoPvcTnEF/W+A9EhrlTlqzpl3v7Z9wlrG3vRwdsMZZZCF3u9aO/lhACHr1trubSd/zA
+	+sFMCrkIijXv6k5lViy/PxKGEBqo40sxIS6v406IoSk7MDczTcuXFJ5jLnRjz47mSm+/mLbYE1b
+	+98iJ5Ws=
+X-Received: by 2002:a05:6512:3b08:b0:5c1:b29a:1ba3 with SMTP id 2adb3069b0e04-5c1bc7d5ce5mr7526450e87.29.1795622156730;
+        Wed, 25 Nov 2026 07:55:56 -0800 (PST)
+Received: from [192.168.0.103] ([46.8.6.187])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd0776edsm4838279e87.73.2026.11.25.07.55.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 07:55:56 -0800 (PST)
+Message-ID: <6c943754-05b5-4017-9145-0d145766909a@gmail.com>
+Date: Wed, 25 Nov 2026 18:55:55 +0300
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH] percpu_ref: make percpu_ref_switch_lock per percpu_ref
+Content-Language: en-US
+References: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
+To: linux-mm@kvack.org
+Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
+ akpm@linux-foundation.org, zhengqi.arch@bytedance.com,
+ linux-kernel@vger.kernel.org
+From: Egor Shalashnov <shalasheg@gmail.com>
+In-Reply-To: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
+X-Forwarded-Message-Id: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B9A6E180014
-X-Stat-Signature: q4d3pggradnj9x7w791puofuqf6rr6t4
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Stat-Signature: bskfigticzgqpus3nu6so3kye9wf6xx9
+X-Rspamd-Queue-Id: 8ECE2140007
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795621884-553848
-X-HE-Meta: U2FsdGVkX1/JOyv8HFD+giE0o3DSvlEE0hE+7iPEpu9Z2AxiGCVmN1Z2sz0D+z1WNaXCmHVC2pZunwDAxoTtxFzQlkARVJSlkbAxaUdpONW6zBFqMWE9e1DrhIYBE2SQ1PaTZLs31Z1g1J33G+BOr8/7CAtnd2UItOl8gO0gpbEG0TNBQy3YoMegzxTCgnk98HtZiz2YHIcFST5SRjNswykUhl+Iz7BoBD7vaFTJsG8pjOw3wbJmK0HnoEjjLtJ4tqibDl6ysKaw67A2N/PqOlL/U5JVQCuDB0Z0hxrBVhIUcjDpkOwMxcy6F+WNy0CgU58Bj1IZJvhqXDYQyins9bOOHe/xF37VYWgfuQefb4XCEqQO1T51OizORlqwrY/wruroC5rV6Hi4I0+5lVjeYVlQ79JXzBf56nXZ1r/MUU4RYCRoFdXsg8m09SQ7okxuJnihs9IFGptYzjAia+hpZL22HH1XbhZ2HyoyH3jvLj2yEmp+inFEHHWmk0Q7HnsT8CQ1DmjiEim99UXdQ++tD8T8i42uSg5kBHocKPpv9jVA56zCAy493M8JnhDQXi9QUL5rMHHWGxfjYsB4BZcXFWki5wYrvvBwNPZVlRKWE5fQvamLHfWqMyGIIsx7bup/akGiWZx2dLMKZmgLyX2YadlCubh1nrZXdUCa9lv4MZzGvitL0mRmzPZ9qSC57Dg8s+x644dPrxHAnhJdQe0bvIzXGKZCUqVv700CbUp8NcoDx/2lUotlTX0T6C3dCA8mz3/PVMkjD0PxRVqCJY0N/WtwtfQvma72YSAy/IdKRtZWztCNdgeqqA8kuKClREIcEzSDDHP+5s4UZtJ3MR4RB8ncD/iQuUfrKzfBUWu9jbTT3oyf6do7ryvdTkjAAvgQsCsaQi3LrQjVsHbLZQyNZLCMvt2U6CWSACftg6u6HtfQ/dAEgCKVMw8XhzA3f1YNrSW+6T82WRdw554sP5v
- wOn3VGaU
- kY1m1QxCWsxbZ5c1Z6uk4+uTvZZIGdBUsxYhnofKnhBTuhe/fNDTrM+Yrs9HJB8CGZPTsoZXMjyHt9i0IX7s+taJvbpYLyl1Ldag1thj+eTZsQLxVCGUn/4+3NDvpmp7yvG5QI+D7j06J9RikYW5JXr5amOvEdhmqFcchYB6nzSQq4yDR2YgZPuaWeHTg/8gRIkoghvh2oM73ROEMW2jSi0Q+eAtqqg/P2cAZjB0HtjFxY/FHEWaY/Su8qObvRYYj2cAGzr8WxogX1yoTrAoiDvShidGy4u2R5fN6ZsnTmveaJl31UyxVtkwu6PwSVp/3vsnPoIfybITz+ytpHmp78LZGIK33iiUOdUBqNAYzZl8+4QWK5oPoy3fC8cG1lho4MNUJ+WAbxNRCwW7s61ZOp2BHeBLYwTjLEC1Zcm9sI54QHzooA2m7ltoxTdPYzGmCcYzHLKun/SZGA/KFxU742pLjhtWtd9kSSgmkhQdQeXEKnArs2GcuEEG1r/klAEnetTbe5Efn/zeLn84WlteO8e8RMBOONHcAYTgE8KoUanF4g6J/A/pb4es0gc7I0JU3U+Sk8n4NDmP4sSdgiQTcsh8gDDcZFUsUzMDAND7v99CZQWkJ8o24DZxxIRjBwQ2VgjnF
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795622158-25656
+X-HE-Meta: U2FsdGVkX1//fZLDisD25xshG3mQ6G8sVleYwVzrBw6QiZXYJZA5/NzKDv6df04iCVaUwVd14maumhuuNkrWqySkjTfuNupEG+F/5vSm92fKjErzSg2IptPqhF8r4FzvJiGfMTpDIoQY+DC36Zs7Ae5C5RKf2yNpUaGIt4WowjPDMNfb176hJWPT79f9WeGem6x9P5+V8axt7kTY9r+xlRMjLkQGVBP33Bi6RsD8/rrx3kAtBQV40ZF3X/ucIjMCsOlgjAsC8leQvNvvc7Y+u2Xc0eSYSNbzzAYVwjfmss4Qj0Iaa6aViRXsuBm5kHIhiVnTXl8UNZGTtJcw7ARLGqlmRYOc38sidxPRLkMcMheUTE+rC9wcc9gN4QQt8aM46YyN3SkhsK7AZxbYpTcCQt8W9Wygd5YMxl0BACVoayr3S+2/ovD6t8ejR5s1tcT2WA7IFyKGNAqxmdfWw6B8Z7mNxjqutzv394ZpCZ2cA2IK0SCIXxrpgJJ34w0nUP5J+qQ/HSLQ2smoTJoDVzvD8YSmltr7FDy6ZD5+JW3E/Mdhm0AI7WEPZQx6w3oehXYgnqqFCwNjqCT1QT1rF6pfCX2KerKCjk6PKt77jcTuefXZk0806ga7G61YsaXQDdjzM/J1DQRde7H8klRu9Y1kfVJPOtVzYWrr/0Dg78SVWcPtL8MNR/W7Nb0XWI3bXv/vs3usPAr5d9cwuYnt70Ed7jFwc1IsRvrdOx9ISj7AN3Ql4hhHaRDEIGw0m4UAm49jVtz++w2vhlDxsSifCd7Kv33w/FjxlollToD1Z6gTikk3AS6mvLVjbGhAXE8nZTEBt1Y1tebB++vzpBT0+6fTH8yp3MUYUle2Y7aid9krNo8ZeHQzOA8LNBS+34EC0y18M1I0ncgm+NMlCvYi6bJvLhhEJIZqUCBxtE4cTnUFyTW/Z1xbS5IZi+58xnzajhC5xcE9zdvA/W0g4TU4Ltj
+ KTARcIlD
+ m8euUGpQLGzQGEOvMY5d03hMm67kmW+R1bIpeD024GLJ7r3uN4M6nqhock0cgFx5oCWNcIXoAmUvSshQJVFB08k85CvokPP7ERGKjpekO+fZfiMEfwT4nDTZaFEAuyR1Atm9Z5tKr6TJpGGmmDCVKTKhI+9KNS6MZH2occ5u1Qi3R9OTAAfEKy6UyVV80IXdGtZPkLMK3CH6uGG/WMfWk6NaTIP2lHjQyYKoWjisDqm2CFtAxeWqirQjy8thzkBtIFKYPA8mLeelOriUoA9zAfpNdrtJfZu5BJGDhyMPV84G1ExGY8QUThzp9WfvA1L0xk6Scvm91upYTA0impQaCDnub8a0JK8NDFmbtFCNeHmW9lQmcLZqx3EAZltlWNzVBPdkYT/+25V4jKonL8uuq6PsK2JOVehrNow94rLUMle3Z4kARs5hHfE8Td5/IbAd+5ADr0z8bo70MMk0btPbWX3mZ1uDQk+t3w0WSLY8tfynZ1SF2jiMbsxW1F/TFreZg2livZvwdLQy/cUlwtANCQwzxzm3wo7erS9qbqPoIzddeAM0Jj8L+y8Kx7L0/JFS468zd/wRDZ6cikC3Kv8oI9aGGI4y53KYU1hrDuVC4Rpve6fJdxsuI6K56J39bLsNLzn/oSG6GWbFh7q/u+76epPWHQJj0t9RKm1IpfLAPkARR6R8y70GzbR8HbySZ8aVbjA5MZNc4mkxg+lylqpfxuhJvMulx4kbvV14QTHn4NGDNls8QfgeHGaAp6a0FSM1bXHZVWd34gY8qeVTFXbDylEy7PA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,78 +129,199 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-crashkernel=size,cma uses existing hugetlb_cma memory, so
-crashk_cma_ranges[] may contain HugeTLB folios. HugeTLB folios allocated
-from hugetlb_cma can be long-term pinned without being migrated.
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-After a crash, the crash kernel uses the memory in crashk_cma_ranges[],
-but a device can still write to a long-term pinned folio.
+Currently, percpu_ref uses the global percpu_ref_switch_lock to
+protect the mode switching operation. When multiple percpu_ref
+perform mode switching at the same time, the lock may become a
+performance bottleneck.
 
-So reject long-term pins of HugeTLB folios overlapping
-crashk_cma_ranges[].
+This patch introduces per percpu_ref percpu_ref_switch_lock to
+fixes this situation.
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Signed-off-by: Egor Shalashnov <shalasheg@gmail.com>
 ---
-The above scenario is only possible with the two patches below applied.
-Currently only linux-next, which is targeting v7.5, has both of them.
+I would like to revive Qi Zheng's per-reference switch lock patch
+from 2022 as a standalone change.
 
-  "mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory" (kexec-next)
-  "mm: gup: allow long-term pins of CMA-allocated HugeTLB folios" (mm-unstable)
----
- mm/cma.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+Our workload maintains many independent percpu_ref instances and
+repeatedly performs kill, waits for references to drain, and reinitializes
+them. Multiple CPUs execute these cycles concurrently on different
+instances.
 
-diff --git a/mm/cma.c b/mm/cma.c
-index 0c97aadcfea4..cb4a92e2b9f5 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -32,6 +32,8 @@
- #include <linux/hugetlb.h>
- #include <trace/events/cma.h>
- #include <linux/page-isolation.h>
-+#include <linux/crash_reserve.h>
-+#include <linux/range.h>
+All these transitions compete for the same global switch lock.
+Reinitialization also clears the per-CPU counters while holding it.
+As the number of concurrent transitions grows, this shared lock
+becomes a significant bottleneck.
+
+With a module-local adaptation of Qi's per-reference locking change,
+we observed approximately 2.8x to 6.5x lower operation completion times
+in the measured workload. This motivates using a lock per instance
+so that independent transitions can proceed concurrently.
+
+Original posting:
+https://lore.kernel.org/linux-mm/20220429133552.33768-4-zhengqi.arch@bytedance.com/
+
+Rebased onto v7.4-rc4 with an explicit spinlock_types.h include.
+
+ include/linux/percpu-refcount.h |  3 +++
+ lib/percpu-refcount.c           | 30 +++++++++++++++---------------
+ 2 files changed, 18 insertions(+), 15 deletions(-)
+
+diff --git a/include/linux/percpu-refcount.h b/include/linux/percpu-refcount.h
+index 1e3212e..4582e79 100644
+--- a/include/linux/percpu-refcount.h
++++ b/include/linux/percpu-refcount.h
+@@ -53,6 +53,7 @@
+ #include <linux/atomic.h>
+ #include <linux/percpu.h>
+ #include <linux/rcupdate.h>
++#include <linux/spinlock_types.h>
+ #include <linux/types.h>
+ #include <linux/gfp.h>
  
- #include "internal.h"
- #include "cma.h"
-@@ -42,12 +44,33 @@ unsigned int cma_area_count;
+@@ -109,6 +110,8 @@ struct percpu_ref {
+ 	 */
+ 	unsigned long		percpu_count_ptr;
  
- bool cma_folio_is_longterm_pinnable(struct folio *folio)
- {
-+	struct range r;
-+	int i;
++	spinlock_t percpu_ref_switch_lock;
 +
  	/*
- 	 * Explicitly allocated CMA folios own their CMA memory and can be
- 	 * pinned even in ZONE_MOVABLE, as CMA memory cannot be offlined.
- 	 * For now, only HugeTLB tracks these allocations with a folio flag.
- 	 */
--	return folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio);
-+	if (!folio_test_hugetlb(folio) || !folio_test_hugetlb_cma(folio))
-+		return false;
-+
-+	/*
-+	 * The crash kernel uses the memory in crashk_cma_ranges[], but a
-+	 * device can still write to a long-term pinned folio after a crash.
-+	 */
-+	if (!crashk_cma_cnt)
-+		return true;
-+
-+	r.start = PFN_PHYS(folio_pfn(folio));
-+	r.end = r.start + folio_size(folio) - 1;
-+
-+	for (i = 0; i < crashk_cma_cnt; i++) {
-+		if (range_overlaps(&crashk_cma_ranges[i], &r))
-+			return false;
-+	}
-+
-+	return true;
- }
+ 	 * 'percpu_ref' is often embedded into user structure, and only
+ 	 * 'percpu_count_ptr' is required in fast path, move other fields
+diff --git a/lib/percpu-refcount.c b/lib/percpu-refcount.c
+index f8d9068..5d46602 100644
+--- a/lib/percpu-refcount.c
++++ b/lib/percpu-refcount.c
+@@ -36,7 +36,6 @@
  
- phys_addr_t cma_get_base(const struct cma *cma)
+ #define PERCPU_COUNT_BIAS	(1LU << (BITS_PER_LONG - 1))
+ 
+-static DEFINE_SPINLOCK(percpu_ref_switch_lock);
+ static DECLARE_WAIT_QUEUE_HEAD(percpu_ref_switch_waitq);
+ 
+ static unsigned long __percpu *percpu_count_ptr(struct percpu_ref *ref)
+@@ -96,6 +95,7 @@ int percpu_ref_init(struct percpu_ref *ref, percpu_ref_func_t *release,
+ 		start_count++;
+ 
+ 	atomic_long_set(&data->count, start_count);
++	spin_lock_init(&ref->percpu_ref_switch_lock);
+ 
+ 	data->release = release;
+ 	data->confirm_switch = NULL;
+@@ -137,11 +137,11 @@ void percpu_ref_exit(struct percpu_ref *ref)
+ 	if (!data)
+ 		return;
+ 
+-	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
++	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
+ 	ref->percpu_count_ptr |= atomic_long_read(&ref->data->count) <<
+ 		__PERCPU_REF_FLAG_BITS;
+ 	ref->data = NULL;
+-	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
++	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
+ 
+ 	kfree(data);
+ }
+@@ -267,7 +267,7 @@ static void __percpu_ref_switch_mode(struct percpu_ref *ref,
+ {
+ 	struct percpu_ref_data *data = ref->data;
+ 
+-	lockdep_assert_held(&percpu_ref_switch_lock);
++	lockdep_assert_held(&ref->percpu_ref_switch_lock);
+ 
+ 	/*
+ 	 * If the previous ATOMIC switching hasn't finished yet, wait for
+@@ -275,7 +275,7 @@ static void __percpu_ref_switch_mode(struct percpu_ref *ref,
+ 	 * isn't in progress, this function can be called from any context.
+ 	 */
+ 	wait_event_lock_irq(percpu_ref_switch_waitq, !data->confirm_switch,
+-			    percpu_ref_switch_lock);
++			    ref->percpu_ref_switch_lock);
+ 
+ 	if (data->force_atomic || percpu_ref_is_dying(ref))
+ 		__percpu_ref_switch_to_atomic(ref, confirm_switch);
+@@ -308,12 +308,12 @@ void percpu_ref_switch_to_atomic(struct percpu_ref *ref,
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
++	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
+ 
+ 	ref->data->force_atomic = true;
+ 	__percpu_ref_switch_mode(ref, confirm_switch);
+ 
+-	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
++	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(percpu_ref_switch_to_atomic);
+ 
+@@ -354,12 +354,12 @@ void percpu_ref_switch_to_percpu(struct percpu_ref *ref)
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
++	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
+ 
+ 	ref->data->force_atomic = false;
+ 	__percpu_ref_switch_mode(ref, NULL);
+ 
+-	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
++	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(percpu_ref_switch_to_percpu);
+ 
+@@ -385,7 +385,7 @@ void percpu_ref_kill_and_confirm(struct percpu_ref *ref,
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
++	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
+ 
+ 	WARN_ONCE(percpu_ref_is_dying(ref),
+ 		  "%s called more than once on %ps!", __func__,
+@@ -395,7 +395,7 @@ void percpu_ref_kill_and_confirm(struct percpu_ref *ref,
+ 	__percpu_ref_switch_mode(ref, confirm_kill);
+ 	percpu_ref_put(ref);
+ 
+-	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
++	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(percpu_ref_kill_and_confirm);
+ 
+@@ -416,12 +416,12 @@ bool percpu_ref_is_zero(struct percpu_ref *ref)
+ 		return false;
+ 
+ 	/* protect us from being destroyed */
+-	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
++	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
+ 	if (ref->data)
+ 		count = atomic_long_read(&ref->data->count);
+ 	else
+ 		count = ref->percpu_count_ptr >> __PERCPU_REF_FLAG_BITS;
+-	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
++	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
+ 
+ 	return count == 0;
+ }
+@@ -465,7 +465,7 @@ void percpu_ref_resurrect(struct percpu_ref *ref)
+ 	unsigned long __percpu *percpu_count;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&percpu_ref_switch_lock, flags);
++	spin_lock_irqsave(&ref->percpu_ref_switch_lock, flags);
+ 
+ 	WARN_ON_ONCE(!percpu_ref_is_dying(ref));
+ 	WARN_ON_ONCE(__ref_is_percpu(ref, &percpu_count));
+@@ -474,6 +474,6 @@ void percpu_ref_resurrect(struct percpu_ref *ref)
+ 	percpu_ref_get(ref);
+ 	__percpu_ref_switch_mode(ref, NULL);
+ 
+-	spin_unlock_irqrestore(&percpu_ref_switch_lock, flags);
++	spin_unlock_irqrestore(&ref->percpu_ref_switch_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(percpu_ref_resurrect);
 
-base-commit: a036649714c3446abfdc36d0ae483046432b16c5
--- 
-2.53.0
-
+base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
 
