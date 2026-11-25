@@ -1,103 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C0C606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18F7606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ktH/Sfpu
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CPs0bHRO
 Received: by kanga.kvack.org (Postfix)
-	id 8869E6B0A05; Wed, 25 Nov 2026 08:05:32 -0500 (EST)
+	id BFBAA6B0A08; Wed, 25 Nov 2026 08:05:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 828686B0A08; Wed, 25 Nov 2026 08:05:32 -0500 (EST)
+	id BD2FF6B0A09; Wed, 25 Nov 2026 08:05:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C95E6B0A06; Wed, 25 Nov 2026 08:05:32 -0500 (EST)
+	id A73AF6B0A0A; Wed, 25 Nov 2026 08:05:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 37EEF6B0A05
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:05:32 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91B6DC0EE5
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:05:31 +0000 (UTC)
-X-FDA: 85473662862.20.49207B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D654C10000F
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:05:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ktH/Sfpu";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 71BFE6B0A08
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:05:48 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE41A80E9B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:05:47 +0000 (UTC)
+X-FDA: 85473663534.19.A2CD8A4
+Received: from mta0.migadu.com (out-18.mta0.migadu.com [91.218.175.18])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CE78C40015
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:05:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CPs0bHRO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795611930;
-	b=BKv0nSHu7AgcFO3ZOdMjSHnE6bo6GNSiugg9GOQGT39HHf/4cgx+L0chCpJ8AVMH6WkNBw
-	pcqkkqMa1qYtfZPoO2YiFwDPmkX/wakr7FqnyDBAOtOB7d5OVxvlmhRk+LWItJlnwBdZZA
-	TGDgoTcgAvdwR1THF7zIGOuQ19qnhQY=
+	t=1795611946;
+	b=z6IQIly4bv80UZZXPSUJcVcRuttSxXhawMgsXs75la3H4zFcdiRoG3zTBu86wIJ5pWq99s
+	8W+OTd7kL9+ejR01UlC89fkd6Sh4ZhRs06CYqVopRTe9QovSdtbtTjG2MHewv51MRFYXXo
+	4ZmStsozeCftB1IghCqH0AGFH7iuL2U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795611930;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1795611946;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yVX4Z3Av7ryf3LrYZitag57whdLEpy0ywu2taML45gM=;
-	b=qLAu65h7T9JTWxzjiHYHs0QAnZKIt587y6beDRsYKmHUHE08AdvLoDUoIS3VjbVvKA+5gx
-	8bIpOtY42+4ZdJvPCFnmXWvL1W2Yx77vPMOncdkq7zpUF3DohR1CJ7GD4FNfPf9dP5XP95
-	BONUa8Zv4OGqK1eeXcprKlYbx0BhnYs=
+	bh=LU+lZMJ7C1LRaiuMHqC0yX/sKSPUmOi9g87GKed2nkY=;
+	b=75L1IluogQmnyeX5pt6vExRVoz8SbKLC9exnQbeowzNYz6UE25iPeRnXSwLDBmTFCgUNLx
+	iAAvJfSO/Wvn/vrSaPaOyvVFpTeJvELEpKG9xKOvQlxP/YTtAd+SK+Q+avVILSPdZSkaOt
+	bqU/q09rSHR61PvU4UFpONYN66LUXXA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ktH/Sfpu";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1AEF043BCB;
-	Wed, 25 Nov 2026 13:05:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C071F000C0;
-	Wed, 25 Nov 2026 13:05:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795611928;
-	bh=yVX4Z3Av7ryf3LrYZitag57whdLEpy0ywu2taML45gM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ktH/SfpunRXeT5zhR2dhHk+SUijyNgYhqdbNDA+/vCr1uelXzxHG/fKzVW7++5xli
-	 fWf6Rhvy9ACSMIP779/1E8qr4WQ8w4gP+yrpgkFlySmBtoX0zZtbRjpBf+l+AHsZfp
-	 okwt56Uy+bQaMXe5mhRcR355F+5I2VD/cjGyWTlB5ACAfJx/LEIx2qBxWsThIlI9P5
-	 Hk1U+jfVMg3rtLglt7jY56D43XFWBdlUW/ORxoA6GY/wFSzTuuqdNNKApUTGkW+ijQ
-	 7eRaPy/29Q3q3qbWQnQ1cqDPJr6mjeSR8FIrFbJ/XdVB4f6WZyvhYfNqbmm4u4++mq
-	 SgSVN16/1gUPA==
-Message-ID: <sashiko-outbox-233449@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 7/7] selftests/dmabuf-heaps: Add dma-buf memcg
- accounting tests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
- Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Jonathan
- Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Sumit
- Semwal" <sumit.semwal@linaro.org>, =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Michal
- Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Benjamin Gaignard" <benjamin.gaignard@collabora.com>, "Brian
- Starkey" <Brian.Starkey@arm.com>, "John Stultz" <jstultz@google.com>, "T.J.
- Mercier" <tjmercier@google.com>, "Christian Brauner" <brauner@kernel.org>, "Paul
- Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Stephen Smalley" <stephen.smalley.work@gmail.com>, "Shuah
- Khan" <shuah@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
- =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, "Jens Wiklander" <jenswi@kernel.org>, "Sumit
- Garg" <sumit.garg@kernel.org>, "Philipp Stanner" <phasta@kernel.org>
-Cc: airlied@gmail.com, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, op-tee@lists.trustedfirmware.org, echanude@redhat.com, mripard@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261124-v2_20230123_tjmercier_google_com-v6-7-dce12fa03ad6@redhat.com>
-References: <20261124-v2_20230123_tjmercier_google_com-v6-0-dce12fa03ad6@redhat.com>
- <20261124-v2_20230123_tjmercier_google_com-v6-7-dce12fa03ad6@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 13:05:26 +0000
-X-Rspamd-Queue-Id: D654C10000F
-X-Stat-Signature: 14njastjfozjrao9jnbp91hjhex6s414
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CPs0bHRO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Y5XrY5yN2GLoPwf0NATfst7wtuL8/+fZic3NtYnstlw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795611941; v=1; x=1796216741;
+ b=CPs0bHROZyEzt8IgGkxomZpNGbjPJxaWSrv3NIxhvh8k2MjdpmRcROKUAqeUtS16ZQuur+z+
+ SI8bTWTNCddfMmSSPvVoVtpiuLvpDSGaP16wIWo55oItIUVozvTc36Xt5kYTRNYTPd5cM0OHONA
+ S4HrfugSFtcdo3113rDgyVcw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4cf78b17849a4a84;
+	Wed, 25 Nov 2026 13:05:40 +0000
+X-Mizu-Trace-ID: 4cf78b17849a4a84
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <47d6cfe5-f2a7-41d7-b397-df30429b216b@linux.dev>
+Date: Wed, 25 Nov 2026 21:05:28 +0800
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 14/16] mm/mglru: Avoid prolonged anon reclaim with
+ swappiness=200
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
+ baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev,
+ kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org,
+ lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
+ liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org,
+ mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org, ryncsn@gmail.com,
+ shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com,
+ weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
+ zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+References: <20261114200803.23129-1-baohua@kernel.org>
+ <20261114200803.23129-15-baohua@kernel.org>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20261114200803.23129-15-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-HE-Tag: 1795611929-456708
-X-HE-Meta: U2FsdGVkX19yVT6XlDeWksPFSuo3HJ2OYsGUfip737jMy03szVOG6HvJFgM6KGPxNrwwSOdXpIFDBB6EtahmaCbVC4zCxlWWaX3IgGw+j1NR9kzy4hShby3K6OCxOxrLUwjrqSZ9CWueE/0RwfgZxyLbfhB2kgZDEmqJK3bx6QOfal+rvkE2BV7KKGNnxwOhgsFIJzFTW7yIL0qIuZB+9qIHr2Wm5lW5eeEBCxoffJFI9gm+CwjnS4reOhqu3eCh1L52y6B5pWfQljFVVVqNhp8V3Yj6GKa3dwZfg/ik/F+ngAXiKanJ3Kk+I7/o3AMG0ZiBmXpa4jPBQKS6+gFrY4PZV0TVDjUVkvaJKEpHd4yyXDq7C1Amf5Pc2N4EwUljwNGpb2nr7iANihh2vO8itlEd+dlH/1Tu2664SXIzTqNwBArC5F2bi1dx2EOVXo1OXvSosGchVAhVWe2H1EESZYjLqXGxnJsTB/1VFCP1H6sBYDm309ZvPgHIOZeyc1iHuP5SAElUvqRJ3IXCHy0Hix5M0EerpPReGVhOxxs/sV+abxnvmDfUd0OI2Rt5gM8gn0VTldS09P7a4OgE6c6Jh1jXZ996CIS4NR4DANOTn+QEi7/puob+3zuhSD25+GhH03t3JkJfHNPvmkBeaue1jSATM/5F4Z74jws0Kr4cv2p+NSU1FWYwwmE7I6yCfoOzMQURiNGS5dJ0xQI5Vv16qWIVCvLIAXjb3xqTZpwJjYx79Z4Mu3kYXWkOSz7YD35blPk4gzwqOT9vTN2/MdkTdcvhFIetoxWCKOM/e9O2zUEjrdoWmwJm4AxAgzdU5tcnD3jayiopN+EINjRLj1oTShLrTrg+ElkR4ApNwtdb5/a97JYxqbz2jw6MWFDABgPFLH3E8dZtCj12sEaya/21R2av9FNDWKBlpGjSKDQKFEeeiAGXDAH5Npy4d5SaKLlBX9IUmYFw4ahzLDNuTfF
- WSJGo8WY
- /sPVyKLcE9GcgmTjaUI3kxF1hj+zZnlFnCoucwDM6ekwiIzSG8Q9ZD5CjUNikB7SVg9Arz5kdTjB4xpUuD3Jcx8ETbGM/zuWjQm+SI93OcNDTk00O6JY/iKnSpxdsx4iyElJB2Rm/qhiE2dIj/iwTJw0FTvXwBAKUmR8o7c0SennngbH/V0X4aasIqUKEwfUdAaMidG0xxM9YM0tMiX6Rp1+aila4ORk+qrz34j1RUbsfeL/mYo2Wdk+JoV2Vb2lk6HSmWzSlZtd45/J3ELp9fRxovTXfK5sOKp3p1yU2EKiOqwps7RVv+q3XU+rkbMbGEWBSPL20e+EpvNFyWG28Kta6WQRaSCHWkQ/Y5NnYPm6YAJdawGUC3jZjEJDgA8WGN9wF6yqZxhmC54TDKChcOA+KRq0RR6kaEwJKV32tguL7M/urrt5DNuYN0037AMOIY/X2cWkmZ09diFWM9uPBBK/0KFVTfzVvrioHRRb1iu+V8XYOgkw0a1m6Dim/c9gDsN3yTaFqPpb9hPen3oJ9btYH7w6lrsY2TJg+YFBrmZ7+Hroz5WcfJQkIx34O/pxXCwn66qnMpi8nyl4toVr1EOHRLd1S5u7dlzx7KhioIJYW5YS0yhBsuVAsBnxdqEGRCEDbrApp9Q8SzpyuL/2P42TPoosooiukkWs2QK7Yb0bKFJ7i8d3qWa2BLgG8UU6aw313Ca0e1Iobr6kiYE/VLemt6qsx+xsEahCurBrotG0MJyGK/cnzUY48DhPWjXrJLeMa98kYhBsqnmwISwlTLpXTAoCoRA6+jqsj7KN4tdMi/67ZS6JrYDL+yJM4Gg5/B62iXBxNte6Iuf7qq852tKkA9Stiw78bJ4RGv79TnlIqBMIPnJeFHjFfMgMoZb7rsMr0P2/bpqoWu9k=
+X-Rspamd-Queue-Id: CE78C40015
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: dsffbe4c6x7zf44ppoqf5pae6ogxpr6j
+X-HE-Tag: 1795611942-621295
+X-HE-Meta: U2FsdGVkX1+McCSAg0KP8hGDJTcosN1HckOrg/ufwV6UB9yeBVNMLJooryWeb4LRDxYEC/BT5l/hwHWfoeEyl4tfkVDGSU40fCgZo0MlNvMGfVwluVprY0/bmH++ZzVWJvrx/ddqLmaHQgYdwDbz09RqXeKFKXQL6kEwku0XGNXklMZyr3y57vQfC9SsB3u9yvbv5EzfPfrdL4z5S1FfXBPY38ZE5/mfZfm0vgGC6uafBVe2ENqPSvyepk2JWSIj/0mYwntbS/dxQeD5Yr6+9sQPyTsyQ8k4ibnD8yQrjJ2dTWB2SyQdzQ9BhR6N2NiHSGjfIrV8urBMX94t5PuZxpm6INuMfu7OVzn+/rHWlZ1iIVx3/8kK1JlVS//PcShX5vi+AsPhxpwv8dxbckpNiV0jLi4x0Mx1leiI95mTnhEyj10SFNLKJpSm6EbWgr1aRvMBvZ8QYUS0mnNakea7bem2fXgaAh2sxBZfyXzG8/UR397azmEv3ofTuZ07i0HKwD06KQdyTnx9mZ7HoOTmMNiEoaUe7MuxL6NMrylRNBMfFDU03K8o3WKN5A6vxFDlCPIQ7Ill6lLrnWm42eLTTKOFc0TlLYUwzVhq/XphpmbxB85UuNfYb8R4w+mAevWDllO9NxP9q933BxvFRqNwMo6BgEHMaqO1JC0k77Hg4KNEtuUlk0svLCM5YWDE+FSfRFMNgPgOlq57ZKEAW4n3m3fnHPKT0GtRpyzhJdcRCbylTgbC4yYvllyrZccKl27yvC7bVAibGtuefWt5GnuIZ7mfVwsMmnJYP3x56eXv7McufdsXpAxOqQiThsv35Cr1221ZENeReC4VR94Wa0o4u5efisarThylYvm/4jAPMVQPKqBR9rgG680USHf23PORC3wSjPKXuBIY7/fKxbe+YTcF08c9YWpBunHsNswdGGDIr8H0m9wpzxLSOlTgTdSvSEkH2VbYsboG7oP8Fl1
+ DdwtQAsH
+ 6OLqGHT8TRUrPUz4fvmo3xyr9VGxTZvnQda3LozzgAQz+cSTO4USnZz6yIMFdmFvww8DBvAYJ5KBn8osukvMoy9sL3G1OMuWXmkyl5eaO9/egQTVgix/ahnpYlpLTvtKMtJnvtn6A0Z2m59Iw/15KoScLHnVlY9jPFj2L1MH4PwGOwwkYN2zUhZjKFjIXvPc7dw00/22KdHIr/qCrqW25op6XFjWHInf6rmlj9ipzjQ6UmNoRnJNFCpzkzmrMdNg/V84xYGdZpQZ6UBdmOReV8HrrbZD8IPVbsY4hcGxUM4u9zHvLmrDSk0rFC35anDd48bqkW2lATl9P3N6+YWLSaqPV5W3RmPKSGPB5xSxABzA9lCujRHRpIgpZCqQbh9wm+OmDbqLNAfDbYbXbyRoHYqv+IzcYEGrCRUJTQ49FoTgz3WSXTN8Gre6W7toP59yOGAoNL3uzoe37TL0xR5dPYimFQ55tdkTlw2HpdbT2yL5rcmPLLn7axV/N6dU2CLDGxipKO4FDyctOXCFLh/+Va7GcgrqiV6fKU5cyIomvUaSxqZAfsQrgAzAaUHS+AH/Sj/pJUN8iJ2IczPYXYCy8As6ZQf7RzmQnjNJOyAkdLQNoN+g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,279 +103,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 9 potential
-issues to consider:
-- [Medium] selftests/cgroup: test_memcg_dmabuf_xfer_at_limit() misses
-  skip checks
-- [Medium] selftests/cgroup: dmabuf tests read memory.stat below rstat
-  flush threshold
-- [Medium] selftests/dmabuf-heaps: pidfd_alloc_supported() mishandles
-  disabled memcg
-- [Medium] selftests/dmabuf-heaps: open_self_cgroupfd() misses memory
-  controller check
-- [Medium] selftests/dmabuf-heaps: check_deps() runs before
-  handle_build() in vmtest.sh
-- [Low] selftests/cgroup: child_cg leak on cg_create() error in
-  test_memcg_dmabuf()
-- [Low] selftests/cgroup: unused MEMCG_SOCKSTAT_WAIT_RETRIES macro in
-  test_memcontrol
-- [Low] selftests/dmabuf-heaps: make_runner() omits
-  test_memcg_dmabuf_dead_cgroup
-- [Low] selftests/dmabuf-heaps: vmtest.sh creates TMP_DIR before setting
-  EXIT trap
---
 
-commit 65b17f139f560196804a32a9dffe9eb0a344be15
-Author: Albert Esteve <aesteve@redhat.com>
 
-selftests/dmabuf-heaps: Add dma-buf memcg accounting tests
+On 11/15/2026 4:08 AM, Barry Song (Xiaomi) wrote:
+> From: Gaofei Lyu <lyugaofei@xiaomi.com>
+> 
+> It has been observed that swappiness=200 can significantly slow down
+> reclaim on some machines, with some workloads running 3x slower
+> under MGLRU than under CLRU.
+> 
+> This is because swappiness=200 currently results in file_factor=0.
+> Give file reclaim a small factor at lower priorities, for example,
+> when sc->priority < DEF_PRIORITY / 2.
+> 
+> Signed-off-by: Gaofei Lyu <lyugaofei@xiaomi.com>
+> Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
+>   mm/vmscan.c | 15 ++++++++++-----
+>   1 file changed, 10 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 6cb905162cba..abefd91f5b95 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4898,8 +4898,8 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+>    * We don't calculate the scan cost. MGLRU uses lazy promotion, which will
+>    * cancel the scan budget naturally.
+>    */
+> -static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
+> -		unsigned long total_scan, unsigned long nr[])
+> +static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_control *sc,
+> +		int swappiness, unsigned long total_scan, unsigned long nr[])
+>   {
+>   	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+>   	u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
+> @@ -4956,7 +4956,12 @@ static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
+>   	file_weight = nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
+>   
+>   	anon_factor = (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_weight;
+> -	file_factor = (u64)(MAX_SWAPPINESS - swappiness) * refault_rate[LRU_GEN_ANON] * file_weight;
+> +	if (swappiness == MAX_SWAPPINESS)
+> +		file_factor = sc->priority < AGING_PRIORITY ?
+> +			      refault_rate[LRU_GEN_ANON] * file_weight : 0;
+> +	else
+> +		file_factor = (u64)(MAX_SWAPPINESS - swappiness) *
+> +			      refault_rate[LRU_GEN_ANON] * file_weight;
+>   
+>   	/* Cross-multiply the ratio above. */
+>   	anon_scan = mul_u64_u64_div_u64(total_scan, anon_factor, anon_factor + file_factor);
+> @@ -5144,7 +5149,7 @@ static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_control *sc,
+>   
+>   	total = apply_proportional_protection(memcg, sc, total);
+>   	total >>= sc->priority;
+> -	lru_gen_balance_scan(lruvec, swappiness, total, nr_to_scan);
+> +	lru_gen_balance_scan(lruvec, sc, swappiness, total, nr_to_scan);
+>   }
+>   
+>   static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+> @@ -5910,7 +5915,7 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
+>   			return 0;
+>   
+>   		lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan, sc->reclaim_idx + 1);
+> -		lru_gen_balance_scan(lruvec, swappiness,
+> +		lru_gen_balance_scan(lruvec, sc, swappiness,
+>   				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
+>   
+>   		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BATCH, NULL))
 
-This commit adds selftests for dma-buf memcg accounting via charge_fd and
-DMA_BUF_IOCTL_XFER_CHARGE in dmabuf-heaps and cgroup/test_memcontrol, along
-with a virtme-ng test runner script and config fragment.
+LGTM.
 
-> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/tes=
-ting/selftests/cgroup/test_memcontrol.c
-> index bb673012dcf08..f612726bd9af7 100644
-> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
-> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-> @@ -27,6 +34,13 @@
->  #define MEMCG_FLUSH_BYTES	\
->  	(2 * sysconf(_SC_PAGESIZE) * MEMCG_CHARGE_BATCH * get_nprocs())
-> =20
-> +#define DMA_HEAP_SYSTEM		"/dev/dma_heap/system"
-> +#define ONE_MEG			(1024 * 1024)
-> +
-> +#define MEMCG_SOCKSTAT_WAIT_RETRIES        30
+Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+Thanks.
 
-[Severity: Low]
-MEMCG_SOCKSTAT_WAIT_RETRIES was removed by eb69e955de7b ("selftests:
-cgroup: make test_memcg_sock check flushed sock stats") and has no users.
-Was it re-added here by mistake during a rebase?
+-- 
+Best regards
+Ridong
 
-> +#define MEMCG_DMABUF_WAIT_RETRIES          30
-> +#define MEMCG_DMABUF_DEAD_WAIT_RETRIES     80
-> +
->  static bool has_localevents;
->  static bool has_recursiveprot;
->  static int page_size;
-> @@ -1797,6 +1811,417 @@ static int test_memcg_inotify_delete_dir(const ch=
-ar *root)
->  	return ret;
->  }
-> =20
-[ ... ]
-> +static int test_memcg_dmabuf(const char *root)
-> +{
-> +	char *parent =3D NULL, *child_cg =3D NULL;
-> +	int ret =3D KSFT_FAIL;
-[ ... ]
-> +	child_cg =3D cg_name(parent, "child");
-> +	if (!child_cg)
-> +		goto cleanup_parent;
-> +
-> +	if (cg_create(child_cg))
-> +		goto cleanup_parent;
-
-[Severity: Low]
-Does this leak child_cg when cg_create(child_cg) fails?  Jumping to
-cleanup_parent skips free(child_cg) in cleanup_child.
-
-[ ... ]
-> +	dmabuf_stat =3D cg_read_key_long(child_cg, "memory.stat", "dmabuf ");
-> +	if (dmabuf_stat =3D=3D -1) {
-> +		ret =3D KSFT_SKIP;
-> +		goto cleanup_dmabuf;
-> +	}
-> +	if (dmabuf_stat !=3D ONE_MEG)
-> +		dmabuf_stat =3D cg_read_key_long_poll(child_cg, "memory.stat",
-> +						    "dmabuf ", ONE_MEG,
-> +						    MEMCG_DMABUF_WAIT_RETRIES,
-> +						    DEFAULT_WAIT_INTERVAL_US);
-
-[Severity: Medium]
-Can polling memory.stat for ONE_MEG miss the rstat flush threshold in
-test_memcg_dmabuf(), test_memcg_dmabuf_xfer_at_limit(), and
-test_memcg_dmabuf_dead_cgroup()?
-
-Reading memory.stat only flushes rstat synchronously when pending updates
-exceed MEMCG_CHARGE_BATCH * num_online_cpus() pages.  On systems with 4 or
-more CPUs (or 64 KB pages), a 1 MB charge or uncharge is below that
-threshold, so cg_read_key_long_poll() relies on the periodic 2s deferrable
-stats_flush_dwork running within the 3s poll window (the same issue fixed
-for test_memcg_sock by eb69e955de7b ("selftests: cgroup: make
-test_memcg_sock check flushed sock stats") using MEMCG_FLUSH_BYTES).
-
-In addition, when test_memcg_dmabuf_xfer_at_limit() polls cg_a for ONE_MEG
-after DMA_BUF_IOCTL_XFER_CHARGE fails with ENOMEM, cg_read_key_long_poll()
-immediately matches the pre-existing cached ONE_MEG value on its first read
-without flushing rstat after the ioctl.
-
-[ ... ]
-> +static int test_memcg_dmabuf_xfer_at_limit(const char *root)
-> +{
-[ ... ]
-> +	if (ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc) < 0) {
-> +		close(alloc.charge_fd);
-> +		goto cleanup_heap;
-> +	}
-> +	close(alloc.charge_fd);
-> +	dmabuf_fd =3D (int)alloc.fd;
-[ ... ]
-> +	xfer.charge_fd =3D (__u32)cg_b_fd;
-> +	if (ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer) =3D=3D 0) {
-> +		fprintf(stderr, "xfer_charge should have failed at limit\n");
-> +		goto cleanup_cgfd;
-> +	}
-> +	if (errno !=3D ENOMEM) {
-> +		fprintf(stderr, "Expected ENOMEM, got %s\n", strerror(errno));
-> +		goto cleanup_cgfd;
-> +	}
-
-[Severity: Medium]
-Should test_memcg_dmabuf_xfer_at_limit() set ret =3D KSFT_SKIP when
-DMA_HEAP_IOCTL_ALLOC or DMA_BUF_IOCTL_XFER_CHARGE fails with EINVAL,
-ENOTTY, or EOPNOTSUPP?
-
-Unlike test_memcg_dmabuf() and test_memcg_dmabuf_dead_cgroup(), neither
-ioctl failure path sets ret =3D KSFT_SKIP, so this test fails instead of
-skipping on unpatched kernels or when dma_heap.mem_accounting=3D0.
-
-> diff --git a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c b/tools/t=
-esting/selftests/dmabuf-heaps/dmabuf-heap.c
-> index 1d49df6719198..44e3f33acf877 100644
-> --- a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-> +++ b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-[ ... ]
-> +static bool pidfd_alloc_supported(int heap_fd)
-> +{
-> +	int devnull_fd, dmabuf_fd =3D -1, ret;
-> +
-> +	devnull_fd =3D open("/dev/null", O_RDONLY);
-> +	if (devnull_fd < 0)
-> +		return false;
-> +
-> +	ret =3D dmabuf_heap_alloc_pidfd(heap_fd, ONE_MEG, 0, devnull_fd, &dmabu=
-f_fd);
-> +	if (dmabuf_fd >=3D 0) {
-> +		close(dmabuf_fd);
-> +		dmabuf_fd =3D -1;
-> +	}
-> +	close(devnull_fd);
-> +	return ret < 0;
-> +}
-
-[Severity: Medium]
-Does pidfd_alloc_supported() return true when memory cgroups are disabled?
-
-When CONFIG_MEMCG=3Dn or cgroup_disable=3Dmemory is passed at boot,
-get_obj_cgroup_from_fd() returns ERR_PTR(-EOPNOTSUPP) before inspecting the
-fd.  Because ret < 0 is true, pidfd_alloc_supported() reports charge_fd as
-supported (whereas active memcg rejects /dev/null with EBADF), and
-test_alloc_pidfd_self(), test_alloc_pidfd_child(), and
-test_alloc_cgroupfd_self() then fail with EOPNOTSUPP instead of skipping.
-
-[ ... ]
-> +static int open_self_cgroupfd(void)
-> +{
-> +	char cgroup_path[PATH_MAX];
-> +	char line[PATH_MAX];
-> +	int ret =3D -1;
-> +	FILE *f;
-> +
-> +	f =3D fopen("/proc/self/cgroup", "r");
-> +	if (!f)
-> +		return -1;
-> +	while (fgets(line, sizeof(line), f)) {
-> +		if (strncmp(line, "0::", 3))
-> +			continue;
-> +		line[strcspn(line, "\n")] =3D '\0';
-> +		if (snprintf(cgroup_path, sizeof(cgroup_path),
-> +			     "/sys/fs/cgroup%s", line + 3) < PATH_MAX)
-> +			ret =3D 0;
-> +		break;
-> +	}
-> +	fclose(f);
-> +
-> +	if (ret)
-> +		return -1;
-> +
-> +	return open(cgroup_path, O_RDONLY | O_DIRECTORY);
-> +}
-
-[Severity: Medium]
-What happens in test_alloc_cgroupfd_self() and
-test_xfer_charge_cgroupfd_self() if the calling process runs in a cgroup
-where the memory controller is not enabled?
-
-Unlike the pidfd path in get_obj_cgroup_from_fd(), which resolves the
-effective ancestor CSS via task_css(), the cgroup directory fd path calls
-css_tryget_online_from_dir() directly on that directory and fails with
-ENOENT when +memory is not enabled in its parent's cgroup.subtree_control,
-causing both tests to fail instead of skipping.
-
-> diff --git a/tools/testing/selftests/dmabuf-heaps/vmtest.sh b/tools/testi=
-ng/selftests/dmabuf-heaps/vmtest.sh
-> new file mode 100755
-> index 0000000000000..3574b71ca83e8
-> --- /dev/null
-> +++ b/tools/testing/selftests/dmabuf-heaps/vmtest.sh
-> @@ -0,0 +1,226 @@
-[ ... ]
-> +readonly DMABUF_HEAP_TEST=3D"${SCRIPT_DIR}"/dmabuf-heap
-> +readonly MEMCONTROL_TEST=3D"${CGROUP_DIR}"/test_memcontrol
-> +readonly TMP_DIR=3D$(mktemp -d /tmp/dmabuf-vmtest.XXXXXXXX)
-
-[Severity: Low]
-Does creating TMP_DIR before getopts leak /tmp/dmabuf-vmtest.XXXXXXXX when
-usage() exits on -h or an invalid option before trap cleanup EXIT is
-installed?
-
-[ ... ]
-> +check_deps() {
-> +	for dep in vng make; do
-> +		if [[ ! -x $(command -v "${dep}") ]]; then
-> +			echo -e "skip:    dependency ${dep} not found!\n"
-> +			exit "${KSFT_SKIP}"
-> +		fi
-> +	done
-> +
-> +	if ${SHELL_MODE}; then
-> +		return
-> +	fi
-> +
-> +	if [[ ! -x "${DMABUF_HEAP_TEST}" ]]; then
-> +		printf "skip:    %s not found!" "${DMABUF_HEAP_TEST}"
-> +		printf " Please build the kselftest dmabuf-heaps target (or use -b).\n"
-> +		exit "${KSFT_SKIP}"
-> +	fi
-> +
-> +	if [[ ! -x "${MEMCONTROL_TEST}" ]]; then
-> +		printf "skip:    %s not found!" "${MEMCONTROL_TEST}"
-> +		printf " Please build the kselftest cgroup target (or use -b).\n"
-> +		exit "${KSFT_SKIP}"
-> +	fi
-> +}
-
-[Severity: Medium]
-Does check_deps() exit with KSFT_SKIP when vmtest.sh -b is run on an
-unbuilt tree?
-
-check_deps() runs before handle_build() compiles DMABUF_HEAP_TEST and
-MEMCONTROL_TEST, and it only returns early for SHELL_MODE, not BUILD.
-
-[ ... ]
-> +	run "dmabuf-heap charge_fd ioctl"	${DMABUF_HEAP_TEST}
-> +	run "memcontrol dma-buf memcg"	${MEMCONTROL_TEST} test_memcg_dmabuf
-> +	run "memcontrol dma-buf xfer limit" \
-> +		${MEMCONTROL_TEST} test_memcg_dmabuf_xfer_at_limit
-
-[Severity: Low]
-Should make_runner() also run test_memcg_dmabuf_dead_cgroup here?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124-v2_2023012=
-3_tjmercier_google_com-v6-0-dce12fa03ad6@redhat.com?part=3D7
 
