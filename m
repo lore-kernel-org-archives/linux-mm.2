@@ -1,93 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37286606A681
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFBE606A68D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=znu4Qbd+
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gH3wcqhx
 Received: by kanga.kvack.org (Postfix)
-	id 343D36B0ABC; Wed, 25 Nov 2026 16:27:35 -0500 (EST)
+	id 31A396B0ABD; Wed, 25 Nov 2026 16:27:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31AA76B0ABD; Wed, 25 Nov 2026 16:27:35 -0500 (EST)
+	id 2A51F6B0ABF; Wed, 25 Nov 2026 16:27:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2311C6B0ABE; Wed, 25 Nov 2026 16:27:35 -0500 (EST)
+	id 194456B0AC0; Wed, 25 Nov 2026 16:27:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F35B26B0ABC
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:27:34 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6CBF7140126
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:27:34 +0000 (UTC)
-X-FDA: 85474928028.03.FE0FBC8
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BBAC080008
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:27:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=znu4Qbd+;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E52046B0ABD
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:27:35 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62B22160126
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:27:35 +0000 (UTC)
+X-FDA: 85474928070.22.C9D5ABD
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 94BAF100009
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:27:33 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gH3wcqhx;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.171 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795642052;
-	b=UkIZdzNrTZ2gVZbXtAsTDTqBRgtq8nRf9J9Uu+midN1VlojW6VPyBok03tv4hkYIoetV3w
-	i/bsBz5QZ2ScxC3Sfftb4NXKbJdQZ9lqZf6eraL040rkLRUc+xMSSaPvXuaNd7XvS6q57G
-	xYVRoMnEEU3AOTM8h7QUU898Kl1z2wU=
+	t=1795642053;
+	b=CBaVRa9847QxzMKZZuab/FC6GS75A/Hqzr/vNF+Pcw+D3Qgroerl7HBlrQ8zPz+vykERfv
+	gNksoApNkpjBR2BhN2idl851A+l0YpwdxhyFrlp6gjzASZ22PEdDu8Tqh78qpzuf9c29xy
+	pAtFSEh733+ThSXy+hvQMgmSFxrBkvg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795642052;
+	s=arc-20220608; t=1795642053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=28q8FBnALdQedCtV2p6X4g9SI7ggHDelqgXm1Uk3okQ=;
-	b=LX9amZbjPr8UjhGrG7R1jBFK3G8J1uGoF3a47or4hLuC7cUF58DRX2qikR7zxaQni3ISHw
-	g6jCm+s3sZ/0go5pQNwM4+1/HZjEDVha4sz10zBnDML+5FxyMtXiqSEQVdpyLQCP6bT4kn
-	6B1b6gAL0Lh0ivjuSgEU+AgHz7JEGs4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P54xZ632a0goSgApFUqzFeM5XwZ1Z2Khd/S+FCqrXvo=;
+	b=eg60oWP0ZFh/VS4Q7tF0f5xZieA1YBLdHPIIKXCDCS5fCBRFWFMtC5E9BC366CiIkNl7n1
+	rHG7c454MWJz/MXmgDMu/Qob2q117YINnSRUSKgxlJkDQZB4nnsKsvu7WOWU99vhYPN0vD
+	k+toKQhKiHk+tJUxwB71SoCFFt/gpdI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=znu4Qbd+;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gH3wcqhx;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.171 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-53dbe9b8d6eso4527806b6e.1
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:27:32 -0800 (PST)
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-86103aaac12so3955864a34.0
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:27:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20260707; t=1795642052; x=1796246852; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=28q8FBnALdQedCtV2p6X4g9SI7ggHDelqgXm1Uk3okQ=;
-        b=znu4Qbd++8/nGxXJWnJY7eyTP3TtC4tFnLHGjwLvhQONEZNqAnhWpZaVapnV/5y4G/
-         mqk2JnlF9YRYpzdNjpcwXu/wFAkYCGdK6g+DbkMlfyVQYeudEOD+fgnhJmZ2jCpN+/DA
-         OGpUpcHboK7KUgxLgggn6OubYsyYP0S+aaPBuAQMu170fqSl7fz5oxunITYYdI0Os1EM
-         /y2axPWRwut21hj6q4hRf6p2rwRPs1JYUxZPS8H/Qt+kO5Hzj5xZVHP9hsbtOFuEH85Y
-         U2IQUuL8TsAHPaEjIpQGvv+8nH1tzgvSeoN9oGy8XDhvZ0IMii4p5ksrTaXBHvrJf4jv
-         BW+Q==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=P54xZ632a0goSgApFUqzFeM5XwZ1Z2Khd/S+FCqrXvo=;
+        b=gH3wcqhxFixj6Gv0A5xW/DKyEBhrdjgJnBMk9Y1+88QbeAx332GrHjViLKuRmZFXN1
+         cS9Rih4kih3DoWe/GI1Uts/70byQm6o/RodTdKd18QebRCDIO2upizldWrhdserNv9eO
+         u7J6dxAI3zy4bGS+O3ZK6I7KFN0fO3tAVRjnqkmdfDIH1fTs7sqbUaiYTOiooZaxeb9R
+         mz0TqiLpTBTq9gEVXxmWbyTFuchyikneBvM74h89Sbmbnieu3WmBX8D0M5xRwPcI+IyG
+         95eiYwdzJUwkPK2YdJLIulqVtFoqXR0Z9ML67AJAwGe5BhNSbBA5lwsJtdnAG23chtBS
+         Y04w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1795642052; x=1796246852;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=28q8FBnALdQedCtV2p6X4g9SI7ggHDelqgXm1Uk3okQ=;
-        b=pXt9Kk9fv6kSitntyoxnjXOnjJOdI7jtSHqyOMsEKywZmlFKiVdBNCdu9QMmOSb+cV
-         +ouoE+hnU2C5ElVtb+YnvlhnpWgbZ7mwtwz5fmhyHLh9sAdNYFw5Np5Y/LJjlJPyu5G8
-         5zrgPYLeZFCES9goHisb66LwKVCQpFnC04npPdGfPY9BGTqj/gETkWM8tX4y6MEiNKsT
-         8kfOrjCQbPY27c3wPArCUjjl6FQOzDv8E9+kdXRhciTUkslJfhdX8Jl9sN3fgFt+p0jR
-         lHBDi8ADO1W7/dm9rmZQ+Yo6rJTRwQwsZpM9jkrbzxlNzmzDE/KzKRlFFvIM2nt6qOJm
-         9omA==
-X-Forwarded-Encrypted: i=1; AL+hErHqYSr8zP1YgyG2urU6UaIpO5Pv/8IYQ+vqSOR3xJC6WSgLpG/dNutlZeL7kdtFngQAJ3nbL1MPmQ==@kvack.org
-X-Gm-Message-State: APuU4Z+fB21ajvmboDaPVzV9hJrCEmPMweAZCHm3rf9LQTv4KFC3oUrm
-	ZLjDy9N87F01bp2xkYkERcHnmp95wn2mvzaOrVR67xg60CR6596XWJ7L
-X-Gm-Gg: AZFdTZdS6qShV8ryNGav1vY0xSoOXzrkaX4l172MhQqb5v0GOdf5fXzvYo7g06kmzNv
-	deUVO9aNwpqstSU3HMAfFHMzCS7BrCq1Jog9DX/tmNqP/UP2cIgRVL1fTyTqvb063fYWrgE/42r
-	6XPZThfbKQmQw2O9VTA/8mE4MyhLeCV8nr3nXg1dQ1uUz7bA1yyJmqpBK5PUuMAPluY0mfs7s/C
-	KJilfKlRcGqspI2DJsRluIZfqSuWNaYHPNQumafEc8t8Kr/2b/ickSeAA+qG8wamLqOLC37q6qs
-	+KF7u4waeDUOB8Mdh1Lm3/yXsLzu/vkY73sUc3vd6Tt1X/4xJmJKop9is4Ovfo3LP4LWUGUK+1n
-	0U0GkcAgQuWEsZrTvVyP/VpKzH/GLqImSj/FYym1R/CzfQaGGBbv/TzNDix88J/6zzO0cR4tI1+
-	0+uNBhgQpbmgqaONOvA8t4Y7S8oXQnm5vhJUawXDF3eZi/JMmFWmcHRCBSaeYCnfVeU90NzUbjQ
-	cPNxBd9qub9cAYoXgV273IqBRBDqQe9k5T01y6RYTu2xAkVfSm7x+HJ9h9jcV8A3PodJMfwpBsf
-	yW4gvQNpyRIz5bY276meqpb3xnBGVtS+tKG9cAJYNimiomSHaHELhxkqosY=
-X-Received: by 2002:a05:6808:6d93:b0:4b8:46e3:e221 with SMTP id 5614622812f47-57a09c1de59mr13142873b6e.13.1795642051631;
-        Wed, 25 Nov 2026 13:27:31 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:7::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-57a350548ffsm13685530b6e.11.2026.11.25.13.27.30
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=P54xZ632a0goSgApFUqzFeM5XwZ1Z2Khd/S+FCqrXvo=;
+        b=iyFhoFro+XsdsCwnjVqbe9nDVuL3t/Nt3HwAkx9/TVfVzCfkZpH4vl6852Sd+kqW2F
+         G0ZbGaBfEPtnddIJm6ZQ4NZrpB9b35pZZZo59qRE5bm8uDL00NHbYdg7LS+O/ImuuzIN
+         fdIJS588qgmTDKktg5FZNQoJYnxIKGG4SdX41FhJpOHA+N7J3BGKV7aknL3tsBDr8glN
+         r3AvIr2ZaGEdri+v+35IkpEXDb51Nq5788CgQGNTquuoUDIz3nhe7WTcv1r/EwIgVNTL
+         jkHsTXKNHn7GKn1MFN0J+rp4J7h3ihf65GUrrwkh7BwkkjCBSLqgByBc/8YqDGA2GGCn
+         wwbg==
+X-Forwarded-Encrypted: i=1; AL+hErFHa8rECo0OpQPKYogMALWsGvsa3JKtOxlt+PDioH/q2E+/Sb5QPjvJm+GePd+BEgLELoUh516MfQ==@kvack.org
+X-Gm-Message-State: APuU4Z+brpeIDfe0MuZcWDebWb/4zT2SVPfVd0E4Hr8gp6cbwGUmyFTs
+	QkSxENuga8841qaZ6x1Q98s+NcMkK0ucgB0v5J4a5J20+d+fd3SlQIrU
+X-Gm-Gg: AZFdTZcaMRHJtW4gchpjRob3WL3S+JfQd3uPSRPbTVXpHUuzeOjjtN9Xq9LmyMzn7oP
+	ftmsPxR1zdtHgfnzzPj7v25Lg+or7rPNVGkQ18tt3zLJhWrx1Hj68vxoS8B44EvTqiQYbC+eark
+	fdn6Un4MIZAXCyNvkRg3FhlqGSApKhgt1rsk7jfm8bG7Pen0aNxxocubTnriLI/G83esI9rlXv+
+	mIlGklSz1/ZCE2F1OpCMv2N3Wug7mdvmYpMYTFcTotYzVfB0x4NWhoeLALNlyHoYpHeu6cWrg4t
+	UrsL/W52+wtO77yCCxsPCMCeYbyyjG9kvD8ruGcfNsNB0FyVN3QMr0WdmQf6woWgyaqn94e+BPR
+	Q90gsdMU8ibXO3bWGlrBiajI5hh3OyG6Air2CkCtHqhCvrJXMPU4qoqM5ALQ4DLV6IAAct/jP6r
+	40pCt99JrkZH528OBC8w+Br5hItYAOuUC383akzGp5//JyD/Qft+FnC41TgNP/IcVYGDnLUtOls
+	6uQEE4UpDBmUNtXdn+DdASHCSxC0JApVxLvQ5uwnqXIa5fPGluX7scWdbWsMRW/4FEpvxgATEKB
+	WJfCP32ttcVP7oW9BT9wKDlC66K5Wm+eSwmlXTRQUGYgLD4dt+NkzL4XH2o=
+X-Received: by 2002:a05:6830:82ee:b0:862:c9e7:2d9e with SMTP id 46e09a7af769-86309065b65mr14818259a34.2.1795642052609;
+        Wed, 25 Nov 2026 13:27:32 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:a::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-86316910337sm13375770a34.23.2026.11.25.13.27.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 13:27:31 -0800 (PST)
+        Wed, 25 Nov 2026 13:27:32 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Vlastimil Babka <vbabka@kernel.org>,
@@ -98,26 +99,28 @@ Cc: Vlastimil Babka <vbabka@kernel.org>,
 	Zi Yan <ziy@nvidia.com>,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [PATCH 0/3] mm/page_alloc: drop the pcp lock before re-enabling IRQs
-Date: Wed, 25 Nov 2026 13:27:24 -0800
-Message-ID: <20261125212730.1128631-1-joshua.hahnjy@gmail.com>
+Subject: [PATCH 1/3] mm/page_alloc: drop the pcp lock before enabling IRQs after a drain
+Date: Wed, 25 Nov 2026 13:27:25 -0800
+Message-ID: <20261125212730.1128631-2-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.1
+In-Reply-To: <20261125212730.1128631-1-joshua.hahnjy@gmail.com>
+References: <20261125212730.1128631-1-joshua.hahnjy@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jarco9ssfg9sp18b5u45pzkx9e7hmtdx
-X-Rspamd-Queue-Id: BBAC080008
+X-Rspamd-Queue-Id: 94BAF100009
+X-Stat-Signature: m4g48b89heanpwymcqpuhn1pmwqexp5w
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795642052-774006
-X-HE-Meta: U2FsdGVkX1/MsAUqoLgq7ntQ/4STL4gvkHrqwn6DL+/OLgHcjuirjb6khHD9/ADJQgGvnCSKZ4kD7zF/BcSNjnGyWPq06d0efTYdAGunIx0x7+aDOIRCdSSiZ9nOInLi4syctC4kntUnm5TwzzOvxQWEgPDEXDtYf8CMXGm03wfx39vgKVwwyyLH1zMDV1d8MnhP0D0rD+/vMvHb/6uApDW0PQsO+9uzrdD7HT9DGaVBtlnDOuP8i8wAR4kzPMdNj5lrMyQUEIrMfcouCi/NLV4wCWJUfHJA1GxH7N6IAH+af86toNfKf9quO/hXE8Qkf3hu99rQpxTt2srqMX1hLfvF2DFKW4J75vmCfjqA4BbjNtZGHdcJFXlGQPdHQEjf2WPtNj5v/ulzxYczK+BhiFW68qx5mhCp+dP2gO09sBMVq2pEzRUu9FyYLIBzhla+ZjJh7VGMkL4qOj7xOlBVEU+Glf5ejm0tZk2XANHlRgzg5Nes3K6PLUwlXO+3rNKWrubY7Sa9f6llxiwFNxrYnBKaarCOW289CnnQPMt6NG5/XCO1iGjJPLLJ+29WKVl886g/N04OZAazWJz1KNe9AboOO8h/03NGQQDoVSqbRsxAhggg6gZunETgVYGhO083LpSMztcyz9erVxvcIRYWowdsfQpurTUlgLjOgaIAPWMM7JMq+jbULO4vgNgaC0kAJzTudKAVdp1QmbpbdH6slfS1vdhp6ft5ZoFqhwDbqLUpPJK5LRgZro35xwIgFCYfZLQCQgZp+AhxkA+ZKRGLhl53ZKQVKLnLc6QtDsZDVRaGR/tUIYVdxmGIcQuffZiA+M1M6RoH01vgaIszPVxtsGBJ//rvN7c6uZgUEbQWJmDst3t2G7M7Trt2J03poLFeabXS1n5sMTgqMio7/tIh+G52063/undT41npCm4v57XaVvZc2T3bd0h4Cb1yuv88BtwEUVtq+iThYUsCVBl
- IKy5ND/i
- 6pQadZthc7mYVIPWXQeFjm7IdVolaouY80q6Avq4+G+wEu7ohoSBIwkbqq5zdbwhK9J0Dh6/aPqSDd/ON+4sKA8BwKNs3Mouxg6QyaeVLaqmU+EZAMIAC8s3/oF4jxndpUgXV9+VJ26kFI2uAlJl2vN/q0F4bXfWTxci3c4azv3F1uoVyXTQxa8TTFFm7/Rquohn/47Gv5l4w9GfL8ro95IvKFJj0yZjg3QN6rg5+V6dE4AGBCIhZW1CREehXZ8PrISTZL+L5BGMw5JMcn+QdMTM8f8ZV1U5w3VSVrqeHbfDtnSp8+K1DyEocFH8nEw/GD8vVlYcbJHHTxu6CovuuUvD4/FK/TzYa9AXPz/iWMQhNjXGbhYWNH9jS51y267qIhLSZ/bkV3vDJonWkep38mgksFfQldPQllI8qQ1vbpW4vj50uEfM+FYzpP9v1wduDXUqc6VaWPyJEWij1h6dQ7QHSLIAEb9UtmlFCwtxNzdpDGQpKCx0DXFr/Xn6fgpbCOVkwt+geCPzwRbWJeO3AWvF2AVCoA8HvGomoeszPC3ZAI/YudjbVO89sHiK33NE0003HTlbwtXkjFQ/hVZOjdr2nb6oetJrTVk1fHX5x5jk2blpMA7xYHSR0IQiMkkT8gh6rGuHDskaD9FhzzTUhNf7XvXzR5WBVEG+1ZmJVzlMeMhbLWUiPQKEwHrJU5F/vsW1ES5LxzjJvjwO6oaMnUhDIoeNQ/KIh5u5S1JFIYa17FJi/3rtRK8WHnEMro4i2fcMee5CHlCQ6ohxt9tKbzjA/g8O/x6bi1Y0G
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795642053-732094
+X-HE-Meta: U2FsdGVkX18XLK6RDGFzITnrQGFywqQLfVd2j8ctBDRW021nVhIa2ulBVCNPXTcVtkcOd5tcUafNY4E/rNdjmfX/ZnYc3leDC4n5bG6672gj6JfRRns5YhUo2A9Z3eJcm33zeFhRLgf9MNuTc4XudZdUi1AGejJ+Mn+O2sxgjbR2HTJDfyGDHH+PqMh8YjtBh2p1fgfVLAXpPqzu+J7P9PtSzbrb+MtgLs38CvhM3PaNCTI10kMn7oUFAvt+BbZez7nqy4ym0PMXytqoBXZ9sv3YJKn7clNwZMZ+gpn2MkQ5L/qcemd+gTB65wo+/ibqIy3/B4kfokhTUfvVTEFAtcMH7T6RTo80xay2A7OvSsTGGLfFsQ7lY7qhGGtIIvyR7aNeMdsZhYS0wjeIk/KxEeNktUIByK07xf7+erTcLk9LRITikD1bIYW6t70TLPhEiWa3oEMa/V4mgT08W9ki+RH4OA+S2EbEDQYD3PQyNTffTYTtS7dlK6Gu820qLe5TbboKXxL97rgDHa4VTXzhQHAoHXjtbSNhuoLTvba6D1igHuzYMWBJMgzd2Wpc6EXioTgMff2KR84QgtEpqsiIWT2FJPBAKXTwurgPq/mkQBw0+rhv2iq6oVKPY8YPdJyKX7T0nVA9FuVX8I1PF6sHv9XygddFh/WhvqmQOl9S+g9StIBmyRUos+wYvIGHMptDFkQoq8mXUcaIOSQSI9LIRx9hf/Py73TOyrwEtUcLR/uj74rzgMVRg0rB//aB8epW/iBCmSov4LmqdQpOAhtZxut180tj3+JS9PJzn3JsZ21iKc7hITKNFUTW2n+lHRr3xPxEBLirfv13Ezj7rnN9On4kxfw9Kf38uaKIKeIw52f+x0U/PWi6fB6e2xVqYAirANFpXYrVcD039eXmtWKS/CELQaU2vIxCoUQsYB3J5EnXAYX4X3de0APNNdiJdrdCLioyN4oboVFK4UBxnQH
+ 9XDmnI3b
+ UjLQDAhsvNVs9wT1UbKz4E3DED2Kl6H2MR0EdcVMz1MfxutPhmA3sNDnFOpEFFaq0nbEXRysK66B8PS/8K1oV6CEi2K2ezRAjdjjcap4Cok9fWbhUEnaAQoXEF7IPDQsfQTVilRQFnwwoub2JYDu5d0h0cAf9kvnfHnzMeIxMb90XHGWj93YmDE7WtvbqHWcjiLmvNGfpQRjEPxjB6F3a/y53uow+v9sY0eqBT7V7fy1F1MR/LDNMq85BRtjAftQhlGop3BTCCddCzYyOv4ewmpSjAEhWpBsFZEzexikvhUckNyO01DCoD9mAbQ7LMGpNFunOczFmk0lum0OLvan92loicCeSJOaZMfUSctk7y8VbrYuR2NC45OrIsbuVBLwScZsQ/k1vml1hwfS51OhU+qwSW1DFfKf09rDUP/5WpdIwE1YqmWG1lh2RKzlJtN6+VNyRnqvSpwKz4rtWu8buH1CnkiPwxUG5n9306X9vlV+rMdt4TOl/R58T+IDo0RfE50ehMX89L+j4WzwUMtR2albm2HbzRv6zXI22KFmXJgwF7g4izgYZMikwNmgCo3dsu2p1pOius9fqAiZKK/C4wHGWvx5IQiyRyOCQQSTnsnDxXxAorU7dP8xKVl6PywM4XQ7DviaW4g3odDlj8oDc86S1/rryZpgYhrpUJfZCIOAwwh+8/JqCjM0Nnx779FK0Iv9iRurKHlwQyGLsptaGk7nTEs6FOgUt7paF8mbPwvKRkw6OhoxPWYIehzZ6DWRvc8lvk+SmxFJ06mc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,69 +129,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When the zone lock needs to be acquired from within the pcp lock
-(due to refills or drains), IRQs are disabled to prevent deadlocks
-with the IRQ handler. Today it looks like this:
+Commit 574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page
+allocations") stopped disabling IRQs under the pcp lock. A softirq that
+interrupts the holder always fails pcp_spin_trylock() and falls back to
+taking zone->lock for each page, since the pcp lock is still held by the
+interrupted process.
 
-pcp lock
-  IRQ disabled
-    zone lock
-    zone unlock
-  IRQ enabled
-pcp unlock
+This is common when zone->lock is contended. free_pcppages_bulk() spins
+on it with IRQs disabled, so an interrupt is often pending when it
+unlocks, and happens with the pcp lock still held.
 
-So any interrupt that queues during the IRQ disabled section fires
-before the pcp unlock. This is not a rare operation; the zone lock
-remains one of the most contended locks on large systems. 
+Restore IRQs only after dropping the pcp lock, and return with the pcp
+unlocked. PREEMPT_RT keeps IRQs enabled.
 
-Together, those two observations mean that any IRQ handler that requires
-taking the pcp lock will fire before the interrupted task can let go of
-the pcp lock, and the handler will always fall back to the already
-contended zone lock.
+With zone->lock contended in a 128-vCPU guest, tlb_remove_table_rcu()
+callbacks hitting the fallback went from 93% to 7%, and the average
+callback duration dropped from 14ms to 1.5ms. Throughput was unchanged.
 
-In Meta production workloads, we've seen softlockups on large machines
-where one CPU spent 23s in an RCU softirq freeing page tables, and
-taking zone->lock once per page because it had interrupted a task
-already holding the pcp lock.
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+ mm/page_alloc.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-Instead, keep the IRQ disabled until the pcp unlock, so that interrupt
-handlers can have a better chance at taking the pcp lock and relieving
-contention on the zone lock:
-
-pcp lock
-  IRQ disabled
-    zone lock
-    zone unlock
-pcp unlock
-  IRQ enabled
-
-This series was tested on a 128-vCPU KVM guest, where every vCPU faults
-in and MADV_DONTNEEDs in a loop. The "pcp fallbacks" (taking the zone
-lock instead of the pcp lock) and long softirqs were summed across 6
-runs of 30 seconds each.
-
-+----------+---------------+-------------------+-----------------+
-|          | pcp fallbacks | callback avg (ms) | softirqs > 65ms |
-+----------+---------------+-------------------+-----------------+
-| mm-new   |        135590 |                14 |             832 |
-| +patch 1 |         10481 |               1.5 |             116 |
-| +patch 2 |          2327 |               0.6 |              55 |
-| +patch 3 |           190 |               0.6 |              10 |
-+----------+---------------+-------------------+-----------------+
-
-Running the same tests with PROVE_LOCKING, DEBUG_VM, and DEBUG_PREEMPT
-also raised no concerns. 
-
-Joshua Hahn (3):
-  mm/page_alloc: drop the pcp lock before enabling IRQs after a drain
-  mm/page_alloc: drop the pcp lock before enabling IRQs after a refill
-  mm/page_alloc: disable IRQs around the remaining pcp drains
-
- mm/page_alloc.c | 59 +++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 50 insertions(+), 9 deletions(-)
-
-
-base-commit: 9f004372ebeb18fdeb699f9880a0e472df90135b
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index aa1ed599c7c6b..bc272f8d8ec75 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -141,6 +141,18 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
+ 	pcpu_task_unpin();						\
+ })
+ 
++/*
++ * Like pcp_spin_unlock(), for callers that disabled IRQs (except on PREEMPT_RT)
++ * before taking zone->lock. An interrupt that arrives in between runs only once
++ * the pcp lock is dropped, so its softirqs can use the pcp lists. Disable IRQs
++ * after taking the pcp lock as other holders may be waiting for an IPI.
++ */
++#define pcp_spin_unlock_irqrestore(ptr, flags)				\
++({									\
++	spin_unlock_irqrestore(&(ptr)->lock, flags);			\
++	pcpu_task_unpin();						\
++})
++
+ /*
+  * On CONFIG_SMP=n the UP implementation of spin_trylock() never fails and thus
+  * is not compatible with our locking scheme. However we do not need pcp for
+@@ -153,6 +165,9 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
+ 
+ #define pcp_spin_unlock(ptr)		\
+ 		BUG_ON(1)
++
++#define pcp_spin_unlock_irqrestore(ptr, flags)	\
++		BUG_ON(1)
+ #endif
+ 
+ /*
+@@ -2846,8 +2861,8 @@ static int nr_pcp_high(struct per_cpu_pages *pcp, struct zone *zone,
+  * Tune pcp alloc factor and adjust count & free_count. Free pages to bring the
+  * pcp's watermarks below high.
+  *
+- * May return a freed pcp, if during page freeing the pcp spinlock cannot be
+- * reacquired. Return true if pcp is locked, false otherwise.
++ * May return with the pcp unlocked after freeing pages to the buddy allocator.
++ * Return true if pcp is locked, false otherwise.
+  */
+ static bool free_frozen_page_commit(struct zone *zone,
+ 		struct per_cpu_pages *pcp, struct page *page, int migratetype,
+@@ -2904,14 +2919,19 @@ static bool free_frozen_page_commit(struct zone *zone,
+ 
+ 	to_free = nr_pcp_free(pcp, batch, high, free_high);
+ 	while (to_free > 0 && pcp->count > 0) {
++		unsigned long flags = 0;
++
+ 		to_free_batched = min(to_free, batch);
++		if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++			local_irq_save(flags);
+ 		free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
+ 		to_free -= to_free_batched;
++		pcp_spin_unlock_irqrestore(pcp, flags);
+ 
+-		if (to_free == 0 || pcp->count == 0)
++		if (!to_free) {
++			ret = false;
+ 			break;
+-
+-		pcp_spin_unlock(pcp);
++		}
+ 
+ 		pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 		if (!pcp) {
 -- 
 2.53.1-Meta
 
