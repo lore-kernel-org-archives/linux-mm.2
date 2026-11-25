@@ -1,139 +1,168 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4E2606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F0E606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pnh0dVx/
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=FEriXY39
 Received: by kanga.kvack.org (Postfix)
-	id 2E9026B0A11; Wed, 25 Nov 2026 08:32:55 -0500 (EST)
+	id 0F0226B0A13; Wed, 25 Nov 2026 08:33:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 273226B0A13; Wed, 25 Nov 2026 08:32:55 -0500 (EST)
+	id 0A0546B0A15; Wed, 25 Nov 2026 08:33:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 114206B0A14; Wed, 25 Nov 2026 08:32:55 -0500 (EST)
+	id EAA026B0A16; Wed, 25 Nov 2026 08:33:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CD87C6B0A11
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:32:54 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 38D90407AF
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:32:54 +0000 (UTC)
-X-FDA: 85473731868.28.C102892
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 71CA418000D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:32:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Pnh0dVx/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795613572;
-	b=l6EbHwCpoR9f6eY7X1E8urgZTUDzD+j+gar4Ir3CRn9Qbm58t6MOTvrk8Jbp3WwGOvkfIq
-	dlbLtoG1evK3gCfDNLbaI77EuKWby77/mvRl4p0TPcJYSgCu7iSHF/gFFBP1r5U1m6oYWn
-	AZu5lJZ8kN6yIZz9UwyJ+yVWDb2PNj0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795613572;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BBFCD6B0A13
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:33:27 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3C17E120E51
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:33:27 +0000 (UTC)
+X-FDA: 85473733254.26.83FE5B8
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010036.outbound.protection.outlook.com [52.101.85.36])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E3D2D1C0005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:33:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=FEriXY39;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf20.hostedemail.com: domain of shivankg@amd.com designates 52.101.85.36 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795613604;
+	b=GFoQdEA+P9njio14fEEfawNL2WIPEdV1MTJ+t3N4fqlYvv4cK9H53y8Pyr/loISxTnIuqz
+	Ntn7SXCuNvJcsoAsdWDaWxZr/C09eEVeNh+ifMKX1cJHySpNXPJHyTecBMpUgXOSgqlWX5
+	ICC+DBilbX24XIbsJBJ4d7AIdOU17X0=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795613604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jiY+GIy6MY/XGAOEhBQIf2DUGSXYYkQR+i74zNHuAyw=;
-	b=7QabTxXLMfSrJMXJrj+g9EmmkfLsBykSQYeI3dFrWeiubsTo7c6YfDIaiz1wozHUUd7Iv4
-	+uUZry4KvtnxsY5dthBrvcQGfmHicbhbCCya3OeTAW6vShY5+lvQOxkYuVMh0Kc+arzwc0
-	CzhQoX5r4czPw3TrTbVyeX5FAdarDtY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Pnh0dVx/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D86B06022A;
-	Wed, 25 Nov 2026 13:32:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2241F000C0;
-	Wed, 25 Nov 2026 13:32:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795613571;
-	bh=jiY+GIy6MY/XGAOEhBQIf2DUGSXYYkQR+i74zNHuAyw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Pnh0dVx/+8VfiOTS2ZdsY706kRBMNLH71+Q/sILCBMjoG49P3AdvAMO2u0YKlphxI
-	 VA1YknQ35/KLVbde/qu1XlmEm/XW4krkfAlRYg/RFOWgPrBpyNeB+a33j2Ae0XDPuv
-	 fsPO2hKErwMds7qPSoNpOpCIUjqt5mdxDqI8ubZMgSLa9Tl8oY8mlXBAqKZXmhV3cn
-	 I9ZUjj5zEHcusqG0gnNjGShxX6mnPBK/JAzp3mey8ft1/iTfLWHPFs6ZygSseOP7LH
-	 njy1pzbKH38mJCggxr0Mq0B2GW9E/JWp4PleQ5J6KLgm7wLatJw9EBOXGaBeQxCvKI
-	 9MWT1Jyy+iZRQ==
-Message-ID: <2382beac-077f-4393-89ad-580bd09a6314@kernel.org>
-Date: Wed, 25 Nov 2026 14:32:46 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KFm1F/LSI7vSkLsu5OtQQybuZ7xVYgJ0MyanQP6caEs=;
+	b=7XQn4Mfhopbr/A3pT5pnmULZ0ffrn4+nf1OHzzeRQJ2UrClKEimpp+8MgHJcxGJ/UI08br
+	90W4WB5lWy2pNnN6m7AmGqZXew0rAt9UKdZxntlez6ILbnfU93aUzsomBM0FeaAr76Z6XK
+	eZVIC8CebPYJDbmLPHufRD1HOHJCg6M=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=FEriXY39;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf20.hostedemail.com: domain of shivankg@amd.com designates 52.101.85.36 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Qj8eO7kJJsjh6UfTJMqqI3qzYRq4BsGE3rx4Zf1lM2v1Divn1uL+l6I+4gd1+XND1dWhURyETWhrJe77AiJ9QStAmPgl5tr/NT34+dFGSv8SoDFyR58jKxDtldzPBawTgcHh605NoBIfKQHLlvZ5/DGpl+FqDMUB8puxYlZwXByew9sxP987rn2TYH6joDzqrktNX6chU4pe6Ew3Gs7X20JfMSylJiqchynT2xVL2roCEPRQwEIrdOJm0I8/qjz2N07tfAyx/GZ0sEGn+KRhbRULQ4kbi9pOwoE4Ne+VYT0bKPFgkabxwAHYyscD39altsnlqsO0cELo0KOs7onlrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KFm1F/LSI7vSkLsu5OtQQybuZ7xVYgJ0MyanQP6caEs=;
+ b=ryrjb+sLksuSTFwypaRf+lXIQcm6PQsMlNdqDB4qf05XLKV8NGZC24uPV0NlPT560q9oJwrU38U22bq5BJUFP6hox8Hwb7A5uUGsIImkQfRnqFFmxotKIN+YUvJd/sNiSye9lOaGH8q1KFmT6S3QaIDqZtJT+3p9wUKF2FVv64vSASkT8QUy5MFXvzmnc3GfR3SGcMzj0fSh8rgNth/A8Y4vKF7jH5KQHhgVpo/Enwj1h2kObNaCaec+r+FBgQQzVEl7wYu7F99UJP7KglAzm0kQwIpoEPHQou8oV+vspSzrdW8xToQDi84l4VZNjF4otJduB1ftEXlOs0BhS29Mww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KFm1F/LSI7vSkLsu5OtQQybuZ7xVYgJ0MyanQP6caEs=;
+ b=FEriXY39KQSBKSdUse0r4oZKEIBQj5ZkXpJjlqnMR8iWr7ed96wkC1xtH5X5er/e1byNGF0k1LL7n2UD2kFA38p+/SJld3oovx8YLjROprPr0B7rPd2+F4KKyeqMGp0Zglf/d6CGmaeru1X+KgD5cDDHBhO6mUrYPCwvEpOC9Ys=
+Received: from MN2PR01CA0040.prod.exchangelabs.com (2603:10b6:208:23f::9) by
+ LV2PR12MB5917.namprd12.prod.outlook.com (2603:10b6:408:175::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.4; Wed, 25 Nov
+ 2026 13:33:14 +0000
+Received: from IA0PEPF00000042.namprd04.prod.outlook.com
+ (2603:10b6:208:23f:cafe::1e) by MN2PR01CA0040.outlook.office365.com
+ (2603:10b6:208:23f::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.6 via Frontend Transport; Wed, 25
+ Nov 2026 13:33:14 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ IA0PEPF00000042.mail.protection.outlook.com (10.167.249.164) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.662.3 via Frontend Transport; Wed, 25 Nov 2026 13:33:14 +0000
+Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 25 Nov
+ 2026 07:33:06 -0600
+From: Shivank Garg <shivankg@amd.com>
+Subject: [PATCH 0/3] mm: fix soft-dirty false positives in mprotect() of
+ large folios
+Date: Wed, 25 Nov 2026 13:32:26 +0000
+Message-ID: <20261125-b4-mm-soft-dirty-fixes-v1-0-538e3cdb618c@amd.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] selftests/mm: fix false-positive and racy KSM fork
- test
-To: sashiko-reviews@lists.linux.dev, "Xu Xin (vivo)" <xu.xin@linux.dev>
-Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev,
- donettom@linux.ibm.com, linux-mm@kvack.org
-References: <20261124130143.128411-1-xu.xin@linux.dev>
- <20261124130327.131410-1-xu.xin@linux.dev> <sashiko-outbox-233438@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <sashiko-outbox-233438@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMywqDMBCF4VeRWTtgQqrSVxEXJpm0U/BCJpaK+
+ O6muvw4/GcHocgk8Cx2iPRl4XnKUGUB7j1ML0L22aArXSulDVqD44gyh4SeY9ow8I8E69Y9mpa
+ UD9ZDjpdI15Dbrr8tq/2QS/83OI4TM+CPCXoAAAA=
+X-Change-ID: 20261124-b4-mm-soft-dirty-fixes-68c578e1dfbd
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+	<liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Dev Jain <dev.jain@arm.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache
+	<nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+	<usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Peter Xu
+	<peterx@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	=?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <emmir@google.com>, Andrei Vagin
+	<avagin@gmail.com>, Paul Gofman <pgofman@codeweavers.com>, Bharata B Rao
+	<bharata@amd.com>, Daniel Wade <danjwade95@gmail.com>, Yin Tirui
+	<yintirui@gmail.com>, Muhammad Usama Anjum <usama.anjum@arm.com>
+CC: <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795613581; l=2300;
+ i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
+ bh=Hl/TQ8+lQU0UKIKuK3Xi1XLX9SCpaff1HyNm5GH0CgM=;
+ b=PJiq9e3laardsBxVABvA5X2gOdvCdHW/57izuLWbopL5FZfobUg0KS639v0+ArbO8nVSjAmm5
+ ndXBkUbl7S9Dq9653IgiVcQWrxNmmp/NLSC3Jr5B+Ghu8NPGb3F6Tdd
+X-Developer-Key: i=shivankg@amd.com; a=ed25519;
+ pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PEPF00000042:EE_|LV2PR12MB5917:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4a34a98-5d2d-43cc-962b-08df4af8a846
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|23010399003|6133799003|18002099003|13003099007|921020|11063799006|56012099006|261022075727099003|261028144727099003|261026121527099003|261102123227099003|261021121427099003|261009223027099003|261022105027099003|261026140227099003|261021123027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	k5X7y7tHYIJAcwvzTQLBwIGDmTsfX4uVloiTMRL3erlHBZvg9DMZnHP+4BkdKCwb4lSxjoTZ3lrZuGASPAzjVy99Pg0JjVoSzMIzVSJYzf7cMy6JPlOIfFM8ANmdzj+OiGITMTUZjQajPdvIhAfBpN1QRF71HfKWwgMbhs4mo/hQR67AwJh9f/gddMtwQDm98CX1WT7OmaBqUj4sknk9dMec9NBnoiVpyAp7oLi8y9ehObnaqkSnKo+OYNNKo+HLzc264tkBYDCB9r8DCxsJ6EQ7eXzgvz8mwdChH/UZa1R8k45AB11wxQzXYXKhjpEu0J9x8yappqMVubFMiNzM46hLEOdvYKTpRVQ2b0mdQiC1kuXIH7c8W6dyzA3gXfASlsXUs9I+9/FL/Z5xa18Z0NsoiWH4fH1fjPID/pV2wWhU77svBhEufoOp0KlAeZxT6Q6x8KhljAqF3sG5uJcU7Unp+ThtPPEBLUFVMFNcGmwB6w5y113yTrlYqHxNWURzkZhJBapqAYhXlv+eel98D9QA4CEw6aqmbTPNhqnJv3dm9E5LKgDGTuFzJVZ2DYBkwAq7KJO47cCgM6O5X9z8OCwN7zg8nf1y9YtQySiACoT1eu7/0yPgmGHksq9kBaPE0nZajVNXmsJBSehcWCBbwC+Busz9Vz6l60f321lzvRcETswe5416+ge5GvwTtVMl
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(23010399003)(6133799003)(18002099003)(13003099007)(921020)(11063799006)(56012099006)(261022075727099003)(261028144727099003)(261026121527099003)(261102123227099003)(261021121427099003)(261009223027099003)(261022105027099003)(261026140227099003)(261021123027099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	E7YwKMhXZV1Rd+lqvIBFIQKcTh0F2LPqRnILz/Yyb+ZSEf5wMUbnTaWrHmc1bREviwlJh3A5jalWH+ph6gkyYhnL0EVEgtQCSv9Bdc+3FhrdyQdXKOuLzQlruT7Um1rh+uLcLSwGtSGWEdVpWRdAC+vPXxSLI75LrErBW/mSU+E510KvNhox3jls47vc8C2mY4LSo6yPXtULAPwAXSzhUDT44n1Q5J+CLbh7TfPAIF70MGlds+tSze+dpXlLn8EJuwnHZm//qSnQXEY1gBEDBLMrREf62LfFbmunv7gfNICc1LTsGTfEdIVyzvtKABYohfj/Z/c0cRP81pHe+xNqhWSEEVz9rgXZ3UtnX1EC070WOUxubuZ5P2O1OKh/8tFcPuKBtaK6EoM4+SU9uGZACODNnDXD1m0y+6/tdqTIGksnb9oFM1GyaE1x+MjBByVt
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 13:33:14.4992
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4a34a98-5d2d-43cc-962b-08df4af8a846
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	IA0PEPF00000042.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5917
 X-Rspam-User:
-X-Rspamd-Queue-Id: 71CA418000D
-X-Stat-Signature: ciq68oqxtn49wgh1da1um64gqz4pcdtu
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E3D2D1C0005
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795613572-441397
-X-HE-Meta: U2FsdGVkX193KWGxAx1jLs/K4EcE0IbbEaI3dxqd7tv5oYOySRFiyxf4tg8rlH+I+Q6Qtkt7F3j9qf9TWgJGtZWwQ8T3UybvUJ20fS/JsD0L9nJjKxcSL2fPbdobXps1mn/8Yc9+BuFnj2j6l9873B9ZzelAcFsrSDRI6Z3KXy34cIQUjFeZnlp8gCj+oYb9MydPQGyrVc7ZjlYImEFKuqd/Gf8tu/9QRIq+NLzPicliW88d8eUQ3QBS8NOM5ZPu9A+OcYy7+lNzUVJnNpHJCbRaPFj4lyhCbSzm47kHIRAhRfxWjomV9y5ljonFcywrX1UYv79EcKZpTCXH7QojCV7cVj0sITIO1fyyg+W6rIEamTgd4/s/R333PzFPKjkDnZq5nBHKVGdQkTGRQiUORHItXgW3UbbwwIsHnq96D0XD5DNCdzddtm8NwrqtzVFw2+5CEN4aTWzsEDeKoAYIk+12w9crYv40D6H4pK1lbVUcSaWCU54D8kDrJ0Y5sIG341Xsy8ThtEWx0ZETNH23mgLcu1DqNb+io4+MYLx6CiVJen08vUsTOaF4BPIOufmxkxPuMoH4oDcrbHmn9CoUWahal4fWDPug2mdw56aJAgdbv2hWaclBMyTvNv6bwABYpFw3X9DjueY9XUAA829dfrt/E5S+XcEx6bAvXG3wVAiOJu8jpkuIWFNASHMDhigoPJMUWQiT4WEJgDAhtPzPLUk85Vo9OOzJ/+sWubN4biFyRwh+NdRp0PXXjOwBXq9HMGNWk02RUgi1xqQMohFTqGn6f6YkdvEfBTZjBGQWZsU5Y+a4xkHK8fYxwM8ZW7R+Ku6dsjlI8oI/iUa+m0dvPaXmjf2M6bJFDElqDrGD/QBnE+54dj2U2N3j1oWB3FMlJLlNC0qoTkLx4mlwRz36BsMZ/zAj/1WQM7OAWKoEltsScbNK4ykYrECEC44OHP4aby39/SpZM3omUWHJIq3
- +Lo5kHvI
- 1tAq1/XGNHNfU1Y8ZflL/egVHlx+HXdwR6g5IHVaGo5+b8VzIjTg0q1bWctdZxzetpAghX6cW3RDywPZ0vUCid2uF3syY7P5gupaYt1ARPfQbTPR2nT14f4ddwlW363bwO1JWDN5vcLu34eA2WqTuwEGPQEfY4ydwfwA8MQFXUK6eHpn3/d+mz5+Ddx16dw7GDGkuXJzVRrqncQy4kUlD2Zb8n7ooe0Xt3dx7eBK2+KJvtHt07Rw1tNdfCPxM2uIG795ao3TtsOUnxkma8hFi4yFlK5cAhFgKc/VON3R6ZpvoCGvL1t1OiURA3/mKjVvBNRr0XcvRhYgMuY3aSh6FYZYDHrsE9K1W3H6hGgZtA+x+x/I26wnedl40ZLYWPolPUpcSa97Sq66l5ajPCVv4NMx2t2nRZ5fvq2ywTNi5+kSQcwmAXOwL2P0Vzakww2BiR4WJ0zIye59i4FavSY/DSRfrnhtmci3ZV++XlAqSk7K666bsAhbiGrGVDHTwF0vYYu/6
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: ktyqiikbrdjgqdniem5z6f8ozuinxd5m
+X-HE-Tag: 1795613603-765028
+X-HE-Meta: U2FsdGVkX1/MvvqwU7/Y2Oz9rHXjnHK/6pYSlYVZJ+eDfaniRvz1+WOPxI1RDSytwZWeyYxJXJ/bD5YRU5C/b/L4SA3lJae9evUwJ9QibkZl3H1v+Qbr1HxS87Om+dlelSSGa2EEMaW9rI9dsMg90/NTdLW6q7A4od1KNXvVKpOrI0PeaSKjs0qNIJOJST/vK4rA8WzuYjdxYw8COmo0MtPV2pg0A20AtHTI2OF+oXJuZ6ywIhwMpxhX8JqhuciuNMpL/e0ulNphAp4yyOsje+I3C3PhmFYrldByBR6UrkQZHJE9s66gG5kpXkMbTc1qZr9KvwDfYVhaLJCTXxzPMWCMSLmg+xH8cx9CLpEDny6hgVFn4gkHqt0MQ/nnUzsXVoUh9PdSGKsQM75oTCcadPQPnTrRW2JIxOvBmrf/SAP+y49gln5+rfPtUlBB8IlONfrpAZlC/r4jGBelHCU6JZth7f0nnr1Y0A1oLvKc1ewIw64pbOSlPY1p5L4kOEW97eXG+M9yFVb1CjBYS0Th7dCoHKAwG5MC4hj22sLJeMcSCnjIqWFdjeke6k5DMKjgJ7zKPp8VhZh1PEw/1CyZ4uqFBzI8sE8Ym1o1b/WePFjB95TpMYA2x8cvtNrnEF0n1SMFC7cdlcACqKaGYNHK3VeI4SeXkNdwLUQ3nA3DEIKuyNh1416nMof85Sno0pkCN5+rreK6SMa334WuL3po2EVZT7rZBmniRfQfpWBCBaUWcwrEgVppL/Ugh9BhQepZkyJ+7TBCoGAXK/wPoInRUtf3ZBwO2AVhURCqMLVutN5hcBHLaLgR0bypTirtVlxZd/o/QV69sVqSwipFBPaLnDtf7HG19GtKPTHe8XOhuefWTSPlIi9HUwGOVE+vmGcEKrOrvq4T5OnuigGnBVuWuD5SA5vcfoLscPO3e8J6hDmkob2s3dgkPja+VfzwtSHFaukbobfu17RombcYMlt
+ NaCkvk5U
+ TK6aiz2tEmHH4TfaP7jZJOST1UspPilFAwHVJMf98dYIzLETBk+r//5o4nRNRND0mvjzcecyzIw6Yd0G41CLZlm+X2M90W4L5mVOXwGqsjgL5eOYo9OyPtn1B6CWSFFPbrkpZn89DkZiTAaroa6JGeoEt6kANjacPwGbaPz6MzHpNoAjqlVXx5OqsOopdJnWYfTrUk50ZsghbRcfNKC2nNljx5Jvebm4LBJVDpl+1AszvPrsTakgJcyJ0Bhb2wu1sYi2nnsMongoqRL8UE8vRMz1/Jp18vg4xT4EWuOOca96+Eyd9KDRF70zDUsOM151Dec4fXCIY+YiTtNqiujF64SEuY9gqt1J2gdpd9WdnP/wwuBNyS4x/vYj/+aO79rTElSuxWWFwN/8wcKbXyD4C1XsoNwyIwbeGu3UidMdhX3lNtJUZ3ubr312ga2umNJ/qH8RcL6YcbdHG+goN8b+MyiQVr0Y9gfbdsmcyKAR1razrhPQjt2yQ2mD+bQo/Lkgp/LYjQUOVldtrFcX5CmPAamaadSmIbwMs+5e563ejBdXwMYJPxnXg1h3n7J/A5FJvFfNyETUMwLSMbdJo7ocs39cYoXDaOKx5dLlcF9juYYizA6+j0gY18qYoqv+jyU/fTjO7UkgLocg+WuLMYK52uaCAgPyFqmO+q2ySpwFbw9bND4RsARBsxItpnU6WqxAgXGTCrLoXTsBEryuL4tSJEXfnjIJwY10QAIdDDnYbnldYwADlRb2U1/Dprt08xEi/zp7SwXqNSt5iP2duMpgFClDVMWpAb7A0orlk8ewTHAa9s3mI9Ab3suVh9ixgxHK1VbnbuIbNu5ztL+E4Qbz6WmdUKDczaAXftHVVTOfldrJFUh0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,49 +171,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 14:04, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Low] selftests/mm: missing Fixes trailer for
->   test_fork_ksm_merging_page_count() fix
-> --
-> 
-> commit 9f91c40f8740268fa4e48f24e3a50d43177b045b
-> Author: Xu Xin (vivo) <xu.xin@linux.dev>
-> 
->> selftests/mm: fix false-positive and racy KSM fork test
->>
->> Currently, test_fork_ksm_merging_page_count() passes wrongly even if
->> fork() fails to reset mm->ksm_merging_pages, because the child process
->> calls init_global_file_handles() -> ksm_stop(), which unmerges all KSM
->> pages across the system before reading its counters.
->>
->> Fix three issues in test_fork_ksm_merging_page_count():
->>
->> - Drop init_global_file_handles() in the child process so it does not
->>   call ksm_stop() and mutate global KSM sysfs state (unmerging all KSM
->>   pages across the system) before reading its counters.
->>
->> - Use '!!' in exit(!!ksm_get_self_merging_pages()) to avoid 8-bit exit
->>   status truncation (e.g., 512 pages on 4 KiB systems truncating to 0).
->>
->> - Introduce ksm_pause() to pause ksmd (write "0" to /sys/kernel/mm/ksm/run)
->>   before fork(), preventing ksmd from scanning the child and incrementing
->>   its counter before it is read.
->>
->> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
->> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> [Severity: Low]
-> Since this fixes defects in test_fork_ksm_merging_page_count(), should it
-> include a Fixes: tag for the commit that introduced the test?
-> 
->   Fixes: 08ff89b5659d ("selftests/mm: add fork inheritance test for ksm_merging_pages counter")
+mprotect() handles the PTEs of a large folio as one batch, and marks the
+whole batch dirty with pte_mkdirty() if any of its PTEs is dirty.  On
+x86, powerpc, riscv and s390, pte_mkdirty() also sets the soft-dirty
+bit, so after clear_refs, mprotect() marks unwritten pages soft-dirty.
+With 64K mTHP on x86-64, all 240 unwritten pages of a 1MiB region are
+reported soft-dirty; with my fix, none are.
 
-Yeah, makes sense.
+I fix this issue similar to how commit 055267feaecc ("mm/migrate:
+preserve exact soft-dirty state") fixed remove_migration_pte() and add
+a selftest.
+On Zen5, an mprotect() loop over 256MiB is 2-4% slower with 16K to 1M
+mTHP and unchanged with 4K pages.  Patch 3 adds a selftest.
 
--- 
-Cheers,
+I first hit this while stress testing [1] and [2] with LLM-generated
+test cases: both build swap or migration entries from
+get_and_clear_full_ptes(), and their soft-dirty tests failed on x86.
+Looking into it, I found that mprotect() batching, already in mainline,
+has the same pattern and reproduces the problem.
 
-David
+Two other places have the same pattern, but I left them out since
+over-indicating soft-dirty is sometimes considered fine:
+
+ - get_and_clear_full_ptes(): when reclaim of a lazyfree large folio
+   fails because the folio was written to, try_to_unmap_one() restores
+   the PTEs from the merged PTE, and all of them become soft-dirty.
+ - remove_migration_pmd(): pmd_mkdirty() marks a migrated PMD THP
+   soft-dirty.
+
+Are they worth fixing?
+
+[1] https://lore.kernel.org/20261123053543.295467-1-dev.jain@arm.com
+[2] https://lore.kernel.org/20260813-migrate-rmap-batch-v2-0-3c5424c555c7@amd.com
+
+---
+Shivank Garg (3):
+      mm: move the soft-dirty fallbacks up in pgtable.h
+      mm: don't let modify_prot_start_ptes() set soft-dirty on clean PTEs
+      selftests/mm: soft-dirty: check that mprotect() keeps PTE-mapped THPs clean
+
+ include/linux/pgtable.h                 | 188 ++++++++++++++++----------------
+ tools/testing/selftests/mm/soft-dirty.c |  48 +++++++-
+ 2 files changed, 143 insertions(+), 93 deletions(-)
+---
+base-commit: 98f6b507621822477db7ec7cef8519de0dd243c4
+base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+change-id: 20261124-b4-mm-soft-dirty-fixes-68c578e1dfbd
+
+Best regards,
+--  
+Shivank Garg <shivankg@amd.com>
+
 
