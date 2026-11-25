@@ -1,126 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6E7606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4FB606A32C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=D2ahuUqC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UC3PL9cl
 Received: by kanga.kvack.org (Postfix)
-	id 6022B6B0AC1; Wed, 25 Nov 2026 16:27:38 -0500 (EST)
+	id B41CD6B0AC3; Wed, 25 Nov 2026 16:34:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DA1B6B0AC3; Wed, 25 Nov 2026 16:27:38 -0500 (EST)
+	id AF3146B0AC5; Wed, 25 Nov 2026 16:34:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9546B0AC4; Wed, 25 Nov 2026 16:27:38 -0500 (EST)
+	id A08326B0AC6; Wed, 25 Nov 2026 16:34:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 25F436B0AC1
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:27:38 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D74CA0140
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:27:37 +0000 (UTC)
-X-FDA: 85474928154.17.B906520
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C4203140004
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:27:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=D2ahuUqC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 72D946B0AC3
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:34:30 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 09F36A8EAD
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:34:30 +0000 (UTC)
+X-FDA: 85474945500.03.D99FE3E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6460B14000E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:34:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UC3PL9cl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795642055;
-	b=eVEiPD/JwjhVI9hY5zTcPvTKiRMIdE/CosnDYVqSKe2GAEdN0r4WijB512Gfbwgm4XtOZ4
-	Kb5bAeyFyFqOfEUP1prYqF4oooZW824MkysL12r+oXmT0s83y5F3p2agdrYasPkZ7m3JOh
-	G1YwMBLZpDZqr0s4E9flHD1m6of/+IA=
+	t=1795642468;
+	b=389TGg0to2a2JuAoGfwOyE7UiYoxXvFMKseFg6FkYzxIVll6TJVEuToBN+WYMFx/rKXvcF
+	QUhrvbl53FbRBcELtJrwOYji6CEo6Av1io6o/MRjhyvHLR4RdOYtQVHt5eGd00tialp+w4
+	111mN/8/2FZhVzVfb6aoIutMJ/PHeb8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795642055;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795642468;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P7FSQ1Jz/1Wt3kKZfok7AA+pWSrm3HTw9n8AOhAKasI=;
-	b=u5/t+PU9SBVFSYnK5BQnhm2PyKCtONl70MOEJR0o2VPHBvzG4elFdRrBQb/8hv79WYibTp
-	+hGWmrt7ZoLQSuot7EZQus4M4mN0v1BFV1PdWAAMkBWZgzkljU9fJ93OO98gnfn4kry1KL
-	j/R0jhXNSqPktUOncSVsQdHBtb4TYw8=
+	bh=dY0OuKBGrZdWMkiz3N3oKt65elhubUri8QQeTOjU5wk=;
+	b=XUPG/nNZIL9Mfj20CTV/QkMaklw+mntE6CFDoPmAeIN1gmkTBZvY7QshDfPkhTku3emI8A
+	29WK+0L4pSi1By92fzB33aDNQqGFzmLBHbZfDGNnt5Tg4Gl6pod9tYFTe2FVsL1fEch7ec
+	bv5K5vymappgBkSdR/UIgs2WuYTGggg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=D2ahuUqC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-86298f9267fso3355741a34.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:27:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795642055; x=1796246855; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=P7FSQ1Jz/1Wt3kKZfok7AA+pWSrm3HTw9n8AOhAKasI=;
-        b=D2ahuUqCd1EoI6GkfzFI8FWPMQW0Rr10Iq5ojBw5BXVqDID5VXl4goRYwDRWdolmpa
-         w/6O+OXhNM7oev+Kc2sNuJkDAwY6fgN6E7avO3CZWPH7P/T9JzL94hUMgNPyf8AFyyUE
-         US9H0YIAsXs4hG8XWkYnXiSyjcGA37VO5VepAcftjNLtRaWN5L45+1AISjLUm3g291gO
-         x0gvefXIxIfB5WPIVjXbpTY5EZJ2eId0MCek967A+8sdvVx8gH1tCZi9TWBp6WHUPM23
-         4tHoFQGI8nPdPeZ0ehJNFXyfmcEhLY3V35VU9xjzZnnRmThpYFCbuFEG5D6mtUaQaa1N
-         +ypw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795642055; x=1796246855;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P7FSQ1Jz/1Wt3kKZfok7AA+pWSrm3HTw9n8AOhAKasI=;
-        b=LvVyFVvMlo3PWmGlFYu3u2YCkhIcuHLPDnqYc4Lx3xxcGvJy1n5Aodg4tZcQUcAJ1c
-         NIPGGl+5Qw/mgKK9g5DXZTe51RaU1mhdL3ga4mSjuObQf7f2nswjt6C09S2NsxHQyv+o
-         zJlo6Te5vL4tszOvhCuCYXLaRKg1Ji6YygbRAJ971y3Ackd+pbnv7nK+ED65slAXdI0X
-         5kbr2PYKEGxhLmX0h2qmb6JxdHjuoXERwSRQMFj8dr0Q2ki7eFgds1fvH9nExUZy5+BO
-         tA0g9D9DLrDSPQ/agSo6+VRpfF4Bqdw4qnYM4qvUqAIDcWwjzJLYB08pKyu0SzLcwXkh
-         ypEg==
-X-Forwarded-Encrypted: i=1; AL+hErFUH0PIACswdFGi0dF91YKfkBVi1JZZQGiEP896EaDhFjqD+LinK/PdDX3Nkb2s4m9Aoqsrl2z0mA==@kvack.org
-X-Gm-Message-State: APuU4Z8QIbJJagVj38UhZZNKe/7/vnTfgl9FAloL6iWpdqTOhiIYaNAf
-	d+AZUIXCJHNDD54j/3GBFfqg/PGTzyTsM9DX3wr/mfQ4+U0oZDbz28b1
-X-Gm-Gg: AZFdTZdAqNUtwSLq/vLm6dpe+GXxTqjWOixylrMESK6w+Syh9CEuPj0azLwiTtGPE34
-	8RfH9vJf5eVyLB76T+7qoRuduMNpqZ/tGYocCG0WRSYghWHwa5hNvLc0Z2MjGqttzyZ9gzKGSs0
-	FIIOt6GV9iaHAUhEvZ6Y0qd9ATMk6k6Ja9aU1syKu5WgBqhZ40uQGzvGckObI8xamtatigKquGO
-	2FJaI2QV5Kolv60g2RORo7+/p8fC9F0yIcTAx3Pekh2/CiBC6trRKBtAwCnYuSjayVF6WuOfCSi
-	wpuB4WhoJVD/jPVMs+fMdDF67WnX9Yu7HiPtsCRPRJG/1vA/MdOB8+mdxHG+ceIVX1V1irIqp52
-	EHFU1O5HW+ibTNtzat63yDBKwukzBlKAM4qg4FViRv7Gat628uRwraVRtHSceLus64R/qRtFyRL
-	LFf+rxbnC50BTU2tFRIsplVU2rRgP1x+0tMRVenJDkq1my4b/64Mdgpf0wQaaUy98LqhFZcWOUq
-	H1Jn+o9FvZ5vPCp2pb+8VEQI8+3UYjACQzIrKuXeqNlk0apA48gFY0iohlfnd8wZHZ13IfwIQPz
-	sUNxHZoy/JY3lnzWnzfKOki0oIcdBflffIs/gdIL21fKL3xt6btKztFSXl94
-X-Received: by 2002:a05:6808:6412:b0:4f4:d7:b16d with SMTP id 5614622812f47-57a0bb5c52emr20134661b6e.60.1795642054839;
-        Wed, 25 Nov 2026 13:27:34 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:52::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-57a35655a5bsm14871329b6e.13.2026.11.25.13.27.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 13:27:34 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: [PATCH 3/3] mm/page_alloc: disable IRQs around the remaining pcp drains
-Date: Wed, 25 Nov 2026 13:27:27 -0800
-Message-ID: <20261125212730.1128631-4-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.1
-In-Reply-To: <20261125212730.1128631-1-joshua.hahnjy@gmail.com>
-References: <20261125212730.1128631-1-joshua.hahnjy@gmail.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C4203140004
-X-Rspam-User:
-X-Stat-Signature: r1jzj68sp8sjns7o3zdjbn3wnh6gbojf
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UC3PL9cl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DC3DD6156B;
+	Wed, 25 Nov 2026 21:34:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D734D1F000D2;
+	Wed, 25 Nov 2026 21:34:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795642466;
+	bh=dY0OuKBGrZdWMkiz3N3oKt65elhubUri8QQeTOjU5wk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UC3PL9clU9qo3x8Gm6yERrd19clLIWXsMILCH4TdOMbPyPFqT86ktd/OGK0B1Flma
+	 GGL1o9AAAxdqRs0tLP/U+LJYSYeRnbLWYxRwQIQKmt+LIKB2ljGg8Ff7obGCX0g5fc
+	 JqkX9FD/eFbW82K3KwKYTP6Egg1q+UTx0iDpx1/8hnbW6cxNRxopCV5jbfXFi0+KM5
+	 zs6PSRTF+0lWjFQNKL+vwbypr2azyW14zi6JpXpC26TEfhkY1s3kieZEjqLiH8HqvS
+	 ONYHbH80GSz/F9gBemaLEN6pQdy3diDgcdwxaHO+quweFW2n5rsrT1MVmwlxCK8P+p
+	 ComkYJQqGp0bg==
+Message-ID: <sashiko-outbox-234186@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] xarray: fix index jumping backwards in
+ xas_find_marked()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Qian Xiao" <heyheyco@gmail.com>, "Matthew Wilcox" <willy@infradead.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, "Krystian Kaniewski" <krystianmkaniewski@gmail.com>
+In-Reply-To: <20261124213409.2224472-1-heyheyco@gmail.com>
+References: <20261124213409.2224472-1-heyheyco@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 25 Nov 2026 21:34:25 +0000
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6460B14000E
+X-Stat-Signature: tri9baiojet1peoaxy9qratmeikum5xx
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795642055-110229
-X-HE-Meta: U2FsdGVkX1/tUP562AQlEdLloOLoxf0yxTektUOOv2V0o5jQ/KpEAU6LsZE1in1ZmosOmWNjLDG2lOiRlOKQ383ROxv6kBVJ3bHQe3YSeGEYFAFvEwLGjprAlIptTjk9tjlbhHoKftiaczDl0fj5cd1CCTwQpC4dxVUq02H3ZfrhuYkuHSFUP9Bjy5Rd5/l71FjFQzAB/mJk0wtq0dtR20I/VFZ0y5DnfM83GRyUWlUXqntRlAa/fJ/617aKGVnL511HN9TvvFIlSSw3ohsHUqwI+5b/TMvOPT/1I0gbzON8WBaS2DiDX11BpEBYmGX9RZnNFFKdnVhCdBE2FJRb4VgOsmjMH3Gl/QQ4QUqrhHIbo7J7zHPvRL/1k0HEeNH10Cw1sgb8vIc8AG+68vf9QnUNJqBkWbLTYRFfj3Jkuvz7ZLBBmGEyUGOqMKjpLz/uFLVc3Wl+bQ27dsQCTXvGK5TBT8DR/m23lh3wer3sgMlam0I9oIvAPU+mptOB0+NZLeDAeLIutKVOYt1ersuMKtcoIgRclQH/JfKHCdcxlrCM98Mo+nkfaKu33jDgL2+Nlw2bkj718jCzG80rzVCXoqZ8Q5G3iy/DmmMtdXLJtHlYDZK4LZ8Ilw9/ndLDOV5jvReMbK9VQlpVKzLF9LH5GGa19MW7bInH5F28ifUDQMjywLcQb8LwLWaAyvj5rDEtXQR5qvU5SaBcENFSwbh0ASAKuQHn/Jf/at+fbtSphmL4reSC+h019y+qcz1PRib6eklr2gxdvpwNKndZKCuThURA1jg1kXu0bTCtB5cocTdvd58s3lqxBxmpfxv6rMOWMhwrCwmn1ASTUpFXFHPZbCZTDcqcBNyG5oefns7Xexvg/89bz2IG0lG29T8SZ7xu8h99d632dGlYpz96XfQBFUQ/cc8bBYhnQtsA9wuMinI1LhjMm16UGN5BCQ3Xv1nCIBiXYbHLpDSJfUd11OM
- wi/tuTxa
- iIgwy7Lsk/Drzo/CGAoTO6c/OfMyZrDGwVm5IzJteJQX9fl/iYuoXlDq008XhHEymxBHOzsVasznsVUpz1ytCBi1Qfm1hndJYBkrGV2+bf1eFxSrjZwiARIH5BORdTdTDONi6evgVFr+zhQZUfDDKmO16MmKvGlvHY2pDxjkpeSlpnwxi5EANZ2BIcXsaDaZYHiiOkshpP8YkMbpe22jqHcxWQwl/QJzlPw1HuAyA9wEtdU7wJhACy91HxMJJeNhQ+1/lg7Bnt+dFlAjdboACtnR3nsRIeAfwRm67tC5ozt0ObVkokL8Ud7uxnuZ+GT0IAFP+6KZkfkBfJL9W97/4txOity4IBUIfb4k/ZjUI9H7Yogdmvy6EMrKKDf4TTeY/dTSN/OgEhG5YV1XWUvAfk2GQ8t6Eti5bE3F9MLPAaUyzCVVpaijeXOU3oTR6TdWVpTZJZu5Xrn+U9jiTCakHwI6QscJ0+nmqgBkjvW/mZtztiANlj4bjeKniaJHRLtzcr/b2VQhJe6lQit+q10xT2+Ksk63cV9jk6rwKJzl/AKsCvceVtMvjoCZFzpURc3noD/uq9qSxi5CW3UFPF6yil0R7H2e+Ww1SMe/YA76x3eUfOEUDkalDUUXCI6nmNRejYkYo9LcfXJbKxAeg0MrlA3jn4wjcngR7b5fvH/YPnbMg4XLX/dgjxy8faIPSVoOIOSTNMWfuVcab+EFkatp6gAc1qJr7d/CXKTZAAAiqPNFSVoS8G5GmK1dKZ6WOdXGZsMa3xonKtCdKbgk=
+X-Rspam-User:
+X-HE-Tag: 1795642468-604978
+X-HE-Meta: U2FsdGVkX1/PkqXu+WeQseEoU0Hepy5t9jnrxgfMocOgYSo8GivHv9axkDii0TJPNPZKSpdndtIb/6HBd4eUcHxv8C2bsIwRD93JrvZ4X4P4bfP1vPNu+r2qxV+p9x7C8K7bd0oRof6KB7hWB3lwAmVi2nF1S2VO+A1t89U67H64P0qjHOxaFG97VkA6m00h0kkGiOWo1ZowYSbYi6+5SY3pTi4WfiLSOssvohaGoZ/haAc4qGphUAP/jhzwp+k98AFvbEh15IgyUn7zGiQACE7x3ddtNZLFACVUAsBGANgi70hOx6s+SoxVdyzm7HGjGJIhy3Ld9oqKcV/ZtfbmXlsrB/7Sc0KHnrJwWwW9zEn6+QEemwgokIkP9+I3ObnpF4Yup3eTodd8G24qHG0tBTLwQtGcgEFFlot2CX8FtGO6dGsW1BtbMoldC4G1If2E76gdGWApmTxB4DUaewfpv6Q2UVJWw8KK3gYtcj1KhKReR3lqRcTtMjQP5meMj752HSUa+OyZ4Jf3HWUPvZ+bZzJtWOTt6dHp1WN0CRlFkD5GdwsOIAwqiI0yALtgv/yBDG5xx/ow921yJsCS2SIpY9qsMoP3BLNNod59qQvjdLy/WlI+CSzx1KdiuL7eDUgA8Z8gN3JHWO5DzTvRSm8pB9mnLh0GnScoUrQq21o8WtetT61vOpBYgpPbTExeXTBg1S9I1FgCdP0sxPu+wLT6+8dnvK8mBvkaZJ/aKls21xn4aPZ51WrkZGLiBH7QBsHkyPIIluyksuiwYy6h/h4hCNaTWIxDkunTto7lqQtJPDQgJr5yW8eE4quHX+ykfATI8+K5Agg5suG0dDEoFbE6jJ9Ujl5vjZgQB1k8yWquWc8NvnWEkSbjzhL59OLygUzi/l+hoV63LfUU5DncmCTUyhCB34F7GHgIiifixd75nLghdEPZOI3mHOwFO3rDxacVIvidfg9VCoslWoVnjXM
+ WPcgPlXf
+ 7UEnikNMyyzFqlTMYtLHh+gNH+M+sJV93IGW+yIII/6/bByyV8LwXAZSSRmDkSlW/YePHtLM2E4D/iDy2oNl00/dRr6k0IaP7XOcXUjCapgv/39hzVyusHMhVvLOISVqEB2AFwiwiCzpB9Q/AHJHFkAhx2CJSNZP8pTnK+ro8kySx3lzE3EfBd7XoMQAylCa/yT+oURjcBDW1K0Z28DQY6uBQprVhFXaNodaxoA9bvX4uEaXXWdfjs2xxRcQhpiRVn1PwgMmM34/ICjtGFeTrU7+RJImY1gUcSSpCIzS9FqdFUfKX5XZD0iLIOhE7p9ClqjU9yKtZLsbVm9NP5W2yWhMoktBZS2jmnKIZeXCgzzb8KhR+ZWXQN6YVDEjSM6l0QjIiRCNwu+4ihYEUO6mMEB5szcvKFNxIIEZplBWmMMomc8enVEXlPZB5vQqiVvS79iC1jHEqao/XUZ0MLCwy2s4gKb9GZkGwL/YEU+Rdnt0JdvaMrg9gGrUFKzT6XowP4uOeRpGKOzM3lJKz0rCagXjtU1G3mEHZSRqaVPsL01mN2P1eKMc+7kEbPuFcYBFYmWcKm+QRoGHGtQYvpHYlcJna33V8cIcqOUn2Jz1W6UNYbNgHmeS9bGaIqDBlEvs82QSo8qHRn5COf8tX5gdxzaFWuQ7HrkEhrVOp5p0a3SkZf0/HBmcF1zilCDiBepyTflMuahK9xxxtO+KzHr7/Y0Y1OPMNFR222BGKPvtHgey9QNjNomjvl7yGY5kSpY9ea7u9oU+LRUIMkemVdYjXkLfOLE5+NcKbzNt/1/Q+ZlwtdQEXUisov1xrwDjH+tsOwh8OwvWOPLQ/U/dhFFkSlnyESmmhi1Z8/qpnFJA14T41y4Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,103 +92,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-decay_pcp_high(), drain_zone_pages(), and drain_pages_zone() also call
-free_pcppages_bulk() under the pcp lock, so an interrupt can happen
-with the lock still held.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [High] xarray: race with split after sibling resolution in
+  xas_find_marked()
+- [High] xarray: missing xa_offset alignment check in xas_next_marked()
+- [High] xarray: xas_pause() overshoots xa_index after xas_find_marked()
+--
 
-Disable IRQs after taking the pcp lock and restore them after dropping
-it. Note that we can't use spin_lock_irqsave() here since
-drain_pages_zone() takes remote CPUs' pcp locks, whose holders keep
-IRQs enabled and may be waiting for this CPU to answer an IPI.
-PREEMPT_RT keeps IRQs enabled.
+commit 4eb10c5fe97f140df6410177fd9785f2f1edc4d2
+Author: Qian Xiao <heyheyco@gmail.com>
 
-With zone->lock contended in a 128-vCPU guest, tlb_remove_table_rcu()
-callbacks hitting the fallback went from 1.5% to 0.1% (the two previous
-commits brought it down from 93% to 7% and then to 1.5%).
+xarray: fix index jumping backwards in xas_find_marked()
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/page_alloc.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+This commit keeps xas->xa_index unchanged when xas_find_marked() resolves a
+sibling slot to its canonical slot, and realigns xas->xa_offset with
+xas->xa_index before advancing on subsequent calls.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0e669e206d371..f2cbc820f24b7 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -178,6 +178,9 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
- 		spin_lock(&(ptr)->lock)
- #define pcp_spin_unlock_nopin(ptr)			\
- 		spin_unlock(&(ptr)->lock)
-+/* Like pcp_spin_unlock_irqrestore(), for callers that did not pin */
-+#define pcp_spin_unlock_nopin_irqrestore(ptr, flags)	\
-+		spin_unlock_irqrestore(&(ptr)->lock, flags)
- 
- #ifdef CONFIG_USE_PERCPU_NUMA_NODE_ID
- DEFINE_PER_CPU(int, numa_node);
-@@ -2599,6 +2602,7 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
- bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
- {
- 	int high_min, to_drain, to_drain_batched, batch;
-+	unsigned long flags = 0;
- 	bool todo = false;
- 
- 	high_min = READ_ONCE(pcp->high_min);
-@@ -2619,8 +2623,10 @@ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
- 	while (to_drain > 0) {
- 		to_drain_batched = min(to_drain, batch);
- 		pcp_spin_lock_nopin(pcp);
-+		if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+			local_irq_save(flags);
- 		free_pcppages_bulk(zone, to_drain_batched, pcp, 0);
--		pcp_spin_unlock_nopin(pcp);
-+		pcp_spin_unlock_nopin_irqrestore(pcp, flags);
- 		todo = true;
- 
- 		to_drain -= to_drain_batched;
-@@ -2637,14 +2643,17 @@ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
-  */
- void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
- {
-+	unsigned long flags = 0;
- 	int to_drain, batch;
- 
- 	batch = READ_ONCE(pcp->batch);
- 	to_drain = min(pcp->count, batch);
- 	if (to_drain > 0) {
- 		pcp_spin_lock_nopin(pcp);
-+		if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+			local_irq_save(flags);
- 		free_pcppages_bulk(zone, to_drain, pcp, 0);
--		pcp_spin_unlock_nopin(pcp);
-+		pcp_spin_unlock_nopin_irqrestore(pcp, flags);
- 	}
- }
- #endif
-@@ -2655,10 +2664,13 @@ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
- static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- {
- 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
-+	unsigned long flags = 0;
- 	int count;
- 
- 	do {
- 		pcp_spin_lock_nopin(pcp);
-+		if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+			local_irq_save(flags);
- 		count = pcp->count;
- 		if (count) {
- 			int to_drain = min(count,
-@@ -2667,7 +2679,7 @@ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- 			free_pcppages_bulk(zone, to_drain, pcp, 0);
- 			count -= to_drain;
- 		}
--		pcp_spin_unlock_nopin(pcp);
-+		pcp_spin_unlock_nopin_irqrestore(pcp, flags);
- 	} while (count);
- }
- 
--- 
-2.53.1-Meta
+> diff --git a/lib/xarray.c b/lib/xarray.c
+> index 8c09f6c6cd8f7..a433f77f61a72 100644
+> --- a/lib/xarray.c
+> +++ b/lib/xarray.c
+> @@ -1500,6 +1500,14 @@ void *xas_find_marked(struct xa_state *xas, unsign=
+ed long max, xa_mark_t mark)
+>  		xas->xa_offset =3D xas->xa_index >> xas->xa_node->shift;
+>  	}
+> =20
+> +	if (advance &&
+> +	    xas->xa_offset !=3D get_offset(xas->xa_index, xas->xa_node)) {
+> +		if (!xas->xa_node->shift)
+> +			xas->xa_offset =3D ((xas->xa_index - 1) & XA_CHUNK_MASK) + 1;
+> +		else
+> +			xas->xa_offset =3D get_offset(xas->xa_index, xas->xa_node);
+> +	}
 
+[Severity: High]
+Does xas_next_marked() bypass this leaf-node offset realignment when
+iterating with xas_for_each_marked()?
+
+When xas_find_marked() starts at a sibling index inside a leaf node
+(!node->shift), it now returns with xas->xa_offset on the canonical slot
+while xas->xa_index remains at the sibling index.  Unlike xas_next_entry(),
+which checks xas->xa_offset !=3D (xas->xa_index & XA_CHUNK_MASK) before usi=
+ng
+its leaf fast path, xas_next_marked() only checks node->shift:
+
+include/linux/xarray.h:xas_next_marked() {
+	if (unlikely(xas_not_node(node) || node->shift))
+		return xas_find_marked(xas, max, mark);
+	offset =3D xas_find_chunk(xas, true, mark);
+	xas->xa_offset =3D offset;
+	xas->xa_index =3D (xas->xa_index & ~XA_CHUNK_MASK) + offset;
+    ...
+}
+
+If a leaf-level multi-index entry is split after the initial lookup, the
+next step in xas_for_each_marked() searches from the canonical
+xas->xa_offset + 1 and rewinds xas->xa_index backwards.  Adding
+xas->xa_offset !=3D (xas->xa_index & XA_CHUNK_MASK) to the fallback conditi=
+on
+in xas_next_marked() would match xas_next_entry().
+
+> =20
+>  	while (xas->xa_index <=3D max) {
+>  		if (unlikely(xas->xa_offset =3D=3D XA_CHUNK_SIZE)) {
+>  			xas->xa_offset =3D xas->xa_node->offset + 1;
+> @@ -1512,10 +1520,8 @@ void *xas_find_marked(struct xa_state *xas, unsign=
+ed long max, xa_mark_t mark)
+> =20
+>  		if (!advance) {
+>  			entry =3D xa_entry(xas->xa, xas->xa_node, xas->xa_offset);
+> -			if (xa_is_sibling(entry)) {
+> +			if (xa_is_sibling(entry))
+>  				xas->xa_offset =3D xa_to_sibling(entry);
+> -				xas_move_index(xas, xas->xa_offset);
+> -			}
+>  		}
+> =20
+>  		offset =3D xas_find_chunk(xas, advance, mark);
+
+[Severity: High]
+Can rewinding xas->xa_offset to the canonical slot without updating
+xas->xa_index corrupt the cursor if a concurrent split occurs before the
+slot is reloaded?
+
+CPU0                                  CPU1
+xas_find_marked() [xa_index =3D 127]
+  /* shift-6 node,xa_offset =3D 1 */
+  entry =3D xa_entry(..., 1)
+  if (xa_is_sibling(entry))
+    xas->xa_offset =3D 0
+                                      xas_split()
+                                        /* replaces slots 0 and 1 with
+                                         * marked child nodes child0
+                                         * (0..63) and child1 (64..127)
+                                         */
+  offset =3D xas_find_chunk(..., false, ...)
+    /* returns 0; offset > xa_offset
+     * is false, xa_index stays 127
+     */
+  entry =3D xa_entry(..., 0)
+    /* loads child0 */
+  xas->xa_node =3D xa_to_node(entry)
+  xas_set_offset(xas)
+    /* descends into child0[63] with
+     * xa_index =3D=3D 127
+     */                               <-- returns entry for index 63
+                                          with xa_index =3D=3D 127
+
+Because xas_reload() only checks the offset within xas->xa_node, callers
+such as find_get_entry() reload child0->slots[63] and do not detect the
+mismatched subtree.  On the next call, climbing out of child0 via
+child0->offset + 1 moves xas->xa_index backwards to 64.  Similarly, if slot
+0 is no longer marked after the split while slot 1 is marked,
+xas_find_chunk() returns offset 1, which satisfies offset > xas->xa_offset
+and calls xas_move_index(xas, 1), zeroing the low bits of xas->xa_index and
+rewinding it from 127 to 64.
+
+[Severity: High]
+Does leaving xas->xa_offset on the canonical slot while xas->xa_index holds
+a sibling index also cause xas_pause() to overshoot the next entry?
+
+lib/xarray.c:xas_pause() {
+    ...
+	if (node) {
+		unsigned long offset =3D xas->xa_offset;
+		while (++offset < XA_CHUNK_SIZE) {
+			if (!xa_is_sibling(xa_entry(xas->xa, node, offset)))
+				break;
+		}
+		xas->xa_index &=3D ~0UL << node->shift;
+		xas->xa_index +=3D (offset - xas->xa_offset) << node->shift;
+    ...
+}
+
+xas_pause() masks off only the bits below node->shift and adds
+(offset - xas->xa_offset) << node->shift, assuming get_offset(xas->xa_index,
+node) equals xas->xa_offset.  When xas_find_marked() matches an entry cover=
+ing
+slots 0..1 at start index 127 (slot 1 in a shift-6 node), it returns with
+xas->xa_offset =3D=3D 0 and xas->xa_index =3D=3D 127.  A subsequent xas_pau=
+se()
+computes (127 & ~63UL) + ((2 - 0) << 6) =3D 192 instead of 128, causing cal=
+lers
+such as tag_pages_for_writeback() to skip marked entries in indices 128..19=
+1.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124213409.2224=
+472-1-heyheyco@gmail.com?part=3D1
 
