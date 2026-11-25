@@ -1,185 +1,185 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0107606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 19:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738F7606A33C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 19:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b4o1XNDl
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=X3j1gI+m
 Received: by kanga.kvack.org (Postfix)
-	id 97F1F6B0AA6; Wed, 25 Nov 2026 14:20:24 -0500 (EST)
+	id 8EBA46B0AA7; Wed, 25 Nov 2026 14:24:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 909526B0AA7; Wed, 25 Nov 2026 14:20:24 -0500 (EST)
+	id 875E66B0AA9; Wed, 25 Nov 2026 14:24:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A8E06B0AA8; Wed, 25 Nov 2026 14:20:24 -0500 (EST)
+	id 715CC6B0AAA; Wed, 25 Nov 2026 14:24:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E29F6B0AA6
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:20:24 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBDD180271
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:20:23 +0000 (UTC)
-X-FDA: 85474607526.08.0E37100
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5124A140007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:20:21 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=b4o1XNDl;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf23.hostedemail.com: domain of shivangu@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=shivangu@linux.ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 48A186B0AA7
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:24:19 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C6C05141022
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:24:18 +0000 (UTC)
+X-FDA: 85474617396.27.13A3C6C
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E08464000A
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:24:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=X3j1gI+m;
+	spf=pass (imf27.hostedemail.com: domain of bleung@google.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=bleung@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795634421;
-	b=MhUcVDyd1VaBzTLw1WPNbEdj7Bw/qU+ooy40b1lJoMmB7V99zKk/Xm2YautbcYjwRFwsvr
-	LOnuM9nF+2wclMCSUQNTcJnJ8ziW32Zap4vYAhTXiIzqG90PJzWStYxuAAU7D+8TLOS7K2
-	Nf1qLbJptSk3KC79a7vowL4kvyOPZ18=
+	t=1795634657;
+	b=Eq/9KTYEVLHADndG/5+VM/R1bZDhISvZ9AxKjPR24+u4Wr+PrwK5niA9S1kwzZcL2vIpzp
+	VasgYZL7LlpXklep/A/1J/h22S5VC7z/VBjjLBn5nVTFENtAK2SaKAXlc55aMye/Ok8Yb/
+	/OECds0k0QQVoCxDbz7Hw5NFSHq3Eu0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795634421;
+	s=arc-20220608; t=1795634657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gjkmUYAQqhObZomEhSZvG/YB77KWT+YtxY8LYQ+JXBM=;
-	b=7UnXK2Uxm8hc8k7QKYhJnhfjGnsWXXsvxtsaSm5Eq/c30TB7cuAz8x7z2ZX24LAYtgcCi/
-	1M6zIu5NOquB80afWd0hlmn6+/985+q7v0+7Qv1hBMGF9KOgupoKDvLdiOfy/fITiEjE20
-	3X/klPZCdCWKl/UMbZbMcDAVw8Xlnuw=
+	bh=N55gjPKFtoyQEkpZ+mulBFdiGvAn3buEDUMJWwRWBLA=;
+	b=HuyfAwfluML3XadD340eI7RI4mn3IfGhuRLEqIEw6BfrDmEFKmv5Jpu7lrIZqjbgtv47mZ
+	Qsn1KuM3JVTICXz8CZgJSiVcrqBOmr7LnxgWALeiHHdeIFEZmMPZ+MWtl8bm/OKvMuSu9Y
+	3a+Yjgtg5wp502e1Uu7xw4yRg9M3GaE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=b4o1XNDl;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf23.hostedemail.com: domain of shivangu@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=shivangu@linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APGYdNb1999322;
-	Wed, 25 Nov 2026 19:19:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=gjkmUY
-	AQqhObZomEhSZvG/YB77KWT+YtxY8LYQ+JXBM=; b=b4o1XNDlfljukz22wGJQ0h
-	hFDvCKahLQE5+oELMoxpvR8yus1xr/9HFGs7jXKfv24NedjQNfOPAQLQsOYaYxmJ
-	dUFE5fhXckqAuW0PYjKLfUY4rjnJnXiiEJ3J6heXYs/hWnlWwEUIeiE6+U2PbLg2
-	8YmBlg57Xz94o6TGMiXCPGRFMqcx7uqeKTvP5PT0Ve/GxmJjLufrD15klX7U8Hzv
-	zal0O8X8xVHjp69b9e+a0liO17XVYXOOvkfuUiwLL6YKgBmTbYUQ+hOU7A7uWYN1
-	Af/9bgIBBKYXWxK+4RRNAGIaKYwc8nTS7EMTL98PhsZN4n/5Bz49Dm62UQ2Sqx/g
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34fae8qk-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 25 Nov 2026 19:19:44 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6APJJJGp505545;
-	Wed, 25 Nov 2026 19:19:43 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j5uxx22n6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Nov 2026 19:19:43 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6APJJdNd42139928
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Nov 2026 19:19:39 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EBD8220043;
-	Wed, 25 Nov 2026 19:19:38 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 75D8420040;
-	Wed, 25 Nov 2026 19:19:14 +0000 (GMT)
-Received: from shivang.upadyay (unknown [9.67.112.155])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 25 Nov 2026 19:19:14 +0000 (GMT)
-Date: Thu, 26 Nov 2026 00:49:10 +0530
-From: Shivang Upadhyay <shivangu@linux.ibm.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-        Christophe Leroy <chleroy@kernel.org>, Boqun Feng <boqun@kernel.org>,
-        Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org,
-        linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-        linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Jan Stancek <jstancek@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v6 05/11] powerpc/vdso: Enable the vdsocheck tool
-Message-ID: <awc0rvqmahY6cHtv@shivang.upadyay>
-References: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
- <20261123-vdso-absolute-reloc-v6-5-161e218dd217@linutronix.de>
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=X3j1gI+m;
+	spf=pass (imf27.hostedemail.com: domain of bleung@google.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=bleung@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8b3577deeb0so2858003b3a.3
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:24:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795634656; x=1796239456; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=N55gjPKFtoyQEkpZ+mulBFdiGvAn3buEDUMJWwRWBLA=;
+        b=X3j1gI+mF4j3Ip2I2c12xU9zdCWXJmVK+nrEJjOAPePEQZMGK5flm2cJF9BwMaCeo/
+         3bt9a2t1mcfSR84RQK6LDhBWWKMJDDl/CrER0zicYI3lqKuHiwBewCzSEJDRDqUD/tMJ
+         GXqvRy7T18dmGxIIAtlwTQaX+vtYkvBCiuNsnFW2in2QaR6mm3wcuoTdS5ZeNWPe94MV
+         E/5+JVItcf73Qxxy1JkOwLX19eXRfUc0il5lObehp9IKmppJIqO7MOqx2k1PEtHHV1hP
+         3VGvo/2agSixnpJ6vGBiHSL2PW6SV9DFEhYuZXcpZ/CqM1hoQ4YZcWDYOyvRy4FpvCNF
+         QvlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795634656; x=1796239456;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=N55gjPKFtoyQEkpZ+mulBFdiGvAn3buEDUMJWwRWBLA=;
+        b=Q5JqYuSv2LTBz9J/5HHaVbH+idh0EeG8Hi5tqizyjjSKTAfTxD1aIcqsLXpzWD/aNy
+         CRlFCTG1QXmAJ7v/npX+/SZhjNbTNST00EFVQm6DLOjISNUKYoRG6T88/hVfuNA731bE
+         zBu0svitlY+SXfr3x/b7Q+qG6CbjjKRkOu5I7P5gZ1YfdAAWCGA/gh1oMBTcxcLN+0sj
+         TabeyQCer7eAtzsVlfNqjXw5hwMmuRgTVYgy8vlyS+CZbVSNscOQ/Jjkj3g1pOt10oPp
+         gCST1auz/zDB5tgNQ+GX7i+mXQi2Gyxdv9+ZFmH+Meux4IERG4dJhpobsHTEbJlgpfUN
+         iHig==
+X-Forwarded-Encrypted: i=1; AL+hErGZM5ifMd6TGEwvsBcizGUMQVmNIHyXnjLLJ39u4anRe2tWqzu8UVGPmYA/LATN71UjkZCrE1eQ7w==@kvack.org
+X-Gm-Message-State: APuU4Z8//qJ4FAFlmdYvZjoIsF2D7v/16WIvAS3N9vWY32EIuJRjbrgN
+	H1EXYpRohaxruHLW9jPj86WdEhfga0AY1olOzTjS593wsLW+P+1igedSBldo5pftwg==
+X-Gm-Gg: AZFdTZcVjrr2hjfz9fvvzGyk838Pb+z5qHpCu2qpcta33Zks2muIox0LTGUpIPgrTe7
+	laFANhnyUpPjjzzHWvtLwuaYx98CWRZSw9rA/zNdCBCSYHth9ZrWlj49PUtvuH6jzoLFFNeLFHN
+	cWd2+WtUcz3YTTrM6yej1sfLtfcuQLlwihiPETiJbS2iBlNDOxN3ZunFfnxudHl6cAAgvlaOTSS
+	J6RKQJmP6uXzrsfGlmocFJg0rLrkoxDsFhNjLCZdnBp+PgBhqWtFUqcAVzcXRa/dLUO9nWAEvM3
+	1dTZ3uDkyYpXc5RDz2x6UFCneElFGfHK3Ahy4FyojzQi4SiFU70c2uu8joh/pNVL/C/GDStJ76h
+	jEMk+qfFnsfyoiPXs9BOakNyWq3s/1BCMdv5IY7twmnyPc5D0SpChcxLxBGtJ+3/6yQVN9XNnkn
+	Mzxf+ogCHXsqYC5Z4ZqHYKrP42rIXIdIsHWmpI7lBVozPiXG3ki9j1qSbr7sgCOI2ZjKjn+Cx4V
+	3kKeuX36Bk/xQ/YgLIt6gVxPd3hbNmnzYRaN7MjnJ58opz+N6x0WbR6OTFM/OLzE8Yu7x2fqhEU
+	m5QMw2UjyjDFxd2+u/Nm15XSCbZktVEe7GF3H1yFO5dC6PShVMDwzX5+8Xv+iumhBUtiQEUIJ3F
+	YsqsmjBUUL+bJ1sZICUXLiXWVlvNepMv5A3GFmNvHbR4HioeArEi3XhF2zytTzfa8R443OeAZuJ
+	a0D7TYWVuTAw==
+X-Received: by 2002:a05:6a00:a908:b0:886:773d:a6a with SMTP id d2e1a72fcca58-8c87c199463mr15925448b3a.28.1795634654761;
+        Wed, 25 Nov 2026 11:24:14 -0800 (PST)
+Received: from google.com (196.126.197.35.bc.googleusercontent.com. [35.197.126.196])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87077bc47sm9717494b3a.6.2026.11.25.11.24.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 11:24:13 -0800 (PST)
+Date: Wed, 25 Nov 2026 11:24:10 -0800
+From: Benson Leung <bleung@google.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
+	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	MPT-FusionLinux.pdl@broadcom.com,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
+	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
+	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	intel-gfx@lists.freedesktop.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org
+Subject: Re: [PATCH v3 11/12] docs: ioctl-number: update platform entries
+Message-ID: <awc12oWB5WDJi8XZ@google.com>
+References: <20261125061340.3402300-1-rdunlap@infradead.org>
+ <20261125061340.3402300-12-rdunlap@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Kk3dCghKBQNrocaf"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261123-vdso-absolute-reloc-v6-5-161e218dd217@linutronix.de>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI1MDA3NiBTYWx0ZWRfX3whPefz46WC1
- hNygsADgWWH3q76IQ97vzHqlw0KVrxx7r7UAw5SVuBqmP03DlIHvveHdnCb8I+LFUdhf3IBTEF4
- 8I0LKw8A6RDat+2jMShRhIdJyHC/snbMARzB3j97ZRg4dk9eQk6Kb/c17OPxkgsEeh56QxlIgDC
- wUPWuvr9YTBgUtvA8T8GCqkSSvcvT95hsmx8Ct0PUUDgvFCs7cWvxl/cHPmpiD4Kk1M2+/XY3xk
- DLiaxWKhSrSivaxvdgJ1EA4G7gz0ulJrAaMk8ySQ2/S47CSLA2FI3plB5nV4GNPFWQXLUfRWPHl
- QcXK+Qe1+YjjykPhUcW6RI716uPTfT8UPFmL8V6qwT/f4oC1rJT58R1VQobyjiFZ9MGmwr6WlCS
- z5ZKV+GghS12zlmcdRFYX61cx8WcuTghM7JYnVHIKLaR9Q0N8q8XzXIjmtuCeYWzKrV/9/k7FwS
- CZCtvJAPPqeb1X+3DCw==
-X-Proofpoint-ORIG-GUID: 9DuPW81bc1Ne1-Acmq-ZFQ1oXTeQgO4D
-X-Authority-Analysis: v=2.4 cv=U6QHnuru c=1 sm=1 tr=0 ts=6b0734d1 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=8nJEP1OIZ-IA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=K52B-zMjTZoA2OaJzQcA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
-X-Proofpoint-GUID: kgd6ntmKeCF4y3vpHzpfFLVurSHBIu2a
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI1MDA3NiBTYWx0ZWRfXwLCiikm0vVyM
- 9boHPXPDQcdJQkQPxTdXN6x3x8c/RPGIYsu6hqtP046Hh/4b5uaJA5LSJKyG0fXuE8vE282QQVw
- jau+sQ3OeVvDMeZGSzccJJHxqp+Tqsg=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-25_04,2026-11-25_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 impostorscore=0
- clxscore=1011 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611250076
-X-Stat-Signature: fxwxp4uxi6zwjgmeiqngug9iafs3ppxz
-X-Rspamd-Queue-Id: 5124A140007
-X-Rspamd-Server: rspam06
+In-Reply-To: <20261125061340.3402300-12-rdunlap@infradead.org>
 X-Rspam-User:
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795634421-266673
-X-HE-Meta: U2FsdGVkX19liJgYzKjwJDPoPADUdT/zCzSWZ8m29iUh9GbQZHrZIRX5KmV6E/zbhXsb+o3mOcE6uEdslBsvkmTJKRwTYK4dswfCujjg8hXWphdau9622Zjj2HUuAQ7DmxxobVJ8NEbdEdCuFzZcxRWP7eIshWEqTHIyZ+TvzA6LKZYIpsasLZrduCOUuttqli9uWP/dIdjIdiMdWPzzQg+BPEOZAqbMXWKqfXUShsu5Do3UEq/4VLCgfnzniZ0aYQfedfWqS9BqB+gMkEvt96NSh7er/hhk49yaQBPcIR8uidXTyMvliP79QNhQPCzgdqcw+q0YP23eQM0loR13KESeEq5JG+xKYeOsPS5Jv9FQOuxf5w4ewWgdz9wCye+/cQFIRBbW71F2nVApzzOrtN0pT7w8NcEH5v4zo81AnmG29K8yVPHDMrvYs81j+yRpNyIt3GeEaxuFpqXfWuZ/Qvu094z/Ebj6AM9aUHmPaMGfsvt0rvbZ4XK1Q2eRevlHeUAX7zgL7KUv2OkZUNUcOfUFCg9/eR79kEkAcQWgwWoDhTIyx7IFcn7H+ku/N5fZasL6Tr8iMp23mWFw4SHW/Rso0+w1zq1HJ2DiZkp5noUj56h2NcZSyW2GFACDHmYgoe1XZsKLecAiNDAKsOnPUFnu5QBMdCa5DGa8fYOWN+a3zYa/xwcRdyYBlRr3AwBUXMrWLwX+AMx2XKSxAAGQgO91AfSIkyaxi7Gmz+97mwhZSQoL6POTfssOTEAIpNN6x+f8A/00qQNqX2TJ/3nfC98ohxubEbioR1fgtwBhOq+bfyS/6HNd26gWGdLf0POiGAnuNO93c6qmU0zeBpo0B3jkpH0vsw7gezCvhck+h2LEgNxO3lceg1xL4by2fyrDbFIi/9FU2H4E7wG58JrWYmbZDD8PwGPRLq77XTdPzAlj4D1HFlbzj9q5sNOaNoj5dsIcZOPEF6Z1LrvbJJc
- kKWJHjSW
- jiHJfKwwU/gHPurXze7kWfozHloipZjvXiJBpzc1YxVXLH3ruE6JO1EO0gDGM5xU/HBKkfMqqwcJGXsPUM+mMTDBWJLcNowhPi82lnQmrrsw3TfJeAbKr23wlW9gRw74EMfvEnZzpXFIT1cbMZIFCTu5LgmhPgzXtC99yQPPZ1zsp/PNFPUgoOKfdL/wlpcWcYMAaLrHmL1iHTOpy5MT4ey/nM8tRJZe3dv3nb7jvieSK9DZX988xHtKcrVf52FRJQPGk646H6kLqLd/mpGQ0VAoGsRWKnFK+cR7Xn5XC7yJOVeEkXfWp1FOd+3WILPDKZ7k6cl3NTELwQtCTW0Qgz34yeSqMfOlJCCEvzWXYyZg91s+0zO9YRBDZGrjtB09o8w1aNfTEQ2yyElxG6eNoobuInZamiDypL08dnb0yh6fIkRHNc3XNjncegUQO20dvwQrl7YhAVyQ/HRirRqx/Eu1StstH/QaGSi+InAc04OswNFmzavD6IbmpX7JP9dFoqJVKkWwQSQaXhqb+8vsHPShb2Lxi1TxLK4MjM86GnsF5sox3O13RVSGvxA==
+X-Rspamd-Queue-Id: E08464000A
+X-Stat-Signature: qkm94coahcdppm1153jkrc5r3r5gxeub
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795634656-139068
+X-HE-Meta: U2FsdGVkX1+Rf1Jh2nym5AHoY71eNL/n5PrvJWwlQygTV/xr1ibpj6G+9njGAT/ee0eKh+KnpJ+q6vyoBbcDd0MKh3qmOeQzZT4tjeY9ok8xIK20VMcNc5RRYRk8IUTrRf/DTLOjQqsEncfAetj0ajlhl/IeXUsq3G0PDISi4jtMCY+JxnrQGj9B16YUiuS61kgkDatpvjLeVnuVTDdnbtUOWstTR4vRLRQkMXNy/OeJA5DXxW/NbfFWaVgG86hxUorEyY+IagVqEqG0oqezzCOSDTqhyKh9O2oXOANqGYPWl2j0rJxRQwC5z5ZPOe2JEByEZozxKR9a/2/nsOZSDhSwVV5Yx32ST8RcfQJH4Ru82L2p+48CDv11YAgZhHWh9pfQqVu/KqSoQeOCNIrgdZP0NbagHmDCKgsLLI84uap/TzSj/A+wUerhlVDb5yUwgKdIszelttknxoZbUkWvp+sMUrWiUhBgjrJ6Bd1bPxHYGTEVc9d9A+Y+nKHmEY8EVyHkPGWA2F54w/HutnTEVrnG/kJptjpWMue7WymMilxKUYYzjl/P50/ryYrNFq3ZfM3NoFUVVhFP0CWbP4FeUfsiLGQ5NI51SHzR5Ey+CmGURmdFo9BAN5ATduNNjtYRtL72JhBbOZjYGFX2EAZ0wKsImEvgiD12/9ZCcyDoMOzJm1lci0SwcQ/2WWMkzPnPWIARWgiEgxK+mSQgrrBxzGdCuP9/fMA4m5T0yms5HE3a808Q5qrwz0w6Y4pWxenqDqZsOH0239XTBg+C+LIusgXxRzN7aj0e8AgnGXlItbg8tsBMIKMbJ13UobRxzBBqvlJWOFoOfYBzWYckSWGjL+wJq/tAxPRWUGT6sd+l1REoapVroBzPsLqHC9SKFXvkeRTTHjcNcPdNztp+mEEx1rjnO/iBorpkuYsBCBUPa2OCFpnPtoKSNS1c7fCwj88GLCMkWii0AofvWAF0coI
+ 2LOZk2g0
+ dLxyi7xE5wmd9qCQd355xLa0AfzbvtmHyPXpoP34001EAjONI4JDgT3GeRcc8KVGp9Pjf7bQB3T13+2arQTelkzX5afz59GttsHQKMi/nF4cMu9/N+QkwZQeiF+PegL+bAs3HppC8O20vKGQdDxOW03IaulNKo46i1JOb3kUzT3wFrCcMJVBx6g9Sqv7zlHb+j8YdGOHB+xd4+zVvSogNnGMMGm7MNK8aQKtcClXW1aFKcT3OraoNb7fyx/K6Z7JIoH8Pn6POEweDuhK4Td9q1oqSyyKs1cLHmztLSjdfFl3HbFYTlOLkZ2rPC3pPedxT3hwUzzc5Qd1iBI/QyouuiIhHxMU0cHVeiDTRkagP0PHKZiLAB8ebYgKgdpoBfoYaj529uir3UQxjgPH7U1vocXpSvbx3YHySUijzT62R1Z+yUax3goCzEh23B7Xcv7xFK278guXqgqb8hmWzW72ZxD/o5iVtoluSJLKfwciiXL4a13XIZ3Vf2Ewzb4tzT1oA6NY0TrDMt+uDCJc0f5tZKggRTB82UpMLw1QKU5NKvUxC0mpaHk3N9Du0zxKs5lZZG3XpbiPv53faDyWOlKuVQj9IsBhLgnGaNsfbtArsBs+RurgDfp+YwDFN/gAuuHrf8lxgnfx29NTA94ZCsFzh/a3ph363TDlubKZuZJI65D5AyquACP7FTppz+H9gdHDPvuMxvII1YSjnf5FYsixzhovQ3KFrGl+9NR8r+wK/9IgPgKFq7nfwHHQEIBCzm7AwaMH+1FAQDBvbSgPRT/HS3DvHKxnK6qyRfQiLTTOzyeNoYPdxk4bz0EWfjC9NQ7vWjLqPF1AwDN/R6EFEm5qfnMZGTLCr0yhYl0fs/2l72416k52kxxb5sRsbBBfnitDcKvmqRJQ6QOY7uAeltZ0mad7cyc5W7Lft6PWSaA+0JO9srjfhN01miIMAYmH+bUjIHN+9XG9tiOkZ6V0fpTgYkER6DeV2
+ HgEfBOiw
+ QapiSp8u7QhdfPNL0IomnvTFtL81yPvWMwo//2w5fnREz1/Tz0Q0Jjb2WGgHRxol6SBUWbr6GTnAMF03wcVFCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,32 +188,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 02:50:56PM +0100, Thomas Weißschuh wrote:
-> +        bindings::EM_PPC64 => AllowedRelocations {
-> +            in_object_file: &[
-> +                10,  /* R_PPC64_REL24 */
-> +                11,  /* R_PPC64_REL14 */
-> +                26,  /* R_PPC64_REL32 */
-> +                44,  /* R_PPC64_REL64 */
-> +                249, /* R_PPC64_REL16 */
-> +                250, /* R_PPC64_REL16_LO */
-> +                251, /* R_PPC64_REL16_HI */
-> +                252, /* R_PPC64_REL16_HA */
-> +            ],
-Seems to excluise list of all reletive relocations.
-I only could find the following being actually used, for defconfig ppc64le.
-But good to have all there.
 
-[root@system vdso]# for i in `ls *.o`; do objdump -r -SD $i  | grep -oP 'R_PPC\w*' ; done | sort |  uniq
-R_PPC64_REL16_HA
-R_PPC64_REL16_LO
-R_PPC64_REL24
-R_PPC64_REL32
-R_PPC64_REL64
-[root@system vdso]#
+--Kk3dCghKBQNrocaf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Looks good. Feel free to add,
-Reviewed-by: Shivang Upadhyay <shivangu@linux.ibm.com>
+On Tue, Nov 24, 2026 at 10:13:38PM -0800, Randy Dunlap wrote:
+> Update the list of platform/ files where ioctls are defined and update
+> the ranges of function numbers that are used.
+>=20
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Acked-by: Tzung-Bi Shih <tzungbi@kernel.org> # cros_ec
 
-~Shivang.
+For cros_ec as well:
+
+Reviewed-by: Benson Leung <bleung@chromium.org>
+
+
+> ---
+> v2: no change
+> v3: rebase
+>=20
+> [Since having multiple maintainers trying to merge these would
+> cause some conflicts, it would be more manageable for Jon to
+> take all of these through the docs-next tree.]
+>=20
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Shuah Khan <skhan@linuxfoundation.org>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Florian Fainelli <florian.fainelli@broadcom.com>
+> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
+om.com>
+> Cc: Tzung-Bi Shih <tzungbi@kernel.org>
+> Cc: Benson Leung <bleung@chromium.org>
+>=20
+>  Documentation/userspace-api/ioctl/ioctl-number.rst |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> --- linux-next-20261123.orig/Documentation/userspace-api/ioctl/ioctl-numb=
+er.rst
+> +++ linux-next-20261123/Documentation/userspace-api/ioctl/ioctl-number.rst
+> @@ -434,6 +434,7 @@ Code  Seq#    Include File
+>  0xBA  00-0F  uapi/linux/liveupdate.h                                   P=
+asha Tatashin
+>                                                                         <=
+mailto:pasha.tatashin@soleen.com>
+>  0xC0  00-0F  linux/usb/iowarrior.h
+> +0xC4  00-1F  platform/raspberrypi/vchiq-interface/vchiq_ioctl.h
+>  0xCA  00-0F  uapi/misc/cxl.h                                           D=
+ead since 6.15
+>  0xCA  10-2F  uapi/misc/ocxl.h
+>  0xCA  80-BF  uapi/scsi/cxlflash_ioctl.h                                D=
+ead since 6.15
+> @@ -446,7 +447,7 @@ Code  Seq#    Include File
+>  0xDD  00-3F                                                            Z=
+FCP device driver see drivers/s390/scsi/
+>                                                                         <=
+mailto:aherrman@de.ibm.com>
+>  0xE5  00-3F  linux/fuse.h
+> -0xEC  00-01  linux/platform_data/cros_ec_chardev.h                     C=
+hromeOS EC driver
+> +0xEC  00-02  linux/platform_data/cros_ec_chardev.h                     C=
+hromeOS EC driver
+>  0xEE  00-09  uapi/linux/pfrut.h                                        P=
+latform Firmware Runtime Update and Telemetry
+>  0xEF  00-0F  uapi/linux/ntfs.h                                         N=
+TFS
+>  0xF3  00-3F  drivers/usb/misc/sisusbvga/sisusb.h                       s=
+isfb
+
+--Kk3dCghKBQNrocaf
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQQCtZK6p/AktxXfkOlzbaomhzOwwgUCawc12gAKCRBzbaomhzOw
+wuvSAP9FFr45oXAv5Psc3n5xsSYyPFouusI/XwRnWy3tYxQspAD+KIeOTWQfcOeC
+TWeqyAANog5rg68r7xNPxeH8I/R6xAQ=
+=Fk2v
+-----END PGP SIGNATURE-----
+
+--Kk3dCghKBQNrocaf--
 
