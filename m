@@ -1,99 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0212606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h3IiHOrW
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68ACB606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:43:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A5B56B0939; Wed, 25 Nov 2026 03:42:34 -0500 (EST)
+	id 8E83F6B093B; Wed, 25 Nov 2026 03:43:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 256986B093B; Wed, 25 Nov 2026 03:42:34 -0500 (EST)
+	id 898886B093D; Wed, 25 Nov 2026 03:43:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1466B6B093C; Wed, 25 Nov 2026 03:42:34 -0500 (EST)
+	id 7AEBA6B093E; Wed, 25 Nov 2026 03:43:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2F736B0939
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:42:33 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 79E0AA8B34
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:42:33 +0000 (UTC)
-X-FDA: 85473000186.22.6083984
-Received: from mta1.migadu.com (out-125.mta1.migadu.com [95.215.58.125])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 60DFE140009
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:42:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h3IiHOrW;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.125 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 58A206B093B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:43:08 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CD5F160D6D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:43:07 +0000 (UTC)
+X-FDA: 85473001614.20.150EE1E
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7BBBD1C0005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:43:05 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf18.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795596151;
-	b=ilqxYRYKzmuFdcattjxXe8nlp4B83smU6eiDW7dQJ+Mp0B00Wf1CAhBBPoRk4IWB2CDDzs
-	yadEk+YOLboY3gVbswchF1ot0IcHTAGrOfB2zN1IT2Rmr/+zmhBtzdo3lQhPaqZPpodooY
-	IwFMnvaZTui9WfUW9gqZy4z6CI/EDEg=
+	t=1795596185;
+	b=GRoCIVaYeF+EtNUYem3+4YQadheOOenoJa1lfiA3n4kP5Xh6DuuegMbILw91wTwzuF6ax0
+	wYtRh+7vbpt5mDmjyM4Uam90ccaD6ePW/lHE+KCD3t7ejH/07w8+UcXWkzfXAO/SmkP9yE
+	Ita8f+ID+TZnYlbgh6QWhd+NB8kMRN4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795596151;
+	s=arc-20220608; t=1795596185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZSvh4Qwu0h8OJdR8+MiT1ZzApUDwrQReChmK7wamOaE=;
-	b=PBgt/sPLmMAH3/BRijGhyuridyibfDArsZ0MNGzemSTDkshTS6zljshtlJN1l1WVXwMtAX
-	f5vM0gyX+Bfh5YENa8HpQfue44XSld5clLVlvB0/iY3kleLNT/wgjzQmKnWlNSgnw+siev
-	6fTNkD2bVPvODueGKmQ9aT5R+NGYRqk=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=1mOvzWhP6BsC2DveCsIqITs/FmHLNBNTXAMNKDO4qhw=;
+	b=qZwmIRgUGnamMAP4S+CIngw7WD6Wq+MS6ucC9wvWpO5bLXsvINEqWnNBMMzwi/0IdnXY3h
+	+CqHL2l2BJooEXCnowuR3Aoldlavjb6B1ZQyzdLUkNt7vhNGa6ledVEPKhoN1aN8NtVM1I
+	t0LZxxIYED2PYNOQMW/UWMy0HZkckqc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h3IiHOrW;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.125 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sJ/2ZbzaqcfeCaxGMm3EfPm8Ar39j5+iRnGJrB7nvUs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795596149; v=1; x=1796200949;
- b=h3IiHOrWRs95/O+DTtGWrpA7RlLiQN4DX9yNaBXtQn4TeFCQXUAVhGZN/LP2F1S4OOJxgXVe
- TFkSbuc1YQlCNGGMVHT9jlv6GbgMYgqWOSsa0vDmMwTwVCqksQy6SbCcLH1o4ptvAmtxXOUuGDB
- MfTeTiatzOffL46ErvwqHVdw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 8fa35624655c959f;
-	Wed, 25 Nov 2026 08:42:28 +0000
-X-Mizu-Trace-ID: 8fa35624655c959f
-X-Migadu-Flow: FLOW_OUT
-From: xu.xin@linux.dev
-To: david@kernel.org
-Cc: ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	akpm@linux-foundation.org,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/mm_slot: introduce mm_slot_next() helper
-Date: Wed, 25 Nov 2026 16:42:05 +0800
-Message-Id: <20261125084205.345860-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf18.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 7C2816732A; Wed, 25 Nov 2026 09:43:00 +0100 (CET)
+Date: Wed, 25 Nov 2026 09:43:00 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: willy@infradead.org, jack@suse.cz
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: what is the correct hugepage dependency for large pagecache folios
+Message-ID: <20261125084300.GA23551@lst.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Stat-Signature: ffy3jo7deax7r77n58yka5wf14ieoq9p
+X-Rspamd-Queue-Id: 7BBBD1C0005
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
 X-Rspam-User:
-X-Rspamd-Queue-Id: 60DFE140009
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: oe8uah5pwqia7jr7qhnxru3ag4tyhhqa
-X-HE-Tag: 1795596151-191712
-X-HE-Meta: U2FsdGVkX1/O/g0/DfHLmAxwm83VUc+0UU3YDjpMKjnhu9aXghP7NRGPGOiiQSK2azR494VwsarsZLS5OajmFsW7ZVpddAnc7K2RCt/Ha9qO7+9ks7MXqjpFPs3gMBGq6vA0X9R/8FM1+a0ZNCe3kk2icNClohSpWhw1GmY8ienkz/gW+Cxj002QSfxtKUzjBcCNk6Klj75NE9MdonWhb6FMC7RYmAuRQjgpDHSX/r5fHLJpIgPt9MQbGPbWos255bSWwrakn63O9WM91LlP4ceRmdgedRaw2sG8yLIOMJ7hk/sFRabg0dFXTVpNRO9fWJvkgVpBCvVz787tOmzezm0mVdE91YyZ6fhIpkJXWLvdloRFi8EJ1gEjTwVQz6KBOnT+EZFIAYoX9JtYDFn7HiPbWijQJw/ml6G6fE0vYAH9mBA+sjHCIPqFWWDu1giuIFsC4HWeZIjiAAbm+4HMh0I6PaN1gKZw2KlNBl4CrQiqj02+rZFfyz92+Ud/hwQo5mnKtY1or3qNDqZPftClLyFEvuGqODvNPmRYzAq6feRkOcta55yzrcQOeX3VAFML2qh2Rtp5AZEIK2xLmOpwnw+ZQmLSoFw2fnaaYeIdmTqwxrE/sRN3+ArrJi10AmRfNSrPSpzN6x5EgrjELqL6qeKwPtdGTQX49OenK3OaMXBDa9RUoj8vSWOzR8JYrYsD3rEIP2RGhD5ofD0PIlIpEaFL5fxeFhTBqKgGVGvFG7WBf1IaNkC/TK2kG8aDdgZ251IKBl62yqTMbie93o7PEs3fYVcMaG68uyh8XrrtKTQg9aB0+GmhzuBTXt2thRvwnGP0ScFR+dINlKaSqLbyiDBDb12XXWfSbrKZF1SIC2b804v7NgvDAOSrp6KQftGIoqwz4IZCdrcx6oRhJ0oI6dF/X4agkcX+62crBasVWBhsYiGjF81X0eA2uOWYo2DO2hGKi84upPqgVKvwEzY
- /rsc11R7
- /or+kyXBd4+F0BXq70xYzeapulGHiezrkgCVmkT+xW6pAEfF0ZW6aRhkOpOB0tHiRT+i6gjrmtaLUHJGxu6mMdrL1obeLAk2t29GV8TihmfB75KmBa3UhrBjVKZ3dOtYe5IgpA2wG9LZ925WUiTpF6le70uFXxkXwt8gtNMgy6xOxs50cqPDAhUQn35J4uMUKCxQdaEHbLvmOy6ppGeWkaSAZNLPlRGgTLT/SOlXbDb+OGbj1bhik7PulUcq+bja3SZgLWwXyy0yuE85FuAVGprPVWnGHGaN/MiwhosCtbcYqB0pLYrQ+UPWWWdudcGfUxWLe7PZsW2NdjKAF7GYQaHZMktFCfOAQlH03tC6rpTAaLqwbxC8Kv0TchmfLVeQfuEvXxx7IAPUD0Kb9PAp76rcUOBA+WPsnl97Wsf1p0EXJkg4dBd9EKZ0xCK8nu33EVgX1L8zcOMCCLRfjuRZEImvKWThAaCaWWj3jnyAL2ZM/Dv4=
+X-HE-Tag: 1795596185-297938
+X-HE-Meta: U2FsdGVkX1+n0RWfceM9DTTMEIar6Gq7D4THDuDQjd/51/JmVXIieGe2jpTUXjDVl/5zhvMK/Qmbgs2ymwSYPvdVIrONlKlamhHuUFpbWnLAVSgie6pGtgjVdfn/CFhGGfTT3SaHe0VbvBR0e4iPs/9nB452cl/8valp2/mxt+fTYPeaRFrppR6T6zzgKnbQdlT6flPlEiHokp5uDomXr5DVJD8Fk+4/1MYLx5s/lQxqZds3fhtFmcxR41nO4b6uPw+FsEG+UwzOpZoT7cCaAVYUqdJLhSy4KeqO+kXLYYXIF0KIry/t3JKNyC/Tw9RqyTifAph+ayY7Q2dHmMZ562FbP0E8QaGG1s4xrgSIrNrvIkE5RfoBVkqO4j5sVNolJYgM9QVlTowv5AMTgBhOBmXAD5ZF1+p7PpBY9VLU2yU9ZlEjS5upSD2xRPs5JEfi6fiKYViEavPx84SOnk8UoUJVzrvpq8B9nufFcUqkath0FsQ5teJ7LX9o93yGoMq6x5iVnuCNEvcb9VeBn8bfH4BUvfpZ9iIL1mKvMLeojD61Gu2l3RzNFsCKl32R2L3uWnqk0re7beMCZbxBXFxlDzZ4zR/LQH/zBhHPbNi5tP/dVSwnYmIwByGMknM3CbLBLsX0C9JSW4GeYXxNkKDkiA3/t7luomuYfstMu3jBSpRz2KeBu3Ua0Wpm/7Icd717iQVhCbbS4BikIEOMuGZWcoFkubKytj7nIH9UlEOrXQ5T3HTDKVgrm6N8dX49mSq0K+Um2tVPVezLIUG9vQL7C+Q0oIUyElV0v7m7SEJGch13m+Kt5Y+/2ZeSQKTRjTUqDsrXpTmKDZ8zcwI4/mGRZIdT6zH9x0UqTieIiJq5KQPEHW7V5l76CKdj7D2V++Nxd8h0PYCr2AUVr4NghHu5wYYJWTdyQm7uQHhkEGT8OyJgvDeStHWuBs3x8SQraAJHyH7X6sF7PZ1jSqFNJWj
+ 5aQVFe3U
+ bWX1zadd3qGMjFXAAMzHMZl3ag83IV9hNxVSpJ8cOsaO0G9BWwkmjUJKXRnwslFMWFMGrLAp+36D0jO1nH4Q1qA/MtdTo3CkF3E/FbPw7THYmTLPR0CTVm/XC8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,109 +75,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+Hi all,
 
-Add a generic mm_slot_next() macro to simplify getting the next
-mm_slot container entry from the list, and use it in khugepaged.c
-and ksm.c, just for cleaning up.
+we ran into an interesting cluster of issues with an LLM review for
+the (not upstream submitted yet but public) xraid code.
 
-No functional change intended.
+The LLM complained that largest_zero_folio might only return a
+PAGE_SIZE zero folio, and this can happen because either:
 
-Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
----
- mm/khugepaged.c |  5 ++---
- mm/ksm.c        | 18 ++++--------------
- mm/mm_slot.h    |  3 +++
- 3 files changed, 9 insertions(+), 17 deletions(-)
+ - CONFIG_TRANSPARENT_HUGEPAGE is enabled by has_transparent_hugepage
+   returns false
+ - huge_zero_init can fail to allocate a PMD-sized huge folio even
+   when transparent huge pages are supported and
+   CONFIG_PERSISTENT_HUGE_ZERO_FOLIO is selected
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 4ceb1b16c03c..0a5c78d01159 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -3074,9 +3074,8 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 		 * mm_slot not pointing to the exiting mm.
- 		 */
- 		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
--			slot = list_next_entry(slot, mm_node);
--			khugepaged_scan.mm_slot =
--				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
-+			khugepaged_scan.mm_slot = mm_slot_next(slot,
-+						struct khugepaged_mm_slot, slot);
- 		} else {
- 			khugepaged_scan.mm_slot = NULL;
- 			khugepaged_full_scans++;
-diff --git a/mm/ksm.c b/mm/ksm.c
-index fd2d212cae79..11914f649a73 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -1217,15 +1217,12 @@ static int remove_all_stable_nodes(void)
- static int unmerge_and_remove_all_rmap_items(void)
- {
- 	struct ksm_mm_slot *mm_slot;
--	struct mm_slot *slot;
- 	struct mm_struct *mm;
- 	struct vm_area_struct *vma;
- 	int err = 0;
- 
- 	spin_lock(&ksm_mmlist_lock);
--	slot = list_entry(ksm_mm_head.slot.mm_node.next,
--			  struct mm_slot, mm_node);
--	ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+	ksm_scan.mm_slot = mm_slot_next(&ksm_mm_head.slot, struct ksm_mm_slot, slot);
- 	spin_unlock(&ksm_mmlist_lock);
- 
- 	for (mm_slot = ksm_scan.mm_slot; mm_slot != &ksm_mm_head;
-@@ -1256,9 +1253,7 @@ static int unmerge_and_remove_all_rmap_items(void)
- 		mmap_read_unlock(mm);
- 
- 		spin_lock(&ksm_mmlist_lock);
--		slot = list_entry(mm_slot->slot.mm_node.next,
--				  struct mm_slot, mm_node);
--		ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+		ksm_scan.mm_slot = mm_slot_next(&mm_slot->slot, struct ksm_mm_slot, slot);
- 		if (ksm_test_exit(mm)) {
- 			mm_slot_remove(&mm_slot->slot);
- 			spin_unlock(&ksm_mmlist_lock);
-@@ -2647,12 +2642,9 @@ static bool scan_should_start_new_cycle(void)
- static struct ksm_mm_slot *scan_get_first_mm(void)
- {
- 	struct ksm_mm_slot *mm_slot = &ksm_mm_head;
--	struct mm_slot *slot;
- 
- 	scoped_guard(spinlock, &ksm_mmlist_lock) {
--		slot = list_entry(mm_slot->slot.mm_node.next,
--				  struct mm_slot, mm_node);
--		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+		mm_slot = mm_slot_next(&mm_slot->slot, struct ksm_mm_slot, slot);
- 		ksm_scan.mm_slot = mm_slot;
- 	}
- 
-@@ -2789,9 +2781,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 	remove_trailing_rmap_items(ksm_scan.rmap_list);
- 
- 	spin_lock(&ksm_mmlist_lock);
--	slot = list_entry(mm_slot->slot.mm_node.next,
--			  struct mm_slot, mm_node);
--	ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+	ksm_scan.mm_slot = mm_slot_next(&mm_slot->slot, struct ksm_mm_slot, slot);
- 	if (ksm_scan.address == 0) {
- 		/*
- 		 * We've completed a full scan of all vmas, holding mmap_lock
-diff --git a/mm/mm_slot.h b/mm/mm_slot.h
-index 9b09b68e5742..303da2cef759 100644
---- a/mm/mm_slot.h
-+++ b/mm/mm_slot.h
-@@ -33,6 +33,9 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
- 	kmem_cache_free(cache, objp);
- }
- 
-+#define mm_slot_next(ptr, type, member) \
-+	mm_slot_entry(list_next_entry(ptr, mm_node), type, member)
-+
- /*
-  * Note: mm_slot_lookup and mm_slot_insert cannot be converted to static inline
-  * functions because the hash helpers (hash_for_each_possible and hash_add) rely
--- 
-2.34.1
+This boils down to three interesting questions:
 
+ 1) should mapping_max_folio_size_supported check has_transparent_hugepage
+    instead of CONFIG_TRANSPARENT_HUGEPAGE, or do all the required bits
+    for large folios in the page work fine even if there is no hardware
+    support for PMD-level or other mappings?
+ 2) should huge_zero_init aim to allocate a large zero folio even
+    when has_transparent_hugepage returns true so that file systems
+    can assume to have a file system-block sized zero folio?
+ 3) should we fail to boot if the allocation in huge_zero_init
+    fails?
+
+Note that only 1) really applies to the current upstream kernel as both
+current users of largest_zero_folio can fall back to building bios
+with multiple segments of zero_page, but for some of my pending code
+that won't be as easy, so if we can't actually reliably get a common
+zero folio of mapping_max_folio_size_supported we might have to allocate
+a duplicate one in fs code.
 
