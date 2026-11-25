@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94770606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F5E606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ahK8ELcL
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jI5dNcyg
 Received: by kanga.kvack.org (Postfix)
-	id 8902D6B0AF5; Wed, 25 Nov 2026 17:34:02 -0500 (EST)
+	id 312C16B0AF7; Wed, 25 Nov 2026 17:34:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 867D46B0AF7; Wed, 25 Nov 2026 17:34:02 -0500 (EST)
+	id 2EA5D6B0AF9; Wed, 25 Nov 2026 17:34:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77D606B0AF8; Wed, 25 Nov 2026 17:34:02 -0500 (EST)
+	id 200716B0AFA; Wed, 25 Nov 2026 17:34:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FB896B0AF5
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:34:02 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D077C160171
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:34:01 +0000 (UTC)
-X-FDA: 85475095482.27.FF6FA61
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0DF5714000C
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:33:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahK8ELcL;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E1A1C6B0AF7
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:34:18 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 618B41A016F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:34:18 +0000 (UTC)
+X-FDA: 85475096196.26.5525AFC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A4BE640004
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:34:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jI5dNcyg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646040;
-	b=bpYFQxOsty9wPLP1VCQas6+tYZ6nrwLweYZBsesyfAPlK44h66g9hGrbNL/oQa5dUFdeTI
-	9hScMvE+TqdMmtBdN2GRshDea50IdCy9nZeI90IPJ3v9WFagKsWaW4QCslj1Z+q7o1tZp6
-	lq/arhwg6zutvhouQedbqzwN8Pz0V7s=
+	t=1795646056;
+	b=k66cb4cLPeiCN7bbSkoIvplqMlT+p+lecFU9F5/7Qk7foUkjw6QK/9ka+Nx0Mbje6on5WV
+	1o9B5lVsspnheakPl59XZzN1pxrCEnqwR97MgaVuJj/0gc41NJjhRowQ2yEdyVoxYo21AW
+	XuoxSrAryzlDryJDdqYHUUyrI0wBt0o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646040;
+	s=arc-20220608; t=1795646056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=He20RWMnQEfWNCCjTnuFJzGYdzo97eyhNCvvU93SJYw=;
-	b=ml0IpTxr7Mju6Hj0bbNoPzx9MJs75Y9INwcGm+9h5M+4PuGfComhcHEvvdLdCTlm0F/CLc
-	lR/q5iGREieczkUn0kCi8alHTbYVGQ+cQzER8b31E50buaFEZ5Z33fGmhS3j59VgJInmJ2
-	iA6flWB3towWOkgKMC1r0y+eCBGmsPo=
+	bh=g5KTQLxud4MM88RXDo3FqSzAoKZXRdMPuy6ADShQWPo=;
+	b=SpA3ALDDLM3hosEcE8Dw1FwF+KDOVHTIa2GPTIOS8A6xUkDK8SJibGBpTfOFTHUuVkUndq
+	22M5gWjjftO5cfvdl82AsDJ3DcIA76Vs6TanEmjbtm8LciLJVs5rBjGCt9K5zGTX7WBbH5
+	I5e3O4Z/5P9ZNo34ceZEleCfThnNBrA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahK8ELcL;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jI5dNcyg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4A4B643085;
+	by tor.source.kernel.org (Postfix) with ESMTP id 420EB62412;
+	Wed, 25 Nov 2026 22:34:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1366B1F000C0;
 	Wed, 25 Nov 2026 22:33:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2D51F000C0;
-	Wed, 25 Nov 2026 22:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646038;
-	bh=He20RWMnQEfWNCCjTnuFJzGYdzo97eyhNCvvU93SJYw=;
+	s=k20260515; t=1795646055;
+	bh=g5KTQLxud4MM88RXDo3FqSzAoKZXRdMPuy6ADShQWPo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ahK8ELcLkFb6vhynAAkR+XAD0pRhnkOpCP9l2RPpNRNuRZg3bHUGplidaID/6tCT3
-	 85TtdL/rN00U2qWrlx3w8v3WO1a28OwRWopl7PUuoyw9FHI/s+OXGB9oncb4k2gKKE
-	 0sSKwEstEQlISK2bJhRvBEC6QKWbsKBzMh8iOXAZ3zQaWyN55pgwfWQ+xsjxx8Awrp
-	 sKXPIUX3/ufMnpCJGA6yClocXINcWSUlgYxIIG34sHi2rcc9X4SikXyfwRI7dfM2UN
-	 DBn9seKPscn6Pz1yANZe6zemGHHxnKZHQZEEBrQ7LS8VmvS89o1b+Kcu/KNlL9prH7
-	 /UomkEFte94Tg==
+	b=jI5dNcygw5JoHLVr+WCQDJKd7cjgATNHsuB047VXIQSwE5Wroaou0wH/Y06E6IWmf
+	 2C8yqmvQhouk22jdODytR75khiQ+WYidt1INQOlwmiLiO7Va1wZqNdCDzWXXGnr6ke
+	 8xz4ms0wuo7Ahslp5Su/GBkhg/qgHWFgUDgWXlmJGlW9S0gGQJpPgtG1bxdm0pjhcW
+	 MVJ62H52VxGvieCjbr8SgQjk3dYZ1tTM18QI+x5G0gKJ0UT8d1IRdlS7BuqKOzMaG2
+	 x1O2md1lea8SQSF/54d4BjiDSXMhDQCPiKM6GFk3hI2UJLZztiOxN38Kb15mum01Rl
+	 U3EBQoj312yJg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 25 Nov 2026 23:33:00 +0100
-Subject: [PATCH 02/21] mm/hugetlb: fix truncated copy result in UFFDIO_COPY
+Date: Wed, 25 Nov 2026 23:33:01 +0100
+Subject: [PATCH 03/21] mm/hugetlb: always mark new page cache folios
+ migratable
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
+Message-Id: <20261125-hugetlb_fixes_2-v1-3-db27fd2f71a8@kernel.org>
 References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 In-Reply-To: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -108,29 +109,28 @@ To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>, 
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+ "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1560; i=david@kernel.org;
- h=from:subject:message-id; bh=IM9Jn0PMIC7KdrlMfsHaSFMWAt4HGC1aolUW6gtZvro=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk5Rjdi+VyA5cFPbUoF87MlvvUGnL/k96RRznmXPXL
- 3pv839RRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABPJ+sHIsMnEy/jx6ccHVTxW
- 7W7d8c5AS3n3vmjtVL9v6R1JKzOZGxgZTl5KXXnrwdue1sjQSBeLw7c9BUoerNDonj8reHKSXLo
- zOwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3980; i=david@kernel.org;
+ h=from:subject:message-id; bh=rib6Mtfo04qKbnTXQh7KiSe8aQC79Zys4RDoI0uBy/0=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk5TnOi/oVNpx+3aUwfZlJe2+7C4RFkts3KdrLwh6y
+ DDLZdaLjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbinMXIMG2NX7nPvVc2M9j7
+ Fad17/3Yr/jyP0u/pNv/E9OtxcuvlDD8dyl6myodaaiTtn9mtWj6f5dg1fyDc82qn0/V2RG4/8E
+ XZgA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0DF5714000C
-X-Rspam-User:
-X-Stat-Signature: fhacodw869syi1kzmiyk5ugyo6yk9ao7
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A4BE640004
+X-Stat-Signature: rens1bpfmhdbw9o7nfqb4xsyggkwb7qo
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795646039-862359
-X-HE-Meta: U2FsdGVkX18Z5IhZMdsLUf+WkYpe+BprtyUt7RUJJfUZVK1mVuNabwdepE8QkakdbqEgPLVOobsI4IIdOUeSzP0WSYSlpckBcv7XAc8LLcheMF4CntvmCPgkdbEc3Uxr3l/CD/GafNmfDeBo95s3GcFUF5vyMYlRlXJOcl5MAVAhfiLRlYYG2Cj3r/+eZ7FLIpaqIhA91Eud41n0Bz80v5E8scf3L+Jj/0ZI6gIXj6e24yByUeoWxxpYo+6pgc373myRjeAdeWMG/vNMbgqNyF83wtt0OmSDiy2lgGzIl/p2yi8RzprNEIEUgNG+8ibwuU5q4hvo3OU3DY3kfbkdSMYYHVI7Luxsh/7+k0mQZt0zTc2xANYmNoNm8429bzNZMWgO40nAHMtpC0EXWXX//Wa+0srBcc+l4JcGXAbpEmqeZ7D2giGHM15LVY8xwYEl7SdpCSXmkOkkwF4nm13zDhAiSjEyI3dwTN3VBJbekpmLxbubqIHVAaNv/+zhZ5qqIGTlJqpVi7UwGeyX0aFvXthOPLNoXGenKXKh+/S6iULUYcUyncTawul5c9sNkVQLPDIicHm9HsqHlzDPRwfWlro6k8xE4VWN6MUJW+GtkAznB2m1JgfBsoxYeM7VPnobrh5czdjE2hks65sGM63qdHE3kw/ay76/36d+acM9e13A4ieIGcWwQ3CcbAXxE6yXJJeI/r5GlKCDygdgM1Qq3QjsOVoPrLrxeUvmDrgz7mOvl5RqxhYwNZA/12CsQz0ni7j3fzxDjDq9EnnhdOjgn48I2SCByEr5HB1k7wn8a8OPL37kn2UUZ4r0YBNWvagx41iPormKogh/jqIi/62P/cXmhQJzpztcxsqBGgVY79HZIkfT8K5vwGMXFbVK4dfHATL2aoN4Slg3XlCkAbmBqjcqzWbiA7UX0/0YllirU2JoTqU9M+G7i8yofFZIwHJrZUdvs0KRSQBrYcSRz2y
- cJXRBYUx
- uh8eVImyJpm+shXSr7KtToCwrPrgYswzcijO0r6GiHEahbsOabp/kugzPdIPk9B4sggv31FsfWcacQNrWGA6yYCjYIR+sZZDfc9YRNw8b4gOeAhVspjGdDWbvjApuma0KJwxKyIoUhZoTw6XcsZFTM+y0EvorZxwwA7xER6ZzSimA/uRHlLPfZJtFWOFdRpnSdhWljq68xIV1gGfMRhJvWbZEfOO6bkETdHXygjtA2C3Y4aeEMIoQX/7xj1KuCQAMeHjv2VmGV/CCT32+eAlBJ0T0SmNssMbaY9QaokR2HcROcveq4jG2JyKetDAP82fIFRGOQr0aDKVnITQr/rQFmAuiwpTGHeQgW27fy9bbjey8O4Dc7RFCjFiZn65Us0ka7WqTDOab0eqkyHrbWVVgGgpLGWIc80mlJD1tGYLGf9QtfvXfbwrcImD8cE66aL43THU2TG5twbzIyl/C0INfY7lGkUaMS0519w72flkAe21jH3DnVrBH7/e3fW+2H23b/jqDkaeEkixfAw+/yXdh53Dl15hu+gWmNrM3pGCzRQD9WnYIdx/MwgtGHhPsk2AHwXHrzfjWy/msRaNKZRxZgR/wRbwZpeTJViHYQSH26ASuXO22zX4LpTpHUg==
+X-Rspam-User:
+X-HE-Tag: 1795646056-287177
+X-HE-Meta: U2FsdGVkX1+Zvsb9MJjZ0o2CJb+EoQBNFRhPb1KuSAmU4SKAOgfYUAxAfcxoU7Q6maMQLRP9KpIsjl7aIZufa/tIFzOhhQgcWPx+pFmWiS5yf4ArJWnXEP9T5Cq8bt40g4s0JhdMbOxmHHPF/ickGrvgOxthg/sp9Iztrd2YPzRJ1LU6pHXSIY3MAgXRcPLFoS11CPxM9WxZ4YvRj7/OiqoU3tzzKyGkydJsxgeCVWXnK2+ayIDFrZdt1GJKm2mxLxEODV2WrQ3QxLDxjNw8vEIHliJY5NrrJ/gJFU4sqghI2/nTdizMaGe7plER0lKtU4VMsYZQzJuSEhhi5PG/U/abbZTlLtorEWB4MfBwRZ74HsO3IFl2CfBIJlG2APafIZh4ANKC0nnP++vHGcqsNqfTJ7awXp9rc+i+P/0WbKp9nC4j0MTuO7LPItcUVH8b2U7/nrbPeh7wFdIjzYOouN4qhLP/QPAKJsY8/e2dIsefgRtvCVU53V+bxcP4u28+GH61hC3sv+fzfwKx4C1BphtavRqsQx460KDWh+XkGEqBCcGL1Ef5/Js/Eh3w6wLJfBkDyXwLCYsDfBLWQ0oAmfHCa0+JYZUvcYaQ9TMGxQY+x3ysGmUzC/5Gyt4ott2ujz/NrWADbWUTvFK8kmgRw0HPso+YiZAsvHq46hdXwAkURXK8pn0hu7EcRrrEniQ/gRbJ0q98gMCtI0Hj6hf6dUeKbrHPAHyq2B3fCP+mteED/2UxAvHGX/NcjE2X3CMBBvGXIh+8sOWG9QbcJG/S6hrc1r00YK3qFExTzK8/Ip7Fdns0P4IFzqx2j58iZB+FS0PI79bi40g/fEcaw2UCBk79tl9ZrhSISlYAsqeMrNy9kH46mbQfYBiLT9itaMhLbmIBOcz+OYx3mdp6f2iy9mFkVbEE9IGmKb/dMep+G/A/XJHJJo8Ye9m9u5oufdyb94f87ZtKYAqKHPOkASo
+ y94fn4mk
+ xWrFO4cIgJrCcSoIgGHyWaErJ2UQXudCgFDKGNMThsZVlvu6NLvWYpscLVP9QckoWhQkztqiO86jNY2aqSVTvcetmpX0Isy5/VOl38onzuY5DLk7KqzY5J2X+f0hlprzTKNYqge1Pde5VviJPL+Oxq2GKQTseRBm8fcto3BXxSWFnbpIb2T5xmoUdAGcy6VGKt8ijW/pIETnHA4TbJEZsVhOYl+V0/R4J4LpyMcMyWm5QWE4Od8IJJK+K+/HQdAU0F0Jxx9LuAinwqLCRxfmiy18Uzpqho1IpPwhQJVbXdPFSFqanO0TqUH7oDBMh6l0vM1ELufAh0KEpDzipw9gdxBnqB531RN0S+hpxILDneak0EQYuSRyfQAOxfbmcIT9xpYjTziwHP8VDIyL/suv856+eP+8QzoPvvI3Ad9F2hR/jode1UROp+WNQNQ94ZWDeT6th4y0x6hnswy3EiQV+aTbJNSexuI3BmjkQw2CfBEm0v8PaZwXAeXm3EFlwivwpao+wVqDFcFJJO0c/+3cZag55i+7lYZ4qrDk6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,50 +139,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Chris Mason <mason@kernel.org>
+hugetlb_no_page() and hugetlb_mfill_atomic_pte() only set
+hugetlb_migratable for a new folio once they installed the PTE.
 
-Folios that span more bytes than can fit into an unsigned integer (e.g.,
-16 GiB folios on arm64) are problematic with UFFDIO_COPY: the result
-from copy_folio_from_user() can be truncated, possibly indicating
-success instead of an error.
+If they back out after adding the new folio to the page cache, for
+example because the PTE changed or is no longer empty, the folio will
+stay in the page cache without the migratable flag set.
 
-We will then continue with the folio that has stale data, and make it
-accessible to user space.
+Later faults will find it as an existing folio and never reset the flag.
+Such a folio can never be isolated for migration, which breaks memory
+offlining, alloc_contig_range(), longterm pinning and memory failure
+handling.
 
-For example, if copy_folio_from_user() fails such that the number of
-bytes not copied is a multiple of 4 GiB, we'll get an effective ret ==
-0.
+Worse, if the folio is not longterm pinnable, because it resides in
+ZONE_MOVABLE or CMA, memfd_pin_folios() and the longterm GUP path retry
+forever on -EAGAIN. memfd_pin_folios() cannot even be killed, which will
+be fixed independently.
 
-Let's fix it by simply testing the return value directly.
+Let's fix it by setting hugetlb folios migratable whenever (1) a new
+anon folio gets mapped; or (2) a new folio was added to the page cache,
+like hugetlbfs_fallocate() already does.
 
-This has medium urgency, as it's an information leak.
+This has low urgency.
 
-Fixes: 8fb5debc5fcd ("userfaultfd: hugetlbfs: add hugetlb_mcopy_atomic_pte for userfaultfd support")
+Fixes: cb6acd01e2e4 ("hugetlbfs: fix races and page leaks during migration")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Chris Mason <mason@kernel.org>
-[ david: cleanup code and description ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ mm/hugetlb.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index f46c85fc0cd0b..d57964914e18a 100644
+index d57964914e18a..c67f9bc3fa3bc 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -6568,11 +6568,8 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 			goto out;
- 		}
+@@ -5953,12 +5953,11 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ {
+ 	const bool pagecache_folio = vmf->vma->vm_flags & VM_MAYSHARE;
+ 	u32 hash = hugetlb_fault_mutex_hash(mapping, vmf->pgoff);
+-	bool new_folio, new_anon_folio = false;
++	bool folio_locked = true, new_anon_folio = false;
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct hstate *h = hstate_vma(vma);
+ 	vm_fault_t ret = VM_FAULT_SIGBUS;
+-	bool folio_locked = true;
+ 	struct folio *folio;
+ 	pte_t new_pte;
  
--		ret = copy_folio_from_user(folio, (const void __user *) src_addr,
--					   false);
--
- 		/* fallback to copy_from_user outside mmap_lock */
--		if (unlikely(ret)) {
-+		if (unlikely(copy_folio_from_user(folio, (const void __user *)src_addr, false))) {
- 			ret = -ENOENT;
- 			/* Free the allocated folio which may have
- 			 * consumed a reservation.
+@@ -5978,7 +5977,6 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 	 * Use page lock to guard against racing truncation
+ 	 * before we get page_table_lock.
+ 	 */
+-	new_folio = false;
+ 	folio = filemap_lock_hugetlb_folio(h, mapping, vmf->pgoff);
+ 	if (IS_ERR(folio)) {
+ 		if (!hugetlb_pgoff_valid(mapping, vmf->pgoff, /* partial= */ false))
+@@ -6048,7 +6046,6 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 		}
+ 		folio_zero_user(folio, vmf->real_address);
+ 		__folio_mark_uptodate(folio);
+-		new_folio = true;
+ 
+ 		if (pagecache_folio) {
+ 			int err = hugetlb_add_to_page_cache(folio, mapping,
+@@ -6069,6 +6066,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 				goto out;
+ 			}
+ 			filemap_invalidate_unlock_shared(mapping);
++			folio_set_hugetlb_migratable(folio);
+ 		} else {
+ 			new_anon_folio = true;
+ 			folio_lock(folio);
+@@ -6151,11 +6149,10 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 	}
+ 
+ 	/*
+-	 * Only set hugetlb_migratable in newly allocated pages.  Existing pages
+-	 * found in the pagecache may not have hugetlb_migratable if they have
+-	 * been isolated for migration.
++	 * We must set hugetlb folios migratable whenever (1) a new anon folio
++	 * gets mapped; or (2) a new folio was added to the pagecache.
+ 	 */
+-	if (new_folio)
++	if (new_anon_folio)
+ 		folio_set_hugetlb_migratable(folio);
+ 
+ 	if (folio_locked)
+@@ -6646,6 +6643,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+ 		if (ret)
+ 			goto out_release_nounlock;
+ 		folio_in_pagecache = true;
++		folio_set_hugetlb_migratable(folio);
+ 	}
+ 
+ 	ptl = huge_pte_lock(h, dst_mm, dst_pte);
+@@ -6694,7 +6692,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+ 	/* No need to invalidate - it was non-present before */
+ 	update_mmu_cache(dst_vma, dst_addr, dst_pte);
+ 
+-	if (!is_continue)
++	if (!folio_in_pagecache)
+ 		folio_set_hugetlb_migratable(folio);
+ 	if (vm_shared || is_continue)
+ 		folio_unlock(folio);
 
 -- 
 2.56.1
