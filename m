@@ -1,96 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA95606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 15:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD49606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 15:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ILwnqsTJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=We4ZcvPf
 Received: by kanga.kvack.org (Postfix)
-	id 1ADFA6B0A4E; Wed, 25 Nov 2026 10:33:03 -0500 (EST)
+	id F20456B0A4F; Wed, 25 Nov 2026 10:33:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15F276B0A4F; Wed, 25 Nov 2026 10:33:03 -0500 (EST)
+	id EF7376B0A51; Wed, 25 Nov 2026 10:33:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0744D6B0A50; Wed, 25 Nov 2026 10:33:02 -0500 (EST)
+	id E0AA26B0A52; Wed, 25 Nov 2026 10:33:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D056E6B0A4E
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:33:02 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6900BA8A18
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:33:02 +0000 (UTC)
-X-FDA: 85474034604.05.33DB881
+	by kanga.kvack.org (Postfix) with ESMTP id B2FB66B0A4F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:33:38 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43F83140F23
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:33:38 +0000 (UTC)
+X-FDA: 85474036116.20.80E0A8F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A719740008
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:33:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ILwnqsTJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9262FC000D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 15:33:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=We4ZcvPf;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795620780;
-	b=rGqtuGRPzTLjJDYzAfGAvGGssHwo/DMOQODTNqI53MJhPtg0lgen9lHye4HnF9bo+bVK32
-	ijt64K9kD7jEhpz1JMseOf9n1w7lj1/czAUVc4t38wxm9a8G87v8ry965crvLwwEb4RFOu
-	nBq0PHTC2x8GvImFyn82PIQFJxrU4nA=
+	t=1795620816;
+	b=PYhakianKstTHu3bfJIydP6O3f2TKoDtjvlNS5RtOeNjIDH1ADJrTV6qFlFZF4Yq7a6b2h
+	690T+/JxRIbVy7ckGCYn6ITZPDsI7C0eLwNnDCVC/TWsSwdBP9ORW5PdaYtsN1A9nEjJra
+	axiVeVzaDXJdxjGLfOSuWhybkjldrLI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795620780;
+	s=arc-20220608; t=1795620816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P9ziKV8LpwywZ6keY4HAU4E3v0yjAaX5+ig0pbD9Vik=;
-	b=d8FGxiypevomgDPQrqu7IIEac+TvkZ4gzey5y2Kp3BprOcWgSVb2xakb01D0VYSDJfi8+s
-	5PIuopNWKPgPpJ3q4wcASel2dsKm/w0jJ4z4d/DUb7oAN9FgjR6EuZZahWpVYEGyjdYWTT
-	0A0n2qvY+WxkBW/HC/8p8i1rYRY3HK0=
+	bh=4+vF0i9sfZKUXmupXO2GXat8RGnc/R+fwUIydX1npxU=;
+	b=xngKtDx1q45CVz+I6q4oq1Noo0Gb1T1SiwrkorT+PXNtB+u3EP9gHbID7kwxA8hRXTSdPs
+	rOnrK0bdh93YYE/oBs0ZFBd0o7vzjQ+xEqJMe2CYPCd2iQ4He9Qwjx1iGyVuWpUIOrhN+u
+	Jx9BFVExVQ4bcTMQ7kTRGY+lUviRVms=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ILwnqsTJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=We4ZcvPf;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 999114461B;
-	Wed, 25 Nov 2026 15:32:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C791F000C4;
-	Wed, 25 Nov 2026 15:32:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D87FF438BC;
+	Wed, 25 Nov 2026 15:33:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5CA1F000F2;
+	Wed, 25 Nov 2026 15:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795620779;
-	bh=P9ziKV8LpwywZ6keY4HAU4E3v0yjAaX5+ig0pbD9Vik=;
+	s=k20260515; t=1795620815;
+	bh=4+vF0i9sfZKUXmupXO2GXat8RGnc/R+fwUIydX1npxU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ILwnqsTJoTAX2y6yreyBSv7Ug5yv859gbc5ivHDIVIiyndf4xWNa3m/VfGPI0DL99
-	 6gFkrWdGw5l67ojlhP1I0mG6HuDXK7MYpGaXJ4/mhpgBzqcv9csTA63EjjPcJYp7VM
-	 zd1bRMFUPXTBVD4WIF+ATgxG7wh6LebcmSAsIaw7wIlmAtpj0YB86daZiYYipg/xOf
-	 9k3BQCDgFcoAvRsp1wiODXhIQ4a8wYfGFQB7msaKHKnYHfUnHEnKBdj4iMKDrRzyOG
-	 ST7+BxK9KYa8YfKIMqlD1LZN6QfEoeOny+w0NBKTzGb5Z0EJ3B73Dp7xyuJ87OVw3t
-	 IB5NC0uG0pr8g==
-Date: Wed, 25 Nov 2026 15:32:57 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrea Righi <arighi@nvidia.com>, Jan Kara <jack@suse.cz>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Quan Liu <qualiu@nvidia.com>, Lee Trager <ltrager@nvidia.com>, 
-	Seth Forshee <sforshee@nvidia.com>, Gregory Price <gourry@gourry.net>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
-Subject: Re: [PATCH] pipe: Prefer mempolicy node for metadata allocations
-Message-ID: <awb8v4sLglHQyHQ2@thinkstation>
-References: <20261110065219.894219-1-arighi@nvidia.com>
- <hbkxlhc5y2jkvuov5o2kjgpisx2pavuo3ad4c4ydixeic7vaq6@mpzzfmhjvtof>
- <avQP1aXhe7nQuzt9@gpd4>
- <3f761a27-74df-4e19-878b-323164da5a69@kernel.org>
+	b=We4ZcvPfvGACiTc0GdegtIgoPDkj5NaWQ/nMSlh2b5Cjv8l99WoEfwMmGVL+VhapP
+	 +9qmZU9xhNSlWCTWXEPXhw1TIRLYR4PXqODqf9+8oCR4TFftuu2bxdhMHb1ZJgyu87
+	 /G0cSUvEEyMb+FN7FpThCnn2aFHueEmF1nj0LeUyoNF971x9+EJRpB3vIWvb8xbckm
+	 /K0QP6jFu9d6KpPngQbMS/1i1hsWwhuZ8tf5OmQLzaXUrVyvj+RdF6zD9OoeY3ZR9U
+	 yXbF93c4RA673PR0G6R1nkft8ISvvfAp/lkvqL1TB/kAJKv059Bb2OZlf+4aHH0QXo
+	 Jkgihn6t/1uHg==
+Date: Wed, 25 Nov 2026 15:33:28 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Aaron Tomlin <atomlin@atomlin.com>
+Cc: david@kernel.org, corbet@lwn.net, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, skhan@linuxfoundation.org, rdunlap@infradead.org, 
+	rientjes@google.com, shakeel.butt@linux.dev, sean@ashe.io, neelx@suse.com, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH] mm/oom_kill: optionally log victim command-line
+ arguments on OOM kill
+Message-ID: <awb6I0qAySbhBIsW@gremlin>
+References: <20261124205043.1010247-1-atomlin@atomlin.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3f761a27-74df-4e19-878b-323164da5a69@kernel.org>
+In-Reply-To: <20261124205043.1010247-1-atomlin@atomlin.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9262FC000D
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A719740008
-X-Stat-Signature: 1rpysk1p36aofiqrxm9kkjde7or3uj7f
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: r1g6rex9sawb34z4amhwur1syypu8ncj
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795620780-928327
-X-HE-Meta: U2FsdGVkX18XlTF4r4KpOJe8dt/P5dwUJBIuiZPkrXXCCvOm92Qijxu3OiFyyHLz45bbU4X0h/KylYCUeoXcZAFap2oV/uiD6I01NV/QxhYMPWoJUvthB5eTpO2HHvjxFlmFEuGHPwnYH7cjfdDOXUFLtPUiVz+Q0gZNhjydL89PWeL38X6lmrW1VIaZvVV4AQLcQ+nFttLeMlUUqd32hCdxoo9nn5tg2MfBfSW1w2g2RWCFYHf20/ldcHQf9oEXX64dwUz7Jc/wM3+sSVRC3PKvn5/0DYjRJbMHYvJpHRQT9R1vNzXT3nV2b4OdLWQm0/chJSCcg6P1mmOCE0hss5f6Lg2rMbnkAZIj0ogWYB366oyoVS0fxm61TjuKECRh4Ty4edMc05x9qlw/S/16mHcgJkBfbXO5slvlfiNhs+iXhcKykGAEsdrZK8HPo3MBX94GDG0bKb12XfubOLoS4M/NKf1iAxxy+0Rc1veBVhc5BMIGlmMI3w8BuFoLhbRI3MsmR2Op898Hd5M58JgrGFmfIG3jWmiJtLPz9XpvCBE7zYA4uMThVp+Bxw8eP7WX9D3aITsjCAhzYaKXvXu0TUXqq/lSESohoH9eSunmk+VeVGbCaUPd6aJdtkaT1pANj+1rjXpSfNDUuGDGwn9+YxzaguXJMXTRlfql3ebNeVnm5MrO5nzYnQdyu37SYxEQGoR9CKrNGTXfGyw1t+KTwURMKxcXSqHW7hvpbWYokWPseXRzvVuBDu2l5TuLWdDoTMJC8rZAtdcskdN+GEHWR318K2zY+te/44qTjzE3Ht7WQDZ7vRLUpKkiTEkFtp70uq/iALPHIM1d+sc/4jmDZFtE5Nb6c299GgKXJ290S5VAjtzDsKxQKjbtZio8CKbSNnvyroocX0JK9SPKsMjF7XuQ1h8QH3XJc88TuQ2NUnehkK6UK/NsZKkSy9hs/72ZV2n9p3+UtijTtmKAp8m
- 4nLxEEgf
- lbkhIhHg4x+B6ymsWZIIdQs1HXavXDzXH2OtsRxr4nTCi0HEsSctNhPLSt1Vp9K9/GffSzqt5xPZirgfNh+28Hx9fSAQSnYLPkATFX2it6Krg6vzTRV0IHTwdDD0SV4Xdv9m0I00+qOQhDoXdSXXbcre2FEQtgLw21vuQShbQfcRV57p1ey8JPOt/SkpaJPPG5S/4GKCoTyVBXQ+t9ydt03NC3MxHy7ajY2T8wAhjP7nyylXxzns4BGKcNE4Ant1X0fuf/2hyjOqFhKlkrn5xT6ccvWWyBrtp2eT//bMLG2MAKiJejRKHmZYR/GSWy85wapcRCg/0rupAtKv8GEvsclETGwBqidiTVTdXiH05nZzJ0LbaXXwFGyWG2fcP+AmTLlQFPKjJqxjmmFHiYhHWsPvm0hOiL0A/AUrvgpp7rLpCKqJG86xB2GIRbU9p4pr7VCIqRcJb9811KT480MHH04uGHhid0W/sPJY2PF/kpoaFWEX0vGj+qx6ny1Da2UyyxED4
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795620816-561107
+X-HE-Meta: U2FsdGVkX1/mk/P8Icr+CWq2/NFiGwcZfSKK0SFW1wqTcQi6QrtX15kek1qlwkOZj+9PEwwFLzREXLDw+bYqTOB0YF69q6j9sfYhjdPFTAIKZPZGR1eEao1vtrwsQczrN6lTmqnmPDqVCsT20f8A9dbut3w67xr3KXa7pel0Uo+LJsuBr7hHP9S4C/wx1qjxMTAyK/3wxDnaBx6T2y8f+OLeHNnqJHmEv6HhuqrhBVh1/oagIFryt74xfM23KMvbE6rqvqZsmIPqLbqUyiCC6q2ftTL6J8ei1xu5P7lThSk76qctDaM39rIjpFd0I8KngPkpJGfHNMFNTkJtpqF3RNAi5R8Vn+wA/beR1AWkWLHqUQGoqwOsz6g/S3nrikYsNqRsvktSGSr6KD9pcubBZPI1+YLY/xN+aNkXXljxfnIisReaogs8AiaBRGD1DPuN9GBC+Sk6bPfBQIMo6xzm/YsCf2DagKLhzkMktNEn1ehSMI8DS/dUl9PNfGNfrh3VMuhZOojsyk4uJ2+u5/t+LUuTktvQ4oCxzZhhn+vcr7QxQB3vAPvxKbQTsqMEPdP8PFai3GIOx8GVaApymKX1QbG1QfnSSf1eL1LxKAOZkSy1MamhvZ5F/HrP3Mdi1SN83DPFIVsi3vZ4u2Liqf5rkfHyaCoeSscl1c6e1LbK1Bt9L4OM/+b/lYY0DimCMjXfzpPtD80ty+pP8awl0g70ZL6/lWSkrICJJfUcCZNLDg8a6d3+tNN/kaFOtlLtzXX788g4XXaHtEQQHjoGlLCEC8iE+cdghA/dteeAJTpslalnIwqzh9oMQrc4dPpODS/KrcKJpjmxvVbpX/l3BeCd1bg/lcQs+wG+EHj994JFMwC7FBnMPWLm1FCKmwdjlfTt9XtxuIgOlKV96EixZ9SprZ5aDA+htJTtjP6xe63C0s6UhgKRRbEh2wYgBw413VsiAD/W67qFbHQjDtjZh7+
+ CJf3bv3i
+ tEK73C7PE9l3/m4OEzgIDubpBdXeKOo3wiUkl5VJ3NPetRQ94FjrnjfIxuKdJV7K1V5xkdd+5el7OXwE/jqfii4jMbDxnnU4nMCo3e9Dn9O/DAijWb+RDNDjS8P5+OfRKu7qKLxyQjPW8xm7TJeZxHy/RN7o0I3mRxjnplMHcdOvfn43HoNYusuvFvUhC6Ezc3ba+mzbO6jma8trvAHNuj1CtzI7dvPuHq+8jj/680ita/6jTneNU24yn6UrFvKU4svCiXhwsW/KlTo287ePyTxppbHkLTzZzRNkOddUNsPd7ChOW9VNwaRbF2u1oCu/IPHBH7xz3bFAzHDpmoooNX5abMp39NZWhtZ1PofQ2lKwUFph9sofqPYSPt+C5iqKJebEb+g3k6f5SS57bQr570IY7Kkh0+fX/jju/+WSUu1o1+dvxX2ZZL9p7sNELGrrDXEGzM/bUs2b7UAjrRRlnyrq+txfvzuGk1wLO5pWtcXJWbRnEQBO4Xc7O2MYGxQD6OhFtV3OjsslCVyn7IGkhUbe4L1GvGMV9Bj4NTuMtitWLmAdwMQzTPCsqhxBv0eSDqePrAzLy3Po4Tgw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,99 +97,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 09:12:44AM +0100, Vlastimil Babka (SUSE) wrote:
-> On 11/11/26 07:48, Andrea Righi wrote:
-> > Hi Jan,
-> > 
-> > On Tue, Nov 10, 2026 at 01:27:53PM +0100, Jan Kara wrote:
-> >> On Tue 10-11-26 07:52:19, Andrea Righi wrote:
-> >> > Generic slab allocations can reuse partial slabs from another NUMA node,
-> >> > even when a pipe workload is bound to one node. Pipe metadata is shared
-> >> > between senders and receivers and accessed throughout the pipe lifetime.
-> >> > Reusing remote metadata can therefore make an IPC workload pay remote
-> >> > access and coherence costs on every exchange.
-> >> > 
-> >> > The target use case is a workload that binds its workers and memory to
-> >> > one NUMA node with numactl. The policy node is then a useful placement
-> >> > hint for shared pipe metadata.
-> >> > 
-> >> > Allocate pipe_inode_info and its descriptor array on the node selected
-> >> > by the caller's memory policy. Apply the same preference when replacing
-> >> > slab-sized descriptor arrays during ring resizing. An explicit node lets
-> >> > SLUB try local allocations before reusing remote partial slabs.
-> >> > 
-> >> > For descriptor arrays larger than KMALLOC_MAX_CACHE_SIZE, pass
-> >> > NUMA_NO_NODE to keep the policy-aware page allocation path. An explicit
-> >> > node would otherwise lose the MPOL_BIND nodemask on fallback. Select the
-> >> > policy node only for slab-sized arrays, avoiding an extra advance of an
-> >> > interleave policy for large allocations.
-> >> > 
-> >> > Moving a pipe's users to another node doesn't migrate its existing
-> >> > metadata, so migration can still result in remote accesses regardless of
-> >> > this change. Generic allocations may reuse remote partial slabs, making
-> >> > initial placement dependent on allocator state. In contrast, preferring
-> >> > the policy node leverages the workload's placement hint to improve
-> >> > locality when users remain on the intended node.
-> >> > 
-> >> > Testing has been performed on a dual-socket NVIDIA Vera system, covering
-> >> > hackbench, pipe transfers, pipe creation and resizing, pipe_bench, and
-> >> > targeted stress tests.
-> >> > 
-> >> > The primary hackbench reproducer is:
-> >> > 
-> >> >   $ numactl --physcpubind=0-87 --membind=0 \
-> >> >       hackbench -P -p -g 10 -f 20 -s 100 -l 100000
-> >> > 
-> >> > Results (over 10 measured runs per case):
-> >> > 
-> >> >               avg       stdev
-> >> >    before     9.811s    0.130s
-> >> >    after      5.770s    0.058s
-> >> > 
-> >> > Before this change, allocations could reuse remote pipe metadata. With
-> >> > this change, both pipe objects and descriptor arrays are allocated on
-> >> > the requested node, improving locality and reducing hackbench runtime by
-> >> > approximately 41%.
-> >> > 
-> >> > Reported-by: Quan Liu <qualiu@nvidia.com>
-> >> > Signed-off-by: Andrea Righi <arighi@nvidia.com>
-> >> 
-> >> To me this makes sense so feel free to add:
-> >> 
-> >> Acked-by: Jan Kara <jack@suse.cz>
-> >> 
-> >> But IMHO it deserves a look from MM guys since this is more of an MM thing
-> >> than a filesystem one... Added to CC.
-> > 
-> > Thanks for taking a look, and good point about getting MM feedback.
-> > 
-> > Vlastimil, Gregory, do you think this SLUB locality and mempolicy
-> > aspects makes sense here? In particular, does preferring the policy node
-> > for slab-sized pipe metadata, while retaining the policy-aware path for
-> > larger arrays, look reasonable?
-> 
-> It's not wrong, but feels a bit ad-hoc. If it's pipe metadata now, what's next?
+Nackity nackity NACK NACK NACK!
 
-Good point.
+This is terribly, horribly broken both in concept and implementation.
 
-> Slab will generally return objects from the cpu's local node even if it's
-> not specified. It's not guaranteed, but it's not guaranteed also when it's
-> specified by kmalloc_node() (unless __GFP_THISNODE forces it).
-> 
-> So the results above are surprising to me. Are they on recent kernels? Are
-> cpus 0-87 all local to node 0, or is membind 0 there to force a node that's
-> not local to some of them? If they are all local, I would expect the objects
-> to be from node 0 even without kmalloc_node(). So maybe we have some unknown
-> deficiency that should be investigated.
+On Tue, Nov 24, 2026 at 03:50:43PM -0500, Aaron Tomlin wrote:
+> When the OOM killer terminates a task in __oom_kill_process(), the
+> kernel log records only victim->comm alongside its PID and memory
+> counters. Because comm[] is truncated to TASK_COMM_LEN and typically
+> reflects the interpreter binary rather than the executed programme or
+> script (e.g. "python3" instead of /usr/bin/python3 -sP
+> /usr/bin/firewalld --nofork --nopid), identifying which service or
+> worker instance was killed during post-mortem analysis is often
+> difficult once the process has exited and /proc/[pid]/cmdline is gone.
+>
+> The standard get_cmdline() helper cannot be called from
+> __oom_kill_process(). OOM kill paths run whilst holding oom_lock, so
+> blocking on mmap_read_lock_killable() risks deadlocking against a
+> thread holding mmap_write_lock() whilst waiting for memory allocation
+> on oom_lock. Furthermore, get_cmdline() walks user pages via
+> access_process_vm(), which triggers page faults, memory allocations,
+> and swap-in I/O during an active OOM condition, and drops an mm_users
+> reference via mmput() that could run synchronous exit_mmap() teardown
+> under oom_lock.
 
-This is the default behaviour of remote_node_defrag_ratio = 1000.
-When there's no slabs left on the local node, most likely it grabs
-objects from remote node before allocating slabs from the local node.
+Also, fiddling with the memory of a soon-to-die process under extreme
+memory pressure is insane, additionally _holding that lock_ under memory
+pressure is insane.
 
-This means quite some of allocations would have to be served from the
-remote nodes before the slab memory on the local node grows.
+>
+> Introduce an opt-in vm.oom_dump_cmdline sysctl (documented in
+> Documentation/admin-guide/sysctl/vm.rst), disabled by default to
 
--- 
-Cheers,
-Harry / Hyeonggon
+'Have mm people support my code literally forever'... and make it an ABI
+requirement too!
+
+> preserve existing behaviour and avoid exposing potentially sensitive
+> command-line arguments unless explicitly requested by the
+> administrator. When enabled on CONFIG_MMU builds, __oom_kill_process()
+> attempts a best-effort, non-blocking read of the victim's resident
+> argument vector (including setproctitle(3) updates inspected via
+> arg_end - 1) after releasing task_lock(victim). It snapshots the
+> argument and environment bounds under mm->arg_lock, acquires mmap_lock
+> via mmap_read_trylock(), bails out if MMF_OOM_SKIP or MMF_UNSTABLE is
+> set, and walks only present, non-PageHWPoison() anonymous page table
+> entries via folio_walk_start() without faulting or allocating memory.
+> After dropping the page table lock, each pinned subpage is flushed via
+> flush_anon_page() and copied across kmap_local_page() and
+> copy_from_user_page(), and mmap_lock is released prior to calling
+> printk.
+
+Ah the giant slabs of impenetrable text that reviewers are supposed to read in
+detail now... LLMs really have a lot to answer for.
+
+You (or far more likely your LLM) is just describing the (horribly broken)
+code in English here.
+
+I hate how often I have to read this stuff...
+
+>
+> To preserve backwards compatibility with monitoring tools that parse
+> the existing "Killed process %d (%s) ..." message, leave that line
+> untouched and emit a separate rate-limited companion line sanitised
+> with %*pE when resident argument bytes are recovered. For example:
+>
+>     [  124.819203] Out of memory: Killed process 1482 (python3) total-vm:184320kB, anon-rss:42100kB, ...
+>     [  124.819215] Out of memory: Process 1482 (python3) cmdline: /usr/bin/python3 -sP /usr/bin/firewalld --nofork --nopid
+>
+
+Doubling the output in a way that is super confusing, great! :)
+
+> Signed-off-by: Aaron Tomlin <atomlin@atomlin.com>
+
+This patch is broken in a million different ways.
+
+The process gets sent SIGKILL and _then_ you race it to take the mmap read
+lock, which prevents the reaper from running?
+
+You do a lock inversion between oom_lock and the mmap_lock, and hope it'll
+be OK?
+
+You take a heavy rwsem lock while the system is under extreme memory
+pressure? Which, again, prevents the reaper getting to it?
+
+You do heavy operations during one of the most sensitive, dangerous times
+for a kernel for a nice-to-have annotation?
+
+And dump_oom_victim() already outputs memcg information, which systemd
+uses, your example mentions firewalld so likely that'd _already_ give you
+the kind of information you are interested in (except for mutliple
+workers).
+
+You're adding a ton of totally broken complexity then, insanely, making it
+a global sysctl flag that we have to support forever as an ABI too.
+
+You intentionally abuse folio_walk_start() to do _what its kdoc tells you
+not to_:
+
+ * This function must *not* be used as a naive replacement for
+ * get_user_pages() / pin_user_pages(), especially not to perform DMA or
+ * to carelessly modify page content. This function may *only* be used to grab
+ * short-term folio references, never to grab long-term folio references.
+
+You're (or more likely your LLM) is literally copy/pasting code from
+__access_remote_vm() combined with this mad abuse of folio_walk_*() as a
+proto-GUP to... get more info about a killed process.
+
+You also copy/pasted wrong so this is even more subtly broken.
+
+You are also potentially exposing sensitive information. Your ratelimiting
+is broken.
+
+Oh and of course, you add 256 bytes to the VERY limited kernel stack at the
+point of an OOMK.
+
+I mean I could go on. Even the concept here is fundamentally broken, so
+please don't waste our time with respins.
+
+Thanks.
+
+> ---
+>  Documentation/admin-guide/sysctl/vm.rst |  30 ++++
+>  mm/oom_kill.c                           | 206 ++++++++++++++++++++++++
+>  2 files changed, 236 insertions(+)
+
+Of course it's also a massive patch...
+
+--
+Cheers, Lorenzo
 
