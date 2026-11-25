@@ -1,108 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F95606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C46606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YZloInuI
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=re/+bKpo
 Received: by kanga.kvack.org (Postfix)
-	id ED4B66B0931; Wed, 25 Nov 2026 03:23:20 -0500 (EST)
+	id 877E16B092F; Wed, 25 Nov 2026 03:28:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E855C6B0932; Wed, 25 Nov 2026 03:23:20 -0500 (EST)
+	id 84EF76B0934; Wed, 25 Nov 2026 03:28:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D742A6B0933; Wed, 25 Nov 2026 03:23:20 -0500 (EST)
+	id 78B766B0935; Wed, 25 Nov 2026 03:28:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AB8C56B0931
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:23:20 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 300BF1C4976
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:23:20 +0000 (UTC)
-X-FDA: 85472951760.28.530AAF1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4AB7C4000A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:23:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YZloInuI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 49CB36B092F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:28:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A55FC120D80
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:28:15 +0000 (UTC)
+X-FDA: 85472964150.17.049FD4E
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C5CA31C0005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:28:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="re/+bKpo";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795594998;
-	b=Jd5G1EyFg4+LFWeSIbWpx/QplDcjtz2LZuqHl8owprjDzzpS4oHneqUZ96IdnnVx8NLJik
-	BYpetfDCo51Ci8ymQjNfW9TNNXNKfdtA857zFm5GUgptVK5DqloNTjIZPnVOxXBrLtlB9g
-	/EYRkSXrIoEfyfIbrUXuRAQtnrbIDNw=
+	t=1795595293;
+	b=gZZfE2pmIcGi8gc1HDmdSdfFK9pHHptc8sZir314DRpP9u24jSMB1rMeE3R2inGEr3sG6v
+	OXS9ft2xYzbFZZceoIiUZkyiZG7LLwyvGOWa06KN2L5uiXYw0BU/aiUpN4O9XTxf5hI/zp
+	OFp5gxZNRj5Hnzc0qkXyTjrkH5w58ys=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795594998;
+	s=arc-20220608; t=1795595293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hsT7zBmMHOA0tSmt3vFfihAtL6RUpoMsSd3RGk73F2s=;
-	b=VVRu9e0hj7sagofvyTPmsSg6uRxQs8BTV9zFCmiw+qeCxrfiSZwwKRkDLnJmUzYKjyNLw/
-	jscbGKMK+gId5uJFafOgc3OefAFhuifc96MTbZaQIVp9Cu+8ECHyDL9JLdh5sSftBOIuzd
-	5zOu58+L0wKY223gWp4PTe0N2/KmggU=
+	bh=O1qqSd7P6LsE224LlEnYuLdDv6qfc2LEAQW7Kqr7xu4=;
+	b=Xh3JDismR/2e+gsewuBsY/LRwCglcJSeyF6ejUyLckAYo4ZmxyKD5ibILqNRn+kQCdAbrI
+	0dpN0CL1Llg1FpkqoYb1QdLSPdeDj3bgdGMIP2q+bj4G/yzWxuhQg6qGkkzClXnVA0LUf/
+	HBeLvwvA0uH7gL7yNQguM5n+hMF+sYo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YZloInuI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0074362386
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:23:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30911F000CF
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:23:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795594996;
-	bh=hsT7zBmMHOA0tSmt3vFfihAtL6RUpoMsSd3RGk73F2s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YZloInuILkJ9lmMUSqL/V1E8ZE2MR7DT1FHtU5vmr1pynf0SQxxjVeQeMdQmCVdOU
-	 yI5vYa/MpHD51913RjFTE0cfACo+wFIrf/YlA2+0n2ByuZEuHOIiFSIN2MxoTdxOq6
-	 YQdPQHNk2d43l8aIC62EUfQ5OpRhtdKq3RVYmk61kUu7I3Wo83lhI1Bihi6LX3J1Gs
-	 xPyd1O68e+0uA3TiIzPNRDmP1QZvMcU27ndaND5Yx03x0lDJYvF3ZXDwQ82WcwthQc
-	 lnTas0aZN4TvJdDeJhA60y3x4W7yMTozdz0arecRmKxYV/HG+m5OCSjgLGKDVl7ITw
-	 ZyXG2yI59pwdg==
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-94999a08973so510508085a.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:23:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGcXxkjjHX2IWRq7fmkcgltOH3c7CSA+1iaDiEyO0ofyAh9XvFMscCg4tPKuGJwNsktLsqqojntOA==@kvack.org
-X-Gm-Message-State: APuU4Z/Jc6xe5Ed428Z+u6TBdiebqzVKKrI2aj6K0V1lc4e1A2HNpHtg
-	6B/lM7MFzWp5OJuR7TjuednJ0LGTIXXRq2UHh5Vxls2PNvdiTCH6xE4sLlUg2rKIRH+PH/tAzTw
-	xfbinfokS3lDQ2w51pqAv79VBGpcOQZo=
-X-Received: by 2002:a05:620a:6c18:b0:949:664e:e3e8 with SMTP id
- af79cd13be357-949ba997635mr2899642585a.34.1795594995906; Wed, 25 Nov 2026
- 00:23:15 -0800 (PST)
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="re/+bKpo";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795595284; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=O1qqSd7P6LsE224LlEnYuLdDv6qfc2LEAQW7Kqr7xu4=;
+	b=re/+bKpo0cMhs1Pid9bYuuB4ZlHNxMgk8B1TViTUXgGr24mIJPtW64wIelRQqSQz///K3AuYDqIOnzHmUsOPPHctdGiH+wqjrRvV3/x7GWl5nYFsJCcPwjEv8JWOgXDaaWzhR9ciln7/n5bI/rSCPfmGuF2Y7UIizuOjwwSO1cY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0XFQvStO_1795595283;
+Received: from 30.74.144.130(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XFQvStO_1795595283 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 25 Nov 2026 16:28:03 +0800
+Message-ID: <f298cdb0-f328-4715-8b9f-e8e1c6ffc854@linux.alibaba.com>
+Date: Wed, 25 Nov 2026 16:28:02 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261125073931.1171242-1-hui.zhu@linux.dev>
-In-Reply-To: <20261125073931.1171242-1-hui.zhu@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 25 Nov 2026 16:23:02 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zvaxT+TD2P0ephTRsjAeVo+9NdavmmxLnuoj6d7P5UuQ@mail.gmail.com>
-X-Gm-Features: Aa3M54oYpLZLgx5RRSzL4wpUVCax0NId0FybUVL-U-z7-jqsoujZkX4qgzA3cgU
-Message-ID: <CAGsJ_4zvaxT+TD2P0ephTRsjAeVo+9NdavmmxLnuoj6d7P5UuQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: mglru: reset the mm iteration cursor in try_to_inc_max_seq_nowalk()
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Harry Yoo <harry@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm: shmem: fix discarded data left intact after
+ truncation or hole punching
+To: sashiko-reviews@lists.linux.dev, akpm@linux-foundation.org,
+ david@kernel.org, hughd@google.com
+Cc: linux-mm@kvack.org
+References: <6fcc15c466667f6943c34e130212b891b7471c83.1795436423.git.baolin.wang@linux.alibaba.com>
+ <sashiko-outbox-231134@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <sashiko-outbox-231134@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C5CA31C0005
+X-Stat-Signature: wtgn4r4mydd79xqjx496nmts8p8tsw58
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4AB7C4000A
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: q1msxzo393gmzhpniixd7aj1wfy3qupz
-X-HE-Tag: 1795594998-468902
-X-HE-Meta: U2FsdGVkX19d5ztFDgCyIcr3QBmJy7ZXUgK5vzzcpzwb4GKRC1U+C8GI2/xv9EOrvh8zCisL4XKMk9s9T7bd9AlOcknaQo+L4H6YWHcQNaOIuchA8vyvv0h3Bh+SchIZiXfF4OYznsbNzjGQb4kN/t3uT92HACbo3TCOMcTssueZsT0RuntPy/HKNN/AmO7VGCKukUWuPKFDLE943jIdUmHQURTe/okieFjRoFAZoQ3C9Y29F+CVHodhxEQrT5HIvYR2X01u9aTDbNatHPCj3Fw+H5024FAlKpNPTP5YiPotXhPSSh6ExCg8aIKwqPxbwQa1jz92e9UjhVnJ39lORV5qtUtJ66hTP5ElTWZJNUYUbU0/0ocd4rYgqTkzrdbbWDwwSV5ik6s0cqkW4zCTYU4Rj3lbv+OPyiIfl96pEUsNHO7JT2PCD3KyOfpEMmpCgiCZbaHrnlcapxRgm6pknMiyZyO9Ae8E5f7DAXQxEhyj2YhN+pz77EhAJR3Q1S5A9M0hL3dQ55nOyQ/6WgCjp678QVwp9btDLOtnvPDPMR/DG5z+4nm0AnnKi9bzqFu5l5U7rbu6tlD6b0/9G1ocWkkNZmZNpwRLYsD89ddZ51pn7YYuN4mZoP3k4TnKN/QWlkNDbe5VyHIiBe4bVEXfuPSDZJXnt6gynRJoHFGgHhOx0mjS8L6KaVUxTPbxYwiwxSFOIUsDwbm0nKNgaoZlch39cMDTNDyj6SzyJP8JJTpgxZnoSli8jM7GTzCH4BeX5y48k4vwqzyG5r2PGrzCFzrBOjj5EtUPuGH0hdJLNWKpyVtCcyKMdxg3yNDABXhJF8au/QaKU81r/tbDdtv8wRexI1sMbuKrI5dC5jVeWastvxKP/hRnL9sjz/ILvhiBhP8Zr2RJrMkVlKj7fZAMl4tVOwyJyi5PiSWFHOnj9R6T1t+KZWUu9q2XvnkDF193wSuWrWyp/REH42V3jkx
- bVo8jCOk
- BKXdmkL2gN13hHQg5RLGP6cfBUuvsok1Dk0MFHJsILwAtDPapRL94AfKSE9OKBDWFy8q9tTaYdfwFU0uHipsewb0eUrEiTs7YO0FM1wp/f3fnFwE0m4RHZRG7vBZnba9w0jmvFx4fOWf1+G3M2kAeuj9LJzZIIEwmXIXwNWqTIEJAPVfETUQhY9AEGgmKw2Icas16Tgy3cR//sJ3dvqUuRXmFK9TRz3rMxfItbdTRGpsplG81RnvfXEOGoOQxVFUGkGIdjNxTj0J9anVkk7aUGAJo8+59FwWX9Zv2yVmLM91/KLxps72rebepA1EWtZQProJkn06i/MywRhgHUynU/Ko1vPzFjGd59XR2XVzVqKwkS2PaCVQy3Or03/LfWpGmOqRPzlr/EoiE5yjR6/fMXJDUr8qYS8rQ42lTAjuZGRHqlLqK6UPKt+v0++MUpAHhJ/+12BWXWo6Xd0CmB2F+6qp0bnWv1jfFjY+gPHuLRrVAUl/2eHgkIG35KRdwIBtD+RJVXADN37FxeiY8pUUZUP8g5a9TI2fmCx0YhjQWx0mCY3BfW9qxyzwgsPMU0joNwfbI+fzuvVGPCbnnk0ikOwV1MG2VeYxGU8S0W597ohEtF64=
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795595290-141027
+X-HE-Meta: U2FsdGVkX1+47vJk3XDsHta42IdJWmEHJX100DvQ17A+Xbwe7TqBKznYC+BdP2Y/TojZZFzwadi2ThGUbbqhSepopWUnJ9XfhFRuhp/8lMT8ZBXr50CoyHB3OtMC8eQKhYF7HDlrMD5FfDhFpGil6WdwUUnZVe5fURnYpX2bnHRvR7RUS7uBq97SXQTYEIDTogKl7a+HO8IgE8iEohU7uju4DocOIxU63Wxf7KD7CPK2svOrkwxyU4Nv4DDtowfFP+nAJEQ6xXUviXqbnRNxqCy6zHUyzaopl0n/2RMSEglChFAIFDELhQgevECyZZoWrEhZ4KGvEiRWLrcR1RqZvKk8C7HPA/0/ptBMF4o4qBOwcHV2sfxlRrrKpFb/VE1Ods0A8t8yO6piRViKqLLTtr/12cuY925gXg4i8UB3yQ+v4qb2SK3+TzYO74JD7ze0SNLSjeJ+wTOOjLjYDwkxiEu2guMP2vDnlcbCl4/TpHPSWDgSr2WWenxRfVSt+kTBNbIX5eKqnHrhiL/inYFwtp3tUTYi921J7bM1vn4M6sGe57JS4CS0BvAt0tluGB+m4Z9Tyvw1mwjRgylQR6TeqXF3XNeFWaQV+9xfi/DLOtpqlN6FL/46CRMV1Vw/e7fNDnMaqlTN/GvnliAojY14NiR3Im3iO1E0i/Hi1Zd3nW7gqj/jBQHEMSp/ZdqvolMH6ELZkfT4R+JQwgzQP25tedTWieiTJbHkAslPoacHS/fxDPSdm6whvnH8P/RRL0W6Ra62Ys7iZGzaP8JhXLYeq6U5TfUwcTjtdk+d4zWiRO++ebCw94PuCX6P8JKhyyt3ffprTMFtBTLdxb039JiduGJ9huNqEpGiS946ahxXghgsTmTtjxPlKrjmbxAhD5vtdsDkjy211lakkCamilsJAJ7KQRhStRaxPeeepzhr/1a4Mp21zWRjEt32qOkuDfBMGx5qb9t1wzAnWGK4Crg
+ UY2hKuoZ
+ 2Ie7Hb6IBHPlR22DDYu0Wv1Odf+g/HiA4dYkIEPa1kI8+tixWMnCNuRVnMkiBj840wxnrOZKs/zXklH1nSa5SGYUyazsrklPOpCsPusNFZNLRhsp9NvfP3jqhNw+wbCaehRCC3ZNPEHtYzSCfVFMZLybxgEczAlUgC9fHg3ky7DJyAkbp5P571U0pOXRcg9EOsNsCd13lBPZVRcBVcEv9a/isuP0VQ/RwXbZmerN8Bb9iGTj45L4+jm1QP96gKA5VkRLedSwIKwj6FGrTMY7Xc8fW0qi7pcLoJP/Z8meVzLFcCLa+UiHiRj7/g+Sv0DFnJSK59RgmH9/f3n367kgcTgekb8cVxuKPd9UqPJZn2cz9FSISyuEUqmiFIqy5zHLZXyvLin6/hDd3arBpccICsT8QjXupmuiXO8HRUrmYL+bDhK6W+v+TNF6tt+uDZvnCsVNJuVV7eYgGy1HoggKXvqJTVjdJN8jXcGDw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,77 +92,264 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 3:39=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
->
-> From: Hui Zhu <zhuhui@kylinos.cn>
->
-> try_to_inc_max_seq_nowalk() advances mm_state->seq without walking the
-> mm_list, but unlike iterate_mm_list_nowalk() it leaves head and tail
-> alone. If it races with an ongoing page table walk, the cursor is left in
-> the middle of the fifo.
->
-> The next walker reads that as "this generation already started": it skips
-> reset_bloom_filter() and resumes after the cursor. The mm it visits are
-> the ones the aborted walk never reached, so they have no bits in the
-> filter being read and walk_pmd_range() descends into none of their PMDs.
-> try_to_shrink_lruvec() ignores the failed try_to_inc_max_seq() and keeps
-> evicting, so those hot folios are not promoted and refault in the parent
-> memcg, until head wraps around a generation later.
 
-I'm not sure I follow this part. Even if the page table walk misses
-those hot folios, we can still detect references through rmap during
-eviction, can't we?
 
-We also have lru_gen_look_around() on the rmap path.
-
-So missing those folios during aging doesn't necessarily mean they
-will be reclaimed and subsequently refault.
-
->
-> Reset head and tail with the seq increment, as iterate_mm_list_nowalk()
-> does. It is safe: get_next_mm() holds an mmgrab() reference and a
-> concurrent walker bails out at "walk->seq <=3D mm_state->seq" before
-> touching head again.
->
-> Only reachable from memcg_reparent_objcgs() -> max_lru_gen_memcg(); not a
-> memory safety issue, since lru_gen_del_mm() repoints head and tail under
-> mm_list->lock.
->
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-
-I'm fine with the fix, but I'm not entirely convinced that everything
-in the changelog is accurate. :-)
-
-> ---
-> Changelog:
-> v2:
-> Drop the helper and keep the fix open-coded (Baoquan He).
->
->  mm/vmscan.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 6a1af9b92349..3601e58f2a69 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4694,6 +4694,8 @@ static void try_to_inc_max_seq_nowalk(struct mem_cg=
-roup *memcg,
->                 spin_lock(&mm_list->lock);
->                 VM_WARN_ON_ONCE(mm_state->seq + 1 < max_seq);
->                 if (max_seq > mm_state->seq) {
-> +                       mm_state->head =3D NULL;
-> +                       mm_state->tail =3D NULL;
->                         WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
->                         success =3D true;
->                 }
+On 11/24/26 8:26 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issues to consider:
+> - [High] mm: shmem: shmem_get_partial_folio() swaps in whole
+>    non-straddling entries
+> - [High] mm: shmem: missing boundary zeroing when hole is faulted in
+>    during truncate
 > --
-> 2.53.0
->
->
+> 
+> commit 44fc5f1a0ce8be88e4d2e1f2173306d27462ff3d
+> Author: Baolin Wang <baolin.wang@linux.alibaba.com>
+> 
+> mm: shmem: fix discarded data left intact after truncation or hole punching
+> 
+> This commit swaps in and locks boundary folios before updating i_size or
+> unmapping the range during truncation and hole punching, propagating swapin
+> errors to the syscall callers and passing the locked boundary folios to
+> shmem_undo_range().
+> 
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 2b2b78dd24975..1e1d741e50dc2 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -1306,6 +1306,7 @@ static struct folio *shmem_get_partial_folio(struct inode *inode, pgoff_t index)
+>>   {
+>>   	const gfp_t gfp = mapping_gfp_mask(inode->i_mapping);
+>>   	struct folio *folio;
+>> +	int error;
+>>   
+>>   retry:
+>>   	folio = filemap_get_entry(inode->i_mapping, index);
+>> @@ -1324,17 +1325,22 @@ static struct folio *shmem_get_partial_folio(struct inode *inode, pgoff_t index)
+>>   	 * Truncation can look up a large swap entry at or beyond i_size.
+>>   	 * Swap it in directly to bypass the size check in shmem_get_folio().
+>>   	 */
+>> -	if (shmem_swapin_folio(inode, index, &folio, SGP_READ, gfp, NULL, NULL) == -EEXIST)
+>> +	error = shmem_swapin_folio(inode, index, &folio, SGP_READ, gfp, NULL, NULL);
+>> +	if (error == -EEXIST)
+>>   		goto retry;
+>> +	if (error)
+>> +		return ERR_PTR(error);
+>>   	return folio;
+>>   }
+>>   
+>>   /*
+>>    * Remove range of pages and swap entries from page cache, and free them.
+>>    * If !unfalloc, truncate or punch hole; if unfalloc, undo failed fallocate.
+>> + * Boundary folios are locked and referenced. Zero them, split large ones,
+>> + * then unlock and put them. NULL means there is no boundary folio.
+>>    */
+>>   static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>> -								 bool unfalloc)
+>> +		struct folio *start_folio, struct folio *end_folio, bool unfalloc)
+>>   {
+>>   	struct address_space *mapping = inode->i_mapping;
+>>   	struct shmem_inode_info *info = SHMEM_I(inode);
+>> @@ -1392,25 +1398,19 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>>   	if (unfalloc)
+>>   		goto whole_folios;
+>>   
+>> -	same_folio = (lstart >> PAGE_SHIFT) == (lend >> PAGE_SHIFT);
+>> -	folio = shmem_get_partial_folio(inode, lstart >> PAGE_SHIFT);
+>> -	if (folio) {
+>> -		same_folio = lend < folio_next_pos(folio);
+>> -		folio_mark_dirty(folio);
+>> -		truncate_inode_partial_folio(folio, lstart, lend, &start,
+>> +	if (start_folio) {
+>> +		same_folio = lend < folio_next_pos(start_folio);
+>> +		folio_mark_dirty(start_folio);
+>> +		truncate_inode_partial_folio(start_folio, lstart, lend, &start,
+>>   					     same_folio ? &end : NULL);
+>> -		folio_unlock(folio);
+>> -		folio_put(folio);
+>> -		folio = NULL;
+>> +		folio_unlock(start_folio);
+>> +		folio_put(start_folio);
+>>   	}
+>> -
+>> -	if (!same_folio)
+>> -		folio = shmem_get_partial_folio(inode, lend >> PAGE_SHIFT);
+>> -	if (folio) {
+>> -		folio_mark_dirty(folio);
+>> -		truncate_inode_partial_folio(folio, lstart, lend, NULL, &end);
+>> -		folio_unlock(folio);
+>> -		folio_put(folio);
+>> +	if (end_folio && end_folio != start_folio) {
+>> +		folio_mark_dirty(end_folio);
+>> +		truncate_inode_partial_folio(end_folio, lstart, lend, NULL, &end);
+>> +		folio_unlock(end_folio);
+>> +		folio_put(end_folio);
+>>   	}
+>>   
+>>   whole_folios:
+>> @@ -1513,12 +1513,39 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>>   	shmem_recalc_inode(inode, 0, -nr_swaps_freed);
+>>   }
+>>   
+>> -void shmem_truncate_range(struct inode *inode, loff_t lstart, uoff_t lend)
+>> +/* Check whether the end page of [lstart, lend] lies in the start folio. */
+>> +static bool is_same_boundary_folio(struct folio *start_folio,
+>> +		loff_t lstart, uoff_t lend)
+>>   {
+>> -	shmem_undo_range(inode, lstart, lend, false);
+>> +	if (start_folio)
+>> +		return folio_next_index(start_folio) > lend >> PAGE_SHIFT;
+>> +	return (lstart >> PAGE_SHIFT) == (lend >> PAGE_SHIFT);
+>> +}
+>> +
+>> +static void shmem_truncate_range_partial(struct inode *inode, loff_t lstart, loff_t lend,
+>> +		struct folio *start_folio, struct folio *end_folio)
+>> +{
+>> +	shmem_undo_range(inode, lstart, lend, start_folio, end_folio, false);
+>>   	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+>>   	inode_inc_iversion(inode);
+>>   }
+>> +
+>> +void shmem_truncate_range(struct inode *inode, loff_t lstart, uoff_t lend)
+>> +{
+>> +	struct folio *start_folio = NULL, *end_folio = NULL;
+>> +
+>> +	/* This void interface retains best-effort handling of boundary errors. */
+>> +	start_folio = shmem_get_partial_folio(inode, lstart >> PAGE_SHIFT);
+>> +	if (IS_ERR(start_folio))
+>> +		start_folio = NULL;
+>> +
+>> +	if (lend != -1 && !is_same_boundary_folio(start_folio, lstart, lend)) {
+>> +		end_folio = shmem_get_partial_folio(inode, lend >> PAGE_SHIFT);
+>> +		if (IS_ERR(end_folio))
+>> +			end_folio = NULL;
+>> +	}
+>> +	shmem_truncate_range_partial(inode, lstart, lend, start_folio, end_folio);
+>> +}
+>>   EXPORT_SYMBOL_GPL(shmem_truncate_range);
+>>   
+>>   static int shmem_getattr(const struct mnt_idmap *idmap,
+>> @@ -1578,19 +1605,30 @@ static int shmem_setattr(const struct mnt_idmap *idmap,
+>>   	if (S_ISREG(inode->i_mode) && (attr->ia_valid & ATTR_SIZE)) {
+>>   		loff_t oldsize = inode->i_size;
+>>   		loff_t newsize = attr->ia_size;
+>> +		struct folio *folio = NULL;
+>>   
+>>   		/* protected by i_rwsem */
+>>   		if ((newsize < oldsize && (info->seals & F_SEAL_SHRINK)) ||
+>>   		    (newsize > oldsize && (info->seals & F_SEAL_GROW)))
+>>   			return -EPERM;
+>>   
+>> +		if (newsize != oldsize && (info->flags & SHMEM_F_MAPPING_FROZEN))
+>> +			return -EPERM;
+>> +		if (newsize <= oldsize) {
+>> +			folio = shmem_get_partial_folio(inode, newsize >> PAGE_SHIFT);
+>> +			if (IS_ERR(folio))
+>> +				return PTR_ERR(folio);
+>> +		}
+> 
+> [Severity: High]
+> Does calling shmem_get_partial_folio() before shmem_undo_range() swap in
+> whole swap entries at lstart >> PAGE_SHIFT and lend >> PAGE_SHIFT even when
+> they do not straddle the range boundaries?
+> 
+> Previously, shmem_get_partial_folio() ran after the first
+> find_lock_entries() pass in shmem_undo_range(), which had already freed
+> non-straddling swap entries in [start, end - 1] via shmem_free_swap().
+> Looking up the boundary indices upfront means a page-aligned truncate (such
+> as ftruncate(fd, 0)), page-aligned hole punch, or shmem_truncate_range()
+> swaps in the entry at the boundary index only for
+> truncate_inode_partial_folio() to immediately discard the entire folio.
+> 
+> As a result, page-aligned ftruncate() and fallocate(FALLOC_FL_PUNCH_HOLE)
+> fail with -ENOMEM when a cgroup at its memory limit tries to free
+> swapped-out pages, and fail with -EIO if the boundary index holds a
+> swapin-error poison marker (regressing 59511d630a69 ("mm/shmem: fix
+> truncation of files containing only swapin-error markers")).
 
-Thanks,
-Barry
+Yes, this is intended. Even for a page-aligned truncate or hole punch, 
+without swapping in and locking the boundary folio upfront, the 
+page-aligned swap entry could be swapped-in/swap-out by a concurrent 
+thread and turn into a large swap entry crossing the boundary, which 
+would still leave discarded data intact.
+
+For poison markers, though, there is no need to return an error to 
+users, since no old data can be observed. I will fix this in the next 
+version.
+
+> [ ... ]
+> 
+>> @@ -3911,7 +3949,9 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>>   		struct address_space *mapping = file->f_mapping;
+>>   		loff_t unmap_start = round_up(offset, PAGE_SIZE);
+>>   		loff_t unmap_end = round_down(offset + len, PAGE_SIZE);
+>> +		loff_t lend = offset + len - 1;
+>>   		DECLARE_WAIT_QUEUE_HEAD_ONSTACK(shmem_falloc_waitq);
+>> +		struct folio *start_folio = NULL, *end_folio = NULL;
+>>   
+>>   		/* protected by i_rwsem */
+>>   		if (info->seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+>> @@ -3919,6 +3959,23 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>>   			goto out;
+>>   		}
+>>   
+>> +		start_folio = shmem_get_partial_folio(inode, offset >> PAGE_SHIFT);
+>> +		if (IS_ERR(start_folio)) {
+>> +			error = PTR_ERR(start_folio);
+>> +			goto out;
+>> +		}
+>> +		if (!is_same_boundary_folio(start_folio, offset, lend)) {
+>> +			end_folio = shmem_get_partial_folio(inode, lend >> PAGE_SHIFT);
+>> +			if (IS_ERR(end_folio)) {
+>> +				error = PTR_ERR(end_folio);
+>> +				if (start_folio) {
+>> +					folio_unlock(start_folio);
+>> +					folio_put(start_folio);
+>> +				}
+>> +				goto out;
+>> +			}
+>> +		}
+>> +
+>>   		shmem_falloc.waitq = &shmem_falloc_waitq;
+>>   		shmem_falloc.start = (u64)unmap_start >> PAGE_SHIFT;
+>>   		shmem_falloc.next = unmap_end >> PAGE_SHIFT;
+>> @@ -3929,7 +3986,8 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>>   		if ((u64)unmap_end > (u64)unmap_start)
+>>   			unmap_mapping_range(mapping, unmap_start,
+>>   					    unmap_end - unmap_start, 0);
+>> -		shmem_truncate_range(inode, offset, offset + len - 1);
+>> +		shmem_truncate_range_partial(inode, offset, lend,
+>> +					     start_folio, end_folio);
+> 
+> [Severity: High]
+> Can a concurrent page fault populate an initially empty boundary page after
+> shmem_get_partial_folio() returns NULL, causing shmem_undo_range() to skip
+> zeroing it?
+> 
+> CPU0                                    CPU1
+> shmem_setattr() / shmem_fallocate()
+>    start_folio = shmem_get_partial_folio()
+>      -> NULL (hole)
+>                                          shmem_fault()
+>                                            allocates and maps folio at
+>                                            boundary index, writes data
+>    i_size_write() / unmap_mapping_range()
+>    shmem_undo_range(..., NULL, ...)
+>      find_lock_entries(mapping, start, ...)
+>      if (start_folio) -> skipped         <-- unaligned boundary not zeroed
+> 
+> When the boundary index starts as a hole, start_folio (or end_folio) is
+> NULL and no folio lock is held across the subsequent swapin of end_folio,
+> i_size_write(), unmap_mapping_range(), or the first find_lock_entries()
+> loop in shmem_undo_range().  Because both loops in shmem_undo_range() scan
+> only [start, end - 1] (where start = (lstart + PAGE_SIZE - 1) >> PAGE_SHIFT
+> and end = (lend + 1) >> PAGE_SHIFT) and shmem_undo_range() no longer
+> re-checks the boundary indices when start_folio or end_folio is NULL, a
+> folio faulted into an unaligned boundary page during that window is left
+> with non-zero bytes in the truncated tail or punched hole.
+
+No. This is invalid. The race itself is possible, but it also exists 
+without the patch. Unsynchronized concurrent mmap writes are not 
+guaranteed to be serialized with truncation or hole punching. So 
+userspace must coordinate them for deterministic results.
 
