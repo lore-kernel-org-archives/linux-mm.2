@@ -1,77 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23DE606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF44606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oeF+83ri
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NmYEF5Ft
 Received: by kanga.kvack.org (Postfix)
-	id D97C26B0AF1; Wed, 25 Nov 2026 17:33:30 -0500 (EST)
+	id 385F36B0AF3; Wed, 25 Nov 2026 17:33:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6F9C6B0AF3; Wed, 25 Nov 2026 17:33:30 -0500 (EST)
+	id 337206B0AF5; Wed, 25 Nov 2026 17:33:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5FA86B0AF4; Wed, 25 Nov 2026 17:33:30 -0500 (EST)
+	id 225D66B0AF6; Wed, 25 Nov 2026 17:33:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97CF96B0AF1
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:33:30 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2520280188
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:33:30 +0000 (UTC)
-X-FDA: 85475094180.07.47F0EF7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3A2864000B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:33:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeF+83ri;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E9DB36B0AF3
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:33:45 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6E046160177
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:33:45 +0000 (UTC)
+X-FDA: 85475094810.30.A86CDAD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A927818000E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:33:43 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NmYEF5Ft;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646008;
-	b=v2C+SjsG1FLJ9YKbEH5VYp15AJJdM4+esbUng0nGvD1l8TxVtloFh8ClkfrKn5lb4YSKqA
-	jnzwRI3O+qDgRILFpNbbKTjkoBLFrlb/IAPhrvn/7kCdImB5P4UpdbEKwed5L3MMKKxdLd
-	AtPormuNfUnN47voypz6TCLQbxw3HP8=
+	t=1795646023;
+	b=Nchx9ahBDXTpcK++wAEJ/234B4sPaY6c9A7Nmra4I2z/8d6m0pmDHPaAcZYjd2nmjst7og
+	fP4NC3+kKWt6ZPWRrLzj7TTJB7cl85C3y87egUt8B8oRj81ek/tfaIgmlkodFxOLcU65hh
+	jNIxqpCbvqif/Ne1nLg7BC7NxddH5zo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646008;
+	s=arc-20220608; t=1795646023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=tzn+by+k8G1JwXk+S/E0tJAgmy0jLDfOi0f5NcqA/MY=;
-	b=pn6tZxdHx06+Zy1ZNbKyFFvbo9CF2Yg+8kVsj4V8Dvs0oh0AmQPNkHZclwWXsxY0IRMiYX
-	LEZsXVS0xic6GWci36aoYWfIyBjX4fDQSO5n9fyaf80mYQtLmLyLqibjCl7+kNIdIhOUzx
-	5girTncP3715wkluQcFa2kET5heWK4Q=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fXzNfGo7RfddoR5dRtUrH7smQbzk3tlvBFxiBJPCKVk=;
+	b=WCLUuO5NN047NCXHef/vsxq+NPxQsSustO55oxEnYUCE8U7wFOeRgoz4Ech+T/rLrBbfCv
+	RoH201sDw6VcljRSyBZbSSrLyMsCNgIsdxOeMXZfrmcAdBPMvLuC8uVhVUS76aauWtiupJ
+	/UirevwNwFoP+p36EnpitNKsaYI4eSk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeF+83ri;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NmYEF5Ft;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A737E415D7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A3D56123D;
+	Wed, 25 Nov 2026 22:33:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5351F000C0;
 	Wed, 25 Nov 2026 22:33:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655D71F000C0;
-	Wed, 25 Nov 2026 22:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646006;
-	bh=tzn+by+k8G1JwXk+S/E0tJAgmy0jLDfOi0f5NcqA/MY=;
-	h=From:Subject:Date:To:Cc;
-	b=oeF+83ripG+YMJQ6SibQuirzvfqlLreGg2dU0N4iBw6J9SwMfGbEdiYCtiUZLOpMd
-	 JYqiF79Vytug9G0B2DkzFLIWoipJtdH+XMvOxqN0DGGpyctPV9W9zPh95DOEF2Z+QY
-	 Xceo8UU5pO3BjrUwnu0S1uUp8LqLqgTugPbAVmqe/LCUO1oXZ7psZ5qitBlKCivcYb
-	 cJwxUd3Rj2XwgOzgIRdtbB/JU+sW9VMX6ByXF7MliTP9djs6rMrE08LzryKnJqRfcE
-	 PzisQMZIlNmWvvo++RWg05A5YHf7BJGoQffk2A7bJcTCTSBVSYYhY9OhGmH+h5669x
-	 28AaXAPpZrf/Q==
+	s=k20260515; t=1795646022;
+	bh=fXzNfGo7RfddoR5dRtUrH7smQbzk3tlvBFxiBJPCKVk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=NmYEF5FtX6uDI4qQqeJ26Pi4q7EkUp7H9qXmB+5VFWNUj0H7Lmevbqo+IwECQy0US
+	 Gzi27CL25JJNKCkmrMQZH8U1+eeac5ljt2zihFcIjGZH8IA1N1cbOlStAX0wbmBa/q
+	 trk736gQ1b2+GcOsSwVSGK9aWe0QBsOEdC5Qipg3JCi1+iYUfH01y4nje16Wz6NEvY
+	 esLL13GSFWNe+4ESBtAVcOyX0slwHcGsslTY83n/HNm6RKej8uCOpS8hOo/6ERIEDA
+	 KRByR6HZ/krdf8FgVgQ3FOkgN8ZbxY/HJv4RLNv94Ic0noflkaUZcIOmNcMhc2HBfA
+	 rBGq+fN9NCX9Q==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 00/21] mm/hugetlb: various fixes (2)
-Date: Wed, 25 Nov 2026 23:32:58 +0100
-Message-Id: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
+Date: Wed, 25 Nov 2026 23:32:59 +0100
+Subject: [PATCH 01/21] mm/hugetlb: charge the copy made at fork to the
+ parent
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXMUQqDMBBF0a0M79uAGRIp2UopoumoU4otGS0Fc
- e9i+3k5cDeYFBVDog1FPmr6mpHIV4Q8dfMoTu9IBK658Z5rN62jLM++HfQr1rLjJsSY4yUMQVA
- R3kV+hETX279t7R+Sl3ODfT8AsQh4LHMAAAA=
-X-Change-ID: 20261120-hugetlb_fixes_2-26455c584f4e
+Message-Id: <20261125-hugetlb_fixes_2-v1-1-db27fd2f71a8@kernel.org>
+References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
+In-Reply-To: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
  Andrew Morton <akpm@linux-foundation.org>, 
  Jinmeng Zhou <jinmengzhou22@gmail.com>, Hongfu Li <lihongfu@kylinos.cn>, 
@@ -110,28 +110,28 @@ Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+ Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3106; i=david@kernel.org;
- h=from:subject:message-id; bh=nzCzOz26eddU4SO7rlRqgKmrjP0kTfGyA8Ecr2EgmCo=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk5TjVFYV1bZe5k5Juf3u5oJJF15cifxTFhJhcLJqq
- bD0jE2KHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExk40aG/zULo7sKr5Xeb15i
- yrPhVfhsTYlSt3trHn7f/fipxO+MF84Mf7iiPeLe3jxfdNmWL429a9eJRb0vt/byrv3/cI5p6+N
- fbnwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3025; i=david@kernel.org;
+ h=from:subject:message-id; bh=2bk4PJ9Bi2fWpYOfBgjZCtpD6hSW3oRGiP3OyVjpNlM=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk5R/n7v2dSOzb41n7rspJSwMBjsiju1PTdvqYWi/s
+ /J98N7yjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbC3srIsHpN3uQpJWdPKmml
+ mkou3sKd1ZT2+hlHo+vS2Y8Y9rw9m87wz/4V+3ax/zaKxnyGK17pyR7bKHg6ou9GlkPCtppfizJ
+ 38gAA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspam-User:
-X-Stat-Signature: yw9fz6dwmychm66pxg875ib7duuzy48h
-X-Rspamd-Queue-Id: 3A2864000B
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A927818000E
+X-Stat-Signature: sn6csbkw58qjqdkttpbr69bhwb1dmd6k
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795646008-990737
-X-HE-Meta: U2FsdGVkX1+UnDizOl0SLqCEJ5df8JMiWSyyZIhzOGXlQhtoIDRm6rXoC2VZ5ETYuUEFLAykNh3hnxj1vm0jTq5jbJnDL4tYImSCdvTbr4whlLa9DuYTjEnZLNx9G5ZbWpaj6yVd/BT7orFcx96qR3LxBvQ13Z1o0p/DXyLEYSkkAW2o4SuPHqs8+3xppOX3AwRqcJWP4j2DW14bla2eWCnwqTYSSReqqKuVMzZgpG/B4tYhN3TJWdDrT7EKnijYujEMdJfM4jNPbxQNO66gDeGNHTXKF6K0VjuEdACfxnpr4W9YOXofjaqI0/cAYI3zDvKxtpaiqpYvAXLtCyq2QPnsl/qQPEgd4uroQjqIEdY11yzXWOhHrAyIsRXr6/wNoRh30ICBz9ucI779T7ggrZVRvTkGgsgbTwwOAQc0AZWtFgUFzzNylKiglMLsTZX6moR7oHT53MegUcAtIBHWAurxN3AQLRmaYR32rcmzE0/RgnY4iMJru1csDvkb5FTaTOpciWRc4nH9u8fboUCbxphdfgukm3jeBKwGIyiBw82x2aAWb9JDtgC7QL5CzbO0QRlqlufy+Vk36i2LZ6dGkTwGcu+g2nx0GNQcbTOlk/5COc4j6vrztvgXo40lFIf0I7dGsZqNLAKdNA3ulZ6/xj3mzjEPe41Lz89E7dDfyz1TWB5jldTaDbz2qIn8tUVMF57y6g7RK+g9/P9Q5GID1DNSGoKi9Y3XV108V1tkPp22KAk/FfP8edHQOfokaIWUSETmqhUj3Cn83wKK8/4Kgwd4shDXEeYOrzilNJ7gAVSxftDHSLpbwlz7YXHkP+ru85XU9lR1Pb+7IVYGcJK0byH1uMesa7rfYcFlU3VCYnKwa0qz2KWFionJEDZ53XaRsvXDxiT3soruA0TFWW9v8OjjflcvW8nIEIwc0E4JT4ullURdawuyspN7LKqsFVWsYCRyjxjmm7yHuQNacw9
- aVAnmCuP
- /M6QiSKcVEaPEI2ImY2H0PzdfR8Q1hL8dyr3dkygF7EejEtmti2pxxouLkaQjdrKK3nvmCNNPw6PJ0CTAT2Udqv9jdgplOzvHxuQ4jDowMVkJBxuRV0qIeCzkM7aqYBKwHKuPXCEbK38TeiOoteKeaUBw+QBILAkuczvK3WDMxG+w14/T+H/7jT8SkKGoH9nyupRVHIdFQiD7WSJYOILDwQtK5sB4CkityTcCImpRVT6caUAn0bIn/ctYbPOAW5LJhFmp3EJg4mgEoWSBT13DZPxAauCaR36hn+nPrW+VfpfV50GzRUIuLHZssCQq8bVMXMLmg5tZGBhr8cvq0ezj6zcV4qN/MLNHuGawMqowIz2qjXd4KS0FAmXd/w1xtIUZk+dTcGMNeicutoWxJt9e33vYf1rre4IaOdwSs06DoODpbD61Vqlk0VpayS+L9dcbUxAQWQurtKvXAxrtyu7/SGLG+nX2SJESclUrTjh5uX50kZGp2uWvQJ9J/H+WMbOfzfP7C6LLj4yB9lAkbEVjwEPrBei3ccU30b3lewyPNk1dISc=
+X-Rspam-User:
+X-HE-Tag: 1795646023-171555
+X-HE-Meta: U2FsdGVkX1+GzvO19bkZeVEFXs2yXko+G8YQ9jFy8N7APll0Zqoe6uYVax0wrwYk1KCzWhCDLooToPAEt14B7hoN+LydmYhD1yJzjK3gr8elX49fe9hCbVNfKr9Tv/muB8/waaaD9rcsDYrdg3MfKqPUbgylOAXmeTj5DTRqLsfVLpWs4B7DDEXHMWCV8ntafDdausjqj8wXXS7UfDND/zEuKa6QcmcyDV8pzwUaDfegBhrPUyA5G75sY83zgKB/+b/zxgBohJJyWzvPN3b5HWtWIEsaLhGyx0hszTWKeqBBq1OYzkpxQ+oltpi9mlGgSM5vh/Qs/+6t+kUtQuhCz86ECip6zsJIK9lhS6bxWoQkhntoTx5ZxzZrtn4CorCpVGEPdd7DjNKVJlwVT2S+XKHSwnJtv5Gm0ZpQrDPULJ2QkY5rVoyM4c2unR2VYM4yU26jVCETPofBLgen6z9mUHSeT8X6g2ZSq2FHcalZqMA+jOiR8KaenvC0yopgPueCZkoY2IU6RuFMj496N69ZgP6Kj/pm2y/dYaPvIhnlxD1/AQnRuHQB997hEXK8uKKMEIyOpnWSTa2hI4IKfbwoFCo3kXgcF0aYHgesFKoev6S0Mg8xuPvZHf3sIuYHHjS+60ieF4URLcW59f/8ko0RotJi+UP/LbKuPOFInaqT7fMltOAXt9uanDUji9NYc/JOL5EDVE8Rk7tJsSwtWvkOGhpH4kFkofLSUkdOUnv2kkKJ+UyIkK9Qnjog2Yogm5/QepJXNgxzgk2qIamlfGDaVhOpluK4Xp5y97xVZyUSkBAwUpsJ+wGm19Vu0ILBF7jkabiVluumL6oilO7hq5CWHbJXN2wTedxF/no4TNKVsdwi2A0NI/dcCGFFUBkEn4J0nPxG52WajOo+bgkR+vAcRNDvqbAABZvz3Vo00e00P7DC/tI4xfZYM6kSfJyiNOjHYrK073TCJd33N312viK
+ leRSeT7h
+ +G5UVpNWQPhza0WwYZpuBty7qeAaX74Ygm/YC1W1owvjUJ8VJzPARA58NhmS/3Y0LBjJ4sfFBQrE1qSS7t+drhVlz5+GQKSusGn/Drp4jlSC4ahgm8i+2TQglqsxn23nTiab5m1vueCjzxuXyqFBYg4hex1WFGWXgQ891/vPOFBgicC5AhAbOo/dhaH4rfCq+M+w6TdQUOrd4D5+7n592Mi/olWOLTh/yBW0Oq9oHAFIX/G3IifSovNu+2BylbERtI+1CQD6gqy/Mmf49FtV3BR+DTuZU3sHxHX9ii+3Ws54msVP+APlWzdsbfDqtsNrL1uF7axqLP9PU7fkJ461GlzKTDn1CmXKwe4pwPBjGNAkjFTLSPwwllErwA50Y1cVPJDCVTbY7jmHPzt3GAizb9nIZanWmnXTWF1Wa8PSmTp+3iCLLLJxmezItiVH4QO4QKcS4LD7ByxL1F+FP+9XxZ7+BYA1mwsIB/AKJpi9P/3jgH715cJwg/6yqcma/6EHcOfjLF53YjhODB8JL8/y9vWf0Ju1jSdsIFelOFhEXgNe8sdLvakeYXU7Q5gjMSA29+0ZCoxELJ2EsPCkdzeAaCUyZMMeqya3ehp+J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,77 +140,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+When copying page tables during fork(), the child is not yet assigned to
+the right memcg. When copying possibly pinned anon hugetlb folios, we
+must charge them to the parent's memcg, otherwise we can end up
+allocating more hugetlb folios than allowed.
 
-some more hugetlb fixes, this time not as horrible and confusing stuff as
-last time:
+Let's fix it by charging the copy to the parent's mm, like we do when
+copying small folios in copy_present_page(), introducing a new helper
+function alloc_hugetlb_folio_for_fork().
 
- - Patch #1: a hotfix for v7.4
- - Patch #2 - #18: a bunch of non-urgent fixes
- - Patch #19 - #20: two related improvements
- - Patch #21: an RFC for a hugetlb cgroup fix
+This is a hotfix for v7.4.
 
-I think patch #21 is the right thing to do, but I am not really a cgroup
-expert.
-
-Patch #19 deserves a closer look from our VMA locking experts :)
-
-Patch #1 should go into v7.4, the rest can wait for the next merge
-window.
-
-Tested with hugetlb selftests and some targeted tests that reproduce
-some of these issues.
-
+Fixes: c2deb1356d82 ("mm/hugetlb: charge folios to the target mm's memcg")
+Reported-by: Chris Mason <mason@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-Chris Mason (8):
-      mm/hugetlb: fix truncated copy result in UFFDIO_COPY
-      hugetlbfs: fix deadlock between hole punching and memory failure
-      hugetlbfs: recheck the vma range after the lock wait
-      mm/hugetlb: don't zap non-present entries when unmapping a folio
-      mm/hugetlb: unshare PMDs of a split VMA if allocating its lock fails
-      mm/hugetlb_cgroup: track in-use folios per cgroup
-      hugetlbfs: seal SHM_HUGETLB files against growth
-      mm/hugetlb: resolve protnone faults without a uffd bit
+ mm/hugetlb.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-David Hildenbrand (Arm) (13):
-      mm/hugetlb: charge the copy made at fork to the parent
-      mm/hugetlb: always mark new page cache folios migratable
-      mm/memfd: mark new hugetlb folios migratable
-      mm/hugetlb: free surplus folios of other nodes on free
-      hugetlbfs: don't zero poisoned pages in a hole punch
-      mm/hugetlb: only check PMD table sharing for PMD-sized folios
-      mm/migrate: check hugetlb PMD sharing in move_pages()
-      mm/hugetlb: don't share page tables of a VMA during mprotect()
-      mm/hugetlb: count migration entries at fork and unmap
-      mm/hugetlb: stop accounting HugetlbPages once PMD tables were shared
-      fs/proc/task_mmu: don't clear VM_SOFTDIRTY on hugetlb VMAs
-      mm/hugetlb: use the VMA lock to stabilize flags for PMD sharing
-      RFC: mm/hugetlb_cgroup: charge faults to mm->owner
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index d0e66fb306221..f46c85fc0cd0b 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3103,8 +3103,9 @@ typedef enum {
+  * allocation).  New call sites should (probably) never set it to true!!
+  * When it's set, the allocation will bypass all vma level reservations.
+  */
+-struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+-				    unsigned long addr, bool cow_from_owner)
++static struct folio *__alloc_hugetlb_folio(struct vm_area_struct *vma,
++		unsigned long addr, bool cow_from_owner,
++		struct mm_struct *memcg_mm)
+ {
+ 	struct hugepage_subpool *spool = subpool_vma(vma);
+ 	struct hstate *h = hstate_vma(vma);
+@@ -3187,7 +3188,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		.nodemask = nodemask,
+ 	};
+ 
+-	folio = hugetlb_alloc_folio(h, &mpoli, vma->vm_mm, alloc_flags);
++	folio = hugetlb_alloc_folio(h, &mpoli, memcg_mm, alloc_flags);
+ 
+ 	mpol_cond_put(mpol);
+ 
+@@ -3249,6 +3250,23 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	return ERR_PTR(ret);
+ }
+ 
++struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
++		unsigned long addr, bool cow_from_owner)
++{
++	return __alloc_hugetlb_folio(vma, addr, cow_from_owner, vma->vm_mm);
++}
++
++/*
++ * Allocate a folio for a copy in the child VMA during fork(), charged to the
++ * parent's mm: the child is not in its memory cgroup yet.
++ */
++static struct folio *alloc_hugetlb_folio_for_fork(struct vm_area_struct *dst_vma,
++		unsigned long addr, struct mm_struct *src_mm)
++{
++	return __alloc_hugetlb_folio(dst_vma, addr, /* cow_from_owner = */ false,
++				     src_mm);
++}
++
+ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
+ {
+ 	if (hugetlb_early_cma(h))
+@@ -5110,7 +5128,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 				spin_unlock(src_ptl);
+ 				spin_unlock(dst_ptl);
+ 				/* Do not use reserve as it's private owned */
+-				new_folio = alloc_hugetlb_folio(dst_vma, addr, false);
++				new_folio = alloc_hugetlb_folio_for_fork(dst_vma, addr, src);
+ 				if (IS_ERR(new_folio)) {
+ 					folio_put(pte_folio);
+ 					ret = PTR_ERR(new_folio);
 
- Documentation/filesystems/proc.rst |   3 +-
- fs/hugetlbfs/inode.c               |  22 +++--
- fs/proc/task_mmu.c                 |   9 +-
- include/linux/hugetlb.h            |  22 ++++-
- include/linux/hugetlb_cgroup.h     |  30 +++++--
- include/linux/leafops.h            |  11 +++
- include/linux/mmap_lock.h          |   1 +
- mm/hugetlb.c                       | 174 ++++++++++++++++++++++++++-----------
- mm/hugetlb_cgroup.c                |  64 ++++++++------
- mm/memfd.c                         |   1 +
- mm/mempolicy.c                     |   2 +-
- mm/migrate.c                       |  23 +++--
- mm/mmap_lock.c                     |  78 +++++++++++------
- mm/rmap.c                          |   4 +-
- mm/vma.c                           |   2 +-
- tools/testing/vma/include/stubs.h  |   3 +-
- 16 files changed, 314 insertions(+), 135 deletions(-)
----
-base-commit: c8117bff684306f5c1f959d055cc2b24dd67b1eb
-change-id: 20261120-hugetlb_fixes_2-26455c584f4e
-
-Best regards,
---  
-David Hildenbrand (Arm) <david@kernel.org>
+-- 
+2.56.1
 
 
