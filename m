@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26761606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB6E606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PA4vCVY8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kka7V0z3
 Received: by kanga.kvack.org (Postfix)
-	id 01CB66B0993; Wed, 25 Nov 2026 05:17:02 -0500 (EST)
+	id E021F6B0995; Wed, 25 Nov 2026 05:17:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0FEE6B0995; Wed, 25 Nov 2026 05:17:01 -0500 (EST)
+	id DB27E6B0997; Wed, 25 Nov 2026 05:17:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E25E36B0996; Wed, 25 Nov 2026 05:17:01 -0500 (EST)
+	id CC8EB6B0998; Wed, 25 Nov 2026 05:17:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A24336B0993
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:17:01 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1816A406A8
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:17:01 +0000 (UTC)
-X-FDA: 85473238242.07.09CFD76
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C16E1180007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:16:57 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PA4vCVY8;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A2FE86B0995
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:17:45 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0DE9AA0E57
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:17:45 +0000 (UTC)
+X-FDA: 85473240090.06.E7D5610
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 550B84000B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:17:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kka7V0z3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795601818;
-	b=B2+Dy7HJcUF89LCvrA2FVkyiTjUnLZmdX1pbUPsoGd5rr+yNheXuMH4an+chV3DgYob2sy
-	eW7R+aFqH7h0iuR7Xx3jZhM/YrPoDANy53JPbyafD7S753ORy6YhoeUbdcoFBEpB4FVF/k
-	LRxK9NilEEyuEdeQ6wZCt0PofXOtax0=
+	t=1795601863;
+	b=eqsAI5eCa9XgRb6HsLh/nOpAc6vjnHCjGTxrUEHkgbNU/PbmbKY+k11c02XUiKnE0smgKJ
+	fcEojYEKMYDhQmWRYqvW54EV5I21XR73DQOTFxYK/+DJCZFPaVqNpwQUjIE1lNXNHg8h5v
+	DONIa07chyG9nqxCyGFM1a0Dvb/J7pY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795601817;
+	s=arc-20220608; t=1795601863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6n8ZrqtxlZkHZpLWE48kD5XtJASweu6G+n13pUnSr/c=;
-	b=rW/EuLg9WaheCsl8Y9dUzn13EKRADGtNhXX4OvJ+n8kCotWXsllHo7BHfwPtj/+enGWX/4
-	KUnyvLeJwLl8DXEjpqnfvP0efTy4//4RyZqRdH3HBIxUkfWdBxHg1/ugb/v4iirAyeBsZ6
-	WLHZ79OGg/SI/YjK/fsIoE4j4kuKpYo=
+	bh=MVpSybBRP0s0J8L4gfkBHiRSvBKROD3zUxXIUAM8HhA=;
+	b=hEropbd/sDaFEDhiIa55Da23z4ILBl4opb9iDWP2uBXq2WjRK4wx2dmN/CxsU6CXR3cQPE
+	CKioaW+KkwBtQKNXfLfUh7b0muWyzhx5GOcSRIVqVaHwqMr1dlKL2V+eu7gr7pW/sLqqJo
+	xDEcy8yacQ2AMinIFE58jqvQ5ZwTyvA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PA4vCVY8;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kka7V0z3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 03994400B7;
-	Wed, 25 Nov 2026 10:16:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123F11F000D1;
-	Wed, 25 Nov 2026 10:16:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C912B60D13;
+	Wed, 25 Nov 2026 10:17:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521A21F000D0;
+	Wed, 25 Nov 2026 10:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795601816;
-	bh=6n8ZrqtxlZkHZpLWE48kD5XtJASweu6G+n13pUnSr/c=;
+	s=k20260515; t=1795601862;
+	bh=MVpSybBRP0s0J8L4gfkBHiRSvBKROD3zUxXIUAM8HhA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PA4vCVY8BiPA2XPSip0zFHGOhURNTa3VIBRn1zN5/U3irjDoM8OaTqdSiYVbpnbUb
-	 QeTPWdYQGhRHUwDTiIUejzz4jz1QMGhweo5zTYaDfi+WZtqqNjI7KxlbNN2Kw+T1Jv
-	 4hMbreJK9Fb6SIAIikCiaV9sSjRS4VP3E29i4X8YzdG2/smoWGIUG8RPBPTQ1pS+t2
-	 NCk0y2EJWKC6wyQMyR267sll6zwHu/MVVnD2GBPR6x2Z410V0hkMf0wxI3LT9G3lQK
-	 ackPlBbCZTa5PycOASqx4rzcpRZfJ056ZocGTo17KNbNqITDLHM8VSTHeSNsqSIlLd
-	 nwFHnRs4/OJuQ==
-Message-ID: <3d9d914a-4288-467d-8d25-4a47d62d23d8@kernel.org>
-Date: Wed, 25 Nov 2026 11:16:39 +0100
+	b=kka7V0z3rAN2myWRWUJ7Onlql/wheMihA7nbgFyaVm1BMatCAYHP0qX/KUiaqp7xS
+	 wLL8DPzN2vyqWkZbm50OyTrAeRDGS/uWROQbMr04QqVwiXXwaaOSJlP3lIVNxUSBnL
+	 baazwmqsbZ8BoEUyRXPuSgvLJnIQzG5unm3ZB7xa9FZtWATUTvSP3TsZXsAiptJpN/
+	 m7zoI+FonBW6LTpOS8CM55qrkns+g7qwaVuv0/gszNJFEmUskBP8mIgJizSQBKWt+l
+	 JFC2nQ4ayt+sS6gOQ4/ePJkENKDTf8g4TYbEz6EVsh34z6BAmvyc99wucVvbtB5q1H
+	 Z8fpZY/SVzKrg==
+Message-ID: <1b88fc30-a3d9-473c-92b7-701cc563be1c@kernel.org>
+Date: Wed, 25 Nov 2026 11:17:24 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 12/18] mm/damon: convert to LRU refs based operations
- for MGLRU
+Subject: Re: [PATCH v6 17/18] mm/mglru: folio LRU refs based active/inactive
+ number accounting
 To: kasong@tencent.com, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
@@ -98,7 +98,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org,
  Tianyi Chen <hi@tychen.cc>, Ridong Chen <ridong.chen@linux.dev>
 References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-12-8ffea39934a6@tencent.com>
+ <20261124-mglru-fg-v6-17-8ffea39934a6@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -145,22 +145,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261124-mglru-fg-v6-12-8ffea39934a6@tencent.com>
+In-Reply-To: <20261124-mglru-fg-v6-17-8ffea39934a6@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Rspamd-Queue-Id: C16E1180007
+X-Stat-Signature: xg753kcjdi3tzxy4cq5rtmm653rfs3o7
+X-Rspamd-Queue-Id: 550B84000B
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: m4qfo7gbkhynq6i9k9moaewykciog791
-X-HE-Tag: 1795601817-278327
-X-HE-Meta: U2FsdGVkX18TApAB7hNugAxMMMRKBf6uXQ6G0LWd4AkLo0YcZgYJLwF+Ndwt/QhyHuJAO/5yoEkq2N9LSIM1wZ6zN00srv2o9hnkTwZn0cwvWUbXLQs3ud2/74hYtMIprcPMcUlzDoEhWCbdL8kBXaw118sVHUNDNx3ZD2zsqrvt9rQa4iddx4n8AIGwPGmtjjAxYd8Dp7m91oyCR9u1dgcVroLFWeBB5qWN7sA/wUtFgIGihnE7lH27nljIz4jngF5O/aotVK3j/Mvp9TejCgHy8lwTuCaLdLTK1mgy30p2ecBD8r0y8+3ND/WNZ6vR+gaXmNna5BS3hes87fNH/Sn2gKyYZP7xo123KnqcKD+9190JyEpdEwX/B7rVSneGgNNkw9I2Tsu+dopAphbWPJZhtOQmYDXztT/DQEb+/39uhuBKd6L37X7aZYTI2Fd7NZ7W3GIib6pbaZNTMbH154hO8n5baXXtyntqvcIaF4XzuM8jP60DwVRjdRoMp5UA8UmSCaUEHXrM8Gl6m4Hf8GAMxHcd6vqqizZxbjPUwqxCoz1doxf6oUvQcWDjfDlMWe6Ofs9UKBonkgyF9zv2w/N1txpSm/w3aIJKhWKPnbZxqw7G+w/iNcoG5KUgwOqmqJUNBrrTazDgC7FezcbNStCs21XYJAhD1+ju40dRoG9yOEsrLahrLgmyj8tWLOFymS+2ya0aYMlyInjqA8dNGv6kczxwLZUh48Ryh6RJXVVUZ527yLTRt7X+BQI3+rUaJtRze0LZ/ay6tHX6EaSq7FZJvrHyMsxweyc9ldwFEasiyz5/31IZ3SzegPhDqCtkGBa6rgQKjq+hR4yYW+AgQj6fO+vgrBQoSWlNrtGyMUF3lGKrhmAO7cC4KpFEpy2OZH69ly7MWMqXHH2mxOS/N2MeyqNKPQ4rhzrcZOG2FMy0PEScHMWTWk6GnkvyoV+gm63qNpjqqpSH4pPIfqf
- CPdgyZR7
- o623MjYIXO7g//mafX5yaABpUlg/OWlQ2Jmj6QvdnZsQvLKpiPdgRLd1p+adcwwhNFOgyaPSu3TZOxTYhOpNxLfULO0g+0GYHu3CpYWh5yFBlHhbPgcjcpTMs1THKE3aU3UyVha6ykxHpK0TA4XdXw9472QusDYxFWKcD7/ANcQqoNAkVpXMa2wuVArIQunelZof/mOzClRTgJZ1YJYtoHP1S48wATM9jbJl/8WhU30QS4jEzjMefOdaLnvSrlHDtX1YEOUhWnO3BKLmH4RgpKZi+feNjonxlKFXPUjXP2MlGSOA4J7k/cn/sLV2Gg3B9/WFH1Zs2N/aNhRQp3g+Ov9tVWt816coW+cbRH77+sfexQQEyFqoXpzAMcl9WZ6oc8xceSb3WjGhHISzibjRjx57Viw8QePNdFenxLHd07YFO6nFRwZG3T5JtkDEcnMsJQsRI3se7aVXCx9zHmoKbPE+8LQOWwueYQ/cHExTH+BRxf1h8t05gn4o9uW70Ai1WWMmz+5JaeTHSW3U/fkASOTkVLd7ey0rVi8dUOZsEof8k+5GEp4qhrm5YxuSlFWECUs6ETHtH+jFEZ9LMQQ/3mP1boFhCkU+LrOPCGTTzySKfisDNIMhDAap+iMygzL0xt21jycUTArgvXoj9L2x0gUB236KbLDILLjIwDhxXPEOyhqtxwtTuh2lby/7YYXPqIItR9hg75utoNsrNERELiujQxg==
+X-HE-Tag: 1795601863-667490
+X-HE-Meta: U2FsdGVkX18tQLbB4t9ruUp61vZ1/olnfmEjBgTiUVlB8/XpFvPvOkgzvVm08YqUFGz6tOAMCNFHoy74fd1Qsbzwi+9W8iOd3/E2wx4EsnyLCVfV4uz5qPYgSiX4ec4m6PtRGRoIoJA+51rrJ8GGOuGJbLSopskBRGOZjbY9v0U7so8VycCAhkWKAKFIa5/sHBdhkmbHETRsDUh4AszH4t79hoHr2yn+DIDWZ0ri3B7cMgfyod4fXkH3OZkzuIThayjLyetyPMMqJaMaDzk4cLe+UxPXT0VvA6o4stdsCUaxo/7L1aZmQrhEd+Mb7TfvF8Fb8syzukbTsJ7h4VmDnCntYvv7RZ2iy92AN6Ox0fNxO4zhNo2CYr6m+RVuyetUR7SY5refV7yFlBqFsR9ubHL2R8kEmJUF82aQ+/kZCgwgjj6CnyYSsEliSGELxG9/v1Cd3YlYbagXg2WXqV1Hk59pwmF6orZTDINc+ukEy/SOtIbKZ5QArHOIjt/0ck5TLnRAUqmMexxvVWqAh/YZUXzvcOTKCEgEOoRx18r4IYIeXiHl4fg1xCmyWbu6Yz4OKtOW8b27yrgMLs+mzT3GYrw4LDuR+RjiLG7bQy0wGo2LzGEu+6Me8GZmdRe3u+xwKxtQxURn3mjQV3+nCaLW1jgtDvo6ioIvjyFBssUP5++RIhq7/TDrzLS7LLIw/NypWCDPw8T2yIMy9g7ZT2R9HxU5oaVM/qrrtLQXX4YptMyIBkPtNKK4EFcR2kqCWoxT46wdKHwRhWBq9UIjBCCObUrMS50RyiL41l494PY+NYNyMt1Hs4UeCsWUTVanrZYn3cKsCL5pOGxuW2v+koURQSbk5K3aXTohUMuaukhyQJmbE4WIvKUUecFzXkyYRMOhovn4Wx8K/YWaSPvEWzc+X7kxkhuvSZlhw3BRedD1iBqoD+qEazOSGN1GcOanr4S7gIPtKRlcB7xg4+R6kQf
+ hO0tODvZ
+ 5gj0eo9KOtcSb/JpAwIGYHclbeEA0byUrkfLsy3StFaVqHAlAZ7Jwrn9PZO90ezOZA6Ek1d1sTJUYPNsyWGxVxfxCDCWYUWnW8qzkTfk19BkawtQGBVXKFqz2xT52MrugaHqfTkCI7kI1CvkrN4lqUzwgahT9uiwxL4q7WoZYfVsCxLvIpG8sLLUrISThuzfl/lIcmzGnIBqgHKEWS7qXxdzgwL4bs4xvcr0VDnFBMA/PjXVs3+JDjKY/xR5YzuyhK1Xefuz+KVOwPuqyULkJzVyY+8RLtZOjDhQxEOTFclgngErrDrm7gn9uWiTt5ySjrgV63kneku0VKiO05xWX325gmToUgVQuRNcaXJHcsZ1UhohUO78JSKsBmMo0VPpucKVfs1ovFXA3setb4gg4MiNeFhtx9h1/SzDKxRFXIzEozJcW6FlgyY58UHRAv0tPWi/s9yv4khGQGyO0Q0N2FDwfmX5GNluYWtTA2bko2M0svRltm16falPtv8QVYi/IvGtD/GcOi91XsTeg6AmM8B4UVzK8ZzgU7dErOUdrRyTawz0Kw+r+1XD4nGQkiMB1ryX1SqX1/w5CZlyx4kvKgXlmvG210Rfj/E9D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,35 +172,52 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 11/23/26 19:53, Kairui Song via B4 Relay wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> damon_pa_pageout() cleared PG_referenced directly, which under MGLRU
-> corrupts the folio's refs count. That flag is now
-> bit 0 of the count (LRU_REFS_FLAGS).
+> Currently the active/inactive LRU sizes exported through /proc/vmstat
+> and memory.stat are derived from the generation window: folios in the
+> two newest generations are accounted as active, the rest as inactive.
+> This causes several problems:
 > 
-> Reset the count instead under MGLRU.
+> - Unmapped file folios can stay in older gens despite repeated use,
+>   so active files can be under-reported, unlike classical LRU.
 > 
-> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
+> - The reading is jumpy: on aging, the second-newest gen, previously
+>   active, becomes inactive all at once, causing a huge drop of active
+>   folios without any change in use.
+> 
+> - The reading is reversed on swapless machines. When swapping is
+>   disabled or unavailable, MGLRU ages anon by moving the gens directly
+>   without walking or touching any folio, to reduce the overhead. So
+>   inactive anon folios can suddenly count as active, or vice versa,
+>   despite no change in their hotness.
+> 
+> With frequency guided promotion, hotness is already tracked per folio by
+> its referenced count, so we can do folio level accounting instead: a
+> folio is active once its refs reach LRU_REFS_ACTIVATED (currently
+> LRU_REFS_PROTECTED).
+> 
+> On reaching this threshold, folios are accounted to the active part.
+> On forced per-folio aging or PID protection, refs are capped at
+> LRU_REFS_WORKINGSET, dropping active folios to the inactive part.
+> Note that on swapless machines anon refs are not reset by aging (the
+> shortcut skips the per-folio walk), but the counts no longer oscillate
+> as the generation indices wrap.
+> 
+> The accounting is now per folio and lruvec independent, so no size
+> adjustment is needed when reparenting a dying memcg: the hierarchical
+> stats keep the counts in the parent automatically.
+> 
+> folio_migrate_lru_refs() also gains off-LRU VM_WARN_ON_ONCE checks and
+> __folio_set_lru_refs() leaves a folio that is still on a gen list alone,
+> as its refs are already in the active/inactive counters.
+> 
 > Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Tested-by: Andrew Morton <akpm@linux-foundation.org>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  mm/damon/paddr.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> index e89cb14ee17b..411e1d557ba3 100644
-> --- a/mm/damon/paddr.c
-> +++ b/mm/damon/paddr.c
-> @@ -279,7 +279,8 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
->  		else
->  			*sz_filter_passed += folio_size(folio) / addr_unit;
->  
-> -		folio_clear_referenced(folio);
-> +		/* The region is cold, better drop the hotness info. */
-> +		folio_clear_lru_refs(folio);
->  		folio_test_clear_young(folio);
+>  Documentation/admin-guide/mm/multigen_lru.rst |   4 +-
+>  include/linux/mm_inline.h                     | 100 ++++++-----
 
-I also wonder whether both operations here should be abstracted, such that MM
-code doesn't have to worry about the details of reclaim handling.
+Another clear indication that this should go into a separate header. Maybe
+mglru.h or vmscan.h ... or both.
 
 -- 
 Cheers,
