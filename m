@@ -1,140 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510BC606A69E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CF3606A339
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AAM8pxul
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kxEWVfGf
 Received: by kanga.kvack.org (Postfix)
-	id 6468D6B0B27; Wed, 25 Nov 2026 17:51:30 -0500 (EST)
+	id D31346B0B29; Wed, 25 Nov 2026 17:57:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F6A16B0B29; Wed, 25 Nov 2026 17:51:30 -0500 (EST)
+	id CE2846B0B2B; Wed, 25 Nov 2026 17:57:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E5316B0B2A; Wed, 25 Nov 2026 17:51:30 -0500 (EST)
+	id BD0226B0B2C; Wed, 25 Nov 2026 17:57:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D63646B0B27
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:51:29 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62538A0184
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:51:29 +0000 (UTC)
-X-FDA: 85475139498.06.7F1202B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9B9B418000A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:51:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AAM8pxul;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795647087;
-	b=oQCgYFz4HS3j4CKYTtp12uwyQcWPpQFnWRhTFRZ8s1Hfg8PK7uBAkRcs5HqdOwx1V/V4B6
-	aWEej9QqesBoV5edf/ptm/T+rjd7tw8736b0IIidSmTbhwhSfgeJCmHQPM58CH1eTUo985
-	/QBRDoDgmWUew73Kytbta0W2hWmdPjU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795647087;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA296B0B29
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:57:25 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF9B21C4916
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:57:24 +0000 (UTC)
+X-FDA: 85475154408.08.42AF628
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 022DA8000B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:57:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=kxEWVfGf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of elkin@google.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=elkin@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795647443;
+	b=p24MJ7G1LEvhKm7szbGdFy2SfMmnkxQocHag4bzdCnQimm+XP3W4SgfScKvX3g3pdWAGbp
+	XEXGn9+Olx1FnuH7+X0QksMK3P2AtCw4oqOvCGEoey+qsMjp6UiYzaAE6fgpDWA0ZrOgMp
+	DaXjk5c9ufd3GTJclz0S0XFFLxTH4Z8=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795647443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XiEaXyK4wnqo/lld8izd+mPMlTH01p0W9lNsSXFPEr4=;
-	b=KvEd3y9bSATIKTUuZuChykNXLBZnXLUd1HsC13VQmhwkTNAwSy7okbUl5fN1BTRGUgcRda
-	6cL4kc62/TBVDu6WolEyjEuvjrqiktgG+R+2VsYlw39mnDAkqUVuqa22awJ32qTTPYu9LU
-	m/Na6sk82k2RpCenEW/BwYaNH7f740U=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AAM8pxul;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2228C620C3;
-	Wed, 25 Nov 2026 22:51:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264F81F000D2;
-	Wed, 25 Nov 2026 22:51:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795647086;
-	bh=XiEaXyK4wnqo/lld8izd+mPMlTH01p0W9lNsSXFPEr4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AAM8pxulDq4TCwh7/7+vcCxkTJGss+cIX1YrGhtlWy+rp14kajXzbRhLczZMNvbL/
-	 t0oxHKGiDkUCQj77OdWqwGuGTvVWv6olXGXDnn1UlNrQAbKdxYgJ5udgJOWuj5g6Kp
-	 aK/R3iiP+opUZaUbDVgsye66y5lEZXH7hZjKVTuseo3ZmQfCNmSEUYtEz+wVM3IQUU
-	 hU51s7DAFhFDIx13KX+G6lqdntTP2kkyzttOBsa4lxni1cjMm6askFAG+IRh3Bq0ho
-	 UcV6WaExu58QkVIdLMkEWnJyomaUICrL+ROOldMEi4/3Jj9xfDn5L91HUBgtZpD8wh
-	 IMMtoK55AxuZQ==
-Message-ID: <f5ff8f43-c75c-4b19-b683-fdff0c6dd7ae@kernel.org>
-Date: Wed, 25 Nov 2026 23:51:21 +0100
+	bh=0OVfCBvpQu7+LPEH8zPzzFoXUbPUS8d7sUdmZNjwHnQ=;
+	b=Av1b6xxc+t9YaR+czMNshiyJqO5kd37VBfZOC3oeh70Nwr+QUeIkc0gQYAmiIdjnvLRjLj
+	1EoRNQPFgVmn65JA7fZUlFTZYP9cEcKWvyoaiuMnEZiCFB9gfpIkxonJVd1gFfDwyVUn2g
+	Nm0wpcwH/yn5yE+ves9zyfVl5AJcviY=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=kxEWVfGf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of elkin@google.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=elkin@google.com
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7d2db1b9bf2so2183544137.2
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:57:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795647442; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gxRHwq5Et1oGoSfG0Xf1oYzg0gl/Pj/Lmh7Wxw7jWWe5Iahfwfjn0JrBR3njd7y455
+         i4SgZbS3GebPVvjBIRTfAd23XeMcFv+QCm6FfHruYZ6Uo6wfqlQD7FBk1yRprV+aBxap
+         K8UsbOXh5tJN7toaRjzkR2kiZwR2y3SYKUYqMAL8dlF3V+OrnEJ9PVr26+Tx9vO+7IN8
+         17c2wSGCXkZwEUQLvAnvp+SAEfQBJPey3b+IAauyjHPwXfaCJ8XzbigNr8kO0duLBrfS
+         NUDz1KUKwqYGpcfyfFg3qqSj6AXGvcUhVLZIgSuuE11VHx/dryZ7nfw2AuLsz8J2E1Hl
+         m2NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0OVfCBvpQu7+LPEH8zPzzFoXUbPUS8d7sUdmZNjwHnQ=;
+        fh=ga6zqXgVue3O2gQWAkVJR8yOvb9zvGnKCvrnLX6+qbg=;
+        b=Qhkm7rmR/jXnqVBHsxWTr4kMu6Kc+TMWdcK82RzEgcQ47WY0cQm6JhtLAeK2jNC3zW
+         +3ecJhCJPSgYDX+oBYcG3UqnVZS4Af7nRpvhOVQVp57UvX4YLYskImEfLGHUQGWQpbtX
+         bmyO99C+MurIiHNVaBHV2MSkTijMb287W9XKjP0MygdWfMHcuhrVtGwplY5MVWw/o8AF
+         JsWBtC/sNf1r/vRtdKJ+rJx7ccEjUgRYsfwlBMRfINbt0HiwDGjghXzkT5dCSj6azyPl
+         lVKWlfzPjv9xgyzyZrGiXF+YNtw3kZnpBDyFnUHU3z98DDtJ+RxbUafCmo/dyW3iKaOg
+         G1pA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795647442; x=1796252242; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0OVfCBvpQu7+LPEH8zPzzFoXUbPUS8d7sUdmZNjwHnQ=;
+        b=kxEWVfGfsFCNvtc+0VVLhz3OEQXQuYOqzRSRgvFzr+jtfuyyOXv0Nj7S/rbAD0G7rO
+         2jNuug84yk0yA5WeyJi6XeyhX7TJaCWUgLWEcyEJTkY05JBlUoS8e6Q9lnZOyju+9Lqk
+         PXXIVDqHSOkXUonZcMQFCIi1qESRwpVQXqK0g8CX2qJwn0wd5LzJ1WlXUXZneX7anbCH
+         CTUMincScyjDpKyoOWO8UEuL3fom8AIXCdcZp2hsVIMe0d5k5DG+s4YFk77ZjjaBcsoX
+         +gq5vNovs8AKuiAMxfNV1vJeu1RC4/pYaoq/I5OhtEhPhlc41zwHoBy7Fd4Nru7eYIWc
+         /h2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795647442; x=1796252242;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0OVfCBvpQu7+LPEH8zPzzFoXUbPUS8d7sUdmZNjwHnQ=;
+        b=JkcViJmF8+F7DzCafemJ2v7JfbSmGXynugEmxLCFurd2LR02ZPIZLGrXOBfVcGDFum
+         3GFML0m3XEL3FCU8h+EtxxZ/27Ljtx55aU7X7DURtdo5FsCjlmsoqfo0bsRBHl/30diQ
+         6UVDJVWEtQYkT/BfE/NLHz1ZgNUG55O3nqXuOnU0IMHnkyOOXwK+xU2sDZevK1CtTkPK
+         2rp6Jl8PH1lUfc+N+L0ySKUxDuZjdFUtGCs1GbjUr5JbHKvdZ1QKSBEzjQduqHCARlZg
+         0ozXUMyCqDjKgMY+MEYZF6vgzhBvWBc7mmp3YTM8fmsBNcbM/71ITQnqP3MigVk+JOQ0
+         61uQ==
+X-Forwarded-Encrypted: i=1; AL+hErEisY/CcvllN37Dt/202zDh9IPCiFe1A1EUjHXQV7owgnXFx84ZiLIWxsXX9+WFOgo/0YMbMh/iCQ==@kvack.org
+X-Gm-Message-State: APuU4Z8olSdnz58XKYRB3UZAs4FAjvDAKtUKOoEtJBt/LjkwG6qWPO7s
+	W9UyNwMpOa8KluYoTpHoLPSbilT3YtR2rVfhp67MqXNSf4N7ReqadwqLvfh95QCX2eRvxnp0eLI
+	yxqtBcJmClzejNB+qGeaTQmw92eOLEqVr8L9XYNZt
+X-Gm-Gg: AZFdTZfrV522kFBU2SqUORlo8KnsAGREnE+ntTB+IPbB7K6HEUvb12wyIrewnqpDQVq
+	cpr1tINEOc6P9XQ9nHUOQv0CJjPjH/Y/NzLuMoA0aN1L9nfXINaVCzYbldB1Avk843GTZBL39JF
+	y0tFf2KwO3+9612uGxN3DroxaN6VoHywTeSo1eyHt8K6gSbOk43ZMPR1Ag6f7rSBzQfnn8JXBOb
+	vIlzt13fHnGTCei9AsNml4x/PMc7BoilsF2z1LI2AxdGm1MskNsNeqnrIe0lTJ18pUQHCcu6ZsX
+	4ef5lY7f/Tn01G93w/lrOre1Xei39rxNIBYbj03d/AOKMNauD2OxTfg+dEhgv5OSfupEgbUEsFB
+	F9wKqdccGGCewOJoFcqt7NpmQmFrhud954/UVf54ev8uYUrA61dc6AQWmQ9JV4goJi3Ne
+X-Received: by 2002:a05:6102:3713:b0:7ce:645a:13a4 with SMTP id
+ ada2fe7eead31-7d7395a933amr10370821137.20.1795647441313; Wed, 25 Nov 2026
+ 14:57:21 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: fault in ranges that start at address 0
-To: Hengyu Liang <hengyul@cs.unc.edu>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261125173202.3636133-1-hengyul@cs.unc.edu>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261125173202.3636133-1-hengyul@cs.unc.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9B9B418000A
-X-Stat-Signature: i6qhufcey5bfq77upteipys1wdo8e6pg
+References: <20261125221911.1425213-1-elkin@google.com> <6afabd96-1888-43d2-9ccb-73ca6702a004@kernel.org>
+In-Reply-To: <6afabd96-1888-43d2-9ccb-73ca6702a004@kernel.org>
+From: Elkin Cruz <elkin@google.com>
+Date: Wed, 25 Nov 2026 14:57:09 -0800
+X-Gm-Features: Aa3M54po9M19B4zck65Q5x7Gi_mcnDA_E4XC-TXXXd7r8mQrZUfrKezEY8XNZ0k
+Message-ID: <CAC_6YktVNFdtDLsNHgPEy-8_2YfZ42mUsuXJ6OKkm=T7zFnxHg@mail.gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: check VMA end bounds in insert_pmd() and insert_pud()
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, irogers@google.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: 7g6w6snhmusec4u4jxknrss817k8zizx
+X-Rspamd-Queue-Id: 022DA8000B
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1795647087-884010
-X-HE-Meta: U2FsdGVkX18AZIbqitWcdkI91cKhTdfgUDbW5CYYn0/WG1ZMCR0OkCC/blRbAb8P5wwOa6XxRJY0XzuDo4Ij7/IflUlpHHuT2u3jQ3CJ7dSTqn37syxyATfDPQgJt2cfqhpi//Uw8iTnaHQ+OHvSQV5eNdHOMkGJ2yT9JGm/7uhWgei0oJg+oG+nK2TxCrwvXIHZnwQ3hwo0aHXSwmjRkvOX85OOk6Hz53dyf9HM1Yp2GnIoLEENYBqpDrIFVCajkR0s7GtaVvRobeiUC1d+m1rz1aP6CEutB2/lj2+EJGl/GiRUYhW6bsjRFhHywO2h4BeEHaKNd92iqbcDNEdBcg72t2iJQ5plutScXXgshWaxH5PSMKHism1HCdqYnHE0fSP3ZEbgG09dC6Mwr4tYq2EXAGaOR4liFAMLRGgKf9a0WZ8CzyPK1nDnjszSmTpBQQx3FoBaHJPwsE9+Qjc+bYniRC0OhL+OEkKApdC0pxYXMZsgMdIINTvy4WygaU08JYJUdscWfdU5s+IDc1MruwkO2Lnn1piUqAqX6yfpUR7jzAB/aTQgV+G+dDyXtELWSLXMnAomwMbyEM2lt2c3gA9io/dooRkfoowN7ijWxrkYEBlNSpUIhX6iUBNqJUZMHCnfuegnAO2AIekt3+exNHFHI1SI+OC0I3IWxkph0QoNXFErx8r5BG324HcGUTBl5bO158s1k6/rDkE7aJqBeE8MHX08R0nbCwKYVPBpeOLU2kovX9LH0gAQrcf18mUUnzHEtH7dYii6TNK58vXGo7xC41ufeaewYoRAz6Q9W2YM0iKLnfjhwOw1RkRNHLnO578ccxszAPEHAR1wi4qIdoM/J7GrLNwKYXIv8KbugV7PEkvaxpVXAKOU8ElqQalDA8WO2kmdkHygvl6Ga2K/FiLG2NuapIcg0kMOXjO2X37SiJwmuAup2HQccLGO5QNs1wr17DKC4NtoiJx3xis
- QfqNPzov
- tY2VW9fK0Joq6Qt7m+E2SIC37O5PvOHfewfQDLvxi4vpYoOgEpm8HRrp7O+E5HFy5xCz0vwGJvTT051WfW+Svuy/h3y2AtcB/1QfYPBN3ewdY2o5nlcxiZgslJVhiLyJm1RQ9HdSgwiVSjND3gU2ZNVj9evs+jGTFa0Ioq8ripYx7ztH7mOn1Zi+aZ73umlagPTi15b86Wiwj+FChTu+Q3H5xiINl/+5+M2nF7qWUtq/NT0g3jR/HNXwiwWi3BTGMBrKZ+OLsHlUHqIg8gLwea1Eiu2cgnYflRh1vCBukj62r2Xd4pe3k7kFx5GjOC87xRDK3hESmOKsePogKSPKR4CegSO8iMHQV7XvG8sDUhefD72E3G5OX2QZg7ZzPbl+78RYHW7HmAS4Zsf2SQxuqJ8csi/7RHJuKFqQOTsGzQWRrYWurxk+yQ1k7QJ1hbR8vwHAH9bnK+EOy4By0zg0JqFOZXzHk2UaDmo8j5+gQwnl4KgB3m7KQqnLDKpMsbVpUlGqs
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795647442-118484
+X-HE-Meta: U2FsdGVkX1++uh29Sdl0Dr6XGTLLBGtRoTlJHn1ssqc84kcwfhaSL/SsyxBRUe8R62yLILs6P0pNrZDUXDyFFo573SnUYpNNH1YEq7XCOIo0pS/D9v6ZF/fIRlTzsxoY0OV6salQjS/0RDHMDHo42/4jgxEuCgh5+NXmpsdiemI5ncb/LNUOrA/PxZk1yhXW08uCBxLzyvK7RkwRwssAS1c6XxzeN2fjDEgj9BOIOYprr238vNwkEyNrD1amMfs7g5epLzAtBRgstbVrcgDFHBQkqsvUYAWMl70FsgEsbHgsrnTOen1s6MPt5eTnCLFK5KSYikMZOYhYVoomTCurj3/1OmucY+76aY0rpLYxn1B5pAHEl5QytzaT7rcpXUgrjvzesofSLuBDMdWNbRLDeKeKronWr0JBE4I2soKB5x6dzfEY1j2uV75CSQXLZpCf+D3YAW7DmsXQWwstrIDEhJOsRmdVIhB+U1cS/vQJz+GHedop8QvX5yaz1is06OkT2pGrXRQILPxpukCiHD/ZIfzXSyyyqboQeHQkOEj4dkRgLBeEitthLifJxVUqH1NEr4LXIm3m3b1lsr7xtwPM9OPnANXR9tkcgx37rITFbh+LOmgbqqH1H5s8c9QLhfrYlg6ee32cAUs7sPEVnMivF4POC8kxcE+z0lzyvoQx+T7TdGkrYDyt1k4pdv23Rymx0BuT6q4RUgL+6oIpF89lwKwMeNBARMMOGn0n0kVzjlky5dwkhtLGaB41OTdxYqjx+thoxwlC+E2Lowl2maNPljCtKUbi5JUndiCq5lc4yahNPLo08YYbcnkzCKWixz7HLOJqV7705Xv9h/f/HXhiwcJkhrRMT4eseTt6EHkqC1tVnFcoAVwxcSP2QUQRVZ2FPgVJQP/byzb7GosINtO7rook/Iw6hHkVZcH1BOsecNQGOB/Rc8wyxVPCDvXU0RaJVpsMiQl3daNHxf4ftb1
+ /n2x/psG
+ mZFYhvTkw0tWRvNr7wYQDP+eL5dFev7GL1ROGlHjo1aqiGAKjhRuiNDYSBoYVqU35xY9P88qbqp25nDe5ossEzlIXMvPlow1a12GsMpvIzjFFvAupvBTKOyPs/oUlKyQXSKrxIlx4zuWGVsLDtFH1dAqR0HBE77um4rApBJr1ZKy5z0PdXWhWn87ZK8gI9f51G9jJXuyeBaPdSs+/TM4+oSItukwxl2bUynOX6J9M25CvfBzS7+Nitc2v/9FWpBcG/WgBa9pYJWSBDl5apr8r/LV30VVEyIRWHxR3IRfQpUGQmJVp/5SIW3q4hsFHWUgi8qV9Ca/Ex8OVBeFP2q9i76OxNZfwBqtVBZWRqdF7kGe+Zol2rlyrs2uJVKxauDkMQT6iK9AQxMUHNUnDvyKSfirwRtzt8Rmjzmw4zJjFbM376hBrGol5jkm3zBIzAU7U4cZvrH8FMaO3VXV7aBTflIwqmmzbzsFqEtsWEx2kQ37Kpr6EJxtaI/OaHYCkOLBHpl0YPUBvnmEtM/EfHcZE/fD+yhenA9L2LoMcWbkiFZDggDDJw4Q0yOf5MQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,95 +148,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 18:32, Hengyu Liang wrote:
-> Commit a7797e74bd39 ("mm/gup: clean up codes in fault_in_xxx()
-> functions") made the loops of fault_in_readable(), fault_in_writeable()
-> and fault_in_safe_writeable() stop when the current address is 0, to
-> detect an overflow.
-> 
-> However, the loops then do not run at all for a range that starts at
-> address 0, and the functions report that nothing was faulted in. As of
-> now, a write() from a buffer at address 0 fails with EFAULT when the
-> page is mapped but not present yet.
-> 
-> The issue can be reproduced with this program, run as root:
-> 
->     #include <fcntl.h>
->     #include <stdio.h>
->     #include <sys/mman.h>
->     #include <unistd.h>
-> 
->     int main(void)
->     {
->             int fd = open("file", O_WRONLY | O_CREAT, 0644);
-> 
->             mmap(NULL, 4096, PROT_READ | PROT_WRITE,
->                  MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
->             printf("%zd\n", write(fd, NULL, 7));
->             return 0;
->     }
+On Wed, Nov 25, 2026 at 2:40=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
 
-Thanks for the report.
+> Which users in the tree trigger this?
 
-Ah, so we require root, because usually we have vm.mmap_min_addr limits in place.
+Very fair point. After a quick check, there are indeed no users in the
+tree that can trigger this.
+Back to the whiteboard. The linter is still too noisy. I will hold off
+sending any more patches :).
 
-Where we disallow mapping to address 0 for good reasons ;)
+Please ignore/drop this patch.
 
-> 
-> Before commit a7797e74bd39 ("mm/gup: clean up codes in fault_in_xxx()
-> functions"), the result is:
-> 
->     7
-> 
-> After that commit, the result is:
-> 
->     -1
-> 
-> With this patch, the result is the same as before that commit.
-> 
-> This patch will stop the loops when the current address is below the
-> start address instead, which is only the case after an overflow.
-> 
-> Fixes: a7797e74bd39 ("mm/gup: clean up codes in fault_in_xxx() functions")
-> Cc: stable@vger.kernel.org # v6.16
-> Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
-> ---
-> I found this while comparing the behavior of different kernel versions.
-> I used an LLM to analyze the problem and to draft the patch and this
-> message, and I analyzed the result myself.
-
-Okay, but you did not actually run into this yourself, right?
-
-Doing some research, mapping to address 0 should not really have any users.
-
-There are some legacy dosem and wine emulators, but looks like that's only a
-problem for 32bit and all legacy.
-
-Likely this is "nobody cares" and we don't need CC stable.
-
-> 
-> Tested on v7.4-rc3 with KASAN and lockdep: with the buffer at address 0
-> and at 0x10000, on ext4, tmpfs and xfs, write(), pwritev() and O_DIRECT
-> reads and writes give the same results as before commit a7797e74bd39.
-> 
->  mm/gup.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 2b405cce2ca5..a174e93327e9 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2074,7 +2074,7 @@ size_t fault_in_writeable(char __user *uaddr, size_t size)
->  		return size;
->  
->  	/* Stop once we overflow to 0. */
-These comments are not really correct anymore. We don't stop once we overflow to
-0 anymore.
-
-Likely we want to be more careful when calcualting+handling end instead.
-
--- 
-Cheers,
-
-David
+Thank you so much for your very quick reply!
+Elkin
 
