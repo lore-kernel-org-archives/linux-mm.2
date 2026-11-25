@@ -1,93 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482B3606A335
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB58606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 16:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MT0lml1B
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+Fl6qci
 Received: by kanga.kvack.org (Postfix)
-	id 666236B0A7D; Wed, 25 Nov 2026 11:40:30 -0500 (EST)
+	id ECBD36B0A7F; Wed, 25 Nov 2026 11:40:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6186D6B0A7F; Wed, 25 Nov 2026 11:40:30 -0500 (EST)
+	id E54266B0A81; Wed, 25 Nov 2026 11:40:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 506276B0A80; Wed, 25 Nov 2026 11:40:30 -0500 (EST)
+	id D1B666B0A82; Wed, 25 Nov 2026 11:40:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 278B36B0A7D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:40:30 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A15826B0A7F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:40:46 -0500 (EST)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 96E48120F17
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:40:29 +0000 (UTC)
-X-FDA: 85474204578.22.F85F6BE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F1827C0007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:40:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MT0lml1B;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39C46A0F93
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:40:46 +0000 (UTC)
+X-FDA: 85474205292.22.6EDAD36
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BD9DF140003
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:40:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=F+Fl6qci;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795624828;
-	b=Xx8s6lmRsGe4Z8Fu3ux9T/W4dTyrN6dBRpix9iBGdNJ27HJasvsolBhVxMYSVIarecFIHD
-	5UGk70k8Sd+7nmDLc9Uh0r5dJ/3H576BQhl1g7r9DX6eqBX4NhYJLZpNnuYayu6Dz5HcSr
-	Z91hBMY8+lohH6L+me7SkHvGFnfULYY=
+	t=1795624844;
+	b=ljdUORaYpxyQgJGUFIcYbvknDYBaKFpjqLoFOfeCSvQNdSwplvw0+zoCjviEYPjc97jyuK
+	Gur47hl15HBIX5437XsDCeI5xbVJ2cj5Jxhw7wmEYYYnDquXgp03XpSIh8uxDOcbjabrif
+	YLZ5fFWcy2EM5r7SxsBWuJ2KpwhpS3k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795624828;
+	s=arc-20220608; t=1795624844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M6si0L6IkcJTY0ySD5eo4lPaTuujwGDaAXZ2WV+4vPo=;
-	b=Mttf1z5VVsx3L5S3yvnghRJ9UXkVNKPSUO3DYtgdBSss184jdrI5uxPKKrP2jAnXGzVPqs
-	m9Jw++71yYAHLBH0KvPlHPsz6RXeMh3RKp1+uGbKk40uyPdGv94roL5xgwTW6HYZqkXiBB
-	wEiay5D26fulveEfL0Vl5ehZelONLNM=
+	bh=TghFUnkx2wFDXauXnjqA/lesm0e681hvYxVKPushlxM=;
+	b=Bl4EW+AmMW1W6bTTw7nyCgcHm4CUzW+8KxakWFjYff2VeG8SQt/nJsteImo3Rb6Do1DkDs
+	2Rb1vIcB0qmQ588aKKLhYVN7YZhQQ4bVRg2o8yLD0GHjZhT0o1xasuN5jmVgfRq/cj6tZV
+	hPTmoJdioOpnCFCv1EE3XeOSQeZPPgw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MT0lml1B;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 73099400DF;
-	Wed, 25 Nov 2026 16:40:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D651F000EC;
-	Wed, 25 Nov 2026 16:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795624826;
-	bh=M6si0L6IkcJTY0ySD5eo4lPaTuujwGDaAXZ2WV+4vPo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MT0lml1BD0MVaxFbYCiDa6kGf+Fufw7PmC4jRB79QEunJE75482OGgaJoDYKKfv1e
-	 +iwUq2JFos4IsraaMWKkT2c96dgo97zc1qNNh7CRicufgDFQ0uFoKdGvlFb76Gs6/k
-	 SilU/Ls3M+2pLkOgL8yFePBa5his73RZ+ljVELpROBw0hEJgwBbnQfGFgOMIO4iV0j
-	 4IJuBjd66SuKcyOZauBOtomzA4bvzuswr84Hxo4GFmJDdWMac0k2dACyMQy6pOzzwL
-	 ZND2KythHdD67E/S2Q1in7EwJfdiRBkLh0WpZbbHNcyRt3uuffNl/GHnvSbnFZwuVr
-	 y+izVVUvotpSw==
-Date: Wed, 25 Nov 2026 16:40:21 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: kernel test robot <yi1.lai@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, 
-	David Hildenbrand <david@kernel.org>, Eliav Farber <farbere@amazon.com>, 
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-Subject: Re: [linux-next:master] [mm/memory]  f8eca7ec1b:
- xfstests.generic.437.fail
-Message-ID: <awcPZG-dG5DvT2o4@gremlin>
-References: <202611252134.37a9cb7e-lkp@intel.com>
- <awbxo7VZyrECnFtj@gremlin>
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=F+Fl6qci;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795624840;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TghFUnkx2wFDXauXnjqA/lesm0e681hvYxVKPushlxM=;
+	b=F+Fl6qciy+1FEGnVjSxXymAaC1MnpLvqgJ9Nl8E+l65p1P3PRyQ2c/glyWtLoUeopDkazD
+	tVZRDCPG2V/ztz9ueLceY48YeH2n3RlWlU8InvCDNrF6U2aKYIBjrZxE63pCAYxAFjHnBX
+	2DRorrgT43KqSLWgD45MoqJE7rvFxI4=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-178-suVtOJ6cPfKZ6fsDdujIPw-1; Wed, 25 Nov 2026 16:40:15 +0000
+X-MC-Unique: suVtOJ6cPfKZ6fsDdujIPw-1
+X-Mimecast-MFC-AGG-ID: suVtOJ6cPfKZ6fsDdujIPw_1795624814
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5c319d442b6so1358216e87.3
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:40:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795624814; x=1796229614;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TghFUnkx2wFDXauXnjqA/lesm0e681hvYxVKPushlxM=;
+        b=V1ZR0Idyn0wOvRAX0ejYE9k2dj1Kd+pvIGFALEKmUnGi3g7TXCv56F/JJ5JadV99in
+         PBgBBWLA45fO3elID3wUEz9T0ZNHCK8ZB2BylyMtYwutDLQ1PPW2cfr4HtXbJnJkM/Cz
+         KxSGMx0rdFT0vgH0LFB86jxayp1fawZW77BYHuky2XlZS1RjQ1HF2HDmwMGrcn/G8Nm8
+         3dw8eIMPJl4PUC4XZOb3BC/oEVHKUlnSaJyGOCLuF6vJvHFTxeDa1t3uupwSOMwzy8i1
+         +4ariAzWokNkI9FhLrpT+fplwjvgb2XOfFUh0ELnOcLu/FUOgwEEXaGMZSDhEMdeQKCY
+         uW8w==
+X-Forwarded-Encrypted: i=1; AL+hErEcrzKFDUzANyaMSfCdaG2VnTCXYmeMQ8NbeqkXG1Jvs82dJ0qmDaoAgZB1qnQYnUT0vDFFy14DIQ==@kvack.org
+X-Gm-Message-State: APuU4Z/NTmV96fiFKGsmHXzUB1MLXS8Gr1wNTfNKUARdZ4HDXUvSKzzV
+	vzRVci7TCw0bHuw+S4pByjIj1tvufngwx1KunW6RtDZ8M0gydWJi/zU7rJLmTu7cu0efwuZkVYw
+	+rhSI08R2WuN/O454qw2jkjYZ0Q8kPCjX+goFd3tAY4PJ4CZzsCQ=
+X-Gm-Gg: AZFdTZe/uRLA2mX3QrKVwQXIJzQWtn6QbsqrbsNejiR8oH9G2lfe5FsEW4kJNyrBCoN
+	md/vT9z5IX71tFtBy58MjDAALTwvYdN7O0X7Q0jTXMKrvoxxdOU6ZyG3nMdX+jlpUO0nFFyIUiS
+	Jfc78VsaUFyHBce4xE/Ms9IliTCWegK5qR+0ozSvoM6MjZtUYE4lgnjEKaV31GPX/AMj7NivoTH
+	pQpExFP5Ro6Kgqi84+L7ZPvJ5fXJK6n6eQOdcitRQFMDEOQIvC1oXoanbhwnlIV3Ai21Gjs5ILK
+	y6euozZwid22HQAW3ZHDg0zK6TEg36YYC711ZgLMGfLqlZt/FVbSraUQAwI9kqIU5J6zsq1x49H
+	rrOBDqGejQdV6EkWzXsuxVklwaUsUamhNUOid+45T1aBEyT448Qufy6F0NSWhe1OADvUgSNLpqz
+	0Mofl+
+X-Received: by 2002:a05:6512:1320:b0:5c1:a8c0:620f with SMTP id 2adb3069b0e04-5c1bc817e34mr5223596e87.50.1795624814156;
+        Wed, 25 Nov 2026 08:40:14 -0800 (PST)
+X-Received: by 2002:a05:6512:1320:b0:5c1:a8c0:620f with SMTP id 2adb3069b0e04-5c1bc817e34mr5223585e87.50.1795624813706;
+        Wed, 25 Nov 2026 08:40:13 -0800 (PST)
+Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd0176fcsm4612398e87.34.2026.11.25.08.40.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 08:40:13 -0800 (PST)
+Message-ID: <be640357-419b-4c78-8d96-3c698424ecd8@redhat.com>
+Date: Wed, 25 Nov 2026 18:40:12 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awbxo7VZyrECnFtj@gremlin>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] lib/test_hmm: invalidate all mirrors on device-private
+ migration
+To: Alexandru Elisei <alexandru.elisei@arm.com>,
+ Aveline Noir <jm5905938@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ Ralph Campbell <rcampbell@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ stable@vger.kernel.org
+References: <bae41f6fc4114357a8a74c8b958f2bdc.1@linux-foundation.org>
+ <awbtZjtII9h1oJ5R@raptor>
+ <CANOyQmGPHrHAzVW70Q8T3AYtzFi3C7jCQdd-QW0rQCPEf=ycyw@mail.gmail.com>
+ <awb5agUP80qz8iss@raptor>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <awb5agUP80qz8iss@raptor>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 3C2sKn2DH353LMfX8ubjDdAx2pu5vivzwjDExBYXckg_1795624814
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BD9DF140003
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F1827C0007
-X-Stat-Signature: tfpjjsx8379h7gbofqrtioceykd3drsp
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: cafngfnjqgjxgzz5b1gehafx11t6typ7
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795624827-914996
-X-HE-Meta: U2FsdGVkX18h30MqCM8+qWh9wSXDv3+BwpBxNcvSR3SuzYZ8xabJaOCTbZ8vXI18SjywFCGOj+d8bGfQ9ZUetGFQkZjfsrq2Pwvv8cK1OxhWjubJeNIDC0+/xcPTW83pHmDhVkIIQtZjtEyDnzCzYA1TmyH3NpaHAlmYCWEyTMk3agbQLhdEDSYqaZlciIYJIzju7cNsaOmXqbvIfY5fB7FS3H1gql/ysmAizZiHI9eKL2Ta1g046lN0k5Y5eKo/r5MuqEzaGP86glSK8X2WlWa0ZgDeR2vGKHyCRU1CpY+bdTXaeK4P9r0gaqOJ6w3QdPHdkGkqEME53zmtMrnn0FBjkZkc2sH3J4yVB0+KEypCpKWnSre1w3I4TcZKdRkUZg7c0oK5aEG3+kSFnxojKVHYu7jC8SOPBvbI8YNVOk01WVn4v5Or4DOgOoUooLZQgD8JxPZRSmeeSUhJ3jFb4xqyIysHpW6BUToy9KTM6iPO9xWDsExTsMJNgp6yU94hpZPrlr4ApNBGpL/MVvmBDFi0bIhp/HlvkU9NVP4IU7ItlnCN7gwOqNAWS9y0Rvb9B2E3cmshvc4aH2fBLZdiiPISyAJMbOZ2RzBW2HnXzlZGzFSopownW/50rZq/tz1wND8kZTYRB1U6w8sJrZgG/WzqWu1OSnXgGPi1QPu5tWmQjmbb5c/NL2YmI6Bk3gErDvBlV2IgInybpl380r72xJXaTBY4pjmjDRmcIyzF4HHFrrdAHCqOzy/3lMw3gJ2NLsnb9+0jE5vwr6//JaABEsULfrA5E8SvA6S6hPTlLr+fMBzgh7XIlu+//9s27Lsp17fxbxOfhzGA1MJz3ctTbHRY/W53IbuuekeSUKPVwjf3movZqWiRPBVYGY3UoVRB5Y1niTeoJyO7qtDAzGo6zvqLsQ2EXMWQVrul1CgRMDld6YEavRUrHuODcH2n50trfhzdMg+TKz2VnwcbEKD
- yhNjMdOL
- SlTzK21kI5AEkAr7I+WVEWMK/OiV/1RgTmdf0f1UqIEm0sPpp9ZBdj8seCajlmT1qyQVSBn9SoBwcz5lON6nvVxaitLg7Q+ZND+HOfzSHhOKB8vSPt2F1DWrRfxsdjCvhQMTHPxczgJR5kn5ZWfdPXSjkTYH/67gkrOOHesOZoCUK9Zl6yPKBF/dC5a5kLUpy/SJ7HxNyeNMJohhJGvfqLRiihUPKAE2LocSLRDV4Bwbl+fY0VA6meIAasKEH7ixIc/ORHeEvsMTpJt6YL3D8KG48RO7BKioOhHZPgcRkFPIgH8h8+k9brAtxrWBc7qPJboj/TYOC4z2BWManIE0h00HbvpzYCwu6DcEnBGYLUQ/XvWHE40ogip69KaqgjtKBsWh69LM3HcHUy47yN2Hu+ljmuZALTJ3UdxYrAQdij7w5fZ6ydC1vBT22V67QPd+DqwGcPhjbQZ4QO9BVZlx9sK9tOkBblQe4ofcDutVdHzkLSqgQFTk4Ghfxbw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795624843-264098
+X-HE-Meta: U2FsdGVkX1+HSHh6bwUm1Z9Miw9KD8cGerQAzgsV25WRUlxbtrb7bdlQqYLBmZIJwCKkbcBWz0vn2J1GjkJAoP5uooKhSrwFulxcZFLwUK+MXuWYad0Bz8EN1tBppEKrAEjvzD7jxNqd/JBEXF06tmGsi1fVTMammcXq1WO5gJ5CZvAX1ABaNQb2mL83syndJdn4u5EKFaPv2HvzLncj00b66+AqRQvGHvpnOdofDnqbDvbj77yyUtZse+rimyi2PEw4FXK8RCErXLtB8vbtQUCJvlZzT6qVhlQZVudxOfdL+xDM9Uim715bjhGaS1+IROjwfBYggOyhTDctCVDAUZCs7FCknC1GyZFBnlTLhaJgf51rvEh5cKNp8mPkzmVOyDPSEjtpYqtbrH2obx7V7IEw9/l60yldtIoO80tIUEbniMX6jKxozjM6a62FtGgIFSXh/T5GGeYFfLzLcMKX6VHYObQEaW5hU8k19xXAXA9SGPD8Fea8a0RVqH4RBoCeplH/RSRspS2yGltMkUjFIIrjKAt21+cdPROZu15vkjlUhQbVNUzFin+CtlfE34FtYlPFK2RIvOgtHG1Al34cG0z4BZH9fBjT4cy6kQxiXilZPhfdBNBlEQuPnUCdmNQ2jpp2xkE05e7mra3KzSaAgOe1Y4M7DLmW+eCtKhGP8zsbwQeEFIuNthOqpWQZ4T0FV4pzqS51o+gdGyF7wn63XJgX0rPnitsa7vY6PO4bthZ6rcIggsOoLgx14eLT5tUDO9qZxgBaHWJFnwArySpMwNK/rWJZ0YzsR/XYjZRijJ1OCBRNEOTLH/dOEQ0A2u8znBiJe7hZxqQhR7q9aPK4RJIsJersKrUYgVUyabMcXPHPpnfIdiF5T/z+AFHn1zTIcbXXxboAw6xL88XZOumT+iY4zbZXBuHhOaBvMRthv35zsv4IxWKsj0OZaUdCn3pZmDHpHeMfzGkM+twHpw6
+ E0ej6WVF
+ 1SMbBVJWwvruSxKN6vOu7nSoBC5NrSm5rqKj+GDC81HCq45fOtqv/Qrv7e6SFDEMxRb1NIC+si1/e4hJXrTL4tX/jacYvroZrqcbuyN7uoo72xaddR3cKeTrkzNVi0Oli2uj0oWgcqKKTNMfzyCp3/HzkjIb4OD03OA/jTmxx/t0eL6eW3Ud0XCNoOzmX9jEUDPJ45drE7Gviv8UsRvu8fyPTfYZbIK9WP3nI3NGx5u7TdAEiv86abZgq+UpiK6IKnVpHVGlDWcTBVDl29aY1PIQNcg9Iz5pk4kf1aWQ3m/SA29SBlQOZVd71Nlwx5X0V6qfdGiTuaJm81ueUmPqpHkISwOmexFV+PB3HjFd9IotV41gkeo4Rk32IDQABYLKA2lF2sZC15VISw9Gfw8ikOvZrZkZSw5jVITyCbmswF7ZfFgZMDeG6xpe642hsbXyBXq0EP2LxK5Em1Gi8W3cwvM/CqtI4ZrZ7XulJ48T38uhaUmgmr/NlAzzM532CDI7CJkNbEb5V+sEVehzthwANhLefzf1Q7qEibmvUQkmelwOqLUfaqN87fVLmCnL5jxpb+oppGpFkrXls+NR9/VQJzlLA6fM/f4BhhR1QQw1dArkcpckm1T/MZGlZa8x0gCe6A/AlpH5VxQe38qTv/X1GZi0nNI3bXAkMaRJbLh5wvrA6Zsk/gQGlLPgHt/zb/dGl/2VrF8xXOzPgRXO6GqVUIK4sfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,35 +144,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 02:34:15PM +0000, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Nov 25, 2026 at 09:47:05PM +0800, kernel test robot wrote:
-> >
-> >
-> > Hello,
-> >
-> > kernel test robot noticed "xfstests.generic.437.fail" on:
-> >
-> > commit: f8eca7ec1b368557613cc727abadc82546c1f46a ("mm/memory: do not report OOM if insert_pfn() races a huge fault") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
-> >
-> > [test failed on linux-next/master 3dd8c790a7b7027abdd568e36db5e82ffaea7c77]
-> >
-> > in testcase: xfstests
-> > version: xfstests-x86_64-d07dca72-1_20261110
-> > with following parameters:
-> >
-> > 	bp1_memmap: 4G!8G
-> > 	bp2_memmap: 4G!10G
-> > 	bp3_memmap: 4G!16G
-> > 	bp4_memmap: 4G!22G
-> > 	nr_pmem: 4
-> > 	fs: ext4
-> > 	test: generic-dax
->
-> Ack let me fix this, I need to have this return -EBUSY not -EFAULT, meant to do
-> this sooner but got so tied up with other fixes ugh.
+Hi,
 
-Fix sent at https://lore.kernel.org/all/20261125-huge-pfnmap-fault-races-v3-3-bbc44489341b@kernel.org/
+On 11/25/26 17:06, Alexandru Elisei wrote:
+> Hi,
+> 
+> On Thu, Nov 26, 2026 at 01:25:41AM +1100, Aveline Noir wrote:
+>> Hi Alex
+>>
+>> On Thu, Nov 26, 2026 at 1:15 AM Alexandru Elisei
+>> <alexandru.elisei@arm.com> wrote:
+>>
+>>> Might be something on my side? I'll investigate further, but I'm not very
+>>> familiar with the code.
+>>
+>> I reproduced the same 0 versus 523264 assertion on x86-64 when the separate
+>> mm/hmm: account for subpage offsets in device-private PMDs fix was absent.
+>> With that fix, the test passed. May you check whether it is in your test tree?
+> 
+> Indeed, I didn't have the patch in my tree, now the test passes!
+> 
+> Tested on a Radxa Orion O6 board (arm64 architecture):
+> 
+> Tested-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> 
+> Thanks,
+> Alex
+> 
+Did you run the full selftest? 
 
---
-Cheers, Lorenzo
+Without skipping own invalidations the normal migrate to device test fails
+( With no skip, migrate_vma_setup()'s invalidation erases the caller's own entries) : 
+
+#  RUN           hmm.hmm_device_private.migrate_fault ...
+# hmm-tests.c:1023:migrate_fault:Expected ret (-2) == 0 (0)
+# migrate_fault: Test terminated by assertion
+#          FAIL  hmm.hmm_device_private.migrate_fault
+not ok 14 hmm.hmm_device_private.migrate_fault
+
+
+As told I will be sending a proper fix for the two fds invalidaton case as a follow up to my other changes to test.hmm.c
+
+--Mika
+
 
