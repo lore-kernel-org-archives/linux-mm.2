@@ -1,99 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1E6606A6A8
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16975606A68D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HaLrY6vi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ieRYNdSd
 Received: by kanga.kvack.org (Postfix)
-	id DC3BC6B0952; Wed, 25 Nov 2026 04:15:01 -0500 (EST)
+	id 39A606B0954; Wed, 25 Nov 2026 04:19:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D99FF6B0954; Wed, 25 Nov 2026 04:15:01 -0500 (EST)
+	id 348F36B0956; Wed, 25 Nov 2026 04:19:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB17F6B0955; Wed, 25 Nov 2026 04:15:01 -0500 (EST)
+	id 232486B0957; Wed, 25 Nov 2026 04:19:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FECF6B0952
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:15:01 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 204EFC0E32
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:15:01 +0000 (UTC)
-X-FDA: 85473082002.02.EEFD38E
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C1DF520008
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:14:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=HaLrY6vi;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf03.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E546E6B0954
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:19:15 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7937340E55
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:19:15 +0000 (UTC)
+X-FDA: 85473092670.17.BC3AFF4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9DADDA000A
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:19:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ieRYNdSd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795598099;
-	b=nS0RRD60r1OxuUeEGG1tjjac8El2vGcBY95oRKbC1XNrvqossMharRwS7lkmNO2Acn4VbD
-	o0JRSA6Vsjo9pfXr0pIfea5PE5QjKeG5QPvkEPsLYSYMGJxYnv2QQodTTwysqj4/W0rYqy
-	Ty0FlU0DkZ+TCZn6oq5WuhUPnShqFqM=
+	t=1795598353;
+	b=uruy9vrWfGa5QgCIgjJfY8xo4luGWavVcd0TdygoLmiIHBOFcWFrCP553IOE0cM9sUShgm
+	Szq1KvVbb52/Uc4b1QPlb3DU/GCmymuD2U4qsVlGnRjButoy5x61qJGNW2P65wVrlXsSO0
+	vDuqo6bKp9nOkAggMdHVz+c3Sjv8Nmk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795598099;
+	s=arc-20220608; t=1795598353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=y1kNffUcvdpobzp+ZxSevNO0697zJUK1Gx23nNr5DRA=;
-	b=Eu9HH2fdpxb+OFou0rJTklIVUcLxsCNxU7MDgzSP67WZDCIl1vDMVmcf5qZkjrnfJj7xt/
-	DGPUSBThAEWgKhPnYhWlDcC3gh4cuau3BJaMUEUQ9yuAkqfzXlNf+LMmwQtcBQMpBHO47F
-	7PCufYaIrYnoWnLncU5Xl6b6zHUtJZU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fAo+SUdWw8IPNJsn0IwIsl5VrDmLwF+WpUivd2tJar4=;
+	b=0DP+WySVlAw4/A1FEK1wOb2YlXiRWdw2R+wsPDEE2zKPBGn0sx1yqPB0/1SuqLr+1sjzks
+	kN13swfrfM/CLbBaKXUx2SDhgC9XQnOwX/m9lIo3TtB4bx1PiG1j6jLkBgPE1zAAqQSJd/
+	Pqm2DL8JrAALW9IumNUP3sov/T1zfnA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=HaLrY6vi;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf03.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=y1
-	kNffUcvdpobzp+ZxSevNO0697zJUK1Gx23nNr5DRA=; b=HaLrY6viqHcpnU0jL7
-	eP0yKx9h2tQX6XY4MuXniaW/35Y5CFq1Wza5sOm+BfCY9dT1OFWAaMfh3nHC5Inz
-	5RYitasG2HO9jpCVhDAqr9mgHQXZv1BMIiKQjhYP8jN9nVm2xFD06+Z5T2n3+Qj8
-	yB2uXDgX63scSD/dFxrk+RQxQ=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgDH7yzwpgZrIz5UHg--.45691S2;
-	Wed, 25 Nov 2026 17:14:25 +0800 (CST)
-From: Xuewen Wang <wangxuewen_ky@163.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	chansen3@cisco.com,
-	sj@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH v2] tools/mm: page-types: flush pending idle bitmap bits after walking
-Date: Wed, 25 Nov 2026 17:14:08 +0800
-Message-Id: <20261125091408.1584017-1-wangxuewen_ky@163.com>
-X-Mailer: git-send-email 2.25.1
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ieRYNdSd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 795CD43B74;
+	Wed, 25 Nov 2026 09:19:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57031F000D8;
+	Wed, 25 Nov 2026 09:19:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795598352;
+	bh=fAo+SUdWw8IPNJsn0IwIsl5VrDmLwF+WpUivd2tJar4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ieRYNdSd01MN6n81no8M7mgH5h/kK3WEx1KRbfDdae6DKqHvU9SprXC7utnqZJU/1
+	 CsRVgCmoPEAGue+cPNYXtJZwG3RFa872GCFNk5z/2QbAQtxcvJ4VYbEIySxPSp+ys8
+	 ul16TYZGMBJB68fRtdfjCl3YDnqutlL5JMjBAwSdDeMTRRSwmuviq99GuevyYmH9fi
+	 gR8AJxmXh9mA2YvZJJoTd7t8wWbVDmY5au5yaYQCmXuLzlZTYyRv4mo8iuvFW4dWYy
+	 mAZxxKYjNmaqJDCuUp4sqZJg98vWiTb7vm7hH+F8QwYMVM5qI/VJdXEmN1hZklv00W
+	 4yUngMTr0gtyA==
+Message-ID: <7b89db31-3c69-4845-a46f-6bf42b3ab0a1@kernel.org>
+Date: Wed, 25 Nov 2026 10:19:02 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgDH7yzwpgZrIz5UHg--.45691S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZryrJrWfKr18GF4UuFy3Jwb_yoW5Cryrpr
-	ZxK34jyw4kta4fGwsxZrnrAF1rAwn3XayfGrW7G345ZayUJF1jq3Wxur10vw18WrWkCFW7
-	Jrs8GF98WrWUArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jmwZ7UUUUU=
-X-CM-SenderInfo: pzdqw5pxhzv0xbn1qiywtou0bp/xtbCzRNCK2sGpvOLoQAA3l
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/rmap: avoid reusing batched TLB flush generations
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Ying Huang <huang.ying.caritas@gmail.com>, linux-mm@kvack.org,
+ linux-rt-devel@lists.linux.dev, linux-riscv@lists.infradead.org,
+ stable@vger.kernel.org, Kirk Swidowski <swidowski@google.com>
+References: <20261124-rmap-v1-1-e3dc48a4b527@kernel.org>
+ <87a4mxthsn.fsf@DESKTOP-5N7EMDA>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <87a4mxthsn.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Rspamd-Queue-Id: C1DF520008
-X-Stat-Signature: gm53nc77bmik4uw3pjrrz1u9xyzbesgg
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795598096-506950
-X-HE-Meta: U2FsdGVkX1/8Um8CCKk088Do4hOBh6bRbQ2sMnfc8+CYOCcFnLzuGPtoMcpXXihbUPvXp4/DY+V/Dj+96qwJNgm5b8BebNguvXQZZ3LlVQ/8jwwnEqkbxUt062LHsZJwYgcy7+zHUOrXDh9rmAk8xowRk7tRDqlUkkcrmrRyVMPq3L43efGPqIFYZqCQtYqZGLWmlACiUGb0sW2cvDaPTky1TaDvZN9J/9W4Y7Vc74IhABVE5pnBEc7pU/u1jRK9x561PVOY7vjsGwpcImIZwGHNn7Wyx9GG2bhJrZZxog4KptsHB3QL447/6UgGFpyzvKhObI5eLh0objVlINGIMeL3iTUPKqaGp1KQ9/ERFP/gjFD0jmSm6+ceC1uwHg6eo+z2FAVqSj2nAgPJa+jzWMyZHEslANfcMYyzEEoMswR8F8k1DGNTzbeI7ziKsl0/WVekjzUFJkF6XTYo46QTwNOC4Ka0S0iLrW91PSzNZBblIWrlFUxZdxoCGdzOTjZ7vb5KYn50gAICRgHUiARdCcgzL40+/An0yL0YCdNTPAwW3yiUF1Dm2LFuyYR/OvlJkk5Rv7m+oJx+1Q6hDpDYlSC+l3O7ZhKxklFTtWeVJH/UuTHaOaM8i678FNzYWzkFtIOin5qtgfC8wjnj6YPJW4biL9WR6u9zW893w5juJ4UwKik0CVLOGUnLB0gbDYYY6U0QU2c+sUdIaodIxUkHcvNNsFzeIIyxZ2bpwqWuRO4RSsEdKGYBCeWQqUmfDE3epFIQqK8IMovXWRvJMws5gFa640vcL0G0Xxl+kDFcnz5jf5EXl1DDpM/ZUzmprEvLydoaE6SQomqTyOyo1GQ8huj74oO48O5nZh0LdXszVvOggfMcQmqODfIMCevjQ1znW+aQcyzhEeEUNRj2C7Utq6ZES6DZ54ti5yzdPmQMZ6BBr8d/MvbGKYp6YBks1BMCQ5zUWTiFqIo4xzx3qgc
- MQ3P0NWY
- fj5ZASnRMuKdVWOLng2EwiId0hXZQtcwQK0FmAEAs66/OLs3gKtsn8nHouxJrEp5sjzEZ76u+Kn7M1nln7Qsm1eXGZ1CcgND6J1jYe1Xz7CpWxatxi39eJJQQMmTgtT4XvqLYPdgBECLBBbQVZppyMuGsSQVtww2Aw0j3wSWY88p3rRJmSr68LDe4RMxeF6b50QRPAMLwB5uf0HwwO87kvwB+x7AdCIuwVqfalJ+HNqemSNzcUasrdtazYDa0Z5i7HpSsPCnif+Il/9/R4NJ035Wn4Fr1XP7SFtr2LsLYwnRny0k2ey5j5nUbZgifuQymmUtG1WtPdc7QCYQP1WKr6UQjTSCnvzWHh6Em/+IYo+ENsejR4VTkOlv3hdh7ph18iLvlH15ixj93/RduX79bqXzyuTPdwAGGneHpe+gEg1flfP9cFCEXLub9sPb1nFbfdEU6bheNou157i8O1xyATS8obs3LPFwLy0M5UurIKIdY94yNStSFt61393zD8hJKl9N9
+X-Stat-Signature: wjhy8np1z7945w34ms4tdh9huthbjiru
+X-Rspamd-Queue-Id: 9DADDA000A
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795598353-294448
+X-HE-Meta: U2FsdGVkX1+u7DNdoOQMxZaYyZqE0SN4n3HqESxre7cFeIs7yc3jaBfRbR1twHJqdM8thlzEi49mWrJ4pewrA61nDwFcNKAEg/TTyJPCOs+kiWSBlBc5MdiHtzjAYUDAvf3R5cSND86dRCdTFy+Q12tpEA8NiCBueA/IMK9qyAbSkbKTqq+nJ7I/gUMT61nJQNAOaSpBNRO2rPebZh6xt7uyXhjDOX9EbJYxc0mwQQJxpU5kPe589Zh+v15l4m/qtvoqadd4mXa7bHdTdpsjxj/ZuQ0BNr0Y/AzxnWwNabV5DaXcE+MCxWbF3i4Umd04s+kV4zBTHg01OMbdp3dS2K8NpEUsHxzBlzj2J2X7TAkoG1aoGbkuiUjgcJKENrlgrQzWiuwsEbQr9Yup9vNoPV97LBhC34ubl7phSLC3Yp/hURcfDjgER6eXgSVVbXSFdlP2wrP8v9mwxQGg/RQkUPTTEIim8wahtzjuhMNkY+4int5e+opkIA4tDmtyqFKN+WHYARKJwmMVtlUJcd4rJ/ExQ/a58BkKDgIBsIzenRn8j9o8kexj7z9iIo0G7mNRbCsz898gtu4GUOgMSxqUEFUCfd3I9nKhiFOghhMlwjx1xKvPawKFJs0qk9hJ802vdZRYhwGyjVR9DR/q2MkAyXytvWFlgbMbw/aH3TnNLgNKyMsR0JV9AgkmDH4Y8Y9Ar7hUj5+BW1f+i4Lkz2pLIK5a4+mfmdLUUts2plYnselO+S0ljc5zWFuiKWW34QZj3C1IVBcViLGMkxBOtbqUoQLcEOEEsIYr8xs5bp72w+edUPVEInluyQhqZIp7eJK47NjGKQlOQUg+vX0fgcp0egyhXJlu3JZVUbRmgjig6Ncmzn1qfuslzGycdC7qJddTDFAdWzG2DKawpeL0iitjlSNRH6fdMGXfM9dCNtpNBAd0SdYuTklpYQ4QaSpcdvsVw9+AYY6mfMIpAdFe3HI
+ y8wsa9de
+ VMdfOe6ZrBLItGHmeq4btBYsJMcGjqB4CTF4obtEIPrZGqIYwFT4gnFr/yVVuLuAOeGpKKzvMQ8DhGL5IDMH3FYvwB2zDksS65RF2v069+3S0/CzBcbV3z68BifoMWYGmScKWCl52P9J4liJmZlCkL1JKiIRVOjzTlZr9rEHCKq3IXMxR6doHP2sV2LRv5HZeueaceZoZK0EMGEvk6ObIvnBc/v0SLSamLDjO7ERap5szxwbw2h066B3HUEEfhN7jiLf2DhUgf9eLTgFyWbXTye69fy96RS0z2tzu9z06iIl4fP93FTCKwfhg2XCURzol6I7uX3bGpy74s9ORTI2UiuFlGfyAPW6N2I6Cgg+cxmTwuBdLBv4Ra8B2mpfMwrIjlsU5WpWZg3c2cqg2+Eqb0eZM89MvL/yuryv0xnJ+kKwClKK6eVv14O/mGez9mFePqdqojU1Yi/eZOM+aS4eUL2ZpZuRQ5s05itB3NG9J5HbWkBZ68dnEe2FNWu7VIDyek1j7vl28aFXOiZQS5B+ihdWf4GzjRAHUdU8bzSbx8syQ9xUKf5xOUAdQzcW/d5srizkK2vRCg1SUEQDjIWjSFgIkarPj5ucYPs1Ydh6WOAeM5gJiVvAjAzEjwnEpN0KYlyC9wTK7t5NraOJaLBklBa+q/B8WSjDuw/Z3+X7vKFA8PYwdH22FVO4AMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,117 +152,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Xuewen Wang <wangxuewen@kylinos.cn>
+On 11/25/26 09:51, Huang, Ying wrote:
+> Hi, David,
+> 
+> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+> 
+>> mm->tlb_flush_batched packs a 15-bit pending and a 15-bit flushed
+>> counter into one atomic_t, and resets both once pending gets large.
+>> flush_tlb_batched_pending() updates flushed with a cmpxchg() against the
+>> value it read before flushing.
+>>
+>> If the counters get reset and reach that same value again while
+>> flush_tlb_mm() is running, the cmpxchg() succeeds and unmaps that
+>> happened in the meantime are considered flushed. A later zap can then
+>> skip the flush and leave stale writable TLB entries behind.
+>>
+>> Use two separate counters, never reset pending, and let the flusher
+>> simply store the pending value it read before flushing. To keep pending
+>> from wrapping around to flushed, pull flushed to pending - 1 once
+>> pending is more than INT_MAX ahead.
+>>
+>> Preventing the wrapping is primarily required because
+>> try_to_unmap_flush() as called from migration and reclaim code does
+>> *not* go through flush_tlb_batched_pending(), as it does not iterate
+>> MMs. So if nothing in the MM triggers flush_tlb_batched_pending(), there
+>> would be a problem.
+>>
+>> As the separate counters are no longer read atomically together, we must
+>> read "flushed" before "pending" (acquire/release), so a reader can never
+>> pair a just moved-forward "flushed" value with an older "pending" value.
+>>
+>> We'll leave the barrier() between clearing the PTE and incrementing
+>> "pending" alone for now: it should be a smp_mb__before_atomic(), but
+>> existing arch code (x86: inc_mm_tlb_gen(), arm64: dsb(ishst) before the
+>> TLBI, riscv: fully-ordered xchg() in ptep_get_and_clear()) imply a
+>> barrier. This should be cleaned up or documented separately.
+>>
+>> Note: if a flusher stalls between reading "pending" and storing it,
+>> while "pending" advances by an exact multiple of 2^32, the counters
+>> could compare equal and we could miss a flush. The same applies to a
+>> writer that stalls while moving "flushed" forward.
+>>
+>> That is irrelevant in practice: both hold the PTL, so without PREEMPT_RT
+>> they cannot get preempted, and wrapping within the ~20s soft lockup and
+>> RCU stall timeouts would require more than 200 million batched unmaps
+>> per second on a single mm, which is impossible in practice. Even with
+>> PREEMPT_RT or long vCPU preemption, we would need minutes of unmap and
+>> refault churn while the stalled task stays off the CPU, which is highly
+>> unlikely and not a realistic attack vector.
+>>
+>> This effectively adds 4 bytes to mm_struct. However, on common 64-bit
+>> configs it fits into the existing padding, leaving the size unchanged.
+>>
+>> Fixes: 5ee2fa2f0636 ("mm/rmap: fix potential batched TLB flush race")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Kirk Swidowski <swidowski@google.com>
+>> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>> [ david: use atomic_t instead of atomic64_t, adjust description ]
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> Except the fork issue pointed out by Harry, the patch looks good to me.
+> Thanks for fixing this problem.  Feel free to add my
+> 
+> Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
 
-mark_page_idle() buffers bits for one 64-page bitmap word and writes
-that word when a page in another word is encountered.
+Thanks!
 
-walk_addr_ranges() tries to flush the final word by marking PFN 0.
-If the last buffered PFN is below 64, this only adds a bit to the same
-word and nothing is written. Otherwise it writes the pending word but
-leaves an unwanted PFN 0 bit buffered. walk_page_cache() does not flush
-at all, so its final pending bits are not written.
-
-Extract the write operation into flush_page_idle() and use it both when
-changing words and after either walker returns to main(). Clear the
-buffer after a successful write and skip writes when it is empty.
-Place the final flush before the no-summary early return and return
-EXIT_FAILURE if it fails.
-
-Use 1ULL for the bit mask so shifts by 32 through 63 are also valid
-on 32-bit hosts.
-
-Fixes: 59ae96ffc3a67 ("tools/vm/page-types.c: add support for idle page tracking")
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
----
-Changes in v2:
-- Return EXIT_FAILURE if the final flush_page_idle() fails, as suggested
-  by Andrew Morton.
-
-v1: https://lore.kernel.org/all/20261118021253.1691428-1-wangxuewen_ky@163.com/
-
-Verified on live kernels (v5.10 and v6.6): after "page-types -f <file>
--i" on a 100-page test file, the kernel idle bitmap held 99/100 of the
-bits before the fix and 100/100 after it.
-
- tools/mm/page-types.c | 38 +++++++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 13 deletions(-)
-
-diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
-index 47e4781c5fc3..1695a7b42169 100644
---- a/tools/mm/page-types.c
-+++ b/tools/mm/page-types.c
-@@ -575,27 +575,39 @@ static int unpoison_page(unsigned long offset)
- 	return 0;
- }
- 
--static int mark_page_idle(unsigned long offset)
-+static unsigned long page_idle_offset;
-+static uint64_t page_idle_buf;
-+
-+static int flush_page_idle(void)
- {
--	static unsigned long off;
--	static uint64_t buf;
- 	int len;
- 
--	if ((offset / 64 == off / 64) || buf == 0) {
--		buf |= 1UL << (offset % 64);
--		off = offset;
-+	if (!page_idle_buf)
- 		return 0;
--	}
- 
--	len = pwrite(page_idle_fd, &buf, 8, 8 * (off / 64));
-+	len = pwrite(page_idle_fd, &page_idle_buf, 8,
-+		     8 * (page_idle_offset / 64));
- 	if (len < 0) {
- 		perror("mark page idle");
- 		return len;
- 	}
- 
--	buf = 1UL << (offset % 64);
--	off = offset;
-+	page_idle_buf = 0;
-+	return 0;
-+}
-+
-+static int mark_page_idle(unsigned long offset)
-+{
-+	int ret;
-+
-+	if (offset / 64 != page_idle_offset / 64) {
-+		ret = flush_page_idle();
-+		if (ret < 0)
-+			return ret;
-+	}
- 
-+	page_idle_buf |= 1ULL << (offset % 64);
-+	page_idle_offset = offset;
- 	return 0;
- }
- 
-@@ -798,9 +810,6 @@ static void walk_addr_ranges(void)
- 		else
- 			walk_task(opt_offset[i], opt_size[i]);
- 
--	if (opt_mark_idle)
--		mark_page_idle(0);
--
- 	close(kpageflags_fd);
- }
- 
-@@ -1364,6 +1373,9 @@ int main(int argc, char *argv[])
- 	else
- 		walk_addr_ranges();
- 
-+	if (opt_mark_idle && flush_page_idle() < 0)
-+		return EXIT_FAILURE;
-+
- 	if (opt_list == 1)
- 		flush_page_range();
- 
 -- 
-2.25.1
+Cheers,
 
+David
 
