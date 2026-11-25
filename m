@@ -1,112 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFC1606A32E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C251E606A334
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=nnB1IeP5
+	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=dK3ByhqU
 Received: by kanga.kvack.org (Postfix)
-	id 47DFA6B0631; Wed, 25 Nov 2026 07:46:56 -0500 (EST)
+	id AA03E6B09F5; Wed, 25 Nov 2026 07:49:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42DCE6B09F5; Wed, 25 Nov 2026 07:46:56 -0500 (EST)
+	id A50856B09F7; Wed, 25 Nov 2026 07:49:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31DDB6B09F6; Wed, 25 Nov 2026 07:46:56 -0500 (EST)
+	id 93E886B09F8; Wed, 25 Nov 2026 07:49:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F2516B09F3
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:46:56 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07457120E1E
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:46:55 +0000 (UTC)
-X-FDA: 85473615990.22.5F4E11F
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B28C6180005
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:46:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=nnB1IeP5;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (imf24.hostedemail.com: domain of phasta@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=phasta@mailbox.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 63A006B09F5
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:49:57 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CAC681A0BD2
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:49:56 +0000 (UTC)
+X-FDA: 85473623592.06.6F468FA
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CF6E61C0006
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:49:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=dK3ByhqU;
+	spf=pass (imf20.hostedemail.com: domain of alex@amutable.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alex@amutable.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795610813;
-	b=a0A9XE3XJY1l3kh9NVkTVU5fOjKA6ZqdYm8vEUsDg48SfBqTRjr308BXbD90LPNGV9Fk0E
-	wk0u474z3y4DY10fRfVxHk6p6lAJDQ74umkCECqDeFbXEQ6jCJp0i6ThI4rTjTF26X9rwx
-	hNuhu44Ci6oqCVV+IIEp7d+QU7L5pqU=
+	t=1795610995;
+	b=ly2hFBeegkvsXJxoWeLeSJRjkU+AKfaZnxvxPySauY6VrnNyThhBGBf7bhRkblSxX+5MjL
+	Ip6+N41mQeN2OFRFoXN3kg6na29VZAIGWugTGYWFLL1atXAl15b8One8TTTsQ8kx26Wp0/
+	3q1uzSmkD8JDWTVKq+pSUKtbhV3Kfr0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795610813;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1795610995;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T3MOwzx9XuXBLF1Dj/6JoALu/Hn/CMkytQ7thbURciM=;
-	b=fOHj6381Fn9YPlkD4cnU+Gw9tjr7nmwe0PqI/+UcCo70OM+PnarzoTP+uOP9k2VkiuK1kG
-	Pz99bd3cU+QlzHIlAKKTlFBbOSIyQE961oOht267ai8U9cfEhijEfiShJIlWbMHelI868a
-	sj+iqKJLtVGx7pxjFwf8/tdveLgIw/s=
+	bh=Le4AwFe0WXouABp9DXzuQtZ3ZnCfLcbkB8kE/IdX7wA=;
+	b=jU8xNYVoqZO9ZB+QJA0tqM577VHB14miuVkTGJdRyn7R+zIGxrzwQYyuv94CiJTgIejYBx
+	JSH2jFzXIL7NkzzTp1iC+/bCXjpNmpXPKm+8XZUCbyGbbwx5U7vOuFmDxzsM49LMIIQ0Y1
+	gaGfmGFHcmyQFrT95ru1mGtqJ4rB1AU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=nnB1IeP5;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (imf24.hostedemail.com: domain of phasta@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=phasta@mailbox.org
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4jZKF606zHzKmSh;
-	Wed, 25 Nov 2026 13:46:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1795610810; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T3MOwzx9XuXBLF1Dj/6JoALu/Hn/CMkytQ7thbURciM=;
-	b=nnB1IeP5yjj9ODqIsOpsLIKLZGhjixC8mZZ8P6Pbd4JOz7OCHCf8y8Cxx5uqGFs3mTej4g
-	lnCPNfU0kgGQsm4vt2wZKbCI2gQ8oomYEn9KDtInhmY+LMuWVmv64regr2GUW2OdViCx0+
-	dlM+SmMzKiMR0AYBXicyIDWEE/BtVnDiKWdX3JxwEWDxiWxwKebFZlbrdbz+ipMw5oGenK
-	i6B/BLiUbNqBkCUYMZEV7ghI+uLMHv9v8IiR4zPRTBrt5aiypfIGh2fW/OBesI39Ksbgpd
-	3gkCb8qtiQaBbJ9NkCCuSdjAPToBXdDizAkT0aYucntdq/f51divrZwalsinfg==
-Message-ID: <a6110f748b76b8773e0b5c9cb449a3bed0b19f36.camel@mailbox.org>
-Subject: Re: [PATCH v6 00/12] rust: xarray: add entry API with preloading
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein	
- <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Alice Ryhl	 <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich	 <dakr@kernel.org>, Daniel Almeida
- <daniel.almeida@collabora.com>, Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Matthew Wilcox	
- <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
- Babka	 <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Hao Li
- <hao.li@linux.dev>,  Christoph Lameter	 <cl@gentwo.org>, David Rientjes
- <rientjes@google.com>, Roman Gushchin	 <roman.gushchin@linux.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Daniel Gomez	
- <da.gomez@samsung.com>, "Mukesh Kumar Chaurasiya (IBM)"
- <mkchauras@gmail.com>,  Sashiko <sashiko-bot@kernel.org>
-Date: Wed, 25 Nov 2026 13:46:44 +0100
-In-Reply-To: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
-References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
+	imf20.hostedemail.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=dK3ByhqU;
+	spf=pass (imf20.hostedemail.com: domain of alex@amutable.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alex@amutable.com;
+	dmarc=none
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-491f34b4e0fso2622325f8f.2
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:49:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1795610993; x=1796215793; darn=kvack.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Le4AwFe0WXouABp9DXzuQtZ3ZnCfLcbkB8kE/IdX7wA=;
+        b=dK3ByhqUjJo4RAk73lAY2TFQngjJnvjSZgyeArOCFyUD9CYR7JZiux4e3KZz8+TT6S
+         bk7IrBQZCQOXDfTlfq4/7mesgRQ7hO4Ek8zZxNIkOQP1vhkO8844AN3upm5Za0vcNmHN
+         h9NUq0LLU2B+U2ZUdTlo/DnVSUItZXyjYmU06AsBKw7dVRnsgo3b0cTpnBNXMthXTu77
+         Dr/oUl2vs64gKpuQqbBSj9IULoJqxYfm1qXmmC8OkQBKOwh4U13x5EdLFKr5Sq0F3BKQ
+         4sWHPeUoJiwLD5uMKnQKBhaJdPNEAfqqHfCz/5yD2/k80QNSnkUWieKLNLy95GMdnr3A
+         iqKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795610993; x=1796215793;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Le4AwFe0WXouABp9DXzuQtZ3ZnCfLcbkB8kE/IdX7wA=;
+        b=jS606ka0XQU5CsvYtuVidoyICP6zBQUaP0LbVMykxrXgeNRQ3+4VETfBpRxhK31UkV
+         QDw12Gln8HL57Feh7eVAtUP7AyAIgJBn8TnWp55suJv7xx+C1MNGZ27Qoi0g3uUTgum3
+         cPzweDVqfzJt2eOKNYLN/JSeZw84N28GTcsSfR+vFH/hLE3sJomGwxNNhAvlBVp0B85F
+         xiVdNXJUUzE80/L2JSgk9248L5/XTw+poE4Xvi9mkl7fzXPrK2NKlhZFHlXdXEVSp4UH
+         0VNyEux984Sx3v8JXuEanqdJj+sOPqo24xqm+bAsqtgzKu+JH+XffIgTM+m/wRBysHoP
+         5AOQ==
+X-Forwarded-Encrypted: i=1; AL+hErEv80DHWktNGFWu3o4KlEplf/PpqO2fYQRe7jY99OAxv20h4LmbUy2GgiTmDuwftiE3KsgR0ruMbw==@kvack.org
+X-Gm-Message-State: APuU4Z+nCprM+OdVmG8RBNCmK7vSaXblB7qfK01tA/MpcVkJDNF4/lec
+	/+k5Ae5ztgbRprvhUwBgmVmP2A1RqEH7xDZGb6r6S47NgEVFCT5VA3Eos/v+PZtF9AmO8iYbt3y
+	QdxM4g2W5
+X-Gm-Gg: AZFdTZejEP7VVwSuKoq1H/rz4wdibedLk13W3Nxil3BkZ9BLkaU+dPtrXCUMggbe2KP
+	D70EQNphZqkRMRKbGux9j3GnUhM3+5G6eQk6bkLSUX+ZjwP7pRdadUAXhH5lnjVX647qmMuu3EO
+	itHQ8Jzy1sDQ0RXA25qqk8GwgHrLhD3AYfAve7ViRzVLYT/fu/ZUpZRHe5RwT/VByxwq/SViDtR
+	rHJ6zkKxDiuZpz4VKZGSPy+LWb56+Js1uIAiZyUevCv5sG6VEwS+ONWXcT8l1fpYCJOFNj+cYnN
+	0rwkLR8hrEWq5K12m4wD72WCr3L5EvqL4pE+RCSFqU2L3i9qEXgoUoLWPqXLa36E8Yxnn4pBbwQ
+	OOBIXQ84+bd/a11zLw5IkatI9gRBQfAo4YATeiXes2Uozlo1e3e+v1BKth5KG2GQ5zKvpPyqyAx
+	ayrGPjjP+wEF2mwuUqThr1gOC35OK3UWE+zEQt19FfhUt/DxiImfWgR57LDLX0mSCES9cvmN3L6
+	5Nb/URSdLIEZOezV1JALrGuCqkbtbDZhAnrbNuJebl5yB3d/EEj6CuzOXNbJ9VtArU/zsjH2RiC
+	I1LzbRB2WfsPbBgid11F3Dic3Rx5KQ1xTdGe/eCrcMJst+WqtXB4sWCEOxpE4AuD5uhzb/9B8op
+	TyOq2cR4shG1u4QHHvk/QkMttIAkZjHTpORzrevcdPHh76kW9uXYPpw==
+X-Received: by 2002:a05:600c:a11:b0:4a2:e0c:2b0a with SMTP id 5b1f17b1804b1-4bb888120famr364999585e9.16.1795610993400;
+        Wed, 25 Nov 2026 04:49:53 -0800 (PST)
+Received: from ?IPv6:2003:cf:572c:2800:c235:97b:8b16:8928? (p200300cf572c2800c235097b8b168928.dip0.t-ipconnect.de. [2003:cf:572c:2800:c235:97b:8b16:8928])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884b7515sm710678895e9.13.2026.11.25.04.49.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 04:49:53 -0800 (PST)
+Message-ID: <34297f66e07c1a64d81205c7669801738676f356.camel@amutable.com>
+Subject: Re: [PATCH v2 11/13] fs: remove d_real_inode()
+From: Alexander Mikhalitsyn <alex@amutable.com>
+To: Christian Brauner <brauner@kernel.org>, Amir Goldstein
+ <amir73il@gmail.com>, 	linux-fsdevel@vger.kernel.org
+Cc: Chris Down <chris@chrisdown.name>, Miklos Szeredi <mszeredi@redhat.com>,
+ 	linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, 	linux-trace-kernel@vger.kernel.org,
+ linux-integrity@vger.kernel.org, 	linux-security-module@vger.kernel.org,
+ linux-mm@kvack.org
+Date: Wed, 25 Nov 2026 13:49:52 +0100
+In-Reply-To: <20261116-work-ovl-d_real-v2-11-90564c4ae347@kernel.org>
+References: <20261116-work-ovl-d_real-v2-0-90564c4ae347@kernel.org>
+	 <20261116-work-ovl-d_real-v2-11-90564c4ae347@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 4eed8370bf969ed1124
-X-MBO-RS-META: ssgee3yfec9ykzuo1a3ycdtcq3w1izm3
-X-Rspamd-Queue-Id: B28C6180005
-X-Stat-Signature: uh4ue7gto65qx1gpb7x9yu8r9mmr75a6
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CF6E61C0006
+X-Stat-Signature: cdp5pdmuzrnq7uq33zxuuywp6o1dn8hh
 X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795610812-331862
-X-HE-Meta: U2FsdGVkX1/tYHiEpl9tVK89Ec02LGIVLbhWI2MY1+miSvYFQ3xm+xmjfasgFcD1lUvoTm04iORJDUhApAxHEJngDTGBf7NdUerZrk4w2bY6ffyd9Q/VXI6xVQXpftlviQVLlqxIvmDVadQ9k6F3CYJK5tIoc/5ZNgMbJiThnNlNZck0vTqTso1R/B///74coBK5O1mpQmWVnQDob9aOdjwy2mjMIqr6AlpciIgk8/uwfcdZF60JCEWuDk24qs64FFqi8SeZzWNZQc/kZu0enPFG2RPI3WNjZgagWsScVic5tBhLlrsMSZvTZAmaqprqkbikwgWH8fqeeGUr8lVlbtYgX7HhnChflnTnUwZosdKQw3dMPqpkpSnDloya4yxCOd5+PV3A63PNpb3KFY+gk9soOJ8U9JV6WaYxZN8WY5l4rE7V0WAseAjkjGiBEGQaFtd0vn7I8TKMIPg5xQIMsZ74oCtUFRwtkxDdYmTdCYu6j8twtnINdQPCrY23RWqBIOl/TSTUSwJRIhCD8TM+SRe0rdqazu0kEH5H1m/Fq1o4p8xlIHMW+iySgJ7VYlrlPhQS/CelJStVZ71zSbsQvNYBHbHfrVlgggYZd/EEOQTSF4PoaBcmebcaZ7uyzU8whbyaVqzyIYZkboJlom11UGsXF8TmLUil9wO2woek4SuV0NWwrdeuRGI7n6HP//96l7fuVm+4Z/2eUCrITXf/RqU3tITpFBqjfJ9wXY9L9AWdIQq/dB8Tv1U98Q31oTwpPKtee2hiImCk80oudn/wQtiCUhHUjibz7Ob4mIGE/LxiEuFzJy/W0y6wsQDmi1U+LSPI075KjE6j5677oxPgOQ43zNI5z89BIabSDkyRg8eDlDkJcgz/BqhH1+CyNBlzx/m8La6HKvF2Ir1PrhJt/gDkE4fgpW5b7Z1OE4RvBvxwEoDzJ6M6QnogoTBQb/rG5zUp0oEMD5AbqDzuEIC
- SNkSDW6q
- g/DmUzsgAjrGlhX4gs1O77aUXT8K0gpc+FP1q9IfJ7Z8uByABQwXhiCCN/YxqURUoHQ0jmmH9rrsQVpvD/pTWuGK6YWyw4JQABfpgIeaCprrRvRGNd9DlIhLxSurmDhS+e0EBGZZ0IZRBBDvCVKWZCUY1PvtWpG+2XU52jNwnMl8UVKZ6ROu19dHdjCI5gqmIoynRrNFYwYZcpnh/qK2vjL6kfQa8AEwSN7SPww3QB2QhA7zvTk5Zb0cgGVQ3ujb/hy9auEm+7v/NIadnI4nvmMJm7cRAXO42GIyoirh9Vh1ZEqIm072s9/BfR5vshLstfrkj7H+GrpdpMorkuAFUPrNP4lIo9CveCp5cv1duuhnf+8zTe0Th92ZzolPybEmBFs4i84gstxkchgxfRG/cZ6UnP+E6YpyI12QMD4+07zLtvYknyV6J+lYCPrn4Tk3CLUlqT2NEAfJPYsfRpdTN1dpm1RppPLl01i7QkwbPLkIHqXiys7+AV89ohk5rS4L4S7LXQvPEwoOPqUwzD2FUb5N2OKJ9OwNWEwL/70/iRKPSn/6OMnWNBUam+qFiY94luYr/ewDcM0aXRT/9RfdPCq90SDISygOnrWd9KIDkIaQq/Sy0as8juTtsqntdtmqnoKh8kXw6l14Of2o=
+X-HE-Tag: 1795610994-458334
+X-HE-Meta: U2FsdGVkX18ISbhP5D1HvcWIrn2kO1eG+F3r4W9qT/nFs6PVnwPWYSGT+gA7EiD6+fCz66+hknkQZVlHyGcS43SFXt1RRKAZZ/lLYA2u5Bk9WBEXRzjmJlNki91zIqN++kJKap+sZqLw5Y8RMNdkrQhEs0rleoM6xuBsa+Dp8aizDhGqlZ3tjKH8ygibHA8hU8RTYOO/6oD2MwcvPVxWAuZGNDpyNPgGsZoMguPB7X4iEb+2I75OH4Nl/iihDgC48pJWbIMVeqkPb7jZsPWiUWc86uzMo8qTEpgUffzgSjLDIXk+yLMc2vil2IbVszroVOwBgl0RJiWPBGugS34wCCbg5jvAFWI5teakLPHk0mLItwT1+qBh2A/aQzwxj2BZo022ojD8hyCxXlipMgFj700lGxPYA8H5iMjUq0k8PysjOyjNJeVbFnV2q0FPQ9QxfZJYD1aGhOXEKvCNM35fekRlzvXzi0zSWQ7YPhRs+9684Wk8SvehbflGlq2/ExPsOG6pjY8+lE/a5IPInZlYpvMq3e0xP6P2nBiSswPw3jrUm8z3Z+BIQ8H3+xfqg9hUJA7ZhAHraOu9XwZYA9z2172B16IyTLV1NHclWtmJGXP3zUVGwHnn+oaCYj7D+OaDIWHiMeVRBnv2dHkUXiXeQgcx8U1k79kZD204rNrH+x/sIKn4h/5pf65MQn8fUcvZ6QQ3dfJLDpKLj2lbRkyGwrlWdHbBef+dLo17gwRSdyWAq1AoPTF6ax6WjOkQ+BKpy+I/pWQASE/Z1zm1nH2KujLU4SQmAbqeTTp5nIDbQxO2DMaB9N80lzz9v2eW/8M4DejT+y8EsouGTU+jTgk6e2IcSOByTbtV9PkHAjgachOorydXFsrWtRpM9mYP2WJfUnl6gdb94elAX7HHjWXOVVpJKEPADg4KK+K0kugTX5KWNOA/W2ccwUGF0yYDjw9eXwCgMZFwLnNNCaLJ3sx
+ 9Oo4ZIY6
+ q0Wv50n7w5XfXfeT7nXvOvCPGvmqDF8hB4jXjD2nZi+6GOdT2mYMYbJifGIE4QNdc10cphQBaSmgtdE5xQfv2YdT61+auovjg0C3j7arl5OhTRR6tLeL/rpomMn5NVnmTGbCySYlMK3o5+K8TmcoxsnN4VOSlBQS4tzx9uUEWLSz66/DW+hPdKuBxY90TNh6u+ze+QHvTnRt1SiJ8xp+z3GNzr2XFpPLX4erWLebaxtURFZi0aToGVFUeNQHoDnkewgzrDGqo42ynowYuVF8q6axFzwYzCflmG5CsDOhM4a2OPZ5babT31jS8OOlC6IdyV4wUE+p6b3KyZOeDx3Rm7Kb1MlVwvve497kVm0aZcreXNnKDD2oSRKqbCG/1nRGRgLUQUl2LE5jItFIOxAJuVyV4wKo0cYJvmPmJ67rrL9IKFxbqpXlRLqIOhFO11ztGt7a9063PlSD1+qofwXlFJFDE79FOARZb0x43BYFj9ywOb/k+Gd4Fla8CEvNuDch2+0G/soQaouVVS/Gw9rwPCqizUe6rOaJohgu3+vSkKaLNWi3ygg9B/JUgWs/cxP2EoJP0VUBAp5yBAGD0kWIqXyH1rSCg1Cu+Z887EypTxZAT2/cnmbBjrOnjW7ZsxdWu5iPRmEnKURkveoHD8Gbm6veZmI32ICSGtcyptAB69Uu+Fwz3m8PoPXRYq4ZONdjYK1e2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,16 +132,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 2026-11-20 at 14:10 +0100, Andreas Hindborg wrote:
-> =C2=A0- Patches 8-9 add support for sheaf-based object caches.
+On Mon, 2026-11-16 at 10:44 +0100, Christian Brauner wrote:
+> All callers have been converted to d_real_data_inode() or
+> d_real_metadata_inode(). Remove d_real_inode() so that any user we
+> missed, or one that gets added in another tree, fails to build
+> instead
+> of passing an ERR_PTR() from d_real() to d_inode().
 >=20
-> =C2=A0- Patch 10 enables sheaf support for the xarray kmem_cache.
+> Add a porting.rst entry.
 >=20
-> =C2=A0- Patch 11 adds preloading to the new entry API.
+> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 
-Sorry for my ignorance, I was out of the loop here. What's actually the
-purpose of this series? What's your user, and what is it going to do?
+Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
 
-
-P.
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> ---
+> =C2=A0Documentation/filesystems/porting.rst | 10 ++++++++++
+> =C2=A0include/linux/dcache.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 13 -------------
+> =C2=A02 files changed, 10 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/Documentation/filesystems/porting.rst
+> b/Documentation/filesystems/porting.rst
+> index c38f5df755bb5..aa0fc43907017 100644
+> --- a/Documentation/filesystems/porting.rst
+> +++ b/Documentation/filesystems/porting.rst
+> @@ -1422,3 +1422,13 @@ helpers take a const struct mnt_idmap *.
+> mnt_idmap() and file_mnt_idmap()
+> =C2=A0return one. The idmapping is immutable so nothing should have
+> modified it
+> =C2=A0anyway. References are taken and dropped via mnt_idmap_get() and
+> =C2=A0mnt_idmap_put() as before, both accept a const pointer.
+> +
+> +---
+> +
+> +**mandatory**
+> +
+> +d_real_inode() is gone. d_real() can fail for D_REAL_DATA now and
+> returns an
+> +ERR_PTR() then, e.g., when overlayfs can't look up the data of a
+> metacopy file
+> +in a data-only layer. Use d_real_data_inode(), which returns the
+> inode hosting
+> +the data or an ERR_PTR(), and handle the error. Use
+> d_real_metadata_inode() for
+> +the inode hosting the metadata and handle its errors as well.
+> diff --git a/include/linux/dcache.h b/include/linux/dcache.h
+> index fd8853622f250..fe1aa8fea0c7a 100644
+> --- a/include/linux/dcache.h
+> +++ b/include/linux/dcache.h
+> @@ -654,19 +654,6 @@ static inline struct dentry *d_real(struct
+> dentry *dentry, enum d_real_type type
+> =C2=A0		return dentry;
+> =C2=A0}
+> =C2=A0
+> -/**
+> - * d_real_inode - Return the real inode hosting the data
+> - * @dentry: The dentry to query
+> - *
+> - * If dentry is on a union/overlay, then return the underlying, real
+> inode.
+> - * Otherwise return d_inode().
+> - */
+> -static inline struct inode *d_real_inode(const struct dentry
+> *dentry)
+> -{
+> -	/* This usage of d_real() results in const dentry */
+> -	return d_inode(d_real((struct dentry *) dentry,
+> D_REAL_DATA));
+> -}
+> -
+> =C2=A0/**
+> =C2=A0 * d_real_data_inode - Return the real inode hosting the data
+> =C2=A0 * @dentry: The dentry to query
 
