@@ -1,67 +1,67 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8BF606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 01:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F328E606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 01:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WizpStaM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nH06Dx5P
 Received: by kanga.kvack.org (Postfix)
-	id 9E2996B08C6; Tue, 24 Nov 2026 20:41:48 -0500 (EST)
+	id 99EA96B08C7; Tue, 24 Nov 2026 20:46:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 993076B08C7; Tue, 24 Nov 2026 20:41:48 -0500 (EST)
+	id 94EDE6B08C9; Tue, 24 Nov 2026 20:46:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85A186B08C8; Tue, 24 Nov 2026 20:41:48 -0500 (EST)
+	id 83E286B08CA; Tue, 24 Nov 2026 20:46:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C3BB6B08C6
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 20:41:48 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CC127A0DCF
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:41:47 +0000 (UTC)
-X-FDA: 85471939854.11.A6DFE73
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C1076B08C7
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 20:46:11 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C9F38C08CE
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:46:10 +0000 (UTC)
+X-FDA: 85471950900.20.4D7CF44
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3F1F2140003
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:41:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WizpStaM;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3A20BC000B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:46:09 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nH06Dx5P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795570906;
-	b=TpkCC22jDmV5ve070iCLhWN9cQ/CDu56KcZ+/Ns8CN82iLrR6X+fuXcHB30dl8AUoCjQZw
-	JrAJkcogH5JwUiEtfULoz3EhjV+LJ5XQNfub0B0GEZ394m2EtslqVF78VQjTVh+sL/pfNn
-	1kxVfjTIiyNmHov4iJA9Bmv+ZCiuhzQ=
+	t=1795571169;
+	b=lfg7+7VxrgXbg32LziIcVb8qad5lyZ9A8EaKysG7xP7XqWkfr4fswM4kR3VwLRDjv/c8SG
+	7L7J0i/6unHHip5Pqlamp5O8o3i3gO44BWSntEEEK7sjT7GTQoIgfYkeuTVtc88MSLtgAi
+	cOc/n5u0tcHTJAhqItTzRwKgRy4AXUk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795570906;
+	s=arc-20220608; t=1795571169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0uALuexdmM829eAKCCxuAtcwAcX/KrdDY7PYwPZUEDc=;
-	b=HLuWoESxqIuXdIfnXS+0zVhlinn0SiyuBe0kAJ6qLzQc20Ag7Pz58lb+0IVn8SCkbOVHqI
-	sspn/4T+VO64RLrTbR+Qyq8nlZpUurcR3352gmLs2iI7okRcEsEZL78DMr0P3r7ugpNr45
-	WJD/xlXvWBAso2Q6Bzm586nNoW1Fv/M=
+	bh=v8v8+B2s1x/OC+2e/Qjn0YMmUDX3uWey0kH3oGaidV4=;
+	b=HYvvm2ek14FjrNLJ9/re3MPhJjWKnEMxxw2hSfPhD8CH2IbgzDId6toMwocWp6doeR4DPQ
+	CN+8R1tYpwisAs+U98YKp1hPqp5zS+PKihyY8AJytbiDooFdglrLqFJvX3KOiXvnpBFQSt
+	/TFVWywwm3UNgXRKD6e59Cyv4RnKAZo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WizpStaM;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nH06Dx5P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BBBEB61DB8;
-	Wed, 25 Nov 2026 01:41:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD771F000CF;
-	Wed, 25 Nov 2026 01:41:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A72A260DD6;
+	Wed, 25 Nov 2026 01:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4E51F000C0;
+	Wed, 25 Nov 2026 01:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795570905;
-	bh=0uALuexdmM829eAKCCxuAtcwAcX/KrdDY7PYwPZUEDc=;
+	s=k20260515; t=1795571167;
+	bh=v8v8+B2s1x/OC+2e/Qjn0YMmUDX3uWey0kH3oGaidV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WizpStaM3pGyZ6aLPTA550frhN/LMtmfDktlk+ZzOz3iB/9QelKkTsH5MLGmLaUyP
-	 itQsUN01OJ9EVXPsKFeHuxpI5NnkAeYhBtSez1PS1p7Z1NX7XTCCaakFGK4NSA08tY
-	 haGL3bYL4fcmhiMEC+HRMV81GPTlCSor6X8StVGmwxfgythZ08KTWin9PirR7hhgiP
-	 B2y6WpUhkadSTyg+rx2gedv/bEQQl+PpRpG7HF5KRmxbSbqUmQV4CliTMBMbZFrU0W
-	 /84p1tYb2cgSHsqFS+vPiDXu+86RBRidyrB1S3LMydHmZdLi/C3eUyycB0ue/bZzEX
-	 cGp0LT/HvtDFA==
+	b=nH06Dx5P0Yi4GgYiauESIEHDhrZ5h0ePu1XxUj6w9X3ipZubgua+BknUm03wE3VgQ
+	 LbfPIPccvlhWg2C2vt/tZZuCh85f8uuaPj5MRM+VcYZF2D9jg0QtgOR+YTv07qoHzd
+	 Hnj0e0/HGED3nzGUhIE2LtG3dgNucQ/R8hwcBKul55Ko2R6NfMgEWvEGShIMcqW/1L
+	 5wd6iKhbeEK/13TwJ61qp/ZkqWfJBxEVGfHOM4dCoTrUliThw2bi3OqFNlaI/roYdP
+	 cUB/KTngPRtJnE6Z1HVAnyHi4tbrC2P2dgMFOvALyqyWboRnne38lNMgRzSiOFWQYv
+	 sVxKrHTC9Q/Fg==
 From: SJ Park <sj@kernel.org>
-To: Kairui Song <kasong@tencent.com>
+To: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
 Cc: SJ Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	Johannes Weiner <hannes@cmpxchg.org>,
@@ -113,28 +113,29 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-doc@vger.kernel.org,
 	Tianyi Chen <hi@tychen.cc>,
+	Kairui Song <kasong@tencent.com>,
 	Ridong Chen <ridong.chen@linux.dev>
-Subject: Re: [PATCH v6 03/18] mm/memcontrol: avoid potential counter leak when reparenting local stats
-Date: Tue, 24 Nov 2026 17:41:36 -0800
-Message-ID: <20261125014136.98425-1-sj@kernel.org>
+Subject: Re: [PATCH v6 04/18] mm/mglru: make generation page counters atomic
+Date: Tue, 24 Nov 2026 17:45:58 -0800
+Message-ID: <20261125014559.98601-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261124-mglru-fg-v6-3-8ffea39934a6@tencent.com>
+In-Reply-To: <20261124-mglru-fg-v6-4-8ffea39934a6@tencent.com>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kqyrnkjutoz9z8onedz4ufzft5z1efy5
+X-Rspamd-Server: rspam04
 X-Rspam-User:
+X-Rspamd-Queue-Id: 3A20BC000B
+X-Stat-Signature: qartku9tut6un943ougpa9gtfgawty1s
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3F1F2140003
-X-HE-Tag: 1795570906-704306
-X-HE-Meta: U2FsdGVkX1/sCB//GEX8aN8uTrHQG8JXnapMUMLJ8icQIRoAc5tOcKChWcSQKRi8Nqq8RJu8Igyrj8NpR3HM709dCw7+GsFiTA9Oek+c7YIMUIzCn15kBYSTaH9ic//ABMTMnXysdKMCFdKS5wmNYmn0P+GvZniwWxUJr2QMpwgegp2Oo+LbAQWteVcjLOfUNrn1L31nlf+eaG8cNF8pvQajMpPkNVWnPP4h3phexACwiXfb8n0jTTi1UgrKmd1vR0FAU2aHXTsOCKfbhcHbormeES98lxw/mMngPLHCUzG+4c1TMoigZK3yYz76AGOT8RFivTcQ9FOinLYibeliXyHkJTXrp3N3SeuFU6g/IlJA1WCLLbasyDWKUxbV9oSHN/E/I8aF+bFh6k4MLKBjlXfd1pTjr/6zsMtBfN+5/wm0nJLL9Sn0lVWO2HwVaNIod/OnGJuYPiuiAtraMbn6Z6sG+3D+GQNVFCsAHpJuF+cShugSlsuEBIYbBrWz4GJaY4L6goPoQHMnjgZgufLxBf/RVQJhjThxCOl6ueXiDxafT+E/ji7aAUlwgJchfZLvMBBORqu5bScW3RXZybk18t234rEqEsjdE2LFao80jJFiHelrT1a1cDz0QoQe67wwrzsFKO55lIBOtdzHw5UeptHv57iE0PZUSHPKPLKNA/nNOilM94orZ7LTnRBF1iUbtcZqmm2tRpsOWmYvfwKwF59Jn0OdiTseeZZv3YGFLXt98jHak3TsQoE+2DHWQwYAWzoG/9u+VBB0W8hj0yyEDRCyuaoxBR5eYF7JchVszlgg22Dl8OvWDATYSZcGJOaJ/43LzjDvhSYqf2weEguY8Hg8X3FCHmxpCv34SeUSGQc6x35jSQK83YO59X3IEnPG/7iEix5icOWiO0JjF3FEFRy3F0iq0kyWxzKQ1YJCovH/w88i3fn5T99stlD4sIt9BJx/r0/2FihxO9nst0q
- bdeyv/po
- uBkOvgZm6i6RBAGhGRdPEocs62Svp4yiSIXDBSuJGc0/qCLnXs8SKYFYFBKhQh3zkWAE2xjqlgX5Y5PDViKy/GD8kPR8pLRFoWA1bZytt1Q6m9UbBPvY4vtVj/m0qtKCDO3D9JwktHpq6emDO0yjgYOV9zmuoEBCxj3IhIv6+PpfkvopWZMouy9rQYK+OnD0ywEFlUNcIyyDrSUQ0iGfsATfPveH2vq1KHo+mts0UQXlarTU/Gl5qox6TRazbXfFqxkjGLgTjYE8fAODWOneRmsTf1sq+toewBz233BYQ9S2sQjBT5nuJrdZ5hXWkovvUeuAcwtXa+pwt/exYW6+j+i085gNQwx6AQRYXaPGMVKER8s/5p4TK8Vf00bzp1MrREKK28k03RC7I52MGmKnmaFGECY0t61UHURsR3EQfK8U2O7bdWgcD1pc43AkPHnsY6g54n1QnXJdXWTucc59necQ+Q2+xa4C/fDWlD1qVhKPm4bDqOPnIFfTF4D1IwU8OVp3f4RFfjCWCgcziMYvrhcmgPgOSjv+i6eBAZaLOquqU9u4vZ+pT5tLZSteBSaSu64md89nPf0agvwA=
+X-HE-Tag: 1795571169-5920
+X-HE-Meta: U2FsdGVkX1/OJbVQtSfFtI5gW/EGAjmEqwmFifjYYxQtKKz+EaBaRNyjTFThc4wHB1nGjqvxmBOmgZpPSetyyuP4ApLNi/X3Z5mYNYeLQvF7cny1pmcb4+dTzhy9enKgTMCJe0ZuodLvbZV/dWsQPBI++IQSebx6tl7/SMrsePCyTLXNeqi2a9/F4KS1YqW672D4E5+OWnKIEvTDNTf/NYltsjrkw/rKLntVTX7XK9HBwUenw3vAYczrmFnp1U6PzwxI9PK3uB9lQ/YOls366SEkD1fZJKsgXAKAOso+zlX82TRbPPRRTxbeXFYk1nBNh8CkOPBZK7KzCpYMiMtXB4zNfKZiYUgfRHyiOQ4hmIW689drN0pywHLsAkVSai4K5446AkNJOHqeoaJrESjyCMEDy2yKqAKetRc5DwjmcMd1K2BtRxx46ndRnsyeuijLyrbKhe0heXOG0tc5zU0rACzur/hiWwb1ibSx4h4ds3ZraBNVZkWwoCnYleGpSaSHpeKnlJ27GniUORrpIgjfyQ9cHKVD7W/bT5OuoYLouK8Z4vht/6i8NldPlOSIt94YJs3o5MXofOpcoGr+Bihx8Uk5oWc+rgje34eSZPHRV/gT+43p4I/BxuVqmnSyeHym8NpF4PID8KRIU72sV/jV5qYO17rGPTjRPulqqp0HghYKZQXqzGWgUbNRLpJfMYHX0UEOFOssomGKL8Gog1JlKP62w0KitP+RPMfD3AC8kQG1VPbElFrXpP1LJHvHv8QMomMm95AJAxDHHjtl6Rx7VrJPRsvCJda2Yne/Q9bEwkyc+fz3DikIJ0Cp7WEIMRbqEFexRobmaL2hI2sq7g6SnwTuKCc1e+7roNO/SdTmfELHgGilA0XBcEN+0+0AlNQ/Sybw2Bgc7IvyAdM3XXqFikBbTIA8hew9/vn1rBQxBfawMr7hO1DIiL49wexCLJ1jps/7se9vPWrLNO9pxhc
+ Xef1hj1Z
+ zQMH+NdMZo2rNGmG5hNmRtVmU55z9JZE3CaAco29rdYySxd69aVw8FxhBBajrXJaRldnqc/mb3scBu6o/ckmtZh62+jqan00wPTD5987txiOqy9T8JIdB2Xe+IVvJXNW7y2122zaYGyKkiv3+OhxSKJDCqyyN7LlcanP6PPNrkV75YDQg7bFMAgmb2wfvye89LdpN04JPqscEg32mMmLB0Q6mDxHHr/NU83oWYCmefmQv4ZccgxihcenzJiuKH87jcTSSK5+Q4UgcOZ8crl5f1snik1CvP992tE03Z108Jvd10hZAHeaHkFkTMB5fenfrC75vMa7Tp/qhij4ntkDrC280KuqJlQOv/MLkuOX1yDqWbV+qGeeR0ak+riWcrJlQs7lAwux2lxSHjF48KV6Ma/g3iqLJvUem8hY+cKwgTjvI/7m3lUY/7PZP/303SZVoiXBeK1raR/2+5xXbVdRnXfMjgSAdACGI1oxIRE7ZfGkJatsItuWgowKocIZohrlXRoyAAyX114Pxp9yKvhEqzNnZRPcagnLWyvIWK0nq77rHBAV08k8JUOLM6mJ6M31gp/W2DmMsPqhmr54LSj8UrenhCDodYooJyvEkUvd/7uij205alIl0Wfw/sconj63zX6TWNF7AjzOvYYX/yGjSlMGWtDUrvJUO2WKWW+4G61p+mHO28KIPkh9ieYJCgvdU4Si7D06ypIOTAYQm/tIvCd26/V5LRIkZdm4SCOAMJnxlFCN/F4uubqtZmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,45 +144,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 24 Nov 2026 02:52:55 +0800 Kairui Song <kasong@tencent.com> wrote:
+On Tue, 24 Nov 2026 02:52:56 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
 
-> lruvec_page_state_local() clamps negative values to zero on SMP.  That
-> is right for readers reporting page counts, but can be wrong for
-> reparenting once MGLRU updates the counters without the lruvec lock.
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Reparenting runs after the forced stats flush, so a negative is a real
-> balance that has to move to the parent, not be discarded. We will
-> introduce lockless MGLRU promotion which may cause following problem:
-> 
->  1. A refs CAS on a folio on the child's lruvec moves it from
->     inactive to active, and its active/inactive counter update follows
->     as a separate step.
-> 
->  2. A concurrent isolation of the folio reads the folio as active,
->     debits the child's NR_ACTIVE_* by delta before CSS_DYING is visible
->     to it.
-> 
->  3. The child is killed, and the two __update_lru_size() calls from
->     step 1 land on the parent: NR_INACTIVE_* -delta, then NR_ACTIVE_*
->     +delta.
-> 
-> The child is left with NR_ACTIVE_* -delta while the parent holds the
-> matching +delta, and reparenting the child's raw value is what cancels
-> the parent's credit.  However, if the child happens to hold few enough
-> folios for that counter to be negative, lruvec_page_state_local() clamps
-> the child's negative to zero, which drops the debit instead, so the
-> parent keeps NR_ACTIVE_* overcounted by delta, and its active + inactive
-> total overcounted as well, permanently: the child's local counters are
-> gone once reparenting is done.
-> 
-> So use a raw signed helper and reparent with that.  Ordinary readers
-> still keep the clamp.
+> No feature change, convert them to atomic so we can update them without
+> holding the LRU lock. A temporary underflow is fine: readers clamp a
+> negative value to zero, and the counters only need to be eventually
+> consistent.
 
 Makes sense to me.
 
 > 
-> Reported-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Closes: https://lore.kernel.org/linux-mm/CAN_Opa-+nb0vxQ+HsENCG2fEEMZoxG9Sy_DBC4CLkWjNLzDWKw@mail.gmail.com/
+> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+> Tested-by: Andrew Morton <akpm@linux-foundation.org>
+> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 
 Reviewed-by: SJ Park <sj@kernel.org>
