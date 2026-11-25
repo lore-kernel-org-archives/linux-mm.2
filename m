@@ -1,86 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF61A606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 06:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68BE606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 06:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=aaRG5jvB
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=IAPMaKU5
 Received: by kanga.kvack.org (Postfix)
-	id D70F26B0917; Wed, 25 Nov 2026 01:44:13 -0500 (EST)
+	id 65D7F6B0919; Wed, 25 Nov 2026 01:53:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D21F76B0918; Wed, 25 Nov 2026 01:44:13 -0500 (EST)
+	id 634AC6B091B; Wed, 25 Nov 2026 01:53:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C374A6B0919; Wed, 25 Nov 2026 01:44:13 -0500 (EST)
+	id 54A0B6B091C; Wed, 25 Nov 2026 01:53:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E4426B0917
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:44:13 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FA79A0E3C
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:44:13 +0000 (UTC)
-X-FDA: 85472701986.14.48ECCBF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 72E0E100003
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:44:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aaRG5jvB;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 23A746B0919
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:53:44 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2535A8CCF
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:53:41 +0000 (UTC)
+X-FDA: 85472725842.18.3224D3E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 79B9520002
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:53:40 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IAPMaKU5;
 	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795589051;
-	b=hRV0tl+akgFqC7x+DsLWT0SuIq60jPYzivnhJ9VI1lEw+iaBQAxagJAp3rsxaLyLTD0taI
-	W/ozfAVIPrNe5gIczQwuGUIF+5XvGKEhCtEZy5pKat0t897VnksjK1z3M2tW2fO4XHhYo/
-	NrseJqmAtJ99wSBt4JcjmWqT317/VVs=
+	t=1795589620;
+	b=OAB/so4Gmu7F/cbD0r15DcKbeVfduHXmvz05h6yvnU7KOIE7uNhbZowED0LyXqG3TZ6sux
+	CD9Ld2UpK0k4+SDn89KemdQyC+lqAr0kIjf3WT9opQPg0BHM4eg0a2i8dZDZkF0CsvjARh
+	cjO8dqxjyveRPlG4DDqGF2dOdCmtHGk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795589051;
+	s=arc-20220608; t=1795589620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=LMQAj09bQbCYq864JFAOM1F6lLxWDCCM05N91L35IgQ=;
-	b=hTy3YfXGSbkgMEBhnJS94o/tk80A9kHe43Jva1eHBR/oNPHff0grIRjuk9XGih8VdV1wj9
-	Anmzw2GmRtezlJ3RcqPKSNSx6yJHESw9Z26BvfoF0+nVeyT36rc+Zxdo2WBJZ/OORtZaNZ
-	j9a5ahB9xAD8l/M5dztCsygW91jgHfs=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=Dqt6DaQK+/ILwEG6W5V3a06/GqmDZB86Dc26lkXrVJo=;
+	b=d8mAWYoekd2K5J+llyBWkY0CwSwaU7jljwoPm78MdVQ80uV+Tkafz1i0Cu81iJ6IpSWo6T
+	PrAzvaK7FnD3qPp6cxU9+0oJeJ5+SuIv48zqJmqsAt/m8BLxyZ/2/l8cyAeCGz2ni/a/Xx
+	wK8djz0vjfy97k6F0UUOgs9Bt0GfxAA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aaRG5jvB;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IAPMaKU5;
 	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B4E14162D;
-	Wed, 25 Nov 2026 06:44:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B741F000CF;
-	Wed, 25 Nov 2026 06:44:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E2FBE61B77;
+	Wed, 25 Nov 2026 06:53:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669921F000D4;
+	Wed, 25 Nov 2026 06:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795589050;
-	bh=LMQAj09bQbCYq864JFAOM1F6lLxWDCCM05N91L35IgQ=;
-	h=Date:From:To:Cc:Subject;
-	b=aaRG5jvBSWj5PNceuyAf4rFfTBdAlBAysT2A6X4VVO6wsWN0puOJZr/etsbm6f/Tn
-	 Sx7262mKxmXayfSJXi+2TlBG1qFuOam48b1vC73fcR/l/OCr4C+D4t3d+KKiZiPh6e
-	 EhMRW0NwdgrZsfyDw2TNx27Yscjj9YkavfS2KyMk=
-Date: Tue, 24 Nov 2026 22:44:09 -0800
+	d=linux-foundation.org; s=korg; t=1795589619;
+	bh=Dqt6DaQK+/ILwEG6W5V3a06/GqmDZB86Dc26lkXrVJo=;
+	h=Date:To:Cc:From:Subject;
+	b=IAPMaKU5nts/5uCKxYRGxGmJjtOjnrm5rs39P+06ZUpsMkhTRKAFMJwybOGY4uXoY
+	 bKsfQWs5VyzLZmdS2o43R+tS39X8rXRyhYqlpVGqGUAy+HRmMQ02mKW9yWtWZlfysp
+	 X7C/4PC2fuWIVY3lNaJkZIbTDCkvju5c1fTeUoxU=
+Date: Tue, 24 Nov 2026 22:53:38 -0800
+To: Mika =?utf-8?q?Penttil=C3=A4?= <mpenttil@redhat.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Aveline Noir <jm5905938@gmail.com>, Ralph Campbell <rcampbell@nvidia.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, David Hildenbrand <david@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ stable@vger.kernel.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mm-commits@vger.kernel.org, David Hildenbrand <david@kernel.org>
-Subject: [GIT PULL] MM hotfixes for 7.4-rc5
-Message-Id: <20261124224409.56e65d8ff1f72a1d485450ad@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <bae41f6fc4114357a8a74c8b958f2bdc.1@linux-foundation.org>
+Subject: [PATCH] lib/test_hmm: invalidate all mirrors on device-private migration
+X-Stat-Signature: id8dcnmocbib75f184x4t498dudxat3n
+X-Rspamd-Queue-Id: 79B9520002
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-15.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	PP_MIME_FAKE_ASCII_TEXT,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 72E0E100003
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: jpmj4iojnj5pbbybmg5gowyskehkjsje
-X-HE-Tag: 1795589051-942597
-X-HE-Meta: U2FsdGVkX18u9X/XiKZJTlrPuLGqFDq408IVHyEvTiWGBh0nW6A/RGR+yAVDSIcBqF2MrbGTLrCdvnUS/bmhbddkAKd/goMr2lZAH4uSeqBfy0TNMRd3L61y/SfQPh7HviPxO9noFPmMd66jAHQojQRqMcDRpEnmVLKJajBIXlo2M95s9zu6JDJLugqHDeZNDVxK6jpwrb8q6x4FPWxjhI16byk3qqwvAVerneqJC9aNbTC0MO3xxDtrzbJoBbKO4ouqozkh63DQxCB6WLVfse9CD7z7GAIeGhGoIIzUuu/89zIGkLCMg0CWsxhdN20UQnY3j7sbmmDNiMy6dxIzSNXxqPQEuvwEu0Tq5QQRCrkMGtMlN/6FIadxb1r9vILEAvDU9KG8dMOFu26ia79YIru6yU02nfl2HGSwfHH1RP6moxZG4AV81ShImJ4x0/YWNZp6+14FXmoEsne9bL1VqZJG3+HJ9fU5XBcyDaXwFLxW20fHV1Xgd07evju6VWwfGsjUTPP3rsGZMZoXtOSm/XiExhm5kHz8E06j46HUV26oojtDNlle66H7HBhCpudFV97iE9Kxe+RfIHME1osIwornB5pzfxIAUVjdnTF4qblgMM6oQKitloTEQsj4ixUxt9ePxoZX9xeAVWUjun1JmNz1YcfJuSqj6TZmNWL+1X3hTMxSRLBm00pQGYrLFAl5gu7AE1n7SrV4O+RuhtjCk8c/3Sts3Q8/c7W4EYCiI7lA+6weH14W4j263t3POhw8k8HWUiCT65XLUtPdM7mxef7G8zmrA48YM1wu2q73PyrR2o6+1HnZA1g0AvhdyQ6aeW/skc0vHWNQDyLFUFh9K2sBMhou8VfPzfP0BdAU4CYx88YYTetz5lxMbnlzuSeI4Vk98Ijn4H3sA6QF0G17A+DdDraigi3YJtXEIhYMZB+HFe1W8eJDCArcaMb1jNVQblfc+cX3aviZ0blLXRJ
- tQ4c4szs
- RhMKnLGTQisFBoAnf6fl05BGiBoWYRstTasHBTF3rdqQ44Qh5Y1iqBRgtF6EjFAlQer+f2f+ioAR6w2Gzm7AfosuW9va4ZzpIHa5RDBWQwvRxDNviJILmLmU5l2kG1aiFBw97OxBOR160tY3m6hXbXerk2r54v6q9E0DfT5YdqfViYnCtBes/PT10ABkXOfCazmVyYSXz7DSYRiiwwVxNHy8DmjSEKTBsoFxGQVClXUwOktbX9jlCt0e5srAawSGrvD0L7quAVojQPtY8eoCnJCUSHlqAFLw4SQ2A8DonmyxRrbXazB21Zxd9F1E3CriT7ACIEk+gnNGhsR4uA14w7ouzZJhpCgrEQfBboxZVeTTpetjvfghU/IYG7UZvIojVJm3vA2sYm5SRtjpYwHkexwBnCXFUYKpyOfcsnAdGP9FIiKM/0qUYtq7q9UZOfdepUj+2sc0oO3Apaxw=
+X-HE-Tag: 1795589620-787128
+X-HE-Meta: U2FsdGVkX1/I1JolHQpAhXtcXcixzle+zee9DWDZ/6ju9D07/WY+K5aHKXQa1p6/JEt4rripYBHclOuEfuq40YL9/LqlOn01Mf+J/H50sqVCLr+DAzM3/eP3JH0tH3qR0j6Yv4Ry0bR0QNLEgWgumXElD6omFnhauRvrMjHCbb0u/Fr5YFIGOO1+x7Wb3XXQeLHhafcUT84Hk24so93oMhSWlOBYtpqfYOR+HXH3ITSntEIaPB+ak1VzyDmchpAclGt1CfgWBsJn7zSDfqCnZW4EElDpBPY2W3XbfT92RawkDqoGDzRK3ylJHZEhSD0DbGiINRYRegPJIRHPcl3DeXLp6Mj/qrLlVj0gqmZpZxavQR/fSOEvwp32782L6R+2i2Pr4W/WlQHjDTaLQEAPt12jE7M/CVchIm03PbTcqL2QitrdH+jPLq3gqLZUv9EbUMNvP4WCZW++AXjWa59o1cpSAr7IhLYZH8K5Z0BCk4eoDyU+VvEuzE2sC29uy89gaQBszRyKo/pAjB3mHClxKOj8h3FV/8rStFqDavcpxjl9s3O7k2J2Xpf+ghkcL3Q3r9ccM5j1oio7nfsYoClfc9CRFPfx4voAb4oOyBqYfW28bQIbtu07AJx/cC1A6lRyMOS/5LpRLBzcmUFulpwIu6ll2cw8vz+eSrgcB/vVbg+FSzimwwZ9cYvZM3yDMbJH9usGiEJl5QHge5dOEbGZ/4e4o7aX0XOLeIkRsYF7Mt90T278fakAj6Kvl6QRl2GOmk6g8SYKP6CJLsBWFzA7bE0Qe0HP5ELW6/YZB0GqSUpH0fDYHMDPqq3MHjlOgDNPKf2nLPkEStOhT1J5PMLhOrCIaO7t+YBQJOMLLjdmUuZm0rfOEngVtq8aPUV+qIRQkG1DiPrH1qvh4ZjWTAYX4k+9X0R/6S6MGqc37IpKmGRHQjJekyV00oqVPoJzFDGSAGYNQmocGfdsxEtiy5F
+ IaHCAwOF
+ H0jaXoFdZ3gGzv1zfhwn591zi0kMKfIVjYtjUNmOZtiBJTzDZIePPO/1FooHkevKhNm9rWWAYRnxIgLSZ82ufM8TYA3R708QR7T4PEtpjX79EoI0VQYKI7VEVH8vzcobDUcWg5uPnSBkA1sLosxftQyqtGDl9WEOM+6VhWIuD1MMXNx9+WwakiKIuFAzRuiFExwatq8fpLooxUXM3ltQfvuNWnziieFkSqHkJy8oBRapBYxJA2AE32As+Acvz0cvbTvOHDSHlTvX2xfjO0m5Vcb1GrjSsazuHDxeASZcHstH56Q5NNJpaXdstSIlrk9LKi3PVdq2sxoTd+FBercni38dOIKZHu3ondvYuDLUGKDTEi8CsPbMxzSmoC3b77Cmy4POpIjo2v2/1PBhNePy5TLsVetp/VMkzEHQulKC+PUNF/4g6Dw3p3vPktbsE3jWkXBLO0vD01o32lcoSq79TFhA2zl2gqXhhaOcVSZeKIV6pIqfQb9b8bQAzNGF+1l/Zc+C41KK2hFpPpgSArsv2ev0WpnrJUnVxKJNeboIo1U7Ttn1kC7C7jdEwvjF9xpBXhm9Vpsm9Nhxx4madIX1Zf0bp/9nxS6i+i8ACIKLIOT/ej95bp7znYrzGJ0+XQoKtghEGyq2el0Cw7q3IeKZFtJ3Re82vvooJl8sP5drC5moxcNMOeNi5hMv4K7YrKYkHSRS1ji7+fJ6D+d2H22zqDZrV5IB15NQ2DhgY2KcgIiw2VvwhQG03MVrPwEKh16DhMU5R//7SmwbkDuL/Rwl2UrqHDIZhyCgMTfi355Cpg67U/NQUZnEnPOYzyK6ImOC1XTk9UaKkCeJt0+VQ9DUAq9fepEx4DMTR7RV+oE7zeKNVlL+OSFG/RQgKHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,168 +88,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: lib/test_hmm: invalidate all mirrors on device-private migration
+Date: Sun, 22 Nov 2026 08:53:12 -0800
 
-Linus, please merge this batch of MM hotfixes, thanks.
+When one open of the fake HMM device migrates a folio to device-private
+memory, a second open can fault the same address into its mirror page
+table. The second mirror then stores the inaccessible device page, which
+can oops the kernel when dmirror_do_read() copies from it. Store the
+corresponding RAM backing subpage instead.
 
+That conversion also makes the backing page's lifetime significant to
+the second mirror. migrate_vma_setup() notifies all mirrors before CPU
+faultback, but dmirror_interval_invalidate() skips the notification for
+every open on the same device. The faulting open clears only its own
+XArray entry. The other open can read or write the backing page after
+migrate_vma_finalize() frees it. Aveline reported a KASAN use-after-free
+and stale data through the second open.
 
-The following changes since commit 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd:
+Handle migration invalidation for every mirror under its mutex. This
+clears pointers before faultback can free the backing pages and waits
+for an active mirror read or write. During system-to-device migration,
+the migrating open installs new entries after migration; other opens
+refault on their next access. Remove the now redundant XArray erase
+from the faultback copy loop.
 
-  Merge tag 'mm-nonmm-hotfixes-stable-2026-11-18-00-06' of git://git.kernel=
-.org/pub/scm/linux/kernel/git/akpm/mm (2026-11-18 09:51:04 -0800)
+Extend the PMD migration selftest to read its last device-private
+subpage through a second open, then fault it back to RAM, change it,
+and read the new value through that open. The trigger is available to
+a process permitted to open /dev/hmm_dmirror* when CONFIG_TEST_HMM is
+enabled; it does not depend on physical GPU hardware.
 
-are available in the Git repository at:
+[akpm@linux-foundation.org: fix device-private backing subpage selection]
+Link: https://lore.kernel.org/r/20261122015246.d8b6b98ff5a8157168156339@linux-foundation.org
+Link: https://lore.kernel.org/r/179535872126.34.4789080961796247940.b4-reply@b4
+Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Aveline Noir <jm5905938@gmail.com>
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Mika Penttilä <mpenttil@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: <stable@vger.kernel.org>
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-st=
-able-2026-11-24-22-39
+ lib/test_hmm.c                         |   20 +++++++-----------
+ tools/testing/selftests/mm/hmm-tests.c |   25 +++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 12 deletions(-)
 
-for you to fetch changes up to 448293c44d86abaff45d6f6919e6056ad97eaa31:
-
-  mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree() (2026-1=
-1-22 22:24:15 -0800)
-
-----------------------------------------------------------------
-mm.git review status for linus..mm-hotfixes-stable
-
-Everything:
-
-Total patches:       26
-Fixes: tags:         18
-cc:stable patches:   17
-Reviews/patch:       3.88
-Reviewed rate:       96%
-
-Summary of patch series in this merge:
-
-- "mm: fix swapcache writeout and cluster table races" (Nhat Pham):
-
-  Let reclaim write dirty swapcache folios without anon mappings.
-  Publish swap cluster tables under the allocator locks and keep
-  stale reclaimers from relocating clusters being populated.
-
-- "mm/hugetlb: various fixes" (David Hildenbrand):
-
-  Prevent fallocate() overflow from consuming and leaking huge pages.
-  Serialize mremap() with migration before flushing stale TLB entries,
-  and avoid corrupting private hugetlb VMA state during unmapping.
-
-- "MAINTAINERS: remove my reviewerships, add CREDITS entry for THP"
-  (Lorenzo Stoakes):
-
-  Remove Lorenzo's MM reviewership entries and record his THP
-  maintenance in CREDITS.
-
-- "MAINTAINERS: MM updates (2)" (David Hildenbrand):
-
-  Add Kairui as an MGLRU maintainer, move Barry to the top of its
-  reviewer list and remove David from reclaim reviewership.
-
-Summary of the 14 singletons in this merge:
-
-Two list_lru fixes prevent a cgroup's reused ID from making a folio unlink
-from the wrong list, which can corrupt the list and later access freed
-memory.  They also avoid a NULL dereference if a folio moves to the root
-cgroup between the allocation path's two lookups.  MGLRU now moves every
-generation when reparenting a cgroup; a skipped list could otherwise
-remain in a freed cgroup and cause a use-after-free.  Clearing MGLRU
-references before removing a MADV_FREE folio from its generation also
-stops reclaim from repeatedly protecting a discardable folio.
-
-The memcg object stock now flushes pending charged bytes when its lock
-cannot be taken.  Otherwise memory.current could grow without matching
-usage, causing unnecessary reclaim, throttling or OOM kills, and a counter
-wrap could leave a permanent charge.  The memcg OOM scan also keeps an
-exiting victim visible until it releases its memory, avoiding an
-unnecessary second kill that could take down an entire workload.
-
-Swap allocation again prefers free clusters on nonsynchronous devices,
-keeping writes mergeable.  In the reported NVMe mysql/sysbench workload,
-the prior policy reduced throughput by 19% with iocost; the revised policy
-improved throughput by 33% against its base.  The change keeps the old
-nonfull-cluster preference for synchronous devices such as zram.  A
-separate fix corrects /proc/swaps and swapon() size reporting for
-multi-terabyte swap areas.  DAMON's estimated bandwidth calculation no
-longer overflows on 32-bit systems.
-
-UFFDIO_MOVE now clears a stale userfaultfd bit when moving a swapped page
-into an unregistered VMA.  The old bit could cause MADV_COLLAPSE to fail
-or trigger a page-table-check warning on fault-in.  Buffered writes
-starting beyond EOF now check an unreadable source buffer before some
-filesystems extend the file, avoiding a failed EFAULT write that leaves a
-larger file.  On 32-bit systems with 64-bit physical addresses, /dev/mem
-now makes the correct uncached mapping decision above 4 GiB.
-
-----------------------------------------------------------------
-Alexandre Ghiti (1):
-      mm, swap: only prefer nonfull clusters on synchronous devices
-
-Andrew Morton (1):
-      MAINTAINERS: add page_ext.h to MEMORY MANAGEMENT - PAGE ALLOCATOR
-
-Chris Down (1):
-      mm: memcontrol: don't lose track of exiting OOM victims
-
-David Hildenbrand (Arm) (4):
-      MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU) update
-      MAINTAINERS: remove myself from MEMORY MANAGEMENT - RECLAIM
-      hugetlbfs: fix integer overflow in fallocate()
-      mm/hugetlb: fix mremap() racing with page migration
-
-Donggeun Yoo (1):
-      userfaultfd: clear the inherited uffd bit in move_swap_pte()
-
-Hui Zhu (1):
-      mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree()
-
-Hungyu Lin (1):
-      filemap: prefault writes starting beyond EOF
-
-Iv=E1n Ezequiel Rodriguez (1):
-      mm: use PFN_PHYS() in phys_mem_access_prot()
-
-Josef Bacik (1):
-      hugetlbfs: fix unmapping folios from private VMAs
-
-Lorenzo Stoakes (ARM) (5):
-      MAINTAINERS: remove myself from MM core reviewership
-      MAINTAINERS: remove myself from MM misc, reclaim reviewership
-      MAINTAINERS: remove myself from MM rust reviewerships
-      CREDITS: add entry for THP maintenance
-      MAINTAINERS: consolidate the memory mapping entries into a VMA entry
-
-Nhat Pham (3):
-      mm: vmscan: allow writeout of swapcache folios without anon mappings
-      mm/swap: publish cluster tables after reacquiring allocator locks
-      mm/swap: skip relocation of tableless clusters
-
-Oleksandr Natalenko (1):
-      mm/swapfile: really fix integer overflow in swap_show() and swapon()
-
-Shakeel Butt (4):
-      mm: mglru: splice all generations when reparenting a memcg
-      memcg: flush nr_charged_bytes when the obj stock trylock fails
-      mm: list_lru: fix NULL deref when a folio moves to the root memcg
-      mm: list_lru: don't use a new memcg's lists for an offline memcg
-
-Wang Guangke (1):
-      mm/damon/stat: avoid overflow in estimated_memory_bandwidth calculati=
-on
-
- CREDITS                  |   6 +++
- MAINTAINERS              |  62 ++++++---------------
- fs/hugetlbfs/inode.c     |  18 +++++--
- include/linux/list_lru.h |   2 +
- mm/char-mem.c            |   2 +-
- mm/damon/stat.c          |  15 +++---
- mm/filemap.c             |  10 ++++
- mm/folio.c               |   6 +--
- mm/hugetlb.c             |  21 +++++++-
- mm/list_lru.c            |  41 ++++++++++----
- mm/memcontrol.c          |  10 +++-
- mm/swapfile.c            | 138 +++++++++++++++++++++++++++++++++----------=
-----
- mm/userfaultfd.c         |   1 +
- mm/vmscan.c              |  15 ++++--
- 14 files changed, 230 insertions(+), 117 deletions(-)
-
+--- a/lib/test_hmm.c~lib-test_hmm-invalidate-all-mirrors-on-device-private-migration
++++ a/lib/test_hmm.c
+@@ -292,6 +292,12 @@ static int dmirror_do_fault(struct dmirr
+ 		page = hmm_pfn_to_page(*pfns);
+ 		WARN_ON(!page);
+ 
++		if (is_device_private_page(page)) {
++			struct folio *folio = page_folio(page);
++			struct page *backing = BACKING_PAGE(&folio->page);
++
++			page = backing + folio_page_idx(folio, page);
++		}
+ 		entry = page;
+ 		if (*pfns & HMM_PFN_WRITE)
+ 			entry = xa_tag_pointer(entry, DPT_XA_TAG_WRITE);
+@@ -327,14 +333,6 @@ static bool dmirror_interval_invalidate(
+ {
+ 	struct dmirror *dmirror = container_of(mni, struct dmirror, notifier);
+ 
+-	/*
+-	 * Ignore invalidation callbacks for device private pages since
+-	 * the invalidation is handled as part of the migration process.
+-	 */
+-	if (range->event == MMU_NOTIFY_MIGRATE &&
+-	    range->owner == dmirror->mdevice)
+-		return true;
+-
+ 	if (mmu_notifier_range_blockable(range))
+ 		mutex_lock(&dmirror->mutex);
+ 	else if (!mutex_trylock(&dmirror->mutex))
+@@ -1198,7 +1196,6 @@ static vm_fault_t dmirror_devmem_fault_a
+ 
+ 			src_page = pfn_to_page(page_to_pfn(spage) + i);
+ 
+-			xa_erase(&dmirror->pt, addr >> PAGE_SHIFT);
+ 			addr += PAGE_SIZE;
+ 			copy_highpage(dst_page, src_page);
+ 		}
+@@ -1822,9 +1819,8 @@ static vm_fault_t dmirror_devmem_fault(s
+ 	}
+ 	migrate_vma_pages(&args);
+ 	/*
+-	 * No device finalize step is needed since
+-	 * dmirror_devmem_fault_alloc_and_copy() will have already
+-	 * invalidated the device page table.
++	 * The migration notifier has invalidated all mirror page tables
++	 * before the backing pages can be freed.
+ 	 */
+ 	migrate_vma_finalize(&args);
+ err:
+--- a/tools/testing/selftests/mm/hmm-tests.c~lib-test_hmm-invalidate-all-mirrors-on-device-private-migration
++++ a/tools/testing/selftests/mm/hmm-tests.c
+@@ -2087,6 +2087,7 @@ TEST_F(hmm, migrate_anon_huge_fault)
+ 	void *old_ptr;
+ 	void *map;
+ 	int pagemap_fd;
++	int fd2 = -1;
+ 	int *ptr;
+ 	int ret;
+ 
+@@ -2143,12 +2144,36 @@ TEST_F(hmm, migrate_anon_huge_fault)
+ 		}
+ 
+ 		close(pagemap_fd);
++
++		/* Read a device-private subpage through another open. */
++		fd2 = hmm_open(variant->device_number);
++		ASSERT_GE(fd2, 0);
++		buffer->ptr = (char *)map + (npages - 1) * self->page_size;
++		ret = hmm_dmirror_cmd(fd2, HMM_DMIRROR_READ, buffer, 1);
++		buffer->ptr = map;
++		ASSERT_EQ(ret, 0);
++		ASSERT_EQ(buffer->cpages, 1);
++		ASSERT_EQ(*(int *)buffer->mirror,
++			  (npages - 1) * self->page_size / sizeof(int));
+ 	}
+ 
+ 	/* Fault pages back to system memory and check them. */
+ 	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
+ 		ASSERT_EQ(ptr[i], i);
+ 
++	if (fd2 >= 0) {
++		/* This open must not retain the freed device backing page. */
++		ptr[(npages - 1) * self->page_size / sizeof(*ptr)] = -1;
++		buffer->ptr = (char *)map + (npages - 1) * self->page_size;
++		ret = hmm_dmirror_cmd(fd2, HMM_DMIRROR_READ, buffer, 1);
++		buffer->ptr = map;
++		ASSERT_EQ(ret, 0);
++		ASSERT_EQ(buffer->cpages, 1);
++		ASSERT_EQ(buffer->faults, 1);
++		ASSERT_EQ(*(int *)buffer->mirror, -1);
++		ASSERT_EQ(close(fd2), 0);
++	}
++
+ 	buffer->ptr = old_ptr;
+ 	hmm_buffer_free(buffer);
+ }
+_
 
