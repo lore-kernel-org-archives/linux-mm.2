@@ -1,102 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381E9606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 11:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDB3606A338
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 11:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LwAxmjWC
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=mosuS/Sa;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=IIWOiZyK
 Received: by kanga.kvack.org (Postfix)
-	id 5D9C76B09C2; Wed, 25 Nov 2026 06:35:45 -0500 (EST)
+	id E68746B09C5; Wed, 25 Nov 2026 06:37:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B13C6B09C5; Wed, 25 Nov 2026 06:35:45 -0500 (EST)
+	id E3F2F6B09C7; Wed, 25 Nov 2026 06:37:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EDBC6B09C6; Wed, 25 Nov 2026 06:35:45 -0500 (EST)
+	id D7C9B6B09C8; Wed, 25 Nov 2026 06:37:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E9556B09C2
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:35:45 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC3D8A0ED1
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:35:44 +0000 (UTC)
-X-FDA: 85473436608.16.4379127
-Received: from mta1.migadu.com (out-1.mta1.migadu.com [95.215.58.1])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D0371100002
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:35:42 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LwAxmjWC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B6C0F6B09C5
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:37:16 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B36140EAB
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:37:16 +0000 (UTC)
+X-FDA: 85473440472.13.4CE0065
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6ED2918000D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:37:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="mosuS/Sa";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=IIWOiZyK;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf06.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795606543;
-	b=3RhlQFCs+HUQVxhxa9BZGL3cc1HBn2X7FjVHVRZjGqU0ShnoJ1+Ngnr/JAe1L9EnV5i/IW
-	Pk8LppO/dL+Nztd8zE3oeKGv8oMikn5AFeWa/ajqsBQYdax0ZDV9omAlF5GREMJH6D1aPY
-	o0H35+NTvkg7cGGjdisd5SmBlAosBGE=
+	t=1795606634;
+	b=yVrQfYQdSWalh86ysDWllMuYLqHRJsJnY3w0ucZ7FHKlWLc74+7Cx5FPrAq2QY5V4hwKs6
+	KAgVMg36REPRtFZuHb3WBbCicjjOOJx5+73Ai0D5JR38XyY4y85af8EHLTIijJasXbBlJ8
+	EN8JE4FIyzzqmP28aAy0vA8Dq/85xaU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795606543;
+	s=arc-20220608; t=1795606634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IYZQR2NWRm2aqXIEbQebL6wCc5yHIbEePswxQJEyMnU=;
-	b=CGLG8uPGdfcJ614N5yM55kcx05lMFO8Ngye5zjprGEYOvNkMJrcwZDIJBjgv9kI4bDH025
-	mLzZT/QFfLJPX7gffLHy91O/IPM4MFMRk2qnLNZZJJdUZfmSkSLEA4KRBZwiRgQk8OH9+z
-	vGfJEzfS3Tic3W58RQU0fauaBLRDwB0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8wBVHYYIzQigIlGlhL1E2SXD/0Foprhlk3jXCBGc+m8=;
+	b=sMUy0PF8OVjFQLedPs5u2URdkCobRzGxE/R9XwJZm6DvLjbECjGg4ukC/T0RS4ZY1WUUD5
+	3P7D4Al96RLQbfGw6ol+HM3sVXajFtPsCWLClkVKcgjLl+i5zf3RqplsyJkcOJRYueTmPt
+	AG9w1KOM/r9H3gfZfmg0tQJB5R5ORLc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LwAxmjWC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=hyYSlPLEjHqHiuxc1EWVJHk/NKxvpHyxjjsLCf7xOrs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795606541; v=1; x=1796211341;
- b=LwAxmjWCu4z6VIUOybmhXd8R1IwJJJPysWeaGc4XNKu/zkAfAaLOFPDaQaWDusOsuf6EYUIu
- 4f2PnxrMw1i59vJMLmKisq1uTiUuoSj9N9xKZ+8dXmKJ+zULN3ZVQ2K+Gwg7ovDvNzIUxJEyC0r
- C9xCMVaIG3CS3hqRo40atMiY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 236edbe9e403cc2d;
-	Wed, 25 Nov 2026 11:35:32 +0000
-X-Mizu-Trace-ID: 236edbe9e403cc2d
-X-Migadu-Flow: FLOW_OUT
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: "Andrew Morton" <akpm@linux-foundation.org>,
-	"Kairui Song" <kasong@tencent.com>,
-	"Qi Zheng" <qi.zheng@linux.dev>,
-	"Shakeel Butt" <shakeel.butt@linux.dev>,
-	"Barry Song" <baohua@kernel.org>,
-	"Axel Rasmussen" <axelrasmussen@google.com>,
-	"Yuanchu Xie" <yuanchu@google.com>,
-	"Wei Xu" <weixugc@google.com>,
-	"Baoquan He" <baoquan.he@linux.dev>,
-	"Baolin Wang" <baolin.wang@linux.alibaba.com>,
-	"Johannes Weiner" <hannes@cmpxchg.org>,
-	"David Hildenbrand" <david@kernel.org>,
-	"Michal Hocko" <mhocko@kernel.org>,
-	"Lorenzo Stoakes" <ljs@kernel.org>,
-	"Harry Yoo" <harry@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] mm: mglru: reset the mm iteration cursor in try_to_inc_max_seq_nowalk()
-Date: Wed, 25 Nov 2026 19:35:18 +0800
-Message-ID: <20261125113518.1207280-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.53.0
+	imf06.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="mosuS/Sa";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=IIWOiZyK;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf06.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+Date: Wed, 25 Nov 2026 12:37:10 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1795606632;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8wBVHYYIzQigIlGlhL1E2SXD/0Foprhlk3jXCBGc+m8=;
+	b=mosuS/Sa03uu1p81hdm9daMU/PDF5wTebZtdy20GzNq+dQs7zU+fhXhPEgTtO49vSbrkiR
+	F9OEQgUmttIicOFWl4TAIf4fE1TSLxFSidGP6ZH+JkQwARXzQwGQjGNRSSwFqRyVPBssZG
+	4vqcI9rSlOXwZjIyJb/hfHn2X+zZfduVKzVrMoAkoXWqtyNeqfM89ZmV93F+y7FPGPrmh5
+	ao0DHWYr5+Pn3g0Gn+WHb4FyqO84qn/zL9S5szQ98QKr56F2uZUV2eNvmLOuaWmMoMl8nf
+	wbTSoszajn4bu3INy3TUU2NMUHLqRMr3GFqlw188OYFYq4FCWO3A0xLOYZZuNQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1795606632;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8wBVHYYIzQigIlGlhL1E2SXD/0Foprhlk3jXCBGc+m8=;
+	b=IIWOiZyKXQlj4MUc4m9j0OcIvLx6Bi1XM+/DGMN88DCNc6MBcMgKqMoPgvt2TdwF5Te/2M
+	TPmm/ck41zKpkhCA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Jiebin Sun <jiebin.sun@intel.com>
+Cc: akpm@linux-foundation.org, dennis@kernel.org, tj@kernel.org,
+	cl@gentwo.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	clrkwllms@kernel.org, rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev, tim.c.chen@linux.intel.com,
+	tianyou.li@intel.com, wangyang.guo@intel.com
+Subject: Re: [PATCH v2] lib/percpu_counter: allow concurrent sums with an
+ rwlock
+Message-ID: <20261125113710.Web5Cy2z@linutronix.de>
+References: <20261124051952.1059282-1-jiebin.sun@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: xopagsombeytmd5qqz6ormxtmtew67ca
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D0371100002
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20261124051952.1059282-1-jiebin.sun@intel.com>
+X-Stat-Signature: on9dpzz4ymytxgomiwx76cuwoo41fgoq
 X-Rspam-User:
-X-HE-Tag: 1795606542-684681
-X-HE-Meta: U2FsdGVkX1+ZiJpVwIGkk1XMRazxw4Ep3qDES9ZjsF2eEa+DbD5/6OpQcvEEgpKwDYDNnpkh9L2sI2AUnEt2Mcg3wXxQVQDNjwu1sRA9y81hSX68VnyVjiR6keA3etKVUyrdrb+Kz0I7hydAqZy+Mqx/F2N5ElI4Y7hM637so/PNQryevVdMZRcyStQ0/qum/ZiiWAKBB2eviqWcgrB/EbOcqG5wU2YT9q+KtNmrDc1qA3huFNtXGiTTdimxk+HbpQWD9h0a6zzo//ZSls/HxEevq+2Lc5g9z920SaxFxam13BleeUVSd88xRiNro+YUABXJauVtFGVjsfnnfz/y7mLpWyPxDKzEGx1UXoOjlKVeubq7SFxqNUPiiAAL5puEs33VVLkLxkAIUPVnXGxHiTZM8McOUPgWSp0IKxUzqBzCTVx6rvaHkvRR9iH1LOYbqY8URDFDOFDbx0jtgIfId5FxmS/iYg6emx5UF8IQ/e8UsWeaQtpIFVqq7VXIYRMzkP5T6XecPBUWwxGwx6zED4EIJk6hSiWCPTshkykHmczFjIW0il50vUXNCyUF0aK/GgleWekDsvh8qkTRQ7pTg36A6YKccUq147llZC+eL1oGRkgT+wgKgiUE8DcmcGs3yAkDBZioFTn6XYUVdCviOT4UApz+u47crBoVxEnGBHlHTIruWBk6P0CkNHaL+lyViPIueTn3LY9AV55FlM4r2bacJUAIBdueAagDesCh+13OuM5KiMIvuMUrI2qYrlCYidhL/PUQVHAVBGSV19cNDlBQSwioW88i7XTpep6QpKPurJKaKTwWwc22X3BrktmvrB5eqpHVoaRuyicAgJh/niGBsTNxLIIjl0P4orPHuQUtDn//pvlyLv2yNR0utdDnifWyHRvujOGKfIrNCOV/MvEgljJBH1KLvWDm2dHnsvzPDtX3fuL3+K3Gpx9vocqd/CQddCQtuTK8OMsB++6
- 7pYb0PVS
- SZWHGyu3ziR3g7XSZrC4qN+Y3swM0WCYA6Xuzsgd8N2cs8mdTvz2ZIC5NrDHyMUlmtxSuWIxzSrbDLjYT9yriklPEzw1oQ2JsPlz2Kp1YblfX5usbYoQUOE/PqdPIXq0baLYy05gGyqZNukEU5gdURTgMdK2y7ul+8LnnYoXCxk1N2QnccFswuIfNjVSY69lcfh+SjrbOqTtszu1UGf0llJZyzL5RxcMEZIdp5tTIt6/dO++IQs/oG4sidLS/tMv4zfP3cNaLGRhY4GSWx2suQRPv2A5Zc9wkqzlUE8DP+DkdF9qsWsQaN2YumsFPsZ1ZvLm7lRq6MOOl0LVuopxKheukv8k7FPhiiJ8j+wpViMzO9jTmT4tE7dyK1FvNq8Mr38PT1aaefJYsJi0c4WATEmMJ08qQa8sX7hsKAjugcn7IJBc0NEfOXnggtJnzC4nXUeUlYqXrpkDyHl47mf+WeDq/cwbuDSL7pupE2tUUcb5cIMGV37JCd+Ksb4w8R1yzoWFEgkrd7cTOpST8HfWmatMivhdIlHn2kTf8md1ZfepsOb4=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 6ED2918000D
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795606634-356399
+X-HE-Meta: U2FsdGVkX1/Y3Low22WlnFEIoMXbGdd4y5RHVeNL9+dt5wurbhVzgAD/I75kK4I49mI5ttMn4OFw7T5pEE5NbaEeMEesFU2gG/f/q22w2B56JMFIhIe3D05zmxqbGBzN7U3w3/aP6B7eB8eI9k+K9Cay4QJDf3RxQzyZYjbbamX9oqraTHANFdxh/Svyu2RVuy+J/0LYrnmiXOfyUoYYOKY2nujQdBk1fDjmQIepeWucGZ/mX8TkS2Z5PYzNvYhgv7J7HI6MDYs/vOfrX/TUA/4k6t0iLFrJhb0QAAwqCJBFPCzO2DQR9+6i0MvMSOtFM5YJrcsiGdtKKWhkZp2tyHClmQSRKJXcF1qbNclmhmWkz1Lyq+naNYGlPeei+RXY184EX2g2WG7n+GfxxTMSUgxW/H4HCK6vqP/YdCO59/NGvVgTWumdPuAMitt06DnZ1PhY09hf3WPsiwWZRhuXJm6B9yISSrF9yAJPtn3sICdOs/Cc49sfscTx2tQSear1ud9f1NulfmA4ZlMwVaPMyVheuFS7WVfRBrkBnqc1SiP6x4/Dgz95J83oj5529R/MzaHQg8vTFXslaG08czzRSrvvilHHxVwy9K3agH92zAkoB31YvPsQPu5xvFBt5bn2I4lza9YefiivlK2bp9NiJzVqWxaXBIKvV9+soQkpq5GjsTSh2mFzsxR6dz7wiC4jSYr2D1Cb2W+FBoRx8DpvvCMLjyidtcHd8AtE1kyFFKYijY1jo2Gsoea+dUjqJ5xNycXSw6g84ouGAwIejEvxJJYPm3ukIN3kfUEHYazuharO+5kW8NEZ9vg1RvihEc/dxgWIdtIVMmOTD0pk9lPosVPACpP3j+XuvNYDOpxwO9m4Edz79DI34Opw0y7ypWcW31WGnp/eElgGpS9dECHQsg3r1qVggdtuBBCrxu3DrcNgFHdPYmbmgMAGMKuEmCQSjcVcrmRDYtWUbwwi/I1
+ 7AGLyPWn
+ 6qeC6uD3W/6UCe8CL4jJYfqdAWIUj6oJE/X/PTLvLd68lXb6a0FFaunFXLGLMW0Prg1sa/r6uTwO2/x0+IWQY46NyYDQWmfUOJGZLEKn2Crg0/2wIAmhFjRBjrO4k5K8lGZwByJFXeCQUf/3/6mzP7Z6dRtQIv2h5blmw2AxGKHkfAKJSTVQMS39dK4UHsM6Hc9hC8QQghwEBPODy7hXlY6u+GSsIdONmwHH6ZGYMXpJpO3uxdD6UrPjzWOd48htCwOcDB3rivfRLRORON2yIMGeQcqqOS3p1cJAISIoHxmoU0DrPPoSmq4Bemhx08ph/21d1FtLltoYgG8PKs3V8i8ys3uOrW8ecx6osne0A4i3nQrZ3UOsNI4DVhGaxwKXrh1VQkvLwHfN3753ga+Knexu2KBgCvHEihY7QQi/jgTxKBVws6FtjJR219rNxeCWWlZ1ja3PMezWlbPffyjBWR4wJ8CMOLf6jVI/kjpSYBpsPN4vcqk/+vVZcnzX0eSIUPDsZv9/YlX/Yp05y/3D6MvImFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,60 +108,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On 2026-11-24 13:19:52 [+0800], Jiebin Sun wrote:
+> __percpu_counter_sum() holds a raw spinlock while reading the global
+> count and per-CPU deltas, serializing concurrent sums of the same
+> counter. Since a sum changes neither the global count nor the per-CPU
+> deltas, use rwlock_t on !PREEMPT_RT to allow concurrent sums with a
+> read lock. Global updates take the write lock. The per-CPU fast path
+> remains lockless, so sums keep their existing snapshot semantics.
+>=20
+> stress-ng dentry reaches this path through ext4_statfs():
+>=20
+>   statfs -> ext4_statfs -> __percpu_counter_sum
+>          -> native_queued_spin_lock_slowpath
 
-try_to_inc_max_seq_nowalk() advances mm_state->seq without walking the
-mm_list, but unlike iterate_mm_list_nowalk() it leaves head and tail
-alone. If it races with an ongoing page table walk, the cursor is left in
-the middle of the fifo.
+Not sure if `df' is considered high performance.
 
-The next walker reads that as "this generation already started": it skips
-reset_bloom_filter() and resumes after the cursor. The mm it visits are
-the ones the aborted walk never reached, so they have no bits in the
-filter being read and walk_pmd_range() descends into none of their PMDs.
-Those mm miss a generation of accessed-bit harvesting, so their aging is
-less accurate and hot folios can be under-promoted. Eviction can still
-detect their references via rmap and lru_gen_look_around(), so this
-weakens aging rather than guaranteeing reclaim and refault.
+=E2=80=A6
+> Suggested-by: Tim Chen <tim.c.chen@linux.intel.com>
+> Reviewed-by: Tianyou Li <tianyou.li@intel.com>
+> Reviewed-by: Wangyang Guo <wangyang.guo@intel.com>
+> Signed-off-by: Jiebin Sun <jiebin.sun@intel.com>
 
-Reset head and tail with the seq increment, as iterate_mm_list_nowalk()
-does. It is safe: get_next_mm() holds an mmgrab() reference and a
-concurrent walker bails out at "walk->seq <= mm_state->seq" before
-touching head again.
+This is fine from PREEMPT_RT/ lockdep point of view. So
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Only reachable from memcg_reparent_objcgs() -> max_lru_gen_memcg(); not a
-memory safety issue, since lru_gen_del_mm() repoints head and tail under
-mm_list->lock.
+Whether is okay from actual RW-lock vs spinlock point of view is a
+different story.
 
-Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
----
-Changelog:
-v3:
-Reword the impact as weakened aging rather than guaranteed refault,
-noting the rmap/lru_gen_look_around() fallback (Barry Song).
-v2:
-Drop the helper and keep the fix open-coded (Baoquan He).
-
- mm/vmscan.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6a1af9b92349..3601e58f2a69 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4694,6 +4694,8 @@ static void try_to_inc_max_seq_nowalk(struct mem_cgroup *memcg,
- 		spin_lock(&mm_list->lock);
- 		VM_WARN_ON_ONCE(mm_state->seq + 1 < max_seq);
- 		if (max_seq > mm_state->seq) {
-+			mm_state->head = NULL;
-+			mm_state->tail = NULL;
- 			WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
- 			success = true;
- 		}
--- 
-2.53.0
-
+Sebastian
 
