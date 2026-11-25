@@ -1,111 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EF6606A32D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 14:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA32606A697
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=HLOmayJZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jvreFhGE
 Received: by kanga.kvack.org (Postfix)
-	id 538526B0A26; Wed, 25 Nov 2026 09:09:17 -0500 (EST)
+	id CDD5B6B0A27; Wed, 25 Nov 2026 09:10:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50F996B0A27; Wed, 25 Nov 2026 09:09:17 -0500 (EST)
+	id CB4196B0A29; Wed, 25 Nov 2026 09:10:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 425056B0A28; Wed, 25 Nov 2026 09:09:17 -0500 (EST)
+	id BF2436B0A2A; Wed, 25 Nov 2026 09:10:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 195BA6B0A26
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:09:17 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A78201C475D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:09:11 +0000 (UTC)
-X-FDA: 85473823302.24.79112C4
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 75496180018
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:09:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=HLOmayJZ;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf24.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A2F96B0A27
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:10:50 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1FF1F140ED5
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:10:50 +0000 (UTC)
+X-FDA: 85473827460.22.F225BB9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7B0AC16000E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:10:48 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvreFhGE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795615750;
-	b=YRaa8pSWgzNBY6BmkiK5S/vqzlMm1ZYviOAGm3BUWqCRLC3+bLHuOcQfxkLdaF6Qgw8E4q
-	EwALPcGLSFhPknVPIxLm9mJD5n9RaTbafVlleUYfau84VsX6Ko0zLAnvM+RyVQRdO0Zn0u
-	FKbgtHMWh72rPGa6/Io4drSaHsMJHpM=
+	t=1795615848;
+	b=1zBgwvxINknEe7y7tLVsn4RCB5Jwu2MLZgjgI8yR4qvoXAptleLYw1o86iV26pR7r05IZI
+	V1X/ZAnrrxoPMUsWrMoRTwpIUC+9g3mtx/Ev+LQ3sulJyOJE7+P9Op3YvFDeRp+s4wIcHa
+	RllvdK5JSTjDoXhyO60PVgutlJ66eTY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795615750;
+	s=arc-20220608; t=1795615848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OJfj0NWZLxmiap02Jgv9y6mBQfosM9khI8VQAwhpY5c=;
-	b=JQkkSAQqRwidh5FB9mFhtKXfKMnd9KTo7r335vwkHLkbvBCntPVZgxkq19LUo+Gz2K/tD0
-	RwKz5A0keSKbT99dGzBiRkSI/3zcCf3qm+GOiurY4uSdOaBNcOgl2BKnjwwFlf/i77RG4V
-	xCnRwIyneqEljrjj8f3rubqf/PWGoGk=
+	bh=MvG2udng3DFxjfopgd41WWndiQho+1dwKgg/AssAfVI=;
+	b=lWZWwyIXUhS5OrHBGL0Adguwmx3SfR1wWysmitk6J28Jx94W0D8QPPB59p/mpNEpMuuPfJ
+	4hjeHGJa6EiXEe1uKS14kkQxGjznlieOUkH4Cia7XAYuruWrdKlQb0usAD5vYN2AWeUMu/
+	BTiH+9vzcQnUslOKcKxA9QpvgA4+uYM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=HLOmayJZ;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf24.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=OJfj0NWZLxmiap02Jgv9y6mBQfosM9khI8VQAwhpY5c=; b=HLOmayJZkdjmUcSo04fNYiJZ+F
-	iuOcY/vbBOs7dUr1USwUAgETw2iJRkCXAb4zbYLJWrHC3WdrMh0hRKm6cbzkctZ33FtIMF3UbqamV
-	lfulBT3qwftheBZI9jUuNiHYSb/CAexRFMIcHIHIePn/PM2FGT2Xzfm8Ex9gbwZ3577im9HaOCuQp
-	EO6f8P1MAwM2LMF7+4K7DdbOh3BJG58TXUNqO2FWUdFV8PzNHKMuGvIPM9gAtb4Q+PEVJ3+a+MkRD
-	lY9sYRYO7EkLhaHmTL+YpkUgZ7yNNP/ohxd6aFksxkzhoeN2Z63iEYrIVQSfWtTmEswM2oOxhh4an
-	Bd/m2EIA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xWDgG-00000005O70-0o3R;
-	Wed, 25 Nov 2026 14:09:04 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id B818F302186; Wed, 25 Nov 2026 15:09:02 +0100 (CET)
-Date: Wed, 25 Nov 2026 15:09:02 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>, bpf@vger.kernel.org,
-	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
-	daniel@iogearbox.net,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-rt-devel@lists.linux.dev, Vlastimil Babka <vbabka@kernel.org>,
-	Hao Li <hao.li@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf-next v1 1/4] bpf: Add call for selecting kmalloc or
- kmalloc_nolock at call time
-Message-ID: <20261125140902.GE2668804@noisy.programming.kicks-ass.net>
-References: <20261124060357.11700-1-emil@etsalapatis.com>
- <20261124060357.11700-2-emil@etsalapatis.com>
- <DN38HGVL8JHQ.2ZVZQCKFXVA9T@gmail.com>
- <awWRZ9xCzWLnj_R6@thinkstation>
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvreFhGE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AAE68437A3;
+	Wed, 25 Nov 2026 14:10:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0251F000D8;
+	Wed, 25 Nov 2026 14:10:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795615847;
+	bh=MvG2udng3DFxjfopgd41WWndiQho+1dwKgg/AssAfVI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jvreFhGEoi3Y/lF1wD38ln+TGJjPKI1JP0HS83P5ZxOskLDIjKRLeIWgdbwgXcsGF
+	 6IizzYlr9SfX2BnT+55b15GqS69UG4Jog9LlEZW8Yv+C1UIUdFeqEwXbexsD4cpWI5
+	 xzbYO9KXDH97oUJlEQWhTUwMUcylgH6SQAXA1CI4aPX/zxgKQHmqwgm+lUk5puw9FL
+	 9N/LBVRBnkem9GNTesf70W1YPHLfKQbn+QgCeLVIQGrYtwm/ynwMevPBbkjr6Zw0X8
+	 DfvHA1I9gRLvdQ7IvqaXadd1UEfPo695geFLtoPnE5q/rG1q2SW0bOfh5OEqpWdW65
+	 NxlYpSm4/Gwzg==
+Date: Wed, 25 Nov 2026 14:10:45 +0000
+From: Harry Yoo <harry@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com, Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH] mm/slub: don't let kmemleak report rcu sheaves
+Message-ID: <awbq19zVSt5cqM2V@thinkstation>
+References: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
+ <0e626675-c6f9-40d7-a4ae-de069154ada2@kernel.org>
+ <avzduIJralOKBgxK@arm.com>
+ <av3NBYxYXyYk_tjS@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <awWRZ9xCzWLnj_R6@thinkstation>
-X-Rspamd-Queue-Id: 75496180018
-X-Stat-Signature: armi9z587eua7rzcsfdof84yj3x11oye
+In-Reply-To: <av3NBYxYXyYk_tjS@arm.com>
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Stat-Signature: xkynwr3fxtsckdm43j9p31rrcibdh5ug
+X-Rspamd-Queue-Id: 7B0AC16000E
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795615749-697514
-X-HE-Meta: U2FsdGVkX1/WKxK/10VSCBE72S8HAyR0d03/le9j2rRpHOlamV0LvmChdzSd2huBNyciX8N0br9bhqgq+zufU6SRrmQqxPJhuy4fy151+rufmNDySsqdPRzO8OwxhLzMMhCd5x4l83KS7NnxGhUecJAKY9JRgP5omkj9cazaomnqHtxoUPnKjYbyAVQcNk4WWYOd26fGlpn6XiOoWlH4+/0em6rddgLC4IP+1c7iwznchWbDXJGr1Ex/GrVkZNTXT/sTNsgvRKUpa9tGFHwp4VkHpk88hd3UXpROI8mTTz+654SDolW2DECFE7HauCeMXjXeDIy6WpAWV4aEtNo2XmSuGi9s19BGGRJA9Xr6IAXOLY97S4ymrCD0cDDbNoZhElsM9tDD+DrQ16xdWx93sDRxHl1aKAzF6N0srAi50ndFY/8o77y9CtefGaG4AZK2PvVAXgmzt8NjGm2WOTmPASUuw5xz4A+0xxQKkM0Em/Pf187vUA5scqRsurEUcf79mlycbrIzlEEnwEckxZmp8A8IIiAXrHM3Vsc6mCbhzcjLwXfVeW51bL0xakJxYP8oRCO0CzjkaMuZOLL9e/4rwC+EYpgBjABGpmxQVa/PlIxNOebZbN35LCNxOTUZT6jJi8Uj+CzoQ0GhXRhgu/aOrSgV4wsqS6z3KAx7/rEq6qbbJ9yhiMvNarF9faWypLgp5zwU7OIM5R5/upgNR8Go6H6waHBvInytC19Vg6wm3ipL+O2lqsqCa4iLqCN2XWoW9WnrGYy4//3iPYdvQsggPs6oyzswp1N9f0D5NHfKrfJasRV+NLZf1HdXLalBlKHwjmV2ByGFNGUkGSvNTruqY8+hk1PwUo2c65rl21F9CSj1+P8dSLImg3+5gAElSAKyyDyZEe0H501KvmcJqSwf9NeIMeA9xQmYkAxdmPSQkaZBt97n7Ty2ZvcAaxIs+UHXtpd/EEZ50NQWpdsVgHB
- VE+MOkAJ
- ZakGt8bWDpZ1u/fKoTiJRyfk9not4ZgeM4eEdJjzDnFD/e/51PB+2aYGWLO4lsVfqp8lbDxqj5WiOTDUpX+2xCRr+4xyDbEL3GQ4Wl5npFQhX5AB8cjfwD0TxgJLAfLecYVpdC+lUR+rcdEqeOUB6QV4PBP9af8+OomjWKHTjTisSt0TC2/HeP2CU8N0gV0Kwn+Li3dh+MgyKjgeaP4zXM+5jBWVPYbZDL45WChneYxRYBVNKQMPJbKHat2q6n2T7byHmSFBu5u0T/sL87RMUAg7spRC5Lh8lMOJpAzbQl7OGlGaKMJ5JQAdeLVfr/YlM2UstmOHwE09v/12frXCaIW+jSgoeChYywQH5wID/JFm4rQ/Me+4SYVfFYDWLHua+2JItGkTv7ucMk2KExgzOBuo8Z4+lRIpgqIBgakutNcGspeBUg6o3qPY7F1slqHVZ8KVvCg4v7OjtPMct44mMxztx1LUy2r1l37inWuARjL3PlVvb9egvkUiDiCozO1WqtGAagpScMz33ZvM+LDKgKhSDN5idVl5gyPvi
+X-HE-Tag: 1795615848-37640
+X-HE-Meta: U2FsdGVkX19zHMSbScRBMXeuuPyV9a1S/lmmCXxm9hz6vog+cVbf4dsPzaQVL8yx2lilHDrHYltbrn5fFtF3lQZL5O2LtVJnYU2IE5xCmvGn1fucrymYyDnOv5tDnWe2XZ7qlbKmAJHj+2hnxlZNFYgzyNP0khpXC+Eqa5utiBqG7SjLTQWDJ5yPn+3lofyYXINIpqETON+MXpHmk+9+7OR2q3Tf43wXd5gJ8w6EoZMNaZ9nCMv/XL2lysvRRNWAqRvIPaJ1ISYzn0AbW1Q/4cjkyAg0i4Eir9TOxGYxH7DLuiZMpq5sgNAzdBdxIYnHHBYmyEnBDuE6IoiV54o08VcYW2vYaz+ivmWdPZs14O0IviSYYSacn4j0Da0IWlWibhjKy2LdbVj2VsFIxhyZ34QLUBI6o3nVyYlHcqqJogV5xsCpGd6c8q4Ms5c/YGglpHNrbSSX+ZfeyIIx+B2tWvKBHTlCQJ7Rt/Gzm1Kxgn1apeoTmbTQ5fPTP73T6goNymLBVl/q8zxSCZIH8biARq7UppchwqIFnkgwPaVfgy8EZIawBsPs/8iLnyNkjyVFKLSTjnCDuEhbH91kiBFOs/ebGPAwXXZoUc3MvIgWFJXFp11NPslas0FX1znDRj3bMk8/3M40uj48JUCDdDEywlNGkyOMNqiebDx1DQcY1S40MBKBziGVMT9wDB9PNBau4NzGBmrQWxTVICFA3cfQlDUUU0AmnMpFRqrwiE7/WqdXfKD4oBj7lrYIDu7pMUjTBV9c56yFSw4C2RhDLQ1alXU/yGAm2jYtIAqObyzTEsbo2Ve3LLh7zWcxQH07SB9NrWnrurbRB+jpJ5iQDgwFzasKzE0RxB+5XokuyUqfT6+JvsPlhLi87Tj2E5L/15NGbcABNe0hJyyAuAbfSiueWktSEgu1GOsdLU3cxY7SijWjlJqMe9KsMbDwxOrrJJ7yhNtvWiGyM2ljvsw8aLV
+ v49jbX16
+ gTQ6kaZhKKqCRMId+QhZvXMwA5CXxCAJ2s8Zg8XP7WlZ1C9vScet9Q6sVSEJiBM0J7G7MWe9c8Y5wk6pb+zrG1qQkn2SslTf+8Lbv4OZ24E/VCZK7QSkHB2+gAS2/yCsLUQyYKcaaFEq8iZ5jkqJ6tN33o4d7J4ZbE4Jy2vgxD+XQ8LJ/OFYL4X7fvpWwFAf30XlizUcJ35rsCT/cijbEeFkHaoUEtfMPwgA84Iq7jr//+Ob6BlPM+LOeQU2S/Wuyw/xfUQjmA7JD+gX0764kRteiD6wb8EHGHHIyuizlDR4ZCQxP6nj/Ea040FXBZlKhA3n5jsdhvuxT1GJgGeWU0upk7qa6BJCi+Z/x7MOC4CJlhqCwAFa65ntsqSlZg3kwxTx36/NwgN+UhyJ10WwUMMhn6XQdqOYCt/dmxJlmzs1kL2+SO9G4h4FZYvbh6tZvnQt8ZXP4LpmLiTUPiAXf7BZAICabMiInlfvVhSFuW6UAK80fTjAwiR/osbJfULGlvJEYb9wcrudu28CEeVItYmEqRcY21wmyndLqjBiABAusqhYh5JGNdwLTUuMXzrpkAo/dG6jKJQxnTWWWLpdTyMK4zsf59DPNvZhxcizL5jn/C/A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,71 +100,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 01:59:31PM +0000, Harry Yoo wrote:
-> [+Cc Relevant folks]
-> 
-> And a bit of context on the underlying problem.
-> 
-> kmalloc_nolock() could fail when there is a contention on locks
-> shared across CPUs (e.g., n->list_lock in slab, zone->lock in buddy),
-> or there is a decent amount of memory pressure. It's more restrictive
-> than GFP_ATOMIC.
-> 
-> Unconditionally using kmalloc_nolock() in BPF local storage is
-> unnecessarily restrictive when the program can sleep or spin, and
-> Emil's patchset teaches the local storage whether the BPF program
-> accessing the local storage could sleep or spin on a lock.
-> 
-> Answering the question "Does this context allow sleeping, or spinning
-> on a lock" is extremely tricky in the Linux kernel as BPF programs
-> could run and call kfuncs almost at any point in the kernel code and
-> the "context" is usually encoded in the GFP flags or the process flags.
-> 
-> Tracking whether certain locks are taken by current context is not
-> ideal either as it adds unnecessary overhead for everybody.
-> 
-> On Tue, Nov 24, 2026 at 06:40:11AM +0000, Alexei Starovoitov wrote:
-> > On Mon, Nov 23, 2026 at 10:03 PM Emil Tsalapatis <emil@etsalapatis.com> wrote:
-> > > +	/* Only try the spinning allocation when preemption disables are tracked. */
-> > > +	if (IS_ENABLED(CONFIG_PREEMPT_COUNT) && can_spin_in_alloc() &&
-> > > +	    size <= KMALLOC_MAX_CACHE_SIZE && !(flags & ~nolock_flags))
-> > > +		ptr = kmalloc(size, flags | GFP_NOWAIT | __GFP_NOMEMALLOC);
+On Wed, Nov 18, 2026 at 04:06:29PM +0000, Catalin Marinas wrote:
+> On Tue, Nov 17, 2026 at 11:05:28PM +0000, Catalin Marinas wrote:
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 45e077c7526c..13b8e57d6dae 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -6278,6 +6278,14 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
 > > 
-> > It works, but I after a bit of brainstorming the following
-> > might be a better fix, since it will address the root cause:
-> > Pls run it by Vlastimil, Harry, Sebastian.
-> >
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index 2fef409..4368ab5 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -2536,6 +2536,24 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
-> >  	return NULL;
-> >  }
+> >  		local_unlock(&s->cpu_sheaves->lock);
+> > 
+> > +		/*
+> > +		 * A sheaf allocated with kmalloc_nolock() is not tracked by
+> > +		 * kmemleak, so neither its objects nor the rcu callback queued
+> > +		 * after it would be scanned. Fall back to defer_kfree_rcu().
+> > +		 */
+> > +		if (IS_ENABLED(CONFIG_DEBUG_KMEMLEAK) && !allow_spin)
+> > +			goto fail;
+> > +
+> >  		/* Don't wake up kswapd, it will cause deadlock under pi_lock */
+> >  		empty = alloc_empty_sheaf(s, __GFP_NOWARN, alloc_flags);
 > >  
-> > +static DEFINE_WAIT_OVERRIDE_MAP(zone_nolock_map, LD_WAIT_CONFIG);
-> > +
-> > +/*
-> > + * zone->lock is always held with IRQs disabled. A caller that runs with IRQs
-> > + * enabled is not nested inside of it, so it can wait for the owner.
-> > + */
-> > +static bool zone_lock_nolock(struct zone *zone, unsigned long *flags)
-> > +{
-> > +	if (IS_ENABLED(CONFIG_PREEMPT_RT) || irqs_disabled() || in_nmi())
-> > +		return spin_trylock_irqsave(&zone->lock, *flags);
-> > +
-> > +	/* The caller may hold a raw_spinlock_t. */
-> > +	lock_map_acquire_try(&zone_nolock_map);
-> > +	spin_lock_irqsave(&zone->lock, *flags);
-> > +	lock_map_release(&zone_nolock_map);
-> > +	return true;
-> > +}
 > 
-> I'm not sure this is a better solution unless this could be generalized
-> or abstracted further.
+> For the objects queued in a sheaf, rather than the !allow_spin fallback
+> above, it's simpler to move the kmemleak_ignore() call in
+> kvfree_call_rcu() before kfree_rcu_sheaf(), so they are treated the same
+> as on the non-sheaf path.
 
-This is absolute atrocious shite. You cannot attempt a spin_trylock from
-NMI context. That thing might be a mutex.
+No strong opinion on this but kmemleak_not_leak() would let kmemleak
+track objects queued in a sheaf?
 
-This should not work; if it does, that is an accident we need to fix.
+Wondering it'd make sense to mark bnodes with kmemleak_not_leak() as
+well instead of calling kmemleak_ignore() on all objects.
+
+> To Vlastimil's earlier point, kmemleak could follow these rcu chains
+> instead of relying on kmemleak_not_leak(). However, with chain breaks at
+> any _nolock or SLAB_NOLEAKTRACE object (including kmemleak's own
+> metadata) and walking the rcu callback lists directly means digging
+> into rcu internals. The annotation is easier to maintain.
+
+Fair enough.
+
+> (got lost in all the slub code, it was much simpler 17 years ago when we
+> merged kmemleak ;))
+
+Good old days :')
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
