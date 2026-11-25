@@ -1,110 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962C1606A33E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23DE606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Up6ewayx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oeF+83ri
 Received: by kanga.kvack.org (Postfix)
-	id B40506B0AEF; Wed, 25 Nov 2026 17:27:32 -0500 (EST)
+	id D97C26B0AF1; Wed, 25 Nov 2026 17:33:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF0E86B0AF1; Wed, 25 Nov 2026 17:27:32 -0500 (EST)
+	id D6F9C6B0AF3; Wed, 25 Nov 2026 17:33:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E0786B0AF2; Wed, 25 Nov 2026 17:27:32 -0500 (EST)
+	id C5FA86B0AF4; Wed, 25 Nov 2026 17:33:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 723B76B0AEF
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:27:32 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09DC54015E
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:27:32 +0000 (UTC)
-X-FDA: 85475079144.01.BC144CB
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 61379180006
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:27:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Up6ewayx;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 30GAHawUKCA8t0zx2v33v0t.r310x29C-11zAprz.36v@flex--elkin.bounces.google.com designates 74.125.82.199 as permitted sender) smtp.mailfrom=30GAHawUKCA8t0zx2v33v0t.r310x29C-11zAprz.36v@flex--elkin.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 97CF96B0AF1
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:33:30 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2520280188
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:33:30 +0000 (UTC)
+X-FDA: 85475094180.07.47F0EF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3A2864000B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:33:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeF+83ri;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795645650;
-	b=iVUmOvuf5RG7eBvHLOVT/vZykeONsSGlOhRrL988e7U6cAH2ZjZ7ZiHwdCkEezjBryxfGb
-	hrP2x0rEZOVTBbzQNcg99Coh/gZW1FXM7+/UXCvfbjBi4kTjGJk1dLA3H4wVqn0HpzIoyl
-	aDRsQRB5WCMBUt23F+NZB92dRy9X/iI=
+	t=1795646008;
+	b=v2C+SjsG1FLJ9YKbEH5VYp15AJJdM4+esbUng0nGvD1l8TxVtloFh8ClkfrKn5lb4YSKqA
+	jnzwRI3O+qDgRILFpNbbKTjkoBLFrlb/IAPhrvn/7kCdImB5P4UpdbEKwed5L3MMKKxdLd
+	AtPormuNfUnN47voypz6TCLQbxw3HP8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795645650;
+	s=arc-20220608; t=1795646008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=RiNM9OF5vBLtGgFl62pfxBUQi+W1VLFdVJFedeCHig4=;
-	b=Z1VANd64zdJ2akUpZS46OaD6KcmjtOsZeQXvFPEEdvtverPOvXepK9NCaHYdlz5rSbACbw
-	XXlewq7J1QNtFcUUmO79m3oUEB0YeVj/Wg7VomFKs15QI18hdG/eB3UQCZ/xDVBjFVz7hn
-	ObBUmrOuKLMy80hIOoIlEc8RtANAspg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tzn+by+k8G1JwXk+S/E0tJAgmy0jLDfOi0f5NcqA/MY=;
+	b=pn6tZxdHx06+Zy1ZNbKyFFvbo9CF2Yg+8kVsj4V8Dvs0oh0AmQPNkHZclwWXsxY0IRMiYX
+	LEZsXVS0xic6GWci36aoYWfIyBjX4fDQSO5n9fyaf80mYQtLmLyLqibjCl7+kNIdIhOUzx
+	5girTncP3715wkluQcFa2kET5heWK4Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Up6ewayx;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 30GAHawUKCA8t0zx2v33v0t.r310x29C-11zAprz.36v@flex--elkin.bounces.google.com designates 74.125.82.199 as permitted sender) smtp.mailfrom=30GAHawUKCA8t0zx2v33v0t.r310x29C-11zAprz.36v@flex--elkin.bounces.google.com
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-3869865a304so490592eec.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:27:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795645649; x=1796250449; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RiNM9OF5vBLtGgFl62pfxBUQi+W1VLFdVJFedeCHig4=;
-        b=Up6ewayxFMvd3wCDxj9B/zN2OTJaYp3OFvqmhZsHsUt5a3TzcvCewbota10bzdMMN/
-         MQXqgFA1bQiKuJPx7Rntpo9SQxEY+njn/rVHMH3SOIf1SCHOEvSRC3jqIs+/ZmPVM2mj
-         8GU5qScxVsCdfqDzksElkG4N3jGzNo+beCYK+Wa6Hyn6oeaybLmYyCZDWLIqtafOnVMX
-         Js4DJ9MywXMhuMkoP3MIy7aXXraClKKJ4DWlmhh/DbHjx6kTSplNvSObRKRtECW4y/UH
-         T7F3tvYCGiPMGm2tGzY0N4Xo7T4/VC81bxFxpQSS0KoziE0R2EdJt53v1zFVXynAmC3q
-         uDpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795645649; x=1796250449;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RiNM9OF5vBLtGgFl62pfxBUQi+W1VLFdVJFedeCHig4=;
-        b=XNoAn1+kOJIXSMUfq0WgxDW/7Y41rJqT+YAyNC8UxtWFlfgbLV1yytqMnEg/6d1dSy
-         yd370/bTGD7uloUyWbLPMe3pnbeP7xolLOAoxopKJUuhx1p2fj34wH3X0imBUpOgQwfd
-         cXjfFA6MxrPZECPJzWk4ak01gaigjl+FKgSAFySEhhWZFQCb1ofsEdaeL+zQ5SkV7dGq
-         pJRrzY88m4+PRpBfHZbO4uTllCY1xz1Piph1wMmW9Qq+Rx8LQS+eUWXHWIFGb62jf/uC
-         y9cWyySZE1LuEsDCu+pL89nkoM4vmCUNbb3sM92JYjHEeM0G1daz/HkzayQuejqq3IPg
-         n4QQ==
-X-Forwarded-Encrypted: i=1; AL+hErEAo6bQfnxzYKPsc6nfRsaV34xIhojKDe9VteIPMgotPyO6drNDETLyXTPsD6DNWA6CL4DjtQ5D4A==@kvack.org
-X-Gm-Message-State: APuU4Z+JmRPB9JBndufDPej/4UP1+ZfmtkLNG7dDZMZjZW64bI0o3WMX
-	OKCv7/ljuCt8aoZ0QJEQd36t3m0LuMCHgVDfKMWsKVLWXWWvBHXVj+ZaVicHWfCXOeg7fzV4EQB
-	X5Q==
-X-Received: from dyp12.prod.google.com ([2002:a05:693c:65cc:b0:381:fb4c:34e1])
- (user=elkin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:4710:b0:378:314:4042
- with SMTP id 5a478bee46e88-385702587c5mr17876713eec.14.1795645648594; Wed, 25
- Nov 2026 14:27:28 -0800 (PST)
-Date: Wed, 25 Nov 2026 22:27:13 +0000
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeF+83ri;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A737E415D7;
+	Wed, 25 Nov 2026 22:33:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655D71F000C0;
+	Wed, 25 Nov 2026 22:33:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795646006;
+	bh=tzn+by+k8G1JwXk+S/E0tJAgmy0jLDfOi0f5NcqA/MY=;
+	h=From:Subject:Date:To:Cc;
+	b=oeF+83ripG+YMJQ6SibQuirzvfqlLreGg2dU0N4iBw6J9SwMfGbEdiYCtiUZLOpMd
+	 JYqiF79Vytug9G0B2DkzFLIWoipJtdH+XMvOxqN0DGGpyctPV9W9zPh95DOEF2Z+QY
+	 Xceo8UU5pO3BjrUwnu0S1uUp8LqLqgTugPbAVmqe/LCUO1oXZ7psZ5qitBlKCivcYb
+	 cJwxUd3Rj2XwgOzgIRdtbB/JU+sW9VMX6ByXF7MliTP9djs6rMrE08LzryKnJqRfcE
+	 PzisQMZIlNmWvvo++RWg05A5YHf7BJGoQffk2A7bJcTCTSBVSYYhY9OhGmH+h5669x
+	 28AaXAPpZrf/Q==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 00/21] mm/hugetlb: various fixes (2)
+Date: Wed, 25 Nov 2026 23:32:58 +0100
+Message-Id: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
-Message-ID: <20261125222713.1450385-1-elkin@google.com>
-Subject: [PATCH] mm/migrate_device: use locked folio in migrate_device_{range,pfns}()
-From: Elkin Cruz <elkin@google.com>
-To: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, irogers@google.com, 
-	Elkin Cruz <elkin@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 61379180006
-X-Stat-Signature: iii99pj1zko3nacb77bifofenfmpdtgd
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXMUQqDMBBF0a0M79uAGRIp2UopoumoU4otGS0Fc
+ e9i+3k5cDeYFBVDog1FPmr6mpHIV4Q8dfMoTu9IBK658Z5rN62jLM++HfQr1rLjJsSY4yUMQVA
+ R3kV+hETX279t7R+Sl3ODfT8AsQh4LHMAAAA=
+X-Change-ID: 20261120-hugetlb_fixes_2-26455c584f4e
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Jinmeng Zhou <jinmengzhou22@gmail.com>, Hongfu Li <lihongfu@kylinos.cn>, 
+ Andrea Arcangeli <aarcange@redhat.com>, 
+ Mike Kravetz <mike.kravetz@oracle.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Dave Airlie <airlied@redhat.com>, 
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
+ Mel Gorman <mel@csn.ul.ie>, Dave McCracken <dave.mccracken@oracle.com>, 
+ Andy Whitcroft <apw@shadowen.org>, Adam Litke <agl@us.ibm.com>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
+ Lance Yang <lance.yang@linux.dev>, James Houghton <jthoughton@google.com>, 
+ Yang Shi <shy828301@gmail.com>, Suren Baghdasaryan <surenb@google.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Matthew Brost <matthew.brost@intel.com>, Byungchul Park <byungchul@sk.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Wanpeng Li <liwanp@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>, 
+ Kenneth W Chen <kenneth.w.chen@intel.com>, Hugh Dickins <hugh@veritas.com>, 
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+ Joern Engel <joern@logfs.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Michal Hocko <mhocko@suse.cz>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>, 
+ KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>, 
+ "Kirill A. Shutemov" <kirill@shutemov.name>, 
+ Sasha Levin <sasha.levin@oracle.com>, 
+ Guillaume Morin <guillaume@morinfr.org>, Wanpeng Li <liwp.linux@gmail.com>
+Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3106; i=david@kernel.org;
+ h=from:subject:message-id; bh=nzCzOz26eddU4SO7rlRqgKmrjP0kTfGyA8Ecr2EgmCo=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk5TjVFYV1bZe5k5Juf3u5oJJF15cifxTFhJhcLJqq
+ bD0jE2KHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExk40aG/zULo7sKr5Xeb15i
+ yrPhVfhsTYlSt3trHn7f/fipxO+MF84Mf7iiPeLe3jxfdNmWL429a9eJRb0vt/byrv3/cI5p6+N
+ fbnwA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User:
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Stat-Signature: yw9fz6dwmychm66pxg875ib7duuzy48h
+X-Rspamd-Queue-Id: 3A2864000B
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795645650-726263
-X-HE-Meta: U2FsdGVkX1/cX0qKpn7U1Fb/9tfmXJO8pA1kFV6yFmEV80LA/8RuzxHEdj7C3c43hLmj3ypWZq6cI3tdzXtqYym8DseN39dZjI2ImixCv2O9oCmFohaX613UoyYbIVKBVY4GeHlAkzQ+OTNS7CsGiBb/TEZJQ3H6iBwaQTgLV3DvZujvWrVhC50d0Ep03Uw89398JqvEluwhDoQ0qAoCet9nLbqOO/xsD9PCADYifhqJ8XCdA2tgIGM5DW73Q4Ujrgw8oWSsujDEBecAKhQOtZ9RKm9RWKGoiFDs0WqzbMLEaG6Hk86y4hBz8JQb8w8DLA/zcRMgRRZmKjcIqeMcjRlKYIGX828a+Fk4r3IGPAbrR8UOVVSxBR1OrQRw8hDSmu1NUnm+hr32mIQlL4B3ecNAEDN7XF7eIw7F+CkH2dj4gUImBI9mf8C0fG/3H+9XjrqMQiyo5Ia8F3cov4fZN9u5iPKfHQJI9RY4mqfg9y6nwtazWcjhpxHMcr5gmokdo9b6ytfa2+JNWnYHWtEt3sKMVFZ0/Zyb0T16Wtc/BsAOhf/VF6x5XAjYIjlkdnaIpiJ9RU48/GATrgp9SudOH9UAtqto/2PSC2IbNNK7mCF6gpAtdrBuA8Oz/6h0r5Ilhu7VznoWgNforxG4r/GPnjZf4Fh3IUY7eAo0W2/coyGMEJT3wCqIGLhSym6kvbpaGGxTiwDRdILCLG7satFYlEm0JDLjuwvzsf73kKGBJPrvhelJkrVoPDpejSk/ovwuJp6ka/DUz2WyZgdT01imF4rKpWj8mNZAcG4oLemt3PvUbHSP9Qkq9nhkkGgSS1bVfogwbn124YNyohiDrS1jf/jPq2WuyBgHCDPzu7U5cruNPFDXnctachyK6wx19KC2yYmlMsZXltF7uX7y+MLfwepE3dbjLKTbmsaV5b2QNsBGoI0mcqPynOtEQmQ2NGFNNTDB77gYgGKyBGuJ7fq
- d6rTCarN
- NKqlQErpD8P4tmd74uaoUyj5UA5gT9ENA/J0FX6yiOZZLb9aViBPHVamd2VZkUD12hO8kDWdEkRwIiR8lzrL56O8J1gPbM/rTv08QFICokPd33ktflu/JvbKSi2NgeTf9DVWUgvfnpWW3+/MZRxRfzaNBm5zDFhJ+Th3eTHelbb4jKXVqxfZ2OcBDzNUszM5NWYECFBLQbCIfWnO35Kb5lIOLPcyTOKESvrOGDKK06KMFqcgtpVHHvdE5dmeYu3DRpXyW9gqLMZhU3yQiibnldzod/7kXoUwOJ029mVHG08wFuAyXgjZxKb7SzdT1hQKFs5Wgl6ETv9Ffg/zz7/iAXkUNXLLuNwoKkGNL2L+RhcJZwMx9rWn7kwqUj50PVoT6UqCxF5Dt63E+0E9aOx8Wnd9xNUWfwtpHPuATPo3j3rFVfWNsc81XMuzA9wNVc2SfmhKPRFM6qa9JcpRfMr37pLXK4Vm4zYQ6lw4tsFh6ECU8NGMRV172iL5/o2uZx2MQ/QAI8GvlCfPhmzlXEgH217vfAOwt2ZWDAyOfZ5SaMMoiAO223dlHUbH7B4Fh5bJljxfAWbPFaZu1icl9bnCAuTj8Ky/050fb81QwXcBczglhgeCYB1PTLvLgTEcN6iAwa+tpcoFtGq0eWO6MuEvvczM/SLl9Ajtily6MvU0jGrMtHUxWf+m5jsLSGbiIr/VcRgpVMckahKedaaeC6l5sTTz1Q3RDkqLGbTXq5gkwtS6PiPYYKi/T9gY4NXrkpFtC6dfrMJ+6ybtWGPdbSWjeT79Jf/HMrGoVswCK7Bq+RQkLoOYi9dXd0baijEmRwtbH4as7Z6O2Wup+ZztldKNcYoX7TBG6iP9PlCBx/i5MMjq68OKHocr1kPql1OloA4pRWBX4OKaJHUDrJRudOqzTQ5l3EA==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795646008-990737
+X-HE-Meta: U2FsdGVkX1+UnDizOl0SLqCEJ5df8JMiWSyyZIhzOGXlQhtoIDRm6rXoC2VZ5ETYuUEFLAykNh3hnxj1vm0jTq5jbJnDL4tYImSCdvTbr4whlLa9DuYTjEnZLNx9G5ZbWpaj6yVd/BT7orFcx96qR3LxBvQ13Z1o0p/DXyLEYSkkAW2o4SuPHqs8+3xppOX3AwRqcJWP4j2DW14bla2eWCnwqTYSSReqqKuVMzZgpG/B4tYhN3TJWdDrT7EKnijYujEMdJfM4jNPbxQNO66gDeGNHTXKF6K0VjuEdACfxnpr4W9YOXofjaqI0/cAYI3zDvKxtpaiqpYvAXLtCyq2QPnsl/qQPEgd4uroQjqIEdY11yzXWOhHrAyIsRXr6/wNoRh30ICBz9ucI779T7ggrZVRvTkGgsgbTwwOAQc0AZWtFgUFzzNylKiglMLsTZX6moR7oHT53MegUcAtIBHWAurxN3AQLRmaYR32rcmzE0/RgnY4iMJru1csDvkb5FTaTOpciWRc4nH9u8fboUCbxphdfgukm3jeBKwGIyiBw82x2aAWb9JDtgC7QL5CzbO0QRlqlufy+Vk36i2LZ6dGkTwGcu+g2nx0GNQcbTOlk/5COc4j6vrztvgXo40lFIf0I7dGsZqNLAKdNA3ulZ6/xj3mzjEPe41Lz89E7dDfyz1TWB5jldTaDbz2qIn8tUVMF57y6g7RK+g9/P9Q5GID1DNSGoKi9Y3XV108V1tkPp22KAk/FfP8edHQOfokaIWUSETmqhUj3Cn83wKK8/4Kgwd4shDXEeYOrzilNJ7gAVSxftDHSLpbwlz7YXHkP+ru85XU9lR1Pb+7IVYGcJK0byH1uMesa7rfYcFlU3VCYnKwa0qz2KWFionJEDZ53XaRsvXDxiT3soruA0TFWW9v8OjjflcvW8nIEIwc0E4JT4ullURdawuyspN7LKqsFVWsYCRyjxjmm7yHuQNacw9
+ aVAnmCuP
+ /M6QiSKcVEaPEI2ImY2H0PzdfR8Q1hL8dyr3dkygF7EejEtmti2pxxouLkaQjdrKK3nvmCNNPw6PJ0CTAT2Udqv9jdgplOzvHxuQ4jDowMVkJBxuRV0qIeCzkM7aqYBKwHKuPXCEbK38TeiOoteKeaUBw+QBILAkuczvK3WDMxG+w14/T+H/7jT8SkKGoH9nyupRVHIdFQiD7WSJYOILDwQtK5sB4CkityTcCImpRVT6caUAn0bIn/ctYbPOAW5LJhFmp3EJg4mgEoWSBT13DZPxAauCaR36hn+nPrW+VfpfV50GzRUIuLHZssCQq8bVMXMLmg5tZGBhr8cvq0ezj6zcV4qN/MLNHuGawMqowIz2qjXd4KS0FAmXd/w1xtIUZk+dTcGMNeicutoWxJt9e33vYf1rre4IaOdwSs06DoODpbD61Vqlk0VpayS+L9dcbUxAQWQurtKvXAxrtyu7/SGLG+nX2SJESclUrTjh5uX50kZGp2uWvQJ9J/H+WMbOfzfP7C6LLj4yB9lAkbEVjwEPrBei3ccU30b3lewyPNk1dISc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,119 +140,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-migrate_device_range() and migrate_device_pfns() read a speculative
-folio pointer via page_folio() prior to taking a reference or lock in
-migrate_device_pfn_lock(). If the page splits or changes compound state
-before lock acquisition, folio_nr_pages(folio) inspects stale state and
-the nr > npages - i error path calls unpin_anon_rmap(), folio_unlock(),
-and folio_put() on the unowned speculative pointer while leaking the
-reference and lock on the folio actually locked by
-migrate_device_pfn_lock().
+Hi,
 
-Return the referenced, locked folio directly from
-migrate_device_pfn_lock() and skip unlocked entries cleanly.
+some more hugetlb fixes, this time not as horrible and confusing stuff as
+last time:
 
-Fixes: dc41e961a269 ("mm/migrate_device: avoid out-of-bounds writes for compound folios")
-Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-Cc: stable@vger.kernel.org
-Signed-off-by: Elkin Cruz <elkin@google.com>
+ - Patch #1: a hotfix for v7.4
+ - Patch #2 - #18: a bunch of non-urgent fixes
+ - Patch #19 - #20: two related improvements
+ - Patch #21: an RFC for a hugetlb cgroup fix
+
+I think patch #21 is the right thing to do, but I am not really a cgroup
+expert.
+
+Patch #19 deserves a closer look from our VMA locking experts :)
+
+Patch #1 should go into v7.4, the rest can wait for the next merge
+window.
+
+Tested with hugetlb selftests and some targeted tests that reproduce
+some of these issues.
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
+Chris Mason (8):
+      mm/hugetlb: fix truncated copy result in UFFDIO_COPY
+      hugetlbfs: fix deadlock between hole punching and memory failure
+      hugetlbfs: recheck the vma range after the lock wait
+      mm/hugetlb: don't zap non-present entries when unmapping a folio
+      mm/hugetlb: unshare PMDs of a split VMA if allocating its lock fails
+      mm/hugetlb_cgroup: track in-use folios per cgroup
+      hugetlbfs: seal SHM_HUGETLB files against growth
+      mm/hugetlb: resolve protnone faults without a uffd bit
 
-I am trying out new Clang static analysis checks for kernel bug
-classes, and they flagged this code as possibly buggy. The findings
-were triaged/fixed and commit descriptions were drafted with help of AI,
-then checked against linux-next (not runtime-tested on hardware).
+David Hildenbrand (Arm) (13):
+      mm/hugetlb: charge the copy made at fork to the parent
+      mm/hugetlb: always mark new page cache folios migratable
+      mm/memfd: mark new hugetlb folios migratable
+      mm/hugetlb: free surplus folios of other nodes on free
+      hugetlbfs: don't zero poisoned pages in a hole punch
+      mm/hugetlb: only check PMD table sharing for PMD-sized folios
+      mm/migrate: check hugetlb PMD sharing in move_pages()
+      mm/hugetlb: don't share page tables of a VMA during mprotect()
+      mm/hugetlb: count migration entries at fork and unmap
+      mm/hugetlb: stop accounting HugetlbPages once PMD tables were shared
+      fs/proc/task_mmu: don't clear VM_SOFTDIRTY on hugetlb VMAs
+      mm/hugetlb: use the VMA lock to stabilize flags for PMD sharing
+      RFC: mm/hugetlb_cgroup: charge faults to mm->owner
 
-Thanks,
-Elkin
+ Documentation/filesystems/proc.rst |   3 +-
+ fs/hugetlbfs/inode.c               |  22 +++--
+ fs/proc/task_mmu.c                 |   9 +-
+ include/linux/hugetlb.h            |  22 ++++-
+ include/linux/hugetlb_cgroup.h     |  30 +++++--
+ include/linux/leafops.h            |  11 +++
+ include/linux/mmap_lock.h          |   1 +
+ mm/hugetlb.c                       | 174 ++++++++++++++++++++++++++-----------
+ mm/hugetlb_cgroup.c                |  64 ++++++++------
+ mm/memfd.c                         |   1 +
+ mm/mempolicy.c                     |   2 +-
+ mm/migrate.c                       |  23 +++--
+ mm/mmap_lock.c                     |  78 +++++++++++------
+ mm/rmap.c                          |   4 +-
+ mm/vma.c                           |   2 +-
+ tools/testing/vma/include/stubs.h  |   3 +-
+ 16 files changed, 314 insertions(+), 135 deletions(-)
+---
+base-commit: c8117bff684306f5c1f959d055cc2b24dd67b1eb
+change-id: 20261120-hugetlb_fixes_2-26455c584f4e
 
- mm/migrate_device.c | 41 ++++++++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 19 deletions(-)
-
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index a953e7acbea6..a599d5baa340 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -1416,11 +1416,13 @@ void migrate_vma_finalize(struct migrate_vma *migrate)
- }
- EXPORT_SYMBOL(migrate_vma_finalize);
- 
--static unsigned long migrate_device_pfn_lock(unsigned long pfn)
-+static unsigned long migrate_device_pfn_lock(unsigned long pfn,
-+					     struct folio **foliop)
- {
- 	unsigned long src_pfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
- 	struct folio *folio;
- 
-+	*foliop = NULL;
- 	folio = folio_get_nontail_page(pfn_to_page(pfn));
- 	if (!folio)
- 		return 0;
-@@ -1436,6 +1438,7 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
- 		return 0;
- 	}
- 
-+	*foliop = folio;
- 	return src_pfn;
- }
- 
-@@ -1464,18 +1467,18 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
- 	unsigned long i, j, pfn;
- 
- 	for (pfn = start, i = 0; i < npages; pfn++, i++) {
--		struct page *page = pfn_to_page(pfn);
--		struct folio *folio = page_folio(page);
--		unsigned int nr = 1;
-+		struct folio *folio;
-+		unsigned int nr;
-+
-+		src_pfns[i] = migrate_device_pfn_lock(pfn, &folio);
-+		if (!folio)
-+			continue;
- 
--		src_pfns[i] = migrate_device_pfn_lock(pfn);
- 		nr = folio_nr_pages(folio);
- 		if (nr > npages - i) {
--			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
--				unpin_anon_rmap(folio, src_pfns[i]);
--				folio_unlock(folio);
--				folio_put(folio);
--			}
-+			unpin_anon_rmap(folio, src_pfns[i]);
-+			folio_unlock(folio);
-+			folio_put(folio);
- 			memset(&src_pfns[i], 0,
- 			       (npages - i) * sizeof(*src_pfns));
- 			break;
-@@ -1508,18 +1511,18 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
- 	unsigned long i, j;
- 
- 	for (i = 0; i < npages; i++) {
--		struct page *page = pfn_to_page(src_pfns[i]);
--		struct folio *folio = page_folio(page);
--		unsigned int nr = 1;
-+		struct folio *folio;
-+		unsigned int nr;
-+
-+		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i], &folio);
-+		if (!folio)
-+			continue;
- 
--		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
- 		nr = folio_nr_pages(folio);
- 		if (nr > npages - i) {
--			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
--				unpin_anon_rmap(folio, src_pfns[i]);
--				folio_unlock(folio);
--				folio_put(folio);
--			}
-+			unpin_anon_rmap(folio, src_pfns[i]);
-+			folio_unlock(folio);
-+			folio_put(folio);
- 			memset(&src_pfns[i], 0,
- 			       (npages - i) * sizeof(*src_pfns));
- 			break;
--- 
-2.56.1.839.g22a8290db9-goog
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
 
 
