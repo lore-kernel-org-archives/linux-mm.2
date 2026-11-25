@@ -1,113 +1,156 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4E0606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC6C606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xdkIyMXz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B9tou37Y
 Received: by kanga.kvack.org (Postfix)
-	id 42A3F6B096D; Wed, 25 Nov 2026 04:48:46 -0500 (EST)
+	id 70FA56B096B; Wed, 25 Nov 2026 04:50:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D4B16B05C7; Wed, 25 Nov 2026 04:48:46 -0500 (EST)
+	id 6E7336B0971; Wed, 25 Nov 2026 04:50:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 275EC6B0970; Wed, 25 Nov 2026 04:48:46 -0500 (EST)
+	id 5FC096B0972; Wed, 25 Nov 2026 04:50:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F23F36B096D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:48:45 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D87EB80E26
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:48:43 +0000 (UTC)
-X-FDA: 85473166926.10.AF3B5A3
-Received: from mta0.migadu.com (out-87.mta0.migadu.com [91.218.175.87])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D160E1C0004
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:48:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xdkIyMXz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.87 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 35AAB6B096B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:50:58 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BFC77120DA2
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:50:57 +0000 (UTC)
+X-FDA: 85473172554.11.021D9B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0451B80008
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:50:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9tou37Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795600122;
-	b=UfFETcB8OJfszE/Qz9Sm5ecd1NzyqxBoNRNX+cfFhUOPhIfwJvna5ZuhJpMkormHvouTSX
-	gXEHyAqMJ7lWh2DO1HEvso0CgfLKetWUvO7wAv7O1L8F2zy2DX5lJEOK7cxlREauqTOIwj
-	ujr7GuQVZlhjswPsFlWNcdCmJvMZgwY=
+	t=1795600256;
+	b=1EzewUS+dX7bP+7wFwrF+asHqJt+LXMV414KfuLtCLuEkRTxpxTwyRam4mYgvTlm0zrThy
+	y7QbXNgdialnMPPFN8Bn6ncE1c/8cQN5mXvVlf3V/6B+hetgCwH3v20A/g8TCaZa7jd1Yu
+	0PNvHoviKVrl8LdQHQSjX1WZsmCXyzE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795600122;
+	s=arc-20220608; t=1795600256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2VfJ6bjv4e27WAuru/P4AIutJffL5p589T07LBcmHCU=;
-	b=TxfDb7Z3w03fnxfDDceNlTG00z5TtzPEkCXbw5/cx8HocyOkpOn/yIidP7jDeRoaK9Jtiq
-	aZ2FPLB6T0dGhzqWRV/4wrS4Cv7UtAi4OxtH4055bGwbaJkR/GbxiyOkCXyvnBPdhoUyRs
-	rAURyFU/VPcsJtf/+Q/3U0tj5AHmsjE=
+	bh=tGnj930oYxvF/0cd6nEVQpcZo3ih9Np+B2tQs915UOA=;
+	b=RSiRxnnjGTSAaNaa9W6kjc8KMcLUwRuOdC+hFjQV6WxRkaLpe5fXx59zCGBhV8sdvdcbF6
+	UkleA75grIdTktKAgKtyaDuE0Y4wV+cOL2MGIfyknLsQTiGO+lvAY5kgpL4yaYtoWifMSz
+	mEppt+2KimUD6VAbQ9mVJ9/QjgAU8GE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xdkIyMXz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.87 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2VfJ6bjv4e27WAuru/P4AIutJffL5p589T07LBcmHCU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795600120; v=1; x=1796204920;
- b=xdkIyMXzAD+2GKgttya0QgKXIDHXTAqb/1cV4Mu1pch3DIrX5nVIHqOF8EGiGFYzg5Rr62DQ
- 5rSH9gAO1pRAekElGxgtSAEov2yJlHGLo3HwVTfTqlblenxGDi+6GqJuBWF/pcmCUWYK2beK0c3
- 92sZc9UsgJ3mVtavJ69vV2pc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f807f146e8e08fa1;
-	Wed, 25 Nov 2026 09:48:40 +0000
-X-Mizu-Trace-ID: f807f146e8e08fa1
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9tou37Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 18D6D62611;
+	Wed, 25 Nov 2026 09:50:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894941F000CF;
+	Wed, 25 Nov 2026 09:50:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795600254;
+	bh=tGnj930oYxvF/0cd6nEVQpcZo3ih9Np+B2tQs915UOA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=B9tou37YVeV/G6AsGUDZ7SNc5OQVrGY/e9fE6e/1iMXgYZYdZ/PG/h0Aade1ilmLy
+	 qwQkMhJ4Oq6rdmJz2jIkmIQxqr6WN16CSV4Avy5fsNI4fbj/B0B0L9XIArwzx30wtb
+	 6EQOMXOy3aw0dq3Hg1UrmNPaLRtwrVonlnPgHUW6B7Mdyk/9Hrmps1xVD9L33zzMzY
+	 XA6n9Sn0k8dqCLzbGRZEEcXtPzcWZVBW7wshk2ZT94W0+N9f9LOib2f5MX/2pu06pc
+	 e7VKroqFAm6xbpg5hSelGOkkhoY3rPNpqNHQoIZih+ZomJOIp7NMgS0AuAngoGBqwc
+	 jXV0PFZA3A6tg==
+Message-ID: <55114986-0ba1-4a80-8498-bf674d64e01b@kernel.org>
+Date: Wed, 25 Nov 2026 10:50:42 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3 04/19] hugetlb_vmemmap: Use try_update_vmemmap_pte to
- update in-use PTEs
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <CADrL8HXQShKvEu_6KVq0wZXbPjWMcR73yZ38iuePxPRZMDjXmg@mail.gmail.com>
-Date: Wed, 25 Nov 2026 17:48:21 +0800
-Cc: Muchun Song <muchun.song@linux.dev>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5747F7E9-14A1-4CBA-BA2B-BDB8A3CC26E9@linux.dev>
-References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-5-jthoughton@google.com>
- <4508589C-2E30-4DAB-9465-73121835D0D8@linux.dev>
- <CADrL8HUstWR2pajfYYzRqL7HziVfzZAXJas6MqJkK6pVxSzXEg@mail.gmail.com>
- <4A195604-B83B-4608-B32E-5F6CC85AE96F@linux.dev>
- <CADrL8HXQShKvEu_6KVq0wZXbPjWMcR73yZ38iuePxPRZMDjXmg@mail.gmail.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: ywsuq6byoq7a1dpsa7uh4wgmggg93x8u
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
+To: Pedro Falcato <pfalcato@suse.de>, John Hubbard <jhubbard@nvidia.com>,
+ Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org,
+ linux-nfs@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
+ <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
+ <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0451B80008
+X-Stat-Signature: m3waf7a1wproan1qsy56hi8x6j6xwsid
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D160E1C0004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795600121-50061
-X-HE-Meta: U2FsdGVkX198+8BVt6k8KEP1ARjC7I23I/tKzPkvkzCyO1q0efJ/vFZ/BR79GlQGM3/P85jEljVgR6ydqw1GnVYzdKAzmIot1HbSvjwhjzS9M7EIgi8dHfC+TAhKgWLmMs607Pyvsk9zTpQWZAD6SsI6/uPBmcg+ExSWtbH5LBtXtQ+O1jgVqlZzZOcletFUnEl6WOiSMPjBftIF1SThmC/Ac1Iv9rvXzwOaunXyAwx6GEwqP4RDr3ASGDTBgTGRarKp7tkVa7MHNTma4d6iVo7AlfIbAfdspbPpEMeJKD7WfPbF5zKX1sehDD5EX4LVtqOBHmbQ/c3T14zhWFR64zcqsTccWAPSnZb3zddxMYszqNDyoo0R7bLA9BFpyWP4g7edFtyHP8byqYr+04HFVCQnCcaPXewQcu3EmfPOc8W5ePNt32mao++be9SdO9FA2XZyDWQHo16PMzEyKSE97RSE6OtoQBsLOcAb5VYRc2A//5tjbcwTf/+SBbet1E9XPnQgGxYTdt1Kbjf2eIyf7VPsRYG9SOfhZBS4xDZdzj/W95cSeSA9ebV02mUROfwgjToquiwfPcogxaV23AdHUeqp6VKjEbVSWEgT0rp74cj21uGgq149XFFW5ZvdNhvZl0sa90OLMXUEUQtZQJkZveVeIqtsHFfQGgUZQW1o27JmFCqPnxu1HUzSiTRfqXAm4+N4eZjUR6O1CDQQPTDVqWXDoHbv9tzx90CnZdWf4OzO2uJGaUzndtPrkfjYLAFIRwWKLePbTeyopx1pTgyzzrX14fcVEzzJ8RZLSi1rESyrUP3U8+lNIF9DIM52MmfoqzMmpyJ6JBqxAOs+KkeGab58RNLp50kCzW7gu+ZMhlIt4wtJEX7K59m7crKl0w/NKS1t1Bkn+VSHAlQLECrD9JKNI9WhF84OhBpC/C9hhSgOhbArUrGf40LT6Xi0974VWENXKXW7avrLOXAKnMY
- 2Q5GTCRd
- mv6CNIWevExjwWht/ZntEoygw1nLSBbD9u4lLoxbvNEgt0dMbrVRu9z8GJEmbHB43rO+3fD5ZPc2eY6k/RPq5qeXf+3rCX6PDjihwFp55AMle2zcM68eAXjG5uax198at5HQBuzx328FFY7kQ1aWIb2qA/XEkNAjQ+9GqBeW2/egSe2LH9/5RmO/HD85orcyQ7MoK26PnBrpootpcAJeNfD3ET0I87z7GOEGX3w+6ibaY0KH44tvRddYDMMIAutI4YQh+07DR8cXcmisPcgDNe5P4/aGrCjJKDkuEPgt8YNG9zrYEGAbQQKTZPHfgyjeiOeMo5RUKtEFyA8sp7KLSGBb0g/tZDElW6ZB9KlSzYbbiYe4QjlNKMELdeagKSODjMJ1f6StLh+FiR/QGcjjXy/1Uew3gJnlbRGhKpaUEyVpST5CufXmBgJlfJlx1ixaG/MkwEwrXKahTQLlF6V1avXvnu39lf/3cn43klmE93KNaM6R3ForYdtDi6Qjbm92lJaGoFlEJ5fnIUwHsFyl383+VqjOoXrxd0RWWhZNIo4oQZ0w=
+X-HE-Tag: 1795600255-819138
+X-HE-Meta: U2FsdGVkX18HBmJF9geNz0pt88z9f/lryLhd3axE0Pafom/cTwHKo1kluw8jdMatc+5SWTQEeADF450Xu6UFWXqnTzvlJysHMnjf7Pda6eGS7AL/1PdIgPOqeA86ggAortoGR7Wd0SBuzGnUQne7nNTuJPBUm9YZODndlthBImbg6+J3g9nSPuZlSXDG8ACZT0rVb2dHj5QLN1NPMwJrVqDhUwqIHIYRvc+0o6sCSC7mDhoOaQ346x7G7/F4VAZ1DkQGrI/DEqGSB9LJhWkEagq429ULYPqT8TUN4icj7BgwpDxAuCKZ/pgIMy+Zxg8fN+B0hLHVrTIzt+uuaxP21tmy3XXaeKBNqhvrI5/HMmD/kvzyAxSPjuFq6FcRq6NR/jiP+qIbPR2gu4K+5jtSvS6w5Bhz4KQSYFTUfksj4kpaUmWGvcL06Jhgfon3rCxDpcZrRNzaPn5aPGaqPtJq3xoczDLBWXpKSaWwKri3tQb/H962/ylrsDr7zfdFEZMTmdefr7rhKRc8FiISCkOAF893IPmZ4DDkj4koNNFkQZtLObwMwZr/v1XyYTImNbX7MyvSUhEkvAEvHguDecmsdDyQPUxf4JqPOQ7mJS/kxwZZchrUkvo71ZSWZiLUmCRhyDYnQGrETY4OxUxx3KWaotaUNZ/bL7gzijpcUGaaR0dFiGe5F7s03DB81fi/av+FthOGpxIsNsJN3v8iOpqEQzv41KXBoJbxHEcmRshwacCq9EyaPcU2QTMIm7PhpAcYyEbB8C+JLt/o3Npy3SCZO+P/wAF8/PGfVBOP+e3NOx0Qry3Fdow510aQqHYaI8Wo5A5vJ8CWV8jluZtYQ9+ecZc7mS7ci7kKTFrzLzFgPfAzBAgjmBUBF9c0C+SYd4EVQaYfJEJPRwVqG1vWsnHhZcpV/lodleleR11nPzQYPw0/7g2ONp2E+//AXZ9FpIa3Vn3ue1LxCNns6V9pCXR
+ kiGqSxph
+ yRQqMcnlh/VPtbzSOucqdkbkaV2c7+EsqQ3lBh5ho2WtxcLbWV0IJ4JPPvoHtsxUemZKNhpInfyUTJlZtyloIS+275Y4WFNE7tEGFZGpM5VOu+lVFxcoq8X3RmrJ4HlXEfmdSLRNQTt8s2OkhjkulmFu3VWz/0uoNhscUHJhjg33D4SP+8WcfmfriocLDyfY8xhZ9y2mhFHBcjh65Mxo3SoHGnnwHW8INtGKm/N+j3ikWQyBMip2vG0kfQb7fcaSxQaMK6mB4CUPpxDiy1l/PM+KHz4nfuyHLfZdQkpuCNnLQ1UhAfWFL185IYEzwNps9joXxH9TAM1OzkzYUPYGchQGKtMFqhZSDBt4plMIXZgcacXuWySrT+cvhE7BkrYa9gS6Swz7j5DKGumJHoAaW8k+UhRHMvb5X+cGDC1DZeqlZWfcj59wA5jX0fkDcfsZzKCiOCVGF0cCh3EvIfu13XDobOBRilFo4tkgz+6fZgqL52vACJcKjz1F+a9pYCtDWDdoR3ZV+nQNW2YbG0S0OHurpYc2pKEMvpJS/xRVpltqBxqHrBchC311aVmw4a1h4SoJ2OhRuKiNals7f+7ncwqj11TwDYarFtn+Azxdto69xlmPwiq+Md14Two/wozKlJqdA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,67 +159,135 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 11/24/26 14:37, Pedro Falcato wrote:
+> Hi John, Christoph, Jan,
+> 
+> Thank you for your replies. Since you largely share the same point, I'll
+> combine this into a single reply.
+> 
+> On Thu, Nov 19, 2026 at 04:55:30PM -0800, John Hubbard wrote:
+>> On 11/19/26 12:10 PM, Pedro Falcato wrote:
+>>> Sooo.... It turns out GUP dirty and ->release_folio() interact really
+>>> weirdly. This was initially reported by some AI agent, and David let me
+>>> know.
+>>>
+>>> The basic issue is:
+>>
+>> The basic issue is covered in a series of LWN articles that span 5 or
+>> 6 years:
+>>
+>>     https://lwn.net/Kernel/Index/#Memory_management-get_user_pages
+>>
+>> Probably good to read and absorb that. There's a lot.
+>>
+> 
+> Thanks. I was aware of some of this, but it's good to take a fresh look again :)
+>  
+>> The problem remains not fully solved. pin_user_pages() is a building
+>> block, but we need to fully coordinate with filesystems in order to
+>> finish. It's good that you are looking at this.
+>>
+>>>  - ->dirty_folio() relies on buffers/IFS/etc being attached to the
+>>>    folios. It _cannot_ attach them itself, as dirty_folio() cannot
+>>>    block.
+>>>  - certain MM paths (reclaim, khugepaged, folio split, etc) are very
+>>>    trigger-happy when it comes to asking filesystems to release them. In
+>>>    most cases, barring any dirty folios, buffers, it will just drop
+>>>    them.
+>>>  - there is no problem in usual IO submission, but issues start to pop
+>>>    up with GUP, where the code flow (roughly) becomes:
+>>>         [get_user_pages(), etc]
+>>>            ->page_mkwrite() called here, or before
+>>>              ->private correctly populated with whatever the filesystem
+>>>                expects.
+>>>              folio is marked as dirty, initially.
+>>>        *write finishes*
+>>>        folio_lock();
+>>>        folio_mark_dirty();
+>>>          ->dirty_folio()
+>>>               dirty_folio expects ->private to be populated by
+>>>               ->page_mkwrite(), ->write_begin().
+>>>        folio_unlock();
+>>>
+>>> What happens if any filemap_release_folio() runs (and succeeds) between
+>>> the initial dirtying (plus eventually writeback) and the write to the
+>>> folio completes? Welp, it's unpredictable. ext4 for example will
+>>> WARN_ONCE, and likely drop data (see ext4_dirty_folio()).
+>>>
+>>> So, what can we do about it? It's complicated, hence why this is an RFC.
+>>> For the possible solutions:
+>>>  - ->dirty_folio() attaching this FS information itself is not really
+>>>    possible in many cases. ->dirty_folio() can't block, nor is it even
+>>>    guaranteed to hold the folio lock while being called.
+>>>  - Can pincount help? Kind of. Things like folio_maybe_dma_pinned() are
+>>>    rough, and don't deal with the usage of get_user_pages(FOLL_WRITE).
+>>>    pincount itself isn't available in the common order-0 case, and not
+>>>    available on order-1 as well on 32-bit, but who cares about that^W^W^W^W^W
+>>>  - Could get_user_pages() ban FOLL_WRITE? Mayhaps. I would not be
+>>>    opposed to that, but that's probably a larger change than ideal for stable,
+>>>    and I'm not familiar enough with GUP requirements to decide to go that way.
+>>>    This would require migrating all FOLL_WRITE users to
+>>>    pin_user_pages().
+>>>  - Can the whole system be reworked? Probably, but not for stable.
+>>>
+>>> This patch series is really rough but kind-of works. Instead of using
+>>> folio_maybe_dma_pinned(), which only interacts with pin_user_pages(), I
+>>
+>> pin_user_pages() was specifically introduced for this exact class of
+>> problem. get_user_pages() is now meant for other, much more limited cases.
+>> I've attempted to document that, here:
+>>
+>>     https://docs.kernel.org/core-api/pin_user_pages.html
+> 
+> Ok, so I guess you want me to drop the hacks to make GUP FOLL_WRITE not
+> screw itself over? To be clear, the rest is still broken, even with pin_user_pages().
+> It just means we get nicer looking fixes, and I can drop patch 3.
+
+I think focusing on pinned pages as the first approach+long-term solution is ok.
+
+BUT
+
+When I looked into this issue, there were some problematic things.
+
+We have some odd drivers that use FOLL_GET|FOLL_WRITE, but I am not too
+concerned about them.
+
+But are ways where unprivileged users can mess with  FOLL_GET|FOLL_WRITE
+references to trigger this.
+
+I think the two that stand out are:
+
+1) /proc/self/mem access using mem_rw() -> access_remote_vm()
+
+User can write to a writable-mapped page-cache PTE. Then we can race with
+removal of folio metadta, to then set the folio dirty afterwards.
+
+I remember a good reason to not convert these paths in the past (we are not
+performing DMA).
 
 
-> On Nov 25, 2026, at 00:29, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> On Mon, Nov 23, 2026 at 9:29=E2=80=AFPM Muchun Song =
-<muchun.song@linux.dev> wrote:
->>=20
->>>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->>>>> index bc1353f03b08..ab33df268955 100644
->>>>> --- a/include/linux/pgtable.h
->>>>> +++ b/include/linux/pgtable.h
->>>>> @@ -458,6 +458,28 @@ static inline void set_ptes(struct mm_struct =
-*mm, unsigned long addr,
->>>>> #endif
->>>>> #define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, =
-pte, 1)
->>>>>=20
->>>>> +#ifdef ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
->>>>=20
->>>> Why not ARCH_WANTS_VMEMMAP_UPDATE_PTE? Then x86, loogarch and =
-RISC-V do not need define
->>>> this macro in their ptable.h.
->>>=20
->>> You're basically asking to make this opt-out instead of opt-in, =
-right?
->>=20
->> Yes, exactly.
->>=20
->>>=20
->>> I like making the different architectures explicitly opt in to the
->>> generic implementation; it forces any new architecture to decide if
->>> the generic implementation is correct for them. But I don't feel
->>> strongly.
->>=20
->> We already have an opt-in config: ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP.
->> It already forces new architectures to pay attention to it.
->=20
-> Right, but that opt-in is different. Requiring architectures to
-> manually specify ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE forces them
-> to think about whether or not they need their own population routine.
-> But yeah, I guess we can just assume that any new architecture
-> implementing HVO should have already checked that. Okay.
+2) /dev/fuse using fuse_copy_fill() -> iov_iter_get_pages2()
 
-Don't worry. I'm planning to rewrite the HVO documentation with a =
-dedicated
-chapter that tells architecture guys which hardware features must be =
-supported
-and what adaptations are needed when enabling this feature, so there =
-won't be
-any issues.
+Same problem, just through fuse.
 
-Thanks,
-Muchun
 
->=20
->>> I'll switch it to opt-out in v4 unless you or someone else tells me =
-otherwise.
->=20
-> So I'll stick with this; I'll switch it to opt-out.
->=20
-> Thanks, Muchun!
+So either
 
+1) We fix all such cases now where unprivileged users can trigger this,
+   converting to FOLL_PIN.
+
+2) We handle it for now in reclaim code by checking for unexpected folio
+   references instead of GUP pins. The spirit of this series.
+
+3) We accept that unprivileged users can trigger unexpected behavior
+   (WARN_ON_ONCE()) etc. I don't think that's an option.
+
+4) We turn all these checks for unexpected behavior into soft warnings.
+
+I think only ext4 is problematic, but I didn't check.
+
+-- 
+Cheers,
+
+David
 
