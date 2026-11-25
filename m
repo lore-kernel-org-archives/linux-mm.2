@@ -1,97 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE77606A68C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0212606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=oVTZiYBC
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h3IiHOrW
 Received: by kanga.kvack.org (Postfix)
-	id 2EF716B0937; Wed, 25 Nov 2026 03:40:59 -0500 (EST)
+	id 2A5B56B0939; Wed, 25 Nov 2026 03:42:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C6A26B0939; Wed, 25 Nov 2026 03:40:59 -0500 (EST)
+	id 256986B093B; Wed, 25 Nov 2026 03:42:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DD1A6B093A; Wed, 25 Nov 2026 03:40:59 -0500 (EST)
+	id 1466B6B093C; Wed, 25 Nov 2026 03:42:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F277D6B0937
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:40:58 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A8CD80DDC
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:40:58 +0000 (UTC)
-X-FDA: 85472996196.12.8DB6682
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D8FDF12000B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:40:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=oVTZiYBC;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au;
-	spf=pass (imf29.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
+	by kanga.kvack.org (Postfix) with ESMTP id E2F736B0939
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:42:33 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 79E0AA8B34
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:42:33 +0000 (UTC)
+X-FDA: 85473000186.22.6083984
+Received: from mta1.migadu.com (out-125.mta1.migadu.com [95.215.58.125])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 60DFE140009
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:42:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h3IiHOrW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.125 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795596057;
-	b=rDNyGu4rdwF90Y7B0TcKfB0RH/TgyGEVXAKe31T2fVZzOkcuN82e00pYLNjQzo2AcuRvF0
-	VpoM5kw0UD49gGcfO/jMDHwv/iZtFViWOyBTnTLp1goFqi9BeZAVv+cfyv+EsIy4y919nz
-	fS6iuY1p056s64X2+1W0OnP9IePCe/M=
+	t=1795596151;
+	b=ilqxYRYKzmuFdcattjxXe8nlp4B83smU6eiDW7dQJ+Mp0B00Wf1CAhBBPoRk4IWB2CDDzs
+	yadEk+YOLboY3gVbswchF1ot0IcHTAGrOfB2zN1IT2Rmr/+zmhBtzdo3lQhPaqZPpodooY
+	IwFMnvaZTui9WfUW9gqZy4z6CI/EDEg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795596057;
+	s=arc-20220608; t=1795596151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dYsFcUK8+jsj7NvG+f903DGBWyTaFCEj4VNhYRMj1Ts=;
-	b=npbsfecL8Ix15qepV3U2WKkypY0ErarUS7ndc68+vXEFyIjSpgsFLY1VnSKyVMyNTe8o7r
-	45Onxej3AJBvOLP+pqr+e0f0fgY98/VRB5dTy48KiziOYtbR24reRW82hEMjwfoykF+jEI
-	6Nt+wOoKtxp7Kwz9BX2v2EgjeC0m8+M=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZSvh4Qwu0h8OJdR8+MiT1ZzApUDwrQReChmK7wamOaE=;
+	b=PBgt/sPLmMAH3/BRijGhyuridyibfDArsZ0MNGzemSTDkshTS6zljshtlJN1l1WVXwMtAX
+	f5vM0gyX+Bfh5YENa8HpQfue44XSld5clLVlvB0/iY3kleLNT/wgjzQmKnWlNSgnw+siev
+	6fTNkD2bVPvODueGKmQ9aT5R+NGYRqk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=oVTZiYBC;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au;
-	spf=pass (imf29.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=dYsFcUK8+jsj7NvG+f903DGBWyTaFCEj4VNhYRMj1Ts=; 
-	b=oVTZiYBCgZc8JC08TT5kespwNby2k9ZUVlXQ4WERhVgTj2JpXDjezNg282p+5J9l2Eld9dCZjCT
-	5pm3gqOdof2K/Pys0suDySqz82z4xFaEvuO0WjCH+Kr2318xipOh77qkGnA4efDUURjQv0bzV7mOm
-	AKXNdiJfbf8eQnJaAvI96WY0vCrELboFkqEqTn4crF2aQVaY1l1JeUMcTVviXMjs9womPqajC02ZA
-	YG9ZTzqKz4DGhiW5vpLVobmBy3HkmDkqOMl84B3XzabkFVSXO4whbtOV/1ahLu7WVIwJBGXVP9hC8
-	JBjWuOvsec/lLSTp7WxYqqyrkXaHId2I/fcw==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1xW8YR-00000001lAN-2nk4;
-	Wed, 25 Nov 2026 16:40:40 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 25 Nov 2026 16:40:39 +0800
-Date: Wed, 25 Nov 2026 16:40:39 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: sashiko-reviews@lists.linux.dev, hannes@cmpxchg.org, yosry@kernel.org,
-	nphamcs@gmail.com, chengming.zhou@linux.dev,
-	akpm@linux-foundation.org, linux-mm@kvack.org, davem@davemloft.net,
-	linux-crypto@vger.kernel.org, rientjes@google.com,
-	willy@infradead.org, senozhatsky@chromium.org
-Subject: Re: [PATCH v3 3/8] crypto: acomp - Add trivial segmentation wrapper.
-Message-ID: <awafBxDtUoIQW9iR@gondor.apana.org.au>
-References: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com>
- <20261106072412.7909-4-kanchanapsridhar2026@gmail.com>
- <sashiko-outbox-202709@kernel.org>
- <CACpmpodxjJ3ZQt4xOsWfWQNjgMtPzKx0oGMy+mJTU1wxVWdMUw@mail.gmail.com>
- <awQCFZSSng2LLGnX@gondor.apana.org.au>
- <CACpmpocCqenTNv62dGoeSLP2zs-AXJYhXM-tj2cytm4zQTj1cA@mail.gmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h3IiHOrW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.125 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=sJ/2ZbzaqcfeCaxGMm3EfPm8Ar39j5+iRnGJrB7nvUs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795596149; v=1; x=1796200949;
+ b=h3IiHOrWRs95/O+DTtGWrpA7RlLiQN4DX9yNaBXtQn4TeFCQXUAVhGZN/LP2F1S4OOJxgXVe
+ TFkSbuc1YQlCNGGMVHT9jlv6GbgMYgqWOSsa0vDmMwTwVCqksQy6SbCcLH1o4ptvAmtxXOUuGDB
+ MfTeTiatzOffL46ErvwqHVdw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 8fa35624655c959f;
+	Wed, 25 Nov 2026 08:42:28 +0000
+X-Mizu-Trace-ID: 8fa35624655c959f
+X-Migadu-Flow: FLOW_OUT
+From: xu.xin@linux.dev
+To: david@kernel.org
+Cc: ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	akpm@linux-foundation.org,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/mm_slot: introduce mm_slot_next() helper
+Date: Wed, 25 Nov 2026 16:42:05 +0800
+Message-Id: <20261125084205.345860-1-xu.xin@linux.dev>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACpmpocCqenTNv62dGoeSLP2zs-AXJYhXM-tj2cytm4zQTj1cA@mail.gmail.com>
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-Stat-Signature: earbuschrd4hcat175zbwf866cnwbnqz
-X-Rspamd-Queue-Id: D8FDF12000B
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795596055-499284
-X-HE-Meta: U2FsdGVkX19ixMzK97IGKALwbLQuXOyyrDzaAcL7vuKZMrSwqzWo58ZuSTdEViYnYqodLUrlcULvkUfxNSojpve4LgxwFvqTuyTem+nP/rPc68EOH8Q9Mp4ZRvda7F0TQFhk1bpzYco70yu3cPmd1+W3P8dRuozxlkmCA5BFS87EXHZmyxNLKvgrHXZRSfrXPuR6UDdcC3fwrsAnga57VQO3geSK9EYjogG/K/QQlOU7huGvBfzXzy3kfNCXoSbeuvS2zMCBjYwtQgKo8ZVjMBBUlcfqfBRZgnulpIBopZGXcToXuLKeZ84Uc5GHi7aEnHn2jyfbKta/a7qySR3F0b4EpYsfoEKU29RXe7Av7z3yH3vlqFgxnQsZAGO4zU2I4m2/M0ynQu1DPHy0KwFXTolF42MY0fZVoImpUzDWHIcrQeTpkFAAb8Uv0fXZAh1LeOnwvOwV0JsUvmziI9Rg5bqZU2a24kRpfruEYxHE9ogwwnfgMiC4Tp9nqqVtUyJOVcfxOXO/TK5oO/G81NYfSsXLOH316Tt4AgHD6SgiuINAtPshwPB5zZXg8nFG2nwUZff6w7+JNfQ66VOND5nwErzX2X9hM+7x458OZi3OYUlN9liORBuTCzv3kfSAvKNjsxzRE129kQGXJVffCAK02N6F2SPBdpzVARC9wJMe4Bdg7vJUYNO10JaSd1XumF4oKe6ceRVBpX4xYxWB+4hEfuS6KNlyMtlBhvmO42wQnD589Qo4sIghWbCm0qIOmV6q0IQyzO52T2VLpteIRpw3AUE7IvE0FKA9MwZt5m3J6KLqoppkhVtUva69sOZX8PLC3vVkckuvWCq04IOUnMFqJQuigqFzbl2zaHIl4sMQJpxjUZqaMcD842wEGoKU3UDCuznz71fQO956uQn6VgPSnxP3CCGOAc8moFP5YbAEBWHVMUCzcHCARHd8CJLxpDbQApNmHdBvbgVYNwRrNTM
- ktDnrEmC
- hzk6I9WYnfCWjLftgzKGdiJsXQje7T8ZqXsd72L7mnnEkKCxx83dGI6TFCzNWV1E3NoRDT7JlUjp1tGFf/UJF65Sy1AfVfvI4pMJ8L7QcdvxDzuRSK9BeUL4zogqkQ0l5DRd0q4iEe62oHzRyHSBd06rUnlOY1K2FWZkm4+IlrNmfvA5GzSQYzGjL0B4oW1sYv8Y73XS0ZPkRJQknmOhQKzWMdegpx/mvmVcr5YigcLB/tMOY2uZxuSZBlWCbyugmwu1nU0X4ovXzoqjWDJwSAILMcDbFl9jPOiYmkBu5vw6m2EsYLJ2h6s4a2oVqg+Ig0IIv5CQ6DQc/5GGArSOR/9LWFAKNjl6vph8O/6BTMkK4OGmzX5WI7eJreEGQMtdNEsniQMzUweIH/H2G9KRQh+pj2saU5fdXKLLbT3B3nd12xnf9sTgST30Yug==
+X-Rspamd-Queue-Id: 60DFE140009
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: oe8uah5pwqia7jr7qhnxru3ag4tyhhqa
+X-HE-Tag: 1795596151-191712
+X-HE-Meta: U2FsdGVkX1/O/g0/DfHLmAxwm83VUc+0UU3YDjpMKjnhu9aXghP7NRGPGOiiQSK2azR494VwsarsZLS5OajmFsW7ZVpddAnc7K2RCt/Ha9qO7+9ks7MXqjpFPs3gMBGq6vA0X9R/8FM1+a0ZNCe3kk2icNClohSpWhw1GmY8ienkz/gW+Cxj002QSfxtKUzjBcCNk6Klj75NE9MdonWhb6FMC7RYmAuRQjgpDHSX/r5fHLJpIgPt9MQbGPbWos255bSWwrakn63O9WM91LlP4ceRmdgedRaw2sG8yLIOMJ7hk/sFRabg0dFXTVpNRO9fWJvkgVpBCvVz787tOmzezm0mVdE91YyZ6fhIpkJXWLvdloRFi8EJ1gEjTwVQz6KBOnT+EZFIAYoX9JtYDFn7HiPbWijQJw/ml6G6fE0vYAH9mBA+sjHCIPqFWWDu1giuIFsC4HWeZIjiAAbm+4HMh0I6PaN1gKZw2KlNBl4CrQiqj02+rZFfyz92+Ud/hwQo5mnKtY1or3qNDqZPftClLyFEvuGqODvNPmRYzAq6feRkOcta55yzrcQOeX3VAFML2qh2Rtp5AZEIK2xLmOpwnw+ZQmLSoFw2fnaaYeIdmTqwxrE/sRN3+ArrJi10AmRfNSrPSpzN6x5EgrjELqL6qeKwPtdGTQX49OenK3OaMXBDa9RUoj8vSWOzR8JYrYsD3rEIP2RGhD5ofD0PIlIpEaFL5fxeFhTBqKgGVGvFG7WBf1IaNkC/TK2kG8aDdgZ251IKBl62yqTMbie93o7PEs3fYVcMaG68uyh8XrrtKTQg9aB0+GmhzuBTXt2thRvwnGP0ScFR+dINlKaSqLbyiDBDb12XXWfSbrKZF1SIC2b804v7NgvDAOSrp6KQftGIoqwz4IZCdrcx6oRhJ0oI6dF/X4agkcX+62crBasVWBhsYiGjF81X0eA2uOWYo2DO2hGKi84upPqgVKvwEzY
+ /rsc11R7
+ /or+kyXBd4+F0BXq70xYzeapulGHiezrkgCVmkT+xW6pAEfF0ZW6aRhkOpOB0tHiRT+i6gjrmtaLUHJGxu6mMdrL1obeLAk2t29GV8TihmfB75KmBa3UhrBjVKZ3dOtYe5IgpA2wG9LZ925WUiTpF6le70uFXxkXwt8gtNMgy6xOxs50cqPDAhUQn35J4uMUKCxQdaEHbLvmOy6ppGeWkaSAZNLPlRGgTLT/SOlXbDb+OGbj1bhik7PulUcq+bja3SZgLWwXyy0yuE85FuAVGprPVWnGHGaN/MiwhosCtbcYqB0pLYrQ+UPWWWdudcGfUxWLe7PZsW2NdjKAF7GYQaHZMktFCfOAQlH03tC6rpTAaLqwbxC8Kv0TchmfLVeQfuEvXxx7IAPUD0Kb9PAp76rcUOBA+WPsnl97Wsf1p0EXJkg4dBd9EKZ0xCK8nu33EVgX1L8zcOMCCLRfjuRZEImvKWThAaCaWWj3jnyAL2ZM/Dv4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,28 +102,109 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 01:56:19PM -0800, Kanchana P. Sridhar wrote:
->
-> diff --git a/crypto/acompress.c b/crypto/acompress.c
-> index df9e42f519c3..f0ff821b3560 100644
-> --- a/crypto/acompress.c
-> +++ b/crypto/acompress.c
-> @@ -247,7 +247,7 @@ static int acomp_reqchain_finish(struct acomp_req
-> *req, int err)
->         acomp_reqchain_virt(req);
->         acomp_restore_req(req);
-> 
-> -       if (req->unit_size)
-> +       if (req->unit_size && !acomp_request_dst_isvirt(req))
->                 req->dst->length = unlikely(err) ? err : req->dlen;
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
 
-I think this should return -EINVAL in the sense that using a
-virtual address with unit_size cannot be supported as it makes
-no sense at the API level.
+Add a generic mm_slot_next() macro to simplify getting the next
+mm_slot container entry from the list, and use it in khugepaged.c
+and ksm.c, just for cleaning up.
 
-Thanks,
+No functional change intended.
+
+Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
+---
+ mm/khugepaged.c |  5 ++---
+ mm/ksm.c        | 18 ++++--------------
+ mm/mm_slot.h    |  3 +++
+ 3 files changed, 9 insertions(+), 17 deletions(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 4ceb1b16c03c..0a5c78d01159 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -3074,9 +3074,8 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 		 * mm_slot not pointing to the exiting mm.
+ 		 */
+ 		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
+-			slot = list_next_entry(slot, mm_node);
+-			khugepaged_scan.mm_slot =
+-				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
++			khugepaged_scan.mm_slot = mm_slot_next(slot,
++						struct khugepaged_mm_slot, slot);
+ 		} else {
+ 			khugepaged_scan.mm_slot = NULL;
+ 			khugepaged_full_scans++;
+diff --git a/mm/ksm.c b/mm/ksm.c
+index fd2d212cae79..11914f649a73 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1217,15 +1217,12 @@ static int remove_all_stable_nodes(void)
+ static int unmerge_and_remove_all_rmap_items(void)
+ {
+ 	struct ksm_mm_slot *mm_slot;
+-	struct mm_slot *slot;
+ 	struct mm_struct *mm;
+ 	struct vm_area_struct *vma;
+ 	int err = 0;
+ 
+ 	spin_lock(&ksm_mmlist_lock);
+-	slot = list_entry(ksm_mm_head.slot.mm_node.next,
+-			  struct mm_slot, mm_node);
+-	ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
++	ksm_scan.mm_slot = mm_slot_next(&ksm_mm_head.slot, struct ksm_mm_slot, slot);
+ 	spin_unlock(&ksm_mmlist_lock);
+ 
+ 	for (mm_slot = ksm_scan.mm_slot; mm_slot != &ksm_mm_head;
+@@ -1256,9 +1253,7 @@ static int unmerge_and_remove_all_rmap_items(void)
+ 		mmap_read_unlock(mm);
+ 
+ 		spin_lock(&ksm_mmlist_lock);
+-		slot = list_entry(mm_slot->slot.mm_node.next,
+-				  struct mm_slot, mm_node);
+-		ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
++		ksm_scan.mm_slot = mm_slot_next(&mm_slot->slot, struct ksm_mm_slot, slot);
+ 		if (ksm_test_exit(mm)) {
+ 			mm_slot_remove(&mm_slot->slot);
+ 			spin_unlock(&ksm_mmlist_lock);
+@@ -2647,12 +2642,9 @@ static bool scan_should_start_new_cycle(void)
+ static struct ksm_mm_slot *scan_get_first_mm(void)
+ {
+ 	struct ksm_mm_slot *mm_slot = &ksm_mm_head;
+-	struct mm_slot *slot;
+ 
+ 	scoped_guard(spinlock, &ksm_mmlist_lock) {
+-		slot = list_entry(mm_slot->slot.mm_node.next,
+-				  struct mm_slot, mm_node);
+-		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
++		mm_slot = mm_slot_next(&mm_slot->slot, struct ksm_mm_slot, slot);
+ 		ksm_scan.mm_slot = mm_slot;
+ 	}
+ 
+@@ -2789,9 +2781,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 	remove_trailing_rmap_items(ksm_scan.rmap_list);
+ 
+ 	spin_lock(&ksm_mmlist_lock);
+-	slot = list_entry(mm_slot->slot.mm_node.next,
+-			  struct mm_slot, mm_node);
+-	ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
++	ksm_scan.mm_slot = mm_slot_next(&mm_slot->slot, struct ksm_mm_slot, slot);
+ 	if (ksm_scan.address == 0) {
+ 		/*
+ 		 * We've completed a full scan of all vmas, holding mmap_lock
+diff --git a/mm/mm_slot.h b/mm/mm_slot.h
+index 9b09b68e5742..303da2cef759 100644
+--- a/mm/mm_slot.h
++++ b/mm/mm_slot.h
+@@ -33,6 +33,9 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
+ 	kmem_cache_free(cache, objp);
+ }
+ 
++#define mm_slot_next(ptr, type, member) \
++	mm_slot_entry(list_next_entry(ptr, mm_node), type, member)
++
+ /*
+  * Note: mm_slot_lookup and mm_slot_insert cannot be converted to static inline
+  * functions because the hash helpers (hash_for_each_possible and hash_add) rely
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.34.1
+
 
