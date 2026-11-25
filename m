@@ -1,97 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C29C606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 00:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9D7606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 00:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nrDwQrMO
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ICImlDJb
 Received: by kanga.kvack.org (Postfix)
-	id 5C26A6B08BB; Tue, 24 Nov 2026 19:32:34 -0500 (EST)
+	id EAD0A6B08BD; Tue, 24 Nov 2026 19:39:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5999B6B08BD; Tue, 24 Nov 2026 19:32:34 -0500 (EST)
+	id E5E516B08BF; Tue, 24 Nov 2026 19:39:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D7306B08BE; Tue, 24 Nov 2026 19:32:34 -0500 (EST)
+	id D4C496B08C0; Tue, 24 Nov 2026 19:39:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E44F6B08BB
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 19:32:34 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27CBFA0E24
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:32:33 +0000 (UTC)
-X-FDA: 85471765386.26.72B3DF5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 785E4100002
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:32:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrDwQrMO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A9E466B08BD
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 19:39:57 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32D7E8065F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:39:57 +0000 (UTC)
+X-FDA: 85471784034.12.78EA9C9
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3F7841C000C
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:39:55 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ICImlDJb;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795566751;
-	b=AQNBij3f8mz6NUSAyW+ZYTVdz6qeSLu7dKQUfIIahkOTg/a89gbADBUdbbGF0GnR7rtpnt
-	kECIad3fotf7Yq+YS9YcuJcB1V2wcq9EZJlJkTHThL26CQKQlhvatJDRykz48twFDN2AIk
-	fMUudrUI3bSSatnup5xoJYDKc6hN44Q=
+	t=1795567195;
+	b=Vv+vzJM9Lfn0Gqf4Da1ENJR2h/dH5/j1UBAQEfEyke04ui/gp/68Oi8D9BMCoA+nO9+JzQ
+	w+npT7CVf/KThpGCqm1U+8+bovsq8g2ZzwBWtRX0m1YkrcENaTwS8JhrN6aSOrsSrXYjRn
+	AA2F7yQseFF38O61pUwhQQRsDXjdJv4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795566751;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1795567195;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kV8T9KghjSzWI5XC/HdS39t7s/X9fFMZu6tr+/jlyzA=;
-	b=pb1HjOplmDpaRx6jscU7oUtF5e9NHyY6dpMFUIqeoHy61sRU8J3A6YGbp/zXGy9tL5pLdy
-	0rdlJUKw/YGjfpxCtutc7n+UtBSrPNEe50VLw9sePQfLFFSsJOoJRPAFm+S+s1kM2OTMBo
-	IA8aUqRYauSfX9hAhxSDBqKfJU1+cUo=
+	bh=YKxHcqUXjQp/1J5J8B8/Kkrmh8UptW8ucEK7buHNuos=;
+	b=BgNCXzrxOlywU89riBp0CY6gVUo4ZnMQ2tQuw+cVH3+iSguf6wDUFOeg/0lfRsqOMM4E6p
+	xywqRH2CTZPHBY8mmowOUghakwjA5FLN1D0jXM4ZBHAlc1c7qgtrkSCjUUDoXrZsXSn1q4
+	N8ZGtJO7zYQ1IQe3fRWCa28oIdXEdi4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrDwQrMO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9EA6B45A55;
-	Wed, 25 Nov 2026 00:32:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B079C1F000CA;
-	Wed, 25 Nov 2026 00:32:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795566750;
-	bh=kV8T9KghjSzWI5XC/HdS39t7s/X9fFMZu6tr+/jlyzA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nrDwQrMOk0ZnxRD5VrLhJKcjZlF5e9qZKnjaqCg/mNgQN6JAnTDfAzYPzHdLhiTUF
-	 WdOYKB9ddzb+IgWbru/nlXL/6DGw8Pg8RLtcIv6bc69w2Xzpj7w881/MTn/nKb30aP
-	 6fw+tXrcUx/cMjEdzKQ5zZGe+UN8VmGvNVGIHhpQKrQUkeBZdNb435FPBYjT3FCLoT
-	 HnGZrYU8Psz3fS4dLXuIg9jX5Rz+OL/x+d/45+HuaTOmm8jQHvFfFRCnFF81/Yylwg
-	 tejSmKKYuejR1IfsP326x/yhXRAwwR7X/bV4G8xM1RUlQk+3XHm/SROxCgCF48K6z1
-	 uZjsrOndqqj4g==
-Message-ID: <sashiko-outbox-232294@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH] mm: memcontrol: let a cgroup opt out of HugeTLB
- accounting
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Harshal Patil" <harpatil@redhat.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Michal
- Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>, "Tejun
- Heo" <tj@kernel.org>
-Cc: "Muchun Song" <muchun.song@linux.dev>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Nhat
- Pham" <nphamcs@gmail.com>, "Frank van der Linden" <fvdl@google.com>, "Yosry
- Ahmed" <yosry@kernel.org>, "Waiman Long" <longman@redhat.com>, "Oscar
- Salvador" <osalvador@suse.de>, "David Hildenbrand" <david@kernel.org>, "Jonathan
- Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, linux-mm@kvack.org
-In-Reply-To: <20261124003145.80705-1-harpatil@redhat.com>
-References: <20261124003145.80705-1-harpatil@redhat.com>
-Content-Type: text/plain; charset=utf-8
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ICImlDJb;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2f03920c4a0so32664495ad.3
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:39:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795567194; x=1796171994; darn=kvack.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YKxHcqUXjQp/1J5J8B8/Kkrmh8UptW8ucEK7buHNuos=;
+        b=ICImlDJbCyIQDYAmWP1t5xKNrVpT/7mpzxfFFiOgvNg4hbRCYLByNMIUa35VZf/KhG
+         odzcwfI5VEKwHrtXAaGQaxM/S0QwBeTwaygynchgTZX1VDjNvdJZuZ3HNRgBvRN9wf+d
+         TH4agzT5kc4C0o8UpVr5qKM8fyGCmdOVZJTBDse1I0HoY5vumJP+NB9Bg6GsC0/5OsZL
+         PqGNmxnYP15t3RzsXcKO5nSlZ+5SQzcrVEXorYWPxxZZe3wnott4Na2DDSPbYPQB/VBL
+         tT7rNi5C9tsdVlFLEVdAhuIcnGl1MQNRgkXccnlnFEcz3iiqk91C4/1psTCyxHEVjLty
+         ++TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795567194; x=1796171994;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YKxHcqUXjQp/1J5J8B8/Kkrmh8UptW8ucEK7buHNuos=;
+        b=2CuK37DHPc7tYPwOp22squ/T5xQehdFX4TaUAu9C1XbsGbeU14hyWknswHx0jVIeI9
+         UJyea0Ro3p21u+a8SszwrCfkQyFkEiq7PESrgaExApd1R1iCJDQi4Z+EZotvLg+cvvwE
+         T8EeGi2anX+9+pTURs7cBoYqXklJvJQ3eXRCkcIL/4apFTZ90Idh/AzUJB9BnoRYzy7G
+         nmcYLG32avcwk+9kZzSIipYWDCa0zNCHvTMCes2Vldk/jgsHavkl6+4b/it6ZeYV4myw
+         x/jJXEPJJLLLdxU/MiMwdT2IXX8cy2nTguQ/mMWMK3Qv8RvlV0qaQcYk4pn34GrG7Zt0
+         8R0w==
+X-Forwarded-Encrypted: i=1; AL+hErEMYh/jjgOnIqRCR/4Ej3oLGXrgIiJliITyY+HT2NLh6Mrkukk08EBw94Au/7+cpABYvy3+dE22WA==@kvack.org
+X-Gm-Message-State: APuU4Z/qad3+/k7PShIMf9MeWFEzn+syM7p4L+q0mIaQ3OjsrRVjPq9Z
+	qxwhS72bAZV8Em1HBz9nYfQKp3FCgDninihxr9LH0xGbxtRzsc7KIPMAQhkF0Z6GKw==
+X-Gm-Gg: AZFdTZcQ7NBHoZRZTD2pkHjj+qaw+9OnN/vLLBbouUk/HnYZ5x9OqdxvdftMxhdq7hR
+	7PUSYOdcmzp/r1nihZJ+ufzXK9aTACTaPjOighZMqwmjG2W9jiZPYDgZtDJqwOkcRR3KNPWzPeP
+	agbF5VE+hGWAlYE4h/UN7MCVQNcWJK+ZDG8se8QS/oPhed2xaUcA2D5zgFDq8AYRfznKUe58CZd
+	Du2rLdu3WyDqd3E0XGXWRf7QKWCBA4Lc2OxpFSOYz2sHsvFvqdV08OhTRxoRW0iQ7v4NoPZhYG6
+	JUzJOAMrkwEvwxTPN6gYLFwEXgCYKZtc3n/rsio0nFQLKM0apAVDKAymZ2HUYa/ITX71xSJXyPp
+	auqfXTzD6/zkYvtcIJGj2FMVzcWYyoikzYY9p71tu/nTIsClrRHXlzlDWkH+FrJnj7J9hg4AhPg
+	VWlRtLrOJgHoQ5ZG/5bq4x+4HJeYjEzhNO7W5uXjuCeDmqE+PnPQeQ/AftiZ2JHu1PYQ92GGDAj
+	SpdR8S8JR82Xj4en2kCunytJgvkYJO1++sA60EGkREo1TDdYPgT0/tIpv1AQUTE8mbY02tfvmVa
+	ozQmHaXeKwsACUayv0pPc0JYb2Dzo+exDyh4IPh08CDQrFhTr0CmfDCNrm5iMNUw
+X-Received: by 2002:a17:902:eccf:b0:2f0:25ea:8fa8 with SMTP id d9443c01a7336-2f03f176abamr169618335ad.19.1795567193320;
+        Tue, 24 Nov 2026 16:39:53 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03ee848c1sm75603595ad.10.2026.11.24.16.39.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Nov 2026 16:39:52 -0800 (PST)
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 00:32:29 +0000
-X-Rspamd-Queue-Id: 785E4100002
-X-Stat-Signature: wszyb6z84wqncqhzjbpprwkm7zze63yk
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Nov 2026 16:39:52 -0800
+Message-Id: <DN3VG4JCILOO.YN40XHHSWRPH@google.com>
+Subject: Re: [PATCH v4 03/19] kho, memfd_luo: Reference struct kho_vmalloc
+ via serialized pointer
+From: "David Matlack" <dmatlack@google.com>
+To: "Pratyush Yadav" <pratyush@kernel.org>, "Tarun Sahu"
+ <tarunsahu@google.com>
+Cc: "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike Rapoport"
+ <rppt@kernel.org>, <robin.murphy@arm.com>, <maz@kernel.org>,
+ <will@kernel.org>, "David Matlack" <dmatlack@google.com>, "Alexander Graf"
+ <graf@amazon.com>, <seanjc@google.com>, <jgg@nvidia.com>,
+ <loganodell@google.com>, <arnd@arndb.de>, <dwmw2@infradead.org>,
+ <baolu.lu@linux.intel.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ <oupton@kernel.org>, <alex@shazbot.org>, <gle.com@google.com>,
+ <pbonzini@redhat.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ <kevin.tian@intel.com>, <joro@8bytes.org>, <kvmarm@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <kexec@lists.infradead.org>,
+ <kvm@vger.kernel.org>, <iommu@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <skhawaja@google.com>,
+ <sagis@google.com>, <linux-arch@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20261110050202.529473-1-tarunsahu@google.com>
+ <20261110050202.529473-4-tarunsahu@google.com>
+ <2vxz4idb1i2w.fsf@kernel.org>
+In-Reply-To: <2vxz4idb1i2w.fsf@kernel.org>
+X-Stat-Signature: fx6h715edig1u8wxh38feuq9i67hwjao
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795566751-387327
-X-HE-Meta: U2FsdGVkX1/ODeyBuV5da/XAg5OfHuMyA6hFKohuN6+dMvHbUNt2wmt1duqkNA6uDHA5N9yOJajUWG7hJvB3UZaiWOUKYaaJk1UiihPIzmWj5bAVC3ljh2G91b5byUrUQKJv6ajD6vXG+kREg/VRUIIatYebH3WZYsBQa4fOF2WRNv8A7cuvDb8wXE9bSCFw5EfJSDu2BDq2RyEwyml+FvXjsh1rCUaAdOKF/dvhjsSjUi6jXciLepYaIlN15RG9kUZNZw3YreQLsg1ug4E29NAuVIhZbAR2VNWIAWzB8yNisnXqfZU5BPMnbD/FVkaaRHEAju8NRooU+3Q7xsHQPL+jRibZ/3gdGTiOHJRwbLe9QbAqmlYuixMfNrtvMWS52P5Xyxaq4WD+kwTHHIPX2NKj/ZkIkpAeyfx31mwgDYDWdmRVOsk5oH+YtNXrWjeXKjPBhQ38Vz2fff5FcySnJJCAozfOqeo3HxIxpsANlBUBJglRrC6I/1rvxO9wiEXXztZ1nJ1NLkBH0ZMI7+ESY0in61bYssIPRvLkvSLFoaKW4vNLiaCp4QCvw85vJhXBZSIFSHZjG1HB71FiE9Li+D+QhyBjvpJPC+gyV1YMumSvy0EkMqZL0AcfOTdKosj6hpc7+QSJhoHP9VOaJzub46hkqCXQcIMixrnRESYz/2W++PkENP953TifxMJrxMvP4ztkCXmlJtjwbJbVnNkKwM8A6L56gctVPB59OPFk8cKgQ3iXfhGA23yQqmgM7Dmp2TJSZSoIlDfypwU+lIV02vsDaWWYxAf1wCWhOUmNTM8D6ZqggntU4WPGVb2Nxw19MGpZy6k85YiIGGhFHD/CkToZVdGsTQIkdG7nU1CXI11YE3vu+alIhDkDgKnHg66niRceoft6/LDxY19LGf42wZN2d6rGBketjmCxpEkABhItzfv5AE1oRQKryGPOUPZsMJQxjuOL3fSq6eMK8mD
- WaFPEu7A
- sUXJoLXSWXTNIN8kmz7Y/5bszTJijVDKelxOnWKX3erosFcK1piPZx1EcI8cbWlL6O4t/gyS3IEFp9jl5PLWMI7Uklrq+XUmTNw7Yy5NuR5tYvK5/6hPUlL3DQzioGKc2tL9Y2lhOD3sRk9ctCrGWrTxJuVMXsPc+Kwvam2jPC6nrAvIhcbp/y3rmpjrzdaoJKd9j2MfUzmhXn1xUWJUzksUrwMgOoDpaAQvZ9tRab5sPgEAcMuBLSKjtENYcfiGLjcO5FEe7ZM6WV6GWHgAKqEiAAQAfkVbcP2XO+zDv3LhIW3A/22mLOFHKWasTSkTfRgn2wtkdASLfD1aKvdrC6bidA2QNG7uFsy4LPHkHjhUTCcIkOq7TCXepx5Bw3qSxA7/nGaT/gzaDmuPpw4WXcpyEuEoNDwT3ftnU2N9ar26xj8fwq+silXmzk3ZJ41lRxRrP7Z8zuBqmhGgLYWf/Kp0VSRmXlsnVnVy2FSCEb1M/stWYjXJ9PQYrGUG7X0noNKwRdZsnOkDN/TyAd3+8ahO4hZztIhnPmpxJXdz8N3bxCr5gj9uGdYYytfYUObKGf9vJ9ciJ2nCjO90ds5PAZW0HCOXZ+cbJigu3lv423kKItcmU4fjlaxdLpOgAOO4wmZ/8pxFJeSPIjDwlweJ7cvynzgNr27sbjOIqsgqCd1D77BoKIgIvi07PFB1Ol7pitlVeazcX1WkUemBpk3EZdUQvNTquloBdmbeLXXIa9EgGtQcnJl1LDg9dLNS0IvnKF7qDMAENKc5bVrvsccwdm3MQ3e2Mik2UV2zn54DgR9PWSfu1aCHc4BKXnmWy1qgH/xqJewZYf0wdSfDGjDgcGD0DMJshbKacsv/NRtst5AL1STahDTY4KfCuFG8WQgC31uMx5NbZNHRulEzu+TGFjLfUZVEoMKEunCNlWrUxMWdVSq8gKG3tK99jGizFnoVlS2Y2
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 3F7841C000C
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795567195-144676
+X-HE-Meta: U2FsdGVkX1+RSM2tMKN3lS/a2xMyZzaMY2Xt1YhCRYExiFtwcRwUgA9FwKWjfAaDEJS6gnDUfzhU2UrtrRprvws5GH/wzLszNOlkAOks4IL4obcwH+eIK6zd45AonDWFcZxKWAiIh4bjlIyS31qg+Mq2XMXlKzFNlk7C7j/xJCXUllD8QitTMDywVp+vCqF4iuh67xelQVmsnV98qyQpUHlC8qv8M6JzdQIMB6MWL3HW+XGj98GMMgaRyLJFyQcZmobBah+Ug6pMVKjvem7zlDKt4BSSJX4L8Ws7bvNVUp5bHhTB4tTamkkCSBN9yqFT/ageCaZUjJ7PATUmU9zoEmhLsUIMKr21vtcGI5Cf5k4RWeeItgLCynqQEZ0UVoMiluFSn0nV1l8hCXovTzIs8/gTa2wyTAF04PwqvNLvUtCMp9pVBNR6BY7uFluePr5Awrqg4x4fCH9229cjS6fDUOEZGP4k2ckY9bdQy0FLkqeWlrSohj+cPeqBzye0vbXuQryKVId+iA7DpCYrLE9nemDzVEWp8Zh8ZuKYkSSMaObhpW7dttxEWU7ZSQic+gEDEQeUBBmQvfDwSLuDaDgn3Wm6tw4dzw9WA24U5KC9U4aRzG9jVfSDCG52bIZeswOkByedSj0o/IBTSpPKBWdGWI/VkusorPykDiZXWs3hUMYTmWFcEfJKxhMaKP0gcB7+UCciLMKI8YKV8VbC3TVWckPmriG8CdKwqkoGwZfTANAuh73rM2sJJs8A2sKiKv+r9I6R6KzZcGlgrU8Skuxzoru8K+wwjwg8UztY29OEOEZMC7m9vsDSkGYAPmMQYP1LTSNPutFLZBxRfSO4NsQO/TKbSp8Cm0HUbxzkGPq1sHWW/rXISQFx7Ng24iJ3Uqn8ShJXVtIwCWdrvBfhAkuz/VZ5d8o9IsG9h34i+Qt9YjmmCUJe6b34e0AdT49aOaFu5unzYz3DcoGRO+9JGXr
+ F4ujoFDX
+ e4M9JCg+lhLXLAcKumti7xd3rfLhUVDrWKWXnEm3+Q0HhP4aFIiVhjAh4v5DFtG93br6ee8yECi9/nBLT+aDPp7xBlL3bHIFoDUgsJoCHxCzMjbzepPcTx/TEDKwS46BaHZknvlZO6OQrFSOCEMwL6x3BK/WGRRQ5i5b7slIN5zRE0l+CqpCSvrYkKwQvfzEcLDxO+87VWbOgRyp2V7qxIO+SU9JEnfbgG+xaZwugbI6ctJXFUq71v4D8aBRI4DZzLWeumZZTfMZsSkBCeg0w0karhhBL2Rmu83r0VWghh0l0ftfrD2PS+7yWvu4ZCDaP6Mhn1HCVVeV8H7vJcQ/YUSyPL+AtmLAeRMsvAFkC7TcQBA3NfpDOah9dM2XyLZIhfUhXWdTNuCXrQCK9TrEd13vnSv/VfBcUB06DOjsiFBqxZhvMqjiJlbBm2HadcGxJrPJxxDK8xItzIpdntDIBzmqEFNO2XTbHtmGZ7i+3rZ34mf0Sedl5gQClrOXxaqK2A2JNCY8g30tgb1SKdfm5iCXCVlcaZgmCpeuDbXecpTZ/b/tnuOFAWk0h1qHcyKd48ifE/BgV4oz2tz6ATbhAVgr1uZbjEA/5kYx7XElciTxsmVFKMYM8ya/ozGFXDExDTTrm0buCqNV122PgiIZPhvry/fY186Z0M87Fk+s1wtjgM2s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,115 +140,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] selftests: cgroup: unflushed root hugetlb stat in
-  hugetlb_opt_out_program()
-- [Low] selftests: cgroup: silent skip in test_hugetlb_memcg_opt_out()
---
+On Fri Nov 20, 2026 at 10:19 AM PST, Pratyush Yadav wrote:
+[...]
 
-commit 7608afc552161fa7f74ef34d7e8ac3bc7ba49d98
-Author: Harshal Patil <harpatil@redhat.com>
+>> +static size_t memfd_luo_ser_size(void)
+>> +{
+>> +	return sizeof(struct memfd_luo_ser) + sizeof(struct kho_vmalloc);
+>> +}
+>> +
+>> +static struct memfd_luo_ser *memfd_luo_ser_init(void *mem)
+>> +{
+>> +	struct kho_vmalloc *kho_vmalloc =3D mem + sizeof(struct memfd_luo_ser)=
+;
+>> +	struct memfd_luo_ser *ser =3D mem;
+>> +
+>> +	KHOSER_STORE_PTR(ser->folios, kho_vmalloc);
+>> +	return ser;
+>> +}
+>> +
+>
+> Hmm, I am not a huge fan of this. This makes doing such allocations
+> quite annoying, and I reckon we will be seeing a fair bit of them in
+> many places.
+>
+> The key observation here is that most file handlers need to allocate a
+> bunch of preserved memory, but they usually can free it all at once. So
+> we can get away with a very simple allocator that hands out memory
+> linearly.
+>
+> I have sketched out some code for this, take a look at the patch below.
+> Note that it is only compile tested.
+>
+> Perhaps give it a try and see if it does the job better.
 
-mm: memcontrol: let a cgroup opt out of HugeTLB accounting
+I agree the manual packing in memfd_luo_ser_init() isn't great, but I'm
+not sure we need an arena. This seems like something KHO slab support
+will solve properly, and since kho_alloc_preserve() already takes a
+size, KHO slab can be dropped in underneath it later without changing
+any callers.
 
-This commit adds a non-root cgroup v2 control file,
-memory.hugetlb_accounting, that allows a cgroup and its descendants to
-opt out of HugeTLB memory accounting so that HugeTLB folios are charged
-to the parent of the topmost ancestor that opted out, and extends the
-hugetlb memcg selftest to cover it.
-
-Link: https://lore.kernel.org/all/CAPTztWY8eDSa1qKx35hTm5ef+e13SDnRHDrevc-1=
-V1v7-pEP3w@mail.gmail.com/ [1]
-Link: https://lore.kernel.org/all/ZRQQMABiVIcXXcrg@dhcp22.suse.cz/ [2]
-Link: https://github.com/systemd/systemd/pull/39486 [3]
-Link: https://lore.kernel.org/all/ZRrI90KcRBwVZn%2Fr@dhcp22.suse.cz/ [4]
-Link: https://lore.kernel.org/all/20231002162133.GC5054@cmpxchg.org/ [5]
-Link: https://lore.kernel.org/all/CAKEwX=3DOwrMNMAvve9a965mBJm8as+njtXE993V=
-cnKXdccd5GEw@mail.gmail.com/ [6]
-Link: https://github.com/kubernetes/kubernetes/issues/144131#issuecomment-7=
-104174643 [7]
-
-> diff --git a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c b/tools/=
-testing/selftests/cgroup/test_hugetlb_memcg.c
-> index 8c5aced813b62..54e34ee79131b 100644
-> --- a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
-> +++ b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
-
-[ ... ]
-
-> @@ -196,13 +201,197 @@ static int test_hugetlb_memcg(char *root)
-> +static int hugetlb_opt_out_program(const char *cgroup, void *arg)
-> +{
-> +	struct opt_out_args *args =3D arg;
-> +	long root, child, parent, grandparent, cur;
-> +	int ret =3D EXIT_FAILURE;
-> +	void *addr;
-> +
-> +	root =3D root_hugetlb(args->root);
-
-[ ... ]
-
-> +	/* memory.stat is flushed lazily, give the root time to catch up */
-> +	cur =3D cg_read_key_long_poll(args->root, "memory.stat", "hugetlb ",
-> +				    root + LENGTH, 30, DEFAULT_WAIT_INTERVAL_US);
-> +	if (cur < 0 || !opt_out_charged("root", cur - root, true))
-> +		goto out;
-> +
-> +	munmap(addr, LENGTH);
-> +	cur =3D cg_read_long(args->grandparent, "memory.current");
-> +	if (cur < 0 || cur - grandparent >=3D MB(2)) {
-> +		ksft_print_msg("memory usage should go back down.\n");
-> +		ksft_print_msg("grandparent memory is now %ld, was %ld\n",
-> +			       cur, grandparent);
-> +		return ret;
-> +	}
-> +
-> +	return EXIT_SUCCESS;
-
-[Severity: Medium]
-Should hugetlb_opt_out_program() also poll args->root memory.stat after
-munmap() until "hugetlb " returns to root?
-
-test_hugetlb_memcg_opt_out() runs hugetlb_opt_out_program() four times
-back to back.  Reading memory.stat only flushes rstat synchronously when
-pending updates exceed MEMCG_CHARGE_BATCH * num_online_cpus():
-
-mm/memcontrol.c:memcg_vmstats_needs_flush() {
-	return atomic_long_read(&vmstats->stats_updates) >
-		MEMCG_CHARGE_BATCH * num_online_cpus();
-}
-
-Unmapping 8 MB (2048 base pages) does not exceed that threshold on
-machines with 32 or more online CPUs, so the next run's non-polling
-root_hugetlb(args->root) can snapshot the stale pre-munmap value.  Once
-rstat flushes both the -8 MB unmap and the new +8 MB fault, "hugetlb "
-settles back at root instead of root + LENGTH and
-cg_read_key_long_poll() times out.  In the fourth run where grandparent
-also opts out, grandparent memory.current is never charged, so polling
-root memory.stat after munmap() is also needed to verify that the
-uncharge took effect.
-
-[ ... ]
-
-> +static int test_hugetlb_memcg_opt_out(char *root)
-> +{
-
-[ ... ]
-
-> +	if (cg_read_long(child, "memory.hugetlb_accounting") < 0) {
-> +		ret =3D KSFT_SKIP;
-> +		goto out;
-> +	}
-
-[Severity: Low]
-Could this log a message with ksft_print_msg() before returning
-KSFT_SKIP, so the skip output explains that memory.hugetlb_accounting is
-not available?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124003145.8070=
-5-1-harpatil@redhat.com?part=3D1
+Until then, maybe we should just allocate struct kho_vmalloc separately
+with kho_alloc_preserve() and accept wasting a folio per object. For
+memfd that's one extra page per preserved file.
 
