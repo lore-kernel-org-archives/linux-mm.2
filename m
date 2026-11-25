@@ -1,104 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB6E606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A71D60A261D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kka7V0z3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SlO3gQTD
 Received: by kanga.kvack.org (Postfix)
-	id E021F6B0995; Wed, 25 Nov 2026 05:17:45 -0500 (EST)
+	id 838B16B0998; Wed, 25 Nov 2026 05:19:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB27E6B0997; Wed, 25 Nov 2026 05:17:45 -0500 (EST)
+	id 811446B0999; Wed, 25 Nov 2026 05:19:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC8EB6B0998; Wed, 25 Nov 2026 05:17:45 -0500 (EST)
+	id 726376B099A; Wed, 25 Nov 2026 05:19:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A2FE86B0995
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:17:45 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0DE9AA0E57
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:17:45 +0000 (UTC)
-X-FDA: 85473240090.06.E7D5610
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F3936B0998
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:19:34 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CEE4DC0E19
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:19:33 +0000 (UTC)
+X-FDA: 85473244626.16.619D9C7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 550B84000B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:17:43 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kka7V0z3;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 11F6E40002
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:19:31 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlO3gQTD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795601863;
-	b=eqsAI5eCa9XgRb6HsLh/nOpAc6vjnHCjGTxrUEHkgbNU/PbmbKY+k11c02XUiKnE0smgKJ
-	fcEojYEKMYDhQmWRYqvW54EV5I21XR73DQOTFxYK/+DJCZFPaVqNpwQUjIE1lNXNHg8h5v
-	DONIa07chyG9nqxCyGFM1a0Dvb/J7pY=
+	t=1795601972;
+	b=jaJ5p0gY1Cunw2slu8HiKtNAgZp+RhmpaOaqaQPmEvwzxXEOt+X8NdkWrjw6TMCC9qWrso
+	Y0XLweXSFJ7BJ4ThOlE2I6kwFdYquQAAVF95EiF+Fj+FELxVP95GOv2wBrfNU0rMpF5t6M
+	3fH2eq4fBGdMshJLb1MCUMw6LM+kxeE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795601863;
+	s=arc-20220608; t=1795601972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MVpSybBRP0s0J8L4gfkBHiRSvBKROD3zUxXIUAM8HhA=;
-	b=hEropbd/sDaFEDhiIa55Da23z4ILBl4opb9iDWP2uBXq2WjRK4wx2dmN/CxsU6CXR3cQPE
-	CKioaW+KkwBtQKNXfLfUh7b0muWyzhx5GOcSRIVqVaHwqMr1dlKL2V+eu7gr7pW/sLqqJo
-	xDEcy8yacQ2AMinIFE58jqvQ5ZwTyvA=
+	bh=A8K1+nUfZGzWQoYLt14zgQq+vIWgX6A19PV0LXI1Njs=;
+	b=Z3ijz7Y1siCb7ouv+AqYxh3AcvjO/cUYvHCobs/+g8eN9oHAADNszBrf6+c9nnHieDbDMy
+	NrqpcrMpKXkEc8FsLinZYJ7vP4zEczb3QPt4Ciywql1PMCe0hbVIsajPM+K6d5fms1YKr4
+	2MNLjfFCbrjoJEsMtaNqe+9YoiBs7ew=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kka7V0z3;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlO3gQTD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C912B60D13;
-	Wed, 25 Nov 2026 10:17:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521A21F000D0;
-	Wed, 25 Nov 2026 10:17:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7E6A5609D0;
+	Wed, 25 Nov 2026 10:19:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E540E1F000D1;
+	Wed, 25 Nov 2026 10:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795601862;
-	bh=MVpSybBRP0s0J8L4gfkBHiRSvBKROD3zUxXIUAM8HhA=;
+	s=k20260515; t=1795601970;
+	bh=A8K1+nUfZGzWQoYLt14zgQq+vIWgX6A19PV0LXI1Njs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kka7V0z3rAN2myWRWUJ7Onlql/wheMihA7nbgFyaVm1BMatCAYHP0qX/KUiaqp7xS
-	 wLL8DPzN2vyqWkZbm50OyTrAeRDGS/uWROQbMr04QqVwiXXwaaOSJlP3lIVNxUSBnL
-	 baazwmqsbZ8BoEUyRXPuSgvLJnIQzG5unm3ZB7xa9FZtWATUTvSP3TsZXsAiptJpN/
-	 m7zoI+FonBW6LTpOS8CM55qrkns+g7qwaVuv0/gszNJFEmUskBP8mIgJizSQBKWt+l
-	 JFC2nQ4ayt+sS6gOQ4/ePJkENKDTf8g4TYbEz6EVsh34z6BAmvyc99wucVvbtB5q1H
-	 Z8fpZY/SVzKrg==
-Message-ID: <1b88fc30-a3d9-473c-92b7-701cc563be1c@kernel.org>
-Date: Wed, 25 Nov 2026 11:17:24 +0100
+	b=SlO3gQTDfH/XH9oJ5c2qoNMJ9dKcJqXpVbRKfQrSwxJ6fwQY6u5CXqLbH6F9wF21w
+	 5TcmLUPb/AOhs4Z2igIdzvBcj9Xi7PGyTLosQFBj4wyI4h7xSglVnMsj4psh6V2um9
+	 fQDkkIJVU4+Xa1MnFp5BWj3Y5d5QJnh+p5vv+LkcPED7DvSIkkrXqfQVCekobPPrUA
+	 JAWeOaWRYW/Eil2G7j+Ke7Lh9N2olb8Q+SM6gP81YztZrQRhSuLNEhB0FSmwSUT7vE
+	 /G8zqW1eQZa++Xg6zUzPXer1Uvms5vGAE7lstVRwThaOjnukiUxbTSPHhq+fdoa0Q+
+	 MpMSYxs/6mnOw==
+Message-ID: <d088452f-1118-4a06-bc16-1942e523e0fc@kernel.org>
+Date: Wed, 25 Nov 2026 11:19:18 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 17/18] mm/mglru: folio LRU refs based active/inactive
- number accounting
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
- Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>,
- Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
- Gregory Price <gourry@gourry.net>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, John Hubbard <jhubbard@nvidia.com>,
+ Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+ Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org,
+ linux-nfs@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
- SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
- Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
- Zicheng Wang <wangzicheng@honor.com>, Tal Zussman <tz2294@columbia.edu>,
- Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>,
- Ehab Ababneh <ehab.ababneh@intel.com>,
- Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang
- <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>,
- Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
- Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org,
- Tianyi Chen <hi@tychen.cc>, Ridong Chen <ridong.chen@linux.dev>
-References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-17-8ffea39934a6@tencent.com>
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
+ <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
+ <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
+ <55114986-0ba1-4a80-8498-bf674d64e01b@kernel.org>
+ <away88BuU8ibcTA5@infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -145,22 +138,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261124-mglru-fg-v6-17-8ffea39934a6@tencent.com>
+In-Reply-To: <away88BuU8ibcTA5@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspam-User:
-X-Stat-Signature: xg753kcjdi3tzxy4cq5rtmm653rfs3o7
-X-Rspamd-Queue-Id: 550B84000B
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795601863-667490
-X-HE-Meta: U2FsdGVkX18tQLbB4t9ruUp61vZ1/olnfmEjBgTiUVlB8/XpFvPvOkgzvVm08YqUFGz6tOAMCNFHoy74fd1Qsbzwi+9W8iOd3/E2wx4EsnyLCVfV4uz5qPYgSiX4ec4m6PtRGRoIoJA+51rrJ8GGOuGJbLSopskBRGOZjbY9v0U7so8VycCAhkWKAKFIa5/sHBdhkmbHETRsDUh4AszH4t79hoHr2yn+DIDWZ0ri3B7cMgfyod4fXkH3OZkzuIThayjLyetyPMMqJaMaDzk4cLe+UxPXT0VvA6o4stdsCUaxo/7L1aZmQrhEd+Mb7TfvF8Fb8syzukbTsJ7h4VmDnCntYvv7RZ2iy92AN6Ox0fNxO4zhNo2CYr6m+RVuyetUR7SY5refV7yFlBqFsR9ubHL2R8kEmJUF82aQ+/kZCgwgjj6CnyYSsEliSGELxG9/v1Cd3YlYbagXg2WXqV1Hk59pwmF6orZTDINc+ukEy/SOtIbKZ5QArHOIjt/0ck5TLnRAUqmMexxvVWqAh/YZUXzvcOTKCEgEOoRx18r4IYIeXiHl4fg1xCmyWbu6Yz4OKtOW8b27yrgMLs+mzT3GYrw4LDuR+RjiLG7bQy0wGo2LzGEu+6Me8GZmdRe3u+xwKxtQxURn3mjQV3+nCaLW1jgtDvo6ioIvjyFBssUP5++RIhq7/TDrzLS7LLIw/NypWCDPw8T2yIMy9g7ZT2R9HxU5oaVM/qrrtLQXX4YptMyIBkPtNKK4EFcR2kqCWoxT46wdKHwRhWBq9UIjBCCObUrMS50RyiL41l494PY+NYNyMt1Hs4UeCsWUTVanrZYn3cKsCL5pOGxuW2v+koURQSbk5K3aXTohUMuaukhyQJmbE4WIvKUUecFzXkyYRMOhovn4Wx8K/YWaSPvEWzc+X7kxkhuvSZlhw3BRedD1iBqoD+qEazOSGN1GcOanr4S7gIPtKRlcB7xg4+R6kQf
- hO0tODvZ
- 5gj0eo9KOtcSb/JpAwIGYHclbeEA0byUrkfLsy3StFaVqHAlAZ7Jwrn9PZO90ezOZA6Ek1d1sTJUYPNsyWGxVxfxCDCWYUWnW8qzkTfk19BkawtQGBVXKFqz2xT52MrugaHqfTkCI7kI1CvkrN4lqUzwgahT9uiwxL4q7WoZYfVsCxLvIpG8sLLUrISThuzfl/lIcmzGnIBqgHKEWS7qXxdzgwL4bs4xvcr0VDnFBMA/PjXVs3+JDjKY/xR5YzuyhK1Xefuz+KVOwPuqyULkJzVyY+8RLtZOjDhQxEOTFclgngErrDrm7gn9uWiTt5ySjrgV63kneku0VKiO05xWX325gmToUgVQuRNcaXJHcsZ1UhohUO78JSKsBmMo0VPpucKVfs1ovFXA3setb4gg4MiNeFhtx9h1/SzDKxRFXIzEozJcW6FlgyY58UHRAv0tPWi/s9yv4khGQGyO0Q0N2FDwfmX5GNluYWtTA2bko2M0svRltm16falPtv8QVYi/IvGtD/GcOi91XsTeg6AmM8B4UVzK8ZzgU7dErOUdrRyTawz0Kw+r+1XD4nGQkiMB1ryX1SqX1/w5CZlyx4kvKgXlmvG210Rfj/E9D
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: e6enr89kkrujkgexpdj7faqs7fx3b8ah
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 11F6E40002
+X-Rspam-User:
+X-HE-Tag: 1795601971-561014
+X-HE-Meta: U2FsdGVkX1/WI4upzioL99PVW1xV6yCS9dpN0Jx8RS6WXQcIwPwy5YV9MqJX3SjmLKd+g80DV/VJ1UiVXDgs1KP+RdY/6PGcNAkHRwd+L4bz5RIw2Y7U6vwJlp75eRF5spd0LEhrJX/SiMupY+9KEixJL3NCgYw5YNFIEkTstm8AEAv7agvye0Dc2LpRBsng/A7H5crc73jnCttoiXo19vMLrCJc+OfndAAk1HCDMMaS70IEFWHjKQ4DVPmjVHt1FUkBvIq/dEuJMtw6QGxrs8yH5Mwn+8U632xfp3ja/uMvK+G4XrXK4X9X5aioGoB8izbmBH0s0jOQ+y03yVN42JZhioh9vLQdnaY5nVWGjNJpbd/bNjVtUJaK0F6N9Cg+q8O8AbL9ZhbiDEFla83/rLYg3ek1CrYfsTpUfTPje+mEmHGmRVDDSEvXdEyoBwkos4WyHZRGtCAVwD197ofAlItwZAQDHhX21AOD2uPTtwyTWO/0N+ExWOW/Rp4+QKXO+QCUeETUNOC680oeu4AQMMlL0XGpry/iLMmef9KtniMfOqrDlLtwkYS25U2jscHX6RqLXiToElg5LnPQL45hxaMc5nZBZrU2gYtNna/iuM1/OGbHeZ8msS+3kwgE+xmkwpNRtu5PQm1xpj75P2iJE88poJfltzPlLHvXobKIh1P8xeXmbOC8qwhlKiS2wXvRdon/GNcGjZtxUWhbFQQriWJDStowE39vJ5vQXvUsFrWWKv1Qyrg01cx583JehrLW2g2/ZUECHkzMMewg/4eGWL3kEF+CxlUf19MvXv6tgSNaJ/Kp30SYBdlTFU7mONXYWcb1snBoZa6hgRsranq0gTEFIcIIvFhIf9HwHMeTWbKzQjKrw+fWXjzMjIeww/kR9cquoXdhh7KjoramF9360xQTkLk2FNaMWFMRp18C61h+s1G5GjvaSdiKE0lDwLp2KA5K/8DMQ/vIbdW0FHA
+ uK0x4Dcc
+ aQgGxCn4MzKACKhddZVSP2/TBmuKOV18VQhhNIuT5lV5gpxx8Vieti7VOslnw2YnHM3E/S3kJyvHCJWLSt8DahRlbY5nE84R5QHnMYCIulds9yUpuHoFrmhptXmsYRMAIRsKUIAjZcDNQh4+7rpstgRubt+9SQTNolWMqAoaXbKeRtCl8OOwHQoOgIyIZSuZR9PSqlFVonak81UG0kdpJwClyoiylYFN1rChIWvsyLlE6fo8kc46g74w+TPHPiR6aG6Bz/+oo2ITilCHnfS+WI7hJr9XXDfcJz4PJVMjH/Tj6Sen8rgB/MzKTW7ptphN5jjXTQmWoFcng1+HEniS5BFHPcqzTAFcybDK2XNPjV49/+TIP88/V6nUCZqPuhNmTGhl4QTdTof4fHBhYZ0UR9zy20zZm3dusagLjSIRykjmpIskA5GJQINIALdfdW7gjvSJnnjrLeACSLGDalfHsWXbmcbbYsI6acVJrV4iG1WVlIawDWx54xGPAZOKtimDYKBXo33G2gqlAgbHpWXGxXW1lXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,55 +161,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/23/26 19:53, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 11/25/26 11:05, Christoph Hellwig wrote:
+> On Wed, Nov 25, 2026 at 10:50:42AM +0100, David Hildenbrand (Arm) wrote:
+>> When I looked into this issue, there were some problematic things.
+>>
+>> We have some odd drivers that use FOLL_GET|FOLL_WRITE, but I am not too
+>> concerned about them.
+>>
+>> But are ways where unprivileged users can mess with  FOLL_GET|FOLL_WRITE
+>> references to trigger this.
+>>
+>> I think the two that stand out are:
+>>
+>> 1) /proc/self/mem access using mem_rw() -> access_remote_vm()
+>>
+>> User can write to a writable-mapped page-cache PTE. Then we can race with
+>> removal of folio metadta, to then set the folio dirty afterwards.
+>>
+>> I remember a good reason to not convert these paths in the past (we are not
+>> performing DMA).
 > 
-> Currently the active/inactive LRU sizes exported through /proc/vmstat
-> and memory.stat are derived from the generation window: folios in the
-> two newest generations are accounted as active, the rest as inactive.
-> This causes several problems:
+> I don't think that is a good reason.  For file system backed VMAs we
+> really need the pin to be able to do someting sane, DMA or not.
 > 
-> - Unmapped file folios can stay in older gens despite repeated use,
->   so active files can be under-reported, unlike classical LRU.
+>> 1) We fix all such cases now where unprivileged users can trigger this,
+>>    converting to FOLL_PIN.
 > 
-> - The reading is jumpy: on aging, the second-newest gen, previously
->   active, becomes inactive all at once, causing a huge drop of active
->   folios without any change in use.
-> 
-> - The reading is reversed on swapless machines. When swapping is
->   disabled or unavailable, MGLRU ages anon by moving the gens directly
->   without walking or touching any folio, to reduce the overhead. So
->   inactive anon folios can suddenly count as active, or vice versa,
->   despite no change in their hotness.
-> 
-> With frequency guided promotion, hotness is already tracked per folio by
-> its referenced count, so we can do folio level accounting instead: a
-> folio is active once its refs reach LRU_REFS_ACTIVATED (currently
-> LRU_REFS_PROTECTED).
-> 
-> On reaching this threshold, folios are accounted to the active part.
-> On forced per-folio aging or PID protection, refs are capped at
-> LRU_REFS_WORKINGSET, dropping active folios to the inactive part.
-> Note that on swapless machines anon refs are not reset by aging (the
-> shortcut skips the per-folio walk), but the counts no longer oscillate
-> as the generation indices wrap.
-> 
-> The accounting is now per folio and lruvec independent, so no size
-> adjustment is needed when reparenting a dying memcg: the hierarchical
-> stats keep the counts in the parent automatically.
-> 
-> folio_migrate_lru_refs() also gains off-LRU VM_WARN_ON_ONCE checks and
-> __folio_set_lru_refs() leaves a folio that is still on a gen list alone,
-> as its refs are already in the active/inactive counters.
-> 
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  Documentation/admin-guide/mm/multigen_lru.rst |   4 +-
->  include/linux/mm_inline.h                     | 100 ++++++-----
+> We need to, if not for this series then for all the other outstanding
+> issues with GUP writes.
 
-Another clear indication that this should go into a separate header. Maybe
-mglru.h or vmscan.h ... or both.
+Cool, and I agree (that's why I placed it at 1).
+
+But who is "we"? Because I recall that "we" wanted to do that a while ago.
+
+(I won't be "we" ;) Pedro, can you take a look? I'm afraid the fuse thing might
+be the harder nut to crack)
 
 -- 
 Cheers,
