@@ -1,130 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C611606A69C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57476606A68F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=uB+i0aYA
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=O3hLtJHG
 Received: by kanga.kvack.org (Postfix)
-	id 6AFDA6B09FC; Wed, 25 Nov 2026 07:53:20 -0500 (EST)
+	id 74D186B09FF; Wed, 25 Nov 2026 07:54:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6876F6B09FD; Wed, 25 Nov 2026 07:53:20 -0500 (EST)
+	id 7264F6B0A00; Wed, 25 Nov 2026 07:54:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59D0B6B09FE; Wed, 25 Nov 2026 07:53:20 -0500 (EST)
+	id 662F86B0A01; Wed, 25 Nov 2026 07:54:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BE316B09FC
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:53:20 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C6905120DFD
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:53:19 +0000 (UTC)
-X-FDA: 85473632118.15.FB1EF8E
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E02DB1C0004
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:53:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=uB+i0aYA;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of alex@amutable.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=alex@amutable.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 409456B09FF
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:54:11 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B409C80E94
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:54:10 +0000 (UTC)
+X-FDA: 85473634260.06.F8DE9F8
+Received: from mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A92E620007
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:54:07 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O3hLtJHG;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795611198;
-	b=onAIjN1ZIx3FUBjuRasPgVtZ8BInjwLAeCyQelQAS9Hpdn2YzS9JagDkBi+2S7UleEice2
-	JHKuMThdbsMnOLQacO6XauupiU727IihcfmtzUEdgDA6CL0ZBhYmzeV8rJ8Us6u0F1mBao
-	5n3a3JQ31SBLbRYyJmyIZYCmDqDCwXY=
+	t=1795611249;
+	b=dGoZLOTAK0agfVym3aB0okd5freUaiIiMYZ9YVida/YKC7i99VfmGGyoTv5TCqe+TgGeE6
+	YLpUko1diiLpJSkwGn62I4h3n814h375iMtaGBJIxgxh59i1tytchdbw8f3gQMSg/OxzOP
+	PAaPt0feZCw65bnhpLarMszXUlMGb+Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795611198;
+	s=arc-20220608; t=1795611249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wb5N99RF+uLplURkem29zNIHwOiV4iL5+6TcWsB08Yc=;
-	b=b7K9QA/o/pwotThKhQLvgFkAjv2bbVFtRY2TZOq88jBdr3MNmydVjqe458EWXXDtDUcZTu
-	o5YpWDuzwBh7uttbBjFnVbov+npyi+tL21wfBIAJZqiYZEL+lxxvAloXTzLTpfqTSBMhrb
-	WZBw8tDKHs8zp/2u9hb1/bt7FLePHs4=
+	bh=18hmBrQfpJAG5UTxwsqwNFDo+XibBBB6MlXV+5uOdH0=;
+	b=5qvFp/rsAtd7xwjaoiVw2f07j7vEzRQvTrjsfFpiw9IE7rGRDYfjrNKbbZDnqkqpKoT6/9
+	pqoUT4JQt/izCixewRMuB9AfY5o5lchVaSeOIFer3pD3+okFCsJozYX6l/vRwsQP0yzpX3
+	DlVFtfbm3gHxzplSnI3leUJaZLB7SPg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=uB+i0aYA;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of alex@amutable.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=alex@amutable.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4bb666304fdso59426605e9.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:53:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1795611197; x=1796215997; darn=kvack.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=wb5N99RF+uLplURkem29zNIHwOiV4iL5+6TcWsB08Yc=;
-        b=uB+i0aYARrqz1uuBdeYaxUBZ0S2PvTHnEQAHxG8kYmDG/BWygZoaak/XlaXBy/qIMc
-         /zkp2YUfMe5gNQ0CmpZZfALJiNUOPQjznki9+9HBIbv/eEG9V2rr8Bj9YbXwSmj6p67S
-         an9n+/V95gXPuUmvgCZvEnEaWR4GALbdpa6liSnibwe/NmsgaFiBaBUSHiE6VDMSTTkB
-         FPak+DwhM0ILo7jSfeGhGyho5L8DUngSmX6v1W/lsP8rveZDv06KjjaEApw+1Pb5kSdI
-         h/CLtX9D452iDQW0S98p5i9dtOGhQ6/Z1wLjuQfjLYZi+3Qr7/1JA6xAa64oM6o8bSrR
-         EVWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795611197; x=1796215997;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wb5N99RF+uLplURkem29zNIHwOiV4iL5+6TcWsB08Yc=;
-        b=QtreE/iX/d45cfSB4YowepXqIpgdreGUHGaAnNkG7alus+haREJ9t5oHE0HAXEhcRz
-         Z1kKvLWUbjphp7nRN0r3sMe9jboWcd8dsrm68Gdy0t3IYhubLCxZQJVn3HWg9zI66yUT
-         0Dblry48nz0Mv6O+YHuxHPicp/0jUeEkfMJOLL67eXsMYnsioZqc+IxaiFeR4aD0QyOb
-         okLp9e6X2lLRivBYPkMJNOtcVRdAmiNeZsz3+LtcKlU9LbxRVKYHXtpA1wUoXe7YQ1m9
-         oIXArL8/5X7fQXL5pGvxqhsgPj2G9uNHHMxaAOw+nxKQTxyOLgK4DmqvqsiXCTRDAUTY
-         DSTw==
-X-Forwarded-Encrypted: i=1; AL+hErFL/mRuiwAp41uxEKdoSTHjzRzedQdD0a77BWIZKv7f21KBjftwn0yyfghulTjuMNOUZsQpxpb5PA==@kvack.org
-X-Gm-Message-State: APuU4Z+7q1FeYgUlubbjhBJxCxcUcZj3EzmTZMiGnFhblAqN2zqfNQ2F
-	Tqhdc0pd7mxvQlD47RGIFwVQvDiKNKhLaJpIkkFowSvL42e/0McnNwlg/c6cXwOn6Blt
-X-Gm-Gg: AZFdTZfzNIJ9uUdspxTzWadgMJXTCi1hVTxfm9+NqcAiG0OzM3FApPJium11LFQLe0A
-	3uMoxStfV4cfbrjgd9tn6LmD8nEZazcUkAqjKj5xtH4WxbMVlYB4VHuctaB5aDfR+JVpBCPNYMF
-	roZk6Lo/ahTU8vcUgIaIBK4AdpsGKtMpA34QFHMVt+Ui0UOOMq1jdbka50QuME8+INsOFLZRTpM
-	iywM6x7F6qpKXYb45F6uDmcZC7dHESBy1pk53TxSTLxVSEdn4Uzim5sKzD2ArSztLLXbvYpt1Ef
-	en8c05rDscQ/OxXNenwYX662JRgguVchy0QYjO5BPcuBEgEy8FBnML6eZP1nuibfqTqx/cNtUzI
-	nqZnrSJ1507WDjD0Z+2lsl1k0YD22FL+87jK+IC8e4pjoidmb8UFCO8UvnExVaNN/shee0ckAWZ
-	k2pWTFSywDtvkg+voLvLicTWQfJcC8j7pL84KWdU48hTBZP1cY60Yw4qcS4YoEWtKd4Yhp+ggLJ
-	M1dNO2VNc8EBKC6ARpxlZWoN8BYMfiSThM3pP/ai+1WoPOtrXlb39B4N1zALPhyrkaTTpdJ6um7
-	Suv3+WqnPYuvD48ln5QD3HVbPFu9cLYEUcs6Cm2JrWUHEScsoN1zxw6ofkn9qiWPW9hjkpAg+up
-	APXbrrJcBM1QXR4UtJMsItFaHWwg5Icsl/PQcjoAjRluM/p0qGeGz6ctQhu3OkJku40t23Ld1SA
-	8=
-X-Received: by 2002:a05:600c:b8a:b0:4a0:20b4:ba93 with SMTP id 5b1f17b1804b1-4bb88818156mr356853675e9.16.1795611196651;
-        Wed, 25 Nov 2026 04:53:16 -0800 (PST)
-Received: from ?IPv6:2003:cf:572c:2800:c235:97b:8b16:8928? (p200300cf572c2800c235097b8b168928.dip0.t-ipconnect.de. [2003:cf:572c:2800:c235:97b:8b16:8928])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853b2437sm736573735e9.13.2026.11.25.04.53.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 04:53:16 -0800 (PST)
-Message-ID: <45510e886330ade6013838f94cd84c688b263aa8.camel@amutable.com>
-Subject: Re: [PATCH v2 08/13] ipe: handle errors from resolving the real
- inode
-From: Alexander Mikhalitsyn <alex@amutable.com>
-To: Christian Brauner <brauner@kernel.org>, Amir Goldstein
- <amir73il@gmail.com>, 	linux-fsdevel@vger.kernel.org
-Cc: Chris Down <chris@chrisdown.name>, Miklos Szeredi <mszeredi@redhat.com>,
- 	linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, 	linux-trace-kernel@vger.kernel.org,
- linux-integrity@vger.kernel.org, 	linux-security-module@vger.kernel.org,
- linux-mm@kvack.org, Fan Wu	 <wufan@kernel.org>
-Date: Wed, 25 Nov 2026 13:53:15 +0100
-In-Reply-To: <20261116-work-ovl-d_real-v2-8-90564c4ae347@kernel.org>
-References: <20261116-work-ovl-d_real-v2-0-90564c4ae347@kernel.org>
-	 <20261116-work-ovl-d_real-v2-8-90564c4ae347@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O3hLtJHG;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ovCyAeWyuFaTW58PgPzA1TUj7418UnVnjzM69URWLP8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795611243; v=1; x=1796216043;
+ b=O3hLtJHGi4tR56GOBETUH7a4U9tLEMegC6iA0RoNnZOiVkU+MFNVAF8S9CjBdlIRTq32LRPi
+ nWHOTMNtyWlNkUQCyqoC4bbzvNXTVM426zUzZcSDQMVaJ9+WSxRSfdX787HG00plUrtWYGCQZ2X
+ LeCirW55f8grwqA/Sb94kxUs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f98bec9bc042860a;
+	Wed, 25 Nov 2026 12:54:02 +0000
+X-Mizu-Trace-ID: f98bec9bc042860a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <13af506e-fa83-4c35-8467-a07a26e1fa02@linux.dev>
+Date: Wed, 25 Nov 2026 20:53:47 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: E02DB1C0004
-X-Stat-Signature: aob3sun4b6tk3u8tbfe7b5f55rnabkyc
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 11/16] mm/mglru: Run aging when one type is drained
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
+ baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev,
+ kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org,
+ lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
+ liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org,
+ mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org, ryncsn@gmail.com,
+ shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com,
+ weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
+ zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+References: <20261114200803.23129-1-baohua@kernel.org>
+ <20261114200803.23129-12-baohua@kernel.org>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20261114200803.23129-12-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nwma9znyze43gf7i1ygd6pbqadjdzf69
+X-Rspamd-Queue-Id: A92E620007
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795611197-343739
-X-HE-Meta: U2FsdGVkX18R0eEI6HXtLW5BHIZZQ/U1bqbpv1QtDyQIrymRNIZmpAbMpzUtE3weX5YNldAx1rAytaZwoI5eSUcJy86zPTaZCJIz0Ij6o3ot2+6tg7yMfBTEDFrIaGqjpyToMj0T4Lr4Eqn+MALtS/fgXGgEWShZ+vd60uKBSIcpjpcUOpa9q7iMgkdwQGJZ5SXFNaeYg4N0a/PbAZJ0dbWkMnKr8Go9X/CyI/EOp1nHJS/D6G5jxPtTIlFJQsNIS2ZcCUZdseKdG1yMtQXVe+IBhtutkrUEh8Zrv28luHrTN8W6mH1i6Ho4Slv87hFHbTOT+Sj5Rv6l2ua++hjLV8OLWGvxfXeo/Mktkr++I71hiCvywN78sGuu7i/oPhEtGS/SIFebWcM8cXWoLk9hyjkl/2wpF3s8MG9Zy96fKhjZgmSCUnxU402PZIFm1GG6PQAfkZkFys4fi8nB6z3WD3WIDUwgUPfDT3T9hFTTi5/HD/TUCDTMvomTRPloykDCa4ZnojrA3xd2LBt/46VEPH5YNIUedTSwgCjbPcDIskmDWNAvvLS0Q9H+QJXgqwoUFyeUSk7QdV+R5ZiX/bZ0fqQS6pgl0liPf0VNspzfcfTvUsX+txABkmA72sxn7++7yQi0ubfdH9GMEsCEmJl1XgITPsFEWxRHrqG2BMvtrKr5xOEMNcPIWDAMt4lPnPmMZ5MHo7hFeHypGDjo1wGAHSxBQ9RlXFPwWdP2w2T1GSgjYa9EPOfVFsAC9Fq0gHsHweYO7K0kFEocRGrzXOTqITpDYhatp4zKJfJ13/dXemTELrHfVqrdONB1K6hf8QnXePHflLhJb4K8RggXelXlZySMFe5bckbv+MPPT1fZvxhU7q6kqBmjxF8FHdItD4kL7FyLwXFz15Yb24ZSIxgC1FH0RO0zfi8rsiKChQ2ihqUONPAltLDT0Bg6ywU1BijoO0NvrOFxczDhXfY0iim
- aETfzAbA
- /Z/NCguvICuDB3B0kKVcCGB/VUoMQ3vnnkgdh/k2h/O80DP/EVSashQoKvyqOJOAxorGp9lGQbqMXUHl7huoWVCobqcMDkx1Ju5ddMpEpfI2i5QMpbZMGEav0axN1qlM4ESe7M5ILnvaWqIhiNANuL1+pOavr9fkTbnt4NmwhEOpV7SKw9MK120MAuGwtpX6fugvghvyck9hQzJiKOux835nauZ5/pnEGlTiGyRlhwRHV2JMGqOTk8v49FYIlVv8XigATUZepjEFKL3Hojrw5S5gqh1UGbdVK3L5FJG8hgv566gQBCzmNx36u3Dq0EW9ZIG7Pv75As+pqbJZwoJzzC6yE7+5nUiV7cdJqmzppFDKEimadVV22OF40Jp6CFtFG2oB2UBpd3xZxTtX2iF8UbHYbKfd180gilZ67gbW7p6wTN67acK0jPR9dsGfadpF/H5jb8VXlLOykKhfrleAkZBfUe8wwRAQJ589vFReoaFsTkOSl7xbfT7dxdwcedej3abltdIY77Rsx9Bq6ipAPKkmI4n+vgTUhYOobZ6RVq+E7rAW2ql3Xrs4urhvDSWyTb9v2GcWcoLw2af8Zet1Ta1pB5S/CVErW5liokYY2jJmlYXjLwScieM/UBQ==
+X-HE-Tag: 1795611247-427701
+X-HE-Meta: U2FsdGVkX1/avQOz9rUw+nhc4BhVNuExbh8YgNslTZW1V2itKrJvKoN/l/0eEWsueecYzJpRiF5Q/n7yQN0aDcQOIIJl5bsZPsL+oUz3OnqAJ0bY21aQdXajZNKCHtjpAmqwRrqLp+CZomwssrB/PKlV1b8bWpZV+v9JQm0BpvqQFbIiTiBIDOyFT5vrzis6UCp55pJ+ms38LWDz5YF5bbMlJ3tZIOQ2ZWw8YH7Qqj7Sjdf/FESv3PI0y79myskLe/0j3j5xCR2A3u5PbcfYFJFreRTK19yQylT/Et2YxOF8S5PLI+HDhjvMw/hv8JSD6+ViK9QY+2vLEGZ8OJ28WDUzt1of+pejat9PYaB+SGKBUEtW8XNwdrrW103QELueXNMCGs6ITGvOyrIpvk6vsNvK/ljf2bWj7mgL7ROpzeqTQeYiNKmo7lA/xtifXOR2+pD4jJ/rTxW1ppcv0R8dugncQPBzspL0kwYxlec8uzzKEGzeRO9AIItCLbu7Hxuud1yhpQmlx8b+w2EqjUE1ONDrSsLNB4v0iZw48JJLEB59n+EeYVqUNA9L8dc9nfrR0mRRTKEIwFmN0haBWeHolbeSOkEhuVB/dblbGrsLLmG8VOvf2OMvzCbug2WZIZX5i7JbDUnu3TY7ZVMsNOD6FebBPnqcQPvld5Uew+NX0CTKxoDKu1vF5D7VFTBU9hLzH0kogP919A/2PJx9KI8QU9v8+I3yzR9SE4yXEFvZp77XKg2SXFhqCCRfEUp5+yItS9PA8O4LM3mAEqGNP1rM5h+hx3iW080js4JZAb2MLN2pl7ATuqxsR3rRjQczWyipLnvcO1Nw2Ps6iNlxh5IPw5JpeHVLlRSPrTL0PVs+kR5AryU0jqTl2HaIDkVuCtRtN+UqcpubbR6pMz/nyOrch/oUU7BgEKYiOJfBFYHvapIV4S4FS5hM4erxQ4xUT6MObe4k1Aw9eMoTLXA3zyB
+ sT3UxFGO
+ 7KjVoBHqx8r+bLH3ypi7a50WFIqHUbGarrd6AcOHE4+vgvMYgAKqOd1AqU5lJopwPvXs3fzVUinGqJfcVbRU82RQiuQYmTHrXjI7jt0v1rammcGZNQ40RlYr1kbPPL7ybRkEjbdA0hP6HXlWNcFf9BcOfShJ/Pk5nF1BIXicxp00F7i67ZigHxHe6TloMvliV031VLI6FmwHmEvjKUp++erYN5jMXHsJFMesMXu/th15XNVmf02fTSewtzz21x0WfojEdrFlo8CG6tEIlQzogvJKXQzvFh45AL3tOTRPAKwUjfU5sfJ2gQpgbsRsdtBYbIVp+g4K67RFEBFquvUFlbmEfn4EQtvItEWUAxlXIuVqrB002nwpVWh/LRfLK8b1FlQLK+xcriYijAIXrmBlQyxgtbt6SOMKAq3aWSGvvE/m+9gzrHYp0YPSDhOTWV6wTJEaudS74lpz3Vn2rcVNOOVF78eoX549c9UgRwpmnaflUw58wSiZdjlI6FG0GsVz1U3V1nOMOY/DAGBqiBn9vaMoIi7xxI5enFC62sPotoQgAJe2XtyaCKPyAWi0cWQzo9Vs1BmR+DMmf/Yc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,63 +103,157 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 2026-11-16 at 10:44 +0100, Christian Brauner wrote:
-> d_real() is about to be able to fail for D_REAL_DATA. So switch
-> ipe_build_eval_ctx() from d_real_inode() to d_real_data_inode() and
-> deal
-> with the error.
->=20
-> Currently, if overlayfs fails to resolve the data of a file it hands
-> back the overlayfs inode and IPE evaluates the policy against that.
-> The
-> overlayfs inode has neither a block device nor any fs-verity state so
-> none of the properties of the file hosting the data are visible.
->=20
-> Instead, leave the block device and inode state of the evaluation
-> context unset if the data can't be resolved so the file is evaluated
-> without any dm-verity or fs-verity state. IOW, IPE reaches the same
-> verdict as today but without looking at the overlayfs inode.
->=20
-> This is a no-op until d_real() can actually fail.
->=20
-> Suggested-by: Fan Wu <wufan@kernel.org>
-> Link:
-> https://lore.kernel.org/all/4e9a39ac-9ad5-49d8-b0c4-09e665504609@kernel.o=
-rg
-> Acked-by: Fan Wu <wufan@kernel.org>
 
-Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
+> We may have remaining scan budget for anon or file but no folios
+> in populatable generations to scan. In this case, `scan_folios()`
+> may repeatedly scan that type without making progress, even when
+> the other type still has populatable folios.
+> 
+> Run aging when a type is drained to make more folios available for
+> reclaim. This also helps honor the scan budget distribution
+> determined by swappiness.
+> 
+> Move aging after eviction to detect a lack of scan progress and
+> avoid unnecessary aging when eviction can still make progress.
+> 
+> To avoid excessive aging, allow drained aging only once per
+> `try_to_shrink_lruvec()` invocation. Also skip drained aging if
+> another reclaimer has advanced `max_seq` during eviction.
+> 
+> At extreme swappiness values such as 1 and 200, reclaim initially
+> focuses on the preferred type. Rely on imbalanced aging once
+> `sc->priority` reaches `DEF_PRIORITY / 2`, rather than triggering
+> drained aging for the unpreferred type. This avoids unnecessary
+> aging and has shown better performance in testing.
+> 
+> If `evict_folio_lists()` returns zero, retry eviction once if
+> `max_seq` has advanced since the aging decision.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
-> =C2=A0security/ipe/eval.c | 13 ++++++++++---
-> =C2=A01 file changed, 10 insertions(+), 3 deletions(-)
->=20
-> diff --git a/security/ipe/eval.c b/security/ipe/eval.c
-> index 4a7be96c84f03..a2366eb9a47b3 100644
-> --- a/security/ipe/eval.c
-> +++ b/security/ipe/eval.c
-> @@ -102,9 +102,16 @@ void ipe_build_eval_ctx(struct ipe_eval_ctx
-> *ctx,
-> =C2=A0
-> =C2=A0	if (file) {
-> =C2=A0		build_ipe_sb_ctx(ctx, file);
-> -		ino =3D d_real_inode(file->f_path.dentry);
-> -		build_ipe_bdev_ctx(ctx, ino);
-> -		build_ipe_inode_ctx(ctx, ino);
+>   mm/vmscan.c | 49 +++++++++++++++++++++++++++++++++++++------------
+>   1 file changed, 37 insertions(+), 12 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 1450542d709c..6d942f192e63 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5175,7 +5175,8 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+>   }
+>   
+>   static long evict_folio_lists(unsigned long nr_to_scan[], struct lruvec *lruvec,
+> -			     struct scan_control *sc, int swappiness, unsigned long max_batch)
+> +			     struct scan_control *sc, int swappiness,
+> +			     unsigned long max_batch, bool *drained)
+>   {
+>   	int type;
+>   	unsigned long batch, scanned, total_scanned = 0;
+> @@ -5191,6 +5192,8 @@ static long evict_folio_lists(unsigned long nr_to_scan[], struct lruvec *lruvec,
+>   		batch = min(nr_to_scan[type], max_batch);
+>   		scanned = evict_folios(batch, lruvec, sc, type, swappiness);
+>   
+> +		if (drained && !scanned)
+> +			*drained = true;
+>   		nr_to_scan[type] -= min(nr_to_scan[type], scanned);
+>   		total_scanned += scanned;
+>   	}
+> @@ -5206,9 +5209,15 @@ static long evict_folio_lists(unsigned long nr_to_scan[], struct lruvec *lruvec,
+>   static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>   {
+>   	unsigned long nr[ANON_AND_FILE];
+> -	bool need_rotate = false, should_age = false;
+> +	bool need_rotate = false, should_age = false, retried = false;
+>   	int swappiness = get_swappiness(lruvec, sc);
+>   	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+> +	/*
+> +	 * Avoid aging the lagging, unpreferred type at extreme swappiness;
+> +	 * rely on imbalanced aging once priority reaches AGING_PRIORITY
+> +	 */
+> +	bool allow_drained_age = sc->priority < DEF_PRIORITY &&
+> +		swappiness > MIN_SWAPPINESS + 1 && swappiness < MAX_SWAPPINESS;
+>   
+>   	/*
+>   	 * Proactive reclaim initiated by userspace for anonymous memory only.
+> @@ -5226,22 +5235,17 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>   	lru_gen_prepare_scan(lruvec, sc, memcg, swappiness, nr);
+>   
+>   	while (nr[LRU_GEN_ANON] > 0 || nr[LRU_GEN_FILE] > 0) {
+> +		bool drained = false, do_drained_age;
+>   		DEFINE_MAX_SEQ(lruvec);
+> +		unsigned long new_seq;
+> +		long scanned;
+>   
+>   		if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
+>   			need_rotate = true;
+>   			break;
+>   		}
+>   
+> -		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
+> -			trace_mm_mglru_aging(lruvec, sc, swappiness);
+> -			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
+> -				need_rotate = true;
+> -			should_age = true;
+> -		}
+> -
+> -		if (!evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATCH))
+> -			break;
+> +		scanned = evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATCH, &drained);
+>   
+>   		if (should_abort_scan(lruvec, sc))
+>   			break;
+> @@ -5253,6 +5257,27 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>   		if (root_reclaim(sc) && should_age)
+>   			break;
+>   
 > +		/*
-> +		 * If the real data inode cannot be resolved, leave
-> the bdev
-> +		 * and inode fields unset so the file is evaluated
-> without
-> +		 * dm-verity/fs-verity state.
+> +		 * Allow drained aging only once per invocation and skip it if
+> +		 * max_seq advanced concurrently during eviction
 > +		 */
-> +		ino =3D d_real_data_inode(file->f_path.dentry);
-> +		if (!IS_ERR(ino)) {
-> +			build_ipe_bdev_ctx(ctx, ino);
-> +			build_ipe_inode_ctx(ctx, ino);
+> +		new_seq = READ_ONCE(lruvec->lrugen.max_seq);
+> +		do_drained_age = drained && allow_drained_age && max_seq == new_seq;
+> +		allow_drained_age &= !do_drained_age;
+> +		if (do_drained_age || should_run_aging(lruvec, new_seq, sc, swappiness)) {
+> +			trace_mm_mglru_aging(lruvec, sc, swappiness);
+> +			if (try_to_inc_max_seq(lruvec, new_seq, swappiness, false))
+> +				need_rotate = true;
+> +			should_age = true;
 > +		}
-> =C2=A0	}
-> =C2=A0}
-> =C2=A0
+> +
+> +		if (!scanned) {
+> +			/* Retry once if aging advanced max_seq */
+> +			if (retried || new_seq == READ_ONCE(lruvec->lrugen.max_seq))
+> +				break;
+> +			retried = true;
+> +		}
+> +
+>   		cond_resched();
+>   	}
+>   
+> @@ -5885,7 +5910,7 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
+>   		lru_gen_balance_scan(lruvec, swappiness,
+>   				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
+>   
+> -		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BATCH))
+> +		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BATCH, NULL))
+>   			return 0;
+>   
+>   		cond_resched();
+
+The logic looks correct to me, but try_to_shrink_lruvec() now carries
+quite a few temporaries (need_rotate, should_age, retried,
+allow_drained_age, drained, do_drained_age, new_seq), and it took me a
+while to follow how the drained aging, the regular aging and the
+retry interact. Not a blocker for this series, but it might be worth a
+follow-up to move the aging decision into a helper, so the loop only
+scans, ages and checks for exit.
+
+Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+Thanks.
+
+-- 
+Best regards
+Ridong
+
 
