@@ -1,98 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFD3606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B95606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 13:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jlIaZOTi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bk1ZGJl0
 Received: by kanga.kvack.org (Postfix)
-	id C62AA6B0A0D; Wed, 25 Nov 2026 08:16:27 -0500 (EST)
+	id 7E5E36B0A10; Wed, 25 Nov 2026 08:27:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C39C66B0A0F; Wed, 25 Nov 2026 08:16:27 -0500 (EST)
+	id 797396B0A11; Wed, 25 Nov 2026 08:27:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4EB56B0A10; Wed, 25 Nov 2026 08:16:27 -0500 (EST)
+	id 6AC286B0A12; Wed, 25 Nov 2026 08:27:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6CD6B0A0D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:16:27 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 177F21C49FB
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:16:27 +0000 (UTC)
-X-FDA: 85473690414.24.71A0736
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1DA261C0002
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:16:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jlIaZOTi;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B4156B0A10
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:27:36 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2707C0EF7
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:27:35 +0000 (UTC)
+X-FDA: 85473718470.07.C964260
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 21F8B180009
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:27:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bk1ZGJl0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795612585;
-	b=jC/Rgn9fCOwFuEhBpOPlo8gwcrBGJWGO55NOLUY3rdKSjTqIRc4YSTkyvkBiYXhUeQZ05b
-	ll6sQN/w8R25kouHpNKlHjm3B3Z66DTetCbtuJ5N6PvWLyofxiVJY5toPXKPqxn/rY8Olz
-	l+GdGohgrXO9Ez7POCeNYMotARDzmcw=
+	t=1795613254;
+	b=dJ610d8lBqP5dsmKpZTOFDHIkaFW0H+nqxxrE7rHBxCAbrZBbp6r/9tC7gBCptijdTfUGy
+	zt9XeJ463F5jbJvQaVjV0TZwNdgJVWelau2nshuCdUFKPARLungRoHbuioDeIhL/HMg7gR
+	E1WOj//+DeBHitslEj/u1Yq8bi3OL3g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795612585;
+	s=arc-20220608; t=1795613254;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0wfHfoffwgQ42eBrOdbPVaIwEE0p9xDrDHUkm0VvxXM=;
-	b=w7h00yyKATAFm88GQrTV9RbCJzGv3yCRA/8OasjmcUWsIYjcHehq0dDcK+5BpX/9WGo9mM
-	TRF50hF84NcBnZpwgnXNWERbmWOBi/geFOIQJgXnzd4bpPGRnZuJLaRFSbNdAqspkdr09U
-	CgBsGtCVK/S+qjlJ/R1dyouAvNOGPQ4=
+	bh=M5gHCchVhFhdOMJqGmOLCKhYwQb/s46rivVW3uM5pk4=;
+	b=OKbb0N8CCkLDpjT0n2X6PJRPBc29mjkyfBkTWVYVGXscbRkbA8U0pV9CqRSmt4ov10sWr9
+	Z8ATe6XP6O8fAwFDgT4j38pnCIrPlI6pYIhe6GqrI0bso6DJHqDzCdixyZUIYzWKOs7iIB
+	4qRjUjX2XAda/bKwYhtFz7lbWAZW5G8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jlIaZOTi;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bk1ZGJl0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8867043F83;
-	Wed, 25 Nov 2026 13:16:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D871F000CF;
-	Wed, 25 Nov 2026 13:16:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7A5BE600D4;
+	Wed, 25 Nov 2026 13:27:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED20E1F000D1;
+	Wed, 25 Nov 2026 13:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795612583;
-	bh=0wfHfoffwgQ42eBrOdbPVaIwEE0p9xDrDHUkm0VvxXM=;
+	s=k20260515; t=1795613252;
+	bh=M5gHCchVhFhdOMJqGmOLCKhYwQb/s46rivVW3uM5pk4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jlIaZOTi8mcDtMdh7+2kln3FbgU+/RW081qKz2cdmejrrCuUN3TBoE/zl4k6/8Cxa
-	 UHJXDOdMczydxP+f3TDR1/rmZC+b5m/+x4dlqfbB6U7Et6aN7xv8A5h8E1uBv+aLa/
-	 9u5fkoOcHC2Xzi/EcDev4rNtcuYgwF4LVKkaZNN8yjSRbRT+qdz0xO++ZQG5BZ1933
-	 kz8dCKvWJbVe0dgpBmF0X4nfuMrTWvq4637wGbCIO6/yiuFCCtjtOZdBCYKCEXHrFn
-	 /M3QnHXyLy64tLGGxX1LJjc7NmdR676tJmcBlWbjbc8aCWR3WjDWBT3bM/ZX9TmneS
-	 FBuEqqW/e8TiA==
-Message-ID: <sashiko-outbox-233479@kernel.org>
+	b=Bk1ZGJl0mQfsOtZAG9hZAygahYGE+v8nlNZGWTBoaiKHWOty4Tg9Epnvn44UmyC9S
+	 24/qBfeLBg3Ngvzc0fWUegmwF6tU2HMQN68N6+HdslpeKzGD2QT+O5LDaPzbHKV9Q+
+	 PC29sZbtpCTlfcR84e7t/JGCyKY8Gnoypyz8gTb/N91hsBBgA2aSB9Nbw6lamelJj3
+	 QFy8tnq4kUTThHwr2s54ZtN6GKWCdYEvexR/ma+KqIBnv1sgTHD0JfbRfIw5TA4Ju5
+	 iBDRLrButwu5x5RdOwABqn5XGioyGYYIvrCrO8aWu7pqqj9a2tXB1GekRvGFsvxvJJ
+	 9V+PXCABs8LXw==
+Message-ID: <sashiko-outbox-233490@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/5] mm/char-mem: implement huge_fault support for
- /dev/mem
+Subject: Re: [PATCH] rust: bug: add warn_once! macro
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Eliav Farber" <farbere@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Zi
- Yan" <ziy@nvidia.com>
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jann
- Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Nico
- Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
- Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, linux-mm@kvack.org
-In-Reply-To: <20261124131510.38745-5-farbere@amazon.com>
-References: <20261124131510.38745-1-farbere@amazon.com>
- <20261124131510.38745-5-farbere@amazon.com>
+To: "Ivan Tverdokhleb" <mbkchelofficialdev@gmail.com>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>
+Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?b?QmrDtnJuIFJveSBCYXJvbg==?= <bjorn3_gh@protonmail.com>, "Benno
+ Lossin" <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir
+ Duberstein" <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?b?T251ciDDlnprYW4=?= <work@onurozkan.dev>, "Liam R . Howlett" <liam@infradead.org>, linux-mm@kvack.org
+In-Reply-To: <20261124132707.101769-1-mbkchelofficialdev@gmail.com>
+References: <20261124132707.101769-1-mbkchelofficialdev@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 13:16:22 +0000
-X-Stat-Signature: ii9aetm9ttx8u5xa4r3e94xrde3m3kzz
+Date: Wed, 25 Nov 2026 13:27:31 +0000
 X-Rspam-User:
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 21F8B180009
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1DA261C0002
-X-HE-Tag: 1795612584-92897
-X-HE-Meta: U2FsdGVkX1+dYihl0I4ERhzkji4WgBDYAc2uUZt8gmAN4wofxd1k8exkA7PLvu2o1YKSRiv8BvlIz5jG8n9xrlshHZQ2npM9/CddeOZdBKzvOp8+K9+0HXE9z/QJ6HLBQtueRQIq8ib8isXffWb0tQLb6Jfsq3My0XX5425fxfYTFFN4LVisOjbwiPbVd6luYRcZbC9SHNeIeTqHiXgEub3pkm+Xz9JrhXnUSRSaKP+AvywgxdH25fXfrCn01uRlQ7d6gIXEbQeaT0ZLp7GhQ49nuhodFh+BUrv8mBlQYibArKDl2JnqyfJNo/9C2W9rYChg6BQUjjRGT+ScolfjyXyapOw6hk28+JZi0iV7rO/WtsE4Lewi9aS2np8e/RWSAbyQZoXWiHliHuObVfZSelsvpTh36uLObB2pMT8PJXquW4aFM4Chql8Yg4w/sPI/TF1ZU/dS+m1XD5usphKxZQRIjA3vUY3w5t/fTRPXxBhTmpFxrrDAnLtkThmRvCWWYrn6oTU7iyuDRYMjgZRk557nP8gMWOQL5VHUb8DjF1X8+GmQGSoOEaDmRc/cuAxHj/6BvI204n4mVLxnUgxE11gM1qJpb8b4HiHKQlPcOQBv8YKDPlIfcdFGhLnJecTBeUS+zIoZfp+uVqj2OawpCNMZPExOO8q/f5SJY4pOmU4y/UerHnv+z8FVX5nV9IyHxWWK93CQJuslGhsfuvB7mFfSfBAmq2Oec914c2LLfjVaMtgk8Joj36FHqdLw4UpadjX6EoVpwcL6K+5c6VbIMpU68j3D9dP0cr1CmjEFJtopYE3LsD4u7sMJKZ9mSzSw69jeE+PIDhhQ9JJ8nHba+MEump44+0gqfkvQuF4tgO7hxNzV0QYiYnJ49EN2VEStvAZxjXp2o593a3IN9FR//7UNSKj0WIF7Bf7UWkwoS6H0YSheEzDnx9amBzQOqez01Ooni38fVHe/Kpn++Dv
- pS6XTAv7
- 45DTNiwIHv7Twm9AyADTA7P336C2IRlmJoxjKLIReOOkAr5Qehbu7tJgPY49W9ckQoKkWi1l15C7k2SLKwQMx0GxbPp0jbR8V3P/hZTuUEP0P/kp3V1fJZNPipV4tzsNM8p0INlvXRudVqdtKXTo6NgBtsYux4fXd/6T/J9GL+KOnVzIDuVSz0IhihhjKjrDf5A1Wvz1aeQShNnLz8TMWSWWoxXeorcC6x2tXsNqqL1x4XnlwXNqdNs3leXwAwa5vH/UbuObuYVk75TNUjyxqtCEjVH7TdEOdTdAg6yQCzDqvprQ4wpF78skD4TSWGZ10ch+uuofGtck0p6nHg0ZBzc+DA+0weOb9j1dYait5//b1+L5KGJdJEUH7RsojITisVArK63xxTrYCRDu68JbUfB9wC5MM2xbm1D2PUuxY03azzFOMQxoeW+vVOt8DnXfC55mQnd1GB+Qf4NRtr1wGnCQxZERzbzVPOYOGicao/GZ09As0Pow33+PcO/qdjRZBJCTneLkh4cW/o17KqGxQtQ2fMqE3Uln7w66O0egybjGVDH0YQ+CjWaeD4dkpg5dfMDJRf4anCbxho9fdeb7t+CGDyafCajDSSp4euIGqtdZlJhzmXlYPoFwojvFhf4rd9PRNWoprnqCRMyxNL2qhLXSee/1SrxWurva/tyd7vZKGSruVJuq2+cuINRl22HKwp5XhtZqmVmHBo2jTSWoObF2or25dljqlQhPVSdXTSWoA1UC++BXIRSKnhRv25AwWdbawsdNdcDMjmk1olcETWp2m/GyQbwcauFNppT/4bBEqJ/BFn6bZkR8VZ+h4rPUqBGPes/cL9HDAUmtag2LKYpqRuNZTL/FcvriiDDSrpZaSb+Q=
+X-Stat-Signature: ujrhmprzirkaeps1kgcui84xuw1snyf5
+X-HE-Tag: 1795613253-801837
+X-HE-Meta: U2FsdGVkX18Kowo2DCt57j9OelqPDaCJM8eNFjYprM3dg0YFLmVofSQjKsTkvK+EjAw8sqgITXu9yWWXdkvFSsRUTIiCp+6ZI5qRfG1rB0gPNoWZ7urh9l8evtyyd7tiMsCAOcsmQy/+l6652juapU3SsZvMg0W1R91dZsPx6VfuRj6rU9QYsfElIm1h+506i1Z/AMMK66U/e898chFMyS9AKu3qHZ6upc28rupHSZMKYxmmhsd/hIFEEZNH3LvNjC10sOo7h3miUyl8lNHq8wW2cWt0xMGzepz6OqaUYUoNpRFrd+MwG6DQSOk5zz4MqopLFGzonS+6BD9VyZDZ0wNmF/tlibsxTnT1YhWHONtHL3wQf+QgJ4BmN8uud+HW5X0XiinocfRzabqmtfTMSaJEn1AxJQ13WzANMDxklvIKztLlyIAvZliQvMyw65jLb+vS5NnvwaOUqmoP2izPD4b6I50U6oXw/Zi5qBPGOF3iMfvyh5ryYFDwcY2xSMb2RT98VK/bNyo5P7msY8nH46FD9+MZ58uQqtApHptgGoUqeGwbB5nYZUg6uu3rh7mCCC4wbNtktP2/s80s7LmeiG3Ckh84D5C89PYgjgEzshnmtydD1NsHCF3aMGDQ/Oo0nbR9gsHep4LchuCE39cjHcatVMntPvSyrwsnHQxrNkvwwnC/fzAeqaJFn5faOvfjNMpE1vO5eQunsuxi5dxiQ3pWgnI0xHD1vEfxFuJZth+5u/Echfa3xcIDsPNioBLfzrV7On6ubdZxQdCggaoIKXYlV2ZTkofnwl2z/JdnBe+z3Y5SiSpTYORlrl/ZJZ9GXGsEmuFKGafPU/QunopDrSeNcnzRXTawpq+jaTKulGyKPqWhPpNjbdTzi2i8eqqrWJUhgfN8+7XzVUrJT2ayIWejjHWcQcuPpe3bccMqoxME7k7yiUhCb4S2YDh1JqjVJRi511Y5Eaa9StFPaXV
+ 1ZedkfxL
+ q6HKsDeAzmtiiaYGmkAxO4i6pOmbs8uNEBXu8mzV4RmGv/izvWb6ibZS5xXz6/YspWknPiL9cRflHGV0P52h8mH+Wl1t6xFiTBAqW/cEShs7XcdfjIqUmZP2iLwsdUUJ1gCjEutTiEeYowgBA1NdV11j1noXanZLFemufO6JVTNmBnD6Nmtm/RsvIl8vtO1yzUikSXG0NSHkVlGbZgQ8sHFs/YLBXAKN928o3NbMdcxRTsVuhbT/VZjGoqE/OWpwA5bcFlX20mruiK44ZOwOXoe/KdyfzmoyCu1EoWNJs0l9/h/Pzvt4/WmMhPiq3RUgDvntrWpDpoddMCS7zDp/ds6DOGsilb9TDfRJculT8BH1IHoAnAXSLtnK12h7+QG1ifFPRe0kNv86JRP5iLmOyfHgiIZD6dD3xj0Hs7A3TJxdZ5JXtvMSoUeF1XVWJ24UgdZrpFm5VRc/Weh07q5rAWcNSqpSVtqG0zXnb12d9VBnVc//oo8r0OEcTTkZXmhal0mrNH2pLEEkTivy1Un0muHu5tiswg0fhAMfSHlxC2GLDDdNL+couzHheU5YDESxQYq/mULwAQY4ZqXN62kTbwUfHJ/+UGZn5XFujumC+1MkY+DdDyLR4MEXi4NPz1Px7RvM9/6dSc3DeCiiCWfJbAQMZQKRS8pVAv/w7caKwnjrrTY+uH5SiJYFGZv7u635ZaGo8YywRtpZQGDrCJJ0KxLdYCHbRnu+rqtFNrIBTra8IIa3PQIKNwcVKg2OI3RMXq5LRA6hdqPDN2KSD/p1ocf0U/Z34o7vrB7tD6wMraUOmJJqZ2h1rSfFFilJdGgGTjwG6W+de75Bge3G/jFgQZtYbAY53LdNqNb96YUBREg1+A7vRGztjYjw12BjRU4tWhdWxR/hhn0CCG0Rt1VSseP+aLErLGVN6jmtKw7pF9pHqB35LWhc3aA7jH3UJCCXmfkzkPKqYyQdsGE1X1mkRnfk5aZfx
+ HlJ3ufFO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,117 +100,153 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issues to consider:
-- [Medium] mm/char-mem: unchecked runtime PUD support in
-  mmap_mem_huge_fault()
-- [Medium] mm/char-mem: missing thp_get_unmapped_area in mem_fops
-  defeats huge_fault
+- [Medium] rust: bug: warn_once! breaks build when CONFIG_GENERIC_BUG is
+  disabled
+- [Medium] rust: bug: test_warn_once() always fails with
+  suppressed_count =3D=3D 2
+- [Low] rust: bug: condition-only macro is named warn_once! instead of
+  warn_on_once!
 --
 
-commit 67f1816619b76ea83350a58c506176be1eb3bbc4
-Author: Eliav Farber <farbere@amazon.com>
+commit a4018fab2b94d6f23a5439e460aa5e9ca9e0714c
+Author: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
 
-mm/char-mem: implement huge_fault support for /dev/mem
+rust: bug: add warn_once! macro
 
-This commit changes non-COW /dev/mem mappings (when CONFIG_IO_STRICT_DEVMEM
-is disabled) from eager 4KiB remap_pfn_range() population at mmap() time to
-fault-driven population with ->fault and ->huge_fault handlers using
-vmf_insert_pfn_order().
+This commit adds a warn_once! macro that sets BUGFLAG_ONCE when reporting a
+warning, adds a KUnit test for it, and uses it in VmaRef::zap_vma_range().
 
-> diff --git a/mm/char-mem.c b/mm/char-mem.c
-> index c5761ddedbd7d..283531645f185 100644
-> --- a/mm/char-mem.c
-> +++ b/mm/char-mem.c
-> @@ -318,9 +318,68 @@ static inline int private_mapping_ok(struct vm_area_=
-desc *desc)
+> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+> index 3b40b0bd37b50..a0db5c902ecba 100644
+> --- a/rust/kernel/bug.rs
+> +++ b/rust/kernel/bug.rs
+> @@ -156,6 +156,27 @@ macro_rules! warn_on {
+>      }};
 >  }
->  #endif
 > =20
-> +#ifdef CONFIG_MMU
-> +/* Populate /dev/mem on fault, huge where the arch and alignment allow */
-> +static vm_fault_t mmap_mem_huge_fault(struct vm_fault *vmf, unsigned int=
- order)
-> +{
-> +	unsigned long addr =3D vmf->address & ~((PAGE_SIZE << order) - 1);
-> +	struct vm_area_struct *vma =3D vmf->vma;
-> +	unsigned long pfn;
+> +/// Report a warning on the first time `cond` is true and return the con=
+dition's evaluation result.
+> +#[macro_export]
+> +macro_rules! warn_once {
+> +    ($cond:expr) =3D> {{
+
+[Severity: Low]
+Should this macro be named warn_on_once! rather than warn_once!?  In C,
+WARN_ON(cond) and WARN_ON_ONCE(cond) take only a condition, whereas
+WARN(cond, fmt, ...) and WARN_ONCE(cond, fmt, ...) take a format string.
+Since the existing condition-only macro in this file is warn_on!, naming
+this warn_on_once! would stay consistent and leave warn_once! available for
+formatted warnings.
+
+> +        let cond =3D $cond;
 > +
-> +	/* An order-aligned addr below the VMA would wrap the subtraction */
-> +	if (addr < vma->vm_start)
-> +		return VM_FAULT_FALLBACK;
+> +        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
+> +        const COND_STR: &str =3D concat!("[", stringify!($cond), "] ", f=
+ile!());
+> +        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
+> +        const COND_STR: &str =3D file!();
 > +
-> +	pfn =3D vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +        if cond {
+> +            const WARN_ON_FLAGS: u32 =3D $crate::bug::bugflag_taint($cra=
+te::bindings::TAINT_WARN)
+> +                | $crate::bindings::BUGFLAG_ONCE;
+
+[Severity: Medium]
+Does referencing $crate::bindings::BUGFLAG_ONCE unconditionally here break
+the build when CONFIG_GENERIC_BUG is disabled, such as on CONFIG_UML=3Dy or
+CONFIG_BUG=3Dn?
+
+In include/asm-generic/bug.h, BUGFLAG_ONCE is only defined under
+#ifdef CONFIG_GENERIC_BUG, so bindgen does not generate bindings::BUGFLAG_O=
+NCE
+when CONFIG_GENERIC_BUG is not set, and VmaRef::zap_vma_range() expands
+warn_once! unconditionally in the kernel crate.
+
 > +
-> +	return vmf_insert_pfn_order(vmf, pfn, order);
+> +            $crate::warn_flags!(COND_STR, WARN_ON_FLAGS);
+> +        }
+> +        cond
+> +    }};
 > +}
-
-[Severity: Medium]
-Can a PUD_ORDER fault reach vmf_insert_pfn_pud() here on a system that
-lacks runtime PUD hugepage support?
-
-For VM_PFNMAP mappings, __thp_vma_allowable_orders() enables both PMD_ORDER
-and PUD_ORDER, and thp_disabled_by_hw() only checks PMD support via
-has_transparent_hugepage().  vmf_insert_pfn_order() checks compile-time
-IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) without verifying runtime PUD
-support (such as has_transparent_pud_hugepage() or
-arch_vmap_pud_supported()).
-
-On PowerPC Book3S 64 with 64KiB pages running on the Hash MMU
-(!radix_enabled()), CONFIG_ARCH_SUPPORTS_PUD_PFNMAP is enabled while PUD
-hugepages are unsupported, so vmf_insert_pfn_pud() -> insert_pud() ->
-pfn_pud() -> __pud_mkhuge() hits an unconditional BUG().  On x86_64 CPUs or
-VMs without X86_FEATURE_GBPAGES, pud_mkhuge() sets _PAGE_PSE on the PUD
-entry, causing a reserved-bit page fault and an oops in pgtable_bad().
-
-[ ... ]
-
-> @@ -355,11 +414,25 @@ static int mmap_mem_prepare(struct vm_area_desc *de=
-sc)
->  					       size,
->  					       desc->page_prot);
-> =20
-> +	desc->action.error_override =3D -EAGAIN;
 > +
-> +	/*
-> +	 * COW can't be populated on fault: vmf_insert_pfn*() BUG_ON() it. And
-> +	 * with IO_STRICT_DEVMEM a fault can install an entry after
-> +	 * revoke_iomem() has zapped it, so keep the revoke final.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_IO_STRICT_DEVMEM) ||
-> +	    vma_desc_is_cow_mapping(desc)) {
-> +		/* Remap-pfn-range will mark the range with the I/O flag. */
-> +		desc->vm_ops =3D &mmap_mem_eager_vm_ops;
-> +		mmap_action_remap_full(desc, desc->pgoff);
-> +		return 0;
-> +	}
+>  #[cfg(CONFIG_RUST_BUG_KUNIT_TEST)]
+>  #[macros::kunit_tests(rust_kernel_bug)]
+>  mod tests {
+> @@ -184,4 +205,29 @@ fn test_warn_on() {
+> =20
+>          assert_eq!(suppressed_count, 1);
+>      }
 > +
->  	desc->vm_ops =3D &mmap_mem_ops;
-> =20
-> -	/* Remap-pfn-range will mark the range with the I/O flag. */
-> -	mmap_action_remap_full(desc, desc->pgoff);
-> -	desc->action.error_override =3D -EAGAIN;
-> +	/* Tracking reserves the memory type, for PAT conflict detection */
-> +	mmap_action_track_pfn(desc, desc->pgoff);
-> =20
->  	return 0;
+> +    #[test]
+> +    fn test_warn_once() {
+> +        // SAFETY: `kunit_get_current_test()` is always safe to call (it=
+ has
+> +        // fallbacks for when no KUnit test is running).
+> +        let test =3D unsafe { bindings::kunit_get_current_test() };
+> +
+> +        // SAFETY: This function runs only as a KUnit test case, so `tes=
+t` is a
+> +        // valid pointer to the running test.
+> +        let handle =3D unsafe { bindings::kunit_start_suppress_warning(t=
+est) };
+> +
+> +        for _ in 0..2 {
+> +            assert!(warn_once!(true));
+> +        }
+> +
+> +        // SAFETY: `kunit_suppressed_warning_count()` accepts any value =
+returned by
+> +        // `kunit_start_suppress_warning()`.
+> +        let suppressed_count =3D unsafe { bindings::kunit_suppressed_war=
+ning_count(handle) };
+> +
+> +        // SAFETY: `test` is valid as above. `kunit_end_suppress_warning=
+()` accepts any
+> +        // value returned by `kunit_start_suppress_warning()`.
+> +        unsafe { bindings::kunit_end_suppress_warning(test, handle) };
+> +
+> +        assert_eq!(suppressed_count, 1);
+> +    }
 >  }
 
 [Severity: Medium]
-Should mem_fops also set .get_unmapped_area =3D thp_get_unmapped_area under
-CONFIG_MMU so unhinted mmap() calls receive a PMD-aligned virtual address?
+Does test_warn_once() always fail with suppressed_count =3D=3D 2?
 
-In __get_unmapped_area(), the automatic thp_get_unmapped_area_vmaflags()
-fallback only runs when !file.  Because mem_fops leaves .get_unmapped_area
-as NULL on CONFIG_MMU, an unhinted mmap(NULL, len, ...) of /dev/mem gets a
-4KiB-aligned virtual address from mm_get_unmapped_area_vmaflags().
-Whenever vma->vm_start and vma->vm_pgoff << PAGE_SHIFT are not congruent
-modulo PMD_SIZE, mmap_mem_huge_fault() computes an unaligned PFN at every
-PMD and PUD boundary, which vmf_insert_pfn_pmd() and vmf_insert_pfn_pud()
-reject with VM_FAULT_FALLBACK, falling back from the previous batched
-remap_pfn_range() to individual 4KiB page faults across the mapping.
+On CONFIG_GENERIC_BUG architectures, __report_bug() checks KUnit warning
+suppression and returns before checking BUGFLAG_ONCE or setting
+BUGFLAG_DONE:
+
+lib/bug.c:__report_bug() {
+	...
+	/*
+	 * Before the once logic so suppressed warnings do not consume
+	 * the single-fire budget of WARN_ON_ONCE().
+	 */
+	if (warning && kunit_is_suppressed_warning(true))
+		return BUG_TRAP_TYPE_WARN;
+
+	disable_trace_on_warning();
+
+	if (warning && once) {
+		if (done)
+			return BUG_TRAP_TYPE_WARN;
+
+		/*
+		 * Since this is the only store, concurrency is not an issue.
+		 */
+		bug->flags |=3D BUGFLAG_DONE;
+	}
+	...
+}
+
+And on CONFIG_ARM, CONFIG_LOONGARCH and CONFIG_UML, warn_flags! ignores
+$flags and warns on every call.  In both cases, both loop iterations
+increment the suppressed warning counter, so assert_eq!(suppressed_count, 1)
+fails.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124131510.3874=
-5-1-farbere@amazon.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124132707.1017=
+69-1-mbkchelofficialdev@gmail.com?part=3D1
 
