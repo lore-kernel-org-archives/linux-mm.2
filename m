@@ -1,90 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FE3606A329
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09308606A33D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d32DnldT
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=XsdkYRYB
 Received: by kanga.kvack.org (Postfix)
-	id E4DBF6B09E1; Wed, 25 Nov 2026 07:00:11 -0500 (EST)
+	id 2946F6B09E3; Wed, 25 Nov 2026 07:03:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E23C96B09E3; Wed, 25 Nov 2026 07:00:11 -0500 (EST)
+	id 26BF36B09E5; Wed, 25 Nov 2026 07:03:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D13756B09E4; Wed, 25 Nov 2026 07:00:11 -0500 (EST)
+	id 182296B09E6; Wed, 25 Nov 2026 07:03:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A50F86B09E1
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:00:11 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E43AB6B09E3
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:03:15 -0500 (EST)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2303AA0EDE
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:00:11 +0000 (UTC)
-X-FDA: 85473498222.17.D1781AD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 67D33180011
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:00:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d32DnldT;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795608009;
-	b=ecLJM4k2XyWstZkZRh/qPuU/84bHH1D7aTb92iDsuubriKZJ3Fk+avtrh1sQO8nI5JmNKr
-	LfoYwegikeEJ9vOFzeU7FKuRsvz8dUoJNyI1rQbxz8WLrj9+7d1RhVt2gYfuoc2FQdJ52w
-	z0XigOE8YABt3ataqGbaofhpu8BzHA0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795608009;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06lPMTFGD0RFB03sZ5oxAw8CmPV1Zq/ZI/RrRxDPVF8=;
-	b=uT9GnkksOvOsnJjYcuHW7TkNW6mkcH6z7k5PoWSjSCC7pF9TCz6Cnf0VpxjYD/m1o5QGE2
-	jiUiu0npGl9lkHmlPbrzEYhoOjpe2EhyP+a7gEGowwGeps0IR5CjIGwB16obp+RyqjJTiR
-	ieYgJ8bHBJInZ67x8dFlpZfmXNoTIXE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d32DnldT;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ECB2B623EA;
-	Wed, 25 Nov 2026 12:00:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFBA1F000C6;
-	Wed, 25 Nov 2026 12:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795608008;
-	bh=06lPMTFGD0RFB03sZ5oxAw8CmPV1Zq/ZI/RrRxDPVF8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=d32DnldTRcvPnFuYSaYf+Gvz9REb2/pVbxA9S6xkQ5L8ColjVd4R6spj5OoXlIZZE
-	 ufYmGyMvpdzdh5aqClvEQ0hVgvv3g+tNznCUHtE96FzK9KgEhZv5AuHLJdCLdFILax
-	 2FsG1ChJoIwPPRN8Cq1XOdKDfJhrfDeQCCi5dUHAXcOLZ7T49BS49j2Sgf5ZpLX3AH
-	 6mYQQoI0Kv2Uo7Pms4n0jdmmxA5pyGfSgD1ybZ9Bq8R35CJVH098cwpRrM/ejNss3O
-	 HENpYdUvDqnqRvcXE/i6CLKfjxd5WPUOVO6qINAABmBKgM/HVmno6MeU8NUfB0YU7M
-	 d9yXz+ywbjNIw==
-Message-ID: <sashiko-outbox-233316@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 7/8] fs: Protect deferred inode reclaim from freezing
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jan Kara" <jack@suse.cz>, "Christian Brauner" <brauner@kernel.org>
-Cc: "Christoph Hellwig" <hch@infradead.org>, linux-mm@kvack.org, "Mikhail
- Rudenko" <xyzzy@yandex-team.ru>, "Andreas Gruenbacher" <agruenba@redhat.com>
-In-Reply-To: <20261124115850.3512-15-jack@suse.cz>
-References: <20261124113450.3451-1-jack@suse.cz>
- <20261124115850.3512-15-jack@suse.cz>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 12:00:07 +0000
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 67D33180011
-X-Stat-Signature: g9zum6ns16hf88jxwnh733jsh6nrmhym
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7EAFC1C49F2
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:03:15 +0000 (UTC)
+X-FDA: 85473505950.17.A5512D4
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012041.outbound.protection.outlook.com [52.101.48.41])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6F0494000F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:03:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XsdkYRYB;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf17.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.48.41 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795608192;
+	b=lPUluUx1Cmde/0b55rd7nytzm0I9bdDQMT/9ZIC8uX/k81T484xt3q8TKcZiW88fx6QI2R
+	3YeOKo0pwArOPnsoZTRC5QNhksrEasYU3Ufc7GhnG+nL0UEQPYAR7Ahwz1xkIMTxpUTT4U
+	jCn73TRltkrc7vRNR+lZvi6LN3wjpoo=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795608192;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oGy+saAa+it6vMWgG5xmcyVHalVc+ypp3DKxMEpyBLk=;
+	b=2xvceLQkk/PDhYFuciBteiZTmtOcur91TjDwNH5/ATC/3XP9cy/xvn2/5UUEI1AtZmSd/U
+	fMkjNZlbz3Y20+4AoI2+x7RgkG0fbWH2/9+HxQ+Kfs7g3IKPUl7tul4HC4sUl94XgUn8us
+	gjlgBD1x6Q2xK1/+RgR8ETa6wY8mtDQ=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XsdkYRYB;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf17.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.48.41 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PKEk81YjjmVP+X16/60s3VUw4nj495QD+w75zW8mjCA8MLEr+R4fj8t6lU76FCluR47M1rGLqTVtbabWXOUkLzai6XwU7mKCMX6f53eTuR8JdZwYFxV42gHBysJtKusWLFcQeoB84Qkjt9j1KSGy07z8ho1Cf1YazwRlLt4T3InaXa6m/MQ21hi4RTF5lnXwkQ56HjnisUM75AFEVrZ00JHPXMguMqg3DAHCQCjABOr2+AIEdFBCGK5nkirhO4kk75gPzGubd+5+QFO010wN7ms3tjP2+IS9W+aCLgzwWh/m7LZjvQyP+nAvnCupnOKZKF7YZR/LAwDWshFqQHrvzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oGy+saAa+it6vMWgG5xmcyVHalVc+ypp3DKxMEpyBLk=;
+ b=JcEzx9drHf+A/nr3A3CNhAUscQh3eHE/FzQtl+9O6+DMkRlUDJcUjsXQnT8hmzHGELSadS/yN1MeI64zMFMZydFx/7VtQbHxCCdspHiWOuSnfNmSnAWjgP3WilA9tA815OPnketO3sl1ZGJ1v5VrepUfC11ckOvMlmQXUnSAYGL8OhjNrsNdvnp9uo5bDVEkzNdoIQmDgwlTF+GQ5sNh0igNTchmWZlhhJi/+ybcEvvpet26LsRyfXCQpHNnPQn/KSLmIjWGxCzv5Z6L30xnqwKcgq7N79ktTbb8vcVGa0RKaBawrvZy9dBBPFfC/Arml4TPQysVtIJs34KHlzOZcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oGy+saAa+it6vMWgG5xmcyVHalVc+ypp3DKxMEpyBLk=;
+ b=XsdkYRYBUrHmrBhklqAxPRTF1WYR2t4hN0HJCIwT145HIGBsPx39bI4GHxu6pHeQIt7EFTCBVEHRISPeTj/wfUO1BVnEhkkt5cAaR46Gogj6tAHBkVEA8hihFG5O9T+6l5Nm+5DzatGXAJcRU/NEgq0kNFXIECy0c8jeYQYGUiU=
+Received: from CH0PR08CA0016.namprd08.prod.outlook.com (2603:10b6:610:33::21)
+ by SJ0PR12MB6735.namprd12.prod.outlook.com (2603:10b6:a03:479::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
+ 2026 12:03:03 +0000
+Received: from CH1PEPF0005BD61.namprd02.prod.outlook.com
+ (2603:10b6:610:33:cafe::88) by CH0PR08CA0016.outlook.office365.com
+ (2603:10b6:610:33::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.7 via Frontend Transport; Wed, 25
+ Nov 2026 12:03:03 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH1PEPF0005BD61.mail.protection.outlook.com (10.167.244.250) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.662.3 via Frontend Transport; Wed, 25 Nov 2026 12:03:03 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 25 Nov
+ 2026 06:03:02 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 25 Nov
+ 2026 06:03:02 -0600
+Received: from pankaj-M75q.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
+ Transport; Wed, 25 Nov 2026 06:03:01 -0600
+From: Pankaj Gupta <pankaj.gupta@amd.com>
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<linux-doc@vger.kernel.org>
+CC: Arnd Bergmann <arnd@arndb.de>, Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Marco Elver <elver@google.com>, "H . Peter Anvin" <hpa@zytor.com>, "Tom
+ Lendacky" <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>, "Kiryl
+ Shutsemau" <kas@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	<linux-kernel@vger.kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	<linux-mm@kvack.org>, <linux-efi@vger.kernel.org>,
+	<Pankaj.gupta.linux@gmail.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Karl Mehltretter <kmehltretter@gmail.com>, Pankaj Gupta
+	<pankaj.gupta@amd.com>
+Subject: [PATCH] Documentation: kernel-parameters: memmap= and mem= in confidential guests
+Date: Wed, 25 Nov 2026 06:03:01 -0600
+Message-ID: <20261125120301.223907-1-pankaj.gupta@amd.com>
+X-Mailer: git-send-email 2.34.1
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0005BD61:EE_|SJ0PR12MB6735:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51706745-e4c3-40c9-a7c9-08df4aec0ee4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|7416014|376014|23010399003|82310400026|10067099003|11063799006|56012099006|261021121427099003|261009223027099003|261102123227099003|261026121527099003|18002099003|6133799003|13003099007|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	wnB0FcRGvoqCkRlai19Kzh4LY+pROvIOyjKnRS95lMWLQPEDAkZ2w86lDJRFr18ekclttZ/CY8vz3ZtOgOS26eKfo0oY5KLbKzGWOaHHkY8lE6jwc1z6SSLQuuGAlYIPjAM88fKsORhglQqPlVPXKeK84POQpXNWEIrVRRPSle4ThzYlCEsU53Fw7sMkuonXDAQ6JitV6UK5+XX5Nw+uGVYLYmTF5gdWkdnYpBu/sJwWgP2tEvEo33rus4cWGXE+c5tMvEfn7P6tZX9bLxcT6ar1zCWiW5B5kmdUQnu2w1vMVzm6DULJdtBJK715/7yu9Jmnaxb/104mjQfTIpK3+REp69t9mw8YlGWo6xMnZGZcG7QOOS5UjIJB8jKHvk1WFSoIFi9X2kGtg8odtgVYKZGu8tjyx8cvPwOlBZn2VwMTrMtgZ1CBBUxIrON/ynHSL6zVSIj2WWb+yaL5v8Z8UNted6GlQ1RqxuRJ+THCFq+b8V658DQ32htp4/7JSMwUOjHQuqPvxgal0kxKfaeZI/P+yctqThay/A3QHktziL3KSUhPPqWDqrb8zVGsMKVpsv3a/EdCgOJ70/MS9j40SGWK6zTbxu0+hjIY0pTnnD0J0+T4bZA0TuOB+bNdABvON8VveLrycZ0Qo9U1GOQeb2/JZcCYwKUMWZgEF9IYtHU=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(376014)(23010399003)(82310400026)(10067099003)(11063799006)(56012099006)(261021121427099003)(261009223027099003)(261102123227099003)(261026121527099003)(18002099003)(6133799003)(13003099007)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	nlj0ytbhmoAGAAo1N23hl3D221oEbMX07qEek5fJmAUKwk1dFU3qqaZFtnazt79cdNc/jorBlETDPYvTOO/o5XH7G3igfyuNI1subTZL6bywTz/+2Nfj+nH7RQjhqAfSW1xhQE+SrKpjNC5Z1hLLhOSKTrmIyso/d9vj6NwvqH32Gt+xZ7yik/D2V9VNb7KCRfkw0JsmnRev0AZQ35O96JgpX+4nkKPcapHx/aNZYUq0odBF+hPUq/YyKfCPzirn8CH7kaJfT1tThEpu5GDDQPCBVEfWyp5ZCNvcUonAHCTrQF4z2Of0+lWgobkgPn0+A4dlYcB3BVbFqBmPufqoOplJj/7/7y7bDvKELJ6k0hTLLaDlZ5H31O40nk5A/FHKdSANSy4oaBC7sEjq9aGrcCXLGxlyRtewdlVNrfOpF+i5C700ff1dhWWZweAO8147
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 12:03:03.1921
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51706745-e4c3-40c9-a7c9-08df4aec0ee4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0005BD61.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6735
+X-Rspamd-Queue-Id: 6F0494000F
+X-Stat-Signature: dx5e98erq87hzb81yaxojqwza8uhnpei
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795608009-767786
-X-HE-Meta: U2FsdGVkX18BLLehhASsjaoXjZvhyaJ2Ag72WvmA4ItXKXPSpA/WM9WICA9zBUo0sYY8Tpfb5fgGXlem9KHBhKuFBvmgkQUjda9xJzMbP9NpVmFHPmXePT+IkPx1jmC/aJZlzyQ/qfQknEJveAO2A0P4VTEACLjMw0Z0dvU76hou06oGQ5nz2k7/Jt2b0+t7g6v7YfHUx++c/h5/9o7SrZiH+QgLJs8ZKBhqWnUROYdsnRa/r0U9HaZHsiFzR9FzEbflP8P0u33r3zZMB+8ih+ekGJiUHaav+KK2cyhqi7kK8aXXuGcsCGNVO3cL5jDy/69e7GhEazpgPru37kWFhBth/5xMY1cO/UIR75Jc2yBPIY2xGq36PV+wbbvG7QFx04bZ2Wk7aMTyQQOQDUK9psOY9pmxHA/nHcGzxOHmNvSpOm0+IkHBeAmBdvsyrbbzcwOJYg3HzSOG0CT0CQxuSciNvBNkPLRpvY2DJhnXxPdCOKxHoIHJKvQ5Qjfr5NHRbb89Oyh8AaPqmSaVLbtUTp8NAMLdvHapxiTj93ppZmSV1gVDoKEDJWPo5DY4ESn5i8xvh4f9J3SlIardwaFd5L+nYQkmFinC4tAW8CntIwyMmzdA75JOHDbpTF4tU/tjL+YyvfivlAdtqits2RUvToMwjHZsyU4aRWbQBIo9kTjHkM7Pcu2IA3erT1OmwhCTKB7rnQEKuEMZKb93p4eWra1rwpvVOLvdk+e/Rhnl4Ql38wDSDP3/cDRbNqxFKKl2ahRXFO1UGyRGn1lRypp6n2xN6a9++zEgg8LBgzyGDairlK9/3LS6y7cu5XJ7wBVde8L/C6yUaTVOUJDn7z4uuxlw97N2/dtplII5/5H6nTHYgPbWpJQK0RZUOQlGmNntwcxjWvg6B55/jPeIhIVUIN5arWoJmNxfWhpROexThP8pG2RFrnOLVKw1qtq6XEHLaiC5jZS1yJsUpqsPCWz
- d4P2oqGr
- zvBGGohw/Aj+iFnsadftPd339csbflDP/Jdj8ylt//lonCH/xYbMyhBi4WW+JJJ1gVInvZZ3CZ/12GykreSzbjp5Fjii/dtAwXuFxssrfwOwlSPMSMR9FXK4DsTp8m5s5Nfgt4/MEigKza2dN6cyshP3pUzyAszMfRO8tnzufFSEJCbzn24DPf6zCHLpTO+Ws3UpNjEsYgVLfNxnh2DBs3eMsCynf6K/1WJNqmdBa7p3ytD4wj9OAAK0LfJZkg9hZoZ1EM4oKZxvUUUslbvSnu059oQtVeKZoSR7rklONOeXe93B9xDjaY3f9kTw83wi5I9k0Zji/ES2pICfd3HL4xvv+3tRb3k7VcLnpgpfgQ+EQ9SWnGLblfhawUrR2pO6lGpKd6pejzB16HQrfuNvO93kuU57wA58A+dpZ+AYeTMX3DycmlQPVvW5KqcA3955hVcQ7WJr2/qn1z9Q49QVPC6IDR+rL5F3E0H205f38KQawGHlnzwPvX+JRwUVetDaQ+5ztHr5AICtEI7EvAk3tV4jsMMWJ0qlxEX6YYDZqRmxNFaz4LeFWahNB7zFQe4n05BwqfmLJ3Kbehxfdfpo5eJ+GfzZJqZBTKGJ6VQUmk3ABbVBlWCYxf+eOBeQgJ21RB5HZAQAPdUAQ4FWlkus5Ejzc5/j53lPpmrlzbTU7g/8VRd3cmJEuJRPCmmUIVe5ZDnP1BhUbYjk72AG32JZ0VEn58je7zZj6AC89f0J44LiOT7nTVjiHgkIOrjKPNE12DE5zV4eEtIYL/YVPRY+hZxNuV6o6fvpscrAQ
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795608192-779125
+X-HE-Meta: U2FsdGVkX191WDdQyG9xaMQufkid9JIR3NAN8x6gHojBe8rBo2eviyUNvLUj9fNUDopanbWp7ffLeVeif3uNTqY8z9KcVjZcsi+VNNAG78/AbwvB21+yzNqHU4iSXxAVSKpJ0CO2ufC5GVF2h6ER86POq6c6vlULIPHYdBtq0b6CNpgJOYsnPRfbbE0tTpkYWPpjtCsHJywVIl/TF8FwFrvqgppXPOv3nIAE5apaTmsf/loHOhMVm1QzkhOrUN18JYTRmaA12XKkS9/T40JY+qil7CjOlx3ea2e7RyBS3e0AzpYaevT4XEsiWC0wcnryaEzW5sRD31x2l7YeT/7EfKFOwPC3j2c+GCVzLhrj89aKvtd3SmD74LVuxZNj5MP1SFNAV03icyPafnGCEZvokOE8RxE9gZha6m6EbijAyWQKjKTgNZcZRs4S1993HouvL7JxjKLxliHeGfP9OUwlbVBbsBjYg4AFzGi3cmSL/yXOMF2ScYuLjqgKMoif9XGNmUfIZKAZw+LSfUenZ1Vh8rD5MPfrftLurJDXuxN1vPFQzdFdin9PmqCMOAGqJdfOAiygumvpY8IxDNLp7DhAK/y7l9ynDSt/l0njLDuiuTu1zbshbguIlOeDj/J0b8iURJd5HQtIAkbdDvXOrbtEv/N6hKruj/EZZrvZ7iHTcyiziBB2JovRKRFjaFgCPGheozaRVV+WSzvmoWOBKaMK7MJWClXrotoinbCjI7rhMdpVId2pAlLkjx3AXzAB7rxmoCvA/M3VBFzrZf8Gpt3iy7ovnhg/DH4kmkh6u0tf7X+pHAePDePA4VQkXLY/nx8mwpeTRxW1ewEJK6DsEEgQKRcVR2OVBoCJi5l3920XPDrCP0Vli2s312jdX/e45yVkkYBOuIHQDDL759g6fTb0mVv2evg54cA9nBUysy2AvoVFKTxRj7865gFfX+zWBCIMXwl1ds2ceT9rZIuu/7n
+ sLIdI81+
+ wO5+DkuYT9MW7Bc2W3C8MYYHJ6XxdlJUyCIwUQz5fIbbl7Qmz3XGOFZeK2espbH99bybfnetOu1eFx9gWq06fe6s67HDRtsVnEdn0479CpazrZILgKRLXswMIFIkD8vt5sud3jiFBPAGL03rK9cWjp6SRzIPBjH5KyF/oUHYZl7UctCwzvd4REJzj1UY80q4THhjpdFDcjlyB2AI5atm8qsQ9P+GKIinubXvVvvJgIYJ8JVq0rCf0eMhdD/136LvhTp9Dv7X1t9eeUT6LV7sjIRAqTnC7Ru5H7aQYnv1Ixz8oxlb9Pl/Dgobb5s4ZXx6nevLeU7+51ym8CdFPHcccxWBlCeEHGvTlAaDtv+wPRslROHHoBnvA37d/ttcyYipcifyLjvca4l4xDxW5FTlxNDSZDMVSnu+vxfC+2RK60hLgUYtF6TlI05rJYENrJB7ocfb9KoiGwz3TUA9ruaglAMo9KGKdW6M+5fhlE/OAUUG64cqd8gayff6Z5t4uzBChd1f8N69jEzIDLzFlLvCGhwmZ6n7v1oEltfD5larqDFMSANpcqUUQqy5NQbrkhz5LzuO1WNgtT0PQuDQsImzNbV5nvj8qO1XHmieO3zwp0Ox9DN2jqmT3SF5d681J//ydTe6+J9+wC+EXkgYoGD7Ixp/IERaCPUGCHB1tkAhtJ7I8PC3xn7K+pNIJ1O1IJ8z9bw4/XQRatGClOg3wCsNpimAJQGnWzz2J5igh0fDUvZM9b36ewaghOn6YzBAqyx8C6sbAnER9YY1t+lfwPF1ynXQSgk5Kh2KgrIXT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,260 +161,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issues to consider:
-- [High] fs: skipping I_FREEING inodes during freeze deadlocks inode
-  lookups
-- [Medium] fs: state mismatch during thaw causes busy loop in
-  inode_reclaim_deferred()
-- [Medium] fs: skipped frozen inodes at head of queue->list cause O(N)
-  rescans
-- [Medium] fs: deferred reclaim of stacked inode can block on frozen
-  lower fs
-- [Low] fs: queue_deferred_reclaim() wakes workers during freeze stages
---
+In a confidential guest (SEV-SNP, TDX) the EFI stub builds the unaccepted
+memory bitmap before the command line is parsed. memmap= and mem= edit
+the E820 table only afterwards, so the two no longer match.
 
-commit 52eb2fd15de6155077a87f493e0148deba16ccc7
-Author: Jan Kara <jack@suse.cz>
+accept_memory() accepts whole units (2 MiB on x86). On SEV-SNP this can
+touch a memmap= hole, which is not mapped, and crashes the guest early
+in boot. TDX accepts by physical address and does not fault.
 
-fs: Protect deferred inode reclaim from freezing
+Making the bitmap follow these options is not feasible in current design,
+as a unit cannot be half accepted. These options are debugging tools,
+so document that they are not supported in confidential guests that use
+unaccepted memory.
 
-This commit protects running deferred inode reclaim against filesystem
-freezing and skips starting new deferred reclaim for inodes on a frozen
-filesystem.
+Link: https://lore.kernel.org/all/96be8f5a-8f65-48ff-8263-1d5d5f706354@intel.com/
+Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
+---
+ Documentation/admin-guide/kernel-parameters.txt | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-> diff --git a/fs/inode.c b/fs/inode.c
-> index fdab88f875454..c0460c0780e00 100644
-> --- a/fs/inode.c
-> +++ b/fs/inode.c
-> @@ -1045,20 +1045,11 @@ static int get_deferred_sb_id(struct super_block =
-*sb)
->  	return hash_ptr(sb, 32) % deferred_reclaim.workers;
->  }
-> =20
-> -static void queue_deferred_reclaim(struct super_block *sb, int count,
-> -				   struct list_head *list)
-> +void wake_deferred_reclaim_workers(struct super_block *sb, int count)
->  {
->  	int id =3D get_deferred_sb_id(sb);
-> -	struct deferred_reclaim_queue *queue =3D
-> -					&deferred_reclaim.queues[id];
->  	int i, wake_count;
-> =20
-> -	spin_lock(&queue->lock);
-> -	list_splice_tail(list, &queue->list);
-> -	atomic_add(count, &sb->s_deferred_reclaim_count);
-> -	spin_unlock(&queue->lock);
-> -
-> -	/* Queue works to process inodes we've added to the list */
->  	wake_count =3D DIV_ROUND_UP(count, INODE_RECLAIM_BATCH_SIZE);
->  	if (wake_count > deferred_reclaim.workers)
->  		wake_count =3D deferred_reclaim.workers;
-> @@ -1069,6 +1060,33 @@ static void queue_deferred_reclaim(struct super_bl=
-ock *sb, int count,
->  	}
->  }
-> =20
-> +static void queue_deferred_reclaim(struct super_block *sb, int count,
-> +				   struct list_head *list)
-> +{
-> +	int id =3D get_deferred_sb_id(sb);
-> +	struct deferred_reclaim_queue *queue =3D
-> +					&deferred_reclaim.queues[id];
-> +
-> +	spin_lock(&queue->lock);
-> +	list_splice_tail(list, &queue->list);
-> +	atomic_add(count, &sb->s_deferred_reclaim_count);
-> +	/*
-> +	 * Make sure queued inodes are visible before we check whether deferred
-> +	 * reclaim is blocked. Pairs with the barrier in thaw_super_locked().
-> +	 */
-> +	smp_mb__after_atomic();
-> +	spin_unlock(&queue->lock);
-> +
-> +	/*
-> +	 * Skip waking up workers for frozen filesystem. They'd skip the inodes
-> +	 * anyway.
-> +	 */
-> +	if (atomic_read(&sb->s_deferred_reclaim_running) < 0)
-> +		return;
-> +
-> +	wake_deferred_reclaim_workers(sb, count);
-> +}
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index dce9b8f3ae98..d0e9a2c7dddb 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3930,6 +3930,12 @@ Kernel parameters
+ 			in above case 3, memory may need be hot added after boot
+ 			if system memory of hypervisor is not sufficient.
+ 
++			[X86] Not supported in confidential guests (SEV-SNP,
++			TDX) that use unaccepted memory. The unaccepted memory
++			bitmap is built before the command line is parsed and
++			does not follow mem=, so memory that is no longer in
++			the memory map may still be accepted.
++
+ 	mem=nn[KMG]@ss[KMG]
+ 			[ARM,MIPS,EARLY] - override the memory layout
+ 			reported by firmware.
+@@ -3971,6 +3977,12 @@ Kernel parameters
+ 			Example:
+ 				memmap=100M@2G,100M#3G,1G!1024G
+ 
++			[X86] Not supported in confidential guests (SEV-SNP,
++			TDX) that use unaccepted memory. The unaccepted memory
++			bitmap is built before the command line is parsed and
++			does not follow memmap=. A memory hole can crash an
++			SEV-SNP guest early in boot.
++
+ 	memmap=nn[KMG]#ss[KMG]
+ 			[KNL,ACPI,EARLY] Mark specific memory as ACPI data.
+ 			Region of memory to be marked is from ss to ss+nn.
+-- 
+2.34.1
 
-[Severity: Low]
-Does this still wake workers unnecessarily during the earlier stages of
-freeze_super()?
-
-freeze_super() sets sb->s_writers.frozen to SB_FREEZE_WRITE and
-SB_FREEZE_PAGEFAULT before sb_wait_write() and sync_filesystem(), while
-s_deferred_reclaim_running is only set to -1 after sync_filesystem()
-completes.  During that window, queue_deferred_reclaim() wakes workers
-even though __get_inode_reclaim_batch() will immediately skip all inodes
-from sb because s_writers.frozen !=3D SB_UNFROZEN.
-
-> @@ -1108,18 +1126,24 @@ static void __get_inode_reclaim_batch(int *start,=
- int end,
->  	for (i =3D *start; i < end; i++) {
->  		struct deferred_reclaim_queue *queue =3D
->  						&deferred_reclaim.queues[i];
-> -		struct list_head *entry, tmp;
-> +		struct inode *inode, *next;
-> =20
->  		if (list_empty_careful(&queue->list))
->  			continue;
->  		spin_lock(&queue->lock);
-> -		list_for_each(entry, &queue->list) {
-> -			if (*count >=3D INODE_RECLAIM_BATCH_SIZE)
-> +		list_for_each_entry_safe(inode, next, &queue->list, i_lru) {
-> +			/*
-> +			 * Skip inodes on frozen fs as we'd likely block. We
-> +			 * always accept inodes from read-only fs as there
-> +			 * eviction cannot require writing.
-> +			 */
-> +			if (!sb_rdonly(inode->i_sb) &&
-> +			    inode->i_sb->s_writers.frozen !=3D SB_UNFROZEN)
-> +				continue;
-
-[Severity: High]
-Can skipping queued inodes here deadlock freeze_super() and stall inode
-lookups?
-
-Inodes queued for deferred reclaim via prune_icache_sb() or iput_final()
-already have I_FREEING set, but remain hashed in inode_hashtable (and
-filesystem lookup tables such as XFS per-AG radix trees) until evict()
-runs in inode_reclaim_deferred().  Any lookup of such an inode blocks in
-__wait_on_freeing_inode() waiting for evict() to finish.
-
-CPU0 (freeze_super)       CPU1 (in-flight writer)   CPU2 (reclaim worker)
--------------------       -----------------------   ---------------------
-s_writers.frozen =3D
-  SB_FREEZE_WRITE
-                          sb_start_write() held
-                          iget_locked(ino)
-                            __wait_on_freeing_inode()
-                                                    __get_inode_reclaim_bat=
-ch()
-                                                      s_writers.frozen !=3D
-                                                        SB_UNFROZEN
-                                                      -> skips inode
-sb_wait_write(
-  SB_FREEZE_WRITE)
-  <-- deadlocks
-
-Also, while the filesystem is frozen, super_cache_scan() ->
-prune_icache_sb() continues isolating inodes with I_DEFER_RECLAIM or
-I_METADATA_WRITEBACK, setting I_FREEING and queuing them where they will
-not be evicted until thaw, causing any reader looking up those inodes to
-hang uninterruptibly in __wait_on_freeing_inode().
-
-> +			list_move_tail(&inode->i_lru, list);
-> +			if (++(*count) >=3D INODE_RECLAIM_BATCH_SIZE)
->  				break;
-> -			(*count)++;
->  		}
-> -		list_cut_before(&tmp, &queue->list, entry);
-> -		list_splice_tail(&tmp, list);
->  		spin_unlock(&queue->lock);
-
-[Severity: Medium]
-Does leaving skipped inodes from a frozen superblock at the head of
-queue->list cause O(N) rescans under queue->lock?
-
-Because deferred_reclaim.queues are shared across superblocks and
-queue_deferred_reclaim() appends new batches at the tail, every batch
-dequeued for an unfrozen superblock on the same queue must walk past all
-frozen inodes at the front under queue->lock.  Moreover, when any other
-worker collects fewer than INODE_RECLAIM_BATCH_SIZE inodes from its own
-queue, get_inode_reclaim_batch() wraps around across all queues, seeing
-!list_empty_careful(&queue->list) and locking and scanning all N frozen
-inodes on that queue only to skip them.
-
-[ ... ]
-
-> @@ -1210,6 +1260,13 @@ static void inode_reclaim_deferred(struct work_str=
-uct *work)
->  				sb =3D inode->i_sb;
->  				count =3D 0;
->  				start =3D ktime_get_ns();
-> +				/* Protect us from filesystem freezing */
-> +				if (!sb_deferred_reclaim_get(sb)) {
-> +					inode_reclaim_skip_inodes(&inode_batch,
-> +								  sb);
-> +					sb =3D NULL;
-> +					continue;
-> +				}
->  			}
->  			count++;
->  			list_del_init(&inode->i_lru);
-
-[Severity: Medium]
-Can evicting a stacked filesystem inode (such as overlayfs or ecryptfs) in
-inode_reclaim_deferred() still block the worker on a frozen lower
-filesystem?
-
-When iput_final() drops the last reference to an unlinked stacked inode
-under PF_MEMALLOC, it queues the stacked inode to deferred_reclaim:
-
-fs/inode.c:iput_final() {
-    ...
-	if (current->flags & PF_MEMALLOC && !inode->i_nlink) {
-		LIST_HEAD(defer);
-
-		list_add(&inode->i_lru, &defer);
-		queue_deferred_reclaim(sb, 1, &defer);
-		return;
-	}
-	evict(inode);
-}
-
-__get_inode_reclaim_batch() and sb_deferred_reclaim_get() only check the
-stacked superblock (inode->i_sb), which is unfrozen.  When the worker runs
-evict(inode), current->flags does not have PF_MEMALLOC set, so dropping
-the underlying unlinked dentry/inode in ovl_destroy_inode() or
-ecryptfs_evict_inode() enters iput_final() -> evict() synchronously on the
-frozen lower writable filesystem and blocks on sb_start_intwrite().
-
-> diff --git a/fs/super.c b/fs/super.c
-> index fa345d5027bff..77e6ab6383b8b 100644
-> --- a/fs/super.c
-> +++ b/fs/super.c
-
-[ ... ]
-
-> @@ -2648,6 +2678,7 @@ static int thaw_super_locked(struct super_block *sb=
-, enum freeze_holder who,
->  	sb->s_writers.frozen =3D SB_UNFROZEN;
->  	sb->s_writers.freeze_owner =3D NULL;
->  	sb_freeze_wake(sb);
->  	sb_freeze_unlock(sb, SB_FREEZE_FS);
-> +	sb_unblock_deferred_reclaim(sb);
->  out_deactivate:
->  	deactivate_locked_super(sb);
->  	return 0;
-
-[Severity: Medium]
-Can setting sb->s_writers.frozen =3D SB_UNFROZEN before
-sb_unblock_deferred_reclaim(sb) cause inode_reclaim_deferred() to spin in
-a tight loop without calling cond_resched()?
-
-In both thaw_super_locked() and the freeze_fs() error path of
-freeze_super(), s_writers.frozen becomes SB_UNFROZEN before
-s_deferred_reclaim_running is reset from -1 to 0 in
-sb_unblock_deferred_reclaim().  During that window,
-__get_inode_reclaim_batch() only checks s_writers.frozen !=3D SB_UNFROZEN
-and moves the inodes to inode_batch, after which
-sb_deferred_reclaim_get(sb) fails, inode_reclaim_skip_inodes() splices
-them back onto queue->list, and inode_reclaim_deferred() continues
-without reaching cond_resched(), immediately re-dequeuing the same inodes
-on the next iteration.  Calling sb_unblock_deferred_reclaim(sb) before
-setting s_writers.frozen =3D SB_UNFROZEN (or also checking
-s_deferred_reclaim_running in __get_inode_reclaim_batch()) would avoid
-this window.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124115850.3512=
--9-jack@suse.cz?part=3D7
 
