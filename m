@@ -1,90 +1,180 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14B8606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642EE606A331
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e/Vedqsm
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=h2yQ1bBs
 Received: by kanga.kvack.org (Postfix)
-	id 994DE6B0AC5; Wed, 25 Nov 2026 16:34:41 -0500 (EST)
+	id 7EB056B0AC7; Wed, 25 Nov 2026 16:36:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96C336B0AC7; Wed, 25 Nov 2026 16:34:41 -0500 (EST)
+	id 7C1E56B0AC9; Wed, 25 Nov 2026 16:36:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A8E56B0AC8; Wed, 25 Nov 2026 16:34:41 -0500 (EST)
+	id 689F86B0ACA; Wed, 25 Nov 2026 16:36:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E8126B0AC5
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:34:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F03B616013B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:34:40 +0000 (UTC)
-X-FDA: 85474945920.27.8EE0DE3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 61AAA12000C
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:34:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e/Vedqsm";
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795642479;
-	b=7YwguOqKyeP4rW0NO5oukkcC7zSyRRcsBA9znWBWWrkVeI7+Hw6NB+y70PSK0ME1niDA9F
-	Eu1x+NCQp/XjfQ1piAwhNUajhPIl18FIz6jmZn8MvS/LOnSxw3kxkOW305dmSMBvJJJQix
-	D8R+5og9782R/0xDp08RaCMcn/iM1cc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795642479;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A1126B0AC7
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:36:10 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A0ADA8C7B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:36:09 +0000 (UTC)
+X-FDA: 85474949658.17.AC50CE4
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010026.outbound.protection.outlook.com [40.93.198.26])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 24CD0180005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:36:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=h2yQ1bBs;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of jhubbard@nvidia.com designates 40.93.198.26 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795642566;
+	b=uT/RVtnl+KHGaezcYHLabvpvhUPK29Rb5yNlTGkGRU3Y4wMwvQpTZlj2NMlEnQLkW0m5+1
+	Ae1gLdcY8yjJdtsShOI9R6zyXJ1VbWke+nBytPtDEf90sEqYsrCkJQHjzQlsSVjBnvZb5a
+	FXdiuvZBaX1K2B9tx1GurRK2iYxfPkI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795642566;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2QRBdN9xCO5VdXRI0zdyDkW4SZFJ1adboHkzZej3wWA=;
-	b=fXGlpNcaUcVrfFwVUC8SQEKeR6Oo63y31FO2pbHRa3DB5FRp6sLTAJXxxUXdYDBswbE4FG
-	Ng3hfzW/HrPmxXwA2u/R7cVmAS8ldYVb6D2FCpZF8sP3RmLnDFazPqf2cCZSHP/jHzeRm2
-	7RmAdTQjQtf6QGBVonz2/ZMO8nlXTro=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e/Vedqsm";
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00BB26156B;
-	Wed, 25 Nov 2026 21:34:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050851F000D1;
-	Wed, 25 Nov 2026 21:34:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795642478;
-	bh=2QRBdN9xCO5VdXRI0zdyDkW4SZFJ1adboHkzZej3wWA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e/VedqsmbHylrLGnKAShIX7NV4zefMLPH7O9+5r4A9VRKTuBGB1f4nXQ23GN0NUqT
-	 vpQJk8hYlJikiFnw2qXrb3n1kaNS/MF5cyVbJdoSyTvyud+b7JXDPrceLA9GaBer8L
-	 FDey2twG23f1nFp8/ljJTenZZBHRRWO0UbqP+OMXm9XZaxnBQRRITEvc398UMhedVu
-	 mSUPWqngPsRU0Ei8OAcfWmr0TiRP3wD1z0z97acqEhvw53SlEYw3n5eZbcqgVnzJgX
-	 Z3TXM5BVJp/GDxjtZL10Yi9cHMVoblZrTdW35DPPZRkqT+STYpNKpU9UbAb+cRbQSD
-	 JcdISuRYk00hQ==
-Message-ID: <sashiko-outbox-234187@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] xarray: fix index jumping backwards in
- xas_find_marked()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Qian Xiao" <heyheyco@gmail.com>, "Matthew Wilcox" <willy@infradead.org>, "Andrew
- Morton" <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, "Krystian Kaniewski" <krystianmkaniewski@gmail.com>
-In-Reply-To: <20261124213424.2224554-1-heyheyco@gmail.com>
-References: <20261124213424.2224554-1-heyheyco@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 21:34:37 +0000
+	bh=hICcxFwpGqAt1bFPGPlzvicfD6n257Qr6ewQEMpxZlw=;
+	b=XLIdma+NqnHtCK/ggpFis6bjLnLB76xKzjSRzXYFOVnHmdxaunCPRT9cLeGZe5usNq/JMG
+	uIycfnoToE2emZjh5kIFsO3xkd67oHc7tVuKbQWNmh1SSQ0p327YoxLbSCA8NG7tMpqzU7
+	+P6aN3the70jcWpW0cuXpxH6KGtYHEg=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=h2yQ1bBs;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of jhubbard@nvidia.com designates 40.93.198.26 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Os6eFg9LyRSrgs4GMPaIH2GyBbIJBC+B7p6YfaPbOgHfOAMcV1fUnrrgblZ5lMvksyldcdrNG/iX1mI5B2U51BzjPArkNqWricvY3SrHRBsHFEPVjw4MrKnuVAM6VILbLTpBy6tXgS/gafhXyh/8M2cBtfECKYdIqNmxnpFzxshzQlHuIWwHH67mVEMAiHVejTeAVlG+aHkg1cWDnmZrHK3UjWBkGgvo8vMLxOfKZ04r0LDnFYFcAx252BSNk/vzTMBajaePpWgs3nlNSjlyukCrCV87MQkxbZpeoSHKwe99WuixNOdhzUIAqgmS/7SuMze8QPtBynwTxTpBnJnlEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hICcxFwpGqAt1bFPGPlzvicfD6n257Qr6ewQEMpxZlw=;
+ b=nxjWZ43CUJ1S6oy6EIfY6uI9SKoU63IZLJIv/YoVbd2XvVDWzZnePfzNB3cP0RZook5sgloHVsoqKt+UCFBq5tQlkoEUYavWRaGKa+aVupBxxCfz1DyDz7p/CnnYb/jZsDirQ+8j4pkUhIbJ9RHHoQhUbS7Ook9tH4lFyusNMY7DHAbTHEZ/bo2jHigD66w7aLFwOVVRrgkUW+MSlTVG1d1NKz7XvANmZsMZaxIsUtNkR5XPLkUkhqNrn9JUOO2/cKasu27v44ay5BnBU323+X5AZNTOaCJvhss/FtH7hUEtRpv8xMC828jcUxXF6v+6y8PnLeltcDiYFLJg4uYU3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hICcxFwpGqAt1bFPGPlzvicfD6n257Qr6ewQEMpxZlw=;
+ b=h2yQ1bBsJWSE0lHR/IpZfFG/ZjnBSV2mM3w2RMs2diBWyCU9zMzHe7blBarFZOx3NUM+2kUNTlu4tvqxuh9GI1dUx4rjm1wJY8NvpH+1+vKGqZpjKTc+grpcXyxlCRHZTr4P3h+eG6c7pWUW4zi+r9ndDmsEaB7hPhp7rY/T2nWWs6rLx/VONXN/oWDA3lH+PVwnQBJNPBHzaw957DN48bAWHlEQeRZuz1w3VszuJbg0sM8ztFxG3LrsVbxH8Hy1sMdAHqIuEoqUBCa+WCR8oFvbQSnoOCC5B0hLAaF85FzBcKSINQzE1FYck6k+l9KBkLtdnpbLtq5KYdUmpfLEHg==
+Received: from SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7)
+ by PH8PR12MB999295.namprd12.prod.outlook.com (2603:10b6:510:408::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Wed, 25 Nov
+ 2026 21:36:00 +0000
+Received: from SA1PR12MB5614.namprd12.prod.outlook.com
+ ([fe80::1a0c:e9e8:f3a5:d9d6]) by SA1PR12MB5614.namprd12.prod.outlook.com
+ ([fe80::1a0c:e9e8:f3a5:d9d6%6]) with mapi id 15.21.0639.011; Wed, 25 Nov 2026
+ 21:36:00 +0000
+Message-ID: <8ba27f45-a99d-4ff8-acd6-e4eae302591c@nvidia.com>
+Date: Wed, 25 Nov 2026 13:35:58 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: Removing ->dirty_folio
+To: Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
+ Rik van Riel <riel@surriel.com>, Qu Wenruo <wqu@suse.com>,
+ "Darrick J. Wong" <djwong@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-xfs@vger.kernel.org, linux-rdma@vger.kernel.org,
+ Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
+References: <aoyWln-Gt-yvZQkE@casper.infradead.org>
+ <CAG48ez0vXVUu9j4rYUeCqgwyHKAiN_6fL--D90WvX9q7B41V-A@mail.gmail.com>
+ <ao3y8TtEGjniZ_4f@casper.infradead.org> <20260826050733.GB15122@lst.de>
+ <20261125085814.GA24887@lst.de>
+ <woe7ui2vuwznrdt4zxynkbnte7r57juoaicwuk4hmwmlhq7lmp@no52geqttfyk>
+ <20261125143206.GA15229@lst.de>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20261125143206.GA15229@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0098.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::13) To SA1PR12MB5614.namprd12.prod.outlook.com
+ (2603:10b6:806:228::7)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB5614:EE_|PH8PR12MB999295:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e2387fd-4dcc-4df1-0636-08df4b3c190c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|10067099003|56012099006|11063799006|261022075727099003|261026140227099003|261028144727099003|261026121527099003|261022105027099003|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	DpqKynoHIJbOkFORdRMRzqmEYsQARv6izJGK89nb+ts7pHDnc3vjnp4rXGcQOlCCmWp6/iwnAfAHTFRAq94BH92iMwH7eYVNZopSXQBej0dyYZCzQGh1T+UNioyYgS9Oeg+5LsSz58RSETYNlhQrIS6H/wqOx260/DVPlLJT92hNbAsh+k9GbIg7a0eFJtdICqLxuP+LRpiAygeovJnp19Yaiem4Z134s2wbaRsINb/HEalnuboUr5THa9YrjOJoWiybDgDBvz2j8MLZLXake6Et1qOQSAfMhD73+YVYhZnL8VHOSIoO4zsNu3mrycZxKvGNwfEwX947PUEGuE7T4ypwu4UgpkP5ozzU9/e2NQ3QKeZUA6drjoVt/AA/ymaM3tfU4FuSuQ5LoVig/KKeAwlf1cJUnNbdhPCTTXrgDe1wsLWLzjF4ELtHgg4dFqHfH0YJasDrLht5PKInpPHpMPFZpEOwi0dkXIWBpWcUz4yRUqorGyA6ZBtuQalzjRCFIz8hUmPi8VcomXy1OJ9f6nV0CpzhbJXpXP5w1IKTLxsj3F2xpP/lCPWoKHNuFNvjiLGcmwiM3JsBXS8b2OJWNyUS8xl1joOqCBokuE5WMeExt8hSX/odd7YMOWMx+LbnSBjwcZZYmDbtieWY5DQKhXZx1bfCEHxmoMsOoyrYaaQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB5614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(10067099003)(56012099006)(11063799006)(261022075727099003)(261026140227099003)(261028144727099003)(261026121527099003)(261022105027099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MWp3Vi9LTVJBSlJDZFpJa295KzZCalExYkdUTEVRcFRicyt0RGlJSDFDVTNs?=
+ =?utf-8?B?alkxTVYzMERKUDZaN0Y3L1RQUkhCUjUvdWFXTFdSbCtzdWYrRGNrNmFhT1Nl?=
+ =?utf-8?B?YmhMYXpWd1owZFlDYmpJTlJUdGVqRWhoRWltQVRteUhPVmZVT0FiV2xJZm5B?=
+ =?utf-8?B?NXI0MW9RQVd1SXJTQ0RmdElaZVpoaWVLUXhWa09nSmJ2SmFTTUVaclR2R3hC?=
+ =?utf-8?B?aHBBNDgrNUtUcDlBZ2ZITWFxODlhd0pOVEUwK3VUcU1Lak5Vd3FxK2dJRVBV?=
+ =?utf-8?B?RlkwblVQaEZUNEpuV0kybWRYUlFRZktOR0tKUmszRHQwMlRLV1d6TGRhcHFK?=
+ =?utf-8?B?eVJMQUg2a2lOUG5xR1Q1NVNGcHZvQzNlRDZmSFE3QXVDSUgySU16Z0FUc1Yv?=
+ =?utf-8?B?bnBEZjZpUGJVZXJJUnROdFFFVm1Bczh1Rk00YW1tSFZPKzFUcHJ0L0tjVjhX?=
+ =?utf-8?B?TEhBVm9XWjRldnJ1Tzl1MkszNmRId0xrbjFMVHlLUnc2OVRhNEFOWDZhU0px?=
+ =?utf-8?B?UHM1RDF3ZEtzRVd6RUo1bHdJQ2MrWk1YYXkxTVhSdVRLbWEvaHlza01ESjJE?=
+ =?utf-8?B?MzV0d0tITmRjZWJzTXZaa3dTZEF0VFdHM25ycTZVQ2N4MkFMdERUL3ZTRkUr?=
+ =?utf-8?B?cTJzeWdmQjUxdXZXWGRmVHI3aW1Oa1N0bjM5UE9LOUl6VEpUYXJEak5xcWtJ?=
+ =?utf-8?B?RlpxT0FOK21NNzlvbUZwd0VKQmlteDlXQVpNYUZ4S3FsdGRSVjZXZHBHY2Nt?=
+ =?utf-8?B?YWZORVQ3bWkrNHQ2ZFozaEhhRmN3Z0lHK2ZGaU1WcXdwT09XK2FoemNVbmFu?=
+ =?utf-8?B?M3hQYi9ZYXhubE1jeXFYN1pKTHQwd3dKRHZaOGRmb082ODdNaVU5ZUo3amNk?=
+ =?utf-8?B?TVFINU5zbkU2YXdxUEtERUVPaW5MckZvdEJnUkFJQ09QUGdleStDd3JDQXM0?=
+ =?utf-8?B?alBYby85bkNla3JwUU9ZeWtpUlBoVkFkbnRhZkVJbXJ4aFk3TnZhZDJOUW84?=
+ =?utf-8?B?b1J3VUUzS1cxTkVRMTJBYzZvbVlrZThzVlprS3VOOVFjaDBQdXoxbHNCUGdn?=
+ =?utf-8?B?bDU0OW1VRCtuMGoxTm9Dd3NUVHRQYUw3NmJCelVwUkFyZFpyaWcxdEtScXBt?=
+ =?utf-8?B?ZG4zVEJmT2RaenVPQUthVW1zZHFDYnVrVVBjVTdkZ0lMSk1XckFTSUM2WjUz?=
+ =?utf-8?B?eDlvMnlHRHdISnJKbGpmcjg3cCtGbHZ6c1l4SXljYW9tQ1Y2MVQ5RGwvTGwy?=
+ =?utf-8?B?TUVkd21mcDZsMFZXemFzditLWFNPUDVGR2RJWlRmaTdQajMzZnNEckJ3Z3ov?=
+ =?utf-8?B?RVlHdE5yMzk2QURwU1lsU3hLWEhWTnBjZGptK3ZPU1crMUc2Z24zUThoM1pP?=
+ =?utf-8?B?aTJYS0FETHR4VFM0ZmVRb3RqeFh3cE4vL3BHbUljeERETWFiWTJoL2ZFYklQ?=
+ =?utf-8?B?T29vM252RURkTE1OV1JqNGFPK1EzSnZKczhaQTFBZ2lzVlQzWldHaWZVZ1lQ?=
+ =?utf-8?B?SHMrNldhRHJDeGVlWENMOE1pTDJoTjNXYkUvZ2czMEVJK3k2Sm5uR0RoRXBa?=
+ =?utf-8?B?SzJ0b0JGY2xEUWd6Uk9zWXYvYm9XOFcrNWJPZllpdm92dDViOHJ1SUw5VTlQ?=
+ =?utf-8?B?SzdOQURYeEV2N2FvbjdJcFkvNHVVeE5aUWlMeENVQkVURGxyalczUDdGK3NB?=
+ =?utf-8?B?MzBHcFBSamJabUlOLzFSREg2MVpKWkx6OGxjMmNtOUlDQk85YUxPaFZSQzd1?=
+ =?utf-8?B?d2tHVExqNTVyeWZKY2xldStQUlcyTkdUSWpNTU9uUGhRdGwyTS9YTFNPcVo5?=
+ =?utf-8?B?N3pua0tHRzJZRVluanFwcFgzbk5LemVweHF2L2pJVjlKakxjMWlEbWhpUTJU?=
+ =?utf-8?B?OTFnbnI0YVBreUxvYk4zT3dSeDZwenkzUEgxVXE3SlAxeUtPSmdCNVJ4NVdK?=
+ =?utf-8?B?YXd6MUZyeU5RNFl5M0xydHIzS2I3dFU4eDlBOW4wUUYzSm1sNGJyR0JyTDd6?=
+ =?utf-8?B?blV0YlhLdHBGQ0wzMlkzQVQyYlBtY29yRHhRYTVSQytndjNucTN5clgwaE1Y?=
+ =?utf-8?B?UWNZSXJPZHV1T1Z5aGhqakM3TU5zQUFiMVZ0ZExzcDVycUZsRzBMajNnSU9R?=
+ =?utf-8?B?SDQ5U0VzbTBad1F2TytaVmdmZHNmOGh0M0hwQm5nNXNteW5ycWJTOThReE5p?=
+ =?utf-8?B?c2t6b3RzMjM4eXhtWGJNMHpDTnRCR0hmeUx2RDluZFdoVGtvaU54cXJSMnZN?=
+ =?utf-8?B?RHNvV2E1VEdmdFRxTndYNTk2WVZGcEoxcVZwellvWHU1b1AzeHY5dmtkcTNz?=
+ =?utf-8?B?ZWJyMFB5YjVLWTZtT09nUWM3NmczOWZCL243bzhLR3I2bXdqRkIrUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e2387fd-4dcc-4df1-0636-08df4b3c190c
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB5614.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 21:36:00.1737
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G/1a6ac9cJFNJfoLq0vQHG1eR58UoFdoMDlgicvgD7fSEgPr5Zims9I/Oqvd1AuUnvmmIDPLRuNcuVFyYRzQIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB999295
+X-Stat-Signature: d3jgnxf6g9f98pxj3arf1exncur1eut1
+X-Rspamd-Queue-Id: 24CD0180005
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Rspamd-Queue-Id: 61AAA12000C
-X-Stat-Signature: ezgy1j4fz1b9g849kub6rbk86ipupmdj
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795642479-311877
-X-HE-Meta: U2FsdGVkX1/VX/GpufnqeHxrhZxyJbW4ftriqrPfdfwYmcCzo7NgCw5u/Sb8+PFtkRJBSHFlbVu/hO089Ra2fIcREB8CIU00ozCMEj9Bp2ZiXUNlAELCR/n8yBbatroFF2NV/GqDrHU0k5hGdxFlODa0Z8OL1VFpFHzUuY+AIhyMig/dlzj7lbjornPiK9Fq3TTdawsBOuGydAGqj45J+8BAE8Pbs8BJd83kkwKhByAcVr6MQu0SHcx7VhYTWRGbwdUvdqhmzOxQDKF//5bnk3xhMwNvDhLdSowDJ7u3QMQHXgm4HqXNpYA7mfXikJbCdESp/CETBgPhAwcOGhaLPgbYXj2lsyJUWwVxS0vXUjjIcLXXU3npK/GS+6LVhE/2VxbMG64XKVgw3MBYibBeVFBlXRwmjThTw5StErc6WtvyRR+bB6/w1jhAl6Y0QanVg/JiDmnnxH+06Ehrfm3CQPvXXPF0FJypvLShavkjJ6uTdjRSqMyR7HmE0Z/KiM3cKciNsruYxOdJjEKWEDADxWQfxbxlVKeeIBG4G6X1QCPJJU9MmDS+BYm1kRzhnAfz7YKeKdBLVXBMzUzAWj88xgauNxz7uxd0DW0YxH37ELm/segR4A72x/BKkl0Gjlb5PzhljO3C8WeII2H54XA6OBn9//iFh/qRA4rzhm/5pvJVTFuz0kCT/eAzywskkabL+YN1oIMGcPC5UKGIUDwo0/5Oz+espYiitFLffOTWnQfOoWTDhpgdU6BgLw6Xwz/iyLtl5+xLyon4sXGqpjHORvSupInFms7Q4dZlwYk04lkgxVY+ynw2qmsIGjfFSwMlK3zn0dMH5gj8hyuXvmCV79ACTmcCWRMrRy3eUJ2OYnyQD22yTL8PqgvJjuS16JwlRPppy9vztJmEnl+lTj0PHYTBU+1vLT9JQzONN7b4b+w120UtlXUKITyGurSSbf1KAkylZnyLrM9h25tZ9zD
- bFo5chT6
- pgrsMf4/RUXa6y4D2hDPFPJ2eTOyNXyhrQzOqFiFALsBbxBp0yvG1+dU6v70SlNt+4q1S5ExVPzpOuWd/DcJ1Q1KLCy+3jDTL2vDrxYalQtouToSTuM2ffT6l3gEL6uOJgIh1S4IA9A6r2aY0MqHlfuKg0yDuwMd8uKReZxMGLDW94jnQgG01eLyp10pD6jZ6XMl2hl/QuJub4NAVaHhJKsaYogYBTS/Y68MfGNQzHrNh7l/lv9Rgs3SjrvylA40nX3D8LOD1Bc60/oroqJZSwuehKuDvFQmtH5r1zrpPC2Qvax3kWkuWMLzmo4v9rzF5/ccCRmf66W1FP//t7EVXNfb0SgMdb49NQqHH0dDPnjaHrKPGZ80G9XY519Q+oBvAUfg/LiPgF2cIfIeUH/Z80yaw8uD2WYxfBxFI28zc/yQn24PtF2/FlaoB3eHQH7OxXoWqHGZ68IgcfunUYIn6OMrkCkmhPaR69M6l9dLmYFd7AnT8ygjQP/CmzgjpCIT4HZRPQS9SuDlnmYtx4XDdr9LHMOxTGhjDQQPXn9bLKsJ3Z5ynURpoPDLnV2HVQIR4d+cIK2A720MCUlsgJfm7nwavya1KIqX2tzY7BsqIDP03sq/OqArmG6pmvDXILkfIgRBheqOVQPeSi1Jt8M6FD0XBOU4w7H0T1D3Fp441DHLl/QaBFZt3bq06SF9KHi+CDpUKPC8Bz4AeAPpmzkRm3gsUFeJVKRlcvX1Fdb0cWNPy29ppN9qhjkA8ay5O+t4e9Z9dmTXaMT8XqLnMmJDQwa4hjnqQ3VmeqxfDoyDPvIs3lacRflNuzeVhehTYsG5IcuSJU19uzWh1ktRsdEusoPhgydbr8lZv3AXWApmhAvv4/2Q=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795642565-313000
+X-HE-Meta: U2FsdGVkX19RWh2hGo78KLlUpVaNPclJc4Vy7NtA1ARgKzbKEGrpzymsPelSt46N5ivk0knhY2BI2fjGk1ixrvsWtR8AwFq69Jt8oDAXz/3R94IpQHr/uqYZ7aPZHe53icbF1RgWBQHsn45QWHkkwNY0sy24sjNLB6sbkC4/1DYCavvoHBYlejoSSniJIN6Eg/aYBJUoxZSmffuVDLISeMWAs2fmUKGBvBnmL57urMnyysQuN/Wfvq6I7SlPny5URpzy5ff464adyLS6a0p5tCs4FrHrdtugw/MThxSVNnDBxRfgAXiQJQ/6KDcjTSd9npWGk9hU2+e7un0Mmzq1evmhNJNk1FdrD4W5CVPnf5wR4VLKYGJBf20Bw+LmnqP9CDW6C5SShqAPn1xllM3IoWpDlJa0sWZc8tRJLgX1MSCjFDSwah5mcdOi3wwFIjlsD6bmAyNV3pZKCzE70+wQKL1NZjSHUNhkI6r7v/lJYBun9X67koY2GghBS1bVG+UJGPMjmPFwc6reRKzcAmZLcCLrgZ/q+Fe9e9dmAMOGe0OTR0Ku7Ip5Mn7AZLQEtjGKpZYq22thPYuBTMujwKi5eFQaqJHvktDIEfy5rP44i2kmYCjkaLsyTQSnA8dPiIoo63JHnG99VgTxvQDJQOUEMpPbl3k7T+A0ekJtuk3HJGHfk9Q5EWqA78Rcv7qb0M8En9MnFgRpXVqsV8FwDiJugKckuiJDi+aRTP16tYjwUioyy3ZYayCOB4hhub2p6EufHHLKzNQZBXrh5DrJdPrHyKJvPaLv5NiR6kKExgaQRWk+jGN1xjekFy2KhC86modGjpVTivhboH5O4XUdRorH2vBT/tFwasXet5bo/uOfGtYLKR9MiWFyS/RQlfbWLEFLVNWxrWGYj6/n1a4MVWgnNmBkJBEXG85wh4ogxGJM5rc+d06Igmcz1U8oEio2R6aQ6t7reHzD7jOm/t2bq2m
+ WlmVQmXU
+ LVdVy2T5jasizlRbPpVQgKuz7HoQpP8WXS+N+Y11v3B2pkXj+kkSxypowY2hBdrV1bht6UZIBUdJ70+Qz63nuMWMk3/yOJm5ZhtTpNc6gXktUecKbFVIeVZDp+NL8HPL8w6fnl9D6JbFDvJS9J5OvdPFa1NbBqgwNr7wW/sAyKp9cMzv83qX6ReDIKR25/Jrirnp46fFmBnIyQepTmOAj16I8TC9vcGphzvEMxRx29+CZZpBMUKJ9TFCnMw71rmcG94eI0s2Mw6NRMOMooTJgCqic2A9dB6a1lLovSabY0zeW6SmSJ5VGl0vczQC00xdzqlgX9tQNjK2Ja52CG8GnE9cJGm16qI1lXvj5BLnNhCd0/9727oqHyVj9s/ASz4nLfagOlwfrH0xOhezXo9UHM4uSFjJC0FQe1m4CJ2qQi+Jn9QwNA4cdWL3HrLxZZe57IfIvh+Dldv7zfLUp7pkN7FDVU5Mc902d6v3Zc3Mbkq32zFRpnL6tGyTlhhxB63jJMXKQIwnoRDdP9PhnWsDei0ps8qzdeSjalwrUbEAf+RpvOt6km9gi8aa2W41tCaoOLIVomMfI3hPIdgMsmhwrYsgyNxczdJoG/2fzJ3XyYmdQ5bOD63EjA90SB3xrPmbwhlPSUH6A438hLTsrZk2w0zeZipckMb+7KBtPySp5GVsbRfCQ7qlF75lqelNfgM2+Va8gP+w0ZajpCc3OSSP6WmGbx2Dn2OA6CEmYUv7mxHVEot6lVoilVYjDf6ZL3ZKU2AvfO6g8Mh47x65GwhHD8yafag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,150 +182,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [High] xarray: concurrent split race in xas_find_marked() on sibling
-  resolution
-- [High] xarray: xas_next_marked() misses leaf offset check and jumps
-  xa_index back
-- [High] xarray: xas_pause() overshoots xa_index and skips entries after
-  sibling find
---
+On 11/25/26 6:32 AM, Christoph Hellwig wrote:
+> On Wed, Nov 25, 2026 at 11:15:40AM +0100, Jan Kara wrote:
+>> I think we agree regarding the direction where this should be going :).
+> 
+> Well, that's good.
+> 
+>> Regarding the tracking of longterm pins, I remember when we started working
+>> of the GUP / pin_user_pages() fixes, one of the ideas that we floated was
+>> to take pinned pages off the LRU (they cannot be freed anyway) and use that
+>> space in struct folio for the tracking we need. John? even had patches for
+>> that but the performance overhead was too big (primarily due to LRU locks
+>> contention) for direct IO. But for longterm pins, the additional overhead
+>> of the setup could be acceptable and that would significantly increase our
+>> maneuvering space in what we can do (because longterm pins are yet another
+>> page refcount in the end).
+> 
+> Yes, additional significant overhead for plain FOLL_PIN would be bad.
+> But for longterm pins it should not be an issue, as they should last
+> long enough to amortize additional cost
 
-commit 9233cae6490ceca4faaeb7112a2155eec3568913
-Author: Qian Xiao <heyheyco@gmail.com>
+Let me go dig that up. I seem to recall that one variation added an "if" branch
+to put_page(), and there was a thudding sound followed by silence when I
+posted it. haha :)
 
-xarray: fix index jumping backwards in xas_find_marked()
 
-This commit preserves xas->xa_index when xas_find_marked() resolves a
-sibling entry and aligns xas->xa_offset from xas->xa_index before
-advancing an already walked cursor.
+thanks,
+-- 
+John Hubbard
 
-> diff --git a/lib/xarray.c b/lib/xarray.c
-> index 8c09f6c6cd8f7..a433f77f61a72 100644
-> --- a/lib/xarray.c
-> +++ b/lib/xarray.c
-> @@ -1500,6 +1500,14 @@ void *xas_find_marked(struct xa_state *xas, unsign=
-ed long max, xa_mark_t mark)
->  		xas->xa_offset =3D xas->xa_index >> xas->xa_node->shift;
->  	}
-> =20
-> +	if (advance &&
-> +	    xas->xa_offset !=3D get_offset(xas->xa_index, xas->xa_node)) {
-> +		if (!xas->xa_node->shift)
-> +			xas->xa_offset =3D ((xas->xa_index - 1) & XA_CHUNK_MASK) + 1;
-> +		else
-> +			xas->xa_offset =3D get_offset(xas->xa_index, xas->xa_node);
-> +	}
-
-[Severity: High]
-Does xas_next_marked() bypass this leaf-node offset alignment when
-advancing via xas_for_each_marked()?
-
-Unlike xas_next_entry(), xas_next_marked() does not fall back to
-xas_find_marked() when xas->xa_offset !=3D (xas->xa_index & XA_CHUNK_MASK):
-
-include/linux/xarray.h:xas_next_marked() {
-	struct xa_node *node =3D xas->xa_node;
-	void *entry;
-	unsigned int offset;
-
-	if (unlikely(xas_not_node(node) || node->shift))
-		return xas_find_marked(xas, max, mark);
-	offset =3D xas_find_chunk(xas, true, mark);
-	xas->xa_offset =3D offset;
-	xas->xa_index =3D (xas->xa_index & ~XA_CHUNK_MASK) + offset;
-
-When a lookup starts at a sibling index inside a marked multi-index entry
-in a leaf node (node->shift =3D=3D 0), xas_find_marked() now returns with
-xas->xa_offset at the canonical slot and xas->xa_index at the sibling
-index.  If that entry is split before the next step, xas_next_marked()
-searches from the stale canonical xas->xa_offset + 1 and recomputes
-xas->xa_index backwards.
-
->  	while (xas->xa_index <=3D max) {
->  		if (unlikely(xas->xa_offset =3D=3D XA_CHUNK_SIZE)) {
->  			xas->xa_offset =3D xas->xa_node->offset + 1;
-> @@ -1512,10 +1520,8 @@ void *xas_find_marked(struct xa_state *xas, unsign=
-ed long max, xa_mark_t mark)
-> =20
->  		if (!advance) {
->  			entry =3D xa_entry(xas->xa, xas->xa_node, xas->xa_offset);
-> -			if (xa_is_sibling(entry)) {
-> +			if (xa_is_sibling(entry))
->  				xas->xa_offset =3D xa_to_sibling(entry);
-> -				xas_move_index(xas, xas->xa_offset);
-> -			}
->  		}
-> =20
->  		offset =3D xas_find_chunk(xas, advance, mark);
-
-[Severity: High]
-Can a concurrent xas_split() on a non-leaf multi-index entry cause
-xas_find_marked() to descend into the canonical slot's child node while
-xas->xa_index still points into the sibling slot's range?
-
-CPU0                                    CPU1
-xas_find_marked(&xas, ...)
-  /* shift-6 node, xas_index =3D 100 */
-  /* slot 1 is sibling of slot 0 */
-  xas->xa_offset =3D 0;
-                                        xas_split()
-                                          /* replaces slots 0 and 1 with */
-                                          /* child_0 (0..63) and child_1 */
-  offset =3D xas_find_chunk(...) /* 0 */
-  entry =3D xa_entry(..., 0) /* child_0 */
-  xas->xa_node =3D xa_to_node(entry);
-  xas_set_offset(xas); /* offset =3D 36 */
-  return child_0->slots[36];            <-- entry for index 36 at xa_index =
-100
-
-Because xas->xa_index is left at 100 while xas->xa_node is child_0,
-xas_find_marked() returns the entry for index 36 with xas.xa_index =3D=3D 1=
-00.
-xas_reload() in find_get_entry() also indexes child_0 by
-get_offset(100, child_0) =3D=3D 36, so the race passes reload validation and
-triggers VM_BUG_ON_FOLIO(!folio_contains(folio, xas.xa_index)) in
-find_lock_entries().
-
-In addition, if the mark on canonical slot 0 is cleared after the split
-while a slot at canon_offset < offset <=3D get_offset(xas->xa_index, node)
-remains marked, xas_find_chunk() returns that offset and
-xas_move_index(xas, offset) moves xas->xa_index backwards (from 100 to 64).
-
-[Severity: High]
-Does leaving xas->xa_offset on the canonical slot while keeping
-xas->xa_index at the sibling index also cause xas_pause() to overshoot
-xas->xa_index and skip entries?
-
-lib/xarray.c:xas_pause() {
-    ...
-		unsigned long offset =3D xas->xa_offset;
-
-		while (++offset < XA_CHUNK_SIZE) {
-			if (!xa_is_sibling(xa_entry(xas->xa, node, offset)))
-				break;
-		}
-		xas->xa_index &=3D ~0UL << node->shift;
-		xas->xa_index +=3D (offset - xas->xa_offset) << node->shift;
-		if (xas->xa_index =3D=3D 0)
-			xas->xa_node =3D XAS_BOUNDS;
-    ...
-}
-
-xas_pause() masks out only the bits below node->shift and adds the full
-entry span (offset - xas->xa_offset) << node->shift onto xas->xa_index,
-assuming get_offset(xas->xa_index, node) =3D=3D xas->xa_offset.  When a walk
-starts at index 3 inside an order-2 marked entry at 0..3 (xas->xa_offset =
-=3D=3D 0,
-xas->xa_index =3D=3D 3) and calls xas_pause(), xas->xa_index becomes 3 + 4 =
-=3D 7
-instead of 4, skipping indices 4..6 in callers such as
-tag_pages_for_writeback().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124213424.2224=
-554-1-heyheyco@gmail.com?part=3D1
 
