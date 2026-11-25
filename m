@@ -1,95 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E7F606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF4B606A333
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DQ3jrQZ8
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sq8YyyCq
 Received: by kanga.kvack.org (Postfix)
-	id 941BF6B0950; Wed, 25 Nov 2026 04:23:17 -0500 (EST)
+	id D242A6B0957; Wed, 25 Nov 2026 04:31:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 918D66B0956; Wed, 25 Nov 2026 04:23:17 -0500 (EST)
+	id CFC056B0959; Wed, 25 Nov 2026 04:31:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8554C6B0958; Wed, 25 Nov 2026 04:23:17 -0500 (EST)
+	id C11606B095A; Wed, 25 Nov 2026 04:31:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 645456B0950
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:23:17 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6F7F51C45FB
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:23:16 +0000 (UTC)
-X-FDA: 85473102792.14.076C8FE
-Received: from mta1.migadu.com (out-246.mta1.migadu.com [95.215.58.246])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A7DDB40009
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:23:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DQ3jrQZ8;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 978AC6B0957
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:31:36 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 195611A0DAA
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:31:36 +0000 (UTC)
+X-FDA: 85473123792.25.9419237
+Received: from mta1.migadu.com (out-147.mta1.migadu.com [95.215.58.147])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C3720100007
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:31:33 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sq8YyyCq;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.147 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795598594;
-	b=hbpwbJE44THSUS2ZlybWurbDLYPWP2awNClRpzNDeYyevGUhvvDknhxXTtFeLiX2Trlrv7
-	n255lLTeD0f+9mz68PUDZ0l6ihWe50jQwkLnUgUYdhVW5JO2LM0obDJqbENvVT0vEuDnYk
-	K/WpOPGGl3yMw1+aVhguJ7z8UKwnHvY=
+	t=1795599094;
+	b=pORjzsfV65FhGYLYtvE9pqHmkvacnpYf3PQsgGO+ATyToXuMBkUPzD5iLt0lkhbA2Krl0p
+	PezvVB1szAoAAYyVrsq5RhAfTM3Cm7h80JL5Wf3krmbu7h7wlo3Exh6x0U+m5kcXU/l+oc
+	e2hoOWQBuyST5+EedqG54sTnqmn2Qgw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795598594;
+	s=arc-20220608; t=1795599094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ti9b2g1cfFsIFQO/QqlEg6n+yVVPk0+NYlYltUymZo=;
-	b=KP/rn1wi7M6gBPYMhDhhpwONalf7ZMdeSFzuHk55AXjbZktDtbnFeh80vwApbEGhIp/7Cj
-	sEenEgshD6f/m4wrsdPmQVLMNnpyXOfXeGcbxBEd8b9p/8Um/wqaxSpc1WyR06I0/rWTEO
-	KD4T5G63ULswAc4aQ/7EjDJWlO2VIMM=
+	bh=0t3yaiYq49eJNhyVmgpMO6uB/jPaQ0b3Gb0soo4gfAU=;
+	b=5DRCsSNJH+10Eg444S5EvzRC/2Y45xNLedlVmUy9LWahuFOQRqtvEFNiSjzTBpnTyyRxfg
+	JwBJjHxfyYKJeKFDOI7YrX076pj9GnrbeadNQeBBk8Fq3jdCMRlqsolacBkyznUrsj1sEu
+	6saiA9eK4g40BW/Soz6jcStlfzPdnBE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DQ3jrQZ8;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sq8YyyCq;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.147 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=DqxSNtCX+aRSNVtoSK3y0B/p6G0anqe+rBJLjrGpyYk=;
+DKIM-Signature: a=rsa-sha256; bh=jWng7U13BDQmuoHoZtAwtlO9p/HGoFdvP6Svn7/G2Lo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795598591; v=1; x=1796203391;
- b=DQ3jrQZ86nN0dkYeinNJg60b9aIM1+JiLbirQ4yTCZz9C5LkhC5treyPhh8XHMzcweNmZtUn
- LK1ykgtVIM+4rlaiUOBG4x6pGzEyJmH3f4Qypnh85d7jfoMmRcdgGcGDhCZKfj6/hB/AFAv6AzU
- xrpkzSlegxm3zg6/5NOrNdi4=
+ t=1795599092; v=1; x=1796203892;
+ b=sq8YyyCqCSynK6LYfT0t+IFE3WlevVXmrJK3E1O16fRUQXV0Jqa3OgXdJmls+i8EC2+TKlUp
+ PX3La5vZufRwNgS+lbGtqnQVre8xrqEkdqWln2ntsWEa5+iOgv7quapCKHJcyo4nLMFeNIouS+E
+ BS+Z3fniDkZ7PGNrfnphBSkg=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e6418e1a59a77475;
-	Wed, 25 Nov 2026 09:23:11 +0000
-X-Mizu-Trace-ID: e6418e1a59a77475
+Received: by smtp.migadu.com with ESMTPS id 16ae719c9c2b2084;
+	Wed, 25 Nov 2026 09:31:32 +0000
+X-Mizu-Trace-ID: 16ae719c9c2b2084
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <7295e3f7-1798-46ad-8213-bc426be790eb@linux.dev>
-Date: Wed, 25 Nov 2026 17:22:57 +0800
+Message-ID: <837d7783-0300-4bc1-a78b-620084af08cc@linux.dev>
+Date: Wed, 25 Nov 2026 17:31:21 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: hmm: give migrate_remap_fault a longer
- timeout
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, jgg@ziepe.ca,
- leon@kernel.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, mhocko@suse.com, balbirs@nvidia.com
-References: <20261119133955.54001-1-zenghui.yu@linux.dev>
- <av94SXo6ZAU7Z5TR@nvdebian.thelocal>
- <20261124213730.a8b4f5100785a2cde54fa8b4@linux-foundation.org>
+Subject: Re: [PATCH v5 09/11] mm/vmalloc: undo what vmap_pages_range_batched()
+ mapped on failure
+To: Suren Baghdasaryan <surenb@google.com>,
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org
+References: <20261116071325.263682-1-hao.ge@linux.dev>
+ <20261116071325.263682-10-hao.ge@linux.dev>
+ <CAJuCfpF_=KV3ArFO5LtMjc4EGMr79tX_tX2K=YCG_JTvC51OfQ@mail.gmail.com>
+ <0e30c5c2-b9d0-40ea-b7f9-af9a8854bd58@linux.dev>
+ <CAJuCfpE7S3uTX2rqEkmYqhO6zuqTKtDH88w20m1_fMHF8L672Q@mail.gmail.com>
 Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20261124213730.a8b4f5100785a2cde54fa8b4@linux-foundation.org>
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpE7S3uTX2rqEkmYqhO6zuqTKtDH88w20m1_fMHF8L672Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Rspamd-Queue-Id: A7DDB40009
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C3720100007
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 3a8x9h3bn1g8n6ttegfnxe9qmbwkn15a
-X-HE-Tag: 1795598592-646118
-X-HE-Meta: U2FsdGVkX1+B97xxLzZo+VV+uUiuTyUhYRGuIVPdVZiNhQV7/duKI65U/4RHZmlVE0vjx2vk8iLeqBgYgGGFYMb9JHul9qfcyV7bH+pjkkgpq/UkchwGFlTYafmZY4P6qPLBNhoFfjAjqdF2rfVNTTsPwGcDVlYAgWlkGVn4v2rzLoUjp1nfL448oCv9MupvFOZsxpGePEqZINFzxz1OBmh1QSMxuEG3Y+oIUSKLcRgepBHa39mGklxfLrfpeALzGbdWgn3HRTloD31nKZuQdEojjjtPV63soaYZz+VqctDzymR3VPVgUxdniJFb1Roh33WqCYe/608ZeTh5Vw/swUvbB4cvezGVgmw0J8RiOvQgdxIPkHif9xs3N5+7xN6rIC+sZYpWA6Sod9ZD/CWjXz5K0P6AwmnotialGpr5r5dfOLbuJKXLRIAh7URzFbwrsU/j9BVvxB8hgvfGlmYVJct/CPxqOCprjEjao0p/0sQLdnAN+J6BrpZVUKTts2coE7ABm+/L9EoMJaeTCoVAOnIHzW1jj9uptV+f77aFh/5WfXq0ZYywoOAUEQEx4TMWEzEXJM4YWw1bqlzfK81KFcPS+/dkRn4NG8TRujk/8P+WH+7RcNNaGof+SVCB0SE9Mt8LJnGj1ZBJeHnEvAW6vlkFMlt9HscgCbKZ6cVHwTRMqs2whAf1DPz33ehGGp3AQv7iw9deB3mFqgx2IWrf53QhcVlumc9VuH1ECq2Qso1VDV4obiIum+kYKEU78Rn7JyJbWTQ80reYICcNhShN4S/J/KMG0lsub/E/gTKZqhuJuJ8U15Xxkan1ldPBEUabv7ZIJ3nEu3Z2Jn2t5KlQaRwgYX1/6q59OfPuK6ja39veogS9kJCI+N+Gy4Zam7DiAGbPSNGhV6bXN2y7uI0LhaMyPCw908g7rLE6BaujzUhFwRldPB/J7e1rNILGuQJ26FZK0PsHgAY+J9kMHBi
- ZPkTc7ab
- 34GYQA4tl5Eb0/L76hyz9Q1Zl4otXh5Hchvt7zCQvGLvkm0JSjaYnr0HUQUHgEJfjt8o2R8xZfcVEqRw3fd47Hc8q2t+vEpGq6qEBnosFTigkXuUO1usKmwDadSQA0RQGYldhByr0vIR3EAfK31EanhpqhNC00RDtwVm6Ed29pjPtq4VbZhbwGYNsNMhUTFKNIAr2Ag9ZId8LexZg4IBJ07K7XXj1pvLsCTb73zvuD372fUnvXmhz7W/bL2Rilpdg/LmzcA6UAiOM/tTrb6vlcmAm21d3tKeBCabU+Ty8pdUSmJxLmVTIZOl1ZEdfTu6Iv1evJYG8c6QTj9TVaNauv9uKEj+xTudOZw8BPavnbeG1S5IHBY+iElpsQqRa8fADvCRMkZnFg+vE3veXkMWNPuJF47/H7mCm2CXyDrSQ0mJutDC/BvcBFn3XfHjpiSlv/4Dj+m6kYh+r71xXSaXyGDhyK04UuwVESJ2aQAKvZoPdZDVT3GsDGeLyFTVMGMJ7c63Mvtlfgxk6TyeXAbcgMOYhU5KCA9RV0G9hhuAhHrP8+Z8zJ7tchBiT3g==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: 3ijxbhd45yt14oq88m9cn5yi1apmp6tp
+X-HE-Tag: 1795599093-674427
+X-HE-Meta: U2FsdGVkX18roD3WZiQtpoUTSWxDOjMoTQBp/PcTGWxZEmfHGoWSsiDYQM6r/N8ya1FEfN/dzkORmz/Ib6jxxAQ77ESWWubYIdpriJys+NVmhS9km+q7TLaRYJGM3XDgquqPtYtYYzppUFiHFQmJCaRe8g2LTORKIQymLBewaOUeohYsSaXvnFB9u0JQeTdK7e6FG/70GcIvwxWriPdT3lHUQM/iPBHPtN4Hl3TnNVxrJCB/jsiFth0Fb+aZsVmGUJlMXbwMDsCsL9pF4UeICEhCpdyb4ZHk3IRC78rbnzc0P9a+EgxuZy9jR+T3Exp9yFRHiTdAH0qMfE3RHiKRFLhxjpBClN6tvNPuCJAw+RNFPhK4tcb29KTf4myTvq9qYUFsA3KEcZHC/clDiVjzmO/FBfgazY7M8xDAO9+6MwBiFG10aMFcz56UoV2a0g1CGkg7wQfEaXaoRtzes1gTePDsCW+jyrkNUzaw0O79bRtnh8W/znrB+nRjg+Rtv2XveLhBLEobAizSVp1YIzNbWkNQQn7htLOjlMb6hnbvjHSYcMvqYtAsgFHF7Si8WBJymQ6YZyUWA5KftJ4KZncYuUN2WyIwi22wJOv8eAiFqBDxv4WrDBUuTPsuUvZaa3d095I404jtFqKTjy696YMpww2loDE5Ft5RAcHeRbvAfSJAJaDBhdrMEgp+6ZB+3YSHNB5/lLqlkoWIltJJ56LJ7tf8U1G4wUIOyJzNUE4SB9orfYpHKwKR5HyZXvYFzFGjutTOLMoXyex0K7SC8cfA6eCSBif8MWgOyiQuO5A4IFNUuOkwN1iJ91QaBOOejL+3NI5RXSAqZ4QYs/ZBePo2o7JSyAcdC4HC0dUxYgZ9kSsSyYwdrb3g1orljbmeUx79Y5VJylO3W1318mONNOQF27O5PaG04Wdg/ZKOi2CrvqLZg4anCMGw9uQl7mbl6ZuTOCMz6cylKMWssPzEFhC
+ 4ag4jZgO
+ i1AhHrCzEHOIHozj5UdKUuM+3yBLUQ6Oo5C/6XcM6smx5kOZtSlmVNBtInMXswTfgmyDlEeZ0RUPlq4fcKAX+2Tj7JGK4HJSE1ntapSVNmj3iPcAfMka14uuNKC6cfD6XPyEjjP3SvKzjcNC62KxiT7GCTH20h1QedSR/ith4kT0hqX8at9YGwa6PTQaGbBw799p4PPHbNNHk5Li/LvMuW3ttu/fnJAbpCpg1POOOYvq6AGaYoZQY/ZCYNLHqb12qySyh+vWIVY3SGjzxKhnpI2RcNJ6snq0w4cSjBAkD6taxcv+Q8y4TEuCFKh8u0+f8MoAgLlzrbKO9MAeGaL8FVeUREhQlo4E5a0pudGtdP7F/Ii2iGhM3HsxE1GsVFtEQ04t8LuSdo7YBpP6scoOkqWFpUeMDzNSek5Oxaj/dGQtks4Rt8MjXzgh46rozeRfIFfhdbRfsSu4Mcj1AFCh3DD9FHmGXafLhd16iA6YZWRHGQvlNqFAVaHJdB3RX2EYSR5k6G+0MmvjxmCnP4A/LKMHv8PA1/P2zLG+jzYV56SIHhaOS+7H/th7JqLYs3wN9zbuxOi9Nlu8B4XFTbxRyOW4rtGmfBPQR7ZWNrPO44ti+NkzYHIyxxdVTDkCb7Xe3SttK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,57 +110,147 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Andrew,
+Hi Suren
 
-On 11/25/26 1:37 PM, Andrew Morton wrote:
-> On Fri, 20 Nov 2026 09:31:23 +1100 Alistair Popple <apopple@nvidia.com> wrote:
+On 2026/11/24 00:13, Suren Baghdasaryan wrote:
+> On Mon, Nov 23, 2026 at 3:32 AM Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>> Hi Suren
+>>
+>>
+>> On 2026/11/22 12:13, Suren Baghdasaryan wrote:
+>>> On Sun, Nov 15, 2026 at 11:14 PM Hao Ge <hao.ge@linux.dev> wrote:
+>>>>
+>>>> vmap_pages_range_batched() maps the range batch by batch. When a
+>>>> batch fails, the batches before it are installed, and the failing
+>>>> one may have installed some of its pages. mapped_end follows the
+>>>> end of the last installed page, and the error path undoes
+>>>> [addr, mapped_end), never past the point where the walk stopped.
+>>>>
+>>>> The KMSAN metadata is set up for the whole range up front, so it is
+>>>> torn down as a whole when the mapping fails, like in
+>>>> vmap_pages_range_noflush(). The only caller, vmap(), also calls
+>>>> vunmap() on its error path; the double teardown only walks over PTEs
+>>>> that are already cleared.
+>>>
+>>> As I mentioned before I think this patch should be merged with patch 7.
+>>
+>> Ack.
+>>
+>>>
+>>>>
+>>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>>>> ---
+>>>>  mm/vmalloc.c | 22 ++++++++++++++++------
+>>>>  1 file changed, 16 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>>> index 28e65073624a..aa80bc273ec0 100644
+>>>> --- a/mm/vmalloc.c
+>>>> +++ b/mm/vmalloc.c
+>>>> @@ -3748,13 +3748,14 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+>>>>         const unsigned int nr_pages = (end - addr) >> PAGE_SHIFT;
+>>>>         unsigned int prev_shift = 0, batch_idx = 0, nr_mapped;
+>>>>         unsigned long batch_start = addr, batch_end = addr;
+>>>> +       unsigned long mapped_end = addr;
+>>>>         int err;
+>>>>
+>>>>         err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+>>>>                                              PAGE_SHIFT, GFP_KERNEL);
+>>>>
+>>>>         if (err)
+>>>> -               goto out;
+>>>> +               return err;
+>>>>
+>>>>         for (unsigned int i = 0; i < nr_pages; ) {
+>>>>                 unsigned int shift = PAGE_SHIFT +
+>>>> @@ -3764,9 +3765,10 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+>>>>                         prev_shift = shift;
+>>>>
+>>>>                 if (shift != prev_shift) {
+>>>> -                       err = vmap_pages_range_noflush_walk(batch_start, batch_end,
+>>>> -                                       prot, pages + batch_idx, prev_shift,
+>>>> -                                       &nr_mapped);
+>>>> +                       err = vmap_pages_range_noflush_walk(batch_start,
+>>>> +                                       batch_end, prot, pages + batch_idx,
+>>>> +                                       prev_shift, &nr_mapped);
+>>>> +                       mapped_end = batch_start + (nr_mapped * PAGE_SIZE);
+>>>>                         if (err)
+>>>>                                 goto out;
+>>>>                         prev_shift = shift;
+>>>> @@ -3786,13 +3788,21 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+>>>>         }
+>>>>
+>>>>         /* Remaining */
+>>>> -       if (batch_start < end)
+>>>> +       if (batch_start < end) {
+>>>>                 err = vmap_pages_range_noflush_walk(batch_start, end, prot,
+>>>>                                 pages + batch_idx, prev_shift, &nr_mapped);
+>>>> +               mapped_end = batch_start + (nr_mapped * PAGE_SIZE);
+>>>> +       }
+>>>>
+>>>>  out:
+>>>> -       if (!err)
+>>>> +       if (err) {
+>>>> +               /* Undo the part the batches installed before they failed. */
+>>>> +               if (mapped_end > addr)
+>>>> +                       __vunmap_range_noflush(addr, mapped_end, true);
+>>>> +               kmsan_vunmap_range_noflush(addr, end, true);
+>>>
+>>> So, you are unmapping (addr, mapped_end) range but removing KMSAN
+>>> metadata for the entire (addr, end) range. Is that intended?
+>>
+>> Yes, that is intended. The metadata for the whole range is set up
+>> before the mapping starts, kmsan_vmap_pages_range_noflush() at the top
+>> of vmap_pages_range_batched() installs the shadow and origin pages for
+>> the entire [addr, end) in one go. So on failure the metadata is fully
+>> installed and has to go as a whole, while the page tables only reached
+>> mapped_end and are undone up to there.
+>>
+>> I know this looks somewhat awkward. The asymmetry comes from the metadata
+>> having to be set up before the mapping starts, I don't see a way to avoid it.
+>> Maybe add a comment explaining this?
 > 
-> > On 2026-11-20 at 00:39 +1100, Zenghui Yu <zenghui.yu@linux.dev> wrote...
-> > > From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-> > >
-> > > migrate_remap_fault sizes its working set from the PMD page size and runs
-> > > 24 combinations of migration/mremap parameters.  On arm64 with 64K base
-> > > pages the PMD size is 512MB, so the test churns through tens of gigabytes
-> > > of memory and takes ~32 seconds on my test machine.  This just exceeds the
-> > > kselftest harness's 30s default per-test timeout (TEST_TIMEOUT_DEFAULT),
-> > > and the test gets killed with "Test terminated by timeout" even though it
-> > > is making steady progress.
-> > >
-> > > Raise the timeout to 120 seconds via TEST_F_TIMEOUT, so that the test can
-> > > run to completion on configurations with large PMD sizes.
-> >
-> > I guess the alternative is to reduce the number of test combinations, but that
-> > seems like it would reduce coverage so this seems reasonable. Adding Balbir to
-> > CC in case he has thoughts though.
-> 
-> 32 seconds is just too long.  We have ~1200 seltests!  Imagine if they
-> all did that.
-> 
-> Can we figure out how to make this test a lot faster?  I slop-coded a
-> thing (below) which halves the runtime but it still needs to be taught
-> to do at least one full-PMD MADV_NOHUGEPAGE run on systems with a PMD
-> larger than 2 MiB.  And 15 seconds still sucks.
-> 
-> See, if running all selftest takes multiple hours then lots of people
-> just aren't going to run selftests and that harms our overall project. 
-> They need to be snappy.
+> Are there any side-effects like the one we found earlier with
+> unmapping PTEs which we never installed?
 
-The good news is that it is perfect on the popular 4k-page-size (and 16k)
-systems, and 64k has not been tested much yet ;-)  There are still some
-failures on my 64k machines that need to be addressed.  I just haven't had
-a chance to fix them.
+I haven't found any so far. If I've missed a scenario, please
+do let me know.
 
-> 
-> If we can't do this then I suggest we find a general way of excluding
-> exceptionally slow tests from run_tests unless the user explicitly
-> passes some --i-am-very-patient arg.  But that's out of scope for this
-> present timeout issue.
-> 
-> Zenghui, are you able to figure out some way of speeding up hmm-tests.c
-> to avoid the timeout without compromising test coverage too much?
+I remain unsure whether kmsan_vunmap_range_noflush() needs a
+TLB flush - I already brought this up in the thread for
+patch 2.
 
-Since Balbir volunteers to deal with it, I will test it then.
+> I don't think a comment is needed as it's quite obvious.
+>
 
-Thanks both,
-Zenghui
+OK.
+
+Thanks again for your and Ulad'careful and patient review of this series.
+I recognise this version is a bit messy - I had a lot going on at the time,
+and I apologise for that.
+
+I'll take that into account and keep improving.
+
+Thanks
+Best Regards
+Hao
+
+>>
+>> WDYT?
+>>
+>> Thanks
+>> Best Regards
+>> Hao
+>>
+>>>
+>>>> +       } else {
+>>>>                 flush_cache_vmap(addr, end);
+>>>> +       }
+>>>>         return err;
+>>>>  }
+>>>>
+>>>> --
+>>>> 2.25.1
+>>>>
 
