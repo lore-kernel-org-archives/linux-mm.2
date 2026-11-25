@@ -1,143 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D602606A331
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 18:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731CB606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 18:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Yhzc8OhL
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gyDWkw3Q
 Received: by kanga.kvack.org (Postfix)
-	id 9B77B6B0A97; Wed, 25 Nov 2026 13:03:27 -0500 (EST)
+	id 6B0CB6B0A99; Wed, 25 Nov 2026 13:06:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98F5C6B0A99; Wed, 25 Nov 2026 13:03:27 -0500 (EST)
+	id 688B26B0A9B; Wed, 25 Nov 2026 13:06:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87E206B0A9A; Wed, 25 Nov 2026 13:03:27 -0500 (EST)
+	id 5777E6B0A9C; Wed, 25 Nov 2026 13:06:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 670EF6B0A97
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:03:27 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC7E5C1056
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 18:03:26 +0000 (UTC)
-X-FDA: 85474413612.25.33217BB
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0482B40002
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 18:03:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Yhzc8OhL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795629805;
-	b=W8lvXRa7unKXn0CMOKzjzCaRiduP/4uGOKeHnAhGCtgcSmCD9BBxtWNyEMLYKPfQ9nc4eB
-	uYaJLddA9PoMPyB6vpqk1wAv3flTOME2afrLuJZ0AfRdy8Hc6F+NXQUijrekK/NTOJzMf+
-	qJQzA5zou44NNmvgYd265k/rsS+EW+w=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795629805;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 341DE6B0A99
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:06:10 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1EEA6120F71
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 18:06:08 +0000 (UTC)
+X-FDA: 85474420416.21.29506FA
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 191B91C0004
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 18:06:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gyDWkw3Q;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795629966;
+	b=BNS6qADax0UlYICyeoM8/iRsK0wiy89O9KxT0kAb9FVfNvTScwCib8Ph8+bu/6fjR+LK5d
+	P6Raqu04zv247pPTSHmSrrXQ/4jbysjYopP+NdNIiwgLneRelnFKqIyOwq/s8B/vJ+BTt5
+	pSZbRZfFZStTPxcYSAbI8mmu7foJE5A=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795629966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X+1AYy7Mp2a7SBL4ePYq/G5iDJIRCdCJCue8L7l5f3k=;
-	b=7qooyPfbi0cszIPbySHTB8aXijp6MZ5Zr5y8ZMI0eG6I48JRShjfKDIGohLLnhT5HiEPWI
-	J78M3DYQ1wuEu51jIWdwwYFoZ/sUarjjqNPzv45Gq5YpebC47bjrOQaVQXuswV/AKpKY4O
-	ykR1m8liC35hEwS/PXfHzLJT3cUMYEs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Yhzc8OhL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=dmatlack@google.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2efe591a1f6so21044345ad.2
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:03:24 -0800 (PST)
+	bh=s0yGO0nle6dWsSssSP9hU9J70E3ycwEl+Dc20fwXM0A=;
+	b=H+X7R4MID0VxMrdjbUwC8Vu2RcmyJTwGthwRfB5b1c449rOOC4lskW4EY9bkfGTqAtdO0Z
+	rNmjje301J1ovgSJOOG+ht6qNmP1KIOnS7L1Q0VdYs9BFxS7pOMxw1NWAQgBkoko0v/SqK
+	F4vaEbWB73PEjyFowvFyHgoKhNBO/JI=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gyDWkw3Q;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5be4fea434bso6312285e87.1
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:06:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795629964; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Uaw0zMK205r7CLTo3Xu3rXi6PPwuoNiXUfbsbJ9Wc5Y/1DHkBmFAK5NSSi3rAyeY0/
+         /OE723//mfTqMa8ZVC3EeBH3cSynXlh9cdpyDt144HnM4hnztz8PGcGO84dmddX8KIqF
+         +5hgN4orXe6rFSJptvl9aIqLX9RtW2lqfn0//D/lLAF7FQqAW4Z6S5ipsuIoMGS3H6+B
+         251am3QploiMDqM6/AQzNNCDoUFxKz/P58ENEIXQWEfvUZf8dOXoqPESfxRYHOJz9gZL
+         LZpOwCMmpxxr8Dtv2gGX/LAhog8FCBgm+dMXIbNERyjCW6fR5zm4XQC3iwpjHn90a+W0
+         YZnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=s0yGO0nle6dWsSssSP9hU9J70E3ycwEl+Dc20fwXM0A=;
+        fh=dtv2tdcCxV3RZUVlwV/xJ5CdvpzqrTUpgVxRnHDWlbM=;
+        b=Cl2Sodfs8rk2it1Kk0A1mMRmN55RCPUvydbyCXC5bx3Vb8o1YBweklnOIxcZC6JHvN
+         aQZUfo2lb93JLXKEEZAG0y/fe5tEY28qduORbyYuoODUDXz/KCtsyCY4/tTpG2KjTiJw
+         ljOnsrTyPA29BQFfLUz64MeJlaOP88GsHZaQoHsG3dLUSvIi+9/oFUPEtzWlVkXSHvzz
+         mrP2lR2zSoQvaHXtop5xDkntW1QQhX3/DdIJrhB470lNGEn5x0ONN4MhsNE2HgAumNNe
+         nTLGYr1+Ga31D05yKjJqWVMp7zJZq7eRuLBZh0XJwV3yaZsTFQsf7obyjWlZkEg/iLb2
+         HpNQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795629804; x=1796234604; darn=kvack.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=X+1AYy7Mp2a7SBL4ePYq/G5iDJIRCdCJCue8L7l5f3k=;
-        b=Yhzc8OhLBevFNHWzOWZZcIxzJOmm6R8OzP+/SlZa+JPzEltjEI2YKLlwH6XH5XAjeL
-         55nb+meyA60dzyCE4RvNOjV3HOCm7Sg7QErVi2E7j8n9v6zy8RLKL6+pR+/yC6G8QyVy
-         csOatQQKmcf4sJ6HPNyOVGOiYLgPnyZRSbwTcnClGAZdPioI2zNYzdlJn8okwWO/SZsi
-         EJ1zqEf84s3tuSBRXiCiDtzWMaeM1Zr0dwP5/KBvfZG/ian8/nuX0fz9KnWBRMlyStf7
-         8Okg/02cMT4lA5pH02ymJsTr302FNzsSbF3tOnn7xvsyLuSp3kXGxTI122IJ+TpjP0ta
-         mokQ==
+        d=gmail.com; s=20260707; t=1795629964; x=1796234764; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=s0yGO0nle6dWsSssSP9hU9J70E3ycwEl+Dc20fwXM0A=;
+        b=gyDWkw3Q3+3zCqemO67KCD1VybTJw0sIcD/m6dXI+hq2yDBlHcoo05Rl7aC6kymtoJ
+         jSwkv71PBjyYVs7uj3F4wlo1d34j4j4epc0beNRbBwDKezGmMkX8RZbxBwawbBCVR6DU
+         I9X1a4hIlkzWG3a1Crmk2hkf58GBP4vRiK71haJuxj2udnhh3kQDAkqzXiDaBJsNACFE
+         CD01TRBvOtQRgRvevfrRuE8uIYqRWPI9H9aexl0uRSDVKbLwpM9VzwSIu89tUf362RHu
+         KjVAxeiqdQPXa/gNWR1hrhuHC6xjzsfIBwDPL1SE6w2XShKdRKjwn7wgsoNr0FW7Ol8R
+         H+lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795629804; x=1796234604;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795629964; x=1796234764;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=X+1AYy7Mp2a7SBL4ePYq/G5iDJIRCdCJCue8L7l5f3k=;
-        b=0OfVTpjpdwEoqeb+UG6+MuPaE1Z9gV/fop3f1wmT4HLRIKqNGG+BgDD9PXAa7ggIHe
-         777JMnntX15XeIPL7BZl74oD3+quh1ICNB5E2jrECM3iZXtRqLh+mM8wZo1H+zMm1RZa
-         8MM4KLhCAL3ucu7XNTMffs9QLA30A9tWTUMOIGhoZOMFtY9JLbZdxJ8m7f/B+NA5Gnou
-         ep7mked3DrAaJtqqGgL1yTu17bry3IWQLytgzQL0TkvykRPdnW5yVLmAcxggPP4GoV/q
-         ObxpLkKxE0/i02abnaNPycz1/b0ZwPTkuK7VHOv9bFVpK1bhjfRCDAxuqbSUkd13cgyM
-         9GAQ==
-X-Forwarded-Encrypted: i=1; AL+hErEPZEzc78B2r0lHS9FUBhKKQffwXZoQePTVnDLIRnTK8ZzAWb1gq+udzEqlTkXrIrjyjRLp/214/Q==@kvack.org
-X-Gm-Message-State: APuU4Z97eIOiPEF2LW+VfGhfS5uUPl0WNmOq19qAOpguS/8ZmcSy0I3l
-	Bg3dV+Rt0pf3mLhT5UWbdEGPErgLYsLh8l9TrWfVv/T9VZZOQ9AdJjhP2rlTbu0d7g==
-X-Gm-Gg: AZFdTZdlkDh/EgJaIIXpfBglrv5shtkaiuauHlwVQFE8TG2dSQ2cpWJQaB2nztRlfgb
-	Wk0zhKLHXhLKAD5XexndbrU2Yl93Taj41XU1fCdQeMDjGH1cQs5j0TeEfzJH4LBCbqZUXMnfkUc
-	iV4YyekHFnjLHdjK7URAiEZneTlbuS1swXyaDUTJ584hy9hPH5by8odbk+8KuKx+MRX5wf8gU+0
-	mZmOB7bIGV+FAnsccJkqfzwzGfBQZHQ6PfXvkehrcCLESzOUFUhNBCNtgV94dJ7AuqhRyvUMmv3
-	GyENLHYkdPKHz1p+5tSO+5sCpzCsfPg4dhPUmOh/9CTyB9hwsqdO2aLfyaPSBmOcq0JOlrAuxk7
-	OeVxK0ft3070mAcvijS1KwI/ssN+ZGJ9eekMrdSERI5rJ1FYJw23tUISKdaYsunlW/l72XZ378B
-	t4okXWTIegVC3tI/Gi0OFkgbbsK7r6tNRuF9fKjrMdy409txM+vfecPpXrY6UW/m2IXhwZ3Rf70
-	8VdUhOiqxUSp9i3YufndlHSUTonYM5wGX4+f2+6rM+spEGlxc3Wf5/kO06t7i4xqtguXF+DiWU7
-	DRGEjJwMsib6G86WwKRH5EfRh+05/rFBBpX4Phy6vH7B4iqyy7eLZ7PajFrJv+Az5w==
-X-Received: by 2002:a17:902:f54c:b0:2e8:9820:80cf with SMTP id d9443c01a7336-2f03f1cfbe5mr188390265ad.58.1795629802894;
-        Wed, 25 Nov 2026 10:03:22 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f14a432sm91361725ad.75.2026.11.25.10.03.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 10:03:21 -0800 (PST)
+        bh=s0yGO0nle6dWsSssSP9hU9J70E3ycwEl+Dc20fwXM0A=;
+        b=Df2XAY3/klYmhr/FpTaRUglliF+fRV+6G/GutCiod9rM4evnL1XLMBR39MFJgmZ6ns
+         U64Q8tGTFK5i0PKjrW1tcj0+iude/uK5pkHU62pRD2TdpltPFUclXtnb5BsmR4+zGWoI
+         OwnjqE/NVDWgZfgW+4aDqsr9j/BJGYSDSiC416JpANM4mTzA9vj8pqVAla+ScnR9e8Lj
+         bWiT1yxtlPLUQoQlJtFacX1hFZFqpLHz4vx3dTkokQPCuPunJrhzrS2ytWCFYp7mOpqI
+         dcrA/cqbih1AcgdrUQfuEzszhzJd+WBn68lhAp0yxfIh84yUxE86jDDOzEDk+g2O1bla
+         22CQ==
+X-Forwarded-Encrypted: i=1; AL+hErE4gdXv+WjWZMZ+dMAv4crsSeA3pjqRc8Ibt9xtWzgTS0WDt5GLaO+7Bcp21RmfRW2+HFaj/vzFHQ==@kvack.org
+X-Gm-Message-State: APuU4Z+mSo1UL7kUU9hIOf5lacxF5EkAPdj2OatRnBDPNxvMvsBHNSbH
+	2844XtygqGuT6UaePwn3MZJJMI4YgqUTPxVX7s0HHtgCANM/hSOTjAs3c7kVt6pv+ANRvmY/aOo
+	aChB/uffv0SfJ15FQBMyatxHnxDUV/TU=
+X-Gm-Gg: AZFdTZc+VEJVDhm7gvgPnacltdmeE3adcuzTAZo6vG0/rKWTls8GgPACv5/lmGTu54X
+	PFpN42RdDScWfPU7elrGvNbO0vEx/lylwFrBlNw5o6kibNUT9XNTYUP3sfLpAqn3JstUjPaFxpb
+	gt3IAQ1A2buU5fI645vixBMvVyYDxyvbhTb+Dweyjnood68meWsUYZMMxVZeKOWXKx3wno0Rned
+	++1DpGjtIzCrZQseuB/VLsDswhm+9FhWDFGsEJP1mq3/AKDu1GVlAo/kBVAw2yuTHX7yLXKOmot
+	DHQdLkc0Rrz4MXFo6jEiTvQA3TO2qFHi/H3Wnx4yLQrnx64331Qi99et4LhvfQJK1WRbmOJ8oEf
+	ha53phTGLTIrYog/VeWw34QXwZ/UbjKCMExvE
+X-Received: by 2002:a05:6512:33d1:b0:5c1:4aa3:cf96 with SMTP id
+ 2adb3069b0e04-5c1bc86cfdcmr4235686e87.14.1795629963996; Wed, 25 Nov 2026
+ 10:06:03 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
+ <CAKEwX=MLrDn55wmVKKba5=PcU+qFpkEbMmN2SjGTfTBiFKX8cw@mail.gmail.com>
+ <awXr6iHBR54wBB05@google.com> <CACpmpodH3UUDLEze8=5v8LWgKnZWQVrQBhzSGJFY-PwEYmHEzQ@mail.gmail.com>
+ <awYsDfYqrS2ldOTw@google.com> <CACpmpofsU3f=PVQF4moe6n=_qit1ZGyo4FMjyM-sVgumfyN0iw@mail.gmail.com>
+ <awZt7P_p-GNZ3A2i@google.com> <CACpmpod_87WY_PcOsNmPZvFzmJyBtCpyvvq1a_BqmZgGmO1e5A@mail.gmail.com>
+ <awcK9oNDbc1QFJr6@google.com>
+In-Reply-To: <awcK9oNDbc1QFJr6@google.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Wed, 25 Nov 2026 10:05:51 -0800
+X-Gm-Features: Aa3M54rQYU3bIxvHpI5Dlfnhm6qCWUiCqJ7E9nlnUc215LhQmCibH9zYugGNAEE
+Message-ID: <CACpmpoenPZ_SqhxL70r8q09WBfrnqvPu3H+F8Tz3nVwO=rvUTw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] Batched zswap_store() framework with compression batching
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, hannes@cmpxchg.org, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Nov 2026 10:03:21 -0800
-Message-Id: <DN4HN2W6ZVES.289H6BZD9U7KB@google.com>
-From: "David Matlack" <dmatlack@google.com>
-To: "Vipin Sharma" <vipinsh@google.com>, "David Matlack"
- <dmatlack@google.com>
-Cc: <kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
- <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
- <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
- <graf@amazon.com>, <jacob.pan@linux.microsoft.com>, <jgg@nvidia.com>,
- <jgg@ziepe.ca>, <jrhilke@google.com>, <julianr@linux.ibm.com>,
- <kees@kernel.org>, <kevin.tian@intel.com>, <leon@kernel.org>,
- <leonro@nvidia.com>, <lukas@wunner.de>, <mattev@meta.com>,
- <michal.winiarski@intel.com>, <parav@nvidia.com>,
- <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
- <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
- <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
- <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
- <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
- <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files
- across Live Update
-X-Mailer: aerc 0.21.0
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-8-vipinsh@google.com> <auzftbPFO_6XBYVw@google.com>
- <20261117220059.GA2250529.vipinsh@google.com>
- <DMZLLYOVIGOU.1RXWYJN6UQTM@google.com>
- <20261124234830.GB3545683.vipinsh@google.com>
-In-Reply-To: <20261124234830.GB3545683.vipinsh@google.com>
-X-Stat-Signature: cxbdqee16w5a3iyschc1eqyjadt13ox7
-X-Rspamd-Queue-Id: 0482B40002
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 191B91C0004
 X-Rspam-User:
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795629804-527932
-X-HE-Meta: U2FsdGVkX19vGzORhmvFGXKBZJsehK30WpLQxX2ffhaciAsiG+VS4R6OfsDdIjH1wkLCye3qnvlY2Ax0BqMBIehiuIgZq8lyGqcg4jHsi24IfjWVLhEMzcX6BdXxKrWGnpj+p9Kbco/tFme7oWL81ID7GkiCfi5uIeEQt7CcrmU/AJZ3VBQ5wk1XdPsu11mRxoqS9uDMpSPHPaf3T54sJFtndyd7eBzGO+V4t9bSUgL8d52HpavSCIRViLUmdJseNvC4S3gtVYEeSqlP37aZd3swGW+DmcBxFP0VYnn9e5+2YjHgUQr7gNLQ0pesxdWHbtvNag2fVsTIRfapdVavcM00cvot6aUxcQ9YwkPAcsbXLkQBUojG3OPXFpWw31ffg2hu37ZWoB0YF8Jzh1yQrC+5vj21ayg9FNYW98IjW4krSnuCCEg61W7YYw9HhRzKtfG2HhWlZ3mE0AtOmK17Z0QqrZMURDCPhdHphPz1vHpUbw4C1VJVip+EmtMJd/bXNGzsUHy/hsbK6sNy0hIEKat00GeeIPQVSXfm/bFGZG1C1b8urZDwld+5ImIXWffWo3/vxGoQVraZr+UVxBMech482tRDZVQMjUNkvd1XIwCMoEyzxTqiG/3nyqbhDJh/a8QNKy31R3iOTawgmEgp8PuYNmS0gighkRNcKH9u5lhb1c3TNEVqrNiwPA1LHriG0uUO6coXcfSG8FEcIbWK2yXryGI1khjav7PXIdM2JiW7/YWNG0lvC8yk3peIn5bEhz3ZWQotddjGzr+GCsQxy+5A0l4FCe1Crt9MzkTsKi5kJdTwiJIyTsGJ1SwsVnf4FgYxEOX4lso7lLwaK/jhg28wVh0kjCXKQHApbWTyNvp93wtTNjY1UZQHqEJcyFdmkFTFfku9B46J+B632VFI7iverY96WrDHFZ014uWS2Ipwi65rmVn17GVyKyl5SbRnr6cVbH9kHmygZR4M77k
- ZQ/GHGqz
- o12TfOnxW9Icml33fg+MA9CLqfrJ75YkyjGcy0GVdUBsZy7ZP+1VrPfHpMDhMRqlhOYt7R4hJs1179BAWQMcgK08xASuND/jKe3lZEoCjxcprZzPFr+OQ0UHaSnaqQQeLlJjVh7iF0lmraxPL8y+z1TEOhkMDUhEGWzaaGjqJUmxmSO0bPeDuR+rQxsq5MM0sI5vXFCjMIFn1czRj8TmLFYTmduiaZMHLXFazHmpB+eZi9qfqRhx5Dqvc0wM4ahKxYvXqfUj940PUiGPTf9kmtxnWMyPethxuLt0FqRvesqFcgylwq6fkzcw6nTcnZ2N7FrAxkraROePNVuiCRrqRkULie61eNHkG7q3LkANoQ18402qRwmQRdKezHH1n89aozxklt6dNZQn08lzOxB2iGWEeTsOZIOefHVYOadgiX6XGMAq2IC7Sg0JCLt5wEp5jq0+fRBf1A65IxPY4sUytEWiIA2J59QcfuRKxO2bdCxVAJ4nwD0hZd4TSOOJW7/495Bgmgr7bJ+0tz2R4PiwjFzUIW0kfdGy29ZjSIauZ9RwrGyHLB3sHL+Tsp3bIKNPRla3CO7A0+uVOPy6B55R5erRr12BgKSOwU88/Z/Bgux+x05zTBBjCs2VT7w==
+X-Stat-Signature: uwyaqgqk5wgfbxjp49rf59rsmpsuu864
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795629965-434666
+X-HE-Meta: U2FsdGVkX1/ngQwWC2jrFA0UwbIrYK7ZaWbNSPwdBCTc+MsQgSS/o7pjyYxWPA+xnjihWHQLy+jUTcWGrmx99fKBlyb560BbEnVJOC+ZqcRQfSAWWmuJwZ1QfSqv1O5SrMwn3tuJQk/F0vAOhzv9qD/2X/FucE5LAS+isU+E8o8EnqIJCwkzWm4X1y23Q7FBLhYB8UNtXaN6uS+MvT1TSFwmnH79VMTLUXnsk6JolWiAPzcOXsB8vu+Ya7swHkVXZ9CSf0X0bG3FZkAGBDNmNL0Gu7cZh6irq1rrXu22qxfzyq35yK/n+PDgoJm9mdjn/fJPbCz+nyzWA9hbs7JSApWFJWcFFizlmUEeEJI57X+aBiiUnfxwNIH+/aQQH2kzlT+sMI5z2BeaHFLloTwsEZBQuSwG3Yet4KGxsAatWStHy7e4cuItKaoWBE9JwJtD/dpGyOmhmJEBOZje++EAm28nRR1vzh7yGoNKzQJo8EyBe8bfGtryn+UJZ7cidz2mpInch/bz3lFXuXndhaccFJYoLUwEe0KMmFdusVC5gPzqO2rtftGf1Bj/Csd1rbE4jvrfJkWwf7maMl1XzHW/bGb3II76cRYOAPNsGf24meBgWibgcjcVuPZTwlR7zsoL4d5wD5XvDlzwKP9F8sV1yI3tudhOudrak2oKMq33lYuxXWbiVYu64LrTaOWB352MJ0w0ajTA1CEdQc1Uac7Mt2FrsRgN4OprjN9qCLGOZKWQvZLDFOYzFPbgDr58zJy0QPmN+rh2vtBlCgr6zSxgshzUKK0RMVyqGwiDpgRAduosZKGF9mpI+hcuzjeDpKHa0lHgtzl5N4kTdlMy2uCCBbgveNDhBBRRyvWTqin7VWvbKDkDFtqakr5XPWQQMqC77Y1ntcRYXiD3rm4keO/nzoac3IaKUISs4UgGotVdYNLhPJD5px2tPitNouYFYdqGN5NVAifRlcaf4EL4V3L
+ KQITZk1w
+ lglYD0l2km9+wYDXn5mL4J2spi+A98yccrXaCi8Ydv3KFW5uyQ9wMeTNOVOkcvYM0e++XyCCAl+VjBd2mLCXdNnuwCpCwgxtrKwY/5m6gLfNrzVl/JVHk1zFguKBuzT9zJM5blP/lLJmpHEREOWKE2vvbPXFfgSp9baZkEYVfrsXuELco3KWv70MF9St1hRRNd0LjROt/pJ2QrC0kzGBDTdrh4B/UqCswRXdbcgZurMF/Uo8GzmCdvowdBwso8ieRmlHtfe8fOxrU2sXRCtfyGpbveZ44D9SPOq6jyG9ILBPcN+qS9wmNygp2ioM9ADxA9j7RJKfDzsjJDyw69xetI+tdHFGkjhVG8F77F/k6FPWoMaX3hHvE4/IXnJb+iChRxfuqVtVMpnlFRtcDL7ZqEz/hPbAF3unqogz57srEApVt/u7KgRGWI1T/aK1q29b4Q14qu6eQCJLN5E2p+V6O5lUPXMycjzOiiI+cYA8eDYGmdB6OcEtBZj24IpPhFKbYpb5BPy6jG0sXQ0WDxm6B3SriqcK9Op9Gz1UaH+6+U0aHEW/KNLCr3ZgrtvSppHSOZXf7KLqiG7BA1kcwVew/GcrQFfh4q1do/7Aar/XeauZ3adMqlQzQ4WO1+dAKDIzIOGXYSsNFN+0Km0OrSRmE6CYf9JqPftH7kAU6XUlxudR/CXZbfkuwDVh0OWqX6p/W4eak
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,28 +152,146 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue Nov 24, 2026 at 4:22 PM PST, Vipin Sharma wrote:
-> On Thu, Nov 19, 2026 at 04:06:38PM -0800, David Matlack wrote:
->> The incoming kernel computes its own virt[] and write[] masks and
->> requires both to match exactly with what's in vfio_pci_core_device_ser,
->> otherwise it fails the retrieve. On take-over it uses the preserved
->> value for bits in virt and its own freshly initialized value for the
->> rest, like your option 1.
+On Wed, Nov 25, 2026 at 8:31=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
 >
-> For now, we will be rejecting any changes and in future when we add
-> userspace opt-in mechanism then we can loosen this check, am I right?
+> [..]
+> > > write_s would be calculated averaging the time in the ".. bytes / ..
+> > > usecs" lines, and free_s by averaging the time from the ".. usecs to =
+free
+> > > memory" lines.
+> > >
+> > > In this run:
+> > > write_s =3D 37.31 s
+> > > free_s =3D 23.39 s
+> > >
+> > > With your patches, I got:
+> > > write_s =3D 37.03 s
+> > > free_s =3D 18.86 s
+> >
+> > I am not sure how useful it is to apply user-space gettimeofday()
+> > results that time many higher level C code API, as an indicator of
+> > zswap_store() performance.
+>
+> It is useful to see where the time is being spent, and it is consistent
+> with the perf profiles.
+>
+> [..]
+> > > You can see that the cycles spent on zswap_store() are almost the sam=
+e,
+> > > and the cycle reduction happens in zswap_invalidate().
+> >
+> > The cycles spent in zswap_store() should be normalized to the # of
+> > zswpout events that these CPU cycles represent, for this to be a
+> > reliable measure of latency improvement. There could be an increase in
+> > reclaimed folios for any number of reasons, all of which are not
+> > necessarily due to performance-improvement/degradation of
+> > zswap_store() itself. IOW, more work for less latency per unit of work
+> > is not always indicative of a performance degradation in this case.
+> >
+> > A realistic scenario would be that with zswap_store() becoming more
+> > efficient, the 30 allocating threads cause more memory.high breaches,
+> > that causes more zswpout..
+> > This would cause more CPU cycles in zswap_store(), but the fact
+> > remains that zswap_store() efficiency has improved due to batching.
+>
+> The zswpout number is almost identical: 45,796,107 vs 45,796,089.
 
-Yes, any difference fails the retrieve.
+Can you also share these vmstat/zswap stats for this run (baseline and
+with patches):
 
-I don't think the opt-in would loosen the check. What changes is the
-masks the incoming kernel expects: it builds its emulation for the
-device with the opt-in bits recorded in struct vfio_pci_core_device_ser,
-so a device that opted in to new emulation still matches. Devices that
-didn't opt in get the baseline emulation and keep matching older
-kernels.
+ pswpin
+ pswpout
+ thp_swpout
+ thp_swpout_fallback
+ zswpin
+ zswpout
+ zswpwb
+ pgmajfault
+ 2048kB-alloc
+ 2048kB-zswpout
+ 2048kB-swpout
+ 2048kB-swpout-fallback
+ zswap_pool_total_size
+ zswap_pool_limit_hit
+ zswap_written_back_pages
 
-Separately, if we later find specific differences that are safe to
-accept (e.g. a newer kernel allowing writes to a bit that used to be
-read-only), we could relax the comparison for those. But that's
-independent of the opt-in.
+Thanks.
+
+>
+> [..]
+> > > > > If we want to address lock contention in zsmalloc freeing we shou=
+ld address it as
+> > > > > such, not by batching compression.
+> > > >
+> > > > Lock contention in zsmalloc seems like an independent optimization
+> > > > that is good to solve. What I don't see is a way of explaining the
+> > > > gains in this series based on zs_free() lock contention, and hence
+> > > > drawing a questionable conclusion that this series does not optimiz=
+e
+> > > > zswap_store(), and further that batch compression is not attributin=
+g
+> > > > to the gains. I have provided ~10 reasons as to why the combined
+> > > > zswap_store_pages() batching and zswap_compress() batching improves
+> > > > zswap_store() performance in [2].
+> > >
+> > > See above. I think the performance improvement is a side effect of
+> > > calling zs_store() in rapid succession for pages in the same folio, a=
+nd
+> > > more pages in the same folio ending up in the same zspage. As I
+> > > previously mentioned, this happens because all pages in usemem end up=
+ in
+> > > the same size class.
+> > >
+> > > The right thing to do would be optimize the zs_free() path. I am look=
+ing
+> > > into batching zswap entries freeing, which I believe is the right pat=
+h
+> > > to optimize given those results.
+> >
+> > If I can restate what you are suggesting, and please correct me if I am=
+ wrong:
+> >
+> > 1) [Data needed]: Normalized zswap_store() CPU cycles to # of zswpout
+> > vmstat events in baseline and patched.
+> >
+> > 2) [Data needed]:  Normalized zs_free() CPU cycles to # of calls to zs_=
+free().
+> >
+> > 3) If (2) confirms that zs_free() has become faster, then that is a
+> > beneficial side effect of batching, per your analysis above.
+>
+> The number of zswap_store() and zs_free() calls is almost the same. So
+> storing doesn't get faster, freeing does.
+>
+> > 4) Why are you suggesting that *instead* of acknowledging the
+> > beneficial side-effects of zswap store/compress batching, you would
+> > want to find another way to improve zs_free() latency by batching of
+> > zswap entries freeing? I would imagine both need to happen. The zspage
+> > locality side-effect isn't a contra-indicator to zswap compress
+> > batching.
+>
+> 1. It is unlikely for realistic workloads to have folio where all pages
+> compress to the same class.
+>
+> 2. Even if it happens in practice, we'd optimizing the wrong thing.
+> Consecutive calls to zs_store() landing in the same zspage is an
+> implementation detail of zsmalloc, and if it is something we want to
+> enforce, we can do so in the correct layer (e.g. by adding per-CPU
+> partial zspages like SLUB). The gains also depend on how different
+> threads race, and the effect of cache locality on the specific CPU.
+>
+> You are basically proposing optimizing zs_free() for this scenario by
+> batching zs_store() calls in hopes of landing compressed pages from a
+> folio in the same zspage so that freeing gets faster. That's definitely
+> not the way to do it.
+>
+> If the zsmalloc class lock is a bottleneck on the freeing side, we
+> should address that problem directly.
+>
+> > I will run some experiments to quantify zswap_store() improvements
+> > better, with compress batching.
+>
+> Feel free to, but we have been going back-and-forth on this a lot, and I
+> am trying to make it clear that your time is better spent elsewhere.
 
