@@ -1,110 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B63606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 11:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4C1606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 11:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Dwjp75Wa
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QyAc7lHe
 Received: by kanga.kvack.org (Postfix)
-	id CB0BC6B09C1; Wed, 25 Nov 2026 06:33:01 -0500 (EST)
+	id 11AF66B09BF; Wed, 25 Nov 2026 06:34:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87AE6B09C2; Wed, 25 Nov 2026 06:33:01 -0500 (EST)
+	id 0F2CD6B09C2; Wed, 25 Nov 2026 06:34:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B76786B09C3; Wed, 25 Nov 2026 06:33:01 -0500 (EST)
+	id F23EC6B09C4; Wed, 25 Nov 2026 06:34:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 909106B09C1
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:33:01 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 220691A0DE4
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:33:01 +0000 (UTC)
-X-FDA: 85473429762.29.AFC207D
-Received: from mta0.migadu.com (out-225.mta0.migadu.com [91.218.175.225])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D2812A000D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:32:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dwjp75Wa;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.225 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C4C936B09BF
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:34:39 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 443BFC0DB8
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:34:39 +0000 (UTC)
+X-FDA: 85473433878.17.101EA89
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4F5E818000D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:34:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=QyAc7lHe;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795606379;
-	b=disxR8p2YS0sZPHjC3eqH1ySZWCRKlGszST+y9ktD1CiCjWchnxiKTTuybGMf2Yz+SkvCA
-	d82eSLNIETfGyu8LdWY3y95QnKAxo8OJVQR7TWf8ssAG221u3ebXKBE958uMjhQMX90DO9
-	vKnJMRaYWOSsvKfvOiXEx7A//OMOXqM=
+	t=1795606477;
+	b=tx/OyezXPt0C5Gg/cihFXv7dq3edEDlF7n4Jmiskl8DN5t/IjFLpKXJiXuP6vbv2pXZpF0
+	3L4Gfogu+EGtGAdPoscMmoNx9dn0mVxWdtndiSTljsE38OxPhZaSjPponWGMcppTDJk7iQ
+	Rm8MfvKe9fMuGLclYCB4w3f0OUk2BUk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795606379;
+	s=arc-20220608; t=1795606477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0V6f85LpMW4xwrS3x6+t74PKgkFqxH39qfpnircqYfU=;
-	b=jOFg1Xx9AmAwiKwDqciDmKeWOq9cyWb5GGe6Y+XlKpmnLzdxCY8iA1uykUHZdhrZ9J9Sto
-	jpTycW+W5agIBanMQkg9yKoVkLqTqxLqmC8nUOfwIubcd+5AagDIpUC6XV9yvkXZyvrvAO
-	IwvUfUPVFFYFdw+QFkq6dmiXsZdeZxg=
+	bh=au+aUwkr58kHsbNGWzHntkHpOI9D5jL8SiuAtxwKygc=;
+	b=B8Bv/ALvCOXuMWh7IxwWsbmHUqIGi1b80Y16nbLsIERrxvf2x4iQVoHcWTqbMxVkJrIl83
+	8gqM9qYr9ETKILDjv7T0R5fYdpeWtlCwrA0i8Lf1TkCiQkP6wfY9IQGvTSpWJna8nAeGuv
+	WiAo4oyI5+zEtRZ/ySXFzh++5qQsHfk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dwjp75Wa;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.225 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=DeSjNojkk4MD/tKsHkRDT7b8MjIXbSU/jX7LSyciBWI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795606376; v=1; x=1796211176;
- b=Dwjp75WaPQLe2GefeA80kr6niIOaCdkb8YzS1evkZiW/zoA/ncTRFFzSlMJtn+YbTNEPRe6j
- SpeTFw+wyiOQxcTg0NyAOu3DzKLpbREWLtDtZRsubcVBMVg2KI6SGKjWHy/04avRnknTZpqQ2n+
- orEqGU+oOWBeu8RPeqWpSxP8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 92cb8adb5f7c7ac6;
-	Wed, 25 Nov 2026 11:32:55 +0000
-X-Mizu-Trace-ID: 92cb8adb5f7c7ac6
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=QyAc7lHe;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4bb6886d30aso53782255e9.3
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:34:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795606476; x=1796211276; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=au+aUwkr58kHsbNGWzHntkHpOI9D5jL8SiuAtxwKygc=;
+        b=QyAc7lHeLVJApL2aidn2Q1NSIKYrqDFR3giQddSsZY0GJdaroC4HUTlx923SveFcLo
+         B8ulQFaDCD1K6xhnC/MGzGHHXw2wZsE5dmXdoqnIufjOBNLgIXOvhmm+ePBtdCmbHEDH
+         1h0dYkG18megajCwoT+7XgVO1kQrLGFM/yCc/7IyelwdHIFVcdFIf7oUbb2WKyphlJkv
+         omp3ajACVj8noDooOeS5y/TopKuRqSJH5CJsJ0d0pv+0Hbm/YitiJi7or2bRnvKD4L8X
+         c+GbumzD7e+PUt9QIv9ZpU+3JRmYjSIzWJzwoBUU1rOYLwt5mb66FvJVSGrulILz1Ss9
+         ZZHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795606476; x=1796211276;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=au+aUwkr58kHsbNGWzHntkHpOI9D5jL8SiuAtxwKygc=;
+        b=XgsSRtimMm8RchrXFlvYvsYhQg5sUmAC7akJDDBP7y/QuWSUMB8yFz+tFNpQTzOW5i
+         EE1we4+HA1GcrEYaBYbQ84xoINvHiawFjzkB1udBMRXeFXWk/seRSmEbmijRl7583ehu
+         LLNanNTjIJKgFPqAWntIODoxA2yx1cBh1BArq1i27I2pEgjMZjl9Pt2clJYJtdFEgbHd
+         StWPyHZ6cLnf/9oNleblU7HmWU34cJgiJOBAlVWEynWa508edm0Mwcgpt9eaV5bUFufo
+         riNXQbuo2YItrRVNP2ocvNxonf2biWnMpQgEgqFbAcHHcW/FYfPicLfrj+dlYipBpmrJ
+         fJ/A==
+X-Forwarded-Encrypted: i=1; AL+hErEK/IJdp/Y78eOK+5sKb73Jq0TLpnjkJKVYEJaocFeuqJvkdoM5VbuvQjbRVlivUz3/rCZF9sfzQQ==@kvack.org
+X-Gm-Message-State: APuU4Z/4+xbk8PX3UIAlw1vri3wdWbYep2p8UTzRYXvCW2XPY0LgP3rS
+	aYVCTHzgT3uq6tIhCwpLalY6jXB7T9V3aecjjBlfY0g1hJeQqBYBLw+B
+X-Gm-Gg: AZFdTZfSqZ9fIeGp2pANyZzU2HZIonAVVphisFX6pw8TXemBEg0VvQXWPMuUbgywRBK
+	NtkUf65rc7wXnFiOzh6fKutZIdFbTvsVZZw+ZEcVxjbLonc+7AIMdBqrM2+WkXJNSvygyjzGIB3
+	HApofhbNeq6W65//lI9I4yT7XWAon7DUn/FOdzTER+mNEug9n7cfFtJw5nITOs0SZ6SJ/rB9fGU
+	/dCbqWepxzdiTfPWLeehfSBVWfpmqu8l8kYwmlLPc/BJux0OILdwOo55sax18LVwtIPk7udf9dY
+	gA6+nKVxX3jUtjqKEQ/HFE7gCPxh2sOw3+rlgX6eoCXfG5Nq83kQs5XPNpYzo7ub+Q2lZZDzBkV
+	ERDl6IV46G5fGJvHI0tIWJe527uR0sYcIknPB14ZQxTEN+vUJhiKDZgigESSq+wmuKPkb8hvXBz
+	rIQi1Ck0ScrcvG253C7AR7PB7Z4vEUAPK1/pAwGy7Zku8OwzOADTZVTbu/14eQpFwRLWQ7vdg+s
+	9p5q0mdIo8LQpQO9LAYO4dOX60K6yzvw3Kda6lgTaZCECZPHwDF7woeI1Xqt1odryP/l6DLtD47
+	2ZzV+iw563+Fz3TV+DNYrnc3
+X-Received: by 2002:a05:600c:64c7:b0:4bb:68b9:f610 with SMTP id 5b1f17b1804b1-4bb887ffee2mr340117785e9.9.1795606475753;
+        Wed, 25 Nov 2026 03:34:35 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853a9687sm572512745e9.10.2026.11.25.03.34.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 03:34:35 -0800 (PST)
+Message-ID: <286006b1-9f9e-4661-bd38-e5f5fce9646b@gmail.com>
+Date: Wed, 25 Nov 2026 12:34:33 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3 16/19 DO-NOT-MERGE] arm64: Implement
- try_populate_vmemmap_pmd using AF trick
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <CADrL8HWNAByKifcNgre_YAX3M+bwAW0BgMrfPmWHubOEs+AfDQ@mail.gmail.com>
-Date: Wed, 25 Nov 2026 19:32:37 +0800
-Cc: Muchun Song <muchun.song@linux.dev>,
- sashiko-reviews@lists.linux.dev,
- Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5028917F-EFF3-488C-903E-9E19E5DDA3D1@linux.dev>
-References: <20261122184453.2668189-1-jthoughton@google.com>
- <20261122184453.2668189-17-jthoughton@google.com>
- <sashiko-outbox-228645@kernel.org>
- <CADrL8HWNAByKifcNgre_YAX3M+bwAW0BgMrfPmWHubOEs+AfDQ@mail.gmail.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Server: rspam10
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] mm/khugepaged: use NOFS while collapse_file() holds
+ folio locks
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Zach O'Keefe <zokeefe@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Hugh Dickins <hughd@google.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Rik van Riel <riel@surriel.com>,
+ Song Liu <songliubraving@fb.com>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+References: <20261125100058.15200-1-azpijr@gmail.com>
+ <20261125100058.15200-5-azpijr@gmail.com>
+ <8c60bed8-6857-4361-91b5-c8fed8a083c3@kernel.org>
+ <66fd4450-6e17-4a1c-be76-38758a62073a@gmail.com>
+ <413a7751-a368-42fd-8983-c3b44a86fd0c@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <413a7751-a368-42fd-8983-c3b44a86fd0c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Rspamd-Queue-Id: D2812A000D
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 4u3tjsctqff9engizs35uwih4jc5gooo
-X-HE-Tag: 1795606378-723707
-X-HE-Meta: U2FsdGVkX19ePGYoeLonu8al4gum8VYd/R6TosqjoNIuHS6z88no7nylNwPtQq27JITs/Xwq66Xs6vLQzIDDDVSI7R4BtZaLN1nxf7aJS7/pFvHa0qEbXabV5nMm0wXjlWkDSoVsnUPDK0MOtb3VQZBaDs4+XAxixbVxHxQ29nZBpDLd8nUkRaPID7i/y9hhezIcbN6VtxFRt4qQ6cTvi+V7PIdIks5wqf6f1IkJxEOYf6nYQTdFdhd4h6eaQVKKi0837YruH3+KHlc2RSONYD9paGYUBy61YY7ngNRxGSmIplHr5o/4IHldErT2ynyYf4nV55Ii+cueVkYXrnUvmeUrML+vdq/XkrIpzy3dRbrWfPPyjOUkvyoyidplqE4jZ8HajW71tZQeqGBtPjCSe75N8Zt8H2HM/dtj3SHADee1Wn0QPAFpg8/8L1w2dYP/k3IvUIGsV6NbpaUiCncMPlyq/r4a2Kv6TEtXvWMo6TgZwgEvQGagtu+DthUJDqne9BwJBoOcDo57LmBWiQqY7mqqhMEppQLNGlsOLQdZAHub91/FSYbSu6uve/5YeYRa63L2xiDojz+5Fw1ErBRLaTsUyRhDZ/+Rv9TGPG60UIx6+E5uyBM5btAUHyi9oe7AIp7MoR9+v4y7XlEbSxp5fqCJ8gc0Hgohbxwe6XX2Y5EaRz9D7phMzAqD7Em5yWUHB8rZcG7tMIGMi0bA+9DawQEPoKtTkZ9jSzqNX5LOUnwzvNon9xdn8R/RxnX/ir7rCg7yLqhJuYj4EbgTvmVVnZGlqEu6aeVW+Rm0CCR1mT8ovwNcXuC7uK6vDwLvvdxD7RiNQ48Si2EhsQts0xspB0IIJivM7tT5PpdWXOxEXnWXNQD2FwjYkHNjyBPSwcMkJgSAgLHFqhTuHc7IqNbOZZV+Iu9jBaol5dDR3Rc9Ylz6f7xwikrfugZ9gUlDLqXTb1uPZiClxgjRA5M5SIS
- u2+rQItm
- mXObyFPb083PGWJC1M7HGVq0Cr98/2TyJHeSS2tXC5LSfI/gL43EDILzHUomTrScte6iIo8YH0Ap8/TtCQIfBZB0YpOGqyb4/EhzpfjUBMS7yCkPythRSko+ajigQ303eFfqL8BachLILY+dS72U5cQYgL7t/asZ4o3/1TF0a9FzDMIwSNEBgl3TVgtXsotyp2o9COex7pUJtMWHyjXLYUYeHqJqVLdv4REqAGwCJ2NJXhZaP99D/lGBCGWoFNoJOabwdkchXq/xpBBztfyGOL1YBjzoZVM8cUa03KHf5CdIGTWfeX2LRGzwPbkPBiAJBPrx35ZIJmMcQA9EQCTzIUw0aeA/S6keyBfH132y5uz0PeVEYZanJpe4DRzlXG19RgC0FZQ95UJ8nnNr/gFIk5haPYt2/vPYdJ6PpAvArOdQjogMUZL5oh8Wo9rvHw62bCtGXcHVVCvRsLrAlXm49uoGnrXUgufIZA0SoN2meAj6rLSc2vfrfohNHAbZSZaqipoq336xhiSoq9B5PULCCkIN4elYUdpCoEIFzs3wsWxTpBVDydnVAw/3zdwYMn5fGqJV/qDkdnT7iKy121gvnMfdBTW3/9o0Bm36h+MUU/NI+EGj1LCmjK3vnpO8gN5elfSpTJD49ZZ51BX2VBt9Ii+dVLenzjc7gFzSdr+/ENxKioEXyLxWklORnKQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4F5E818000D
+X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: d88asrcmjxucfaapegey4b6asm4afbfd
+X-HE-Tag: 1795606477-103246
+X-HE-Meta: U2FsdGVkX18JVNN+SYAuC6zY5MqaA5bmc9ClGL+jqAuTofyD/6YG4hkv+q4xpwiWr11npRJ4ZwN8EgSNtQZ1MSmmyEcrVdrcb9Dqhek6k641Ab8lGrQfy2+vz42gBUeZrwnUNTRPfflpnaMoFw8Jh3MVGs9vj9PZkL6qGas50ZOu4zOkZtkukSfNiUgCHK0aao/HXhaZLebSXOyTpA9RdQhtALdCNbq7sR92oiNZI0gpJvMwu6VjyQC4Qpu+T4Op6ncnejbfPubnPe/eYiFGCV9amsO3vMqpDhsHPfb1f3quD8RI0U/5dViYiw+sDvC4hgJDwHgA/ipfCDxEnKGjfdzpeZXIiK7+IzBPsi3f4/MoLNZlSakgGN5jbUCGDVpLEB+QjIYmipmxb/0HG/00s72RpiSBlnEkcFdV8hMKhIOQfgGf+fDauMm9blOg22m3UYFBny88uaB2tcL9Pz+ZAVZYiO6K0oopM8AXYsoAe5N0JULQ/b3WKPzyuC1RBPBDHeYmEkwUP25ks2aJM6P1DWWfeXOuFe4USmI+40hg8fPYDUw1MQhH1jsKSdsT6dqcugBubLhMsPAX8jyq8DLaKzaMcgdWuDsOMVqdOEtMZ6zFPu5ZmLIrTVqXrqUy/CiwLBWN4x3+Acmc+zfHweI6Ozf2FDW2Q5m+b9E9Xte1QsHKMaq3ZzK/qsA6gyjbY4a60Sbl2FkNGxPgysCr/IeN7ZKXE1Qg+5vBPiC+oZYJhXopEx6r4uKDNMHB7qjN5kDN72b611XAtoXlbRM2XYi5SitBPZo62A2PCsc2ZoLKln7aAARAGBRyc+bCi0qvonBz5hMuP3gmv99GuZSlAX/EBZWa8f8LYk5rWDUHAu/TOlW0ZB8aJJtek5eLyKqvn6HaWlgsItyfcbbAcKmYFCt3k6dKJSt8D5wwt2lkjgJhzusgekSN/froIO7K6YtCjCIoWWj0mfGYrbLgdHU3dJy
+ BbskNnkT
+ 9YcqPpzwWddfg6YykeW7EGRC5ahfFo3GYs8cLXd+oOp4GasX424SnPCko4g6Hu4BPQQU4u7xiy71O82IcjbjoBQwo/r4HBc6rBpt3Xitav70lbskrV49MACNKIL5BcmBsLkhg5yltC2EWecLO8u37b1A4Zv3Wl6JjehyxYZ0jMUEasN09easW1joY2uhzvuBs5DFZKww1djOWCJbtIHFaEnL+8EJeO/SLBDXMkiYJPfpiuCowVauTuTg+YGLmmBgRR9AZmoticdYz22bmdc+AlxCUoo4zwT41qIJdapzBwRjkyAdkgd3lg2iBQ+m5V6jWRTcK4ti+3YJoSGIyRog4pzzPiJ29yD9t/ZHaDSH6RbYAW8FAhL0YVQRDzWUDIa/zEY3Vw4teHXKcJ4KnGW3NE1VsftkLVj6mHmHR2JnUG/36OtEICJyvGlJj5Imuwy7X+BTdLSsqIHfoa9bzaBqxp4Jhe/Ym2+oOu7ekKkVA4BcSavkWrHnoUkxo7b8reD8yHGk1PFHj+pHqnyPCg98K1EhGLsC27hdgqw2hyVwYyzvUBj76b3cLVZpaY82aYoEYGqIOp2Mewks/sTEL+lsG26fw/5nS9UzLt9ZqNFOKYzHYHUn+u0X0rp9BqV0YxuvsYJ3Ac9ejDQsh6tFOVGCFTyGZKGAp35kA3J18uWHZ9RJfMNNWAxGwMLtPB+E7prsHj9NJDJ4UguVkZ5tUEcc4BxMinBqmCkOlSFWlNDdRIRmrOgA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,157 +144,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 11/25/26 12:15 PM, David Hildenbrand (Arm) wrote:
+> On 11/25/26 12:12, Jose A. Perez de Azpillaga wrote:
+>> On 11/25/26 11:55 AM, David Hildenbrand (Arm) wrote:
+>>> On 11/25/26 10:59, Jose A. Perez de Azpillaga wrote:
+>>>> collapse_file() keeps the folios it collapses locked until it is done.
+>>>> With those locks held, it calls filemap_release_folio() with GFP_KERNEL,
+>>>> and for shmem it swaps folios in with the mapping gfp, which includes
+>>>> __GFP_FS.
+>>>>
+>>>> As when splitting folios, allocating with __GFP_FS while holding folio
+>>>> locks can deadlock in direct reclaim or compaction, and __GFP_FS also
+>>>> lets filemap_release_folio() wait on the filesystem.
+>>> How is that possible with my fixes?
+>>>
+>> it isn't, sorry. I'll drop 4/4.
+> So there are no other allocations in there besides the one done by splitting?
 
+there are, the shmem swapin, but they can't deadlock.
 
-> On Nov 25, 2026, at 01:39, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> On Sun, Nov 22, 2026 at 11:08=E2=80=AFPM <sashiko-bot@kernel.org> =
-wrote:
->>=20
->> Thank you for your contribution! Sashiko AI review found 2 potential
->> issues to consider:
->> - [Medium] arm64/mm: over-broad TLB flush in =
-try_populate_vmemmap_pmd()
->> - [Low] arm64: direct AF=3D0 block-to-table transition in
->>  try_populate_vmemmap_pmd()
->> --
->>=20
->> commit 1319c4a7862ad5f3b810c4beca866ee98bd48fd7
->> Author: James Houghton <jthoughton@google.com>
->>=20
->> arm64: Implement try_populate_vmemmap_pmd using AF trick
->>=20
->> This commit implements try_populate_vmemmap_pmd() on arm64 to replace
->> in-use leaf vmemmap PMD block entries with table entries by clearing =
-the
->> access flag instead of using a break-before-make sequence when BBML3 =
-is
->> not supported.
->>=20
->>> diff --git a/arch/arm64/include/asm/pgalloc.h =
-b/arch/arm64/include/asm/pgalloc.h
->>> index 0263329fb7b30..7e304f01ce6d5 100644
->>> --- a/arch/arm64/include/asm/pgalloc.h
->>> +++ b/arch/arm64/include/asm/pgalloc.h
->>> @@ -124,9 +124,54 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, =
-pgtable_t ptep)
->>> static inline int try_populate_vmemmap_pmd(unsigned long addr, pmd_t =
-*pmdp,
->>>                                         pte_t *pgtable)
->>> {
->>> -     /* BBLM3 is required. Its presence has been checked. */
->>> -     pmd_populate_kernel(&init_mm, pmdp, pgtable);
->>> -     return 0;
->>> +     const int max_attempts =3D 16;
->>> +     int attempts =3D 0;
->>> +     pmd_t old_pmd, new_pmd;
->>> +
->>> +     if (!system_supports_bbm_through_af())
->>> +             return -EOPNOTSUPP;
->>> +
->>> +     if (system_supports_bbml3()) {
->>> +             /*
->>> +              * BBML3 allows block->table transitions if the PTEs =
-underneath
->>> +              * do not conflict with existing, potentially cached
->>> +              * translations.
->>> +              */
->>> +             pmd_populate_kernel(&init_mm, pmdp, pgtable);
->>> +             return 0;
->>> +     }
->>> +
->>> +     new_pmd =3D __pmd(__phys_to_pmd_val(__pa(pgtable)) |
->>> +                     PMD_TYPE_TABLE | PMD_TABLE_AF | =
-PMD_TABLE_UXN);
->>> +
->>> +     old_pmd =3D pmdp_get(pmdp);
->>> +
->>> +     do {
->>> +             if (WARN_ON_ONCE(!pmd_valid(old_pmd)))
->>> +                     return -EINVAL;
->>> +
->>> +             if (WARN_ON_ONCE(!pmd_leaf(old_pmd)))
->>> +                     return -EINVAL;
->>> +
->>> +             /* We should never get a contiguous PMD here. */
->>> +             if (WARN_ON_ONCE(pmd_cont(old_pmd)))
->>> +                     return -EINVAL;
->>> +
->>> +             if (pmd_young(old_pmd)) {
->>> +                     /* __ptep_clear_young() returns the =
-overwritten PTE */
->>> +                     old_pmd =3D =
-pte_pmd(pte_mkold(__ptep_clear_young((pte_t *)pmdp)));
->>> +
->>> +                     flush_tlb_kernel_range(addr, addr + PMD_SIZE);
->>> +             }
->>=20
->> [Severity: Medium]
->> Should this pass addr + PAGE_SIZE instead of addr + PMD_SIZE to
->> flush_tlb_kernel_range()?
->>=20
->> Invalidating a single non-contiguous PMD block entry only needs one
->> overlapping page-granular TLB invalidation, as in
->> unmap_hotplug_pmd_range().  With a range of PMD_SIZE and stride of
->> PAGE_SIZE, pages equals PTRS_PER_PTE (MAX_DVM_OPS), so
->> __flush_tlb_range_limit_excess() returns true on CPUs without
->> FEAT_TLBIRANGE and escalates the flush to flush_tlb_all().
->=20
-> Oh! I didn't know that!
->=20
-> I will change it to PAGE_SIZE instead of PMD_SIZE in v4. Neat!
->=20
->>=20
->>> +     /*
->>> +      * Translations without AF cannot be cached, so we can replace
->>> +      * them without BBM.
->>> +      */
->>> +     } while (!try_cmpxchg_relaxed(&pmd_val(*pmdp), =
-&pmd_val(old_pmd),
->>> +                                   pmd_val(new_pmd)) &&
->>> +              ++attempts < max_attempts);
->>=20
->> [Severity: Low]
->> As reported by Catalin Marinas on v1 [1], this rests on an =
-architecture
->> detail the review could not confirm from the kernel source: can a CPU
->> walk cache or TLB retain information from a valid leaf block PMD
->> descriptor when AF=3D0, or is a TLB invalidation and =
-break-before-make
->> sequence still required before converting a valid AF=3D0 block =
-descriptor
->> into a table descriptor without BBML3?
->>=20
->> If it can, skipping flush_tlb_kernel_range() when pmd_young(old_pmd) =
-is
->> already false or directly overwriting the valid AF=3D0 block =
-descriptor
->> with new_pmd leaves stale walk-cache or TLB state active while a =
-table
->> entry is installed.
->>=20
->> [1] https://lore.kernel.org/r/aoSJcAFMNJ1nPl2H@arm.com
->=20
-> Yeah, this is why these final 5 patches are marked as DO-NOT-MERGE.
-
-If we aren't sure about the hardware behavior here, why don't we just =
-drop
-these patches? Once the initial support of HVO for arm64 is merged into =
-the
-community, we can bring up this uncertain part for discussion. Wouldn't =
-that
-be simpler for this series?
-
-Thanks,
-Muchun
-
->=20
->>=20
->> --
->> Sashiko AI review =C2=B7 =
-https://sashiko.dev/#/patchset/20261122184453.2668189-1-jthoughton@google.=
-com?part=3D16
-
-
+-- 
+cheers,
+jose a. p-a
 
