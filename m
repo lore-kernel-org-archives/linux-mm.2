@@ -1,134 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE4D606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 06:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6C6606A334
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 06:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KrYeRAFp
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lKo6Hcca
 Received: by kanga.kvack.org (Postfix)
-	id 689FF6B06B6; Wed, 25 Nov 2026 01:55:36 -0500 (EST)
+	id 7C8CB6B091B; Wed, 25 Nov 2026 01:56:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 550F46B06A4; Wed, 25 Nov 2026 01:55:36 -0500 (EST)
+	id 779516B091F; Wed, 25 Nov 2026 01:56:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 306ED6B0624; Wed, 25 Nov 2026 01:55:36 -0500 (EST)
+	id 640446B0920; Wed, 25 Nov 2026 01:56:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 08BA56B091B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:55:36 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90AA5C0D1C
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:55:35 +0000 (UTC)
-X-FDA: 85472730630.28.07CEC04
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AF36CA000B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:55:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=KrYeRAFp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=vipinsh@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795589733;
-	b=21vYh1WwzQFghrmck8uaS+gj/MltPUbBJ2xyh8W/W1DVs/PpiPkfsD2kZHhXf+gKa9psRe
-	LmT+0wNK4n79DJ37NJL+xOHyS11K3dBlxsDXbv654IVZLs23ggUS3mF5i4AkPc6KlF00hw
-	Z0xwuK6cmA6cFLn+Xtv7tUNXgkFYY7w=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795589733;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 36BFA6B091B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:56:59 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A80731C4945
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:56:58 +0000 (UTC)
+X-FDA: 85472734116.11.25B9CB9
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8BEC5100007
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:56:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=lKo6Hcca;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795589816;
+	b=tMIcHx9wPyKsfuxAamjhpPA24VRUZNpIzWhIsc/qlnO/flaP0PxHuvHZKQZUk6FidPkH0l
+	RGH9Yg9u2q1kro17UykzWE8G+fRNJgVQ7DG51FD+kLsFCyHLbuWMqCZAb9kVdSu8eUlmIN
+	AANhG2wxA+uQUcmTVunPjfTJNnTVZFE=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795589816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPRUbVIzxn2NwG5vGsxVyrASfvomYL0+/SGbKSIacUs=;
-	b=vvDmOobdVCtlhdPnpTxDL+jEAENxB4Hs/LiE+/gJtwe9LdmZYqAq8y0mffWYBqYGoTuhKb
-	hDD1lsYO8vUAiAIHjZEueRGqhjuYs7nwOLld/yesII+2ZKOjQI9gs7T+ytl2/GwDDeK4/G
-	RTFu6y0I4P3gETN5dUeS0zmIFQZ05mw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=KrYeRAFp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=vipinsh@google.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2f0afdb97abso177225ad.1
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:55:33 -0800 (PST)
+	bh=ha1sD3FIgKbrRu6a6kLtp+uh7BrvdOhtuCwLJhvS3Z4=;
+	b=i/USIxswUOL65Ys2nVY01TZoDoApTTz59p6KXavuFaxEL0DOh2T7fcPZLORrxZpLYFUT9K
+	YN4x3j80DXHD55oJZiuXOXVaboVfUmxfPPPnoZS3u4YvNu+8BwkQ/+sXFqK9zF0u4lmegz
+	bNd4yfv5ohbKS2ingDqjGYjvhtoGXyA=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=lKo6Hcca;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3adf9b1f5aeso55606021fa.0
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:56:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795589815; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D7yPsyMYKRHh66ThwWghihsJn3YpcD7gPsBVIp8tp/OiSpZtxBdBl1ftPwP5v/uR/i
+         FUzIKWue27yLNlBl/HpV9YurWmGLEUDCIv91RVc0sISzQl7GsrqFl9zkB+/wr7wIjZaP
+         agWt0P5XyCXPFMtBUSGUTMwWIwXaONoEnZ3iD96Q8pfB5vKI/tHXuT62SQyQITdqxvLx
+         4WXpiAJBbTeiAmWc8Ce5SHrlN8yCuyIWmC8FtVzY6q7lIeubSSVihL3B4Xep0cxvoPsJ
+         JKVYZQx31iT+mhrV226d6Qj0H1d43PsiUiuhj/ll7ZXrG2b7HIIgtakJIZ3/cf0/Q83C
+         4yCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ha1sD3FIgKbrRu6a6kLtp+uh7BrvdOhtuCwLJhvS3Z4=;
+        fh=4yO9URcslabwvWamImnzJjsoVLXcpW8zJ7SGjfVxibk=;
+        b=JLRke0lu9DP987s7FS+eFUPHc0u0p5cRb6BasqJgsNESgpxz5Z0zuwxIUtvDhh8Pc5
+         5+O81mc1ONOGtLtpFDNMnrhABnIl2QVZEXjYz+6k+oGWFrUBGGyFGDaSScilfMjdOT04
+         d0D4owt8L2EUEKBroe3fMvNaQhYIznd6GNJm9zSEjRVoj1SDnf34FTP/df6lgJR9Nh/N
+         n0wuJgLIi2OGxI7n3bTEgHGVnb0aQEWUoejh+zuqvvdFt/mdRCNR9c4vLQpMEmx1GDLt
+         kmmk/D4TFZLlqSRIIhFbt0XsA54D7bXc9EixlhUhdir50Fv65jFra5qCotIw+peTvwWA
+         tj2w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795589732; x=1796194532; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1795589815; x=1796194615; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=JPRUbVIzxn2NwG5vGsxVyrASfvomYL0+/SGbKSIacUs=;
-        b=KrYeRAFpjMh1oNPDvSCaPpKEzaqrS5q+I7eHUjVsBlxiSShjX8C7QTyzBLA4IZh07t
-         F0tL1Gk26+n48xaTSi2djiMEknCwp3xtsVSHpmfe9uBqze9XyW7/ELvIuYTHhpHj77gG
-         n1TtXvqZVv8L3vfuj2RlytYYn7TuGmuL+lw/fHjIpRtAMgrLvaqaZXszSCT7VTbY8pnL
-         IQD2wTcw3whAmv9Q2dMuXasaFqEkNHr7RNHmu53T6+MkHg/nvXwGAFkl5off/HCIB7cA
-         rVgTbm9zgfyJ7NyaSdxikEppNvyJVjKcX+Fh42OdiIrZcQF3znT+64dOR83MV+46lTpB
-         R8zg==
+        bh=ha1sD3FIgKbrRu6a6kLtp+uh7BrvdOhtuCwLJhvS3Z4=;
+        b=lKo6Hcca2yOAagWIf3dYEwlGEw95eWZtsHtsf63cpCULQuoHZmCXBpnZHXjHNxX3bP
+         ARBKDst8/nNcFAU+e/u51aDclKZ7Yzp7bsWHlJoEQccUiMgmPRN/fbk8AyVe404Xi95o
+         K3OMW/ziKN+y1qXZF7wEp/lB6Y89xhNmCs/vCYgyx2w5b5+T0x0p7AjYv+/qdMvLn75p
+         tFuOGdZUtWG+0bvQg9pwVAX2d5KJEyn9Nqdjin17t4F5ToWg4izrxzCm9wZh9bvGwUUt
+         KLaBvC/hD96NXKVbnajg8z4s7anT/bgHKlajQmLHwwwL4pTbUL271kpPkKAOvCnPmw1J
+         LALw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795589732; x=1796194532;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1795589815; x=1796194615;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JPRUbVIzxn2NwG5vGsxVyrASfvomYL0+/SGbKSIacUs=;
-        b=wxtmzIkxE3MBYXtqvyEFe/KrReGA2QnrpG5pc2W4YMb0x0uPx9PiHN+ddSO1+Yc/DT
-         8sJ5ifAI36Qx31V3Tx3Fmi6YY/NXISBjgsKXZf6/Epnw5IY8uuDH52puYC9l96O3P5xv
-         IDFkBDglJj4q6GJA2xkDN9YVVDg6YlsHiinKSj62CryxHGrT5PBzcstUrd9UQeIVoPG0
-         46BKl5EN+nczs+aXL1qpIlO5aD5+GOHktg8N5S9uzqko+BagdTN+eLE4lXIPMP7ciG8Z
-         J99Q06ueWVbY9u53cmdOU1mAh9nATDGXbelItDvo9cChPHt5fHdRL6hp9GchKsdnvacm
-         bLlA==
-X-Forwarded-Encrypted: i=1; AL+hErFBjOigkF9II4zmBQ3/UKRRUjcjRMvNRO9VgmcoxX77fS0jLS03r7CAjsm58UFStxtczPFsGjgKvQ==@kvack.org
-X-Gm-Message-State: APuU4Z/JADjkL+j8uZm9wH6sP2Zz7+a6gqsie6GkWaFzcvvx8DRse1XZ
-	dTK+ygM3DWLoXdeUHgYE9fydVsx4NW34fk8/MhocZcgfjLCFQTNR/hc9wiAYwfPuhQ==
-X-Gm-Gg: AZFdTZdg/pcdoV9QCRIyuFy83+d//8QKnK31t8+XymzuMhPpXVH7WpjJcrg5P67zBci
-	/LSBKYuIbYlqICYhzsXX2UvJrz0PaXlL4d4fcs3dpT0pv4O4mvC4hbJ7lHLrZYxWYENjoB25JYX
-	GDlYDJZWg+LlHgjQ4g53EHnhcokLxHxjo2hUhB/1ka/EBvMlWuK58HI4cGo5wULPJB+nq1s6skl
-	4pHsPfe0SZd/iVAVs6UukYK0WLRasFRYoETq/JxDKfp7IRXfUB/cXd30DRAPidp/K/O/+I/VW9Q
-	ys7FrE0pb0BeNe0Ak6GHmsmQY54y2zChLqMFr/uN+XS/UDnuffNOUFr5EjCvChgZmG7ZLKEECw5
-	0Q2sYw0fzzwnkmT7QfZxyU/rzGfwxcxmbd5RPav5TIPJ0gn0Em9MzzL5guR4oLPyqUZSC3GvBSM
-	/cp0JOh6kHn5zHajN84EdW8y8nzDxguwkDEDcelRiDE1mN6HmNBzCVrDTgY69NXJAMfew+YwhYc
-	yPHIRiH7lNabu/6mrF245unooGYPnF//PzE48vhPDiElBFTO4fpzErclXTlYqarsSddgKxP44SC
-	628XS4UeFU3NlyBxRQcReVQ+PbiVOr6a3BOEU9F2CrynWPGLGFKiSbe+rRFtTJs7940=
-X-Received: by 2002:a17:903:298c:b0:2e6:1013:ad57 with SMTP id d9443c01a7336-2f0666c0739mr15428995ad.12.1795589731845;
-        Tue, 24 Nov 2026 22:55:31 -0800 (PST)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde6cfebdbasm8167972a12.13.2026.11.24.22.55.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 22:55:30 -0800 (PST)
-Date: Tue, 24 Nov 2026 22:55:27 -0800
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
-	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
-	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
-	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
-	jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, 
-	leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, 
-	michal.winiarski@intel.com, parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, 
-	pratyush@kernel.org, rananta@google.com, rdunlap@infradead.org, rientjes@google.com, 
-	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, schnelle@linux.ibm.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Subject: Re: [PATCH v6 11/27] vfio/pci: Retrieve preserved device files after
- Live Update
-Message-ID: <20261125003759.GD3545683.vipinsh@google.com>
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-12-vipinsh@google.com>
- <DMZMRTXS7OSC.M79XF39ZVEWE@google.com>
+        bh=ha1sD3FIgKbrRu6a6kLtp+uh7BrvdOhtuCwLJhvS3Z4=;
+        b=VmsHlZ41yVgOpnoW2iUqU2rfvP70cjZsbXIu1FCbQGqNAoIDD8wZFHyI195xkgzsxW
+         5pVbZU8Y28yP7dTxzh7ThVgjcQHUG3GklNSldOO4bTD3PEc/12c/dkRpm5iuOR0sQoSf
+         6utxB55Dpc0LR+dFZgKFA85zJDIx1Ii84CvXEKtfs68But4IbkYSiepN4r1ZvTdEY9GM
+         +qegVFwxrZrbQAzxCs6Klyr22MggYy5Cv9TpdJGuf5EQ6HGtiOB+IO5CgMaH3uO/aUPh
+         rB7UqGiy1nAAdIS1BuGBeSiTz9eYR1gMqx6SdeSC4f1lP5U2NyRNMgcvV4v1/SvgR492
+         yNqw==
+X-Forwarded-Encrypted: i=1; AL+hErHazkzsflPWaTOYECb8KNbcC/PwChYk1Sz01QA0uRTMwleH3JHVo3RtLFGqpnhqrKZMQ4cpnEAJAQ==@kvack.org
+X-Gm-Message-State: APuU4Z+XDqyD09p2zfB/rp3s/1ITRpJutX1vmcwE5W7aQHQk9grb4tnZ
+	+8dixJj2k13f5xODaoLBflmdJnmDWgQ36CPOFAQDOo+h2SAePF0i6Y7AJCBd/bhpQpOoqG6cIhx
+	NidOMCTVEM/tLxEQIdzhDL2+yKOBqqyw=
+X-Gm-Gg: AZFdTZcVAXlqnfh9g4u7WSpcYOvOfuFE1yffzlxBCBzDjvLvzYNrvfDckOU5xahp8uR
+	ejY1o7398cvZMAS1OMYhAS4YbgcnbtJQ316C1Ho5npqX/unHHIRVwi8wnXso6huzGfZZ89MQETa
+	bzEvssv1WFPrl3Dwhl9XLN5zBGEg55TJmtpW3EflnNpRRLYFsN5y2g3pBO278jE4u3piTzmgUW9
+	i8rMLvoZ7EJ5UuE/pEhD4/Ds9vjS0csd+o9B7cV0NxLV+nM8mLBdhK506bHA1oLD4VwvE4jYhys
+	6grhU7VR4CJ0KjbgaL0PtlRwcn181+atIpVxzxYgzWq8EMXQokVb6HmRhqvd2OuSFIf9U/txVOz
+	lXLhAVh8rhgcKkITvemnUJnHn1WnVzC9GzCHY
+X-Received: by 2002:a05:6512:104f:b0:5bf:ca51:e25d with SMTP id
+ 2adb3069b0e04-5c1bc85debcmr4552963e87.11.1795589814181; Tue, 24 Nov 2026
+ 22:56:54 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DMZMRTXS7OSC.M79XF39ZVEWE@google.com>
+References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
+ <CAKEwX=MLrDn55wmVKKba5=PcU+qFpkEbMmN2SjGTfTBiFKX8cw@mail.gmail.com>
+ <awXr6iHBR54wBB05@google.com> <CACpmpodH3UUDLEze8=5v8LWgKnZWQVrQBhzSGJFY-PwEYmHEzQ@mail.gmail.com>
+ <awYsDfYqrS2ldOTw@google.com> <CACpmpofsU3f=PVQF4moe6n=_qit1ZGyo4FMjyM-sVgumfyN0iw@mail.gmail.com>
+ <awZt7P_p-GNZ3A2i@google.com>
+In-Reply-To: <awZt7P_p-GNZ3A2i@google.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Tue, 24 Nov 2026 22:56:42 -0800
+X-Gm-Features: Aa3M54oXzyeaRv6QCCuUq_sp7X_zsNBqLra3JmTQYx5ozeA7YpvDzRVEZ_mU90g
+Message-ID: <CACpmpod_87WY_PcOsNmPZvFzmJyBtCpyvvq1a_BqmZgGmO1e5A@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] Batched zswap_store() framework with compression batching
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, hannes@cmpxchg.org, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AF36CA000B
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 45o9npq57r3iwdr1nnqjp6fwp6ubxhq3
-X-HE-Tag: 1795589733-955154
-X-HE-Meta: U2FsdGVkX18GTeQLpBsG9MDr27rWzeVU/kqr4DDkt3gl/fir2o3X+LqAaYjgHkAbzczXqeervNCERjV+PSax4lSvinQmScj3t0aCY+cfCO33Cws7SgZJBr7aiZeXgsJLjYUOzdg3MoBgg0tWLZ7h0KbVDzYlXW6fUBjcU9jZ24FQyM3euff4f/w4GFJnCE8WOBsPwk+C7sLeofVMLwje6DPd+Y2Ivo5oqYVhFIjfcsZyT1fOMOqEmYzAl27j0gvyXgx6nGTdsp15Rkrtp+rjBkRysKiqhXUMsHTvV8KaNXsk16KfmK/ZUeRJ3/AX5Bu7Am2+9L8ZNqQd82dHDLw8A3pt6YOFBbmz94O5tSLUkIIJHY7UuBtyusZf2hDjFFkKKMqyTzixjiRrymqcSdCk0qfE7kiDuV6B5TQDL/5g76hDRT5h+cBPSpJcTU8SNbqMS7cCm8vvbI7v0/7jAkyvNn5/mUDoUIIFzIRBJ8t0QXEbI0arL/hGl4V/7syBclmC6Qg5qbbz0v00IANgfc3RQ5GbZpsoa6MTkrRysXuJIAHY76EKUIJEp93zu25pvP/DYdapX/49qUbsMF9SVrqdUNf4VRWiPtW0uqfp8oNMztZDUvOS1/zWmOPN/kBKukqUNQbUkp/q7TKmVZFp/qJfpHCgHuYQqzUG6R8/RQZXriemscyrNQpqzMG2Djfocst+rWPnJsi6O9LD+1jmpj6aQEJ9gOaW2ErJEhaSvmcuf/+SJPnw6zw7AIFtxtfCABf+q5ixyvGXLI2sWOYWX3hglg0IxB0h5+h1EmdJmQeOrMZhKViY/KPU0CjM+8diqbDvOYMwiB1NeAxYvVpgZ1ynPMtfWHFOfMMiOb3v1ZcyiteDv0JZbacnsKH+Fwe5c8WuGBvnnhZG4Dcq/Vtpx591/UOFiZ7rxsFPOSiUmLi8LVGv2kl9o4+TuoskWPc9wdI+bjlIANCDd9MtvXbba9W
- 6uq80IvF
- 53CIi5BzkjDUKnCcY6VlLcrL3sBH4+iegNQmMYnEQypk0uy1XeyE67o1d4TYRDTiLeZ5KvMg22iNqiFXgjl3PmubDU+3SbJhxd3APAP3883BGSwHWojKrZ40VR6VJMVaW2PacMCCDuo8AFaTE0PKNZm3/imiWpioGKSc5WQKaIdhvSJNpB8YftKGJ6bWlJmzMk5vIeFOgxno4c/+de1QTURQXa2u2CK0guwoyjpp2A+67SRlxOhmTsDUyFT9rrT2zGz5a/ZVzvTgQ6MI/01kUp78qtqC2wFMNWqoMeuMD5lPZb8/KhEfgcClYk8jMaFor+JGTxP7bq6yAUp/tWErjzymF2XEdz99qisBwfptv0xidmCEspw6xD589ljPlznCLBdfwAjv+GMN6MNSBZ9p7gtHrfSbcn1gQ1zbvtamU7wUJGLMAovUx6scMKWqVXsZdlRo/5TAbL4AMY7FA8ZEoUpO4kqbKJ/9zP4Ecrf9H38yj8Dbqh6tjbdK19Lt9eWao5TBW3HzfU57CN0ewdr8NwXa+QR371mwK/NzOPcxNUmqBNTwzjPhLgNfo+e6DQpNV6vFh3HGCzfVjgKc=
+X-Stat-Signature: fd6s3p8yr5hqfsb9xjxn1wr5xch44c9c
+X-Rspamd-Queue-Id: 8BEC5100007
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795589816-136323
+X-HE-Meta: U2FsdGVkX19HkSTTlGThiWXsbzS6NsurBNs+xxxsNeHTV1QLV0WJdZEbvZIY7oARQbXNVvBOgbC4cYyQ3Caco7PvQDx8Apcc6Xx/8fY5q7HukEJCW4rxKWk5bM/xVBZD0xXhHtJQULI7miR/k50AE/kliHl53yk4XjjRq7u17Kk80QRPi6xLWNwtIPj/DwU0hPHLu/0Hve0sMhA4Qc7FdVI7SOesPAVOZTNAhG7vO6ZfkoVmRWUiBR1cplBfw0Oe4ZWm0VgWoV4oGVC5eE8jqjeuatfBZCtExtq4WNEFOQsBXsg7ud31W77GSSprx/zRkzNAE6A0rKcEPmxW3f+rSFerMtOBkGGlC2hza9EwlkiJNN0qFfLaLg/g1ziPJj6KqE4yLw/xR/bscB+hV5afV8HikH/NH7ua5b+NPIH9zcsAbmh+6+ywsmZZytWu5iL77dYDQCFFvng13wyJvQT+Zn1KfzSyZ8DcEe6Pld5S6kVejyH+5UmaNpha6o4ITNzThqni2rwtiJIpi/8yVjwa26X5BKAHjhFpnqk3lyR0WL81jet2ve0Oc5ytbGY/pHEXt18l89WfmrX9OY5Sbvl2kBxkpAPzgk8B/JzUg5ZgJlBanJABxHnrrvqsqxYijhneOx/96nt4S/9N9slSf5dcjJw6IwnmX6uIYtVIHzTVsGEYwM6M4NVT95FAUU29YhMpPeLqbgpte6gySy6hGfT7aMbe9WRbdPU8CE61DfbEGhg05bQ7yTh08GJnQvWQNakMqmyYu6aGm306wr6Vqm244PczOJGyOEv+7RDFbQ0sFd3wGj8rPa5a1gVTogu18k8QjWUc2pTLui/W2JoSilxvbugb/ylsARLWNrz74ooc9Xp3Nn3+yXIHvVFrqvGFfNXE4Zr5NdMFpIB8GApBTK3d70Zs0qdkXP8lJ/kbSSfFnUDMVsIye52ZfKH4xdJDvbQQmYRBWT4jwk2Xtoy/zj9
+ 6qKpH0dJ
+ TD1sVzZofFk7uFg0fR4xSPFwvWfnbbTwV8gqZZN8bQOmwo3pHf2s5Ec/N2Wi0/KoQVskIrHXM6w8gd3CAKEbT575DRQtv7FUXSM5ssum1Iavgv3sD8sEjAC9OseDGQeiQcK+PczItShb9SVC0gIJ6b/nLQE+FYA1zVs3f22GNyG2G/+TwM489gw6Out7DQztpyeT0lbQmX2jslGAqfVW9QdfiaWSuzUsQLNxD+HWFWMsx8jFgjjpqq/rmM2w3Whb7g1P1L1Mw6XpMH6OzZL0O993bc6IZbwBZbof1rD0JSnopRajf1zr8pt1UpZmWgaGgInMouMmgK7/KPr8MrtrHT5TN3zVwQM7/AgwA3RpwCoJDZ6alB5GjnUyxak9fYGQ9oAIxe9KrP5Gto3ZKvsUKxZz4YjsJ1SaQ+GkBtT9nytOOXsKofnFCa13ZUZyK+4l+lY5gq+JhtSD1bSNaMUiFLKstOuj+CaYwFYmshLKhrXznmVtaBY0QaM+hXyfsmeJd+lUwqy+IczE02/TDfcjctedntBwk5js1id94nSWp5JahcVGyOhznH4Vpj2bhPfuAmZxvTDwqo31jU1LOVNd6e6yhLjl3NCDJeiA/YxzgJtUsLH25hkTCxhyhOKuQtPKd0l7fpUGeABpRPU7rSQjqEmEoCH1fECHtjOFpNpdCio+qF3/tg87hSEzKVZ52A4qWP10JzmF0gaRQc+KCd+PTjlLlohimWnhPTzEciNWeNpu2qLk4R48Kni77mg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,210 +151,402 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 05:01:19PM -0800, David Matlack wrote:
-> On Mon Nov 2, 2026 at 7:36 AM PST, Vipin Sharma wrote:
-> > Enable userspace to retrieve preserved VFIO device files after a Live
-> > Update by implementing the retrieve() and finish() file handler
-> > callbacks.
-> >
-> > During retrieve():
-> >  * Validate the handed-over struct vfio_pci_core_device_ser header,
-> >    sizes, and flags.
+On Tue, Nov 24, 2026 at 9:51=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Tue, Nov 24, 2026 at 06:10:25PM -0800, Kanchana P. Sridhar wrote:
+> > On Tue, Nov 24, 2026 at 4:59=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
+wrote:
 > > [...]
-> 
-> Please make the commit messages in this series easier to read. They are
-> mostly long bulleted lists of everything the code does, which is hard to
-> follow and largely repeats the diff. A commit message should explain, in
-> prose, what problem the patch solves and why it solves it this way, and
-> only call out details that a reviewer can't easily get from the code.
-> This applies to most of the patches in the series (e.g. PATCH 07 and
-> PATCH 13 too).
-> 
+> > >
+> > > I think the real gain comes from making the freeing path faster. What=
+ I
+> > > am saying is that we should optimize the freeing path rather than
+> > > batching stores to get better locality in zsmalloc pages, as this onl=
+y
+> > > speeds up the freeing path when most data in a batch falls into the s=
+ame
+> > > size class in zsmalloc, which isn't the case for real data (e.g.
+> > > Silesia).
+> > >
+> > > I am not arguing that usemem results are not valuable, I am arguing t=
+hat
+> > > there's more to the data than just usemem latency/throughput being
+> > > better with the patches.
+> > >
+> > > The hacks were just a way to test the theory by eliminating zsmalloc
+> > > class contention. I am looking into proper optimizations for this pat=
+h,
+> > > the goal was just to see if optimizing the class lock contention in t=
+he
+> > > freeing path would achieve the desired result.
+> > >
+> > [...]
+> > > Yes. I tried rerunning usemem on a similar setup to yours, and
+> > > aggregating throughput, total sys/wall time, as well as write/free ti=
+mes
+> > > over 10 runs (write comes from throughput lines, free comes from free=
+ing
+> > > lines). I did this at the baseline, with patches 1-7, and with patch =
+8
+> > > on top.
+> > >
+> > > usemem30 (usemem -w -O -b 5 -s 10 -n 30 10g):
+> > >       kernel   sys_s (mean +- sd)   wall_s   write_s  free_s   tput (=
+KB/s)
+> > >       base     2355.6 +- 25.3       94.24    55.62    26.82    212,23=
+9
+> > >       p1-7     2366.7 +- 22.9       94.65    55.91    26.90    211,10=
+8
+> > >       p1-8     2197.0 +- 37.9       89.65    55.48    21.66    212,85=
+3
+> > >                (-6.73% vs base,
+> > >                 -7.17% vs p1-7)
+> > >
+> > > AFAICT the speed up happens on the freeing side, not the writing side=
+,
+> > > so it's not really zswap stores getting faster. In the freeing phase
+> > > (66%-100% of the run), ~90-92% of cycles are spinning in zs_free(), a=
+nd
+> > > total cycles drop from ~1.64T to ~1.30T (-21%).
+> >
+> > Can you please clarify what "write_s" and "free_s" refer to, and how
+> > are they measured? If you are referring to the gettimeofday() reported
+> > timing done in user-space by usemem, these times measure child
+> > processes' fork, do_unit, join, etc. : IOW, not a reliable indicator
+> > of zswap_store() performance.
+>
+> write_s and free_s are from usemem's output.
+>
+> Without your patches, here's the raw data I got:
+>
+>     12079595520 bytes / 36047550 usecs =3D 327247 KB/s
+>     12079595520 bytes / 36221811 usecs =3D 325673 KB/s
+>     12079595520 bytes / 36539948 usecs =3D 322837 KB/s
+>     12079595520 bytes / 36554520 usecs =3D 322709 KB/s
+>     12079595520 bytes / 36630659 usecs =3D 322038 KB/s
+>     12079595520 bytes / 36705879 usecs =3D 321378 KB/s
+>     12079595520 bytes / 36795396 usecs =3D 320596 KB/s
+>     12079595520 bytes / 36844030 usecs =3D 320173 KB/s
+>     12079595520 bytes / 36936923 usecs =3D 319368 KB/s
+>     12079595520 bytes / 36989604 usecs =3D 318913 KB/s
+>     12079595520 bytes / 37063935 usecs =3D 318273 KB/s
+>     12079595520 bytes / 37065296 usecs =3D 318262 KB/s
+>     12079595520 bytes / 37158608 usecs =3D 317462 KB/s
+>     12079595520 bytes / 37188329 usecs =3D 317209 KB/s
+>     12079595520 bytes / 37176041 usecs =3D 317314 KB/s
+>     12079595520 bytes / 37222619 usecs =3D 316916 KB/s
+>     12079595520 bytes / 37277605 usecs =3D 316449 KB/s
+>     12079595520 bytes / 37382137 usecs =3D 315564 KB/s
+>     12079595520 bytes / 37485910 usecs =3D 314691 KB/s
+>     12079595520 bytes / 37506482 usecs =3D 314518 KB/s
+>     12079595520 bytes / 37582493 usecs =3D 313882 KB/s
+>     12079595520 bytes / 37654025 usecs =3D 313286 KB/s
+>     12079595520 bytes / 37804401 usecs =3D 312039 KB/s
+>     12079595520 bytes / 37872179 usecs =3D 311481 KB/s
+>     12079595520 bytes / 38139663 usecs =3D 309296 KB/s
+>     12079595520 bytes / 38148594 usecs =3D 309224 KB/s
+>     12079595520 bytes / 38149377 usecs =3D 309218 KB/s
+>     12079595520 bytes / 38207236 usecs =3D 308749 KB/s
+>     12079595520 bytes / 38442241 usecs =3D 306862 KB/s
+>     12079595520 bytes / 38445731 usecs =3D 306834 KB/s
+>     11147897 usecs to free memory
+>     16392260 usecs to free memory
+>     22879204 usecs to free memory
+>     23382635 usecs to free memory
+>     23518192 usecs to free memory
+>     24023442 usecs to free memory
+>     24176849 usecs to free memory
+>     24461635 usecs to free memory
+>     24232157 usecs to free memory
+>     24571926 usecs to free memory
+>     24498438 usecs to free memory
+>     24500253 usecs to free memory
+>     24197624 usecs to free memory
+>     24424616 usecs to free memory
+>     24128275 usecs to free memory
+>     24646461 usecs to free memory
+>     24390349 usecs to free memory
+>     24522151 usecs to free memory
+>     24563204 usecs to free memory
+>     24270881 usecs to free memory
+>     24232957 usecs to free memory
+>     23980870 usecs to free memory
+>     24180573 usecs to free memory
+>     24068183 usecs to free memory
+>     23758087 usecs to free memory
+>     23799366 usecs to free memory
+>     23512788 usecs to free memory
+>     23749313 usecs to free memory
+>     23829669 usecs to free memory
+>     23532371 usecs to free memory
+>
+> write_s would be calculated averaging the time in the ".. bytes / ..
+> usecs" lines, and free_s by averaging the time from the ".. usecs to free
+> memory" lines.
+>
+> In this run:
+> write_s =3D 37.31 s
+> free_s =3D 23.39 s
+>
+> With your patches, I got:
+> write_s =3D 37.03 s
+> free_s =3D 18.86 s
 
- I will do a better a job in the next version.
+I am not sure how useful it is to apply user-space gettimeofday()
+results that time many higher level C code API, as an indicator of
+zswap_store() performance.
 
-> > Do not implement can_finish(): closing a retrieved LUO session invokes
-> > finish, and refusing can_finish() would leak the session and leave
-> > unclaimed devices running. Instead, finish() always completes:
-> >  * If the retrieved device was claimed by opening it via
-> >    VFIO_DEVICE_BIND_IOMMUFD (which consumes vdev->liveupdate_incoming;
-> >    subsequent patches replace the open-time reset with non-reset
-> >    take-over, reject opening incoming devices other than via retrieve(),
-> >    and protect incoming kept-running devices across runtime PM, dev_set
-> >    resets, and non-noiommu boots), finish() simply completes its PCI
-> >    Live Update participation.
-> >  * If the device was not claimed (never retrieved, retrieve() failed, or
-> >    retrieved but never bound via VFIO_DEVICE_BIND_IOMMUFD),
-> >    vfio_pci_core_liveupdate_reset() logs one pci_warn() naming the
-> >    device, clears PCI_COMMAND_MASTER, resets the function, and restores
-> >    the inherited pci_saved_state just as closing the device would. If
-> >    the device has a function reset but is not reset, e.g. because
-> >    pci_dev_trylock() contends with a concurrent driver unbind, latch
-> >    vdev->liveupdate_reset_pending so vfio_pci_core_unregister_device()
-> >    completes the function reset and state restoration via
-> >    vfio_pci_core_liveupdate_reset_locked() under the device lock held by
-> >    device_release_driver(). Opening the device after finish() resets it
-> >    like any open, so it drops the latch.
-> >  * If the device was not retrieved, look it up under pci_dev_lock(),
-> >    which waits for a vfio-pci probe in progress. If it is bound to
-> >    vfio-pci, finish it as above. If it has no driver, clear bus
-> >    mastering and reset it. Otherwise leave it to the bound driver.
-> >  * Call pci_liveupdate_finish() and kho_restore_free() on every path.
-> 
-> This is a lot of complexity for one commit, and it's hard to review. I'd
-> like to start with the simplest approach and build from there: implement
-> can_finish() and have it return false until the device is fully
-> retrieved, i.e. retrieved and taken over by VFIO_DEVICE_BIND_IOMMUFD.
-> Then finish() only needs to free the incoming state and call
-> pci_liveupdate_finish().
+>
+> So most of the improvement is in the freeing time.
+>
+> > Also, there are no calls to zs_free() from zswap_compress() and
+> > zswap_update_entries(), so, it is not clear why "free_s" reduces from
+> > patch 7 (26.90s) to patch 8 (21.66s), if what you are saying (as I
+> > understand it), is zs_free() results in the gains.
+> [..]
+> > Is this perf run at the workload level? Can you also share the
+> > zswap_store() perf breakdown? I don't see any zswap_store() callees
+> > here..
+>
+> Here are perf reports collected with:
+>
+>     perf report --stdio --children --sort sym --percentage absolute \
+>         --symbol-filter=3Dzswap_ -g graph,1,caller,function,period
+>
+> Baseline:
+>
+> # Total Lost Samples: 0
+> # Samples: 923K of event 'cpu/cycles/P'
+> # Event count (approx.): 5783481013054
+> #
+> # Children      Self  Symbol
+> # ........  ........  ..................................................
+> #
+> 52.06%     0.26%  [.] zswap_store
+>         |
+>          --2995798359281--zswap_store
+>                    |
+>                    |--2724723679947--zstd_compress
+>                    |          |--2639614263267--ZSTD_compress2
+>                    |          ...
+>                    |           --66562348127--ZSTD_initStaticCCtx
+>                    |
+>                     --217649410880--zs_store
+>                               |
+>                                --126618473697--__pv_queued_spin_lock_slow=
+path
+> [...]
+> 40.26%     0.01%  [.] zswap_invalidate
+>         |
+>          --2327775248737--zswap_invalidate
+>                    |
+>                     --2322317048724--zswap_entry_free
+>                               |
+>                                --2233301817626--zs_free
+>                                          |
+>                                           --2178824329486--__pv_queued_sp=
+in_lock_slowpath
+>
+> With the patches:
+>
+> # Total Lost Samples: 0
+> # Samples: 863K of event 'cpu/cycles/P'
+> # Event count (approx.): 5420333292095
+> #
+> # Children      Self  Symbol
+> # ........  ........  ..................................................
+> #
+> 55.49%     0.17%  [.] zswap_store
+>         |
+>          --2998025641673--zswap_store
+>                    |
+>                    |--2724254313681--crypto_acomp_compress
+>                    |          |
+>                    |           --2718237550253--zstd_compress
+>                    |                     |--2634756568606--ZSTD_compress2
+>                    |                     ...
+>                    |                      --62825503508--ZSTD_initStaticC=
+Ctx
+>                    |
+>                     --206719808793--zs_store
+>                               |
+>                                --142932151337--__pv_queued_spin_lock_slow=
+path
+> [...]
+> 36.25%     0.01%  [.] zswap_invalidate
+>         |
+>          --1964269438386--zswap_invalidate
+>                    |
+>                     --1959142544382--zswap_entry_free
+>                               |
+>                                --1874286346020--zs_free
+>                                          |
+>                                           --1828012531673--__pv_queued_sp=
+in_lock_slowpath
+>
+>
+> You can see that the cycles spent on zswap_store() are almost the same,
+> and the cycle reduction happens in zswap_invalidate().
 
-Closing session FD is not retriable. If it returns an error then
-userspace won't be able to retry. So, only option will remain to reboot
-the host.
+The cycles spent in zswap_store() should be normalized to the # of
+zswpout events that these CPU cycles represent, for this to be a
+reliable measure of latency improvement. There could be an increase in
+reclaimed folios for any number of reasons, all of which are not
+necessarily due to performance-improvement/degradation of
+zswap_store() itself. IOW, more work for less latency per unit of work
+is not always indicative of a performance degradation in this case.
 
-VFIO doesn't need to impose this restriction. We discussed in LPC to not
-block finish() as this call can only be tried one time in LU if
-session is leaked.
+A realistic scenario would be that with zswap_store() becoming more
+efficient, the 30 allocating threads cause more memory.high breaches,
+that causes more zswpout..
+This would cause more CPU cycles in zswap_store(), but the fact
+remains that zswap_store() efficiency has improved due to batching.
 
-> 
-> That gets rid of vfio_pci_core_liveupdate_reset(),
-> vfio_pci_core_liveupdate_reset_locked(),
-> vfio_pci_liveupdate_finish_lookup() and its bridge and device locking,
-> liveupdate_reset_pending, and most of the finish documentation. If you
-> want to handle the other scenarios (devices that are never retrieved or
-> never bound, devices bound to other drivers, unbind racing with finish),
-> please add them in separate commits on top, each with its own
-> justification.
-> 
-> As for closing the session leaking it and leaving unclaimed devices
-> running: that only happens if userspace closes the session without
-> taking over all of its devices, and leaving the device running with its
-> memory still preserved is safe. Resetting the device in that case is
-> something that can be added later.
-> 
-> It also has a nice side effect: LUO calls can_finish() on every file in
-> a session before finishing any of them, so a memfd in the same session
-> that the device DMAs into can't be finished before the device has been
-> taken over.
+>
+> > > Adding some instrumentation I figured out that ~all memory from useme=
+m
+> > > ends up in the same size class, hence the better zspage locality from
+> > > the batching in patch 8.
+> >
+> > What does this have to do with batching? All usemem memory compresses
+> > to the same zsmalloc size class in the baseline too. Can you elaborate
+> > what you mean by "better zspage locality from the batching in patch
+> > 8"?
+>
+> With compression batching, pages in a folio call zs_store() in a row, so
+> they have a higher chance of landing in the same zspage compared to the
+> baseline.
+>
+> In the baseline, each page's zs_store() is separated by ZSTD
+> compression, during which the other 29 processes fill up the current
+> zspage. With the patches (especially patch 8), 4 pages are compressed
+> first and then stored via zs_store() back-to-back, so they are much more
+> likely to land in the same zspage.
+>
+> I used an LLM-generated bpftrace script to map each folio to the zspage
+> its pages end up on (~450 folios sampled), and aggregate the results:
+>
+>                                          base           patched
+> Distinct zspages per 512-page folio:
+> mean +- sd                               510.6+-2.8     321.8+-24.0
+> median (p10 - p90)                       511 (509-512)  322 (302-341)
+> min - max                                483 - 512      215 - 407
+> Avg pages of same folio per zspage         1.00         1.59
+> Consecutive pages hitting same zspage      0.27%        36.16%
+> (same-zspage adjacent pairs / 231,483)   (618)          (83,709)
+> Contiguous same-zspage run lengths:
+> len =3D 1                                  99.7%          62.8%
+> len =3D 2                                   0.3%          22.1%
+> len =3D 3                                   0.0%          10.9%
+> len =3D 4                                   0.0%          4.2%
+>
+> This causes zs_free() to run faster (i.e. shorter lock critical section)
+> as the zspage (and its metadata) is hot in the cache during freeing.
 
-If userspace has two session, memfd in one and vfio in another, we will
-still have risk, where memfd is retrieved correctly and may be
-closed/released due to a process crash but VFIO device still acessing memory
-by continuing its DMA and potentially corrupting memory.
+All these seem to be good kernel improvements caused by zswap store &
+compress batching. I don't see an issue here.
 
-I am still inclined to let finish proceed without blocking via
-can_finish(). I can try splitting patches.
-> 
-> > +static int
-> > +vfio_pci_liveupdate_attach_incoming(struct vfio_pci_core_device *vdev,
-> > +				    struct vfio_pci_liveupdate_incoming *in)
-> > +{
-> > +	guard(mutex)(&vdev->vdev.dev_set->lock);
-> > +
-> > +	if (vdev->liveupdate_incoming || vdev->liveupdate_claimed ||
-> > +	    !pci_liveupdate_is_incoming(vdev->pdev))
-> > +		return -EBUSY;
-> > +
-> > +	vdev->liveupdate_incoming = in;
-> > +	return 0;
-> > +}
-> 
-> The pci_liveupdate_is_incoming() check here is redundant with the one in
-> vfio_pci_liveupdate_retrieve(). Nothing can clear it in between, since
-> only finish() should do that (see below) and LUO holds the session mutex
-> across both retrieve and finish.
-> 
-> The liveupdate_claimed check is redundant too: LUO only lets a token be
-> retrieved successfully once, PATCH 12 prevents opening an incoming
-> device any other way, and the liveupdate_incoming check already prevents
-> attaching twice.
+>
+> >
+> > >
+> > > Here's the bpftrace data I collected, I don't see a material change w=
+hen
+> > > probing zswap_store():
+> > >
+> > >     zswap_store() (2048kB PMD folios, 178.9k calls):
+> > >       metric         base           p1-8           delta
+> > >       p50            10.76 ms       10.85 ms       +0.87%
+> > >       p95            11.34 ms       11.40 ms       +0.59%
+> > >       p99            12.15 ms       12.05 ms       -0.82%
+> > >       avg            10.80 ms       10.84 ms       +0.40%
+> > >
+> > >
+> > > Also if I run your modified usemem with Silesia like your previous
+> > > versions, the improvement goes away (because data no longer all goes =
+in
+> > > the same zsmalloc class):
+> > >
+> > >     usemem30 + Silesia (usemem -w --read-silesia -O -b 5 -s 10 -n 30 =
+2560m,
+> > >     memory.high=3D38G):
+> > >       kernel   sys_s (mean +- sd)   wall_s   write_s  free_s   tput (=
+KB/s)
+> > >       base     1779.0 +- 8.5        72.84    55.34    6.92     53,290
+> > >       p1-7     1775.7 +- 7.3        72.81    55.29    6.86     53,337
+> > >       p1-8     1771.8 +- 7.8        72.58    55.19    6.83     53,435
+> > >                (-0.40% vs base,
+> > >                 -0.22% vs p1-7)
+> >
+> > Is this with PMD mTHP? Also, we would get a better idea of concurrency
+> > by increasing the memory allocation duration by allocating 10g per
+> > process, for 30 processes under memory.high=3D150G. 2g gives much fewer
+> > samples to be helpful, imo.
+>
+> Yes, with PMD mTHP.
+>
+> 2560m with memory.high=3D38G was chosen purely to stay under the default
+> max_pool_percent=3D20 (38G on a 190G host) with zero pool-limit hits or
+> disk swapout, since Silesia compresses ~2.5-3x instead of ~7x for
+> unmodified usemem. Because ZSTD on Silesia is heavier per page, the
+> write duration is actually the same as 10g unmodified usemem with ~31M
+> zswpout per run.
+>
+> >
+> > [...]
+> > > I am not saying there is no performance improvement, I am saying the
+> > > performance improvement is a side effect of locality in zsmalloc, not
+> > > faster stores, and that it doesn't reproduce on real data.
+> >
+> > I don't see the connection between batching and "locality in
+> > zspage/zsmalloc" since compressed size is a net wash between baseline
+> > and my patch series. Are we drawing the right conclusions?
+>
+> See above.
+>
+> >
+> > > If we want to address lock contention in zsmalloc freeing we should a=
+ddress it as
+> > > such, not by batching compression.
+> >
+> > Lock contention in zsmalloc seems like an independent optimization
+> > that is good to solve. What I don't see is a way of explaining the
+> > gains in this series based on zs_free() lock contention, and hence
+> > drawing a questionable conclusion that this series does not optimize
+> > zswap_store(), and further that batch compression is not attributing
+> > to the gains. I have provided ~10 reasons as to why the combined
+> > zswap_store_pages() batching and zswap_compress() batching improves
+> > zswap_store() performance in [2].
+>
+> See above. I think the performance improvement is a side effect of
+> calling zs_store() in rapid succession for pages in the same folio, and
+> more pages in the same folio ending up in the same zspage. As I
+> previously mentioned, this happens because all pages in usemem end up in
+> the same size class.
+>
+> The right thing to do would be optimize the zs_free() path. I am looking
+> into batching zswap entries freeing, which I believe is the right path
+> to optimize given those results.
 
-I will remove it.
+If I can restate what you are suggesting, and please correct me if I am wro=
+ng:
 
-> 
-> > +	if (!pci_liveupdate_is_incoming(pdev) ||
-> > +	    ser->cfg_size != pdev->cfg_size) {
-> > +		ret = -EINVAL;
-> > +		goto out_put_dev;
-> > +	}
-> 
-> If the device isn't incoming here, that's a kernel bug. The previous
-> kernel only preserves the file after pci_liveupdate_preserve()
-> succeeds, the PCI core marks the device incoming when it's enumerated,
-> and only VFIO's finish() should clear it. So this should be a
-> WARN_ON_ONCE().
+1) [Data needed]: Normalized zswap_store() CPU cycles to # of zswpout
+vmstat events in baseline and patched.
 
-I will add a WARN_ON_ONCE().
+2) [Data needed]:  Normalized zs_free() CPU cycles to # of calls to zs_free=
+().
 
-> 
-> > +	if (pci_liveupdate_is_incoming(pdev))
-> > +		pci_liveupdate_finish(pdev);
-> > +}
-> 
-> Likewise, the device must still be incoming here, so
-> pci_liveupdate_finish() can be called unconditionally.
-> 
+3) If (2) confirms that zs_free() has become faster, then that is a
+beneficial side effect of batching, per your analysis above.
 
-Yes, I will remove it.
+4) Why are you suggesting that *instead* of acknowledging the
+beneficial side-effects of zswap store/compress batching, you would
+want to find another way to improve zs_free() latency by batching of
+zswap entries freeing? I would imagine both need to happen. The zspage
+locality side-effect isn't a contra-indicator to zswap compress
+batching.
 
-> > +static inline void
-> > +vfio_pci_liveupdate_unregister_dev(struct vfio_pci_core_device *vdev)
-> > +{
-> > +	struct pci_dev *pdev = vdev->pdev;
-> > +
-> > +	scoped_guard(mutex, &vdev->vdev.dev_set->lock) {
-> > +		/*
-> > +		 * Complete a reset that finish() could not do, see
-> > +		 * vfio_pci_liveupdate_finish_vdev().
-> > +		 */
-> > +		if (vdev->liveupdate_reset_pending) {
-> > +			vfio_pci_core_liveupdate_reset_locked(vdev);
-> > +			vdev->liveupdate_reset_pending = false;
-> > +		}
-> > +		vfio_pci_liveupdate_free_incoming(vdev);
-> > +	}
-> > +
-> > +	if (pci_liveupdate_is_incoming(pdev))
-> > +		pci_liveupdate_finish(pdev);
-> > +}
-> 
-> VFIO should only call pci_liveupdate_finish() from its finish()
-> callback (see the kernel-doc of pci_liveupdate_finish()).
-> 
-> If vfio-pci is unbound from an incoming device before finish(), it
-> should just leave the device and its Live Update state alone. That's
-> fine: if vfio-pci is bound to the device again, the device is still
-> incoming and can still be retrieved. And once the device has been
-> retrieved, LUO holds a reference to the device file until finish(), so
-> vfio_unregister_group_dev() already blocks unbinding it like it does for
-> any other open device file.
-> 
-> If userspace binds a different driver to the device instead, that's
-> userspace's problem. The PCI core documentation already says it is the
-> user's responsibility to ensure that incoming preserved devices are
-> bound to the correct driver.
-> 
-> So I don't think the unbind path needs any Live Update handling at all.
-
-I think this should be doable.
-
-> 
-> >  #ifdef CONFIG_VFIO_PCI_LIVEUPDATE
-> >  	bool			liveupdate_frozen;
-> >  	bool			liveupdate_intx_disabled;
-> > +	bool			liveupdate_claimed;
-> > +	bool			liveupdate_reset_pending;
-> > +	struct vfio_pci_liveupdate_incoming *liveupdate_incoming;
-> >  #endif
-> 
-> With the simpler finish(), I don't think liveupdate_claimed or
-> liveupdate_reset_pending are needed.
-> 
-> PATCH 13 later inverts liveupdate_claimed into liveupdate_kept_running
-> and uses it to block dev_set resets while a preserved device is still
-> running. That can use pci_liveupdate_is_incoming() instead. It blocks
-> resets until finish() rather than until take-over, but since finish()
-> now requires take-over, userspace controls that window. If some flag is
-> still needed later, please introduce it once with its final name and
-> meaning instead of adding it here and inverting it in PATCH 13.
+I will run some experiments to quantify zswap_store() improvements
+better, with compress batching.
 
