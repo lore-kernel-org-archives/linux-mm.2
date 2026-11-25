@@ -1,122 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2568606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4F4606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GRSsjREO
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HZZpKpqL
 Received: by kanga.kvack.org (Postfix)
-	id AB2A26B0AE5; Wed, 25 Nov 2026 16:40:08 -0500 (EST)
+	id 6A2156B0AE7; Wed, 25 Nov 2026 16:46:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A89A16B0AE7; Wed, 25 Nov 2026 16:40:08 -0500 (EST)
+	id 6798A6B0AE9; Wed, 25 Nov 2026 16:46:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A0026B0AE8; Wed, 25 Nov 2026 16:40:08 -0500 (EST)
+	id 58FD16B0AEA; Wed, 25 Nov 2026 16:46:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FF2D6B0AE5
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:40:08 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EAB05140109
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:40:07 +0000 (UTC)
-X-FDA: 85474959654.02.67A27A7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4F2C410000F
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:40:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRSsjREO;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31C096B0AE7
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:46:39 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE60D1C4B67
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:46:38 +0000 (UTC)
+X-FDA: 85474976076.04.9D404A7
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DB746180003
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:46:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=HZZpKpqL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of shalasheg@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=shalasheg@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795642806;
-	b=nfqH7pJy6+dGLXGRIE9Xdj03JPPzdb6KoDOWfeIjisLOGEORy+ipndWiFGjk2wIEC7NlkE
-	HDYYoYXOn2x3AenzVlyr6dxBe1bvdq1+pqJVCGwmvTSEbkKnywdnLHhWyUy1TTbpVKrug/
-	xEsN1bs/rIS9LemyuiNeV49R96JYDhM=
+	t=1795643197;
+	b=JNZ8doiQFvQBqRJfLSJm8ijlVPE/aipjF2InOpLgKA9v8dq7RjuRgsJWpdzPdkqiKiwqGq
+	kfoLwFBif44OBUpBJKQl0NAjDessWP6hAg9myewa8loGM9e4D+eo4kgtgDOaOtP37SIPne
+	F0WEFnw0cDvrHLOI1s/T7YZeH1ujYE4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795642806;
+	s=arc-20220608; t=1795643197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vTpYbw5ItroGz0DZO7PAjQShiM8iXjTmR55aJhYUH3g=;
-	b=gy6LIYNYI4G4Yz/1VJhq4572m4Ql+QihFaboaKfWMFbHNDHBiVdXl/qKd+V8kjF7Mdwzwu
-	qsjFYr7ZYcyfkta7SUmJgoMS/AQWS46D5uKqMA1LWH7gNsDOyjRrA/smHy0/purbgid9vR
-	SdXcJL1HW4NTzY/4N/FMGqNvBBWOJsI=
+	bh=ECZfLCqovArdDXRBWaYMU5CLXc1REyLj6z5OT4Fz8Bo=;
+	b=VUqKJU6xeo9DNPb1G//GUZ92SpjM3BlaYAE0waPzRVR0PucayHLcPZC4B0rtlQA2xSOwwg
+	alTZWMLQ3L6VfJRabaYP6/ayxoZ5M+aCIsj8n4hc/VPHCjaZ6iluS4MeVi+9o+sQbnOwE+
+	oUpR9LmIXkJBvfaedUtR4ePHLdPNEBQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRSsjREO;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD744612BD;
-	Wed, 25 Nov 2026 21:40:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B041F000EE;
-	Wed, 25 Nov 2026 21:39:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795642805;
-	bh=vTpYbw5ItroGz0DZO7PAjQShiM8iXjTmR55aJhYUH3g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=GRSsjREOeODhI5QM3n2jnFfutP8TiC2UDlmMdp0c86+anFTcws9MuEdgcZWJgWP0c
-	 5BHn5mQMtmswZRaAL2973a9k4bOpstS04RzDP3QBv4UvxC01O4sXMSXh52Ox23gxTq
-	 VZybPONqkOJfx9yY92XNGRQpyENEFbDh6eE+IgK0Jn/cJaWaySXbOteZhO3hd2ts8L
-	 XK6ADqs3lQJnK9wJgFqKSlSOKs0TDHR1RizgROWdlolXgbucx9A1WlxtnGSYcSb/Xu
-	 5YAZ5xl6hAPVJPR3oCBUPgDbUmduQ8vG6K8fDxNIXc7HR7aR3mvU+/BH/TMQ5YGGed
-	 ADuzLhxw7XKvA==
-From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Wed, 25 Nov 2026 21:37:15 +0000
-Subject: [PATCH slab/for-next v2 14/14] mm/slab: do not set
- SLAB_MAY_ACCOUNT for all caches
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=HZZpKpqL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of shalasheg@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=shalasheg@gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be3cff0f6cso4153521e87.0
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:46:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795643195; x=1796247995; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ECZfLCqovArdDXRBWaYMU5CLXc1REyLj6z5OT4Fz8Bo=;
+        b=HZZpKpqLDd4CJ9WGmyXLL35z+EsphE+rszkXglENeBkFb6aobTNOsJMJL9SmJHN4aM
+         X/quiIYNMNHZ/QI+Fhzx9di5pD9pBYeHcmDmu3Ra8ocv6qE7HPAjqNr0Jrb1yApCmB0N
+         48U8/q0HGFkD5CPrVA4XgPMkQRsMFvOhGSDhdhahmCLH1dLuOXaTEi4M31Xt3Nl/2QoD
+         AeSjRJgRK+uh3NNgQVd6+dCGnHYmz5pNC93iOEOn3b33tHnL09R0mI4bGJXHuB7q9xC6
+         b+SU1FX7CjCuJHmzRY8/BgcBPQxr+QipT/lYMfrzGfcB7O/Etiiow92p8aE2MIxeJBhU
+         G3Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795643195; x=1796247995;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ECZfLCqovArdDXRBWaYMU5CLXc1REyLj6z5OT4Fz8Bo=;
+        b=ajLsWwkfqsa+uHl5ABOYModzqthw5NJH84wNK8qcPlV20HuSpASiNVV4IFwpiYe3g4
+         e3Bv8oVvMKjbp19B16IcDuYiWmIlXkJV1JhJcpTU+ZtgEQ3wFNx9jTvwGNyGrkNZhhP+
+         eBxzyeszQDf6cKXfe8yHCkjUo03Pk40RJUfTLYbpqaKXxXnBlR7K1lgQcM9lT2JWa0WH
+         ruEfNdtc6V4/3Y3TuvRTVeNAVkWNcG1k14UJPycRAg8Po9GjNW1RGbIauScaPnBWNX4T
+         UJ6hkT5OQqA2HpO6QiSomkmeWFo4MgzifmQpW5hZOw9nu6MxBG5Rr+Cu1vsVaZcFc1ti
+         6omQ==
+X-Gm-Message-State: APuU4Z+toZuXFcVuhsJ52jivX0FEYDtze1slbPbWmiIcN7TlFqT/S4Wb
+	cdaSpXFo9NUj4o8YQNxai4GU4onEXR8bKVyuc036xG0aJmRzg11CMczV
+X-Gm-Gg: AZFdTZeJeJNRc6ZdTdIzn5FXtl6tf3tBxlXkqJVxqh1o6Pft3SSrQTKJS2/oEHuQu3f
+	5XMLzsB9l8M9oxvRNxyMNo60rtqDWSJOFsU0EidudGXbZtwmQJo7fjBmYEIWjkyG6HOCFQsaIyq
+	zIjnd/hVf4Jkn2f/XZm7ntlqqSDEtbrU0o3piwfQQs0Vft65M7vyMAsb9ffN/j3NwYb+45/FW+e
+	AGuh3vPLy4AIpflr87QH5UZtyjO2YcIMNHDc9iyuHiInjnXYrOytnhO2fZ0nVJvj5agwjCqP9xR
+	obVaB0abQjUo52UxXQpS72tcVFg4fjtEId3w6hI4zllco/oRWsa2YVA67twnL3GyJ7C1HufMVMQ
+	HytQlxpub9nOSrdh8n/VcjpB3bkLxINH69QkHPgGgFlJRQHOAOxbsCQPSdBfX0ATVG/rEd9Rz4A
+	IyS5h3HST/xeEI/9mxLRz1EgKl589uQVoBrVr+XyHRAcArEvn6SdYRak1Am84i9WggUmXW0Wq1E
+	5GSlX+eWl5ty1V7OUc/IMJNT1oU3KJTsm2/rOkZC4ITCw2mEOAnmqm6CFnWVHJ0Fkp1w4wlAxcK
+	RHICrqyJR/OLvmDS8SkiZkKyK/3JMCSxtes0WvC89m/CohBrIvveTF2feA+kfA==
+X-Received: by 2002:a05:6512:3b08:b0:5c1:b29a:1ba3 with SMTP id 2adb3069b0e04-5c1bc7d5ce5mr7798199e87.29.1795643194950;
+        Wed, 25 Nov 2026 13:46:34 -0800 (PST)
+Received: from [192.168.0.103] ([46.8.6.187])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd04327bsm4896168e87.51.2026.11.25.13.46.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 13:46:34 -0800 (PST)
+Message-ID: <edfb1d04-0d55-47ed-b1cb-dcd8c5df75ce@gmail.com>
+Date: Thu, 26 Nov 2026 00:46:33 +0300
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] percpu_ref: make percpu_ref_switch_lock per percpu_ref
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
+ zhengqi.arch@bytedance.com, linux-kernel@vger.kernel.org
+References: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
+ <6c943754-05b5-4017-9145-0d145766909a@gmail.com>
+ <20261125113537.bdb168bfe8962ef1aefc097b@linux-foundation.org>
+Content-Language: en-US
+From: Egor Shalashnov <shalasheg@gmail.com>
+In-Reply-To: <20261125113537.bdb168bfe8962ef1aefc097b@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-14-7c680f02a734@kernel.org>
-References: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
-In-Reply-To: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
- David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>, 
- Hao Ge <hao.ge@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- "Harry Yoo (Meta)" <harry@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
- Andrew Ballance <andrewjballance@gmail.com>, 
- Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org, 
- Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Robin Murphy <robin.murphy@arm.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
- Amir Goldstein <amir73il@gmail.com>, 
- Casey Schaufler <casey@schaufler-ca.com>, Paul Moore <paul@paul-moore.com>, 
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
- linux-security-module@vger.kernel.org, Richard Weinberger <richard@nod.at>, 
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
- Johannes Berg <johannes@sipsolutions.net>, 
- Eric Dumazet <edumazet@kernel.org>
-X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DB746180003
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4F2C410000F
-X-Stat-Signature: bfek4cqb1fjdhmnp3s4fign1653ifcne
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795642806-228245
-X-HE-Meta: U2FsdGVkX19hP3S06jVq+zxw3/soWTD/AOGMa4Qb9Grx4QSU2ocJp/jbmZxMvDRh0Hl4GsuUeH4tQQVjX4lCRjTXRm8I/W9XmFfdiSA5Je9Te+TuPw3gJVhhtBm3D0rD3G+/XnffVXTrh1y1Uwvy+F6wlLtXeUFnN77VJ3JXefAwaa/6nSgn27NC8S+1f2KADBJy3WKYSpqktdXI3uNLkISz2b4P2G6bjl5VspTEz/T6s2nX7dEKGIUq/ICiMPJ2coTcyciGYB5HuAvtsikKjJuKBPSLLudChEZ9rsanBTP+SkMrxzDkWlVFNdfx5qiLhlyyQcjO+6cXennPcWlvF8xw+UOu3BYVaN4B0pbreYqmPN/UVB+bSEmtcaqVQThoG2/uXLjU0iVugkhkxsvZY1ATyGtNQxvZarpIESz6Bf9PxhpbhK4ylH2iqYD3aQa9PtPze4A123rEQEZ2ikCk5k0fg029uJ9I+rIWUwStGO3QSGwBC6ufxwUqzPB/xqSz8F2IYnpgQbu6xXGVBDNPhPq0y6tuUpEoNHVDe7Fqb61gMgFlg2xSEy1DPFqN9LikYMgdDelMtlCZJS658jHrZidHOaO8xHLKDtwtlRODieJnN5GrQHWwnKFywT9lcB4BhB40RxHNJUGAhR98LzY9XXfPy3okJ+h+DXQk84ukpcLtMqDY1nzWwwbgmTtopH9H1PbOxGJHbg9aY/DizpTmYG8nXy6Lj4hLLzsSCPDi3ysopemrlRFfnFqs6xfLXFxaS9VomCwg56IXg5eBYBYb60QNcrndgcx3mvjyoBwOoUOn7navfR/1FEZOZcLxm7boT1etnzBHaWGk0UT2GhAocpyJ42dda4HFtVfznOpFFmCnqMzEsLNA9tCZEmLuJnJe7DpiYFBkP4vRViLL7Ds8dugI9e3WFj7O3QiVoZOnNY/gZECRx5SLhL1DRDGvQSWiPhRl+cwYSgdoW1vu7vE
- u/L+/Mla
- Kea5BPza+A93uxdjx0koux1AaUbhcftlZ7JDaqIXhn4wL8W/djry3zurW8VF570ZdG8z1L5CNGuLPSd+YPB2QN8E7DN0gnYcXxHbaxO2wWkARVlFnY0Fgqr0FzEW4Ccn4hkZJjxp6VzLljLbEO5uUOw/KCqNiarvG1yu4GIfHMxRfpWCB4Iiyb5x4dLa5JDIg6Yk/TMHjDzszftgOhOwFop6FALNH+fm3jgxG4GO8luL5t7Yc9SqmrZfBMTq4lVY1Y8meTpntpB8OqpLcLCVdvnIQrMCWKGniPuDHQR2H9wii3vo5G9i4oNxZvQHGkg23KnskIq4bcMQQ3bs1iZd5DENl78K0tqsL2S1yho3KsZ843+tiCQinTfjEC3HC99jceH6fWzhPoJCz2cp5w0BTkwNZXotoIRz1byhnPJVIR5HwyltpkLAKO+obJbhVyssHWbuCfJFI+bQ426Xb2QTJ+UpoYcTBpN1JwV0Uyq5zNU5wk4SjsaR6s9yehh8Vr5gMFc87A45voYUE6XE=
+X-Stat-Signature: 17fb4knzoratwbshgyijdocigshzeawj
+X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795643196-207793
+X-HE-Meta: U2FsdGVkX1+w40owEvlILM9lra/1VvEMcXlDNGsrgfqUrGnen4Kuhxn9k8UzVQj+/tWivmrIB8F8T8+itKCgbWUoNe0++38mdiEvturrz1ZQtEsz5j18ilokd985ZhMwQGIqcU08CXhlAtt1/ENZayBcaX8iU3HkHwjzQeTxvYipEk1e+/oX0Z/9+UY6J1kJI/Jql6la7eXfv2R3EbIuWWQz4NHcnLvRm7eQaMcpBV0YdY4ijahxTuE2e+/BQbMyLUepjglzwe+wKu0VctHUbA6jmLCqXMOc3D98+18dbOSWOK6zjmcPGfJcfwpL5ruUcJaaPTlASu0BfFncEEoSbtx/F4jAPdVjzzaBpyTn1ydV/aIVkw4zlai/EAn2Eiwr9g42D73jmO0iB5AF4yIEq3h+3ZMrpwp6FPFBNLdm1tgoXXzU/IfHmZffgdq9KWNDUAyO7vyT8jJIAtwh4jL5Tuv4zG8OghfpOfSHPFK+Oq0xT5sj2fBcCiqNOp0o33Rp1ZgUsuZQTSUjPXKgaa623ElkdJSswO/qJUlUnvJZ0Qza9AOcNdaj1WhPLYVJA67OKoICajetL0+7LUPQ3tXMXp6M3T4fLg9gBe32//4SSBBXhkTzOmTT+bUY/wSTVmQrjQz4e3qSGK8UBCwDEJYiBZQ4rzPY662xk1n/aNMcM5j/eIVIkK6uSd8u+f7Mwgl6+EVdgeLBFtZYlDPjzt4IVJ9pUg4fbFYnAcy7mQXrDv5FKHshzQxnodnpDFwa3bH7R/UT8XygJW78oHKhytig0K1yH1JpOWjjCtu4f6WtWF2stQrcWMngMZJ9sY2zPletZbtpxKPV1PFsHUeLcQRN/UrQszQaHLRWbpHOvT3Jo745E8nzyZl374dxc8/96yNTi5D74hXGHE5Uaqtd6aC6HU98ZReQviL37h6PsoqhlP2JLefBc+rr7+/QKTB5qwcyOquQPaVckteu5XxkVMt
+ VOHoQuHF
+ BPYt9ffzs3tKRS3TNf7ix6M1vxW2YF/sGqVFTVrh7y0k5rIVdKtwoErYAOc3looRcpCnXpcrl/3oZldN9BYRMfoH+KyGCfxl1wQXyU846a1T/njVmt8iRXghLs4SWOhg5q6ss1qvVAhWLFLxgPxje2vJEgfn3T+/vA2DLdq2+HeVDaEy4+pHf6r1pKCd8R2GIn0MSJ8vqGIYGum/y9NCWP+XTPvSRnNGS5cFX7x95do95NCM4I9wmQG7F70azi54Cz7E18XRwEUfPzWvJ57PJ78afFBeJm0jdpj3/ogo8OCpWwZicZ5FmV8lXF60f4+HjhRaHdckSeZUNdWz1l45wtJyLyDQH4xhv/c+CPq5mDUfAsz4s+TQcnl5cxfo01Vzz9DH28lMUKxpyDTDv4EVHmZpC732hKANpaT1qT3LwkE1pY0Snlevjmxmp40Vg9YWung80MSJP03Fr42WTf46AAsxLcu9qLdytZNJLuYBYsqjgyCEL1Vpdtxzs7MVsVke/Ulzb0IRsKnGqGJazo+eJ22NrG6QNZzo4rFOBFTOf19sRgp13WXiD1taTnf7H/MFttubth+BbRPxdjedab3bvTLyQw0AfsRDGqmkwewDTfJIWnhxgXVmgsXjefVz93Dp/GbqHJHpVh/HuY49biBrhH9vlPRKs2aJBLHAlzaDs7Hv2yPs/uHm3TrZfM6HbX7TSL/PRKqKDw9yqXSQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,72 +129,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Now that all caches whose objects may be allocated with __GFP_ACCOUNT
-specify SLAB_MAY_ACCOUNT (or SLAB_ACCOUNT, which implies it), stop
-assuming any cache may be used with __GFP_ACCOUNT. This avoids wasting
-the objcg slot in slabobj_ext for caches that are never charged to a
-memcg.
 
-Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
----
- include/linux/slab.h | 16 +++++++++++++---
- mm/slab_common.c     |  8 +++-----
- 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index ad645967a3ee..8525e70eaa76 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -201,14 +201,24 @@ enum _slab_flag_bits {
- /**
-  * define SLAB_ACCOUNT - Account allocations to memcg.
-  *
-- * All object allocations from this cache will be memcg accounted, regardless of
-- * __GFP_ACCOUNT being or not being passed to individual allocations.
-+ * All object allocations from this cache will be memcg accounted.
-+ * SLAB_ACCOUNT implies SLAB_MAY_ACCOUNT.
-  */
- #ifdef CONFIG_MEMCG
- # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
--# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_MAY_ACCOUNT)
- #else
- # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
-+#endif
-+
-+/**
-+ * define SLAB_MAY_ACCOUNT
-+ *
-+ * Objects will be memcg accounted when __GFP_ACCOUNT flag is specified.
-+ * Requesting __GFP_ACCOUNT allocations without SLAB_MAY_ACCOUNT is not allowed.
-+ */
-+#ifdef CONFIG_MEMCG
-+# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_MAY_ACCOUNT)
-+#else
- # define SLAB_MAY_ACCOUNT	__SLAB_FLAG_UNUSED
- #endif
- 
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 193b5a03bc47..464695504248 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -367,12 +367,10 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
- 		goto out_unlock;
- 	}
- 
--	/*
--	 * For now we assume any cache can be used with __GFP_ACCOUNT and thus
--	 * may need to store objcg pointers for objects
--	 */
--	if (!mem_cgroup_kmem_disabled())
-+	if (flags & SLAB_ACCOUNT)
- 		flags |= SLAB_MAY_ACCOUNT;
-+	if (mem_cgroup_kmem_disabled())
-+		flags &= ~SLAB_MAY_ACCOUNT;
- 
- 	/* Fail closed on bad usersize of useroffset values. */
- 	if (!IS_ENABLED(CONFIG_HARDENED_USERCOPY) ||
+On 25/11/2026 22:35, Andrew Morton wrote:
+> Well, an unpublished module isn't very useful for us.
+> 
+> And an intense microbenchmark isn't as interesting as a real-world
+> workload.  So can you please provide more details about what "our
+> workload" is doing and some measurements on how much this patch
+> improves that workload?
 
--- 
-2.54.0
+The workload is a full-volume discard on an out-of-tree storage
+block device backed by NVMe drives. The test machine has 128 logical CPUs.
 
+The device maintains a percpu_ref for each independently managed
+logical region of a thin volume. Normal I/O holds a reference while accessing 
+that region. To process a discard, we kill the affected references and
+wait for outstanding I/O to drain before removing the mappings.
+After the metadata updates complete, we reinitialize the references
+so the regions can accept I/O again.
+
+A large discard repeats this lifecycle for many regions, with
+different regions processed concurrently on multiple CPUs. Although
+the regions are independent, their kill and reinit operations
+contend on the global percpu_ref_switch_lock.
+
+We measured the elapsed time of blkdiscard over the entire volume,
+refilling the volume before each run.
+
+Volume    Global lock    Per-reference lock    Speedup
+ 1 TB       3.424 s            1.218 s            2.81x
+ 8 TB      27.943 s            6.133 s            4.56x
+16 TB      56.021 s            8.591 s            6.52x
+
+> Alternatively, this looks like somewhere where a hashed spinlock will
+> work well.  A static array of 32(?) cacheline_aligned spinlocks, hash
+> the percpu_ref* onto one of those.  That'll get 90% of the benefit
+> without growing percpu_ref.
+
+This might be a better approach. I'll compare it with the global-lock
+and per-reference-lock variants and report the results.
 
