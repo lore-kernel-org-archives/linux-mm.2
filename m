@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60DA606A329
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9122606A32E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mcGV1irF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hd2Wiu/P
 Received: by kanga.kvack.org (Postfix)
-	id BA6C56B0B15; Wed, 25 Nov 2026 17:38:19 -0500 (EST)
+	id DF2A86B0B17; Wed, 25 Nov 2026 17:38:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7E396B0B17; Wed, 25 Nov 2026 17:38:19 -0500 (EST)
+	id DC9276B0B19; Wed, 25 Nov 2026 17:38:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6D3D6B0B18; Wed, 25 Nov 2026 17:38:19 -0500 (EST)
+	id CB7736B0B1A; Wed, 25 Nov 2026 17:38:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C3A96B0B15
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:38:19 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0891F1C3C9E
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:38:19 +0000 (UTC)
-X-FDA: 85475106318.25.5F91D9C
+	by kanga.kvack.org (Postfix) with ESMTP id 9B9E66B0B17
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:38:34 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 29FA11C4A9E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:38:34 +0000 (UTC)
+X-FDA: 85475106948.17.CC65CD2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 387F12000B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:38:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mcGV1irF;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 572F3180003
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:38:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Hd2Wiu/P";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646297;
-	b=W2S7qD59fT+V6CHCSreCLbdLIzTtuRSggPtLEwWbuHDUHYI6qOHPDH3kXaD9uKNfnM9l8B
-	N7etiSBJoAzqFZCWr0qGEbwNrJXy/Uu8gvpEDRtFmQAKZMx5J5bFPu2bSQdaiB38A3sSHm
-	p1pTLvY5QkuRd9hlZpZgW/Iww1JQAC8=
+	t=1795646312;
+	b=jS0HS5z2kVOkqQ6MOyJhT4MYNYu2NP0nsD6PYb1irvOu2HXU1yeeaXhWZRUWc/gfyYbkp7
+	Wo6Go94MS3jZCWHBSEdHHMOOAM1k1LO6uGdhwtdHy7hibe8BlEIEtdz0pMuQFDdW5QcSkM
+	6CyU4NqfHXgDztytkfHa4la7VzaMsS0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646297;
+	s=arc-20220608; t=1795646312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c5sCadhkwY9UanmmId4XEWhXMASQtuWsR/mG1JPVDXI=;
-	b=glV8aY3FaAsbfZgDzceH5ZkFHN38tP0i+ueHWtk7nDJx+IPVEbnlcaDSLbW7XbzPELOp4R
-	ycZ8K9v69PcpPHBaKdKvUMpFXUPTDhb8BzIU1I9WzJOnNe9OF+t7/uHEGGeGLxGuOhtoIa
-	lB2Fd394GN2uqRMttwROUEqbtT8daps=
+	bh=xAZnRy4ClkSREhxpzPfANj/gGJeGD+jD2/eNSheQ1pc=;
+	b=nlRY+bwxcptq2r0O8+j3X7EX6QvkJ0Of6dX/FcztMhXMAG3VAnWhLeTJj81sOzM/NqdzY1
+	fY+BiiHYZGU3/3W9ibUsodG0qhWBDhSNdWS68mt8aaWx39PkS+VUuVYVVvBtRnu2vWRhZ2
+	8xohrE4QujtLVBw6/4+M7ZU1I8mW5zY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mcGV1irF;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Hd2Wiu/P";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D8BD843B07;
-	Wed, 25 Nov 2026 22:38:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CA81F000C0;
-	Wed, 25 Nov 2026 22:37:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 86490456E9;
+	Wed, 25 Nov 2026 22:38:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AC91F000D0;
+	Wed, 25 Nov 2026 22:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646295;
-	bh=c5sCadhkwY9UanmmId4XEWhXMASQtuWsR/mG1JPVDXI=;
+	s=k20260515; t=1795646311;
+	bh=xAZnRy4ClkSREhxpzPfANj/gGJeGD+jD2/eNSheQ1pc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mcGV1irFRfXDZP7eEVn2PE6y0zqMjBz3R4YH3XVsY1dIM8vndetGzsNVRLSa9MHqH
-	 Hl8tPm3IHHw8Q+AWHbAmKVE8Eokao7NczVWg8nPhKPR1BZ9rGJoernBmso/wi+Lvmn
-	 I1oNfQ86/7bW+rb+gZM3Sr9iVsB0iUxRM+nd6p3ha72bJMyr4FvbaQnt+EQPcQhZDF
-	 xmmEK1Ro+b8WaD1DQn4PQv8jOyiIt5Q8LY+q5ei+PGW6+Ud9+cpmHuOCatVBkqyr6Y
-	 lpvOFTcZtHdIOmkTP6GZ7zxp2qtV9fIRjDzqLM0Ep6XUzFQ42c4NcdPFrDEK/hSR1A
-	 sk6LwO1VZkHZQ==
+	b=Hd2Wiu/P8uIxlKTdjUOUTYFoij2bc4AjUep+hFytgDGFz4JyXIiyXD9VW3wDxpNxS
+	 +obf+ckENrzeA9vbQqu2NviMHORKBVMsJ6b8Q2lXjNIu9DbkFlA9HaLBF33edWjPGi
+	 hckgy6Xe0kuB9i4sqQELrUCO84TtwrwjvLMXIC7NYlalyxmv5BtReOOsdVrdOqQZql
+	 QygU+eT9s2nYmFzzl+CPwZbLPHsC3v/CKciZKSw3Qp67i7cXRgz9+APlIbouBE7DG7
+	 baFeo5B21tKkkv0WtMffh4PXCv8ZcbXuV2L21g07upLcGqRlswmAoY8Kkak91j23sE
+	 1iMeICdwga3XA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 25 Nov 2026 23:33:16 +0100
-Subject: [PATCH 18/21] fs/proc/task_mmu: don't clear VM_SOFTDIRTY on
- hugetlb VMAs
+Date: Wed, 25 Nov 2026 23:33:17 +0100
+Subject: [PATCH 19/21] mm/hugetlb: use the VMA lock to stabilize flags for
+ PMD sharing
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-hugetlb_fixes_2-v1-18-db27fd2f71a8@kernel.org>
+Message-Id: <20261125-hugetlb_fixes_2-v1-19-db27fd2f71a8@kernel.org>
 References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 In-Reply-To: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -109,29 +109,28 @@ To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>, 
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
- Chris Mason <mason@kernel.org>
+ "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1880; i=david@kernel.org;
- h=from:subject:message-id; bh=+sv+UhDuOwJztPqdlwWWA+euIQWZKN3bwN8oaLd2OMA=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1RjN1gnhsRf/3P15CPRqcePHrc9xZkad2Pdwldv2
- 2d6xawS7ChlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAiu5Yx/I/o3civLLybU1m6
- 1z3Qdp/Q7vdu6p+t9rxujPg/YU3NK1dGhtfpgcuaM5e8/G12cbkh71vRn9cr38Tqv9XZ8iC0ILr
- MnQsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6785; i=david@kernel.org;
+ h=from:subject:message-id; bh=PwP2RLUs3pwQwesqKHMjKcPs2SdsbC0XZtUwTfW/jbY=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1T/hT3qEOxbNI3jiYVKS0y/7dL2txxznbbt1PirY
+ 3bgnOPpjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACZyypDhr/yPUyqfzity8EUq
+ q7U33lSM9a9qFqmQWF985N/8PRa1KowMX9qi9PY7pn01Ouho8OuZ/jUrtS3+ga4X7kamhEuv7Wl
+ nAwA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 387F12000B
-X-Stat-Signature: oi7jhk5sp44x3rntkewcw9zgcpkgwfwd
+X-Rspamd-Queue-Id: 572F3180003
+X-Stat-Signature: y4baxnouqj84c74c3icey7cst6izeree
 X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795646297-767330
-X-HE-Meta: U2FsdGVkX1/87YyNlRVphmD68XwjQ8zjFF+LsT/1Rl7Uj7Q79hnwIhUSXGUsST6o4nE8FvG5C2/YR0Pl6xXzXnm0fI0DlCwud6mNn/URvWPfjzMHrMCP+pT/rkp3bkfrxiGe7LyonwC5rNUHW/G0CA6UzkEjnXWIrTajwGPTH5W5Fq13lWAOt86TjHoGg6AsJ5sGZGXFV/lgh+366iEdFmoH+978JboJ8yVrqMefCgAKbUDbSRGH9SHWaZgdeUcYrfgglfuNq+4t5wCu3mTd8u5kV6swx9/8UEykzaNMqcbwATOQovUv83tv/ytjfSEkFVAuk4E2T3gGAKJKp8x86s/A2LyEa6AVs/Q8USs+cyHB28jicc7l8cFcQAfGm1zP7KmELuF4G6nXF84BM9ejkDxzpUV9kT6KUKSQmYUi7YIJVJeEMF2FJxejBFYVO90O/bmIOWpejydMTdF3l+gTcF/RBRkAoV1wGG5mbhbemQaEuCYrpF56Ban+fblYUKPCS3x2eMFPGa5uE9zd+X3BMygUEZySLsheXAwncBM0F0ITwIw/aDylEJHx5f6+IIcUct7k44RcSezAjrg4uuKByy94JloWz+GQx9xHM6j3DxyvkBjM+E3DxayLutVX84/WQR49+ejKlwkjbQdh72Gh2q7wq9qBlDs7sIBTyoGK8P+wMFUzNBljrKJg6zqYrwFlbZ4VUx+2ZITIyuAMq4J0R3bwfyFWO91DFkcYqwM/S5zfEexZTg3HudmUdCC5fm24H6Kr/dZnvrOVSDrNqoGxqrf0ZQNWeTj2IC+92FYPQc+GM8FaPHxjKv1KOgyokmVjquljZxANF8fk39BD5pqTevZqV8fZXgrytA2zo2QeoB/089CswZjoQRj2CZem24Zfvu7kzffjjw5dkP+wdJjUBK3FOayTUF6qdFOwxDADSB0/1AQf04FDG1bFHvTqmnzP8NZw5w08ts0Kjjf1w2W
- NvQCb+tp
- /hk3H2nSyJZxN14B1LrJusS+uCWySXZQZtq44JO4FHBzJQG/T/sShNwPsBVtbJV4GaRM0wtAJzSU6Oedls/GCb6LyoLdd1wog1oDF6nwzD3UfrZnIZfbnS1FM0Vw9GqntdJKydCnV6dnmxHhw/gOESFRr6kzCU66IBZjFygToJaXy6W3jSllEBjt2KPqz7o+a+TOS3le4BVGtSL+vtEy4vLHp1iOIsC7hIUzRn8VkIknyt5D5g6DfmaPHz74bmN8q9pOcJSPOaHOqKx9kawbXGVNsHTGrsiFFp/MnOM+Qy88zlGkIIMUgD0P2pYfJAf7qzC11HDpioE8sygPQb/Ojdq5lpnW2ToG0cuyHGx3MoR2qB8lDQ84FhmYjmuXquFb4T+lP6goZd1AVJsHJEk4PgKnCaezoye/lx66OTAc40+P0gxk/+I6I+sT4Y4PYIgnsStjDMO4+6w9D3dd358CVSidi0NlVrUtY6bpb2tGyWKvjWEbOLPJh5A384aDtDcOBGyUyeZEKE4YBNV8fg7cq53JgELBAOCMgQ30KrSa2nvD/WplY8o/YKVreVZr9Cu/b62xbBCGQW5+lDdQPctydNCThHg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795646312-22927
+X-HE-Meta: U2FsdGVkX18qTfrHpyM7iGGh9Qu6DLIzwQZCp73Eb4epCEzweGOvp++T6IhJRxqYnyqpcCpq6nKQ7iYqhI0NBab9RFowhnUVwp049zlS8L0vSRcIan0HnuSNjN/ttusTgS40nCDKYlMmJKgY7eekYn9AgexysEBE3Ljx1VR9aVVp1X8EsVTXailIqgZw/pjnaB34DTS6FY7ccoN+HFCThem+MTXDevYGt0+jl4EElzBic/8uCVZBsVWzUlFKef0jeedqgWnTh+TtUGSfRRmBWR3k8JMWoMIQySFHw7Kc1ue6zxRym/+MXff4kImfzAKUh9iiGezmOWhKOHm9iTIAoZOUP6nVaDATCIRpVcR80JZygZO0QnXgHzh5uD3L7dK6OS65tbCSS0eCsQRoIkSgWCppOXbzvFLBJt25OZsMfzGVEFv9xRUIa0pJfky+FWGnJfATcztVTFM/r+FcGS7JxzVYi/cJtqwFNVBoYM6njZgMcuZI05dfE1/R75+zyD8u4Ob2MpDLy8wT2YSCDL1Vjkw9rTTAjKscfEcZOjVFHWdf7wlORbDNso86ymwLIokRyeL1NNEPau4RrKU0jteOoE0w3EknizqlhgMQ65TrHj6cZDvkDfy8R+nfCiS0z8Vuyx6NkBm58bkvVO0BWhU4n4w2Vkf0VcNFIGlrVaa2aqAocXylrBcjTA/BD8lniBl1U7R1QpVVFZw8StwYltJfmtpoCAOO2/UlO6laFiwJh6N1xtGE4IsVwhF18sawpxwy8+mlQzLETjI+vbSd7Db9VV8yPkN2HQUzrOxalD/o3rBicQ5eOyXTrUyqRA5mR3rlcFuN731S0B5q3PysvpR/EBouC1PyP28T+5cbrwkTE/waT4R5X1h4YDtl7VkytklogxAUNhcaG0tE81aV8jimw8FkjxqJGwybGfVJHc05pr627fpxZVwrJVafT37MZ//ajF4YAskvhC1ojgcaAaw
+ bCpnvvBY
+ BiUa+R+UbKBYf4+EjfOcrZ+MH/xJiVIcpQAjzuCxsbdpsKK3OFkMPinVgWy0QupQRIBXWXW+Wm6SQ/5YiIeLRJWAR15vTf3r4QyxTcHNR5EoaVBrDoe+74yIQrc9x7vTeWZVACg1aN1A8C1XGADEVXbD0XifJhdv0WIJJKq3OaoOTqFi54YNGB8hcolzo/RRiWJX7XO7Ea5w8l0954i2BUtG9ykFw5urP38VmLmZKIMGTolo9e2EOH9qb89d3sCA8NiwigQ+mBeahtuiyjRgWdxbGPEX+QqLBW1Hh+5poP2OgnSzwVAdxeFb8PnAqfJ+Y6Do1rRS7w1mhsxqYo88PGR0MJe8bxI0zmredBwSYwk6AOoHVRVKmOM0tgEDbwA5Ye3M1JRzg5YzJbPLq3TCBrR/br0khhJH4z63mP8us8eFhq2VJCulm7iTgkK9/oGsIdLdJZc5ae73wki/SVP2hIRPTEcJYEMAP/HVhl94mxINnpr2gIBPfr4K1FO+UpuEwOrT5CYboxwF+OGiSyl6WGi/KDElnbxvP/KK56Zfc54oaiBw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,57 +139,190 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-hugetlb does not support soft-dirty tracking: since commit f96f7a40874d
-("mm/hugetlb: fix hugetlb not supporting softdirty tracking"),
-vma_wants_writenotify() ignores VM_SOFTDIRTY for hugetlb VMAs, and
-clear_refs never clears the soft-dirty bits of hugetlb entries.
+huge_pmd_share() currently only shares the page tables of another VMA if
+it can read-lock the mmap lock of the corresponding mm. That refuses
+sharing whenever that mm is write-locked or if the mmap lock is
+contended.
 
-However, clear_refs still clears VM_SOFTDIRTY on hugetlb VMAs. With
-CONFIG_MEM_SOFT_DIRTY, a FOLL_FORCE write to a private hugetlb mapping
-without VM_WRITE can then loop in __get_user_pages() until the task is
-killed, with the mmap_lock held for reading:
+mprotect() holds the VMA write lock while changing the flags and the
+page table entries, so let's read-lock only that VMA instead. As we hold
+i_mmap_rwsem, that VMA remains part of its mm and cannot go away.
 
-    __get_user_pages()
-    retry:
-      follow_page_mask()
-        follow_huge_pmd()
-          can_follow_write_pmd()
-            pmd_needs_soft_dirty_wp() is true
-          returns NULL
-      faultin_page()
-        hugetlb_wp()
-          set_huge_ptep_maybe_writable()
-            no VM_WRITE: the entry stays as it is
-        returns 0
-      goto retry
+Add vma_trylock_read(), a variant of vma_start_read(), that does not
+require being called with the RCU read lock held, and will also not drop
+it itself.
 
-Let's fix it by not clearing VM_SOFTDIRTY on hugetlb VMAs, so we always
-treat hugetlb pages as soft-dirty.
-
-This has low urgency, as the loop can be killed.
-
-Fixes: 052ccfbcc6cd ("mm/hugetlb: support FOLL_FORCE|FOLL_WRITE")
-Cc: <stable@vger.kernel.org>
-Reported-by: Chris Mason <mason@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- fs/proc/task_mmu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/mmap_lock.h |  1 +
+ mm/hugetlb.c              |  4 +--
+ mm/mmap_lock.c            | 78 +++++++++++++++++++++++++++++++----------------
+ 3 files changed, 55 insertions(+), 28 deletions(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 41b280ab7b19d..d9ecb94f4daa5 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1801,6 +1801,9 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index bada7a03ddf4b..f42444069e76c 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -278,6 +278,7 @@ static inline bool vma_start_read_locked(struct vm_area_struct *vma)
  
- 		if (type == CLEAR_REFS_SOFT_DIRTY) {
- 			for_each_vma(vmi, vma) {
-+				/* hugetlb does not support soft-dirty tracking. */
-+				if (vma_is_hugetlb(vma))
-+					continue;
- 				if (!(vma->vm_flags & VM_SOFTDIRTY))
- 					continue;
- 				vm_flags_clear(vma, VM_SOFTDIRTY);
+ struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+ 					       unsigned long address);
++bool vma_trylock_read(struct vm_area_struct *vma);
+ 
+ static inline void vma_end_read(struct vm_area_struct *vma)
+ {
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 5db97f6d15595..62ed8d9aeeadd 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7287,7 +7287,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		 * Stabilize the svma flags, as mprotect() changes flags
+ 		 * before adjusting page tables.
+ 		 */
+-		if (!mmap_read_trylock(svma->vm_mm))
++		if (!vma_trylock_read(svma))
+ 			continue;
+ 
+ 		saddr = page_table_shareable(svma, vma, addr, idx);
+@@ -7297,7 +7297,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+ 			if (spte)
+ 				ptdesc_pmd_pts_inc(virt_to_ptdesc(spte));
+ 		}
+-		mmap_read_unlock(svma->vm_mm);
++		vma_end_read(svma);
+ 		if (spte)
+ 			break;
+ 	}
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index c7261f980cef1..68c16281e52a5 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -212,26 +212,17 @@ static bool vma_seqcount_is_write_locked(unsigned int vma_seq, unsigned int mm_s
+ }
+ 
+ /*
+- * Try to read-lock a vma. The function is allowed to occasionally yield false
+- * locked result to avoid performance overhead, in which case we fall back to
+- * using mmap_lock. The function should never yield false unlocked result.
+- * False locked result is possible if vma gets reused and attached to a
+- * different mm before we lock it.
+- * Returns the vma on success, NULL on failure to lock and EAGAIN if vma got
+- * detached.
+- *
+- * IMPORTANT: RCU lock must be held upon entering the function, but upon error
+- *            IT IS RELEASED. The caller must handle this correctly.
++ * Like vma_start_read(), but without RCU handling: the caller must make sure
++ * that the vma cannot be freed, for example by holding the RCU lock.
+  */
+-static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+-					     struct vm_area_struct *vma)
++static struct vm_area_struct *__vma_start_read(struct mm_struct *mm,
++		struct vm_area_struct *vma)
+ {
+ 	unsigned int vma_seq;
+ 	unsigned int mm_seq;
+ 	struct mm_struct *other_mm;
+ 	int oldcnt;
+ 
+-	RCU_LOCKDEP_WARN(!rcu_read_lock_held(), "no rcu lock held");
+ 	/*
+ 	 * Check before locking. A race might cause false locked result.
+ 	 * We can use READ_ONCE() for the mm_lock_seq here, and don't need
+@@ -241,10 +232,8 @@ static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 	 */
+ 	vma_seq = READ_ONCE(vma->vm_lock_seq);
+ 	mm_seq = READ_ONCE(mm->mm_lock_seq.sequence);
+-	if (vma_seqcount_is_write_locked(vma_seq, mm_seq)) {
+-		vma = NULL;
+-		goto err;
+-	}
++	if (vma_seqcount_is_write_locked(vma_seq, mm_seq))
++		return NULL;
+ 
+ 	/*
+ 	 * If VM_REFCNT_EXCLUDE_READERS_FLAG is set,
+@@ -257,8 +246,7 @@ static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 	if (unlikely(!__refcount_inc_not_zero_limited_acquire(&vma->vm_refcnt, &oldcnt,
+ 							      VM_REFCNT_LIMIT))) {
+ 		/* return EAGAIN if vma got detached from under us */
+-		vma = oldcnt ? NULL : ERR_PTR(-EAGAIN);
+-		goto err;
++		return oldcnt ? NULL : ERR_PTR(-EAGAIN);
+ 	}
+ 
+ 	__vma_lockdep_acquire_read(vma);
+@@ -288,14 +276,9 @@ static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 	mm_seq = raw_read_seqcount(&mm->mm_lock_seq);
+ 	if (unlikely(vma_seqcount_is_write_locked(vma_seq, mm_seq))) {
+ 		vma_refcount_put(vma);
+-		vma = NULL;
+-		goto err;
++		return NULL;
+ 	}
+ 
+-	return vma;
+-err:
+-	rcu_read_unlock();
+-
+ 	return vma;
+ err_unstable:
+ 	/*
+@@ -309,11 +292,54 @@ static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 	mmgrab(other_mm);
+ 	vma_refcount_put(vma);
+ 	mmdrop_async(other_mm);
+-	rcu_read_unlock();
+ 
+ 	return NULL;
+ }
+ 
++/**
++ * vma_start_read() - Try to read-lock a vma looked up under RCU.
++ * @mm: The mm the vma is expected to belong to.
++ * @vma: The vma to read-lock.
++ *
++ * The function is allowed to occasionally yield false locked result to avoid
++ * performance overhead, in which case we fall back to using mmap_lock. The
++ * function should never yield false unlocked result. False locked result is
++ * possible if vma gets reused and attached to a different mm before we lock it.
++ *
++ * Context: RCU lock must be held upon entering the function, but upon error
++ * IT IS RELEASED. The caller must handle this correctly.
++ *
++ * Return: The vma on success, NULL on failure to lock and ERR_PTR(-EAGAIN) if
++ * the vma got detached.
++ */
++static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
++		struct vm_area_struct *vma)
++{
++	RCU_LOCKDEP_WARN(!rcu_read_lock_held(), "no rcu lock held");
++
++	vma = __vma_start_read(mm, vma);
++	if (IS_ERR_OR_NULL(vma))
++		rcu_read_unlock();
++	return vma;
++}
++
++/**
++ * vma_trylock_read() - Try to read-lock a VMA that belongs to its mm.
++ * @vma: The VMA to read-lock.
++ *
++ * Unlike vma_start_read(), this function does not deal with VMAs that might
++ * get freed and reused in another mm concurrently.
++ *
++ * Context: The caller must make sure that @vma remains part of @vma->vm_mm
++ * and cannot go away.
++ *
++ * Return: true if @vma is read-locked, false otherwise.
++ */
++bool vma_trylock_read(struct vm_area_struct *vma)
++{
++	return !IS_ERR_OR_NULL(__vma_start_read(vma->vm_mm, vma));
++}
++
+ /*
+  * Lookup and lock a VMA under RCU protection. Returned VMA is guaranteed to be
+  * stable and not isolated. If the VMA is not found or is being modified the
 
 -- 
 2.56.1
