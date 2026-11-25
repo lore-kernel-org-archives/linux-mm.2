@@ -1,90 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9025E606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 19:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B974606A33D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 19:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=BlcS5iMC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P/ceNiVh
 Received: by kanga.kvack.org (Postfix)
-	id A8CE56B0AAD; Wed, 25 Nov 2026 14:35:42 -0500 (EST)
+	id 8699F6B0AAF; Wed, 25 Nov 2026 14:35:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3D666B0AAF; Wed, 25 Nov 2026 14:35:42 -0500 (EST)
+	id 81A086B0AB1; Wed, 25 Nov 2026 14:35:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9526D6B0AB0; Wed, 25 Nov 2026 14:35:42 -0500 (EST)
+	id 6E2866B0AB2; Wed, 25 Nov 2026 14:35:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 714316B0AAD
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:35:42 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3933C6B0AAF
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:35:43 -0500 (EST)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC7C8A8C24
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:35:41 +0000 (UTC)
-X-FDA: 85474646082.25.A4DB248
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 20B811A0008
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:35:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BlcS5iMC;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BAA881A0F5B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:35:42 +0000 (UTC)
+X-FDA: 85474646124.25.0EFE3B9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C6D5520008
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:35:40 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/ceNiVh";
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795635340;
-	b=6ZW5YSa5bXubPW8wao3xHILDlGgJiRPB/O3pT1z2RKSQCO/2G6M1HI/uHy3kVwyM865A4K
-	GjRLaKUebaGtlFliifBgNexIl3xC/KBxqAA9oAQq58QVg91MAsbza32Ij45jWHd/XA4Urz
-	28GW+XefcFs/lPvKeDzdKGag3RWaDVs=
+	t=1795635341;
+	b=SO/q7zgbq6M2++tp6/BSm02PlRqI1++DzZGDs419YS6Z1OsXKbPXlQyqKs4Ia5lwPNZZvI
+	9qrVzmrcb84UmWQDjRWwo7fIOiF546slXvmHxIjXA/cKUnJ+miG9MaJ1XAdjjVlrG/Ygom
+	lcVdlcGw2Szz7TwcqxnDWJx3iVZ9VFg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795635340;
+	s=arc-20220608; t=1795635341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J16zb1Ctmxjj4viGGPpXWizsVsOTqEcxg8H1/pGkPyA=;
-	b=Hg6to8rwMah3PjS74TkbDPqukwKeDHmiYL3k3vrGWQGn7X2topsFWrBuTwRlnkMbLwmtqp
-	teDrdnMiSr7kH7caeQDrB7OLIh9IQVsAlQiubLPF70ubsPw2vL1QyW0b8hui+rw8QeB2vm
-	tEHMFHGxwIWA2UVSr+d2HoCNWsiRRVg=
+	bh=1+q8Ae8jrmk6bl1RZ8HU+lLzzarRDFRRVfcZbA9EG7A=;
+	b=P0csfTh1nN5gBhPpEN+c/ABkbqPBHIU5is7rJHMAid0n+g8vyagMnYUIw0ooNSGKILZAv4
+	6thaQx84mYorCFtalZ48dhRe3vlqA0SGUnU5YZm19512OgzLNXrPCrQ9sMXbl95GFJLu1z
+	xkZTm5csAXsfYrdbr+xsDO0mnv2xoV8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BlcS5iMC;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/ceNiVh";
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A82162173;
+	by sea.source.kernel.org (Postfix) with ESMTP id A51ED430A9;
 	Wed, 25 Nov 2026 19:35:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EF31F000C6;
-	Wed, 25 Nov 2026 19:35:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795635338;
-	bh=J16zb1Ctmxjj4viGGPpXWizsVsOTqEcxg8H1/pGkPyA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BlcS5iMCT7yAwq7lIHqSzzXNh1Mxt2Je8g0hVSPb3wBTiacydjRxAP7iaWWnqIuBO
-	 er7Zs8hkKDu7ZFNAGXsQ5Qo1VGv0f4eHqaZKrvQPxzNXbnCcOZe5+rduaAYA1L0y8R
-	 JSaKGixXq/zwswHUrguiZGgS/nwsOroDUPhEcu0k=
-Date: Wed, 25 Nov 2026 11:35:37 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Egor Shalashnov <shalasheg@gmail.com>
-Cc: linux-mm@kvack.org, dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
- zhengqi.arch@bytedance.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] percpu_ref: make percpu_ref_switch_lock per percpu_ref
-Message-Id: <20261125113537.bdb168bfe8962ef1aefc097b@linux-foundation.org>
-In-Reply-To: <6c943754-05b5-4017-9145-0d145766909a@gmail.com>
-References: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
-	<6c943754-05b5-4017-9145-0d145766909a@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E451F000C0;
+	Wed, 25 Nov 2026 19:35:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795635339;
+	bh=1+q8Ae8jrmk6bl1RZ8HU+lLzzarRDFRRVfcZbA9EG7A=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=P/ceNiVhDJLD3/PE2I5MF5FhfA5XeBvr5g4afuA0grVD9p4t8hiLhiZYCQfuTgXdL
+	 VKRHeOcHflA78hCJ45L8CnZIctQN7tsD7U4Pf6z4YMZKOdSs3I/xzfHcWU1VOyacd7
+	 RLcRGz4jqFahEksVBHHxvVZ0//JqJuuUCcticaVwPbU6pKbWQbyJ14tmWSVE0mrpOJ
+	 AkLmfgKwW7zOAvSJ6rtl3rV/sw7emhNPquB4alY9lYgVs7/13RozydoGSg1YuYvS4o
+	 loBYqpVEyWo6GLE6j0/Nt0CN8sWyPzQm4Uti4RXptZk43r5Q3X0R5HUM01+ulg5zZx
+	 U0n1LWvIaU25w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Wed, 25 Nov 2026 20:35:13 +0100
+Subject: [PATCH 2/3] mm/slab: document that sheaf refill does not require
+ blocking
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 20B811A0008
-X-Stat-Signature: j69jmi3oibaw7t7bd5e7s4zapu4udef8
+Message-Id: <20261125-sheaf-doc-update-v1-2-4a579abaf0b8@kernel.org>
+References: <20261125-sheaf-doc-update-v1-0-4a579abaf0b8@kernel.org>
+In-Reply-To: <20261125-sheaf-doc-update-v1-0-4a579abaf0b8@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ "Liam R. Howlett" <liam@infradead.org>, 
+ Suren Baghdasaryan <surenb@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2039; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=UUoIQIX/nTFV93t7aBOUbv6O6X4z36KqrPowG4bzXV0=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrBzh3ZRYxLd4WnjeFJADAC4QrbE37PzmR90lE1
+ cwPScODTQ+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawc4dwAKCRD6UCkIqsW9
+ 0PNoD/93WPS9i0upZdhEO+HxgMQw2zhsyRpd23tKdakOrU87REPm8r+7wyIDV3ela/Mn6erYxe9
+ tbiq7/bySizW//XOKq9AziEZ0FULPBtZpZiYE8FvDyFRIwQDXQjXm8s81SabVxsPxMyvoniHtzI
+ +8W3FrnIvK5Ptr0GJ8Mh61TAH8FCKTkmRfxIN5X+tjVx4bK65UkQrY/93jw8RQaHwwDFP5gapP/
+ L82FzgCNApHmIm1FDB6b1vWr1WJ5uB8tj8PewyF/mpch6kcEtzcu/y5zIOzHzcDkMQYlNHQhkUu
+ HGxWil3dIZBpqo2ljiuiIBH/A79J2mlKWW6Njrku08cJVoIdfr62+cQZ9dV7sWMjQtBZu7uvtWF
+ TlvUI+HqmHibyGrrAmZEe0Ay2bpiJHp1dILaYVcIFCOBLbbGa3RPVm+ZeeyHjfkz+Du52duScFl
+ csulaEIR5dO29Sa01m3N7UYa+1EbYF3TEnulbiDBOaVcXdBXG2duUik8P0TbbLsYxxGCsLtnRZO
+ R4Ismylr9lWbil54nN775OBRfIqRa6SxQkPi71dfkVc+NvrH3rgT0qvjO+HWA3PkuY1O2IOhX4B
+ T2eBQHC9o/w5He8rMPc7TsVWECnQXGzc6Glfr5rirUA42fsG+RG5/qJqZCP8LjCS3JPHcWWgfGC
+ 2eb8sTuJRKIhmtg==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C6D5520008
 X-Rspam-User:
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795635339-926083
-X-HE-Meta: U2FsdGVkX18rflpzpiGtjex5tQ80uESU7+/h4sQX4/ehTgOyQrRYBvrFfebrZjl/wBzfeA20bjEap7A4SFvoS0wjILCVBk1K+kJAMx5E49NgG0y/p8lO/43teEfboXcEhXXzcARU8g4AL4hP05ZNCOfSMGXxqIYIxvtuM4sJyNA+V1+ZoaMESn2XHwyuLueBJBA5djRb4CP0vGAlZiOnGHRyEWCkUe2J22duAOkSOTl6HcvnAeCbByo05GYms4QaMaZnlFGvxv58wcdRITf+alJLhEOqVZMR3S6jLwRdG8DsgCpG1U0LOLbnWKgh90SIeKs/Hvr3COZlXyqaztcj0vovL1S+3SUGnSon1OvS9Aw3HCyl7x+fBbX4x3zUq0b25kpsJYBHPdnJ+Yu1x7f/SwbMCc8nBzfOYEeZX0idWq+8QxNwIYy/PfUWbe9wctGaUrTApTOBnPy79oUfb4jKDECsqIdzJK+9p2x//omVmo11cKWAUv09JNjjyAfMsOyCwCTo6z9XEKAChYB/0EeaUW0MRHY3VLP09wyAz3HSJuhmP6SzOZHa7w9hQ1b8axqYl+Oexr8jGzEXbw8bnD3PRqFPG9WILiaAaeMDVy7YHeQ+Fj6QdrWkH2pcFL4NhQxyg8JvmeHPF9DPfIp2MeLG6XCEXqab38yl8uNT93C+VFWAgU1iDVvZ+FzOGYrY3V9zPzRIZsMmLsF6iCAiZsZMvTgpHlAyWmQ2YyYilFipm17uv2HNEiMBy5XqcT1kRWBnmFLW1XGweYCqYqInu6mvEAVT2wlS4Lev5RnWlFp8dVFGWn5YqFMkvum98feyM31vddpd68TSdWZ+U8f3AtfKQGXeD0HWl35Q/eNtmOcQ0WIlqHgKDlj6ERxPyeM0DT3LzrZnk/Y32xgWKHbe76lkprm923dY+/eF0NOqNemElO7R58DjSx9eGqfYHyfnv+o0Y1+3F29nc115Ac445wC
- N1RipUZ5
- HygJz7nRSUVv4dyCNofycMa0Ev+y23MIQI61lAqgq60d88j90cN3QHblyusxA4qkcAJ19w5o7C49pf7bANVsu1qvxpF4yrMFd1vtqeYUKraaElnuqUP1e4uuHw3gVwUdj4OaYZCvmoE9zvNc9fAkk4w4TeRozpQMMmWR5Yjmb7sEt7F1sR3cBHvMYBbfY/pnSt6hn4ejC1+W8quq12TnViWs434w3Ui+1JISeXefouBLu3MXUqj4YdjiPPQKPstwM3PtPldwxbAJa4KR8Pi9kNK1WltwI4WqoCXzKZd83N6YfwzEToB0UK3c1Uwp/OVwSL3LsC9AQluYI9DX9ci1b1jmMwwGkreG+to91UOVzXH/Sj1ogLoVCh61ZqzmaIzoIAb6bXCMMZw5ePYXEbiGPf6BA6bLy2m/NzEsnm6A5EpMJbGSqCHlVHL8s95sNBnGWO6WVYwA5gD1BCkwzVNYQgTVjEQ4zOQlgFdZH9IhxWTJ6304VnjOxIdL73/xyK80IV5QHDiBq7Rbc4gY=
+X-Stat-Signature: rj9mtqnwcw8eji19qo3mdhg3xt6eqfhi
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795635340-661069
+X-HE-Meta: U2FsdGVkX1+0TWX6fX1vwPoOuFMH49h/J8Km59eo7i5RzeocLLJhBTcYoNLWTx1qOYelhUXzPAuSqRhLo0+QUEsmFGcl086HBWq+SgkSj5R6h7QgVHhf9J1UfG6xKFciy9YcXq7MGJ/9Avjs1kKDWvdsDQaKsorpIAKt/sVoiEAT6X3uZoZEVicWECLnqkJd9c05+1Nnb0nJQeOs0JAXHNCwYwULRVKvfL9fpeCTf6M6Ps+hL9+pYjnfUvIvJr4PusdaTp3lGtCT1fjzw12kAMldIVmS+bTR1JKKaUa8yKQSVOBDBfNE0hvWGMRQmrpzY7u765DeoD6Az6GdlXafyA3x9Ao+jPlJRRVcgdJFrn2uv0ZGv7XJAxAsHj8dLf+2zzbu+cPSMIcQIUPJbBw6uA5SP7nTrIDviIyAfrSP+VsFBy9+9dxsTiz5ZOo69gJuapidun+2ZxKIq1QVlxca+9dqJGctb1Y5S5Ap/p50kp6XezQJsVIQu0FJ1zKIxnMmsGxdgfK6RnvXCL0vc/LQ8qcbGyXU3EPhHaNU/+P9D/0dOdOHh+cNZqu52/JkOF9bhCkA/z42L6o9mWKY/d14pKUkqZab9MaIHLPeyvnKIFkpg+CptS2FvTsOzbnNDF7Zr9dUQ0Sx/FNJCuYONoqsd+ngI/prKT8MO8Nttk/od8SO/nCMCTi8iTufoOwDGUZxKQErUH2HkxTXyFVsqAO0/DvwH9P6XKn1BweiKhpdySnxB3C06+5O4SNJdWhVeeGF3DIvPjVAPRhvMNFQtebR50580f1ikNLvxHF5NI9clFSJQKb1CHM69vbusBMnD1ixrXY+4Tcr2YUgpQHzpD+LvJ4m9V0oLvcLwtqUTRFS217uc5ug0QbRG9vV+v2IdQrQWfWxlgrUdbRXRSThFj4pslDWncT8iXAwuLzQdFqqoGk+Q0JrxhIoCkunOHMIycUXTRMwSZ1xb8uEYffnqmU
+ rlML5n0y
+ RW2GeW0zaw5HdEGXDcrE3Eh4nGjcLZk6BP7z/TYbfrXpaWpGTPoe2RCmhJvcicPfONNcPrGGZV9C6dLk491ieTvYkMhao9sNmYXS1EjIabIGPFfPwtwSpV5WDMD8xUVZNE6VUB9YrTLVW2n+we0gfTlCr5fPQYLg4bXE7itEVyMHxTQaoiopIwzqqqeWYKMSNncDMyWj/HkzqAjLQmhvGN9+EgnKAMX1IdVJb1/yB4KzzvfzjftH2tB9vszk9zz0HxXlV7KBXi0w/SMFZjJBlkdgVoCtlQjgX0w2VcuKRzrbLiWbvv/STjJ2VoyuNFySMDJHvqI8Y/n+uCh885/BFXdKPAg5g9pUcdWvIyOSaixBS/JZ3+yW3ftPeFHabW5KFn5hn8wNRYJ3ndtuyaG86l35TAWjfCf2SP31C6Y7WiUINO/2jOsq4vP1uNFTeWhyv/uuZzZU4qBXcwPqjKJTdxNvYBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,79 +117,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 25 Nov 2026 18:55:55 +0300 Egor Shalashnov <shalasheg@gmail.com> wrote:
+The documentation of the sheaf_capacity member of struct kmem_cache_args
+states that when no full sheaf is available, a sheaf is only allocated and
+filled if the gfp flags allow blocking, and that the allocation otherwise
+falls back to allocating a single object from a slab.
 
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> Currently, percpu_ref uses the global percpu_ref_switch_lock to
-> protect the mode switching operation. When multiple percpu_ref
-> perform mode switching at the same time, the lock may become a
-> performance bottleneck.
-> 
-> This patch introduces per percpu_ref percpu_ref_switch_lock to
-> fixes this situation.
-> 
-> ...
->
-> I would like to revive Qi Zheng's per-reference switch lock patch
-> from 2022 as a standalone change.
+This has not been the case since commit fb1091febd66 ("mm/slab: allow sheaf
+refill if blocking is not allowed"). __pcs_replace_empty_main() now refills
+a sheaf whenever spinning is allowed. Only kmalloc_nolock() disallows
+spinning, and it allocates from the kmalloc caches, so for caches created
+with kmem_cache_create() the refill is attempted regardless of the gfp
+flags.
 
-This is a nice little change - it's a shame it was buried inside in a
-larger patchset back in 2022.
+Drop the condition from the documentation, and describe the fallback as
+what happens when the sheaf cannot be allocated or filled.
 
-> Our workload maintains many independent percpu_ref instances and
-> repeatedly performs kill, waits for references to drain, and reinitializes
-> them. Multiple CPUs execute these cycles concurrently on different
-> instances.
-> 
-> All these transitions compete for the same global switch lock.
-> Reinitialization also clears the per-CPU counters while holding it.
-> As the number of concurrent transitions grows, this shared lock
-> becomes a significant bottleneck.
-> 
-> With a module-local adaptation of Qi's per-reference locking change,
-> we observed approximately 2.8x to 6.5x lower operation completion times
-> in the measured workload. This motivates using a lock per instance
-> so that independent transitions can proceed concurrently.
+Fixes: fb1091febd66 ("mm/slab: allow sheaf refill if blocking is not allowed")
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ include/linux/slab.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Well, an unpublished module isn't very useful for us.
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 64daeb239f78..8f484e1edcd2 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -358,10 +358,10 @@ struct kmem_cache_args {
+ 	 * that may be not present. When both become empty, there's an attempt
+ 	 * to replace an empty sheaf with a full sheaf from the per-node barn.
+ 	 *
+-	 * When no full sheaf is available, and gfp flags allow blocking, a
+-	 * sheaf is allocated and filled from slab(s) using bulk allocation.
+-	 * Otherwise the allocation falls back to the normal operation
+-	 * allocating a single object from a slab.
++	 * When no full sheaf is available, a sheaf is allocated and filled
++	 * from slab(s) using bulk allocation. If that fails, the allocation
++	 * falls back to the normal operation allocating a single object from
++	 * a slab.
+ 	 *
+ 	 * Analogically when freeing and both percpu sheaves are full, the barn
+ 	 * may replace it with an empty sheaf, unless it's over capacity. In
 
-And an intense microbenchmark isn't as interesting as a real-world
-workload.  So can you please provide more details about what "our
-workload" is doing and some measurements on how much this patch
-improves that workload?
+-- 
+2.54.0
 
-> @@ -109,6 +110,8 @@ struct percpu_ref {
->  	 */
->  	unsigned long		percpu_count_ptr;
->  
-> +	spinlock_t percpu_ref_switch_lock;
-> +
->  	/*
->  	 * 'percpu_ref' is often embedded into user structure, and only
->  	 * 'percpu_count_ptr' is required in fast path, move other fields
-> diff --git a/lib/percpu-refcount.c b/lib/percpu-refcount.c
-> index f8d9068..5d46602 100644
-> --- a/lib/percpu-refcount.c
-> +++ b/lib/percpu-refcount.c
-> @@ -36,7 +36,6 @@
->  
->  #define PERCPU_COUNT_BIAS	(1LU << (BITS_PER_LONG - 1))
->  
-> -static DEFINE_SPINLOCK(percpu_ref_switch_lock);
-
-lol, yeah, that'll do it!
-
-It does grow percpu_ref by 4 bytes, but LLM estimates that a busy
-machine will have 10k-100k of these floating around so not to bad.
-
-And I'm told that this will cause io_ring_ctx's hot fields to spill
-into a second cacheline, but that can be fixed up by reordering
-io_ring_ctx fields.
-
-Alternatively, this looks like somewhere where a hashed spinlock will
-work well.  A static array of 32(?) cacheline_aligned spinlocks, hash
-the percpu_ref* onto one of those.  That'll get 90% of the benefit
-without growing percpu_ref.
 
 
