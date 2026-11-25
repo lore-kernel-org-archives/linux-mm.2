@@ -1,110 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B563606A338
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BC3606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=1R4oRQ/i;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Xseqmy5b;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=1R4oRQ/i;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Xseqmy5b
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=xWfccdjs;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=OO3e4siu;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=G5/pHpGg;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uThUAfA+
 Received: by kanga.kvack.org (Postfix)
-	id 2F8CA6B093D; Wed, 25 Nov 2026 03:45:11 -0500 (EST)
+	id 373C06B093F; Wed, 25 Nov 2026 03:47:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A9BC6B093F; Wed, 25 Nov 2026 03:45:11 -0500 (EST)
+	id 324746B0941; Wed, 25 Nov 2026 03:47:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 199D86B0940; Wed, 25 Nov 2026 03:45:11 -0500 (EST)
+	id 214696B0942; Wed, 25 Nov 2026 03:47:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E09BE6B093D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:45:10 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B83EA0E77
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:45:10 +0000 (UTC)
-X-FDA: 85473006780.01.4F120A0
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3839B18000B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:45:08 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1R4oRQ/i";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xseqmy5b;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1R4oRQ/i";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xseqmy5b;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DB65C6B093F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:47:49 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DD5C1C496C
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:47:49 +0000 (UTC)
+X-FDA: 85473013458.13.DEB5F8F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 29123C0003
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:47:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xWfccdjs;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OO3e4siu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="G5/pHpGg";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uThUAfA+;
 	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795596308;
-	b=ZS0JwCVIHwevLxHKltkiCjr7IQrgGO5fSvgPB93NbQy9TQLcBqRu5ZlBI6Gkp5vF/Y2hvp
-	grTTSvrJ4301aQEiZwGMu9hKtiXeEmF6q01sgoZxp8r/9t7pgSXBkHhRHxajPMav4l5MUc
-	fIiN1lf4CQkQA5Wb7klu1+d3UHmAvH8=
+	t=1795596467;
+	b=pppHyjGi1EBh2rRy/V/f/r4xZ1hSb72bMMH+fnVq+1ns5WC3zEwV1ErQWSSl0f6arITD04
+	Enx5jG/oA7GO5N8/pBInn/tG1nHXOh1w23YTNGFJMX/C2//tVDQnJmIJgVfT8mGvpWP1rP
+	uubTX78KcKX6xDokJR2lU+3pvFzqggw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795596308;
+	s=arc-20220608; t=1795596467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
-	b=kV7m2IwTOI3EstaPgBbo1ot8yGYvwI1KaJwdf/8S5NHrS+fnrlHrLKZ3brtj0I14Z5BpoA
-	4onzK3L2OeoNBAmxpusArE+/chg6TXVFpziVA3S2sZglRN+6BBIyN8bIfvu8MXthKncpQI
-	YZMJF84mQiIcWuXrgGpi6yQay9JjwlY=
+	bh=WLw5iSLUAmy5ESjmbTA6ThiW5AF9rDmQb0R0/WJ6aCs=;
+	b=LHLPwiiJ4AyHvpwfrtxbhBTmzR/U06wIqc97osUqGSwpbaP4sonysb6CQQpFKCn/+61FHJ
+	raxrLCdlyFoIivKs8vn5ykA4PT9KnLiGQy0z1u5ohkPYDwMr+g+iZgi7vSMvkAAOKu+hoM
+	4VhNqOIl5Zf2CquF77mkojq1hHDZgss=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1R4oRQ/i";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xseqmy5b;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1R4oRQ/i";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xseqmy5b;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xWfccdjs;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OO3e4siu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="G5/pHpGg";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uThUAfA+;
 	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 78AE61F747;
-	Wed, 25 Nov 2026 08:45:06 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BA8D221F6C;
+	Wed, 25 Nov 2026 08:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795596306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1795596465; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
-	b=1R4oRQ/iWiVF3GfygHgPI9xqm0DU0PL/33RSEd0kAHFOjj03JbHnGcDeKjPUuZVKUfQ/C3
-	se0iiVMXGurVPeKjOHJAJnk/StmPKNjpbtuFJjiXHDzF2B6Iiqw2/KkYzF02DFKI3odKHe
-	4PRjahV3Nz4geMoybs+TdWwUp9oQtfo=
+	bh=WLw5iSLUAmy5ESjmbTA6ThiW5AF9rDmQb0R0/WJ6aCs=;
+	b=xWfccdjs+1brj5kF+U2+aXs2cxkUEyD9UIBRARlzVvl9saKhVrlGVeG2182x+XRHh74x4L
+	30ISI2+aHO20dRWdE5nYT7+NRhq0mYp8xn9klblBfquFqjIwNfnnZuxyxjGaW4tqecXeGt
+	WzDf6SwJBfcMUEHQhMU7A+wf52Seuso=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795596306;
+	s=susede2_ed25519; t=1795596465;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
-	b=Xseqmy5b9lVtcOfm6N7qVKeOgqlUYxNKD7bCD3QFJ2Xcfd0l+ZHy35FU1NbGLHKMQyqpAk
-	Kdvq0lCqAMg4XqBg==
+	bh=WLw5iSLUAmy5ESjmbTA6ThiW5AF9rDmQb0R0/WJ6aCs=;
+	b=OO3e4siu057blVR7oduuGttVRQ6uVbk+AYp0GveOXc/5mOKgZ2gVhEscpe/X8sc4cmWVPx
+	11du91yR2QjGURAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795596306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1795596463; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
-	b=1R4oRQ/iWiVF3GfygHgPI9xqm0DU0PL/33RSEd0kAHFOjj03JbHnGcDeKjPUuZVKUfQ/C3
-	se0iiVMXGurVPeKjOHJAJnk/StmPKNjpbtuFJjiXHDzF2B6Iiqw2/KkYzF02DFKI3odKHe
-	4PRjahV3Nz4geMoybs+TdWwUp9oQtfo=
+	bh=WLw5iSLUAmy5ESjmbTA6ThiW5AF9rDmQb0R0/WJ6aCs=;
+	b=G5/pHpGgJ+KX/BAPyqrfkORLpvZZ2w2sPOsdSr9Aa6d/S0BTaAsj041hgU6q8Xx7Es/HO4
+	vCWtNLkkgWw69gT3KFSZkNdF4TImelbmEdC00v6oGMOc5Mhe2eGGphFvBf5ZxMVhq2WwUS
+	/kZAgJWDINutbQZW2YZaZV5zvw8ht9A=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795596306;
+	s=susede2_ed25519; t=1795596463;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
-	b=Xseqmy5b9lVtcOfm6N7qVKeOgqlUYxNKD7bCD3QFJ2Xcfd0l+ZHy35FU1NbGLHKMQyqpAk
-	Kdvq0lCqAMg4XqBg==
+	bh=WLw5iSLUAmy5ESjmbTA6ThiW5AF9rDmQb0R0/WJ6aCs=;
+	b=uThUAfA+mQDqsC3uBXC/kZ6qobt/aiXkG2wPdqYaV56ahkHKu4SUllbMGqyh6QdYUxnTHe
+	76GoEn2qMIcPHnCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D533134CA;
-	Wed, 25 Nov 2026 08:45:06 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 90A7F134CA;
+	Wed, 25 Nov 2026 08:47:43 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FrpCChKgBmvYegAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 25 Nov 2026 08:45:06 +0000
+	id 0yVvG6+gBmvGfQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 25 Nov 2026 08:47:43 +0000
 Received: by quack.suse.cz (Postfix, from userid 1000)
-	id C7C0F27BBB; Wed, 25 Nov 2026 09:45:01 +0100 (CET)
-Date: Wed, 25 Nov 2026 09:45:01 +0100
+	id 2440E27BBD; Wed, 25 Nov 2026 09:47:39 +0100 (CET)
+Date: Wed, 25 Nov 2026 09:47:39 +0100
 From: Jan Kara <jack@suse.cz>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: David Hildenbrand <david@kernel.org>, 
@@ -122,30 +122,30 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
 	Michal Hocko <mhocko@kernel.org>, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 4/5] mm/vmscan: be more careful when releasing FS
- metadata if buffer_heads_over_limit
-Message-ID: <wm57zjtvdpexvbfygmdggw2ytsazelyds4rt3mtx6oy6u72mke@rhviuzp26rt6>
+Subject: Re: [PATCH RFC 5/5] mm/filemap: refuse releasing maybe_dma_pinned
+ folios
+Message-ID: <fsmnfotflgrddrlak24cve7vkcjkellsgb3xbei5ysxvmqnul6@byvxblm4dtqm>
 References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
- <20261119-gup-dirty-what-v1-4-236d69f25c24@suse.de>
+ <20261119-gup-dirty-what-v1-5-236d69f25c24@suse.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261119-gup-dirty-what-v1-4-236d69f25c24@suse.de>
-X-Spam-Score: -12.80
+In-Reply-To: <20261119-gup-dirty-what-v1-5-236d69f25c24@suse.de>
 X-Spam-Level: 
-X-Stat-Signature: tcycyoye1xf6beq31ed4r7x7gmaxs36a
-X-Rspamd-Queue-Id: 3839B18000B
-X-Rspamd-Server: rspam12
+X-Spam-Score: -12.80
+X-Rspamd-Queue-Id: 29123C0003
+X-Stat-Signature: 8n33i8yjmz6my4f7tf8kzt3yyxka8wou
+X-Rspam-User:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795596308-624681
-X-HE-Meta: U2FsdGVkX19oX9/i9Jp/TMueIfN/mb0ohsckSqkf5U29dl6Mpu+wq/eo90cEDpf7hB2QOQaBh/4GgHxyeU3aOx91gY1UL0V20omGkE4Uqgu6BXOALaqRs4C8DMS8kyAl/kxzxus9TRXoEkdK4ELJpTiOWmYzIWDIRCKLYQfVdgKkPkuMCaJkhfNbWsIqZlOwzm04JfAUZo9BGALJ81EC+GlsU6s78B64qY5QSduiD8+aPBlRaCifC8PViObMhfHUM8K6Djaa8h5MZJFN8/Qbyuy11OqoRx2KCZ3W0wvVxCE1n8ksyIPpm3eaPIzeRXY9TfjWZgBN8t0qyJWeEOLcc3IT/vMclFOfUMU7zZCTLw6REsWn52P8SPcSjWExYIBLcOFNsgZlZuGeB1CmaA/cxIJiGosNTOaacwQ/Qj5adY9ZAXeSL2OCBTUxtPIbxK5wS7Hs4dF8e+GXKuZi2hTZxykxPaGqHZB/3JgFL92UKl3+UioFsY0aWqECjwmfdF5Euw1Ul5LqhKmBxOhq94E2sIfWAkaRXK9/hOO8tLAizDBz3rxUzIVluV8nQacb/GxmeQ3oS32ogXm3pFTiDyTqedJwToGXAdz87R1eYlfmV0KZHXGHXdVp8W3BS2y2r37p8cX1H78ExS1VEuwW9JA/84vbEJWKk+K2BjG0z2pw+nfCE29Ce3vUgaO4br2Iun1IQI35KVUuKd0Ew95/BiMVUgRU1p9VXqFoCYO6CaO5bEdJicTec4eQwuSKqcRKykiqy+54l0rzF/lTmYPoLf57QwxLZV0ziqedEWhzZqbSIHiikOU+iT5ve1uPUwdlHJ6brU1USarLisclXlOAxflAKbbDj2o9klb10iKyZRIEm9pX8F8CD7KspfAzhrmKbHX9SUQfVnhLx/HXGRMfKASPDEOe+u2yOx/IAmxSncl4Rbo6qeNjU2EHTb0SzkSgfoB9GBRZbjE31h0+7wggMjz
- ac36+pM4
- EQgrWVll9QuL9D7xw/b1DGezd7j8dC0kFX2tXjQQZ268T/b/Tiv57GADtbMTpQv7jugJHR3CpzNclwWJQ4zMUMz3iolGvXiuL3XVRKvvbJbMBKCfNWPIOdKwbcHt7UxDZ2KpymeNv3noXQwTB+fVxkPrFoLPlYq5D7ILH6qsfbmyeZdCo26cRJAG6trO8GsKKZYwVnvBM3WvenOiEXtWNOhTZjormIzrrdg4nPCcklp53Ze+69Y73zJ5x0Ml3PEeAiKzSSwBoW8cwh7HYbdekCzwJmZ5QJ4FTIXPv7YXSeJGM0S4DRdMpxrACoFB5zmvbbIVtKdTxTBpVcM5IxStOiUlKfdCNbONMVMeql2x4PyeaZk9cgLWwV8RXLkrzTO+5TqWsOzbS1DbvtkxHwca76xeu4EnX/eetuqzY1npLENi6Lfq0vq+YO/014ZPUqILflwIcgyj+puGkgWUlPtIFSxxa8eOGUNNlnhJPDBeC7ExvBwpSgDZfeseYC94oRnblV8YtYJL6cDiADSoi2VIJhVhN5fOzpYHmP67ocaEst+sxoIY+SwfOvjGVBtjl5JWUlxcNd9usDXcSJQQsGtoNReL8gw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795596467-984832
+X-HE-Meta: U2FsdGVkX18cC4On9Hf130s/knFOj3i67N1DlC/hj1MV9lsmivQC2l78k8k/Trp9NOYdLYliZkW5QQYsuJPK8QnuXFdv21EwT4b51vbWsd+fZbQhtPxbdeZnXcUObSCKOPgx6iWy8q+lCft/1gPAmUzfgxouBfTEp+YJqSTUvIWns5wcwtL1a5Wu7kHEQLX1Y59UaDVjj26RnfHoD4eAXBJtH67rwOVXqvOzo6+1uL0co9tsvwgdxMH8Y8YoCvBeJgHH9wQU9R7eTclBiV1NgMVKgcA7YlfKUzKcW7mEeJW0uh82CbNMFPDWEDVp1+PcmnVFZaluO1O6IBhlCGEpVeA+uEjscq1iAn/ODjo1aO0zW6VxV/dlAkintrIvES71p+hl3AxTZHxKtf/XNbre/CvMaXEEzwJEYHoKdrmMfqPQB0SfB8mtfw/Op32PyQreJjIy7egDIxm+1YCHelcfk6BlZ22AxtV8OZMrDYQ6AilozwuTf62FQgMFni+sf62OBT0eqhr5/7x1A3yYiROXCpHnfA75PYJ77CVMcCgSFw0Tx41gJXpNo171pTYYqdXgSk1rBt1WN4+8o+k+GONBtLez2w+/lZe4Hq0uydY9Z8VFDVZb9SF9EqHl41vbSRBMfHS4F/aHZEashLtzApIo34BWWpCrcNutbDMVhPcNDC7ZUu7aw0shQPOY3T2Nz5K8hevHH9d4jmSY00T8UiKG7t5+fn82Ty12jAXc1vOwQwTnWOx+Ik2QUSMzENP8r1Hp/WmKasHBJ4LCUpGRMmzQdkY09yMVrDsUMShLX+FagKOfKx2xuwSS8WGdbxk/KlFYv7qcurlcK1t44E61x5I7k4JbX1eYm2p19MAU/P8Buw4oDIa+aqyW8IbpmPLyyCB7WB0A4oTpY7ZvErV5byJrWwCSjtn9NWAX/5K5EoXn2m30E6rFa408iK0epQdrWKjPxIw/3JBxc4KzSTUIfSN
+ WNObBrL0
+ Vt+cE1DKGTFGRcR0LnRRTCdy0OOcTEt5cHfg59s8LF9d6A5S572aLpq0vDrWJmt4rOKreQIntmCLIe1ts6BOM6fX40GHkx2J4eS1hT07JasXuR8eNp3R+UNOd1yKtyNczR1YPiOvii3GLMmWihdgL9yvGrADE5jPEw7y7Rf22NGXiw/eyHuCX3pc70g4eDFRt1FzqZN59P68Sbh8pXh8ZEbDHqn96PprKZ3ozacRewOR3Z56OT2HpcPkjxJuDKUyyRIgeMSTveIxsSjG9FjstA4rDcAsfwO5lMNN8+zwr6udlU87+Kvpu5WrfR//j7ElXVC0oJ9RnwSzwRMp2ZFHexrBnKOYH4IBni15VFhGZUEDgyM7kF0bA8921pVoMcbaPAdXVnH/dqYRcf78lCqLDd6NdCwEpxpZkbReQIIPGlZpege6LFxdY67Oqhb9RbpSd/J28HalNWYakgeQX5/uy26VngLtufRg8rUyliR6exJwjqY9dvcYaU4c9Jo0HSvE/NWECIZ5m7PYH1BwOSReG8kFSciFaORfi009Lmt7p5N07t8zky/5KpEbengUaq9PmCsu4KvULxwUzUqS57ThFdmxN5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,52 +154,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu 19-11-26 20:10:47, Pedro Falcato wrote:
-> Namely, don't call ->release_folio() for mapped or referenced folios.
-> Since this is the active list, there's no actual point in doing
-> unmapping. In fact, that would be counterproductive for active folios.
+On Thu 19-11-26 20:10:48, Pedro Falcato wrote:
+> Some callers, like folio_unmap_invalidate(), call filemap_release_folio()
+> without any care for folio refcounts. This is on purpose. As
+> folio_unmap_invalidate() states, invalidate_inode_pages2() needs stronger
+> guarantees, and "can't afford to leave folios behind because
+> shrink_folio_list() has a temp ref on them". Ok.
 > 
-> So, gate on !mapped && may_release_folio.
+> Use folio_maybe_dma_pinned() universally, in filemap_release_folio(). This
+> has a much lower false positive rate, and should be ok enough for most
+> serious cases.
 > 
-> Reported-by: David Hildenbrand <david@kernel.org>
+> While here, properly assert that no folio passed to release_folio is
+> mapped.
+> 
 > Cc: stable@vger.kernel.org
 > Fixes: d824ec2a1546 ("mm: do not reclaim private data from pinned page")
 > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-This is OK with me but so feel free to add:
+Looks good to me. Feel free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
-Just given buffer_heads_over_limit is a HIGHMEM thing and given how much we
-care (not) about HIGHMEM, maybe just completely ripping out the whole
-buffer_heads_over_limit logic is a better "solution"? I mean it's a crude
-heuristic anyway and for struct buffer_head to occupy significant portion
-of ZONE_NORMAL, you'd have to have several GB of pagecache with buffers
-which means the machine has to have quite some highmem which makes the
-setup even more dubious...
+and we'll see whether there's some path which actually required private
+data on pinned page to be freed in some cornercase :)
 
-								Honza 
+								Honza
 
 > ---
->  mm/vmscan.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  mm/filemap.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index d80bbb607a15..986742d7fb6a 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -2217,7 +2217,10 @@ static void shrink_active_list(unsigned long nr_to_scan,
->  		if (unlikely(buffer_heads_over_limit)) {
->  			if (folio_needs_release(folio) &&
->  			    folio_trylock(folio)) {
-> -				filemap_release_folio(folio, 0);
-> +				if (!folio_mapped(folio) &&
-> +				    filemap_may_release_folio(folio, 1)) {
-> +					filemap_release_folio(folio, 0);
-> +				}
->  				folio_unlock(folio);
->  			}
->  		}
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index f9e34144c53c..4fa75663b7f3 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -4571,8 +4571,11 @@ bool filemap_release_folio(struct folio *folio, gfp_t gfp)
+>  	struct address_space * const mapping = folio->mapping;
+>  
+>  	BUG_ON(!folio_test_locked(folio));
+> +	VM_WARN_ON_FOLIO(folio_mapped(folio), folio);
+>  	if (!folio_needs_release(folio))
+>  		return true;
+> +	if (folio_maybe_dma_pinned(folio))
+> +		return false;
+>  	if (folio_test_writeback(folio))
+>  		return false;
+>  
 > 
 > -- 
 > 2.56.1
