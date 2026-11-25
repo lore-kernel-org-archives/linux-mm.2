@@ -1,141 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F328E606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 01:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6211A606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 02:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nH06Dx5P
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=N+C+9XYN
 Received: by kanga.kvack.org (Postfix)
-	id 99EA96B08C7; Tue, 24 Nov 2026 20:46:11 -0500 (EST)
+	id 4E6596B08CA; Tue, 24 Nov 2026 21:04:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94EDE6B08C9; Tue, 24 Nov 2026 20:46:11 -0500 (EST)
+	id 470116B08CB; Tue, 24 Nov 2026 21:04:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83E286B08CA; Tue, 24 Nov 2026 20:46:11 -0500 (EST)
+	id 35F3E6B08CC; Tue, 24 Nov 2026 21:04:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C1076B08C7
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 20:46:11 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C9F38C08CE
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:46:10 +0000 (UTC)
-X-FDA: 85471950900.20.4D7CF44
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1618E6B08CA
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 21:04:28 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 96733120CFC
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:04:27 +0000 (UTC)
+X-FDA: 85471996974.11.4F612BD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3A20BC000B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:46:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nH06Dx5P;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id C12E2160007
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:04:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N+C+9XYN;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795571169;
-	b=lfg7+7VxrgXbg32LziIcVb8qad5lyZ9A8EaKysG7xP7XqWkfr4fswM4kR3VwLRDjv/c8SG
-	7L7J0i/6unHHip5Pqlamp5O8o3i3gO44BWSntEEEK7sjT7GTQoIgfYkeuTVtc88MSLtgAi
-	cOc/n5u0tcHTJAhqItTzRwKgRy4AXUk=
+	t=1795572266;
+	b=yTmyGDjaEUCpgna6eUp6eWxY8tnER+If49SQT+BN+U1bk0sLrI7GgqGYUjdQo+knhGKsbI
+	HFVy/2Mz7WUMQkwutjFyfyNggzUQ3p4qM6pF/ksDHWA7UX1f6jK5n7c453vxTGqFj/OohX
+	ANfPY6OAfzeEG40uIx7foCjP7mc2v7Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795571169;
+	s=arc-20220608; t=1795572266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v8v8+B2s1x/OC+2e/Qjn0YMmUDX3uWey0kH3oGaidV4=;
-	b=HYvvm2ek14FjrNLJ9/re3MPhJjWKnEMxxw2hSfPhD8CH2IbgzDId6toMwocWp6doeR4DPQ
-	CN+8R1tYpwisAs+U98YKp1hPqp5zS+PKihyY8AJytbiDooFdglrLqFJvX3KOiXvnpBFQSt
-	/TFVWywwm3UNgXRKD6e59Cyv4RnKAZo=
+	bh=kyF1PQF9lcGtzWfkqaX6DIkCAl/BRZ3Sz/aZMWmRKEQ=;
+	b=lO26e7zph+UXpdFnYGKRkwpUYj/1Jk+y35vfPTeS9QS2DQwgzvg2RQF6PvG+fdJv6iMVoy
+	UIz4gKi9keK9uEUPiNJpykGySaD8ono0X2q99Bt9bk6ZADUW4uJ7SyMPlhlQESvQ0NutKE
+	AJEWh04bVW0ylRpBgtEwZU0Oa/X+QVs=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nH06Dx5P;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N+C+9XYN;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A72A260DD6;
-	Wed, 25 Nov 2026 01:46:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4E51F000C0;
-	Wed, 25 Nov 2026 01:46:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795571167;
-	bh=v8v8+B2s1x/OC+2e/Qjn0YMmUDX3uWey0kH3oGaidV4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nH06Dx5P0Yi4GgYiauESIEHDhrZ5h0ePu1XxUj6w9X3ipZubgua+BknUm03wE3VgQ
-	 LbfPIPccvlhWg2C2vt/tZZuCh85f8uuaPj5MRM+VcYZF2D9jg0QtgOR+YTv07qoHzd
-	 Hnj0e0/HGED3nzGUhIE2LtG3dgNucQ/R8hwcBKul55Ko2R6NfMgEWvEGShIMcqW/1L
-	 5wd6iKhbeEK/13TwJ61qp/ZkqWfJBxEVGfHOM4dCoTrUliThw2bi3OqFNlaI/roYdP
-	 cUB/KTngPRtJnE6Z1HVAnyHi4tbrC2P2dgMFOvALyqyWboRnne38lNMgRzSiOFWQYv
-	 sVxKrHTC9Q/Fg==
-From: SJ Park <sj@kernel.org>
-To: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Chris Li <chrisl@kernel.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Nico Pache <nico.pache@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Hugh Dickins <hughd@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Vernon Yang <vernon2gm@gmail.com>,
-	Zicheng Wang <wangzicheng@honor.com>,
-	Tal Zussman <tz2294@columbia.edu>,
-	Kairui Song <ryncsn@gmail.com>,
-	Xiang Liu <liuxiang.277@bytedance.com>,
-	Ehab Ababneh <ehab.ababneh@intel.com>,
-	Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>,
-	Lian Wang <lianux.mm@gmail.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	Hui Zhu <hui.zhu@linux.dev>,
-	Maxim Muzafarov <maxmuzaf@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	Tianyi Chen <hi@tychen.cc>,
-	Kairui Song <kasong@tencent.com>,
-	Ridong Chen <ridong.chen@linux.dev>
-Subject: Re: [PATCH v6 04/18] mm/mglru: make generation page counters atomic
-Date: Tue, 24 Nov 2026 17:45:58 -0800
-Message-ID: <20261125014559.98601-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261124-mglru-fg-v6-4-8ffea39934a6@tencent.com>
-References: 
+	by tor.source.kernel.org (Postfix) with ESMTP id 3B05B60181;
+	Wed, 25 Nov 2026 02:04:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0BA1F000D0;
+	Wed, 25 Nov 2026 02:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1795572264;
+	bh=kyF1PQF9lcGtzWfkqaX6DIkCAl/BRZ3Sz/aZMWmRKEQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=N+C+9XYNDsK8OPxn7bHuTkGnIaM8u7AHB/CRuF0HFDTqWbeOGVeCnvG8wXsb47p95
+	 vLU19bFc6DjP0LeR2iJuyJXIdJk/Lejrgs6XsizYAKtxSCIjeXw5hr9eFQB+hLZDzG
+	 tkNG1Or8ngRIPc7i5u52qoIOizwBLB4slNSwqF2k=
+Date: Tue, 24 Nov 2026 18:04:23 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Chris Wiseman <chriswiseman@google.com>
+Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
+ Lameter <cl@gentwo.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH] percpu: skip sidelined slot in pcpu_balance_populated()
+Message-Id: <20261124180423.ca36e90d4cabaab8b2dc4721@linux-foundation.org>
+In-Reply-To: <18e88cd2a725491b.3137322e32332e3235332e313736.c1dd7.0000sendgmr@google.com>
+References: <18e88cd2a725491b.3137322e32332e3235332e313736.c1dd7.0000sendgmr@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Rspamd-Queue-Id: 3A20BC000B
-X-Stat-Signature: qartku9tut6un943ougpa9gtfgawty1s
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795571169-5920
-X-HE-Meta: U2FsdGVkX1/OJbVQtSfFtI5gW/EGAjmEqwmFifjYYxQtKKz+EaBaRNyjTFThc4wHB1nGjqvxmBOmgZpPSetyyuP4ApLNi/X3Z5mYNYeLQvF7cny1pmcb4+dTzhy9enKgTMCJe0ZuodLvbZV/dWsQPBI++IQSebx6tl7/SMrsePCyTLXNeqi2a9/F4KS1YqW672D4E5+OWnKIEvTDNTf/NYltsjrkw/rKLntVTX7XK9HBwUenw3vAYczrmFnp1U6PzwxI9PK3uB9lQ/YOls366SEkD1fZJKsgXAKAOso+zlX82TRbPPRRTxbeXFYk1nBNh8CkOPBZK7KzCpYMiMtXB4zNfKZiYUgfRHyiOQ4hmIW689drN0pywHLsAkVSai4K5446AkNJOHqeoaJrESjyCMEDy2yKqAKetRc5DwjmcMd1K2BtRxx46ndRnsyeuijLyrbKhe0heXOG0tc5zU0rACzur/hiWwb1ibSx4h4ds3ZraBNVZkWwoCnYleGpSaSHpeKnlJ27GniUORrpIgjfyQ9cHKVD7W/bT5OuoYLouK8Z4vht/6i8NldPlOSIt94YJs3o5MXofOpcoGr+Bihx8Uk5oWc+rgje34eSZPHRV/gT+43p4I/BxuVqmnSyeHym8NpF4PID8KRIU72sV/jV5qYO17rGPTjRPulqqp0HghYKZQXqzGWgUbNRLpJfMYHX0UEOFOssomGKL8Gog1JlKP62w0KitP+RPMfD3AC8kQG1VPbElFrXpP1LJHvHv8QMomMm95AJAxDHHjtl6Rx7VrJPRsvCJda2Yne/Q9bEwkyc+fz3DikIJ0Cp7WEIMRbqEFexRobmaL2hI2sq7g6SnwTuKCc1e+7roNO/SdTmfELHgGilA0XBcEN+0+0AlNQ/Sybw2Bgc7IvyAdM3XXqFikBbTIA8hew9/vn1rBQxBfawMr7hO1DIiL49wexCLJ1jps/7se9vPWrLNO9pxhc
- Xef1hj1Z
- zQMH+NdMZo2rNGmG5hNmRtVmU55z9JZE3CaAco29rdYySxd69aVw8FxhBBajrXJaRldnqc/mb3scBu6o/ckmtZh62+jqan00wPTD5987txiOqy9T8JIdB2Xe+IVvJXNW7y2122zaYGyKkiv3+OhxSKJDCqyyN7LlcanP6PPNrkV75YDQg7bFMAgmb2wfvye89LdpN04JPqscEg32mMmLB0Q6mDxHHr/NU83oWYCmefmQv4ZccgxihcenzJiuKH87jcTSSK5+Q4UgcOZ8crl5f1snik1CvP992tE03Z108Jvd10hZAHeaHkFkTMB5fenfrC75vMa7Tp/qhij4ntkDrC280KuqJlQOv/MLkuOX1yDqWbV+qGeeR0ak+riWcrJlQs7lAwux2lxSHjF48KV6Ma/g3iqLJvUem8hY+cKwgTjvI/7m3lUY/7PZP/303SZVoiXBeK1raR/2+5xXbVdRnXfMjgSAdACGI1oxIRE7ZfGkJatsItuWgowKocIZohrlXRoyAAyX114Pxp9yKvhEqzNnZRPcagnLWyvIWK0nq77rHBAV08k8JUOLM6mJ6M31gp/W2DmMsPqhmr54LSj8UrenhCDodYooJyvEkUvd/7uij205alIl0Wfw/sconj63zX6TWNF7AjzOvYYX/yGjSlMGWtDUrvJUO2WKWW+4G61p+mHO28KIPkh9ieYJCgvdU4Si7D06ypIOTAYQm/tIvCd26/V5LRIkZdm4SCOAMJnxlFCN/F4uubqtZmw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C12E2160007
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 3daye7od5drfdjba8krban3p9px3ds1i
+X-HE-Tag: 1795572265-379252
+X-HE-Meta: U2FsdGVkX1+h5YqlAhFu+Sy+ig6IaXyD92SMYxFrVENSbaRaAStVYM8TDqImdtRqHTreTV5NhUmAwurm9hDZODTf6xtzzTGT0Acu5a1/HQM5OxNzjlXlJQ58RICQABx4WW3FKZt7VO+7bY7mZ8Rie6R3YBc9JMwnpQCl8HG4hS890UJ70C4HfLcjMFK+wfhBPUFgK69pWgvTr4K3ErtZuMaVwyLJazFc9QPFapTpnHJXav8HcQj22jq4PKhcpRQpCmf3LM6Tw9bxAkbpnFjQliOP/IKQKEFRF021ihAojRUHd8u03inRuMHSyL7x4MvkNOBxe2GujmfXQQKaH4MVGCUpEbkvixYKpS9eKdCZYmS7/CIRGrhFEmOQE1Xhvz4hL/ScWjeMCXUJFgCQvOxlutPe2TehaoJReESKdDMuRzByb3NS1Y6vgBB5GB4ktXkgsF/8iTuPnBH3qOIccajPcCKm/rkg8ETgYAmN/Q6P8eh3gE04mMKxWj+siByQQ253lO5fMezjHu+SBhh9L4lKXrZ0bBYVOnGq0nP0YKt6W7SxLtoqU2th0wmiz4f4kM/gNIGgHPXqJmQKszgNYajcZ45JGlrsJOSANHhpBK0RHQXDh7VF9HVm+Zh/+zSg+r7tkl0KKfYMNd8QLw0KLOZbS/VBf2tbUcqKXzMAPEJZQgNFe8Q6cA82PGDkxljX0sgNw14nJfyYSepLylXIYA2IrHYqOhlnXUMosocaHFftoSok+4xG5vDsWkzfy7yM9ZBinEAO26lUVDQRbbAbHmRDlqkKAyHM6IKJgHs8HrI42/jsW68wJnICq8Z826nEob1DAQQz4twieuYQwxe71sUwqxRKyI9/3/CHqpVASaBc4By6sbPHVdtDC/v6G2vaJ/TvziaA3GmE4c2S1GSsO4sg0f1veBY+4Hnv+AIuTlPQsuce17Zj5aHkV6rWgk/cgmJGqdrZXbaR4SzZCYQ9OLl
+ /jK28GOZ
+ I4J/o1z1mVUTWxWS8TA2rp2PnWX9gGy/o+f96s5u5t+L1FXw7BUEBWXa8+SPIDyCBLGLio4IrjDukvPGgSyH64MKodb6nMj3vmuOHN6vu1QO0YIAY3BZJvcATb7QEl5uzoS6TK3h96YzMRC40fgphfAD7WTIgclbmO9grLiXeGJ1oFu+bOkcIWpy25AT0dSU4XNkxlU+L4uK8Wnf1qK7qmC+bpi/B4UgK1NbRoKCL/pyi2Bv1BT31Jmp/t07Acxb38x59MR5f1wXkrhZSHmI4IQCTQwA1ABwpwqqX0Q24cx2Fj/QZ1FItc4PzApisVD8fhkZtPedJtUg158q9M7TB/qi5Ra8DG788RBYaFk9AaLYcL2aCWx78nN11CM6dISfmAFl/3fo2sBjPuIPR+zTMQ4rrmItxiBoKfYEvkpKi9nDvdqtNtnhnFPFUzNk0LBvGKKLXUWXlwv/OoYIqdfPCdFa4cGi8pHrqT7b6hYpnr3XB4zkl2N0NTy9OLuy+G6wGFlMolluU5kUXzBw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,30 +93,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 24 Nov 2026 02:52:56 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
+On Mon, 16 Nov 2026 14:28:07 +0000 Chris Wiseman <chriswiseman@google.com> wrote:
 
-> From: Kairui Song <kasong@tencent.com>
+> Commit f183324133ea ("percpu: implement partial chunk depopulation")
+> placed pcpu_sidelined_slot at __pcpu_size_to_slot(pcpu_unit_size) + 1
+> and moved pcpu_free_slot to pcpu_sidelined_slot + 1 so pcpu_alloc()
+> checks sidelined chunks before free chunks. pcpu_balance_populated()
+> also loops from pcpu_size_to_slot(PAGE_SIZE) through pcpu_free_slot,
+> but was not updated to skip pcpu_sidelined_slot.
 > 
-> No feature change, convert them to atomic so we can update them without
-> holding the LRU lock. A temporary underflow is fine: readers clamp a
-> negative value to zero, and the counters only need to be eventually
-> consistent.
-
-Makes sense to me.
-
+> When pcpu_nr_empty_pop_pages drops below PCPU_EMPTY_POP_PAGES_HIGH and
+> active chunks have no unpopulated pages, pcpu_balance_populated() walks
+> into pcpu_sidelined_slot and repopulates chunks that were just sidelined
+> to save memory. Because chunk->isolated is still true on sidelined
+> chunks, pcpu_update_empty_pages() does not count those newly populated
+> pages toward pcpu_nr_empty_pop_pages. That leaves the global empty page
+> count below the threshold, so subsequent balance passes keep refilling
+> every sidelined chunk back to 100% before reaching pcpu_free_slot.
 > 
-> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Tested-by: Andrew Morton <akpm@linux-foundation.org>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Skip pcpu_sidelined_slot in pcpu_balance_populated() so sidelined chunks
+> stay depopulated until pcpu_alloc() actually needs them.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+Seems right, thanks.
 
+> Benchmark results (4-CPU arm64, 4 sidelined chunks with 60 reclaimed
+> pages after triggering pcpu_balance_populated()):
+> 
+>    Metric                                    Before     After     Delta
+>    --------------------------------------------------------------------
+>    Sidelined pages repopulated                   60         0    -100%
+>    Sidelined backing pages (kB)                 960         0  -960 kB
+> 
+> Fixes: f183324133ea ("percpu: implement partial chunk depopulation")
 
-Thanks,
-SJ
+Added in 2021.
 
-[...]
+> Cc: stable@vger.kernel.org
+
+Why the cc:stable?  The changelog doesn't clearly describe the
+userspace-visible runtime effects of this flaw (please always include
+this!) so I'm struggling to understand this decision?
+
+> --- a/mm/percpu.c
+> +++ b/mm/percpu.c
+> @@ -2045,6 +2045,9 @@ static void pcpu_balance_populated(void)
+>   		if (!nr_to_pop)
+>   			break;
+> 
+> +		if (slot == pcpu_sidelined_slot)
+> +			continue;
+> +
+>   		list_for_each_entry(chunk, &pcpu_chunk_lists[slot], list) {
+>   			nr_unpop = chunk->nr_pages - chunk->nr_populated;
+>   			if (nr_unpop)
+> -- 
+> 2.47.0
 
