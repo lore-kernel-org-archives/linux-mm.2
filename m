@@ -1,79 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4521A606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 11:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1B0606A680
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 11:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BqwI/Uvh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dL7fPahC
 Received: by kanga.kvack.org (Postfix)
-	id 680666B09D3; Wed, 25 Nov 2026 06:58:47 -0500 (EST)
+	id 7BB8D6B09D5; Wed, 25 Nov 2026 06:59:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659C26B09D5; Wed, 25 Nov 2026 06:58:47 -0500 (EST)
+	id 793616B09D7; Wed, 25 Nov 2026 06:59:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56F236B09D6; Wed, 25 Nov 2026 06:58:47 -0500 (EST)
+	id 6AA3A6B09D8; Wed, 25 Nov 2026 06:59:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B6F06B09D3
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:58:47 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 485386B09D5
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:59:25 -0500 (EST)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 994DE80E64
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:58:46 +0000 (UTC)
-X-FDA: 85473494652.16.C1A3B2E
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C9A5140DB5
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:59:23 +0000 (UTC)
+X-FDA: 85473496206.16.CD4C08D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D896DC0004
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:58:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BqwI/Uvh";
+	by imf09.hostedemail.com (Postfix) with ESMTP id 77B11140005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:59:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dL7fPahC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795607925;
-	b=DZbG4b6BkW/yULKHICapeB3fkUbaxjJnHMwID44nU6UaoNBYQHEgusZbmZbOJqHSVlEDcN
-	cFxURRGrhk220cJUGHrhh+rLW3jXz/lY3QdMxq+54g3ZvzBJZyn0Hp+DAxBrKRg2Se4Gg/
-	JZ288JrDCOCPfR5enQd9EobiYqyuDgA=
+	t=1795607961;
+	b=mZ3zOReOhmp48PzgfaBBJCPsfnAFZSVt08G0tSqaKWb0Olq2oWc7O9ty22FTl/4kNJFDY6
+	heR+7Nrh2RLWAErhWgzyse3Jerj1cNpjmxhYgq1SGYiKuQ8+qf2zCBur0NHKaNVf1wOWlp
+	Fgd0+HpRp/hHB8vtaUc3e6KmpbAnF3I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795607925;
+	s=arc-20220608; t=1795607961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lNCRH7cZNuQ7wfq9CQGChM58dHTmDD/qVZ/gcuDQhzg=;
-	b=izagBmjyxl4GbzzVgDF8eGM0Is4bNTnPc3zZLdnrlEzKAM31XfjNhCTCDUDkcCXsayqwVq
-	xOhSSLM/QfTFdUd6pNXc5v6P8kei+5EC38SSwvz+FFEqcUSvtncw7IeVCvcixDgkhSsHu7
-	MV7Yx6zMXdLbUwgksqsLhueqmfzfhx4=
+	bh=rsojXvZUV/8CWWLGDvdxZoety8wB2FPnWCvQ+ubHDsg=;
+	b=m2niZ6eRHu7KpBtq/Q/AMW7KH2sQ7MueacOLG6ZvID80QSgFUJ26zGqX8FYrfZhgqx9TdZ
+	w/aD3yQRWPKpKZQpRgCxIhGa1/aOfrMw5toSDg00wf5V4lx7TpnaC6fBkiZD3QanCy4J9s
+	GFDuWu38rB/5ghZIurwgfMOYSxmFDBE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BqwI/Uvh";
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dL7fPahC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C760B436D3;
-	Wed, 25 Nov 2026 11:58:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42B01F000C4;
-	Wed, 25 Nov 2026 11:58:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D2B945EC3;
+	Wed, 25 Nov 2026 11:59:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379B81F000F4;
+	Wed, 25 Nov 2026 11:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795607923;
-	bh=lNCRH7cZNuQ7wfq9CQGChM58dHTmDD/qVZ/gcuDQhzg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BqwI/Uvh1M7WGfv3uxJ5RiUJbBD+YJxiGEH51l57/J8cvR0nYFX9EuOxH01Db/gl3
-	 azhDLeQNLq+gSCz9bBclgE/Stxwgc1OnGda8kGmqV5EMXVKkUmFfV2CvT+Rm62XK1D
-	 XenG4wQO2RrCgW/wCbiDbBeO4Rc7Ip56EoT3c3O+llR7TUr6/zNgbWYvfeIzDxnx4p
-	 +ubU4YtMsxmEZnWNmlaSQ/wG+hvcmY4BCfujSx+SR/f4sy4MzVXgjv7yDcjComKw4v
-	 IQ/v+4QySHWIFRBr0ULn+3P4SkF0Kkj2loMeQgoVqubeybQ7GXz5stRzotyVe4uM66
-	 RFWviZn0m/VFg==
-Message-ID: <4ffa6613-119b-4eae-abbf-26134bd60177@kernel.org>
-Date: Wed, 25 Nov 2026 12:58:38 +0100
+	s=k20260515; t=1795607960;
+	bh=rsojXvZUV/8CWWLGDvdxZoety8wB2FPnWCvQ+ubHDsg=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=dL7fPahCLzn8G1sTEduUAI6i//aBNNBx7AwuTOAasT7iM4V97HCsfh5uBWHRoyBYH
+	 oSSDQYix7BDViCl49Har43idoVTO1J+nA+Isbf4nKf9g0TVhDPeHjUBxSabBVAwaoG
+	 ifShjjz1RNUA/0cQ5nbsncVKAIJ9AcoOl6oBO9O+HRWNFGWl6lBh+74maJ4cIfPf9A
+	 hCBt14ubzttO5tLDfXENrKHKI9UdS0NsLBikZbnEwNThG/FIAQlZnmeLyxOQeLpgZP
+	 eGkZPD5/nsrtPR/dfbTtJhJkoDGbuihSdvlhfMTYC0wNd3v3amBT2aLXZ1vm1fs6LH
+	 neQNvjnsdKW1A==
+Message-ID: <57cbd30b-4c6d-4298-bdaa-481773279bae@kernel.org>
+Date: Wed, 25 Nov 2026 12:59:08 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: stop hashing address_space pointers for fault
- mutexes
-To: Zhengchuan Liang <zcliangcn@gmail.com>,
- Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Davidlohr Bueso
- <davidlohr@hp.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <9a97a64f7e7aabc668499c426a2417a77d13a2f4.1795587203.git.zcliangcn@gmail.com>
+Subject: Re: [PATCH v4 1/3] fs/proc/task_mmu: read the PMD once in
+ smaps_pmd_entry()
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com,
+ byungchul@sk.com, gourry@gourry.net, jannh@google.com,
+ joshua.hahnjy@gmail.com, liam@infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ matthew.brost@intel.com, mhocko@suse.com, pfalcato@suse.de, rppt@kernel.org,
+ surenb@google.com, vbabka@kernel.org, ying.huang@linux.alibaba.com,
+ ziy@nvidia.com, kas@kernel.org, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kernel-team@meta.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev
+References: <20261125115014.4014507-1-usama.arif@linux.dev>
+ <20261125115014.4014507-2-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,21 +127,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <9a97a64f7e7aabc668499c426a2417a77d13a2f4.1795587203.git.zcliangcn@gmail.com>
+In-Reply-To: <20261125115014.4014507-2-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D896DC0004
-X-Stat-Signature: tdhjbrymg73hbco4r63wk6c6uxc5ra17
 X-Rspam-User:
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 77B11140005
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795607924-692858
-X-HE-Meta: U2FsdGVkX19dM0CqVumnZ5UZalaZk0lS9Cd4ZG3hpmO4fG9B/IdLLXYQAGXPkxGiXo6zEKS91UTPBOFsyw9EicHtJIlJIooBUg4htbaPluti+MvSit41g1M9qhaUtyAdiUvwnJ4JC7p9C/W0AaCpq+PFUMuU1ojJWtahWezVwlka8K1PQ/3LlSJAhE8bZfjsdxyex8GmRR0YVWo4I1MgUCsyoCv/h8BvMuJ3+AJwyXAPIWoidJWGfWJxOHItqmJrxxyGCbvR3LZ1CNtoGh1MV4rBdfOedicIqjhlvcNcnNJmjnQi60D2cP92rs0jRr12R0buP3Y3n97v+xjg/DlKluxSIUGsbiOqvQ5e9yhmcrlMwUEBjL17W3ifdvdv6fndV0jYKfoGXPjU1Wgm+ufplrQiQ7hIVAw+MkJEQG19CGn1940KHZP2Yy3D+uGzc3ErhtmEvzKdeRdiBKzEQA+5ekLrC4n+dMwmz/odmMx0hL0xVcfYMLEtvF+XaZBtxesMZptnD1D1XDqGowYAY+UMU+Bnp29vTab7lyXUBCkNnZtIO05Cxd4kMEBV1xEEv9NO9/Ld/T0pe2KDviuXOoRsQkQ4usmH8uc1TuoS59FffwwXb3E/rqoLol6K32CYMLR/0qHWwokhTUeFrot2G96WctUX00HfR6ab+bo/M0PqSretOqJGr638I1uFbljSQVzPOQ0E8HdnWKni3K/a8Kj8T+ogpuSN6QbIMhWPBIueizuhH5SFFyp8+p95jQzTPeQFziB7Y4T6+o3/vJvLOue5qvlX/rhz4NPBIfo2+bpt62KPTI068NREZuU9O3mNvlPQiqEdupuTFooYSam3A3UmzcY7Z0A/YRvCK+yn0k68K0dQZG2dP3Fp7mHZs0cf63wgEONVpN5iXdfHfWuVDGZixQPKLCDHbJCHVbXWMK2lOc9geWBbdQurlfOFuA2JcrTUNnJr4GkhxaBqMtsyl/C
- FlxmLn9D
- T8EYLCblBu3M8FiHqCK0pbUz4mhZERY5xVDdnsq4VVQwWorepOcF2b1vGcmYbILPJdedcb9B2FN6iGVs3gNYni+5UjGEFkwXdJRHaTkO3ZFaIChVWWy2eQGfPA8UsCFWuFzxjITRCYnCAO2l6OX1P8E8l7HS7UOv0IXmi6JBfAWEnU8gVVq4u0n1vfvxC628H0BWX6XgZkszSTJ44ktLCZOOffE7LN3YTQ10NgfSz9kNDtd9+EZGJQiETz89hAz79B2eiWFC9SLa5kgWT7EMpS0AOMWAQh9y0GmzpXMQACgRhdOr1OuWyFVNTfI/VLOqrFfoXLTw8bo58Mgbalq1WkUh7ql+O4mL19nEt4JmQQSuD6MRWuQeFi30xOYOFQIa5fecaqVumoVhc9w+g8mnT3oBzS39O2HIoO5c6KK68AfZv3Deb9MJcoBPjTkQQGym3a6jW68g1ccSDcEd8wB0s8Ufemv4fC2BBx3zDvA+ui1jvyt66ieyHINT3gQsoFjv/rd1mO3RH+sFuTIk0cvooj6hOjw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: s3tij8mqiaci5gxcksywbgemuhji7s75
+X-HE-Tag: 1795607961-695091
+X-HE-Meta: U2FsdGVkX18ehOnkdSFMqhArEt9VOXqfBd+UTs3j0PFDpNCTDwIQejoqqeMr/6h1Yqa1zazSiqgiWR9capofLTSjveP79N7gkUKl35jAo1yaXrJ647KLPSwEvihTFQcTrOe4OdQZc8WSKvDzahlbxmPoocT0o68vSUbNY690w9JQOOVTRsUJ+7Vlyso3xzgRnNVSVd1yExBqq+7yX2hAQLVKz58ojOdjnJbEYpoApL3rFJ0ssO0frcVZnYh5bkgE89RtxDHjryHEvQz3tW25jFwU98orH5Zhzncxi6n3cQ/vVWNy+IARIqIuskqj0A7tdOYRXpYXr85V66S9RNaIp2Bz840XJo5+bRVm7xwUk59mjj/WDAhqwgi4eWtGbW6+8bRSwdRQLIfa52QpTis74zhvD5xZSIZS5GoRnK++iahuOMjLvsm+KBkBOcFNmYA0SYUmmHJYoUgAKjmnm6R50TUhYrPeY2YmJvXUbGB+b3mfu8TpZ1JPpb4DaaEttLxlUfIvjBO1yR/J3cT0+CALFKzNdiSjnk9Ox+XYwGIS/6Sq197ooXdX2+FEolsMVRW3/SX1xMR/s4ployJw0RR8H0elimaORpQfRQzHOG42ArorQX8tXWlqK/wkIklIKDF7EaOy58mQ+pOQq8cpej0jM6BpP+dUfNZzkYp/AJxVTnJbvyT5Pcjj0uD3/RCf5DPa57jmbFgnZcOfr+fHysISbGMNjvS0zaY+RK0BF/1iSCoO238zCkWeEOz1eGRPz/OegcYLCZi2oNt9R6W6YUX5jno5uCOfTjZ/6u9D0hefthqORJpe1fYdDoBHRJLLpnsC7c5Lju+yVnZYiqlsqjdsA+19yvUFo40x7/5w0zdWLeqSMAaU8On3fMIB+tqIp+bcDvHIwle0nalF4CQH6hKHKXKlb9QF41aZAMaQpsEBrTbtKnMCG0p5Pjv9EHPUKkdOwzThQD3Py4OjufjRnWE
+ wlun7xds
+ mwQae4L5MWGTY8GrMfPG+7VKu+rZpQXC/66qjMh6q2AXa8PXeKxg9XfL5yrr0bQ4hOCYMqKJUb2MspwBDxGvyQNjH+YnA7d8KuzCr2ddiovRWFwq1Xq50m5sju3vw17tL9juNQEBAzFwqgewPsycS5CKOIVnrl7c65P9miHRztIEtrEVqycgovsaUsYwRH9uge9RZx4nLzw7qOH8ndaLNW9u8jWBrKEqiwVO3ebu6jXtCiJ/tpBQvZoDpmhS4BdJX73Cza/bSUmRaTtbCiKkEpbvYs25m3nWgH2SXi9LWXar2BM04YhkcgWcDMocH/bAJrFwQy99ACgI5erTQsJBkgPK0JBAlyDxewTKe9krCRcagKojlXXeRQdimJN8rEXvMZCtAFSo9TJDsg1LPawmwpsztrXGQ6ayLzAuPAf2WwjGTgPWOyZ2WUhTRoIuW/+Rm3I0afCbrJjpi8SRMeAK7WC5Z0he9vys6NhcltML10Y43c+Kc2zNhyXgNYUJaOeEF3xNR3Q4bvYBvCCnnTq0uzirXIRUV2paUKrsdSFdSmSjGwKI4yL6Yt+ZAzU7RnbsbjTFfCHY11iqEskhhYfqCv7f2HHyNJL6463xWgyyeTm6IiFKmimgs9FMZI0HKq+wnEV8pWZmmSd9nHVu5Ce1mL2O8GA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,29 +150,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 07:15, Zhengchuan Liang wrote:
-> hugetlb_fault_mutex_hash() uses the address_space pointer and page index
-> to select an entry in a global mutex table. An unprivileged user can
-> create a no-reserve HugeTLB memfd with an empty huge page pool, build
-> contention on one index, and time SIGBUS faults at chosen indices.
-> Pointer-dependent mutex collisions expose equations that recover the
-> exact address_space address.
-
-I'm not sure we care about this problem. I'll let other speak up.
-
-Attacking hugetlb users is stupid. This doesn't matter in practice.
-
-[I had stupid AI fix that allocated fault mutexes for each inode that I
-discarded immediately]
-
+On 11/25/26 12:49, Usama Arif wrote:
+> smaps_pmd_entry() dereferences the pmd pointer six times. Read it once
+> into a local with pmdp_get(), the way smaps_pte_entry() already does
+> with ptep_get(), so that every test sees the same value.
 > 
-> Give each hugetlbfs inode a dedicated random hash seed instead, and hash
-> the page index with that value. Operations on the same mapping continue
-> to select the same mutex, while separate mappings retain independent
-> bucket distributions without encoding an address. The seed is not
-> relied upon as a secret and is not reused by another hash table.
+> No functional change intended.
+> 
+> Suggested-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> ---
 
-Can't we still end up with the same problem, just slightly different, afterwards?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
