@@ -1,174 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EDC606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 06:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0938E606A32C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 06:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=OQ10UQlo
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=q5JFsByH
 Received: by kanga.kvack.org (Postfix)
-	id 2A6326B0912; Wed, 25 Nov 2026 01:14:15 -0500 (EST)
+	id 281BD6B091A; Wed, 25 Nov 2026 01:15:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27C9E6B0913; Wed, 25 Nov 2026 01:14:15 -0500 (EST)
+	id 258F46B091B; Wed, 25 Nov 2026 01:15:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 144426B0914; Wed, 25 Nov 2026 01:14:15 -0500 (EST)
+	id 16F546B091C; Wed, 25 Nov 2026 01:15:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C56DA6B0912
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:14:14 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4CDDF40E27
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:14:14 +0000 (UTC)
-X-FDA: 85472626428.12.3C3F2F9
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9CA9AC0003
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:14:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=OQ10UQlo;
-	spf=pass (imf22.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E58D76B091A
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 01:15:33 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7BA46140843
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:15:33 +0000 (UTC)
+X-FDA: 85472629746.17.7E2482F
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C82A7180003
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:15:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=q5JFsByH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of zcliangcn@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=zcliangcn@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795587252;
-	b=Iy0dr0PdHzBZUOu6qeNbXrS275fME1dqZs8XZy3+m+H5dh1pd5rffPYRsngIeAQsZ8m9Pf
-	1FScJVdhs1cv3kBapD9dCfP+SP28atlp9xCfWx8IeADKqsnUzrfiRraiWF+7rYi+zh6+gX
-	xMQa4/OBuNApXTuUcG6dTHrWDvIRCE4=
+	t=1795587331;
+	b=5WRHwNnsNRtU5zSKusNI30E3H2lqNyKjaHSgETkjb8a8QLmYHNsLin94B9+ea74CedQ5yz
+	Z1ydPfkCCKZiElOz7vd7NPFyTNdq69HuercZJ5W07DegicA+8GOK+A3ZmFhgfUh4tk2gsQ
+	8Gu9j6Iw5hCdOcj5DJMzp3uI04tsQVw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795587252;
+	s=arc-20220608; t=1795587331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nH1JDKUpxZKr2E7xywv7sSC/lG5A4nxPxWDHndTmH+U=;
-	b=DLAXADoy2fG5oxnph9lv3sqLaJm1giuebT3rwZqWtXc5EkxkSFSzOuVhV3Umul4lz3AGnI
-	bK8tD1JO7fl6PJPtmr7b16l91p7KLxa60wRkEjDuwJinPzwUp7XRBxY1tX6b1w9IpcrqIt
-	QDA42/RbbOuepO+HYpm2Txz0vGj2Yg4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GJn83fHmEkvzSXvNUuSjTxCL7XacZsUzXMIbSueFZFs=;
+	b=UngoMIgcc9VfnCgosL8qQzZ51FXq22qIV0L+SVBDBCzefF4CjIckFrw576JsRG7PMstuFV
+	aJguQ3w/Ydwes+zAK8OXDqrGiGB+2JWlpo7NQlQHYFEa6kucgOp1SNGErnD82HnGcBBJ2F
+	AQIZrBbD+ojkRwoROGwglTf0zemq05Y=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=OQ10UQlo;
-	spf=pass (imf22.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=nH1JDKUpxZKr2E7xywv7sSC/lG5A4nxPxWDHndTmH+U=; b=OQ10UQlojOOElMejsET63HIbzZ
-	3DHzvbtYIGqi3qtZVmlnOiTGbSwjJaXCrsDgpHInm2eUGr8Xc79IeDQYDrtJVitNB0FwJZCPO4B8q
-	+iOBeVWlbGzBejGX44u6FBx6jMlOzwnzs0/RPybD92JWe+ZEhd2F0VZXPfoSXXKlqmHkpJj3BYeff
-	PI7xG81lPzaQFyumhKdnS4tNxkr8IW9Cdx3c7fbkK4m5X/Zh5Rgxrc0VYPw9ZDhRuFltHqM60uFWP
-	hZDBs8jxgJq594XvPuA6d95qyJlYfVavjeq76w/EreE8GdBtyeqVTX0Sp6D1XhKyU0S94iu4liry5
-	Ut1LqIcw==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xW6Gh-00000008Wvh-0GYM;
-	Wed, 25 Nov 2026 06:14:11 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org,
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=q5JFsByH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of zcliangcn@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=zcliangcn@gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-386bd881d39so3737198eec.1
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:15:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795587330; x=1796192130; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GJn83fHmEkvzSXvNUuSjTxCL7XacZsUzXMIbSueFZFs=;
+        b=q5JFsByHrIlM7wg6y9vLSWggn3E0C2NxtdZYdMVtREm268Zt9VYWwrG9v9ASx2Fu4F
+         Sm2GAWSQuytxz06cAxsbiiV9eU4dTvVPOkYtpfbmxXm+ep6epSJtQpLEm35JQcC9ZL4q
+         0RQ+ZYL4xz5u2LeXujuSn47d1xqudJUBJGbRN5MS8ReETLz7EhV9SD9clOHHx1EApDCO
+         FSkmcmz8fZzcqEfpt+e55gUN4acvVW63Jr/PEihlzoUUw6d6ujpH0J6FoN8sY/qvyfGb
+         0RgvmM8uoiVQLxldQGFzKzQD1SzyVO5u8DdHPuQNfatTj9Jg952ilwN0q1AKBj8uD9zj
+         h13Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795587330; x=1796192130;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GJn83fHmEkvzSXvNUuSjTxCL7XacZsUzXMIbSueFZFs=;
+        b=KqHLw7IyqZnAQmNfwlTOgXlVI5dGgIaWjFCzgiNeuXMKuVzHopTlTxABQd+f2rQpMf
+         +IpxruKqgabseqAjyN++9lyZlJIG0lbq/ELXozALRN7LBaKpfVILDah0TSNzVMvaqkg8
+         VVvafQ7GnHwsMS+WPTmWV8KPWtJzQtH7BbrH7zanw7Zh21Xk8O9TEFOJ9qmJ5ELcPW7+
+         LbByBMmlOTSJK1ovkoSk4NVCpD3ifCcxehjmEl0NIojG7x2028L4Htci9lhdm7ClEVMX
+         TMsNOpqJ/C/nbSglNPzuQd3JtlE8IVn0z2M5hcQP+7881UmVbqIg1pJQv6ZznmmurENx
+         fiwQ==
+X-Forwarded-Encrypted: i=1; AL+hErF8rS3fHdEde6C38Mq+9P8E3VZmPHtYYILFbqGZ+/tzzzjFL5W8+rg7GFNlWJivZ1Vng53eVQ760A==@kvack.org
+X-Gm-Message-State: APuU4Z/tZ+C7TrzPuO7LfcMUOWypibg7ODgV8fnXi+WItkHFXTneRKXW
+	rmpW33DSiXMxXR38bgN41vwFF5F27LjNg9+zNubInjimagy70ddHFoy7
+X-Gm-Gg: AZFdTZcDKiW71vDaLbRWNMRz+xb8GrzKVru/jDat5hHBxw3ov88K/TyVPSvq3GIbtHA
+	nNkRYnkkMRmHQuu30P1VPSkRvUJ3Ui9tP4gQXuMN/+vYSgaZnQ/o8lAjqPxopx6DLf2W2DR+dV0
+	10/6Prsh6ClfnMDJkHZugRD+45w2r65QsLoF+gthcy4RVcoXsoH8lRougSkRspthsSqV9fcg45I
+	Fh4vWX4beJzSGNt9OXzZDy/gsrOrij3Km8dId/83k8PK3ohHMCOSOyMu7HOFiPQJVNCFjWB31xU
+	GQowE+OnOnzXQolLVb7ZzDZL4DVCbHqIObRfaYciv4gKGEYM9PggMQSJLkZROHxtxTnZQSVbB7h
+	CzE6kpXivVyVfybug31bk/TTVi2bB0lLqY+v3xtWO5bQiQUReYKsaZOXbPh0QBW5i8tVlTgly8e
+	S4acQi/2A/lqxru3DGeUdSAP8aET9gXFnpp+YmERP/m+rDb5fIZI0Fwwmkw1h8Lkusk4+IrLjQP
+	MdcNVJefitWNoDCs2UQ4DBRfbuk5sl3cesCMM981wuXTNeA5nwd52mIQVWNyGUf7KnA2Qx2E9S4
+	69404pvpLFotuE8tTdprLHuS8uEC8feu6waqpGKCdGBe8BynEq4yuJnOzMXN
+X-Received: by 2002:a05:7301:4710:b0:378:314:4042 with SMTP id 5a478bee46e88-385702587c5mr16061924eec.14.1795587330274;
+        Tue, 24 Nov 2026 22:15:30 -0800 (PST)
+Received: from kq.cs.ucr.edu (kq.cs.ucr.edu. [169.235.27.223])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385666e99fdsm62468634eec.5.2026.11.24.22.15.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 22:15:30 -0800 (PST)
+From: Zhengchuan Liang <zcliangcn@gmail.com>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Davidlohr Bueso <davidlohr@hp.com>,
 	linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev,
-	Chas Williams <3chas3@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org,
-	Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org,
-	Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org,
-	Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-Subject: [PATCH v3 12/12] docs: ioctl-number: update DRM entries
-Date: Tue, 24 Nov 2026 22:13:39 -0800
-Message-ID: <20261125061340.3402300-13-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261125061340.3402300-1-rdunlap@infradead.org>
-References: <20261125061340.3402300-1-rdunlap@infradead.org>
+	linux-kernel@vger.kernel.org,
+	Zhengchuan Liang <zcliangcn@gmail.com>
+Subject: [PATCH] mm/hugetlb: stop hashing address_space pointers for fault mutexes
+Date: Tue, 24 Nov 2026 22:15:21 -0800
+Message-Id: <9a97a64f7e7aabc668499c426a2417a77d13a2f4.1795587203.git.zcliangcn@gmail.com>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: x6jf7a59tdo347bmu3gxupcd4r4g6b5s
+X-Rspamd-Queue-Id: C82A7180003
+X-Stat-Signature: dwu33f5g1xxmfmwxzocthmzpsbgpfded
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9CA9AC0003
-X-HE-Tag: 1795587252-107696
-X-HE-Meta: U2FsdGVkX1/o50Q82F2Jm1GnRYQUm1g7XLDoMk6cb0dOxMfRhkOUcxUDR5fN6Y+f1ysR3bg+SK2cCrxUKxQ68RzFVhXt5WoOR5QeH6iz7f9u8a+WG8EhICq9fopsAaFE8UbhwkZ2xdPb7KoAWjaIFFSGMygsMTnn73Och+NMuqOcMgGBkMZrPwUZV/KBTl2nrgGAbb98GU/JYTqU60wbZXXExZUn5FnkA8uXif+V+69xmp1P+yHRSIwDVd4kCQ6q6T7W0MtAXGNJWHkwV9eLg1JZO0f/vsP/HVIQkdP0fjQk8q2OEJZnZPw7Dbp1ZpWIKWFeUBtnDxOW2/xjFN4aLRNe8CgYU6+HBtxwaI3h6TnEjzZMRbLZ3uLajLy9ossnSOp2M0BpqKyGNOMLq9GRqXWVOqVrOuDeEm7F3rUr2vyZ8LdhuBuTEfpfztCRd30sjByVROz9XmmuarbLXSMqD19uTZeePAoRyEufCpmGvctHIpEVTs+/98EUNs7s2lICKyNERc/1Nwgkbm2aqcLff5kVx0TX0YKhPNe+9/iwiD6R2lBKAWQ9zMv+F2VtJxmonSxqvU+qfsDqbS2yM7KZYAp7xVVbKFxpN4LUe/Zz0koTtiz4lJOa7WoUAGQ0R2gMmOTxNITyapv9v0YWylDq4YRvsgOdIaGb+R00zKtMDkHghPOA8SwygjO/B1J/uXpK/vCwUUY0BBz5l/GNMdXCu0/phRPAsv2U2EjUmj+56DuJv6+oAH+pju9db5oTv1v3oM5SYM6DKJaAl9Vx+BQPZqf1I7MaoifSWfSIY9DcF7sIpEr0eQ6n562EwAetO3JfWTBdwBD3FdS3YnBgnYV6OMEcdYO1vHYHcDOtou0Z9sk/R45VNZ69nIqrtOvlWwT5pkQfLCRJ2E011pApTL8IhdLM1cQD8CeRpqJ+MeY2ogqcwZK4fJBYeqR1b+8jQMMJdoNt0nOPXB5pv+hYLAf
- Swx13P+M
- HBGX6DZhkbKiGFsVRUxKDWoswoAFeEDdiB6LSzvpBRT57bUB88+0ge0hXMl1bS0j9ZSePc0i972KKzW4m9pY09A6oWkv/t50WyOHuVXIBaXaD4MVOXxOPOzhw288CH0tD5eG5ng7cSxt8NN5MpZhmcM8Zn/ARrjv//6flUFygmplKa7mVhohTg1QLoN149s3pNkUO/Wzb36ixrFQO/Wxcn4DnQrN7ilVGGTlSUHFVa1NXK9dZmtjeqKDO74rLahKYJdPXnbHVUf8lc4gXikh0y49U2mT8vKE6VxIvvOyo4KdDknJNG7BSegp0VqlbPJ0JBQog2W+Yzvpg0G/yRbfg5LxABB2JRGrfNfFA9yjgnvFjLJsaMmX2XIb40L13BZkR7GBN9+7dVJSLGJfvMRBuAx3q8e3HEd8bkaEToxbLglhd7YmC9DEA952swk+/dB7o78tCbiPTLsUqF+PNW9gaBu8jG5s51UOqtu5R0LpUGAMRtr0c41jSd7PJdU783Z9omZWMFtn2Tp/CcosaUKibYeGPkrQCjgvch4wswvjznkFC95bP0TBxISweTJ1ZZkMG+MGsdU5ZXib08pWL8gg84ucj1gxV4ol5pRP5hxMssyuavM0icDCtOWDS0mCKo+u/BzGowNga5Z2gIF/t5wPI/kw/HC0wqoKubZJUqtqlMaMjfrGeibDTUf+t9Bwas5XKkes5kFMRkXl7O1tR6L1VssrLGd0N8vhQb52ErbJv74qsD4aa2LNuSqTkFSVP+SfBz7GYW9Ov8W1dHRxyy6VnBR7jz686IZImHMRGsBoFXoSy3eCdkH5xgUlDoD5xxai3RpGz/Ygioz+aI+PR5c1b4cdanjDym5lkn2letMWo04QeESlaalAA2JRqdSYHocJ+H5y3in1WhSc0JMGMzqlNWEygoWXVeTTiyhRC07F9fMWq3gldImjQ+oH50YLJvQX8rKSlSyWak0SEefeDF614pd48IPYm
- JRy6EXht
- NXkzme2j/4H9San/C7e4QKbrUuu+UFm7YNJaMaBWPluOM90+0M4TZGHgxHRrtUuzP3AeqqSZ+yyPwFmI8Xj3Syun7lsftMV5BBoeTumHjFF0VDtbfeUPu/8jwDW5Dqqmq11o+I9sc4ECevkOd66IQt6hzQKjVcNMuWROLPp9Ii00OOYl/mQr3jxBijLJ2jRA9DRGaHqu/6Ft7OMiiIOWXbI7GQc21OnRaKhaINywVV0=
+X-HE-Tag: 1795587331-686749
+X-HE-Meta: U2FsdGVkX19yt6zr1ESyuV/e5b6PUsnX80DCbGtvDCdkDFi+0dHQpKosVMDQncJJp2en0VcMgK55dO9yiwx4RA0FMnsheYZLWzyeNDMn/0+LuQG1o2FyErXRdHcMgUXYzjduxieptrvpM5yBRmjpw3lpeW69rNFdMVtm8KcshfsrJFkglvsZX/A15MqRCpQXTS1xGg2Sp93jJXh+Mm0bzdBgrbiz7dIE7QAsWvdYq6hjIVpwR94+IuFEF4mqgrEBdIcH+mxWHi5JdWU0Cr+TrpuntXvQV/P5xTzNDTjRhzuekFecbsHnUIlDjoZR8Nn3AGCD3owAN5flYmz0/swLLhW5Ak12isHX2BYW2Qy4FDlA1oZr/I1Z6Gc97fEUNyI4O3wC5MeSV7MTKPl0CWIzpnHccxvR/CfKy4EZtYJWDGc/cJ0fvmcHHkndL2OusYsNl9n506IbH7xxWilLmVbgLYfGnzZjLbSnAPirLW9NZjjogmtwzY8SWAct0CvCw2vUbIUGesUP7sRjHaZALolkHa2c3hctt1ZVtBC0OZTnOIPQUHjI9yRV2dvI5SarNgVdkQNqYT0EtPXyMI0fcBLByJ8o4nPYHa9bPo1jCyKAudPnhKQcqwOvAkonoFsaYaLJff/Ln6bxhsEvv2EtseFPEkvxBWlfSVp8TxHc2y7FJUx4sQesGC8XAAKV802DdXSyklCtWUGtKNPjrwO5bdnprXqMl3b1HwG6t8nO2wJcAOcjh0l8PPvxTcmdLk5EThyoYbwlGaW7yInSMJKyAm3ecJrTg+kJzinJWLIXauHumKMNjdWZupeXnpk+79+k0jW7dbPc3Nju022CU/zkT+1DoXH9VkmFm5U+UI0dZUwllf7pJ5WKGS6klwBwPSlf/5K1UfX60KzxbSOt1L+z0pNYC3OmePU3+A8qoxrZQfRMqKDuBwFZGNAiha2OOBy/dvESqtS8BWGKC+OEYwkYH5D
+ i1EsW8ln
+ VP3qfoaeQAM3trdF/dq5W4B1w4c7TSibMX4RjhpOIFmZmYaEPNr4v2GezOGnOM8YzG4mfRH82fEUuS6NLJGWmuqURe30NvTPG23AUONWMdqshqJ4E5nH6ntuCdmAAwF6HuEK35uCdkyQH0gL+yfEZLfOAeeFNJKy5zEw6SSiOTWRaRomEmSgMwjvaPTSPp6f1lXhfMYOJoGdmTZVdGF9nOz8ZSZZjzCjJZ1+3r9pHqJDXTEvRD7fAdALzf+NfC7x9jWwUHLXuEKtTTHoXnQgaNTdtGNuB1/sXSGltnSznj9wrGI7kZRqmao88WjbUXI7rn+P8/DDpTA9SIFrcMdMn3EE0uUBhvEjs5Pjt6hbliLVijjk0ChlqqCmKr927isUElzk4DMex2T9SetQkzNInpGAcqRqYgcAWRwRVAnN8TKzmb4XtZ+ksKlW13Q8igCs5E3s0EWfHihUCpwK0L9TvBKiuJ9e6ESuFXcKWkMMkUOYpj2hE22e0oaj6pHUa+b9qOcnE7AAvVO+3F3CIMCevK63HoYrWEMkxdVs+B6klpXT9tersdXfmHoHRRuVdoz/q1KA2VKLH/2AdHcU90EoizMIDrGAtIxQkWaM7yMbPSGm+aDUlk/l3c29BYh2QJuZXhXCo3JxDmAH9gJADmGMtob4X+NYMTIdk6kc+kTEYoA9QQbDTJ6N/gMA8ttAhMFC4hq7U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,64 +125,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Update the list of files where DRM ioctls are defined.
+hugetlb_fault_mutex_hash() uses the address_space pointer and page index
+to select an entry in a global mutex table. An unprivileged user can
+create a no-reserve HugeTLB memfd with an empty huge page pool, build
+contention on one index, and time SIGBUS faults at chosen indices.
+Pointer-dependent mutex collisions expose equations that recover the
+exact address_space address.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Give each hugetlbfs inode a dedicated random hash seed instead, and hash
+the page index with that value. Operations on the same mapping continue
+to select the same mutex, while separate mappings retain independent
+bucket distributions without encoding an address. The seed is not
+relied upon as a secret and is not reused by another hash table.
+
+Fixes: 8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
 ---
-v2: no change
-v3: rebase
+ fs/hugetlbfs/inode.c    | 2 ++
+ include/linux/hugetlb.h | 1 +
+ mm/hugetlb.c            | 9 ++-------
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
-[Since having multiple maintainers trying to merge these would
-cause some conflicts, it would be more manageable for Jon to
-take all of these through the docs-next tree.]
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 558007fa5e88..72a406b97f9e 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -35,6 +35,7 @@
+ #include <linux/security.h>
+ #include <linux/magic.h>
+ #include <linux/migrate.h>
++#include <linux/random.h>
+ #include <linux/uio.h>
+ 
+ #include <linux/uaccess.h>
+@@ -1182,6 +1183,7 @@ static struct inode *hugetlbfs_alloc_inode(struct super_block *sb)
+ 		hugetlbfs_inc_free_inodes(sbinfo);
+ 		return NULL;
+ 	}
++	p->fault_mutex_hash_seed = get_random_u32();
+ 	return &p->vfs_inode;
+ }
+ 
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 58f755e70e96..61d833b7a76c 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -504,6 +504,7 @@ static inline struct hugetlbfs_sb_info *HUGETLBFS_SB(struct super_block *sb)
+ struct hugetlbfs_inode_info {
+ 	struct inode vfs_inode;
+ 	struct resv_map *resv_map;
++	u32 fault_mutex_hash_seed;
+ 	unsigned int seals;
+ #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+ 	atomic64_t pmd_sharing_count;
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index ce9c8e57b8e5..6865ff468343 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6091,13 +6091,8 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ #ifdef CONFIG_SMP
+ u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
+ {
+-	unsigned long key[2];
+-	u32 hash;
+-
+-	key[0] = (unsigned long) mapping;
+-	key[1] = idx;
+-
+-	hash = jhash2((u32 *)&key, sizeof(key)/(sizeof(u32)), 0);
++	u32 seed = HUGETLBFS_I(mapping->host)->fault_mutex_hash_seed;
++	u32 hash = jhash2((u32 *)&idx, sizeof(idx) / sizeof(u32), seed);
+ 
+ 	return hash & (num_fault_mutexes - 1);
+ }
+-- 
+2.34.1
 
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-doc@vger.kernel.org
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: intel-gfx@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: intel-xe@lists.freedesktop.org
-
- Documentation/userspace-api/ioctl/ioctl-number.rst |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
---- linux-next-20261123.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ linux-next-20261123/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -98,6 +98,7 @@ Code  Seq#    Include File
- 0x1b  all                                                              InfiniBand Subsystem
-                                                                        <http://infiniband.sourceforge.net/>
- 0x20  all    drivers/cdrom/cm206.h
-+0x20  00-01  drivers/gpu/drm/amd/amdgpu/amdgpu_umr.h
- 0x22  all    scsi/sg.h
- 0x3E  00-0F  linux/counter.h                                           <mailto:linux-iio@vger.kernel.org>
- '!'   00-1F  uapi/linux/seccomp.h
-@@ -268,7 +269,7 @@ Code  Seq#    Include File
- 'c'   08     drivers/scsi/ch.c                                         conflict!
- 'c'   80-9F  arch/s390/include/asm/chsc.h                              conflict!
- 'c'   A0-AF  arch/x86/include/asm/msr.h conflict!
--'d'   00-FF  linux/char/drm/drm.h                                      conflict!
-+'d'   00-FF  drm/drm.h                                                 conflict!
- 'd'   02-40  pcmcia/ds.h                                               conflict!
- 'd'   F0-FF  linux/digi1.h
- 'e'   all    linux/digi1.h                                             conflict!
-@@ -292,6 +293,8 @@ Code  Seq#    Include File
-                                                                        <mailto:zapman@interlan.net>
- 'h'   00-1F  linux/hpet.h                                              conflict!
- 'h'   80-8F  fs/hfsplus/ioctl.c
-+'i'   00-02  drm/i915_drm.h
-+'i'   00-04  drm/xe_drm.h
- 'i'   00-3F  linux/i2o-dev.h                                           conflict!
- 'i'   0B-1F  linux/ipmi.h                                              conflict!
- 'i'   80-8F  linux/i8k.h
 
