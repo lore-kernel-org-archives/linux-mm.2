@@ -1,95 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18ABC606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 05:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84423606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 05:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=clvSJ2ws
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=HlXDUdBs
 Received: by kanga.kvack.org (Postfix)
-	id 387C96B08EC; Wed, 25 Nov 2026 00:00:40 -0500 (EST)
+	id 62B1D6B08ED; Wed, 25 Nov 2026 00:06:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35FB46B08ED; Wed, 25 Nov 2026 00:00:40 -0500 (EST)
+	id 5DCB96B08EF; Wed, 25 Nov 2026 00:06:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 275526B08EE; Wed, 25 Nov 2026 00:00:40 -0500 (EST)
+	id 4CB026B08F0; Wed, 25 Nov 2026 00:06:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 07D776B08EC
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:00:39 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1603A1609E6
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:00:39 +0000 (UTC)
-X-FDA: 85472440998.19.CD66C50
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2868E6B08ED
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:06:11 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2E78A0CBD
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:06:09 +0000 (UTC)
+X-FDA: 85472454900.08.DF341C4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5AED9C000D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:00:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=clvSJ2ws;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1F39A80005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:06:08 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HlXDUdBs;
+	dmarc=pass (policy=quarantine) header.from=linuxfoundation.org;
+	spf=pass (imf30.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795582837;
-	b=wwpjtItYIU2KTNASiSICXNh0az46spvtzLaCZeGDmc2QV381Uss74hrWXPJwUxUvbPJdmP
-	WC6pwLfw3KBFxU7dl8g4BewQn7aCUdOMO29slqD0KuddAjCXhjVHuowvQZt78e612tbD1G
-	EP70LeqQJ872WdeQ6HxjhQTpzy7Hpaw=
+	t=1795583168;
+	b=kI2Ue3G7dpBXKRO9A61wSj6qTVwczaG2uS61tt7ISDZEe7KRE2gCsD26pQcMoWnrH1Qn5O
+	Cqi+v+WQEzJxY4UFTrYbAItvDx06jA5HFqDG0q6+dFUIfei4sgHAs5mibEoA7a0NlRGNTj
+	crzFlcz3Krx6JH8XPMbveEnXEn7xDlQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795582837;
+	s=arc-20220608; t=1795583168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/DyrLQAwnaVdIlNNu/TcqCjNECAIqfAfCTOu9JpszU=;
-	b=gbA2lcZ4Z8+gb3DnJpCRlRO8VvEWHxBK9+MvK0XqNknVZawmZKlJJcHGi5kWQ1lyRRB5uL
-	9Hit62u03M6G5Q95xc0BNp6fmdKN6jKElvfOfuz+C293nZNy4NUYuOOAe3k5N4KSfIlcS1
-	SO2RNV69DYjcN0hwkICKIHUt9PJSEAE=
+	bh=Uz/lRB43XRntDAJzkH7ycnHE4dBan8nKXw3o4HGoSjE=;
+	b=YLEEPsr56S3rJmGOGC5C7fKv4YOePj+k296nr4cL+51treb9o3DRfg/3AdrasTwWYBzBqw
+	juoxi3OF3cSyUPSWaCZli/VhyfF8kxDxDQ3HKRW+oRW7vYORIG6h78v53jtFlOqL3LZWf9
+	1eqpriK2NBaqfbMvGg7ou0UKolgmsMw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=clvSJ2ws;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HlXDUdBs;
+	dmarc=pass (policy=quarantine) header.from=linuxfoundation.org;
+	spf=pass (imf30.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC2AF605D1;
-	Wed, 25 Nov 2026 05:00:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484571F000C6;
-	Wed, 25 Nov 2026 05:00:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795582836;
-	bh=6/DyrLQAwnaVdIlNNu/TcqCjNECAIqfAfCTOu9JpszU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=clvSJ2wsEVPXgdnUPsGMilKqq2Vs7zlX+sEDEY2h0DNxB6u6sHU+6YIYZBPI9xAUx
-	 OD6DS1EKqMljYfDZxJGvlXmGqkW5TnhVbIes5XEhGopFf1VwXbeKg39oH9AcUDwRqb
-	 tfNO1mummX160mXsQh3fPgYO0DzKKtzNRoMIGhT5u3nvbBFxzRXKsp1t0ajNbZRlkW
-	 Obc6p7APVSrrS65Y9yh6jpr+i8CC090I8N52djW7hkcHCMENZeKb1gxgVIpYz6x2V9
-	 JCGeZDpFRyLN+ZBVVNtH69K7rufxntzJsyO5hPj/9tP0vPotsT7YrW+y8LPaQNFrms
-	 yW8csjpMktxVA==
-From: SJ Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "linruifeng (A)" <linruifeng4@huawei.com>,
-	akpm@linux-foundation.org,
-	chenjun102@huawei.com,
-	tongtiangen@huawei.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon: support freeze kdamond
-Date: Tue, 24 Nov 2026 21:00:28 -0800
-Message-ID: <20261125050029.100568-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260409140609.59881-1-sj@kernel.org>
-References: 
+	by tor.source.kernel.org (Postfix) with ESMTP id 8DA7260E76;
+	Wed, 25 Nov 2026 05:06:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392EB1F000C6;
+	Wed, 25 Nov 2026 05:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1795583166;
+	bh=Uz/lRB43XRntDAJzkH7ycnHE4dBan8nKXw3o4HGoSjE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HlXDUdBs2uLBBs/puvB7zu8QlY/VjjLdP0hmISSus30YRf4hL0tV1W2VDoWCetPW9
+	 k6GUWglGmvzRaVJf5K/o168KBMpWmZ86xKCVZKu3vATMtNSEABNCV1AkNfvPcjFmBg
+	 IOIZnu2BAzE8a3gNJopeLTbH2ZE03IWUZdBhBopU=
+Date: Wed, 25 Nov 2026 06:06:26 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Pedro Falcato <pfalcato@suse.de>, Dave Hansen <dave.hansen@intel.com>,
+	x86@kernel.org, mhocko@suse.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Kirill Shutemov <kas@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Naveen N Rao (AMD)" <naveen@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	David Hildenbrand <david@kernel.org>
+Subject: Re: [RESEND PATCH] x86/devmem: Drop /dev/mem access for confidential
+ guests
+Message-ID: <2026112533-juncture-skyline-91d5@gregkh>
+References: <20261124160025.738362-2-nik.borisov@suse.com>
+ <0dc6759e-ada2-461c-85de-809c170abd6a@intel.com>
+ <awXBtrPSHfs51Y2f@pedro-suse.tail5790ac.ts.net>
+ <2026112404-hyperlink-widget-ff36@gregkh>
+ <15d9c032-a8cd-4469-9272-0964e8d9ac9d@suse.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: e89rfg16errjunaasju8up8p3nm1qi45
-X-Rspam-User:
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <15d9c032-a8cd-4469-9272-0964e8d9ac9d@suse.com>
+X-Stat-Signature: z5q7xxzp8ha63g85zadc1a6u8ridig5e
+X-Rspamd-Queue-Id: 1F39A80005
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5AED9C000D
-X-HE-Tag: 1795582837-29217
-X-HE-Meta: U2FsdGVkX198gG9sAPRQXoLtUv6eAI1i263x0Zs0RPDIZRFQBpbnhgkqyMuk91mnwmm5KY9BZ1SahdHLcvKoYLpg9T+NRqGyeDDxgzoIQwKEkcAS3jCJ3/PmGOPgxiko9erwqULQpSPwyWIvEQS07xPwdFq0vjg3oCmpSbmtQgI3+YKz28SP5OwurTfqutCQBMg94148YWEYvDOEaBCI/wNgk+rCwqryfHcwBFMm1NAMjomtcUhcG2SNZUhpGuaVSNehGOX045dlkmqoFle9LNxl1iG3xTGyLs/vxxXvVvaBiVKh1S6R0nWWGJPKQZ9k/Kaly2jRI4oC6tPkEpa94juEIOR+A+7zZ2wnpnkDwmqvSmrvDQj8OHwoIsinYz3jMWz7DCTJVBvtVQFo4jtisu46m64rSFo7M0KZepCEatedEYqJD71c6fAnSFx5Zk5/oSfnBE6RzYB7wOVL0A90dJeCPkOreu3O/n0UmAJfJ7+OQ+eL43OvTaSeO/j+xIAwUOF4IDgkR2ootk/PO0IBGuYj8RTbrFIrBIVHAD9bTEgvvD+QSOJ2yUS5QUCc59zQNFEtj4y8U4ty1DUXO0l+0TsiWso5Ke3nMbjyDsXtSajbgzfPVV1hEftbgh4UL+0TMiiKwjAiSlkHlXLwWYhelB7bCmKqbh+2IyekZn+2IsaRJAUdmQpajQP5p+FbyaxJHML7XO9444BsRk6q4PC8seCLNiNDfEVLPSURlC0H9xE4xPid/0JFT9P3a4sg5HFZfziWxQGP52h9SVVLhhgC4SOYIZrjKFpZ76zVNJb/iQLCkkR7n4lwFWfNrfZpcqjtTRF5gMCeY1El1VH/OQsFPNx4BYxL+xxWJ778I+UIAxW/fYOge1IRfvIo1CLcCHVJ6fuiBdislcw6mUUj4Ba01DLDjeFik5z1a1pe4Nd4MA4B+6vQfL8mx8U5HktT3twjytuEySnhajH8EMonwe/
- 6tT9EJgj
- VdoQrx1Y09tG3Q/CoIuStn+12iZ0Ar3pW5CNozJOlzNnpKyotWd19JDd21eYgbqbfmGK39dK2nsCOqmpVgy4TaEcLM7Sos1a3tOi7wCplz+Ex6UY1+uJ51OGBv5Gii3P20vfMkTPpfsOfbijZjr3E8iKhaQNZeH+JRAFiFDwfVz595hXuepfc8RLCuhZZT1FaCWJozKuNctqE38gqO0d9ndFnX0FxXcmSaT65opWooHaRhFn5syEFKbedJgbA68FRBNfGD4ivOH8XK3dograyYDxF48JQwBLwARQlMtTgj3JBQZzqR7hI5LcBYl69lu+hNHwHtnpH9sI15LDWbM4IIpRqz2EOD62KEg/qcl3sxpQLWHJ6c32TyIB1I6M1DpvOgTaQQnMgNi6Mq4K4CnW9JGXwUu763GOnf026VRCz0evTMK4InDprMyGBFDHH8TH6yrk2A8OhwlHdx5SEoqHbhGeiQ1CuLryuMOiT
+X-Rspam-User:
+X-HE-Tag: 1795583168-688440
+X-HE-Meta: U2FsdGVkX1/zyvzTmuoghB/DOaGJhogcwU/cckt81vPJvSoSzmcPf3/2E7NAxvVdFycManzIP5Z+tirDdKy8zlESlLYk7WWtZ/J2I9wagTFo6I2FbsGvUSyF4AUUKfTWMQRI2SicuMiK8lBDk5CiRNRPkXQ1PRuiry2MQSKDqGU733AomN4dls7MQwkImfmP62SX3sKqVdnuln6IeQ+7DMYRKb8refv4KTkswJB43N9FF/02+tDUsuLXkgdFvi2ksbBRWoP2nv454uj1GtT/GFNdckLkgCnAkSUHZu2jh7j8MN0mVqsIi+Em94kT5GP6reKtCQooN8iEQAZLCwPOa2spj9rjGdCrjXevoEPddJnB2Wc3+xbIjs8JkyeiueGHFLj28cpeNNdrnZ4z5tEnQKmTl5OHxvDskKXDCjPC1BXkfCxly+UluV+mI18MxeXXHjJTBnbDvNcXh1c3aGNf3Zzavi0FyeQHTNny5JPaUrogmdeJgaJFr7mJnq7cC8OX2Pe/AVGiRVjEREPyyodXZ3NLS2mE13Axgn/BKWDDuT1+5QaphVNqzz4O1a/Rca7lpqyxBBbfGXVMpGfFXLz5WZkMBlbAHsM0hosXHyOtXu8rwOLG5wx3tvIi3GlI8O/ymUVugu2CtBd0Lm4NU8nA0+O7T1QuKvZWAQQp9CQC3uucxAccLwIFKejVy4N5xadcx7f96TnPfFOkb/lTKQ67e1/XArCodh2aEJzxKYUha1JXWvebTFIo9omAFz6RuMubTZ9c/hzvp2iMv7rRo9f7eP/YEQ7gfQORDqmuJJnw+ZYvJnkvOPvcLa/cFULtKumOZWqkQuurla6THQqNBigUNrlsLAKNGWUZExoQTi4+4GqeSwu1xiH6JjwS8mWKemOx0XBbDw6fyE6KAcnpPBplgK65/f3jM47DJpFtw9XCttY2BRGLx2MdO9q6K4tDQTK0nOI+SrE+0qQO+J/XiXz
+ h8pAwavs
+ Cvw5o2SlVM2gGb/415kt9ZOKdaUML/9scK38SDRr9hqAlwp1y9k0zrxDrtD4VHyiJmg6iGoGyvGoltECxo7mCYNw5LjtD2kMKwIqidfREA7RjqHvD0g/E7Eq3B6vVcfJC6Syyn7ENddWczEMRKh7o2CGzXOVpTHQ9aCOU3wlZ6ek2+3cwQJCAhRRnJ2ZH+yTKzzHsaMf6J4XtsvWwW3raJyx/qjFA6L/+PJQ/c3BRTMYpXjMc+qpelY5w+dHpvKLbbfFH88piVKJZjdis7PIN7/ClDtABuWWEtz1kWopNKXFJfhpZgsYm0FUwRQCGRqL+18M34baEI0FBsLInhA9SW7rq7oQZHQ+bT1Nmlj+EZGv3lPnjxi3h0vJF+szcD8HFF8xehmkbhzI/9r3ddEga5GIaFF8JWJ/PUMnhSYFwDzSK8JEd5xbKsHr/YNTpKWZSFAxUIvkiOOU6w+9RexJ/FxCLVNNa9EHI1WH70hcOb4ADT5av/muAL4eFD5l2habshPcuHdaYdX7bPkU/9MzqbhLC/1UMDWF5cTkTm7SGLKOTIvQW9xU8j/aWU9pnW4r/dMQY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,40 +111,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello linruifeng,
+On Tue, Nov 24, 2026 at 07:53:53PM +0200, Nikolay Borisov wrote:
+> 
+> 
+> On 24.11.26 г. 19:35 ч., Greg Kroah-Hartman wrote:
+> > On Tue, Nov 24, 2026 at 05:10:21PM +0000, Pedro Falcato wrote:
+> > > Holy cow the CC list is stale.
+> > > Fixing some up.
+> > > 
+> > > On Tue, Nov 24, 2026 at 08:36:45AM -0800, Dave Hansen wrote:
+> > > > On 11/24/26 08:00, Nikolay Borisov wrote:
+> > > > > Resending this with the hope of either getting it accepted or
+> > > > > arriving at a consensus what exactly is missing so that I can take
+> > > > > it from there and eventually get something merged. As previously
+> > > > > mentioned this results in real problems for confidential guests both
+> > > > > on TDX as well as SEV-SNP.>
+> > > > >   arch/x86/Kconfig |  4 ++++
+> > > > >   mm/char-mem.c    | 10 ++++++++++
+> > > > >   2 files changed, 14 insertions(+)
+> > > > 
+> > > > I'm still OK with doing this.
+> > > > 
+> > > > But I didn't want to sneak an mm/ change in via the tip tree. Any mm
+> > > > acks or naks on this?
+> > > 
+> > > For what it's worth, I don't love this fix. Yes, it fixes issues in /dev/mem,
+> > > but it:
+> > > 1) skips any other potential problem spots (I don't know which)
+> > > 2) open-codes random CC checks in mm, which is kind-of regrettable
+> > > 
+> > > OTOH, it's unclear to me why that CC check is needed. If configs select
+> > > STRICT_DEVMEM and IO_STRICT_DEVMEM, shouldn't it Just Do The Right thing?
+> > > in iomem_is_exclusive, etc. If not, could the CC awareness sit there
+> > > instead?
+> > 
+> > Yeah, why is anyone letting a CC system access /dev/mem at all?  That's
+> > ripe for abuse lots of different ways, so I really don't like this
+> > change either.
+> 
+> You are missing the point, this pertains to /dev/mem in the guest. There are
+> a bunch of libraries (libhd for example) which reads the first meg of
+> memory. This causes the CC guest to shutdown in both AMD-SEVSNP and TDX
+> world.
 
+Then don't allow those libraries to work in cc guests :)
 
-I was thinking how DAMON would work under hibernation, and recalled this
-thread.
+Again, why would you want anyone to access /dev/mem/ at all in those
+types of situations?
 
-On Thu,  9 Apr 2026 07:06:08 -0700 SeongJae Park <sj@kernel.org> wrote:
-
-> On Thu, 9 Apr 2026 15:20:10 +0800 "linruifeng (A)" <linruifeng4@huawei.com> wrote:
-[...]
-> I feel like it is reasonable but I'd love it more if there are more concrete
-> examples and/or observations that support this.
-
-I now understand following problem could happen in theory.  If DAMOS is
-configured, it could migrate or reclaim pages while hibernation image is being
-copied.  It could make the image be corrupted.  As a result, the system could
-run with corrupted memory after resuming from the hibernation.
-
-Users could work around by stopping or pausing the kdamond before hibernation
-is started.  But it is easy to forget and cumbersome.
-
-So I think your patch is better to be added.
-
-Nonetheless, I think you should replace kthread_should_stop() with
-kthread_freezable_should_stop(),  Otherwise, it could have kthread_stop() /
-freezer deadlock.  By doing that, try_to_freeze() call wouldn't be necessary.
-
-Would you mind posting this patch again, with the above elaborations and
-changes?  If you don't reply in about a couple of days, I will do that on my
-own.  In the case, I will add your credit with Suggested-by: tag.
-
-
-Thanks,
-SJ
-
-[...]
+greg k-h
 
