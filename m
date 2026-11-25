@@ -1,112 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796F6606A69C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 07:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C11606A33D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 07:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=v8EOTEaR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OSPCAGvB
 Received: by kanga.kvack.org (Postfix)
-	id 875B46B0922; Wed, 25 Nov 2026 02:36:32 -0500 (EST)
+	id 3E6DF6B0923; Wed, 25 Nov 2026 02:38:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 826C06B0923; Wed, 25 Nov 2026 02:36:32 -0500 (EST)
+	id 397A06B0925; Wed, 25 Nov 2026 02:38:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73D496B0924; Wed, 25 Nov 2026 02:36:32 -0500 (EST)
+	id 2ADA56B0926; Wed, 25 Nov 2026 02:38:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BAC96B0922
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:36:32 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3C0A1C4607
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:36:30 +0000 (UTC)
-X-FDA: 85472833740.05.76490EF
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 890D7140003
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:36:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=v8EOTEaR;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf09.hostedemail.com: domain of BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F3A036B0923
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:38:40 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7714840E2C
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:38:40 +0000 (UTC)
+X-FDA: 85472839200.01.5B27545
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 93A2D20005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:38:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OSPCAGvB;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795592189;
-	b=toBedIe4cQf/z0Iz9o+oHVKoJnYmVqk3vfR1BiM6uiQjjVmqgRdJoFC460dXjjb5V2HTh8
-	A6yLxjPHBbSuHKWPjwK5kvX0ORYQEXE1S7GHlV/UV1K+3KWf5nojZqP07pn1cbP5PhEKff
-	hfxS9bnlDwPc1bnyM7c0+4TQaX8Gaw4=
+	t=1795592318;
+	b=P8VNHXpgb3X+1+l00bR9v5OSV8kSQkU22wo9HofT89q+GvegGMQeSuo7SDF5diXzvDK7IE
+	zH3s3IO7aDaL0Txf/CZWBbNLlGDog/0Alddtl5PMmNVlpJoG13nYwg/FdCIfCSdLM3dhHc
+	ewJLeEVpUX1ukbtfn3TYjp48Xv8Xhzo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795592189;
+	s=arc-20220608; t=1795592318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NqNmpPsXgETS8dZeuiCyJlLE3rCmwYk+XFbPXhBfg4U=;
-	b=c3IhYrehxIantLm7MK0e+nANl79Jq15IaaezHZ7l7HBUf0NJAV4YtdtfOPf36a8iZ+ECUx
-	j3VnHOqQsbBPwmkVSqp6z556JL9+NIya4/UJnxo2zQaSvRp2W37e9/RQZNVDxCrbDi92yQ
-	/yQerMR9nT/XHwmp2l8vHhdHvuDxkzI=
+	bh=RGB+fOBKdYyUYIRe+oBpjk90yiPpoLkK9I3BKuiG5yA=;
+	b=vB2kVFw6/ZStewqyzq7WNPI8wv//lnFtrwtw0P272r4A/amb92e6KnR8zxd22aplooV4sR
+	g2ivm++gG2HL+FhGa4SGTNAGD7XBNVNojucvkCPrN2HaOVWsMErxkuyApivpfeAeDN11fZ
+	EXs/+6dHLxCLYdX5iK/38LANox6I88c=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=v8EOTEaR;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf09.hostedemail.com: domain of BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NqNmpPsXgETS8dZeuiCyJlLE3rCmwYk+XFbPXhBfg4U=; b=v8EOTEaRlkbw5Q1MD4ATdrS8Du
-	2wLhbbgEsGmVs2gzSbe0zfglIVkfdWxz0ovS9CWjZwEl1CGJ2/C7bDC7X3WguhCzxTmDvhE7lnkdB
-	2PdOthUl8XjMxaiLMQS4DnMzgiwDG9gkZMZ/MgOxviFcgX11LYqlvEvZ9qIHOuMPnlfD6S7+/WcLZ
-	x78t4cRSYCT/NuBnjkRcOSbjdyN8MJavl4xXiAweXPTJalZVcgJgOIkJh5lrxmc7BwYeSj0BK7DW3
-	D5sQTHw1xvNoOL5nVGPUXJgyiWNirG1cAYedkL4VUTnWGojZcvbrSgdl0Tsg5R6yhsibfI/6ruAfJ
-	7f0262bg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xW7Y9-00000008uf8-3ovC;
-	Wed, 25 Nov 2026 07:36:17 +0000
-Date: Tue, 24 Nov 2026 23:36:17 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: John Hubbard <jhubbard@nvidia.com>,
-	Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org,
-	linux-nfs@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>, Michal Hocko <mhocko@kernel.org>,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
-Message-ID: <awaP8a3GaI3LCcuw@infradead.org>
-References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
- <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
- <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OSPCAGvB;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D6DF60F97
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:38:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56B31F000E1
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:38:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795592317;
+	bh=RGB+fOBKdYyUYIRe+oBpjk90yiPpoLkK9I3BKuiG5yA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OSPCAGvBBPGdVwRymygPVtZlLky7yB4MBRcAfgZvdpmP8TnQttwwd2uEES2lbnSK4
+	 KDkSWj+W9/RypsuypNPrqG7Gtrj+e2xebWj/gdrrLO4c8ausIuArnWvTp14CXnTe1J
+	 Whr8byp4VzBVZWFHU0cvykhiJIcxc1DMlm04nhHKD4ajAQHTGd+DYwIf8F8zwHd9OZ
+	 qzBJ8+SkWVXvLU6DPaJhOkezKgw8LHJZNLOr8CgHeOSG1EajNHGo3izVrNnHRCjogs
+	 9Ls5SMtKEZrgR8C+w2nvtaXUIqCZp6n6EhXiJvEtMg+x0rkxUOZdLXPeAf01vt1/Ih
+	 T4fo8VAWIxZ0g==
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-949680e6d82so594281585a.2
+        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 23:38:37 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGzCFlwDiFUNTlb4dtB1QDsHBTVVgG7FMCiXWEnq35SAdyeriJi6UHfG1jatHr/504f3avgPqVHjA==@kvack.org
+X-Gm-Message-State: APuU4Z9+tj9pPbLnUrhzp5rFphMhfE6I+9xE1wrdE6KRNezEUE4hPo6J
+	p59WSRMI9fyyZvu36igdHT2RftDX71nQUsqFOVhElfmN2cl/muB7Wpp/DziBz7fDG7+7zZ/Nbjo
+	o0tCpC0VpC8sS6bjBxlJswNrsvURGa90=
+X-Received: by 2002:a05:620a:171f:b0:949:7f5c:6d9d with SMTP id
+ af79cd13be357-949bab24d39mr2862714285a.75.1795592317040; Tue, 24 Nov 2026
+ 23:38:37 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: zt5yeb4ffre83ued1pxe8bipy44w4dwj
+References: <20261125-fix-mglru-kswapd-age-v2-1-4cc37437af9b@tencent.com>
+In-Reply-To: <20261125-fix-mglru-kswapd-age-v2-1-4cc37437af9b@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 25 Nov 2026 15:38:25 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z-UdXQg0LYqymEZdoHALPmAZC7eGcXbGad6f0sdjmkcw@mail.gmail.com>
+X-Gm-Features: Aa3M54ohWK453GGCwz5KqjeaTi0MuN11Z-VTtmlbSWu2DhjYRrMVio6g8TeMuFw
+Message-ID: <CAGsJ_4z-UdXQg0LYqymEZdoHALPmAZC7eGcXbGad6f0sdjmkcw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/mglru: skip oom killing for order != 0 allocs in kswapd
+To: bingfangguo@tencent.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Yu Zhao <yuzhao@google.com>, Bingfang Guo <bfguo@icloud.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: hd7cgxcnmtbgm88epir49ne6777588it
 X-Rspam-User:
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 890D7140003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795592188-6579
-X-HE-Meta: U2FsdGVkX1/atfbL1t3TFf5dLAq3b+VzidnoCvBF9l79GlgUjqIg+uK45I5SUFUxi9qRg7QY2Jrz1A19VZEj54TckdEX8vptBaaTxlv2TJ/z8P8IhOrCcmeRF60yGvlx3UYS0vHGc1K5oi93MBeGas2Vqm0pD0iPjJZo65gg1AEgtQRg2LO6NHtyfz6DFU2z0V+E9rrO/IxbpvN0+LTA79vkNjc+TozIQUMH5OKhisXyDNMcDaH6aXcwkdF0kB4RffHpKYrmTYXplswxUrnv9yHT4zZwGkzt/PrCQ2EI1zvAFJWkEU5ndXSjJsOOeBI918Mgw1gtoF9Rks0skpyhkal1PVsagpY4MZaIrWI5RBGMBB/pCQb8SlcdCtZm4CRa7SiMzDZLoaebBmNZdBJCoR7KyrT6o/h9Ogd9u635NF4RwL0Reou80FXFfGINlgJihNkgfn+qAaebpnX93fJSq8x1/jz4n4isq1hI6rVr+cbRubfRDFFS1Cze3KwggLcDELOe42GSm+flmk3fTVrItQ6GU3Xr2zUZHC/YvtWIeLe4/tPrzdjdgo43ckeNWwVqo1pjVIqMxpfGJw3dFreCLlLY4WcHyzTs+WDiTt8cdqdXEsCfji/ZnNetiIHeoPXd+z9ZZ2Gedl/Tj5v+Iavcqfx0S9M3adyOunsw9f/g3TY3/E9O4sYel/CMINBEs7TopvVLkC4g3ytmIdrVviyGdrgANtzuDLcMDXnPWEkWIok67UZBD4xL/WXH4q74Q0r6Y8NuKol96RrgeddgYgIdM4Szglke+/rfVc/VOetVnLgCJ7wWw9gY/GJ4OUFzseHmyojbwrmMSBmwxMNbETOIzLIggA4lo5dsC5hlBp5r7lrlne26TzmD1Tq/W+NegOQlpzNjhtGWMKauENBttkpuczjvkdFE80pMA/4uu9oh7lqp/hoEWkYBRCFfLfKrNqJsSwIgXmvbHEa1EOLig3s
- lHnoAjKQ
- M0dTdvGWP73fi00uj0roNg5zb7xgKQFpTia8imeYoVY8xlmNxufkOlWSD3oOzs3r9iqon51bfbxwyxXMIF9vREglKAKALHhL7YIuZ8FoYETKtYt2RxXWa3EkxlQx3jTxMyH58nrtgs9RnWywLP8pF28gnIZWlPUc/7blG65otcQ/MFbnnA75x2UsARoBorVmMyvvfpo73VKw+nehEyho2c7PEV88f5WW7rqmcXEJpnRhBvsMFmgIsjESPNKiA9w7K2QCTdbVdYiDCQcvffJVDNoi3M+kHL4cA0yLSkb3CqVLv9J66VGy2oPeXb0Hl/Co1t5XJSQeEuUASTGU+6rvBqEe1ZUcWA7FZOV8klUD+RiS1dTG96hnNGrqXTgCSBTAc1nlzgOouIeLRCJtgcnpP7x1cgGhRiTFan48S7FfczEwd+hXwQKKi+O3hYNSqdD5cibKP6RJQy3/wGjtGvdei87FzxUagU34JzfUyvnPVp8JQ/IEEvQGbB4Nko2O/LvrWWGoaDjp8YFf0NhLEJS25p2kjlEfByVGTsHKFvd+KrFm5+evjw/1UPIDh6aZ8AeghFSHS5kkJz5CCDLZZenPCtgyHIaqYu66ETmL3aiMWx5hZhsz27V8EIapHNCBv9mWPq0nSsPuPCi1X+wYgHsl9RQqZlmCbQ+ToAOGZNrlFjhP7RnxBCBV8kbAdbUYhYyAGRushNhXikAj+k4pTtbRGwkNhQ1Md9HL40F8AdxIEwLZGD0yLGLAAEbBRe3JcWBlgsrxLxzdNZCKX6MMsoDj11tJpGz/UkwpZ0FTfQJRc42bHQ65HTn+7tZfvwltLxLzsmPbRaNchWZLTnrqjTOTiYzml7zdAR/qutyAitGH8PQ+ArIOz6zzXLxO1iQ==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 93A2D20005
+X-HE-Tag: 1795592318-381437
+X-HE-Meta: U2FsdGVkX1+F28Ql/dwSbUvd7StRdAG048uWcphptSwoDuOkhmD9wotBQNW1fNsjMFxWvjyRz7iIOa1eJNtdLcTLIAIMaiKaG06chVwCORLOOWUoxlFxJvpoklnqeRRqNto77t14qVeoYOTE+AfRuFH6VP+3EU+4uZGpJGQrzQJPcrNkssSxwuJXOA7+YeKL3TlrbbD3N5ExKU9RQapviNPPwyUKUZW5SVf9dZXRRJlOKjxbE91PVCLbgcDcyKdcwEpeG1N4gGCx6kTmXEZ+VKhORPUA7DGHckgMvrGp91f42YGbg/Dgeu1UUqQGXSchuEXtySdHbUC/uEwBAR3m6xTLR0iKr/Twu7Szfz6g+snKOaV4ohi2fq6wVJOEO9Ht6KwgWYaRsxefmajq7GVmaQlbGfYHVgRvrJV1dBHmqfend07zFTEO2LahgWUXRGwAREdwGMib0tLCO4oug+4fHw80WPkJdXMUgYcQbhM9hwginouDYARDOo/DhWuEAKXB8laVLHCoPhYzC4E/rSVEjej4eismq7sG+qEJWRUPECCGIU8JX9kJ7u6UpEN4IIXtqWxhD2r/5rhaE2XkJNMSygkNX0iGf6V2iPbbHazbriDCjf0X3FnYgsHcg1O1Hf4K0iYE+b6eV4/cRMAJGQKuwcy9/sWNRfFeiB+T9qfg5GbTWFecJPDGxwtDPCCn74syCiKk0D42QHBlKeqHzOMVSuIDV50G8gCqLLxV77miDs5sEZBg3IiOPMb5EoRf1OTFSAHaxWAGttuv/KVGlAeL1a7V0A+GgyAcXtgxLYkWDf+s/RrXyhojp25OEcluUrdw+i9f+ecy+/eQ3GJnHoPe1DtQxecwL1rcmdlsFqdOQw1BIjrEv+JldsLLPtcpg8fHjuR34oyAo24oen2aox1bIpmH59CU3iGNTKsh1hOXhnua5M39sExEIYJ+CbWYg84cT1+f/3ZVH/sPH5VJTjG
+ X6TQ8zsG
+ hJJk0cq3E1DTtQjJbFjTMBpu8QtG28wvpZw0K/yFhY1mH2Ur4c2t5CwCv9pT+rJR/RQeWPFHBI8xJgPyNB7/PrrPXti++KR3QQqJsBS96FtBwrK0T5+iD5VPvr/NvXV7FCEFdOYTsFUbo7EEvBsU933fAwdtSe/LYNn/lWy4fhKe8P6olfdA8G85jXpqoWVExZxPyWixxJzv0KVImH/gupiRVa34UUWKVNE+mBqPZwmPxOiY8RzKgDrlrZfeCNDajWvCi5Mu9rIiz0pHL4X820oM4/zNKWXXJOFJMsQofOSJFDaLYTMv+A3qdVq4GBtUhmJ/bUziKRyCJxWrd+kA0i8hvVt+aUEg6jYbXXCbfEcKK4C+BLkDge7Hm0ctADe7hGqJwcgu7vKoVPJRgkOHEfKz6tELRpAzoC4p9LREdbl9JFIXOEe82zdLtsabOVtJN2rusW6PL+wjS2/o8LP2042DR74uzs4wi1MZXphXiBOTWjwg9JVJfERVhfVzJUf8Ao5yUGlle6+EhEOED2bMFQudHJBqD9r7nI3ZUfZWJsCrrkize9y7GyROUyUBOt8wjsJa0lYZIXcLrBZHQY79BVwclMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,30 +111,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 01:37:43PM +0000, Pedro Falcato wrote:
-> > pin_user_pages() was specifically introduced for this exact class of
-> > problem. get_user_pages() is now meant for other, much more limited cases.
-> > I've attempted to document that, here:
-> > 
-> >     https://docs.kernel.org/core-api/pin_user_pages.html
-> 
-> Ok, so I guess you want me to drop the hacks to make GUP FOLL_WRITE not
-> screw itself over? To be clear, the rest is still broken, even with pin_user_pages().
-> It just means we get nicer looking fixes, and I can drop patch 3.
+On Wed, Nov 25, 2026 at 12:32=E2=80=AFPM Bingfang Guo via B4 Relay
+<devnull+bingfangguo.tencent.com@kernel.org> wrote:
+>
+> From: Bingfang Guo <bingfangguo@tencent.com>
+>
+> We observed that when MGLRU min_ttl is set and the system is highly
+> fragmented, high order allocations (e.g. order =3D=3D 9) will fail and wa=
+ke
+> up kswapd. It can not make any progress, while pushing generations of
+> memcgs so that they all end up younger than min_ttl_ms, repeatedly
+> triggering the OOM killer in lru_gen_age_node(). Then the whole process
+> repeats until all processes are killed and the kernel panics.
 
-Yes.  And maybe start looking into fixing GUP FOLL_WRITE users if there
-are any that you ran into or which are relevant to your workload.
+It seems we should address the underlying issue of why order-9 reclaim
+keeps advancing memcg generations until all memcgs are younger than
+min_ttl.
 
-> It's unclear (to me) whether we care about any straggling get_user_pages
-> FOLL_WRITE users. A quick look around doesn't find me many; most seem to have
-> been converted to pin_user_pages() (though, admittedly, I don't know how many
-> of these are converted in stable; do we care?). Perhaps piling on a patch
-> to simply disallow get_user_pages(FOLL_WRITE) is ok? Giving Lorenzo's idea
-> a go again :)
+>
+> The purpose of the min_ttl is to prevent thrashing when all memcgs are
+> too young to reclaim instead of preventing fragmentation. So fix this by
+> restoring the behavior in commit 30d77b7eef019 ("mm/mglru: fix
+> ineffective protection calculation"), which skips OOM killer invocations
+> in lru_gen_age_node() for sc->order !=3D 0.
 
-I fear this is going to to break quite a lot of things.  Although given
-how long we've asked about this maybe we should at least send a patch
-to it with all relevant maintainers Cced and queue it up in -next for
-a while.
+I'm not really convinced this is the correct fix. It seems to work
+around an issue with min_ttl for higher-order allocations, but it
+doesn't appear to address the root cause.
 
+And what about order-1 and order-2 allocations?
+
+>
+> Fixes: 30d77b7eef019 ("mm/mglru: fix ineffective protection calculation")
+> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
+> ---
+> =3D=3D=3D=3D Testing =3D=3D=3D=3D
+>
+> Tested on a VM with 6 cores and 6GiB of memory, HZ=3D1000, MGLRU enabled,
+> min_ttl_ms set to 1000, and a workload that fragments the memory then
+> allocates 2M pages.
+>
+
+So the real question is: if order-9 reclaim can't make progress, why
+do we keep triggering memcg aging and end up over-reclaiming?
+
+> Without the patch, kswapd kills all processes and panics the system even
+> with plenty of memory available. With the patch, allocations fail but
+> the system remains stable.
+
+I know, I know. But this isn't really the root cause, is it?
+Even if we avoid OOM kills, we may still end up with excessive reclaim
+or system overheating, right?
+
+>
+> --
+> Changes in v2:
+> - Reword the comments to explain the purpose clearly. (Kairui)
+> - Relax the skip condition to sc->order !=3D 0 for soundness. (sashiko)
+> - Rebase to mm-unstable.
+> - Cc stable.
+> - Link to v1: https://lore.kernel.org/all/20261027-fix-mglru-kswapd-age-v=
+1-1-b1ffdec4ae52@tencent.com/
+> ---
+>  mm/vmscan.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 836f50814ffa..9fadc6f9da49 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4351,7 +4351,7 @@ static void lru_gen_age_node(struct pglist_data *pg=
+dat, struct scan_control *sc)
+>  {
+>         struct mem_cgroup *memcg;
+>         unsigned long min_ttl =3D READ_ONCE(lru_gen_min_ttl);
+> -       bool reclaimable =3D !min_ttl;
+> +       bool reclaimable =3D !min_ttl || sc->order;
+>
+>         VM_WARN_ON_ONCE(!current_is_kswapd());
+>
+> @@ -4371,6 +4371,9 @@ static void lru_gen_age_node(struct pglist_data *pg=
+dat, struct scan_control *sc)
+>          * The main goal is to OOM kill if every generation from all memc=
+gs is
+>          * younger than min_ttl. However, another possibility is all memc=
+gs are
+>          * either too small or below min.
+> +        *
+> +        * OOM killing for fragmentation is not desired. So skip this whe=
+n
+> +        * sc->order !=3D 0.
+>          */
+>         if (!reclaimable && mutex_trylock(&oom_lock)) {
+>                 struct oom_control oc =3D {
+>
+> ---
+> base-commit: a3d0117e02bfa1c3bb6c50e7afe42bbecdbb3459
+> change-id: 20261026-fix-mglru-kswapd-age-98390614c746
+>
+> Best regards,
+> --
+> Bingfang Guo <bingfangguo@tencent.com>
+>
+>
+
+Thanks,
+Barry
 
