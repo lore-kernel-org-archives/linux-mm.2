@@ -1,133 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6D3606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 16:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D26606A335
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 16:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=Au1x/Qfi
+	dkim=pass (2048-bit key, unprotected) header.d=atomlin.com header.i=@atomlin.com header.a=rsa-sha256 header.s=purelymail2 header.b=JaRz1fVk;
+	dkim=pass (2048-bit key, unprotected) header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=I4jXZS4T
 Received: by kanga.kvack.org (Postfix)
-	id 7BE9A6B0A71; Wed, 25 Nov 2026 11:20:52 -0500 (EST)
+	id 9480B6B0A73; Wed, 25 Nov 2026 11:21:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F746B0A73; Wed, 25 Nov 2026 11:20:52 -0500 (EST)
+	id 91FB16B0A75; Wed, 25 Nov 2026 11:21:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65E906B0A74; Wed, 25 Nov 2026 11:20:52 -0500 (EST)
+	id 834916B0A76; Wed, 25 Nov 2026 11:21:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FEF26B0A71
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:20:52 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C684040FE1
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:20:51 +0000 (UTC)
-X-FDA: 85474155102.09.B687424
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 22B1012000E
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:20:49 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=manguebit.org header.s=dkim header.b="Au1x/Qfi";
-	dmarc=pass (policy=quarantine) header.from=manguebit.org;
-	spf=pass (imf29.hostedemail.com: domain of pc@manguebit.org designates 143.255.12.172 as permitted sender) smtp.mailfrom=pc@manguebit.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 607C56B0A73
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 11:21:34 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9C2BC0FA9
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:21:33 +0000 (UTC)
+X-FDA: 85474156866.06.CC0E6BC
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 22D881A000C
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:21:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=atomlin.com header.s=purelymail2 header.b=JaRz1fVk;
+	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b=I4jXZS4T;
+	dmarc=pass (policy=reject) header.from=atomlin.com;
+	spf=pass (imf19.hostedemail.com: domain of atomlin@atomlin.com designates 34.202.193.197 as permitted sender) smtp.mailfrom=atomlin@atomlin.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795623650;
-	b=t5ZaAKvB0QN6EF6xJF5gLVM+V2B4eT53u4VQWRlf6XzvwgS8DzLX4eEHcD/vXSoFkyjBDi
-	HBmco16cj4eTWBe6MwXY84k3ZmzsH07IH/YIZ0Bu7ftKqYqDQhYkWud8R81e9b1xTb4Q/i
-	zpmIqZ9VQjt1ZmPB6QMQ5MS7Vfq92gc=
+	t=1795623692;
+	b=HMNzfbkOq6gffKXweFDtJU0QWPqB9IfwvC2/A5GC6qdT7P+kY9ll4/dWElVCdUEBb6K7XT
+	FbZtaNNAfSOuZyn5kI7f4PJRZvhtAsiffsNrGyvONxX/YziuWC+Ngp6vnn21f9uMNmWT67
+	hmElGKu1JD30N9Wn4UU9QgX9kYQ4giU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795623650;
+	s=arc-20220608; t=1795623692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MFjp1Epxvbzt1A9g4t7Y/jDE3CxQAavGU4RMdlNgNPA=;
-	b=7PnwfpSzlU8904ye1g/a0eQhkRRkydvPc6kPl3cuWllMlVhqkXru/3X8y+cNcd/dQVsv7V
-	bHRo1YPgeAvUaHewD9dEc2+5SEBwAFaC8+vn9BjbB6Ep6JNpNxIYdHiZuzOZcYnq0wrHi3
-	niks7HbpS+9Hc9ClyEXHBmWjM8VLN28=
+	bh=sRMctCIyHFl/rubK1Zvyz0tzvLwm3/RXHacDMmrLKwY=;
+	b=pXcc84wQ+6u9vx2TVUqIbjEg0oghOMTjeVMHHTAnrj529X63Tn9E46EB38m1a7KT4/4nIe
+	hoaUgFblZVLHjnkVkIQk2JCLyakv9SsUJBLDhIpqvDeYBb5lwxaRwPGiisNtjNjlk0vEx8
+	5c3Bef9vz4m2S2piYurJTnrSLnrA9Dc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=manguebit.org header.s=dkim header.b="Au1x/Qfi";
-	dmarc=pass (policy=quarantine) header.from=manguebit.org;
-	spf=pass (imf29.hostedemail.com: domain of pc@manguebit.org designates 143.255.12.172 as permitted sender) smtp.mailfrom=pc@manguebit.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=MFjp1Epxvbzt1A9g4t7Y/jDE3CxQAavGU4RMdlNgNPA=; b=Au1x/Qfixdt8Oeg5ELWQmTzZ7d
-	wr1MiZso849kQQI90RjKYgtWlHvOsL4sUODQa+yJU/QJtei3+nwrCl8XPzyxSYVWxD0jEkv9ZHfHG
-	OmNUZEcDaNBk4Nn1E9cP7BuRGcZNEM6J6xtS4Ket7/m79g97o7hU8kn2wKyFBLeu8gwPpXcQdviQ+
-	Hln2JCas14QUSmhfJsWIjqhstDco/PUWJlhmY/+248fQXkeCIGO5O9nEwcb7Q1W2v+0HrcyzdyrIT
-	XwITUgiGSX5J7ehQY0B1lclNs46kSXv1DsiPlzDA2AP0RSCXykcJrKqmOyVKoOLO8j21CyIPiZYaT
-	T4+/q8fw==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.100.1)
-	id 1xWFjN-00000000vNZ-3XTu;
-	Wed, 25 Nov 2026 13:20:25 -0300
-Message-ID: <9afd33b0951849b9a48c5a0783d76fde@manguebit.org>
-From: Paulo Alcantara <pc@manguebit.org>
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, David
- Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- linux-mm@kvack.org, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
- <tiwai@suse.com>, linux-sound@vger.kernel.org, Jens Axboe
- <axboe@kernel.dk>, linux-block@vger.kernel.org, Marcel Holtmann
- <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- linux-bluetooth@vger.kernel.org, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowangio@gmail.com>,
- David Heidelberg <david@ixit.cz>, oe-linux-nfc@lists.linux.dev, Chas
- Williams <3chas3@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, Helge Deller
- <deller@gmx.de>, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, MPT-FusionLinux.pdl@broadcom.com, "James
- E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K.
- Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, Zhihao Cheng <chengzhihao1@huawei.com>,
- linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>, Andrey
- Konovalov <andreyknvl@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Juergen Gross
- <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
- xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>, Arnd
- Bergmann <arnd@arndb.de>, "Michael S. Tsirkin" <mst@redhat.com>, Eugenio
- =?utf-8?Q?P=C3=A9rez?= <eperezma@redhat.com>, Sean Christopherson
- <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
- linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
- devel@lists.orangefs.org, Namjae Jeon <linkinjeon@kernel.org>,
- linux-cifs@vger.kernel.org, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu
- <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net, Florian
- Fainelli <florian.fainelli@broadcom.com>, Broadcom internal kernel review
- list <bcm-kernel-feedback-list@broadcom.com>, Tzung-Bi Shih
- <tzungbi@kernel.org>, Benson Leung <bleung@chromium.org>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alex Deucher
- <alexander.deucher@amd.com>, Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
- amd-gfx@lists.freedesktop.org, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>,
- intel-gfx@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH v2 10/12] docs: ioctl-number: update FS entries
-In-Reply-To: <20261119053514.255348-11-rdunlap@infradead.org>
-References: <20261119053514.255348-1-rdunlap@infradead.org>
- <20261119053514.255348-11-rdunlap@infradead.org>
-Date: Wed, 25 Nov 2026 13:20:25 -0300
+	imf19.hostedemail.com;
+	dkim=pass header.d=atomlin.com header.s=purelymail2 header.b=JaRz1fVk;
+	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b=I4jXZS4T;
+	dmarc=pass (policy=reject) header.from=atomlin.com;
+	spf=pass (imf19.hostedemail.com: domain of atomlin@atomlin.com designates 34.202.193.197 as permitted sender) smtp.mailfrom=atomlin@atomlin.com
+DKIM-Signature: a=rsa-sha256; b=JaRz1fVkCfMLTnnLV57pzTTK1Ne42yfaj1IQX7jkKpXoYRm2xfPAeUWitfuGkVkuBkYPfwSQi6GVts1W8ILi/8fKG3fd6woyrygZcvrYMGO7+Fn2m7PsE5NEAAQWDIe8LOPCpFTgKzb+37wUWO8o3cB/9juGJGuBJnrD6oQBmjCT31iFtD06jOAPhhADuPk2K1hJ1TsZXt8Qc5vvB5o68ViOziNwX6cg0TC/LADlzhNY8k4yJwlinxgWIBmNZn4+GpacEOD0UoFqxgmRwPcJ3HE/Q0RFp9wdO01pC6fjTgJW6+iYGA/Lp8ajKzL0zrgJzKFi/maclLHm/2t50hCoQg==; s=purelymail2; d=atomlin.com; v=1; bh=JpXvq6kgsv07UGUTorie+7FWgV7cwV+gGchX02qK4cs=; h=Received:Date:From:To:Subject:Message-ID;
+DKIM-Signature: a=rsa-sha256; b=I4jXZS4T8UIPssnHu0O3SGNngfH1JK0VCZY2wnvzTqpBZZkwIKsLrgxuFaCz6RFMXLvZVACSGPonpZlXOl03dO4uxIlr7kANcxRRizZp5ka9Me0Jfp7YIsQrW1fvILuU2VN92x6pDsgjQYYnZHVvnU1PmFtKpFsQf8c907Tbiwm9c89SXcKpiCt+KCjq2LcK+C6LfPSEz0qgPjS7PJK8nhfDV0Vv9i6FdgMBR58smK5k4ILe+4mXr9x9v6ehlRFk4TV5u3ZYV7kHxxW7HNgu42hvDGvau202rfSyErr6hQmyAzb1aArsuZUk3f+1ZkSmkMIsEyoEzKy4uChAJe5fDA==; s=purelymail2; d=purelymail.com; v=1; bh=JpXvq6kgsv07UGUTorie+7FWgV7cwV+gGchX02qK4cs=; h=Feedback-ID:Received:Date:From:To:Subject:Message-ID;
+Feedback-ID: 1802931:67223:null:purelymail
+X-Pm-Original-To: linux-mm@kvack.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -217530310;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Wed, 25 Nov 2026 16:20:17 +0000 (UTC)
+Date: Wed, 25 Nov 2026 11:20:16 -0500
+From: Aaron Tomlin <atomlin@atomlin.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: david@kernel.org, corbet@lwn.net, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, skhan@linuxfoundation.org, rdunlap@infradead.org, 
+	rientjes@google.com, shakeel.butt@linux.dev, sean@ashe.io, neelx@suse.com, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH] mm/oom_kill: optionally log victim command-line
+ arguments on OOM kill
+Message-ID: <4gedpy2buvhc2urtsabb6kz56f4s3njwvjmxbd4whpz2bvgv4s@visad5hfhylk>
+References: <20261124205043.1010247-1-atomlin@atomlin.com>
+ <awb6I0qAySbhBIsW@gremlin>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <awb6I0qAySbhBIsW@gremlin>
+X-Stat-Signature: 9iqyh1mmwf6brghd4jzb69p367wfae98
+X-Rspamd-Queue-Id: 22D881A000C
 X-Rspam-User:
-X-Stat-Signature: us54dts5xwihruemftgebqtsbpecahe6
-X-Rspamd-Queue-Id: 22B1012000E
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_ADSP_ALL,
-	DKIM_INVALID,DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795623649-855782
-X-HE-Meta: U2FsdGVkX1+Xw68DNBeudfH3XYw0gUHssl22BmlIY85XUSBsSOPZZvX2okHDFDL+QNdkB/jou9kYOOLw9lwryX3WHSnn8R1TkKgY/Ww2h09XOZhocuNDfwriB2jDTiFB7yEKgzulMiv1TpmLvGnJBisFFXO4yhtjRJLrJ2jBeJ1V2X2meYJEsqvi8SFgLp9A21D6doXhg2zfxReWKHkqn9Fs9uL9773CVEWP4kKS27TqJTqCULmSjurW71GTWBCj3ZVnHt1KZAc8fskFvKao/U7w/RMCbajDVDuaaxy9veZJuWh+jzyYoMotxIhzIrNcjvQ1URYS6/0YXeZwvvUUTBIlGrdO3A8SeTEOCdtxHjZce73HYx9vLIVIjw2ucb4rNtBA7WVePkNLdRIiVcAOCfs571L7SDLSHeSjNK5FoZzHKNZnhrSHIlc6AZJXwe/bXMcTkpUcWoiJ1BniMEOUg+fXPbVXGFwAULslXmGdSJTwgJNgKgRk51BcXG8f7vCtgncVSl8k8TLYFK85aVNt8FcZdyRnKDpg4D4a+6OEvM3QKCiCefZxaZM+dOtHn7Chwv9CCvfnFCaMJNSPnfcuUP2kkfm3Khhlthdy4L9fG/RHM0Zp/1Eiv87LGwIVkhZpgE/GuTfUX+hoBHWiea+Vrzh6JJaussSOVkY1E6c2UnqAwOrcDMv2DI1EPbqq0RuYsIlR+NMAQZS4R9pNvn6pt9KC3G+Uc0ZlQNKXcr6RKn0eRVnj8+2/461kwiOhHMBJdEPcQ7L+q893sVTnZbRCTPOjumzZtoPvcI+6UfH4nNjWbebURxQEapzQSnRI3s40XY1lRVipdsFRO1UBY+G31GlTSFCwpXs4sd7ZjfIujUgknaamImskdWjjqyLkoyJmB/D8jCXfMF5FfP9DnIQ75Rs7/iwYGpqRVEtkFlrNJFTcHf2kqTphYRSi+UKAc1kW2Cx6wiTgr+7WRDLJKm/
- d8ddYO2J
- HSWFNVo2aBY0XMUMPUqx7+1IRAyy+ihhpB2Fo0eaEUVVGw9Gx2LP8jWjoogIEqcIeCPnp8X3P+bnyWaxNO1DIjHZjCUgXnUUT4n25gcFSRVy6o2HXj+TwAbymW3SS+rKmamJ4iytsl/7Y3Lj7U62Jhd18Yqwt9TnUupWsu9y+h0EsWs+AcxqQbkw2NAP89SrkGadiZPoPZcwD0eFTR6JHmEN4/weIo+WZ06FxuVNRFFw0V3jP5asdfbHky+aoYBc1BgT46XwWKWVNfnvEDTXrivrOJZZWO/R49nIx0exPxjd5dE0Gu++N00wKo7pxq1kfPJ25Zb/BoY3xApvOlZDAkynaA4jDAZGa5UH5SOhf61TpdlKdyoQdr5B6HziOs5Xhl65aUQ898qXWHP3xDpVeaZ4ImLyybsPWHYxrwVVvfz7Qc4Xyj3nnsqLq0ghuaTibsKuJiny94CGQ5YIe7ITk0ItiiG3F2S7tL8+pnRJaBN4VkP3jjmHivfRXfkKzlb+1qI4FWsEOOs5jzJPe0ScDbfoVkjgYxY/i2ZReILaetV5UAxcQ1VkrWiLO7tPKx6HSxDyey5xhw1iRL+k/8tTtb9yahA==
+X-Rspamd-Server: rspam03
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795623691-656738
+X-HE-Meta: U2FsdGVkX18dPgzFhTag2+mfNxYvtUUo1jyeS+iQdje4koHJuGbJALSVpsJAFu/AfZw7Btq8WWVEedQtSNqGAjWCaek2GxGl2oKMSdnV4IOVGeYTI0Xaj9IX8yWWQASYljkEKneolOYKbG3OdEyfMlzWSn/sDsgVA54rGLRpBGpEe6zX0r6fyT+5Ks3SsMvqIDFP+zATJ8DI9aCehBnFIOaiCgRAW5KAIuyJKXcrmPOrtFR5Slm/IFXNT7LCB5hZgVxb1rSleCKOcj0TuQLioFQax0X2jcj/XKywfLODugY8nDpyA3+ENKfehKegxOeMGJMxOpT2nufmwuMts40iHKH+zE9hQXuoIqupvK1LVaRyY1LMY3iollnb9+8RUh5dTrVv6DXqZtMbJBFqeElNesRxNOVtooeBJa94qYfs4CCF5hRsr03aZOpg/oD0Ie7Ay2s1braIIkA6KigjSKJRFjTZDYbgs/KtOs+gdWuGe5z/FVa6OagbsYJ+E3InPfeD1fgvNwsSp+HtqhAFP7o0gt0MJ4/uGhbcv2FFWlwSR6ZUT+u7Ham565USTN9Zp6KN/EBatkpxkx8csA6eqEus8ghupNwQCqyJMrEtOptW0d3uTYcjpwRKck79v7Pziq4k3oVOkBd7gwXFtJsQIV/juyV2lNEi4NHfyq96fJGyDEKgyO5THiMxkRdXd7BjqXvafCWZ50Q6y8Fg+wDiVDdAZWkoiJhJza/JMsO0rgpqIDLMT6vnM5Q56SEJruCphMMVWDq3IvLTEHYEXoTXJR1uMfp1lxAryWu+WatAwi/IoG1gvmHVoQnMgoDwzixsgEC/DAGrUvzRRdNuZnOqbpCXAS45zNqmbH4bOUPMDgIrBLI9mw6sZsIHC/ps4cn9Gat/L3e7xxs6NZbFcroIcicOdNIJ8Azlj+FJTgUr8DYSmm+6fq0hw2hLVDPkxRAO0qmtnY0hJOYemjMto7H+6uQ
+ UJvn92L7
+ PNzoTG4VQET239W7RPL+f8MI2cQgv1rFxWw2GFl7itVx0K6rNrdxDVdKtJ/5Dlq9zvuJVVLvT8uzLvjzjEem+uj4IBEtxzuGFifql2DuuY5AMKicBzERyldbJViWHDuO1HpyJvokRDGFovW1eEwVl4EWsKtmSyLK4LitLG5504e1eR4ZE3FAENCKbSIpBDTmqN1oifx6la0zpiy0otp5TPZ99JqjpDuxyY6eb2p8w1haRtUCM56asOCCLtcuPBCmqbTBx6AB/yWYu2vB/BLnqq/fzRTtpcYv66kBnj2q0Hwxuz9SQbym0Z5phPfVsKnTRK0hiUKFDFLwibRUC7HYQP7tVyhQ2GMyV8jiKOXiztaZTx7DPKJ6GB3B7Ku+u42YrmxDZZlIOckaM4VAd/glZdscBeEvHoBkzyps4U+HxgdaOKB6l/99XUN539iQa7snSU8bMK4wG0nNvG7uKNcpgrRm122IzGK+abc/YCSk8Ot/1tgUs3q0eI8sObnAlsxzVMrIH4mAZjy1zetFVeDhMsjoUTHcwsJYMzHhm+eOSVbVYKMXT956Hb3fdQ3AE3Q520sP6lx3ETNeo7nF8z4+F6N3nGykSsxSD/ezY+liI5klj6FluAwr3aflaeaT5BqrIvLOXIrEfr9XlCMz+OKR+4F5Cc1lh1z4VAqkNa7+27+x13zl75z2/AMNE7nQe0roEHPyD+4zLrdD61W/qD/Mb2zeKsCB9kZc/UdYZJLXJk287Ulyce3BrtAvx1fGqZBcXuG3L
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,15 +93,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Randy Dunlap <rdunlap@infradead.org> writes:
+On Wed, Nov 25, 2026 at 03:33:28PM +0000, Lorenzo Stoakes (ARM) wrote:
+> Nackity nackity NACK NACK NACK!
+> 
+> This is terribly, horribly broken both in concept and implementation.
 
-> Update the list of files where filesystem ioctls are defined and update
-> the ranges of function numbers that are used.
->
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> ---
-> v2: address sashiko review comment (ext4 00-2F range referred to
->     the wrong file name)
+Hi Lorenzo,
 
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
+Fair enough.
+
+For context, using mmap_read_trylock() before queue_oom_reaper() was
+intentional to avoid blocking under oom_lock, which is why I sent it as an
+RFC. That said, I take your point: touching mmap_lock and walking page
+tables via folio_walk_start() in __oom_kill_process(), along with the stack
+footprint and adding a new vm sysctl ABI, is the wrong trade-off at OOM
+time when dump_oom_victim() provides memcg context.
+
+Thanks for taking a look.
+
+Kind regards,
+-- 
+Aaron Tomlin
 
