@@ -1,101 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6742E606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 05:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6AF606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 05:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B13O7WUj
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=XQCi86sA
 Received: by kanga.kvack.org (Postfix)
-	id 5A2B56B08F7; Wed, 25 Nov 2026 00:51:05 -0500 (EST)
+	id 319656B08F9; Wed, 25 Nov 2026 00:57:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5534D6B08F9; Wed, 25 Nov 2026 00:51:05 -0500 (EST)
+	id 2F0A66B08FB; Wed, 25 Nov 2026 00:57:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 469F26B08FA; Wed, 25 Nov 2026 00:51:05 -0500 (EST)
+	id 22E246B08FC; Wed, 25 Nov 2026 00:57:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 15E806B08F7
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:51:05 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97A431C48CA
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:51:04 +0000 (UTC)
-X-FDA: 85472568048.19.ACCB472
+	by kanga.kvack.org (Postfix) with ESMTP id EA9FF6B08F9
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:57:35 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 35A51160D2F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:57:34 +0000 (UTC)
+X-FDA: 85472584428.01.AABABA5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DE4CF4000A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:51:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B13O7WUj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6DA4BC0003
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:57:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XQCi86sA;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795585863;
-	b=Hern6RqgIqazu/faNf9pclV2YXGqowRtfGHesrgJvg/4bqZh52KfhKP6evL8uTqPejOIBC
-	Frtj+/4vT/8zigoNbmWZdFmoJoj3zYh1PwStGVgpnfV17fB5+XRXuV94rqhwwJrEXB9rP6
-	MOCxUln7/1xlzTiicQwcVgWTws7Wjbk=
+	t=1795586252;
+	b=Vi8aUXwcWWl4DsLtxwEqoCObdXxQ12QW+0QT4UFleo9zlgqDxLJ0nDKDfm99bUDC7SI08Y
+	1PeLKkHkLBW26A5x2S+CNxz7NJThSjZho5udaBjbTgP6TcVk49Ps47phsQXz95JzFD3HSn
+	x5ZhTJnAxRQlqbJPtEQUTNMh65x+cCU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795585863;
+	s=arc-20220608; t=1795586252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z3+0AEVtBqRYPmd3pDOG3DH8fjFIwFx/rMlidxGEFVI=;
-	b=cfRpmjtQLAFG6p6fBqanHkBk7dg8eDdsugXRygIVTjv5BLs+uREp2dXSgdKo5j7bAp5eX9
-	AATG+zpAfzJbwmVVoun7e41n0oVKhPJSNqB/ASNFb8yQUEFoAY4FS6DGSZRZrAVmumrkNw
-	1E7PnbGPNX+K4Q1dgSzU0NIKApnzYLs=
+	bh=Q968GSmLkmv+FRzp/+spwBiGX/qP9XmBOTNq6DpuJYg=;
+	b=VPDSuGVHPbszj7iCOyYFDvglyWNuHv7coMrtYdfFgzQuZdcNr8zvc+dLeV3Fqjc2GeuAya
+	3dzym9G/8fTYinXv9tjlBJuejHoz49h2Vkq0kgo3gdvzwS1zgLLkqNLpwIRUJfesmLaWWQ
+	x91ApUnFx4dR+TWvAyID5KM0EZ+RqXE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B13O7WUj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XQCi86sA;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5492861FFC;
-	Wed, 25 Nov 2026 05:51:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C941F000D1;
-	Wed, 25 Nov 2026 05:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795585861;
-	bh=Z3+0AEVtBqRYPmd3pDOG3DH8fjFIwFx/rMlidxGEFVI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=B13O7WUjH464avzvlS3E/9Qh4guHneCId8SUBboU9UeS4qpTG9Vlm4khlCg3oz+q4
-	 Sg87/Pw3xlFPTSyaY+3F7SuyeWZ6tuSgoI347fdSZydpnySn9eoKLXeTpfLqIGWOOB
-	 GJPyVhsNNACCZ8JO9tdsJ7m5KDtT1n48emtODuMYBDZZFgNP690sjGjr1mEaPFe59y
-	 vbf3RCz4mRMkzYcaunHjhQOhRyxOu2vVInLuazeVg6Dlh6Nmn5yUiA9zhLxzl1vP/w
-	 2k9ME+iY3IwUi4c31JDjagzdmotUjLPTWBsx3kbuNXG6epOzxISfmNbb7Ys7XPK2fC
-	 z7ZfeHVwEZHDQ==
-Date: Wed, 25 Nov 2026 05:51:00 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: Nhat Pham <nphamcs@gmail.com>, hannes@cmpxchg.org, 
-	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org
-Subject: Re: [PATCH v4 0/8] Batched zswap_store() framework with compression
- batching
-Message-ID: <awZt7P_p-GNZ3A2i@google.com>
-References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
- <CAKEwX=MLrDn55wmVKKba5=PcU+qFpkEbMmN2SjGTfTBiFKX8cw@mail.gmail.com>
- <awXr6iHBR54wBB05@google.com>
- <CACpmpodH3UUDLEze8=5v8LWgKnZWQVrQBhzSGJFY-PwEYmHEzQ@mail.gmail.com>
- <awYsDfYqrS2ldOTw@google.com>
- <CACpmpofsU3f=PVQF4moe6n=_qit1ZGyo4FMjyM-sVgumfyN0iw@mail.gmail.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id EBB6160200;
+	Wed, 25 Nov 2026 05:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346311F000CA;
+	Wed, 25 Nov 2026 05:57:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1795586251;
+	bh=Q968GSmLkmv+FRzp/+spwBiGX/qP9XmBOTNq6DpuJYg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XQCi86sAgGzkBEUTgWvt9P+rymD0u1n2NdNMxGWGoxWa+/SGUY1C7ynI+cTzFKIK8
+	 x+gE5Drk1jIG59j0Qzr6RXHZYQbq33RUPUTAZmT4H8j8U9eScNpHS+gCtlDIuKS+VA
+	 6wb5E1W52NjPMsnVYVFmhVukyYutxW0GSDhjMsHk=
+Date: Tue, 24 Nov 2026 21:57:30 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>, Zenghui Yu <zenghui.yu@linux.dev>,
+ linux-mm@kvack.org, jgg@ziepe.ca, leon@kernel.org, david@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com
+Subject: Re: [PATCH] selftests/mm: hmm: give migrate_remap_fault a longer
+ timeout
+Message-Id: <20261124215730.0f6adc9ad36c7abc623a1dde@linux-foundation.org>
+In-Reply-To: <awZ2S5yZXOHIxBxm@parvat>
+References: <20261119133955.54001-1-zenghui.yu@linux.dev>
+	<av94SXo6ZAU7Z5TR@nvdebian.thelocal>
+	<20261124213730.a8b4f5100785a2cde54fa8b4@linux-foundation.org>
+	<awZ2S5yZXOHIxBxm@parvat>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACpmpofsU3f=PVQF4moe6n=_qit1ZGyo4FMjyM-sVgumfyN0iw@mail.gmail.com>
-X-Stat-Signature: 37zziokfzx3xna64crkuyox9nrwuts3p
-X-Rspamd-Queue-Id: DE4CF4000A
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
 X-Rspam-User:
-X-HE-Tag: 1795585862-2617
-X-HE-Meta: U2FsdGVkX1/6VzhpYMARBAD/zlj0NEhz9PSQrSZxn4k722SQN8pA3WXSaDcrU8hScTUAOUqhbrM+neejCCH37QSAcPY1qcj0vPxkixNimaGsXJd0TWH3kX9GT/RJAqKoEzMMlATTcZ9vTR4odwmsyCY9pbh2AJeg4B+ClcZ/ZI3XKUvaNAIspJLtfUekRUFbSYWNDTIpv8tI/9S+nz0VGZwH4ael1Gsj1DtvyPqA1YKKrVRqPpIhHrkGuZgRnaadqI5C9SX+Q3Zhe27BXxR7TSxY57VzJUDgzg2dWT1Wo1dr9Bc8b2YMMnyHABIRUkwhSW0ideofpsx7VGpDusGweFUa3nn34pTh7LorzrpDe2ua+JV9k/Q9UrOXoF7q4XU6B5aDt7USs7VVf/JhoKenafYKQ9Kfv9/a/A/6K8ThimK7WtM0nBOdpSz056jId64QrN0XaPGkSGQtC7whtd1t1COcp4YFkJo1WyCxTtMuirxZT+dMj7HqKK2qpv0/KcBdY7cGWGcToRR5gwfLjfcOs8XmY8Moy8TCHaVR716bipFUNq2LN01iM4QVzx+9FuaEJ+Ub7xgBBewmtaOGgn/h+Pwrcvp44emj1iIPpCeZOOabs2d8GsWdI1L1v6MxPE1OCImQTqf4khmQeneNW9CfBqxCHYiSuuCQDdh42mLDHKqqiB16zXumRN8RRoq0nCLA1+L4IO/mW6d1r6vVdmdutCAzq6zjHBC6TzC3Pp98gBlKXl37Eq4IY6Ym6kZAk6oPFKEpOyc7FdEq20v7hADfcdGN0W3ywcJH89a0J7cIyhr5o/JwlyzzZfS7pYPIcZKRuEW/d0S8WNgxKZ5nSUxhGUgt8GZxEKdUJ/Sp6W1g8xO3IxVC4IaqG4YEtGwVqEzjuTHy/AP8TO8bwFuxh1z5Dre7YzRWiB18rblinY5RsC42QbEvfgbMG7KdjMW2GgDGoVWrsiW/Tc8kq68Jrjf
- PvEAa30V
- b7+YsUF6bzDmSF60KK5xAUogwEYfOB1EznMpt8LxboIEOTB3/wWCPoPHpACju/WXRC20vFuPyeO2XnMKRwlDKN48WgAWiYmeCz/yPGQTZGvEn2+rtawtT3XVMiEauf6JuGfgF8n1pF0uE0NI7FpAYc0FPUxgbH9fULb98LvZ26rX0PxB+lNqnQGsWN9YdMSMDyrG9STF10nE460pFXlX7F2obRtlVIvTmgif8JSk0OEMY7XyO/NRuZtIOdq4Yp8YOaoTH29eRrTlRhGtU/I23aP7BxlQUefHKnqe8y4QY8fjezVZSbZYFj1swA76jb34XxjFBQfbrR+3bWyM9qcPlI9i+Q8Uwajb+BRSGRiI4Qo7xwNc05hyWY4bRho+bEg1qHO6LI0daRvNd0qfOHbSAb+bXAXuCf4tebCkP4GfaLYDjT329HUuuHtUveJU9/If1X5tt5ABzllL9HLo6QfDCViOlwVEiSXRnVOPY2IHxZ+jAXgW1+VQ+3xrowGXgJiOqGMvbN0y4BVHNiMLP7CilRN4DXsIDqNCuSYEz7+ZjcUZFTOBzixq2BhmDk+Z7KYcvY/XS
+X-Rspamd-Queue-Id: 6DA4BC0003
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: ejm7wefh7ftwfhcuq1fwyuu9eiq8ft58
+X-HE-Tag: 1795586252-464210
+X-HE-Meta: U2FsdGVkX19wFJk3vKE90AdTflRAmHazKjCdiddV3ZeFQmUvHhkcHxX6JXfqka6ytQSk5LXTEj3Mq/BEVEu1if6sYaCHfvJQcvjaqW2OTpkF9u7GIO2vNw+j5CBZjIAE7d8w9wNxjniVesnQnHZ4LwNeoPPte6SwzYJSMK6SA4ozjypRqka8Cel0ydjjXR8j6QXTn/Qqztdfp/lmWl36eFsyPUOU4+pvK9uG6gRDtFTEzYmvd7PJLk63M6DlIDwox0r9eVgTB4B3qlG+pQUFQcjftESY4W2fwPEI0R+kVY8Dpxoms4BC1u36OOHkElFCxKwRx+zy2rBzvpsbkLZ8gwxhST3JAo+7K0wu7+Bx1vILTaGi4R15RfAYsdGhNrTBbwI2p4X5rDVpH9Kq0Ql1CL0s2kUuH+UQOJ4+EqmxQA+/CYyUBGJJbbse5190VnAI/1SOapSpRYtoB5wX52dJHUaKzrRXeXwApI1+laZ9TamKd1qxQfasvIJXLhoFQ6ynhlyseqY0+8oPxwUg94HyYll0Nwu+4WirsbtplQQkOxqmz9XbsITM+5KhZC9G6FikbsuDOrdl4PBr2sgvfizOq9W+Ezo386ot+Urk4fvxSsU8vBBsVP/oCeODUE2HickI5M5z1gmVx9uKXycntTuxuuiyUxrHF1AHjOu0P3fuIr4RTD6A899yct9Xgj4zdnG0ojJzl7hJM4oz6ZwDtOAXGbwhmBjQ4+IIni3G2mLMgIi3LCiDnxKFMuz7cqvaMHTLgSQ5dtyEFMgh+wbF2ObVBW0SXxhv6QM0jUl0Mp859oCZOFonoFF0PJ41fRqpUulGrrQdUaz/q3fE7pfI/2ighuAkhaNDwU/8C10gnUZ2oR8Tcz/gfjooH7byXrOtq9va6Nubdb1+dDXqXgOcbI1V//64X5PB2VdOivJn2+9bm1rWMFnP9DxuuK5GBqfSqmg1TLrCueZCULi+V1mTceg
+ Or2OsMgP
+ sAy3dp4994T51qA1dVwAxjjxLue76BAMWE7ejNR6c+6ygGYS7Y6NZqakjtBsVaAgckJZ0KJL7rNVrMnoWinuYXABUPVxD4PJUmFxLptUk61fD5WMhNnBMcBDOY8M6z4qZPBxJNwltzHRP10qwOq2OtoZ7WACcUcZzLe1bgfNCqs+Qq9Yx9e467iZnadaRwW7nzFr+iGAq+rY9/dgh2arxRo2SekB8td9hXjK+DdI50N+Hy7CCfmNrH0Wq3vfkwyiWUQMe9pbG+7pxs2IFxvER0ZIN60L59OWneQs50YIVVMShutqwuaKcUBid1txqrXI4r3+GMu6t3MXqicql28TaInp8e0jPZFwRLGbqo5NRBa/jiRtS6SVytN4XshNpXWpc8ClskFcl6KCV2rAeH/woVIQC372JLSdtlp38EMtTwx6Sp0EpwiimD9xCDhU8yKrcljtMgwTYr7M1gFfKkNXIeyYI9BuJjUaHAnB2HL/JO+d+wHf9WRgmKMp/k1iI2wAipMc5M1Vb4gXwyMGIR71W4FrCjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,326 +97,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 24, 2026 at 06:10:25PM -0800, Kanchana P. Sridhar wrote:
-> On Tue, Nov 24, 2026 at 4:59 PM Yosry Ahmed <yosry@kernel.org> wrote:
-> [...]
+On Wed, 25 Nov 2026 16:50:33 +1100 Balbir Singh <balbirs@nvidia.com> wrote:
+
+> > Zenghui, are you able to figure out some way of speeding up hmm-tests.c
+> > to avoid the timeout without compromising test coverage too much?
 > >
-> > I think the real gain comes from making the freeing path faster. What I
-> > am saying is that we should optimize the freeing path rather than
-> > batching stores to get better locality in zsmalloc pages, as this only
-> > speeds up the freeing path when most data in a batch falls into the same
-> > size class in zsmalloc, which isn't the case for real data (e.g.
-> > Silesia).
-> >
-> > I am not arguing that usemem results are not valuable, I am arguing that
-> > there's more to the data than just usemem latency/throughput being
-> > better with the patches.
-> >
-> > The hacks were just a way to test the theory by eliminating zsmalloc
-> > class contention. I am looking into proper optimizations for this path,
-> > the goal was just to see if optimizing the class lock contention in the
-> > freeing path would achieve the desired result.
-> >
-> [...]
-> > Yes. I tried rerunning usemem on a similar setup to yours, and
-> > aggregating throughput, total sys/wall time, as well as write/free times
-> > over 10 runs (write comes from throughput lines, free comes from freeing
-> > lines). I did this at the baseline, with patches 1-7, and with patch 8
-> > on top.
-> >
-> > usemem30 (usemem -w -O -b 5 -s 10 -n 30 10g):
-> >       kernel   sys_s (mean +- sd)   wall_s   write_s  free_s   tput (KB/s)
-> >       base     2355.6 +- 25.3       94.24    55.62    26.82    212,239
-> >       p1-7     2366.7 +- 22.9       94.65    55.91    26.90    211,108
-> >       p1-8     2197.0 +- 37.9       89.65    55.48    21.66    212,853
-> >                (-6.73% vs base,
-> >                 -7.17% vs p1-7)
-> >
-> > AFAICT the speed up happens on the freeing side, not the writing side,
-> > so it's not really zswap stores getting faster. In the freeing phase
-> > (66%-100% of the run), ~90-92% of cycles are spinning in zs_free(), and
-> > total cycles drop from ~1.64T to ~1.30T (-21%).
 > 
-> Can you please clarify what "write_s" and "free_s" refer to, and how
-> are they measured? If you are referring to the gettimeofday() reported
-> timing done in user-space by usemem, these times measure child
-> processes' fork, do_unit, join, etc. : IOW, not a reliable indicator
-> of zswap_store() performance.
+> That's the delicate balance.
 
-write_s and free_s are from usemem's output.
+I think we should have tools/testing/stress-tests and
+tools/testing/performance-tests.  Without those things, everything gets
+put into selftests/.
 
-Without your patches, here's the raw data I got:
+> The changes below look reasonable. I can
+> move the perf testing out of hmm_tests into a separate test or trim the
+> sizes to smaller set of huge page sizes
 
-    12079595520 bytes / 36047550 usecs = 327247 KB/s
-    12079595520 bytes / 36221811 usecs = 325673 KB/s
-    12079595520 bytes / 36539948 usecs = 322837 KB/s
-    12079595520 bytes / 36554520 usecs = 322709 KB/s
-    12079595520 bytes / 36630659 usecs = 322038 KB/s
-    12079595520 bytes / 36705879 usecs = 321378 KB/s
-    12079595520 bytes / 36795396 usecs = 320596 KB/s
-    12079595520 bytes / 36844030 usecs = 320173 KB/s
-    12079595520 bytes / 36936923 usecs = 319368 KB/s
-    12079595520 bytes / 36989604 usecs = 318913 KB/s
-    12079595520 bytes / 37063935 usecs = 318273 KB/s
-    12079595520 bytes / 37065296 usecs = 318262 KB/s
-    12079595520 bytes / 37158608 usecs = 317462 KB/s
-    12079595520 bytes / 37188329 usecs = 317209 KB/s
-    12079595520 bytes / 37176041 usecs = 317314 KB/s
-    12079595520 bytes / 37222619 usecs = 316916 KB/s
-    12079595520 bytes / 37277605 usecs = 316449 KB/s
-    12079595520 bytes / 37382137 usecs = 315564 KB/s
-    12079595520 bytes / 37485910 usecs = 314691 KB/s
-    12079595520 bytes / 37506482 usecs = 314518 KB/s
-    12079595520 bytes / 37582493 usecs = 313882 KB/s
-    12079595520 bytes / 37654025 usecs = 313286 KB/s
-    12079595520 bytes / 37804401 usecs = 312039 KB/s
-    12079595520 bytes / 37872179 usecs = 311481 KB/s
-    12079595520 bytes / 38139663 usecs = 309296 KB/s
-    12079595520 bytes / 38148594 usecs = 309224 KB/s
-    12079595520 bytes / 38149377 usecs = 309218 KB/s
-    12079595520 bytes / 38207236 usecs = 308749 KB/s
-    12079595520 bytes / 38442241 usecs = 306862 KB/s
-    12079595520 bytes / 38445731 usecs = 306834 KB/s
-    11147897 usecs to free memory
-    16392260 usecs to free memory
-    22879204 usecs to free memory
-    23382635 usecs to free memory
-    23518192 usecs to free memory
-    24023442 usecs to free memory
-    24176849 usecs to free memory
-    24461635 usecs to free memory
-    24232157 usecs to free memory
-    24571926 usecs to free memory
-    24498438 usecs to free memory
-    24500253 usecs to free memory
-    24197624 usecs to free memory
-    24424616 usecs to free memory
-    24128275 usecs to free memory
-    24646461 usecs to free memory
-    24390349 usecs to free memory
-    24522151 usecs to free memory
-    24563204 usecs to free memory
-    24270881 usecs to free memory
-    24232957 usecs to free memory
-    23980870 usecs to free memory
-    24180573 usecs to free memory
-    24068183 usecs to free memory
-    23758087 usecs to free memory
-    23799366 usecs to free memory
-    23512788 usecs to free memory
-    23749313 usecs to free memory
-    23829669 usecs to free memory
-    23532371 usecs to free memory
-
-write_s would be calculated averaging the time in the ".. bytes / ..
-usecs" lines, and free_s by averaging the time from the ".. usecs to free
-memory" lines.
-
-In this run:
-write_s = 37.31 s
-free_s = 23.39 s
-
-With your patches, I got:
-write_s = 37.03 s
-free_s = 18.86 s
-
-So most of the improvement is in the freeing time.
-
-> Also, there are no calls to zs_free() from zswap_compress() and
-> zswap_update_entries(), so, it is not clear why "free_s" reduces from
-> patch 7 (26.90s) to patch 8 (21.66s), if what you are saying (as I
-> understand it), is zs_free() results in the gains.
-[..]
-> Is this perf run at the workload level? Can you also share the
-> zswap_store() perf breakdown? I don't see any zswap_store() callees
-> here..
-
-Here are perf reports collected with:
-
-    perf report --stdio --children --sort sym --percentage absolute \
-        --symbol-filter=zswap_ -g graph,1,caller,function,period
-
-Baseline:
-
-# Total Lost Samples: 0
-# Samples: 923K of event 'cpu/cycles/P'
-# Event count (approx.): 5783481013054
-#
-# Children      Self  Symbol
-# ........  ........  ..................................................
-#
-52.06%     0.26%  [.] zswap_store
-	|
-	 --2995798359281--zswap_store
-		   |
-		   |--2724723679947--zstd_compress
-		   |          |--2639614263267--ZSTD_compress2
-		   |          ...
-		   |           --66562348127--ZSTD_initStaticCCtx
-		   |
-		    --217649410880--zs_store
-			      |
-			       --126618473697--__pv_queued_spin_lock_slowpath
-[...]
-40.26%     0.01%  [.] zswap_invalidate
-	|
-	 --2327775248737--zswap_invalidate
-		   |
-		    --2322317048724--zswap_entry_free
-			      |
-			       --2233301817626--zs_free
-					 |
-					  --2178824329486--__pv_queued_spin_lock_slowpath
-
-With the patches:
-
-# Total Lost Samples: 0
-# Samples: 863K of event 'cpu/cycles/P'
-# Event count (approx.): 5420333292095
-#
-# Children      Self  Symbol
-# ........  ........  ..................................................
-#
-55.49%     0.17%  [.] zswap_store
-	|
-	 --2998025641673--zswap_store
-		   |
-		   |--2724254313681--crypto_acomp_compress
-		   |          |
-		   |           --2718237550253--zstd_compress
-		   |                     |--2634756568606--ZSTD_compress2
-		   |                     ...
-		   |                      --62825503508--ZSTD_initStaticCCtx
-		   |
-		    --206719808793--zs_store
-			      |
-			       --142932151337--__pv_queued_spin_lock_slowpath
-[...]
-36.25%     0.01%  [.] zswap_invalidate
-	|
-	 --1964269438386--zswap_invalidate
-		   |
-		    --1959142544382--zswap_entry_free
-			      |
-			       --1874286346020--zs_free
-					 |
-					  --1828012531673--__pv_queued_spin_lock_slowpath
-
-
-You can see that the cycles spent on zswap_store() are almost the same,
-and the cycle reduction happens in zswap_invalidate().
-
-> > Adding some instrumentation I figured out that ~all memory from usemem
-> > ends up in the same size class, hence the better zspage locality from
-> > the batching in patch 8.
-> 
-> What does this have to do with batching? All usemem memory compresses
-> to the same zsmalloc size class in the baseline too. Can you elaborate
-> what you mean by "better zspage locality from the batching in patch
-> 8"?
-
-With compression batching, pages in a folio call zs_store() in a row, so
-they have a higher chance of landing in the same zspage compared to the
-baseline.
-
-In the baseline, each page's zs_store() is separated by ZSTD
-compression, during which the other 29 processes fill up the current
-zspage. With the patches (especially patch 8), 4 pages are compressed
-first and then stored via zs_store() back-to-back, so they are much more
-likely to land in the same zspage.
-
-I used an LLM-generated bpftrace script to map each folio to the zspage
-its pages end up on (~450 folios sampled), and aggregate the results:
-
-					 base        	patched
-Distinct zspages per 512-page folio:
-mean +- sd                               510.6+-2.8  	321.8+-24.0
-median (p10 - p90)                       511 (509-512) 	322 (302-341)
-min - max                                483 - 512   	215 - 407
-Avg pages of same folio per zspage         1.00        	1.59	
-Consecutive pages hitting same zspage      0.27%       	36.16%	
-(same-zspage adjacent pairs / 231,483)   (618)       	(83,709)
-Contiguous same-zspage run lengths:
-len = 1                                  99.7%       	62.8%
-len = 2                                   0.3%       	22.1%
-len = 3                                   0.0%       	10.9%
-len = 4                                   0.0%        	4.2%
-
-This causes zs_free() to run faster (i.e. shorter lock critical section)
-as the zspage (and its metadata) is hot in the cache during freeing.
-
-> 
-> >
-> > Here's the bpftrace data I collected, I don't see a material change when
-> > probing zswap_store():
-> >
-> >     zswap_store() (2048kB PMD folios, 178.9k calls):
-> >       metric         base           p1-8           delta
-> >       p50            10.76 ms       10.85 ms       +0.87%
-> >       p95            11.34 ms       11.40 ms       +0.59%
-> >       p99            12.15 ms       12.05 ms       -0.82%
-> >       avg            10.80 ms       10.84 ms       +0.40%
-> >
-> >
-> > Also if I run your modified usemem with Silesia like your previous
-> > versions, the improvement goes away (because data no longer all goes in
-> > the same zsmalloc class):
-> >
-> >     usemem30 + Silesia (usemem -w --read-silesia -O -b 5 -s 10 -n 30 2560m,
-> >     memory.high=38G):
-> >       kernel   sys_s (mean +- sd)   wall_s   write_s  free_s   tput (KB/s)
-> >       base     1779.0 +- 8.5        72.84    55.34    6.92     53,290
-> >       p1-7     1775.7 +- 7.3        72.81    55.29    6.86     53,337
-> >       p1-8     1771.8 +- 7.8        72.58    55.19    6.83     53,435
-> >                (-0.40% vs base,
-> >                 -0.22% vs p1-7)
-> 
-> Is this with PMD mTHP? Also, we would get a better idea of concurrency
-> by increasing the memory allocation duration by allocating 10g per
-> process, for 30 processes under memory.high=150G. 2g gives much fewer
-> samples to be helpful, imo.
-
-Yes, with PMD mTHP.
-
-2560m with memory.high=38G was chosen purely to stay under the default
-max_pool_percent=20 (38G on a 190G host) with zero pool-limit hits or
-disk swapout, since Silesia compresses ~2.5-3x instead of ~7x for
-unmodified usemem. Because ZSTD on Silesia is heavier per page, the
-write duration is actually the same as 10g unmodified usemem with ~31M
-zswpout per run.
-
-> 
-> [...]
-> > I am not saying there is no performance improvement, I am saying the
-> > performance improvement is a side effect of locality in zsmalloc, not
-> > faster stores, and that it doesn't reproduce on real data.
-> 
-> I don't see the connection between batching and "locality in
-> zspage/zsmalloc" since compressed size is a net wash between baseline
-> and my patch series. Are we drawing the right conclusions?
-
-See above.
-
-> 
-> > If we want to address lock contention in zsmalloc freeing we should address it as
-> > such, not by batching compression.
-> 
-> Lock contention in zsmalloc seems like an independent optimization
-> that is good to solve. What I don't see is a way of explaining the
-> gains in this series based on zs_free() lock contention, and hence
-> drawing a questionable conclusion that this series does not optimize
-> zswap_store(), and further that batch compression is not attributing
-> to the gains. I have provided ~10 reasons as to why the combined
-> zswap_store_pages() batching and zswap_compress() batching improves
-> zswap_store() performance in [2].
-
-See above. I think the performance improvement is a side effect of
-calling zs_store() in rapid succession for pages in the same folio, and
-more pages in the same folio ending up in the same zspage. As I
-previously mentioned, this happens because all pages in usemem end up in
-the same size class.
-
-The right thing to do would be optimize the zs_free() path. I am looking
-into batching zswap entries freeing, which I believe is the right path
-to optimize given those results.
+Great, thanks.
 
