@@ -1,94 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93824606A33F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1E6606A6A8
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=FQBXh1gs
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HaLrY6vi
 Received: by kanga.kvack.org (Postfix)
-	id B2B8E6B0951; Wed, 25 Nov 2026 04:14:50 -0500 (EST)
+	id DC3BC6B0952; Wed, 25 Nov 2026 04:15:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B02436B0952; Wed, 25 Nov 2026 04:14:50 -0500 (EST)
+	id D99FF6B0954; Wed, 25 Nov 2026 04:15:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A18546B0953; Wed, 25 Nov 2026 04:14:50 -0500 (EST)
+	id CB17F6B0955; Wed, 25 Nov 2026 04:15:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 815276B0951
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:14:50 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BF06160D8B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:14:50 +0000 (UTC)
-X-FDA: 85473081540.05.701739F
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 140CB40006
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:14:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=FQBXh1gs;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FECF6B0952
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:15:01 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 204EFC0E32
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:15:01 +0000 (UTC)
+X-FDA: 85473082002.02.EEFD38E
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C1DF520008
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:14:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=HaLrY6vi;
 	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf17.hostedemail.com: domain of wangxuewen_ky@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
+	spf=pass (imf03.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795598088;
-	b=fSjgPEPa+o+Co3MvL/LUlMleJpCAy2jVALVGGDX4Llvm9TTfvpg44RmUOblBN5EKjDRFw2
-	6LP2UhwHBoCZWVTPuQxP9HdUu6k0i4NyZsvw9YmygqKaBLBlYSM4P+5hsUwuPkZYcCwJlf
-	9ip+wDoGS9a0+8i5OiVSoDTAFdtZCnw=
+	t=1795598099;
+	b=nS0RRD60r1OxuUeEGG1tjjac8El2vGcBY95oRKbC1XNrvqossMharRwS7lkmNO2Acn4VbD
+	o0JRSA6Vsjo9pfXr0pIfea5PE5QjKeG5QPvkEPsLYSYMGJxYnv2QQodTTwysqj4/W0rYqy
+	Ty0FlU0DkZ+TCZn6oq5WuhUPnShqFqM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795598088;
+	s=arc-20220608; t=1795598099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uxn3jxNdlE5+3G+0a/jOfGNwju6eb5abMXfzyttYx/I=;
-	b=ALYY1hw5BcUT48Wvt8eAldjBhrZ6yxI3Y04h1T5ZJnNWUnY31e2/icQ5622Fnp7dFhpzuf
-	nO7BF8jm512uRI3IhHlC4un+M9RdI/gFwqORAecvUO3PlNrhtx9qYpjmM8mfR+kEmmVVy4
-	7/vVI/E4NhgkAYBvbJ58PvvBXyPWF2g=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=y1kNffUcvdpobzp+ZxSevNO0697zJUK1Gx23nNr5DRA=;
+	b=Eu9HH2fdpxb+OFou0rJTklIVUcLxsCNxU7MDgzSP67WZDCIl1vDMVmcf5qZkjrnfJj7xt/
+	DGPUSBThAEWgKhPnYhWlDcC3gh4cuau3BJaMUEUQ9yuAkqfzXlNf+LMmwQtcBQMpBHO47F
+	7PCufYaIrYnoWnLncU5Xl6b6zHUtJZU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=FQBXh1gs;
+	imf03.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=HaLrY6vi;
 	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf17.hostedemail.com: domain of wangxuewen_ky@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
+	spf=pass (imf03.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=Uxn3jxNdlE5+3G+0a/jOfGNwju6eb5abMXfzyttYx/I=;
-	b=FQBXh1gsaj7wA1AY0uC5hnMdhUInKaGZN5DgzUSUA5PzR5R2NzUw1c82gXWs1j
-	WrKr2XBNHi4cV62xghVsCLd8VjFP/afu5nQw90lyK8zjp4pcs+ysSkIyuzT10T9B
-	hnS0fAmEvHQn7krH1HJoS4n9AUTvc6PuPJhhrfuUF3zpM=
-Message-ID: <dcf71430-9c9a-4b41-a36f-4af2549e3683@163.com>
-Date: Wed, 25 Nov 2026 17:13:57 +0800
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=y1
+	kNffUcvdpobzp+ZxSevNO0697zJUK1Gx23nNr5DRA=; b=HaLrY6viqHcpnU0jL7
+	eP0yKx9h2tQX6XY4MuXniaW/35Y5CFq1Wza5sOm+BfCY9dT1OFWAaMfh3nHC5Inz
+	5RYitasG2HO9jpCVhDAqr9mgHQXZv1BMIiKQjhYP8jN9nVm2xFD06+Z5T2n3+Qj8
+	yB2uXDgX63scSD/dFxrk+RQxQ=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgDH7yzwpgZrIz5UHg--.45691S2;
+	Wed, 25 Nov 2026 17:14:25 +0800 (CST)
+From: Xuewen Wang <wangxuewen_ky@163.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	chansen3@cisco.com,
+	sj@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Xuewen Wang <wangxuewen@kylinos.cn>
+Subject: [PATCH v2] tools/mm: page-types: flush pending idle bitmap bits after walking
+Date: Wed, 25 Nov 2026 17:14:08 +0800
+Message-Id: <20261125091408.1584017-1-wangxuewen_ky@163.com>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] tools/mm: page-types: flush pending idle bitmap bits
- after walking
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, sj@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Xuewen Wang <wangxuewen@kylinos.cn>
-References: <20261118021253.1691428-1-wangxuewen_ky@163.com>
- <20261124184653.d6e1d627154d526e6cd85d27@linux-foundation.org>
-From: Xuewen Wang <wangxuewen_ky@163.com>
-In-Reply-To: <20261124184653.d6e1d627154d526e6cd85d27@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3P9XVpgZrYVVvJw--.49914S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uFWxGr1kJr1xZw4rtF1fJFb_yoW8XrWDp3
-	yYka17Kw4ktrW3GwnxAFs7AF1IyryfXFWfGws3Ar98uF45Xry2qFWFgry093W8Wr4fCF12
-	vw4UK398u3WrZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07joSoJUUUUU=
-X-CM-SenderInfo: pzdqw5pxhzv0xbn1qiywtou0bp/xtbC8BY7JGsGptaFlAAA31
-X-Rspamd-Server: rspam10
+X-CM-TRANSID:PSgvCgDH7yzwpgZrIz5UHg--.45691S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZryrJrWfKr18GF4UuFy3Jwb_yoW5Cryrpr
+	ZxK34jyw4kta4fGwsxZrnrAF1rAwn3XayfGrW7G345ZayUJF1jq3Wxur10vw18WrWkCFW7
+	Jrs8GF98WrWUArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jmwZ7UUUUU=
+X-CM-SenderInfo: pzdqw5pxhzv0xbn1qiywtou0bp/xtbCzRNCK2sGpvOLoQAA3l
+X-Rspamd-Server: rspam04
 X-Rspam-User:
-X-Rspamd-Queue-Id: 140CB40006
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: C1DF520008
+X-Stat-Signature: gm53nc77bmik4uw3pjrrz1u9xyzbesgg
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: kxhq8rua1d4g1sbmjqmq5rzqj6ij4gde
-X-HE-Tag: 1795598085-155113
-X-HE-Meta: U2FsdGVkX1/wbGGJe7OqJk6WkCpj9RfUq69BsLfHXuAIr1Jmh+v1wvOsubhdWW89e2YZSC+OLUsjnyk/5RR94d+rBa1o4DZkWPyj2BOb2WHon6Vmnw/UYkWU3iHQJaPbuDOBljh5GkH4Mr55qPiXAQ4sD3KG5CkW2l2YELKP8sHzfR38pYw/ZuVU5tW8PHLSoc3JpdJ5zp+j36bSaaLIdQUubkO4UKxNMo5Iyk3kxwFRmn2OXtvtyMbnxC6QWXyeX5UX31rlc9fBaYkCUCcQhyJQ9k4CcOE5oSPqwPFmj42IelaneP9R3O0C9T6j7Ye8evKW3dHZMTr69yDAe3hs+8evObAfjRESTk4ZwGqW2ldGbQ3zuDlglkIkdq5SCetnH/43gg9IKENEC8dJd1ZK0gjJyaaLn2a/7Kksq7nmZnOcaqItNp35Oz4N3LYdjIK369LoUr+PawlsVlFbcPYvyeHMbq5+BjI1iGLliAXzGL3WR4ZyLEQF7SZlMoYQaigXy6WX/Bl20+f3qUBQJImnMMktOXhhcxIccRCsXrN3fwd93YdSz8CuUe8WCG5RoX9J/pX8+D5T5he4d2wZ21W//+trtwjCrhVECXsqjUwFI6VgJ3uzA4Y1Al27Asm78j6yV3mq6Za/m1LFjCxojIOtgyh9C56RX0ZCM5HB+zw8dUjPSE8SFH94zuq9UbEdXTmiVUTtLNH/fZCMHH+nCjSXBGm8en7r859iF6pMdw5vmJa2px14IBykQIYM5yOeP0egp3RFE7cQJD0e4lC7i0zht3NmMfKQ2GdplD0f15vz7WWp4y9pVz2/NRQPknObc2slMvbpNETzKraPsZdtbSrf5/DaW7ozKIs7mkU4oa9cW3bhOhFv+hL/tU7/ZbtmVDOBbzCGTHi957vaBP6JHbifk0doIFXUjKYMB22Z7mutVTpFTSFlptTX3VuppbFmZmpLzYUGgK7tSJEPNXso/hO
- fZlk2hSe
- BEXifwsywg3WXs0NdY7C8+dl4AUBD1+baDdLd2+gWxWKks9tDP7KNTjZAVx9+uUmEx1WHEXeJMvP385PYay4uof8K1jRJysWPyMsE0q747i9Jizl04RcoaYPcuAgk2wRyKf9cHvyyYF/dzGDEITjTWtupA1/MzLLUBAWuqlTc/wQlJh96LMnK9mrMx5ILmHnTqoKrgOIJ/asFRAP1ZusHs4V3QVVQxDpSSm26hUbsV6DL8/ORlUGltcHgn95ZSSYBORHrYWiAPxHyj+Tt2ehpS0jwkimo/utuVryoepe0V49C7lWqWQpJhWwxBY6aQEjXVqX5mgGERPHpMZRyP0GaPVCujVsxDWTzLDsrUoO6mofxja/uD5zm3rAFXuruKCXYFBTH5vHZhvlWXJU/PkR06mVOhFSBmaBGmrM048a+PRUsxiXxuHNkjWHeeJOvbvtgxt9cQJ17Rf4WYKhxq51eywMPWlPhcL/IWfi9T0KFhlqv5laKVxQT89Gdr+LdvtwYHunJJi+HN4Ee5grc7Yw2dikNO8W7q+fIXUqgQGItfjVDwmFNtuw3eO/FDNMUdeQUWRBSZajXSb9LHWb/OfRysC4+zA==
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795598096-506950
+X-HE-Meta: U2FsdGVkX1/8Um8CCKk088Do4hOBh6bRbQ2sMnfc8+CYOCcFnLzuGPtoMcpXXihbUPvXp4/DY+V/Dj+96qwJNgm5b8BebNguvXQZZ3LlVQ/8jwwnEqkbxUt062LHsZJwYgcy7+zHUOrXDh9rmAk8xowRk7tRDqlUkkcrmrRyVMPq3L43efGPqIFYZqCQtYqZGLWmlACiUGb0sW2cvDaPTky1TaDvZN9J/9W4Y7Vc74IhABVE5pnBEc7pU/u1jRK9x561PVOY7vjsGwpcImIZwGHNn7Wyx9GG2bhJrZZxog4KptsHB3QL447/6UgGFpyzvKhObI5eLh0objVlINGIMeL3iTUPKqaGp1KQ9/ERFP/gjFD0jmSm6+ceC1uwHg6eo+z2FAVqSj2nAgPJa+jzWMyZHEslANfcMYyzEEoMswR8F8k1DGNTzbeI7ziKsl0/WVekjzUFJkF6XTYo46QTwNOC4Ka0S0iLrW91PSzNZBblIWrlFUxZdxoCGdzOTjZ7vb5KYn50gAICRgHUiARdCcgzL40+/An0yL0YCdNTPAwW3yiUF1Dm2LFuyYR/OvlJkk5Rv7m+oJx+1Q6hDpDYlSC+l3O7ZhKxklFTtWeVJH/UuTHaOaM8i678FNzYWzkFtIOin5qtgfC8wjnj6YPJW4biL9WR6u9zW893w5juJ4UwKik0CVLOGUnLB0gbDYYY6U0QU2c+sUdIaodIxUkHcvNNsFzeIIyxZ2bpwqWuRO4RSsEdKGYBCeWQqUmfDE3epFIQqK8IMovXWRvJMws5gFa640vcL0G0Xxl+kDFcnz5jf5EXl1DDpM/ZUzmprEvLydoaE6SQomqTyOyo1GQ8huj74oO48O5nZh0LdXszVvOggfMcQmqODfIMCevjQ1znW+aQcyzhEeEUNRj2C7Utq6ZES6DZ54ti5yzdPmQMZ6BBr8d/MvbGKYp6YBks1BMCQ5zUWTiFqIo4xzx3qgc
+ MQ3P0NWY
+ fj5ZASnRMuKdVWOLng2EwiId0hXZQtcwQK0FmAEAs66/OLs3gKtsn8nHouxJrEp5sjzEZ76u+Kn7M1nln7Qsm1eXGZ1CcgND6J1jYe1Xz7CpWxatxi39eJJQQMmTgtT4XvqLYPdgBECLBBbQVZppyMuGsSQVtww2Aw0j3wSWY88p3rRJmSr68LDe4RMxeF6b50QRPAMLwB5uf0HwwO87kvwB+x7AdCIuwVqfalJ+HNqemSNzcUasrdtazYDa0Z5i7HpSsPCnif+Il/9/R4NJ035Wn4Fr1XP7SFtr2LsLYwnRny0k2ey5j5nUbZgifuQymmUtG1WtPdc7QCYQP1WKr6UQjTSCnvzWHh6Em/+IYo+ENsejR4VTkOlv3hdh7ph18iLvlH15ixj93/RduX79bqXzyuTPdwAGGneHpe+gEg1flfP9cFCEXLub9sPb1nFbfdEU6bheNou157i8O1xyATS8obs3LPFwLy0M5UurIKIdY94yNStSFt61393zD8hJKl9N9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,52 +102,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+From: Xuewen Wang <wangxuewen@kylinos.cn>
 
+mark_page_idle() buffers bits for one 64-page bitmap word and writes
+that word when a page in another word is encountered.
 
-在 2026/11/25 10:46, Andrew Morton 写道:
-> On Wed, 18 Nov 2026 10:12:53 +0800 Xuewen Wang <wangxuewen_ky@163.com> wrote:
-> 
->> From: Xuewen Wang <wangxuewen@kylinos.cn>
->>
->> mark_page_idle() buffers bits for one 64-page bitmap word and writes
->> that word when a page in another word is encountered.
->>
->> walk_addr_ranges() tries to flush the final word by marking PFN 0.
->> If the last buffered PFN is below 64, this only adds a bit to the same
->> word and nothing is written. Otherwise it writes the pending word but
->> leaves an unwanted PFN 0 bit buffered. walk_page_cache() does not flush
->> at all, so its final pending bits are not written.
->>
->> Extract the write operation into flush_page_idle() and use it both when
->> changing words and after either walker returns to main(). Clear the
->> buffer after a successful write and skip writes when it is empty.
->> Place the final flush before the no-summary early return.
->>
->> Use 1ULL for the bit mask so shifts by 32 through 63 are also valid
->> on 32-bit hosts.
->>
->> ...
->>   
->> @@ -1364,6 +1373,9 @@ int main(int argc, char *argv[])
->>   	else
->>   		walk_addr_ranges();
->>   
->> +	if (opt_mark_idle)
->> +		flush_page_idle();
-> 
-> Very minor, but we shouldn't exit(0) if that flush_page_idle() returned
-> error?
-Hi Andrew,
+walk_addr_ranges() tries to flush the final word by marking PFN 0.
+If the last buffered PFN is below 64, this only adds a bit to the same
+word and nothing is written. Otherwise it writes the pending word but
+leaves an unwanted PFN 0 bit buffered. walk_page_cache() does not flush
+at all, so its final pending bits are not written.
 
-Thanks for reviewing the patch and pointing this out. I've updated 
-main() to return EXIT_FAILURE if the final flush_page_idle() call fails.
-I'll send v2 shortly.
+Extract the write operation into flush_page_idle() and use it both when
+changing words and after either walker returns to main(). Clear the
+buffer after a successful write and skip writes when it is empty.
+Place the final flush before the no-summary early return and return
+EXIT_FAILURE if it fails.
 
-Thanks,
-Xuewen
-> 
->>   	if (opt_list == 1)
->>   		flush_page_range();
->>   
+Use 1ULL for the bit mask so shifts by 32 through 63 are also valid
+on 32-bit hosts.
+
+Fixes: 59ae96ffc3a67 ("tools/vm/page-types.c: add support for idle page tracking")
+Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+---
+Changes in v2:
+- Return EXIT_FAILURE if the final flush_page_idle() fails, as suggested
+  by Andrew Morton.
+
+v1: https://lore.kernel.org/all/20261118021253.1691428-1-wangxuewen_ky@163.com/
+
+Verified on live kernels (v5.10 and v6.6): after "page-types -f <file>
+-i" on a 100-page test file, the kernel idle bitmap held 99/100 of the
+bits before the fix and 100/100 after it.
+
+ tools/mm/page-types.c | 38 +++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
+
+diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
+index 47e4781c5fc3..1695a7b42169 100644
+--- a/tools/mm/page-types.c
++++ b/tools/mm/page-types.c
+@@ -575,27 +575,39 @@ static int unpoison_page(unsigned long offset)
+ 	return 0;
+ }
+ 
+-static int mark_page_idle(unsigned long offset)
++static unsigned long page_idle_offset;
++static uint64_t page_idle_buf;
++
++static int flush_page_idle(void)
+ {
+-	static unsigned long off;
+-	static uint64_t buf;
+ 	int len;
+ 
+-	if ((offset / 64 == off / 64) || buf == 0) {
+-		buf |= 1UL << (offset % 64);
+-		off = offset;
++	if (!page_idle_buf)
+ 		return 0;
+-	}
+ 
+-	len = pwrite(page_idle_fd, &buf, 8, 8 * (off / 64));
++	len = pwrite(page_idle_fd, &page_idle_buf, 8,
++		     8 * (page_idle_offset / 64));
+ 	if (len < 0) {
+ 		perror("mark page idle");
+ 		return len;
+ 	}
+ 
+-	buf = 1UL << (offset % 64);
+-	off = offset;
++	page_idle_buf = 0;
++	return 0;
++}
++
++static int mark_page_idle(unsigned long offset)
++{
++	int ret;
++
++	if (offset / 64 != page_idle_offset / 64) {
++		ret = flush_page_idle();
++		if (ret < 0)
++			return ret;
++	}
+ 
++	page_idle_buf |= 1ULL << (offset % 64);
++	page_idle_offset = offset;
+ 	return 0;
+ }
+ 
+@@ -798,9 +810,6 @@ static void walk_addr_ranges(void)
+ 		else
+ 			walk_task(opt_offset[i], opt_size[i]);
+ 
+-	if (opt_mark_idle)
+-		mark_page_idle(0);
+-
+ 	close(kpageflags_fd);
+ }
+ 
+@@ -1364,6 +1373,9 @@ int main(int argc, char *argv[])
+ 	else
+ 		walk_addr_ranges();
+ 
++	if (opt_mark_idle && flush_page_idle() < 0)
++		return EXIT_FAILURE;
++
+ 	if (opt_list == 1)
+ 		flush_page_range();
+ 
+-- 
+2.25.1
 
 
