@@ -1,136 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BFA606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01048606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WWRSzkxK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fF39pGtq
 Received: by kanga.kvack.org (Postfix)
-	id DCD126B0B1B; Wed, 25 Nov 2026 17:39:07 -0500 (EST)
+	id E92AE6B0B1D; Wed, 25 Nov 2026 17:40:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA4856B0B1D; Wed, 25 Nov 2026 17:39:07 -0500 (EST)
+	id E6B166B0B1F; Wed, 25 Nov 2026 17:40:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C94046B0B1E; Wed, 25 Nov 2026 17:39:07 -0500 (EST)
+	id D7FF46B0B20; Wed, 25 Nov 2026 17:40:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 91F7A6B0B1B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:39:07 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5ED6120175
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:39:06 +0000 (UTC)
-X-FDA: 85475108292.17.0CBF0A4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AD86A6B0B1D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:40:45 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 799778014A
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:40:44 +0000 (UTC)
+X-FDA: 85475112408.18.C457AF0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id ECB6E40008
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:39:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WWRSzkxK;
+	by imf20.hostedemail.com (Postfix) with ESMTP id B6F9B1C0006
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:40:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fF39pGtq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646345;
-	b=pLaVT5O3XQU3C4Fvcg6LxsoZxOgkW4mpJ0Z776th763bSpHUhgqEmKV4RlYQjfKj48qkqv
-	DXInZHWCYXNOQs/75Q6oT3XuH7JPvrVqG5AFbpYRhygQn6QCxKuZxnZ0hnBsbfImxUqVtf
-	vay413N5rqxY9LrXiKb0ehIExfd4z/k=
+	t=1795646442;
+	b=02t7UdwfnUlvKkXdbsKWSabduWryGz0z1qTLjKLGObxICa24dlmUAlGHXrnmWYUuSN5caV
+	q+Nq81mQSPngeit9An1A0pAm6X0AKPLVJDni55z7QAi545kQc8f/OAejO1a5DzW3EwE/r2
+	AfjWiebP6K/IHdTM1qNFojPQPJtfGt8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646345;
+	s=arc-20220608; t=1795646442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=li/Z73kIBxQSgciTmM8k7ypsdLM7WIF3LC62JW/m68c=;
-	b=YrxlxeG5ry+olkmcJMgauuFWin0NJol54uN3g8dYUFDjNcHAFmK8M4Z+bgzO5kL4vJkXK6
-	y2ctfxcsOxa+d9fW16C6I3Mhmt7yDxEYysx+GGywmubRiZkAMQRwl/FcNl9+0YTfWhjnDG
-	/BaBYDv9POaXLKmcTAhwmKexoVA11Xw=
+	bh=HFEO3+Zpc0o9i9tlrP3rTUdlR6T3RFfXFEfEcMTXpBc=;
+	b=O+2Ywzej0ZZgAyUDNP4ZnSZdlX+KqPb6+asaXdfQ/odhV6wRAt0N97r8mjMrbJlBWTeAAC
+	fVroHhtDGdd8J5DtaQ+eag5XXS1vgIN1KQmtdyAjEUMP8Q5nVBFDoU5J4CoIaBvFZyBaNa
+	2lJ5x9feQdVDKgerJL2axYzaUTV2vd8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WWRSzkxK;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fF39pGtq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6631662C54;
-	Wed, 25 Nov 2026 22:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9E51F000F0;
-	Wed, 25 Nov 2026 22:38:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E824C62526;
+	Wed, 25 Nov 2026 22:40:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02C51F000C0;
+	Wed, 25 Nov 2026 22:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646344;
-	bh=li/Z73kIBxQSgciTmM8k7ypsdLM7WIF3LC62JW/m68c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=WWRSzkxKCDtSTbuZO9OMBcIfWezVK/8KYw9obS2Wic3WfhWYL/H4LAa/9miP/KChS
-	 dpbbuZdFJ/ltxFE9X+kRMLux851BA9WBn5vEWTSxqPcse4iCblZq5qba3QO2A/gMe5
-	 FQFnJoORZE0KObUJjQ/2Bn4TcNDxTBKvTDj9jhnZCkWthJ/s3wfe+5bhC2uxGMPkZR
-	 sR5i2IxpIglwqi4IvRpYtm/PQFY3BV1gU+lIDj+y1pzbS1XxQZF9bJcniYUGYlqTHZ
-	 /8dPwpDVl/TeyTGIzPrcVIK7kHt+hwdmavgP9LUtMonJZF687RYVWXeJ1hNhz9QRvJ
-	 6G+PuPLFnQ0kQ==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 25 Nov 2026 23:33:19 +0100
-Subject: [PATCH 21/21] RFC: mm/hugetlb_cgroup: charge faults to mm->owner
+	s=k20260515; t=1795646441;
+	bh=HFEO3+Zpc0o9i9tlrP3rTUdlR6T3RFfXFEfEcMTXpBc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fF39pGtqxxepy+KP0PC+Y5OKcM1qbgbvQ7TJG1E7JQ1LbKpysFsiO4+v8/8SzJf1w
+	 CwsMtXjhKZYoN1dD3aJN2guDN3cw5Dznx4xjInTNJCFHq2bKJcBeVKeaFX5Rk7LKVP
+	 cYSHh1VQdh2C4FAW/3az0ia3b9J0ilS0+xym14vm2ErXaZGbuupCVmH/grvPI3gBt9
+	 DMDfqHie2T45umUwG0j8L4KHIe7dUHIRbaFRM9+qQ3qNDnF8tg/sXkbSJjDMnSAwoI
+	 rGjJR1e4Wgf9wcRUhgXTja5yXcvjS78LNDqT7CBfsYHk9o5q+zPtm/bUjPUNXOF/lh
+	 56G1y+0j7M6jA==
+Message-ID: <6afabd96-1888-43d2-9ccb-73ca6702a004@kernel.org>
+Date: Wed, 25 Nov 2026 23:40:32 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: check VMA end bounds in insert_pmd() and
+ insert_pud()
+To: Elkin Cruz <elkin@google.com>, Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ irogers@google.com, stable@vger.kernel.org
+References: <20261125221911.1425213-1-elkin@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261125221911.1425213-1-elkin@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-hugetlb_fixes_2-v1-21-db27fd2f71a8@kernel.org>
-References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
-In-Reply-To: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Jinmeng Zhou <jinmengzhou22@gmail.com>, Hongfu Li <lihongfu@kylinos.cn>, 
- Andrea Arcangeli <aarcange@redhat.com>, 
- Mike Kravetz <mike.kravetz@oracle.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Dave Airlie <airlied@redhat.com>, 
- Vivek Kasireddy <vivek.kasireddy@intel.com>, 
- Gerd Hoffmann <kraxel@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
- Mel Gorman <mel@csn.ul.ie>, Dave McCracken <dave.mccracken@oracle.com>, 
- Andy Whitcroft <apw@shadowen.org>, Adam Litke <agl@us.ibm.com>, 
- Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
- Lance Yang <lance.yang@linux.dev>, James Houghton <jthoughton@google.com>, 
- Yang Shi <shy828301@gmail.com>, Suren Baghdasaryan <surenb@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
- Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Matthew Brost <matthew.brost@intel.com>, Byungchul Park <byungchul@sk.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Wanpeng Li <liwanp@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>, 
- Kenneth W Chen <kenneth.w.chen@intel.com>, Hugh Dickins <hugh@veritas.com>, 
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
- Joern Engel <joern@logfs.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, Michal Hocko <mhocko@suse.cz>, 
- "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>, 
- KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>, 
- "Kirill A. Shutemov" <kirill@shutemov.name>, 
- Sasha Levin <sasha.levin@oracle.com>, 
- Guillaume Morin <guillaume@morinfr.org>, Wanpeng Li <liwp.linux@gmail.com>
-Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, 
- Chris Mason <mason@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7801; i=david@kernel.org;
- h=from:subject:message-id; bh=lJ4xfsTmQl063PifoPRspfQkZofQC6q60Ex8KWNPtEc=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1TlMoOMzGK3Kgj4P5Zk+ej8QK26jeHLiQ0qKU3c3
- n8Nb3/rKGVhEONgkBVTZAkKvm/w8uW62mo3PmaYOaxMIEMYuDgFYCKvJjMynF/K8E+uaVfc07Vi
- KzynrTxq+6zQIEH3QH3021A+z7ZznAx/xY4+mfs9YHNA6uvFkR9lQ02+X98cwW7Nsv+VgZTLwxv
- K/AA=
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Stat-Signature: 1u9nax4kg479smf5z4nfsf7mfkb14dd5
+X-Rspamd-Queue-Id: B6F9B1C0006
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ECB6E40008
-X-Stat-Signature: xh8ghfpo8sg1pmwb6t73wh369oamj3z4
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795646344-690654
-X-HE-Meta: U2FsdGVkX18u6UCpiesSt5g1JIO+jrcZjc0+Wb+xIA5dRulvFh2qJyJdc51GVpWbNqHci4kEojECQMu+8hfpjihox4wAxmC7mJYwbxcujW0x2YEPOxUrpPXfNuiutOlwmUCdSZq6KhaMkP7hL0Aymf9zz8g+b58AYoFLF4Cz2tJCQnUre5cwZOHQLtRXuAI94lVdsUbg4+Tj4GnNoCxBq+4sv3OXJRsSr3J9kVoQniGbtloqJ9RK3K2zX9+RAsjULVqi2H/0eViKsba0fNgCzGRt19bFzG6JnKnDaR1DC1K1bW7IweQ4vYhQED974XE3qjGsxaDjn/dS3wHRZbTybFDMd5SeCSf4rbVEdfYvjFx+CY97TUSaygacmhputTjDs540aiewrV6aCaDxw/nXft2AkACavj5basKIeNLkg04/s5gB+yb7c0rgcBH0YLaHNiwI/ll8ng3d6Tbx8xlazhuBB9LxCc5aINSWlewkaxogQjL1q11sHyMkH2zW6/OqJGxt7Kvx5ASt5Z398e9hCUO8sy7Dd9/8ZTWBSW4D11SE0aW+BeiAKUp4yKe6tZ+UNMyqpltdhmYQDoGu3u/6R/OsnYY8SeW/usCe5Z3uYieSEybPdG4amDqsW+ywWE88CNbLs1RZypGoIVRJtcLfnlxayR5+lMv5wtRYEEjYkCyIXgFDqv2U4W4EhxJykQ630WY51ZsPV+KWMjHfaSeehtJ+N/xg+RR+8bZhEo6c2hqxylQXeWlA5EcS6J5uf3NUEI1ghMMd4k867P/E1qX4dLBHzNyVBHxL1cj396Ds981cslzQ8LIbxPby8Ur68yBJNZjzWavb10ACz5YxyFe0VImkdxqf+pU6zJQtIGb0jWSS0mqBENB8ehjhkpiG/CwseeFYkzc4CCjE2uQuihyfAEbFV5TGcIth8O7aLp3sMrRTRVXmSN9b64fE+WWAv+lFtSY3J8WSODqVRRF16iL
- Tgipk4Pj
- Y8iOzfUOQFE4Lq4mkacgn/7offk0nKeVx4MteVa0sVD6XzDM9YWRIURfuZK0F39N1F+TsJONdIntc9xUmMOweTpbhRwjEQg2oXlJPWkwSLtDEwzr1gF1FvR9fl/xvVwrQGK0QCL6xsNJHS7KEiy2hTCAqBRoMctoBqrnwkkjvJesS7BFwcnl7qpPLzMfX+zGVR1jAM/ICL/JZG3f5EQ04wZFiUXWVdjSFsYe9jNi2mmQgYt9FfOXK+1LnTDQbsFoAGWepZn3kdlT00k/5cCXGHriXXh1vHDb1LTFY4/qnOqZkwk6qeJzoRXzJf87ncDc2wgmZezhECu49V44ibGihpO0KAzlCO/83MscvNKhZzVR27w7nqUKWPTYIN75n6x+o/xwPYifSp2AKXwOO8PO/Z6mPnu8A268YnvBtN5JSE6RmUcNWWOsVD0XEGQj4WtCCbkSJyb+Bcn6WE033MQlHVcfjJX5OywWgS+eJMdQoCu5HXYI+JzBkFPAM3KopLuNSJagI0a7PIq3pwwK352Kc92KkBnt5DuBDGABlHBzIS1u73kI0YVACJn8287cm/nYHzFBgEluSWrC+A9nC7gYjAVMlag==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795646442-858
+X-HE-Meta: U2FsdGVkX1/TYeRxfmoplsIJHiJaieNOn2rdzMT5A2Q6VZVyeS0UCe6hs75vVkBkpX/cHN08Uk0THiMjZ2T0bfJi+lds4OLkr9PAGg/avCOUv8QDLeXfuP151jvPu9qRZ+q9w9JTaBEPJAjSCFNc8bZ4ZBsHiPKTlYx6N+p6q3HSwyiAmLU9oKbI0iwaklMXvgIuhiVXINH/IJV21HAqc7cjtN+E16CuefNpIl9Q3hkGdNixAEJSZsTCLnNFOtpzy/JMjvuHCJ3exhg5FCAje6ysduhtxGw73DTS3HvwgVhFJEOBYvThdd3ETOoHkg/Tl2USrTOnO36mBaEEWAsWg/6C1cA+XY4HR5CyEZ787ej/PgbB+dBdmkQzjqyPze310lF3CeqKo8HAWPcCpymB5cr7JJYfeXkITr3yNcr/1K2YSRPjNzhUnEtGcEFVgr1veBMqCzHGe44UWT9A4Ry+tv1xNP0GFL7X3pvdjfz6x/n2+LyjaSfPRXO53ftrpeu/fE9HTCuJJwGFqzy7f1GTjN3n0G8GLSfO//MZv2Pq9L8oV8xBBs9r2GObZTkB53U+zXjAXvEFQkwU8DKU0ffxM+pZBlIkaM52MqvmvyEmKwitJtuAaRdzD9Kiv5LTvAE1j2S5r3HdqORngJyG9wcliiowK3KD/IuTYxSUQ3mNtGnU8lTDQuYdgcvzrlJNo8FIlAx50d1blWhD1b5j6v+9YtwuK5+dvqhFwGSNS9ddtesOWht4JnK+GFUnuo44FKwEdb1yuLtykht9SgvOSiyyOwxGG5oQAPwxsPzgLAZAeErErhYC/rKKgtfRhJFRWFyetPki74OTvVjbtnaDIF68iATkgqak259naoQDSlroB4N31IfwY5lBs5cJg8f+FrPi1A1jeHVk4vwdm4L0duEBV5cyrIFFrRPEE7lIa4faDB0p6AsfqCkAoTap4QKEwvvOsC/hATHxhI8a/fLBR5s
+ gdJt7kLH
+ sJtIlTSVPBP5flaHtysI43zGqSLy1iwl3s76D9sMmdxLacV3VtiuOFwtJiDhtvcHVu2t+F8p3V7t/izITOAZFGusSC8Mt7U8fw2x+J+p7cXGnNvY6GuYsongPICkXsNIrrOXP5VI4oWm/JMpIz2/u1aEBhRFUsvI3Ql8a1i2YffUqZAHJ5pGHQ4Xwc6AIPcC9O5IrkKKVss0QZLNej6RYidl5eol3hHYCToOJpRMjwpdSouXhUp+8MQ57/NXdbGSRiZr6a2Qd4bCYSunpLfkwak7FDUTBNwYo5jrTL8HiGnqGTuWeWXo4BkHGrpizS4QdfalPMFLx6y4zrUzzpZ6/Xi5X+xWWYPrWFheDKk7hDd5MCL3n0FykWWAcLGmuc7FIsCwZYSuiS49Pu7xX2sr7R79w5ssuVzklXYtf0XSTsw29jZzeOPrU/GS6TzWwu6izhJvKnWRxUKDXdh5DkYHA1d4aTn9XcCctUv0IlRpEJpdnimckjPs3oOFwUKRN1732nsM4gOKEnwGIlXUSH/ZEGd4Pqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,205 +147,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-We can bypass hugetlb cgroup limits when a kernel thread faults in
-hugetlb pages for a user process: __hugetlb_cgroup_charge_cgroup()
-charges the hugetlb cgroup of current, and kernel threads usually live
-in the root cgroup, which has no limit.
+On 11/25/26 23:19, Elkin Cruz wrote:
+> insert_pmd() and insert_pud() only check that addr lies within
+> [vma->vm_start, vma->vm_end) without verifying that the full PMD or PUD
+> mapping fits below vma->vm_end. On a VMA whose end is not PMD- or
+> PUD-aligned, inserting a huge mapping at the tail straddles past
+> vma->vm_end.
+> 
+> Require vma->vm_end - addr >= HPAGE_PMD_SIZE in insert_pmd() and
+> vma->vm_end - addr >= HPAGE_PUD_SIZE in insert_pud().
+> 
+> Fixes: 5cad465d7fa6 ("mm: add vmf_insert_pfn_pmd()")
+> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
 
-For example, a KVM's async page fault repeats a fault of a vCPU that
-just failed at the limit in a kworker, which then charges the root
-cgroup:
-
-    vCPU thread                     kworker
-    ===========                     =======
-    __kvm_mmu_faultin_pfn()
-      hva_to_pfn(), FOLL_NOWAIT
-        hugetlb_alloc_folio()
-          charge fails
-        KVM_PFN_ERR_NEEDS_IO
-      kvm_setup_async_pf()
-                                    async_pf_execute()
-                                      get_user_pages_remote()
-                                        hugetlb_alloc_folio()
-                                          charges the root
-
-Let's fix it by charging the hugetlb cgroup of mm->owner whenever we
-allocate for an mm, like memcg does. Unlike memcg, which falls back to
-the root cgroup, we fail the charge if the mm has no owner (anymore), as
-we would otherwise bypass the limits again. As mm->owner depends on
-CONFIG_MEMCG, nothing changes without it.
-
-This changes the charged hugetlb cgroup in these scenarios:
-
- (1) Kernel threads that fault on a user mm, such as KVM async page
-     faults, kvm_xen_set_evtchn() in the irqfd work item and
-     iommu_sva_handle_mm(), now charge the cgroup of mm->owner instead
-     of the root cgroup.
- (2) vhost kthread workers, which join the cgroups of the task that
-     created them, now charge the cgroup of mm->owner.
- (3) With cgroup v1, threads of a process that are in different hugetlb
-     cgroups now all charge the cgroup of mm->owner.
- (4) Processes that fault on the mm of another process, such as a
-     userfaultfd monitor (UFFDIO_COPY) or remote GUP through ptrace,
-     /proc/pid/mem or process_vm_writev(), now charge the cgroup of the
-     target's mm->owner instead of their own cgroup.
-
-... which should just be the right thing to do.
-
-This has low urgency, as it only affects hugetlb cgroup limits. Let's
-not CC stable, as this might not be particularly easy to backport.
-
-Fixes: 6d76dcf40405 ("hugetlb/cgroup: add charge/uncharge routines for hugetlb cgroup")
-Reported-by: Chris Mason <mason@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- include/linux/hugetlb_cgroup.h | 10 +++++-----
- mm/hugetlb.c                   | 11 ++++++-----
- mm/hugetlb_cgroup.c            | 30 +++++++++++++++++++++++-------
- 3 files changed, 34 insertions(+), 17 deletions(-)
-
-diff --git a/include/linux/hugetlb_cgroup.h b/include/linux/hugetlb_cgroup.h
-index 1c437eb2e1c30..97208bb9d9639 100644
---- a/include/linux/hugetlb_cgroup.h
-+++ b/include/linux/hugetlb_cgroup.h
-@@ -139,9 +139,9 @@ static inline void resv_map_put_hugetlb_cgroup_uncharge_info(
- }
- 
- extern int hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
--					struct hugetlb_cgroup **ptr);
-+		struct mm_struct *mm, struct hugetlb_cgroup **ptr);
- extern int hugetlb_cgroup_charge_cgroup_rsvd(int idx, unsigned long nr_pages,
--					     struct hugetlb_cgroup **ptr);
-+		struct mm_struct *mm, struct hugetlb_cgroup **ptr);
- extern void hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
- 					 struct hugetlb_cgroup *h_cg,
- 					 struct folio *folio);
-@@ -225,14 +225,14 @@ static inline void resv_map_put_hugetlb_cgroup_uncharge_info(
- }
- 
- static inline int hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
--					       struct hugetlb_cgroup **ptr)
-+		struct mm_struct *mm, struct hugetlb_cgroup **ptr)
- {
- 	return 0;
- }
- 
- static inline int hugetlb_cgroup_charge_cgroup_rsvd(int idx,
--						    unsigned long nr_pages,
--						    struct hugetlb_cgroup **ptr)
-+		unsigned long nr_pages, struct mm_struct *mm,
-+		struct hugetlb_cgroup **ptr)
- {
- 	return 0;
- }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 438263c2ba3d9..2b0ae201e1e60 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2305,7 +2305,7 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
- 	int idx = hstate_index(h);
- 	int ret;
- 
--	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, &h_cg))
-+	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, NULL, &h_cg))
- 		return NULL;
- 
- 	spin_lock_irq(&hugetlb_lock);
-@@ -3000,7 +3000,8 @@ void wait_for_freed_hugetlb_folios(void)
-  * hugetlb_alloc_folio - Allocate a hugetlb folio.
-  * @h: Hugetlb state control block.
-  * @mpoli: Interpreted memory policy to use for allocation.
-- * @mm: Memory descriptor of the allocation target.
-+ * @mm: Memory descriptor of the allocation target. With CONFIG_MEMCG, the
-+ *      hugetlb cgroup of the owner of @mm is charged.
-  * @alloc_flags: Flags controlling the allocation behavior.
-  *
-  * Allocates a hugetlb folio and handles cgroup charging and global hstate
-@@ -3026,10 +3027,10 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
- 	int ret;
- 
- 	if (charge_hugetlb_cgroup_rsvd &&
--	    hugetlb_cgroup_charge_cgroup_rsvd(idx, nr_pages, &h_cg_rsvd))
-+	    hugetlb_cgroup_charge_cgroup_rsvd(idx, nr_pages, mm, &h_cg_rsvd))
- 		return ERR_PTR(-ENOSPC);
- 
--	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, &h_cg)) {
-+	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, mm, &h_cg)) {
- 		ret = -ENOSPC;
- 		goto err_uncharge_hugetlb_cgroup_rsvd;
- 	}
-@@ -7011,7 +7012,7 @@ long hugetlb_reserve_pages(struct inode *inode,
- 	}
- 
- 	err = hugetlb_cgroup_charge_cgroup_rsvd(hstate_index(h),
--				chg * pages_per_huge_page(h), &h_cg);
-+						chg * pages_per_huge_page(h), NULL, &h_cg);
- 	if (err < 0)
- 		goto out_err;
- 
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index 6ee771334a3bd..be6a3e0f13209 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -281,9 +281,20 @@ static inline void hugetlb_event(struct hugetlb_cgroup *hugetlb, int idx,
- 		 !hugetlb_cgroup_is_root(hugetlb));
- }
- 
-+static struct hugetlb_cgroup *hugetlb_cgroup_from_mm(struct mm_struct *mm)
-+{
-+	struct task_struct *task = current;
-+
-+#ifdef CONFIG_MEMCG
-+	/* Like memcg, charge the owner of the mm we allocate for. */
-+	if (mm)
-+		task = rcu_dereference(mm->owner);
-+#endif
-+	return task ? hugetlb_cgroup_from_task(task) : NULL;
-+}
-+
- static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
--					  struct hugetlb_cgroup **ptr,
--					  bool rsvd)
-+		struct mm_struct *mm, struct hugetlb_cgroup **ptr, bool rsvd)
- {
- 	int ret = 0;
- 	struct page_counter *counter;
-@@ -293,7 +304,12 @@ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
- 		goto done;
- again:
- 	rcu_read_lock();
--	h_cg = hugetlb_cgroup_from_task(current);
-+	h_cg = hugetlb_cgroup_from_mm(mm);
-+	if (!h_cg) {
-+		rcu_read_unlock();
-+		ret = -ENOMEM;
-+		goto done;
-+	}
- 	if (!css_tryget(&h_cg->css)) {
- 		rcu_read_unlock();
- 		goto again;
-@@ -318,15 +334,15 @@ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
- }
- 
- int hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
--				 struct hugetlb_cgroup **ptr)
-+		struct mm_struct *mm, struct hugetlb_cgroup **ptr)
- {
--	return __hugetlb_cgroup_charge_cgroup(idx, nr_pages, ptr, false);
-+	return __hugetlb_cgroup_charge_cgroup(idx, nr_pages, mm, ptr, false);
- }
- 
- int hugetlb_cgroup_charge_cgroup_rsvd(int idx, unsigned long nr_pages,
--				      struct hugetlb_cgroup **ptr)
-+		struct mm_struct *mm, struct hugetlb_cgroup **ptr)
- {
--	return __hugetlb_cgroup_charge_cgroup(idx, nr_pages, ptr, true);
-+	return __hugetlb_cgroup_charge_cgroup(idx, nr_pages, mm, ptr, true);
- }
- 
- /* Should be called with hugetlb_lock held */
+Which users in the tree trigger this?
 
 -- 
-2.56.1
+Cheers,
 
+David
 
