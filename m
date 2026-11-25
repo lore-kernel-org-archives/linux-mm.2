@@ -1,165 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDB8606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 07:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796F6606A69C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 07:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=NXmQYgQf;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=mhCAzoiz
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=v8EOTEaR
 Received: by kanga.kvack.org (Postfix)
-	id 10AF86B0920; Wed, 25 Nov 2026 02:25:56 -0500 (EST)
+	id 875B46B0922; Wed, 25 Nov 2026 02:36:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0954D6B0921; Wed, 25 Nov 2026 02:25:56 -0500 (EST)
+	id 826C06B0923; Wed, 25 Nov 2026 02:36:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77FF6B0922; Wed, 25 Nov 2026 02:25:55 -0500 (EST)
+	id 73D496B0924; Wed, 25 Nov 2026 02:36:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B212E6B0920
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:25:55 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 15FEB140DCB
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:25:55 +0000 (UTC)
-X-FDA: 85472807070.15.F558BC5
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CD8FE100007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:25:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=NXmQYgQf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="m hCAzoi";
-	spf=pass (imf05.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.156 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BAC96B0922
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:36:32 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3C0A1C4607
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:36:30 +0000 (UTC)
+X-FDA: 85472833740.05.76490EF
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 890D7140003
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:36:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=v8EOTEaR;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf09.hostedemail.com: domain of BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795591553;
-	b=XHWbVKG/+Akxn1TKR/jHMZHrRX750nEo5ZaQ9LOqUPcz2os/RYOfFWhnCU4n1KQwy9643l
-	5s6/1ebZWAPzC5j3EWngAWYB0QugiyCmYijbDkBXm23omoD5a7AjWr3BCEaKAJdrAlvLie
-	qy4vEI5DZZL+OYWi0C7kcIzbyws3uig=
+	t=1795592189;
+	b=toBedIe4cQf/z0Iz9o+oHVKoJnYmVqk3vfR1BiM6uiQjjVmqgRdJoFC460dXjjb5V2HTh8
+	A6yLxjPHBbSuHKWPjwK5kvX0ORYQEXE1S7GHlV/UV1K+3KWf5nojZqP07pn1cbP5PhEKff
+	hfxS9bnlDwPc1bnyM7c0+4TQaX8Gaw4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795591553;
+	s=arc-20220608; t=1795592189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=areUyV5IGaUVKzShNrXTKucydKXnSUiEsCYf0gfgVEI=;
-	b=gZx1SPVnR+RBbaXsNezjUhaBWPibv0Md7o1BzyVRaIaN4UY1Y4vPbOpBGaVaKPi7E/VmYw
-	4Ad534N2i2KBOFVwdtwqC6WHPoM7jNTReyeDF4I2I8z/X7oR3x6/oiHWEtGNaNKP0XuBgs
-	3h8p08RBlghfQfSxFZZrRa0auVVGHfM=
+	bh=NqNmpPsXgETS8dZeuiCyJlLE3rCmwYk+XFbPXhBfg4U=;
+	b=c3IhYrehxIantLm7MK0e+nANl79Jq15IaaezHZ7l7HBUf0NJAV4YtdtfOPf36a8iZ+ECUx
+	j3VnHOqQsbBPwmkVSqp6z556JL9+NIya4/UJnxo2zQaSvRp2W37e9/RQZNVDxCrbDi92yQ
+	/yQerMR9nT/XHwmp2l8vHhdHvuDxkzI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=NXmQYgQf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="m hCAzoi";
-	spf=pass (imf05.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.156 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 15F421400435
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 02:25:52 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Wed, 25 Nov 2026 02:25:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1795591549;
-	 x=1795677949; bh=areUyV5IGaUVKzShNrXTKucydKXnSUiEsCYf0gfgVEI=; b=
-	NXmQYgQfDBGtJJqA6lvVi0OJb8T+mYZTwOFSzroe6/oEumlIDMoOoBVQyvMptNTV
-	M5GurofGyGzpx68W0qorKdy4R/xlR4nuXhn5n/LsH91e9i9qdE+OM4swCxDK2pRe
-	WHQkVYGq8tSKTHETaOuAO3Z8FoXI6HFIavffF537didW3kxqWoIcunaoADoB6sBk
-	yi6VVuji+82nyUQ5kT3qmYipitW/tzddzJkvxNyS6f8AxnBir/6VtMjMTwgnHSiQ
-	fqNcyG9LOxd9zhHwAqiRihNk0wARFFva+wqOs9XsI5BtsVhAOTmrFbcVCXOgzrlU
-	ea7/fsOx6TZ+BV1KuL4Nzg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795591549; x=
-	1795677949; bh=areUyV5IGaUVKzShNrXTKucydKXnSUiEsCYf0gfgVEI=; b=m
-	hCAzoizhQKruuk5LmFRQz2d6hn2R1ksevvfdior23pCqGCzg/BtAT2Go8+nzfNeu
-	RhfWZihDkz+MljWwSE93SDxX87KckydiZQ46rEk1J1v0qcB1d0cB1rI9d2olDzUI
-	wEW3Cpuvf+NS+OX9f8B5I1O/dx6GdJkGRsbFI82xUidwKGBgrRTBva4FYeSRIaHU
-	O8KX4B/vRG7cStt+nMcV6v7pKcplsDtDd2pGQB8dBO7/a7514VNMZyYxRi9WCXMu
-	CjE4O8Zu1I/fE/ogBKLToJrDWtuMsN2lYbcPAeJL9C3Jd+fKi5MzDtAP8ML2mA8b
-	5hnotpSYgwwpsDz7ICkWA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795591549; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm3:rsa-sha256:gyaZRTnah0NwAK2Wf/qNkZZGR2KceRhbQuZRIV96KlQC6xh
-	oAlE53+xyigLUwGI/Vbc28Zx3qx2LEV32aEdIqQX18BsUd/rutynABzM+ZSo/BpL
-	y0ihOISisDqVVNVYQIk+MCnsmkQqdQdkyFiXCnQrcakda1AprtDVDYb+Ddre4+0d
-	mFOSOufI9kmP+txHt+GGrO5zEfhte4mhXuS26wmIKlT3Pe/Q9/ZnKisG1Q+52V69
-	5QBIs8z9LK2aqIHRRnH9S8oclBt1rWzBeOJs3D2EfqNeWkqrEiLugs1GWYr6yNnH
-	tcHw65pUPJYCHfwVenmXpNI1rFxjEwZ8NLfT3rQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:ExiAzAI7ZIHsP3YwjQVuySluz/eigJ9CVIPb+SsDzuU=:qrbV5AJknoaupQ7zjDTbd8KS55zbU4af6v59P5+eBLQ=;
-X-ME-Sender: <xms:do0Ga6GSJ35BWkDWp2fNfsaepR0LXFLtkcELH66KvHrOuyTtucC9eg>
-    <xme:do0Ga2LokOoqcjP5nJFPguJ2BHyK7iWTQMVCke4O4omZ9B4ofEz_wGBv6K63B_cjc
-    pXDSEAtTEPU56NTIZ6JUuo5HtZDg9fUERtxCd8FuaJKzkx9L1cpo2fL>
-X-ME-Proxy-Cause: dmFkZTFZPq8SB5M/2S0yRtLGK0naaJDyEBcCAUFLXlW46+6wD18D2V7n4HzSTDFK4Zu1Kw
-    lUGCTgRUyrsxhkAV+GljK6xyWGLMX6/po0bC24OTwhC/yvl3WbamZka1z3vH7mEIP2a+BQ
-    r8p0BLhaxT1fv3BVPIZxSuB0NrZA8SBu7UDybYkk3RTzXTm6YGwzm2dav7RsHa/dNgBYEC
-    YwhP8Dl9H1u3n5tS0gj4z7i5ITr+MMdY5LjaWGt24PBOj8tqd25FfpcFWI52efMkFvlXLN
-    hV4JKd3Am4eI0FqzMtG0EnQJohRn7gz778dU+o0s+7DdgeK2+Wh1J+MUnGN1Rn7mO+ZdmT
-    4IDUMWZnjGt8qxGM6Bg58JGW/gHqSlvYL/PjPdsE7xvOR26o0QuBGjASNOaeF8H8wOdYB1
-    tFmBZa6aX9U2hB6XcOngW+Jz4N4UV1TZ6B1qZuMoRj0b34gf0HQ2W9sZ8KDO50YFmwFVpg
-    IkiFPfqb3nAQUS5DTaqJSKCJnk0r57xA6VPqprSgrd/Nqg9cvFs3Y6jCaU4q27ehrWJuYr
-    04vbgl0UUFovYY6lThKmmCbFbfM1dtQg+4wHu47UsA1c5cxR4XQ/2AoRhEUju0NKGbdOER
-    ndp++75cb5519xDNdHN/VoHlMTe0mNy/RZGkWXsxNkmPj/HiG0T4SHCpI0og
-X-ME-Proxy: <xmx:eY0Ga6S26rUQ_4ScmJ0YuJyWGJBwfBk5Umdal-Mg-2zuFJhou9LDNw>
-    <xmx:eY0Ga3BprrMbUkf0SGxUGKcE0aMP0HZDS05EUNpxte60g9jvjbtX-g>
-    <xmx:eY0GayvMvbdOEJERGQ8GvkbNHA_XslY0D_3LbzpTxmu1UIMgsFd5Ig>
-    <xmx:eY0Ga18YTWLRREiBOs4qyRbQofRmBO4GOwowD1_trVaFXUz_EQ41bA>
-    <xmx:fY0Ga3CeXFNz_4ixcslQkf6tb9EOKpaiJf7FkdwjRDMoKYnbLD2IBBDY>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id C30DD32A0099; Wed, 25 Nov 2026 02:25:42 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=v8EOTEaR;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf09.hostedemail.com: domain of BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NqNmpPsXgETS8dZeuiCyJlLE3rCmwYk+XFbPXhBfg4U=; b=v8EOTEaRlkbw5Q1MD4ATdrS8Du
+	2wLhbbgEsGmVs2gzSbe0zfglIVkfdWxz0ovS9CWjZwEl1CGJ2/C7bDC7X3WguhCzxTmDvhE7lnkdB
+	2PdOthUl8XjMxaiLMQS4DnMzgiwDG9gkZMZ/MgOxviFcgX11LYqlvEvZ9qIHOuMPnlfD6S7+/WcLZ
+	x78t4cRSYCT/NuBnjkRcOSbjdyN8MJavl4xXiAweXPTJalZVcgJgOIkJh5lrxmc7BwYeSj0BK7DW3
+	D5sQTHw1xvNoOL5nVGPUXJgyiWNirG1cAYedkL4VUTnWGojZcvbrSgdl0Tsg5R6yhsibfI/6ruAfJ
+	7f0262bg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xW7Y9-00000008uf8-3ovC;
+	Wed, 25 Nov 2026 07:36:17 +0000
+Date: Tue, 24 Nov 2026 23:36:17 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org,
+	linux-nfs@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
+Message-ID: <awaP8a3GaI3LCcuw@infradead.org>
+References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
+ <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
+ <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AzzadY2dYG8o
-Date: Wed, 25 Nov 2026 08:25:22 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Finn Thain" <fthain@linux-m68k.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>,
- "Bart Van Assche" <bvanassche@acm.org>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "kernel test robot" <lkp@intel.com>, oe-kbuild-all@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- "Linux Memory Management List" <linux-mm@kvack.org>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, scsi <linux-scsi@vger.kernel.org>,
- "Nilesh Javali" <njavali@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com
-Message-Id: <9ada54e5-d80a-4d3c-a491-87e7a99f2ac8@app.fastmail.com>
-In-Reply-To: <9120b892-6a31-d161-381b-809191017bdc@linux-m68k.org>
-References: <20261121034304.2dPxVKzk-lkp@intel.com>
- <0b947a72-7a68-9bde-8b0b-adb539f09a8c@linux-m68k.org>
- <CAMuHMdUxYwD2t8zrqs4QBCtATOtf9xE83Djo0g7qbNFGSCWAQA@mail.gmail.com>
- <669b9ce8-bb33-f7ee-1087-88c1e9d3b610@linux-m68k.org>
- <8a0f78e3-5483-42a2-ae27-473bbb6de915@acm.org>
- <85e103fe-acca-0880-1be3-cb1e7f79f9a4@linux-m68k.org>
- <f0ec2845-245d-43ac-9c96-242e0d1d11ea@app.fastmail.com>
- <9120b892-6a31-d161-381b-809191017bdc@linux-m68k.org>
-Subject: Re: include/linux/compiler_types.h:631:45: error: call to
- '__compiletime_assert_433' declared with attribute error: BUILD_BUG_ON
- failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) !=
- sizeof(*u)
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: r1x91a8x98ipri5hpmssotxd7ufudn63
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: zt5yeb4ffre83ued1pxe8bipy44w4dwj
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CD8FE100007
-X-HE-Tag: 1795591552-288496
-X-HE-Meta: U2FsdGVkX19WfzRX80DnjU3gHNV7SUYuftXsYvavELTFUVO4E1+y6T2WWtjX5ODVccRksa5tIP/tN6Ja+nGP4j7zoQH0UfVAryiX6+Hl5M72mLE82jxmEhvHlqxTPqcvAqjNnHVDTha0ZKA2F7T2SLZfXGfRd8RGRPtuqjBJRr7OBstGgltU77ErbN/U84F894Qj9MxfvNJDLLgHfhvluGqQ28woQq2us5GgBWnX370s3W8UJOTdim8gey2Fi4tkbFUYV0ttZRKtG8Yi+sSGGpA1ZPLW0XxebKl23/lg/1P7McarXiISPmYz8d2jXsZptxQZTNJ+t9Je8jdJVZ0jwpBkn3g7M/w5j5n6N2VFQMJMzY7m8MbM4e9GwF8gN11OqyK0gyfbtrTRhAHhxACYiVr9+V56T/b3prysmDXDHkP6nOhr/rUCei/ASsI0yAt61lzIkhgMQ6Z8JhAsyqfhU9NLdGboAS/rYTM+pGtGz6oC7DB8ZkcshMLdelSrq9qobsDiGqsNvx6h90stQoC1djDTIs+iRGlaiEAyGuG6KsPo3LWGiFXxlwX3ouIC4cwOCA3Of5bKmAcrS6ctSnzrI88W0oflH+Qf+eTrionb5HOdguqFxr7eZkLJPdjeby35f5RaEjvFhg87K3Yy043P8y+nR6quxwmFZ5GbrYTr55Nwj8nwWJ2qXeBKO0esfpPf8qKE52UenNfDQS5O7gC1/olnUKg7B1Dr9jp1JOc2hojQ9aFKbtvn0mb0AdC8LfyVZKX1z5u24DyyFgtjmpRsLineYpFxj9Go5JcrZKwmvoz6fvbck1S92IsWsohbEPH8idnUX34QIVwEp5s6oghIzvVHwb28GBW4rZA6KXL2KwUyA6SZxykLKcC4iBAGg5j6i5Ckp0Bmrx2IGdhlEjiU+FQNw1uW3qd83u0wFCKw8RIqtT2sJKpYZH2JoPJaeN1PJRVeVvZz4Zdd7YX6LKR
- 4MAioq78
- /n9wU0/gUV8ALaSpf1mXU94SkvZ0fWjOGtH+ubpoY9z6T8NH5+x9M1KZrfaEyYlL05Q3z2GlORqkysW6Fk9yrviErFFM9FKVmLt2Kn8OCnaxQoBl8bz/uHZa43Ama4PL2Jmp8gaMVmcUlXTiRws1NdoF1ga84DXiqWKvDp1A2P5a6iMpuFRUaRQiucaRGAf4Z41IitRBi7dwFf6HNagWj6D1cxq3Ml/PCYcL5cIMFoD+2qNBZJD9/ao6gRJ4gN7CrQnICr3zRMBK+vt1ObL8R3c7feuHIZ/XPOYI24jMVm3hGAEnqhk62gz6yMW0lrNnVMAOrDCTgTnI7op6nS/4tLb4PL8iELvPOpWlbGmiDv9i5DCPbSeGMNz8gOiHm34LjGs/CyLmxO5lq2YGlGVfojHXmfwNDp5FdsozjcApX+XhKDTS41/w7snQv4MnA+P6iOjT3dC3yT3gLX9PBEKC9J0CTLNcSthZ0TYZxKHs47HwePy3ypMTaKh1jNYekUeJqBFAMo8BGvX+8+rDFpbgHCbgGa04TiPOSprdC9Gt/9lKk1LlPcmUgfqLwuVgmlTVQOFUx2UECBd6nCL2ZZsw9ltiGX5PPzaQMY+dV3MYZNGpnm4KHUEFwjaaxSsR/zmfuu//zTTd8bKzrGJU=
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 890D7140003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795592188-6579
+X-HE-Meta: U2FsdGVkX1/atfbL1t3TFf5dLAq3b+VzidnoCvBF9l79GlgUjqIg+uK45I5SUFUxi9qRg7QY2Jrz1A19VZEj54TckdEX8vptBaaTxlv2TJ/z8P8IhOrCcmeRF60yGvlx3UYS0vHGc1K5oi93MBeGas2Vqm0pD0iPjJZo65gg1AEgtQRg2LO6NHtyfz6DFU2z0V+E9rrO/IxbpvN0+LTA79vkNjc+TozIQUMH5OKhisXyDNMcDaH6aXcwkdF0kB4RffHpKYrmTYXplswxUrnv9yHT4zZwGkzt/PrCQ2EI1zvAFJWkEU5ndXSjJsOOeBI918Mgw1gtoF9Rks0skpyhkal1PVsagpY4MZaIrWI5RBGMBB/pCQb8SlcdCtZm4CRa7SiMzDZLoaebBmNZdBJCoR7KyrT6o/h9Ogd9u635NF4RwL0Reou80FXFfGINlgJihNkgfn+qAaebpnX93fJSq8x1/jz4n4isq1hI6rVr+cbRubfRDFFS1Cze3KwggLcDELOe42GSm+flmk3fTVrItQ6GU3Xr2zUZHC/YvtWIeLe4/tPrzdjdgo43ckeNWwVqo1pjVIqMxpfGJw3dFreCLlLY4WcHyzTs+WDiTt8cdqdXEsCfji/ZnNetiIHeoPXd+z9ZZ2Gedl/Tj5v+Iavcqfx0S9M3adyOunsw9f/g3TY3/E9O4sYel/CMINBEs7TopvVLkC4g3ytmIdrVviyGdrgANtzuDLcMDXnPWEkWIok67UZBD4xL/WXH4q74Q0r6Y8NuKol96RrgeddgYgIdM4Szglke+/rfVc/VOetVnLgCJ7wWw9gY/GJ4OUFzseHmyojbwrmMSBmwxMNbETOIzLIggA4lo5dsC5hlBp5r7lrlne26TzmD1Tq/W+NegOQlpzNjhtGWMKauENBttkpuczjvkdFE80pMA/4uu9oh7lqp/hoEWkYBRCFfLfKrNqJsSwIgXmvbHEa1EOLig3s
+ lHnoAjKQ
+ M0dTdvGWP73fi00uj0roNg5zb7xgKQFpTia8imeYoVY8xlmNxufkOlWSD3oOzs3r9iqon51bfbxwyxXMIF9vREglKAKALHhL7YIuZ8FoYETKtYt2RxXWa3EkxlQx3jTxMyH58nrtgs9RnWywLP8pF28gnIZWlPUc/7blG65otcQ/MFbnnA75x2UsARoBorVmMyvvfpo73VKw+nehEyho2c7PEV88f5WW7rqmcXEJpnRhBvsMFmgIsjESPNKiA9w7K2QCTdbVdYiDCQcvffJVDNoi3M+kHL4cA0yLSkb3CqVLv9J66VGy2oPeXb0Hl/Co1t5XJSQeEuUASTGU+6rvBqEe1ZUcWA7FZOV8klUD+RiS1dTG96hnNGrqXTgCSBTAc1nlzgOouIeLRCJtgcnpP7x1cgGhRiTFan48S7FfczEwd+hXwQKKi+O3hYNSqdD5cibKP6RJQy3/wGjtGvdei87FzxUagU34JzfUyvnPVp8JQ/IEEvQGbB4Nko2O/LvrWWGoaDjp8YFf0NhLEJS25p2kjlEfByVGTsHKFvd+KrFm5+evjw/1UPIDh6aZ8AeghFSHS5kkJz5CCDLZZenPCtgyHIaqYu66ETmL3aiMWx5hZhsz27V8EIapHNCBv9mWPq0nSsPuPCi1X+wYgHsl9RQqZlmCbQ+ToAOGZNrlFjhP7RnxBCBV8kbAdbUYhYyAGRushNhXikAj+k4pTtbRGwkNhQ1Md9HL40F8AdxIEwLZGD0yLGLAAEbBRe3JcWBlgsrxLxzdNZCKX6MMsoDj11tJpGz/UkwpZ0FTfQJRc42bHQ65HTn+7tZfvwltLxLzsmPbRaNchWZLTnrqjTOTiYzml7zdAR/qutyAitGH8PQ+ArIOz6zzXLxO1iQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,75 +115,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026, at 01:18, Finn Thain wrote:
-> [Cc qla2xxx maintainers]
-> On Tue, 24 Nov 2026, Arnd Bergmann wrote:
->> On Tue, Nov 24, 2026, at 04:31, Finn Thain wrote:
->> > On Mon, 23 Nov 2026, Bart Van Assche wrote:
->> > Adding a flex array to struct qla_tgt_sess_op can prevent new struct 
->> > members being added in the wrong spot in that struct but can't prevent 
->> > new struct members being added to struct atio7_fcp_cmnd. Neither does 
->> > the assertion. So the "remove" alternative doesn't have all the 
->> > disadvantages that you might expect.
->> 
->> This is probably just a difference in perception: atio_from_isp and 
->> everything inside is clearly marked as a hardware structure that is 
->> meant to align exactly to the 64 byte cacheline, so it would not make 
->> any sense to change its layout and add more members here.
->
-> If this driver is for x86_64 only, as you seem to be implying, then the 
-> right fix for this build failure would seem to be Kconfig:
->
+On Tue, Nov 24, 2026 at 01:37:43PM +0000, Pedro Falcato wrote:
+> > pin_user_pages() was specifically introduced for this exact class of
+> > problem. get_user_pages() is now meant for other, much more limited cases.
+> > I've attempted to document that, here:
+> > 
+> >     https://docs.kernel.org/core-api/pin_user_pages.html
+> 
+> Ok, so I guess you want me to drop the hacks to make GUP FOLL_WRITE not
+> screw itself over? To be clear, the rest is still broken, even with pin_user_pages().
+> It just means we get nicer looking fixes, and I can drop patch 3.
 
-I did not say or imply that.
+Yes.  And maybe start looking into fixing GUP FOLL_WRITE users if there
+are any that you ran into or which are relevant to your workload.
 
->> qla_tgt_sess_op on the other hand is clearly not a hardware structure 
->> but an in-kernel one so it is quite unexpected that one of its members 
->> extends past the end, especially when the other three instances of 
->> atio_from_isp in data structures don't seem to do that.
->> 
->> >> @@ -227,7 +224,7 @@ static void qlt_queue_unknown_atio(scsi_qla_host_t *vha,
->> >>   		add_cdb_len =
->> >>   			((unsigned int) atio->u.isp24.fcp_cmnd.add_cdb_len) * 4;
->> >> 
->> >> -	u = kzalloc(sizeof(*u) + add_cdb_len, GFP_ATOMIC);
->> >> +	u = kzalloc_flex(*u, extra_cdb, add_cdb_len, GFP_ATOMIC);
->> >>   	if (u == NULL)
->> >>  		goto out_term;
->> 
->> While this does make the current implementation more correct by having
->> the correct length, I'm worried that it just ends up establishing
->> the complexity more in the sense that extra_cdb extends both into
->> the padding and beyond qla_tgt_sess_op.
->> 
->> If the driver is still actively maintained, it would be nice to
->> reduce the complexity instead, in one of two ways:
->> 
->> a) make atio_from_isp naturally aligned by dropping the bogus
->>    __packed attribute, 
->
-> I don't think I follow. "Natural" alignment would be at integer multiples 
-> of the struct size, right? Moreover, the correct alignment for a hardware 
-> struct is a question for the hardware vendor, isn't it?
+> It's unclear (to me) whether we care about any straggling get_user_pages
+> FOLL_WRITE users. A quick look around doesn't find me many; most seem to have
+> been converted to pin_user_pages() (though, admittedly, I don't know how many
+> of these are converted in stable; do we care?). Perhaps piling on a patch
+> to simply disallow get_user_pages(FOLL_WRITE) is ok? Giving Lorenzo's idea
+> a go again :)
 
-I should have been clearer here, I meant having it aligned to the
-highest alignment of any of its members, in this case alignof(u64),
-which would avoid both the warning and the slow byte-at-a-time
-access.
+I fear this is going to to break quite a lot of things.  Although given
+how long we've asked about this maybe we should at least send a patch
+to it with all relevant maintainers Cced and queue it up in -next for
+a while.
 
->>    so it is actually at the end of qla_tgt_sess_op
->>    as the driver was written to expect. 
->
-> FWIW, I think __packed on a hardware struct is at least as desirable as 
-> portable drivers are.
-
-I can certainly see an argument for marking the inner structures
-"__packed __aligned(8)" or similar, to ensure that the members are
-tightly packed but can still be accessed worth multi-byte load/store
-instructures.
-
-The way the __packed it written on the outer struct, it only causes
-problems but does not actually enforce packing of the inner struct.
-
-     Arnd
 
