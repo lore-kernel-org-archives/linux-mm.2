@@ -1,180 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642EE606A331
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D84606A335
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=h2yQ1bBs
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mq49p9IU
 Received: by kanga.kvack.org (Postfix)
-	id 7EB056B0AC7; Wed, 25 Nov 2026 16:36:10 -0500 (EST)
+	id 222306B0AC9; Wed, 25 Nov 2026 16:37:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C1E56B0AC9; Wed, 25 Nov 2026 16:36:10 -0500 (EST)
+	id 1D1796B0ACB; Wed, 25 Nov 2026 16:37:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 689F86B0ACA; Wed, 25 Nov 2026 16:36:10 -0500 (EST)
+	id 09B616B0ACC; Wed, 25 Nov 2026 16:37:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A1126B0AC7
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:36:10 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A0ADA8C7B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:36:09 +0000 (UTC)
-X-FDA: 85474949658.17.AC50CE4
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010026.outbound.protection.outlook.com [40.93.198.26])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 24CD0180005
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:36:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=h2yQ1bBs;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of jhubbard@nvidia.com designates 40.93.198.26 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795642566;
-	b=uT/RVtnl+KHGaezcYHLabvpvhUPK29Rb5yNlTGkGRU3Y4wMwvQpTZlj2NMlEnQLkW0m5+1
-	Ae1gLdcY8yjJdtsShOI9R6zyXJ1VbWke+nBytPtDEf90sEqYsrCkJQHjzQlsSVjBnvZb5a
-	FXdiuvZBaX1K2B9tx1GurRK2iYxfPkI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795642566;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C61706B0AC9
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:37:53 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3803D1A013E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:37:53 +0000 (UTC)
+X-FDA: 85474954026.10.E016778
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 899CD1C0004
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:37:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mq49p9IU;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795642671;
+	b=uSBpPz6coUEMoi/p7DOQKms+8aac7euGfxDsLeHkwKSTR4an8UVfdAuG5/nQb1+pj7e8gI
+	+d78sx0vI2tRIIIbiGWMuLTkNx4hfFVN9PhSir//+hZa95J1SfLDUOwfWE5Dk2jHpt8epS
+	mWTnuO+S8I+IlOlmT5rZyrv3KftqAT0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795642671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hICcxFwpGqAt1bFPGPlzvicfD6n257Qr6ewQEMpxZlw=;
-	b=XLIdma+NqnHtCK/ggpFis6bjLnLB76xKzjSRzXYFOVnHmdxaunCPRT9cLeGZe5usNq/JMG
-	uIycfnoToE2emZjh5kIFsO3xkd67oHc7tVuKbQWNmh1SSQ0p327YoxLbSCA8NG7tMpqzU7
-	+P6aN3the70jcWpW0cuXpxH6KGtYHEg=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=h2yQ1bBs;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of jhubbard@nvidia.com designates 40.93.198.26 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Os6eFg9LyRSrgs4GMPaIH2GyBbIJBC+B7p6YfaPbOgHfOAMcV1fUnrrgblZ5lMvksyldcdrNG/iX1mI5B2U51BzjPArkNqWricvY3SrHRBsHFEPVjw4MrKnuVAM6VILbLTpBy6tXgS/gafhXyh/8M2cBtfECKYdIqNmxnpFzxshzQlHuIWwHH67mVEMAiHVejTeAVlG+aHkg1cWDnmZrHK3UjWBkGgvo8vMLxOfKZ04r0LDnFYFcAx252BSNk/vzTMBajaePpWgs3nlNSjlyukCrCV87MQkxbZpeoSHKwe99WuixNOdhzUIAqgmS/7SuMze8QPtBynwTxTpBnJnlEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hICcxFwpGqAt1bFPGPlzvicfD6n257Qr6ewQEMpxZlw=;
- b=nxjWZ43CUJ1S6oy6EIfY6uI9SKoU63IZLJIv/YoVbd2XvVDWzZnePfzNB3cP0RZook5sgloHVsoqKt+UCFBq5tQlkoEUYavWRaGKa+aVupBxxCfz1DyDz7p/CnnYb/jZsDirQ+8j4pkUhIbJ9RHHoQhUbS7Ook9tH4lFyusNMY7DHAbTHEZ/bo2jHigD66w7aLFwOVVRrgkUW+MSlTVG1d1NKz7XvANmZsMZaxIsUtNkR5XPLkUkhqNrn9JUOO2/cKasu27v44ay5BnBU323+X5AZNTOaCJvhss/FtH7hUEtRpv8xMC828jcUxXF6v+6y8PnLeltcDiYFLJg4uYU3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hICcxFwpGqAt1bFPGPlzvicfD6n257Qr6ewQEMpxZlw=;
- b=h2yQ1bBsJWSE0lHR/IpZfFG/ZjnBSV2mM3w2RMs2diBWyCU9zMzHe7blBarFZOx3NUM+2kUNTlu4tvqxuh9GI1dUx4rjm1wJY8NvpH+1+vKGqZpjKTc+grpcXyxlCRHZTr4P3h+eG6c7pWUW4zi+r9ndDmsEaB7hPhp7rY/T2nWWs6rLx/VONXN/oWDA3lH+PVwnQBJNPBHzaw957DN48bAWHlEQeRZuz1w3VszuJbg0sM8ztFxG3LrsVbxH8Hy1sMdAHqIuEoqUBCa+WCR8oFvbQSnoOCC5B0hLAaF85FzBcKSINQzE1FYck6k+l9KBkLtdnpbLtq5KYdUmpfLEHg==
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7)
- by PH8PR12MB999295.namprd12.prod.outlook.com (2603:10b6:510:408::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Wed, 25 Nov
- 2026 21:36:00 +0000
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6]) by SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6%6]) with mapi id 15.21.0639.011; Wed, 25 Nov 2026
- 21:36:00 +0000
-Message-ID: <8ba27f45-a99d-4ff8-acd6-e4eae302591c@nvidia.com>
-Date: Wed, 25 Nov 2026 13:35:58 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: Removing ->dirty_folio
-To: Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
- Rik van Riel <riel@surriel.com>, Qu Wenruo <wqu@suse.com>,
- "Darrick J. Wong" <djwong@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-xfs@vger.kernel.org, linux-rdma@vger.kernel.org,
- Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
-References: <aoyWln-Gt-yvZQkE@casper.infradead.org>
- <CAG48ez0vXVUu9j4rYUeCqgwyHKAiN_6fL--D90WvX9q7B41V-A@mail.gmail.com>
- <ao3y8TtEGjniZ_4f@casper.infradead.org> <20260826050733.GB15122@lst.de>
- <20261125085814.GA24887@lst.de>
- <woe7ui2vuwznrdt4zxynkbnte7r57juoaicwuk4hmwmlhq7lmp@no52geqttfyk>
- <20261125143206.GA15229@lst.de>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20261125143206.GA15229@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0098.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::13) To SA1PR12MB5614.namprd12.prod.outlook.com
- (2603:10b6:806:228::7)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=60kyMXIH5oxacfi0kIXucfPpSjIf0lxOoUeaDl5buic=;
+	b=L0EJzTP5M5X7zwk3FZI9wk/J068ASr+5K4N6o9YYM+xfHYl/UgBmyEk5/CeR79kmvue+Yh
+	tc3k0ZQ4zrDLAilGjq8y93TrQsBnSbpFqWPm9zZuv6tbaNYnZPJt1g+TSeQQ9zGUjjcWBD
+	wUXzmoV09nyiieeMzOxwrLgWiCSbn1c=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mq49p9IU;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E85BE60230;
+	Wed, 25 Nov 2026 21:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AD41F000C6;
+	Wed, 25 Nov 2026 21:37:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795642670;
+	bh=60kyMXIH5oxacfi0kIXucfPpSjIf0lxOoUeaDl5buic=;
+	h=From:Subject:Date:To:Cc;
+	b=Mq49p9IUviztHKgBHD0Jsq63jIlzruPhIWld2Xsc7qz+X6oTRPsKGX6N5KksA07Ny
+	 CATzkgBG3Mxldfdp92CY1L+XkTNdySuhRXdbYlkZOpDvfmuZCu4DiPXDtZ5+7wx0pU
+	 kwolEUhlHBDHnAEvkXaS85TJoGKYJwuUCuYzWtBHT7FJL8xQQAodvmquqJSsdZUBhy
+	 YEJeL14E6/iK/Pe0R1bWfeHMJDhf2jx15+8iyp83GGVtOcZ8TbwfZe/N9akz4DZi+M
+	 tYrTY9Jflg71R5j/zwYNnDGvJJXGFPhwzR8W47osHvNy1fCdHASo2o8+t6VUafAutz
+	 XTNiJH6MgkJow==
+From: "Harry Yoo (Meta)" <harry@kernel.org>
+Subject: [PATCH slab/for-next v2 00/14] mm/slab: mandate SLAB_MAY_ACCOUNT
+ for __GFP_ACCOUNT allocations to avoid wasting memory for slab metadata
+Date: Wed, 25 Nov 2026 21:37:01 +0000
+Message-Id: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB5614:EE_|PH8PR12MB999295:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e2387fd-4dcc-4df1-0636-08df4b3c190c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|10067099003|56012099006|11063799006|261022075727099003|261026140227099003|261028144727099003|261026121527099003|261022105027099003|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	DpqKynoHIJbOkFORdRMRzqmEYsQARv6izJGK89nb+ts7pHDnc3vjnp4rXGcQOlCCmWp6/iwnAfAHTFRAq94BH92iMwH7eYVNZopSXQBej0dyYZCzQGh1T+UNioyYgS9Oeg+5LsSz58RSETYNlhQrIS6H/wqOx260/DVPlLJT92hNbAsh+k9GbIg7a0eFJtdICqLxuP+LRpiAygeovJnp19Yaiem4Z134s2wbaRsINb/HEalnuboUr5THa9YrjOJoWiybDgDBvz2j8MLZLXake6Et1qOQSAfMhD73+YVYhZnL8VHOSIoO4zsNu3mrycZxKvGNwfEwX947PUEGuE7T4ypwu4UgpkP5ozzU9/e2NQ3QKeZUA6drjoVt/AA/ymaM3tfU4FuSuQ5LoVig/KKeAwlf1cJUnNbdhPCTTXrgDe1wsLWLzjF4ELtHgg4dFqHfH0YJasDrLht5PKInpPHpMPFZpEOwi0dkXIWBpWcUz4yRUqorGyA6ZBtuQalzjRCFIz8hUmPi8VcomXy1OJ9f6nV0CpzhbJXpXP5w1IKTLxsj3F2xpP/lCPWoKHNuFNvjiLGcmwiM3JsBXS8b2OJWNyUS8xl1joOqCBokuE5WMeExt8hSX/odd7YMOWMx+LbnSBjwcZZYmDbtieWY5DQKhXZx1bfCEHxmoMsOoyrYaaQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB5614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(10067099003)(56012099006)(11063799006)(261022075727099003)(261026140227099003)(261028144727099003)(261026121527099003)(261022105027099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWp3Vi9LTVJBSlJDZFpJa295KzZCalExYkdUTEVRcFRicyt0RGlJSDFDVTNs?=
- =?utf-8?B?alkxTVYzMERKUDZaN0Y3L1RQUkhCUjUvdWFXTFdSbCtzdWYrRGNrNmFhT1Nl?=
- =?utf-8?B?YmhMYXpWd1owZFlDYmpJTlJUdGVqRWhoRWltQVRteUhPVmZVT0FiV2xJZm5B?=
- =?utf-8?B?NXI0MW9RQVd1SXJTQ0RmdElaZVpoaWVLUXhWa09nSmJ2SmFTTUVaclR2R3hC?=
- =?utf-8?B?aHBBNDgrNUtUcDlBZ2ZITWFxODlhd0pOVEUwK3VUcU1Lak5Vd3FxK2dJRVBV?=
- =?utf-8?B?RlkwblVQaEZUNEpuV0kybWRYUlFRZktOR0tKUmszRHQwMlRLV1d6TGRhcHFK?=
- =?utf-8?B?eVJMQUg2a2lOUG5xR1Q1NVNGcHZvQzNlRDZmSFE3QXVDSUgySU16Z0FUc1Yv?=
- =?utf-8?B?bnBEZjZpUGJVZXJJUnROdFFFVm1Bczh1Rk00YW1tSFZPKzFUcHJ0L0tjVjhX?=
- =?utf-8?B?TEhBVm9XWjRldnJ1Tzl1MkszNmRId0xrbjFMVHlLUnc2OVRhNEFOWDZhU0px?=
- =?utf-8?B?UHM1RDF3ZEtzRVd6RUo1bHdJQ2MrWk1YYXkxTVhSdVRLbWEvaHlza01ESjJE?=
- =?utf-8?B?MzV0d0tITmRjZWJzTXZaa3dTZEF0VFdHM25ycTZVQ2N4MkFMdERUL3ZTRkUr?=
- =?utf-8?B?cTJzeWdmQjUxdXZXWGRmVHI3aW1Oa1N0bjM5UE9LOUl6VEpUYXJEak5xcWtJ?=
- =?utf-8?B?RlpxT0FOK21NNzlvbUZwd0VKQmlteDlXQVpNYUZ4S3FsdGRSVjZXZHBHY2Nt?=
- =?utf-8?B?YWZORVQ3bWkrNHQ2ZFozaEhhRmN3Z0lHK2ZGaU1WcXdwT09XK2FoemNVbmFu?=
- =?utf-8?B?M3hQYi9ZYXhubE1jeXFYN1pKTHQwd3dKRHZaOGRmb082ODdNaVU5ZUo3amNk?=
- =?utf-8?B?TVFINU5zbkU2YXdxUEtERUVPaW5MckZvdEJnUkFJQ09QUGdleStDd3JDQXM0?=
- =?utf-8?B?alBYby85bkNla3JwUU9ZeWtpUlBoVkFkbnRhZkVJbXJ4aFk3TnZhZDJOUW84?=
- =?utf-8?B?b1J3VUUzS1cxTkVRMTJBYzZvbVlrZThzVlprS3VOOVFjaDBQdXoxbHNCUGdn?=
- =?utf-8?B?bDU0OW1VRCtuMGoxTm9Dd3NUVHRQYUw3NmJCelVwUkFyZFpyaWcxdEtScXBt?=
- =?utf-8?B?ZG4zVEJmT2RaenVPQUthVW1zZHFDYnVrVVBjVTdkZ0lMSk1XckFTSUM2WjUz?=
- =?utf-8?B?eDlvMnlHRHdISnJKbGpmcjg3cCtGbHZ6c1l4SXljYW9tQ1Y2MVQ5RGwvTGwy?=
- =?utf-8?B?TUVkd21mcDZsMFZXemFzditLWFNPUDVGR2RJWlRmaTdQajMzZnNEckJ3Z3ov?=
- =?utf-8?B?RVlHdE5yMzk2QURwU1lsU3hLWEhWTnBjZGptK3ZPU1crMUc2Z24zUThoM1pP?=
- =?utf-8?B?aTJYS0FETHR4VFM0ZmVRb3RqeFh3cE4vL3BHbUljeERETWFiWTJoL2ZFYklQ?=
- =?utf-8?B?T29vM252RURkTE1OV1JqNGFPK1EzSnZKczhaQTFBZ2lzVlQzWldHaWZVZ1lQ?=
- =?utf-8?B?SHMrNldhRHJDeGVlWENMOE1pTDJoTjNXYkUvZ2czMEVJK3k2Sm5uR0RoRXBa?=
- =?utf-8?B?SzJ0b0JGY2xEUWd6Uk9zWXYvYm9XOFcrNWJPZllpdm92dDViOHJ1SUw5VTlQ?=
- =?utf-8?B?SzdOQURYeEV2N2FvbjdJcFkvNHVVeE5aUWlMeENVQkVURGxyalczUDdGK3NB?=
- =?utf-8?B?MzBHcFBSamJabUlOLzFSREg2MVpKWkx6OGxjMmNtOUlDQk85YUxPaFZSQzd1?=
- =?utf-8?B?d2tHVExqNTVyeWZKY2xldStQUlcyTkdUSWpNTU9uUGhRdGwyTS9YTFNPcVo5?=
- =?utf-8?B?N3pua0tHRzJZRVluanFwcFgzbk5LemVweHF2L2pJVjlKakxjMWlEbWhpUTJU?=
- =?utf-8?B?OTFnbnI0YVBreUxvYk4zT3dSeDZwenkzUEgxVXE3SlAxeUtPSmdCNVJ4NVdK?=
- =?utf-8?B?YXd6MUZyeU5RNFl5M0xydHIzS2I3dFU4eDlBOW4wUUYzSm1sNGJyR0JyTDd6?=
- =?utf-8?B?blV0YlhLdHBGQ0wzMlkzQVQyYlBtY29yRHhRYTVSQytndjNucTN5clgwaE1Y?=
- =?utf-8?B?UWNZSXJPZHV1T1Z5aGhqakM3TU5zQUFiMVZ0ZExzcDVycUZsRzBMajNnSU9R?=
- =?utf-8?B?SDQ5U0VzbTBad1F2TytaVmdmZHNmOGh0M0hwQm5nNXNteW5ycWJTOThReE5p?=
- =?utf-8?B?c2t6b3RzMjM4eXhtWGJNMHpDTnRCR0hmeUx2RDluZFdoVGtvaU54cXJSMnZN?=
- =?utf-8?B?RHNvV2E1VEdmdFRxTndYNTk2WVZGcEoxcVZwellvWHU1b1AzeHY5dmtkcTNz?=
- =?utf-8?B?ZWJyMFB5YjVLWTZtT09nUWM3NmczOWZCL243bzhLR3I2bXdqRkIrUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e2387fd-4dcc-4df1-0636-08df4b3c190c
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB5614.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 21:36:00.1737
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: G/1a6ac9cJFNJfoLq0vQHG1eR58UoFdoMDlgicvgD7fSEgPr5Zims9I/Oqvd1AuUnvmmIDPLRuNcuVFyYRzQIg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB999295
-X-Stat-Signature: d3jgnxf6g9f98pxj3arf1exncur1eut1
-X-Rspamd-Queue-Id: 24CD0180005
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP1UB2sC/5WOTQ6CMBCFr2Jm7Wh/kIgr72FcDDCFKramragx3
+ N2CJ3D5MvO9930gcrAc4bD6QODRRutdDmq9gqYn1zHaNmdQQpVSyAJvfKNh8A3egzfYepfwSTE
+ xxoFqX1+QXyk/JWopEerCVIVmU5W7PeTOe2BjX8veCWZia3xAlxk4/87xUV+4SfPmDPQ2Jh/ei
+ 98oF+ynouSfKqNEgaIq90IQaa3F8crB8bDxoYPzNE1fu7frgAwBAAA=
+X-Change-ID: 20261014-memalloc-prof-dont-waste-slabobj-ext-metadata-34f943ef9658
+To: Vlastimil Babka <vbabka@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>, 
+ Hao Ge <hao.ge@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ "Harry Yoo (Meta)" <harry@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Andrew Ballance <andrewjballance@gmail.com>, 
+ Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org, 
+ Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Robin Murphy <robin.murphy@arm.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+ Amir Goldstein <amir73il@gmail.com>, 
+ Casey Schaufler <casey@schaufler-ca.com>, Paul Moore <paul@paul-moore.com>, 
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+ linux-security-module@vger.kernel.org, Richard Weinberger <richard@nod.at>, 
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Eric Dumazet <edumazet@kernel.org>, maple-tree@lists.infradead.org, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jason Xing <kerneljasonxing@gmail.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Mina Almasry <almasrymina@google.com>, 
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
+ K Prateek Nayak <kprateek.nayak@amd.com>, 
+ Anshuman Khandual <anshuman.khandual@arm.com>, 
+ linux-arm-kernel@lists.infradead.org, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ linuxppc-dev@lists.ozlabs.org, Niklas Schnelle <schnelle@linux.ibm.com>, 
+ Matthew Rosato <mjrosato@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, iommu@lists.linux.dev, 
+ linux-s390@vger.kernel.org, linux-sunxi@lists.linux.dev, 
+ linux-um@lists.infradead.org, cgroups@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 899CD1C0004
 X-Rspam-User:
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: 76nzc3qek7guz57wh6ptenx5kr7q94qf
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795642565-313000
-X-HE-Meta: U2FsdGVkX19RWh2hGo78KLlUpVaNPclJc4Vy7NtA1ARgKzbKEGrpzymsPelSt46N5ivk0knhY2BI2fjGk1ixrvsWtR8AwFq69Jt8oDAXz/3R94IpQHr/uqYZ7aPZHe53icbF1RgWBQHsn45QWHkkwNY0sy24sjNLB6sbkC4/1DYCavvoHBYlejoSSniJIN6Eg/aYBJUoxZSmffuVDLISeMWAs2fmUKGBvBnmL57urMnyysQuN/Wfvq6I7SlPny5URpzy5ff464adyLS6a0p5tCs4FrHrdtugw/MThxSVNnDBxRfgAXiQJQ/6KDcjTSd9npWGk9hU2+e7un0Mmzq1evmhNJNk1FdrD4W5CVPnf5wR4VLKYGJBf20Bw+LmnqP9CDW6C5SShqAPn1xllM3IoWpDlJa0sWZc8tRJLgX1MSCjFDSwah5mcdOi3wwFIjlsD6bmAyNV3pZKCzE70+wQKL1NZjSHUNhkI6r7v/lJYBun9X67koY2GghBS1bVG+UJGPMjmPFwc6reRKzcAmZLcCLrgZ/q+Fe9e9dmAMOGe0OTR0Ku7Ip5Mn7AZLQEtjGKpZYq22thPYuBTMujwKi5eFQaqJHvktDIEfy5rP44i2kmYCjkaLsyTQSnA8dPiIoo63JHnG99VgTxvQDJQOUEMpPbl3k7T+A0ekJtuk3HJGHfk9Q5EWqA78Rcv7qb0M8En9MnFgRpXVqsV8FwDiJugKckuiJDi+aRTP16tYjwUioyy3ZYayCOB4hhub2p6EufHHLKzNQZBXrh5DrJdPrHyKJvPaLv5NiR6kKExgaQRWk+jGN1xjekFy2KhC86modGjpVTivhboH5O4XUdRorH2vBT/tFwasXet5bo/uOfGtYLKR9MiWFyS/RQlfbWLEFLVNWxrWGYj6/n1a4MVWgnNmBkJBEXG85wh4ogxGJM5rc+d06Igmcz1U8oEio2R6aQ6t7reHzD7jOm/t2bq2m
- WlmVQmXU
- LVdVy2T5jasizlRbPpVQgKuz7HoQpP8WXS+N+Y11v3B2pkXj+kkSxypowY2hBdrV1bht6UZIBUdJ70+Qz63nuMWMk3/yOJm5ZhtTpNc6gXktUecKbFVIeVZDp+NL8HPL8w6fnl9D6JbFDvJS9J5OvdPFa1NbBqgwNr7wW/sAyKp9cMzv83qX6ReDIKR25/Jrirnp46fFmBnIyQepTmOAj16I8TC9vcGphzvEMxRx29+CZZpBMUKJ9TFCnMw71rmcG94eI0s2Mw6NRMOMooTJgCqic2A9dB6a1lLovSabY0zeW6SmSJ5VGl0vczQC00xdzqlgX9tQNjK2Ja52CG8GnE9cJGm16qI1lXvj5BLnNhCd0/9727oqHyVj9s/ASz4nLfagOlwfrH0xOhezXo9UHM4uSFjJC0FQe1m4CJ2qQi+Jn9QwNA4cdWL3HrLxZZe57IfIvh+Dldv7zfLUp7pkN7FDVU5Mc902d6v3Zc3Mbkq32zFRpnL6tGyTlhhxB63jJMXKQIwnoRDdP9PhnWsDei0ps8qzdeSjalwrUbEAf+RpvOt6km9gi8aa2W41tCaoOLIVomMfI3hPIdgMsmhwrYsgyNxczdJoG/2fzJ3XyYmdQ5bOD63EjA90SB3xrPmbwhlPSUH6A438hLTsrZk2w0zeZipckMb+7KBtPySp5GVsbRfCQ7qlF75lqelNfgM2+Va8gP+w0ZajpCc3OSSP6WmGbx2Dn2OA6CEmYUv7mxHVEot6lVoilVYjDf6ZL3ZKU2AvfO6g8Mh47x65GwhHD8yafag==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795642671-538278
+X-HE-Meta: U2FsdGVkX19OUHhjKYh2aqbIam9mwRTNNytvR/b3gPzoKGaCinMu5+JAX4+pBZPEDT5NSuo3IHD/ZQAyLkHPd9vN8gtlq9uja2DN1cmyOgOokk07NKT+94QI7OKVKcRWlEI4ibk7Opc++OJROtbP1gcDWzEYVIjg3sxJDW73aVnKZW7nkQh8tAAMYwMTmk0Sg7rukxpPFlkE46ixaVOY3Dua5ofKD4XETCG7uib2kRI1+1oKncnH9OvC+mmk5aCIc3HilpvdyE/eUGawd6e26iaE4VN013bqIBnpAisRRd/7sWc5eHeVt/wlAsIRhBV3PWRtf83zKgl73cDLiP75Q3MJ5oHBNO0MJxkndT9IilGVSUkMefVt4UjP3kKhWTXELyJxsy7r9dWZY+BjN4WThLoCTZMHqKnpqzPFCxi5u7sUKnvtE4x2nWXIDsJqX9cttdVOC+Od/RRnviPFXyr3T7NKbinZu8rhaxsbM32oZaRlaw4sLvYIO6L4/2myikqoDyaReEa0kNFEyTxsiHSlI3+VoYOa6vrYlRWPk/sJSzMQ0yBlW6lhvQCkK70JZh4GqWxEkPU6O33D5EZN0puRQp+G5jy8eatkfi41DnNveeWam8quofQd/xmkM80ojkMh+aYSNXbM7aC0+VEr+NiNsSCAkQtPa4lCAAmH178hAVqwbktEPfiNrFCSOKYqjN9jx5shSM5q601cPWj4dVlyINALkVSzKQmH1BWP+QYY8Mop6oaPENZ0W3hEDZMT/so2yMJw4G2sEj8aQQfh8uoO86kTbQwVk7MMsDzWQXa1YlwturIRjMXHqtp9jn0pFl3cKGmxKMZrSq7487fotlkaQ8udKAUvDCFo/aKXhQgiGdY425emXK0ZQ1HWqx1JBwmM/Eu1VjJQiIquAZIGEqCeFwm+Oii3saWwVONnC8mUeeYhb0heWO/Uf/5QmCoi/2lpOQtC8s2JYtqUDoXHVrh
+ 9lV8Wj2v
+ 7sceu5hEPtMKcEGn9JepG75KZDmKwNa4qvccSKA8l69Kb1RA4mTdV9GeWBcPld7qf7PXbTn+XfWztKMoC8zjTD0dA8uEfPQ3P6UZoXQnkCKMXOeMqSzi9RchNEvvh/TbPDWyn6O5i+lZV498jsFHHnjVZuS9RAc2azq0lsCAfe18pF930XzCrr6mqi3+1fj3rTPeMohQyKmYPysonUjPyzsoamgx5u8M4loxjUF5lHRzsQMvI3S3TyG24bCHyRvcTMlGPvsepyIrgyseGCGScx5ffsYCII++/MO3e0CFQ5dIwiD16eTKNl8EaA6WhDdzeVR3k9SwNbqVEWBswLGN1vYKgvNrzXiqzQU3ygbiXlOFx57xUP3VEW65barfkpLZrO1CJ7JBiw+Tw+igOBDa0Y9LEuhJfUFNKZiUuGR9mCocQBH4a4nt1nyDajHiJ6phg7lcAu58UWZrkRzVmgrAdDaGaRCjse2c2yh7hV/eGFGRCsoC0AMZjcrczatxEF9vrwRn8tnFYrTSi+oDdPb1VLbqvrkyZuwcr6cfzD3EHvA5nS4oIdZdpOzmh09DHyWJ27onTjfag6t2YHW2af8MFcEb/7kzlyJMA2ACZ2r+dzJ4zDNrfsSFh9bVF50U1FjL9li4clv8S8ZJr68+JkXI0zbHh8/m2fn79JNydTcH9Ik0VSEeLrFseR4azFP+BnkQ6RD1NeP0Sml/h2KuEHgFSvB8POAe7VXEebTUTaRne7fHftIQoi0BFAYSXzqWJfqrhtJSQNL0kewvQZIosXo/C6jSEXCvY+44nHagxo4XQkrNAmtpkT1tLbTL79esMs3xvetnnwOXHUgPEbnAxvNzFzBrGGBR527TlHBIA8LRjNJT1dWm4Jq+37Wb5Dd4Cr1XM9uT4wJ1aZzJXQVdW2q8z5EhJyWyrWnUA6ps2qkljORRrlc4mss+F+0nu7ZhV52GMoBKokukah94579R7TzdFx/5t8NhG
+ R2Gi/tLc
+ 9jBaLUNH1/IaprerwJuCx3egwBJxr9ny1VKKc/3sbt5u9JFSMK/s1iNJM750Izj9rKYNRVti0hIrsk6DyE/4GIhVVg+rMz6abiIRIb7O5LhPsvThw+mzOJ7e6BPR5BVtOfGwT1iItItfQmyz8AR7AqOW6IjrOP+XN22JAKDa/nDo8o1kh8XHnfb39MjDbPc4Oah/6Oh9Q36giS2FDQmfA56nC3pjCzCqSNV8IcvaBA0iy208+vBMS36x/YuQdCjfIlHD1mefbW+oksh2PNuYLY9QeUEPlH1X54YvA7kw49yzDUe9gZMXYEGenK/A7rVAw1iigY9GtQpg2D+sNoq1J4NbCt6/RA6fT+NCIM33udKYKoZoa0BFns4N+QKojgNIGa5P/QqKI8Cen/XQ0sI/9kxr34VWED68EddsK97iMlg9dZM1Z+FH8aKCaV10/+lzp+qShXtcPkubxIkpFe9xnmnAC7XZft4U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,33 +152,331 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 6:32 AM, Christoph Hellwig wrote:
-> On Wed, Nov 25, 2026 at 11:15:40AM +0100, Jan Kara wrote:
->> I think we agree regarding the direction where this should be going :).
-> 
-> Well, that's good.
-> 
->> Regarding the tracking of longterm pins, I remember when we started working
->> of the GUP / pin_user_pages() fixes, one of the ideas that we floated was
->> to take pinned pages off the LRU (they cannot be freed anyway) and use that
->> space in struct folio for the tracking we need. John? even had patches for
->> that but the performance overhead was too big (primarily due to LRU locks
->> contention) for direct IO. But for longterm pins, the additional overhead
->> of the setup could be acceptable and that would significantly increase our
->> maneuvering space in what we can do (because longterm pins are yet another
->> page refcount in the end).
-> 
-> Yes, additional significant overhead for plain FOLL_PIN would be bad.
-> But for longterm pins it should not be an issue, as they should last
-> long enough to amortize additional cost
+TL;DR
+-----
 
-Let me go dig that up. I seem to recall that one variation added an "if" branch
-to put_page(), and there was a thudding sound followed by silence when I
-posted it. haha :)
+The purpose of this series is to convert existing slab users that
+specify __GFP_ACCOUNT on allocations to specify SLAB_MAY_ACCOUNT on
+cache creation, to reduce memory waste for slab metadata with
+CONFIG_MEMCG=y && CONFIG_MEM_ALLOC_PROFILING=y.
 
+Longer version of the cover letter
+----------------------------------
 
-thanks,
--- 
-John Hubbard
+Currently, there are two ways to charge slab objects to memory
+cgroups: 1) specify SLAB_ACCOUNT during cache creation, or 2) specify
+__GFP_ACCOUNT on allocation. The latter method made it impossible to
+assume that certain slab caches are never charged to memory cgroups.
+
+Since commit d4404b0f5b8b ("mm/slab: stop allocating objcg pointers when
+unnecessary"), slabobj_ext allocates the space for the objcg pointer
+only for caches with SLAB_MAY_ACCOUNT. However, kmem_cache_create() sets
+the flag on every cache, because any cache may be used with
+__GFP_ACCOUNT.
+
+As a result, sizeof(struct obj_cgroup *) bytes are wasted for each
+unaccounted slab object when both memalloc profiling and memcg are
+enabled. This is suboptimal when memalloc profiling is used to
+profile memory allocations on production.
+
+So, let's make memcg charging opt-in and stop wasting memory!
+
+New rule for slab users: a cache must specify SLAB_MAY_ACCOUNT
+(explicitly or implied by SLAB_ACCOUNT) for its objects to be charged
+to a memcg. Otherwise __GFP_ACCOUNT is ignored and triggers a warning on
+debug kernels (CONFIG_DEBUG_VM=y).
+
+The approach is quite straightforward, but converting all caches that
+may pass __GFP_ACCOUNT without SLAB_ACCOUNT at once is not.
+As a best-effort approach, I swept the whole tree (with help of an
+LLM) for paths that pass __GFP_ACCOUNT into slab allocations either
+directly or indirectly.
+
+While I tried to make sure the sweep is exhaustive, there can be a
+missing conversion. However that is not a correctness problem:
+the objects are just no longer charged to memcgs. Patch 13 adds
+VM_WARN_ON_ONCE in __memcg_slab_post_alloc_hook() to catch such a
+missing conversion.
+
+Patch 1 allows passing SLAB_MAY_ACCOUNT to kmem_cache_create(),
+patches 2-12 specify SLAB_MAY_ACCOUNT for the caches found by
+the sweep, and patch 14 stops setting SLAB_MAY_ACCOUNT on all caches.
+
+Memory savings and testing
+--------------------------
+
+On an idle x86 VM with both memalloc profiling and memcg enabled,
+slabobj_ext memory (the alloc_slab_obj_exts entry in /proc/allocinfo)
+drops from 1,280KB to 910KB (-29%) after boot. The savings are expected
+to be larger on real workloads, which allocate far more unaccounted slab
+objects (8 bytes per unaccounted slab object).
+
+Each tested cache was verified with the warning in patch 13:
+I confirmed that 1) the warning is triggered without the conversion,
+and 2) specifying SLAB_MAY_ACCOUNT resolves it. However I could not test
+io-pgtable_armv7s_l2 and sun50i's pt_pool caches due to lack of the
+hardware and emulation support. So they are compile-tested only.
+
+  cache                  tested  environment
+  ---------------------  ------  -----------------------
+  radix_tree_node        yes     x86
+  maple_node             yes     x86
+  buffer_head            yes     x86
+  skbuff_head_cache      yes     x86
+  fanotify_*_event       yes     x86
+  smack_rule             yes     x86
+  io-pgtable_armv7s_l2   no      compile-tested only
+  thread_stack           yes     ppc64le (64K pages)
+  pgd_cache (arm64)      yes     arm64 (64K pages)
+  PGT_CACHE (powerpc)    yes     ppc64le
+  PCI_DMA_*_tables       yes     s390x (zPCI + vfio)
+  hostfs_inode_cache     yes     UML
+  sun50i pt_pool         no      compile-tested only
+
+Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+---
+Changes in v2:
+- Rebased onto the latest slab/for-next.
+- Collected Acked-by from Jakub and Reviewed-by from Casey. Thanks!
+- Patch 1
+  - Resolve "sysfs: cannot create duplicate filename" warning by
+    encoding SLAB_MAY_ACCOUNT in create_unique_id() (kernel test robot,
+    Sashiko).
+  - Define SLAB_MAY_ACCOUNT in tools/include/linux/slab.h to fix
+    the build of tools/testing/{radix-tree,vma} (Mike, Sashiko).
+- Swept the tree again on the new base. No new cache needs
+  SLAB_MAY_ACCOUNT.
+- Re-tested all the conversions on the new base.
+- Link to v1: https://patch.msgid.link/20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org
+
+Range-diff against v1:
+
+ 1:  f749199b4fde !  1:  31425f1e4a92 mm/slab: allow passing SLAB_MAY_ACCOUNT to kmem_cache_create()
+    @@ Commit message
+         Callers will specify SLAB_MAY_ACCOUNT for caches whose objects may be
+         allocated with __GFP_ACCOUNT. Accept the flag in SLAB_CORE_FLAGS.
+     
+    +    SLAB_MAY_ACCOUNT prevents merging but is not part of the sysfs ID. This
+    +    was fine while all mergeable caches had the flag. Now that callers may
+    +    specify it, encode it in create_unique_id() to keep the ID unique.
+    +
+    +    Define the flag in tools/ as well to avoid breaking the userspace tests.
+    +
+         Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+     
+      ## mm/slab.h ##
+    @@ mm/slab.h: void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
+      			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE)
+      
+      #define SLAB_DEBUG_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
+    +
+    + ## mm/slub.c ##
+    +@@ mm/slub.c: static char *create_unique_id(struct kmem_cache *s)
+    + 		*p++ = 'a';
+    + 	if (s->flags & SLAB_ACCOUNT)
+    + 		*p++ = 'A';
+    ++	if (s->flags & SLAB_MAY_ACCOUNT)
+    ++		*p++ = 'M';
+    + 	if (s->flags & SLAB_DEBUG_NOOP)
+    + 		*p++ = 'N';
+    + 	if (p != name + 1)
+    +
+    + ## tools/include/linux/slab.h ##
+    +@@ tools/include/linux/slab.h: enum _slab_flag_bits {
+    + 	_SLAB_PANIC,
+    + 	_SLAB_TYPESAFE_BY_RCU,
+    + 	_SLAB_ACCOUNT,
+    ++	_SLAB_MAY_ACCOUNT,
+    + 	_SLAB_FLAGS_LAST_BIT
+    + };
+    + 
+    +@@ tools/include/linux/slab.h: enum _slab_flag_bits {
+    + #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+    + #ifdef CONFIG_MEMCG
+    + # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+    ++# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_MAY_ACCOUNT)
+    + #else
+    + # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+    ++# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_UNUSED
+    + #endif
+    + 
+    + void *kmalloc(size_t size, gfp_t gfp);
+ 2:  7bde3ab6533f !  2:  9323ceca452f lib/maple_tree: specify SLAB_MAY_ACCOUNT for maple_node cache
+    @@ Commit message
+         Path: mtree_insert_range(GFP_KERNEL_ACCOUNT) -> mas_nomem()
+           -> mas_alloc_nodes() -> kmem_cache_alloc(maple_node_cache)
+     
+    -    Assisted-by: LLM
+         Cc: "Liam R. Howlett" <liam@infradead.org>
+         Cc: Alice Ryhl <aliceryhl@google.com>
+         Cc: Andrew Ballance <andrewjballance@gmail.com>
+ 3:  1c34ea46a76e !  3:  0558bdf4936a lib/xarray: specify SLAB_MAY_ACCOUNT for radix_tree_node cache
+    @@ Commit message
+           -> xas_store() -> xas_alloc() (gfp |= __GFP_ACCOUNT)
+           -> kmem_cache_alloc_lru(radix_tree_node_cachep)
+     
+    -    Assisted-by: LLM
+         Cc: Matthew Wilcox <willy@infradead.org>
+         Cc: linux-fsdevel@vger.kernel.org
+         Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+ 4:  d9e638c3320d !  4:  96f41e2fa6db fs/buffer: specify SLAB_MAY_ACCOUNT for buffer_head cache
+    @@ Commit message
+         Path: ext4_getblk() -> folio_alloc_buffers(GFP_NOFS | __GFP_ACCOUNT)
+           -> alloc_buffer_head() -> kmem_cache_zalloc(bh_cachep)
+     
+    -    Assisted-by: LLM
+         Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+         Cc: Christian Brauner <brauner@kernel.org>
+         Cc: Jan Kara <jack@suse.cz>
+ 5:  c986fd19aacd !  5:  4f6b86b850c7 net: skbuff: specify SLAB_MAY_ACCOUNT for skbuff_head_cache
+    @@ Commit message
+           -> alloc_skb_with_frags() -> __alloc_skb()
+           -> kmem_cache_alloc_node(skbuff_head_cache)
+     
+    -    Assisted-by: LLM
+         Cc: "David S. Miller" <davem@davemloft.net>
+         Cc: Eric Dumazet <edumazet@google.com>
+         Cc: Jakub Kicinski <kuba@kernel.org>
+    @@ Commit message
+         Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+         Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+         Cc: netdev@vger.kernel.org
+    +    Acked-by: Jakub Kicinski <kuba@kernel.org>
+         Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+     
+      ## net/core/skbuff.c ##
+ 6:  c86eb6c221f7 !  6:  c6f61c47e801 kernel/fork: specify SLAB_MAY_ACCOUNT for thread_stack cache
+    @@ Commit message
+           -> dup_task_struct() -> alloc_thread_stack_node()
+           -> kmem_cache_alloc_node(thread_stack_cache, THREADINFO_GFP)
+     
+    -    Assisted-by: LLM
+         Cc: Kees Cook <kees@kernel.org>
+         Cc: David Hildenbrand <david@kernel.org>
+         Cc: Lorenzo Stoakes <ljs@kernel.org>
+ 7:  a37935e9f1d8 !  7:  7c448f3688f4 arm64/mm: specify SLAB_MAY_ACCOUNT for pgd_cache
+    @@ Commit message
+         Path (e.g. 64K pages): copy_process() -> mm_init() -> pgd_alloc()
+           -> kmem_cache_alloc(pgd_cache, GFP_PGTABLE_USER)
+     
+    -    Assisted-by: LLM
+         Cc: Catalin Marinas <catalin.marinas@arm.com>
+         Cc: Will Deacon <will@kernel.org>
+         Cc: Mark Rutland <mark.rutland@arm.com>
+ 8:  948c9aa21dbf !  8:  8d5c29a8d6d6 powerpc/mm: specify SLAB_MAY_ACCOUNT for pgtable caches
+    @@ Commit message
+           -> kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
+                               pgtable_gfp_flags(mm, GFP_KERNEL))
+     
+    -    Assisted-by: LLM
+         Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+         Cc: Michael Ellerman <mpe@ellerman.id.au>
+         Cc: Nicholas Piggin <npiggin@gmail.com>
+ 9:  0b2d6a632aeb !  9:  9e68e442c86b iommu: specify SLAB_MAY_ACCOUNT for slab-backed page table caches
+    @@ Commit message
+           iommu_map(GFP_KERNEL_ACCOUNT) -> sun50i_iommu_map()
+             -> sun50i_dte_get_page_table() -> kmem_cache_zalloc(iommu->pt_pool)
+     
+    -    Assisted-by: LLM
+         Cc: Will Deacon <will@kernel.org>
+         Cc: Robin Murphy <robin.murphy@arm.com>
+         Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>
+10:  df629ca9f8a3 ! 10:  0fb6578f9d32 fanotify: specify SLAB_MAY_ACCOUNT for event caches
+    @@ Commit message
+           -> fanotify_alloc_event(GFP_KERNEL_ACCOUNT)
+           -> kmem_cache_alloc(fanotify_{fid,path,perm,mnt}_event_cachep)
+     
+    -    Assisted-by: LLM
+         Cc: Jan Kara <jack@suse.cz>
+         Cc: Amir Goldstein <amir73il@gmail.com>
+         Cc: linux-fsdevel@vger.kernel.org
+11:  d3fd8833b207 ! 11:  cd123bafe26d smack: specify SLAB_MAY_ACCOUNT for smack_rule cache
+    @@ Commit message
+           -> security_prepare_creds(GFP_KERNEL_ACCOUNT) -> smack_cred_prepare()
+           -> smk_copy_rules() -> kmem_cache_zalloc(smack_rule_cache)
+     
+    -    Assisted-by: LLM
+         Cc: Casey Schaufler <casey@schaufler-ca.com>
+         Cc: Paul Moore <paul@paul-moore.com>
+         Cc: James Morris <jmorris@namei.org>
+         Cc: "Serge E. Hallyn" <serge@hallyn.com>
+         Cc: linux-security-module@vger.kernel.org
+    +    Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+         Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+     
+      ## security/smack/smack_lsm.c ##
+12:  e491d907f0da ! 12:  33a8d0abf54e hostfs: specify SLAB_MAY_ACCOUNT for inode cache
+    @@ Commit message
+         Path: lookup -> hostfs_iget() -> hostfs_alloc_inode()
+           -> alloc_inode_sb(sb, hostfs_inode_cache, GFP_KERNEL_ACCOUNT)
+     
+    -    Assisted-by: LLM
+         Cc: Richard Weinberger <richard@nod.at>
+         Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+         Cc: Johannes Berg <johannes@sipsolutions.net>
+13:  495470a3e8c2 ! 13:  3dd416de21c1 mm/memcontrol: do not allow charging objects without SLAB_MAY_ACCOUNT
+    @@ Commit message
+         is never charged does not access the objcg slot again, and the free
+         path already skips such caches via slab_needs_objcg().
+     
+    -    Assisted-by: LLM # Changelog
+         Cc: Johannes Weiner <hannes@cmpxchg.org>
+         Cc: Michal Hocko <mhocko@kernel.org>
+         Cc: Shakeel Butt <shakeel.butt@linux.dev>
+14:  84b9be2d2d42 ! 14:  533a72d59074 mm/slab: do not set SLAB_MAY_ACCOUNT for all caches
+    @@ Commit message
+         the objcg slot in slabobj_ext for caches that are never charged to a
+         memcg.
+     
+    -    Assisted-by: LLM # Changelog
+         Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+     
+      ## include/linux/slab.h ##
+
+---
+Harry Yoo (Meta) (14):
+      mm/slab: allow passing SLAB_MAY_ACCOUNT to kmem_cache_create()
+      lib/maple_tree: specify SLAB_MAY_ACCOUNT for maple_node cache
+      lib/xarray: specify SLAB_MAY_ACCOUNT for radix_tree_node cache
+      fs/buffer: specify SLAB_MAY_ACCOUNT for buffer_head cache
+      net: skbuff: specify SLAB_MAY_ACCOUNT for skbuff_head_cache
+      kernel/fork: specify SLAB_MAY_ACCOUNT for thread_stack cache
+      arm64/mm: specify SLAB_MAY_ACCOUNT for pgd_cache
+      powerpc/mm: specify SLAB_MAY_ACCOUNT for pgtable caches
+      iommu: specify SLAB_MAY_ACCOUNT for slab-backed page table caches
+      fanotify: specify SLAB_MAY_ACCOUNT for event caches
+      smack: specify SLAB_MAY_ACCOUNT for smack_rule cache
+      hostfs: specify SLAB_MAY_ACCOUNT for inode cache
+      mm/memcontrol: do not allow charging objects without SLAB_MAY_ACCOUNT
+      mm/slab: do not set SLAB_MAY_ACCOUNT for all caches
+
+ arch/arm64/mm/pgd.c                |  2 +-
+ arch/powerpc/mm/init-common.c      |  3 ++-
+ drivers/iommu/io-pgtable-arm-v7s.c |  2 +-
+ drivers/iommu/s390-iommu.c         |  4 ++--
+ drivers/iommu/sun50i-iommu.c       |  3 ++-
+ fs/buffer.c                        |  2 +-
+ fs/hostfs/hostfs_kern.c            |  2 +-
+ fs/notify/fanotify/fanotify_user.c | 10 ++++++----
+ include/linux/slab.h               | 16 +++++++++++++---
+ kernel/fork.c                      |  3 ++-
+ lib/maple_tree.c                   |  2 +-
+ lib/radix-tree.c                   |  2 +-
+ mm/memcontrol.c                    |  6 ++++++
+ mm/slab.h                          |  2 +-
+ mm/slab_common.c                   |  8 +++-----
+ mm/slub.c                          |  2 ++
+ net/core/skbuff.c                  |  2 +-
+ security/smack/smack_lsm.c         |  2 +-
+ tools/include/linux/slab.h         |  3 +++
+ 19 files changed, 50 insertions(+), 26 deletions(-)
+---
+base-commit: 0b0985aeb9979c5fa5c3b872cecdf97ed4ed2b3e
+change-id: 20261014-memalloc-prof-dont-waste-slabobj-ext-metadata-34f943ef9658
+
+Best regards,
+--  
+Cheers,
+Harry / Hyeonggon
 
 
