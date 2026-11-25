@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18139606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BFA606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kck3KUj7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WWRSzkxK
 Received: by kanga.kvack.org (Postfix)
-	id 16FAE6B0B19; Wed, 25 Nov 2026 17:38:52 -0500 (EST)
+	id DCD126B0B1B; Wed, 25 Nov 2026 17:39:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 146B26B0B1B; Wed, 25 Nov 2026 17:38:52 -0500 (EST)
+	id DA4856B0B1D; Wed, 25 Nov 2026 17:39:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00E766B0B1C; Wed, 25 Nov 2026 17:38:51 -0500 (EST)
+	id C94046B0B1E; Wed, 25 Nov 2026 17:39:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CE1526B0B19
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:38:51 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E5191A014D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:38:50 +0000 (UTC)
-X-FDA: 85475107620.15.29D2110
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AD913160007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:38:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kck3KUj7;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 91F7A6B0B1B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:39:07 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5ED6120175
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:39:06 +0000 (UTC)
+X-FDA: 85475108292.17.0CBF0A4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id ECB6E40008
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:39:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WWRSzkxK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646328;
-	b=FKkCm67bhRvA5OsbTBRyQ6hhV2jMOZ0jJRloOcGt+iKTHNZlkKVP7T4EG0fdrA8F6nfeDx
-	AHToE0ra3EhQoug5tYzIFwMgkwEIT6yDqMR1CX1Tsb9RE6488kri7cuTKODFKtzAVF/ZQu
-	VRTyiMCK/2e4+4b0ncYB38WOls8XmUg=
+	t=1795646345;
+	b=pLaVT5O3XQU3C4Fvcg6LxsoZxOgkW4mpJ0Z776th763bSpHUhgqEmKV4RlYQjfKj48qkqv
+	DXInZHWCYXNOQs/75Q6oT3XuH7JPvrVqG5AFbpYRhygQn6QCxKuZxnZ0hnBsbfImxUqVtf
+	vay413N5rqxY9LrXiKb0ehIExfd4z/k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646328;
+	s=arc-20220608; t=1795646345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZmPaow3aRP/mBzNF7NAqWx/in1rPd5GnDvZIz10/EGU=;
-	b=eNCLPNv2UqVyOJSHLon4c2zDAdF8tdYbmFS/1vbjJDWphzhdtZ9bIgxs7+RXxXnLcz6WAd
-	95P4qPVQJX9GQRg3/liDkhpm7NA0m0PDcHPDUFk/BOM6kp/ljFs8cRy/zuT2E1f2uBOwqz
-	HzNVt9soUhe4vRMQqFgMay0ZD6iigGw=
+	bh=li/Z73kIBxQSgciTmM8k7ypsdLM7WIF3LC62JW/m68c=;
+	b=YrxlxeG5ry+olkmcJMgauuFWin0NJol54uN3g8dYUFDjNcHAFmK8M4Z+bgzO5kL4vJkXK6
+	y2ctfxcsOxa+d9fW16C6I3Mhmt7yDxEYysx+GGywmubRiZkAMQRwl/FcNl9+0YTfWhjnDG
+	/BaBYDv9POaXLKmcTAhwmKexoVA11Xw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kck3KUj7;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WWRSzkxK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EB01845D40;
-	Wed, 25 Nov 2026 22:38:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E8C1F000D3;
-	Wed, 25 Nov 2026 22:38:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6631662C54;
+	Wed, 25 Nov 2026 22:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9E51F000F0;
+	Wed, 25 Nov 2026 22:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646327;
-	bh=ZmPaow3aRP/mBzNF7NAqWx/in1rPd5GnDvZIz10/EGU=;
+	s=k20260515; t=1795646344;
+	bh=li/Z73kIBxQSgciTmM8k7ypsdLM7WIF3LC62JW/m68c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=kck3KUj7vJS4ZeVNP5dth6KmT6gHDA25j5pi/Mlm4lHVub4QENyWtu123HUcGJWaD
-	 Rl6cPbRSDWHJCcycyuMKnF4PaRpPvlsIUUhXGf/Gh90zai+FSgpndNMnhJP2fTLqCV
-	 30XnFvrgW6Smdi/oGKIwqz3HFc7kYoNdReVHbuczICq1mspWkfyZTYRfpXxKPB1Ab3
-	 gpitjL32298LymauPpHqMHGOH/zRByjab2cGejKPvzWIEsQO5lr0Wk2Oyy4SaVoJoB
-	 6h4XMJpK6crskYi7uiSaVNQOctaPhIZt/qfokW4aMQtFSwY+1C8qE0ckCGwkMuUbb4
-	 KVOy3psWBLEuw==
+	b=WWRSzkxKCDtSTbuZO9OMBcIfWezVK/8KYw9obS2Wic3WfhWYL/H4LAa/9miP/KChS
+	 dpbbuZdFJ/ltxFE9X+kRMLux851BA9WBn5vEWTSxqPcse4iCblZq5qba3QO2A/gMe5
+	 FQFnJoORZE0KObUJjQ/2Bn4TcNDxTBKvTDj9jhnZCkWthJ/s3wfe+5bhC2uxGMPkZR
+	 sR5i2IxpIglwqi4IvRpYtm/PQFY3BV1gU+lIDj+y1pzbS1XxQZF9bJcniYUGYlqTHZ
+	 /8dPwpDVl/TeyTGIzPrcVIK7kHt+hwdmavgP9LUtMonJZF687RYVWXeJ1hNhz9QRvJ
+	 6G+PuPLFnQ0kQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 25 Nov 2026 23:33:18 +0100
-Subject: [PATCH 20/21] mm/hugetlb: resolve protnone faults without a uffd
- bit
+Date: Wed, 25 Nov 2026 23:33:19 +0100
+Subject: [PATCH 21/21] RFC: mm/hugetlb_cgroup: charge faults to mm->owner
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-hugetlb_fixes_2-v1-20-db27fd2f71a8@kernel.org>
+Message-Id: <20261125-hugetlb_fixes_2-v1-21-db27fd2f71a8@kernel.org>
 References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 In-Reply-To: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -112,26 +111,26 @@ Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>,
  "David Hildenbrand (Arm)" <david@kernel.org>, 
  Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3028; i=david@kernel.org;
- h=from:subject:message-id; bh=/N0SQCShJZSXpsEEatww5OmscpGwDY5DnTCpFLl2oKQ=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1QN963jEHB2n7Sa7WjQu0+lOg1aGf3GChsnFpWzW
- ry68OxMRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABN5LMvwh/cbf+TE7e+lM5Mb
- OBaW36+NmLE8cUPd9RlJ2wN+rtdoK2P4ZxqRv/iiWtJuQ5GsuSZnLs51Xmv5o+DE9qJ7C4NPJdn
- M4QYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7801; i=david@kernel.org;
+ h=from:subject:message-id; bh=lJ4xfsTmQl063PifoPRspfQkZofQC6q60Ex8KWNPtEc=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1TlMoOMzGK3Kgj4P5Zk+ej8QK26jeHLiQ0qKU3c3
+ n8Nb3/rKGVhEONgkBVTZAkKvm/w8uW62mo3PmaYOaxMIEMYuDgFYCKvJjMynF/K8E+uaVfc07Vi
+ KzynrTxq+6zQIEH3QH3021A+z7ZznAx/xY4+mfs9YHNA6uvFkR9lQ02+X98cwW7Nsv+VgZTLwxv
+ K/AA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AD913160007
-X-Stat-Signature: 1c4zhjkspd5pr3w9gmhuy4qic3sgwr3m
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ECB6E40008
+X-Stat-Signature: xh8ghfpo8sg1pmwb6t73wh369oamj3z4
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795646328-196738
-X-HE-Meta: U2FsdGVkX1/m/Mo5RlpD/01+kHRVpIrLEDcA5w9VyT7hLyi4nrDmBMd9wURUdBrzQ9p7sUbxnZUrw19ke2F/Mv6qbdQjsYmrnCmq8QUN7mBTkZAmKIu2c5JGKXbzXeAc0Oi6h7viGQFULkiS6071Eh0pGHqG0Eo62mjR/bPNOdEXcVQI+ulQ7obYiNC6v6X3yu6yy+/OokLLwYb5b8mBnG9mQGNuOOVrgKtGuv4S9JmeSZ1BJN9gaGw0hwcLarv8/O/SNMIQKyLe+UGZKtKCGb5bE+5fv0lIy3v53IsEkHMbxZWqMvgaNOhIRXyU6av43K8DqViC5YBQjyfzrz+uUeOM0/nlByZskFhflzTo8y0HXVZnAu1KAqklRrdlNcg4WyXyloAq+i+BbC/9TT0f4NUXiHzIjRTrve+L2g0G85r34IUQH3+LVMYN2mC16MruzTZRAE+dscVGvkfwV45sNKNuEA5qYS6EegwnC/xRZ19k/9qhUrV7rdm0JYWfbtagV/nIe7P42N1/hW7zAifLw5IbiwOWDwdYk4lES2BU2k2IKShZKgc/9z/43AEL1lPtTPgEzLlQ7V43fKiy6B2hzSUaM4QDI7Z/0l94Y9V2nri3C7nmBIoJp653hnQSibxNuGBSf/82AuFxePtkHVa0pNFQR/fiTAeHw5QZnoe7GA25B75Oi1ve5wmszI6zsrfb3qxUPXQBesjnGt3WDhQh7G1e9zSNJkBJ2Q+9DH2m6yZaeFesblHvlifegDBO1BReBEfB870xClpC58Clw4cqyG2KeuWK1Wo8YgybvlKWmHMYshengY++TElKXQbHPDz1DOC71pru33wmX/RrAe5QdQcbZEGvXFaVV1dmKeqdAow8IL1T5eWEOwXB146UjRJ8fKLaosGLNPsVK8DnvuLJzlXzXFD2Ro0eLCEJb63NQTVRTCXJvC1ulrEUfpYygDKlyZhUEv0wyJPKt3cTs4B
- BA14SD2S
- RDdyjyDejRmsoPBfm7rZlc8IbDcMihm4etg44cDaPigfh211xIwe+8hyKc/u0xHaphTa09+B4CVokEIxaK9SnoAqcQaiJb1mzoXEE5F5WjCxeSLuwD6WXWZfq0neY95U2mwKxwZj+BS2KnJk1Mnu54vHo2o/+fEpnx5idyM9ymoGqyy0BlYHRmpRyXrx8HB3KIpzcqobG0s9YUF+dAEy1+b/fzKqd52Dj061Wv9JroYfoH+UzD+64JUbIbqcaqJPoMpICRUPasf33CF0tj0f56exFkDpXkaaMbz/iBOIJHQ/sKbNYoc8EynrQbqGYksxc7pskhH1k/I8IcxkayjMMAg8Tq/3osU4BtwMJvioDYi50895cBwkcXhvgYhJuZk0322mIN/tB6jthDWPuptp7iSaScKq9lLx81333BVj+nB+PwyMYE7m8YZkbHQ418vGx5nOwCdpelhU2uXmoMZavSMVJ1XotzA2yReSWhLMy8cbEeGNaEy/rjtYwCDOzfIytc+lWWUxOCkRXi9S8zEDhkjiOvmjKs+HVWuERTBmsRXpp4pg=
+X-HE-Tag: 1795646344-690654
+X-HE-Meta: U2FsdGVkX18u6UCpiesSt5g1JIO+jrcZjc0+Wb+xIA5dRulvFh2qJyJdc51GVpWbNqHci4kEojECQMu+8hfpjihox4wAxmC7mJYwbxcujW0x2YEPOxUrpPXfNuiutOlwmUCdSZq6KhaMkP7hL0Aymf9zz8g+b58AYoFLF4Cz2tJCQnUre5cwZOHQLtRXuAI94lVdsUbg4+Tj4GnNoCxBq+4sv3OXJRsSr3J9kVoQniGbtloqJ9RK3K2zX9+RAsjULVqi2H/0eViKsba0fNgCzGRt19bFzG6JnKnDaR1DC1K1bW7IweQ4vYhQED974XE3qjGsxaDjn/dS3wHRZbTybFDMd5SeCSf4rbVEdfYvjFx+CY97TUSaygacmhputTjDs540aiewrV6aCaDxw/nXft2AkACavj5basKIeNLkg04/s5gB+yb7c0rgcBH0YLaHNiwI/ll8ng3d6Tbx8xlazhuBB9LxCc5aINSWlewkaxogQjL1q11sHyMkH2zW6/OqJGxt7Kvx5ASt5Z398e9hCUO8sy7Dd9/8ZTWBSW4D11SE0aW+BeiAKUp4yKe6tZ+UNMyqpltdhmYQDoGu3u/6R/OsnYY8SeW/usCe5Z3uYieSEybPdG4amDqsW+ywWE88CNbLs1RZypGoIVRJtcLfnlxayR5+lMv5wtRYEEjYkCyIXgFDqv2U4W4EhxJykQ630WY51ZsPV+KWMjHfaSeehtJ+N/xg+RR+8bZhEo6c2hqxylQXeWlA5EcS6J5uf3NUEI1ghMMd4k867P/E1qX4dLBHzNyVBHxL1cj396Ds981cslzQ8LIbxPby8Ur68yBJNZjzWavb10ACz5YxyFe0VImkdxqf+pU6zJQtIGb0jWSS0mqBENB8ehjhkpiG/CwseeFYkzc4CCjE2uQuihyfAEbFV5TGcIth8O7aLp3sMrRTRVXmSN9b64fE+WWAv+lFtSY3J8WSODqVRRF16iL
+ Tgipk4Pj
+ Y8iOzfUOQFE4Lq4mkacgn/7offk0nKeVx4MteVa0sVD6XzDM9YWRIURfuZK0F39N1F+TsJONdIntc9xUmMOweTpbhRwjEQg2oXlJPWkwSLtDEwzr1gF1FvR9fl/xvVwrQGK0QCL6xsNJHS7KEiy2hTCAqBRoMctoBqrnwkkjvJesS7BFwcnl7qpPLzMfX+zGVR1jAM/ICL/JZG3f5EQ04wZFiUXWVdjSFsYe9jNi2mmQgYt9FfOXK+1LnTDQbsFoAGWepZn3kdlT00k/5cCXGHriXXh1vHDb1LTFY4/qnOqZkwk6qeJzoRXzJf87ncDc2wgmZezhECu49V44ibGihpO0KAzlCO/83MscvNKhZzVR27w7nqUKWPTYIN75n6x+o/xwPYifSp2AKXwOO8PO/Z6mPnu8A268YnvBtN5JSE6RmUcNWWOsVD0XEGQj4WtCCbkSJyb+Bcn6WE033MQlHVcfjJX5OywWgS+eJMdQoCu5HXYI+JzBkFPAM3KopLuNSJagI0a7PIq3pwwK352Kc92KkBnt5DuBDGABlHBzIS1u73kI0YVACJn8287cm/nYHzFBgEluSWrC+A9nC7gYjAVMlag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,80 +139,203 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Chris Mason <mason@kernel.org>
+We can bypass hugetlb cgroup limits when a kernel thread faults in
+hugetlb pages for a user process: __hugetlb_cgroup_charge_cgroup()
+charges the hugetlb cgroup of current, and kernel threads usually live
+in the root cgroup, which has no limit.
 
-hugetlb_fault() only restores the protection of protnone entries that
-have the uffd bit set, assuming that accessible VMAs cannot have other
-protnone entries. If such an entry existed nevertheless, any access to
-it would result in an endless fault loop.
+For example, a KVM's async page fault repeats a fault of a vCPU that
+just failed at the limit in a kworker, which then charges the root
+cgroup:
 
-We are not aware of a way to trigger this: paths that drop the uffd bit
-(fork(), mremap(), unregistering) restore the protection, and
-remove_migration_pte() only drops the uffd bit for writable migration
-entries, which cannot be created from protnone entries.
+    vCPU thread                     kworker
+    ===========                     =======
+    __kvm_mmu_faultin_pfn()
+      hva_to_pfn(), FOLL_NOWAIT
+        hugetlb_alloc_folio()
+          charge fails
+        KVM_PFN_ERR_NEEDS_IO
+      kvm_setup_async_pf()
+                                    async_pf_execute()
+                                      get_user_pages_remote()
+                                        hugetlb_alloc_folio()
+                                          charges the root
 
-Let's be defensive and make any protnone entry in an accessible VMA
-accessible again, unless it is an RWP fault that has to be reported to
-user space, like do_numa_page() does for small folios.
+Let's fix it by charging the hugetlb cgroup of mm->owner whenever we
+allocate for an mm, like memcg does. Unlike memcg, which falls back to
+the root cgroup, we fail the charge if the mm has no owner (anymore), as
+we would otherwise bypass the limits again. As mm->owner depends on
+CONFIG_MEMCG, nothing changes without it.
 
-Signed-off-by: Chris Mason <mason@kernel.org>
-[ david: adjust comments and description ]
+This changes the charged hugetlb cgroup in these scenarios:
+
+ (1) Kernel threads that fault on a user mm, such as KVM async page
+     faults, kvm_xen_set_evtchn() in the irqfd work item and
+     iommu_sva_handle_mm(), now charge the cgroup of mm->owner instead
+     of the root cgroup.
+ (2) vhost kthread workers, which join the cgroups of the task that
+     created them, now charge the cgroup of mm->owner.
+ (3) With cgroup v1, threads of a process that are in different hugetlb
+     cgroups now all charge the cgroup of mm->owner.
+ (4) Processes that fault on the mm of another process, such as a
+     userfaultfd monitor (UFFDIO_COPY) or remote GUP through ptrace,
+     /proc/pid/mem or process_vm_writev(), now charge the cgroup of the
+     target's mm->owner instead of their own cgroup.
+
+... which should just be the right thing to do.
+
+This has low urgency, as it only affects hugetlb cgroup limits. Let's
+not CC stable, as this might not be particularly easy to backport.
+
+Fixes: 6d76dcf40405 ("hugetlb/cgroup: add charge/uncharge routines for hugetlb cgroup")
+Reported-by: Chris Mason <mason@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ include/linux/hugetlb_cgroup.h | 10 +++++-----
+ mm/hugetlb.c                   | 11 ++++++-----
+ mm/hugetlb_cgroup.c            | 30 +++++++++++++++++++++++-------
+ 3 files changed, 34 insertions(+), 17 deletions(-)
 
+diff --git a/include/linux/hugetlb_cgroup.h b/include/linux/hugetlb_cgroup.h
+index 1c437eb2e1c30..97208bb9d9639 100644
+--- a/include/linux/hugetlb_cgroup.h
++++ b/include/linux/hugetlb_cgroup.h
+@@ -139,9 +139,9 @@ static inline void resv_map_put_hugetlb_cgroup_uncharge_info(
+ }
+ 
+ extern int hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
+-					struct hugetlb_cgroup **ptr);
++		struct mm_struct *mm, struct hugetlb_cgroup **ptr);
+ extern int hugetlb_cgroup_charge_cgroup_rsvd(int idx, unsigned long nr_pages,
+-					     struct hugetlb_cgroup **ptr);
++		struct mm_struct *mm, struct hugetlb_cgroup **ptr);
+ extern void hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
+ 					 struct hugetlb_cgroup *h_cg,
+ 					 struct folio *folio);
+@@ -225,14 +225,14 @@ static inline void resv_map_put_hugetlb_cgroup_uncharge_info(
+ }
+ 
+ static inline int hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
+-					       struct hugetlb_cgroup **ptr)
++		struct mm_struct *mm, struct hugetlb_cgroup **ptr)
+ {
+ 	return 0;
+ }
+ 
+ static inline int hugetlb_cgroup_charge_cgroup_rsvd(int idx,
+-						    unsigned long nr_pages,
+-						    struct hugetlb_cgroup **ptr)
++		unsigned long nr_pages, struct mm_struct *mm,
++		struct hugetlb_cgroup **ptr)
+ {
+ 	return 0;
+ }
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 62ed8d9aeeadd..438263c2ba3d9 100644
+index 438263c2ba3d9..2b0ae201e1e60 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -6355,32 +6355,33 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+@@ -2305,7 +2305,7 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ 	int idx = hstate_index(h);
+ 	int ret;
+ 
+-	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, &h_cg))
++	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, NULL, &h_cg))
+ 		return NULL;
+ 
+ 	spin_lock_irq(&hugetlb_lock);
+@@ -3000,7 +3000,8 @@ void wait_for_freed_hugetlb_folios(void)
+  * hugetlb_alloc_folio - Allocate a hugetlb folio.
+  * @h: Hugetlb state control block.
+  * @mpoli: Interpreted memory policy to use for allocation.
+- * @mm: Memory descriptor of the allocation target.
++ * @mm: Memory descriptor of the allocation target. With CONFIG_MEMCG, the
++ *      hugetlb cgroup of the owner of @mm is charged.
+  * @alloc_flags: Flags controlling the allocation behavior.
+  *
+  * Allocates a hugetlb folio and handles cgroup charging and global hstate
+@@ -3026,10 +3027,10 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
+ 	int ret;
+ 
+ 	if (charge_hugetlb_cgroup_rsvd &&
+-	    hugetlb_cgroup_charge_cgroup_rsvd(idx, nr_pages, &h_cg_rsvd))
++	    hugetlb_cgroup_charge_cgroup_rsvd(idx, nr_pages, mm, &h_cg_rsvd))
+ 		return ERR_PTR(-ENOSPC);
+ 
+-	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, &h_cg)) {
++	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, mm, &h_cg)) {
+ 		ret = -ENOSPC;
+ 		goto err_uncharge_hugetlb_cgroup_rsvd;
+ 	}
+@@ -7011,7 +7012,7 @@ long hugetlb_reserve_pages(struct inode *inode,
  	}
  
- 	/*
--	 * Protnone hugetlb PTEs with the uffd bit are used by
--	 * userfaultfd RWP for access tracking. Plain PROT_NONE (without the
--	 * marker) is not an RWP fault and is not expected on hugetlb (no
--	 * NUMA hinting), so let normal hugetlb fault handling proceed.
-+	 * Protnone hugetlb PTEs with the uffd bit are used by userfaultfd RWP
-+	 * for access tracking. Without the bit there is nothing to report, so
-+	 * just make the PTE accessible.
- 	 */
--	if (pte_protnone(vmf.orig_pte) && vma_is_accessible(vma) &&
--	    huge_pte_uffd(vmf.orig_pte)) {
-+	if (pte_protnone(vmf.orig_pte) && vma_is_accessible(vma)) {
- 		spinlock_t *ptl;
- 		pte_t pte;
+ 	err = hugetlb_cgroup_charge_cgroup_rsvd(hstate_index(h),
+-				chg * pages_per_huge_page(h), &h_cg);
++						chg * pages_per_huge_page(h), NULL, &h_cg);
+ 	if (err < 0)
+ 		goto out_err;
  
- 		/* Sync: drop hugetlb locks before blocking in handle_userfault() */
--		if (userfaultfd_rwp(vma) && !userfaultfd_rwp_async(vma))
-+		if (huge_pte_uffd(vmf.orig_pte) && userfaultfd_rwp(vma) &&
-+		    !userfaultfd_rwp_async(vma))
- 			return hugetlb_handle_userfault(&vmf, mapping, VM_UFFD_RWP);
+diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
+index 6ee771334a3bd..be6a3e0f13209 100644
+--- a/mm/hugetlb_cgroup.c
++++ b/mm/hugetlb_cgroup.c
+@@ -281,9 +281,20 @@ static inline void hugetlb_event(struct hugetlb_cgroup *hugetlb, int idx,
+ 		 !hugetlb_cgroup_is_root(hugetlb));
+ }
  
- 		ptl = huge_pte_lock(h, mm, vmf.pte);
- 		pte = huge_ptep_get(mm, vmf.address, vmf.pte);
--		/*
--		 * TODO: fix all cases where uffd PTE bits remain in VMAs that
--		 * are no longer registered with uffd.
--		 */
--		if (pte_protnone(pte) && huge_pte_uffd(pte)) {
-+		if (pte_same(pte, vmf.orig_pte)) {
- 			unsigned int shift = huge_page_shift(h);
++static struct hugetlb_cgroup *hugetlb_cgroup_from_mm(struct mm_struct *mm)
++{
++	struct task_struct *task = current;
++
++#ifdef CONFIG_MEMCG
++	/* Like memcg, charge the owner of the mm we allocate for. */
++	if (mm)
++		task = rcu_dereference(mm->owner);
++#endif
++	return task ? hugetlb_cgroup_from_task(task) : NULL;
++}
++
+ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
+-					  struct hugetlb_cgroup **ptr,
+-					  bool rsvd)
++		struct mm_struct *mm, struct hugetlb_cgroup **ptr, bool rsvd)
+ {
+ 	int ret = 0;
+ 	struct page_counter *counter;
+@@ -293,7 +304,12 @@ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
+ 		goto done;
+ again:
+ 	rcu_read_lock();
+-	h_cg = hugetlb_cgroup_from_task(current);
++	h_cg = hugetlb_cgroup_from_mm(mm);
++	if (!h_cg) {
++		rcu_read_unlock();
++		ret = -ENOMEM;
++		goto done;
++	}
+ 	if (!css_tryget(&h_cg->css)) {
+ 		rcu_read_unlock();
+ 		goto again;
+@@ -318,15 +334,15 @@ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
+ }
  
- 			pte = huge_pte_modify(pte, vma->vm_page_prot);
- 			pte = arch_make_huge_pte(pte, shift, vma->vm_flags);
--			/* huge_pte_modify() preserves _PAGE_UFFD; drop it on resolution */
-+			/*
-+			 * huge_pte_modify() preserves _PAGE_UFFD; drop it on
-+			 * resolution.
-+			 *
-+			 * TODO: fix all cases where uffd PTE bits remain in VMAs
-+			 * that are no longer registered with uffd.
-+			 */
- 			pte = huge_pte_clear_uffd(pte);
- 			pte = pte_mkyoung(pte);
- 			/*
+ int hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
+-				 struct hugetlb_cgroup **ptr)
++		struct mm_struct *mm, struct hugetlb_cgroup **ptr)
+ {
+-	return __hugetlb_cgroup_charge_cgroup(idx, nr_pages, ptr, false);
++	return __hugetlb_cgroup_charge_cgroup(idx, nr_pages, mm, ptr, false);
+ }
+ 
+ int hugetlb_cgroup_charge_cgroup_rsvd(int idx, unsigned long nr_pages,
+-				      struct hugetlb_cgroup **ptr)
++		struct mm_struct *mm, struct hugetlb_cgroup **ptr)
+ {
+-	return __hugetlb_cgroup_charge_cgroup(idx, nr_pages, ptr, true);
++	return __hugetlb_cgroup_charge_cgroup(idx, nr_pages, mm, ptr, true);
+ }
+ 
+ /* Should be called with hugetlb_lock held */
 
 -- 
 2.56.1
