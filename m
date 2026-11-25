@@ -1,70 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57476606A68F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93EC606A33A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=O3hLtJHG
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WlLAo1lN
 Received: by kanga.kvack.org (Postfix)
-	id 74D186B09FF; Wed, 25 Nov 2026 07:54:11 -0500 (EST)
+	id E38816B09F8; Wed, 25 Nov 2026 07:59:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7264F6B0A00; Wed, 25 Nov 2026 07:54:11 -0500 (EST)
+	id E0F996B09FA; Wed, 25 Nov 2026 07:59:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 662F86B0A01; Wed, 25 Nov 2026 07:54:11 -0500 (EST)
+	id D4CF56B09FD; Wed, 25 Nov 2026 07:59:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 409456B09FF
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:54:11 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B409C80E94
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:54:10 +0000 (UTC)
-X-FDA: 85473634260.06.F8DE9F8
-Received: from mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A92E620007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:54:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=O3hLtJHG;
+	by kanga.kvack.org (Postfix) with ESMTP id AD4656B09F8
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:59:53 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 49EE9A8597
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:59:53 +0000 (UTC)
+X-FDA: 85473648666.10.C9959DC
+Received: from mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1146B20005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:59:50 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WlLAo1lN;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795611249;
-	b=dGoZLOTAK0agfVym3aB0okd5freUaiIiMYZ9YVida/YKC7i99VfmGGyoTv5TCqe+TgGeE6
-	YLpUko1diiLpJSkwGn62I4h3n814h375iMtaGBJIxgxh59i1tytchdbw8f3gQMSg/OxzOP
-	PAaPt0feZCw65bnhpLarMszXUlMGb+Y=
+	t=1795611591;
+	b=X9C0cPkxM7h9uyxGhr9x/KmN3GTEQ1MouoUJJdxojBCbjZ8mP4fV/z3OGDQk3kfbsqb2Rh
+	QqbDD7Lx80hFFCECXAYqB+tYp1ke865fZpRy9WwXaNxB/5MPVaVEYfPey19lcl1jDqiTXJ
+	v+7Ar8hWbo5/6Js+8ovVHfEBCzYqbmw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795611249;
+	s=arc-20220608; t=1795611591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=18hmBrQfpJAG5UTxwsqwNFDo+XibBBB6MlXV+5uOdH0=;
-	b=5qvFp/rsAtd7xwjaoiVw2f07j7vEzRQvTrjsfFpiw9IE7rGRDYfjrNKbbZDnqkqpKoT6/9
-	pqoUT4JQt/izCixewRMuB9AfY5o5lchVaSeOIFer3pD3+okFCsJozYX6l/vRwsQP0yzpX3
-	DlVFtfbm3gHxzplSnI3leUJaZLB7SPg=
+	bh=c+Mpazxl4ZEIYEZU/rJ/n2zn5OgZbseL/gkYDzd+dwc=;
+	b=Tnto/c+Gs3vlwkt1KzT8Xlw1PJivlAqNyM7cJcv/UYMT8TR+PgIPCGQdBDl98zynt/ynGk
+	otAOtUqSD9xpTPfXH+2MtEPgzUPfAVX7cu/XRCL6TdGF0duRuhQxyocAYGsXrC+M9GeZIK
+	BA1ZrOFEDoml/qJgekrkpWwJvAtconQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=O3hLtJHG;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WlLAo1lN;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ovCyAeWyuFaTW58PgPzA1TUj7418UnVnjzM69URWLP8=;
+DKIM-Signature: a=rsa-sha256; bh=zvbWqo5iHc5+akdiEM8RCy5BVcALG0xIAZNTE1kuK1g=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795611243; v=1; x=1796216043;
- b=O3hLtJHGi4tR56GOBETUH7a4U9tLEMegC6iA0RoNnZOiVkU+MFNVAF8S9CjBdlIRTq32LRPi
- nWHOTMNtyWlNkUQCyqoC4bbzvNXTVM426zUzZcSDQMVaJ9+WSxRSfdX787HG00plUrtWYGCQZ2X
- LeCirW55f8grwqA/Sb94kxUs=
+ t=1795611589; v=1; x=1796216389;
+ b=WlLAo1lNv8iH8o8n7VKHCUvl64e1kpI2IsRlzaCwY6+dbLfZfSDMqqydjcG/Q86vXMhwJxKD
+ 3sv55vXnXLodBR2IYxDuicHdb53cJLoVW8mPo0Y6vSi2wkUJqS5CHPrasjLHwthS8z+A4UBJ8BS
+ lZl0z11fI4v/9d5VuYCe1wlk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f98bec9bc042860a;
-	Wed, 25 Nov 2026 12:54:02 +0000
-X-Mizu-Trace-ID: f98bec9bc042860a
+Received: by smtp.migadu.com with ESMTPS id 89e5829b4aa7431a;
+	Wed, 25 Nov 2026 12:59:49 +0000
+X-Mizu-Trace-ID: 89e5829b4aa7431a
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <13af506e-fa83-4c35-8467-a07a26e1fa02@linux.dev>
-Date: Wed, 25 Nov 2026 20:53:47 +0800
+Message-ID: <0b27c4ca-4c5d-4693-9153-51ab365e06b0@linux.dev>
+Date: Wed, 25 Nov 2026 20:59:34 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 11/16] mm/mglru: Run aging when one type is drained
+Subject: Re: [PATCH v9 12/16] mm/mglru: Restrict eviction accounting to
+ eligible zones
 To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
  linux-mm@kvack.org
 Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
@@ -77,24 +78,24 @@ Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
  weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
  zhuhui@kylinos.cn, sidchintamaneni@gmail.com
 References: <20261114200803.23129-1-baohua@kernel.org>
- <20261114200803.23129-12-baohua@kernel.org>
+ <20261114200803.23129-13-baohua@kernel.org>
 From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20261114200803.23129-12-baohua@kernel.org>
+In-Reply-To: <20261114200803.23129-13-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: nwma9znyze43gf7i1ygd6pbqadjdzf69
-X-Rspamd-Queue-Id: A92E620007
-X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1146B20005
+X-Stat-Signature: fs4mubobwwg5pckpkyuie4f5qtwnaxbi
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795611247-427701
-X-HE-Meta: U2FsdGVkX1/avQOz9rUw+nhc4BhVNuExbh8YgNslTZW1V2itKrJvKoN/l/0eEWsueecYzJpRiF5Q/n7yQN0aDcQOIIJl5bsZPsL+oUz3OnqAJ0bY21aQdXajZNKCHtjpAmqwRrqLp+CZomwssrB/PKlV1b8bWpZV+v9JQm0BpvqQFbIiTiBIDOyFT5vrzis6UCp55pJ+ms38LWDz5YF5bbMlJ3tZIOQ2ZWw8YH7Qqj7Sjdf/FESv3PI0y79myskLe/0j3j5xCR2A3u5PbcfYFJFreRTK19yQylT/Et2YxOF8S5PLI+HDhjvMw/hv8JSD6+ViK9QY+2vLEGZ8OJ28WDUzt1of+pejat9PYaB+SGKBUEtW8XNwdrrW103QELueXNMCGs6ITGvOyrIpvk6vsNvK/ljf2bWj7mgL7ROpzeqTQeYiNKmo7lA/xtifXOR2+pD4jJ/rTxW1ppcv0R8dugncQPBzspL0kwYxlec8uzzKEGzeRO9AIItCLbu7Hxuud1yhpQmlx8b+w2EqjUE1ONDrSsLNB4v0iZw48JJLEB59n+EeYVqUNA9L8dc9nfrR0mRRTKEIwFmN0haBWeHolbeSOkEhuVB/dblbGrsLLmG8VOvf2OMvzCbug2WZIZX5i7JbDUnu3TY7ZVMsNOD6FebBPnqcQPvld5Uew+NX0CTKxoDKu1vF5D7VFTBU9hLzH0kogP919A/2PJx9KI8QU9v8+I3yzR9SE4yXEFvZp77XKg2SXFhqCCRfEUp5+yItS9PA8O4LM3mAEqGNP1rM5h+hx3iW080js4JZAb2MLN2pl7ATuqxsR3rRjQczWyipLnvcO1Nw2Ps6iNlxh5IPw5JpeHVLlRSPrTL0PVs+kR5AryU0jqTl2HaIDkVuCtRtN+UqcpubbR6pMz/nyOrch/oUU7BgEKYiOJfBFYHvapIV4S4FS5hM4erxQ4xUT6MObe4k1Aw9eMoTLXA3zyB
- sT3UxFGO
- 7KjVoBHqx8r+bLH3ypi7a50WFIqHUbGarrd6AcOHE4+vgvMYgAKqOd1AqU5lJopwPvXs3fzVUinGqJfcVbRU82RQiuQYmTHrXjI7jt0v1rammcGZNQ40RlYr1kbPPL7ybRkEjbdA0hP6HXlWNcFf9BcOfShJ/Pk5nF1BIXicxp00F7i67ZigHxHe6TloMvliV031VLI6FmwHmEvjKUp++erYN5jMXHsJFMesMXu/th15XNVmf02fTSewtzz21x0WfojEdrFlo8CG6tEIlQzogvJKXQzvFh45AL3tOTRPAKwUjfU5sfJ2gQpgbsRsdtBYbIVp+g4K67RFEBFquvUFlbmEfn4EQtvItEWUAxlXIuVqrB002nwpVWh/LRfLK8b1FlQLK+xcriYijAIXrmBlQyxgtbt6SOMKAq3aWSGvvE/m+9gzrHYp0YPSDhOTWV6wTJEaudS74lpz3Vn2rcVNOOVF78eoX549c9UgRwpmnaflUw58wSiZdjlI6FG0GsVz1U3V1nOMOY/DAGBqiBn9vaMoIi7xxI5enFC62sPotoQgAJe2XtyaCKPyAWi0cWQzo9Vs1BmR+DMmf/Yc=
+X-HE-Tag: 1795611590-734898
+X-HE-Meta: U2FsdGVkX18wNwaF+50G8hSxAgtWK7tbtPxMCPqgXrXOYnfx+USzhejeZzMtag447Xrh/u8k1QtWVvEAzUQjpPCb615PFlCouJpxPrVf1kJhStYFOpk0G3q5Nepau9rkWnAppSP3vhx0pTs57UjGvvHrvuli00ObjM8Hmt3/U7H0ne9EnMwa6zTXV91idX7tIwzcTiUUmAoJdrHcZv6Cxpuqm+wYKA+H1e6/0Eiq8umr+zYZ77E8ZV7Z7iuulUvyftpEyMEJyApKUUo89m7d1M8EvoLUpgb9/CZSvhIiD+7IYi9pJXdNLvKOxLbRixTq2X68B+2iOwBuw6XL5hT5hkWC+AT/jQeqGsl2cXy+tCuzlVaFEZmInjDGGXQ0/2csgVHhLW7Kz+7wce3H/sjkyKcNFFSS+xB1dvgUAcyigE85UM//YMV5r3abZRjBmFxjW3TNU525pshPYEZO1cESP1Na8kh9mWvhGOg4pFTV7Mb6XJiQKxcd+dLHrMxOk+Fv1InSnHtIw6wQtmhVIo0XkLLvjOG3Itld99Gv0ACt7f08dwXkIRRBs8bnQ+POJ+mWCeDRVSEGWDTl5zLsIzrGn+vs/MN0SRSpSD1n5ImgG06aDDsM5/cSKYnfS32sFTqPNO1SgW7A97G3jO9rc6P2LNxJy4X+c0a7Y4Y80YoONufV0AgSyDABiUxUXqYldPnOe4K5IfHJGPN71BjOKmLVpVNmYjjMnvujDJZDuwvI7g7RkzkUKgS96StF7SbZv8aDIRZiVSMARInaUowusttFuAzbxrjrl17LhN44tZCbpbsM3pmJbK2l05F3dtyftBCeF0vxIwM7Rxw71t/vlNs5lwTtiMcb5T1yMzHR+BxW8U9HxmU0+5Va16LMRBi5SZbTnvGrAIAqqBA+yqwCp9h6ASiEaFuSFB6m1oJpEgaDwerbu6FxVDmuWmb3VY/6fNfI8V+EduOAstG1jaeudIO
+ 2yKZsvSk
+ 5cDXEcUOMm+pLmeuU24YZnxWsGyAJjoplsYlh9YCrxfqbnIoHxPTMQQ6DdCr+w5E1M8cC4ESfksKqI/AuHYFwGOr9PlCtVF06GBxryG1g+YUrTZG42XrpaR1LmrBoPH0zX8kGSbi1lO/mRjArmULX7pXlI01Hjas9zV9sfkwOHcUtyMk/hvxBdbvV0aU4aqPsdyJgwIFEQvClGooMjbkE27z2dO4Fl63Nnkh7DbbeZKX6knQPGgMsobXX03q8teUjB7ARuVAFnyswNxuItUJQawxQXQRM53AeCJWBBgx1vDcsMSmHcq23tOhkBPgpIWjH+W7jJ19Gnb9jZ/zEOfj79PzErIyMz+MTmwFsr9RAUrwx7LY671nCccmIbgHOlpc1qJRX4V10LcxpPTVypXCErMM1xlzxOndEDwKRTgw4PAFMDniIdNZgxGF+T1nKJvF9rtZIDUxTuXCzPORaPRcuCb9I6R72Y27RAbAJZ87Z82CNEUA/UPYbXqY5KaiOgm7AdaIJc3rvQNRAbFnQkfM5lZXepYz3AJWqotaOyTWF6Nt4o61IyOgNJSJOguU2UVn3aR6g4whfGCmReuxPcFEJzkbj3SjPLx0v/rWCjEpAf5zd/Qc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,148 +107,186 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
-> We may have remaining scan budget for anon or file but no folios
-> in populatable generations to scan. In this case, `scan_folios()`
-> may repeatedly scan that type without making progress, even when
-> the other type still has populatable folios.
+> For both lruvec_evictable_size() and lru_gen_imbalanced(),
+> only count eligible zones up to sc->reclaim_idx. This avoids
+> overestimating the number of pages available for scanning and
+> allows aging to proceed more promptly when eligible zones
+> contain few folios.
 > 
-> Run aging when a type is drained to make more folios available for
-> reclaim. This also helps honor the scan budget distribution
-> determined by swappiness.
+> lru_gen_age_node() uses lruvec_is_reclaimable() to determine
+> whether any memcg has generations old enough to reclaim under
+> min_ttl. If none are reclaimable, it may trigger OOM. However,
+> lruvec_is_reclaimable() also uses lruvec_is_sizable() to
+> estimate the LRU size.
 > 
-> Move aging after eviction to detect a lack of scan progress and
-> avoid unnecessary aging when eviction can still make progress.
+> Previously, lruvec_is_sizable() counted folios across all zones.
+> With accounting now restricted to zones up to sc->reclaim_idx,
+> the estimated size may be significantly smaller, potentially
+> leading to premature OOM.
 > 
-> To avoid excessive aging, allow drained aging only once per
-> `try_to_shrink_lruvec()` invocation. Also skip drained aging if
-> another reclaimer has advanced `max_seq` during eviction.
+> To avoid this and simplify the implementation, allow
+> lru_gen_age_node() to count folios from all zones.
 > 
-> At extreme swappiness values such as 1 and 200, reclaim initially
-> focuses on the preferred type. Rely on imbalanced aging once
-> `sc->priority` reaches `DEF_PRIORITY / 2`, rather than triggering
-> drained aging for the unpreferred type. This avoids unnecessary
-> aging and has shown better performance in testing.
+> Note that min_ttl currently has several issues and does not
+> work as expected.
 > 
-> If `evict_folio_lists()` returns zero, retry eviction once if
-> `max_seq` has advanced since the aging decision.
+> First, reclaim does not enforce min_ttl on a per-memcg basis,
+> so folios from memcgs whose generations are all younger than
+> min_ttl can still be reclaimed.
 > 
+> Second, the LRU size check is coupled with the min_ttl check,
+> which can lead to premature OOM. For example, consider a system
+> with 100 memcgs, each containing fewer than 16 MB of evictable
+> folios. At priority 12, shifting each memcg's LRU size by
+> sc->priority can yield zero, causing all memcgs to be considered
+> unreclaimable even if their generations are older than min_ttl.
+> 
+> These issues should be addressed in a separate patch series
+> rather than as part of this eviction accounting change.
+> 
+> Co-developed-by: Bo Zhang <zhangbo56@xiaomi.com>
+> Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
 > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
->   mm/vmscan.c | 49 +++++++++++++++++++++++++++++++++++++------------
->   1 file changed, 37 insertions(+), 12 deletions(-)
+>   mm/trace_vmscan.h |  4 ++--
+>   mm/vmscan.c       | 27 +++++++++++++++------------
+>   mm/vmscan.h       |  7 ++++---
+>   3 files changed, 21 insertions(+), 17 deletions(-)
 > 
+> diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
+> index 565c56428364..9dafdb5bd3ce 100644
+> --- a/mm/trace_vmscan.h
+> +++ b/mm/trace_vmscan.h
+> @@ -488,9 +488,9 @@ TRACE_EVENT(mm_mglru_aging,
+>   			unsigned long seq = max_seq - MAX_NR_GENS + 1 + i;
+>   
+>   			__entry->nr_anon[i] =
+> -				lruvec_gen_size(lrugen, LRU_GEN_ANON, seq);
+> +				lruvec_gen_size(lrugen, LRU_GEN_ANON, seq, MAX_NR_ZONES);
+>   			__entry->nr_file[i] =
+> -				lruvec_gen_size(lrugen, LRU_GEN_FILE, seq);
+> +				lruvec_gen_size(lrugen, LRU_GEN_FILE, seq, MAX_NR_ZONES);
+>   		}
+>   		__entry->nid = lruvec_pgdat(lruvec)->node_id;
+>   		__entry->priority = sc->priority;
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 1450542d709c..6d942f192e63 100644
+> index 6d942f192e63..c9e22a5cbb51 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -5175,7 +5175,8 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+> @@ -4207,8 +4207,9 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
+>   	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
 >   }
 >   
->   static long evict_folio_lists(unsigned long nr_to_scan[], struct lruvec *lruvec,
-> -			     struct scan_control *sc, int swappiness, unsigned long max_batch)
-> +			     struct scan_control *sc, int swappiness,
-> +			     unsigned long max_batch, bool *drained)
+> -static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
+> -				  unsigned long nr[])
+> +static void lruvec_evictable_size(struct lruvec *lruvec, struct scan_control *sc,
+> +				  int swappiness, unsigned long nr[],
+> +				  int max_zone)
 >   {
 >   	int type;
->   	unsigned long batch, scanned, total_scanned = 0;
-> @@ -5191,6 +5192,8 @@ static long evict_folio_lists(unsigned long nr_to_scan[], struct lruvec *lruvec,
->   		batch = min(nr_to_scan[type], max_batch);
->   		scanned = evict_folios(batch, lruvec, sc, type, swappiness);
+>   	unsigned long seq;
+> @@ -4221,16 +4222,17 @@ static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
 >   
-> +		if (drained && !scanned)
-> +			*drained = true;
->   		nr_to_scan[type] -= min(nr_to_scan[type], scanned);
->   		total_scanned += scanned;
+>   	for_each_evictable_type(type, swappiness) {
+>   		for (seq = min_seq[type]; seq <= max_seq; seq++)
+> -			nr[type] += lruvec_gen_size(lrugen, type, seq);
+> +			nr[type] += lruvec_gen_size(lrugen, type, seq, max_zone);
 >   	}
-> @@ -5206,9 +5209,15 @@ static long evict_folio_lists(unsigned long nr_to_scan[], struct lruvec *lruvec,
->   static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>   }
+>   
+> -static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
+> +static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc,
+> +		int max_zone)
 >   {
->   	unsigned long nr[ANON_AND_FILE];
-> -	bool need_rotate = false, should_age = false;
-> +	bool need_rotate = false, should_age = false, retried = false;
+>   	unsigned long total, sizes[ANON_AND_FILE];
 >   	int swappiness = get_swappiness(lruvec, sc);
->   	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-> +	/*
-> +	 * Avoid aging the lagging, unpreferred type at extreme swappiness;
-> +	 * rely on imbalanced aging once priority reaches AGING_PRIORITY
-> +	 */
-> +	bool allow_drained_age = sc->priority < DEF_PRIORITY &&
-> +		swappiness > MIN_SWAPPINESS + 1 && swappiness < MAX_SWAPPINESS;
 >   
->   	/*
->   	 * Proactive reclaim initiated by userspace for anonymous memory only.
-> @@ -5226,22 +5235,17 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->   	lru_gen_prepare_scan(lruvec, sc, memcg, swappiness, nr);
+> -	lruvec_evictable_size(lruvec, swappiness, sizes);
+> +	lruvec_evictable_size(lruvec, sc, swappiness, sizes, max_zone);
+>   	total = sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
 >   
->   	while (nr[LRU_GEN_ANON] > 0 || nr[LRU_GEN_FILE] > 0) {
-> +		bool drained = false, do_drained_age;
->   		DEFINE_MAX_SEQ(lruvec);
-> +		unsigned long new_seq;
-> +		long scanned;
+>   	/* whether the size is big enough to be helpful */
+> @@ -4249,7 +4251,8 @@ static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc
+>   	if (mem_cgroup_below_min(NULL, memcg))
+>   		return false;
 >   
->   		if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
->   			need_rotate = true;
->   			break;
+> -	if (!lruvec_is_sizable(lruvec, sc))
+> +	/* counting all zones to avoid premature OOM */
+> +	if (!lruvec_is_sizable(lruvec, sc, MAX_NR_ZONES))
+>   		return false;
+>   
+>   	gen = lru_gen_from_seq(evictable_min_seq(min_seq, swappiness));
+> @@ -5099,9 +5102,9 @@ static bool lru_gen_imbalanced(struct lruvec *lruvec, struct scan_control *sc,
+>   	for_each_evictable_type(type, swappiness) {
+>   		unsigned long seq;
+>   
+> -		youngest[type] = lruvec_gen_size(lrugen, type, max_seq);
+> +		youngest[type] = lruvec_gen_size(lrugen, type, max_seq, sc->reclaim_idx + 1);
+>   		for (seq = min_seq[type]; seq < max_seq; seq++)
+> -			old[type] += lruvec_gen_size(lrugen, type, seq);
+> +			old[type] += lruvec_gen_size(lrugen, type, seq, sc->reclaim_idx + 1);
+>   	}
+>   
+>   	/* the vast majority of pages sit in the youngest gen */
+> @@ -5136,7 +5139,7 @@ static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_control *sc,
+>   {
+>   	unsigned long total;
+>   
+> -	lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
+> +	lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan, sc->reclaim_idx + 1);
+>   	total = nr_to_scan[LRU_GEN_ANON] + nr_to_scan[LRU_GEN_FILE];
+>   
+>   	total = apply_proportional_protection(memcg, sc, total);
+> @@ -5323,7 +5326,7 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>   	if (need_rotate)
+>   		return MEMCG_LRU_YOUNG;
+>   
+> -	if (lruvec_is_sizable(lruvec, sc))
+> +	if (lruvec_is_sizable(lruvec, sc, sc->reclaim_idx + 1))
+>   		return 0;
+>   
+>   	/* one retry if too small */
+> @@ -5853,7 +5856,7 @@ static int lru_gen_seq_show(struct seq_file *m, void *v)
+>   			char mark = full && seq < min_seq[type] ? 'x' : ' ';
+>   
+>   			seq_printf(m, " %10lu%c",
+> -				   lruvec_gen_size(lrugen, type, seq), mark);
+> +				   lruvec_gen_size(lrugen, type, seq, MAX_NR_ZONES), mark);
 >   		}
 >   
-> -		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
-> -			trace_mm_mglru_aging(lruvec, sc, swappiness);
-> -			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
-> -				need_rotate = true;
-> -			should_age = true;
-> -		}
-> -
-> -		if (!evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATCH))
-> -			break;
-> +		scanned = evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATCH, &drained);
+>   		seq_putc(m, '\n');
+> @@ -5906,7 +5909,7 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
+>   		if (sc->nr_reclaimed >= nr_to_reclaim)
+>   			return 0;
 >   
->   		if (should_abort_scan(lruvec, sc))
->   			break;
-> @@ -5253,6 +5257,27 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->   		if (root_reclaim(sc) && should_age)
->   			break;
->   
-> +		/*
-> +		 * Allow drained aging only once per invocation and skip it if
-> +		 * max_seq advanced concurrently during eviction
-> +		 */
-> +		new_seq = READ_ONCE(lruvec->lrugen.max_seq);
-> +		do_drained_age = drained && allow_drained_age && max_seq == new_seq;
-> +		allow_drained_age &= !do_drained_age;
-> +		if (do_drained_age || should_run_aging(lruvec, new_seq, sc, swappiness)) {
-> +			trace_mm_mglru_aging(lruvec, sc, swappiness);
-> +			if (try_to_inc_max_seq(lruvec, new_seq, swappiness, false))
-> +				need_rotate = true;
-> +			should_age = true;
-> +		}
-> +
-> +		if (!scanned) {
-> +			/* Retry once if aging advanced max_seq */
-> +			if (retried || new_seq == READ_ONCE(lruvec->lrugen.max_seq))
-> +				break;
-> +			retried = true;
-> +		}
-> +
->   		cond_resched();
->   	}
->   
-> @@ -5885,7 +5910,7 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
+> -		lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
+> +		lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan, sc->reclaim_idx + 1);
 >   		lru_gen_balance_scan(lruvec, swappiness,
 >   				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
 >   
-> -		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BATCH))
-> +		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BATCH, NULL))
->   			return 0;
+> diff --git a/mm/vmscan.h b/mm/vmscan.h
+> index c6b583fc7493..c2cea36289f3 100644
+> --- a/mm/vmscan.h
+> +++ b/mm/vmscan.h
+> @@ -117,14 +117,15 @@ struct scan_control {
+>   };
 >   
->   		cond_resched();
-
-The logic looks correct to me, but try_to_shrink_lruvec() now carries
-quite a few temporaries (need_rotate, should_age, retried,
-allow_drained_age, drained, do_drained_age, new_seq), and it took me a
-while to follow how the drained aging, the regular aging and the
-retry interact. Not a blocker for this series, but it might be worth a
-follow-up to move the aging decision into a helper, so the loop only
-scans, ages and checks for exit.
+>   #ifdef CONFIG_LRU_GEN
+> -/* The number of pages of @type in the generation @seq, summed over all zones */
+> +/* Number of pages of @type in generation @seq below @max_zone */
+>   static inline unsigned long lruvec_gen_size(struct lru_gen_folio *lrugen,
+> -					    int type, unsigned long seq)
+> +					    int type, unsigned long seq,
+> +					    int max_zone)
+>   {
+>   	int gen = lru_gen_from_seq(seq);
+>   	unsigned long size = 0;
+>   
+> -	for (int zone = 0; zone < MAX_NR_ZONES; zone++)
+> +	for (int zone = 0; zone < max_zone; zone++)
+>   		size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
+>   
+>   	return size;
 
 Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
 Thanks.
