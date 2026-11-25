@@ -1,85 +1,78 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE8A606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510BC606A69E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aM6g4pbn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AAM8pxul
 Received: by kanga.kvack.org (Postfix)
-	id 4AE3C6B0B25; Wed, 25 Nov 2026 17:43:53 -0500 (EST)
+	id 6468D6B0B27; Wed, 25 Nov 2026 17:51:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 486BE6B0B27; Wed, 25 Nov 2026 17:43:53 -0500 (EST)
+	id 5F6A16B0B29; Wed, 25 Nov 2026 17:51:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39BFE6B0B28; Wed, 25 Nov 2026 17:43:53 -0500 (EST)
+	id 4E5316B0B2A; Wed, 25 Nov 2026 17:51:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE6EC6B0B25
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:43:52 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 444498017F
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:43:52 +0000 (UTC)
-X-FDA: 85475120304.28.3CA6DEC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D63646B0B27
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:51:29 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62538A0184
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:51:29 +0000 (UTC)
+X-FDA: 85475139498.06.7F1202B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 816A1100008
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:43:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aM6g4pbn;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9B9B418000A
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:51:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AAM8pxul;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646630;
-	b=41gK4TmmZEiEblJmfI+WuhX5faZpGacVQ1JpBn6YbMy40T4bpGSN9b5lbXK3jRRh/y8yl2
-	iPrEitLyssIsYKc0FoflHJWV80tmzItvnLaGlst1mZc+c6cJmgt0EXSrSG2sqjGGH6Spw8
-	hfNn4vnm5peE/Yjpj15ccnYgEOFzf+g=
+	t=1795647087;
+	b=oQCgYFz4HS3j4CKYTtp12uwyQcWPpQFnWRhTFRZ8s1Hfg8PK7uBAkRcs5HqdOwx1V/V4B6
+	aWEej9QqesBoV5edf/ptm/T+rjd7tw8736b0IIidSmTbhwhSfgeJCmHQPM58CH1eTUo985
+	/QBRDoDgmWUew73Kytbta0W2hWmdPjU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646630;
+	s=arc-20220608; t=1795647087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rs1HN9vCwz6PNJ9aUfg5Y3QcmGo7HtSHwQkPXAqBJKE=;
-	b=oJvc8Ql2VqJ3U2Z08ia6FxhAQyIcyFVart3gLgSgV8vSTSfzx/abE+KpjCSoFlIKMjJBLt
-	5qO21k3+ZWIAYoLGmDGKqBmmHINHn1Xce3VPx+vvAXqsMm5DGMqgPy8He9rp2Q2mt/DlZx
-	6UwWCxcXH35DKFXsA4bquTNwfcYRJZU=
+	bh=XiEaXyK4wnqo/lld8izd+mPMlTH01p0W9lNsSXFPEr4=;
+	b=KvEd3y9bSATIKTUuZuChykNXLBZnXLUd1HsC13VQmhwkTNAwSy7okbUl5fN1BTRGUgcRda
+	6cL4kc62/TBVDu6WolEyjEuvjrqiktgG+R+2VsYlw39mnDAkqUVuqa22awJ32qTTPYu9LU
+	m/Na6sk82k2RpCenEW/BwYaNH7f740U=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aM6g4pbn;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AAM8pxul;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E570F60180;
-	Wed, 25 Nov 2026 22:43:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC641F000C0;
-	Wed, 25 Nov 2026 22:43:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2228C620C3;
+	Wed, 25 Nov 2026 22:51:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264F81F000D2;
+	Wed, 25 Nov 2026 22:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646629;
-	bh=rs1HN9vCwz6PNJ9aUfg5Y3QcmGo7HtSHwQkPXAqBJKE=;
+	s=k20260515; t=1795647086;
+	bh=XiEaXyK4wnqo/lld8izd+mPMlTH01p0W9lNsSXFPEr4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aM6g4pbn0tnEc3WXkPsiTcXbY75AA47Eps0qDQkf8Awmqc9srBMfHP7fHwLoCe3Sc
-	 tK9D6fj0AhuIBsd8fZw9kW2pkKBko4xSFCjnXkarIH5cBEo8jgqvK0rEXTqgF4DdhS
-	 Geh9CjQEqO9rcPNZeeazGp5Z0iyEmqJ6WxuR1hyJLsyyxWY/h56Mi/nN6FfFUOMUza
-	 pkAoFbZDWJcBhN9MuQuLnmaI0F0SRwJlNfIJ5wVJh6faA+pJnB+NbjaljqzsMknYeP
-	 W9PGggIrwDFWDfn0rdnKbgRP6geHP5jzB5X2/bzypToHQ6BPX87zDY8PIp6lROYxc9
-	 RXUlAx9DAf9LA==
-Message-ID: <f79014e3-3c81-4b2b-87f6-df0c2d946357@kernel.org>
-Date: Wed, 25 Nov 2026 23:43:40 +0100
+	b=AAM8pxulDq4TCwh7/7+vcCxkTJGss+cIX1YrGhtlWy+rp14kajXzbRhLczZMNvbL/
+	 t0oxHKGiDkUCQj77OdWqwGuGTvVWv6olXGXDnn1UlNrQAbKdxYgJ5udgJOWuj5g6Kp
+	 aK/R3iiP+opUZaUbDVgsye66y5lEZXH7hZjKVTuseo3ZmQfCNmSEUYtEz+wVM3IQUU
+	 hU51s7DAFhFDIx13KX+G6lqdntTP2kkyzttOBsa4lxni1cjMm6askFAG+IRh3Bq0ho
+	 UcV6WaExu58QkVIdLMkEWnJyomaUICrL+ROOldMEi4/3Jj9xfDn5L91HUBgtZpD8wh
+	 IMMtoK55AxuZQ==
+Message-ID: <f5ff8f43-c75c-4b19-b683-fdff0c6dd7ae@kernel.org>
+Date: Wed, 25 Nov 2026 23:51:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/cma: reject long-term pins of HugeTLB folios
- overlapping crashkernel CMA
-To: Sang-Heon Jeon <ekffu200098@gmail.com>,
+Subject: Re: [PATCH] mm/gup: fault in ranges that start at address 0
+To: Hengyu Liang <hengyul@cs.unc.edu>,
  Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Usama Arif <usama.arif@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Frank van der Linden <fvdl@google.com>, Kiryl Shutsemau <kas@kernel.org>,
- Baoquan He <baoquan.he@linux.dev>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>,
- Jiri Bohac <jbohac@suse.cz>, kexec@lists.infradead.org
-References: <20261125155108.24098-1-ekffu200098@gmail.com>
+Cc: Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261125173202.3636133-1-hengyul@cs.unc.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,22 +119,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261125155108.24098-1-ekffu200098@gmail.com>
+In-Reply-To: <20261125173202.3636133-1-hengyul@cs.unc.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9B9B418000A
+X-Stat-Signature: i6qhufcey5bfq77upteipys1wdo8e6pg
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 816A1100008
-X-Stat-Signature: gmbt7kymykf67xxdkwiwmuodh4dpb6hm
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795646630-311392
-X-HE-Meta: U2FsdGVkX18iXLLxTcg0t9D2nUDDl9cM4Ww8M8POyUpn55D75zNBh5E75xlnCdy9zARvsx1pOEQUBe6lRQvLzUMi/1P3jn1uG54Ej56mPDvQIbDhh6sny79eIAWXWVNE4xKLmPu2s5X3t5YecokStN2lJhJlxHjulIBuFxJaLj41EIJJZ7m7LZM8t/yJdGeXM4Cj/7OQS+p4emwdTysg9rtRtO7RdsmO8HWTZO26NFOHO+13hr6IWk+cYUj5a/9LN3AH/a3P9IS9uyKKRIPjMzloP4c9pOf4Tg3IoNvYUn+EM/iz6LEwb9684wfqeQXcIWqBZXge3vdz8ORJF59jgShqZnnAh0A3ZtaOjEmO5Eui+F4FqLYB+P9BK00qfe5V1tajplyjYYq752hRA3MqtBn8LOwUjNUbb2P3K9qv05VjE1HBuR4i5OtahvZ3byf8j3KuZgMfBIZL/dZvcwh893X8QVbHifbmgcSZ55WYIotWoDmOUA7QERe2R9d7HzSzgDjWpcu+gEMnLfc7KVlBzqC6OJDJiSNSZeTODuODF43Z63XeMCvlXBTI9LfDDibIbvldPBOuUbc8xUmRlbVO1xtpNnbsBsalWSTeNy3VtL4FlsOUep0jJaQ+MzgRYlwhQEiuEWgQuaIJ7pwOtvksJGWq9prp/dDgLANR+mUjM6mIr4RARtPh8FJthsXhhCEm/uoO/gikeJBYsBiFLXNPpGLcaFIyLgzOWxeXk3GHu0mPAkplRXofE0hk3oqyHgKuLCta5Pj0l+S08Xn4YLeFi4DZusHYvU4flNUrimj+0yCUwdLaibg2ArhSPvsl1u3OYskstzEugSfKCM19vZh1wnCaqJchlgAmcBHJNCUiBfOElp0iVAQ404uwrxdt5+7dGbKwyQctRRF+O9Azi5/39qUP3J1f8NwudyhhFxkjYGU3sysRPpjCC166HPswCvzFMU3KLcSZZhnpZMEFX41
- QxL+fnCG
- xNq1iuInlCaJXRxVr+H9vS5zDtMinNzeCHhHwpOyUWP8HCh8zqzq3xhAq24FttFtnH1efWh4ihIUqXpiLMPoKfGmjpyB7OsRU9yzFDC0/fUdMzMtr5deL9QCmGOK3Uh6KX7lk1K8nQmLpM9E3NilY8SbCWbhBQvwhIGzk7QTCnHCIJq2KBCTrFk04SqKh9J8uSH15xULKucJlE69QBYmyMWl/mZkJ/LGv567k8HYeRB6o5ynceYDCFvAcZ8Gu6uNKQ9KIzRzwD1ieCWxN61KZ/lwbACzSelUy/LrDZljH48PA1I0YLC4Vy45i2vRswwlkUY0nybVQSnKPmuNn+4diIuqbIQ2so6DAS3l+GGty/EPtTRoBXiFXwdxLF3uWoX4abeOiirB0/2dKqXsDOIgBRK9eDiL1sQLhCNNskkDWgg92qVL3MJGzHQsl2g2ewEiyqSqgb2ETSRKiI4VgQqvOXXb4GtHzdenp+Jx+40nuG2TZDs92cqAJvqW1gykCbPoysDyX
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795647087-884010
+X-HE-Meta: U2FsdGVkX18AZIbqitWcdkI91cKhTdfgUDbW5CYYn0/WG1ZMCR0OkCC/blRbAb8P5wwOa6XxRJY0XzuDo4Ij7/IflUlpHHuT2u3jQ3CJ7dSTqn37syxyATfDPQgJt2cfqhpi//Uw8iTnaHQ+OHvSQV5eNdHOMkGJ2yT9JGm/7uhWgei0oJg+oG+nK2TxCrwvXIHZnwQ3hwo0aHXSwmjRkvOX85OOk6Hz53dyf9HM1Yp2GnIoLEENYBqpDrIFVCajkR0s7GtaVvRobeiUC1d+m1rz1aP6CEutB2/lj2+EJGl/GiRUYhW6bsjRFhHywO2h4BeEHaKNd92iqbcDNEdBcg72t2iJQ5plutScXXgshWaxH5PSMKHism1HCdqYnHE0fSP3ZEbgG09dC6Mwr4tYq2EXAGaOR4liFAMLRGgKf9a0WZ8CzyPK1nDnjszSmTpBQQx3FoBaHJPwsE9+Qjc+bYniRC0OhL+OEkKApdC0pxYXMZsgMdIINTvy4WygaU08JYJUdscWfdU5s+IDc1MruwkO2Lnn1piUqAqX6yfpUR7jzAB/aTQgV+G+dDyXtELWSLXMnAomwMbyEM2lt2c3gA9io/dooRkfoowN7ijWxrkYEBlNSpUIhX6iUBNqJUZMHCnfuegnAO2AIekt3+exNHFHI1SI+OC0I3IWxkph0QoNXFErx8r5BG324HcGUTBl5bO158s1k6/rDkE7aJqBeE8MHX08R0nbCwKYVPBpeOLU2kovX9LH0gAQrcf18mUUnzHEtH7dYii6TNK58vXGo7xC41ufeaewYoRAz6Q9W2YM0iKLnfjhwOw1RkRNHLnO578ccxszAPEHAR1wi4qIdoM/J7GrLNwKYXIv8KbugV7PEkvaxpVXAKOU8ElqQalDA8WO2kmdkHygvl6Ga2K/FiLG2NuapIcg0kMOXjO2X37SiJwmuAup2HQccLGO5QNs1wr17DKC4NtoiJx3xis
+ QfqNPzov
+ tY2VW9fK0Joq6Qt7m+E2SIC37O5PvOHfewfQDLvxi4vpYoOgEpm8HRrp7O+E5HFy5xCz0vwGJvTT051WfW+Svuy/h3y2AtcB/1QfYPBN3ewdY2o5nlcxiZgslJVhiLyJm1RQ9HdSgwiVSjND3gU2ZNVj9evs+jGTFa0Ioq8ripYx7ztH7mOn1Zi+aZ73umlagPTi15b86Wiwj+FChTu+Q3H5xiINl/+5+M2nF7qWUtq/NT0g3jR/HNXwiwWi3BTGMBrKZ+OLsHlUHqIg8gLwea1Eiu2cgnYflRh1vCBukj62r2Xd4pe3k7kFx5GjOC87xRDK3hESmOKsePogKSPKR4CegSO8iMHQV7XvG8sDUhefD72E3G5OX2QZg7ZzPbl+78RYHW7HmAS4Zsf2SQxuqJ8csi/7RHJuKFqQOTsGzQWRrYWurxk+yQ1k7QJ1hbR8vwHAH9bnK+EOy4By0zg0JqFOZXzHk2UaDmo8j5+gQwnl4KgB3m7KQqnLDKpMsbVpUlGqs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,27 +143,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 16:51, Sang-Heon Jeon wrote:
-> crashkernel=size,cma uses existing hugetlb_cma memory, so
-> crashk_cma_ranges[] may contain HugeTLB folios. HugeTLB folios allocated
-> from hugetlb_cma can be long-term pinned without being migrated.
+On 11/25/26 18:32, Hengyu Liang wrote:
+> Commit a7797e74bd39 ("mm/gup: clean up codes in fault_in_xxx()
+> functions") made the loops of fault_in_readable(), fault_in_writeable()
+> and fault_in_safe_writeable() stop when the current address is 0, to
+> detect an overflow.
 > 
-> After a crash, the crash kernel uses the memory in crashk_cma_ranges[],
-> but a device can still write to a long-term pinned folio.
+> However, the loops then do not run at all for a range that starts at
+> address 0, and the functions report that nothing was faulted in. As of
+> now, a write() from a buffer at address 0 fails with EFAULT when the
+> page is mapped but not present yet.
 > 
-> So reject long-term pins of HugeTLB folios overlapping
-> crashk_cma_ranges[].
+> The issue can be reproduced with this program, run as root:
 > 
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+>     #include <fcntl.h>
+>     #include <stdio.h>
+>     #include <sys/mman.h>
+>     #include <unistd.h>
+> 
+>     int main(void)
+>     {
+>             int fd = open("file", O_WRONLY | O_CREAT, 0644);
+> 
+>             mmap(NULL, 4096, PROT_READ | PROT_WRITE,
+>                  MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
+>             printf("%zd\n", write(fd, NULL, 7));
+>             return 0;
+>     }
+
+Thanks for the report.
+
+Ah, so we require root, because usually we have vm.mmap_min_addr limits in place.
+
+Where we disallow mapping to address 0 for good reasons ;)
+
+> 
+> Before commit a7797e74bd39 ("mm/gup: clean up codes in fault_in_xxx()
+> functions"), the result is:
+> 
+>     7
+> 
+> After that commit, the result is:
+> 
+>     -1
+> 
+> With this patch, the result is the same as before that commit.
+> 
+> This patch will stop the loops when the current address is below the
+> start address instead, which is only the case after an overflow.
+> 
+> Fixes: a7797e74bd39 ("mm/gup: clean up codes in fault_in_xxx() functions")
+> Cc: stable@vger.kernel.org # v6.16
+> Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
 > ---
-> The above scenario is only possible with the two patches below applied.
-> Currently only linux-next, which is targeting v7.5, has both of them.
+> I found this while comparing the behavior of different kernel versions.
+> I used an LLM to analyze the problem and to draft the patch and this
+> message, and I analyzed the result myself.
+
+Okay, but you did not actually run into this yourself, right?
+
+Doing some research, mapping to address 0 should not really have any users.
+
+There are some legacy dosem and wine emulators, but looks like that's only a
+problem for 32bit and all legacy.
+
+Likely this is "nobody cares" and we don't need CC stable.
+
 > 
->   "mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory" (kexec-next)
+> Tested on v7.4-rc3 with KASAN and lockdep: with the buffer at address 0
+> and at 0x10000, on ext4, tmpfs and xfs, write(), pwritev() and O_DIRECT
+> reads and writes give the same results as before commit a7797e74bd39.
+> 
+>  mm/gup.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 2b405cce2ca5..a174e93327e9 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2074,7 +2074,7 @@ size_t fault_in_writeable(char __user *uaddr, size_t size)
+>  		return size;
+>  
+>  	/* Stop once we overflow to 0. */
+These comments are not really correct anymore. We don't stop once we overflow to
+0 anymore.
 
-I think that's a real problem with this thing.
-
-The solution is not to disallow long-term pinning. :/
+Likely we want to be more careful when calcualting+handling end instead.
 
 -- 
 Cheers,
