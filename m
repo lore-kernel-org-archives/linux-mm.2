@@ -1,72 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68ACB606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B563606A338
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 08:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=1R4oRQ/i;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Xseqmy5b;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=1R4oRQ/i;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Xseqmy5b
 Received: by kanga.kvack.org (Postfix)
-	id 8E83F6B093B; Wed, 25 Nov 2026 03:43:08 -0500 (EST)
+	id 2F8CA6B093D; Wed, 25 Nov 2026 03:45:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 898886B093D; Wed, 25 Nov 2026 03:43:08 -0500 (EST)
+	id 2A9BC6B093F; Wed, 25 Nov 2026 03:45:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AEBA6B093E; Wed, 25 Nov 2026 03:43:08 -0500 (EST)
+	id 199D86B0940; Wed, 25 Nov 2026 03:45:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58A206B093B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:43:08 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CD5F160D6D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:43:07 +0000 (UTC)
-X-FDA: 85473001614.20.150EE1E
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7BBBD1C0005
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:43:05 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf18.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E09BE6B093D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:45:10 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B83EA0E77
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:45:10 +0000 (UTC)
+X-FDA: 85473006780.01.4F120A0
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3839B18000B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 08:45:08 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1R4oRQ/i";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xseqmy5b;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1R4oRQ/i";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xseqmy5b;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795596185;
-	b=GRoCIVaYeF+EtNUYem3+4YQadheOOenoJa1lfiA3n4kP5Xh6DuuegMbILw91wTwzuF6ax0
-	wYtRh+7vbpt5mDmjyM4Uam90ccaD6ePW/lHE+KCD3t7ejH/07w8+UcXWkzfXAO/SmkP9yE
-	Ita8f+ID+TZnYlbgh6QWhd+NB8kMRN4=
+	t=1795596308;
+	b=ZS0JwCVIHwevLxHKltkiCjr7IQrgGO5fSvgPB93NbQy9TQLcBqRu5ZlBI6Gkp5vF/Y2hvp
+	grTTSvrJ4301aQEiZwGMu9hKtiXeEmF6q01sgoZxp8r/9t7pgSXBkHhRHxajPMav4l5MUc
+	fIiN1lf4CQkQA5Wb7klu1+d3UHmAvH8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795596185;
+	s=arc-20220608; t=1795596308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=1mOvzWhP6BsC2DveCsIqITs/FmHLNBNTXAMNKDO4qhw=;
-	b=qZwmIRgUGnamMAP4S+CIngw7WD6Wq+MS6ucC9wvWpO5bLXsvINEqWnNBMMzwi/0IdnXY3h
-	+CqHL2l2BJooEXCnowuR3Aoldlavjb6B1ZQyzdLUkNt7vhNGa6ledVEPKhoN1aN8NtVM1I
-	t0LZxxIYED2PYNOQMW/UWMy0HZkckqc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
+	b=kV7m2IwTOI3EstaPgBbo1ot8yGYvwI1KaJwdf/8S5NHrS+fnrlHrLKZ3brtj0I14Z5BpoA
+	4onzK3L2OeoNBAmxpusArE+/chg6TXVFpziVA3S2sZglRN+6BBIyN8bIfvu8MXthKncpQI
+	YZMJF84mQiIcWuXrgGpi6yQay9JjwlY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf18.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 7C2816732A; Wed, 25 Nov 2026 09:43:00 +0100 (CET)
-Date: Wed, 25 Nov 2026 09:43:00 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: willy@infradead.org, jack@suse.cz
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: what is the correct hugepage dependency for large pagecache folios
-Message-ID: <20261125084300.GA23551@lst.de>
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1R4oRQ/i";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xseqmy5b;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1R4oRQ/i";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xseqmy5b;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 78AE61F747;
+	Wed, 25 Nov 2026 08:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1795596306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
+	b=1R4oRQ/iWiVF3GfygHgPI9xqm0DU0PL/33RSEd0kAHFOjj03JbHnGcDeKjPUuZVKUfQ/C3
+	se0iiVMXGurVPeKjOHJAJnk/StmPKNjpbtuFJjiXHDzF2B6Iiqw2/KkYzF02DFKI3odKHe
+	4PRjahV3Nz4geMoybs+TdWwUp9oQtfo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1795596306;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
+	b=Xseqmy5b9lVtcOfm6N7qVKeOgqlUYxNKD7bCD3QFJ2Xcfd0l+ZHy35FU1NbGLHKMQyqpAk
+	Kdvq0lCqAMg4XqBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1795596306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
+	b=1R4oRQ/iWiVF3GfygHgPI9xqm0DU0PL/33RSEd0kAHFOjj03JbHnGcDeKjPUuZVKUfQ/C3
+	se0iiVMXGurVPeKjOHJAJnk/StmPKNjpbtuFJjiXHDzF2B6Iiqw2/KkYzF02DFKI3odKHe
+	4PRjahV3Nz4geMoybs+TdWwUp9oQtfo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1795596306;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xIQGPFCJd67xaKCihbcJC3tux5xClyxULhK31mQOmgA=;
+	b=Xseqmy5b9lVtcOfm6N7qVKeOgqlUYxNKD7bCD3QFJ2Xcfd0l+ZHy35FU1NbGLHKMQyqpAk
+	Kdvq0lCqAMg4XqBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D533134CA;
+	Wed, 25 Nov 2026 08:45:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FrpCChKgBmvYegAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 25 Nov 2026 08:45:06 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id C7C0F27BBB; Wed, 25 Nov 2026 09:45:01 +0100 (CET)
+Date: Wed, 25 Nov 2026 09:45:01 +0100
+From: Jan Kara <jack@suse.cz>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <ljs@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 4/5] mm/vmscan: be more careful when releasing FS
+ metadata if buffer_heads_over_limit
+Message-ID: <wm57zjtvdpexvbfygmdggw2ytsazelyds4rt3mtx6oy6u72mke@rhviuzp26rt6>
+References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
+ <20261119-gup-dirty-what-v1-4-236d69f25c24@suse.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: ffy3jo7deax7r77n58yka5wf14ieoq9p
-X-Rspamd-Queue-Id: 7BBBD1C0005
+In-Reply-To: <20261119-gup-dirty-what-v1-4-236d69f25c24@suse.de>
+X-Spam-Score: -12.80
+X-Spam-Level: 
+X-Stat-Signature: tcycyoye1xf6beq31ed4r7x7gmaxs36a
+X-Rspamd-Queue-Id: 3839B18000B
 X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795596185-297938
-X-HE-Meta: U2FsdGVkX1+n0RWfceM9DTTMEIar6Gq7D4THDuDQjd/51/JmVXIieGe2jpTUXjDVl/5zhvMK/Qmbgs2ymwSYPvdVIrONlKlamhHuUFpbWnLAVSgie6pGtgjVdfn/CFhGGfTT3SaHe0VbvBR0e4iPs/9nB452cl/8valp2/mxt+fTYPeaRFrppR6T6zzgKnbQdlT6flPlEiHokp5uDomXr5DVJD8Fk+4/1MYLx5s/lQxqZds3fhtFmcxR41nO4b6uPw+FsEG+UwzOpZoT7cCaAVYUqdJLhSy4KeqO+kXLYYXIF0KIry/t3JKNyC/Tw9RqyTifAph+ayY7Q2dHmMZ562FbP0E8QaGG1s4xrgSIrNrvIkE5RfoBVkqO4j5sVNolJYgM9QVlTowv5AMTgBhOBmXAD5ZF1+p7PpBY9VLU2yU9ZlEjS5upSD2xRPs5JEfi6fiKYViEavPx84SOnk8UoUJVzrvpq8B9nufFcUqkath0FsQ5teJ7LX9o93yGoMq6x5iVnuCNEvcb9VeBn8bfH4BUvfpZ9iIL1mKvMLeojD61Gu2l3RzNFsCKl32R2L3uWnqk0re7beMCZbxBXFxlDzZ4zR/LQH/zBhHPbNi5tP/dVSwnYmIwByGMknM3CbLBLsX0C9JSW4GeYXxNkKDkiA3/t7luomuYfstMu3jBSpRz2KeBu3Ua0Wpm/7Icd717iQVhCbbS4BikIEOMuGZWcoFkubKytj7nIH9UlEOrXQ5T3HTDKVgrm6N8dX49mSq0K+Um2tVPVezLIUG9vQL7C+Q0oIUyElV0v7m7SEJGch13m+Kt5Y+/2ZeSQKTRjTUqDsrXpTmKDZ8zcwI4/mGRZIdT6zH9x0UqTieIiJq5KQPEHW7V5l76CKdj7D2V++Nxd8h0PYCr2AUVr4NghHu5wYYJWTdyQm7uQHhkEGT8OyJgvDeStHWuBs3x8SQraAJHyH7X6sF7PZ1jSqFNJWj
- 5aQVFe3U
- bWX1zadd3qGMjFXAAMzHMZl3ag83IV9hNxVSpJ8cOsaO0G9BWwkmjUJKXRnwslFMWFMGrLAp+36D0jO1nH4Q1qA/MtdTo3CkF3E/FbPw7THYmTLPR0CTVm/XC8A==
+X-HE-Tag: 1795596308-624681
+X-HE-Meta: U2FsdGVkX19oX9/i9Jp/TMueIfN/mb0ohsckSqkf5U29dl6Mpu+wq/eo90cEDpf7hB2QOQaBh/4GgHxyeU3aOx91gY1UL0V20omGkE4Uqgu6BXOALaqRs4C8DMS8kyAl/kxzxus9TRXoEkdK4ELJpTiOWmYzIWDIRCKLYQfVdgKkPkuMCaJkhfNbWsIqZlOwzm04JfAUZo9BGALJ81EC+GlsU6s78B64qY5QSduiD8+aPBlRaCifC8PViObMhfHUM8K6Djaa8h5MZJFN8/Qbyuy11OqoRx2KCZ3W0wvVxCE1n8ksyIPpm3eaPIzeRXY9TfjWZgBN8t0qyJWeEOLcc3IT/vMclFOfUMU7zZCTLw6REsWn52P8SPcSjWExYIBLcOFNsgZlZuGeB1CmaA/cxIJiGosNTOaacwQ/Qj5adY9ZAXeSL2OCBTUxtPIbxK5wS7Hs4dF8e+GXKuZi2hTZxykxPaGqHZB/3JgFL92UKl3+UioFsY0aWqECjwmfdF5Euw1Ul5LqhKmBxOhq94E2sIfWAkaRXK9/hOO8tLAizDBz3rxUzIVluV8nQacb/GxmeQ3oS32ogXm3pFTiDyTqedJwToGXAdz87R1eYlfmV0KZHXGHXdVp8W3BS2y2r37p8cX1H78ExS1VEuwW9JA/84vbEJWKk+K2BjG0z2pw+nfCE29Ce3vUgaO4br2Iun1IQI35KVUuKd0Ew95/BiMVUgRU1p9VXqFoCYO6CaO5bEdJicTec4eQwuSKqcRKykiqy+54l0rzF/lTmYPoLf57QwxLZV0ziqedEWhzZqbSIHiikOU+iT5ve1uPUwdlHJ6brU1USarLisclXlOAxflAKbbDj2o9klb10iKyZRIEm9pX8F8CD7KspfAzhrmKbHX9SUQfVnhLx/HXGRMfKASPDEOe+u2yOx/IAmxSncl4Rbo6qeNjU2EHTb0SzkSgfoB9GBRZbjE31h0+7wggMjz
+ ac36+pM4
+ EQgrWVll9QuL9D7xw/b1DGezd7j8dC0kFX2tXjQQZ268T/b/Tiv57GADtbMTpQv7jugJHR3CpzNclwWJQ4zMUMz3iolGvXiuL3XVRKvvbJbMBKCfNWPIOdKwbcHt7UxDZ2KpymeNv3noXQwTB+fVxkPrFoLPlYq5D7ILH6qsfbmyeZdCo26cRJAG6trO8GsKKZYwVnvBM3WvenOiEXtWNOhTZjormIzrrdg4nPCcklp53Ze+69Y73zJ5x0Ml3PEeAiKzSSwBoW8cwh7HYbdekCzwJmZ5QJ4FTIXPv7YXSeJGM0S4DRdMpxrACoFB5zmvbbIVtKdTxTBpVcM5IxStOiUlKfdCNbONMVMeql2x4PyeaZk9cgLWwV8RXLkrzTO+5TqWsOzbS1DbvtkxHwca76xeu4EnX/eetuqzY1npLENi6Lfq0vq+YO/014ZPUqILflwIcgyj+puGkgWUlPtIFSxxa8eOGUNNlnhJPDBeC7ExvBwpSgDZfeseYC94oRnblV8YtYJL6cDiADSoi2VIJhVhN5fOzpYHmP67ocaEst+sxoIY+SwfOvjGVBtjl5JWUlxcNd9usDXcSJQQsGtoNReL8gw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -75,36 +154,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi all,
+On Thu 19-11-26 20:10:47, Pedro Falcato wrote:
+> Namely, don't call ->release_folio() for mapped or referenced folios.
+> Since this is the active list, there's no actual point in doing
+> unmapping. In fact, that would be counterproductive for active folios.
+> 
+> So, gate on !mapped && may_release_folio.
+> 
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Cc: stable@vger.kernel.org
+> Fixes: d824ec2a1546 ("mm: do not reclaim private data from pinned page")
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-we ran into an interesting cluster of issues with an LLM review for
-the (not upstream submitted yet but public) xraid code.
+This is OK with me but so feel free to add:
 
-The LLM complained that largest_zero_folio might only return a
-PAGE_SIZE zero folio, and this can happen because either:
+Reviewed-by: Jan Kara <jack@suse.cz>
 
- - CONFIG_TRANSPARENT_HUGEPAGE is enabled by has_transparent_hugepage
-   returns false
- - huge_zero_init can fail to allocate a PMD-sized huge folio even
-   when transparent huge pages are supported and
-   CONFIG_PERSISTENT_HUGE_ZERO_FOLIO is selected
+Just given buffer_heads_over_limit is a HIGHMEM thing and given how much we
+care (not) about HIGHMEM, maybe just completely ripping out the whole
+buffer_heads_over_limit logic is a better "solution"? I mean it's a crude
+heuristic anyway and for struct buffer_head to occupy significant portion
+of ZONE_NORMAL, you'd have to have several GB of pagecache with buffers
+which means the machine has to have quite some highmem which makes the
+setup even more dubious...
 
-This boils down to three interesting questions:
+								Honza 
 
- 1) should mapping_max_folio_size_supported check has_transparent_hugepage
-    instead of CONFIG_TRANSPARENT_HUGEPAGE, or do all the required bits
-    for large folios in the page work fine even if there is no hardware
-    support for PMD-level or other mappings?
- 2) should huge_zero_init aim to allocate a large zero folio even
-    when has_transparent_hugepage returns true so that file systems
-    can assume to have a file system-block sized zero folio?
- 3) should we fail to boot if the allocation in huge_zero_init
-    fails?
-
-Note that only 1) really applies to the current upstream kernel as both
-current users of largest_zero_folio can fall back to building bios
-with multiple segments of zero_page, but for some of my pending code
-that won't be as easy, so if we can't actually reliably get a common
-zero folio of mapping_max_folio_size_supported we might have to allocate
-a duplicate one in fs code.
+> ---
+>  mm/vmscan.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index d80bbb607a15..986742d7fb6a 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -2217,7 +2217,10 @@ static void shrink_active_list(unsigned long nr_to_scan,
+>  		if (unlikely(buffer_heads_over_limit)) {
+>  			if (folio_needs_release(folio) &&
+>  			    folio_trylock(folio)) {
+> -				filemap_release_folio(folio, 0);
+> +				if (!folio_mapped(folio) &&
+> +				    filemap_may_release_folio(folio, 1)) {
+> +					filemap_release_folio(folio, 0);
+> +				}
+>  				folio_unlock(folio);
+>  			}
+>  		}
+> 
+> -- 
+> 2.56.1
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
