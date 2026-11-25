@@ -1,139 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9F8606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 03:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1C2606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 03:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=olvwK4ji
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Efflm2x/
 Received: by kanga.kvack.org (Postfix)
-	id CD3126B08DB; Tue, 24 Nov 2026 22:13:41 -0500 (EST)
+	id 340046B08DE; Tue, 24 Nov 2026 22:36:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C85106B08DD; Tue, 24 Nov 2026 22:13:41 -0500 (EST)
+	id 2A3296B08DF; Tue, 24 Nov 2026 22:36:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B731E6B08DE; Tue, 24 Nov 2026 22:13:41 -0500 (EST)
+	id 1B9416B08E0; Tue, 24 Nov 2026 22:36:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E2686B08DB
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:13:41 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F05AC120D01
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:13:40 +0000 (UTC)
-X-FDA: 85472171400.02.BB3D652
-Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0F789180005
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:13:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=olvwK4ji;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf06.hostedemail.com: domain of bsdhenrymartin@gmail.com designates 74.125.227.132 as permitted sender) smtp.mailfrom=bsdhenrymartin@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795576419;
-	b=yyohAMHTFR+aJ1PTnaQy38GUuGK9dYB40Je/mtzm6PeL8dXE4uG5Mx06Ows5lrysY5159h
-	9CkK8CzNMpK+OD2FAtErpiMSKJxbzDV4cxsFjZNrawCZKWghA2/nwJcKkBP7y1FTgXwGim
-	AxPyTfvqY9YORu92ZA6YPIqEiD7Kzm8=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795576419;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E49246B08DE
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 22:36:36 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C0E2140DA7
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:36:36 +0000 (UTC)
+X-FDA: 85472229192.18.6AC8CE7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C2D58120005
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 03:36:34 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Efflm2x/";
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795577794;
+	b=VtA7H8033wJU/QAm2A7R6PTsbpZ6ZPaeuElomxpCMqyigGnRvwPwL4jgX0WFX3ZMeN8OkB
+	TuUJZbD0tu084HybleX6TUquhmfl4lmoalRYxGujIoSCXe1LLYxX+ZKRndsufqFP+3zR2z
+	3/ZVsS+f4CYzA8SvRc8VmdTSD1D/IXE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795577794;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tCFbqC4C5B+TcudKUswIJlj5VybrEnHtIhkQZVCLE4o=;
-	b=kZafVJPPIt9ZxnZbxhN4rAVvC88FddDXRg2susEUq6VkqvTr+riWbr5X+GnhWbPMJRgdqp
-	0n2qFyg3zHE17IHnw7ge0XZ3lNsiUuE1+W3zKXfLf7CI4zJmCXYihFqP9TCPy0jrelzULA
-	YQ6YEa8Vhtm5hGnuUTma30QEd2xnxSA=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=olvwK4ji;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf06.hostedemail.com: domain of bsdhenrymartin@gmail.com designates 74.125.227.132 as permitted sender) smtp.mailfrom=bsdhenrymartin@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3b497279c25so1316905a91.0
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 19:13:38 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795576418; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PebZnMk4iKsnNbJ1WDhdCDsNLxFr+2bVwMx2G3z9fP9YO9+tR3ACr21YNyahe8Ze4F
-         zEavRWm4iwg15PpZM9MyzZtbhCkWupYc76WV+AKN42VwU6Qkn3O9KTXefPMxYSnH9NlM
-         hBYhuHTKOykUHV3j9mVYRD+NyZDAyAFSSZ48cjBpMb59m5BauAD1u6wuDueXVc9m/nCY
-         hm4GfBevCS4dlQ30ErcGc3kFkWo8qYgr5SawdqgAQ5qZ5kx8q++J3Zwj1tpSH7QatnJQ
-         5/s8kMxbB1TMniGz6YAZ3mvhdoraTy0jRveesERUJelv2LK9iSlUOwf2oy8sJp64YCvp
-         Wz5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=tCFbqC4C5B+TcudKUswIJlj5VybrEnHtIhkQZVCLE4o=;
-        fh=rkontbQWKzvgoKWGcCO7eIf/OfeFMSz/88W1rnITSvU=;
-        b=UF+Ec/0B/jTrfM+lbOojMG+x6s6MReQYj5jEPzonjSiIXKidgdmV2KcF71ToJKJocV
-         zmDlGoeiMvXakLeW+4X/SKz7DBFhnSvmuHmcxlgruW5KZiEwNxdMGwr3tIG9UiqaTtTA
-         F/gB61YxO9IDlqXPFjg37Xy4P/WVIMd5rB9My65zhchD766dPDPVuqpBMhf+VWyjt34x
-         IIOlGkxMHiS6BQzp3xHxleE2Y7QjUQLrgbsi5Yv/gLEodxhD5ZCCZk0WuUPEtoxxkLD3
-         wKvZyGQkMpkzPtWEgNCrhTO0GitLnGIJjYhMnKkzh7uVtJqfKfAGT5vaA+ocYus2ihyy
-         l//w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795576418; x=1796181218; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tCFbqC4C5B+TcudKUswIJlj5VybrEnHtIhkQZVCLE4o=;
-        b=olvwK4jiITPJ3/VTPK2T057GjFVu3X2z9OsZ0dm5oDwoCWNoKLDJhS1sVnJqohwa9m
-         ++JlYReOIR3Fim4VZVWQpNSTTVDzdb/a2d0deEvasXFk7/Ufuw7IVUkqyZkrGdHn1hd8
-         bYNalDHP5FJpXFxBca22ELnr+G4LLVY9bCkqcf/htsjGGVRF2gdcW7FAfG0VghTNBZY/
-         OL9pEeis+59khZIKQ/m3xMjrcOmTOpv8s1OOKWOpoXGFyJUrv8jfS29yZX/XHO20vZ0f
-         l/+eGxViz7o7BpO++HU9yYYoq5cLFNeViD1w8fKNBufarc7Cx43DwNzhiDg+JRff8r3F
-         abDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795576418; x=1796181218;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=tCFbqC4C5B+TcudKUswIJlj5VybrEnHtIhkQZVCLE4o=;
-        b=IJeUCW85x4cbqPsCWN9Yeawv7NRilopR68vw9LpgoueZ0s/9mdJ328E7KpAifZBsjh
-         dINauLvlKNfp4TYTIITrOjo84xapvKEKAud+8B+eguS0jHHtjU/CRBX6cZBZHJVI5mgX
-         CMi81kU0+FmzBtpGe1AQn9StDR/10/Rj/b+92ANTZjkANjHQDc8ku5FVNJgQBr3K8sLO
-         GHy6LT+9Pu+CsQiK8tGnitjH0imPFsmUTdQamTo2C8cZtiqXNrdCYChlzFntqVvnJIOu
-         emwKm1i1IvT/FD77FHsr76SFm7n2IoD6AisETZaBd+euqER9LEr/XMkp1FIuYoE8PD3V
-         l2Uw==
-X-Forwarded-Encrypted: i=1; AL+hErHsHo+kpwPudl3hnLuV0XNS1H6pkOD5mgR4MOCTIGrn5CucnHWWH5SBxl3+Cw+0/AMXBgSBijD20g==@kvack.org
-X-Gm-Message-State: APuU4Z+Bu2EeyHsYP5/Rp43C81i7mqO6vP6S5PqdUNWNhyqzCU3g4kl4
-	TszA/F6nw9VEQ49ZaFDiZFTzWQBtdpNcpBY1+iWaJ2rDgqVFbherq/GqlbR3BDJzcw1ZjV/2yGK
-	fULSa4uHvfM1uEBKCNrdz8xLIfDruZa8=
-X-Gm-Gg: AZFdTZc8RvIgv+gS1WzkPU2BI2ymYqxi9qktVWndyW4SHn7QYODdcTomns6OEkBwrHg
-	vK/UHeE0dSIISCtpoKhkroIGLlKB4olaWHc3oDXdpNWHDMFrkzVK9z6HUZevK5g/jGuc7zTbfTp
-	m/UuFhiXNRGU4IU2oUJUpH8HGjA60lUsPgW3JvDJqNFYjaxF7hucgYQ9bdojsz27vpS8adUqVky
-	8dpTQkMMyeBMGXrmPyxEBxlk/u8PKCG6fkEOwcAVtao0B3yB0rXdn/pOCQtXzaXzJVAwdKexUu8
-	+O5t69a9JDBNH2rflmxO7fb+bQAZRQIXKBSUDwPLh7CgKoQ8reBBe+jGdEYOnLTeRcKeTpXMeUl
-	TCbMsIMjAMr66+PWdRTJh4UEVzXVNO2Nfpaifdg==
-X-Received: by 2002:a17:90b:17cd:b0:3ab:4f1:4f76 with SMTP id
- 98e67ed59e1d1-3b41c900b24mr15919769a91.24.1795576417688; Tue, 24 Nov 2026
- 19:13:37 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261123030014.3116755-1-bsdhenrymartin@gmail.com>
- <lh4cnpy2kw3tdtmhubwhhvim25kxpqxo6xttt7sihyx7x5hqdf@3tvivew2qh7m> <CAKEwX=Py7W0vOwxKdWMCZu3d=BbF2OkgDt6Tu_AHhEJZ06w0ew@mail.gmail.com>
-In-Reply-To: <CAKEwX=Py7W0vOwxKdWMCZu3d=BbF2OkgDt6Tu_AHhEJZ06w0ew@mail.gmail.com>
-From: henry martin <bsdhenrymartin@gmail.com>
-Date: Wed, 25 Nov 2026 11:13:24 +0800
-X-Gm-Features: Aa3M54pnXMEK0Eck5BBUuqtUrkvY1nVqb3SO0OotTOKtwJph7tvN7_xbLx5Lf10
-Message-ID: <CAEnQdOrzP9wKwmyuySRch=a4B5F3Akgsvk9TNUj1Vycq-4JZEg@mail.gmail.com>
-Subject: Re: [PATCH] mm: fix cachestat NULL pgdat dereference on DAX mappings
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ipj8wzsh7rnuoypbywbm3c9d84adwirk
+	bh=rpbEYzPL4+9HXslVBGDoIM4ZEdfZMsvJubmieVG8Kgg=;
+	b=MpltA6Rr0/C8bMk5kEXSOf1+ebRUw4KaHkv3Dk8we7Bby02giLagyXiFhSu8u6uIlFW0Gp
+	xG0jG9ezjEUzpZTqmKy1a0p0BARBmka66JOpgMTSI1opM5m3c36GbjFIJkhP5BuWF1mSNs
+	tt/BLoZGsKnrwcvb1MCseqY71wvbMUc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Efflm2x/";
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4090561829;
+	Wed, 25 Nov 2026 03:36:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3894F1F000C4;
+	Wed, 25 Nov 2026 03:36:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795577793;
+	bh=rpbEYzPL4+9HXslVBGDoIM4ZEdfZMsvJubmieVG8Kgg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Efflm2x/woiUXtSPov384648LQXwZ4Jg6dNuInruLMISNeVlvYSPahW4Tm/IUFriZ
+	 Q8aN2it5SDui+1QCzjdSl9RMIF6FKtfOTbutiitxMkxpvgqbjKvSwtQxxaz0FqHcVU
+	 LQ6+eU9FNcavKJZVs6QhTTJ2ZQkpsU2GgndpWEgdmwOxxO7ax53ydfroHN7l//mXDr
+	 uCr4fq05nB+kt8FFS8zQYs+1Kb51q7SjrTrEJSBn8vqgZVjDnwH0aX2UvQaCKXdsIu
+	 aiiXm7JuRx2Mp49Pd4tA7EgxGOPwkQLtJ4tQVAUNQYrvG8KyOzPeGF5tWi8MiTTSsS
+	 remrvan84wjYQ==
+Message-ID: <sashiko-outbox-232472@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] mm: memcontrol: find the OOM group of a process
+ where its threads are
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhan Xusheng" <zhanxusheng1024@gmail.com>, tj@kernel.org
+Cc: hannes@cmpxchg.org, mkoutny@suse.com, mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, akpm@linux-foundation.org, kolyshkin@gmail.com, chris@chrisdown.name, linux-mm@kvack.org, zhanxusheng@xiaomi.com
+In-Reply-To: <20261124033547.2373352-3-zhanxusheng1024@gmail.com>
+References: <20261124033547.2373352-1-zhanxusheng1024@gmail.com>
+ <20261124033547.2373352-3-zhanxusheng1024@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 25 Nov 2026 03:36:32 +0000
+X-Stat-Signature: sednycbde9w4sdj14wyjs3gjf6yfd677
 X-Rspam-User:
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0F789180005
-X-HE-Tag: 1795576418-738118
-X-HE-Meta: U2FsdGVkX1/H+mVt1woclmc9oiNf4yRndWvNQeRHzXGeQsb6bfepnaSn+rhCYRwz1RZLAFvacNTnbWqQSqGiuYvKm3pM6dH3z8aciqo6D0aes+vlxwVtc1FuLZPxY/c3d0k/Ki0vumR6ogHJjB5e4zNcHl9oVjKX/zUEaKAsoTXt7kvjqm/8jXt6M8lOmXvMnlAAs4TBCVMpKMn3Hdz4U3FkpkcV4B7ZJQ5kkr8FTSbU/P3zNS5yENLuP4ehaLU9dxKz3fvXv/pMai1b7X+tASOM1v7alz7FYS4TRboYS18ojb3jDglWZ5m4ByUDsSHeIow2rTYzEwD8qYbJxSEpHDUkuF9u68QwCgvxnPO1B3ZyO5xaREUFPGhUNFvrSe7vC2UbezrrNE6SkA5b4BteQ6XdKt3qnhzD62hneA90/+P0c8ZbTtbJBtXgklr2EeR8bjxh7cUukZFymPODuF9x2vtTDgR4LwZatQoPJJKcBdkaC9cuGY503aozWJHBr00WBAy03TLZ+nln7XWR/0FL9nby2xb7lgZeSen7nTSnFJ1X7sK9rSY/tE1yAS72NkHD+bO1K2JkxN/FIF6syDPLiMfc8/WxsoQmywlUj92R++N0ldRQGVw23j/eBVA5AsfTDsMSV3/mo0SywEEGZhGVUfzgaYMa60EqdksfC7ddJH3QPyD02Em98+fifb1ntkZ0b0VAtaukjOQCByQwiW2JMoSUsP32HXjEkoFyPAeiRdvCdEhUF99ZDPGICPIkLK29rrIGHLj+SBM4cXf6gO5BKjIOQX6Ei4ZZHXKf5NBEbRIu0hNKAlVitVpoLLasJ+eHjKRv5dtaElWK5GuFiIpAnfPOXVDJKfvOfHJQJSSxyYoUMhJ4lMY6PABKhr+WcstgfAFpj0qWpXCPo1JM8t4POREDu+Jw/XYrSEWr0+MM05g9/U+8s/s/1QFYZp8BbMUuNy/u2+VP6k0uNkNX0+d
- RLQD3PmD
- v2dZAWpRj+Wco/255Kl6JjNMcvcfKjSqAj1IdugAbAvpxcnS1dW4f0BXUxRnCSV9VbUTETQzLtuyUgglZXN7x/FLxgytOCINFuFjXm0JkhiboBj5UTt3r/nKN/I2HQ5q1xeFJNMsawK3/FCu3y/P0VbjDvXplm+GiPVn3RrUa/tKyYmmJ8UyFWs+suZZRn9JtdtAjzIp42gQgmMvg/KGLhuzSSb75oZkjMi48A1TFZku+Ez1Kp97mATgsVFsIrbItzSYFGIbIU9c8EVeKnV2t31qYYp1MfX+2CphpdnNKgPJ+87vcnYF36719Mr9f6hHNiuloelomCO865jsNIUv0NKv16oIcDw1OQp4ipzCUgRzBSGB4hM6/XqtV2Q0GFSi4sSPugEjIXVx8muwTPA1wheTJZpEDpB7te00C4qMk7UjbOI69xj7EU+ISqQ0I4gtinCYnNAfvW7BJ2kByNJ4LrqmgKgpwPAdmeubTS/oSaOxbLxQUofi3WMlPBok8yuxcwVnUhbbyPb9oMdIdZ+2koxXMsr42zbGmbQIkuUSXpgq1gHsk2BxsWRItIVnhFhBX1aD8JNlUgi4VQsMeDt31Jw35WXuaJDgs/E6eUKP/B8q5gNrMIUph5dY8b0AOVjJ9ACHbongQv3UlH50VJp/fVdGqa8TE2T2bAAFf
+X-Rspamd-Queue-Id: C2D58120005
+X-HE-Tag: 1795577794-560994
+X-HE-Meta: U2FsdGVkX1/JSXHn9UdY42NS/ilU1P+fOKs7qCEIHrPhtqrrxwtGEzFOCLcEPLMal+VQf7HS5VbFjs9n/+plVAHf3Sy16MyLiocLlwstcKJvZcyhrOvPGGSlVXpGgZ1aZ+1lSYzx9ErUOd6GaaP63pbfp6x0q01/q1EqKVBBuRr1Du9Th5ko1S8MK/8f/qhM01GLjufOFGbDSWvfhB+s6mWPt3RI8wAvL5ng7N/aXWuqAepatXgQJT4axGQgxbz0AjqUkCQsNbmNicqKzgvwyphExnH2JEuzQY4Lcz//7LL9kxSsC1CtIw7/bDGSZLQ+q9WF4WfK1omjBipKFbZoFMXzDelYwCx/o2TlWHS+7J8szHW4aU4orznQPbvOpAv4hSZWpogkblyjRPhsclaC6fJ9mnwDuQKU8jqdJYLZsoHg7IscK1HaZiCTkAUJZjiJkLFR/KAhND3i26tOAC//7rxELllzQgUJYyym38AAoFsSUdWX9y66Ju+Gs3PEjs2GFZkv95g+thPM5XSA1W6rV8zqVCyB9PsctIU3ivGlOwcuBiYQ/HJ3im1Eybq5/pAGLynb29/arQrNrDDcRAcLGxK4wiOlZi49qZ1iw558w/nyRDeR9tgcUZLDvHLqGApcGgVQ7tBG/CBx2TEHF3q3cxcwyqqKyoEDNCC5/qhaa6eBMwKL1iCf3IpvDp/5YevAdKX2EpyW2V6dEh+gB7dvjdiCFseSGwzvTxn5YS96xP6aZHNjJ1U9EOyHPrVr65v4buwugm1wP7rj8spW4aMPd8Enhaif5jvUg5vEbHacHLy7tYt9nEuVnhJtUIKZSkhnoZI2zE6SGgLDo1pf5TWvBeA0yZ5VZv9z7P5jxKS2cWMRTRw7bR/AQT3o9MNuoXkc6eniBCH0nrkg9MEua6lQJEYQCl6yY2Kfx2JfDViBvtTvxNHsxKJ5JwY+xoXmuCGk6x3cbXsor47UVEnrMKp
+ 06ehaH5C
+ jBEEBeE91EHfJp1GRitkb2WvUx998XABlmFILoSxJB8tRJxJbGiAXT9PCPeJ4H+pRA67n/DBDE/p8hADoH/xExU2UFy9kHsxbnpvNvWqjKLosig9CPVE9ZXFv8+K0kkpJ71jY+N7jNYCKkyJwGW5kJADiBW9zzfVlhqXtq2KiBMPbcQf2LjZN1eK5SrNv/sG3FBniUT+4+YTgu+SNSTJig6gFy7F9cAllDKZjHsR/sik1cb8fUaeTBhfNU0n+fFR0KPHctxDKtLYm6k3e8Im85acpBYoSsMmng6U9bKnJR1+0ycye5UYp2DC1TYl+MVpRSRRwYaizQrUdmRVqUrdALI4iiUikNWG38dwK6ssp+P/difiyGhetmoI+bJl53OqbrVFhz79N+GjJq0IQvpMA1vdJpTFamdqILVsaqtTC/Hsh3FTf3xGFECg7mU+u0VY/M05SxDtmd3c0YBTzRlc2o3ObvxmfcgFQOZ6k7zGNombUdEXlN4STgTizBYnJ/8Pohg1SqGrVnIOCkb+9Bm/dlHHey7Y5rL1MYJw98OVR0ugJbLjJa764Y79DK7h/EznSVVb4CtS5e7Bijz2bAYUN+Ut5pCQkRh4/TAbD1EoPho5Z3hmTAXN1VTNWxSQ2oYoKwMmp4N9XV+pKpVeRtxIyqKxjJgPl0arEXaXCTqAjpn2QEom872my3poiGy1sbQjlK1gz/HN47TmTf+AXTlFQMh37VjG4sd7Upd0m8dtYg85K+MmdJ9cpn5mTqVV7jPsWo+e0Z5cXNRTjFINpYIX+RNeEUeXjUg/cF8uvVUM/TUnOT2m9nxJblp3f+TiLcALop0+MgvJUeNBzfhdj5PBPdbH1Xi+hGxn5RuyjRHFWQr1tfAI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,19 +92,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-> +1. This sounds good to me.
->
-> Henry, would you mind sending v2 along this line?
->
-> (and maybe add some documentation).
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] mm: memcontrol: task_procs_css_set() returns stale css_set if
+  threads exit
+- [Medium] cgroup: missing cg_leader_left update in
+  cgroup_update_dfl_csses()
+- [Low] mm: memcontrol: use of task_cgroup() in
+  mem_cgroup_print_oom_context()
+--
 
- Sure, v2 sent: cachestat() now skips the xarray walk for DAX mappings
- and reports all zeros, and the behaviour is documented in the syscall's
- kernel-doc.
+commit 00e8b03872e16150479767210c746337c6018f3f
+Author: Zhan Xusheng <zhanxusheng@xiaomi.com>
 
- Link: https://lore.kernel.org/linux-mm/20261125030432.274396-1-bsdhenrymartin@gmail.com/
+mm: memcontrol: find the OOM group of a process where its threads are
 
- Thanks,
- Henry
+This commit adds task_procs_css_set() and task_procs_css() to resolve the
+css of a process returned by a CSS_TASK_ITER_PROCS walk via
+procs_live_thread(), and uses it in mem_cgroup_get_oom_group() so that a
+migrated process with an exited thread group leader is matched against the
+memcg where its live threads reside.
+
+> diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+> index ab442f94e29d2..0be7f96ce074d 100644
+> --- a/kernel/cgroup/cgroup.c
+> +++ b/kernel/cgroup/cgroup.c
+> @@ -5237,6 +5237,17 @@ static bool procs_stand_in(struct task_struct *tas=
+k)
+>  	return leader !=3D task && procs_live_thread(leader) =3D=3D task;
+>  }
+> =20
+> +/**
+> + * task_procs_css_set - css_set of the process a PROCS walk returned
+> + * @task: the task returned by the walk
+> + *
+> + * See task_procs_css().
+> + */
+> +struct css_set *task_procs_css_set(struct task_struct *task)
+> +{
+> +	return task_css_set(procs_live_thread(task));
+> +}
+
+[Severity: Medium]
+Can task_procs_css_set() return the exited leader's old css_set if the
+remaining threads in the destination cgroup enter do_exit() before
+mem_cgroup_get_oom_group() runs?
+
+When the victim is an exited leader left behind by a cgroup.procs
+migration, victim->mm is NULL, so task_will_free_mem(victim) in
+oom_kill_process() returns false and does not short-circuit before
+mem_cgroup_get_oom_group().  If the remaining threads in the destination
+cgroup set PF_EXITING between select_bad_process() and
+mem_cgroup_get_oom_group() (for example while dump_header() is printing),
+procs_live_thread() skips every thread with PF_EXITING and falls back to
+returning the leader on the old css_set:
+
+kernel/cgroup/cgroup.c:procs_live_thread() {
+	...
+	for_each_thread(leader, t) {
+		if (!(t->flags & PF_EXITING)) {
+			if (task_css_set(t) =3D=3D task_css_set(leader))
+				return leader;
+			return t;
+		}
+	}
+	return leader;
+}
+
+mem_cgroup_get_oom_group() will then miss memory.oom.group on the
+destination cgroup, or kill unrelated processes in the old source cgroup
+if the old cgroup is also under oom_domain and has memory.oom.group set.
+
+[Severity: Medium]
+Does task_procs_css_set() also return the exited leader's stale css_set
+after cgroup_update_dfl_csses() moves live threads to a new css_set on a
+cgroup.subtree_control write?
+
+When a thread group leader exits while sibling threads remain alive,
+do_cgroup_task_dead() moves the leader to src_cset->dying_tasks.  If a
+controller such as memory is then enabled on an ancestor,
+cgroup_update_dfl_csses() migrates only tasks on src_cset->tasks to the
+new dst_cset, leaving the exited leader on src_cset->dying_tasks without
+setting leader->cg_leader_left =3D true (which is only set in
+cgroup_migrate()).  Because cg_leader_left is still false,
+procs_live_thread() returns the leader on src_cset, so
+task_procs_css() in mem_cgroup_get_oom_group() resolves to the ancestor's
+memcg on src_cset instead of the child's new memcg on dst_cset, and
+CSS_TASK_ITER_PROCS walks on the child's new CSS skip the process because
+procs_stand_in() evaluates to false.
+
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1271d390b617e..5704e4415a16f 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2003,7 +2003,7 @@ struct mem_cgroup *mem_cgroup_get_oom_group(struct =
+task_struct *victim,
+> =20
+>  	rcu_read_lock();
+> =20
+> -	memcg =3D mem_cgroup_from_task(victim);
+> +	memcg =3D mem_cgroup_from_css(task_procs_css(victim, memory_cgrp_id));
+>  	if (mem_cgroup_is_root(memcg))
+>  		goto out;
+
+[Severity: Low]
+Should mem_cgroup_print_oom_context() also use task_procs_css() instead of
+task_cgroup(p, memory_cgrp_id)?
+
+oom_kill_process() passes the same victim task to dump_oom_victim() right
+before calling mem_cgroup_get_oom_group(), so task_memcg=3D in the OOM log
+will still print the old source cgroup where the exited leader was left
+behind.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124033547.2373=
+352-1-zhanxusheng1024@gmail.com?part=3D2
 
