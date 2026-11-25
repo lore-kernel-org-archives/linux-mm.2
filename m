@@ -1,114 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B80606A335
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F5C606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 14:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=SPVQka5q
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=q5HczsTT
 Received: by kanga.kvack.org (Postfix)
-	id 07BAF6B0A2F; Wed, 25 Nov 2026 09:25:58 -0500 (EST)
+	id 1DF0D6B0A31; Wed, 25 Nov 2026 09:27:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF95B6B0A31; Wed, 25 Nov 2026 09:25:57 -0500 (EST)
+	id 18F596B0A33; Wed, 25 Nov 2026 09:27:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE7FE6B0A32; Wed, 25 Nov 2026 09:25:57 -0500 (EST)
+	id 07E836B0A34; Wed, 25 Nov 2026 09:27:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B3C926B0A2F
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:25:57 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48220160E6E
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:25:57 +0000 (UTC)
-X-FDA: 85473865554.23.29BA83D
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 05417180006
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:25:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SPVQka5q;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf06.hostedemail.com: domain of BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CCD506B0A31
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:27:26 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5F718A0D69
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:27:26 +0000 (UTC)
+X-FDA: 85473869292.13.92B25C7
+Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7E37BA000F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 14:27:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=q5HczsTT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795616755;
-	b=JFXTLttTb6tGsiD4XQtoMDqWi+tKHNnHEYMEvHiG6kw8LNCUZmfySyiJDPgyF0jyAuH/A+
-	sG/kgQMrIb0gpT8YmIpIWfy7E/5OJE3LzDW669nXJXqwTulH++AdKTuZo8XS0iGCPijc/z
-	DqnPEu/vXmWuopga8NsOlwCtpUKMzSo=
+	t=1795616844;
+	b=qt23tXDAee+ahuHn4E63SGNyE5dxu0BHA4ux8XUkyjdvQZI5LYeqEanfpTQIAqe0oYM21k
+	Nn6AtRe5rdqjJUUdLGRK3leLDmQKc1XPHJ0gBb4S8rRFl18ls7Ot9RWC1dNasWakdTBeKQ
+	/LpgucPVEAwoUShmWd7T8BGl/jD6i48=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795616755;
+	s=arc-20220608; t=1795616844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qUuiYfPMGF1dYU/3s8nfXtw2BbGEHy61uU94+Ks01XY=;
-	b=kYo4vRdgoCFMhJ0tsw/bFGJzqCb7lCG2F3FcA5sQMfkMsrVb+Fycd/3BvIQOVPcm7v4cZd
-	QypMNG4Ng9UOoUBxO7bhFkXwfn4tGfS3AIf0whjkerNClKNgeQLHtTvZYT8Vd3XABeC4ot
-	1GXgk0Ewxbs+ufzKWdoQ0F+94PDwcVI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=git5H/KUb8r/Os1Gz2Z/JEfZLifx/Swk93pecwuIC0A=;
+	b=YVwQGeFapDq+dXVW5nRKC5KfipNfDO8QQfs1dpwJVoYrbk7H4y6EzVmlsEBLvnsI3ifg3u
+	8BhdyJGRG4YGfSrK1vwv93z2Ct3mZjelee/GJw/mIHk8sHkYCDc1ZRwXx4K8NfMM6rYefy
+	o/X2Nxw8q22m9F9uBwGN7zvDRjMVuDg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SPVQka5q;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf06.hostedemail.com: domain of BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4447d50bfa760894bb46+8494+infradead.org+hch@bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qUuiYfPMGF1dYU/3s8nfXtw2BbGEHy61uU94+Ks01XY=; b=SPVQka5q6b+Q1YM0gqBdrJp3y3
-	UUUokphX0g5eOWTiYvKvIDnraP8DhH9YtPY1ZVZmsYKhEi7+gXw3fYCn4rPNoFx2DLd55U804oNgy
-	BpAC/5lODMecYTLyeGz5nCdxDEtSTYfIvUTVe8FbTHsbr0cIOgfgv0jPn+sHtL6DMlT8tuSRuUd6v
-	32FH4VYNd9i9qBT2ZAx4KCl5vVK5/EmscHlH4AaNOdMwQCsBZIDp6aSZpqVQ4A5WpNM8a/Uxl+XzR
-	DKPxKHf0vYby5fO+XwYhJ+FBMHHCrLpsCuR4fOwgm09h/UIcEa50ozW2eGgy3J1Rf3BkAR21O08IJ
-	cQO/zxyw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xWDwO-0000000A9gO-01yg;
-	Wed, 25 Nov 2026 14:25:44 +0000
-Date: Wed, 25 Nov 2026 06:25:43 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>, Pedro Falcato <pfalcato@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org,
-	linux-nfs@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>, Michal Hocko <mhocko@kernel.org>,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
-Message-ID: <awbv55FryMamHvVP@infradead.org>
-References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
- <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
- <awWNyDZT2SVu2Zp9@pedro-suse.tail5790ac.ts.net>
- <55114986-0ba1-4a80-8498-bf674d64e01b@kernel.org>
- <away88BuU8ibcTA5@infradead.org>
- <d088452f-1118-4a06-bc16-1942e523e0fc@kernel.org>
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=q5HczsTT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-3831d564bcfso2147613eec.1
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 06:27:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795616843; x=1796221643; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=git5H/KUb8r/Os1Gz2Z/JEfZLifx/Swk93pecwuIC0A=;
+        b=q5HczsTTJkhuJjOmKk5IeJZP5gbAOocgVa3drmpAhoZSDfnAQJ5MLeHtqvRYgPp3uY
+         NPrz4oM5kByJPpnnbJphhztcVwaCiHEqAFfGJR+kG2aHDrvqw/fJ5adgP2MQaoi2lCx+
+         eH1+H9ZuboT8aPVsFcn28WB7UY6R9KBiiF7oTddeiNHBByOjCZk1sOdrKf3gcreSPJfb
+         dyDikumT1vIe1Bqrh6kXejMQcrr5ySaLbzxwWzYJ26fsoKrrK8E3pEKwVSc36XLhq+/s
+         hLmWdQQ1hdHqXYFa1FX7b/clGIZWhQUSmKnRXHKHsNijV16AdRAJQcznHyq8+b/Wyr7r
+         sR5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795616843; x=1796221643;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=git5H/KUb8r/Os1Gz2Z/JEfZLifx/Swk93pecwuIC0A=;
+        b=cGk4fdQ/tpzjTuJVuo6/E9OieGoS9PFnvW0TrVcL6o/+q5lyXo/bDVgn7pUQ/jrPOq
+         9Vl6BLZhABke6CwXXbU2axNnYrhXPd3Sp6HALFsF6+uZnYvJj3z2C+IYJM48KE5v/azQ
+         zAvtmM63STMw6S9+MWkO4+gMCpCjcPI8YQKdJFX2H4DwH44sVT+av/vDhHrl76MsJdJQ
+         Ir/8F7iBv/ghYuD/oWT3c/z0+fR4H+fjrYJxlFlLaykRYPLu3+yF8drbIjBaVKOoB8QH
+         fGR8wNtradOo0s77tnUI5kzwBk10jrbvqdZbkpVeeGS8B5IA4E2ORFM1OpqLJR/2iiny
+         KcOA==
+X-Forwarded-Encrypted: i=1; AL+hErFfSHanHW6xw9+qoW/KkDc/KgzUhjwZ/KYhF5h9MJ4JleXVVLIzPsEEZNPX49vXYh/gxSWEypZGEg==@kvack.org
+X-Gm-Message-State: APuU4Z813KB/ntXQjA5HDHt0uydo/Rp4rFgQqUW2zlwBPlClWtc4Z0g+
+	cevhLdYs1+AywtKVQIi0vOE5EjVdhfor/xfKLVBMovNz6K5ef35k+hff
+X-Gm-Gg: AZFdTZdVORNNkrd7b7P4oUNcn5Pgj6/JjcxmoFAvbAHUQS7SQOCgHbkIqc6HFEgzWeU
+	H0ZxZ22MbHgMZ8WV8IP/15STZNfhqZNajC3OLU1Qc4P71GhsZJk1Xrbn+dfVDJ+80Dx8QbYAi+A
+	1OZbKBvac4iehkkOeSqs6rtCxH5iGi12ledrPpNdilnl0U0Cm8L9Lyqsn8IfdWwd97tKD8Q2tsb
+	xSpVqTVtOnRCKgf5xr0sTLZXvpaomy+i3GLcsvq6muG8Av9uY7W3pLv4RLmmCyL96ctfg9j3O0W
+	u1v/dOW+Mnd2DtMX/piCeyR0hSAYHp34A/qPD2kF+JHkJX3LkSz+UlBmcLduzQZB1g7HaCb/EoE
+	bMtwqCy4ujiQBRjmF+Pbw58kg+VetL5uE2F0DpYp5YSkQQNMxBnpTjduXBdNjpirfeJlGPmdPWq
+	pjq2AauhPE9cy6xQD5VEz5s00wyHu52HSjLWf8OMBXWHElNw1CScoMhPmvbFR6kXnQCrxnaopk5
+	k0B0CxQd68iZ6wEMPz9FJJBMZC/MAQpSUi9c+mX2wnlorLcHiK3EMMB7SVH2WcsU/3m4KMoMSIP
+	xiSNCkdOfVJd0uTPiX0AtTl9WHj6G0KGQUParRwKL4v6OSUIFzJe1Rk6M+JnKqU+9CymVgaqPeJ
+	Sqh/O2tyI+F1Y8TQEguhDw8HW3eUxLuseFd9UDB1lx2tL+n39cVwISzV46Zx/vKDYQhHPDg==
+X-Received: by 2002:a05:7300:c7c4:b0:376:13e5:e8fe with SMTP id 5a478bee46e88-3856c4b839cmr17298103eec.3.1795616842823;
+        Wed, 25 Nov 2026 06:27:22 -0800 (PST)
+Received: from [10.131.38.181] (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385d2b93dd9sm62402114eec.24.2026.11.25.06.27.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 06:27:22 -0800 (PST)
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Thu, 26 Nov 2026 01:10:56 +1100
+Subject: [PATCH] mm/hugetlb: track pending subpool requests separately from
+ used_hpages
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d088452f-1118-4a06-bc16-1942e523e0fc@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 05417180006
-X-Stat-Signature: ihnh98r8tux4b6zq3c6jza83r4yqrpy8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261126-hugetlb-subpool-pending-v1-1-e1831a48f19c@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WP0Y7CIBREf6XhWRJgBUp/ZeMDXC4tptIKrdnE+
+ O9LrQ/GxMeZzJx7504K5oiFdM2dZLzFEqdUBT80BAabeqTRV00EE4pzoeiw9riMjpbVzdM00hm
+ Tj6mnwjAwYLUO3pPanjOG+Pck/552XStnhGXDbQlnC1KXbYJhsz7BGUesiRcr43Wtzy07cO/Cd
+ LnEpWug5Vy7EFR7/GEqSODBSOOZlADCiaP3SjuOjryP6prXJEm/XKbOtmhQMya9726cnB6Pf2b
+ Mk/swAQAA
+X-Change-ID: 20261126-hugetlb-subpool-pending-290c9ca77fdd
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Usama Arif <usama.arif@linux.dev>, 
+ Karl Mehltretter <kmehltretter@gmail.com>, 
+ Ackerley Tng <ackerleytng@google.com>, Zhao Li <enderaoelyther@gmail.com>, 
+ Jinmeng Zhou <zhoujinmeng@bytedance.com>, linux-mm@kvack.org
+X-Mailer: b4 0.16.0
+X-Stat-Signature: ra6ufj6ir7gjheger78j46sge7z7tr16
 X-Rspam-User:
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795616754-8553
-X-HE-Meta: U2FsdGVkX18STEOuNPAekR9Vq2wCqGVNhoIEMTPfd6/KILUy/yz7rW+Czgh+Dwp2ws/mhRmcW86ngomNhawp0+npJJJ90hQS3SJxOAmvziIpxTtjI6HQb1hCRm1+OUboqk99ovfrzFI8UroLRXMeYJjEDjW1FviSD3DBTjoJ7Ddy8ndBQC7VYJNYNvqAyiDsUaSVwXaadBwQP/Pu1r8DyzDSrMxfzkKdcwjv8HajJJHTx0nTmajpaODMX2sMbeTEpq8dp1HEz9h6feZVdPwY+vC2kKMZJ6YQTYth2NuEJuRisGx7lxcQGR3vIk1JIHplPrdWXCkRhwdoyiI5X2JtmZFt8tgwG6p1UVuU6t054hWflutXbLTMJErSZRieH1iDqra8T5fWPhDTjD8OYhtdEvVZvR2zfLxexBZOvxXUlvdrau1hCWeZ53f/RdUc0Zjn34nq8C8Zw+ntSZnak0uL9xnMfMRubdiLFz37gsDjQOapFirIzZMYarAw39SdXIATCICq1PgZrQ/DL8tuqu7kgJneODpGGDDH6G4vJ1OVz7mh6v743e9+WzmPSGoo4SpimzzAKW68eEefcnvygvxDhMf1PDz/n8JhwkeT9LJlBSjL3WsrTMnutF30lrLoxfcgloIuZUwloXt99MgWaojXfD4mJTcFkGOgOx/1GErP30DlOVrhYWFnGXGLaJHyKo9Zl/z4DUVON2sDj4fLiq89AAPFqee7ictdVEVthczBWzlsWV4icyQMTF4k4dcuzs+2WkRyg1WC/3fvZcAeb0XkG7fAKLL3sOq8M/dARi6zG0nwrEZT1lgLWQ2sF9lVdYvreeTcs3LvhuZki2ZJII8eoTvZMS+0D1/jTHsy5rV9Jf6f+Iw4qcxDCXKsyrr9WxVsYtZ/obiP0kgJh1axKZ4PO8Oiow7yOnqZx3zypL1u3G1vEi0kpqGLybK8KOUvkcdejIfYN0aDX0f7A7pfJSq
- MDL57xQ9
- tj3v5vsIhrK9Y4BPIF6yvqSIK6ZOeKNF989ao8Z1n1nx8nSYB2ePl45nHJu+p+aqK7uk2Y5d6/80M2I3Gw3H6UVjT2Z/CsIm5lfg5stw6AzweU+i62r/jTpdh1tsezXy31/z8iVWGA5G812RHUKrxdlkmVTbOeaDn65YuZ+4QUfSkN0eXp0PFtKmiRXv32L2OpX5Lar6TLeiJNG43CTWWbAetYFmd6J3zwYfl7NB1WB+gitqkyfXerNXRThXxY/XFRt/wkGibKz9BcvUVEqe/WPdNGZvUG7gmLuw1lqooRLjj6oQvy/CMAs7dGPLGt6PGNqVxlJWPIPIdqY/pCKxFoCCZJ90FuRKyoqLQWR6Kdbo7wHybOogRorMSADF+Py3rA8CtELBUlp8w7nH+wos22KGsRXNa8Sc9LGqN9JBl0qAqJETf6Lcltv/b2z2EpMvlSrOL/2+Y9WA5NTxKUXdnHMwJxCLHZjugGkmd1KuMn62xBE8we1NEasTORstwYkwKQBy9wwgCwEyKPTjlabpamfIxQTIEqrXhFNFZaa1DklnHKHo+xyElIUTs4pUSHg8dm2nHodmyF/eofqN276QxI/HHdNlQ1CetbdPJHBRUqF/kORjY4S6iSDl+xE/6B7XeNmr/A4VWcUNxHkCefXUOAT4Q/K8qffXlaNsCtC7Hnl8FrBwuFfAHlQ5ozpp+jv6dAhwq4SnmFxMGxrKdDqdHAsNrYZndUPCgcXipxRZXzVIqTnzJlo0e1lh3ZvsPPSNm+vTlHhq5URPoReRneUc/9cLPvEmbEJUAIqOOqc2vMDItQiXLtJco03/51lYPYdkFBJuhLnIqPa5CbkU=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7E37BA000F
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795616844-91581
+X-HE-Meta: U2FsdGVkX1/dToik2YEDeTpTipdQY//7Yrc0PRVmwJiZAsHP0SrgcbEBWK+GQyJd5wXs5BIk+/082CalDbE+L6bBXoe+oJu9VAdDSf8J4LzbjgvphEU3sqfEjRH1TJ2QzJybgneWGcWuvKrarPvxZ/yhD/0oZL0ckVmVtOBV1SBsN1pyIFnK1HubTUDehXamHOx0xv9sO9X4Y1gLZYbBKAXa8crUnpiQvDxAxAcASsgs0GUgV5uhhMv61hZQH1N2dld8MzNEcjWjcl2fYmh1sITfG7Q6WHzpXX+NLs5zkdXB571KaNSsUflcBz9Sij5O+lvEGdealpVMgGeMU0AauW/yYTZh7Yrdkr6lD13QCxbrTiOxfrFxHHcBP97KPmcOXO9GL5dxCeJw1Y/ZvaorLKf/SdWb5notAuNKMCUIyPeD9wqix02D+ZiqO7cDcb3haw2XDi/rDZE7KR2EIL+URADlia+wxmMOD2WxFBTIlVVm+gNt6ke22/yd5FCENE6dxBAHeFpsf1phWF5vOmqR3Jc38oODpyFOt1JjDV1fQmESG38skqstj1sh30uXIOfW4cRicqkSCQaQ3ZAcRykQ+XzTIDT6hABouSNnOcFTy0v9U5NTl9eZvIYgC9J8kyjbWpYlRA5LYjUfrvwBvUKmpczPYNk3trohjZvr91C6wYM0gn1krqYGXE7ZGbPgckXx6xOBKTMoFuI89W4fhNXJ5dHRl1QvGOgDZem98HomLZoSsJT+i4yj5X/cbxghyMa82IUVFWYcnJpYK8BosbFcBOie4NZM3vLgGhW/QInUvejaMH+mpq0IzRMzU81W1R+IkCK2yCaKFA2Qw8+pzbF+BUJl2y+nregfGI5gs4DDnQ93cuL804hYAFFG/ukLirboXg79D25XWepnbc7lp0xjWuDNpTgc6VQMxMk9eSuwU9o0d6cfIEzUoo827+E15qAD7MGvrji8mHhU0ltuylb
+ 6eYjOpUR
+ 0DFKckM6dD7UEFwTI2AmEv+leFwqXMiW8M6tu+NbGx0F/VJp+Scg8NGOfvaddcTXyrh9bxpHFiVjQsCtmaGiNTB1nqAqCHVwlAOBKfWAn/xuCsBPPeBeLAPrH9mxRtfxWrYJPaj5PxeqkRogZCpDpDjck63kh1cgwJJe5OhhWvI5h7L22Ng54jAhO67iPuwDoLMGovQ7tXKfxnORpCTEWF4vIZffpKaqolkjqEwAv8rsA3SDoEOgOTrekyc9YvdT0caYbnL2fdr7HaH+mJnWZS4i3J6ptyXm1UM0w0pKsYLQ0bjZ21GXeo07ZyzGPM9kEZghMjOLry4Y+SV5L3F9vGN8cRnYpNuC2gYnQ3Nyy+p86VhEfGT/+gUVtH3lS+gx+bhOL3Cd2HBTRI8BNyu4QNu1eVdwGrCE6uxEhXcHOdw1SLGfZCML+RVTd2ZQNbOV4qvZlYf9TPaZ1U4YnrAa/LYtsDOR4UYT+OgFlqlZoQ9bp7vBT4IMoMAGTNYaYihh1aL59nMpmIrwnGi6hm9My6i9ePc9tHy8laSDsyIpA6U6BTLKQL6CxenZX9WXZuMenKsHMhIoD4GFdmc415ilPzcbV336FNLl81ioP23EiOf56yQtLbKQW/zvfHB4DS3Vf/wAnnNRfc0Q41GKQp9gckDHVyzUuT5De9+ez1NRlGWhTtTdg/fv6tn1yWG+ysAiUcChKyG2R2x2UOUqVh8cMOscIaMbJqfbKHGyfYkivu2DSRKNoX0hipPUiaGY+qnWw1fGEAbWsNsJwF+jieWlct95T/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,25 +134,292 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 11:19:18AM +0100, David Hildenbrand (Arm) wrote:
-> > I don't think that is a good reason.  For file system backed VMAs we
-> > really need the pin to be able to do someting sane, DMA or not.
-> > 
-> >> 1) We fix all such cases now where unprivileged users can trigger this,
-> >>    converting to FOLL_PIN.
-> > 
-> > We need to, if not for this series then for all the other outstanding
-> > issues with GUP writes.
-> 
-> Cool, and I agree (that's why I placed it at 1).
-> 
-> But who is "we"? Because I recall that "we" wanted to do that a while ago.
-> 
-> (I won't be "we" ;) Pedro, can you take a look? I'm afraid the fuse thing might
-> be the harder nut to crack)
+On a hugetlbfs mount with both size= and a positive min_size=, a
+reservation that fails global accounting while another task releases
+pages on the same mount can leave the subpool short of its minimum
+reservations. On unmount the subpool then drops all min_hpages global
+reservations, more than it still holds, so HugePages_Rsvd underflows or
+another mapping silently loses its reservation.
 
-The collective of MM/FS integrity interested people (for which the
-recipient list is a good proxy) plus the maintainers of the code
-still writing through FOLL_GET.
+hugepage_subpool_get_pages() adds the whole request to
+spool->used_hpages before the caller has obtained global reservations or
+a folio. A concurrent hugepage_subpool_put_pages() compares this
+inflated used_hpages with min_hpages, skips refilling spool->rsv_hpages,
+and drops a global reservation instead. When the request then fails,
+hugetlb_reserve_pages() only subtracts the failed global portion from
+used_hpages, so the refill that should have happened is lost.
+
+When both max_hpages and a positive min_hpages are set, keep the portion
+of a request that still needs global backing in a new
+spool->pending_hpages counter until the caller commits or aborts it, as
+Karl Mehltretter suggested on the out_put_pages thread [1].
+hugepage_subpool_commit_pages() moves it to used_hpages once global
+accounting or folio allocation succeeds; if a concurrent put refilled
+rsv_hpages meanwhile, commit trims rsv_hpages to what the minimum still
+needs and returns the excess for the caller to drop from the global
+pool. On failure, hugetlb_reserve_pages() drops the pending count
+without touching rsv_hpages, avoiding any positive global adjustment on
+rollback. A request that overlaps such a release now fails if the global
+pool has no free page, as if it had run before the release. Mounts
+without both max_hpages and a positive min_hpages leave pending_hpages
+unused and return 0 from hugepage_subpool_commit_pages() without taking
+spool->lock.
+
+hugetlb_fix_reserve_counts() commits its page as well; if
+hugetlb_acct_memory() fails there but commit trimmed a refilled
+reservation, one trimmed reservation covers the dangling reserve map
+entry. The max_hpages check, hugetlbfs_statfs(), and subpool_is_free()
+count both used_hpages and pending_hpages, while minimum accounting in
+__hugepage_subpool_put_pages() only considers committed pages.
+
+Fixes: 1d3f9bb4c8af ("mm/hugetlb: restore failed global reservations to subpool")
+Link: https://lore.kernel.org/20260927170103.2381-1-kmehltretter@gmail.com [1]
+Suggested-by: Karl Mehltretter <kmehltretter@gmail.com>
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+---
+Applies on top of:
+https://lore.kernel.org/linux-mm/20261125-hugetlb-subpool-release-v1-1-7398c24d09b0@gmail.com/
+
+That patch is a runtime prerequisite (it closes the free_huge_folio()
+reserve-restoration window that commit trimming can otherwise hit), so
+please do not backport this to stable without it.
+
+Karl's idea in [1] of keeping global requests provisional until commit
+or abort fits this race well, so I went with that approach here. Karl,
+would appreciate it if you could take a look :)
+
+Note for the overlapping subpool work: for size= + min_size > 0 mounts,
+in-flight global charges now live in pending_hpages until commit. The
+pre-existing alloc_hugetlb_folio() failure leak (now in pending_hpages
+for those mounts) is left to the separate alloc-failure fix.
+
+Tests passed in x86_64 QEMU with KASAN, PROVE_LOCKING, DEBUG_VM and
+DEBUG_ATOMIC_SLEEP.
+---
+ fs/hugetlbfs/inode.c    |  3 +-
+ include/linux/hugetlb.h |  4 ++-
+ mm/hugetlb.c            | 96 ++++++++++++++++++++++++++++++++++++++++---------
+ 3 files changed, 85 insertions(+), 18 deletions(-)
+
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 4a92f31c88e1..a893ba76eab9 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -1138,7 +1138,8 @@ static int hugetlbfs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 			spin_lock_irq(&sbinfo->spool->lock);
+ 			buf->f_blocks = sbinfo->spool->max_hpages;
+ 			free_pages = sbinfo->spool->max_hpages
+-				- sbinfo->spool->used_hpages;
++				- sbinfo->spool->used_hpages
++				- sbinfo->spool->pending_hpages;
+ 			buf->f_bavail = buf->f_bfree = free_pages;
+ 			spin_unlock_irq(&sbinfo->spool->lock);
+ 		}
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 0d5414392d87..2fabc19e245a 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -39,8 +39,10 @@ struct hugepage_subpool {
+ 	spinlock_t lock;
+ 	long count;
+ 	long max_hpages;	/* Maximum huge pages or -1 if no maximum. */
+-	long used_hpages;	/* Used count against maximum, includes */
++	long used_hpages;	/* Committed count against maximum, includes */
+ 				/* both allocated and reserved pages. */
++	long pending_hpages;	/* In-flight global requests not yet */
++				/* committed to used_hpages. */
+ 	struct hstate *hstate;
+ 	long min_hpages;	/* Minimum huge pages or -1 if no minimum. */
+ 	long rsv_hpages;	/* Pages reserved against global pool to */
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 05c34ca44a15..a2140a0e7615 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -151,7 +151,7 @@ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+ 	if (spool->count)
+ 		return false;
+ 	if (spool->max_hpages != -1)
+-		return spool->used_hpages == 0;
++		return !spool->used_hpages && !spool->pending_hpages;
+ 	if (spool->min_hpages != -1)
+ 		return spool->rsv_hpages == spool->min_hpages;
+ 
+@@ -219,7 +219,10 @@ void hugepage_put_subpool(struct hugepage_subpool *spool)
+  * request.  Otherwise, return the number of pages by which the
+  * global pools must be adjusted (upward).  The returned value may
+  * only be different than the passed value (delta) in the case where
+- * a subpool minimum size must be maintained.
++ * a subpool minimum size must be maintained.  When both max_hpages and a
++ * positive min_hpages are set, pages counted in a positive return value
++ * stay in pending_hpages until the caller commits them with
++ * hugepage_subpool_commit_pages() or drops them on failure.
+  */
+ static long hugepage_subpool_get_pages(struct hugepage_subpool *spool,
+ 				      long delta)
+@@ -231,13 +234,11 @@ static long hugepage_subpool_get_pages(struct hugepage_subpool *spool,
+ 
+ 	spin_lock_irq(&spool->lock);
+ 
+-	if (spool->max_hpages != -1) {		/* maximum size accounting */
+-		if ((spool->used_hpages + delta) <= spool->max_hpages)
+-			spool->used_hpages += delta;
+-		else {
+-			ret = -ENOMEM;
+-			goto unlock_ret;
+-		}
++	if (spool->max_hpages != -1 &&
++	    (spool->used_hpages + spool->pending_hpages + delta) >
++	    spool->max_hpages) {
++		ret = -ENOMEM;
++		goto unlock_ret;
+ 	}
+ 
+ 	/* minimum size accounting */
+@@ -255,11 +256,52 @@ static long hugepage_subpool_get_pages(struct hugepage_subpool *spool,
+ 		}
+ 	}
+ 
++	if (spool->max_hpages != -1) {
++		if (spool->min_hpages > 0) {
++			spool->used_hpages += delta - ret;
++			spool->pending_hpages += ret;
++		} else {
++			spool->used_hpages += delta;
++		}
++	}
++
+ unlock_ret:
+ 	spin_unlock_irq(&spool->lock);
+ 	return ret;
+ }
+ 
++/*
++ * Commit pending pages once the global pool backs them.  Return the number of
++ * subpool reservations that are no longer needed; the caller must drop them
++ * from the global pool.
++ */
++static long hugepage_subpool_commit_pages(struct hugepage_subpool *spool,
++					  long delta)
++{
++	long ret = 0;
++	unsigned long flags;
++
++	if (!spool || !delta || spool->max_hpages == -1 ||
++	    spool->min_hpages <= 0)
++		return 0;
++
++	spin_lock_irqsave(&spool->lock, flags);
++	spool->pending_hpages -= delta;
++	spool->used_hpages += delta;
++
++	if (spool->rsv_hpages) {
++		long needed = max(0L, spool->min_hpages - spool->used_hpages);
++
++		if (spool->rsv_hpages > needed) {
++			ret = spool->rsv_hpages - needed;
++			spool->rsv_hpages = needed;
++		}
++	}
++	spin_unlock_irqrestore(&spool->lock, flags);
++
++	return ret;
++}
++
+ /*
+  * Subpool accounting for freeing and unreserving pages.
+  * Return the number of global page reservations that must be dropped.
+@@ -1038,8 +1080,17 @@ void hugetlb_fix_reserve_counts(struct inode *inode)
+ 	if (rsv_adjust > 0) {
+ 		struct hstate *h = hstate_inode(inode);
+ 
+-		if (!hugetlb_acct_memory(h, 1))
++		reserved = !hugetlb_acct_memory(h, 1);
++		rsv_adjust = hugepage_subpool_commit_pages(spool, 1);
++		if (!reserved && rsv_adjust) {
++			/*
++			 * One trimmed subpool reservation covers this entry;
++			 * drop any remaining excess from the global pool.
++			 */
+ 			reserved = true;
++			rsv_adjust--;
++		}
++		hugetlb_acct_memory(h, -rsv_adjust);
+ 	} else if (!rsv_adjust) {
+ 		reserved = true;
+ 	}
+@@ -3253,6 +3304,12 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		goto out_subpool_put;
+ 	}
+ 
++	if (gbl_chg) {
++		long rsv_adjust = hugepage_subpool_commit_pages(spool, gbl_chg);
++
++		hugetlb_acct_memory(h, -rsv_adjust);
++	}
++
+ 	hugetlb_set_folio_subpool(folio, spool);
+ 
+ 	if (map_chg != MAP_CHG_ENFORCED) {
+@@ -6944,7 +7001,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		struct vm_area_struct *vma,
+ 		vma_flags_t vma_flags)
+ {
+-	long chg = -1, add = -1, spool_resv, gbl_resv;
++	long chg = -1, add = -1, spool_resv, gbl_resv, rsv_adjust;
+ 	struct hstate *h = hstate_inode(inode);
+ 	struct hugepage_subpool *spool = subpool_inode(inode);
+ 	struct resv_map *resv_map;
+@@ -7058,7 +7115,10 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 			hugetlb_acct_memory(h, -gbl_reserve);
+ 			err = add;
+ 			goto out_put_pages;
+-		} else if (unlikely(chg > add)) {
++		}
++		rsv_adjust = hugepage_subpool_commit_pages(spool, gbl_reserve);
++		hugetlb_acct_memory(h, -rsv_adjust);
++		if (unlikely(chg > add)) {
+ 			/*
+ 			 * pages in this range were added to the reserve
+ 			 * map between region_chg and region_add.  This
+@@ -7066,7 +7126,6 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 			 * the subpool and reserve counts modified above
+ 			 * based on the difference.
+ 			 */
+-			long rsv_adjust;
+ 
+ 			/*
+ 			 * hugetlb_cgroup_uncharge_cgroup_rsvd() will put the
+@@ -7088,17 +7147,22 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 			 */
+ 			hugetlb_cgroup_put_rsvd_cgroup(h_cg);
+ 		}
++	} else {
++		rsv_adjust = hugepage_subpool_commit_pages(spool, gbl_reserve);
++		hugetlb_acct_memory(h, -rsv_adjust);
+ 	}
+ 	return chg;
+ 
+ out_put_pages:
+ 	spool_resv = chg - gbl_reserve;
+-	/* Restore used_hpages for pages that failed global reservation */
+-	if (gbl_reserve && spool) {
++	/* Restore subpool accounting for pages that failed global reservation */
++	if (gbl_reserve && spool && spool->max_hpages != -1) {
+ 		unsigned long flags;
+ 
+ 		spin_lock_irqsave(&spool->lock, flags);
+-		if (spool->max_hpages != -1)
++		if (spool->min_hpages > 0)
++			spool->pending_hpages -= gbl_reserve;
++		else
+ 			spool->used_hpages -= gbl_reserve;
+ 		unlock_or_release_subpool(spool, flags);
+ 	}
+
+---
+base-commit: c8117bff684306f5c1f959d055cc2b24dd67b1eb
+change-id: 20261126-hugetlb-subpool-pending-290c9ca77fdd
+prerequisite-change-id: 20261125-hugetlb-subpool-release-ba8e9e7005dd:v1
+prerequisite-patch-id: 4e904ec452de2249cd958c99e9801fdd211f2d20
 
 
