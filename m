@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A575606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D78B606A32D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XS55ov+z
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b9nyDQ2J
 Received: by kanga.kvack.org (Postfix)
-	id 44C836B0AFC; Wed, 25 Nov 2026 17:34:50 -0500 (EST)
+	id 908076B0AFD; Wed, 25 Nov 2026 17:35:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FC296B0AFD; Wed, 25 Nov 2026 17:34:50 -0500 (EST)
+	id 8DEB96B0AFF; Wed, 25 Nov 2026 17:35:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C48F6B0AFE; Wed, 25 Nov 2026 17:34:50 -0500 (EST)
+	id 7F5D16B0B00; Wed, 25 Nov 2026 17:35:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0442D6B0AFC
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:34:49 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82F8C160152
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:34:49 +0000 (UTC)
-X-FDA: 85475097498.16.5399A78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AC883140007
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:34:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XS55ov+z;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 54D4C6B0AFD
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:35:05 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DC7E48014A
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:35:04 +0000 (UTC)
+X-FDA: 85475098128.24.ADB72FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2525540010
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:35:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b9nyDQ2J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646087;
-	b=Py143YEV2rCwy5LhrSpyGy+Z5HHIUY10HuVgdrRDx70Y8zNbtmqHUZA8YRR1zg997YvY/6
-	NhCglr/LgFQknhkYEm2zcv02ulY4oAD2FkNMmceteFRs1QHOA4OzLcru0ShKis6wl1kbm9
-	h7Kj6aKalTltiLwGzmmTuducjkm46fc=
+	t=1795646103;
+	b=C61sKA2BcNlyM16TYw6boCbNp1tp52nmPtZOqpSYEMa03x8KJ/FLBw8pgisXN05uVFLcuu
+	tiV0KtdtKA39y7TpCMhufxuijml2NmM3iAAZ669GHelct74Acz712pzFglTkV99UV/hYd6
+	9X39S4Ngd215p+rAW0Qb2hrSsnrkNyc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646087;
+	s=arc-20220608; t=1795646103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+7eQOKRTJo3SLTBv1Jd05JmL/1qkaOFv7kkY51zdPi8=;
-	b=a9Xn/KVUVmrgcxx4dE9mHdDb98LDgrYRMxyNVxxdQyeQL15W9f4Go+Y4UnGkX0Rp4Tx2Sz
-	1ijumYRjugsso/N5rdkh76hBE2WOQsDlK3Mg/UvW2YvkJWaC6RqjsTaf4nNyNGnZKFvbyg
-	aSotxbG5zswPSYfc5T9kC347BTsGac4=
+	bh=rfL5x6QN4uMtbxP3f8hbUSFP2Tb3L1Ge5tQU0VKhPiU=;
+	b=to/nBoqS2jJnUa1vIed1RGFsEYg+LbpVr7LpsnSZtsN6eYLdGOR52qNcY7vQHtv5XLv+yA
+	W/ul98CExGpk00I3Ir7KVZqZ8Or3Q30oaZHFdUk+Zug6JOvSWnWYO63Pu47pD/xWprT+SV
+	BPITaYIwyq6HLtb5VoXs+wMy+m9ROlE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XS55ov+z;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b9nyDQ2J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D1E1D43E73;
-	Wed, 25 Nov 2026 22:34:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2211F000E6;
-	Wed, 25 Nov 2026 22:34:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A5800623BA;
+	Wed, 25 Nov 2026 22:35:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E2E1F000D8;
+	Wed, 25 Nov 2026 22:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646086;
-	bh=+7eQOKRTJo3SLTBv1Jd05JmL/1qkaOFv7kkY51zdPi8=;
+	s=k20260515; t=1795646102;
+	bh=rfL5x6QN4uMtbxP3f8hbUSFP2Tb3L1Ge5tQU0VKhPiU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=XS55ov+zqWoVcnX4hPssMBTYab88z/dEVQhSp3UYfJX8JimTbKs5+14jIjxvktxOv
-	 CmlOhqWq9d1GIPrDcgOgRzNHTg8A3LxMHspSf/h5cRwVX6dtsWLHSuoOpPTMx8BvPT
-	 oq2zzO3tNyTrWvrlilSG99kw0BF0O/NLxKEbdUCu1ilDUwNsfHqdzGfK/A5S2m421W
-	 T2sXkbyk++z1LuqN9xr2ENeAhfGOHOfH9RHjWJR/foZBRcfqGR5TYBkVN9XlqsMIN5
-	 cdGugAAMR9VWpn0gbVllfwqz2SQq8YbbzPeRJjEEOnozWftq+AqrVFTPeVxGLKQ4RZ
-	 NW+RVHKlnx0SA==
+	b=b9nyDQ2J/RIU42aEm7BmZJbfvXcRFNipTjhfwdSgRn0KzkRLJdvdxcUi9aMl1YWyy
+	 TMHtFurAtb3rTwa/SqNviyHbah/r8l0b9Jj7s43SnuUcATIvotOlhb91ZJGwL1W9M8
+	 Ip9bBn89Ra7CmDp/hoab/W4xrVJS6qW4XbFBQMct+5eso2M/+mWCzUfSUjhaX79JVK
+	 h8DYuAWlix+O3sgFNPzVew0i8bcRct4KI0fiYeEbJ0JQH3SstmPi8gQte0qYzfsMYP
+	 EcT6sgUk9AqPVGaMPCTh+LNfFYpAIKt90ZC/1tdl47XLlkSKII75q4vHiiMfUpzzGz
+	 qGK/u2K08DVjg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 25 Nov 2026 23:33:03 +0100
-Subject: [PATCH 05/21] mm/hugetlb: free surplus folios of other nodes on
- free
+Date: Wed, 25 Nov 2026 23:33:04 +0100
+Subject: [PATCH 06/21] hugetlbfs: fix deadlock between hole punching and
+ memory failure
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-hugetlb_fixes_2-v1-5-db27fd2f71a8@kernel.org>
+Message-Id: <20261125-hugetlb_fixes_2-v1-6-db27fd2f71a8@kernel.org>
 References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 In-Reply-To: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -109,29 +109,29 @@ To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>, 
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
- Chris Mason <mason@kernel.org>
+ "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4706; i=david@kernel.org;
- h=from:subject:message-id; bh=TlH3URFqdFZZwxSAcYE/TmvkYUeArrst3wv1uC1N/aE=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1QuVaQ35Nxa47v6yKM3ry7+KD2/+/fnD4kF0r/sc
- mRls38od5SyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjAR86sM/8uXxx5IUmJRTX7w
- t1Xwv872I9vuthqXPZlyhuetpMv0Fc8YGV5vluE/H3auWvxGi+Gfnh95bAW7+B4bmR1iXz2DY6I
- jOxMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5106; i=david@kernel.org;
+ h=from:subject:message-id; bh=8Ks2EUC02lGqJ75Fw8MnkFmyG7Ap+d4rJhnmmYI1Rhc=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1RcNk/jPB8lsK6CY6/E85woho3/zc0WJMVvMX3g7
+ /D7xfopHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExE8jzDf8fJ9sIrVruEJDzt
+ lPhmECz0s2C7kZcZi/S5vZP+qO9hKWdkeJb0ILqSp4Zr/3OtJBHnRRb9h9SeSs/Vvmt0Q++LUfk
+ eFgA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AC883140007
-X-Rspam-User:
-X-Stat-Signature: 1teb3hbrteoy7rjq53rq6gm49iudd4ar
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2525540010
+X-Stat-Signature: qfecfxh63artmkpnqm489rt85k9y61z5
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795646087-486694
-X-HE-Meta: U2FsdGVkX18GjeiXx0gepxfwcBYjzghtDOop3ijpbXY70lzxy/aDV9iBamKwkHJzqQ7JPlwK3ws+XNAj3sgh15GG6g8LMRiZc5hiHdbfGSroei+z+kwZgqsjKM57CPYnYoEDsZrXK5HI3/BPeMf8q1d8EfyPlQFYVk43/EbniLuPFfTOIXgJSn8lu5/+ESzQZ8fgIbMciqfmIOr4+QQ4nZQCJhzoBIR6DYbnyqLVATqmnikhOcS+FwWYFK8sTs++6v7uZI5AX6wOw9NyFaVKIXiIMtcsq+7ZQHYDhGuLF0HcY41TJEh3sV+brfbMCOgWMwUqWaXmwwCM3Mz+KP65Cdb+wKu12s7YLHxYnokOuxbjZFEXzkBBHxZBr0U/VHBNmVIUw6233vWm+GQgo646BOsRgJlZ+RKzxCqq11rVsjnUKFTrDap+JHbvluWzGiNoSlHq1Z2ARKNN3SIOk3aK0paRhQ6aYoeEDyTSPfPBdtTUxJFHnwoweAhDwVjEL/RlhZP22ZXrBLFGybB0N6aVncVVmzjiKLC7sEtkMByPTQ5JUncVUq2dghCIeWyE4aOzJf+QtjgpOhyHkO9CgP2zovnvhl5srv8JMXrHlck4qg8y1mLnM5YMw2hubtJuZoZBWS/iEIFkPCDa32SDUYB5tOgcQEKdY52NKviwOSg6BBpnA51a5e1/tn9JPnQfigW/TnF8nLmSy5hqAG+96+pgIFz94BeqUja1nPkk7LiCq7aeN6FgSMxMAs6Ubb1f+PTDoSi7id33KOj/4vg5etHRRr8O7iPNKfl/IunEwijkL2ib2yHkm8DjZyXCwagwig3gn0kptRvy5/89ct4YivNpcbr11A0/l1OjmZuNxu1eHH+E6eeZWIaAnE8PiUzrlXRlFvqvOsGiecHd+KetWUN2FEAc9X0QAGqmnHM3/tmT2qGAC8zrboEaial5e+jB2vd20Gf4O+amVawhd9IAdWH
- Fu5McLYK
- YhCg5iCuPCOwbUWJSfIabLmiTIUudSFoBEE8O91dwH7b0GvVi6bvWEdAu+PH3XxA/bIhCf5v5drdsOCY6lAi6uB6twmRT1v+I0HL/h0Y8YyQJN71QbQtzK1x58NCQ0/DZpRM7Hl0fF7wDfYvsHOxWAiA13atRupCHPM60IyJw6MjaEOB+7hYAAGHfQK40D9QtlvS9C8J2CPCGLLg0Q7Rq/BVtMlxSxjeAjuf67+3kVUDbP4jq3hPVrSEsuHQOi0Gyp8rhWF4ZP69NlBqEEOLGwIauOvLI+eBtOGvBTYxLn+4L4RTwLW/G+Dn+snnNSfujtjn5OSUXk+QnQPWC2AQypygfR+KJtwwfxWsZe4k79CtT2+mvJkyr1A6DH0cKhaQBOLEWJJlsXpVoYkBBBaPCoPIe3BVmn3lb0PBbJ6j1g3dn9U65jTwUA7AP+tqHiYL3aLl/jBuWQz7BUf29m3HmDsWJ87xXLfQ7SOilP0MFJuLAj289UCyAj2qHwlrozIdQO8kYl1/PLsB0Uy78Z9JyyAtbCnhCaOTla7sQyL3G4lxI1OQ=
+X-Rspam-User:
+X-HE-Tag: 1795646102-45894
+X-HE-Meta: U2FsdGVkX19XzTyyl/U8r8UFwrDuzEKF9Ap48nPMYNYDoWtCGxVAywZ13Bln5ZasV6ngkjT8ah2VbxFhLwc/ja0TEx6vwev6TnjxK6ksQ84xvcRWw71h3J6c6UW4sAKz1byei0ICEi5T6BXio13mB04pLxzoIYcIijOgTcBi6CdVz8QH+WE2Kgx3K6T94KBf2kfVhrmmIiPaB7Hv+SG4KPugwoHmT3dex7CbBtE2mGSEl7tp87fNmGe9xkxVlgOmtlTV/WGgwcLvdZ8oi1KBZv4WMdvmrBHw7uAvJn/Z3u/O6HzdMaSniYJELPwtyUwOwZHw+JnzhFb1CRsYi3tQbO9wrYYfoN0hKznr3hVOGXhj79DtX7/viDSw7tYcX2NLL0YVHU4aroCPfXn3TOgdyJtP3EjgGmikZYO3dVO1Vkjny8Yh3UhvT3A7AfI0cdQHkBI/4uTPLXvV0rl+ysXA+IOFKrh2a6+Buk+3LQBSA3Uu7wXTIoOqRYS6Zgb5l8/+sBD5rlp0R7ZIPV+nP4J4UExBD6DgxnT16DmCHwozdMNJs0rnMq6nh6JBwRnUjMZ5kLeCzY1z5hPTkRRJbm7jMJPNQU1zWK4H1Rn+Jeex83XcStoQtkJgqWVx+1fKOqU8ZNDqidRdE+qTeCx/e22QbJYi590dd5DS+p3cNHbv72suEBDeq5yznoAMs7DFd22te/zOeuiuHPBf6RSSv4ke073aE8tpeqLtxciAFISryRkd1hjjsYHRawowL21vho92rEc8RQo+xH8CYyOWFbhuv9HAlvGVqAWerUW3xDeCDoUwzGcgDclRGR7sCxB7uB5qDcMVc+9dTcroz4xDsj6YFiD23kmkoJDSZTrm252bZKx86Bcwo7+6y0rwjL439MefQ7RSbMjtgXHzJ4swnYlAxOqfSEqXfOTh507QvcqJe0I/OFaiMxglBbl9fb+ZuBfvZpwk4ISfLb1vtMrM2rh
+ E2abDnGY
+ WAHONXU0BlfbpOtZ5VgzNEJT0HgxbpAYyR1QYbzXuCjgSQu0kHEPOOdsrF3zYme7klalOlgAq3WDgY+iJvJtxPgwIXfxO2X47GnSis+mkXuePdMO3tW++sfcc2ECcmCHqdcThZTZ4iGq6BxoI0pZClWlW5+rmVMcRV4Q8aYhZqdwdWoH2lTk8oqxh5hiqEjVMJMqzVEOE+9LyCOdFqjKsBWF72jhw6qcF3YtY8AJGCk99XjzF3mVXdEbXxuPl8wlagixUDoNIn2150MKY1N3WPghvYDTLO1++GaypqezLTFOzei5nkJiX2s+SWWySQDwuG17wjWT2y7r4d7X+RND8y3qF054RGqhbHS7ZeQx05aplRZw3IMBWrABHvoneP09FQF63D5XQGcwtj5wssNYQAs9f2pLmwd+tOxKCY9/eup9yx4tNqBRzXhfV+SMZd9yNcKZelzC/xqRdcuIYfuuwZJDQ1F5lcc6omQoPg8FVUOXNp743idtvk4uhtcPFQuaVofJyqsCvQSjLD35ehdgsdbQEVMBehBa6mmfmFB+fO23VP8k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,121 +140,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Surplus hugetlb folios are accounted per node, but reservations are
-global. When free_huge_folio() frees a hugetlb folio whose node doesn't
-have any surplus folios, we currently keep it as a free hugetlb folio.
+From: Chris Mason <mason@kernel.org>
 
-However, we might then have surplus folios on other nodes that are no
-longer required for the global reservations.
+Punching a hole that isn't aligned to the huge page size can deadlock
+against memory_failure() on a mapped folio at the edge of the hole.
 
-This can be reproduced with two NUMA nodes, nr_hugepages=1 on node 0 and
-nr_overcommit_hugepages=1:
+hugetlbfs_punch_hole() locks and zeroes the partial folios with
+i_mmap_rwsem held for write, following the hugetlbfs locking order
+documented in mm/rmap.c: i_mmap_rwsem before the folio lock.
 
- (1) Allocate the single hugetlb folio on node 0 from the pool.
- (2) With MPOL_BIND to node 1, mmap(MAP_SHARED) a hugetlb memfd that
-     needs a single folio. This will reserve + allocate a surplus folio
-     on node 1.
- (3) Free the folio from (1).
- (4) With MPOL_BIND to node 0, fault in the folio of the memfd, which
-     consumes the reservation and allocates node 0's free folio, and
-     immediately punch a hole, freeing the folio without restoring the
-     reservation. Node 0 has no surplus folios, so the folio is kept.
+However, try_memory_failure_hugetlb() locks the folio first, and then
+collects the processes to kill under i_mmap_rwsem:
 
-The pool ends up with a free surplus folio on node 1 that nobody
-reserved:
+    hugetlbfs_punch_hole()              try_memory_failure_hugetlb()
+    ======================              ============================
+    i_mmap_lock_write()
+                                        folio_lock()
+    hugetlbfs_zero_partial_page()       hwpoison_user_mappings()
+      filemap_lock_hugetlb_folio()        collect_procs_file()
+        waits for the folio lock            i_mmap_lock_read()
+                                              waits for the writer
 
-  HugePages_Total:       2
-  HugePages_Free:        2
-  HugePages_Rsvd:        0
-  HugePages_Surp:        1
+In fact, the documentation is outdated: hugetlbfs_punch_hole() is the
+*only* one that still takes i_mmap_rwsem before the folio lock. All
+other scenarios always take the folio lock before the i_mmap_rwsem.
 
-Let's fix it by freeing a surplus folio of another node when
-free_huge_folio() keeps a folio whose node has no surplus folios, using
-the same rule as for the folio's own node: the free folios cover all
-reservations without it.
+Only memory failure can deadlock with the hole punch:
 
-With this fix, the surplus folio is already freed in (3), as the two
-free folios then exceed the single reservation, and we correctly end up
-with a single free folio on node 0 and no surplus folios.
+* truncation and hole punching of full folios are serialized against it
+  through the inode lock
+* unmap_ref_private() holds the lock of an anon folio, not of a page
+  cache folio that the hole punch zeroes
+* migration only tries to take the i_mmap_rwsem.
 
-Note that the freed surplus folio might have been required by a task
-that was bound to that node. But we don't care about that: reservations
-are inherently not NUMA aware, and anybody who needs guarantees on
-specific nodes has to preallocate, like QEMU does, for example.
+There is no need to zero the partial folios under i_mmap_rwsem. The lock
+only protects the VMA tree and PMD table sharing, nothing about zeroing;
+the inode lock and the folio lock are sufficient.
 
-This has low urgency.
+Let's fix it by only holding i_mmap_rwsem while unmapping the full
+folios of the hole.
 
-Fixes: 7893d1d505d5 ("hugetlb: Try to grow hugetlb pool for MAP_PRIVATE mappings")
+Update the documented locking order in mm/rmap.c and the function
+comment above hugetlb_folio_mapping_lock_write().
+hugetlb_folio_mapping_lock_write() could now take the lock
+unconditionally, but we leave that for a separate change.
+
+The order of the folio lock and i_mmap_rwsem now matches the one for
+other folios, which is nice.
+
+This has low urgency, as the race shouldn't really happen all that often
+in practice (never seen).
+
+Fixes: 68d32527d340 ("hugetlbfs: zero partial pages during fallocate hole punch")
 Cc: <stable@vger.kernel.org>
-Reported-by: Chris Mason <mason@kernel.org>
+Signed-off-by: Chris Mason <mason@kernel.org>
+[ david: adjust comment and description ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ fs/hugetlbfs/inode.c | 6 ++----
+ mm/hugetlb.c         | 3 +--
+ mm/rmap.c            | 4 ++--
+ 3 files changed, 5 insertions(+), 8 deletions(-)
 
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 4a92f31c88e1a..2e8672ae2fd52 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -684,8 +684,6 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ 		return -EPERM;
+ 	}
+ 
+-	i_mmap_lock_write(mapping);
+-
+ 	/* If range starts before first full page, zero partial page. */
+ 	if (offset < hole_start)
+ 		hugetlbfs_zero_partial_page(h, mapping,
+@@ -693,10 +691,12 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ 
+ 	/* Unmap users of full pages in the hole. */
+ 	if (hole_end > hole_start) {
++		i_mmap_lock_write(mapping);
+ 		if (mapping_mapped(mapping))
+ 			hugetlb_vmdelete_list(mapping,
+ 					      hole_start >> PAGE_SHIFT,
+ 					      hole_end >> PAGE_SHIFT, 0);
++		i_mmap_unlock_write(mapping);
+ 	}
+ 
+ 	/* If range extends beyond last full page, zero partial page. */
+@@ -704,8 +704,6 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ 		hugetlbfs_zero_partial_page(h, mapping,
+ 				hole_end, offset + len);
+ 
+-	i_mmap_unlock_write(mapping);
+-
+ 	/* Remove full pages from the file. */
+ 	if (hole_end > hole_start)
+ 		remove_inode_hugepages(inode, hole_start, hole_end);
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c67f9bc3fa3bc..0f3db932266d7 100644
+index 0f3db932266d7..befa2670cb03f 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -142,6 +142,8 @@ static void hugetlb_unmap_range(struct mmu_gather *tlb,
- 				unsigned long end, struct folio *folio,
- 				zap_flags_t zap_flags);
- static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
-+static struct folio *remove_pool_hugetlb_folio(struct hstate *h,
-+		nodemask_t *nodes_allowed, bool acct_surplus);
- 
- static inline bool subpool_is_free(struct hugepage_subpool *spool)
+@@ -1871,8 +1871,7 @@ void init_new_hugetlb_folio(struct folio *folio)
+  * Find and lock address space (mapping) in write mode.
+  *
+  * Upon entry, the folio is locked which means that folio_mapping() is
+- * stable.  Due to locking order, we can only trylock_write.  If we can
+- * not get the lock, simply return NULL to caller.
++ * stable. If we cannot get the lock immediately, we simply return NULL.
+  */
+ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
  {
-@@ -1760,6 +1762,7 @@ void free_huge_folio(struct folio *folio)
- 	struct hstate *h = folio_hstate(folio);
- 	int nid = folio_nid(folio);
- 	struct hugepage_subpool *spool = hugetlb_folio_subpool(folio);
-+	struct folio *surplus_folio = NULL;
- 	bool restore_reserve;
- 	unsigned long flags;
+diff --git a/mm/rmap.c b/mm/rmap.c
+index fe354fa6cc43a..f35b671d26514 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -49,8 +49,8 @@
+  *   hugetlb_fault_mutex (hugetlbfs specific page fault mutex)
+  *     vma_lock (hugetlb specific lock for pmd_sharing)
+  *       mapping->invalidate_lock (when allocating page cache folios)
+- *         mapping->i_mmap_rwsem (also used for hugetlb pmd sharing)
+- *           folio_lock
++ *         folio_lock
++ *           mapping->i_mmap_rwsem (also used for hugetlb pmd sharing)
+  */
  
-@@ -1808,19 +1811,35 @@ void free_huge_folio(struct folio *folio)
- 		folio_clear_hugetlb_temporary(folio);
- 		spin_unlock_irqrestore(&hugetlb_lock, flags);
- 		update_and_free_hugetlb_folio(h, folio, true);
-+		return;
- 	} else if (h->surplus_huge_pages_node[nid] &&
- 		   h->free_huge_pages >= h->resv_huge_pages) {
- 		/* Free this surplus folio that is not required globally. */
- 		remove_hugetlb_folio(h, folio, true);
- 		spin_unlock_irqrestore(&hugetlb_lock, flags);
- 		update_and_free_hugetlb_folio(h, folio, true);
--	} else {
--		mod_node_page_state(folio_pgdat(folio), NR_HUGETLB,
--				    -(long)pages_per_huge_page(h));
--		arch_clear_hugetlb_flags(folio);
--		enqueue_hugetlb_folio(h, folio);
--		spin_unlock_irqrestore(&hugetlb_lock, flags);
-+		return;
- 	}
-+
-+	mod_node_page_state(folio_pgdat(folio), NR_HUGETLB,
-+			    -(long)pages_per_huge_page(h));
-+	arch_clear_hugetlb_flags(folio);
-+	enqueue_hugetlb_folio(h, folio);
-+
-+	/*
-+	 * This is not a surplus folio on this node, but we might have surplus
-+	 * folios on other nodes that are no longer required, as reservations
-+	 * are global and surplus folios are per node. So free another folio
-+	 * instead.
-+	 */
-+	if (h->surplus_huge_pages &&
-+	    h->free_huge_pages > h->resv_huge_pages)
-+		surplus_folio = remove_pool_hugetlb_folio(h, &node_states[N_MEMORY],
-+							  /* acct_surplus= */ true);
-+	spin_unlock_irqrestore(&hugetlb_lock, flags);
-+	/* We might be in atomic context, but freeing might need vmemmap pages. */
-+	if (surplus_folio)
-+		update_and_free_hugetlb_folio(h, surplus_folio, true);
- }
- 
- /*
+ #include <linux/mm.h>
 
 -- 
 2.56.1
