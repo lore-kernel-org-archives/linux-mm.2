@@ -1,90 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E202606A335
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFE9606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 10:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dPXfLhRl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kv3sEfb3
 Received: by kanga.kvack.org (Postfix)
-	id 343AF6B06A2; Wed, 25 Nov 2026 05:28:12 -0500 (EST)
+	id 31F7D6B0996; Wed, 25 Nov 2026 05:29:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CCE16B064A; Wed, 25 Nov 2026 05:28:12 -0500 (EST)
+	id 2A8B16B09A1; Wed, 25 Nov 2026 05:29:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16E916B0613; Wed, 25 Nov 2026 05:28:12 -0500 (EST)
+	id 0FE336B09A2; Wed, 25 Nov 2026 05:29:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1E866B099D
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:28:11 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 52E8E1A0D71
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:28:11 +0000 (UTC)
-X-FDA: 85473266382.10.F84F69E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D74316B0996
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 05:29:56 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62601140B5E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:29:56 +0000 (UTC)
+X-FDA: 85473270792.18.8861D0F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 788C7A000A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:28:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dPXfLhRl;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 87FB640004
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 10:29:54 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kv3sEfb3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795602489;
-	b=NfebJzP0vrbkFYiiFuHocC9s+TcvzHOvNDbuIkwrWIclB7tQZ4cJgnshy/ZDuep4Vhb30q
-	TuIWITWdrm35zDB14Q6kFUzXjDewhtT+b5dXUbqDu6/Qgv0u+BLlGhud26NNmGT+5HYmqj
-	FK5h5BsVIWsL+RQ+6j0ggjy25NONk2Q=
+	t=1795602594;
+	b=saUMCl8xrNsmkNAzi/46YcsLOadzp8vaOBGIVSotDQo7f/DZDNCIQUpFI0wQtDaKtovSMW
+	WJCTxviHXFAWIYBfXhumVsxrBsTnapb2u10k5ogtJjQyodZ7Mym3hMUVQPEZpfV08gVCim
+	ySxqrsvufYmpK4mUgqpBeKBBpCeux5k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795602489;
+	s=arc-20220608; t=1795602594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MGVz8MkfrWT99NOgoSClXzB3TiqbC7fJ6Ti/DWb6XV8=;
-	b=l+Xr5hkMCjIGGZ8OLBOxK57kxsZAxw8LaASRSsjP+z1v/m3dCvL0St+ViDi6vPhzVPy7xa
-	UumxN8LfgWqcA/hBIjmzB4b3wc4IUpcpg2Cr16B95wGI1Eckb46I63tKuhFUgIotKNWC8P
-	2Dwlqsz7nCFMBW8uzNjct7p8IzoEdhA=
+	bh=cV15oLjwMNgk/g1Q+nr1ktVJ0SDw2D1b5XtLlmxbxaM=;
+	b=WWPB2eiKbEYblpeIOfD+w1pqNBr22HtN54W6NYnm1BIa5CVgAlJZSRs7vOlKQiOA3mBU1S
+	gdbqePShtYXm45RdVc3+uLlNRWWejpUzkkulmOcz9CAm1XEGW9UBcEvfdLHLUdYu8Hd/N9
+	ddyI50ug7amgymu+2WkU0Wm0nq2l/kc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dPXfLhRl;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kv3sEfb3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A4294137A;
-	Wed, 25 Nov 2026 10:28:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5B21F000CA;
-	Wed, 25 Nov 2026 10:28:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B33D843215;
+	Wed, 25 Nov 2026 10:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC961F000C0;
+	Wed, 25 Nov 2026 10:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795602488;
-	bh=MGVz8MkfrWT99NOgoSClXzB3TiqbC7fJ6Ti/DWb6XV8=;
+	s=k20260515; t=1795602593;
+	bh=cV15oLjwMNgk/g1Q+nr1ktVJ0SDw2D1b5XtLlmxbxaM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dPXfLhRlNX3C47bTvyfqDSPoT+ngQnO1ogDDwToQbuHwgruya++gG0PxLaInNTGUM
-	 lYbCZk+rU0bcihXPKtTnde6wbQxpNGOVLAuh0Ve7aATx9pvU+BvWjX0vBNy9ufMptf
-	 FDPpZvPelhxf5xOW2jsfIZiVFTvzxBdSJVrHrfV9I7HAYijci6NweyiBxDvExL2uzG
-	 A6NiPTZpI0m8RuK2U7tC7M0RIaITOozt+dduoxm6wjf6pVOG681AQLd5KAWL9KqSnF
-	 bUCuMIUsrByWE+o65RckiYhXigGW4FiBeRcpsjHz1kesmIEAC0fCAflmlqRm5yz2Aj
-	 Zsevq5p/BAYsg==
-Message-ID: <83953464-5b75-456a-abd0-9c4b4b82a481@kernel.org>
-Date: Wed, 25 Nov 2026 11:27:58 +0100
+	b=kv3sEfb3VmLNDgnW8QxTAmJX8KNK1JjIIvs6JjhV9xR3Idtt+E/Acy4sgcGCIppE4
+	 fnJkMqDZbs0YxjZI0omhdwO3pmG/m9f2/9M8y5Js9tcxthcTUP5V6USECeO4SB+aGw
+	 MNSMXUKRiLYUbWzfDy3760p/XFwm07QheI/qTMYLKOBevoQP2wctWbyOORugl2n6IE
+	 /2KRvK78WomCoAN9r3JZWj9Ek7TJlv5tIy6tBjzQ0i9U8yc4aj9H+FLBxpPrUxHzJc
+	 FAXgnTDwMkU+YF3HjkZ+frzy5AN+WW2sI2x/TTrk+C3BQhLZ+SpHYGbXKeCKqQjq90
+	 yApJVfo9MBUlQ==
+Message-ID: <d2d127d3-6791-4c66-8900-36b717fcdf9f@kernel.org>
+Date: Wed, 25 Nov 2026 11:29:35 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/ksm: prevent zero-page remapping during
- ksmd-triggered THP splits
-To: Nico Pache <nico.pache@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Yu Zhao <yuzhao@google.com>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
-References: <20261122-b4-ksm_fixv2-v3-1-f78ea7779746@linux.dev>
- <27c7a176-cd38-4e2c-b2e6-ad63b79ffc07@kernel.org>
- <b69a5619-87bd-41bf-9125-95f17f232c62@linux.dev>
+Subject: Re: [PATCH v2 1/2] mm: kasan: skip KASAN for GFP_HIGHUSER
+To: Jeff Xu <jeffxu@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver
+ <elver@google.com>, Boris Brezillon <boris.brezillon@collabora.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Chia-I Wu <olvaffe@gmail.com>,
+ Dev Jain <dev.jain@arm.com>, Ian Rickards <ian.rickards@arm.com>,
+ Jann Horn <jannh@google.com>, Jeff Vander Stoep <jeffv@google.com>,
+ Jeff Xu <jeffxu@google.com>, Kees Cook <kees@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Peter Collingbourne <peter@pcc.me.uk>,
+ =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Tomasz Figa <tfiga@chromium.org>,
+ Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Miklos Szeredi <miklos@szeredi.hu>, Baoquan He <baoquan.he@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Allison Henderson
+ <achender@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ fuse-devel@lists.linux.dev, kexec@lists.infradead.org,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
+References: <20261123033111.2349160-1-jeffxu@chromium.org>
+ <20261123033111.2349160-2-jeffxu@chromium.org>
+ <7ed1f755-5759-4b5b-ae00-a814f16b7903@kernel.org>
+ <20261124195455.164425-1-jeffxu@chromium.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,21 +148,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <b69a5619-87bd-41bf-9125-95f17f232c62@linux.dev>
+In-Reply-To: <20261124195455.164425-1-jeffxu@chromium.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 788C7A000A
-X-Stat-Signature: tkpex4fym9rujorkra4kipsjr8qknuio
+X-Rspamd-Queue-Id: 87FB640004
+X-Stat-Signature: pr5k66e8aari6b38uqbbaamaoeh14tu4
 X-Rspam-User:
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795602489-554239
-X-HE-Meta: U2FsdGVkX1/X7sTDCtEM4k8hZ4Qyc7QyIn8cHwvNXdxiQ4+Kr80fzR7hYb04lke37diKIqqPaXeGGtZRHpEIRNHRDrnGFGT1tYHnr5qDH8V11lReo1AU/btxgJnH+gL66K4u5bPswMCBGlyy8HPr37kqtu9f+kDrONroDwfl/Cwvm+cFIRoaVxiFPlNLSoPphVBJhSR9ZF2LOrFFcaz+miO7igLlRR0/gvPATJZF6l7LXKNzL+u59Sm/WCikgW4a1ThRZp0fEP6i2EgE4h3DJW9Y6VOC1GrQUulZtxQlRPduecpxMb6LJeAacyaYg72Xn4yLNan5n310LEW1XWBEwrG8QBeetKhMgvU1MyIt/+q+RTC3ieMIW4r7Q3ty+ShSeIetQ8K869+fCG6LNfYhVZZ52dMHUnd1gv/w8K5+TLaKw2ckP3tkFVOBV7fxCEZn/Y0n4ng6/IT7HWQdOFFjIxbdbpGyS1rr/03FVzhwVfaz42s1uJQo5EgHg90qBsESJjJtYKr0dWeyn29BrTmktokC8mzjKnG1VNFIvVM7LAUn5DgW7Mq8q2YV6K7BuGL7Y6pV/tS5wctyzAWPfLaZTeDww0wqX4ustw7nUc8TM0uSSZKFgXqOSa7l5vm2pDuB5MWhIOtS629rn8B1C3+ybGse+KBV5yYUwfNEreovQ4YgmXYlIaHJHeR+ArvS8jEnfLAldD+zO0dsKTOjzR7u3CuOAOMSC4Un2gau8u7o+aV/y+DUrkKjBObhICRkw+WpghLggwtV9vXIYIEIG6vYXbUfLNHMvVPBL1P6SEXxJuG0EV01jA/BDd1i20EnG1pJh2wL+izJU8VzZ77PX27awUhsoKj9LBXZLHdVFAhMBImeZ4Qxb97TnC2Em4YGjAXgsIvQ4VCx9ZJZSiulf6QJurkDm/GRsUUn0uosxG3MIQTnTAbjAdqJp657bR5A582YkuDR5qgzZwisEDlQBgO
- mn7RMlSp
- Syv1q2rae3upCgq/ufg5KnSrwU/CaKnBJabva5oltfEdKr1FKuhGiXR91wIyXXMZThpd3E1M5zHQ+K1JPji6ErGl+MaQmIb5OmMwrp4maIhNj8WToVLfYkmAJu5E00KtlkHq69L1dK/nesXA9wjgEFtqeJTPuUD4m4CumDSimaucrH7+QSd/bUbOIgwJC7k0evlpKhvEwgncLkIzDN1PYdqCdHHS8go1mmGFP9IT3OhWoOlg4NBmSF5zXNJqwGy9g5vjp5AzVVP7zQsGZHYTVmwuX8jdkcv3RcZgtRcFC6yoqYYWHMNHW2bl1XBQG8nc3UzEhj5OKoBGN/BxINU/neRs0wZkHHu2hQBeRaPuiBgjhCRroVzV279CIQicraGR9G2TDEMO8Ya4RNMC9KlYeJunjscc4Nc3+lhk1aP0Yyi4pNNH9SgKXStQpzC+yetXoHwPbYSYOJUWJzplxazdNzGG6TQCLMH1J9ovxvG9OeRurBN/rEhmPsIzAGZEXmMrc5lkmloxMfwpJz0DMXCzz2nEUlbsqf5OsMr14BF1LP/BiA1oaxGYUUilPeA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795602594-95327
+X-HE-Meta: U2FsdGVkX18qd5Rf18CThbtA/m2r6niOp/Qzf71DII3WPa/tDWYkGL/G9MoIf5xFN6QZmebwHW2JUTxWlTxE1EvSiaChiH0J5aM9NqzfNuGxL+YaYz02jlmxoK4teLgKmHnlK7L35gsxyjOUInqL0izR3dnVkXN13C7Z0JAkTsgpdvZOLyLIcNF/ogcGENqmbt8qgUvIeymiMMopvagjuCoSf9JXC6k3IAcr1n/MPoApFFWWjJhogp4XGPVtgOUH9IJD2RAR8JWiRVktDK+HqspLsOCv5KUyJCY3MzACQn3KnzgDxhnJiFTHn6LrzHwKfu6Ieym9jVbFsvHl+MuR0X3mfbUcIUZu3kyxCqQchtdqp9KaJH19LspwSRk68y6mlf7Hv4i75dxowlkjkRsAfIrU203reSMbFz4zDruGiM9r1BPTSOGCK/kQdQIahExp+YNcySSXkpR2Sf1Vawka88Xc+XdOabupih4WFVPthVLxmWu8Gy3ezkxYmfdBUmAQM7mmzSynQ9DEK9nyjHY2TequuVJRSpD0FhLjh0WlHI2Om7U7EixanHS4gqee0q4dfhauYK+OLyb6iiwlxA/xlqqA7FTBCkPWlSjM2n0qJUldslbnpFGd8EdeYN0Y1oCqoJXES4lv50DPc4DaWohg1pGM+nY+uuvk62S/maRVlLwpHvZl+2Yo1cT/yhzvGZn2IWAkwSCp2vtP4WkT1zjLdLuwbgICi8hB/5grSUE1HktMRXCruROhRQ6S4+91yDAx9pw3Niculb9/77O9LO6qHFzWlxWXOp4OZbng5roSt2RwwNlCNzFHoOa5T+nHWnUJotMNpratIwlxWu2ZblxwM/sp3+qlRKLtfTOLue2kwKNxrKvfT14hqxyjAkg44bgKVwCIMFlpHTqUjrVWPYLXn3E2XWXBIt/vdAOudviHuSqUVDDKLXsqf+CnK2X3sTC6IjDTqUt/du75u5Crtg6
+ MzR9aofR
+ UPfGMvKlAMXziPjrHps+JJJM5wuWVM1KraWxisGu43ravPQacXwMO+XNtrOH5Z4YWmUjb2D9bq6RtkR+HET2pEGUbuVEh02nEMrPxxyK00ss9/1niXvdBi5tNzuT01dcwCsvWcfgoKDwDeTLUoHhGi2ZAwwzFtkNsdX0w7wJi/WspTvf89daU5Dp/8PRM3XQW/+X2Tc9b7sKUJV9vuILcGlFrjtgaH0ZEedorzl2YJYxMgwFBGQd3ha9a/lyIygcuNjgp35wu2BEOoHvLi3gnNLjXrC0nHgvknyZZ6kNaHtqShFS0JPgB/Aui3VEsOp/QJ1dpfCiH9hod35VUPt6YIs5AetyAfTF1f8eTrnit6Otx2gJPQwHuSIzC1aFFrOwJqgSZGyCyjjh2+LAj3Vz/+Jq8APz9R4V4c806EEl6f/wBS1ub6xhG3bt8N+jraFprNQW2EP1r8drGwatM6IV6KLORhMLdX8yKffl5wZMKX61oqsaFr3mEOtfJ4Q71zCxJKs/Bci32fJCGYS2LcyzDGZ2j1OfSLVuARyYPbuaVbJvt111Ic5XHi3qqPI7HGajVa/Jz1cbbfJcklaQRYsAe4EjW03SnJGNHc20uUaia0T6vSW8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,25 +171,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 00:28, Nico Pache wrote:
+On 11/24/26 20:54, Jeff Xu wrote:
+> On Tue, Nov 24, 2026 at 09:10:53AM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/23/26 04:31, Jeff Xu wrote:
+>>> -#define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM)
+>>> -#define GFP_HIGHUSER_MOVABLE	(GFP_HIGHUSER | __GFP_MOVABLE | __GFP_SKIP_KASAN)
+>>> +#define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM | __GFP_SKIP_KASAN)
+>>> +#define GFP_HIGHUSER_MOVABLE	(GFP_HIGHUSER | __GFP_MOVABLE)
+>>
+>> Can we please add a big fat comment above GFP_HIGHUSER, explaining why we use
+>> __GFP_SKIP_KASAN and which security impact this has?
 > 
+> Sure, I'll add a comment above GFP_HIGHUSER in v3:
 > 
-> On 11/23/26 9:33 AM, David Hildenbrand (Arm) wrote:
->>
->> [...]
->>
->>
->>
->> I do wonder if we wan to make this an inline function to not require a function
->> call just to check this.
->>
->> Thoughts?
-> 
-> we would have to also expose ksm_scan_thread; tbh im not sure what the 
-> impact of that is.
+> /*
+>  * GFP_HIGHUSER (and GFP_HIGHUSER_MOVABLE derived from it) sets
+>  * __GFP_SKIP_KASAN to skip HW_TAGS tagging on allocation and poisoning on
+>  * free. These pages are meant for userspace data (e.g. anonymous and page
+>  * cache pages, DMA-BUF, GPU/DRM buffers) rather than kernel data structures,
+>  * and tagging every granule on allocation and free is expensive.
+>  *
+>  * Security impact: under CONFIG_KASAN_HW_TAGS, these pages carry the
+>  * match-all tag (0xff), so kernel accesses via page_address() or
+>  * kmap_local_page() lose HW_TAGS out-of-bounds and use-after-free
+>  * detection. Callers that store kernel data structures in these pages
+>  * should not use GFP_HIGHUSER. Generic and SW_TAGS KASAN are unaffected.
+>  */
 
-I wouldn't worry about the impact. Maybe put it in mm_inline.h such that it's
-limited to core-mm.
+Yeah, that sounds good to me. But let's wait for some more review.
 
 -- 
 Cheers,
