@@ -1,91 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEF4606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D804606A329
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 12:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wl6FpETe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WkL8C3T8
 Received: by kanga.kvack.org (Postfix)
-	id C9EE96B09DE; Wed, 25 Nov 2026 07:00:09 -0500 (EST)
+	id 0DF336B09DD; Wed, 25 Nov 2026 07:00:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4F446B09E1; Wed, 25 Nov 2026 07:00:09 -0500 (EST)
+	id 068736B09E1; Wed, 25 Nov 2026 07:00:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B92776B09DE; Wed, 25 Nov 2026 07:00:09 -0500 (EST)
+	id EEDDE6B09E2; Wed, 25 Nov 2026 07:00:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FAFD6B09DE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B15A56B09DD
 	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 07:00:09 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77234140E1E
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 416001C498B
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:00:09 +0000 (UTC)
+X-FDA: 85473498138.08.CCE88CE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 84E5F40010
 	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:00:07 +0000 (UTC)
-X-FDA: 85473498054.18.C41C1FD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CD3482000A
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 12:00:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wl6FpETe;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WkL8C3T8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795608005;
-	b=wn1MvOFszLzb5QVMNOGxQau7Gx8q41A3H94a6TBimK4Q0L8LuTDD+VgmP0Wi2LATuadRZI
-	KoGx4Lsi/7OTQ+ZceoOdmb8j1mbXtkwvjdPLolS+FDvUf0ZllmRTXlOe2aNYMG0ekIuAS8
-	q5OOkKq7K0WWPPwJlvZAvGP4vmxrmS0=
+	t=1795608007;
+	b=x4HF/XQnLTqicZ5y2na7NfeLBuOK03R0I/0FkrSHstlCCMlmZlgiL7ApoAPDwL5ldkoU1+
+	GVkdJ5LAJwwMhnCDC6jzpAZQTya2bjtQxJMXrAF/8uptitm4wvunMPeLBUrUXcapgln85G
+	IMUWFKjysukLKSmIoss9jrsJ0D/4tsE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795608005;
+	s=arc-20220608; t=1795608007;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xxu0bPb2V0jwv7Yxq96R2JrKTa1qATXmL+4rVigoyqU=;
-	b=CjMcUqa1Jsl1t5WMqFYjVAwtkI5+LfHBPsk5wxsngXAKD/CGGXUWPFe3YG6nX6gJl672xM
-	CVlGNumCNZhWR/rgvacxdV5HeyAETB66W7xpv5RYVFzbUHdSXMtsrAaMaVaYV1M+v+9W6a
-	PxBKQ/nKlR3WT35RMj1DRFUqEn3pNHI=
+	bh=a8a9e/Syys2RS7fmtSVEsufGSUaoooDAGnuf8vGZTyM=;
+	b=sXIs8zq3Ho2LY6jSHhAVqoJ8rfwg5zoTVG6ak7zAG7R2Nbj5fl+WFhZaz7SUBjexwIFbLH
+	Y4mScX9IUG2iuEa+WIlPwJA5+EqCeS0JN5FI+tPFyhAKbqh7LaBo1h4tLIhdAJN3noWR+b
+	enxSx9KX9aHxzVqc71uzRt/9zZn9yx0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wl6FpETe;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WkL8C3T8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5641E62946;
-	Wed, 25 Nov 2026 12:00:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4484B1F000D3;
-	Wed, 25 Nov 2026 12:00:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C46DD43DA3;
+	Wed, 25 Nov 2026 12:00:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B5D1F000C6;
+	Wed, 25 Nov 2026 12:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795608004;
-	bh=Xxu0bPb2V0jwv7Yxq96R2JrKTa1qATXmL+4rVigoyqU=;
+	s=k20260515; t=1795608006;
+	bh=a8a9e/Syys2RS7fmtSVEsufGSUaoooDAGnuf8vGZTyM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Wl6FpETeE/Sz2LGE8PVwAzgwN/M8PJ44XNS7XnqhKbuh2f4vz/CjOOEtA7AzHBryI
-	 FcSJ8vrq8PlozavfA0ww2eXTy7Oz2aIkGjDslo1uOxAfIbMWaSFu/D4VS30p5Q5pnJ
-	 Vg4Ox/gLmJr55OmGVcw9qX4nt2530aWjvCsEq7sFdjLJFDk2XnZz4Wub+AMxbgIX1K
-	 GE5gekSS4VG0yPthYrPTi+TdqRNk4+TGVZT7VBEjuA7ZSoW+nvjY4dQ1yhS4ZmpcNK
-	 GcOu1XGxMU4CRs46YzGnKco12fDUKSg/AnsQLdAvq264eFdPQ4s0pYZfkbR0gJDI6U
-	 dG/RNYy2Eei6g==
-Message-ID: <sashiko-outbox-233312@kernel.org>
+	b=WkL8C3T8TTboiiJULDWFUF+r3CksIBb0HKKt6dlTJjt++PCvjf4nn+hfxcFpC+p/Y
+	 NPHqrlk/kEb7IyMPGOG/RyBwEy3r03lCg42AIPSoA+QanyYLvkXOtdUZbJuawwttXP
+	 t0+WEp0t+TIwvFvolau9wTCZJpBx2mj8LxTNWlhkFeWvUEi538QlKLzXxJWLLfJ8yj
+	 wPus5HLBrfL0n+XdK4hXDpGAi36yvO7clSb3RPTH2j4mUaM9k4OP5HKUkjZgwBlLY5
+	 7OjbPYDfP/JhGAgk9ZU3gmYcuKCOGJotxxfKTQ2iyzGc/dz4+/2fmIJoKB9EGvhx5/
+	 ia1vHwEehZcsQ==
+Message-ID: <sashiko-outbox-233315@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/8] fs: Basic infrastructure for offloading inode
- reclaim
+Subject: Re: [PATCH v2 6/8] fs: Add throttling to deferred inode reclaim
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jan Kara" <jack@suse.cz>, "Christian Brauner" <brauner@kernel.org>
 Cc: "Christoph Hellwig" <hch@infradead.org>, linux-mm@kvack.org, "Mikhail
  Rudenko" <xyzzy@yandex-team.ru>, "Andreas Gruenbacher" <agruenba@redhat.com>
-In-Reply-To: <20261124115850.3512-11-jack@suse.cz>
+In-Reply-To: <20261124115850.3512-14-jack@suse.cz>
 References: <20261124113450.3451-1-jack@suse.cz>
- <20261124115850.3512-11-jack@suse.cz>
+ <20261124115850.3512-14-jack@suse.cz>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 12:00:03 +0000
-X-Rspamd-Queue-Id: CD3482000A
-X-Stat-Signature: 3o8wbm4abw1tw4o3yr4usrr5wnm3rhzp
+Date: Wed, 25 Nov 2026 12:00:05 +0000
+X-Rspamd-Queue-Id: 84E5F40010
+X-Stat-Signature: 13ka9yjzt47r9fa1pxowmae9ua1zmzga
 X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795608005-474400
-X-HE-Meta: U2FsdGVkX1+LTicM24w3aC2dPdEVouUaeZIC4lhyXH0c0I2PJThVIQqV8stFy1JDkwWhCziJkkGy1rbN4hRPprPnIZTcfzHL7n+rM0nvpLf+d4NUZlI05QoKe9JuWnjrE75o/yQdToO+lLQp+2pwKZ8QSyQTJEMT38YJubFEVOmOyGu9UwcAVvIMt4B9zLL6TdXxlD7q4cI3gkdsp50iOYrEnUiKxCD4UQJ+s1dg9MLhth7gE+x4xzhKtCyU7PoQ6vzIz5sFhE5sqn7IHARUlrdoo/L6dlclOlsNEmM8gt5JucYbLCyD53PZrteGI2o9bBMxmz7xpyfeYwn4HU1Gn3xLvd7prZSfBgWQauNqv55UJ8fs+cG+PWh33w9FnB5SWsZWsDkWpjMoFZ+jc1CmwwTYLkVuy+duadXLSvG2RKwVs62FZnY1ljEIvOLwXuQg50x4cfGSL8eoWpuQbfAlKOFDXE36qR7BEbIbgsUMqdCtLuqhLED+03IH+N3HKeDPtyyEJli9C7ArQ1rgNvSWe6xmzSN0LytspT6n3zqctZqzYQZTmhIXLpJ131Eyk6Tq6hCI9s6lgyzFj89zh3aDSTs2V8CCMgG8leEkETp3BoCRRHctAfHu+NPiwCWSUwK7JPH+vSnG1shq0Nn2r1IODBnF9Kiy0E6UzWxS1EzdHXgwNWThCJZ9bEGbHG2HGmLOiFam3HDQmRlTiZYZaajr89wHMaEC54DB6nmrDQw7O5K95khIb+xbPgE91m2DLvEtG+zCaWb+EYtu9heTVnEonykv7XiIX6NsGt1r9RVSr4mnJNjbHFnbaz3a0197uGGBDpZUqEkJf0fPPGheWrMCCu5ZduPEW7hNvJcDKU9a+8/i32+/8UqGT/dq3uToGmNxbUkLiGccC/6zOqoWgNoGk9fUwIR2nbCzYUeHhWqtmwxWSGxvS5Kymo8/Se6TqHrr7177DPXWjl0SGqKaH26
- SX0xlIHc
- jAQvBiXRmAVfMj05aWBseqzEK9lG1nFs/xAsyZZ4U1+8wN9BLtvOf3lKN7gJf+/fBiPnoAg6loHb2OWzvpT227DXUj83COJdegXdwtN0aD7cr9rQsFzayvnqhxNWRUPo/LeiC6PfkDUC7w1Au398Lhyfe+EcD6wTbC5dhfka2ohZ3WTLjRHEKOKdsLmVv2SmSBKYvcUYNLulpQa7h0qUcNzBMnrEmtnSJYC2eAzUmmHFUVHBome7yIlBDbifE/CdMAgaeVPLnIFsNYlPQgPZ6HSsQA4iuQqH/9pMguD9/tqz6b2+VwUW+kc98j6xI5AtIJuRlMGPj77kEEEuS+Ze87d4SI7RzrES/MwguZZO8pS7+qQidNQWzo2XSianYke8TTSvSO0+0DzFXkG9K7Q4CJVY/BvF+g3KR/8hoUagphXF3YBL0gxWTvzDFu6G42gSC2ymoheznuT4SiMaqD6nmRaZatsmP72TFXmTrpo3YllWNxQSXN4NT2ugaQIBji56MqmKM72aFbo5j00yUGAAoezOvKmdsyZlHl2Tnqqfm+P0VYLCLHgBuvzyHrSS9MyEeWM69o4+OqKL5DeMElANcmgsAot/iSA80ptwrIryO4msm9WfYhZ1R19TxrY23Ww7bZIYQ/humLQJDp7449R4OAH2J1Fssp1gYzt0eA/30h+dEWeVwJTBBzDV8lI+ZCHg83bCsCrS6NmKr4ygBlemKwDxzhC5cMtFXRQHlFgIBpi+LHbiEEEIOcHm4AaADNOiJaOJqMt/41PFqmffJbq0OuZUddKT+aCvlNn5f
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795608007-853616
+X-HE-Meta: U2FsdGVkX18ikmelziXM8pBBs7luwlsB5C6kUn+CbpQm2RO4kMofiWJi+9XFNo1IabeE/dxKzSECR2+vp/QjC7Lcmg5wfPZdyFI3mOqWyZqBJl19PbkaVNMce4mawEu0G7soGdhi32Ak1Wf/ziR2yO8De8Oij2NY/qpAZkirDwuHVTl8OhP6d4/Ooxm06LtFy0XAQpAJeEh91rntas56xCty2iAzE6OfttggVcNQ/C4KOGLS0KNd4g96XLeSZdktvHizTGeCLztCRZ321XBRHEwGU8Oa+PNY386FJ5WeKabMTWvMu6PvFNpldR5fqhTAcbOvgM1oUToonqrPnCHc4hMFlE4Q7ZbhNH3Y9X684RPwkOhnrTbGzmfjG/vVqp6J3jBS47gESTA1ZL0qxHcYHcYqlrGRKrQGGjo6MmuM3T74gHhbEKoT3VUtbWXBrAQvvyRZQ2NIDFVh1t7LlcmosaSJEWxK0V784lag5QLTWKw+5rdrlKujG501xwvWNbyL5NbUccWdieQpLpgK78F6i7u8cd/f422UTuOQ9XdVJoVIo/Iv8GMlnmozcqmbXnt4NYqhcGXmyJ1Vq/bcl9v0XnwfwMnxcxe7TZG8eiE5WO8kh2bv1l7kQx6xH2xEBNW/dt+tc405Wrl9/lKc6ZBiISEb5zmbFCf7329aBICa6DvRfngaELn8tQWufRh0ff/WhXPwGJXD4Lz2aNUQC4HY4RWguMWKh1b1FqxwYja8iMeHDaflxW+DJ6pl7PVjFaogl9Q/ZArrQ/4kdlxF5Iy1fVr95P1Jm5foQ+jK5NxAf3W1sTJZcKYkCdgFw2Ddklr/dZfV9ua7dAvDVuFHgIYLaiBvDHdynLMsKdqsmKZsWqstTVwcdm5B1zZaNy40+dvp2MQutBTqEMlc7NsLHPc6WD1VlXuuN8NKLoRC0Y6zxpkf5CG0PTYR8cKR/ZRjsasi8/SE0OWrwQkb+Va44C9
+ PhDH15lD
+ vtfKaumfE7zsnOx3cWG2gajGW6fjxlE3v3rWvCUCrPtlAELPp95TdtazCNKjLbLZ5ly6JUQiPxyoOhdMNVJvD5OJhxGmc5rcWwE+HMUiolITj82I5ehxhh0q6LvA0EQmufXTEvUk3P2icQrMEFcAGTu/otluBqnaZ6UXhCiIgCd8JRoIzWWb7M7rJNsroUWOmFx7OQZKbAUDil1abUMBCiQ1BvMNKOX6o48+vyBCfe0m7qbiND/MwfPImkvMvArJf/OFTatcZHSZg4LJZmkHALC8MJbo35UGQyMu6Sf7g9Bs+N2YnERD9dFwcZZ44MdLDfr6Lej1HE8l4UXvpgA1TszEVfFWvE5qst4b4PDXRx8c8aQpK/SSEVN2FkiWiN/hzqix2bgp6/Vp7nOZWqk84qucHdk5Li3pxdub7iO3EXSj5tkc2CpsQ8GQW8Dg0HOxCr37gVwofZbrAxBtxSyg+XVldkMeARu03KBGXXiyaXaj3v3+49+uhMPO9ImUVK7JjrSGbmhW3RUpBc0VM7x/ZAipcNKmo6moD7g7n5khYUxOvWaWmMvGQrL3SSpYGKcBww2/yElFiL7Q/+LIbA24IyvQT8VMGL9NvMc2d8tBhlsFfqVCrW2PHOSVERn6o8ILQ8FS/9ZEm88X/hIGcLW+iAwSxSwZdn6zkRyMNxnd/fX3p237ANej/BQ0cPMyi9d+aorPpXDjiooZwE0nWFNvdgPb5CvLwSx7FvFp2b6r9SZphVnTdvj/6reyWrYrXpNx1gTNXKjQb/UuYEptosklPtx1Cm1oyUyKGif8y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,83 +94,130 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] fs: queue_deferred_reclaim() fails to wake sibling workers on
-  small batches
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] fs: sub-jiffy delay truncation to 1-jiffy sleep in
+  deferred_delay_work()
+- [Low] trace: writeback: non-standard
+  mark_inode_reclaim_deferred_throttle name
+- [Low] fs: missing __GFP_NOWARN and direct GFP_NOFS in
+  throttle_inode_deferred_reclaim()
 --
 
-commit 8c1021dc7fb5b82263bdc1a9f11c91562cd680a6
+commit 1ea5687985f2e4f8753b554cdf12dd2d8a420e3c
 Author: Jan Kara <jack@suse.cz>
 
-fs: Basic infrastructure for offloading inode reclaim
+fs: Add throttling to deferred inode reclaim
 
-This commit adds infrastructure for marking inodes with I_DEFER_RECLAIM
-and offloading their eviction from the superblock shrinker to a multi-worker
-workqueue.
+This commit adds a throttling mechanism that delays tasks on return to
+userspace when the per-superblock deferred inode reclaim list exceeds
+INODE_DEFERRED_RECLAIM_LIMIT, proportional to the moving-average per-inode
+eviction duration.
 
 > diff --git a/fs/inode.c b/fs/inode.c
-> index 4b13125f0678c..8853eb6015dc0 100644
+> index dfba54288cbfd..fdab88f875454 100644
 > --- a/fs/inode.c
 > +++ b/fs/inode.c
 [ ... ]
-> @@ -1017,6 +1036,38 @@ static enum lru_status inode_lru_isolate(struct li=
-st_head *item,
->  	return LRU_REMOVED;
+> @@ -1216,6 +1256,80 @@ static void __init deferred_reclaim_init(void)
+>  	}
 >  }
 > =20
-> +/* Number of inodes to process in one reclaim batch */
-> +#define INODE_RECLAIM_BATCH_SIZE 16
+> +struct deferred_reclaim_delay {
+> +	struct callback_head task_work;
+> +	u64 delay;
+> +};
 > +
-> +static int get_deferred_sb_id(struct super_block *sb)
+> +static void deferred_delay_work(struct callback_head *work)
 > +{
-> +	return hash_ptr(sb, 32) % deferred_reclaim.workers;
+> +	struct deferred_reclaim_delay *dd =3D
+> +		container_of(work, struct deferred_reclaim_delay, task_work);
+> +
+> +	schedule_timeout_killable(nsecs_to_jiffies(dd->delay));
+> +	kfree(dd);
 > +}
 > +
-> +static void queue_deferred_reclaim(struct super_block *sb, int count,
-> +				   struct list_head *list)
+> +/*
+> + * Size of deferred reclaim list from which we start throttling tasks cr=
+eating
+> + * inodes marked for deferred reclaim.
+> + */
+> +#define INODE_DEFERRED_RECLAIM_LIMIT 8192
+> +
+> +static void throttle_inode_deferred_reclaim(struct inode *inode)
 > +{
-> +	int id =3D get_deferred_sb_id(sb);
-> +	struct deferred_reclaim_queue *queue =3D
-> +					&deferred_reclaim.queues[id];
-> +	int i, wake_count;
+[ ... ]
+> +	len =3D atomic_read(&sb->s_deferred_reclaim_count);
+> +	if (len > INODE_DEFERRED_RECLAIM_LIMIT) {
+> +		u64 delay =3D READ_ONCE(sb->s_deferred_reclaim_delay);
+> +		struct deferred_reclaim_delay *dd;
 > +
-> +	spin_lock(&queue->lock);
-> +	list_splice_tail(list, &queue->list);
-> +	atomic_add(count, &sb->s_deferred_reclaim_count);
-> +	spin_unlock(&queue->lock);
+> +		if (!delay)
+> +			return;
 > +
-> +	/* Queue works to process inodes we've added to the list */
-> +	wake_count =3D DIV_ROUND_UP(count, INODE_RECLAIM_BATCH_SIZE);
-> +	if (wake_count > deferred_reclaim.workers)
-> +		wake_count =3D deferred_reclaim.workers;
-> +	for (i =3D 0; i < wake_count; i++) {
-> +		queue_work(deferred_reclaim.wq,
-> +			   &deferred_reclaim.work[id]);
-> +		id =3D (id + 1) % deferred_reclaim.workers;
-> +	}
-> +}
+> +		dd =3D kmalloc_obj(*dd, GFP_NOFS | __GFP_NORETRY);
+> +		/*
+> +		 * If the allocation failed, don't bother. Throttling is
+> +		 * approximate anyway and next time we'll throttle more.
+> +		 */
+> +		if (!dd)
+> +			return;
+
+[Severity: Low]
+Since allocation failure is intentionally ignored here, should this include
+__GFP_NOWARN so a failed slab expansion under memory pressure does not trig=
+ger
+warn_alloc() and slab_out_of_memory() splats in dmesg?  Also, MM guidelines
+prefer scoped memalloc_nofs_save()/memalloc_nofs_restore() (or
+GFP_NOWAIT | __GFP_NOWARN) over passing GFP_NOFS directly.
+
+> +
+> +		/*
+> +		 * Scale the delay based on how much we exceed the limit. Wait
+> +		 * at most 4x as long as estimated time to reclaim the inode.
+> +		 */
+> +		len =3D min(len, 5 * INODE_DEFERRED_RECLAIM_LIMIT);
+> +		delay =3D div_u64(delay * (len - INODE_DEFERRED_RECLAIM_LIMIT),
+> +				INODE_DEFERRED_RECLAIM_LIMIT);
 
 [Severity: Medium]
-Can queue_deferred_reclaim() serialize deferred eviction for a superblock
-onto a single worker when inodes are queued in batches of
-INODE_RECLAIM_BATCH_SIZE (16) or fewer?
+Does passing nsecs_to_jiffies(dd->delay) to schedule_timeout_killable() sta=
+ll
+tasks for a full jiffy whenever the scaled nanosecond delay is sub-jiffy or=
+ 0?
 
-Because get_deferred_sb_id(sb) returns a fixed starting index for a given
-superblock and wake_count is computed only from the current call's count,
-any call with count <=3D 16 sets wake_count =3D 1 and only tries to queue
-deferred_reclaim.work[id].  When multiple prune_icache_sb() scans (or
-single-inode queuing from iput_final() in commit "fs: Defer reclaim of
-unlinked inodes") each add <=3D 16 inodes while work[id] is busy and already
-marked pending, queue_work() on work[id] returns false and the loop exits
-without waking work[id + 1] or any of the other idle workers, even if a
-large backlog has accumulated on queue->list.
+throttle_inode_deferred_reclaim() checks !delay and allocates dd before
+scaling delay down by (len - 8192) / 8192, so a small s_deferred_reclaim_de=
+lay
+near the limit scales to 0 ns and still queues deferred_delay_work().
+Even when the scaled delay is non-zero, any sub-jiffy value is truncated to
+0 jiffies by nsecs_to_jiffies(), and schedule_timeout(0) does not return
+immediately: it arms a timer for jiffies + 1 and sleeps until the next timer
+tick (1 to 10 ms depending on HZ), defeating the proportional ramp-up.
 
-Computing wake_count from the total queued count (or advancing to the next
-worker when queue_work() returns false) would allow sibling workers to help
-drain the queue via get_inode_reclaim_batch().
+Scaling delay before checking !delay and allocating dd, and sleeping with
+schedule_hrtimeout() in deferred_delay_work(), would avoid queuing 0-ns wai=
+ts
+and preserve sub-jiffy delays.
+
+[ ... ]
+> diff --git a/include/trace/events/writeback.h b/include/trace/events/writ=
+eback.h
+> index c2a5b492a71a5..d371d1112843f 100644
+> --- a/include/trace/events/writeback.h
+> +++ b/include/trace/events/writeback.h
+[ ... ]
+> +TRACE_EVENT(mark_inode_reclaim_deferred_throttle,
+> +	TP_PROTO(struct inode *inode, unsigned int len, u64 delay),
+> +	TP_ARGS(inode, len, delay),
+
+[Severity: Low]
+This isn't a bug, but tracepoint names normally follow the subsystem_event
+convention (such as inode_reclaim_throttle, matching inode_reclaim_update_s=
+tat
+above) rather than starting with the verb mark_.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124115850.3512=
--9-jack@suse.cz?part=3D3
+-9-jack@suse.cz?part=3D6
 
