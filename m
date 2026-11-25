@@ -1,136 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28D2606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 00:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C29C606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 00:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PRWW/5t7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nrDwQrMO
 Received: by kanga.kvack.org (Postfix)
-	id 86FBB6B08B9; Tue, 24 Nov 2026 19:24:21 -0500 (EST)
+	id 5C26A6B08BB; Tue, 24 Nov 2026 19:32:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F93C6B08BB; Tue, 24 Nov 2026 19:24:21 -0500 (EST)
+	id 5999B6B08BD; Tue, 24 Nov 2026 19:32:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E73F6B08BC; Tue, 24 Nov 2026 19:24:21 -0500 (EST)
+	id 4D7306B08BE; Tue, 24 Nov 2026 19:32:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C6646B08B9
-	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 19:24:21 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCF04C0D6E
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:24:20 +0000 (UTC)
-X-FDA: 85471744680.23.2699C64
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DCB65100006
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:24:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E44F6B08BB
+	for <linux-mm@kvack.org>; Tue, 24 Nov 2026 19:32:34 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27CBFA0E24
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:32:33 +0000 (UTC)
+X-FDA: 85471765386.26.72B3DF5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 785E4100002
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 00:32:31 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="PRWW/5t7";
-	spf=pass (imf14.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrDwQrMO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795566259;
-	b=oG8U0ji+HRAFWtt7xn9EPgM/8+ecdeycVihx2uIz6JmAZij3q5hflMousXHvC/0XjivA1k
-	4rDlX1nqZxRexLxIndJ7mFJoBYDmaZqINNsOo9Zo+TJsr/dJJcr+AoRpCl7ioofjBHaozW
-	FnM9wS+qFGrR8P1NwK5UWLH/UIN8ZXU=
+	t=1795566751;
+	b=AQNBij3f8mz6NUSAyW+ZYTVdz6qeSLu7dKQUfIIahkOTg/a89gbADBUdbbGF0GnR7rtpnt
+	kECIad3fotf7Yq+YS9YcuJcB1V2wcq9EZJlJkTHThL26CQKQlhvatJDRykz48twFDN2AIk
+	fMUudrUI3bSSatnup5xoJYDKc6hN44Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795566259;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1795566751;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YMO/Q4LHoS6IxvSYVAkwFpWA6bWqlpOH+BNCvhBFP1g=;
-	b=yE2wq+IFi1Ub3sGHyCixvXlIwG4Vn6gq1L2Y6JcI221R64XHG9JB65FQKkW6wesFptvmdy
-	psAZg3HHuP4Ygrn7dRSOuLAULaiqTCrhw2hQSIwoRP0o84XifbfDYgq+gNCaOVMH1bTamQ
-	9YayEbpNW5hHLMKz4g+Vxu0LrAUFxrc=
+	bh=kV8T9KghjSzWI5XC/HdS39t7s/X9fFMZu6tr+/jlyzA=;
+	b=pb1HjOplmDpaRx6jscU7oUtF5e9NHyY6dpMFUIqeoHy61sRU8J3A6YGbp/zXGy9tL5pLdy
+	0rdlJUKw/YGjfpxCtutc7n+UtBSrPNEe50VLw9sePQfLFFSsJOoJRPAFm+S+s1kM2OTMBo
+	IA8aUqRYauSfX9hAhxSDBqKfJU1+cUo=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="PRWW/5t7";
-	spf=pass (imf14.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2f0afdb97abso162645ad.1
-        for <linux-mm@kvack.org>; Tue, 24 Nov 2026 16:24:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795566258; x=1796171058; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YMO/Q4LHoS6IxvSYVAkwFpWA6bWqlpOH+BNCvhBFP1g=;
-        b=PRWW/5t7131NkyhorN0r3v7GbZ86xUebB9TenoW6Anen7EM8sV2zToV+7KjzQsmOC4
-         lpY/Hsg/4MoQAwzBFFtwrSC8XmANB2YofbImvIqRGpbasOw/uAUcAx750tokwqcHTHW7
-         RaHu4KEE8D/RBHq+CECvm6F3gnpkKndl1DOMWIuNQnfS+KuNLfwiEAeNZflwvv54Xf+X
-         Vonl2k0sEk3Y9kjFrm2MEB2wbSq2k+ob7nbbCWln/F4cpPHggbEqiqxs+Bqw8kwSPUYg
-         MIlWJAXVHK0Vq2RwHIJGuNadl58wzzjnK9eGeSGPRPKJ8Tk8uaaZiFrV28sbrXFzXeWW
-         4Ucg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795566258; x=1796171058;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YMO/Q4LHoS6IxvSYVAkwFpWA6bWqlpOH+BNCvhBFP1g=;
-        b=ZvWKQVuUQtCzm/FG43cFr4L45+pd30vb5YqhMhP382wrZWUOkCRcAv/xFAlgj34HIn
-         QrRU58kiD4UuOQ2eWUOfuhQXHwxyl2zwcLiH/EDQ5eqKNkFV4iWgbH2U3F34boa55ntC
-         zZVJU6FJ9dlvXrKSpfCoChxEy9hfw1fghUvdQp5gScalfRuPNAlN/+sGFQhsw3lyjp/N
-         gcngOo3VEOSqwAzeIZlitlVtN3GQi4ge2WZNVGs22chFtiUgnJU8hr/FLVlKruag5CAl
-         gRMffgfPtqJixWk+7TsOlfqT+QR+iVWCrTi790tDTakAfapD6wjoNrfTFh5rLKjJIKRc
-         wdaw==
-X-Forwarded-Encrypted: i=1; AL+hErG6GlVgrYDrwmDoU5z5EHA/1vm2kQyRX6hS5fjZZuYJkRJi6XiCoiczhNxp6eVS3SMTd+UQvp/HoQ==@kvack.org
-X-Gm-Message-State: APuU4Z/+pVItcghSrdDfSEYR3/eST5aC8RL/9UIgrLOcjFSoRM/Ycx4m
-	YTnW4as5tUNZ9ezi5iJiqsJBqBvJzbpolSI9YwbiZPZb1IY8ObmSEnqPtRO64biBuA==
-X-Gm-Gg: AZFdTZfYF+IjZ3St7sSqd6KUc0No6dTnbOc/MnFzQeT24yu8uebF1YEyWVCPEoR0BDH
-	eXa/XeFt5SWNw5gvHypn7e5b2sMvgQqdPHaFDVwm9qv3PQ+4V6f5f4UavWuz47OaQjpxCS/eT7N
-	aPn0pgaiPI6tqvXnuZONtZqC/q84J2j7d6yyT+aoKJ7zXczpLjW6vrYqWvJj2SgepDOUMkmhRRD
-	EsWxpSE27MMQJX0ESlZljGB5vf84Pz6T7o0qPP1wtrIE8hJnxVQUtmmI8NQZ6DGwvx29q7JMhFQ
-	r+8juEbg6dXa4vjjsFbkgHrJC/E3GsR2BHOQE9NZ9pnJhbAjaobGvDBhLC28i9iBnrdHmgohNXZ
-	xAu++LzjkG02CyH28pe0IJsuDYtG3X/K/taq0y/CdW4JzNr4lK86cAwHCbfVvWnmWsnZk3ZIlEE
-	nZ67T8bm6nMlzPTp+sWRFcvVn4kzlG7t499lP5anx4SQGGHwhM0LpSIGmP5XyJD5K6klP8H/vaa
-	fmd4KP4MXmhxwsxR4oDLWv57datG58Mzorw04qTbJiUy7JXRJoLnwZXrPJcYzDyPQXbR2ctbS31
-	es9RoCnChYfeuZcwX4GVVKWXFxJ75pJmzdiNr7tF3v4vMSQyK6HwbFMM103GyrptbLoIe91HckE
-	bdsLTIguXm/jJ
-X-Received: by 2002:a17:902:e950:b0:2d5:c090:3810 with SMTP id d9443c01a7336-2f06242bd42mr16475105ad.2.1795566257244;
-        Tue, 24 Nov 2026 16:24:17 -0800 (PST)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde6cff4c1asm7632022a12.15.2026.11.24.16.24.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 16:24:16 -0800 (PST)
-Date: Tue, 24 Nov 2026 16:24:12 -0800
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
-	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
-	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
-	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
-	jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, 
-	leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, 
-	michal.winiarski@intel.com, parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, 
-	pratyush@kernel.org, rananta@google.com, rdunlap@infradead.org, rientjes@google.com, 
-	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, schnelle@linux.ibm.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Subject: Re: [PATCH v6 12/27] vfio: Enforce preserved devices are retrieved
- via LIVEUPDATE_SESSION_RETRIEVE_FD
-Message-ID: <20261125002302.GC3545683.vipinsh@google.com>
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-13-vipinsh@google.com>
- <DMZLVV5YW6GW.1HMW8L8NIQ1XR@google.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DMZLVV5YW6GW.1HMW8L8NIQ1XR@google.com>
-X-Stat-Signature: nmhbxf517pnddtwxch4xmktaphqgtbpg
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrDwQrMO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9EA6B45A55;
+	Wed, 25 Nov 2026 00:32:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B079C1F000CA;
+	Wed, 25 Nov 2026 00:32:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795566750;
+	bh=kV8T9KghjSzWI5XC/HdS39t7s/X9fFMZu6tr+/jlyzA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nrDwQrMOk0ZnxRD5VrLhJKcjZlF5e9qZKnjaqCg/mNgQN6JAnTDfAzYPzHdLhiTUF
+	 WdOYKB9ddzb+IgWbru/nlXL/6DGw8Pg8RLtcIv6bc69w2Xzpj7w881/MTn/nKb30aP
+	 6fw+tXrcUx/cMjEdzKQ5zZGe+UN8VmGvNVGIHhpQKrQUkeBZdNb435FPBYjT3FCLoT
+	 HnGZrYU8Psz3fS4dLXuIg9jX5Rz+OL/x+d/45+HuaTOmm8jQHvFfFRCnFF81/Yylwg
+	 tejSmKKYuejR1IfsP326x/yhXRAwwR7X/bV4G8xM1RUlQk+3XHm/SROxCgCF48K6z1
+	 uZjsrOndqqj4g==
+Message-ID: <sashiko-outbox-232294@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH] mm: memcontrol: let a cgroup opt out of HugeTLB
+ accounting
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Harshal Patil" <harpatil@redhat.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Michal
+ Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>, "Tejun
+ Heo" <tj@kernel.org>
+Cc: "Muchun Song" <muchun.song@linux.dev>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Nhat
+ Pham" <nphamcs@gmail.com>, "Frank van der Linden" <fvdl@google.com>, "Yosry
+ Ahmed" <yosry@kernel.org>, "Waiman Long" <longman@redhat.com>, "Oscar
+ Salvador" <osalvador@suse.de>, "David Hildenbrand" <david@kernel.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, linux-mm@kvack.org
+In-Reply-To: <20261124003145.80705-1-harpatil@redhat.com>
+References: <20261124003145.80705-1-harpatil@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 25 Nov 2026 00:32:29 +0000
+X-Rspamd-Queue-Id: 785E4100002
+X-Stat-Signature: wszyb6z84wqncqhzjbpprwkm7zze63yk
 X-Rspam-User:
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DCB65100006
-X-HE-Tag: 1795566258-751780
-X-HE-Meta: U2FsdGVkX19a8MXuuzOqo1jRRTgkD0P0SDfjY98axVpzRnkcgaZ2oPepkmETbVTBoXKuG0fDD8b2G4tPdPRzko3VTVR4d4WiUl5zHWEbouLQcyNFHA0KRt8zREOF0TiN5SpPyi746phbbBMngO7CO5cJ3MRi0J/1AQ6m+RaqhXFk7X3V3UDDNsvFK7AhI0JBa1r7B2KayfIDueO0q8FvZebLWxbVVi9cldFDdvHeyk5vSCO4/I5LxtqcBa+c9wwus1yEmPp8rvlXeKskgRUiimFGJNzP8ac+XpdubSmsreJLXWkVA+mREpreRdIwy7KfIUW3bYa5cK/SLmDWOf68UjLyTis/G8V6BbJVJLncQOD2NgNZ/e6ZkAqx4rJ8sNlsIlScXUSSlOFQkFRN4wr+u4Aev2Dz62rfsPs9rRal/bgIrv6G62itZEHGKh/ds89HbV7R2ZeO4LneHUHvgs27XPm2lc4iGsWdbUmsep07VKNyV0Dw/vTiPC6RZngIi1oVE8MXwqmc5sfvFbXF1vOr9Ui/jGo1emk+1XRcbI9V7a2a1MFD6AOzROCztY/x24TRVKqSs1AkSKR+0RoNiHc2axF6dUwQYqY2mFQUXaQDeZcWvvIl6NyrYBgVbOEeKWWM9yGByPMc+sOJ0GR57pFgBkVFkMfZnbx2H6DWRLFWXfpQhfLWiVrGJeyUj0Dil0w433DkZ3wpTGghx7yPLttJE3iBajl5cEQiqp8VUP6Z4UsF/UneDAKYzHtYGC0vlzsbXVZTnGVD7BNl+ZKtgl1pNmQSO8VQNq1KrzIKljHgIINVyc0aX+tR2m+lk78EuyrwhrVU3RQUEf5SxrS2MKqboLBvvseQs15oBhYW1iAR9XKhJV/DzYr4YCLTcn0p5uL2t3LSnmSLsZXla/qkiA40Rt3W5jL0/VfmuIfPPyuFD+HGFls/gGV5HN52CQBlvwkXLSwABCYjEVKhpsMX5CM
- U9cONOIW
- odPWb9+S86AaA8BmGE1BonIwhY/hwN/3DaQMXKa2/cEZeJJ0hlmpuXT+wzRglmTc400gA7kMw1PKhC7GdqnGStJ8IXhjh+GPnYwfZuUN87vT3aVNBk5Jb/5oeiuHZv7vawxTT7+tDofqi5MngOXS3MUO/9CgwRTFYmYMwW/xdLJ7J41Q19NncTFF6/06UYfYvZcu3Y07daWGkUlJpPrpCj6R8ln4DS3g+D6yHJvI9gPl+eBD8drwpsFgwy69xGLcyiPzzMnjpBzNYhh/8yfCgEP6/OpNEJJdLkqwyVdXz0rlJp/KF7/Qa98ccfQUCwrRdS1tceFYD2T1gUlqKF4rMVCvWJPQ9G/5/VewUCKtVzzqEx+NuhbuUQRG2qSuiwLOj3uKKa5OoyRS7NG6JKQafTvhmQ2b45seJnfd7X+qX3YXiU8xgHV9p3/nulmrG8TQqjR3bQ6m1YXZt9lw74diRCJ1zAqBNLj3nRc5+HJyzqHiS33zIQyaY3VSNaNa88mh7hEY6J81R5ai9Fk1cqz2Jf3v6HW0YM+qBogXV72QFpJeHOx7ITYBR3B53fEXMGJQC6IXJet3G4Svy2GgQBAE3TfkC2DeEWSW/klVQjl47WW5CLGy25FA+EaqCUzTj6vVqAyY2
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795566751-387327
+X-HE-Meta: U2FsdGVkX1/ODeyBuV5da/XAg5OfHuMyA6hFKohuN6+dMvHbUNt2wmt1duqkNA6uDHA5N9yOJajUWG7hJvB3UZaiWOUKYaaJk1UiihPIzmWj5bAVC3ljh2G91b5byUrUQKJv6ajD6vXG+kREg/VRUIIatYebH3WZYsBQa4fOF2WRNv8A7cuvDb8wXE9bSCFw5EfJSDu2BDq2RyEwyml+FvXjsh1rCUaAdOKF/dvhjsSjUi6jXciLepYaIlN15RG9kUZNZw3YreQLsg1ug4E29NAuVIhZbAR2VNWIAWzB8yNisnXqfZU5BPMnbD/FVkaaRHEAju8NRooU+3Q7xsHQPL+jRibZ/3gdGTiOHJRwbLe9QbAqmlYuixMfNrtvMWS52P5Xyxaq4WD+kwTHHIPX2NKj/ZkIkpAeyfx31mwgDYDWdmRVOsk5oH+YtNXrWjeXKjPBhQ38Vz2fff5FcySnJJCAozfOqeo3HxIxpsANlBUBJglRrC6I/1rvxO9wiEXXztZ1nJ1NLkBH0ZMI7+ESY0in61bYssIPRvLkvSLFoaKW4vNLiaCp4QCvw85vJhXBZSIFSHZjG1HB71FiE9Li+D+QhyBjvpJPC+gyV1YMumSvy0EkMqZL0AcfOTdKosj6hpc7+QSJhoHP9VOaJzub46hkqCXQcIMixrnRESYz/2W++PkENP953TifxMJrxMvP4ztkCXmlJtjwbJbVnNkKwM8A6L56gctVPB59OPFk8cKgQ3iXfhGA23yQqmgM7Dmp2TJSZSoIlDfypwU+lIV02vsDaWWYxAf1wCWhOUmNTM8D6ZqggntU4WPGVb2Nxw19MGpZy6k85YiIGGhFHD/CkToZVdGsTQIkdG7nU1CXI11YE3vu+alIhDkDgKnHg66niRceoft6/LDxY19LGf42wZN2d6rGBketjmCxpEkABhItzfv5AE1oRQKryGPOUPZsMJQxjuOL3fSq6eMK8mD
+ WaFPEu7A
+ sUXJoLXSWXTNIN8kmz7Y/5bszTJijVDKelxOnWKX3erosFcK1piPZx1EcI8cbWlL6O4t/gyS3IEFp9jl5PLWMI7Uklrq+XUmTNw7Yy5NuR5tYvK5/6hPUlL3DQzioGKc2tL9Y2lhOD3sRk9ctCrGWrTxJuVMXsPc+Kwvam2jPC6nrAvIhcbp/y3rmpjrzdaoJKd9j2MfUzmhXn1xUWJUzksUrwMgOoDpaAQvZ9tRab5sPgEAcMuBLSKjtENYcfiGLjcO5FEe7ZM6WV6GWHgAKqEiAAQAfkVbcP2XO+zDv3LhIW3A/22mLOFHKWasTSkTfRgn2wtkdASLfD1aKvdrC6bidA2QNG7uFsy4LPHkHjhUTCcIkOq7TCXepx5Bw3qSxA7/nGaT/gzaDmuPpw4WXcpyEuEoNDwT3ftnU2N9ar26xj8fwq+silXmzk3ZJ41lRxRrP7Z8zuBqmhGgLYWf/Kp0VSRmXlsnVnVy2FSCEb1M/stWYjXJ9PQYrGUG7X0noNKwRdZsnOkDN/TyAd3+8ahO4hZztIhnPmpxJXdz8N3bxCr5gj9uGdYYytfYUObKGf9vJ9ciJ2nCjO90ds5PAZW0HCOXZ+cbJigu3lv423kKItcmU4fjlaxdLpOgAOO4wmZ/8pxFJeSPIjDwlweJ7cvynzgNr27sbjOIqsgqCd1D77BoKIgIvi07PFB1Ol7pitlVeazcX1WkUemBpk3EZdUQvNTquloBdmbeLXXIa9EgGtQcnJl1LDg9dLNS0IvnKF7qDMAENKc5bVrvsccwdm3MQ3e2Mik2UV2zn54DgR9PWSfu1aCHc4BKXnmWy1qgH/xqJewZYf0wdSfDGjDgcGD0DMJshbKacsv/NRtst5AL1STahDTY4KfCuFG8WQgC31uMx5NbZNHRulEzu+TGFjLfUZVEoMKEunCNlWrUxMWdVSq8gKG3tK99jGizFnoVlS2Y2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,45 +99,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Thu, Nov 19, 2026 at 04:19:34PM -0800, David Matlack wrote:
-> On Mon Nov 2, 2026 at 7:36 AM PST, Vipin Sharma wrote:
-> > diff --git a/drivers/vfio/vfio.h b/drivers/vfio/vfio.h
-> > index 12557d45dfee..e6ca4c3fda06 100644
-> > --- a/drivers/vfio/vfio.h
-> > +++ b/drivers/vfio/vfio.h
-> > @@ -11,6 +11,7 @@
-> >  #include <linux/cdev.h>
-> >  #include <linux/module.h>
-> >  #include <linux/vfio.h>
-> > +#include <linux/pci.h>
-> >  
-> >  struct iommufd_ctx;
-> >  struct iommu_group;
-> > @@ -446,4 +447,21 @@ static inline void vfio_device_debugfs_init(struct vfio_device *vdev) { }
-> >  static inline void vfio_device_debugfs_exit(struct vfio_device *vdev) { }
-> >  #endif /* CONFIG_VFIO_DEBUGFS */
-> >  
-> > +#ifdef CONFIG_VFIO_PCI_LIVEUPDATE
-> > +static inline bool vfio_liveupdate_incoming_is_preserved(struct vfio_device *device)
-> > +{
-> > +	struct device *d = device->dev;
-> > +
-> > +	if (dev_is_pci(d))
-> > +		return pci_liveupdate_is_incoming(to_pci_dev(d));
-> > +
-> > +	return false;
-> > +}
-> > +#else
-> > +static inline bool vfio_liveupdate_incoming_is_preserved(struct vfio_device *device)
-> > +{
-> > +	return false;
-> > +}
-> > +#endif /* CONFIG_VFIO_PCI_LIVEUPDATE */
-> 
-> No need for the ifdef here and 2 definitions here. If
-> CONFIG_PCI_LIVEUPDATE is not enabled then the compiler should be able to
-> optimize vfio_liveupdate_incoming_is_preserved() to false.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] selftests: cgroup: unflushed root hugetlb stat in
+  hugetlb_opt_out_program()
+- [Low] selftests: cgroup: silent skip in test_hugetlb_memcg_opt_out()
+--
 
-Okay, I will remove it.
+commit 7608afc552161fa7f74ef34d7e8ac3bc7ba49d98
+Author: Harshal Patil <harpatil@redhat.com>
+
+mm: memcontrol: let a cgroup opt out of HugeTLB accounting
+
+This commit adds a non-root cgroup v2 control file,
+memory.hugetlb_accounting, that allows a cgroup and its descendants to
+opt out of HugeTLB memory accounting so that HugeTLB folios are charged
+to the parent of the topmost ancestor that opted out, and extends the
+hugetlb memcg selftest to cover it.
+
+Link: https://lore.kernel.org/all/CAPTztWY8eDSa1qKx35hTm5ef+e13SDnRHDrevc-1=
+V1v7-pEP3w@mail.gmail.com/ [1]
+Link: https://lore.kernel.org/all/ZRQQMABiVIcXXcrg@dhcp22.suse.cz/ [2]
+Link: https://github.com/systemd/systemd/pull/39486 [3]
+Link: https://lore.kernel.org/all/ZRrI90KcRBwVZn%2Fr@dhcp22.suse.cz/ [4]
+Link: https://lore.kernel.org/all/20231002162133.GC5054@cmpxchg.org/ [5]
+Link: https://lore.kernel.org/all/CAKEwX=3DOwrMNMAvve9a965mBJm8as+njtXE993V=
+cnKXdccd5GEw@mail.gmail.com/ [6]
+Link: https://github.com/kubernetes/kubernetes/issues/144131#issuecomment-7=
+104174643 [7]
+
+> diff --git a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c b/tools/=
+testing/selftests/cgroup/test_hugetlb_memcg.c
+> index 8c5aced813b62..54e34ee79131b 100644
+> --- a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+> +++ b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+
+[ ... ]
+
+> @@ -196,13 +201,197 @@ static int test_hugetlb_memcg(char *root)
+> +static int hugetlb_opt_out_program(const char *cgroup, void *arg)
+> +{
+> +	struct opt_out_args *args =3D arg;
+> +	long root, child, parent, grandparent, cur;
+> +	int ret =3D EXIT_FAILURE;
+> +	void *addr;
+> +
+> +	root =3D root_hugetlb(args->root);
+
+[ ... ]
+
+> +	/* memory.stat is flushed lazily, give the root time to catch up */
+> +	cur =3D cg_read_key_long_poll(args->root, "memory.stat", "hugetlb ",
+> +				    root + LENGTH, 30, DEFAULT_WAIT_INTERVAL_US);
+> +	if (cur < 0 || !opt_out_charged("root", cur - root, true))
+> +		goto out;
+> +
+> +	munmap(addr, LENGTH);
+> +	cur =3D cg_read_long(args->grandparent, "memory.current");
+> +	if (cur < 0 || cur - grandparent >=3D MB(2)) {
+> +		ksft_print_msg("memory usage should go back down.\n");
+> +		ksft_print_msg("grandparent memory is now %ld, was %ld\n",
+> +			       cur, grandparent);
+> +		return ret;
+> +	}
+> +
+> +	return EXIT_SUCCESS;
+
+[Severity: Medium]
+Should hugetlb_opt_out_program() also poll args->root memory.stat after
+munmap() until "hugetlb " returns to root?
+
+test_hugetlb_memcg_opt_out() runs hugetlb_opt_out_program() four times
+back to back.  Reading memory.stat only flushes rstat synchronously when
+pending updates exceed MEMCG_CHARGE_BATCH * num_online_cpus():
+
+mm/memcontrol.c:memcg_vmstats_needs_flush() {
+	return atomic_long_read(&vmstats->stats_updates) >
+		MEMCG_CHARGE_BATCH * num_online_cpus();
+}
+
+Unmapping 8 MB (2048 base pages) does not exceed that threshold on
+machines with 32 or more online CPUs, so the next run's non-polling
+root_hugetlb(args->root) can snapshot the stale pre-munmap value.  Once
+rstat flushes both the -8 MB unmap and the new +8 MB fault, "hugetlb "
+settles back at root instead of root + LENGTH and
+cg_read_key_long_poll() times out.  In the fourth run where grandparent
+also opts out, grandparent memory.current is never charged, so polling
+root memory.stat after munmap() is also needed to verify that the
+uncharge took effect.
+
+[ ... ]
+
+> +static int test_hugetlb_memcg_opt_out(char *root)
+> +{
+
+[ ... ]
+
+> +	if (cg_read_long(child, "memory.hugetlb_accounting") < 0) {
+> +		ret =3D KSFT_SKIP;
+> +		goto out;
+> +	}
+
+[Severity: Low]
+Could this log a message with ksft_print_msg() before returning
+KSFT_SKIP, so the skip output explains that memory.hugetlb_accounting is
+not available?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124003145.8070=
+5-1-harpatil@redhat.com?part=3D1
 
