@@ -1,126 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4F4606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE78606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 21:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HZZpKpqL
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hp+ABLEg
 Received: by kanga.kvack.org (Postfix)
-	id 6A2156B0AE7; Wed, 25 Nov 2026 16:46:39 -0500 (EST)
+	id 9416B6B0AE9; Wed, 25 Nov 2026 16:49:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6798A6B0AE9; Wed, 25 Nov 2026 16:46:39 -0500 (EST)
+	id 8F18F6B0AEB; Wed, 25 Nov 2026 16:49:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58FD16B0AEA; Wed, 25 Nov 2026 16:46:39 -0500 (EST)
+	id 7E0186B0AEC; Wed, 25 Nov 2026 16:49:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 31C096B0AE7
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:46:39 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE60D1C4B67
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:46:38 +0000 (UTC)
-X-FDA: 85474976076.04.9D404A7
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DB746180003
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:46:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=HZZpKpqL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of shalasheg@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=shalasheg@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 60CC36B0AE9
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:49:42 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3F7E12012E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:49:41 +0000 (UTC)
+X-FDA: 85474983762.14.17216AA
+Received: from mta0.migadu.com (out-12.mta0.migadu.com [91.218.175.12])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 18D721C000F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:49:37 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hp+ABLEg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795643197;
-	b=JNZ8doiQFvQBqRJfLSJm8ijlVPE/aipjF2InOpLgKA9v8dq7RjuRgsJWpdzPdkqiKiwqGq
-	kfoLwFBif44OBUpBJKQl0NAjDessWP6hAg9myewa8loGM9e4D+eo4kgtgDOaOtP37SIPne
-	F0WEFnw0cDvrHLOI1s/T7YZeH1ujYE4=
+	t=1795643380;
+	b=lTYpyV9HYcdJIj+KlKWqpM3xNJGRgJSkg1/0ZPWbIf6PJoeUsVGqjGB5nRh7zeeP4lAWNB
+	3Kv0lbZdFR4ktveKyvJnXHRrUrAbgv3B//kBqvzBXFKVDTzwQQexlF4FAM4JkRSB5VXc3v
+	rbs7ylt5BJSvcgpHy2zJiLahplPO4UU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795643197;
+	s=arc-20220608; t=1795643380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ECZfLCqovArdDXRBWaYMU5CLXc1REyLj6z5OT4Fz8Bo=;
-	b=VUqKJU6xeo9DNPb1G//GUZ92SpjM3BlaYAE0waPzRVR0PucayHLcPZC4B0rtlQA2xSOwwg
-	alTZWMLQ3L6VfJRabaYP6/ayxoZ5M+aCIsj8n4hc/VPHCjaZ6iluS4MeVi+9o+sQbnOwE+
-	oUpR9LmIXkJBvfaedUtR4ePHLdPNEBQ=
+	bh=kKJKbMnJNOGoE6D91lLl+V2hqik3/+jrS4TaB+PdqrY=;
+	b=cCvQNjDPnTaKyx6gWNCJdWrv/B7jpa4oJuEbUbcjfoAvcNdi9mRX8fqz5sPTvpUstRKDUU
+	wjIM7bHOG7nF26MCq+Hq0qq/GdmDjfdGBDu79r5WZUosAQsPGP+nG8kV96YcSe2G4s8oLF
+	KB2whLyd5srW4rxbk1zYQSJtJWYxYLA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=HZZpKpqL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of shalasheg@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=shalasheg@gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be3cff0f6cso4153521e87.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 13:46:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795643195; x=1796247995; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ECZfLCqovArdDXRBWaYMU5CLXc1REyLj6z5OT4Fz8Bo=;
-        b=HZZpKpqLDd4CJ9WGmyXLL35z+EsphE+rszkXglENeBkFb6aobTNOsJMJL9SmJHN4aM
-         X/quiIYNMNHZ/QI+Fhzx9di5pD9pBYeHcmDmu3Ra8ocv6qE7HPAjqNr0Jrb1yApCmB0N
-         48U8/q0HGFkD5CPrVA4XgPMkQRsMFvOhGSDhdhahmCLH1dLuOXaTEi4M31Xt3Nl/2QoD
-         AeSjRJgRK+uh3NNgQVd6+dCGnHYmz5pNC93iOEOn3b33tHnL09R0mI4bGJXHuB7q9xC6
-         b+SU1FX7CjCuJHmzRY8/BgcBPQxr+QipT/lYMfrzGfcB7O/Etiiow92p8aE2MIxeJBhU
-         G3Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795643195; x=1796247995;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ECZfLCqovArdDXRBWaYMU5CLXc1REyLj6z5OT4Fz8Bo=;
-        b=ajLsWwkfqsa+uHl5ABOYModzqthw5NJH84wNK8qcPlV20HuSpASiNVV4IFwpiYe3g4
-         e3Bv8oVvMKjbp19B16IcDuYiWmIlXkJV1JhJcpTU+ZtgEQ3wFNx9jTvwGNyGrkNZhhP+
-         eBxzyeszQDf6cKXfe8yHCkjUo03Pk40RJUfTLYbpqaKXxXnBlR7K1lgQcM9lT2JWa0WH
-         ruEfNdtc6V4/3Y3TuvRTVeNAVkWNcG1k14UJPycRAg8Po9GjNW1RGbIauScaPnBWNX4T
-         UJ6hkT5OQqA2HpO6QiSomkmeWFo4MgzifmQpW5hZOw9nu6MxBG5Rr+Cu1vsVaZcFc1ti
-         6omQ==
-X-Gm-Message-State: APuU4Z+toZuXFcVuhsJ52jivX0FEYDtze1slbPbWmiIcN7TlFqT/S4Wb
-	cdaSpXFo9NUj4o8YQNxai4GU4onEXR8bKVyuc036xG0aJmRzg11CMczV
-X-Gm-Gg: AZFdTZeJeJNRc6ZdTdIzn5FXtl6tf3tBxlXkqJVxqh1o6Pft3SSrQTKJS2/oEHuQu3f
-	5XMLzsB9l8M9oxvRNxyMNo60rtqDWSJOFsU0EidudGXbZtwmQJo7fjBmYEIWjkyG6HOCFQsaIyq
-	zIjnd/hVf4Jkn2f/XZm7ntlqqSDEtbrU0o3piwfQQs0Vft65M7vyMAsb9ffN/j3NwYb+45/FW+e
-	AGuh3vPLy4AIpflr87QH5UZtyjO2YcIMNHDc9iyuHiInjnXYrOytnhO2fZ0nVJvj5agwjCqP9xR
-	obVaB0abQjUo52UxXQpS72tcVFg4fjtEId3w6hI4zllco/oRWsa2YVA67twnL3GyJ7C1HufMVMQ
-	HytQlxpub9nOSrdh8n/VcjpB3bkLxINH69QkHPgGgFlJRQHOAOxbsCQPSdBfX0ATVG/rEd9Rz4A
-	IyS5h3HST/xeEI/9mxLRz1EgKl589uQVoBrVr+XyHRAcArEvn6SdYRak1Am84i9WggUmXW0Wq1E
-	5GSlX+eWl5ty1V7OUc/IMJNT1oU3KJTsm2/rOkZC4ITCw2mEOAnmqm6CFnWVHJ0Fkp1w4wlAxcK
-	RHICrqyJR/OLvmDS8SkiZkKyK/3JMCSxtes0WvC89m/CohBrIvveTF2feA+kfA==
-X-Received: by 2002:a05:6512:3b08:b0:5c1:b29a:1ba3 with SMTP id 2adb3069b0e04-5c1bc7d5ce5mr7798199e87.29.1795643194950;
-        Wed, 25 Nov 2026 13:46:34 -0800 (PST)
-Received: from [192.168.0.103] ([46.8.6.187])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd04327bsm4896168e87.51.2026.11.25.13.46.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 13:46:34 -0800 (PST)
-Message-ID: <edfb1d04-0d55-47ed-b1cb-dcd8c5df75ce@gmail.com>
-Date: Thu, 26 Nov 2026 00:46:33 +0300
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hp+ABLEg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=23ukelReVlQPxc727XgPBvL052sL8fB47EA5Oas4FGk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795643374; v=1; x=1796248174;
+ b=hp+ABLEg0b/bekpWtfUCIxBHwN0MXCO6S4wZ3CEVtM0Pl76ygNMlY7EUHAzlYrzSXdhHjuhb
+ 4NWoyD4thz9BwCAc4OXMm8Fk99uWattQ73XKtwFMfPt6uACUcM9S55ibJwWn86W8pr2N9sbHH40
+ M0f27pSLk2NCK/uUl//wHKrg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 61dfde814fe69c93;
+	Wed, 25 Nov 2026 21:49:34 +0000
+X-Mizu-Trace-ID: 61dfde814fe69c93
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <1b0242ef-49ad-4d7d-820e-d1e6569eacf8@linux.dev>
+Date: Wed, 25 Nov 2026 21:49:34 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] percpu_ref: make percpu_ref_switch_lock per percpu_ref
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
- zhengqi.arch@bytedance.com, linux-kernel@vger.kernel.org
-References: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
- <6c943754-05b5-4017-9145-0d145766909a@gmail.com>
- <20261125113537.bdb168bfe8962ef1aefc097b@linux-foundation.org>
+Subject: Re: [PATCH] mm/cma: reject long-term pins of HugeTLB folios
+ overlapping crashkernel CMA
+To: Sang-Heon Jeon <ekffu200098@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Frank van der Linden <fvdl@google.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Jiri Bohac <jbohac@suse.cz>,
+ kexec@lists.infradead.org
+References: <20261125155108.24098-1-ekffu200098@gmail.com>
 Content-Language: en-US
-From: Egor Shalashnov <shalasheg@gmail.com>
-In-Reply-To: <20261125113537.bdb168bfe8962ef1aefc097b@linux-foundation.org>
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20261125155108.24098-1-ekffu200098@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DB746180003
+X-Rspamd-Queue-Id: 18D721C000F
+X-Stat-Signature: acsxpgqsta8ahsjf7ucmh1myykbc1iaf
 X-Rspam-User:
-X-Stat-Signature: 17fb4knzoratwbshgyijdocigshzeawj
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795643196-207793
-X-HE-Meta: U2FsdGVkX1+w40owEvlILM9lra/1VvEMcXlDNGsrgfqUrGnen4Kuhxn9k8UzVQj+/tWivmrIB8F8T8+itKCgbWUoNe0++38mdiEvturrz1ZQtEsz5j18ilokd985ZhMwQGIqcU08CXhlAtt1/ENZayBcaX8iU3HkHwjzQeTxvYipEk1e+/oX0Z/9+UY6J1kJI/Jql6la7eXfv2R3EbIuWWQz4NHcnLvRm7eQaMcpBV0YdY4ijahxTuE2e+/BQbMyLUepjglzwe+wKu0VctHUbA6jmLCqXMOc3D98+18dbOSWOK6zjmcPGfJcfwpL5ruUcJaaPTlASu0BfFncEEoSbtx/F4jAPdVjzzaBpyTn1ydV/aIVkw4zlai/EAn2Eiwr9g42D73jmO0iB5AF4yIEq3h+3ZMrpwp6FPFBNLdm1tgoXXzU/IfHmZffgdq9KWNDUAyO7vyT8jJIAtwh4jL5Tuv4zG8OghfpOfSHPFK+Oq0xT5sj2fBcCiqNOp0o33Rp1ZgUsuZQTSUjPXKgaa623ElkdJSswO/qJUlUnvJZ0Qza9AOcNdaj1WhPLYVJA67OKoICajetL0+7LUPQ3tXMXp6M3T4fLg9gBe32//4SSBBXhkTzOmTT+bUY/wSTVmQrjQz4e3qSGK8UBCwDEJYiBZQ4rzPY662xk1n/aNMcM5j/eIVIkK6uSd8u+f7Mwgl6+EVdgeLBFtZYlDPjzt4IVJ9pUg4fbFYnAcy7mQXrDv5FKHshzQxnodnpDFwa3bH7R/UT8XygJW78oHKhytig0K1yH1JpOWjjCtu4f6WtWF2stQrcWMngMZJ9sY2zPletZbtpxKPV1PFsHUeLcQRN/UrQszQaHLRWbpHOvT3Jo745E8nzyZl374dxc8/96yNTi5D74hXGHE5Uaqtd6aC6HU98ZReQviL37h6PsoqhlP2JLefBc+rr7+/QKTB5qwcyOquQPaVckteu5XxkVMt
- VOHoQuHF
- BPYt9ffzs3tKRS3TNf7ix6M1vxW2YF/sGqVFTVrh7y0k5rIVdKtwoErYAOc3looRcpCnXpcrl/3oZldN9BYRMfoH+KyGCfxl1wQXyU846a1T/njVmt8iRXghLs4SWOhg5q6ss1qvVAhWLFLxgPxje2vJEgfn3T+/vA2DLdq2+HeVDaEy4+pHf6r1pKCd8R2GIn0MSJ8vqGIYGum/y9NCWP+XTPvSRnNGS5cFX7x95do95NCM4I9wmQG7F70azi54Cz7E18XRwEUfPzWvJ57PJ78afFBeJm0jdpj3/ogo8OCpWwZicZ5FmV8lXF60f4+HjhRaHdckSeZUNdWz1l45wtJyLyDQH4xhv/c+CPq5mDUfAsz4s+TQcnl5cxfo01Vzz9DH28lMUKxpyDTDv4EVHmZpC732hKANpaT1qT3LwkE1pY0Snlevjmxmp40Vg9YWung80MSJP03Fr42WTf46AAsxLcu9qLdytZNJLuYBYsqjgyCEL1Vpdtxzs7MVsVke/Ulzb0IRsKnGqGJazo+eJ22NrG6QNZzo4rFOBFTOf19sRgp13WXiD1taTnf7H/MFttubth+BbRPxdjedab3bvTLyQw0AfsRDGqmkwewDTfJIWnhxgXVmgsXjefVz93Dp/GbqHJHpVh/HuY49biBrhH9vlPRKs2aJBLHAlzaDs7Hv2yPs/uHm3TrZfM6HbX7TSL/PRKqKDw9yqXSQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795643377-427184
+X-HE-Meta: U2FsdGVkX19cb3A9NwgVrEWAl0Cl0LbuB34fe8kAc+MCO1u1S+F0hStQD16ZDolMxoXPOlAsGyM9luYNq9KZBLKxqsTIfSM9Cb0bXTYa2Eo9g9xIe8oRCzSCNA7imIScnmS59rEu5+d0995ei5aSWXHzDXdlUAHjnkSDY6RHMQJ/1ihd/xhY9ocociSRDoiAVTNjTuWBgwaV8NMccNk6+haSDL1G+8frsLhjR+K829gCXsgh0l4jNqwNiZPj+oXdz3qN51i0H65Bv1g08UMNrOyozAsl39OKvLpEH5MNHWTv04cmHJbqBD+8nSsIJ7sAZAO6WgZDwsauq9zMOXFyLV65BOWUeIDAOAfnCS7NLzzzgxKc4jiRm8IO1bxhMgw/OoxnizJ4Wp6/6Q46kBvOE2rKTLh7bXazqLFel9zFYtYuYW0O0qi6HadzBMYX2WdeaaJ879oz2Po3ily4qY6YBLB1Sad52jg0XqbyqE8ltkUdDLN4sItkVWxdbMnfdIy9We5ubIX4RhlMx/vqonfPvewHw7VLgSZ29wShHFIMLDmW/Qm2+Hc05U/wozke6eZosDRYVRkdnhyq+0Q1Uvx7XfjrKld0gb4U1QBxVvSkak2+WiSCwEz0MzR68BFq+NGw2L1+6uwqCVjVDpqDXwunAFMqlsBNdpoGFGMr2R51zGLcal4pRMnZSDFb/qiphGw0xSy5pvOZgzp/iG309DMGSbBkM1LG3WO8uAOY46U2OSF4iNbEGXHByY8UnTE9U/+iGZwr0AVg6GC4N7hVclwuckApIoSL0+iJli3xOgFn3bVN+Q63lh999iZIwOTtFF8hwoERbgNVRt4+3dFpiUBuDaBRpqJv+zVy8o7hrX8ROZbF1v0mtm0XbZDoA2Rg45xZcm2D36aySGFU7cT0WqNorHlNf1AzNK883a5jIzFH2IBJUrR+buxZ5NnVtNzsDr4g7/IPqFTcDaCFw59DPJb
+ zkfaGRI1
+ FfMbYYAUakNEQJoIGu8Af+mML0UNWFyecPygTWawKbLid0OnnNA6q3wq203V/YysgXfwKdDTv8UitR/d8v76qkrqY8deowxQVRaciy5cmJiwmBdU1uegfNQGNAp/QKigK3UfzwCQZ/7uORXZzD4H21XBzU206c1maB8VkxFNvZFcv5zaxrOSeLVFu7r2YHfSc0zvzRA6xPblDRm754U0NCoJbyV3SQUi6oVMOp8D+8gKB1SP/Qhos8Qaiw8MrdFewdzXkQh+kcR8X0pwM9NWEuFxMMSS4HQ2rd2B43lkpKSOmaGw6EU6XZLcXobzZiWyan1YjUQlCLY721LkaP1/BPA5eEuCLdc8cjL0VBbJ7sE7pFqmlbZ+szHV/GZbd+r+eUgYOG21h5Ate7koQO9IlYcGrLqRxpurL83bjfmqLvfNxf9i81+MTBNviCjr1IhqwsMORkq40M88TP8C6lxaJMuF3I11A995WwsmJdZb2LYO3+9zDyM3PnV75ViWN17ZG67WIx0WS99jaljwT13d+KR1a+PZzENreWBmZJ6Ze31t2YrI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,42 +107,88 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 25/11/2026 22:35, Andrew Morton wrote:
-> Well, an unpublished module isn't very useful for us.
+On 25/11/2026 07:51, Sang-Heon Jeon wrote:
+> crashkernel=size,cma uses existing hugetlb_cma memory, so
+> crashk_cma_ranges[] may contain HugeTLB folios. HugeTLB folios allocated
+> from hugetlb_cma can be long-term pinned without being migrated.
 > 
-> And an intense microbenchmark isn't as interesting as a real-world
-> workload.  So can you please provide more details about what "our
-> workload" is doing and some measurements on how much this patch
-> improves that workload?
+> After a crash, the crash kernel uses the memory in crashk_cma_ranges[],
+> but a device can still write to a long-term pinned folio.
+> 
+> So reject long-term pins of HugeTLB folios overlapping
+> crashk_cma_ranges[].
+> 
 
-The workload is a full-volume discard on an out-of-tree storage
-block device backed by NVMe drives. The test machine has 128 logical CPUs.
+Is spending the workload to protect the dump the right way round for this
+option?  kdump.rst describes it as
 
-The device maintains a percpu_ref for each independently managed
-logical region of a thin volume. Normal I/O holds a reference while accessing 
-that region. To process a discard, we kill the affected references and
-wait for outstanding I/O to drain before removing the mappings.
-After the metadata updates complete, we reinitialize the references
-so the regions can accept I/O again.
+	This reservation method is intended for systems that can't afford to
+	sacrifice enough memory for standard crashkernel reservation and where
+	less reliable and possibly incomplete kdump is preferable to no kdump at
+	all.
 
-A large discard repeats this lifecycle for many regions, with
-different regions processed concurrently on multiple CPUs. Although
-the regions are independent, their kill and reinit operations
-contend on the global percpu_ref_switch_lock.
+so the dump is the part the admin has already agreed to give up.
 
-We measured the elapsed time of blkdiscard over the entire volume,
-refilling the volume before each run.
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
+> The above scenario is only possible with the two patches below applied.
+> Currently only linux-next, which is targeting v7.5, has both of them.
+> 
+>   "mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory" (kexec-next)
+>   "mm: gup: allow long-term pins of CMA-allocated HugeTLB folios" (mm-unstable)
+> ---
+>  mm/cma.c | 25 ++++++++++++++++++++++++-
+>  1 file changed, 24 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/cma.c b/mm/cma.c
+> index 0c97aadcfea4..cb4a92e2b9f5 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -32,6 +32,8 @@
+>  #include <linux/hugetlb.h>
+>  #include <trace/events/cma.h>
+>  #include <linux/page-isolation.h>
+> +#include <linux/crash_reserve.h>
+> +#include <linux/range.h>
+>  
+>  #include "internal.h"
+>  #include "cma.h"
+> @@ -42,12 +44,33 @@ unsigned int cma_area_count;
+>  
+>  bool cma_folio_is_longterm_pinnable(struct folio *folio)
+>  {
+> +	struct range r;
+> +	int i;
+> +
+>  	/*
+>  	 * Explicitly allocated CMA folios own their CMA memory and can be
+>  	 * pinned even in ZONE_MOVABLE, as CMA memory cannot be offlined.
+>  	 * For now, only HugeTLB tracks these allocations with a folio flag.
+>  	 */
+> -	return folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio);
+> +	if (!folio_test_hugetlb(folio) || !folio_test_hugetlb_cma(folio))
+> +		return false;
+> +
+> +	/*
+> +	 * The crash kernel uses the memory in crashk_cma_ranges[], but a
+> +	 * device can still write to a long-term pinned folio after a crash.
+> +	 */
+> +	if (!crashk_cma_cnt)
+> +		return true;
+> +
+> +	r.start = PFN_PHYS(folio_pfn(folio));
+> +	r.end = r.start + folio_size(folio) - 1;
+> +
+> +	for (i = 0; i < crashk_cma_cnt; i++) {
+> +		if (range_overlaps(&crashk_cma_ranges[i], &r))
+> +			return false;
+> +	}
+> +
+> +	return true;
+>  }
+>  
+>  phys_addr_t cma_get_base(const struct cma *cma)
+> 
+> base-commit: a036649714c3446abfdc36d0ae483046432b16c5
 
-Volume    Global lock    Per-reference lock    Speedup
- 1 TB       3.424 s            1.218 s            2.81x
- 8 TB      27.943 s            6.133 s            4.56x
-16 TB      56.021 s            8.591 s            6.52x
-
-> Alternatively, this looks like somewhere where a hashed spinlock will
-> work well.  A static array of 32(?) cacheline_aligned spinlocks, hash
-> the percpu_ref* onto one of those.  That'll get 90% of the benefit
-> without growing percpu_ref.
-
-This might be a better approach. I'll compare it with the global-lock
-and per-reference-lock variants and report the results.
 
