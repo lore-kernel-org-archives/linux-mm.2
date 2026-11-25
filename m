@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759AB606A329
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F66E606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 22:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T1yDptkd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BmsTCXIE
 Received: by kanga.kvack.org (Postfix)
-	id 4EAAC6B0B05; Wed, 25 Nov 2026 17:36:10 -0500 (EST)
+	id 7F8D16B0B07; Wed, 25 Nov 2026 17:36:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C2546B0B07; Wed, 25 Nov 2026 17:36:10 -0500 (EST)
+	id 7D0056B0B09; Wed, 25 Nov 2026 17:36:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B1B26B0B08; Wed, 25 Nov 2026 17:36:10 -0500 (EST)
+	id 6E6156B0B0A; Wed, 25 Nov 2026 17:36:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 12AEE6B0B05
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:36:10 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9533CA0191
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:36:09 +0000 (UTC)
-X-FDA: 85475100858.03.0F806BF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C8D30120005
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:36:07 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1yDptkd;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 468D26B0B07
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:36:25 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C902714016D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:36:24 +0000 (UTC)
+X-FDA: 85475101488.04.9917972
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2099716000D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:36:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BmsTCXIE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795646168;
-	b=6Oi9YYy2c71sO2t5kW/0AIYbZeDBmW9Q7UjCk7bT/ZhxC3nCdOeNCBGiRmORuMuPPFZ8vR
-	ZotzbG5bChnDsAOHqtkI/PL4dOGrP1sL1JV9NE5BMpyY0cfKuvIrfrBYuosMXJ4b0/6WAN
-	B4U7tA3uvxoDU6sd7Er/j07K4gLMB8A=
+	t=1795646183;
+	b=6AmF0IvG8I0uB8rj02r29YvYgFYLCMmV383jS01xWlzjnXAWrWtQLv/kJkTAMnAYJ6cGoH
+	ci6oDvFsoZ/5wDZIXmxKD4N6URceIyY+3vsFMjPUGZJE+bZvREvtZ9Ljn6C14/PmlwvE9Z
+	j8mUd9x7SXke+qitzWQFnodO55+zux4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795646168;
+	s=arc-20220608; t=1795646183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p1rYByMhz0KjcnKxiH/WuOpBmwN+k1Zzr7v4FN4dO+g=;
-	b=tQKUdMrGZAU47CqRwTELCcAVbfzKjohniUXM0MT50dozKpBlzjnl7rT7OwD7sUkLuCiQny
-	Qs5GL+OCuiBzz+sKcKDm/000//BZvu89kTA1qQ039xcTXqfCiZXKxyO3cuBnhnlHys+SzZ
-	xbAV5bBYIeoqOWlqtKbUfkmP3wApgcU=
+	bh=mZpBmqbQgXgMnTQ2l4D3Ajs1IvGXdBhBJX97XEhXrFw=;
+	b=3whvm2jMuyps6KJzIvBoQ/KzzH5/ky3nGCsSTkXlLePEGlPxXlJHL8ZCchyENErhFZIOie
+	ckr4JECq/VRlfDkxXlecCagcqIICToeg1cRhhBkYvDJuHVTlAY2cEru89CxvLZBO4t/N5E
+	L4mSo2i7bR+UBREdZtzdwIPfp2jNpPw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1yDptkd;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BmsTCXIE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F351044470;
-	Wed, 25 Nov 2026 22:36:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AFC1F000C4;
-	Wed, 25 Nov 2026 22:35:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 95118628F1;
+	Wed, 25 Nov 2026 22:36:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598C71F000C6;
+	Wed, 25 Nov 2026 22:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795646166;
-	bh=p1rYByMhz0KjcnKxiH/WuOpBmwN+k1Zzr7v4FN4dO+g=;
+	s=k20260515; t=1795646182;
+	bh=mZpBmqbQgXgMnTQ2l4D3Ajs1IvGXdBhBJX97XEhXrFw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=T1yDptkdGkhkS4DIxHYWR8qc1deBMKJOGNiY/8Xr9dtoAjuu7hzpJcLvYs/dh5moW
-	 aM53gd1HM9rf9K8UIiY+slvhsN2H5X1EvzGOHbSPaBv6wlo7/VANCAznNVbD3oTer8
-	 EsLOZULLTDbrBDytJ/eDRNyUjkvmA5jZdsuvtKJIIqmOfbnpIRoPAVYCM/cov6t8m7
-	 vIni4++pC828MD8grzV/M/r0dGpUPl4/8MWkeddfXXSn+4AjOjKbHwN4tfkCDdM4fD
-	 S06jjQJHPI8hYCdvtWSWmcHddQODiIkcAsjmMpJefrliTd/utiosAWJKwkEAjYuhSu
-	 bnsDBqlJ1C1IQ==
+	b=BmsTCXIEHzyk1Iz3UrAmJqsf3yHx5toX3cmpJM5kGRORGuPeuzYOlsDrF8XRi+99N
+	 j9evxWo6rcK8doMUD9vmK1thBCtMq5uX8vc8TxGnfOgvgN0sK1afqV4d/TbeAsN+bv
+	 b8BiNeoB4vopglr3JXsfHw5M37KsLQN0BwCEJytLA1a6wCSRHFe4RJHYqC1L9XfI7k
+	 qUKpnSUFKJuQaiXSMEM4PWhJoL/P+br2Twoofuuz2Uvtfi5ubkKhgkpKQN64s84iGN
+	 eT+TMY/5RBB7nmUvqsexw1/SyyTQISQBuiOOdYDcBDEssVNYa4BSoEdNjJtV7SOmch
+	 Yn7sJqQjyEgFw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 25 Nov 2026 23:33:08 +0100
-Subject: [PATCH 10/21] mm/hugetlb: only check PMD table sharing for
- PMD-sized folios
+Date: Wed, 25 Nov 2026 23:33:09 +0100
+Subject: [PATCH 11/21] mm/migrate: check hugetlb PMD sharing in
+ move_pages()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-hugetlb_fixes_2-v1-10-db27fd2f71a8@kernel.org>
+Message-Id: <20261125-hugetlb_fixes_2-v1-11-db27fd2f71a8@kernel.org>
 References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 In-Reply-To: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -112,26 +112,26 @@ Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>,
  "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
  Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3518; i=david@kernel.org;
- h=from:subject:message-id; bh=HG9FVeHkf3r0GJ2DWJD6urls2DRbMkH6Rwt8+2D/97s=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1R6m1me+71ZUHJi1ga2I7lVS1vbHrv2XazSX/Xyl
- P008Xq5jlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACZi9ofhnyVj/g+BQ2/zX7y9
- 6fytvlqwhNVJNVlJ49bB5mJPTd6fyxkZdkbM+L3vy4qZibnTnlteatu/4sedOKblnZ1dBrxldq9
- 7GQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2908; i=david@kernel.org;
+ h=from:subject:message-id; bh=LCKF5BA45+5q+zlGMmgNQ58xhaVraHm1MhKbZUIdXxE=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLZk1SOsM2XOqg9/+16iS+zL/m5bQuprN2nbVLyaMWcm
+ VaTnnh87ihlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAi0r2MDJviahiD/OV+Mjuk
+ H7d1XiSutsrqw38Di6cGh6vvLgy042X4Z3d13c6okD9K3F/OWp2R+rN7yptrPq47wnvqp3bU8Of
+ cZwAA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C8D30120005
-X-Stat-Signature: zhtei1df44wz449xkuspe3qwiuxfagpq
+X-Rspamd-Queue-Id: 2099716000D
+X-Stat-Signature: j3rts5dcbdyrzs4hae1rmoatfj3unwmf
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795646167-473473
-X-HE-Meta: U2FsdGVkX18goBqoPhKhXi6sTuc2uTDgkcUpeGHTOynPnfWVluQ+1ug2S5lkYdknEo7Mj9PJwq/Msmy1+LoL3i9LF+M3spgM+MRiWnJMpCKDQopTJYWsrQaVMDCqlxYFKr2FjZ+Bu6fu33/zAM1D6XCCafkXJfcKAUfvO0ICVM5m/Q+CO0RfEuAZU+54mXZFFuc3RYEvb4IMEb2RPfe3Zfe/wfOw4/RQuFIkXXhQVgY7qReCPyzQxvFWg7bf5qBMDj8O31z9UsvRITF5HQosal4y+5z05jF9Cy+A9w24DR/LEWsKNYyEj/K+K0n3Cw76fBVSmlrH+dbPQLlyFRDe0Ntmhps77okxMlwhRXolJj9p6gvgwse0mPoMiKE20WlVZ/RlrW5tb5rvIq1MOwIA3HawNkfAhYeYI3f8e52yirztbjuYD/y6gerQ7Az3aWLZSzZI2javhi4YklYGB9BMqxyPIfOO90Va0sIzXYxxtofZnzDB5MWYFdqzy7ZaBFjXkJhaed8nS5+rTSyLvmnfa4564H7/LD7QD51nvbi5N0FR/VyGL8w/+1Z0CspznNK2dPq4G79IzEGJCyQsMOt/bajKsYcSA6U0JU9t2BuU29k8B76SNlyomOqAJAe43F1SACDZL2B6GZ8noHd4APgrjRrpdodK7uNHYcazLVYhsWjcrkLOkXy1YJAkwzHMMkjb3UEWh+4/8tGyR72l22A50DrZKLoEVr3eQcpaMThTdRK4djmkHls4X/jdzPoBYFTUG+WaD3Y29w8QlEIdPanWlXNhzN0RxF/g520yC1e4PmFZOMtcQwpzg4YCGoRLyHOEYOfymdi6V/PjAVYxhEQ4xQj1pVbeqS0dXIf8UEVkLhZKHe7GjAr6Npwk2FpTG6au1uCl3kYXB8YmUdwx4fZhGhIUbFOt5HBLO+IE/y7K8+CLt0/cLD3uv8uclxIGKu2DCY3VRXxc/85Y9U+ZON3
- EoL5U04o
- +gV4OY+HgXV7W3IQ9UZ5T19nquX9icxsJf2PGeM6fzawLuubrgwhe2JA7Y3gNlaP3hKVGUk2ttFT/MkQJR1oZ7ZdyE+89APcey6gCUXFT7NrCcCLBsGjJ+LlQbv9Z5MVllXRMCMh2uSe6io2a/X8bFxNphvVlEK6Kc4IALmOHjzuB7uoBB98A89J/+w1bweMPP52CvQc7TM84MzjPv+8bwLzr39jWUNmsGLdNkFooM6NW9CTiMQmiQLVd/s8HmWfC13WQayb5r8TKyD3rAnp3V3w2QtinDCPH0T6e9bsWxsdmBYjxGamuLyikUgGHUODdlTrn5umOaR1U3s5p5UWWN3joSnH7bdtELDkFLVUKJFApH3s4wNnvHMOGa8/SO6kX85aO9XvwtzxeAvcXuMQ4Mz6ClHQ5rmMPUj8pD7fhZPcZ5gu6J3kClRHM0TcHGBQ1w9ZCGlAqyVCCsmDgjaPITzP3Ej6d6QGv4qXDg9gbD4o0JbdcbTibnGDgQ15IRd5bTgaAUs7t8MNjxF85W4DOCj5+qHhfO3V1V9mJ+6DsZbDnqSQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795646182-992053
+X-HE-Meta: U2FsdGVkX19rblpsCKB//w4yeUuqRmNFncZ1IXKpefQB23QNcC7cxBOYGUxO33XDFDSugbIDQ0HlVkbqXIAZodn5IWVta2MISeehQV1nHJ63ALd62PD+9XlBetihoN+CjQ5Iel1Orn//lVeIAa6CzB74iy4SHjDX1UzAhW3BPXz768poTvOUjnd1y4YqS0br6haEchxvjRPR/+K5ybnQcto5VYEO3+qJ8RfJ7I8brCn/viFfK/4JikIkc8Zq6EcVHd+zYg/MU2xVxihfWprrTwnUGFN1IHqXTV2HA1/3IoQ8iBrVFrosPO2aVE2PRHaj3Dr4AVHoqAT2c6olDLfo1cVzIOMjAOFj71s0xP2JVC6L7B5GFpYce/jUneZaPmj16j3p5tW0YET7LMdNyO0xSHJ2t3FXCFdtwu0JmF5SPb5EaGgLQ+AuQNYVL+Wp95aYId7osAZhsaenbqAwGtL2iaMZz6JGDUhw2H1Z1BN00R62nlJSE8M/VyKZ9nywchfwIaSNRNgcnF4ItBUGwCfGTZGqT8H149b+Kb0xm2BYbxECkSizu131IWdT5F9PrZ8YaDOONzIzpfHg9mfCgCkPdrv44Ws4AlbxaHje0kvXh2vunuEvOLdRHJP8FIUQLlkZae4uif8zDKKwBnhXjrbhoBDMdIx134OGlUphBR4pCDdZu6zr2gdcIzFoMe1qDMpgsA6f7cudNx7uH1i6gfiPPg7kEGxcg3PmoST6AzgnJ56zSotmqNTms1wh3Tz+8fQEbwwRpvPu3fyUxpT13asZTz2gjs+goj2pg0s+BiAnhBJHf66X5fNmz+hlOK+rVbbTQNpVivk51VZ464PWK5pYrU5nvyjZEQ2AoHP0a3/zAaqaClvoj9RfgdJznFBHCf3nmFN0zYJklvrYSAYOJ+EIh97wae7R5hj+ZkuPypS4YvEHC/y1pIETptgLQs+NdbhRg9jt46Gy7r/lzugB74K
+ PnaIEaUl
+ ZaVX2TX2lJB2sRzj3N1Wl36OKYcqch3glKTlcUqoPUlMbmEqx3hUM/MGsFm4HU1PrZfluIvx+D3hdISvj2wpVt7Xwj3CHy5bqMT8AwOjxHpW35PbPYNm85KiZkr8BKEG4uFCG0AynggXAmEKEc9PWSSI+XfoJsDyWfgxc1j6GxGWCz5iu9Y9PObqqFsYrZ9a1wrgcQtQMBYbCiopD5jhN0LNAGYk3RR2cQk/gjXX+MTISBIZyhHZ3CVXaFoxOzsLHdMmmW0yuFduJRs9Z4ebhEIbVwTPUCDt7K8jf72ypgAinQI9MhQ37Vdqe2fuut2tJ6q5aD9lwmQkKinVHAPZI2pyqeQDJM84FTikiAF9Lsr98vqM3v1ckd4o0ALi3t8LHFmNG2LWrrzLAipCNLOPBfn2p1+FmsT9VqfgCVXZFOnxPLE4rXAZb1EUgZay19cFpgVXnJ+QMwvtembghP325gGWukxEnNbmF21KNL85ZriuAHErE6iZ/QtmfI9JJOXGtiWhtujKKV3Ur0omX9lW1IeotGLeluH8xHvCJSGMFHQfNEL8l5IC2Sfk298s7WANHTI37d9JKAZWAPkqBFx+XwwKSO9Dvmh3n9NnFaVHJAthzOkXtg4ndfbVUL1cMl8I8KdHu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,98 +140,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-hugetlb_pmd_shared() reads "pt_share_count" from the ptdesc of the page
-table that maps a hugetlb folio, independent of the folio size, to tell
-whether that page table is shared. Only PMD tables have a valid
-"pt_share_count"; for other folio sizes, such as 1 GiB folios on x86
-that are mapped by a PUD table, we read whatever another user of the
-union left behind.
+Without MPOL_MF_MOVE_ALL, which requires CAP_SYS_NICE, move_pages(2)
+refuses to migrate folios that might be mapped by other processes.
 
-As a result, such folios might be reported as shared in smaps and as not
-exclusively mapped in pagemap, and mbind(MPOL_MF_MOVE) and
-migrate_pages() might skip them.
+However, folio_maybe_mapped_shared() does not check for page table
+sharing. So move_pages(2) with MPOL_MF_MOVE can migrate hugetlb
+folios that other processes map.
 
-Let's fix it by adding hugetlb_folio_maybe_mapped_shared(), which
-combines folio_maybe_mapped_shared(), documented to not care about page
-table sharing, with a check for PMD table sharing only for PMD-sized
-folios, and using it in the affected callers.
+mbind(2) and migrate_pages(2) already handle PMD table sharing since
+commit 73bdf65ea748 ("migrate: hugetlb: check for hugetlb shared PMD in
+node migration"), but we missed move_pages(2).
+
+Let's fix it by using hugetlb_folio_maybe_mapped_shared() for hugetlb
+folios in move_pages(2). Such folios are now reported with -EACCES in
+the status array.
+
+Rework the code to have separate checks for hugetlb vs. !hugetlb.
 
 This has low urgency.
 
-Fixes: ca1a47cd3f5f ("mm/hugetlb: fix hugetlb_pmd_shared()")
+Fixes: e632a938d914 ("mm: migrate: add hugepage migration code to move_pages()")
 Cc: <stable@vger.kernel.org>
 Reported-by: Chris Mason <mason@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- fs/proc/task_mmu.c      |  6 ++----
- include/linux/hugetlb.h | 16 ++++++++++++++++
- mm/mempolicy.c          |  2 +-
- 3 files changed, 19 insertions(+), 5 deletions(-)
+ mm/migrate.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index d2a524c6ad4b9..41b280ab7b19d 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1211,8 +1211,7 @@ static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
- 
- 	if (folio) {
- 		/* We treat non-present entries as "maybe shared". */
--		if (!present || folio_maybe_mapped_shared(folio) ||
--		    hugetlb_pmd_shared(pte))
-+		if (!present || hugetlb_folio_maybe_mapped_shared(folio, pte))
- 			mss->shared_hugetlb += huge_page_size(hstate_vma(vma));
- 		else
- 			mss->private_hugetlb += huge_page_size(hstate_vma(vma));
-@@ -2131,8 +2130,7 @@ static int pagemap_hugetlb_range(pte_t *ptep, unsigned long hmask,
- 		if (!folio_test_anon(folio))
- 			flags |= PM_FILE;
- 
--		if (!folio_maybe_mapped_shared(folio) &&
--		    !hugetlb_pmd_shared(ptep))
-+		if (!hugetlb_folio_maybe_mapped_shared(folio, ptep))
- 			flags |= PM_MMAP_EXCLUSIVE;
- 
- 		if (huge_pte_uffd(pte))
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 0d5414392d870..49dad5ae57512 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -1386,6 +1386,22 @@ static inline bool hugetlb_pmd_shared(pte_t *pte)
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 0430197fdc04b..194d74152e8e3 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2279,8 +2279,9 @@ static int do_move_pages_to_node(struct list_head *pagelist, int node)
+ 	return err;
  }
- #endif
  
-+#ifdef CONFIG_HUGETLB_PAGE
-+static inline bool hugetlb_folio_maybe_mapped_shared(struct folio *folio,
-+		pte_t *ptep)
-+{
-+	if (folio_maybe_mapped_shared(folio))
-+		return true;
-+	return folio_size(folio) == PMD_SIZE && hugetlb_pmd_shared(ptep);
-+}
-+#else /* !CONFIG_HUGETLB_PAGE */
-+static inline bool hugetlb_folio_maybe_mapped_shared(struct folio *folio,
-+		pte_t *ptep)
-+{
-+	return true;
-+}
-+#endif /* CONFIG_HUGETLB_PAGE */
+-static int __add_folio_for_migration(struct folio *folio, int node,
+-		struct list_head *pagelist, bool migrate_all)
++static int __add_folio_for_migration(struct folio *folio,
++		struct folio_walk *fw, int node, struct list_head *pagelist,
++		bool migrate_all)
+ {
+ 	if (is_zero_folio(folio) || is_huge_zero_folio(folio))
+ 		return -EFAULT;
+@@ -2291,13 +2292,19 @@ static int __add_folio_for_migration(struct folio *folio, int node,
+ 	if (folio_nid(folio) == node)
+ 		return 0;
+ 
+-	if (folio_maybe_mapped_shared(folio) && !migrate_all)
+-		return -EACCES;
+-
+ 	if (folio_test_hugetlb(folio)) {
++		/* fw->ptep aliases fw->pmdp and fw->pudp. */
++		if (!migrate_all && hugetlb_folio_maybe_mapped_shared(folio, fw->ptep))
++			return -EACCES;
+ 		if (folio_isolate_hugetlb(folio, pagelist))
+ 			return 1;
+-	} else if (folio_isolate_lru(folio)) {
++		return -EBUSY;
++	}
 +
- bool want_pmd_share(struct vm_area_struct *vma, unsigned long addr);
- 
- #ifndef __HAVE_ARCH_FLUSH_HUGETLB_TLB_RANGE
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 6f800fb961aec..229efcdb2c7db 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -833,7 +833,7 @@ static int queue_folios_hugetlb(pte_t *pte, unsigned long hmask,
- 	 * cannot easily detect if a folio is shared.
- 	 */
- 	if ((flags & MPOL_MF_MOVE_ALL) ||
--	    (!folio_maybe_mapped_shared(folio) && !hugetlb_pmd_shared(pte)))
-+	    !hugetlb_folio_maybe_mapped_shared(folio, pte))
- 		if (!folio_isolate_hugetlb(folio, qp->pagelist))
- 			qp->nr_failed++;
- unlock:
++	if (!migrate_all && folio_maybe_mapped_shared(folio))
++		return -EACCES;
++
++	if (folio_isolate_lru(folio)) {
+ 		list_add_tail(&folio->lru, pagelist);
+ 		node_stat_mod_folio(folio,
+ 			NR_ISOLATED_ANON + folio_is_file_lru(folio),
+@@ -2332,8 +2339,8 @@ static int add_folio_for_migration(struct mm_struct *mm, const void __user *p,
+ 	if (vma && vma_migratable(vma)) {
+ 		folio = folio_walk_start(&fw, vma, addr, FW_ZEROPAGE);
+ 		if (folio) {
+-			err = __add_folio_for_migration(folio, node, pagelist,
+-							migrate_all);
++			err = __add_folio_for_migration(folio, &fw, node,
++							pagelist, migrate_all);
+ 			folio_walk_end(&fw, vma);
+ 		} else {
+ 			err = -ENOENT;
 
 -- 
 2.56.1
