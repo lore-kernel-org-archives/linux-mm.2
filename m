@@ -1,103 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4F0606A684
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FCA606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Nov 2026 09:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VwsvQWjN
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IWSBa6bB
 Received: by kanga.kvack.org (Postfix)
-	id 874FC6B0960; Wed, 25 Nov 2026 04:35:38 -0500 (EST)
+	id 394A56B0959; Wed, 25 Nov 2026 04:37:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FE8F6B0961; Wed, 25 Nov 2026 04:35:38 -0500 (EST)
+	id 31EA36B0962; Wed, 25 Nov 2026 04:37:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EAD16B0962; Wed, 25 Nov 2026 04:35:38 -0500 (EST)
+	id 20E4D6B0963; Wed, 25 Nov 2026 04:37:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 47ABC6B0960
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:35:38 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2822C80E25
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:35:36 +0000 (UTC)
-X-FDA: 85473133872.04.C3D555C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7F6B61A0011
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:35:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VwsvQWjN;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E56C16B0959
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 04:37:32 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7DCDC160D9A
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:37:31 +0000 (UTC)
+X-FDA: 85473138702.01.A0F6B21
+Received: from mta1.migadu.com (out-250.mta1.migadu.com [95.215.58.250])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 689D520008
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 09:37:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IWSBa6bB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.250 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795599334;
-	b=KD0L+M/vq7qTjKFhttllg+NUv4lKGAmmDThaqxsyRdD9VWp/A6j9UhVJxJIHMdnF1ksu6q
-	0Onjsj8haFzjReN1to44bjna5T2xpOPECDNl0uRfk8TTBbVS40gk5U/FGfgC2UJOxzCQ+X
-	BIsQUuiT/kJrKXK1sYDcTl64323HZ2k=
+	t=1795599449;
+	b=aw/G9vb1OCmKfBVXjPTjwYj79tLuyVQtm9vnMoVYPn90w+2whV1kCDtyFj8HREY3D24ggf
+	BfTXMpigbbQsVURT2gGdyoZd7lHk+HRKv/87uDVx+qIyFHWdRTiA5GgbqmNe+K13SW7jwr
+	TuZsE6ZdEb/hPcdhLDSgjsqLsqextlA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795599334;
+	s=arc-20220608; t=1795599449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=lWlGP+Ou3VbMvXRiWf2VUrbZoItxcuCKRD9aSDkrNIo=;
-	b=ere36sm7s2SCniBfocU390lzuW3B9KVXHhHeMCdPuZ/siF4CHAMEHA7x/f8pZ5Km1e4JQM
-	6PV2m5jqltF7EafwtyLm8bbbIZE4nJyULZS552ujqk9SW1TSZzclH83dForyfF9lNinied
-	SBffRyExFZg7u15r3KWRk2hZcnQZ2Wk=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=k5xHf2lhPr/RExrawLrN0PmhwGouCpcZE5UnOts9ZAQ=;
+	b=6RGH8C699Lmpz74B8/zEEbsKyrwd1agJuyWL7X5dMqw+ksQ7Vb6oZFDihx2O59Loj6+u+V
+	1OwuFFas/SB+xaie4jV7iylRTc/w3zFEfkg2qFKwaXctXcxBMIXsW9r8Pn15AEnCakNJye
+	E0DQG8DsAkCEkzsnraad+rMjUfQ7nFc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VwsvQWjN;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795599334; x=1827135334;
-  h=date:from:to:cc:subject:message-id;
-  bh=00uX1NQG46bUWx6NkRFg/fsjUJ6HFdTMVvTYmoFvSuA=;
-  b=VwsvQWjNY7WNNMfQ8IkdXMe1py1AfAdUBUOI53t6c87Lx0QVrgABB1AV
-   SEDvMy36GwgF3vA/xiqjFN/zp9dW/HgQjjjTxlhcjWD2UuGPss495cCEI
-   civ2Lbn0JkQVuc5yuvK3zC8bP9U+7cVrj6K2WrotJqFxUd2D/kHKbi/ZQ
-   7L+5l0MF9urtJ9gdEMLSPzOioDTFmRaehRy0/Jwijmj/roYyDALFTceZY
-   ujKP9RWGUgOX5R9mcTlrUNtDrKiCz54mmtqjdi9tAxd+kxVw7Xw5mv/vr
-   r+RGpzWYNsdMr1KnVy9hv6/y3jzNxHvN9ZOk2XFXX/GDm0LjXrHLXzEOL
-   A==;
-X-CSE-ConnectionGUID: j5dZNJ3ZRwWD1Tqofi+xug==
-X-CSE-MsgGUID: clAK4BRsQxqBr8YZWUEhCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4531278"
-X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
-   d="scan'208";a="4531278"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 01:35:33 -0800
-X-CSE-ConnectionGUID: kVIqQh8DQMOkWK7WBYaiTA==
-X-CSE-MsgGUID: 33zrC3G/RhaZAVdAtpNkpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
-   d="scan'208";a="11686482"
-Received: from igk-lkp-server01.igk.intel.com (HELO 99c479ab0aeb) ([10.211.93.152])
-  by orviesa004.jf.intel.com with ESMTP; 25 Nov 2026 01:35:30 -0800
-Received: from kbuild by 99c479ab0aeb with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xW9PS-0000000006N-1lpK;
-	Wed, 25 Nov 2026 09:35:26 +0000
-Date: Wed, 25 Nov 2026 10:34:55 +0100
-From: kernel test robot <lkp@intel.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IWSBa6bB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.250 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=qq12iW/GfAR0dRAaMy1K7AX9iuydUIvkIBU6+z/H2qQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795599446; v=1; x=1796204246;
+ b=IWSBa6bBkna41jsj8ZWeTM5E9j/lXWrq4rL+MR5TuEE38yqwCk17IeysPgN915zJZvyyjZTE
+ xTAr659q93oRoGQiGIJVvcObUhGC2iFfVWku0zHSXkn5GPxU0Aceu2/dlqI6DDzFwlciimXZ0a4
+ zjd5hbkg/I2UmjJeu6cWafvk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 442509cce5000c32;
+	Wed, 25 Nov 2026 09:37:26 +0000
+X-Mizu-Trace-ID: 442509cce5000c32
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v3 06/19] hugetlb: Optimize bootmem folios that were not
+ pre-HVOed
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <CADrL8HW8+eFt5f1VBQ0zt-ioiU3X150W4ROaKf2Nzw4j9+0i_Q@mail.gmail.com>
+Date: Wed, 25 Nov 2026 17:37:04 +0800
+Cc: Muchun Song <muchun.song@linux.dev>,
+ Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Oscar Salvador <osalvador@suse.de>,
  Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [akpm-mm:mm-unstable 33/408] mm/mmap_lock.c:572:14-33:
- WARNING: atomic_dec_and_test variation before object free at line 574.
-Message-ID: <20261125102827.xQ94ZCi1-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: 7F6B61A0011
-X-Stat-Signature: xy1hpm8izsy1zskcq7wwnz6e17yga5a6
+ Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Nikos Nikoleris <nikos.nikoleris@arm.com>,
+ Linu Cherian <linu.cherian@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ David Hildenbrand <david@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Nanyong Sun <sunnanyong@huawei.com>,
+ Yu Zhao <yuzhao@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ David Rientjes <rientjes@google.com>,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <09A53080-61DE-472D-9A37-38B524C76FF9@linux.dev>
+References: <20261122184453.2668189-1-jthoughton@google.com>
+ <20261122184453.2668189-7-jthoughton@google.com>
+ <CF94E7D7-87D2-4523-9343-512EE00094FA@linux.dev>
+ <CADrL8HW8+eFt5f1VBQ0zt-ioiU3X150W4ROaKf2Nzw4j9+0i_Q@mail.gmail.com>
+To: James Houghton <jthoughton@google.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Server: rspam07
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795599333-91610
-X-HE-Meta: U2FsdGVkX19tdc/0F3lILUl4O2mrxw8dLXUOp/vzwcP8r7fjqujFwEgHEO0fovzNlrazSiA3k6gNSA3q5JmIvHFFrkkMyJuUl4XOV0LE0LnUlFIGVe7n7kvQuJVmxjKaf6iSuP8OYRQTej3ibawCp76SkgW8g0EBdDWaE/NN/PiGusVKFpB2M5KWFv7NbNP8PaozJchuobyDNhBPnCDg5ipGkA2HHrSvICngGhxL5n/DhHpoDMjN32gzA4EZmfv+RxjLMAfc0ehVDxKNHPRwOH+BhLLSICMs8GCzn7w/G7hczBQY3yDsWXpOGNcMANpOrciWkXQjo75N2Qn2WAa352SJd/eV16eXSWtF9HjZtwRJ+iEtaQa7pW1AsMuhgoN4LKXhSDkZcVD/+b2+TN9x6grih8HuBvoK6U3r2BKfYlkbC+35hIqBX+ir5Qmwh/PoO59YlaNjGgJ2UeaG0lL2YW0yfQeosgWKNH7A0s7uEGYbhhbklgCK7PTjr/L2VSBBQP6q7E8j8vrVElH0j/riHQ0+6VyYU+EF5cqRSd64kTRIOkbXpxM6GFDNuBqPxBCbsNnoleQqx47iBHTbmj2L5oFiqDSDZGXe2Go75o/DI16RTXl2sFTm/jnO7SmhdxQNK6LDiFGOPl7o9D+8vIN1h+c6MLOPirxuX5xEagQgJZE7Fid83zv4Of4mrpZ3ck/W3Mrf0P5oLPylSdEYAQ1h+txkBoaLzNGBrC6ur7jw7zyp3sLsWhGCoZqwgaDh61U4Yphx/BwYS+TsoHSi6X/1OswMb/cUppA/34hO4t67UNm8wKzNkUlsStrBS/6WJE78LeS7wVd13ibCmd6VWR8kb8Dl9Cid0kfCe/kkEuibRGJriv3lwVU+S9KZ9heaGsTHC43odGNzzKJiJubhSb6BevfUN6wqZ+plHVbIiKnRsI0NIBnvnuq5KZNdlOolV8bUsvPWLzfZpSKr7rLktVF
- aR890q9g
- SQqIa0MXtQpi8i0LKWDgNuUDLpiRR4nmeGwjdeQNqB5dIRD56M0yYxarJbrN9gBh+TJMDddd9/STI7QXG7kSYbJZ3AZd2dzfSSNu+E5ojMOnZ3xnJ+IwMIb25rO8lX1nenRfxo83WkS918I741CdFTJz+dE4u+0DGPtERx6gV3NJzGewyLjb1YtZrYMKKuRjWliKij64b27iLZecAy9jyhqb/rqCZIi7SyDA2yqzrOkJILub5HMS9wQ6ob54u3LpfM20HxkIySoKvEYyloAPsHBsl1O9ldAIAkkRFfQwhTfL147S/+jW/Fa2X8wCipAeJoBP9hZN9uQ7FLeI+ukYnfzMuyATiMYKml3kgUGhW0ZKxQLYktPUbAA3WojN87pma9/nTxrLG/L4unqbwXGdiiYl69OlFETKogFYsdEn9o2lU3UBldn7gPBpmTydCTGbRT1d5QWzSad6iKrd4+Ym6IU1DGE+UCCH4hRPzOWHw9b5EYGscdNSOxnLny1FcPCM/RboljuMoteo71jOaar3uruCZtvRPrgg2FFAGRHCiL8+BOQs=
+X-Stat-Signature: wxw3tz1mnmskb98nsbpiz6p7uqqytd1k
+X-Rspamd-Queue-Id: 689D520008
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795599448-469496
+X-HE-Meta: U2FsdGVkX19DzMmyI1WrLvWcaxnH6DsUNbxfNnOfkyXIFOlC0NhLOlcemywmLDzRhb+LfD/4BsY1jHQIRbDZfm3O53Qqbpu9AmcwiYF4+6rFhLKuOFKe1Cg+WgojmIG1eY/r/iX/1dcRTynhrMXTzBpuCIXr5UFdVOqLQ2rEV7O9tfVXCZ6zrE+Bla7hXStpulL2c/MmFsk3M+iobFI1vRuQW3dXkt41mZUSNHZZpYH+C4PAJA7hRnBrPf3M5KBxboTO9oECm0pHznU9Ghz/WL5dKFKm1Srnx4nKWhnW6MOqAEOT5WywU7odt+CK4V4k621XQyF/CwdxHQmg7TSBylDtFpLxes0uiaUcd0NXE01ft0kYDk1B7ATa8aFYrIctaYCAKdBt0DlI4uKeiNSzXIFmIqbo1al7k/CBow3mABCnmJc2IL69yEeWeq2XDdVBXA17D3nttjbyJv+sNCrNNBjbP34sWwGFI36Ze9Uxpv1VoAZ0uaxprDh5cUmuqvcrjuQgRhrOKCOVSNtUbH9OV5fJERbWIrg73RkKoRWgOj1BItJRDW8a5CBZpFGBSSi4fdbHmMFxdXJcH/fOShAIJ/YcnjKkwJXhR7O1ApnW3lxec+rcVH3LiF+efjTAyxslwlHhPiGbMTau+PBmjTgAtILUXANwa5LJfDg3iWH1BzvxB8LEtVZh1wUt3GMBNtfF2Zh+u/C6FJdFGeholeCgZCIxDrPPR16u042Kl6MSIY1O2F3dj0WyJX3RFBLF9n8yL6D1C7JkTzr1L+r+qvxgseUfa4lbbEUo6RdEp+liwZ1p2IpkWRg6Me/w2+BufbhAotenQT7epTSWSqxNzPBO+ei/QywB1z2MUL++7l0I1Fl+6Q6kXFwF5P/yikapgk4GBaqfYZzdqAnkcANHdYLSuUqWKYOLaeYJCJAVxZQL0FlqJA2CL0ECzUGI7j00K4R3+/RdAjS3iOL66SiPPOu
+ Tl3lJZKi
+ xvUNzYmkqqMqyfEpHGuVg5RDKa7HDTqGv2yujYythSnuPQhRIv6FvaYIXNZbtksXTxmWHIHMp2Tish877TI5ben7VwNNWY+2hHxKO81J2GPTdQWPgebWMVSYaYbqdnYtfLwC9eymIxijA7mULKMlhtNsVsNl1UJqDF5Mh3kdPuJVIvOeBDKpTwKhwIoYxNoVGuxZ7+kPT/gYESlL9BueTLazckPkbGFz+PWMaUdEjX98Kf1vU/IK5U3tZR5yMVhZ9NeJ7o4Btlpg+QCz6xrERTZnw26CQ9Dobep+ZMiXG+zfanZ2MQLlEj25bsrEtEfhh9tAf+l0PiHTgbGy/k2Hn8+tqLtqnA9JTthqolrHM12VLd7jV+y8xIps38PBvCBiuQ0KHKMsJJtWI+neWNBXoK65kryGQ8VJ5BqTd7hQoTDGkvt26KJlWsQtIpFQP+7fwTw0MXIUS22359fiGPZwrhTtTJqakwuMvao3Zcr7SSlHxHfebV8vZLhdElIV5WHRQltX5g9NqzMsQwRPZ24awSQaI1sCTXqiaJnmQ4qZU0DyXjuc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,35 +113,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   c8117bff684306f5c1f959d055cc2b24dd67b1eb
-commit: 549e0b6c9835de4cc4e8e4a56459ef09febfc2f7 [33/408] mm/vma: drop mm asynchronously in vma_start_read()
-config: sh-randconfig-r2100-20261125 (https://download.01.org/0day-ci/archive/20261125/20261125102827.xQ94ZCi1-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 12.5.0
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/20261125102827.xQ94ZCi1-lkp@intel.com/
 
-cocci warnings: (new ones prefixed by >>)
->> mm/mmap_lock.c:572:14-33: WARNING: atomic_dec_and_test variation before object free at line 574.
+> On Nov 25, 2026, at 00:58, James Houghton <jthoughton@google.com> =
+wrote:
+>=20
+> On Sun, Nov 22, 2026 at 10:11=E2=80=AFPM Muchun Song =
+<muchun.song@linux.dev> wrote:
+>>=20
+>>=20
+>>=20
+>>> On Nov 23, 2026, at 02:44, James Houghton <jthoughton@google.com> =
+wrote:
+>>>=20
+>>> Boot-time gigantic folios are expected to be pre-HVOed through the
+>>> section-based vmemmap optimization, so the bulk optimization pass =
+for
+>>> bootmem folios was dropped.
+>>>=20
+>>> However, arch_support_vmemmap_remap() may not yet
+>>> return true when bootmem folios are allocated (e.g. on arm64, where
+>>> support depends on a system-wide CPU capability), while it does =
+return
+>>> true by the time the bootmem folios are gathered. Such architectures
+>>> disable the section-based vmemmap optimization in their vmemmap
+>>> population path (see section_vmemmap_optimization_disable()), so the
+>>> folios are not pre-HVOed and would never be optimized.
+>>=20
+>> Yeah, when I removed support for this part of the code, I figured you
+>> might add a new patch in the future to add support back. It is fine.
+>>=20
+>>>=20
+>>> Optimize such folios when gathering bootmem folios. Their tail =
+struct
+>>> pages have all been initialized by memmap_init_compound_page(),
+>>> as they were not pre-HVOed. Pre-HVOed folios are skipped by
+>>> vmemmap_should_optimize_folio().
+>>>=20
+>>> Signed-off-by: James Houghton <jthoughton@google.com>
+>>> ---
+>>> mm/hugetlb.c | 11 +++++++++++
+>>> 1 file changed, 11 insertions(+)
+>>>=20
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index 72839e98f998..8756c0206922 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -3325,6 +3325,17 @@ static void __init =
+prep_and_add_bootmem_folios(struct hstate *h,
+>>>      unsigned long flags;
+>>>      struct folio *folio, *tmp_f;
+>>>=20
+>>> +     /*
+>>> +      * Bootmem folios are normally pre-HVOed through the =
+section-based
+>>> +      * vmemmap optimization. However, an architecture that can =
+only
+>>> +      * determine whether it supports HVO after bootmem allocation =
+disables
+>>> +      * the section-based optimization (see
+>>> +      * section_vmemmap_optimization_disable()), in which case the =
+folios
+>>> +      * were not pre-HVOed and must be optimized now. Pre-HVOed =
+folios are
+>>> +      * skipped.
+>>> +      */
+>>=20
+>> I'd like to condense these comments to something like:
+>>=20
+>> /*
+>> * Some architectures do not support section-based vmemmap =
+optimization,
+>> * so their bootmem folios should be optimized here with folio-based
+>> * optimization.
+>> */
+>=20
+> Applied in v4, thanks!
+>=20
+> Also just so you don't miss it, would appreciate your thoughts on my
+> reply to Sashiko's comments on this patch[1]. Let me know if you would
+> like me to do something different.
 
-vim +572 mm/mmap_lock.c
+I think the diff below might be a bit simpler. You might think that when
+HVO is turned off, it could still cause some unnecessary TLB flushes. =
+You
+don't need to worry about that, because I've added a global guard to =
+make
+sure it doesn't happen. Take a look here [1].
 
-   569	
-   570	void mmdrop_async(struct mm_struct *mm)
-   571	{
- > 572		if (unlikely(atomic_dec_and_test(&mm->mm_count))) {
-   573			INIT_WORK(&mm->async_put_work, mmdrop_async_fn);
- > 574			schedule_work(&mm->async_put_work);
-   575		}
-   576	}
-   577	
+[1] =
+https://lore.kernel.org/all/20261124110530.3004071-3-songmuchun@bytedance.=
+com/
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index b2c14f4f99b7..69a7d4ca8b1b 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3345,6 +3345,7 @@ static void __init =
+gather_bootmem_prealloc_node(unsigned long nid)
+        LIST_HEAD(folio_list);
+        struct huge_bootmem_page *m, *tm;
+        struct hstate *h =3D NULL, *prev_h =3D NULL;
++       unsigned long vmemmap_unoptimized =3D 0;
+
+        list_for_each_entry_safe(m, tm, &huge_boot_pages[nid], list) {
+                struct page *page =3D virt_to_page(m);
+@@ -3368,6 +3369,8 @@ static void __init =
+gather_bootmem_prealloc_node(unsigned long nid)
+
+                if =
+(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
+                        folio_set_hugetlb_vmemmap_optimized(folio);
++               else
++                       vmemmap_unoptimized++;
+                section_set_compound_order_range(pfn, nr_pages, 0);
+
+                list_add(&folio->lru, &folio_list);
+@@ -3387,6 +3390,8 @@ static void __init =
+gather_bootmem_prealloc_node(unsigned long nid)
+                cond_resched();
+        }
+
++       if (vmemmap_unoptimized)
++               hugetlb_vmemmap_optimize_folios(h, &folio_list);
+        prep_and_add_bootmem_folios(h, &folio_list);
+ }
+
+
+>=20
+> [1] =
+https://lore.kernel.org/linux-mm/20261124165516.1182390-1-jthoughton@googl=
+e.com/
+
+
 
