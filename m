@@ -1,92 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1CB606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 07:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81227606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 07:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qTBHxcXN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fadt6nw5
 Received: by kanga.kvack.org (Postfix)
-	id 096EB6B05B2; Thu, 26 Nov 2026 02:26:30 -0500 (EST)
+	id 1E8236B05B0; Thu, 26 Nov 2026 02:52:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 047AB6B05B5; Thu, 26 Nov 2026 02:26:30 -0500 (EST)
+	id 197D26B05B1; Thu, 26 Nov 2026 02:52:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9F886B05B6; Thu, 26 Nov 2026 02:26:29 -0500 (EST)
+	id 0AE496B05B2; Thu, 26 Nov 2026 02:52:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7122D6B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:26:29 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7A9C6120319
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:26:28 +0000 (UTC)
-X-FDA: 85476437256.18.FCA9DD6
-Received: from mta0.migadu.com (out-33.mta0.migadu.com [91.218.175.33])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B1F3640004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:26:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qTBHxcXN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of enze.li@linux.dev designates 91.218.175.33 as permitted sender) smtp.mailfrom=enze.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DF0446B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:52:15 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64CFCA8BFB
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:52:15 +0000 (UTC)
+X-FDA: 85476502230.03.EB244D0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C8E4F180003
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:52:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fadt6nw5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795677986;
-	b=3mNYW6eVJvwN81SEUgX0n8Tn4MfwWpDhC6C3xei9c4DbK4xUNGbBmCRN58YZCxSqvgahyc
-	PUth+dSoQi9H1JE1h9zaNdW1ZyNOErFbsl2vEq5sYBgdDV1gosRKdhdYwVtXzw4+cB4fSb
-	h2QNu1ai1npytuwwo3kuEzQJKvIHCy8=
+	t=1795679533;
+	b=zpCIkwdyk+z5Uj+r/MHznHA/3L9P1lH8uhqtoqDgie7nRiG145ATDCyaFW69M8DYw0JNCn
+	DhCPkWp1HNC5UFtQjXa0VsbDg4zUqqeT/RyeHfz3PftnheMhQwHp+GpvcOFNo6g80C/xXm
+	4vRw5MTSoauCOaqSQp6Zz2u+iUWFQfY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795677986;
+	s=arc-20220608; t=1795679533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xXhMDzXROUrP6zH1iZr5JFVo7mUfWfuBS1RHTgeL3j8=;
-	b=NSVma6Gs8fFIaXkHXaUZ9nmk1i7azd5xeTMdMKaJ3/CFVzXyF1mh2YHp5Qa7GbOHbiQ4/y
-	SPK+XAphYq4RiBDn9eg0ZlomTgb2ebWOJjrfIaa9FSB6fzAs5nQi12pW//jsU5fA9724l3
-	JKW6/DGzsRKEtxI31ZXFkVL4Tmi023Q=
+	bh=sjgDRX59u2rhrH/aBYJ1iEOZp9hLuFc1LePhclHXlTc=;
+	b=iwgYgUaFElaZHGPFqpApYiL+iUrqfX9kIWzCSLcQb95HgknoJb97Nijv/ujeLVls4FsGOY
+	BNfHmW780yY/XHHueXgSQeLkIn9YkuBDT8NPTY3qo1yBv7ZnpfMIthLXev7vYxQXf1tl6A
+	8iV3YVgKFnhlo9J8ENMaFiluFSXY118=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qTBHxcXN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of enze.li@linux.dev designates 91.218.175.33 as permitted sender) smtp.mailfrom=enze.li@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=gTa+FiRs62WDz953uXBqnXtabhJGkFZlwN7q3IrHJlo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795677979; v=1; x=1796282779;
- b=qTBHxcXNo9wpdFVX4/9vyn5CsJkqvoP2n2NrDcR9wU/4c72xEeDFykQo42MC4jSgpUujmqSG
- /VYXdCHRp/W772hYUdeePXahXtmlEkS5cslQLM908tDWjK/6LiXRs7xWrb7Cf6VFG+EFHKqPTaG
- bTme7vtbfDYW3oF0eL7Vj15A=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id df473b4b10cf1edd;
-	Thu, 26 Nov 2026 07:26:19 +0000
-X-Mizu-Trace-ID: df473b4b10cf1edd
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <dd0a62f4-b6e2-409a-8863-7e2903179e3b@linux.dev>
-Date: Thu, 26 Nov 2026 15:26:15 +0800
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fadt6nw5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 10DDB60F3E;
+	Thu, 26 Nov 2026 07:52:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1875D1F000CA;
+	Thu, 26 Nov 2026 07:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795679532;
+	bh=sjgDRX59u2rhrH/aBYJ1iEOZp9hLuFc1LePhclHXlTc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=fadt6nw5f9NwgOoSQr2Y2gIX72DaChYa9vbQkh82kHAorFqTVRcmtU8m/Tn9PCOM5
+	 vQE2vWQ8ZmNE7u1ZQIyRLTarwXLI77JJ1MO+hA2x0YtQ4MUhgQuFa++CeOLaQgsHRR
+	 mFs7oQPPhIcfc5e7r7mJaXLl5+3Y2Wf8moaxjjqeBjF8Aa5Qm8iTFqXLeK0ASeBQv0
+	 oA/tU3UHb+mQxBnYUs2FzOjwGlHZgtMBJl6NEIuGMjIkJ023VmWJOxWzaxumMywRwV
+	 hpZBEgo9bieA5T6j999O3EEcF4cA4q5p+87Mu1c5Xy6Xm8yUTCSZossQkYPpBIaGC0
+	 s/cgt2h+cCKxw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: phasta@kernel.org, Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Matthew Wilcox
+ <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Hao Li
+ <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes
+ <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Daniel Gomez
+ <da.gomez@samsung.com>, "Mukesh Kumar Chaurasiya (IBM)"
+ <mkchauras@gmail.com>, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v6 00/12] rust: xarray: add entry API with preloading
+In-Reply-To: <a6110f748b76b8773e0b5c9cb449a3bed0b19f36.camel@mailbox.org>
+References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
+ <a6110f748b76b8773e0b5c9cb449a3bed0b19f36.camel@mailbox.org>
+Date: Thu, 26 Nov 2026 08:51:57 +0100
+Message-ID: <875wxkuj1e.fsf@t14s.mail-host-address-is-not-set>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/27] mm/damon/sysfs: add admin/reports/ directory
-To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org,
- Aveline Noir <jm5905938@gmail.com>, Lian Wang <lianux.mm@gmail.com>
-References: <20261124153636.91854-1-sj@kernel.org>
- <20261124153636.91854-5-sj@kernel.org>
-Content-Language: en-US
-From: Enze Li <enze.li@linux.dev>
-In-Reply-To: <20261124153636.91854-5-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B1F3640004
-X-Stat-Signature: p8boqf9atpffz315fffjt94qatfkegy9
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C8E4F180003
 X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1795677984-707924
-X-HE-Meta: U2FsdGVkX18F1XbT06C+PZAQ1cr1IGHhHzfAB1oFvPZVYF97es68nDa7BCXlUtdFLgtz7F85HFWy5Yx+KaaYrSc2ZEoyQXpypDQpT41zMCVyPfwZMoIry9S7J88OhR5PTNwDXXDu8HZ+SI46hpLDc/T9P/FENJ8OOrsR8FZPWwmnbdtSDliHbFyX5hWZD9eb24O/XQpS0g3uJBAXjsT9Cg0aw1uHGGtCfmHevPfq1tunv0gkKbP2osN2fPkafjgnLf8GJlAnVOJbjrIhjaQMw3vbPFGccVSTzkZqV9QCT7/LMhymuBzKokNo7GWuA+6GE7SGYrhEDnK9Wv0FKf80lpJv6Pc/jFsuVzFMhJkGSBPsSZNuECoOrgtJwi5RCw3w1kbW/rJJHUEmyIgdxKCvNosBB9SWIwJNUYWgWBRQc6DeQLQeBw+fIFfFuzOOvfeS3rJXyj+JcPuboy8mP+0Zqjtl0+hQb/sP3Ldc/Yi5/RDKSGTxhaubbbw2Scwg0GYk41GKGjMzxp4u8Hwor52O9Hb+AK9SzqUF9FMM+YwIxDiauQXEIJ9EO9byX1FQ+E3P6eaEifFfLls4yZM2E3M/nURmHpL+uKIXfyj8JaTqN6y38j3nsomHG/LKVZmAk0Whh3VZ1jVe6oxLBMuwMbh7xEfayrtcBdKOZ04PdpNS7gK69GqPnS2WFX7og73RSrd8bWMvBY6APIoBpey8R5ANjT1FpOLEIylj1pTywSybM5s4Zi/O6IfPNdPvqUY5wZoET6oY1cXxsKaoxHOtJtJ2p+GuovRHn5e6ECwBFnjxKqJmulnInc4wbbn8mpN6xLU03zsM6AycMh9Gy+JkAPJaII3vpaUun9VcK40HDIeFZqQiqjr9tHx44WOEFaA1Zts1YwE+ruqlhwTMwa9lhkkFbjivBUxt8lMuvdz+l+u3V/IBI7YZBFk1CKtHixFUp3ABg4zAf6UTw9Epq+eEDJJ
- Zf6TOvPv
- nv9XZBHmFHVPLbGb6vQ4D+iKILKZP45P0skQJEnZkGeI6zm+r2mC/V/6jgFAfsnfn/2Ebfs+/+jB/Go9LLpQgWYMKM/T3TedFd0jyMoLJwqfaYidnjQM2MKch5AF2R2OMh89b3bC3dewr9zX4dQXJYt1NiFiDT0VE/vUt8W9A345WcUJR8vFsjgoKvsFNt72Pd94UURt+mO7vfbdqscHAxl1cUVyNF/3EmxX2mVaWy5rW/tuSn96PKjoE235oef/GD2PStPe9BJSYASauoen7Iq1dWH7B93aGktlOkt3QRG0qipBG5ZoXhFUBtDrHKrZNU5+OMbyhtWUsZ2Bun3M3/NpadGgDn+lrOqUjQtrphT8ZfVxV2e1pUBhG3UOzAMnJn+NsdGb4XblkVMjIzaQ7ZIlttW9SGaiXUSyC9gLWPjc8yS1FcuEIWQslbB0Lsid/SpzHrYdJmYCdGJKMUfrIi4530tHNyOvMkWOY0FRdTa2pr3JH18ZAcIx5hl9R56QR3MrqWkJk8Lhq8g4Y3NelwZ39n4ThuuEGe3aeLkgertM1/qo38RrCVa9hOh0Yh+jveTCpEez8Q3v145jWhJEkiM+gsuKWZ5srK5EarcrUzthKKe8=
+X-Stat-Signature: px7x7c7iyf7p8itmmp7rhcf8q6kwpn1h
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795679533-149261
+X-HE-Meta: U2FsdGVkX18iV2aOTXsd7HEn33m/3vVTno4zD/yXMp8ROM/5IB3ghdhqgdMY4SNzHJcjDJK5OeKMyBUqh87O9X9hfQENr8YTOQuQUcNKFnuE+QSXMMMG+wigxECeEtrL/rNgA8niaFTA7TCHLN7+jmf4RShtn+7LJ+E/lCERM4VR2t3+wMh9FyDFCDJZ1scNXX1PSic9f9ZG83Q7GW7krm7w0vKMlELkkEDcHWxgwQCDafbxrzmYkFwMEHiy+X6wZTu0lBWWDLfvBld6S22WIVDRuGpx4ula/AitWx9DthHz/cZGvo6Yybw45zdGkT8k3hZXUjd1spAu01worT4m5uwSZNsIqiqvlII44fqUZ26CVJ2FKaTqxh0GGvkU4o+AwwP+emF6mfnm6V/RLoleyIYDG1iE5NH2dMOI4WUmD9QvfQq1CaP2QWUVzAJnZPtsPXQuAQfcsZlM4b4bQB/3fmxP9977JOFoPaAr3AHJagCzxunNPZTWlFrxDPtjir9QZoZzeyj3em2Gn/TJlSn8FFCQ0HKYFB2crrejQOeHGpSDK1l1ZLNREv5j0lnYmk31jZ3F5UYfylc+JP0IlJd1aUuQvW8cW2zzZoNd/uOI7aTRUCTdWm3mmCggOvgMxoNRz8VDYQVWRo467yGRRC+J0N3h7sn+3tPc3d19TcDNjlLM1FDvK7+MB1d3Wln7vu3GzVf+tE/uMCeWT9Zr4UfSuiDT+qaODHeaz+fIOJTj/vxbfd1JPtNVRRFWUaCKI9ZAvq0125XNeSm2y8t/sumxgv8/I8KhOH/udVrDow1Ee3U38hzpALCR7NbzS6IUWCl91zEhiafqpE66Wq9DaDvq6+q1xQAx2N8BUOcwlCekSweXSRXzZRFaHm/w2sGU1XbZLeorQUjMog1/8QidEKY2nqq217/uyBImjqrU5/XCMQVlJgo3tRU+5zoQ9DFlhhtnWd4Qr13Q9/nJAN9alAd
+ VRJqn2KX
+ vWj7gwjM30OGqRNvXOOmd0gZptABA8fK4VVUj3sXElT9QN1eEgLx6gNEsOhij2g/vkJfbrB4ufBdPUVMdcPWFHy3B9at3zVvdiDxHT48HdYqwFn1vrIDoQzV9T2OGEHlnXAWpBDYraZAHU/JGXJTJUczrVBc6Je4OnOxjJ/LoWqbNjb44Hj7LRCjaD4HH2XpPTc4tqsoJakhzJ9h2GjngAzxKfNwyjNx6vuJjPMa8t1U9NVOkF9LrNfOZZTvV1hnnaCfSiFCMU3MygQ3sM2xalEXpGPcMhshAm6AeDigN2lwGJ1etNvr79C3t5NG2FsmeNB1oxRniEOuuT9q7OyS5AcbXY+yCud1KPhzPJaou4GY+VIU8gh8fFXDRKyxiAQiLFbSY3Occf+Dd5sIWscG/n7WBYYQSW27zgpTIzRdiOIEMC84F9nV5EmaymKkUKY5jHER2gpKqrax988zEaT1+6cexFZNhSONVDx53PkzGJzOqti3oDarqkzgCmGOvJYsSTnj7R9PG3pOWimWciA6kdXtgAghnLprTKdG2G1jFrPXBXwfbMOxBTdYQxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,17 +110,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 23:36, SJ Park wrote:
-> Add a new sysfs directory, reports/, as a place holder for sysfs files
-> that will be used for controlling the data attribute report system.  Put
-> the directory under the admin/ directory, next to kdamonds/ directory.
-> 
-> Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> Signed-off-by: SJ Park <sj@kernel.org>
+Philipp Stanner <phasta@mailbox.org> writes:
 
-Reviewed-by: Enze Li <lienze@kylinos.cn>
+> On Fri, 2026-11-20 at 14:10 +0100, Andreas Hindborg wrote:
+>> =C2=A0- Patches 8-9 add support for sheaf-based object caches.
+>>=20
+>> =C2=A0- Patch 10 enables sheaf support for the xarray kmem_cache.
+>>=20
+>> =C2=A0- Patch 11 adds preloading to the new entry API.
+>
+> Sorry for my ignorance, I was out of the loop here. What's actually the
+> purpose of this series? What's your user, and what is it going to do?
 
-Thanks,
-Enze
+As by the cover letter
+
+  The feature additions in this series are dependencies for the rust null
+  block driver, most of which is still downstream.
+
+Specifically, we are inserting to into the XArray while holding a
+`SpinLock` [1]. If the path of the inserted key has not yet been
+allocated, the XArray must acquire some memory to build the path.
+
+Best regards,
+Andreas Hindborg
+
+
+[1] https://github.com/metaspace/linux/blob/9c0fceca4feed5f1056f55abe9c7c70=
+731402776/drivers/block/rnull/disk_storage.rs#L185
+
 
