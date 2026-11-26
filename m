@@ -1,142 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18E0606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 20:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C536606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 20:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lWN8uz1q
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lV8hE1XL
 Received: by kanga.kvack.org (Postfix)
-	id C91A86B05B0; Thu, 26 Nov 2026 15:00:05 -0500 (EST)
+	id 309276B05B0; Thu, 26 Nov 2026 15:09:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1AA26B05B1; Thu, 26 Nov 2026 15:00:05 -0500 (EST)
+	id 2E0C66B05B1; Thu, 26 Nov 2026 15:09:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABA2C6B05B2; Thu, 26 Nov 2026 15:00:05 -0500 (EST)
+	id 21E556B05B2; Thu, 26 Nov 2026 15:09:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 301486B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:00:05 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACECA16037B
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:00:04 +0000 (UTC)
-X-FDA: 85478336328.29.F3712D3
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B96FF4000F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:00:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=lWN8uz1q;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of elver@google.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795723202;
-	b=w0EbNelyd51vAEtmYvHFsRz1LYSyWUyY3Sx8zQCB6m+DaL+7RAzXcs1eK7JMfWQrDouyxZ
-	d7+IAHqtLs0ojZgnbRAtBpBKbdKPXp+FfeHgX8TVbrC6ktuRfbPmFMwN78c7fJw9MZ30wb
-	3w4OFuQV4StA11pxX+ynU0mOffzFkh8=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795723202;
+	by kanga.kvack.org (Postfix) with ESMTP id 021306B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:09:40 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2A5F160217
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:09:38 +0000 (UTC)
+X-FDA: 85478360436.16.9095419
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 18EC012000A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:09:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lV8hE1XL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795723777;
+	b=h3vpwpVeVfyi8jKDknKk/+GHXIZCzn/xy5O9iJw9twGO7bWWLC+ZxdrXYowkA7VYyO7RIZ
+	MqSBajb9Ox6HJufqzNi9gBJhfq0Wslb8XpW+L0IT4tW3X16nVd98mEb5830fq+DNHblxJE
+	5sNeK49e7+U5bwKPQuKJdJKEbElYtX0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795723777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QUQmLAInkGKTLacIVSVGPlTbjIhBu2Q0Jnfx3pxNGHE=;
-	b=L+bSdu3ueOIOljH+OgYuRn4H6ZhPV9xhfT2YW8zxozGGaYiW9I9VIivCJ0kXsJMIhzSGXI
-	ZbSDdYlrDqIqYHmLSN8v5xBnCKmHJidk4Q7HWYu6O0sSOldxzU+sNiEF7TQZivSiwfhyWK
-	splCo9jP+pZ+3aLKs9uZVPLqwURwiNM=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=lWN8uz1q;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of elver@google.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1b3a05f8b5bso9938196c88.1
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:00:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795723201; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cw7/zbONDsZ+DUBsSdK+q8RTdIxdyqfZt7HD+Iuw6llPgjgTfyDuRQKMthhw/tJEjU
-         uMG7x/QJ4FosvoaV8NBleGYnE5KPs/NY6u5sBkBhWUWuzHGBn/y3ubSFcPGN/jxnMsnm
-         e7QhReMtNLLmV3iriaDes/OKuRxLrZp1Ws2Ie87QO1jtoyS0OhxWf5Xx0aP2a6JP9OyU
-         wMH99wBpj/H4UJrXlfltLZ5bULawuSjrZMw03XgARL53iyp7IayBnJzMlH6kXikhCYKW
-         KgjYtr3efe104HtAXg6Go+A32WxR55q5OJKu2lNr+N7Vw9d15Y0jHNDbDhDooy3vxguB
-         3BrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=QUQmLAInkGKTLacIVSVGPlTbjIhBu2Q0Jnfx3pxNGHE=;
-        fh=h+Eq8+eqmmW8cdebvMwYYaCxjmbdXTgCcbjrm4i/I4Q=;
-        b=CQ3/RtvFLB7gpe84aeG3vO2NpBqbL38Yhs2V8SaBOGvuur1EtImf8C/Eiz8sKMcr8Y
-         ZHPI8ccZtddx8mUQ74McAjNxB2Xct0VlDsl7lAlGyJnamr9Yb7/kTpsXo0OjPulCnouI
-         ujAyJR5e+1mNJE+sojM4uDFTLUqS8TaPX6m+yOkkYlR2qPULwOo2pn/5+RCw0Q+8uj4O
-         z0/PtIIzgAv7hBQncPBrfn4sEvOWq2tbCI8+b2il22cFVSlN7/Q0o0iQOnV7gREgV2ET
-         l18k5pXXJ7Sch5rdq9upeOgqhyAy7uANNtzTibZeCM0tyCHEV5jdQGfKrDCbYRYe6ZaJ
-         2uJA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795723201; x=1796328001; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QUQmLAInkGKTLacIVSVGPlTbjIhBu2Q0Jnfx3pxNGHE=;
-        b=lWN8uz1qIlt/zVUEwDefzH6rQMSt8K7cjnnclAQWt3jUOW7RwpxpC5Bsl3Vb/VQXFj
-         iyMItJ0pe4Mwznr6M4WB/BY4OcSMY15iu2JmzqIs4/R4aoR0XIPXicwE02/t8VedrpIa
-         QNy/J5Vwn3u77jPZRi1x+IUoJRjIXV8G7BQravSCKNZ1SQzTSDDZEiL6gvvPBbCEH9nC
-         Uqe0rzRDyZKfPHEuoolML2pV8Y5TllIxDPmlV+g7Smc9LsqQuo3m7xNfcDOdAMsbwNiz
-         v3+3hoaKjGmZBxooK+YQTOOHUqkIjMAp4xi2nvpopLrt/bUqn8TnBCCvuCc2MmkbZ+yT
-         7rsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795723201; x=1796328001;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=QUQmLAInkGKTLacIVSVGPlTbjIhBu2Q0Jnfx3pxNGHE=;
-        b=qmU7TRvw6byihdnV28GjbRM0nPsSt4H1t3FAoWObvKg9Y7OyMCY4WrZzQCNoiSwyL2
-         +g9qwJ+HCVWHv5HFoTCjU6R7I9RWh52QRMBvxHsidWKw9ejxB2A00I+NX67Gnm/qsxys
-         p1SakBu//6DnqBJawkLL+3CSuRdz433UIgYIxJstk1vQbndOM2pLq8ul6WpxthuC+xX0
-         IxfmzcF9eqApu+pA3ZU6EvXEDIpHci8wXiCSmBNDOLFANzFWRsHwTH7DZNK2ckqCP00n
-         Q5qBVI+4FV9fpiXUmoVmJNi9cr8lPQ78X/9iUVbyBMocREpTlm9TnK6/jhF3h+gNzKon
-         dAFQ==
-X-Forwarded-Encrypted: i=1; AL+hErHvWjm/dB94eMQ703tWyzZvw4mZwchuIIhy5pzLrcJqnR2lXZlNYYiaWUXgrNq7ZdyYechxRbqq8A==@kvack.org
-X-Gm-Message-State: APuU4Z8JmDem6vgFaQIvRlfFh1A5I1XclME8a4mHx6dnMGihK16f9onD
-	wRFgquzf+kqpHArb7mb0u/Rqpdv+yG/rLML6wx0UdAnkktIWvMuAppwYkyEplPWxWNqsBWzujQq
-	bfHLebFToPW/GZBXur6q0Gzv+eyMGZGSvJpuM6nfB
-X-Gm-Gg: AZFdTZfXs7NdC0nbwRl3RKiJGugeUIrFG4J32UFf83Y/K3wexW5wWznyBZ+T6P6Gev0
-	Yn97xsfLfvcfS8binY2sgBdd7yaiT/PubCqtpJ1P9L54QeZrw0/jOK4MRkvP3gBvQBAu7QQagAt
-	uDH3eIc44WJze78XbhyJYpX5nbav8wGsA0UsOGOcGYn0C6sSzHlV1IY8CQvw+vAJxWyEqczLOaO
-	5FIWp6ZyK20RSbUmQBgbbe7Hay9EnBiGs3+6oupHtihuRIyY/oeFka652LfNwOui/TBoDriQwDj
-	qAHOkxb5Cbn1z7RhYin213y6nD+CdJG2IkeZWjJKN/H8HfYUwfsmI3mKC06tZyj4sPZVRiDuWrO
-	xtFfS4geKiqvi7g/p7r7TDwLL39RSJjsdUR1GM7hWv8N0EWq58RDmKCm7uIUDhsJa/LKo
-X-Received: by 2002:a05:701b:260e:b0:1a7:e1c6:6f33 with SMTP id
- a92af1059eb24-1b5568d3ca9mr22040002c88.30.1795723200649; Thu, 26 Nov 2026
- 12:00:00 -0800 (PST)
+	bh=QhqV5yNTeb/bGSfEg8Z4WR9+47g1ctbrNRf+rLB0iJI=;
+	b=ACwdbkdrE2wVr37m34EILDwAOl/IzdSVP8Ctu7iOia9m0o60lu9jEoo/VBFi4EsuXAx3bS
+	nHVquNY8cZX6tNakojH4DJNQudDQGNJ9/REoIsCw2qSE6ivtYgKTrqzjPqpS6iwE//l0mR
+	YzSQhMCSrhJ1/eItw5kte+3yTlrV5N0=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lV8hE1XL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EEB4044DDD
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:09:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54241F000C6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:09:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795723775;
+	bh=QhqV5yNTeb/bGSfEg8Z4WR9+47g1ctbrNRf+rLB0iJI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=lV8hE1XLfBuin3LiFGTjhaTowSIa2OI3cPxF+o+uzy6D80GJI2/E3K0FcV8BjOLXJ
+	 WqXD9UrZb5CcqDxSKDrXvaOgbsgGOzqaiO0gbCD65XR/0M9IzRhzvC7FpwXMs7jbTh
+	 NZTtqpTcYjrS+VObwY8O88I+2iz54j6fdCujBLvGol8rbMwDjvcYyeWcVXa+Gv+uBU
+	 KXzs8EL9E/WMevAtsPo63sKno2xnGrLs1kmZ2BuqAc7XPvJ7tl56ZuGl2vBapDZ1j9
+	 idrmovlNezujhDZ5CrtQ4aP1DGY+xIh4R1ksf6PCYrTWpgCOJOSog8Yi6BoapF9OV+
+	 ALvD3cXI+LPmg==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c505b2e1cb9so1332535766b.2
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:09:35 -0800 (PST)
+X-Gm-Message-State: APuU4Z/zlqQBDwjz1+i7mk0nLIEElDSo3ti4n/K6iMj//upwbH4DrrpL
+	Q4K5isjb86paiR8+KHkL27+yRoLAuoUcHugyKjCEYuxV8ucNRbL93EbaXxp6PqId+ynoS3O0nYH
+	6fTbib/a5xH5SBZhuKeRKolLFzshK0x8HgRZ1jdaVIg==
+X-Received: by 2002:a17:906:f8cf:b0:c50:bf14:8ec1 with SMTP id
+ a640c23a62f3a-c513ab4d93emr1278198566b.33.1795723774577; Thu, 26 Nov 2026
+ 12:09:34 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261124-kmalloc-entry-rework-v1-0-37b1631a67b5@kernel.org>
- <20261124-kmalloc-entry-rework-v1-2-37b1631a67b5@kernel.org>
- <awg-2hrOmY5U3vzS@thinkstation> <4cb6e0ea-5e6c-4ecd-b673-70b42864c694@kernel.org>
-In-Reply-To: <4cb6e0ea-5e6c-4ecd-b673-70b42864c694@kernel.org>
-From: Marco Elver <elver@google.com>
-Date: Thu, 26 Nov 2026 20:59:23 +0100
-X-Gm-Features: Aa3M54qIRTbwIcF7QF1KtF_Buuyhe7XJlsbw6zNTzNtYRjONQTndd6cep3utZfE
-Message-ID: <CANpmjNM8K=2qGb2qWGj-AnuGSRbT5KwPdu9z6e5i2JfH8_+7kg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] mm/slab: add own entry points for kmem_buckets_alloc()
- family
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Chris Down <chris@chrisdown.name>, Kees Cook <kees@kernel.org>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1795439990.git.lianux.mm@gmail.com> <0d61898075921b05c626accfa34a60e16472b556.1795439990.git.lianux.mm@gmail.com>
+In-Reply-To: <0d61898075921b05c626accfa34a60e16472b556.1795439990.git.lianux.mm@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 26 Nov 2026 12:09:23 -0800
+X-Gmail-Original-Message-ID: <CACePvbWk-TK+VtiD_0ByM_pxXzyHhZiW=C0LB_mH2FtBXH99FQ@mail.gmail.com>
+X-Gm-Features: Aa3M54rfv4QAGdHBq0QdP2ylbNXUTYqxGTt5VDMad8QSONEg4H11dzsHXoWD7_M
+Message-ID: <CACePvbWk-TK+VtiD_0ByM_pxXzyHhZiW=C0LB_mH2FtBXH99FQ@mail.gmail.com>
+Subject: Re: [PATCH v5 10/19] mm/swap: mask the off-list bit when checking
+ whether swap is full
+To: Lian Wang <lianux.mm@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kairui Song <kasong@tencent.com>, Jihan LIN <linjh22s@gmail.com>, 
+	Kunwu Chan <kunwu.chan@linux.dev>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Thomas Gleixner <tglx@kernel.org>, linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B96FF4000F
-X-Stat-Signature: 1jj4gxxo5d8f4thzagtpfn6rfp75mm45
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 18EC012000A
+X-Rspam-User:
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795723202-611926
-X-HE-Meta: U2FsdGVkX1/wM85pRQRT6d2PEAEDWf4/ACpK5pu31Uxv/dMnwCD+FvbKDjsAN+WbgH8zqkcvzmgDBN8GHlbBMap0baJN3vyeByMvk9zYu3MDiOjG8+IZKuuKY+Qr7LbxDCJb7gX/XTu0qfs4zRyVS1BLRe4FeFfx6g34Oa5knaftF9Rvgzlq2pY4tLcWI+0lUXizLZx/B+7TtrNysjas4NeVxEbUNQM3ERRV2/JNZI4bcWRzyfbGkeWP9DtwVOq0OAWc1LQftjyiwFfFIxhXaAeW7ZUG/E3C97xqOrctvoc63x2K5d9fH/rpAnd6MJgXF/xAMh5rpgpcPsG8Tb2vVrrD/VTY5up8dryJKTFPUcBc+tAZQX1cLf8vBmYlK3WOAm74YCgJc/HKGeUIK2zUM/nLhDuwRcGOk4+4CSzF8etda9n2aO2rVMxJVEsf60CN/djBH4+h8XHtw++oRp3en/9rmilVppHrQyzSJFiyF95RpNuaQyFMZ0kTviUdkGIDB5POzdGCEb6UR+Zqxl6hRQ3srupiphZxwF4Q/1tRtRvxRwOGSpxgrDCLtUreAeQBy/RvK2C5ltZ6WYP/o0zImRM8ZyZT2uj/xGuHcLx04ND/MVDYUep4BQNlW3DkKD2RSBvx8Qr/7h4jp0APk4ObNDqs12ue4vhYMLYnY+JLwCWWhw0d1+aaM3PUlqlc6X6Y+Cr/5Suh6lGKzIYiMG649zK+WKrSzv8+4CK06KTeeeC98fpS8ftMiInr1BjWytxmXE9CQs+Yzs9/5UtF5LIJtsWNt2663KV95E8y6laX2YIZvI8hWcn/gOKbp/qZ0lT677UzEhO7pNUVXwNSWZlakzlc8XrOYgXbIFi243qlRRriPHZsm2W18QTkiYpTnHLKH3qLY+3KEI0T7Be4zPLxuQK532mq5MJwQEifdGAiO0xTvsImj4EjQ20aZQ4cXL9pQUtNt8Qjn39tJ9mqShY
- izBLzUo9
- OODhKpPgHCO5KcAyHhmMnP9nCH/wl0F15ZlhpdhMCYu/jo4YE6870gkNzRrZUZV20vJ5e1QvFn41y36HYjtsmCdeegZkFfMOQ/Ts7wSkyg+0EH2j241YCGVhhKyvPovMp+1h+IWIiCiuyf5K3/JCIXx2Xd+531CCj2sBYln5wHqTN/26Pox9JeTk+BTiAeVtUzD/OGmWZlVh7obmfV3yBpjORl554Jxn0nManLiVXJAlthwlqrPEL5OKgm2Ji84ZqM8h/lOEJCnoe72aZL3CnnnG7tUnYpxHcM465tbdvrG9yRjqf+ItJjaAnBKtDeDr0+5w/lSyHEIOYVb40ccFdOxctNed5fTW8ILfn4spqBrB0ZUIpjn5KLN1ib/Ppdi3Howv0fcFl3pDCYbN72LX1CHVpwjxSc5+vSMj2FG74Pdk8kq+Iz8VrjrhxA/S1FPyI5cjzl167H5NdFM0peq/A3KZDN56QLFi5Zks2029q7fw4TsS7RF7f8fWdESGiL/MMPM0x1XRiATJ0TZtLeSjLOzLxxw==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: cdpk37ec4pggis6gxhcnqex91w4msr4h
+X-HE-Tag: 1795723776-772314
+X-HE-Meta: U2FsdGVkX1/6qLj+zjdTrAaWvoboELDet8EuVFpI8vtTmXiK80MEqKViitjijOZbKCb2dJZNXPxn0JOnKY3JdakUvPTwKdMGIWDDDt+GssUAFhL/9Mo39TXrN+8UApAqXgZsiwhGno1ddoAFxTyIebm90YAvRosgpRSpcPFBzi3GFeSrUOFs2zRonbpyT+buG+S9E8yrFsXt9hjKse5M/i7czyN8gxP8ICdKcH466dVcRcWkpAJNIdfD9gkHHlzXEmOQC5oJOr9SrhWCZxhcp+p6uRGwSV73tExfUHRpEwyM80rUL+3gflc01J5yfo8QPvFiOYvwpKCuIH9BwZx+eQgIHDB4VO9WXHnBGk6jVsvHMfpXhIP7bQMoqH6+WX9HEd5S6HKFSP5YevNlb3yrMv3U1uWQcjhPlQKvV4EOAfoduICDBdn5EXGOkjS4FgqVBHeiebZZMjk15Qu9CJSdKPtDIObzfAuHJImCnnvg2eEYM+3XgmeEqLGsdJuUW5iOCEfujovrlN8Op+lxyJVw8lxncmVU9cZ1VOQTykfrDSe9WLwWNNW70lgTCvWDtAvMrwNg04/WVkkS/ypzxP9kep9G4F7AF+pcVENqz+g9ofASgPqVmHnsaZTxYzkt21PCtatuRg3Bsi97maKm7uPOZo268LFXtAtHGS2PoLg8CTEvOFgOK3y+UrxrIZcP4hvtEE3PmZO+V1GcEgdF9QZJ/Lf7KwQuvZIJW1ZWWPo0F5IZ9XdEg1b0Lhi4OSODleQn6REiHEBm7/9WC2JAAMdL5jhx+7CjPvWwpyBvqYAPJuWqI7AGAmtqA2qjG2TosTpesXw48toUYY5AvGaXkDA/5ZSwYEIGp8RBBqCYJp7IkZyQ8Gqv48S8I9LqIMyxew0I1xLBVTR9bzwYyudmWqfJsqYRdkebpIngboeGOlQQKqrNdsR1o1EhtFYqgH3LCT+yhCiSFh/R6ulRoQaQJIn
+ cn8+lvb+
+ iG+S58ycZsVDppB17ZsoxD32//MSB0D394eVZOcHyIWZmWgegp6/pqJjkX5ntdyRwOvtkdq3WWck2XKGV/3TCew198YvJyhxEGZjrV05DdTs+NeYXA5SXkYSjmRU3lH5x0u1NOc7uhxMegfOLvHR5sGXUF69uWi6wRSFLyYopM8w6QSz7bH3AaiZcwXENDEfD/eZMRp0GaLKUjXfC49d1zoWC6kd1AWpetJfg88fvhe82ULw0ldjpmKLD7tDDobievCb0HPeazKfvB2/rY8PRHVM3pJuXC1t2GWIovC52hhcDrai2mzEiZpMPqOlH4yqONefzFQoDvaJI20fSNvIhseY3a6G78AfIzFyehfFwz5YOVuqvxfqoWMNN7SPYWNkW70zGV9PsEfEw/975AWY/IAUB1bt8VlOVxKhB5ctZtMGr6L8olG3rUNEBHTO5Gk7H7il8E22PbBKcMFXrYIiaTllAx5RRr0M7fQbqRipk4eYVQzPY6jRFGI1YGlsCEI9vme2VbgCHlSugpc7cTcFYC/FsI33O0eSbKZuY/VvHit2z58zjqG+eJhOJOrLwXP2Kmyqa6rCwlJCcb4iwJFVVOpBxh47pXE2dj4L/PXIhuLUKePsxApH3QPcJG8IPjeyD/aNa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,65 +110,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 26 Nov 2026 at 20:04, Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
+On Mon, Nov 23, 2026 at 6:18=E2=80=AFAM Lian Wang <lianux.mm@gmail.com> wro=
+te:
 >
-> On 11/26/26 15:22, Harry Yoo wrote:
-> > On Tue, Nov 24, 2026 at 05:30:03PM +0100, Vlastimil Babka (SUSE) wrote:
-> >> The way buckets have been implemented was to extend
-> >> __kmalloc_node_noprof() and two more functions with the kmem_buckets
-> >> pointer parameter, which means all kmalloc_node() callers now have to
-> >> pass NULL. To avoid this extra parameter with CONFIG_SLAB_BUCKETS=n,
-> >> we added macros for parameter declaring and passing.
-> >>
-> >> This can be avoided by creating own entry points for kmem_buckets
-> >> allocations and not using the kmalloc ones. They all end up performing
-> >> __do_kmalloc_node() internally.
-> >>
-> >> Since it's just 3 functions with few callers, do not try to do anything
-> >> special to eliminate code with CONFIG_SLAB_BUCKETS=n. Only make sure the
-> >> bucket parameter is changed to NULL in that case because it would be
-> >> ZERO_SIZE_PTR otherwise.
-> >>
-> >> The removal of the now-unnecessary parameter macros is done separately
-> >> next.
-> >>
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >> ---
-> >>  include/linux/slab.h |  16 +++++++--
-> >>  mm/slub.c            | 100 +++++++++++++++++++++++++++++++++++++++++----------
-> >>  2 files changed, 94 insertions(+), 22 deletions(-)
-> >>
-> >> diff --git a/mm/slub.c b/mm/slub.c
-> >> index 70df0a2e3876..6674caabbb6e 100644
-> >> --- a/mm/slub.c
-> >> +++ b/mm/slub.c
-> >> @@ -5732,6 +5732,34 @@ void *__kmalloc_flags_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags,
-> >>      }
-> >>  }
-> >>
-> >> +void *__kmem_buckets_alloc_noprof(kmem_buckets *b, size_t size, gfp_t flags)
-> >> +{
-> >> +    const struct slab_alloc_context ac = {
-> >> +            .caller_addr = _RET_IP_,
-> >> +            .orig_size = size,
-> >> +            .alloc_flags = SLAB_ALLOC_DEFAULT,
-> >> +    };
-> >> +
-> >> +    if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
-> >> +            b = NULL;
-> >> +
-> >> +    return __do_kmalloc_node(b, flags, NUMA_NO_NODE, (kmalloc_token_t){}, &ac);
-> >
-> > No type-based or random kmalloc partitioning w/o SLAB_BUCKETS?
+> add_to_avail_list() clears SWAP_USAGE_OFFLIST_BIT with an atomic
+> fetch-and. The returned value is the old count, including the bit.
+> If a freed slot has already been allocated again, comparing that
+> value directly with si->pages misses a full device.
 >
-> Hm that's right, that excludes it. I didn't realize that, but also I wonder
-> if anyone would really choose to have partitioning enabled but buckets
-> disabled. It should be straigtforward to add it though. But as long as
-> buckets are not disabled, the token parameter will be effectively unused. Kees?
+> Mask the state bit for the comparison. Keep the cmpxchg on the live
+> counter so that a concurrent free can still make the device
+> available. This also applies to the existing plist allocator.
+>
+> Fixes: b228386cf237 ("mm, swap: clean up plist removal and adding")
+> Link: https://lore.kernel.org/all/f53b388e1bcf6840457fe5041e989a3c0d0cc4d=
+f@linux.dev/
+> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 
-This falls back to normal kmalloc caches, right? If so, if
-partitioning is enabled, it should choose one of the partitions just
-like normal kmalloc. That'd be consistent, but also partitioning
-without buckets is a valid combination that has different perf/memory
-trade-offs that may be preferable for some deployments.
+Acked-by: Chris Li <chrisl@kernel.org>
+
+Chris
+
+> ---
+>  mm/swapfile.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 70913402a265..1ef5f1ead656 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1347,7 +1347,7 @@ static void add_to_avail_list(struct swap_info_stru=
+ct *si)
+>          * that updater happen to be here, just skip adding.
+>          */
+>         pages =3D si->pages;
+> -       if (val =3D=3D pages) {
+> +       if ((val & SWAP_USAGE_COUNTER_MASK) =3D=3D pages) {
+>                 /* Just like the cmpxchg in del_from_avail_list */
+>                 if (atomic_long_try_cmpxchg(&si->inuse_pages, &pages,
+>                                             pages | SWAP_USAGE_OFFLIST_BI=
+T))
 
