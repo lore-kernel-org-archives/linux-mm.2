@@ -1,93 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A4D606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 09:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D13606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 09:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nbVhAchV
 Received: by kanga.kvack.org (Postfix)
-	id 3CF7B6B05B0; Thu, 26 Nov 2026 04:43:28 -0500 (EST)
+	id 4451E6B05B2; Thu, 26 Nov 2026 04:43:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3803E6B05B1; Thu, 26 Nov 2026 04:43:28 -0500 (EST)
+	id 3F57C6B05B3; Thu, 26 Nov 2026 04:43:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 295BF6B05B2; Thu, 26 Nov 2026 04:43:28 -0500 (EST)
+	id 2E4AA6B05B4; Thu, 26 Nov 2026 04:43:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0771D6B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:43:27 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 574BA4021E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:43:27 +0000 (UTC)
-X-FDA: 85476782454.10.0805380
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 57392C0003
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:43:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=pass (policy=none) header.from=ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E47CB6B05B2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:43:36 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A9A516034E
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:43:35 +0000 (UTC)
+X-FDA: 85476782790.26.C75DBED
+Received: from mta0.migadu.com (out-235.mta0.migadu.com [91.218.175.235])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2B39240004
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:43:32 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nbVhAchV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795686205;
-	b=GUlpwzZGY+tcjlUcbcVYm8SWWBRTRexmzhR1cbRqjjMVw4VexY/E+JZSTBmy3GLRWYeFQz
-	ShDVhoRpeomQ03AFkGm6eOKUkeMDRSEsb9Tmc0AtWXfywaMet6mTBCrb1mFE/d+HJ7YmRg
-	JDc1zc0D3ALNgHllW6BRUMO4eqBSdSU=
+	t=1795686213;
+	b=j6Si40Lou6QUd2v1mDj3mIhqz29Ge0sFtvv7Ov5eU4l/hBPKpNVsjCyBqf5yfTZX/9wDF6
+	uRw3TfVXZYFlVpb69mjkQgnDB1kmLcqiU5GU1dhS8m0W7g+Q7QgeJt7lzQM1kcjloTblsk
+	au4Pq6jMoDdOlqB7O/6P2YiCtiBBnoY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795686205;
+	s=arc-20220608; t=1795686213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=U2RG/43Gt62+a3trqh1OXBqfFh76n70yv7dg/xkqTbQ=;
-	b=KEUA7NBIILnR46u4E0KxNgs10erhQZVI2Kb3gpKyppsvGltpdIjld+jC2wEfNFp19SkNhc
-	rQRai/wJb4/ljqtivAOAqKzA8ctJRSeq9JNawhVEujeOKU7Mz194pDWNHQ0NVF4VhW5DXA
-	vufYYXWewQ3/74zwQxozd425AH8irBg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=45243M13KOvb9KniU4MCiqJ1WOWt7TIcLK3eH++OB0U=;
+	b=YzZf/Th4j22WDLp3riQXu7kSxCq3ogYCAhTA6Q62DFXslZ+TJ9Lbh9EBywqksTOySokTHl
+	OP2dtYCW8EYgVAcF5LgRHuO3MkEl5CMS4JxUUWFdyJijVOn+ysTmon5dBZL63ozhr72oPB
+	M325RwZBcvAW+f5Yc9LeWy7JmkWqzuU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=pass (policy=none) header.from=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1B5EF3E815;
-	Thu, 26 Nov 2026 09:43:19 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Barry Song <baohua@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH] mm: free the swap slot of a dirty swapin folio
-Date: Thu, 26 Nov 2026 10:42:45 +0100
-Message-ID: <20261126094318.244973-1-alex@ghiti.fr>
-X-Mailer: git-send-email 2.56.1
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nbVhAchV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=D32CMv1v+3bZYh/n5UdiiqLQfDC+3bfpicw46CnpCFQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795686210; v=1; x=1796291010;
+ b=nbVhAchVucldszUIDs3Fxw8OH3B1265gjHbv4PRnkuMQ5IVnWDaaVoAoZnFpaDbFZjUOeNLv
+ S4sLw8AH/h2ZQIG57bcTgDWKx+Dzb1sMDisUUx0joqD13lMretLAZ/iNJDjVZzPpevgvCdz/DbI
+ AQptCLp9n3ZCVvFQt/8xl0Vc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5d6fe757d0ca69c4;
+	Thu, 26 Nov 2026 09:43:30 +0000
+X-Mizu-Trace-ID: 5d6fe757d0ca69c4
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <387237c3-c2f8-4782-9ba6-481f459cf7f2@linux.dev>
+Date: Thu, 26 Nov 2026 17:43:14 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTEdJR/H4Xa4ZKuZ4nTBVEkhQ4eIOXT8KBKdz48DaOc5wbOZ2w+1WPgtVNRgprI4/22vAN1OenUTh9HkBYJ4rslBNvFArNCZXQ28g1/NkIwdm4h1XM9+oBIoN9fzUsCSpmHnfCZksERC5zH7jYF0qCl2FD6Fa8775TNfY95y0FTFrIfI6+213vdjQhq3nY6EH43SiwUTshKCRfEnuJPNOCNGDfHd/ZQa7aM47zEkhJAHXntw1KQCSIeU2xrjpqXzWS6oGdWWFqLBY1BEeZkEWyBT6qXL278TaOR0Qv+mO9gtoNMwrdYw/zT4kcBv5PTthlLQKtd7fCdHYWYj9T55opuvcVhirBRGh89bqo3wTGudx/vk/WQI9z6+eeZLs7jtXlMRrBFuXOwClvIOgiYWuceKyQWb4XC5lqTwVDas/gstcQgP4EEv68P7bS3cwV79NybjR6sUoQyytY3zDlzlR5hlB8Cxrt0y1f5q5Hse5+7ll/9+CLIyfvXr//lXZOyX6Hu/8E53L4693z8FEqIAsgaJlqjf89fYJJglU2aZNhxCiZbkXt/dA4TNqedPE9A3IhRsqgCe0boyvG60aHuesKA/xQSznQmGSK2c3G3SXO2oYOopKgPeL74TrfVfpdNjM2yvy1ovNglzu/1w4ROTeHQe8Q8iIC4jdAxsGlkv3Lm58g
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/18] mm/memcontrol: allow update of LRU statistic
+ without holding LRU lock
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+ SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
+ Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Tal Zussman <tz2294@columbia.edu>,
+ Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>,
+ Ehab Ababneh <ehab.ababneh@intel.com>,
+ Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang
+ <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>,
+ Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
+ Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org,
+ Tianyi Chen <hi@tychen.cc>
+References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
+ <20261124-mglru-fg-v6-2-8ffea39934a6@tencent.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20261124-mglru-fg-v6-2-8ffea39934a6@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2B39240004
+X-Stat-Signature: f5tkjusnhpnibybgq1y9b8sb4uuw8g57
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 57392C0003
-X-Stat-Signature: quzkgzwkf3tcehq5zhikt5imphgy3yx9
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795686205-876954
-X-HE-Meta: U2FsdGVkX1/auBfFhoxyEGgdawb4SK1pHq8rVTezvwzat5byu72ydjBQenQjlWJfkkycTqJww6w8achlufdfiU3lFkzD+EKIhyravyYjMv2n8evQUV7DJ7iy7GEiatvm42Xy6UfygmhtBQyf1Jp8n2J+z+Q9DPR4mAFcHR2/+pI98Vz1YnZDzGA3X/eRCxWy7bKkMOOEWtuRVTrICKE6dkLaIIs4q7Tqfgrwu3K7fHA0FQRpXj5PC4hPORR+eZTQkChZ1V+IJHHq4bfOYQX4zGj8R+uEFk3nBjGP2q5JrK0JZ/oYN/cFB6/chTKgWiDj/sa5+FBbikUDO34oJdtsimqQ1X1HetbrxyioE/88AJKeet/vbm6Ipv5KTdZD5tjcdUskhN1Zy1j17vxO2xKJjFfQ5JlJoWw9aIZNijLGLx3Np4ns9CfUic8f+RmCX9/6DRsg7BX0bgIzda91qxsX/qKZ3NWOMU7HY+GeUxEhCu8XLGvtGvCRW/NqBGVJw0xPNXr/PmR0MflICA+VK1YrODBdZ4gNmAcpxtF5GWMjyHIYQqEZfNlT/5cRf75o3azHqwY06aZfP3mpMjjve4srwzODmh6rbQ1iVFgKD0ad1vcmR7UGO2v2rk/T7WD0fHSjPFCEERY9bh4getPrdqU3Q2SAnnT+hnU5bGuG6u95wA0G7AhkSrTwGmYvQdd3seuEfhyhmRaFgm4XZCnmXq9y1qO6OH3k57KfBmMU3RsMFUhwe4IJoltWgBUdkrSFdSFy8TYYRcaNkX4bO+0/Yg88PpCb4hDCv+Dn1E8cwyqGZAtZ7mMaIcftJtO4v9vg3crFiYm0NoWpWutX/1MyqqIYGp7t2VTQmdHsO6dwbsa8HK6jVwo3l4nSm21U+W/ebo0VutocWS3qGAwQM6YEPL+Q5g+7wL2zYAgTwk43LWHoqon8pW/DHatvhgyAaO3yA7zVWx3MqSpm6DYE1iwNJaD
- RPnPeLXz
- LH/oIeOlfn3QRxKkXsfXR9a8uzbd98/OS0QyQrtgcF1zic3wu0nDP3i4+XnVP+bSeU4/RaN5eSCam+sFQSuOMmWM2CnL/a2Om1tchTogCm4J6H9cXkJ9xAscYZUGeU5NEp7hV2Ch3BIIGagRuuQJwOpqfArb9WQua+4Y7Na4jq2u6fBL3lIZdF2A1zH+s50Z/pj1awKLYm9Hs6nIBMHUWEieG6GQbBdZXNJjoJKZIdZsrStLdwOc3SbdXvfrbp8au3D1etEI/UQafj0UzMZKt5lymVWsRK39JKV/WuEcqJO2sBoA=
+X-HE-Tag: 1795686212-732083
+X-HE-Meta: U2FsdGVkX1+kwwz8nOVYeuu/ltFReYMOXkk+5/rxfpAWCuIGrZQIl6sl+jLREz8AYLFhz+oHIL4crHE75nUcGgSnM5/6vdEu5I9yZlRYQgHeYPf34ek8HnjxRzHhPNolHjiEY8czlJKI+EGr60T5gZztU9dRpyDJMGOHYNola6FVriM6ffmBopNYB2Euxxc8013Mk1hOKYJIzABHmEdJqTzzUckAwU5cqorgswEzVUdxuvOyHE58lP4ucLMUfXlonJJZVCrkt4SexhyLXK7LMwMS7Ay/ef1dfMA3qsXicVBMRWJH8R6I2KuWIN2YArxG0LxY6QOlmrlAUxjjVNHwpdXrNPMSyPRc7jOQ1Amv4n61fRxrj3htJBg2cz8gr0fqstDvutwLMeZ95inTkDNULBKd2gvb+gvRprjUYGkZPLpHLgUbUlOJrzCvRvX15vx4q1nO7nyxiYL5gvtbQTeeAgTqH2mm8nSIl6ip8SxLMUHaD21V3PFqVTVn0NpmwyV7XtFSuTJHZdTEieCe8F74+UoBeALVsOcYQ6b4eG1mNWcue6IhIVH84wPbphnXiAM8KQskBnEjaa3vuRucIxwJRUDj78cMMRf6NW+HUi5L/NyCZszZbZYjueV/eOL4Sr4rzf42iR6PYr+4vuM5EDefUZrcyWYCJ5qI/34tNhf99aa5h7oABaMfzVcWL1uu8vur2U4FP+GWv3cdn0BqC9PNjSyF3WTDw2bT8DbvHoh8zwerKuMrI6VPYczQ6FIMiscWfB8NpV1LjY9Jjo7TiTUx2iLymBsZGL4txs0B3jbWhkpcLtrtRMoM5ypIzUPn8ufbhIklzLT0EfitX3u4B9GXPLHt0ZZPBDa1V/pbfFSOIn5xH2tsDyh3gzEKadCpGK5td5zDAYHYiFLhYSiQ3ULFUPtLixdornTUfq5+e8Krvr/GNXOykipWvJ/t5zwSP/Kt8TxQeF3AHRqvSbB6LpO
+ 5HuwzP+e
+ e3tU998pBgWOFI1A//gR7eWWmuzFdR0tGTdTZ8WTmeMLtMtE7h541Hdo7BVfg6SdEgGoOBJxGnrp+CLfitN3KW15Pz8BW2SFA8gTHQ1G/NNAkT6NsF3xey2pkCApuyruaWQzl79DC/z9e6kSFL+SFiawPV8JVaNmmcJVpak+QgVy+GUEQdWtV78nbIRRT9Xuc1+u8ec+ZDgF+tIU8Q6DlLzlOGCJoSWOA0Bf8nTdljNXReLxVEuI3y0oU6x/pVx5Kp2K4XmC2X2CqPXg8JJe1Fb81UvP3Wa9RiIWLwVQli0NaD8YdCYbMCOlGLIPFTWJ0v227Cn1F3hYVkXX9Fy1vxZVO/gLUH2izlnGvwC5OFV90ym1L4B//IYSMUzVHkPa0W14s/B0+96CQAu0QTOPU2Tjg6oLWismBHNKzkQnRaVM/09VaUPQwvyV9Qh3TWf2salCfr6y+Zjc5Vf66HzpbdH96zE0J+GCI+MqB7zLHANiB9ECCAbx3RF0rgyhkn6UrTlN0IeEohJFzlfuVECy0RS4V0ZORYTvTIT3Yf/NB57QIJSspB+7BWb9rXhZrodEOg2L9+cfxVjP94Wsc0LFKBj/jwBqs81ox9Ru7prBeH0LjRn3c86DQmPnwbCJVtsdAEp7fTV4WZGfXVJwexCjBPJuijoLdBmOdONZMCdRZeBvDa2FH7g1ZRHEr5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,81 +122,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-do_swap_page() frees the swap cache of an exclusive folio on a write
-fault only. A folio loaded from zswap is dirty: zswap drops its copy on
-load, so the slot no longer holds the data and only reserves swap space
-until the folio is reclaimed again or its owner exits.
 
-Such folios add up, and they are expensive to free at exit: on a large
-production workload, the exit time doubled when zswap was enabled. A
-third of the increase comes from the folios left in the swap cache,
-each costing about 3x a resident page to tear down; the rest comes from
-freeing the zswap entries.
 
-So free the swap cache of an exclusive dirty folio as well, so that the
-slot is released at swapin, as is already done on an exclusive write
-fault. The folio is dirty, so it would get written out again anyway:
-the only cost is a new slot allocation on its next reclaim, which write
-faults already pay.
+On 11/24/2026 2:52 AM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> To enable moving file pages in folio_mark_accessed directly and lazily
+> for MGLRU, allow updating the LRU statistic atomically without holding a
+> lock. It may cause temporary counter underflow, which should be fine as
+> the counter is eventually consistent and only serves as an estimate.
+> 
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+> Tested-by: Andrew Morton <akpm@linux-foundation.org>
+> Acked-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
+> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>   include/linux/mm_inline.h | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index 2395ca8ee305..2edb9beef6d3 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -47,12 +47,11 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
+>   {
+>   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>   
+> -	lockdep_assert_held(&lruvec->lru_lock);
+>   	WARN_ON_ONCE(nr_pages != (int)nr_pages);
+>   
+>   	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
+> -	__mod_zone_page_state(&pgdat->node_zones[zid],
+> -				NR_ZONE_LRU_BASE + lru, nr_pages);
+> +	mod_zone_page_state(&pgdat->node_zones[zid],
+> +			    NR_ZONE_LRU_BASE + lru, nr_pages);
+>   }
+>   
+>   static __always_inline void update_lru_size(struct lruvec *lruvec,
+> 
 
-On the production workload, this patch removed that third: the exit time
-decreased by about 15%. On a simple microbenchmark, 4 GiB of anonymous
-memory in a memcg pushed to swap, read back, then SIGKILLed in a QEMU
-guest (mean +- stddev of 9 runs):
+Hi Kairui,
 
-                     base            patched
-  exit time    989 +- 24 ms       502 +- 28 ms   (-49%)
+Just a heads-up: this may conflict with Joanne's "mm: move LRU size stat
+updates out of lru_lock in folio batches" [1], which is in linux-next now.
 
-The cost is paid by folios that keep cycling between zswap and memory:
-each reclaim allocates a new slot and adds the folio to the swap cache
-again. On a kernel build in a 600 MiB memcg (-j4, defconfig), this is
-not measurable (mean +- stddev of 5 runs on bare metal):
+That patch makes __update_lru_size() add to a batch attached to the
+lruvec by the lru_lock holder, and relies on lockdep_assert_held() there.
+Once this patch lets folio_inc_lru_refs()/folio_reset_lru_refs() call it
+without the lock, they could write into another CPU's on-stack batch.
+So the lockless paths probably need to bypass the batch.
 
-                       base            patched
-  time (s)        592.4 +- 1.1      592.4 +- 0.9    (+0.0%)
-  sys (s)         256.6 +- 1.5      257.5 +- 1.4    (+0.3%)
+[1] https://lore.kernel.org/20261029204157.117879-1-joannelkoong@gmail.com
 
-In the worst case, random reads over 4 GiB of anonymous memory in a
-3 GiB memcg, so that half the reads are zswap read faults and the task
-spends all its time in the kernel, throughput drops by 1.1-1.4%
-(mean +- stddev of 5 runs on bare metal):
-
-                       base            patched
-  reads/s, 1 thread   37310 +- 182     36889 +- 77     (-1.1%)
-  reads/s, 8 threads 291937 +- 802    287954 +- 373    (-1.4%)
-
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
----
-
-Notes:
-    Previous discussion:
-    https://lore.kernel.org/all/CAGsJ_4xBtKGqXFP4zvp+Qn+tb4X7aCvXn+wqDqot_cXR92DjhQ@mail.gmail.com/
-
- mm/memory.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index d477a4f986bc..dac0f0a24bc7 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4711,10 +4711,13 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
- 		return true;
- 
- 	/*
--	 * Free the swapcache only if we are the exclusive user and
--	 * this is a write fault.
-+	 * Free the swapcache only if we are the exclusive user and this is a
-+	 * write fault, or the folio is dirty: its copy in the swap slot is
-+	 * stale then (zswap loads are exclusive and dirty the folio), so the
-+	 * slot only holds swap space.
- 	 */
--	return (fault_flags & FAULT_FLAG_WRITE) && exclusive;
-+	return exclusive && ((fault_flags & FAULT_FLAG_WRITE) ||
-+			     folio_test_dirty(folio));
- }
- 
- static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
 -- 
-2.53.1-Meta
+Best regards
+Ridong
 
 
