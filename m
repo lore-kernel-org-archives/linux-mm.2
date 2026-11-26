@@ -1,94 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6686B606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3B0606A68E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MM+gUYz+
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=M1s9wfC/
 Received: by kanga.kvack.org (Postfix)
-	id 32AA66B05B5; Thu, 26 Nov 2026 09:50:52 -0500 (EST)
+	id 728066B05B7; Thu, 26 Nov 2026 09:53:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DBC86B05B7; Thu, 26 Nov 2026 09:50:52 -0500 (EST)
+	id 6D8506B05BA; Thu, 26 Nov 2026 09:53:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F2606B05BA; Thu, 26 Nov 2026 09:50:52 -0500 (EST)
+	id 5EEBA6B05BB; Thu, 26 Nov 2026 09:53:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 009B66B05B5
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:50:51 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8BEAF1C3B83
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:50:51 +0000 (UTC)
-X-FDA: 85477557102.24.3B3F210
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E2E1914000B
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:50:49 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MM+gUYz+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EEAC16B05B7
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:53:16 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3EC41404C8
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:53:14 +0000 (UTC)
+X-FDA: 85477563108.06.7A4B715
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	by imf01.hostedemail.com (Postfix) with ESMTP id ECDC44000C
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:53:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="M1s9wfC/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of mbkchelofficialdev@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=mbkchelofficialdev@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795704650;
-	b=VnWLDCFrAvTfcKdjrEx5KNDVuCbNqCsaBo03pmUqiucZB4q9Y65ThlmqCq1b6o0RBEO/LA
-	vI5xYX/hUCHxBGf/ZWCd21UDuUk24OUGJsh/3+R0JWQbG7RSjz0uUs9su6knN8ACDrwHEY
-	O5QxmLfsrtIkyvmvi2cs7uQc2pFMlg0=
+	t=1795704793;
+	b=7OrjTXlzddtYL1o3jlfiSXeBLZrFd7F/WEkFlYOrSKiqijzSN22E5axZIVQfvPuMWo5bPx
+	0IT8TZzU4cZjZrfA7Fs7XhAeArpggF7X5RHm/cb38dYAyotY1ggbpQ76iupJlkZUbtHuc3
+	QPU1vp6UiKr7OwAhmO3yuM9k8KUaOvE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795704650;
+	s=arc-20220608; t=1795704793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BzSAPriKmxmZ03qlrGTjPQb+mIO8/xB1Y5Fffpd+Qhg=;
-	b=fYSlRZRevAZW+sZdIwD9X7ErCNJCLBM4B9xD7JDUGC4yz3eC5DJsWgzJZWSONPTMimKv2B
-	bHrybFgBR/JFn1FJyOSZvg4h6Tg8Bu0RHCNal5cM9aQ1cEbqKUSF6E8tEzGQruQ8uU+ZEY
-	3cMqd7pdELDWxzK61LfREMOEjzUYgYk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YeDEQjq1QHnb/SlOHmlULyGohnJ9XGys0KZ0/DkEdK4=;
+	b=lolrT0nZKeLMw3G3dRFcadCUrjZPu0dp3rt5ScMAvka/+ikpLzZ46oIzL+EampvGx/XLY5
+	kwcKbAcKpVwo0HyvGtixml7g9g3Ay99gHphTymZHqT1s8kCZ8tpjH/5dB5zkxwVMJK1QFi
+	l0vKf4Zjv55xbCUAp6evp1CoueBEgwQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MM+gUYz+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C81E440CA;
-	Thu, 26 Nov 2026 14:50:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483411F000C0;
-	Thu, 26 Nov 2026 14:50:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795704648;
-	bh=BzSAPriKmxmZ03qlrGTjPQb+mIO8/xB1Y5Fffpd+Qhg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MM+gUYz+XJKZVtDO1r3vHu7u0mJoELV97fiUr5JmWVbgdezUW/SGv6YKykagd0xt3
-	 I9NATohIFrMUVuJFVMe5LRFYNBBp/oLRjbtLN5+WA7W4H9umU//F3gZzTamN2tsgEJ
-	 ypCZd3CPfAOYlv+mN4CE4FggGv93FugE1G68LEN92D+yzgrjDeKuHH/BJM1WwaOTe2
-	 l0YgAbMdg8e9S5kRXBR22JB3Z1DgLK2IecmBTj1An/IrX6f3Z1W7WPkX6ZZSA8I0va
-	 s+bR3ZLtetWrVOXpzFJsMDEXEcTHG9oolFPcxTnvN4vhDzZSzsJ63xfDJxjOY+6aes
-	 NmfSu1e9lbCsg==
-Date: Thu, 26 Nov 2026 14:50:46 +0000
-From: Harry Yoo <harry@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm/slab: document that sheaf refill does not require
- blocking
-Message-ID: <awhG_gYUbcm_y74R@thinkstation>
-References: <20261125-sheaf-doc-update-v1-0-4a579abaf0b8@kernel.org>
- <20261125-sheaf-doc-update-v1-2-4a579abaf0b8@kernel.org>
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="M1s9wfC/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of mbkchelofficialdev@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=mbkchelofficialdev@gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5be53e5fce1so6538036e87.1
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:53:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795704791; x=1796309591; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YeDEQjq1QHnb/SlOHmlULyGohnJ9XGys0KZ0/DkEdK4=;
+        b=M1s9wfC/fzOKmK2MBtsqJ8bDNGNSlVY8BZtelDJNuvJBFAsetOXyY43pusP/c/Pn8o
+         UGJVCeeffZycPXtJlNdbGXvp3auTqnN5+vBkPjC81h/n+xSovJ3z+vkXYLIVX7f3Oviw
+         cSJnron8ozCqyVR5CZqdPtO5nPN12kbK1hst/bGeFUXkNASNUuOKG8I7l40tmiTVXzyW
+         22fc8U/6oU9+Z1iVD3n4cX2BHpB381dXDX/FLmKqWxAPRVvfNS1bWXwlIboPD+vbICxX
+         Out2Q6yUNGVoLOAG+dMBkAUv79WDUs/+/FYOOJQwfjis0+gD27JTTrQyiUCQl1JgB8Ct
+         Pq8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795704791; x=1796309591;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YeDEQjq1QHnb/SlOHmlULyGohnJ9XGys0KZ0/DkEdK4=;
+        b=kV9prpNGD5WHfGs6/cjqUVlhMkNXrwAkP+Ri3GtcWLMEfmUxDlSX0WmD1G88I11k+K
+         jwkQjGtXpcVDWVAn4+XoiDyc7jjYwQTNstdOKlr3oqrQjCKt/hgZ9iqslgs/7h9yEMJs
+         NQSAEyLwk7K8EV+Ec7f6Q/Mmq8UcMRw+00YBRnUHlEY6LX4JU+/pbGZPxmod+db1Zamw
+         EkQ75eWypbNnGk/sfmu+pWOB0MaQp0yFOOMKuZReOklaUKdfn7VgPhs3ogVy3kwOt3Wx
+         B2bQtYHUeHe+ew5SLIWLxp/uu3bZ27OiE/Tc0hO7QT1GkTBnr5cx1Lp1yaRpxxSgME/X
+         s6jw==
+X-Forwarded-Encrypted: i=1; AL+hErFj5iNg3D4zCdIODWRosUVPvndiRRqBB/H75oZOEDGfN82G9sIoem23I2Xg+q2iXMACd/kdrOFI2g==@kvack.org
+X-Gm-Message-State: APuU4Z8oyofowImpFYQ02t9k713UWhl9TRhQsXLbU9zOR33Hm4PeLdsq
+	yDngz2wjy0j2gas8oef9MiOZear9nmK4CwQEd2qJt8vmEMPTUrbwx8b6
+X-Gm-Gg: AZFdTZfL0aYwUtleDlChORQazBxkrNat/TwKLIg40lDQvgfTZ4hZf/ZRm06TjsD/xWP
+	mho9bKmk9WqG8iNADJ7ChLggqPJvEdJC8NSzSnJ5NwOuXfbL/+KRq+Wsgl3uRqsQ6bNSyO8eV9k
+	VUI/YlY2/cy8bW7WcDSzlgMNk+rm7mam/nx4dXdaqnrIZGQRw8sEvNi3O24qhb/k1pSBH+rTc74
+	1GNIeNQn1tyx3qY63DI9r+ICO6ooapbtnXdripnyE1BhaGCAMCqverPn/Et2J3AuablSIfkSDKp
+	bRRRxG4PDtpdfQvXgGf02q/PS/LVhXZzykCR4JBYMq65GpP7m1y0uPsfhXDLNTkasLpvkuUNdZX
+	f7VEtmpYTqLCEe9Pzofw/P1kwxNig79l/WvJYa2/U55LjMiYwINbyUkjYMsSv0Ub6nrwB46Llzi
+	wQYrif8S9aIAjBFXOio2yXpX8QrrtbMEhUo1ZGUAVimy5/yVtbix4vWfbE7QbX4W+yUjRblqPb+
+	CzO1x2XwwnrbJml1wtHVg+jC5Hge5mwa9d0ar9xwK3exHFs7t1QFM2lOGYtbFI44sqAL94+/+iK
+	uaiIvY1UMpAkZRMJGwA9UJCCZmj/KBSAPjpO
+X-Received: by 2002:ac2:4e07:0:b0:5c1:a828:499b with SMTP id 2adb3069b0e04-5c1bc682145mr6200113e87.2.1795704790902;
+        Thu, 26 Nov 2026 06:53:10 -0800 (PST)
+Received: from archlinux ([194.28.181.64])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd06d1efsm5493328e87.72.2026.11.26.06.53.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2026 06:53:09 -0800 (PST)
+From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	=?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nicolas.antinori.7@gmail.com>,
+	linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org,
+	Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+Subject: [PATCH v3] rust: mm: warn once on invalid VMA range
+Date: Thu, 26 Nov 2026 16:52:57 +0200
+Message-ID: <20261126145257.192636-1-mbkchelofficialdev@gmail.com>
+X-Mailer: git-send-email 2.56.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261125-sheaf-doc-update-v1-2-4a579abaf0b8@kernel.org>
-X-Stat-Signature: r79ezs6k5gfrwgd1hdx37hti57jpqz37
-X-Rspamd-Queue-Id: E2E1914000B
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pjtt3pb4mshugjzcyi16wehyahxhfqtx
+X-Rspamd-Queue-Id: ECDC44000C
 X-Rspam-User:
 X-Rspamd-Server: rspam03
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795704649-978286
-X-HE-Meta: U2FsdGVkX1/iiaDOIGCvSM1m4wHUXdLRZ7mRvvV5AK4NTXnMb3qLe/IcASUFFYvwv/rsxhBKe6ovEqrvu0NTAmSt9HoZ5KUkhHH8RoTeTuDaPSMX5OQk74GGswz7GrDuVYqbttVOAqvEWcWKx3zaKZFR7q/2Pk9QtVWxT/fFRKsHDDCawzOQnoFknz9gxdnrR0fQ/0PlwLMuHJh5MJ4iJGmMrdA372YpA9QCOTnHcJtDu8RKKnnrRx5CHquNteRGYl3jcmfJPbS0J3OcQZZPO/zt4SNcBm5O8jVqsyZx+PkfTTWFJFbbj+UAQvPpbKKfA4iY2M882KqU8mg22TMRLNijsyCeSbsFdieClvCkLWrJ0UlmwYVdvBQSU8WxP0W2t9EillvtVed0xTrvfQR6fPCU7U/qZyMyQgwSQkQlh7FHr6bEF7MLVPcUpIQiXK+orPyGNiq5l61EtSgGr3pxsG1OrBiAdcJcw9OSlIXDcSWQ1m+tw5GmaH/icxVt0rk8hica/L6qR0n+noDUB6/G9Ok91b2D8h+i/rHtLAwuvvsYXxDgyjjo24FCGd5Zlb3UUFx/h2axUK5uCx+puS7p5Ltb8VCNhORvZ+mrZbc/zTxPY71hqI6nA5ZlVLW9/yYj4n3WtktDcBBQlB8mvBXMI1BhGa0VOaNMEiSvTHTCL7/RTOStUfVw/kUteCXZ71RMKHqfoDWJzy22CDOR6x0ZooYuK3Mr22rVvVcKU8inJME55xfEbdXdJaIYUx+wbMa/je27ri3wNOuOXPcdG30fxDdq2nkkdRkvzqUk2uKlzzrgq31veYTG9McoIJE0+3zn/KOutJX7CapLBWyhbQGx3m6KxE5zYV35FXSZvUHsjSQzKz1Rofu7mrw2jUzSLTyKN10sWgg+9A2ciiM2s1xt30Ot0GvT/NU6XoyzYFMBSHyRFww39vrPqPps3p+cvQ3u8YstAwOFpF5+VFGX/nZ
- IA1P57n5
- eazL82SjV7sopT0YpwECs4JZ5f7cJqqolT0+JNUZcSv6hJOiEEtYKHeVuBjL5kmTPS9B2GN9skRHpP1ijss6uGBcNrzQekf7DvmnK79ZILMhruSLBBNlqY6uOQaBaOB+TmHA1ei4qiacXBwXEroIlR+G1XHJFOB0NWJqk8xZ+ACZGK1PtAs981EwWLqY58pc2Vmb9n96drsPXLmTwmbzoPMz8WmXX89a/68LZxCYDY5wIJSaHYgOD689smv7GeFi4mKpAUj+zipCKYadeYBfxy0AaXqqLfLAxbE67Zg3uTSPIBCJ1CqabIriS+6pTM32a5DXBll8FfhyOgJh/49yp5ggIS932p6/J4DeR+Go8FvdvC99tbS5QBlRGPrimsdrUL2+ppmDHG1c23/uUKDuP0UlPdDbZ2+n56cWLG25v+mbsiZDuxNkkz5k/cHYqScATiSx17ubrdRFMWSHZLisHqudqAbrgON9NFuz4NnDSf5AMBcEfC8PCRfvT9Q==
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795704792-371714
+X-HE-Meta: U2FsdGVkX19PtFQROfaZ4i/9CZO9+2DX8uX01HMXzv6q08ZeDyKDJvmrsOJ48CWG3VkfeXT8EZdhel3OlrRcqaIzPdvnu0aJbV1S0sVsSGqAZjDpEcMGJblJ5Yr7bKIXrVSYX+zOPfGSQ+zK6v/aeiAkTCRxC0cOF6Pmyp5WUZE9N93RW8yTeiaxa9YHPjl4vv0wPHBUnzCP+pgFJFj1p9r6OjyrN91tUGOf9VlPTza9avWOhWDlyV2VusGe7asMhzpdo9BMmbgSNb4qEbfQJ1/q3lCb2Ur7a7n8rLXiKfqkmD6Uvrl9jN4CGUFYEPChO5Wc2Jspskl7Z8fFzLNF/sNYpk+jjea2cByTUuxBn8A1JqZjAFS5oaHtEiuXaTcOX8bWdrmAXjpeU8oDJXbOHdj8RxsdAQDmG+HYbIy5Go+ihEDhVUXw5xjUSGztd/BDIaQAK/ZfAyBRpFEnIvU338CBS2f7PO6Oh1FRxf6XFeEqYdbx9tsEFnyE7oeZ6SWZZ9+IjPc0BOuTL1l9YLLv463tM7IdGYlZwDHEO1/LQ5Ey0EO041oNV8AbOUTYlu4adnEfbKzVE5hjUb2xIPw6GXsqeqWXclQV+0827vdEO1/zd3THqsFdgTaZ+b4snqz+f2VQBGnfT891KycFvQXKGpcZz+oV+WVaPU684wR94e58DF02ELyudw8Bw8hFSl6CTlAxYY0uvf6KVHroxT7r27eKLghBUOoN/asSSf2/k3J3VMqeCFT7Y7oUMecY09nTRkCBeChS1WfdgoEI+7loTKe9IXAc5meEFdKHiIGhSio/WyxXY0B58HyBkrO0y9v1FCJBKQdBGTk4Hb+m5Nh6b42iRzjb2OuV4r3f4lIldtqLa8w4mWQSqzf/9bra3aDeoy2vCObqq4T9aFT3b1e361cz20pCPeLfkoBa3fuCDmwV5LSjsWyWuPvtjAxyUWLHCcDIcFx1nv+GgrpHYAO
+ hXdz5ZD5
+ v156w96TJcRdkZaoJvSlXwhDenA7TFBzVlkkikZMfMBBUyVkHCwvI1RRGX0DNKK4oJE0UxAja+tV+4XlfX6/SasG2n2aOJzcN67LC4JzrGHeCaCJPaLVwl0wBBFm3OG1RBozUlYoWlIXC0frvGy4EZVLwARBdWncWL3gye6rushAXqh7w9TbU/b4jWfy8kL48zvuWT0yS+4PxTgtIbClkXwynLN1cGtSCi/BCIh4Y98PHPmkFkXhCHBo1q68egky8h7yBdLQSUc9r6F3lu1a38MC8/frNJkaCwhDrF6n0FrZVJV/SmeaAi5dKt8KJ2eb0elvLpBU/UOKJL59zDr0gof1EjUzL2XxrIxMFYggED35y4Lb2UgDhlv1wKhHGuFwMQCK1pFqq/fLiDZ41H/UzdptP9vDSWW3wum2Rowd4MprQVN8659aHAUjBs4/iD/KZGptXaqr0gIqYFa9UAscSRr9OhtGyhq2B4i4k55PMHabEsZH1hOj5V7JH7saABSng2s6pdnfJmhnqXewqpRW0AiP5a+nYEXn2UmSdLbEHFfv+svvPZWWRtqZLhW0CgfYErnCqL9HDB79UlKKEjIpk89OcbliYIheXaqx5znuF78WLrFCNp1R2BijO9YUMJBr32w6wikYuva/CnyIMn9GwPbYevCOTCC+QbACq+MZ085ioZ6Zy1slzu2HIOB+vxqMKUW1Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,30 +138,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 08:35:13PM +0100, Andreas Hindborg wrote:
-> The documentation of the sheaf_capacity member of struct kmem_cache_args
-> states that when no full sheaf is available, a sheaf is only allocated and
-> filled if the gfp flags allow blocking, and that the allocation otherwise
-> falls back to allocating a single object from a slab.
-> 
-> This has not been the case since commit fb1091febd66 ("mm/slab: allow sheaf
-> refill if blocking is not allowed"). __pcs_replace_empty_main() now refills
-> a sheaf whenever spinning is allowed. Only kmalloc_nolock() disallows
-> spinning, and it allocates from the kmalloc caches, so for caches created
-> with kmem_cache_create() the refill is attempted regardless of the gfp
-> flags.
-> 
-> Drop the condition from the documentation, and describe the fallback as
-> what happens when the sheaf cannot be allocated or filled.
-> 
-> Fixes: fb1091febd66 ("mm/slab: allow sheaf refill if blocking is not allowed")
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
+Use `debug_assert!()` and `pr_warn_once!()` in
+`Vma::zap_vma_range()` to report invalid ranges.
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+---
+Changes in v2:
+- Drop the `warn_once!()` macro and its KUnit test.
+- Use `debug_assert!()` and `pr_warn_once!()` in `Vma::zap_vma_range()` as suggested by Miguel.
 
+Changes in v3:
+- Add `#[cfg(CONFIG_DEBUG_VM)]` in 'pr_warn_once!()' as suggested by Nicolás.
+ rust/kernel/mm/virt.rs | 4 +++-
+
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+index 63eb730b0..289511dc1 100644
+--- a/rust/kernel/mm/virt.rs
++++ b/rust/kernel/mm/virt.rs
+@@ -115,8 +115,10 @@ pub fn end(&self) -> usize {
+     #[inline]
+     pub fn zap_vma_range(&self, address: usize, size: usize) {
+         let (end, did_overflow) = address.overflowing_add(size);
++        debug_assert!(!did_overflow && address >= self.start() && self.end() >= end);
+         if did_overflow || address < self.start() || self.end() < end {
+-            // TODO: call WARN_ONCE once Rust version of it is added
++            #[cfg(CONFIG_DEBUG_VM)]
++            crate::pr_warn_once!("Attempt to zap invalid VMA range\n");
+             return;
+         }
+ 
 -- 
-Cheers,
-Harry / Hyeonggon
+2.56.1
 
