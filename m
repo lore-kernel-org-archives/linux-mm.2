@@ -1,100 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027E1606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 19:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C3C606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 19:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=msB+tvWY
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mC7UtwFI
 Received: by kanga.kvack.org (Postfix)
-	id 14F936B05B0; Thu, 26 Nov 2026 14:12:45 -0500 (EST)
+	id 9E0276B05B6; Thu, 26 Nov 2026 14:14:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 100B16B05B5; Thu, 26 Nov 2026 14:12:45 -0500 (EST)
+	id 990DF6B05B7; Thu, 26 Nov 2026 14:14:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 016D76B05B6; Thu, 26 Nov 2026 14:12:44 -0500 (EST)
+	id 8A6E96B05B8; Thu, 26 Nov 2026 14:14:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEC176B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:12:44 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DBB8403B7
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 19:12:44 +0000 (UTC)
-X-FDA: 85478217048.26.1E3913C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C563EC0008
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 19:12:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=msB+tvWY;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 635576B05B6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:14:54 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E497BC0552
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 19:14:53 +0000 (UTC)
+X-FDA: 85478222466.10.7399F92
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 51D3A100006
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 19:14:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mC7UtwFI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795720362;
-	b=DbhyvMUZSO2nBq3oqM15KIBPOxXbjuWB/pD1x538EFJ8NaNFXdPOKMFsvwKRHrCXBKnuIZ
-	Kw529+Ge8CzGjl4eTTj09AYJa1v2vk23S+rXMp82/k5Vht4hq/gpeWwBqXTGGLayKuNzU7
-	gykUqbuGfQ6utKz3xT538i3mwlBryXQ=
+	t=1795720492;
+	b=IbOkFYrg/j6KJEUsbliUE3CMIeuQQzV2wrAhWgz1Vsshmz0y7SRP9KEY0jUUrJpeTLlKuA
+	Cvq5pLaUNs17niI3v3Qf8CHFuncCYEQPlvqVWfr2sbRL9qBGtf3WwWBBe9O+g/r28ZC4jl
+	O0XCsLc/WZxrEs/gFP3Pq/kLvnTaJZA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795720362;
+	s=arc-20220608; t=1795720492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=yMX/WIgWWXKdWFq0loUbH9QdBxREazrXEzbmQjJFf5s=;
-	b=vGtI4fEfZK86em0F3M8+Tdf1QAkt6FddlWQFxFp97e0DP3V7ZEdh7EHNukvIDU96N0t2fd
-	YARySih1GRP0fior1KNfVhLj42Zzt8M1+4mEx2Eb+m5TS+ImN/bxOPyxjK+qpOSDFmgX9M
-	lEkIVGtvuXvuY19FADo36zFMqUD57As=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CuVLv2i2GOptfnACX7l3LiPUxZvYfKOmSODmwPhhkPw=;
+	b=KN9wJmgd/83MQH0iPe36h1SVqu4oX2q6LjPypNWmvep8y5MSDBT1RRbaDb9U3iYEOmXwzb
+	iazSUhCp1K2wt3LlC9Mpqg/7t2njNALuAxJDs1aE2/RbfaJqQYirnpF/cEZQCm2mID7gnO
+	0/DIrWKo0SwcbTv8+PhxNiXkdawtVdo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=msB+tvWY;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795720362; x=1827256362;
-  h=date:from:to:cc:subject:message-id;
-  bh=EyEA8NYw2I5lCV/VMr7fHwN6g3ky5bubMNF+yC1KPm0=;
-  b=msB+tvWYxiL085hWniUqN/SL2w0xhtXIdh/NtAAITyeo+S564ezAOI5W
-   hFCfswghrrt2alLpuD5imBfZksYN/OYh8mp+puB1csDW3Gw7IVcFB/oOX
-   osR5kf2mcIsV5fAstBWuLLIPBBDC5Lvu//1oQnQ06mIqVERt0wbPTq0e1
-   fkLFrTs1ztKKCz3tEiPNTFu/Xwaue85VnVIPNRCot3GToIghZCHV/Dz4h
-   ovxfJF/W2MqalCxy1RYQDkvxwQtxHGAGk/6nQl1x9ZqSMIlGyBUh2O1tQ
-   IqxioRqR8Y75YVms+p3JdrDd6Kjt+t8KmMBKeK7uAlcc5NdbTCT0RXHBR
-   A==;
-X-CSE-ConnectionGUID: xwN2mlenQEWiF0bqL+64kQ==
-X-CSE-MsgGUID: UsrKOKNPTsGOq1nP/uE1Yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11978"; a="4644022"
-X-IronPort-AV: E=Sophos;i="6.27,235,1787036400"; 
-   d="scan'208";a="4644022"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2026 11:12:41 -0800
-X-CSE-ConnectionGUID: wYa/3BwWQlKoWuGQHZWRhA==
-X-CSE-MsgGUID: B7ZI9DU9SvuRdwpz8dYPbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,235,1787036400"; 
-   d="scan'208";a="13915930"
-Received: from igk-lkp-server01.igk.intel.com (HELO 800201f3098f) ([10.211.93.152])
-  by fmviesa012.fm.intel.com with ESMTP; 26 Nov 2026 11:12:38 -0800
-Received: from kbuild by 800201f3098f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xWetU-000000000A2-1F3x;
-	Thu, 26 Nov 2026 19:12:32 +0000
-Date: Thu, 26 Nov 2026 20:12:07 +0100
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [mm:for-test 8/10] mm/vmscan.c:6324:38: error: 'struct
- scan_control' has no member named 'nofragment'
-Message-ID: <20261126200319.fbiL0kw3-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: C563EC0008
-X-Stat-Signature: us69z8xt65py41e65ndqgqtfm9jpn7yp
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mC7UtwFI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B1C460D72;
+	Thu, 26 Nov 2026 19:14:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B11D1F000C4;
+	Thu, 26 Nov 2026 19:14:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795720491;
+	bh=CuVLv2i2GOptfnACX7l3LiPUxZvYfKOmSODmwPhhkPw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=mC7UtwFIZfgl362g4XVFFQa/G8viDzYK9zciLeNK4vN3HA19avPzi/zfmTg9BbGIU
+	 dgelNbTa7s4yMuoGmp8foEhEPgNckZ0kOOxjjZzmt6CBra5rShY0LwesOtWrGrviCT
+	 BXQwqJfB3mNv/WrPnyop1ygoMYYseBWl1YAbDtlasemS/PkApEcvJLQwZ6e3eGygqI
+	 Z3OXnQlvYs/Yo8WSSjFWvSEvKBPp5MXU4m+OUQkmI7PKHw5pZhjyTruSefXYjiNpzB
+	 VjRtOH2rC9Q8ru9ADi02DdfamuJWXQkm/qynGSBxdwbpRo+RVi6rEgIwh1Zb8voVhL
+	 ocZCZs24Dg2eQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: sashiko-bot@kernel.org
+Cc: "Pratyush Yadav" <pratyush@kernel.org>,  "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>,  "Mike Rapoport" <rppt@kernel.org>,  "Andrew
+ Morton" <akpm@linux-foundation.org>,  sashiko-reviews@lists.linux.dev,
+  kexec@lists.infradead.org,  linux-mm@kvack.org
+Subject: Re: [PATCH v4] mm/memfd_luo: don't use memfd_pin_folios()
+In-Reply-To: <sashiko-outbox-234004@kernel.org> (sashiko-bot@kernel.org's
+	message of "Wed, 25 Nov 2026 18:40:57 +0000")
+References: <20261124184042.1823277-1-pratyush@kernel.org>
+	<sashiko-outbox-234004@kernel.org>
+Date: Thu, 26 Nov 2026 19:14:47 +0000
+Message-ID: <2vxzzeuvv1zs.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 51D3A100006
+X-Stat-Signature: uz5exygdoqzqms96wmfaope77kbybdtj
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795720361-923119
-X-HE-Meta: U2FsdGVkX1+kF6LUaDma6CpF8bBCkuwvlyy451Ukci5ZYK2XrliIIiCYLsdIVF8q1XKrZ8+wJBWjNk/7GsPsXq1nV4fqPl/b973GkWtv8C7JSmZ/T35swRIz98zW/yJ7Rxkzcu/zBeUWde0mMYvhfOG112+cmCBOwnH29Eb/rgfcw04+NXp38TSUa8Gv7Jdl1QqMlvCkfNCVnPROKBNF1CejDsy+JshHQN2hJnmSl/Mx3tBsmqx76B8i9HsFVYkLKJJUaZFSVmmRGgT9bOLhj/2+mfl8F1OF1r+YB8/7lAX352uZAeofG2xE71GadvSS51nl5EeEMhfig/tnDwwV6X2uz+uex27GFEHFEEDev/wNfsj8ElFFDsvAwTB/qvwbj6MROhkqkbcgCxVRs+lPMWOM9TyWzVtTJcJ2YtzkyFiVh+JUenOiBSrYrteNdMaylBJ6h7/kBSUvAz6Go88otbtdR1Z0++fT/hwOGkvEwiHg4wNjCyigDZaEW02dXByLIjaxAdNf4Sa0ZouXHnoS3f7pObDI7OIl0D3dHLf3oQC5QLSJwNfI/0ng5M+kSxYrk5m06Qq3EvIyaQ0flymO5JsqGVz5p9xURRoP4gJe490qCbmw1+jTYbSroEzOA4BVVs4WKq8oUFEGpNLgwk3uNsWOYoLKElZdtHaBio9+vCB/lc7Kgoc5mFaGAExQfc5QRv4AoS3l5GqA5c/+gkL94zfgEFM3tScToeDNi4gJ7UclSyk9fOkRKvjheseJQnplqEGIkk3hC1Gq2frO6WT3pe1Ffim4wFyICNrfyV79XoQMa4w47D32csxv3bCtEy9gr5vj4nCBhGMpfrDwfXC3HBxdJ5SJIj/4Z3lxGS6z84Xf1a7gYKSBThwO27Kiiptl3ueAPEEV4hDE8VtVi2k4JVU2oxcNTMK2RmL6cNVGc6ig5qW0S/qaVT7y5teJQpKm0RcHMKCQAlI7MiaiMUC
- SsjwWl5o
- +d1AO8je8mkAxATqT+rj6H2DZMLA+jJPZlqJ2hNQQYIRT1mG9KnMK0W4PLLFpS63q/cjEGvz0gWO64JhLtwM9tpLf7zqYg19pZ2SXmlFApYP8Towk64QUEVYVnhQRc7nRI2sNHOAyBCrr638APZbOEdEIF/yNNV4xaALN829PVaMV0yc0RS/wcYOc9ysyNPwJ4ET+xehLYGjHtEUux7vvEFpDjRowvEecpHoti5+TpA2ePtWYCmDOL/RTclQGL/95+Xl4jpAPNFEj15zhmIpGKR/Ilps6WkNuN+5T0nA2O9A/RcFcHd0hKAp1yGYhV6K/ABI/gLWVrJjSLr+NTbuyrcpm3m6q98veD/MJt1/Dtww+8wSiL11fwwGk7W8+ycKmbKu8rpxpF1Uj3kpm0oiOYn4Y/+a6t0cT6mWPUJpH0x/iiWCHWhRjsNEsF9qKG2VtM/2gcjV27z3vil/f1UbIKHKsubu3rFbHDljVX0HDxkHE+QOfWGDT0ZPPlcuvjhYxR/YFQLRFncf1yoP+N+NE3m4knBLPdF8+MoEHT3oRFFHcUV8=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795720492-714195
+X-HE-Meta: U2FsdGVkX18PMQ903sCjvNfMiGXLPCnL8JwTDF1Zt/dMBu3fLDTKHKnINkzOwwrwCRHzp3I0DBrlXOATO1KvGHdPA5SV3W3P7BCYh5wlZgmWZF6BRD4EOtVSQZx2ZLMsnFxmnsyyGgbyFhgOeL5SN8Dis8YsupwZs+0C8YwC1GYEvICRero3fAfT6fFmIoXUjb8O4TzokjCWGpkr5eTs99wzu6W3gkcmQypFrLLYC0VI1JVcCqMGzdkYlStsv247U3Z2y/gBNLM4VEAqeEAcqJgJzjn/9bV2NgX1LzCkNXOVV2NqNLkGwzMDhLBsX5n7boFydMrd86x9UK3v5y26jG59vuU314SrkFZHqXuDfzfN8nk0IjMOZa/z9eUJzkmxpI6QpzAKPqXuO2JTFX+EbvXEX+TntveYK5NaF7OCW0BRuqNj9Vvz3lYXaLKpUDpkIVek8oCcq8YCyuggjt1s3KdTuIxDAXflnRTkKsmrGwRygVCc2oLWiXqVbSM3Z5+YcUgEn8i3Zraa+gU/qYHtJv5NmYqFCtFP+n/9mXPBeuxalxvPtcOhADw5fAMBoO4J12f12ClaRXUgx0xSPyuuMk1TZtGbOqMtDJisqhfZQj1G8p5Fu+QQiaIdzILVWiMDJdWnxQuWzu7pfB47ApyBZ6XO+s1FiDGmUObLPqssxda1+imTg0q6ueqMlcl3NSwiq+njE4y1vZsOlheQALN43TkdGdn8q/wYHrJAIkNHhfOqEtXDWojHG/PBBQAaPmjLkeSmFNiRiYOT7wc2vBEyMEDaqnznqfBqkwPlIW1UalAgmI1f7kcGXev/UiwFDGOc8On3Ula3RlMGyPZfP46YFuw6zkmPCZy71jyUlMNoA8pTJ6xBetDH+Z5CFPrvraSxuuU3pWaIV53FJEIr2OjNmCqvgAo0Atfd3rvaVw3BGjRmyU2DwU95OOZQCFt1G17+Vs5V4DSFna2cX7+RffG
+ s1OaTDe6
+ kOxTdrKViiSKFrldA3Yg8ch8QuKmOEMTuj8Dy4FNn2qdxPPH660rW1MGzXZzmh3mCvkAxeIzwxLiqNt8Ni+QE/ec9mDrLe9icfOiTTpLvx0QH2KNRDFrKMCJWuxUVFkZSsU3VSYYLNMyuYcWy+c2PBeB5yfz4djONexsTFlOO1k+7rGq8PzRMgaiDpFzw/72wUsqknYOZfkwILSB1y2/yF4SSSqgT/+vMhjtNrQTGhJ3/+rR+IWS/09qKYvkWner1VBliSe1wzidUSrZ0l6w3s/zQNT/yK37X/WpmjGaefF/l8qBH4XIG8hmbOE8X3K3r1taQtvAHca5117DVZ+vCpxn+BC+8xFod5pou0LfWSZa6nZ+TnNmeK5gTRTCGjm9eTnPiveSkN7Ntu7DBSjP1em/mfo0yG1+DYVGh2E0ETO6yijUyMs9U7ntlCADFF3kL1YN2scVEooJIOlDRDXQJYBZOy+0NPe3yZL7otWomk8w34FjBk9zeCqZ5PPPp2LOtrirO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,58 +97,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mm/linux.git for-test
-head:   36a5408f22c511a0e2a3105244b88e0f8feb772d
-commit: 5cd57ec259efa2dfa64c2b7a48553febb8ab6149 [8/10] Merge https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable into for-next
-config: sparc64-randconfig-2200-20261126 (https://download.01.org/0day-ci/archive/20261126/20261126200319.fbiL0kw3-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 12.5.0
-smatch: v0.5.0-9187-g5189e3fb
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261126/20261126200319.fbiL0kw3-lkp@intel.com/reproduce)
+On Wed, Nov 25 2026, sashiko-bot@kernel.org wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/20261126200319.fbiL0kw3-lkp@intel.com/
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Medium] mm/memfd_luo: unbatched migration and LRU drain in
+>   memfd_luo_migrate_folio()
+> --
+>
+> commit 36bee618bf022031606488c041334f6b85cc82a9
+> Author: Pratyush Yadav (Google) <pratyush@kernel.org>
+>
+> mm/memfd_luo: don't use memfd_pin_folios()
+>
+> This commit replaces memfd_pin_folios() with a direct page cache walk
+> using shmem_get_folio() and migrates folios out of movable or CMA
+> pageblocks individually via memfd_luo_migrate_folio().
+>
+>> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+>> index 6b68220275ebe..38584ecfa70be 100644
+>> --- a/mm/memfd_luo.c
+>> +++ b/mm/memfd_luo.c
+>> @@ -77,26 +77,168 @@
+>
+> [ ... ]
+>
+>> +static int memfd_luo_migrate_folio(struct folio *folio)
+>> +{
+>> +	struct migration_target_control mtc = {
+>> +		.nid = NUMA_NO_NODE,
+>> +		/* Not movable, so the target is neither in ZONE_MOVABLE nor CMA. */
+>> +		.gfp_mask = GFP_USER | __GFP_NOWARN,
+>> +		.reason = MR_LONGTERM_PIN,
+>> +	};
+>> +	LIST_HEAD(source);
+>> +	bool isolated;
+>> +
+>> +	/* Flush per-CPU LRU batches holding the folio so isolation works. */
+>> +	lru_cache_drain_for_folio(folio, 1, NULL);
+>> +	isolated = isolate_folio_to_list(folio, &source);
+>> +	/* Isolation holds its own reference. */
+>> +	folio_put(folio);
+>> +	if (!isolated)
+>> +		return -EBUSY;
+>> +
+>> +	if (migrate_pages(&source, alloc_migration_target, NULL,
+>> +			  (unsigned long)&mtc, MIGRATE_SYNC, MR_LONGTERM_PIN,
+>> +			  NULL)) {
+>> +		putback_movable_pages(&source);
+>> +		return -ENOMEM;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>
+> [Severity: Medium]
+> Does migrating one folio at a time here regress preservation latency when
+> folios in the memfd already reside in ZONE_MOVABLE or MIGRATE_CMA
+> pageblocks?
+>
+> Previously, memfd_pin_folios() called check_and_migrate_movable_folios(),
+> which shared a single enum lru_cache_drained state across the scan so
+> lru_add_drain() and lru_add_drain_all() ran at most once, and passed all
+> movable folios to a single migrate_pages() call so migrate_pages_batch()
+> could batch TLB shootdowns across up to NR_MAX_BATCHED_MIGRATION (512)
+> unmapped pages.
+>
+> Calling memfd_luo_migrate_folio() per folio passes NULL for the drained
+> state to lru_cache_drain_for_folio(), which can trigger repeated local and
+> all-CPU LRU cache drains, and invokes migrate_pages() on a single-folio
+> list, forcing a cross-CPU TLB shootdown IPI for every mapped folio that
+> needs migration.
 
-Note: the mm/for-test HEAD 36a5408f22c511a0e2a3105244b88e0f8feb772d builds fine.
-      It only hurts bisectability.
+I measured the performance before and after this patch with
+movablecore=75%, and it found that with 4k pages, performance does
+indeed drop, but the difference is quite small. Only 5-8% slower. THPs
+stay about the same.
 
-All errors (new ones prefixed by >>):
-
-   mm/vmscan.c: In function 'allocation_can_succeed':
->> mm/vmscan.c:6324:38: error: 'struct scan_control' has no member named 'nofragment'
-    6324 |         unsigned int alloc_flags = sc->nofragment ? ALLOC_NOFRAGMENT : 0;
-         |                                      ^~
-   mm/vmscan.c: In function 'try_to_free_pages':
-   mm/vmscan.c:6993:18: error: 'struct scan_control' has no member named 'nofragment'
-    6993 |                 .nofragment = !!(alloc_flags & ALLOC_NOFRAGMENT),
-         |                  ^~~~~~~~~~
-
-
-vim +6324 mm/vmscan.c
-
-23b9da55c5b0fe Mel Gorman             2012-05-29  6320  
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6321) static bool allocation_can_succeed(struct zone *zone, struct scan_control *sc,
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6322) 				   unsigned long mark)
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6323) {
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16 @6324) 	unsigned int alloc_flags = sc->nofragment ? ALLOC_NOFRAGMENT : 0;
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6325) 	long free_pages = zone_page_state(zone, NR_FREE_PAGES);
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6326) 	int migratetype = gfp_migratetype(sc->gfp_mask);
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6327) 
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6328) 	return __zone_watermark_ok_mt(zone, sc->order, mark, sc->reclaim_idx,
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6329) 				      alloc_flags, free_pages, migratetype);
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6330) }
-dbbc5a3d50f9c0 Kiryl Shutsemau (Meta  2026-11-16  6331) 
-
-:::::: The code at line 6324 was first introduced by commit
-:::::: dbbc5a3d50f9c0404903d4ca31311175fb6aae8c mm: vmscan: tell direct reclaim the allocation is ALLOC_NOFRAGMENT
-
-:::::: TO: Kiryl Shutsemau (Meta) <kas@kernel.org>
-:::::: CC: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+So I think the slowdown is small enough to not matter.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Pratyush Yadav
 
