@@ -1,68 +1,47 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DAB606A337
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BAF606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WZFs7hwb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gbLLVOyd
 Received: by kanga.kvack.org (Postfix)
-	id 5010B6B05B2; Thu, 26 Nov 2026 08:41:08 -0500 (EST)
+	id D41376B05B3; Thu, 26 Nov 2026 08:42:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D8646B05B3; Thu, 26 Nov 2026 08:41:08 -0500 (EST)
+	id CF16C6B05B4; Thu, 26 Nov 2026 08:42:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C7866B05B4; Thu, 26 Nov 2026 08:41:08 -0500 (EST)
+	id C30406B05B5; Thu, 26 Nov 2026 08:42:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 18D5D6B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:41:08 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D317A1C432D
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:41:06 +0000 (UTC)
-X-FDA: 85477381332.02.03F3B7D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7D46BC0015
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:40:49 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795700449;
-	b=HFmDVeTn1ZFxcuSlCVUL48gDosTCOyzd7+ITmHQzwPRQbGeE49Sn3esppSkahUHZohOKnL
-	noMCj5McRvyiJci0ro5Jmyc5EwsDV6Pm2IXXLyF93wbYzkrD0thdt14zZ4Hw4DDMJQRSAh
-	16Lpka1OwFMnWw3xEAvuVoJLAFtHll8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795700449;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bAOfoeKeKxAJG4Ybe8EL4xCrZltisidYWdcuZ9V3nfQ=;
-	b=PCTAtujtedmS/+HL3N9FfwAGRRpZqLk2w1GcwBAHsjwVxcyEFpGVmKjGiPvqaF8+5rt+I6
-	vq3/qR58Z3+ROm5/s9Syax6gg2GQP3Rb52QBidlrdo37C9iwj9k97Qsn1RpbRWWxUl6Yr7
-	eEDnWj29d0JbbFv/ZWtJjhm8vJ5ZWsE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZFs7hwb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A0A256B05B3
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:42:24 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0E38B140487
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:42:24 +0000 (UTC)
+X-FDA: 85477384608.26.5F8D013
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id ACF11A0026
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:42:06 +0000 (UTC)
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 651E3605D5;
-	Thu, 26 Nov 2026 13:40:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D991F000C4;
-	Thu, 26 Nov 2026 13:40:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DDB3340A28;
+	Thu, 26 Nov 2026 13:42:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB001F000C4;
+	Thu, 26 Nov 2026 13:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795700448;
-	bh=bAOfoeKeKxAJG4Ybe8EL4xCrZltisidYWdcuZ9V3nfQ=;
+	s=k20260515; t=1795700525;
+	bh=3y1+RAoTiRmBI3p6Z4+38EZ+FatJO0aCtVj/6uxTSBY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WZFs7hwbk36kn+GBI+c8t5i41KZDS/3/LAf7XexggQnLBjkPuU2Cs+By6As13zHew
-	 20d0NGnspLYu8J2+pSXdKWbU3G7QINN0gUQbUx0b0xxRx5oYaY8EGhKpkOUDz4FpCf
-	 pzS1LWE8oM9SKlYCFHeBNg4C999Z47GIHYcJZLunaElbCzb2iKad0xroDdKnCud33D
-	 VA3+cpirnfuYW+akGOCckeJwVbZnuiS7cMA7O8ng93jjI0HNMCgx/7eHUFHk09AIHd
-	 qW2UgwQGkw7ncPYnpTLP9pDHJRWSFAP3NvqHXmXsYJthg+/XUz9tzEqJG5Ytk/SPDl
-	 28zW+KzoPtlVw==
-Message-ID: <33f7be76-390f-42c7-935c-d2ad3d77ef6e@kernel.org>
-Date: Thu, 26 Nov 2026 14:40:41 +0100
+	b=gbLLVOydBvkMe8tP+W0IOjwHDecpZIWlug3TR42aXUutzDN5FedabExkixcGooxiX
+	 8zOJkBDsjhkkFNGe3s59k3VqiLcNUx4YAHuo0eGXCjlAEj4JyyDS6u8UWwXZPCjM+v
+	 lOjAxFlH1jmHAxy0NtutJZeDW+0/OlNT6TddGwioPdpvPduKfxudSJoN+913Lw1Zc2
+	 r2DXDhFwYjZW6+fN+PCRl0BYd/S0cJrhBXeOmvquUJe4kq2UV0VOwporxRkOF0ml56
+	 8neBbsf33WLU5kstRptCci6iez18Gi6+D41ULqmw28nVogx5wg2F7msAAim/o88bsK
+	 UU2CkwwK5cyGg==
+Message-ID: <4fc1e334-16c8-440f-aa83-ae27f8b8d3d8@kernel.org>
+Date: Thu, 26 Nov 2026 14:41:59 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] mm/gup: break out gup_fill_pages() helper
+Subject: Re: [PATCH 2/9] mm/gup: break out gup_flush_pages() helper
 To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -70,7 +49,7 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  <aa9736195201@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
  Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>
 References: <20261123195609.4115244-1-riel@surriel.com>
- <20261123195609.4115244-2-riel@surriel.com>
+ <20261123195609.4115244-3-riel@surriel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -117,11 +96,11 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261123195609.4115244-2-riel@surriel.com>
+In-Reply-To: <20261123195609.4115244-3-riel@surriel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-HE-Tag: 1795700449-845479
-X-HE-Meta: U2FsdGVkX19dX+H1tH8a6PcPDktCOmRQiPN1vdjat9TuIahm47e/WGBD5PX61UB5xE6Hykzy2T0gVMTzhxFzqmAVSIu/t3k7nnauuLilfzR6znl0/qw4rULG+khX96EvwjtoxZxekF7tmom9qDez3bnu1B4W1mK0Z1dtacBamYolRnTGI2kW++AoB4gQkFrR6kpEzxpP/acxlIeEAbd1q1ZC/ax/WPyE2zlEMLRnBocKSQ88C76w70GLL5Ktcy2Xo5SvTBBZ4FbN4b+N7mPfFIDKZzAcIHGpx4Nw7psjaA42MkSqAJ9xm4NZCGyVjfcdcQZAi09AxFYSfUE5l0gBNHWxp29c/QpsDX9cUQTqt/UsmXH6a8GK7J2w/pNj6+KV1NFTO0mZhaHWgLY9WirR27OvhiqsrIY7LN1yvknvWWIvns+auuIDFYPYG5JYA8MaUlsBP8BfDPY=
+X-HE-Tag: 1795700526-505921
+X-HE-Meta: U2FsdGVkX18K/ZGvyLlf/O5dd8mWnkApRYPw5y3+DKAhjMbB5tweIsgzbVxowROJoIp4qir5RCIFV5ISvV4RgJB+wdltuf6tBSiu5lQHoS1hjsQLw1d+jZm01kgtDE1xlIWHgTu9qaurLs/mXpwfXgaDpW4H0T1j6pAGoEYJf5xTHYz6+0sNCaPqu83vv/FtGXKQF7hnx9llVryqwBcqb7ds5qToU5K81sBOf/TlacRxe0ixScjUBDPKN+ptdA2cSMFH3WlSWXbCjdpedB4eEUsbVlZM1ASSVaqzj9WdLz3PiPzB7rfJppVlqBzA3Wxa8zuJoDZfO8teAeb8Uadjx6wpGA0YafLTHOM5e2IKIpg3S6SRNqqg3BfCobrKpOzDGH4kgLp4HKye7/KC8+3W0CxqV0AhPAfFyoE4zUKH+VHx03ByKjcp/v2pRr354gmrY+igMzWRmkc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,77 +115,49 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/23/26 20:56, Rik van Riel wrote:
-> __get_user_pages() fills pages[] in an open-coded loop, and the
-> GUP-fast PTE, PMD and PUD leaf paths each have their own copy of
-> the same loop.
+> __get_user_pages() flushes each page's caches in an open-coded loop
+> right after filling the array.
 > 
-> Move the store into a gup_fill_pages() helper, shared by the slow
-> and the fast paths. The helper keeps a pages==NULL check, so the
-> fault-in users that pass no pages array (faultin_page_range(),
-> populate_vma_page_range()) need no conditionals at their call
-> sites. Cache flushing stays open-coded for now; it moves into its
-> own helper in the next patch.
+> Move it into a gup_flush_pages() helper.
 > 
 > No functional changes intended.
 > 
 > Suggested-by: David Hildenbrand <david@kernel.org>
 > Signed-off-by: Rik van Riel <riel@surriel.com>
 > ---
->  mm/gup.c | 35 +++++++++++++++++++++++++----------
->  1 file changed, 25 insertions(+), 10 deletions(-)
+>  mm/gup.c | 27 +++++++++++++++++++--------
+>  1 file changed, 19 insertions(+), 8 deletions(-)
 > 
 > diff --git a/mm/gup.c b/mm/gup.c
-> index b0a0019de80a..e0698d2075b4 100644
+> index e0698d2075b4..d35fedbce7e1 100644
 > --- a/mm/gup.c
 > +++ b/mm/gup.c
-> @@ -710,6 +710,25 @@ static inline bool gup_must_unshare(struct vm_area_struct *vma,
->  	return gup_pages_not_requiring_unshare(vma, flags, folio, page, 1) != 1;
+> @@ -729,6 +729,24 @@ static void gup_fill_pages(struct page **pages, struct page *page,
+>  		pages[i] = page + i;
 >  }
 >  
 > +/*
-> + * Store @nr_pages consecutive pages starting at @page into @pages.
-> + * The caller must hold at least one reference on the folio, so it
-> + * cannot go away, or get split while the array is filled.
-> + *
-> + * Some GUP users only fault pages in and pass no pages array.
+> + * Flush the caches for @nr_pages pages stored in @pages. The caller
+> + * already holds folio references on the pages.
 > + */
 
-Drop all these comments, they don't add a lot of value within this file.
+Again, drop all of these function comments.
 
-Any implementation details should be commented in-line, but also that's not
-required here.
-
-> +static void gup_fill_pages(struct page **pages, struct page *page,
-> +		unsigned long nr_pages)
+> +static void gup_flush_pages(struct vm_area_struct *vma, unsigned long address,
+> +		struct page **pages, unsigned long nr_pages)
 > +{
 > +	unsigned long i;
 > +
 > +	if (!pages)
 > +		return;
-> +
-> +	for (i = 0; i < nr_pages; i++)
-> +		pages[i] = page + i;
-> +}
-> +
->  #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
->  /* FOLL_FORCE can write to even unwritable PUDs in COW mappings. */
->  static inline bool can_follow_write_pud(pud_t pud, struct page *page,
-> @@ -1579,9 +1598,9 @@ static long __get_user_pages(struct mm_struct *mm,
->  				}
->  			}
->  
-> +			gup_fill_pages(pages + i, page, page_increm);
->  			for (j = 0; j < page_increm; j++) {
->  				subpage = page + j;
-> -				pages[i + j] = subpage;
->  				flush_anon_page(vma, subpage, start + j * PAGE_SIZE);
->  				flush_dcache_page(subpage);
 
-Ok, two loops. I assume on architectures we care about that would be optimized
-out completely either way.
 
+Will this ever be called in this series on !pages?
+
+If not, remove it.
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
 
 -- 
 Cheers,
