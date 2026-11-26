@@ -1,46 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18ED8606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 17:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAB6606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 17:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=TvIwMg+3
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=bt4LY3tt
 Received: by kanga.kvack.org (Postfix)
-	id 7F82B6B05B0; Thu, 26 Nov 2026 12:38:42 -0500 (EST)
+	id D2FF36B05B4; Thu, 26 Nov 2026 12:41:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A9436B05B1; Thu, 26 Nov 2026 12:38:42 -0500 (EST)
+	id D06AD6B05B5; Thu, 26 Nov 2026 12:41:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BE8D6B05B3; Thu, 26 Nov 2026 12:38:42 -0500 (EST)
+	id C1C5B6B05B6; Thu, 26 Nov 2026 12:41:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 426BE6B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:38:42 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB4A780459
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:38:41 +0000 (UTC)
-X-FDA: 85477980042.15.A1E5A67
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A50426B05B4
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:41:43 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B560A058D
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:41:43 +0000 (UTC)
+X-FDA: 85477987686.01.CFA7D1B
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2F9FF16001A
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:38:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	none
+	by imf23.hostedemail.com (Postfix) with ESMTP id EBD88140010
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:41:33 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795714895;
+	b=NVtDFz+vYAzh74yhqceK9udtnoKmUilzfF/3fvrEdwp/dLNowHdgoRzMmGRrNwDpie8HWf
+	DDVcD6SWRhYLLNkiThfPK4yWfmR99RV2DaVWxVTtKUG1AQgG8K2J1zlzSWznBxUX6JbU/e
+	hwrq8sGbqdmb5Pv7GyZrNWlex5ibD/U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795714895;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+3IE4ahtHNeYXKAbhohuMqg1ApMu7OpkeIRKUByF/e4=;
+	b=qYlQwQU/WUU9kokJDd02INs4aMTnlI9OXE3Y2OQoWshH+7jriWQQ7Wz7O0DCODLtEq4xl9
+	ODLSbt7DDgInZMoYZs5XO6T5DipNBuJWeQkHV+vVUNPWRvLXOp2+CPU9+WPrdF6tH/50AP
+	RX6FArp38tISipvciFGIKh97ZuETe74=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="bt4LY3 t";
+	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=4teLVqdxHTIzeHzEWuOEGSiE2+RDD7y3+MbgjsgCQhI=; b=TvIwMg
-	+3sFwNPvLhoFzrimboVdCHWGmjGzP3mjH/aJwAcQ9ZNQb90BAkG9GHRaeOppEMN4+0sC+EImeFNev
-	aODfe95REu1AP2SHRRIQC6kzDXSZ6zSSdUCjywSUgdDQ+ITZukxheaoSOnDvnbkP+Wb/5Xqc9TnSL
-	wzQbXWQ9CjHXkC1g3ODtZIortRdF6u9MHAHlrss9N3xTTNrlH5KCgVnR1JmtnHM1/U18BQZ8qWksA
-	njO3/qIkKahO4yNGr1+QyPNyYsLefcLjeRZgbrl0S0QUUHBRM8tJ3MJgNq/YAcXXO5z9THXi3DhKJ
-	CI6T1MWBxeNT7+JGCyDpmWMK7Tig==;
+	:Resent-Message-ID; bh=+3IE4ahtHNeYXKAbhohuMqg1ApMu7OpkeIRKUByF/e4=; b=bt4LY3
+	ttXGwKIWVDxUCAN49/2bPwKm7HHkslLRWJ09XHY3pl8TZ0APiaR+OLHJ7MGTIubXmINEIyl+97LII
+	hq+oKxGK+W0Qm21VFO8Iml0ke+Z6s1m0fxTvzNc7KHlDh0wL/XSKjLeuP0dNHEjIIEHucKghwGDHu
+	4hnw/QRx8FCDx5tGPTFmHBl0fG3JIpC87vv1+P4dPosbmospOy9rSD/YO94eiaCA14ut/w5M/N4At
+	YH4uVa3Ql1Iupj4uWoGIi6NOP28uZ+hXUfZz0t053DjYR4ZZLhBj3J0GW834lLzUpleNWRsFtiZNl
+	lQUD/bqgdW3AO6IIGgNtbL4DImBA==;
 Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
 	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <riel@surriel.com>)
-	id 1xWdPy-000000001Yi-0BK6;
-	Thu, 26 Nov 2026 17:37:58 +0000
-Message-ID: <577d25b6aa80bcfc216eda5bb4311ffe796be49e.camel@surriel.com>
-Subject: Re: [PATCH 9/9] mm/gup: unshare-check every page of a pte batch
+	id 1xWdTJ-000000001aw-3srZ;
+	Thu, 26 Nov 2026 17:41:25 +0000
+Message-ID: <8e6d0de214bf930e14a53fddbd9bdb23d12410b8.camel@surriel.com>
+Subject: Re: [PATCH 2/9] mm/gup: break out gup_flush_pages() helper
 From: Rik van Riel <riel@surriel.com>
 To: "David Hildenbrand (Arm)" <david@kernel.org>, 
 	linux-kernel@vger.kernel.org
@@ -49,11 +68,11 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, Suren
  Christoph Hellwig <hch@infradead.org>,  Yuan-Hao Hsu
  <aa9736195201@gmail.com>, John Hubbard <jhubbard@nvidia.com>, Jason
  Gunthorpe <jgg@ziepe.ca>,  Peter Xu <peterx@redhat.com>
-Date: Thu, 26 Nov 2026 12:37:57 -0500
-In-Reply-To: <05de9fe1-9a3f-432d-9ce6-9f497852d1d6@kernel.org>
+Date: Thu, 26 Nov 2026 12:41:25 -0500
+In-Reply-To: <4fc1e334-16c8-440f-aa83-ae27f8b8d3d8@kernel.org>
 References: <20261123195609.4115244-1-riel@surriel.com>
-	 <20261123195609.4115244-10-riel@surriel.com>
-	 <05de9fe1-9a3f-432d-9ce6-9f497852d1d6@kernel.org>
+	 <20261123195609.4115244-3-riel@surriel.com>
+	 <4fc1e334-16c8-440f-aa83-ae27f8b8d3d8@kernel.org>
 Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
  keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
  eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
@@ -83,100 +102,48 @@ Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspam-User: nil
-X-Stat-Signature: ju7gakm5fmyhu64mihyxuzr8wd7drq3s
-X-Rspamd-Queue-Id: 2F9FF16001A
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795714702-445875
-X-HE-Meta: U2FsdGVkX18QUwCswc8ZGaCBshGcagZqdUglJVNv9TFHjw4GGuxq1+GXDhTtLEVEifRx1B+eqgnBheHvw4lo+SVlUzhSyT6XihvYA7nXk0vfhncGsvmrmbcNFy7RKxMAcyRNN3wXLiLF3XAVY20n5d5tX0X+hpQrR7hwiM1ZAj5JtoIyboKr17Sxo9/uZ1Y0PzEJbUpfw5dgY4cJQSALramDZVU+wtrMkg3AfHGn1N3I2RIb7OTyT3BUYtaMfj2UBe3cGfI48uBliTd+Y+xeWCwjGQ8WoEO/Tfs5UbCoV4n8Uhsq46huBtOquInTK9PtOgTYQeuD8XS7NwGGPMH6WguQNCtF22Frtl1ZoZ2jmmLq1Orh9TT+hR5cqSofDirtVx5ftJiEcOIy8mH3xWQ67e99Tv71jV2y+uARwwghHw8=
+X-HE-Tag: 1795714893-725695
+X-HE-Meta: U2FsdGVkX1+l3mtzyQvS64yOiqQLxf0tSw4GmI56N8g+7Ka7jxCW1fIIGtU+7MajNvq9woDVvVmVEFbNAGr7BhuLd/hSr8PvdtVcIF5feDSpZUWIAjyCRGg/B4zO8OTr0CE0GD6XHxCcMFf3Ux48Y9F5ZEHpaCLXUycZ9VOSFmlTvg5HdbhzeZPm5JMwGGjfrVKG9aK64dyk4hHL+n7TBTjA48Yu/uaUjc5oDXh7znieS88EMlUUlWL8MoWQ5gmzSjBE3RHkiZF7Pqa4ci+CLQQHRm236TVfFuctMawb6B3MzmHqQWoRSdo/0887+tooknIGaYonZoLxwCXrdpfNxs4c0bRf6/G5MUYjbZUceN6Mdgm2q+TI4+E5/uQk8x3AR1/obxvYFTc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 2026-11-26 at 14:50 +0100, David Hildenbrand (Arm) wrote:
+On Thu, 2026-11-26 at 14:41 +0100, David Hildenbrand (Arm) wrote:
 > On 11/23/26 20:56, Rik van Riel wrote:
-> > A slow GUP write pin over a PTE batch can hand back pages that a
-> > later
-> > write fault replaces under the pin holder: the process writes to
-> > the copy, the holder keeps the old page:
-> >=20
-> > =C2=A0=C2=A0=C2=A0 pin holder=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 process (mm owner)
-> > =C2=A0=C2=A0=C2=A0 pin all 16 for write
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 batch passes unchecked
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 write to a page
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 fault copies it elsewhere
-> > =C2=A0=C2=A0=C2=A0 read pinned page -> stale
-> >=20
-> > With GUP-fast, FOLL_WRITE | FOLL_PIN can never reach
-> > gup_pages_not_requiring_unshare, but slow GUP can reach it
-> > with a read-only head PTE.
 >=20
-> I assume you mean FOLL_FORCE?
 >=20
-Indeede, it is FOLL_FORCE. I need to rewrite that.
-
-> I don't quite understand the problem you are trying to solve reading
-> this.
+> > +static void gup_flush_pages(struct vm_area_struct *vma, unsigned
+> > long address,
+> > +		struct page **pages, unsigned long nr_pages)
+> > +{
+> > +	unsigned long i;
+> > +
+> > +	if (!pages)
+> > +		return;
 >=20
-> So can you walk me through the exact sequence of events + flags that
-> are being
-> passed?
+>=20
+> Will this ever be called in this series on !pages?
+>=20
+> If not, remove it.
 
-The sequence seems somewhat contrived, but it
-looks like it can happen, and some runtimes
-(maybe Java?) might actually do stuff like this.
+The splitting of the two helpers means this is
+only called from one spot now. That means we
+should check for !pages either in the caller,
+which is already long, or here.
 
-1) mmap 64K private anon, touch it (one mTHP folio, 16 pages).
+I'll remove the duplicate, and I'll remove the=C2=A0
+unnecessary comments you pointed out both for=C2=A0
+this patch, and for the others.
 
-2) fork, child exits/execs
-
-3) Parent holds 16 pages, all PTEs read-only
-
-4) Parent writes first page, COW makes it exclusive.=C2=A0
-   This is now the only PageAnonExclusive page in the mTHP,
-   while the other pages in the folio are not.
-
-5) mprotect the range read-only. Now all PTEs are read-only,
-   but the head is exclusive, while the 15 tails not.
-
-6) Slow GUP pin_user_pages(FOLL_FORCE|FOLL_WRITE), which
-   pins all 16 pages without COW faults, since all the
-   PTEs have the same permissions, they all map the
-   same folio, and the first page is PageAnonExclusive.
-
-7) mprotect the range read-write again, this changes the
-   first PTE (on an exclusive page) back to read-write,
-   but GUP already did its thing
-
-8) A write by the program to page 5 now causes a
-   COW fault, since that page is not PageAnonExclusive,
-   and the refcount is raised
-=20
-9) A write to page 5 by the GUP buffer holder
-   goes to the old page, and becomes invisible
-   to the program
-
-The fix is to simply do the same checks for
-FOLL_WRITE that we already have in place for
-FOLL_PIN.
-
-Want me to put the above explanation in the
-changelog, or tweak it some more?
+The comment above the gup_flush_pages call
+could probably be shortened, too.
 
 --=20
 All Rights Reversed.
