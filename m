@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5571606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6686B606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QYpHcabK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MM+gUYz+
 Received: by kanga.kvack.org (Postfix)
-	id 914236B05B2; Thu, 26 Nov 2026 09:45:52 -0500 (EST)
+	id 32AA66B05B5; Thu, 26 Nov 2026 09:50:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EAEE6B05B3; Thu, 26 Nov 2026 09:45:52 -0500 (EST)
+	id 2DBC86B05B7; Thu, 26 Nov 2026 09:50:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 829076B05BB; Thu, 26 Nov 2026 09:45:52 -0500 (EST)
+	id 1F2606B05BA; Thu, 26 Nov 2026 09:50:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 606E66B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:45:52 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 015241C3CE9
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:45:51 +0000 (UTC)
-X-FDA: 85477544544.22.E9E4B72
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5E90D80009
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:45:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QYpHcabK;
+	by kanga.kvack.org (Postfix) with ESMTP id 009B66B05B5
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:50:51 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8BEAF1C3B83
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:50:51 +0000 (UTC)
+X-FDA: 85477557102.24.3B3F210
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E2E1914000B
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:50:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MM+gUYz+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795704350;
-	b=fvYyQYx2g4xXacey3QiVARh3+xuRBxj8+NZejK8HYivaADIV5+yJ6uAwMHYTTBPuNqqOMB
-	3OwAL+Hh7eU84+pzrEcgpu33ORangN+mDqHb9bWqLHW81xmXkzywakwOvcKhj0toFrq8Bu
-	RjAgsVRWROeuzTWXhERb1GLDqw7UCOg=
+	t=1795704650;
+	b=VnWLDCFrAvTfcKdjrEx5KNDVuCbNqCsaBo03pmUqiucZB4q9Y65ThlmqCq1b6o0RBEO/LA
+	vI5xYX/hUCHxBGf/ZWCd21UDuUk24OUGJsh/3+R0JWQbG7RSjz0uUs9su6knN8ACDrwHEY
+	O5QxmLfsrtIkyvmvi2cs7uQc2pFMlg0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795704350;
+	s=arc-20220608; t=1795704650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jL8G5ucVxhl6XpniwOn5qtswk6ptTrbZ5+4HABky+sU=;
-	b=3gnJXsu3lhaG8WSZBHLaD4Csz9JBkSifwltoGOoAzA4bktgb82GKFX/b5C6ygqXG/as8Od
-	j/pyB+t3dp77pO32Rf8MD1BlTcgZHnHKLL9MZ6poL/T23svk6T24Fxq+L676rOV69TF7yB
-	jfPEcj3L/k2DfeqheMX5pHR8e7b/fk8=
+	bh=BzSAPriKmxmZ03qlrGTjPQb+mIO8/xB1Y5Fffpd+Qhg=;
+	b=fYSlRZRevAZW+sZdIwD9X7ErCNJCLBM4B9xD7JDUGC4yz3eC5DJsWgzJZWSONPTMimKv2B
+	bHrybFgBR/JFn1FJyOSZvg4h6Tg8Bu0RHCNal5cM9aQ1cEbqKUSF6E8tEzGQruQ8uU+ZEY
+	3cMqd7pdELDWxzK61LfREMOEjzUYgYk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QYpHcabK;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MM+gUYz+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CAA1D609E9;
-	Thu, 26 Nov 2026 14:45:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143091F000CF;
-	Thu, 26 Nov 2026 14:45:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C81E440CA;
+	Thu, 26 Nov 2026 14:50:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483411F000C0;
+	Thu, 26 Nov 2026 14:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795704349;
-	bh=jL8G5ucVxhl6XpniwOn5qtswk6ptTrbZ5+4HABky+sU=;
+	s=k20260515; t=1795704648;
+	bh=BzSAPriKmxmZ03qlrGTjPQb+mIO8/xB1Y5Fffpd+Qhg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QYpHcabKB8A5uWvZwYP0lVVKukfxNBAoWXWIiefHci3pC7KeBZuK9SW74oFBLaL/n
-	 cqoy/YByLDr3wbHOeVLQpYgccznfeMUzUqdPzyy/mCPSRwNus9t2fEJhvgOyNiL3Ik
-	 CpxHXbHuwbSmrgI4HhKBY+dqG7HxT/ovasWRAo0bThZaUsMYGqyANx2X2Anu9ZHqac
-	 RWPcSr0SxN5twTU4v1fxRR5LjIFgxbooxghKmaVh6D3j6/M3FOYhCY0I3/Zdg+WZ6G
-	 iOxtN+NF8R5vwquyyXJSd3DGD1douEkXCCA5EFXRUm/A1kmTGvX3KeW7M5TR77O7KZ
-	 gdo+aWcLq46mg==
-Date: Thu, 26 Nov 2026 14:45:47 +0000
+	b=MM+gUYz+XJKZVtDO1r3vHu7u0mJoELV97fiUr5JmWVbgdezUW/SGv6YKykagd0xt3
+	 I9NATohIFrMUVuJFVMe5LRFYNBBp/oLRjbtLN5+WA7W4H9umU//F3gZzTamN2tsgEJ
+	 ypCZd3CPfAOYlv+mN4CE4FggGv93FugE1G68LEN92D+yzgrjDeKuHH/BJM1WwaOTe2
+	 l0YgAbMdg8e9S5kRXBR22JB3Z1DgLK2IecmBTj1An/IrX6f3Z1W7WPkX6ZZSA8I0va
+	 s+bR3ZLtetWrVOXpzFJsMDEXEcTHG9oolFPcxTnvN4vhDzZSzsJ63xfDJxjOY+6aes
+	 NmfSu1e9lbCsg==
+Date: Thu, 26 Nov 2026 14:50:46 +0000
 From: Harry Yoo <harry@kernel.org>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
 	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable+noautosel@kernel.org
-Subject: Re: [PATCH 1/3] mm/slab: update the documentation of sheaf_capacity
-Message-ID: <awhCltyLWlLRBtsG@thinkstation>
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm/slab: document that sheaf refill does not require
+ blocking
+Message-ID: <awhG_gYUbcm_y74R@thinkstation>
 References: <20261125-sheaf-doc-update-v1-0-4a579abaf0b8@kernel.org>
- <20261125-sheaf-doc-update-v1-1-4a579abaf0b8@kernel.org>
+ <20261125-sheaf-doc-update-v1-2-4a579abaf0b8@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261125-sheaf-doc-update-v1-1-4a579abaf0b8@kernel.org>
-X-Rspamd-Queue-Id: 5E90D80009
-X-Stat-Signature: qmemb5j4ycx8gnz8zy11wk1ob3kog38p
+In-Reply-To: <20261125-sheaf-doc-update-v1-2-4a579abaf0b8@kernel.org>
+X-Stat-Signature: r79ezs6k5gfrwgd1hdx37hti57jpqz37
+X-Rspamd-Queue-Id: E2E1914000B
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam03
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1795704350-410375
-X-HE-Meta: U2FsdGVkX18sBUD4qPEiBzfD6jKDNv3NEBmwl2ZdFh80DRaXtjh97WLgaLnB/EkrVIj0l8XJkNPg27NJ5WWrYTq32WKPnktRSlxI9aDuk3GYh0B2DzaX1xbXd7uyMFnESutYkJ7srVY512Q2BtCxm2d3XJGicIKMYmIowQ2YussQqCRNV5YRSBBO8RnSiyQQT7kElg8Kaw8sPQVmauectFQjyzSYHOOWO8LibUGQOJoHx51EmnRwyGdSL8KML8ym6xkB6ChIhSe1PVbnUb9+5HQCfjlI393JX3rnEDnXb3pjPRMfByHBwuevOBy/IQFrcNLHFvKrpKmmszcEOGZyFv2T9SkIyaKck65iOZkoW31W2vXehOOsyTbUi0w4iSbLamnGx5yxGXBLuwKxkGgakJAKqSi7rWz4vgACrEsWhAfvgO3gM+11vVesmGrzzJ/cbr6nD7ljjRyBUxDwbsXqN/t7xBgHBgpDTOzs1G22OGo1IH74ndvQxBNLhv1DMOumaFdpkcNfKeiLyhTBo8fLqWu5hU5cCfO17zZIC9vOOTBz00sLfg20RvxISrm//FEiTF56XwnNtyXXlNCm/LU5xNOM3wek5/of7DIhQl64fnsl4qUJJq05uThgBAI70VZ7wUsLsFSQIN1iJaPVLcAKsJnmWHSt7Kz+nV+tAHcd6esqTEGpkc8+8kiWkZtZ2TZQGr5qtEIl2ziW7BtoiaFjVzX7wIi0OwPu0Ug7pl6OPtjQuqgh502T5d9w/rUFEXOiR8LY88mAAZoU88vznLoQ2Fr9cbWihljaKj+VFdR4tH+Ji7kadn7wyWJSxNCpc6Lg45stRAS3JiZgwhC0T2PThfzXdxSzoTXlA+zNQEFNFkF+753MHw9UCaIbTtTC6URR+y1ECSfKPlp9yQsvlVm0MlkVzTNCQoQsijh95WIRz38yoKQng1feB21b03ZLwikpVMiuCdl3tirLH0w+Mpg
- nFV864kh
- qVcZGHh9wHlgJXFxq05JSp4er8YfSXt3b9wU5ccsUq6LoBNKpFRCFo1VYp28FWXG8qqx8+5dNQSXClLbnyXySj7woKrT8LXzc/PZZLAWlAZEw1/BN8GkAdpHrND4J9yhzm1sQTpbf9dWGuSeUYcxT56GWC+4MTwYErnMcT4QY0ABq3T0Kxdc/u8qZUOUyI4c4mGt5iEwJCdHDM+ApfvBf83X1YmWsjTMNYhTs7GatkfDvSVdjSvdIm3NNY752ZFNQW+rrsI/eEN6xuMVJz4ymPNH0quOMKOK+KyTFKck8OYeEjOZBDg607xmEzToSBKm7/jp/Bt68u8azx0vYo5n30keQpO9F4hH+E8ll4lyy1F37Jdc9R/ygeSolM18YuJx6PhH+d3joaUKXCuAmJ72TwHWWS9pSrEcdSXmxDsNTaEaLh9POJV3bpFJRKCe+o1ZR9DMgnKrNe3Wl5UuPxwUHfCAUDcXHeOiwwFQDz++Px3s73B+fJWSZXB768rJ3vFR6GiBmnzecamn+1GEaB1iqwdtOsrxYk32ij+PH9lPmw1hbPwVtTN4p51HYJmqwaMeyFEAtyCrB2wFhdFh7Py7pSR7IH6QjjQzDDyOsdOc/EwGeCQT2SqOLk1mwym4iy/k6RyFxeVs0zOGLkgHM3gSfl3BQytaFIYAr+ui1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795704649-978286
+X-HE-Meta: U2FsdGVkX1/iiaDOIGCvSM1m4wHUXdLRZ7mRvvV5AK4NTXnMb3qLe/IcASUFFYvwv/rsxhBKe6ovEqrvu0NTAmSt9HoZ5KUkhHH8RoTeTuDaPSMX5OQk74GGswz7GrDuVYqbttVOAqvEWcWKx3zaKZFR7q/2Pk9QtVWxT/fFRKsHDDCawzOQnoFknz9gxdnrR0fQ/0PlwLMuHJh5MJ4iJGmMrdA372YpA9QCOTnHcJtDu8RKKnnrRx5CHquNteRGYl3jcmfJPbS0J3OcQZZPO/zt4SNcBm5O8jVqsyZx+PkfTTWFJFbbj+UAQvPpbKKfA4iY2M882KqU8mg22TMRLNijsyCeSbsFdieClvCkLWrJ0UlmwYVdvBQSU8WxP0W2t9EillvtVed0xTrvfQR6fPCU7U/qZyMyQgwSQkQlh7FHr6bEF7MLVPcUpIQiXK+orPyGNiq5l61EtSgGr3pxsG1OrBiAdcJcw9OSlIXDcSWQ1m+tw5GmaH/icxVt0rk8hica/L6qR0n+noDUB6/G9Ok91b2D8h+i/rHtLAwuvvsYXxDgyjjo24FCGd5Zlb3UUFx/h2axUK5uCx+puS7p5Ltb8VCNhORvZ+mrZbc/zTxPY71hqI6nA5ZlVLW9/yYj4n3WtktDcBBQlB8mvBXMI1BhGa0VOaNMEiSvTHTCL7/RTOStUfVw/kUteCXZ71RMKHqfoDWJzy22CDOR6x0ZooYuK3Mr22rVvVcKU8inJME55xfEbdXdJaIYUx+wbMa/je27ri3wNOuOXPcdG30fxDdq2nkkdRkvzqUk2uKlzzrgq31veYTG9McoIJE0+3zn/KOutJX7CapLBWyhbQGx3m6KxE5zYV35FXSZvUHsjSQzKz1Rofu7mrw2jUzSLTyKN10sWgg+9A2ciiM2s1xt30Ot0GvT/NU6XoyzYFMBSHyRFww39vrPqPps3p+cvQ3u8YstAwOFpF5+VFGX/nZ
+ IA1P57n5
+ eazL82SjV7sopT0YpwECs4JZ5f7cJqqolT0+JNUZcSv6hJOiEEtYKHeVuBjL5kmTPS9B2GN9skRHpP1ijss6uGBcNrzQekf7DvmnK79ZILMhruSLBBNlqY6uOQaBaOB+TmHA1ei4qiacXBwXEroIlR+G1XHJFOB0NWJqk8xZ+ACZGK1PtAs981EwWLqY58pc2Vmb9n96drsPXLmTwmbzoPMz8WmXX89a/68LZxCYDY5wIJSaHYgOD689smv7GeFi4mKpAUj+zipCKYadeYBfxy0AaXqqLfLAxbE67Zg3uTSPIBCJ1CqabIriS+6pTM32a5DXBll8FfhyOgJh/49yp5ggIS932p6/J4DeR+Go8FvdvC99tbS5QBlRGPrimsdrUL2+ppmDHG1c23/uUKDuP0UlPdDbZ2+n56cWLG25v+mbsiZDuxNkkz5k/cHYqScATiSx17ubrdRFMWSHZLisHqudqAbrgON9NFuz4NnDSf5AMBcEfC8PCRfvT9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,87 +97,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 08:35:12PM +0100, Andreas Hindborg wrote:
+On Wed, Nov 25, 2026 at 08:35:13PM +0100, Andreas Hindborg wrote:
 > The documentation of the sheaf_capacity member of struct kmem_cache_args
-> describes sheaves as an opt-in feature: a non-zero value enables sheaves of
-> the given capacity, and zero means that no sheaves are created.
+> states that when no full sheaf is available, a sheaf is only allocated and
+> filled if the gfp flags allow blocking, and that the allocation otherwise
+> falls back to allocating a single object from a slab.
 > 
-> This has not been the case since sheaves were added to most caches.
-> calculate_sheaf_capacity() now calculates a capacity from the object size
-> for all caches and returns the larger of that and the requested capacity.
-> The requested capacity is thus a minimum, and zero selects the calculated
-> capacity, as pointed out in [1].
+> This has not been the case since commit fb1091febd66 ("mm/slab: allow sheaf
+> refill if blocking is not allowed"). __pcs_replace_empty_main() now refills
+> a sheaf whenever spinning is allowed. Only kmalloc_nolock() disallows
+> spinning, and it allocates from the kmalloc caches, so for caches created
+> with kmem_cache_create() the refill is attempted regardless of the gfp
+> flags.
 > 
-> Update the documentation to match.
-
-> While at it, mention that a non-zero
-> value makes the cache unmergeable,
-
-This is not something we want to guarantee in the API?
-Otherwise LGTM.
-
-> that the requested capacity is also not
-> used when slab_tiny is enabled, and refer to the debugging parameter by its
-> current name, slab_debug.
+> Drop the condition from the documentation, and describe the fallback as
+> what happens when the sheaf cannot be allocated or filled.
 > 
-> The updated text refers to the slab_tiny boot parameter, which older
-> kernels do not have, so exclude the patch from stable autoselection.
-> 
-> Fixes: e47c897a2949 ("slab: add sheaves to most caches")
-> Cc: <stable+noautosel@kernel.org> # slab_tiny is not in older kernels
->
-> Link: https://lore.kernel.org/r/8a73da1c-0167-4aa5-a62c-4190327685cd@kernel.org [1]
+> Fixes: fb1091febd66 ("mm/slab: allow sheaf refill if blocking is not allowed")
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > ---
->  include/linux/slab.h | 26 +++++++++++++++++---------
->  1 file changed, 17 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index ad645967a3ee..64daeb239f78 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -351,13 +351,12 @@ struct kmem_cache_args {
->  	 */
->  	void (*ctor)(void *);
->  	/**
-> -	 * @sheaf_capacity: Enable sheaves of given capacity for the cache.
-> +	 * @sheaf_capacity: Minimum capacity of the sheaves of the cache.
->  	 *
-> -	 * With a non-zero value, allocations from the cache go through caching
-> -	 * arrays called sheaves. Each cpu has a main sheaf that's always
-> -	 * present, and a spare sheaf that may be not present. When both become
-> -	 * empty, there's an attempt to replace an empty sheaf with a full sheaf
-> -	 * from the per-node barn.
-> +	 * Allocations from the cache go through caching arrays called sheaves.
-> +	 * Each cpu has a main sheaf that's always present, and a spare sheaf
-> +	 * that may be not present. When both become empty, there's an attempt
-> +	 * to replace an empty sheaf with a full sheaf from the per-node barn.
 
->  	 * When no full sheaf is available, and gfp flags allow blocking, a
->  	 * sheaf is allocated and filled from slab(s) using bulk allocation.
-> @@ -375,10 +374,19 @@ struct kmem_cache_args {
->  	 * Bulk allocation and free operations also try to use the cpu sheaves
->  	 * and barn, but fallback to using slab pages directly.
->  	 *
-> -	 * When slub_debug is enabled for the cache, the sheaf_capacity argument
-> -	 * is ignored.
-> +	 * The allocator selects a default capacity for the sheaves based on the
-> +	 * size of the objects in the cache, with larger objects giving a lower
-> +	 * capacity. With a non-zero value, the capacity is at least the given
-> +	 * value. Use this to match the expected maximum size passed to
-> +	 * kmem_cache_prefill_sheaf(), to avoid low-performance oversize
-> +	 * sheaves. A cache created with a non-zero value is not merged with
-> +	 * other caches.
->  	 *
-> -	 * %0 means no sheaves will be created.
-> +	 * When slab_tiny is enabled, or when slab_debug is enabled for the
-> +	 * cache, no percpu sheaves are created and the requested capacity is
-> +	 * not used. A non-zero value still prevents merging of the cache.
-> +	 *
-> +	 * %0 means the calculated capacity is used.
->  	 */
->  	unsigned int sheaf_capacity;
->  };
+Looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 
 -- 
 Cheers,
