@@ -1,200 +1,172 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8A9606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF38606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IQvQ+jx5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BLUHY1S2
 Received: by kanga.kvack.org (Postfix)
-	id 751B46B05B2; Thu, 26 Nov 2026 09:18:56 -0500 (EST)
+	id 816326B05B7; Thu, 26 Nov 2026 09:19:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 702446B05B6; Thu, 26 Nov 2026 09:18:56 -0500 (EST)
+	id 7C6CB6B05B8; Thu, 26 Nov 2026 09:19:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F03D6B05B7; Thu, 26 Nov 2026 09:18:56 -0500 (EST)
+	id 6B68B6B05B9; Thu, 26 Nov 2026 09:19:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EB956B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:18:56 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2CB540463
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:18:55 +0000 (UTC)
-X-FDA: 85477476630.19.3CB3CE7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id ECA7AC0012
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:18:37 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795702718;
-	b=yrZyrUkmkve/NdXIlxI4JPleNr9l2JlAgzsAZJaxpsqfveIBou7VMCn9qDOUhnIkfAaUjb
-	gKvkyfgyCKk/ptKt5QFRzjFcPsl9aBsXgIELLAbjeZwt5zKtoVDtUpp8g2kO1hvuAtY3NP
-	3N3uLuoK4IOpconL+7XPZBX20Bdb80U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795702718;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oc0e78R7GnTku6S9kDpVJbJPkJaWrIi7MbRLcQ86nNY=;
-	b=KpVPeVTklbSZW4UpM17Vl/avOwJ+WUlptyI0bexXURQnBy+zrN+Q3SLwC7HKuGoBslZwNK
-	NxS9YFgN2qjKaN261nSl+8jvS0ZHlvtCr3UflMtXayGqoVYjvSAshLwkE5ggqtGVi2scMq
-	x4jcHA2RAfa4AcHfDc0Sd4+K1GXBm98=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IQvQ+jx5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of pabeni@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pabeni@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795702717;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Oc0e78R7GnTku6S9kDpVJbJPkJaWrIi7MbRLcQ86nNY=;
-	b=IQvQ+jx506yOy/x4yvg8d6uOB9A6r/WEYX4lq96Ol2I6Rv/SlmUr6Y6RxajOMnSma/aAfd
-	A9bsKYZHhHPRKwe1XRTSGD6XOfgn6zcqFI8wEOdhbakXxWiWRVjfreWXDApHhL6SGSdQP/
-	xPyk3/mNX1NLhwjyKf3BrOTNQvAYLPU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-510-ZnUBqhuINXGM8oDEppiZNQ-1; Thu, 26 Nov 2026 14:18:35 +0000
-X-MC-Unique: ZnUBqhuINXGM8oDEppiZNQ-1
-X-Mimecast-MFC-AGG-ID: ZnUBqhuINXGM8oDEppiZNQ_1795702714
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4b9fde3044dso50603855e9.0
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:18:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795702714; x=1796307514;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Oc0e78R7GnTku6S9kDpVJbJPkJaWrIi7MbRLcQ86nNY=;
-        b=qKt+70K0zxxaGmiUo8xi3dCi37qCKzHHt+dHZnDJap/c29QZKhnVAJofZDYfxLzv2l
-         UT8sj5FE/8o3HTflE1jLYGfEhyyOa0lhVOov1yySvP4sGd3FH/4ttlZcGoXiUQHdvgKD
-         ikE02P14N9pGONLxtAOA5K/MEjFEPbhz9xc1RE9QnUG9Qp5nJ/eMqgRNpFm5NojkbHUg
-         ZLx+mL0AT7dN18PongG5RKli9p9J9Q4fUvJ92c/Uptc7oMUMo5bSb5PWsCQ6ta+K9ZZo
-         O9gg8Xe1UqvTldVAo4ggU6t107pdy+5rwvGkMd6VN3zRqfI21AgmG8YanDfgRU4zW1fR
-         QrFQ==
-X-Forwarded-Encrypted: i=1; AL+hErGDe/HWO3sfUM78gwK/BRtOsx/MgN5wxZE9KKGw9epD3YYjwWkEHwvDZPtHr0hYqbOuQWNaX9a8EQ==@kvack.org
-X-Gm-Message-State: APuU4Z/TnEC1mW39lTSSyQyZuZy5G6egHCVYFAea+A3iLTqhERIEkvIo
-	TxEi7tiLrUDbVgcqElY9YLize0SXvaYvLtKxx+cUGH5TVDlyUvGL1/EoGuEToikj5vax7AIGhBP
-	tWKUzI11qmeaiovFAHYQlPevdbs7LVXvxUJCQdB3YlTi9f6ilhqv6
-X-Gm-Gg: AZFdTZc9deBn6GjUzYI+NfEuTnWn6lDwkz8DNFd3b5q8kehMEf3JKy+UrbiuTb9DN0o
-	+q/el/HIcG8H1kBHObfWN52EipKGoEatrBLcnvh2Q8KPbeVveIq0UvwjphQGtmRKrt/PvIJnTsu
-	G+5qqSC1xrg0MwwKF4U/yCeskEAXsL8IzNhrXz4IECeG2O54jwUU0+qxj8P+efDLt9ym8rP+hvl
-	ct5CL1OdySAdO/yBzK5V0HyNMxZb3cAji814G3jhD6eB6Escl3lJGbtlGOK5hfrCgCmTjUevqL9
-	dVpHjqiOYwGHiVh7XWaResvDWXvZw5WE5bnOXTWJ8nkk9595OM5UJ1NTo7q6wCfoJmx7M1djZfj
-	Jy67ayHKDdT/uU4pYACtbEg7cK3fPShwQsAeX4lLKwXTOm+ROGW9mZxjOh3p2aYzDRxNcO+ftPN
-	QBX17zmkZWAGoVXDx6vWs0I5LOOOigbGT+h6sEdkUoEAhD
-X-Received: by 2002:a05:600c:190d:b0:4ba:2bfc:c8b5 with SMTP id 5b1f17b1804b1-4bb888267aemr430554115e9.10.1795702714052;
-        Thu, 26 Nov 2026 06:18:34 -0800 (PST)
-X-Received: by 2002:a05:600c:190d:b0:4ba:2bfc:c8b5 with SMTP id 5b1f17b1804b1-4bb888267aemr430553595e9.10.1795702713623;
-        Thu, 26 Nov 2026 06:18:33 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb8538b09bsm1120826425e9.4.2026.11.26.06.18.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Nov 2026 06:18:33 -0800 (PST)
-Message-ID: <14059088-7992-4d89-ac6c-1e6d1f61b3c8@redhat.com>
-Date: Thu, 26 Nov 2026 15:18:31 +0100
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 06BB16B05B7
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:19:52 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 718BF12045F
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:19:51 +0000 (UTC)
+X-FDA: 85477478982.22.3A53A25
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 24ACD40023
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:19:34 +0000 (UTC)
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9C28B63396;
+	Thu, 26 Nov 2026 14:19:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06551F000C0;
+	Thu, 26 Nov 2026 14:19:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795702773;
+	bh=0nlSHi0qFWi9gf0za/z/P+1+DL2gKRC6mZXAm1Oyf3Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BLUHY1S2iF3IL/wCA6mm5j/UjKahg2kQz/XXqkCTlo45D8VOEi7G9QdsNEr9Wjspb
+	 f+sOX/wPQDZkC5aKMS5/mHYD5jT9u3LELLqDi1VkFSswNUTcTF84fd6TILyZlnKUQX
+	 az4k1Fhc398rwL0UL5/povcxQDycmhXbfAL11CxmERtfSYkbUfMNgPk2SDsx2LRoDn
+	 N1jeNgBWAf0q9fzPlzhuw6pd/MC08l2FQsl3AwKBZSqLsiNr8EuujbbjiJnYV/41Dh
+	 zMPRKzSu2x+L0FxiCikBccBJWrJJinfS8fCVjF6ipHLHZndP/d2nUx/v6dwpvPBdCD
+	 Xk2IwgWgvK91A==
+Message-ID: <682c765f-332f-4ac2-b448-4201c8fae6fc@kernel.org>
+Date: Thu, 26 Nov 2026 15:19:13 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 4/4] net: skbuff: limit folio refcount when splicing
- from sockets
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Kiryl Shutsemau <kas@kernel.org>,
- Song Liu <songliubraving@fb.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Rik van Riel <riel@surriel.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20261118-skb_refcount_overflow-v1-0-5551b4954c3f@kernel.org>
- <20261118-skb_refcount_overflow-v1-4-5551b4954c3f@kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261118-skb_refcount_overflow-v1-4-5551b4954c3f@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: IeHOgYvu6nrjvxMe340zwWZvsmMRhwcF-m8nBo3FeB8_1795702714
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
+ with ascend order from PGD
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Mike Rapoport <rppt@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
+ <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
+References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
+ <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
+ <awXD4i47F-VAG1tD@kernel.org> <awXc0MSZl9t9VW8e@e129823.arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <awXc0MSZl9t9VW8e@e129823.arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-HE-Tag: 1795702717-371241
-X-HE-Meta: U2FsdGVkX19lLDowi85VmK5J1C86VhdKAI3vh8NP3jMbiYA+/lo84OoBjDaHRCjjnIcc/IgxE+VG7vsczwtFIZTq6HWAbnzebxmRpQ6N28P0CFrxQvSECLJeDH0y8w4Se4/GcDPDy86SwXAhGc3jXFixv6+N9Rr945YXk3giZiKw359ahaIFlGrOQbXmBpLjD8G1V8aq7gsvbmV7L+gUgcuAKiH+GHnC4pfLPRc1GQeLezyID4u5TLA9sTLt+NfuINb4kswS1zwds+o2HWNNoF+shApGl4C9moaeWFujTtXukhiKL72qYeICNRoRYNRCqYQWOSOJ71R18e4Le9SUjHeX9tEts52j0Mq/OTB7WY6u84XXL4IJ1g==
+X-HE-Tag: 1795702774-609954
+X-HE-Meta: U2FsdGVkX1/dxQDYCJlmxKX1y41+RnwzQ9pYdRCdqN2AFXhgKJqmwH8WN1iw0i/qaa5QodhKZpGog22YTQy0V0lA1VulYnadbn6XHn9eOMUkzYeQaSer2g16NRYQgRyHRVGCiduJDrqto4oVlofdWovef/PtYJY5lNVZAPqKxxAS3dVG3otVYds2uQUaRo6caXEGHyQO5MBCuLIrAmRxCKzu3ZB8nl02ul+5TMrdFAIP6e006m7vcbvbs27G4Ml4TwIwGD7DmKDavCk6+yyb/iBwEWGq1G3TOv/pYFXyJXn7wQ4/bIys8FAZ3fItVG7CfOhYBh4id6w4p7DMv4fBPTLVZG13eOu+kbjHVYcUFDGcbqOWX/+WgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 09:32, David Hildenbrand (Arm) wrote:
-> @@ -3299,14 +3311,14 @@ int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
->   		.ops = &default_pipe_buf_ops,
->   		.spd_release = sock_spd_release,
->   	};
-> -	int ret = 0;
-> +	int ret;
->   
-> -	__skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk);
-> +	ret = __skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk);
->   
->   	if (spd.nr_pages)
-> -		ret = splice_to_pipe(pipe, &spd);
-> -
-> -	return ret;
-> +		return splice_to_pipe(pipe, &spd);
-> +	/* Returning 0 would make callers report EOF. */
-> +	return ret < 0 ? ret : 0;
+On 11/24/26 19:52, Yeoreum Yun wrote:
+> On Tue, Nov 24, 2026 at 07:05:38PM +0200, Mike Rapoport wrote:
+>> On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
+>>> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
+>>> from their intended usage.
+>>>
+>>> Intuitively, higher page table levels should have smaller enum values,
+>>> but PTE is currently assigned 0.
+>>
+>> That's not what x86 thinks :)
+>> They even expose it in /proc/vmstat with smaller numbers meaning lower levels
+>>
+>> $ grep direct_map /proc/vmstat 
+>> direct_map_level2_splits 152
+>> direct_map_level3_splits 4
+>> direct_map_level2_collapses 0
+>> direct_map_level3_collapses 0
+>>
+>> Just an observation, I don't mind either order.
+> 
+> Right. I made this change because a depth-based scheme seems more intuitive.
+> 
+> As you pointed out, though, the x86 specification uses smaller
+> numbers (0) for lower levels (pte), so I think we can leave the
+> x86-specific direct_map_* entries as they are.
 
-AFAICS the above introduces a change of behavior:
-caller with tlen==0 get 1 as return value, while they
-used to get EOF. I think the return code from
-`__skb_splice_bits` should be ignored, when not negative.
+patch #14 depends on this, no?
 
-I think the churn here could be reduced re-using the `len`
-ptr argument to store the error code; something alike the
-(completely untested) following:
+-- 
+Cheers,
 
----
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 85d5caa08887..9fd5116f33f3 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3177,6 +3177,10 @@ static bool spd_fill_page(struct splice_pipe_desc *spd, struct page *page,
-                 spd->partial[spd->nr_pages - 1].len += *len;
-                 return false;
-         }
-+       if (!try_get_page(page)) {
-+               *len = -EFAULT;
-+               return true;
-+       }
-         get_page(page);
-         spd->pages[spd->nr_pages] = page;
-         spd->partial[spd->nr_pages].len = *len;
-@@ -3299,6 +3303,8 @@ int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
-         int ret = 0;
-
-         __skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk);
-+       if (tlen < 0)
-+               return tlen;
-
-         if (spd.nr_pages)
-                 ret = splice_to_pipe(pipe, &spd);
----
-
-which is arguably ugly but IMHO no more than the tristate
-return value in the current version.
-
-Possibly some comment around __skb_splice_bits and/or
-spd_fill_page() would make this option more palatable.
-
-/P
-
+David
 
