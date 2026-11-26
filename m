@@ -1,114 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB0F606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Td7WQqa3
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D9A606A680
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:20:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F31B86B05F1; Thu, 26 Nov 2026 06:20:00 -0500 (EST)
+	id 8A2AF6B05F3; Thu, 26 Nov 2026 06:20:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F093B6B05F2; Thu, 26 Nov 2026 06:20:00 -0500 (EST)
+	id 82D776B05F4; Thu, 26 Nov 2026 06:20:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1F206B05F3; Thu, 26 Nov 2026 06:20:00 -0500 (EST)
+	id 741506B05F5; Thu, 26 Nov 2026 06:20:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F5FA6B05F1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:20:00 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D94AE1C4611
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:19:59 +0000 (UTC)
-X-FDA: 85477025718.27.878F378
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AC614140005
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E7266B05F3
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:20:03 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C1FEC0278
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:20:02 +0000 (UTC)
+X-FDA: 85477025844.24.35F4177
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 27FCCA000B
 	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:19:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Td7WQqa3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691997;
-	b=AOt9rNOJcw1RKU+7P8CcZ1wY0qpji0dQW3yH79Cwit7UQObL/SRSeTnG3VcBMql3/Db5YR
-	4GzE5ph/3Fyo0E5ohOpKhXGs2NSN2cx1KRZJ4aZlJuWfUUJOcj5Ewg28/MnUe2G4+d7Gcr
-	8CS2NOGimHZvgscOYPIkjVAqulJHPIU=
+	t=1795692000;
+	b=WKUs8Duqole+6v5ZK1T/Lbok9srYFhrT/lEbzo3BVkCtUGeoKx8Rokn2IA8+kkJ60ihoyg
+	/IJrNGFnlTa/Uy1FFaBSP30MxLpc6R9KbZ5YpSwfkUkVh4JuLIQ7e117wTUSGVqD7xS8V3
+	Y0nGFZR43ya9fYmmZZnG8O/yfwg4XFc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691997;
+	s=arc-20220608; t=1795692000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QjHPKIVW3NJ7hgK/PWATF9K0DetPjPAzIieyOSxd4IY=;
-	b=01adVuhf/uINIWwjtWi/V3i5unyS43o/n8jZejS9I7Xcn5fNpNT0kMYs5SGf0lNmJ7WqyG
-	QBMjjiXQGU+pLms6ZzPoBO601mqPvCKpYCVS1OqmYXLGEzOBmKs565XNE/donic6+amoeq
-	Sxmo5Btmwb4IKxvoNZDyz+GaqjgClaM=
+	 in-reply-to:in-reply-to:references:references;
+	bh=oy20coKOo4RVez7QDzR5SPGemys71Bilu2eltbE7agM=;
+	b=OMdzeYHzBzbgghosEJEClOJRmBRw5mi47GbZVJayJl35YYI77vGDwIIfDx7fcWkKeDMSq5
+	bpDbllKhQwVsd/jI9XxmIutBc+fT1lM+FuD+lhRxaJ3RdXkBV0SJsMxVItZGYoenPLa/lz
+	LIczPgSjEmR0QdDNQP9upDHl2wJcRwU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Td7WQqa3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 035DF41AE8;
-	Thu, 26 Nov 2026 11:19:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD1F1F000C0;
-	Thu, 26 Nov 2026 11:19:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691996;
-	bh=QjHPKIVW3NJ7hgK/PWATF9K0DetPjPAzIieyOSxd4IY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Td7WQqa3c7ClvHl+OoEBfCYgP/n9WHRuAztnd/C+dWFx/SKyzf+rot9DehsBhdEMR
-	 XhXHzNONCqJnzktHcCzhsfRDZommDkcJRNBgrcK5izNOUg12XwVVEbLxKxPwcdg96C
-	 Xl3Viw8y3ZSm0/uWV18pSGWunvgmjwPqYGaPkfo+V0AWmO70GciFkYKDvcqzBBfPed
-	 ctZTYZalj6ONgdxp/Rpub5hd6TXezAF/ggB1Nb4/cI+LVmxeD4StvrlxIEMNlT+TVE
-	 oOptv6/WnyWRCi5WfRuMwlrbjSFlyQfXsQ/Wxn6Hzybs66OymbziDAuPFND4Y1ib3g
-	 lTQWRh5WHeHKQ==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:47 +0200
-Subject: [PATCH RFC v2 34/54] LoongArch: stop pretending LoongArch supports
- set_direct_map APIs
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+X-UUID: 49a4ca20e98b11f19a56ed5b684f684d-20261126
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_TXT, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_MAILER_MTBG, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS
+	HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED
+	IP_UNFAMILIAR, SRC_UNFAMILIAR, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
+	CIE_GOOD_SPF, CIE_UNKNOWN, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:5164b479-3906-4282-8c19-e641c61d65a5,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:5164b479-3906-4282-8c19-e641c61d65a5,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:0a6e950a75cdc679f99637ba237caaba,BulkI
+	D:26112610033528PJVL0O,BulkQuantity:4,SF:10|38|64|66|78|80|81|82|83|102|12
+	7|153|841|865|898,TC:nil,Content:0|15|52|99,EDM:-3,IP:-2,URL:0,File:nil,RT
+	:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:
+	0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 49a4ca20e98b11f19a56ed5b684f684d-20261126
+X-User: lihongfu@kylinos.cn
+Received: from [192.168.43.7] [(114.246.238.190)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 2135561116; Thu, 26 Nov 2026 19:19:47 +0800
+Message-ID: <a7bb101b-e9d9-4e03-9854-33ccc6d6eda9@kylinos.cn>
+Date: Thu, 26 Nov 2026 19:19:41 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-34-723f1e33c3d8@kernel.org>
-References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
-In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
-To: linux-mm@kvack.org
-Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Borislav Petkov <bp@alien8.de>, Brendan Jackman <brendan.jackman@linux.dev>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- David Hildenbrand <david@kernel.org>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
- Ingo Molnar <mingo@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, 
- Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Russell King <linux@armlinux.org.uk>, 
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
-X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: bt5r1m133cm95pjy1xazk1zzzuedfrzp
-X-Rspamd-Queue-Id: AC614140005
-X-Rspamd-Server: rspam06
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/21] mm/hugetlb: fix truncated copy result in
+ UFFDIO_COPY
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jinmeng Zhou <jinmengzhou22@gmail.com>, Hongfu Li <lihongfu@kylinos.cn>,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dave Airlie
+ <airlied@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ Mel Gorman <mel@csn.ul.ie>, Dave McCracken <dave.mccracken@oracle.com>,
+ Andy Whitcroft <apw@shadowen.org>, Adam Litke <agl@us.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Lance Yang <lance.yang@linux.dev>, James Houghton <jthoughton@google.com>,
+ Yang Shi <shy828301@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Matthew Brost <matthew.brost@intel.com>, Byungchul Park <byungchul@sk.com>,
+ Alistair Popple <apopple@nvidia.com>, Wanpeng Li
+ <liwanp@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
+ Kenneth W Chen <kenneth.w.chen@intel.com>, Hugh Dickins <hugh@veritas.com>,
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
+ Joern Engel <joern@logfs.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Michal Hocko <mhocko@suse.cz>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+ KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Sasha Levin <sasha.levin@oracle.com>, Guillaume Morin
+ <guillaume@morinfr.org>, Wanpeng Li <liwp.linux@gmail.com>
+Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org,
+ Hongfu Li <hongfu.li@linux.dev>
+References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
+ <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
+From: Hongfu Li <lihongfu@kylinos.cn>
+In-Reply-To: <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 27FCCA000B
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795691997-847990
-X-HE-Meta: U2FsdGVkX19COSHQ3hodZYuruhdAc66Sib43AJzw2crFPKYDtcNcFUoNInIJJh5cjq1ngQFaTCr+ZG1/FEhugua4PbTvMEg9Wykf3sovWIYUqUeF6hjOq47VT6e0vKsO86wCsPdQnU4N4cocyvugGGDbQi2yyXSckDpg/tdHeiyCeYEQmFhivddOAz3jbshYm6NLKvOXiUS3KHVUXNp1XIxoSLRoBpE4WpN7J4vriqtfVFWnHPpMPFrb65cd7YeUyX2vdZhJ9NEevx39l9Ht6UkMBLcol+wEKGJBxwknfmO4RLeYfAQKT84Aumc2MU4hFPxSvUjklvFqeFXV80khKNTUr2k69CV1deNlkVAXLCjeA5+n7VVChB7YReOyu8OQgp03ZIkXrh8Hj3dkqIWTzYRO+k3Q+tCjAqidaQR4w22OMipFCeYLyE/8cgk7C8C/aBB04lHUqdwzH6oQOWiFDe8EqD1ELIJhZwidau0/p6Li4lKPYNejP8lJdSxpQ3gQCA7CRHkHS1X/mSFXs5G5//HYYAILjMVdaC+VS7QVxq8E66EDmCo/RT3Ly7EP89dUREmxTzqAupNDZ5FfQLGao63TqkVtPT2fIbdL2+S4X1+7ZOgxCijU3Iv395ss17eeDakarCHsMna+ncdYWd2g3XMGUYV8SStD+ybIH/20DD/Xdx8lsATgCpWRL7K1UxoNVEsWuxlJ4xriDQQ/XO6oB2VB7IcrR+dMDAhxcRI7RZH2P9es0Kq7S+/hYTxCMKvujIkxhcpkSAg8TislUKJRD9TIGwQ8jmFE3y8S9LUCmUNVdoSMc5/eFvogoHs7gdsnMOjzdKD4XMSduCX+WeQY+cYMDQFtXOI6ZafEZAXij235nr1fLKzRI/nj9RjZq+QS1TQ2aji9eHXv/OY8Xv9qDYd1NcbrPbhRJAb0XwmZJSK8IEyffW0BsnmRMZG+JQdAgY6rN8pTlsviHOCWvyD
- W4Lh60F9
- hLF+/7D9CvTAERhkjV9ZhqGTi9v5/diNL1iRHWZdV41xlJyK1qKokOLqzYqP1aT1bc+MW8lnx7MZr2T1J93gX1yp33yqNYoaPbg9obDu9kTHREPfYZJfzIh4GPTJd+stA05X4FxrCjw9d9bEbK7kwTrJuzgk3HBasfUppmChbaNE8UJrYyOPDHyCL+81oimkflhUKKhTRvmyxO1YaQufJG1axcpWxEcwgrVnnrKt8smPaXnk09XuBtl0t0lCWNtWAKR4OBb30yxSn2y3yxJ8V4LlpdshLgjQSEtaHsCEUvjhNMvMzw252dZfOc1a4WftGq829Sw4rA1ahYb/TlaFBEEHgMTEzA4QZVp6WMITI6/vGLj6P2mJ5k4/kDkIZiw7D0FZrsR9bsf5Cj09bl1BYwe/EXzh8AhNuswj/DrfmoicvxDwFMmGtV87WjxA/He/1h7E3Ih+kze5mPaCPoDwJiqUffYZWdhX33XYv+3hfyoTwACCZNREmybB5TbW646EuFEHNr+f75R3AsGU=
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: szga3sfnke7ih1oyntsijncupu56a7w8
+X-HE-Tag: 1795691997-483330
+X-HE-Meta: U2FsdGVkX1+ucZi7U8sRTKfPWgVei8NB3NlSFtfJZEMh01G6rvL7ZGlJ+ww5E0uhuOyTXBfBgUH1AACRXQb/hSLnb/YuEQSIj6As6DkA79wu4XcLvmLq/NXVGJhhZbZpcuhA1w+XAt4tAgg8u4KTClKamsJ/RiLB4cgGjccuKCsjervsPA7idjIuoatFYqDwEPkXCdZxVUr9rgkk7oYPTgrFDoErvS0xix1I7si2G0jvzazZslVHCr4Oszxuw5g4ghgmUlraxIkFcrUCpPmCXXN3/DWjy8/ooox9UF/2BDK5TuqlI3RNuPzMwaE8+Rt2tTf1mlk8F4RScLAEI7KEb1l1qoKUs5oVpCnpUr8dniWpEFFBe8UnFwRj3AWP4J//SoQmP7kx/PtAPxuLfrwl7MzTlCqrfigGJM8g+jZhfstwdcV2F+6/iQ+ZTH1mLeKK+PZbFMWdF0jnrpFc7HTOidk0GHM9ZCz90GFmTwqs/Z8xrlwMeA2Dw/CGsZ4gGwCr3n0iK75Toq4dUvgmZwrd9fEnFNvZggEco2gv/lGwitcLmk4gJjVlae5ssgs8x9PmN/C3vqBb/+mfqW6lMDsCkBMJcYjTcoX571aFZb3DDX86KDtbY9/nREEvFIotCH88OLFbrgn11xCa8xj5vEcT/Hh8kD7wkZ4pYCHBM2/SLxud8S65FODaviaEsVKotDzpY4kUNJyrTraiFyAwMBuxoPp4Cl5i8z1RVftqTelFvLGTtzws9lfWqrnqEgFB2fE+Ch8LctogYfNa/kJao9NulO2FLIvHNXx8pK6eraxfLQk8KkCvjNK/7irLZmHAiMO7aFDSH2VHzi/MfieBU7C4T18X+Mn7yyIXIzhXjgwI7fsdONZGU7Im6Gp4TOd/kNBXJIj0+gNjCrSo7wu8K5fuOUbEuiA+FoWZm1k+YB3/NdRwa1FPjsYkBkSFKRoQjHKWUr3GN+UpbdK/VYOv0kE
+ 7ogeaOPh
+ GpGYSDiwTwQzWd6HMI2nKBMq4T32vvN9WjDDoS732i6I5TrbQDVYO9RP8q7niVR6BgPkdsvju9aJkiUBFzqtBGLtbFdc7uuMUkQ9/l+IxepoKdVJLYMQzJY0jrEgMKUKzm8nlugJkVKNh2LPmSDF1ljnS/e6wIA6vV/U5iCqW8sIXkSyGBx2lIu2Y511ocO2mm0HjFO2Kie9Pouyb3BvHjkcF4xFiWT10INTrjOuOFP/vNjoHDO4j+SNxKYrQwbUIEuhvUgj1lHUnqq9DF4LQyrLuGXWVKRYfFR5RSI0g3YTt/YFONGBvLfHRHa7Zs6jeTTBe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,137 +149,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-LoongArch selects ARCH_HAS_SET_DIRECT_MAP and implements set_direct_map*()
-APIs to allow coexistence of hibernation with KFENCE, see
-commit f04de6d8f252 ("LoongArch: Add ARCH_HAS_SET_DIRECT_MAP support").
 
-However, LoongArch does not have page tables for its direct map to begin
-with. It maps the physical memory with a hardware window, so there is no
-way to change the permissions of an individual page there.
+在 11/26/26 06:33, David Hildenbrand (Arm) 写道:
+> From: Chris Mason <mason@kernel.org>
+>
+> Folios that span more bytes than can fit into an unsigned integer (e.g.,
+> 16 GiB folios on arm64) are problematic with UFFDIO_COPY: the result
+> from copy_folio_from_user() can be truncated, possibly indicating
+> success instead of an error.
+>
+> We will then continue with the folio that has stale data, and make it
+> accessible to user space.
+>
+> For example, if copy_folio_from_user() fails such that the number of
+> bytes not copied is a multiple of 4 GiB, we'll get an effective ret ==
+> 0.
+>
+> Let's fix it by simply testing the return value directly.
+>
+> This has medium urgency, as it's an information leak.
+>
+> Fixes: 8fb5debc5fcd ("userfaultfd: hugetlbfs: add hugetlb_mcopy_atomic_pte for userfaultfd support")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: cleanup code and description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Protection of KFENCE pages is handled outside the direct map: they are
-mapped in the dedicated address space area and their virtual address is
-explicitly set with set_page_address() to keep page_address() working for
-those pages.
+Reviewed-by: Hongfu Li <lihongfu@kylinos.cn>
 
-Selecting ARCH_HAS_SET_DIRECT_MAP enables secretmem on LoongArch, although
-without the actual ability to modify the direct map, secretmem becomes a
-limited memfd and does not provide the security it promises.
-
-After the rework of the temporary mappings in the hibernation code [1],
-there is no need for LoongArch to pretend it supports direct map
-operations.
-
-Remove the set_direct_map*() implementation and stop enabling
-ARCH_HAS_SET_DIRECT_MAP.
-
-Removing support for ARCH_HAS_SET_DIRECT_MAP effectively disables
-secretmem, and memfd_secret() returns -ENOSYS on LoongArch.
-
-[1] https://lore.kernel.org/all/20260917-hibernation-v1-4-7f7dfae3dbe0@kernel.org
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- arch/loongarch/Kconfig                  |  1 -
- arch/loongarch/include/asm/set_memory.h |  4 ---
- arch/loongarch/mm/pageattr.c            | 60 ---------------------------------
- 3 files changed, 65 deletions(-)
-
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index b5ed4881d3c0..bad699e2847f 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -27,7 +27,6 @@ config LOONGARCH
- 	select ARCH_HAS_PREEMPT_LAZY
- 	select ARCH_HAS_PTE_SPECIAL if 64BIT
- 	select ARCH_HAS_SET_MEMORY
--	select ARCH_HAS_SET_DIRECT_MAP
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UBSAN
- 	select ARCH_HAS_VDSO_ARCH_DATA
-diff --git a/arch/loongarch/include/asm/set_memory.h b/arch/loongarch/include/asm/set_memory.h
-index 4bb01172fbc2..64c7f942e8ec 100644
---- a/arch/loongarch/include/asm/set_memory.h
-+++ b/arch/loongarch/include/asm/set_memory.h
-@@ -14,8 +14,4 @@ int set_memory_nx(unsigned long addr, int numpages);
- int set_memory_ro(unsigned long addr, int numpages);
- int set_memory_rw(unsigned long addr, int numpages);
- 
--bool kernel_page_present(struct page *page);
--int set_direct_map_default_noflush(struct page *page, unsigned int nr);
--int set_direct_map_invalid_noflush(struct page *page, unsigned int nr);
--
- #endif /* _ASM_LOONGARCH_SET_MEMORY_H */
-diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c
-index a728db40f9e0..7283059d6e1f 100644
---- a/arch/loongarch/mm/pageattr.c
-+++ b/arch/loongarch/mm/pageattr.c
-@@ -156,63 +156,3 @@ int set_memory_rw(unsigned long addr, int numpages)
- 
- 	return __set_memory(addr, numpages, __pgprot(_PAGE_WRITE | _PAGE_DIRTY), __pgprot(0));
- }
--
--bool kernel_page_present(struct page *page)
--{
--	pgd_t *pgd;
--	p4d_t *p4d;
--	pud_t *pud;
--	pmd_t *pmd;
--	pte_t *pte;
--	unsigned long addr = (unsigned long)page_address(page);
--
--	if (addr < vm_map_base)
--		return true;
--
--	pgd = pgd_offset_k(addr);
--	if (pgd_none(pgdp_get(pgd)))
--		return false;
--	if (pgd_leaf(pgdp_get(pgd)))
--		return true;
--
--	p4d = p4d_offset(pgd, addr);
--	if (p4d_none(p4dp_get(p4d)))
--		return false;
--	if (p4d_leaf(p4dp_get(p4d)))
--		return true;
--
--	pud = pud_offset(p4d, addr);
--	if (pud_none(pudp_get(pud)))
--		return false;
--	if (pud_leaf(pudp_get(pud)))
--		return true;
--
--	pmd = pmd_offset(pud, addr);
--	if (pmd_none(pmdp_get(pmd)))
--		return false;
--	if (pmd_leaf(pmdp_get(pmd)))
--		return true;
--
--	pte = pte_offset_kernel(pmd, addr);
--	return pte_present(ptep_get(pte));
--}
--
--int set_direct_map_default_noflush(struct page *page, unsigned int nr)
--{
--	unsigned long addr = (unsigned long)page_address(page);
--
--	if (addr < vm_map_base)
--		return 0;
--
--	return __set_memory(addr, nr, PAGE_KERNEL, __pgprot(0));
--}
--
--int set_direct_map_invalid_noflush(struct page *page, unsigned int nr)
--{
--	unsigned long addr = (unsigned long)page_address(page);
--
--	if (addr < vm_map_base)
--		return 0;
--
--	return __set_memory(addr, nr, __pgprot(0), __pgprot(_PAGE_PRESENT | _PAGE_VALID));
--}
-
--- 
-2.53.0
-
+> ---
+>   mm/hugetlb.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
+>
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index f46c85fc0cd0b..d57964914e18a 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6568,11 +6568,8 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+>   			goto out;
+>   		}
+>   
+> -		ret = copy_folio_from_user(folio, (const void __user *) src_addr,
+> -					   false);
+> -
+>   		/* fallback to copy_from_user outside mmap_lock */
+> -		if (unlikely(ret)) {
+> +		if (unlikely(copy_folio_from_user(folio, (const void __user *)src_addr, false))) {
+>   			ret = -ENOENT;
+>   			/* Free the allocated folio which may have
+>   			 * consumed a reservation.
+>
 
