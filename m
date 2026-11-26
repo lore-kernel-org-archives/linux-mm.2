@@ -1,105 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07651606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 18:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CE9606A329
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 19:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n2CNBE5+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LyZfe9UI
 Received: by kanga.kvack.org (Postfix)
-	id E3ABA6B05B0; Thu, 26 Nov 2026 13:49:34 -0500 (EST)
+	id 115D36B05B0; Thu, 26 Nov 2026 14:04:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E131E6B05B1; Thu, 26 Nov 2026 13:49:34 -0500 (EST)
+	id 0C6396B05B1; Thu, 26 Nov 2026 14:04:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D511C6B05B4; Thu, 26 Nov 2026 13:49:34 -0500 (EST)
+	id EF6F06B05B2; Thu, 26 Nov 2026 14:04:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD2A96B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:49:34 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27410140211
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:49:34 +0000 (UTC)
-X-FDA: 85478158668.13.9D41960
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 88C0F1A000A
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:49:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n2CNBE5+;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CF2C16B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:04:22 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 55E9BC0552
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 19:04:22 +0000 (UTC)
+X-FDA: 85478195964.28.D075FF0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8524E40016
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 19:04:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LyZfe9UI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795718972;
-	b=tj/sT/ZhoFMoiqQwpqqBOEDXDxQe0JV3X52kOV8AVq9eXPqxYtv+6e4Ru428923jbHG1h7
-	52xZPKGKTkxkvk8eTmxaoP0n/Wb4PnsX2R93PP1+b3W5qm5zy+rsET3Iv5oMK97sGOw4qW
-	vCerhC1HF9exfqW17Zj4PCy3l7QF5Xc=
+	t=1795719860;
+	b=HQW3rwqxjb/CaaDnkbX80rkrOH6YgnZztwaChYpuaNAdygI9Q/AKIHmlBLkG0RG5COWa7I
+	/wsA4q1k7o6/B1dkXV8Vhpwb+D+iFkIhHzsw//Ae8jBFnmuGbC36aCYQZUWXD4FCDHHAjn
+	8CUe937+ujJxxfO546fjdTEZkbUx2e4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795718972;
+	s=arc-20220608; t=1795719860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OJrIBssRihwY1hjT7BcClChtfC90/g3C4v7S4XKqBtA=;
-	b=OGVPuW6X8nV1czZaE7vwLnEwXLP0mK6pNUM/3DoqL1mYpn/8EhJJFepbIfN83dGc4uWG81
-	NVSdsdAAxRjeUDCoPxhEdlLdER1uNa8Xi5KyLjB2jddxcW6MJzpxwD79qCu5Kxim3QwBbu
-	SBT9Eu+c4vyRwlvvfjZy9wVZdSqfcGs=
+	bh=8S26I6ok0b8j0h9YQ9IUuW55x9LrqcCKF+IrYf7BDO4=;
+	b=zWtSymgSTvDDZpvf1D7JnMg+SOQibmRpD1r8YzFAc5ucMBq0gtQE/hGX3pBqCTZBaRSp5R
+	qgy+80DUD2bVaDKW9rjpB86HsvGnRA5CUNkChg0Molt8dYkozL+763ByBKAvfhJBAV5G2z
+	Fg0e3wZGM8rWdvq4lI9ShGpoYBr+ZeA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n2CNBE5+;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LyZfe9UI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0DA8760A54;
-	Thu, 26 Nov 2026 18:49:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5161F000C0;
-	Thu, 26 Nov 2026 18:49:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B519A4443D;
+	Thu, 26 Nov 2026 19:04:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C5F1F000C0;
+	Thu, 26 Nov 2026 19:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795718971;
-	bh=OJrIBssRihwY1hjT7BcClChtfC90/g3C4v7S4XKqBtA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=n2CNBE5+M6S3Gti+E4h/BEiW+QZsCLWVg3Z07JmCFD4CJWtQOT7wmTFvMHay90J17
-	 FASidj/Tb9qKR6r+t0f8m5l2GSXoRaCyDUjouiMfYBDRAya375OAB8ifBdjby0L3cN
-	 XvZu0xkJxI/+pA9AAyI7y3aIotV8xSxGc2csYUvuvg6Uw1JsXVX+0NOYxmoIoYXxv2
-	 M34fX1uPVfxBkS9zufumLpfpKWYxQRuFEpxczh1v12sNbqWWyTovgyCerZ8wJElZbL
-	 qHPbpDy15BB/FUoYPImERW6CSIHqZ46EBBEwU+aASP6SbeqtKq5FQihbH4FEKfQfVt
-	 VyCXs6QVLSDTA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
- <rppt@kernel.org>,  robin.murphy@arm.com,  maz@kernel.org,
-  will@kernel.org,  David Matlack <dmatlack@google.com>,  Alexander Graf
- <graf@amazon.com>,  seanjc@google.com,  jgg@nvidia.com,
-  loganodell@google.com,  arnd@arndb.de,  dwmw2@infradead.org,
-  baolu.lu@linux.intel.com,  Bjorn Helgaas <bhelgaas@google.com>,
-  oupton@kernel.org,  alex@shazbot.org,  gle.com@google.com,
-  pbonzini@redhat.com,  Andrew Morton <akpm@linux-foundation.org>,
-  kevin.tian@intel.com,  joro@8bytes.org,  kvmarm@lists.linux.dev,
-  linux-pci@vger.kernel.org,  Pratyush Yadav <pratyush@kernel.org>,
-  kexec@lists.infradead.org,  kvm@vger.kernel.org,  iommu@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org,  skhawaja@google.com,
-  sagis@google.com,  linux-arch@vger.kernel.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 18/19] mm: memfd_luo: Add feature header to struct
- memfd_luo_folio_ser
-In-Reply-To: <20261110050202.529473-19-tarunsahu@google.com> (Tarun Sahu's
-	message of "Tue, 10 Nov 2026 05:02:01 +0000")
-References: <20261110050202.529473-1-tarunsahu@google.com>
-	<20261110050202.529473-19-tarunsahu@google.com>
-Date: Thu, 26 Nov 2026 18:49:24 +0000
-Message-ID: <2vxz8q2fwhqj.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1795719859;
+	bh=8S26I6ok0b8j0h9YQ9IUuW55x9LrqcCKF+IrYf7BDO4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LyZfe9UIsfZsjtR4FVcI9/XOT/YilWBirVEmLuQzo7NPIBZ8XUYKiLRNl93xFqLnq
+	 zSH0VxCrqEegpTdUq1tb+9rHrBq5IdmhfNp8Fdnqf08N/UYw3+9UMrV5cp6kLiTEE/
+	 oMFelfcH+pgvoufFKnwd9FzvE6z+rboT+5Kx5LmuHXc1249mPSxzg+WQvmzr6wZrDS
+	 cPD8zRmPJQofozgSCYI9NvvgIZ6xPjL7NlDH8qxxDjc+vxew3isRm0SzH6agL4cFFC
+	 9DwfvPWPFYsSt6bT+UkBrIL7ibz2TPdvhZCvEVWTPRx2gzWo+odibnTCilwMfjEWMw
+	 nOhfyb8O7aO4Q==
+Message-ID: <4cb6e0ea-5e6c-4ecd-b673-70b42864c694@kernel.org>
+Date: Thu, 26 Nov 2026 20:04:15 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] mm/slab: add own entry points for
+ kmem_buckets_alloc() family
+To: Harry Yoo <harry@kernel.org>
+Cc: Chris Down <chris@chrisdown.name>, Kees Cook <kees@kernel.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Marco Elver <elver@google.com>
+References: <20261124-kmalloc-entry-rework-v1-0-37b1631a67b5@kernel.org>
+ <20261124-kmalloc-entry-rework-v1-2-37b1631a67b5@kernel.org>
+ <awg-2hrOmY5U3vzS@thinkstation>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <awg-2hrOmY5U3vzS@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8524E40016
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 88C0F1A000A
-X-Stat-Signature: m553z75ppg3a4jjiexehrqwh7zm4py53
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: gquyhgfe3gyqztuma4q3cr8phk6y7xu9
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795718972-584930
-X-HE-Meta: U2FsdGVkX1/AKImWz8ficpNUxXoh8Y/uMj5vtE0FEsYD+b7hsTW9zgORi/jRfEOUOH7NTA7wZKfY+UaLBUh9ZWPzVz7jMOJG1FqUiB8Ef3onm2MUaLJoImvtDVukq/Hoso+wgWVoIhQ6qpvpgElbdrc+0VoOHYuIaUE24hCMOjsKbRW+7HftPXnQBiIBN89UcpeT8FKendqMbkZl5yxNgLy/KA71wvNZUTTVgQMBcURKfUccQ9hkoN+gwYAsnDIwv39/Um2EMDnibmjATQlYJBaJ0bAhNPam3PWl5nfcmzYHPf7d4ea4xw9Cii7nZLexlMExK/Xb9UtGvR+KJu42d6QgOcAvcj4HUrjLV5RBSjh+yvmX0hjy6tA8vh1JQZO1m71LQfiB4nGGuxEwZINNhNjxMJ8bMQItVZrCO+8ZBztNRNiWMrSEH/vTfGAxAfaOqLzKKqxdTBQ9kq7TXnAPXcFRx0B5613+w/R/bavoswM359pYMJjKxRCONPPBpEaMlMmIayq6J+bHgRHwc6FRW+xYtq9nHk7tQgJXqfE3gQksdmMQM1SuElb39HVeFmAjZIctLGYg2Tb9/LKHZEQ19jrXYP85toMkMTWN9GJYTLq3T60GFcEpWDEpZt68nEqht3oBzV8m91amIoSq9Txec3dmmeEjrpvtBb938NSXa+OPFPKl0XFPVuFSxWJrb/Uitn0n0rKoQjztwiHANZhuz8+xTY1slS5L/32tOqAGyabNbaucGflOmbTNpHP9yZzFk705c5A4jJwjgqpmqyv8g7zXb9Lw6ey3AQeNmI6eQ0M/j+Fe+KTh3/IQVyp54MbpiTWQrA2wBTgMsrG2VAtLL9U3qNU0kuuYYGEF9qewl1sj6+vOQ3mVlmeymM50Pp/5fx8OP4JwK3RNRPEJcGisTqXEXjGJxYJqX0+x1VlNV/saBbi542cFYk0JyKSoqYBnfi6wCmTnqWrHZeflWSO
- 0YTR3oFA
- KEXgcBoEwbYJ3U4F1pNbl5QWsr+YDoVSTojfMrs1qffGvT+ej2TVCei3ElB3ZPe9G43Wjd3Fl4d8k/kZwk1r8heL5sW8YvTTsFiQil3YmLPIH/ayMAomWdDCJeHKuzWKqpbDzpt3h+JeOerEm3iU6bGkh6WFcnczr9ebYHuHSZSMgbcP3ZfZHHb2pC2GkSclBfQWcR17qiahUtE/mmLbsm7IsHrghSjgyCoNp1a0IsbJ09YraJiDDsCSumQh2DmSu5ORidEPcqWfcOARhwbbxYLwGmZKM3WXKWGR4IkQtxHpGoy7NsOCI06iDWldFbaeNwIJIz3KEP1VDhzURhcddfdmT4BpU6vzrYjUT8D++OZdc6++Fs1+BgWJI1AfkNw7TwDTkEEsZKJpUaavpdslllt+R66BjttT/rBMVPXbX0a6O3k+5arsdqMxViEcfnDrP5QEuoZzzOJRG8M4QTJ4D/+bem36afQX3bTTBDYHhAuxfpkk=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795719860-667253
+X-HE-Meta: U2FsdGVkX1/9cFTi+bEoGfA5jLviMucaThUED7UBFb4Yrl8mppXGp2QrtxWn2szLVIjQPZVhSOh9qmvE6sPR8qTQZ0VtIJ2M5IaTEPavdBFZ725RdFFyl5wdX4/iDFss2bXnD/7VtPm/L7/M/ishJAuwzhVOJBMlS7kFSJ1wkAkxyGDGJkHJ+K7/pQcMk/v3kwIiw87eDS4hHSTSZe1jL9sqFFdrvCZAnUfl9kP1jPZIMcPOAQ0+ePG1H9zTw730U0SNBkzVr5rNPgLBBAW45YlyoIg3onzJvudyvRVqhUJXaRktFsdjd5h8ogAZw92BP02m+FhAUwu4iYsDZa98c2XnH5vmcGRW1N2SJYAI3D8ECpw2WWqCzNYFoIoJPYMp+OkmuLErBlHlGG2fG/ADXieAhbiXK9CsMUUg31UjAop3vWwjJVwM9GQIarR3qbIUiBFatt1cninECrKL/W+mShn138tQSnKSAjoLoWhRbnk8WWePb5WUpN0CXhoqDc5JTIqOci3eIJ8A4Sov15T8XGRuaY7MvKbChrMxAc3qbStsER7bpFm7WT3OeIczBp9IccFkyGmqYnviLI2fZhf75bjuQJqSbL30l2BwRzWvxvFPz0b3tPZ1fDwuQ6M7sXnJDlYGgwVVGkPXoKXhXD0RydS/dSRT2W6TkUo2BmVBhg60pyv9Fem+aFLVdJdBYf4uSlzdx5TlRi1j/lriBnnBQ3DZlfaPA0dbmqhJQUpdMvGvp9dWHATJ7C5e4oKpim4lI0pxz2EekHdZTwdoDtb4crMxoAb171NkkS5hjH7zHH+AUaU/MoD4yRWFT2rLsU537G+lzZVUdTA2q4c3eZbV32q7oNyBfoBmRrKkJqWm3EqbBLEVa4IR+9XO7zB1MP/Hl/TAaTbGURvGRx1DsGEvjkPi/J3dTo9CPta9rAr1H8x0uZGRTTGAM3QTWZzFmiH7r+MjPLnhdV9uYPM4eHL
+ 0iZhEbB2
+ 9NFD5/ffmduSJ6NRfi4z2IlbQ9t7mGUxgbQv87t8U1256CIjR1T83hG9S9L8iawO3QzDsnMTxZET3UdihfjCmvvNs77NauchgpEZYC5g8qwt6l7j7mZjWmUcXprmB+ro66NqqoORVMf5BAUoQ60Z+bdhXDUVLKhZADPMslDqQ8gtu708frvuCjxpbPnizoV39A4zdR5a7tCR/kJiCrF5zsmRaQay4+k/kNZ4H64bcU66j33XVXtFnNvn1aQaI0b3knRHgCxN3ngELDDZr/8WJWUE+hktjX35R6ypGXQjEc1WoYpl0zN14RsuTsuuF9U+Q+KAYKIkRJ+1z1lhT8Qq92Msxe8AoXP+ZUgbsMg4zi11IG0J7wyhEYlvVGfxXwMymTv9R6hMDZhpsbWcOxuaHmAFMwFZzunExcTi7gmaANjchHkRaVg4iE42+qrn9CW+D5LGEXBCB4ai8X5QBgdxhvDNmNuZ4+HSArFAUOU9xknLZQwF1Y2YivPzRiJKOTZotFSEyhHi57kWi2Lt2XW49ZkfDY1K8JN4SDGK+7vH/QTfSylA554iNwG+WMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,30 +142,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10 2026, Tarun Sahu wrote:
+On 11/26/26 15:22, Harry Yoo wrote:
+> On Tue, Nov 24, 2026 at 05:30:03PM +0100, Vlastimil Babka (SUSE) wrote:
+>> The way buckets have been implemented was to extend
+>> __kmalloc_node_noprof() and two more functions with the kmem_buckets
+>> pointer parameter, which means all kmalloc_node() callers now have to
+>> pass NULL. To avoid this extra parameter with CONFIG_SLAB_BUCKETS=n,
+>> we added macros for parameter declaring and passing.
+>> 
+>> This can be avoided by creating own entry points for kmem_buckets
+>> allocations and not using the kmalloc ones. They all end up performing
+>> __do_kmalloc_node() internally.
+>> 
+>> Since it's just 3 functions with few callers, do not try to do anything
+>> special to eliminate code with CONFIG_SLAB_BUCKETS=n. Only make sure the
+>> bucket parameter is changed to NULL in that case because it would be
+>> ZERO_SIZE_PTR otherwise.
+>> 
+>> The removal of the now-unnecessary parameter macros is done separately
+>> next.
+>> 
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> ---
+>>  include/linux/slab.h |  16 +++++++--
+>>  mm/slub.c            | 100 +++++++++++++++++++++++++++++++++++++++++----------
+>>  2 files changed, 94 insertions(+), 22 deletions(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 70df0a2e3876..6674caabbb6e 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -5732,6 +5732,34 @@ void *__kmalloc_flags_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags,
+>>  	}
+>>  }
+>>  
+>> +void *__kmem_buckets_alloc_noprof(kmem_buckets *b, size_t size, gfp_t flags)
+>> +{
+>> +	const struct slab_alloc_context ac = {
+>> +		.caller_addr = _RET_IP_,
+>> +		.orig_size = size,
+>> +		.alloc_flags = SLAB_ALLOC_DEFAULT,
+>> +	};
+>> +
+>> +	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
+>> +		b = NULL;
+>> +
+>> +	return __do_kmalloc_node(b, flags, NUMA_NO_NODE, (kmalloc_token_t){}, &ac);
+> 
+> No type-based or random kmalloc partitioning w/o SLAB_BUCKETS?
 
-> Precede each serialized folio entry in the preserved memfd folio array
-> with struct kho_ser_hdr via DECLARE_KHO_SER so future per-folio memfd
-> features can append fields to struct memfd_luo_folio_ser without breaking
-> compatibility between adjacent kernels.
->
-> Allocate the preserved folio array using kho_ser_size(memfd_luo_folio_ser)
-> per entry and initialize each entry feature header in
-> memfd_luo_preserve_folios(). On the incoming path in
-> memfd_luo_discard_folios() and memfd_luo_retrieve_folios(), validate each
-> entry feature header with kho_ser_validate() and advance between entries
-> using fhdr->size so entries written with a different feature layout are
-> traversed accurately.
-
-No. The flags in each folio entry is a part of memfd's ABI. These flags
-don't have an ABI of their own. If the layout of memfd_luo_folio_ser
-changes, it goes in the memfd_luo_ser flags.
-
-Doubling the memory needed to preserve a memfd is not acceptable.
-
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+Hm that's right, that excludes it. I didn't realize that, but also I wonder
+if anyone would really choose to have partitioning enabled but buckets
+disabled. It should be straigtforward to add it though. But as long as
+buckets are not disabled, the token parameter will be effectively unused. Kees?
 
