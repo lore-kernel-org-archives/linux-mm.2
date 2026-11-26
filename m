@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F6E606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 21:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B3B606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 21:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NGQkgawf
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmK+azDo
 Received: by kanga.kvack.org (Postfix)
-	id CCF2B6B05BC; Thu, 26 Nov 2026 16:19:14 -0500 (EST)
+	id 555A36B05BE; Thu, 26 Nov 2026 16:19:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C58886B05BD; Thu, 26 Nov 2026 16:19:14 -0500 (EST)
+	id 506966B05BF; Thu, 26 Nov 2026 16:19:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFA086B05BE; Thu, 26 Nov 2026 16:19:14 -0500 (EST)
+	id 3CED36B05C0; Thu, 26 Nov 2026 16:19:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 744B56B05BC
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:19:14 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D856B80122
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:19:13 +0000 (UTC)
-X-FDA: 85478535786.28.0B63D71
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BA0A36B05BE
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:19:20 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CC1140125
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:19:20 +0000 (UTC)
+X-FDA: 85478536080.17.F62C690
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 19DB3C0003
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:19:11 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGQkgawf;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7A1D7140003
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:19:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nmK+azDo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795727952;
-	b=Ztesfu16ab/WFqasPCJdJifx4D9hBFGrHDcy+2PhAwilHcSKWeM9Liiyv/pW5wL1F1teu/
-	eae9RyUyJXMS2KGW/wPTmeoAp4b/QDxFs70zazzlu7YoW45YP4LclAIkwwH9zqmLqtXH3F
-	Spn0OQM7+btBlKZjglFQ53jjZnww88c=
+	t=1795727958;
+	b=YUroMGsGbMORUWAVNtwRQuOSUMmWNmYaB9ZcOD810m+Rx/hqYU35YkPR9/MDrpiqAXJJkl
+	MHXvZbnNFmT00Lmu73SNNmmD3ZBHRg1AMXkD/7GFC0pf7qhk2XKwZ4jKCkLFQNxRcOHsT4
+	Q73HzjwXXrmC8dhIJWyr6nhCfwY0pAA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795727952;
+	s=arc-20220608; t=1795727958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oicFZg3PZAtEvtRcxaG/6RIrfDc601vXmAq3DDYC6X0=;
-	b=0wAoz28B6DhDIELC4+IUKX4uWHbX9mpA13oslJwEx7Wwzhv5aHiGvFJQJLm6ZhsoG2mxbC
-	FjErw/RNOsUiXmnK8gybNAkpu3/QFkCz2SGSzFQ/GYFHTOxQnW2VHTjjQYGgxZi0OKZz5+
-	ZMuPa47mWcZKuHR2WucLGoDAZbPno/A=
+	bh=T7g0PF2rhm0R9Xo1OcuGfmkKtp0vvqib29xJ2PkeRIE=;
+	b=fOSx8u5ZruyGIDY43cEdlJoaDUK7MMP//FmkpPjd+VRABvwmKuyhW4g3TFcdtZapcaLZn/
+	S4+PH0G5FDP7m4Che+R9OhFwiXS8WMoLQ7N6kBvnqF10gfAf/UBlOzNI3FRX5A+HN1fd4H
+	APZ5Z6KULGd3HbH5U95GnRWfF1UTEP0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGQkgawf;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nmK+azDo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE1DE61379;
-	Thu, 26 Nov 2026 21:19:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B491F00923;
-	Thu, 26 Nov 2026 21:19:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0930561379;
+	Thu, 26 Nov 2026 21:19:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4602E1F00924;
+	Thu, 26 Nov 2026 21:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795727951;
-	bh=oicFZg3PZAtEvtRcxaG/6RIrfDc601vXmAq3DDYC6X0=;
+	s=k20260515; t=1795727957;
+	bh=T7g0PF2rhm0R9Xo1OcuGfmkKtp0vvqib29xJ2PkeRIE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=NGQkgawf7OepBD0bNaeywxqe0J2xEr/mGqcfU+Erk9Yq9kaLnkFXwcNCqaMuq5EHE
-	 KnmLa6t8gTrul0F4oy/ztYqMqlTk28l55qxZGZkWU0J5NV26wfD+BxchFDC616Hp6H
-	 B09YMNNZ7iInObuz83d2e17bBARsCo+Jn4auL7ve6KptHUREzWFypQB4Q1NiScRIOs
-	 FE5cjiPr/Ki9n75C9Bv1vWEPtc3Z0b4doPy1fuCHeCYujS92k2TdTVFy1+JU3t57+k
-	 STDrCIsS5ENo+81hY+aWEWA8W9J6Ny4yBSHTx7rtaiXAZlGMrSeOBbzBg54/YpPY6v
-	 LDRr6B0oQgYrg==
+	b=nmK+azDom1PHTU7H8yvB0f4RqUfCdgs859IwtodDz2vMV5vCV1NX8WTon4Q0KNF5f
+	 Z94d27mzbKCejbI/EnAqTIDZtThR5A9bWEl2TW3tqxmmysJRjOWINwCOIX182tvd+2
+	 bBIbkRRXJkSy7F6206Y2qFGAazvL/zsW7lw8udwjnG5h/vnqY9ei3A4rTYovvAWnUl
+	 ubuW/k1yG2LmG5zX3X84Lh+YQixDMb55SpGD4lYqTfqvQU8xOS1stQtRo3aFdc4EhT
+	 D96Tzk4dxDiVGxTCC69KqQ5dEBvrB60eXjhBZAv44sr/vFOHbBFp0RnYatUOb6KI9l
+	 D2qsHxnZR5Inw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 26 Nov 2026 22:18:39 +0100
-Subject: [PATCH net v2 3/4] net: skbuff: limit folio refcount when splicing
- pages into skbs
+Date: Thu, 26 Nov 2026 22:18:40 +0100
+Subject: [PATCH net v2 4/4] net: skbuff: limit folio refcount when splicing
+ from sockets
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-skb_refcount_overflow-v2-3-a6f600a5634a@kernel.org>
+Message-Id: <20261126-skb_refcount_overflow-v2-4-a6f600a5634a@kernel.org>
 References: <20261126-skb_refcount_overflow-v2-0-a6f600a5634a@kernel.org>
 In-Reply-To: <20261126-skb_refcount_overflow-v2-0-a6f600a5634a@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -87,26 +87,26 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2698; i=david@kernel.org;
- h=from:subject:message-id; bh=k5M7OtcbHAW/WJI8bXuPKFdUy5X+jLqVEyvsPvol7tc=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI5Fpl9/e0a9GRvr3OaGaPhr7TpQc1R8VtyLX4+3G90U
- +bljXnmHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExk52dGhg1XzvhcDfu24Os5
- d98HD4tCiuUuz5i3unCt7KeG45uyHvAy/BVdWXj9dH22f+9S94X2/qX/+bLiPf6vD9oZMP2kTeY
- PFV4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5778; i=david@kernel.org;
+ h=from:subject:message-id; bh=T9uhC/xEmr2tuYoZB/8o6f641B8j3fTWqS2TXzJ8NJU=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI5Fpl9Slk7v/Na4NTqfarWO1YmNxwXTrn0IkH2zUPfL
+ Q5XGgOMO0pZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZjIbgmG/zWacwIKHqlvzj/E
+ sVL303ruyLkLE14FGa14vlU3YVvf5lJGhleCX1LldmRrZZuyRSiKBiSFed+uupO8QG+//tl5C5+
+ 78QAA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 19DB3C0003
-X-Rspam-User:
-X-Stat-Signature: xoko9cjbq43p9bffsrhqqk66zc9unf51
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7A1D7140003
+X-Stat-Signature: pzf9d9acg48pfh3965b6rbrdoi46dimb
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795727951-314836
-X-HE-Meta: U2FsdGVkX1+cP6FdgaXdmwmFr6MGX0ctSxhJWjFfHvwqzclOqcbu2ajC8qMVFXONglvcRk66ZQIulxBzg99KpxuOWT8z5fj118BSpMjqUDXiov/ch27aj6Q0J+b2AJ34/OGCt9FxDxt3X9XSK5zcbMtlglXDkC3hQqNjvLt9TnvC2wRm7w4udMIhlvZvwpDTtG1F5Y+xbkrig1w0xzZpTvLn+Vy80haJX8syE/AjgaUtBqaluaNhl00wgSr0f5vNbU5Hya4Etf7UFEUCcr+hfdWViPFnUw+u3PyJwrqBR/c7M8YKvd0MsXj1ASZm3vAcWhtohW0eVTVlvkFz3gTOIO0q9JnQxygzLXv5ZWhPYpju5KVFyBDxy5naIWvK8Rql4i80ElMWXhLFnZVOCA+N7Hr1OMUj6E2t4lF9TQ0oICm2HAxm5ZyKFuR/OsdlLGiNaFAA3gBtd58h69fMOHjprml8RFfVDJqYuR6lTNIawEF+1FNOyX0YCU+Mk7DXFsUIKQSCYHPhobRLjen/Iiz9jTp6MrUin1Pa6qsR8pvWpON8hyk4qyjrnhiB5VQR2DhEa6DqGlzDKB9HdJl1eC3WK+oq5VijQU4L041LN77GOkoT1mDzPayKI2C2UpLyj8HUT0+ClUL/K7+p0fI/78+BJoK0nSnBamQcuLjTwcl0Pw7T5+Pik5ptrN7rFxJxTL+pHPRu777d1imQ6oIkWtXajse69gUsZrjBRclXBLbz9YIJjBhPGvMykkpqzKtpwp+0p7WQx0rn7kBgAgNDdORPs90FQYkmCZCFfZVLGFSXDN9UsKEsrY4YMPJFGA5i8m+kLcoG+Gq11xbna+iRr5sBe3sP8fmcqDY8v2tZoOEu3JkfRVQpqphTTeI4WxUAZtXFBSjO7SXmBGmseJuIVN4UIE/tKVvuqRza+XCfp4W2FQsjxayhTbGAKAzxCqnRj012NzI9MjZkT8JvbEdq0zq
- mWfrKNST
- 68WI2WoYetIz5/nwr3vEXI6KaEsKKsSuakHadk+Yvl73VddMpUJJfq4NyQJJenQKS+vO3LLQ7KF7L237e1opMsOxVc3q7FXR8vjE0YFsNYkBc1/YWzUCb4xFTyyMwJ4CTkNHNK8VWsY1BL0bMVcLT98bsZGcTNi45YdhL1O6lPAEuhL83bpkU3/rR+X7mJrS+5iBYBDCrIaD8SqTtXrJkxMR/YgPYBgj45iOYmR3oKfJqmjkOLB23AM2qhekD54ouAwW0+WUIh+6V3xR509SiUaTdZkdp33wbRwTyptgqrJK/WewMwPU8XqY290zh/UXC20lPbhCAWG9d//B2ALNjlVtFa+F0y8LjQOTYaaYOXstKRX9ozIzcs1q3kfFRuMuqaYRU0ziAPjj+QyzvabO4ESvzKcwVfl3b3YW6gONdT6gUbw63sYwm2T2O7jO3uVXwr33IJmx9o81hrpvXA8jyRzws6HB588byjBrSAlxXo8FsgaQMX7pEjhYqr4HiD8HIaDWzxKKuLnBRZSWIa97u6kbSnrEAZXmzfJuIV1fExYByc7w=
+X-Rspam-User:
+X-HE-Tag: 1795727958-644690
+X-HE-Meta: U2FsdGVkX1+JCgtXhThVdue/Lo+49JMxzV8OtTnxoHu/qvxpTvHwaDEPJmZkQUjMP+v3a0ZQFk8rfj876LhQJrYJIluY/VvYKb4B9slD4hPny83nNL1KJ01iyLxxIfL2FxitofNuD9aAsXNT/xsM2dm2ebPpUXT8uLak3pDmeFEvg1tj2BArVMjNgjHe3ALrVTYoBf7YNWiSFbJDBdaZAdQRZQ8TTsEdPPJqeii4HlR9u2pLV93Zr89lxeADBfOUnk/dbW0V22wrJWMvlBFkCn44GW+R7gP4YkQaWQbQ+Scov52BvGLgc1PYbHx2CrtOfbwizLjsIjGhdo4UC6RDSuTqrx95sqTWCE4pIfZalr6dJPxDGTgJOWJcr/UJhe+YsDsiX2jbfQApq2uXvcZGr87j70XJbx3ZrrsBlxekJNvlXtQkSCqcJ9Cbq41OHr2PoN+gBDzrS2puc0CcK1wMgh6uTdGK9q29LvRTW5ayrtUk4vgmDXmGodd7EmLhXe5MtmcINBN/w0Y62KnQ1xJLG1HTXzImnkl9xSFRFUNK4AI+EkouaqZKZPOc1Of/hu7LPvDSejL/KPr9JiscrFvDLa2RPejJ4E71wCB3mFh6dp/sgVkYfuXuLsOS4F95c+5Q6F4+yZCnFrmHLJi4DZgAPgcdqB6JUkaTDfRlAbsJ1eW+WJv+YofDYgmxm+NtE7NaAP8lVgjqwPosxvCA8MlGzqEZ5WFY4i0l5l1+2wqaqn6oeYinAFz5Qq8k4rbD8vzWKtKQ583Mgf7rFXcXANpp8WKniOteOG/HcI6CMuQFZ7fCNn8WbgL2FaMWXFFE+Ef0hHeuQiw1xpecbBefQKjBSRhkCVBzVLOZ2f5wiCWg0oxfgxL7/0Jl+/1QUdT/Irm9/ZRGoDQMPz20L2lQPsj0fyfdENRWRcrSA4zjU+U+WKnUjtpHnK2Ea9VJNBhffceteor/3bUxyAAFXDNjr70
+ MCQouwnh
+ SxDOYnMAAeKBuO5S2ob9UGN393wV7rZvAmK9xQ7XK14e9GuG2TNzGYxlwtNSmJ7evMBPt74JHrUeBLCgObILxpVXcSeWVsNeG5io+reWVYLNPU4I/w419YsWqjsqmZm8WPgN0uzcEKGgqs36H1CASk1PFp8KCB6MYZVUIlG5c4NrJiNWDlye7wMuEYPZF4jrFiIeCxCN8cNuc4nB9ezkyl/D3pLbIit8SWEchDT2RWj3B9V1lsKd8T8Cm5AJ2bTPISTDTVApZkqsZ/pJioswQv2Z4raxhAdBS+WGOPcSRVb4N/UPnL30v/KHIEb1gj1QgLerOuOrsrFBXlWdCiSJt0uNq96gt5e6XnSQE9nXE4MDedSiLOV67tymh2T4Cg8WDaczXBDmU9TLAxCBvxMnlPxMWUUX6Buy55iH+8bEEUDEgwlt9ypKOxzHE8KhqLHeJit6AAaJhyiuAyhZNYXelU26Pjtur5MYJIhJfZSvwBoLzCOlVlAslAMhXZ013daHqSULYecTgLisUynY+1EZz5OQouZYs4cxUfmAj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,66 +115,158 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Various networking features use MSG_SPLICE_PAGES to add pages to skbs,
-whereby skb_append_pagefrags() takes a page reference for each fragment it
-adds. Pages spliced from pipes were already checked when entering the
-pipe, but in-kernel users like sunrpc pass pagecache pages directly. This
-allows for exceeding folio refcount limits.
+Various networking features support splicing data from sockets into
+pipes (TCP, AF_UNIX, KCM, kTLS), whereby spd_fill_page() takes an
+additional page reference for each fragment, while the skb keeps its own
+reference until it was fully consumed. This allows for exceeding folio
+refcount limits.
 
 This is not specific to large pagecache folios, but with them it is a
 lot easier to reach the refcount limit, as page table mappings can cheaply
 create many references.
 
-Let's use try_get_page() in skb_append_pagefrags() and fail with -EFAULT.
-Don't use -EMSGSIZE, as TCP would just retry with a new skb. The only
-caller, skb_splice_from_iter(), handles that.
+Let's use try_get_page() in spd_fill_page() and stop splicing with
+-EFAULT if that fails. To propagate the error, add an "err" output
+parameter to spd_fill_page(), __splice_segment() and __skb_splice_bits().
 
-For nfsd, such a failure while sending a reply tears down the
-connection. That can only happen if someone pushed the refcount of an
-exported folio close to the limit, so it's not relevant in practice;
-nfsd could handle that more gracefully in the future.
+If we could not splice anything, return the error from skb_splice_bits():
+returning 0 would make the callers (TCP, AF_UNIX, KCM, kTLS) report EOF,
+although data is still queued. The callers already handle errors.
+
+Use -EFAULT, consistent with splice_folio_into_pipe().
 
 Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
 Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
 Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
 Cc: stable@vger.kernel.org
-Acked-by: Pedro Falcato <pfalcato@suse.de>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- net/core/skbuff.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/core/skbuff.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
 diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 6da51ad8fd440..957335bcc5961 100644
+index 957335bcc5961..ca5e27545b46b 100644
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -4714,8 +4714,13 @@ int skb_append_pagefrags(struct sk_buff *skb, struct page *page,
- 	if (skb_can_coalesce(skb, i, page, offset)) {
- 		skb_frag_size_add(&skb_shinfo(skb)->frags[i - 1], size);
- 	} else if (i < max_frags) {
-+		/*
-+		 * Don't use -EMSGSIZE, as callers would just retry with a new
-+		 * skb.
-+		 */
-+		if (!try_get_page(page))
-+			return -EFAULT;
- 		skb_zcopy_downgrade_managed(skb);
--		get_page(page);
- 		skb_fill_page_desc_noacc(skb, i, page, offset, size);
- 	} else {
- 		return -EMSGSIZE;
-@@ -7613,8 +7618,9 @@ static void skb_splice_csum_page(struct sk_buff *skb, struct page *page,
-  * possible, copying them to fragments if not possible (such as if they're slab
-  * pages).
-  *
-- * Returns the amount of data spliced/copied or -EMSGSIZE if there's
-- * insufficient space in the buffer to transfer anything.
-+ * Returns the amount of data spliced/copied, -EMSGSIZE if there's
-+ * insufficient space in the buffer to transfer anything, or -EFAULT if we
-+ * could not take a page reference.
+@@ -3162,11 +3162,12 @@ static bool spd_can_coalesce(const struct splice_pipe_desc *spd,
+ }
+ 
+ /*
+- * Fill page/offset/length into spd, if it can hold more pages.
++ * Fill page/offset/length into spd, if it can hold more pages and we can
++ * take a page reference.
   */
- ssize_t skb_splice_from_iter(struct sk_buff *skb, struct iov_iter *iter,
- 			     ssize_t maxsize)
+ static bool spd_fill_page(struct splice_pipe_desc *spd, struct page *page,
+ 			  unsigned int *len, unsigned int offset, bool linear,
+-			  struct sock *sk)
++			  struct sock *sk, int *err)
+ {
+ 	if (unlikely(spd->nr_pages == MAX_SKB_FRAGS))
+ 		return true;
+@@ -3180,7 +3181,10 @@ static bool spd_fill_page(struct splice_pipe_desc *spd, struct page *page,
+ 		spd->partial[spd->nr_pages - 1].len += *len;
+ 		return false;
+ 	}
+-	get_page(page);
++	if (!try_get_page(page)) {
++		*err = -EFAULT;
++		return true;
++	}
+ 	spd->pages[spd->nr_pages] = page;
+ 	spd->partial[spd->nr_pages].len = *len;
+ 	spd->partial[spd->nr_pages].offset = offset;
+@@ -3193,7 +3197,7 @@ static bool __splice_segment(struct page *page, unsigned int poff,
+ 			     unsigned int plen, unsigned int *off,
+ 			     unsigned int *len,
+ 			     struct splice_pipe_desc *spd, bool linear,
+-			     struct sock *sk)
++			     struct sock *sk, int *err)
+ {
+ 	if (!*len)
+ 		return true;
+@@ -3212,7 +3216,7 @@ static bool __splice_segment(struct page *page, unsigned int poff,
+ 	do {
+ 		unsigned int flen = min(*len, plen);
+ 
+-		if (spd_fill_page(spd, page, &flen, poff, linear, sk))
++		if (spd_fill_page(spd, page, &flen, poff, linear, sk, err))
+ 			return true;
+ 		poff += flen;
+ 		plen -= flen;
+@@ -3226,11 +3230,12 @@ static bool __splice_segment(struct page *page, unsigned int poff,
+ 
+ /*
+  * Map linear and fragment data from the skb to spd. It reports true if the
+- * pipe is full or if we already spliced the requested length.
++ * pipe is full, if we already spliced the requested length, or on error.
+  */
+ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
+ 			      unsigned int *offset, unsigned int *len,
+-			      struct splice_pipe_desc *spd, struct sock *sk)
++			      struct splice_pipe_desc *spd, struct sock *sk,
++			      int *err)
+ {
+ 	struct sk_buff *iter;
+ 	int seg;
+@@ -3245,7 +3250,7 @@ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
+ 			     skb_headlen(skb),
+ 			     offset, len, spd,
+ 			     skb_head_is_locked(skb),
+-			     sk))
++			     sk, err))
+ 		return true;
+ 
+ 	/*
+@@ -3262,7 +3267,7 @@ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
+ 
+ 		if (__splice_segment(skb_frag_page(f),
+ 				     skb_frag_off(f), skb_frag_size(f),
+-				     offset, len, spd, false, sk))
++				     offset, len, spd, false, sk, err))
+ 			return true;
+ 	}
+ 
+@@ -3272,10 +3277,10 @@ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
+ 			continue;
+ 		}
+ 		/* __skb_splice_bits() only fails if the output has no room
+-		 * left, so no point in going over the frag_list for the error
+-		 * case.
++		 * left or on error, so no point in going over the frag_list
++		 * for the error case.
+ 		 */
+-		if (__skb_splice_bits(iter, pipe, offset, len, spd, sk))
++		if (__skb_splice_bits(iter, pipe, offset, len, spd, sk, err))
+ 			return true;
+ 	}
+ 
+@@ -3284,7 +3289,8 @@ static bool __skb_splice_bits(struct sk_buff *skb, struct pipe_inode_info *pipe,
+ 
+ /*
+  * Map data from the skb to a pipe. Should handle both the linear part,
+- * the fragments, and the frag list.
++ * the fragments, and the frag list. Returns the number of bytes spliced,
++ * or an error if splicing failed.
+  */
+ int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
+ 		    struct pipe_inode_info *pipe, unsigned int tlen,
+@@ -3299,12 +3305,14 @@ int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
+ 		.ops = &default_pipe_buf_ops,
+ 		.spd_release = sock_spd_release,
+ 	};
+-	int ret = 0;
++	int ret = 0, err = 0;
+ 
+-	__skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk);
++	__skb_splice_bits(skb, pipe, &offset, &tlen, &spd, sk, &err);
+ 
+ 	if (spd.nr_pages)
+ 		ret = splice_to_pipe(pipe, &spd);
++	else if (err)
++		ret = err;
+ 
+ 	return ret;
+ }
 
 -- 
 2.56.1
