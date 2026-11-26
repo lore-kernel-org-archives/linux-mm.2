@@ -1,100 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2CC606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 09:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9068D606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 09:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UUwelAap
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=fytAJIt/
 Received: by kanga.kvack.org (Postfix)
-	id BB6B46B05B1; Thu, 26 Nov 2026 04:22:23 -0500 (EST)
+	id 83B4C6B05B3; Thu, 26 Nov 2026 04:25:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B67F06B05B2; Thu, 26 Nov 2026 04:22:23 -0500 (EST)
+	id 7C5406B05B5; Thu, 26 Nov 2026 04:25:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2F2C6B05B3; Thu, 26 Nov 2026 04:22:23 -0500 (EST)
+	id 6B51C6B05B6; Thu, 26 Nov 2026 04:25:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 77F166B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:22:23 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C77536B05B3
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:25:54 -0500 (EST)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FE7680338
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:22:23 +0000 (UTC)
-X-FDA: 85476729366.16.6A5C543
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7020520004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:22:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UUwelAap;
-	spf=pass (imf03.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 84E8F4038D
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:25:51 +0000 (UTC)
+X-FDA: 85476738102.16.9F76045
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AE318C0008
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:25:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="fytAJIt/";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795684941;
-	b=pvwTodz5I3RLrmX9qa+V2DISOfmuYbcGDGwyKS+Mn6BPAH+k5Xh7+LpVUx5kWo+wC5cSJ/
-	EmT7VcZl8EVfdlTG5XTStCCmfWp4IZuPbJaQFgIk5atCLdRFIjJLznuNf+gjRnYiNIjrWE
-	TkHhYreaE5BQ/ECkelqotuCkaFPXu7k=
+	t=1795685150;
+	b=0s5dnkeOdyxoi2t56jw3YiRLR5g31pcZYqDrf7nEkcEJisMejkNTQm80oFCKc3YnP9gpP+
+	ZikTdbTQR89wOEghAIfNNezlWSfgcj1udAITiamrSF9SQyiOcfACFcZ3x52c2vkQOwTAxN
+	FWnM3WXQqt2dNE5W9tPfrY8A7soEpXw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795684941;
+	s=arc-20220608; t=1795685150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f9NuElDwmx9JKzBH+xtXilAFMLSLkvMpGnhqiyMaCkE=;
-	b=WsvXQQrDwa3vqwwjQUShOz6fatacS93Yr4QSQUmX871Xjp7wzyE0n8MQI/OCiPRM/lsyjG
-	nZTEASaBu2ifFGCv5WpSJaIHKrw5Xm0Bkq1iPn3fN+lgvhv+D/kRMWh+VCRIcyIcqKASAJ
-	ZeM+Pr1GOlnrgDeJAsM2WZBsw/q18tc=
+	bh=aKApNAjFNuW6/wq/vS146NocYcxpNSbPfKkUgd3vTt8=;
+	b=Dq/SQPQ5KuwNHA63DQGK/QmpGru7agA/uEQ/qJdl7IVW2MhQUHOEc/xoL4kLwvrxdCNK6W
+	DeyKgpi0LlT0O94czTRe7W63d0Yyp32utt44A2l2iaiJJyZNkW46gRrm/HvOhtFSOh35sS
+	mHXoVDCXto0fGvBIaxVaGR6xqWqkQCI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UUwelAap;
-	spf=pass (imf03.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B6A6860D91;
-	Thu, 26 Nov 2026 09:22:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785BC1F000C0;
-	Thu, 26 Nov 2026 09:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795684940;
-	bh=f9NuElDwmx9JKzBH+xtXilAFMLSLkvMpGnhqiyMaCkE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UUwelAap3lS3Bvdnj9h0Qtbpx8sIJc00DcdbYb4TcBr1Ymzp0wFoeXKcYyCZ/K7af
-	 QEapR5Bdj+9HKP+NimN/goz+/EdUA2WO3VMuz6OKgHycexEPT7ITVxLLWW5feSm4jc
-	 HLdrI3SLTELdvHViFvbaIgi1kWFj/YAaM4DOSH4HXfAbzDr96emSYfaZ+Wva7Memwp
-	 qtFCWL3yfmS8pR4qY0zqI69JLx+/kZTWfVpMpyhnspBiPR75EyrCQ8kOBAKmpuEEu3
-	 XdRSjEPIZT2sdn7YT86n2I0gEydYkTyjkb2B8pRU8SMl9RZJJgsFpFmILJc28cfGxx
-	 oJSxPglwibcPA==
-Date: Thu, 26 Nov 2026 10:22:14 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Mani Tofigh <mt4022@columbia.edu>, Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	tz2294@columbia.edu, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/memory_hotplug: don't offline a hwpoisoned page
- still in the page cache
-Message-ID: <awf6RghUETgb41pr@localhost.localdomain>
-References: <20261105-memhp-hwpoison-pagecache-v2-1-029d35634d42@columbia.edu>
- <d4812513-6cfb-4865-8636-b83dd92c23a0@kernel.org>
- <2e11ba52-b5c6-463e-a5ea-c165ba935704@columbia.edu>
- <89037847-8875-4d8b-a8f3-d77a59aaddea@kernel.org>
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="fytAJIt/";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C0D661BA8;
+	Thu, 26 Nov 2026 01:25:45 -0800 (PST)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E0FDA3F632;
+	Thu, 26 Nov 2026 01:25:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795685148; bh=Hbxa4IjJkMzsMDpju7sU3gXs/jL+CVj1EcFYUSt0hhY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fytAJIt/ajmL5jTVWMxzkakTC6xw3pTwIVq8nYP+1wRcqvdE7IH+DM9FsC6Jg1xZf
+	 XLx+SPAJxFl1QVjR/2HSoORWNFHBnG2oJv3p1Z9KU3k9uvpvxcglm2rIMui5Imr/2W
+	 m03B95GEVOoVhW7Zdm5fjeCfedMqHjBBIB3JIJHY=
+Date: Thu, 26 Nov 2026 14:55:45 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: JonasZhou-oc <jonaszhou-oc@zhaoxin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	jianhuizzzzz@gmail.com
+Subject: Re: [PATCH] mm/vmalloc: avoid false sharing with drain_vmap_work
+Message-ID: <gdy3cvqeppwda5zydfl3cq37gmihrbizbnio5bnandkl2brnt4@vw5s5wcbejoq>
+References: <20260825104659.100134-1-jonaszhou-oc@zhaoxin.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <89037847-8875-4d8b-a8f3-d77a59aaddea@kernel.org>
+In-Reply-To: <20260825104659.100134-1-jonaszhou-oc@zhaoxin.com>
+X-Rspamd-Queue-Id: AE318C0008
+X-Stat-Signature: 7zw5hc7hkaqziw5mtehehsro9967xpjq
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7020520004
-X-Stat-Signature: uet53atotmnone79i6oyytyhzpyqsoej
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795684941-380145
-X-HE-Meta: U2FsdGVkX1+SkEHceJn+OhW0jfsTIkzqznR4fyOVn7yll/Dt8DRl6CWey3HXD+vRSolFw4Z4O0nZl7NC/REyiGuUO+SO//Lm3BEsROXaflAvHCb/f+TEuXg0WM+uGOt4FzF4IyIKzpTk29AQG5+5b+FNuTRL3KRXqjW0MPtu0JallqaD3+DlNj9Al0D6cEkkFUwTyHfyod5SfJ+ssV46Dh0kK3JFxP97oW5rwXwRSwroItj8iAImB9khK7qD8YIjO5FD8jd7tqERO9weKLfoVIG/EQEGSKuA/jYMjds8htQXJtwdf3z9Ovm198c5nIsdzOc2Pl4+XfsSrN6ZjoIJwyGwvd0xYFOI5chNHmnEHvNLpvItpqNJBlsNvTCVpi1Wq4xYP2MKKJ6+Q/Va4EltPXdgmEQydwiK2CThK5c2YtWTC1G8dXcMLLrXGhwZXxefjxTbtQPnH0jNZ6TjJHVPBwzdfXqUNZJAjNnJaQ3u0qA3m3AuN7iewA4ZN2XdayrBM6OIe7pWK8/v75OWrV9CdmjB8lIZnGVrCeuiWPxK6+NGKgLE9tbmrw0uh7cPs8u/vp7FKKPUAgeCZaeDha3onWV2qFnkG3/16TIMLoQNuoJb3AHu/WxYt+PMQZ/LIWtHPWPIR5xCKx18XDGUbiKZ3HJlPkxk2VJLw7uVVGN10p9SP2oazlF9y+/D/He8eEYJR/tn2wNpuvhGadRzak+5BfLMdOFA1SEwtwYWujDvRHkG9QXFx0Xoii56IHjiZ+frIYOKSZ7fmT5xXt6DF9CUX4bNdXH6mPBX+qhVPPZc8H9Gs/i+7k10vafs5X5dGaJTiQBt/OEJNLJy0toLgUdb9MfA3M989KG9LZGTd/4rca8L/7ZrtlTJiIm8idw8iOh9U/uHXwCPeKZDdFWbAEY1/vyztEQSkXPH1L29EvuyLTd2fy04Jos6UwsaQoUBwU6hoSwvvU0kM2hRffAwWQ+
- q2L17pWQ
- jzBnAY+VJBAugnoa6j9bbhkAm+bWe9AcNWJIjvpd9XoKDBRdpCOziYBECn3g85BvPSnRrkL3RIKl7d1kTN9nUTaBPjjLSqhVt/h0PhDGz0gVYlML4YeIEQ3ubf1exPFFCg5sJCnwltKDxNH83eOjfKcJpW4xx6dFdYpGtdmRxZHF0K5amCp5fh3lGtbfn1qhdmwBwlYkd6e18c2B0VQh3aHHKQBX5ijwvLCtj5jTxo+PGE1F5I8MK6TGjjEgpXN2sHL9iNLM7c0z5AhmuGhl5pKnMuLIitsdxYVe2qGTf4D9ei1UEY2WfQkj49C+zNbXK4HZIrfM3jZszqmYIg3faK+bsxxIxD3k8B1qC3KTSici2vf3xDZt0LhvIxPZAwF1RZ113rn03+0W0f9XmcJH7uUffoM5CbKPJg49E9YCGMXeq6h4lws9YRw7TLEoSxa0dPl3FBWaCGiZZbN5uH4PyoNDwVpVgb+X4nHdKCDs2A92P+ngrnRHzMRIzlnX2gekwG2ApizcsgT/afWxPr/ZZpIODUFIlfe90b1Fi+5FmbC8s1GpEoGcYWRQjnw==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795685149-578628
+X-HE-Meta: U2FsdGVkX1/FT5uA/l4QflOxHfRrzsvvce+BIpTb2W63Ypbz/mer55Ac4tmBHJrcy1dT7KgiC9eGxUJPe5aW9bZ4BM4duWfywlN7ejO5yiClPL4CgqYogUftHp5nvSgb+JtYwdrHbk59JhHlChboRpD9okz7tuh1NSV7/XeZg5RoJogobPqyiMueICEQQALNcgkiXvhlAK5KQoQYwZhmZUNtekDT+RfQEy+RmnsgN+v6nJMjKB269w+pIXII9LiS9/irNn+UW2rticiLhSFYDDz1jTDzo9ePdbj6AYcBHhNewX3iYL4ru6B4o0MawMYxcpE4He6CuiUcSjFy2dA+uc4RQ7xyHctI+rXS5Bb/034pW8tux3NxhTJmEZLzk9YdGZjng6BYQ38aKVdm90Ye80rUdvIBWz5AYCxgQHWT10gQunoBX3+mwGDt3nUNNM1S8w4bu1gilHyWOoBG1OtRrQAhT999pTKBCNx1xFlOTS1zdTJ9UhwVyScljQ83ntQZ8Sz8tKIvIq8i6aM82X/NXiX5UVWa0SW6a4AxmUtBG5PMVUlvYvoXH5agkdPUz1V0Y2yAttQbntFSn+IrM9PMndi0srv526smCwnADMlupAWdjgv4G1akeeqadwtJCijZXOKKWguD7Yaov8MUjHtuJiXvFWvZGKvILBbn73bOKln4kID5X4hO7pgRw46vEZqOV3aGP0IpZ+o2JYxbV0G71m9BtjfnzGAhWj2OSt7VMfcOU3DHPcDMZ+OFIaft2ujpSn8KYHw+8pmvCXhsvX872DpyPUJsiEpN/GimN3nAYGjTorrm+1KIaEA6bp8CKtshEH4abIb9oq4nh1DH8PSoT0wtvxpNOKwSBZYy0NRghkreFCrUsL4724Y0xp0h0deBB8rmxx4ju+uaenO+/nhaBF/nc7GgObw2UXZKp50KTkTwwIi5FDgQ+I2CquLJoNJ8pvJxU7ylQP12tM3zsq3
+ pk0v46Ga
+ kj3Iyu2vh97vM0kf44Aqi0AYfY36idCVYk8fJ02fyzIu7IZPrccXXDYen6AO8JJtKHnLzwR2gO4O/D4OlHscafyBkf6c7MyoFkVennX2LCeyMyrOeu92fOehxlniNUkPLjhFkqmLReITkdKMrHLCoCNP58RW1jjgEPw0wpZhlxBPLQD5iSHAV+k7FHPLo/fnqFHyj0hW5hKaaabI831+ebeuLlhtdnYLoqNkGioVALZ7ecZGvdvLw+QlOGz8Y99MgKfrkDTCmL0YscUZL+CKyqK+jB30IdWe07vQzOd7CilPaJi8W4tkZN1VJUCbW/T7KDOxPruGYdKwhFHEf8o/8Jpe5y2EmpgemviqF4cfxvCleLobQOph1mlJL7aNEwShdfnJasAjl+uWlNDYfCEzK2lpoaRFytkG81xTr89zPulwyBJUbWhylHBd5kXCEirEJIVvcP2a+ctRjatuNSRSH8RqOtELEmc3qddeojxQtAU0iQUaVo4I6TP8hqW7oE//X+W8baWcHraspV6Y/0sQfEwfNQhibXm1GPqeRfmyjC+i7pH5Bb24Z+w8931aJvFmh+dXjgfjO1/cg4WpeZwxmievNLjWQthQqdr/B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,27 +91,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 08:45:37PM +0100, David Hildenbrand (Arm) wrote:
-> We'll have to find a way to make that reliable. Everything else is just hacking
-> around it.
+On Tue, Aug 25, 2026 at 06:46:59PM +0800, JonasZhou-oc wrote:
+> free_vmap_area_noflush() queues drain_vmap_work after the number of
+> lazily freed pages exceeds lazy_max_pages(). Until the worker purges
+> those pages, concurrent frees keep calling schedule_work(). Even if
+> the work is already pending, queue_work_on() performs a locked
+> test_and_set_bit() on the pending bit in the work item.
 > 
-> Why can we block concurrent offlining through get_online_mems/put_online_mems?
-> But I hate these functions.
+> On the tested x86-64 build, drain_vmap_work and vmap_nodes occupy the
+> same 64-byte cache line. The work item starts at offset 0 and the
+> vmap_nodes pointer at offset 32. The latter is read by vmap allocation
+> and free paths, so updates to the work item invalidate a cache line
+> read by all CPUs.
 > 
-> Or alternatively (better?), have a memory notifier that block concurrent
-> memory_failure() by grabbing the mf_mutex when MEM_GOING_OFFLINE and releasing
-> it when MEM_CANCEL_OFFLINE/MEM_OFFLINE.
+> Put drain_vmap_work in the cacheline-aligned data section. Tests were
+> run on Linux 7.2.
 
-I think this is the way to go.
-memory-failure is a shaky operation and over the years we have seen how challenging
-was to interact with other parts of the kernel without crashing.
+Should the test be performed again on latest RC kernel ?
 
-IMHO, we can try to be clever and try to workaround those issues
-(memhotplug vs memfailure) or just make the two exclusive.
+> 
+> On a two-socket Intel Xeon Silver 4208 system using 16 workers, the
+> runtimes of vmalloc.fix_align, vmalloc.fix_size, and
+> vmalloc.no_block_alloc decreased by 12.61%, 5.78%, and 6.87%,
+> respectively. HITM samples for the affected cache line and total HITM
+> samples decreased by 96.55% and 13.36%, respectively.
+> 
+> Signed-off-by: JonasZhou <jonaszhou-oc@zhaoxin.com>
+> ---
+>  mm/vmalloc.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index f4fa227a8d7f..6b4b287e91f6 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -1088,7 +1088,12 @@ RB_DECLARE_CALLBACKS_MAX(static, free_vmap_area_rb_augment_cb,
+>  static void reclaim_and_purge_vmap_areas(void);
+>  static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+>  static void drain_vmap_area_work(struct work_struct *work);
+> -static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
+> +/*
+> + * Keep the work item, whose pending bit is updated by freeing CPUs,
+> + * away from vmap metadata read by allocation and free paths.
 
-@Miaohe: Thoughts?
+s/away/cacheline away/ instead ?
 
--- 
-Oscar Salvador
-SUSE Labs
+Besides the comment could be re-worded with some more detail perhaps.
+
+> + */
+> +static __cacheline_aligned_in_smp
+> +DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
+>  
+>  static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+>  
+> -- 
+> 2.43.0
+> 
+> 
 
