@@ -1,221 +1,231 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB60D606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 17:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E865606A329
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 18:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wo4Ee3Dw
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OGnBv2u0
 Received: by kanga.kvack.org (Postfix)
-	id BED5F6B05B0; Thu, 26 Nov 2026 12:55:10 -0500 (EST)
+	id 436CE6B05B2; Thu, 26 Nov 2026 13:03:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC4B66B05B1; Thu, 26 Nov 2026 12:55:10 -0500 (EST)
+	id 3E7856B05B3; Thu, 26 Nov 2026 13:03:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD9816B05B2; Thu, 26 Nov 2026 12:55:10 -0500 (EST)
+	id 2FE856B05B4; Thu, 26 Nov 2026 13:03:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 81FD06B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:55:10 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E4D1FC020F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:55:09 +0000 (UTC)
-X-FDA: 85478021538.11.913E189
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3F36A40008
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:55:00 +0000 (UTC)
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795715700;
-	b=YuY9vrDUxBxXEoXjZlKzhdbIX6eyG8v8xJboSlzf2yaPKY8JZQU83n9ytacMTpPsRwEXWi
-	ZOlzUPT05eDuK+aE5dB9YqyGs9FSo5/A+zlslglIuFVC5wp2ycKMCeaGCxrXAnU0/fbNrn
-	NOj+lMb9z7wQ83+vEGyzYb7fFMavc70=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795715700;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B7B7D6B05B2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:03:35 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49EE980538
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:03:35 +0000 (UTC)
+X-FDA: 85478042790.23.630301E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7E3A240016
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:03:33 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OGnBv2u0;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795716213;
+	b=xH12Wo5C2fX501LSMYI2et0NSWaXy7bhwceuuGR2pHIJkRyGiDd1iQKp1ugCxqzGyACtBR
+	KiyZKhWpH7N5KtJ6nBBiAoI0oYZAM0xHIlNqiNE3WILzor8yBC5ia562o0IQReIeXbJ/CG
+	qUpcn5s6RHkJJ/BPld6jeqfqKQ01EQE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795716213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SdbryK6r7Z8TT5rN4VXUmz07ho9c9oC73ihA4weajeE=;
-	b=FhbBGSQfa6MVAC7ug8jDkVlWYwfdQ8lqRbUaKPsmHVRmQqhnIBvkSZBEdsrEWyjusG4qL7
-	VFePn6LYCFsK49vTTfqZ3vVEdpsdPb/AocOKm8GCi6PBx5lKYs2zXdg9Awvu/Oq/wy126H
-	sbK/DwXA75QbM7RjO1PtlWQkDj9yYVg=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Wo4Ee3Dw;
-	spf=pass (imf01.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4aa5833c263so7032259f8f.2
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:54:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795715699; cv=none;
-        d=google.com; s=arc-20260327;
-        b=K+bCQ1hBfNy33AMCoF1cGPX+MRQRtuaB6fTk5vvHZfA5yoO+VwlbvG64CE5aTe1K4y
-         LxftDlK1dg3M7zLPM8F+xSy6XKujEok23cbb5aRspAL+ek//di/g5+ZRExQ+uNqLnVvq
-         K6JWVLSqkcSKvUaw6+jYt17Ts/qhuj9p9CzkIEyDmcoDjTtdYbG4efriyxzpp8B7b9y9
-         xJw/aUoz1fPlHAxY+aKeH1ldUF+tVJa/9OYrqBjT0XmSVgrXF3ZxMC4IKbRgf5agQRzE
-         CRV4Eva5JayDZWMCzYBFK5DK6MWpRRkrX2WyaWMpeMy17IU3LD3kxwRELT71LfmLfufo
-         WWrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SdbryK6r7Z8TT5rN4VXUmz07ho9c9oC73ihA4weajeE=;
-        fh=2qzmH6QJMmfdQ1QHfd8bds1cP4J8rnDbsyNzh7tZ/XU=;
-        b=gTYwFo2BIdq5XIHVfoAdlwPapDSXb7lEaDkyixBaClDeAEXt+3ZwOV5wOisV9oHhqK
-         ybM5eUaqCC7oD34+yuEuns25M1BlxU93b6CiY0Yb6ZIPFMCqzAA6446Lv/+8sTHV3bfe
-         TMjAamImGJ02u+9CNF37uxAJh7RgbtOWPMfPdI6uZPehl91RUp63wWqy1X5SWyM4Rx+c
-         LnIdhf6Me7wfBrSYjzOtTdKj0DYWPqNRHDe8RMQxcnyL7PxzoySBjgs6q9Ku+OKRc7LR
-         K0pTJWx3HG9L5Jf+gLMd5L3M2Hq/yBClo43b8qJr4b/arFZ1mzqZc2V9G9VWfZmUQot8
-         zBRw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795715699; x=1796320499; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SdbryK6r7Z8TT5rN4VXUmz07ho9c9oC73ihA4weajeE=;
-        b=Wo4Ee3DwFs/nXezs3xmAu/BK5mtqqqWIcQw6QqtQfxB5zkMAcbyFBAtGXSd7eCxcNp
-         HWTWD65IgLxLg8cHtPCbppBRGRrwnMpFAWMAJBYN0FFFlRgbN51vWzwoEYkFOS5N96JM
-         oyiO+rY6AVIfTwP2U7FTE3hTs+j4RwO7/rzUXlTGHpKppyibvGQ2MrJXxrrdjAACD6RC
-         4rr6uRhn/66XHGSMJ2OkQt3K+Mnq0n30JNGaHiBFIWR1aISUml1NYbEoPgKafA32W/2H
-         /pHZXBtOdOABYPZevSMZyPJOsB910vtXD6th+gx4EeuVS5LEpvV1K+Tel1zbIYDuIqqi
-         4Phw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795715699; x=1796320499;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SdbryK6r7Z8TT5rN4VXUmz07ho9c9oC73ihA4weajeE=;
-        b=YzXsNLYzmQccAQ9E1NIBOLcuVx6Q2VFQB3XzI9fYLYV9Gi0zN7F8ct2tynPA2Nk/17
-         xSQT4/3BrZP9ZnFbgCVZYFG8xDR5RXu3xPbyVEYGscD1QKV5IkVbyw51h9FbjLwQHLWx
-         5DMEJhulKfFQmMEt0X7ra+Y0C/RwoR+XhxItFD5fGJeWB8Z36kp2pNtbExIGFS+STtYi
-         CioL7PO3Tknwwuxa1RybZhnLSnPp9XJjy6w/S4XCKW1s2E5C0lh1t0Pxtyg3Kpzymm1E
-         vP6reqp8bhBloTDifFma8FulNHbZtdyQ29E/Thy3y2BCwM3A8jMJSSrg0wBMzEhdhe7+
-         qTwA==
-X-Forwarded-Encrypted: i=1; AL+hErEBFtjPNkpvrQRlAZCUVbMTnbd9mgadszDsHTrEJkdhgA0KeSqNfcZT5kGAmudLxhCA4xUvSqOJZA==@kvack.org
-X-Gm-Message-State: APuU4Z8qQNjI5XkGFZhlu2C8rXEGSBc6pD4bcoFH/61YvOrRzegxt+s6
-	ZHs6fjphNnQanR8+I3g4sSd920X7Dz5t9ve3K5t78ycHkZZ076mSUQa/knGa1pvsSA1XxPQLbXu
-	Rv7NAdzE5zIs1yxAW6bWzUayXcdSAi2o=
-X-Gm-Gg: AZFdTZfqedwz7gBp3SDB80ULCsCQvsbCVgMcGGghyf0IOXA7cH8Uxp2JGuBix28pulv
-	XTDm+/WSJYQpMSlagln3Kn5JILl28YawGbokai1cwNF2a/95Krrb9cuPFXmuSddyGgNDXdDW0g4
-	zLitQleXwRFIoWBrv3n8iDIYBxMAq97ojOE9K+1cK2w/iSxYmYWnA7dTJZ1umhX3o9W/SkITpNe
-	U599ZAVO+QoQSAHKC2gRkXOxlEhjZM3vc0Ev2Z/FWOOgztTUR+uZS+g9K4NXEfr2sbDrLQNIPDT
-	x4xUHxCyM302whNA4h3V2Xv8mTNdvWi7mz5lM7EzPnLbE3/+Qh+ylwBtZv6AJ6epaKnSN74FpHb
-	9xS0RbuYehcuAOgd0RlpcyLPxo1Brvdmb4i26SIGfhxfUr7041ieRnBz3l0+8UcgVzgVwzDkQhs
-	qzfBOddK7TW94BRamfXaa1SnJcafuisZfLRI6Ca2A5aNUUNmrJS8h1
-X-Received: by 2002:a05:600c:5306:b0:4a2:5ca:767f with SMTP id
- 5b1f17b1804b1-4bb887c9af4mr419667095e9.4.1795715698718; Thu, 26 Nov 2026
- 09:54:58 -0800 (PST)
+	bh=SRMbopjT2ZDCp3S0bduHH4K2gvQ2HvHqic8ibWdFK5o=;
+	b=xiO7OC+8Fkg3eMWLUV9MXeSVOkKP3i8AKXGF7yvhtBU03T7DBWFjse/KwusfJZxuO3V2Wq
+	rnnYhPsoUtKych/mSNwmm6ByRTfmq+ykF5uwRuNNaopQqyMJCytIuWMd+a97PFhCKI4x8w
+	Mqp+FedPnflvCCWaI/sBmfBnG3/evgo=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OGnBv2u0;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D993F43BD5;
+	Thu, 26 Nov 2026 18:03:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F3F1F00AE3;
+	Thu, 26 Nov 2026 18:03:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795716211;
+	bh=SRMbopjT2ZDCp3S0bduHH4K2gvQ2HvHqic8ibWdFK5o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=OGnBv2u03WCFZWsDn0SqFklZyJny8+Af7jkPORwbwrdfJO9Uuyh3rw7lkea/8Q6vB
+	 cSIp8xQifnWtaWmwzYmEuwcFqqquwhEDZYU9qydrjf+sBZlYdV0Uh4OcohneorzOIF
+	 dQPa+xbeiqQcdPDC9Oa7jdvVgs4qB+n6553AGLoeNcTPRVh325vt+HhS5HZHGL1sQs
+	 OkUadX01xuDVnzUkH625JGfejnQ3/CAK3j6h3DWaPExj7QpjphDplmcLYj/MRIcgd0
+	 eVototx5kDwOQb/DevkWMQPYQDKm10UmfNq6zCKguaXM2lSgE0EpwfzgMQkEYxMgnP
+	 jCJ1NS7tAygTQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
+ <rppt@kernel.org>,  robin.murphy@arm.com,  maz@kernel.org,
+  will@kernel.org,  David Matlack <dmatlack@google.com>,  Alexander Graf
+ <graf@amazon.com>,  seanjc@google.com,  jgg@nvidia.com,
+  loganodell@google.com,  arnd@arndb.de,  dwmw2@infradead.org,
+  baolu.lu@linux.intel.com,  Bjorn Helgaas <bhelgaas@google.com>,
+  oupton@kernel.org,  alex@shazbot.org,  gle.com@google.com,
+  pbonzini@redhat.com,  Andrew Morton <akpm@linux-foundation.org>,
+  kevin.tian@intel.com,  joro@8bytes.org,  kvmarm@lists.linux.dev,
+  linux-pci@vger.kernel.org,  Pratyush Yadav <pratyush@kernel.org>,
+  kexec@lists.infradead.org,  kvm@vger.kernel.org,  iommu@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  skhawaja@google.com,
+  sagis@google.com,  linux-arch@vger.kernel.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 07/19] kho: vmalloc: Add the feature header
+In-Reply-To: <20261110050202.529473-8-tarunsahu@google.com> (Tarun Sahu's
+	message of "Tue, 10 Nov 2026 05:01:50 +0000")
+References: <20261110050202.529473-1-tarunsahu@google.com>
+	<20261110050202.529473-8-tarunsahu@google.com>
+Date: Thu, 26 Nov 2026 18:03:23 +0000
+Message-ID: <2vxzh5h3wjv8.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261126094318.244973-1-alex@ghiti.fr> <98fecdf0-6409-4499-90e4-63996f33db90@kernel.org>
- <CAEmasaXWwWeuQnMbA+g8OyvNwe721Dro+1h+5pfTpzLuV6dx3g@mail.gmail.com> <0b7e81a8-d291-4cbf-8da0-e65e9a0b40a0@kernel.org>
-In-Reply-To: <0b7e81a8-d291-4cbf-8da0-e65e9a0b40a0@kernel.org>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 26 Nov 2026 10:54:46 -0700
-X-Gm-Features: Aa3M54qrITO3fdIud_o5bv_u9tR45TbGg9y25OYPa2Ghf3Ip3t8wAyWPaymBSKs
-Message-ID: <CAKEwX=OHfC6gMBQ+DFPPRCvnj8QQbvEXg0SHvYqTjwrab-DjFA@mail.gmail.com>
-Subject: Re: [PATCH] mm: free the swap slot of a dirty swapin folio
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alexandre Ghiti <alexghiti@meta.com>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Barry Song <baohua@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Baoquan He <baoquan.he@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Youngjun Park <youngjun.park@lge.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-HE-Tag: 1795715700-589373
-X-HE-Meta: U2FsdGVkX18UGCz5xZ+vdC7/vH/SH3/M3Qxi0CU3hVSkIOSY/BdwdKmiFMg8fXwbfya3LluVHuxOofFnyTg4BWNv803bJB1YYYvIF1JN890tEChi9Se4/ycPpZkMWkWTrIxo8r7j3DFqBzFhqqSpJCWkysFRM+s9OP5RXpwpLala09i0/GHhSNlFFMcmuOZqf6iwvkRbiDH8tFSYGkTlizgBifV4qgeot5wXy9yQEVTBdMgRvS9aUKjoQLzb0t5dDMU0TeXt3cFXeFq5pNpHV9XtdKyELojE9ZrvFe62KLqfwW44hRlGRweE4LYB74v6/mmfRK6ULRaVYckYMwL6P+AObRGVntQdHsGuG6WVsh/gByTuJsG9/GwKGPxkgplYK/+w4fSVzR4d2gomBFG4Sb6IYSfC4wN9i/EA19+Q5eGqlsIWRR5Edw==
+Content-Type: text/plain
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7E3A240016
+X-Rspam-User:
+X-Stat-Signature: cthb3ptqbxk8b1cfdafe1dnwnsbfzj56
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795716213-608315
+X-HE-Meta: U2FsdGVkX1+30MNqm713usZWQReyr6I9Lb6MtM0n0NKHlq2xy6pQYGw59+cCXxrLH9Vfd4OHrOrSrMfIE7ZdQrkJ6fi01GoaIB971lPfk6UDt3J0wP6HFGEylhB91xYmnNNTj/lsLD8U0t3c+ZHpc+eFJcTYMIgYXojC3vZ8IJb3lXRAqR6ndbhiBiQsQ/m5sbSN2L1JDaA3s+3w90Y7T6dOgwSTeG7N9NDtNHeaajCHth7zP4NS+uuthby2eks5tEzPLf/xcluChCZTE3Lis0wXpbapGr4dFFctSBEX9Hd14sCHtOiVFK+KQZsdkcvjfcH1VQNcm0VFHCKq49cth4tPuRq7t9lzwRQ5hnJMTvt732pUxzTuWEap55KlCHgm9up7SCJxfirWUp4yBr3cdoJYHEeAb6jSiAVGIiixA3UMsetX4Eqr0gowCg91VY7jbTXTBh2FrZwL5vbyF7/4n8ilZkGMjXGrszexuqDrQBm4nKYJYAyJIHO+LqL7fVXoela82DYb7sTU37leBqDTvgMhaWSgfh9fvpxzlv5/LGj2bfqGgxVpma5XUUB249Q5+FxuUUv3yA9smkGJaqgc48zkgu66s5jtHYWWMKmhJfUlhQU9jJ6u5Z9JcSCMQIo71PeYFPSEWjQ6c34VSXrGFKP3Tgqjo0fCzzpLb0XDg+i6ShiGkNLhrzBNbMPy4wKzDkttKQWMUsPK++8nrdu/7u6G1sjnMCeduHz+6xCy/BbV2QR8ol4FJiqK5k6whg4nHureUZY+6BLGX5psbKRF6Q+DmHAURNz4F9FCvicSVfJEKRpE0HsmLOUXFsFjq/zH+qBy3rkk3tyXdi1uGk1utFQrEdVMHYkbxMVFWZJrQeOxQNzD3CxL0yLyKZBglzNCrOoPO6l7WLwrdU1tviUNV/NJNNHr2O6HUuj8Csc+8/tIihkJzRXiFeiPeLaWtWDFX+JkPtsImmE5eGU5dQq
+ feB0FKD2
+ LoF59D2aBHXING08t4iuAnS4bVzpgboOrCOXolyv2rQqdCcBmCwvZFcNCx3s6vuYrEYpM2z5UMZoVnyQ5Ipcm0j5nLMD+Y0cbisliBZKqzqzC5/PD24qJ0v3aEsTjetagwnFS3Mdkq4rlIlxJSubG+UsXWvADMwj0JBKN2ZrIiOMEPatXv05fJpB3Wgs56y7CS2PjuR05fBRKRyCc6Eas0kk5NUiqlGCSN6cgOaYKBdoqj2J5MB6IQwuoGBP7QNGyIkSdWpkLTyNSZ13+QgPPD2aKF74BcPWMExnNoi7O1S7pD56Y3G/oIF6hvuOzLhYQqeF4UD915sPFNOyc5Un8K5ibXserL0eu38yYtz/7/a/C8AgIyzxc9THxnnmlaBz5EKrp+3buuK/caOEcKt1c0TWQu/GwZogRnR5GXgYrdRa/vHl4bQfdZjVnstuTUA5kaYOCCd0XKDbbzGjJDQD6w6lPXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 26, 2026 at 9:20=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 11/26/26 16:01, Alexandre Ghiti wrote:
-> >
-> >>
-> >> But ... isn't this zswap specific? Why do we have zswap specific stuff=
- in this
-> >> common code?
-> >>
-> >> The comment already gives away that something is not quite right here.
-> >
-> > I am mostly interested in the zswap benefits, but nothing is zswap
-> > specific here: do_swap_page() can also find a dirty folio in the swap
-> > cache when reclaim bailed out before writeout, or when the swap write
-> > failed. In all those cases, the copy in the slot is stale, so the slot
-> > only reserves swap space. zswap is simply the common case, since
-> > zswap_load() dirties the folio.
-> >
-> > What do you think?
->
-> If it's generic, then the comment shouldn't mention zswap in the comment =
-:)
+On Tue, Nov 10 2026, Tarun Sahu wrote:
 
-+1. Maybe mention zswap as an example of when this can happen rather
-than the sole motivation. I suspect this is a generic problem, with
-zswap being a common/easy to trigger case :)
-
-In general, seems like the whole point of caching these slots
-(especially after Kairui optimized the swap allocator) is just to
-avoid repeating pageout work in subsequent reclaim attempts. In zswap
-case (where we invalidate the fault after page-in), that trade-off is
-not worth it.
-
-FWIW, zram is also doing the same thing:
-
-/*
- * Always try to free swap cache for SWP_SYNCHRONOUS_IO devices. Swap
- * cache can help save some IO or memory overhead, but these devices
- * are fast, and meanwhile, swap cache pinning the slot deferring the
- * release of metadata or fragmentation is a more critical issue.
- */
-if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
-    return true;
-
-so we kinda already have some backend-specific logic bled out to this
-location. Maybe we can genericize this in the future :)
-
+> Register struct kho_vmalloc with the KHO serialization feature header
+> mechanism to allow future additive fields or feature extensions without
+> breaking live update ABI compatibility.
 >
-> And the patch description should be all about zswap.
+> Add DECLARE_KHO_SER(kho_vmalloc, 16, 0, 0) to register the 16-byte
+> structure with 0 required and 0 optional features. Update function
+> prototypes in include/linux/kexec_handover.h to take
+> DECLARE_KHO_SER_HDR(kho_vmalloc, *fhdr) parameters, documenting which
+> registered structure the feature header belongs to while enforcing
+> compile-time type verification.
 >
-> And we should measure the effect without zswap.
+> In kho_preserve_vmalloc(), initialize the feature header with
+> kho_ser_init() and access the payload fields via kho_ser_payload().
+> In kho_restore_vmalloc(), validate incoming required features with
+> kho_ser_validate() and access payload fields via kho_ser_payload().
+> In kho_unpreserve_vmalloc(), access payload fields via kho_ser_payload().
+> The chunk page format and traversal remain unchanged.
 >
-> So, folio dirty -> We'd need another writeback because the content on dis=
-k is stale.
+> Update memfd_luo and test_kho to pass typed feature header pointers
+> and use kho_ser_size() for allocation sizing.
 >
-> If we reclaim swap, the next reclaim run will have to re-allocate one.
->
->
-> But why is this "is dirty" linked to exclusive?
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+[...]
+> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
+> index 7b49dd6d7e2a..b0597c438973 100644
+> --- a/include/linux/kho/abi/memfd.h
+> +++ b/include/linux/kho/abi/memfd.h
+> @@ -80,9 +80,9 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
+>   * @seals:     The seals present on the memfd. The seals are uABI so it is safe
+>   *             to directly use them in the ABI.
+>   * @flags:     Flags for the file. Unused flag bits must be set to 0.
+> - * @nr_folios: Number of folios in the folios array.
+> - * @folios:    Pointer to KHO vmalloc descriptor for the array of
+> - *             struct memfd_luo_folio_ser.
+> + * @nr_folios:   Number of folios in the folios array.
+> + * @folios_fhdr: Pointer to KHO vmalloc descriptor for the array of
+> + *               struct memfd_luo_folio_ser.
+>   */
+>  struct memfd_luo_ser {
+>  	u64 pos;
+> @@ -90,7 +90,7 @@ struct memfd_luo_ser {
+>  	u32 seals;
+>  	u32 flags;
+>  	u64 nr_folios;
+> -	DECLARE_KHOSER_PTR(folios, struct kho_vmalloc *);
+> +	DECLARE_KHOSER_PTR(folios_fhdr, DECLARE_KHO_SER_HDR(kho_vmalloc, *));
 
-I don't think we need exclusive here at all yeah. folio_free_swap()
-already does all the necessary safety checks.
+This doesn't _only_ point to the feature header. It points to the
+vmalloc buffer of of folios, conceptually. So it should be called
+"folios". Reading folios_fhdr everywhere is super confusing and hard to
+read. Users of KHO vmalloc should be pointing to the KHO malloc
+serialization structure, not to its headers or so on.
 
->
-> What if we did
->
-> /*
->  * Free the swapcache if the folio is already dirty, or if we will dirty =
-it
->  * immediately afterwards by writing to it.
->  */
-> if (folio_test_dirty(folio))
->         return true;
-> return (fault_flags & FAULT_FLAG_WRITE) && exclusive;
+The feature header is an implementation detail of kho_vmalloc (same for
+others). It should not be visible to its callers.
 
-LGTM.
+>  };
+>  
+>  static_assert(sizeof(struct memfd_luo_ser) == 40);
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 641a3b4c88fb..6e428df717cc 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1378,20 +1378,20 @@ static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk,
+>  /**
+>   * kho_preserve_vmalloc - preserve memory allocated with vmalloc() across kexec
+>   * @ptr: pointer to the area in vmalloc address space
+> - * @preservation: placeholder for preservation metadata
+> + * @fhdr:         placeholder for preservation metadata
+>   *
+>   * Instructs KHO to preserve the area in vmalloc address space at @ptr. The
+>   * physical pages mapped at @ptr will be preserved and on successful return
+> - * @preservation will hold the physical address of a structure that describes
+> - * the preservation.
+> + * @fhdr will hold the preservation metadata.
+>   *
+>   * NOTE: The memory allocated with vmalloc_node() variants cannot be reliably
+>   * restored on the same node
+>   *
+>   * Return: 0 on success, error code on failure
+>   */
+> -int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+> +int kho_preserve_vmalloc(void *ptr, DECLARE_KHO_SER_HDR(kho_vmalloc, *fhdr))
+>  {
+> +	struct kho_vmalloc *vmalloc_ser;
+>  	struct kho_vmalloc_chunk *chunk;
+>  	struct vm_struct *vm = find_vm_area(ptr);
+>  	unsigned int order, flags, nr_contig_pages;
+> @@ -1404,13 +1404,18 @@ int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+>  	if (vm->flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+>  		return -EOPNOTSUPP;
+>  
+> +	kho_ser_init(fhdr, kho_vmalloc);
+> +
+> +	vmalloc_ser = kho_ser_payload(fhdr, kho_vmalloc);
+> +
+>  	flags = vmalloc_flags_to_kho(vm->flags);
+>  	order = get_vm_area_page_order(vm);
+> +	vmalloc_ser->order = order;
+
+Nit: Why is this moving around? Seems like a stray change.
+
+Also, renaming preservation to vmalloc_ser adds a lot of noise to your
+diff. Perhaps keep it as-is for now?
+>  
+>  	chunk = new_vmalloc_chunk(NULL);
+>  	if (!chunk)
+>  		return -ENOMEM;
+> -	KHOSER_STORE_PTR(preservation->first, chunk);
+> +	KHOSER_STORE_PTR(vmalloc_ser->first, chunk);
+>  
+>  	nr_contig_pages = (1 << order);
+>  	for (int i = 0; i < vm->nr_pages; i += nr_contig_pages) {
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
