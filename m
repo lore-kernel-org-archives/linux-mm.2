@@ -1,82 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679C0606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5132E606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RIzKI4va
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJyTKMIe
 Received: by kanga.kvack.org (Postfix)
-	id 7ABF16B05B3; Thu, 26 Nov 2026 06:14:39 -0500 (EST)
+	id 69A3C6B05B5; Thu, 26 Nov 2026 06:14:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75B946B05B4; Thu, 26 Nov 2026 06:14:39 -0500 (EST)
+	id 623C36B05B6; Thu, 26 Nov 2026 06:14:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64B736B05B5; Thu, 26 Nov 2026 06:14:39 -0500 (EST)
+	id 4EC596B05B7; Thu, 26 Nov 2026 06:14:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED0776B05B3
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:14:38 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D5E11403D7
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:14:38 +0000 (UTC)
-X-FDA: 85477012236.26.8BE365F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AB4311C0008
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:14:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RIzKI4va;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D1D2C6B05B5
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:14:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DF35403D6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:14:48 +0000 (UTC)
+X-FDA: 85477012656.18.BF75AF1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A04D1100002
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:14:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJyTKMIe;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691676;
-	b=u5RfIYaeGXZ6CnNR6mVa7pm1v8I9reVwirt4GS5ET+5Ist6aW4s4JAGxCZnot1TnrNwPM6
-	4NnxYHIFGkNkFrjd7BUkO8iBEBYMfjH8ARRjkqiD5BBIXhPRWJMX4izGcHXadFZOKZFcrz
-	veVCN+M36myfnBsjgs0WeH+B870kFW8=
+	t=1795691686;
+	b=rOAbFaf0uuxGvfaUZyMDZKB5CtC/NgnT4ryoI8tGf0IAI9VPID4L/9OU3zDlTWhBdGbQnr
+	Y2oRr8p3rnJBa/JNQVyJ2E/0t6cNR1IXTjTSDFQpJKjKN5BvhwRKPb+wFWjTxPl02lECOV
+	wnGPlb40MPsiEGoeUuCOmQITx2HzzAg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691676;
+	s=arc-20220608; t=1795691686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6YKQUHqJDRHR3OCTfVDPkStj7CDLwSpBT3OSStLmyG8=;
-	b=SlsaR29O1MgBMUx1U4lzRyqwgPZL8g2phvELOD9LSjMmD6iqJcMvzk2uKEV2LPOsRZMMjs
-	cj3LDOfFEepgqsvcxSW5C5V2SkN6Ut2folF8MIAAlpwoPij3yR0yKtffA3xEfnp02wZ5oI
-	R3lvmSv5OCcm/8cNVz1tB6Gy7JsxeHM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+zAN299vizOOPECPls5C9ly2hX7A6i/wCUYEhdWTrYE=;
+	b=8YGX+MBQqm9AUieA+yZWd1mFtV8Zq8QDqhId2EeW8YBONU9vPi/yF+GcLCMvUPG/pTih2M
+	cFLbSyG+m5xepcX2iWRUupyXaB12btL5YgeaDXJi8zzYAAS5odsN7ssmM/hflhVQg73EgL
+	8AuhWOpf8KOETZr77KZZybcIftpQvYA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RIzKI4va;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJyTKMIe;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 10E6C61E12;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0FFB943B27;
+	Thu, 26 Nov 2026 11:14:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488AA1F000C4;
 	Thu, 26 Nov 2026 11:14:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C461F000C0;
-	Thu, 26 Nov 2026 11:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691675;
-	bh=6YKQUHqJDRHR3OCTfVDPkStj7CDLwSpBT3OSStLmyG8=;
-	h=From:Subject:Date:To:Cc;
-	b=RIzKI4va+frBwlc3L5up4od5Tzz5+IjApWpqzPqE+xv9jFM5mM90LbTn7IGHybUdo
-	 frm/EMLI2JqkB+cS25k4UmXZXWB07H+XNcKtUR7frpUMZxWrCYR3DGOa/X/MpLq+jh
-	 PV0BS7E4dViEIpcL/qFS4PVk9Q6KK0gywkDhG+VaVhoAjRq2WN1fBw0VQozFJ0FoOZ
-	 MvP+SOIq31uptC2jpA+gEOEia4UowVG5kosrZuTrhHijOhq3bltvBXoa7seeeP5CwO
-	 ZYXkZLAKrsjA5mYJZEYMzX21yAE9XTWjfZ/GYlVgWG9dZei7XsFofG/i2PQ80MNyan
-	 d4HLkIP2adjlg==
+	s=k20260515; t=1795691684;
+	bh=+zAN299vizOOPECPls5C9ly2hX7A6i/wCUYEhdWTrYE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=kJyTKMIef9KUJ7TrzxTw1NFRlFaRrs8sShSVVpag23heJBC0+PbBRsR1oW1Wkkfe3
+	 /BEDq5VE3iJDg9scZN+INRUCab6B1pQg4aSTRrJ64C0kKSQyJj5olaROHEH5iUjs+j
+	 8wKpdu+jFo2YDtHGgaZw4V+6poffdw5Oag7Yqa5qdXG3V3GPOwPnZgPhV6dXf9v76W
+	 Sb0W8VbJ3BmR3nLdG+OyaPztr9yMUdYv/loapVRW0yE+e+WYmM44YbzJciMR6VYcE8
+	 wGiDHGR3bmNJb9AN7Zbx5mEvbwquRTkTxaAYZtEGd9VyUgt5DRG8mbCQoHnOAjKSOb
+	 +bMedTT8QILgA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH RFC v2 00/54] arch, mm: create a generic
- set_memory/change_page_attr core
-Date: Thu, 26 Nov 2026 13:14:13 +0200
-Message-Id: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
+Date: Thu, 26 Nov 2026 13:14:14 +0200
+Subject: [PATCH RFC v2 01/54] riscv: do not use P4D entries for the linear
+ mapping
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WQzU7DMBCEX6XymS3+i+3khITEA3BFPdjOpjGQB
- OzUKqr67jhphZAQcNzRfrOzcyIJY8BEms2JRMwhhWksA7/ZEN/bcY8Q2jITTrmimjPY41gIDwl
- nGHCY4gdkCgyoqqS2lDpukRT6LWIXjqvzE3l8uCe7i5gO7hn9vHgua84mBBft6PtF+ul+m+lWw
- bK2rPchzUVc42a2ev+bLJdwwD3rvOKCKifuXjCO+Lqd4p7szpdYEd8P5fn5Gvjr91LF4l8zBX1
- whbNzaQi0osIZha42rMmcfK/rgjDGOKwNwNEooJ5VTtnWc8abkvxPIIbkMwiURhvTVabDX2/oK
- 5JETcHwWopaFErb65G1Xz8NQ5ibjUXnNNdSaiWpoJK2leFeMalN25lOWu262reitHL+BOlh9HM
- aAgAA
-X-Change-ID: 20260721-generic-set-memory-v0-1-06547a00b2ae
+Message-Id: <20261126-generic-set-memory-v0-1-v2-1-723f1e33c3d8@kernel.org>
+References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
+In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 To: linux-mm@kvack.org
 Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
  Alexander Gordeev <agordeev@linux.ibm.com>, 
@@ -101,18 +96,19 @@ Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
 X-Mailer: b4 0.16.1-dev
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A04D1100002
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AB4311C0008
-X-Stat-Signature: pq5ezust5yaiqd6j5amh7yuoibk1mt6a
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795691676-457876
-X-HE-Meta: U2FsdGVkX18PZBG87gV0XNr2MLLMd1/duGo6MetsmnfOgF/4ROEITLVqgyIDFMWukelhKNU8BamQpBziI2BLEXVw8DRUjmZL3fKN9CB0z4n85jooeoy6b3x/3wMBDbZqgEugS1GBlNK8sOmaBr046wfspdrWE9t4x7zJBjrV5WJqVeZdm310c9FFRy+A7O2TkGMU3ra0cIbI50w3ehSVkPeawwNV2tbCqaIrZ/6M0Hw427oXySQ1bAjY/8gZGs5inkNm+x+wpIPUFLLXU6X9eAVaVrwGYKn+opxFH+6y7fUXy7qbeU6JdvLehrnXhsFuOMljB/ISo3J1hQJrOTURmWxozzWWM1bH3awBPplW6Aqi7ZA+cawa4xSYPXZDd7+id/gDp4Kc1hSiXdcr1KafcAKvBhz87af2vkJrYWuofG0tnQyt0al97cr0YQwOBKUt28HroxuFlPn3OYL0O5rr5AVtV7fv48jBbZss4jHB3HdNeOfE9FGZY/O2Z79hEu3dGUKdyxSFq9ppQUsAKYo+AiPSx0oiRQofh5+VzmJKqSp+Qz/yr5pKaolo9otyVHhXmu8Jo3eQlyEmUSOvVN4LDtCvXJ3aKojBd+Arje7+aBm0WUN0+/JIORYlkAA/Jc5bfQUQ5jH3kT+ZJ9aVVcnUj6rLgDuahxvfxiHdbNcs7lZ5rMmSGSaPq5pISeqv4Pl4cRDi5zaAi6CPlfoE8dVLu1nlASdAXykhqmeouOqcZvL5jxgp8CLDYh6wCq9DGgnlyrwceSbrH0aKl1D9zMuWvvk5fM6jE/x/sgda700zFLbS5wphy+J1yZ+LSyLaZe0uLtGv4mrRATCirbash5c33BCtjTjLxSy3vymJ5XywRcJepwY2B34TQZbKDF1vqLJ21XAV7A0zXPHvycasvp4wqywESguXe6DPv7LRsnqRx6LJRsw5xUbCYNbriBI/undwAT7kb/n6d4GN7OBAqq8
- qJwLsq8w
- WHdPXLp6wxWsMzAaOINjZLXpm+ht3lZHM/iFpiv2qrK1QJUK1ZSD05JQjGVFmdPwyGnCq8uAEmIR9lLYvQtjkpbuiWfbRYkSQbYYTsGGMrbkSB+gT0QYGy9O3DFrkiZFNbmd0EujgEl6G6gL7dCdJHNnLXwzeIJnVQ1joignzOTGM2efxrF+T8gQvdoFtLGQeVfM7tJxDILzfwEvyGSBC3HoY2aytWgKbK4cOwcWz9Ie++BRFEjK7V8E1D1dkd/xXxYwRLgiZZliRDnWX0M2+ur8yuAkd+P0m91Ct4KE+MCR+L8+8p9apK0kNkbjEBbF7Ow1NudJIjInqhloX94tHQ4KtGFgGo3g4DLWfRFW0dAIBrJOB/2Cq34XXJsACfzuW66lP0YehpNE1MItaLBDhfX4JY3VmOUL6TzvpnzOmmUDa1sF/qS+VVtKukTDkvyLcP7oihGYCcUrYH/vXuBbMjPq9DyilJyBF11jpgSibKXZJwzTmBs+7EHLcO6DaUTsbhALWKl8dzkhBcHAAGRstNthJ0M5tgB+ACj/bXogIgFzFtbiVCtXY+mhyo7d/jtXJfeQHxQStiNft9V4Nl3mKGcEhl7Op18QzbmlEvL1hf7HAbNvsHYhawsOqbKEHsmaV3Ovadj4FYW/QHD3jbgs16WGmCYw9vLCuVaIbFRKv2bKF7Wc=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: wb3yc11rc7nu6t4kbt17695o7p7gd7hh
+X-HE-Tag: 1795691686-514232
+X-HE-Meta: U2FsdGVkX1+JbLOEJWRCZ1o2JYPmT2g122Fv+eQWxgN567EbrQFThuhQOXEedNqQ8OkgkKzfn9Wvc2Cy75OpLhSVe3+1HheuzQpw2QoKMI7w7JJu0Ov2Do+wWHJtp1Nk223ZRJf/J7VmL6hkCcM5FhHvmg/Wcu1N56TiSPV6Hk7cIBPlFPSw9gVAuSHnYkuPGL2bsVdQjLh95gIl8rfs+28jQiKz+ZEBIK3EE0N06C5DAmef3Ube3Aniv46HemOms5CYYKo/tcmboqxUSYp1VoEEkdK6RFNNNNFReyy/iiCuuArDUcF9EWks7vZ8VpcjJnKzXXyyY1H0A9JIDTzpVU0FFPNoQK1Um53h0Y/jLxC1tYfs6Xyx3vEkXV2/J3RZGMaadsgsM4TBYZVQCnqNOUluhS0cAT3z818gJzjNpUwj5fO0+jSSv5YJliEmeTm1jlDmWLO5/PkIRyErsgCM2YcneRaTdI1d5lQj9HztJfNS2BxLxpPQxohGkeAjt8BjKY7Grns9zszdWq+VYYP5f4j4XV8yaf5R2T8qRumVAMCSc7JFAI1hewQKM6KDCRgj15iHo5rCrIE6nKb+Z7xGPmI8VLnq6yARHnIFQwQ0x7RdwE0o6ZijHQuLqNE6Zp2YRCkFiwtaZPJ8ch1E+HHOYIrRwBn0xVvTkNrr5+KCXvUx3atcUx8O9uRg5z0fipJgfLEAR5btZ4xkFqgkbmGedltjL+va5W9jJQlW1vPFtnBJSB4HuTfNvnH9ORiHV8p6BkKt89D8SM8ZCy9m9Y1i7QL5mxuCzr/rGgcQTDfLgNH84+QjxpYBL3gxWhHkxjfFfPljKlPmaJFb4+8P7v9apZvGsbiL1JppiXC8sn9qtQ0+cKDLkMVaJYzbBW8I0WXiKD7q4sjFlzp7NB58LPdknL0Oz8AGVJB0X80BJMDEWuzh+f56uGNvARxIZXX/ttl8S19bpm4y7USvXOiAfQJ
+ 32Adm47o
+ ZSUeui0PfyoILmz6Eb8oG8nrnBOB7hcvddrqOkZ0f2uAL4LLYQIjj3xyd6EDSG9EC6a7WeBbDvMTy5zqtUwbtnGvFGmO7fH0gM3L6AcvQyhyN5p5Ga5zXP11yAxa6k9Mqm8GMckmqm3ipQJ1pSVLnZskWL450GcKUo0y9uBdNcrQ+Udi1AJ/4l2n5KoeTJzjKxO9PsmpXStphUp9YqFu1waFPseqsxlUUdpLjl2L6R9YtwztNytP4qPN7LQZ0L65WIlBOgBDLnIE+kyAzONQU0kbpNKpkgbTJjYFHrkQ6vpMzA1fTQTA83SkXVH47TzGXDMP8DSeRUVKjKmpBMJu1p+iEZpUzNRcllFgvs8mQ57PaaXwoDh/sN5i9qVhK24HY6VXNFQcFxdjURBXFZvYEe0nRurl1kOXUU0INcFfZZWc9PUx14QD5EP12ThdCjE1rTUVG49Pw2UQqOpvIr4p6aec51ypeaOmeZYS2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,291 +117,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-= tl;dr =
+The linear map uses P4D sized leaves with Sv57 since commit 3335068f8721
+("riscv: Use PUD/P4D/PGD pages for the linear mapping"), but riscv has no
+p4d_leaf() and the generic stub returns false.
 
-This is heavily reworked v2 of
+As a result, kernel page table walks treat P4D leaves as tables and wrongly
+descend to lower levels. This affects the split in set_memory_*(),
+kernel_page_present(), ptdump and the hibernation page table copy.
 
-https://lore.kernel.org/all/20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org
+Stop creating P4D leaves rather than teaching every walker about them, as
+commit 629db01c64ff ("riscv: Don't use PGD entries for the linear mapping")
+did for PGD leaves.
 
-I decided to convert all architectures that implement set_memory_*() in one
-series so that it will be clear that the consolidation does not have
-conceptual gaps.
-
-While the series is large, a bulk of it is a refactoring of x86's CPA, and
-then several commits that create the generic code and a few commits per
-converted architecture.
-
-= Motivation =
-
-Currently there are 7 independent implementations for set_memory and
-set_direct_map APIs.
-
-With increasing demand for kernel page table manipulations, for example
-"Direct Map Removal Support for guest_memfd" [1] and "mm: ASI direct map
-management" [2], it makes sense to have a generic core for kernel page
-table manipulation in mm/ with helpers in the architecture specific code.
-
-A fix to a UAF bug [3] earlier this year had to touch set memory
-functionality in subtly different way in different architectures rather
-than to fix the core logic in a single place.
-
-x86's implementation is the most versatile and most battle tested and as
-such it is the best base for the generic implementation: it preserves large
-mappings when it can, it splits when it must, it handles the direct map
-alias, it serializes against itself and it sanity checks the result. The
-others are catching up one bug at a time ;-)
-
-With the generic CPA core in place it would be possible to:
-
-- make sure protection updates follow all-or-nothing principle: today a
-  request that fails half way leaves the pages it already processed changed
-  and a caller has no real way to recover from it
-- add an "atomic" mode to CPA so that it could handle debug_pagealloc and
-  KFENCE the same way on all architectures
-- enable collapse of large mappings on arm64 with BBML3 and on s390 and let
-  them use EXECMEM_ROX_CACHE
-- enable collapse of the direct map sometime in the future
-
-= Changes =
-
-This series converts all the architectures that implement set_memory APIs
-to use a generic core based on x86 implementation so that all of them have
-the same behaviour.
-
-The core walks the page tables, serializes the requests, decides how large
-mappings are handled, and makes direct map counters in /proc/meminfo and
-/proc/vmstat and CPA statistics in debugfs available to all architectures.
-
-The architectures take care of the page table format, of what they can
-split, of definitions of alias mappings and of the TLB flushes.
-
-The changelogs of the conversion patches list what changes for every
-architecture.
-
-I left out Documentation/mm/kernel-page-tables.rst update for now. Will
-post it with non-RFC version.
-
-= Patches =
-
-Patches 1-2 are riscv fixes for handling of p4d leaves and Svnapot.
-
-Patches 3-5 align command line parsing in s390 decompressor with the kernel
-to make sure both kernel and decompressor see the same parameter values,
-particularly for debug_pagealloc.
-
-Patches 6-17 are x86 fixes and cleanups.
-
-Patches 18-28 reorganize x86 CPA implementation to make it friendlier for
-generalization and separate the generic part of CPA from the x86 specifics.
-
-Patch 29 pulls CPA core to mm/pageattr.c and declares the architecture
-hooks in include/linux/pageattr.h.
-
-Patches 30-32, 38, 43, 44 and 48 add bits that the architectures converted
-after them need.
-
-Then there are the conversion patches:
-- 33-36 for LoongArch
-- 37 for ARM
-- 39 for powerpc
-- 40-42 for riscv
-- 45-47 for s390
-- 49-52 for arm64
-
-And in the end, patch 53 enables the generic core with ARCH_HAS_SET_MEMORY
-and patch 54 adds kernel-doc for the API and the hooks.
-
-= Testing =
-
-The patches are build tested on all architectures with various relevant
-configuration options turned on and off.
-
-arm64 and riscv boot in QEMU and pass module load and unload loops, BPF JIT
-loads, memfd_secret() and writes to tmpfs, which on arm64 trigger CPA with
-debug_pagealloc.
-
-x86 is tested in KVM with the CPA self test, module load and unload loops
-and BPF JIT loads.
-
-All three were tested with and without debug_pagealloc, and arm64 with
-rodata=on as well.
-
-The tests ran with a concurrent loop reading the kernel page tables dump in
-debugfs to rule out races with ptdump.
-
-I also verified that there is no measurable performance difference on x86.
-
-= Prerequisites =
-
-While working on this series I found a few more issues, though much less
-pressing than UAF :)
-
-The fixes for x86 [4], riscv [5] and s390 [6] are posted separately.
-
-This series is on top of v7.4-rc3 with the posted fixes applied and with
-hibernation series [7] from mm-nonmm-unstable that is waiting for the next
-merge window in Andrew's tree.
-
-b4 will conflict on the hibernation series, it's easier to get this RFC
-from git:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=generic-set-memory/rfc-v2
-
-= Merging =
-
-As Dave suggested [8], I'd like this to go through mm with acks from the
-architectures.
-
-= References =
-
-[1] https://lore.kernel.org/all/20260410151746.61150-1-kalyazin@amazon.com
-[2] https://lore.kernel.org/all/20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com/
-[3] https://lore.kernel.org/all/20260723-series-vmap-race-fix-v6-0-8cc77dcc0018@kernel.org
-[4] https://lore.kernel.org/all/20261112-fixes-x86-v1-0-791adb8d6670@kernel.org
-[5] https://lore.kernel.org/all/20261117-fixes-riscv-v2-0-5edc9bdc54fd@kernel.org
-[6] https://lore.kernel.org/all/20261117-fixes-s390-v1-1-2d9d04ca0072@kernel.org
-[7] https://lore.kernel.org/all/20260926-hibernation-v2-0-235f69f3ab2a@kernel.org
-[8] https://lore.kernel.org/all/fa75382e-878a-4064-a9b1-43bd2c9dedce@intel.com
-
+Fixes: 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear mapping")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-v2 changes:
-* revamp the series :)
+ arch/riscv/mm/init.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-v1: https://patch.msgid.link/20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 070ee69eabb3..e1bcc3a16129 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -717,10 +717,6 @@ static uintptr_t __meminit best_map_size(phys_addr_t pa, uintptr_t va, phys_addr
+ 	if (debug_pagealloc_enabled())
+ 		return PAGE_SIZE;
+ 
+-	if (pgtable_l5_enabled() &&
+-	    !(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
+-		return P4D_SIZE;
+-
+ 	if (pgtable_l4_enabled() &&
+ 	    !(pa & (PUD_SIZE - 1)) && !(va & (PUD_SIZE - 1)) && size >= PUD_SIZE)
+ 		return PUD_SIZE;
 
----
-Mike Rapoport (Microsoft) (54):
-      riscv: do not use P4D entries for the linear mapping
-      riscv: test for Svnapot in pte_napot()
-      s390/boot: parse boolean parameters like the kernel
-      s390/boot: stop parsing the command line at "--"
-      s390/boot: treat dashes and underscores alike in parameter names
-      x86/mm/pat: don't count kernel image splits as direct map splits
-      x86/mm/pat: drop KERN_WARNING from the WARN() in __cpa_process_fault()
-      x86/mm/pat: fail a split at an unexpected level with -EINVAL
-      x86/mm/pat: separate CPA request flags from internal state
-      x86/mm/pat: stop using CPA for debug_pagealloc
-      x86/mm/pat: drop the init_mm read lock from change_page_attr_set_clr()
-      x86/mm/pat: introduce change_page_attr_pages()
-      x86/mm/pat: make the direct map counters atomic
-      x86/mm/pat: take pgd_lock only around the pgd_list walks
-      x86/mm/pat: look up the effective NX/RW bits in verify_rwx()
-      x86/mm/pat: look up a large page again only after dropping cpa_lock
-      x86/mm/pat: drop the check of existing mappings against static protections
-      x86/mm/pat: consolidate encoding of page table entries
-      x86/mm/pat: use enum pgtable_level in CPA
-      x86/mm/pat: index the CPA statistics by page table level
-      x86/mm/pat: introduce struct cpa_leaf
-      x86/mm/pat: consolidate calculation of the new protection
-      x86/mm/pat: allocate the page tables for a split by level
-      x86/mm/pat: detect unchanged mappings by comparing protections
-      x86/mm/pat: add cpa_is_direct_map()
-      x86/mm/pat: implement set_memory_*() with a table of operations
-      x86/mm/pat: prepare the direct map counters for the generic code
-      x86/mm/pat: separate the generic part of CPA from the x86 hooks
-      x86/mm/pat, mm: pull CPA core to mm/
-      mm/pageattr: introduce arch_cpa_can_split()
-      mm/pageattr: introduce cpa_flush_tlb_kernel_range()
-      asm-generic: add an empty pageattr.h
-      LoongArch: use pfn_is_nosave() to exclude firmware ranges from hibernation
-      LoongArch: stop pretending LoongArch supports set_direct_map APIs
-      LoongArch: drop the huge page handling from set_memory()
-      LoongArch: use the generic CPA core
-      ARM: mm: use the generic CPA core
-      mm/pageattr: let a leaf cover a contiguous block of entries
-      powerpc: use the generic CPA core
-      riscv: replace set_memory_rw_nx() with set_memory_nx() and set_memory_rw()
-      riscv: use the generic CPA core
-      riscv: count the mappings of the linear map
-      mm/pageattr: let an architecture allocate the page tables for a split
-      mm/pageattr: derive direct map counter updates from the level sizes
-      s390/boot: map the identity map with 4K pages for debug_pagealloc
-      s390: remove set_memory_rwnx()
-      s390: use the generic CPA core
-      mm/pageattr: let an architecture bracket the set_memory() entry points
-      arm64: mm: allocate page tables in the callers of split_p{mu}d()
-      arm64: use the generic CPA core
-      arm64: let the generic CPA core split large mappings
-      arm64: count the mappings of the linear map
-      arch, mm: enable the generic CPA core with ARCH_HAS_SET_MEMORY
-      mm/pageattr: document CPA core and the architecture hooks
-
- arch/arm/include/asm/set_memory.h       |    6 +-
- arch/arm/mm/pageattr.c                  |   96 ++-
- arch/arm64/include/asm/mmu.h            |    3 -
- arch/arm64/include/asm/pageattr.h       |   23 +
- arch/arm64/include/asm/set_memory.h     |    2 -
- arch/arm64/mm/init.c                    |    3 -
- arch/arm64/mm/mmu.c                     |  310 +++-----
- arch/arm64/mm/pageattr.c                |  390 +++++-----
- arch/loongarch/Kconfig                  |    1 -
- arch/loongarch/include/asm/set_memory.h |   12 +-
- arch/loongarch/mm/pageattr.c            |  215 +-----
- arch/loongarch/power/hibernate.c        |    6 +-
- arch/powerpc/include/asm/set_memory.h   |   46 +-
- arch/powerpc/mm/pageattr.c              |  160 ++--
- arch/riscv/include/asm/pageattr.h       |   17 +
- arch/riscv/include/asm/pgtable.h        |   10 +-
- arch/riscv/include/asm/set_memory.h     |   10 +-
- arch/riscv/kernel/setup.c               |    6 +-
- arch/riscv/mm/init.c                    |   24 +-
- arch/riscv/mm/pageattr.c                |  459 ++++--------
- arch/s390/boot/boot.h                   |    1 +
- arch/s390/boot/ipl_parm.c               |   64 +-
- arch/s390/boot/string.c                 |    9 +
- arch/s390/boot/vmem.c                   |    3 +-
- arch/s390/include/asm/pageattr.h        |   21 +
- arch/s390/include/asm/set_memory.h      |   56 +-
- arch/s390/mm/dump_pagetables.c          |    2 -
- arch/s390/mm/init.c                     |   15 +
- arch/s390/mm/pageattr.c                 |  496 ++++++-------
- arch/s390/mm/vmem.c                     |   12 +-
- arch/x86/Kconfig                        |    8 -
- arch/x86/include/asm/pageattr.h         |   33 +
- arch/x86/include/asm/pgtable_types.h    |    6 -
- arch/x86/include/asm/set_memory.h       |    5 -
- arch/x86/mm/init_32.c                   |    5 +-
- arch/x86/mm/init_64.c                   |   15 +-
- arch/x86/mm/pat/set_memory.c            | 1220 +++++++++----------------------
- include/asm-generic/Kbuild              |    1 +
- include/asm-generic/pageattr.h          |    5 +
- include/asm-generic/set_memory.h        |   11 +
- include/linux/pageattr.h                |  459 ++++++++++++
- include/linux/pgtable.h                 |   26 +
- include/linux/vm_event_item.h           |    2 +-
- mm/Kconfig                              |    3 +
- mm/Kconfig.debug                        |    8 +
- mm/Makefile                             |    1 +
- mm/pageattr.c                           |  684 +++++++++++++++++
- mm/vmstat.c                             |    2 +-
- 48 files changed, 2614 insertions(+), 2358 deletions(-)
----
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
-change-id: 20260721-generic-set-memory-v0-1-06547a00b2ae
-prerequisite-change-id: 20260916-hibernation-7603b86eb981:v2
-prerequisite-patch-id: b1bb2d4e1a2f542e3e8d0741a30a780722a350b0
-prerequisite-patch-id: da4fcef1a9df5f657cadfccf591d6bbb45a197f4
-prerequisite-patch-id: 6eab635bf8bd5b2ad0b40464fc7f595d7929769a
-prerequisite-patch-id: 74ad7bb09568c6b155058869cddbca01f37ee377
-prerequisite-patch-id: 319fe0988123448585901a69c901cd6381744ae7
-prerequisite-change-id: 20261112-fixes-x86-0c15b6adc212:v1
-prerequisite-patch-id: 00540235ba71e3d6f77190958aed21af53e3231e
-prerequisite-patch-id: 4c8347b413897acfb979f48814bd0a98887881cb
-prerequisite-patch-id: 3432c685702db763dc8ace31c0ba56e9e357c97d
-prerequisite-patch-id: 0b22ccc8b6b84cf68d83eb4322196cc51b22310e
-prerequisite-patch-id: 0e2e3eb56ec4e967db60bc464e42cdcb4a132571
-prerequisite-patch-id: f35d21bc18f51b0ca3fc3c80f3fb8901ce207f98
-prerequisite-patch-id: b1825b2c583747b97cfee853f231ff91fbbb1e64
-prerequisite-patch-id: c972a0aef660b2fc348ad08acfd290406b565932
-prerequisite-patch-id: 95489ac4f31f34a8b874ca96c6145c6613f9b612
-prerequisite-change-id: 20261112-fixes-riscv-3e48788f58fe:v2
-prerequisite-patch-id: 99056c0e4f9faa899a17b9cdc913796f60d848d5
-prerequisite-patch-id: cc95791ee9f36ddcf041d6c0dd9ddd655ed38718
-prerequisite-change-id: 20261117-fixes-s390-82943938787a:v1
-prerequisite-patch-id: f93f6904a8052e1e5e504e055e886363846b7881
-
---
-Sincerely yours,
-Mike.
+-- 
+2.53.0
 
 
