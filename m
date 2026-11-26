@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAD9606A684
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294C9606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QJo5w1j0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dcA/LQZJ
 Received: by kanga.kvack.org (Postfix)
-	id 4A7306B05E0; Thu, 26 Nov 2026 06:18:16 -0500 (EST)
+	id 4F4F36B05E1; Thu, 26 Nov 2026 06:18:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45E8E6B05E1; Thu, 26 Nov 2026 06:18:16 -0500 (EST)
+	id 4CC576B05E2; Thu, 26 Nov 2026 06:18:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36D6F6B05E2; Thu, 26 Nov 2026 06:18:16 -0500 (EST)
+	id 3E20C6B05E3; Thu, 26 Nov 2026 06:18:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B7BA86B05E0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:18:15 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 52363A03D3
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:18:15 +0000 (UTC)
-X-FDA: 85477021350.02.94A5438
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CC5826B05E1
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:18:24 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A69F403DB
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:18:24 +0000 (UTC)
+X-FDA: 85477021728.04.E1F6BEF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9BB3D40004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:18:13 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJo5w1j0;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id CAFF41C000E
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:18:22 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dcA/LQZJ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691893;
-	b=RTgez67nqmWIAL1mAiCJM4beY7Q8B/Y5XKFsjmbZQCe0teGq4m4Xh7nz16N3IT+G6wCpVq
-	TuJEhig21tqKHXKCKIF78Jm6OQ/MjkTpJW1ABP5ujtShJvaxYcd95ozD/s2b9K94fFXFg9
-	v1FI60KY3iQy/GdC3JbosW/6/MZ00fE=
+	t=1795691903;
+	b=eL+bAYq+6ucxVFhBbKWp7xnMzm+nJyihu8YgRMbdq+Qh7L8t6rnjJZUdG9lTI31wuugIn5
+	Q2ogZb4Gmpz+2CvjgmqyUeeSARdrZDKLzHtvRfdnAME2FZI6rc1tHOgVGh1d3j38GNgKSM
+	s3ZUcs07o6y86keEz48tCt/rRu2C/2A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691893;
+	s=arc-20220608; t=1795691903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nfYyn85pUjMYKHSpG7Nmwds+Fo4pM3ejdYfJznX5ccQ=;
-	b=oHDV8a7OF0CMxFSRF6M9MlOErkwTwJiVDgaS4uo313Uc5C1vrUqhKwd6Ey15QvVuO06tLt
-	86Xob7KB8qFK/asiXGUc+AcosMtEbh+AbfhQOZNQDYoAiHS34CYJl2WhJ12YPX8u/saO1j
-	2GRCPATdu7DSmZMx0HiZ2Zr1wY53cvk=
+	bh=ZILZfKisda6VydMd2eX+gp7jxSdYsZR8fHOcYz6Cqew=;
+	b=s5dd0K5NYptFYymSiHZLmJkkCsy2FvTINbcd5L1pa3r+EtG7HXYSP5pTyRULY4sITNiEOX
+	sCoB6zW1Wz9qwnTqbNdA1finFZstr+g0RiBZ8Z7ZpIUEEvHiRFP50xmDP3yspkbMxj7JqN
+	0tdzVaUg1wG93yMU7P83fAh1aTxv5FM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJo5w1j0;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dcA/LQZJ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F26CB419AF;
-	Thu, 26 Nov 2026 11:18:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AE21F000EB;
-	Thu, 26 Nov 2026 11:18:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2FB18433ED;
+	Thu, 26 Nov 2026 11:18:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612A11F000EB;
+	Thu, 26 Nov 2026 11:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691892;
-	bh=nfYyn85pUjMYKHSpG7Nmwds+Fo4pM3ejdYfJznX5ccQ=;
+	s=k20260515; t=1795691901;
+	bh=ZILZfKisda6VydMd2eX+gp7jxSdYsZR8fHOcYz6Cqew=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=QJo5w1j0YNGG/MVA+7N155ZqRi61HNhq+idbAR7dzgepcTaSSSN+xAPQr/B4U+LMp
-	 BLLyXQGrlkuNmkAqtR7dz8Vof5IMsXtBsjhDvz09x6vkSHb44KisyiT2zc91b6fKiF
-	 epVtUi6raw9GLDuK3tUSzLuNl8A3gKsBJnlMXAnCd5iSLbGjpGFwIfl2Mdc53Fho3V
-	 0IC1AcfgPDA4Pw6cojyD+hOhrBG/fRcdxuqntusHbWpnhLYrajjU5tuNGDAfZv1Wgl
-	 TYwLJc1rd7vxclPEfcAiKd46fTu/XAJzcoKbGilWnJ5MpVt4qvcl71XSrrSDsRt/Rs
-	 5JDZxjrcdb/1g==
+	b=dcA/LQZJNTRxAXYiSO3ecetRk8UeUJ6G6eowyblPb3SceghWJPlB47dy81dO3ekpo
+	 8zDVpbCPPwxS+gP2aWUtngwOLnVGrkWp3lbRZc00nMGGvENyrC+LUZsSkDTGn2a/Df
+	 Ykat0AJi7F5ysyrmoP735e9b3JtJOJkyBZb/r31kMWVXdrscOhgdsETzfdXnYLy3Oa
+	 9MLDBL0FuPwbh5GLhPshgP2x2ZO3LV6BIDUNOwy6XdbqpNWoRFGlguk+SsxHNgl76s
+	 ing/lUECgznOONlhV/K97ITTVUhM1RAQes1Mo/It0ScWnHTtRza5jJ7IGIDCXcwDNm
+	 NDSCBoaFdVjlw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:36 +0200
-Subject: [PATCH RFC v2 23/54] x86/mm/pat: allocate the page tables for a
- split by level
+Date: Thu, 26 Nov 2026 13:14:37 +0200
+Subject: [PATCH RFC v2 24/54] x86/mm/pat: detect unchanged mappings by
+ comparing protections
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-23-723f1e33c3d8@kernel.org>
+Message-Id: <20261126-generic-set-memory-v0-1-v2-24-723f1e33c3d8@kernel.org>
 References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 To: linux-mm@kvack.org
@@ -96,19 +96,19 @@ Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9BB3D40004
-X-Rspam-User:
-X-Stat-Signature: u8jpizwsjrwa8ohkt7mg4pgb4enkn7ie
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CAFF41C000E
+X-Stat-Signature: 3hhps88dndkmh47xc4u41pieafhnrgq9
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795691893-449606
-X-HE-Meta: U2FsdGVkX19s0uV8sB+SMKKSr1VYYXBAxe5/LVj+fri7YLuiFB4qa7Hsx9w7ejpFP15VWUtRvAmlwKSLpfHWN2BN5ipWAoGJFrOwlNdNgWLcvX63mPPpZyU3W6eo0M8oDzHt2xYVZHGCm9fcMHJg8EIRbnpMlm65HxXgZqi2gbhMrmd5JI6u79PTB3htJ36UG6x4UaFjVeGKEF1oE8OMX8LIizebrn8xQd8tyy64JOcVv+p4+v/pcTzLZr807Qu2FfUqZUalpC21Xda4koR00jVn/F2f9VnXYI1km2oH6xZsL+uZCWNWji5Uug/ZJRqLSUGwFcREC7omuQ5hzf/RjHvyma2+5FMesMo4dwN08vrGGHaAuscFMnP+zy4ixUTc0b9h4rCCCU2VHCZKZFn+6z+JBRJ1AUs1sm4NKrd1SMMmL5sepqdDPVc0xQtSzTzIvTsAtaOAT/YBMLmKloAyAWen0HyFQ/zJv+Yr6nw/Lot/QRwbqEFuBBZMsgFtYeRt8at7ck5qapmluGp8VhPD9aYgTMtEuvorF7Y4qI3T5lyX4CNu7jhKdi9N+dWxgimSNNNkPlo9Tws/hfZoq1XcJ/QOLx6FJ7TpKsi0WTtdCrnhaO1ibfrNgz+7STvcbveOicvM9fl6mWbPUZmyuIZ3BF/XQnqmt0Z6+WcHkztjFnuQvo/w7bZT9482JzDk7L+RLViv3Jw/5CbThxo0kBjKvwtMEe5mUOVXP/uiTqNscuBLSUX4XzvAdhB1yvmmusTi36k/suYTaYZUwy7Et2+VGhUK+uxkU6bOdKUn21gkZtfcj5OHvJJb3pjq/8VMPS2pUkg5Z7QUvQ3tC5Atzr3sh7dbCFNf9cPqupllI4lwyUDsY7yyrxZMrfyHXVioHrV23CN+5EaHI2yq4ot1Wr/0vi5M7WOOdnYucVrfnrQQriMvfHhU3a/P8tAnpaMv/LwZprg4c1w/ELs99oTIWA9
- zlsL0Dot
- S+ns4K9SyrWwxe19GwHxSzcjYUzpuY098H0eU5l6JMubM31q70vYPTiop95aMu/O7UQzaHYd2gVtX4tq8resKiVC7ayV371EFxaiicIk7QcWeQEdq2lbqTcGxRoUY/F6zipudKICZczOeyDcTA7OBy+5dyPPmo4YHWoJHMuaz/dndJroFKpi2G0vOIudd4xpJ9noAqHHNgu1Zyb4NwVtVdrnAmitxbIr+qX6GnLaBVTh4DOnoFbN5G9B+X3PRVMWIPhIUrmHxKjBY74wC00v4XF1J9ZyD0Pe9CNEI7dGGKOu7UlEOmZgwG75Hop3MZ11dJcuQ/29L9zEGp8Ww7cRt9FD7mCZeCUEZFAeKtWn0b3In6zq9MmC6ibiUIUUkv5p2n0k6gjkZpNV14Kad9KO365hhdjrkNVUerYWL7ExtEl07Emid+m+/W80waTssY19wr3aEyZ8sdfWKVqqK+joaghBO1J0a1BylOo9yxzv2RjLImcP0vc95QnIZVOd9knLES8J7
+X-Rspam-User:
+X-HE-Tag: 1795691902-131366
+X-HE-Meta: U2FsdGVkX19K6501nGpMhwIuJ1xxyw06Mg63wRRdI+uTjkKgwTvojMBNmZcHL93/r80LdjCjH/BhcwgRf40/e563boL9FdrydKv5oeD+5wvYZV34IIURZTJMGOvxBRSQHp8P8GmnPhRyDnbdxuhd/+vHaMIsdioq3Sis/5icU+ARTpJpqmBNHpXXFQKBprALQl/DHCdKQPpzwsrOYm5dCkedRYWTcbYRfiNjX+54hHHv2DHzhEuVC2RvGYeFu6JzbFGbTWr4Iz1ZQQN/TxjR/AGzZsEWwUFsa54DASfgMUK6ja7nw25+02gyUxV0ehF4/ei5kMZHnaycdw8DPP36AdYuQcyAK2JVdZjgIJmQotOc87bluMBY+9DDryND1wSzXoKhmssRMKYW5ML/CoeQbdLfJlTTE9PZDghwUYptHOMHjsd6o93tE7sLKz7gcYakCn9TabHtGA//IK0+ix7XNwurmIaDM8vYcK8i6QI467Oatuh4YUExJSAhNg5FiLbovvKmjkG9dUxKMkUWFz9LbFPu6kieoW8btPOf7jBnjOx4yMFU48Rnf4rgYn8ztnx+knLAy7VS0rZptIG7O61o2DmOxV3EtxNItF1nkqYM88NJcn6Hzxqw+Prq54onHXZv6CjUHGDQyEBp2R8M0jRf/n76EMluvUjDODEIoTy4BSjaORpqSmXIjdgPYTuqryN+WY6MKB2KUgcBrFtaPOJ1DhmisuD/qt1uod1+bXumxIOM45qu4xgwMTh7Ud/XPXtjg1qJR7eaRSOmT7/e+Zq8EpNcTP3WcSrHeuolufZR9hVbOrzi2kR4lsAziLLzF3prITnGUBOyrUgZtpON1NwT8jPuq9jgbmVoi33/eWAcMBV0H1nQAcPwFfT2ZV6AvStPpvN5TVDMyMi1MiOAkUmjPfrNbGYZ06GFaphLTtxwkZBOzuwkSMWXl3b9N/Cc0Z4RbiD0UsvehOC5DI7pL23
+ ihxjXOfP
+ vG8KfpmEcsO/TEzNVZpT768xyluTx5wBQbqCJyCN8+jxPnUiweBw2UT3QDyNsuBkPWgDClvIlGV8lVu6wpG1jm88uhijktZe3qMKdTxjwbK3Vc4pGCmhD0RF/pidEzyyQ1ZNyxGU+fiLHuimQg2K2Xc86PKpVczPsQlZ7rI/Y5NNpzOF+OnrExKjjJKXeL9gOq9ZmjfHZMrR4BBKPVxnA/KrVGujIVm2j5Y6BhMGSFnv6at7JQddHRF6WqpYb7qmOBO2cmpN5ERzgsJxIOoNwNS7nJAXSsKxa7jf/xXHreymIvQyUm41VIPgLcLuSjyEdSMb/N0GCdU8Dz2OqQUmYnnIVA3RD7s8U/Amy2SwJ44Xbww8wL9pmswwGuAd3FIjNg4801h4k+lNZCPDTgc8dHrRlnV1MRG8c3sTHulCG+xP9Yu+HLyj4+NSlF702QZ81S/Hc9DEJAFzYENBrUSiU1SMKtGFWUyTE5tJj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,98 +117,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-split_large_page() allocates the page table for a split with
-pte_alloc_one_kernel() regardless of the level it splits. A PMD table that
-replaces a PUD is allocated and announced to paravirt as a PTE table.
+CPA decides whether a mapping changes by encoding the new page table entry
+and comparing it with the existing one.
 
-While in practice this only matters for the accounting of page table pages,
-having proper allocation helpers not only makes that accounting right but
-will allow architectures to override page table allocation methods when
-core CPA logic moves to the generic code.
+It would be suboptimal to encode actual entries in the generic code for
+every comparison of the existing, requested and new protections, as every
+architecture would need one more out-of-line hook for it.
 
-Add helpers to allocate and free page tables with the appropriate function:
-pte_alloc_one_kernel() for a table that replaces PMD and pmd_alloc_one()
-for a table that replaces PUD.
+cpa_leaf by definition has the decoded protection which can be used in
+comparisons.
 
-Use paravirt_alloc_pmd() to notify PV guests about the new page table that
-replaces a PUD.
+Compare the new protection with the decoded one and encode only the page
+table entries that are written, as the last step.
+
+Encoding masks out the bits the CPU does not support and _PAGE_GLOBAL bit
+of a non-present entry, comparing protections does not. set_memory_global()
+on a CPU without PGE or on a non-present page now rewrites the PTEs with
+the same value and flushes the TLB. Its only caller changes the kernel
+text, which is always present, once at boot.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index cb503e41340b..0a2d19064f23 100644
+index 0a2d19064f23..f4d3e2d9c3c9 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -1215,7 +1215,10 @@ __split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf, pte_t *pbase)
- 	if (level != PGTABLE_LEVEL_PMD && level != PGTABLE_LEVEL_PUD)
- 		return -EINVAL;
+@@ -1917,26 +1917,18 @@ static int __change_page_attr(struct cpa_data *cpa)
+ 		return __cpa_process_fault(cpa, address);
  
--	paravirt_alloc_pte(&init_mm, page_to_pfn(base));
-+	if (level == PGTABLE_LEVEL_PMD)
-+		paravirt_alloc_pte(&init_mm, page_to_pfn(base));
-+	else
-+		paravirt_alloc_pmd(&init_mm, page_to_pfn(base));
+ 	if (leaf.level == PGTABLE_LEVEL_PTE) {
+-		pte_t old_pte = *leaf.kpte;
+ 		pgprot_t new_prot;
+ 		unsigned long pfn = leaf.pfn;
+-		pte_t new_pte;
  
- 	pfninc = pgtable_level_size(level - 1) >> PAGE_SHIFT;
- 	for (i = 0; i < PTRS_PER_PTE; i++, pfn += pfninc)
-@@ -1257,18 +1260,34 @@ __split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf, pte_t *pbase)
- 	return 0;
- }
- 
-+static void *cpa_alloc_pgtable(struct cpa_leaf *leaf)
-+{
-+	if (leaf->level == PGTABLE_LEVEL_PMD)
-+		return pte_alloc_one_kernel(&init_mm);
-+
-+	return pmd_alloc_one(&init_mm, leaf->addr);
-+}
-+
-+static void cpa_free_pgtable(struct cpa_leaf *leaf, void *table)
-+{
-+	if (leaf->level == PGTABLE_LEVEL_PMD)
-+		pte_free_kernel(&init_mm, table);
-+	else
-+		pmd_free(&init_mm, table);
-+}
-+
- static int split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf)
- {
- 	unsigned long address = __cpa_addr(cpa, cpa->curpage);
- 	pte_t *kpte = leaf->kpte;
- 	struct cpa_leaf tmp;
--	pte_t *pte;
-+	void *table;
- 	int ret = 0;
- 
- 	spin_unlock(&cpa_lock);
--	pte = pte_alloc_one_kernel(&init_mm);
-+	table = cpa_alloc_pgtable(leaf);
- 	spin_lock(&cpa_lock);
--	if (!pte)
-+	if (!table)
- 		return -ENOMEM;
- 
- 	/*
-@@ -1279,14 +1298,14 @@ static int split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf)
- 		goto out;
- 	*leaf = tmp;
- 
--	ret = __split_large_page(cpa, leaf, pte);
-+	ret = __split_large_page(cpa, leaf, table);
- 	if (ret)
- 		goto out;
- 
- 	return 0;
- 
- out:
--	pte_free_kernel(&init_mm, pte);
-+	cpa_free_pgtable(leaf, table);
- 	return ret;
- }
- 
+ 		cpa_inc_pte_install();
+ 		new_prot = cpa_new_prot(cpa, &leaf);
+-
+-		/*
+-		 * We need to keep the pfn from the existing PTE,
+-		 * after all we're only going to change its attributes
+-		 * not the memory it points to
+-		 */
+-		new_pte = cpa_pte(leaf.level, pfn, new_prot);
+ 		cpa->pfn = pfn;
+ 		/*
+ 		 * Do we really change anything ?
+ 		 */
+-		if (pte_val(old_pte) != pte_val(new_pte)) {
+-			set_pte_atomic(leaf.kpte, new_pte);
++		if (pgprot_val(new_prot) != pgprot_val(leaf.prot)) {
++			set_pte_atomic(leaf.kpte,
++				       cpa_pte(leaf.level, pfn, new_prot));
+ 			cpa->state |= CPA_ST_FLUSHTLB;
+ 		}
+ 		cpa->numpages = 1;
 
 -- 
 2.53.0
