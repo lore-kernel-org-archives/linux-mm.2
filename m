@@ -1,146 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D9A606A680
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC005606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YQX4Vlfz
 Received: by kanga.kvack.org (Postfix)
-	id 8A2AF6B05F3; Thu, 26 Nov 2026 06:20:03 -0500 (EST)
+	id 3241E6B05F4; Thu, 26 Nov 2026 06:20:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82D776B05F4; Thu, 26 Nov 2026 06:20:03 -0500 (EST)
+	id 2FC396B05F5; Thu, 26 Nov 2026 06:20:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 741506B05F5; Thu, 26 Nov 2026 06:20:03 -0500 (EST)
+	id 2120D6B05F6; Thu, 26 Nov 2026 06:20:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E7266B05F3
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:20:03 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C1FEC0278
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:20:02 +0000 (UTC)
-X-FDA: 85477025844.24.35F4177
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 27FCCA000B
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:19:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ECD5F6B05F4
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:20:09 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68BE41403E9
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:20:09 +0000 (UTC)
+X-FDA: 85477026138.05.AC79C63
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CF4B38000B
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:20:07 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YQX4Vlfz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795692000;
-	b=WKUs8Duqole+6v5ZK1T/Lbok9srYFhrT/lEbzo3BVkCtUGeoKx8Rokn2IA8+kkJ60ihoyg
-	/IJrNGFnlTa/Uy1FFaBSP30MxLpc6R9KbZ5YpSwfkUkVh4JuLIQ7e117wTUSGVqD7xS8V3
-	Y0nGFZR43ya9fYmmZZnG8O/yfwg4XFc=
+	t=1795692007;
+	b=3SfaI+UGSS5hm3vxo7N1tsdFKtXdWTPTKHxdsBHAmUj6ImagwmwKpj78lHOvxqHhf3qv34
+	gxgW01UT9yyUBDTcHrmTrjuRc3HCDEWoMhDSE16Rvr+1QU0Umso0ByVhxgeqeSw8ob3Jwk
+	MHJp9Ng5IVlBJxNyP4d+60NTekU24n4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795692000;
+	s=arc-20220608; t=1795692007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oy20coKOo4RVez7QDzR5SPGemys71Bilu2eltbE7agM=;
-	b=OMdzeYHzBzbgghosEJEClOJRmBRw5mi47GbZVJayJl35YYI77vGDwIIfDx7fcWkKeDMSq5
-	bpDbllKhQwVsd/jI9XxmIutBc+fT1lM+FuD+lhRxaJ3RdXkBV0SJsMxVItZGYoenPLa/lz
-	LIczPgSjEmR0QdDNQP9upDHl2wJcRwU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TcovJ7fKpwSIau6n7YhDhlDaqqn2o0CpIonYbQhgs1Q=;
+	b=EeI/PNphXbTVypm9503VYpaHWzU/sEGsO8WjjfF+UYIVuGgdPcgXYReiIxwVCvXUAfLwQA
+	dMRdPesC/xELbo3doKTXsSUOA2TnIw7Nyu9Mf4TVv101jcMZVP8t3FXPRe07lUgy6rfSB4
+	o9CuriY4rGGj3diFwH0fCmTapKVkeps=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
-X-UUID: 49a4ca20e98b11f19a56ed5b684f684d-20261126
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_TXT, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_MAILER_MTBG, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
-	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS
-	HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED
-	IP_UNFAMILIAR, SRC_UNFAMILIAR, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD_SPF, CIE_UNKNOWN, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:5164b479-3906-4282-8c19-e641c61d65a5,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:5164b479-3906-4282-8c19-e641c61d65a5,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:0a6e950a75cdc679f99637ba237caaba,BulkI
-	D:26112610033528PJVL0O,BulkQuantity:4,SF:10|38|64|66|78|80|81|82|83|102|12
-	7|153|841|865|898,TC:nil,Content:0|15|52|99,EDM:-3,IP:-2,URL:0,File:nil,RT
-	:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:
-	0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 49a4ca20e98b11f19a56ed5b684f684d-20261126
-X-User: lihongfu@kylinos.cn
-Received: from [192.168.43.7] [(114.246.238.190)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 2135561116; Thu, 26 Nov 2026 19:19:47 +0800
-Message-ID: <a7bb101b-e9d9-4e03-9854-33ccc6d6eda9@kylinos.cn>
-Date: Thu, 26 Nov 2026 19:19:41 +0800
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YQX4Vlfz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F5BF630FE;
+	Thu, 26 Nov 2026 11:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291EB1F0089E;
+	Thu, 26 Nov 2026 11:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795692006;
+	bh=TcovJ7fKpwSIau6n7YhDhlDaqqn2o0CpIonYbQhgs1Q=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=YQX4Vlfzncbu4ByMDCKIDOkYYuSMz8GiefAX4fx/EY+K2NBxvpNvsiNjKehGukcK3
+	 lYy3m1CGX662GRgnQjDUdbqu7M4DZmesh3UjBMBBpadd+prI19r4f7zsZRkeynMYjI
+	 xsqqk0eHRRZvHrMs/B6xCL2yudop9ANQuRk+Uwk6lNeuZmstf+gkjHcxLeG0C07xGd
+	 Jso+S6uzBcWs9Srk4u6wHwIrfto5nZZkQZ2G7x16qj3IaMAxz77wxlvKOemicCLn+0
+	 HxT7UKA95ELqMw6kAI+RO/k1BXqNlkMdNJ9XqukHBM6bTLzSCsIcXL/BxoHIhzTAYJ
+	 imaUFPSKUcSjA==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Thu, 26 Nov 2026 13:14:48 +0200
+Subject: [PATCH RFC v2 35/54] LoongArch: drop the huge page handling from
+ set_memory()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/21] mm/hugetlb: fix truncated copy result in
- UFFDIO_COPY
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jinmeng Zhou <jinmengzhou22@gmail.com>, Hongfu Li <lihongfu@kylinos.cn>,
- Andrea Arcangeli <aarcange@redhat.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Dave Airlie
- <airlied@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Mike Rapoport <rppt@kernel.org>,
- Mel Gorman <mel@csn.ul.ie>, Dave McCracken <dave.mccracken@oracle.com>,
- Andy Whitcroft <apw@shadowen.org>, Adam Litke <agl@us.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
- Lance Yang <lance.yang@linux.dev>, James Houghton <jthoughton@google.com>,
- Yang Shi <shy828301@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
- Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Matthew Brost <matthew.brost@intel.com>, Byungchul Park <byungchul@sk.com>,
- Alistair Popple <apopple@nvidia.com>, Wanpeng Li
- <liwanp@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
- Kenneth W Chen <kenneth.w.chen@intel.com>, Hugh Dickins <hugh@veritas.com>,
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
- Joern Engel <joern@logfs.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Michal Hocko <mhocko@suse.cz>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
- KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Sasha Levin <sasha.levin@oracle.com>, Guillaume Morin
- <guillaume@morinfr.org>, Wanpeng Li <liwp.linux@gmail.com>
-Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org,
- Hongfu Li <hongfu.li@linux.dev>
-References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
- <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
-From: Hongfu Li <lihongfu@kylinos.cn>
-In-Reply-To: <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 27FCCA000B
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261126-generic-set-memory-v0-1-v2-35-723f1e33c3d8@kernel.org>
+References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
+In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
+To: linux-mm@kvack.org
+Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Borislav Petkov <bp@alien8.de>, Brendan Jackman <brendan.jackman@linux.dev>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Ingo Molnar <mingo@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, 
+ Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
+X-Mailer: b4 0.16.1-dev
+X-Stat-Signature: h44jdrbpyahjuhpxqx85r66kqabidbqm
+X-Rspamd-Queue-Id: CF4B38000B
 X-Rspam-User:
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: szga3sfnke7ih1oyntsijncupu56a7w8
-X-HE-Tag: 1795691997-483330
-X-HE-Meta: U2FsdGVkX1+ucZi7U8sRTKfPWgVei8NB3NlSFtfJZEMh01G6rvL7ZGlJ+ww5E0uhuOyTXBfBgUH1AACRXQb/hSLnb/YuEQSIj6As6DkA79wu4XcLvmLq/NXVGJhhZbZpcuhA1w+XAt4tAgg8u4KTClKamsJ/RiLB4cgGjccuKCsjervsPA7idjIuoatFYqDwEPkXCdZxVUr9rgkk7oYPTgrFDoErvS0xix1I7si2G0jvzazZslVHCr4Oszxuw5g4ghgmUlraxIkFcrUCpPmCXXN3/DWjy8/ooox9UF/2BDK5TuqlI3RNuPzMwaE8+Rt2tTf1mlk8F4RScLAEI7KEb1l1qoKUs5oVpCnpUr8dniWpEFFBe8UnFwRj3AWP4J//SoQmP7kx/PtAPxuLfrwl7MzTlCqrfigGJM8g+jZhfstwdcV2F+6/iQ+ZTH1mLeKK+PZbFMWdF0jnrpFc7HTOidk0GHM9ZCz90GFmTwqs/Z8xrlwMeA2Dw/CGsZ4gGwCr3n0iK75Toq4dUvgmZwrd9fEnFNvZggEco2gv/lGwitcLmk4gJjVlae5ssgs8x9PmN/C3vqBb/+mfqW6lMDsCkBMJcYjTcoX571aFZb3DDX86KDtbY9/nREEvFIotCH88OLFbrgn11xCa8xj5vEcT/Hh8kD7wkZ4pYCHBM2/SLxud8S65FODaviaEsVKotDzpY4kUNJyrTraiFyAwMBuxoPp4Cl5i8z1RVftqTelFvLGTtzws9lfWqrnqEgFB2fE+Ch8LctogYfNa/kJao9NulO2FLIvHNXx8pK6eraxfLQk8KkCvjNK/7irLZmHAiMO7aFDSH2VHzi/MfieBU7C4T18X+Mn7yyIXIzhXjgwI7fsdONZGU7Im6Gp4TOd/kNBXJIj0+gNjCrSo7wu8K5fuOUbEuiA+FoWZm1k+YB3/NdRwa1FPjsYkBkSFKRoQjHKWUr3GN+UpbdK/VYOv0kE
- 7ogeaOPh
- GpGYSDiwTwQzWd6HMI2nKBMq4T32vvN9WjDDoS732i6I5TrbQDVYO9RP8q7niVR6BgPkdsvju9aJkiUBFzqtBGLtbFdc7uuMUkQ9/l+IxepoKdVJLYMQzJY0jrEgMKUKzm8nlugJkVKNh2LPmSDF1ljnS/e6wIA6vV/U5iCqW8sIXkSyGBx2lIu2Y511ocO2mm0HjFO2Kie9Pouyb3BvHjkcF4xFiWT10INTrjOuOFP/vNjoHDO4j+SNxKYrQwbUIEuhvUgj1lHUnqq9DF4LQyrLuGXWVKRYfFR5RSI0g3YTt/YFONGBvLfHRHa7Zs6jeTTBe
+X-Rspamd-Server: rspam03
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795692007-857358
+X-HE-Meta: U2FsdGVkX1/p1movFybOatR6WuwgMbbn8mFc0Kl2TkG2iHd5nRAO/5+lc8UyMZucGFHnYL9f2iDRbHYMBDbTOwIB9TfRjGGkGTrHp1YQNLTM0pyIOK+KO/TZNeyUYD4GrKEJDMab6ylueL3AzMa0Z1p8Vu4zUvW2+rGQpUMnx5+ta3Wd+cTd7c5yphXxrMDyKaKOnJXfXOi33hWFDQHI/FuheP5WWtAwYqqgBaitXpFcQfLK7rjTyK7llWdtcQqodwak2LZu4UEPpprQvOkCC5TJGAxjjTblaHsdB281ckCkd/1LovWzZfIDtJBzI/f1Vx+Y8GhSmIc6Aop/mrvwIEzF5UzDqE+OBMW2Fc6WswspZJsaj9MJPtF4cGskw4xWk1C8f7WkbvadopZDRnXPGkoo051ia4AWRa3S3XjRpIa7Uz7m6GBArAikrqsvJ2vfER8W/667CJRbKqqEMdAi3IIgR7HOD88mDfwBLYe7dgPKyUBk9tjejpfKEQBTOgGY4k0hkzlmeo392oPbDTvd5sMc5L1Sr9pdPFDu2PQ+CTY2PILqxuzJUEXIXhLAzRX1IFo7YABrd9LWXrn2tHNMundLxlv8gGsaWT951VeIH3EY7o+bvAl+uuGYK8nkfugLSxwMq/606qnLc51gWowUNbGJNM/xqEFfLJKTvw8xfFtday6rJ0TA5DY7uLc9Cu9p7ucey8TYmOuvJFyMwhGXG2CCLwde5xnc67/eX0GsXPuIE753BN4bg4t9Cqvk+z2/74ARZWfL23dkptTdA4lmTWkDY2FGuCHmmrLCCfpcMk92WaNFNOKsE73fkmYxwkDtmpblUDX6uhArJXh3iX/n3za3ltrttIDaytEqKI8QzPFjUnakRR4VzSfRD9W9S+NlRSZ1pa4r4Y838IRKNAIljVU2kYvrqjy7typckD6GFv6AmWD/5HzpMSyDaPRpBT00cvWVih9Qnl8u8kcmLVH
+ k4FZwHiF
+ isWOoBc1vGHaT6MZqmb66vkNPDFeGDIing4nk+g1y2W+uUSU81oL21NtP7X3ICeY+QjPLCaFNZbZdXZMW0HKSbtPpl1N+kvb7EGigJ39x5GfFmwTZTbk0aCnt26KXt4sGDeHi6+7VpY4cvfXXlelDeXScdsaOQSEeim8fwqurhzwzr/U+J1nrBfNpuv+JYWe488Awh21nHAUSQiNt7SlOPxkH9dgQQFRrPapHBL/a7pQcs3LZ2RtxoamQqVQaLiS+3bKo+AEdRVUYE1zlHy6Y/rHH0uC48nZT8huFAJSC8lbYx8ZZgTG4Ab5XYf5/kQ5Aja5QGYWxn6pcKz3qPgpLtD2kMqTmXBTm5MWkoyeduv5kULqqEPLqeUtIZC7X3a4bysKEMJq693uDzmc5BDLP7pbBLIxC8p/Vqa7rhiLvDZnOgcBCsmVmxRyTbEkALyHfZfdeZg7QXk96nNxuV0JNLncu9rA71IS6f9CSRXFIhpYhb4jm59OuItdte5bTjLFBus5MOPvGqDsok4k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,54 +117,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+set_memory() never finds a huge mapping on LoongArch.
 
-在 11/26/26 06:33, David Hildenbrand (Arm) 写道:
-> From: Chris Mason <mason@kernel.org>
->
-> Folios that span more bytes than can fit into an unsigned integer (e.g.,
-> 16 GiB folios on arm64) are problematic with UFFDIO_COPY: the result
-> from copy_folio_from_user() can be truncated, possibly indicating
-> success instead of an error.
->
-> We will then continue with the folio that has stale data, and make it
-> accessible to user space.
->
-> For example, if copy_folio_from_user() fails such that the number of
-> bytes not copied is a multiple of 4 GiB, we'll get an effective ret ==
-> 0.
->
-> Let's fix it by simply testing the return value directly.
->
-> This has medium urgency, as it's an information leak.
->
-> Fixes: 8fb5debc5fcd ("userfaultfd: hugetlbfs: add hugetlb_mcopy_atomic_pte for userfaultfd support")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: cleanup code and description ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+The direct map and the kernel image are in the direct mapping windows,
+which have no page tables, and set_memory() skips them.
 
-Reviewed-by: Hongfu Li <lihongfu@kylinos.cn>
+Everything in the vmalloc area is mapped with base pages, because LoongArch
+selects neither HAVE_ARCH_HUGE_VMALLOC nor HAVE_ARCH_HUGE_VMAP.
 
-> ---
->   mm/hugetlb.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index f46c85fc0cd0b..d57964914e18a 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6568,11 +6568,8 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
->   			goto out;
->   		}
->   
-> -		ret = copy_folio_from_user(folio, (const void __user *) src_addr,
-> -					   false);
-> -
->   		/* fallback to copy_from_user outside mmap_lock */
-> -		if (unlikely(ret)) {
-> +		if (unlikely(copy_folio_from_user(folio, (const void __user *)src_addr, false))) {
->   			ret = -ENOENT;
->   			/* Free the allocated folio which may have
->   			 * consumed a reservation.
->
+The only huge kernel mapping is the vmemmap, and nothing changes its
+protections.
+
+The PGD, P4D, PUD and PMD handlers of the set_memory() page table walk are
+dead code. Drop them.
+
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ arch/loongarch/mm/pageattr.c | 56 --------------------------------------------
+ 1 file changed, 56 deletions(-)
+
+diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c
+index 7283059d6e1f..11cea93c7415 100644
+--- a/arch/loongarch/mm/pageattr.c
++++ b/arch/loongarch/mm/pageattr.c
+@@ -24,58 +24,6 @@ static unsigned long set_pageattr_masks(unsigned long val, struct mm_walk *walk)
+ 	return new_val;
+ }
+ 
+-static int pageattr_pgd_entry(pgd_t *pgd, unsigned long addr,
+-			      unsigned long next, struct mm_walk *walk)
+-{
+-	pgd_t val = pgdp_get(pgd);
+-
+-	if (pgd_leaf(val)) {
+-		val = __pgd(set_pageattr_masks(pgd_val(val), walk));
+-		set_pgd(pgd, val);
+-	}
+-
+-	return 0;
+-}
+-
+-static int pageattr_p4d_entry(p4d_t *p4d, unsigned long addr,
+-			      unsigned long next, struct mm_walk *walk)
+-{
+-	p4d_t val = p4dp_get(p4d);
+-
+-	if (p4d_leaf(val)) {
+-		val = __p4d(set_pageattr_masks(p4d_val(val), walk));
+-		set_p4d(p4d, val);
+-	}
+-
+-	return 0;
+-}
+-
+-static int pageattr_pud_entry(pud_t *pud, unsigned long addr,
+-			      unsigned long next, struct mm_walk *walk)
+-{
+-	pud_t val = pudp_get(pud);
+-
+-	if (pud_leaf(val)) {
+-		val = __pud(set_pageattr_masks(pud_val(val), walk));
+-		set_pud(pud, val);
+-	}
+-
+-	return 0;
+-}
+-
+-static int pageattr_pmd_entry(pmd_t *pmd, unsigned long addr,
+-			      unsigned long next, struct mm_walk *walk)
+-{
+-	pmd_t val = pmdp_get(pmd);
+-
+-	if (pmd_leaf(val)) {
+-		val = __pmd(set_pageattr_masks(pmd_val(val), walk));
+-		set_pmd(pmd, val);
+-	}
+-
+-	return 0;
+-}
+-
+ static int pageattr_pte_entry(pte_t *pte, unsigned long addr,
+ 			      unsigned long next, struct mm_walk *walk)
+ {
+@@ -94,10 +42,6 @@ static int pageattr_pte_hole(unsigned long addr, unsigned long next,
+ }
+ 
+ static const struct mm_walk_ops pageattr_ops = {
+-	.pgd_entry = pageattr_pgd_entry,
+-	.p4d_entry = pageattr_p4d_entry,
+-	.pud_entry = pageattr_pud_entry,
+-	.pmd_entry = pageattr_pmd_entry,
+ 	.pte_entry = pageattr_pte_entry,
+ 	.pte_hole = pageattr_pte_hole,
+ 	.walk_lock = PGWALK_RDLOCK,
+
+-- 
+2.53.0
+
 
