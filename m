@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E565606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D0E606A699
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k3kFIR10
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jpOHDK1p
 Received: by kanga.kvack.org (Postfix)
-	id 00D686B05BD; Thu, 26 Nov 2026 06:15:26 -0500 (EST)
+	id 2A3E46B05BF; Thu, 26 Nov 2026 06:15:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFFD46B05BE; Thu, 26 Nov 2026 06:15:25 -0500 (EST)
+	id 254F36B05C0; Thu, 26 Nov 2026 06:15:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E15396B05BF; Thu, 26 Nov 2026 06:15:25 -0500 (EST)
+	id 143C76B05C1; Thu, 26 Nov 2026 06:15:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 715AA6B05BD
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:15:25 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CCA31403C6
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:15:24 +0000 (UTC)
-X-FDA: 85477014168.02.4AE806B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1EF5414000E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:15:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3kFIR10;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A2D706B05BF
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:15:34 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C3518047C
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:15:34 +0000 (UTC)
+X-FDA: 85477014588.27.B27C02E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 819A112000A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:15:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jpOHDK1p;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691723;
-	b=4AMOGTmGJLyCLvRV0nW5j4QP3KGiublA5yTzfuFDhplU76CS52qYC3jXmS1ug5bSUYK75v
-	ABZML4y/NvRmVapDnu2745uIO5usqFhUzG+qeUR56/kFMMt+a2saWx7qkJldi4m+GvozNx
-	9QbumjP/p4wtVdRPUUYCSN8MlAxF2BU=
+	t=1795691732;
+	b=QL0G9XzKSQM389aQsXzlejBDjoqcYVK66qGM4syydz1Jxg/+t/W7t5YHvcK517obhKJMzY
+	myurDS4lFwdt7t5SPJCjROMShV0OPpKynaSlY4YmP8HtUdVfpk46nA5Fuu+IfLviM3OVsN
+	xu0bnsKa3H+FG0Cs1yLUdQ67D9h4xOY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691723;
+	s=arc-20220608; t=1795691732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zImSfvTk7Ce9C0Ntm689zz11A7MeuyzdnAnXV7c96Hs=;
-	b=3DqYpQWoe9rm18SNoWtqPMq+ZbOaQ3h5Exa5mMxvYLjPeJ7MKPXURRz4wwAzclvYln513k
-	hmVBoGwLpzY2oE/hN9aW03OUodpxim3cWJPei/oCQt99w8mW/2XmhlnjBCDOfB3/sFkgHO
-	k2/KoUl6cCNzduDHKS9DIjJE2JRBTas=
+	bh=zeebKmC4zt9ER//cYViWMCf8JsX3wxI4858CYnYyK4Y=;
+	b=n3Z1EfLktLjOAB3/5phQcIAnWHvCcKf+4bKWg3ww1bv85eUS94PGEiKsVf+sd4/o+9b3dn
+	AMPe9Xc8AkVZ4GpsGdKU5EKnCrjrPZrkHc6F8ZCDsY3clcr6WBHxO5J/tJ6VmsBvvvm8hN
+	LGe0C/jit6qbmDuJf0uaEw9Gromh/kg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3kFIR10;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jpOHDK1p;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D98643224;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1EC5362207;
+	Thu, 26 Nov 2026 11:15:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09C61F000D2;
 	Thu, 26 Nov 2026 11:15:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCDB1F00AE3;
-	Thu, 26 Nov 2026 11:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691722;
-	bh=zImSfvTk7Ce9C0Ntm689zz11A7MeuyzdnAnXV7c96Hs=;
+	s=k20260515; t=1795691731;
+	bh=zeebKmC4zt9ER//cYViWMCf8JsX3wxI4858CYnYyK4Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=k3kFIR107EfL7OCOXCU8Gw8+wFHgYeB6pwLpvAtrtxNruSbP+IxmvekCmPdAtQpU6
-	 UY9gwt+R1jj/XLJxRSkgFV/NN1dqYd2vaEiNbba2VGjRRqrndAy3W3NDIYMGpwGJdL
-	 5I5xoLA6NN9oPGIT+cll+4qCT2QAsDrYc+8BocCiyQFLGSboxGfTEYTroUEdlDxo+c
-	 GWTUcL/DyD6jX5uwq92MnSCE+qN75XIupuUympUcKEE9nsukylR8tAJqmagsFaNpi4
-	 wqNpEf6O3v9v4sAEU0M1bRVvAdcO5ESPqGmgBJIygD3v50tp7Tk1xNsDGMbHsOcixL
-	 hxaqNlHeGhMdg==
+	b=jpOHDK1p/+2ScS6pTVO+ve0hzKh3+qSBP1nb5Vo1QtiyTil/tUQdCXZMRsYDRurOy
+	 nMF/zy+gS4188OPxfP1dbbUtm+m7Mbb3agYHHWCFSW/9xowa+DkAE83MKuY9hDAkqA
+	 ItEVaA3iu0i8LkNX5qaBFoxmSBaMSJa5GjeFeFbHrDP1yDt7Xa8NpovnofVLg6cOXu
+	 bNWOrmmtPlvK3xASh9BYQyxFxh9UZ6m9Q/FzKh+Tf+65DDVfs6EAdM5wsnWYU8bmLp
+	 xbkIwTMBdgKK2iqJ7731qo0G/kIPc14YdSl9AIEpGPAuz1H6cnQpuM/SzPPuBFjms7
+	 Wg91I2Upldwwg==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:18 +0200
-Subject: [PATCH RFC v2 05/54] s390/boot: treat dashes and underscores alike
- in parameter names
+Date: Thu, 26 Nov 2026 13:14:19 +0200
+Subject: [PATCH RFC v2 06/54] x86/mm/pat: don't count kernel image splits
+ as direct map splits
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-5-723f1e33c3d8@kernel.org>
+Message-Id: <20261126-generic-set-memory-v0-1-v2-6-723f1e33c3d8@kernel.org>
 References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 To: linux-mm@kvack.org
@@ -96,19 +96,18 @@ Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: 3iio8eksnj95bqt5kr87iuesorsijqq9
-X-Rspamd-Queue-Id: 1EF5414000E
+X-Rspamd-Queue-Id: 819A112000A
+X-Stat-Signature: sow3ochmyg7n8sg4h6nx7cjisyxy47k7
 X-Rspam-User:
-X-Rspamd-Server: rspam03
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795691722-631401
-X-HE-Meta: U2FsdGVkX19Jwd4CCmmphfhmUDjXAHAF7smqomaJbfUj0Rih9qEGPqHjcTL6Mu9vP3KQocMnCMjO1+BIE3cEF8lTh1j4fFgFQqg4BATRzczZtNuCle5awpwWrxzQd+2y0kdGjGKquBGyOviD+PCWSRT4dAhv7guIuxTfB+VF4RAKNIPtjU5eIpaLrkuQv57eX3gsiQAz8Avirhf3XTm8mYPXUXjLj0zqYe19fCJxUKP8mN4CH2QjZCLDRPoQkFP2YCeHmuL8GTy7QNq0aj5sMtX6injMBX9rqz2rt3a5mIix0aUJXJ6tyCOcuh9MYwsQZlufONjlsmwCNpR9nUkA8x4f8eZn+Ktetzyr4ef3J2nVaZbtwfgD7R7bxAnNnZNc8uPNRQXfuqvQQ0BvhXwAk2m24uXqzoRJ4XblFloel0D9tmFEtYt/YEbAhHYzb8UXx+Lw7uSx+WS6HtXmjnjt8RjKArFdFH0G6YBRuhkcEdeotYPvacZdPN60iKh+NT73PVRa5+zK1eQdnnXWrKiUTMsF/YDwTLuj49AWHY8SCXt5OGPZ3D6UMJQWSCTdl1VxfVnpUmr8k9aWzaK6zIgdmvECMFSrkQYNLYHcfc2JsqMUB/4mcpu432eQ6ZNbHI92Gj7UZPcTEhnTngWb337pdwWh9kJZw3oXzSByTIgpq7AkYSppjXF8McIhvL7VuhZOHl4K2LsVcv7E6vBuJj2v6jXlNIR3fSPIxHBwRHUSkEIJHjxpxIHT2fbysuJzGD27afRqJw5yDQWC4g6NgAvjKubSjLuxYjCIj2SwIjSrVoyg039NGdvgOe98KXmwcxacYmaMRW9p1VaqRKDTWxlkvoYapNSjnyDbACWzFE5OIvGDIbcSrd7iy/Ws/ARBcaR7bLlKCAvnWllmHl2NKW62nu7R8VHjZTQ7Xveuo+4Sk3GJ3+YmaXDR8MzREPieJ9ynyxdDzjBQlXlUCWVzZbf
- MR76tQ1i
- er0dJisEDNP+1xIiIi8On6ByvB401Rxr3KLewDxG6XPQ6AH0fb7sjsYa450QDZK0TKR0L402EH9ijByP31YFiEjncacLAbHkpkFyLSjv36APnSA3piNn7P0WDInjD7mo8l3K8EXurv7cZIO4FLFuZqI6wJ/yXfgdvXAoy9S82xW7MZvAVmduv6IO4Uz3PLHYwAN2XoSnI30uzEeT1xrnwuTXcQzMblBNydxeQK+OPhnHH5Q7s7nkdLVOuCk4CHQds3v43qOmuU3mAJV4T3geO4PEkHrtwczCr1jdhoGixNcyQnhLZ7MmISMHwqZfd2MLXElpOAo9wfx0nf8mQpGFAfWi2J9HrR5Jo40+SKJaiSwrE/+ySxHX2kcBKfC6kvAbqrxOBc//2Z5ZcplJf2AJUi8dHJa7m8M7jaFqHK/9D2FjV/Uf4kgWEgn/zGHM6WdKAzAVveT4MNT69crmuAvarU4SEhyon9BU5lEEA
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795691732-557841
+X-HE-Meta: U2FsdGVkX18GPp7tWfHkFkVX+7MraYAQxuBD470Nc2wUoRP5x6KnO3ZXmA104SZnPGgrilb/cxIjKUoy+WwEUhWZuvYvwgBQfEXvF+2xFtSL0Gu7MUDOmPqE1Zw3WQx2jLtZPTJJ6eYQh1L3dlIn2ARnfNRtR8D1dBQK+2+IXduKpiKNfNdn2RwgB5CGEiNm87RYrEzrKZjMfDNoXI+TV03kzsuNkYrL1JYW2tujz0WmPRCOqBgfX+YY9KrLOQvCMAfpKDxLOxUTzr+YsSyp8dZRbefpO6Y2yk+MDmGHmwLNcIZLNTBSP/F1xfdW5nM4Fkmb6AHsIZKbJQ5Z6CFlusYZdYf3/PBEv9ee1qrS/5thB1FeIqZuPqFBhgCSqlACE9ubPw9Fx2HytTeLICuTF8SrJelWdn/lTgw2KL8roX3OS/dCsRMGsR0dFlTVTwRJvF7SFEkZhGgEnkFh4BTRrd8hdf3E91k2N+8327TMDYciBXN+TRvN1yJsl+7cAcomHh/s9l3U3Rk/2890u8JFz+Q3j5oSYPVrx6nTlDZvNyKSBrDrKkBIAxT2EkmHw31GEe+uaS11RXKRDTGn4nVewuZ0T7FmOT51CTANKnH9O7I0W1wjDyICUXEASWvsdZFe4mbMvFC54zEdHprBh/whf2jkhFaV6ThhJcM7JWD5GhYwO0ONKT4ME5cC/ZmVZ5c63J1TNSdmuL+d8gMOalm+50iL1ktrpO9zvJ/O0xXYt8iUimR5oT7wW8A1RMjusilJjjG0uHV0OI4tw9+dVRaK/9Gte/NZjDYStQ5b94vflJISYJqgfv5cLferEVc3qEYSFwu2Ru+RzX+ZDc9WI9psdle8RtN3huo3xF7EIAd6zQXwOI4KLbfJX1J56osl/DxvQH4TKg9UeiMnQsupKE+hEyF2/zPWmUhhfHDvs2XBVXOuw1HsXkaEEg8CTzZSx/RbXC1Jbv69gy9FCq6rMYd
+ PpEb5IOM
+ hIoiYYBbr8NXnuPbNTehYWtRlbLUOMB6XNKDB4ZktbZDXzF++h2S2CnCDlRDtSONDP2mFgCTLxd6D2aQwbPxpV/Gowev+ps/9X6aW5V3IMX66Sgoi7bvI69FitNup4SYtFIe8UEskOaBxdk9adQYfXrOCmJWkcXKHhl0AM1eRUdUkL/H1LwYzbAYPRz76UnZqinoXdnCZZOYErdFdU8HLzTFkT2yXVG0DsFiMKuEbWufP7CXkzHQg45sIP7D4a1WMjJfoKpcVb3/SesGARmOc8eh4eQ8tEU6QHvWNA00PT4hH6H47lmiw+OatNCAPJ5x1j5DNJKpnL2o13VCTiVo/5uf86+QQ5xOiKePtZ7JA/IaSg4sNKhmQcIevFAPWIxJoMKF8EtwdLe2ePtPd9xnD1Z0NG5kQ7in4OHQYqloR2U3WUJHhIsAPdd3/XVYhG/w2h7TrSMRo+kC+kDhh37AGhoUoGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,129 +116,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Dashes and underscores are equivalent in the names of kernel parameters,
-and the kernel compares the names with parameq(). The decompressor uses
-strcmp(), so it ignores "relocate-lowcore" or "prot-virt=1".
+The DirectMap lines of /proc/meminfo count only the direct map. The kernel
+image mapping is never added to them.
 
-Compare the names like parameq() does.
+CPA counts a split if virt_addr_valid() accepts the address and its pfn is
+mapped in the direct map. On 64-bit virt_addr_valid() accepts the kernel
+image mapping too, and its pfns are in the direct map, so the splits of the
+kernel image mapping are counted as well.
 
+Such splits can happen when mark_rodata_ro() updates the protections of the
+kernel image.
+
+Each split of the kernel image mapping moves 2M from DirectMap2M to
+DirectMap4k, although the direct map does not change.
+
+Count splits and collapses only for addresses in the direct map.
+
+Fixes: 8eb5779f6b9c ("x86, mm: use pfn_range_is_mapped() with CPA")
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/s390/boot/ipl_parm.c | 51 ++++++++++++++++++++++++++++++++---------------
- 1 file changed, 35 insertions(+), 16 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/s390/boot/ipl_parm.c b/arch/s390/boot/ipl_parm.c
-index ed28ea2fc1d1..ac4cf1ced71d 100644
---- a/arch/s390/boot/ipl_parm.c
-+++ b/arch/s390/boot/ipl_parm.c
-@@ -255,6 +255,25 @@ static void modify_fac_list(char *str)
- 	check_cleared_facilities();
- }
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 2ff37ff1cecd..42f27d60adf3 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -1190,12 +1190,9 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
+ 	for (i = 0; i < PTRS_PER_PTE; i++, pfn += pfninc, lpaddr += lpinc)
+ 		split_set_pte(cpa, pbase + i, pfn, ref_prot, lpaddr, lpinc);
  
-+static char dash2underscore(char c)
-+{
-+	if (c == '-')
-+		return '_';
-+	return c;
-+}
-+
-+/* Dashes and underscores are equivalent in parameter names */
-+static bool parameq(const char *a, const char *b)
-+{
-+	size_t i, n = strlen(a) + 1;
-+
-+	for (i = 0; i < n; i++) {
-+		if (dash2underscore(a[i]) != dash2underscore(b[i]))
-+			return false;
-+	}
-+	return true;
-+}
-+
- void parse_boot_command_line(void)
- {
- 	char *param, *val;
-@@ -272,15 +291,15 @@ void parse_boot_command_line(void)
- 		if (!val && !strcmp(param, "--"))
- 			break;
+-	if (virt_addr_valid(address)) {
+-		unsigned long pfn = PFN_DOWN(__pa(address));
+-
+-		if (pfn_range_is_mapped(pfn, pfn + 1))
+-			split_page_count(level);
+-	}
++	if (within(address, PAGE_OFFSET,
++		   PAGE_OFFSET + (max_pfn_mapped << PAGE_SHIFT)))
++		split_page_count(level);
  
--		if (!strcmp(param, "mem") && val)
-+		if (parameq(param, "mem") && val)
- 			memory_limit = round_down(memparse(val, NULL), PAGE_SIZE);
- 
--		if (!strcmp(param, "vmalloc") && val) {
-+		if (parameq(param, "vmalloc") && val) {
- 			vmalloc_size = round_up(memparse(val, NULL), _SEGMENT_SIZE);
- 			vmalloc_size_set = 1;
+ 	/*
+ 	 * Install the new, split up pagetable.
+@@ -1314,7 +1311,8 @@ static int collapse_pmd_page(pmd_t *pmd, unsigned long addr,
  		}
+ 	}
  
--		if (!strcmp(param, "dfltcc") && val) {
-+		if (parameq(param, "dfltcc") && val) {
- 			if (!strcmp(val, "off"))
- 				zlib_dfltcc_support = ZLIB_DFLTCC_DISABLED;
- 			else if (!strcmp(val, "on"))
-@@ -293,49 +312,49 @@ void parse_boot_command_line(void)
- 				zlib_dfltcc_support = ZLIB_DFLTCC_FULL_DEBUG;
- 		}
+-	if (virt_addr_valid(addr) && pfn_range_is_mapped(pfn, pfn + 1))
++	if (within(addr, PAGE_OFFSET,
++		   PAGE_OFFSET + (max_pfn_mapped << PAGE_SHIFT)))
+ 		collapse_page_count(PG_LEVEL_2M);
  
--		if (!strcmp(param, "facilities") && val)
-+		if (parameq(param, "facilities") && val)
- 			modify_fac_list(val);
+ 	return 1;
+@@ -1361,7 +1359,8 @@ static int collapse_pud_page(pud_t *pud, unsigned long addr,
+ 	list_add(&page_ptdesc(pud_page(*pud))->pt_list, pgtables);
+ 	set_pud(pud, pfn_pud(pfn, pmd_pgprot(first)));
  
--		if (!strcmp(param, "debug-alternative"))
-+		if (parameq(param, "debug-alternative"))
- 			alt_debug_setup(val);
+-	if (virt_addr_valid(addr) && pfn_range_is_mapped(pfn, pfn + 1))
++	if (within(addr, PAGE_OFFSET,
++		   PAGE_OFFSET + (max_pfn_mapped << PAGE_SHIFT)))
+ 		collapse_page_count(PG_LEVEL_1G);
  
--		if (!strcmp(param, "nokaslr"))
-+		if (parameq(param, "nokaslr"))
- 			__kaslr_enabled = 0;
- 
--		if (!strcmp(param, "cmma")) {
-+		if (parameq(param, "cmma")) {
- 			rc = kstrtobool(val, &enabled);
- 			if (!rc && !enabled)
- 				cmma_flag = 0;
- 		}
- 
- #ifdef CONFIG_STACKPROTECTOR
--		if (!strcmp(param, "debug_stackprotector"))
-+		if (parameq(param, "debug_stackprotector"))
- 			stack_protector_debug = 1;
- #endif
- 
- #if IS_ENABLED(CONFIG_KVM)
--		if (!strcmp(param, "prot_virt")) {
-+		if (parameq(param, "prot_virt")) {
- 			rc = kstrtobool(val, &enabled);
- 			if (!rc && enabled)
- 				prot_virt_host = 1;
- 		}
- #endif
--		if (!strcmp(param, "relocate_lowcore") && test_facility(193))
-+		if (parameq(param, "relocate_lowcore") && test_facility(193))
- 			set_machine_feature(MFEATURE_LOWCORE);
--		if (!strcmp(param, "earlyprintk"))
-+		if (parameq(param, "earlyprintk"))
- 			boot_earlyprintk = true;
--		if (!strcmp(param, "debug"))
-+		if (parameq(param, "debug"))
- 			boot_console_loglevel = CONSOLE_LOGLEVEL_DEBUG;
--		if (!strcmp(param, "bootdebug")) {
-+		if (parameq(param, "bootdebug")) {
- 			bootdebug = true;
- 			if (val)
- 				strscpy(bootdebug_filter, val);
- 		}
--		if (!strcmp(param, "quiet"))
-+		if (parameq(param, "quiet"))
- 			boot_console_loglevel = CONSOLE_LOGLEVEL_QUIET;
--		if (!strcmp(param, "ignore_loglevel"))
-+		if (parameq(param, "ignore_loglevel"))
- 			boot_ignore_loglevel = true;
--		if (!strcmp(param, "loglevel")) {
-+		if (parameq(param, "loglevel")) {
- 			boot_console_loglevel = simple_strtoull(val, NULL, 10);
- 			if (boot_console_loglevel < CONSOLE_LOGLEVEL_MIN)
- 				boot_console_loglevel = CONSOLE_LOGLEVEL_MIN;
+ 	return 1;
 
 -- 
 2.53.0
