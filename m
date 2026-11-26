@@ -1,86 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D0D606A334
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E91606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g0huoPLA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W0vPQuJM
 Received: by kanga.kvack.org (Postfix)
-	id 468446B05B3; Thu, 26 Nov 2026 08:07:28 -0500 (EST)
+	id A182B6B05B0; Thu, 26 Nov 2026 08:12:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43FAB6B05B4; Thu, 26 Nov 2026 08:07:28 -0500 (EST)
+	id 9C8826B05B2; Thu, 26 Nov 2026 08:12:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32D486B05B5; Thu, 26 Nov 2026 08:07:28 -0500 (EST)
+	id 8B77D6B05B5; Thu, 26 Nov 2026 08:12:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B8DC16B05B3
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:07:27 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A0BAA898A
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:07:27 +0000 (UTC)
-X-FDA: 85477296534.22.CF0E0F5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7205B4000E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:07:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g0huoPLA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BBAF6B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:12:41 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D7BE11A0449
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:12:40 +0000 (UTC)
+X-FDA: 85477309680.19.BDB17B2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1220BC000B
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:12:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W0vPQuJM;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795698445;
-	b=NOz6EiLx3HX0oL+b70CniDk/fXruMy5AgHVUWUTPf3KLE7I5ApRmDdqNWvvrcXjH+/HClR
-	s/TqtkA5Id3s2faFXXyFH9idhaB06KYcZWso/+9kUaZQKrm7tTaRyy9SOcoDIfn9di4hj9
-	c2AZiZaMPV8nXLuwb4V84IHLxm+NX3A=
+	t=1795698759;
+	b=Nq5QOmBTs6iTaw17B41aBzKD0DcogC181yjEwgPzNWsjbY0lUq8vl+KvaUJnKckFbCWivw
+	Y1jaQR/fWDn3gRSDvCX1016Fb/QlLh6NOFMfQCc7OPi/fGvTrUd8ix9KujWu+mcKb2qSVd
+	pWLVZUpzmLkQCQ8AswowSr8N9qwZmjM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795698445;
+	s=arc-20220608; t=1795698759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=foknlsobLC1fmFyqK5JuWlMNEp3Cfb1HNvIorEGGP60=;
-	b=hajHRAMHfpp0fKgX3fAns2XbA5+NLqQHJDXsQr+suedREgHExg3Ig4546NyAB32gKdz84n
-	I8tB7PsUUSfDxiViss/88dU8gfxJsWZhps0pObpxLe1bxWHausg7OdMdsGXoW7AJN4oLk4
-	RH4cBoEF7hBKKtSbBjO4oF0P+TNYgys=
+	bh=04Pw5/OY8msg1N4ni7fthpRWs4dsPaaWOmyW/Ryrtok=;
+	b=BsXoSad/1SgqsQ4GPztHi82ZmtQGUuZUXHGiQNM9tT5Dv6os1GesJ7gp7cZ/mWTW7osZSS
+	s/LBkB1jrQHM2EDg3r4JAfpzUyHuTjzpmTOOiAVj9efMBcP0PdzvKQXg2M+jqe7qMbXYjl
+	9b6IRRkFOEadCaVBPx9tYUR9WYp2k6s=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g0huoPLA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W0vPQuJM;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E25EB61164;
-	Thu, 26 Nov 2026 13:07:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297E11F000D0;
-	Thu, 26 Nov 2026 13:07:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4122E41841;
+	Thu, 26 Nov 2026 13:12:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731561F000C6;
+	Thu, 26 Nov 2026 13:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795698444;
-	bh=foknlsobLC1fmFyqK5JuWlMNEp3Cfb1HNvIorEGGP60=;
+	s=k20260515; t=1795698758;
+	bh=04Pw5/OY8msg1N4ni7fthpRWs4dsPaaWOmyW/Ryrtok=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=g0huoPLAbF7NU2cha7D8a91bsfXr5lvj0dpFIJcLsM453MTh23seN7Mo0dXxnu2qC
-	 xN3ZgRasgaszBgksxHfwMbSXsLcd2O9/rZWZLCTvE74vIXMgR5jFrjVrguesR/dFQt
-	 IeBvu2o7iVXpognac2ufIxexQxZ3p2R/kpy1OhpHewwntJh/LiN2+tvylVcB9ba4Hg
-	 4gpXntdXbtr1QSSEqNXJaUxkL9wGU99NMiMFBef2CFoLjVOBL/wfGOHS0rd3kZS/qi
-	 mVJguYEu76rGOSonjL/iXaakgV3DIjaZRnsAjrOkxMVSjHTttCSt9WS+jdJYQid2ar
-	 WYuuFzBc9V5+w==
-Message-ID: <931acd3e-0689-4517-bbd2-d06109ac4a6e@kernel.org>
-Date: Thu, 26 Nov 2026 14:07:16 +0100
+	b=W0vPQuJMT+/oHXZHnqDlw703OaMHbf9w2Yg2CfsBeQqcQFeJ3KRryyUQrVG6gjCBZ
+	 SfxCBZBXSDJPKATvOgElt98JC++9M1kiyuHDEN+ykHhCkgGbLPMqp4g7rpyQH3fY+i
+	 oP3lPp37BZRKQvNOQ/0K7i1FWpK+2jNcCQ6WhKwnQf/5gkNLgBt217e2SvbMQrActz
+	 PQ+fW5PxActHc15mqtmbnNRjFvRlWvvMtqNYdwRhYGa7Zuu2KKTgcm0i1uFb5gh/LY
+	 wbuVOJOHhT3AkJUvtGIkwpgGjPJlccc3sCHETam5mnkOkTlBSx/MPcPYeEnn/3cTnY
+	 reDX0Jl6KU4ug==
+Message-ID: <5cc60faa-002c-4c96-97e3-46d3002718c9@kernel.org>
+Date: Thu, 26 Nov 2026 14:12:29 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/cma: reject long-term pins of HugeTLB folios
- overlapping crashkernel CMA
-To: Usama Arif <usama.arif@linux.dev>, Sang-Heon Jeon
- <ekffu200098@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Frank van der Linden <fvdl@google.com>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Jiri Bohac <jbohac@suse.cz>,
- kexec@lists.infradead.org
-References: <20261125155108.24098-1-ekffu200098@gmail.com>
- <1b0242ef-49ad-4d7d-820e-d1e6569eacf8@linux.dev>
+Subject: Re: [PATCH] iov_iter: Fix direct I/O across compatible device pgmaps
+To: Naman Jain <namjain@linux.microsoft.com>, Christoph Hellwig <hch@lst.de>,
+ Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Oscar Salvador <osalvador@suse.de>, Logan Gunthorpe
+ <logang@deltatee.com>, Leon Romanovsky <leon@kernel.org>,
+ Keith Busch <kbusch@kernel.org>, linux-block@vger.kernel.org,
+ linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20261126053433.88531-1-namjain@linux.microsoft.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,21 +122,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <1b0242ef-49ad-4d7d-820e-d1e6569eacf8@linux.dev>
+In-Reply-To: <20261126053433.88531-1-namjain@linux.microsoft.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7205B4000E
-X-Stat-Signature: ugnp8m1j68kg8bcyu14atragpgzwpyfc
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 1220BC000B
+X-Stat-Signature: nwifa7wuy4nqrx81xejfbfhtdidhduo7
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795698445-171002
-X-HE-Meta: U2FsdGVkX1+9tNA0+9Qdzk2q6eY8BMEpE2E0mbPsIdwac8hFliBDkBD6J+9PDmpiWwn1q5KFdiQRDz6+sLXNcp7n/LcAmDpLegy2qSfnYmqKJPNjsdwCt5rn8EHtCcwUeK5oQ0CYbsDWfINmKL9xmTmy8PZBO/K1xM0GO98lLhWwz2Pjr185ObBvSEWz3oDVH8/TN7gT88PTCq6C4fed9i79bHW/Ht5c89PbRXC/FS/ue/rlWGDjY2u885OgPzizlnQ6msQXha+P+Jre/nan0dfRq4Qgch0NAy59dbnU/HXvk0Xj74r8vbQY/enlK6PYij2WSXFdWsqfDSfkrCGZ8RATbiM17fQUB0zWi3lkppjBwQS2K6B1NKyEuNalsNojOp03D8KRksRVae5fwbBik2i5K1c5f5kUctsqiqInLizshfYwbb+uWVC7fi+fn0zsCsNx0aw4jpJeZsDpzQT2/8KBezxf/zq1hj+EkIX9+BMuxHD8dOkLJZIhJycmD+XoczbMZWVlnIY1yUlrVe1KAruIKHjUSfVs+rvbyGkGCpeocDTEaWBkhz0mYMDUcsXRnagRVbnUDVBF7TVIO74eWOOZcvC209c+aR/8mSgIvpzqc/yafrXXb7enWasAmz3pywiMXm3im/pV6NygFAX1epgRAsTjSbTEHxi/a2oIKw3IL88BKJsUvwpkaX68EjRO6YPgTjro6lPYqdpdIUUfoHHYg2Q6xhtEZNrS72Bc9CoKeO9qraPexTLVqoY8rh6TZvqzGZzNkwW1FsIwLko6zeJJgSPXrYYwoWYp9ccWstItNog7cHhJqp3ckFZyKJJomMHqoM0bstQ4Jd7J9oMjW5t7jV3gQjX6dep5JBAsQCTDvdRCccPvKVlH3lTuJztzd5oEGp/hnM6DDs04s/TwjsQ4ewoEVS1qvmRcdBaSIfQq3A/fxeXqFsBxuhoiTwdBqPZukGiCxMrVon/tzM4
- Qfscem70
- LQKet1P5XyAhAfq6yFxDpACvsCzA7soK7T9YPKWDvzVQyRe3ffyeXCAOxd3zUsuFpHuMPKxH+nwFJDFpJA/asFUsk27NBwo0YJ5BESCrAGeYNQlDwgzjPKujUbWqfTfd3cik+YBQpNtWPKhN01orLtz30m/k34MJCC2NWBvlOyQ0sOqtLNC/RE6vDVzTeeqRlIi2jaKGmhslNk3kIOH0P6aLrKBuyJroybuRFusUIcv0uwrMcA9Ia6A8vnGW++C7B1D/6QO/HlOpX9XGUt9c358fv3M3NHGup2QHRvs9qdJeVCGRXtsQrW3tBXRTq6tNGYaNMusMXV83gXU4bM9n5bP4DvD5CQZYg3K16zcLMmbHpuhax7Cxz8fYdIlsMFlueDfoMIEuF7QYgaH0vo44f9unXUscDH8WPfvyZCT4l6pEQuSZZRQXVPwMo+Zv9RP3YGOimMFbGdhLdkBy2PZQduK1NEX9MhLGzaL9/LQ53kFFwEsvTFCfADPGbI5kO+Tel8OBc9nVwBonCfd2s4sotsZyN2A==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795698758-593621
+X-HE-Meta: U2FsdGVkX19r2xUp4UOU2BXmtBsZfi2Iyu2WM8solcwO7jlvXhanOuiPL9PFnaQYOL7m2FPgal9MHBLwIcHPAK3W8Edb8u9HrTyHV5SQ5pj3ItMnDgCgRZfFscAWnghwkewuvon3AWeOtBy45VTFdSmtpNRxcc0O2LrHGKbTTFtWsOtxzr39X+XfvZqbKhQn9unPPmeTQBH+IJrelklQG90+lrQRDSIrg5hInxo2V6f/++429/p7bhK81TlGqOEmsuJUj7cOkpzbxi9HUewQZGvRVI53hFjG1eezqYLgYZla9dxtubeXMfFxH+myboDNN0nrRS4JyvNXhDKv+W4jI8Jw9tPW39CiLkbfWPqYVjK3RMX5WKQF+Ljmh06cSKTEo2/EYdt0h47b0sU2esYSpP3u1AZQZ4wAFraGzlYEGQ5ACRg+HrKE3CFRFL0hFRCqGxENEgiHEjpcMkJ5Ho9Lda1iLT0eplw8gfNbgyokz3SlhrOx4xLNtJRnhmiUpk9ZH4saat9gjh3Zpg4o+1Dq9uqWtNPwoNVeKXuxdJLdd4XfjTfNYVXn/zfGtaML7TY88wQO1p0JiDlFwf22u+E4ScW1mHl9nwm5JOMIBO+eIb9U73/ZjJbYCJ6s/s2KglCJ/i9BExyaOAaOJvr4XYQVvvU0O3PkFPZlYiG4spnIy5Wj3gYtBE+Hy0sM/gULDp/u4zO4V7Hd5SkQamoUTViywUehgzw1fWmA4aqev+06IvYbdK9+57JAk85KWvWuNJxTMHSsg+CCfYszE89T6Mtxkr8nuOvgiETQNiRVJm8VjeJSrtBHohU4yBBTSZsivP306/cPRlgVyy3GPXiCch7KYAcElHBh0MqO/oXsQHOv9JMRAvzFuNOtVjSL1ot49kaZXrTX9YECO5Iar0Sz6otqpqa4iovZsQjQlUPsh2xo4Bi82ZjuuiT00V164mqIhcmSIozHyssen+zeo8c7a8E
+ 7y1UarBV
+ VKv/ESFcNZAO0wGn8SWeKIDak5pyfqVGesSHCJVW6VbMGXdsJkXl3d+oICyWscV3dcoH58+Icd8D3k2mwJSGYq8htzaCSt4XieaX2PGcpjxFs4R8VyuLtUganoCsnicPIIQZesp+QxGKBiEM+bCj7HM7M8NO9pdCqipwlDs6J8KyYY7DHNF+UHEMStFg2u6XfIt5JnDB0xl7T1aCTXrljPJ2lXcEhMw5nlBXMs69BsuBdsj5SA1UYW46PItCx5y4OqUTrCk5N0Fi+1sTxn4R1dMoRWhFVmw9hIVPoTLlBbgbzH6cG8ZXFRrggrpvlcIPfsSgC78aK05YTVnma/MpV1fklxW7AI4uGAIx7HL5wsG5wgGZlfSNxgVn4stRUJLRaOeITd4bd9Roa32m7R7HWisoEpR1LgiIiFPFvJi2IsKQGveen+64bB7mJ58db6dAhnfSBiEaujgnEgK+8PODHMKlwBGK+uIVEv7FHewpjSlIHfuzGwYzRHPZPnybuDySbl1WxUG5E2i08QuZH/nXi/gDzfLp8nzY6RVi0YUXr6z3vpnDGv4Y0BlA76psPHKMgqlcLgZf76+f7uPc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,64 +146,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 22:49, Usama Arif wrote:
+On 11/26/26 06:34, Naman Jain wrote:
+> Commit 38446014648c ("block: don't merge different kinds of P2P transfers
+> in a single bio") made bio_add_page() reject pages from different
+> dev_pagemaps. This was needed for PCI P2PDMA, but also rejected pages
+> with compatible DMA mapping requirements.
 > 
+> Commit 41c665aae2b5 ("block: relax pgmap check in bio_add_page for
+> compatible zone device pages") allows these pages in separate bvecs.
+> Commit 13920e4b7b784 ("block: add pgmap check to biovec_phys_mergeable")
+> prevents physically contiguous bvecs from different pgmaps from being
+> merged into one segment.
 > 
-> On 25/11/2026 07:51, Sang-Heon Jeon wrote:
->> crashkernel=size,cma uses existing hugetlb_cma memory, so
->> crashk_cma_ranges[] may contain HugeTLB folios. HugeTLB folios allocated
->> from hugetlb_cma can be long-term pinned without being migrated.
->>
->> After a crash, the crash kernel uses the memory in crashk_cma_ranges[],
->> but a device can still write to a long-term pinned folio.
->>
->> So reject long-term pins of HugeTLB folios overlapping
->> crashk_cma_ranges[].
->>
+> But direct I/O now fills a bio using iov_iter_extract_bvecs(), which
+> retained the original restriction and bypasses bio_add_page().
+> For a non-atomic request handled by a single bio, only the data before
+> the pgmap boundary is submitted. The rest is not transferred, and the
+> request completes with fewer bytes than requested.
 > 
-> Is spending the workload to protect the dump the right way round for this
-> option?  kdump.rst describes it as
+> Fix this by moving zone_device_pages_compatible() from blk.h to
+> memremap.h and using it in iov_iter_extract_bvecs(). This allows
+> compatible pages to be added as separate bvecs without relaxing the
+> same-pgmap requirement for PCI P2PDMA.
 > 
-> 	This reservation method is intended for systems that can't afford to
-> 	sacrifice enough memory for standard crashkernel reservation and where
-> 	less reliable and possibly incomplete kdump is preferable to no kdump at
-> 	all.
+> Fixes: 38446014648c ("block: don't merge different kinds of P2P transfers in a single bio")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+> ---
+>  block/blk.h              | 19 -------------------
+>  include/linux/memremap.h | 19 +++++++++++++++++++
+>  lib/iov_iter.c           |  3 ++-
+>  3 files changed, 21 insertions(+), 20 deletions(-)
 > 
-> so the dump is the part the admin has already agreed to give up.
+> diff --git a/block/blk.h b/block/blk.h
+> index 50abfd9328861..460c064f1d1b0 100644
+> --- a/block/blk.h
+> +++ b/block/blk.h
+> @@ -142,25 +142,6 @@ static inline bool biovec_phys_mergeable(struct request_queue *q,
+>  	return true;
+>  }
+>  
+> -/*
+> - * Check if two pages from potentially different zone device pgmaps can
+> - * coexist as separate bvec entries in the same bio.
+> - *
+> - * The block DMA iterator (blk_dma_map_iter_start) caches the P2PDMA mapping
+> - * state from the first segment and applies it to all subsequent segments, so
+> - * P2PDMA pages from different pgmaps must not be mixed in the same bio.
+> - *
+> - * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys() path
+> - * as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
+> - */
+> -static inline bool zone_device_pages_compatible(const struct page *a,
+> -						const struct page *b)
+> -{
+> -	if (is_pci_p2pdma_page(a) || is_pci_p2pdma_page(b))
+> -		return zone_device_pages_have_same_pgmap(a, b);
+> -	return true;
+> -}
+> -
+>  static inline bool __bvec_gap_to_prev(const struct queue_limits *lim,
+>  		struct bio_vec *bprv, unsigned int offset)
+>  {
+> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+> index c8a4979d4c780..a1d447a847990 100644
+> --- a/include/linux/memremap.h
+> +++ b/include/linux/memremap.h
+> @@ -202,6 +202,25 @@ static inline bool is_pci_p2pdma_page(const struct page *page)
+>  		folio_is_pci_p2pdma(page_folio(page));
+>  }
+>  
+> +/*
+> + * Check if two pages from potentially different zone device pgmaps can
+> + * coexist as separate bvec entries in the same bio.
+> + *
+> + * The block DMA iterator (blk_dma_map_iter_start) caches the P2PDMA mapping
+> + * state from the first segment and applies it to all subsequent segments, so
+> + * P2PDMA pages from different pgmaps must not be mixed in the same bio.
+> + *
+> + * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys() path
+> + * as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
+> + */
+>
 
-We have in there:
+Can you convert this to proper kernel doc while at it?
 
-"This option increases the risk of a kdump failure: DMA transfers configured by
-the first kernel may end up corrupting the second kernel's memory."
-
-... but I recall some discussions about short-term vs. long-term vs. cma
-discussions.
-
-Ah: https://lore.kernel.org/all/ZWJllXCN0SDIELrX@dwarf.suse.cz/
-
-"User pages for RDMA, should be pinned with FOLL_LONGTERM and that
-would migrate them away from the CMA area.
-
-But you're right that DMA to user pages pinned without
-FOLL_LONGTERM would still be possible. Would this be a problem in
-practice? Do you see any way around it?
-"
-
-And later (me):
-
-https://lore.kernel.org/all/04904e86-5b5f-4aa1-a120-428dac119189@redhat.com/
-
-"What does "short" mean? At least in theory, long-term pinning is
-forbidden for MIGRATE_CMA, so we should not have such pages mapped into
-an iommu where DMA can happily keep going on for quite a while.
-
-But that assumes that our old kernel is not buggy, and doesn't end up
-mapping these pages into an IOMMU where DMA will just continue. I recall
-that DRM might currently be a problem, described here [1]."
-
-
-And in the end, we settled for the 10s wait, crossing our fingers that it will
-be alright :)
+Also this should all be working on folios instead of pages. But that will need a
+zone_device_folios_have_same_pgmap() so we can defer it, not suitable for this fix.
 
 -- 
 Cheers,
