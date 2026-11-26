@@ -1,118 +1,188 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCE1606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 10:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C95606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 10:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XFmf/9UI
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=1CBlVtIn
 Received: by kanga.kvack.org (Postfix)
-	id 594406B05B0; Thu, 26 Nov 2026 05:28:43 -0500 (EST)
+	id 944B26B05B2; Thu, 26 Nov 2026 05:31:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 546276B05B1; Thu, 26 Nov 2026 05:28:43 -0500 (EST)
+	id 8F4BB6B05B3; Thu, 26 Nov 2026 05:31:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 433526B05B3; Thu, 26 Nov 2026 05:28:43 -0500 (EST)
+	id 7BC266B05B4; Thu, 26 Nov 2026 05:31:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 18A4D6B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:28:43 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94E4BA8A8E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:28:42 +0000 (UTC)
-X-FDA: 85476896484.27.4C52553
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id DC1404000A
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:28:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XFmf/9UI";
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795688921;
-	b=ptdXVuNDCD3rAYUfqerwSBpvC+s2Es55GFSVQDy9UjaByiX0IksiZKad/xMWWvvVIllj+R
-	82IaTr8SLTa37+VS4zAwOKEy5rOpJnO4gOEEL2tBvJjVwoVXYi1TJNIsW2KLXZfKwXX0by
-	cEjxHtcfZrgV96cSXuyjGfxIVqjYFog=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795688921;
+	by kanga.kvack.org (Postfix) with ESMTP id 46A4F6B05B2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:31:27 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8174BA86DC
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:31:25 +0000 (UTC)
+X-FDA: 85476903330.15.2CC0A12
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013007.outbound.protection.outlook.com [40.93.196.7])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5EEB72000A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:31:22 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=1CBlVtIn;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf03.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.7 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795689082;
+	b=2R/nZ61J81rxBfUrf3JvKu0g4RSkQ/6Ls3bGZOAIrdoWN/yQ6gTO4eHJIRP3qjF7TRyeVr
+	+gyowzgmpWEbFlVWYoHLCo+srSq5ckMTPZ10kYDLhG0VeC8wx5voSCkYChXPyZdynxaWn2
+	N1DWrn/MlfdmOZExYb3L4SBWN/O/ALU=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795689082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xPD3/o6xCiF7f4XJKB2+X8m6YFpbVm6rmbxAd1zz7Ok=;
-	b=1+pm6VRqdaMhMuFMp+MKp2fA1zhWzb/SN1Skb3P7qTFxrgv272u0XwP5jGG07qmVF8XVLp
-	oUX2pbDMfAUBpzLpNU3bNoOijM6ZVgUkOCfNRI5D/eqIyswYViPf0EHFDq2BcCf4w3prQC
-	LvnKNT0Y6u3envf/zGHG44X9UKu3NLA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XFmf/9UI";
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4782046069;
-	Thu, 26 Nov 2026 10:28:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A041F000C4;
-	Thu, 26 Nov 2026 10:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795688919;
-	bh=xPD3/o6xCiF7f4XJKB2+X8m6YFpbVm6rmbxAd1zz7Ok=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=XFmf/9UIQgxftAv9Jb8YIvR1VUIRRpK5a5WDDrP7Uhm80itZxyjRzwO97cd1dnVI5
-	 olOjHHH0kKch+m2XiYjK6zmh3p9bwSvareVD2CktSmffyvqKLWrF9zsTnPzwA9ypfs
-	 sH1SyEbxaLTF4XBvVeKORQb9Ts9WqSboQhXLaNKj8wHOyODSIfN8o1J9Nb3KLICr+2
-	 FMsDr6zqVQEK8jUv83B4V6im8d7yduBzl4ulRHFxeMyfN8+h6IZATsKb+DEhI+5iSQ
-	 +m/18p2oHDdt/LYlO6nfWSedQVdXNnFEZGddyFt6o1Z3Od9mF+CGzaskFZ1dNTc4qT
-	 pSmRjObl5T4mw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
- <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, David
- Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Mike
- Rapoport <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie
- Kim <rakie.kim@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Matthew Wilcox <willy@infradead.org>,
- Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Almeida
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5u?=
- =?utf-8?B?ZXbDpWc=?=
- <arve@android.com>, Todd Kjos <tkjos@android.com>, Christian Brauner
- <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Igor B
- <igor.b@beldev.am>, Vitaly Wool <vitaly.wool@konsulko.se>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v22 0/6] rust: page: add page kinds
-In-Reply-To: <C1137621-6CF4-4C52-A40A-C2875D37EC6F@nvidia.com>
-References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
- <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
- <871p8iue5y.fsf@t14s.mail-host-address-is-not-set>
- <3C3421E5-5B7D-42B8-ABD2-185375693D7A@nvidia.com>
- <87se0vu2ul.fsf@t14s.mail-host-address-is-not-set>
- <C1137621-6CF4-4C52-A40A-C2875D37EC6F@nvidia.com>
-Date: Thu, 26 Nov 2026 11:28:23 +0100
-Message-ID: <874id3vqd4.fsf@t14s.mail-host-address-is-not-set>
+	bh=oJyoZLKuLl3tH/UApHdtjPC6PNjyEudFDmqQMypXY9Q=;
+	b=VHH2GgxbExjDeM8+lznCig2VjqfsnnCXBaoKbn2JSurSxguKsr+Q0whb/rY6950/J48KRy
+	3isnDAWvEUkp72/lOoVqx06ckSfzvdIUaCdiAvAOcwdpjf67DZwcEnmdQyq8Sv8lzk/dwY
+	QxjvGuH8Tzz/HfnZgxJzh6wKjYR4VQw=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=1CBlVtIn;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf03.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.7 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TFp6ncmosNnFUEOaUWh9PphgRwYAxsFGo501W978xfVPtGNw8EVrQ3BGDGaAKs09hxtYgxAM6RwC7Taoy2vMuwdmFFwzL8A2Mm9uBkGFJxeqjENtgi93oU98IjSv+1Gbuo0PKVmD5KeHRbQgjU4f0aFrBLV5kTMRB7WYZi/waV1POb4yOvPi09HrtoInFXzTpFcbwfssj5JjBzFCvCEmB3E12pos+iM9cJrBg0dtQZE6FtzH8ky7w92pdkqaUqtDjQV97M1oFDRTzlKUaoxoN/DuYo5yxq3gc7SIqhIyRNQI2029NSYwoEqmLMlmek0mzoVLAA8dFzdPhWyU+dhAgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oJyoZLKuLl3tH/UApHdtjPC6PNjyEudFDmqQMypXY9Q=;
+ b=B0j0KK7nIfI+5+VwjDN6/Glg1vkB0orawa6O2dkSUHsZoU4WnxJSxzMppoGzJ3rD7ytFNu8Yx7IB/sKROc9/nSlOtQulcaVXIXHAfNHxC//nb2Jf5gIF0pBuAfqepRS/OqCLtc3oNVMWWd2eW+E01x8fJ7vnFLiQlnc8rTmYHJzJTo1tTKQCFamf1p3SBwjPy9apkdclkz0ufBOj29gN81gZCXE1SBc70Hfv5mHFt/Q69xynt7HEJXsyZpDR18QhRU7RJvUST/2DSBjGkAGpoT1qchT2GdIPOQgZhFgCvrGxa4rWZVzaBW0uXUUhebhyJjhS4O6WdY8sM/YKAYd2jw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oJyoZLKuLl3tH/UApHdtjPC6PNjyEudFDmqQMypXY9Q=;
+ b=1CBlVtInauZoHWRQtj0OKvPFBt7CgVXOaGGjDsrFye2tfYJvoxqrqLtCYaa0Tp7pjphce6Gh4dc12+F8fwBu9dHebCjU5I+0iTB/D/eZ/v4pJ/26KJiUQEBWdLgoYjKfbnkDkNsNUftA2KrJV/aga6jj8Tj2z99FjgzT6YrwD9k=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by IA1PR12MB6017.namprd12.prod.outlook.com (2603:10b6:208:3d7::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Thu, 26 Nov
+ 2026 10:29:29 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%6]) with mapi id 15.21.0662.001; Thu, 26 Nov 2026
+ 10:29:29 +0000
+From: "Garg, Shivank" <shivankg@amd.com>
+To: "dev.jain@arm.com" <dev.jain@arm.com>, "chrisl@kernel.org"
+	<chrisl@kernel.org>, "david@kernel.org" <david@kernel.org>, "ljs@kernel.org"
+	<ljs@kernel.org>, "hughd@google.com" <hughd@google.com>, "kasong@tencent.com"
+	<kasong@tencent.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+CC: "baohua@kernel.org" <baohua@kernel.org>, "rppt@kernel.org"
+	<rppt@kernel.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "vbabka@kernel.org"
+	<vbabka@kernel.org>, "harry@kernel.org" <harry@kernel.org>,
+	"riel@surriel.com" <riel@surriel.com>, "anshuman.khandual@arm.com"
+	<anshuman.khandual@arm.com>, "surenb@google.com" <surenb@google.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "youngjun.park@lge.com"
+	<youngjun.park@lge.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"jannh@google.com" <jannh@google.com>, "liam@infradead.org"
+	<liam@infradead.org>, "mhocko@suse.com" <mhocko@suse.com>,
+	"lance.yang@linux.dev" <lance.yang@linux.dev>,
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "pfalcato@suse.de"
+	<pfalcato@suse.de>
+Subject: Re: [PATCH v5 2/8] mm/swapfile: add batched version of folio_put_swap
+Thread-Topic: [PATCH v5 2/8] mm/swapfile: add batched version of
+ folio_put_swap
+Thread-Index: AQHdfYyMGA2d41Oe/EKQcrgn2iSM4rdAJuwA
+Date: Thu, 26 Nov 2026 10:29:29 +0000
+Message-ID: <5d69b91c3f1f76f0f16125b5fa33b58a3ab86f93.camel@amd.com>
+References: <20261123053543.295467-1-dev.jain@arm.com>
+	 <20261123053543.295467-3-dev.jain@arm.com>
+In-Reply-To: <20261123053543.295467-3-dev.jain@arm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR12MB5259:EE_|IA1PR12MB6017:EE_
+x-ms-office365-filtering-correlation-id: 3bbe2bdc-073d-4991-adb2-08df4ba8272d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|366016|376014|1800799024|23010399003|10067099003|261021123027099003|261026140227099003|4143699003|261009223027099003|11063799006|5023799004|56012099006|261021135927099003|261022075727099003|261022105027099003|261021121427099003|261102123227099003|261028144727099003|261026121527099003|38070700021|22082099003|18002099003|6133799003;
+x-microsoft-antispam-message-info:
+ KQg2xDFLcD3fpaO2BC28uovQg1UDTuoyKvBDEM3vdn6miYcKlgYMHi1JnbCRMLBtGEiJ7497tEpu+cMRMbFbBz5vr/hHVVDBtZDn9CYcJP2HmqmJo1IxPb4xb10G+tuySy1HbKHvdBGJi8vtBZfoj2C7mBkr74lW3HUHu6wFyXqkiN19RQY1Dltsdop5bjlucI2qqvNvK8aDHU6wDEU4UK4xI1moqllhwvYAFbisbD4SLHZ9aDuxwI4kmSBFYkBFYvq3WrfehpkJgFBHEhqXYUSFhK63oULn5qFAC8R36h9HwNFvlI0e03cbNnWuKMYef9T3rLi8TUpb0SCfuJV2SL0X6vGhANT4LlTJ25A12rzcux+8pTTqkrBzetDT+op4P9kctcoOzsGRZcJThZZtVpSVrtQv3oSLyZu1vr7TflwiAZAGk9TizXxrd1DuT8xPa6d/n0tMdo6BpiM0mMt3Ves7JjvWqMlFCugyl3PUft6gxtzyppVmTvyoZLTZeTv7CF/Bq4rqQ3c8Il8Y8bugQ0oJkG44AWyOK3Q5q7Nakmr/2k/rFWz7gb3KukVEV5E8gpys8HKp6oi5ZMUIWB/Sw8YTKs9IDvkDpkj/QpscoOOEtQFx3ZGvITRJFJlAg/+FrVIahVA7HfY4KQzSaBPW58N+LQXf+TkOP1Yxjpai8EuRYZ6TbNGYHcR7TMXCpypp29t14PIBIw7GlvetbzdDTcdI7q73T3VQLef3eb0p9mA=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(23010399003)(10067099003)(261021123027099003)(261026140227099003)(4143699003)(261009223027099003)(11063799006)(5023799004)(56012099006)(261021135927099003)(261022075727099003)(261022105027099003)(261021121427099003)(261102123227099003)(261028144727099003)(261026121527099003)(38070700021)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?cy9EQUgwai9GNWcramZTclU5UWdCQWl0UFZrNXVXc2F5S2tGK1NmUlEzUWts?=
+ =?utf-8?B?cHlvTm1PRzViLzV2Uk5xeTg0SnBZdlQzc1VkUitQdVpWc1BnOVdjSkZ4ZDlS?=
+ =?utf-8?B?SGFRVmVxVVdSWktFZ0xhSmF5dy8vU0tDYW9UbWpsdURjL3EvQU1nS3Nudldk?=
+ =?utf-8?B?b0w2aGo4dzJGZDNIdTdJVU1SSE03aDlqZ2tsekVIVCtXRG9hMEY3SHNTVVlO?=
+ =?utf-8?B?SmJQN2FaOWhBK0pNc3NvbVZUamRrbjkxMW52MFp2MmVrZkFJYk94MllMRmdr?=
+ =?utf-8?B?SXRpQWQraFNLTjFZRE9vc0NudGJHeU9iSnV0NW8vL3M3Zlc3dHZXR3BGT0lY?=
+ =?utf-8?B?YmMwQzFRaFFlYjNvaGpLd21pejdFSmJaR29qZU9vRXNWWnNRQ0Z0QW1BYk1t?=
+ =?utf-8?B?S1ZCKy9TWGdpYXU3aW9VMUxZb1pMa0NJZmJUY1QyNVR0eFVhRGFzWHRVbEFD?=
+ =?utf-8?B?QVZhYmRlbDdtTDVJUFVUS3VkTVRMN0U4VkI4ckFyR1lVeXNQTlJrcVhiSmJH?=
+ =?utf-8?B?UVVQaXZ4M0VVbnd5ODk3RW5FNjlxQ25LZnA2Y1BqR1ZRMUFUYW0rMEhIbEFB?=
+ =?utf-8?B?Mys5MDRta0hrLzBoQ2cvZ29raEVLUVRMZzdCKzdEMFJIWnJXNGd6NDF2U0w1?=
+ =?utf-8?B?ZmxLMU9PeXBaVHJaaVpwRW5qbnRuS2dzQlZTRW1zbW9rZk9zTXZ0K001d2xQ?=
+ =?utf-8?B?cjdSemdYWnVyeElyZjh3ZWxtTnFobFNDT3h6NThtWk4xT3dWQXNqdEpBeG53?=
+ =?utf-8?B?RGRCVU9jU3VFUnY1TXFDY1d4WVNuRlBOMVNEcElvNFNzZjdHOHZQSkR2ZlRW?=
+ =?utf-8?B?SXBKTU5pOXkxOUNDRnh0UTBBVnMxckg4b1YwOFVreWZkdTRpdE5MQkFDRlIr?=
+ =?utf-8?B?ek5VUmtML0tIZUo4QlN2aWQwWi9peVFwUEZWOFdjTUkyUUZOZFBBaThIY0ts?=
+ =?utf-8?B?bHkvVUY5TDYyaFZxdktUVkNzR1pJc1h0TkxmLzRVVStnWjFSUWt1OCtFTEtY?=
+ =?utf-8?B?MmZJaVpJMUtMSFQzeS93anNXV1lxWVlJMUJYVGhkcWYrU2lFenF2K3VwVFky?=
+ =?utf-8?B?RWc3cnJlamhnTFVMTG9MajlUU1dGZnJ5ZWY4Vmk4VFZ0bVM4enh6WjNtbm5E?=
+ =?utf-8?B?WkRBTE9zeFlHMmx1K2svaXROeTNYMXRKTDRhRzkzTFR1YmVDTlUycVhVeWln?=
+ =?utf-8?B?VlNGcGFpSTRBYXRYcm9UdEtkMkl5OVNZWHBMMTl0cW4zQm1jek1oaFpNSlh5?=
+ =?utf-8?B?WG1XVlowbHJxNFE0d21lUUo4cndKVkRlZzhDYnF0QXJ0T0czMUJOTGk4Mysx?=
+ =?utf-8?B?Y2VPUkVsdXNZc0FXaHI3bkZFbWJSYkJSZzFHT3RUalVNQ3Z4RWN4L2V1UHVi?=
+ =?utf-8?B?WEFFbmJtdkcxMVRzM2hPRGZQTGx6c1dUWGdna1owTHpHN0NVanR3Rkh0cUxx?=
+ =?utf-8?B?N0VRVlJHV2grams2MHRsbWdVTHJ3RnpyQXdSQUlxZ3p0Q2l5aGl0WElhWG84?=
+ =?utf-8?B?Y1F0MEJYbW5jQmJ0b0diQUJNL1hqL3lNUGx6b3N2TG91dDh3dmRHYm9JL1NC?=
+ =?utf-8?B?ZXdIRHZoMGtaY24xYkdLdU5uUC9wUlZIMzdrd091dEZjNkNQWENmV2tzL3dk?=
+ =?utf-8?B?SGl1ckdaSUxObGkvbUpBN2ZYRDlDRmErRVBsR2ZuMm5TeU5ZYlI3S1FRcjZQ?=
+ =?utf-8?B?WmVwZ2NNWFAwZE9tWUYzQU92aTMzMzIxaktFc0U4QWNNeCtQVXExOVhxZDIw?=
+ =?utf-8?B?ekFSTFVOcFJSUmZqMkp3WmxLRHdHKzFRcEo4THdSSG1oS3JmZDlaWmZmM1h5?=
+ =?utf-8?B?Wk1DYWZKdHZLNlI0enhENHpJOG93SjlGc2NpSjF1ZUQySnh4STFzbXZXYUNJ?=
+ =?utf-8?B?QmtFZGx4ZStjWEtWdWIxeXVwRGg3R09EV0x4SkhhNWNJUEFYeFZBMnEvbWgx?=
+ =?utf-8?B?OXVZV1I0Rm5RODZ3S2JVakpWV2M0UTRHY3ZLZ2VISzFJbHFhMXBGOXpIWll2?=
+ =?utf-8?B?U0xHeG9jL3BDUUZYbnYxQmFQUUx3UWxFbFpwamFFTVVnVmkvZGFyTXdsSEhj?=
+ =?utf-8?B?MTY0MUJVdUtvZGFEekRUdmdLWDNyTVF4emtXK1BvMHZBMkNoUk53TkdINS9U?=
+ =?utf-8?B?WHdGV1hRTERNU1hHM2gxdFB0REVqRkdwU3ZvUUp3THFqcWJxOWxMR1RIVUFI?=
+ =?utf-8?B?ZEZ4VkhFWXlGUmRWSXkyeW1PTE1HcEhzaUNzczRqS2NnNjZvTFl0UHAya2Rr?=
+ =?utf-8?B?ZXByNFZEeFNGUnk1TURjTkxpT2xUV1huajRvU0pwRXVvMERrZ0c2LzQzT2la?=
+ =?utf-8?B?NDBZd3p1YXExUGxKOURjNjJqc3ZHb0NXNU9wSmFQL0VHekF0RFNQZz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B6BD06E4EA4D054A9FAEB916E26FC62C@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3bbe2bdc-073d-4991-adb2-08df4ba8272d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Nov 2026 10:29:29.3392
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6CIpg84dpuQkOAJ9DDBowbL+E4DT+S8zVue+ZfhIX+DUJSmlKpsslWmI8jC2brb8gQcmfmAd4Pd6JPb9d/M79Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6017
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5EEB72000A
 X-Rspam-User:
-X-Rspamd-Queue-Id: DC1404000A
-X-Stat-Signature: wzsaw6khjamm5a5xzc4x46to1kf4fjbn
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: k7ckgocygjkfpqba44wcedqi4j8o911g
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795688920-83715
-X-HE-Meta: U2FsdGVkX1/nU15Ikj001yMqe/9dztqcKCf+OiIIMlI3Zgp3tZCoMNAWJCezPQkTr3H8o5c9MfteGLnmVf9Ol7+QkmXVc0SpRPE5pSHw/SARYFIBwUjLi1JaumLlVE7B97CQ5WnXQbowUCWItLpzjZ5fSrKDGshZU6ItUl68yIN8oSBsl6hb8cDss69H2eAWy+llF18uQOprVgaqHTFI7OHPsCFVndsb2x2oAFUz65wMrez4AmstbzgeaYpvpggT1v41k25Fi62z71alrU+BB/9yHoJZX41LoV3ojoMONdmw2tJ8A0gHB9eNjiutI295DQfqTqn3lC9zgGxCBg1/5al1h9UgEay+93RuchMsyL6BZljXyl7u9V2Nt2zuRSU/IA5Dt7cAT+vtdE9e0a115ZLIWnrkV9sUXOkCXcvBwGeySZ8J3HmJviwW7wqmHl5bn1/fgAQ1BLs+lCK9MbIa8oUAEUP+ZlRcBCD0qtVWL8RArzQ/8XmETpZq3/cNqymo2LXI0FXKuul+2w0thLRQgkmiwjGuxlRs+/yw0PXcxJkaz2ZQW6ucg62zFIf4JWO3Ps8HI2K3DHhi9/nRym2l2ztJ1J/o9matFeQ5Bxwt3La/DY6o+uW/dwuLbJh+OLGnPcbXa9VOD5DfSGTIPymyPz2PNeBJa6j7r0vmqCWzTntzUActdx7cPXcRs/ROthJosr/KeMKiq40IFGGVtNOPYnukWzm4CfSToZDXrm981BAbA5gZAKquWKbc3LnfrS/1XvYfmsVg4GAFYtLFpBBrESRy3hceYv2iQunUCSl0P/2FS9uxaJlTlmJdv9p+qmS6TOEQ+JKbtvSmYstUPzmDzI6nCURfsevMuRNuAwQdvu6MjmqgIeP/WXSAa7VprUVuZAnd9w4APTdUGW1D+BFjFQQIsHnd02572X7ZUXM1xAI0pzt8X4GefJJ+P2D1MwGpKqBnPBgVwz7jRJEBh3S
- 8c+gig/F
- kRnCAcHGYJ9sof4hNVSYsnTz5jiXuFp8tkHKxT12Ly94HIb+IKAmAaAz8qHSXzqycIvms5DK9PA/sQBovTw5V2xUUyum/HoEjqpkobMeVMjQI08F1d9lDp1cHJSZgJGBx+0FbrLor8BbD8YPlYsjrXJWf2sC398A2cJ24ooK3QUBwbZzDAASHMKMHdk+8+sKHvHLAd+VIBGvB6OsOpcr7C+6NJ5nAh4nF3y5MSTmW4CsSh8EqAa9mgmd4CMOgEbr8t0NQ7YPeG6C5DG3Ax7Ukyo90dJDHaKljB8QAJNT2+ZNvTsD1sZYk0g9ksa2lT63aVMvwT2LE37MYfFPatxWHYBVLDl43bTq/7MTE113ho63gkF1dKorq1OkPSCOfF5BRKupWVYfclYQWI9+ImAXYWa1033WpyV1OqcIyqtLuqFmDu5OFvRRycLOAM8aTILxETazCeaL8R07+/h3NWH7ieu3OdkYOv0RiOPMTqZNfhSgnGt1F335r/NfIGmmt+UYI6BzXaqhZbzuwI4gE9bpxpCgQezAb9ucDsDyR4ElO3Q/YYQoFdffoDQVew/8XO2HkvxA/LE/HYJ27UIe2fGcyqBWNvhMzqfAM7OQiVlZ9vx+GVzg8DCs0AtpQkA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795689082-490961
+X-HE-Meta: U2FsdGVkX18mhTtuk+rirPNkk3+2jbNlcRenZI2CklEmnA0QogtsW01ayDb1jR1O/SJ/Awjz2GaHE03Aqtm/U36V/JnU8TrDD8MtFbCtRMxSpIGXBW11/i87pEdAt+gebPl7g6Bmn/9cN5w0XeWPCa/TCRbSOYeL3S4BoYcxWUad4APycPlOgzhYXok4W1d4w549D+wlIYUYwLnQVo+GblXezkpaujoS7MWpwg61JVcDhGMvkmcBVcKX5JT+BrruWf5PV7biISHDQOzm9JI7bvb3fvHGn1fXpWJ43llIyAkmugeQvUVNwWSIoPLQ3daRrFDh0G+gE/e5G8NWzZKerG9dZ2za9rhFHFDnJrGvIduS0JHbM/dGSmMEod5aRSeoVls0kU4horchqzQKtH7YlocB/XboPwUarZBtBZqWp7imF0s47iysJRCves3a/kendtUDwTSJX16xZr1ui0QPk1aEEFlVcDFVCsEM8C1LlNhKm4+UFUbTT2KWcWdagLYd3FIr8OB7vVciGo9rHagsxJcv4vRiLbmD9tE8ua/p6eLBvL/uWhL9xg1PGLmd6H5SOqHqXX4JIQUFZ0RK539rNJzU3ksthx3zimxEainBZ0V1zUu1HDugyZ6UhMDRLSv4GQIUxXndQKx6TKGLdjjPg08RYg0pc/rpZK8G5Lk38nceT4oRRpZBaptUGbpv5J22VzRzGPI7f8zKPEIFFzeXHeP5E/qMNvtT1BwvLVKF+uku/t2n29kPrdgHIaeT6I1L5GHWFp9n7qPeqs/vsSd4qL57ETERTn1Nv7f1ig+Ue82HsEyxGbTGSYaLq0OdlWl6qLPBIEey2vpRKnqkTJTVmcK0nbTIjUXwdMdhmGmss0afObKQnLvgLNDl5CT5mBlUMSe8+vo8Met0io3pj0Ul4qO7dE06X6xcyMe1kEByCF0D/1QpPf/v9TzzDxbW/VeaipTNWrzyOcH8GYYUqQe
+ g0EtGdps
+ jvOkoQ9niPbenNAYJCVb5RJj6tOR2RUViV4Bo5pNsMf4ryVeqH4PgtE/sf2XmACOePIRs4nB2TYcSHChKa7mIBIAbSqNod+J49nYq2KFN3S7cFMZ+2tVgWLrxq3YZhABkfylhjhDGnYfiktB/l4NQtynVnyQ78k+vClen10LXx3eEXRy1+nrWU5Qri5iAmsvenbZoiedyCXrebQtzH9EupmTflp3bBU1th2aGWDTIWfOsGkh7GvnZ/65D+wX3IXG0MMPpZkhQFgHmvQOmADK0V125utD3YQhIIDKeSooAKGHZCEN1COfrye4Vhuz8Wcr3CEossOuZKDRoAFQuxNUk1tQ92mAyRfgxa2hxDFNEnPb0ayPkGpJyIcBHQX6iM9V0ZamWXsvgR0nZJGyEQgU0II0d2K9ssXjqBEgZp3TLDKHKVm8EC5TCM4bw9sGpZfxZNFaxNeCSqd4ni9Ok02wolbpres4t30x4b7KhftrJoBaP4hhyBJmtUhhX5JoRuXpyvF99boGU/DDU5fV+pfeTactCPxV9rA6unSwpcPYu9qoHJCfLyguTrX5ohWhQsvGZ0vcQuaSxUHtty1Sd/h9A5TVx+yQsgeldgmQpRJLmeEI2kB59t7FpSgMqixQeKn9aFgi7+4xsZ5nqqKh9kRRiyZwHjBLpsdLWw7WUHX6g9Ql7d9grI0X6C3dWYNU2tb7v7Zsmj5tc7POrwOx0EnSkj0zcNhgAAj7s9bG6vwrW+wUqfgaKxS/lyVO0Gpsr1KkFH+QQmTU/LUSBkuFiLHw8b2JBzj6OmaVXUwbZ33b1QPO4ZBiTyCvfBCJfFqBNVtMY4uSEiS7gCNbqEfAx1rOt1zo3e1Wp3Lw+Gb7yuN2xAI+rUqBUBT31JSufnuUvwosyuBsZc3jzSjSZBVAX5hW1UfJUkOo+AQ84xCmAZVoeLUMJnxPza4G38LBS7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,350 +191,148 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Zi Yan <ziy@nvidia.com> writes:
-
-> On 20 Nov 2026, at 7:03, Andreas Hindborg wrote:
->
->> Zi Yan <ziy@nvidia.com> writes:
->>
->>> On 18 Nov 2026, at 14:34, Andreas Hindborg wrote:
->>>
->>>> Zi Yan <ziy@nvidia.com> writes:
->>>>
->>>>> On 18 Nov 2026, at 11:18, Andreas Hindborg wrote:
->>>>>
->>>>>> Note: The page patches were part of the `Ownable` series [1] until v=
-21.
->>>>>> This series continues the version numbering of that series, and it d=
-epends
->>>>>> on v22 of that series for `Ownable`, `Owned` and the split of `RefCo=
-unted`
->>>>>> and `AlwaysRefCounted`.
->>>>>>
->>>>>> Not all pages can be treated the same way. A page allocated with
->>>>>> `alloc_pages()` is managed by the page reference count, and kernel C=
- code
->>>>>> routinely takes its own references to such a page. A page owned by t=
-he
->>>>>> slab allocator must not have references taken to it, but it can still
->>>>>> show up in places such as a bio vector. A frozen page has a reference
->>>>>> count of zero and is exclusively owned by the party that allocated i=
-t.
->>>>>>
->>>>>> A single `Page` type cannot describe all of these. This series makes
->>>>>> `Page` generic over a sealed `PageKind` that describes what is known=
- about
->>>>>> the page:
->>>>>>
->>>>>>  - `Page<Base>` is the base kind. Nothing is known about the page
->>>>>>    beyond the validity of the `struct page`.
->>>>>>  - `Page<RefCounted>` is the default kind. The page is managed by the
->>>>>>    page reference count, and `Page<RefCounted>` implements
->>>>>>    `AlwaysRefCounted`.
->>>>>>  - `Page<Exclusive>` is a uniquely owned frozen page whose data area
->>>>>>    follows standard Rust aliasing rules, so the data is available as
->>>>>>    `&[u8]` and `&mut [u8]`. It is handled through
->>>>>>    `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
->>>>>>  - `Page<Frozen>` is a frozen page whose allocation is uniquely owne=
-d.
->>>>>>    Unlike for `Page<Exclusive>`, nothing is known about who accesses=
- the
->>>>>>    data of the page, so the data is only available through the unsafe
->>>>>>    raw accessors.
->>>>>
->>>>> Why do we need to allocate Page<Frozen> when we can allocate Page<Exc=
-lusive>?
->>>>> To me, Page<Frozen> is an observed page state from a non-owner point
->>>>> of view.
->>>>
->>>> I'm not sure we need it, which is why I added this note:
->>>>
->>>>  This currently has no users, but I add it here for completeness. Let's
->>>>  discuss if we should keep it or not.
->>>>
->>>> The difference between the `Page<Frozen>` and `Page<Exclusive>` is that
->>>> `Page<Exclusive>` has stronger invariants. Namely that the (physical)
->>>> memory region of the page does not incur data races, and that the page
->>>> not in highmem. From a Rust point of view, this allows us to obtain a
->>>> reference to the page contents without jumping through any hoops.
->>>
->>> But access to memory region of the page is associated with page table
->>> mapping or IOMMU mapping (for device, and I assume devices are accessing
->>> data via virtual addresses instead of physical addresses to avoid furth=
-er
->>> complication). It seems that you are trying to use page refcount =3D=3D=
- 0
->>> to infer that no page table mapping exists for the page. But how about
->>> kernel direct map?
->>
->> `Page<Exclusive>` has the invariant that it must not be in highmem, and
->> as such is always accessible in the kernel virtual address space. As far
->> as I understand, this means we do not need `kmap_local` before accessing
->> the contents.
->>
->>> Anyone with struct page can use kmap_local*()
->>> to get kernel direct map and access the page content. kmap_local*()
->>> does not reject frozen pages.
->>
->> `Page<Exclusive>` is a unique handle. Nobody can get a hold of the
->> underlying `struct page` to perform mapping operations on the page.
->>
->
-> Right, but if kernel direct map exists, how can you claim
-> =E2=80=9Cthe (physical) memory region of the page does not incur data rac=
-es=E2=80=9D?
-> At least, =E2=80=9Cassuming no one is accessing the region via kernel dir=
-ect
-> map=E2=80=9D could be added.
-
-I think I see the disconnect. Let me see if I can explain.
-
-In Rust, when you allocate memory that is not reference counted, you get
-a handle to it. In safe Rust, you are the only one with that handle. The
-type system makes sure that you can only write through this handle if
-you did not share it with anyone. All this is ensured statically, and
-the handle compiles down to a pointer at runtime. `Page<Exclusive>` is
-such a handle. Assuming absence of unsafe Rust and C code, the allocated
-memory is race free.
-
-In the kernel of course we have C code and any thread in the kernel can
-access any piece of memory mapped into the address space, including all
-physical memory via the direct map (assuming no highmem). But that is
-not how we generally write software. If we want to access the contents
-of a frozen `struct page`, we will get the pointer to it from somewhere,
-probably an allocator. Probably we will call `alloc_frozen_pages()`. And
-assuming the allocator is correct, it will not hand out the same page
-twice, at least not until it is freed first.
-
-So the page backing `Page<Exclusive>` comes from `alloc_frozen_pages`,
-and since this function will not hand out pages that are already in use,
-we can claim that the page contents is free of data races. If this is
-not the case, there is a bug in the kernel. Pages handed out by
-`alloc_frozen_pages` should not be in use.
-
-And because of the type system, users of `Page<Exclusive>` can only
-write the page contents if the compiler can assert that the handle is
-unique. This is called an exclusive reference, or a mutable reference,
-in Rust.
-
-They `Page<Exclusive>` type makes sure that the page cannot be used in a
-way that would cause the page contents to incur data races. It cannot be
-inserted into a vma, for instance.
-
-So the guarantee comes from ownership of the allocation, not from mm
-preventing direct map access.
-
->
->>>
->>>>
->>>> I do not have a user for a frozen page without these invariants, but I
->>>> would assume there are use cases?
->>>
->>> For the above reason, everything is Page<Frozen>?
->>
->> Pages that are part of user space process vmas are not frozen? We see
->> these in system calls for IO.
->
-> Sorry I was too vague. I mean Page<Exclusive> and Page<Frozen> should
-> be Page<Frozen> given that kernel direct map exists. Strictly speaking,
-> Page<Exclusive> should be pages allocated without kernel direct mapping.
-
-It is OK for the pages to be direct mapped. In fact I think they _have_
-to be, otherwise we would not be able to access their content.
-
->
->>
->>>
->>>>
->>>>> In core-mm, a page is frozen, when its refcount =3D=3D 0. The code lo=
-oking
->>>>> at the page knows the page is exclusively owned by others. If the code
->>>>> allocates a frozen page, it will not check its refcount, because
->>>>> the code knows it has the exclusive ownership of the page. To reflect
->>>>> this, the code calling alloc_frozen_pages() should just get
->>>>> Page<Exclusive>
->>>>
->>>> Is it always the case that users of frozen pages will use them in such=
- a
->>>> way that they can guarantee no races to the page contents (physical
->>>> memory)? They cannot be mapped for DMA access or anything like that -
->>>> that always requires a refcount?
->>>
->>> See kmap_local*() case above.
->>
->> Right. Both `Page<Frozen>` and `Page<Exclusive>` are guaranteed to be
->> the only reference the underlying `struct page`, and so nobody can do
->> mapping operations from under us. The difference of the two is that
->> `Page<Exclusive>` provides guarantees about placement out of highmem and
->> no races on the page contents.
->>
->
-> Sorry for being pedantic, but IMHO =E2=80=9Cno races on the page content=
-=E2=80=9D is
-> too strong. LLM tells me, let me know if it is wrong, that DMA map
-> code does not check page refcount and currently gives a dma_addr_t
-> for slab and kmalloc pages, which are frozen. This means a Page<Exclusive>
-> can be mapped via dma map C code. What is the plan to prevent that?
-
-`Page<Exclusive>` cannot be mapped for dma with safe Rust code. We use
-the Rust type system to ensure this. We use different types to express
-different capabilities.
-
-(Future) Rust DMA mapping APIs may not take `Page<Exclusive>` or
-`Page<Base>` as arguments.
-
->
->>>
->>>>
->>>>> and if the code encounters a Page<Base> and finds it has no refcount,
->>>>> it should convert it to Page<Frozen> or there should be a method
->>>>> that accepts PFN and return Page<Frozen> if the page of the PFN has no
->>>>> refcount, for PFN walkers.
->>>>
->>>> We can add conversion functions, that makes sense.
->>>>
->>>>>
->>>>> =E2=80=9Cthe data=E2=80=9D mentioned in Page<Exclusive> and Page<Froz=
-en> is struct page
->>>>> data or the data in the physical frame pointed by Page<...>? If it
->>>>> is the former, is it better to use metadata?
->>>>
->>>> I'm referring to the actual physical memory region that the struct page
->>>> describes.
->>>>
->>>>>
->>>>> I am new to Rust, so feel free to correct me. Thanks. :)
->>>>>
->>>>
->>>> I'm new to mm, I really appreciate your eyes on this.
->>>
->>> Do you mind describing the high level workflow around Page in Rust?
->>> From my point of view, exclusive page content access is more related
->>> to page table (including IOMMU page table) than struct page itself.
->>> struct page ownership is more about the metadata stored in struct
->>> page for physical memory maintenance.
->>
->> Just as in C code, there are many workflows around `Page`. Three main
->> ones I have seen in Rust code are:
->>
->> - Pages that are part of io buffers during a syscall. The pages are
->>   mapped in at least one user space process and the kernel may want to
->>   read or write from/to them. These would be `Page<RefCounted>`.
->
-> Is RefCounted too broad for this? A refcounted page might or might not
-> be mapped and a mapped page might not might not be mapped into userspace.
-> Is UserMapped more descriptive?
-
-I think for the invariants we put on `Page<RefCounted>` it does not
-matter whether the page is mapped or not. The fact that it _may_ be
-mapped is enough. If we need to figure out whether a page is mapped or
-not in order to give access to particular functionality, we can add
-another type for that. This pattern is some times referred to as
-typestates.
-
->
-> FYI, I am working on adding PG_folio to distinguish user rmappable
-> folios from general mapped pages. In terms of pages mapped into
-> userspace process, they can be either rmappable or vm_insert*()
-> into userspace.
-
-For now we do not have any infrastructure for handling folios in Rust.
-We only handle order 0 regular pages. But I imagine we will need it
-eventually.
-
->
->>
->> - Pages that hit the block device driver API via the block layer. These
->>   can be anything, so we model them as `Page<Base>`.
->
-> Even they can be frozen without a refcount?
-
-Yes. Quick robot overview on v7.4-rc2 (I did not verify all of it):
-
-  Kernel buffers from kmalloc() live on frozen pages (refcount 0). The
-  block layer turns such a buffer into a bio_vec with plain
-  virt_to_page() and never takes a page reference, so the frozen page
-  ends up in bi_io_vec unchanged.
-
-  1. Where frozen pages come from
-
-  SLUB allocates the backing pages for all slabs as frozen pages:
-
-  - Normal slabs: mm/slub.c:3379-3384, allocate_slab() =E2=86=92
-    alloc_frozen_pages() / __alloc_frozen_pages().
-  - Large kmalloc (bigger than KMALLOC_MAX_CACHE_SIZE):
-    mm/slub.c:5474-5477 calls alloc_frozen_pages_noprof() and then
-    __SetPageLargeKmalloc(page).
-
-  So every kmalloc()'d buffer sits on a page whose _refcount is 0,
-  whether it comes from a slab or the large-kmalloc path. The pages are
-  freed again with free_frozen_pages().
-
-  2. How the block layer turns a kernel buffer into a bvec
-
-  Everything goes through bio_add_virt_nofail() (block/bio.c:1055):
-
-  void bio_add_virt_nofail(struct bio *bio, void *vaddr, unsigned len)
-  {
-          __bio_add_page(bio, virt_to_page(vaddr), len, offset_in_page(vadd=
-r));
-  }
-
-  __bio_add_page() (block/bio.c:1030) just calls
-  bvec_set_page(&bio->bi_io_vec[bio->bi_vcnt], page, ...). There is no
-  get_page() and no pinning. The bio borrows the page, and the caller
-  has to keep the buffer alive until completion. bvec_set_virt()
-  (include/linux/bvec.h:71) does the same thing for bvecs built by hand.
-
-  3. Concrete call paths
-
-  Passthrough requests (most common for a blk-mq driver):
-
-  nvme_identify_ctrl()                    drivers/nvme/host/core.c:1500
-    id =3D kmalloc_obj(struct nvme_id_ctrl) // 4 KiB, slab page, frozen
-    __nvme_submit_sync_cmd()              core.c:1210
-      blk_rq_map_kern(req, buffer, len)   block/blk-map.c:652
-        // aligned and not on stack, so no bounce copy
-        bio_map_kern()                    blk-map.c:312
-          // !is_vmalloc_addr(data)
-          bio_add_virt_nofail(bio, data, len)
-            virt_to_page(data)            // frozen slab page
-            -> bio->bi_io_vec[n].bv_page
-
-  Other blk_rq_map_kern() callers follow the same path: SCSI
-  scsi_execute_cmd() (drivers/scsi/scsi_lib.c:318), virtio_blk zone
-  report and ID string (virtio_blk.c:581, :831), and ublk
-  (ublk_drv.c:679). Only misaligned buffers or buffers on the stack get
-  bounced through bio_copy_kern(), which uses freshly allocated,
-  normally refcounted pages.
-
-  Filesystem metadata I/O through bdev_rw_virt() (block/bio.c:1613): XFS
-  (xfs_bio_io.c:27), btrfs scrub (scrub.c:2922), gfs2, hfsplus, zonefs,
-  ntfs and hibernation swap (kernel/power/swap.c:268) all pass kmalloc'd
-  buffers. bdev_rw_virt() calls bio_add_virt_nofail() directly. The same
-  applies to code that sizes its bio with bio_add_max_vecs() and then
-  adds a virtual address, such as xfs_buf.c:1290 and
-  dm-pcache/backing_dev.c:227.
-
-  KVEC iov_iters: iov_iter_extract_kvec_pages() (lib/iov_iter.c:~1747)
-  also does a plain virt_to_page(kaddr) with no reference.
-  iov_iter_extract_will_pin() is false for kvecs, so BIO_PAGE_PINNED is
-  not set (block/bio.c:1365).
-
->
->>
->> - Pages used for backing storage like in the null block driver. These
->>   are modeled as `Page<Exclusive>`.
->
-> null_alloc_page() uses alloc_pages() and gets refcount =3D=3D 1 pages.
-> unless you mean struct nullb_page.
-
-Yes, the C null block driver uses reference counted pages. The Rust null
-block driver implementation will use frozen pages. Matthew suggested
-this approach.
-
-Best regards,
-Andreas Hindborg
-
-
+T24gTW9uLCAyMDI2LTExLTIzIGF0IDA1OjM1ICswMDAwLCBEZXYgSmFpbiB3cm90ZToNCj4gQWRk
+IGZvbGlvX3B1dF9zd2FwX3BhZ2VzIHRvIGhhbmRsZSBhIGJhdGNoIG9mIGNvbnNlY3V0aXZlIHBh
+Z2VzLiBOb3RlDQo+IHRoYXQgZm9saW9fcHV0X3N3YXAgYWxyZWFkeSBjYW4gaGFuZGxlIGEgc3Vi
+c2V0IG9mIHRoaXM6IG5yX3BhZ2VzID09IDEgYW5kDQo+IG5yX3BhZ2VzID09IGZvbGlvX25yX3Bh
+Z2VzKGZvbGlvKS4gR2VuZXJhbGl6ZSB0aGlzIHRvIGFueSBucl9wYWdlcy4NCj4gDQo+IEN1cnJl
+bnRseSB3ZSBoYXZlIGEgbm90LXNvLW5pY2UgbG9naWMgb2YgcGFzc2luZyBpbiBzdWJwYWdlID09
+IE5VTEwgaWYNCj4gd2UgbWVhbiB0byBleGVyY2lzZSB0aGUgbG9naWMgb24gdGhlIGVudGlyZSBm
+b2xpbywgYW5kIHN1YnBhZ2UgIT0gTlVMTCBpZg0KPiB3ZSB3YW50IHRvIGV4ZXJjaXNlIHRoZSBs
+b2dpYyBvbiBvbmx5IHRoYXQgc3VicGFnZS4gUmVtb3ZlIHRoaXMNCj4gaW5kaXJlY3Rpb246IHRo
+ZSBjYWxsZXIgaW52b2tlcyBmb2xpb19wdXRfc3dhcF9wYWdlcygpIGlmIGl0IHdhbnRzIHRvDQo+
+IG9wZXJhdGUgb24gYSByYW5nZSBvZiBwYWdlcyBpbiB0aGUgZm9saW8gKGkuZSBucl9wYWdlcyBt
+YXkgYmUgYW55dGhpbmcNCj4gYmV0d2VlbiAxIGFuZCBmb2xpb19ucl9wYWdlcygpKSwgYW5kIGlu
+dm9rZXMgZm9saW9fcHV0X3N3YXAoKSBpZiBpdA0KPiB3YW50cyB0byBvcGVyYXRlIG9uIHRoZSBl
+bnRpcmUgZm9saW8uDQo+IA0KPiBBY2tlZC1ieTogRGF2aWQgSGlsZGVuYnJhbmQgKEFybSkgPGRh
+dmlkQGtlcm5lbC5vcmc+DQo+IFJldmlld2VkLWJ5OiBLYWlydWkgU29uZyA8a2Fzb25nQHRlbmNl
+bnQuY29tPg0KPiBSZXZpZXdlZC1ieTogQmFycnkgU29uZyA8YmFvaHVhQGtlcm5lbC5vcmc+DQo+
+IFNpZ25lZC1vZmYtYnk6IERldiBKYWluIDxkZXYuamFpbkBhcm0uY29tPg0KPiAtLS0NCj4gIG1t
+L21lbW9yeS5jICAgfCAgOSArKysrKy0tLS0NCj4gIG1tL3JtYXAuYyAgICAgfCAgNCArKy0tDQo+
+ICBtbS9zaG1lbS5jICAgIHwgIDYgKysrLS0tDQo+ICBtbS9zd2FwLmggICAgIHwgMTcgKysrKysr
+KysrKysrKysrLS0NCj4gIG1tL3N3YXBmaWxlLmMgfCAyMSArKysrKysrKysrLS0tLS0tLS0tLS0N
+Cj4gIDUgZmlsZXMgY2hhbmdlZCwgMzUgaW5zZXJ0aW9ucygrKSwgMjIgZGVsZXRpb25zKC0pDQo+
+IA0KPiBkaWZmIC0tZ2l0IGEvbW0vbWVtb3J5LmMgYi9tbS9tZW1vcnkuYw0KPiBpbmRleCA2YTIz
+MTk4YzFjNjcuLmVkNmRmZGI2Mzk5NCAxMDA2NDQNCj4gLS0tIGEvbW0vbWVtb3J5LmMNCj4gKysr
+IGIvbW0vbWVtb3J5LmMNCj4gQEAgLTUzMjcsOCArNTMyNyw5IEBAIHZtX2ZhdWx0X3QgZG9fc3dh
+cF9wYWdlKHN0cnVjdCB2bV9mYXVsdCAqdm1mKQ0KPiAgCWlmICh1bmxpa2VseShmb2xpbyAhPSBz
+d2FwY2FjaGUpKSB7DQo+ICAJCWZvbGlvX2FkZF9uZXdfYW5vbl9ybWFwKGZvbGlvLCB2bWEsIGFk
+ZHJlc3MsIFJNQVBfRVhDTFVTSVZFKTsNCj4gIAkJZm9saW9fYWRkX2xydV92bWEoZm9saW8sIHZt
+YSk7DQo+IC0JCWZvbGlvX3B1dF9zd2FwKHN3YXBjYWNoZSwNCj4gLQkJCSAgICAgICBmb2xpb19m
+aWxlX3BhZ2Uoc3dhcGNhY2hlLCBzd3Bfb2Zmc2V0KGVudHJ5KSkpOw0KPiArCQlmb2xpb19wdXRf
+c3dhcF9wYWdlcyhzd2FwY2FjaGUsDQo+ICsJCQkJICAgICBmb2xpb19maWxlX3BhZ2Uoc3dhcGNh
+Y2hlLCBzd3Bfb2Zmc2V0KGVudHJ5KSksDQo+ICsJCQkJICAgICAxKTsNCj4gIAl9IGVsc2UgaWYg
+KCFmb2xpb190ZXN0X2Fub24oZm9saW8pKSB7DQo+ICAJCS8qDQo+ICAJCSAqIFdlIGN1cnJlbnRs
+eSBvbmx5IGV4cGVjdCAhYW5vbiBmb2xpb3MgdGhhdCBhcmUgZnVsbHkNCj4gQEAgLTUzMzcsMTIg
+KzUzMzgsMTIgQEAgdm1fZmF1bHRfdCBkb19zd2FwX3BhZ2Uoc3RydWN0IHZtX2ZhdWx0ICp2bWYp
+DQo+ICAJCVZNX1dBUk5fT05fT05DRV9GT0xJTyhmb2xpb19ucl9wYWdlcyhmb2xpbykgIT0gbnJf
+cGFnZXMsIGZvbGlvKTsNCj4gIAkJVk1fV0FSTl9PTl9PTkNFX0ZPTElPKGZvbGlvX21hcHBlZChm
+b2xpbyksIGZvbGlvKTsNCj4gIAkJZm9saW9fYWRkX25ld19hbm9uX3JtYXAoZm9saW8sIHZtYSwg
+YWRkcmVzcywgcm1hcF9mbGFncyk7DQo+IC0JCWZvbGlvX3B1dF9zd2FwKGZvbGlvLCBOVUxMKTsN
+Cj4gKwkJZm9saW9fcHV0X3N3YXAoZm9saW8pOw0KPiAgCX0gZWxzZSB7DQo+ICAJCVZNX1dBUk5f
+T05fT05DRShucl9wYWdlcyAhPSAxICYmIG5yX3BhZ2VzICE9IGZvbGlvX25yX3BhZ2VzKGZvbGlv
+KSk7DQo+ICAJCWZvbGlvX2FkZF9hbm9uX3JtYXBfcHRlcyhmb2xpbywgcGFnZSwgbnJfcGFnZXMs
+IHZtYSwgYWRkcmVzcywNCj4gIAkJCQkJIHJtYXBfZmxhZ3MpOw0KPiAtCQlmb2xpb19wdXRfc3dh
+cChmb2xpbywgbnJfcGFnZXMgPT0gMSA/IHBhZ2UgOiBOVUxMKTsNCj4gKwkJZm9saW9fcHV0X3N3
+YXBfcGFnZXMoZm9saW8sIHBhZ2UsIG5yX3BhZ2VzKTsNCj4gIAl9DQo+ICANCj4gIAlWTV9CVUdf
+T04oIWZvbGlvX3Rlc3RfYW5vbihmb2xpbykgfHwNCj4gZGlmZiAtLWdpdCBhL21tL3JtYXAuYyBi
+L21tL3JtYXAuYw0KPiBpbmRleCBlYTk0ZTY5MDEwZGEuLjk4NjkwOTQ3ZWYxOSAxMDA2NDQNCj4g
+LS0tIGEvbW0vcm1hcC5jDQo+ICsrKyBiL21tL3JtYXAuYw0KPiBAQCAtMjE3NiwxMyArMjE3Niwx
+MyBAQCBzdGF0aWMgYm9vbCB0dHVfYW5vbl9zd2FwYmFja2VkX2ZvbGlvKHN0cnVjdCB2bV9hcmVh
+X3N0cnVjdCAqdm1hLA0KPiAgCSAqIHNvIHdlJ2xsIG5vdCBjaGVjay9jYXJlLg0KPiAgCSAqLw0K
+PiAgCWlmIChhcmNoX3VubWFwX29uZShtbSwgdm1hLCBhZGRyZXNzLCBwdGV2YWwpIDwgMCkgew0K
+PiAtCQlmb2xpb19wdXRfc3dhcChmb2xpbywgcGFnZSk7DQo+ICsJCWZvbGlvX3B1dF9zd2FwX3Bh
+Z2VzKGZvbGlvLCBwYWdlLCAxKTsNCj4gIAkJcmV0dXJuIGZhbHNlOw0KPiAgCX0NCj4gIA0KPiAg
+CS8qIFNlZSBmb2xpb190cnlfc2hhcmVfYW5vbl9ybWFwKCk6IGNsZWFyIFBURSBmaXJzdC4gKi8N
+Cj4gIAlpZiAoYW5vbl9leGNsdXNpdmUgJiYgZm9saW9fdHJ5X3NoYXJlX2Fub25fcm1hcF9wdGUo
+Zm9saW8sIHBhZ2UpKSB7DQo+IC0JCWZvbGlvX3B1dF9zd2FwKGZvbGlvLCBwYWdlKTsNCj4gKwkJ
+Zm9saW9fcHV0X3N3YXBfcGFnZXMoZm9saW8sIHBhZ2UsIDEpOw0KPiAgCQlyZXR1cm4gZmFsc2U7
+DQo+ICAJfQ0KPiAgDQo+IGRpZmYgLS1naXQgYS9tbS9zaG1lbS5jIGIvbW0vc2htZW0uYw0KPiBp
+bmRleCBhZmY0NmIyNTA4YTcuLjBhZjUwMDEwMzAzNiAxMDA2NDQNCj4gLS0tIGEvbW0vc2htZW0u
+Yw0KPiArKysgYi9tbS9zaG1lbS5jDQo+IEBAIC0yMDA4LDcgKzIwMDgsNyBAQCBpbnQgc2htZW1f
+d3JpdGVvdXQoc3RydWN0IHN3YXBfaW9fY3R4ICpjdHgsIHN0cnVjdCBmb2xpbyAqZm9saW8sDQo+
+ICAJCS8qIFN3YXAgZW50cnkgbWlnaHQgYmUgZXJhc2VkIGJ5IHJhY2luZyBzaG1lbV9mcmVlX3N3
+YXAoKSAqLw0KPiAgCQlpZiAoIWVycm9yKSB7DQo+ICAJCQlzaG1lbV9yZWNhbGNfaW5vZGUoaW5v
+ZGUsIDAsIC1ucl9wYWdlcyk7DQo+IC0JCQlmb2xpb19wdXRfc3dhcChmb2xpbywgTlVMTCk7DQo+
+ICsJCQlmb2xpb19wdXRfc3dhcChmb2xpbyk7DQo+ICAJCX0NCj4gIAkJc2htZW1fYWxsb3dfZXZp
+Y3Rpb24oaW5mbyk7DQo+ICANCj4gQEAgLTI0NDUsNyArMjQ0NSw3IEBAIHN0YXRpYyB2b2lkIHNo
+bWVtX3NldF9mb2xpb19zd2FwaW5fZXJyb3Ioc3RydWN0IGlub2RlICppbm9kZSwgcGdvZmZfdCBp
+bmRleCwNCj4gIA0KPiAgCW5yX3BhZ2VzID0gZm9saW9fbnJfcGFnZXMoZm9saW8pOw0KPiAgCWZv
+bGlvX3dhaXRfd3JpdGViYWNrKGZvbGlvKTsNCj4gLQlmb2xpb19wdXRfc3dhcChmb2xpbywgTlVM
+TCk7DQo+ICsJZm9saW9fcHV0X3N3YXAoZm9saW8pOw0KPiAgCXN3YXBfY2FjaGVfZGVsX2ZvbGlv
+KGZvbGlvKTsNCj4gIAkvKg0KPiAgCSAqIExldCBzaG1lbV9yZWNhbGNfaW5vZGUoKSByZWR1Y2Ug
+YWxsb2NlZCBhbmQgcmVsZWFzZSB0aGUgYmxvY2sgY2hhcmdlDQo+IEBAIC0yNjc5LDcgKzI2Nzks
+NyBAQCBzdGF0aWMgaW50IHNobWVtX3N3YXBpbl9mb2xpbyhzdHJ1Y3QgaW5vZGUgKmlub2RlLCBw
+Z29mZl90IGluZGV4LA0KPiAgCWlmIChzZ3AgPT0gU0dQX1dSSVRFKQ0KPiAgCQlmb2xpb19tYXJr
+X2FjY2Vzc2VkKGZvbGlvKTsNCj4gIA0KPiAtCWZvbGlvX3B1dF9zd2FwKGZvbGlvLCBOVUxMKTsN
+Cj4gKwlmb2xpb19wdXRfc3dhcChmb2xpbyk7DQo+ICAJc3dhcF9jYWNoZV9kZWxfZm9saW8oZm9s
+aW8pOw0KPiAgCWZvbGlvX21hcmtfZGlydHkoZm9saW8pOw0KPiAgCXB1dF9zd2FwX2RldmljZShz
+aSk7DQo+IGRpZmYgLS1naXQgYS9tbS9zd2FwLmggYi9tbS9zd2FwLmgNCj4gaW5kZXggZWE3MTBj
+ZWM5ODZjLi44OTFmNDFjNDU1NmMgMTAwNjQ0DQo+IC0tLSBhL21tL3N3YXAuaA0KPiArKysgYi9t
+bS9zd2FwLmgNCj4gQEAgLTI0Niw3ICsyNDYsOCBAQCBleHRlcm4gaW50IHN3YXBfcmV0cnlfdGFi
+bGVfYWxsb2Moc3dwX2VudHJ5X3QgZW50cnksIGdmcF90IGdmcCk7DQo+ICBpbnQgZm9saW9fYWxs
+b2Nfc3dhcChzdHJ1Y3QgZm9saW8gKmZvbGlvKTsNCj4gIGludCBmb2xpb19kdXBfc3dhcF9wYWdl
+cyhzdHJ1Y3QgZm9saW8gKmZvbGlvLCBzdHJ1Y3QgcGFnZSAqcGFnZSwNCj4gIAkJdW5zaWduZWQg
+bG9uZyBucl9wYWdlcyk7DQo+IC12b2lkIGZvbGlvX3B1dF9zd2FwKHN0cnVjdCBmb2xpbyAqZm9s
+aW8sIHN0cnVjdCBwYWdlICpwYWdlKTsNCj4gK3ZvaWQgZm9saW9fcHV0X3N3YXBfcGFnZXMoc3Ry
+dWN0IGZvbGlvICpmb2xpbywgc3RydWN0IHBhZ2UgKnBhZ2UsDQo+ICsJCXVuc2lnbmVkIGxvbmcg
+bnJfcGFnZXMpOw0KPiAgDQo+ICAvKiBGb3IgaW50ZXJuYWwgdXNlICovDQo+ICBleHRlcm4gdm9p
+ZCBfX3N3YXBfY2x1c3Rlcl9mcmVlX2VudHJpZXMoc3RydWN0IHN3YXBfaW5mb19zdHJ1Y3QgKnNp
+LA0KPiBAQCAtMzc1LDcgKzM3Niw4IEBAIHN0YXRpYyBpbmxpbmUgaW50IGZvbGlvX2R1cF9zd2Fw
+X3BhZ2VzKHN0cnVjdCBmb2xpbyAqZm9saW8sIHN0cnVjdCBwYWdlICpwYWdlLA0KPiAgCXJldHVy
+biAtRUlOVkFMOw0KPiAgfQ0KPiAgDQo+IC1zdGF0aWMgaW5saW5lIHZvaWQgZm9saW9fcHV0X3N3
+YXAoc3RydWN0IGZvbGlvICpmb2xpbywgc3RydWN0IHBhZ2UgKnBhZ2UpDQo+ICtzdGF0aWMgaW5s
+aW5lIHZvaWQgZm9saW9fcHV0X3N3YXBfcGFnZXMoc3RydWN0IGZvbGlvICpmb2xpbywgc3RydWN0
+IHBhZ2UgKnBhZ2UsDQo+ICsJCXVuc2lnbmVkIGxvbmcgbnJfcGFnZXMpDQo+ICB7DQo+ICB9DQo+
+ICANCj4gQEAgLTQ3OCw2ICs0ODAsMTcgQEAgc3RhdGljIGlubGluZSBpbnQgZm9saW9fZHVwX3N3
+YXAoc3RydWN0IGZvbGlvICpmb2xpbykNCj4gIAkJCQkgICAgZm9saW9fbnJfcGFnZXMoZm9saW8p
+KTsNCj4gIH0NCj4gIA0KPiArLyoqDQo+ICsgKiBmb2xpb19wdXRfc3dhcCgpIC0gRGVjcmVhc2Ug
+c3dhcCBjb3VudCBvZiBhbGwgc3dhcCBlbnRyaWVzIG9mIGEgZm9saW8uDQo+ICsgKiBAZm9saW86
+IGZvbGlvIHdpdGggc3dhcCBlbnRyaWVzIGJvdW5kLg0KPiArICoNCj4gKyAqIFNlZSBmb2xpb19w
+dXRfc3dhcF9wYWdlcygpIGZvciBtb3JlIGluZm9ybWF0aW9uLg0KPiArICovDQo+ICtzdGF0aWMg
+aW5saW5lIHZvaWQgZm9saW9fcHV0X3N3YXAoc3RydWN0IGZvbGlvICpmb2xpbykNCj4gK3sNCj4g
+Kwlmb2xpb19wdXRfc3dhcF9wYWdlcyhmb2xpbywgZm9saW9fcGFnZShmb2xpbywgMCksIGZvbGlv
+X25yX3BhZ2VzKGZvbGlvKSk7DQo+ICt9DQo+ICsNCj4gIGV4dGVybiBjb25zdCBzdHJ1Y3Qgc3dh
+cF9vcHMgc3dhcF9iZGV2X29wczsNCj4gIA0KPiAgaW50IHNobWVtX3dyaXRlb3V0KHN0cnVjdCBz
+d2FwX2lvX2N0eCAqY3R4LCBzdHJ1Y3QgZm9saW8gKmZvbGlvLA0KPiBkaWZmIC0tZ2l0IGEvbW0v
+c3dhcGZpbGUuYyBiL21tL3N3YXBmaWxlLmMNCj4gaW5kZXggYTdkN2UxZjgxYzc5Li5jZDgxYTdi
+Y2ZmYjggMTAwNjQ0DQo+IC0tLSBhL21tL3N3YXBmaWxlLmMNCj4gKysrIGIvbW0vc3dhcGZpbGUu
+Yw0KPiBAQCAtMTgzNiwyNyArMTgzNiwyNSBAQCBpbnQgZm9saW9fZHVwX3N3YXBfcGFnZXMoc3Ry
+dWN0IGZvbGlvICpmb2xpbywgc3RydWN0IHBhZ2UgKnBhZ2UsDQo+ICB9DQo+ICANCj4gIC8qKg0K
+PiAtICogZm9saW9fcHV0X3N3YXAoKSAtIERlY3JlYXNlIHN3YXAgY291bnQgb2Ygc3dhcCBlbnRy
+aWVzIG9mIGEgZm9saW8uDQo+ICsgKiBmb2xpb19wdXRfc3dhcF9wYWdlcygpIC0gRGVjcmVhc2Ug
+c3dhcCBjb3VudCBvZiBzd2FwIGVudHJpZXMgb2YgYSBmb2xpby4NCj4gICAqIEBmb2xpbzogZm9s
+aW8gd2l0aCBzd2FwIGVudHJpZXMgYm91bmRlZCwgbXVzdCBiZSBpbiBzd2FwIGNhY2hlIGFuZCBs
+b2NrZWQuDQo+IC0gKiBAcGFnZTogaWYgbm90IE5VTEwsIG9ubHkgZGVjcmVhc2UgdGhlIHN3YXAg
+Y291bnQgb2YgdGhpcyBwYWdlLg0KPiArICogQHBhZ2U6IHRoZSBmaXJzdCBwYWdlIGluIHRoZSBm
+b2xpbyB0byBkZWNyZWFzZSB0aGUgc3dhcCBjb3VudCBmb3IuDQo+ICsgKiBAbnJfcGFnZXM6IHRo
+ZSBudW1iZXIgb2YgcGFnZXMgaW4gdGhlIGZvbGlvIHRvIGRlY3JlYXNlIHRoZSBzd2FwIGNvdW50
+IGZvci4NCj4gICAqDQo+ICAgKiBUaGlzIHdvbid0IGZyZWUgdGhlIHN3YXAgc2xvdHMgZXZlbiBp
+ZiBzd2FwIGNvdW50IGRyb3BzIHRvIHplcm8sIHRoZXkgYXJlDQo+ICAgKiBzdGlsbCBwaW5uZWQg
+YnkgdGhlIHN3YXAgY2FjaGUuIFVzZXIgbWF5IGNhbGwgZm9saW9fZnJlZV9zd2FwIHRvIGZyZWUg
+dGhlbS4NCj4gICAqIENvbnRleHQ6IENhbGxlciBtdXN0IGVuc3VyZSB0aGUgZm9saW8gaXMgbG9j
+a2VkIGFuZCBpbiB0aGUgc3dhcCBjYWNoZS4NCj4gICAqLw0KPiAtdm9pZCBmb2xpb19wdXRfc3dh
+cChzdHJ1Y3QgZm9saW8gKmZvbGlvLCBzdHJ1Y3QgcGFnZSAqcGFnZSkNCj4gK3ZvaWQgZm9saW9f
+cHV0X3N3YXBfcGFnZXMoc3RydWN0IGZvbGlvICpmb2xpbywgc3RydWN0IHBhZ2UgKnBhZ2UsDQo+
+ICsJCXVuc2lnbmVkIGxvbmcgbnJfcGFnZXMpDQo+ICB7DQo+IC0Jc3dwX2VudHJ5X3QgZW50cnkg
+PSBmb2xpby0+c3dhcDsNCj4gLQl1bnNpZ25lZCBsb25nIG5yX3BhZ2VzID0gZm9saW9fbnJfcGFn
+ZXMoZm9saW8pOw0KPiArCXN3cF9lbnRyeV90IGVudHJ5ID0gZm9saW9fcGFnZV9zd2FwX2VudHJ5
+KGZvbGlvLCBwYWdlKTsNCj4gIAlzdHJ1Y3Qgc3dhcF9pbmZvX3N0cnVjdCAqc2kgPSBfX3N3YXBf
+ZW50cnlfdG9faW5mbyhlbnRyeSk7DQo+ICsJdW5zaWduZWQgbG9uZyBpZHggPSBmb2xpb19wYWdl
+X2lkeChmb2xpbywgcGFnZSk7DQo+ICANCj4gIAlWTV9XQVJOX09OX0ZPTElPKCFmb2xpb190ZXN0
+X2xvY2tlZChmb2xpbyksIGZvbGlvKTsNCj4gIAlWTV9XQVJOX09OX0ZPTElPKCFmb2xpb190ZXN0
+X3N3YXBjYWNoZShmb2xpbyksIGZvbGlvKTsNCj4gLQ0KPiAtCWlmIChwYWdlKSB7DQo+IC0JCWVu
+dHJ5ID0gZm9saW9fcGFnZV9zd2FwX2VudHJ5KGZvbGlvLCBwYWdlKTsNCj4gLQkJbnJfcGFnZXMg
+PSAxOw0KPiAtCX0NCj4gKwlWTV9XQVJOX09OX0ZPTElPKGlkeCArIG5yX3BhZ2VzID4gZm9saW9f
+bnJfcGFnZXMoZm9saW8pLCBmb2xpbyk7DQo+ICANCj4gIAlzd2FwX3B1dF9lbnRyaWVzX2NsdXN0
+ZXIoc2ksIHN3cF9vZmZzZXQoZW50cnkpLCBucl9wYWdlcywgZmFsc2UpOw0KPiAgfQ0KPiBAQCAt
+MjYwMiw3ICsyNjAwLDggQEAgc3RhdGljIGludCB1bnVzZV9wdGUoc3RydWN0IHZtX2FyZWFfc3Ry
+dWN0ICp2bWEsIHBtZF90ICpwbWQsDQo+ICANCj4gIHNldHB0ZToNCj4gIAlzZXRfcHRlX2F0KHZt
+YS0+dm1fbW0sIGFkZHIsIHB0ZSwgbmV3X3B0ZSk7DQo+IC0JZm9saW9fcHV0X3N3YXAoc3dhcGNh
+Y2hlLCBmb2xpb19maWxlX3BhZ2Uoc3dhcGNhY2hlLCBzd3Bfb2Zmc2V0KGVudHJ5KSkpOw0KPiAr
+CWZvbGlvX3B1dF9zd2FwX3BhZ2VzKHN3YXBjYWNoZSwNCj4gKwkJCSAgICAgZm9saW9fZmlsZV9w
+YWdlKHN3YXBjYWNoZSwgc3dwX29mZnNldChlbnRyeSkpLCAxKTsNCj4gIG91dDoNCj4gIAlpZiAo
+cHRlKQ0KPiAgCQlwdGVfdW5tYXBfdW5sb2NrKHB0ZSwgcHRsKTsNCg0KTEdUTQ0KDQpSZXZpZXdl
+ZC1ieTogU2hpdmFuayBHYXJnIDxzaGl2YW5rZ0BhbWQuY29tPg0KDQpUaGFua3MsDQpTaGl2YW5r
+DQo=
 
