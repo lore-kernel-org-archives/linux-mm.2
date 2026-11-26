@@ -1,73 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BA5606A684
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 16:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13011606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OCLxusdV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gSw4txl+
 Received: by kanga.kvack.org (Postfix)
-	id 92AE76B05B0; Thu, 26 Nov 2026 11:25:13 -0500 (EST)
+	id 27D666B05B1; Thu, 26 Nov 2026 11:29:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DBF96B05B1; Thu, 26 Nov 2026 11:25:13 -0500 (EST)
+	id 206FA6B05B6; Thu, 26 Nov 2026 11:29:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A30F6B05B6; Thu, 26 Nov 2026 11:25:13 -0500 (EST)
+	id 0D04C6B05B7; Thu, 26 Nov 2026 11:29:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 56B766B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:25:13 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2C7BC050F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:25:12 +0000 (UTC)
-X-FDA: 85477794864.12.B09319D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 10838C0007
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:25:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OCLxusdV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D756C6B05B1
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:29:29 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F7101203EC
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:29:29 +0000 (UTC)
+X-FDA: 85477805658.28.23E6C57
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E96011C0025
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:29:11 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795710311;
-	b=y70tgYH6PQEGccK3o5PrKQDr3jbLvFy9zyncxAqJPmPZMjjMSFVIfXcGVjFPUgkiSuqlC3
-	5TAHAqgmxSZOgBbWugVJBf8X0QO6AJDd3sea7xOWIvPCpiwyyVQ6fQ1tLgoA0uO1iWIz6r
-	ekAn6cs42HdxzVAR0qyTGOPCw7H8qdw=
+	t=1795710552;
+	b=Cw5jR0g1hgHvzHTBOHu4RYkr1xKT/RetfTkC1dk3IT8N0beAV+zwPrtCS/DrPWqPT9+a13
+	ojxsTnPpGBTzkolhpJemuyEJCkDQg5DEd1K+ZGY8QPrgl91c1Ua/BiSVn36CIcHg/4Dw5Z
+	F6VJr/lRZCa8SbW29AKL/XQOi+YQjOc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795710311;
+	s=arc-20220608; t=1795710552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2UPNRRIVz5KRFGxnDTZmZbYAI/y+27zb2Ho2AqiDdIY=;
-	b=N5xR6po9EW6krLkldjhwgprBGCKcbdxXSg0aQcpiFMvQoCOJluWAZaU/Ekjhl5PK6GB8aD
-	nBthq6mxKA9HfyoQjN14M80Dn7AKTvsrRAU0V2fgeC51QclQYIL13xJWfo9Vsv+eqKJeiJ
-	S1TvqPst3CEn79NPqcMCVdITFb0AImc=
+	bh=WGmEidvvehaJScFEq1xdQHoioXcnhe32ej9jHAQch0c=;
+	b=JrKmDAN3eA7BSqEdlkGpWu48FPhT4qDWZUyDYNKdVhXwAaMWBJ7f3ZEPgTbn5Kx8gXVmha
+	vFlcQRF2KuiNekqf2rakEgGkZHouyu5hn/LkCRo08+N/raKMFOEbZG0WnBKoB3MeUqxjK/
+	Mo5LZp4f77gteUGNCnc4x0+QAlRrKII=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OCLxusdV;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gSw4txl+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3B21942370;
-	Thu, 26 Nov 2026 16:25:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0F41F000F2;
-	Thu, 26 Nov 2026 16:25:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 711AB611C2;
+	Thu, 26 Nov 2026 16:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5161F000CF;
+	Thu, 26 Nov 2026 16:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795710309;
-	bh=2UPNRRIVz5KRFGxnDTZmZbYAI/y+27zb2Ho2AqiDdIY=;
+	s=k20260515; t=1795710551;
+	bh=WGmEidvvehaJScFEq1xdQHoioXcnhe32ej9jHAQch0c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OCLxusdVYBkFomceMQ/l6ugQeuOgW9cgvcPw7B8Dg6WOMeIZ4kdj0APSvCghwvySW
-	 QjkG+SpgYcQaZlM5x+W+2tegSCFyLjJstr45BsHW5ScQial/H7aV4aNYcAHMvr9Bqh
-	 qaH4uc+s1UVN28vvQPQBTJt+9KKV8q0W4iAKq5EN4cN++RfGSyJ+LUJfv6GRjVKygm
-	 9qX7yxoWIKGW9fsCOJGgaQhnLKtMlR7VxcUjp7kcgtMVNLzfLAGRPTzcYYTbeKvegO
-	 vbHo6ttTzsDll3jLFx8u1+WNcJFrskCvD4x9GkzxN9631H1MfxbLrgsnlKQTl88B7w
-	 ZN1J5mWE0vmpg==
-Message-ID: <042ab922-4707-4c96-80a2-83a0378646d1@kernel.org>
-Date: Thu, 26 Nov 2026 17:24:59 +0100
+	b=gSw4txl+iuw4H5rZj8WPEf4SBYiu9DB3ztjOF5v+Vk42UKSVNFruGF/SeI8dzy1iO
+	 ApOd4Wh/plF0BOKvI6wi7apjnYeItra1nCAy32L3hqiLslojZac0jaNGu3m/KMvQXg
+	 3kHk7AvNTT9NQ2g8KPxM+jXJ/Vv63NC7myfnO4A03r15C5205bE8SSu1IYsUnT5JlL
+	 K0mkPVjbvnqHlvGciqTjtmriHmLi8Gt31lx63Djwh1LCGFxrodm+nQUKS5D/yzoWHM
+	 /sruyTWBwQUHbF0xYinYTYSntWJF4G+uzwHiNX5MQUC7c54/8bzi5C6LDUPn8YkXPF
+	 TGRXS0MDxF16Q==
+Message-ID: <9d506473-4844-4ed2-ac58-e72cd72b5c9e@kernel.org>
+Date: Thu, 26 Nov 2026 17:29:00 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm/khugepaged: allocate page tables before locking
- the folio
+Subject: Re: [PATCH 2/4] mm/memory: don't allocate in finish_fault() with the
+ folio locked
 To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
@@ -83,7 +79,7 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
  linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
 References: <20261125100058.15200-1-azpijr@gmail.com>
- <20261125100058.15200-2-azpijr@gmail.com>
+ <20261125100058.15200-3-azpijr@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,61 +126,81 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261125100058.15200-2-azpijr@gmail.com>
+In-Reply-To: <20261125100058.15200-3-azpijr@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 10838C0007
-X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 3ya7mw4acaa9tjjupeey83krig9q3n9c
-X-HE-Tag: 1795710310-836198
-X-HE-Meta: U2FsdGVkX1/bo7Ls/QhbPRbFae5STDOlBvs+ilahrq0+fPujUtAKtL3gpnw2qrZV9ThRxFYkDl5b2FOt2ICbNFQGuu0f4ahjy/xnGuc3ZhXZcmXmxx5VQhBOhgAVaZ0yBZH2vsJem+cPuZKbaqAzmitnuk1bRkr0tU8dPDgUr3mlKOy9QQDIPpj0Emfo8ecb9QMPT6l9u1XgdGWKfqg1BoxgCBg7VA0S6yiWWZD7eDpE+W3x6mTD8U6Ehi2uroyfSjbsyHlFNrFdDVvviuhWJbLf3X2WCZMthHP88bGEcu1ns2vL9efjFQpIy8gztbDSnawJM17h73Hbxpez56AtSeUQloVYekQ6chHcYjs58+ivEympjul/XngfjwxtmiWpxXRMbmIueccVQbx+cQR3L//zpMn8Ydv7A7rg8bxJF1OAjjOTLbj8k4FGbGDA0rs/Qexu7Tv6/20Qgjy22k0Ud+oeOj4iHxxfJ2/EVd6ChDG1rleEi3ePpqyKQvIfpI+FR/aiqpcDZpoEZw+LsQrOevE+ZZwQ3ruFivJgbOzDmyppUHHw8ve2jA8Chuc47xHE36xpgPzzA/fVLM8lUy2mOcMA8d0g5zmrB+RjafuUOY5TnIZlao59a5kja4HAMnUw/MarnFTAJyK8t1WwXsVQ6uvN19DbOOIHSCCK1K9k7Hr0W1GNzxyq7hN4RBfQVqJsPfWbOx9eW2FsIaJm2oDy8fK4sXLG1gwAR9rCEnRGjOTXdZxprGAPgy4mkBjjszAhQFZDPHW5Kg0Un1J4gSUIvzX83P+6Z1mI37dEKeKhLKO6djwa/pQEHPJVorGN0c3yRgf1acrkgTwaup7uZSotgmbR2ns6WTEWw6FuVmFgSOzosS9FZ5MfvjrlyAv8NlSVTUV/NS5MF6FIUvuIn1Bbz2D2a2MQZeX6tEnoOMwRBB6TfuhwHbeolFGr2w+7GKMtP3o1SQb6jD/0Ox0N0qH
- z5iMhnkc
- Pk/07nEvqY9pBejRTuUrw5ih9oMEga58RqqbnhSeo3k/hioNA3QakIJlShDTJ2pxvlbjxXzOjjnHZdfveXwOV2YvQu6gEwl7gOKPY0QDw6efIwph/9ERvxquraDbfGvkAdLGSf49lKid6ZtCooDRMIqILFyQ9bVCLNBi8z/rQVbQXx3DkmUSHYRLJai4FaTUqQvikw7IDR4Jh3OsyGnqUor1ap0iGC+ZWlpT6uF0rpfw+zW7hWw4PqMFab4L9jixfpTPmmbSPiCnImhYu2WR9tA2MYml+mNyX/bpQ0DrWRshwU9oW7JFZtCX2tbAkgUikhurfDgQLqUmJn/R6HV1NfeENjmFKFP6DEykTSugbtt47odX3EmrjCkn2+zsa+eM3GtBVMedO0IYZDDcQc6S58FXNwot1cCexHk+pWfaRB10a6rFRTn+22jARXZ1S6fYOPf/Kw2Ez90HoydSpGQ6u9gVs3/MAjnkVtBBg9n8ec6xlZK8DX7GZfv5plwBv7e+fMFVdv3KqC1dKkH4LaPm6B+S8NA==
+X-HE-Tag: 1795710551-811640
+X-HE-Meta: U2FsdGVkX19E3qpL5QCmwkYUDVjQl6qKMxw/gKe7cLIIn8cB1L/zv6LTMGvUvTUETrTFq+LffcmA7PavOA8WaBOP3/7GY5aCIK41NZF3xjXB49OCDySFXMSfj1RaZ4Nxlb1NLzG8a3uV19Hp60mhSeAeaXPUzkJiu2kXnNMUD/FZyfHSf+h4yysD9vwVXGyfjvGmctG8QRzRSGoEnH16EY/UcJ7p+FvtHEYR0Zsk6AFDEyDdqW/GDtckYgM6xwl6U6Vp3vQrwwkvLRPVAxitzlTRgP/tkt8cV2tdCbN0dxk56llYIMWoz3lFHD7z/JCzDs7JLnMzT8kHcnYHRd7zYDCrY0vwnwQDxCuwOL+fYkTDMsV1jo5FD33wSqttWgNPQKI/vO8YZnMgM9LnSeOwldw2kCoMZO0F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/25/26 10:59, Jose A. Perez de Azpillaga wrote:
-> try_collapse_pte_mapped_thp() calls set_huge_pmd() with the folio
-> locked. set_huge_pmd() allocates the missing p4d/pud/pmd tables there,
-> and on ppc64 with the hash MMU do_set_pmd() also allocates the page
-> table to deposit.
+> __do_fault() preallocates a page table only when the PMD is empty, so
+> that finish_fault() does not have to allocate one with the folio locked.
+> 
+> Since retract_page_tables() no longer takes the mmap and VMA locks, the
+> page table can be removed while the fault waits in ->fault().
+> finish_fault() then finds an empty PMD without a preallocated table, and
+> calls pte_alloc() with the folio locked. On ppc64 with the hash MMU,
+> do_set_pmd() allocates the page table to deposit in the same case.
 > 
 > Allocating with __GFP_FS while holding a folio lock can deadlock in
-> reclaim. For example, memcg reclaim on cgroup v1 waits for writeback
-> that may be waiting for the folio lock we hold.
+> reclaim, for example the memcg reclaim deadlock on cgroup v1 described
+> in commit 63f3655f9501 ("mm, memcg: fix reclaim deadlock with
+> writeback").
 > 
-> Allocate these page tables before locking the folio. The mmap lock
-> keeps the upper levels around, and an unused deposit table is freed
-> after unlocking the folio.
+> Return VM_FAULT_NOPAGE instead, as we already do when
+> pte_offset_map_lock() fails. The retried fault preallocates the page
+> table before locking the folio.
 > 
-> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
-> Fixes: f8a01513f574 ("mm/khugepaged: do not fail collapse_pte_mapped_thp() on SCAN_PMD_NULL")
+> Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 > ---
->  mm/khugepaged.c | 79 +++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 56 insertions(+), 23 deletions(-)
+>  mm/memory.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
 > 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 11cc4039b853..b7e53d7cf6e5 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5986,16 +5986,21 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+>  	}
+>  
+>  	if (pmd_none(*vmf->pmd)) {
+> +		/*
+> +		 * The page table was removed after __do_fault() found it, so
+> +		 * nothing was preallocated. Allocating with the folio locked
+> +		 * can deadlock in reclaim, so retry the fault instead.
+> +		 */
+> +		if (!vmf->prealloc_pte)
+> +			return VM_FAULT_NOPAGE;
 
-That's a lot of churn for a corner case (powerpc with hash MMU).
+Hm, but do_set_pmd() really only needs one for ppc64. Assuming we allocate it as
+NOFS in there for that corner cases ...
 
-What about simply running in NOFS context when allcoating that page table?
-
-Apparently pte_alloc_one() doesn't consume GFP flags ... but we could add NOFS
-around the allocation.
-
-Any reason you went for this more complicated solution?
+> +
+>  		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
+>  			ret = do_set_pmd(vmf, folio, page, /* may_alloc= */ true);
+>  			if (ret != VM_FAULT_FALLBACK)
+>  				return ret;
+>  		}
+>  
+> -		if (vmf->prealloc_pte)
+> -			pmd_install(vma->vm_mm, vmf->pmd, &vmf->prealloc_pte);
+> -		else if (unlikely(pte_alloc(vma->vm_mm, vmf->pmd)))
+> -			return VM_FAULT_OOM;
+Could we instead fallback here, after we tried to install the PMD ?
 
 -- 
 Cheers,
