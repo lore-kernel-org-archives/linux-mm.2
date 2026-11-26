@@ -1,135 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBEB606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 12:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B67606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 12:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fsXmJYXb
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P+GUhHOC
 Received: by kanga.kvack.org (Postfix)
-	id 9E2476B05B1; Thu, 26 Nov 2026 07:30:39 -0500 (EST)
+	id D01AB6B05B0; Thu, 26 Nov 2026 07:38:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9923A6B05B2; Thu, 26 Nov 2026 07:30:39 -0500 (EST)
+	id CB2016B05B3; Thu, 26 Nov 2026 07:38:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 859FC6B05B3; Thu, 26 Nov 2026 07:30:39 -0500 (EST)
+	id B9F976B05B4; Thu, 26 Nov 2026 07:38:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B5CB6B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:30:39 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BC3F804A4
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:30:38 +0000 (UTC)
-X-FDA: 85477203756.06.D2EB96E
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2D5C480018
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:30:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fsXmJYXb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8F33A6B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:38:49 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 820A5A8D8E
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:38:47 +0000 (UTC)
+X-FDA: 85477224294.08.681792F
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B1F2B20002
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:38:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=P+GUhHOC;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795696236;
-	b=W6CowOAGlqzyPRk5VPjHjIgBfbmP8gzFijQGLlyAUSV0wRNhOKyDmxEKHx5N9du91KjFYx
-	K/j1I0O8h/JoLf3CBBGPQD8G6hc59TRtazJCSN3kQpVOPNs7WfWtU5Qb4n2Po6Id+b0HAl
-	+GLuFAyXfFyVVOfOBWo0/rUmj464rh8=
+	t=1795696725;
+	b=VPkMbUNOWxkvQGr1jpQDlHqeQyNk4f+rq28U6tUH1dWMFKljK+BoPbVqS22yXUTQfT8j0V
+	IygsDXYYjUz8/nGaa2ihUOG55hLC+aWTzc+5ebQcga3GpKgTVfouc9bsQ7w4soGl95jKeI
+	Sm3fu9X3opsbtoUwvRvCTH3ap8041fc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795696236;
+	s=arc-20220608; t=1795696725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=63ma5jEPd/DP2X+W+npb2v4pGvrjKq1tRkWvj8G+bR4=;
-	b=yeI/xkUmXsatanozPX/sQvdHotFYknnRHcMvdfGp/RTBjM6gQg8bwkLRTde5RlqrPPTlCL
-	TkUHx0Yj0muzrnG+2XXUboc3sUFLI901AtN5ojBn8MJleJ9TCGxREGi91fQvNT48lhblCg
-	kflVvyQU2ezX52RXgQ0/8jY2WWsLPcs=
+	bh=C/AbZhSvVAtAuxRzfiAolPI8iaF2YFQe3pPvY/yniKU=;
+	b=wGwT8elCVYaVDAA9rGHDkrZD47/WDKBE/uaFbITtxIh/55XF24qdfDM2hlBGfvv6K5w4Sk
+	hQXWhcJu/gM/9kvjpxa3Pg32ZSsxDJabWXfLrNgi/F3fUnxvAz+lK5mU/IQkzbCfZ7OfHe
+	GmxsIPDlGHUMl6aj2v+4Joj0QjseCYc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fsXmJYXb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-385d8a00598so10236574eec.1
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:30:35 -0800 (PST)
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=P+GUhHOC;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cd62c570b5dso4716642a12.2
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:38:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795696235; x=1796301035; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1795696724; x=1796301524; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=63ma5jEPd/DP2X+W+npb2v4pGvrjKq1tRkWvj8G+bR4=;
-        b=fsXmJYXbGOwrQf8HLHbBbvdVTbpl6fyBb2hVYfMvbIBVZmqy23anKs1WknJDMd4xS/
-         +EoBez3kjneWS24vlpysPHys1YzpAMJJdgZdijZ8hlx98+nvn60QWAzObEjq4nPj6X5I
-         gaKCxot8/2UQAm/6GeuWO252/KUmD3QmXX0OB0e7u/wpNerS6FjbyYV3tCURYviI/ZBN
-         sETlKnUOB2Ugd/80IEfJ6gZ7Qsi3FARwBi+aQEyNqQNCYuD5bo6TjCRbWjlUby12hZMR
-         oCZHXFR+u+I3Ifnf23I1AuwdzxS8CapPJ6uLPt0thLby1EmRu+OFHG7r/hqzJ3t888DU
-         ScQw==
+        bh=C/AbZhSvVAtAuxRzfiAolPI8iaF2YFQe3pPvY/yniKU=;
+        b=P+GUhHOCV+j3JCd5eUoeWNkc9gQgHq18U6MOcUUEr0ymrT8Zc85hcMgIwuOSQAeN0S
+         lH6zLQoqwDz2RPNA1sQvszRDVnUcEQikWusyIem5Fe2QowleHg1t0oq+0asR3kH84nAo
+         7+J+4t1bgfgTSiGaSse59DW1W56Etc88mmE42euXNEQkPH+ANCn1+ZgiSIZp/R4myEga
+         hyU9c1BVCcEUbEEE/5eYr+LFSukSmqR4cI5ralPVLUwsK/sQRwwRwdvvmuupJ6VUBEG0
+         Sxze3pRZ6sIRzHSae8PozX99nPWkrz1yxJPD9N/Z0rWJpwqynza/6JFaumJXw+IgJ13a
+         io4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795696235; x=1796301035;
-        h=content-transfer-encoding:mime-version:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1795696724; x=1796301524;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=63ma5jEPd/DP2X+W+npb2v4pGvrjKq1tRkWvj8G+bR4=;
-        b=1L5+rAOc4v3myLNyfkjhNqCONeGy8QwwBDKHAkZtJn15A8nRzRHl4gCKRVlMKD0RRK
-         urmZ3cgP6G+4mIdVSewgPgg6Y/6t1AZm21ENLhU0ttHi603uzIWeDt5AMeyCbfoIDVNL
-         MpH1kuk4V9wZHYPpS5npZ9y7dIb67Ty+jIRroE8XoxRHXpQjTWAJuymLG7FlND9Vjuyu
-         rpjZtKawv7bgIcpkleO4x/tW6X239evun+Foq47NKGOYoqMCxZvT0g07ofXjZfYMedjX
-         R/HRBJom+AhArHYpmq2C3ZJQtjelg//CaYcvjWqRsL7NsOOEgq0VmWhpBYVaMupnDqnj
-         wSIw==
-X-Gm-Message-State: APuU4Z9ZOtlrxRAJkecBlQN4gWKiBK+QDX0XiPbf91fQZd7B+QHhinV2
-	B6uEUiH/FhdNxidMjAeFECNI4FneJNamXHdRIlivUEXTU1cRW8SKiIpY
-X-Gm-Gg: AZFdTZd0O0poWJkAtr/SACfgFQGyU7AiPBaIrbqP5M7/HNh3/oBoIgXe72czLH4Ul/g
-	p5/BjKfDzej9dSINs/FmqGCER7qxMfQsGGcemsMEBAIMEDHJTBw0Js+R6ojaUlm9AyrH1u0bEKE
-	KKkIZyOxuIdhLqqz57F3i8NjEMO3WMSESZqconeS5T7gBEQPs4lpQ06ukHXpWDFdQkGkNV8G8nr
-	n4/PSmXOtLuhI4JoP/k2DV7XHuALW984ebQSojrvbse9j5UQ/TixinWH9YQQ0COcKifIByIs9vM
-	kTkaCa/j1fzB0foHVuMY5Lio2+t5uXfjE4JhRW7KMRs44BE9by+X/ZND53RmMrG/Sn+S4h7Iycu
-	dT5wje5othHRtrNOUuU7oU3BGoqa9TYR0cUxWMu/OzMqFjLH08aKSHJO9TluQ2HMU7tLgvsFdTA
-	RPynFo4Mk6rILFf2RIQw58KPwjxFIVK/N6v96sKGiy7v6tvIgA33wbPgcap69sJalMWWSFLRqfB
-	y8okiBOcF+MzD9g+6QivPUzb1w+ewlXAqb/T0XCBvb7UYrinDStMzvne+sgCWRa5vlD4tpKzcyd
-	J4emQj2rP9t1IcqYgF4o8wosH102I2VpV4hfYZYQbONpMHGbLocTo9j7/6Owje1VQC15zjgX7t+
-	8a56DxA==
-X-Received: by 2002:a05:7301:6191:20b0:375:e4de:96d3 with SMTP id 5a478bee46e88-3869e61da0fmr17122398eec.31.1795696234586;
-        Thu, 26 Nov 2026 04:30:34 -0800 (PST)
-Received: from HFGF46V04Q.bytedance.net ([203.208.189.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385672c6f31sm61373340eec.15.2026.11.26.04.30.28
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 26 Nov 2026 04:30:34 -0800 (PST)
-From: Lian Wang <lianux.mm@gmail.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>,
-	Jihan LIN <linjh22s@gmail.com>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v5 03/19] mm/swap: cleanup and document swap device availability flag usage
-Date: Thu, 26 Nov 2026 20:30:07 +0800
-Message-ID: <179569618256.54252.3159687265879392207@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <CACePvbWLkZtdX-kedNHeFDRV+e3Hcyzixsc=9eENTrZVhiSjjQ@mail.gmail.com>
-References: <cover.1795439990.git.lianux.mm@gmail.com> <5a83cfe8b0992c65cf4cca1e8cd612b4de0b78c6.1795439990.git.lianux.mm@gmail.com> <CACePvbWLkZtdX-kedNHeFDRV+e3Hcyzixsc=9eENTrZVhiSjjQ@mail.gmail.com>
-Content-Type: text/plain; charset="us-ascii"
+        bh=C/AbZhSvVAtAuxRzfiAolPI8iaF2YFQe3pPvY/yniKU=;
+        b=mweWrLb4SUb8fF1aK0egEjG8btqd3PHzCIxq5PsPlO8knMbMlYIiZBd5HXd9/BtCOi
+         04eLxxZ776ZOqUsvelQiURxLx3nl4Je0Jw+UYFJifSLuhDoARKATWoXL8IaomS6p7bxb
+         kxN11Y2rCCprPxhh8CYmurVI/f5ZR7K0E+7qSCvVG10R4DPd5awNUlCv1c8sDKFXbBRC
+         iKuo7GjjQ3G5sTkNZIGjuNqjxzVgWZ3LduE+TzgfO0kkWHPs1m9qfF2syz0AiMn2n7c2
+         CggHQfmBbprc2WEeqzETf3HhtIIABmu8G70hCLyJXVnw2p59JTvGshl4sqEwho5uDz3u
+         Nc9Q==
+X-Forwarded-Encrypted: i=1; AL+hErF9DTElo8hmSN753tzCS1PNvqif9SbjXzRmTGYDDUfn9HBBXrGpyBRWFRykEV1075mekzyRq0ASrg==@kvack.org
+X-Gm-Message-State: APuU4Z/8cQ3TuZf6JSUekOptXdrtali5CdFgBGH78wiHRpyMnGGn+1WI
+	CArQVXSRcvl/aHz6TBePqsb8QyhdBagXv5v1ww2zmYbXPnNDSMatEV7z
+X-Gm-Gg: AZFdTZe7O+oAem5G1rAjl7dV+7jtK2QYIT+mPqZdEUgfMRcp0WosTCvgvKZl0MN8M2Y
+	GJfgYtuHFGPbbTQPSPoihxbu+bfHrRfMT+HeePlPzLviE0sWJO2f8QjHdCGnYp8StTaCOr8RXDq
+	uVJR/nZsDcZy3fTx94cYtXYfiMO+dCZuNcKahEA982FxfO4zoxUvQVYlgZ6JHOP1MGvGBZFt/Zn
+	Yp2yKRjQCv7QO3x+e9KkLaFQxbElBvJcoTmBPtObcp0MRIkv882V17vckFaLC7e0MMvyEUwv7xB
+	P4Nrj9hAfxYtIVABMNa69VdHZIDrU89eJmAz2z1SdnA/8dKhwYGqe1pfxbj99KS+aS7qSEqXBf4
+	gN91rBP4F1L5r0IRwqCYb3Nmi1JzUy2cm9kqse2Nrd7MluLM4Qv+zuSsVmvaKTVbraKuECu4KyL
+	gumeoV3ocwKEhsUqYCsDCIke9uHr6y0dlFJPMLotuWH66bW2tDbYYXGFuQfJWSM/pZ58Mu10OVJ
+	GKF3Ymvb+242tjcqjopHoQjiaE/ukHY4yB6XguS+J05Tagn6+IwdtBl+XPY2Ftd7Boc0ilvJL9/
+	2VwacjI91oBeGrSzPe838yX6CxJ7xgJ5sCUrZig6iJOhZ7leM4241CpGCaU7sDX/XVtLBdY=
+X-Received: by 2002:a17:90a:d2cf:b0:3ab:2737:3395 with SMTP id 98e67ed59e1d1-3b41cafd604mr18006258a91.42.1795696724285;
+        Thu, 26 Nov 2026 04:38:44 -0800 (PST)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad0a33fsm33352174a91.6.2026.11.26.04.38.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2026 04:38:43 -0800 (PST)
+Date: Thu, 26 Nov 2026 20:38:16 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: kasong@tencent.com, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
+	Hugh Dickins <hughd@google.com>, SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Tal Zussman <tz2294@columbia.edu>, 
+	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
+	Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
+	Joanne Koong <joannelkoong@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>, 
+	Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev, linux-doc@vger.kernel.org, Tianyi Chen <hi@tychen.cc>
+Subject: Re: [PATCH v6 02/18] mm/memcontrol: allow update of LRU statistic
+ without holding LRU lock
+Message-ID: <awgnMVr6GHt0XKD0@KASONG-MC4>
+References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
+ <20261124-mglru-fg-v6-2-8ffea39934a6@tencent.com>
+ <387237c3-c2f8-4782-9ba6-481f459cf7f2@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <387237c3-c2f8-4782-9ba6-481f459cf7f2@linux.dev>
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2D5C480018
-X-Stat-Signature: 7mpg8migzzez9emdngi9ndwmjwe56k85
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: B1F2B20002
+X-Stat-Signature: bi7ogkn4kf5hwa1xfuke9oeojw55nhoz
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795696236-158436
-X-HE-Meta: U2FsdGVkX1/FvWs5vn8TeXA/6yk5lcLj/0nhgzMJdWd2D4mrrcfPQP1apwxfA2g+zazo542i7FoJexZS08T8IMUWoEtyPNQahq/1fSyWtOR85m948utd2Xl3lEAqYBrk+14ukRYCunWzpEnkyjpmtDf/gEvFOGQ9G+/KRHV1QZnJIvoZt/86bwocgY0rlkuO1DbqIE7Wl5QjLd7P5RWTd4SWIGe5Q35c1iU+/nO21SBlaVCZ5P289dW5mkqx3iGKN6JLEutcIXOPQTYta/aEchv8Ee3+nJ8EUin/iqz+nCrryiyMUOAE20mouh1FXacQEqsIixltW65Ql+PHu0cINz7Xo57bd6WsDhLfrYlGrP/3Jzligbo6j2eqDqDx1T6v2AvUu3FibeISwOeL97Nr+hS7yUqLLTHG5UKPVsZtuI6GtPXpZP4dWWzowvFo1+H+JT1G1/XywH0z7FpUcArAte+ABgjt456H0oRc7QXHXM9wF0kUbsL4HjKqTkPpyqQ8SOGyA7KvUeKzJ6AXihl6TELDDRIUex5qYLj+DxZ5I3RogmVQtL43G06ToJk6iO4ywiPap/CnUMJzeOqpYIoGz7X/FPNCe7osJnOvXj9rCRyOSaw5539POkR1256Vd11hw+mHfamkP2ovTVpubDMQ7Jki35C30iebhc24QrOfsTblcAYMwM3POVjRqBbt7GwSK2byauri/2YHt+8y4tzVVLuAgEiJA9Q/+BzRW0OdJnf18TETceK7SAXfRNnjnmhGQzKFAiI2ZsqMllGUHEWLYCz1v17YzFUjaXFV5WgjTBIo33ncFMTj5NUnNMxOX+ieusS8vrK9L4nMsDTO8GRwPnzy8vUY6ii2kTSQEv385BH6HfxTQFg0oixXvqHGkLout7SusSm3/w4eXE0Kni0yW+tY62zskw+bgBENpZsJfxT5ubLQzZ0kATsPHBTdHp9VYeTP9KJOILMmqmbmtAC
- vI3aPUWk
- Zdt22czFSO5EZ7wSbYztPTWoxdCrFolDyuKiYpMFLqqhOvgY/Qxjpskl+WTCiibpD/fh5jZ55VkjUWkhRPkC814DRCdvv+zE7VmJbRm9R+Rd4S5Y7mS0RuN9lj8HKtkQ0u3pGV7O6J6KlD0ExeUt8olbG8um2fGcJhwFbQFYQRnCZS7M6soTtBMkrdKucIMpDk0OM3oy8wlh0AJHPsFSZuJN5R0bjbpjpqWGeP8qRT0wmn3419BI8C5n7tAWexkDrv77yzqmksGdx+pycgS26TxRmxN7mqF/wLv1C2/nq5gEqI0mIjTkyMPBEzhsnSDOxuj7mp9j/fUNSWmclstU7P1KXyrkEMBxPxmGTieW0uBXn5DJZxDuWlDiHwzDqSdtT5WH0Dm+jhozc5r/DNmBP9Le5BdMXCDtg1Nq5BgCGLF6YGmEaOhsNCqLOHzxtgu9EJEvr5CdSIbvMIY17yTlWaedStq4KxLSFwC78TK+5ZhLcxeia2j3uWykE541PBfoXxt7joytccjbuuRXziCZhsIfyV88tbia+dT7tz8lTT7Ig43/Ka52UeKyJGqAuem9xhyPO30K33zQPaTzE3gt5Tk5/P8Pf4AUblb/9blCvC8hVUGVqpsCvWwR44TE5WTxvpTTWn+kMHRbtZVxSiKM0JEe3sw==
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795696725-669973
+X-HE-Meta: U2FsdGVkX1/jB+D1mb2p3fFVVnU0pvgvfBLEqAr08jP3DiN989vHKDkF/iwE7WCHmsHQgrwbY2SPyIG9UeW7GKl6uZV261j1ulraLTY7GXcNXv3bQd/3hQqimDFoO2lxgV+5dB78E3Sy1Jw+H4bJouN6ft0TLbXNA/Wmfb8uN1lHKArbtavvlGbiaLTR8+XW5AOGKKVuily8hve6RMgBxymAsFRKmrlBY0UmsoBq0VxQYbneqyY8z0zw5vmQuXrrgX82udj6pmdNvIligX/y67MVLpWnkqCtcQUglm+CwGfJMluli35B5b7XpPQPzqLhTKepbz3QTCV6ySGLjSDsuGxhHveEb//DonAoGfUWGeN1j3XQReTEyxDZPSNcmGeKoueXkNTo/vtxLbPMj9RKQjGEjit7JJ97CeWiovbLVNB98YtZImv920ctHvDuK6qItVZytGYpkdA/CKxcfpa8wIboghhcjsSmNQMYYpglJxE2jWNw4sHyg9d3wMBJ7TrTrBQ9lAWVuu4c8tbv8FrgHywUB1SuzdWt4Px2U09o/hmsKj5XWZXKXP3kYfY3EKsikgIx50MUtaTUOdblGbt2e7YuMlubfyRQaI3nV5JRVbkVBtnByiJymCVpgCN6nQ515ZvWP6hGGjfZvTsaXW9x0rPwZ3feZPjeHKaxjOakjkCqZB5RzXPGHF49UVy0vVlz7gMO1HSdFA+6UbNSPvRTayJijvHU40dat5u4pSYF3t+9VT8+ugmstE1Cg0AUPCUgmD0sSaTSmoh5HRSTaAogyq5cEzjx8ddP490XDiVecWlcMWcvwht1JxgTrBPK+LRgrMaXikfImBWREXmAP8MZ9LzeKn720zlFYXflLlM6ebuLOsmdG823zDvbd6kLLZ3J1vBhvyh62qNhuLJfe7w5hVv1Oq3r4MmyNWcWSbvUM8zCLyBFtjAaYDWRaxYfuf/J6s2KhgWS9mcs4RbeG2d
+ O47cPj7j
+ P0fTv9XYkX8H6dkLyXtjPBRlim14sqsXBpOYHtJ0O6mWVOCrPNoe9+P+IJDn9GB/NEcsGAtj4cdjyKNfwununvnrKOJNZq9J7L1x4ajNS1B1LPkrbQbdzcHQ6bHnvAdJgmquDveTMWScWkBwVe1LbLJ8HMB00qaPTIj4PvhXkQowAY7KD5vhhrZYIZnZDu+ngZy+FSSBrRagZ9ZOmFmtIiZ1O8bB1+UZlesXGHPkAji2Qf0paRJbgumOxtOIaHekfs3jszfUsti3fVOdIZvRIBNJ0RBk/wUk8uQZTLBNKGGgMgNgQmLTCGT76QwlnReIOGIapOrDDV0t9YVH/ahP9ZTzwKam7pCzOkAgSjSASUowLCxFKkdJjwzA7uck/Q1x9pTtUvyHfyVHLeNKzNNqeOLGTw0lxbpYaeo0KEQcntUqc4cHpVShW7c3oIE0PDtbL7MaKZ1K+dZlCr4KmznlEu+W8KsuXTE664aKh/EFtXormzjlMIUVF15T4JGQEo3+vXidkKo5JOQBFyLtt2YHYV3aGBYU6kvorraQkFww9QoaDK/DHrFFf8FTsbGkDpIQA0stTVwfQ20i1WEvLmlPPXjVM85248IzX2UShWIe+9yIqI0qVNPYU6G+u2NsvlyS9fsBG10YntdOg4015rwI8cXRaym9BeIj8EgvENid9TDvr5VSndWD50LMLkj4BBo+Cv7vzxLFg/Vs0ZVopAi5uLtqVx3fhjFn+bRkjRpKPRiocBljbZ5wqStdLkDqghatSFb/rgq6TDwaHZaE+dBjgiuHK/rz4rUniv0sMi91pEG10IU+pYYGRI5i6HD/zmICIDteylPDJ1h360uTIVpZLBZurZ0kL+kUQqjZr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,41 +147,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Chris,
+On Thu, Nov 26, 2026 at 05:43:14PM +0800, Ridong Chen wrote:
+> 
+> 
+> On 11/24/2026 2:52 AM, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> > 
+> > To enable moving file pages in folio_mark_accessed directly and lazily
+> > for MGLRU, allow updating the LRU statistic atomically without holding a
+> > lock. It may cause temporary counter underflow, which should be fine as
+> > the counter is eventually consistent and only serves as an estimate.
+> > 
+> > Reviewed-by: Barry Song <baohua@kernel.org>
+> > Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+> > Tested-by: Andrew Morton <akpm@linux-foundation.org>
+> > Acked-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
+> > Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >   include/linux/mm_inline.h | 5 ++---
+> >   1 file changed, 2 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> > index 2395ca8ee305..2edb9beef6d3 100644
+> > --- a/include/linux/mm_inline.h
+> > +++ b/include/linux/mm_inline.h
+> > @@ -47,12 +47,11 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
+> >   {
+> >   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+> > -	lockdep_assert_held(&lruvec->lru_lock);
+> >   	WARN_ON_ONCE(nr_pages != (int)nr_pages);
+> >   	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
+> > -	__mod_zone_page_state(&pgdat->node_zones[zid],
+> > -				NR_ZONE_LRU_BASE + lru, nr_pages);
+> > +	mod_zone_page_state(&pgdat->node_zones[zid],
+> > +			    NR_ZONE_LRU_BASE + lru, nr_pages);
+> >   }
+> >   static __always_inline void update_lru_size(struct lruvec *lruvec,
+> > 
+> 
+> Hi Kairui,
+> 
+> Just a heads-up: this may conflict with Joanne's "mm: move LRU size stat
+> updates out of lru_lock in folio batches" [1], which is in linux-next now.
+> 
+> That patch makes __update_lru_size() add to a batch attached to the
+> lruvec by the lru_lock holder, and relies on lockdep_assert_held() there.
+> Once this patch lets folio_inc_lru_refs()/folio_reset_lru_refs() call it
+> without the lock, they could write into another CPU's on-stack batch.
+> So the lockless paths probably need to bypass the batch.
+> 
+> [1] https://lore.kernel.org/20261029204157.117879-1-joannelkoong@gmail.com
 
-Thanks for the careful review. I kept the enable/disable helpers and
-the call to add_to_avail_list() outside swap_lock from Kairui's
-original patch, and later revised the locking around device lookup
-and SWP_WRITEOK updates.
+Yes I'm aware of that, the fix is easy too, something like:
 
-> Why is this change safe?
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index 4ca8011bd288..fb5e3990402c 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -64,6 +64,30 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
+ 				NR_ZONE_LRU_BASE + lru, nr_pages);
+ }
+ 
++static __always_inline void __update_lru_size_lockless(struct lruvec *lruvec,
++				enum lru_list lru, enum zone_type zid,
++				long nr_pages)
++{
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++
++	VM_WARN_ON_ONCE(nr_pages != (int)nr_pages);
++	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
++	mod_zone_page_state(&pgdat->node_zones[zid],
++				NR_ZONE_LRU_BASE + lru, nr_pages);
++}
++
+ static __always_inline void update_lru_size(struct lruvec *lruvec,
+ 				enum lru_list lru, enum zone_type zid,
+ 				long nr_pages)
 
-Both before and after this patch, setting or clearing SWP_WRITEOK
-takes all three locks in order: swap_lock, si->lock, then
-swap_avail_lock. A reader holding any one of them is serialized with
-those updates. I'll make that distinction clear in the comment.
+---
 
-On the swapoff side, what changes is that we release si->lock earlier.
-We still hold swap_lock while removing the device from the active list
-and updating the global counters. The old code already dropped
-swap_lock before wait_for_allocation() walked the cluster locks.
-
-> what lock protects the avail_list, is that swap_avail_lock?
-
-Yes. Previously, we set SWP_WRITEOK and added the device to the
-available list under the same swap_avail_lock critical section. With
-this patch, add_to_avail_list() takes that lock again and rechecks
-SWP_WRITEOK and the off-list bit. If swapoff has already cleared
-SWP_WRITEOK, the add is skipped. If the add happens first, swapoff
-removes the entry.
-
-> May I suggest splitting this patch into two?
-
-Agreed. I'll keep the first patch to extracting the helpers with the
-existing locking and operation order. In the second patch, I'll spell
-out which operations move outside each lock and why that's safe.
-I'll also keep the original if (swapoff) branch order.
-
-Thanks,
-Lian
+And I think that batch design could be somehow improved too,
+holding a stack variable in a global struct looks a bit odd, could
+be simplified if we audit and update all users for update_lru_size
+later.
 
