@@ -1,98 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B49606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 02:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00E1606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 02:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MgkliDEz
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZQnT2Dwd
 Received: by kanga.kvack.org (Postfix)
-	id B07CE6B0B53; Wed, 25 Nov 2026 21:04:27 -0500 (EST)
+	id 960046B0B55; Wed, 25 Nov 2026 21:05:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABCD16B0B55; Wed, 25 Nov 2026 21:04:27 -0500 (EST)
+	id 9375F6B0B57; Wed, 25 Nov 2026 21:05:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D3AB6B0B56; Wed, 25 Nov 2026 21:04:27 -0500 (EST)
+	id 84DE16B0B58; Wed, 25 Nov 2026 21:05:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7198D6B0B53
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:04:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1C56120249
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:04:26 +0000 (UTC)
-X-FDA: 85475625732.15.AA2A1D8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4AC92C0005
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:04:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgkliDEz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 609906B0B55
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:05:21 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E75AF1A0268
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:05:20 +0000 (UTC)
+X-FDA: 85475628000.11.D4F73E5
+Received: from mta1.migadu.com (out-161.mta1.migadu.com [95.215.58.161])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D6567140009
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:05:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZQnT2Dwd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.161 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795658665;
-	b=AKpcs0ppxJVDFKhboC08bO+VVTeTYmlZw5egB6b3llG/4y7c62MNFGEvpILSMKUm7kuQ0s
-	U2VMRQ3+14yXfeUOyyGMDCpzWvg9dDmYbpB8KckbRFRCjuLFqirq3ZlGlPnmzJNZfGjlkv
-	qAb3SAb8kt6+Ehaq3PNucd+KqoCyFEc=
+	t=1795658719;
+	b=mRDLsB9MRRLHhw7wCvcFtbnw7NYPsQKBfCd6vTwXkTFGaZrF6VJFzKTgWFrACqBvS0XaPf
+	lDiwQLZXk/464drGqViVK2gvFg7mEQ+TgXCFHV7JsHwclzaseLXDWQ1C3wm1NcbSW4NhW7
+	V+0EYSNhSxePUV9WHtbZUShgZBdefyg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795658665;
+	s=arc-20220608; t=1795658719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=liXpri4l+8f0qFYwYuywNL9hfYgq5mI2uGuMxDVOQ14=;
-	b=iauZWsXOyNEH1bu9suNhtDC24UqMyscMgDoaX4wEeeR7Tx3AV7T1EoIC6noTsKWUckk7Cb
-	irKD/YtgCEEPftZOIEPxZRLvUFQk19pnUqDKCOVfTn6AsVsbA4XItrLPCu5kA2zJsyDo/q
-	JrzsSiYXEqXmKTDgTheWJcZycTns1nU=
+	bh=5f8HopAilRekX4oDmbEUHNnRptZx1Qep0LVLshbVfgc=;
+	b=IFBGzOCsMDFGssFrwEYjvMFhaF8+fe4AC49balpme9J8izpJMCpC06L6ipG5R4iUDIk5ul
+	ACeJwAPsW9qVHNh+qiIAtCI5ZPQqhNi6WH0SqTpG+Bb/OCbdN21yA1QXYQUpj2cYaI3qr/
+	A8mqqFqBE6pKO2jG8ZXnUDlynYi0Dt4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgkliDEz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9CC1623F8;
-	Thu, 26 Nov 2026 02:04:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A8E1F000C6;
-	Thu, 26 Nov 2026 02:04:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795658664;
-	bh=liXpri4l+8f0qFYwYuywNL9hfYgq5mI2uGuMxDVOQ14=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MgkliDEzz48SDtPEkoj1EzzSbv+0i+SwDuizIFFidXAbXKbaN9ogCauoDp4szR61n
-	 pld4i/EA5lgSprrlPKu3sipbIAtN0nQkVhPi8saJ6u8AqX8sETALWfR3ff00XbzUHW
-	 Q2UtEe7/QFvLqF6YzOGZCKQ7GonA7VIrhH2ekXFjambZEJ5akMBR99FQtHRn0b3OI3
-	 Tbs1rQnNUF1ac0fSfPel71yx8RhtNY17o5XmklfN87u/1MVxSF7E4K/GckW3+FlfDJ
-	 uMeF29fDjLSLXyA2qzBchiqFi/DFfQOSZWlACZXV/CVhBq9+ITmKpDDFHqiHDCl4+3
-	 9opDI4xUrvhpw==
-From: SJ Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/27] mm/damon: let users report their data attribute findings
-Date: Wed, 25 Nov 2026 18:04:15 -0800
-Message-ID: <20261126020416.87656-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CALa+Y14BNfdWH3yBY+ky1+Sb0YvRzW=gRcKKyGWWaBQkysPUkA@mail.gmail.com>
-References: 
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZQnT2Dwd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.161 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5f8HopAilRekX4oDmbEUHNnRptZx1Qep0LVLshbVfgc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795658717; v=1; x=1796263517;
+ b=ZQnT2Dwd4OZHvVTwdB+ZOAhxiIQZ514z1N2rUUTvnQYjr9MULJRHrTUmxrahjznEPZqNmMoL
+ ZtAM01J4woT4VYWvbM5HSERLVNGHbKspuEhx7A1r0J6qgn8KEjr+GtZJxZGqD0ZyCRiyDIbBUB7
+ stJckE0FmD73ku1/3AZAocCg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4765b56b99f04d54;
+	Thu, 26 Nov 2026 02:05:10 +0000
+X-Mizu-Trace-ID: 4765b56b99f04d54
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xck9hh1n3x4xtf7kar1nmoxfdwtep63t
-X-Rspamd-Queue-Id: 4AC92C0005
-X-Rspamd-Server: rspam06
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 04/21] mm/memfd: mark new hugetlb folios migratable
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261125-hugetlb_fixes_2-v1-4-db27fd2f71a8@kernel.org>
+Date: Thu, 26 Nov 2026 10:04:48 +0800
+Cc: Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jinmeng Zhou <jinmengzhou22@gmail.com>,
+ Hongfu Li <lihongfu@kylinos.cn>,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Dave Airlie <airlied@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Mike Rapoport <rppt@kernel.org>,
+ Mel Gorman <mel@csn.ul.ie>,
+ Dave McCracken <dave.mccracken@oracle.com>,
+ Andy Whitcroft <apw@shadowen.org>,
+ Adam Litke <agl@us.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Rik van Riel <riel@surriel.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>,
+ Lance Yang <lance.yang@linux.dev>,
+ James Houghton <jthoughton@google.com>,
+ Yang Shi <shy828301@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>,
+ Gregory Price <gourry@gourry.net>,
+ Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Byungchul Park <byungchul@sk.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Wanpeng Li <liwanp@linux.vnet.ibm.com>,
+ Andi Kleen <ak@linux.intel.com>,
+ Kenneth W Chen <kenneth.w.chen@intel.com>,
+ Hugh Dickins <hugh@veritas.com>,
+ Michal Hocko <mhocko@suse.com>,
+ David Rientjes <rientjes@google.com>,
+ Joern Engel <joern@logfs.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Michal Hocko <mhocko@suse.cz>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+ KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Sasha Levin <sasha.levin@oracle.com>,
+ Guillaume Morin <guillaume@morinfr.org>,
+ Wanpeng Li <liwp.linux@gmail.com>,
+ linux-mm@kvack.org,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@osdl.org>,
+ linux-doc@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <98C27A06-0FE2-428A-9B13-63E9CB0C648E@linux.dev>
+References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
+ <20261125-hugetlb_fixes_2-v1-4-db27fd2f71a8@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Queue-Id: D6567140009
+X-Stat-Signature: ctf6s731rdbrjkuweyg6z78dszzeo4bu
 X-Rspam-User:
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795658665-223173
-X-HE-Meta: U2FsdGVkX190GhKO0e2GFOPB7DuF/Z+6UiB6ng0CpBCgs6Ca7jJLgfhP5znes2++vNdId7sfQ9fGmszV40XpJfGjqDyEW3LH60dkVCO3p2k0FhH30FtLMHiRn7qQF/vNeY9mAt+nefP13djdM57GEKQZNzOJ2fJahOH8aqjQvOEq3fkTVMxEeZSCWb1BAzAVR01JTxRi6/VdiXZKG71PX1zLMkLAEuH0RF7XUVWIm2wU4IpH7eqoeprbJDRtNLE7tRu3UjjKEX8pqYUETG6w93VodluthYYwL+fs+Va0mg/jLR8vk8m51yW6Vl/AK3Jv+s1+T3v5LAZX6lCWa/gEPM0wt3OUjyDmvg1zxxAQdgVuHNIHTqzGvFN4FDvfX+Awf06+XycRC1oYAQi2GoxAbM4pgHzFbQ9FtmaJA7BOt2UnKClQ8YRy7nf9u7Gi7s2T415ORiAsR8WIp3PpgkN0nksO8UacV1pM8pTxe+9VYnO5ifPJa4yNlbUfDVvTX/DNGIrhRKTLf9AbQN4z3lu68kJcy+WZk5SBbXdA4QPZBpKNu8Z2RRaH3ttZOxNzCuh7ZO2QEkT65WaBoiDeS5kvBbYh5V8tWOou4tfX1LWdy4uOlphnj5koGmZ6Dt5b42NpOYKXXQ9CQ/FX/tuda0xBwdg+K/PF6FaDOJRstCSMgyxyp+IVZ1+UGnzzF+rdESk/GND/RPGib14F5OQhVZew+xo3XEsqU98rsjULeyPF31KlskgeVc4tceHt0BLj57DvXt/pMJ/mHc06xUtPsfufh++cRQw3xz0M1br4YXBcLY92t1b9AR4UOMuhwBcyDOfIT2EYwXF7jIwI8EzJdwQh1feaVYWkxhU18AWsqAdy9OXxun2GYGUJIPvdldV5JOxf7qwiHhzLp74Dz58uy9qTl22SZNZkQSatCoe11Jjom4YFCABjS1FhEjUOpkAUxJf5csTKaTrBGwtWzP1k+jd
- s+rrkAWK
- sFiN/BAbet28fwNk6a35qCktRqQp5XjRElfSgWOCWc1Im54d9dg0OBnXUM9h5LFxImrhk3nzoLp9VMCA7zJM2nEkZEnUTenmudvlgxo04Y+GLKe1PP0im5J2oXo9arjzqTXae1XxiX6GZ4FIMq8fOcNXqfbUs95TMyt49IyqZQpJlLRSR3c+T+If4Ju3O0UwJsSXn9IxODi/5d8hU1OEcpderA9u/fXdX+QU+ye4LuZpAMQpfDVO5DHm2+E7wDvusRFBQot38pz5RNku3AxYoYwlbRlQDooNN0hTS4Zl3iBKofYIbjiJWAuo5V0WVcS97A3GJqqRC94Q6Fx354YjJkUurhy/PcXpeN3FY0nrsAyZKhesyWYlb79+jOq83+6Qmwsh8HmrQ4nAwFrIc3PS5GyOq5EM/4HU2Igv5GwVwOinqDVN0x9Dvy2GHbfOofN2Knm9Wom2b5oDCKlFQmsC2DDxENhoxZHyxBiStEZWNgUbCLzQMcAVYjDGotxeLxp3acV3LhHkkizWfe4tu+1DY6r+AkQ==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795658718-693153
+X-HE-Meta: U2FsdGVkX1/GBuW1WSb3DHaUkn916s/3CYmgrwvzX3kCOQeV8KCWzlkxgV5XRweVmH7b16RLWpdYIjm0Pf7twoDzWSBpF/snKnAAwB/E+hxMoLGrGDu3lVE5Kf6ae6Vwa6cgr56H4dfZ9qEQXX+6o4p1G4bKHni1uWohIGcnchF6calahP25Plt/zEPFpopescZIEwpaglq3P3NRfkx9Me3IJsQCH8THyHv2SUbWw8l+DRJ9vamTL3+dfKU2AFtwiIqtLGU6EoK+BW+gC7+Ae+nISeVM1plXhuRy7V23Wew++6cblCO/rFi4N6LHHRIrt4bzX6MUw1Ey/JuFsYI/Z54WrXeD2JbrE4HABBa6skES821lViiH+VLWNWH3PZQVF66Ap28jHQYwsKFrEBG4dJVmHX9mJWBFBiPNRfy4kRV8KKO+d25wzRjfbVv47oZGPaEuhpd2iogH5rq/1959LYkgza+9FGHn3C/c6posOS6sYb9gDe6TQXpsGGpN6XV3kjtiqQ9hE2j2FeoEc7S4isrpBGRNmobgCg23Q0oZ7dNjYoXOxRdxgQwa/97uPRpTlKf3EAAtN9xawcznMxv/z8dSPPAX+J5ug1tLGwwPWqVsZ5Kky5Zsmq55VFFY9AsE1Bvm6YXxM5U2loexn/X/tVa/S6ZgOVVSX8jPl4Yp9eJ+LqryKtEDZDQPirO0UPe4F8nJpKCCTkOFu5zt4E9fq6Y/by7UVyEmQMUqAQ/rfDg4sSYkEwVuwLDKvJ+NVOc6TqrDcidXXmBj1tloGsXM8L/eyUCW07iujocwG4Ox9ZRVVHUP30jNyDqGA6EYvt1iADhA0FVfqlnqcoPfwCQe+uj5Km77A14trkfI+CFRPkFtVE0axfn4k/J1EKOczeEuNmv6YMkwUYIjpZu1c8FiWBYyF+cxm1AEMdcpLRwfOl7r0Fs8m1FQUN3gpIAehwpOPbceNKjj2wIhGL0Vsl3
+ DCdg05Rs
+ aYyO5TGqlWBQwuYgBrpxY7UAUEZU/aynmhyehUuuiZqkQbVhG0U5i9C9dKmTBd7e+6DCDdTOWas6EXAzmmRbiTMlrjNif7n7OIrdkXqtTdyjmEPEZwLCGLDzvk4+Gc+UIhRA7LujCYvZuV4XfwMokOOOkAPaxqMFh3YCy6cKbCQYpRvs08e4fClJDer3LHbVEdiRoZZLGHCLXNJ4ZV700PI+4qJ7/Bhokt/yO3qEt/Z57hPH0NPIPhdMznln2thUkvP8x23u0w/f4xngJPWnW4HjAWQXig31qvKpNlZCKZrsZD7mPj4NvhqsOjX0sPcqL5Ji6vTeTUMwW4AiK/0jco76zjvzeO1QzCT5Q2xNs8l9mEpM7SxspQleWsZUa4Bz2jxQaJmUBhxW2/X71poNviCSpHSRSGeJ5TUzlXAC/f/ly1n2zV4H0X7P6iX+z7F/gu5YKB2/Arf1T+Irt7zHHLCJ3bgrpLgle/TgjQ6BhU1U8865E1qaGU8ZzFrlXd3yGWz9Hj2f2RhucYxo7MVZsqYoy40/iIyLnduH0NgrEiO89F3Vxn3CxMjgrbwRV+K87BpuF6UVuu6CZgw9/8fc9YLSi6GmEn3JZTBsJwh0/CuUKg6M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,116 +155,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ravi,
-
-On Wed, 25 Nov 2026 14:10:15 -0800 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
-
-> Hi SJ,
-> 
-> I tested v2 as it is in mm-new, and wanted to share what I saw.
-
-Thank you for sharing!
-
-[...]
-> 2. As the submit rate goes up, two things go wrong:
->    - with matching=Y, the probe misses the report more and more
->      often, although it is always there;
->    - with matching=N, the probe matches more and more often, although
->      it should never match.
-> 3. Empty and inverted reports are accepted.  They never match, but
->    they take queue slots, and enough of them push the valid report
->    out.
-> 4. On a vaddr context the filter is accepted but has no effect.
-> 
-> Where it comes from
-> 
-> Case 2: a busy report queue (13/27, 14/27)
-> 
-> When a lookup finds the report queue locked, for example by a submit,
-> it answers "not found" rather than "don't know".  For matching=Y that
-> is a miss; for matching=N it is a match.  The more writers, the busier
-> the queue, and the more samples go wrong.
-
-This is the expected result.  The implementation is more strict for type
-matching.  If it is unclear, it says the type is not matched.
-
-For example, if filter type is PGIDLE_SET and we cannot confirm it, it is
-treated as not PGIDLE_SET.  For example, DAMON could fail at confirming that if
-it was unable to get the folio for the probing memory due to some races.
-
-> 
-> The right answer here is 100 % of samples for matching=Y and 0 % for
-> matching=N.  What I measured (the last column is the share of submits
-> refused as busy):
-> 
->   writers               matching=Y   matching=N   refused submits
->   1, one submit per ms     99.5 %        0.5 %          0.1 %
->   1, back to back          45.5 %       55.3 %          0.2 %
->   4, back to back          49.0 %       51.3 %         60.2 %
->   16, back to back         15.6 %       84.9 %         79.9 %
-> 
-> The numbers vary somewhat between boots; the trend does not.
-> 
-> Could a lookup that finds the queue busy skip that sample instead of
-> counting it as a miss?
-
-I agree that could reduce the error rate.  But I concern if it could make the
-behavior inconsistent.
-
-In my humble opinion, , the user could work around this issue by not submitting
-the report too frequently.
-
-But the more important question is, if the user really need to do this kind of
-frequent report submissions.  I have no clue at the moment.  If it turns out
-so, we could improve kernel side.
-
-One straightforward way would be introducing a complenting type.  For example,
-we introduced PGIDLE_UNSET to complement PGILDE_SET.  We could add something
-similar for REPORT_MADE, say, REPORT_UNMADE.
-
-Yet more possible kernel side improvement would be making the report queue
-synchronization be more robust to contentions.
-
-> 
-> Cases 3 and 4: input checks
-> 
-> Two smaller things, both about inputs that are accepted but cannot
-> work:
-> 
-> - Submit accepts a report whose start equals its end, or is above it
->   (22/27, 23/27).  It never matches but takes a queue slot: with 1000
->   of them after a valid report, the valid one is found in only 4 % of
->   samples.  Return -EINVAL for these?
-> - A vaddr context accepts a REPORT_MADE filter (16/27), but the vaddr
->   operations never evaluate it.  Refuse it for non-paddr contexts for
->   now?
-
-I agree this could be confusing.  In a sense, that said, those are working as
-documented.  There is no documentation saying addr_start should be less than
-addr_end.  DAMOS filter design documentation mentions "support of the filter
-types depends on the DAMON operations set".  And the probe filter design
-documentation says "The filters work the same as DAMOS filters".
-
-I personally tend to prefer keeping code simple over making good user
-experience, as long as it is not causing critical issues like crashes and/or
-leaks.
-
-If it turns out to really confuse users to be real problematic, we could add
-documents or make code changes.
-
-> 
-> A minor nit in the cover letter: the loop
-> "echo submit > producer_state" runs in producers/, so it fails with
-> "Permission denied".  It should be "echo submit > 0/producer_state".
-
-Good finding, thank you.  Maybe we could ask Andrew to fix this up, but this
-might be too minor thing that readers could easily find out themselves...?
-
-Thank you again for your review and testing, Ravi!
 
 
-Thanks,
-SJ
+> On Nov 26, 2026, at 06:33, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> memfd_alloc_folio() adds a new hugetlb folio to the page cache, but
+> never sets it migratable, unlike hugetlb_no_page() and
+> hugetlbfs_fallocate().
+>=20
+> Later faults will find it as an existing folio and never set the
+> migratable flag.
+>=20
+> Such a folio can never be isolated for migration, even once it is no
+> longer pinned, which breaks memory offlining, alloc_contig_range() and
+> memory failure handling.
+>=20
+> Let's fix it by setting the new folio migratable after adding it to =
+the
+> page cache, like hugetlbfs_fallocate() already does.
+>=20
+> This has low urgency.
+>=20
+> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning =
+memfd folios")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-[...]
+Reviewed-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
+
+
 
