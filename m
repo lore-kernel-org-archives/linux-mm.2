@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5132E606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87410606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJyTKMIe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UtsNJXH5
 Received: by kanga.kvack.org (Postfix)
-	id 69A3C6B05B5; Thu, 26 Nov 2026 06:14:49 -0500 (EST)
+	id B07AF6B05B9; Thu, 26 Nov 2026 06:15:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 623C36B05B6; Thu, 26 Nov 2026 06:14:49 -0500 (EST)
+	id ADEFA6B05BA; Thu, 26 Nov 2026 06:15:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EC596B05B7; Thu, 26 Nov 2026 06:14:49 -0500 (EST)
+	id 9A6556B05BB; Thu, 26 Nov 2026 06:15:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1D2C6B05B5
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:14:48 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DF35403D6
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:14:48 +0000 (UTC)
-X-FDA: 85477012656.18.BF75AF1
+	by kanga.kvack.org (Postfix) with ESMTP id 750FB6B05B9
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:15:06 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0CAE21A03D5
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:15:06 +0000 (UTC)
+X-FDA: 85477013412.16.671BAC6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A04D1100002
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:14:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJyTKMIe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4F62D40005
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:15:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UtsNJXH5;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691686;
-	b=rOAbFaf0uuxGvfaUZyMDZKB5CtC/NgnT4ryoI8tGf0IAI9VPID4L/9OU3zDlTWhBdGbQnr
-	Y2oRr8p3rnJBa/JNQVyJ2E/0t6cNR1IXTjTSDFQpJKjKN5BvhwRKPb+wFWjTxPl02lECOV
-	wnGPlb40MPsiEGoeUuCOmQITx2HzzAg=
+	t=1795691704;
+	b=oGESPpGz6VmvxF7F0iYxIJCLzAzre7olHBOmPvmE5Q3D1BH7K28GAU61O5Tyj2GpGgHfuq
+	mRIXoyOcaBOLl8rbGzi/3KPffvtakIe3ctgQoD/vtlWlVEjduOkLIcw1lxx89W05hTvQaK
+	11p2GLz+Cf3abeaKY4NPT3hRsCngr4U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691686;
+	s=arc-20220608; t=1795691704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+zAN299vizOOPECPls5C9ly2hX7A6i/wCUYEhdWTrYE=;
-	b=8YGX+MBQqm9AUieA+yZWd1mFtV8Zq8QDqhId2EeW8YBONU9vPi/yF+GcLCMvUPG/pTih2M
-	cFLbSyG+m5xepcX2iWRUupyXaB12btL5YgeaDXJi8zzYAAS5odsN7ssmM/hflhVQg73EgL
-	8AuhWOpf8KOETZr77KZZybcIftpQvYA=
+	bh=bj8/4t1D3486bMWuOXwhLcAKxLKyES2zSNh6vuKXpeY=;
+	b=q1v1rsH0PIR1hePfuqiERfiHpBFDDyrTaGfMX5bJk++C6rAyYleaU812lBXjGWO924dvPD
+	5wiOMlGzzbyVl4DZufEIn3xT/NfS1Uh1M2fg7Uy/okpHe0sbWNUDX4xmG6e02dmVyXfvmC
+	YZo1WNQ0giBkqlRo/NgwD1vujqJ8kWQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJyTKMIe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UtsNJXH5;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0FFB943B27;
-	Thu, 26 Nov 2026 11:14:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488AA1F000C4;
-	Thu, 26 Nov 2026 11:14:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 919D645CBF;
+	Thu, 26 Nov 2026 11:15:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18B61F000C0;
+	Thu, 26 Nov 2026 11:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691684;
-	bh=+zAN299vizOOPECPls5C9ly2hX7A6i/wCUYEhdWTrYE=;
+	s=k20260515; t=1795691703;
+	bh=bj8/4t1D3486bMWuOXwhLcAKxLKyES2zSNh6vuKXpeY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=kJyTKMIef9KUJ7TrzxTw1NFRlFaRrs8sShSVVpag23heJBC0+PbBRsR1oW1Wkkfe3
-	 /BEDq5VE3iJDg9scZN+INRUCab6B1pQg4aSTRrJ64C0kKSQyJj5olaROHEH5iUjs+j
-	 8wKpdu+jFo2YDtHGgaZw4V+6poffdw5Oag7Yqa5qdXG3V3GPOwPnZgPhV6dXf9v76W
-	 Sb0W8VbJ3BmR3nLdG+OyaPztr9yMUdYv/loapVRW0yE+e+WYmM44YbzJciMR6VYcE8
-	 wGiDHGR3bmNJb9AN7Zbx5mEvbwquRTkTxaAYZtEGd9VyUgt5DRG8mbCQoHnOAjKSOb
-	 +bMedTT8QILgA==
+	b=UtsNJXH5LkGbLvmX8h3OWLUUPvo5d1Agxt9hiYQPPnM54LtZfxIJvEkh7mIytiaPL
+	 R/iQ8gA7kJPLRFnQ2FHCXHvqEw5yPC6eW6oxNL4Gli3chYbPmwhbjwy2PutbebUGMc
+	 R73R+kL6N6mVGWCCB1VsAFs8AB9+g4AyJv+7cH0WQ+PHsw7ExmQ0tVphZP274UDziY
+	 3gfWXTO7rOPovoqCNUi+BQdyjUiAqRxeTnYvKTBDnS5fdyx3AoxmmN1YYITXMeU6u5
+	 58JA57EHTN+Mt/ar7zYd+kdqSTSqOfYOBW/fd8UrNniZmSKj+/mHWAgxeBE9NdurAa
+	 swzGR3b7HpeBA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:14 +0200
-Subject: [PATCH RFC v2 01/54] riscv: do not use P4D entries for the linear
- mapping
+Date: Thu, 26 Nov 2026 13:14:16 +0200
+Subject: [PATCH RFC v2 03/54] s390/boot: parse boolean parameters like the
+ kernel
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-1-723f1e33c3d8@kernel.org>
+Message-Id: <20261126-generic-set-memory-v0-1-v2-3-723f1e33c3d8@kernel.org>
 References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 To: linux-mm@kvack.org
@@ -96,19 +96,19 @@ Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A04D1100002
 X-Rspam-User:
+X-Rspamd-Queue-Id: 4F62D40005
+X-Stat-Signature: t1c3oigqws3sxrhize7mjqxtozta3qrq
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: wb3yc11rc7nu6t4kbt17695o7p7gd7hh
-X-HE-Tag: 1795691686-514232
-X-HE-Meta: U2FsdGVkX1+JbLOEJWRCZ1o2JYPmT2g122Fv+eQWxgN567EbrQFThuhQOXEedNqQ8OkgkKzfn9Wvc2Cy75OpLhSVe3+1HheuzQpw2QoKMI7w7JJu0Ov2Do+wWHJtp1Nk223ZRJf/J7VmL6hkCcM5FhHvmg/Wcu1N56TiSPV6Hk7cIBPlFPSw9gVAuSHnYkuPGL2bsVdQjLh95gIl8rfs+28jQiKz+ZEBIK3EE0N06C5DAmef3Ube3Aniv46HemOms5CYYKo/tcmboqxUSYp1VoEEkdK6RFNNNNFReyy/iiCuuArDUcF9EWks7vZ8VpcjJnKzXXyyY1H0A9JIDTzpVU0FFPNoQK1Um53h0Y/jLxC1tYfs6Xyx3vEkXV2/J3RZGMaadsgsM4TBYZVQCnqNOUluhS0cAT3z818gJzjNpUwj5fO0+jSSv5YJliEmeTm1jlDmWLO5/PkIRyErsgCM2YcneRaTdI1d5lQj9HztJfNS2BxLxpPQxohGkeAjt8BjKY7Grns9zszdWq+VYYP5f4j4XV8yaf5R2T8qRumVAMCSc7JFAI1hewQKM6KDCRgj15iHo5rCrIE6nKb+Z7xGPmI8VLnq6yARHnIFQwQ0x7RdwE0o6ZijHQuLqNE6Zp2YRCkFiwtaZPJ8ch1E+HHOYIrRwBn0xVvTkNrr5+KCXvUx3atcUx8O9uRg5z0fipJgfLEAR5btZ4xkFqgkbmGedltjL+va5W9jJQlW1vPFtnBJSB4HuTfNvnH9ORiHV8p6BkKt89D8SM8ZCy9m9Y1i7QL5mxuCzr/rGgcQTDfLgNH84+QjxpYBL3gxWhHkxjfFfPljKlPmaJFb4+8P7v9apZvGsbiL1JppiXC8sn9qtQ0+cKDLkMVaJYzbBW8I0WXiKD7q4sjFlzp7NB58LPdknL0Oz8AGVJB0X80BJMDEWuzh+f56uGNvARxIZXX/ttl8S19bpm4y7USvXOiAfQJ
- 32Adm47o
- ZSUeui0PfyoILmz6Eb8oG8nrnBOB7hcvddrqOkZ0f2uAL4LLYQIjj3xyd6EDSG9EC6a7WeBbDvMTy5zqtUwbtnGvFGmO7fH0gM3L6AcvQyhyN5p5Ga5zXP11yAxa6k9Mqm8GMckmqm3ipQJ1pSVLnZskWL450GcKUo0y9uBdNcrQ+Udi1AJ/4l2n5KoeTJzjKxO9PsmpXStphUp9YqFu1waFPseqsxlUUdpLjl2L6R9YtwztNytP4qPN7LQZ0L65WIlBOgBDLnIE+kyAzONQU0kbpNKpkgbTJjYFHrkQ6vpMzA1fTQTA83SkXVH47TzGXDMP8DSeRUVKjKmpBMJu1p+iEZpUzNRcllFgvs8mQ57PaaXwoDh/sN5i9qVhK24HY6VXNFQcFxdjURBXFZvYEe0nRurl1kOXUU0INcFfZZWc9PUx14QD5EP12ThdCjE1rTUVG49Pw2UQqOpvIr4p6aec51ypeaOmeZYS2
+X-HE-Tag: 1795691704-191255
+X-HE-Meta: U2FsdGVkX1/kV9AOTO5aZvShc6sl//xn90e7o4ureDlEm7TzoCGUrn31ukwBs03ggBXsOk4etfy8SCeHpU/hR8YImjzFh0TfSzddJ123UF2F1WRF8SSbwXK4K5t14UStorB5ewoTpdau+K5UK/gC7jmfsmrVZhv9KxD6nFt9PHD+V/us67j/80P9LP4UxflSz2pxwmm1VReJWVbuENfklBlcMrxk6GpYtNVPfFIO0ohKLIpp3HX8g/jEajh3w9jp/o0HacEn3D2zfjCuCSFxPMkn7ZNS+EuCpFC76OuvODUJYVNkiVENIjfSPUpAdZOHp92UGuayrxfU7DhuxTr2dAenrX40roWvPV5ZrDPRI/6A36cD/oHXeyFgoP5fU876b8xqdoKaLVuliRj5+rERJ3vFKQMkHMq0CmWdEgIGoiqDL3gDxc+GPyKM2tzqfJMgO57xbYACjsedGSmIge4mS91Nj0mVOv7Me9YmNUmRiiaD52uUFgIRSw/c7Xs3c5Ewn7NwUWIUalWICNMOA+tv8gbin9TGEkYdAkcu0bHbN0c5IyDj1iAQ2Z+6YJzRLlEw+UMW1FlMaEasVNm6hcNy5Xt7oi8gNVIgjtJoNhUepii1Urp+a4fab7XhtVWc4c22kxEcK4QBwt11J0Y0x5mQOrIC5AV0tWR0WCj001B5IBc1XFfo0lsndZt7o0mcov399UbW0pIr1cWfj3a48iVombTdnYyAqaR1Oq0XzDXS1gddAty6z0ViE4ecLQQaFbweYPTd8BsFSxSfXcJjZN3DhWs8k2UcftqczeoQowdB1y/dOxO7tIL76gMzREhGSrVj9WxejOOeulWBJwDZEmL59MezYaodiVzASHaaa4HSDcJJlFmcDHefK+ItMkbOJKwwrkjhgczlobb0eP/cAe/RV68mYMt5I3TCNfb/qzuw5kxG4AEluEocmq8ebBuE5Cfxi+9cBYPvcoUfLzHQR1n
+ 6a1FjXD0
+ N2zlP8WiycDZxnJdnNRFhALUfilUErrgYonm5R6GcyKo5symQdfas8HT+uBRVh3vUzxNLYM4ni6BwgbC/p6vXG940tPEM/PftMtF8cWpbg3nvYl7fOZoBJSLkMYmtwrQ1dxsfLOr2Pq725rdTfjm3G2mkCL2ue1a9k7Bj3r5mOglVoRDEy/gL5+bj64T10C3lOPt/DIZWcC/8p2aA2XYolyG3tPFpSlmIhN3C90oo64zQuSKwxYhy/sKNyVyCWjXcPBCMhFE1Wv/GDlxMRJGvvOAo4b8SQELalPVoI7zXNKlULpGPgufBWGXnmBS1iv4LbvkcwHXAw10sd1L8iVoX6U6j7wyunmBdN29Ycl/o8JeGXOgRDYSX8RASexzH9+D4Yyy7VU5C3kOM7fF0UAZ1HmJeI+cqTd1/qymyeoE9w7ylpSWBo/C/xdH6D4OMVFQ7aWNT1dM41M6X+h9Zg+Upeg5FLec9c4yUt8ik
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,39 +117,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The linear map uses P4D sized leaves with Sv57 since commit 3335068f8721
-("riscv: Use PUD/P4D/PGD pages for the linear mapping"), but riscv has no
-p4d_leaf() and the generic stub returns false.
+The decompressor has a copy of kstrtobool() that takes only y/n, 1/0 and
+on/off. The kernel's kstrtobool() also takes true/false since 0d6ea3ac94ca
+("lib/kstrtox.c: add "false"/"true" support to kstrtobool()") and
+enabled/disabled since ae5b3500856f ("kstrtox: add support for enabled and
+disabled in kstrtobool()").
 
-As a result, kernel page table walks treat P4D leaves as tables and wrongly
-descend to lower levels. This affects the split in set_memory_*(),
-kernel_page_present(), ptdump and the hibernation page table copy.
+The decompressor ignores these values, so "cmma=false" leaves CMMA enabled
+and "prot_virt=true" does not enable it.
 
-Stop creating P4D leaves rather than teaching every walker about them, as
-commit 629db01c64ff ("riscv: Don't use PGD entries for the linear mapping")
-did for PGD leaves.
+Copy kstrtobool() from lib/kstrtox.c. This also adds the break after the
+on/off switch, which only replaces a fall through to the empty default
+case.
 
-Fixes: 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear mapping")
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/riscv/mm/init.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/s390/boot/string.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 070ee69eabb3..e1bcc3a16129 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -717,10 +717,6 @@ static uintptr_t __meminit best_map_size(phys_addr_t pa, uintptr_t va, phys_addr
- 	if (debug_pagealloc_enabled())
- 		return PAGE_SIZE;
+diff --git a/arch/s390/boot/string.c b/arch/s390/boot/string.c
+index e4ad196cb720..c12fee2670e3 100644
+--- a/arch/s390/boot/string.c
++++ b/arch/s390/boot/string.c
+@@ -132,13 +132,21 @@ int kstrtobool(const char *s, bool *res)
+ 		return -EINVAL;
  
--	if (pgtable_l5_enabled() &&
--	    !(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
--		return P4D_SIZE;
--
- 	if (pgtable_l4_enabled() &&
- 	    !(pa & (PUD_SIZE - 1)) && !(va & (PUD_SIZE - 1)) && size >= PUD_SIZE)
- 		return PUD_SIZE;
+ 	switch (s[0]) {
++	case 'e':
++	case 'E':
+ 	case 'y':
+ 	case 'Y':
++	case 't':
++	case 'T':
+ 	case '1':
+ 		*res = true;
+ 		return 0;
++	case 'd':
++	case 'D':
+ 	case 'n':
+ 	case 'N':
++	case 'f':
++	case 'F':
+ 	case '0':
+ 		*res = false;
+ 		return 0;
+@@ -156,6 +164,7 @@ int kstrtobool(const char *s, bool *res)
+ 		default:
+ 			break;
+ 		}
++		break;
+ 	default:
+ 		break;
+ 	}
 
 -- 
 2.53.0
