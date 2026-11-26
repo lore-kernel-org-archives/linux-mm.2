@@ -1,118 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA61606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 01:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2126E606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 02:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=g6xy8cFz
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZErz2gHT
 Received: by kanga.kvack.org (Postfix)
-	id CD5C26B0B4F; Wed, 25 Nov 2026 20:59:54 -0500 (EST)
+	id 9356A6B0B51; Wed, 25 Nov 2026 21:03:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAD516B0B51; Wed, 25 Nov 2026 20:59:54 -0500 (EST)
+	id 90C806B0B53; Wed, 25 Nov 2026 21:03:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9D896B0B52; Wed, 25 Nov 2026 20:59:54 -0500 (EST)
+	id 822496B0B54; Wed, 25 Nov 2026 21:03:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 93AB26B0B4F
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 20:59:54 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F645C0240
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:59:54 +0000 (UTC)
-X-FDA: 85475614308.23.CC0481B
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4381280007
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:59:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=g6xy8cFz;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B3E86B0B51
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:03:35 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C79A1140226
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:03:34 +0000 (UTC)
+X-FDA: 85475623548.06.D0C3BDA
+Received: from mta0.migadu.com (out-243.mta0.migadu.com [91.218.175.243])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4958020009
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:03:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZErz2gHT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795658392;
-	b=8HKHlnZ5vt0kJHgMWi4+hP6W5VQ6ixx9H4nlBLa3pih01qVwv46oMxJ+9+C2WdPds4xxEE
-	1Aj6xhOUGYSdTVO2z3Rjlzdry68dQ91vVRPAbYr7TmF+X6X8JzwQBfx/s51YfiWq57x9Ll
-	vl1PrBmjkThJaUySHfzOMw3W1GfHfmY=
+	t=1795658613;
+	b=V6j1aczqfOABf/IVfc+OJ/JWQiHEy9N6RYSXxa6TOWBB1lPcedGaSVxpRVUeRboz4ItA6s
+	aL/zUeRjQdVWC/7hfmP361+xENZEgCp5Wtkjs57zPiMRRkBJR0mh20JsBxn2bbM1DZieAP
+	XKnJ3cVcNdbVIZbWB6QVFO/WWT+XtIk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795658392;
+	s=arc-20220608; t=1795658613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=cwYQ9S4xNOhgMpsr/2Fw0/uwY52gpltHLNu3ahogehA=;
-	b=4NieK8SBkiFC+WbqheTBkv/jo7A0IQiqUg3s+yAGQvJV5JyCjRjzLDpIaD2oDan9ZZTNh9
-	GwEhKFlZ1lGIMYFMzQSXY43l4O3pIn54/ADZVLgapCX8HU4vA2gI4k/ximfHrUNsVJj49o
-	2K+fLJCjkXS8CGGLkJWyQhTY1drW7xc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mDPdURnq3OYJxD9FHhva4DbPjq66mRuiBiRc8sZ8u50=;
+	b=T16mon4aDWycawtf7Six7hQaWhUat211HjBVwQAUkL+cvREfDLj9WoollJEwcsLShyLNYv
+	rBNbNQoZjxo01NZtXoMgeAwcyZZtnAE01pMt7HT9jUWTSZScPZ/14hlOu98FljTJxj2lXe
+	0qmPJW1nEUjiamq12n8K3a+2y2pnmwk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=g6xy8cFz;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3b155f50c24so5268936a91.3
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:59:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795658391; x=1796263191; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cwYQ9S4xNOhgMpsr/2Fw0/uwY52gpltHLNu3ahogehA=;
-        b=g6xy8cFzW9CiTgbaATwlIvDAlIGVzKg6PijwYNrGNYhJ6kC+52R7inUPz8LHrrVwp/
-         3x5672TA+4hVQiB8N4PlebRDI00gNRUs5c2Pb8ZhI2nU2+dlCsZGCvg8rPCEQ8mY+t/E
-         Y39OxgaCW7/QlhFiJ9KFQYUG6Kzf5hK03umLE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795658391; x=1796263191;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cwYQ9S4xNOhgMpsr/2Fw0/uwY52gpltHLNu3ahogehA=;
-        b=wVU4ONcnmMzDUJoGZpXjBa/gDnftxEi97W/z2ZpLlWkapXiy10ucCxCbbniP4jlLST
-         dBDuv2HxB9BVlqBAU7KJxO4nJh1hGCfAMvsBeeDv34f1X7z+LL3YKJGAqleAcbD1XaJh
-         qIKfUm7eUEGC9Izh3cUGsX6EbRAyyXb82EvLaOUpHii4XNinds6174jN8LcQxI3mnTHg
-         8FpDToC1hr5aD8fbfNEFVgRSRJYHl6w+XaJxkbe805/Y9WGhC7dn8VuajngtaPWcdOQ5
-         BMMjXarPb/j9Ul+DHTcT5RffxzbUI1c1EJ3HC1DlYG5CJKkj8aUhdLCJpcW0KTwoDWUx
-         uthA==
-X-Forwarded-Encrypted: i=1; AL+hErF7451kXVK4KmDKOALGi84O3uDitWcQKNGqqHu4yKRHXTXY/8yl/d308zwRCaPQFr9LYCISVLgb7A==@kvack.org
-X-Gm-Message-State: APuU4Z9YeUyNDC+3LMc8NVVojxq0IjaWL2/bLLiEI4MhNCjsHoRSHhZb
-	OukbhosGP8Gm9PXn2FvBrRDm8Qkqc0DzFw4X9ofhDv7GRFNdNr4cZuTEcGhV+R9bTA==
-X-Gm-Gg: AZFdTZfj9Zp95pjofF41H/pYcAXaKVv+wddPi7MZfBtRTlm+ZzABarqtKzhsJFj/8OY
-	Clm6LS7SYLSSQcUZfuC29qVLH0bnxAmDHGkBaUXEiVGZvuuVjnKE+mDTas3e1P6vtM5+Va0DXTp
-	Tm2TyzEjEY+DCE3doahNshBez7DOfeivFB6raNO+pkrQcESaukl9Y6DHtarMwayVCpGwCEeT/UB
-	AvnIyJnr7VivvwDAPEylfYRalmcFp0f1b+3hWo7P60xfS8jjAGViWEfmNw2fxkBOSrwihqFBcHy
-	TqkCQ/l06pNyhs0pMWT/YVdmsyxaNzZX2TmZ0hoCUNYesY0sRqAMCqHCGxgj7cywb0xwaajHKh3
-	DV2jCfv05xkEtGxXixqJVyrpHqDTZYq0xw4LJoUS7auujVw3Xv/b0IbuUDw4qcZu9Y3hqVgoEB0
-	LkboC0P1znM6uuHyKorLocM5HaKNua4ElgtXGh1rMNrRoWjte0i1wgqJtxWqTMAjVNoSGt54mbe
-	eIceIiBcWwEWdeF0DBO8SsWF+joy31uhoEedmM3OT1JDY/jHxVfFRvssKsQuFvgZrTmdoyFI6Nj
-	Qp3OgBeW7NTaBIAK4UTSAS0ZLUr6qVbT/nX3D9L4mQncQZ7sDbois2wFzprvc4GVrzm+cGgxwWs
-	639+Nm9Qgcs4NOw==
-X-Received: by 2002:a17:90a:ec86:b0:3b4:889:883a with SMTP id 98e67ed59e1d1-3b41c9bacbbmr19770542a91.66.1795658390973;
-        Wed, 25 Nov 2026 17:59:50 -0800 (PST)
-Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:59ac:90a:64:4bd7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b4afeaaa84sm14344902a91.10.2026.11.25.17.59.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 17:59:50 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Alejandro Colomar <alx@kernel.org>
-Subject: [PATCH] zram: do not modify cont sysfs store buffers
-Date: Thu, 26 Nov 2026 10:45:07 +0900
-Message-ID: <20261126014518.1318583-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZErz2gHT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=mDPdURnq3OYJxD9FHhva4DbPjq66mRuiBiRc8sZ8u50=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795658606; v=1; x=1796263406;
+ b=ZErz2gHTqsz8fab7qlaB/35lX5tzDF84D27Q3qVrATZPxzLDk9sBcv4U0VvjoYWHWc+zcj5b
+ idNoA3INzUORoNAmYbOeoHPnn/zi9Dd5M+b2ckpPS5++szpfnoFxQwlFB23r4OEYO3rZlqvMBnC
+ p5DjSxP24y7eMF6a17IEFdZE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 99fa385bc754693e;
+	Thu, 26 Nov 2026 02:03:26 +0000
+X-Mizu-Trace-ID: 99fa385bc754693e
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kzccmhmtcc4c9b1y4ofnbzn9z31ufqg5
-X-Rspamd-Queue-Id: 4381280007
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 02/21] mm/hugetlb: fix truncated copy result in
+ UFFDIO_COPY
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
+Date: Thu, 26 Nov 2026 10:03:04 +0800
+Cc: Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jinmeng Zhou <jinmengzhou22@gmail.com>,
+ Hongfu Li <lihongfu@kylinos.cn>,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Dave Airlie <airlied@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Mike Rapoport <rppt@kernel.org>,
+ Mel Gorman <mel@csn.ul.ie>,
+ Dave McCracken <dave.mccracken@oracle.com>,
+ Andy Whitcroft <apw@shadowen.org>,
+ Adam Litke <agl@us.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Rik van Riel <riel@surriel.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>,
+ Lance Yang <lance.yang@linux.dev>,
+ James Houghton <jthoughton@google.com>,
+ Yang Shi <shy828301@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>,
+ Gregory Price <gourry@gourry.net>,
+ Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Byungchul Park <byungchul@sk.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Wanpeng Li <liwanp@linux.vnet.ibm.com>,
+ Andi Kleen <ak@linux.intel.com>,
+ Kenneth W Chen <kenneth.w.chen@intel.com>,
+ Hugh Dickins <hugh@veritas.com>,
+ Michal Hocko <mhocko@suse.com>,
+ David Rientjes <rientjes@google.com>,
+ Joern Engel <joern@logfs.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Michal Hocko <mhocko@suse.cz>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+ KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Sasha Levin <sasha.levin@oracle.com>,
+ Guillaume Morin <guillaume@morinfr.org>,
+ Wanpeng Li <liwp.linux@gmail.com>,
+ linux-mm@kvack.org,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@osdl.org>,
+ linux-doc@vger.kernel.org,
+ Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <36B2540E-D15B-4A56-88B3-2283A26B40BA@linux.dev>
+References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
+ <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795658392-568415
-X-HE-Meta: U2FsdGVkX1824xsQ9MvmWf9yAKvyFG1bJ1XiqJx+fRdbbj3iqameNt9UB51ouWJ6DTnUwwiPbQw9Th5Eu9RcAjiLFgjwLwDOC4mWXXDP0L89aE3tSR0RPtxEHPCj42X/VwMkBBJlVDBY/tXeaxQqrVLn73AB/kZ7cuoHM3nxAvp4FrDEjMVg34YFUsTbsheq2lCcsySFojKYK+2fX0J4HDmMllKNcydZ0j87c93fPdkXqoBzZm0BWvPJZR+WiA4CbyY+AQ1HSOsY6peeUZzC+39BTEwRCFxOgGkpUGJK8VLDcSWHXZ+D2ix22ur43O6DTRWGsc9VPAW5TI6WNKudNlX1/04goH7btuXZ4v5TU4HVgl0o3p12bwS6Cjmsj31Ob/eUFpzA0xKnwmvWSXmuCu5GsJP+9oLxxk+LoiDoE98CMnJ5veTRl3eudeT54ys7N1MRZ49lasmu4GGefVfRKdz+LSm7ql95HKqhg0FQWeZ0f1yOCiP4zHH7VHuS2aYGoCjv4t11sDW/Ss3i6JYuz2MqIrjzEXAtSq70avNC95JLp3n7w5y+aZ2fVlKLoWUPIoXRPwSG/zgCFmkCELbJA5cTbBpxOq7qMfx9q5soViC+6BEgvvhYXK0bDNa6goTjK1dPFtWrXP9qVleslofiePgNv8IwLQRCqbmvzDt0uC/bJQycPi10tlw8rPXQB/S7NTGEyj6PSsej2Q1czzX2MvyCXBkVZTNvJQC2esVjsyDTZgThr7No7GqF2gLESyYk0JjBw2A+PRCnMtIyWpe9mCSwr/x9vkcVU/tIOGv2rs7NhgXtmP8f2bcfMQf0AXv1JTQ0nA0tYdjWzirRvPzS9KjPqmAG9FzrzaNc+gmzEcgxb0DxQnbEVcT7A+ncBmB2scfjZSZkAiS0GfzHG4VmKk1mxKkxKUrmZPeQKMWNWnR6fI2h6tblfILkgttr7kzxRJ9BaYI/f5qZgcT6IUl
- dwnKxMEs
- 4CBq7Ziy2xy8+Bz8EGPY+OGoHiad7/4A58X0xl1/TsdikLfUPYYFyvejrPGWV62BEYrNpjJqPRriefk4tdP9llRGSwxSqj+dApoqGSYjNz2a9MNE+QorK6+1mUtt9Tsqi0RB3u/aVlCz3Mqf0PoPcUwUscl/jg9ROH9TF2TpbXzIq0t3On+AqbdIT9jHjrmk0GuUDpJcoUVH4NEKIY0oibiyAJT55oCM4kc7NogE/sime1TjMcgTbY7NDJHcekT02u8GJpyL2kJ2HZW+TR7W1BelvX8JxJYhKOwKg3ZHwtXoVJ0sO/Fqix7oxxVTnfOoB26x8Vvy6Mqc6g6QwfbLgFVCihDBunV87VW86tBf8d0jJtsLJARC9Gru32FFqT84L3D+xmsL1PT0gMmPTzlJ5fC+zzdtvgkze6Gp9lYwWBMQ8y/TSXXYi3WgZZC6r9rV4N3OReesenPK1dhgWZS9VwI0fO3iOT3PnM47zb80iH33AENX0hP3fmIoWpVd10nXfYz2spq3eG1EYjBK88ECRQ1jp9cD3nQ+oRq9gyWjy9uBZeRs=
+X-Stat-Signature: e9yrpcedoh13daut9k3ryi5geg5pkke1
+X-Rspamd-Queue-Id: 4958020009
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795658611-225103
+X-HE-Meta: U2FsdGVkX1/39F+CHAcdJ6PCm1BQH7CAbdXqDRkjfuMcawwrtmexkX0aYyIjYthO49DOJIvKz72dHwobms1iWJTcAg6KcVdCMCY4fMOah+bUZjfH4D+0FiGwUqsTSj/jOEo8AqHBvU4nyoiEkkVZLUx3FReoLtO/inIdRf2EjA4ofnfJsjdYR7bySky5ROqzA8H5rUfUdRoEb1ScpayZUyZ9a1StS1fBMZQmK7X3AowLUOzADT8p6bktD1k0QoRD5TBpknDsxpKM+krS2q6JH2kAZT3DlID+Qh3FGrtWXiY7aSvetoGjCUrufsrhIBWfIB13m6zrMC0oZexY0MOK2lka54/X7YPiTWntamhcIfV/3VNy151Qn05Ukz2c874TXoZbXrxXVPodAPH85wdgC6ah4sgR1AH2FpCUQEpwtV5UrUv2xQ2xwOy9N0JHNmvbdzLm818f2j4gL6tXbd491CQEwe4Oss0ruwGUtyGjtOdzhwG3XlfgrHaarCj+rrtIcUwmQVXupTB5szs6IJx0zk/Z7j6ciMjyxB/DRDdYpMqGP4BRnPETiZOm1iOYtq7zD/baKUk0SbxdDRmWHPxNm+1l5jUo0/tJDsx1mIg7Vzl1W3LLerfQevMh51I+R7dBIBN6Mdwt53nEq17eK4e4SxWO2bZk1hY9MzAP1Y+A3A8t9HCFMjRlc//lyewLNWnJLqJNDV636lqiszqeY81Bs+mLpcfDExgK8pyhKBPrYPErR6HX3DZ1IlYJhuDgzC+Gnr3NtVgBfBv1E98XlBmioj4//H/BIk1GttkQ9XHw5Xd5FieNQtpTQvZw5pK+wiCIAsHWt4TCDJMz3rg9qpeX50EiiXeaEHp/k1YRDlCiwl+uUAa6cjb7Tn48a10Wrg4uJjh4IyUtZ64+FEfVSs8gAB/yFQ71AmAe2kUJEKguIzef3wml1eAXu6T+RqLi89jPHyAvzoSsg7S3EMmGmIj
+ N6Kpqo73
+ t2TkY/hXRL0HtWI0sCvjAzL+JTpXTuxbq9/vlXPJlL00CV1GRB0ofkpO8mfRMIO4nvuBEVa2x2a/azPgaTwbuk5D0f2lGQ72JqBdXWikPjGJty9W2ok2NTDVooxK0ZjdVRKyREYgXw0V14P9XPvCVFfc3OVQe/qSvrw0ocyMxX/QFbxnYgtSUvEO1godutfHZvGG0g67WSrVJ6NB+ZzRtVWhfq91vYXBDs+G0Hb/ATx/+UY/7tmglpJV2iYPx7ifEz6JlFLRZIrtPYff06OPPTO++6DPW6cUyvGsjRrX9+tiqz7VUgJ/O5flhzhn3mz54pjMiKNFzNunPK6li6XVl1/7fT4MppDHaL5CMpInOYbIrF3jeMzYdasj5Ma20BfyC4b4awftf/uzqTGiXORqrp/YVxbY8KMtNHBsR2oqKmhwC0/CveG1GTPV/TOT2Cq3IJ6ehTIXXExtU54Q+zc/umz4BxcY9UVk3PfOtR8jkS+goSYji2GLhEfhDRxRZ10kZ683RYNUFNxO/j+7O8CDlCzwRF7uhgpO1FsFUxuuAfEqHpTMtCHL5hq4Ux67uvkX6eHxPHqAcbwl7fgkLGpyAApNKObP9/AGJq7kjyZHdTDbHHdM4ijvdIuILmIvRtrDW+EtfD7iVPwFdGaTK1c87Uc8F4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,112 +157,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-zram sysfs handlers that accept key=value arguments (e.g.
-algorithm_params_store(), etc.) pass their const char *buf
-parameter through skip_spaces(), discarding const, and then
-mutate it in-place via next_arg().  This is not dangerous
-per se because kernfs_fop_write_iter() passes a temp copy
-of user string to zram, however it is still probably worth
-fixing, just for the sake of correctness.
 
-Allocate a temp non-const buffer for args tokenisation.
 
-Link: https://lore.kernel.org/all/awcpkJD6K1xtx_Pe@devuan/
-Reported-by: Alejandro Colomar <alx@kernel.org>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zram_drv.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+> On Nov 26, 2026, at 06:33, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> From: Chris Mason <mason@kernel.org>
+>=20
+> Folios that span more bytes than can fit into an unsigned integer =
+(e.g.,
+> 16 GiB folios on arm64) are problematic with UFFDIO_COPY: the result
+> from copy_folio_from_user() can be truncated, possibly indicating
+> success instead of an error.
+>=20
+> We will then continue with the folio that has stale data, and make it
+> accessible to user space.
+>=20
+> For example, if copy_folio_from_user() fails such that the number of
+> bytes not copied is a multiple of 4 GiB, we'll get an effective ret =3D=3D=
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 96b135e3f727..ca12c1918aec 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1279,10 +1279,15 @@ static ssize_t writeback_store(struct device *dev,
- 	unsigned long lo = 0, hi;
- 	struct zram_pp_ctl *pp_ctl = NULL;
- 	struct zram_wb_ctl *wb_ctl = NULL;
-+	char *kbuf __free(kfree) = NULL;
- 	char *args, *param, *val;
- 	ssize_t ret = len;
- 	int err, mode = 0;
- 
-+	kbuf = kstrndup(buf, len, GFP_KERNEL);
-+	if (!kbuf)
-+		return -ENOMEM;
-+
- 	guard(rwsem_write)(&zram->dev_lock);
- 	if (!init_done(zram))
- 		return -EINVAL;
-@@ -1303,7 +1308,7 @@ static ssize_t writeback_store(struct device *dev,
- 		goto out;
- 	}
- 
--	args = skip_spaces(buf);
-+	args = skip_spaces(kbuf);
- 	while (*args) {
- 		args = next_arg(args, &param, &val);
- 
-@@ -1779,12 +1784,17 @@ static ssize_t algorithm_params_store(struct device *dev,
- 	char *args, *param, *val, *algo = NULL, *dict_path = NULL;
- 	struct deflate_params deflate_params;
- 	struct zram *zram = dev_to_zram(dev);
-+	char *kbuf __free(kfree) = NULL;
- 	bool prio_param = false;
- 	int ret;
- 
- 	deflate_params.winbits = ZCOMP_PARAM_NOT_SET;
- 
--	args = skip_spaces(buf);
-+	kbuf = kstrndup(buf, len, GFP_KERNEL);
-+	if (!kbuf)
-+		return -ENOMEM;
-+
-+	args = skip_spaces(kbuf);
- 	while (*args) {
- 		args = next_arg(args, &param, &val);
- 
-@@ -1899,12 +1909,17 @@ static ssize_t recomp_algorithm_store(struct device *dev,
- 				      size_t len)
- {
- 	struct zram *zram = dev_to_zram(dev);
-+	char *kbuf __free(kfree) = NULL;
- 	int prio = ZRAM_SECONDARY_COMP;
- 	char *args, *param, *val;
- 	char *alg = NULL;
- 	int ret;
- 
--	args = skip_spaces(buf);
-+	kbuf = kstrndup(buf, len, GFP_KERNEL);
-+	if (!kbuf)
-+		return -ENOMEM;
-+
-+	args = skip_spaces(kbuf);
- 	while (*args) {
- 		args = next_arg(args, &param, &val);
- 
-@@ -2578,6 +2593,7 @@ static ssize_t recompress_store(struct device *dev,
- 	struct zram *zram = dev_to_zram(dev);
- 	char *args, *param, *val, *algo = NULL;
- 	u64 num_recomp_pages = ULLONG_MAX;
-+	char *kbuf __free(kfree) = NULL;
- 	struct zram_pp_ctl *ctl = NULL;
- 	s32 prio = ZRAM_SECONDARY_COMP;
- 	u32 mode = 0, threshold = 0;
-@@ -2586,7 +2602,11 @@ static ssize_t recompress_store(struct device *dev,
- 	bool prio_param = false;
- 	ssize_t ret;
- 
--	args = skip_spaces(buf);
-+	kbuf = kstrndup(buf, len, GFP_KERNEL);
-+	if (!kbuf)
-+		return -ENOMEM;
-+
-+	args = skip_spaces(kbuf);
- 	while (*args) {
- 		args = next_arg(args, &param, &val);
- 
--- 
-2.56.1.839.g22a8290db9-goog
+> 0.
+>=20
+> Let's fix it by simply testing the return value directly.
+>=20
+> This has medium urgency, as it's an information leak.
+>=20
+> Fixes: 8fb5debc5fcd ("userfaultfd: hugetlbfs: add =
+hugetlb_mcopy_atomic_pte for userfaultfd support")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: cleanup code and description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Reviewed-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
+
 
 
