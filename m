@@ -1,119 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D13606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 09:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F3C606A331
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 09:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nbVhAchV
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=mYfWrggO
 Received: by kanga.kvack.org (Postfix)
-	id 4451E6B05B2; Thu, 26 Nov 2026 04:43:37 -0500 (EST)
+	id 13A2C6B05B4; Thu, 26 Nov 2026 04:44:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F57C6B05B3; Thu, 26 Nov 2026 04:43:37 -0500 (EST)
+	id 111146B05B5; Thu, 26 Nov 2026 04:44:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E4AA6B05B4; Thu, 26 Nov 2026 04:43:37 -0500 (EST)
+	id 04DD96B05B6; Thu, 26 Nov 2026 04:44:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E47CB6B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:43:36 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A9A516034E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:43:35 +0000 (UTC)
-X-FDA: 85476782790.26.C75DBED
-Received: from mta0.migadu.com (out-235.mta0.migadu.com [91.218.175.235])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2B39240004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:43:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nbVhAchV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB45B6B05B4
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:44:11 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 60D17402CE
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:44:11 +0000 (UTC)
+X-FDA: 85476784302.07.D684287
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 33F5F1C0006
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:44:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mYfWrggO;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf20.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795686213;
-	b=j6Si40Lou6QUd2v1mDj3mIhqz29Ge0sFtvv7Ov5eU4l/hBPKpNVsjCyBqf5yfTZX/9wDF6
-	uRw3TfVXZYFlVpb69mjkQgnDB1kmLcqiU5GU1dhS8m0W7g+Q7QgeJt7lzQM1kcjloTblsk
-	au4Pq6jMoDdOlqB7O/6P2YiCtiBBnoY=
+	t=1795686249;
+	b=iUvya6kERY55UJ0VdK7xpaxFkxsgb8SEIY2nCQ8wQpCMof7PS4JU9zGgK3kEwbaEZSLDFt
+	5skwJYdHAqtZizFe9CtpZhxaHdI+gDmS+r4XhXDlQWGoV37ZqWhJ1DW+nVEcs5qHBgVeRZ
+	LYb1iT1IhK+1MBnpJPFv9swdn4MtM+I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795686213;
+	s=arc-20220608; t=1795686249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=45243M13KOvb9KniU4MCiqJ1WOWt7TIcLK3eH++OB0U=;
-	b=YzZf/Th4j22WDLp3riQXu7kSxCq3ogYCAhTA6Q62DFXslZ+TJ9Lbh9EBywqksTOySokTHl
-	OP2dtYCW8EYgVAcF5LgRHuO3MkEl5CMS4JxUUWFdyJijVOn+ysTmon5dBZL63ozhr72oPB
-	M325RwZBcvAW+f5Yc9LeWy7JmkWqzuU=
+	bh=5VJC6n1hJwExr4EuZxRtgDyPGN93jbJ5pGv3/LKWlIo=;
+	b=44gIT3TsOucvqfXf8LXkuQhPSd5HR5HXqebbwsDO7jky7JnT/H3Rj7kX617aWbGlAjnP5q
+	oEn8al76AFdQ4hop0oZIqC8SFT5b6ysKupGsF1oN2TKMS3pONsYWhD96XX0a4Q3MRN1Nm3
+	+IJNCZfR+rkHaP09refNGkJBih+oDgs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nbVhAchV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=D32CMv1v+3bZYh/n5UdiiqLQfDC+3bfpicw46CnpCFQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795686210; v=1; x=1796291010;
- b=nbVhAchVucldszUIDs3Fxw8OH3B1265gjHbv4PRnkuMQ5IVnWDaaVoAoZnFpaDbFZjUOeNLv
- S4sLw8AH/h2ZQIG57bcTgDWKx+Dzb1sMDisUUx0joqD13lMretLAZ/iNJDjVZzPpevgvCdz/DbI
- AQptCLp9n3ZCVvFQt/8xl0Vc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5d6fe757d0ca69c4;
-	Thu, 26 Nov 2026 09:43:30 +0000
-X-Mizu-Trace-ID: 5d6fe757d0ca69c4
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <387237c3-c2f8-4782-9ba6-481f459cf7f2@linux.dev>
-Date: Thu, 26 Nov 2026 17:43:14 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mYfWrggO;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf20.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5VJC6n1hJwExr4EuZxRtgDyPGN93jbJ5pGv3/LKWlIo=; b=mYfWrggOtGDgLQkraxk8jwrHB9
+	I0YDFhk6XT5etnPyoX7WtgS/UG7Y5XbpzoWR3LOGdonMJL6mlPpFRrsmoLV/k8taYMZpY+Pa3aAvV
+	6ONbVWf3P1iUw7L76jKLpH9pX+NQr/HDb54L4qzairth1l7jYLEXFjS4TjwAD1jyxYAQDESMcFuvD
+	iJtGYxRCQeuauFaP0vlRuko+VUg0KLUOXMNo0CH0Tch0ZCy2UtzXG1jR7E/HLKtyrh9c9glWXBWPM
+	J60mFEEn5NaM2khTXcsaRRwJTjIVyBN4pS1nwgG3EBhoRHkYj8nBFUEMb3sxB1aN3Xgu3zL9Rc7bP
+	kQpRBbkQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xWW1M-00000000Ch3-3rUU;
+	Thu, 26 Nov 2026 09:44:05 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C61DA300446; Thu, 26 Nov 2026 10:44:03 +0100 (CET)
+Date: Thu, 26 Nov 2026 10:44:03 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Harry Yoo <harry@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>,
+	bpf@vger.kernel.org, andrii@kernel.org, eddyz87@gmail.com,
+	memxor@gmail.com, daniel@iogearbox.net,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-rt-devel@lists.linux.dev, Vlastimil Babka <vbabka@kernel.org>,
+	Hao Li <hao.li@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next v1 1/4] bpf: Add call for selecting kmalloc or
+ kmalloc_nolock at call time
+Message-ID: <20261126094403.GA49833@noisy.programming.kicks-ass.net>
+References: <20261124060357.11700-1-emil@etsalapatis.com>
+ <20261124060357.11700-2-emil@etsalapatis.com>
+ <DN38HGVL8JHQ.2ZVZQCKFXVA9T@gmail.com>
+ <awWRZ9xCzWLnj_R6@thinkstation>
+ <20261125140902.GE2668804@noisy.programming.kicks-ass.net>
+ <DN4QLI2XAGO1.2DDIFJ49PNRPS@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 02/18] mm/memcontrol: allow update of LRU statistic
- without holding LRU lock
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
- Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
- SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
- Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
- Zicheng Wang <wangzicheng@honor.com>, Tal Zussman <tz2294@columbia.edu>,
- Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>,
- Ehab Ababneh <ehab.ababneh@intel.com>,
- Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang
- <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>,
- Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
- Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org,
- Tianyi Chen <hi@tychen.cc>
-References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-2-8ffea39934a6@tencent.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20261124-mglru-fg-v6-2-8ffea39934a6@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2B39240004
-X-Stat-Signature: f5tkjusnhpnibybgq1y9b8sb4uuw8g57
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DN4QLI2XAGO1.2DDIFJ49PNRPS@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 33F5F1C0006
 X-Rspam-User:
-X-HE-Tag: 1795686212-732083
-X-HE-Meta: U2FsdGVkX1+kwwz8nOVYeuu/ltFReYMOXkk+5/rxfpAWCuIGrZQIl6sl+jLREz8AYLFhz+oHIL4crHE75nUcGgSnM5/6vdEu5I9yZlRYQgHeYPf34ek8HnjxRzHhPNolHjiEY8czlJKI+EGr60T5gZztU9dRpyDJMGOHYNola6FVriM6ffmBopNYB2Euxxc8013Mk1hOKYJIzABHmEdJqTzzUckAwU5cqorgswEzVUdxuvOyHE58lP4ucLMUfXlonJJZVCrkt4SexhyLXK7LMwMS7Ay/ef1dfMA3qsXicVBMRWJH8R6I2KuWIN2YArxG0LxY6QOlmrlAUxjjVNHwpdXrNPMSyPRc7jOQ1Amv4n61fRxrj3htJBg2cz8gr0fqstDvutwLMeZ95inTkDNULBKd2gvb+gvRprjUYGkZPLpHLgUbUlOJrzCvRvX15vx4q1nO7nyxiYL5gvtbQTeeAgTqH2mm8nSIl6ip8SxLMUHaD21V3PFqVTVn0NpmwyV7XtFSuTJHZdTEieCe8F74+UoBeALVsOcYQ6b4eG1mNWcue6IhIVH84wPbphnXiAM8KQskBnEjaa3vuRucIxwJRUDj78cMMRf6NW+HUi5L/NyCZszZbZYjueV/eOL4Sr4rzf42iR6PYr+4vuM5EDefUZrcyWYCJ5qI/34tNhf99aa5h7oABaMfzVcWL1uu8vur2U4FP+GWv3cdn0BqC9PNjSyF3WTDw2bT8DbvHoh8zwerKuMrI6VPYczQ6FIMiscWfB8NpV1LjY9Jjo7TiTUx2iLymBsZGL4txs0B3jbWhkpcLtrtRMoM5ypIzUPn8ufbhIklzLT0EfitX3u4B9GXPLHt0ZZPBDa1V/pbfFSOIn5xH2tsDyh3gzEKadCpGK5td5zDAYHYiFLhYSiQ3ULFUPtLixdornTUfq5+e8Krvr/GNXOykipWvJ/t5zwSP/Kt8TxQeF3AHRqvSbB6LpO
- 5HuwzP+e
- e3tU998pBgWOFI1A//gR7eWWmuzFdR0tGTdTZ8WTmeMLtMtE7h541Hdo7BVfg6SdEgGoOBJxGnrp+CLfitN3KW15Pz8BW2SFA8gTHQ1G/NNAkT6NsF3xey2pkCApuyruaWQzl79DC/z9e6kSFL+SFiawPV8JVaNmmcJVpak+QgVy+GUEQdWtV78nbIRRT9Xuc1+u8ec+ZDgF+tIU8Q6DlLzlOGCJoSWOA0Bf8nTdljNXReLxVEuI3y0oU6x/pVx5Kp2K4XmC2X2CqPXg8JJe1Fb81UvP3Wa9RiIWLwVQli0NaD8YdCYbMCOlGLIPFTWJ0v227Cn1F3hYVkXX9Fy1vxZVO/gLUH2izlnGvwC5OFV90ym1L4B//IYSMUzVHkPa0W14s/B0+96CQAu0QTOPU2Tjg6oLWismBHNKzkQnRaVM/09VaUPQwvyV9Qh3TWf2salCfr6y+Zjc5Vf66HzpbdH96zE0J+GCI+MqB7zLHANiB9ECCAbx3RF0rgyhkn6UrTlN0IeEohJFzlfuVECy0RS4V0ZORYTvTIT3Yf/NB57QIJSspB+7BWb9rXhZrodEOg2L9+cfxVjP94Wsc0LFKBj/jwBqs81ox9Ru7prBeH0LjRn3c86DQmPnwbCJVtsdAEp7fTV4WZGfXVJwexCjBPJuijoLdBmOdONZMCdRZeBvDa2FH7g1ZRHEr5g==
+X-Stat-Signature: 64pn3sgqztsir6wpgz98s1ssmx6hb9px
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795686249-388153
+X-HE-Meta: U2FsdGVkX188FFfjmHe980+HW8S8ZwyfLdLZUryTq3YY89/mRkKtbuskkUhMRP2kNH5VbogVpZ8KieD/Xe5RmZLxIirT6rAuWGQgj/lw1JypImI04ZPzjXaTuU3iLaNi8Vvx4m6qjlmWUYc5emw5zRce1V566HvaoeDT3SZOg3cWJ0unF7mp4m+djWZCkwlaKXevphjuklTwThqXLdxoNyW2yb8Zu7OhsMmH6vOMDOLmHkCBOGVYBxjIWRXK6XYPqo+fRN2POR/9AQV8pddQDS1P6XOtOpyI5+TwVZUxFUG8CoaSy3szViTB1Ck55akOYteGt/BIWsIBYUyO80nnX02n/LY1MVlhKpv31scTCKLlwsDbDVoNPtEjFMUdHh/Vf3Yb3WUfIE3/92ac6xb/nxUqNdd99eMoCspa+9hrsfY/cS154R1CbkooZ66HXsiRLR66wyQStI4o4BlA33aGEk9QT4m7tjgeSksbnQL6bElq0KQ2A68vZNsLQf8lc9K8K0tMRauE9GB87wlOj3hRIAeQN7la+o1ER2TjTW8+xV5Vp9bWN0cCI8N8IUyFNAt8rx7AqrybIqolfu5U/wmCgVPf1QeTLhHOW/wjIpxaXl0nfD8fQHw7b8fTuI/dWtx1EGSPZrxpUGkrPzKu9eHsyRppT8Pl2sfs3Z62nDC6LMNhCiVBhtL6T53MUMcW7dTw9mZVKQmh5+ktqio4x17TYDV9l24eIWEMYQir8Bsm4pKParcbKduTk/lW69gKpy0QDQYT9w2XgdkRS/wrjTSraaKR4kjwmQ0p3jkewgEXUzUbi0wmuUkxmRUcq+6OYJ0HBnkDxHQwnEIubkzOPJpvo/n+lNhuGpmIyXEhiOrnROSsj2YwrKBvafZkeHmdgqFFPpMGQfQ9jlIm2cPkuLK7TkCpoRUcRxN7fz+SDAFjvok14ckJFuF+au9QpXm99XhdATBlLBK5syQqDEpYvDj
+ uOgy3bS0
+ mxT/a7/QRMdkwk0Fa090xhJjljFYL2TVEOGN2P8oZPc+r2eaHcWMH69vUSkmq2HigZzFhmPNKZCZ6P4k5gf5tCIFZ119wQT8iUh1Nl1hutUspB7AOS6+p6uRI+KpzTkG/OAG1hcS4XY3N4yFth4eLALxpbOEEEODqBPXH7jZtOTj4XEgQeE52C6OObEsvEhavSEYvT8/+28nHv1UZ+EBT0H7CE4rEjl4E6gxd2urnZy+Z+wNt64VPqjzv/tNrWM6HNIZRPeFbp1nqy7kZTD3nt4FbPbMhS3pTb1lqM9CEBtKABIKzUORhv+D8+IvZvqN2U5SeGJK+eqFWmlsHIiizHEyf9FrTMojye/CRrbdj/zrEf8F0Ed93IG3ZAm4g2SikFZU9+uJudpuc3H8L0ZPEtghdCpP59gkfIemujOaTZjNcRiCaWayAF1aZHM1bpuCK6G4a7s1I5ri9ClyROkcFootPVVTZOWqZY2CV35aDMWV1AH7f/Va8zZqAON+Rx16Gw9wgJg0Bz1VXSynUX5hXF3z0euF1CnchY4l5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,62 +114,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 11/24/2026 2:52 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On Thu, Nov 26, 2026 at 01:04:27AM +0000, Alexei Starovoitov wrote:
+> On Wed, Nov 25, 2026 at 06:09 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> > This is absolute atrocious shite. You cannot attempt a spin_trylock from
+> > NMI context. That thing might be a mutex.
 > 
-> To enable moving file pages in folio_mark_accessed directly and lazily
-> for MGLRU, allow updating the LRU statistic atomically without holding a
-> lock. It may cause temporary counter underflow, which should be fine as
-> the counter is eventually consistent and only serves as an estimate.
+> cannot spin_trylock from NMI _on PREEMPT_RT_ ... correct.
+> And the patch guard against that.
 > 
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Tested-by: Andrew Morton <akpm@linux-foundation.org>
-> Acked-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   include/linux/mm_inline.h | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
+> On RT the nolock path doesn't reach zone->lock in NMI or hardirq:
 > 
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index 2395ca8ee305..2edb9beef6d3 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -47,12 +47,11 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
->   {
->   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->   
-> -	lockdep_assert_held(&lruvec->lru_lock);
->   	WARN_ON_ONCE(nr_pages != (int)nr_pages);
->   
->   	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
-> -	__mod_zone_page_state(&pgdat->node_zones[zid],
-> -				NR_ZONE_LRU_BASE + lru, nr_pages);
-> +	mod_zone_page_state(&pgdat->node_zones[zid],
-> +			    NR_ZONE_LRU_BASE + lru, nr_pages);
->   }
->   
->   static __always_inline void update_lru_size(struct lruvec *lruvec,
+>   __alloc_frozen_pages_noprof()     alloc_flags has ALLOC_NOLOCK
+>     alloc_nolock_allowed()
+>       can_spin_trylock()
+>         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
+>                 return false;
 > 
+> fwiw kmalloc_nolock() has the same check.
+> 
+> > This should not work; if it does, that is an accident we need to fix.
+> 
+> It's not an accident.
+> In NMI only !RT SMP kernels reach the trylock.
 
-Hi Kairui,
+Allowing this on !RT makes people think this is 'OK' and then the RT
+people get to fix endless crap again :-(
 
-Just a heads-up: this may conflict with Joanne's "mm: move LRU size stat
-updates out of lru_lock in folio batches" [1], which is in linux-next now.
+Locking constructs should behave identical across the configurations to
+avoid divergence and create problems.
 
-That patch makes __update_lru_size() add to a batch attached to the
-lruvec by the lru_lock holder, and relies on lockdep_assert_held() there.
-Once this patch lets folio_inc_lru_refs()/folio_reset_lru_refs() call it
-without the lock, they could write into another CPU's on-stack batch.
-So the lockless paths probably need to bypass the batch.
-
-[1] https://lore.kernel.org/20261029204157.117879-1-joannelkoong@gmail.com
-
--- 
-Best regards
-Ridong
-
+You're actively creating something that doesn't and cannot work on RT.
+That is not cool.
 
