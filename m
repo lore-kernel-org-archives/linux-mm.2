@@ -1,141 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4001606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCFE606A32E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gXH/RP8U
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kx1Ab6qc
 Received: by kanga.kvack.org (Postfix)
-	id BB0A96B05FB; Thu, 26 Nov 2026 06:20:36 -0500 (EST)
+	id A51666B05FC; Thu, 26 Nov 2026 06:20:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B61556B05FC; Thu, 26 Nov 2026 06:20:36 -0500 (EST)
+	id A28C36B05FD; Thu, 26 Nov 2026 06:20:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A51146B05FD; Thu, 26 Nov 2026 06:20:36 -0500 (EST)
+	id 917AE6B05FE; Thu, 26 Nov 2026 06:20:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 77F016B05FB
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:20:36 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F024E1203DA
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:20:30 +0000 (UTC)
-X-FDA: 85477027020.01.6622F81
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2BB0B120006
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:20:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gXH/RP8U";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6577E6B05FC
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:20:38 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D70011A03E8
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:20:37 +0000 (UTC)
+X-FDA: 85477027314.29.4416AC0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3324EC0007
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:20:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kx1Ab6qc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795692029;
-	b=WyXoKJbCc9aaAgz5O+/RL2GTv3/uRz08a6ebZb/qWvpbtpFVzNe+iEuLJhxCvPMtoX0D7N
-	fTiou9aCBzr/6560kfTFqH2inFNsSozaFlIlhpVcAgpG6Qj5irC+icylDggGADnUTzS0uO
-	oWePC8wCn0Gc55MOGCrfwgwVQuMXI7g=
+	t=1795692036;
+	b=tva/CpUYiu0yAedHQQLdG/wIYXk7qYIzNosqMAZ4huBqPA2l0NcivcWi8S2pW7mZlGkoRg
+	77ZHJuw7uYTTSvjkpIyggJKc39If8Hl21JZJc5XxMhF+dgEM7HcCsirJGBodaW8EUUj904
+	TtiUQUxpnsgn4Xrf7MqEgN0PSRsSEdA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795692029;
+	s=arc-20220608; t=1795692036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ecA3ZmQf+hgtDK0BoSFd9aCf4CcQv1VF93CQ72nCLAE=;
-	b=3TfKzUl+Da2QVqSDMhPtj2kY7Hs6SDFDKWEEWW1DE89hf7EyhjsEKMLs9Z0WZ+R3NbeouV
-	lUk7Gami5V/9WjjJXxh5Z1LW2ycJveXPk8I3Oq1ACiEAJfFwUu/75JODG4dItMnvJAJw+Z
-	7UgLnUEk/nS8F2vMKolZ+krLnAY+K6o=
+	bh=rM4+cSkBP6X510/nTqJRrow0GCDm2EsnlCpLERs/6as=;
+	b=8D7T5lBKhDLHxueqm2KFD8TRJJUZXePk342fkXoxi6NBfZGqP9EBTvnMRgLh8kVK0xQKGd
+	hfXlPvrpBz+4/qOf00OShY4VN50glhXO1n0as9fPDwUm/MnHICH8aAZnP3Tqw6AnFrq0IO
+	q6ZCir+efFPFxVrz9ON2UNbL7Fm959E=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gXH/RP8U";
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kx1Ab6qc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7CE054379A;
-	Thu, 26 Nov 2026 11:20:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9B51F000D3;
+	by tor.source.kernel.org (Postfix) with ESMTP id CA26E630FE;
+	Thu, 26 Nov 2026 11:20:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E567B1F000C4;
 	Thu, 26 Nov 2026 11:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795692028;
-	bh=ecA3ZmQf+hgtDK0BoSFd9aCf4CcQv1VF93CQ72nCLAE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gXH/RP8UrELFZe6yrXteIGd+phr3Qk99Egj4zsLK1IuvwArJXAK1Fy4KyAbF46mO5
-	 PH0AxCw9BklCUuFyejyZpc6QuUzGGyyTb9CiMuc1bIRzpeKcpaUv7ch9kTp/7kY7Nc
-	 oeRIGOgPjuUfqUtKKkAC4FaPY6+9gOFDn9iTm9BfW8d7oeAXnOy8SMx0NZhmFcXs0O
-	 dW8Hp6rsc+7FpvJr/U2HGBSpJ9+xX+pqAuVsvANh7gjkmFMjIz1FZMZVxm98+7H6rn
-	 lGzkGrqZKMj/LAaWVP0xF7prst/6ghmOafBpGxF+9FGCZzeKJAIeqt9ktEc9aweNja
-	 3dvFXL4LIKVYA==
-Message-ID: <650e5497-1625-4e05-afc4-9db9472262ae@kernel.org>
-Date: Thu, 26 Nov 2026 12:20:23 +0100
+	s=k20260515; t=1795692035;
+	bh=rM4+cSkBP6X510/nTqJRrow0GCDm2EsnlCpLERs/6as=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=kx1Ab6qcUM54KkRHDXzVtjMBXuOGt7snMFzSHdZ1b+HJhSZECrTxp+suhOQIt05g8
+	 ulPmTyAEzO4hD9Ksq3FP/lBfAG0GX3OSIuJUGLtsmT/CJyQNAPUaAFCgsP4m+6oFjR
+	 Ji37csI6i2qNNeSvLjaR3D5hcSPiZUbUkK6vvXbTtxl1JjVIa4eHvVFsfTlpvVJCrl
+	 tA4ItitFRfmXoZROL1Pe+z85u0flpuI5rw+XvECSxELuxJdBKYYJNObc4IuioomJLf
+	 xMxc6AEhf6CPOk0lTAC7OJsOyG9QxzRrmH4CZOpr+pFhI9qGci+fadxeBxhmr+g7Ww
+	 yG7EIx3Ocf//A==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Thu, 26 Nov 2026 13:14:51 +0200
+Subject: [PATCH RFC v2 38/54] mm/pageattr: let a leaf cover a contiguous
+ block of entries
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: stop hashing address_space pointers for fault
- mutexes
-To: Zhengchuan Liang <zcliangcn@gmail.com>,
- Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Davidlohr Bueso
- <davidlohr@hp.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <9a97a64f7e7aabc668499c426a2417a77d13a2f4.1795587203.git.zcliangcn@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <9a97a64f7e7aabc668499c426a2417a77d13a2f4.1795587203.git.zcliangcn@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261126-generic-set-memory-v0-1-v2-38-723f1e33c3d8@kernel.org>
+References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
+In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
+To: linux-mm@kvack.org
+Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Borislav Petkov <bp@alien8.de>, Brendan Jackman <brendan.jackman@linux.dev>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Ingo Molnar <mingo@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, 
+ Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
+X-Mailer: b4 0.16.1-dev
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2BB0B120006
+X-Rspamd-Queue-Id: 3324EC0007
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: we3pur7ux5jxbpo6m4axi178bcqq4ggw
-X-HE-Tag: 1795692029-678505
-X-HE-Meta: U2FsdGVkX19xuVRQGrZEc6MpyTKw3sc1iuDPHUPYT80NO9poPLVcwFuCtSbbT07tjlW93DTYTw9s1DYU1z+87Ob9LrdJhhFDEbel+sxrsyc3vHJE1uKQVl9QjlOG9X7YbemHpSqnqcde3o5FyEh7wcfGDAqphAsgknO7SwprrMU54I+u6mt7zKUzxroLjTgOGhcw6Svv8wOwXBDN15j5LuEayyVJaNQVOeo4IUgbNx1JjC7Gt2oZfGW/lpDktqkqsk2K8SR1XFoamxBZ5kaAocsicoauF5RIaOhH7UlUCuNb+fjyxpzdg3lj969h2PiOAhshIaJT0sAuGp+wDHBu4U8U7vd60uZ1lbmGyzJmPESXHUr2cGWClST0Xfr/x0rOKsNF9s37JjQJz/cU+wGxuZ92dMqIXoFebb3PU23ezHAS0q+/0740SW2Svu46NAmScyZQhuEqyq+P3wY6dtBEu7QG+vIfRmxF1AeAOh9kkqVZLPF8M5QjWNDb1M2y8XevxQI7yHo3wyoybXzJ66VeLCpTq9zduxLjwXQnF+ieouxcb3nND9TYxStZHhRNHf4ZBAtXO5SkocFuHckA1X+3uv0dIZLWyAF8pUwHk1doNNMwfBAo3wLzjzMMjHUyZyXQRck7U5/glwoRKSTZKcM7wMtR508hZgZYwp49k2lGefhDLHkhFGV8b6r/dqBwSQVqbwUsQYio8sTBX2ms2AJHDdomuzDKh6QPZnPzcoQM87xsaSqAPNk5QEmpROpXnmNMQLeabIvigsVTXcI+q9KY6BfYAeB2ZAljWAesammv04s9hdoRnWPOY122oV6LSYSRKV4Pwa3y8Gerk/TDFRRVV9hPx6p4+GZ5MadrtwyoPoe0gTGwOBvXrEbWnDW47qpbJ3LLsO5uqVApdW1u1XeiiOUNxk2lmhR4n0mFo/lTMGGoQDogghyASmZYot8mNCTgNWWUdLCUCbX/9l/894n
- e8uPGojV
- +sOkD8rll75EPEVYFhJ9oMW3ok+uWE9doP8GvmWMp/z6B59qGRls1SXsUpXnNPCC1WRuyQY2W8Bu8+shHDcpnrAH896uGdQ9XHlF/0IPF2l1RFm9fe+s8OOB/luxQyjkPcyYVqdwgWmcUSZRyobnsMVcKBg/k0CHO8dt+gBZnwETLAIde0xQocyVZP7JK6Iv5dOd83Oevrv5Il6UOzNL8ZsJslhUaOxZ8b5N8PDk7c1j/OodajWb0yFiNgiFo1qesvdIcqKVP7O1qRyK6AVp8y+IaY//P1jcCfjnSNzwOjzfxpB3VHw8+KM2n8wjGM/EADli7luFuBESixe4dERlhb6kK9k7e94Ccmn4owvgYs9FnJFKXDpIK1eF1HVE9Ehm2YucdOTTTShEhOYzy9hF4RgYkz754aa2SlJEiN2zO+FcBF+DoPwTFZh5IAev3n5X71PmSrdw/G+7/+guTjwK/Q3nfVnLV0bIhGBeNIrwAN0RTTq2bzz1RS0IwAU7hB49C6PTz7P3rBpFo0mIIQ1v/WtI0sMmHvSgvaDaQ8VzBKknGiwGKmq8FnoZvbkto9pBlmAhUCncXhIlzMqs=
+X-Stat-Signature: 9y9wgwh4retn4fsqnmbs4hspzq9w8fhp
+X-HE-Tag: 1795692036-723735
+X-HE-Meta: U2FsdGVkX1+Y1EJM2mkeV3B2UR3rQ1E6cVgvVyqMGzT/S7/pfx8WB4W6924ufEb5QIEIw05SAvQR0Zv2Pc186TSvUwPrJ6eXp542tcIIjNRfNf0O09iOqTo9avaDJgCMI3p+lmZj/Tr/lSgWnV5PaAeZg2v471Ue+h1ax5lC4yLtM0GoAPA9pkidzDCc6n0leljzAt9ntLgBuuEyeDjQMWZ29Q77z6emTexI499ZXQt2djZZAGudscDPhR+OrxlYuzNp/4ux6S0vFUgYeqwEWYic68UvYq3qgCDuUwZjBHauko2B5jYIeyu64+DMiL5v3bCHQ+VWGpxoHx7hb3WDrYOBPG1czfelIR9uamExxxM+rJTIJYJd6tGXdmi+kkBcuxPadYKx0BuuYAOhvXJI1BHB7qjatZuRsYv6+L9oHgmc1vfdcr6KEeRJGfetarJndeI2YMXquAp7pQFlNbAWU/E8ypSoHCDoufchfUxmI/F7PyOjDWXVL0ScHFAAI3CS3RDvHe5Jdq99yF/2TRPpuJNiXZpMg3AjosqFgtY7eYP12QpUayEuIH4sboYXirhGSiuMgnzPvX1AW5vAcxTFcxQsYsoIshoZHZc5CN2/c1PTD4Hrzxt56fwSFjTMAkbMP6HaoUH34KrYpnUmerPVTazGoHFrGoFXGubwlPWmYWwPsNn3c2PGLLKCiL+QguE3Wix/CWj0o8kxiZdDGbNwym2zqaTNbQee3CTDiJAVNXIMK8D1v4uGUivgAc5HINW06gKGpHTrQxxILQ3oFjtWqe1jtjxExPSXajdRcHFdcKJsfl32O8qzWwvdgN/7Cxfh65SjyGugIHhxeQLD0FhbPuUEiA4F9RDyzD2oshu6CWSsSYBitnD9+5LcIfNZUYxOU1Ra3UneQKmNUpZl6v6yFNA1FsQByzI4WxJg4r4PN9qxT6ZX/6GisT2CqLx+CtSfe3nBbTLk8gCdRHBc7Tp
+ uFgjoZav
+ 08tVVfl7OvLn6uVCUgq3iMTLGXXqm+CHfo/QDTQiBTNTKFLEv0RjP6E6QR//ZCM4VhhHWOLweqljeYCmLso86WEtHgDh4T8FDWeo+EtKOUlgPEbWMcm/N2V0aZK5fW21LiDA4nl9Fr+KkvuZHc4B+PXL2XAxe8AcVJ566r/pgNbPr78vMqNfO6WzSwZ2SKudKy4xGaA5TfGJLyoFdSelmp/2DPLBjDU9858BXohye4V0JXYraj1ytOjsBdZLZPNRjJhWwohjl44za23Ql6RodpWjGjuo6UABCgNaJvT8HlPQ3PQi1kge3wSeHUX4zZbRD2Pqby6aGsDvYhAi+c7KbWMLjVJdDNAFtn+2wYE9hoPOPxSeQV4UzurBuUIv0otBC+T14fUxLN4fD5bvPGooPKiQQ0RrSFrXdR/kuqBw1GSE3A7DAlR5hvvikcYB1LUgxW4VqkhCtHFsmnap0h31a/kMUiKdIZOURFyxw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,92 +117,197 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 07:15, Zhengchuan Liang wrote:
-> hugetlb_fault_mutex_hash() uses the address_space pointer and page index
-> to select an entry in a global mutex table. An unprivileged user can
-> create a no-reserve HugeTLB memfd with an empty huge page pool, build
-> contention on one index, and time SIGBUS faults at chosen indices.
-> Pointer-dependent mutex collisions expose equations that recover the
-> exact address_space address.
-> 
-> Give each hugetlbfs inode a dedicated random hash seed instead, and hash
-> the page index with that value. Operations on the same mapping continue
-> to select the same mutex, while separate mappings retain independent
-> bucket distributions without encoding an address. The seed is not
-> relied upon as a secret and is not reused by another hash table.
-> 
-> Fixes: 8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-> ---
->  fs/hugetlbfs/inode.c    | 2 ++
->  include/linux/hugetlb.h | 1 +
->  mm/hugetlb.c            | 9 ++-------
->  3 files changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 558007fa5e88..72a406b97f9e 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -35,6 +35,7 @@
->  #include <linux/security.h>
->  #include <linux/magic.h>
->  #include <linux/migrate.h>
-> +#include <linux/random.h>
->  #include <linux/uio.h>
->  
->  #include <linux/uaccess.h>
-> @@ -1182,6 +1183,7 @@ static struct inode *hugetlbfs_alloc_inode(struct super_block *sb)
->  		hugetlbfs_inc_free_inodes(sbinfo);
->  		return NULL;
->  	}
-> +	p->fault_mutex_hash_seed = get_random_u32();
->  	return &p->vfs_inode;
->  }
->  
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 58f755e70e96..61d833b7a76c 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -504,6 +504,7 @@ static inline struct hugetlbfs_sb_info *HUGETLBFS_SB(struct super_block *sb)
->  struct hugetlbfs_inode_info {
->  	struct inode vfs_inode;
->  	struct resv_map *resv_map;
-> +	u32 fault_mutex_hash_seed;
->  	unsigned int seals;
->  #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
->  	atomic64_t pmd_sharing_count;
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index ce9c8e57b8e5..6865ff468343 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6091,13 +6091,8 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
->  #ifdef CONFIG_SMP
->  u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
->  {
-> -	unsigned long key[2];
-> -	u32 hash;
-> -
-> -	key[0] = (unsigned long) mapping;
-> -	key[1] = idx;
-> -
-> -	hash = jhash2((u32 *)&key, sizeof(key)/(sizeof(u32)), 0);
-> +	u32 seed = HUGETLBFS_I(mapping->host)->fault_mutex_hash_seed;
-> +	u32 hash = jhash2((u32 *)&idx, sizeof(idx) / sizeof(u32), seed);
+Some architectures map a naturally aligned range with a block of adjacent
+entries that the TLB may cache as a single translation: the 16K, 512K and
+8M pages of powerpc 8xx, Svnapot on riscv and the contiguous bit of arm64.
 
-Both can be const.
+The entries of such a block have to change together, or the block has to be
+broken up first, exactly like a large page.
 
-As discussed, using the inode number, if possible (and if it provides sufficient
-variance?) would be even better.
+Let arch_cpa_decode_leaf() extend a leaf to the whole block, so that the
+core keeps the block when a request covers it entirely and splits it
+otherwise.
 
-The u32 random number works for me as well.
+Breaking up a block only rewrites its entries and it does not need to
+allocate new page table page, so the core can call arch_cpa_split_leaf()
+without dropping cpa_lock.
 
-Let's wait what hugetlb maintainers think.
+Update the CPA statistics so that they count contiguous blocks separately
+from large pages and single PTEs.
 
-Thanks!
+The block counters stay at zero on architectures without blocks.
+
+There are no users yet. powerpc 8xx, riscv and arm64 will use it when they
+switch to the core.
+
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ mm/pageattr.c | 79 ++++++++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 56 insertions(+), 23 deletions(-)
+
+diff --git a/mm/pageattr.c b/mm/pageattr.c
+index 852e0989dac9..2f357a8c24d2 100644
+--- a/mm/pageattr.c
++++ b/mm/pageattr.c
+@@ -94,39 +94,63 @@ void cpa_report_meminfo(struct seq_file *m, unsigned long levels)
+ 
+ #ifdef CONFIG_CPA_STATISTICS
+ 
+-static unsigned long cpa_checked[PGTABLE_LEVEL_NUM];
+-static unsigned long cpa_sameprot[PGTABLE_LEVEL_NUM];
+-static unsigned long cpa_preserved[PGTABLE_LEVEL_NUM];
++struct cpa_stats {
++	unsigned long	checked;
++	unsigned long	sameprot;
++	unsigned long	preserved;
++};
++
++/* Large pages and contiguous blocks, by the level of their entries */
++static struct cpa_stats cpa_pages[PGTABLE_LEVEL_NUM];
++static struct cpa_stats cpa_blocks[PGTABLE_LEVEL_NUM];
+ 
+-static inline void cpa_inc_pxd_checked(enum pgtable_level level)
++static struct cpa_stats *cpa_leaf_stats(const struct cpa_leaf *leaf)
+ {
+-	cpa_checked[level]++;
++	if (leaf->size != pgtable_level_size(leaf->level))
++		return &cpa_blocks[leaf->level];
++
++	return &cpa_pages[leaf->level];
++}
++
++static inline void cpa_inc_checked(const struct cpa_leaf *leaf)
++{
++	cpa_leaf_stats(leaf)->checked++;
+ }
+ 
+ static inline void cpa_inc_pte_install(void)
+ {
+-	cpa_checked[PGTABLE_LEVEL_PTE]++;
++	cpa_pages[PGTABLE_LEVEL_PTE].checked++;
+ }
+ 
+-static inline void cpa_inc_pxd_sameprot(enum pgtable_level level)
++static inline void cpa_inc_sameprot(const struct cpa_leaf *leaf)
+ {
+-	cpa_sameprot[level]++;
++	cpa_leaf_stats(leaf)->sameprot++;
+ }
+ 
+-static inline void cpa_inc_pxd_preserved(enum pgtable_level level)
++static inline void cpa_inc_preserved(const struct cpa_leaf *leaf)
+ {
+-	cpa_preserved[level]++;
++	cpa_leaf_stats(leaf)->preserved++;
+ }
+ 
+ static void cpastats_show_level(struct seq_file *m, enum pgtable_level level)
+ {
++	struct cpa_stats *s = &cpa_pages[level];
+ 	char sz[20];
+ 
+ 	cpa_size_str(level, sz, sizeof(sz));
+-	seq_printf(m, "%s pages checked:     %16lu\n", sz, cpa_checked[level]);
+-	seq_printf(m, "%s pages sameprot:    %16lu\n", sz, cpa_sameprot[level]);
+-	seq_printf(m, "%s pages preserved:   %16lu\n", sz,
+-		   cpa_preserved[level]);
++	seq_printf(m, "%s pages checked:     %16lu\n", sz, s->checked);
++	seq_printf(m, "%s pages sameprot:    %16lu\n", sz, s->sameprot);
++	seq_printf(m, "%s pages preserved:   %16lu\n", sz, s->preserved);
++}
++
++static void cpastats_show_blocks(struct seq_file *m, enum pgtable_level level)
++{
++	const char *name = pgtable_level_to_str(level);
++	struct cpa_stats *s = &cpa_blocks[level];
++
++	seq_printf(m, "%s blocks checked:   %16lu\n", name, s->checked);
++	seq_printf(m, "%s blocks sameprot:  %16lu\n", name, s->sameprot);
++	seq_printf(m, "%s blocks preserved: %16lu\n", name, s->preserved);
+ }
+ 
+ static int cpastats_show(struct seq_file *m, void *p)
+@@ -137,7 +161,9 @@ static int cpastats_show(struct seq_file *m, void *p)
+ 	cpastats_show_level(m, PGTABLE_LEVEL_PMD);
+ 	seq_printf(m, "%s pages set-checked: %16lu\n",
+ 		   cpa_size_str(PGTABLE_LEVEL_PTE, sz, sizeof(sz)),
+-		   cpa_checked[PGTABLE_LEVEL_PTE]);
++		   cpa_pages[PGTABLE_LEVEL_PTE].checked);
++	cpastats_show_blocks(m, PGTABLE_LEVEL_PMD);
++	cpastats_show_blocks(m, PGTABLE_LEVEL_PTE);
+ 	return 0;
+ }
+ 
+@@ -160,10 +186,10 @@ static int __init cpa_stats_init(void)
+ }
+ late_initcall(cpa_stats_init);
+ #else
+-static inline void cpa_inc_pxd_checked(enum pgtable_level level) { }
++static inline void cpa_inc_checked(const struct cpa_leaf *leaf) { }
+ static inline void cpa_inc_pte_install(void) { }
+-static inline void cpa_inc_pxd_sameprot(enum pgtable_level level) { }
+-static inline void cpa_inc_pxd_preserved(enum pgtable_level level) { }
++static inline void cpa_inc_sameprot(const struct cpa_leaf *leaf) { }
++static inline void cpa_inc_preserved(const struct cpa_leaf *leaf) { }
+ #endif
+ 
+ static pte_t *cpa_lookup_in_pgd(pgd_t *pgdp, unsigned long address,
+@@ -253,10 +279,10 @@ static int should_split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf)
+ 	if (cpa->flags & CPA_REQ_SPLIT)
+ 		return 1;
+ 
+-	if (level != PGTABLE_LEVEL_PMD && level != PGTABLE_LEVEL_PUD)
++	if (level > PGTABLE_LEVEL_PUD)
+ 		return -EINVAL;
+ 
+-	cpa_inc_pxd_checked(level);
++	cpa_inc_checked(leaf);
+ 
+ 	/*
+ 	 * Calculate the number of pages, which fit into this large
+@@ -284,7 +310,7 @@ static int should_split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf)
+ 	 * range.
+ 	 */
+ 	if (pgprot_val(req_prot) == pgprot_val(old_prot)) {
+-		cpa_inc_pxd_sameprot(level);
++		cpa_inc_sameprot(leaf);
+ 		return 0;
+ 	}
+ 
+@@ -307,7 +333,7 @@ static int should_split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf)
+ 	/* All checks passed. Update the large page mapping. */
+ 	arch_cpa_modify_leaf(leaf, new_prot);
+ 	cpa->state |= CPA_ST_FLUSHTLB;
+-	cpa_inc_pxd_preserved(level);
++	cpa_inc_preserved(leaf);
+ 	return 0;
+ }
+ 
+@@ -319,6 +345,13 @@ static int split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf)
+ 	void *table;
+ 	int ret = 0;
+ 
++	/*
++	 * A block of entries is broken up in place, without a page table and
++	 * without dropping cpa_lock.
++	 */
++	if (leaf->size != pgtable_level_size(leaf->level))
++		return arch_cpa_split_leaf(cpa, leaf, NULL);
++
+ 	spin_unlock(&cpa_lock);
+ 	table = arch_cpa_alloc_pgtable(leaf);
+ 	spin_lock(&cpa_lock);
+@@ -389,7 +422,7 @@ static int __change_page_attr(struct cpa_data *cpa)
+ 	if (!cpa_lookup(cpa, address, &leaf))
+ 		return arch_cpa_process_fault(cpa);
+ 
+-	if (leaf.level == PGTABLE_LEVEL_PTE) {
++	if (leaf.size == PAGE_SIZE) {
+ 		pgprot_t new_prot;
+ 		unsigned long pfn = leaf.pfn;
+ 
 
 -- 
-Cheers,
+2.53.0
 
-David
 
