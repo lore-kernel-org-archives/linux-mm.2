@@ -1,240 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F905606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 06:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1492606A32D
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 06:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=orQsZTUp
+	dkim=pass (1024-bit key, unprotected) header.d=finanzturbo.com header.i=@finanzturbo.com header.a=rsa-sha256 header.s=resend header.b=ZuSdPASV;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b=Og6/AxHC
 Received: by kanga.kvack.org (Postfix)
-	id 5277D6B05B6; Thu, 26 Nov 2026 01:03:30 -0500 (EST)
+	id ADAAA6B05B0; Thu, 26 Nov 2026 01:24:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D84C6B05B7; Thu, 26 Nov 2026 01:03:30 -0500 (EST)
+	id A8AC66B05B1; Thu, 26 Nov 2026 01:24:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C7816B05B8; Thu, 26 Nov 2026 01:03:30 -0500 (EST)
+	id 9A0E26B05B2; Thu, 26 Nov 2026 01:24:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F9656B05B6
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:03:30 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E22F1602CE
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:03:29 +0000 (UTC)
-X-FDA: 85476228138.17.2A73D47
-Received: from mta1.migadu.com (out-215.mta1.migadu.com [95.215.58.215])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 74596180007
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:03:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=orQsZTUp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6591F6B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:24:54 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B37A51402D2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:24:53 +0000 (UTC)
+X-FDA: 85476282066.29.4383DCB
+Received: from a48-187.smtp-out.amazonses.com (a48-187.smtp-out.amazonses.com [54.240.48.187])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 34A8D80008
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:24:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=finanzturbo.com header.s=resend header.b=ZuSdPASV;
+	dkim=pass header.d=amazonses.com header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b="Og6/AxHC";
+	dmarc=pass (policy=none) header.from=finanzturbo.com;
+	spf=pass (imf02.hostedemail.com: domain of 010001a216873c25-37e02654-b69e-463e-9e99-64d88d2cc582-000000@rsend.finanzturbo.com designates 54.240.48.187 as permitted sender) smtp.mailfrom=010001a216873c25-37e02654-b69e-463e-9e99-64d88d2cc582-000000@rsend.finanzturbo.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795673007;
-	b=raWOKcTN1akPEaQOo4l0yVK0sAT2IIxMLZOTw7c0QXomctyc44POJvdaQN9Tn/WpErKT9G
-	qmJIdFkGRtbSR9gPAGdbDrnQe69zAL21xG2VfjRkEDcT+seK621pzzs/4LwrMR6H7/9sIu
-	35z4sudN0xF8+NsvEJV1+zgg4lOIkJo=
+	t=1795674292;
+	b=t+mDcpj38YGRyPlWVdX1qjmpbNN5ub+aPZEjiplNf1VV4bOBLdLkh25i53EMhvMtgDu4CN
+	8kNgRFBg5fF8/mblaiWk5RIsugjT3YgX6jUnqWF1Pe5s4ZmBCVrBNB1WNmVPZSjMdde9Kr
+	wobQ10CeG/CkOaa5CkeuVmGgApYcMRc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795673007;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0PzfTGtQNoeXf6Gjoec1s/Tw8QgiWIeiBg+XwjQcs8o=;
-	b=refNbSK4ComDd8U5nLKaddIZlTrtVq6ZFU5xvfMP+aUwUHYMdZX3cbPtzNbJbeFs3wRwcM
-	xKguiEU3PRPxZuAFEsKNTV7UkmNfbeiH0vN132zyL1bVrT1tvtbQhSw65t0h3cYsIz2jxW
-	KorDTuGNRPRubHR1QwIWHd/O7tw2/KI=
+	s=arc-20220608; t=1795674292;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wj/KEOakK5Zr+VXevV2mjtUMrX+Th+IkivRCPnCNP6w=;
+	b=bfUATcJZdKMtb21ZuSBrpBRw9kn6IMjHX/4DkCofdtTHnsFeptghs0XEfQkJQD2Qu2Ugtx
+	WOXOB2AQzMyxXnQL0EydOWibFVX/lBLVmtwkWUp6Gbmy6emXcPjSBBfzXbS3/8Ra+HQfR8
+	1fcHr0IOcqiGobQ87f1YPOJPGwVze4c=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=orQsZTUp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=748+ddCbsTP/XIDjke/+TROSx5c7dPfXbczUrGruMHY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795673005; v=1; x=1796277805;
- b=orQsZTUppfMHaenXYMAuC6fgaFhIJ8I2sIqlnrUlmWRJmaBgrone90Ei8FYK5hiRn9+KB0fx
- s1KYh08T/FBsUCyn5YuPbPE/4r6A5TlNSunVVHVc3mHMoxG2VB/378K8bB3DeeT9iTFBPUCaauZ
- iyZ991Wg8d1sMoBHJQBbY8wk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id c47457697a4402af;
-	Thu, 26 Nov 2026 06:03:24 +0000
-X-Mizu-Trace-ID: c47457697a4402af
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 26 Nov 2026 14:03:19 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <ryncsn@gmail.com>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Gregory Price <gourry@gourry.net>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rik van Riel <riel@surriel.com>, Wei Xu <weixugc@google.com>,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: Re: Virtual Swap Sync
-Message-ID: <awfLp4H_pyefSM5v@fedora>
-References: <CAKEwX=NXSwSiuY65EV5nqFocMLd6-afsiJfgy_ahB2v_MDmcng@mail.gmail.com>
- <CAKEwX=O2McF-gyqJT2a8R5q79+QABCPjULrcjC2CC0v8TnXxJw@mail.gmail.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=finanzturbo.com header.s=resend header.b=ZuSdPASV;
+	dkim=pass header.d=amazonses.com header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b="Og6/AxHC";
+	dmarc=pass (policy=none) header.from=finanzturbo.com;
+	spf=pass (imf02.hostedemail.com: domain of 010001a216873c25-37e02654-b69e-463e-9e99-64d88d2cc582-000000@rsend.finanzturbo.com designates 54.240.48.187 as permitted sender) smtp.mailfrom=010001a216873c25-37e02654-b69e-463e-9e99-64d88d2cc582-000000@rsend.finanzturbo.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
+	d=finanzturbo.com; t=1795674291;
+	h=From:To:Reply-To:Subject:Message-ID:Date:MIME-Version:Content-Type;
+	bh=wj/KEOakK5Zr+VXevV2mjtUMrX+Th+IkivRCPnCNP6w=;
+	b=ZuSdPASV0kH2ZNHUgkCQM4YVDfA5lXXm9R7AfG0TVHnubkTqedEhIyZUv2Pd2Sjb
+	mV7dzOMHTzGnFmlrLjvCi0O44FCp/lnLLeBYkKk3O5VizQF00V7RL9sM48AXuIddz8D
+	3eY8yfMjNU320JYsGzHcTIR1I3F0QOtR0Ala0Ncw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1795674291;
+	h=From:To:Reply-To:Subject:Message-ID:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=wj/KEOakK5Zr+VXevV2mjtUMrX+Th+IkivRCPnCNP6w=;
+	b=Og6/AxHCInOFWxWgozjsU9CVGRh6gMVBcR3/7IF2IbUdDAOf1wThrfTxcAS3heZQ
+	kvKVbN0s+BG0HFboW7GzoUmlyjWr1ZL/6txMIxLZ0se4lSe+EeErNU3ZGsblsu71AK2
+	UjcbHtEBR9chSW5uqD6kvv9BdI9ouANzohwBoSMo=
+From: FHS <info@finanzturbo.com>
+To: linux-mm@kvack.org
+Reply-To: FHS <tylerpierce_smwcorp.us@aol.com>
+Subject: =?UTF-8?Q?Product_Catalogue_Request_=E2=80=93_Pote?=
+ =?UTF-8?Q?ntial_Business_Partnership?=
+Message-ID: <010001a216873c25-37e02654-b69e-463e-9e99-64d88d2cc582-000000@email.amazonses.com>
+Date: Thu, 26 Nov 2026 06:24:51 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=O2McF-gyqJT2a8R5q79+QABCPjULrcjC2CC0v8TnXxJw@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 74596180007
-X-Rspam-User:
-X-Stat-Signature: xfjqjwnwz878i8xj3bedpibo3ictbeqy
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: multipart/alternative;
+ boundary="--_NmP-271d297bd64b6dda-Part_1"
+Feedback-ID: :1.us-east-1.2uTtVpWKL7dHMxGUFQPDtft/IFpFjnhBaNQ6YVbbEzqElRjyRWNLfumcGiK++ORRSKgXSnWlPCWU8Fy45SWqyRDYQ6FENP8+qbZ5+LFWlGnXrCEq2zNWC0pUo0A2kRZ+/KuUDfSFiW0K1N6oMHVszMuE8eoM/QZEMm4fT44QuwI=:1.us-east-1.pAEstvQcjyhQNKGKcgSlzI7SVR8ZSG5wSmKwiz/A8Dg=:AmazonSES
+X-SES-Outgoing: 2026.11.26-54.240.48.187
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 34A8D80008
+X-Stat-Signature: 8tnppp9g64zs6wgx8777aexzztoeh8ic
+X-Spam-Status: No, score=2.7 required=3.0 tests=BAYES_50,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795673007-469799
-X-HE-Meta: U2FsdGVkX195fWAQViGfi/+pF4GwcxbnmH7e22U3vX5xe68CGo/dAuixXTwzFNRXwAaABOs6VHRaDi3oTDJQretyU5DBkYO7Q7VgdHxH7e28VouWJv8CDo3RQxQXiect6rYm2t4XHo7Lwz6pmjHgHLy70ZqR1CmYFROvpfRavlpAYifIJRVckF6T6z93mmcsGtzFHtEYVizhYis2Yr5xs9HqmiCiczKmUIc3rvZXKqIR1xooGOzA+2F5JZ8iFu+jorNwUQrIX/WLHeVrGlwaQBO6cIpx7qKu9GE4FFWcXtuvWuu6fV1Aaiw4D6n6tqJRwYJ0m/+py54Cb4mrS/MCcrsfM1Q/+NYyNrJEe8NhMNORsM3bRIuivivhGSaAL+uTuG86cJcZxK6r66NapTXEnQObWFcGc7QxLYkF4GU3beylf/enra/B27e8SacZl0IP1j10DAvnLmjH7V9DHjQ51fHfqP2AQ86sUdfo4PHxOH5kWyCvYxzFEzIL4YOuvYOyQAvywkx3rHv3/SUWoFeIuJHLrY8lWaqa6Ylex/rmbzVLpYTHuDrXeol5P5mMJwXznXlvYGCmaDu5JbWluHS8xsmXQRwY6Q56i9k26PFPlwxqt2Q+VyYqxLuwg0gcUUZf7hAkROe+vnU7PBYMHvGSrCUuWuTGfPSRkRtrRNCPdeUGfMWX7z/N3KhU8EjeBK6hRyTxvHC+r2IpafLUwB2EMMFcjVTuxDE/C7huMtGe1fMNravuU1nzLM4xpkty/1LD2nw4GvYhxTR7ev7xtCsSGyJ06pTl1VOenHRU8vY4zcFzdutG6vaNhhML+X6RXHRmFa/nhTmMllm6zJVV10b3Y+jLJsXFJqxYIqH44Wnr9YSkk140LXOaLvA5U+6xYPNQgXwnVcMDEwbmgCVyTfhFy4mmoJkbCeQ5QF16CCBT3PteUsd7lKSBakPQBumS7Wa/YE6tpjwzUbNkcz6d9m4
- qq7XO5f+
- eZ8vtujwQsbyrbpFYAxgDIIncIN28SHrWSlyHiNjhpDJw3DLVo2qj2POlRBaLKlAJiNkr7ZTqwWGWwk3u+T+xs5+ZAs5IAUE0LxW1wpFhVGQzKPM3QLF0Oe0IpJtA+gtsMAy6KBI6wcQ1djgEduJ4GopeBA4sIPjJ3hig2TwndXQpMDbp3hnAPYv609Sy+iESjEuq4jV6h89LxKTPdRIElafRRNEOpZplGhmL0RrJ13S7vngJRIaoiJCamyNdbJ3ze84mawLHIRvb7+0SbvB7J9hQDZoMwddoDeJMT1lEOe4X3l/uq7R8ypuEOZdM1QYxNTxC/ZNsLcd4M6Y9h33Fz7FXFqg5VBoBC+58jlEax3Q7Vj9E/n5f5DAMVL9Pv4ZXV1KSS3OiJ3cjPI1o51SV9hi8N8GizOOntF6de7lWUmquS8Wx4eqPDUhw7Ah4aS8zWbO6zcoTzEQj21UMgLLi5uNyCrOkaNkfzmuUMZF65xBo/cjqVw3wzbJiV7BrKme6usCNeUdYcQ+1HwzXhVjoIw9VsSn1nMsneh1hsghJy+pvid2HJ1KJ6f3eR07KWmpEfmN7e1xqef1SUzjNe7Oh3fGV/rCN3Qz7eyVFTWjiEAjIQQff92lvrNTvwwv1R0ftLeUvuomO9AY1Mes=
+X-Rspam-User:
+X-HE-Tag: 1795674292-561566
+X-HE-Meta: U2FsdGVkX19j/LWQP47APIUA31aeV8Z0mMk1qYkc6Zv59hfRYv9SKkYwafbwCdM2GkyxHzm/5Myn+7QlAiBHuS5bZ9efCrjAzCgDJCHvgH7UCGn5CkrnxapT4FPhELpASdQVKbV5nXJ/PDoCSRnM/aYS+V+Cnibx8kde5UEFglQcDwKOCkBzHwGo0qGrtLeVVZFieYp0BrGa5zUn/O+giPbqFG9Ki9mvRCk1SEbY7Jy70jD3s5G9bF337E1rbATydHzp3CBDrE0dV/6SDzWqsnvLV+fHsAxGgcPJZ3BxqG9tR4yZcL5xH0ozVuAimWn9qpu+deqVFRAZ2VRKI0QniPuHvgK5mBBqXb/zQ4x89rqRVttBR5yK5/Zi0utCjS21dy3/gC1o2IQcy56ixoTCH9+B1xz2R0cWTeKfGOBYKKt/j+b9ZxAmy+ohb95QWJY36MMUaNbK6Zb6dRh1AsGc0pj4gcQlgiEhZF3fu+B7Z9YD9QcIf+dgDrBqUDGZ6batQ+SD4kDAizJZErOVZXdEVxjxf6RLiRI8TylJwcpSNxodNfKXNi/p3uW7MGgljrO8F0804pGRd0xIcHdIqFB7wVoKBBsj0ltdOssrtEoNrPw9BXarbt8Dzkqt8wJ9WW1zHd5lxBKZukH9D7cw5hsMDAmkeJbV+LrUam2rpiFzWNR9CYuQLPfNGlVk2xyQCpL+FYTn93C7x1pWwrZy0MN8tAvRLm3dykBG4WAqUpKzy1W3NG7CoV5n1Vy50Nvm9QmvfdwyM5TxAdNKn1v23/PCNraM0E4EwxHV4mSFqoOb6LP3UtUWTdujSSpaK1oJdJ4YTUlsFjwBG54bLvYkISwaw8Hb/5UA5DkaXt8jVHqCndPN34SKGyqXWN41o9TIGV71yja0N2xAuMSqEBqpyG3T0NbjpRA/Y5YBCT0/WkMOgUo/ch8E+RoyaHdd87VQhzdqkI6G5Eix5oKcxRyfwMf
+ uzCKPVGI
+ La5iJFqdICxvtwkMNkDIs7mgSY4D0jbrRTWf2G2BJzj8I1N6Up/j2vXev7bHZyiXsQaGzKOPn97RuTj2FBMoHMS8mmn+A99+E9MvaZS0JDxPvaLhvYk+bFiqUq3tth2mt/1ljiBvDGd1fR3s5nQ6W2boiPm8YidMtZJ56JDqLyEAphhijD74zJ+cxdJ2A2CKwJllHFsmSq0PADsyy3NP+Vc+HA2J9r900+1nWbsn1mUIzXeUFPlgnK1YVa7W9Aq+tvjzRgKTsGdI0j9tgHb+NU5mwI3kQ5jyyLzdEVZG4diYwxAxvJJ7ClEo/olBH5uIQMohDsHF6k78NoXXiXScn9scU/iUlBov7oR17TITV/q0xbGSyCFQV8awZmOAdc0I8mNR6RJkM+uVeCxHtGrp8yk/Q0IRTPLSWUnEEkXDzRSmtpbOYmbzVJv5k6AX9YqfKg+0Dz9FF1eDlJKHGUrgo89Z/1WClsu4E92MB/BOl+o9t1GZhDd/1mNY4fbPYU436k+Hf3BDyDiBHb7p1CBwXjhEzLyulpnrsB9Tn8Qgn8MBHR4rn5F9r32Mdjf1rer0xzZWl2f4m3fS2ZRw6TauaI4WFx4UiFkAOR/OIrw1Z4yeaVFhOkE3piIqCeT/8Fz7oKg+yUneggWeotZT9IDKk1IRBP7bYG3i7I3nPT1acVvtK3vMHwOU31tusu2ShQwb/iZZeurHZB45/VkgFH4cxIcHA7q6uXKzbTaMrJIiUqAjFFLcTAxBXIw0vbcuVnos+CQl0pAhqAOcDAFvxv56n496HrkyUSva0Ziw4hngaHANcxJjB5stt1JoJ5SAGPVUfQUnuwG9lYyDr4h0ZhS/Fux86Ite1m6qAUi+sVx4HPx3h7j8jzCIURAalMmVUrXx2nz9lxuymcOxEO64T9g3QGf6rjjVyxXAiJjME02KSDQnSLrwPRMMxhrhZYL+D8qOMJhgCX6vp/LyTkQdbakExzpdrh/Qh
+ K80d82RR
+ HnxSU/s0yXptsmYMk7b+t3n0+gG/NYqxqotdYeIoaySdTqyPkDMOq0oLKio6aOpKggW4063KuBLSj2kivdzZWzs1yZ4369SyPbgBc/nH24MsjylvQwj+AX0DMxtesqR2FK06ge/P7E3d4d0OaUbqcwJ520jjUYuF45DYkHLzz5RbuyyaywePU+f92/5KB3YpPmM0afpLqb28GgTPxFM0Jy5oAnBeJ0iBlTmoBTgERaojemTuP0NiW1RoI4osyaZILwUAU85AVgpO3A3qaihW28aEUfT/qbmo0jQ0v382qmEjGd5IqIbTPjjJZ0fAiQpY2gH+fFiKNuWx+telEhJB6cNd6IZtCpHQt0GP0wGpSzNNBPkjF0iztij/SZmxGKngAx3fOw/OLYOb+zPnWiK0ViD9JK18y5PWQ0tDSu+V54S1ougEjJ4BY0+W4ed8caCMfZXWJmna4vGxLPCNYbZofrTVmKeBiCBPEJUnV8k2v3wLbulb7LT5y0TzOXaD6ebJ9eGTljs9ApvyYpytUMLjUpDeQDMiPU5GiPi2JvygHPBiBjfgovStfdC1PiewuV22HkByEOT/rHPi0YpThtyp6QiO5NbnQbXXqvqlBH+5yJBARMQj0I/EafsEvnQZEeLE+N+YxW93cujwbnumDAO2YNhgF5P/VtW29WMfYem6dOPbpfBW0yZxTYkeH+P5484e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/22/26 at 08:31am, Nhat Pham wrote:
-> On Thu, Nov 5, 2026 at 2:06 PM Nhat Pham <nphamcs@gmail.com> wrote:
-> >
-> > Hi folks,
-> >
-> 
-> Hi folks - thanks everyone for attending. :)
-> 
-> I summarized the points we discussed below - please let me know if I
-> missed anything or misunderstood a point.
-> 
-> * Control interface: Google is interested in a knob to cease zswapping
-> (which already exists and will still work in vswap world). Kairui has
-> a use case for remapping all swapped-out pages.
-> 
-> Vswap currently bypassed when zswap is off; per-cgroup selection could
-> be added as concrete use case arises (for e.g migration/compaction).
-> 
-> David objected that a virtual swap abstraction should not carry a
-> swapoff interface per se. Folks also asked whether making vswap a
-> mandatory layer would make the implementation cleaner (Nhat will
-> explore this direction and follow up on this).
-> 
-> * Virtual space sizing: We discussed using vm.overcommit_ratio and
-> vm.overcommit_memory to limit the host's logical memory footprint. The
-> exact sizing formula is still unclear - Nhat will follow up with
-> Kairui on whether it is acceptable.
-> 
-> (Kairui, if possible, can you respond here for your exact use case? Do
-> you want to limit physical memory usage, or virtual? My understanding
-> is you want to gate physical + swap, which would be closer to the
-> latter).
-> 
-> * Priority and multiple swapfiles: should not be added for now.
->   No good use case for swap priority was identified.
->   Multiple swapfiles were used in the past to work around swapfile
-> lock contention, but it is unclear whether they are still needed with
-> Kairui's new cluster-based allocator. If contention remains a problem,
-> we should fix it in the kernel before putting that burden on
-> userspace.
-> 
-> * Proposed phase split and charging (from Nhat):
-> 
->   - Phase 1 - initial foundation:
->     - Decoupled zswap: Let zswap operate without reserving disk swap
-> for every virtual entry.
->     - Physical backing and writeback: Keep disk swap available as a
-> backend, including when zswap cannot store a page or an entry needs
-> writeback.
->     - Charging: Retain memsw charging for virtual entries; keep
-> virtual-slot usage out of memory.swap.max. Actual physical swap usage
-> keeps its resource charging.
->     - Usage counter: Expose vswap usage so users can monitor
-> virtual-space consumption separately from physical swap usage.
-> Essentially this gives you a method to estimate the logical footprint
-> (memory.current - swapcached + vswap).
-> 
->   - Subsequent phase(s) - further support and controls:
->     - VM_SPARSE: Add VM_SPARSE as an optimization after the
-> first-phase foundation.
->     - Runtime controls (added as use cases arise):
->       - Host-wide runtime disablement knob (and remapping of swapped out data).
->       - Per-cgroup vswap control (for e.g, if some cgroups want
-> migrations/physical swapfile compaction).
-> 
->   - Orthogonal use cases and concerns:
->     - Cgroup-level logical memory limits in cgroupv2 (memsw?) - swap
-> developers will follow up with memcg maintainers.
->     - Static sizing: Define the host-sizing formula and decide whether
-> another interface is needed.
->     - Swap tiering for cgroups: Explore backend selection when a
-> concrete workload needs it.
+----_NmP-271d297bd64b6dda-Part_1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Youngjun's swap tier comes from concrete use case of his company, it's
-been v11, he presented this in LSF and LPC. 
+Hello Sir,
 
-[RFC PATCH v11 0/4] mm/swap: priority-based swap tiers with per-cgroup selection
-https://lore.kernel.org/all/20260916183437.2946306-1-youngjun.park@lge.com/T/#u
+I hope this message finds you well.
 
-This is xswap road map I shared with you when we discussed about working
-together. I also mentioned swap tier in road map because Swap tier is a
-very important feature we swap developers plan to add. 
+We received your contact =
+details through a referral, and I would like to express our interest in =
+purchasing your products.
 
-https://lore.kernel.org/all/al8ohWshSSZ64AtT@MiWiFi-R3L-srv/
+Could you kindly share your latest product =
+catalogue with us on WhatsApp +2349015024475 so we can review your =
+available products and discuss potential business opportunities, including =
+pricing, product specifications, and order arrangements?
 
-I thought you had read them.
+We look forward to hearing from you and hopefully establishing a successful=
+ and long-term business relationship.
 
-I don't know why I couldn't join meeting last time, I tried at 8:05am at
-my side, kept waiting for people to approve me until 8:30am I was
-added. Not sure if you guys also talked about this.
+Thank you for your time and =
+consideration.
 
-Thanks
-Baoquan
+Best regards,
 
-> 
-> Folks, please comment on the summary and proposal.
-> 
-> Let us keep the communication line open and coordinate on the next
-> steps. I will schedule something again.
-> 
-> Also taking a step back - once we reach a consensus on vswap, maybe we
-> can repurpose this series of meeting for general swap alignment? There
-> are other swap/compressed swap developments right now (looking at the
-> orthogonal use cases list above for e.g), so maybe we can do this once
-> or twice a month. My experience in the past year or so has shown that
-> we clearly need better alignment :)
-> 
-> I will reach out to set up another round of meeting. I'm hoping we can
-> do it one more time in December, but I understand that holiday season
-> is coming :)
-> 
-> For folks in the U.S, I wish you all a merry and festive Thanksgiving.
+Best Regards
+Tyler Pierce
+Purchase Manager
+FHS GLOBAL LTD.
+email: tylerpierce_smwcorp.us@aol.com
+WhatsApp: +2349015024475
+----_NmP-271d297bd64b6dda-Part_1
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML>
+
+<html><head><title></title>
+<meta http-equiv=3D"X-UA-Compa=
+tible" content=3D"IE=3Dedge">
+</head>
+<body style=3D"margin: 0.4em; =
+font-size: 14pt;"><div>Hello Sir,<br><br>I hope this message finds you well=
+.<br><br>We received your contact details through a referral, and I would =
+like to express our interest in purchasing your products.<br><br>Could you =
+kindly share your latest product catalogue with us on WhatsApp =
++2349015024475 so we can review your available products and discuss =
+potential business opportunities, including pricing, product specifications=
+, and order arrangements?<br><br>
+ We look forward to hearing from you and =
+hopefully establishing a successful and long-term business relationship.=
+<br><br>Thank you for your time and consideration.<br><br>Best regards,=
+<br><br>Best Regards<br>Tyler Pierce<br>Purchase Manager<br>FHS GLOBAL LTD.=
+<br>email: <a href=3D"mailto:tylerpierce_smwcorp.us@aol.=
+com">tylerpierce_smwcorp.us@aol.com</a><br>WhatsApp: =
++2349015024475</div></body></html>
+
+----_NmP-271d297bd64b6dda-Part_1--
 
