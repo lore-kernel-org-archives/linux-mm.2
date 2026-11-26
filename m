@@ -1,144 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B67606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 12:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F2C606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 12:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P+GUhHOC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KR3A9L0V
 Received: by kanga.kvack.org (Postfix)
-	id D01AB6B05B0; Thu, 26 Nov 2026 07:38:49 -0500 (EST)
+	id A91BF6B05B1; Thu, 26 Nov 2026 07:39:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB2016B05B3; Thu, 26 Nov 2026 07:38:49 -0500 (EST)
+	id A42366B05B2; Thu, 26 Nov 2026 07:39:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F976B05B4; Thu, 26 Nov 2026 07:38:49 -0500 (EST)
+	id 980146B05B3; Thu, 26 Nov 2026 07:39:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F33A6B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:38:49 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 820A5A8D8E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:38:47 +0000 (UTC)
-X-FDA: 85477224294.08.681792F
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B1F2B20002
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:38:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=P+GUhHOC;
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7798A6B05B1
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:39:54 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB449C041E
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:39:53 +0000 (UTC)
+X-FDA: 85477227066.25.4639D07
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 28EDD80008
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:39:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KR3A9L0V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795696725;
-	b=VPkMbUNOWxkvQGr1jpQDlHqeQyNk4f+rq28U6tUH1dWMFKljK+BoPbVqS22yXUTQfT8j0V
-	IygsDXYYjUz8/nGaa2ihUOG55hLC+aWTzc+5ebQcga3GpKgTVfouc9bsQ7w4soGl95jKeI
-	Sm3fu9X3opsbtoUwvRvCTH3ap8041fc=
+	t=1795696792;
+	b=SpmEeexPeCEgwtbNdEpng58za49ysC4oYj8ZnPHv+8zXYtxXSAdu+ozNMa2xZmgFT2n/nB
+	VwtvLg5KWxmgFPBIkeUk91LMAzYczMWQlsmCNGFriUFSdHztYJkjiQXwEzSi4A92iY8xni
+	XJz7wr1s52yCNy1P+4L1hBUS1k0gfAQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795696725;
+	s=arc-20220608; t=1795696792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C/AbZhSvVAtAuxRzfiAolPI8iaF2YFQe3pPvY/yniKU=;
-	b=wGwT8elCVYaVDAA9rGHDkrZD47/WDKBE/uaFbITtxIh/55XF24qdfDM2hlBGfvv6K5w4Sk
-	hQXWhcJu/gM/9kvjpxa3Pg32ZSsxDJabWXfLrNgi/F3fUnxvAz+lK5mU/IQkzbCfZ7OfHe
-	GmxsIPDlGHUMl6aj2v+4Joj0QjseCYc=
+	bh=e3Vrgu8a6DhnD5x0zdlXCxiwJd6p3spzYZMPi3rDJIo=;
+	b=XHO7S8uSSfJw8ofayOLmQ1+7yMMHIGPBeSIiYWLUvW+lbX8fohqhvPjldW9s35U/HsjFla
+	snaea2OJSuiEnQi6kyguGWKOG7G3BKB8DmzZHn4OF2ddgtIq0ONsCu73FAYqIeUa765Qq9
+	Qpk1Y2or2+pkxe6GP4VjUtyIubw9KTc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=P+GUhHOC;
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cd62c570b5dso4716642a12.2
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:38:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795696724; x=1796301524; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=C/AbZhSvVAtAuxRzfiAolPI8iaF2YFQe3pPvY/yniKU=;
-        b=P+GUhHOCV+j3JCd5eUoeWNkc9gQgHq18U6MOcUUEr0ymrT8Zc85hcMgIwuOSQAeN0S
-         lH6zLQoqwDz2RPNA1sQvszRDVnUcEQikWusyIem5Fe2QowleHg1t0oq+0asR3kH84nAo
-         7+J+4t1bgfgTSiGaSse59DW1W56Etc88mmE42euXNEQkPH+ANCn1+ZgiSIZp/R4myEga
-         hyU9c1BVCcEUbEEE/5eYr+LFSukSmqR4cI5ralPVLUwsK/sQRwwRwdvvmuupJ6VUBEG0
-         Sxze3pRZ6sIRzHSae8PozX99nPWkrz1yxJPD9N/Z0rWJpwqynza/6JFaumJXw+IgJ13a
-         io4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795696724; x=1796301524;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C/AbZhSvVAtAuxRzfiAolPI8iaF2YFQe3pPvY/yniKU=;
-        b=mweWrLb4SUb8fF1aK0egEjG8btqd3PHzCIxq5PsPlO8knMbMlYIiZBd5HXd9/BtCOi
-         04eLxxZ776ZOqUsvelQiURxLx3nl4Je0Jw+UYFJifSLuhDoARKATWoXL8IaomS6p7bxb
-         kxN11Y2rCCprPxhh8CYmurVI/f5ZR7K0E+7qSCvVG10R4DPd5awNUlCv1c8sDKFXbBRC
-         iKuo7GjjQ3G5sTkNZIGjuNqjxzVgWZ3LduE+TzgfO0kkWHPs1m9qfF2syz0AiMn2n7c2
-         CggHQfmBbprc2WEeqzETf3HhtIIABmu8G70hCLyJXVnw2p59JTvGshl4sqEwho5uDz3u
-         Nc9Q==
-X-Forwarded-Encrypted: i=1; AL+hErF9DTElo8hmSN753tzCS1PNvqif9SbjXzRmTGYDDUfn9HBBXrGpyBRWFRykEV1075mekzyRq0ASrg==@kvack.org
-X-Gm-Message-State: APuU4Z/8cQ3TuZf6JSUekOptXdrtali5CdFgBGH78wiHRpyMnGGn+1WI
-	CArQVXSRcvl/aHz6TBePqsb8QyhdBagXv5v1ww2zmYbXPnNDSMatEV7z
-X-Gm-Gg: AZFdTZe7O+oAem5G1rAjl7dV+7jtK2QYIT+mPqZdEUgfMRcp0WosTCvgvKZl0MN8M2Y
-	GJfgYtuHFGPbbTQPSPoihxbu+bfHrRfMT+HeePlPzLviE0sWJO2f8QjHdCGnYp8StTaCOr8RXDq
-	uVJR/nZsDcZy3fTx94cYtXYfiMO+dCZuNcKahEA982FxfO4zoxUvQVYlgZ6JHOP1MGvGBZFt/Zn
-	Yp2yKRjQCv7QO3x+e9KkLaFQxbElBvJcoTmBPtObcp0MRIkv882V17vckFaLC7e0MMvyEUwv7xB
-	P4Nrj9hAfxYtIVABMNa69VdHZIDrU89eJmAz2z1SdnA/8dKhwYGqe1pfxbj99KS+aS7qSEqXBf4
-	gN91rBP4F1L5r0IRwqCYb3Nmi1JzUy2cm9kqse2Nrd7MluLM4Qv+zuSsVmvaKTVbraKuECu4KyL
-	gumeoV3ocwKEhsUqYCsDCIke9uHr6y0dlFJPMLotuWH66bW2tDbYYXGFuQfJWSM/pZ58Mu10OVJ
-	GKF3Ymvb+242tjcqjopHoQjiaE/ukHY4yB6XguS+J05Tagn6+IwdtBl+XPY2Ftd7Boc0ilvJL9/
-	2VwacjI91oBeGrSzPe838yX6CxJ7xgJ5sCUrZig6iJOhZ7leM4241CpGCaU7sDX/XVtLBdY=
-X-Received: by 2002:a17:90a:d2cf:b0:3ab:2737:3395 with SMTP id 98e67ed59e1d1-3b41cafd604mr18006258a91.42.1795696724285;
-        Thu, 26 Nov 2026 04:38:44 -0800 (PST)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad0a33fsm33352174a91.6.2026.11.26.04.38.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 04:38:43 -0800 (PST)
-Date: Thu, 26 Nov 2026 20:38:16 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
-	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
-	Hugh Dickins <hughd@google.com>, SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Tal Zussman <tz2294@columbia.edu>, 
-	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
-	Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
-	Joanne Koong <joannelkoong@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>, 
-	Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	damon@lists.linux.dev, linux-doc@vger.kernel.org, Tianyi Chen <hi@tychen.cc>
-Subject: Re: [PATCH v6 02/18] mm/memcontrol: allow update of LRU statistic
- without holding LRU lock
-Message-ID: <awgnMVr6GHt0XKD0@KASONG-MC4>
-References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-2-8ffea39934a6@tencent.com>
- <387237c3-c2f8-4782-9ba6-481f459cf7f2@linux.dev>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KR3A9L0V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5693E41878;
+	Thu, 26 Nov 2026 12:39:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37BB1F000C0;
+	Thu, 26 Nov 2026 12:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795696791;
+	bh=e3Vrgu8a6DhnD5x0zdlXCxiwJd6p3spzYZMPi3rDJIo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KR3A9L0VZpKALooXFfJGBXBBHfYTm+/7kiZ8wlFcFuRXBWdBSbnZOIZVH5T6CHoa1
+	 9io65Zms5anLjDPNI76lA/eFbZj5ZGRqdJdpqC9TyvMzMB/fNJBbFapBfnofiJnIq5
+	 e82/+f61DkNp9WkroWudGo633awrt70wUvlcYtrrJrUDJcEVVNcrtwoSnnJJYMRGDq
+	 8d4zS0k+WKA333Hr5nZmKhucdABm68ygQr1qNDIJ/D3bCD5ztXi7vnOGIU3bgnIcjq
+	 idFd3omvBztPAhx5ho29H3sQ5Hs9PFSXYLejD40KvsxrHJ/TRjG2i2AOUwuYP4l2sR
+	 ABJLoA2w3siAQ==
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Chris Down <chris@chrisdown.name>,
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/2] memfd_luo: keep memfd frozen until finish
+Date: Thu, 26 Nov 2026 14:39:44 +0200
+Message-ID: <179569676808.4123145.16669613485216005083.b4-ty@b4>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261123130509.4032642-1-pratyush@kernel.org>
+References: <20261123130509.4032642-1-pratyush@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <387237c3-c2f8-4782-9ba6-481f459cf7f2@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 28EDD80008
+X-Stat-Signature: wp74634m168azw7jxkgzd5ziunsue8xa
 X-Rspam-User:
-X-Rspamd-Queue-Id: B1F2B20002
-X-Stat-Signature: bi7ogkn4kf5hwa1xfuke9oeojw55nhoz
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795696725-669973
-X-HE-Meta: U2FsdGVkX1/jB+D1mb2p3fFVVnU0pvgvfBLEqAr08jP3DiN989vHKDkF/iwE7WCHmsHQgrwbY2SPyIG9UeW7GKl6uZV261j1ulraLTY7GXcNXv3bQd/3hQqimDFoO2lxgV+5dB78E3Sy1Jw+H4bJouN6ft0TLbXNA/Wmfb8uN1lHKArbtavvlGbiaLTR8+XW5AOGKKVuily8hve6RMgBxymAsFRKmrlBY0UmsoBq0VxQYbneqyY8z0zw5vmQuXrrgX82udj6pmdNvIligX/y67MVLpWnkqCtcQUglm+CwGfJMluli35B5b7XpPQPzqLhTKepbz3QTCV6ySGLjSDsuGxhHveEb//DonAoGfUWGeN1j3XQReTEyxDZPSNcmGeKoueXkNTo/vtxLbPMj9RKQjGEjit7JJ97CeWiovbLVNB98YtZImv920ctHvDuK6qItVZytGYpkdA/CKxcfpa8wIboghhcjsSmNQMYYpglJxE2jWNw4sHyg9d3wMBJ7TrTrBQ9lAWVuu4c8tbv8FrgHywUB1SuzdWt4Px2U09o/hmsKj5XWZXKXP3kYfY3EKsikgIx50MUtaTUOdblGbt2e7YuMlubfyRQaI3nV5JRVbkVBtnByiJymCVpgCN6nQ515ZvWP6hGGjfZvTsaXW9x0rPwZ3feZPjeHKaxjOakjkCqZB5RzXPGHF49UVy0vVlz7gMO1HSdFA+6UbNSPvRTayJijvHU40dat5u4pSYF3t+9VT8+ugmstE1Cg0AUPCUgmD0sSaTSmoh5HRSTaAogyq5cEzjx8ddP490XDiVecWlcMWcvwht1JxgTrBPK+LRgrMaXikfImBWREXmAP8MZ9LzeKn720zlFYXflLlM6ebuLOsmdG823zDvbd6kLLZ3J1vBhvyh62qNhuLJfe7w5hVv1Oq3r4MmyNWcWSbvUM8zCLyBFtjAaYDWRaxYfuf/J6s2KhgWS9mcs4RbeG2d
- O47cPj7j
- P0fTv9XYkX8H6dkLyXtjPBRlim14sqsXBpOYHtJ0O6mWVOCrPNoe9+P+IJDn9GB/NEcsGAtj4cdjyKNfwununvnrKOJNZq9J7L1x4ajNS1B1LPkrbQbdzcHQ6bHnvAdJgmquDveTMWScWkBwVe1LbLJ8HMB00qaPTIj4PvhXkQowAY7KD5vhhrZYIZnZDu+ngZy+FSSBrRagZ9ZOmFmtIiZ1O8bB1+UZlesXGHPkAji2Qf0paRJbgumOxtOIaHekfs3jszfUsti3fVOdIZvRIBNJ0RBk/wUk8uQZTLBNKGGgMgNgQmLTCGT76QwlnReIOGIapOrDDV0t9YVH/ahP9ZTzwKam7pCzOkAgSjSASUowLCxFKkdJjwzA7uck/Q1x9pTtUvyHfyVHLeNKzNNqeOLGTw0lxbpYaeo0KEQcntUqc4cHpVShW7c3oIE0PDtbL7MaKZ1K+dZlCr4KmznlEu+W8KsuXTE664aKh/EFtXormzjlMIUVF15T4JGQEo3+vXidkKo5JOQBFyLtt2YHYV3aGBYU6kvorraQkFww9QoaDK/DHrFFf8FTsbGkDpIQA0stTVwfQ20i1WEvLmlPPXjVM85248IzX2UShWIe+9yIqI0qVNPYU6G+u2NsvlyS9fsBG10YntdOg4015rwI8cXRaym9BeIj8EgvENid9TDvr5VSndWD50LMLkj4BBo+Cv7vzxLFg/Vs0ZVopAi5uLtqVx3fhjFn+bRkjRpKPRiocBljbZ5wqStdLkDqghatSFb/rgq6TDwaHZaE+dBjgiuHK/rz4rUniv0sMi91pEG10IU+pYYGRI5i6HD/zmICIDteylPDJ1h360uTIVpZLBZurZ0kL+kUQqjZr
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795696791-18224
+X-HE-Meta: U2FsdGVkX1/M9KH/xOvG+RrM+EIB85JP15hEStIeb0PInGtwMqXEzDYbN7U+8AIgLaPoXTEbOINqLirryP9YJu3Bl5UjrjzDKAVc+lPttVsd6e4O6VhhW+Js84yuWrqx8VOIGo6yJmr72CoryL1eWcl888PZAKCX8Na1eBzhop+4TOpOL3t4rqXJAmLYgPZL02WjEFTtYpxv7saMbLlopfSX2WkLTESOl+Kw8bNqqXYFwW/WIvnHkk1FBqxv1GT0xp3onE29v5oHgBrWHlrug9lI3xaJ+xHwuRcOvRziik8TDAD0VQTWf6O7uKzXIFVgql120K12ZNPUCydZ6Ysi/xSXMFWhZoD+8W7v6dEMHxjrCkIWnGfBIv/Hc/078r6FU5DbIL4A2OkB/dRLqcBXrVkhObv+zOEKRsiIxT5bGWrXmB6vAPJqom4EP4M+adAcGtkVZPT2wxICjzhzXXwaODk+e0ntjF/Z2BdvKwVERzMboUE9ADnY355mM1cT+muFbVw8IiTTkx1oQ7oc7SxET9Cuj0N5rMW8o8jq+T2eXwlkmKYgCwSIsHR36njzJklZabxwNpaMiPuHd0/mEpeovkfO58nT+OmTjMzocwFJ9pH+vCMmSjBR4LsjjDFe+YIY78T53xYq3BZa5Aslxm1FR0iKqyu5ZAvbUw1mIKGJ+pcic6cCkpBsTXz2ktx99rsTNwNB1RVHOcjF9xyr3UUOLsj8svvNcHs4BXpR3MtzO+G+lpcj2iq3F+hB1xIdLmPJWYqa1oJYtUZc/RazQEFNh1nDlewRWxXm0zHxQKLAD36u/d5nm0WJImHAhanWtbNCyhGsY1AtPeIWNwn8EyXaY3If/9O05fT7GXm70IkOK+9WgZdeiKAvbhoxqFc/0RbtwA8WYVkMOkkpdrtkY7P8qY+mmCIv8fk931EEwsd+fs0B0M8fQILgcCp2OhhohIy3Z1nZ8ASYAfUdPwZ4nlA
+ 07sAC6lg
+ jnFWRO3CXC0K6mUg3KEvO4pcDkz1D9oJ2EtsflVDPj2ADq7N7C6blsEWZkZ6HTezPRjzDtm7hp7FMDPBEUUkqeXifO7Dc2RFt/wRWFyAmQtr5bNZWi8bW0yw0Vd2vl1tacx01my4nI6hY/Qg5pV+IUsK2/clU/Tp3YSRn7DLBeNpfohC7IjXGLWP+Ht6HFtZJIW/AQ9GasyeFdlZctcqFa0BFj68+7krS1v8DGxRinzQ7U6dEyvzupIK5Mpiqpn/FzzUbM/KhkOW3jeTBFXtCfy/VgAaeFuaty1w67VUA2A6yHwRMz6qmdIIwWosyZrorAcoKw/vrW2GPMzogs5SJ38iyAc042YZC/sKf2l5OkxM9x43It6+ACKFi3MFxGNq5nFnmbVUOZxZZfUUfKdyTFJCLmI/dl5DBC3+IIkVLkyMYzx9ot05VexWMwSTB3Gtdj3s2u8BmDV5XSrtpu9WgWjaXOhWhRTYo7MPlTX0AsRuDgSf49183H5FL4CyOcLb/z+dwZmwXpYxBV8o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,88 +101,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 26, 2026 at 05:43:14PM +0800, Ridong Chen wrote:
-> 
-> 
-> On 11/24/2026 2:52 AM, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> > 
-> > To enable moving file pages in folio_mark_accessed directly and lazily
-> > for MGLRU, allow updating the LRU statistic atomically without holding a
-> > lock. It may cause temporary counter underflow, which should be fine as
-> > the counter is eventually consistent and only serves as an estimate.
-> > 
-> > Reviewed-by: Barry Song <baohua@kernel.org>
-> > Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> > Tested-by: Andrew Morton <akpm@linux-foundation.org>
-> > Acked-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
-> > Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >   include/linux/mm_inline.h | 5 ++---
-> >   1 file changed, 2 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> > index 2395ca8ee305..2edb9beef6d3 100644
-> > --- a/include/linux/mm_inline.h
-> > +++ b/include/linux/mm_inline.h
-> > @@ -47,12 +47,11 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
-> >   {
-> >   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-> > -	lockdep_assert_held(&lruvec->lru_lock);
-> >   	WARN_ON_ONCE(nr_pages != (int)nr_pages);
-> >   	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
-> > -	__mod_zone_page_state(&pgdat->node_zones[zid],
-> > -				NR_ZONE_LRU_BASE + lru, nr_pages);
-> > +	mod_zone_page_state(&pgdat->node_zones[zid],
-> > +			    NR_ZONE_LRU_BASE + lru, nr_pages);
-> >   }
-> >   static __always_inline void update_lru_size(struct lruvec *lruvec,
-> > 
-> 
-> Hi Kairui,
-> 
-> Just a heads-up: this may conflict with Joanne's "mm: move LRU size stat
-> updates out of lru_lock in folio batches" [1], which is in linux-next now.
-> 
-> That patch makes __update_lru_size() add to a batch attached to the
-> lruvec by the lru_lock holder, and relies on lockdep_assert_held() there.
-> Once this patch lets folio_inc_lru_refs()/folio_reset_lru_refs() call it
-> without the lock, they could write into another CPU's on-stack batch.
-> So the lockless paths probably need to bypass the batch.
-> 
-> [1] https://lore.kernel.org/20261029204157.117879-1-joannelkoong@gmail.com
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Yes I'm aware of that, the fix is easy too, something like:
+On Mon, 23 Nov 2026 13:05:06 +0000, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> Hi,
+> 
+> This series keeps a retrieved memfd frozen until finish. The main
+> motivation is to let dependents like iommufd have a chance to acquire a
+> reference. It also fits conceptually: finish is the point when the file
+> should be back to "normal".
+> 
+> [...]
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 4ca8011bd288..fb5e3990402c 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -64,6 +64,30 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
- 				NR_ZONE_LRU_BASE + lru, nr_pages);
- }
- 
-+static __always_inline void __update_lru_size_lockless(struct lruvec *lruvec,
-+				enum lru_list lru, enum zone_type zid,
-+				long nr_pages)
-+{
-+	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+
-+	VM_WARN_ON_ONCE(nr_pages != (int)nr_pages);
-+	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
-+	mod_zone_page_state(&pgdat->node_zones[zid],
-+				NR_ZONE_LRU_BASE + lru, nr_pages);
-+}
-+
- static __always_inline void update_lru_size(struct lruvec *lruvec,
- 				enum lru_list lru, enum zone_type zid,
- 				long nr_pages)
+Applied to next branch of liveupdate/linux.git tree, thanks!
 
----
+[1/2] liveupdate: luo_file: allow keeping private_data from retrieve until finish
+      commit: 407c72e5a9c329e169c5132557c905913116f04d
+[2/2] mm/memfd_luo: keep memfd frozen until finish
+      commit: a89b83c7a9571dacb10e757d9a7400a886b11bc8
 
-And I think that batch design could be somehow improved too,
-holding a stack variable in a global struct looks a bit odd, could
-be simplified if we audit and update all users for update_lru_size
-later.
+tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
+branch: next
+
+--
+Sincerely yours,
+Mike.
+
 
