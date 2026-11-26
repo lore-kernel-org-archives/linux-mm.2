@@ -1,85 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7571606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 05:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA94D606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 05:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YoGC8RJg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jX5gf0s3
 Received: by kanga.kvack.org (Postfix)
-	id D2B4D6B05B0; Thu, 26 Nov 2026 00:55:06 -0500 (EST)
+	id BAF3D6B05B4; Thu, 26 Nov 2026 00:59:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDC196B05B3; Thu, 26 Nov 2026 00:55:06 -0500 (EST)
+	id B604A6B05B5; Thu, 26 Nov 2026 00:59:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCAC16B05B4; Thu, 26 Nov 2026 00:55:06 -0500 (EST)
+	id A51A96B05B6; Thu, 26 Nov 2026 00:59:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 53E876B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:55:06 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 71CDE6B05B4
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:59:36 -0500 (EST)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DAAE21A032A
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:55:05 +0000 (UTC)
-X-FDA: 85476206970.10.5B13765
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E3B64A8C26
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:59:35 +0000 (UTC)
+X-FDA: 85476218310.10.9824491
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0E495140004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:55:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YoGC8RJg;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 17AA240006
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:59:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jX5gf0s3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795672504;
-	b=TEV8QF4MxM3rE39bc1eTmFUKYEhewKPf2G8TUHxGnRUpUUedDezCWBUF7URcR4X8TU/9OO
-	DkzmohUEBRyEEPhwcBeR7QjrPZcGYiWzphEc9UVQ9fKFYa7aEGFYfrblBoU0iaOsmNopMn
-	M9NBpaK1LQX/jxHkssmrsAfz4JWB/ZU=
+	t=1795672774;
+	b=JDiIA+gGKvSq/Ndsbt5uM4FBR1TW68xENWAs5rwDQ5SxCN9uLH/Pune+Fcrrop0OXdiB9t
+	ZSsRlAENtfDrCXbRd/iqxHqvkOGc0md7g6r6ShQ08Z10gMiU1yLyarrdE6Xy4hMXzTjjIP
+	f4NB2QFU9QFLWKhy4uyDSuKOWikuWZk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795672504;
+	s=arc-20220608; t=1795672774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SsXnkh9rZiup8TkTxbsw+huciahwayKl9nCe3uqM0fY=;
-	b=w4eAyluwTet+CNsQzdMDP+/5FcANyXgertES5B2BOcWXNf8r3kouJZR3uB7+9uj0rmKT1l
-	i6d5bYhHQDSvP8yqMKRe+FeRIDJzwQJRhoO0KKWmSSGhUwoazJZaamFbogEVn9x9Bwvf09
-	XbuFvarP+Q9vxv1ogLumhsbk4IfSpdU=
+	bh=VsisjEdAcEQoikyIb1phqdw1n0JZDLyJ/MLeqYyqG0E=;
+	b=QK77aOFbSWwnr7BuKGHXJqL83QdLQqko8A05AF4jKR5JgrUe5k0tfAdCA9FvsNoPw6axWi
+	/Q6WB8OBUqgGWO0JuTePlFCHVsE7dn1eMS17XH8k2J//A+kAtvczwN2YYPgNKdVVZAY9nH
+	48GaR6xRlpdnYYmXeMkMs0FYxp/WNyI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YoGC8RJg;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jX5gf0s3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7917661B37
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:55:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9581F000C0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:55:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 78EEC60F08
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A4B1F000E6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795672503;
-	bh=SsXnkh9rZiup8TkTxbsw+huciahwayKl9nCe3uqM0fY=;
+	s=k20260515; t=1795672772;
+	bh=VsisjEdAcEQoikyIb1phqdw1n0JZDLyJ/MLeqYyqG0E=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YoGC8RJgRQg97KUL43XIUZd7vkdWSIx8mHm2/nVy+5NKP2V85aKWJo2lY7UHp0NW2
-	 k+4bk/jdfGn7IpwdOSlaDvjBwWah95cF3LGdS9Rjdj0x4dwm+6kzklyYyC3aYxjZL9
-	 0qcNHO1ccrTsCz1iT9EZFJJPjv3P92efEp8Xc5KdG4KMZogwmBCz+Bye4cVVzuxzaw
-	 Ju13QKZACtntb78tA84ElhxPF98vFYQEJKELuxDCes4jvfwcJ8Eva5N/gUFc+cmD54
-	 f592twGkA6fFWJkF+Bt286N4k8wC9n+viigOHodU4batTbhh7MjG+soKmHq7V4fUH7
-	 XrKemJO72Wpgw==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c51bf011392so108037566b.3
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:55:02 -0800 (PST)
-X-Gm-Message-State: APuU4Z9TJnn82rDDyRqRKeSbfSDO94BPjjjQ0olBNfGIHwV7LxoVnTp3
-	hiAx/oNXIGlaVrkLUeVX6Vn4J7NDNVch5lmR93fu0OXMnIhK2LkwH2//ZHdj/9IzsEdkaF7mVnx
-	HgyOy47sCRRel2f4BjFYgiugmG/IbQVglp8ABiu3VoA==
-X-Received: by 2002:a17:906:4fc8:b0:c51:ab6:1c73 with SMTP id
- a640c23a62f3a-c513aaff9c8mr1746636066b.23.1795672501752; Wed, 25 Nov 2026
- 21:55:01 -0800 (PST)
+	b=jX5gf0s3CFTwpoga7V0Jihxldl3viYJ63kjPyV3ognxDwWErcdcRKbm3bvkVNtBU2
+	 /gBef46Y9q6v5yjRZPQ5ERn7s96pnEvbPHj/hsqaTrZDKdlNtjs/gOGFRJorIPII/H
+	 bDslLOelA2fmLqD+NzeCFSf8kKgIx6SCvT2EoImDnO8WdBVabWYTR6y2F6VyiiEzEG
+	 wealsmoaZV/QngF7f+H4i4hMppmO1Rh2P8k0w1RBuuNxkQUc3JY6P68T4ZFZeXYM5s
+	 xmYP6BvFaraGVv3bDpSb8IAuF9frERxVKFq2lXAXG8hrQVNDyqe3GCwOhmIOvfFLV4
+	 6eJDSJLvk/EgA==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c51373ae637so191254666b.3
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:59:32 -0800 (PST)
+X-Gm-Message-State: APuU4Z9NxOLYHvkfy5Zz8X5S3uoa/Wq2NV4VyS1n6P6KRY2kyKTS3tUF
+	qU3wEeQTNbQuzTW4+cj2NIH2ncP/ho2X3m+zCkbIRd3cRJveg7YHgZ1QiaQUdN4RbzK/mZjJ3NV
+	qmWv9SS6ZcDXNclqMABB2gKvcVdy57ntsNdKUAgBfQQ==
+X-Received: by 2002:a17:906:da0e:b0:c46:a72:e0c3 with SMTP id
+ a640c23a62f3a-c513a84dd04mr1356707266b.16.1795672771599; Wed, 25 Nov 2026
+ 21:59:31 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <cover.1795439990.git.lianux.mm@gmail.com> <9f3715ab29bc9ee4aaa1bb92bff47c7584b73ee7.1795439990.git.lianux.mm@gmail.com>
-In-Reply-To: <9f3715ab29bc9ee4aaa1bb92bff47c7584b73ee7.1795439990.git.lianux.mm@gmail.com>
+References: <cover.1795439990.git.lianux.mm@gmail.com> <3e8d55101602d5ec982ae636eaf5eb4dcaad3ba8.1795439990.git.lianux.mm@gmail.com>
+In-Reply-To: <3e8d55101602d5ec982ae636eaf5eb4dcaad3ba8.1795439990.git.lianux.mm@gmail.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Wed, 25 Nov 2026 21:54:50 -0800
-X-Gmail-Original-Message-ID: <CACePvbXWL-CHKiG6hw6vFKbERDXLU_v3mfi7V=6hbaW1y8hs8g@mail.gmail.com>
-X-Gm-Features: Aa3M54oBQMzNvzYM2e4PD29_5XhYK-wobZpG4mQp3FDlOc_DSnwaHTsE7U41QGs
-Message-ID: <CACePvbXWL-CHKiG6hw6vFKbERDXLU_v3mfi7V=6hbaW1y8hs8g@mail.gmail.com>
-Subject: Re: [PATCH v5 01/19] mm/swap: remove unused parameter for reading
- swap header
+Date: Wed, 25 Nov 2026 21:59:19 -0800
+X-Gmail-Original-Message-ID: <CACePvbWzE6AvbLzNFe=J5Vid8iy6FFQh0RBgr+V_jJJ4p=OEVw@mail.gmail.com>
+X-Gm-Features: Aa3M54oIbvTBzc16n1b5zBCTLN35erJwZkNIaRd8dYijTduchcrgfU7gWLxR6Vs
+Message-ID: <CACePvbWzE6AvbLzNFe=J5Vid8iy6FFQh0RBgr+V_jJJ4p=OEVw@mail.gmail.com>
+Subject: Re: [PATCH v5 02/19] mm/swap: clean up hibernation error handling
 To: Lian Wang <lianux.mm@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
@@ -90,18 +89,18 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Thomas Gleixner <tglx@kernel.org>, linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ctd3q9j56d11xmhtze8bobkqwbqtppxq
-X-Rspamd-Queue-Id: 0E495140004
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 17AA240006
+X-Stat-Signature: sjodpefcb5nim83wm98hwe7szt78777m
 X-Rspam-User:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795672503-273991
-X-HE-Meta: U2FsdGVkX1/aFDwLPY6pMaC7Tf2nhgTPMz8eN+LU5uazGoR6HhniDnlXKhwPEka/iBJXu6UpPEFIxFlxKbKEnCtf0zm8US2EhA6hEinHKSbKIokH4M2jaish+e6P+a8e/qYEUrqvFqL6I0qouTix6SQ63HkSCyqOs0sndqwmR+51C5L89vEQL5R9MhVrdODgBJoFtEhW54QAwGJTNeED6x2xWNJ0Zk+6tbsZE9OIvxRsB2fNuKX9d/y0se7eLrEBvD180b4bDIu0AdcViRg0i/EDUW9CKXcEzoHsxe0GKZNSLVwpPCz3FNMzdxX7nH9mhBJZLQPE4PZLaPv3zfQjLP09OCfasr4x7/w+4VyFyLDUeSHHU+TzTa4FE7MNFQgc5AuQNldDkIO9AmiQBfEyiKpTHTZdGUu0RL3/S/BVq625zzX5tQoWSwFn/MaTJ7//q1FXJVuV9I3pBxCAbTr5TkewjWxWm2455QAibMVyKYzo4ky2GlWxum3yGVVV8Lk9MsLpkrCiBWSUPvM/Ubwxzq2NvLrSutQ2LCi8oXLKBkqf9I+ma180kABhztH8CrzOpuexP2twyXvadsDy3g5gGMcFMq2V3Ddn92MdtKPLx8EFl0r7anovN61Jr+gzp7LkREmUDUGzClh7xghQic09sz+TtsjrcJsnh+P8+BieAWcCEdkc6uX7RobMqXD2E/9rWU8Y5ja3m6QNUuIHRTmyDzORLpL8BVp5WFM9BAsJegghBqgQiRJDoKsrEuG8jglGqehKjwnp/jdY+uShuvfXoPdvvC3LKN0u7su8aDW6woHxXhMVbwv10UVylid3/5/EGJA+R7klt8LQWYVztRfeUDIJoFPftFI1bEvs8tU0rGX8iVpNGoCFkl7aPGR0HMvCs6vqJ7bZrteOzYlBWt0O58V+YFf6b2wNbT7biLzYFwkFIj2p1WC4ciz4v7THhZFRXFIte94dKIHsdhGuUN5
- KjBoUXa4
- YFDfV0P6W1X6JVFOgHy6WmJ4JGMYlWlNlrx7O+Jstyg62Rbw5wnRsYYlR5/dxmtrL/v1WXI4ZlWAgYX5F3R9Y1ePsWTqmiF3MGllg7g4cBT42MIXP4hEqP/vODrjsK9M/4lYKNutg40woEb4mv22iwh7lf/d2FzSNe6PQSnzjQstNedhcAvEDTs8hedoZaCMceghNtuDxN5fLJHr/2x3v2v6PzDc2ZRlqNxo114uC3jwIDkdUyDVcOMxB0NSKIYe9V0OC29q1xXFLjB9xI9Pp21ezkCu7wDFvLy+ZgR42cJ5NGRncNPdXTaGsFYI+LdUtixHAAxCCkMaGVtm7XIUHVlA3BYdGv/78+KLcXkynVJ21Gd07AnFo5VExgntVs4qlfInviqkGiZSDDq34ZisNjL3TgTG526HMlGMQzMkLk59ZtZGoxxgKTBi8MSQKUFqpeb8OlE8H9eCnJ9S0oFtrEI8BtumT70vnLBclDUy1vSxQO+iQRuGYHH2DyV0EOcYsCrZAWiwICd5FSuVW24suuJajWSKlo9MEAwhuU8RPI6RwxKgh5Jo8J+A1TR4m74CAnWnHbMZb8uNAjtfGOo9wE+3nphqVbKDvcibHTsP16JTDZO2AJbr82ShhS8/WxjRx8EuJnBewMkOGAfJdc0t4Oh3bcw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795672773-608743
+X-HE-Meta: U2FsdGVkX19r+KbqPEMAYQuSc0DXMJ5T4bKbQYPaUMNmi/UXkdaHNYgqF+OQdfUV+BhadBxw6FIWUl9TMmyTyWmsU1uDtT2p7ZVeyZRSUE91zLQPI0JshqhTH+QdJOSL1JPCMnrmbkrEVbAhwEjmTs3FllTHsPVhuumZefnV1sX95b7oe3eva/1c3cLGUk1ITtTVQDRULoB840Dq4jKNLuhLchtCpzFgWxB/6tm/kmlEMKrowTBPXTub/eLA+aRCvH07ULq/1PuCxYafMzAI44dhhdvOrO7vyoEO76H2qMar0QAmHhyEs1Tw0culMzd1xDl71+Ce9Er2tuXTwgU+ZyauFl54STixpIrXYqV0KWSGL+HMaKyEJRg7J+/7vhC6FsKR19tu5z0x4hF9Q49tz9gWCPE0vujA1o1gTR9X+wRkmJuc+jlqKhif6K2wO3LYdeeWFH4XHD6O9aGvePsTcOdwzue6bCrebWKs73HBrvfDLTfv0yhgingGiN0q9BtUO29PDWcqKQob41yh1NbeQ/URiG6yD7q7k8GkFcC6xk9U33zLWZuB4poBsykYqP3kfiiz64NpOW0MmZKAnVVHrr72iZxO5CoTZnMJJ3iQ94kdjd6KSb+VuOo3T+kLDzzf9YbxfjEWEVp/cymMANQy2k90/Wr8bBgPJs9HByzMUiTBb8iTz0ccfYshZN1cum5m4lah2XN0lAeBQ6wuMIY4o26R/65xPcGr5vZM1onBadKuNUP7yCyzJNkIOCzhORRjAQCkMyRzpcXGk5eJblCbsXtqK8gAVqPDhNHVHc46lVqfH+2RrKSF8KQujW3d0fx07iFtCf2emFNvoBZV55gNECEq4C8A+hLrBnfI6UBp2KJhzAag+BMLoz2Xw91jsjcIKb+WolL+pwoyENFuFA0MqVaxZRF3W+sKkDyqvy2ozgoTw25PqJhr+y3Bno9BQP9ve8Fa2oUvI2I57wB+ETv
+ LC2dvgJy
+ sMuFsymsNVqwmDZSbvpeHjlSYAovIlGYol9UvTY8YivDP6laxtxW358nzCUdNHPHwMHU4CoGGrXsbyPOBdgGUXto/1OgXMKdxVbT5iOo0wunEQZc6fBLoUL2sA7h6sEMZP6g1IMRPYUhRKwo1rBhTz8hj3jShiuna3owJjduFdTNW6VjoxIRZPH3eJThItae0ru2rMt7ZeN8anGuPdiX9RCDzGWdgVw5jbUUdZR4vSg0vhr/2oOBWbTOdpVYZ0UnckfPJEFBEXwj+PPfrfNMKjxEIifBiblQvk2g27ZYS8BPlVMPw6zOkjLkavVRWIZFjMzhD2nXRvxD7L2aUiHBX7Pk3uA6oMCeN9mrQgY9Bd3Yye1vRSF2sjg1og2fTm53MF4Irbsd3NE58FqlyPZ8m7KbzkdX+lLNHWdT2M4/6C/dY+aVPyb1R9JqxlA+43STdKL6ZjQGP5CPqLYKNC2UEVb0q/oCG5mlFEyiVFNplQSb6leDahLE7saXjAbZQfW7GF81zGMgP73yuv7gaM4vZqPU3Dz5Px5p33mJSzClKPJgTy+nWBWKvxSSXTJsAtSBNYmL0kV71rJtNTG8hFfg+y+OP7NsnvRkh2g9JEpknmgTCX+jCFGdyVKvztzVMm67x0X+wamiPYgIorjtdm5YmRdnhSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,10 +114,11 @@ te:
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> The swap_info_struct argument to read_swap_header() is unused. Remove it
-> and update the swapon() call site.
->
-> No functional change.
+> Restructure the error paths in pin_hibernation_swap_type() using a
+> goto out pattern to avoid repeated spin_unlock() calls and simplify
+> the return flow.  Also simplify unpin_hibernation_swap_type() by
+> making the si NULL check inline, and clean up find_first_swap() to
+> avoid an early return inside the loop.
 >
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
@@ -126,36 +126,108 @@ te:
 
 Acked-by: Chris Li <chrisl@kernel.org>
 
-Chris
-
 > ---
->  mm/swapfile.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+>  mm/swapfile.c | 39 +++++++++++++++++----------------------
+>  1 file changed, 17 insertions(+), 22 deletions(-)
 >
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index d59fa8220862..c06f9f532e74 100644
+> index c06f9f532e74..0ae901296731 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
-> @@ -3630,9 +3630,8 @@ __weak unsigned long arch_max_swapfile_size(void)
->         return generic_max_swapfile_size();
+> @@ -2331,21 +2331,18 @@ static int __find_hibernation_swap_type(dev_t dev=
+ice, sector_t offset)
+>   */
+>  int pin_hibernation_swap_type(dev_t device, sector_t offset)
+>  {
+> -       int type;
+> +       int ret;
+
+Nitpick: Here "ret" only carries error code. Maybe we can call it "err".
+
+>         struct swap_info_struct *si;
+>
+>         spin_lock(&swap_lock);
+> +       ret =3D __find_hibernation_swap_type(device, offset);
+> +       if (ret < 0)
+> +               goto out;
+>
+> -       type =3D __find_hibernation_swap_type(device, offset);
+> -       if (type < 0) {
+> -               spin_unlock(&swap_lock);
+> -               return type;
+> -       }
+> -
+> -       si =3D swap_type_to_info(type);
+> +       si =3D swap_type_to_info(ret);
+>         if (WARN_ON_ONCE(!si)) {
+> -               spin_unlock(&swap_lock);
+> -               return -ENODEV;
+> +               ret =3D -ENODEV;
+> +               goto out;
+>         }
+>
+>         /*
+> @@ -2354,14 +2351,15 @@ int pin_hibernation_swap_type(dev_t device, secto=
+r_t offset)
+>          * the same session.
+>          */
+>         if (WARN_ON_ONCE(si->flags & SWP_HIBERNATION)) {
+> -               spin_unlock(&swap_lock);
+> -               return -EBUSY;
+> +               ret =3D -EBUSY;
+> +               goto out;
+>         }
+>
+>         si->flags |=3D SWP_HIBERNATION;
+>
+> +out:
+Nitpick: Maybe "unlock"?
+
+Chris
+
+>         spin_unlock(&swap_lock);
+> -       return type;
+> +       return ret;
 >  }
 >
-> -static unsigned long read_swap_header(struct swap_info_struct *si,
-> -                                       union swap_header *swap_header,
-> -                                       struct inode *inode)
-> +static unsigned long read_swap_header(union swap_header *swap_header,
-> +                                     struct inode *inode)
->  {
->         int i;
->         unsigned long maxpages;
-> @@ -3863,7 +3862,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specia=
-lfile, int, swap_flags)
->         }
->         swap_header =3D kmap_local_folio(folio, 0);
+>  /**
+> @@ -2441,11 +2439,8 @@ void unpin_hibernation_swap_type(int type)
 >
-> -       maxpages =3D read_swap_header(si, swap_header, inode);
-> +       maxpages =3D read_swap_header(swap_header, inode);
->         if (unlikely(!maxpages)) {
->                 error =3D -EINVAL;
->                 goto bad_swap_unlock_inode;
+>         spin_lock(&swap_lock);
+>         si =3D swap_type_to_info(type);
+> -       if (!si) {
+> -               spin_unlock(&swap_lock);
+> -               return;
+> -       }
+> -       si->flags &=3D ~SWP_HIBERNATION;
+> +       if (si)
+> +               si->flags &=3D ~SWP_HIBERNATION;
+>         spin_unlock(&swap_lock);
+>  }
+>
+> @@ -2480,7 +2475,7 @@ int find_hibernation_swap_type(dev_t device, sector=
+_t offset)
+>
+>  int find_first_swap(dev_t *device)
+>  {
+> -       int type;
+> +       int type, ret =3D -ENODEV;
+>
+>         spin_lock(&swap_lock);
+>         for (type =3D 0; type < nr_swapfiles; type++) {
+> @@ -2489,11 +2484,11 @@ int find_first_swap(dev_t *device)
+>                 if (!(sis->flags & SWP_WRITEOK))
+>                         continue;
+>                 *device =3D sis->bdev->bd_dev;
+> -               spin_unlock(&swap_lock);
+> -               return type;
+> +               ret =3D type;
+> +               break;
+>         }
+>         spin_unlock(&swap_lock);
+> -       return -ENODEV;
+> +       return ret;
+>  }
+>
+>  /*
 
