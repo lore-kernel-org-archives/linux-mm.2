@@ -1,113 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC27606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 15:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D9C606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 15:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=So+WdnWi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OvJHETHD
 Received: by kanga.kvack.org (Postfix)
-	id 2C8C26B05B2; Thu, 26 Nov 2026 10:52:23 -0500 (EST)
+	id 2831D6B05B0; Thu, 26 Nov 2026 10:56:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 279D56B05B3; Thu, 26 Nov 2026 10:52:23 -0500 (EST)
+	id 233FE6B05B1; Thu, 26 Nov 2026 10:56:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18F8D6B05B5; Thu, 26 Nov 2026 10:52:23 -0500 (EST)
+	id 14BF16B05B4; Thu, 26 Nov 2026 10:56:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A55F76B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:52:22 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C635EA051F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:52:21 +0000 (UTC)
-X-FDA: 85477712082.18.12114BC
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 348AB4001D
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:52:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E1D646B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:56:24 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0645C1C3FB5
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:56:24 +0000 (UTC)
+X-FDA: 85477722288.10.ACFBB49
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 71537100020
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:56:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
 	none
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E995E1BA8;
-	Thu, 26 Nov 2026 07:52:07 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D9373F632;
-	Thu, 26 Nov 2026 07:52:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795708330; bh=t/iAXo76mNWOYi6NXRXLm9HYRbfENwEmeSuVZl+vjQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=So+WdnWiITxUEA+zPA0qZrHfIgEWB8UDt3yn4IEO5THcFQuUupbSyZ38WSbYLlzZO
-	 Rdd4TpDOmHWWTHsRW+t1aSXOFu6+xeusbEXx8t6R4TR3fxZ+3I/eAfWH7BVYVPd6hg
-	 fcIkARwHaaJVtuaYyOlwbtgwfzyTh/vzHdKQd+qA=
-Date: Thu, 26 Nov 2026 15:52:00 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian K?nig <christian.koenig@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-Message-ID: <awhVoDXluqpncgcd@arm.com>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
- <awQd81MwZqi55gf8@arm.com>
- <yq5aa4mybbmv.fsf@kernel.org>
- <20261124134621.GI9566@ziepe.ca>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261124134621.GI9566@ziepe.ca>
-X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 348AB4001D
-X-Stat-Signature: peqm7h5r749azuwsrr31tjyuo613a48t
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 534374005C;
+	Thu, 26 Nov 2026 15:56:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0E51F000CA;
+	Thu, 26 Nov 2026 15:56:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795708573;
+	bh=WPgi0UO9OMJkDQmrQEq7cc93hq76+nhsfMPo0kS8irI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OvJHETHDnG4CEYU93Oq6oKqgT6G9EH9EyM2xHehfi35ooIURf/g55MbSrlMOg/b6A
+	 N4n3ii5oiK/4+i4cifgmHEOAGc1XvB/vv7DMWAUZ8v7Zi4o+lVYs/6UbiZ1eGJuju5
+	 1HFdX3yKZBJf455rsVr78x/hoEmmSr4xwBuxanfwdrZsmH8pVKZkVaSBfXV0A7OnGu
+	 VIIDCTBEDl3OMGWjAFuAVstLJ4U7EFBLpVOVXKIb7DNYUBx0S3j97lFEnXTHMLFqmT
+	 w1gZ+rE5PJSVzAX2EhcbF2ZipPfh9RpH2HRCv9t/IA60Zo5dI1kJzgwrgAjW+Ck+DR
+	 WUZzt3LiazsXg==
+Message-ID: <sashiko-outbox-235862@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] percpu_ref: make percpu_ref_switch_lock per percpu_ref
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Egor Shalashnov" <shalasheg@gmail.com>, linux-mm@kvack.org
+Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org, akpm@linux-foundation.org, zhengqi.arch@bytedance.com
+In-Reply-To: <6c943754-05b5-4017-9145-0d145766909a@gmail.com>
+References: <01612865-faa0-4fe5-8184-a177f104843f@gmail.com>
+ <6c943754-05b5-4017-9145-0d145766909a@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 26 Nov 2026 15:56:12 +0000
+X-Stat-Signature: egrupogs3gwu5xp473d5tt6jh3co3rgy
+X-Rspamd-Queue-Id: 71537100020
+X-Rspamd-Server: rspam06
+X-Rspam-User: nil
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795708332-981086
-X-HE-Meta: U2FsdGVkX1/wYDex54wNPTn9mDk9PMXgRBXQPdn7RShz0a8fAu+tIOxfDd2RvLC9/50JBcl1RabGSJGQs2XUTyYSYAAmcXFa3xvC5kpixkozBemahDCsr6CCHjmgqFjWnR1eGPWkb1oRdV504MaC9t1zqtL2RKq07L7HIAM8ru+n1WlbwZG0kPkmIR/nMEMBjLrhJ0ueFND+lw4MsseROEJNVSo5AvS/bApO1lRurEb93rJ/mtlOfAway/AK2wBQiVwSOXtiKc9Zl0vavYpzc8cZeTSCkHVnpdz0ZSnbUgna85R7xyn9UX+xXLq0ubmcnp0rUfFIQmccUchEoiu3at1WIF2pQtTPz0XyyDDroOLe3TV+lSYaFS5ICRaLt4BZii0XAAwB5JBTSPKiCqQ1eLmmtUhEQlEBIHo4w3AMTlvTnkDJ1LTyOiRYVKqfAH0hOpBvUTTobmIaHXicEZ8YJc7tpO+I8YDRNefybvxt1+8=
+X-HE-Tag: 1795708574-146811
+X-HE-Meta: U2FsdGVkX1++WD0Yibt+MwJQtqrmSFSHTr4lwSrcQYC86R4yU0oHs5mXjiDNpvlWl4b1QFsCzGUl4KzPH1vvLMaUDbsw/TqpXLslvGwXgY8edW9oHtYgaq0zpY437jLbiyt5LlSbaOvIAFkh+MqQzOSQlGGSP5iU1bcYx8DEXtB9tGtLnDT+UIKMmrThO1GgrvKDEp4ZLy0fgI1wTrFKkBrXXou5KM2bFXitQFP3qAWVUDdaFuIboL3ILbQZGHmd2fcdRbDRnmSQKSj17MwcV6if8Tqizz1Cy6GKkwOiU043W21il6XqJrm29VpPKFvXijV6fMc4PKuOExk03Un1y5nPFFRuJ+cNqT2v2Rq26OfdH58Fij9GXq8r/7FPa+R0KeaCBoHMaKEDBYXuRYtL7jibWccWE60pRCCLqrD1huPmOw4qmdHVJ2ykmMglCOVwTmtdnZabm0+T17Q4bm15CNYdAVMvEuRs69ebtzZ+5Qo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,29 +67,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue, Nov 24, 2026 at 09:46:21AM -0400, Jason Gunthorpe wrote:
-> On Tue, Nov 24, 2026 at 07:00:00PM +0530, Aneesh Kumar K.V wrote:
-> 
-> > Taking Jason's feedback into account, we could have the allocator
-> > request compound pages and recover the actual allocation order with
-> > compound_order(). That would avoid passing an order to free:
-> > 
-> > void *alloc_cc_shared_node(int nid, gfp_t gfp, unsigned int order);
-> > void *alloc_cc_shared(gfp_t gfp, unsigned int order);
-> > void free_cc_shared(void *addr);
-> 
-> It probably shouldn't be order here, that is hard to use. Just size_t
-> len
-> 
-> And round up internally
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] percpu_ref: global percpu_ref_switch_waitq still serializes
+  mode switches
+- [Medium] percpu_ref: switch lock in struct percpu_ref bloats hot
+  embedding cachelines
+--
 
-Minor point in favour of keeping the '_pages' naming and order is that
-it makes it more obvious what alignment is returned for code that needs
-it like the ITS. Otherwise we can just document it, I don't have a
-strong opinion either way (only that it's simpler than what was proposed
-earlier).
+commit d37012ad38aa40d26d6d73947c79cfb449eb07ba
+Author: Qi Zheng <qi.zheng@linux.dev>
 
--- 
-Catalin
+percpu_ref: make percpu_ref_switch_lock per percpu_ref
+
+This commit replaces the global percpu_ref_switch_lock with a per-instance
+spinlock inside struct percpu_ref to avoid lock contention across
+concurrent mode switches.
+
+> diff --git a/include/linux/percpu-refcount.h b/include/linux/percpu-refco=
+unt.h
+> index 1e3212e2c8271..4582e798de8a6 100644
+> --- a/include/linux/percpu-refcount.h
+> +++ b/include/linux/percpu-refcount.h
+[ ... ]
+> @@ -109,6 +110,8 @@ struct percpu_ref {
+>  	 */
+>  	unsigned long		percpu_count_ptr;
+> =20
+> +	spinlock_t percpu_ref_switch_lock;
+> +
+>  	/*
+>  	 * 'percpu_ref' is often embedded into user structure, and only
+>  	 * 'percpu_count_ptr' is required in fast path, move other fields
+
+[Severity: Medium]
+Should percpu_ref_switch_lock be placed in struct percpu_ref_data instead
+of struct percpu_ref?
+
+As noted in the comment right below, commit 2b0d3d3e4fcf ("percpu_ref:
+reduce memory footprint of percpu_ref in fast path") moved slow-path fields
+into struct percpu_ref_data to keep struct percpu_ref at 16 bytes for
+structures that embed it in hot cachelines.
+
+Adding percpu_ref_switch_lock here grows struct percpu_ref to 24 bytes on
+64-bit SMP (and up to 88 bytes with lock debugging or PREEMPT_RT).  In
+struct io_ring_ctx, for example, the first ____cacheline_aligned_in_smp
+read-mostly block is packed to 64 bytes, so expanding refs pushes
+notify_method and sq_thread_idle into a second cacheline.
+
+> diff --git a/lib/percpu-refcount.c b/lib/percpu-refcount.c
+> index f8d90689af9f5..5d466026e5251 100644
+> --- a/lib/percpu-refcount.c
+> +++ b/lib/percpu-refcount.c
+> @@ -36,7 +36,6 @@
+> =20
+>  #define PERCPU_COUNT_BIAS	(1LU << (BITS_PER_LONG - 1))
+> =20
+> -static DEFINE_SPINLOCK(percpu_ref_switch_lock);
+>  static DECLARE_WAIT_QUEUE_HEAD(percpu_ref_switch_waitq);
+[ ... ]
+> @@ -267,7 +267,7 @@ static void __percpu_ref_switch_mode(struct percpu_re=
+f *ref,
+>  {
+>  	struct percpu_ref_data *data =3D ref->data;
+> =20
+> -	lockdep_assert_held(&percpu_ref_switch_lock);
+> +	lockdep_assert_held(&ref->percpu_ref_switch_lock);
+> =20
+>  	/*
+>  	 * If the previous ATOMIC switching hasn't finished yet, wait for
+> @@ -275,7 +275,7 @@ static void __percpu_ref_switch_mode(struct percpu_re=
+f *ref,
+>  	 * isn't in progress, this function can be called from any context.
+>  	 */
+>  	wait_event_lock_irq(percpu_ref_switch_waitq, !data->confirm_switch,
+> -			    percpu_ref_switch_lock);
+> +			    ref->percpu_ref_switch_lock);
+
+[Severity: Medium]
+Does leaving percpu_ref_switch_waitq global keep the mode-switch path
+serialized on a shared spinlock?
+
+Every percpu-to-atomic transition completes in
+percpu_ref_call_confirm_rcu(), which unconditionally calls
+wake_up_all(&percpu_ref_switch_waitq).  That acquires the global
+percpu_ref_switch_waitq.lock even when no task is waiting, and wakes
+waiters across all unrelated percpu_ref instances when tasks do wait.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/6c943754-05b5-4017-=
+9145-0d145766909a@gmail.com?part=3D1
 
