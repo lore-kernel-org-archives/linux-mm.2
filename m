@@ -1,92 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE410606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 05:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9825A606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 05:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vX743oeP
+	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=IG6kP8Z7
 Received: by kanga.kvack.org (Postfix)
-	id D2D346B05B2; Thu, 26 Nov 2026 00:36:30 -0500 (EST)
+	id 8F0D36B05B4; Thu, 26 Nov 2026 00:41:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDDE56B05B3; Thu, 26 Nov 2026 00:36:30 -0500 (EST)
+	id 8CDAD6B05B5; Thu, 26 Nov 2026 00:41:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCDD86B05B4; Thu, 26 Nov 2026 00:36:30 -0500 (EST)
+	id 8055F6B05B6; Thu, 26 Nov 2026 00:41:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 91EF46B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:36:30 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0B6D6402CE
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:36:30 +0000 (UTC)
-X-FDA: 85476160140.22.16812B2
-Received: from mta1.migadu.com (out-54.mta1.migadu.com [95.215.58.54])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B483D40007
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:36:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vX743oeP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of enze.li@linux.dev designates 95.215.58.54 as permitted sender) smtp.mailfrom=enze.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FD796B05B4
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:41:34 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D8CF21602AF
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:41:33 +0000 (UTC)
+X-FDA: 85476172866.11.F7B131E
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4053BA000A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:41:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=IG6kP8Z7;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au;
+	spf=pass (imf25.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795671388;
-	b=GKSr3qrAyzwaYgvB4MybUMyCPa6YcngcfpVi/IApU7NmBpsLXeiKoAvrFj+1a4j+Ij7/lM
-	hG9B5oyBs4WRoMWlL3dI1PLUQ14lfJD9mSa78eejxe+dMnm43oclqxnxKX+SQhpe7UL+gp
-	jf6N4fMxW7KytWRgOGgz7gx1V8PdxFw=
+	t=1795671692;
+	b=QcmyUPr4qt1hltqbZXvs69v4JZjVf2eJox2THSrna+xTzyy8XMpL7m5Hz85RIGNK4Z0dBu
+	isXCLnjoypfM40E28K6iSuF5vjYGxRaMiDFLOg+1/7vuLzn/Tb+Xif1lTKpVmhCGd1odR9
+	+8XFYDJSr6iv7y25nrUmbhuHJypUhw8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795671388;
+	s=arc-20220608; t=1795671692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AodBlwpDiWRSi288fIhZCa0nGcYDVws6bZrTK/h3RpA=;
-	b=6zkgiQHFgeAKnh4gYaxmNe1aPhi/MFSgt2YpR628USiNHr40nphKUsw1JYPWqcNiZcN/NG
-	6WzMaBR+8kTLTsSBF7iu5erSko1o/7uZuF5H39mfSMZhwVfYDQ1aIiMcmus493KFaJi0NP
-	RBM4bGz9PmN19BPYr/jET3XkdZtylK8=
+	bh=lB5Z2jAXM1MCahZXaWDYMLFa+FaZwYx21kct5EFKyxs=;
+	b=QVZije5hCB1qZgEkLKBqqpsYtaOqoYo8FLgZ6jM7TJ/nPIUBQkqiM3WxOlq7lj+qFCN6nu
+	6ycV1kLg4H1uCDNDAsn+7iSNJeXUFc5SmaK8AEmciKmngCb3AUtUDSSzPcNFtiHpYopdXH
+	QH32VLcYpKm7LxQKMfz2wg5r3SBHBxI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vX743oeP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of enze.li@linux.dev designates 95.215.58.54 as permitted sender) smtp.mailfrom=enze.li@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kp2zkzyDc865q46+d1AEFq6uaEh8U+dzJCBvqx8kpkY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795671385; v=1; x=1796276185;
- b=vX743oePNPEydQplnwINqOUy5lJqMh01VM2ZPDFF2SVsUMxnocCj7Cf9I1dW7qS5HdacfeaM
- Gw9JqE+mroOrbHa+lFQPeOukysVsirZVAoezam1R+ZJO/6aswokPexi7yPNqwbHTJWrQCZk1cVn
- K3r0O40RdJIXlc3zhsskHt/I=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 69ea2c5db0ff0af8;
-	Thu, 26 Nov 2026 05:36:25 +0000
-X-Mizu-Trace-ID: 69ea2c5db0ff0af8
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <18dd1ee6-21a6-40ab-968b-33042a2e11d8@linux.dev>
-Date: Thu, 26 Nov 2026 13:36:21 +0800
+	imf25.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=IG6kP8Z7;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au;
+	spf=pass (imf25.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=lB5Z2jAXM1MCahZXaWDYMLFa+FaZwYx21kct5EFKyxs=; 
+	b=IG6kP8Z78B1+GAs3HdVj0OF7xN4BFXwTmMwOoZcez01WeFEZrA/tC5S6hHti9gLbezGKIBVG3rh
+	cjAjMgwZ6UQi+6LcVu54fAAj5TOVTlN0TaeHvc3HaSFPFCSEHcU8DxsBne9pH6bVJBnVpLi5Q7EG7
+	XosjJVl6tpkFHAR3DWL6yMSzrWQYZlf6Wa9YWeeoJluJNuck52OmcXzm/gee0+69R8qo5C2n2YlRE
+	WyHtFm5yaTaEl+EMM1LI98g6wpdjLWBLcWQiUQkOOpIyVvh6qREeXna87cgGs+O3b4saRMJoso9cB
+	somkNjo75RQeIyP7bTDkZY85jL2HTOh07+7Q==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xWSEQ-000000029BE-1eI1;
+	Thu, 26 Nov 2026 13:41:19 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 26 Nov 2026 13:41:18 +0800
+Date: Thu, 26 Nov 2026 13:41:18 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: sashiko-reviews@lists.linux.dev, hannes@cmpxchg.org, yosry@kernel.org,
+	nphamcs@gmail.com, chengming.zhou@linux.dev,
+	akpm@linux-foundation.org, linux-mm@kvack.org, davem@davemloft.net,
+	linux-crypto@vger.kernel.org, rientjes@google.com,
+	willy@infradead.org, senozhatsky@chromium.org
+Subject: Re: [PATCH v3 3/8] crypto: acomp - Add trivial segmentation wrapper.
+Message-ID: <awfGfqMK8FfrMNvz@gondor.apana.org.au>
+References: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com>
+ <20261106072412.7909-4-kanchanapsridhar2026@gmail.com>
+ <sashiko-outbox-202709@kernel.org>
+ <CACpmpodxjJ3ZQt4xOsWfWQNjgMtPzKx0oGMy+mJTU1wxVWdMUw@mail.gmail.com>
+ <awQCFZSSng2LLGnX@gondor.apana.org.au>
+ <CACpmpocCqenTNv62dGoeSLP2zs-AXJYhXM-tj2cytm4zQTj1cA@mail.gmail.com>
+ <awafBxDtUoIQW9iR@gondor.apana.org.au>
+ <CACpmpocWW7pWGYiF==DupmZDB0-jETu32C3-9NYY8nssKcDm-g@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/27] mm/damon/core: introduce damon_submit_report()
-To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org,
- Aveline Noir <jm5905938@gmail.com>
-References: <20261124153636.91854-1-sj@kernel.org>
- <20261124153636.91854-4-sj@kernel.org>
-Content-Language: en-US
-From: Enze Li <enze.li@linux.dev>
-In-Reply-To: <20261124153636.91854-4-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B483D40007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACpmpocWW7pWGYiF==DupmZDB0-jETu32C3-9NYY8nssKcDm-g@mail.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4053BA000A
 X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Stat-Signature: 31nchecyjptg91f8r389wpu13qric6nq
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: qr9xw8axyicbw3ti1nm9tqa6zwh99f9c
-X-HE-Tag: 1795671387-745965
-X-HE-Meta: U2FsdGVkX18LCrT5Z8GT1R5jmLq3PTT5w9MEAdqQtsSyqt1ULMk1L/3yNkMA5QM19tS9VI4e+JyJSKIOQAgaODzIkIbEEpdmukMwYiwqqy7nr07dcAfsH+i9zLGhcIO++LlYO2Dv8gVlsj8b+9Swg4P1XhiGP3kLTe3aVJX2Y5CmZ59ILkI6jfPVWTQosxOAmnM9hOHkt0NcQwJop27ps0MViv5R7fG9zILbvfMVQchMPiyObqtly1qJDbEmoke5pUBrKzG4vCpAP7ZrdA91/Sq6zH3utMiY4U3/A49UHn27lrRObOue09rYQq7olzE4jwP++qEf9bjliokrndxEabA280BOzwH4J8sVEV15wsnF5rY+hIml8V0VXAONwMoQ3gPtp/bFFCIbh3jBDyonWE8KZ/LGZLAWT3EfYrsX4Br7Urgbnxuw4V1hKHEIzSEtAYgVMI2HzJ5Vg/M3unpbL/kPMBJQ85vVVtigiD++mHFdJ7Na3LQfFpLCDkUHbotFdngTOhwgKfYhAKy6B+U+nfb/JCrqC6zkfrw/MM8T0M4Yjpk4eQGznO6yFpjBRedY5/WANT1aDvAy6I/OoEnGi/P0+ZcbBwFCsIJk1JLvGmXVW6cwP3mvguimZKDgFCM0AqixAYKVVgHYnZq6g8fcmTQBXWasswHvqzTBzwkzWHOKwb8AGEzHxZSocoT5JnsC5vGfUm7xGLVXH6JFkutaVHmuf/D0/deGShdWZq5CuRbYLbFkPs070KDG4u/e0L6T5Q+wxdEkC1sngsNWL1swKHgWT1Fu9O+PFV6RS8uSIDelgQXdGK7KjAkWbZK0LaDmLYv+pDXpB1Ij0zdfM9/SgV3Ly2Fq1nOIwdDJWK42GwGekIL9SUNAwBRqdCiTp+OlboBbz8zeKJZu+gSzS30tX21jDeWUUW2WEQVcjd0DQEsOv082kyvPlmrIKKz5zjPWV6sJOgzEU/H4bzzfzwn
- BgUx4vYt
- ZzIeIJtV5e1oAJtjCSvmKGzpcoXsTE16uruvCQqehwPZ7i0p54JN4WF7lJ4Kmt0k1zHsYoMtPTMW7uQyJh8afBLg9VXZ5vmFh5ONUlCLAk7JdWqa7NvoUhUF0qCoXJ44J6E8ZSXRaLn7zG4rnnFqcfc/9nWhHQwkSdDXNXBBN45Npfh7hCDTQzN4aigyskOodROwqEbON3xu2+NtgqjGnh3Cvx9V4V9ZPon7ah6dodvz5R5SXVYyhhfRD4HJc1K818pPu314JP+2Ywi/A7U8leF1dw0Cs1c7ScvByJS5eYRzUnQN98R8GIlCjRcvQx3AWFseiYgRGTsHfr83K96BHeX2YQPd0SwOTKJEWQrOCN/MCxpHPUENllqtnP4gJ2b0XaaVW60dGjtRJq5LLJAxfphLSRDtkk35gS8gPXeKcBWQtHzObfLFWbfSQFPZm9uFG1sjs7GDvlynDrzBzwb2JXWYtiMrgUQE34kYAm2Z1rNmMeH2DG77gUnxDWN5lcFV2yzUlhiw4IU+gJovMPc0vAYdoX/UPp5zPzvrL7hpliQTgW0xeMore5Fot/D4nxy+3gDwZ/UX5PHkD1Fw=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795671691-153602
+X-HE-Meta: U2FsdGVkX18LxeOg+h8ySRkWagTb8veNi3Z+yNNerAL6vig60xuFI8NiLmUKfzailVtClyjetxNBT/6Ip435nQJO3AEojOIsHSIxTHCmQWjYmWgMuCSkb69VyUf5iuIV38Co+GAvnBKTgm7thZgTiRe+iy3/rdnn3T7PrIOtO2yyejjq5wNxzcc+FGFHX/vLUglyaVmSBf2qnyA/pMLFfznvhqIK/Ci9hLXA25I0WRGQ706VCPL3R1X0sUo7bSlNFK6g359gtM7at+iNwqVhJjPasVigUEhGeu6EXM3/LjmjwcS7RyFXsnHYzZxSm1/F9OfFSYtiPU3v8ctEjHhOfIxyx/V9PVuOOVuYH+f44a4c01ixsFeiFLfFQ8UEdV1s1XRHpAjqWr8rHPUtfaZTgLs+o65X6v/gYXHtWonWx1ePiznU49ss8vGxkJgmc7KH6dp/+DoNjzcCNt4BDzQW+7cVdQGeSGZLh1fb0n7TbxTlqH/UBEz23aoIO5mJ0fFbuv/AK9zSxTuyb0mKD+IPord3jCDhIbcCEVzHr4D61pgX+fkACHPoh7wz4jNPJ4iXIeMMkdgz03CByEYnD8yXUmk0mNJ/mHp1qTJgpdBSuo96xRlto1IG2zbF3LOC6lKHdhXw8oK7A7VhJrh+0KuG7a4GiGuZKoQm0IvTGJauRAiQ2yCwgcLzWriZNgeCVpG39pDuEztuos+yPVKT0E3y1zwKbJrvAqfgYBqZeW2M/YhOMpWpb0jN51GJyXHpUDH29j1YkUB9m5dFQevECv/pYr+CHX5JW+nTiLHeMmRIWlRuX+ZBHTP7lx9fcfNPxHHSPHz7cqi8D2zrSxIEEEn0CO6sc3RScuNl0bjV+giosBVeIteHXfRQQ1+j3GFWHLHcy/qRZ4dx2IHGqcAVk4VgyJjviPGgjdgZ/Cwms3RbUhzTM8cq4Brxz/hS9r7L7UP0ybSYsvaoKlGx3DGBTVw
+ 65WdzXeT
+ nVSwXbgvBhCYNffA1+ZZLs61L51lGmY6Q2wZXA+syBsH6FLFhx+Kx7kKzSpKSr/jap0KV9emTSzPKlD/FAhPiIjojMkvfNwsZmbFyAO3AIvA5WBjJ5rJTPnPqITR40krXgaV1fNzfzHXq1PPUCkfR1Fe063E1Rj6fsoaVM9FpIeykDJXNEaWfEB4QowW6dYoOkgveYetbwvzKNQlKigEyJCRGYu9+xv7tVLpVVYXQAsuWczjUGL8dp/FdIwnF8f6SQ2zkt+JBW7IBTEU0Z07yAPrjMg015FC9GMbkU531PYkCKrlju9qWfJkQZOkoC8Dz+0wyQ5noWmN0J1s5dx+rYmQEmZxj4cRg/8JMDX9dyyxts98FkMuJNEsv4G6We+ckD8PtQz1sbIdN/f/CEK3dHbPPl74LEZe5ANgDZPDfRPB5nNV37Fi5vHzebw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,25 +102,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 23:36, SJ Park wrote:
-> Implement and expose a new DAMON API function for submitting a data
-> attribute report.  Any kernel component in any context including NMI
-> context can use it to report their finding of data attribute information
-> for a given memory.
-> 
-> The function copies the content of the report into the DAMON-internal
-> report queue.  The copy is done in a ring buffer-like manner, without
-> being blocked for consumption.  As a result, the queue keeps the latest
-> reports up to its capacity.
-> 
-> Use simple CAS-based try-locking.  If any parallel submission is
-> detected, simply forgive the submission.
-> 
-> Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-> Signed-off-by: SJ Park <sj@kernel.org>
+On Wed, Nov 25, 2026 at 11:08:20AM -0800, Kanchana P. Sridhar wrote:
+>
+> -       if (unlikely(req->unit_size && req->slen > req->unit_size))
+> +       if (unlikely(req->unit_size && acomp_request_dst_isvirt(req)))
+> +               return -EINVAL;
 
-Reviewed-by: Enze Li <lienze@kylinos.cn>
+This looks good.
+
+> +       if (unlikely(req->unit_size &&
+> +                       ((comp && req->slen > req->unit_size) ||
+> +                        (!comp && req->dlen > req->unit_size))))
+
+For decompression, shouldn't it just fail unconditionally since
+we do not support batching for it?
+
+Also how about moving these API guards into the top-level compression
+and decompression functions instead of in the shared path.
 
 Thanks,
-Enze
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
