@@ -1,187 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC44606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 10:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454BB606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 10:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=H3nOkLNd
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I9UcKRqs
 Received: by kanga.kvack.org (Postfix)
-	id EF6046B05B4; Thu, 26 Nov 2026 05:36:48 -0500 (EST)
+	id E825A6B05B6; Thu, 26 Nov 2026 05:37:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA6CC6B05B5; Thu, 26 Nov 2026 05:36:48 -0500 (EST)
+	id E59CE6B05B8; Thu, 26 Nov 2026 05:37:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6DBF6B05B6; Thu, 26 Nov 2026 05:36:48 -0500 (EST)
+	id D4FA56B05B6; Thu, 26 Nov 2026 05:37:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B0B056B05B4
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:36:48 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F04FA8809
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:36:48 +0000 (UTC)
-X-FDA: 85476916896.19.9DF703C
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013064.outbound.protection.outlook.com [40.93.201.64])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 27FF0140003
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:36:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=H3nOkLNd;
-	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 40.93.201.64 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795689405;
-	b=c0pi3bt2M3UhdMA/34jmJdHaYNyRYSfEWsSKJbenQZO5azGr01SzbroCPosnR5/ORgFfor
-	lWIOUjdrDl60u/YF4AwxgomRY8rkbH3wtqFdqRy7g0WctQEMjQHlbxtSyd9hBMvBxXE/7v
-	oAhQ2Way6mc77gk8a6Gh9AJOJN1f7XM=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795689405;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ADA076B05B6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:37:38 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46BE41C43AD
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:37:38 +0000 (UTC)
+X-FDA: 85476918996.18.B01F0FA
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 654E618000A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:37:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=I9UcKRqs;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795689456;
+	b=ym3WmWyAp72rDb5mYSGeV7yXXJ9rF/OoAUOjSMAAgQDNKkw5BwV8+GRHRJoGOatBSmC2Yo
+	wIL7zHlGy9Pz4xZmWzn367sAlRFk+UF+/4Wo7G9EIckiGwXbHpCrDsO2TMw7bnEU3a/faQ
+	YOSNxvhYJCGO3eP3vj3ZZgsvIU/Is0s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795689456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rZtvu3I44CB1HT1okPm6jy4UccZB6CoAfzbcHHs1R/g=;
-	b=t5y23TXgkhunSZW7NncwKRc3SdappW8/N9lV3eHxooHBtAq0k/gXqgpn6bqRWsnZUm0hmZ
-	Da2NeStTQ0SRQcBqiusaAwCaeP4yy5YOLCZU40oOVOIQAPDSOjuk67eRvEW21GSjcotRCA
-	YyxXISs45vgK5EoUpI/6SmyUI2/edOw=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=H3nOkLNd;
-	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 40.93.201.64 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MnbKIMf8mcahTppb6o01pWB5sqHc6ThyGZSy2zaao9KX2iV2P5gg2MEBHCQVLZyQ+YP9YFaUSQsTANdZxkzQQbP1qLAEicVIzakpbaifqPecB1NYKZufUJKxUyeMuS8rWBs0QWoVw5DAFUQYeGi2ibk9GSztdEQgwi42j9jGo+xFuJVsN6E3halZ/07d8oiayqU86VyOgTXXUNz6L5j9pAWn82k4qp7xGRZhblJPB4AFBcIXX/9U4ZysHRTwCZ52NfYQ8ThvrbRA2FWSqJ0zQfbfU6rdKnl7NcMvj8JVPbluTCyQU3PP8ena+lWXmSsnZ/gjivEQdgHlzwvXanjIjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rZtvu3I44CB1HT1okPm6jy4UccZB6CoAfzbcHHs1R/g=;
- b=OcLmV2DuVu8t9oyNdMtAChP00yCyPqQrNm5cyrWLkZ/vlSQr3ihAVWb85lkjwob92RTWFvfg3lG3jBIUSRKr77TXTBWKeWh0DrhT8IlTz62CBHjMDKp7gi5+L0NW0oadIYNL/fTOlzcAo10BDIr/73c830sq9wVAlGbgelBkKEI3Hnr2RVQUvgQUKlWY2Y0mEGvOkiixv2E8hPZYdh5Sqy3OuwprGvOLX/XPuDD9xTMJYABRg60pveDBvjmyVBAG7w426pezgezrfKXIM2cdykIjvkoUjIWBF6LMa8xwyO1IGHVx+bjA/msDramgtU8mGmKDoNiKtjY/PoQRniwsLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rZtvu3I44CB1HT1okPm6jy4UccZB6CoAfzbcHHs1R/g=;
- b=H3nOkLNdcE5s0OWtoQ8ctlxL7FfDopbt9w7ZqAwNHEzfuKvVjWm+nefPgik4MuhJp5DegLbDElz+OdICte6lI+ROzl80Q4F/Dfz44N1GsMeUmWKDljQ/Xn2+qn/KUafRqgQnS7sY3IeCQYSJrNgcwbwJqz2s+L78OSrji2WGto0=
-Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
- by DS0PR12MB7803.namprd12.prod.outlook.com (2603:10b6:8:144::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Thu, 26 Nov
- 2026 10:36:39 +0000
-Received: from BN9PR12MB5259.namprd12.prod.outlook.com
- ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
- ([fe80::122c:cca7:c2b3:90ed%6]) with mapi id 15.21.0662.001; Thu, 26 Nov 2026
- 10:36:38 +0000
-From: "Garg, Shivank" <shivankg@amd.com>
-To: "dev.jain@arm.com" <dev.jain@arm.com>, "chrisl@kernel.org"
-	<chrisl@kernel.org>, "david@kernel.org" <david@kernel.org>, "ljs@kernel.org"
-	<ljs@kernel.org>, "hughd@google.com" <hughd@google.com>, "kasong@tencent.com"
-	<kasong@tencent.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
-CC: "baohua@kernel.org" <baohua@kernel.org>, "rppt@kernel.org"
-	<rppt@kernel.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
-	"shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, "vbabka@kernel.org"
-	<vbabka@kernel.org>, "harry@kernel.org" <harry@kernel.org>,
-	"riel@surriel.com" <riel@surriel.com>, "anshuman.khandual@arm.com"
-	<anshuman.khandual@arm.com>, "surenb@google.com" <surenb@google.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "youngjun.park@lge.com"
-	<youngjun.park@lge.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
-	"jannh@google.com" <jannh@google.com>, "liam@infradead.org"
-	<liam@infradead.org>, "mhocko@suse.com" <mhocko@suse.com>,
-	"lance.yang@linux.dev" <lance.yang@linux.dev>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "pfalcato@suse.de"
-	<pfalcato@suse.de>
-Subject: Re: [PATCH v5 3/8] mm: move anon-exclusive batch helper to rmap.h
-Thread-Topic: [PATCH v5 3/8] mm: move anon-exclusive batch helper to rmap.h
-Thread-Index: AQHdfYyN1LyXuNyjpkicYJabIu1ynbdAKOwA
-Date: Thu, 26 Nov 2026 10:36:38 +0000
-Message-ID: <54b76e018f98ebe341f705cb9b7d64d392d197e7.camel@amd.com>
-References: <20261123053543.295467-1-dev.jain@arm.com>
-	 <20261123053543.295467-4-dev.jain@arm.com>
-In-Reply-To: <20261123053543.295467-4-dev.jain@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR12MB5259:EE_|DS0PR12MB7803:EE_
-x-ms-office365-filtering-correlation-id: 3dfc2b04-9826-4c49-58ce-08df4ba9271e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|4143699003|261009223027099003|22082099003|18002099003|3023799007|56012099006|10067099003|11063799006|261102123227099003|261021121427099003|261026140227099003|261028144727099003|261021123027099003|261022105027099003|38070700021;
-x-microsoft-antispam-message-info:
- Mt5y7mabBCsk+F7znECAFhLLKCKj1JTk0k9U1B4T6a9lxl0Ea9fp0sFJB6ficvi9RfP0o2Hm56zapaYHBodPJyEQ3UU/WGLVt0AZvSrxHNLuYGDbeNEpq8WeoMyi/lY7pRq6E5xTeunLcdp8JVubn94oHl9q5zb9qpO0oxHaHMOISZrdcKQKvlBDoIjn1Sw0ny8boeH3A6tSDheniIQ+zCs4lIKWHn43gFhHOh4C2AxveJG5i1DfpGFqdF57x4SUeezZGt4+YewdnATelFNzyN6+aG+3XaWkRGuIXq9vdDEmMTV0PUTHLJr/Va4ThS4wjAy7zYwsjqLeoNtCMMuOpoKzmFL+bDCb49BxrrjSJOOWVPN5JMbbc8t+Ok1W6jSzsD/z/TOJ/he/A9J9Yqp9ytiaohvAdoqvrx902nh0az9AlXTAO9qqC9kWC3/YmtMg25IU1Fz1Ue8MoFs52UUHS/Vp3kLxCb+QblEr5FJpW5NSNAj54sV/OZLyjCb6lpOT6Lh9HIZ6kxyYpqLGMGiUUmd4ZNNGGcj9VZsNFPJMdKJhy3v7lk/NJcekDWpXZcx/vvA12/jkW6P+AmML2AolFEn4BKN2/YCKJMjPTVpF1g2t+iL5Kf4QFwTci0Ru1MQefjwECWeEnSOLfiR7wq1ZbfO5s+tN+TAXRcm4CGJVK8UKiMt/KWMY8ZAkGKMkfaYHSldEL3sMCAmpuDEXX5eUiDP2T0DLyvpTr1rVFEeu5r8=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(4143699003)(261009223027099003)(22082099003)(18002099003)(3023799007)(56012099006)(10067099003)(11063799006)(261102123227099003)(261021121427099003)(261026140227099003)(261028144727099003)(261021123027099003)(261022105027099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?eUdGdjAyREJCa3d1bHNYekhNbTRLYnlzMU9KeDFFcVFqWVNyVTBORnh1ZzNk?=
- =?utf-8?B?SVNxV2lKYUtaQ0dNTVprZXRTOVFCbVFkZWVwOEtwQmNQWURma013WHQ4cnNK?=
- =?utf-8?B?Y3lBSEhyR2N0MUd4d1dGNkxHYXBjRE5CU1ZUTVh5T3J0U2c2N0t1ek9uSXRC?=
- =?utf-8?B?L2J0WUYzdCtQazR3bWZLdFZzU2Vadnp4cEJLN0s1TjZSVERsS1F3RnFWNWZE?=
- =?utf-8?B?TzVQWHZRU2IwbEpYY0p6VFk1NFo4UUNuWFJocHN4b21JbW1mYmxCb083cEVZ?=
- =?utf-8?B?QjZMWjJkNzRBQzBucTBEZkd2TG9mbU1yeGc2YVN1ZnA5OFEyQzN6MHkvaFJX?=
- =?utf-8?B?TE9Sc0hrSVNndVhQaE5zc0owVUV6MUJsYXB0Tm9DeHM1WXFkbWsrcmtLbHBN?=
- =?utf-8?B?Rys5OFczKzZFQjIxbEtvbURMenhlUGpFbnphZzd4L05heTFKcGVIMHFxR3pT?=
- =?utf-8?B?eHViVmMwWFBTMTVVNUFrUk5zVXdDOVUyakJXelpoTEwrRDZROGNhbFJiTWdt?=
- =?utf-8?B?aUFUaDl3N3hQaFJCd3hIR0hRMTdpSllPWDBMV3hrUFZVWUNoM1ZoUlBad2hn?=
- =?utf-8?B?bjNiZGNJUytjQ0tQMVEwUTRxeWs5T0JOVERKUHRFRVRZeDE1SGtwY2FOOG9r?=
- =?utf-8?B?aFU2YlArQVRzMTlvM0YwOUE1N2VkWDdCN3J2aXlld2YwejI4Vmd6MVpwTEFs?=
- =?utf-8?B?ZmtMcmV6WmRuWnJWc0ZrZHFha0NzNVE5L0hYd09WSlJEV0FIMnYvRzlLTjBp?=
- =?utf-8?B?WDlhRHl5M0VSZnRnYit3N0ZBbnBBR3NxRDk3TGZNTHVPK2w1dlJRam9zNTYr?=
- =?utf-8?B?dkp6akVudVFtakQxR3cxMGVOcml0VS83TkhCU1lrakpYNDBGdjY0WFc0NCtn?=
- =?utf-8?B?RWNBRXRSVHR3SWQzWVBFamQzK0VSTVV2MTQwYk9VWDlrMFFoai9abnhObWlX?=
- =?utf-8?B?allVYkVHelNkYVlwaFIrbXVjSWM3bUEvdnBZK0QyL1FWZGh0UkwwblR0Rlgy?=
- =?utf-8?B?dFhaVVdnYXRXeCtCTnlYVEVjTGtpSEVnWVpNdHowdXQ4M3lDZ2kwMS93NVlV?=
- =?utf-8?B?Y0cvVHJFb2pKN2hubDNrSU5yTDcreFRjRjZKWDNicU82bUVWcHdIT0tOWWVX?=
- =?utf-8?B?aUxhbDgyNEpYTC9talZZOTE0aUc5VnM0ditzRUZUaExLVk0zK0ZTejJoMFJw?=
- =?utf-8?B?cW44eVUxM1RwTWg0WVljWEN3aTZ0TUF4b3YzSnFkSUlYRXRwYU15YW04dVVy?=
- =?utf-8?B?aUZSYXBRZWxnb0V0NUJjQVdlbVV6M2lWQ09mMHp3bzBhc1phajJTR2tmQ1hY?=
- =?utf-8?B?dzdYdjNuK21PZ2VvVmg4VmcydG5UM1B0MEdGclRQTE9hM2V3dkc0clo0dGR1?=
- =?utf-8?B?cW1kR00xOGFWSTdFMmV1NlZZMjQzRWFwNlJLTmF2cGhSdlF4bGlveDh0bnZR?=
- =?utf-8?B?d0k4elUwekhtT1llZDBjU2dsUzlWaUdDaExrMFExc2FqbHZPdUU1YmIxdmpJ?=
- =?utf-8?B?T1lTaU9XalphNUxScHppT09iQkRSdGo1TEg4NHNyQmhBVFBvN3M4V0pCS1A0?=
- =?utf-8?B?Z2JZTE9WSnh2OTdVNnpOQTQ2VU5uK2NteXorYnluaEk2UGkxcUlsSnBUTE13?=
- =?utf-8?B?NWFkWWpvSHd2QnJvdm5IL0JqYXJZNWdCdWJGNURROVhKWUNGNktnZHpHZG9q?=
- =?utf-8?B?WDkzZENYQlZxV25mc0pJMDdaZTNRZVpXMlYybnQwVDJFZWNRMmVkTThqblUy?=
- =?utf-8?B?eGtwUVpFTmpmNkxEVFdPSlZOOHBkYWVocUlnTXJmcFdtQVljZmt1N0E0NHhh?=
- =?utf-8?B?MTFJeFVGeUFJVW41OWJuend0VGhPSkFmL3dVNGgyaCtjRHNkSjZ1QnZsNXp5?=
- =?utf-8?B?a2l6WU94RENRRXdwV0xzUlhCbkZJbUV2enYzQ1diK054bzhtMkd5cUpSVnNH?=
- =?utf-8?B?bGkrOGdyaVFRNXZEUll5dlpDOGpkVkVkVG1rTHBSR3ozVzlLckk1SVNUWmQ0?=
- =?utf-8?B?ZmVjTUdSWkpVdUJJSEhHdm9uN1VyUElxVExtdUQySXJTUWtqZVplWHVzSEFO?=
- =?utf-8?B?U0pFeUNZTStCL014cXphYnJYRDFMY0QzUzh4ZUU1WEZTUUVtcXdoVlVyM3p2?=
- =?utf-8?B?WmFnTmxxdmw0aERMTEVyVWk3ajhpam1FZ3YrS0ZKMkhQOGpaSVN5NVd3TXdJ?=
- =?utf-8?B?WTdwdHRvVmpvMTcybnhjVWNJZ3k1YlcxVENQbVNrUmhIU1VCRk9ZNVE5YWlx?=
- =?utf-8?B?elB0MFpIQURGSEFVcW51U2ZOTkgvNmFzNjI3N05GTHZ1bjVVVHJKT0JoeXJK?=
- =?utf-8?B?b2Uvc3ZKMXVIUHJQT0VGWHJqcnhjcnhDdll1ZTdUWVJtZ0pVNXNiZz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9E90A9C5215175418074B562B292D530@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	bh=zp08wFsGJ44C0c4ykLgsDmwy4mpu8EhHOI/Atjz+FcY=;
+	b=fDTk4TyPXjMDVcFYk0std8ir7743a2zXt2PFc7+Fp5hzOUKv5WzTKh9xSsftq8uCMzuhUR
+	KkjdgoY82cO6NFXEg16/aN4iDgg4Pb5f3CZ2C3grodc7+dpolqdhfPQ6MKb7kE40xDdDWk
+	ZMUZM5MFXnH+w4SzWc65XpaljCQzjdI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=I9UcKRqs;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8a070755c8cso3377407b3a.0
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:37:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795689455; x=1796294255; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zp08wFsGJ44C0c4ykLgsDmwy4mpu8EhHOI/Atjz+FcY=;
+        b=I9UcKRqshZGRKKGUH9CjYe5L4TbrkJ1LhuA6COv3FtvGAqmXG+bcqCn8sm4nktWnvW
+         7yybFn0tmtp7s0MhwijFgC2aSAngif7aabIFyAPVEjxU4fgndgD6TgoYmxsdg0rygH+r
+         A4yysAVXS27+E8MFA3ULR7J2rMEBEqxA3CLU46FayqTypiwZM+YdoM7b+AlRi+a8RiNA
+         JexJ2Q3cfYDjyoeoWhKlgkcd0A7x6Bdj9QNuN00IUTYNe2NCJ1Xu6EmmfDtowHG2d0eR
+         ubxibkEEQIndxMIutLsJqkEdMZ7tiC1kkC6ieTbxrP3Yt43uZ/3r1gW5tuwC3Aa03bHL
+         ZJlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795689455; x=1796294255;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zp08wFsGJ44C0c4ykLgsDmwy4mpu8EhHOI/Atjz+FcY=;
+        b=q7zIhD1sRTPN+f6e3p424USyHOpUGQVYLP31PXNA6OniFNBUWB+tLnNFSnjYTS5to1
+         QimODIatCNj0e7y6uq7AS2GJ9Yo3nWScLtJeS5eRwYSMQre0cKO9K5XySgG9Amg2WYRv
+         bhUDLyObceyPeOcPf/GwlFYWLC/6Yx0Y7JG5ToELkjZS/yWSM2HhBx4+QJA6Ar5GSb9f
+         F6ADQVh0ubvFLVGCu7QRfWsjyTNLgHzuBvq38W0t3BPZld8yKg1SOpQzX2apYiNz2tmL
+         tu8JXUz8WBqh+BA5sJ0pUot/XuxRsKQBoW5biii0aXhi8wLf/UnlKxs/nv0MKg5P+VHa
+         ticQ==
+X-Forwarded-Encrypted: i=1; AL+hErEXkyW6Z7ESrYLZGx6eF8aOP7WhCJ/DcfCOb9rIzsq3rTit5RcFuMIaUyLILvJDAthfrellMEOIfg==@kvack.org
+X-Gm-Message-State: APuU4Z8ChlS5XcRbp1QTs8MPGC8dqajxouVNwK8yZmzwQda27+DLIfFd
+	tfnQZsgOQcA71du3ePvpXFQLgsU1TIbLNCTGcg4TSZJN+fRCZtPPrabi
+X-Gm-Gg: AZFdTZepmLCgsdLTDhYuaVtdU8Kdbs8nOku/idVVgSuLjFVCmH6DR2QbsGWsFRAOiPM
+	SrC0D9/W9WLimV5oH2hd8BvKKQ6sSGwwM44yLVhSWq6WtXRut729nIuQGxtNPqOZnVHxsjPnZ6X
+	c3VdLivRn1swKLb1OvmZwymp5LDXuZgAy9iDno6cpYskDzEJNdFjgB8ClCoYteE+3KETJ2FwwZG
+	J772Z5tlMY92M+AfBp63UZF1XgZIJSxOTf+wm184aBin/AH1dNxiW7YwXRS1FgjzkrHeMWEx/HE
+	JZuly+Eh26Yv7MIH4cNpoT6OYF7G5HgQ04xDXoJg9ftfacj1Skp4U3pNtqmDvFmW+EwmBV+oQed
+	sbTAtqARqXxhq7U/TGNLiWgS/F2xRJ48k4T4qMAWsbSsmM4/Xpb85Ek99BbRdQQGSxnA83Cn4S7
+	dnXT/Pf9evwcnhqcWQehFImnls5oijglpVSbDD/eARuhT302M8HKQT2ng6Z93qidB+lhk+/pmln
+	BsFG0PPJjke/YjQFND/8rsox7Ir9m7BZHYKhCZxTIPK+sIyLOpdr7A9WL0rBnqkw2dm8pFZw6oX
+	1Z95ug8vMnPj4g44smfNsA/yGgdemOVG+Cf3bwAXmI5Tykt2nUBvavtHlGtTLCBzJ5dZNQ+gtHk
+	mNB4+SQMNpbx5ow==
+X-Received: by 2002:a05:6a21:3d8b:b0:3e2:7c10:d482 with SMTP id adf61e73a8af0-4014b564366mr17311908637.16.1795689454813;
+        Thu, 26 Nov 2026 02:37:34 -0800 (PST)
+Received: from KASONG-MC4 ([114.254.0.53])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87353b889sm10702825b3a.42.2026.11.26.02.37.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2026 02:37:34 -0800 (PST)
+Date: Thu, 26 Nov 2026 18:37:22 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, axelrasmussen@google.com, baolin.wang@linux.alibaba.com, 
+	baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev, kasong@tencent.com, 
+	kunwu.chan@gmail.com, liam@infradead.org, lianux.mm@gmail.com, 
+	linux-kernel@vger.kernel.org, liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, 
+	mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org, 
+	shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, weixugc@google.com, 
+	yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, 
+	sidchintamaneni@gmail.com
+Subject: Re: [PATCH v9 07/16] mm/mglru: balance anon and file scan budget by
+ refault rate
+Message-ID: <awf7WGiaC4LVLYhA@KASONG-MC4>
+References: <20261114200803.23129-1-baohua@kernel.org>
+ <20261114200803.23129-8-baohua@kernel.org>
+ <5238e574-ed22-4781-aac2-b91a6b2d911e@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dfc2b04-9826-4c49-58ce-08df4ba9271e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Nov 2026 10:36:38.7148
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: t8+HMNZH1Z/alAoMSECRwaFp+IbJuK9TiSrjYyPiOQlfHmiXmbTWlLdaOubKp+lmWdhYk6aAhXLtH0Da3noSbA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7803
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5238e574-ed22-4781-aac2-b91a6b2d911e@linux.dev>
+X-Stat-Signature: 7trcmgn6sfafe7dekxn99pump87ww6qr
+X-Rspamd-Queue-Id: 654E618000A
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 27FF0140003
-X-Stat-Signature: 94zyog7abrrgsbik3p7mfncfnohq611m
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795689404-469227
-X-HE-Meta: U2FsdGVkX1/doORnNjDjrCaneIWwuP1V+l/TpcqqJb/9eRBykvMJ2M0/TTcR64sS0A0/znt/yJq/2nhgTLKHTRLEunaRaYNkoY2iyNoYJ/8wM6BDUrcTdH7bAT1Rzn1AADLOos/I48bbNcqizq5dliJFxfnymXKimPSYzAlpD+9LU7cMAphWzjyYLrJ3R8y38E9cS6GrkGfvh2UaDaf/7dSFAd3Mc9YpVZOVeHA1cDHHsxgS7chJzf4bpgeXSIUKAWfgyUTtOITNxG4OSD1tWvkhVmp0flK0wJYJcSWE82tLfVJ4Owz8L+wBnGBjf+MfGDlaPsc3k/nqxYiC3hnqzTS8kHda2vjjCyBxlZV24qKSar4JcqdFLcRWM+UJGqcId+2dahhWVOv7UPj2VT3r7/Jl7vCLDMNVb7IXaE/9afFC3805LJ1CCAwDbgDn3w7hh6Q4rjujw+3muEGV1NkeFXMb2W8q24Kr6CE8oRqgdFZXdNzOnEVgsR5M6usjKr6/RWqZz/eJQp7hS1wf8KiDWQdA7q6jaJcurebh4mjr67jxdgIh0fu007TSxWj/4unPO9Jqln1rEvzWg2OWXg+DmxNimMCxM+hKEd99YtuB9AoH5idd7onHeAoH9HfghYS7zvJTQSfs9ZPBUURPy5UXjI62lolCEiYlrQakRCogaqHgq0Hg5jagbTFmewf3rcMcEVcRiSfXQM+xPU/iBhh1+ndp1IvfJeTrCmuOPT7NN8qrJHNRdPtVLWrp+x+zqRlhnV/ralHlcSW7Q4wzZLCWt2Hl4m9TV8QOhLn7Jh6RK+lJE98gKP3wukuTePTug/tG8U3a22RagTy+31zRJU+s2R9TSJs8PKA9yWZ4i7u7gPbcZwke2BfSt8qY8+UIdsJ7gZYEFhQPy9OIoLjBin7HBzEssSmIGewxp+aplWIuPSvRs3ttlpanLs0WnNKWQOxMKO4n816M3/GLO3CK+qb
- ZNowzVA8
- qd/pvtEbfl22q1YJ5+4QIlk/UvU+HGDadlItjfymoWe5K9/MUQgqtDL2Fr0nEyfQT1+kpGBF1BRJbVQfJtQNntS8xpJcl0tkCuuv0fvvrUWFzlIXhUSnk6CSr73Le1sB4AZF7qtUlvZpVAg9XDt/MjR8YkDutuUpCeRGZ3OFes6jSfch9RO2k7aW6RYy+xYr2CmgGFoFK9NqqxgBPxJSb7L/756L+CWlER1oyjHDSMn4QF58anLbLXuHmHJAAb3+UW2YNkyFfJFT96JWsi7DWtwsTiFpfWLwVN16kvCEClp41PXiyKNHmw0pJXOSErHKC63ml48sEvkoQ1dgiosZXmTRXvP7cx6KSmTj0CN0utMD8LLJFD7DaT53fVvLKJ3fp04r73K0EbBuYlRTkLWgHWmMmslXXIiU3lE1PPyfIOV1Ql9nn4kz5hfpCkcgyU0zr39Kv6HwIfcEsbmDvpK1swJOaIlwLzy35S7dSywz23xM2RUQ5NZoI7dBEHH5pG35q4ws+NI9d3xW23eXT4gnHpHYp5FA7UMjTYyZGD4orA+M4NT6ikjG3jeqaZmHoQ1Vbv6vzSCJ7q+mhtYX1Z11DVAjCDLrUoLUDEGpeJmA6xHEssvthaQPDhWxIujQP8xZho8rV+XfA2wjM13nd2aDWdVN3AFIiQD5c6IJh6D83IQEDSFPy7ETB1kk1PdSILuyLrURFDPhEt+DHRG3lQ7dvLEdXKH4spk/Y7hXYz+pMsy59ByCyfG8jCzOWoWIqnnKK5HGgpjy2bLP1J7mVjj04P6Uyz5qTFPiEF6TGFiDWFlJ74K0bJMv+6GIYy1Ip8iApG360Lj+UZzLUiGKZm9mpBbW32PDwyCSYGofeSz+sFYO9QdE7SiANcSGJ3A==
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795689456-701703
+X-HE-Meta: U2FsdGVkX1+NZstW9ANIXjiBgrTqZU0rK4pdWQZkP8rKxOzOEZOFO2WVYa+Z2LMNt5cqwWuA6VO/gcXPOEAmaR5PbDdHJAoe8By1bGqvGRudvCyZ6YofUgjujrlwrUNVvnetrjaRK1J/mKbek3CajLQb53N5V+YIOMLd3ELdAbpt37NMu1R8qfulvxUiB9xAJrjO2MA80sUML/C3rb06twntO+B6xgoSPzsmofMHeqLsHupOVXdfNQBL8vBbWFTBf6efmGpIqABHK7yIkYHvYgaL8Ig+80ijdqMP2SVNQuwa+N/EYjKLPQ41pPTfZe7j0CheUkkP/9M3qX4SLOp1k9GrXdbhMSJQF7FiY5BMU0sjm+Ed7SdMGn1bneRjI+/BeZtPwtySwvJZWciQUJX9GePgup780j5anB959wJrbvH/gQBBBtoPWrFKpino6+ioijjFGvrt8oK04sT3rHqzE3DdE0DUmZ0LxIhJzeV5q2Y+eSrx/HOc5fQwhQCMjb4siMyJpuqCEBnEbp+e6VJmdx4loc4Gatl6+Cn80tT4wHi9I2l62vzy/mfAAWeVE0bZeTZmHxtgeDHnDowJzUkT5zW6N6mbIQp+Gjv6OxZB/Lqwa38WyRl5GbT7DNkTWs6kv7ByYT5NNcUkMuk92414hcodsxV/SxwkMh9l6Dpaz/0lNAqh0PyTe9X+ShkO02mcyn+Avdi2R66bxfOpGgVW0qRLxuDbRjX4OuovKcCAHhF1tYcbPDgGpIGBgSkNfmTqvAAeS+3giryaQYL6Vx8gBAaRhRUedOLV3aLU1J6C/1WhIXei1JJoOOPRumaXxNSP2TRs2F4tWtq3NpwvCl15vI0DUARItWJv2DiLaQZA8EWv2rPRBElKSd7hJ7ePrpnwh11JF3st9QkPn/5O5RyqJ4EUZw2zS3SVKCqLWyGFYwRhYx2F/CDKLe5VOpNREKP8HqbXR0zibXkdvvR563b
+ 42YywOqQ
+ IgZcbsRXPE2QzJtbjOAQrZoaW5hP5o+IMjFuuoItAdG+KQ476dncm3lgAUiv/LQ/6WrvY+caXGP3CRP6vG96jPfIz04jzbLV2Njd8xi/9F17FaPIJzqHzGx8s0mfX3GVoudn+OiGLTh2EJOO+Kb37duOsmN3GmWxoI7xN3cS4egG0xMP/EdtFlFxiGAK5U3yM2nlfxhPcjb0mHTruTYHnlthe93M62vXmcHzVvYMOxckH8WFCvpLapJaYOTwkVIU2vYH39hAWjoPh6zSqjz5ZXjzZZSpADK/bJpwhY2aW87uRdaNoFHGZWYjvMuFAjSVBdKRR567mw2mCadaSTf3FBOBLfy9qcvwKl1olDvRNfhe8TWB0u9NtOe8hvK7SH7Kka0KCOCIACtWzHYrmjPr+g8H+E4JtaQmBQfTplXsCIJViYr9UkOzY51eElzX5M37xM86FYwUNL/28XPRDv1xnZdM0HL+BFpI+D/QDRUy7/1YuB2zbNBB7+H+VUshzX65e34nq8vspSo/6MwqazLIEBNNeT3sxmPzryuab2JU6/2QPn/EgVUcZcgvj3YfjC+FZOroOp0Z2d3o1sWdDb8uZ/iT3LKWgz1XRvBG/mXYhMEL4vCu5zxuXmU4uI97B7haLH2XeIUNRQWAKK6EXljMMsSHTbzrq/AYh7xraCCPtpfXO35a7m4X58sLrR8k5VGrl8JqhOFImEwZnuNXFXBzfuZrErmoDrmJPvTMq5GUmp+4ioprZSQu+RaGXVCofDPKHfaYEq7lNJV0LaUJRnUKsiKkkSslz1kHGF03LGbUz4O7IC/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -190,76 +135,245 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-T24gTW9uLCAyMDI2LTExLTIzIGF0IDA1OjM1ICswMDAwLCBEZXYgSmFpbiB3cm90ZToNCj4gSW4g
-cHJlcGFyYXRpb24gZm9yIG9wdGltaXppbmcgbGFyZ2UgZm9saW8gdW5tYXBwaW5nLCB3ZSBuZWVk
-IHRvIHJldXNlDQo+IHRoZSBwYWdlX2Fub25fZXhjbHVzaXZlX2JhdGNoIGhlbHBlciBpbiBybWFw
-LmMgYW5kIHJtYXAuaCBhbmQgb2JleSB0aGUNCj4gZXhpc3RpbmcgdXNlIGluIG1wcm90ZWN0LmMg
-Lg0KPiANCj4gVGhlcmVmb3JlLCBtb3ZlIGl0IGZyb20gbXByb3RlY3QuYyB0byBybWFwLmguDQo+
-IA0KPiBXaGlsZSBhdCBpdCwgY2hhbmdlIHJldHVybiB0eXBlLCBzdGFydF9pZHggYW5kIG1heF9s
-ZW4gdG8gdW5zaWduZWQgbG9uZw0KPiB0eXBlIGZvciBmdXR1cmUgcHJvb2ZpbmcgYWdhaW5zdCBU
-SFAgc3VwcG9ydCBhdCA+PSBQVUQgbGV2ZWwuIEFsc28NCj4gbWFrZSB0aGUgaGVscGVyIHJldHVy
-biB0aGUgYW5vbi1leGNsdXNpdml0eSBzdGF0ZSB0aHJvdWdoIGFuIG91dHB1dCBwYXJhbWV0ZXIu
-DQo+IA0KPiBSZXZpZXdlZC1ieTogQmFycnkgU29uZyA8YmFvaHVhQGtlcm5lbC5vcmc+DQo+IFNp
-Z25lZC1vZmYtYnk6IERldiBKYWluIDxkZXYuamFpbkBhcm0uY29tPg0KPiAtLS0NCj4gIGluY2x1
-ZGUvbGludXgvcm1hcC5oIHwgMTggKysrKysrKysrKysrKysrKysrDQo+ICBtbS9tcHJvdGVjdC5j
-ICAgICAgICB8IDI1ICsrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gIDIgZmlsZXMgY2hhbmdl
-ZCwgMjIgaW5zZXJ0aW9ucygrKSwgMjEgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
-aW5jbHVkZS9saW51eC9ybWFwLmggYi9pbmNsdWRlL2xpbnV4L3JtYXAuaA0KPiBpbmRleCA5ZjVi
-ZmEzMTdhNWMuLmVjMWU4NTg1NWJlMSAxMDA2NDQNCj4gLS0tIGEvaW5jbHVkZS9saW51eC9ybWFw
-LmgNCj4gKysrIGIvaW5jbHVkZS9saW51eC9ybWFwLmgNCj4gQEAgLTEwNiw2ICsxMDYsMjQgQEAg
-ZW51bSB0dHVfZmxhZ3Mgew0KPiAgDQo+ICAjaWZkZWYgQ09ORklHX01NVQ0KPiAgDQo+ICsvKg0K
-PiArICogR2V0IG1heCBsZW5ndGggb2YgY29uc2VjdXRpdmUgUFRFcyBwb2ludGluZyB0byBQYWdl
-QW5vbkV4Y2x1c2l2ZSgpIHBhZ2VzIG9yDQo+ICsgKiAhUGFnZUFub25FeGNsdXNpdmUoKSBwYWdl
-cywgc3RhcnRpbmcgZnJvbSBzdGFydF9pZHguIENhbGxlciBtdXN0IGVuZm9yY2UNCj4gKyAqIHRo
-YXQgdGhlIFBURXMgcG9pbnQgdG8gY29uc2VjdXRpdmUgcGFnZXMgb2YgdGhlIHNhbWUgYW5vbiBs
-YXJnZSBmb2xpby4NCj4gKyAqLw0KPiArc3RhdGljIF9fYWx3YXlzX2lubGluZSB1bnNpZ25lZCBs
-b25nIHBhZ2VfYW5vbl9leGNsdXNpdmVfYmF0Y2godW5zaWduZWQgbG9uZyBzdGFydF9pZHgsDQo+
-ICsJCXVuc2lnbmVkIGxvbmcgbWF4X2xlbiwgc3RydWN0IHBhZ2UgKmZpcnN0X3BhZ2UsIGJvb2wg
-KmV4Y2x1c2l2ZSkNCj4gK3sNCj4gKwl1bnNpZ25lZCBsb25nIGlkeDsNCj4gKw0KPiArCSpleGNs
-dXNpdmUgPSBQYWdlQW5vbkV4Y2x1c2l2ZShmaXJzdF9wYWdlICsgc3RhcnRfaWR4KTsNCj4gKwlm
-b3IgKGlkeCA9IHN0YXJ0X2lkeCArIDE7IGlkeCA8IHN0YXJ0X2lkeCArIG1heF9sZW47ICsraWR4
-KSB7DQo+ICsJCWlmICgqZXhjbHVzaXZlICE9IFBhZ2VBbm9uRXhjbHVzaXZlKGZpcnN0X3BhZ2Ug
-KyBpZHgpKQ0KPiArCQkJYnJlYWs7DQo+ICsJfQ0KPiArCXJldHVybiBpZHggLSBzdGFydF9pZHg7
-DQo+ICt9DQo+ICsNCj4gIHZvaWQgYW5vbl92bWFfaW5pdCh2b2lkKTsJLyogY3JlYXRlIGFub25f
-dm1hX2NhY2hlcCAqLw0KPiAgDQo+ICAjaWZkZWYgQ09ORklHX01NX0lEDQo+IGRpZmYgLS1naXQg
-YS9tbS9tcHJvdGVjdC5jIGIvbW0vbXByb3RlY3QuYw0KPiBpbmRleCBlMThkNGUxMmZjMzQuLjAw
-YWU3MzI4NDkwNyAxMDA2NDQNCj4gLS0tIGEvbW0vbXByb3RlY3QuYw0KPiArKysgYi9tbS9tcHJv
-dGVjdC5jDQo+IEBAIC0zMCw2ICszMCw3IEBADQo+ICAjaW5jbHVkZSA8bGludXgvbW1faW5saW5l
-Lmg+DQo+ICAjaW5jbHVkZSA8bGludXgvcGd0YWJsZS5oPg0KPiAgI2luY2x1ZGUgPGxpbnV4L3Vz
-ZXJmYXVsdGZkX2suaD4NCj4gKyNpbmNsdWRlIDxsaW51eC9ybWFwLmg+DQo+ICAjaW5jbHVkZSA8
-dWFwaS9saW51eC9tbWFuLmg+DQo+ICAjaW5jbHVkZSA8YXNtL2NhY2hlZmx1c2guaD4NCj4gICNp
-bmNsdWRlIDxhc20vbW11X2NvbnRleHQuaD4NCj4gQEAgLTEzOCwyMyArMTM5LDYgQEAgc3RhdGlj
-IF9fYWx3YXlzX2lubGluZSB2b2lkIHByb3RfY29tbWl0X2ZsdXNoX3B0ZXMoc3RydWN0IHZtX2Fy
-ZWFfc3RydWN0ICp2bWEsDQo+ICAJCXRsYl9mbHVzaF9wdGVfcmFuZ2UodGxiLCBhZGRyLCBucl9w
-dGVzICogUEFHRV9TSVpFKTsNCj4gIH0NCj4gIA0KPiAtLyoNCj4gLSAqIEdldCBtYXggbGVuZ3Ro
-IG9mIGNvbnNlY3V0aXZlIHB0ZXMgcG9pbnRpbmcgdG8gUGFnZUFub25FeGNsdXNpdmUoKSBwYWdl
-cyBvcg0KPiAtICogIVBhZ2VBbm9uRXhjbHVzaXZlKCkgcGFnZXMsIHN0YXJ0aW5nIGZyb20gc3Rh
-cnRfaWR4LiBDYWxsZXIgbXVzdCBlbmZvcmNlDQo+IC0gKiB0aGF0IHRoZSBwdGVzIHBvaW50IHRv
-IGNvbnNlY3V0aXZlIHBhZ2VzIG9mIHRoZSBzYW1lIGFub24gbGFyZ2UgZm9saW8uDQo+IC0gKi8N
-Cj4gLXN0YXRpYyBfX2Fsd2F5c19pbmxpbmUgaW50IHBhZ2VfYW5vbl9leGNsdXNpdmVfYmF0Y2go
-aW50IHN0YXJ0X2lkeCwgaW50IG1heF9sZW4sDQo+IC0JCXN0cnVjdCBwYWdlICpmaXJzdF9wYWdl
-LCBib29sIGV4cGVjdGVkX2Fub25fZXhjbHVzaXZlKQ0KPiAtew0KPiAtCWludCBpZHg7DQo+IC0N
-Cj4gLQlmb3IgKGlkeCA9IHN0YXJ0X2lkeCArIDE7IGlkeCA8IHN0YXJ0X2lkeCArIG1heF9sZW47
-ICsraWR4KSB7DQo+IC0JCWlmIChleHBlY3RlZF9hbm9uX2V4Y2x1c2l2ZSAhPSBQYWdlQW5vbkV4
-Y2x1c2l2ZShmaXJzdF9wYWdlICsgaWR4KSkNCj4gLQkJCWJyZWFrOw0KPiAtCX0NCj4gLQlyZXR1
-cm4gaWR4IC0gc3RhcnRfaWR4Ow0KPiAtfQ0KPiAtDQo+ICAvKg0KPiAgICogVGhpcyBmdW5jdGlv
-biBpcyBhIHJlc3VsdCBvZiB0cnlpbmcgb3VyIHZlcnkgYmVzdCB0byByZXRhaW4gdGhlDQo+ICAg
-KiAiYXZvaWQgdGhlIHdyaXRlLWZhdWx0IGhhbmRsZXIiIG9wdGltaXphdGlvbi4gSW4gY2FuX2No
-YW5nZV9wdGVfd3JpdGFibGUoKSwNCj4gQEAgLTE3MywxNiArMTU3LDE1IEBAIHN0YXRpYyBfX2Fs
-d2F5c19pbmxpbmUgdm9pZCBjb21taXRfYW5vbl9mb2xpb19iYXRjaChzdHJ1Y3Qgdm1fYXJlYV9z
-dHJ1Y3QgKnZtYSwNCj4gIAkJc3RydWN0IGZvbGlvICpmb2xpbywgc3RydWN0IHBhZ2UgKmZpcnN0
-X3BhZ2UsIHVuc2lnbmVkIGxvbmcgYWRkciwgcHRlX3QgKnB0ZXAsDQo+ICAJCXB0ZV90IG9sZHB0
-ZSwgcHRlX3QgcHRlbnQsIGludCBucl9wdGVzLCBzdHJ1Y3QgbW11X2dhdGhlciAqdGxiKQ0KPiAg
-ew0KPiAtCWJvb2wgZXhwZWN0ZWRfYW5vbl9leGNsdXNpdmU7DQo+ICsJYm9vbCBleGNsdXNpdmU7
-DQo+ICAJaW50IGJhdGNoX2lkeCA9IDA7DQo+ICAJaW50IGxlbjsNCj4gIA0KPiAgCXdoaWxlIChu
-cl9wdGVzKSB7DQo+IC0JCWV4cGVjdGVkX2Fub25fZXhjbHVzaXZlID0gUGFnZUFub25FeGNsdXNp
-dmUoZmlyc3RfcGFnZSArIGJhdGNoX2lkeCk7DQo+ICAJCWxlbiA9IHBhZ2VfYW5vbl9leGNsdXNp
-dmVfYmF0Y2goYmF0Y2hfaWR4LCBucl9wdGVzLA0KPiAtCQkJCQlmaXJzdF9wYWdlLCBleHBlY3Rl
-ZF9hbm9uX2V4Y2x1c2l2ZSk7DQo+ICsJCQkJCWZpcnN0X3BhZ2UsICZleGNsdXNpdmUpOw0KPiAg
-CQlwcm90X2NvbW1pdF9mbHVzaF9wdGVzKHZtYSwgYWRkciwgcHRlcCwgb2xkcHRlLCBwdGVudCwg
-bGVuLA0KPiAtCQkJCSAgICAgICBiYXRjaF9pZHgsIGV4cGVjdGVkX2Fub25fZXhjbHVzaXZlLCB0
-bGIpOw0KPiArCQkJCSAgICAgICBiYXRjaF9pZHgsIGV4Y2x1c2l2ZSwgdGxiKTsNCj4gIAkJYmF0
-Y2hfaWR4ICs9IGxlbjsNCj4gIAkJbnJfcHRlcyAtPSBsZW47DQo+ICAJfQ0KDQoNClJldmlld2Vk
-LWJ5OiBTaGl2YW5rIEdhcmcgPHNoaXZhbmtnQGFtZC5jb20+DQoNClRoYW5rcywNClNoaXZhbmsN
-Cg==
+On Thu, Nov 19, 2026 at 05:48:38PM +0800, Ridong Chen wrote:
+> 
+> 
+> On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> > 
+> > Replace get_type_to_scan() and isolate_folios(), which selected one
+> > type per batch, with a proportional split of the scan budget between
+> > anon and file, and scan both types each round.
+> > 
+> > lru_gen_balance_scan() splits the total by
+> > 
+> >          anon : file = swappiness * r_file * w_anon :
+> >                        (MAX_SWAPPINESS - swappiness) * r_anon * w_file
+> > 
+> > where r_anon and r_file are the per-type refault rates scaled by
+> > 4096, clamped to [1, 4096]; a rate at the 4096 ceiling means the type
+> > refaults at least as often as it is evicted. The w factors bias the
+> > split toward the LRU sizes at mild swappiness and follow the IO cost
+> > ratio at the extremes. Both rate accumulators start at MIN_LRU_BATCH,
+> > so a type without eviction history reads as 100% until evictions
+> > accumulate, and the floor of 1 keeps a type that never refaults from
+> > zeroing out the other type's share. Swappiness 0 and
+> > SWAPPINESS_ANON_ONLY keep their single-type behavior; at swappiness ==
+> > MAX_SWAPPINESS the file factor is zero, so anon gets the whole budget,
+> > as in the classical LRU; swappiness 1 no longer forces file-only
+> > scanning as the old code did.
+> > 
+> > The proportional protection and priority reduction are applied to the
+> > total once, before the split, and each budget is capped at its type's
+> > evictable size. Regular reclaim derives the total from the evictable
+> > sizes, so the budgets sum to it. The proactive path re-splits the
+> > remaining target each round, so eviction keeps working while either
+> > type makes progress, until the target is met or no progress is
+> > possible. The debugfs scan_control gets .priority = DEF_PRIORITY so
+> > eviction starts from the oldest gen and reports the default priority
+> > in the tracepoints.
+> > 
+> > Note that we are already lenient with the debugfs proactive
+> > reclaim interface. We may reclaim one generation ahead even
+> > at `DEF_PRIORITY`, and with extreme swappiness values such
+> > as 1 and 200, we may not fall back to the other type.
+> > 
+> > To address these cases and preserve the behavior of the
+> > previous model before scan-budget-based reclaim, we would
+> > need to add another flag to `scan_control`. However, this
+> > may not be worthwhile for a debugfs interface that is likely
+> > to be rarely used, especially given that we already have
+> > memory-level and node-level proactive reclaim interfaces.
+> > 
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > Co-developed-by: Gaofei Lyu <lyugaofei@xiaomi.com>
+> > Signed-off-by: Gaofei Lyu <lyugaofei@xiaomi.com>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+> >   mm/vmscan.c | 219 +++++++++++++++++++++++++++++++++-------------------
+> >   1 file changed, 138 insertions(+), 81 deletions(-)
+> > 
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index f7fbe91fedf3..18cf1c084e78 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4863,79 +4863,110 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+> >   	return tier - 1;
+> >   }
+> > -static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+> > +/*
+> > + * Balance the anon vs file scan budget using MGLRU's per-type refault
+> > + * rates, where swappiness is the relative IO cost of anon vs file (see
+> > + * Documentation/admin-guide/sysctl/vm.rst).
+> > + *
+> > + * On entry, nr[] holds the evictable size of each type, on return it
+> > + * holds each type's scan budget, bounded by its evictable size.
+> > + *
+> > + * LRU lock not needed: a stale snapshot merely skews the split for one pass,
+> > + * and MGLRU aging averages the fault rate so we can simply read it, no need
+> > + * to do any extra work here. If reclaim is blocked by unfair type hotness or
+> > + * stall aging, the priority will raise and a raised priority drives the
+> > + * aging.
+> > + *
+> > + * Calculation is basically based on following formula with a LRU size bias:
+> > + *
+> > + * anon : file = swappiness * r_file * w_anon :
+> > + *               (MAX_SWAPPINESS - swappiness) * r_anon * w_file
+> > + *
+> > + * r_file / r_anon: refault rate for file / anon.
+> > + * w_file / w_anon: LRU size weight of file / anon.
+> > + *
+> > + * We don't calculate the scan cost. MGLRU uses lazy promotion, which will
+> > + * cancel the scan budget naturally.
+> > + */
+> > +static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
+> > +		unsigned long total_scan, unsigned long nr[])
+> >   {
+> > -	struct ctrl_pos sp, pv;
+> > +	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+> > +	u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
+> > +	u64 anon_scan, file_scan, total;
+> > +	u64 anon_weight, file_weight;
+> > +	int size_bias;
+> > -	if (swappiness <= MIN_SWAPPINESS + 1)
+> > -		return LRU_GEN_FILE;
+> > +	total = nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE];
+> > +	if (!total)
+> > +		return;
+> > -	if (swappiness >= MAX_SWAPPINESS)
+> > -		return LRU_GEN_ANON;
+> > -	/*
+> > -	 * Compare the sum of all tiers of anon with that of file to determine
+> > -	 * which type to scan.
+> > -	 */
+> > -	read_ctrl_pos(lruvec, LRU_GEN_ANON, LRU_TIER_MIN, LRU_TIER_MAX,
+> > -		      swappiness, &sp);
+> > -	read_ctrl_pos(lruvec, LRU_GEN_FILE, LRU_TIER_MIN, LRU_TIER_MAX,
+> > -		      MAX_SWAPPINESS - swappiness, &pv);
+> > +	if (swappiness <= MIN_SWAPPINESS) {
+> > +		nr[LRU_GEN_ANON] = 0;
+> > +		nr[LRU_GEN_FILE] = min_t(u64, total_scan, nr[LRU_GEN_FILE]);
+> > +		return;
+> > +	}
+> > -	return positive_ctrl_err(&sp, &pv);
+> > -}
+> > +	if (swappiness == SWAPPINESS_ANON_ONLY) {
+> > +		nr[LRU_GEN_FILE] = 0;
+> > +		nr[LRU_GEN_ANON] = min_t(u64, total_scan, nr[LRU_GEN_ANON]);
+> > +		return;
+> > +	}
+> > -static inline bool is_single_type_reclaim(int swappiness)
+> > -{
+> > -	return swappiness == MIN_SWAPPINESS ||
+> > -	       swappiness == SWAPPINESS_ANON_ONLY;
+> > -}
+> > +	for (int type = LRU_GEN_ANON; type <= LRU_GEN_FILE; type++) {
+> > +		int hist = lru_hist_from_seq(READ_ONCE(lrugen->min_seq[type]));
+> > +		/* start at MIN_LRU_BATCH to smooth the rate on gen start */
+> > +		u64 refaulted = MIN_LRU_BATCH, evicted = MIN_LRU_BATCH;
+> > -static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+> > -			  struct scan_control *sc, int swappiness,
+> > -			  struct list_head *list, int *isolated,
+> > -			  int *isolate_type, int *isolate_scanned)
+> > -{
+> > -	bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
+> > -	int type = get_type_to_scan(lruvec, swappiness);
+> > -	int total_scanned = 0, scanned, tier;
+> > -	bool tried = false;
+> > +		for (int tier = 0; tier < MAX_NR_TIERS; tier++) {
+> > +			refaulted += READ_ONCE(lrugen->avg_refaulted[type][tier]);
+> > +			refaulted += atomic_long_read(&lrugen->refaulted[hist][type][tier]);
+> > -retry:
+> > -	tier = get_tier_idx(lruvec, type);
+> > -	scanned = scan_folios(nr_to_scan, lruvec, sc,
+> > -			      type, tier, list, isolated);
+> > +			evicted += READ_ONCE(lrugen->avg_total[type][tier]);
+> > +			evicted += atomic_long_read(&lrugen->evicted[hist][type][tier]);
+> > +		}
+> > -	total_scanned += scanned;
+> > -	if (*isolated) {
+> > -		*isolate_type = type;
+> > -		*isolate_scanned = scanned;
+> > -		return total_scanned;
+> > +		/*
+> > +		 * The rate scaled by 4096 to survive integer division, clamped
+> > +		 * to [1, 4096] (~0% - 100%), the floor of 1 keeps a type that
+> > +		 * never refaults from zeroing out the other type's share.
+> > +		 */
+> > +		refault_rate[type] = mul_u64_u64_div_u64(refaulted, 4096, evicted);
+> > +		refault_rate[type] = clamp_t(u64, refault_rate[type], 1, 4096);
+> >   	}
+> >   	/*
+> > -	 * We are running out of the current reclaim type. Fall back to
+> > -	 * the other type if allowed.
+> > +	 * The more extreme the swappiness, the wider the IO cost gap between
+> > +	 * anon and file, so the split should follow the IO cost ratio rather
+> > +	 * than the sizes. With a mild swappiness, balance the scan by the
+> > +	 * actual LRU size more.
+> >   	 */
+> > -	if (!scanned && !tried && type_fallback_allowed) {
+> > -		type = !type;
+> > -		tried = true;
+> > -		type_fallback_allowed = false;
+> > -		goto retry;
+> > -	}
+> 
+> Hi Kairui, Barry,
+> 
+> A question about the size weight:
+> 
+> > +	size_bias = max(1, min(swappiness, MAX_SWAPPINESS - swappiness));
+> > +	anon_weight = nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE] / size_bias;
+> > +	file_weight = nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
+> > +
+> 
+> In the classic LRU, get_scan_count() weights each type by its own size
+> only.
+
+Hi Ridong
+
+> 
+> Here each weight also includes the other type's size / size_bias. So
+> around swappiness 100 the split follows the sizes like the classic LRU,
+> but near swappiness 1 or 199 the sizes cancel out and the split follows
+> swappiness only.
+> 
+> For example, anon 3G, file 100M, same refault rate, anon share of the
+> scan budget:
+> 
+> 	  swappiness   classic   this patch
+> 		 100         97%        96%
+> 		  10         62%        28%
+> 		   1         13%       0.5%
+> 
+> Having two behaviors in one formula is a bit confusing. What is the
+> reason for this blending, and is there data behind it? Would weighting
+> each type only by its own size, like get_scan_count(), work as well?
+
+Your numbers are right, but get_scan_count() isn't just balancing by size:
+swappiness goes through calculate_pressure_balance(), and the cost there is
+refault IO plus rotation cost, size turns that pressure into a page count.
+
+With w = own size we'd match your classic column exactly, the bias is the
+only difference. And the bias is there on purpose: 0 and 201 are single-type
+and never reach the formula, while 1/200 are their counterparts, which is what
+get_type_to_scan() used to hard-code. If the user asks for an extreme setting
+then we respect it, and 15/16 and 16/16 make those ends exact. And this also
+matches the other parts:
+
+We don't use classic's cost accounting here. The rotation part is gone
+with lazy promotion: a young folio stays in its gen instead of being rotated,
+so the budget is bounded by the evictable size automatically. And the refault
+part is already kept per type and tier by MGLRU PID, and aging averages it
+so we can read it locklessly, a stale snapshot only skews one pass.
+
+So that's the whole model, it is a bit different but works well.
+Barry posted a lot of test data through v1 to v9, the swappiness sweeps
+(1/60/100/150/200, with per-type pgscan and refault) show the balance moving
+as described, including the ends.
+
+There could be some pitfall with PID's ineffective protection for
+high swappiness so with high swappiness you may observe a worse
+refault after this, however it is not caused by this, same problem
+exists for file heavy workloads, and will be solved with MGLRU-FG.
 
