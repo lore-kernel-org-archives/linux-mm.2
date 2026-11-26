@@ -1,94 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E690606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D0D606A334
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GjnZ+Jyl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g0huoPLA
 Received: by kanga.kvack.org (Postfix)
-	id 3E60D6B05B1; Thu, 26 Nov 2026 08:02:13 -0500 (EST)
+	id 468446B05B3; Thu, 26 Nov 2026 08:07:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3970E6B05B3; Thu, 26 Nov 2026 08:02:13 -0500 (EST)
+	id 43FAB6B05B4; Thu, 26 Nov 2026 08:07:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AC0F6B05B4; Thu, 26 Nov 2026 08:02:13 -0500 (EST)
+	id 32D486B05B5; Thu, 26 Nov 2026 08:07:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BD57C6B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:02:12 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57B85A044D
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:02:12 +0000 (UTC)
-X-FDA: 85477283304.24.AAAB9F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 94775C000E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:02:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GjnZ+Jyl;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B8DC16B05B3
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:07:27 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A0BAA898A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:07:27 +0000 (UTC)
+X-FDA: 85477296534.22.CF0E0F5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7205B4000E
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:07:25 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g0huoPLA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795698130;
-	b=zyvl2Xw1HykyHClZJow97p85Yw91DvF87PsK58wMkOsPyvep2U/JDuFgx6fgSf6ganlbNs
-	pl1i6QZwbtjDSdKNnPULahA+uldo35RW9DU0CwGKX6FsgNsfRNerPlnSBZYpBt+YDp8GWT
-	RiYFGx7XJYpwx0IJeg9tT9RF7U0rwMw=
+	t=1795698445;
+	b=NOz6EiLx3HX0oL+b70CniDk/fXruMy5AgHVUWUTPf3KLE7I5ApRmDdqNWvvrcXjH+/HClR
+	s/TqtkA5Id3s2faFXXyFH9idhaB06KYcZWso/+9kUaZQKrm7tTaRyy9SOcoDIfn9di4hj9
+	c2AZiZaMPV8nXLuwb4V84IHLxm+NX3A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795698130;
+	s=arc-20220608; t=1795698445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JNZtgNBPSxn7bvj4efWeLJ9UQDdmYpN2fvka3yysKZk=;
-	b=N4pbui/sKBG4sW/asnsrH1hUlqa7tMOLkFgF2/WMY6hGT8NLPSowQe+DSYPBV48TBjmRgO
-	dFux+T8or7R7OMfm77HrIYDMfEoAKP+SnKHfp6mY6wGDuHJQZH3MgloTAXarU5sCwflvBE
-	OArRrk4rTecy+VMD4DM1iGXas6P3Qog=
+	bh=foknlsobLC1fmFyqK5JuWlMNEp3Cfb1HNvIorEGGP60=;
+	b=hajHRAMHfpp0fKgX3fAns2XbA5+NLqQHJDXsQr+suedREgHExg3Ig4546NyAB32gKdz84n
+	I8tB7PsUUSfDxiViss/88dU8gfxJsWZhps0pObpxLe1bxWHausg7OdMdsGXoW7AJN4oLk4
+	RH4cBoEF7hBKKtSbBjO4oF0P+TNYgys=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GjnZ+Jyl;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g0huoPLA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B6BFD414F3;
-	Thu, 26 Nov 2026 13:02:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02E81F000C0;
-	Thu, 26 Nov 2026 13:02:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E25EB61164;
+	Thu, 26 Nov 2026 13:07:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297E11F000D0;
+	Thu, 26 Nov 2026 13:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795698129;
-	bh=JNZtgNBPSxn7bvj4efWeLJ9UQDdmYpN2fvka3yysKZk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GjnZ+Jyl/pFPw28aJ1N62SXh98WagAz6GlzjVpESIPTdRhJomCTQIoNHgrN2co06S
-	 pZhNokVEkj0S7Zb1qf/xYTAnPAY/vnU8tdFYlCk2Km5tbv5V9CJVS64Ek7Mb2etD3w
-	 MwN76Y3jCjwbecfl2LklxHFoQA532q5CJT9nO8EAWvS+TmWBAdCUq02X0jsPKHfHzp
-	 svYa/Dc6GOA//f0HfOgffGb3qeTXa/cOjx6QIPq522ifrqd7/iH1iAHbEbrnW4ODUb
-	 n+ZR9VtGehQqArlc2Dxf9VN5EmkKv3ywj4I/koKnGEqhuOgi5mAEBuKeJ9vL14J2fs
-	 XY0UPEDs67TPA==
-Date: Thu, 26 Nov 2026 15:02:02 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: me@amir.fyi
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Eric Dumazet <edumazet@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH] mm/mm_init: don't shrink large system hash tables below
- low_limit
-Message-ID: <awgtymEawotNXV8f@kernel.org>
-References: <20261123-mm-hash-low-limit-v1-1-8a803aa8ac70@amir.fyi>
+	s=k20260515; t=1795698444;
+	bh=foknlsobLC1fmFyqK5JuWlMNEp3Cfb1HNvIorEGGP60=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=g0huoPLAbF7NU2cha7D8a91bsfXr5lvj0dpFIJcLsM453MTh23seN7Mo0dXxnu2qC
+	 xN3ZgRasgaszBgksxHfwMbSXsLcd2O9/rZWZLCTvE74vIXMgR5jFrjVrguesR/dFQt
+	 IeBvu2o7iVXpognac2ufIxexQxZ3p2R/kpy1OhpHewwntJh/LiN2+tvylVcB9ba4Hg
+	 4gpXntdXbtr1QSSEqNXJaUxkL9wGU99NMiMFBef2CFoLjVOBL/wfGOHS0rd3kZS/qi
+	 mVJguYEu76rGOSonjL/iXaakgV3DIjaZRnsAjrOkxMVSjHTttCSt9WS+jdJYQid2ar
+	 WYuuFzBc9V5+w==
+Message-ID: <931acd3e-0689-4517-bbd2-d06109ac4a6e@kernel.org>
+Date: Thu, 26 Nov 2026 14:07:16 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261123-mm-hash-low-limit-v1-1-8a803aa8ac70@amir.fyi>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/cma: reject long-term pins of HugeTLB folios
+ overlapping crashkernel CMA
+To: Usama Arif <usama.arif@linux.dev>, Sang-Heon Jeon
+ <ekffu200098@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Frank van der Linden <fvdl@google.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Jiri Bohac <jbohac@suse.cz>,
+ kexec@lists.infradead.org
+References: <20261125155108.24098-1-ekffu200098@gmail.com>
+ <1b0242ef-49ad-4d7d-820e-d1e6569eacf8@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1b0242ef-49ad-4d7d-820e-d1e6569eacf8@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Rspamd-Queue-Id: 94775C000E
-X-Stat-Signature: g7frkc5a95i65jktna766m5padw1q9a1
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7205B4000E
+X-Stat-Signature: ugnp8m1j68kg8bcyu14atragpgzwpyfc
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795698130-954644
-X-HE-Meta: U2FsdGVkX19sEVPqdlRJhbD5ClVdRNpTtzeimnZxEHihgvKTZ1A2nTMjro2S48g5hlaxeQUw9NKFJQIqZuqxmP3xoUBJgxbAQSLvYcVAWI7lDuAHB308tdYK01tLZsJWHcq5h/7sAhyQmWNsxVZcZ7qVG+CGsPfW69SDMso8C1iCsZL2w8V2915Bab7QRnMHVJdGX39LHW6D4woDEL1xSgaI4AyK4lsjPDbGPpmaSs3Dyu0ZM9Xujfbqw8GZLSQApZAR5rcPiJ/FRUDtGaw6gAu7nEZSecBWXhXHqYAxO9kQcWXSlztPJr5CxzBsOdEvp+h+hTNr7FeN3cU/DwbCJWedrPQT1sCbGzJyfb+LrEfbOb0QNLSbyjuDJBi1sDyJPBh3qAnnC4poQCeaZAKRanQY+/Wl9hJnMc4cOJdD1/etDPv6EQLfxccosnhmj9pP0TwoxnJXBio33RFZ873n5OtaSPdKstwKU1No1ujy50HRxrXEEY8zNnKPJdhJe3al3Y9LmgwfLdJ4QyuntQhkFRKmtsBYlxMt0toa4vqpPLdhEkWMjVFuKKMFvfRIGhIpW3xjeL7RZTiR3S88Abm7JBf8qKxT5bXfhm0EtneTRRM+2LxGiB8E4soDU8B9TNLmtp7VQXNbkw8pbH+8n7nadjzcO9ewYcxzohwhh3w3JL6oQbRQchIXi82vf+FYO20fK8XVrqkmbPjhyzk7lLltBYdDBPERFu9miEHFsPY1+wc0CGo9FvmdPJhJvZhkVencsdgDFNvH2dURjkbm+GycoWjbpqiF42gNA3q3duSr72HxKszKxarJGyEYqB5v8zD0EgBNULsgiAtraWQz3s6VYZnRnfJAetTQC7Jjw6jv47rQeg6WfhaFFEdTQtUJPWgdwH8aiYYk1nudv2Ie2WoOmqQQDg6zyD2mUJ33Z0VhHESo8qM8MTH3Mc4jKuRqR73LOP6fbSbVrF702dv7bcz
- p33EOAod
- SIPjAmIfaH2LMPTcH0WE6WR8mGnEMryjimiuie2DVXuNsMHU/Oc1xJtefmHe8wfQyprZfgUJkXr3hfd/sxxqY3LpJ4SLpau0Lg23A0sTyOsoIyUinZ2iY8ydFxrGPRSDOktIuxL0ymfav3oXwHrgQX67byoqvHMQPlbdCajGtyTbBi5XcLqru+sSz5SY46iGhG0xhlxO37k5rjZIQCllQ6JaC9jzOY0niShhSrHEbJpyUZKNIBqf95xHd7nx4IJOsqUTUVYNf5Cu4Zgil19hKh6nUOMUiyoxecB8R5tUU8H7Z2mZBEblWjnHH5uFSnMXceYG5ZZVt6iPwHIS5ARcY5Isi1uOjkw+ptvgnL+K5n0KIL4CVWdfJRBXHaw67jt14xyo5ES8DeHQdXiugkVMNtcwzdQ2t0IxAIJglgIvmUO4E0uKlPimJiK0UpG3UyUttwkDEe5H0xEMstgw+cmuU8QNASvrwAEYZkWNAnDgbIJ9Y/bmAp+nU3H6O9389kZLuTyFkXE8v3CrvyIq6/+81REdz9ipvy6ksfztpOe6EVz6c7Ls=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795698445-171002
+X-HE-Meta: U2FsdGVkX1+9tNA0+9Qdzk2q6eY8BMEpE2E0mbPsIdwac8hFliBDkBD6J+9PDmpiWwn1q5KFdiQRDz6+sLXNcp7n/LcAmDpLegy2qSfnYmqKJPNjsdwCt5rn8EHtCcwUeK5oQ0CYbsDWfINmKL9xmTmy8PZBO/K1xM0GO98lLhWwz2Pjr185ObBvSEWz3oDVH8/TN7gT88PTCq6C4fed9i79bHW/Ht5c89PbRXC/FS/ue/rlWGDjY2u885OgPzizlnQ6msQXha+P+Jre/nan0dfRq4Qgch0NAy59dbnU/HXvk0Xj74r8vbQY/enlK6PYij2WSXFdWsqfDSfkrCGZ8RATbiM17fQUB0zWi3lkppjBwQS2K6B1NKyEuNalsNojOp03D8KRksRVae5fwbBik2i5K1c5f5kUctsqiqInLizshfYwbb+uWVC7fi+fn0zsCsNx0aw4jpJeZsDpzQT2/8KBezxf/zq1hj+EkIX9+BMuxHD8dOkLJZIhJycmD+XoczbMZWVlnIY1yUlrVe1KAruIKHjUSfVs+rvbyGkGCpeocDTEaWBkhz0mYMDUcsXRnagRVbnUDVBF7TVIO74eWOOZcvC209c+aR/8mSgIvpzqc/yafrXXb7enWasAmz3pywiMXm3im/pV6NygFAX1epgRAsTjSbTEHxi/a2oIKw3IL88BKJsUvwpkaX68EjRO6YPgTjro6lPYqdpdIUUfoHHYg2Q6xhtEZNrS72Bc9CoKeO9qraPexTLVqoY8rh6TZvqzGZzNkwW1FsIwLko6zeJJgSPXrYYwoWYp9ccWstItNog7cHhJqp3ckFZyKJJomMHqoM0bstQ4Jd7J9oMjW5t7jV3gQjX6dep5JBAsQCTDvdRCccPvKVlH3lTuJztzd5oEGp/hnM6DDs04s/TwjsQ4ewoEVS1qvmRcdBaSIfQq3A/fxeXqFsBxuhoiTwdBqPZukGiCxMrVon/tzM4
+ Qfscem70
+ LQKet1P5XyAhAfq6yFxDpACvsCzA7soK7T9YPKWDvzVQyRe3ffyeXCAOxd3zUsuFpHuMPKxH+nwFJDFpJA/asFUsk27NBwo0YJ5BESCrAGeYNQlDwgzjPKujUbWqfTfd3cik+YBQpNtWPKhN01orLtz30m/k34MJCC2NWBvlOyQ0sOqtLNC/RE6vDVzTeeqRlIi2jaKGmhslNk3kIOH0P6aLrKBuyJroybuRFusUIcv0uwrMcA9Ia6A8vnGW++C7B1D/6QO/HlOpX9XGUt9c358fv3M3NHGup2QHRvs9qdJeVCGRXtsQrW3tBXRTq6tNGYaNMusMXV83gXU4bM9n5bP4DvD5CQZYg3K16zcLMmbHpuhax7Cxz8fYdIlsMFlueDfoMIEuF7QYgaH0vo44f9unXUscDH8WPfvyZCT4l6pEQuSZZRQXVPwMo+Zv9RP3YGOimMFbGdhLdkBy2PZQduK1NEX9MhLGzaL9/LQ53kFFwEsvTFCfADPGbI5kO+Tel8OBc9nVwBonCfd2s4sotsZyN2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,140 +150,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-(added Christian)
+On 11/25/26 22:49, Usama Arif wrote:
+> 
+> 
+> On 25/11/2026 07:51, Sang-Heon Jeon wrote:
+>> crashkernel=size,cma uses existing hugetlb_cma memory, so
+>> crashk_cma_ranges[] may contain HugeTLB folios. HugeTLB folios allocated
+>> from hugetlb_cma can be long-term pinned without being migrated.
+>>
+>> After a crash, the crash kernel uses the memory in crashk_cma_ranges[],
+>> but a device can still write to a long-term pinned folio.
+>>
+>> So reject long-term pins of HugeTLB folios overlapping
+>> crashk_cma_ranges[].
+>>
+> 
+> Is spending the workload to protect the dump the right way round for this
+> option?  kdump.rst describes it as
+> 
+> 	This reservation method is intended for systems that can't afford to
+> 	sacrifice enough memory for standard crashkernel reservation and where
+> 	less reliable and possibly incomplete kdump is preferable to no kdump at
+> 	all.
+> 
+> so the dump is the part the admin has already agreed to give up.
 
-On Mon, Nov 23, 2026 at 08:15:49PM +0000, Amir Hosseini via B4 Relay wrote:
-> From: Amir Hosseini <me@amir.fyi>
-> 
-> When an allocation fails, alloc_large_system_hash() halves the table and
-> retries until it is down to a single page.  It does not stop at
-> low_limit, although commit 31fe62b95866 ("mm: add a low limit to
-> alloc_large_system_hash") added low_limit precisely so that callers need
-> not check the size they get back.
-> 
-> The TCP source port perturbation table depends on that.  It passes
-> low_limit == high_limit == INET_TABLE_PERTURB_SIZE and neither
-> _hash_shift nor _hash_mask, so it cannot learn the real size, and
-> __inet_hash_connect() fills and indexes INET_TABLE_PERTURB_SIZE entries.
-> On a single node system hashdist is off and the table needs one order-6
-> GFP_ATOMIC allocation.  If that fails, e.g. because most memory was
-> reserved for HugeTLB at boot, the situation commit e67b72b90b7e ("tcp:
-> use alloc_large_system_hash() to allocate table_perturb") was meant to
-> handle, the table is silently halved and the first connect() writes up
-> to 240 KiB of random bytes past its end, typically into the TCP
-> established hash table:
+We have in there:
 
-This is hard to read :/
- 
->   Table-perturb hash table entries: 32768 (order: 5, 131072 bytes, linear)
->   ...
->   Oops: general protection fault, probably for non-canonical address 0xe480dbf6b420b3d9: 0000 [#1] SMP KASAN
->   RIP: 0010:__inet_lookup_established+0x168/0x5d0
->   Call Trace:
->    <IRQ>
->    tcp_v4_rcv
->    ip_protocol_deliver_rcu
->    ip_local_deliver
-> 
-> Stop halving at low_limit.  If the linear allocation still fails, retry
-> the same size with vmalloc_huge(), which this function already uses for
-> tables that are too large for the page allocator or when hashdist is
-> set, and which does not need physically contiguous memory.  If that
-> fails too, panic as before.
+"This option increases the risk of a kdump failure: DMA transfers configured by
+the first kernel may end up corrupting the second kernel's memory."
 
-So, AFAIU the gist is here is that page allocator fails, let's fallback to
-vmalloc_huge().
+... but I recall some discussions about short-term vs. long-term vs. cma
+discussions.
 
-The large hashes are normally allocated at boot time when memory is not yet
-fragmented, so it's very unlikely that page allocator would fail.
+Ah: https://lore.kernel.org/all/ZWJllXCN0SDIELrX@dwarf.suse.cz/
 
-But there is another question: do we really need physically contiguous
-memory for the hashes we get from alloc_large_system_hash()?
+"User pages for RDMA, should be pinned with FOLL_LONGTERM and that
+would migrate them away from the CMA area.
 
-AFAIU, we can just drop the alloc_pages_exact() case and keep memblock for
-HASH_EARLY and vmalloc_huge() for the rest.
+But you're right that DMA to user pages pinned without
+FOLL_LONGTERM would still be possible. Would this be a problem in
+practice? Do you see any way around it?
+"
 
-Eric, Christian, what do you think?
- 
-> Reproduced on v7.4-rc4 in an x86_64 QEMU guest (virtme-ng, 1 node,
-> KASAN) by failing just that allocation with CONFIG_FAIL_PAGE_ALLOC and
-> fail_page_alloc=1,100,<space>,1, where <space> was measured with the
-> kmem:mm_page_alloc tracepoint so that the one injected failure hits the
-> Table-perturb allocation.  Without this patch the table is halved and
-> the kernel crashes as above on the first connect(); with it the table
-> keeps 65536 entries (vmalloc) and the system works normally.
-> 
-> The reproducer and fix were developed with the help of Claude Code.
-> 
-> Fixes: 31fe62b95866 ("mm: add a low limit to alloc_large_system_hash")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Amir Hosseini <me@amir.fyi>
-> ---
->  mm/mm_init.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index d99af80ec752..418068bad006 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2359,6 +2359,7 @@ void __init page_alloc_init_late(void)
->   * - it is assumed that the hash table must contain an exact power-of-2
->   *   quantity of entries
->   * - limit is the number of hash buckets, not the total allocation size
-> + * - the table has at least low_limit entries, callers may rely on that
->   */
->  void *__init alloc_large_system_hash(const char *tablename,
->  				     unsigned long bucketsize,
-> @@ -2371,7 +2372,7 @@ void *__init alloc_large_system_hash(const char *tablename,
->  				     unsigned long high_limit)
->  {
->  	unsigned long long max = high_limit;
-> -	unsigned long log2qty, size;
-> +	unsigned long log2qty, min_log2qty, size;
->  	void *table;
->  	gfp_t gfp_flags;
->  	bool virt;
-> @@ -2420,6 +2421,7 @@ void *__init alloc_large_system_hash(const char *tablename,
->  		numentries = max;
->  
->  	log2qty = ilog2(numentries);
-> +	min_log2qty = max(order_base_2(low_limit), 1);
->  
->  	gfp_flags = (flags & HASH_ZERO) ? GFP_ATOMIC | __GFP_ZERO : GFP_ATOMIC;
->  	do {
-> @@ -2445,7 +2447,19 @@ void *__init alloc_large_system_hash(const char *tablename,
->  			table = alloc_pages_exact(size, gfp_flags);
->  			kmemleak_alloc(table, size, 1, gfp_flags);
->  		}
-> -	} while (!table && size > PAGE_SIZE && --log2qty);
-> +	} while (!table && size > PAGE_SIZE && log2qty > min_log2qty &&
-> +		 --log2qty);
-> +
-> +	/*
-> +	 * Shrinking below low_limit would break callers that size other data
-> +	 * from it, so fall back to vmalloc, which needs no contiguous memory.
-> +	 */
-> +	if (!table && !virt && !(flags & HASH_EARLY)) {
-> +		table = vmalloc_huge(size, gfp_flags);
-> +		virt = true;
-> +		if (table)
-> +			huge = is_vm_area_hugepages(table);
-> +	}
->  
->  	if (!table)
->  		panic("Failed to allocate %s hash table\n", tablename);
-> 
-> ---
-> base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
-> change-id: 20261123-mm-hash-low-limit-37a3a47c7cd1
-> 
-> Best regards,
-> --  
-> Amir Hosseini <me@amir.fyi>
-> 
-> 
+And later (me):
+
+https://lore.kernel.org/all/04904e86-5b5f-4aa1-a120-428dac119189@redhat.com/
+
+"What does "short" mean? At least in theory, long-term pinning is
+forbidden for MIGRATE_CMA, so we should not have such pages mapped into
+an iommu where DMA can happily keep going on for quite a while.
+
+But that assumes that our old kernel is not buggy, and doesn't end up
+mapping these pages into an IOMMU where DMA will just continue. I recall
+that DRM might currently be a problem, described here [1]."
+
+
+And in the end, we settled for the 10s wait, crossing our fingers that it will
+be alright :)
 
 -- 
-Sincerely yours,
-Mike.
+Cheers,
+
+David
 
