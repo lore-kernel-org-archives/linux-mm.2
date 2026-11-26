@@ -1,97 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A74606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA92606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A+nXzGi6
 Received: by kanga.kvack.org (Postfix)
-	id 54AFA6B05B0; Thu, 26 Nov 2026 06:05:00 -0500 (EST)
+	id CD3366B05B0; Thu, 26 Nov 2026 06:10:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 522C16B05B1; Thu, 26 Nov 2026 06:05:00 -0500 (EST)
+	id C5D406B05B1; Thu, 26 Nov 2026 06:10:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 438356B05B2; Thu, 26 Nov 2026 06:05:00 -0500 (EST)
+	id B24346B05B2; Thu, 26 Nov 2026 06:10:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 249286B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:05:00 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A800B1C418E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:04:59 +0000 (UTC)
-X-FDA: 85476987918.10.04CC44B
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A670F8000E
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:04:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of yangyizhen3198@phytium.com.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=yangyizhen3198@phytium.com.cn;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BBEF6B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:10:57 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AF24C03E6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:10:56 +0000 (UTC)
+X-FDA: 85477002912.07.E0FD323
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CCF92160007
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:10:54 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A+nXzGi6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691097;
-	b=w/xKNwdx/iB7tqB+YpL5cN9ZSuUH7KHcLxjJWPKn+lSJfqaCxxMeEg6Vdtkbv3HdLOJjnZ
-	EP9bywdzxJHgE9EFAMGgDewsTZhvH8tZMvhqdl+3wwxRVi+JVAtUY6rXIo4vWzD+OORDtp
-	KN+J5CZlQqAYoLNMDVcvwShw2QWeBR4=
+	t=1795691454;
+	b=2TS1a+ScUThLbjnjTWofUUuRIA2PlK3WFzEVSJ1DH0SnRmiwf8xfuBZTZYdt2AnjVCW6BL
+	dAGtGuJeQfDU7a6PkR1Du73LEaF2rH9Yki/UAVlTGLb3V+94OIQLAEbh0cDQ675MagQmDC
+	h4Egc8WtBumJweZU/sirPXH0nBqxnKE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691097;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795691454;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7WZrC5amErdAZUKH3zA00f9ty+dy4dlRNgU1aieOoRU=;
-	b=S2cjIWi1UVxncxeYo35L4N7VJq+yTL483qOYrUgeRbay7DOqv3Pwh1fHGfeMtc6p9bHZVb
-	+s4Gg0b+NoDj1x90FqR5u8Mj88xdng4vdF11iUH991SGPjFZPp52ZWaj7+d+23tv5n0tJk
-	Zt6XicAUX00pyNnB6dHK/mm37HHEX/4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mzhfHYOTAiWX4/4QQvlE4sNDOxtXiB/zhUzzBPto7Gg=;
+	b=W5464dBukP5BaZ2IRivea8T5rgoz8jHi/A1/OIuf81uIlkyadWXFC6xm1gARQcBaF2VFiQ
+	Sgr2GXX6inBA8HPTksA2gcDDdSFMzS3JsQMF6KF5266GA6sPsCW+3qP5qMgs9Rze3MzUg4
+	on+MsrzJJFD9NcHSvfw/ESaejuzWXyk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of yangyizhen3198@phytium.com.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=yangyizhen3198@phytium.com.cn;
-	dmarc=none
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-6 (Coremail) with UTF8SMTP id AQAAfwAHXt1TEghrtjkqAg--.9133S2;
-	Thu, 26 Nov 2026 19:04:51 +0800 (CST)
-Received: from yangyizhen3198$phytium.com.cn ( [218.76.62.144] ) by
- ajax-webmail-mail (Coremail) ; Thu, 26 Nov 2026 19:04:50 +0800 (GMT+08:00)
-Date: Thu, 26 Nov 2026 19:04:50 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?5p2o6L2255SE?= <yangyizhen3198@phytium.com.cn>
-To: "Christian Brauner" <brauner@kernel.org>
-Cc: "Jens Axboe" <axboe@kernel.dk>,
-	"Alexander Viro" <viro@zeniv.linux.org.uk>,
-	"Jan Kara" <jack@suse.cz>, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: Re: [RFC PATCH 0/1] block: long udev open waits during cache
- teardown
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250512(e7b47ee3) Copyright (c) 2002-2026 www.mailtech.cn OP_ICM_ICMVM
-In-Reply-To: <20261120-hassliebe-arena-kaufvertrag-3ac58fd0483a@brauner>
-References: <20261117105107.14236-1-yangyizhen3198@phytium.com.cn>
- <20261120-hassliebe-arena-kaufvertrag-3ac58fd0483a@brauner>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: Lc7SY2Zvb3Rlcl90eHQ9MTM4NzozODM=
-Content-Type: text/plain; charset=UTF-8
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Message-ID: <4effe3b8.6085.1a217879319.Coremail.yangyizhen3198@phytium.com.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:AQAAf8Dw8nVSEghrOBUAAQ--.52298W
-X-CM-SenderInfo: 51dqw5pl2kv0atrzmqxsk13x1xpou0fpof0/1tbiAQALDWsHN0wEe
-	QABss
-X-Coremail-Antispam: 1Uk129KBjvJXoWxZw4xXr18Zr4rAF1xtrWkWFg_yoWrXryUp3
-	W8t3W8Aw1UGw17G3ySgw18ZryUC3yUGr47Ja10y3sFywnrJrnIqrnxKFW8J3WjgFyYyrWD
-	tw17Z398Xr1UtrUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A+nXzGi6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0CD9E61755;
+	Thu, 26 Nov 2026 11:10:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5161F000C0;
+	Thu, 26 Nov 2026 11:10:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795691453;
+	bh=mzhfHYOTAiWX4/4QQvlE4sNDOxtXiB/zhUzzBPto7Gg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=A+nXzGi6hA1waDmMchthGQIFQF53hls5vuEY0MNWl8ro9oCLwWl1SiqufjiNXVqyA
+	 KlZtB/DTEanOQ9KDlavO2hm+TxpBobgPkG5aecpDsqcXjDGn0xJFFghvOMZhQMRE4s
+	 MpZmDd2noaNyR23VJVt5hIQdE96YwmPNeOEj9jUZojYIM+GlSv3zI4ZTxCwlraux2R
+	 bZPSQATVGWzO2K2FAvf6zXqNmKAs9WIKiMhICBCwMRIpfEmEgfNdwzrGvQrpHsDqaH
+	 v7Lkug97REhA8Gqaa7sjCAy0Cf6na6PQqzu2a2lgjSD8xz8t3VXexLak/FXubRTfHG
+	 tX4ad4XqZ1deg==
+Message-ID: <sashiko-outbox-235347@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH slab/for-next v2 14/14] mm/slab: do not set
+ SLAB_MAY_ACCOUNT for all caches
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SGFycnkgWW9vIChNZXRhKQ==?= <harry@kernel.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Michal
+ Hocko" <mhocko@kernel.org>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>
+Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
+ Rientjes" <rientjes@google.com>, "Muchun Song" <muchun.song@linux.dev>, "Hao
+ Ge" <hao.ge@linux.dev>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org, kernel-team@meta.com, "Liam
+ R. Howlett" <liam@infradead.org>, "Alice Ryhl" <aliceryhl@google.com>, "Andrew
+ Ballance" <andrewjballance@gmail.com>, "Matthew Wilcox" <willy@infradead.org>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>, "Jan
+ Kara" <jack@suse.cz>, "David S. Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>, "Jiayuan
+ Chen" <jiayuan.chen@linux.dev>, "Kees Cook" <kees@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Mark
+ Rutland" <mark.rutland@arm.com>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>, "Robin
+ Murphy" <robin.murphy@arm.com>, =?utf-8?b?Sm9lcmcgUm9lZGVsIChBTUQp?= <joro@8bytes.org>, "Amir
+ Goldstein" <amir73il@gmail.com>, "Casey Schaufler" <casey@schaufler-ca.com>, "Paul
+ Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org, "Richard
+ Weinberger" <richard@nod.at>, "Anton Ivanov" <anton.ivanov@cambridgegreys.com>, "Johannes
+ Berg" <johannes@sipsolutions.net>, "Eric Dumazet" <edumazet@kernel.org>
+In-Reply-To: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-14-7c680f02a734@kernel.org>
+References: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
+ <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-14-7c680f02a734@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 26 Nov 2026 11:10:51 +0000
+X-Stat-Signature: cr86955daasczpgphxfn8nm1uzc6dak8
+X-Rspamd-Queue-Id: CCF92160007
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Rspamd-Queue-Id: A670F8000E
-X-Stat-Signature: pskf6kfucdxzufzwhqumg9u941hwqbyr
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795691094-173694
-X-HE-Meta: U2FsdGVkX19ITHqAm/cxwXvlX0L/C3Kfm9+EkRPkjZ2tEsUsA/VwwnS92ripIg6jXLUjhwpxaelK2YzBbeB8ePf0euNna6Tru8fE0O8cvA0kcmCQE28iBjaKN+EdniDq7FzPRI82Nllms2dG9JpzkRgKfsf/7rMqXfCr+BsIYaU0DzBI7lznNEr5OfSJlvJH3n+947UH260VOkH48gERluA2kFqrSN9x/yvUDHlnBpA6c1NFg5xqCh/r8u2FoWkWkhk8QNOUyyKNVYlYxVKPzxrTFWeArDlDiJR4qKrMvBmvOM05GaxMKwfJOynpThw6cWPx6wajeAQcKGdglJ3YIAPt1jY5cAjE7S62QYA1Bk7PuoB0fsbnDdqmHE1HXR0SE+0kjnKWdM01ozpmwdwpiAQNzLTrnZ/mtasoF2XQKY0o8AVdUx7pjjMHG59SStZcVl8KGI0xomUmDiWW2AplcmwYHi1j25enp2Ws8hyfJOQzLaZ52Mh9iOECgeh6bDh9VEr5PxkIr4Tl4UdmJEMlztjcCx7zYsHdAxAfODYlfZrOt+SwcQz7sXKATanReOUWcz86LkcyVX4m31izwa4DPaPzrXGlOFPCJl3Ef3BWSdiEjhQ9AD6MpJqv4kNY5+IlNddB7Lp5yOzyJz+L4g+CvIn6jG3LA8QRe1ikw0WQT8W3jbsHzNqx2/4HXtqEW0l2XiC+jAdh47gQuURUTDHqZlaSuwX7t74CkcwJvlltO0kA2TSbSZZ0NZFO/ZQVjiH3yCdjsqGBAd6FvdR/cTrTQn9UtE8pn9pXZkj6tNX1CQNLjOiMZdHESjC5YCFGk77HibV/ZAiqZCGNCINqBqYr4CqtAP00yAevLm8eSzzEaUUzIjukcjmJn7VsUramho4hXbD11STfWeWm8DyzKMxxNGtA3GY9/1bPd8Anm8JzFdQI4FySbIJ9aprPtrSYk7deOPfS9PFsEawJxCBL15W
- aYrgTnzp
- 8Hdmtn5f0wm2VXQIB8bqSHOVPJQ3ye9UzdFz47ijIqnRjFJ4YuxZCLkCVRE1ZOL4jSljKHdKzkOWnnCaXfB8Va0co58cqH+83QuvRc3f2emPIK8WBqP2XYR5YhVJ5zbK5hFq/xWdV/Rq/DD2t60uTFGOAm79MXjrety2Pg8yVjxiqukIRMHckaj4m85db6mucjsO02ratoh163cL2mT/LdkFn1ETryNWOCO6gVRcb5zG92rNomKfkmso+GLHSOiahjzQc6H/9C+yQ1dPxCwSYVQ5kd52Qc1aTbzUeIzJD+XgMecDwWNF/HqQ2VF2iuqMyoJjFKmfcjoW2OmZmspr9RFdYUEeXVxOPuAYHv26oqaRd4E0=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795691454-433642
+X-HE-Meta: U2FsdGVkX18cxLmyf6sIfGSgQ0SS5VM6KJUPi3+jzms4FWnlhDxqk9A/qySp8uF5C8EU5Pc7UOmBktU//ZCShVLf7sJPSli0CD55wyk87KNEz5aQ4naMr8nhBnN8NrCEqDUcjL6nBzQdHpR/LTZoRha9A4q/RsSaXF2DGh03qFACNWsRhdo9XLXUHEo0ffK1q8U6YkjeUuAjYO5WCLygcvp9FHhd0k9C1Lr5UCGwXb9AHtsANjob4hX1LqdU/Nv5gNFcG7opnBJKRMLcZYV6J9FRPuQf1AZC3OYcxCT0vZBWVLoRV9IJM6E/+RQguSJLQj0HetOX4MjtTfGFB9d7Rm1A2LcklzK4rBTknndZRGBmqB8ck4ZCPLuH58IANwexB8Q9kuF0jTHoAVpEmst2984edX/b3vgpfOqIYfoQ690IUuhlaylBS5cETLOuK5NE6sZnXIwx7MOswe0aHgD1Xo3Qzgimpg61aWkeQUaVjOCOtBV9O3Yb4JaakzS5lLyxNf1vhGky7UBtg2zzLlVDx8zGQclftBfOVlkLfn+h5TpP0qQaGynHyP1syrCEBitLiIuqFOEsWWHjcbXatpetCuyZrGEoksGwl4uH4cGwEgOgMZNxypPuhe5tXGaemCGFreAHJO3XZiG4vuZ/Zgi2uRni1dBZx8Cig00zmSDQhkjesrMTC+CcTIqQp3+JtIJHHCgFjsp65pavVYbo53V92oB7DJfu2JRnrJHy61r6su4XQE7BoALOvMDG+iG1b3UXnQYMyn/TC/wqqHhjZk+//OKFztyngC/A4HIWgDPDFd2ZZTUskYcxco0g3JRfiI2+uMVJDLiedWdudYMU1/zsz485ifYehmGDcRRUmAg4JqFezIiiZBiXV1yt5iEx5srPrGhPiAKQUpWqjBOsJ5h1BcPCwAI8OdH4pps8I/LldWwL05Pp/faSvpLd/SlYONVxCXuVCPhZv1cfeWLx2hw
+ 1x/bk1iO
+ jErlWwFhwiikpIIV8AENMiGpBxxadEKfkHL4wZEkXITJKlTDIW1VdUxhlW64NhYd2zMTk+bX1rXoI1aUVK+6N3acV8gTZM9wf1Lr77m2crtDyl+ws0GnKjWFkEqLJdCsNfwpM7Z/XbnK9DmfNGmdR+JCgvv0VXxjUL6Hv+QAXK3369Qvhp9DTyPbh4qXfUtyy6OPstoYCFFnTvfSq5s0di6zFXrL3C954NE54/B+Il/P042Yg45WnzccAziOkppRGwyOdSr0x1TchB5ghNqcqR4PXMNCigK4YvS/4vLk4C5URxLvz7/j2K9tl3UdwDGytkIE3+Y+xcJy3qF33Ybb7CtA77Ey0vd2VVDEncN3xvB70IOfFbbnmc8Q2Bsm2t2GwwM30IIGGUjRdhqtjbl5qS6DsnELaYHy2p3dF/ajN3SPOFbeksEPCzti3a5KBvZG/W9V3ghAu+US1NuT04aC6hJteuRGjKoOOKvKrE/mhRay0kS1HcHlJcZnEuterd1nJnqz+xIrvUmMuXVQwrdjYqWCoEyG+OYl7nBxzpqTw0X0tABR3Ye25gjVJw/ZzbsUmZaeAMUR2zKjXcpns8NRPjqqueLv0fE5JXrNbDSxmqM848SmZpt1ymBBjg7piXdDq//J1I79Lbw4K2Y4nDxV5HsLS/a7PndVNjoPzCjxIsmhQIfEIuhmgFm38aRc/FoucX1IyrARTHZDXQ/Ynl/aAYs7mx9Lg0tvMTdOXah9F3/SqAiFqPt+CsUUawkuqeMJSAHb0zo17Z8pdLYwDWIPrjOpf4AhimlLAzvwicvnuLul8PcDDIDfK0o8mI1vl5oqvEgZnBUjIMnQM8lLntA8CujKgRl0GwucqrquyDxc61UNfH3QWqRNme1UcqJFvjHWWM/y6wAT89pdCQKgYUdSOANHBKzpi+tA8qd9tlXB0E7DcNukUK8WOd9+ARw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,40 +114,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-SGkgQ2hyaXN0aWFuLAoKPiBJZiB0aGF0IHN0aWxsIHJlcHJvZHVjZXMgb24gbWFpbmxpbmUgaXQn
-cyBhIHF1ZXN0aW9uCj4gYWJvdXQgdGhlIGJkZXYgcmVsZWFzZSBsb2NraW5nLgoKSSByZXByb2R1
-Y2VkIHRoZSBsb25nIHVkZXYgb3BlbiB3YWl0IG9uIHVwc3RyZWFtIExpbnV4IHY2LjYgYW5kIG9u
-CkxpbnV4IHY3LjAuMTQuIE9uIGJvdGgga2VybmVscywgdWRldiBibG9ja2VkIHdoaWxlIHRyeWlu
-ZyB0byBvcGVuIHRoZQpkZXZpY2UgYXMgbWtmcy5udGZzIHdhcyBjbG9zaW5nIGl0IGFmdGVyIGEg
-ZnVsbCBmb3JtYXQuCgpUaGFua3MgZm9yIHBvaW50aW5nIG91dCB0aGUgaW1wYWN0IG9uIG90aGVy
-IG9wZW5lcnMuIEkgYWdyZWUgdGhhdCBhCnVkZXYgcHJvYmUgY2xvc2luZyBpdHMgb3duIGZpbGUg
-Y291bGQgdHJpZ2dlciB3cml0ZWJhY2sgYW5kIGV2aWN0CmNhY2hlIHRoYXQgYW5vdGhlciBvcGVu
-ZXIgaXMgc3RpbGwgdXNpbmcuIEknbGwgZHJvcCB0aGUgX19mcHV0KCkKcHJvcG9zYWwuCgpJJ2Qg
-bGlrZSB0byB1bmRlcnN0YW5kIHRoZSBsb2NraW5nIHJlcXVpcmVtZW50cyBpbiB0aGUgYmxvY2sg
-ZGV2aWNlCmxhc3QtY2xvc2UgcGF0aC4gSW4gcGFydGljdWxhciwgd2h5IGRvZXMga2lsbF9iZGV2
-KCkgbmVlZCB0byBjb21wbGV0ZQp3aGlsZSBvcGVuX211dGV4IGlzIGhlbGQ/IFdoYXQgc3RhdGUg
-YW5kIG9yZGVyaW5nIHJlcXVpcmVtZW50cyBkb2VzCnRoZSBsb2NrIHByb3RlY3QgZHVyaW5nIHRo
-aXMgY2xlYW51cD8KCkknbSBhc2tpbmcgYmVjYXVzZSB0aGUgZGV2aWNlIG1hcHBpbmcgY2FuIHN0
-aWxsIGNvbnRhaW4gYSBsYXJnZQphbW91bnQgb2YgY2xlYW4gcGFnZSBjYWNoZSBhZnRlciB0aGUg
-ZWFybHkgc3luYy4gSW4gbXkgdGVzdHMgb24gdGhlCnZlbmRvciA2LjYga2VybmVsLCBhYm91dCA4
-MDUgR2lCIHJlbWFpbmVkIGF0IGZpbmFsIHRlYXJkb3duLCBhbmQKdGhlIHRydW5jYXRlIHRvb2sg
-cm91Z2hseSBzZXZlbiBtaW51dGVzIHdoaWxlIHVkZXYgd2FzIHdhaXRpbmcuCkNvdWxkIHRoZSBy
-ZWxlYXNlIHBhdGggYmUgY2hhbmdlZCB0byByZWR1Y2UgdGhlIHRpbWUgb3Blbl9tdXRleCBpcwpo
-ZWxkIHdoaWxlIHByZXNlcnZpbmcgdGhvc2UgcmVxdWlyZW1lbnRzPwoKPiBBbmQgbWtmcyBjYW4g
-anVzdCBmc3luYygpIGFuZCBQT1NJWF9GQURWX0RPTlRORUVEIHRoZSBkZXZpY2UgaXRzZWxmCj4g
-YmVmb3JlIGl0IGNsb3NlcyBpdC4KCkkndmUgc3VibWl0dGVkIGEgcGF0Y2ggdG8gdGhlIG50ZnMt
-M2cgcHJvamVjdCB0aGF0IGNhbGxzIGZzeW5jKCkKYW5kIHRoZW4gcG9zaXhfZmFkdmlzZSguLi4s
-IFBPU0lYX0ZBRFZfRE9OVE5FRUQpIGluIHVzZXJzcGFjZQpiZWZvcmUgY2xvc2luZyB0aGUgZGV2
-aWNlLgoKVGhhbmtzLApFdGhhbg0KDQrkv6Hmga/lronlhajlo7DmmI7vvJrmnKzpgq7ku7bljIXl
-kKvkv6Hmga/lvZLlj5Hku7bkurrmiYDlnKjnu4Tnu4fmiYDmnIks5Y+R5Lu25Lq65omA5Zyo57uE
-57uH5a+56K+l6YKu5Lu25oul5pyJ5omA5pyJ5p2D5Yip44CC6K+35o6l5pS26ICF5rOo5oSP5L+d
-5a+GLOacque7j+WPkeS7tuS6uuS5pumdouiuuOWPryzkuI3lvpflkJHku7vkvZXnrKzkuInmlrnn
-u4Tnu4flkozkuKrkurrpgI/pnLLmnKzpgq7ku7bmiYDlkKvkv6Hmga/jgIINCkluZm9ybWF0aW9u
-IFNlY3VyaXR5IE5vdGljZTogVGhlIGluZm9ybWF0aW9uIGNvbnRhaW5lZCBpbiB0aGlzIG1haWwg
-aXMgc29sZWx5IHByb3BlcnR5IG9mIHRoZSBzZW5kZXIncyBvcmdhbml6YXRpb24uVGhpcyBtYWls
-IGNvbW11bmljYXRpb24gaXMgY29uZmlkZW50aWFsLlJlY2lwaWVudHMgbmFtZWQgYWJvdmUgYXJl
-IG9ibGlnYXRlZCB0byBtYWludGFpbiBzZWNyZWN5IGFuZCBhcmUgbm90IHBlcm1pdHRlZCB0byBk
-aXNjbG9zZSB0aGUgY29udGVudHMgb2YgdGhpcyBjb21tdW5pY2F0aW9uIHRvIG90aGVycy4=
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] mm/slab: missing short description in SLAB_MAY_ACCOUNT
+  kernel-doc comment
+--
 
+commit b34eae19fad88ae1a8ba755676d1139c330f19f8
+Author: Harry Yoo (Meta) <harry@kernel.org>
+
+mm/slab: do not set SLAB_MAY_ACCOUNT for all caches
+
+This commit stops unconditionally setting SLAB_MAY_ACCOUNT on all slab
+caches and updates the kernel-doc comments for SLAB_ACCOUNT and
+SLAB_MAY_ACCOUNT.
+
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index ad645967a3eea..8525e70eaa76b 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -201,14 +201,24 @@ enum _slab_flag_bits {
+>  /**
+>   * define SLAB_ACCOUNT - Account allocations to memcg.
+>   *
+> - * All object allocations from this cache will be memcg accounted, regar=
+dless of
+> - * __GFP_ACCOUNT being or not being passed to individual allocations.
+> + * All object allocations from this cache will be memcg accounted.
+> + * SLAB_ACCOUNT implies SLAB_MAY_ACCOUNT.
+>   */
+>  #ifdef CONFIG_MEMCG
+>  # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+> -# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_MAY_ACCOUNT)
+>  #else
+>  # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+> +#endif
+> +
+> +/**
+> + * define SLAB_MAY_ACCOUNT
+> + *
+> + * Objects will be memcg accounted when __GFP_ACCOUNT flag is specified.
+> + * Requesting __GFP_ACCOUNT allocations without SLAB_MAY_ACCOUNT is not =
+allowed.
+> + */
+
+[Severity: Low]
+Should the identifier line for SLAB_MAY_ACCOUNT include a "- <short
+description>" suffix, like SLAB_ACCOUNT above?  Without it, running
+kernel-doc with -Wall or -Wshort-desc warns about a missing initial short
+description.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-memalloc-p=
+rof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org?part=3D14
 
