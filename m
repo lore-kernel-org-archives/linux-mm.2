@@ -1,141 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FFE606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5442F606A6B1
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=et37q7q4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lsZvT1vj
 Received: by kanga.kvack.org (Postfix)
-	id 9AE556B05D8; Thu, 26 Nov 2026 06:17:32 -0500 (EST)
+	id 62BD16B05D6; Thu, 26 Nov 2026 06:17:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95E6B6B05D9; Thu, 26 Nov 2026 06:17:32 -0500 (EST)
+	id 58E026B05D7; Thu, 26 Nov 2026 06:17:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8740E6B05DA; Thu, 26 Nov 2026 06:17:32 -0500 (EST)
+	id 4A34E6B05D8; Thu, 26 Nov 2026 06:17:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 55A4D6B05D8
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:17:32 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D96F41603B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:17:31 +0000 (UTC)
-X-FDA: 85477019502.19.A03F361
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 11D84180003
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:17:29 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=et37q7q4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AD806B05D6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:17:28 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 989DDC03DB
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:17:27 +0000 (UTC)
+X-FDA: 85477019334.09.8C4076C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E0F4F1C000F
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:17:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lsZvT1vj;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691850;
-	b=cnK7ETQugKIhyQjqHXKAS7iaXhJfX9HN24Z1z3oNtISWIXxEfc79H0hgENOKNGwuUB9bM7
-	AL+glZ7tEwbAxqnTL4SVzhYbgtpt5EJzBYjuhVmW8iTgx+F1VrO692lDT5Q5i27BedNheo
-	4Vqdrfn/ihDmP+aU9Cxp0/DoVseBCMQ=
+	t=1795691846;
+	b=ApbCylDza9NsyZqcdmCAItQAs2Bk3Z6W3oIo8VDpvYm55zB1jfs9KeJlhKyVh7XA5SkzQJ
+	JCn+i79v9ohroQdkMlwNr/hZtBFpko54/JGB/0S6KN5IOSslw5XpJCyzuN/+SScORbf9dj
+	0LYpEhjjj3pkw4ciUXWDdW4pWo7p1Tw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691850;
+	s=arc-20220608; t=1795691846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8anWI4wnghqDwMT8IkGpbFVOQpbY6mA/D0RVRsfG7w8=;
-	b=0vrxuQMi8IYfea88aLaWYW3yePLIZcUIOVEPxfhXnLE3v9x1TWa05TWCuoLqYmsXvHmKED
-	DxE8mS+1aVtTcrbKAq4kKh6wP6uDWea64+vHXSsGXWX2MfBgtadlFLrBeIkeKtji0jttrr
-	A4DNagwTZbQL1ej0WYFvu8R3AEJW6YI=
+	bh=5DoNm9BxMiCQEr+qNjgywS01tQK5uUyYap8n/VDfFq4=;
+	b=4N/yYZ5bHFtFi7jJ+KH1IJUlcQiDdRhH6nk8qyWauUZwIiKnuEWMycUPexLvsQZ67NmBF8
+	Z0M5BQmmNy5p1JksdsEOdq9YLe3hojULh1drsRciqMQZExoijW64Cq8so0pKp2MnBGkVSy
+	9nHkROqaeyM6CH1dsmcXHZBkRZLvefs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=et37q7q4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lsZvT1vj;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D37E2630B6;
-	Thu, 26 Nov 2026 11:17:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5901F01568;
-	Thu, 26 Nov 2026 11:17:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A36544EC5;
+	Thu, 26 Nov 2026 11:17:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8265A1F0093C;
+	Thu, 26 Nov 2026 11:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691848;
-	bh=8anWI4wnghqDwMT8IkGpbFVOQpbY6mA/D0RVRsfG7w8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=et37q7q4eqHRyyOeiojSHRmMB0v7Cm5o63xhU9cRdI0CehXFULk9kBGbiudTHTVr/
-	 o9Kg/vmbbCShoj3ZrKfkdz7XeqUP91dWb2DaKuJvJyXkuHx6PpzX8sEIjPcJTAg5JC
-	 2ppBzlDgGdkvE0rcMUUQ8tccZ+SypPeCnDj38kL9NTMXVKAWj7/2/FijXE0xhMmkn/
-	 TZ46HKa0gexKebuz8NPxghK1wtRqUTIGrY6dfburH7t4T77fVCr66J7mZVmxU68oqw
-	 /uYkDtNR99xnqcqQN7qc3ObNwhrmn+CV3DQuLdLfEZIAlobrGpBOqC0oWKIYsJiJ0J
-	 7NPmzMzUGzdbg==
-Message-ID: <3ee0f274-0089-4450-9888-7be659af9d63@kernel.org>
-Date: Thu, 26 Nov 2026 12:17:23 +0100
+	s=k20260515; t=1795691845;
+	bh=5DoNm9BxMiCQEr+qNjgywS01tQK5uUyYap8n/VDfFq4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=lsZvT1vjJ/BY9sTlQOvZYhVIq610w41r/GrWTSFBkc8Hn5MspOrOjbMVeN6Z5g9Ps
+	 StHuwLpwVe1sqViKqK5rwJvNfsab4i10QpGgmoWRUpvZ0ZdHh5p1zC+DlzyDW7jJFh
+	 ycSAiUPw9f4VQjltnizOeWzjcQXBt34T2JUF/n+LTCgxTcP0b675rE/QXn++VbbyjH
+	 mEyk5cjy5y35X01PvcgUdscO++kGzHYNfut/I2oC/MOGODBPn4Q9CesZac+BwKrTdi
+	 yWNv9RL/tL0sHZkybp6sfBNB3+3kHeVZI0f7IB75hUGO43/nFfIIyo5KtVdXHjoTT/
+	 Gv8qIAENkH/7g==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Thu, 26 Nov 2026 13:14:31 +0200
+Subject: [PATCH RFC v2 18/54] x86/mm/pat: consolidate encoding of page
+ table entries
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: stop hashing address_space pointers for fault
- mutexes
-To: Zhengchuan Liang <zcliangcn@gmail.com>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Davidlohr Bueso
- <davidlohr@hp.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <9a97a64f7e7aabc668499c426a2417a77d13a2f4.1795587203.git.zcliangcn@gmail.com>
- <4ffa6613-119b-4eae-abbf-26134bd60177@kernel.org>
- <CAOny8psx408zqVv1xt7DHN8yYkQksjKZFDQCJ+AGFB-CDN9SmA@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAOny8psx408zqVv1xt7DHN8yYkQksjKZFDQCJ+AGFB-CDN9SmA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261126-generic-set-memory-v0-1-v2-18-723f1e33c3d8@kernel.org>
+References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
+In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
+To: linux-mm@kvack.org
+Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Borislav Petkov <bp@alien8.de>, Brendan Jackman <brendan.jackman@linux.dev>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Ingo Molnar <mingo@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, 
+ Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
+X-Mailer: b4 0.16.1-dev
 X-Rspam-User:
-X-Stat-Signature: w85daiysbcrodjwi8mhimabbehb5niub
-X-Rspamd-Queue-Id: 11D84180003
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E0F4F1C000F
+X-Stat-Signature: cergb11mrt43jakzkabtaaf63bkwn96y
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795691849-973152
-X-HE-Meta: U2FsdGVkX1/d0cu5HjHSLRZw4ASxbu+jx20gl8miv789kIqOscHyGuoKctDvp3tG1Wwo2ShUqwVGRCgrAxLUCZOFFbEy88AySgFBCajmqPaxffN93KKO6g9d8MmD2KxHhVl7ewMDCfnv0QWTMD9Aj+E/rhRg21Ohn94HV6Ox0EKuj5oCK2RhIvySBvt8QtMiP5ull8qYYIbS2zLn2pddzVhuJVT0Cf5auwYc9kByyf1HICSZS5Nci1PD66hYZlaT1ACEKtaG0CWk7gOQywgpHc+JxT4MM9Z4Yf/tqCLDPBGMlGX3O6uEslCk+c+HhMJzdv7NGiI85mGg1MwD4SFKL/LV38oGNsRY8VIjTdTotEYD8YeRYE62TyKwKxxy6UtPOskDDI6tYLYuVpqstDm5O+k+oicyG5HsGYeZ1hekxxBiNTGoD/ep/SHPVhRmd49568eFrNibMxokBx/17t4v4AdafwVRdbQB0rEfCwPGpBozlUeB3F6hs0TzmFzutEc8gO48a+7/KqLji9ZhqqF/G95au4I53VaC8yFQVCym4lu0KFMK2Y6N6N9OYxOfkqwvhQHVoNlFZhYd2ifK0AmdkM8oWeX1Ckf9cFiPBtvcjaof+FUoJjW5SZNh2EajLl0SSADlov2+8mugDeGoFZVf5fn0PC3fFlCFyttqbU2vLYNJP0gRzjR1ODw0Ds2nY9w/quOuNT8T3S2jVQSOX3MCctqv5OialAx7wkIHQ5fy1XhbFpR3u13alIGGuBuABVAjeGi52J8qStpSINBH6o53wskGaK8jrPI1gBQYKvDIEpqGC/b9oC/gT3FZe5pSXc6CFmCLq9rjalVbbUh1uE1gK2M3ADaiChPqRb8hziK2I/KkjHof1+t6WgNjGnZ8kRLyAVrJ+80D+aLdP4wKr7QTojcE/b2rx191QqtEKs9FI7D5vkilqukkAKSdhrjHuTevXiJwW/9JWNn8DlkcPTM
- c9U4PWeM
- Pvv4OuV5ZSrcsvjMKc65fSvJ3w9zswv065+/3r22nZiCHmBYYT8QPlAOXYHNtCciAbZUNFfg9sXn7gF6GkfQO3jJkEY9dQLWfjAwzlg/X1sYPrrx+5VSOFvNjn5yEiaoaThUsbI9zld0OVdFufiGmHi08umeZ4jb4zPEi6iFCoL/0UHzhPiB5Q6Tr6aEiMtrSlPkyPhZEX8kwfsAWKxU4hiDXZ4+yaW6yPM4r4wAIkebo8saCKR5Ca32VGJbP2cxl+a6RG7s8ntBchWmLez03UHlPZUIKhcad9x518fchfMiCvWPTk5EjtYAVuqqhV5095x3Y3m3bEhyuJgbf7fQOPyEUIvVyAHqi+6n5pXeACYmrb1SBkPQSUsEpQWVmYtImsNfyRct0aPywWcY6kV+Oio8jMVORqFcHMamdOCQomXitegUQREirm31lQ+Wlq7TYzH90WP9HpzFuJ0Hw6Rg8HKYHww5xj7t5ueG/k7nwAc5DIk32zBdUkwHsj9N+IHRWd57XNwzWqvvAsvqPMzfYyfIPLBKFNetxKfrN39WZGh25P8RRHvzTMS6YvFsXdFe/D0Gm1/6FNq7JzzE=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795691845-353030
+X-HE-Meta: U2FsdGVkX1+q5IZpLcYQSrVaFoIAqwRKI3hdUMhJvA/4W3XT9+DxVTX4Cqemlcx7OVKG5HoiY+dXZW05vRwh6Dh4yuOj+MGRaXOeqBKtbd+EFGxGSY7GZpdkiQJ7nW8KhuwiQrCSi4nZjVleeN+GbgLPOxo5i7nGnBkYdwBNFfOhr0rOlH7m3c1smY+qGIIE3IXOvmVaypI3krZXqpchh24AObz68Y7uh0GEmHAiCcZ6Fd1j6uVi3YBBKaDwlAPiAIm7CgJUBto5e6rOvJKMQzjSx3sRMImtR+4/7XOAFrRttla+TIft3RB/NTlS/E+vrCEey+GvwJNMeDIjkwwK/MLFBvy03ygtfOROlH2UslAg9W8lrO7BGMHnQOq1eiB3DEPQk5t4JABX+yVa6WFq2b5iM0EJ3m2hWPcc1BKzD8LRFMLMvTkcC+RO3ZECIbG+dBDewmny/95FanYhfdGlvluuwG4crb3RxVoPckjaztPIkah1Cc60A3kjghk9X+nSOGgVviSxp7ALzvVlZBb67PpKeod7rPuTC0TOnSCwA3V+Y7E5sF6DZdUt1ek0vG6qWEWVzo2cHjaTapCsS69IxambAmvNtkHTzE4mEkobqWfeMtNANEefTj5ETS1rKKhblRptCBPRYrLABnGjvDIlAvkdU0HvHNlYddtIMtAF9T5qXI+t80yCAzs1fJuFmXwDy6Ti/F7VH1TFNb/lhGjdUg4ewuguvCtg0TRFUELYeaUXgmdtI7e3b2SZBk+ImcgprVF4jLA2qFHVJR8U/z6mrGTb0Hog/7ctZlpvcZrlpo0aAWifRuFrfnRakUirdtlcRZQYBXu2p4f8jvqz/cH1U6WVxNumtw3+ZGWLOmIKoknfjFr3DUXwu1Qki1Z5C64PvNKYsde3N4ULNpGm1UK7Jk6ZVzMFGg0aF16aOv2xNmJCmDMj7m5Zlh1/nqMlgAdUFLMOOG6/50D8g4Hh6xT
+ AVlQGpqy
+ ueMfFFF206ZXa/wcdAfQjzo4TGbVgDMplhnAU0AQi+bqUg9R5AwnKp/rg6KEc4cm48YD10bdGMrAmn3mziYIB2UWtLxwrwRn0XFbbduXxqUbv8HZGOf/i3NYOsm1HaPYoAr2yTb4hu50phhsZbKT0V/mZ/UVfZhw0nVzluC4pnTxi24b9Lza1dMksQL1iBaDSVyOTeQreNhkZSH8RPdMr9tSFjJIi9Qagi09k8NU/qz6SFAl/PL3snvWY7ysPi06vVfIMDcRhx1oqRv9xu+5yGdhYdBYtN0QAJKHtJwbwmR4KQfIJ4QWCYZ3S3fCcU/7ZgVH1TpMwxakJa7GVXCbDHKoZlwk/P3o/+u9+oZiXzFGiiGKuBDF6LfSjEJsREscxDj+yqf89GT/BhLWt/ZxRM1Lo3XJS+x3q8mW6WIkgcf8j6+CP64ZqVJTG+KuLUJqXh10xXshyISXztPjaOTiYHEMeJxosG69Onk7N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,70 +117,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 19:59, Zhengchuan Liang wrote:
->> I'm not sure we care about this problem. I'll let other speak up.
->>
->> Attacking hugetlb users is stupid. This doesn't matter in practice.
-> 
-> Thanks. To clarify the threat model, this is an exact kernel heap
-> address leak. 
+CPA encodes page table entries in three places: when it writes a PTE, when
+it updates a large page it keeps and when it splits a large page.
 
-Ah, sorry. I was jumping to conclusions that this is about harming other hugetlb
-users.
+Each place converts between the PTE and the large page formats and fixes up
+PSE and PROTNONE.
 
-> The attack does not target another HugeTLB user or their
-> mapping. An unprivileged process creates and operates only on its own
-> no-reserve HugeTLB memfd, even with an empty huge-page pool, and recovers
-> the exact address of its embedded address_space. 
+The split of a PUD does it differently from the split of a PMD.
 
-Interesting.
+Add cpa_pte() that encodes an entry for a page table level and use it
+everywhere.
 
-> Since that object has a
-> fixed offset within struct hugetlbfs_inode_info, this also gives the
-> exact address of the hugetlbfs_inode_cache allocation.
-> 
-> KernelSnitch (NDSS 2025) demonstrated why the address of an
-> attacker-created object can be useful. It recovered an mm_struct address,
-> freed all objects in the corresponding slab, reclaimed the slab pages
-> with msg_msg objects, and thereby learned the addresses of those
-> replacement objects. Here an attacker can similarly allocate and release
-> hugetlbfs_inode_cache objects by creating and closing HugeTLB memfds. I
-> have not demonstrated full-slab reclamation or cross-cache reuse for this
-> case.
+The check for an unchanged large page no longer clears _PAGE_GLOBAL when
+_PAGE_PRESENT is clear, so set_memory_global() on a non-present large page
+rewrites or splits it, although nothing changes. Its only caller changes
+the kernel text, which is always present.
 
-Right. Do we have any gut feeling how exploitable this is?
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ arch/x86/mm/pat/set_memory.c | 48 +++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 25 deletions(-)
 
-> 
-> https://www.ndss-symposium.org/ndss-paper/kernelsnitch-side-channel-attacks-on-kernel-data-structures/
-> 
->> Can't we still end up with the same problem, just slightly different,
->> afterwards?
-> 
-> Yes, the timing channel may allow the per-inode seed to be recovered as
-> well. That does not recreate the address disclosure: the seed is neither
-> derived from a kernel address nor used anywhere else, so recovering it
-> reveals only this inode's bucket distribution.
-> 
-> A simpler fix would be to replace the mapping pointer in the existing key
-> with mapping->host->i_ino. The inode number is stable for the inode's
-> lifetime and is already exposed through fstat(). This would preserve
-> separate per-inode distributions without adding a new field.
-> 
-> I understand if this particular address disclosure is not considered
-> worth fixing.
-
-Oh I just have 0 experience with these types of (let's call it) address leaks. I
-know that we, in general, try to not expose PFNs/pointers to user space because
-of rowhammer.
-
-So this probably should be fixed.
-
-Using a random number looks good to me.
-
-Just not sure about the severity.
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 9ccc08cf220f..068ab1e2bbc8 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -969,6 +969,24 @@ static pgprot_t pgprot_clear_protnone_bits(pgprot_t prot)
+ 	return prot;
+ }
+ 
++/*
++ * The caching mode includes the PAT bit located at different bit positions
++ * in the 4K and large page formats, and _PAGE_PSE is only valid for present
++ * large pages.
++ */
++static pte_t cpa_pte(enum pg_level level, unsigned long pfn, pgprot_t prot)
++{
++	prot = pgprot_clear_protnone_bits(prot);
++
++	if (level != PG_LEVEL_4K) {
++		prot = pgprot_4k_2_large(prot);
++		if (pgprot_val(prot) & _PAGE_PRESENT)
++			pgprot_val(prot) |= _PAGE_PSE;
++	}
++
++	return pfn_pte(pfn, prot);
++}
++
+ static int should_split_large_page(pte_t *kpte, unsigned long address,
+ 				   enum pg_level level, struct cpa_data *cpa)
+ {
+@@ -1018,16 +1036,6 @@ static int should_split_large_page(pte_t *kpte, unsigned long address,
+ 	pgprot_val(req_prot) &= ~pgprot_val(cpa->mask_clr);
+ 	pgprot_val(req_prot) |= pgprot_val(cpa->mask_set);
+ 
+-	/*
+-	 * req_prot is in format of 4k pages. It must be converted to large
+-	 * page format: the caching mode includes the PAT bit located at
+-	 * different bit positions in the two formats.
+-	 */
+-	req_prot = pgprot_4k_2_large(req_prot);
+-	req_prot = pgprot_clear_protnone_bits(req_prot);
+-	if (pgprot_val(req_prot) & _PAGE_PRESENT)
+-		pgprot_val(req_prot) |= _PAGE_PSE;
+-
+ 	/*
+ 	 * old_pfn points to the large page base pfn. So we need to add the
+ 	 * offset of the virtual address:
+@@ -1048,7 +1056,7 @@ static int should_split_large_page(pte_t *kpte, unsigned long address,
+ 	 * required independent of alignment and length of the requested
+ 	 * range.
+ 	 */
+-	if (pgprot_val(req_prot) == pgprot_val(old_prot)) {
++	if (pgprot_val(req_prot) == pgprot_val(pgprot_large_2_4k(old_prot))) {
+ 		cpa_inc_lp_sameprot(level);
+ 		return 0;
+ 	}
+@@ -1082,7 +1090,7 @@ static int should_split_large_page(pte_t *kpte, unsigned long address,
+ 		return 1;
+ 
+ 	/* All checks passed. Update the large page mapping. */
+-	new_pte = pfn_pte(old_pfn, new_prot);
++	new_pte = cpa_pte(level, old_pfn, new_prot);
+ 	__set_pmd_pte(kpte, address, new_pte);
+ 	cpa->state |= CPA_ST_FLUSHTLB;
+ 	cpa_inc_lp_preserved(level);
+@@ -1115,27 +1123,19 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
+ 		ref_prot = pud_pgprot(*(pud_t *)kpte);
+ 		ref_pfn = pud_pfn(*(pud_t *)kpte);
+ 		pfninc = PMD_SIZE >> PAGE_SHIFT;
+-		/*
+-		 * Clear the PSE flags if the PRESENT flag is not set
+-		 * otherwise pmd_present() will return true even on a non
+-		 * present pmd.
+-		 */
+-		if (!(pgprot_val(ref_prot) & _PAGE_PRESENT))
+-			pgprot_val(ref_prot) &= ~_PAGE_PSE;
++		ref_prot = pgprot_large_2_4k(ref_prot);
+ 		break;
+ 
+ 	default:
+ 		return -EINVAL;
+ 	}
+ 
+-	ref_prot = pgprot_clear_protnone_bits(ref_prot);
+-
+ 	/*
+ 	 * Get the target pfn from the original entry:
+ 	 */
+ 	pfn = ref_pfn;
+ 	for (i = 0; i < PTRS_PER_PTE; i++, pfn += pfninc)
+-		set_pte(pbase + i, pfn_pte(pfn, ref_prot));
++		set_pte(pbase + i, cpa_pte(level - 1, pfn, ref_prot));
+ 
+ 	if (within(address, PAGE_OFFSET,
+ 		   PAGE_OFFSET + (max_pfn_mapped << PAGE_SHIFT)))
+@@ -1833,14 +1833,12 @@ static int __change_page_attr(struct cpa_data *cpa)
+ 
+ 		new_prot = verify_rwx(cpa, old_prot, new_prot, address, pfn, 1);
+ 
+-		new_prot = pgprot_clear_protnone_bits(new_prot);
+-
+ 		/*
+ 		 * We need to keep the pfn from the existing PTE,
+ 		 * after all we're only going to change its attributes
+ 		 * not the memory it points to
+ 		 */
+-		new_pte = pfn_pte(pfn, new_prot);
++		new_pte = cpa_pte(level, pfn, new_prot);
+ 		cpa->pfn = pfn;
+ 		/*
+ 		 * Do we really change anything ?
 
 -- 
-Cheers,
+2.53.0
 
-David
 
