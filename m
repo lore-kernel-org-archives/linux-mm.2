@@ -1,84 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD81606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49669606A331
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EPHU4bh1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OKjmQFPo
 Received: by kanga.kvack.org (Postfix)
-	id 929756B05B4; Thu, 26 Nov 2026 08:28:00 -0500 (EST)
+	id 55A756B05B6; Thu, 26 Nov 2026 08:28:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9004C6B05B5; Thu, 26 Nov 2026 08:28:00 -0500 (EST)
+	id 531B96B05B7; Thu, 26 Nov 2026 08:28:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F2516B05B6; Thu, 26 Nov 2026 08:28:00 -0500 (EST)
+	id 4482A6B05B8; Thu, 26 Nov 2026 08:28:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4039E6B05B4
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:28:00 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77805A0450
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:59 +0000 (UTC)
-X-FDA: 85477348278.07.DFA2864
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ED6F6B05B6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:28:48 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A23D216044F
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:28:47 +0000 (UTC)
+X-FDA: 85477350294.12.8484174
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8BFD0180006
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EPHU4bh1;
-	spf=pass (imf16.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id BB074A0012
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:28:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OKjmQFPo;
+	spf=pass (imf15.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795699677;
-	b=Av5s5Lm8kkX4hHd/Jn2m97mPQqdoGdlOyU6CyvUxSaNS4hh4DfUdOAs8Rlq90Cy65GkIXV
-	6zNmKiG893sm0ZUFilJUq1NRivsPpQwR48bP9YSbrYmHvdSj3UeVrBUMb4HCe0nwL7kS1n
-	3hVMKDAj7ol6Wkm8GME1gtTADxc2hZI=
+	t=1795699725;
+	b=pjf67N7O6RqWeOOSerbqVjtISZQfYg0E2vQRQxkX1mkv7vQj3LzvyDuVDwiE6HyIfFvctL
+	Q+TvylhXzNKJDuOhjncVxTY7KU/d0Rsh1L2ZWcNeIZJFZPbB2LTIXkTOhf8wEYT7q4v7uA
+	j7CJZqvJSoeNN9PQph4uRAYZFVcz28U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795699677;
+	s=arc-20220608; t=1795699725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0SuygBFJgQJDPEHL8vg5eLv9glUvVL4TbpwchKTOKc8=;
-	b=eKUuzWxBTEPEXtJMoZEt5fPmo2HeVZR2vCYmG6RJk9mk2paHaqVZmsTs1d2FufbTTB/sel
-	ZgVK3jLFFXIyO7vjfcnbIEWPFsM6YKjf8HuXjOBOx93N/v+SimY6SqiyWw4qgJUwSm19UM
-	bL7ENtzwnNfBFnPdOGNYuilgp5BqNVo=
+	bh=cjfeIB7Jh9Ac/AfayNnL1Yf0x7S27z/ryKSokFRvmis=;
+	b=vgng8NYshNvBIFMEWoCOAT0dU4TgFkKwgJqZJzuVWywZk+0O8gmugc9lTHSD/uWTmxzS5s
+	zhEozp6h7e+zkmfb9CASsP4ZUw3Nbeluj2UWlH9ROIk901qeV0g15gC5Iz/v9YViLeFdO+
+	GSRkow3SoTcEYh3iScJFrlio8fAhjQo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EPHU4bh1;
-	spf=pass (imf16.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OKjmQFPo;
+	spf=pass (imf15.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D1DC14637A
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CDB1F01563
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0727745669
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:28:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616841F00A3E
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795699676;
-	bh=0SuygBFJgQJDPEHL8vg5eLv9glUvVL4TbpwchKTOKc8=;
+	s=k20260515; t=1795699724;
+	bh=cjfeIB7Jh9Ac/AfayNnL1Yf0x7S27z/ryKSokFRvmis=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EPHU4bh1rQUynF67I/BLiAYnpMItWNnTQ9AParYyhIyJ+y6H3njJ4HyIE0s6Jx202
-	 xCNzY4EbdFEUvhIGV7u89sr9xvmTk/hzD3usLMoUVQo7zRS1mVOEOGXKaU7srd0lqN
-	 QJ8zgMkZSbzwDG6k/Q8gKHxK2xOwoNZh0rfmPcgTWzKzVzQoVxEJRXus9AvWUL1U2G
-	 poRlMVnD4ZVArgDu1nm8eFgis+FkVYb/7yrTihelucyhtlDiutnGbPYYQd1IeXPRF1
-	 uMR3MT3fEDrUV6O3qWBar39ZOF0tAC8l88Y7GgJIURjBmPo17gy3FHsqx2yCKI3NPh
-	 QpwxgY4N6hLRw==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5be47aa555cso438598e87.3
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:27:56 -0800 (PST)
-X-Gm-Message-State: APuU4Z+xxig2ow1g1/tWZMukK0L+Q6lFACgoeSlHLPj3klTafAmrGI7R
-	oShVEh/9kV5kPOT578IQWvXhu1PGCmz4i/F+CZi7046sYTUPu+hkWmVcMDJKjSDw3K8xOvVJMzV
-	0OGzA5mtFwo4YMiM64Pa7t06/ELMgw50=
-X-Received: by 2002:a05:6512:36d9:b0:5c1:5976:1d30 with SMTP id
- 2adb3069b0e04-5c1bc8206cdmr4300123e87.57.1795699675392; Thu, 26 Nov 2026
- 05:27:55 -0800 (PST)
+	b=OKjmQFPo1M75NXkW1bHMDWybQdIuae5BfdUB+xGnCd8WnZUl/pDfDcBO7rB3WwRBS
+	 /Ob1mY//DhcXEHQ/uv6PMdV+zDPkCmw026DdqzRidvVfO57zNsZ5lx19VY8mEJEfRI
+	 NbQBvzhp+gPFFwQBIh98wVGgz0sVb5J2qhuKj3w2sLjZLC+2Jz3xd/iXOMiHZuSFhu
+	 VXk/8CCos/vN9KGdGMsSfxA8Ueh0PcXCmFe3AY2A44UJ4PQrSBxPd/ZTi4mfET6X/v
+	 ExJt6R9GcDL0CkqyBHW7iQlwm4AKk2/6tvRSIaioKBzEDyuHPX6sX/aLjG/Prito3n
+	 cJnEjZgWJdwjA==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5c126f80426so6743898e87.1
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:28:44 -0800 (PST)
+X-Gm-Message-State: APuU4Z/3Yt65LlXBoCWdWoVYo+S0VAOgpxpZVxC54bxMbV2abkY2VQT/
+	9+ja+dzL7k+werqDhcmggee82Oms3cBUj4b+Y2fwDbOqyt3QPBCDrEYJuXQfsltVcakKbKfjRtf
+	qska9cuCxZkE+HnOhpeZqtH9EGSFxosM=
+X-Received: by 2002:a05:6512:124d:b0:5c1:56f2:fda4 with SMTP id
+ 2adb3069b0e04-5c1bc89530fmr5518571e87.49.1795699723141; Thu, 26 Nov 2026
+ 05:28:43 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261116124832.662455-1-arnd@kernel.org> <20261116124832.662455-6-arnd@kernel.org>
-In-Reply-To: <20261116124832.662455-6-arnd@kernel.org>
+References: <20261116124832.662455-1-arnd@kernel.org> <20261116124832.662455-8-arnd@kernel.org>
+In-Reply-To: <20261116124832.662455-8-arnd@kernel.org>
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 26 Nov 2026 14:27:42 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=ZyHZcJRUTpVghs3xYH0OGOKauKVWTF8tiPpHPjuad+g@mail.gmail.com>
-X-Gm-Features: Aa3M54pIH7xhTLEiVGxFItiuCxGTTC1f9B6RJQ9R1KEb9x9xI611Qqdum1NmRD8
-Message-ID: <CAD++jL=ZyHZcJRUTpVghs3xYH0OGOKauKVWTF8tiPpHPjuad+g@mail.gmail.com>
-Subject: Re: [PATCH v3 05/10] ARM: add CONFIG_VMSPLIT_2G_OPT option
+Date: Thu, 26 Nov 2026 14:28:30 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmT3dgWNhwXnxBbMWT4FPtM85j7pGqphVhofVDn6bgq4w@mail.gmail.com>
+X-Gm-Features: Aa3M54qt87pVcinKxHwHL_cdEyu5uWkoYM1H8TRwnc8234Hd9kxa6PUDkX4jAZc
+Message-ID: <CAD++jLmT3dgWNhwXnxBbMWT4FPtM85j7pGqphVhofVDn6bgq4w@mail.gmail.com>
+Subject: Re: [PATCH v3 07/10] ARM: defconfig: turn off highmem in favor of CONFIG_VMSPLIT_2G_OPT
 To: Arnd Bergmann <arnd@kernel.org>
 Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
 	Andreas Larsson <andreas@gaisler.com>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -93,18 +93,18 @@ Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
 	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BB074A0012
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8BFD0180006
-X-Stat-Signature: 9aaf3uyuuhgxon74xpock3yzbgqpw77d
+X-Stat-Signature: wzz5drx67nkq1fx5cymt1scnf6for3pi
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1795699677-299317
-X-HE-Meta: U2FsdGVkX1835IiZtThRfTrXmbyeL/+IU8Xbdx6GRj6FohV8vQsereWWa4cmS8p8MI//wMmcIE4IkQAJpPM0CKPpdNL6d+R4I+2L7Xw2OCwyOr4cjRvtmzl1ur6s0soq3XohV86LW0GCbTbYr6UtmOp/PAqLCqcqifc4vi27IVnRpsOhBSgYQM0t4Yu6yPQxbSQbOGOjvf95jzTHiuqCRrqXnAOVSd9fXbgSaj88ZgUagdvMUNNdxCVcHPYEAPpePerSODdYnb6p1f6tcDALGp3e0J1sQBtZ09EWfkE28AalMgMm/eIm40+U22ox0Px7OqGMuMVMV+oAR96gj44cEq1deZ5Ew2vM2AYrQlGNBZRnNrdi0dEEWe9WKvM4Fc2T15g4BcVyIStgscZmV/61IQf+QBim1ATfWYnlgg97sBZLrJ5Upp+kpfHo0Eb2AXSRHmYIndlpx+DvTqPICEnMc0YDZqH1pciBaWN8rCCkYUs5vJhDyynEK0W9GFocmhK2jml4vA5pvTRdSsfOjvGmx1i6PiLd0x9k6xsVnwwKOQqsh1HGJT6q5//GBLrVxc/yVnxKg/tGjARoO2Pwg1JuS5NQvRbS2Gr8ib++nfVsgOWSuE8pSWP8i2YkNGVf4Gs3p5flMEicIAhEdZ0pYtY4ATAx0vgiNMuw0smCwYu2EVjWdZQ7EAyf1vTOcntCCJjDgydEBqLaiAs8/Gixz5GO3JTv5tPDMCeC0/Vioc7qVUsL0Y4qpWrESXJjk4hUc/LHW/GuJxjnGcKEAidOOO6vZ8CRkAMuyWT3rx1dmH+iGMBHKS7A7CeBXhPt/I1n8PMqcDJoHZVa9WJ1M8js31NFti5hxea5mpKoBXSLLzbWJoxVwyqnDEZDVlMk9/HZhtJ7U0aLFKPJgKkTm3Q8xhb5Z7tTPZl6CDKqyw4UCyGUff+kIaOXLXHnWAGlf6GwF4redO0kXHyym4BhB6NoId5
- OW6aofgO
- 314dJU1RphanqC1fzYrGSJD1qyHaSMTh1Oy630LLqgH2jf4rky6tln2WIBtZhMAM2SVcjECMtXnICH2HbrBntZ+LtiPbF4upWWBQRLC2OqPQtvtGer44YNxPveyGX2Pvehq3JfBae85PzKZeMuYH/vbzxT8ILEDPYIAADAFOJCD9YmIOdzrBzyRXWf55jd8knVgpXCI3e9mI+KmBn/Udibcvuk3xL+xzvKSNapt3XWueZRyJCyq7SM6BLjFlEEk9DwPJ41GPv5Zd4TS6rX/3DRQ+/G8txU1R57Ljs766w4zq05D0RjpI9zK2KqEKp4XgXakYVKq2d4ZM1yLm97lwDtd3NkFSY21VZYtivdWmf50Ng8NchuXT4dKj1VYvtawoXVIS5XAnb/QAzQkeab0hrTMovc3sX5VJP3728UoJkAzt5ZJkoiUQSzgO2zI3i87w02E2gkdHjp7qS+AZjJys1d79OGBHPXITnpmYgU1pu7wqe0iUOaI2AlcbaixP1fgjozEgLHDLl5vkqSFPUj6o7xzx4AVSOWhAxTPw5NEoHEOOKHSTF0zh4hzQAgU6BIDEZ8N7pAFGWyO0NukReP7tNtD2lgpOzWrMyVeIN+ufWOEZaY2s=
+X-HE-Tag: 1795699725-869573
+X-HE-Meta: U2FsdGVkX19cNVL4bT3VNMBDj7MVlN4i5a45mKyXGHP8dMuSXcDnlBxf4vuSnJaDETSzDdbCFsFZxOF4dUcVZBXgFgC8+tdz2BE8uUfhgvE+zdGVFYFUCDH8nWlAZe51FQO4io7IcdfMxp5HCTVZT9CmnJ/SC4moyUW6pHz4dTn76AqG9QGyVx9BxjAZ9sYDArKi1FRzrVTgkYlkI0ywc0+pOQlWvRdmo8T0IHC+g+k5+ArFuWpA/bxkHnWHffnTP+DTNiEoUuzsJivVuVp9CynYAXsN5KIneU1exnKOlapvr5cBxtAbgefsCJrUU2x6lKhqEIPschQjhVVQ3pQpShSXv8Cw9OVBtSGWGqFd3C15gHbUtDpc8PJWhnvuwFv74r9ndh8tIVAGTenhxAb2PJvSTAu5TidKzQCJdy8yYYFTFfPy4AOZKcIPm9L+YoNofLGdvuYFIgAJ4wSLDyW4Y/KC248VbvHfFUqVrMV1fHCxik5Q5P2y/eKx+9MTK9wwnUG/cXemmXxBB7MCSpgwo70TKkUF4T5vLe8Lzbedwb898xTedygGDYAd7fbe9wEQQ40mKv+MvrvJ3xFyZiCwHa7YTBZBUXrDzhRJthToyqc318QPpVp3FEMW/bOL0aLM2gWYFrgWXxhY+ZiYd+wy1Z8hPWOKLsHJZ70mQ0YuohVFHrVN3cZsI+KCpntEQQv4IfacQYqhUeo6RkFT5LZzglQLH4zmvzjugwQkcvr3MX9X6ZuBBr5Kr6gzXUNEP+K3FAy3vhrCkZ+7Ufu9oZs4jGXMQKiVAQUPeKMR2Tv6ECH+JHXW0QMG8nbX2EjWGxaMMb4BMtOm2mcxjwVZE4C4CO5mvftpnxNq3NS2xtDtAf+cxtg1DKjHN725/ri78Jr2rCbqYHcjm+9zCAjDCjfFcqwn3jpdjvajlKdWEuuKutU039qL6M5KSpcsfE+/+RBUvxbGPGsX/8eU00TUTIC
+ GK7D+m9Y
+ QSNafvZqTIdE/rJhLBKlnngnSIdiO4KkWx5DGCITBjuRef6w5zu129Z3KptRqkduAhgiLvpKC3oZ8H1Q8CRtk6wBO4tT6C/x8VS8XjJC898sh/8xnxIhE+5UbrPeAGvOEKB9uHno+FHY/KdWQFs6tZzGp6RcAxG4OenVNFxbGZVGPOkR6FJ9irTX7G4X0A9rzud0Y+WwTy2rDcH9TfuUpM7KvbxKobr+38tdT5Aw4ssOB/QY00Zr0ikCT+0laixRZMKeI4vxcUY3kHEQTMl4YY+vVVAwCJV6zOqzWXK3NXRArniigGyaSSjMaSbVExAvMJgTgj8tk6ELJ4Z4yVlzpAfPEIilSW8SvOQYaQbGlYtfHsZ4hAF3MQ3aDIM773EUYjhWMtHCM01zJJuQecI6W84CPU1Skfa3HJJ6bToG8ufL7dlGGC0VIHzrCjBGNfl8D9killS/PuGP62smYtVqP3qhciDXCqWIf0Y3vbSo/OUVfeq2lH3RAEWJosmncOjUzJeMCT4DtYikrkj8tWCoeB92a73kznBguXkaw2fbNZGqyYQ2lTC7UseReBRr78hsJnkMf4L56cFaEuw0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,21 +118,34 @@ te:
 
 > From: Arnd Bergmann <arnd@arndb.de>
 >
-> Unlike x86 and powerpc, there is currently no option to use exactly 2GiB
-> of lowmem on Arm. Since 2GiB is still a relatively common configuration
-> on embedded systems, it makes sense to allow this to be used in
-> non-highmem builds.
+> The multi_v7_defconfig and omap2plus_defconfig attempt to support a
+> broad range of hardware. This is at odds with the setting for highmem
+> being slowly phased out on the one hand but still enabled by means of
+> CONFIG_ARCH_OMAP2PLUS_TYPICAL, leading to a default CONFIG_VMSPLIT_2G_OPT
+> split.
 >
-> Add the Kconfig option and make this the default for non-LPAE builds
-> with highmem enabled instead of CONFIG_VMSPLIT_2G.  LPAE still requires
-> the vmsplit to be on a gigabyte boundary, so this is only available for
-> classic pagetables at the moment, same as CONFIG_VMSPLIT_3G_OPT.
-> Keep ARCH_MMAP_RND_BITS_MAX at 15 for this.
+> None of the upstream OMAP2+ DTS files actually list more than 2GiB
+> of RAM, so it seems fine to just turn off highmem by default and use
+> CONFIG_VMSPLIT_2G_OPT from the defconfig to still support the same
+> hardware but not require highmem.
 >
-> Tested in qemu -M virt, both with and without HIGHMEM enabled.
+> This also changes multi_v7_defconfig, which currently supports all sorts
+> of ARMv7 systems except those that require LPAE.
 >
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> The best comprimise I can think of again is to use VMSPLIT_2G_OPT in
+> place of highmem. Compared to highmem configurations, this should be
+> an improvement on most machines with 2GiB of installed memory for the
+> lower overhead and complexity, but it does degrade machines that rely
+> on highmem to access all memory, as well as reduce the available user
+> address space (1.75GiB instead of the traditional 3GiB).
+>
+> For aspeed_g5_defconfig, the decision is trivial, as there are no
+> 4GiB configurations we need to support, but g6 is known to use
+> up to 2GiB.
+>
+> If you run into problems on production machines with the new default,
+> with the absence of highmem, or the smaller user area, please complain.
+>
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
 Reviewed-by: Linus Walleij <linusw@kernel.org>
