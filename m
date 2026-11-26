@@ -1,146 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF06606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 12:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E690606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ji0cBEjq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GjnZ+Jyl
 Received: by kanga.kvack.org (Postfix)
-	id DE7086B05B0; Thu, 26 Nov 2026 07:54:40 -0500 (EST)
+	id 3E60D6B05B1; Thu, 26 Nov 2026 08:02:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D716E6B05B2; Thu, 26 Nov 2026 07:54:40 -0500 (EST)
+	id 3970E6B05B3; Thu, 26 Nov 2026 08:02:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C382D6B05B3; Thu, 26 Nov 2026 07:54:40 -0500 (EST)
+	id 2AC0F6B05B4; Thu, 26 Nov 2026 08:02:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C64A6B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:54:40 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5AA488045A
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:54:38 +0000 (UTC)
-X-FDA: 85477264236.01.4B46211
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BD57C6B05B1
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:02:12 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57B85A044D
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:02:12 +0000 (UTC)
+X-FDA: 85477283304.24.AAAB9F9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6E47440007
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:54:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ji0cBEjq;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 94775C000E
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:02:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GjnZ+Jyl;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795697676;
-	b=UJcmAJtv7Jzx5d0Cu1WeIB08fbSitJYIpvUfalu9kZwBj+Y8Cpp8xDUHFM5kiZs1urqFEr
-	ZfBTCtZz+w7fVxRL3AQX66cW1dSWEbJ493rhJQbVceCmc+bAtJJ1e/U09QRm+JgFgSReF9
-	ej9uZqRcACQevfmWEX8li+q2AjmMgZ0=
+	t=1795698130;
+	b=zyvl2Xw1HykyHClZJow97p85Yw91DvF87PsK58wMkOsPyvep2U/JDuFgx6fgSf6ganlbNs
+	pl1i6QZwbtjDSdKNnPULahA+uldo35RW9DU0CwGKX6FsgNsfRNerPlnSBZYpBt+YDp8GWT
+	RiYFGx7XJYpwx0IJeg9tT9RF7U0rwMw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795697676;
+	s=arc-20220608; t=1795698130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zkWfopv7ojWziK2+hPK7yInVZt0kcWSrrg5OSpM0fCg=;
-	b=gfo/cC8mewelKCe91sDhy4R0s7cH1khkAW/Jrwye52N7hiiLoOFqMIYzAs7yn1zjAFnqtR
-	wFE5YW3n9ApmaSAo4SX8HB+BsVjtusXHwhXtugAd3E2xDFTWi6ajwX8C8du1H8Y6pqN4pm
-	gJp/wJm9DGFJZKIyxSvmQmmtx7dk2Qo=
+	bh=JNZtgNBPSxn7bvj4efWeLJ9UQDdmYpN2fvka3yysKZk=;
+	b=N4pbui/sKBG4sW/asnsrH1hUlqa7tMOLkFgF2/WMY6hGT8NLPSowQe+DSYPBV48TBjmRgO
+	dFux+T8or7R7OMfm77HrIYDMfEoAKP+SnKHfp6mY6wGDuHJQZH3MgloTAXarU5sCwflvBE
+	OArRrk4rTecy+VMD4DM1iGXas6P3Qog=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ji0cBEjq;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GjnZ+Jyl;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F7D841859;
-	Thu, 26 Nov 2026 12:54:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0921F000C0;
-	Thu, 26 Nov 2026 12:54:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B6BFD414F3;
+	Thu, 26 Nov 2026 13:02:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02E81F000C0;
+	Thu, 26 Nov 2026 13:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795697675;
-	bh=zkWfopv7ojWziK2+hPK7yInVZt0kcWSrrg5OSpM0fCg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ji0cBEjqr0ypcXtP2ymmf+/8EDlVCQib1En2BfROUfVed47Smhhbtd/6Bunz0iuAR
-	 aiEnf11vay4I9JgBMWHY0HNnpLxAwvyUwlyxODiz37/lntcL5d9GP9xiYM45+5+9lm
-	 dUbk7Lfv2KrKDb4X2wTKONgbdRSF+OlPe75tM0z8gHlAOk+ppC4hS3c9oL/FnSXkcY
-	 0SqmRCocXJNwEQYvTSH1Xda7BrAGeFmmHd3Nw/E+5YjTTvP3wocmFwYITWTOofYwlc
-	 mO0c3ASTqe27J5FMjwg9DbvbrkanVfyNYdfo5I4vo1s8n1wyFF4mQFfYeV1hdQW5AD
-	 WgMMR2A27QZ9Q==
-Message-ID: <98fecdf0-6409-4499-90e4-63996f33db90@kernel.org>
-Date: Thu, 26 Nov 2026 13:54:26 +0100
+	s=k20260515; t=1795698129;
+	bh=JNZtgNBPSxn7bvj4efWeLJ9UQDdmYpN2fvka3yysKZk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GjnZ+Jyl/pFPw28aJ1N62SXh98WagAz6GlzjVpESIPTdRhJomCTQIoNHgrN2co06S
+	 pZhNokVEkj0S7Zb1qf/xYTAnPAY/vnU8tdFYlCk2Km5tbv5V9CJVS64Ek7Mb2etD3w
+	 MwN76Y3jCjwbecfl2LklxHFoQA532q5CJT9nO8EAWvS+TmWBAdCUq02X0jsPKHfHzp
+	 svYa/Dc6GOA//f0HfOgffGb3qeTXa/cOjx6QIPq522ifrqd7/iH1iAHbEbrnW4ODUb
+	 n+ZR9VtGehQqArlc2Dxf9VN5EmkKv3ywj4I/koKnGEqhuOgi5mAEBuKeJ9vL14J2fs
+	 XY0UPEDs67TPA==
+Date: Thu, 26 Nov 2026 15:02:02 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: me@amir.fyi
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] mm/mm_init: don't shrink large system hash tables below
+ low_limit
+Message-ID: <awgtymEawotNXV8f@kernel.org>
+References: <20261123-mm-hash-low-limit-v1-1-8a803aa8ac70@amir.fyi>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: free the swap slot of a dirty swapin folio
-To: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Barry Song <baohua@kernel.org>,
- Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>,
- Baoquan He <baoquan.he@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Youngjun Park <youngjun.park@lge.com>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-References: <20261126094318.244973-1-alex@ghiti.fr>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20261126094318.244973-1-alex@ghiti.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6E47440007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261123-mm-hash-low-limit-v1-1-8a803aa8ac70@amir.fyi>
 X-Rspam-User:
-X-Stat-Signature: qngkjj1r4y1q8ew7x5ax93ih17ebkfcj
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 94775C000E
+X-Stat-Signature: g7frkc5a95i65jktna766m5padw1q9a1
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795697676-109511
-X-HE-Meta: U2FsdGVkX1/G2/9QR1hhV+GekU0NlGOj+OoTbl8N34TD1wI8R01nxnO9uubGBwR7RThyTna+XpBW5Tozyfw6mT2pZNwGO7aOIXP70nlSVOIUjWYeRz8rMfgMGRe8As4taS32yaB/LYEg0c0hcCImD1OVQ/b+mfQRPoLpPHqHhzZJ1fSGXqWHEJqjVQqEDUzZ/BeB90LtalSXncXYrTWxsDER6vDBwnZqQ1ktzuqmyWdnc0jikSR+npmc1Bz/GWy9CU8KG/a6LhP1ckFZ2VxIgU3N1W52ny7Tsv9n5tsXW9o8EHy55Y2D7fQHlhxVcR/PWd8YjCZJXSV36z1mTpDC3P6vpQSLDj7EQeXNq/qI04SatGGEGIx1PSRDasj1Qr0CYQgSCkk6EnLcDbXaPgVv7axvkWf+aase6seLsTj/CEaue/YfZX1C7r1gXBYVJwD85xvSYOEF2xc0EYr9l1PKiQzNMsfA9oC9sVwj4Hwt/qKxPSqOXnm1wPY4frTIljo5+UiB42PMq32BgzeBQoy/TivpWSx5Oy6N8t86UsLW+nhTS+X9Ou0OEBMIFBVmOE13C0m/LBExxXlMwK2QqzNaDBBc/1VldPxrOIkVJzBoTuLB05b6L9w/++A4qPoaF2acH94sSjaqP63bYga6d4gq5RMAbD+zcJPLXI/CXINcC4v0b+JiH3Byjm8gsXO2Z6XWLuAYW9qhEfnJei/33RLo9+PgYW89D7CcEBNs9iQP10pN/0aDMkhkZnmvnh4tDPTPqa/h20hGxVpHP3PgIxhfjbwVni8dJdV2J3HJjR36uoqWIb617COmd9AiRc/buBm5O1I4bs4npiqBtTaxVCP57tH4Alp8lkLqmaSAFoTgxXF/tJTfq475pqLbkVet8e2v52MIL8XEuAI0nC8sqd/0mVvbesBkqiiuW0je8Bs8fE1cDe17r849QGnVqBfeIMvXAx6jaltGDeQ4L4Xym53
- bccgzP8y
- 9nslsGkHo/7awgRp4iEwiypQx3Plj+piqcA3JBjB2N5Pq0/P7HFgQrQ54oIDeyfxw9PY2ZKxDK1XmcZULTzhO/mZE/AczTHRVVaCqPFxjowWjd9nhO17Omb2tuBotbG48zWRvJwj/0cFJfxD1zHT581SZTwnlqMiru7BZMI68lCArK8gtHa7G3E+1h9MdwmWQR8SEFKTqi4ptBKbkbUZrd+RfXquwNvu7tZp2Je1mHLQnyUBAdmrWXL/UBHhKnhifc3Mmlkls2MdKuwvJF/UhfhKaV3b0bReNtAVG7EUn+uEN4umUV03Sbv6m/PvqBPQf0SKxOD7vJT325zYn+WmAkXzvkrk4X7Ajnj70lf/otbhik+H3bbMoFqNtEzoFMGrpbwiQ/lS2EjQTiKGNBwGXpiP4kNZCaq0pZVqJ/IGIAefQsrU3HO76Hj/cjWoIBcMZlYcf29GMO0VYNHLKV1HNEFdL1HeQAzZg5nHiuHjPUd7NKY97WbSeA5lyQvbrcUbB0TGjntFY+8vEzWZGZVL9CMDySg==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795698130-954644
+X-HE-Meta: U2FsdGVkX19sEVPqdlRJhbD5ClVdRNpTtzeimnZxEHihgvKTZ1A2nTMjro2S48g5hlaxeQUw9NKFJQIqZuqxmP3xoUBJgxbAQSLvYcVAWI7lDuAHB308tdYK01tLZsJWHcq5h/7sAhyQmWNsxVZcZ7qVG+CGsPfW69SDMso8C1iCsZL2w8V2915Bab7QRnMHVJdGX39LHW6D4woDEL1xSgaI4AyK4lsjPDbGPpmaSs3Dyu0ZM9Xujfbqw8GZLSQApZAR5rcPiJ/FRUDtGaw6gAu7nEZSecBWXhXHqYAxO9kQcWXSlztPJr5CxzBsOdEvp+h+hTNr7FeN3cU/DwbCJWedrPQT1sCbGzJyfb+LrEfbOb0QNLSbyjuDJBi1sDyJPBh3qAnnC4poQCeaZAKRanQY+/Wl9hJnMc4cOJdD1/etDPv6EQLfxccosnhmj9pP0TwoxnJXBio33RFZ873n5OtaSPdKstwKU1No1ujy50HRxrXEEY8zNnKPJdhJe3al3Y9LmgwfLdJ4QyuntQhkFRKmtsBYlxMt0toa4vqpPLdhEkWMjVFuKKMFvfRIGhIpW3xjeL7RZTiR3S88Abm7JBf8qKxT5bXfhm0EtneTRRM+2LxGiB8E4soDU8B9TNLmtp7VQXNbkw8pbH+8n7nadjzcO9ewYcxzohwhh3w3JL6oQbRQchIXi82vf+FYO20fK8XVrqkmbPjhyzk7lLltBYdDBPERFu9miEHFsPY1+wc0CGo9FvmdPJhJvZhkVencsdgDFNvH2dURjkbm+GycoWjbpqiF42gNA3q3duSr72HxKszKxarJGyEYqB5v8zD0EgBNULsgiAtraWQz3s6VYZnRnfJAetTQC7Jjw6jv47rQeg6WfhaFFEdTQtUJPWgdwH8aiYYk1nudv2Ie2WoOmqQQDg6zyD2mUJ33Z0VhHESo8qM8MTH3Mc4jKuRqR73LOP6fbSbVrF702dv7bcz
+ p33EOAod
+ SIPjAmIfaH2LMPTcH0WE6WR8mGnEMryjimiuie2DVXuNsMHU/Oc1xJtefmHe8wfQyprZfgUJkXr3hfd/sxxqY3LpJ4SLpau0Lg23A0sTyOsoIyUinZ2iY8ydFxrGPRSDOktIuxL0ymfav3oXwHrgQX67byoqvHMQPlbdCajGtyTbBi5XcLqru+sSz5SY46iGhG0xhlxO37k5rjZIQCllQ6JaC9jzOY0niShhSrHEbJpyUZKNIBqf95xHd7nx4IJOsqUTUVYNf5Cu4Zgil19hKh6nUOMUiyoxecB8R5tUU8H7Z2mZBEblWjnHH5uFSnMXceYG5ZZVt6iPwHIS5ARcY5Isi1uOjkw+ptvgnL+K5n0KIL4CVWdfJRBXHaw67jt14xyo5ES8DeHQdXiugkVMNtcwzdQ2t0IxAIJglgIvmUO4E0uKlPimJiK0UpG3UyUttwkDEe5H0xEMstgw+cmuU8QNASvrwAEYZkWNAnDgbIJ9Y/bmAp+nU3H6O9389kZLuTyFkXE8v3CrvyIq6/+81REdz9ipvy6ksfztpOe6EVz6c7Ls=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,92 +97,140 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/26/26 10:42, Alexandre Ghiti wrote:
-> do_swap_page() frees the swap cache of an exclusive folio on a write
-> fault only. A folio loaded from zswap is dirty: zswap drops its copy on
-> load, so the slot no longer holds the data and only reserves swap space
-> until the folio is reclaimed again or its owner exits.
+(added Christian)
+
+On Mon, Nov 23, 2026 at 08:15:49PM +0000, Amir Hosseini via B4 Relay wrote:
+> From: Amir Hosseini <me@amir.fyi>
 > 
-> Such folios add up, and they are expensive to free at exit: on a large
-> production workload, the exit time doubled when zswap was enabled. A
-> third of the increase comes from the folios left in the swap cache,
-> each costing about 3x a resident page to tear down; the rest comes from
-> freeing the zswap entries.
+> When an allocation fails, alloc_large_system_hash() halves the table and
+> retries until it is down to a single page.  It does not stop at
+> low_limit, although commit 31fe62b95866 ("mm: add a low limit to
+> alloc_large_system_hash") added low_limit precisely so that callers need
+> not check the size they get back.
 > 
-> So free the swap cache of an exclusive dirty folio as well, so that the
-> slot is released at swapin, as is already done on an exclusive write
-> fault. The folio is dirty, so it would get written out again anyway:
-> the only cost is a new slot allocation on its next reclaim, which write
-> faults already pay.
+> The TCP source port perturbation table depends on that.  It passes
+> low_limit == high_limit == INET_TABLE_PERTURB_SIZE and neither
+> _hash_shift nor _hash_mask, so it cannot learn the real size, and
+> __inet_hash_connect() fills and indexes INET_TABLE_PERTURB_SIZE entries.
+> On a single node system hashdist is off and the table needs one order-6
+> GFP_ATOMIC allocation.  If that fails, e.g. because most memory was
+> reserved for HugeTLB at boot, the situation commit e67b72b90b7e ("tcp:
+> use alloc_large_system_hash() to allocate table_perturb") was meant to
+> handle, the table is silently halved and the first connect() writes up
+> to 240 KiB of random bytes past its end, typically into the TCP
+> established hash table:
+
+This is hard to read :/
+ 
+>   Table-perturb hash table entries: 32768 (order: 5, 131072 bytes, linear)
+>   ...
+>   Oops: general protection fault, probably for non-canonical address 0xe480dbf6b420b3d9: 0000 [#1] SMP KASAN
+>   RIP: 0010:__inet_lookup_established+0x168/0x5d0
+>   Call Trace:
+>    <IRQ>
+>    tcp_v4_rcv
+>    ip_protocol_deliver_rcu
+>    ip_local_deliver
 > 
-> On the production workload, this patch removed that third: the exit time
-> decreased by about 15%. On a simple microbenchmark, 4 GiB of anonymous
-> memory in a memcg pushed to swap, read back, then SIGKILLed in a QEMU
-> guest (mean +- stddev of 9 runs):
+> Stop halving at low_limit.  If the linear allocation still fails, retry
+> the same size with vmalloc_huge(), which this function already uses for
+> tables that are too large for the page allocator or when hashdist is
+> set, and which does not need physically contiguous memory.  If that
+> fails too, panic as before.
+
+So, AFAIU the gist is here is that page allocator fails, let's fallback to
+vmalloc_huge().
+
+The large hashes are normally allocated at boot time when memory is not yet
+fragmented, so it's very unlikely that page allocator would fail.
+
+But there is another question: do we really need physically contiguous
+memory for the hashes we get from alloc_large_system_hash()?
+
+AFAIU, we can just drop the alloc_pages_exact() case and keep memblock for
+HASH_EARLY and vmalloc_huge() for the rest.
+
+Eric, Christian, what do you think?
+ 
+> Reproduced on v7.4-rc4 in an x86_64 QEMU guest (virtme-ng, 1 node,
+> KASAN) by failing just that allocation with CONFIG_FAIL_PAGE_ALLOC and
+> fail_page_alloc=1,100,<space>,1, where <space> was measured with the
+> kmem:mm_page_alloc tracepoint so that the one injected failure hits the
+> Table-perturb allocation.  Without this patch the table is halved and
+> the kernel crashes as above on the first connect(); with it the table
+> keeps 65536 entries (vmalloc) and the system works normally.
 > 
->                      base            patched
->   exit time    989 +- 24 ms       502 +- 28 ms   (-49%)
+> The reproducer and fix were developed with the help of Claude Code.
 > 
-> The cost is paid by folios that keep cycling between zswap and memory:
-> each reclaim allocates a new slot and adds the folio to the swap cache
-> again. On a kernel build in a 600 MiB memcg (-j4, defconfig), this is
-> not measurable (mean +- stddev of 5 runs on bare metal):
-> 
->                        base            patched
->   time (s)        592.4 +- 1.1      592.4 +- 0.9    (+0.0%)
->   sys (s)         256.6 +- 1.5      257.5 +- 1.4    (+0.3%)
-> 
-> In the worst case, random reads over 4 GiB of anonymous memory in a
-> 3 GiB memcg, so that half the reads are zswap read faults and the task
-> spends all its time in the kernel, throughput drops by 1.1-1.4%
-> (mean +- stddev of 5 runs on bare metal):
-> 
->                        base            patched
->   reads/s, 1 thread   37310 +- 182     36889 +- 77     (-1.1%)
->   reads/s, 8 threads 291937 +- 802    287954 +- 373    (-1.4%)
-> 
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Fixes: 31fe62b95866 ("mm: add a low limit to alloc_large_system_hash")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Amir Hosseini <me@amir.fyi>
 > ---
+>  mm/mm_init.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
 > 
-> Notes:
->     Previous discussion:
->     https://lore.kernel.org/all/CAGsJ_4xBtKGqXFP4zvp+Qn+tb4X7aCvXn+wqDqot_cXR92DjhQ@mail.gmail.com/
-> 
->  mm/memory.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index d477a4f986bc..dac0f0a24bc7 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4711,10 +4711,13 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
->  		return true;
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index d99af80ec752..418068bad006 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2359,6 +2359,7 @@ void __init page_alloc_init_late(void)
+>   * - it is assumed that the hash table must contain an exact power-of-2
+>   *   quantity of entries
+>   * - limit is the number of hash buckets, not the total allocation size
+> + * - the table has at least low_limit entries, callers may rely on that
+>   */
+>  void *__init alloc_large_system_hash(const char *tablename,
+>  				     unsigned long bucketsize,
+> @@ -2371,7 +2372,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+>  				     unsigned long high_limit)
+>  {
+>  	unsigned long long max = high_limit;
+> -	unsigned long log2qty, size;
+> +	unsigned long log2qty, min_log2qty, size;
+>  	void *table;
+>  	gfp_t gfp_flags;
+>  	bool virt;
+> @@ -2420,6 +2421,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+>  		numentries = max;
 >  
->  	/*
-> -	 * Free the swapcache only if we are the exclusive user and
-> -	 * this is a write fault.
-> +	 * Free the swapcache only if we are the exclusive user and this is a
-> +	 * write fault, or the folio is dirty: its copy in the swap slot is
-> +	 * stale then (zswap loads are exclusive and dirty the folio), so the
-> +	 * slot only holds swap space.
->  	 */
-> -	return (fault_flags & FAULT_FLAG_WRITE) && exclusive;
-> +	return exclusive && ((fault_flags & FAULT_FLAG_WRITE) ||
-> +			     folio_test_dirty(folio));
-
-Why not more readable as
-
-if (!exclusive)
-	return false;
-return (fault_flags & FAULT_FLAG_WRITE) || folio_test_dirty(folio);
-
-But ... isn't this zswap specific? Why do we have zswap specific stuff in this
-common code?
-
-The comment already gives away that something is not quite right here.
+>  	log2qty = ilog2(numentries);
+> +	min_log2qty = max(order_base_2(low_limit), 1);
+>  
+>  	gfp_flags = (flags & HASH_ZERO) ? GFP_ATOMIC | __GFP_ZERO : GFP_ATOMIC;
+>  	do {
+> @@ -2445,7 +2447,19 @@ void *__init alloc_large_system_hash(const char *tablename,
+>  			table = alloc_pages_exact(size, gfp_flags);
+>  			kmemleak_alloc(table, size, 1, gfp_flags);
+>  		}
+> -	} while (!table && size > PAGE_SIZE && --log2qty);
+> +	} while (!table && size > PAGE_SIZE && log2qty > min_log2qty &&
+> +		 --log2qty);
+> +
+> +	/*
+> +	 * Shrinking below low_limit would break callers that size other data
+> +	 * from it, so fall back to vmalloc, which needs no contiguous memory.
+> +	 */
+> +	if (!table && !virt && !(flags & HASH_EARLY)) {
+> +		table = vmalloc_huge(size, gfp_flags);
+> +		virt = true;
+> +		if (table)
+> +			huge = is_vm_area_hugepages(table);
+> +	}
+>  
+>  	if (!table)
+>  		panic("Failed to allocate %s hash table\n", tablename);
+> 
+> ---
+> base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
+> change-id: 20261123-mm-hash-low-limit-37a3a47c7cd1
+> 
+> Best regards,
+> --  
+> Amir Hosseini <me@amir.fyi>
+> 
+> 
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
