@@ -1,127 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1425606A6AC
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5A3606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LVEeRbRa
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H0BfK7QY
 Received: by kanga.kvack.org (Postfix)
-	id D87606B05B0; Thu, 26 Nov 2026 09:31:07 -0500 (EST)
+	id 26F6B6B05B0; Thu, 26 Nov 2026 09:36:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5FCA6B05B1; Thu, 26 Nov 2026 09:31:07 -0500 (EST)
+	id 21FEB6B05B2; Thu, 26 Nov 2026 09:36:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C742E6B05B2; Thu, 26 Nov 2026 09:31:07 -0500 (EST)
+	id 136E86B05B3; Thu, 26 Nov 2026 09:36:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6057F6B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:31:07 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DFA0C402A2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:31:06 +0000 (UTC)
-X-FDA: 85477507332.24.5092C21
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ECDD3C0009
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:31:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=LVEeRbRa;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DD8DB6B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:36:34 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 725E5A049A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:36:34 +0000 (UTC)
+X-FDA: 85477521108.17.0E661E7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A5AA1100007
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:36:32 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0BfK7QY;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795703465;
-	b=uMTS9mslKf0sXX1nJlqynqLXgVtw4UejXAzpQS3q7+0ep1oLggmjYImfCf+rydQMzp9EOK
-	XafOBW5TVm98OTuDDYprzQY7DBdIbOsKXKSyGZwNdYi4Ad79nEH+b37S+XjZMKWNeFOdLo
-	pz9wYdEln/gpqrg36Djno8UnhcNQmH8=
+	t=1795703792;
+	b=2kX6UtomZ1u2oUGl0P67Q6FLfKX5rashfiSUU/VFdI6fV/rvx4Cztb2JSwYlLh6wwMUICb
+	wwmTWtQtTHNSpJUCnll0TSvZZ/BpZq34NNBKJXg58iz5ygHOIxpbJbDUv3rUlhfGnWBfZ7
+	Q2Ogj+K3qEayrztcKqsIgzbbdDnUhME=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795703465;
+	s=arc-20220608; t=1795703792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S5r3XjtXFsLjzzhMzj390HKNPBHceWrZJqEAhyaam0k=;
-	b=2odjJ/8DKqDvrBRtMcgjBrmeBMPAZCcLseFeYNe2geZuhzJJEcySnzuslv613x9mFR368q
-	fOe8uP7x3JPlpNdvfWy5IImkm/5oIzG/QHonEWqx5gjOiFs/urcVTya+mU76tuIdO+CyGG
-	G37Q8jgI2A0R3xAmQbWrp+SnCu13WHE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=kYrLxqLUpWVgKn3zzF+gWk/ajqUs6nOlEAHO0CfcR6Q=;
+	b=vBasnGAO4PNdjAgr4QxHKEgROcCeO9UDpa9j2HRwjNbf7U6JCHpf+fssOoBrjH7MucH2/g
+	s2h/dtAxv8WRid8JbgMpLhioCzsLBvhqTQ640GPnp3UpZ+1EwD0qVHdWXmsUxM6Da+ayhb
+	5etHfIQPXVRS5Et03as0CG/AG11JH4Y=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=LVEeRbRa;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE2881BA8;
-	Thu, 26 Nov 2026 06:31:00 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E9F83F86F;
-	Thu, 26 Nov 2026 06:30:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795703463; bh=Gh8fyK7BLAji0Po7ndrDo9Z/I+fzSOToLbTFsVx3zZg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LVEeRbRacat2kmxF2QkCxag4t6jAyhtj4S+xDo+pF7fMr1Tz/HhujzVMY5tHehXMU
-	 qCzCPO6R0EVjS9S8Iu8MQu60xg6xWeReC2v+YlZNpk+tZF0qOlBkj1aO4wtTScfy+Z
-	 21pgcGpco2AGab9fHjE3qak7bp9yODvWbgfJ3hW4=
-Date: Thu, 26 Nov 2026 14:30:54 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Mike Rapoport <rppt@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
- with ascend order from PGD
-Message-ID: <awhCnpiUc1R_BLx4@e129823.arm.com>
-References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
- <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
- <awXD4i47F-VAG1tD@kernel.org>
- <awXc0MSZl9t9VW8e@e129823.arm.com>
- <682c765f-332f-4ac2-b448-4201c8fae6fc@kernel.org>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0BfK7QY;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 280ED6359C;
+	Thu, 26 Nov 2026 14:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9B11F01562;
+	Thu, 26 Nov 2026 14:36:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795703791;
+	bh=kYrLxqLUpWVgKn3zzF+gWk/ajqUs6nOlEAHO0CfcR6Q=;
+	h=From:Subject:Date:To:Cc;
+	b=H0BfK7QYVTriVdhymieK7UYL1mcWS2BeLUaphRZegSaUknJdRwTUKHzEXAiiYK9cH
+	 fX0DvcnXUgSuuZzylyDb/mZ5KwFE21oLmq3olRZSeStzHNP+vSrzDUgao/nG4WZHaz
+	 pdXMNKN5i7fgRkBaUhtYh96N/5TiaLRECbqrM264VMcXnXOIx9XkZToa6fWCch0ysS
+	 Ku3t26MLBCEydgmd7eyCRsmK8nC3UG1Q5L8mAd2bbyaTST+nEc2CL/myg1lYLMG6U7
+	 bYpDQ/CiBwTexZZzWiQBQUClD2Agl2bD+QGF7krfMnnykXHw5YZJvPmQX8MnjS8pPb
+	 66WA0Byn7stvQ==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v4 0/4] mm: fix races between huge and non-huge faults in
+ PFN mappings
+Date: Thu, 26 Nov 2026 14:36:18 +0000
+Message-Id: <20261126-huge-pfnmap-fault-races-v4-0-feecd58bb14f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <682c765f-332f-4ac2-b448-4201c8fae6fc@kernel.org>
-X-Stat-Signature: h97yxstswi3oe1fbqt4cnzpg679g3yba
-X-Rspamd-Queue-Id: ECDD3C0009
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/4XOy27CMBCF4VexZs1Uvhuy4j2qLmIzTswliewkA
+ qG8exW6oUK0y5GOvn/uUCgnKlCxO2SaU0l9BxXTGwahrbuGMB2gYiC5tEIIg+3UEA6xu9QDxno
+ 6j5jrQAWN0mSlPZAJATYMhkwxXR/y59fPXSZ/pDCu3LpoUxn7fHukZ7Hu/q/MAjka5Sw3Vqto4
+ /5EuaPzR58bWDOzfIbce0giR+ks546c8sG/QOoJkn98pJCj90Frvd0pLX5Dy7J8A+ihNCpjAQA
+ A
+X-Change-ID: 20261115-huge-pfnmap-fault-races-534e626de5cc
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>, 
+ Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>, 
+ Roman Kisel <romank@linux.microsoft.com>, 
+ Saurabh Sengar <ssengar@linux.microsoft.com>, 
+ Naman Jain <namjain@linux.microsoft.com>, 
+ Michael Kelley <mhklinux@outlook.com>
+Cc: ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+ "T.J. Mercier" <tjmercier@google.com>, Eliav Farber <farbere@amazon.com>, 
+ "Gregory Price (Meta)" <gourry@gourry.net>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4624; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=LjQ6DmHgJktoUdlUzhIdMVT20fXjKvMndIPL42dNs9w=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI5nJ9e3DTz7PPGNVx71Hj4WDRnl7Xm8PTd/V/Tcr5ln
+ QwX9670jlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExE4CbDP4PjoTWqVdJC5yt8
+ +G9q/lCfktV34FxYb97O+xcV7ra7T2ZkeMR8PtzPsrD1iBrPjf3H3k67crf07sEoRVfjzy4f7kl
+ m8wMA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A5AA1100007
 X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795703464-436162
-X-HE-Meta: U2FsdGVkX1+qRqBxU93EXD5D7QMbGknm70npiD7uOtLz6rXnesoiM+lPLabkIpabRaP+gExuR+s7GHDEJhQ+ZzJfe6YdwNhYOK2w2FBpVlHw4z615pLEA4OXOmFuRsk63TdKRRHWKljovT2DXfoxOqOVr0MapmwWb4UgMZX0SO0bs/UwNdMGV0rG+copiXehjp3TOujNiFSzeJ2U9X6vY5LBh8QGjA8Y7o7vWW2ihAhR3Qvrnl7/rXm/XlToVjHXI6EVkKcB6oBZ2dSHang0EUrWHbTQPD+5u9RMe50Fdnn+kQ7FKPp0UCSYVq7oohw47otESDYikBxsg5Lbj9eXfTZKFOshpzyPztr3h7jw8LFiTQ937tev0qzHkANIrNdxy+4aSdO+XQry1jgvzm/SBVHxSXEEm9SDd3CcfCeL4kYCzQDGNrizSCSL3q205ZVjSOnk36apg9sIdhJXMAB1lpAM5uyaS9IDRCo87UnZTt52hjHvMLTn+6qcXjN8D4CQZVsJr6UJfHXbIrz8gP8EvHN34iqbO5ad3KvqSLaKX92yjjf0B4vMDIj2nBIj8h70LKyvuWEOYDMc3yqOXVQOAOhXis4tyuA9uJLD5LRXFbYw4Anq5TZDxX3waapI90blOl0Y7qsBpV5YX5Uj62Ec6RX1HVtbyk2RqqRz9loLAJsomYwaGyMkvtv/4v9ruy3rwK5wDEllGOTKFXw0eLuYMWvGoEEOQ9Z55IgK92hnGoO0gp33EVnmSB0WvTrm874Xok0RfRkRbi5GVqG8YU3NGImL8EN2q1zj/Q7JJsD1oMPZzaMUfw20qEhn+DxKE3hcCk0wd8SjIavX5xkWpSGFXjeLStx1Kj5DJKnHubupUOqrZMqJWNAqBxNPp2ItFGFcgQH93jAJsak60GymFc3WfxAzET9Ae7Cd+T6Id40oZCURaFS0re4D1mYQqX6Glo26ywGf0tlRMQBozNy+X9+
- xznvdXsh
- M8EcgxMgHGzEtlr+PITpommy2wlK0KPbLf9muL3vBgxKFKp9B3vTqX8eRsLGuJ1N2qxFFT83qNFgoa3EqnU+ETZ9wNsN7Zl5j3JaM8EhNjPU4SDsxY+pGdTcufD/yx+Dtx4gU7QpwmPy1dXHS5wNV2hEUHlPw7tBJceBJlKxSjBCS+3C3d1QX9mEbiab0DmLO0PoZLSWjqS56Yz9FM2uKgSo7ofxuKl0kS6YU11h3bG+MEfXaPsxmlwhFcbAGTzndB5kLL0cY4Fu4+L11vM9KyuHydkIVtzkj88BcRgIlO0nF1YhYgagE3iJuIHLxrjyUE1QQ7reEaQJzXh/39ZEDoe67jpAjZtZLz7zX8Ercfys1TiJ3acIZWOGXxv89fGnBgniT9MgDUQr16o3yaY76Ysr0Hgx7jYuMQ5nZE43KMWVIp8sadMrAPs3sQ4Lk4uzNtbGMV5YqnXOWPQvCLwtwUP2yMpsPXLRk7Hb9aNqvTxbOVWgzopMlsyGvvvElRU/nmzcL
+X-Stat-Signature: nyn9jrwudjdw47fcsg5cyp3ho14rerym
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795703792-76618
+X-HE-Meta: U2FsdGVkX1+3kjp4nms1KeBDNUQmifkW1oUJkazuUqDqDQkXWwrOSwpbw/CtC1ERPvXTzAOmac977Dz0swx8N9Dy39B4ovRlM77kxg4FqdytT0xy0RNbELPdD7w6Lh5dpgYgyc1YyHnkUMctqKO6IrwhZEr3O20HV9ryvpy7GPKkWTqAb7edxOHytX+Xij9+XSHbTjFY8yqN868txNE7g575tVBgqY7/Z/XzicCm42alfARlgMvzHHJiQD8G/C+oJL/JzvbUGxFaD/NkI9qLY5n6WRazREsEyBmMTAYUquYN601/+65zK2p71dgtI8ePcPoeEjWd/kk09t5GKYMbOC3MAltevRPZnB0gBxKuucjdt/nMlg6w+bnGUfNpzzXb6wJQTwsqum/CZ+1qLU3AHSMPwxk3/q0ISGy/VpAh7RyiYhaSXZdGySI+DdgmIPkDsPH8UGcmxx15kqKfSrHTCojMTw0Rug3I2rAp1Ekw4vT2pZAP/GR4nj2FTR0uEmq6TkOVEM3Vme7+OiSRT0IO5JMoJIsrpOsk/PpBdhXnmkWn/RUlp7+P3+6KK5I79lN0gVum8bhjAvXRqge3mJMyXyOK7bMg2O3DvxIqcO0ogMy/2k3OPManeQ4RAJBJB2orPj9SgnwheRQuEJnqnAART3FiCOaTq8+yQYERLuPBt1Y0osbFkNUghMNbT4KRAD1CYIZou3hdAYgVMxG9Uanmu4GrG18JP2uNSXK6QQpmBIXK7zLy8gbgKFzZz9qqLZoSOMVK8HeYr+Aq1zSwDhFTCQtKngvU07M4QqqD+A02+zDy4eVYFAgvKMPQ/eXQ/0Nf0nNYzZ2YA2Dw39hejxD7Gx1Rr+q4R9wBN2DCo6y60YcCb48nJhl4kRlKYro7wVvJTwflNb/YIOT0E1b3mV++wcIcBZOvGt5x8YNI6IrngOX8YOAdAeoH7jpq87nevqkBG/aC+WSYxMl1ew9BIbN
+ L8W13ANq
+ FmlDmnxrnwo1CAkLhVkcRzA/IBX6uG/2j36BdBDYrjwUTphpgc295FzGAxiRc/Ho7yCpV5mXA2OgN9wJIxSJr4fVb4DSwMKLgCvBoNA9ISl+a3NwY1FoPjwVfTAg/Jin6Y+0yKvKwKBPgoux//UQlYAEyqt5ahhfFN/ft/QaVxWGCXSngeLJiT468Kq4a0m7dnCrug+WYX5/mkfKrh/6ybIb7wHyPvyIS4TNAUBS+DqspwNKP2K1jSPJ0wMLkVen3DReGR5sOIsIQqGmGUz2lZvBufuuLPIHjouAdd8TmC59Rw9UKlElqHyNtsYI8XpP6bLNeCnpX7ks1iMB36zVVGHJ4CMq8FcJOc4Hvsa7qH5NFrkX9yN4XI5Hu+wTFlWoCX/f8BRiUOSr5bmwC5TljoNzBBEqNk5OXaaqcGJcadzlrbD/6CfuP06A+SrVFqyHC7LyEpLjTxMuU1lUEoXO+45XZQoj2lKNWxTXmcfaVHdC3IPcf84a4rRKfyIHo8yAnH82NCoiealrj3jlmNBUlnjvUoeXPmuKmPW/KBy43NLTzpH5Q89UCEWyt2j9FKdALoUdF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,46 +123,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 26, 2026 at 03:19:13PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/24/26 19:52, Yeoreum Yun wrote:
-> > On Tue, Nov 24, 2026 at 07:05:38PM +0200, Mike Rapoport wrote:
-> >> On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
-> >>> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
-> >>> from their intended usage.
-> >>>
-> >>> Intuitively, higher page table levels should have smaller enum values,
-> >>> but PTE is currently assigned 0.
-> >>
-> >> That's not what x86 thinks :)
-> >> They even expose it in /proc/vmstat with smaller numbers meaning lower levels
-> >>
-> >> $ grep direct_map /proc/vmstat 
-> >> direct_map_level2_splits 152
-> >> direct_map_level3_splits 4
-> >> direct_map_level2_collapses 0
-> >> direct_map_level3_collapses 0
-> >>
-> >> Just an observation, I don't mind either order.
-> > 
-> > Right. I made this change because a depth-based scheme seems more intuitive.
-> > 
-> > As you pointed out, though, the x86 specification uses smaller
-> > numbers (0) for lower levels (pte), so I think we can leave the
-> > x86-specific direct_map_* entries as they are.
-> 
-> patch #14 depends on this, no?
+A driver that implements both ->fault and ->huge_fault must anticipate
+concurrent use of both.
 
-Interestingly, x86 documentation numbers the PGD level as 4 or 5,
-whereas helpers such as effective_prot_pgd() use 0 for PGD.
+This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
+concurrent with faulting, as that only holds the mmap write lock and thus
+does not exclude faulting threads stabilised by VMA lock.
 
-Anyway, this follows the usage and semantics of effective_prot_pXd(),
-rather than architecture-specific level numbering, which varies across
-architectures.
+A number of places in the code that implements huge PFN support fail to
+take this into account correctly, which this series aims to address.
 
-And yes, patch #14 depends on this, although changing the condition to
-level != PGD_LEVEL would remove that dependency.
+Generally the shape of the issue is that faulting the same empty page table
+entry can result in the ->fault and ->huge_fault handlers racing and the
+loser finding something they didn't expect.
 
+The fault code must tolerate this, but fails to in 3 places:
+
+1. walk_to_pmd() asserts, without the PMD lock, that the PMD entry is not
+   huge, so a VM_BUG_ON() triggers. [ vfio-pci, nvgrace-gpu ]
+
+2. insert_pfn() treats a failure to map the PTE table as an allocation
+   failure and reports OOM, causing kernel accesses to the range to
+   spuriously fail with -EFAULT. [ vfio-pci, nvgrace-gpu ]
+
+3. insert_pmd() and insert_pud() assume a populated entry is huge and
+   compare its PFN on write fault, warning when that of a page table does
+   not match. [ mshv_vtl, drm_gem_shmem, panthor ]
+
+This was originally reported and fixed by Eliav Farber in [0], this series
+reworks patches 1-3 of that one.
+
+Patch 4 of that series (x86 PAT encoding of huge PFN mappings) is dropped -
+it is unrelated to the above, no in-tree driver is affected by it, and it
+needs a different approach which is better pursued separately with the x86
+maintainers.
+
+All three issues were reproduced on x86-64 under QEMU using vfio-pci in
+no-IOMMU mode on an ivshmem BAR, with 6 threads faulting the same address
+in each PMD or PUD aligned range of the mapping while another toggles
+PR_SET_THP_DISABLE (note that vfio-pci had to be modified to pass the write
+flag to reproduce the third issue).
+
+Without this series the BUG is hit immediately, with only patches 1 and 2
+applied tens of thousands of -EFAULTs are observed within seconds, and with
+patches 1-3 (and the vfio-pci modification) both warnings fire immediately.
+
+With the series applied 30 second runs at each of PMD and PUD size complete
+with none of the above, with or without the vfio-pci modification.
+
+[0]: https://lore.kernel.org/all/20261112051440.16140-1-farbere@amazon.com/
+
+---
+v4:
+* Rebased on mm-core/for-next.
+
+v3:
+* Propagated tags, thanks everybody!
+* Fix issue with 3/4 returning -EFAULT, which resulted in a SIGBUS. Fix
+  this by returning -EBUSY so the fault is retried. As reported by the
+  kernel test robot.
+* Updated 3/4 comments and commit message to reflect this + also that
+  MADV_DONTNEED can result in a missing page table.
+* Updated 3/4 to also have insert_pages() return -EBUSY under the same
+  circumstances as insert_page() for consistency.
+* Fixed 'Reivewed-by' tag in 3/4.
+https://lore.kernel.org/r/20261125-huge-pfnmap-fault-races-v3-0-bbc44489341b@kernel.org
+
+v2:
+* Added 1/4 to have walk_to_pmd() return an error code. This is marked for
+  stable as it is a prerequisite of 3/4.
+* Updated 3/4 (was 2/3) to add __get_locked_pte(), which differentiates a
+  failed page table allocation from racing a huge entry, and to use it in
+  both insert_pfn() and insert_page(), as per David.
+* Updated 3/4 (was 2/3) to have walk_to_pmd() return -EFAULT if it
+  encounters a huge PUD entry, as per David.
+* Updated 3/4 (was 2/3) to be authored by me as it is substantially
+  reworked, retaining Eliav as reporter.
+* Updated 4/4 (was 3/3) to use [pmd, pud]_leaf() rather than
+  [pmd, pud]_trans_huge(), as per David.
+* Propagated tags, other than to 3/4 (was 2/3) as changed significantly.
+https://lore.kernel.org/r/20261117-huge-pfnmap-fault-races-v2-0-276007e73bcb@kernel.org
+
+v1:
+https://patch.msgid.link/20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org
+
+---
+Eliav Farber (1):
+      mm/memory: remove racy huge PMD assertion from walk_to_pmd()
+
+Lorenzo Stoakes (ARM) (3):
+      mm: update walk_to_pmd() to explicitly return an error
+      mm/memory: do not report OOM if insert_pfn() races a huge fault
+      mm/huge_memory: only compare PFNs of huge entries on huge fault insert
+
+ mm/huge_memory.c |  8 +++++++
+ mm/memory.c      | 70 ++++++++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 58 insertions(+), 20 deletions(-)
+---
+base-commit: ded26aaeec76470592fb8e5eae1ec7bcbfa14b24
+change-id: 20261115-huge-pfnmap-fault-races-534e626de5cc
+
+Cheers,
 -- 
-Sincerely,
-Yeoreum Yun
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
