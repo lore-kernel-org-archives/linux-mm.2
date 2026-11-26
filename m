@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE93606A32C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442DC606A335
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MdONGc5D
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SNX3cDEN
 Received: by kanga.kvack.org (Postfix)
-	id 5C0366B0608; Thu, 26 Nov 2026 06:21:32 -0500 (EST)
+	id 65C706B0609; Thu, 26 Nov 2026 06:21:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 597126B0609; Thu, 26 Nov 2026 06:21:32 -0500 (EST)
+	id 633386B060A; Thu, 26 Nov 2026 06:21:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4875A6B060A; Thu, 26 Nov 2026 06:21:32 -0500 (EST)
+	id 521FF6B060B; Thu, 26 Nov 2026 06:21:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A1046B0608
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:21:32 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F13E1403F3
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:21:26 +0000 (UTC)
-X-FDA: 85477029372.24.8E66EF1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B336618000F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:21:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MdONGc5D;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E94F6B0609
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:21:36 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B433D1A0DBA
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:21:35 +0000 (UTC)
+X-FDA: 85477029750.29.178EFC2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1BB51A000C
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:21:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNX3cDEN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795692084;
-	b=aF5zx8qVz0zOYOhlPM4FoK527PZyLamcxj7TIQPIONz7fTbw9HROyg27QdeyDiDB31WGbh
-	snhrc6zN+1eINLoHf6YS55xnXsLwj81/5Ov9sm0TN6Gtthyvojz88z/uGzZw2qEIX+vOjl
-	RCR8J/s0wLTepOt7fe04Coo2HapEDYc=
+	t=1795692094;
+	b=BSekzp9lmRkRme7np4JVhkK6qdPKHd5kS02Z1xhbjlHGNpSYhvSNoabxpoTLQlD0nYWvfD
+	kavUMghfBh1WC+Dnhng/xNjIPH+pX2SEEbp6BcS3kFSb/L6TjUPPrsHdzgc6jZyOaxMaYn
+	mZ1I39/x4Q85ElFXsLZimNSxLklh+rg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795692084;
+	s=arc-20220608; t=1795692094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oczPXoX6LmrOL71NJs0ylkVxm4d3C/x+BrDR38WYHaE=;
-	b=cDsT0rNiuxFyjQBzDm5r6QPLrCE+x1TEi+OY4FEmHLYltbmijq6qupisfzYET6svHhvJWu
-	VlzIUZ6vqDmvPybUbdawWzxkAcMUlur3DwZ9SosG4Y/PizAJXOIFXsRt/24JdcQgmkYQWj
-	1h32YySbKq55AfzyZ7xIB4BudFUsuv8=
+	bh=vigwkAWRONvzPByx/zhPfJ9SVHH2ehEcBxoq+qTMC8E=;
+	b=BvFo0gMVewLvkcWzXBEIfOZNmOeDvn3i+aUIWYv4DTCJw6FxJ2xTRuAG5nlsG6Y3UhiBCJ
+	eE6qP7klNWSd7682YaaanZnE8m9uHPskR3au8m3DWgnrqTys9pDK0aPY2XaVq1Q7U7yFGm
+	Gk84BF4W/p5rm9un/lNw63sMClBQoKc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MdONGc5D;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNX3cDEN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1184943D04;
+	by tor.source.kernel.org (Postfix) with ESMTP id A569C6338F;
+	Thu, 26 Nov 2026 11:21:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734441F00AD4;
 	Thu, 26 Nov 2026 11:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1641F000C0;
-	Thu, 26 Nov 2026 11:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795692083;
-	bh=oczPXoX6LmrOL71NJs0ylkVxm4d3C/x+BrDR38WYHaE=;
+	s=k20260515; t=1795692092;
+	bh=vigwkAWRONvzPByx/zhPfJ9SVHH2ehEcBxoq+qTMC8E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=MdONGc5D6rm4fAIyBNnofa7zpl+ADVHNhC4NDJwfkNfn8091gbfJmZAzoRVlM/UAl
-	 38krRg5mk0qAmdNSn25jievEXiTiFYMnALk5q/eCta1QCgZ9gXPatAvYcRG58uVVBE
-	 3wm4HYstziFwb74euNhfATKEVwYpu+Z970spJ7A+TWt8ilM4sCBjHWuMBCVIPGSzRx
-	 /6zudqAJDsL4am9+DVg43+2gXxLgl6UsPiaIN70VlmvNQeb+uYNXnrQTMkVGavd135
-	 nxFSo02+WGH/4IoofGf/gRphDaH3v6Nduf1B5F3XSAOCSmOauduVMTOdJZelQ13K7m
-	 +/5p7bR7Qt+Hg==
+	b=SNX3cDENiO5DzlG2beALu6yElwtfAJXpHrvTqpxO60LzbbVU27yDaIgMMSFUrC3qK
+	 +gif9ob2GHrwxtQZ2uGiKiYmg7Dy16SvDHGHzdFUsr1dSx+qMH8iVYn8rJD5ozxCDu
+	 ZLenCOZbN2Wt7s8cZ1jwGUELsfeht4miRfQl7N/J1msWxoJt4085AIm4mT+Ff3Hjww
+	 0rvY138mhTHgAPV+UhUHEzrCijrGWuVoJt3D8ag2qDG35f5eTy1vTkHDWY+1GMsIhv
+	 Z/IC6JEKsjS2y2gDXBkm1BfHhyIJPZCVGsNCbFMHzeqMQhFUU9ScTYCUcWKZiWuLGQ
+	 jEz1spOt2dAIA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:56 +0200
-Subject: [PATCH RFC v2 43/54] mm/pageattr: let an architecture allocate the
- page tables for a split
+Date: Thu, 26 Nov 2026 13:14:57 +0200
+Subject: [PATCH RFC v2 44/54] mm/pageattr: derive direct map counter
+ updates from the level sizes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-43-723f1e33c3d8@kernel.org>
+Message-Id: <20261126-generic-set-memory-v0-1-v2-44-723f1e33c3d8@kernel.org>
 References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 To: linux-mm@kvack.org
@@ -96,19 +96,19 @@ Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: xfyjfy3583fdyowbpijihcr31we45too
-X-Rspamd-Queue-Id: B336618000F
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1BB51A000C
 X-Rspam-User:
-X-Rspamd-Server: rspam03
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795692084-694332
-X-HE-Meta: U2FsdGVkX18z4gDf6IKCY4WZP2R1+Zyl98ZaU3aJMCjAw1GZ2M+tOIuXpJPq/Q6LlyL4CbY8xlIXvd640/YGLtZwr6d0Dr5xlOqlMJv031NW/FU7XPd9VKHGMdDvrKaNfW8jmOpfMdbIzlK+phVdSHMiSUDPo3Jpz6IMe72mtAWOpdC53DvtMcI+hyAgRYaTljRg7zVXPUY3FIn+OlttAjPCCtJGI6ieNNsLIXOalRvmysAcAcWek3m6xGm8uZ9PdC4VcZlVDgYSuMMmXtZiYDeoiBF+f9ofQrm8A6L/WrNODz8EjB3sR5cnTrZGz+A0xoRK+LuiRx4TkqFThxb0GB2pVLoKCZ4VDwDS+Y4mXZ6Jl2RK3WOjDTqJUByQQyIc9cJK66p2GTsnidxMlTwtBRb2D4/y46z56ktQuNUWrfmez1YjSciGygr3ONg5XuxJ3IJ3iOdh4JS1UggylHafeefMGY//EhaueB2tzR446Uv1wEoeF7V24HtPdJw02fFnxJlhswvVBE477QzmW3hWsyKmC74LxT8mMTwar3FR5Rol+C+X2RIUumCavKgmfMbznGMjzq/2ZlYDDdcBob9GPSLP4LPCOZdpWzppTasIzqAUJGmS/inHV8HWzKr0P1eR3bbdAD0EWunaUYIG5cJUrrGewVcAneBtUWtcoqtuP++pz7j7+AK+YxQ3auT4FxUTVG80HX+hgP8XIFZlD07XRY+0FtpJUQrbTSbQ4gARqPt1+PoVCkfZFDShbUyWTPHds3+ilSg3QdXrSLBY2XO9IZxZ/VfoFXqvpytgIgXYR/a5XQmGJtkfYtmMlNLhfyPzwX6iKHmIqX2xJprSImyjG/NAdpj8edaE7k6lntBt1abz1bv3W7/ZS92VAvLnekOKd5SY/4/r12TFiF4auC3Hiuxk5NqVU91oT7dRc+2QGqoBZo1E2W2lYHYzFRiznpOfAyNUXWIaZMRq6uT0VSB
- AY6n81Zb
- DH5MvWD4gosHJmP7sXleZIpg0WOfwFj6cwf0WkusBbukZJJXLgmeomw8ZEeYIeU6TO24huTwadFhH3awm+acCf7iOTCzWP4a0IzxApivBKW1kusf4qOpcXcOeZf+K8nCj4rVb42VGNacaa2xBSD4pFFgLOw9ONc0gN8UYFh8N8cFwhMGRdzmTXrmxYrRJ30CHHcea2aSc0Le+eh8wtBxrv8YxrsY6YsJCyD1Ut05A8LYDP9HHqWNbiAy68Wm/2lYcmOU6/v+4YgOJLpv3oINJqV9lExE9i9TxU2TeIrY/6HdfkESt4SwKVNn8HQIjKWgmRBJChUO7UsLt8YhLS4YASOYCz/L7QhngPyNUwa7VVsItowpeYcWM85E8mt4QulFbnGFf797rhXu48JYOx1vPvzYvwTdr3EW8xTbr4Y+PhE2QDs890pyIa8XN2vV+oxxA5DIT8z7SFWytjGmWMQ8GbnVACRm90+8mC6Si
+X-Stat-Signature: dp6jqh376sh5kru6g865pwyjyb766byc
+X-HE-Tag: 1795692093-224779
+X-HE-Meta: U2FsdGVkX1+qZ+rsiqMrrQqCvbpHkfxL5EoYMvWd8ArN7fJxMA7/oyNBxNktnjgBb+/AdoeJq5bAvku+ZnZVen6ABm9TZpgEXkYOBn48iLYTuNIoi5y0kzTQ7kN7CCpoEhcpRJ//AeXZY03I8EvnaDmNae32MBpauTJrBVrVUy+/SEJtvH3ZUZMzlsMu0rpQHJ0Q+W2agqCLUurPJacj8NPwSc9E5N3aZApwNHgkzulZRuNW9lF5rUdXdkJTPtDdtfwx/sEAkf8NpoIT83T0T+W66BXt8INNH3EeQKpOKtKrznIQkblIDJ2yYwxhYsxAZkdyfhvfyrKU04Lp9FIOzLib9L4SciKGHAVd7bJAXiRFv4cYDvxt2+yiibCxM1nCtBz5LdoymHfhRseO442I1It7IVFc+2Qnc9bhc3BQHyoADMoB7TcZD5GerBES71wneG91FlfUvupehX/Ct/hfgQrFQTW5IPTnT0EYphXkTOxwSVj2cgqwI3tj8Jt1I6eODCk+j9dS+LvxDYSJT7MqgbXX+uK6dbwmEzl6NPck3ZsNRp3N22bIXjQExFCy2dy8S265nGNIIYPPO/dQ+nehBdtpi/jAWevZSCuUKqJZT2xZB5qlgIQZr3YhF7yc8/9dGHQVIxFVlz7mzZPqDHJ6Kibzpnqe95+9ak/xe2BSCDuy52DjR5I+MecCcLBji/mJ0ITiwwQcPHFP4maAQZavpkjs1CgaFUWyuruvoVJ7tftObM86CTFMya165gnQ6L7nLZwSYKFIhTmtW09HjSPjdedIrjKMDRpAkFasgLhUNawcpb0EGDDXuXZZl8keHlreFNrhB4pixSRF1eLkQ/yrEVotL5xlmZ06Prq8MumboDuXF9MpYsorINxh5pQ2W61wkH8mi9bdtwouLhK3O0ZlpdXs6nUUXwe8tI1RaSE0P+nOz2gyrSbT6rcIgfi9RKB/jBvGdwV9i/0eKcE3Jlq
+ fTNQEhiC
+ Lfw/O0SFFCCLyI/gRnnEvOTVMed+8ZlsNDw5b7YIxomPtOkyL5PNoU0GZtrEl7bTKQatTTYzs6LaWRH5IV8Udmt1G9X/jTyiw2cXyTzogHYcjeqA4yBPH3vIvqTIlF1DnwffQAoro7CrmJCas+lwxZ31wN0laDBy/7CpRzFUkqIbhqTJSYQYdW4U4eKF1cR+ukxqy9VY92hNs67SUmmHhosfbm+ey89IlZhnvZBgt/3gkhYyk63S0Oob2kpZhcXTMlqS+mhD1vM3TREh6sIJ7EXGIJUMXU85axBzIL18Kz+W9klq0OnzOE36c7oYPfxLRFeJyj2i8GVske/qhOBAEY7TRQEnGsyuc+j4Wq4qlKHILDpwchhT+/19l4df65GDCFl9hqXFZX/t6TCIDMsozKufVYd/qkfShIGalLFqi7YvRgV2LBVIG8/uV9xddQu5lD3+riKeNHvBCcnw3tfUQbdgX35SI+msu3vG1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,81 +117,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The core allocates the page table for a split with pte_alloc_one_kernel()
-and pmd_alloc_one(). s390 cannot use them.
+The direct map counters add PTRS_PER_PTE entries at the next level for
+every split.
 
-vmem_map_init() write protects the kernel image before the page allocator
-is up, so a split at that time has to allocate from memblock.
+That is right on x86, riscv and arm64, where all levels have the same
+number of entries and PTRS_PER_PTE is the same as PTRS_PER_PMD.
 
-A fallback to memblock in the core would not be enough. With CMMA, the
-decompressor marks all memory as no-DAT, and a page has to be switched back
-to DAT before it is used as a page table.
+This is not the case on s390.
 
-vmem_pte_alloc() and vmem_crst_alloc() do both: they fall back to memblock
-and initialize the page.
+An s390 segment table has 2048 entries and a page table has 256, i.e.
+PTRS_PER_PMD is 2048 and PTRS_PER_PTE is 256.
 
-Memory hot-remove frees the tables of the identity map with
-vmem_free_pages(), so a segment table in the identity map has to come from
-vmem_crst_alloc() rather than from pmd_alloc_one().
+A split of a PUD mapping on s390 would add 2048 entries to the PMD
+counters.
 
-Let an architecture provide arch_cpa_alloc_pgtable() and
-arch_cpa_free_pgtable().
-
-There are no users yet. s390 will use them when it switches to the core.
+Replace the hard-coded PTRS_PER_PTE in the counter update with a helper
+that derives the number of entries from the sizes of the two levels.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- include/linux/pageattr.h | 6 ++++++
- mm/pageattr.c            | 6 ++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ mm/pageattr.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/pageattr.h b/include/linux/pageattr.h
-index 091408ad328f..1a4e7c5dca98 100644
---- a/include/linux/pageattr.h
-+++ b/include/linux/pageattr.h
-@@ -111,6 +111,12 @@ static inline int arch_cpa_split_leaf(struct cpa_data *cpa,
- }
- #endif
- 
-+#ifndef arch_cpa_alloc_pgtable
-+void *arch_cpa_alloc_pgtable(struct cpa_leaf *leaf);
-+
-+void arch_cpa_free_pgtable(struct cpa_leaf *leaf, void *table);
-+#endif
-+
- #ifndef cpa_is_direct_map
- static inline bool cpa_is_direct_map(unsigned long addr)
- {
 diff --git a/mm/pageattr.c b/mm/pageattr.c
-index 2f357a8c24d2..e05281a2b169 100644
+index e05281a2b169..555e55e7ecea 100644
 --- a/mm/pageattr.c
 +++ b/mm/pageattr.c
-@@ -249,7 +249,8 @@ static pte_t *cpa_lookup(struct cpa_data *cpa, unsigned long address,
- 	return leaf->kpte;
+@@ -48,6 +48,11 @@ void direct_map_count_update(enum pgtable_level level, long pages)
+ 	atomic_long_add(pages, &cpa_direct_map_pages[level]);
  }
  
--static void *arch_cpa_alloc_pgtable(struct cpa_leaf *leaf)
-+#ifndef arch_cpa_alloc_pgtable
-+void *arch_cpa_alloc_pgtable(struct cpa_leaf *leaf)
++static long nr_entries(enum pgtable_level level)
++{
++	return pgtable_level_size(level) / pgtable_level_size(level - 1);
++}
++
+ void direct_map_count_split(enum pgtable_level level)
  {
- 	if (leaf->level == PGTABLE_LEVEL_PMD)
- 		return pte_alloc_one_kernel(&init_mm);
-@@ -257,13 +258,14 @@ static void *arch_cpa_alloc_pgtable(struct cpa_leaf *leaf)
- 	return pmd_alloc_one(&init_mm, leaf->addr);
+ 	if (atomic_long_dec_if_positive(&cpa_direct_map_pages[level]) < 0)
+@@ -59,7 +64,7 @@ void direct_map_count_split(enum pgtable_level level)
+ 		else if (level == PGTABLE_LEVEL_PUD)
+ 			count_vm_event(DIRECT_MAP_LEVEL3_SPLIT);
+ 	}
+-	atomic_long_add(PTRS_PER_PTE, &cpa_direct_map_pages[level - 1]);
++	atomic_long_add(nr_entries(level), &cpa_direct_map_pages[level - 1]);
  }
  
--static void arch_cpa_free_pgtable(struct cpa_leaf *leaf, void *table)
-+void arch_cpa_free_pgtable(struct cpa_leaf *leaf, void *table)
- {
- 	if (leaf->level == PGTABLE_LEVEL_PMD)
- 		pte_free_kernel(&init_mm, table);
- 	else
- 		pmd_free(&init_mm, table);
+ void direct_map_count_collapse(enum pgtable_level level)
+@@ -71,7 +76,7 @@ void direct_map_count_collapse(enum pgtable_level level)
+ 		else if (level == PGTABLE_LEVEL_PUD)
+ 			count_vm_event(DIRECT_MAP_LEVEL3_COLLAPSE);
+ 	}
+-	atomic_long_sub(PTRS_PER_PTE, &cpa_direct_map_pages[level - 1]);
++	atomic_long_sub(nr_entries(level), &cpa_direct_map_pages[level - 1]);
  }
-+#endif
  
- static int should_split_large_page(struct cpa_data *cpa, struct cpa_leaf *leaf)
- {
+ void cpa_report_meminfo(struct seq_file *m, unsigned long levels)
 
 -- 
 2.53.0
