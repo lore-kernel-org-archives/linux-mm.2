@@ -1,114 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A9F606A682
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oLg2Fff7
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03F7606A32C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:17:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E90186B05D1; Thu, 26 Nov 2026 06:17:10 -0500 (EST)
+	id 16F586B05D2; Thu, 26 Nov 2026 06:17:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E67B96B05D2; Thu, 26 Nov 2026 06:17:10 -0500 (EST)
+	id 121766B05D3; Thu, 26 Nov 2026 06:17:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7C5F6B05D3; Thu, 26 Nov 2026 06:17:10 -0500 (EST)
+	id 00F216B05D4; Thu, 26 Nov 2026 06:17:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A52246B05D1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:17:10 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE89C8018F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:17:08 +0000 (UTC)
-X-FDA: 85477018536.04.354CCF0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 008F1140007
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:17:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLg2Fff7;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 976956B05D2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:17:14 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2CF811403D2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:17:14 +0000 (UTC)
+X-FDA: 85477018788.27.FE62CE4
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2141780007
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:17:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691827;
-	b=lQrxhPbQvpoB/ELhZb9FyOolAYpU5ZcZ/PG2GoXSwdbVjUeO/xvvuI5Q5hv6t16XSJsosh
-	GpeX0ggZJA6ZcOfKHPnl51Z2msIAoI8mLKirSaddj1nMG61hqndipM+j1BQy+y08t/6YGM
-	T0IO2rh86UHENSo8WwT52sYdq0fcPw8=
+	t=1795691832;
+	b=hncCiibW/C/5LprCbHLnbP7ZnWP8yzGg86lbsaZDxWUc2yRRP43f03VrNMxVV4TI9GeART
+	JB7jyBATdCSP9ywaiMU01d8NKA6osnsclr/6zsLjmJFGdOk4/17hfLbdehBzfWrxo0XNM3
+	6lmnZJFdspqu0BEQQ1o5jx/GU7H2sHg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691827;
+	s=arc-20220608; t=1795691832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1qwpULvuAWXJZ83/2tVfvAzpASrXdkB8r3lEsMJ0zjs=;
-	b=rPyk1ib4SSdJOQzGYaui94A42lXQq/m/U1SXny/qcS1uMCmcMYvIDuxF4Ro8dk5jgfSbeU
-	ue2V90e4B2r1ImuimtKTfn7c+eXmrW13lWV8DrlQEowKE5NEP35bgSabSifzUbnxCn9wX2
-	q1FmrXcz6SWRh5qeKaoBC70JMrjjXgM=
+	 in-reply-to:in-reply-to:references:references;
+	bh=yvpFVPS5nHjAd98a7zI89o00MRQ9zkYpBpD7SEFfFdo=;
+	b=wTX58eIiS7k0JeQeSEpin7QkEJuUZ7hIMy0c2nhRYrTHNQkTflKh7WHrh4p5pzfNqPDXsE
+	fZ7UM8FwcNMRCNECR0zvVcvo3rgdsqFiQ+923U11iqnFBDRbWz4VnXR387esnoi1jCkXcl
+	IixwqdIGo0SLt24k9ZFcBaEhYewCfXA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLg2Fff7;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E91862F6F;
-	Thu, 26 Nov 2026 11:17:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CDD1F000D2;
-	Thu, 26 Nov 2026 11:16:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691826;
-	bh=1qwpULvuAWXJZ83/2tVfvAzpASrXdkB8r3lEsMJ0zjs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oLg2Fff7b+2GZ35KNT50QSRRomdqr8XgASiLEKyHKcac4W/Z1CMbzv01oYlWouSwC
-	 GxPtD3s5R8ZiYTXm7tUz7i//000wVVRYmBxIYQ5mRZB6e1yGLe+AMAw6uJOrbnfiQC
-	 Q55lylf44P0449CTFHdGj2JrUw8UjP5jyEbE3phSOC1zaT2sYm+q7CCmJtSHfdyVxN
-	 AHtzkEI4zwJ57R7nz9tV9R6oWmucQGl/oMN22NQJFfgfwOyAnRykXq5wW/tk6kslhj
-	 a1va0BC8LTJjIG7RQ2u718+g+LISZw+RMvuGfzbOzBTBwzwm/MKm72KcheaaCEpTER
-	 R/87hS5fS97Zg==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:29 +0200
-Subject: [PATCH RFC v2 16/54] x86/mm/pat: look up a large page again only
- after dropping cpa_lock
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+X-UUID: e71d7726e98a11f19a56ed5b684f684d-20261126
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_TXT, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_MAILER_MTBG, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS
+	HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED
+	IP_UNFAMILIAR, SRC_UNFAMILIAR, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
+	CIE_GOOD_SPF, CIE_UNKNOWN, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:7452ed6e-7e81-4150-93e8-1cd97ed03b34,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:7452ed6e-7e81-4150-93e8-1cd97ed03b34,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:ecac7c148939b6f01b1df28134bf306d,BulkI
+	D:261126094937PW693UOR,BulkQuantity:4,SF:10|38|64|66|78|80|81|82|83|102|12
+	7|136|153|841|865|898,TC:nil,Content:0|15|52|99,EDM:-3|-100,IP:-2,URL:0,Fi
+	le:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,D
+	KR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e71d7726e98a11f19a56ed5b684f684d-20261126
+X-User: lihongfu@kylinos.cn
+Received: from [192.168.43.7] [(114.246.238.190)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 1496325343; Thu, 26 Nov 2026 19:17:01 +0800
+Message-ID: <5dc5ea66-ba09-48d3-8c72-bcc5c141b6d9@kylinos.cn>
+Date: Thu, 26 Nov 2026 19:16:54 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-16-723f1e33c3d8@kernel.org>
-References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
-In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
-To: linux-mm@kvack.org
-Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Borislav Petkov <bp@alien8.de>, Brendan Jackman <brendan.jackman@linux.dev>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- David Hildenbrand <david@kernel.org>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
- Ingo Molnar <mingo@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, 
- Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Russell King <linux@armlinux.org.uk>, 
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
-X-Mailer: b4 0.16.1-dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/21] mm/hugetlb: charge the copy made at fork to the
+ parent
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jinmeng Zhou <jinmengzhou22@gmail.com>, Hongfu Li <lihongfu@kylinos.cn>,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dave Airlie
+ <airlied@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ Mel Gorman <mel@csn.ul.ie>, Dave McCracken <dave.mccracken@oracle.com>,
+ Andy Whitcroft <apw@shadowen.org>, Adam Litke <agl@us.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Lance Yang <lance.yang@linux.dev>, James Houghton <jthoughton@google.com>,
+ Yang Shi <shy828301@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Matthew Brost <matthew.brost@intel.com>, Byungchul Park <byungchul@sk.com>,
+ Alistair Popple <apopple@nvidia.com>, Wanpeng Li
+ <liwanp@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
+ Kenneth W Chen <kenneth.w.chen@intel.com>, Hugh Dickins <hugh@veritas.com>,
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
+ Joern Engel <joern@logfs.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Michal Hocko <mhocko@suse.cz>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+ KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Sasha Levin <sasha.levin@oracle.com>, Guillaume Morin
+ <guillaume@morinfr.org>, Wanpeng Li <liwp.linux@gmail.com>
+Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, Hongfu Li <hongfu.li@linux.dev>
+References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
+ <20261125-hugetlb_fixes_2-v1-1-db27fd2f71a8@kernel.org>
+From: Hongfu Li <lihongfu@kylinos.cn>
+In-Reply-To: <20261125-hugetlb_fixes_2-v1-1-db27fd2f71a8@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ownqxrfe7fae3zxtep7fqn9ockka3wx1
+X-Rspamd-Queue-Id: 2141780007
 X-Rspam-User:
-X-Rspamd-Queue-Id: 008F1140007
-X-Stat-Signature: 36zx3uaj6in6in7gw939fwri8kmxcyr6
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795691826-601371
-X-HE-Meta: U2FsdGVkX1+GIAU/1PHDWtZpjHavDOtZt6h3wETM5Pih4Hvf02Vuuq9z5dmbV7az+3oigFxMgLfqCiCDGFQLVoJFphD2GSmnPpyuzxPJw8cZb7YnCYwoRGTXx2ru12dWQ6HGn4J4j095b/dYdTkW9+Tv8i3w8QIEkQmwi/8MtzT/NmTOz16UE+oB6tx3Ojk7KjudIxJAaEKxIboc0k2txWKh1aj+sV2A9Sl+4AS8qUjBXRXY9ZpQFxqRXkiVUYGnc4s4diO+I22tXw9VAg4gV9CRcKiXfIxin1+m8rP1lM4ZoxeFmVTUOj2w/21P7/D40uVnZ3mojdDP10gdb3PuCQG9ewLhd/bJLGpRFzj2xYExjjqUwLM2zF85dpwJSpU/NKfVuRUxd+C2iqC6z4crt2sU7WWBrIKTEPR9nciEyoD7YJBoLGjfzn6nguehh8MBp5uytoocXLUsuncX9SY8LM1RdwTLtWyDMdlrt2Fyz9i20fYG99A1VO4m1BWGpPh1RZx5KA0orYhF0rQEjpV7Jmud1KTkWzm+ISpfPcQNO1ZsPiD1eqtT1095BPbweuRtzBBRI55Mqe7AgvgTgzpjS0uexi4Sus9lhjGo4k1RLXSAvwRhzxXhCsnclaejDw3BQEFxs9dASMkUhm/0VCdxE0YQghA2bJmtKl/3eEF7Ms/TUDMzEP7GRqoUY7GRnfzHOkSCzEhQ4OJcKwYKnknqpwK0M3oHrgCw58kChM+tplR8g77xhkBSMGUr/g7ESme/ljrkzpxWGN+yA8ABGvKDws+pvGHm7G7VXaPE1oFPm7WKacBMKXgDlzXwYHkHQVNDiroFNS7fU0H5RmyCTwPlSDyklafU1idGu/NAPlWJYywSFpFbWFv2d1zLMTYFJiKFcWn4omQR7R0582YbgyF36GLslh+SGMMouemiilpkl5pTOo5Tze05A+YoMK+NbPKukYgf2N3aFFeHie6XN4K
- tooimc+8
- +7O7uTazgmxExp9DEAk+XLCMD2/D1uGZM+duzV0bUFIKTP7i6kzNM4L354ikv7d4PEr8OY1XBXY5QLWu4ZNYl7qlpo5njTlHw3lgIxisccM2EFobkAl2FRe7iPAkfN0bOoGyXcN59pTqh81K+8loHwaLIXEoDjltC2ZsIzMUTU5rGAK/KzB2odjOvgvTlwFH9Vi6eM/Rwqv2/uVLCwzsWWtbQqXLcdC9Pfegfs2EUTe0W6JomNEYmfEYh1YsFeMRmGb+GkvqkRiBfB59OHx5NvYnfrj1NofD/EzRjCVyYBxqq26t8kYWbdtBLJW9tB9NbFtk7uIf+Z6aKeY7wlSHM6KuJZBDiDSspQrp60r8PWRuFy+bj3J3E9j2cy7b//1KiuUFOgX0O/Sa7vfS4HWg32PHjVz8s+2YXLVirUcWJEfQz8gFDaglQGrxyaW3eC/XBKvvsDvfE0KwSc/4OMv3xGw6CwHv4+Hy4MMXf26Xzy5yfWEjVILh0la6roP3Br2q2uQZPBYiTGq8qr5SNDz1d7pwMWVUYGBgfKHHsJGo3KSjdMS0=
+X-Rspamd-Server: rspam03
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795691830-145009
+X-HE-Meta: U2FsdGVkX18qbuJRUVypi+rvnUf4RLXH0wqoZEO3ydiuSlgaGEmPxrR4OoIxwOHOiA1YeAPiS0aVp6xLNlZWmxk7PVAg3PlkpTYfvdZ12KmunEszfn1ZeTd/eho13Vwgki6tJINXNGHzSf461sbpV7t3e5U8cjsZnas/iJboZWB12VfTX5QNYTa41SCIANd5i6VZt+6J9G+k7O9HIMSp6S43fsyOJ0rLvebhZlipvnubAdQMI1iohH2cbNh7mxozCuSC69V/309mhiR2dYvN0jZMNCik1v6hqm8/TyGN3YvlGsGYiRg3mT5hDOYDoT7fMyfwT+Tmuw+N8+XgmEey95QIoOYWZZeLKbjmErEE8nrokHFTZk+xe2VqyhVqUGIaSdisM6JyNB8QlYoHtYEvIZuPbaBomaRsVIVCioiWN8032WMYmdPidDCjbtn8DmY+7MbP4xT23GK7xyb4LPeWAZ36pVQOrAtaCViexNNtR1aUSvhdUNSzCDwqjAucgtM6zCkydmTPO3CdoYrT5f3Q2cBD3rCpNm9c/OCAgC3v67k6C4WqUHOvpC4mGoqOpAA2czpJCsB/v/kKFomDTd+WNs89pmy3SjaluS0Fkdjn8I4nL8OwdQJNT4s+BaLTQPaFUqD5RTzbjVEiiQHsK5RN5Y73YtuImUkqJ+KSXA9ZhZedXAZZ3NkevT7YoT5kz6rFO8I9nGCxRPUniEE+NzNgPlWJheWcDXivs3ydM925Ppev42+9v7U6b2aN5MPtq3UnP+hnfx1V40iRtjCK4mvyaSxgp1rnyHHfc1fFxH6y3S1KDLJRZXWiycB6o34HX2zz7iyeqEoxZ3BXQBQgIxP/2YARPrC/xYGzSPhkFI8w8XkKldxHaGQpJQ2X7JVm3PEonUrb1CmN6wBpfRvzm1ivCguD32CR1Pzq3mCJS6lwPfSN+FPIzADMAyw/vDydCR6Wx4RCDYTdaMRCdTDckQA
+ 8Q3o5vo9
+ lqxh7shEUCMX6GfH2z38pUcWHi3h2DUpv2FlflecQG61T08fOLuL+MQuyOueQb+nr26I/OvZ/FF6DtpLxyda0ddrQdpSeJGUWrOt2cFKdek0asTnkeyg96aFWSpSadi7JMzOaV9xhGoK8sA7kd7bd5IoUsPKUV0YXzJiP2gyiywXtD4K/s0io4v5V7ZcbmGKbmAXpUIHebxEevKYHfoC0E5E5xDvfj0+c7ZLucvDSD/kdxFRskLx9SzbrSnsCGnp3yl4pQ4QcQwlI+q4OKy8rZKAWGs05MLnchPYoMzkeBzcB55E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,131 +148,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-should_split_large_page() and __split_large_page() both look up the address
-again to check whether another CPU split the large page after the previous
-lookup.
 
-In should_split_large_page() this cannot happen, because cpa_lock is held
-from the lookup in __change_page_attr() to the check.
+在 11/26/26 06:32, David Hildenbrand (Arm) 写道:
+> When copying page tables during fork(), the child is not yet assigned to
+> the right memcg. When copying possibly pinned anon hugetlb folios, we
+> must charge them to the parent's memcg, otherwise we can end up
+> allocating more hugetlb folios than allowed.
+>
+> Let's fix it by charging the copy to the parent's mm, like we do when
+> copying small folios in copy_present_page(), introducing a new helper
+> function alloc_hugetlb_folio_for_fork().
+>
+> This is a hotfix for v7.4.
+>
+> Fixes: c2deb1356d82 ("mm/hugetlb: charge folios to the target mm's memcg")
+> Reported-by: Chris Mason <mason@kernel.org>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-split_large_page() drops cpa_lock to allocate a page table, so the check is
-needed there.
+Tested-by: Hongfu Li <lihongfu@kylinos.cn>
+Reviewed-by: Hongfu Li <lihongfu@kylinos.cn>
 
-Drop the lookup from should_split_large_page() and pass it the level that
-__change_page_attr() found.
-
-Move the lookup from __split_large_page() to split_large_page(), right
-after it retakes cpa_lock, and pass the level down.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- arch/x86/mm/pat/set_memory.c | 48 ++++++++++++++++++--------------------------
- 1 file changed, 20 insertions(+), 28 deletions(-)
-
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 8d481e9edf75..967d691ef1c0 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -973,24 +973,15 @@ static pgprot_t pgprot_clear_protnone_bits(pgprot_t prot)
- }
- 
- static int should_split_large_page(pte_t *kpte, unsigned long address,
--				   struct cpa_data *cpa)
-+				   enum pg_level level, struct cpa_data *cpa)
- {
- 	unsigned long numpages, pmask, psize, lpaddr, pfn, old_pfn;
- 	pgprot_t old_prot, new_prot, req_prot, chk_prot;
--	pte_t new_pte, *tmp;
--	enum pg_level level;
-+	pte_t new_pte;
- 
- 	if (cpa->flags & CPA_REQ_SPLIT)
- 		return 1;
- 
--	/*
--	 * Check for races, another CPU might have split this page
--	 * up already:
--	 */
--	tmp = _lookup_address_cpa(cpa, address, &level);
--	if (tmp != kpte)
--		return 1;
--
- 	switch (level) {
- 	case PG_LEVEL_2M:
- 		old_prot = pmd_pgprot(*(pmd_t *)kpte);
-@@ -1159,21 +1150,12 @@ static void split_set_pte(struct cpa_data *cpa, pte_t *pte, unsigned long pfn,
- 
- static int
- __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
--		   pte_t *pbase)
-+		   unsigned int level, pte_t *pbase)
- {
- 	unsigned long lpaddr, lpinc, ref_pfn, pfn, pfninc = 1;
- 	struct page *base = virt_to_page(pbase);
--	unsigned int i, level;
- 	pgprot_t ref_prot;
--	pte_t *tmp;
--
--	/*
--	 * Check for races, another CPU might have split this page
--	 * up for us already:
--	 */
--	tmp = _lookup_address_cpa(cpa, address, &level);
--	if (tmp != kpte)
--		return 1;
-+	unsigned int i;
- 
- 	paravirt_alloc_pte(&init_mm, page_to_pfn(base));
- 
-@@ -1257,8 +1239,9 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- 			    unsigned long address)
- {
-+	unsigned int level;
- 	pte_t *pte;
--	int ret;
-+	int ret = 0;
- 
- 	spin_unlock(&cpa_lock);
- 	pte = pte_alloc_one_kernel(&init_mm);
-@@ -1266,13 +1249,22 @@ static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- 	if (!pte)
- 		return -ENOMEM;
- 
--	ret = __split_large_page(cpa, kpte, address, pte);
-+	/*
-+	 * Check for races, another CPU might have split this page
-+	 * up for us already:
-+	 */
-+	if (_lookup_address_cpa(cpa, address, &level) != kpte)
-+		goto out;
-+
-+	ret = __split_large_page(cpa, kpte, address, level, pte);
- 	if (ret)
--		pte_free_kernel(&init_mm, pte);
--	if (ret < 0)
--		return ret;
-+		goto out;
- 
- 	return 0;
-+
-+out:
-+	pte_free_kernel(&init_mm, pte);
-+	return ret;
- }
- 
- static int collapse_pmd_page(pmd_t *pmd, unsigned long addr,
-@@ -1928,7 +1920,7 @@ static int __change_page_attr(struct cpa_data *cpa)
- 	 * Check, whether we can keep the large page intact
- 	 * and just change the pte:
- 	 */
--	do_split = should_split_large_page(kpte, address, cpa);
-+	do_split = should_split_large_page(kpte, address, level, cpa);
- 	/*
- 	 * When the range fits into the existing large page,
- 	 * return. cp->numpages and cpa->tlbflush have been updated in
-
--- 
-2.53.0
-
+> ---
+>   mm/hugetlb.c | 26 ++++++++++++++++++++++----
+>   1 file changed, 22 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index d0e66fb306221..f46c85fc0cd0b 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -3103,8 +3103,9 @@ typedef enum {
+>    * allocation).  New call sites should (probably) never set it to true!!
+>    * When it's set, the allocation will bypass all vma level reservations.
+>    */
+> -struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+> -				    unsigned long addr, bool cow_from_owner)
+> +static struct folio *__alloc_hugetlb_folio(struct vm_area_struct *vma,
+> +		unsigned long addr, bool cow_from_owner,
+> +		struct mm_struct *memcg_mm)
+>   {
+>   	struct hugepage_subpool *spool = subpool_vma(vma);
+>   	struct hstate *h = hstate_vma(vma);
+> @@ -3187,7 +3188,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>   		.nodemask = nodemask,
+>   	};
+>   
+> -	folio = hugetlb_alloc_folio(h, &mpoli, vma->vm_mm, alloc_flags);
+> +	folio = hugetlb_alloc_folio(h, &mpoli, memcg_mm, alloc_flags);
+>   
+>   	mpol_cond_put(mpol);
+>   
+> @@ -3249,6 +3250,23 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>   	return ERR_PTR(ret);
+>   }
+>   
+> +struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+> +		unsigned long addr, bool cow_from_owner)
+> +{
+> +	return __alloc_hugetlb_folio(vma, addr, cow_from_owner, vma->vm_mm);
+> +}
+> +
+> +/*
+> + * Allocate a folio for a copy in the child VMA during fork(), charged to the
+> + * parent's mm: the child is not in its memory cgroup yet.
+> + */
+> +static struct folio *alloc_hugetlb_folio_for_fork(struct vm_area_struct *dst_vma,
+> +		unsigned long addr, struct mm_struct *src_mm)
+> +{
+> +	return __alloc_hugetlb_folio(dst_vma, addr, /* cow_from_owner = */ false,
+> +				     src_mm);
+> +}
+> +
+>   static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
+>   {
+>   	if (hugetlb_early_cma(h))
+> @@ -5110,7 +5128,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+>   				spin_unlock(src_ptl);
+>   				spin_unlock(dst_ptl);
+>   				/* Do not use reserve as it's private owned */
+> -				new_folio = alloc_hugetlb_folio(dst_vma, addr, false);
+> +				new_folio = alloc_hugetlb_folio_for_fork(dst_vma, addr, src);
+>   				if (IS_ERR(new_folio)) {
+>   					folio_put(pte_folio);
+>   					ret = PTR_ERR(new_folio);
+>
 
