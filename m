@@ -1,78 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD58606A32E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 21:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F21D606A32F
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 21:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eFshtLzJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O8gv2Nxw
 Received: by kanga.kvack.org (Postfix)
-	id 8FF716B05B2; Thu, 26 Nov 2026 16:18:56 -0500 (EST)
+	id 15CC16B05B5; Thu, 26 Nov 2026 16:19:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B01E6B05B3; Thu, 26 Nov 2026 16:18:56 -0500 (EST)
+	id 0E6FA6B05B6; Thu, 26 Nov 2026 16:19:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79E3C6B05B5; Thu, 26 Nov 2026 16:18:56 -0500 (EST)
+	id EA2FA6B05B9; Thu, 26 Nov 2026 16:19:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E3B6C6B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:18:55 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B8861A0123
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:18:55 +0000 (UTC)
-X-FDA: 85478535030.26.3D5B958
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A9C83C0003
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:18:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eFshtLzJ;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BC3806B05B5
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:19:01 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44FD716011E
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:19:01 +0000 (UTC)
+X-FDA: 85478535282.21.4A4D294
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6F02C2000A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:18:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O8gv2Nxw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795727933;
-	b=hna0cF63Hx3W4Hk4vnrH95+n1aqSndz0a+ZciWePIc7uyG8gE4HXOM2prL2jKBECbt9M0Z
-	Yh4+D6qEV3/oMb0NQI+62Zj0LcyDj93G4SyLM04IvwotOUGeWrJfPwbzfSEaWYcE3/88g+
-	68wZPyKmb98I6cs+a1QRgRbSq2u98Ts=
+	t=1795727939;
+	b=GcnPHkwXXdeRzlZSD78f2Kmg9u2b8JDgbsnOkvFQvi3s4q/wWV5E/MD6wkpo0Pin0DbSWr
+	fqOAl5n3TXYQE9L8B1gvyqLxQQELHRgD7mWTYF7z3paF4p2l3nnhN3LMevG/FSLxNGafIl
+	14AZRIcj3VhHnI42YDzqKzxBJxO10ZE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795727933;
+	s=arc-20220608; t=1795727939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=w4CqDwg7D7154OuRysg7R/98YqHxmOgh6GHFXhtckiw=;
-	b=UsZERd39h7CNj+MbjJjNMLElC/fBFerWFrW4ySLgfTTQMR3InYxHNN6MiLoBDtc5N6Hdq3
-	QMAW6hRO/0FxqRx5YnxVCjtvvEbQ0w+xYjEKSWvm8fzOjC8jlJAdq2/D55CliHX9peBc29
-	FyOoSu5rhNdLb5YlYeyS6u/MxONw1Ok=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Mg7Qi4LHUwhrCBip/YNh+ysHUS3QtiytfnZ8aKHca6Y=;
+	b=zzKCNSfvFmOkyL+/UGVr+JyJxNBGyqJsRnWP2KcPuY+J2qSndhTemVk5GEDMTd36HTOUZS
+	AokS6CJDyTGmWF/UW9REt5O1s4lfYSMXGUHBri4NMMpZrCgUArtoWhlcPV5jPmfUbxReml
+	RT7TFIu6wHtjBRnZ5BtjKH6hEdcx/is=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eFshtLzJ;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O8gv2Nxw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E0A460CBA;
+	by sea.source.kernel.org (Postfix) with ESMTP id 552A240381;
+	Thu, 26 Nov 2026 21:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE4D1F000C1;
 	Thu, 26 Nov 2026 21:18:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08E21F000C1;
-	Thu, 26 Nov 2026 21:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795727932;
-	bh=w4CqDwg7D7154OuRysg7R/98YqHxmOgh6GHFXhtckiw=;
-	h=From:Subject:Date:To:Cc;
-	b=eFshtLzJ/qZhIuDavJGMHhx0awqSSLOmqIK+rtEp3hFJGJsXGZp89mYuJ0A2oflwe
-	 WPjABWLlBns1I6Gpe1W3XZGnCdq7jSWTGPUQyeOkVmmQRQy8IgxiawOkCmrG/1zgEO
-	 eESU6WCiodorlDqXUIXFTOcA6BJ2tDqcXtW2yLhywgq0ZojA041FHtBYK2MknIb8MU
-	 oJv4WcqlaWM1MpPY7fKv9kixGfxkcsNBzxM2tkOx+8ZvKYFk6ctt6Ocxu7uwKKFUZL
-	 /UZgbnXSlWo4Nq25r/q2s7Gpew/DaW+ywHX7yhxv4/yrC2G+0LK2yGIXRSzA8sisTU
-	 xuxNQUPxv3ikw==
+	s=k20260515; t=1795727938;
+	bh=Mg7Qi4LHUwhrCBip/YNh+ysHUS3QtiytfnZ8aKHca6Y=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=O8gv2NxwkgNbzwKhX2fUIYRxC5AGfVq3E/xZVXTMFfMFTb2mP8I76C46eWOA+VnmG
+	 q0yRMEpz/XdsubohZiFimte7JM0+A60hrKq6FWTm/6b5EAz5rFgA75xQdrBn/jm1UG
+	 ouAMUXR/m3Kg0GCwpi84r79EuxdnlTw2mNbHcVZCTQlZuBb5545Lzl9yAdNREnV+9P
+	 jl7xEEAVC6xsQIHtc9wtC0zNpgWKnpf1rAA5jAHz+6/3+bp4+GnqZ0Ro0q71/ysWwo
+	 lVmZPxXD1qp1u8vCNmEtTHGdafRJSpY6ODAE5BJ+hKQBdxe+QTcqcLKPstEJpunyMH
+	 QrlES0nRCGudw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH net v2 0/4] net: skbuff: limit pagecache folio refcount
-Date: Thu, 26 Nov 2026 22:18:36 +0100
-Message-Id: <20261126-skb_refcount_overflow-v2-0-a6f600a5634a@kernel.org>
+Date: Thu, 26 Nov 2026 22:18:37 +0100
+Subject: [PATCH net v2 1/4] net: skbuff: limit folio refcount when copying
+ skb frag references
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/3WN0Q6CIBRAf4XdZ2mgoulT/9GcU7oo6aABUs357
- 03rtdezs3NW8Og0eqjJCg6j9toaqEmaEJBjZwak+gY1gZSlBee8pH7qW4dK2sWE1kZ0arZPWoq
- OsSzHvKgQEgIPh0q/ju4VDAZovtAv/R1l2Iu7NmofrHsf98gP+Tc6/xlFThkVQvA+r0QuM3WZ0
- BmcT9YN0Gzb9gEfcs4u0gAAAA==
-X-Change-ID: 20261117-skb_refcount_overflow-75a0034e469e
+Message-Id: <20261126-skb_refcount_overflow-v2-1-a6f600a5634a@kernel.org>
+References: <20261126-skb_refcount_overflow-v2-0-a6f600a5634a@kernel.org>
+In-Reply-To: <20261126-skb_refcount_overflow-v2-0-a6f600a5634a@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, 
  Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>, Stanislav Fomichev <sdf.kernel@gmail.com>, 
@@ -88,26 +87,26 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5224; i=david@kernel.org;
- h=from:subject:message-id; bh=3E6okuV7gkYorzSuAVGWdCzZhWj30E+ec9fUig6K0PM=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI5Fhn38llMXxfVz2q0s2jN+791KUdTQ3Se/9a7Xb/G8
- ay09bv8jlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACayTZCRYdfdXwv3Kr03PpUl
- v3XP76BOnjcqivlTt/s51jGtWzF3pxcjw3Kz/hluE1tXX7M+LxFt8GxbePipKOMJnzqUJmV9XX5
- 3HwsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7086; i=david@kernel.org;
+ h=from:subject:message-id; bh=wewoRC7UtcfuSJ9poShcy6AwrFQ9/guO5z282gKfSI0=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI5Fpnu/Fl3TKl85qY4Od6VcW//ei39GrZIsmBtvM9iR
+ Z+D9htfdpSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCRjzcY/kfdf1DtWfPt2F51
+ PiF3vU1JnMe+vPf6019rcH6aSAZnWirD/yKOGMlt7cZVSZIfve813vmT5e90cNmMTB3/l8rTg28
+ XMwAA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Queue-Id: 6F02C2000A
+X-Stat-Signature: ozp14yuaoodim1gxe3r8hxymujk97pqw
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A9C83C0003
-X-Stat-Signature: ekh6yisut3wfauqkisbrsmtwp6fth8cy
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795727933-304130
-X-HE-Meta: U2FsdGVkX1/OcSo08ffSUgd3sJL150ATBUN/F2qLhD6cW02rtzTCh4DR7Imu5/bwI7K9PzuSHCSaTkaDoqf2g7P3taf2uxUnT9kyZjAfy7wTAmVxaMAjEnsTzms5lQhCYm8QaKYPC7Q8Oen9w8LDtH1UY8xQR1XT3c+9dLx92K2lW80bPGqRacv+rpQCSxtXBjeatZX063h9FuatTFSJf6r5Ml/H1FnQo+JwiT1tuc3iSkf0xJZSbjtowWXC/J2Bwv2Jrhf+OE62qsKutLC4ICtblRUlNpMISqbx7Zcd0mhlHx4hWQN4a4GKpw44OGnjdMsg4psslFRVfGHMxZWBDDjpVuud8etDL4FgFkr6ljh3Ycl7CqK5Ucee8z9cuaHZGtj/Fi2TvoQm/UE3KsoIDNDZzYKVgf/HpH7YdDoljkuO4P6xBuYB7YzpghN5pO7BJmAV92fbRdHxBvNzMbLpBsfVhYnB4EAjSGrqO/nFMR3zggKzXQz+O+qwWcEv6mjXg4G9zaX3QHRrOqKzwBSLLhP84yUlDsxur0wW6SWqXCeUIefLDIfY2rzD0R7/26DLDiuftct1/BmZSGyOI/CH13k+QUiXR8uP+dkS+6PJ13yfatVRuVahqBINcdAXAPh09UE/dKl2DEmUaziD3yzrXFiAyr2Gda69JuBJeG9UUSFDik81l0iJd7khKJCsLk6gbIwMdXwxIFAqquJ6Cu3VFsZOwPkpyx7Zl/egsTB2PuNtJfTH2vdXKJ8Aw0SbQA3jC30n8NKM47cNIG1JKUmy3IKAC5bOl78OEew8ac57xINvQOMT1Sssctqw4YQna5FIvck5x16qBIDPfFHJOIA9hRZleWg4yF+O+9hbEqvwG15ccjaFZ+rNn7JWbnjHKkozEoORmoWE/mZbk2jmGhzT79CDIbmbqeNi/xcNrtLGi9LdRb0xFdbuc68yrb8NnmpsKHfVnUFSGgXHrqmxFuB
- HhuTBq2k
- AGu8AgwNccTGzVZx6ODmUP0UeVEc73Qxa9t6BSZ3z6OvdKubnZnIVf0/8QalW25B5/ilPYwIcT3Gv1rPRv1UDfcMucMIZjeNNLqf8RNKPW6CBUayF4NuC0zbr2y56yQtOF9Vt5/Q/SG6JLpZ++4FwXDuJGxZmNwMxia3Zpr/3XVo5TLLF5rC+GD460TH+pCnEjFnVteSXmjaiT2/MCOF8ghoUWbsnHKG0OqpBf9YW8vAXr9TVkxBxw6/dwlQJ5BN41LtryrNdhTQlBnQ7Kw3KrJCBOgc7TOyosKPRUYnYKBIW3nV4FaPkJGSDdHoQzte9pFgl1iULSmh/GnJx35ukdrOmo5rA+EKjerhl6aD0ULMu8/ztKYM5trigUiA8p+GbDFKd+FQRwczTgjJl0KWBUM9mPgOSwYPnOwMMf00wPisl/HsEQR49mZXxT79HSoo7mBelAuq5khTQpcZ3t8HiRA9ygC8kdbWNYEP2RHQ3Pv1N5UcD/Pt11mlGJy59mQz+Oo0W+9LPh/cjpKhHSD/Feet3eMdJ+72YwAtrqNAfAvm3Puq1WIkP48UzqIO1+nP+mpd6sXPBSYqsyBnMUC6FIK2xHBf/UWlvEc5HgfleJihtY4pAJ+FrzZ9ijg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795727939-75286
+X-HE-Meta: U2FsdGVkX1+aokBOVtSztNEp0G30DBdsWy/33LZB5Z2kIfrzU70VN+uzzLLSQdDNcncjXxfGwBGAHx3YuGt53omwfwd93mFY6n8rhHJY+E1YnBuE3tfK4Xdh5pJasAJpsNJLod2okglxtuQNFpcH6PEXfXlCzCurV0FbzQo9bP6XNck05xzDf0Hem7R6wXO15UDDmNLoERW1qHHDleDVvpjL49sFcjBIiSkT1piz5oKCTP7ciDw58p0jf/kbrK/dWH84kYUoEs5dTGS0ohiZcD1Z0N4advA9IFPHO8uzTR4m5tdktXJyIxtpzV4dEktLW0GB/48a+52pYWHXKoK5frK+ySANzJcVSaaTfV9AE9u/NBmPYw/NRZ2YkC7Bf78k68R6PjWFLnFY9SdOa4KlZl8ReYvUU1jichjyV0Rm26nxZzG32eKxUHyZrOBRL5SAEOC6THW+RxLxtPt+Aq3I+7bVQk/m95gPPQ8zzlMBIfm7MrHe+9vJuRTbko+uS2G+1J87HCjHXY+y7DW+s1ADd/KQ8w8ZK9o/Eun8kuiJ0UPerrLTuVXNW3mMlvz5/2uphzKHHazu/+Y9WZexuTWJV0XIFPSH7uhpixgCKebz8x2H1aqx5PYHD2ndMYr7i3s4HNQEDW27VXiwCVxZj14vPRQB7RWhlyZgJaL1OUQK1CQfSMtxAT9Pf6xIWzPcarsiQJ5+0cFn2mOwGpnHUHRDqQpJcA9pK9qd4Az9IU2XgexA+n11TPilJrnDOCm2xOh0J1Ihdep2fqm6as+ReGY7jLSFPGqk6YQDpvhT73S24C7A31bI7PdhifYD3ms1MDN6w0YGmbcoLwguoB/nZ09njjkz/P4j7q1LU36mrKJQAT+i6O5Ec5dUjT/jVUjQIbEhBZnaJDBN5qXyEjQoO+qZTnKbYsWUA3IFlhCOGZf3xw4zUJexmkffgF71+EHRdXU89Au4VuAtofsQi7Hi2+D
+ uDajkh3n
+ FZ7ReQkxBorROgSySxsZQDW6PJGoS0H2cEZWmt8wOSOVcpeY8jTXcGvGBfVW7qlCfKv/r9wP3t9px69n3AvBCWrQIsy26z0QhcfQ3vKcbQdSIigMllcpP0ZW+DZFKpHrZ6raLYnuMbUeJxsDUVkrZq38+yJGen0+8wBDQs8GPAhZlP9rwH0bDVLs4jGWXZgi5dro93WG0BFIbPPq1KeDS+lumBHGZfMjmhDlH1Mdt3qkHByUD6JpDTgpGDb4qBdSOLmN2bsoS9rOc0H5bSZgnvx7AdkQYXu/0MBbrWPR2W9pAtrFTTXdPyuLJASWrvOcDJpGVJzFFzY2oVvXaOtsHkPN87mbMvRqei7DELsgZOs1P4kYkCCqvijjhdg1QLhJLDnTWoIBwoPeiAI7Jw4y8hb14yEDNycvSwYTbApxierlDfqHuwi5AQdNG4QJP6g1A+JWYzIzXoz8bBFxfZKhePMngLHXO+3P6O8REEbZmtCnmh6FvFXBN9eVAMRM9a3xDpfPsMGiLivqXaeaG9J/LRIkoBqz47fZgCa5Mrvbc2684ZsM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,119 +115,206 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+Various networking features copy frag references of an skb, for example
+when unsharing a cloned skb (AF_PACKET trimming a clone), when copying an
+skb (nft dup) or when building NFQUEUE messages. This is an effective
+way for multiplying folio references held by an skb, allowing for
+exceeding folio refcount limits.
 
-This is v2 of the remaining folio refcount overflow fixes that should go
-through the net tree, ideally soon. They address the known cases where
-networking can still overflow the folio refcount by taking unbounded
-references.
+This is not specific to large pagecache folios, but with them it is a
+lot easier to reach the refcount limit, as page table mappings can cheaply
+create many references.
 
-The series is based on Linus' tree, which includes the MM prerequisite
-c6c9a4c1c9a16 ("mm: limit pagecache folio refcount when splicing into
-pipes") that adds the refcount limit checks to try_get_page().
+Let's introduce skb_frag_try_ref() and skb_frags_try_ref(), which use
+try_get_page(), and use them in pskb_expand_head(), __pskb_copy_fclone(),
+skb_zerocopy() and pskb_carve_inside_*(). All of these can already fail,
+and their callers handle that.
 
-More details in [1], but in essence:
-
-There are ways to overflow the folio refcount and cause trouble either
-by letting it go negative or letting it go all the way back to 0.
-
-This is particularly easy with large pagecache folios, where page table
-mappings can "easily" create many references. The MM changes limit
-references from page tables, GUP and pipes, and leave some headroom for
-races, other bounded refcount users etc.
-
-However, skbs can easily multiply folio references, so any such skb path
-that can take unbounded folio references must also obey the new limits: we
-must use try_get_page() to obtain an additional folio reference and handle
-failures accordingly.
-
-Patch #1 introduces skb_frag_try_ref() and skb_frags_try_ref() and uses
-them when copying skb frag references. Patch #2 covers rearranging
-frags. Patches #3 and #4 cover splicing pages into skbs and splicing data
-from sockets into pipes.
-
-We use existing failure paths where possible. Socket splicing returns
-the bytes already spliced, or -EFAULT if no data could be spliced because
-try_get_page() failed.
-
-Net paths that take folio references that I don't touch because the
-references are either bounded or the paths are not relevant in practice:
-
- - skb_split(): each reference needs a new socket-charged skb.
- - IP-TFS reassembly: each reference needs a new inner skb.
- - io_uring zerocopy send: each piece is charged >= 4 KiB of TCP memory.
- - kTLS software splicing: only transfers references from the pipe.
- - kTLS device offload: pushing the record fails in skb_append_pagefrags()
-   (patch #3), so a socket can exceed the limit by about one record.
- - AF_XDP zerocopy TX, nfsd splice reads, sockmap / sk_msg, espintcp:
-   bounded, or require privileges / special setups.
- - Other driver-specific paths: not looked into for now, as I can neither
-   test them nor see if they actually trigger unbounded references.
- - page_pool and net_iov frags: not pagecache pages.
-
-The original refcount overflow problem was reported by Anthropic; we
-knew that it was possible in theory, but didn't expect to have easy ways
-to trigger it. After fixing the splice issue, I used AI to identify
-other unbounded folio refcount users, and it flagged various skb-related
-paths. I made it actually reproduce unbounded references. These patches
-address the paths that were actually reproduced.
-
-I ran tests before and after applying the changes, using a kernel with
-reduced folio refcount limits. These tests focused on exercising the new
-error paths and checking that the refcount limits were respected.
-
-These tests covered AF_PACKET, nft dup, NFQUEUE, software GSO
-segmentation, TCP receive coalescing with dropped ACKs, and socket
-splicing.
-
-I also ran the following networking selftests successfully:
-
- - net:tls
- - net:udp_splice_checksum
- - net:udpgso.sh
- - net:msg_zerocopy.sh
-
-If there are any further tests I can run, please let me know; help with
-testing would be appreciated as well, as I only have access to limited
-hardware and have limited net experience in general.
-
-[1] https://lore.kernel.org/linux-mm/20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org/
-
+Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Cc: stable@vger.kernel.org
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-Changes in v2:
-- "net: skbuff: limit folio refcount when copying skb frag references"
-  - Fix skb_zerocopy() kernel-doc indentation
-- "net: skbuff: limit folio refcount when splicing pages into skbs"
-  - Mention nfsd connection teardown in the description
-- "net: skbuff: limit folio refcount when splicing from sockets"
-  - Propagate the error through an "err" pointer
-  - Document the skb_splice_bits() return value
-  - Update the description accordingly
-  - Drop Pedro's Ack
-- Extend the cover letter
-- The GVE issue sashiko reported has already been fixed in commit
-  3946899dbeac ("gve: fix RX page refcount overflow from INT_MAX
-  pagecnt_bias").
-- Link to v1: https://patch.msgid.link/20261118-skb_refcount_overflow-v1-0-5551b4954c3f@kernel.org
+ include/linux/skbuff_ref.h | 53 ++++++++++++++++++++++++++++++++++++++++++++++
+ net/core/skbuff.c          | 35 +++++++++++++++++++-----------
+ 2 files changed, 76 insertions(+), 12 deletions(-)
 
----
-David Hildenbrand (Arm) (4):
-      net: skbuff: limit folio refcount when copying skb frag references
-      net: skbuff: limit folio refcount when rearranging skb frags
-      net: skbuff: limit folio refcount when splicing pages into skbs
-      net: skbuff: limit folio refcount when splicing from sockets
+diff --git a/include/linux/skbuff_ref.h b/include/linux/skbuff_ref.h
+index b6f6da556ee90..560ddc863bbec 100644
+--- a/include/linux/skbuff_ref.h
++++ b/include/linux/skbuff_ref.h
+@@ -44,6 +44,33 @@ static __always_inline void skb_frag_ref(struct sk_buff *skb, int f)
+ 		       skb->pp_recycle);
+ }
+ 
++/**
++ * skb_frag_try_ref - try to acquire a reference on a paged fragment of an skb
++ * @skb: the buffer
++ * @f: the fragment offset
++ *
++ * Like skb_frag_ref(), but acquires non-page_pool page references using
++ * try_get_page(), refusing additional references to a page whose refcount is
++ * at its limit.
++ *
++ * Return: True if a reference was acquired, otherwise false.
++ */
++static __always_inline __must_check bool skb_frag_try_ref(struct sk_buff *skb,
++							  int f)
++{
++	netmem_ref netmem = skb_frag_netmem(&skb_shinfo(skb)->frags[f]);
++
++#ifdef CONFIG_PAGE_POOL
++	if (skb->pp_recycle && napi_pp_get_page(netmem))
++		return true;
++#endif
++	if (netmem_is_net_iov(netmem)) {
++		net_iov_inc_ref(netmem_to_net_iov(netmem));
++		return true;
++	}
++	return try_get_page(netmem_to_page(netmem));
++}
++
+ bool napi_pp_put_page(netmem_ref netmem);
+ 
+ /**
+@@ -83,4 +110,30 @@ static __always_inline void skb_frag_unref(struct sk_buff *skb, int f)
+ 				 skb->pp_recycle);
+ }
+ 
++/**
++ * skb_frags_try_ref - try to acquire references on all paged fragments
++ * @skb: the buffer
++ *
++ * Try to acquire a reference on each paged fragment of @skb using
++ * skb_frag_try_ref(). On failure, acquired references are dropped.
++ *
++ * Must not be used on skbs with managed frag references.
++ *
++ * Return: True if all references were acquired, otherwise false.
++ */
++static inline __must_check bool skb_frags_try_ref(struct sk_buff *skb)
++{
++	int i;
++
++	DEBUG_NET_WARN_ON_ONCE(skb_zcopy_managed(skb));
++	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
++		if (unlikely(!skb_frag_try_ref(skb, i))) {
++			while (i--)
++				skb_frag_unref(skb, i);
++			return false;
++		}
++	}
++	return true;
++}
++
+ #endif	/* _LINUX_SKBUFF_REF_H */
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 1ac1e327ac4c6..05626d9622b3d 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -2266,7 +2266,13 @@ struct sk_buff *__pskb_copy_fclone(struct sk_buff *skb, int headroom,
+ 		n->pp_recycle = skb->pp_recycle;
+ 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+ 			skb_shinfo(n)->frags[i] = skb_shinfo(skb)->frags[i];
+-			skb_frag_ref(n, i);
++			if (!skb_frag_try_ref(n, i)) {
++				/* Drop the references acquired so far. */
++				skb_shinfo(n)->nr_frags = i;
++				kfree_skb(n);
++				n = NULL;
++				goto out;
++			}
+ 		}
+ 		skb_shinfo(n)->nr_frags = i;
+ 		skb_shinfo(n)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
+@@ -2310,7 +2316,6 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
+ 	unsigned int size = osize + nhead + ntail;
+ 	long off;
+ 	u8 *data;
+-	int i;
+ 
+ 	if (unlikely(nhead < 0)) {
+ 		DEBUG_NET_WARN_ON_ONCE(1);
+@@ -2347,12 +2352,10 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
+ 	 * be since all we did is relocate the values
+ 	 */
+ 	if (skb_cloned(skb)) {
+-		if (skb_orphan_frags(skb, gfp_mask))
++		if (skb_orphan_frags(skb, gfp_mask) || !skb_frags_try_ref(skb))
+ 			goto nofrags;
+ 		if (skb_zcopy(skb))
+ 			net_zcopy_get(skb_uarg(skb));
+-		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+-			skb_frag_ref(skb, i);
+ 
+ 		if (skb_has_frag_list(skb))
+ 			skb_clone_fraglist(skb);
+@@ -3908,7 +3911,8 @@ EXPORT_SYMBOL_GPL(skb_zerocopy_headlen);
+  *
+  *	Return value:
+  *	0: everything is OK
+- *	-ENOMEM: couldn't orphan frags of @from due to lack of memory
++ *	-ENOMEM: couldn't orphan frags of @from due to lack of memory, or
++ *	couldn't take additional references to the frags of @from
+  *	-EFAULT: skb_copy_bits() found some problem with skb geometry, or readable head
+  *      payload would be mixed with unreadable frags.
+  */
+@@ -3973,7 +3977,11 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
+ 					len);
+ 		skb_frag_size_set(&skb_shinfo(to)->frags[j], size);
+ 		len -= size;
+-		skb_frag_ref(to, j);
++		if (!skb_frag_try_ref(to, j)) {
++			/* The caller frees @to, dropping the acquired refs. */
++			skb_shinfo(to)->nr_frags = j;
++			return -ENOMEM;
++		}
+ 		j++;
+ 	}
+ 	skb_shinfo(to)->nr_frags = j;
+@@ -7004,7 +7012,6 @@ static void skb_carve_reset_headers(struct sk_buff *skb)
+ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+ 				    const int headlen, gfp_t gfp_mask)
+ {
+-	int i;
+ 	unsigned int size = skb_end_offset(skb);
+ 	int new_hlen = headlen - off;
+ 	u8 *data;
+@@ -7032,14 +7039,12 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+ 			frags[skb_shinfo(skb)->nr_frags]));
+ 	if (skb_cloned(skb)) {
+ 		/* drop the old head gracefully */
+-		if (skb_orphan_frags(skb, gfp_mask)) {
++		if (skb_orphan_frags(skb, gfp_mask) || !skb_frags_try_ref(skb)) {
+ 			skb_kfree_head(data);
+ 			return -ENOMEM;
+ 		}
+ 		if (skb_zcopy(skb))
+ 			net_zcopy_get(skb_uarg(skb));
+-		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+-			skb_frag_ref(skb, i);
+ 		if (skb_has_frag_list(skb))
+ 			skb_clone_fraglist(skb);
+ 		skb_release_data(skb, SKB_CONSUMED);
+@@ -7169,7 +7174,13 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
+ 				skb_frag_off_add(&shinfo->frags[0], off - pos);
+ 				skb_frag_size_sub(&shinfo->frags[0], off - pos);
+ 			}
+-			skb_frag_ref(skb, i);
++			if (!skb_frag_try_ref(skb, i)) {
++				/* We referenced frags i - k ... i - 1 so far. */
++				while (k--)
++					skb_frag_unref(skb, --i);
++				skb_kfree_head(data);
++				return -ENOMEM;
++			}
+ 			k++;
+ 		}
+ 		pos += fsize;
 
- include/linux/skbuff_ref.h |  53 ++++++++++++++++++++
- net/core/skbuff.c          | 117 +++++++++++++++++++++++++++++----------------
- net/ipv4/tcp_output.c      |   8 ++--
- 3 files changed, 134 insertions(+), 44 deletions(-)
----
-base-commit: 63fdb511c27afcebce797e3db580b3534ddfa639
-change-id: 20261117-skb_refcount_overflow-75a0034e469e
-
-Best regards,
---  
-David Hildenbrand (Arm) <david@kernel.org>
+-- 
+2.56.1
 
 
