@@ -1,111 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3EF1606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 00:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15347606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 00:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxchyc4J
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IIsSkvRm
 Received: by kanga.kvack.org (Postfix)
-	id B41C76B0B3B; Wed, 25 Nov 2026 19:11:14 -0500 (EST)
+	id 1C1456B0B3E; Wed, 25 Nov 2026 19:41:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACC256B0B3D; Wed, 25 Nov 2026 19:11:14 -0500 (EST)
+	id 171FB6B0B3F; Wed, 25 Nov 2026 19:41:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B9286B0B3E; Wed, 25 Nov 2026 19:11:14 -0500 (EST)
+	id 060D96B0B40; Wed, 25 Nov 2026 19:41:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 719CF6B0B3B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:11:14 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CDD0DC01B8
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:11:13 +0000 (UTC)
-X-FDA: 85475340426.04.FEC71D1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E61104000F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:11:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bxchyc4J;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DC216B0B3E
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 19:41:00 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F1D17400FF
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:40:59 +0000 (UTC)
+X-FDA: 85475415438.26.A38DEF6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1EC6B8000B
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:40:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IIsSkvRm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795651872;
-	b=jJfAuizCGnyWYkDXh661lwUrT1WMElX82hpopmrfhnH4cNjZMCles1NnIDhAR1S6qnnn2A
-	gmB/Uz92IlwaVcASAjNuLPMm+VN622yOL56SVACoxv/7C/vX1yZ0K6dqNv0dhxNs8iCJsC
-	XD3SuIbQ6yznA/w3Qt03YYKirkSU9nQ=
+	t=1795653658;
+	b=sH5tC2Wkd6Gjy9Nq21ig7wx5VUCZt/FhnK61g8qwf2eExX+9iVUJ5DQVDjrFicWy6d0eEk
+	AVmZHhB55dzj/ZaIdT5W2qlmj2wo2xEeY36I9sEQNePr4AdfoDESShvLyVNaueQr9xSOfc
+	a7bGs8cpXEZwstYUVhwVoeT/rO5H0lc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795651872;
+	s=arc-20220608; t=1795653658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RDINDvHKD6MZseAlC2/IPYtXWUlAArkqAjR7GnUg3Lk=;
-	b=M0lPBvhfZAyVjNO7IGD4sxW6rQiF4eMjOt6idpcBIsdOqIIiQ1xo0YH4GFSt6FPLRuT/Vf
-	zJoSe/Yv1njSkCNuS1gdeqw3eKVWUQVBEmPu5cuzfBS6hjzNXNqlqqULcAJ0jAHXwHYvy2
-	K272kx4WT2j7PUshm0cw9hVMYLWLDfY=
+	bh=ROqfz97ZpfUHHWsM2JzaOj+b4tvNFO3hHXdoi3R6Bx4=;
+	b=RuHNCqiQyA8XbSUJU65bVbswF2OaNp8oaNUBocRN2Drc8rZhtbyO6GYloXyxsCln4G64yk
+	ZCdGMPz/KmzwfImx/Pb2uhBbaNN9FrebUrwHWYAWBl70oa45uKFCjgy+u4XsUTT0gxF92f
+	6pO3GKWaStAj5Lcxi+Ho8xEdhcP0+6s=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bxchyc4J;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IIsSkvRm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A9AA410C3
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:11:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D281F000D2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:11:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 24E43620FF
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:40:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F151F000D3
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795651871;
-	bh=RDINDvHKD6MZseAlC2/IPYtXWUlAArkqAjR7GnUg3Lk=;
+	s=k20260515; t=1795653656;
+	bh=ROqfz97ZpfUHHWsM2JzaOj+b4tvNFO3hHXdoi3R6Bx4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bxchyc4JfjA37MYjy8kPfsVM9Ol2cupkuK0ohVXmFUTPfH6j3gHcSouV7rL/Gl5Bg
-	 vE6fKxChav6JXnCWMZENtTaYOaEMteR6ijkUrVK5ed7GMnRtFXlJVjVnU8LmCLxEn1
-	 6QXl6H69cWtNLEq3YGCm3XYWJCmqwJkVwVVPgVtySQeIrtyJVaFOmgqim+/r2CstDF
-	 1V7UyX0tIhzFziHodoinKQ9JrFI2noNHZQs7gbIAeqaFA2PX2ZqVBR1mDI49AI4uAZ
-	 6dpUWhqsfJjQ4PkBBAP/ItbaYuH6DxmchleB2vCB1B2PbvrUn7qprtIAU8cbGMYX0h
-	 g3rzZYUMstphA==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9496577d4c4so707664685a.1
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:11:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFxLZP1+huVCtHH81UxnNHjL/jcjqDVWoBk9r6KpqyQnVqADDN0nlVZnuVAsjmoBbGb3xFbTK59iQ==@kvack.org
-X-Gm-Message-State: APuU4Z9AevtkdyUbfr/iKh8PWhS7Wkzcye4jGeUYNcAe9ctQhS/ROufQ
-	4xsHTM/zuasXjlqakzvOICZt2sBDdV9szzBC5/Z/m9ddNqoo9mV3q91l4udK58XyevrfK0WqCmM
-	33Jrrl2KM6wbhVAOhV9e3qHtA9VJLEZc=
-X-Received: by 2002:a05:620a:2585:b0:949:7058:dbcb with SMTP id
- af79cd13be357-949b35723b2mr3687848785a.14.1795651870358; Wed, 25 Nov 2026
- 16:11:10 -0800 (PST)
+	b=IIsSkvRmrxVpdt2ZNq7F8YmH1k07rPBBHdA5/CYaWIJydO+J973A1KWLslA0i1DP6
+	 599Mgk4greqpc6ghIkzL1gYqthcINWxidXMeQExEnYWGXUC/E8gG3nW2JSL89c/QfX
+	 cta3o4lZoFQXL5a9p7W85owYHhIEQxQOmJ4qHMNUqC2mamkDo1zjLccYvzeMKdVtvx
+	 qtsYtcHaMX4Ds+6vPOZXLfEuwJC1pEJQDCgmnmySrWpTS+6dh+x+0GWhvjSCZv8YA7
+	 NUSm3Yla6h+UqGg6vVPxJnYmzaTEJloHEuZmC7nDrrLG1Ghj7A4Iac5yMU1nj9IgWN
+	 0EuiwHOVnDk5w==
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-55b8cd4e2abso66084761cf.1
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 16:40:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErH/RXZX2u6r+nqcHCvY1drH4dZ/sf6FkRcM0gXO4pN2RFTOmjU/JA9wi+s2DwYcBvEp5adGzFajWQ==@kvack.org
+X-Gm-Message-State: APuU4Z/KZRq6um35QgeaPKnCuQog3sHhPGPf6GUN5H3Ys9G/wug8sWT4
+	Dg8wdbSUTEaVay//wc7LF6xHYEli2fyP99uicePZWihEgmeNNIkYDrJPGJsbXtsswrzHM9aH92f
+	Y4zvfEgdURG4zITKJX+RBNlb+FFBLB2w=
+X-Received: by 2002:a05:620a:17ab:b0:93f:6e05:22eb with SMTP id
+ af79cd13be357-949ba9e1425mr3467128985a.48.1795653656141; Wed, 25 Nov 2026
+ 16:40:56 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261114200803.23129-1-baohua@kernel.org> <20261114200803.23129-10-baohua@kernel.org>
- <e2595c80-c223-472a-a756-d352161a3330@linux.dev>
-In-Reply-To: <e2595c80-c223-472a-a756-d352161a3330@linux.dev>
+References: <20261125-fix-mglru-kswapd-age-v2-1-4cc37437af9b@tencent.com>
+ <CAGsJ_4z-UdXQg0LYqymEZdoHALPmAZC7eGcXbGad6f0sdjmkcw@mail.gmail.com> <awarDrT/DT7tQu+U@lima-default>
+In-Reply-To: <awarDrT/DT7tQu+U@lima-default>
 From: Barry Song <baohua@kernel.org>
-Date: Thu, 26 Nov 2026 08:10:57 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wTMF3qj5tzT1FtFDgJJAL7hw=Gb2w3uq99ZNrCK0vcYA@mail.gmail.com>
-X-Gm-Features: Aa3M54qEbqb2UlKYb-QEOhd5-I-lklbxngV8mRirioZSLDDnWN8UWOGBIbJttK0
-Message-ID: <CAGsJ_4wTMF3qj5tzT1FtFDgJJAL7hw=Gb2w3uq99ZNrCK0vcYA@mail.gmail.com>
-Subject: Re: [PATCH v9 09/16] mm/mglru: Avoid placing rejected folios below
- populated gen
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
-	hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, 
-	liam@infradead.org, lianux.mm@gmail.com, linux-kernel@vger.kernel.org, 
-	liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, 
-	mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org, ryncsn@gmail.com, 
-	shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, 
-	weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, 
-	zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+Date: Thu, 26 Nov 2026 08:40:44 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zf5NabZJanr2_Czr3oVQe6tTTdXmddx+PxowbKBN9M8Q@mail.gmail.com>
+X-Gm-Features: Aa3M54qqdItbwgjoEHWn9-crdqoWLQnJV4aNvDHtTbWqBrdWHNaBEhfxmdXesaw
+Message-ID: <CAGsJ_4zf5NabZJanr2_Czr3oVQe6tTTdXmddx+PxowbKBN9M8Q@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/mglru: skip oom killing for order != 0 allocs in kswapd
+To: Bingfang Guo <bfguo@icloud.com>
+Cc: bingfangguo@tencent.com, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Yu Zhao <yuzhao@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E61104000F
-X-Stat-Signature: 5jwuuaonbyc77wp368z1q71mhz3di5xb
+X-Stat-Signature: x1p1jjb1q6np7r1rd9wkjk6acrcdiqbx
+X-Rspamd-Queue-Id: 1EC6B8000B
+X-Rspam-User:
+X-Rspamd-Server: rspam03
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795651871-121016
-X-HE-Meta: U2FsdGVkX18VW3F4IkczEHXRtwJk1DtYdT6gdHD/xfq6NrQCL70UDd/7ve3Eh7IHBGWu+fuAQZXwcXjXWRGTaWLCb4XoGOUBPHuFe/efidyfTiwNcBOWLSxwhGMYAK5Ghj1VB5RoCuwgO7XugG18dhStRwxAYJldu20W+nBZl/NHJX3bZKCsp3aPaH0NH20rJJLNZ1dhtGqU4sBSCSppTfAl7kTWmFMjAgsHoO/vYc4XOAGun/pgoXXfmv/8GTvzl6uWyEpbmQMvdAseIymqk3QulGYIlEoFtvsbOQtGHDJJtL2t72UBWOQpHkvj5dBuHdUEHKwH2hk015j+sd9qv8JA12lSyeNtsq6qHkadxXL6od9Q4JvmeLJkOqK3SAk2047iG8c7Qe3VULfCHrCgI5DqXHbAfuc/v9IOZbXCs7C3tp1fXpFWJSswTwTBDcXi4+bE9cIirwzCJzecruyrOw/mR/VCi4BdOOCu0liW2+eelcK3satnIvL8ugfY5x9bH2J31w0yOC5HWE3w3Zxpbu+/JvanvGytB1v9+VDejcYkd1ANZCYW+3fBMmE/F4FiwC/ql/q4aQFHr4KZ55Z1agIPhIwsIoCyEIIidZMPlWBP3cvMLo0SeAMXwIGn2A2VdUi3+G5eG67TcPg5LOdBGOhw43u2rIW20Pitry82DfVzGuAXA97bnizj6OCslGqX2eskjYK88Ui3vP4hKTaGy5kaQoypn7XPVDrS9+43aBbTs0cxpcgM3dlespNjk71G3ngtnEmqUeuPbe5Qi3e2NDVWe9YnIpK47Szj8G7TltIGo/cEnTElYAWto0QfJa4qjNfzlszXwFiAo1hWMG3SdJoFvisJ7mB5/95pgEGxQa25rPAnQi1IoXFUwCUkq02JFlT9ZSaMPNzMW/EKOeXFPHQ9aaAmSeY3dCdXavGAqagiHvICoIVYMtfCPinBM31oDiq2YLmoWf0Uo+SiyhM
- 0zf/00II
- fE+5z7WesTi/6VwWC4blASSwbe+DK4B47b/WkxGOA0fFtdO8MBZGcdi8+A0rO9XBG44x3z/QTAGeuDuZWLADmWEI/94GTaBW8QsmJEzZdIItiWy10tC7b6W6RI4wB5aHu7drXiOh9XyLcLCrm1I5ZxfkKXFRd+kZAoy2ut8OHZOFKMTbl2ZvaWZDRtVRDbsHHWMcMoVwZfRIiXibOjOPwYC6h/ClecrwlCZJCHugqklqHDMP+NkJ4PVj3lBJgWvZAuY87xtmsGp0eDvq3ii17Y4auh49s6mBKZ4x8CK8a0KkSa2Qf2jz4Cry+VCQ1snbG5dKaiVTo2S15FO6UgWIzk7Vgq8B+l84DW6fUk2qEcvpZs7APwAw31MqOzrm/VLSxkzx7MHQpSj++eAcF6H85CnGNfZEcDefKs+k/JAzEpZczuXyGjEagADBq1FyaCg4CsdzuRCI4WmuPhEGsFqdKRUPPsov9tToX9ruxpBXxHPT22rYJn5EtyaXwiG1MBo1FUY3a1vF2dUgrKTouo7Wv81sOYsIsybfbtAlCwUcBvs68DBGVcGG1kF7RrEyzdUqNZ6L6TQReMEb1MHve5h/bqmH6Dg==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795653658-316470
+X-HE-Meta: U2FsdGVkX1/5iFX9ghOp/u4rGd64Z4izYQmzyKRr84Rwazy9h9EjEtVrevM4ZSTrfILki3EYmbfVM9kXFaP2cU55jkU54uAwU26iDFKBqeL+fFBhQW7RlFKu6OkiiCN6GtW4wjatf43YL3km+QPlPYLi9Fxebn60y8KLRNvNW7a6l+1O4QPlA+z0bDCuOF6gsMLNlH2A83GUv+q5W1T8ukwaAV6Vm+1bYzYwRxf6w/Wwc/76lWEEcTTil1x8rpRypxfZshc1WqbUMoWT2O7uc9DCv5q2bfcYr+pJh48lWtO07keUdltP99JdGjNAFTBIG4mK3A95/irA8D8oe35/Gbhrp3IFiXareNW77FWAdY6JZuaVao4TYQswPcCe3ruCT5qYSb2vV+qeh0UUjheeUxPbgVxcOeT64NdvDMZ4rX6JDBlXjfE+RfOoBiIpHOrCI9OsFYkAJJilZ5mCXobb9S1jERsXA0EYsqIw7I9BN29B7qf4s12ttIPA99fLlI878cn3zLJ3zsKuNKwswa76pf0Zbeajl9e5Gf/VW9k7F3Mxi/k94ECLkxtCVRGyHa7Nq/4DCMJqPIJXFpEccbo+DXvut1xuDhYaLHASFrgRUAKR67QBE4C/WkzkfkEJ6as+6SeiqVs1RpyZUVqT30e0cE/rutUSHv6FdTSYuYG7Fc3N3UImoInR2lmEme0J1MX2FcByooHKgmqJv7Qpi2A/7Nf2cMbh8hVv7JKDSKdrmlgLfNF+CqMnHcH8nrleNIODTZPl6PLyFjllprmgAjkvjsOmiteelx6od9qNiHdi6PzVd28EQS5OW3MY0sNzTGw8aVYpMENOncSbj6Asu04tyFz3Ep7BUvWN8ZSos7kGZH0+WIdabfRzCK5cxILtNkihKNpJw3nT0/pGcsLhQbzZq5pt32Uc4+Il5hRLCBPabUduhk1259GZMoqPnhbfV6+CjB9bclqYE9V/zBe4Egb
+ L+hdTO1/
+ sndSxySH7eZ9MIdgliNWFRe1qa2YbawgKATjNzBSLAw4G1WGgDqoejMGW6d6GI495T/Fk846THhhBaHFQ7mT/aOiLAtcLPQyDKGp/AkbZG7QijoFAjVPO+LLUerGG+0NwcMm/YYb8z+5i1ei/2xm+WJE3nUseIArbye1JOqkb0s98Lwv9071ItQal029Q/uN3a+5NQ59g+Rpk63xX+t/1YWl2f6orKlfRf76mEd1r/RQbt+qM1qHd60x83bbB8UTuTV0Hr/jX4HV6vy8D2B0eTjVLp+BsDTxuDCoKHX3Q8xPFM5VhSVM6EBboSGA4SSZu+HqF8oXPI6LtXRmirgH3UZ/cu7pE4x7sSvgYo1jufZGu9R19cQCIeHeFtyVNDJujApUP4HJ6OBk3KU2wJoSAxKuWDH+3GQS5HZQIsBm2OQaUT3xye6R419SSoZLXqnqnwM+M16qYwrWrUSUO2ekzAn5DGSzasqnnzqC+Ut0w7okaoSv1DxDpV7WmiLPvVgjLJYvawfxZCkuj7z3nV3OiCYvZFq6U9pHaFHMKcmTAO2xmcKGAWEfJ8kL6StX44zeKA138Fr48ICJ+vtYyqkm6RHFERar5UmzCLPoQFyfFJ6g9lermChQjO9zqW8a/OZRp1Dq2Zwbc0EBKbnmU85sGDr54Yg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,29 +112,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 7:47=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
->
->
-> On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
-> > We used to scan only the oldest generation in scan_folios(). In
-> > evict_folios(), we checked whether
-> > lru_gen_folio_seq(lruvec, folio, false) =3D=3D min_seq[type]. If so, th=
-e
-> > folio was marked active and moved to younger generations.
-> >
-> > This was itself buggy, as folios in generation min_seq[type] - 1
->
-> Should this be min_seq[type] + 1?
-
-Oops, a fat-finger typo. Andrew, could you please help fix this
-in the changelog?
-
+On Wed, Nov 25, 2026 at 5:32=E2=80=AFPM Bingfang Guo <bfguo@icloud.com> wro=
+te:
 [...]
+> You are right. Maybe we can start from skipping aging in reclaim path if =
+the
+> youngest gen is still too young? And maybe for this path, min_ttl can hav=
+e a
+> default value? Is that a good idea?
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index d891ae46baf49..7f9b14b772d14 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5136,8 +5136,11 @@ static bool should_run_aging(struct lruvec *lruvec=
+, unsigned long max_seq,
+>                 return false;
+>
+> +       /* avoid excessive aging for huge allocations */
+> +        if (unlikely(sc->order)) {
+> +               int gen =3D lru_gen_from_seq(max_seq);
+> +               unsigned long birth =3D READ_ONCE(lruvec->lrugen.timestam=
+ps[gen]);
+> +               return !time_is_before_jiffies(birth + min_ttl);
+> +        }
 
-> Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+I'm not convinced that we need to couple the aging decision with
+min_ttl protection.
 
-Thanks!
+This has been a long-standing problem: high-order allocations can
+trigger excessive reclaim and still fail to obtain contiguous
+memory.
+
+I've tried to address this twice, but haven't found a satisfactory
+solution yet:
+
+https://lore.kernel.org/linux-mm/20260422021842.78495-1-baohua@kernel.org/
+
+Johannes shared some thoughts on this here:
+
+https://lore.kernel.org/linux-mm/aejtfpBUu7gNV6Tk@cmpxchg.org/
+
+Do you have any traces showing how many pages kswapd scans and
+reclaims while kcompactd makes little progress toward satisfying
+order-9 allocations?
+
+Basically, I think we need some form of throttling to prevent
+kswapd from freeing more and more memory when there is already
+plenty of free memory, yet compaction is making little progress
+toward satisfying order-9 allocations.
+
+>
+>         /* better to run aging even though eviction is still possible */
+>         return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =3D=
+=3D max_seq;
+>
+> I will give this a test later and share more findings.
+
+Thanks,
 Barry
 
