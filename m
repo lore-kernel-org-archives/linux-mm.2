@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DCB606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5199606A330
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PzgtvDcA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=arH33Iw+
 Received: by kanga.kvack.org (Postfix)
-	id 0B23F6B05ED; Thu, 26 Nov 2026 06:19:41 -0500 (EST)
+	id 03E7F6B05EF; Thu, 26 Nov 2026 06:19:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08A2E6B05EE; Thu, 26 Nov 2026 06:19:41 -0500 (EST)
+	id 015376B05F0; Thu, 26 Nov 2026 06:19:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE3266B05EF; Thu, 26 Nov 2026 06:19:40 -0500 (EST)
+	id E46AF6B05F1; Thu, 26 Nov 2026 06:19:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D09A16B05ED
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:19:40 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 639621203A7
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:19:40 +0000 (UTC)
-X-FDA: 85477024920.29.CB4E570
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AF9A240002
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:19:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PzgtvDcA;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C4C676B05EF
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:19:50 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6ABF81C4508
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:19:50 +0000 (UTC)
+X-FDA: 85477025340.10.EBFA491
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AB54240006
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:19:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=arH33Iw+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691978;
-	b=SH642ku0cSfRaej1soZYMQDAaLlnYJIIlLSxtXJKszVfvI0q1GFH+3PqeMFDzmBQ0Wg4an
-	llwr6vjzgrQ+Af+yOtoN6i0XoMccnSmj1+nat8/1Rx8rKf4FRzVVZMx8vlLgguNqes8G+D
-	1F2w5eLnq9j/uzAHlwG+c45hpdJtkHw=
+	t=1795691988;
+	b=mWoXvCxbpwnHh48ZFz80ZJnqzYqFN5a+73fl/Sow3lpH+mE0Pd4J9eANCi9NHfYUfa1W04
+	cH08nzA+CtdNjiTyZUelrfW3V6K9dsvmq5A9846B0+jw8UdTOH4GyQECp+xJt4+U/O/Nj2
+	aJeWdZ7jDl4YV+3ox9ZM7nXRA3hU6fo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691978;
+	s=arc-20220608; t=1795691988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6IUAESVFtsidcpD6OicOHeScwyTIg4rQEjzbtezfzqA=;
-	b=M7/9+7kyTkLqfm/B7iRBySLn2Vc1J0VF2+hcAT3eHhtOuWmYs1N/BZwIzUZAbD72vUxLo/
-	zX+jH2GP0krUjbK+hEa5cVjbO7GnjFEVzNpNrSbARNrRQtC0qsczvATygGBM+CQ2THFcaT
-	rDiy+38GmhFMRpZBecxMQvdf6LIQJSY=
+	bh=3baBQY1vcim/LIuBDd2iS5vp7cN9wnC3Urh2E32RyUQ=;
+	b=HK5pmXKWD65QVt7apz6FBUCF6NdAORMnv0awTVeWlf9vq74AkJyIOh5veYOSTo/zZl4wMs
+	BS6/5wLEGmAfWU8mH61XEIihVIunk9K+j9bibgn8NHWILHtozDU1eQuvKrDayYO2jEwRKs
+	KLHka6W8a/RK9o6wGfH1sIClyr7Q/r0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PzgtvDcA;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=arH33Iw+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51F8C62D47;
+	by sea.source.kernel.org (Postfix) with ESMTP id EE5DB43BED;
+	Thu, 26 Nov 2026 11:19:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3021F008B2;
 	Thu, 26 Nov 2026 11:19:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D211F00A03;
-	Thu, 26 Nov 2026 11:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691977;
-	bh=6IUAESVFtsidcpD6OicOHeScwyTIg4rQEjzbtezfzqA=;
+	s=k20260515; t=1795691987;
+	bh=3baBQY1vcim/LIuBDd2iS5vp7cN9wnC3Urh2E32RyUQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PzgtvDcA4yy/D2Uepj3A4ekmgkoMVvK8vCHb6UdANFhGAR3OBnrXkvAS3r9CqvP2I
-	 eDmwCIrTD3P98wMkVnY3W85BeGo+ZeBhcoHLlCd12HdFjujk8Zaf5uhR8BV51AOM9P
-	 oW6Xtzx0AUymGG49kFi+8vJRbIFAGKIoVzVQwMCXSTZexmCClqXB7irUaJOvnH7AT5
-	 H8yglHbC98pbN4quyuAGcNaw3RNs1KOwrdkUjWO3r1r/5ZIYpv9vJVR16CKt6bfdWC
-	 KH8ca4HCAeD7eXntGrPQqRIQieHY1E0JUb0HMs7NmNLeElY0r6qD2n6VSHz7fdgu6N
-	 3KyI5zsbNkYeQ==
+	b=arH33Iw+PdWr+zlekYtf5nt+Op90L1TFCAIp15UEy+JOD/BMr6gM82izCzHJ1j53x
+	 Rf7Bd3XB7buR8nKFBjOykUN3NzH886rFBdFTBPFTBNhX8nMAbZ26UqYbx9bGLW+g3i
+	 /sQ2LSWtOosQOua5U2835M+MrgzYeEUFMalhl41+LsupVwAVt0II5/HrUmhS4p0NSh
+	 NQAllOapJ7m1dfpO7PW+vkvGZTmiNe52cT0vTejwfyJiRSIEKrJTLRp8aAuN4g45//
+	 GvISaE7BPJ/Lhx5ZN5KxgnwBOhwRJdneHwiwJQvKiPXC9/6nLeJSOz+UOUnwYZx5zs
+	 1+Ng3jE8359qw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:45 +0200
-Subject: [PATCH RFC v2 32/54] asm-generic: add an empty pageattr.h
+Date: Thu, 26 Nov 2026 13:14:46 +0200
+Subject: [PATCH RFC v2 33/54] LoongArch: use pfn_is_nosave() to exclude
+ firmware ranges from hibernation
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-32-723f1e33c3d8@kernel.org>
+Message-Id: <20261126-generic-set-memory-v0-1-v2-33-723f1e33c3d8@kernel.org>
 References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 To: linux-mm@kvack.org
@@ -95,18 +96,19 @@ Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AF9A240002
-X-Stat-Signature: duktrgqtr3uuto85jps47c3tk8fkcrwk
+X-Rspamd-Queue-Id: AB54240006
+X-Stat-Signature: i5ohz58gieik63ubij55omapw7z8i7qh
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795691978-533260
-X-HE-Meta: U2FsdGVkX1+sKUB+OHzA6nsJtX4xcDUMk+UqLZ4m2TEQSJ5PHpMTzi8mak6rpmMZGECl6Vu0UyGH4hAsC53tnW4YLJuE69qeeMyu4uu6DylWasjf1IDUF27IG4S7+RcUMNgmNR/E6m5KK+KenvtXtP08UcwmXNqLqWjAjHMAEKCtzV1AehIYvlluWfa0cVKDLF4N0Ik67HuHZ9m+cfCfofFqbBjm9fnIQ3XnhaU9ISWNI1NP3l7VtVJxZG/EoUacUE7P5XZ38QNMJdLzgjxmTk+Ja2S8DkXvB/Wob4oYn08OMaN4phZb2b8P6M4KhbK05UFlmex33PCzEuxsDT4b5RK2XHBFDq1Y5oFXsKh9pydHlcfk8lkL7o2MMQoR4/K4tEwBNuSl/Vg6pR+7NAKTsZA3LdXKEEuUggTfqrSSW8ejqmR3Zgl7x7LF68KPqCTf6Zs3RTSx0RaYckJvWsO0FntGEadXAdh3nli1Tnrnn1jv0dAV0DnT5A4aQjKBwhEHiWPLHJouOMSExGsWGNCELkpT8RdoC2ktU3F1PQqpRQEuMVP2n/VT7vHcKj8zfN25plsT9iKTf+xfKVWoxIAqQz+DagAaJPNZ3XOzNosJU0xof1Idq7D6O2l7pKltPsxitBnho04r/GyK9bw8phvP2x96uIKzmPAH8s+TA7KLCVwgS3BOvCQGOQ0csPFHFPOgDlymEN7orm9EBGHoTW/eUyn3C1GhWBG6CIrzbj3igtBb/ga47kh03NONSIgIvCgqIv0krE/7swFCUbiTDSdW3ZHhdnsnhc3momP8SHR+pb+Xl/QWfXQIhjJgUyz0T1lju9oOE9BQFVj6oJb9/TfwvfEk12CeHTX/DRAULjMi4w1Xi75RMYdiZz1l2eNuydXAjzXrPC+KR/hpD3PEb/uIzJXr6XkWvirjRIJe9NifwLODiifw2wwXeQ7Y1xGrqt1tXHidQA6lO0nXf4x8XB+
- LmwzMm6F
- tBwQNOtcBLT+yMQ99sBc2MEUGmtc7lalztfaiV7uAQV7Zq2O0aodg74vXEeORSsCY4mB2Ek1TpX2s7dJMZdVeyAzIFGikYx05KyFMULdk2HG2LkZ7HD7MfNflOOF8sqe0d0uQQ8qnCDH3s9W2ijADW/ozhkJE8C+4iT692V49azTpvgc4Oedw8NLUCxXppTk8SciAhNzqr832fZYQ2qvwnoFgYx8SDVKqIZeqFfbCKwJw1RIh3R/4abjOYn3LmiodVq+UztuzqO/3FpUwYY2jEcpQdExWjTrFZEBWnGK+w1304tDNp2sYdZhWd95T+kXbQBPRBOR1HgIn8ioFhRsGw6waSzwh18X+mGn9ns/Q7MT5a6yMiPPhYZZ3kxLty3C9EfzRIX6lz0/TKmKNeStOFTaosGX0oDay7YfG3Vfkuyyh6W+Gth4aaw9Ja0Wiz8pamV2MVFhOgioC8UjTAh7aKRZTlhDXTROaPDbq
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795691988-616323
+X-HE-Meta: U2FsdGVkX1/FU1+e2LUaIHCvDRY5oJMrdCdzZKYBGp0LAoL38E7KtVuJ1846PGWY7gWCsT5M7jZPyy3m8iUQZttMHf/dHQfQczZnYDlx4GS8sVU+XAUfmsdkmKUay6k96zrSGvqql25SXbEnEnDBbOSV6gkTpeo9y/1QiS0NW4yTS74g0ZOyfNOP/ZBkd3TpJmrYBG+PyC1IkVQZVKoRWCuEd0IOjkRvxsW7Q36ztykiLN8Wb54n7U0q3G1VAYwExoFPjBpYEShwmZnn55ymopHGhvKRHv6I0jCNIBp6tDJLi94V/qxxiBQFxDgd8YRXeiwxMdbvUzRXbFJcrPH5i+Mh3JG/0ijhNFQyJtKc7VPAnuUADy30yb85JNVMZdQzfy0mkyoz8Gr5v37JXdvrbx6ag1K9pKsBWwuoZwEGhTa9G8pcVgB12JhdlBBw9djyZfuPCGq68DdgEbdPeIt0Zh8ODRuqKPlr5k6lbTh6hgCEkKboIFqekS7UAjcNUxEr19TMIUEID/xJr4HgBh7+LsORdynAnaLQMpQXhE0PDyFrm6IJ3Fysxme8wspVHQsdG/vHOlsbWLTZMQfmD8oM2Ng0kg1yxdsQsoqgf2zZDsayAZxoX6BmtoLovABhsBciX4hnAiYCg4u009e5F40NH25RdlTwG7lSjMmYGbDek1pg6ea+t79Mt/LjXovBC6Nk0iSNK7GOglSOb5H+tsjf0cQ9EZlBf72oUPS0trAOmAdWI/7dtwA1CD8lGPmNmGJkAjI73VU7q/K6KFvftsspdIRfEUesVT2uvU+vii0ydGHtgLKcmekaeTAq2fJ7lnanhvvkU3zHLNj20Df6Q5UbaGTNJPWz20WCSiAP/UClkFUEL67a7ZQzLpwVIJzx7o0/VoPxGuKF1QN9Q17mmECnQhR+ju9GD3XxRJsJirMbqmbDLQA6lvs6AQUxEcKFYINFgMjxJ4ykyN88SIHq9KK
+ yAFbdIAN
+ FHLMu7ZBfNVJT18TXoDqHYSaHd4bV1qtta+eh2men0z6uXICw8Os7KwayXCTyPJI2cUqXYgirwrAbcOb8devasNwoi34NITaKhKxIw5ynpfcIH/OURrpuNL17OfMLXtPpLC3DAU7Ao7ub+pKPrWaJv12NhAh7H4XyNFFuW9B7zJfqG+Xwl7C2tfugQnkZxG1MBcSzPPyWv/lV9GtDPZYZ9HhKIdHCVs25Dpuvkz+FUtqhqv4ReE+FOV55A2jy4y3Ad4DT99454wcdWGG79ygAOKq5EfyXFbPIU6WnWYL45nXaLc6AbIusZhBaAfZpHU7I65yxEKRWoY2N8hxl3cfxDaTclGFQlvXya2Ety6hMquaspYJ2qVmAxvxLyAjboWeThiXs6SX2yOrddyvfTwC7kdClxDuQox9i1HpTW4ogb7k5k/DaDbzUj0iwqoY6dmclJYCRBrFA+09LL6bsqcqVN/kydsWYzzxrOGJGJyNw39gj7ywKPhRPco2gTsqr8GVpi14FcpTt8Owkbkg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,45 +117,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-linux/pageattr.h includes asm/pageattr.h for the overrides of the CPA
-hooks. An architecture that is fine with all the defaults has nothing to
-put there.
+Commit 619b52777a49 ("LoongArch: Fix kernel_page_present() for
+KPRANGE/XKPRANGE") made kernel_page_present() filter out firmware pages,
+such as EFI runtime services code and data, to prevent hibernation from
+saving and restoring them.
 
-Add an empty asm-generic/pageattr.h and make it mandatory, so that such an
-architecture does not need an empty header of its own.
+kernel_page_present() reports whether a page is mapped in the kernel page
+tables, while excluding physical memory from the hibernation image is what
+pfn_is_nosave() is for.
 
-LoongArch, ARM and powerpc will pick up the asm-generic/pageattr.h when
-they switch to the CPA core.
+Move the check for firmware pages to pfn_is_nosave().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- include/asm-generic/Kbuild     | 1 +
- include/asm-generic/pageattr.h | 5 +++++
- 2 files changed, 6 insertions(+)
+ arch/loongarch/mm/pageattr.c     | 3 +--
+ arch/loongarch/power/hibernate.c | 6 +++++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
-index b7a388bef6ea..fd9fb2c3260b 100644
---- a/include/asm-generic/Kbuild
-+++ b/include/asm-generic/Kbuild
-@@ -42,6 +42,7 @@ mandatory-y += mmu_context.h
- mandatory-y += module.h
- mandatory-y += module.lds.h
- mandatory-y += msi.h
-+mandatory-y += pageattr.h
- mandatory-y += pci.h
- mandatory-y += percpu.h
- mandatory-y += percpu_types.h
-diff --git a/include/asm-generic/pageattr.h b/include/asm-generic/pageattr.h
-new file mode 100644
-index 000000000000..07bf3b0e84a0
---- /dev/null
-+++ b/include/asm-generic/pageattr.h
-@@ -0,0 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_GENERIC_PAGEATTR_H
-+#define __ASM_GENERIC_PAGEATTR_H
+diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c
+index a7dcff40f759..a728db40f9e0 100644
+--- a/arch/loongarch/mm/pageattr.c
++++ b/arch/loongarch/mm/pageattr.c
+@@ -3,7 +3,6 @@
+  * Copyright (C) 2024 Loongson Technology Corporation Limited
+  */
+ 
+-#include <linux/memblock.h>
+ #include <linux/pagewalk.h>
+ #include <linux/pgtable.h>
+ #include <asm/set_memory.h>
+@@ -168,7 +167,7 @@ bool kernel_page_present(struct page *page)
+ 	unsigned long addr = (unsigned long)page_address(page);
+ 
+ 	if (addr < vm_map_base)
+-		return memblock_is_memory(__pa(addr));
++		return true;
+ 
+ 	pgd = pgd_offset_k(addr);
+ 	if (pgd_none(pgdp_get(pgd)))
+diff --git a/arch/loongarch/power/hibernate.c b/arch/loongarch/power/hibernate.c
+index 3de38ffb11c3..65dbf1aed4a7 100644
+--- a/arch/loongarch/power/hibernate.c
++++ b/arch/loongarch/power/hibernate.c
+@@ -4,6 +4,7 @@
+ #include <asm/sections.h>
+ #include <asm/time.h>
+ #include <asm/tlbflush.h>
++#include <linux/memblock.h>
+ #include <linux/suspend.h>
+ 
+ static u32 saved_crmd;
+@@ -44,7 +45,10 @@ int pfn_is_nosave(unsigned long pfn)
+ 	unsigned long nosave_begin_pfn = PFN_DOWN(__pa(&__nosave_begin));
+ 	unsigned long nosave_end_pfn = PFN_UP(__pa(&__nosave_end));
+ 
+-	return	(pfn >= nosave_begin_pfn) && (pfn < nosave_end_pfn);
++	if (pfn >= nosave_begin_pfn && pfn < nosave_end_pfn)
++		return 1;
 +
-+#endif /* __ASM_GENERIC_PAGEATTR_H */
++	return !memblock_is_memory(PFN_PHYS(pfn));
+ }
+ 
+ extern int swsusp_asm_suspend(void);
 
 -- 
 2.53.0
