@@ -1,142 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D6E606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679C0606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KHqd8jGo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RIzKI4va
 Received: by kanga.kvack.org (Postfix)
-	id 845096B05B2; Thu, 26 Nov 2026 06:13:30 -0500 (EST)
+	id 7ABF16B05B3; Thu, 26 Nov 2026 06:14:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F61D6B05B3; Thu, 26 Nov 2026 06:13:30 -0500 (EST)
+	id 75B946B05B4; Thu, 26 Nov 2026 06:14:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E5006B05B4; Thu, 26 Nov 2026 06:13:30 -0500 (EST)
+	id 64B736B05B5; Thu, 26 Nov 2026 06:14:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0926F6B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:13:29 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7599A9047
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:13:28 +0000 (UTC)
-X-FDA: 85477009296.28.1034237
+	by kanga.kvack.org (Postfix) with ESMTP id ED0776B05B3
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:14:38 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D5E11403D7
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:14:38 +0000 (UTC)
+X-FDA: 85477012236.26.8BE365F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2AE8E120005
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:13:27 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KHqd8jGo;
+	by imf20.hostedemail.com (Postfix) with ESMTP id AB4311C0008
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:14:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RIzKI4va;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691607;
-	b=kjslJdwD/VMF4owN3b7TyOZLlT2Id6UigEBj5otTx0solWVyqJKnDY+giHtup7vTFM2Iwd
-	4wQd6vnE0gVRaTnmGJqngARYZLnP9QnBNIAW7VFymeQvaq4cLQvnitsXIdJT71/MgfiMiM
-	EWuwqajSnQIPWTbj/uk32cqtVs98Pl8=
+	t=1795691676;
+	b=u5RfIYaeGXZ6CnNR6mVa7pm1v8I9reVwirt4GS5ET+5Ist6aW4s4JAGxCZnot1TnrNwPM6
+	4NnxYHIFGkNkFrjd7BUkO8iBEBYMfjH8ARRjkqiD5BBIXhPRWJMX4izGcHXadFZOKZFcrz
+	veVCN+M36myfnBsjgs0WeH+B870kFW8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691607;
+	s=arc-20220608; t=1795691676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QyEzruHSk3PWNRGlXxnoXSvBzuBF1VHW0e91SegwgI4=;
-	b=vOZh7HPPYvOWBPAKjztF6wUHqJZaHL2J2y399ZVp+SNECNGniuFqGHZhSecD7Vz8GfIISn
-	fDuKNZLClLrZxveXLFJrXDn1EN/EXwl2/8m+GwIn+W5XemjTXSL7V4ibKxsX7K5SsN9d34
-	4wJbukirxRBJDdRuTybGZxcT2ErOydk=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6YKQUHqJDRHR3OCTfVDPkStj7CDLwSpBT3OSStLmyG8=;
+	b=SlsaR29O1MgBMUx1U4lzRyqwgPZL8g2phvELOD9LSjMmD6iqJcMvzk2uKEV2LPOsRZMMjs
+	cj3LDOfFEepgqsvcxSW5C5V2SkN6Ut2folF8MIAAlpwoPij3yR0yKtffA3xEfnp02wZ5oI
+	R3lvmSv5OCcm/8cNVz1tB6Gy7JsxeHM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KHqd8jGo;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RIzKI4va;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A73F4618C5;
-	Thu, 26 Nov 2026 11:13:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750331F000C4;
-	Thu, 26 Nov 2026 11:13:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 10E6C61E12;
+	Thu, 26 Nov 2026 11:14:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C461F000C0;
+	Thu, 26 Nov 2026 11:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691606;
-	bh=QyEzruHSk3PWNRGlXxnoXSvBzuBF1VHW0e91SegwgI4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KHqd8jGoK63FBGz6hruXqVsJj0+OR5Kg92zKXvALh22HB3TDrcoyFshXfuUHkjShG
-	 X43MCgVG6Ql4ImY/4qE+dBYhOUtvDRdQ5Wev2E9cRKsZ6KE56T5+f0qr/tW6uiQKbW
-	 hVaGU1yCLlVKfSlzPravL9m5+aPBHHTQGkVJ8Ux9BezoV6AQkCI3nItKg0iJXcd7e9
-	 z3KKWdCcYd2b+f17PRrxM5csYQg9fJ8v5RHyyq6mxVrzii7ig9D4ko62yh1MVahScK
-	 B3lfEeMOIyw0XxB7xd7Ep+vMDo6FusSnITcevpn8wBF65Z76U2DPREUVw3v/TSJmiu
-	 HTpO4GMb6fWBQ==
-Message-ID: <d1d7e82c-a113-48e3-801e-61dcffc4c747@kernel.org>
-Date: Thu, 26 Nov 2026 12:13:19 +0100
+	s=k20260515; t=1795691675;
+	bh=6YKQUHqJDRHR3OCTfVDPkStj7CDLwSpBT3OSStLmyG8=;
+	h=From:Subject:Date:To:Cc;
+	b=RIzKI4va+frBwlc3L5up4od5Tzz5+IjApWpqzPqE+xv9jFM5mM90LbTn7IGHybUdo
+	 frm/EMLI2JqkB+cS25k4UmXZXWB07H+XNcKtUR7frpUMZxWrCYR3DGOa/X/MpLq+jh
+	 PV0BS7E4dViEIpcL/qFS4PVk9Q6KK0gywkDhG+VaVhoAjRq2WN1fBw0VQozFJ0FoOZ
+	 MvP+SOIq31uptC2jpA+gEOEia4UowVG5kosrZuTrhHijOhq3bltvBXoa7seeeP5CwO
+	 ZYXkZLAKrsjA5mYJZEYMzX21yAE9XTWjfZ/GYlVgWG9dZei7XsFofG/i2PQ80MNyan
+	 d4HLkIP2adjlg==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH RFC v2 00/54] arch, mm: create a generic
+ set_memory/change_page_attr core
+Date: Thu, 26 Nov 2026 13:14:13 +0200
+Message-Id: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: Fix the name of the memory hotplug online type
- configs
-To: TAKANO Mitsuhiro <takano32@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, Dan Williams <djbw@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261125193039.2437025-1-takano32@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261125193039.2437025-1-takano32@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pwo7kdmn8ow8xufmqjcrqfkrirkja6ja
-X-Rspamd-Queue-Id: 2AE8E120005
-X-Rspamd-Server: rspam06
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WQzU7DMBCEX6XymS3+i+3khITEA3BFPdjOpjGQB
+ OzUKqr67jhphZAQcNzRfrOzcyIJY8BEms2JRMwhhWksA7/ZEN/bcY8Q2jITTrmimjPY41gIDwl
+ nGHCY4gdkCgyoqqS2lDpukRT6LWIXjqvzE3l8uCe7i5gO7hn9vHgua84mBBft6PtF+ul+m+lWw
+ bK2rPchzUVc42a2ev+bLJdwwD3rvOKCKifuXjCO+Lqd4p7szpdYEd8P5fn5Gvjr91LF4l8zBX1
+ whbNzaQi0osIZha42rMmcfK/rgjDGOKwNwNEooJ5VTtnWc8abkvxPIIbkMwiURhvTVabDX2/oK
+ 5JETcHwWopaFErb65G1Xz8NQ5ibjUXnNNdSaiWpoJK2leFeMalN25lOWu262reitHL+BOlh9HM
+ aAgAA
+X-Change-ID: 20260721-generic-set-memory-v0-1-06547a00b2ae
+To: linux-mm@kvack.org
+Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Borislav Petkov <bp@alien8.de>, Brendan Jackman <brendan.jackman@linux.dev>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Ingo Molnar <mingo@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, 
+ Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
+X-Mailer: b4 0.16.1-dev
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AB4311C0008
+X-Stat-Signature: pq5ezust5yaiqd6j5amh7yuoibk1mt6a
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795691607-89118
-X-HE-Meta: U2FsdGVkX191WNYZngB+/+si9iAoKTyHxoeqBaCfkV8OYxORHGRtCQHKQe5V4Sda+o0lvO4A1EjvQBMsAmi4Ms7Zq+TYECvbrHwgM6V6rkRwdf1X4TVxwTSJqqNFiwVbRL1y8stoSESR1EWIviiRg/DKRMVQxImYmYMOlfCEJ8ajlDq6SUtvKPLhQzMsmMPPyNSUgT2RLx/co9GiwTLUReXxOR/fn9DFZP3bMyuwBvh8yQCAJ82vJPn0RYvzvqJ/dtoZERoINOuHmcTKkIK+VeHK9gPUKb79CNsXRKEfX4ZiRH4efaa0XR0zuPRD31P296TVyFQssW1r1whD2qps0qCC/9mL1KbNodLkSMCMwF5UVdeAB9615NeEi3obEDIefhOzQNffh42DWXxeJlfnUBUAWhL6eD+jKIOF9RIjZIL07Ngf5LaNuWVyHMpXmnKKuwur4apog4hiMqtDgDGak+buaa55yA3PAiEHxZ5VSNkPGxsdWCwfdx7UfCwxNQpOC+V8EPBfW7vbAUI+riTepcINs5uRWEKKl6/tB/wLqWrs7lXQhDu4C3ANU5RrZKFiodyFlV3txbgcXB4QH9uT180EVGEMmIXvZ11jlBvWv65SKFWqGOxqpOHCHboG3a2GCSJ3sjIq4Tsahwf3dmiUSLCsMKK6z/cy1PXY3JGQXY2Yx3vMO8n6mUygikXQDIYB0s6VK7Txh1+6kABtP/BnBVeVkwnjqbHKSO/8h3hQnCpx59OLA707ZFlwwowqmt9XVC/r4kaLyPheLIkL2K3CSxGSPYG1WOGf/WcImZOlcx+qX1tOmITA2wX774tcdEtJL+/lFgztYvvodlGxdXsM3Q7KkOy0d2lQsjWUlzG6r2bY2jR6sryV/pFW3XksuHDSl7XiH9tiDzjujHmbdDGWwpdooOG/zOtsKp95A9yFfV0F9ifGMg3Gq8V0CSXlUSwAbKPCnDz7QSjb89NaxOS
- wFugAbAP
- ccGz0cqpw7FpWJ+uQcJKuD8zRNYz2xphWZo8Qh+VL2wMHxX5fXEapYmvCO3rflxVMxoxuRBIeoHd6MrYGiorUClHid+lGg1etuqYBMxYCA6JKFfWvqn5ibWO2Gzfn/4aHbrIQh7gWryzAYipC0w0XTu5zRjJ/Lx5rlgrqXx5p8mPSvt0gnTbjYEW/ZH/G+BUzNCSN0A1cwF3aVbn1RIjSBjL5EzPuxuOBQHVWK+kOPJkO5v44f4P1/s7TDaMwn7iAuiShRbtmFoSLOSHIG64+Dmt9O2cASAV14PTWL+eaObvS/KzUZk1HY5jrPlBah69d2MGjK1OgC3gjRmqsOtCYTcjZpwDSn/G4VApOZ3939gEMELhMEczcEj5At/Kt2h1ctYC9ia0eQ0NWIY4+PfHlWJMxhJIoCOpFECPBtZc340+mMiL+ZgvicUi6eTDHhegG52ben6tnIa4BJGG/KUphRhhS+30j72/ea+63AyYciwZ8ZbCXkpDRTB5Jw+9VhKs6fP+mhWjz2SV+zD6Pysyk2dWqIFTQ2V6iuMLC
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795691676-457876
+X-HE-Meta: U2FsdGVkX18PZBG87gV0XNr2MLLMd1/duGo6MetsmnfOgF/4ROEITLVqgyIDFMWukelhKNU8BamQpBziI2BLEXVw8DRUjmZL3fKN9CB0z4n85jooeoy6b3x/3wMBDbZqgEugS1GBlNK8sOmaBr046wfspdrWE9t4x7zJBjrV5WJqVeZdm310c9FFRy+A7O2TkGMU3ra0cIbI50w3ehSVkPeawwNV2tbCqaIrZ/6M0Hw427oXySQ1bAjY/8gZGs5inkNm+x+wpIPUFLLXU6X9eAVaVrwGYKn+opxFH+6y7fUXy7qbeU6JdvLehrnXhsFuOMljB/ISo3J1hQJrOTURmWxozzWWM1bH3awBPplW6Aqi7ZA+cawa4xSYPXZDd7+id/gDp4Kc1hSiXdcr1KafcAKvBhz87af2vkJrYWuofG0tnQyt0al97cr0YQwOBKUt28HroxuFlPn3OYL0O5rr5AVtV7fv48jBbZss4jHB3HdNeOfE9FGZY/O2Z79hEu3dGUKdyxSFq9ppQUsAKYo+AiPSx0oiRQofh5+VzmJKqSp+Qz/yr5pKaolo9otyVHhXmu8Jo3eQlyEmUSOvVN4LDtCvXJ3aKojBd+Arje7+aBm0WUN0+/JIORYlkAA/Jc5bfQUQ5jH3kT+ZJ9aVVcnUj6rLgDuahxvfxiHdbNcs7lZ5rMmSGSaPq5pISeqv4Pl4cRDi5zaAi6CPlfoE8dVLu1nlASdAXykhqmeouOqcZvL5jxgp8CLDYh6wCq9DGgnlyrwceSbrH0aKl1D9zMuWvvk5fM6jE/x/sgda700zFLbS5wphy+J1yZ+LSyLaZe0uLtGv4mrRATCirbash5c33BCtjTjLxSy3vymJ5XywRcJepwY2B34TQZbKDF1vqLJ21XAV7A0zXPHvycasvp4wqywESguXe6DPv7LRsnqRx6LJRsw5xUbCYNbriBI/undwAT7kb/n6d4GN7OBAqq8
+ qJwLsq8w
+ WHdPXLp6wxWsMzAaOINjZLXpm+ht3lZHM/iFpiv2qrK1QJUK1ZSD05JQjGVFmdPwyGnCq8uAEmIR9lLYvQtjkpbuiWfbRYkSQbYYTsGGMrbkSB+gT0QYGy9O3DFrkiZFNbmd0EujgEl6G6gL7dCdJHNnLXwzeIJnVQ1joignzOTGM2efxrF+T8gQvdoFtLGQeVfM7tJxDILzfwEvyGSBC3HoY2aytWgKbK4cOwcWz9Ie++BRFEjK7V8E1D1dkd/xXxYwRLgiZZliRDnWX0M2+ur8yuAkd+P0m91Ct4KE+MCR+L8+8p9apK0kNkbjEBbF7Ow1NudJIjInqhloX94tHQ4KtGFgGo3g4DLWfRFW0dAIBrJOB/2Cq34XXJsACfzuW66lP0YehpNE1MItaLBDhfX4JY3VmOUL6TzvpnzOmmUDa1sF/qS+VVtKukTDkvyLcP7oihGYCcUrYH/vXuBbMjPq9DyilJyBF11jpgSibKXZJwzTmBs+7EHLcO6DaUTsbhALWKl8dzkhBcHAAGRstNthJ0M5tgB+ACj/bXogIgFzFtbiVCtXY+mhyo7d/jtXJfeQHxQStiNft9V4Nl3mKGcEhl7Op18QzbmlEvL1hf7HAbNvsHYhawsOqbKEHsmaV3Ovadj4FYW/QHD3jbgs16WGmCYw9vLCuVaIbFRKv2bKF7Wc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,62 +121,291 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 20:30, TAKANO Mitsuhiro wrote:
-> The default online type is a Kconfig choice, so the symbols it defines
-> are CONFIG_MHP_DEFAULT_ONLINE_TYPE_OFFLINE, _ONLINE_AUTO,
-> _ONLINE_KERNEL and _ONLINE_MOVABLE.  There is no
-> CONFIG_MHP_DEFAULT_ONLINE_TYPE symbol, but five files name one:
-> 
->   Documentation/admin-guide/kernel-parameters.txt
->   Documentation/admin-guide/mm/memory-hotplug.rst
->   Documentation/driver-api/cxl/linux/early-boot.rst
->   Documentation/driver-api/cxl/linux/memory-hotplug.rst
->   Documentation/driver-api/cxl/linux/overview.rst
-> 
-> Spell the family with a trailing _* so that a reader looking the symbol
-> up in a .config finds one that exists.
-> 
-> early-boot.rst also gives the zone choices as _NORMAL and _MOVABLE.
-> The symbols are _ONLINE_KERNEL and _ONLINE_MOVABLE, so write those.
-> 
-> Verification: a build of the tree defines
-> CONFIG_MHP_DEFAULT_ONLINE_TYPE_OFFLINE and no bare
-> CONFIG_MHP_DEFAULT_ONLINE_TYPE in include/generated/autoconf.h, and
-> grep finds no reference to the bare symbol under Documentation/ after
-> the change.
-> 
-> Signed-off-by: TAKANO Mitsuhiro <takano32@gmail.com>
-> ---
+= tl;dr =
 
-[...]
+This is heavily reworked v2 of
 
->  		       See the ``state`` property of memory blocks for details.
-> diff --git a/Documentation/driver-api/cxl/linux/early-boot.rst b/Documentation/driver-api/cxl/linux/early-boot.rst
-> index 414481f33819..be9d5e510f99 100644
-> --- a/Documentation/driver-api/cxl/linux/early-boot.rst
-> +++ b/Documentation/driver-api/cxl/linux/early-boot.rst
-> @@ -34,7 +34,7 @@ which dictate how memory will be managed by Linux during early boot.
->    * Linux Build config option that dictates whether the kernel supports
->      Specific Purpose memory.
->  
-> -* CONFIG_MHP_DEFAULT_ONLINE_TYPE
-> +* CONFIG_MHP_DEFAULT_ONLINE_TYPE_*
->  
->    * Linux Build config that dictates whether and how Specific Purpose memory
->      converted to a dax device should be managed (left as DAX or onlined as
-> @@ -61,7 +61,7 @@ SystemRAM.  This will expose the memory to the kernel page allocator in
->  If `Specific Purpose` is set and supported, :code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_*`
->  dictates whether the memory is onlined by default (:code:`_OFFLINE` or
->  :code:`_ONLINE_*`), and if online which zone to online this memory to by default
-> -(:code:`_NORMAL` or :code:`_MOVABLE`).
-> +(:code:`_ONLINE_KERNEL` or :code:`_ONLINE_MOVABLE`).
-But combining "CONFIG_MHP_DEFAULT_ONLINE_TYPE_*" with "_ONLINE_KERNEL" doesn't
-make any sense. What am I missing?
+https://lore.kernel.org/all/20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org
 
-Maybe we should just spell out the full config names then?
+I decided to convert all architectures that implement set_memory_*() in one
+series so that it will be clear that the consolidation does not have
+conceptual gaps.
 
--- 
-Cheers,
+While the series is large, a bulk of it is a refactoring of x86's CPA, and
+then several commits that create the generic code and a few commits per
+converted architecture.
 
-David
+= Motivation =
+
+Currently there are 7 independent implementations for set_memory and
+set_direct_map APIs.
+
+With increasing demand for kernel page table manipulations, for example
+"Direct Map Removal Support for guest_memfd" [1] and "mm: ASI direct map
+management" [2], it makes sense to have a generic core for kernel page
+table manipulation in mm/ with helpers in the architecture specific code.
+
+A fix to a UAF bug [3] earlier this year had to touch set memory
+functionality in subtly different way in different architectures rather
+than to fix the core logic in a single place.
+
+x86's implementation is the most versatile and most battle tested and as
+such it is the best base for the generic implementation: it preserves large
+mappings when it can, it splits when it must, it handles the direct map
+alias, it serializes against itself and it sanity checks the result. The
+others are catching up one bug at a time ;-)
+
+With the generic CPA core in place it would be possible to:
+
+- make sure protection updates follow all-or-nothing principle: today a
+  request that fails half way leaves the pages it already processed changed
+  and a caller has no real way to recover from it
+- add an "atomic" mode to CPA so that it could handle debug_pagealloc and
+  KFENCE the same way on all architectures
+- enable collapse of large mappings on arm64 with BBML3 and on s390 and let
+  them use EXECMEM_ROX_CACHE
+- enable collapse of the direct map sometime in the future
+
+= Changes =
+
+This series converts all the architectures that implement set_memory APIs
+to use a generic core based on x86 implementation so that all of them have
+the same behaviour.
+
+The core walks the page tables, serializes the requests, decides how large
+mappings are handled, and makes direct map counters in /proc/meminfo and
+/proc/vmstat and CPA statistics in debugfs available to all architectures.
+
+The architectures take care of the page table format, of what they can
+split, of definitions of alias mappings and of the TLB flushes.
+
+The changelogs of the conversion patches list what changes for every
+architecture.
+
+I left out Documentation/mm/kernel-page-tables.rst update for now. Will
+post it with non-RFC version.
+
+= Patches =
+
+Patches 1-2 are riscv fixes for handling of p4d leaves and Svnapot.
+
+Patches 3-5 align command line parsing in s390 decompressor with the kernel
+to make sure both kernel and decompressor see the same parameter values,
+particularly for debug_pagealloc.
+
+Patches 6-17 are x86 fixes and cleanups.
+
+Patches 18-28 reorganize x86 CPA implementation to make it friendlier for
+generalization and separate the generic part of CPA from the x86 specifics.
+
+Patch 29 pulls CPA core to mm/pageattr.c and declares the architecture
+hooks in include/linux/pageattr.h.
+
+Patches 30-32, 38, 43, 44 and 48 add bits that the architectures converted
+after them need.
+
+Then there are the conversion patches:
+- 33-36 for LoongArch
+- 37 for ARM
+- 39 for powerpc
+- 40-42 for riscv
+- 45-47 for s390
+- 49-52 for arm64
+
+And in the end, patch 53 enables the generic core with ARCH_HAS_SET_MEMORY
+and patch 54 adds kernel-doc for the API and the hooks.
+
+= Testing =
+
+The patches are build tested on all architectures with various relevant
+configuration options turned on and off.
+
+arm64 and riscv boot in QEMU and pass module load and unload loops, BPF JIT
+loads, memfd_secret() and writes to tmpfs, which on arm64 trigger CPA with
+debug_pagealloc.
+
+x86 is tested in KVM with the CPA self test, module load and unload loops
+and BPF JIT loads.
+
+All three were tested with and without debug_pagealloc, and arm64 with
+rodata=on as well.
+
+The tests ran with a concurrent loop reading the kernel page tables dump in
+debugfs to rule out races with ptdump.
+
+I also verified that there is no measurable performance difference on x86.
+
+= Prerequisites =
+
+While working on this series I found a few more issues, though much less
+pressing than UAF :)
+
+The fixes for x86 [4], riscv [5] and s390 [6] are posted separately.
+
+This series is on top of v7.4-rc3 with the posted fixes applied and with
+hibernation series [7] from mm-nonmm-unstable that is waiting for the next
+merge window in Andrew's tree.
+
+b4 will conflict on the hibernation series, it's easier to get this RFC
+from git:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=generic-set-memory/rfc-v2
+
+= Merging =
+
+As Dave suggested [8], I'd like this to go through mm with acks from the
+architectures.
+
+= References =
+
+[1] https://lore.kernel.org/all/20260410151746.61150-1-kalyazin@amazon.com
+[2] https://lore.kernel.org/all/20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com/
+[3] https://lore.kernel.org/all/20260723-series-vmap-race-fix-v6-0-8cc77dcc0018@kernel.org
+[4] https://lore.kernel.org/all/20261112-fixes-x86-v1-0-791adb8d6670@kernel.org
+[5] https://lore.kernel.org/all/20261117-fixes-riscv-v2-0-5edc9bdc54fd@kernel.org
+[6] https://lore.kernel.org/all/20261117-fixes-s390-v1-1-2d9d04ca0072@kernel.org
+[7] https://lore.kernel.org/all/20260926-hibernation-v2-0-235f69f3ab2a@kernel.org
+[8] https://lore.kernel.org/all/fa75382e-878a-4064-a9b1-43bd2c9dedce@intel.com
+
+---
+v2 changes:
+* revamp the series :)
+
+v1: https://patch.msgid.link/20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org
+
+---
+Mike Rapoport (Microsoft) (54):
+      riscv: do not use P4D entries for the linear mapping
+      riscv: test for Svnapot in pte_napot()
+      s390/boot: parse boolean parameters like the kernel
+      s390/boot: stop parsing the command line at "--"
+      s390/boot: treat dashes and underscores alike in parameter names
+      x86/mm/pat: don't count kernel image splits as direct map splits
+      x86/mm/pat: drop KERN_WARNING from the WARN() in __cpa_process_fault()
+      x86/mm/pat: fail a split at an unexpected level with -EINVAL
+      x86/mm/pat: separate CPA request flags from internal state
+      x86/mm/pat: stop using CPA for debug_pagealloc
+      x86/mm/pat: drop the init_mm read lock from change_page_attr_set_clr()
+      x86/mm/pat: introduce change_page_attr_pages()
+      x86/mm/pat: make the direct map counters atomic
+      x86/mm/pat: take pgd_lock only around the pgd_list walks
+      x86/mm/pat: look up the effective NX/RW bits in verify_rwx()
+      x86/mm/pat: look up a large page again only after dropping cpa_lock
+      x86/mm/pat: drop the check of existing mappings against static protections
+      x86/mm/pat: consolidate encoding of page table entries
+      x86/mm/pat: use enum pgtable_level in CPA
+      x86/mm/pat: index the CPA statistics by page table level
+      x86/mm/pat: introduce struct cpa_leaf
+      x86/mm/pat: consolidate calculation of the new protection
+      x86/mm/pat: allocate the page tables for a split by level
+      x86/mm/pat: detect unchanged mappings by comparing protections
+      x86/mm/pat: add cpa_is_direct_map()
+      x86/mm/pat: implement set_memory_*() with a table of operations
+      x86/mm/pat: prepare the direct map counters for the generic code
+      x86/mm/pat: separate the generic part of CPA from the x86 hooks
+      x86/mm/pat, mm: pull CPA core to mm/
+      mm/pageattr: introduce arch_cpa_can_split()
+      mm/pageattr: introduce cpa_flush_tlb_kernel_range()
+      asm-generic: add an empty pageattr.h
+      LoongArch: use pfn_is_nosave() to exclude firmware ranges from hibernation
+      LoongArch: stop pretending LoongArch supports set_direct_map APIs
+      LoongArch: drop the huge page handling from set_memory()
+      LoongArch: use the generic CPA core
+      ARM: mm: use the generic CPA core
+      mm/pageattr: let a leaf cover a contiguous block of entries
+      powerpc: use the generic CPA core
+      riscv: replace set_memory_rw_nx() with set_memory_nx() and set_memory_rw()
+      riscv: use the generic CPA core
+      riscv: count the mappings of the linear map
+      mm/pageattr: let an architecture allocate the page tables for a split
+      mm/pageattr: derive direct map counter updates from the level sizes
+      s390/boot: map the identity map with 4K pages for debug_pagealloc
+      s390: remove set_memory_rwnx()
+      s390: use the generic CPA core
+      mm/pageattr: let an architecture bracket the set_memory() entry points
+      arm64: mm: allocate page tables in the callers of split_p{mu}d()
+      arm64: use the generic CPA core
+      arm64: let the generic CPA core split large mappings
+      arm64: count the mappings of the linear map
+      arch, mm: enable the generic CPA core with ARCH_HAS_SET_MEMORY
+      mm/pageattr: document CPA core and the architecture hooks
+
+ arch/arm/include/asm/set_memory.h       |    6 +-
+ arch/arm/mm/pageattr.c                  |   96 ++-
+ arch/arm64/include/asm/mmu.h            |    3 -
+ arch/arm64/include/asm/pageattr.h       |   23 +
+ arch/arm64/include/asm/set_memory.h     |    2 -
+ arch/arm64/mm/init.c                    |    3 -
+ arch/arm64/mm/mmu.c                     |  310 +++-----
+ arch/arm64/mm/pageattr.c                |  390 +++++-----
+ arch/loongarch/Kconfig                  |    1 -
+ arch/loongarch/include/asm/set_memory.h |   12 +-
+ arch/loongarch/mm/pageattr.c            |  215 +-----
+ arch/loongarch/power/hibernate.c        |    6 +-
+ arch/powerpc/include/asm/set_memory.h   |   46 +-
+ arch/powerpc/mm/pageattr.c              |  160 ++--
+ arch/riscv/include/asm/pageattr.h       |   17 +
+ arch/riscv/include/asm/pgtable.h        |   10 +-
+ arch/riscv/include/asm/set_memory.h     |   10 +-
+ arch/riscv/kernel/setup.c               |    6 +-
+ arch/riscv/mm/init.c                    |   24 +-
+ arch/riscv/mm/pageattr.c                |  459 ++++--------
+ arch/s390/boot/boot.h                   |    1 +
+ arch/s390/boot/ipl_parm.c               |   64 +-
+ arch/s390/boot/string.c                 |    9 +
+ arch/s390/boot/vmem.c                   |    3 +-
+ arch/s390/include/asm/pageattr.h        |   21 +
+ arch/s390/include/asm/set_memory.h      |   56 +-
+ arch/s390/mm/dump_pagetables.c          |    2 -
+ arch/s390/mm/init.c                     |   15 +
+ arch/s390/mm/pageattr.c                 |  496 ++++++-------
+ arch/s390/mm/vmem.c                     |   12 +-
+ arch/x86/Kconfig                        |    8 -
+ arch/x86/include/asm/pageattr.h         |   33 +
+ arch/x86/include/asm/pgtable_types.h    |    6 -
+ arch/x86/include/asm/set_memory.h       |    5 -
+ arch/x86/mm/init_32.c                   |    5 +-
+ arch/x86/mm/init_64.c                   |   15 +-
+ arch/x86/mm/pat/set_memory.c            | 1220 +++++++++----------------------
+ include/asm-generic/Kbuild              |    1 +
+ include/asm-generic/pageattr.h          |    5 +
+ include/asm-generic/set_memory.h        |   11 +
+ include/linux/pageattr.h                |  459 ++++++++++++
+ include/linux/pgtable.h                 |   26 +
+ include/linux/vm_event_item.h           |    2 +-
+ mm/Kconfig                              |    3 +
+ mm/Kconfig.debug                        |    8 +
+ mm/Makefile                             |    1 +
+ mm/pageattr.c                           |  684 +++++++++++++++++
+ mm/vmstat.c                             |    2 +-
+ 48 files changed, 2614 insertions(+), 2358 deletions(-)
+---
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+change-id: 20260721-generic-set-memory-v0-1-06547a00b2ae
+prerequisite-change-id: 20260916-hibernation-7603b86eb981:v2
+prerequisite-patch-id: b1bb2d4e1a2f542e3e8d0741a30a780722a350b0
+prerequisite-patch-id: da4fcef1a9df5f657cadfccf591d6bbb45a197f4
+prerequisite-patch-id: 6eab635bf8bd5b2ad0b40464fc7f595d7929769a
+prerequisite-patch-id: 74ad7bb09568c6b155058869cddbca01f37ee377
+prerequisite-patch-id: 319fe0988123448585901a69c901cd6381744ae7
+prerequisite-change-id: 20261112-fixes-x86-0c15b6adc212:v1
+prerequisite-patch-id: 00540235ba71e3d6f77190958aed21af53e3231e
+prerequisite-patch-id: 4c8347b413897acfb979f48814bd0a98887881cb
+prerequisite-patch-id: 3432c685702db763dc8ace31c0ba56e9e357c97d
+prerequisite-patch-id: 0b22ccc8b6b84cf68d83eb4322196cc51b22310e
+prerequisite-patch-id: 0e2e3eb56ec4e967db60bc464e42cdcb4a132571
+prerequisite-patch-id: f35d21bc18f51b0ca3fc3c80f3fb8901ce207f98
+prerequisite-patch-id: b1825b2c583747b97cfee853f231ff91fbbb1e64
+prerequisite-patch-id: c972a0aef660b2fc348ad08acfd290406b565932
+prerequisite-patch-id: 95489ac4f31f34a8b874ca96c6145c6613f9b612
+prerequisite-change-id: 20261112-fixes-riscv-3e48788f58fe:v2
+prerequisite-patch-id: 99056c0e4f9faa899a17b9cdc913796f60d848d5
+prerequisite-patch-id: cc95791ee9f36ddcf041d6c0dd9ddd655ed38718
+prerequisite-change-id: 20261117-fixes-s390-82943938787a:v1
+prerequisite-patch-id: f93f6904a8052e1e5e504e055e886363846b7881
+
+--
+Sincerely yours,
+Mike.
+
 
