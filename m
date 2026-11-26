@@ -1,134 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E1B606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 01:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F84606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 01:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JdB+MP28
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=FfrJVv9m
 Received: by kanga.kvack.org (Postfix)
-	id B29276B0B41; Wed, 25 Nov 2026 20:08:00 -0500 (EST)
+	id C796E6B0B44; Wed, 25 Nov 2026 20:19:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD9E16B0B43; Wed, 25 Nov 2026 20:08:00 -0500 (EST)
+	id C2A5A6B0B45; Wed, 25 Nov 2026 20:19:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CB556B0B44; Wed, 25 Nov 2026 20:08:00 -0500 (EST)
+	id B66E36B0B46; Wed, 25 Nov 2026 20:19:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 797976B0B41
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 20:08:00 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14F47A8C94
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:08:00 +0000 (UTC)
-X-FDA: 85475483520.28.AB606C9
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4CB9CC0009
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:07:58 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=JdB+MP28;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3A80E6B0B44
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 20:19:08 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD8DDA8D4D
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:19:07 +0000 (UTC)
+X-FDA: 85475511534.26.D9BDD15
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6FF7AA000C
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:19:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=FfrJVv9m;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
+	spf=pass (imf15.hostedemail.com: domain of tongzhiwei@cmss.chinamobile.com designates 111.22.67.139 as permitted sender) smtp.mailfrom=tongzhiwei@cmss.chinamobile.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795655278;
-	b=dW/JEHF0cJS4QP1l6zEWX+FnGF9Gu1A+45L6SOtg/18euFq/GV+JD//g/E2lEB28Jkh3yL
-	D27qnr42v/bPDk+ep+DB5TgSC4LsK41qcZPhhC0taoOxy+l+SRGEUp/Dus39Nu4tHFzuuT
-	TMxsgWJNtB6wDnZHs7kpUfmFEXFFzaM=
+	t=1795655946;
+	b=2I8ePSv8ioLZ6YabGhDJriVyMqoKl85+IYtCs2xT21idzA3A+p57S4WGp37WJlg5TVsFvj
+	1iHVWJhlDglh2rKHZ9wndEBLUDiefq3pyIHZ9ch8gMnw+NPuQ1c4me14IDNKNzIZS4nDgP
+	9aqKsGIrjhu8AcXg4mTCybtU/U5oDZY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795655278;
+	s=arc-20220608; t=1795655946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0e+Ouu+6oLoZy2ujzXapWcEGF96bjKcfmd5hC33j504=;
-	b=kdIT9D/mZ8evsTAKGuILzHC8IKEckKxDSLMVab+00QI3w/ZJ0qc290NKO/B5zkndupHxjE
-	dUpEXMHxTFN3tNeNux+XKDsEAygSD4YW7+21AG8Xcklhgg+k19c+PdBWecIVd4gk+JmN9O
-	c5exkv1skgXKegi9XR2bOeqALydr4FM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/bP0dHnKGr+2Tueqse6iudbEche5N89ZiaGs3zV4IFA=;
+	b=NTHO3K3drI3yJReL2JTvtx7WEO+CXLoCRK+0XJLBuVriMfBpCtjT8UKLQHHW5J3wTyOqvt
+	TJBZGBt/Er87PKDOLQxtq8Fl6oW71jPgUr0/TP6g05s7pEdZ1MFlwtE6alwzZpy+VCdAi9
+	Pv+k5wVK5jDZPF2bnfbwnTqWH2w/DEo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=JdB+MP28;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-89d6bd67045so3038746b3a.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:07:58 -0800 (PST)
+	imf15.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=FfrJVv9m;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
+	spf=pass (imf15.hostedemail.com: domain of tongzhiwei@cmss.chinamobile.com designates 111.22.67.139 as permitted sender) smtp.mailfrom=tongzhiwei@cmss.chinamobile.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795655277; x=1796260077; darn=kvack.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0e+Ouu+6oLoZy2ujzXapWcEGF96bjKcfmd5hC33j504=;
-        b=JdB+MP28t72ddArSYnacB7mpN37Go8N5CsQHOyEmKHiskYVH5oAyFxz3IUcs1boLTX
-         uAfRbXjufqTmy1gV9l8p1ANykYs4xU9kVIPRumGpVzMADA6i6kDrM4mOfibFiBnew9JS
-         ObvYhvBTLAFABQraiCpv7xoD77y79caUK5ygfrFxJu+xxPw5JesqlrJQJ7Z/dXbGUZfi
-         HBS8eNztWDb164LrXESaxQPhLIqZ4L/8/QKN/RBOjiPeu6kmjWvKqOuUOZl0BkW7W13d
-         3khmSQLe2Xjbvqcj3PXObq1QT6NWHbDNmjtXHEiZH0MgbdLSv9EEMyXzobEcnVlFJaOk
-         Bb+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795655277; x=1796260077;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0e+Ouu+6oLoZy2ujzXapWcEGF96bjKcfmd5hC33j504=;
-        b=l1Xkz4itWminKXLbnRpxx5ce44NUmt9wPp6WZ8YzqeKIG6ZQFbwu3Nwxk5AEkJPvwk
-         2aU3fewGwbX4bP4xsD+Bhzze1C9W8nwDhqXofGbqX/QmCLgWN26bgz3mI8kVHnETTvNV
-         FzoQlfxocbLN9blnDAvGR80SHyAyWv8//thfAFOJwYwNlv8uhH/6Z9igcQuxANqY/yyp
-         uzZZrM6MlVb1KJkL+ZBthkrGXVqYekHhjii4hOEKXMQ+W0PkciTkqdRFQndfE5K+XZuU
-         NfDpRq5SNqzdUS3nTJsXvGr5idsYKc1ELNnduWpkkJ6f+tlfo0tIElmFkEonrrk0+wNk
-         v4fQ==
-X-Forwarded-Encrypted: i=1; AL+hErEQYVemhZe7PlovZOMbzNMuSV1D4I26p5xMxP2BJGiAMkJVwS4687VLbRGrJgMO5qUECl9//aZokQ==@kvack.org
-X-Gm-Message-State: APuU4Z+cZlILh6H0qv2TjEt9auO6KO70IH8YfFg95V20ijXJorg2meyE
-	EYJH1DlWEvB6NdfTQQNiL4McoTIpjnEkKVuNM2NHVtLKCCgWR/M9etuX
-X-Gm-Gg: AZFdTZc5tSQ+G5FwaasPOTXxRDqsoDrmtbdAU51eMaW58R/pbpF8ja2wfPDdAFWfWBI
-	nQvoXDLMHyHKsgOO5ZIrRRrxAsKSXhjtJQ6u63kEoXORRjYttXqw/UfMJoD6s8ilYvSfS3KcN5W
-	4XC4Ibs0jq89kiph1dD7rrWI8hg14ndl3wOitK9Sl7HHwwPrvTWZoaUqd42HT/nrE7EsVTvKg8w
-	yxICM53sfRUf7fC1YjUMIzG/MLuEyBApuvaIaqzxx2oEX5poGID8Xsjt/KfYnkKOdPuU7AcqlzV
-	KUm+dG4JYLj+/W1DhTxga+cE7HWLouQX5pUlCEPgZeNMBhHZAMMxrb6D4zjtMu8EsU66bRAwOuy
-	mmcNEYP4KMPmheYrZ96ItnaUaR1Vb+iHZ8whw5tY03Ogv8F3e7eAlOQOc8n9isKuHBKRyMGwXP5
-	njxBNhuJaAYuqncCY7oYaLyDawEYw4z4+d5C7HwBEtvxLTEKfwcaaSnNHt/1dv7GKTHcH2jAR8V
-	t0l5uvJcgg2S/Iux/9CmGxBp/3ZpuwSZ54sC+iBlI+HQ0B2PoUH/hcxrcm/OkqKG4KcMEhifilG
-	xV22LjhKDiwpabEz/FuMgNu/DM9sf4QB1sA4kNnGLCUrfyskrpTt3h/KIGNR4OlH6zkKzvltqGr
-	zjL2MZ+VaEhlXNgXns+517KPuw7rrFn4D4j8=
-X-Received: by 2002:a05:6a00:c08a:20b0:8c7:f59c:e82e with SMTP id d2e1a72fcca58-8c7f59cee72mr10451362b3a.36.1795655276950;
-        Wed, 25 Nov 2026 17:07:56 -0800 (PST)
-Received: from localhost ([153.61.198.254])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c872e4c43bsm9633902b3a.26.2026.11.25.17.07.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 17:07:56 -0800 (PST)
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Nov 2026 01:07:55 +0000
-Message-Id: <DN4QO5PPVN0Z.1CO2JSCYRH04R@gmail.com>
-Cc: "Emil Tsalapatis" <emil@etsalapatis.com>, <bpf@vger.kernel.org>,
- <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
- <daniel@iogearbox.net>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>, <linux-rt-devel@lists.linux.dev>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Hao Li" <hao.li@linux.dev>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Suren Baghdasaryan"
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Brendan Jackman"
- <brendan.jackman@linux.dev>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi
- Yan" <ziy@nvidia.com>, <linux-mm@kvack.org>, "David Hildenbrand"
- <david@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
- <will@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Waiman Long"
- <longman@redhat.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH bpf-next v1 1/4] bpf: Add call for selecting kmalloc or
- kmalloc_nolock at call time
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Peter Zijlstra" <peterz@infradead.org>, "Harry Yoo" <harry@kernel.org>
-In-Reply-To: <20261125160409.GF2668804@noisy.programming.kicks-ass.net>
-References: <20261124060357.11700-1-emil@etsalapatis.com> <20261124060357.11700-2-emil@etsalapatis.com> <DN38HGVL8JHQ.2ZVZQCKFXVA9T@gmail.com> <awWRZ9xCzWLnj_R6@thinkstation> <20261125140902.GE2668804@noisy.programming.kicks-ass.net> <awbvek-HS3OJYJGF@thinkstation> <20261125160409.GF2668804@noisy.programming.kicks-ass.net>
-Content-Transfer-Encoding: 8bit
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=FfrJVv9mTW7QVFhOgmELvlZsxM3ygecgmrFKsbWzT7hMSuXVwT/XLMPnEffO84IqI0T7W1E89m/rM
+	 rEUj5+Iy0qd7s4iNKNOBcrjKpmjqIj8ksQzLGwWGDMWxHnrJheewUYGeHP7OBoehfZfg1QLEnVEekX
+	 CgcH4Mpz7sLBfAoc=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16b078901502-31385;
+	Thu, 26 Nov 2026 09:18:59 +0800 (CST)
+X-RM-TRANSID:2ee16b078901502-31385
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[10.55.1.72])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96b0789004cd-56c91;
+	Thu, 26 Nov 2026 09:18:58 +0800 (CST)
+X-RM-TRANSID:2ee96b0789004cd-56c91
+From: tongzhiwei <tongzhiwei@cmss.chinamobile.com>
+To: Nhat Pham <nphamcs@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: tongzhiwei@cmss.chinamobile.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests/cachestat: clean up the mmap test scratch file
+Date: Thu, 26 Nov 2026 09:18:15 +0800
+Message-ID: <20261126011818.417-1-tongzhiwei@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.45.0.windows.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4CB9CC0009
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: b594wnpcxtgd54pc3yuttusjtne5ud9i
+X-Rspamd-Queue-Id: 6FF7AA000C
 X-Rspam-User:
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: m9yy1p6qkhan443utb1kp79b9wyeoosm
-X-HE-Tag: 1795655278-271987
-X-HE-Meta: U2FsdGVkX1+i/hk1r94eAY71eBEsFcFgJLt+Wjq9+6BFj3znIb3VYpr13MM3OphKSBuG5hLAXbz2JH3gc3Mg6wD/NqWdYctomMk2B6lHzEdRhyJBaMx0pRUxYOT6kwyIAf0l3O/hRQnRyJYRlEZtSQ4S3gJ+pdxLTSCijT/LS3N1MmCMHpYdIY8S7qzz0NAt26tyYR+3KPlZOP1T/oW8jkIbToigUCGEvFzvYV9/DKdR7WqxU6hVSQwszNmqNmjzGr+vfqAPixeXdIJDSN3DZtwFXYZb8H4PnA8HLLyKtjmGbUqTrU48i/0LhdU4FIGHSWHYbF7SWnvE0i1M9Y+pFuJUpW3LDCzXpWGPqW+xzvIqYlcmBj2tWJO5xd9U1wM50+FU1JeqZDh18avvqUKtyxykA+SZzQ1UnMIaZioYQgQDXkJeELSoAJL9DG5VhYzr5v+KPjusxHtFTyqmgaQNafw/BncVrDcfjomszACG5/97bY+HcJLlHC68/682Ce+9Gr90t1YhGFi8A7qqnfSFReyJvsYkJDsTpFB5ftNc4f7ByvHmuiijLDYFjMilR3z37Iyr4QhpYHYC1njwhfX9+6pJJR/K9d2pvPDCdpq1Zguc/YA1aqy/JzKo5ZuhT2f/FFdWlqnJE9TFTqWNnJIvxrqEDLQfMsmUntBM8ww14hCz/ASVYOR6gzD083o9BmSFQrv1xL9UREpaLmZHjR4MaAPRaM5XbH1TYc3GFoscK+rROUOupHzHqJtl2hKT8nRTI6GB7GRkDSi+usMpBhRd61rw5ZtrjSWgLAwL3wjEsz1oUKkcx9luOPHRrW0nZDm6pV+Ip7M9gfGLvqeHHi8inmSm2WytimoNl7ydlFwpAU2cI0vBgZ5mzas/UyG91+Ayn9gS7IUfdC+V6c8aLGXgdnwGjJ5rooIPqTlkAIKcIC1c1hYRErCkanaUN/cBqF1l2u4SDadfTkIJpP/jSbb
- vTeql7ee
- dtuuK7cYsW1OceAb0IUR5eVS1qTGIx0YqYXl/4clKzhPA8/c8ktAnXMcDAMeZva0Yw0lUZnwCFsOBzVZLzRfdmv4a3lkGYMFEjbKDsjVxlfOjE7ykRgLd6WIk0T8kH1WYaS9nAbN6ldNEkcAdA7Rfc//ZVGMFgDXSJNEw8jRRLnGCYGN/dDudAP03g+bGcVot/2j+CiNwaHhH9RG7d1p1TKfFhsNcX3chPe0g76jCYjNdYFe0fvXKXx9Gz3Lky39TcVsJgcyNzGbRxE3qU90jdSZarjKCRx6466YSL0JU9jGWwti6GkCyODKxtYCujJf4C2lwZEepC6+XhsmWDbVnxomUJfDnI2/8WHGFnjOv9/0b99pGPPYDdk+gOpJ/wFRrssE7LZLEoAm6LhmRuvRiw+msgAX6abU4ySXoS+ZN1DA1OeBqWyotB62TVi0XdTxnlKhtNEri2yinJiJhzDv3iavfyZOIcr4Mp1im2A0GU5qefy7t5skqDyoALABoL7r6emokhmx+LgOimlT/0fBBnlLprbTywBOEdEXQ9XifKbIWkPHVOXWY6xS90nAqvTsYBCxohvyeMc695ljuq90J2eCdCqR9vq7Uaq9tx28N0w0Crsn6IWBSMvgDFuEsF0H0Ec2o280x2A+C5sAu+wJ8hgzTAEAJPFRGY4uPO96HhY7UUZDfuvCygGeGlFUhijdetHzTJSuHnbQs2J+vCHJmkSA/SiohKDKIDkUUKjpNxHWucE59tqVOyv3U2uewmSqX2Xqi2Sds+AbHXsVhmwqgXaVJvL4RWJaZcR4Vo02TOvoBuGpU+bevf3qijSunlBWmVyB57JJCl5k61f/Le34FjZoaEGECjOUNMiUx7J7PQqtr/olFb6Ej+deKo93MKZgvvpWosYcvIx+7RGU=
+X-Rspamd-Server: rspam03
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795655944-904613
+X-HE-Meta: U2FsdGVkX19UHYs7JknjJbA3+g5uJcpuT69gWZLxg4ZS2ppTohAhRhz21SXkEu40yejeTqJc288f0Llkhvzg6qTrT31aDN80Z8GdWvBCr6kzI/P7+Mwd5P5xO2hgmgHruc/Y2xFXmpR0plCoo362W5x/EEiCW2C5Rvh/DBt89XLwz7MDnwlNMAyhWtImENnCd5yfe8H9f6pwGa/gkokxhHP04OEzgbCoYi1HrOtjgajrFzxYW88LAZgvHyxBzlU2ddWrRgXiFVyd2BydYkEg+FcUqnkksMUkl+evOA2FYBsJkoATDF+WC97osQ9e7hd1SZ5rgVqeKEkCnzkprxF44a8LM7hHEn5CI5HEIvx781OoJl7S7sqtn1vhnKgkbNnkIJIgg/qQSYcLKizMlPAFZLWGP3h+o+PrNC61ytf3/unqwkIIgsHp9cZwbKNi+zOSz29XP7ZHEjAyoLpxAQdXylx266v4LAk9reeXLUS/mmnGkNGvlcf35Bk5uc/F3BIFVaC2SSplq+JsnaaaL/5ae1VJYOI6HlwEpNENgzlixJoSJqG69KZ+S5kgu6zfCtPYQzOV+W7saTJ/J0dYbhYMetWm//03GYZCQhht5DFCjDR/s4K2upRbbY/7b757ypTWKPfjqu1R7BqFcNJFLk4xA1MSUNaOc+E+vrp+eO7eDp2Lc0Wt1v1fo0nVF/hXAeS1ZAz/YD4Ox8zHrQxNsowreCSS+LNtXDeJFV6iXEUFzYa/Lq2It/wEOsg2ozPzubdn7idp98DT/4072AKcbjoQPogn14xG+Y+iWN3gqeGsxh7v20NBz5di8Vt/nKHB1cdMKkw0acTul5kcQVFGPXGAf2sQyJBnTV+3dYFpFoYh3fnB3h3vwA9urLlTLmKyVdD6HoowF01dreSV+FhRejU6LZ93Oo68ENraDUZLlCzjnujP9x/dcCHW1w4Tnwkvm2KoE4fqqfxECygDVSeKtvZ
+ lDzCVmCa
+ Z4PLwmgE6XoQ9boaa3jHPWT2PcLE70HHJFnsKUY0Cq57sF96m1YTB8s7US33nz0PrLxWeR91d68YgYKD/rvuKxBUamlAMzCpa53MEnOP3YGvIcVoIAVEN6CyfF65gBmuFNxVSGnOfFndzU1636ogiefG8ERwzRDT0+nes
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,13 +99,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 08:04 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> On Wed, Nov 25, 2026 at 02:30:52PM +0000, Harry Yoo wrote:
+NOTE: This fix is found and coded by llm, but it has been
+reviewed by human.
 
->> One remaining accident we're aware is that we cannot attempt a
->> spin_trylock or local_trylock under pi_lock (even on !RT).
+run_cachestat_test() creates its FILE_MMAP scratch file with open() but
+cleans it up with shm_unlink(), which only removes a POSIX shared-memory
+object under /dev/shm.  The regular file "tmpshmcstat" is therefore left
+behind in the working directory after every run.
 
-No. It's RT only. Already answered in the other email.
-Nothing wrong with !RT.
+The leftover file was previously worked around by adding its name to
+.gitignore in commit b90cafb43887 ("selftests/cachestat: add
+tmpshmcstat file to .gitignore"); the entry remains as a safety net
+for runs interrupted mid-test, but the test itself should not leave
+the file behind in the first place.
+
+Use remove() for the mmap case and keep shm_unlink() for the FILE_SHMEM
+case only, matching the cleanup the sibling test_cachestat() helper
+already does for its own temp file.
+
+Remove the file unconditionally, by design: the name "tmpshmcstat" is
+test-specific so a real collision is implausible, and gating removal on
+whether this run created the file would preserve stale files left by a
+crashed previous run instead of cleaning them up.
+
+Assisted-by: LLM
+Signed-off-by: tongzhiwei <tongzhiwei@cmss.chinamobile.com>
+---
+For context: the same leftover file was previously discussed in a
+related but different proposal from Madhur Kumar, which took the
+EXTRA_CLEAN approach (removing the file in "make kselftest-clean")
+and has not been applied so far:
+https://lore.kernel.org/r/20250927161141.778631-1-madhurkumar004@gmail.com/
+This patch instead removes the leftover inside the test itself, so
+the file is cleaned up whether or not the test builds/runs via make.
+
+ tools/testing/selftests/cachestat/test_cachestat.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/cachestat/test_cachestat.c b/tools/testing/selftests/cachestat/test_cachestat.c
+index 542cd09..5e62c49 100644
+--- a/tools/testing/selftests/cachestat/test_cachestat.c
++++ b/tools/testing/selftests/cachestat/test_cachestat.c
+@@ -289,7 +289,10 @@ bool run_cachestat_test(enum file_type type)
+ 	}
+ 
+ close_fd:
+-	shm_unlink(filename);
++	if (type == FILE_SHMEM)
++		shm_unlink(filename);
++	else
++		remove(filename);
+ out:
+ 	return ret;
+ }
+-- 
+2.33.0
+
+
 
 
