@@ -1,84 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420E3606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD81606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RhloDf5h
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EPHU4bh1
 Received: by kanga.kvack.org (Postfix)
-	id 6DCE56B05B2; Thu, 26 Nov 2026 08:27:06 -0500 (EST)
+	id 929756B05B4; Thu, 26 Nov 2026 08:28:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B46D6B05B3; Thu, 26 Nov 2026 08:27:06 -0500 (EST)
+	id 9004C6B05B5; Thu, 26 Nov 2026 08:28:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A3096B05B4; Thu, 26 Nov 2026 08:27:06 -0500 (EST)
+	id 7F2516B05B6; Thu, 26 Nov 2026 08:28:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 39C4E6B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:27:06 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C77F4140438
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:05 +0000 (UTC)
-X-FDA: 85477346010.13.E62C012
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4039E6B05B4
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:28:00 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77805A0450
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:59 +0000 (UTC)
+X-FDA: 85477348278.07.DFA2864
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E36B6A0003
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhloDf5h;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8BFD0180006
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EPHU4bh1;
+	spf=pass (imf16.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795699624;
-	b=YewKdbwV8Y2raiiE1RLbZ7xQcEix4n8Y1X0ZmmmzxXCPho34hT5gnwK7RO6oe+Z5wIvLJY
-	y5lcF8ftSlgOGiXGDOspruvFsRp44Q2IyZf4kG4p2UjiiebY2RfWD1DM7mAqKQzwzw+82Z
-	3AyT18O4useG8ngZYN2jdFGmnbY3jVg=
+	t=1795699677;
+	b=Av5s5Lm8kkX4hHd/Jn2m97mPQqdoGdlOyU6CyvUxSaNS4hh4DfUdOAs8Rlq90Cy65GkIXV
+	6zNmKiG893sm0ZUFilJUq1NRivsPpQwR48bP9YSbrYmHvdSj3UeVrBUMb4HCe0nwL7kS1n
+	3hVMKDAj7ol6Wkm8GME1gtTADxc2hZI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795699624;
+	s=arc-20220608; t=1795699677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZokuwfU4kATqyfaTag6SaT3MT9q8pH3IyIO6M5PAlLQ=;
-	b=XCifkRzTPXRQF8AR07YTNkEdHhp2BVoBGbbSQaJoJIMkOKZs6sGcnidcAT5pHI3kmCch9T
-	cHMLb2UpGSpd/u8k2425d8s6fnJQgw5UyJvxd2foQ2DDMWrilez0LAVnwZhY/xEo06JzWT
-	mFga6KMGKMvKnkpdP3mNmzm7C/NijVM=
+	bh=0SuygBFJgQJDPEHL8vg5eLv9glUvVL4TbpwchKTOKc8=;
+	b=eKUuzWxBTEPEXtJMoZEt5fPmo2HeVZR2vCYmG6RJk9mk2paHaqVZmsTs1d2FufbTTB/sel
+	ZgVK3jLFFXIyO7vjfcnbIEWPFsM6YKjf8HuXjOBOx93N/v+SimY6SqiyWw4qgJUwSm19UM
+	bL7ENtzwnNfBFnPdOGNYuilgp5BqNVo=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhloDf5h;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EPHU4bh1;
+	spf=pass (imf16.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 28A9841606
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D061F000F0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D1DC14637A
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CDB1F01563
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795699622;
-	bh=ZokuwfU4kATqyfaTag6SaT3MT9q8pH3IyIO6M5PAlLQ=;
+	s=k20260515; t=1795699676;
+	bh=0SuygBFJgQJDPEHL8vg5eLv9glUvVL4TbpwchKTOKc8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=RhloDf5hjViDM1wa120MCgd7yIwpKXtodHert8PQGCu3nBm3Jhrb09TaNG4V8Vs5/
-	 d1vXZiZry4y/sMZO+BHWZqI6I8kbwDjJ5tj7eo69vxWr3+mO790EUTeE93erN6DUug
-	 /+Xrz1C+FBXYxu00wHMRsUx0TeB7gI6IBwCtH6p4ScNc3/1sNZ48q1pUb+ZpywnDgZ
-	 XVRPR+txQwLdlqSwSwgjtDaLOXnffR1tbfJNLZDhTgUKD7e3Yw05AETznW/H3wSsTH
-	 XVEdiem2CXwXSMkBzP2IING/Njo/LlWbqYyIccI4XEG2KwHon9RuKWhsn/TqVpF2si
-	 RlvpUjUD9LcsQ==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3adf9b1f5aeso68182221fa.0
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:27:02 -0800 (PST)
-X-Gm-Message-State: APuU4Z8PnIB4ZfBZMMLPFrMlsBzwZhJXXOMHiBQwHtbK/s/ALSZx7Xoc
-	DhAL6DVnjREGGX0xuTUxAYk6J7YOxrQxMf2EJC/5IoP0brmGd1+3HINTT0ztBu0fPSvtubPmg9Y
-	PqGJekuhzSM+2Wa25G4SKmqpTkcaja+I=
-X-Received: by 2002:a05:6512:23a0:b0:5c1:5a42:37ad with SMTP id
- 2adb3069b0e04-5c1b7beabfcmr5752337e87.16.1795699621444; Thu, 26 Nov 2026
- 05:27:01 -0800 (PST)
+	b=EPHU4bh1rQUynF67I/BLiAYnpMItWNnTQ9AParYyhIyJ+y6H3njJ4HyIE0s6Jx202
+	 xCNzY4EbdFEUvhIGV7u89sr9xvmTk/hzD3usLMoUVQo7zRS1mVOEOGXKaU7srd0lqN
+	 QJ8zgMkZSbzwDG6k/Q8gKHxK2xOwoNZh0rfmPcgTWzKzVzQoVxEJRXus9AvWUL1U2G
+	 poRlMVnD4ZVArgDu1nm8eFgis+FkVYb/7yrTihelucyhtlDiutnGbPYYQd1IeXPRF1
+	 uMR3MT3fEDrUV6O3qWBar39ZOF0tAC8l88Y7GgJIURjBmPo17gy3FHsqx2yCKI3NPh
+	 QpwxgY4N6hLRw==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5be47aa555cso438598e87.3
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:27:56 -0800 (PST)
+X-Gm-Message-State: APuU4Z+xxig2ow1g1/tWZMukK0L+Q6lFACgoeSlHLPj3klTafAmrGI7R
+	oShVEh/9kV5kPOT578IQWvXhu1PGCmz4i/F+CZi7046sYTUPu+hkWmVcMDJKjSDw3K8xOvVJMzV
+	0OGzA5mtFwo4YMiM64Pa7t06/ELMgw50=
+X-Received: by 2002:a05:6512:36d9:b0:5c1:5976:1d30 with SMTP id
+ 2adb3069b0e04-5c1bc8206cdmr4300123e87.57.1795699675392; Thu, 26 Nov 2026
+ 05:27:55 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261116124832.662455-1-arnd@kernel.org> <20261116124832.662455-4-arnd@kernel.org>
-In-Reply-To: <20261116124832.662455-4-arnd@kernel.org>
+References: <20261116124832.662455-1-arnd@kernel.org> <20261116124832.662455-6-arnd@kernel.org>
+In-Reply-To: <20261116124832.662455-6-arnd@kernel.org>
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 26 Nov 2026 14:26:47 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=TmzH8tm46CvCd1=B_YMyiZM=f1vys_NhDZOM4MdxzFg@mail.gmail.com>
-X-Gm-Features: Aa3M54oJhuqbanKDTHMwhtXUm4eQYbQ6svpItwvRIwSjJelTST1VrzQM13SDhkU
-Message-ID: <CAD++jL=TmzH8tm46CvCd1=B_YMyiZM=f1vys_NhDZOM4MdxzFg@mail.gmail.com>
-Subject: Re: [PATCH v3 03/10] ARM: pxa: support arbitrary PAGE_OFFSET
+Date: Thu, 26 Nov 2026 14:27:42 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=ZyHZcJRUTpVghs3xYH0OGOKauKVWTF8tiPpHPjuad+g@mail.gmail.com>
+X-Gm-Features: Aa3M54pIH7xhTLEiVGxFItiuCxGTTC1f9B6RJQ9R1KEb9x9xI611Qqdum1NmRD8
+Message-ID: <CAD++jL=ZyHZcJRUTpVghs3xYH0OGOKauKVWTF8tiPpHPjuad+g@mail.gmail.com>
+Subject: Re: [PATCH v3 05/10] ARM: add CONFIG_VMSPLIT_2G_OPT option
 To: Arnd Bergmann <arnd@kernel.org>
 Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
 	Andreas Larsson <andreas@gaisler.com>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -90,22 +90,21 @@ Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
 	Michal Simek <monstr@monstr.eu>, Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
 	Nishanth Menon <nm@ti.com>, Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, 
 	Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, 
-	sashiko-bot@kernel.org, stable@vger.kernel.org
+	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E36B6A0003
-X-Stat-Signature: mqzh51kb9jroxhfrkxa7ntue57nekeow
 X-Rspam-User:
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8BFD0180006
+X-Stat-Signature: 9aaf3uyuuhgxon74xpock3yzbgqpw77d
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795699623-181435
-X-HE-Meta: U2FsdGVkX1/N9iN672XzUTGkCZlmQt1inwXo+PiSMFJxmTmhwX5yBrY7iwoCG+DRdPxPL8UxZ5Dgn6CdAyuNR90DvzH8W2MEdoESi2DULq5zpMDi8TJdpEgZnFyIP4wii5Ksat1bwssKn33vf/P7RPkrZWIoSoFSUuoi2wDwuH5nLaW1gxzb28Mqbry/Wxv3BTBQTRsvxwVNTRpC8a9KKVZDxxbxUQ/uDSEsxSnaFnFIafikXKw3Qk3j/wfxphO6y/l2y1sM33wVWagsM/zpM1rZnu5jwpHxYOlmfNF9GrfEq8+vNB/nohD5HMvaMMf2wybzBVhWpbf1fq8tOGM9eFybufwbX9PPeBeNuz/7PCOoAuOqrQzYlQhsKYs9XiRLSdaEdZrpCUWp3gwFJ99YhjcX3gUn11CkCqqn3FTsJOxI23Mz1M3J5ByaEFi38UFpZ3lC6LqSd/hEzRYf5PfM/z+WbCoT3/X2VJnoORgKCxqTyoIRcke7wbdURRxsrPHrmq95mV6EdqAb+DYFf3qOmND5AlghdxoPn6PAPXLuAS6hG/QLv+pTsfkI5bM+HvfyruqMsxmnNjpagH7y/SpxBTAtMFaegk4DqDYjBwX/njw7S8DZz3K3+2ENrOIPYwvAy0dwBizieD2voKVY9c3GrJO1MGKYqYizbt188K/rHp/qVJTCmMZ2/IZpGYhYy56sx4GvyX7SfPs1RoPkASbqY6tKnUUPgMnOcCGr4Ujch+LMC9SqN7juBSD+JGttHzh528TkFPZKoH98R+CT1I2aWieptLYcYcAQIjnN1D3QK5lqyTxXuvQXtLAEUJA7kCInRXgrc5AJQmeXoUIekXYtuB2/ZwrRV9AIEzoo3+kzAUqS68kwYx1xUjltTA3X+mqyI6m1GY+rX+Tvb7oqJw47npqPUgYC/2T3F0pqxXZ1fnDfwwaHkkU0MFdIng5ufrWkQOFlTZG84w0lWaDtWyO
- YIzIMTtf
- +h/+ocKw9Uwln93Sz6PxnIwGkU4GZrRpkLZxTWEGjIDJTGav/Yhc0sWMx62KAATfRkSNfrfV007pWKF6b4nwauB9JMO4kadFMy9L8TdEj8VU1BXe3P34+AK8g0TjB3mnoBKzThN3F5haBN0yonQXsgwpMnXx4KYDoFOsBifjWcXy5I8wfv67aiAtpqEhwSa97NETo34nKGuHOly5yiofaQuCwM/zYDTrKkTVlcrdJ9CbN1W9pdZy2eCaE0ebCy5q6x+EKkVrgfsG7ipgBkeCcr2tsMgXsOAktZaLa8Ys8YFRelqpgPo/w5ls+19jOXj4roPHSZvNgPVPrilA9bAF2Oo6hgjJKvHqm3jq8Z9Ij1mo8JlOcxTLEI1ma2j15YVn34TbMTPY2k3r06QjD5NWhLF3u8Yx8r3tG0dgu9stCWFC4VZlZgdO9b7ROqhfJ+PtQ8gtjufFAC41PbTo/VG+0AWdFIBss3H90JWbgNG+0+2pFTcciAYDPW3CzGrgE9kac5Sbys2dZzd5Wzcw9mfGSEqjKD4WZcjFsH7tOuQ2lbGuQTaUfKV3oG2AMuWnVa1D3zPbINw3xQs/7FgI=
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1795699677-299317
+X-HE-Meta: U2FsdGVkX1835IiZtThRfTrXmbyeL/+IU8Xbdx6GRj6FohV8vQsereWWa4cmS8p8MI//wMmcIE4IkQAJpPM0CKPpdNL6d+R4I+2L7Xw2OCwyOr4cjRvtmzl1ur6s0soq3XohV86LW0GCbTbYr6UtmOp/PAqLCqcqifc4vi27IVnRpsOhBSgYQM0t4Yu6yPQxbSQbOGOjvf95jzTHiuqCRrqXnAOVSd9fXbgSaj88ZgUagdvMUNNdxCVcHPYEAPpePerSODdYnb6p1f6tcDALGp3e0J1sQBtZ09EWfkE28AalMgMm/eIm40+U22ox0Px7OqGMuMVMV+oAR96gj44cEq1deZ5Ew2vM2AYrQlGNBZRnNrdi0dEEWe9WKvM4Fc2T15g4BcVyIStgscZmV/61IQf+QBim1ATfWYnlgg97sBZLrJ5Upp+kpfHo0Eb2AXSRHmYIndlpx+DvTqPICEnMc0YDZqH1pciBaWN8rCCkYUs5vJhDyynEK0W9GFocmhK2jml4vA5pvTRdSsfOjvGmx1i6PiLd0x9k6xsVnwwKOQqsh1HGJT6q5//GBLrVxc/yVnxKg/tGjARoO2Pwg1JuS5NQvRbS2Gr8ib++nfVsgOWSuE8pSWP8i2YkNGVf4Gs3p5flMEicIAhEdZ0pYtY4ATAx0vgiNMuw0smCwYu2EVjWdZQ7EAyf1vTOcntCCJjDgydEBqLaiAs8/Gixz5GO3JTv5tPDMCeC0/Vioc7qVUsL0Y4qpWrESXJjk4hUc/LHW/GuJxjnGcKEAidOOO6vZ8CRkAMuyWT3rx1dmH+iGMBHKS7A7CeBXhPt/I1n8PMqcDJoHZVa9WJ1M8js31NFti5hxea5mpKoBXSLLzbWJoxVwyqnDEZDVlMk9/HZhtJ7U0aLFKPJgKkTm3Q8xhb5Z7tTPZl6CDKqyw4UCyGUff+kIaOXLXHnWAGlf6GwF4redO0kXHyym4BhB6NoId5
+ OW6aofgO
+ 314dJU1RphanqC1fzYrGSJD1qyHaSMTh1Oy630LLqgH2jf4rky6tln2WIBtZhMAM2SVcjECMtXnICH2HbrBntZ+LtiPbF4upWWBQRLC2OqPQtvtGer44YNxPveyGX2Pvehq3JfBae85PzKZeMuYH/vbzxT8ILEDPYIAADAFOJCD9YmIOdzrBzyRXWf55jd8knVgpXCI3e9mI+KmBn/Udibcvuk3xL+xzvKSNapt3XWueZRyJCyq7SM6BLjFlEEk9DwPJ41GPv5Zd4TS6rX/3DRQ+/G8txU1R57Ljs766w4zq05D0RjpI9zK2KqEKp4XgXakYVKq2d4ZM1yLm97lwDtd3NkFSY21VZYtivdWmf50Ng8NchuXT4dKj1VYvtawoXVIS5XAnb/QAzQkeab0hrTMovc3sX5VJP3728UoJkAzt5ZJkoiUQSzgO2zI3i87w02E2gkdHjp7qS+AZjJys1d79OGBHPXITnpmYgU1pu7wqe0iUOaI2AlcbaixP1fgjozEgLHDLl5vkqSFPUj6o7xzx4AVSOWhAxTPw5NEoHEOOKHSTF0zh4hzQAgU6BIDEZ8N7pAFGWyO0NukReP7tNtD2lgpOzWrMyVeIN+ufWOEZaY2s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,18 +118,21 @@ te:
 
 > From: Arnd Bergmann <arnd@arndb.de>
 >
-> The pxa3xx_cpu_pm_suspend() implementation hardcodes the default
-> PAGE_OFFSET value for CONFIG_VMSPLIT_3G. This has always been broken
-> for other configurations but becomes much worse now that the default
-> is changing.
+> Unlike x86 and powerpc, there is currently no option to use exactly 2GiB
+> of lowmem on Arm. Since 2GiB is still a relatively common configuration
+> on embedded systems, it makes sense to allow this to be used in
+> non-highmem builds.
 >
-> Fix this to use the correct compile-time constant instead.
+> Add the Kconfig option and make this the default for non-LPAE builds
+> with highmem enabled instead of CONFIG_VMSPLIT_2G.  LPAE still requires
+> the vmsplit to be on a gigabyte boundary, so this is only available for
+> classic pagetables at the moment, same as CONFIG_VMSPLIT_3G_OPT.
+> Keep ARCH_MMAP_RND_BITS_MAX at 15 for this.
 >
-> Reported-by: sashiko-bot@kernel.org
-> Fixes: c4d1fb627ff3 ("[ARM] pxa: add preliminary suspend/resume code for =
-pxa3xx")
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/all/sashiko-outbox-212719@kernel.org/
+> Tested in qemu -M virt, both with and without HIGHMEM enabled.
+>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
 Reviewed-by: Linus Walleij <linusw@kernel.org>
