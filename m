@@ -1,70 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50443606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 03:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16170606A32D
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 03:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v4LNimE/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LSdyAs8J
 Received: by kanga.kvack.org (Postfix)
-	id E839F6B05B2; Wed, 25 Nov 2026 22:11:30 -0500 (EST)
+	id EE8A86B05B0; Wed, 25 Nov 2026 22:39:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E341C6B05B3; Wed, 25 Nov 2026 22:11:30 -0500 (EST)
+	id E4B536B05B1; Wed, 25 Nov 2026 22:39:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4A336B05B4; Wed, 25 Nov 2026 22:11:30 -0500 (EST)
+	id CEB606B05B2; Wed, 25 Nov 2026 22:39:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FE9D6B05B2
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:11:30 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 942FF80280
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 03:11:29 +0000 (UTC)
-X-FDA: 85475794698.25.7D74C56
-Received: from mta1.migadu.com (out-221.mta1.migadu.com [95.215.58.221])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2FB9B40007
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 03:11:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="v4LNimE/";
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AA9F6B05B0
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:39:06 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EEFAC120234
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 03:39:05 +0000 (UTC)
+X-FDA: 85475864250.07.44A0A68
+Received: from mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B8F4E180006
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 03:39:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LSdyAs8J;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795662687;
-	b=kvBiYJx0z61jQHDBUIUkfEBLPnnvCZFjfU3eNYxQ2zlsLbrPUGkqqb/gN5H4Eg1xjEGf3Z
-	NfcmtsePXynTM8ALth7L+m2NuEAD3Dncj4Yf5WOI1EuMZwzFUEiqlhJD1D39zgFZ1JFTDe
-	v7qJON3Q8Z7OmgH3oE1t2fGfgFRS+to=
+	t=1795664344;
+	b=T5MZC0U3WZBu/E7KTMusDMGmvweGUZEHntm/gPcWX9k6UPqiNOBfVu/xQ2VITBsqckzA67
+	jrWw+X8sZ18sv7UMt2UF88RHXzx1yXUBdCnpptxPnUb875FW8BUURsGgiCad4uo1mWTguA
+	EWOn7QWmVIvJvWA0dazEkGSz7F8fcww=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795662687;
+	s=arc-20220608; t=1795664344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WYSs5d5Lp36V/22Iomfy0//nynBZd0fYykzrM/pot3A=;
-	b=ghRtzxoedoLhIiYQGQlG3Hy4QxFP4BSY95qqhJsLGFMNFe3TOjaRZl3dLmF0CeRSrhJU9S
-	haoUBpNePbH6EH3Eo/goHpZt56Kwhl/WpxpQBEXDFb4obfnKEfrknSzAt9tqwiygQrZGas
-	UaQrQeD9xKM1T93ibu1MqKtCHELsYT0=
+	bh=WZXhqqMJtGtQSFqs9mp5EiyQrG4t9fKkEiiJJfk1V94=;
+	b=76lq3xuDytjpWcx9Ix78UJrCZSXaorPzlYbgIlA6wrJ+w/Pi4E28G+k8RAwZJM139UHfBd
+	Hahw5z1W+5VyClwnPq1ZMPSav50YfZjutoZGJzuQ2thTMfMOnF3e/xaagL5k2ZhMFDzp/i
+	BbWSpX7RtXPfdbOAUj8C/MJLk2qywBI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="v4LNimE/";
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LSdyAs8J;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=vvqUdZiid5uV0/NNKfcYRq6aGGte+Ajub0kcJ88W1xw=;
+DKIM-Signature: a=rsa-sha256; bh=3UV2O3vp01qJF08PlpVk7+NJu2+NXqvyVZ3Kr2qDcy8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795662684; v=1; x=1796267484;
- b=v4LNimE/gC1YH2gkJSPSsR1U5WkvOLP+v30bRf7crUd8FH1aTK9tP82zmAxUbhbOCOFfvj24
- 5YC0nbgSj0t9VOLVGdrL204D2lqRQooqnbMMKSrBrHTraKgDztTpeGwr705aKwG9VKpi9tMNas7
- Ed/aQnfk8eKQdTvJZTByNDt0=
+ t=1795664342; v=1; x=1796269142;
+ b=LSdyAs8J7bC0cwji/tGdQecq8Tb/rUDxBvCZ8eA2i2W2wcoPx32DxmBSqPsZUXpyVC/jASZp
+ W5Q5gHCmigHcxUkWUsIUEaW4tZX8X/02c4qBdNrJInCsJGoAobC5G7g7oXcnSlYNUKq0omgJe+s
+ 93KKvNA1mcwtd7Dgk23bKn94=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c118c9884fa7c50c;
-	Thu, 26 Nov 2026 03:11:24 +0000
-X-Mizu-Trace-ID: c118c9884fa7c50c
+Received: by smtp.migadu.com with ESMTPS id 5700fc680564a234;
+	Thu, 26 Nov 2026 03:39:02 +0000
+X-Mizu-Trace-ID: 5700fc680564a234
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <82a7b4da-a67a-4e53-bdad-8c0551585cec@linux.dev>
-Date: Thu, 26 Nov 2026 11:11:10 +0800
+Message-ID: <8685acd8-4546-4414-9b92-217048766321@linux.dev>
+Date: Thu, 26 Nov 2026 11:38:48 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 04/18] mm/mglru: make generation page counters atomic
+Subject: Re: [PATCH v6 03/18] mm/memcontrol: avoid potential counter leak when
+ reparenting local stats
 To: kasong@tencent.com, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
@@ -95,24 +96,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org,
  Tianyi Chen <hi@tychen.cc>
 References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-4-8ffea39934a6@tencent.com>
+ <20261124-mglru-fg-v6-3-8ffea39934a6@tencent.com>
 From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20261124-mglru-fg-v6-4-8ffea39934a6@tencent.com>
+In-Reply-To: <20261124-mglru-fg-v6-3-8ffea39934a6@tencent.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2FB9B40007
+X-Rspamd-Queue-Id: B8F4E180006
 X-Rspam-User:
-X-Stat-Signature: x1ag5w93cpenmihzqccqya3cpx43tftu
+X-Stat-Signature: ctybapfmrjncw4iez1fmjgxbadsmccse
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795662686-449874
-X-HE-Meta: U2FsdGVkX1+p1X0WVAyrqMY02WmHu4Z7VJQnPi5af6qO9OeRl0PHfm74h3V0IbbUdlyIqal5t1p5Xa2QSk1fJZBgg6hio+ITemMF7SLm7CtA7eu6gUXhxWTc4ogZn83MVtLm6DxVEvLQN7G26xVg7StDEBArGxNMDyUbUcooa0E3i+aMggyEuseyIEcAHA2qFRHBp35bh/HLM1eDhzS6Ptl+5j5cSRUmiIRgzW9AdloTo/96iEB2y9coLmsAPqDZ60MJ7YSLJUMtyUnxAfj6QgEeanqe0W8Gb54VJrK/rvteiaUrESDJ6ghqfZtgi8XsH4YAHaB0D5vNSM3U94ArGLlerJBDoP1spYDXHyKCq4ngznTdqihJZPwNbiECh74MWRIwMHilWa+FUatrSc3EvgxWMaTPt6IGcBFcXz11lZZcrnH1cSwGF5H+daaZ8UEkxVsY7Fiv0JvSOcI87amY67dty8DsF64quSNlWrqIYuW8t+EJ3I7q30oIfuyoLxzYlAe5hrhXgLdlbPuxwNyuYq7hyouEzHhcFsUpglbDWCzC3jS0atEief+ScWy5NZpuvGxVFnC8hI1QT8a9UEqgfxPaw7OYG5AudQiyIxwIQA9zzJESB+A8DPrQIhdFfh1OX8Z3YeGp3jEqo4lOyZcdgUXtQxjXLvkHK0X5plp0cuIvS7lU+QMYW8v/SI+g43ye7OqX2MMTU8lOdhz2Al/BCZYH083p+DaUzr9DR1Fop1zsY5HMouJY2SfmfcX6PkPrU0c2/oOOsQmI5lGCD8ywx5GOszCStZwqOGCWms+wmxlsfLJ5dGt9fmBS6zxTDjmN4B9klKdeGMUv5vssqAaBDOM8NSPceHXE5KhzD8TTDH+v73i1lMOxDipwTW+HEDdlfsx7Za+Gx8KxXUlyhigSwONdpgJeB5c5do5xuogCoRelhqjAy1M5fEtFAnf5kx/IG79hJgQJ+71CiRBHQrf
- Jimm4EUQ
- PjfuaL7Sa48Cyg19Ij3JwkLJQWxE5d0E6mbHDKDX4erO8iUvp/+vkdytBXhUv9gb1J1HCKgI0tu8qI+muvi/Ni2/RVsaXdLWvfqIpXfHQNCkm/zOfko0VS2F8c99FXsKDqBgQ50JzTZEKi4xwnBIRe7QeWvP+8+JHXyr8Yy8yd5Cxm7t5/vMGJVM4lkGfZQilE1pJqKQXUvBvkajRNJqPHELyvlJXcHS1p/2PJjXr7gtelW/Z7GA2/4MHZZAGZV7xQWHjeZBT1YcsZM3hLjWKUlJEi3q8R1Nle95mi/RN7PGjjKRVxYswf55e76U0qkXXYysbcP3VS4JdMr1wY9qHsYpSYnERXwFNI5aKTU2ffeM13esG/yQppx6dL+WVRHD9W1/QiS3uclmUzAMRZJjfj1cAcsXFXjS57GvnQ3KEVl27u7rCR9iLu3mcXiBeSjjJz+T/1Qz4k2ooJIYZORRztx4ps1DXmuyEElv4+RdJhj1qIPTPibQvMBsSsYZUBTbXaG34loEyZLoce1DVTfi2GOi7bfMultTg0CrrIKyzw5wJqV2a5MOEYlaKeSm3xQDQCKpT1renceNlMcu7c1HY3lbM/tSu4ofmKCP2Zkhl+JrofIjbrSOhKiUYb9t9Do+qtvTeKgjNC9eXa8qMoVZUNEhOihxRT5m2VCrIYcWaeuyuEZCuT1OvCEo0IYH4C1L4QXji/dXt5EepuPXQvl+g6irRa1T83zYsDHjP3rfqKgyXrYxielZ2sGC7zw==
+X-HE-Tag: 1795664343-831047
+X-HE-Meta: U2FsdGVkX1/XgXrVyr4C0EVRekC/k5GbL1NrVPNzQ1uBl7XIu0syQMPA+SliSHQtRv2mM053GBQ9o9p6V839X/WAGcGuIbz0VVq2BtqbiW5M5h3iB+WmNjxY1+m7oO78XF6r2Lqax/fo8PbY+ALKo0x0m1/65D/F+pKjQFfnoL+rg5zT/hog1y6uV/LIfhJqp6P16quki1DdWYCuIOcnCJzH5cIyRaet1bT5eJfr9Vrg5abEwqdARYwcWpKm2W9KhKDjd3DFFXRYWQrF/rtdm8+rfvMVcrW3QNdGjkZeC6mKuzAXQMO0vN4++uYT4W+QmtJuHk5Cg2X5NyiC5ikyfawckvMz1v9flX8AZAu33VifSkGDMrRQEFG4YFvZQtVOPdK5fhmRvwaOcwUaOHqDTQXrN9Oymzf6MseHsG2nFOcFPq0oMxNQR+4zYqMW3wwo4sYW4HFocBq+iJEjp7sGU3iNSjyyXUyWwepOkzmHxil+REUNxtI8DwXBa9olCprBbuvnRbKbrhpkihxcRp8iiDnBPMg/DwlKLpAiOLTgd4KzzkIMV9pew6c2oWomlBuTaR2QPXjwV95+X8KvI/rL/Medlqu7kQXN56stTRgi9J0HSGtGECUzeSOUHiCVrpOKE4yLtggwgdgfFFAzvGRmtQb7CV41/IvS4ObX5uAZi5OLUjUwsZEujqcqFd/CAa3ropv9euosbcoLocMu2qnav/Rp0cnAw3bpHHVuhhCbUEYJlCEi4WL3KgTNiDzBPPNzI2MJBn9cwFS9rWi4wwOudJWQI6l/ymtHD4IJMZ0UCkC0sQK3gwDzLVEufh/eY85T+l3uH89OE+wsbe8Xk8jq9OxBjURdxxKGTLO8UuWNg5i8A/oWNAEGD+INmc4pDMrsfcWzefFEDbhYUfVBailJUEw4etobdBEcvIepZIejBJZKsfrnOXeP4CLt6dvPC8DxEpMEyyR7brvnGNqXAeC
+ 88KcCL2Q
+ pi2zv06883w1t0aHC34EteBlxMuWb4FYzb/TSHfE0u/Izpg0RZRhiG7RD3m8iArBKeIf6EWG6DuKsPExgivjuQaWDHAaBMahIuVY7/qZJfRhYZ3w8ZV9gIp442wQboTErLogEB08RixAcbAdu5ufEnffJD6TmIjan5sredxNRh8Tenfq1pBL4OP/FUT1CXP/UA8i1LkUyvs6vLS8MTuiXEoG6X3qDCrq0y1iZjjBOR0pIdS5sZSf0qTKM6e6PsmIz8937p8Q+zFSRCawbJGEpMsRgoCP6ICILnozlyWpBjo0uO8bi8BKkyEfMu1Emcubt1X0V0mrC4sU6Pwd+QUM2v+dRkB5CY8N3Jynw6wbps6p2QPVqdlyVXFTOvLE+CEk4R3SUc6Hz3Di7Q5fmRMgZxLjiv/D8NmQyTK9/0/HWyrREhj7hjaA9iEKAnX/IAhUocJvbtuB3I/e4TcAHIeXzL7LJOE7IVxWU7tgsJ4ZMNjdjsVJNtGCEepyiChRlgLblJc9ICshnS1rlkdxJWUD87/oWPlIIE0o3nBMNuzFm3iiHaQ1Y+KdBcrWe35t2balnH+QIl0Ll/aPHXh7MgSWxlLfL/6q+1DwhjCmfhJt/JO1nXdZkVZwHXyUDTsGOwG8Q0Iu+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,135 +127,91 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 11/24/2026 2:52 AM, Kairui Song via B4 Relay wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> No feature change, convert them to atomic so we can update them without
-> holding the LRU lock. A temporary underflow is fine: readers clamp a
-> negative value to zero, and the counters only need to be eventually
-> consistent.
+> lruvec_page_state_local() clamps negative values to zero on SMP.  That
+> is right for readers reporting page counts, but can be wrong for
+> reparenting once MGLRU updates the counters without the lruvec lock.
 > 
-> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Tested-by: Andrew Morton <akpm@linux-foundation.org>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+> Reparenting runs after the forced stats flush, so a negative is a real
+> balance that has to move to the parent, not be discarded. We will
+> introduce lockless MGLRU promotion which may cause following problem:
+> 
+>   1. A refs CAS on a folio on the child's lruvec moves it from
+>      inactive to active, and its active/inactive counter update follows
+>      as a separate step.
+> 
+>   2. A concurrent isolation of the folio reads the folio as active,
+>      debits the child's NR_ACTIVE_* by delta before CSS_DYING is visible
+>      to it.
+> 
+>   3. The child is killed, and the two __update_lru_size() calls from
+>      step 1 land on the parent: NR_INACTIVE_* -delta, then NR_ACTIVE_*
+>      +delta.
+> 
+> The child is left with NR_ACTIVE_* -delta while the parent holds the
+> matching +delta, and reparenting the child's raw value is what cancels
+> the parent's credit.  However, if the child happens to hold few enough
+> folios for that counter to be negative, lruvec_page_state_local() clamps
+> the child's negative to zero, which drops the debit instead, so the
+> parent keeps NR_ACTIVE_* overcounted by delta, and its active + inactive
+> total overcounted as well, permanently: the child's local counters are
+> gone once reparenting is done.
+> 
+> So use a raw signed helper and reparent with that.  Ordinary readers
+> still keep the clamp.
+> 
+> Reported-by: Kunwu Chan <kunwu.chan@gmail.com>
+> Closes: https://lore.kernel.org/linux-mm/CAN_Opa-+nb0vxQ+HsENCG2fEEMZoxG9Sy_DBC4CLkWjNLzDWKw@mail.gmail.com/
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->   include/linux/mm_inline.h |  6 ++----
->   include/linux/mmzone.h    |  2 +-
->   mm/vmscan.c               | 26 +++++++++++++-------------
->   mm/vmscan.h               |  2 +-
->   4 files changed, 17 insertions(+), 19 deletions(-)
+>   mm/memcontrol.c | 15 +++++++++++----
+>   1 file changed, 11 insertions(+), 4 deletions(-)
 > 
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index 2edb9beef6d3..46beded51c7d 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -265,11 +265,9 @@ static inline void lru_gen_update_size(struct lruvec *lruvec, struct folio *foli
->   	VM_WARN_ON_ONCE(old_gen == -1 && new_gen == -1);
->   
->   	if (old_gen >= 0)
-> -		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
-> -			   lrugen->nr_pages[old_gen][type][zone] - delta);
-> +		atomic_long_sub(delta, &lrugen->nr_pages[old_gen][type][zone]);
->   	if (new_gen >= 0)
-> -		WRITE_ONCE(lrugen->nr_pages[new_gen][type][zone],
-> -			   lrugen->nr_pages[new_gen][type][zone] + delta);
-> +		atomic_long_add(delta, &lrugen->nr_pages[new_gen][type][zone]);
->   
->   	/* addition */
->   	if (old_gen < 0) {
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 6a2ad0cff795..4e85bb520f76 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -554,7 +554,7 @@ struct lru_gen_folio {
->   	/* the multi-gen LRU lists, lazily sorted on eviction */
->   	struct list_head folios[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
->   	/* the multi-gen LRU sizes, eventually consistent */
-> -	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
-> +	atomic_long_t nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
->   	/* the exponential moving average of refaulted */
->   	unsigned long avg_refaulted[ANON_AND_FILE][MAX_NR_TIERS];
->   	/* the exponential moving average of evicted+protected */
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index bc7579d47f9b..202e0f874b23 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3350,8 +3350,7 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
->   			continue;
->   
->   		walk->nr_pages[gen][type][zone] = 0;
-> -		WRITE_ONCE(lrugen->nr_pages[gen][type][zone],
-> -			   lrugen->nr_pages[gen][type][zone] + delta);
-> +		atomic_long_add(delta, &lrugen->nr_pages[gen][type][zone]);
->   
->   		if (lru_gen_is_active(lruvec, gen))
->   			lru += LRU_ACTIVE;
-> @@ -3971,11 +3970,8 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->   				break;
->   		}
->   		flush_lru_batch(head, &batch_end, target_list);
-> -
-> -		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
-> -			   lrugen->nr_pages[old_gen][type][zone] - delta);
-> -		WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
-> -			   lrugen->nr_pages[target_gen][type][zone] + delta);
-> +		atomic_long_sub(delta, &lrugen->nr_pages[old_gen][type][zone]);
-> +		atomic_long_add(delta, &lrugen->nr_pages[target_gen][type][zone]);
->   		if (!remaining)
->   			return false;
->   	}
-> @@ -4093,8 +4089,8 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
->   	for (type = 0; type < ANON_AND_FILE; type++) {
->   		for (zone = 0; zone < MAX_NR_ZONES; zone++) {
->   			enum lru_list lru = type * LRU_INACTIVE_FILE;
-> -			long delta = lrugen->nr_pages[prev][type][zone] -
-> -				     lrugen->nr_pages[next][type][zone];
-> +			long delta = atomic_long_read(&lrugen->nr_pages[prev][type][zone]) -
-> +				     atomic_long_read(&lrugen->nr_pages[next][type][zone]);
->   
->   			if (!delta)
->   				continue;
-> @@ -4625,8 +4621,13 @@ static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec
->   	child_lrugen = &child_lruvec->lrugen;
->   	parent_lrugen = &parent_lruvec->lrugen;
->   
-> +	/*
-> +	 * The child is offline and the lockless updaters, which hold
-> +	 * rcu_read_lock() over the update, avoid racing with reparenting,
-> +	 * so the read/set/add operations below are safe.
-> +	 */
->   	for (gen = 0; gen < MAX_NR_GENS; gen++) {
-> -		long nr_pages = child_lrugen->nr_pages[gen][type][zone];
-> +		long nr_pages = atomic_long_read(&child_lrugen->nr_pages[gen][type][zone]);
->   		int child_lru_active = lru_gen_is_active(child_lruvec, gen) ? LRU_ACTIVE : 0;
->   		int parent_lru_active = lru_gen_is_active(parent_lruvec, gen) ? LRU_ACTIVE : 0;
->   
-> @@ -4634,9 +4635,8 @@ static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec
->   		list_splice_tail_init(&child_lrugen->folios[gen][type][zone],
->   				      &parent_lrugen->folios[gen][type][zone]);
->   
-> -		WRITE_ONCE(child_lrugen->nr_pages[gen][type][zone], 0);
-> -		WRITE_ONCE(parent_lrugen->nr_pages[gen][type][zone],
-> -			   parent_lrugen->nr_pages[gen][type][zone] + nr_pages);
-> +		atomic_long_set(&child_lrugen->nr_pages[gen][type][zone], 0);
-> +		atomic_long_add(nr_pages, &parent_lrugen->nr_pages[gen][type][zone]);
->   
->   		if (lru_gen_is_active(child_lruvec, gen) != lru_gen_is_active(parent_lruvec, gen)) {
->   			__update_lru_size(child_lruvec, lru + child_lru_active, zone, -nr_pages);
-> diff --git a/mm/vmscan.h b/mm/vmscan.h
-> index c2cea36289f3..6551f0a6691a 100644
-> --- a/mm/vmscan.h
-> +++ b/mm/vmscan.h
-> @@ -126,7 +126,7 @@ static inline unsigned long lruvec_gen_size(struct lru_gen_folio *lrugen,
->   	unsigned long size = 0;
->   
->   	for (int zone = 0; zone < max_zone; zone++)
-> -		size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-> +		size += max(atomic_long_read(&lrugen->nr_pages[gen][type][zone]), 0L);
->   
->   	return size;
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 091401cecf39..3f551e2e3206 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -562,11 +562,10 @@ unsigned long lruvec_page_state_monotonic(const struct lruvec *lruvec,
+>   	return (unsigned long)READ_ONCE(pn->lruvec_stats->state[i]);
 >   }
+>   
+> -unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+> +static long __lruvec_page_state_local(const struct lruvec *lruvec,
+>   				      enum node_stat_item idx)
+>   {
+>   	const struct mem_cgroup_per_node *pn;
+> -	long x;
+>   	int i;
+>   
+>   	if (mem_cgroup_disabled())
+> @@ -577,7 +576,14 @@ unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+>   		return 0;
+>   
+>   	pn = container_of_const(lruvec, struct mem_cgroup_per_node, lruvec);
+> -	x = READ_ONCE(pn->lruvec_stats->state_local[i]);
+> +	return READ_ONCE(pn->lruvec_stats->state_local[i]);
+> +}
+> +
+> +unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+> +				      enum node_stat_item idx)
+> +{
+> +	long x = __lruvec_page_state_local(lruvec, idx);
+> +
+>   #ifdef CONFIG_SMP
+>   	if (x < 0)
+>   		x = 0;
+> @@ -595,7 +601,8 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+>   
+>   	for_each_node(nid) {
+>   		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+> -		unsigned long value = lruvec_page_state_local(lruvec, idx);
+> +		/* Reparent the raw value: the clamp drops the child's debit. */
+> +		long value = __lruvec_page_state_local(lruvec, idx);
+>   
+>   		__mod_memcg_lruvec_state(memcg, nid, idx, -value);
+>   		__mod_memcg_lruvec_state(parent, nid, idx, value);
 > 
+
+LGTM.
 
 Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
 Thanks.
