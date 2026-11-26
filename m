@@ -1,154 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB70606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420E3606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 13:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JKa/u5d3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RhloDf5h
 Received: by kanga.kvack.org (Postfix)
-	id C0D2A6B05B0; Thu, 26 Nov 2026 08:26:51 -0500 (EST)
+	id 6DCE56B05B2; Thu, 26 Nov 2026 08:27:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBD816B05B1; Thu, 26 Nov 2026 08:26:51 -0500 (EST)
+	id 6B46D6B05B3; Thu, 26 Nov 2026 08:27:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAB066B05B2; Thu, 26 Nov 2026 08:26:51 -0500 (EST)
+	id 5A3096B05B4; Thu, 26 Nov 2026 08:27:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AC206B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:26:51 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14E7E1203FB
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:26:51 +0000 (UTC)
-X-FDA: 85477345422.09.0370924
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 46081A0012
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:26:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JKa/u5d3";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 39C4E6B05B2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:27:06 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C77F4140438
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:05 +0000 (UTC)
+X-FDA: 85477346010.13.E62C012
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E36B6A0003
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhloDf5h;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795699609;
-	b=MHrL0hNzGJlkL8o5XmkTNmiap7Dw2V30vD1LQk1jUpkdeLJSsDXR8tAWre+Iyl0hTvyLxu
-	FhCOT4cJZ3NR8AZqXXzhzTr5NvA52cIxzVT0gaQa/O1TX5/7UmXCIVGf1jI2+F9i6aHZ7c
-	Nw/ngM7hP1gmNYiSWNn/jv7rrUo+TCY=
+	t=1795699624;
+	b=YewKdbwV8Y2raiiE1RLbZ7xQcEix4n8Y1X0ZmmmzxXCPho34hT5gnwK7RO6oe+Z5wIvLJY
+	y5lcF8ftSlgOGiXGDOspruvFsRp44Q2IyZf4kG4p2UjiiebY2RfWD1DM7mAqKQzwzw+82Z
+	3AyT18O4useG8ngZYN2jdFGmnbY3jVg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795699609;
+	s=arc-20220608; t=1795699624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=44YcTNEv0pQgCbvisYqDB6TZpb73ujBffN6Vnl7ST18=;
-	b=sFhnj1nfCWEYPOJsYtFg0VwM6TzW1IDDjj6dUMR0dCiuT8CqpwmYi2WVMumRxS6+RfXW6K
-	cJIII+ZtEeffsqMopXotm03SOjQnIWxRS2jVogRpwZ5xkjZUXO1XnfyTGD4ziknaORN03c
-	8JipFdbywN/B9AkdqQcAG7QnGArvwf0=
+	bh=ZokuwfU4kATqyfaTag6SaT3MT9q8pH3IyIO6M5PAlLQ=;
+	b=XCifkRzTPXRQF8AR07YTNkEdHhp2BVoBGbbSQaJoJIMkOKZs6sGcnidcAT5pHI3kmCch9T
+	cHMLb2UpGSpd/u8k2425d8s6fnJQgw5UyJvxd2foQ2DDMWrilez0LAVnwZhY/xEo06JzWT
+	mFga6KMGKMvKnkpdP3mNmzm7C/NijVM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JKa/u5d3";
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhloDf5h;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9C081628B1;
-	Thu, 26 Nov 2026 13:26:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372651F000C0;
-	Thu, 26 Nov 2026 13:26:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 28A9841606
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D061F000F0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 13:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795699607;
-	bh=44YcTNEv0pQgCbvisYqDB6TZpb73ujBffN6Vnl7ST18=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JKa/u5d3QpYiV7XdwPVy7nnF+pPoRyyOucSSqu5763e+IdqOlCfDJh0HciBgZPD3t
-	 jS8+BlBL4X+nwzTuCnCCLp6oOCHclFcP62Xpwa2CsI497QpWnlaZHrWM4MyoTFcrBu
-	 sWfw+D9N9NPJ1HB4MGNauuvH6v6mLBiDjNldqbWWpNGbt277HkVowpwXir1cb+SJWF
-	 hDUHFg/5coZTiClO382cj1NLD2w02la1n3czbRvGXtOWtlMuKCe8wESu55cpuXm8Os
-	 k2x9ABH7fNAicFWDl/U0DXIOVaSqiNRqGfM0ebdPmx5535XGnm4D8KFBGcGZ+DCwfB
-	 LgGWWrTCUWqcg==
-Message-ID: <dc62bf2a-9188-4cc6-9850-14ab3a2e5274@kernel.org>
-Date: Thu, 26 Nov 2026 14:26:37 +0100
+	s=k20260515; t=1795699622;
+	bh=ZokuwfU4kATqyfaTag6SaT3MT9q8pH3IyIO6M5PAlLQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RhloDf5hjViDM1wa120MCgd7yIwpKXtodHert8PQGCu3nBm3Jhrb09TaNG4V8Vs5/
+	 d1vXZiZry4y/sMZO+BHWZqI6I8kbwDjJ5tj7eo69vxWr3+mO790EUTeE93erN6DUug
+	 /+Xrz1C+FBXYxu00wHMRsUx0TeB7gI6IBwCtH6p4ScNc3/1sNZ48q1pUb+ZpywnDgZ
+	 XVRPR+txQwLdlqSwSwgjtDaLOXnffR1tbfJNLZDhTgUKD7e3Yw05AETznW/H3wSsTH
+	 XVEdiem2CXwXSMkBzP2IING/Njo/LlWbqYyIccI4XEG2KwHon9RuKWhsn/TqVpF2si
+	 RlvpUjUD9LcsQ==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3adf9b1f5aeso68182221fa.0
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:27:02 -0800 (PST)
+X-Gm-Message-State: APuU4Z8PnIB4ZfBZMMLPFrMlsBzwZhJXXOMHiBQwHtbK/s/ALSZx7Xoc
+	DhAL6DVnjREGGX0xuTUxAYk6J7YOxrQxMf2EJC/5IoP0brmGd1+3HINTT0ztBu0fPSvtubPmg9Y
+	PqGJekuhzSM+2Wa25G4SKmqpTkcaja+I=
+X-Received: by 2002:a05:6512:23a0:b0:5c1:5a42:37ad with SMTP id
+ 2adb3069b0e04-5c1b7beabfcmr5752337e87.16.1795699621444; Thu, 26 Nov 2026
+ 05:27:01 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] mm: fix races between huge and non-huge faults in
- PFN mappings
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>,
- Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>,
- Roman Kisel <romank@linux.microsoft.com>,
- Saurabh Sengar <ssengar@linux.microsoft.com>,
- Naman Jain <namjain@linux.microsoft.com>,
- Michael Kelley <mhklinux@outlook.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- "T.J. Mercier" <tjmercier@google.com>, Eliav Farber <farbere@amazon.com>,
- "Gregory Price (Meta)" <gourry@gourry.net>
-References: <20261125-huge-pfnmap-fault-races-v3-0-bbc44489341b@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261125-huge-pfnmap-fault-races-v3-0-bbc44489341b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 46081A0012
-X-Stat-Signature: ftoaye1snhew648ykz6rpena8hnqbbuw
+References: <20261116124832.662455-1-arnd@kernel.org> <20261116124832.662455-4-arnd@kernel.org>
+In-Reply-To: <20261116124832.662455-4-arnd@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 26 Nov 2026 14:26:47 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=TmzH8tm46CvCd1=B_YMyiZM=f1vys_NhDZOM4MdxzFg@mail.gmail.com>
+X-Gm-Features: Aa3M54oJhuqbanKDTHMwhtXUm4eQYbQ6svpItwvRIwSjJelTST1VrzQM13SDhkU
+Message-ID: <CAD++jL=TmzH8tm46CvCd1=B_YMyiZM=f1vys_NhDZOM4MdxzFg@mail.gmail.com>
+Subject: Re: [PATCH v3 03/10] ARM: pxa: support arbitrary PAGE_OFFSET
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
+	Andreas Larsson <andreas@gaisler.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Lucas Stach <l.stach@pengutronix.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Malin Jonsson <malin.jonsson@est.tech>, 
+	Matthew Wilcox <willy@infradead.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Michal Simek <monstr@monstr.eu>, Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Nishanth Menon <nm@ti.com>, Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, 
+	Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, 
+	sashiko-bot@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E36B6A0003
+X-Stat-Signature: mqzh51kb9jroxhfrkxa7ntue57nekeow
 X-Rspam-User:
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1795699609-129
-X-HE-Meta: U2FsdGVkX18JcegZDCcZPxpNICB41nKMCrdIiKrw7pv84yHeEbIBcyqUE/QUfWgZJy5nkxfXzg74+WJCdNFKWoxYAyhHpSCJ5yAfftkyVUnZUwij+lThI3LoUuiT+qiMjXcXWYdCULkAyvLdY0rlrz5klpGco6tMmEU5hpdYmEzf08xr+hZ2lnPDdtG+1F5+9mjWJNjA+TGcWDIeFCaTig++htzutErS/zwrsPT5jw4QCU1p1KuZk/JXF8a15pcGYqUFYUeAO4WrBvlj8iA7Z2NphVkToQX2TECtdEbvWCmMD6yVpc+RFJl1cITBAX3JfGZVPY8hW/RJKI603H9pjAPlGEzA1h7CMT4werSmHlImwoox3dd2j9/isIrHm/nE7KKIR/Cfw14CGiFC8pSzlZYg+SVCq4gGT8/SCt537vX5nEIox1uH7tLom5xPp9SiYbYHaStJ8NpAvqxuf2FQrjRnEH6A1mrFHqMndMs6FPqPiAT3RQBc8ro7kKTT7Xxj8kLOsARQ7BJqfWpkb26/4Ab0JBT9MnSvzR2P0cFPbaBTakN8SVdPWYojNEpu8OTEErcyAh8rj7xEhmmmuxvnUsZ2L7ab0AtDggAFb/8pvLndKBYuyP0cx6vx1QVwAtd2ct4m6EGfWOBUICZ5O/6drBaGW51VcBi94bQIw0VeNTvcwC+L0dtEsbDmnId1v9v5W/kVPtZWfMqoDvCLsfM2OPjIDQ2SB5IH4WkopgVazAVp5wEd+STchbtxDbgaiMmQRjv4lJIvYpoEpCUBwsG/VvbiYsoUzAABMoGdkciiA4RUF7/8RNHoO9KAsGchT2CH02iZKDB0XrximN1mLiaDBLlsh1c/Vft673tyyYcLMzQeheqbPcYXXbQkfsGoY7j8X6e3v18AYHPjsOGjiFBrYrAo6zbeeN8GqBEMk23ZtsDz6M7AxJ7pXZBhowRCySrEgQpO5YqTlP+KiTeJMjM
- Qr1Q2d6p
- QSc/ggPMqDOcIRQbG+AOzsBNyWJuFQuXiS1adc3GS5R40aS7gXP6dJrD8iHz7Cc/1BpLRBGbS6lfsP+FicIYkfERja4myo01D3Obf6/EmrIM8xpCGBBw5I/vyax0PhClpx8D1lof7QVAjrQ7EHvPFBaOIMP1oEgtwLsY7BEBzIo4ImYMdgn/B1Nbqkcz7huWP4LC43YogreM6eWOIGyLYjJBd3UMnB/arC0593RaYySr/F7cHm3nwa7Nq8fG3XaM8Yf1W7TcjurSf2vbdFBPG1gIEfIzNkiifQN7FiHZQoAhHlBbhQQwkPVjsk8ATJNsi3xgIYtMB3LiT5JZTzP1o7n1OsuNKlPT87l0UGsAhwr7ac+1Ex+k/jlCmCpIEw9/QqNmDBiGPbwd1gH6/fUwtUDxix6IR9OfVMVj/7hpWDtJXIs52iMFz+vogzpxwwKrbrbJn6PnCJiARg7pkZbMy7zVvGj/5f7rtpYvR2jveSBkrOAcKyNcudy7zB+DfXDteNBn7sl/B0vmIbVjbMBGY2lS78Q==
+X-HE-Tag: 1795699623-181435
+X-HE-Meta: U2FsdGVkX1/N9iN672XzUTGkCZlmQt1inwXo+PiSMFJxmTmhwX5yBrY7iwoCG+DRdPxPL8UxZ5Dgn6CdAyuNR90DvzH8W2MEdoESi2DULq5zpMDi8TJdpEgZnFyIP4wii5Ksat1bwssKn33vf/P7RPkrZWIoSoFSUuoi2wDwuH5nLaW1gxzb28Mqbry/Wxv3BTBQTRsvxwVNTRpC8a9KKVZDxxbxUQ/uDSEsxSnaFnFIafikXKw3Qk3j/wfxphO6y/l2y1sM33wVWagsM/zpM1rZnu5jwpHxYOlmfNF9GrfEq8+vNB/nohD5HMvaMMf2wybzBVhWpbf1fq8tOGM9eFybufwbX9PPeBeNuz/7PCOoAuOqrQzYlQhsKYs9XiRLSdaEdZrpCUWp3gwFJ99YhjcX3gUn11CkCqqn3FTsJOxI23Mz1M3J5ByaEFi38UFpZ3lC6LqSd/hEzRYf5PfM/z+WbCoT3/X2VJnoORgKCxqTyoIRcke7wbdURRxsrPHrmq95mV6EdqAb+DYFf3qOmND5AlghdxoPn6PAPXLuAS6hG/QLv+pTsfkI5bM+HvfyruqMsxmnNjpagH7y/SpxBTAtMFaegk4DqDYjBwX/njw7S8DZz3K3+2ENrOIPYwvAy0dwBizieD2voKVY9c3GrJO1MGKYqYizbt188K/rHp/qVJTCmMZ2/IZpGYhYy56sx4GvyX7SfPs1RoPkASbqY6tKnUUPgMnOcCGr4Ujch+LMC9SqN7juBSD+JGttHzh528TkFPZKoH98R+CT1I2aWieptLYcYcAQIjnN1D3QK5lqyTxXuvQXtLAEUJA7kCInRXgrc5AJQmeXoUIekXYtuB2/ZwrRV9AIEzoo3+kzAUqS68kwYx1xUjltTA3X+mqyI6m1GY+rX+Tvb7oqJw47npqPUgYC/2T3F0pqxXZ1fnDfwwaHkkU0MFdIng5ufrWkQOFlTZG84w0lWaDtWyO
+ YIzIMTtf
+ +h/+ocKw9Uwln93Sz6PxnIwGkU4GZrRpkLZxTWEGjIDJTGav/Yhc0sWMx62KAATfRkSNfrfV007pWKF6b4nwauB9JMO4kadFMy9L8TdEj8VU1BXe3P34+AK8g0TjB3mnoBKzThN3F5haBN0yonQXsgwpMnXx4KYDoFOsBifjWcXy5I8wfv67aiAtpqEhwSa97NETo34nKGuHOly5yiofaQuCwM/zYDTrKkTVlcrdJ9CbN1W9pdZy2eCaE0ebCy5q6x+EKkVrgfsG7ipgBkeCcr2tsMgXsOAktZaLa8Ys8YFRelqpgPo/w5ls+19jOXj4roPHSZvNgPVPrilA9bAF2Oo6hgjJKvHqm3jq8Z9Ij1mo8JlOcxTLEI1ma2j15YVn34TbMTPY2k3r06QjD5NWhLF3u8Yx8r3tG0dgu9stCWFC4VZlZgdO9b7ROqhfJ+PtQ8gtjufFAC41PbTo/VG+0AWdFIBss3H90JWbgNG+0+2pFTcciAYDPW3CzGrgE9kac5Sbys2dZzd5Wzcw9mfGSEqjKD4WZcjFsH7tOuQ2lbGuQTaUfKV3oG2AMuWnVa1D3zPbINw3xQs/7FgI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,68 +114,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 16:48, Lorenzo Stoakes (ARM) wrote:
-> A driver that implements both ->fault and ->huge_fault must anticipate
-> concurrent use of both.
-> 
-> This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
-> concurrent with faulting, as that only holds the mmap write lock and thus
-> does not exclude faulting threads stabilised by VMA lock.
-> 
-> A number of places in the code that implements huge PFN support fail to
-> take this into account correctly, which this series aims to address.
-> 
-> Generally the shape of the issue is that faulting the same empty page table
-> entry can result in the ->fault and ->huge_fault handlers racing and the
-> loser finding something they didn't expect.
-> 
-> The fault code must tolerate this, but fails to in 3 places:
-> 
-> 1. walk_to_pmd() asserts, without the PMD lock, that the PMD entry is not
->    huge, so a VM_BUG_ON() triggers. [ vfio-pci, nvgrace-gpu ]
-> 
-> 2. insert_pfn() treats a failure to map the PTE table as an allocation
->    failure and reports OOM, causing kernel accesses to the range to
->    spuriously fail with -EFAULT. [ vfio-pci, nvgrace-gpu ]
-> 
-> 3. insert_pmd() and insert_pud() assume a populated entry is huge and
->    compare its PFN on write fault, warning when that of a page table does
->    not match. [ mshv_vtl, drm_gem_shmem, panthor ]
-> 
-> This was originally reported and fixed by Eliav Farber in [0], this series
-> reworks patches 1-3 of that one.
-> 
-> Patch 4 of that series (x86 PAT encoding of huge PFN mappings) is dropped -
-> it is unrelated to the above, no in-tree driver is affected by it, and it
-> needs a different approach which is better pursued separately with the x86
-> maintainers.
-> 
-> All three issues were reproduced on x86-64 under QEMU using vfio-pci in
-> no-IOMMU mode on an ivshmem BAR, with 6 threads faulting the same address
-> in each PMD or PUD aligned range of the mapping while another toggles
-> PR_SET_THP_DISABLE (note that vfio-pci had to be modified to pass the write
-> flag to reproduce the third issue).
-> 
-> Without this series the BUG is hit immediately, with only patches 1 and 2
-> applied tens of thousands of -EFAULTs are observed within seconds, and with
-> patches 1-3 (and the vfio-pci modification) both warnings fire immediately.
-> 
-> With the series applied 30 second runs at each of PMD and PUD size complete
-> with none of the above, with or without the vfio-pci modification.
-> 
-> [0]: https://lore.kernel.org/all/20261112051440.16140-1-farbere@amazon.com/
-> 
+On Mon, Nov 16, 2026 at 1:49=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
 
-Dropped v2, tried to apply v3, doesn't apply.
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The pxa3xx_cpu_pm_suspend() implementation hardcodes the default
+> PAGE_OFFSET value for CONFIG_VMSPLIT_3G. This has always been broken
+> for other configurations but becomes much worse now that the default
+> is changing.
+>
+> Fix this to use the correct compile-time constant instead.
+>
+> Reported-by: sashiko-bot@kernel.org
+> Fixes: c4d1fb627ff3 ("[ARM] pxa: add preliminary suspend/resume code for =
+pxa3xx")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/all/sashiko-outbox-212719@kernel.org/
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Against which branch was it based? mm/hotfixes-stable?
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-I this really urgent stuff or can this wait until the next merge window?
-
-I had v2 staged for the next merge window.
-
--- 
-Cheers,
-
-David
+Yours,
+Linus Walleij
 
