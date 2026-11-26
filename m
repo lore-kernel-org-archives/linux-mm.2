@@ -1,83 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6758606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 06:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39435606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 06:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMgrSOKG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M47Q5eJ+
 Received: by kanga.kvack.org (Postfix)
-	id 9008B6B05B0; Thu, 26 Nov 2026 01:39:24 -0500 (EST)
+	id 5361E6B05B2; Thu, 26 Nov 2026 01:42:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D7BB6B05B1; Thu, 26 Nov 2026 01:39:24 -0500 (EST)
+	id 4E7686B05B3; Thu, 26 Nov 2026 01:42:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C7116B05B2; Thu, 26 Nov 2026 01:39:24 -0500 (EST)
+	id 3D5326B05B4; Thu, 26 Nov 2026 01:42:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 52AF16B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:39:24 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D205340319
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:39:23 +0000 (UTC)
-X-FDA: 85476318606.01.1BA798C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 17FD8C0003
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:39:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMgrSOKG;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 184DE6B05B2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:42:00 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92E371602D6
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:41:58 +0000 (UTC)
+X-FDA: 85476325116.25.AECD3C7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C475120005
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:41:56 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M47Q5eJ+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795675162;
-	b=Z3bumtYQryg9hoU4CdnPM9xv4wUZ5uPvArz0+IUm27QirrknjGVIgjBIhqqevU+FBCQafv
-	OH570joianKzGkNjp9hI1ohHyCGnq/FTtOBDvqdwW/Gc+a3MSve6kkd1C14gabFp/EnJxq
-	0joTUnH5xUH9p1NeIMExBOfVdN8tCe0=
+	t=1795675317;
+	b=utQ3xBNr9g/TdQu6ssKxCHMU/+L4Q8FVd8ATjqMhnAgqbBTajSsKHqTkaT08bi7rnQZ5iw
+	4a7ap6X7djBXeswfB+oNryT5VLZXAQOlst6jV3wbYn3sIhbvTQFx7OnvZ/vY2ayIICPKNe
+	RC+TYCmebajpXCShplZm3KE0IPQBQUE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795675162;
+	s=arc-20220608; t=1795675317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3McccvAI/FLaZGqGJQk/HhOZ4ZrqKkkSLebPcj1nZnc=;
-	b=XacijcJ3hKivYp7L68PDZT+4KGDEr3V4m/IxyIL/buCYCUtcJcajL5Ng3HLK+I2Zg4igyH
-	Upx2/xu1BVFPMEFEA5U+Hxz1aVj223kEaSkg7l/bBMTP9lkGU5o6GfmMFXtW1GjI/8mx3l
-	77BB5R4QdbXBU3Yx+WpEm+dlfIHgES8=
+	bh=wgeUolha0fJQH9UwTLcaDXErohxlBmGVPsT2catGQk4=;
+	b=gQ2ifRUHpIx32eV3EjYbmjduBzHG6bLub8/zja0CsezIuBNsego6bOaAMK4VzeggYXu/hw
+	ZEI680xDJ0NKc/N6DVHT96PRi4wi7QOvEZF400P6AQPjHWXPSpu1eXrbPDRb7Uj8n5CK5L
+	3eRUMkToRQOAtjAnGWoLCzRFKNT+sC4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMgrSOKG;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M47Q5eJ+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 83E2E62767;
-	Thu, 26 Nov 2026 06:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A32A1F000C6;
-	Thu, 26 Nov 2026 06:39:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D38F2416AC;
+	Thu, 26 Nov 2026 06:41:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1931F000CF;
+	Thu, 26 Nov 2026 06:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795675161;
-	bh=3McccvAI/FLaZGqGJQk/HhOZ4ZrqKkkSLebPcj1nZnc=;
+	s=k20260515; t=1795675315;
+	bh=wgeUolha0fJQH9UwTLcaDXErohxlBmGVPsT2catGQk4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AMgrSOKGVOD1dNuClyYuqAm6kgbeWNJTX9kp7rsd2PvOmScHdG9euwHsAUA5bTS4c
-	 SgF8C8JAU2yWxiXrEQ0FtbGgHmrPF0r24koMReV3vKjhRDF1rv/PCZEPWp7U/3a81e
-	 DNpvQYfzAZs4uJgsXGTX5QFoj7WnC07HJk23bIQSdO9nxtkyb/2mRoxRyPs5iDrJtd
-	 JhFDWcB+Usv1AqX5T/qdHRR/ZOyQg7adMRgG8hyRvL7xCG29Jc3DpK21VGOfsjDFdo
-	 TxLy3Dl0HjtsoOuTPhVCzavUaYZ/VTfVkIe0A1rLN8GyGkJZIme94FyqNNZoOIkD+x
-	 KK6PYGk679KCA==
-Message-ID: <72190fc0-e756-4442-a38c-7b8871e6a971@kernel.org>
-Date: Thu, 26 Nov 2026 07:39:16 +0100
+	b=M47Q5eJ+gBbg21TeYhMgcQJmEolXZeGyr1Z3yNmNIhsk8ZCUDRuYEPJdLV77mzPDt
+	 bs/OWPm7HRyz2gDPAT7YlDQ9F5FeGXPadxEC62HPXUdNKrcZ5KNYa0eKncwoZ34xba
+	 rNX0wPiDl01AO0GxeRZJXGI6FbZmbuVL12VmI6xOAtOnrtSuIaRR4FswZdpEdvM4s+
+	 ZCKU2WpeiAi+xs9SEY3M0zKI+z9k3SYhkrzPRDxiZuZuBwielUOgpc/5i/OFHARn0H
+	 0VHxvCMoMASX6x4Am6ugvOFAges/84GO2oj2jbmtQ6yZmdID/5k3651dfTxxcNS2N6
+	 zwjuHgmnR6Q/Q==
+Message-ID: <fba23668-add0-4787-b027-bfba1f66e090@kernel.org>
+Date: Thu, 26 Nov 2026 07:41:48 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: mm/hugetlb: a min_size-only hugetlbfs subpool is kfree()d before
- its last pinned page is released, so free_huge_folio() takes a spinlock on
- freed memory (UAF)
-To: Ackerley Tng <ackerleytng@google.com>, =?UTF-8?B?5b6Q5pmX57+U?=
- <xuhx@hust.edu.cn>, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <4c7f9772.192e1.1a17d5c2ed5.Coremail.xuhx@hust.edu.cn>
- <2026102727-data-sequel-ce41@gregkh>
- <566ddeb4.2ad04.1a202302fe1.Coremail.xuhx@hust.edu.cn>
- <3b7d2d65-be96-4b63-9de6-7303d2de641b@kernel.org>
- <CAEvNRgFsS3ntQBANqaqdm5XS8c4n6KDh3aODiduf6pCczmBSGg@mail.gmail.com>
+Subject: Re: [PATCH] selftests/mm: move the HMM migration benchmark out of
+ selftests
+To: Balbir Singh <balbirs@nvidia.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
+References: <20261126025653.1344932-1-balbirs@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +121,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAEvNRgFsS3ntQBANqaqdm5XS8c4n6KDh3aODiduf6pCczmBSGg@mail.gmail.com>
+In-Reply-To: <20261126025653.1344932-1-balbirs@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 17FD8C0003
+X-Stat-Signature: z57sgi513gku1bxrghw4oeg65g9sffj7
+X-Rspamd-Queue-Id: C475120005
 X-Rspam-User:
+X-Rspamd-Server: rspam03
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 4m8uooqr1qhzk97gzf99efp3kgukhky3
-X-HE-Tag: 1795675161-267043
-X-HE-Meta: U2FsdGVkX18Bqg3Q+L3lFIlSNbXzimetheifrz+npQRzCSOjitnbuDHoCf8wZHpyr1fIcKhlBruNZYfMBi/AXyOi93vwvYTee1ziE3V9mjxjCOm0OPXNY2boOHsUTe/3/PKUyy+xi6tn0O4ZY5Psv0Cjt/z5G/CNk3CGNShqeMy3mrFiJznirSiOFvcLW0QWF21m33xi8DP0lxPh55geW5CcmXNjy/aUrhXlLJQ9pyBMsxAzgXoB7iU7DAz6WivAK9T4/v9kfQi4Njx1hlG/o2Aq85aBjLm045a91pivL98Jo2is+DzylrI2pdsO07yai/ypxsAeQ4KzDJdGRn58iaVxBrYibkMefYEeW/2J+8zPpVL8TOQdFZ/ahHIVbcGPeH5Q2hcGYsiHC/iF95v6i+GlxrFzShKfc6G/pWO24heYPSwKYkXiI19WB1bDdGKt5RsuWGzoV7Ktr0kHikep8gdZT7EnuR10ba+1kRqH7UBrlhD5UZ+tBAGUtHADj3ReHNfhGp3SGc82R1sILMcQqiSlEPEg6EgJ3ChsbVrY1BBFvjIgcfpjjoEs5f0T8ItGCXl+XPCUPIBr9dNqsjUM0ixgSfDk0axOGyOxlWy57ohhI69a5svhYTdPUyCzaX7SLt31T4dMFsvNnq2SgZZkNnuTSjQ/SHkPNlopAOFeo+o2uMKP71rukhLoqJIVUvydde58JTQDu337mKzaQlW+vKHgMU++5n5n8OrJk7TtUKWlqgcdyCGEW38UpOlefLy8UdVmH5OPmQ5bnoF7MF+GP7C4JT/jsQ5IIWohI8IxA2OlvOvqjLVi1BcKatLXtBhezsr7lqViTS5FemGFX2HpYid62mzUVgDlLrSTUI0I5NwbjzrKZsq9eOFTPPpvxeG5hIxxPU3UGkx6psoQzfKWplmWPGaaNvdf+HY9rvbwyb1zAsy2/Xe13K9Zv6DGI2UxnhIziUZ410lYj5vojgr
- z10ThaLk
- PTo0a/6ZmV6B4CJXTUc2pVFkBkVJtLZaxoXM6F46t40mAJPzIL3JWqv9yzp7ZtZ6EBzkOyTg5TsqYnwVT+iIGr2+0Jm0LLS0xUnizx7RxIMA4fMg6EhZCs5vN7xtOjgRZ6y6H5j2J5Qxv+J9kBhAUBldGmch81Xsu/6NCvkZhlj4LiNUM0vd8ygPD7w2GPFIa3Mc9QukW6fpqTipFeJ+O+mEYmo+5+qnMMirX+djeK5qpL5t6T4Bx7ogxiEy4r3fBh37BFtp4k+jTGGXa10TIi1KSvz5lZqQ1NVOl+s1tKS5xUjBUBtnFl6/L77SBDDGVqskK7mq/c9bv09lS8DkQQFc2XldP7zS1gp8J2YhU/nkfxAnziHr1USye7Wwr6g/xtBwNDT+Yf3xz24LnWRSOu8YAls7Syh3V04gtkcLN77/rY65EYliEMZSqTbdWokDWBFlE1flECMK3hMRCBCP8vC6N4VEzJAojhwxAppxAXHayxfQOQLccu4fR0ZQm721o9Ma+U9fHJCjLxmRTdcHUG7R0ckhU991vS3Lj23OkIrTcsprS8Hbdsvzw72vUs2bQAbrC/6domaZU86mQW8gZB+QD5IWWjaGetIny
+X-HE-Tag: 1795675316-212891
+X-HE-Meta: U2FsdGVkX1+UKHg215FvnLDZKvnAtdeHoFnrAJvvhG0LJ9G64IU6oqO691xr63+gyu1zPGTL+yBtEleSSgz+fixsXAddV/AmqkPgZWIaphqOnQw28UbbUruPWiWcq2Kv1HMPsRILU8SOdFycpzvip7istXNK1y2RxzeVyg7Yf5fBhp5+tJeSpTSuqYytzwL8ISSWPGb0Vu0JKu3B3MqVYn9NhyRO74cUtkwh8PONBrYZudOchmOumlU0UcIuO3zfOFT+GYIKjMVaCh3xfiPRovVOPug1hUPDhQ3o11iuDbATi0nvwNPlJ6IzaQgYRsz+SeFrNA0JD+ZjMdNdE5RpHHDYQpMvaV8YdvEYUf+TZ712phtb0m4itEWEjwqB+s0yqJkaIFnsZ+qYo10p8T19KG4QNQmh+vU41QG1LE3tIE3pDBdaLRLSjH7TR1DVd6BhpUCWT7CL9pFIJHpDJvbcv6aX7jMZq7Q7AaimAuxADh5BY0qoIxc7thA58H3hFSHg467t9m+XiV1bfo+vjN8V4MNkJRz7MlAjOSuQDPqBHKQ2XNqGgqFc/C5Sw4rlrOieLiOc5atzlJNiynGrB3dITdS/ZG8IaJd+G1KReOt+Xg0jKT2L08VVbI3UOb5raZfSYqE4OcFqofcAWV6j3HLR4UOA9ZXZN9NMaAmVVh9rlC+mqZiv/t60sShZyDLKl9kTRCcvxTLjlHwDgMasCoX/fFdZ79718WriB9L01GlQdYkdge5E5vzXXAuJbNuwyQ43FM5MmY9mLblSJUuD5j8UPlvjDV3FpcKkEYSNg2pq+NTLwkhxS0POyAFzAnOOd1iaGdHDxkP5KOlAKJCZkjcensKvyz22fDjbY30vHp6r+IFhbWIzhVm2gocGmsmSs6ufMrXrL21kK+6vl/nE6NPzmn8JEKWekHNUb8RZAlWFl7JndO20rFMTQh9C8hXapcq/suN2jIc+AdS7ut9mkjD
+ JjV1Ok36
+ 1ksbNFS7ScMR0Sdm8t+44MZHwbs8A4DWhbiuZdskUjphBACmz5dng+IJuqEGGHJzxTMgXpFUDzxnXErkFx1drHWi7EwuuBP6lameqMTp1Xcv4Qgqt5QHQg9liEBqqy3nzns5SehylFolT44JJSo10bU2mur2f4TTgC9shDUZWnFE1ky2ZnzKSNaiVFO/3JoycB2+uLguABR2E/bL2HL2mvUuWHg+sTpMCIoavZI6YGXBxLi6q7cb8iA3r09XiVeHzGKSyy9rdf05i3AVqzQ438UEfxCTDAHL3jk2VhCIjr05XOS25bzvyuLBR5HFsD1cp5k89RHXvkAuq5RZdbT6el4LjaYtxP8fMc8hTVEeBJVfuGeAFwZrIHR5x/OeZ6RN/NzQ4o0v54ULBHItJSYfWa/0YMCcTxKcmPBusYmD8aooPhAvryOXcHKNC9RXrqapHidmam06VKN0+f6NZjwp8l+zjgT/TFsngYOtc3HCyHtTn5N0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,42 +144,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/26/26 06:52, Ackerley Tng wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+On 11/26/26 03:56, Balbir Singh wrote:
+> The HMM selftest runs benchmark_thp_migration on every invocation.
+> The benchmark repeatedly migrates buffers in both directions to measure
+> latency and throughput with and without THP. Run it on demand so the
+> regular suite spends its time checking correctness.
 > 
->> Hi Ackerley,
->>
->> does your series [1] actually fix this? What's the status of that?
->>
->> [1]
->> https://lore.kernel.org/linux-mm/20260916-hugetlb-subpool-always-track-used-v3-0-38aae9b5ccdd@google.com/
->>
+> Move the benchmark into its own hmm-bench binary and share the device
+> fixture, buffer helpers and migration ioctls with hmm-tests. To run it:
 > 
-> Hi!
+>   make -C tools/testing/performance-tests/mm
+>   sudo modprobe test_hmm
+>   sudo tools/testing/performance-tests/mm/hmm-bench
 > 
-> Yes, "mm/hugetlb: Track used_hpages when getting/putting pages from
-> subpool" fixes this bug.
+> Drop the 128-PMD buffer to bound the amount of memory migrated in one
+> measurement. With 2 MiB PMDs, the largest buffer falls from 256 MiB to
+> 16 MiB. The remaining sizes still cover buffers smaller than a PMD, a
+> single PMD and multiple PMDs, with and without MADV_HUGEPAGE.
 > 
-> I've been tied up with other work since [1] was posted.
-> 
-> I have a set of reproducers locally for the various combinations of
-> min_size, max_size, and both defined, while taking various paths
-> (reservations vs actual allocations).
-> 
-> The plan was to always track used_hpages, which simplifies the
-> accounting and it does fix all the reproducers I have.
-> 
-> I thought in addition to simplifying and fixing all those paths, it
-> would always fix races, but AI showed me a repro with races that broke
-> the model.
-> 
-> Because of the repro, I planned to re-evaluate to see if there's a
-> better model/clean fix but haven't got around to that.
-> 
-> I'll try to get to it in the next few weeks?
+> Call fflush(stdout) after printing the results for each buffer size.
+> The kselftest harness ends the test child with _exit(0), so timing
+> results still buffered in stdout can be lost when output is redirected
+> to a file or pipe.
+There was recently a discussion on where to put performance tests. Usually it's
+much rather tools to test performance.
 
-Thanks. It's a UAF, so higher priority. But I think admin interaction is
-required to trigger the UAF, so lower priority :)
+So what about tools/mm/ instead, where we also placed gup_bench.c ?
 
 -- 
 Cheers,
