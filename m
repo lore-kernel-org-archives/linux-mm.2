@@ -1,177 +1,189 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ACFE606A32C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19970606A331
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mKxSM0kO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N2pz3ZCU
 Received: by kanga.kvack.org (Postfix)
-	id 03A556B05B0; Thu, 26 Nov 2026 09:10:49 -0500 (EST)
+	id 320FC6B05B2; Thu, 26 Nov 2026 09:11:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 011956B05B1; Thu, 26 Nov 2026 09:10:48 -0500 (EST)
+	id 2F8DB6B05B3; Thu, 26 Nov 2026 09:11:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6C5B6B05B2; Thu, 26 Nov 2026 09:10:48 -0500 (EST)
+	id 1E7EA6B05B4; Thu, 26 Nov 2026 09:11:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB6D66B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:10:48 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D2C440479
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:10:48 +0000 (UTC)
-X-FDA: 85477456176.24.59B11D7
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6EB21A002B
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:10:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=mKxSM0kO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of nico.antinori.7@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=nico.antinori.7@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A4AC96B05B2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:11:14 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41A2240476
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:11:14 +0000 (UTC)
+X-FDA: 85477457268.05.CF7A31A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BB51C40019
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:10:56 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795702238;
-	b=exogOq76nqzCCCwxorCj/JsSe8a3ca4MI6+1GNlqPTMrbhDSGUK14fmK1qatqwHZ/obsWN
-	J79DGs0RPABDXqVBtKcr1IwBasbMap1BPjKLOriLPugb4ILY9jol6iUQp3uHy0OdTYqmZL
-	VF5E8g3OKPBSonpIs00Ly3axk7oNwA0=
+	t=1795702256;
+	b=7a71ZS6mpcDg3/ZZCtUgUUZJ5dXikMLixV0gl3haa8jy+oAGrRX/VySyAgWuQhb84qi6Pu
+	hslUmsLojxQMXSl+GaSxjgBMwpXU1L+/uLvbTyPSZrYdWxUVP2pGsVGDC1//ayOIBNFdcN
+	7a4pQwfi8Ov8lR6hpkkSH7mogYyt7vk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795702238;
+	s=arc-20220608; t=1795702256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
-	b=j29447NVyOJlWPgKRJk5C7woSEQ+MpsGtX6KsxbqFhORrVpGlLlgXO0dia9V9gir9GVDM+
-	gCttdg4xfsTxSTC17GBvsSmXy8jE3P9UnE9zlX0o6wiUAHGzqoH1wyNR+RRB/SJV8lydHR
-	MutTOgYQ02n8tnEJTYAivNfEhODRcPo=
+	bh=6O9fFPnsC2fRnN/QRfMcf6hwkntt/ekyLWGe+pOVc4U=;
+	b=6ZqU2qCQfJGtBWBAT2PRYjX2ZzHksImo0u/lOxbBFhr7By87Ug14MAcew2hcCNtvWdJ6sP
+	sL/nut7bw2ynaRvVoGG9DhkC6fPo6ZIM1G4PFH8hjqjbWje6CXqJvmDWiz8lzsoPBKlMdq
+	Alv7yx9n1S/rHO47kzEBHqFXmJWcE5M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=mKxSM0kO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of nico.antinori.7@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=nico.antinori.7@gmail.com
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5eac7220e9cso2741465e0c.3
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:10:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795702237; x=1796307037; darn=kvack.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
-        b=mKxSM0kO5TNAQo0W7/yA1yMLEelEDSBmM08QkAgKwuqHF7qhzWKPcWq4OoosBWMf34
-         qDFeQd9wd6Ke4CBDwasbltnwgAwor+RZIaRMhreFT9JBGTPC4DP+2ssmBT01DNCQeDFw
-         iEQ70Ba7rwTJ6f7p38gezDabBtaHNQesyXhZjZBCQiGdqEgCiEmspjRWrIRux3iVvOwz
-         FlLDsXp3ZILD8Hpq4oPtmZGE+/23f+MkjCTEsYZODbEPNEk7W80Nge7MROhLEYZNd3XZ
-         D2VVOCNpFDwRVQk5d5nGVkSlZaVGnbSMBFwvQ7wQba2EDQooEyqGrb5MV7s9BkCOPuB+
-         bTwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795702237; x=1796307037;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
-        b=GzUHQtCouETz5M8EAUX92uco+J6zofzoLbAYLXu1Trx9M4Mo7wyJ985b7MhY5yuNYq
-         o2OCpsQgCEApYAIwXNfhVg/haburviDC+zd60TfmvJJ82jsCsedTJ/xLPdctVzsxoCYu
-         5657WH+zbZesGda8EeC1v7VrdwHkrlk/k+FAHnZh4PPOZrJWgd7QTFhfrcxZYxB7TUZf
-         v7oUwKHya+puWnNfGtWIeMBGrMtBydf+h2j2QS40CgKtJFTQn81ZiAlj4lnUHZlueZZB
-         1yilBuTGrFIP8YSGOwcqoUliZgiU0Jc/4jcbeoKwf7N/0gshYhkB3sH52Q/Uv4BEjBnH
-         2MEQ==
-X-Forwarded-Encrypted: i=1; AL+hErGeCoeVAM3w9Aim2VLhd/isJa9RPUBhfGucG/iJblA8tdNmVd7agPP7pAq2QLIXRTgADhfECM9EHA==@kvack.org
-X-Gm-Message-State: APuU4Z9Eqekf/AY8JNg9R63dQLUNlAcUyZKC1oWFPlQMvT+ThA/45aQF
-	orACcTUt6cMQEjbEpL4iVpROhiuzF6+Kgo/f8YFW3LPWYJKQiF7jWq0=
-X-Gm-Gg: AZFdTZeZbBmotmKY2D4/S0YiCoKcrVCSg2obJu1R1+2UqQ7X5X2iFN7scjkk0qdItAZ
-	KS32SMwu94VbctI1YbdlG4MtIaAkVa5BrP0cVYr7iqNpkARmlGs7JQUQHVxiGEujIhcdhdgYSqd
-	LXf7Xz/tQRWy9ilM28lt2sz+m36cCgeqfG6Qnk93mSf4YL8OiIXh1Fd96eoSI6KUNF7UzzpTSds
-	qWKdTM77M9wokDpSA7PsOPDAT++3RmxLlfYLb/U/TsRVGztvh3Bq1ZyTrZ2WZx1EbUvVs4dZU5u
-	Fjaepj9ysQ3Nhk/pyFecTQsz7Pu1GZwTh1ADclrSp0rOymFbESjo51/ZPZAAwt0Np4rUl8XplNW
-	Z0mtAn1zTFb5hPCde+YYMHKXDexTqNq/BOigEi4r9AEka/gGTrVdfuJKzNxExGKcCNCIMHYFrVh
-	o/7lJ+wZg80sbPdeg7jKR4XU4Q6jlTSd3GxylbE/Hx9NqjoDwTnQpz54jsI+0quVojtc0PWTX/Z
-	3Fn0SyqNAdlHMo6IdQ21M1E6GZ+sffZUm6tyGg7FzUYsdRGv84R+eNTeaJFNIRSnVkEmt2QHh7r
-	70aTYbjlR4GCT9vNf1zNygbLVCz+CrjcjdHb4F663Zgz9GzCPdmUivUGQXNyjVvj
-X-Received: by 2002:a05:6122:3b84:b0:5ea:e324:7c0c with SMTP id 71dfb90a1353d-5ee8af8d6fdmr11736966e0c.22.1795702237493;
-        Thu, 26 Nov 2026 06:10:37 -0800 (PST)
-Received: from localhost ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee91a4e0cfsm19471567e0c.13.2026.11.26.06.10.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Nov 2026 06:10:37 -0800 (PST)
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N2pz3ZCU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F1A9840A3A;
+	Thu, 26 Nov 2026 14:10:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D773A1F01564;
+	Thu, 26 Nov 2026 14:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795702255;
+	bh=6O9fFPnsC2fRnN/QRfMcf6hwkntt/ekyLWGe+pOVc4U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=N2pz3ZCU176TcfVQhG2iuo5458/3FyeO0kX903oXUUqvpGySu15X6A3HfU+AA6eEX
+	 Iyuu5ZeD+XYBv18n6tsOIpEp93zp+oW+TZJ5dWBH0buqUinIxKYdy8l3CUWtUi4XFX
+	 pvBTZZKDkZzVDnGB5RiefR2c+6IyGyAI2gTVRmQRvax7uxgNKTLf+anD7RIAVJAlG+
+	 b/al4pBnu6+4vPkZ33ZiV45scsPGvwc5+zgRH+84qQrDGn0aoD0Epzt46iXl1Lr3cf
+	 wZHHg+PhqTYEg39ZnAp9rK/bbQl58DGdd+2EzysXttKD5OgpysLYjSVuEoM8A1bMFv
+	 69QeNtO35FVEA==
+Message-ID: <59ac6564-519e-43f0-9a4a-11600e1d794e@kernel.org>
+Date: Thu, 26 Nov 2026 15:10:44 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/9] mm: keep writable entries writable on protection
+ changes
+To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
+ akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
+ imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+References: <20261112142039.907090-2-clopez@suse.de>
+ <20261112142039.907090-6-clopez@suse.de>
+ <603cd8e0-c2c5-4c1e-85c4-d0a5ceda8d4c@kernel.org>
+ <743f60f7-d611-4d73-a2d1-d5873bcdda36@suse.de>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <743f60f7-d611-4d73-a2d1-d5873bcdda36@suse.de>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Nov 2026 11:10:29 -0300
-Message-Id: <DN57BC2XOPSJ.2UE7DI9RNQUBD@gmail.com>
-From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-To: "Ivan Tverdokhleb" <mbkchelofficialdev@gmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>
-Cc: "Liam R . Howlett" <liam@infradead.org>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, <linux-mm@kvack.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: mm: warn once on invalid VMA range
-X-Mailer: aerc 0.20.0
-References: <20261124132609.101657-1-mbkchelofficialdev@gmail.com>
- <20261124153228.134723-1-mbkchelofficialdev@gmail.com>
-In-Reply-To: <20261124153228.134723-1-mbkchelofficialdev@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6EB21A002B
-X-Rspam-User:
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: kyhkdm5z9gqyyyuttkaxzk1469qn8fdb
-X-HE-Tag: 1795702238-185587
-X-HE-Meta: U2FsdGVkX1+SLFfGGIR1scsoSACAq2K5yQWVuWJGCiF4N2O9MH1Q9d7O48WSEfUaWKs+yw+QlpvqDgxHM2QkwOFbxgOejqC3+p3PordcWshWn2E2P5rOQ8nrFMW8WM45agBA3Of4lYDIUvwVkpccXWVtUQtLLZOHXG31d8yqbgZ0IxhRjXPYrl1t4awv3myQ+Os70Gxs9EODSU4vDHt3gf6/kMfrjznIg3zojSWnHc1Ygd/I0SRstsoL1OpWGyzstx9G+K1hPHfUb6PxXcnyG5fFK29w9bhSKQ978hurbzgp4Obliqm88YDUnB4P4PM5Voo1yeC2+/7BBS1PHyfZAGPn8jC+pZ7Sz7XP9Fl20Ld5Hh+jen4iWnmFbsI0FrYI7PH6O0aBgJDIhiUkthDGThDHHwrqYrTpsASkeLRzmAZjykO8qhLefLg26uwWxvx5TuqcyAQYCzvvtrTXGJvlyJA+sl/tVVHMjgXsGqspOlXnTKtSbzIBEXh22H3zdoIFQhEpzzknNvQAVK/cdXMFu2ZaJiz8/D2Q6ImQ6Pi4jH5lzqd+dhjPCjnEsAg+nyzosY2jFZtaLvF4xd/WJvBRzPo3l2HxwBsesce2G5dqo5kBnZTUFoxhZjhUdlXxDF0967dGeZLd2q3RulVG1Igjd8G8OcWprvacJeHezbY7UUAHzBcZFVrrkWtWlAs5zpnWkWZUPv7PVm0z9jay10QBkqW3ITtf1TxwMkCValZRwj7aTdqoQF6EGzlQMkx5Gy/6einKEdoaqzfhD60+DSiStM9q1ly0gPfwmi6Bl5oXdTy0Ud9d7+0y2lQc4bliTWn8v6XK7ePOt9+4y8MbduhMp5/VKDZUWseU8qYgx/AjyDrzj+/U324PKrJCC5/ywwYuiUxUXES2yeTmfhC40KXoFjUnSOM9LekIkmnT4JsOl9dEm6adBf2ORxCx49cOgNVn/nORpegGyXqw/c8/T5t
- C5Qj7eog
- 8Kf0Tn2qQNr2Q0AUt1bvmfkFv6C+DZFxCOuEyAw8sizkZuPq79wLQMyNOe7R1/MipCrpPu0C1Z8MKd2zX4xUKiTZggdV+dbR5DJxWqU37rG43gPm+UyrAMQUXqp/HY3rhhSzb4/fDnuYfiHuhv3US9avjG0NxxTgGmpSc3jbJRTrv1lMMFba+nqrnMEixZxCvTlTz3gzMi7+/BLJa9FAZr13HF+jXeow9M2EpRpT/RvCPUQpHS4Kti0xw1b0M4iK3jvkftIhECcskEI0cVz/2pQ2Z+TCiyQsgvQV4BTFHGQHvM2TKvUg8B6gLA615KgFhs4Gn9ix0692PozC+Fqv2MkWWF6Gn3dbGyMNYQyAQS0glkim2fP/1Ow1v4zguef0qq669eKN82oHxPDnNwPsEWbBYo+ft9QhM0TzDARQVlZLP6dfWLIOQ5rDYUnU2gR9lA+I9jWf1ifg9IWfAyCH1BJlNi/qTuwltwoxi6nccOpykXG/NygmA6Io7791eSN8gZ7i0/rtdMSPwEqZTNWWdzVTbqx9fwE/mtgmSjqH5wMFgC95ezfMH+sch2DE4NzmvTsGjg7OPAGBLavCFNoWNLHzABx1/iXwRmKgilDaqU+O+B36raSIUKhCZ695EImW0s8vGW24pXIIHjya9wQGyeS50HzC4jr1RiMlPu6mjQvioMLl2KK2Vq3RlQ3ApVCsXr40RJIK+JSBIfPrmETIlufZNfFGt4HjGDAnZ1leZcv8gYEDl883jEnGTZ7p9YR02n6bznQxcP7pG7mIvRRwvPO2rfwVtypwZoV2FLSmrUMeuYwetCMOZyBs0mEixGoawUF0yi8oGq+LglUo=
+Content-Transfer-Encoding: 8bit
+X-HE-Tag: 1795702256-647353
+X-HE-Meta: U2FsdGVkX183nzQ8P/1R3fmyMf08D2kwL96N7EQeJ9jAbLPknED7h/iScotzQWLz6ulqZrwVqE4G+Kej8WdICTeRZSdZ+qO4C8Gw4//bHvZMirmc1ELS/BJrR8bUzBmszxlc4by8zKAsGrZXX//nbxN/GO/giu8VsaRBssjsEnU9rvBzl10j4Nch5Gm1IQOvAAlUcUeYqxVplvr9rhy8J1QmsTSLC38Z6/F8PUp4OToPqUl61NURWGBybd1he2PSpKKY/yx6VMdMc1NZVE02AjxorZBpfg9g8RpWIL6kTcXmBBFrT154iEC1ZEYR8feJoA8l814sr6iii7cnLKZfCI/Pe6t3z1wjoXQNLA6GxnJ0gPFBysUNlYebv72F5TDPZ/llgrekS80=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello,
-On Tue Nov 24, 2026 at 12:32 PM -03, Ivan Tverdokhleb wrote:
-> Use `debug_assert!()` and `pr_warn_once!()` in
-> `Vma::zap_vma_range()` to report invalid ranges.
->
-> Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-> ---
-> Changes in v2:
-> - Drop the `warn_once!()` macro and its KUnit test.
-> - Use `debug_assert!()` and `pr_warn_once!()` in `Vma::zap_vma_range()` a=
-s suggested by Miguel.
->
->  rust/kernel/mm/virt.rs | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> index 63eb730b0..1a3a990c9 100644
-> --- a/rust/kernel/mm/virt.rs
-> +++ b/rust/kernel/mm/virt.rs
-> @@ -115,8 +115,9 @@ pub fn end(&self) -> usize {
->      #[inline]
->      pub fn zap_vma_range(&self, address: usize, size: usize) {
->          let (end, did_overflow) =3D address.overflowing_add(size);
-> +        debug_assert!(!did_overflow && address >=3D self.start() && self=
-.end() >=3D end);
->          if did_overflow || address < self.start() || self.end() < end {
-> -            // TODO: call WARN_ONCE once Rust version of it is added
-> +            crate::pr_warn_once!("Attempt to zap invalid VMA range\n");
+On 11/15/26 22:59, Carlos López wrote:
+> On 11/13/26 7:56 PM, David Hildenbrand (Arm) wrote:
+>> On 11/12/26 15:20, Carlos López wrote:
+>>> change_protection() applies vma->vm_page_prot, which lacks the write bit
+>>> for CoW and write-notified mappings. MM_CP_TRY_CHANGE_WRITABLE makes
+>>> entries writable again if a write fault would only set the write bit.
+>>> In shared mappings, it relies on the dirty bit for this, as a clean
+>>> entry might still need a write fault to notify the FS.
+>>>
+>>> However, this misses clean entries that were already writable. For
+>>> example, a uffd-wp unprotect makes shmem PTEs read-only if they were
+>>> mapped by a read fault before uffd-wp was registered, so the next write
+>>> to each of them faults.
+>>
+>> See my other reply, adding such optimizations without any motivation why we
+>> should even care is not really what we want.
+>>
+>> Drop it from your series and keep the MM changes to a bare minimum please.
+>>
+>> Or is there a real dependency for your work?
+>>
+> 
+> Yes there is, but I clearly did not explain it properly.
+> 
+> The whole point of the series is to avoid zaps when no permission bits
+> are removed by a protection change, e.g. mprotect(PROT_READ |
+> PROT_WRITE) on a read-only VMA. My proposal is for change_protection()
+> to signal this is the case to MMU notifiers with a new flag. However,
+> change_protection() sometimes write-protects entries that were writable,
+> which makes the flag wrong, so this patch fixes that.
+> 
+> I'll be sure to explain this properly.
 
-I believe by the comment of Fujita [1], the `pr_warn_once!` should be
-guarded by `#[cfg(CONFIG_DEBUG_VM)]`.
+I think there are some weird interactions between things.
 
-Regards,
-Nicol=C3=A1s
+I'm swamped with other stuff right now, but once you resend and explain it
+better, maybe I can figure out how to do this cleanly.
 
-[1] https://lore.kernel.org/rust-for-linux/20261124.225103.2152350984946270=
-550.tomo@flapping.org/
+-- 
+Cheers,
 
+David
 
