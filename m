@@ -1,149 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A848606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 01:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA61606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 01:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xdD0KYnq
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=g6xy8cFz
 Received: by kanga.kvack.org (Postfix)
-	id 077EB6B0B4E; Wed, 25 Nov 2026 20:58:24 -0500 (EST)
+	id CD5C26B0B4F; Wed, 25 Nov 2026 20:59:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 027536B0B4F; Wed, 25 Nov 2026 20:58:23 -0500 (EST)
+	id CAD516B0B51; Wed, 25 Nov 2026 20:59:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E58CE6B0B50; Wed, 25 Nov 2026 20:58:23 -0500 (EST)
+	id B9D896B0B52; Wed, 25 Nov 2026 20:59:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C1846B0B4E
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 20:58:23 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9961AC0240
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:58:22 +0000 (UTC)
-X-FDA: 85475610444.03.6E72250
-Received: from mail-oi2-f11.google.com (mail-oi2-f11.google.com [74.125.231.203])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9691D140004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:58:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xdD0KYnq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf26.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.203 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795658300;
-	b=1B8SodKXXZvIaFYr+LpMNPguD86oQdyw6bAf3A4TmMvKJv05rNIRF1ZIjT9Fej5nYVf06F
-	cs4xq/r339Tpfx4UvD3tQlSANrI4BvJgdQACLtESAbEPdgnfPxrnPd2yyoNWQ075XdyZY7
-	ZLza4yxEWPBajJrhfYjN+Z0eE8zaI7c=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795658300;
+	by kanga.kvack.org (Postfix) with ESMTP id 93AB26B0B4F
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 20:59:54 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F645C0240
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:59:54 +0000 (UTC)
+X-FDA: 85475614308.23.CC0481B
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4381280007
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 01:59:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=g6xy8cFz;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795658392;
+	b=8HKHlnZ5vt0kJHgMWi4+hP6W5VQ6ixx9H4nlBLa3pih01qVwv46oMxJ+9+C2WdPds4xxEE
+	1Aj6xhOUGYSdTVO2z3Rjlzdry68dQ91vVRPAbYr7TmF+X6X8JzwQBfx/s51YfiWq57x9Ll
+	vl1PrBmjkThJaUySHfzOMw3W1GfHfmY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795658392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tCGVdvTPZIhAz66YN5IUl8TOqz+MMSQeSPJRIWUDXgM=;
-	b=Yj9qtbzf/bUBYFVQjMz0daK52BAe2jys5UbW6cf0yloiOcXmv+RoUP5HJnBs9X38C1nd2L
-	Istvhv/orZcKK5iuWZtcanMEgja0VEeW8NU3IH518VlBsvpQ6BqHAL489jN0hGAwxr6J9P
-	5+eDLdqD5nFbI+cVOgH9G/0+S3glzqM=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xdD0KYnq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf26.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.203 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
-Received: by mail-oi2-f11.google.com with SMTP id 5614622812f47-56820670d00so2192414b6e.0
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:58:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795658299; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VrqWL7tmvGxqnv/UQVVYN4zIoFJHhOJaY/rbt/9jTwRpVUwdX0+lu0Rjs5wQ2sfcKz
-         blQMvstxrISplBQW5LOzz/luFJeT6v6YtQvOYQQghlfI9214YFDZwtl8BRVhlvS3CT5H
-         J4LJj5PvUT3XF4Ece128EUEJWPphSiPn9VpAE5jhuhJodQpTySZrTrEQXGAXCOQQgk2e
-         9QU5IciJF/XWJRqKZ7wEQOw5L48qWuGz9I8+DQZ6ubh9tf9Q0wZG6PS+gKqfLY+bfAl/
-         5yKmYxbc8o68J3Xm9c19LJe/JY3PWpePLsG8gJKjdppEzxB+No5O+b75XjU5l1qfU0G1
-         K91g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:references
-         :in-reply-to:from:mime-version:dkim-signature;
-        bh=tCGVdvTPZIhAz66YN5IUl8TOqz+MMSQeSPJRIWUDXgM=;
-        fh=0ow7ekenojhba7x23F8X+Rj93fMTazOxPc8UqotU/gU=;
-        b=SixF55YRaeNIsU0WFHLfGskv6I50om93q+MYOK2og1VUXCzOQKmk5i6pGDyevEAjSq
-         0EC7i0o7Im5E6zu3qcMODKFSeIhPr2BrM7tz803oWvQy2p5NhST+0jzB1VX+bNBx0u1F
-         iP+Y0NiyOJTBz10jWT1aAdGeVBHMsP+V+uaWW1slxkYjYp2dLxQ2woGIFok4K0IKNIZl
-         HpSWpm9EFoj3YygIu9yGkmIEwLgY4rjLDboA3KoPVBOC4nl9SbgIFnIsY/1x9A/eAFgp
-         A8JyujDzTwDQ6tPWlx+ikxgKbI1jcxj4yyClbUBNe5pN1KG7RBgTtgIAS7/goHHcm6s1
-         DfQw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=cwYQ9S4xNOhgMpsr/2Fw0/uwY52gpltHLNu3ahogehA=;
+	b=4NieK8SBkiFC+WbqheTBkv/jo7A0IQiqUg3s+yAGQvJV5JyCjRjzLDpIaD2oDan9ZZTNh9
+	GwEhKFlZ1lGIMYFMzQSXY43l4O3pIn54/ADZVLgapCX8HU4vA2gI4k/ximfHrUNsVJj49o
+	2K+fLJCjkXS8CGGLkJWyQhTY1drW7xc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=g6xy8cFz;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3b155f50c24so5268936a91.3
+        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 17:59:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795658299; x=1796263099; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:references:in-reply-to:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tCGVdvTPZIhAz66YN5IUl8TOqz+MMSQeSPJRIWUDXgM=;
-        b=xdD0KYnqkpb8/0C8CtOa/gU+UKa+HcfjZZmp9oRa1FD6rg8Jw65zWoIaChJ3XRAs1p
-         vgvC9n6XL1te9u+3ylYoKEUr6wjcrTx9pV/XA26ry/HGaGfFbi1SYQhgDfNG3yO7T3OD
-         VMVVyKmxuKdo1K4XlIMgZxfyXiImy/Ue4S9G5ta8aVwz4kr6RzlTWHga14tKl7gmbZMK
-         k15z8yrTv5ykPinFtTlBq0aYso1fNrliH28jDDWc0s1abq5ck6WUnMTAcLuvfvyXU9sr
-         oy/Pl2VyOCmL6C9joF6wVZbyJtW/Ow82WKRBFB2dBDooDITkmE8LL+ONgM9HTX5e5r4w
-         Elew==
+        d=chromium.org; s=google; t=1795658391; x=1796263191; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cwYQ9S4xNOhgMpsr/2Fw0/uwY52gpltHLNu3ahogehA=;
+        b=g6xy8cFzW9CiTgbaATwlIvDAlIGVzKg6PijwYNrGNYhJ6kC+52R7inUPz8LHrrVwp/
+         3x5672TA+4hVQiB8N4PlebRDI00gNRUs5c2Pb8ZhI2nU2+dlCsZGCvg8rPCEQ8mY+t/E
+         Y39OxgaCW7/QlhFiJ9KFQYUG6Kzf5hK03umLE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795658299; x=1796263099;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:references:in-reply-to:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tCGVdvTPZIhAz66YN5IUl8TOqz+MMSQeSPJRIWUDXgM=;
-        b=PD2s+Gpo8kwvx7r+g2R9sEx0g4HvdLA8qzwrY4Of+OhOJIW96lb8WheR3AhXAXHb1j
-         TAvAshIiOqgQohDbH0KgT2M0gvW3Mpi0xGP6LzszamBjdrAD/vnAKfhlVfQQhUPSrwJ0
-         aDSFAirqxVrxcXPyuBgBD+eCiOri2CzuYOU9ILLOYd6z43cNHR64WgzwV4bGvDSRQxi0
-         KSyyjPgb7lqZVUq6vMuwo53Ts26ysRgxdU0qEiCb5yPN7FBCEUdDxzRyZhlq0UHgJW+1
-         BI1DE3lO3PJNIue1EtLA1Nc43Gpm2UljBFmyWK4kTmuknqLbFpoHk4ftjX7wtwqD3hJg
-         Dh7w==
-X-Forwarded-Encrypted: i=1; AL+hErFBqm+F3IeS3xVJKtjZAaKSG0162slfZJtzZKuLp89E7UPNo7pkFtkChJPRRJVPGi0a3eWOEnGefg==@kvack.org
-X-Gm-Message-State: APuU4Z/nFXkQf57xaGfnA3q7t1mZqudVVOq94YmpFTpi3WxhZBIzbND3
-	oyNtsrtsJ8BpKqa7a3gp5KXAXAIc2AW0N+gq7whovq/7MWaR7uiECtwWX0EJ7KTX05qhVjy5Lr2
-	LTIFSub2t5X4qckDwo1NRfDZivESqS7U=
-X-Gm-Gg: AZFdTZeZn86aAqKrcPsuLMr2OkCAHjydJMYG1kf5TuENxZOElbILPYh/LZGWhunVfah
-	s1Qso/kfInDq0mlgGceNxX4MLwaDySfjj7H4DrYF6mrCNDGwofHz1yfRYGAob7UvdgyW11Fhanm
-	k5TVp/u3brjZ9y8PyuziBdjr8QNmpi0rTaILM2TdIbgPiT57CbdgS3C6WpRW+luQFimb+UTdXMB
-	5txYfyrdOK2tp/6gaY6sYgFwXy+qzG2HIpDnzVUXhnOSLMzGrttFzWR3WGWN+wUDbuKKYj1t02V
-	SR6K0DczPONrCzsAd7Zdvor74ojYi4nesdVVRGtP25x96oA+uW7PyU28JAl3Zc1HmGo4nDCbxoJ
-	M4LqhMWCdiqv1maMd1SOd1OxZC4fh+ndZeD+FEN+1aDZzBg8HdqQNjbjl/WOXmG2pAO/1eDVTYt
-	/WL7mTARTyK4ruzM9wuSTNYTc1BS8=
-X-Received: by 2002:a05:6808:19a8:b0:564:36f8:ee76 with SMTP id
- 5614622812f47-57a06b269d2mr20161076b6e.7.1795658299340; Wed, 25 Nov 2026
- 17:58:19 -0800 (PST)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 25 Nov 2026 20:58:18 -0500
+        d=1e100.net; s=20260707; t=1795658391; x=1796263191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cwYQ9S4xNOhgMpsr/2Fw0/uwY52gpltHLNu3ahogehA=;
+        b=wVU4ONcnmMzDUJoGZpXjBa/gDnftxEi97W/z2ZpLlWkapXiy10ucCxCbbniP4jlLST
+         dBDuv2HxB9BVlqBAU7KJxO4nJh1hGCfAMvsBeeDv34f1X7z+LL3YKJGAqleAcbD1XaJh
+         qIKfUm7eUEGC9Izh3cUGsX6EbRAyyXb82EvLaOUpHii4XNinds6174jN8LcQxI3mnTHg
+         8FpDToC1hr5aD8fbfNEFVgRSRJYHl6w+XaJxkbe805/Y9WGhC7dn8VuajngtaPWcdOQ5
+         BMMjXarPb/j9Ul+DHTcT5RffxzbUI1c1EJ3HC1DlYG5CJKkj8aUhdLCJpcW0KTwoDWUx
+         uthA==
+X-Forwarded-Encrypted: i=1; AL+hErF7451kXVK4KmDKOALGi84O3uDitWcQKNGqqHu4yKRHXTXY/8yl/d308zwRCaPQFr9LYCISVLgb7A==@kvack.org
+X-Gm-Message-State: APuU4Z9YeUyNDC+3LMc8NVVojxq0IjaWL2/bLLiEI4MhNCjsHoRSHhZb
+	OukbhosGP8Gm9PXn2FvBrRDm8Qkqc0DzFw4X9ofhDv7GRFNdNr4cZuTEcGhV+R9bTA==
+X-Gm-Gg: AZFdTZfj9Zp95pjofF41H/pYcAXaKVv+wddPi7MZfBtRTlm+ZzABarqtKzhsJFj/8OY
+	Clm6LS7SYLSSQcUZfuC29qVLH0bnxAmDHGkBaUXEiVGZvuuVjnKE+mDTas3e1P6vtM5+Va0DXTp
+	Tm2TyzEjEY+DCE3doahNshBez7DOfeivFB6raNO+pkrQcESaukl9Y6DHtarMwayVCpGwCEeT/UB
+	AvnIyJnr7VivvwDAPEylfYRalmcFp0f1b+3hWo7P60xfS8jjAGViWEfmNw2fxkBOSrwihqFBcHy
+	TqkCQ/l06pNyhs0pMWT/YVdmsyxaNzZX2TmZ0hoCUNYesY0sRqAMCqHCGxgj7cywb0xwaajHKh3
+	DV2jCfv05xkEtGxXixqJVyrpHqDTZYq0xw4LJoUS7auujVw3Xv/b0IbuUDw4qcZu9Y3hqVgoEB0
+	LkboC0P1znM6uuHyKorLocM5HaKNua4ElgtXGh1rMNrRoWjte0i1wgqJtxWqTMAjVNoSGt54mbe
+	eIceIiBcWwEWdeF0DBO8SsWF+joy31uhoEedmM3OT1JDY/jHxVfFRvssKsQuFvgZrTmdoyFI6Nj
+	Qp3OgBeW7NTaBIAK4UTSAS0ZLUr6qVbT/nX3D9L4mQncQZ7sDbois2wFzprvc4GVrzm+cGgxwWs
+	639+Nm9Qgcs4NOw==
+X-Received: by 2002:a17:90a:ec86:b0:3b4:889:883a with SMTP id 98e67ed59e1d1-3b41c9bacbbmr19770542a91.66.1795658390973;
+        Wed, 25 Nov 2026 17:59:50 -0800 (PST)
+Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:59ac:90a:64:4bd7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b4afeaaa84sm14344902a91.10.2026.11.25.17.59.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 17:59:50 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Alejandro Colomar <alx@kernel.org>
+Subject: [PATCH] zram: do not modify cont sysfs store buffers
+Date: Thu, 26 Nov 2026 10:45:07 +0900
+Message-ID: <20261126014518.1318583-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-From: Aveline Noir <jm5905938@gmail.com>
-In-Reply-To: <be640357-419b-4c78-8d96-3c698424ecd8@redhat.com>
-References: <bae41f6fc4114357a8a74c8b958f2bdc.1@linux-foundation.org>
- <awbtZjtII9h1oJ5R@raptor> <CANOyQmGPHrHAzVW70Q8T3AYtzFi3C7jCQdd-QW0rQCPEf=ycyw@mail.gmail.com>
- <awb5agUP80qz8iss@raptor> <be640357-419b-4c78-8d96-3c698424ecd8@redhat.com>
-Date: Wed, 25 Nov 2026 20:58:18 -0500
-X-Gm-Features: Aa3M54qAXZ6qA4q_sbAfBxVmt8Cb0Xyz8Ds0vdPPeDkPy9UkzqtNX26VGzoRiOY
-Message-ID: <CANOyQmHt=Q+JjcDjdkcv2RVzTDtiWZAmiBy8rEyhROmUK-uhEQ@mail.gmail.com>
-Subject: Re: [PATCH] lib/test_hmm: invalidate all mirrors on device-private migration
-To: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Ralph Campbell <rcampbell@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: j4g7zif8gzce6odba1xkcahd4os6mi9e
-X-Rspamd-Queue-Id: 9691D140004
-X-Rspamd-Server: rspam06
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kzccmhmtcc4c9b1y4ofnbzn9z31ufqg5
+X-Rspamd-Queue-Id: 4381280007
 X-Rspam-User:
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795658300-924182
-X-HE-Meta: U2FsdGVkX19PYNCXLWwiSa+8luHjaSQYC2TXC3J5MVNgrdqIR/S77TD2BAD3LKhEDd+vnvWSUyrsMEf9URVoPT7TzWg0/AOioHoaTyvlTlRfG+guHrjy02qXQoDlWaO49Utp7mbo+UWJ+MJLZDTEEMOevPC6p2dXHZAobm31+xmZPBAwYsNUNeUQ89i7eATpwY9RX+XDDB+8vJ8ims7N9HOYINALIxEvFFFY1xpeFkAwFi5X8CNaowEXYt0nPfYmEI7JJEfQMoShWIo0b6Hz5enu98DiBoL4dsqhYNk1ePezG6JyZoOA91eowCGyt4HAVxs/yRC3YVHds0xCGxs11UpyMa22gtcTuA2RL5INguWSiIYViqewqWf5ITwiG6Aa3JQJR6kPGerFDzyqN4i0v0jigrS6m0tKHns1kNxCAKTj5jEDAZcy+p6xp4ghjhqKWqGmkdwWAkmAjm0o5cgEQKHQ4VOwqzK/2FhT8BxfRQ8Wqm/YC1mrtFgxfFRWiPSr7oKhng2XiCv9/Ng4wIOQDpkZQD9MzwIVCOvg5uJVHhkVh74rYPzQLuEwz4WEZsI4ieRCZIAYIBjHSW4cRl2TL78dosQ1NFIAy79pDksesj+NC4K7Ket6zMeZUEpBEeSSSsJ3Eb0eoZPAXtf6U6fLCqixnXi81bL8t30/GL2vyeKaqo/+JXyjJ/VCQsEoRsDRUayGDLKzN2CvNRVP8r9SJFeDK+RKD9Nz+oQDVLFhFF4F/KH6fjzZipTuJ2qiuHW7bqw440H+9ToEtNWAjEjXhYcq14ozySVzX7wKKqBoNjiKseqVwsncRPi88tMp/dsQ004ffkXcWYkUxv1IHLKEGRZG5PvyrkmiQ4y0QLu0Jdq9QpNTLpCvex4rea3K78QkkEqNo+kXbOHpWMfcI1mS0RkiXNedr/8HFxaCrgP1B/slsA1RBGTkilvZmeIxOEGdSc6q/CWEp/CrM5S6Ikc
- Jymqo04g
- lX2dH2F46ViY6tR0ov+UHb0JdIsGPVtnW9V85/Ko9wfaRB4krgDaWL3IdoEMVKfD5VznBnjCI7U/FkGD/l5UTuZPLArUHiuOsBJUwTZcN5z3Whg8D2n4CTLbEhNKO+hAHfc4DIXUJoULtC9tHjFISIshpKx//2TNt7DTnuZAMvl02CdF9bvpi3q+1HW6FJsmE+RV1YjSEwSN1REdUky+hR/EUTQGJC0KDpZdUsi3Q2ecC0dOjAvsI7zZKq9fmXQWPSsEGuhfIm4NAfwbKUfgTZT9uNZ9xs2Xj8YxZPQXBOS0NeEVBaoupWVEUx5LfBTGi9H7E5y/BOrw7C0ko3kzuKyXcAYV3uXol76rF51U9Tw2MHgmLQiVSBOUKGeTtfQrBwS7ITXGqa8Fgxe9ykjGUtvnnCHKmgcKB3q+3xdYyI0+0Svjx9HJ/+6YRKBh8H4QWvs9vEiDmtgWXBhwT27fMVm7u0gNRfrqEg7UgQ2BTV+KF/xVKOlS8edyM+DNWHrxz5CC8dXfmLxaorZzdVye0oNgzSIv0mddRRzXU6DgJc7dLJdg27UXnouUiBcLAOkw09qYkcuQjUtZYzg/QUC9KAQiA8lKUno+BPRdM7AlEMy71whKW1VjavbFXyf9s1kuOAM+L58IlnHjtZssImNmlH3qw+FvYv3+67pS3QCgsLerYm7mEUrhqkdc5zs8DWSIRX3ekSX26aebQtgJ9tGkONWa9cPlhaMzz2qjPEy5Q80Zkr5f07gRjcE8mnNQv8Mf7Eq6U8aqyIYl1DS52EUelxkZreGywEr7qKQI8WAa+ZmpXzBlRtOuavlUx1w==
+X-Rspamd-Server: rspam03
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795658392-568415
+X-HE-Meta: U2FsdGVkX1824xsQ9MvmWf9yAKvyFG1bJ1XiqJx+fRdbbj3iqameNt9UB51ouWJ6DTnUwwiPbQw9Th5Eu9RcAjiLFgjwLwDOC4mWXXDP0L89aE3tSR0RPtxEHPCj42X/VwMkBBJlVDBY/tXeaxQqrVLn73AB/kZ7cuoHM3nxAvp4FrDEjMVg34YFUsTbsheq2lCcsySFojKYK+2fX0J4HDmMllKNcydZ0j87c93fPdkXqoBzZm0BWvPJZR+WiA4CbyY+AQ1HSOsY6peeUZzC+39BTEwRCFxOgGkpUGJK8VLDcSWHXZ+D2ix22ur43O6DTRWGsc9VPAW5TI6WNKudNlX1/04goH7btuXZ4v5TU4HVgl0o3p12bwS6Cjmsj31Ob/eUFpzA0xKnwmvWSXmuCu5GsJP+9oLxxk+LoiDoE98CMnJ5veTRl3eudeT54ys7N1MRZ49lasmu4GGefVfRKdz+LSm7ql95HKqhg0FQWeZ0f1yOCiP4zHH7VHuS2aYGoCjv4t11sDW/Ss3i6JYuz2MqIrjzEXAtSq70avNC95JLp3n7w5y+aZ2fVlKLoWUPIoXRPwSG/zgCFmkCELbJA5cTbBpxOq7qMfx9q5soViC+6BEgvvhYXK0bDNa6goTjK1dPFtWrXP9qVleslofiePgNv8IwLQRCqbmvzDt0uC/bJQycPi10tlw8rPXQB/S7NTGEyj6PSsej2Q1czzX2MvyCXBkVZTNvJQC2esVjsyDTZgThr7No7GqF2gLESyYk0JjBw2A+PRCnMtIyWpe9mCSwr/x9vkcVU/tIOGv2rs7NhgXtmP8f2bcfMQf0AXv1JTQ0nA0tYdjWzirRvPzS9KjPqmAG9FzrzaNc+gmzEcgxb0DxQnbEVcT7A+ncBmB2scfjZSZkAiS0GfzHG4VmKk1mxKkxKUrmZPeQKMWNWnR6fI2h6tblfILkgttr7kzxRJ9BaYI/f5qZgcT6IUl
+ dwnKxMEs
+ 4CBq7Ziy2xy8+Bz8EGPY+OGoHiad7/4A58X0xl1/TsdikLfUPYYFyvejrPGWV62BEYrNpjJqPRriefk4tdP9llRGSwxSqj+dApoqGSYjNz2a9MNE+QorK6+1mUtt9Tsqi0RB3u/aVlCz3Mqf0PoPcUwUscl/jg9ROH9TF2TpbXzIq0t3On+AqbdIT9jHjrmk0GuUDpJcoUVH4NEKIY0oibiyAJT55oCM4kc7NogE/sime1TjMcgTbY7NDJHcekT02u8GJpyL2kJ2HZW+TR7W1BelvX8JxJYhKOwKg3ZHwtXoVJ0sO/Fqix7oxxVTnfOoB26x8Vvy6Mqc6g6QwfbLgFVCihDBunV87VW86tBf8d0jJtsLJARC9Gru32FFqT84L3D+xmsL1PT0gMmPTzlJ5fC+zzdtvgkze6Gp9lYwWBMQ8y/TSXXYi3WgZZC6r9rV4N3OReesenPK1dhgWZS9VwI0fO3iOT3PnM47zb80iH33AENX0hP3fmIoWpVd10nXfYz2spq3eG1EYjBK88ECRQ1jp9cD3nQ+oRq9gyWjy9uBZeRs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,65 +121,112 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mika,
+zram sysfs handlers that accept key=value arguments (e.g.
+algorithm_params_store(), etc.) pass their const char *buf
+parameter through skip_spaces(), discarding const, and then
+mutate it in-place via next_arg().  This is not dangerous
+per se because kernfs_fop_write_iter() passes a temp copy
+of user string to zram, however it is still probably worth
+fixing, just for the sake of correctness.
 
-> As told I will be sending a proper fix for the two fds invalidation case
-> as a follow up to my other changes to test.hmm.c
+Allocate a temp non-const buffer for args tokenisation.
 
-I only ran the selftest that Alexandru mentioned.
+Link: https://lore.kernel.org/all/awcpkJD6K1xtx_Pe@devuan/
+Reported-by: Alejandro Colomar <alx@kernel.org>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ drivers/block/zram/zram_drv.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-Thanks for the clarification! Looking forward to your patch. :)
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 96b135e3f727..ca12c1918aec 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1279,10 +1279,15 @@ static ssize_t writeback_store(struct device *dev,
+ 	unsigned long lo = 0, hi;
+ 	struct zram_pp_ctl *pp_ctl = NULL;
+ 	struct zram_wb_ctl *wb_ctl = NULL;
++	char *kbuf __free(kfree) = NULL;
+ 	char *args, *param, *val;
+ 	ssize_t ret = len;
+ 	int err, mode = 0;
+ 
++	kbuf = kstrndup(buf, len, GFP_KERNEL);
++	if (!kbuf)
++		return -ENOMEM;
++
+ 	guard(rwsem_write)(&zram->dev_lock);
+ 	if (!init_done(zram))
+ 		return -EINVAL;
+@@ -1303,7 +1308,7 @@ static ssize_t writeback_store(struct device *dev,
+ 		goto out;
+ 	}
+ 
+-	args = skip_spaces(buf);
++	args = skip_spaces(kbuf);
+ 	while (*args) {
+ 		args = next_arg(args, &param, &val);
+ 
+@@ -1779,12 +1784,17 @@ static ssize_t algorithm_params_store(struct device *dev,
+ 	char *args, *param, *val, *algo = NULL, *dict_path = NULL;
+ 	struct deflate_params deflate_params;
+ 	struct zram *zram = dev_to_zram(dev);
++	char *kbuf __free(kfree) = NULL;
+ 	bool prio_param = false;
+ 	int ret;
+ 
+ 	deflate_params.winbits = ZCOMP_PARAM_NOT_SET;
+ 
+-	args = skip_spaces(buf);
++	kbuf = kstrndup(buf, len, GFP_KERNEL);
++	if (!kbuf)
++		return -ENOMEM;
++
++	args = skip_spaces(kbuf);
+ 	while (*args) {
+ 		args = next_arg(args, &param, &val);
+ 
+@@ -1899,12 +1909,17 @@ static ssize_t recomp_algorithm_store(struct device *dev,
+ 				      size_t len)
+ {
+ 	struct zram *zram = dev_to_zram(dev);
++	char *kbuf __free(kfree) = NULL;
+ 	int prio = ZRAM_SECONDARY_COMP;
+ 	char *args, *param, *val;
+ 	char *alg = NULL;
+ 	int ret;
+ 
+-	args = skip_spaces(buf);
++	kbuf = kstrndup(buf, len, GFP_KERNEL);
++	if (!kbuf)
++		return -ENOMEM;
++
++	args = skip_spaces(kbuf);
+ 	while (*args) {
+ 		args = next_arg(args, &param, &val);
+ 
+@@ -2578,6 +2593,7 @@ static ssize_t recompress_store(struct device *dev,
+ 	struct zram *zram = dev_to_zram(dev);
+ 	char *args, *param, *val, *algo = NULL;
+ 	u64 num_recomp_pages = ULLONG_MAX;
++	char *kbuf __free(kfree) = NULL;
+ 	struct zram_pp_ctl *ctl = NULL;
+ 	s32 prio = ZRAM_SECONDARY_COMP;
+ 	u32 mode = 0, threshold = 0;
+@@ -2586,7 +2602,11 @@ static ssize_t recompress_store(struct device *dev,
+ 	bool prio_param = false;
+ 	ssize_t ret;
+ 
+-	args = skip_spaces(buf);
++	kbuf = kstrndup(buf, len, GFP_KERNEL);
++	if (!kbuf)
++		return -ENOMEM;
++
++	args = skip_spaces(kbuf);
+ 	while (*args) {
+ 		args = next_arg(args, &param, &val);
+ 
+-- 
+2.56.1.839.g22a8290db9-goog
 
-
-On Wed, 25 Nov 2026 18:40:12 +0200, Mika Penttil=C3=A4 <mpenttil@redhat.com=
-> wrote:
-> Hi,
->
-> On 11/25/26 17:06, Alexandru Elisei wrote:
-> > Hi,
-> >
-> > On Thu, Nov 26, 2026 at 01:25:41AM +1100, Aveline Noir wrote:
-> >> Hi Alex
-> >>
-> >> On Thu, Nov 26, 2026 at 1:15=E2=80=AFAM Alexandru Elisei
-> >> <alexandru.elisei@arm.com> wrote:
-> >>
-> >>> Might be something on my side? I'll investigate further, but I'm not =
-very
-> >>> familiar with the code.
-> >>
-> >> I reproduced the same 0 versus 523264 assertion on x86-64 when the sep=
-arate
-> >> mm/hmm: account for subpage offsets in device-private PMDs fix was abs=
-ent.
-> >> With that fix, the test passed. May you check whether it is in your te=
-st tree?
-> >
-> > Indeed, I didn't have the patch in my tree, now the test passes!
-> >
-> > Tested on a Radxa Orion O6 board (arm64 architecture):
-> >
-> > Tested-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> >
-> > Thanks,
-> > Alex
-> >
-> Did you run the full selftest?
->
-> Without skipping own invalidations the normal migrate to device test fail=
-s
-> ( With no skip, migrate_vma_setup()'s invalidation erases the caller's ow=
-n entries) :
->
-> #  RUN           hmm.hmm_device_private.migrate_fault ...
-> # hmm-tests.c:1023:migrate_fault:Expected ret (-2) =3D=3D 0 (0)
-> # migrate_fault: Test terminated by assertion
-> #          FAIL  hmm.hmm_device_private.migrate_fault
-> not ok 14 hmm.hmm_device_private.migrate_fault
->
->
-> As told I will be sending a proper fix for the two fds invalidaton case a=
-s a follow up to my other changes to test.hmm.c
->
-> --Mika
 
