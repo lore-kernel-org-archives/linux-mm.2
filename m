@@ -1,147 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCD4606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 15:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC27606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 15:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=pxvCQeEz
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=So+WdnWi
 Received: by kanga.kvack.org (Postfix)
-	id 35F3F6B05B1; Thu, 26 Nov 2026 10:49:38 -0500 (EST)
+	id 2C8C26B05B2; Thu, 26 Nov 2026 10:52:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 337896B05B2; Thu, 26 Nov 2026 10:49:38 -0500 (EST)
+	id 279D56B05B3; Thu, 26 Nov 2026 10:52:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24DBA6B05B3; Thu, 26 Nov 2026 10:49:38 -0500 (EST)
+	id 18F8D6B05B5; Thu, 26 Nov 2026 10:52:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E434F6B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:49:37 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2C7DC04CB
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:49:36 +0000 (UTC)
-X-FDA: 85477705152.06.A1A5FBB
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022117.outbound.protection.outlook.com [52.101.96.117])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 06DC7140013
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:49:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A55F76B05B2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:52:22 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C635EA051F
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:52:21 +0000 (UTC)
+X-FDA: 85477712082.18.12114BC
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 348AB4001D
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:52:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
 	none
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IpVC1KQX19j7qp7ZBViVcHSe5qqhjvY/+HtUGO5FPwNFjdOBm7VFlDGWqKfp2WSZnUjEJpfFgbOjjxThf97isa8fjAGY3ZgnLbgOehR4kUdukfMC9p6R9wb46oybB/9eRLW4X2EzmPdhbiuMAKboDLHhXJCefyAcFExXA5nrGjWbhTXcFZkUU3Z7ZQ0bvjeY6eIAMTewFldDgMxPQcp+lgSwxVGDI2GzXKDgxurPwciDnHAooToRLta/4nJVeYo86J4JldmCmUBEQIsxE1cWqik3Y4Tokmk2mRfDiI+QAEYD48ypF654xts8nbQf5j6eFPAiVItC9VMZeKpZn5/N3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ez40QSda35CUuJ8kw0NMlMjvzoHZw50eP3m9edVfqJ4=;
- b=IBSIVYTTwJRdzR+AzocWZz1bQc+ZOi4/ehO9Hh/30PZnqBDtSuToPmB8N46m0BhYzvR/7UFKxP8KfSfZr0ZwrU9xtykYcMDPni92OO3cgikcY2+a/ZUM5G/J5TwatMcHRot0MsvFikPJEDbKN8z7+AWrc/XAkp/AIadL5ryUliusFvMZnTk10dwIGC/4k+WYJUJdIsDSSMiePlzrtOILywl2V/K3e0QynocjVkZf899T7p7/oR8TuxPRybDb5fptFBDTdm1VKYLIx1K5Hpm/FXkS4JTXFGNwbVfcJx7TAt8t0u2/iJN63Waq7JBsEJI/jnHxYLUWZ4e4DPN/pSFOLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ez40QSda35CUuJ8kw0NMlMjvzoHZw50eP3m9edVfqJ4=;
- b=pxvCQeEzQcj7MJbZr6AswA2E7vUM2Pyi8pm35Sq+uqOeM16EpZw5L9T+rkeTm4bYj1ROPQsQytOMgwB69zr6M00wyVmI8u7go2HA1xQrgZlnbv7+YGVWFpHNNkbQ6WPMiFj3LLjCkxqFZn3fbzN3gMWwsxOq4dDYN4JVfvrcvHw=
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LO0P265MB9290.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4a1::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Thu, 26 Nov
- 2026 15:49:14 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0662.004; Thu, 26 Nov 2026
- 15:49:14 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Nov 2026 15:49:13 +0000
-Message-Id: <DN59EXEWINPV.3UUBOIK6EROAC@garyguo.net>
-Cc: <fujita.tomonori@gmail.com>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <dakr@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <acourbot@nvidia.com>, <work@onurozkan.dev>, <liam@infradead.org>,
- <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: Re: [PATCH] rust: bug: add warn_once! macro
-From: "Gary Guo" <gary@garyguo.net>
-To: "FUJITA Tomonori" <tomo@flapping.org>, <mbkchelofficialdev@gmail.com>
-X-Mailer: aerc 0.22.0
-References: <20261124132707.101769-1-mbkchelofficialdev@gmail.com>
- <20261124.225103.2152350984946270550.tomo@flapping.org>
-In-Reply-To: <20261124.225103.2152350984946270550.tomo@flapping.org>
-X-ClientProxiedBy: LO2P265CA0509.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:13b::16) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E995E1BA8;
+	Thu, 26 Nov 2026 07:52:07 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D9373F632;
+	Thu, 26 Nov 2026 07:52:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795708330; bh=t/iAXo76mNWOYi6NXRXLm9HYRbfENwEmeSuVZl+vjQ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=So+WdnWiITxUEA+zPA0qZrHfIgEWB8UDt3yn4IEO5THcFQuUupbSyZ38WSbYLlzZO
+	 Rdd4TpDOmHWWTHsRW+t1aSXOFu6+xeusbEXx8t6R4TR3fxZ+3I/eAfWH7BVYVPd6hg
+	 fcIkARwHaaJVtuaYyOlwbtgwfzyTh/vzHdKQd+qA=
+Date: Thu, 26 Nov 2026 15:52:00 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Christian K?nig <christian.koenig@amd.com>,
+	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	linaro-mm-sig@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
+Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
+ using CoCo shared memory allocator
+Message-ID: <awhVoDXluqpncgcd@arm.com>
+References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
+ <20261116091137.94252-5-aneesh.kumar@kernel.org>
+ <awQd81MwZqi55gf8@arm.com>
+ <yq5aa4mybbmv.fsf@kernel.org>
+ <20261124134621.GI9566@ziepe.ca>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LO0P265MB9290:EE_
-X-MS-Office365-Filtering-Correlation-Id: 605a8b7c-d1b8-4e53-51f7-08df4bd4d248
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|23010399003|7416014|1800799024|4143699003|6133799003|22082099003|18002099003|261026140227099003|10067099003|56012099006|261026121527099003|261028144727099003|261021121427099003|261022105027099003|261102123227099003|261022075727099003;
-X-Microsoft-Antispam-Message-Info:
-	Mm8wwSWI3vbcknlBCOjukn3f4HxQYXP8liyS0AtWIQSEd2blZVwjYj7mb5WZXIDZFMGY8bIX+/iUNHbontWAZj0g6yIE7vmMBOtmUzm6hp9cAvvXRZenQ+R4awGS9ZwfTqzXg3itcP7RI/U0z+sH2HzieTZ27BLrgBHL+ZPC8utYZpvgjUn8HMmJiXYda4UayBLx8/HmTGv7PAVdiXhxAKoStsiATW202V7RDj8OU4F01fXxAjwee08ipQgD8nIX2/DOPZiDYqt66nWrVS7fjWIZ2tinejtNfNe+Z9hMm/ISax74w2yf+2vZjYvyMzZt0qdiRZAuNbD0XTQW2ize/yh3C2xjP3F10c9aYcTZJ/Dny2k+u2oC7LGiJcKlkh8a/RntrS7MQCIKNaMYlyQllXLEIQP7GVMivtAL0RZ9jcyqVR6im4tMq2gzW1S9VGvX59YBZkSw9rtXU1IdXsGNAcpH7lYoSeHkQ+WbSGHXZIXwnvL9QOYg6K9DCUoj5RbU1VnSRb7LsSebijOOk5pTrZXv9S+SHdzpDWgNM6Srh0qu+1qsSVX4Jf5ikQ9JEd4VimCyaXAlXel4RXuY/CEmTEaFmQ3vJQjCwSEHfgIUe4fGKp9tyPUdQfUZKH3grzJH
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(23010399003)(7416014)(1800799024)(4143699003)(6133799003)(22082099003)(18002099003)(261026140227099003)(10067099003)(56012099006)(261026121527099003)(261028144727099003)(261021121427099003)(261022105027099003)(261102123227099003)(261022075727099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?azlXWnhEdWtMT2JzdEpXSWpVckZxcUN5TzhmQUhlZXdVNXp2WHBieW82N3Vl?=
- =?utf-8?B?RGxXOWVra0UwUHk1dFRQai9ScDF2bklRYkZ4cVkwNXpQcjBTRm1jSU1IWXp2?=
- =?utf-8?B?WUYzR3pXdCtEei9kNk85aGs4am90eFA5em9aa3Eya0M3SXBXalZaMGFDRVpI?=
- =?utf-8?B?V3laTGZXbXRudFhHU3ozUktYZUcrRStFdW8ranhBbWdrVXpWRGZxOEZRZjd4?=
- =?utf-8?B?QkpSeENROHRva0RkV2t3ck5yOXdIc0s4Nm1hQ3hlL3pKK01Na3RqTFB4bmlQ?=
- =?utf-8?B?WnpoelNOWCtVaC94bGZvQ2ZGM3dvK25KbDlvOXVGWTFsQ3JYaTBvN0paaFdO?=
- =?utf-8?B?Y0lBdmxiVGVUdWloZTBVNEd0ZFlOQ1MwMXlMUURoVlFEeEhUWkdScFpJTDIx?=
- =?utf-8?B?VnRLelpSaGRZdGw2TnVDa3NFWHJiNzRJZ3hTWmxLcDZuT0szdThaQ3NGaVFs?=
- =?utf-8?B?akRVd0QrZGJlWE1mUy9EWDFlNVRmTVQ5Wm1Wbm5ZQytBTFcxQk5jWlBscnNY?=
- =?utf-8?B?OXg0WmdNcG5BdElRNERaT2xDSis0Njl0Z0NwT3BvRDM0OHF3VVFzcEduRlhz?=
- =?utf-8?B?Uy9aeWhJMVJjM0NXWDIwbXNBQ1V5S1JPOTlMcytBUGFVL05oTnBEWVlTN1pW?=
- =?utf-8?B?Zm51b25rRDBqelBUOUI5Slg0cFcvYStZU1I5S2Q5Y0hvM0NhUXM5ZUZHL21a?=
- =?utf-8?B?TW9jMjBRYysxWDFWcUhWanVONXJ1ZGFXZUdSdzVEN2xIWjJYSnUwM25YUjk1?=
- =?utf-8?B?dk5SbnlZdDZsMk1sbFN3M2ZGMXdmVjVqZ0ZnUkpIeXFMODlSbVIrQmV6ZkN5?=
- =?utf-8?B?RlV3R2pYVkZoR0RYUXp1QzlqMHFsU3hINHZJTnFOYzNyRVN3MFZRUFVkRTVz?=
- =?utf-8?B?RGlsOC9FdDlxZEo3T0czN2hDU3pkQkE1MGlvYVBGbGlETHpQZmlyMUNYdEda?=
- =?utf-8?B?WDIrZU5KbEFmejFhbXJmKzVXQVFrWXZxY05sMndJVitkYjhObDk4RU9EQjlJ?=
- =?utf-8?B?K1BHOXhtYmtoSVR6L2FLbC9zcFBISU02K09UMHM3dXhTMlVVakw5RjBCam9l?=
- =?utf-8?B?QUhiQXJmVm1KWUFFVlpvaHlacjIzUUJ6OHNmaWdtalhsRENWNm0vdVRCRmEr?=
- =?utf-8?B?VE5tZlkrQ3RwV1RtSmZ6RE11OVhZc2t5dmhLdXkwSU9uWnRvVWdwaFVlNGU3?=
- =?utf-8?B?VnY5bDlBRXIwREE0RXZROEs0MDcrY013YjBDYSsvdDEwVFh0WXl1QVVPUENi?=
- =?utf-8?B?anVWS1Q3YUNSZDNKN05NUGdndjJETUFET1RFRit4RHptdDdobElIWUYxTDY5?=
- =?utf-8?B?UDF4dVN5RTZwcXFNZ0x5RWsyR0Mrc3Z1NVRSVi9INEhrRTdVNlVqbThoM3Zi?=
- =?utf-8?B?TlJDUXIrSlc0cHFxc1pIT2p3WlVpWW9PTmpnNHJlVFN5eHdJMGhjMkxDVmQ0?=
- =?utf-8?B?d0l6c1ZZa1FOc013bVI2eUxsVWl0ai9WRFpGSm12L21JY0lyMXBxNE8yT3lu?=
- =?utf-8?B?NmQ0UGlGbjRsS25qMVc4b0EwZ0VwUWNoUHFVeWdrNU4zUVdpS0ZWOG9CMi9o?=
- =?utf-8?B?YlRVaDdoMkRpRy9DOHY3WEF6UVZzRHUwaXFaeHhXZDhmRE1jZzdMLzZRWVV1?=
- =?utf-8?B?aUg0M3c2dU9reGFZZGJvSG5WRTZLZzcrcjJkMnlUMUtjWHRxNmFQNjZDa2Fh?=
- =?utf-8?B?c2FCbFhWc0MxeGNVcHVLTWlqOWlGdmFmejVKVUFHSlRpY0x0djdUNFMwbjZk?=
- =?utf-8?B?ZmhFNUlqYmJjYjY1OW1SSWhVUXV5WXpkbitNYkRFRVk4Q0IzQnpia3IrQ0Rl?=
- =?utf-8?B?YWhJK2R4VnQ0aGVOQUwvM3NQSW10aHBkb3k0ZldjM0lyRzRvc1kyczM0L29T?=
- =?utf-8?B?RHVvTkVEdUkxQlRtdGJmN3lhelRaUUVwVEszamVERC8zMHdJWU5Ca3orcm1t?=
- =?utf-8?B?SXcwTmxuVnFIWFJJU3JDMFpGQ3NkL2M2eFNsaHZnWW1uU3FEZ1k4eWhFRldv?=
- =?utf-8?B?UU5RdzdGUDJXZEE5R3pWaDAvbjhpUjVqcjlJb3VUM0tuRDNRczA0L0s1ZmM5?=
- =?utf-8?B?TFVKamRZdXp3c2JUaXhnM2hudVlVWEgxVkdwYzdsMjdxcVhRMnh2eEJJeiti?=
- =?utf-8?B?SkZ4VDlrUzFjNW9EMUJtdm5xWlJiRnAwUG5UOGxVczdQQWdxTlQ0TCtldzRD?=
- =?utf-8?B?cUZqckgwSUlBb0VpR3BTdjJQb01JaDVBZHNqMWIxTTRlc2t3d2tDam1yajE2?=
- =?utf-8?B?bzVWNW41dkcwRG93QUp1Tk5sbWZLZGFFeDlHY1crRDJoMnh5bXVKVVpqT1pG?=
- =?utf-8?B?cENGcVBmRDhUdmo5N2NBRUExTGQ5amZtd0VxYkUyRFFVYTVHQ2hCdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 605a8b7c-d1b8-4e53-51f7-08df4bd4d248
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 15:49:14.4153
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y/YHoVi+IACdaBSLe0HxbFkByADG5HO8bJT84qXlj3LI89qe7HdCuAiOCi2S2YVGf0oWKSxwq0RooyzmIZ8coA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB9290
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261124134621.GI9566@ziepe.ca>
 X-Rspam-User:
-X-Rspamd-Queue-Id: 06DC7140013
-X-Stat-Signature: cy4a1kytnmexcg5n7inx4qfyyepxe57q
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 348AB4001D
+X-Stat-Signature: peqm7h5r749azuwsrr31tjyuo613a48t
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795708165-674032
-X-HE-Meta: U2FsdGVkX18efSnHYKaBqsiSDlDP7aDrtIQsngHtep+BtyV049YRjBTLtHfvp8uQaRQ80lhBWTbkmd7XgZvshk6ylDN1w/efMCPnyzZUzA8hYskCqzDOLK/xMockWRVE8aDvfCrA4lRBydBauFLKoq4xRqnaj1jP1htnJ/at3TYKtri0XiRkaomf03HjLCOvQ+k7WExDtyZYczlM000h9lv9XzNsCIRxbL4B6iNWSVRmmbd28JyHB+rrGo+PiD04SKyZY7ytjFy1Zp3kRbQOHCAd9XBfUXPFopJdWm9bCVxPTsX3CaK0w36ipor3bzu+M1j9j16B+E5PCLj8mJpQ4b1W8R7KXWtZmvrq1ly2eQ+m/t4fQ4TYixO5VPRRbNnxK+n1k0GOYOjmF+52EkrlMKlEZlKkE6M9UAM9MKla+5DvBhLo/+MVa4RxNzL71sAF459FFcaZqwqtHawpRy48OmOTw6l9jJe5GndkNb8aKtQ+WCSt9yGAzewIac3eu0xOpjTztA3WQXJnQFzpsCmYd5iGsiFU5RZGUP8OwevI21IpnATpWlzybbzV6Pf9mw/jxUxsKH9lcevBOItNOISJkCdZDmaSKoDMH9CwYY1cPIdrU8eCR+yYIqW7wnIaP2sy
+X-HE-Tag: 1795708332-981086
+X-HE-Meta: U2FsdGVkX1/wYDex54wNPTn9mDk9PMXgRBXQPdn7RShz0a8fAu+tIOxfDd2RvLC9/50JBcl1RabGSJGQs2XUTyYSYAAmcXFa3xvC5kpixkozBemahDCsr6CCHjmgqFjWnR1eGPWkb1oRdV504MaC9t1zqtL2RKq07L7HIAM8ru+n1WlbwZG0kPkmIR/nMEMBjLrhJ0ueFND+lw4MsseROEJNVSo5AvS/bApO1lRurEb93rJ/mtlOfAway/AK2wBQiVwSOXtiKc9Zl0vavYpzc8cZeTSCkHVnpdz0ZSnbUgna85R7xyn9UX+xXLq0ubmcnp0rUfFIQmccUchEoiu3at1WIF2pQtTPz0XyyDDroOLe3TV+lSYaFS5ICRaLt4BZii0XAAwB5JBTSPKiCqQ1eLmmtUhEQlEBIHo4w3AMTlvTnkDJ1LTyOiRYVKqfAH0hOpBvUTTobmIaHXicEZ8YJc7tpO+I8YDRNefybvxt1+8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,71 +116,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue Nov 24, 2026 at 1:51 PM GMT, FUJITA Tomonori wrote:
-> On Tue, 24 Nov 2026 15:27:07 +0200
-> Ivan Tverdokhleb <mbkchelofficialdev@gmail.com> wrote:
->
->> Add a Rust counterpart of the C WARN_ONCE() macro. It behaves like
->> warn_on!(), but additionally sets BUGFLAG_ONCE, so the warning is
->> reported only the first time a given call site triggers.
->
-> C WARN_ONCE() takes a format string. This macro is the Rust version
-> of WARN_ON_ONCE().
->
->> The macro returns the evaluated condition, like warn_on!(), so it can be
->> used directly in an `if`.
->>=20
->> Use it in Vma::zap_vma_range() to report an invalid range, which
->> resolves the pending TODO there.
->>=20
->> On configurations where warn_flags!() ignores the flags (UML, ARM and
->> LoongArch), the macro behaves like warn_on!() and warns every time.
->
-> C WARN_ON_ONCE() warns only once on these architectures too. I have a
-> local warn_on_once!() patch that does the same on all architectures.
-> I can post it if needed.
->
-> Also, this patch does not build on UML, and test_warn_once fails on
-> x86_64.
->
->> --- a/rust/kernel/mm/virt.rs
->> +++ b/rust/kernel/mm/virt.rs
->> @@ -115,8 +115,7 @@ pub fn end(&self) -> usize {
->>      #[inline]
->>      pub fn zap_vma_range(&self, address: usize, size: usize) {
->>          let (end, did_overflow) =3D address.overflowing_add(size);
->> -        if did_overflow || address < self.start() || self.end() < end {
->> -            // TODO: call WARN_ONCE once Rust version of it is added
->> +        if crate::warn_once!(did_overflow || address < self.start() || =
-self.end() < end) {
->
-> Miguel said that "Erroneous Behavior" cases like this should use
-> debug_assert!() plus pr_warn_once!() [1]. Also, the C side uses
-> VM_WARN_ON_ONCE() in __zap_vma_range(), which warns only with
-> CONFIG_DEBUG_VM.
->
-> [1] https://lore.kernel.org/rust-for-linux/CANiq72=3DtKVD13GD2Bzmt_LnC4Si=
-OX1nkHQPcz2BS=3DP=3Db23e0Yw@mail.gmail.com/
+On Tue, Nov 24, 2026 at 09:46:21AM -0400, Jason Gunthorpe wrote:
+> On Tue, Nov 24, 2026 at 07:00:00PM +0530, Aneesh Kumar K.V wrote:
+> 
+> > Taking Jason's feedback into account, we could have the allocator
+> > request compound pages and recover the actual allocation order with
+> > compound_order(). That would avoid passing an order to free:
+> > 
+> > void *alloc_cc_shared_node(int nid, gfp_t gfp, unsigned int order);
+> > void *alloc_cc_shared(gfp_t gfp, unsigned int order);
+> > void free_cc_shared(void *addr);
+> 
+> It probably shouldn't be order here, that is hard to use. Just size_t
+> len
+> 
+> And round up internally
 
-For zap_vma_range I think we do actually want WARN_ONCE. For something impo=
-rtant
-like zapping a VMA range if thngs are used incorrectly we do want to figure=
- out.
+Minor point in favour of keeping the '_pages' naming and order is that
+it makes it more obvious what alignment is returned for code that needs
+it like the ITS. Otherwise we can just document it, I don't have a
+strong opinion either way (only that it's simpler than what was proposed
+earlier).
 
-A debug_assert is not as useful because it's not enabled on kernel shipped =
-to
-end users. A pr_warn_once is not useful because you don't know who's callin=
-g the
-library and causing issue, and also a dmesg warning is mostly ignored by pe=
-ople
-like a WARN.
-
-I think a condition is unlikely to be triggered from invalid userspace inpu=
-ts,
-and the misuse is actually a bug, we should prefer WARN_ON because that's h=
-ow
-can get things fixed.
-
-Best,
-Gary
+-- 
+Catalin
 
