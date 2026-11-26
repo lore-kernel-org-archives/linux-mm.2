@@ -1,119 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16170606A32D
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 03:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D632606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 05:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LSdyAs8J
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ojF7bNFN
 Received: by kanga.kvack.org (Postfix)
-	id EE8A86B05B0; Wed, 25 Nov 2026 22:39:06 -0500 (EST)
+	id BFD0B6B05B0; Thu, 26 Nov 2026 00:05:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4B536B05B1; Wed, 25 Nov 2026 22:39:06 -0500 (EST)
+	id BD6156B05B1; Thu, 26 Nov 2026 00:05:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEB606B05B2; Wed, 25 Nov 2026 22:39:06 -0500 (EST)
+	id AC3A76B05B2; Thu, 26 Nov 2026 00:05:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AA9F6B05B0
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 22:39:06 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EEFAC120234
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 03:39:05 +0000 (UTC)
-X-FDA: 85475864250.07.44A0A68
-Received: from mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B8F4E180006
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 03:39:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LSdyAs8J;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E3F36B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:05:04 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C6C171A02ED
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:05:03 +0000 (UTC)
+X-FDA: 85476080886.30.5670091
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A2F5C1C0003
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 05:05:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ojF7bNFN;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795664344;
-	b=T5MZC0U3WZBu/E7KTMusDMGmvweGUZEHntm/gPcWX9k6UPqiNOBfVu/xQ2VITBsqckzA67
-	jrWw+X8sZ18sv7UMt2UF88RHXzx1yXUBdCnpptxPnUb875FW8BUURsGgiCad4uo1mWTguA
-	EWOn7QWmVIvJvWA0dazEkGSz7F8fcww=
+	t=1795669502;
+	b=Q9NyEvVo5mUVFE6uXbKShMG9jyyjxJnmlsb3micJdLbTi755Sq8IZJzI1BD/mkT7kdJBAs
+	5dfDZzwZ029B9rgloyg5e/HXP41XxcnchCZiF+dD6nfGTUOXQ75sFG9t5v94ejXxCJZDIo
+	qqP6XUsMJIgOi6Z0Sr3/r2YoQTT9ZXs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795664344;
+	s=arc-20220608; t=1795669502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WZXhqqMJtGtQSFqs9mp5EiyQrG4t9fKkEiiJJfk1V94=;
-	b=76lq3xuDytjpWcx9Ix78UJrCZSXaorPzlYbgIlA6wrJ+w/Pi4E28G+k8RAwZJM139UHfBd
-	Hahw5z1W+5VyClwnPq1ZMPSav50YfZjutoZGJzuQ2thTMfMOnF3e/xaagL5k2ZhMFDzp/i
-	BbWSpX7RtXPfdbOAUj8C/MJLk2qywBI=
+	bh=64KL/KFbpUyHcPj5QRcpND3tqWtW+aDzEoNTUEv5lcQ=;
+	b=uBxUybmlduUH2pvhmUa0rJZMqVUxYXjSg1PdOnuMcONY0pc1SIoGGDH2GZQNqltW2OHbBA
+	WsdQCL64n1BmaLzbKdfuS6bkKzS1rj5kxjUcA4en0OhmM8/HyZXqs5ycm6PE7tbBefTh5R
+	FztR1gpdc2pPM6/QO4+xPu/Ba8w/Ki4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LSdyAs8J;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=3UV2O3vp01qJF08PlpVk7+NJu2+NXqvyVZ3Kr2qDcy8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795664342; v=1; x=1796269142;
- b=LSdyAs8J7bC0cwji/tGdQecq8Tb/rUDxBvCZ8eA2i2W2wcoPx32DxmBSqPsZUXpyVC/jASZp
- W5Q5gHCmigHcxUkWUsIUEaW4tZX8X/02c4qBdNrJInCsJGoAobC5G7g7oXcnSlYNUKq0omgJe+s
- 93KKvNA1mcwtd7Dgk23bKn94=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5700fc680564a234;
-	Thu, 26 Nov 2026 03:39:02 +0000
-X-Mizu-Trace-ID: 5700fc680564a234
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <8685acd8-4546-4414-9b92-217048766321@linux.dev>
-Date: Thu, 26 Nov 2026 11:38:48 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ojF7bNFN;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 853462F;
+	Wed, 25 Nov 2026 21:04:57 -0800 (PST)
+Received: from [10.164.19.73] (unknown [10.164.19.73])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D400B3F632;
+	Wed, 25 Nov 2026 21:04:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795669500; bh=AWAl92CdwflShhxtxbzvVO8xOtkxsr5N7S7TvV7IWjE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ojF7bNFNDUpKMZgKqLkNNjqmYApZvP260KZxtqTrPDCC/Qx6xWxa2VtTMvFQ3WCkq
+	 1POo9OWwjxUUBQGhzckJwp5L3x5eTt0/tDH2Xg2zIBFjL/nE9+IxdrOCsYxD326KxA
+	 esRtsQdXdejA0xiScw4jfa605pFcrErDZX7CsfqA=
+Message-ID: <f0d1b03f-22e7-4009-aded-1e121172b245@arm.com>
+Date: Thu, 26 Nov 2026 10:34:51 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 03/18] mm/memcontrol: avoid potential counter leak when
- reparenting local stats
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
- Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
- SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
- Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
- Zicheng Wang <wangzicheng@honor.com>, Tal Zussman <tz2294@columbia.edu>,
- Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>,
- Ehab Ababneh <ehab.ababneh@intel.com>,
- Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang
- <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>,
- Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
- Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org,
- Tianyi Chen <hi@tychen.cc>
-References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-3-8ffea39934a6@tencent.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20261124-mglru-fg-v6-3-8ffea39934a6@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v5 0/8] Optimize anonymous swapbacked large folio
+ unmapping
+To: "Garg, Shivank" <shivankg@amd.com>, "chrisl@kernel.org"
+ <chrisl@kernel.org>, "david@kernel.org" <david@kernel.org>,
+ "ljs@kernel.org" <ljs@kernel.org>, "hughd@google.com" <hughd@google.com>,
+ "kasong@tencent.com" <kasong@tencent.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+Cc: "baohua@kernel.org" <baohua@kernel.org>, "rppt@kernel.org"
+ <rppt@kernel.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
+ "shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>,
+ "vbabka@kernel.org" <vbabka@kernel.org>, "harry@kernel.org"
+ <harry@kernel.org>, "riel@surriel.com" <riel@surriel.com>,
+ "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>,
+ "surenb@google.com" <surenb@google.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "youngjun.park@lge.com" <youngjun.park@lge.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "jannh@google.com" <jannh@google.com>,
+ "liam@infradead.org" <liam@infradead.org>, "mhocko@suse.com"
+ <mhocko@suse.com>, "lance.yang@linux.dev" <lance.yang@linux.dev>,
+ "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+ "baoquan.he@linux.dev" <baoquan.he@linux.dev>,
+ "pfalcato@suse.de" <pfalcato@suse.de>
+References: <20261123053543.295467-1-dev.jain@arm.com>
+ <3cee4b04dc7364321e1e8f8a98cfddd7f0082f03.camel@amd.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <3cee4b04dc7364321e1e8f8a98cfddd7f0082f03.camel@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B8F4E180006
 X-Rspam-User:
-X-Stat-Signature: ctybapfmrjncw4iez1fmjgxbadsmccse
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A2F5C1C0003
+X-Stat-Signature: 4swzqwf5dnykz8aezdjq6s8qd763ej7c
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795664343-831047
-X-HE-Meta: U2FsdGVkX1/XgXrVyr4C0EVRekC/k5GbL1NrVPNzQ1uBl7XIu0syQMPA+SliSHQtRv2mM053GBQ9o9p6V839X/WAGcGuIbz0VVq2BtqbiW5M5h3iB+WmNjxY1+m7oO78XF6r2Lqax/fo8PbY+ALKo0x0m1/65D/F+pKjQFfnoL+rg5zT/hog1y6uV/LIfhJqp6P16quki1DdWYCuIOcnCJzH5cIyRaet1bT5eJfr9Vrg5abEwqdARYwcWpKm2W9KhKDjd3DFFXRYWQrF/rtdm8+rfvMVcrW3QNdGjkZeC6mKuzAXQMO0vN4++uYT4W+QmtJuHk5Cg2X5NyiC5ikyfawckvMz1v9flX8AZAu33VifSkGDMrRQEFG4YFvZQtVOPdK5fhmRvwaOcwUaOHqDTQXrN9Oymzf6MseHsG2nFOcFPq0oMxNQR+4zYqMW3wwo4sYW4HFocBq+iJEjp7sGU3iNSjyyXUyWwepOkzmHxil+REUNxtI8DwXBa9olCprBbuvnRbKbrhpkihxcRp8iiDnBPMg/DwlKLpAiOLTgd4KzzkIMV9pew6c2oWomlBuTaR2QPXjwV95+X8KvI/rL/Medlqu7kQXN56stTRgi9J0HSGtGECUzeSOUHiCVrpOKE4yLtggwgdgfFFAzvGRmtQb7CV41/IvS4ObX5uAZi5OLUjUwsZEujqcqFd/CAa3ropv9euosbcoLocMu2qnav/Rp0cnAw3bpHHVuhhCbUEYJlCEi4WL3KgTNiDzBPPNzI2MJBn9cwFS9rWi4wwOudJWQI6l/ymtHD4IJMZ0UCkC0sQK3gwDzLVEufh/eY85T+l3uH89OE+wsbe8Xk8jq9OxBjURdxxKGTLO8UuWNg5i8A/oWNAEGD+INmc4pDMrsfcWzefFEDbhYUfVBailJUEw4etobdBEcvIepZIejBJZKsfrnOXeP4CLt6dvPC8DxEpMEyyR7brvnGNqXAeC
- 88KcCL2Q
- pi2zv06883w1t0aHC34EteBlxMuWb4FYzb/TSHfE0u/Izpg0RZRhiG7RD3m8iArBKeIf6EWG6DuKsPExgivjuQaWDHAaBMahIuVY7/qZJfRhYZ3w8ZV9gIp442wQboTErLogEB08RixAcbAdu5ufEnffJD6TmIjan5sredxNRh8Tenfq1pBL4OP/FUT1CXP/UA8i1LkUyvs6vLS8MTuiXEoG6X3qDCrq0y1iZjjBOR0pIdS5sZSf0qTKM6e6PsmIz8937p8Q+zFSRCawbJGEpMsRgoCP6ICILnozlyWpBjo0uO8bi8BKkyEfMu1Emcubt1X0V0mrC4sU6Pwd+QUM2v+dRkB5CY8N3Jynw6wbps6p2QPVqdlyVXFTOvLE+CEk4R3SUc6Hz3Di7Q5fmRMgZxLjiv/D8NmQyTK9/0/HWyrREhj7hjaA9iEKAnX/IAhUocJvbtuB3I/e4TcAHIeXzL7LJOE7IVxWU7tgsJ4ZMNjdjsVJNtGCEepyiChRlgLblJc9ICshnS1rlkdxJWUD87/oWPlIIE0o3nBMNuzFm3iiHaQ1Y+KdBcrWe35t2balnH+QIl0Ll/aPHXh7MgSWxlLfL/6q+1DwhjCmfhJt/JO1nXdZkVZwHXyUDTsGOwG8Q0Iu+
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795669501-559841
+X-HE-Meta: U2FsdGVkX19zKeTzoodtuCbP0SvOC3/u5XB5u+0vchDlPFTGiO/WaBxakyp2EC/1tMc//Dyo1WI5+gZQPpsvC/L0+ukCzlTqQUv0Xc0TeLMFadhhG0KjiyhWVDqywpPr4nqVLh4M6342tLwH3CQdPChuUhqO0C0IWddDDbiKjmtj799kNvTXkY/Uwp57AHVdYuUv8H8MGph4Bh5lqHtrarZ+s+etpWZJWfP90mdpThgxIdy7H0/UVnHtmw0ulUCtiuIayePtIQS072st4ydOvmeczX7mxAWGMmzlnlwuE3HvRVqfHDZBqPweQrysu+uIoieTvSg1BR7q5pyVWF/+Ur6TwODLOZACbZBhg2/amHSO3SF9sj4AFQorjkA0xM48z59EZz26G22ZvXY8hIYBVvwN91bF6V2NmJI4LkY+tDKpsxYAbghS9jn59/SWygpSGD+HEESx9C9LpqkprcxT8BGeqtg+SnzUn/bTM0mBjkEzRQfJWdiW/nqaq/xCKFlydBecQpzET1viBxBuCH7m6/QLBk/VFjR/Cd0dyUvYpgVI54j7gnPdVccHscKnI/hBDS0JpwQQ9PbQ3ljDGt/pQLa00cV1xDYYsmYecTJ2xdMIWe/Bmp7Mq1uqppygSTaMqB/zTsitMSUnnQqBlFng+PUcQqWlygz+uDf/qICYSqhoyYroZeFDIdCw0gDTHms0O4j0suvWb53cdvuH0silvo/XbxNmMp4Y33srodW0rBlRgdOh9qbuTuPqndRoeoz7u3dbpRXISg62yBeOS+zHHsXwLr7T7oBAGCOiZSmyagXY/JwoCm++6HVvWNP77DdI3lAwaAtOkJ0GtQCSueJ19XTDdSPDmPMCkOrSlDLbWpR49QqW8QFsBA0C++BN2SVitxCKP93plWKBeS1KoDjJ1jiTT9pYG1KsDQKsK+T7xfs9ldZ1yQTDeNMpfIlXYwrDbDNKJmF3rcVJeokM/NW
+ a1Y34vcL
+ POpl17i8Np6nagYeAyxeFvkCVNFGRo1yqAwsLoJ+JkccVAB1FFRIvuTrgJUZu6DI62KicPLTssqDZ9VGrdjzV0g8sAugu853ZqYBEbbInqurY1VNXqUwRjqZaNL22dxcZoZyv5XkwpxDYBhfcfZLqsHcXeTr6oZVaK/mx3+vvaG+QFT40+MxgkPJzIGOY20/sI+h5ITFb8hoo2LhTb3kn4i4duLZqQUzMQIicvOUfWKITnRJoTzKIcQ/8eRaged59DtvncQfn1GRqRF78QiXUCS2WC/rq5XEL6CvJ3/1elfgJjrpYq2d0s6O1VJ//PEnMfM2yT8sJgHNlXFRr/GoeWv9zEOdJGUxPr5hlUXPwqtIKGkGyKPK244S8qBON+ISXrUaSuHYXfeZTASc46WFXRDH8IvDiqinsyR6hqI4FFAxqVH7hglPHaoW8JzXL84BnY+x2rswovnGJQYISI/4/mLwTeKcOyCTDNrOo6dzEMM4sGRP6uZpV/nTcogDT2cK/ua+5O9FH3UocRiBrSO3J9FiMm5F2koBFB7OLUAIljd2ZUuM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,100 +115,125 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/24/2026 2:52 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 25/11/26 11:28 pm, Garg, Shivank wrote:
+> On Mon, 2026-11-23 at 05:35 +0000, Dev Jain wrote:
+>> Speed up unmapping of anonymous swapbacked large folios by clearing
+>> the ptes, and setting swap ptes, in one go.
+>>
+>> The following benchmark (stolen from Barry) is used to measure the
+>> time taken to swapout 256M worth of memory backed by 64K large folios:
+>>
+>>  #define _GNU_SOURCE
+>>  #include <stdio.h>
+>>  #include <stdlib.h>
+>>  #include <sys/mman.h>
+>>  #include <string.h>
+>>  #include <time.h>
+>>  #include <unistd.h>
+>>  #include <errno.h>
+>>
+>>  #define SIZE_MB 256
+>>  #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
+>>
+>>  int main() {
+>>      void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
+>>                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>>      if (addr == MAP_FAILED) {
+>>          perror("mmap failed");
+>>          return 1;
+>>      }
+>>
+>>      memset(addr, 0, SIZE_BYTES);
+>>
+>>      struct timespec start, end;
+>>      clock_gettime(CLOCK_MONOTONIC, &start);
+>>
+>>      if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
+>>          perror("madvise(MADV_PAGEOUT) failed");
+>>          munmap(addr, SIZE_BYTES);
+>>          return 1;
+>>      }
+>>
+>>      clock_gettime(CLOCK_MONOTONIC, &end);
+>>
+>>      long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
+>>                         (end.tv_nsec - start.tv_nsec);
+>>      printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
+>>             duration_ns, duration_ns / 1e6);
+>>
+>>      munmap(addr, SIZE_BYTES);
+>>      return 0;
+>>  }
+>>
+>> Performance as measured on a Linux VM on Apple M3 (arm64):
+>>
+>> Vanilla - Mean: 37401913 ns, std dev: 12%
+>> Patched - Mean: 17420282 ns, std dev: 11%
+>>
+>> resulting in more than 2x speedup.
+>>
+>> No regression observed on 4K folios.
+>>
+>> Performance as measured on bare metal x86:
+>>
+>> Vanilla - mean: 54986286 ns, std dev: 1.5%
+>> Patched - mean: 51930795 ns, std dev: 3%
+>>
+>> I tried magnifying the difference on x86 by using 1M large folios, but
+>> can't spot an obvious improvement (looks like my system is too fast to
+>> benefit from batched atomic operations!), hinting that the benefit lies
+>> mainly in the reduction of ptep_get() calls and the reduction of TLB
+>> flushes during contpte-unfolding, on arm64.
+>>
+>> No regression is observed on 4K folios on x86 too.
 > 
-> lruvec_page_state_local() clamps negative values to zero on SMP.  That
-> is right for readers reporting page counts, but can be wrong for
-> reparenting once MGLRU updates the counters without the lruvec lock.
 > 
-> Reparenting runs after the forced stats flush, so a negative is a real
-> balance that has to move to the parent, not be discarded. We will
-> introduce lockless MGLRU promotion which may cause following problem:
+> I ran this on bare-metal AMD EPYC Zen5 (2 sockets)
+> swapping to zram, MADV_PAGEOUT of 256MiB, with
+> zero-filled and with non-zero data.
 > 
->   1. A refs CAS on a folio on the child's lruvec moves it from
->      inactive to active, and its active/inactive counter update follows
->      as a separate step.
+> Mean of 20 runs, (in ms):
 > 
->   2. A concurrent isolation of the folio reads the folio as active,
->      debits the child's NR_ACTIVE_* by delta before CSS_DYING is visible
->      to it.
+> mthp        base     v5      delta       base     v5      delta
+>             zero     zero                data     data
+>   4K        63.6     61.1    noise       128.1    126.2   noise
+>   16K       37.1     32.6    -12%         93.3     89.2   -4%
+>   64K       27.3     21.8    -20%         74.5     68.8   -8%
+>   256K      23.4     14.9    -36%         70.9     62.5   -12%
+>   1M        23.2     14.6    -37%         69.4     60.4   -13%
 > 
->   3. The child is killed, and the two __update_lru_size() calls from
->      step 1 land on the parent: NR_INACTIVE_* -delta, then NR_ACTIVE_*
->      +delta.
 > 
-> The child is left with NR_ACTIVE_* -delta while the parent holds the
-> matching +delta, and reparenting the child's raw value is what cancels
-> the parent's credit.  However, if the child happens to hold few enough
-> folios for that counter to be negative, lruvec_page_state_local() clamps
-> the child's negative to zero, which drops the debit instead, so the
-> parent keeps NR_ACTIVE_* overcounted by delta, and its active + inactive
-> total overcounted as well, permanently: the child's local counters are
-> gone once reparenting is done.
-> 
-> So use a raw signed helper and reparent with that.  Ordinary readers
-> still keep the clamp.
-> 
-> Reported-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Closes: https://lore.kernel.org/linux-mm/CAN_Opa-+nb0vxQ+HsENCG2fEEMZoxG9Sy_DBC4CLkWjNLzDWKw@mail.gmail.com/
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   mm/memcontrol.c | 15 +++++++++++----
->   1 file changed, 11 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 091401cecf39..3f551e2e3206 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -562,11 +562,10 @@ unsigned long lruvec_page_state_monotonic(const struct lruvec *lruvec,
->   	return (unsigned long)READ_ONCE(pn->lruvec_stats->state[i]);
->   }
->   
-> -unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
-> +static long __lruvec_page_state_local(const struct lruvec *lruvec,
->   				      enum node_stat_item idx)
->   {
->   	const struct mem_cgroup_per_node *pn;
-> -	long x;
->   	int i;
->   
->   	if (mem_cgroup_disabled())
-> @@ -577,7 +576,14 @@ unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
->   		return 0;
->   
->   	pn = container_of_const(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	x = READ_ONCE(pn->lruvec_stats->state_local[i]);
-> +	return READ_ONCE(pn->lruvec_stats->state_local[i]);
-> +}
-> +
-> +unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
-> +				      enum node_stat_item idx)
-> +{
-> +	long x = __lruvec_page_state_local(lruvec, idx);
-> +
->   #ifdef CONFIG_SMP
->   	if (x < 0)
->   		x = 0;
-> @@ -595,7 +601,8 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
->   
->   	for_each_node(nid) {
->   		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
-> -		unsigned long value = lruvec_page_state_local(lruvec, idx);
-> +		/* Reparent the raw value: the clamp drops the child's debit. */
-> +		long value = __lruvec_page_state_local(lruvec, idx);
->   
->   		__mod_memcg_lruvec_state(memcg, nid, idx, -value);
->   		__mod_memcg_lruvec_state(parent, nid, idx, value);
-> 
+> I'm seeing good improvements with this series on x86 :)
 
-LGTM.
+Thanks Shivank! Much appreciated.
 
-Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
-Thanks.
 
--- 
-Best regards
-Ridong
+> 
+> Can you check with vmstat on what's happening on your system?
+
+Yeah I'll investigate next week what's happening on my system.
+
+
+> 
+> Functionally, my swap/migration stress suite and concurrent race test
+> pass on Zen5 and in a KASAN + PAGE_TABLE_CHECK VM with no warnings, and
+> the mm selftests pass with this.
+> 
+> The only difference I see is soft-dirty:
+> with patch 8, swp_pte_prepare() takes soft-dirty from the PTE returned by
+> get_and_clear_ptes(), which merges the dirty bits with pte_mkdirty()
+> and so also sets soft-dirty on x86.
+> 
+> After clear_refs and MADV_PAGEOUT, 8192 of 10922 unwritten pages in 64MiB
+> are reported soft-dirty with 16K mTHP (10880 with 1M), where base reports
+> none. mprotect() over-indicates the same way upstream, and David said that
+> is fine [1], so I don't have any concern on this.
+> 
+> [1] https://lore.kernel.org/all/380e029a-2d9a-43ee-9048-c4b490c11f41@kernel.org
+> 
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> 
+> Thanks,
+> Shivank
 
 
