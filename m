@@ -1,272 +1,177 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D22606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ACFE606A32C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZPhY/d2f
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mKxSM0kO
 Received: by kanga.kvack.org (Postfix)
-	id D9BA46B05B0; Thu, 26 Nov 2026 09:05:07 -0500 (EST)
+	id 03A556B05B0; Thu, 26 Nov 2026 09:10:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D72EB6B05B1; Thu, 26 Nov 2026 09:05:07 -0500 (EST)
+	id 011956B05B1; Thu, 26 Nov 2026 09:10:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB0566B05B4; Thu, 26 Nov 2026 09:05:07 -0500 (EST)
+	id E6C5B6B05B2; Thu, 26 Nov 2026 09:10:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A24496B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:05:07 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BB6D66B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:10:48 -0500 (EST)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBE761C36B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:05:02 +0000 (UTC)
-X-FDA: 85477441644.24.9296D7E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 88A1C12002D
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:04:45 +0000 (UTC)
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F9AE62456;
-	Thu, 26 Nov 2026 14:04:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919831F000C6;
-	Thu, 26 Nov 2026 14:04:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795701884;
-	bh=pNMdGCArlzbSAdigoh9SFuXrBkD6+wA1jwUtEGp3Jfk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZPhY/d2f0Z0spfxLYiJQZAJ2Ae/g0/yUciIgcKYMpjN6X8VOLaeyjAGEnlJLIr6qW
-	 v2qCp2VTfzE88g4PX2CHAmVIujS14JCS8YbnibHXrdRdqWfmTCI5LdAxX6wj8i+o79
-	 ZK1Kr9L0gzQofpMoXIlS0MVSeMRPHcby9f+uJ7/xbi6fRocGEhsGuTK55x2wAdjzWM
-	 +FLyZCiGy+u/WRD4flfGtNGqqxuYq1bF/G873bBzMZsFr9ZjNdBhwX1xdyaZ9fIZPl
-	 Q2XvB7905yX4pG4JRqIprg3/GK8a0JGI2H0Xidp91J2YV0B906luegrwHlURBsezB8
-	 pEbCfRw5EI+AQ==
-Message-ID: <cfe8bf71-7b94-4cef-8b27-9e50c3229a4a@kernel.org>
-Date: Thu, 26 Nov 2026 15:04:38 +0100
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D2C440479
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:10:48 +0000 (UTC)
+X-FDA: 85477456176.24.59B11D7
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6EB21A002B
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:10:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=mKxSM0kO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of nico.antinori.7@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=nico.antinori.7@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795702238;
+	b=exogOq76nqzCCCwxorCj/JsSe8a3ca4MI6+1GNlqPTMrbhDSGUK14fmK1qatqwHZ/obsWN
+	J79DGs0RPABDXqVBtKcr1IwBasbMap1BPjKLOriLPugb4ILY9jol6iUQp3uHy0OdTYqmZL
+	VF5E8g3OKPBSonpIs00Ly3axk7oNwA0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795702238;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
+	b=j29447NVyOJlWPgKRJk5C7woSEQ+MpsGtX6KsxbqFhORrVpGlLlgXO0dia9V9gir9GVDM+
+	gCttdg4xfsTxSTC17GBvsSmXy8jE3P9UnE9zlX0o6wiUAHGzqoH1wyNR+RRB/SJV8lydHR
+	MutTOgYQ02n8tnEJTYAivNfEhODRcPo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=mKxSM0kO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of nico.antinori.7@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=nico.antinori.7@gmail.com
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5eac7220e9cso2741465e0c.3
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:10:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795702237; x=1796307037; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
+        b=mKxSM0kO5TNAQo0W7/yA1yMLEelEDSBmM08QkAgKwuqHF7qhzWKPcWq4OoosBWMf34
+         qDFeQd9wd6Ke4CBDwasbltnwgAwor+RZIaRMhreFT9JBGTPC4DP+2ssmBT01DNCQeDFw
+         iEQ70Ba7rwTJ6f7p38gezDabBtaHNQesyXhZjZBCQiGdqEgCiEmspjRWrIRux3iVvOwz
+         FlLDsXp3ZILD8Hpq4oPtmZGE+/23f+MkjCTEsYZODbEPNEk7W80Nge7MROhLEYZNd3XZ
+         D2VVOCNpFDwRVQk5d5nGVkSlZaVGnbSMBFwvQ7wQba2EDQooEyqGrb5MV7s9BkCOPuB+
+         bTwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795702237; x=1796307037;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
+        b=GzUHQtCouETz5M8EAUX92uco+J6zofzoLbAYLXu1Trx9M4Mo7wyJ985b7MhY5yuNYq
+         o2OCpsQgCEApYAIwXNfhVg/haburviDC+zd60TfmvJJ82jsCsedTJ/xLPdctVzsxoCYu
+         5657WH+zbZesGda8EeC1v7VrdwHkrlk/k+FAHnZh4PPOZrJWgd7QTFhfrcxZYxB7TUZf
+         v7oUwKHya+puWnNfGtWIeMBGrMtBydf+h2j2QS40CgKtJFTQn81ZiAlj4lnUHZlueZZB
+         1yilBuTGrFIP8YSGOwcqoUliZgiU0Jc/4jcbeoKwf7N/0gshYhkB3sH52Q/Uv4BEjBnH
+         2MEQ==
+X-Forwarded-Encrypted: i=1; AL+hErGeCoeVAM3w9Aim2VLhd/isJa9RPUBhfGucG/iJblA8tdNmVd7agPP7pAq2QLIXRTgADhfECM9EHA==@kvack.org
+X-Gm-Message-State: APuU4Z9Eqekf/AY8JNg9R63dQLUNlAcUyZKC1oWFPlQMvT+ThA/45aQF
+	orACcTUt6cMQEjbEpL4iVpROhiuzF6+Kgo/f8YFW3LPWYJKQiF7jWq0=
+X-Gm-Gg: AZFdTZeZbBmotmKY2D4/S0YiCoKcrVCSg2obJu1R1+2UqQ7X5X2iFN7scjkk0qdItAZ
+	KS32SMwu94VbctI1YbdlG4MtIaAkVa5BrP0cVYr7iqNpkARmlGs7JQUQHVxiGEujIhcdhdgYSqd
+	LXf7Xz/tQRWy9ilM28lt2sz+m36cCgeqfG6Qnk93mSf4YL8OiIXh1Fd96eoSI6KUNF7UzzpTSds
+	qWKdTM77M9wokDpSA7PsOPDAT++3RmxLlfYLb/U/TsRVGztvh3Bq1ZyTrZ2WZx1EbUvVs4dZU5u
+	Fjaepj9ysQ3Nhk/pyFecTQsz7Pu1GZwTh1ADclrSp0rOymFbESjo51/ZPZAAwt0Np4rUl8XplNW
+	Z0mtAn1zTFb5hPCde+YYMHKXDexTqNq/BOigEi4r9AEka/gGTrVdfuJKzNxExGKcCNCIMHYFrVh
+	o/7lJ+wZg80sbPdeg7jKR4XU4Q6jlTSd3GxylbE/Hx9NqjoDwTnQpz54jsI+0quVojtc0PWTX/Z
+	3Fn0SyqNAdlHMo6IdQ21M1E6GZ+sffZUm6tyGg7FzUYsdRGv84R+eNTeaJFNIRSnVkEmt2QHh7r
+	70aTYbjlR4GCT9vNf1zNygbLVCz+CrjcjdHb4F663Zgz9GzCPdmUivUGQXNyjVvj
+X-Received: by 2002:a05:6122:3b84:b0:5ea:e324:7c0c with SMTP id 71dfb90a1353d-5ee8af8d6fdmr11736966e0c.22.1795702237493;
+        Thu, 26 Nov 2026 06:10:37 -0800 (PST)
+Received: from localhost ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee91a4e0cfsm19471567e0c.13.2026.11.26.06.10.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Nov 2026 06:10:37 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/9] mm/gup: convert follow_page_mask() to return a long
-To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
- Christoph Hellwig <hch@infradead.org>, Yuan-Hao Hsu
- <aa9736195201@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>
-References: <20261123195609.4115244-1-riel@surriel.com>
- <20261123195609.4115244-4-riel@surriel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261123195609.4115244-4-riel@surriel.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-HE-Tag: 1795701885-331186
-X-HE-Meta: U2FsdGVkX190/vrECc+BDVdLnDXBVz8i+jYLSca8yg4E5uMSs5JkrXh1Zk/jjoy3Huqu1ExHvEmF4tDD5+QR9s42rpj+9jqgMrMgKIWUk/7QLGo+PGyxGQTrAzQ8IfMLOyaFG/Mwgjg2DMuZtxPQM8AI7NGXFoWTPxm4eVR2uagCrg59jRNJa25cu/+2Rq8OKh3c8Slj374SvpfMwwDDsmK2zf/flNi8OgOTiv037hPMgJapEFLCgU8SEyXMQThiWsDop4z8mLxCmfdStdtE0QLGay58S+XdVhYwlkAbwWQxKd9e9j7GsOXBGutJuEM8m1f21O5X8XhuMig/ptjOawn3DncMG8KTIBnW5GVMUC326yJEb4nTYCKY44XoqOhRpAXKWLmm1J5kU5A/nKdP16+65Lx9W8ppehhmrBFgWUB45lY2q82dlE7WXKlB26myhoTMp2yIKB4=
+Date: Thu, 26 Nov 2026 11:10:29 -0300
+Message-Id: <DN57BC2XOPSJ.2UE7DI9RNQUBD@gmail.com>
+From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+To: "Ivan Tverdokhleb" <mbkchelofficialdev@gmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <linux-mm@kvack.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2] rust: mm: warn once on invalid VMA range
+X-Mailer: aerc 0.20.0
+References: <20261124132609.101657-1-mbkchelofficialdev@gmail.com>
+ <20261124153228.134723-1-mbkchelofficialdev@gmail.com>
+In-Reply-To: <20261124153228.134723-1-mbkchelofficialdev@gmail.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6EB21A002B
+X-Rspam-User:
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: kyhkdm5z9gqyyyuttkaxzk1469qn8fdb
+X-HE-Tag: 1795702238-185587
+X-HE-Meta: U2FsdGVkX1+SLFfGGIR1scsoSACAq2K5yQWVuWJGCiF4N2O9MH1Q9d7O48WSEfUaWKs+yw+QlpvqDgxHM2QkwOFbxgOejqC3+p3PordcWshWn2E2P5rOQ8nrFMW8WM45agBA3Of4lYDIUvwVkpccXWVtUQtLLZOHXG31d8yqbgZ0IxhRjXPYrl1t4awv3myQ+Os70Gxs9EODSU4vDHt3gf6/kMfrjznIg3zojSWnHc1Ygd/I0SRstsoL1OpWGyzstx9G+K1hPHfUb6PxXcnyG5fFK29w9bhSKQ978hurbzgp4Obliqm88YDUnB4P4PM5Voo1yeC2+/7BBS1PHyfZAGPn8jC+pZ7Sz7XP9Fl20Ld5Hh+jen4iWnmFbsI0FrYI7PH6O0aBgJDIhiUkthDGThDHHwrqYrTpsASkeLRzmAZjykO8qhLefLg26uwWxvx5TuqcyAQYCzvvtrTXGJvlyJA+sl/tVVHMjgXsGqspOlXnTKtSbzIBEXh22H3zdoIFQhEpzzknNvQAVK/cdXMFu2ZaJiz8/D2Q6ImQ6Pi4jH5lzqd+dhjPCjnEsAg+nyzosY2jFZtaLvF4xd/WJvBRzPo3l2HxwBsesce2G5dqo5kBnZTUFoxhZjhUdlXxDF0967dGeZLd2q3RulVG1Igjd8G8OcWprvacJeHezbY7UUAHzBcZFVrrkWtWlAs5zpnWkWZUPv7PVm0z9jay10QBkqW3ITtf1TxwMkCValZRwj7aTdqoQF6EGzlQMkx5Gy/6einKEdoaqzfhD60+DSiStM9q1ly0gPfwmi6Bl5oXdTy0Ud9d7+0y2lQc4bliTWn8v6XK7ePOt9+4y8MbduhMp5/VKDZUWseU8qYgx/AjyDrzj+/U324PKrJCC5/ywwYuiUxUXES2yeTmfhC40KXoFjUnSOM9LekIkmnT4JsOl9dEm6adBf2ORxCx49cOgNVn/nORpegGyXqw/c8/T5t
+ C5Qj7eog
+ 8Kf0Tn2qQNr2Q0AUt1bvmfkFv6C+DZFxCOuEyAw8sizkZuPq79wLQMyNOe7R1/MipCrpPu0C1Z8MKd2zX4xUKiTZggdV+dbR5DJxWqU37rG43gPm+UyrAMQUXqp/HY3rhhSzb4/fDnuYfiHuhv3US9avjG0NxxTgGmpSc3jbJRTrv1lMMFba+nqrnMEixZxCvTlTz3gzMi7+/BLJa9FAZr13HF+jXeow9M2EpRpT/RvCPUQpHS4Kti0xw1b0M4iK3jvkftIhECcskEI0cVz/2pQ2Z+TCiyQsgvQV4BTFHGQHvM2TKvUg8B6gLA615KgFhs4Gn9ix0692PozC+Fqv2MkWWF6Gn3dbGyMNYQyAQS0glkim2fP/1Ow1v4zguef0qq669eKN82oHxPDnNwPsEWbBYo+ft9QhM0TzDARQVlZLP6dfWLIOQ5rDYUnU2gR9lA+I9jWf1ifg9IWfAyCH1BJlNi/qTuwltwoxi6nccOpykXG/NygmA6Io7791eSN8gZ7i0/rtdMSPwEqZTNWWdzVTbqx9fwE/mtgmSjqH5wMFgC95ezfMH+sch2DE4NzmvTsGjg7OPAGBLavCFNoWNLHzABx1/iXwRmKgilDaqU+O+B36raSIUKhCZ695EImW0s8vGW24pXIIHjya9wQGyeS50HzC4jr1RiMlPu6mjQvioMLl2KK2Vq3RlQ3ApVCsXr40RJIK+JSBIfPrmETIlufZNfFGt4HjGDAnZ1leZcv8gYEDl883jEnGTZ7p9YR02n6bznQxcP7pG7mIvRRwvPO2rfwVtypwZoV2FLSmrUMeuYwetCMOZyBs0mEixGoawUF0yi8oGq+LglUo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/23/26 20:56, Rik van Riel wrote:
-> follow_page_mask() and its helpers return a struct page pointer: NULL,
-> ERR_PTR(), or the page found. Change the return type to long instead:
-> 0, a negative errno, or 1 with the page stored in a new pages[0] slot.
-> 
-> This lets the return type carry a page count rather than a single
-> struct page pointer.
-
-You can say here that we now make the interface match gup-fast.
-
-> 
-> follow_huge_pud(), follow_huge_pmd() and follow_page_pte() now store
-> the found page in a pages[0] slot. __get_user_pages() reads that page
-> back from pages[i], fills the rest of a large folio's run itself, and
-> flushes the whole run's caches with gup_flush_pages(). 
-
-You can say here that we will rework that next, to collect all folio pages from
-inside these functions directly.
-
-> The follow path
-> itself never flushes: the caches are always flushed from
-> __get_user_pages(), without any page table lock held.
-> 
-> The vsyscall gate area bypasses follow_page_mask() and fills and flushes
-> its own slot the same way. The gate handles a single page, so it
-> initializes the count to 1.
-> 
-> *page_mask and __get_user_pages()'s handling of a large folio's
-> remaining subpages are untouched, and mm/gup_test.c
-
-As willy keeps saying, there is no such thing as subpages.
-
-"a large folio's remainin pages"
-
-> (PIN_LONGTERM_BENCHMARK) shows no measurable difference for 4 kB,
-> 64 kB mTHP, or 2 MB THP.
-> 
-> No functional changes intended.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Rik van Riel <riel@surriel.com>
+Hello,
+On Tue Nov 24, 2026 at 12:32 PM -03, Ivan Tverdokhleb wrote:
+> Use `debug_assert!()` and `pr_warn_once!()` in
+> `Vma::zap_vma_range()` to report invalid ranges.
+>
+> Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
 > ---
+> Changes in v2:
+> - Drop the `warn_once!()` macro and its KUnit test.
+> - Use `debug_assert!()` and `pr_warn_once!()` in `Vma::zap_vma_range()` a=
+s suggested by Miguel.
+>
+>  rust/kernel/mm/virt.rs | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> index 63eb730b0..1a3a990c9 100644
+> --- a/rust/kernel/mm/virt.rs
+> +++ b/rust/kernel/mm/virt.rs
+> @@ -115,8 +115,9 @@ pub fn end(&self) -> usize {
+>      #[inline]
+>      pub fn zap_vma_range(&self, address: usize, size: usize) {
+>          let (end, did_overflow) =3D address.overflowing_add(size);
+> +        debug_assert!(!did_overflow && address >=3D self.start() && self=
+.end() >=3D end);
+>          if did_overflow || address < self.start() || self.end() < end {
+> -            // TODO: call WARN_ONCE once Rust version of it is added
+> +            crate::pr_warn_once!("Attempt to zap invalid VMA range\n");
 
+I believe by the comment of Fujita [1], the `pr_warn_once!` should be
+guarded by `#[cfg(CONFIG_DEBUG_VM)]`.
 
-[...]>
->  		/* first iteration or cross vma bound */
->  		if (!vma || start >= vma->vm_end) {
-> @@ -1523,8 +1536,11 @@ static long __get_user_pages(struct mm_struct *mm,
->  						pages ? &page : NULL);
->  				if (ret)
->  					goto out;
-> -				page_mask = 0;
-> -				goto next_page;
-> +				if (pages)
-> +					pages[i] = page;
-> +				nr = 1;
+Regards,
+Nicol=C3=A1s
 
-Why not use gup_fill_pages() here?
+[1] https://lore.kernel.org/rust-for-linux/20261124.225103.2152350984946270=
+550.tomo@flapping.org/
 
-But why do we goto fill_flush where we do another gup_fill_pages?
-
-> +				page_increm = 1;
-> +				goto fill_flush;
->  			}
->  
->  			if (!vma) {
-> @@ -1546,10 +1562,11 @@ static long __get_user_pages(struct mm_struct *mm,
->  		}
->  		cond_resched();
->  
-> -		page = follow_page_mask(vma, start, gup_flags, &page_mask);
-> -		if (!page || PTR_ERR(page) == -EMLINK) {
-> +		nr = follow_page_mask(vma, start, gup_flags, &page_mask,
-> +				      pages ? &pages[i] : NULL);
-> +		if (!nr || nr == -EMLINK) {
->  			ret = faultin_page(vma, start, gup_flags,
-> -					   PTR_ERR(page) == -EMLINK, locked);
-> +					   nr == -EMLINK, locked);
->  			switch (ret) {
->  			case 0:
->  				goto retry;
-> @@ -1563,7 +1580,7 @@ static long __get_user_pages(struct mm_struct *mm,
->  				goto out;
->  			}
->  			BUG();
-> -		} else if (PTR_ERR(page) == -EEXIST) {
-> +		} else if (nr == -EEXIST) {
->  			/*
->  			 * Proper page table entry exists, but no corresponding
->  			 * struct page. If the caller expects **pages to be
-> @@ -1571,49 +1588,56 @@ static long __get_user_pages(struct mm_struct *mm,
->  			 * for this page.
->  			 */
->  			if (pages) {
-> -				ret = PTR_ERR(page);
-> +				ret = nr;
->  				goto out;
->  			}
-> -		} else if (IS_ERR(page)) {
-> -			ret = PTR_ERR(page);
-> +		} else if (nr < 0) {
-> +			ret = nr;
->  			goto out;
->  		}
-> -next_page:
-> +
->  		page_increm = 1 + (~(start >> PAGE_SHIFT) & page_mask);
->  		if (page_increm > nr_pages)
->  			page_increm = nr_pages;
->  
-> -		if (pages) {
-> +		/*
-> +		 * This must be a large folio (and doesn't need to
-> +		 * be the whole folio; it can be part of it), do
-> +		 * the refcount work for the remaining pages.
-> +		 *
-> +		 * NOTE: here the page may not be the head page
-> +		 * e.g. when start addr is not thp-size aligned.
-> +		 * try_grab_folio() should have taken care of tail
-> +		 * pages.
-> +		 */
-> +		if (pages && page_increm > 1) {
-> +			struct folio *folio = page_folio(pages[i]);
-> +
->  			/*
-> -			 * This must be a large folio (and doesn't need to
-> -			 * be the whole folio; it can be part of it), do
-> -			 * the refcount work for all the subpages too.
-> -			 *
-> -			 * NOTE: here the page may not be the head page
-> -			 * e.g. when start addr is not thp-size aligned.
-> -			 * try_grab_folio() should have taken care of tail
-> -			 * pages.
-> +			 * Since we already hold refcount on the
-> +			 * large folio, this should never fail.
-
-This code recently changed slightly:
-
-commit 2d9bcd380585abc436f055fbb618b34f98882004
-Author: David Hildenbrand (Arm) <david@kernel.org>
-Date:   Thu Nov 12 23:53:24 2026 +0100
-
-    mm/gup: limit pagecache folio refcount when grabbing references
-
-So once you rebase on top of mm-core/for-next, there will be some smaller
-conflcits but nothign earth shattering.
-
-
-There is a lot happening in this patch. I wonder if there would be some way to
-convert some of the functions before converting follow_page_mask().
-
--- 
-Cheers,
-
-David
 
