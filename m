@@ -1,154 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFEE606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 02:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1556D606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 02:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iHiygrY4
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rMsou7hH
 Received: by kanga.kvack.org (Postfix)
-	id 5714B6B0B5B; Wed, 25 Nov 2026 21:09:21 -0500 (EST)
+	id 1F0DB6B0B5D; Wed, 25 Nov 2026 21:09:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 548B76B0B5D; Wed, 25 Nov 2026 21:09:21 -0500 (EST)
+	id 1A0A76B0B5F; Wed, 25 Nov 2026 21:09:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 460146B0B5E; Wed, 25 Nov 2026 21:09:21 -0500 (EST)
+	id 0E0F46B0B60; Wed, 25 Nov 2026 21:09:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B2B46B0B5B
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:09:21 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A416F1C46B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:09:20 +0000 (UTC)
-X-FDA: 85475638080.07.64D9A68
-Received: from mta0.migadu.com (out-113.mta0.migadu.com [91.218.175.113])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 970B8A0004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:09:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iHiygrY4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.113 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DE1AF6B0B5D
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:09:50 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6885A40270
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:09:50 +0000 (UTC)
+X-FDA: 85475639340.02.7280A20
+Received: from mta0.migadu.com (out-128.mta0.migadu.com [91.218.175.128])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6352620002
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:09:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rMsou7hH;
+	spf=pass (imf13.hostedemail.com: domain of enze.li@linux.dev designates 91.218.175.128 as permitted sender) smtp.mailfrom=enze.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795658959;
-	b=WED4i10Ei9APZJNHT62CghAOz6DYAs4WftcgG0TUjOblkaf77GUBk6T+xpLJ9ipGRFTlD5
-	ho/rpiDl/M0nd18CWtmp9/v7Sdh4fe4/zsJ0V2q0u7kGFxCboAnaVeakzstK62BumcHls2
-	AsSegypRaoztZClGBQLZX5mnbty1HnE=
+	t=1795658988;
+	b=sfBcND/P1T5p0UP6f2mrjqqrnKoZdbhA7Rhd4RsVY7oLh9fR+SGZSe8SfVAPM3oNwJ0uAB
+	GGXzf6qahyWwVIPviAIOR2U0siFi0/OLPzIpIv8ocCYhl5aq2H2LjL8Cbzb472+ERad9p8
+	FTQJM/CgeH+rkxomPv3IvMyk1hRimLM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795658959;
+	s=arc-20220608; t=1795658988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CcruErW631cRyNVYcZhaTd+ooyBSWxhrtfIr60h9UBg=;
-	b=kLKfnQx55kTsttqAjOsoE5EFhga08FnsVNigXydVEPXRwVSCGJ0JW0QuFN+Sc0FR/Y3UJN
-	sbLvMVGlKRIiyx226KNZMznwVLFOxY4LshtN11/G7rO/TOp32/9mOgESwqfEpjGCID7mHh
-	N8BWwaX2sbZOsdyl8H8w8reg0YtytCg=
+	bh=QFCJnUDvI/zg1+C9IEAmU9f3aSLnc5uju1bEjEaUAKU=;
+	b=ZBSwABfHuIljOoWe0baMZ4DeIq/ivmmHTN6AxhfmdhbZ+5FwnUJVZB1ZkI8Gf4EjI7Mv9s
+	s8J0UnVbDgI5ciVbxy8onOjCiCzxI7o6oEzNMURDxN/Dav6h7dalBpa0YKesHoRNyCZqz6
+	qqJcA3fzyQa2KjHd/kiQcZY16zof8IQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iHiygrY4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.113 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rMsou7hH;
+	spf=pass (imf13.hostedemail.com: domain of enze.li@linux.dev designates 91.218.175.128 as permitted sender) smtp.mailfrom=enze.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=CcruErW631cRyNVYcZhaTd+ooyBSWxhrtfIr60h9UBg=;
+DKIM-Signature: a=rsa-sha256; bh=iPPxwdSBC7SlFa3kpJ7q0c07VmKdWjj/7qHY2bBVFek=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795658957; v=1; x=1796263757;
- b=iHiygrY4YdMMVg2PiVGi7WPUsuMeCiRWM6CpkTSUqvsjiB8j+BahxwGM+iwWHTN8s2d4ECK+
- rD2PKTT8rm58DkMPRcCSgEq+SLUBU5EijXFnr1RTqgFh4CWIK7gmgjY5Ho7W6XPV0ubECqn0KyG
- WbO2danQxz4doYswc8WhOKrQ=
+ t=1795658987; v=1; x=1796263787;
+ b=rMsou7hHxIbftKxzemcNQukrZeleDw/BRhARpk9a8XZZK28jkPvgbHPqPjmCUjCiQJJlDe8Z
+ aPeaS6XWgB83cC96ZdAnQ6Rxyp806lwfvcnkROSTVe06QPa+TSE3R9qIyB8mMmri+ewLo6KMTBA
+ uZyfBFtC1Hi8C1FEodIdr0dc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e1cc9e9085ce54e2;
-	Thu, 26 Nov 2026 02:09:16 +0000
-X-Mizu-Trace-ID: e1cc9e9085ce54e2
+Received: by smtp.migadu.com with ESMTPS id 3ff17c68b4d8eade;
+	Thu, 26 Nov 2026 02:09:46 +0000
+X-Mizu-Trace-ID: 3ff17c68b4d8eade
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+Message-ID: <842629d5-974b-4987-b9cb-0f0792e3d69b@linux.dev>
+Date: Thu, 26 Nov 2026 10:09:44 +0800
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH 10/21] mm/hugetlb: only check PMD table sharing for
- PMD-sized folios
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261125-hugetlb_fixes_2-v1-10-db27fd2f71a8@kernel.org>
-Date: Thu, 26 Nov 2026 10:08:45 +0800
-Cc: Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jinmeng Zhou <jinmengzhou22@gmail.com>,
- Hongfu Li <lihongfu@kylinos.cn>,
- Andrea Arcangeli <aarcange@redhat.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Dave Airlie <airlied@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mike Rapoport <rppt@kernel.org>,
- Mel Gorman <mel@csn.ul.ie>,
- Dave McCracken <dave.mccracken@oracle.com>,
- Andy Whitcroft <apw@shadowen.org>,
- Adam Litke <agl@us.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Rik van Riel <riel@surriel.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>,
- Lance Yang <lance.yang@linux.dev>,
- James Houghton <jthoughton@google.com>,
- Yang Shi <shy828301@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>,
- Gregory Price <gourry@gourry.net>,
- Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Byungchul Park <byungchul@sk.com>,
- Alistair Popple <apopple@nvidia.com>,
- Wanpeng Li <liwanp@linux.vnet.ibm.com>,
- Andi Kleen <ak@linux.intel.com>,
- Kenneth W Chen <kenneth.w.chen@intel.com>,
- Hugh Dickins <hugh@veritas.com>,
- Michal Hocko <mhocko@suse.com>,
- David Rientjes <rientjes@google.com>,
- Joern Engel <joern@logfs.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Michal Hocko <mhocko@suse.cz>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
- KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Sasha Levin <sasha.levin@oracle.com>,
- Guillaume Morin <guillaume@morinfr.org>,
- Wanpeng Li <liwp.linux@gmail.com>,
- linux-mm@kvack.org,
- Jason Gunthorpe <jgg@ziepe.ca>,
- linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@osdl.org>,
- linux-doc@vger.kernel.org,
- stable@vger.kernel.org,
- Chris Mason <mason@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7348490D-C5B9-4471-AFE9-CDE68FDBAFF1@linux.dev>
-References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
- <20261125-hugetlb_fixes_2-v1-10-db27fd2f71a8@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 970B8A0004
-X-Stat-Signature: hzeiau4uaj69zj7rzzweo989ytashf1t
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Enze Li <enze.li@linux.dev>
+Subject: Re: [PATCH v2 02/27] mm/damon/core: implement data attribute report
+ queue
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org,
+ Aveline Noir <jm5905938@gmail.com>, Lian Wang <lianux.mm@gmail.com>
+References: <20261124153636.91854-1-sj@kernel.org>
+ <20261124153636.91854-3-sj@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20261124153636.91854-3-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-HE-Tag: 1795658958-587183
-X-HE-Meta: U2FsdGVkX1/aaQrcTH/za0hqA9ng1r+Bdj6pK12eKdE491mNVjguLD0VTt/3iwo9QF+S8vOYqLxs+mAmRt0NLvPgfv/YhvT8K2pQGhOr6BbS7kTiCeUXzrn/uOfpYlPiZa9cvvO0Xiu3I3HNCDEDUZ/ar3Y8IprGEq0L/c8gd+nEH/6mhz3OzYEo2JRnJ0FyPxCEjkONbbc8cW6nykMpah62HAP51qy5Nay/wXIjc0YRF3X4bswB5jDtvwLnUEFcttiNXXjRyHaIsBrAVFnPyeisf9l9BhUREY28mfwiKbyr9U0g0O77HF+evb25zG415m+3b5G4p3XL8aHAztgKtCVTvcGO4/GeXew67ci4zTaLlxoUyfK9Vp8RsO7Zxtu6+qmbU3MQsKeb4absyK33PFSiDSWFqQ8qGl3yULvtCrPnJuYNwQ8Wg2T/BeMZwu3tylQSgLKjfzVNpdgFtZuieGanTs3+jmIbQOe45R4Mb9C09gaOtF4AYJnCknxBw0OOehj3J2eWnyfuFySxBTbKyecKCWuAjtd3oO3eQJnuCqvVu3pOj+nxthJSAZU2n6oIoOX4e7zbG9hmbd91ZFaA9rQRhn6NTPridmCfON0MD7o6TZINBD4aTcC6aQgLXc3LLh3ovgExSjR7bxh/wo9eMiXkqSY+qhuLK+cFQlk4yXf3fo9Mi5MznMXnbJ7yOylJwlnROIpWmv/Aiji44bXUR3tinKOGX0Gcneote0NzzfiruCSKYJkJBqOrdjbTG9EqR9CazBLgo2RHXh21HJJJmwlaeh9vQc8+Am+dqwaIzjOoh2A6XxffAjhMShb+GJxpZBsWomt4BlI1KQ8EPLA+Voa9VPj1EbXB+4BHDC2J4QToHdi0cbDPdddSoSGOu9Pw402QKMPa1YlJJ7UQ06xWH2LEDUIjG0OsNAVswMKggw5BkfiFXXTF+AYKYT9CgL5AaGTBinO9U5xiFQ9C1U2
- IadWq82s
- hmkQI5QpkV1rhhbD45bdAq1O5q5fiEUXZ5UUiKP7thrJSNhr/6ae0h565ZCmpe716Pa8iqcGWxOZLKeyH3njbbk8f3NaXAvgis4h2KD8zzghPgBYElebga7LkGobZjxcqpbxO3/mxbWys56B1B+vnEt4yKbV1TcxPpyZUIaQPJd63sx4/vPpJuA1pWZM3kmJdHLrH5H+Keym2YafR22t1tlpEYnYjqZu9rlEpWVF8ph1vbCT+PF57CylRNx6aX4fAmjUbDpTklLly3zDXl04QrNap41y423oFUWRzS9Uav20PV9yvXS7hPiUGSbWsUBlcVzhqLLYIV2eLq59YXE1eXWUGWS4LDPkN5EO4J61LrzKpnVkh182BcXywWZDNrNvyvd412O2b+U3RCQtpGABZnupsTulvQjXBc8mhjqog+/AsA+LUug1Bhng2N8PtKN1FB2ar4kwhtvzaDna2S97Ue3253TzclBvLrCRUI03g5Iu0RwDDviwxGLemEFbeE5LT0ES4k4kx5GjmtM7C6YeLQLpLeNRSz4OPW2seJnlxoHszN32ponknebGtAclZMSb2fttUAWZ5ifkjizwLvHcsWVelSB5ZKv4cTE6PrOGi+U6COY0=
+X-Rspamd-Queue-Id: 6352620002
+X-Stat-Signature: ow7itgau4fgpmq7hspgptnqefdjyc4c7
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795658988-636431
+X-HE-Meta: U2FsdGVkX19g2g5B8q3evwsYPSUPLMLBR9JIzer4sHjohZUuKou86OXdDaT/bxQ8WOsZTRzMOsaDgrLdJAcNTO0ZQNlI1080rn4gkoYvNeukxrUaTK3ZfJE592i3BvtKeP1b4b/JGwvR1DrnfdLeA+RM166I1Vd1PKQErYpdltSOgNj6HWcZjq6gs3Qb/iOTHJJz8lKz3BYM+piz45Ng0H3kQgRuGUfZsz4RL892VJEXa/YEUgMTlX/glVUY0f91u9AC68tEF5yWTB3E5jO8Uw/erApMYSvL8HH7JVgkD7uEgvaF4pC8t4qcIWP6pzzvPryU/9J2VcoIF24/QzOIvsXMsKCTT/xOk7exPmJSVBlAvQURmp2mFQdh9DtrCDw+KpUZnoLLSuTlS6+QjIjP6JScq7cxwkf4iGZTpXL/24RSN9zv8dK6mVE0D81eD0XWfp/RDxWq2y3WB1YCiW0sqeCDIQhHKgbQWKZ4m3R5R7hq54+RcLDhwYdIZSL0lQrawXt2ZJ4MSTqrHKNo/czeXh8qhEQN8uOxjwwLkfm3fkKaDbfX5fHZqLbtwLaKIK1g7WDyxEKrdCO4IThpZLC2wZvXTsv8KM2QP7+yDxtlk1pHtI/xHmgrCRzSQSVBeLA4UjbR5+Flb4Zm2YDLhIIv9z8Rqag5SE4BE/lLHtyHS+8flKIsgtErxtALDeR3chxbkl+E9CI+hOVnRA8BRfyqckdNzfbvRuqHoRgt4OmYURyWRezsKDA0JUxhFKKI1Je/e5yEWM7rvIUu+GLgETvYmYwCjJ4KCb0ESUw9Yvjz6k7J6S8yi2xuDTAww8JMjgOaCvURwnwX0y+p7WnAdmDOcYuaL50OU+MnrnOFlkvsDG5AV7we9EQU3C3xP4l0OuE0akZCSI+JKfsUtOczeRPHdpfPZtHWkRma+4QslXuHF+qYgrWOvU6pFa8OrUCmz5qfVQEY1MOcyxBT+ugfgah
+ bAKhbhsL
+ Ii+mR6Ed/X5o6F5/UDuLqnp7AuGRVj9VyPX1k5/Ek5kVOe1hSxAi8B7baxujNfWKN89bgwuTbL3EHjb29BhLA9zvHY4I9AJ1lEzLR0qsS+VkDQrp6E5MGqp4q9mK1upUl33tbCEZTl79zf2hJVwCHZP+keA26kWWCQSAqBvSL1qnMGzNqFCFQpayGqoY5HuYc+8BTx5QekN1MUe6tpWy8TSE4U6agE36JMdzoFlH2/vXiKlHxTJ9c8EVecwGTCoMLARbxDL+Rs3NmQnxxHHNFihnkwdLQXotebkv1P5OIB0BDm5vbhk6OyI1cxXv4/R67fWst9g5cCHd5xVxMvntELSQcoCyHYpZaNaDEiu4+Zd2lh83MQJ6hjutgAK94JVwqbrvJNI4juAFjk70Oh5vJ4GJ1bwqGm5eudj5nk9g2xRr2kkRCloif14JA333qc6FRYWjkwobGbtgrApvhLSt6ewpk2je4vZHMQEywkBgin3W5pYjiCHRc1sfpjgSPf/JQfE4r6xp4AnM6LKVS5a3CeeCgwTSC+mkrTLYoDOPMpKu/WL1eLDpzi4SwZ38Jlux5PMTbF85Ry9imiLL7NjvBtEMqlLkmMZGxYajzm2tEMyuy6RM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,39 +96,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 2026/11/24 23:36, SJ Park wrote:
+> Implement DAMON core internal data structure for queuing received
+> data attribute reports.  Initialize the queue for up to 1,000 reports,
+> inside the DAMON init routine.  Destroy damon_region_cache and reset the
+> pointer for the queue setup failures.
+> 
+> Reviewed-by: Aveline Noir <jm5905938@gmail.com>
+> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+> Signed-off-by: SJ Park <sj@kernel.org>
 
+Reviewed-by: Enze Li <lienze@kylinos.cn>
 
-> On Nov 26, 2026, at 06:33, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> hugetlb_pmd_shared() reads "pt_share_count" from the ptdesc of the =
-page
-> table that maps a hugetlb folio, independent of the folio size, to =
-tell
-> whether that page table is shared. Only PMD tables have a valid
-> "pt_share_count"; for other folio sizes, such as 1 GiB folios on x86
-> that are mapped by a PUD table, we read whatever another user of the
-> union left behind.
->=20
-> As a result, such folios might be reported as shared in smaps and as =
-not
-> exclusively mapped in pagemap, and mbind(MPOL_MF_MOVE) and
-> migrate_pages() might skip them.
->=20
-> Let's fix it by adding hugetlb_folio_maybe_mapped_shared(), which
-> combines folio_maybe_mapped_shared(), documented to not care about =
-page
-> table sharing, with a check for PMD table sharing only for PMD-sized
-> folios, and using it in the affected callers.
->=20
-> This has low urgency.
->=20
-> Fixes: ca1a47cd3f5f ("mm/hugetlb: fix hugetlb_pmd_shared()")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Reviewed-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
-
-
+Thanks,
+Enze
 
