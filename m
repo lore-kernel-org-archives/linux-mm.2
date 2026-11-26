@@ -1,115 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFD3606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B01606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cLtgzE2m
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dJDPIgoI
 Received: by kanga.kvack.org (Postfix)
-	id 058486B05B8; Thu, 26 Nov 2026 09:23:43 -0500 (EST)
+	id 3B4706B05B9; Thu, 26 Nov 2026 09:24:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0088A6B05B9; Thu, 26 Nov 2026 09:23:42 -0500 (EST)
+	id 38B546B05BA; Thu, 26 Nov 2026 09:24:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E60276B05BA; Thu, 26 Nov 2026 09:23:42 -0500 (EST)
+	id 2C8406B05BB; Thu, 26 Nov 2026 09:24:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C72C46B05B8
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:23:42 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6773E1404A5
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:23:42 +0000 (UTC)
-X-FDA: 85477488684.22.4BD825B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DEF66B05B9
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:24:08 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A91E402FA
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:24:07 +0000 (UTC)
+X-FDA: 85477489734.04.121C115
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B3CE3100008
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:23:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cLtgzE2m;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0CD5940002
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:24:05 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJDPIgoI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795703020;
-	b=AN0T5RP8ULgW8kC2MhMkJMxL4RDdkT51jNghudg9v9WC3TzdhqHAIrmPfk6p0qSz6n7stz
-	VfJiCTXwMgKKwW0Ns6zGJpHo0vY6lJsTywQlOmUijdK0bn9R/PLw/uEQfteiwwfXJ2JD5R
-	LM6nbdg4R3MpvIqBPv5yH5N9xpCdgMQ=
+	t=1795703046;
+	b=d/7oEVl9keLRkKcpDHBb9twChGR3qdNZoXzQCzzNiv9/l48o6bVJhBFOH7zuwFcMDxvL7X
+	z4FwCW0N6kJRGDR2oz1CwoAlZ8hTRnpXQBEAnOw+gY/WTXXZFdkq3E0kZPwubICztGwEg2
+	ksdV4HeAKql9NLW53UZDAnnTy+M9Moc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795703020;
+	s=arc-20220608; t=1795703046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TM3nSQU4U49T6GuNdT3oigc7kZQ4pNCPYHhbPmQrcTg=;
-	b=jSpHsx/XmvKDawElMiMNbHVWa5/+ZhQA/SNJREFl+TL+Z1NF2Ur0H/KKLu934t6HJCWW8D
-	+9PRFS+XsFy0oDq+Bka2w2JrH8dKKx8ijsHKSY/NotLe60xhgKCpNGxuQdPDssUgmElqcW
-	82JmmiLmv7Rw3fvYfVHg8UpGyYYucIQ=
+	bh=nGDviZu4wWbCw/94ZJVbbOlqdCrfKBOx/sMrkNJCHBs=;
+	b=cZpGHPKYR0znbir7ZkJLurH1c3ZGrSu4WWQi1RNOR9NF6VflL9AQrmL89Q5MGzvOUjnMov
+	39K1hV8FGF658W95WYrP8d56dc18sZIGbdGZiNyByYhM6OSy7rX337SHB34omebYbKKzYl
+	jbOpdlr+IeFVT+6WReyYWVS9UvvhAco=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cLtgzE2m;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJDPIgoI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFA3F40015;
-	Thu, 26 Nov 2026 14:23:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2CE1F000C6;
-	Thu, 26 Nov 2026 14:23:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3916A4448B;
+	Thu, 26 Nov 2026 14:24:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AA41F000CA;
+	Thu, 26 Nov 2026 14:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795703019;
-	bh=TM3nSQU4U49T6GuNdT3oigc7kZQ4pNCPYHhbPmQrcTg=;
+	s=k20260515; t=1795703045;
+	bh=nGDviZu4wWbCw/94ZJVbbOlqdCrfKBOx/sMrkNJCHBs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cLtgzE2m1YoJXGpueRMJ0WG9tvSKfNQlB02h6sqo7+CT8SIX7diyIjeNQZEBq+Rmt
-	 c3wVUQBaScWcqNmdizx9oeZqhcQnvwkubrAnPGao9ZHg/pRNuxscJLtGFEwWhyKHZe
-	 nD/eW4RvR6/G4RIOLr/J3D0i1W1bfaIVV4gV6Xo1o3NxvrDYmUXGUKIoxb5lrWYo0q
-	 Xm3lS0pcjZzeAgfeDD994mnwvbbJ6Bb4w8QRSJ88kkDhfkdRtNyJf6tq4OTMhrIQma
-	 cQteoWOcf297BZrDLqN31mAQGOYddmIaQKOZUGDlnYAJ1X9HJwRkWGecY/FtSID7JT
-	 LyLKLX3iIqGPg==
-Date: Thu, 26 Nov 2026 14:23:37 +0000
-From: Harry Yoo <harry@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>, Hao Ge <hao.ge@linux.dev>, 
-	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Robin Murphy <robin.murphy@arm.com>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Amir Goldstein <amir73il@gmail.com>, 
-	Casey Schaufler <casey@schaufler-ca.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	linux-security-module@vger.kernel.org, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Eric Dumazet <edumazet@kernel.org>
-Subject: Re: [PATCH slab/for-next v2 04/14] fs/buffer: specify
- SLAB_MAY_ACCOUNT for buffer_head cache
-Message-ID: <awhA1sW94lviTsgT@thinkstation>
-References: <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-0-7c680f02a734@kernel.org>
- <20261125-memalloc-prof-dont-waste-slabobj-ext-metadata-v2-4-7c680f02a734@kernel.org>
- <gmnosp2u47xewnszzrx4asmldxsyjtejyrbrng2ckrcfedymeu@evhwupv3iwhf>
+	b=dJDPIgoIEY6adsxiBKLj31BpxdocV45Ho0ZXndsXTByUCNQSeqJbisV76kX96NGTm
+	 lP8PTWZkBAGAaf4ROQhL4YqNqDUlIg+OsBLvEgyfgtkWB+XlbUoT0R/bzjR59GoZSP
+	 N5+A4KpckrQdwruGKB/c/3DFMnTOqERUzcvPzJZpY/g4Kdxp2gDzUy1JYrmyX8XKYP
+	 TXxxUruqjjJGGyB011S20azsLDh52IjKOk0t101eKEo/U3oNrczd8Vk1ozeO6EL1DP
+	 x3OTUL1cheR2+0oIxHePd2pDgUmFL2xhTfFh30DsPsjg1hCIsQI/y4vtjeD7HByrbT
+	 yF43DQKEx+kfQ==
+Date: Thu, 26 Nov 2026 14:23:55 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>, 
+	Roman Kisel <romank@linux.microsoft.com>, Saurabh Sengar <ssengar@linux.microsoft.com>, 
+	Naman Jain <namjain@linux.microsoft.com>, Michael Kelley <mhklinux@outlook.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Eliav Farber <farbere@amazon.com>, "Gregory Price (Meta)" <gourry@gourry.net>
+Subject: Re: [PATCH v3 0/4] mm: fix races between huge and non-huge faults in
+ PFN mappings
+Message-ID: <awhAygxxEKQ7TVuY@gremlin>
+References: <20261125-huge-pfnmap-fault-races-v3-0-bbc44489341b@kernel.org>
+ <dc62bf2a-9188-4cc6-9850-14ab3a2e5274@kernel.org>
+ <awg3r1kVqhQy7wlZ@gremlin>
+ <e60ef611-5e67-41b3-9c5a-ade4d183c492@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <gmnosp2u47xewnszzrx4asmldxsyjtejyrbrng2ckrcfedymeu@evhwupv3iwhf>
-X-Stat-Signature: yqbhpo1ixk5a95we9juky8dut79px6h7
-X-Rspamd-Queue-Id: B3CE3100008
-X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <e60ef611-5e67-41b3-9c5a-ade4d183c492@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0CD5940002
+X-Stat-Signature: s6t6pny7rcgs95hgqak3t8nf5446snuq
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795703020-296852
-X-HE-Meta: U2FsdGVkX19/FJSKcxG/Jn1R1vCuQMnI27O1G3zUQIIV0kcPlq/gUbLNiHORsA9bpvrk73gW4NNchrpoDL9FL/fXzbd2Gq9/1ur784dwCk56K1ZD/UVFJ+BpSIFDmLqWkZU88XXG9DgYtMa2TOOgEKtHx6KF17ePki9w3PWu+rco618LiRdMGHWFMqRFp7XlqEdEYtp06hbazeFirix/c9DxOeMj82DsG2dr1w/zF+9Sg9wCrJQkw+z/mIDvwJIT3/9KUjQ/2xzMVkY+fBtEIRaLEOVUR1KDw8R9lC9QtFMGUGCyxiEyNj2YDCaU/8V8WgdpDff8beUd2chEaty0098Lima62H2eaKDwjqWPA78x5l0zJhdduHyiY8PBrXWnBDneEuZU0pOsrmaNr1CSuCJsgB60VdibHq5sSNhFDkq9E3su4kBRlX2Y8lo0eH/0/i01ouOrfqyFGuYnrdCQibWwVhrQh99w5dhkrHcsHlYR3Op5AtMHImPbR64ohPLEHXK+Ol71PlLvSB1g2XyNzXOO/ZHx6AZKO2qlHVlbwoSPxpqKgZFzmIIgBmSQoQEC1ora1sMte+JHPo+RSK1smueLjb1/JKQkDVzapS8MaxfPFV9dAb0ur3D8KL5qGKRXFHEsYNKG9Lwo06ODLjOS0Mpoqa2pHNCmbFhK41mDN3cRl8QGME3upgSnbxdmO+87e6CGu43W4LhNHkG17IetNzMejQhqacQVjyfXcUJQK8L65GASgiJx6Dzv/B5NNjoSvGyFflVT2OUBVmx+fV4nr+5y/8QsH75HrW3x5UMLSbQP0OOZN+DTW29gj1a5Esmjm0P0mYj4oqPI8Dk8XgDwC2dYTAw30e0dt1OP50vNkfTmu6lxWisPsLNj98REYErRSvo5uYFWr+nzjYVg4rm4GWnu/usER0fHLaaVzIlc8v87DBcU4KOElqiHHIUq8rS1Y9xUa0vHeRvLxi5a0zP
- PxBJnxji
- eFxOc0OqBMKUDgqgne3gmSkhd9DyMQfMSgcH8VEvLi9eLONP+CZ89Rc9F21CP/J85mmHRVV84Hh/zJABHFnlMEP7HOXfM6PYWgURsZKko6KzA44gRmt9obxtmwHgEXHUt20Q2LqpbSh5xZE8c2ihOyBC+MqgjJr82PjTajR9sabexqsWm2FEIrvYmNTKhcDXV6Jq5xIuZBz6/aOJMXu4VD1om5gDoM6+9Ekri0ko0+ljJ49hPCbNvS5kyo5Eu8yxArmU9O4MOYr80BcrC7fZuC9GARlLSCz2kGKUmDpjPEjBrCvfVHwiFK+zK7V9nE7D0haezFsfyVkS+sNNIeX+ChXUCGb983UuHfwjCzO3IGGZZ2e7SWoaUFHq/Cjtzo/iejLzpBdZaLisJ+niSE7r0rH98/Q7lzEySasF1Oo6ZOB8TntMtdd3EAOtwvCgOMI7UkfP+l4bsAEkbAKX2Hask5mYAIUoKj4ONkybloF1Gmdx7fD69exF2z3HD6RTyxgz0YSQFygVCork6ZiW4W1M1LvQgBeBU5FB5CZdy0OXxu4KoZE4TS7G0YdayBkgP0g6ieMa2oO4THq9RkyOm8KmvAs5PN8Euev+wzvEbuP3gZM6iWO4=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795703045-683661
+X-HE-Meta: U2FsdGVkX1/MdkLdqObWqRpGuzSIrqrDOMXXojT5vvT9iS02fvG11LIE4Lfpyi7ggcuPPpbQJyfbUujJ1ApPRjAB8Ffae1+c/ZwaAQGJLoFKwd9j4oc3zAVswT+ojBkj8NBgkLhdBfKcxxkKDDPuZY3vVaUjrlBLWDtOYcVnffv/KzbhjTYPtL1Xq5YU5CHhNykqsrimhmwJQDh/NaPf/wD/3UWfryH5fbNvVo8mXatiJktm7IBsB53qupNow6D7Dt2Gz0vd8gyHO19ACUQjrWVctFql2mK65f9YvC9A6jjKjqUc6ED+GE1ucfVR/pTNXbhpLHWpbCSh95MmpkIi2qBCJNyuWWmeWBrF5q9bdg3KWskAOqwmr4AR1qnSRTAZv7yAFCQdI/RWCv5+zGlrUOqkmOfwiRXeWMv5znp+0uGMlZtIoWNIPw+ouwcY62EkLDjwRTm/YUpwa5yJMRmSWVZOhCP4dFtlyLjNWtZWH7YN6fa68/Rh4a0Z5nuHhjGdgk92zgPaRTmkj7Sqy9GHWocoImOQi7YiDZy45/wTITsWkQBQE9xX7lF9ZLQe7bPDhF5u6HXES9II+BUsjrYpMIijWr1hwt1s7WU0Y0MndQj7qWTTBIu1oUkFs/8B5zfszP8+yZrUMNog4sBUgu5bcT0ysRIptxuulKMEGOa1u28YVnqkjBC9oogqNCu4F2HCT2EJAvf+n3DGR9spETUdqFhrMszGMVc6Kh2jQ6B9EHPEQomf2NGgsvvvO6IeqNb0V+jw2n6q1RMsJ/D/WRhnOHn1nkUGT+YeYP/Hl3A3jaFS6b7MOkT85UsbHQXJEbhPSaYbDvKvEvRqAuo8y9AJAwFoxO4Xv/Pdp2W2yyRxsIxoZjSJ3xaAVlDjrcAdvrafPZPeCN25IOeeuYHFhmJ/eyVCX3/CQXr100hqTY37/dVT8TuPcMi77kp6JVVLvHrJu2fNvd4XzuY1+bCJ/yn
+ wWLFZyHU
+ yJrUBqFxmiichReGl8dddaMAFzyRN099rjlpSGGmGSNU1O+utOgvAQymMNzip79RD4f7SWMFAdw7uZ2fg3DlSyYlFSbsR3IzS/TajCs/HtXVpAQsWjWt4F/5gD3Oopn6p7rYZZvoTOyffL4j9mAa0DlhRpQDVBBWlFTxElSeVjOkUs3wK4Iz2nQNqggKWDB7irHH2nuhBGjeGV8Cn3sLMKyCyBAryUZFZJbT1pMWp+b26n/ecKMSaNhkBjpiBvij2JwgaJp1Io8gpqywe1mL3J8Sp17J7gRvn3zK6SbSOS0h1L9gGUxQgqxOAT1OfzZ9z++/DsqgLBDVnulTyIz0SDu2sZp4A7PcpONhsX47CKiGrHzV7OXL6cb5DLq4Io12DoofMNBedm/mVUqUUGZf/bZHXhb0Mi++8dfcBWGTAxAy2cakfbg64cZjujXXcQsOmfq+TS7Ur4mc6Q7az59r9L4GMQwHS6oUXI8bx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,29 +108,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 26, 2026 at 10:05:35AM +0100, Jan Kara wrote:
-> On Wed 25-11-26 21:37:05, Harry Yoo (Meta) wrote:
-> > Buffer heads are allocated with __GFP_ACCOUNT to charge them to the
-> > memcg of the folio they are attached to. Specify SLAB_MAY_ACCOUNT when
-> > the object may be charged to a memcg. __GFP_ACCOUNT without
-> > SLAB_MAY_ACCOUNT will not be allowed.
-> > 
-> > Path: ext4_getblk() -> folio_alloc_buffers(GFP_NOFS | __GFP_ACCOUNT)
-> >   -> alloc_buffer_head() -> kmem_cache_zalloc(bh_cachep)
-> > 
-> > Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> > Cc: Christian Brauner <brauner@kernel.org>
-> > Cc: Jan Kara <jack@suse.cz>
-> > Cc: linux-fsdevel@vger.kernel.org
-> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-> 
-> Looks good. Feel free to add:
+On Thu, Nov 26, 2026 at 03:15:57PM +0100, David Hildenbrand (Arm) wrote:
+> Can you resent against mm-core/for-next? That would help a lot.
 
-Thank you for reviewing them, Jan!
+[ ... ]
 
-> Acked-by: Jan Kara <jack@suse.cz>
+> I dropped the series from mm-core/for-next and pushed the branches.
+>
+> If you're fast I can apply it there again even before I merge -next this evening ;)
 
--- 
-Cheers,
-Harry / Hyeonggon
+Sure, on it, will get that out in a sec!
+
+--
+Cheers, Lorenzo
 
