@@ -1,73 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62076606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 12:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043C2606A338
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 12:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bQr3SgNQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h5UpCr5X
 Received: by kanga.kvack.org (Postfix)
-	id 8C7A66B05B6; Thu, 26 Nov 2026 07:09:50 -0500 (EST)
+	id 215476B05B8; Thu, 26 Nov 2026 07:12:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89F096B05B7; Thu, 26 Nov 2026 07:09:50 -0500 (EST)
+	id 1C65A6B05B9; Thu, 26 Nov 2026 07:12:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B57A6B05B8; Thu, 26 Nov 2026 07:09:50 -0500 (EST)
+	id 0B55C6B05BA; Thu, 26 Nov 2026 07:12:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 567146B05B6
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:09:50 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CFB6316038A
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:09:49 +0000 (UTC)
-X-FDA: 85477151298.10.6AC395F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D9ABD6B05B8
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:12:03 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B867120407
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:12:03 +0000 (UTC)
+X-FDA: 85477156926.06.22ACDC7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0986C1A000D
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:09:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bQr3SgNQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 780D3140004
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:12:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h5UpCr5X;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795694988;
-	b=sgX4dyek3Ih2y1Rg4IwWNPqQjL9wV08iidVeLBQXy5tzn96rr/E7HNd9hm0LdBZ69E6FW+
-	1QXjo7/OsSXLJ8HwiU41dKgc5EZF1lt962oKCZwMNvne9Xdst8ZOS0vxT87YfeNUDBESlK
-	KmRSuP4JoFmeJH8srAzvEIdiuHeybqo=
+	t=1795695121;
+	b=peOAXrnQ/rEIIXQcHHqXZP+PTa2PDfcF4stT06zCbT0t6mNLpLY+NMxcZ0TKc7WL8O0cEi
+	EWkoIiyqPgiWoCjvVUCJfcbXKGPx7As/bEzju6BQmZFD6JVx9Y86yZ7w57I5l31l0xdV19
+	JGISe7irxD2d2KB49emX1WJwBNuAg0g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795694988;
+	s=arc-20220608; t=1795695121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q+JKvzGnMxlxThC9PfaTX+KOyMwuxYvBqRDEjjzOohQ=;
-	b=cLcibO+06FwD6iqaAhEd1o3+ytDtoqt1cyLQYMcKj0Mw2j/vfOdC4+MtMRVUvALBNUNVXk
-	KrwKxNNrM2xIneWRvu+ImUkqUIVsGDWqb2BaPgRqDRBK2EycKe6tPTGsvcOGBisiXlx3XK
-	U+tYLDqXUzU+FkdOEqtmV7ullLKJPaE=
+	bh=t7loBArwRLc18PrwG2FEcw4MnEZTO4NDPziNitS8YjA=;
+	b=zpmB+SyLtINk3procHhAt1QmY+1D6FMgd5+i/vWlAa2FpJRiOM8bZudgFoRRKhR+Uzd6PY
+	hf6XgLnalhv0ke2CqJT4fH/6aSchfDDg4ubdLAVrtfbOayGMst5MRXjoD2bow+8XXfGGij
+	xuS/SxUm2ZcKQYMnUwPjiDff0hNN8/s=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bQr3SgNQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h5UpCr5X;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 410AD4577C;
-	Thu, 26 Nov 2026 12:09:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43561F000C0;
-	Thu, 26 Nov 2026 12:09:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AC6F9460CA;
+	Thu, 26 Nov 2026 12:12:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD94A1F000EC;
+	Thu, 26 Nov 2026 12:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795694987;
-	bh=Q+JKvzGnMxlxThC9PfaTX+KOyMwuxYvBqRDEjjzOohQ=;
+	s=k20260515; t=1795695120;
+	bh=t7loBArwRLc18PrwG2FEcw4MnEZTO4NDPziNitS8YjA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bQr3SgNQfQAEZHGz+o97ehtKZmTADTK1Kj0izJYkEd/3ErC9S30REW4MIpK3i3bZZ
-	 +z8sENqAIhOEPA1BQcT1qvru+PAcKptCy9tqZOhOJVaWBNdGaGDsZ3i2yJXoAucbdX
-	 Lbv0JKYtKuZyCsADY3qyZwRs32ENRfwtXcvahdfWhQyk+xiWxGepKKFn+mkJHC62cf
-	 vShICvX3Tf2agEBtxUMV7wBjXHSP8gkIpqc3Qszhvx0YrR4Topjh3CBNTMLXmft1cT
-	 XFLdFt8Lf5EnVMdbOSVcuWwEC9qAhv6oZGSqLnm9GiT/+LaQt8011wyxCBtQxi/UU6
-	 qPxn8J0LVtUwg==
-Message-ID: <c0b75d88-3559-4a0f-957c-dd9d8748d176@kernel.org>
-Date: Thu, 26 Nov 2026 13:09:36 +0100
+	b=h5UpCr5X5rBz/TbCFFFAoe8krJCzI+rji6GfZ74frdPPsM8peYv1L3LR9P73FhbwJ
+	 bfK8+h0kgb3cPQONyLMViMNaIdQMXXDaq6w3dQaxITq/KqFpbxcXQYVDQMGMEHlcM9
+	 7ydGcirJgJP1I+3qe/F2qxauOCJZ2Y0d2HSk7Uv2Thl3z5sO1GCtE3psEQcg9yfgkO
+	 QyrXNfX0LLiXS5ZJ33DnUZtUoW6UzLeNqWvjyim72vTJFBJo83e8IJOKVVx/8Ok2jt
+	 D7Ul8WhVOqKZkoIFCPTAeI108m2rvj385lZjv5015v6SOHYQubcSc/W/KbkaY80jtQ
+	 kwjaABR+/hTlg==
+Message-ID: <8bc630ca-34ef-4617-af58-ec4585bf687c@kernel.org>
+Date: Thu, 26 Nov 2026 13:11:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/8] mm/internal: rename swap offset helpers to
- softleaf offset
+Subject: Re: [PATCH v5 6/8] mm/internal: add set_softleaf_ptes
 To: Dev Jain <dev.jain@arm.com>, ljs@kernel.org, akpm@linux-foundation.org,
  hughd@google.com, chrisl@kernel.org, kasong@tencent.com
 Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
@@ -77,7 +76,7 @@ Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
  linux-mm@kvack.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
  pfalcato@suse.de, ryan.roberts@arm.com, anshuman.khandual@arm.com
 References: <20261123053543.295467-1-dev.jain@arm.com>
- <20261123053543.295467-6-dev.jain@arm.com>
+ <20261123053543.295467-7-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,22 +123,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261123053543.295467-6-dev.jain@arm.com>
+In-Reply-To: <20261123053543.295467-7-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 780D3140004
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0986C1A000D
-X-Stat-Signature: ectghdkiacg76mf4x9gtdjcyf495kdgn
+X-Stat-Signature: 765pydz98h1wtjwmffpddhj7k1jqfw5m
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795694987-111987
-X-HE-Meta: U2FsdGVkX19GYrFGSYZQkPKvjqi+glizrvUUH+FQe934o7xUlBBvYlB8WwuInkAqPlO29IC7seZ0Ep1YfIJr4DxJp4iHxEN8BX88BfEcOJcnelYLwXuHK5frrb/phiFlGltdQDg7EZ6+TsCfpNagFHIbdd9dtHjeuX5cOkiDKodb3wCYFfA8SzCH/RMPqaFhsSTc9jVLDbX4gIgl9NIa8OIpnx2ifXMtzukkk4Uaj4NeOfGSFoIWiItZdKYy194UwtAzNRKbxlA2CofKJaA7aLOzHSX2WR4UTcDo/49CdptANxR0AWXFGbqrkvIVm/oViY0qrgIQxRakbIKNJclOKhM4Q8Au48/t5OXUmto1poJRbXun2ivcaDhPB9Z7JGv/DjT0cZSaGI0SPpU1udV9sz7w8T9OzEUzq0KzwUIaZXQ/mjuCIaRlh35JVoADqye233ke7KuW2dpahtRlHPurOO43iHXKEexnp8XiXea2qIiCfsjk8j3Sik3jgHOohcOIRlVPOfXaNnIRqghJEQhlQgGgAIgqC3NPxgHBiw2d3xNn8KKV7Fo62vln0Qi+YFe7qQPZh73+wbLPeSPgw4bsOQyRSa9YdhMyZ+0JhiFIiukDJiUbl4Ca8BZNqbIrU5mMvQapRqEjn+AdshtfVpZWas0nEQvd33lhQGOlFIP+C1asPzs2JVzgaWUxnggG+HUdk15zcLwA8NB+NOrxsBwZh6AtlB14uZLBZs+jUkca1DQZwiKAj2s/OdLBEsGGpkJo2hn1uPXzlH/NCfG81V2W53hnqjtMrunOQ/ToWH7m2J4Br11Hnwgfoa78d8x/rZvAu+5ydNEBjNwUgtZV1REWtesxtaiFZGMhGdAlTOIsO4RymNUT75+Nn9tm1ZEqE0VSSjQt3zIGhYWK5TaV+PQ0Sl+U+ZvvEaxEvQ8hN4eO7ZHK8tbhSWDgQckvafqx9w6xaG7O4cf0npj6ZJEc002
- nMGAha7V
- pCyyBZLnfP7Hhwlm3rMsd9i0wafoSuFClKsnVDmz0+C5CcyStrBErQdGRyeQg4M0osTPldBTAJURbSyxABCVXM+DG5+11ON6+aHVOBe81H0UKsIv1ViXHfyLadKS5RseWL4SEpNKoxee/TGun1kCvcjHZmRRKO3qFYBC2gsxnaG7k9igk4VyJ7aqqf2ACqQgHMqAe2ifTa8SPFpQLwOV5bEcZaKUiFY7hTT2CcnJvvSSDgS7ry3Zw45cqi5BS+18ygtBcE726tTIo1wt4XOCv7A+oXjQLz4AHPrIWuH0uhtXs/4BoGrXWgURiybOqAgtRlqUKNT+O7WXOMpm0gvh3mBWEULHK7Gd4X3DbQR4bV6hutbl7OYFGHeHI9rSAXKP/Z5OAvAUeJOW6x8B20ieMFUoMwOlqSdKFTHdx49rpagBHdmqOD7IDvV1un828iN+UoMdeyglbYTwPl8YZ+tpRxmq/it//lCo8Av7YiLfCIKTKicBeFAFDgSobLkMgZRHME1XWMq8K6MNz2x7txmriU4LNYm0+stn5atH97quGhDMxvPQMwwF/MMUMc9FQJKTtyaMn
+X-HE-Tag: 1795695121-584887
+X-HE-Meta: U2FsdGVkX18T9R7qy0+8OIcMXoS7z1fRFLoSJvw7K4dmImjnKaQ7Qery3gaxV2xdxtNMFydDhw9A26UYOYmvS6qDijyzvzNK/7etgm/jsyLgeqZ+HYf3EvF29MPu9PrAR+HuPKB/EEmubzaBU2OBGWheuOnbEgavvlPvgdLamZPINfcYX139wV8b8vjp7+v1F/XqgvFetsuFgNGjpaL0Ia43JawNDR8HNW15KdsWPmzf8zONgXoZwf6c2BJE4nQ1t9I06klyzmopeEbc91gj6uuEyO/Ffi9cvO/eArrSGk92nD8AvrLpIV7Di0kgMwPXlMW8w/rmK4RS1fvGZxNIaXTPWxB97qWR1D7PfgyPKwUbbmOLgUGQW69MlB19F3pKpO5/KNSHnOC4Vm2pXgWm0XdgASQGxResB0YP/AxRsoZNaBuFZG78fWPm413U42RGduymzvXadfmYCpu4urOYLsAct4Y0eVMjTY2jxNXS2BWQcnxIOugZPu5jTsils4353K+RnUSxlsylVCD6owixrQm+JPNXUjtXpxZPbIrtjqQuKSfANLksfjiVLLVVItyrywKtmjbnWvyEo3jLhvjgeRQp5fdyVmSS2oS2aOWfhfCQ9c1kW/1IZVDfs2ZbfdL4qPLtS9v/YEXLAQhUjAvqgBesL3Rw8x83+k5tCVq9DN0+l/RJa7fL5SH+SDeZ7lF0SAMz8W2iOIvbroFZEMRot3OaLusO9JBIqw3z8+ApdYOCgSYahYzBvR3OJJPpL8r+zGSCEfPnNtAHpmnJzqawXEtjuJ6isjO6YFLcVAHhy8UDFoTgUQrrixNGxOrvi0N3PBnCwnDaRLZfjGYNABj1X4Haghcsa1Yy1ma/SHn92Aoe3yUhGpmt52umQq4kwJzuY+/7bGL9i6AmXyjUTduR1I9B8lAcmDseJo12KzYXz2nNs/7AtISdxlikGytdXDcTA2atCWFXh62GmpXUQu4
+ 27G3h01A
+ NI6eBDZFs3MtCl3zmdZFCoUhrJ57iSs5n2pVE7WMBGD3IZn1iBR6d0fmK/Pb6pVzdBxO3EAlApNuTKsXr2gdB1gEgZpPnWVPbJQuxkSXHd0TCORbBEQuSzgIQarbXCfIBt+Oe0SnJBKQ0B/Md8GD920KR/iLF6J6EYQTfFNZcyPhAIKL/FpzMyA+CJerCXZdtFvfl6g5nrSdey2Wm/w8ylmJSjly3/+gLhDSHgH4aNFDrFTn8fIzi9rX2isn5EZxZTpYYbKLYh1Szce/9zPt89Ob0IaTRZAr3Lj4Xtq70D+KXVXvO1DbDh81YTYi0V+RhkCieo+fkF8W7NFDV96xd3mlYX1UoIW2YFLVnEWDUZxNgaysyiDiPLYSh00ZPBV83WoYhhC3eiEWWHtkxzx8kqgKp3AJtT2L/tdKhWy5Q9t+mn5nYnjtpKfG9FCEtUj7XhsgyCbnC6J7dx1vXPpo4zhTtp0qaiY0hGBKdVtbvxXmY8SuWUmuBXA2Jzdgj/Bup83pEE89IkDhMkCBf3wLvi4RDc0fVMVx+ZflbAF8wCFPfRjQ4gLgQsOZJlnALSblzLfamCe1C6nV8YYLOPWKZYZrDsk6Iz5dE18VZ+9IyimA5m+w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,64 +148,77 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/23/26 06:35, Dev Jain wrote:
-> In preparation for adding a helper to set softleaf PTEs in one go,
-> generalize the helpers that advance a swap-entry offset so they operate
-> on softleaf entries.
+> Currently we have a helper called set_ptes() which is used to set
+> consecutive present ptes in the pgtables. To do the same operation but
+> to set "consecutive" nonpresent (softleaf) ptes, add set_softleaf_ptes().
 > 
-> Softleaf entries use the same type/offset layout as swap entries, so
-> advancing the offset works for swap softleaves and PFN-bearing
-> softleaves. Preserve soft-dirty and uffd bits across the move. The
-> swap-exclusive bit is meaningful only for swap softleaves, so guard that
-> preservation with softleaf_is_swap().
+> The softleaves which have a notion of consecutivity is swap softleaf,
+> and those grouped by softeaf_has_pfn(). The latter is trivial; future
+> code can convert present ptes pointing to the same large folio to
+> swap softleaves with consecutive offsets using this helper.
+> 
+> The other case is softleaf markers. They do not have a notion of a swap
+> offset or PFN, so future code can use set_softleaf_ptes() to store
+> multiple (same) markers on the ptes.
 > 
 > Reviewed-by: Barry Song <baohua@kernel.org>
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 > ---
->  mm/internal.h | 31 ++++++++++++++++---------------
->  mm/memory.c   |  4 ++--
->  2 files changed, 18 insertions(+), 17 deletions(-)
+>  mm/internal.h | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
 > 
 > diff --git a/mm/internal.h b/mm/internal.h
-> index 530c022117ab..ae0c37ee3406 100644
+> index ae0c37ee3406..e72f9571617b 100644
 > --- a/mm/internal.h
 > +++ b/mm/internal.h
-> @@ -480,16 +480,16 @@ unsigned int folio_pte_batch(struct folio *folio, pte_t *ptep, pte_t pte,
->  		unsigned int max_nr);
+> @@ -519,6 +519,39 @@ static inline pte_t pte_next_softleaf_offset(pte_t pte)
+>  	return pte_move_softleaf_offset(pte, 1);
+>  }
 >  
+> +/**
+> + * set_softleaf_ptes - Set consecutive softleaf PTEs.
+> + * @mm: Address space the PTEs belong to.
+> + * @addr: Address of the first PTE.
+> + * @ptep: Page table pointer for the first PTE.
+> + * @pte: PTE to set for the first entry.
+> + * @nr: Number of PTEs to set.
+> + *
+> + * Install @nr softleaf PTEs, advancing @pte when its softleaf entry
+> + * represents consecutive offsets. Swap entries advance through swap offsets,
+> + * PFN softleaf entries advance through PFNs (encoded by swap offset), and
+> + * marker entries are repeated unchanged.
+> + */
+> +static inline void set_softleaf_ptes(struct mm_struct *mm, unsigned long addr,
+> +		pte_t *ptep, pte_t pte, unsigned long nr)
+> +{
+> +	softleaf_t entry;
+> +	bool advance;
+> +
+> +	entry = softleaf_from_pte(pte);
+> +	advance = softleaf_is_swap(entry) || softleaf_has_pfn(entry);
+
+Initialize both directly and make them const.
+
+I do wonder whether we want a simple softleaf_uses_swap_offset() and sue that
+already in the check in the previous patch.
+
+> +
+> +	for (;;) {
+> +		set_pte_at(mm, addr, ptep, pte);
+> +		if (--nr == 0)
+> +			break;
+> +		if (advance)
+> +			pte = pte_next_softleaf_offset(pte);
+> +		ptep++;
+> +		addr += PAGE_SIZE;
+> +	}
+> +}
+> +
 >  /**
-> - * pte_move_swp_offset - Move the swap entry offset field of a swap pte
-> - *	 forward or backward by delta
-> - * @pte: The initial pte state; must be a swap entry
-> + * pte_move_softleaf_offset - Move the softleaf entry offset field of a
-> + * softleaf pte forward or backward by delta
-> + * @pte: The initial pte state; must be a softleaf entry
->   * @delta: The direction and the offset we are moving; forward if delta
->   *	 is positive; backward if delta is negative
->   *
-> - * Moves the swap offset, while maintaining all other fields, including
-> - * swap type, and any swp pte bits. The resulting pte is returned.
-> + * Moves the softleaf offset, while maintaining all other fields, including
-> + * softleaf type, and any softleaf pte bits. The resulting pte is returned.
->   */
-> -static inline pte_t pte_move_swp_offset(pte_t pte, long delta)
-> +static inline pte_t pte_move_softleaf_offset(pte_t pte, long delta)
->  {
->  	const softleaf_t entry = softleaf_from_pte(pte);
->  	pte_t new = __swp_entry_to_pte(__swp_entry(swp_type(entry),
-> @@ -497,7 +497,7 @@ static inline pte_t pte_move_swp_offset(pte_t pte, long delta)
->  
->  	if (pte_swp_soft_dirty(pte))
->  		new = pte_swp_mksoft_dirty(new);
-> -	if (pte_swp_exclusive(pte))
-> +	if (softleaf_is_swap(entry) && pte_swp_exclusive(pte))
->  		new = pte_swp_mkexclusive(new);
->  	if (pte_swp_uffd(pte))
->  		new = pte_swp_mkuffd(new);
-Do we want to check that our softleaf either is a swap entry or softleaf_has_pfn?
+>   * swap_pte_batch - detect a PTE batch for a set of contiguous swap entries
+>   * @start_ptep: Page table pointer for the first entry.
 
-I'd document that and throw in a VM_WARN_ON_ONCE.
-
-Apart from that LGTM.
+Please squash this into the next patch.
 
 -- 
 Cheers,
