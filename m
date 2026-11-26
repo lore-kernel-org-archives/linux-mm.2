@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A392606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECBD606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aYpj+ngS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C6JaML8N
 Received: by kanga.kvack.org (Postfix)
-	id 789C26B05CB; Thu, 26 Nov 2026 06:16:41 -0500 (EST)
+	id C92186B05CC; Thu, 26 Nov 2026 06:16:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7390A6B05CC; Thu, 26 Nov 2026 06:16:41 -0500 (EST)
+	id C42786B05CE; Thu, 26 Nov 2026 06:16:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 629076B05CD; Thu, 26 Nov 2026 06:16:41 -0500 (EST)
+	id B31B46B05CF; Thu, 26 Nov 2026 06:16:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DFE36B05CB
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:16:41 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C38BE80606
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:16:40 +0000 (UTC)
-X-FDA: 85477017360.23.2AC86A8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 07D5C4000C
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:16:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYpj+ngS;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E6E66B05CC
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:16:50 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 10F9A1C26B7
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:16:50 +0000 (UTC)
+X-FDA: 85477017780.30.F6F41D5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 735511C0011
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:16:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C6JaML8N;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795691799;
-	b=zFrShUqm/BYcew4nDefZ92erBRnRAI0XLTa6+hrdaSgQ/oCMzrvzUFzGYwKlVAL1KxF0bl
-	Bhfi4cxQL2SBEmvbAsAD8Ed1emmmUxSV16ih+p6AI8OzAR646GHY08N5rlCfmE3RyHXy7b
-	JZkPJJxKcP05gMW7L7QDyE9kZmTpUt8=
+	t=1795691808;
+	b=C8M7Jz6v2tv0oxukn4GV4sJZVycNkqjbM+/jLuZy/tiCfYbiJRVm5maov1t0gJjiRrRu3e
+	CRsmVq95Pf6eJo/FscrfrrB3Jnkc+9dDGPZ4gfQnsvuM2/7RSoOhi+jOvO3RkPN4Hj+9JO
+	fFqvgdwLBaf29yUQSblwdqOSBf2rO0k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795691799;
+	s=arc-20220608; t=1795691808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JWC/vBALKCjgB3Vp7e+Dp/3jppLyPAzKiZgZB+giSqk=;
-	b=AdFS/lmp8RiJ5LURcOxLoQD8X14Sefbbl7If+Wd3/onEE0hNNEG8VFUK4F4ctqR17Tg7AO
-	4IDqwwxg7NGOLmywHjJvM1Eqx67Dku81BTQIJLSpgcQi1ypJi8grRcrgtjupSlljH6lBJc
-	icpJ7FFq2dViYS2KrWW9DBFB0G89J7I=
+	bh=ia0IpFMuZ2KgIGlhSeCcR6ahLTVFLFvimBCAHBa8K7A=;
+	b=L2yK6MuKWB82iPrBlK3tnoWhMl6wKC6Y9iLPvRafhU8p0hZ94Y2NhFU6ElZXQlvXMm64ki
+	yEfeR/0adZJJqvd5mdexLCM0RFXTIW746lhDuJJopSIUk1vAJadu6tvzfuk1xVSRIWmbFE
+	GSIWdSM2+DErvL5hHlWhGVyQ4EoUHlE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYpj+ngS;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C6JaML8N;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5BFA643B55;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0DDCD62BFE;
+	Thu, 26 Nov 2026 11:16:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB7F1F000C0;
 	Thu, 26 Nov 2026 11:16:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733D71F000C4;
-	Thu, 26 Nov 2026 11:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795691797;
-	bh=JWC/vBALKCjgB3Vp7e+Dp/3jppLyPAzKiZgZB+giSqk=;
+	s=k20260515; t=1795691807;
+	bh=ia0IpFMuZ2KgIGlhSeCcR6ahLTVFLFvimBCAHBa8K7A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aYpj+ngSiVFqOgPwkjKWlL43cMwZ+c5qm9pyvtLBv6pRVxFQz/EnGMvT3cqG60CKV
-	 gp17gvtMKi2AUU8TijAS5yNkCTOTjH2Hcpzo5zl5CqJX4AX6FkoKmRtDnCuSFqV1Me
-	 F5l2AWld4jnr12BgoJ/0hRgE9SX3p1+lkLsNAfVFhqEKgJ6rZL/qR7qp6M7cgLZYkA
-	 cajyHtUCZrnpDkX20HptjbPShYFK0PskDHvCpXjIeQQYNmZuANQV5dGi67AmHknFT9
-	 b0dh9ehw25xnd7VAFSRbYHeAn3Icdmn02VTQRbc8OoQpSYOJECww1+H2cR7XMAw8q2
-	 JUPAaB2anngGA==
+	b=C6JaML8N2aNTeIzENf2nvr8+aQgkt9RA0b/lUdY93mcchmhUi11+e2a0tScZ3CniC
+	 QcRTPjB5Vvm2IKDrI4w2dr9YP7aKd6XiEFEQSWgHsN3oqfBPSbyJh4msiz7bJhFJnY
+	 iHdEmk5VqDZ48vtOq9/cNB+6cQtOxm6d8cwlsfOe1vf3GC7TxG6ITRc00G6AjGH+kS
+	 B1xDuZEPBtfEFIxDXf4DYfMJfU9pqQnNKwdDbA+opSwvI0DnVrHPn5m+cXAEC5semk
+	 KHjBJ98o8aoZmxj2R6CX3JQmkDMDMQuLboY0NzWq2S7adY5QVhdyX0S7Rlpx6YLmpG
+	 3SAUQuPMNGeGg==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:26 +0200
-Subject: [PATCH RFC v2 13/54] x86/mm/pat: make the direct map counters
- atomic
+Date: Thu, 26 Nov 2026 13:14:27 +0200
+Subject: [PATCH RFC v2 14/54] x86/mm/pat: take pgd_lock only around the
+ pgd_list walks
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-13-723f1e33c3d8@kernel.org>
+Message-Id: <20261126-generic-set-memory-v0-1-v2-14-723f1e33c3d8@kernel.org>
 References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
 To: linux-mm@kvack.org
@@ -96,19 +96,19 @@ Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
 X-Mailer: b4 0.16.1-dev
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 735511C0011
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 07D5C4000C
-X-Stat-Signature: zdtn7b896t6t1u7g61rtkcna9deqzeh8
+X-Stat-Signature: 8kojpmxdo1i9xxch7yubhrbwq8n5wgsh
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795691798-305498
-X-HE-Meta: U2FsdGVkX1+9DyimujKY0Hep2Fsi1VCrFwS+m4IBE2XHNBpDqb0oB9N0hIA+SBFIU6FKQhr6WfgCVT4ctICA5X5oBBOyDMXz9xq49Lv4GpoIVB5Yc96XoAOe6Sx1cbBxW+bupjkStHB8/H5FlzLFewTZ8T+/Q6dTII1YooaJUrkPaGnkvgEE022SBr3ODNE2yuTV7hzZFJGmNClkmp+tNQtgXoupP5bnVGJHgsnHa66joD7h3XaYXssq+ReDXPtqD9ZGohJ7SXHUAbbor0uL9yPplDEwWQ1PqUTANr5udtfFDqMH9dwoaOB8RjpOiXps43WAVRQPrIM0RlVGWvgsQNOfUK1lO6jwr6EkKOdhTMqNzya0/utfe+N7rsRuGzLExdbut4BLDVsS25CKl0V0QeZVERks+fku0rFfm/BZeggMW0opwfHX3AX5lmOhuATxPQgQNF1a/iAaUdIECWcyC0XlP18rQaP9JvejmA2sEb2tg+MhMGBhDJpUiqrDTpxrR/aVEnQiCCFIU0eRpTvYMnFGa/yHtQXopOdFiN0LlPxNao2CkctUNpmfGgnOpvlB++ZLFBdrMzdDqxb8OBBzfkIiDfS1fXWTpe+Hrqv0YMIKWc3WeQV0BiPFBhUMlh5/AaoVZ5EpHCJoNjsvXCSHeg5UNM0fb97V1Vv4GvWk71HZjvMx7zUzE56JG/sGsVBYmYpP0Xuu4vpSEMbqs47ok/SEdY8bZPbL2XkxJOTfc0x4Nk5rWY8vhulmxRxVTPoMP0y2Ydo/93kBH+wKib37v79DiX5+j9FzwYmX6xk9n6gP42t5XZXB/hoYsB3+EO1TMGQUa3ZITdbXIbSRYmc8svxm5D1YxwxySAtPPsgZ2/hJUJ9VMvUoYyINpvEV4OERX2qynyIXDmh4EJRaeqLBLQF68Z72WITr4xcgArvwZYxPzgMQjpuJehaf6iynKm4FJi9Slw38yEkYETLSkqw
- 9KNO0LM4
- eWR6zI496IPYGDnQKPGBUVDaufQF5ujk60WvHWTE4bYfnhO9VCvJl/Y4tyCiF7Dlv88x22fxEslPxZyIdS36sACoG+tZBBQ978nTq0hqZTWg9tzSbBjbkdrEs6gawumZwZiqLmIHt3vWEam/kfXGhbY/W3iQt3JDkopYqgrQX33Ircq8enApoQo3XTA02xom3/7gO+cAnmo/W1WjuZBH4N59MSwobs01A4sg5xdHfxiWjchxVDQeFTvrIpcgg3N3CD5vOCZCK79umF9oRYr7oLustFV90VCwvc481jUuWjKABWIKeGeZic1S2+dzgf/+cnU5xcDHg5oVh/jJ7V3d82UDlyyT3t3cqiNuRDb1KumfIUm5Qf/DmAsEQax+ZtmSaxBPLuiScycj8tjic9O8Rkt4WdJgXQvnQ23EJK+k/SnYjuWzyQ97P767jigzg+78/YR1MUkByFm6quTX+4tS/2KYn8FKGo8ejVhMD
+X-HE-Tag: 1795691808-222771
+X-HE-Meta: U2FsdGVkX1/fVsf1F9ZUqJA0QM6OOXpf669YA6/9oaQx6sWjPkWoqXB54JuKobQz/q09Mh8bx6VZTSjnD91OQmJLgJcu16okymhv9dyag+J+f26tYY1Uo31lPVe3V72aWLXMJy9iIXSL3jxXeYXD9uyPiBtHW+i3Ne7WLk+6ryLagxUheAFTf+ezwnB3tHvbuZ0pfI868++Iky91cAvIEXS2Wdl65unpej/N2BPOWlpVZDFSrkkQan8pSe/IsMdbzb4ZCJ2/KG+nX0PMg8SHIlz8paHsKPj8aRPaYVIWYwEZA8usSUQSzDjRPNZK2bPGQJ0dLFRsScNtbBahhgzhqGB9dTLM3ETWGDElb1vcc02TJSXGXFT7Ar7Zn2WnB5VUuEvu/VLQslN/iaDDIkK0lSUjjFuxtdsuFQWC5P1x6xcIsrrnQbj7JpGpSY45iM5HK8TMhyWYZHHy7yZyukSEzvbGs+Z2zhc156nYnPjExl2ZfBZNsbYn/rFYuaNQLAWGEEIWo4K7ZvIgZv6lmiDSJhtgFjZaos/7v3aqcOufN/7YHcmznllmp3Wgp0agEYRGkcSicg71ZzlIFJklQuovuKlF5/gN5Ioy4oTuBXMVu3SR7j9Vlk9JkEvOC7lrFqziBzgGjmWX1JWLV+V6vZ4PF+HlnPTt1R01kTYhXYURN/MNe1Xmy00HIsvXA0BmRKpmrSnQ1knNP50hFfAv+QPnoUnsy865+rSws9VUlpGJMA9Cnyp/ngHKbkrhEPSwe+Q0uLv14JrxX3YOWgOiK5QSgyILXVjoc+jVrxuy45CzP/bDSAJ5SzJHmjg85ImmS6QqKE0hbigZ/fwsieTogm39WdVUlDWMaWpVAo0SwAepmTz66w2o+9b10vWl0Dhk0ScwFOFoYaIp45/SLgikHI6vupv/zjCH8tPh4MsgkGSG+R6WMY+vMbyjRJ9elxq8YrGfKygJN59aBC7pJJrvdBo
+ nTawzFtE
+ z98jIpZLNXL0JYaF/9U0vuxq/PYvbIxGTg4QrVZG8M+OyVtSn5z6tQdemUa59EPCQMnd9n9wkQ+SLqT2huCVzvKI9ivry8P40tLvQL+cQP1uXqfZyNVjCOn0/FYtvvrltJG9ykyujhCc1R/DTn2FJ+Z+qL3PphXzdo2XUdEAJFI7FA5q/NYdzhru9KV4DJkC3LROl7KrznpEVvzHUk2udv4iw40kQ3qgD8KNrCrK0PTFZv6jjgnj2BekqfiqLDvqY6TnJExn5UPRLTNVuKe6jENJHZw/bGr5s/qk+9yiHcPxGY0LmuRpM/FqwW87vYop9Oa7I9BZWB95sARIvnw+0BIEOiCH0awLRjp6cvaH/YPMJKwHgIDv8iWq6sBkWc0tvZNQJbFZ4Fy4OSoZ313yL3AV0Db98aoF6dM8zQDQi7UOep78IU71Xho2Y7lg9Q/t+az0papKtAFqQ9ZUchYz7JNdmsGNgGr55+P+9KirUiaVDZ6uFfm/zVVQpUG2IhtSpNtpAmP7ak07GjW0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,98 +117,138 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In update_page_count() pgd_lock protects only the direct map counters. The
-splits and collapses in CPA update the counters under pgd_lock that they
-hold for other reasons.
+CPA takes pgd_lock around the split decision, the update of a large page,
+the split and the collapse of large pages.
 
-Make the counters atomic_long_t, like s390 and powerpc do, so that updating
-them does not need pgd_lock.
+Everywhere else pgd_lock protects pgd_list. CPA needs it only on 32-bit, to
+update the per-pgd copies of the kernel PMD entries when it changes them.
 
-A split checks that the counter of the large pages is not zero before it
-decrements it. Use atomic_long_dec_if_positive() so that a concurrent
-update cannot drive the counter below zero between the two.
+Updates of large pages are serialized by cpa_lock anyway, and the direct
+map counters are atomic.
+
+Take pgd_lock only around the pgd_list walks.
+
+Without pgd_lock, should_split_large_page() only checks CPA_REQ_SPLIT
+before it calls __should_split_large_page(). Fold it into
+__should_split_large_page() and keep the shorter name.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 56 +++++++++++++++++++++-----------------------
+ 1 file changed, 27 insertions(+), 29 deletions(-)
 
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 5e3c1152d202..8076d29a2931 100644
+index 8076d29a2931..9dfe69d608b8 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -84,56 +84,58 @@ static inline pgprot_t cachemode2pgprot(enum page_cache_mode pcm)
- }
- 
- #ifdef CONFIG_PROC_FS
--static unsigned long direct_pages_count[PG_LEVEL_NUM];
-+static atomic_long_t direct_pages_count[PG_LEVEL_NUM];
- 
- void update_page_count(int level, unsigned long pages)
+@@ -916,24 +916,29 @@ EXPORT_SYMBOL_GPL(slow_virt_to_phys);
+  */
+ static void __set_pmd_pte(pte_t *kpte, unsigned long address, pte_t pte)
  {
--	/* Protect against CPA */
--	guard(spinlock)(&pgd_lock);
--	direct_pages_count[level] += pages;
-+	atomic_long_add(pages, &direct_pages_count[level]);
- }
- 
- static void split_page_count(int level)
- {
--	if (direct_pages_count[level] == 0)
-+	if (atomic_long_dec_if_positive(&direct_pages_count[level]) < 0)
- 		return;
- 
--	direct_pages_count[level]--;
- 	if (system_state == SYSTEM_RUNNING) {
- 		if (level == PG_LEVEL_2M)
- 			count_vm_event(DIRECT_MAP_LEVEL2_SPLIT);
- 		else if (level == PG_LEVEL_1G)
- 			count_vm_event(DIRECT_MAP_LEVEL3_SPLIT);
- 	}
--	direct_pages_count[level - 1] += PTRS_PER_PTE;
-+	atomic_long_add(PTRS_PER_PTE, &direct_pages_count[level - 1]);
- }
- 
- static void collapse_page_count(int level)
- {
--	direct_pages_count[level]++;
-+	atomic_long_inc(&direct_pages_count[level]);
- 	if (system_state == SYSTEM_RUNNING) {
- 		if (level == PG_LEVEL_2M)
- 			count_vm_event(DIRECT_MAP_LEVEL2_COLLAPSE);
- 		else if (level == PG_LEVEL_1G)
- 			count_vm_event(DIRECT_MAP_LEVEL3_COLLAPSE);
- 	}
--	direct_pages_count[level - 1] -= PTRS_PER_PTE;
-+	atomic_long_sub(PTRS_PER_PTE, &direct_pages_count[level - 1]);
-+}
++	struct ptdesc *ptdesc;
 +
-+static unsigned long direct_pages(int level)
-+{
-+	return atomic_long_read(&direct_pages_count[level]);
++	if (!IS_ENABLED(CONFIG_X86_32)) {
++		set_pte_atomic(kpte, pte);
++		return;
++	}
++
++	guard(spinlock)(&pgd_lock);
++
+ 	/* change init_mm */
+ 	set_pte_atomic(kpte, pte);
+ 
+-	if (IS_ENABLED(CONFIG_X86_32)) {
+-		struct ptdesc *ptdesc;
+-
+-		list_for_each_entry(ptdesc, &pgd_list, pt_list) {
+-			pgd_t *pgd;
+-			p4d_t *p4d;
+-			pud_t *pud;
+-			pmd_t *pmd;
+-
+-			pgd = (pgd_t *)ptdesc_address(ptdesc) + pgd_index(address);
+-			p4d = p4d_offset(pgd, address);
+-			pud = pud_offset(p4d, address);
+-			pmd = pmd_offset(pud, address);
+-			set_pte_atomic((pte_t *)pmd, pte);
+-		}
++	list_for_each_entry(ptdesc, &pgd_list, pt_list) {
++		pgd_t *pgd;
++		p4d_t *p4d;
++		pud_t *pud;
++		pmd_t *pmd;
++
++		pgd = (pgd_t *)ptdesc_address(ptdesc) + pgd_index(address);
++		p4d = p4d_offset(pgd, address);
++		pud = pud_offset(p4d, address);
++		pmd = pmd_offset(pud, address);
++		set_pte_atomic((pte_t *)pmd, pte);
+ 	}
  }
  
- void arch_report_meminfo(struct seq_file *m)
- {
- 	seq_printf(m, "DirectMap4k:    %8lu kB\n",
--			direct_pages_count[PG_LEVEL_4K] << 2);
-+		   direct_pages(PG_LEVEL_4K) << 2);
- #if defined(CONFIG_X86_64) || defined(CONFIG_X86_PAE)
- 	seq_printf(m, "DirectMap2M:    %8lu kB\n",
--			direct_pages_count[PG_LEVEL_2M] << 11);
-+		   direct_pages(PG_LEVEL_2M) << 11);
- #else
- 	seq_printf(m, "DirectMap4M:    %8lu kB\n",
--			direct_pages_count[PG_LEVEL_2M] << 12);
-+		   direct_pages(PG_LEVEL_2M) << 12);
- #endif
- 	if (direct_gbpages)
- 		seq_printf(m, "DirectMap1G:    %8lu kB\n",
--			direct_pages_count[PG_LEVEL_1G] << 20);
-+			   direct_pages(PG_LEVEL_1G) << 20);
+@@ -954,8 +959,8 @@ static pgprot_t pgprot_clear_protnone_bits(pgprot_t prot)
+ 	return prot;
  }
- #else
- static inline void split_page_count(int level) { }
+ 
+-static int __should_split_large_page(pte_t *kpte, unsigned long address,
+-				     struct cpa_data *cpa)
++static int should_split_large_page(pte_t *kpte, unsigned long address,
++				   struct cpa_data *cpa)
+ {
+ 	unsigned long numpages, pmask, psize, lpaddr, pfn, old_pfn;
+ 	pgprot_t old_prot, new_prot, req_prot, chk_prot;
+@@ -963,6 +968,9 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
+ 	enum pg_level level;
+ 	bool nx, rw;
+ 
++	if (cpa->flags & CPA_REQ_SPLIT)
++		return 1;
++
+ 	/*
+ 	 * Check for races, another CPU might have split this page
+ 	 * up already:
+@@ -1101,16 +1109,6 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
+ 	return 0;
+ }
+ 
+-static int should_split_large_page(pte_t *kpte, unsigned long address,
+-				   struct cpa_data *cpa)
+-{
+-	if (cpa->flags & CPA_REQ_SPLIT)
+-		return 1;
+-
+-	guard(spinlock)(&pgd_lock);
+-	return __should_split_large_page(kpte, address, cpa);
+-}
+-
+ static void split_set_pte(struct cpa_data *cpa, pte_t *pte, unsigned long pfn,
+ 			  pgprot_t ref_prot, unsigned long address,
+ 			  unsigned long size)
+@@ -1158,7 +1156,6 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
+ 	bool nx, rw;
+ 	pte_t *tmp;
+ 
+-	guard(spinlock)(&pgd_lock);
+ 	/*
+ 	 * Check for races, another CPU might have split this page
+ 	 * up for us already:
+@@ -1304,6 +1301,8 @@ static int collapse_pmd_page(pmd_t *pmd, unsigned long addr,
+ 			return 0;
+ 	}
+ 
++	guard(spinlock)(&pgd_lock);
++
+ 	old_pmd = *pmd;
+ 
+ 	/* Success: set up a large page */
+@@ -1404,7 +1403,6 @@ static int collapse_large_pages(unsigned long addr, struct list_head *pgtables)
+ 
+ 	addr &= PMD_MASK;
+ 
+-	guard(spinlock)(&pgd_lock);
+ 	pgd = pgd_offset_k(addr);
+ 	if (pgd_none(*pgd))
+ 		return 0;
 
 -- 
 2.53.0
