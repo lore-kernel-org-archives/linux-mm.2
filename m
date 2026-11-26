@@ -1,93 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6A4606A33A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 09:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841C1606A337
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 09:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=F8wGvLSG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GPX3Wl7F
 Received: by kanga.kvack.org (Postfix)
-	id D63536B05BB; Thu, 26 Nov 2026 04:56:12 -0500 (EST)
+	id ACDD26B05BD; Thu, 26 Nov 2026 04:57:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D13F26B05BC; Thu, 26 Nov 2026 04:56:12 -0500 (EST)
+	id A7E1D6B05BE; Thu, 26 Nov 2026 04:57:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C29EC6B05BD; Thu, 26 Nov 2026 04:56:12 -0500 (EST)
+	id 945BA6B05BF; Thu, 26 Nov 2026 04:57:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A28EE6B05BB
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:56:12 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D518A87C7
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:56:11 +0000 (UTC)
-X-FDA: 85476814542.12.B4587A6
-Received: from mta0.migadu.com (out-43.mta0.migadu.com [91.218.175.43])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 730C940008
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:56:09 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=F8wGvLSG;
-	spf=pass (imf01.hostedemail.com: domain of enze.li@linux.dev designates 91.218.175.43 as permitted sender) smtp.mailfrom=enze.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 26A796B05BD
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 04:57:06 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B0B484038D
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:57:00 +0000 (UTC)
+X-FDA: 85476816600.05.BDF3277
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 06EB620002
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:56:58 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GPX3Wl7F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795686969;
-	b=bpv9IDk0iXUx1eGcE3NMeoR+PlhBCwgp3eVExelOiaoL1iAMZuZbecP6pkmy13ad5P6SfQ
-	rhtdGtI4BIajG9Zust36sw6OUdtaJhoCYs2y8PVzW17zsAsIslnb3+lLpKRqsIeFTCSSJb
-	7l+xSrmDPOMMQ0djyxdemtmZEk9JR6A=
+	t=1795687019;
+	b=qti/KWitFF/rQtUGMO2wdD4orwZKo5FSSogWdmulKWWL8WTSZ5ei1QcFiqU8dwMhnRE62h
+	5j9ev7S/awY7ycJXZhYNREuftMubf9+zhZpw9/iQa2+arzApR/4CXoz7ruq26gTP09+1Ht
+	IXp6XOwcmoVtdGB+qc2b+Tb3y+MiSCc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795686969;
+	s=arc-20220608; t=1795687019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BQcIcei88kUqCnw+OzaF/BPCcNprpGmpU6tq1V0AoeA=;
-	b=VZV3oH0kSpkvmO/7BkmYUR7V30uJoWag813/RrGqVehL7KPs9VRt0IpP0ydPsCX09a7qgk
-	Mh+rS/WVXLX8qnA6XO54hjALmn2Svx1KaIURpcwASHhKRXAtsYQyWqPulQPE1MdjSc2fz5
-	8mm2wj+3FtWS6XPy4v9+3NGGLKuAtRY=
+	bh=rHK7ugbX/RMzKr1pPu3mSFVGP/fH09WdJS5CXhJ99Os=;
+	b=hZ1r99aQnV9Npw9XnFaIDRMpuMA9zfNtI4K5fUmfhTd2g+Zzw4aSFrHMXlGPDoWBrzwEV/
+	TbhiGah2uYnMMD8IxdtW5jsacW9QcEDcFhmhJzM1g0fgjeVqA8ruxeVXqX2S3qlvkpN/a6
+	Kfl+6i/oSkdNl7oiPhZuK3PMPZyyVs8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=F8wGvLSG;
-	spf=pass (imf01.hostedemail.com: domain of enze.li@linux.dev designates 91.218.175.43 as permitted sender) smtp.mailfrom=enze.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dxPJpYyq7fmjNCgcazcTAlVEtnKcktGtMN2JR/cLLl0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795686967; v=1; x=1796291767;
- b=F8wGvLSGGHwwvClbV9xt7ors1OyBtyBOwm/iNTdtdHmTT2CixXnH5DbsLdPRDcSIcJZjLuH1
- +u0Cqp4PaaEBcLGqVaIXTWmJmTUajjIL9hzhav3KscOlwXkg9UuY3tD6xVWQFxCbBqhEVgk6lC8
- n/QJM2rprvnaWIVjvJusqC/4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f274d0239c21fc85;
-	Thu, 26 Nov 2026 09:56:07 +0000
-X-Mizu-Trace-ID: f274d0239c21fc85
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0ad1c783-8ddd-4f55-a08e-ec1e690f92d5@linux.dev>
-Date: Thu, 26 Nov 2026 17:56:05 +0800
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GPX3Wl7F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 80B354655C;
+	Thu, 26 Nov 2026 09:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7271F000CA;
+	Thu, 26 Nov 2026 09:56:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795687017;
+	bh=rHK7ugbX/RMzKr1pPu3mSFVGP/fH09WdJS5CXhJ99Os=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GPX3Wl7FbyrIagF0lBQcklbIYOAvUqR6p5Gv6f96/HnRYBZmrEtooA3U/Z5iwLVRN
+	 nqqse/UGgLqHu9GagDHI2Ze48A+pQkaoRfPVxaHpoqrzOmdMbor3I5P7Z5XmyOpVqv
+	 xkNO6H3QrQEv3ltZAjqFykTRczJXaZG4fshFSPKWR3og8XGF5wkNLGRx+LGW4qXLLT
+	 513Y8RscNvzkHTW19JX7h7C0BAwpG5J3qzeGzYs9+9xiNFNEk1sTCBXBTbYGSQg4sk
+	 /Msat1+pLGMQjnHu5/sTJOtSc22pw3hCEnkuNNgZJE+3iZLt9ZafFH0YxGcicdXgXr
+	 P7Z6duZTQxNOA==
+Date: Thu, 26 Nov 2026 10:56:40 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jinmeng Zhou <jinmengzhou22@gmail.com>,
+	Hongfu Li <lihongfu@kylinos.cn>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Gerd Hoffmann <kraxel@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+	Mel Gorman <mel@csn.ul.ie>,
+	Dave McCracken <dave.mccracken@oracle.com>,
+	Andy Whitcroft <apw@shadowen.org>, Adam Litke <agl@us.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+	James Houghton <jthoughton@google.com>,
+	Yang Shi <shy828301@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Pedro Falcato <pfalcato@suse.de>, Gregory Price <gourry@gourry.net>,
+	Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Wanpeng Li <liwanp@linux.vnet.ibm.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kenneth W Chen <kenneth.w.chen@intel.com>,
+	Hugh Dickins <hugh@veritas.com>, Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>, Joern Engel <joern@logfs.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Michal Hocko <mhocko@suse.cz>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+	KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+	"Kirill A. Shutemov" <kirill@shutemov.name>,
+	Sasha Levin <sasha.levin@oracle.com>,
+	Guillaume Morin <guillaume@morinfr.org>,
+	Wanpeng Li <liwp.linux@gmail.com>, linux-mm@kvack.org,
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@osdl.org>,
+	linux-doc@vger.kernel.org, Chris Mason <mason@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 02/21] mm/hugetlb: fix truncated copy result in
+ UFFDIO_COPY
+Message-ID: <awgCWBs4rkuTTxBn@localhost.localdomain>
+References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
+ <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/27] mm/damon/sysfs: implement report producer
- directory
-To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org,
- Aveline Noir <jm5905938@gmail.com>, Lian Wang <lianux.mm@gmail.com>
-References: <20261124153636.91854-1-sj@kernel.org>
- <20261124153636.91854-8-sj@kernel.org>
-Content-Language: en-US
-From: Enze Li <enze.li@linux.dev>
-In-Reply-To: <20261124153636.91854-8-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 730C940008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261125-hugetlb_fixes_2-v1-2-db27fd2f71a8@kernel.org>
+X-Rspamd-Queue-Id: 06EB620002
+X-Stat-Signature: 1inbqyagab1kfn4zgwns1hoqw8gozusf
 X-Rspam-User:
-X-Stat-Signature: buwpg16ahhzgsu3tua1zt4ns1dyt73ow
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795686969-421463
-X-HE-Meta: U2FsdGVkX1/OoPglTFg/TE7mDlCXePnyZH5i1HIE44P6CXTPGo3/Ijm4KY1+09y5tDlbgfRYdyoG975uLFz4rCQIWz6FbCghlSmehofmp77j2HZPhtr5wEkk334qEcRjBgLyCxhi98O3UzvoEKppWAJcC90aEWguOWptWBF2w3e5t57Rlo+mOgQSREDW5Ez0LQ7RioYMAE3CiOnW7x/DA0v6SDcwaJTFnazaRjd4CDYgHmR8RhoLXY3rsvocrQOrqVRpKe8mQ/vx4WWyK9WIHsnAQhMMUsQerjpq57RNJF0/tz4GJtaKbnKzNPenQV4nnmlGE8NRBlxpDy92OVGyZE0YLEBbbGuaOb/00wETr1iVWDvV+yru9eMggWiISM4TZBnFGpyuZVsIdDYg7UE+KHhkq++YLgdLPbhFYWw+KPmTVGBOx3VFrOhXlH+vzoXyzo96OEErqxHbOwGlR85ZunGfSMTwHIsm9a9PTYCQ3iW9bSYMlyeavKY1wneQzSITCYAHDDUil40PKiZDPDcF0ufJeyzUUSjB5sfQrbausEakQV0m5KCnw0c23OvdGl9r/0jp2Vxrp5Vv7yXdlcAP6l6KkBHVyS+66u3eGm8An4ICj99rmKpVVlYlb8mHnqOYAV9TprMUp1dVoLV/XG4HOwzOJFqLdmvc7tD/7kl0LiCerWdro35eGvCVhGxO0GNEscw+N3QdbEqLYhrCjrtiTp0YnwpCbcFOysA1F4FnabrFHf3YeG/tMeGeq00wpd+L0J7a5IFm55EPop+quqgidRXVNU9VhTFEDhzl26sQ3npWDen+IPquEPxqPXxEmgho04MUf20SJjU40ZfYkOR1aVxvdanz8M6324vzJsxA9PPAixP/Pphb57hVI+ddLyastndOndQJXPJAvh4M9H/cPFR19nz0/tE5/fZvi2sFMM9hTy1jCqsfoLS2oGp/zAQ0CzkYKB17kBfCK/DyR6n
- Xe0+JmIp
- qh4kDQJnhLpnBtn/nTrcyYRG3tJ/mugQ3ojxwsXGe/oDgxINSnNEVsSfXwum8hIDLWnWH9W8vm7E3yPfrHC3pywauX8jUp2Sff8ZiJJ03lCrp82qXEH2jIGhdw+/XOT3pbIa3RRLsYHjtd9cZ8rvoi45tmbrTcvvmJoNexpayv7g43kvAzMei1QdRl+6HI360zXoLbOUl4U5SxXt+hkIYMhwJ474Fg7SKxYkiRsHQQ/Lo5YEuFy+uXJNvxY+zzjLSk2zoyjxk400cP4rgF0rdezJHS4m6NDYM1CTYhx0FnfpeqRFeaH5Jewfxw6IPM//1kcdPAck1RJexLqHM6xVYmCfuiuqOOLXbHQzMFFWFhez/FqMKKuluLrpv6SzAH+CmVjeNPmMdttaMtWxy1h73lap4aSwAoik6896RGFcS/IS/McESRd6ES5aT2vC3cRchT2T8lXzXEkkmUZbs/d0M+U4k1HqCXbz6ORkI+SKxf1Eof0L1ASaODqk9maNlJFG1ju31gHXX6RWSDByuGJ4wvnbFniFq7DtKzhN1m9XmJOkzGGlRK0EVLbJCecQYK0wfmq72S7ZNj17jrtIEXbms0iN3/K62tQ3dlwgARDpQcQHMyWE=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795687018-656244
+X-HE-Meta: U2FsdGVkX18LbQU3ySSnkQrjrwqa8kKPz7lNNhsTsT4qoi6AEk4XIVO6RLrcRddHmoh0Et8kFQINAuzUzsTrz9HUaYhKrH4sJIxm6hKomsO06TPTygLS4GusMLyVaCv2rX/G6eO/D5PHiqYG7PRTc4TOWwHeHvJhjsHk9rHP3ax8aXFQbLw7QSccsNkQ7DS4jsxF1tWUJCstSkWOo/JXolu2y9R8MJwB+Gita0qMeRBHTxmqBOBkZyswDTQbZ/e31Rr3m0W3tMQ8sb5h/0mE4YGQl3SzuWdDl3JFrA4qijiUGrCU8iF5+AeHTxdbP0y7oJvI2oKWSFDcG4DcEzWhKANJRcyvmxVsgEjMxeQmZG8gA+RyGHW9uneO4tkNUGOS703yBwflGCDiKOeeNyH03cbAaYXPZtqee08yHqnm1yyrmTKkSGVpRsnb7VzybuZQDAb4EVyhlupKGiBApEo4WZd03PSdvVvDxniEjcCY/uuYKWPQ1NeBUO89piNbn79iMvmZyN2RRSwU3tp8nOmw5O2r7bhuT4zx+54Nqujunyj1NlUmzmjzdk2okb6awCw8xnpmP8QHFjcCB05PQXAfJNOnkRxaMD2tietRpoKWufy39I9O1R8vI1U8qeYVTgd4+dGjhoGHKmrG5ENHajos/0d41rHfyWsaxL8Zt1PYpKDFoe9GewxKu6FGnHPqHSbyKpsxuPxKdy55MfZr62Y/sn7Oy283gHouCMK6QaBw7jwGh1n+M5UdaV3jzIeHnRszsLbcWkur8bdjvBiKeQmqkpMle+soW4vdI04xk5ZCYiG+xpRtUMAwqow3gOxxtuSmsuwSaruirpI1IsavBxHMi9pN7+GRT1nor9tfef0Ma5FTwYWhcGsSr7OZzgInta5mr2o1y1/TVHYsOgQep03S7nNT+3WKk7m/Fl8a3Cf1IAv5bquS6bKvj1qN6jBOC07oDslrkJ0tnr4FXegjuFT
+ 2GCw/HCr
+ QgW+gm9wMY5Dnz2Rvqw0Y5t0gQ8o7JqiHVaPmtKAPFvSxlvUC3n7MrtPv0GsSkXQNTHJrC4HgkQo2jgMOcXTJyA8vgeKZ0T3uAjapqbksdqKdQ9CpuHchoxIAHoNPmuxr9LA8vcT/SQmqEsI2N4AcNKPSJYCamfNWYaqzzJtL71Ns+ef2CFBpgmrLor15IuNgc6V5qmaBT74OeVZfxGMbD20gDkrCH64O+Qv5VcnWuOq7y7K5e3KT4Sp1XsjEmHn6WLEf1ynGOoWesnbVEEp4MDr5HbbwvfxKJPZPMWX8Tjap0dYl0AlwX4kVPd/OCFgFRRuS/URdW70msts8GLJI5RDTiwALKwCK917soMJEVSW6PJBL45WIWzVyhHMJSu2BZuAdwSPUMaWkqKVk/6MvgfbSLj1Dk43JHJEAw62GAnsFQ44dydn6eBI9hja/ZEqLTxknAFAqn9W16RqBylPcz1O/lhEG+Xo4pmhLExIXEN4ASGbymY7C0V6RcxFGcSaZurTbRHeLPkKSGi/f2YvBqWqFqv4Ncs8MnO02ycY/Oke/NzjDf3XaUfjBxW2vG6YZqR/QFwHwMsLgxm2u2fXzXyEe2EQA1lurRchsK/xv3Lzphwb8bXjwbrJU9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,18 +141,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/24/26 23:36, SJ Park wrote:
-> Implement a sysfs directory for each report producer.  Create and remove
-> the directories for reports/producers/nr_producers file writes.  It is a
-> placeholder for sysfs files that will be used for controlling each
-> report producer.
+On Wed, Nov 25, 2026 at 11:33:00PM +0100, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
 > 
-> Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> Signed-off-by: SJ Park <sj@kernel.org>
+> Folios that span more bytes than can fit into an unsigned integer (e.g.,
+> 16 GiB folios on arm64) are problematic with UFFDIO_COPY: the result
+> from copy_folio_from_user() can be truncated, possibly indicating
+> success instead of an error.
+> 
+> We will then continue with the folio that has stale data, and make it
+> accessible to user space.
+> 
+> For example, if copy_folio_from_user() fails such that the number of
+> bytes not copied is a multiple of 4 GiB, we'll get an effective ret ==
+> 0.
+> 
+> Let's fix it by simply testing the return value directly.
+> 
+> This has medium urgency, as it's an information leak.
+> 
+> Fixes: 8fb5debc5fcd ("userfaultfd: hugetlbfs: add hugetlb_mcopy_atomic_pte for userfaultfd support")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: cleanup code and description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reviewed-by: Enze Li <lienze@kylinos.cn>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-Thanks,
-Enze
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
