@@ -1,86 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19970606A331
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAFE606A33E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 14:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N2pz3ZCU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XM/v0L+X
 Received: by kanga.kvack.org (Postfix)
-	id 320FC6B05B2; Thu, 26 Nov 2026 09:11:15 -0500 (EST)
+	id 34BA86B05B3; Thu, 26 Nov 2026 09:12:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F8DB6B05B3; Thu, 26 Nov 2026 09:11:15 -0500 (EST)
+	id 323246B05B4; Thu, 26 Nov 2026 09:12:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E7EA6B05B4; Thu, 26 Nov 2026 09:11:15 -0500 (EST)
+	id 23B9A6B05B5; Thu, 26 Nov 2026 09:12:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A4AC96B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:11:14 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41A2240476
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:11:14 +0000 (UTC)
-X-FDA: 85477457268.05.CF7A31A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BB51C40019
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:10:56 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 0A4AA6B05B3
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:12:49 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9519A40487
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:12:48 +0000 (UTC)
+X-FDA: 85477461216.08.6ECD601
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1D9DF20026
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 14:12:30 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795702256;
-	b=7a71ZS6mpcDg3/ZZCtUgUUZJ5dXikMLixV0gl3haa8jy+oAGrRX/VySyAgWuQhb84qi6Pu
-	hslUmsLojxQMXSl+GaSxjgBMwpXU1L+/uLvbTyPSZrYdWxUVP2pGsVGDC1//ayOIBNFdcN
-	7a4pQwfi8Ov8lR6hpkkSH7mogYyt7vk=
+	t=1795702351;
+	b=FhTCeHjOJSjVykW/a+cZPFqyqb0SdxYEoRteFbeQd+lvuewbK9XyF3GZ2Gc4KWFTkFoYQb
+	B2jadLenvhH6wcD09BNeGy95gvZyJ5l6EQX0hJ/SrCZMT94EpsIt9mB4Ky4eARyeMTL5G/
+	vk44Lsv8qFQwmZQZTeXavOiDqmJiuag=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795702256;
+	s=arc-20220608; t=1795702351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6O9fFPnsC2fRnN/QRfMcf6hwkntt/ekyLWGe+pOVc4U=;
-	b=6ZqU2qCQfJGtBWBAT2PRYjX2ZzHksImo0u/lOxbBFhr7By87Ug14MAcew2hcCNtvWdJ6sP
-	sL/nut7bw2ynaRvVoGG9DhkC6fPo6ZIM1G4PFH8hjqjbWje6CXqJvmDWiz8lzsoPBKlMdq
-	Alv7yx9n1S/rHO47kzEBHqFXmJWcE5M=
+	bh=i2cNc8HSARC2wOejD22JDbD0mwhfJQiUlrWNB6pO/o4=;
+	b=7fgj4IvPMZlLGkMMBK9aZAL8IyDOogxu3M59mk91v2Fjs3Kxx2nofBDpWJqBCDlPK01l//
+	8r3Z4t7NUQ/IEKVqUS6gtG8/ZUdm30FQ6LvH9vJmc7SX8Cq6WuQ9LfH2E3mKLUpHAozVA5
+	r6Q2pjg8diCMlt2wV3ieklYRNlnR0F8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N2pz3ZCU;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XM/v0L+X";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1A9840A3A;
-	Thu, 26 Nov 2026 14:10:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D773A1F01564;
-	Thu, 26 Nov 2026 14:10:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9311D62DC7;
+	Thu, 26 Nov 2026 14:12:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F20F1F000C4;
+	Thu, 26 Nov 2026 14:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795702255;
-	bh=6O9fFPnsC2fRnN/QRfMcf6hwkntt/ekyLWGe+pOVc4U=;
+	s=k20260515; t=1795702350;
+	bh=i2cNc8HSARC2wOejD22JDbD0mwhfJQiUlrWNB6pO/o4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=N2pz3ZCU176TcfVQhG2iuo5458/3FyeO0kX903oXUUqvpGySu15X6A3HfU+AA6eEX
-	 Iyuu5ZeD+XYBv18n6tsOIpEp93zp+oW+TZJ5dWBH0buqUinIxKYdy8l3CUWtUi4XFX
-	 pvBTZZKDkZzVDnGB5RiefR2c+6IyGyAI2gTVRmQRvax7uxgNKTLf+anD7RIAVJAlG+
-	 b/al4pBnu6+4vPkZ33ZiV45scsPGvwc5+zgRH+84qQrDGn0aoD0Epzt46iXl1Lr3cf
-	 wZHHg+PhqTYEg39ZnAp9rK/bbQl58DGdd+2EzysXttKD5OgpysLYjSVuEoM8A1bMFv
-	 69QeNtO35FVEA==
-Message-ID: <59ac6564-519e-43f0-9a4a-11600e1d794e@kernel.org>
-Date: Thu, 26 Nov 2026 15:10:44 +0100
+	b=XM/v0L+X45woIBgANOwNtHPPIUmqXvHJxQ6mG9ukfV9OpVWj+xy+U5/lLU6twpiv8
+	 I9moaYBWThXPieB8iVDdrgZRck2TaptOWDWaINkRf87Eq23OBBP4BTZHZiTLQF+6Dl
+	 3VoSl6+svsMEeJ2t/4eq+g6pv6fIyAc88iW1KHSuMke+N+vXD7PgYDbZOpIKcCeCBD
+	 LeBKC5ixNrN57C6ukG4KDBtar3YC/74xgGg7ZUoS6201lCrDlW5P4oZaRkM5OvGFkt
+	 8tKz+wqmdZnUid+GmJ08v/IpaXMQLzrmptGj3dz97OX8yyKN8C9vQpgSwH1Cha7eo+
+	 bzApLFZU5wIZA==
+Message-ID: <4b60cf7b-bf8f-42dc-979e-71fe6d00c5d1@kernel.org>
+Date: Thu, 26 Nov 2026 15:12:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] mm: keep writable entries writable on protection
- changes
+Subject: Re: [PATCH v3 5/9] mm/mprotect: add MM_CP_PERM_UPGRADE
 To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
  linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
  linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
  akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
  imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
  Pedro Falcato <pfalcato@suse.de>
 References: <20261112142039.907090-2-clopez@suse.de>
- <20261112142039.907090-6-clopez@suse.de>
- <603cd8e0-c2c5-4c1e-85c4-d0a5ceda8d4c@kernel.org>
- <743f60f7-d611-4d73-a2d1-d5873bcdda36@suse.de>
+ <20261112142039.907090-7-clopez@suse.de>
+ <3314e44d-dbfe-45da-a1b0-8337784a5e86@kernel.org>
+ <5412ba3a-ff32-48e8-b5a1-d46b97cf5f8f@suse.de>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,60 +123,60 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <743f60f7-d611-4d73-a2d1-d5873bcdda36@suse.de>
+In-Reply-To: <5412ba3a-ff32-48e8-b5a1-d46b97cf5f8f@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HE-Tag: 1795702256-647353
-X-HE-Meta: U2FsdGVkX183nzQ8P/1R3fmyMf08D2kwL96N7EQeJ9jAbLPknED7h/iScotzQWLz6ulqZrwVqE4G+Kej8WdICTeRZSdZ+qO4C8Gw4//bHvZMirmc1ELS/BJrR8bUzBmszxlc4by8zKAsGrZXX//nbxN/GO/giu8VsaRBssjsEnU9rvBzl10j4Nch5Gm1IQOvAAlUcUeYqxVplvr9rhy8J1QmsTSLC38Z6/F8PUp4OToPqUl61NURWGBybd1he2PSpKKY/yx6VMdMc1NZVE02AjxorZBpfg9g8RpWIL6kTcXmBBFrT154iEC1ZEYR8feJoA8l814sr6iii7cnLKZfCI/Pe6t3z1wjoXQNLA6GxnJ0gPFBysUNlYebv72F5TDPZ/llgrekS80=
+X-HE-Tag: 1795702350-459522
+X-HE-Meta: U2FsdGVkX194cBDbVmV3JmKW4vGr42C/Ue+qog8eij9m71e/lvvc07YTBgjLZE+hJp+z/SAzyLxpBd6JOtu1dXBVLPb+fEI1wetpxgA8R6mSNz21oqzEETlfnotjudrbF8ub256DRtEBhbzdU7jF7y1fiOEIyx9ZFLaw0/bg1e8bei8r//vrfu7OrqZw+VQ1gFMOaCOTKzOAmgVtJwUQBYzmsOo4miNIRoES1po/FSX76KemDpdzFF7QS85332x5WwRWzF7hG/Cc0zJl7tA3TnNQcKSGMWipwb1nsSmqKIRPtN8lkm8pJIQ7LVJGY+qq8HCvw/KlibX7sBRIxls8wvikHgxNeoYmSbFzbE8dt+c5fHQoD7FCjb+VEzo6kTnd3Tq5+vbrbP4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/15/26 22:59, Carlos López wrote:
-> On 11/13/26 7:56 PM, David Hildenbrand (Arm) wrote:
->> On 11/12/26 15:20, Carlos López wrote:
->>> change_protection() applies vma->vm_page_prot, which lacks the write bit
->>> for CoW and write-notified mappings. MM_CP_TRY_CHANGE_WRITABLE makes
->>> entries writable again if a write fault would only set the write bit.
->>> In shared mappings, it relies on the dirty bit for this, as a clean
->>> entry might still need a write fault to notify the FS.
->>>
->>> However, this misses clean entries that were already writable. For
->>> example, a uffd-wp unprotect makes shmem PTEs read-only if they were
->>> mapped by a read fault before uffd-wp was registered, so the next write
->>> to each of them faults.
+On 11/15/26 23:03, Carlos López wrote:
+> On 11/13/26 7:51 PM, David Hildenbrand (Arm) wrote:
+>>> diff --git a/mm/mprotect.c b/mm/mprotect.c
+>>> index 84bcfe0281d3..8c0fcd10f5a3 100644
+>>> --- a/mm/mprotect.c
+>>> +++ b/mm/mprotect.c
+>>> @@ -767,6 +767,17 @@ static const struct mm_walk_ops prot_none_walk_ops = {
+>>>  	.walk_lock		= PGWALK_WRLOCK,
+>>>  };
+>>>  
+>>> +static bool vma_flags_is_perm_upgrade(vma_flags_t old_vma_flags,
+>>> +				      vma_flags_t new_vma_flags)
 >>
->> See my other reply, adding such optimizations without any motivation why we
->> should even care is not really what we want.
->>
->> Drop it from your series and keep the MM changes to a bare minimum please.
->>
->> Or is there a real dependency for your work?
->>
+>> Two tab indent.
 > 
-> Yes there is, but I clearly did not explain it properly.
+> Will fix
 > 
-> The whole point of the series is to avoid zaps when no permission bits
-> are removed by a protection change, e.g. mprotect(PROT_READ |
-> PROT_WRITE) on a read-only VMA. My proposal is for change_protection()
-> to signal this is the case to MMU notifiers with a new flag. However,
-> change_protection() sometimes write-protects entries that were writable,
-> which makes the flag wrong, so this patch fixes that.
+>>> +{
+>>> +	vm_flags_t old = vma_flags_to_legacy(old_vma_flags);
+>>> +	vm_flags_t new = vma_flags_to_legacy(new_vma_flags);
+>>> +	/* VM_ACCOUNT does not affect page tables */
+>>> +	vm_flags_t mask = VM_READ | VM_WRITE | VM_EXEC | VM_ACCOUNT;
+>>
+>> Why is VM_ACCOUNT a permission upgrade? At best it's "no change".
+>>
+>> What am I missing?
 > 
-> I'll be sure to explain this properly.
+> It isn't, this just means to cover the case where mprotect(PROT_READ |
+> PROT_WRITE) on a private read-only VMA sets VM_ACCOUNT as well. Without
+> this, the change is not detected as an upgrade.
 
-I think there are some weird interactions between things.
+Why is setting VM_ACCOUNT and upgrade for permissions?!
 
-I'm swamped with other stuff right now, but once you resend and explain it
-better, maybe I can figure out how to do this cleanly.
+I'm sorry but this is all way to shaky and confusing.
+
+Take a step back and think how to do all of this cleanly without making this
+code here unmaintainable :)
 
 -- 
 Cheers,
