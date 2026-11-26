@@ -1,106 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1AA606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 17:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34E2606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 17:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nXW9C6+2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EKPP0Bkf
 Received: by kanga.kvack.org (Postfix)
-	id BAF8B6B05B2; Thu, 26 Nov 2026 12:26:45 -0500 (EST)
+	id D18986B05B4; Thu, 26 Nov 2026 12:30:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B60C56B05B3; Thu, 26 Nov 2026 12:26:45 -0500 (EST)
+	id CEFC26B05B5; Thu, 26 Nov 2026 12:30:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4F006B05B4; Thu, 26 Nov 2026 12:26:45 -0500 (EST)
+	id BB7716B05B6; Thu, 26 Nov 2026 12:30:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 76FC66B05B2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:26:45 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 17CEAA04E2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:26:45 +0000 (UTC)
-X-FDA: 85477949970.09.C5E7C36
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3ECFBA000B
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:26:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nXW9C6+2;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795714003;
-	b=ESPWabGKiYsYekmEuhRitCrYD06/aIjP1UdIydVxu0ms+R9K7yTrjwONzHuzUCz20JniDy
-	LZGH9GG2F2/qWUadE9iNGttSwLtWnWCnR+FPkQ73eg+wKYZCDbBwW4BOKsPMXqUB2Vmu9C
-	Z714bOceAIMyYoa+weRusBxu3ISsvNU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795714003;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EA1A6B05B4
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 12:30:41 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 455C3120491
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:30:39 +0000 (UTC)
+X-FDA: 85477959798.14.7A5E91B
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0E9E280012
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:30:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=EKPP0Bkf;
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795714237;
+	b=iIXKsYVa9MWFHgdS348PMxDoX28sl4byHgKZWLM00LVLRmru+P8VCARVYtuqDx338VUjvA
+	NQQ/sOjGIawQnIbBjgv6Xe6OwURUF9BCxK7jy+9N/aA4NeDtNR5KT1Fe7/V0CGtLP63+BE
+	AFQDQ8Kkm+az2CNaDd6l0dcamWVTdG0=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795714237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3TsAdFflCae5+igj5qVBS4hOwgiKQAIIPXHogQ5HlvU=;
-	b=O4HWYZDkvzh8sI9jiA8TDNSUSLtimIP/djdobXPSo/Jd+ImhEkOnCUvCLJvbrSlueYR70o
-	D6DcRi5uVseCtN8QhfA+sWddO187eKfW38sCho8Fzi+7tFXoUrD0zRh5wiXLUVx1CHLAuS
-	whf2FDAlacHziQ166enat8zE/UzP18A=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nXW9C6+2;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9CC860CF5
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:26:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEFD1F000D8
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 17:26:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795714002;
-	bh=3TsAdFflCae5+igj5qVBS4hOwgiKQAIIPXHogQ5HlvU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nXW9C6+2gF1Q3zHNBPh8fBgfcJl1KF5jCuJOoyL8o79r4Jo4Qi8RYCE+y3y4gVhgg
-	 nc0b1UM4KedhJ77WRrrMSxTvgEbywdv1OgVa9r0kq3ZJ3XScT//RfFOmrX2BOiVeBi
-	 hdZiOKM3USpja0gYDwehlfItA/pcQkbB79zrz4+otu/2TxbHHZIs3uRTsihpvOIgdX
-	 aNP0NmKyp/EvuGg+wAtzZgJvFcratHTWORY+eT96S0iegXqA0+5VQVnkSsKLgGOz78
-	 bxi3hI5Ea+s3u6VibI5gvHyAO6QM854aMb9ECLC1130omghVqMrOtr9fPNXW3bMvT8
-	 fRYG6YNFRth8g==
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b87a1a2babso14452747a12.0
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:26:42 -0800 (PST)
-X-Gm-Message-State: APuU4Z93HKgaTy9kehfRDTTEkI0zxXLGCxeQVC1b9Vw+YjaCNjfxlcst
-	VAEuZe+G28BvAcS4Mrj+BXHb4YnNXgeQzA/Wgaa+wt8PZa/2vu+hdd6nazW96tBZVm1Vg/dJXx2
-	X9K7V/G17zr7orSqPc56py944R5i+uD8y/Zz7NwzmNQ==
-X-Received: by 2002:aa7:d8c6:0:b0:6b7:8b02:726e with SMTP id
- 4fb4d7f45d1cf-6ba1fc20931mr13487563a12.18.1795714001262; Thu, 26 Nov 2026
- 09:26:41 -0800 (PST)
+	bh=gddPbAWbVCreSTfaILEUDv9Rsv+EhM6Ujvvqb1L6T4U=;
+	b=RMdoxRDgEdGZAgw8pn7i5sRnhi8UaRdkQckx6dwdUti39fIkCK6MfjhrY6x+Hc3WNvWRxT
+	X4lMIta8e1u6tUMS2bOMykNA+EXdZtVpMkiXjscyxjXwlIslaBi7w+8A1Cc9F/g8Ypo7KA
+	f9Z0KOXbZaOCsMTY3/0ZinS/Q3urJ6k=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=EKPP0Bkf;
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-490c3ae81d3so4558587f8f.2
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 09:30:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795714235; cv=none;
+        d=google.com; s=arc-20260327;
+        b=k9wYQEquLfysGbj4NWrmOxwrklg57e3htIHyVLyof2jTewYSI8mpu3rnn4YrQ6ZY6Q
+         v9DmAj0TZJSfyJ21YCnvohRBYNqXJlL9nr5DUMt/XyszUOjm5TisRRGOrBNTbC5V22kX
+         ZnAiztJrM1CERSkHr7a8HhPvpAvuc4VG9GVwwSGIyQr2nZK5jrr71QisMLtTEaQ+BxxD
+         uu4mvBJDS2w7E/RWHoX/QxpVwKJOPtaRqEUg9Dimi2xkUMzQIayKGCZnquudwKuj9cWz
+         2cz9bmGwdi+VYNmjFFOnK9mIJA6oybO7mtEx+p9yRYLdpy7Cd40KsrJE0kCW0MNBBKsC
+         eOWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gddPbAWbVCreSTfaILEUDv9Rsv+EhM6Ujvvqb1L6T4U=;
+        fh=f4jbz+dJwygjOkQa9g4Sg44cHRJYlblvz1goICeczzM=;
+        b=f+EXswMwlxY7jaftQD8tkOt//x8siMA7+SN2/BxHxdAIxwYJUwlykmtrl3bJ9wYDd/
+         aEh1bac3aqW9QHQkoOMq1A03MrTa1zpY+QooTAkQyLwyPy2r86KG0wfMHmXM6DOnGo5c
+         bO5ZzbDng782bCvrg9xtVptNBr/YvtY4Prl540uwc/rTvrWmH+nQe38yqDc3lr6sI/Yg
+         /aQ4KFq2+uwk596BXlSrW2B06diHMM8+tWaY3M+0XBUoRYH5U9W2cioSSGP7aki2iVRF
+         c9jXaQIHgcCawbjl3daK4R+Sp46x7e7wo+AT/9aWD188T3gAHMMwpxF3JyiusH4i+CY3
+         qjCQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795714235; x=1796319035; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gddPbAWbVCreSTfaILEUDv9Rsv+EhM6Ujvvqb1L6T4U=;
+        b=EKPP0BkfHy+mXSmJnQ6jIOs+ZlhKOsGH8UEIcxjikFtXMd4TkVr7A39VObVuiWHZUd
+         z1fMkAJauAb8zKOqS+O6fTKvGxmcKcz6F6cucgvypIUsvjcb1PL9mHSf0AhplCo/RQ5i
+         nfgKpIeDPKvCHltzU6L5x9PFbr0JHe6U9xABaC/uO1zMqPEQ3eo3xdW/JQWRyaeTYUyR
+         gWbrLIFI1V6LbgIdm+6gOUwHz1YYllnKL3wugh0lsUZHuEz+qCWC5bKOljeQ5eppgNx6
+         sCdREGRFy8oBD/2cNLOnbByLmpvKZKU+2pGWWG52KJi8cJHFTd2VbYlFpowYk05vsXE+
+         3gAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795714235; x=1796319035;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gddPbAWbVCreSTfaILEUDv9Rsv+EhM6Ujvvqb1L6T4U=;
+        b=ogTtJ9Zonn1blW8dmTyQb74bbz9AYXQnKkHIh46YPqknAunZypNBUWRLPKBnIoxpvA
+         2R6rtNHCElvYd46zPgOW0FVd4nYeAkblvsVbSFOcqRrArZPSXVpou6SELEDCfEyRDcuM
+         DJ8g1Lta2NZLuEWPGSXWJuWggphoLfhkA88EDxbXBCKXbblHK9+xEEMiiWTjqHO2kw2S
+         cc9uimwfrE4JP4G1Y6HQUnw3pdOOsEymBwBHA32WGI96LEwFOGeMlcXb411SLt4N6Qqe
+         VQoC7MAtF7T7l41mNkNFn7aqf42hlKnYz+tOX3kaEY+l+JDuP/pOjIlhQzfwf880SbAZ
+         5eKw==
+X-Forwarded-Encrypted: i=1; AL+hErFaOcW/hBQB1bgYyESQK4KcCl3ocX/zfmyY61/8iUT5kmb2qgrQBX0MEaIPJERZOsQ23Qo6cGvbdg==@kvack.org
+X-Gm-Message-State: APuU4Z+vDBp4RYwddozGiCdh6UFZs+RLraajia7mvXZ9OqCbDzd9hL2/
+	Ihz41QfzPuUpgOM7fyfqhvDQ/uhWaoPj7uV0NxZtO9Di33r4xoE2/21IdXvVvsXXBI8KgfFil6P
+	TzzwNziwP6WjCVRBzoWeYazxl3koT/R8=
+X-Gm-Gg: AZFdTZcLmszdrj/uwoZ06LjOnmdAQTppKvdUXaKUynHNcbtC4ck5eWVDaImzfxvwHD7
+	H/2AaeU3Xda23G4a5pzrDSEGm/ky1TmnPR+tinkqLXc8Xb+SXxvPojQZhYlCL4krd9guxjxluc1
+	ocqE/ZV+qHgSkpnGG0ovIj30qL/fkO5WntFYJDrnrglkUXDLulo05xpV+KSXjavc3/KpsFVBJAq
+	K6vTa/Ry5KG02tZBjkGdTEhYYNLu5nS7DuP1RO6v725Viu2druXAQaaWZZLIVnCP8cUj20B4aL4
+	lzdpuQJ1p/LeXMqzS0n6zhF4YrP3SbsZHiwdzPGKTi4jKuCCHZFiqzkhWHEFFc4u/ejUmujiHyC
+	dQ1nJrew9O6BdS5450ElGO+k4bJlkVyiyms9w40vfKsqSZZ+vwkFsMAJ0pmg5Ddmfo7BNjz1R4F
+	3k4+54BhCBfPzXsTMKg4Kt59wFZXNpEcQydMJN3BXWk7atRLC5jDvp
+X-Received: by 2002:a05:6000:29ce:b0:4a7:1fca:e52d with SMTP id
+ ffacd0b85a97d-4abb0e46a88mr29683986f8f.9.1795714235150; Thu, 26 Nov 2026
+ 09:30:35 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <cover.1795439990.git.lianux.mm@gmail.com> <be6ef058f4a6babd3562270daa5b61c4ff9a6a50.1795439990.git.lianux.mm@gmail.com>
-In-Reply-To: <be6ef058f4a6babd3562270daa5b61c4ff9a6a50.1795439990.git.lianux.mm@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 26 Nov 2026 09:26:29 -0800
-X-Gmail-Original-Message-ID: <CACePvbU2cg1EVBjONWjYcsanDM0JS4eLXgX9aGYeEaXu4zZ2-w@mail.gmail.com>
-X-Gm-Features: Aa3M54rq-_aDaC2IZzYFQcaEVIrU54eEGaMwFyEv8kqdmSEUInVdyb4y-llAiSs
-Message-ID: <CACePvbU2cg1EVBjONWjYcsanDM0JS4eLXgX9aGYeEaXu4zZ2-w@mail.gmail.com>
-Subject: Re: [PATCH v5 04/19] mm/swap: introduce swap device iteration helper
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kairui Song <kasong@tencent.com>, Jihan LIN <linjh22s@gmail.com>, 
-	Kunwu Chan <kunwu.chan@linux.dev>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Thomas Gleixner <tglx@kernel.org>, linux-hardening@vger.kernel.org
+References: <CAKEwX=NXSwSiuY65EV5nqFocMLd6-afsiJfgy_ahB2v_MDmcng@mail.gmail.com>
+ <CAKEwX=O2McF-gyqJT2a8R5q79+QABCPjULrcjC2CC0v8TnXxJw@mail.gmail.com> <awfLp4H_pyefSM5v@fedora>
+In-Reply-To: <awfLp4H_pyefSM5v@fedora>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 26 Nov 2026 10:30:23 -0700
+X-Gm-Features: Aa3M54rJTgwPSeOjApk5LSNeUtBIt7uA3RemLayFHLNNoWbgFBictWmfnBliNKE
+Message-ID: <CAKEwX=O2d4KKzvmReuv3x4TPX+NGSN4WUmuWY-OtANse+=sNVg@mail.gmail.com>
+Subject: Re: Virtual Swap Sync
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <ryncsn@gmail.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Gregory Price <gourry@gourry.net>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rik van Riel <riel@surriel.com>, Wei Xu <weixugc@google.com>, 
+	Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User:
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3ECFBA000B
-X-Stat-Signature: 8bnzpe6jbm7361rpctn6bj6usqdsti8k
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795714003-476790
-X-HE-Meta: U2FsdGVkX1/akC92AO52rhKQodARa4ecQVpMM8V+32THcaNZ1n+L+eFgKmythO19ZF6MpwSp7L725O4wUzLCSoQ3VPyiiCcZWSTCOvmc3DTgjeDJENKXYm7COS++SLiHWvuJGcpEIpkAsJQJOtbPILo3q8u3H8vJNE+lIVtiXDUPAaUpPmiPdJHn+gAKBHIQQEtSVQ48+1L4wyOkLIeDvLnXgAioSRIVkfbuEEDjU49wlStTbaz/ym7y3S+pY4RexvRQT8XKVlN6kgkkmB6l6hsgqtg8msSHVIHXefROsO5xr/viwapykLnDnU3j7cV7LBXvf3UJoah5S7die9OngJy6UMHzLU8PivdE+CcKPJ5eVi334Ps4AzjKxGINfdG0zpUybzGZL/6jgwG8oWmmDyfxqy2qUdYdwk6pVoNuymQGkKxNA8FhpsuWYFwcrMQMp4PzMQTCO21re6E3avw2htMLUaEpkvwy0OpLkn8Sb/kYZN2e5A+zmQhPvbsHtkA6pHDKPLTvTlpw1dQ1TR2j3iJ9tEngqgJjtEEwUb1Yfa4m6oEzqiX7oRyJRmVm4JrzMrVAlp5oIWWKEpomNVsj0HOr3QqBFlxHVQbfWpss5TLGLn6Gvyz/KUuoaDQG1EMYvSjFNZ3gZhTwXeIiFQINeHipaNNzk9uOPBu2LYc1gq42k2T+xc2ZbYBqIjWTkYkdnsHhn+kbbjusXFcphWOwBsPguVtkLhB7a7rSueMluyaYUOp758/bWZ3/fK0NpTjdQcVSAraalvoXOigcanwQgP+L30zLpIMuwM5rwyFuEnDiGrY8saS0J1nJ2TyWNnF1kjJFXU1DjLfU8TtsIP+ZJFSC9olAqF9fGEIhlYf42Lo1+nzD2iQ82oopLbVuSTf8Qvgj123rSD55+S/gF29ciCro5OsmuQxRRNiPUs0UsKpMq3K5zghx6tPQlmuXZq7iojJOoGBBI84t7PeVFCo
- t8JVoaD/
- 4M6XcZYxQ64ln8xhOjk9ieSwg7PJbV0qOv3Zug541aX8QO4H44cI270p4Nk7wUiwTdviaGlB/Z5qYzvUGv/rUnMwyTOplCQXr7Cnr5n1vcGW8oHb6X1m462wylPK2UXg5soY4LWSCMxQ/nnEX+EAvCkEbrQOyef7IW8ahh4LIqEKMPqod8AvyxsknDRjzNMb0inAwexWRXX/E5r4G1OOaj/EbKyYQ1yHRWmyK8PzNm+6LD4eF/wmMVjvhj04ftn27yNMhkAp4iVoK+H7XZUFx7EEmkf09rZsXMwxg2d+ShlZjEbxt0Bc4V9GYtJ4CGosdb/PGUzCt9IZQH9b0u7+33rckGsT7Fjgb+UFxvY4qhBDKD0Ot4kfebtRhFa0ZvmIP4tQejZS/eyyH1ULJxMKz6Gd8Bh+aW3p6YMGrqVmPQj/U3DqouugLqG4JwixvymiQdcrEWsVOkXOitBa9EGlznH3USjQR7MAsk1ernCamW0N80A0ZBTVHsvUVvc3UpRL0i6cvI5lpk0eckB6li02BWgRqGBX2G5DpIaiC/Y2uJX/oBNZ92XOAX75D1u4WIosKuJh0nr4g5aEswzNsGpH2c3lnGU4ZETptcKDddaruptgdyWab7TqdAwveEyRvWVhAz3bRGMJRNz1q3Y6wW0pezunZJw==
+X-Rspamd-Queue-Id: 0E9E280012
+X-Stat-Signature: pbmmn6f3fu8ffrrez3b6bn9xd3teme89
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795714236-375557
+X-HE-Meta: U2FsdGVkX19CxVdLESrp9d3xBYD+3vGR/ReI5xJknoIhhhBg+PnAoQyne6QOF51g48HLFLirdK0PIGLJ78f++QSnAbO683f3X6hZYg8vVSzrLy4bc+k9Afn3QhxLAZ3xQLR5Yr45MTNAQOPwmjY1Ijz/FKjEA4wzghq4iveEYJMIZeuJVqw93KWRITmGb3IBmf9hCZ9UTHNkPepyzzKjo2FPBhuRMOX9v8mLesRqDj7Fk9jFG9TPDV1DCtLzHU0L9Ydz3juHluhb275S16bEUi4yCKso0cQXOvaE4rHGdfNgd8W5VxH8rjzrOWvcMnvMyRm6WlHkIbriBxt0jk+9h2l31e2DB4WvbLF9FBI0/6i0AO8Yvlf8MBRQoXqmml8HeI2K+Za3ZcSBnkuWeIDSIW5xIqxQEBh9QKj2rjlCyEyIWJyThwEsAEJQnhI+o1I0ZWQ7aheiANVNwTLe8ubrW5IGlBYE/8/Bn0VqDbCb9auKJyVAoDYWgDh6kb3ByALqGyRfwSsdtDy2n0h+PdaXMIjmzttk3rnEZKE//puAwDlXplCee9rPBX9ZR/f3RPCgpk2Abm/E/jAD46TUeHfRAXn2KGM3Ah64Rcfez3l2srBevHgFQygKgn2tmZQggIQ9Ron2SzdwLPvYNkmTYjrL0qVCJJSjZcu+oJtaCPMmTzLAovvjxU+tKaWe0y9tUs27O18XUAirFaVoo3FWNioKU4apITTUcpmAHPgWdh/V/QEpIUmYBRGzva0ZJVnQcvDWABiO8wzlGnemzS45PkGw5AGW4E/pnN5tnVWkU6Z2UjBJJxco+mB7GlQU+go/Nj6lP9Tg1el978EAhCbiWwrlE36wcpDIdzpdWx+PhlaVxryo5yDb+ISmoZJzLgvMU+oO51D84SN07+CnH3AuGi2lpclrQrJhnLCAiWyoL7oxYR6QMIhKgVl3CE6+muFroN5lCoLg3fjakNAxEt5pOcz
+ 8v3AGZIc
+ 0cVHE9+vnTNMlVuAr3BF+qcqrFauE1wkJ/bDFjCTa4WOnA0K3ipn7Ojx9gA4s1vzREG9eyQA3L/+tHAzAYvAroZ++3zXJt9ResbUcGAfiQJuW4rpL/Cb9DXDSM5MzwDkIHH4xY3qhvYKTQDt954FagzmU2v0c3PsrKgvXaYXcYTZVyPSUz0S4HsXtxJEWLFVPMXP6hKr01T7cTgYZILVsbg7vxqUdyVi4PTBp4U+0gx8tAQHG7h9YxSevCYqdfNFMqeaPRgTTHfYEmhdIr/KSBwZT9dWBrnJZKRPtN4sq5jOLhF4K9iW6qIldFw3qlpyHD+6TN5JCHnQrnD6IBt99ZFhFZ3Z8jRqhsYczidHrh9pJAO0F/IC9epmJ9+lnU2iHSQEM2k0vi30+Ayttm3+UWJ7n3C/tAAyIT3S0/25mqelOpFfRXDKxe09zQZBn+mRh08ZpvcAjBjJ6gNRKU4iTr60b7PfonLTrcD9rsKbNfWac98mJdMC5V54rmtI/ZKLULA4Yd1u02x3PNbUiO6n5Dtx+Kwxe3rKOCw2x7X7HmwWhvCQUmhQFBdkjdmdR78H/6grBCQtKSbmkZQq/vlo+rR04eKL/y2N8d7X5VlXXQzSr7ArVv0FR/t+q5q0aAxwnf8NCfl1/aljxzS6v/ypqBRIJmQHowWTGERzS+a1YlERjm8f2BsQ8PkjUvOu/Xc2Y6DhUO7is+EjiLB9LRk0ap0UYrDIW/DBNJtAK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,247 +162,145 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 6:16=E2=80=AFAM Lian Wang <lianux.mm@gmail.com> wro=
-te:
+On Wed, Nov 25, 2026 at 11:03=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> =
+wrote:
 >
-> From: Kairui Song <kasong@tencent.com>
+> On 11/22/26 at 08:31am, Nhat Pham wrote:
+> > On Thu, Nov 5, 2026 at 2:06=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wr=
+ote:
+> > >
+> > > Hi folks,
+> > >
+> >
+> > Hi folks - thanks everyone for attending. :)
+> >
+> > I summarized the points we discussed below - please let me know if I
+> > missed anything or misunderstood a point.
+> >
+> > * Control interface: Google is interested in a knob to cease zswapping
+> > (which already exists and will still work in vswap world). Kairui has
+> > a use case for remapping all swapped-out pages.
+> >
+> > Vswap currently bypassed when zswap is off; per-cgroup selection could
+> > be added as concrete use case arises (for e.g migration/compaction).
+> >
+> > David objected that a virtual swap abstraction should not carry a
+> > swapoff interface per se. Folks also asked whether making vswap a
+> > mandatory layer would make the implementation cleaner (Nhat will
+> > explore this direction and follow up on this).
+> >
+> > * Virtual space sizing: We discussed using vm.overcommit_ratio and
+> > vm.overcommit_memory to limit the host's logical memory footprint. The
+> > exact sizing formula is still unclear - Nhat will follow up with
+> > Kairui on whether it is acceptable.
+> >
+> > (Kairui, if possible, can you respond here for your exact use case? Do
+> > you want to limit physical memory usage, or virtual? My understanding
+> > is you want to gate physical + swap, which would be closer to the
+> > latter).
+> >
+> > * Priority and multiple swapfiles: should not be added for now.
+> >   No good use case for swap priority was identified.
+> >   Multiple swapfiles were used in the past to work around swapfile
+> > lock contention, but it is unclear whether they are still needed with
+> > Kairui's new cluster-based allocator. If contention remains a problem,
+> > we should fix it in the kernel before putting that burden on
+> > userspace.
+> >
+> > * Proposed phase split and charging (from Nhat):
+> >
+> >   - Phase 1 - initial foundation:
+> >     - Decoupled zswap: Let zswap operate without reserving disk swap
+> > for every virtual entry.
+> >     - Physical backing and writeback: Keep disk swap available as a
+> > backend, including when zswap cannot store a page or an entry needs
+> > writeback.
+> >     - Charging: Retain memsw charging for virtual entries; keep
+> > virtual-slot usage out of memory.swap.max. Actual physical swap usage
+> > keeps its resource charging.
+> >     - Usage counter: Expose vswap usage so users can monitor
+> > virtual-space consumption separately from physical swap usage.
+> > Essentially this gives you a method to estimate the logical footprint
+> > (memory.current - swapcached + vswap).
+> >
+> >   - Subsequent phase(s) - further support and controls:
+> >     - VM_SPARSE: Add VM_SPARSE as an optimization after the
+> > first-phase foundation.
+> >     - Runtime controls (added as use cases arise):
+> >       - Host-wide runtime disablement knob (and remapping of swapped ou=
+t data).
+> >       - Per-cgroup vswap control (for e.g, if some cgroups want
+> > migrations/physical swapfile compaction).
+> >
+> >   - Orthogonal use cases and concerns:
+> >     - Cgroup-level logical memory limits in cgroupv2 (memsw?) - swap
+> > developers will follow up with memcg maintainers.
+> >     - Static sizing: Define the host-sizing formula and decide whether
+> > another interface is needed.
+> >     - Swap tiering for cgroups: Explore backend selection when a
+> > concrete workload needs it.
 >
-> Separate iteration over allocated swap_info descriptors from iteration
-> over writable devices. Hibernation lookups require SWP_USED and
-> SWP_WRITEOK under swap_lock. Take a single snapshot for each flag
-> test, since unrelated bits in the same word can change during setup.
+> Youngjun's swap tier comes from concrete use case of his company, it's
+> been v11, he presented this in LSF and LPC.
 >
-> drain_mmlist() only needs the atomic usage count; walk every
-> descriptor without loading flags there. In si_swapinfo(), count
-> usage only for descriptors that are in use but no longer writable.
+> [RFC PATCH v11 0/4] mm/swap: priority-based swap tiers with per-cgroup se=
+lection
+> https://lore.kernel.org/all/20260916183437.2946306-1-youngjun.park@lge.co=
+m/T/#u
 >
-> Move the live-reference warning from __swap_type_to_info() into
-> __swap_entry_to_info(). The iterator must inspect descriptors before
-> applying its flag filter, including descriptors whose device reference
-> is dead; entry-based lookup retains the warning.
+> This is xswap road map I shared with you when we discussed about working
+> together. I also mentioned swap tier in road map because Swap tier is a
+> very important feature we swap developers plan to add.
+>
+> https://lore.kernel.org/all/al8ohWshSSZ64AtT@MiWiFi-R3L-srv/
+>
+> I thought you had read them.
 
-The patches looks good. Some minor nitpick follows.
+I put this as "orthogonal" because I don't think swap tiering should
+block virtual swap development. It's probably the other way around -
+swap tiering makes a lot less sense without a virtual swap layer.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+If you want my opinions on swap tiering, you could search on lore :)
 
-Chris
+https://lore.kernel.org/linux-mm/CAKEwX=3DO-_OZ8x0UC96a_k+0eZfAE+mWMWDdn68u=
+y1LHRq=3DJC0w@mail.gmail.com/
+https://lore.kernel.org/linux-mm/CAKEwX=3DN2XcMHN1jatppOk6wnmz-Shab5XMtTtzg=
+YOzRvU_6YFw@mail.gmail.com/
+https://lore.kernel.org/all/CAKEwX=3DNfSy0XiD_UMsDOHGCwpE7sYmBmhV4Y9vk_cbnn=
+r6J6PQ@mail.gmail.com/
+https://lore.kernel.org/all/CAKEwX=3DNfSy0XiD_UMsDOHGCwpE7sYmBmhV4Y9vk_cbnn=
+r6J6PQ@mail.gmail.com/
 
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
-> ---
->  mm/swap.h     | 12 ++++----
->  mm/swapfile.c | 77 ++++++++++++++++++++++++++++++++-------------------
->  2 files changed, 54 insertions(+), 35 deletions(-)
->
-> diff --git a/mm/swap.h b/mm/swap.h
-> index d488a69c2809..70fd3ab655ff 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -108,16 +108,16 @@ static inline unsigned int swp_cluster_offset(swp_e=
-ntry_t entry)
->   */
->  static inline struct swap_info_struct *__swap_type_to_info(int type)
->  {
-> -       struct swap_info_struct *si;
-> -
-> -       si =3D READ_ONCE(swap_info[type]); /* rcu_dereference() */
-> -       VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swa=
-poff */
-> -       return si;
-> +       return READ_ONCE(swap_info[type]); /* rcu_dereference() */
->  }
->
->  static inline struct swap_info_struct *__swap_entry_to_info(swp_entry_t =
-entry)
->  {
-> -       return __swap_type_to_info(swp_type(entry));
-> +       struct swap_info_struct *si;
-> +
-> +       si =3D __swap_type_to_info(swp_type(entry)); /* rcu_dereference()=
- */
-> +       VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swa=
-poff */
-> +       return si;
->  }
->
->  static inline struct swap_cluster_info *__swap_offset_to_cluster(
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index f22197a6286c..56b75770d320 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -106,6 +106,34 @@ static DEFINE_SPINLOCK(swap_avail_lock);
->
->  struct swap_info_struct *swap_info[MAX_SWAPFILES];
->
-> +static inline struct swap_info_struct *__swap_iter(int *i, unsigned long=
- flag)
-> +{
-> +       lockdep_assert_held(&swap_lock);
-Nitpick: Suggest have a internal version of "int _i", then sync to
-"int *i" at function exit.
+I did review Youngjun's code, pointing out some deficiencies we needed
+to fix eventually, but I did not nack anything.
 
-> +       while (*i < nr_swapfiles) {
+The problem with that series is that the memcg maintainers are not
+satisfied with the proposed interface, and the lack of writeback
+support (i.e data transfer between tier).
 
-The trick part of this is that, if the caller change *i between you
-test *i < nr_swapfile and you use *i for __swap_type_to_info(*i), you
-can visit out of bound array.  So having an internal version of  *i as
-scalor will remove that abuse. It is likely the compiler can generate
-better code as well because it avoids needing to know about pointer
-aliasing with pointer. I think your later verison might need to use
-more complicate inter state that "int i", so you might as well make it
-a inter struct which contains "int index" now.
+I also raised a similar concern in one of those comments. And it's not
+just a nice-to-have either. We can get into LRU inversion scenario
+because of it.
 
-> +               struct swap_info_struct *si =3D __swap_type_to_info(*i);
-> +
-> +               VM_WARN_ON(!si);
+FWIW, virtual swap IS a step to resolve that problem. It provides an
+indirection layer that allow you to change the backend without having
+to do PT walk to update the backend, or repeating the logic at every
+backend level. The "V" in VFS, so to speak.
 
-You don't need this WARN ON. When i < nr_swapfile, the swap_info[i]
-array can never the NULL. If you are paranoid you can continue if "si"
-is NULL.
-
-> +               (*i)++;
-> +               if (flag && (READ_ONCE(si->flags) & flag) !=3D flag)
-> +                       continue;
-> +               return si;
-> +       }
-> +       return NULL;
-> +}
-> +
-> +#define __for_each_swap(si, flag)                      \
-> +       for (int __i =3D 0; ((si) =3D __swap_iter(&__i, flag));)
-
-This is a bit too cose to for_each_swap_info. May be __for_each_swap_dev_fl=
-ag()
-
-> +
-> +/*
-> + * for_each_swap_info - iterate over all allocated swap descriptors
-> + * @si: the iterator
-> + *
-> + * Context: The caller must hold swap_lock. The lock may be dropped duri=
-ng
-> + * the loop body but must be re-acquired before the next iteration.
-> + */
-> +#define for_each_swap_info(si) __for_each_swap(si, 0)
-
-NITPICK: for_each_swap_dev()?
-
-> +#define for_each_avail_swap(si) __for_each_swap(si, SWP_USED | SWP_WRITE=
-OK)
-
-NITPICK: for_each_avail_swap_dev()?
-
-> +
->  static struct kmem_cache *swap_table_cachep;
->
->  /* Protects si->swap_file for /proc/swaps usage */
-> @@ -2284,26 +2312,18 @@ void swap_free_hibernation_slot(swp_entry_t entry=
-)
->
->  static int __find_hibernation_swap_type(dev_t device, sector_t offset)
->  {
-> -       int type;
-> -
-> -       lockdep_assert_held(&swap_lock);
-> +       struct swap_info_struct *si;
->
->         if (!device)
->                 return -EINVAL;
->
-> -       for (type =3D 0; type < nr_swapfiles; type++) {
-> -               struct swap_info_struct *sis =3D swap_info[type];
-> -
-> -               if (!(sis->flags & SWP_WRITEOK))
-> -                       continue;
-> -
-> -               if (device =3D=3D sis->bdev->bd_dev) {
-> -                       struct swap_extent *se =3D first_se(sis);
-> -
-> -                       if (se->start_block =3D=3D offset)
-> -                               return type;
-> +       for_each_avail_swap(si) {
-> +               if (device =3D=3D si->bdev->bd_dev) {
-> +                       if (first_se(si)->start_block =3D=3D offset)
-> +                               return si->type;
->                 }
->         }
-> +
->         return -ENODEV;
->  }
->
-> @@ -2470,16 +2490,13 @@ int find_hibernation_swap_type(dev_t device, sect=
-or_t offset)
->
->  int find_first_swap(dev_t *device)
->  {
-> -       int type, ret =3D -ENODEV;
-> +       int ret =3D -ENODEV;
-> +       struct swap_info_struct *si;
->
->         spin_lock(&swap_lock);
-> -       for (type =3D 0; type < nr_swapfiles; type++) {
-> -               struct swap_info_struct *sis =3D swap_info[type];
-> -
-> -               if (!(sis->flags & SWP_WRITEOK))
-> -                       continue;
-> -               *device =3D sis->bdev->bd_dev;
-> -               ret =3D type;
-> +       for_each_avail_swap(si) {
-> +               *device =3D si->bdev->bd_dev;
-> +               ret =3D si->type;
->                 break;
->         }
->         spin_unlock(&swap_lock);
-> @@ -2996,12 +3013,14 @@ static int try_to_unuse(unsigned int type)
->   */
->  static void drain_mmlist(void)
->  {
-> +       struct swap_info_struct *si;
->         struct list_head *p, *next;
-> -       unsigned int type;
->
-> -       for (type =3D 0; type < nr_swapfiles; type++)
-> -               if (swap_usage_in_pages(swap_info[type]))
-> +       for_each_swap_info(si) {
-> +               if (swap_usage_in_pages(si))
->                         return;
-> +       }
-> +
->         spin_lock(&mmlist_lock);
->         list_for_each_safe(p, next, &init_mm.mmlist)
->                 list_del_init(p);
-> @@ -3997,14 +4016,14 @@ SYSCALL_DEFINE2(swapon, const char __user *, spec=
-ialfile, int, swap_flags)
->
->  void si_swapinfo(struct sysinfo *val)
->  {
-> -       unsigned int type;
-> +       struct swap_info_struct *si;
->         unsigned long nr_to_be_unused =3D 0;
->
->         spin_lock(&swap_lock);
-> -       for (type =3D 0; type < nr_swapfiles; type++) {
-> -               struct swap_info_struct *si =3D swap_info[type];
-> +       for_each_swap_info(si) {
-> +               unsigned long flags =3D READ_ONCE(si->flags);
-
-Hmm. There is a READ_ONCE(si->flags) inside for_each_swap_info() as
-well. Now you have two READ_ONCE(si->flags). How do you ensure that
-flag between two READ_ONCE is always synced?
+Similar with the other items on the list - memsw for e.g. I made a
+best effort attempt at least to make vswap work with memsw, but memsw
+in cgroupv2 is its own conversation.
 
 >
-> -               if ((si->flags & SWP_USED) && !(si->flags & SWP_WRITEOK))
-> +               if ((flags & (SWP_USED | SWP_WRITEOK)) =3D=3D SWP_USED)
+> I don't know why I couldn't join meeting last time, I tried at 8:05am at
+> my side, kept waiting for people to approve me until 8:30am I was
+> added. Not sure if you guys also talked about this.
 
-I think for_each_swap_info() requested flags as SWP_USED |
-SWP_WRITEOK. Is this intent here to catch the race that SWP_WRITEOK
-get dropped after the for_each_swap_info()?
+Hmm maybe I missed that notifications? Apologies if that's the case -
+I do remember letting you in but I wasn't sure at which time. But you
+were eventually in right? I remember you commenting on some
+overcommiting stuff.
 
-Chris
-
->                         nr_to_be_unused +=3D swap_usage_in_pages(si);
->         }
->         val->freeswap =3D atomic_long_read(&nr_swap_pages) + nr_to_be_unu=
-sed;
+Feel free to comment on this summary if you disagree with any points
+:) And how do you feel about the proposal?
 
