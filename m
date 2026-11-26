@@ -1,72 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00E1606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 02:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7078C606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 02:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZQnT2Dwd
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CVShjB8q
 Received: by kanga.kvack.org (Postfix)
-	id 960046B0B55; Wed, 25 Nov 2026 21:05:21 -0500 (EST)
+	id 7DA8A6B0B57; Wed, 25 Nov 2026 21:05:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9375F6B0B57; Wed, 25 Nov 2026 21:05:21 -0500 (EST)
+	id 7B1D16B0B59; Wed, 25 Nov 2026 21:05:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84DE16B0B58; Wed, 25 Nov 2026 21:05:21 -0500 (EST)
+	id 6C86E6B0B5A; Wed, 25 Nov 2026 21:05:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 609906B0B55
-	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:05:21 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E75AF1A0268
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:05:20 +0000 (UTC)
-X-FDA: 85475628000.11.D4F73E5
-Received: from mta1.migadu.com (out-161.mta1.migadu.com [95.215.58.161])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D6567140009
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:05:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D9CC6B0B57
+	for <linux-mm@kvack.org>; Wed, 25 Nov 2026 21:05:49 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B715B1C498F
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:05:48 +0000 (UTC)
+X-FDA: 85475629176.06.FC9083D
+Received: from mta0.migadu.com (out-49.mta0.migadu.com [91.218.175.49])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A8550140009
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:05:46 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZQnT2Dwd;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CVShjB8q;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.161 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.49 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795658719;
-	b=mRDLsB9MRRLHhw7wCvcFtbnw7NYPsQKBfCd6vTwXkTFGaZrF6VJFzKTgWFrACqBvS0XaPf
-	lDiwQLZXk/464drGqViVK2gvFg7mEQ+TgXCFHV7JsHwclzaseLXDWQ1C3wm1NcbSW4NhW7
-	V+0EYSNhSxePUV9WHtbZUShgZBdefyg=
+	t=1795658747;
+	b=JW+nKNIOMprScK70+Br30AzBpNUc8XPPzQu/O8jKbPNk+S5KaGNxkxNebKHejy+ML/hr5L
+	DvQTDTkD/21vlvszlL3AEMwB/ta9jv9xapQGnlZVK92S+j7np/notySuNDKZUPiNuses+d
+	4kwcQBpkUdx0dho9aX18OoFX+DUdv8k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795658719;
+	s=arc-20220608; t=1795658747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5f8HopAilRekX4oDmbEUHNnRptZx1Qep0LVLshbVfgc=;
-	b=IFBGzOCsMDFGssFrwEYjvMFhaF8+fe4AC49balpme9J8izpJMCpC06L6ipG5R4iUDIk5ul
-	ACeJwAPsW9qVHNh+qiIAtCI5ZPQqhNi6WH0SqTpG+Bb/OCbdN21yA1QXYQUpj2cYaI3qr/
-	A8mqqFqBE6pKO2jG8ZXnUDlynYi0Dt4=
+	bh=WtwI+c9ObEOaIfdXp9STes6sTUCSWn6KexSqCuHMD30=;
+	b=gJcYJ5qh5abf3esqdiKxHenDMEfmIgYSzKCThjRhnFQZjkRfsOQJylty3s5Tnr0Z6c8cuQ
+	HPHuyJv8njuJ2ORwqi6K7tfgQk16d3ibGdIUI/KLOHHhkt9O4m2eX7q4rWpLmI4p36tLHk
+	8IkCwJunqjgB+ocy1zlbrw9fDwEJnxQ=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZQnT2Dwd;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CVShjB8q;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.161 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.49 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5f8HopAilRekX4oDmbEUHNnRptZx1Qep0LVLshbVfgc=;
+DKIM-Signature: a=rsa-sha256; bh=WtwI+c9ObEOaIfdXp9STes6sTUCSWn6KexSqCuHMD30=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795658717; v=1; x=1796263517;
- b=ZQnT2Dwd4OZHvVTwdB+ZOAhxiIQZ514z1N2rUUTvnQYjr9MULJRHrTUmxrahjznEPZqNmMoL
- ZtAM01J4woT4VYWvbM5HSERLVNGHbKspuEhx7A1r0J6qgn8KEjr+GtZJxZGqD0ZyCRiyDIbBUB7
- stJckE0FmD73ku1/3AZAocCg=
+ t=1795658745; v=1; x=1796263545;
+ b=CVShjB8qQ7qAzh4mixJMxw40VAJKpj/4y1j0cDUIt5JjbLW+kd+JJpU2nVTYjJHjX733+0ip
+ 3kK9o+dOF/dvt+y9VU6UGV2PyBPNTgNBnCPqRVdtLtxnXM6/zgazAZfnIO3VzAMyFVJ5wB5Bx7s
+ WTNj1msmqmOkk8SfzKfwyU/Q=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4765b56b99f04d54;
-	Thu, 26 Nov 2026 02:05:10 +0000
-X-Mizu-Trace-ID: 4765b56b99f04d54
+Received: by smtp.migadu.com with ESMTPS id bcad4ddb13afde49;
+	Thu, 26 Nov 2026 02:05:24 +0000
+X-Mizu-Trace-ID: bcad4ddb13afde49
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH 04/21] mm/memfd: mark new hugetlb folios migratable
+Subject: Re: [PATCH 03/21] mm/hugetlb: always mark new page cache folios
+ migratable
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261125-hugetlb_fixes_2-v1-4-db27fd2f71a8@kernel.org>
-Date: Thu, 26 Nov 2026 10:04:48 +0800
+In-Reply-To: <20261125-hugetlb_fixes_2-v1-3-db27fd2f71a8@kernel.org>
+Date: Thu, 26 Nov 2026 10:04:25 +0800
 Cc: Muchun Song <muchun.song@linux.dev>,
  Oscar Salvador <osalvador@suse.de>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -130,23 +131,23 @@ Cc: Muchun Song <muchun.song@linux.dev>,
  linux-doc@vger.kernel.org,
  stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <98C27A06-0FE2-428A-9B13-63E9CB0C648E@linux.dev>
+Message-Id: <C615E9EC-BE52-4F33-86D4-4FE7F911EEAC@linux.dev>
 References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
- <20261125-hugetlb_fixes_2-v1-4-db27fd2f71a8@kernel.org>
+ <20261125-hugetlb_fixes_2-v1-3-db27fd2f71a8@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Queue-Id: D6567140009
-X-Stat-Signature: ctf6s731rdbrjkuweyg6z78dszzeo4bu
 X-Rspam-User:
+X-Stat-Signature: 1krc6gqs4kf6j6pxy15b49x1k3tg6kh6
+X-Rspamd-Queue-Id: A8550140009
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795658718-693153
-X-HE-Meta: U2FsdGVkX1/GBuW1WSb3DHaUkn916s/3CYmgrwvzX3kCOQeV8KCWzlkxgV5XRweVmH7b16RLWpdYIjm0Pf7twoDzWSBpF/snKnAAwB/E+hxMoLGrGDu3lVE5Kf6ae6Vwa6cgr56H4dfZ9qEQXX+6o4p1G4bKHni1uWohIGcnchF6calahP25Plt/zEPFpopescZIEwpaglq3P3NRfkx9Me3IJsQCH8THyHv2SUbWw8l+DRJ9vamTL3+dfKU2AFtwiIqtLGU6EoK+BW+gC7+Ae+nISeVM1plXhuRy7V23Wew++6cblCO/rFi4N6LHHRIrt4bzX6MUw1Ey/JuFsYI/Z54WrXeD2JbrE4HABBa6skES821lViiH+VLWNWH3PZQVF66Ap28jHQYwsKFrEBG4dJVmHX9mJWBFBiPNRfy4kRV8KKO+d25wzRjfbVv47oZGPaEuhpd2iogH5rq/1959LYkgza+9FGHn3C/c6posOS6sYb9gDe6TQXpsGGpN6XV3kjtiqQ9hE2j2FeoEc7S4isrpBGRNmobgCg23Q0oZ7dNjYoXOxRdxgQwa/97uPRpTlKf3EAAtN9xawcznMxv/z8dSPPAX+J5ug1tLGwwPWqVsZ5Kky5Zsmq55VFFY9AsE1Bvm6YXxM5U2loexn/X/tVa/S6ZgOVVSX8jPl4Yp9eJ+LqryKtEDZDQPirO0UPe4F8nJpKCCTkOFu5zt4E9fq6Y/by7UVyEmQMUqAQ/rfDg4sSYkEwVuwLDKvJ+NVOc6TqrDcidXXmBj1tloGsXM8L/eyUCW07iujocwG4Ox9ZRVVHUP30jNyDqGA6EYvt1iADhA0FVfqlnqcoPfwCQe+uj5Km77A14trkfI+CFRPkFtVE0axfn4k/J1EKOczeEuNmv6YMkwUYIjpZu1c8FiWBYyF+cxm1AEMdcpLRwfOl7r0Fs8m1FQUN3gpIAehwpOPbceNKjj2wIhGL0Vsl3
- DCdg05Rs
- aYyO5TGqlWBQwuYgBrpxY7UAUEZU/aynmhyehUuuiZqkQbVhG0U5i9C9dKmTBd7e+6DCDdTOWas6EXAzmmRbiTMlrjNif7n7OIrdkXqtTdyjmEPEZwLCGLDzvk4+Gc+UIhRA7LujCYvZuV4XfwMokOOOkAPaxqMFh3YCy6cKbCQYpRvs08e4fClJDer3LHbVEdiRoZZLGHCLXNJ4ZV700PI+4qJ7/Bhokt/yO3qEt/Z57hPH0NPIPhdMznln2thUkvP8x23u0w/f4xngJPWnW4HjAWQXig31qvKpNlZCKZrsZD7mPj4NvhqsOjX0sPcqL5Ji6vTeTUMwW4AiK/0jco76zjvzeO1QzCT5Q2xNs8l9mEpM7SxspQleWsZUa4Bz2jxQaJmUBhxW2/X71poNviCSpHSRSGeJ5TUzlXAC/f/ly1n2zV4H0X7P6iX+z7F/gu5YKB2/Arf1T+Irt7zHHLCJ3bgrpLgle/TgjQ6BhU1U8865E1qaGU8ZzFrlXd3yGWz9Hj2f2RhucYxo7MVZsqYoy40/iIyLnduH0NgrEiO89F3Vxn3CxMjgrbwRV+K87BpuF6UVuu6CZgw9/8fc9YLSi6GmEn3JZTBsJwh0/CuUKg6M=
+X-HE-Tag: 1795658746-726587
+X-HE-Meta: U2FsdGVkX1+U/gFvDCjO0TGXSnZ6zlcJknJDAHnMuDBRJpRapZfE0xe8RyRy1boOlgRaq+UUD2fAkyE6YDO2fdBCW5jM9LfEXzStKzsVowgImk6E2LnMcQnoddeSd3WuprsXu8LYANJDvywBdZpvvsRAj1uNRHhqzbr97X2O0JfDmkPXa8qvocEzRUPdqDisV3olyzgNBrPRpPtBVPJR/XBieQfdpZi0z7IA+pqjKs7n7QwpE6m8PgPSmhxEprN3xcTsyOk4xOhAC6mduq6eTLL6nXKtLQhRapywid/xe63bBPzOxB5gYKPYJYOgyt8cvuemQjh3IQfhVaG2URCnqTfI6amJHd2s9WZXeYb9lSGyYRE8YPG/qHVcJm6lygPJOG9EcVe+OLZsLTAhmEoMPPicnGsFYGIDCFpnRlXnCwRK6gJpJyfk2AeJSSXWbBiR8/KXSIQEm01yi4wLcV0nEopxK+68mAKoiC6NU+EZL2rf/Lh080poMbEgJAh+7bnCrAjrQ0KSyJb37w1S2GtvAltxfeEv+42Tc4yKT8epypbaBKnkXSPcwOUiR6Uw2KZ/HkDg2mA3eMTtmln/NIM2CYupnMZS8UqZ6+H/tv9ITlUL3aIgWlL9Q8BLnK8RCe7iqSXjAhoBgKMKJAiYNRy6hza7382pq70yZ5Jm/bNkFJjAr6iELdBz4UIdeiBGJuYJhp3cHvbK6SukUCcX0hqzFTCEyiBmLOmkoe7+wJI07xQq8J1mmUAmxHhh1OCnAl+tB4yG5zSY8Bo3o0rYn3COqFLlayQU7PjHz+KfwywENOrpduNA0By5KzUyeeM6Jr96NM6hXTGt1FPIJhKuiQy1ituZf9fUFEUt8+Ognhxpmb7v2LVF0sgFatD9HVccgbl4dYjdQfzJX8jjmh8nNoITTSDSuhMUdbaXPTFz8W2laVelwTwof4CDZjEJXbcqRhJIqq8bxMyV8A8TIhm8S2y
+ o2742UKd
+ eo8Qa1hOL+/x0J/OHokdxckw4sx97cSqBP+BFao1iaK3wc8az5yec6Zt51X/dAQH83A8aGgwabf3IEVKfQvx4e03Ww4QrzuR5nq441kDtWuqF1GnyAKueQgvcBARFieX0zzlTOkZ+hbXDAwg6M0FZfCaHU3hilja5f7gArIH29dNfnIOgdfNP0FEW9L/xP330/n5D8BXCXxSprGOKpMMf7wkPiSsWcpt4t6EaHDMsiR8VzPN4K7cEZikRQ81RADpxFWbD6qVJNeq8G8aIJ0O+eZbrETp76zahEJJU1Hw99OLS/NjP2Z+jaLTWH6YrFaIaZVMIKUUiBJizmXwipre3DehFZO36471YfeygXXelGg/d4jsaHCDzkWvlDEhg3TSa6JkujLpGZHtUz5EYqiYVX2d6p0IMFT8+PaQdyHwvqSQRs3mi/MmRDtLqsSjlfqBP8FFuRFWVHuASQOHf5ARI9mQ8cRb2RJEbDqc/0hlZ7suq5nEzSujohIscabU2V22t5AL6+j+ZM3MkwOJ61irtY4u33FDHp0xVm04eLGznPCE6tZPECADhG19KjpW8ykwW969KnxLNAyJ+o8BECA8wzWDIydJqHnG0IpKTSiB3IObDFnc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,25 +161,35 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 > On Nov 26, 2026, at 06:33, David Hildenbrand (Arm) <david@kernel.org> =
 wrote:
 >=20
-> memfd_alloc_folio() adds a new hugetlb folio to the page cache, but
-> never sets it migratable, unlike hugetlb_no_page() and
-> hugetlbfs_fallocate().
+> hugetlb_no_page() and hugetlb_mfill_atomic_pte() only set
+> hugetlb_migratable for a new folio once they installed the PTE.
 >=20
-> Later faults will find it as an existing folio and never set the
-> migratable flag.
+> If they back out after adding the new folio to the page cache, for
+> example because the PTE changed or is no longer empty, the folio will
+> stay in the page cache without the migratable flag set.
 >=20
-> Such a folio can never be isolated for migration, even once it is no
-> longer pinned, which breaks memory offlining, alloc_contig_range() and
-> memory failure handling.
+> Later faults will find it as an existing folio and never reset the =
+flag.
+> Such a folio can never be isolated for migration, which breaks memory
+> offlining, alloc_contig_range(), longterm pinning and memory failure
+> handling.
 >=20
-> Let's fix it by setting the new folio migratable after adding it to =
-the
-> page cache, like hugetlbfs_fallocate() already does.
+> Worse, if the folio is not longterm pinnable, because it resides in
+> ZONE_MOVABLE or CMA, memfd_pin_folios() and the longterm GUP path =
+retry
+> forever on -EAGAIN. memfd_pin_folios() cannot even be killed, which =
+will
+> be fixed independently.
+>=20
+> Let's fix it by setting hugetlb folios migratable whenever (1) a new
+> anon folio gets mapped; or (2) a new folio was added to the page =
+cache,
+> like hugetlbfs_fallocate() already does.
 >=20
 > This has low urgency.
 >=20
-> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning =
-memfd folios")
+> Fixes: cb6acd01e2e4 ("hugetlbfs: fix races and page leaks during =
+migration")
 > Cc: <stable@vger.kernel.org>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
