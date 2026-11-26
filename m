@@ -1,141 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBDA606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 07:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32D6606A331
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 07:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jLba0c6F
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Li4i6wBE
 Received: by kanga.kvack.org (Postfix)
-	id 408976B05B1; Thu, 26 Nov 2026 02:03:43 -0500 (EST)
+	id 7A9816B05B0; Thu, 26 Nov 2026 02:16:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BA506B05B3; Thu, 26 Nov 2026 02:03:43 -0500 (EST)
+	id 781666B05B1; Thu, 26 Nov 2026 02:16:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A7C96B05B4; Thu, 26 Nov 2026 02:03:43 -0500 (EST)
+	id 698096B05B2; Thu, 26 Nov 2026 02:16:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EB5726B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:03:42 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7FAF8A8F6F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:03:42 +0000 (UTC)
-X-FDA: 85476379884.15.FA9F721
-Received: from mail-dl2-f11.google.com (mail-dl2-f11.google.com [74.125.229.139])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9083B40009
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:03:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=jLba0c6F;
-	spf=pass (imf04.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.139 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795676620;
-	b=CIUSMIBfH66cKmAchSEJrJW/qk6NXjSdiYg/lelR68rxOP5Jg3jBJ9wN+Mk6ios3KEsysa
-	MfjRLFGetOly85VS/62KiBCbNYadxsi4mRk9W2hYosQV/mcLJNbLzwA/jn93ydqOtpwuSf
-	kdsl2evlUXrD7ktKNc7WEMMu+RkIZ6M=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795676620;
+	by kanga.kvack.org (Postfix) with ESMTP id 3C3526B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 02:16:21 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB5E2140309
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:16:20 +0000 (UTC)
+X-FDA: 85476411720.29.AE6CBCC
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9DE5F140007
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:16:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Li4i6wBE;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795677379;
+	b=JZ6Ut2G7ngUZgZLgWv8/sKo1BZsn/lnN8yXZjgys5aGi+c/7M7wTqAO1ZIkC1rQX/CvZzX
+	SaZ9VpDWy3c0fVG7BSq6H2MXvZSRSUO/9U4m+1KvWt9oE7xU8wZ4rVthNnd1+pcEAOs/OL
+	jubRPF7HBj+B/mD4hUcPlu4nBJSA+tM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795677378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8z4X9d7XTdPtdZKUVI1Q6jRe3rMzFKexJK1WGJD7qk=;
-	b=7lOP3tYw4XnQo88MwuPyAfQ/TEzeVLD6r/+rrLRTQsp435vqUC65t6F27FORtR63+5M7VF
-	c8nKxxAVRAUSUb6bfnxXYPs+qUGdhhpc1DTzuMg8iHwR7PJPQIcAYwKKh3AzvBJpr4GR8X
-	40iTpyjBaNbdjzeIV61Y5VtOf+jpajM=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=jLba0c6F;
-	spf=pass (imf04.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.139 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-dl2-f11.google.com with SMTP id a92af1059eb24-1b345449fcbso310823c88.1
-        for <linux-mm@kvack.org>; Wed, 25 Nov 2026 23:03:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795676619; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WYjgsesk9OHINxI2AYxx9nIG8ZVthjrQ0Z29IrdPysjhUcgBNbLHXFHWTFSm0rklw0
-         /Ig1qNggh+IerlrNoGoDnTAWtAigrv3fG4sFgSW4JSG1Pekx7RvskXtwiI+WoUkpzmze
-         OspHEHvZ1f6SEqmZE/f97nFjfJ31pe0GG9CAWbbg2pABojG71McwH8XTGaHGg/NH013v
-         S+iTXQfxU+xclv6biV23nlOTdhgOeTuhF/UZaaLXT7xnSSEgZ3fM/1hkOAGjOKqDvV7r
-         88jjUkdY06t3JIEVV/+HfEzJGxeJ2KgenJx5CQiwLiaQME1T2XWnNNdcAhpneYEVe76/
-         B+SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=D8z4X9d7XTdPtdZKUVI1Q6jRe3rMzFKexJK1WGJD7qk=;
-        fh=Ep5pnRKy5GB6l6bOeoCQCIbE6XyJSF8pXTyjbuB/9jM=;
-        b=CMKX6VgeJ0TyBbB5tb94eQ5mjLseWZ8FnXlqzGzmUP/e9RL/bm1pLDyTILpTja+35k
-         HHW7QgWGlvgKDgribPzE2236F0b4hNwC8biXGnu6c5IJGuJih7L2/2vJAFug63CadSbA
-         ry27wb58NFcTSInf+O4kTavgk7P+N80/KhxZn20MXXDNjIv0xTR3ZMjgbJr+R1LgoHTW
-         7mMU+4KgoRackYe5rCKjReq3pmsKzFbtMrAz1IZ1u7JhD5DKhOipphtHVLzkKHdTNa6c
-         DNYwUf5bu00aRRSWDsUS+xUP8xPFitjBLikBh7Ih/6Ayup8urWCQyYQR2BEBiVlXb8sD
-         aKLQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795676619; x=1796281419; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D8z4X9d7XTdPtdZKUVI1Q6jRe3rMzFKexJK1WGJD7qk=;
-        b=jLba0c6Fucb2Ve+UW1zaOVk3QZBwozXXhNlr10BWbCji7NGgNrzuZtdGvEPG2H8Tta
-         rpemvGfSL2Oj9yl6vhovZuLZfLFcoFSsFGY0wMJL4MjzkfnRKRWgr8sGDXi5sDyUcLj8
-         xoJrQijiwMFJa6+hDg80KXx4ps8/Guaq9YqRs99cW9gTXSf7uDgMNir1T6aGsm5Q0A86
-         cfTuJiKmYBe868pedDEewk2afePaDZ/myd8ajFKJS2eDgOdlQpIfa87kTSpkshJCmjxU
-         g2T1EWWbmi/uhkDmbpLtm0g47FddYonZuqwSvk2FXGDviTFaV85syAX3Xl4AseMF3bPh
-         JU0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795676619; x=1796281419;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=D8z4X9d7XTdPtdZKUVI1Q6jRe3rMzFKexJK1WGJD7qk=;
-        b=L5WyIgsQOUaZAOSFWpJQkj5PqVNLqMn1S8ZS2Gk1LXI1tN7ihQB+2ip+WemakVPxyp
-         /BlElHx0iZdL+gCWGob0YPmFcQEv0uELwQS55keeSvSQsgrPF3+7pqwwND/vysbTZsRm
-         pmPOlcntSE7+Ud4B1hUaOxphxXBed0vHzRele6XCEYaO2NBgE6IbQr1wsxnIOp5CfA4D
-         UevBoVtu3H/6FLVnwhU4uzexgAAdkaYrbEOZ2+QqJZ7cGvclmK/Lxxd1zCiv4GBBGSdC
-         Ni7byhtpI7t5mcil9kGouuojx/QhP2STcsA+gp7MYG/dkzwe1jqAxMfZxM5iLiQgdaOc
-         o3bg==
-X-Forwarded-Encrypted: i=1; AL+hErHLACXEhJjHggsk5jdKm8MWgUNMNNMuHbCQeR2AWIlbuw52U4vJ0V00zIzPoApOEmR7urHwRRycTQ==@kvack.org
-X-Gm-Message-State: APuU4Z9ts4HprOExbmDhf47E2AAym6rnXQ5SJjm76W2RcpJbWg1dPi0P
-	q1lLPqrjjHu8aTr/i/N4G550Ig4H77HSlxoNjWINwP7j0Wd3m3LNh+ErbAKD6Dx0IBtOCg0JbpZ
-	6BzMJoZUtC+J5bpah4xz37SNhxVcxEQ==
-X-Gm-Gg: AZFdTZdcBc+UYA2odBjk3JLLJGhoLqL2+ioA0mmYA2SmittgXF7AbOlFj8MuINUcP6c
-	LhS8xmGX7kfmCJgJSuqGbyOSAwOMQW1PEKZyo9syFLoi2PT9QEwmvwPJQZeuDUm4OhbX3DDiLw5
-	I9F6W+gQWiR1p3prSITvBQnQgvqhokAGWMBv83sLirNVb3oJ1ybzBrAYcX7sqcoM33E/A8jxn6D
-	gNloX5wsWPUz5nLpG2u4pKalklTt5ARMS1dxs5mAD0qYYNa8YhU3FVTxquYNXqn9XMeJkSxumbk
-	ta0XhwVyKqcxV1Gdo3BHgdLk/CdZhQclRouJk4EMcNPEDYZ5OOD2VrTRpevJhednnytCX2xbghY
-	CPExeui9RIua9xgmmPaAdufgOIc3RVetSF5Da
-X-Received: by 2002:a05:7022:23aa:b0:1b5:23e7:3387 with SMTP id
- a92af1059eb24-1b55688dd29mr28250607c88.19.1795676619107; Wed, 25 Nov 2026
- 23:03:39 -0800 (PST)
+	bh=fQ9pC12UgeQHKo4v2+Isp6+X8dmisuGtcTzdtq5XM1w=;
+	b=ApSr2nyjV+96WwSlJ7X86S8qS9/4GXF76qA2cASgK/+bnlsr4BJGz7qGm3/dVev/oq66lu
+	SrV9etkQTF3Jz5zoEtaqbEWLIjNfBJuQyszyPgvw99J9jhLbzdacQjiS+LYKrgBopN5e++
+	4PNapMsbGlMCds2yO/1EAXcUEUpryVw=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Li4i6wBE;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=fQ9pC12UgeQHKo4v2+Isp6+X8dmisuGtcTzdtq5XM1w=;
+	b=Li4i6wBET6MlGF7NQok3MceD0g0Osz25ZYuKOUjgYHLzLsW8jFkameq1ks9DZ0LaL4THMRIDP
+	ozCtCGUiiFuG0FcfH9SMTbs2AXlhBOUNvpvWl8NFTjElEePpD85+HCMyjDOQr8MKJgVFkHeM/Pl
+	6kbZr/N6s4b6jujuSQ7LL0k=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jZnrV0L7Kz1cyRy;
+	Thu, 26 Nov 2026 15:15:38 +0800 (CST)
+Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id BBBDD4057C;
+	Thu, 26 Nov 2026 15:16:02 +0800 (CST)
+Received: from [10.173.98.163] (10.173.98.163) by
+ whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 26 Nov 2026 15:15:59 +0800
+Subject: Re: [PATCH v7 2/3] mm/page_alloc: only free healthy pages in
+ high-order folio
+To: Jiaqi Yan <jiaqiyan@google.com>
+CC: <osalvador@kernel.org>, <ljs@kernel.org>, <ziy@nvidia.com>,
+	<harry.yoo@oracle.com>, <willy@infradead.org>, <osalvador@suse.de>,
+	<jackmanb@google.com>, <hannes@cmpxchg.org>, <nao.horiguchi@gmail.com>,
+	<david@kernel.org>, <william.roche@oracle.com>, <tony.luck@intel.com>,
+	<wangkefeng.wang@huawei.com>, <jane.chu@oracle.com>,
+	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <liam@infradead.org>,
+	<rientjes@google.com>, <duenwen@google.com>, <jthoughton@google.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <shuah@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <boudewijn@delta-utec.com>, Vlastimil Babka
+	<vbabka@kernel.org>
+References: <20261110053331.2708996-1-jiaqiyan@google.com>
+ <20261110053331.2708996-3-jiaqiyan@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <ac843d8d-4415-85f3-6832-e3faf5cfd04f@huawei.com>
+Date: Thu, 26 Nov 2026 15:15:59 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <CALa+Y14BNfdWH3yBY+ky1+Sb0YvRzW=gRcKKyGWWaBQkysPUkA@mail.gmail.com>
- <20261126020416.87656-1-sj@kernel.org>
-In-Reply-To: <20261126020416.87656-1-sj@kernel.org>
-From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Date: Wed, 25 Nov 2026 23:03:27 -0800
-X-Gm-Features: Aa3M54pr7zZt1s4Atym5UQrDZXCPmYeOf41IBUKmR70FxfH89wL-58DBqEGqTME
-Message-ID: <CALa+Y15wc4bgERo_FEwxL4m-NUjx=_o0yPipUN+ymv7HTSUL0g@mail.gmail.com>
-Subject: Re: [PATCH v2 00/27] mm/damon: let users report their data attribute findings
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, damon@lists.linux.dev, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20261110053331.2708996-3-jiaqiyan@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ whupemk100004.china.huawei.com (7.152.185.74)
+X-Stat-Signature: n15sue4jewz7xk55nh5ieu8ma6knrzn4
+X-Rspamd-Queue-Id: 9DE5F140007
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9083B40009
-X-Stat-Signature: 3napod1wgg8w16tdnyo3cg833aweuy6j
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795676620-862887
-X-HE-Meta: U2FsdGVkX1/jFngsozxb65wdza8zW9dQWWkZ/jG2xV71aI+EZ7QVOXCJfHswkn57gjmn74xmM2EiiyRqq3My0WwOPNMKCtHnhLzfPL8/1Z7dABdg+Ul9NcGlVgilpK5fEPnhIC/z2uDxd+2d+LnQ/eqaKWyhQK7XhLHtSJ20PttfFOY9arJZzLMHy8iMcaDxrnAjy/J5jr7AwDXjMzMqxqRSe0zZljQmarEKQV69D4cSXM24DPWuyZLFdX5VJC40dKlkcUuFfliDMOTxHtI2iT3VVml8W5hR0/605lHXpnt41hQqwqptXVdirIYsatBjj1c0+p93gFLu4tTaurbNVbwrL2btCfZVeFsUwDEkrck5UD7ZTqy/nOeayFZXyeu5axMlGRS8EI5ecZd/MffbYaKtcDYZlgsj/C+hIbikb/R9Ux3BZTqMGwLgT6ILp83n7hMcQgItgq9fNtXE0anoJnEzNhqDC64o+0J0hJ4rnWgQwECG/ExrywKLoKMQITAxa/VB7wkIApfqLqEJe7VODKJF4N3mNzsBDhzcyT62LT/VUOvs/cN6vi1qJb3dtOMRyJLdwfictq0C+krY46vK4VG0nR6ezihvHhl+hBfUG3Lvqun1zcpBoPLv3fYC/OxJm9mkZPHB2MHc3cY2tV399zxBjFTGb7p6hzN0pZUFb0S6urRvXRBYW5PtDClqdYQHDnzw4k57hDVRGPnHmvp8VcXWR+kUcdCxrBJIQUEJ67XQrMq7hDDHFaX2BMxsyLQsf+SoKJvFjI7VHy7nx79pw2e6JgN9IRkDetnGXpzMp0rlJcYakgphw6y1yTCzhzLdZ/P2i8Yi7gsoW9UQ1AVoCYiYy3i60yBbwB74NXSHKWXtNXp4t03zgVUOHU4m+d0po0ToRQ4CdS05+gZWeAVzhbyrQ3vM2efcw4QtbD8gP8yLtM6Wl9oyTLbxPuOIHsu2KXhwR61/Guzswf5pDVH
- z3xsiDdB
- 1xxfdGwQfQblR0U6prdQs8qhWC9YwbX4JsmHLQQbXe+CQj9Sl/d3Tw1lC9OLR0nQIdj69rRoT7U73BBow+EaRyBf+m+98aUeN1kSmmIUMTnRmokkISWHfiCmLYq49TXyfS9/tBzpCAh4aJTwJIrJ7PGVYm56lRZXi62eQUuO7ndlAMEZoVqOxct0Gj9npRsSk4TQCprwlprWQdExWuBUvt9g8rayVzNfybOG+Ye/gvVAPsikJs6k2VuzQQ1aQG4RU7pG3ZMVFxTnPpKI7qJwHWSLil1s05Asjk9CyT2l9wgMqeo96F3uVLaUJai1/qoUPZ/BCdemyhy6G5y5sAa6PEcwY4wVblz+3rStKNIZaTNrXLHzl27U+BobYTnsAOaIdXjLVk6XQdizV7Rao89Ub6mxrOPSqiBmVLxKRaKW72Pw169OiYqZDYxc5nSCLU47Z7H+aoigEpFihmBki8vI4mwOMFUdRlBYe/v3nOdhcoMoE970Cb7B2sIE2vUe6W9PZHhyuMC8RvCZvqVGtNRlbwB3tuzUc98duJVzde48IwjtpLcbuXTiOwCG1nzNjXk+Bwizr6A7K+46Of4GdiXx6FoHP7zVq4ldFMKEgM80hYhq/hUetxTlnaaOnOXgEuAKJTr8nVxO48jDJv0VGQ0dAtQrvRr+SEbSFt/RaXw6gqVVEFRQ=
+X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795677376-265339
+X-HE-Meta: U2FsdGVkX1+ggL5N/t5Wei2nUyU4A9L5z7Trzg/fDk/LwFrIWsPGkyy/vUySviC2crnFvdQENnFNcCAKCzxwHP9OYjq2kfulvHKH+jVKnX5/bY/DvnuKg4ioC/9ywqAv15PJP7za+dq6SGPLp280Hvc5OBBjAtaQJvv+St/8P8xQL/VW/soTuBWPGCnbk2halqsh+tExhnMqC4jaNbpzr+7h2s/L6E6wZppcOOBClbZ+cjpq92MQJuqlmbg/OZ/yGa6cC3L9zwX0OP9la+ddgwo9W7zM2zjbVkkG/cL1qZZzzFZU+2bvZeez6xPLf6MT2n8BcBtQArwGH2pblQdCALTnhe8BnkSxi6TQlpXi/AdOXf8Tq9thaYnt95TbLPMpoAZqQnwpxOxJyEyM24293JUG0/J+jiYC+Tzbi0IPRj0RBwr9lCFYpZ/Aurynpe8eyPEImUAkNUfopARn26lHRB7KXHBabka6r5+re/vBPNI8/rtAb2sTb5fqqwYvjieLq70LLYRNXPDuexHkZmg36tTZNUI2FurBUgsIbp2clSRGY4pbi+Cb7wKeKa+IaPLSq+dBD6GQCKX5hwR+q749LhkB9siUphBKg929ZrMy6qRg5MOOuOfE52somLHouJVw2pAVqY20dwkllZkY8IuXxNguwL7Bnpy9/2k99P+DO59x9SCyDdPofO8H/iRdMsutwuA/giVuhAv5/pZcWBIO8U6szSPdu1Q5arSdGhWc8rZ2dKzVPUrcBXuTeWN+V0h4QNFloRyME7mxgjhym/wyco3cYVipwD4psk4W47OkygCvosu+ou+DNkmepATkkP4M/94BppVRPaRakVEdCJcCAhnuG6abuaIWAnBkljiTfNxCs2v5AHCPX448y1+pdhkrhl6/XH9U3WNIrijxQ/c3vMi02m6EStn05XoKZ1J4aZEkl20DvLtr4BQ6FDdlIYJmtYI7sSvb5VEHBQyUUCH
+ zCl8tE8Q
+ 0szld5vIJWT2HHkvLcC7G9EOYLZwctwFXHNB4vYcucOF6MvXnRJrBL1433WVEQlti3zS8gbEVlOKqDQeBB6q61t5zoFmTbiCeRv/A1YtGB8OOLZc5bOSu/I+OMgdhERk/fdaBDkLDrx08hfgt5wdJAqmihB2yFKX0NZkn5ZDBFS3/zpp6yFIIjvQvZzNszRmb5WL7f/EAe5Jo1aCNrgutdTSjMDhiJZl/Z6b9DdF3XmAtnpjOtsPdBAsy/ncl8q2cr/0Ka3Voqoa204of4aj7U75K4wIAENNfOH/YLV1j13kKEsPPytMRZM9VAHQln7NEDuCpoFdyseI6NeqsUvLTsR15Pc2lqANChFuwt5kENShqbCt9o8aKcUkQG2hkSRfVA6fg2ABrwDeJ5Rws1XmPoHmtwk5hlYYwahj5LWFag5gh6T5sdSmZN+TwE/EcHKag2yL2kS6mLSrKdWY8+m2Tdw3+qhM5tqO0tagsleWrA1I+cfn+h8TOQwhDbK9eKu6pOgR6A5Qgdbp2POLckcuneYRC2cBq0tNQEL8gL/N1x04xhKTMH5Sr80pXmaUXG7r1XNEpL6tWZI/IuLKthJ9bMyVClrf2PxqIZvAlhnYmWg0a9e4ZankSJRt0Ew+D5Hhl7U/Dq2gO2S5/WQoq92di2adlO1Pwz/1SNqvzJBT4+vzNP3LXJyj6tZlLXvvFizuPQE+uSE/HG4hBQhg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,50 +113,373 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+On 2026/11/10 13:33, Jiaqi Yan wrote:
+> At the end of dissolve_free_hugetlb_folio(), a free HugeTLB folio
+> becomes non-HugeTLB, and it is released to buddy allocator as a
+> high-order folio, e.g. a folio that contains 262144 pages if the
+> folio was a 1G HugeTLB hugepage.
+> 
+> This is problematic if the HugeTLB hugepage contained HWPoison
+> subpages. In that case, since buddy allocator does not check
+> HWPoison for non-zero-order folio, the raw HWPoison page can be
+> given out with its buddy page and be re-used by either kernel or
+> userspace.
+> 
+> Memory failure recovery (MFR) in kernel does attempt to take raw
+> HWPoison page off buddy allocator after
+> dissolve_free_hugetlb_folio(). However, there is always a time
+> window between dissolve_free_hugetlb_folio() frees a HWPoison
+> high-order folio to buddy allocator and MFR takes HWPoison raw page
+> off buddy allocator. Worse, a free HWPoison HugeTLB folio can also
+> be dissolved outside of MFR, e.g. when shrinking the HugeTLB pool,
+> and then nobody takes its HWPoison pages off buddy allocator.
+> 
+> Another similar situation is when a transparent huge page (THP)
+> runs into memory failure but splitting failed. Such THP will
+> eventually be released to buddy allocator when owning userspace
+> processes are gone, but with certain subpages having HWPoison.
+> 
+> One obvious way to avoid these problems is to always check
+> PageHWPoison() when allocating pages, which check_new_pages() only
+> does if page sanity checks are enabled. However, it is against the
+> past efforts to reduce sanity check overhead [1,2,3].
+> 
+> Instead, keep HWPoison pages out of buddy allocator when freeing a
+> high-order folio. __free_pages_prepare() already walks through all
+> tail pages of a high-order folio to check and clear their flags, so
+> counting PageHWPoison() pages in that loop is cheap, as pointed out
+> by David Hildenbrand [4]. Unlike PG_has_hwpoisoned, which is only
+> maintained for THP, this catches HWPoison pages in any high-order
+> folio, including dissolved HugeTLB folios.
+> 
+> If any HWPoison page is found, then after all checks and
+> preparations in __free_pages_prepare() succeed, take a shortcut to
+> the newly introduced free_has_hwpoisoned(), which only frees the
+> healthy pages and excludes the HWPoison ones. __free_pages_prepare()
+> then returns false so that its callers don't free the folio again.
+> 
+> free_has_hwpoisoned() iterates through the pages of the folio to
+> identify contiguous ranges of healthy pages. It uses
+> free_prepared_contig_range() to decompose each healthy range into
+> the largest possible chunks of different orders, which are then
+> freed via __free_frozen_pages(). Knowing the number of HWPoison
+> pages from __free_pages_prepare(), it stops scanning once all of
+> them are found, and frees the remaining pages without scanning them.
+> 
+> Sanitizing pages at free time (e.g. page poisoning and init_on_free)
+> may write to page contents, which must be avoided for HWPoison
+> pages. So factor it out of __free_pages_prepare() into
+> free_pages_sanitize(), and skip it for a folio that has HWPoison
+> pages. Instead, free_has_hwpoisoned() passes the new FPI_SANITIZE
+> flag to free_prepared_contig_range(), which then sanitizes each
+> healthy chunk right before freeing it.
+> 
+> Each excluded HWPoison page is treated like a page that
+> memory_failure() takes off buddy allocator: it is marked
+> PageHWPoisonTakenOff and holds a refcount of 1. Its alloc tag
+> reference is also cleared, as is done for an order-0 HWPoison page
+> in __free_pages_prepare(). This allows unpoison_memory() to put it
+> back to buddy allocator via put_page_back_buddy() instead of leaking
+> it.
+> 
+> As a result, memory_failure() no longer needs to take HWPoison pages
+> off buddy allocator after dissolving a HugeTLB folio. For a free
+> HugeTLB folio, or an anonymous one that becomes free after being
+> unmapped, try_memory_failure_hugetlb() and me_huge_page() call
+> __page_handle_poison(), which disables pcplists, dissolves the folio
+> and then calls take_page_off_buddy(). Since the raw HWPoison page
+> never reaches buddy allocator now, take_page_off_buddy() would fail,
+> and memory_failure() would report MF_FAILED.
+> 
+> So add __hugepage_handle_poison() for these two callers. It dissolves
+> the folio and then checks whether the raw HWPoison page has been
+> isolated, i.e. is HWPoisonTakenOff. It doesn't test any HugeTLB
+> flags, because the folio may have already been freed, e.g. by
+> folio_put() in me_huge_page() if it was a surplus folio, or by a
+> concurrent dissolve. If the folio's raw_hwp_list is unreliable,
+> __update_and_free_hugetlb_folio() leaks the folio and the raw
+> HWPoison page is not isolated, so memory_failure() still reports
+> MF_FAILED. As free_has_hwpoisoned() already holds a refcount on
+> each isolated page, the callers no longer page_ref_inc() it. Soft
+> offline keeps using __page_handle_poison(), because it marks a page
+> HWPoison only after taking it off buddy allocator.
+> 
+> free_has_hwpoisoned() has linear time complexity wrt the number of
+> pages in the folio; the worst case is when the last page of the
+> folio is HWPoison. While the power-of-two decomposition keeps the
+> number of calls to buddy allocator small, the linear scan of pages
+> to identify PageHWPoison() defines the overall time complexity. For
+> a 1G hugepage having 8 HWPoison pages and if the last page is HWPoison,
+> free_has_hwpoisoned() takes in worst case 15x the time free_one_page()
+> takes for a healthy 1G hugepage, measured on a system having 56 Intel
+> Skylake physical cores. The cost is nontrivial but far from triggering
+> soft lockup, and fair for handling exceptional hardware memory errors.
+> 
+> This commit message text was reworded with an AI assistant, then
+> reviewed and edited by me. The code changes are my own, but they
+> are reviewed by the AI assistant.
+> 
+> [1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-mgorman@techsingularity.net
+> [2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-mgorman@techsingularity.net
+> [3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+> [4] https://lore.kernel.org/linux-mm/8e48c288-2183-4d58-b69d-5f78344b5da5@kernel.org
+> 
+> Assisted-by: Antigravity:claude-opus-5-5
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
 
-On Wed, 25 Nov 2026 18:04:15 -0800 SJ Park <sj@kernel.org> wrote:
+Thanks for update. Some questions below.
 
-[...]
-> This is the expected result.  The implementation is more strict for type
-> matching.  If it is unclear, it says the type is not matched.
->
-> For example, if filter type is PGIDLE_SET and we cannot confirm it, it is
-> treated as not PGIDLE_SET.  For example, DAMON could fail at confirming that if
-> it was unable to get the folio for the probing memory due to some races.
+> ---
+>  mm/internal.h       |   3 +
+>  mm/memory-failure.c |  52 +++++++++-----
+>  mm/page_alloc.c     | 170 +++++++++++++++++++++++++++++++++++++-------
+>  3 files changed, 183 insertions(+), 42 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 9b8864a8540a..3ccbf7e4439a 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1195,6 +1195,9 @@ static inline int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, b
+>  {
+>  	return -EBUSY;
+>  }
+> +
+> +static inline void SetPageHWPoisonTakenOff(struct page *page)
+> +{
+> +}
+>  #endif
+>  
+>  extern unsigned long  __must_check vm_mmap_pgoff(struct file *, unsigned long,
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index b215312f261b..b456e0996ecd 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -214,7 +214,40 @@ static struct rb_root_cached pfn_space_itree = RB_ROOT_CACHED;
+>  
+>  static DEFINE_MUTEX(pfn_space_lock);
+>  
+> +static inline bool PageHWPoisonTakenOff(struct page *page)
+> +{
+> +	return PageHWPoison(page) && page_private(page) == MAGIC_HWPOISON;
+> +}
+> +
+> +/*
+> + * Only for a HugeTLB page being handled by memory_failure().
+> + * Unlike soft_offline_page(), no HWPoison subpage makes it into
+> + * buddy allocator when the folio is freed, so take_page_off_buddy()
+> + * is unnecessary.
+> + *
+> + * Return values:
+> + *   1:   the folio is dissolved and the page is isolated with
+> + *        HWPoisonTakenOff and refcount=1. Caller must not take
+> + *        another refcount.
+> + *   0:   the folio is dissolved but the page is not isolated,
+> + *        e.g. the folio's raw_hwp_list is unreliable.
 
-That makes sense, thank you for explaining.
+If folio's raw_hwp_list is unreliable, I think it cannot be dissolved. So
+above comment confused me.
 
-[...]
-> In my humble opinion, , the user could work around this issue by not submitting
-> the report too frequently.
->
-> But the more important question is, if the user really need to do this kind of
-> frequent report submissions.  I have no clue at the moment.  If it turns out
-> so, we could improve kernel side.
+> + *   < 0: failed to dissolve folio.
+> + */
+> +static int __hugepage_handle_poison(struct page *page)
 
-Agreed, user reports through sysfs are unlikely to be submitted this
-often.  The main reason I tested at high submit rates was future
-hardware samplers, which would produce reports much faster than a
-user would.  I was checking how the queue holds up under that kind of
-load.  I am happy to discuss this further once this series is in and
-you share more on the next milestones.
+...
 
-[...]
-> I agree this could be confusing.  In a sense, that said, those are working as
-> documented.  There is no documentation saying addr_start should be less than
-> addr_end.  DAMOS filter design documentation mentions "support of the filter
-> types depends on the DAMON operations set".  And the probe filter design
-> documentation says "The filters work the same as DAMOS filters".
+> +/*
+> + * Returns
+> + * - true: checks and preparations all good, caller can proceed freeing.
+> + * - false: do not proceed freeing for one of the following reasons:
+> + *   1. Some check failed so it is not safe to proceed freeing.
+> + *   2. A compound page has some HWPoison pages. The healthy pages
+> + *      are already safely freed, and the HWPoison ones isolated.
+> + */
+>  static __always_inline bool __free_pages_prepare(struct page *page,
+>  		unsigned int order, fpi_t fpi_flags)
+>  {
+>  	int bad = 0;
+> -	bool skip_kasan_poison = should_skip_kasan_poison(page);
+> -	bool init = want_init_on_free();
+>  	bool compound = PageCompound(page);
+>  	struct folio *folio = page_folio(page);
+> +	unsigned int num_hwpoisoned = 0;
+>  
+>  	if (fpi_flags & FPI_PREPARED)
+>  		return true;
+> @@ -1376,6 +1437,7 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>  			folio->_nr_pages = 0;
+>  #endif
+>  		}
+> +		num_hwpoisoned += PageHWPoison(page);
+>  		for (i = 1; i < (1 << order); i++) {
+>  			struct page *tail_page = page + i;
+>  
+> @@ -1394,6 +1456,7 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>  				}
+>  			}
+>  			tail_page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+> +			num_hwpoisoned += PageHWPoison(tail_page);
+>  		}
+>  	}
+>  	if (folio_test_anon(folio)) {
+> @@ -1425,34 +1488,20 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>  					   PAGE_SIZE << order);
+>  	}
+>  
+> -	kernel_poison_pages(page, 1 << order);
+> -
+>  	/*
+> -	 * As memory initialization might be integrated into KASAN,
+> -	 * KASAN poisoning and memory initialization code must be
+> -	 * kept together to avoid discrepancies in behavior.
+> +	 * After breaking down compound page and dealing with page metadata
+> +	 * (e.g. page owner and page alloc tags), take a shortcut if this
+> +	 * was a compound page containing certain HWPoison subpages.
+>  	 *
+> -	 * With hardware tag-based KASAN, memory tags must be set before the
+> -	 * page becomes unavailable via debug_pagealloc or arch_free_page.
+> +	 * Pass FPI_SANITIZE to only free_pages_sanitize() healthy pages.
+>  	 */
+> -	if (!skip_kasan_poison) {
+> -		kasan_poison_pages(page, order, init);
+> -
+> -		/* Memory is already initialized if KASAN did it internally. */
+> -		if (kasan_has_integrated_init())
+> -			init = false;
+> +	if (unlikely(num_hwpoisoned)) {
+> +		free_has_hwpoisoned(page, order, num_hwpoisoned,
+> +				    fpi_flags | FPI_SANITIZE);
+> +		return false;
 
-Agreed.
+There is free_page_is_bad check above this:
+	if (is_check_pages_enabled()) {
+		if (free_page_is_bad(page))
+			bad++;
+		if (bad)
+			return false;
+	}
 
-[...]
-> Good finding, thank you.  Maybe we could ask Andrew to fix this up, but this
-> might be too minor thing that readers could easily find out themselves...?
+It can return early if bad is true. In this case, free_has_hwpoisoned cannot handle
+the hwpoisoned subpages. Is this expected behavior?
 
-Agreed, it is a minor nit; can be ignored.
+>  	}
+> -	if (init)
+> -		clear_highpages_kasan_tagged(page, 1 << order);
+> -
+> -	/*
+> -	 * arch_free_page() can make the page's contents inaccessible.  s390
+> -	 * does this.  So nothing which can access the page's contents should
+> -	 * happen after this.
+> -	 */
+> -	arch_free_page(page, order);
+>  
+> -	debug_pagealloc_unmap_pages(page, 1 << order);
+> +	free_pages_sanitize(page, order);
+>  
+>  	return true;
+>  }
+> @@ -7059,7 +7108,14 @@ static void free_prepared_contig_range(struct page *page,
+>  		/*
+>  		 * Free the chunk as a single block. Our caller has already
+>  		 * called free_pages_prepare() for each order-0 page.
+> +		 *
+> +		 * If the original compound page has HWPoison page,
+> +		 * free_pages_prepare() has to skip sanitize at that time,
+> +		 * but now it is good time to do that.
+>  		 */
+> +		if (fpi_flags & FPI_SANITIZE)
+> +			free_pages_sanitize(page, order);
+> +
+>  		__free_frozen_pages(page, order, fpi_flags | FPI_PREPARED);
+>  
+>  		pfn += 1UL << order;
+> @@ -7141,6 +7197,69 @@ void __free_contig_range(unsigned long pfn, unsigned long nr_pages)
+>  	__free_contig_range_common(pfn, nr_pages, /* is_frozen= */ false);
+>  }
+>  
+> +/*
+> + * Given some contiguous pages that have num_hwpoisoned HWPoison page(s),
+> + * free only the healthy ones.
+> + *
+> + * Used at the end of __free_pages_prepare(). Even if having HWPoison pages,
+> + * breaking down compound page and clearing metadata (e.g. page owner, alloc
+> + * tag) can be done together during __free_pages_prepare(), which simplifies
+> + * the splitting here: unlike __split_unmapped_folio(), there is no need to
+> + * turn split pages into a compound page or to carry metadata.
+> + *
+> + * It scans every raw page of the compound page and causes nontrivial overhead.
+> + * So only use this when the compound page contains HWPoison page(s).
+> + *
+> + * This implementation needs rework in memdesc world.
+> + */
+> +static void free_has_hwpoisoned(struct page *page, unsigned int order,
+> +				unsigned int num_hwpoisoned,
+> +				fpi_t fpi_flags)
 
-Thanks,
-Ravi
+There are codes for order = 0 in __free_pages_prepare:
+
+	if (unlikely(PageHWPoison(page)) && !order) {
+		/* Do not let hwpoison pages hit pcplists/buddy */
+		reset_page_owner(page, order);
+		page_table_check_free(page, order);
+		pgalloc_tag_sub(page, 1 << order);
+
+		/*
+		 * The page is isolated and accounted for.
+		 * Mark the codetag as empty to avoid accounting error
+		 * when the page is freed by unpoison_memory().
+		 */
+		clear_page_tag_ref(page);
+		return false;
+	}
+
+Can free_has_hwpoisoned also handle order=0 pages? This way, the hwpoison-related handling code
+can be centralized here.
+
+> +{
+> +	unsigned long curr = page_to_pfn(page);
+> +	unsigned long end_pfn = curr + (1UL << order);
+> +	unsigned long next;
+> +	struct page *hwpoisoned;
+> +
+> +	while (curr < end_pfn) {
+> +		if (!num_hwpoisoned) {
+> +			/* No more HWPoison page in [curr, end_pfn) */
+> +			free_prepared_contig_range(pfn_to_page(curr),
+> +						   end_pfn - curr, fpi_flags);
+> +			break;
+> +		}
+> +
+> +		next = curr;
+> +		while (next < end_pfn && !PageHWPoison(pfn_to_page(next)))
+> +			++next;
+> +
+> +		if (next != end_pfn) {
+
+We reach here with num_hwpoisoned != 0. So next can not be equal to end_pfn?
+
+> +			hwpoisoned = pfn_to_page(next);
+> +			/*
+> +			 * Avoid accounting error when the page is freed
+> +			 * by unpoison_memory().
+> +			 */
+> +			clear_page_tag_ref(hwpoisoned);
+> +			/*
+> +			 * unpoison_memory() will put_page_back_buddy()
+> +			 * for HWPoisonTakenOff pages. Increment refcount
+> +			 * to avoid VM_BUG() from put_page_testzero().
+> +			 */
+> +			page_ref_inc(hwpoisoned);
+> +			SetPageHWPoisonTakenOff(hwpoisoned);
+> +			--num_hwpoisoned;
+> +		}
+> +
+> +		free_prepared_contig_range(pfn_to_page(curr), next - curr,
+> +					   fpi_flags);
+> +
+> +		if (next == end_pfn)
+
+Ditto.
+
+Thanks.
+.
 
