@@ -1,176 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AFD606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 15:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E8D606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 15:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=P20P0qzw
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nTSc0c7L
 Received: by kanga.kvack.org (Postfix)
-	id 20AC46B05B1; Thu, 26 Nov 2026 10:02:01 -0500 (EST)
+	id 205286B05B0; Thu, 26 Nov 2026 10:17:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BB2D6B05B2; Thu, 26 Nov 2026 10:02:01 -0500 (EST)
+	id 1DD236B05B1; Thu, 26 Nov 2026 10:17:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AAEF6B05B3; Thu, 26 Nov 2026 10:02:01 -0500 (EST)
+	id 0CCDE6B05B2; Thu, 26 Nov 2026 10:17:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DF59B6B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:02:00 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 692904026C
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:02:00 +0000 (UTC)
-X-FDA: 85477585200.10.5258215
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C4DF44001F
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:01:57 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=P20P0qzw;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf27.hostedemail.com: domain of "prvs=9790d755d3=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=9790d755d3=alexghiti@meta.com"
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1795705318;
-	b=VZDFYQG4sDO78+sNvigwgjIvxTIpyWEoSKrKDRbrO2pyh63hBoEL6itpvhksHtFGaLhY8I
-	Z2D7CglFN3SKEPmXNXZ/LDAdqTgq6fsY8qgqjayl9bmwxdR8NILMtzrydxPeTMqmFf51Ed
-	T4Qvehv77SEOJBS0CFsLRCy8+SF/htw=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 972F56B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 10:17:11 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B94C1C3F42
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:17:11 +0000 (UTC)
+X-FDA: 85477623462.29.2D809CF
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3162340011
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 15:17:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=nTSc0c7L;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795706229;
+	b=BsZnKesPMmnvZ1p41/iwkrRJfLE0dbp9wb2qA1YyiB93ZsI7nXnmg2/3/vWGGZwISmawWu
+	aL67EKKeZtkOUVkMUtNR5Y5s3Gsb0iGXt3TgnI6chC5DRf1U03NN1OinQWqdGC09+L+oJS
+	GGwuGm8AYf8bIxT2QwqXwxfUj4ySldQ=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795705318;
+	s=arc-20220608; t=1795706229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ksHsU0kbsqVUkEZNVmcgFe4AO3w0i+7EkE+yHh4jTrM=;
-	b=5OoOunNor+DI0viXTQ/X8ch0S82A6taNqur2Xg4KG8sIvt39sp3p8Ybd3X+bLv8iyQUVYR
-	ckSBfqRM+cQ9zOTb48lVAHdoxehecjFV6RjOh/1AQ5ZKYkA5XSKR6/VznwJYX118mokk2f
-	+aFYgfgWe0Q2poARvCe3HEtRqQgRE08=
+	bh=gzjKwk0Le2x/UkisX7hnImUaEzdnPPlkkivbYquJqUY=;
+	b=SkVRBjI7Sr8KFS7A+4aSt4TXaPUnaQ0l9BB05hNWExijngiqy20LIcBOIML2YsiL2lZ4zC
+	02kEx/2u/oFLM/sbBtVf4g5WqFcWrB35PrgxAXRfylZowmml/IRmTeZVuLsRN4daPdi4hH
+	GbaB18z2r93Lo8Mks87SMgWCD5NZJ18=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=P20P0qzw;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf27.hostedemail.com: domain of "prvs=9790d755d3=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=9790d755d3=alexghiti@meta.com"
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6AQEUcaO3866359
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:01:56 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=ksHsU0kbsqVUkEZNVmcgFe4AO3w0i+7EkE+yH
-	h4jTrM=; b=P20P0qzwdql3dJs55tVw/zSzER0pnEDse7ct7RVGedvqKP1wlaPFt
-	2s73M5Y2IlukoczLKpiPu0XiW/qLarOOrkPmrP2TCHeRa0jx8As94si2fvP+lKkd
-	2eNagtp00Z/AB6j7OnOoAuwuiMms5RE8iA5/uTUwzM8rGADXF60qRBA6Eb54t27L
-	tyFd5dsxxp4AOKwfcv0BIv95oxDoozVeBFGbjIkFis2h1Bdnp1E1AxqoV2iEMzRg
-	aH1G1eL+IPsXzC1At1XQHo/CnQZtoYWBvB6+Mi49vKJQP1n32Kxrv/W4W6xXBSJd
-	NZtyf4UXDuiDA28Cd08oevAIA1bTncLQA==
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	by m0001303.ppops.net (PPS) with ESMTPS id 4j5f3gncnx-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:01:56 -0800 (PST)
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6a5d57a8d51so726124a12.1
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:01:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795705315; cv=none;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=nTSc0c7L;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8b4e04eda5aso53143857b3.1
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 07:17:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795706228; cv=none;
         d=google.com; s=arc-20260327;
-        b=lJCMZjYWBVTeoSgwVM1acLuap1DeoTSLxnQD9SLrnzwqxd2796vKnW4LGsUMXvqyW+
-         xUZEyKddCL9oakTb9CQzQ8xbKHS5zpd57b1qfoqv+yWAhtInScskhx0Cwj+HZhgFF+s8
-         xbPYAKpBe767hmuBlaqPmPFmXPzPAXD5bnLnsj1r7LLCt25wisGxFgSA/OPq8Q8vxu5e
-         ZabCgi3xTB2bVHovj8T0A0IbDFqqFI06OO37YbSCFg56fHrylOd4H6dULeLuRexUd8bk
-         p/F7eFQP7HfDTs9hH4XyAAKM6/uMIPndoHZ2MQDC1ukMXcg8U3ezTwxDDVO0NdWW0JAU
-         h+LA==
+        b=f4JUfNukaqU81tdfL25piN0Aqna9jb4QWESJN9Gpuli7bGZOTJtfPPlVhFytQq8naj
+         OdTDeAAV7mwmxakhIn6gjLVYv1hGtSUpVTpuUctge9shAu0MlFBX5Nft7VTZlUcAmnbZ
+         169FUmV6fC3032BGhh8d+WfGAvbQiaonOP/vhyUvLzZ00rR+2DVK5hDY6deCVC74GQAq
+         hTBydRyk4zNVbRl4VnECiFzGHA2yLWpElIdv4dLQLSuJ+3ATkelnycxPz2cQ6yTe2f69
+         Z+UpdBVho/1zvGrkgKHUhjlmE9YuiEjcM9usAV4FaCJp6gaYRGG6aZdHUuz72znvE/Ea
+         pEZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=BqPHn9TvziiIAHrsauOPgw6b2tlMG6ggA0GmAWeOUhA=;
-        fh=Lm1oxw+p7VHrsl8N/VLnsf4nTbvIZz81L0dW5ekWQB4=;
-        b=hspQ5sZClRNpPVCkm9eClEAFZncxHUlo4ctAXVEP3GD0CvObBV9+Kmf4pXVhH8MEkw
-         88zg7LECbeegJcebVZKd9v2b9XvOG+IeYBcaC2ss8mZM+5GtoXSkfG/EJgKDwPsvHU92
-         Te0wZRxcXUrGAaKSvFNe2zbWmrh6rpZvMdngDVkc3a2Lt7OIBhtCofgpALPKBlHY7ZI2
-         xEGXm3LrAVaN+v0z+gdZSbagfICRbhFKs94sp5ML+cVpPtOBRhpB9zaukZXkTB7hpCsi
-         JSwf3m+SR0O24Oh1BzRRNLHivzntF6p/BEdCW9o7vGrlJE/Fn7MaqpHoD0f0fGLzhc27
-         o7CQ==;
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gzjKwk0Le2x/UkisX7hnImUaEzdnPPlkkivbYquJqUY=;
+        fh=OegJ/MU/JgH4jkW4AnChu1D2HxnN+WvoFvYrMsVDjfU=;
+        b=UhfUnes7ontS3VOUd0vkDJOdyosMdGEc5FR6GAFNfBZXDKWUDffnsCCH04Bl4KVdrm
+         LuxYZGJmonJD/elHuNTWpKUYBLXCdFMWFyDdiWeM8lBZ++jFYhL8/qiNkuqMu8puJ90n
+         pdeGNWfvaiLH59VxoMnSPkbDvKWy++iYUgt5ngWyR+Ppkq+D9bVkzf1dNV4OfSvuxUvB
+         NoNBgxx6OCbxB+Jpty0/v7ZUM14wyUlEgMUk4sxY5NJTZ7AZxcfCaEKVY6UZWHenGCR0
+         yvQhq22Ic7X6dCjPSzSgaxfPzXMDOESlPwxG6RxCF/CxGaTESQvhbNf54ysSxdm/w9/0
+         uY2Q==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795706228; x=1796311028; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gzjKwk0Le2x/UkisX7hnImUaEzdnPPlkkivbYquJqUY=;
+        b=nTSc0c7L644z2tpjFiR+0wEa0Bb4/uh4uy54lqZPp5GGaPFPIkYNFE8a8sLQLLv7jA
+         KP2FmQqnU2ARvFQzo0T82VHW00oCxEyognC2L80FS1pGOkntcwqdLnHGMPgTkM+B0dqk
+         7GxvkDct6nzRPe5F7wWN8cpOY9iIbk800ZWBrUhXFpHpgB2yxr0bwVKJepQ3pThXkgCm
+         QI9Rdc/u7/brtZNCudkmlB4/qQqme7EQ0nq5mM/6lxuKv/wRn5tCO1NSC5zcNrIA8Poi
+         1wYzMlTP9L2apkJJpAPhdwmPHlYrnAOoqjL0CEFxcuo5vKtvkzXNj9/VuXmJl5fVNzd9
+         G6jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795705315; x=1796310115;
+        d=1e100.net; s=20260707; t=1795706228; x=1796311028;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BqPHn9TvziiIAHrsauOPgw6b2tlMG6ggA0GmAWeOUhA=;
-        b=wjoRMllEnvhh9jAUixF8yvJVbLUyAU8rRN21xuuU/ALAywwZzeakQK+Z8uj0rsifNr
-         DHr+95oI1c5/lWb8XM+2ZGkxMOo/luysNlnk98rLu7zSGXnR2Qy2aLFFfVGP4Rfppq71
-         YEJ/42MTrxeAWxTFIAXVOotIcTQI3eZ7vEE2xB5hHQ1JHUhLnh222g7aE/pmBgD8j1Ty
-         0LzHwsPLdGdaKMCriZGmkoRUgLySCkE6Vhw6fjJRkdYXc0wOUdFbl82gtARHzUnGU5Aa
-         EUfUvrAYIvz21x/SWKgNISVsMfigyUIXY4oUSq24tdqzj2pFweeS4WzZT5r/zNdKyUrJ
-         2eSg==
-X-Forwarded-Encrypted: i=1; AL+hErHpBOPkY4sxmAsVG3ocBlOWNxLw24QaSQOWMDMgn1orhesvfmgGJOA8uxzkvdEj9DobCYFN9TJ/fQ==@kvack.org
-X-Gm-Message-State: APuU4Z/aPun5FLMXPMRgFeb6uhwmhzRo7Ki+QyF6+RY2e5Gez1jXMzW3
-	geC9htErZgyEUa7KuDtmxreUykbXXvsv74ug7G8EaAewNTzTmTjSFC1689Tv2IPPMW4nAmPRf9d
-	+tK1IGXQX7Y9pMaNNj2I0xlok9oK4ZLiWiXM3RSlc5y0zYqmlTL4CmrvTugBWVfqYQDZ39zKxA8
-	wWEaWERKAuCY78rKPRr+PfShkBHQ==
-X-Gm-Gg: AZFdTZfmBvIlwWKH4+70FCy73Xbvk5yWhW4gF0wwUWzm5NIkZclC6qBhlAEpMyiQdzq
-	6+kN/FqsewJOMxDSkITbySF4ux0whJLKgT5ESJzcUFPjCL0GlM2Tu1lAZfwa6xRVbgSRsdgoSz1
-	w+qhbIkM13BzDH7RyywZ5Yqcezimhw74Ur5OPYaUKozvICrLXXjtqG/3XbviVUt3lamN0eSiFIM
-	hrhbO5PRmUvAX0iXg==
-X-Received: by 2002:a05:6402:210e:b0:6b8:6e5d:31c8 with SMTP id 4fb4d7f45d1cf-6ba37d34b4emr16199789a12.16.1795705314593;
-        Thu, 26 Nov 2026 07:01:54 -0800 (PST)
-X-Received: by 2002:a05:6402:210e:b0:6b8:6e5d:31c8 with SMTP id
- 4fb4d7f45d1cf-6ba37d34b4emr16199723a12.16.1795705313703; Thu, 26 Nov 2026
- 07:01:53 -0800 (PST)
+        bh=gzjKwk0Le2x/UkisX7hnImUaEzdnPPlkkivbYquJqUY=;
+        b=qlzxhsNat1N+qEcuQT6ocp1ky3eGd+xDtpOzxj/Mm+qLIeotcWydqgBV/Htr692j7r
+         5Ov1pq7V+0z12MH6zDPxkq0iw/CoySORSTSGYg48uycnChUijyaNf+WbGQong40pWbab
+         mMbkDRoRm6L/55kuHDwONCpOc8iS1tQfhshgIEJ9rqk6KrEK/m0aV5eCypdNxRXy4+aq
+         pnA5H15y60alSLjCi85SZvNdcNwAUkaFwVvWjdX59tNK3PdPu9mCi3hIW9Utv4IOaKjD
+         qyKY2x0OmA0CWwRENtlutbtW1EUpC3j3yMJsq4LdcqHh7gh0ld1IH4dowskLQX9/bAOb
+         zTSw==
+X-Forwarded-Encrypted: i=1; AL+hErHImJWUPi1irQiAq0kGtP/qJIlYyE1gfoRcSB1wwIdQbuiZA1fggUQKbHgSaFHUFUDd/kqQg4L4gQ==@kvack.org
+X-Gm-Message-State: APuU4Z/7iodpima8B7unkB1lxSOZ1HrrEEOdAcbJAYh/6yGWOf30WIRe
+	6UPH3yA2z04i+vYkctDmQwWGZepftDR6iCcAsJe05ZKow+CMGIiwOM1u3G2LriZxpvdK2fMFABY
+	Zi9716bAAr1FZyDMOwdA8+G82LZK+zvw=
+X-Gm-Gg: AZFdTZeWYRsH6jaV/WzKdNRJuu2HeP5ZIixXJuNzsBSmeCnnRZpfRAetlz2KeYiLuPL
+	tyP9MFWEedNyq3HTCoHh1RX8At4fbcN0C8rWTl/EsuNNgaRkuCE2vkZRlJJKHjG/HbXJrXDo+bE
+	d1T/HJFMhs49nU9DID89Aydl8rX3LqnDjnVeveXQogi5rLlT6s0y0GlCVfIm5eqRKH1mdIjkH5k
+	VjTZyt8KQwCboFAmbraoaWtuCvnfUHcHk58D1BFCZtoa68X5kpeqH3WyGBhhNZXAaFTbxcs7qjf
+	z8kBVK5w7QQzPWM48cMFd8Q15v6IF5afG9cy3aU0dLx4VTLze10j1YC46NQ2bm/irg/CWc0Xkv6
+	/nFy4nMymkItmqytMLJch2Q7HLQyJbsZZ3XnUtM5ECn1qA96QF3HWbgp1Um/WVOp7fA==
+X-Received: by 2002:a05:690e:d50:b0:67d:a3f0:7d98 with SMTP id
+ 956f58d0204a3-67df4487e2amr8033601d50.81.1795706228153; Thu, 26 Nov 2026
+ 07:17:08 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261126094318.244973-1-alex@ghiti.fr> <98fecdf0-6409-4499-90e4-63996f33db90@kernel.org>
-In-Reply-To: <98fecdf0-6409-4499-90e4-63996f33db90@kernel.org>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Thu, 26 Nov 2026 16:01:42 +0100
-X-Gm-Features: Aa3M54rDcsYyFryAPjZjAPtJPfhPSO-4qzJEQsClg3xH9Aj6JUbbS_UM0fHTqdo
-Message-ID: <CAEmasaXWwWeuQnMbA+g8OyvNwe721Dro+1h+5pfTpzLuV6dx3g@mail.gmail.com>
-Subject: Re: [PATCH] mm: free the swap slot of a dirty swapin folio
+References: <20261125155108.24098-1-ekffu200098@gmail.com> <1b0242ef-49ad-4d7d-820e-d1e6569eacf8@linux.dev>
+ <931acd3e-0689-4517-bbd2-d06109ac4a6e@kernel.org>
+In-Reply-To: <931acd3e-0689-4517-bbd2-d06109ac4a6e@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Fri, 27 Nov 2026 00:16:56 +0900
+X-Gm-Features: Aa3M54onaw8MJYDddQT_3nYWVFohYsmtAwqNoqMbydwkYedoY5CvfFd6KJvm8zY
+Message-ID: <CABFDxMGzXM2iQjv9hLVnrDTrXfxhJ5NHkXiiucciHo8eMGn2ag@mail.gmail.com>
+Subject: Re: [PATCH] mm/cma: reject long-term pins of HugeTLB folios
+ overlapping crashkernel CMA
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-        Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Baoquan He <baoquan.he@linux.dev>,
-        Kemeng Shi <shikemeng@huaweicloud.com>,
-        Youngjun Park <youngjun.park@lge.com>,
-        "Liam R . Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: Usama Arif <usama.arif@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Frank van der Linden <fvdl@google.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Jiri Bohac <jbohac@suse.cz>, kexec@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: ajI5tn2-Y-wu1dlOcdPjNm4lKX4r5N7G
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI2MDA1OCBTYWx0ZWRfX/3PPc0NZZtNG
- v7mrs2HO3XEKSSHupzkpb9bX+9q8KYI4iNAfBJGrvOqbS5vLvY3UWzd18rSsaKPJ1MUE79rGQD8
- 89GmLSc6YdFtuxBYreLWiGhqxhOO8EU4tYXVkxBsEB62ZpyM6eNMl6ZNun5vwFIuBNWcU6XgLky
- BH9qUfxpTihBD3ffFTyQqAim4AocYdaP/6l8ry1o7pcvS8mZvEgN5V4zj31RZ8Rs+i5E+k40y0q
- V0nysMeD7TprDCI96YHxke1zf4JwEyS4WOCvmYj8useCOQmpy9uW/pAQSEow+WGl9PACPyMcGLw
- x82hBHoQ9UTAvWg68LsC8E8en0i1sqoXDEj1xA6sgQtPXwrmwvF6CSty9NBfA7FXU+YLVWRhB66
- v9AT3IDprdmTiah8SrT1BIMouMO4HFuvFYaJwqnx1DyHrpTD8vrnuWwpqcaW/tksetmEuDKxZ6t
- 8oekqSmnnElBExDQdIg==
-X-Proofpoint-GUID: ajI5tn2-Y-wu1dlOcdPjNm4lKX4r5N7G
-X-Authority-Analysis: v=2.4 cv=VZNir1p9 c=1 sm=1 tr=0 ts=6b0849e4 cx=c_pps
- a=9KvDgq78n9V61H3VJbnhTw==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=oIRQa5m1TaVr89WThhUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI2MDA1OCBTYWx0ZWRfXyNhW2KZZZdQK
- S1amRdw+QPpPrkkQxIL2eTbgluOQlUtcFoIX6pfVDYYQC40oMV8WaD4k6svvZsCwfr1qq3AKDQV
- OasB2MeOrjJWzhIAvdWat0saoIJDN8A=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-26_03,2026-11-26_02,2025-10-01_01
-X-Stat-Signature: sibfj8dta7cn4zrq3x73zzu7s4qpn9s9
-X-Rspamd-Queue-Id: C4DF44001F
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3162340011
+X-Stat-Signature: m6z8ogmb5sx3qwao8ujpapkjpjatdomc
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795705317-619581
-X-HE-Meta: U2FsdGVkX1/wm4fxViTM1TmnHyLtNia8o3c7B0SomfoRHF0E44rgdNOm/j8dUkkwVgpby3lpFUiQKg26kjTrZxOeF9Z1G495WTCRv2sL3T7e3mxecpv2wp+FmqgDkinvqyxpmzYYRtyRaE+DL4xddO5HtTBpIUoiDpvu4fr9raufXPYcQuB9wY7n9wDQ8bDeGO5QlxFCkLcSoNeWzDEU8goZeyGKvvA5Hk8bVeaK5W+lmsgeDGewiU4BLNF/Mafsy9nM6EKUYfDylbOvwAnDnUNLtQdZoQYxGyCFoAQq32y/ezyBvE8cPe1oNIrJSCIMl42amYfVxiQuwHRBodsV7MiqZLJVrNOAfXUPhL4ct+ZWqy/PqBC+wbJWxW6FWNTpira2TV3Q6N20C3QuDRuwKLoifGWsNJIuSqsFs/U0pNRjb5FOQN21lfZWV4iJB0YSEXc4JJ6a7eoN/XHzYor84JortKTVtmW05CvSLIK5OKC9Ld6YFIV1h36S+g+9tekjTNBnZh5GTWZjxNIrLmJc9Cz3oDzd67VmamCSFhMcwO5OUwyViBzuvZdn3RtFBg4H3dyFcFtydjoTjYStJvWzXPfgtj1r2UfFxZ9iCICTnK8cMBdMj9w5oqzK/YwL0GJ7f5VsYcPkczudEKGEfX+dJtnCzdkPck+P8H4i3w6zZOPC5OHmQoqQLf7CnFVLnjWnwhEN5ChHj2heGR+aeF8IVQ/jT3QR5EBgTPkxD0+3S4BBHR8Y/aiVDPJHTg3Mil6V6y5jriyUTl/XvmoyyvQY7WthMPDsH/QZO/qL5+78VO22IU+VSv0ionoACchj6cOQDTtQ03Q7Yz1Njxm0SaagFbiytksTSW8/h0YeSYZAv2OlsxfkaLbqhed1tAupnvcuMDYzY7bSc3I1/vAnUPfHUeDbpXiyG7hHcaS5h0lpUbPx3QOVkbMCCmVzmP3saxCxQqS1O4RQ40Lf5WfZ464
- 6XPY9YsS
- QYPgW3ZweOrnm/ruuFh/BS6XfFUSHPDohFw9RaleuIoLSC4Zo2Y9HWm14/JCRdxrfsaSVUaO4JVI8l1S/uHo9aSzEy9h5dgsD2c1uy21zIyVNHlvhhQ9hh2Bk375s94g+/DOuNVvnpi8JOz1rDqMQZJ/NLfz0mD4gdiKTpZq65eSqK9OiWNDq57twaGBgJJ3VCFc3kQh0OPmB4YhyxSJvynR8hM1Wq/u6d+SLh2nn2Y+u014ksgmJJMSNqqPOIHe/ziiqdvzIYL0sKtohnxHV2zMOE0mnTOYdnkKPtRo6IagZsxaDWBLUaNiaCy+9X5tcNSUqqpxkMaC0d3hykxXKTVrz7B4QCiJJiV2klt4/Shs2SzT2mWINUt+kAKEj02TTn8Ug2qTpAl0WnR738lQaplgyMVZ3SaL2SwaZxim3O/sUkyZFyyKeoFJVZW5QaH/hR25nPUHtD5J6VSOyyOirKEWUObgEXpiPzWEgeIFfTVPjyhMRqFov4wywN/y0RPk1q9vxP6QRyk+oPKoY/06wf2CfB18ug0h1mjmmZQ2F9A563lywy7iKLMmQGs4dIqvNAtVGJsy8zvqyiy8I2DmvMG+Hco9nb4MPByoA668GWTe0JaHtnkv6k4VZfPRAiWirjjReOAz+D6IQttrWL5MBUSiMXjksSGtJSJUxCwVHlklVE4/BtteSVz2lWryL9bWAmg9Mxw8CoKep7DIa8K2hxdEGL3GCPQr03GTxBkrahoJdj8pPgj9X0IKw5U42ZyWyzUIDy0JuYpQg3GVtuQuyQVHDGr4aA8sN+gynuQsDGEd7R3I=
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795706229-585329
+X-HE-Meta: U2FsdGVkX1/Y7StXgHN9/wP2ZSnsTXtp5R4lM9Xjm0vu0izVr5qQ7FuJjvUB1CPJMOZsiMaws1P9kYslBRSUOQzg0tws4B5NZjJOAEQ2MvhEgf1VbCJaye54kJcw9NZsZOIj5rijyv/F1K28Ml1PM53B0W4B/TdcsDSRYXXP2UixKekCPVuKQtLb20i7x69rGbNXSxrWHMlU8e0w/ibnBrvcAQLWCVgLfZ2ae0hlJtE/KodebUpl/9dr+O8YQGiyVj24Yx2dAT2ghHFX/soDj9RS/X/hinWaTMMjnl+yPYxNhySTGS3h21CeI1+7YRtotk4o+BEIBZPinD0EGWN4Kt8ToA//CFDHiZRJxY/dAQZpCzMOJ2BKuDeBZogkO2FDDU5gV+KX8cuzN7zedSvtPI0hy9GJvZcPddOx53EkinU675rvChYEDc2uWJjST33Qeg/GqyMCPpxOo4JA0KeADZXTqJG7ouRU5pxtKzH13JhDV33AWhLdpKat5Z8pOcZVku2hCi1WPzciHQZzxUTKq5H2O9pKXYKTUGgdrKxgS+ZUJnBP0mNGyam/p4JLifEbc6UpqI0gJn9VfdJCel9Ulp0j8N1Ruk7gK32vqZMMQSKloWIujqPg9wgKnVGz5k3PtiZ9CEal+pJv/3SPywPMLlXsWlHthBJJ/BllRyjh/kn+85xiVyhx98oLJTAjXt9FAIviE2E1mkHVO79eutvTnBY6KPnWJiPPRHbzXMyooc+be8YBLqBGCQiD3Hdd1s1UurS4Ao3fYE4l2zAzX6oFu6ZpvhmFHDHrF3HvaCcDkYZnVXHqywSI/18/CcYGHBfLHz/jBI9ihYnZ+QGug1rRFV0cIZqeYko1iLsbA+IsrWzAKVBA01yTGKuQOLPhL7VfY6cvPj2i4EW7UHmjKSKWtAotWtbjKo3j0nIUtM4c9Spt+V1mms4PE/WKMY0yhP6hmnEzT2ZRkt85rhtQUJe
+ 7YlOJhoB
+ GklDn5GkToqwizIxRqnUt31BjIzySfEBJZmR6BgliqqdD6Nnb2OYkvMKborT5pzeaOsYYz4pD0PBKH6W5PovMRj0/M2zLXPLtSH47V+y4mlKUfKUSfXx/6ExZbHl+OaGq8FnmEORdBvHbbI/w4WWbPsJrTLItFZIRTplC61L9HpFmlxisDSPMFuaKLCbmfvT5SwrBTRfn6yuKwokUFQIVBJv0QhBekuNOLdE2QEVcVRyWwRI6H6KJDM83y3DGoka9hNRdbZOc0FazkTmn/f0iia3jxyHcg4lCynxdFlqGm3d0btenLW1w04tCT5UBUiJj86PaJJILl3bfZC13EqilG/YEIwhkuQBy4TBuCy4BkYIHgEU6vxBv7YEvlK5Zxpyxa6YCmi6fc3C7Va96pwtxZLxL0Sy/T+Y16a8IZdttEO3okfJpzUNbb+0EDzLMUznuylUX44yVyHcrWaQ1Q0sUZVjcZz8X39d6vC22T9ZM3ek1SOKDRZapSGQxpYZb1C0A63VnP5LytiSr1tDP7AnanGznGTwGd77P/NLXqnin7Il1N4MHS5bAPI9R3b7FJLUEygq7e68oWC82PRIEWOXbTXxjic63in6RY7D3MKhxCXZFoTR0w5aFzAwYNn+Ul6KW0G5MTgoMhqEp1TpQcE5ljHcVzwrv84X70mzVy1USyHYYBp0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,123 +150,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi David,
+Hi, Usama, David, Michal
 
-On Thu, Nov 26, 2026 at 1:54=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
+2026=EB=85=84 11=EC=9B=94 26=EC=9D=BC (=EB=AA=A9) =EC=98=A4=ED=9B=84 10:07,=
+ David Hildenbrand (Arm) <david@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
+=84=B1:
 >
+> On 11/25/26 22:49, Usama Arif wrote:
 > >
-> On 11/26/26 10:42, Alexandre Ghiti wrote:
-> > do_swap_page() frees the swap cache of an exclusive folio on a write
-> > fault only. A folio loaded from zswap is dirty: zswap drops its copy on
-> > load, so the slot no longer holds the data and only reserves swap space
-> > until the folio is reclaimed again or its owner exits.
 > >
-> > Such folios add up, and they are expensive to free at exit: on a large
-> > production workload, the exit time doubled when zswap was enabled. A
-> > third of the increase comes from the folios left in the swap cache,
-> > each costing about 3x a resident page to tear down; the rest comes from
-> > freeing the zswap entries.
+> > On 25/11/2026 07:51, Sang-Heon Jeon wrote:
+> >> crashkernel=3Dsize,cma uses existing hugetlb_cma memory, so
+> >> crashk_cma_ranges[] may contain HugeTLB folios. HugeTLB folios allocat=
+ed
+> >> from hugetlb_cma can be long-term pinned without being migrated.
+> >>
+> >> After a crash, the crash kernel uses the memory in crashk_cma_ranges[]=
+,
+> >> but a device can still write to a long-term pinned folio.
+> >>
+> >> So reject long-term pins of HugeTLB folios overlapping
+> >> crashk_cma_ranges[].
+> >>
 > >
-> > So free the swap cache of an exclusive dirty folio as well, so that the
-> > slot is released at swapin, as is already done on an exclusive write
-> > fault. The folio is dirty, so it would get written out again anyway:
-> > the only cost is a new slot allocation on its next reclaim, which write
-> > faults already pay.
-> >
-> > On the production workload, this patch removed that third: the exit time
-> > decreased by about 15%. On a simple microbenchmark, 4 GiB of anonymous
-> > memory in a memcg pushed to swap, read back, then SIGKILLed in a QEMU
-> > guest (mean +- stddev of 9 runs):
-> >
-> >                      base            patched
-> >   exit time    989 +- 24 ms       502 +- 28 ms   (-49%)
-> >
-> > The cost is paid by folios that keep cycling between zswap and memory:
-> > each reclaim allocates a new slot and adds the folio to the swap cache
-> > again. On a kernel build in a 600 MiB memcg (-j4, defconfig), this is
-> > not measurable (mean +- stddev of 5 runs on bare metal):
-> >
-> >                        base            patched
-> >   time (s)        592.4 +- 1.1      592.4 +- 0.9    (+0.0%)
-> >   sys (s)         256.6 +- 1.5      257.5 +- 1.4    (+0.3%)
-> >
-> > In the worst case, random reads over 4 GiB of anonymous memory in a
-> > 3 GiB memcg, so that half the reads are zswap read faults and the task
-> > spends all its time in the kernel, throughput drops by 1.1-1.4%
-> > (mean +- stddev of 5 runs on bare metal):
-> >
-> >                        base            patched
-> >   reads/s, 1 thread   37310 +- 182     36889 +- 77     (-1.1%)
-> >   reads/s, 8 threads 291937 +- 802    287954 +- 373    (-1.4%)
-> >
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> > ---
-> >
-> > Notes:
-> >     Previous discussion:
-> >     https://lore.kernel.org/all/CAGsJ_4xBtKGqXFP4zvp+Qn+tb4X7aCvXn+wqDq=
-ot_cXR92DjhQ@mail.gmail.com/
-> >
-> >  mm/memory.c | 9 ++++++---
-> >  1 file changed, 6 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index d477a4f986bc..dac0f0a24bc7 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4711,10 +4711,13 @@ static inline bool should_try_to_free_swap(stru=
-ct swap_info_struct *si,
-> >               return true;
-> >
-> >       /*
-> > -      * Free the swapcache only if we are the exclusive user and
-> > -      * this is a write fault.
-> > +      * Free the swapcache only if we are the exclusive user and this =
-is a
-> > +      * write fault, or the folio is dirty: its copy in the swap slot =
+> > Is spending the workload to protect the dump the right way round for th=
 is
-> > +      * stale then (zswap loads are exclusive and dirty the folio), so=
- the
-> > +      * slot only holds swap space.
-> >        */
-> > -     return (fault_flags & FAULT_FLAG_WRITE) && exclusive;
-> > +     return exclusive && ((fault_flags & FAULT_FLAG_WRITE) ||
-> > +                          folio_test_dirty(folio));
+> > option?  kdump.rst describes it as
+> >
+> >       This reservation method is intended for systems that can't afford=
+ to
+> >       sacrifice enough memory for standard crashkernel reservation and =
+where
+> >       less reliable and possibly incomplete kdump is preferable to no k=
+dump at
+> >       all.
+> >
+> > so the dump is the part the admin has already agreed to give up.
 >
-> Why not more readable as
+> We have in there:
 >
-> if (!exclusive)
->         return false;
-> return (fault_flags & FAULT_FLAG_WRITE) || folio_test_dirty(folio);
-
-Agree, I'll change that for v2.
-
+> "This option increases the risk of a kdump failure: DMA transfers configu=
+red by
+> the first kernel may end up corrupting the second kernel's memory."
 >
-> But ... isn't this zswap specific? Why do we have zswap specific stuff in=
- this
-> common code?
+> ... but I recall some discussions about short-term vs. long-term vs. cma
+> discussions.
 >
-> The comment already gives away that something is not quite right here.
-
-I am mostly interested in the zswap benefits, but nothing is zswap
-specific here: do_swap_page() can also find a dirty folio in the swap
-cache when reclaim bailed out before writeout, or when the swap write
-failed. In all those cases, the copy in the slot is stale, so the slot
-only reserves swap space. zswap is simply the common case, since
-zswap_load() dirties the folio.
-
-What do you think?
-
-Thanks,
-
-Alex
-
-
+> Ah: https://lore.kernel.org/all/ZWJllXCN0SDIELrX@dwarf.suse.cz/
 >
+> "User pages for RDMA, should be pinned with FOLL_LONGTERM and that
+> would migrate them away from the CMA area.
+>
+> But you're right that DMA to user pages pinned without
+> FOLL_LONGTERM would still be possible. Would this be a problem in
+> practice? Do you see any way around it?
+> "
+>
+> And later (me):
+>
+> https://lore.kernel.org/all/04904e86-5b5f-4aa1-a120-428dac119189@redhat.c=
+om/
+>
+> "What does "short" mean? At least in theory, long-term pinning is
+> forbidden for MIGRATE_CMA, so we should not have such pages mapped into
+> an iommu where DMA can happily keep going on for quite a while.
+>
+> But that assumes that our old kernel is not buggy, and doesn't end up
+> mapping these pages into an IOMMU where DMA will just continue. I recall
+> that DRM might currently be a problem, described here [1]."
+>
+>
+> And in the end, we settled for the 10s wait, crossing our fingers that it=
+ will
+> be alright :)
+
+Thanks for the explanation. So, the possibility of corruption of
+CMA-based crashkernel is already well known, and should be taken care
+of by administrators. I also agree that saving memory by reusing
+hugetlb cma could be very helpful, and it's not a good idea to block
+that.
+
+Feel free to drop this patch. Sorry for the noise.
+
+Best regards,
+Sang-Heon Jeon
+
 > --
 > Cheers,
 >
 > David
->
 
