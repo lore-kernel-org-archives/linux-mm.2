@@ -1,177 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C76A606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 08:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1334C606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 08:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=B7jiD3pR
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=d6RuUVoy
 Received: by kanga.kvack.org (Postfix)
-	id 2B01F6B05B0; Thu, 26 Nov 2026 03:28:09 -0500 (EST)
+	id E766B6B05B1; Thu, 26 Nov 2026 03:30:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 260FD6B05B1; Thu, 26 Nov 2026 03:28:09 -0500 (EST)
+	id E003B6B05B2; Thu, 26 Nov 2026 03:30:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1510F6B05B2; Thu, 26 Nov 2026 03:28:09 -0500 (EST)
+	id CC7C06B05B3; Thu, 26 Nov 2026 03:30:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A802C6B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 03:28:08 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4082A160330
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:28:08 +0000 (UTC)
-X-FDA: 85476592656.23.537074C
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EFCB9120005
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:28:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=B7jiD3pR;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AAB1A6B05B1
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 03:30:49 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D24DFA02F0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:30:48 +0000 (UTC)
+X-FDA: 85476599376.29.ABD55BF
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 00A048000B
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 08:30:46 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=d6RuUVoy;
 	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf29.hostedemail.com: domain of nik.borisov@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nik.borisov@suse.com
+	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795681686;
-	b=NOUT7H96DmZHislCA2HmG03TuH+wY83SLKbF8BDpK8IuaTaEMChnK0hJL5fOBiKI+pBh3x
-	ULC4iHXg9m9fFGSrMRVkxGsscM8nh01Z6B5BCXRPgFfHUcMG44VFStceMPHlAZi1jlQ64x
-	iZBssKSrPFYGYJVJFM0B8AL0nbz7Uz0=
+	t=1795681847;
+	b=cZytIBzoA3cqGRs0EpXfoiLX8fPrbJZlzGztJ6NFLrZlXYZ4nd32DeLbcZDGJoXyu7MVYr
+	IyuMuH0Hb50lF/SPSXlIFQ3LkDHYdQy8Fra5M+ksYEL0+uYKNHgknDbEa9ZiEhsMnHLmFI
+	NrfQFgrOkxKOKZV4JxOh6aQL6DjLTuQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795681686;
+	s=arc-20220608; t=1795681847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ziK1uxgT0N4pJKr51qdZ7M3Xl/fHtbiRKWKZVIb+tYU=;
-	b=0+Ypm3RU5rzDD/9KWGEEQKF+rCDMpaTYfMFurcQh2c+ZGmQbknZCjWrcjMsqoIa7y2hkOK
-	pZ//CcLJe/WUTBq/RhbFMWl8nA4Z5miEdmzZ4EiV3vTC2bB0G65Ey9UrEv9AbpQC6ulWjt
-	PB4nYaNm2pyXm8aMvQgPbT+sh59Uvyo=
+	bh=FyyIgAo1e3KK4/AdbdpOK9l3019Yj2VAw+xdIQTmPhE=;
+	b=N/3qAO8XONsPtzqMrFyuTYgy285PtEpiceAb51feNaFDlE1PrjVHiQDbtepBNFyEuMRGJl
+	kTJfhZbAwz60g6/srFJ5+LaXazeH7iG53FNJhk5gOaA0Z05c34sitm7OfzsW3s+uJ7IMsa
+	20DZ2EqZtmIb5RskwrlTrjPSDG8IbmA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=B7jiD3pR;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=d6RuUVoy;
 	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf29.hostedemail.com: domain of nik.borisov@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nik.borisov@suse.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48e20ed3b9dso5871548f8f.2
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:28:05 -0800 (PST)
+	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4bb9d8e8e90so38364475e9.3
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 00:30:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1795681684; x=1796286484; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ziK1uxgT0N4pJKr51qdZ7M3Xl/fHtbiRKWKZVIb+tYU=;
-        b=B7jiD3pRa+lntKS5/ti0UvSHX3+bcP/BPXUoiraSh6Y/Pi2jJAPYEvvbLJOKdWBA57
-         1kroEebNvtWPdcUEIwm9TbazyuzHb5FrCg8McLVRQANbbvUGR3yfo2H5QT3P45ty1rUM
-         /ZvrnRsGeJUfYdy/8xMFpmg73CscCotXMvATq76C1GMtPDaQ24/oVbxHVedKCncmz2X4
-         YqIQNT3jhPqdWMfX0fPgtDMQeV8DkMcMjlIwogOkIEg4MQmQQr8lbtZVg/ojA2UwS75/
-         xl3Xa1hebM3CUt7ooa+P1p1lM4MsY1Rz3WP6cyviwkgpfx3tzCkbRtwjQDFr6K0HOM9Z
-         c/TQ==
+        d=suse.com; s=google; t=1795681845; x=1796286645; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FyyIgAo1e3KK4/AdbdpOK9l3019Yj2VAw+xdIQTmPhE=;
+        b=d6RuUVoy06dgLUXVnRD/NsQAym9gaTp7Tw/wkb+HDfDDmezyS5OxCh2STGR5omctxY
+         1vBnWjQuXh+019Z5RtkkhZsot1LdNn04QKn6EPbgbEa19OeS0OBI0pksWFioe4YOmfpu
+         yzN3cJPIKwms71XEqeIeOOkRM/NhJOO1igRT47qF7k6kNaBMjtwLMMyUAJ6zwa+FZXic
+         OO9WyzZaWA14Ky2QfgaNoofB2T2KxmeQDyNkGE7sFjZbE5Qy03DW3JbLWJmEKIiFrIIA
+         ZudKBwJyOBrvfCs8KomY6h4oVFbFVuv9dyFQgfG28ra5hJna20a4qEgigd3kgBTiOPyc
+         t13Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795681684; x=1796286484;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ziK1uxgT0N4pJKr51qdZ7M3Xl/fHtbiRKWKZVIb+tYU=;
-        b=tywE3DmBGk9VoTA/P8B42/K8A0xzahQGsiW1UCm8zogK7M9fOFm8c++q6RH4cbI298
-         GcPFFPIK38YtwfQMLqpWK8GPMcjyEass9WG3FkYUVybgUo1BBIYx4ljRZeXbErhRVnt4
-         j6Rtco4pblEtPWg74LN7NyV913peIL6PjkJwuOytPhKYFqX8afou+Hq8yOKTnET5yAXt
-         behMWZoFr7vH2RrGeNwiN+LrNqvJMmbcW1WSMisp5V9p2KXdjY3i3aI95mH2WQLzg4sl
-         vLuRBpQ7pRllyehM88geap1yyxFg2NAZWogm137xINpIxz7i9/fZim7shyRe1UoTkIdZ
-         4MuA==
-X-Forwarded-Encrypted: i=1; AL+hErGPUW2plwm7mfStorSHZl3uM3PxWBlK9VDBYNxpDTIhsQrsH+WRVQI1eoFjlvZt3L3f5vMEAi/1rQ==@kvack.org
-X-Gm-Message-State: APuU4Z+iAz+zcTPO9s42dl/xQilr4Uz+5vovv+tm1SVPILdtWC2AgViq
-	uD636WIHP1kqZKvKUw3CQBadh9eOTG5/dq3vYqVZCVbqM/erY5bHew3IbQXo4ypqL2Y=
-X-Gm-Gg: AZFdTZdnMpoobnwLXVMllDJU7yH76ZoLH/cgeRMXFd6IMGtRE0d4c5RTZvvCmOu341U
-	hwBn7bMuQjItTsobdppgH3WQ2FGJa59DZLD6eA55cvqK/rwBEfbZ0ckL1InGFjWfk7NNAmjB0pZ
-	XXhTFu49/e+kAwErbJlBs5VuQ7pF2d6IOKydAHeKpYsQAijWJxexm4LAKYjgs5jVOmUdE/+A3qx
-	VXMBpgmMF4lCMTkoVKmVxJPbOV/Z3FM8cYUzLFn93ooMVJCBsNO31dTqUrQx5YyO2gUswptjqvD
-	+Dw2o6gi4hmF/jwfOveU2g4aP9x/Fcuf81bc1I2OLVXtdqsLIqsvbtmTcRjgCP0hVYIQGf/sHMs
-	/DCrBehEGs1LvkpLtgLN0FQXQM1fUD30c+O/JtrHV5riQcZuEvo4UVIRuBP2kA0hg/dod90o39C
-	fBaFX8t1HEgvRl/D0zeTzJzjuoU8s3e84MEl0puCwLvC+zWFdOMuNgdg2GHGfUjMCgY3UcHI6Ct
-	rFtRNj03BjWpHy5k7fYSY2+2tLyDKVZWBROcypC/c1OKTXbojuhjiEvX+1NvWd8ykEo9yumlsQC
-	RHLFmVKRtky7tRFBjFphu5CBx7BSBj6H
-X-Received: by 2002:a05:6000:2c13:b0:4aa:874c:a1c7 with SMTP id ffacd0b85a97d-4abb86ed79amr37999532f8f.43.1795681684336;
-        Thu, 26 Nov 2026 00:28:04 -0800 (PST)
-Received: from [192.168.0.20] ([212.21.133.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6baa3882sm38604004f8f.49.2026.11.26.00.28.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Nov 2026 00:28:03 -0800 (PST)
-Message-ID: <8e8bda1f-dbcc-4f24-bc75-0b68bcc1a40c@suse.com>
-Date: Thu, 26 Nov 2026 10:28:02 +0200
+        d=1e100.net; s=20260707; t=1795681845; x=1796286645;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FyyIgAo1e3KK4/AdbdpOK9l3019Yj2VAw+xdIQTmPhE=;
+        b=jrdF6vPXDi9FArXFfdkmJBk/xIf+BPfoOuazO/kZs7biQ4jNCYnoV1KcRwIAu+vsQt
+         itqhWMVNLpMejl16A0W9sPUMI4D/wyxyDn9EJTah3XamoS/q24sIDnQx5bySTlf3Cirx
+         I0Cq6L/UK5TbIphoUhUo5PIq0XZ220j5A9ZJ+2Ma3g0e8XKY3IdUNEY+oMYvBMSZuN8u
+         JwL2iGHyU+wzLrzaU9Wj01svNl5CT0JQWqOeNTQCuhe28LS/DrnDsrZBt7GemoLNQXVv
+         Fhl/+hb9wJTBp2lyj3Hhx/uZjJ4a+fVWyV9usoCz8EaGBZM2oWcp2Tvptixq89vwxJOI
+         CS9w==
+X-Forwarded-Encrypted: i=1; AL+hErF8Z7xBWsiJytO3RAY5wDUE1PZ8kZw3991R78MlnLRwEbr/5Ll9PD3PX5+cT4baLNHIrt5J+h8GNA==@kvack.org
+X-Gm-Message-State: APuU4Z/uxAOa5+lr1tmKvBCV48RoetOMby1hVReP5mkKsGXbi8bUrfKK
+	CYGOipn/vQSJbVdOL6cX9nDwmyqZLT3odzuPtiG2MSC5W2v9LiwIyn36HgNmbmJ8dNo=
+X-Gm-Gg: AZFdTZeaM2S89x45XqXbtoMoekjre7Ia30EqrnxgFzy7Z8+RM+4WHb2pfvELym7s2df
+	/hxn9mgpx5oYP1511lyQknpY/XBxDcVtn7X9cFCza4UyQdwEq+Oq/3rvLV+EDvRznN5gXssJOS5
+	o5+07McYumZ/NzaaFv1lRyx1RflykPfQdw1jN5JKIMTTE0bDmDhAVcw5/XVSDGg7T5u7d20xja1
+	AyzIRorZSMAdmtyFBULJ7C6wuvKfbicaJmIo8XbyiavMwLlC9WsL7fwan92Nd+fm8++j4DPuuKF
+	yAs+S6kjMRIoKhREf0j2TcTKXTiCm8xYbP431zdrzemgc12l5YiIAhrtaBXWHGKGTCPqi2gdvaV
+	qo8XkwfpwmvtEu7aO6gIMSBuxbBRsHBTgprJUqY0H2Zotl1DPzsqjoYC8khsiqXek6WtiesytOI
+	T0KT15Bs+7dkrOXiefNjAUJuAAlU9Tvtq0/7QDJfgS8xJQ1+yibGaGD0NNswwmvE4/FkPb62pSu
+	9dbaptkROpNFYSIJq8W1dSqq1iphSJUY3S3jLL52FtaE0ahfPpdbMG84aBRLGc9Hlsa1/NRxubv
+	ZY8Cz/YF0FpQjy7lJflp+HdGy3sr2Q1bEofoAEH6
+X-Received: by 2002:a05:600c:6219:b0:4a1:d087:f6ab with SMTP id 5b1f17b1804b1-4bb8880badfmr388991925e9.18.1795681845543;
+        Thu, 26 Nov 2026 00:30:45 -0800 (PST)
+Received: from localhost (109-81-21-11.rct.o2.cz. [109.81.21.11])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bba3d3679bsm61507665e9.2.2026.11.26.00.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2026 00:30:44 -0800 (PST)
+Date: Thu, 26 Nov 2026 09:30:43 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/memcontrol: expose anon and file reclaim statistics
+ in memory.stat
+Message-ID: <awfuM7vj5Vyb6Fjb@tiehlicka>
+References: <20261124-memcg-reclain-stat-v1-1-c6cb14b0d917@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH] x86/devmem: Drop /dev/mem access for confidential
- guests
-To: x86@kernel.org
-Cc: mhocko@suse.com, kas@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kees Cook <kees@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Naveen N Rao (AMD)" <naveen@kernel.org>, Pedro Falcato <pfalcato@suse.de>
-References: <20261124160025.738362-2-nik.borisov@suse.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20261124160025.738362-2-nik.borisov@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ossqrq7knysztrud7hwjhfoxg1ztb6bq
-X-Rspamd-Queue-Id: EFCB9120005
-X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261124-memcg-reclain-stat-v1-1-c6cb14b0d917@gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 00A048000B
+X-Stat-Signature: p9f8chuwrriruomfghworqi1i4nsigk5
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795681685-386423
-X-HE-Meta: U2FsdGVkX19ihZGmXev8yVgkZGYykrmpR3XtbiWKB6EnKWHMPTOl0pyaq8yPJBrmTrDYA1UlGuW4HuuQSNWb6GlJyaR0QX3Y8JG7XfFKrjUy2vPZ2cj8vGp3y1SU1rFt7EEEwQ8obJlSDVYQ9ZbOqsrBihMJcR1SckD/+jNd2D42hkZXZxe4go4CqncgjHHUynnOvyhG931W7dIkfXO6OD4gGpW0rCzlgkWT4Jnz5SAtC8rF5yMHZxcTH9YMTJ6C8xpE0j2Xbr0PJ7G9prQCBM6AjNDursFdwK7Q0sR166Ztyc8gp52K32LFn1qwFECqnrQtaGdPDuxNTz4WXuSwqV7nKEbU2FcJp5mKLXPVA46Xw+yX8jmr8GqOdy9RCDGBBSKdkGikzCMcKWriGxVrdtfGwi9yTz+44JKlXlFqOS1PM2jKqAEF1VLRDoJ1oZToGiGHC/BILGSzsO6wE3MfV2XInH/CwArEWJmFGHD9EUQf9pSyHmlv/gNI16cDM5PT6ISze7FCa1QRMrTH9rtBSxzdtnic2sYOel0TgxSEt/+BGJGJa5ihj/pguUe/fjWC5TMFpk1vJzMWfZ+VNs+KybE+eP0zn4pqf9LjiRuMZL8VITsMrPVKsusJzNzvXN8x+ci/Y3IwvFKBBaAbKMrIZFzjAoM7UOO3T0foO2VsL3k3r0wuWgmZQLkNQc2x7yQShUqPcC+dXwODpFHlGy/tWhxFy4cb4MR0De70cYF0QRYO3OKt/5EX4wKt9REG8Vn9zl7BRiVoI8MByx9QlMnaCWXusqo0+Z+NOAEU58MaR0KSlsFkG3l42Tl0eubGzEFj1OtuW4CMG6hBLrZ+yzxDsfyLJmQ+Lnqvq72JAeCpHh7HfnQovmKBSFsWakej8PbIPsDmxxdeMnvavxQpUI4f34jomzRt5lSrwmTQuKSvF5xYScLDbFH4zYPo31CX0oAN4jueUPKW/SinR+dvWCQ
- oBzp+2pN
- aVZMkUtylbC5ZZgmAmu3xXvhdHgi4NsinIcH2UxtyZiv0DkAghpT2bGWafQ1DidjGON5Gyk2gFQmCDo7HSzpQ7bzP9EtEkRxaEzPmocyUnxeoXSTgjxU2zVvMCAzKjPIM/q3ZXnK32o4sdT9aHWHxE6LZGrTU1FeRSPMnn9RVH+S7gVkeMOfR/VM5qOLRbEbGJIxPdteFboTxrQUyxtMZCz+xlsv5573EsnFSVtXjYYSvTNJZvk4tcNN/9STv2vfP2BpHU5ryTTe/KYrEbLQ1DSXEzL65h9ccSrA4DnVja52q3+EiUu/pv0zWEaP0dfnzxH9wir9vBDpdRSF1AMYkqWN0y7FSon+95HhYP7Ha6bghwq/zKUhzErcu1OpxkR6snbRbW9bacExDQb83J28j0Asy5teLhyJPIHebXhmP6oEQNF3XyI5cXXktnlqthF9aIpcR5Dzqd/ecf0kPoDmoKiWpa6AtHOordn+z7yJIbgVoHc4XKZvWycTPZZZ0m9sGuX3rnUz4WT+iv+hqifeNiUk+Gq/i1EDMBsyRG0L8p/4ieX8AqTBh9LTBeWu/CJPupbDWtgpZH5CPt26Xq1PYlYQtmuePP/4sme12FaEY9OVRhH9qwskm201FFJmEvccfdVYyzjfZvhP0/98pgT1I3Fu90GpMzws0+df0kw58QFlHWBDWaG55UsBUYrBMWHP/8bNsaGrkciH/CqrCyuC5TJXG/fkgUsQD4njAfP603kU1KL+lJbqAiVq3mZAR5KwO+XMErEMqOIvGnPYMhtzcBri4+PNbncBy13uMv80MOT4ShGn9Y1IIqFdVxtJqhrJcJRLiPUJvhtdM2H0=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795681846-282472
+X-HE-Meta: U2FsdGVkX18RG9tzob/V56OYzNyAEOPKBLHouRtZ8Nqscgo9lBctkTjmcnrbGhTe5M5PJyCnPvQ8vX5jaiQ8y26j6EIsKLA4PMyx9ogkhXb7+etktaxCxWWnbRC7Tz8kVIv/ZT531PjuQv5z4HE5lE/pciCMxJlxseIIwxqHw4tl8hSX467R4m91pSxrsHfhBiv3bPD5kAtlRztS8FewjhTNgxxqL8DoPN4uFr5EVKmqtjI9pdsj2fZg2GyHKhBLg2EOsRvYxt7we9uEO+WiIdTC40+fFkcOxQc+Op3xhbzZ1vdNOEUY7qFuh00ILhEeQpiN2kKwsiHU1CxKUeNbMPW6frv/pv/PeM/WSMGQt7GDt4hLjrUSmYCpzpzH+f7WQlFdigtLcJ/BuY1FX8LQBXdI1CbKUhfuC2LFAa8tnZzYSgOggEYv3XEL+k01QvKM1DKS9whO3YhrG8Dofx+5euPZS1OANNgCOusduOOSjphNAzAsx2JFZ74TdWeqc8mIlS91eKLDVj8iDsrcHA7heR1qLVvJNRvKZ1xfd7tZ6gcrfSQMN0FP7ZqPk9nMNx/Aljv7n+T7BOOw7mSIc/+7yk+ufnWSaPt4aKpJKOoJBDx2aor+QDxYq4IZuYUkhrDEwG9Zh8xicBoYAkbfuuiJieZ9JBp+dS5a/fSVYcgGiuIj5UhfKENCup9Qr0hdzTKLTP72IelzIzOV2yhXUeGJkw4SeBwyO4+CsLb/6HKfKVzcNYKdksFSGp+j2jwWcGayQz0aT4tYk8+kXXko4LiXTZzuWBRCCVzaS0lDq3b5q+dfIbSRlHYiGsmaM8QbTPffdx7lvYFTHkm98HZfSdZy8UgqhgJKIOEmsDGKUbE0JsNrQ/y7VrqAQ5nSLPUOJ1iCFirYhFdeJMBY5H4BReJAaUldZBPzb1ey9GE2+pmjDZJK49gPUR01XZxgY3T443IpUiFIrKpHi6aGCrRCTei
+ x+iYIafa
+ YFtko5rVyQwXoMr8gX2nnqLlqwL2SfRS1t/S3Y5HGuDHDQgVZwFYms/568SqNGo5EkGtg2mFZw1VHmX7t/0ef8STzvDINhHaFd6oZwy7vL7k9vjS9CToOizpaO75CKrt3T06iDJSoAe4KBWuid1m6LNFZkuvZS3xnFfKnwUq36mxehxVR/kESeZftYLtBqNBucJaIbCqSw/i9ar8mRPMtpZZOAzaHAaGo9yMZynoUzaJZeJJyRr7KctRih2hKRaYrq3LNRNvSUP52QfcW/RH5bnzHHXkCL/umFxeb1FqwQDmxPsv5OeSHppLBpYIL5WkVpM1vZQ/SWL2sYaPbr+q+oxvHVSgGgnUN8sTQXY1Z9dO7qapywiT4tUxzuwSGSkxs4zvwDrJdBXWE1+J/N26pznaADu8N2x/IshGBsyupbAaeZ3REghqres0SkUGMTeOecKD28M9EOCG7a+UXqJ2bSx3u3q3/qw/0VmBCliOHuGoaN+Ho+v1vl3jpGm/T8JHKt3yrwr7nonuXbf0pawWiUyQiJNnpuR55ab1NCi+Es2aU3XRHutve051iNyU0yqNtdKKeEag1mUU9oeLQymG5W7+4I19a7dw92BhdvkmORe3nRCWNn6xyZX2PfyLWWF39e/Wu3yUvWQtX99Uagl2aj3wdcn83BgXNpHOBFHpKdEsXHiL82/83YRYEm4B1OMM6fr7Wkxb0/c8wH2iqdNw/HO1NQPiep+paUbLdcA+hbqz4iNQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,139 +133,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue 24-11-26 15:51:27, Xueyuan Chen wrote:
+> The aggregate reclaim counters in memory.stat do not show how reclaim
+> is split between the anonymous and file LRUs of a cgroup.
+> 
+> Expose the existing per-memcg scan and steal counters by LRU type so
+> userspace can measure reclaim balance and efficiency when evaluating
+> reclaim policy. Report the same counters per node in memory.numa_stat.
+> Both files report the counters in base pages.
 
+We have found these stats quite useful when debugging issues at the
+global level many times. So I think this is a useful addition to memcg
+stats as well. Especially when we already collect the data so this is
+purely a change to show the already available information.
 
-On 24.11.26 г. 18:00 ч., Nikolay Borisov wrote:
-> From: Dan Williams <dan.j.williams@intel.com>
-> 
-> Nikolay reports that accessing BIOS data (first 1MB of the physical
-> address space) via /dev/mem results in a "crash" / terminated VM
-> (unhandled SEPT violation). See report [1] for details.
-> 
-> The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
-> unencrypted mapping where the kernel had established an encrypted
-> mapping previously. The CPU enforces mapping consistency with a fault
-> upon detecting a mismatch. A similar situation arises with devmem access
-> to "unaccepted" confidential memory. In summary, it is fraught to allow
-> uncoordinated userspace mapping of confidential memory.
-> 
-> While there is an existing mitigation to simulate and redirect access to
-> the BIOS data area with STRICT_DEVMEM=y, it is insufficient.
-> Specifically, STRICT_DEVMEM=y traps read(2) access to the BIOS data
-> area, and returns a zeroed buffer.  However, it turns out the kernel
-> fails to enforce the same via mmap(2), and a direct mapping is
-> established. This is a hole, and unfortunately userspace has learned to
-> exploit it [2].
-> 
-> This means the kernel either needs: a mechanism to ensure consistent
-> plus accepted "encrypted" mappings of this /dev/mem mmap() hole, close
-> the hole by mapping the zero page in the mmap(2) path, block only BIOS
-> data access and let typical STRICT_DEVMEM protect the rest, or disable
-> /dev/mem altogether.
-> 
-> The simplest option for now is arrange for /dev/mem to always behave as
-> if lockdown is enabled for confidential guests. Require confidential
-> guest userspace to jettison legacy dependencies on /dev/mem similar to
-> how other legacy mechanisms are jettisoned for confidential operation.
-> Recall that modern methods for BIOS data access are available like
-> /sys/firmware/dmi/tables.
-> 
-> Now, this begs the question what to do with PCI sysfs which allows
-> userspace mappings of confidential MMIO with similar mapping consistency
-> and acceptance expectations? Here, the existing mitigation of
-> IO_STRICT_DEVMEM is likely sufficient. The kernel is expected to use
-> request_mem_region() when toggling the state of MMIO. With
-> IO_STRICT_DEVMEM that enforces kernel-exclusive access until
-> release_mem_region(), i.e. mapping conflicts are prevented.
-> 
-> Cc: x86@kernel.org
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Vishal Annapurve <vannapurve@google.com>
-> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
-> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
-> Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
+
 > ---
+>  Documentation/admin-guide/cgroup-v2.rst | 20 ++++++++++++++++++--
+>  mm/memcontrol.c                         |  8 ++++++++
+>  2 files changed, 26 insertions(+), 2 deletions(-)
 > 
-> Resending this with the hope of either getting it accepted or arriving at a consensus
-> what exactly is missing so that I can take it from there and eventually get something
-> merged. As previously mentioned this results in real problems for confidential
-> guests both on TDX as well as SEV-SNP.
-> 
->   arch/x86/Kconfig |  4 ++++
->   mm/char-mem.c    | 10 ++++++++++
->   2 files changed, 14 insertions(+)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 3159852fd6b3..1490e0019c71 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -901,6 +901,8 @@ config INTEL_TDX_GUEST
->   	depends on X86_X2APIC
->   	depends on EFI_STUB
->   	depends on PARAVIRT
-> +	select STRICT_DEVMEM
-> +	select IO_STRICT_DEVMEM
->   	select ARCH_HAS_CC_PLATFORM
->   	select X86_MEM_ENCRYPT
->   	select X86_MCE
-> @@ -1490,6 +1492,8 @@ config AMD_MEM_ENCRYPT
->   	bool "AMD Secure Memory Encryption (SME) support"
->   	depends on X86_64 && CPU_SUP_AMD
->   	depends on EFI_STUB
-> +	select STRICT_DEVMEM
-> +	select IO_STRICT_DEVMEM
->   	select DMA_COHERENT_POOL
->   	select ARCH_USE_MEMREMAP_PROT
->   	select INSTRUCTION_DECODER
-> diff --git a/mm/char-mem.c b/mm/char-mem.c
-> index c5761ddedbd7..5d383befd87d 100644
-> --- a/mm/char-mem.c
-> +++ b/mm/char-mem.c
-> @@ -30,6 +30,7 @@
->   #include <linux/uio.h>
->   #include <linux/uaccess.h>
->   #include <linux/security.h>
-> +#include <linux/cc_platform.h>
->   
->   #include "internal.h"
->   
-> @@ -609,6 +610,15 @@ static int open_port(struct inode *inode, struct file *filp)
->   	if (rc)
->   		return rc;
->   
-> +	/*
-> +	 * Enforce encrypted mapping consistency and avoid unaccepted
-> +	 * memory conflicts, "lockdown" /dev/mem for confidential
-> +	 * guests.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
-> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> +		return -EPERM;
+> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+> index 9e3c67b02ae2..eeeaf635754c 100644
+> --- a/Documentation/admin-guide/cgroup-v2.rst
+> +++ b/Documentation/admin-guide/cgroup-v2.rst
+> @@ -1726,6 +1726,22 @@ The following nested keys are defined.
+>  	  pgsteal_proactive (npn)
+>  		Amount of reclaimed pages proactively
+>  
+> +	  pgscan_anon
+> +		Number of base pages scanned for reclaim from the anonymous
+> +		LRU. With the multi-gen LRU, counts pages isolated for reclaim.
 > +
->   	if (iminor(inode) != DEVMEM_MINOR)
->   		return 0;
->   
-
-Having taken a 2nd look I think a consensus solution would be if this 
-check is moved inside devmem_is_allowed() for x86. That way /dev/mem 
-could be opened but reads will simply return -EPERM. That way 
-x86-specific checks don't leak into the generic mm code.
-
-> --
-> 2.56.0
+> +	  pgscan_file
+> +		Number of base pages scanned for reclaim from the file LRU.
+> +		With the multi-gen LRU, counts pages isolated for reclaim.
+> +
+> +	  pgsteal_anon
+> +		Number of base pages reclaimed from the anonymous LRU,
+> +		including pages demoted to another node.
+> +
+> +	  pgsteal_file
+> +		Number of base pages reclaimed from the file LRU,
+> +		including pages demoted to another node.
+> +
+>  	  pgfault (npn)
+>  		Total number of page faults incurred
+>  
+> @@ -1829,11 +1845,11 @@ The following nested keys are defined.
+>  	application performance by combining this information with the
+>  	application's CPU allocation.
+>  
+> -	All memory amounts are in bytes.
+> +	All memory amounts are in bytes. Reclaim counters are in base pages.
+>  
+>  	The output format of memory.numa_stat is::
+>  
+> -	  type N0=<bytes in node 0> N1=<bytes in node 1> ...
+> +	  type N0=<value for node 0> N1=<value for node 1> ...
+>  
+>  	The entries are ordered to be human readable, and new entries
+>  	can show up in the middle. Don't rely on items remaining in a
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1ebc9330aeae..ac12ff69a633 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -1647,10 +1647,14 @@ static const struct memory_stat memory_stats[] = {
+>  	{ "pgsteal_direct",		PGSTEAL_DIRECT		},
+>  	{ "pgsteal_khugepaged",		PGSTEAL_KHUGEPAGED	},
+>  	{ "pgsteal_proactive",		PGSTEAL_PROACTIVE	},
+> +	{ "pgsteal_anon",		PGSTEAL_ANON		},
+> +	{ "pgsteal_file",		PGSTEAL_FILE		},
+>  	{ "pgscan_kswapd",		PGSCAN_KSWAPD		},
+>  	{ "pgscan_direct",		PGSCAN_DIRECT		},
+>  	{ "pgscan_khugepaged",		PGSCAN_KHUGEPAGED	},
+>  	{ "pgscan_proactive",		PGSCAN_PROACTIVE	},
+> +	{ "pgscan_anon",		PGSCAN_ANON		},
+> +	{ "pgscan_file",		PGSCAN_FILE		},
+>  	{ "pgrefill",			PGREFILL		},
+>  #ifdef CONFIG_NUMA_BALANCING
+>  	{ "pgpromote_success",		PGPROMOTE_SUCCESS	},
+> @@ -1699,10 +1703,14 @@ static int memcg_page_state_output_unit(int item)
+>  	case PGSTEAL_DIRECT:
+>  	case PGSTEAL_KHUGEPAGED:
+>  	case PGSTEAL_PROACTIVE:
+> +	case PGSTEAL_ANON:
+> +	case PGSTEAL_FILE:
+>  	case PGSCAN_KSWAPD:
+>  	case PGSCAN_DIRECT:
+>  	case PGSCAN_KHUGEPAGED:
+>  	case PGSCAN_PROACTIVE:
+> +	case PGSCAN_ANON:
+> +	case PGSCAN_FILE:
+>  	case PGREFILL:
+>  #ifdef CONFIG_NUMA_BALANCING
+>  	case PGPROMOTE_SUCCESS:
+> 
+> ---
+> base-commit: b024a51b0184b1efb6f55b11aaf7b15a490a6307
+> 
+> --  
+> Best regards,
+> Xueyuan
 > 
 
+-- 
+Michal Hocko
+SUSE Labs
 
