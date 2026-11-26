@@ -1,112 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F42606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B8A606A32E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 11:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oK4AqxJG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fcMpkfYU
 Received: by kanga.kvack.org (Postfix)
-	id BD95B6B0604; Thu, 26 Nov 2026 06:21:16 -0500 (EST)
+	id 1A1236B0606; Thu, 26 Nov 2026 06:21:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB1646B0605; Thu, 26 Nov 2026 06:21:16 -0500 (EST)
+	id 177A96B0607; Thu, 26 Nov 2026 06:21:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC6EA6B0606; Thu, 26 Nov 2026 06:21:16 -0500 (EST)
+	id 068856B0608; Thu, 26 Nov 2026 06:21:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B4756B0604
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:21:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21C1B403E2
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:21:16 +0000 (UTC)
-X-FDA: 85477028952.22.33A2353
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 758421C0004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:21:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oK4AqxJG;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D968D6B0606
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 06:21:26 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 71D2280463
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:21:26 +0000 (UTC)
+X-FDA: 85477029372.27.6F99DB4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C94E6140009
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 11:21:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fcMpkfYU;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795692074;
-	b=iv3k4EYjx4I6pOqgbqutubrT2dG7tNNrILOG1I2ixsCes40KRMybeBt9rKAKdEks6K+VWw
-	K+4q3KlxAf7BwG2syQALF1O00XyspT7lezl+vvBbZQhbCJ5NY7k8zzKuhA7Fqq0QVyMrFu
-	HS+5pKALYhnJAr9tC9Fd/Rg1R0JskRs=
+	t=1795692084;
+	b=LRo0X4PjXsQSdBcXN5YSp75wXTS8xiZJn0HAa1CaXStJjINcZNfgaaTFq1IoRnousomSm0
+	Zxk5YbVdN02FjSV2kPJdx3fmc0LePbql2LPk+HVhm4icasgm30PgokbYzWW1IX1L6GKWFa
+	/3MRSZUbeLkkExsYllArzkgZvVMk+Sc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795692074;
+	s=arc-20220608; t=1795692084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=acVZadH+VFBFC1d1dLbutXfDJETNRTgRtEhv1loN3Kc=;
-	b=ZVC6MHCsK8F6QaWAblRKM3l6+K3F98ZXF3uFOXkkjOB4XmM0C3ESMhw1dFQcf9hMU3Loj+
-	KdVgRmn0oH/4PdAPIGs9hNvGCIlamEXFUuiwI1/Ban9T17QX1aaTbxrM8bpF7Ytt16bymo
-	51MZMMeKItSuQ+hfAVP4ERnCjR7m4po=
+	bh=3UuAdt7dSVCdcMjg2v0KRdp+uX84J2DmHB+3MfIgCio=;
+	b=orXT/QMfxJ3H0okzejmxsMHxXL7zDNdwtBKhjlihaclhPukpv89GiWMDrP82uwll3m1/Ds
+	CPTQGIaKxlNPdrpQVVwZTEHCi28FEe1cmcIhkEEKIrQSNSN/11EiuTJxLLQSM94j6wNZyP
+	iXE/2WgGF73vb5cmHnGUT4W3KYeDo+o=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oK4AqxJG;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fcMpkfYU;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 174A66338E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 117CC40067;
+	Thu, 26 Nov 2026 11:21:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721DE1F000CF;
 	Thu, 26 Nov 2026 11:21:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F331F000F0;
-	Thu, 26 Nov 2026 11:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795692073;
-	bh=acVZadH+VFBFC1d1dLbutXfDJETNRTgRtEhv1loN3Kc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oK4AqxJGy9uqp40xlP/Jc0iEDwgFDT9uMRNK+Zl8qcl8G0bhKbCFVgHRfykGfNWh7
-	 rtJNH451csTci9e1tSOqJ5qyT8T6vptgOd9P041BiJa0SV5y21pqGOAEXr1+d+1WCS
-	 cIpdBKH1Fy/CULw7Wl50ENc3s+c3GzFxSO5iYs+XhEAWpLIAX9icNKRJR3koOxCV0Z
-	 mHqfTR7sjYIttOG7RyHW9UfPkEmc9uo53WuWB6vqHW+ROeoi9ZN6xtbRTt34C0QJDV
-	 AQKxlsm/4KiSBcg5omjktitzKas7r73CDVkNZYMMMl3IfwUGRR6riIvMyHQ81TcoJ/
-	 UqKiSDECBOiuA==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 26 Nov 2026 13:14:55 +0200
-Subject: [PATCH RFC v2 42/54] riscv: count the mappings of the linear map
+	s=k20260515; t=1795692083;
+	bh=3UuAdt7dSVCdcMjg2v0KRdp+uX84J2DmHB+3MfIgCio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fcMpkfYUPPxSdHrXBEDXH5r0pdjxRpjy93Zt4Kx20zZYirYAJUjl5pIDbOUxZecy9
+	 Z6lQHKg19QGO7V9fxFM3spvdLuYK6N3NLsSac6BlvrOBeV3KF7LnhY/sgcq8gYEInD
+	 yczJOoLOYSUrP88rqweUx8QDgqven4oPCZzNgQ3PvP5hHsn2/TNVrKqvbm8dQl6HjR
+	 1PG6SEttsPiCPgJdmoZU4DHzPCx7skKD2aFyv42T6DcZXpQhgI7rRUU6Nge0FvvTDb
+	 7veKQ6wKzE15RxQQ57HkIOQK+YOe0lgTrA5j0ufjwTuyRf/KkPx77g693TixMxVwx2
+	 89vRCFbq+I60Q==
+Date: Thu, 26 Nov 2026 13:21:10 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Alex Williamson <alex.williamson@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Chris Down <chris@chrisdown.name>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v11 00/13] PCI: liveupdate: PCI core support for Live
+ Update
+Message-ID: <awgWJok0E3ASR7Q3@kernel.org>
+References: <20261118223704.3286085-1-dmatlack@google.com>
+ <DN0FL1752MH5.1FSZE620OJBM0@google.com>
+ <awKlfqlQYhphXCvf@kernel.org>
+ <DN2TQRX57C04.ZT5UUS6AQ1L6@google.com>
+ <awVjqLFrXY_PCm7X@kernel.org>
+ <DN3L5XQDSVO9.1NJFYQJTS16ID@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-generic-set-memory-v0-1-v2-42-723f1e33c3d8@kernel.org>
-References: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
-In-Reply-To: <20261126-generic-set-memory-v0-1-v2-0-723f1e33c3d8@kernel.org>
-To: linux-mm@kvack.org
-Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Borislav Petkov <bp@alien8.de>, Brendan Jackman <brendan.jackman@linux.dev>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- David Hildenbrand <david@kernel.org>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
- Ingo Molnar <mingo@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, 
- Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Russell King <linux@armlinux.org.uk>, 
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, x86@kernel.org
-X-Mailer: b4 0.16.1-dev
-X-Rspamd-Queue-Id: 758421C0004
-X-Stat-Signature: zscnbgtoi5xp91jw4sjfj73nwkygi55j
-X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DN3L5XQDSVO9.1NJFYQJTS16ID@google.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C94E6140009
+X-Stat-Signature: hfojr8awj37crfkjopune4ocb486sttt
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795692074-325703
-X-HE-Meta: U2FsdGVkX19vcikrXntAWO62Hzk4Ts40LC06077k1nRsj3sSw5QsjrQphel2o+SJNRBh0sCk8+BQcL5z3+caGRM0FUgbnJ5kK2wjyTaOVNqgOUh27UVj6lByp+7eMxje4WgJ00zFoFILSGZgCaVuof2zrGuFcb7KkqDLaPTEnba9ETlY7IvnhpJ2puokufxYKM6jhcLkWdjwgxe7GQUPJwbnlTLxG73Hc8lwk8skeI431FZ75wCKwcLeDu51rra4Z71ID8GXbZMEuvt+hZDeUhBrP8cZShRqkpYKb1nufparvz97+QMXc5xFhmYMiarbDqkAyzhXj1mcav3YAC0ykTkBTFBFItf1iwLQVoTWl1cakLl/Cfj5ZpwGtfWg7ffKtUYIuRuLn0NifL9+/H3+3WGI9nzxue+lEWkQWpziVhsHNnS95wzo+dHgWMfBXHPzKLHp8IxxN3nD6XsOMIOEHAQalGYIuCqS6oyVPA3NOF0kqFer58Q7IPWp+lVL4/dppulUmF8bowVQI+dduQxPOCNi5UoqGD0OszjDOHmm8E5D1JR7AVu/unFmFhqb8kiRnNA27WGS+sndBEw0u+xa3/zkmdC7YGQH5q/4v+GEzqy4aN4OnhvpAkgVp0lzCSqStMcgygOHVV1zavT2MYNZrAKwHnNLpGamjAu1jzgbaoUfvK5c6djZL9eRJ5E5V3t+YUVwyB3+GNk2pK+ix4ke1oYCXCZhCXV7ZOOTH1BIZU59hox7tV/uBB2FN3qnFZr+Lvd1F5spX/g0y2jQ/FruGyfgShqVFPJq4CW8s10ovS1HXGXRQFVGdzyQGI3Ga+KfdQwmjgfNRpcDJrowGmof6DgN7i1nHs9DTVXtRdVdrYajxp19LPIHbeCfq9RaLdz9Dicbp+39fy9L6wFXNLk7lByzDLkeYd0U6VQ6VYWKt1ceKeC7Mpg0mP8Lk8KquBCQSM6iodo4oV4BN+76sXN
- mjfdA7R6
- ZIV11DkSUyNK/4rVBwkHyh2tdzGz7DwFmKopFsPx+MGbi58XB8GechyNq/0cgTqgGA3gLYRf2X9KyjfowfYwtUfKffejkJUF76yDHHQI5V2V7n8rq0hP27rFYF8htcAuw49LbCqDBCNL4/9UIKgx5CxjJ9v/c/gj5J/evtwrMji5WGt5kUXWIxx3FE6P228bttbUs5Wi+zX0bUgDiraJMeuLFbd9eRvygt4HOP21V8aL2QbmGesgcboASYkcpYfi0w9m+Nz2XyqGzOqo6qtH6x2l/30WygAQe0pfPEp3uwCxBa5TiqIgnOQmtHjOXUq0Y4xjnz2C/0LEiYvOhjpPcj7DiWW1kdL96GhCrEt+yAi5A7JO8IjEQSYmciRPtaCd3wo2va+fNip6xJtbm2DypjjNMYKLLOJQAvhJmrk0WDgHPWjGgtcBZTxkwWKlAHFvoCqOHxaNfRQILXEYFB6NYyelB0KdrUH6ngk9P
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795692084-291869
+X-HE-Meta: U2FsdGVkX19C36as0r2a9EstMZ4gwql8a2uk4dAqv3kT1K1QHK3Imn8Kko9ihWHX+wsI4ivxSBhljs2bgJOYFDafjHBRjVrs9jZNZWUHLDXdrUhc9XY5Zmnj3OFHuj1g/lRmO+QTEaX+rP9Z2GhJbWKviOR0OOvrFPMZeu+8kizj+TBZSb1Hd8If/NzLCLRcCd0sL2MufKlb+kA0IsSEb63WpgO+tnH173lwiCropxU6Mv0EqXUwTRb1NIT9fGHwmReZ7imS89syCzSP1LrCCCoBX+G9B7sG2TEACtmg8cNOu45/l1VYcXzlum72ZAv27ey0XZbMnrIxtjp4LFKfyMKarewHVFCOlwPwct8PBfTNgmAUZiK807k6nqtP7FXt82C7OWzDLP4obDrkTCXE6P6lOT2EvacGmllJ/tIEzOKqud4FNgP7j7EFcyTb/T/TD2AuTWvG8/us4s8Eh2+MeMSjiVYTGm3L+Ga2Vg50KQ4Z2fwpxrq5YQ6BpuEpzjuSvffFrZSGidy+asJXWnX8osauH/Yq3t/TBcusnmrGDbpunj3mSYvKrIeTcpsZQSQqE4xoigwu0R20CSHpMFydrN/FUe4V5wKTkCxhGV8qgQS2btrAWiR6p99bVEXhxvRvs9Ypsik/qDYSySjo3Uzi2xr6N62oARrmjZiGT6hdgnLE3Ry3ScnmRGoz3sYN02jZyu78FOTYqh1m12XgQo+OJQqk6kZFt5Z4kQCEuZ+dP3GS1P6B03Z7Ty50W1mJJDVpzuZOUyS0YQV2ehZEkn7UI76N3KcBmP7G8ljDeSSUn+iPNL/wEvDLMW9MHJIKvkuRYa0YOr4jUm6LP+D8AV4bBKgEwdHKwgbOwmTFHzLu0jqkxyPLxwXeKcOlkQ2XITctMUBRHSeQld96wW9d8QlxUzziiY13RbU4+4EieiDnpw6pnwm0tPXgEkdeGXdv3nGNGMwlusYpMMbOMxFcnR1
+ bFf+Uju9
+ HmVDzvgygycKK/kuR+DKw2sVzm+g7IdxzbHJa7cUJjXLZdwQpjcFJoee9WFEA2Xl0S8nW12XUduTp8tBjEawHApnBRizZTs6o1h442LLDW79XDMIvnbOAxZEMT6OiT2Y7TIm/etWB7nCt6qjFxiHcHG/MPkLw+gSbBy6sUl85BCIUOJKYiBKyX5vW0uKFore+XtZgkDhSdqELfEfUIdg5mizArK2iorod34gWY2J5PtZCOK+VB+tUy9dHtJX2/VhgyFvsS1TMcMSBIUKrIBZ7SO1QVn+LhTl7wvWothC0hbnY/yr3twtb+l3FdTuenhsszzFtMXI2b6FJqFJYr/xmpfsh2XJSh+QNhRWydRxRJzs5q2/eXDzGZIsUxoLfQLVxfv3EoQZx0uJzlQ7qOFB03NyggmvvIIr4pS9477jxq0d1SzaX9TNgutcUgQ7B/efWveAfBalTVx9PIekg/Zc15smrV7EaD41qfQobH7lATjrJRRgQw2DNaXQpuCpRlOCP+TSoVzkwQoP7fOibysjSNBBXcRECcv9YgRmVxmFC5RRMEgqnpIUz6US/owtWx2eUFXgUiNF1lU+Z1l4+CXKePYzk2FVbBB7TE6no+BEEg9nPYNw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,131 +121,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The CPA core keeps a counter of the linear map entries at every page table
-level and displays the "Breakdown of page table sizes used in the kernel's
-identity mapping of RAM" in /proc/meminfo.
+On Tue, Nov 24, 2026 at 08:36:22AM -0800, David Matlack wrote:
+> On Tue Nov 24, 2026 at 2:15 AM PST, Mike Rapoport wrote:
+> > On Mon, Nov 23, 2026 at 11:07:04AM -0800, David Matlack wrote:
+> >> On Sun Nov 22, 2026 at 12:19 AM PST, Mike Rapoport wrote:
+> >> 
+> >> Hopefully I did this all correctly... This is my first time sending
+> >> in-reply-to fixup! patches.
+> >
+> > This is my first time merging !fixup patches and it seems b4 managed it
+> > well :)
+> >
+> > Please check I didn't miss anything:
+> >
+> > https://git.kernel.org/liveupdate/linux/l/lu-pci-preservation
+> 
+> Thanks Mike!
+> 
+> I checked the updated lu-pci-preservation branch and the code is
+> identical to the v12 I had prepared locally.
+> 
+> One commit message nit: "Freeze preservation status during shutdown"
+> ended up with two Link: trailers, the original v11 patch and the amend!
+> patch:
+> 
+>   Link: https://patch.msgid.link/20261118223704.3286085-12-dmatlack@google.com
+>   Link: https://patch.msgid.link/20261123190045.2166865-4-dmatlack@google.com
 
-When a large mapping is split, the counters of the split level and the one
-below are updated as well as direct_map_level2_splits or
-direct_map_level3_splits event counters displayed in /proc/vmstat.
-
-The initial updates for these counters happen when an architecture creates
-its linear map.
-
-riscv doesn't seed these counters, so the CPA core cannot update them
-during a split, and the split events stay at zero.
-
-Count the linear map when it is created at boot and on memory hot-plug and
-hot-remove.
-
-Report the counters in /proc/meminfo, as x86 and s390 do.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- arch/riscv/mm/init.c     | 20 ++++++++++++++++++++
- arch/riscv/mm/pageattr.c | 15 +++++++++++++++
- 2 files changed, 35 insertions(+)
-
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index e1bcc3a16129..b466db515ee1 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -28,6 +28,9 @@
- #include <linux/kfence.h>
- #include <linux/execmem.h>
- #include <linux/vmemmap-optimization.h>
-+#ifdef CONFIG_MMU
-+#include <linux/pageattr.h>
-+#endif
+I dropped the second link. It's the same thread, so I think it's fine.
  
- #include <asm/alternative.h>
- #include <asm/fixmap.h>
-@@ -1201,6 +1204,15 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- 	pt_ops_set_fixmap();
- }
- 
-+static enum pgtable_level __meminit linear_map_level(uintptr_t map_size)
-+{
-+	if (map_size == PUD_SIZE)
-+		return PGTABLE_LEVEL_PUD;
-+	if (map_size == PMD_SIZE)
-+		return PGTABLE_LEVEL_PMD;
-+	return PGTABLE_LEVEL_PTE;
-+}
-+
- static void __meminit create_linear_mapping_range(phys_addr_t start, phys_addr_t end,
- 						  uintptr_t fixed_map_size, const pgprot_t *pgprot)
- {
-@@ -1214,6 +1226,7 @@ static void __meminit create_linear_mapping_range(phys_addr_t start, phys_addr_t
- 
- 		create_pgd_mapping(swapper_pg_dir, va, pa, map_size,
- 				   pgprot ? *pgprot : pgprot_from_va(va));
-+		direct_map_count_update(linear_map_level(map_size), 1);
- 	}
- }
- 
-@@ -1599,6 +1612,8 @@ static void __meminit remove_pte_mapping(pte_t *pte_base, unsigned long addr, un
- 		pte_clear(&init_mm, addr, ptep);
- 		if (is_vmemmap)
- 			free_vmemmap_storage(pte_page(pte), PAGE_SIZE, altmap);
-+		else
-+			direct_map_count_update(PGTABLE_LEVEL_PTE, -1);
- 	}
- }
- 
-@@ -1620,6 +1635,8 @@ static void __meminit remove_pmd_mapping(pmd_t *pmd_base, unsigned long addr, un
- 			pmd_clear(pmdp);
- 			if (is_vmemmap)
- 				free_vmemmap_storage(pmd_page(pmd), PMD_SIZE, altmap);
-+			else
-+				direct_map_count_update(PGTABLE_LEVEL_PMD, -1);
- 			continue;
- 		}
- 
-@@ -1648,6 +1665,9 @@ static void __meminit remove_pud_mapping(pud_t *pud_base, unsigned long addr, un
- 				pud_clear(pudp);
- 				if (is_vmemmap)
- 					free_vmemmap_storage(pud_page(pud), PUD_SIZE, altmap);
-+				else
-+					direct_map_count_update(
-+						PGTABLE_LEVEL_PUD, -1);
- 			}
- 			continue;
- 		}
-diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-index bb8629da0d1d..22826ba688c3 100644
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -5,12 +5,27 @@
- 
- #include <linux/pageattr.h>
- #include <linux/pgtable.h>
-+#include <linux/proc_fs.h>
- #include <linux/vmalloc.h>
- #include <linux/cacheflush.h>
- #include <asm/tlbflush.h>
- #include <asm/bitops.h>
- #include <asm/set_memory.h>
- 
-+#ifdef CONFIG_PROC_FS
-+void arch_report_meminfo(struct seq_file *m)
-+{
-+	unsigned long levels = BIT(PGTABLE_LEVEL_PTE);
-+
-+	if (IS_ENABLED(CONFIG_64BIT))
-+		levels |= BIT(PGTABLE_LEVEL_PMD);
-+	if (pgtable_l4_enabled())
-+		levels |= BIT(PGTABLE_LEVEL_PUD);
-+
-+	cpa_report_meminfo(m, levels);
-+}
-+#endif
-+
- void arch_cpa_decode_leaf(struct cpa_leaf *leaf)
- {
- 	pte_t pte = ptep_get(leaf->kpte);
+> whereas "Adopt ACS controls in incoming preserved devices" only has the
+> original Link: (not the amend! Link).
+> 
+> Not sure which is correct.
 
 -- 
-2.53.0
-
+Sincerely yours,
+Mike.
 
