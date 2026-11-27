@@ -1,142 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F0A606A334
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 18:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58313606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 19:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WB3S9P18
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SAWHU8ST
 Received: by kanga.kvack.org (Postfix)
-	id 288146B05B7; Fri, 27 Nov 2026 13:55:54 -0500 (EST)
+	id 1115F6B05B0; Fri, 27 Nov 2026 14:02:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 211836B05B8; Fri, 27 Nov 2026 13:55:54 -0500 (EST)
+	id 0C1976B05B1; Fri, 27 Nov 2026 14:02:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D9AC6B05B9; Fri, 27 Nov 2026 13:55:54 -0500 (EST)
+	id EF1B56B05B2; Fri, 27 Nov 2026 14:02:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D13ED6B05B7
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 13:55:53 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A57112027B
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 18:55:53 +0000 (UTC)
-X-FDA: 85481803386.12.AA8E5CF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 82C3E1A000B
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 18:55:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WB3S9P18;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B2D036B05B0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:02:16 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9FAD41604A5
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:02:14 +0000 (UTC)
+X-FDA: 85481819388.23.80F5030
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BCB3218001E
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:02:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=SAWHU8ST;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of takano32@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=takano32@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795805751;
-	b=uwdbCrdJYA0S5oQFsNLDpvopf14N5XZmTxiWTnNfzP/mY2TVhjG0GyuH/nn4mCEfBCajFd
-	93TDzSL9ukcOkRL2mbbl1slcrtbOzQiZpIvZMqxStOqdySSOzH/BkgTtCVgyUddfmM7SUZ
-	Vf1RUARh7l5LrqLOtfWq0RsfvuElk/s=
+	t=1795806132;
+	b=YizQtPPN7/5jMDx1hPmY/2tXzVqW+FnbG6bKDhyp1C75DZz7E6LFgP5k+fXF2oX9mO1unj
+	Lc9SzD6gFpRoyqUTXvbdtOxad610Hw9/FBxNii87dvywSY0nWKq0YTvSPRshjaWsD/ui7C
+	v5n3uvNoI9ek6NEL55uw3a+gtbktfoA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795805751;
+	s=arc-20220608; t=1795806132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kk0P4RjBnkUANQ7BOgGeFQVkoBHRZ4qGLab3lxHDvm4=;
-	b=pRlT9Z35+ZkbOl8DPzwBK4A4hoME6Lan+e5qdw0gx4w0/MxTyyAm/98rRDGjY1HOQYJwKP
-	0/xUzFbtUumzc20Y3+Qv4R5doLrO9+3zC6O+f7HP9w0x9YJoKPrlHGmPBsUb/55hXtK7uB
-	9Mw+nXO9Oq9Ugl0XNrc4u8RbSXU3+qM=
+	bh=zkQBPyKgHhzReYEqUfH52eqklLDsrHQN3rdcMHP01SI=;
+	b=W34KAZMjvJqcbEL90rOYwc3EYyqC2Q+hKh+GzvTWbNabw0lzWNVtoCLNynhtLHYkND3o8Q
+	EkAiV0CF/8tHK5RJ2raoWBSRX1kHghrUIdBrOzn6fk2UAJbtCO+rkR7O1CVh90tglEO4Q/
+	Cq9Lg8hKPw99rZzdgmBUYf6b2FMtTI0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WB3S9P18;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B79E544760;
-	Fri, 27 Nov 2026 18:55:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3B31F00893;
-	Fri, 27 Nov 2026 18:55:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795805750;
-	bh=Kk0P4RjBnkUANQ7BOgGeFQVkoBHRZ4qGLab3lxHDvm4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WB3S9P18agvkjXrKDgXBdVcq6JGAoKj/Y9IR/h4TZBJzlQD3BQ2kkykmug6PJ4hFX
-	 4lQOchnrxH8zl2WR7eExQFReU0eR6nijOcU+EetFP7ENuUDnXnNE5H8X3ZfvOCp4op
-	 0jKsDumzQC4tywsGwl3VFYYwn46d8x+TcKa1bm4Rw5huh1sZv3/APrTQBLYwN+v2Jo
-	 vrhN7dBTiJRh/Bv/ONbKmxcIltuMRcjHx4BFjU6JWZD+wATwE5cbVIv6OtLSzQRuz0
-	 mptppS6nOjVLkHZX3rOpUXSuPJlv8UgwHNtg8XQaJSTHUBA4pILOp8LB/K91Uq+UG7
-	 xevJLqjUQybhg==
-Message-ID: <43b57ca6-cffe-4fc8-9622-c3e3645d2976@kernel.org>
-Date: Fri, 27 Nov 2026 19:55:45 +0100
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=SAWHU8ST;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of takano32@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=takano32@gmail.com
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1aefd1bf74aso4777211c88.1
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 11:02:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795806131; x=1796410931; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zkQBPyKgHhzReYEqUfH52eqklLDsrHQN3rdcMHP01SI=;
+        b=SAWHU8STjUQsfAKRZxZD/ZWx344+hoQC1KJYr+paj8ugJlwM9Z4KKh9WeQox4oBgml
+         X76qqYHAyTOY/XB+UNFK+h9S6J8bRJJTo91qpP46DSh2Ts8T6kKDHZoEClt4FLlKX4su
+         moI8dpgJObihy1TK2q4/uf5W/SavqdmXNpTFnzm6Hi9Tu8q4r5Aqr9a0qXvtTVVS/AgW
+         mfdZciWZKm+HfMygo74FukzynK497QXRuipDOMYNasphFYp4ogv/eReCD7TLQ901N+JQ
+         JdnWohs7R+ffxaz+QeXuAfPrlgoiXazS1LoIdQs2XeUkaU0RqbzF6yexo1dfaov9fDWa
+         x6Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795806131; x=1796410931;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zkQBPyKgHhzReYEqUfH52eqklLDsrHQN3rdcMHP01SI=;
+        b=qp/s1X5YY4bTdNQKKkOj0zRYcaMnLJ4Bm7qG6PnyUsa0SS1M3YHQM+BsZFVWIqdjOC
+         4b64TRdEqilfVKlfEDh2aqMKca0AmXi4y3YRoqlk7U4U7tU57UGOXK3DrGVO4W9C8F2p
+         sz5Q/eXM3fbCrtZgTwFzW/JNre5RuKxhkDWC8REhbmwxKuJ5WqqIoC/B4SFZYcxnjaQ2
+         Kc89KlrI1A8ZSR9xdGDGn3x0Rn0if4IV3rEFsdvkMiybrRWDTsQSSjQ/d3Zg5KaInlWu
+         W5Sv4SM3OqBtlOBIQ0nBgyxlXLYTIofjEcc2aj7NCtwRmXTc3v0ovoRTGrsL8FDS4G5e
+         zLGg==
+X-Forwarded-Encrypted: i=1; AL+hErG3i9gwKky1L/Y1PvKYF0zfkZS+DHSviA1Kmdthk2p/Mo2IX079E0eRnw6VorRoDTNF3UOjBD8xXw==@kvack.org
+X-Gm-Message-State: APuU4Z+LobIaoCizbkRZpoCPsmqqESJI6xoVSINa6ZDuvxNuaDb8BS2n
+	4Mv/qMN9g+eq/3cNIjO7EN6KKyYRV9Z8QBaRLcC5SlzBSxLUeof3RCaB
+X-Gm-Gg: AZFdTZdYkd/p4dxIWAWpR5LFouqKbd6nM430oIhfiIKV9v6s4ZmHfk0qFW42xESJd4t
+	M4al2hyHaMmvRv3s5K7qqF0ic3EgbAKVeXoWxyuM0lwRNffbsgNYXnAgUvf/wVDB7ppGkVppcqU
+	NED8GXw24mKjfcsR4fkwUD+xz4CScztCPSTjosfqW6lxbxEs+o/sfvWYojqJv9huxhQnAuVUMRu
+	Esdnhtq4w2gg11IdZZRze/qL1cI53Ipife4brvtQcGUSibEzVlZrufYXZzSgPYPsY2EgbdyeMTv
+	oKyEy6KtPfA0y3QQfXNVSrJJ2XYJufLiD4JkkOT7cSyy42D6HLtNKghygczbhtcy3UFw1+oFLyp
+	t7jbzrLScRS8MHZ5UVNvE0a3oAJtbkhLUMpAuJszhXBfxOxqveJ3Olk+JHb0PPv5j/GvwTVz4/l
+	YA2/HJvvoXKzqv0w/vKhoJTnkZMAv6iF8dgz603oRUSK34ciQ5KZXvyKvDBhxwL15CC5DXqyolV
+	xKyvqws5M+4rES4hi4XxcnX/6kRybHwFPclPOgGf5xxWRkYPC0pgj7vHi84fQgkyOhoWfNK8wv+
+	QUEmeRbReK4xMBibCPs2
+X-Received: by 2002:a05:7023:a41:b0:1b2:67f9:43cb with SMTP id a92af1059eb24-1b5525e786cmr25527192c88.17.1795806130946;
+        Fri, 27 Nov 2026 11:02:10 -0800 (PST)
+Received: from a1-free ([2603:c021:8021:f000:0:1865:8c38:18fc])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5566c3052sm58116574c88.1.2026.11.27.11.02.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 11:02:10 -0800 (PST)
+From: TAKANO Mitsuhiro <takano32@gmail.com>
+To: Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dan Williams <djbw@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	TAKANO Mitsuhiro <takano32@gmail.com>
+Subject: [PATCH v2] docs: Name the memory hotplug online type configs that exist
+Date: Fri, 27 Nov 2026 19:02:07 +0000
+Message-ID: <20261127190207.245175-1-takano32@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261125193039.2437025-1-takano32@gmail.com>
+References: <20261125193039.2437025-1-takano32@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/mm: add a drgn script to show HugeTLB reservations
-Content-Language: en-US
-To: Aveline Noir <jm5905938@gmail.com>, Muchun Song <muchun.song@linux.dev>
-Cc: Ackerley Tng <ackerleytng@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Zhao Li <enderaoelyther@gmail.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>,
- Karl Mehltretter <kmehltretter@gmail.com>,
- "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Michal Hocko <mhocko@suse.com>,
- Oscar Salvador <osalvador@suse.de>, Omar Sandoval <osandov@osandov.com>,
- Mike Rapoport <rppt@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Jinmeng Zhou <zhoujinmeng@bytedance.com>
-References: <20261126-hugetlb-resv-drgn-v1-1-345a6ee7c08c@gmail.com>
- <FDAF27F6-A5D1-4911-BB86-6645272E2BD3@linux.dev>
- <179578806997.38.3754686117717776990.b4-reply@b4>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <179578806997.38.3754686117717776990.b4-reply@b4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BCB3218001E
+X-Stat-Signature: bafrd68iakcdf3u8wojdcokphgac89jj
 X-Rspam-User:
-X-Stat-Signature: x7cs71owuphi5juqt47eb38ezs6hq1k7
-X-Rspamd-Queue-Id: 82C3E1A000B
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795805751-777050
-X-HE-Meta: U2FsdGVkX1+KXbTAEGRxcSU/yic3ewAp29g2FOKEw+DH9EvJKpHxnL0FeTKcnwYB+UW8OKXrP/EzQ3AP6m8srrx7dUwPOleGOXIzs07AQzJ78uz3lqGshwgJUybwf+5KBa32oq9aiB93362du5K335Ts4jguO3RWJfrHWOI2EeIg7dEUBsUFYJipEw5lUx9iMzgvGSw2qC39TwBcnpDm244iJ67Q2pGJvn9FHweAu4lBslOW1tNZwngqEZYe35uwQIGL2qmYp2yWhTK7okTyYIw6NcnOGQhWOk39YiuvVgtdA+rgPw6hkswwvT7oBSMNgESqPIDsZT5upIzyor0dnhIeFuOErjpiZjrQLIe2QbopxZENuuZeJvmr6iBo386D9b824cWKzEhzVWM/Ou8JdQ8ZlvIOXf0PHRUbMS8eoUDx5IwE7IWF3x8ceAuA5Snsy+EwyJsmvcQ8CNM4oDfC1sNJtjPOeEFn7J1NsJR1n+BByr2smZaapDWiqNjR6rEwwpCA0Cc+JiUSiPdLLW1pYxngCxiioM1C+faFPGJYxvDDKbeM04GIKe4z67ASbWJmLXQm86RwmvhYCgTKX9FN8s0ukoFxjbY936ApmKP69mAklkM+kXzhWgfASJgH1YtVdy9P4IldOIQxzoOx09HwUgyZRUU97oBrfQLD2dt6GkOevm5k/v2HOlFE1vi5hoZ4kxcYFylksZDGAmiYxGDpjaHuwNWmSM+SDUIc6jvZhgsa5lx5vzs57f186MOwOImHVh9MbDMyqwG3rcGQ0bSwrQuZZgU7mnX6CrI6jkJIjdTiDkHJmBI3CGrCBYkt3YHJ3759ar7Vbsj+jYzh2S2mzoDHvbbOjHthGITqkK+ca5hzPC8AF7UPNm80vvlNWwSPsCOGIijfL36bXf6fZJpT8i3Ax1xxLwAOjrX9aRYSAGX2gV9gH6xUkEoLjJJyvEEZ6imILr4/c7ZWqjXefhj
- zo9KheI+
- ieBe/0s8V1Ygjek6hE5iKfuXhuMfzQ6WrH+PJmHwrNyhxWBjvFJPTqqJkdjL1LidfgpdpgRAcLJq1S0sygUvIDFQeOG+BL1OSdMj9SVRNcTA98iXc4NJzrm0Gy2TlQp4JvJcOydv+vzoj7xHBpiCFSg0Bw1JrXodh2WBs2M5NM2nJUZ3nBbaR9gRTXJAhhBXcSFydZt6x10FL4CdaaeyugMjd21gEaYviyW/OEpPPqvDxhjNlCiibU7F3OlWhoEBO0cM0nzU3vzPtHN8h8488pC2T22kC2cLqTpoqFU6Bc5MQSlEb5pujGPbotOOiLRw37I/ZKs07EGYulmD3rCCo6xD6F+R198C0yTvtY+4D6Thy4TOUnHNpj/SG00v89+FGU2y0LtLG/KS+yAbGdkOtU32c4oAwoH0x3tMhCmFv0/QbK9TV6zBX5+RETe8H9B97DB4bUul7KPffLJlCEV7fclkqTie7sq9qg4cEljK+Ijh1nhODy7lUI8HdERzZ8qhaH2Gnr/mNstL90eEOgmKxaqpO0sl+hgws0NxGRzyqdnbRIz2k6I7elnKcrxnLY35Wns6VGhn9Vc3JoEvx4rFN+ILwCNNOxfn1uZJM
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795806132-289768
+X-HE-Meta: U2FsdGVkX19pWNT6JH94jkFUXO2WufdOO/kqfecXnXiaDYAxC83v4qZviCzdD1w16FT5ZeWZictpkdxFl4+LMz/OSiQEZB+pAVThO6VcHpRxbOgrUTSVVKFzQxGrJ91FR6j2PBqkxvfBgFYfcxHx0t+pKUa84mLDBnxaCHoBynCZ14M8ZSdCYFQuXcLRd0X7RhZJ7cDwW0kZ8zvpIUjiMtFx0ulwnWUfxLqziZw8CGo3vbEwGP2EK8VT2nIrmoAjjdUHkKDWb3EatwnSDjpjhG+KYlm1yf2eNVWot0NaQjCuUsgDiUEUmVGPhEFRWgpujBpu5y5nzhEEwWdM4zCVOqFaSVQZZ6o2/rrDVyr20ypPk/B5sTJAT1gmuB1izv1krPyT90Jvi6JSoEhgQAdcrvv0g8Fcik6Kv2aC2aQlfpJyAd/rWqefCFzadQ+A+LAcWYRbpQncX2zdr601ZenxPF+MlGcMCUbZsgv7B8EgK62gJ7G8Nic+Ky3Di5Ih/2+3Yon5GYoFD9dj8sFZhncHAyw5CVbLLNeBriVAHAjPZnLJO55Q9sQYb+FLNxQjaNFUs/DFVLZZhcrcyq3gHL2yfaU7ZeghJ0rbk78GNyCCXaW74uFuOX2R1xlN64dukuwySw+fr8qtG3AVLerc0Sohb+EI5tf8mf+PF2NEm4Bfj7H0tWbtJmjqipye3tirMt70qpC9coEoZLmK4yof5dEfFVBhTdn/dnIDri84LOdM77MFcBZSVK8v0DzEH5Dz//6pjr9rsJgvZ9Bx/7S1oKsfxaZf1hyqfRRtS8c5U0DFHK14KA7nF4mB1kXWBz9qpwzMcpmSagzJNHe5vvrdmjSFF5kCu7yYNbFfDZA0zEC+GpdVrceuq2vrgylfFIzHZQdFR2gVQqDxkYU80lJiXSip5YChJsBH9Xl1tl4wcuFucj8mzdwi/E1BQMc6cuLhy7yCTPg8SxwRPw9Rq1BC3Ph
+ uyj1R/64
+ WgVL1twVtTGIZkKfQX7Z9eSRazZ7iJPfVBVbc91rjzBTR7bEBzaxykjoaTbUS7JyszpUR7wygjK5RXj9qo6NiwrHy1HjflsjL4+S5R4soP/jkcqiXSxfoKcO1QcbU26c/BTgBdqgEKhSGkx+ovqG3PFbX5iw5hF2/iQ+iVVYUhdtXbdRwZQlySDGrhq6Yp0Lepem3Jh5z/WN7YbBBdE12xdTxewSv0eHAgeyUqwMYdqpXxiB8biy3xMDwgQBgW851+l8nLKCnnktB8sdta9fkU5WJaZuNTadM/cE19BMRrm8bVcVJTe1/0a+6V3eIUpHyNWOkV4MNtS7UlHLp6kub8T6mKhrNdzxoZbUjVj/8ChMIBulJIa3clbLofgVtkq+1pjkC08x5/Gre5HTNAzzNZ8rl6kgHaDTt4Fr3hE4FsAQHurDm7uJofk1smEHj/U9GX2HlMDzBZsYU8JB54do1pT7zPq4b6++uGijFIYXbcHtziWJkCDXsHKAIMKpKTInOFE8sDHFn5BNR8MIJi0WvVXjjqxKZVRHJBguLLwwZPz1ua2v/ZT11H/mJGN9UpVXYTT/pfC3QqRroCstvM/44q/mLnGNiSc8WcnzWbb1h0VklXXPyNur0mi7qxx2q3I+v20UI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,36 +131,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/27/26 15:01, Aveline Noir wrote:
-> Hi Muchun,
-> 
-> On Fri, 27 Nov 2026 19:30:04 +0800 Muchun Song wrote:
-> 
->> The Dragon project itself probably belongs to this type of script? See
->> here:
->>
->>     https://github.com/osandov/drgn/tree/main/scripts
-> 
-> Thanks for the suggestion! There was a similar discussion when
-> show_page_info.py was proposed for tools/mm/:
-> 
-> https://lore.kernel.org/r/aACaf4_molKromnT@telecaster
-> 
-> That's mainly why I sent it to the kernel tree instead. Having it close
-> to the code it inspects should make it easier to keep the checks in sync
-> as HugeTLB reservation accounting changes, so it felt like a better fit
-> here. What do you think?
+The default online type is a Kconfig choice, so the symbols it defines are
+CONFIG_MHP_DEFAULT_ONLINE_TYPE_OFFLINE, _ONLINE_AUTO, _ONLINE_KERNEL and
+_ONLINE_MOVABLE.  There is no CONFIG_MHP_DEFAULT_ONLINE_TYPE symbol, but
+five files name one.
 
-IMHO it's better if the support is part of drgn itself and can be adjusted
-with kernel changes while still supporting older kernels at the same time,
-and automatically detecting which scheme applies (not from version, but from
-what fields exist or not in the relevant structs, etc). Like e.g. the crash
-tool does. Yeah the scripts are then more complex, but it's much easier for
-the user, who doesn't need to fish for the right kernel version's scripts.
-Which may anyway become out of sync because nobody notices, and are only
-fixed in a later version.
+Where a file lists the config, name the family with a trailing _*.  Where
+it names a choice value, spell the whole symbol out: early-boot.rst gave
+the zone choices as _NORMAL and _MOVABLE, which are not suffixes.
 
-> Thanks,
-> Aveline Noir
+Verification: a build of the tree defines
+CONFIG_MHP_DEFAULT_ONLINE_TYPE_OFFLINE and no bare
+CONFIG_MHP_DEFAULT_ONLINE_TYPE in include/generated/autoconf.h, and grep
+finds no reference to the bare symbol under Documentation/ afterwards.
+
+Signed-off-by: TAKANO Mitsuhiro <takano32@gmail.com>
+---
+v2: Spell the full config names in early-boot.rst.  David Hildenbrand pointed
+    out that CONFIG_MHP_DEFAULT_ONLINE_TYPE_* with _ONLINE_KERNEL appended
+    does not parse.  The other four files keep the _* form because they list
+    the config, not one of its values.
+
+    Written with Hermes Agent, an LLM assistant; the author reviewed the
+    wording and the diff.
+
+ Documentation/admin-guide/kernel-parameters.txt      |  2 +-
+ Documentation/admin-guide/mm/memory-hotplug.rst      |  2 +-
+ Documentation/driver-api/cxl/linux/early-boot.rst    | 12 +++++++-----
+ .../driver-api/cxl/linux/memory-hotplug.rst          |  2 +-
+ Documentation/driver-api/cxl/linux/overview.rst      |  2 +-
+ 5 files changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 176648941aec..8580099b98c1 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3948,7 +3948,7 @@ Kernel parameters
+ 			[KNL] Set the initial state for the memory hotplug
+ 			onlining policy. If not specified, the default value is
+ 			set according to the
+-			CONFIG_MHP_DEFAULT_ONLINE_TYPE kernel config
++			CONFIG_MHP_DEFAULT_ONLINE_TYPE_* kernel config
+ 			options.
+ 			See Documentation/admin-guide/mm/memory-hotplug.rst.
+ 
+diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
+index 0207f8725142..c7de458a962f 100644
+--- a/Documentation/admin-guide/mm/memory-hotplug.rst
++++ b/Documentation/admin-guide/mm/memory-hotplug.rst
+@@ -280,7 +280,7 @@ The following files are currently defined:
+ 		       blocks; configure auto-onlining.
+ 
+ 		       The default value depends on the
+-		       CONFIG_MHP_DEFAULT_ONLINE_TYPE kernel configuration
++		       CONFIG_MHP_DEFAULT_ONLINE_TYPE_* kernel configuration
+ 		       options.
+ 
+ 		       See the ``state`` property of memory blocks for details.
+diff --git a/Documentation/driver-api/cxl/linux/early-boot.rst b/Documentation/driver-api/cxl/linux/early-boot.rst
+index 414481f33819..c3a3def3b3c6 100644
+--- a/Documentation/driver-api/cxl/linux/early-boot.rst
++++ b/Documentation/driver-api/cxl/linux/early-boot.rst
+@@ -34,7 +34,7 @@ which dictate how memory will be managed by Linux during early boot.
+   * Linux Build config option that dictates whether the kernel supports
+     Specific Purpose memory.
+ 
+-* CONFIG_MHP_DEFAULT_ONLINE_TYPE
++* CONFIG_MHP_DEFAULT_ONLINE_TYPE_*
+ 
+   * Linux Build config that dictates whether and how Specific Purpose memory
+     converted to a dax device should be managed (left as DAX or onlined as
+@@ -58,10 +58,12 @@ SystemRAM.  This will expose the memory to the kernel page allocator in
+ :code:`ZONE_NORMAL`, making it available for use for most allocations (including
+ :code:`struct page` and page tables).
+ 
+-If `Specific Purpose` is set and supported, :code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_*`
+-dictates whether the memory is onlined by default (:code:`_OFFLINE` or
+-:code:`_ONLINE_*`), and if online which zone to online this memory to by default
+-(:code:`_NORMAL` or :code:`_MOVABLE`).
++If `Specific Purpose` is set and supported,
++:code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_OFFLINE` leaves the memory offline,
++:code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_KERNEL` onlines it by default to
++:code:`ZONE_NORMAL`, and
++:code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE` onlines it by default to
++:code:`ZONE_MOVABLE`.
+ 
+ If placed in :code:`ZONE_MOVABLE`, the memory will not be available for most
+ kernel allocations (such as :code:`struct page` or page tables).  This may
+diff --git a/Documentation/driver-api/cxl/linux/memory-hotplug.rst b/Documentation/driver-api/cxl/linux/memory-hotplug.rst
+index af368c2bc9cf..df27520b193f 100644
+--- a/Documentation/driver-api/cxl/linux/memory-hotplug.rst
++++ b/Documentation/driver-api/cxl/linux/memory-hotplug.rst
+@@ -19,7 +19,7 @@ Default Online Behavior
+ The default-online behavior of hotplug memory is dictated by the following,
+ in order of precedence:
+ 
+-- :code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE` Build Configuration
++- :code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_*` Build Configuration
+ - :code:`memhp_default_state` Boot parameter
+ - :code:`/sys/devices/system/memory/auto_online_blocks` value
+ 
+diff --git a/Documentation/driver-api/cxl/linux/overview.rst b/Documentation/driver-api/cxl/linux/overview.rst
+index 648beb2c8c83..d567353e1dab 100644
+--- a/Documentation/driver-api/cxl/linux/overview.rst
++++ b/Documentation/driver-api/cxl/linux/overview.rst
+@@ -17,7 +17,7 @@ are generated.
+ 
+     i) EFI_MEMORY_SP
+     ii) CONFIG_EFI_SOFT_RESERVE
+-    iii) CONFIG_MHP_DEFAULT_ONLINE_TYPE
++    iii) CONFIG_MHP_DEFAULT_ONLINE_TYPE_*
+     iv) nosoftreserve
+ 
+   b) Memory Map Creation
+
+base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
+-- 
+2.53.0
 
 
