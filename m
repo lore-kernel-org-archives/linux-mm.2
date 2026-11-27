@@ -1,140 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101B2606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 17:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5F2606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 17:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=R9tqx0ap;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6rdCS3uh;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=2zpsBrb0;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tYGG06th
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SPts2HZ2
 Received: by kanga.kvack.org (Postfix)
-	id E09AE6B05B0; Fri, 27 Nov 2026 12:19:42 -0500 (EST)
+	id 4CBA26B05B4; Fri, 27 Nov 2026 12:26:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBA8F6B05B1; Fri, 27 Nov 2026 12:19:42 -0500 (EST)
+	id 47BA36B05B5; Fri, 27 Nov 2026 12:26:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAB666B05B4; Fri, 27 Nov 2026 12:19:42 -0500 (EST)
+	id 391676B05B6; Fri, 27 Nov 2026 12:26:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 47BFE6B05B0
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:19:42 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CEB9D1C3B51
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:19:41 +0000 (UTC)
-X-FDA: 85481560962.04.E746D8F
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9A82DC0004
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:19:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=R9tqx0ap;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6rdCS3uh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2zpsBrb0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tYGG06th;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 150606B05B4
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:26:45 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D2E0C03E5
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:26:44 +0000 (UTC)
+X-FDA: 85481578728.21.BD6F343
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A9D34140004
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:26:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SPts2HZ2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795799979;
-	b=PaEjLT6Wp+8Nfx8p0pkAUc9XKbXj9rKValuLpH0YM9vlg1W7nEzUaTCqdgRDUgd4PnUQgp
-	Zj6ThUYQc9JruyGQuzU7yKzyA2lvP0c0H1dzndBUD5d4b6fVYGvr/4WS+Tctj2h7jpF1S3
-	RGT2yB1P7Ad52XTZNC9Kd264llOEOUE=
+	t=1795800402;
+	b=2Wojqj91P28mr1pfrvPKjPkof0qWi+sVJOHUIZ+aFhSBumyPbfNbeP+sMSFSy5zyYGwN8B
+	tSbholIf8Z5E7iM2gcFSM1BQPMHhHiKe6iWh+i79FGv2k214Y1y6j+y8g29uoTiF0JU8nU
+	eL5BK2rC3OvLbvT595D7SPRJFmZHeqs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795799979;
+	s=arc-20220608; t=1795800402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5eEaGQs+qlzFDOnTZyKR6/iEQUt0A17EVipFCA5PZns=;
-	b=B2PioIA/nBUWBjdO75BRZIePXpo1YNHNZPsRIGwg5W9fCOYVQZhLsj5lDy/WumGd/LlaOv
-	syb6hAabp1uYwi542SOISNhUJAhzsVnZj4zOs1TSsxx9G+Ccs/xAitEJyaTaoeGH5VMaZ5
-	S3YALGhLXJjiuHxkghQMk3ZuJAQkWJU=
+	bh=3XHeNf6dkhJt1onpBYytmylIIsDYpini2AOV7gcbkiQ=;
+	b=GDtsDWTDr7NiIXLGNt2AIIKLh8u/O03Zzp6L4QI+v8PmMLPXlKtCamwiB+/1lJAClJuIIa
+	MK+K4TVUqs2SAH2wTW1o4mmV0hQX2FTY0CKZX6q0TF2l7NbSO8mSkDG6hhSVSQaZSz71hl
+	EajAjnPtXKm659r3orFa8pqILJ5cUvQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=R9tqx0ap;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6rdCS3uh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2zpsBrb0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tYGG06th;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 11AB4229B3;
-	Fri, 27 Nov 2026 17:19:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795799978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5eEaGQs+qlzFDOnTZyKR6/iEQUt0A17EVipFCA5PZns=;
-	b=R9tqx0apWJGnNiFVKnIgJX7kf0enA+iHKa9iU+m+lujnRAmeHr/RVWssBXy4bm5h50zM/N
-	W+UMkuXoSxQvXDJfHNl8E4DN4CrwJzrw71+7EfdnCgeklY9/Kn+uDIwe4nb2OBLWkEQoz6
-	/QxWv9OZK7mK28E7mvFEHV7UumDrM0A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795799978;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5eEaGQs+qlzFDOnTZyKR6/iEQUt0A17EVipFCA5PZns=;
-	b=6rdCS3uhdntV0GPzxx9bemPkRVt5e2wLZryT39CmtQYsuWsnATHC/jyyFNW4rvuPatvuWk
-	Nj5p/svxUYtZh+Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795799977; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5eEaGQs+qlzFDOnTZyKR6/iEQUt0A17EVipFCA5PZns=;
-	b=2zpsBrb0xlk4JmqXOUkxAhNu152KICb+DWgtLP/fPOB6I15TTW3QUeLINWqA0MGvudDFGP
-	wiKVCd2DFq5FjYXU7r/ZSeVuAjcFCeTcaXSzXGRtoDwQBcHYe8u54j3Er5nR/dPp4mqvYK
-	pfgAQq278GOt4ugC41J/QC0oL6sN4RY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795799977;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5eEaGQs+qlzFDOnTZyKR6/iEQUt0A17EVipFCA5PZns=;
-	b=tYGG06thAG3zeOLexa1+0RNFEz2x0ndtWUp+2ycm7wf54LviMbkLEzQ3LrO0GRoan2zygF
-	tr0tXYBrHn9escAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D9CDA134F4;
-	Fri, 27 Nov 2026 17:19:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZMz6LKi7CWvZAwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Nov 2026 17:19:36 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 625E5510BB; Fri, 27 Nov 2026 18:19:36 +0100 (CET)
-Date: Fri, 27 Nov 2026 18:19:36 +0100
-From: Jan Kara <jack@suse.cz>
-To: sashiko-reviews@lists.linux.dev
-Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
-	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org, Mikhail Rudenko <xyzzy@yandex-team.ru>, 
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: Re: [PATCH v2 4/8] fs: Defer reclaim of unlinked inodes
-Message-ID: <d5g4uper5qb7gmypl7qokgr6k6m6ave6vb5u4p3zk2pwyqskvd@422bmdwvrqs6>
-References: <20261124113450.3451-1-jack@suse.cz>
- <20261124115850.3512-12-jack@suse.cz>
- <sashiko-outbox-233313@kernel.org>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SPts2HZ2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B621C43F36;
+	Fri, 27 Nov 2026 17:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B3A1F00899;
+	Fri, 27 Nov 2026 17:26:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795800401;
+	bh=3XHeNf6dkhJt1onpBYytmylIIsDYpini2AOV7gcbkiQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SPts2HZ2fx9HHbsj96xKZ5JkPvbMxFMiCsuJqX40UgUB41Tk5iKcWEy88jd3gIr5G
+	 PEmAXODN9mTm1Oku09ou3FReTH2j/a8GS7OlN7+UsiycXy0kDhHyuYZg9qlPOH/Zay
+	 phuMzu2TLPHR8xuHYQmNplqQhlGFKdz90ajuFiTyHia48TLQZJW/e5ZoAnlrJiLetC
+	 2NLN6reXqq8XxYfUFMCxLjchApqd9opVha7opkx+rEWkbh7CTD/RfL5L513spIN5xv
+	 Jqsm/+5zx8hnQK+d2YDEqftTVpEAqLjcrfjPtm/dPOeEK5XSfXWhJQcMYB/FGE8OaG
+	 i0GfUpAtH39ug==
+From: SJ Park <sj@kernel.org>
+To: Lian Wang <lianux.mm@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 0/4] mm/damon/sysfs: refactor state input matching
+Date: Fri, 27 Nov 2026 09:26:23 -0800
+Message-ID: <20261127172623.88602-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261127022945.8243-1-lianux.mm@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-233313@kernel.org>
-X-Rspamd-Action: no action
-X-Spam-Score: -13.01
-X-Spam-Level: 
-X-Stat-Signature: xx7zj79p4yssyb38f6ghoqg6jf5y37m1
-X-Rspamd-Queue-Id: 9A82DC0004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A9D34140004
+X-Stat-Signature: dydh8s8mnqaeoetdcizsuqawmhhrnpbx
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795799979-616395
-X-HE-Meta: U2FsdGVkX18DtWPbjbRJOKHdrMJM5gQWPPVwEW4Rk8K4lNdefc8MsnYJYVe7Nnzp/XB2Hlkqm1D+weCvBtN/RsIwWq9gCsN4fJhbi2vKkm+KYOVbkyq2Yz9fTOqHXikGcCkdxVVBdGOr3JsRsoUBrO6V6K7t/WwZX9gqRn02tfOVDiVAS+YZ4TRB8hSBvqB3ASSJeMr+ID4CDFZRV0kD2Cpa41Aqln/G0BNNIKW0Yu/pBzQi2tU14ylykeu9Pm7BU2lWm6R0pe5dY8Eo3GcegmvjBjY4fReEaqFfDVPbiQHn2Dmiqa5Nd/mUW3WCN+v9SI3vy+hc8R9UY8b7ceDA+gJCPTDzi4lrfLYNUe55rHNDobEUGSIqfNMJ6bbjnvjGZUkPhwYO+Exdb2O5R+FoVdA5nIU1Ds2PN4QKpVURqfObezRPssd+g0ldQFf4FX9d0YgvryglxcyFZyoGG2mfX/NvzLISVUIt0Mg5Qm0IXM8ZU5xvY+l8m05yb25ClR67zpGi2VAJUo/yGnfN+SuOuCvTLaA4SgGLKYva2FPgOt1/RbYJm5IS+mmrn2eZhe7rrG6AGGcncrSIiw6mBCUkFNZ23JUzoO7ixdabnOJ6f80jbMMqrNcscJi0DzX0rfCttzZcFGCoD/ZWy3B9hJUSUQwxcUd+b/ftnm53zfHh+I3NmTK6Kuon0E2imFTXgnbZv49/YVhsXoStl5e6LTVMpAJiO+4pfpRIL5sK9dXFnsRUN2AzQpAWlUYIvmmhKM7MO1+ePzonYcI3IQcbMUDLbexUWhTUoQPTh91De/Y3c6kwm5Rll/qNRHPIdYmSTT2Wmb59pI9M8mUx+cLXHvNVWeloXilnT5ipBdSG1DR2WCwhxdjzyTiBSQaTBSYlZD/JnzvcHZ/Z6JT634AB/OetAH+oNn9/Qk1SwLJRr8Q0Oc1B3mvjTHJfwE5qb5swPTQSguONGTeOyGDYFmP27pe
- 5mVvU2qt
- nn9JJv5aAhLtahJAL/gI5jHO7tXkg8cAGfUOyhDspPjfK6BldU1mIYLTbjoMkifWSR26DA7RFA+VZsROmacrpLAVu0HW7N2qF1ra+ULyX5xpxbyYSs1sm8ZChMjBjSz+BSRrRj6+OzbYEdzkshLGVhvnHwnsbqGD//9uBTELeSyO9DZFJ+eaRXZSQP1Ui6dNvXw0QbIkYCIIo/kJ9lNIrUSh+ExN+ffah+sNc4A/Dc8Jy0hK6bvfGHkFokM8Ggf6KxpUbEVK0ZU5RaGMVl9dptaSfYlm6sOmpabPiE8eiTbUI12u36FrNaL4IIVqsCzazcnHHfeM1MQUOh8XTFy5gNVBEhPwHCINd4JxfH4qud86pDHeNXd5tAs3LhwZn420BmXdeNvryvSomJR/bKT2A+5a55L5XJeVMZ5TjAS8AXclIIL1KK68NsS4oa1JWmIb9CmjR0Um6FIHaTw7Ed9W9VA6a5IauiWU4BfxSQWFbIT5xAl6a0mDt2a90G4s801/J82F9Pesfa2NBdFw6DebjmgoDI3fEXIhLKpgd
+X-HE-Tag: 1795800402-388424
+X-HE-Meta: U2FsdGVkX1+ucm61Y4crCEvoURKT1N8ECD5dzc+2UHeWhds7ZtMT+Jb/yfwd1+KOTx4ZWhHpo2dNcSvtNOVutj08JFsf8glhHQDm6vtrr5jsCg2IMkwzx182fiOPHo9m1hmlSVymrN9lQefCom0/YxrZ3lKmDptjkrvQMSwUbDkw6B/p78HpZAE9+uTn6NpwBfsCEMUVv3hImKjk1DIW3anfhFZ4ReZdE/uKA50xiyhHMcrV7KwFos1HQHsinFZx/WhtpnBgjiJE0/J9XTHnHByJOL4YhNRizbxjcefBV5s2xAwANhH+GJHR89erZapsLKXld1zQ9QwcHF3XZgz0ssxkqNRmoXLC8pYQEpKxB4qfC3s6qV755xmSSFwuESZF6sX/o/2WpGhxJcj7/1vzyPqmafmYnWkNMiA9e+y+OXfGFys+/zF+qBVmUN0Dy/MKxLgp67r64wzkSSqzTe/LDfm03cy6uL4J69aywQnUaaP5hVPZNADtPn+louUqAQwj/6jcB4LMR4othF+fmr/Q7Bd8Pasc+FYzLoxo23TS0lV0jou6SIQt2kQ+9URYYjeA1JlbqqjZh7gvSdx5LCLcsnE+4zxypO2l8Y5KCYMogeaKrW5v7JZLuk8NBu8xkhnQsFmfH0Gt5mWb9ls+9Irxl6ElPADrdQHycvInIqIG+gNmgeWwkffYUbOkcA2K4+VmdVp8u4gFFiVaQkm1YM2718PqROvD2wdvAs2i+0JjDeDMhBd7IuVh0UUls96co+7G8XJgzXb6uSd+21WHC3wv7p5aeknlXeCQ3tW7PwzV6suBcn39vb9Iz8UPqyLN+FEtlTmvltbcz+b2ossfQFAYMpOg5UXwuw/tTH+uBGYZLKW1/N6Wb1Od+UMI9vrHRoejuLr3ViGOtUKMhoY7iW88tuO8hGOq2w3mHfykQ6MiVskJxNnWh+97qSuXpABlnpXhvm+tdHmwxiQpvdNyEMm
+ VPzG7eHH
+ 82PaSJ+BJ2y5W0p+n4mKGmHXtcDSUmyab8PjDuwfD7NgqohnC/is+tjGpeX7SxJkcY+RwAKDFpAwxdjR1e45i6rG+0YPKLpvtgZ4eMeA7RjZIYQLQgAMj4Vk0Uj3rZeqSiA1viD9l0yQyhzC67S76gIkfIxo8c+GLpbmSKyBIVCdV+ufycLFdpzervKPhX7FpxwuIuaVYjWHkI03Ei0eAjaEuDr/AhTtCLS/F2fzy1ipZnFQhmqlc3c7/0UgSlk8sp/Xc6n4+F85e5vEIJ2S/9C+j9z3N01A6q18h3+iWoDtP5ogeMQxifd0PU+DTNPDrvFXTlxwG1w3nwFF5UADcuMj8HA1ve+yL2pi+bZ0ay/ZYBc7a+o73Fe9pw+Iwv2sJcA2g4i3Vy8RqxmRuQaoDq/y3SnKvNVdde6N7ms22TmjIo89vPE5lUuND2y1CiyQvnzSAuLYcSE+Qw8k7kfdspDOnxfSIbF7SjmJRoEYBAgcEmRyNnyIgOfCe1qGL1Wr6/nMjjdpI91EtKSlJC0G6ZA7tcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,79 +95,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed 25-11-26 12:00:05, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] fs: single-worker serialization in iput_final() via
->   queue_deferred_reclaim()
-> --
-> 
-> commit 8449483727b2bbcd575fed1bb97c8ea7882097a9
-> Author: Jan Kara <jack@suse.cz>
-> 
-> fs: Defer reclaim of unlinked inodes
-> 
-> This commit offloads the eviction of unlinked inodes to the deferred reclaim
-> workqueue when the last reference is dropped from a memory reclaim context.
-> 
-> > diff --git a/fs/inode.c b/fs/inode.c
-> > index 8853eb6015dc0..2977d5f1382b9 100644
-> > --- a/fs/inode.c
-> > +++ b/fs/inode.c
-> > @@ -2240,6 +2240,23 @@ static void iput_final(struct inode *inode)
-> >  	inode_lru_list_del(inode);
-> >  	spin_unlock(&inode->i_lock);
-> >  
-> > +	/*
-> > +	 * Are we going to delete this inode while in reclaim path? Likely
-> > +	 * reclaim of some object (e.g. overlayfs inode) ended up dropping the
-> > +	 * last reference to an already deleted inode. Offload the eviction as
-> > +	 * it's likely to require memory allocations and block on IO. Since
-> > +	 * this eviction was triggered by a reclaim of unrelated object, the
-> > +	 * inode is already outliving the operation that originally deleted it
-> > +	 * (unlink, file close...). A slightly longer delay thus should not be
-> > +	 * observable by userspace.
-> > +	 */
-> > +	if (current->flags & PF_MEMALLOC && !inode->i_nlink) {
-> > +		LIST_HEAD(defer);
-> > +
-> > +		list_add(&inode->i_lru, &defer);
-> > +		queue_deferred_reclaim(sb, 1, &defer);
-> > +		return;
-> > +	}
-> 
-> [Severity: Medium]
-> Does passing count = 1 to queue_deferred_reclaim() here serialize all
-> deferred unlinked inode evictions for a superblock onto a single worker?
-> 
-> queue_deferred_reclaim() starts at id = get_deferred_sb_id(sb) and computes
-> how many workers to wake from the per-call count rather than the total queued
-> inodes:
-> 
-> fs/inode.c:queue_deferred_reclaim() {
-> 	...
-> 	wake_count = DIV_ROUND_UP(count, INODE_RECLAIM_BATCH_SIZE);
-> 	if (wake_count > deferred_reclaim.workers)
-> 		wake_count = deferred_reclaim.workers;
-> 	for (i = 0; i < wake_count; i++) {
-> 		queue_work(deferred_reclaim.wq,
-> 			   &deferred_reclaim.work[id]);
-> 		id = (id + 1) % deferred_reclaim.workers;
-> 	}
-> }
-> 
-> Because iput_final() queues one inode at a time, wake_count is always 1 and
-> only deferred_reclaim.work[id] for that superblock's hash id is ever queued.
-> When reclaim (such as overlayfs dcache/icache shrinking) drops the last
-> reference to many unlinked upper inodes, the remaining workers in
-> deferred_reclaim.work are never woken, throttling background inode deletion to
-> one thread.
+On Fri, 27 Nov 2026 10:29:21 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
 
-Ok, here we'd be really waking only one worker and I agree some parallelism
-in this path might be good. I'll think a bit if we can improve it.
+> Hi SJ,
+> 
+> > It is easy to mistakenly make the order broken.
+> 
+> This makes sense. The explicit command/name mappings preserve the existing
+> commands and state read/write behavior while removing the ordering
+> dependency. LGTM.
+> 
+> For the series:
+> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Thank you for reviews, Lian!
+
+
+Thanks,
+SJ
+
+[...]
 
