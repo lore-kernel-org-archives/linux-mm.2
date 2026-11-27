@@ -1,98 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7258606A334
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 21:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07D8606A32A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 21:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GyXeg09V
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=X5J/Yojb
 Received: by kanga.kvack.org (Postfix)
-	id 5F4E46B05B5; Fri, 27 Nov 2026 16:21:55 -0500 (EST)
+	id B9E2B6B05B0; Fri, 27 Nov 2026 16:41:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57E176B05B6; Fri, 27 Nov 2026 16:21:55 -0500 (EST)
+	id B4E366B05B1; Fri, 27 Nov 2026 16:41:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41F136B05B7; Fri, 27 Nov 2026 16:21:55 -0500 (EST)
+	id A3D046B05B2; Fri, 27 Nov 2026 16:41:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D0B746B05B5
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 16:21:54 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 646771604C4
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:21:54 +0000 (UTC)
-X-FDA: 85482171348.17.D5C77D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BE74914000A
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:21:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GyXeg09V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6822C6B05B0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 16:41:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE6431204EE
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:41:17 +0000 (UTC)
+X-FDA: 85482220194.18.F09B567
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 196DC12000B
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:41:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="X5J/Yojb";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795814512;
-	b=kWDegyi7QN35dyA+d2MSYyHVGhLKSatnHuBfEKotwu/TYkJo7h3I/QEZvYgsH4/uwbbKRn
-	7x8ljlFxCSxKyhAtwLDhRC/i4kekEiVLg1VLtF2qZzMebMNgmPDnjRIwOVPqI500uMJNW/
-	1yQ9Go9ijSZwqspxixfgc9AcBJu73UQ=
+	t=1795815676;
+	b=KAkYPLbCyWkLF2oxVLXG/ywQ6R0ZK9sDpNLAiTZ+o2vwud6QFgcBu2monYcdn98japGw4+
+	liUCUNs0ZyVejC45ksmeC67eFOeLWwlsYMQ/kra7lPXF0uEhuSfpv6DtDw65AEmdudQ7ak
+	iqI/vYgPBsqoOBdKbuUghefWkdhJneM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795814512;
+	s=arc-20220608; t=1795815676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YIRTDuQE4r/aXiKDRPP0uS7lZ5Ydoef491BfdGmULdw=;
-	b=up+KAvXyxQQ8E1yGGNZ3JtHILTXRBgOIhbBaRpdsM6YvDXfkjH2ykRjT4Gudm2HP+7JxZx
-	ZzeAg9BvjNmMzSNL/g2+v5ob7k/R7EN4QMgwuPzY+OMvl9VmdMnqAXwnt+5jMUMLWCnPDP
-	50UDhtAeDc/IpPNLAD/iKvMXC0JSa28=
+	bh=GNjJtSmgBzeJqa75AyMuB1FfpMIGeExfgQrDDeRI15s=;
+	b=UWQ15SAVqystKztLoSvg2KeynB8gIwute17xSOXEKBWJQyoQVAuWlV7NsBLOd5rvYiimei
+	RpLA1WbBQXcVVuQlcDHl2TkTXZZlkSlgOOxFtwl3baBq40Er5bPATx9i80ZhbXoJmppNQ0
+	BlJDtL0MNRrM0TePL5jogZCBE/IR2WY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GyXeg09V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5989E61B36;
-	Fri, 27 Nov 2026 21:21:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDD91F00897;
-	Fri, 27 Nov 2026 21:21:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795814512;
-	bh=YIRTDuQE4r/aXiKDRPP0uS7lZ5Ydoef491BfdGmULdw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GyXeg09VB0wAl0TmCP+UxG6RrRmfqXEG/4IhxJ1zoEH9+INmjqQYNKNW4+b5QtRfR
-	 a3BcfF8GGG9UpO8uDuxoTgZdzukxLv6z835qNLUvGZFLqAvcsIvzNZXers5+YqN++K
-	 Vd5kyeQlCd0MtrhRzUSsUEMiaobcSmqLmrd1+G1HmEweLidfTv69X4gvyXHbzWJ8eP
-	 yYA9yyYffm5lqcZcc88Ppw9imIM8tpLNdK5ncLgOXbvjk8GQnt1xvVYxIdaelCsYTk
-	 6f6CshpkX6nsGDDWnyC0tNwO9L6M+wdB49AHjiNNsJ9Xi6fk5sUqHarMJQrYdb5Vtc
-	 tK03Xs9SeMDUA==
-Subject: Re: [PATCH net v2 3/4] net: skbuff: limit folio refcount when
- splicing pages into skbs
-From: netdev-bot+sashiko@kernel.org
-To: david@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, sdf.kernel@gmail.com, willemb@google.com, horms@kernel.org,
- akpm@linux-foundation.org, kas@kernel.org, songliubraving@fb.com,
- hannes@cmpxchg.org, riel@surriel.com, willy@infradead.org,
- ncardwell@google.com, kuniyu@google.com, pfalcato@suse.de, cel@kernel.org,
- jlayton@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Date: Fri, 27 Nov 2026 21:21:50 +0000
-Message-ID: <179581451032.3135.17667643003292457918@kernel.org>
-In-Reply-To: <20261126-skb_refcount_overflow-v2-3-a6f600a5634a@kernel.org>
-References: <20261126-skb_refcount_overflow-v2-3-a6f600a5634a@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="X5J/Yojb";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4bb666304fdso83008025e9.0
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 13:41:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795815674; x=1796420474; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GNjJtSmgBzeJqa75AyMuB1FfpMIGeExfgQrDDeRI15s=;
+        b=X5J/YojbaAGarumz8hC/DncZVrI2wFPwmZ2aPvFgUZNgl3tqzBIfbZGBRnx+ZsauvU
+         KvOnIGNpuP8eUqXFncLdYQ457K3AgdQuM/TKYg5Th84Kx2p8wySIaGWwK6k3MRLeV7Ob
+         WqvO8n+PmcW1WmNiR3EPqw6e4uDnnmiz+PgN8EQH+uS28vZU6MpQsQ4JYElpWSRUBVjI
+         RPL0VIU9rupN1TcUg8Q6/y0qTZZR0mRdXWiMjJBdrgl2KyARNSRuwfalH3zhozrj50NW
+         X4S/q7WFBBn7Qd6efBgyjkLTwUpe2bZk0USucw4FWCQstztNGtnPWMNy0heOWun9wTA1
+         S4rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795815674; x=1796420474;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GNjJtSmgBzeJqa75AyMuB1FfpMIGeExfgQrDDeRI15s=;
+        b=xsr9+IgIsCSp0AgXOW6cxIcN+FrG8m36qjUq5GHhyZ2uBZpbLGs2pGAJIjk5BdLBc8
+         Ptr2u12+o4gFaZIF1yYbJE+Iy45Usg2oeFLU0GK4hD8cSTiBW8UWLLWbeNA1RHyvkQIJ
+         xR0Ydp+nKI8PXch5VaJ7EvfZlCoPzH5qwipShQFhnjFXaxXTXkmhGQHhxarZZQVysvJa
+         mMCu1D2+93XLUy70uJDMoa47NeWm8MJy+OEKy7a7J6tFEPx4NIC3pVLWB6637RoQT8xR
+         RLIomgjB+7E9OPXfRzRQPXMl71y8n6RrSMhJKrXTZIdxVR5Qx6tWEW5nLugnynjO/8hb
+         LLtQ==
+X-Forwarded-Encrypted: i=1; AL+hErExGbf2kvs72/vnC7I4+royeB4Li61Q2DwzAwXrL7N2DFqszVemFcjnCjNvvErNlOhxwwvebj6CvA==@kvack.org
+X-Gm-Message-State: APuU4Z+bcdsX+oVoWWjm1a9ukmZRyNM+0+fCUJExOi3m+qYR6fdDrBcY
+	fq+MwEUXJ6UOQZw2CRVKp6eCVhOSdgdmtKez0iiUrOAS/bYgRa/wFYIv
+X-Gm-Gg: AZFdTZefkeV5NCarZ8x6BqojvW/jSgcjbJzNNrYrrI9kGB4l+85SmQwsgGH21mM5CyD
+	Zpj5tWwmJXoffHBd8hcnRMx2SB7TGzLKdUQsSEhBXkLXrwhzLiCtToqMWOMIg1Jgt8Yaa2WO01g
+	/ViL3VGu3Q/xADokJYcm1UMWtYYrPTLsUgtiosTbKLDq1puxIZjR57go83ttv6zi/8D83tdG+/0
+	Vt0Fj+h/iZ/nZ9wlQa8BDO5a3KQE5euBJ/hJWm94cws4wO2TIX05Hb7KaUjuaSzgtqWYCwYrgC0
+	YhxNfsDL3ccS8hQeSOjtBbsSY3U4PMbJ26sRLl86Rmo6Tv/JP82oFf3v+NcW4BC6NshzbZGH44C
+	Ks/4nSN5iBLP/VmSqC35QJhRgJZhwUgBIx7vnVR1Mu8JR5AZew3BX+yiOAKDqjzv+yHcflpEfHi
+	zmuNTdJhxeuJIH5HjVt/PIlndlo23xR3BoLEkHRJ3O9kDgVoZvr3z9cyCr002l9WI9ZQMEj7Sj6
+	QtZjrj2tKisN7rzRxkD5VDbs2iVnxVSDJVwR1VvVMK3xxLxFLOp5pbrDC0tThu8tLAbO66hJDwC
+	/BqQi4jxwQLZE+2BT4sEYzzqDA==
+X-Received: by 2002:a05:600c:a085:b0:4bb:85d9:156e with SMTP id 5b1f17b1804b1-4bb8880fe46mr518939935e9.11.1795815674386;
+        Fri, 27 Nov 2026 13:41:14 -0800 (PST)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4bbb97e5356sm37714445e9.4.2026.11.27.13.41.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Nov 2026 13:41:13 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: jarkko@kernel.org
+Cc: aleksa@amutable.com,
+	alex@amutable.com,
+	alexei.starovoitov@gmail.com,
+	arnd@arndb.de,
+	bpf@vger.kernel.org,
+	brauner@kernel.org,
+	containers@lists.linux.dev,
+	corbet@lwn.net,
+	dhowells@redhat.com,
+	ebiggers@kernel.org,
+	giuseppe@scrivano.org,
+	hughd@google.com,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	josef@toxicpanda.com,
+	kees@kernel.org,
+	kpsingh@kernel.org,
+	lennart@poettering.net,
+	linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	luto@amacapital.net,
+	neal@gompa.dev,
+	oleg@redhat.com,
+	paul@paul-moore.com,
+	ptikhomirov@virtuozzo.com,
+	sergeh@kernel.org,
+	skhan@linuxfoundation.org,
+	viro@zeniv.linux.org.uk,
+	zygmunt.krynicki@canonical.com
+Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
+Date: Sat, 28 Nov 2026 00:41:03 +0300
+Message-ID: <20261127214103.542291-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <awOQDOel_72Xwjm7@kernel.org>
+References: <awOQDOel_72Xwjm7@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 196DC12000B
 X-Rspam-User:
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BE74914000A
-X-Stat-Signature: a787rp6yuy4q87bs8cf787y8uadc56fi
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795814512-469970
-X-HE-Meta: U2FsdGVkX1+PV2fYfVg9wEFVeA/tuC3Ng9g1uSkFxDNcjVsbnap5GvIW14hiM8xZSMRMZ2YDDbb/jywAjdlFSsLXUNRxXG0mgftPLi4WN9n5+TI+ui73DN4sA3IQOl805Uz8CXKqEuYWqnlzLZAJOZv7pi3BPEa3xp0SMvFdGXXhHL+wfHoc2VX8XpM2n98Gs8WvvrH8zUqiP7VtqZNFMiv5qz1HrPHigUIz7oVuIS9HCngfMo1Wa7VLR9DbJ6g6RDtHiwiilW2vyhZwqBCb3lfhrgy5hh7kcBjPPt7VoBSvDhkCzhxD3zypMv31UpV2FNxKWglqb+0MDz90HaItNK78CNlLcQ/LZscpGqhK91DKZeq1FlbH6Z2xpvMPNsnmDdq+KMFiYeKrLmWXAzsec+qShnlok8ZvwvinlNmCOxmG6r2hD3DuuV0V+wj35hz6zbWDU0tS22LQ+gsEs3rnGn15TkGQeaUKXGxd02Hl8bsrGVTs2u9LZJicsLc04MmrfmQ9VUZ2l0yVSnWFd4pnz8qFalyh7EKwV8bmgGMlyVPRvT/9ap5aPJoUV+BzvVvQnziHTNZh0TJbvEDsV0sEfmrfvrzUWXf3wlSUjfp5cgnddFfbjoIvHJt78FMz5NbQMmTQbQFRk6BfCPjhJjFBNxJl7aCFp4qgh8XXUhSFKSUHgZY09CxHgSH4p7TiW7PFjPb2XQGiFm54GhH8QDiSh1FzQIhN/HZGJTxomknxwu9bzRrPYvhw/6h45N6lGySYMji+qYNg5NEYvQxPdy44FyjKBGcvCMe/IivL0aNiea3Nr3gCp3RGq8C5s5+ipfJ9mt5mgA/pBIowBGofLYP1Yciatg0Ik3Spxbv1JrVTeiXflzdUVdjpqnb8jV0vqmNRxUvZHu0uWHjLc6w5Ed8XSPHd76MncXWIWhG+HjttK4LUNKQK1AacKtyQ7HKBrRWdVkwYQuL5XOn8I0ydxhM
- BAcW212p
- ZKUgn0K7qkqfxRCYLrgG9CGfsn83ijA6q0XJvWdBniRwrKZpXB3fDxcPs3EI3qXS1fZ/RtT1XP5LBGHANlVW8AmJsQV8KgrsO1qhfDCAp/9OVFwC5eay04qfEiNvyV8NeOlJ1zdc/9yBV8MI5KPNGaLNQXWLma4bj1Im35D8bqG31y+TMWJVNdpx3Vv+zB/jElrS6ZVzqxB2pLE3jGSqHAvnycXPXTjH5bpj4wrHmxvGWgyEuW5kk2IRVnECkpOM3f0l6yyK+N1uvGvNNQEqb42Ddhw1ZG8fn5z+hmKXm1OZffmvEbjWhwIWmf9jg4u91r0UTkCmV1J4qb0mZZH0kODrh+U8VtQ0nEoIdL6jlFW18CDHcDdjHqU5uR+pSHUIYHHE2Frb3nlGVBG8dD0uAh23U6PAQM2pu79g0hSKcj65Oftxo5fDvFR6prbiyl1zA1JU6KR7atqG31MthFRBreaTBF/gza5XgJ8rJM7bNsS/qtvPL934tv8tR6m5OGS5WCeHau8rROhaPS+oSdYv/65ex+XGDoGc9T58lPm9v3a6joIMAMVREaDUkNQv6chq6Fc+l58hTyIfzMTJE0ec+jA2XCLJ4MVYD06PTJROXwG43GPR26Vh8DSFvwv26q98wD/NrQn3F4Zfp9JuEUvf0FfV/oszMjP0I/D8+k+oeNg1oRtPZIf8vF2p4mlyv9TSdv9fA
+X-Stat-Signature: b34giggk8fsht6e8e1961rsz96zq7utr
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795815675-848469
+X-HE-Meta: U2FsdGVkX18QQy7REqYpYj47nvlpOeQEXDia5uQypISwmk47LeDeYB8yNq3L2O0xvOIrS4TGT2onkYbCsRFab43fkBINm0f8cqQ3tO/Cv2604p4Twi10kW3eQobtDNhogNttAv8KHuQ43x61/uuRatEKq0pAS7RCALKrUjHWwQSdIf5sms8hjygKclY6RoOwJeUrMkYVmqvS1vSUptHt3Geeg2xZytPNisw2te5zewVE88IaIxziDzVrfsZ6Du8hNQqdFv0jN7dwe8iTVGqI5Ja7ffFQvl9E25g2BbJJLPisjw2wjZIDnpHeFI0sxmqJpUmF/7hyi+JtlVQtDfOIQiCNunuTru/ruUVA82leap22LbuNhA00ZxlxefylBIQXK9gQDFmQ2kR3zJz8N5/D25R1hyLB4ZyXxFxEiSD7VBHD+kZqUZTT/tNyRN8iDXgozW5H5SSkyfHIOzTyZELJHpcqaKwKJ4IvrK4ghkYH9WKeM3qUt1Kvx1hRFbRlx+6eB1BBqT0ZNyJaAtgz1n4r4ViADRGfPrRubsgQT0GBiHRyZ9YQkHtupUZQrTOoHAIo7B0g1GJFvCN+CzXjB2P/uTg5A6HSt7W6XJvyXdBC6y9vIE+6V/mvas/4ZgrtmEmOt9PvOUw/CmVuc0iO0khBo0P45/ctfpbNjzs7MvL429SfR+GuOoBYYA6972EqEBVY4ncrkC/jSW2QmTJYopo6IgKoglwmWnEMSGKeogFRSsVow98U1XxLGyD3iTIUlE/2YoX6XLUwYgElFVsXRsnRvdBWec1U7Nt1iYC9wTsVfrBFJCPGsmCI6ZS4uT4lR6tRrxkhlET930Gyl0S3VFNiPQUXk1wdljUuWOg/Vjg2XKI9ET+9LewPeACF7ibOULDaVGNfVdOBBjRe10NA1+goxVG3IjXGWjGzaYEsNIIx0TyJb2ll9/DSPHfenVsJ3UVTNmpbf0bHlaOpOfpZ8TG
+ az/6cwe7
+ NfAo3As9iYOOgslyBeopLJh+hs9UyRQfSR62VyeMrcuKlRwWAEFfzR447A52wZxeALbuP7XtA0ji7e1AOMpa5Iuu7JLYmDaUD0TrKItXfmKQf8AB5d9CNW6R7eGigCEbs/r1GKGQGMEjeEgXBrIRI2+RJxlUp5+vUTHPeUizDjf5AiP7NFEkG+x3aFruO9JjlhMNRw8mxI/LNGAoXuwXGTJlk5S+NoOlUV2IaZ2uVO3q5Q76SrwRFGQ/MlBlu3EAA/MRpoFgbVECT6SvrC4x8RK6ZslZ5rGUOxy1bkZT2rk67kMmGQpqu44zMXHjdypklCRkFwBYuCNHKLCPvjh9BxVIShldWHfYgJAUNJib74VNqBQB0Dyz+VmmcghrI8yad1phEchHywdpShIUsDfHD2k9GqjMqVIl0HV3qNVDsiwHwHvO5uCqIVhos2ougIgBaX0L1FrMEOjKYt15keZjw96eIlD4u2UmiPszkocCaRTSopN1kE3M3QwkitaGEwky19rCy36VPRRIqNii7LlQqlGYEM6mtfjxRrK9SLh3zcs14jxH5Ft6R2ib3WLqc8Exn3iuZv36qhXgdaXsyDQixeo84qwPicu42bL4ee0vHT75r2BV6fOcJAzlSy8arXpWhobaCRt6KjyVOstX0vlp3X3xRRCqwzPlXcCeksIJB2MKlJAvmPfP1UWaO/spltTRSucPgZoeJmlqXwU7S6PtbtyhDjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,108 +155,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Jarkko Sakkinen <jarkko@kernel.org>:
+> I personally think that "getting in" should not be a goal in the first
+> place. I care more about that whaever gets in has a high bar of
+> quality enough. It can be something different than this but
+> when I read the LWN article about Cells I was alarmed enough
+> so that I had to do this and prove my point.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+I think that Bacik's patchset has better chances than yours.
+I think so, because (as Bacik said) it was tested in Anthropic, and also
+because Brauner reacted positively:
+https://lore.kernel.org/all/20261021-zeitig-niemals-clubmitglieder-b3973fcebd38@brauner/ .
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+So I suggest reading Bacik's patchset and say what you don't like about it.
+You will have chance to influence Bacik's proposal before it will be merged.
 
-- [High] The refcount-limit fix does not cover kernel TLS, so the case
-  the commit message uses as its example (sunrpc/nfsd sending pagecache…
-
---
-
-net: skbuff: limit folio refcount when splicing pages into skbs
-
-This commit changes skb_append_pagefrags() to use try_get_page() instead
-of get_page(). In-kernel MSG_SPLICE_PAGES senders that pass pagecache
-pages directly, such as sunrpc, can then no longer push a folio's
-refcount past the limit. On failure it returns -EFAULT rather than
--EMSGSIZE, so TCP does not just retry with a new skb.
-
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 6da51ad8fd440..957335bcc5961 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -4714,8 +4714,13 @@ int skb_append_pagefrags(struct sk_buff *skb, struct page *page,
->  	if (skb_can_coalesce(skb, i, page, offset)) {
->  		skb_frag_size_add(&skb_shinfo(skb)->frags[i - 1], size);
->  	} else if (i < max_frags) {
-> +		/*
-> +		 * Don't use -EMSGSIZE, as callers would just retry with a new
-> +		 * skb.
-> +		 */
-> +		if (!try_get_page(page))
-> +			return -EFAULT;
->  		skb_zcopy_downgrade_managed(skb);
-> -		get_page(page);
->  		skb_fill_page_desc_noacc(skb, i, page, offset, size);
->  	} else {
->  		return -EMSGSIZE;
-
-[Severity: High]
-Does this cover sockets that have kTLS installed? The commit message uses
-sunrpc/nfsd as its example. With kTLS, though, MSG_SPLICE_PAGES never
-reaches skb_append_pagefrags().
-
-With software kTLS the call chain is:
-
-tls_sw_sendmsg()
-  tls_sw_sendmsg_splice()
-    sk_msg_page_add()
-
-sk_msg_page_add() in include/linux/skmsg.h still takes the reference
-without a check, and it has no way to return an error:
-
-static inline void sk_msg_page_add(struct sk_msg *msg, struct page *page,
-				   u32 len, u32 offset)
-{
-	struct scatterlist *sge;
-
-	get_page(page);
-	...
-}
-
-With TLS device offload, the MSG_SPLICE_PAGES branch in tls_push_data()
-passes the extracted page to tls_append_frag(). That function also uses
-plain get_page(), and the reference is held until the record is ACKed:
-
-net/tls/tls_device.c:tls_append_frag() {
-	...
-	} else {
-		++frag;
-		skb_frag_fill_page_desc(frag, pfrag->page, pfrag->offset,
-					size);
-		++record->num_frags;
-		get_page(pfrag->page);
-	}
-	...
-}
-
-nfsd reaches these paths with xprtsec=tls:
-
-- nfsd_read_splice_ok() only turns off splice reads for krb5i and krb5p.
-- So nfsd_splice_read() still puts pagecache pages into rq_res.
-- svc_tcp_sendmsg() then sends them with MSG_SPLICE_PAGES through
-  sock_sendmsg(), which goes to tls_sw_sendmsg() or tls_device_sendmsg().
-
-nvme-tcp over TLS also sends pages with MSG_SPLICE_PAGES and goes through
-the same paths.
-
-The sunrpc client does not seem to use MSG_SPLICE_PAGES, since
-XS_SENDMSG_FLAGS is MSG_DONTWAIT | MSG_NOSIGNAL. The server side is the
-case that matters here.
-
-Should sk_msg_page_add() (or tls_sw_sendmsg_splice()) and the zero-copy
-tls_append_frag() path also use try_get_page() and fail with -EFAULT in
-the same way? No other patch in the series appears to touch net/tls or
-include/linux/skmsg.h.
+(Note: I am not kernel developer.)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261126-skb_refcount_overflow-v2-0-a6f600a5634a%40kernel.org
+Askar Safin
 
