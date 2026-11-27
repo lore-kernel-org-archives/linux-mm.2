@@ -1,147 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FFE606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 02:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qBocoT1H
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C777606A683
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 02:57:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF5596B05B1; Thu, 26 Nov 2026 21:55:13 -0500 (EST)
+	id 396646B05B0; Thu, 26 Nov 2026 21:57:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA5A16B05B2; Thu, 26 Nov 2026 21:55:13 -0500 (EST)
+	id 346B46B05B2; Thu, 26 Nov 2026 21:57:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A941D6B05B3; Thu, 26 Nov 2026 21:55:13 -0500 (EST)
+	id 236146B05B3; Thu, 26 Nov 2026 21:57:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C0846B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:55:13 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 555691A0157
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:55:12 +0000 (UTC)
-X-FDA: 85479382464.18.712DB73
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6A197A0012
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:55:10 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=qBocoT1H;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795748110;
-	b=KWLNVDgWmMT0m6oh5YYqaEr0HoJRWJ8/HKGOEdmgNkjqlGqx0N5EacN8jhEydoUZ0RttJ7
-	NDdmBzbJf+3uXQAtDLfidy265NEHHPwS11EPMPgbU7wUczz1446yXApv635mgmuNQdvSJ2
-	uMwCwDAlkbLLqGwpQfY2UAmedoeMzG4=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795748110;
+	by kanga.kvack.org (Postfix) with ESMTP id F0A086B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:57:38 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 72F5E1A0157
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:57:38 +0000 (UTC)
+X-FDA: 85479388596.25.9B3A7A4
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 947A81C0003
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:57:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795748256;
+	b=m4N83oKM3M5GSL8dCh4FcHmt/16mY+4A4ZZSpp8FCba+/dMVlXfDEmySC8Y94oTCJAaQ+0
+	etm+g5YefCwV+G7nIR8fwUV4EHJ1V6hcVSaKL/M/X1fMT1SqmY3XyPdmPvW1Olp7c5mSPj
+	5S1ENUbYWzIEAZW5hBh+XN3D9FTmMwQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795748256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v3hflK/w9trNoSZS5EWvDWp/lpUVGxr8L2pSGjpSId0=;
-	b=vclPzcBzFSCb+5d/V11JTbi08mNVutwi97pTWr+SKQgjfXH/bzbnLWeq+pLxPvufZwsUZy
-	n8beKRejaYSQL5egBE9NUmvaSZ3aE5GSvKSoz/ZWoMlku0gZHbHQtSKw/rqFUBLqW+0kQm
-	dVqA15msKQdS5TrqCEOFGNkp/lfM3pY=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=qBocoT1H;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b894d9a075so8438069a12.2
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:55:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795748109; cv=none;
-        d=google.com; s=arc-20260327;
-        b=igRFE8Bx5ef0aP5H5Eo5WTZWE75jyBTLSFRcR5shaBpjkMdVqBkeuSUR76N9I6aDb0
-         lruVS0l0XJ/cMZF1gBCyAh79mOf4UzWO+KCxyQ70VaPQuE3fIuypycSkKZY+YjYZjatb
-         hebtBdLlFTxt8Ky4gilhjFk1Ek0pBqVvYthvcfEVn+/AlHEDZrnkDjIHrbJ4vOCQJ0hm
-         f/BT/yHHJPyHtL8UFPdj+l71b3OJKhZzKXA8vgnADORPAbg4DMBmBx6hB//Ph0lF6Odb
-         7fGrXeoEMk13FROZaZNeTpwC8R1OLyqpr6MdxFFjG3+bPNhOxR2GfxotQmy1tyFP3kaU
-         g2dQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=v3hflK/w9trNoSZS5EWvDWp/lpUVGxr8L2pSGjpSId0=;
-        fh=ETxyNyDINm/EDeFo2XGqKnv0UQpgErHeOAmzB7YA2ow=;
-        b=ckrIjrHSRviTB4+WMGfWgtBUyLagFKyaL1D7FBqhBibwX9CwvPKB5xglHn18J74dJ6
-         ixiF4tysVjXvSMmvKTo0X3DIbZkEwRuLt1YcxfhMwq7xiTIzsNx8b9zI672VtPLWym76
-         5bwzG2+d8aIADVOUl8jNR/OSdjMCFANXAnRvd3vGRK/s0GpMlYwlQJNhTGUC7y8RdJ3v
-         DwMY2E6UZe8gOce7+w1rFbT7M+VvoLZpbj3xc6m9cUn459aPRstr15xGhUIyYx+qjgB0
-         VMS2jKQXkTr3I/kusgOCPeU1Lh5mQwt8MpG0OsS4Ehw0IHBJeyo27Eqz1aLipgzd9IDP
-         nfqQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795748109; x=1796352909; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v3hflK/w9trNoSZS5EWvDWp/lpUVGxr8L2pSGjpSId0=;
-        b=qBocoT1HomIVWTO0pBzYDtKG9dMgjdHU7gAf2LDeISUNCvYrL0xxGDsWJZ58QfZQ0G
-         ya450wUi6f/EMk3tIc1dqVBFiGnSpGksYAE7Txg865u+vrvsLTA6LoZ9J1nxvDBIC3XP
-         7IZcThgQoLHbxlzix2S4dzTA+EBBUYtRM0/GORLtuTnk+C+4Z4aASyrzkszYWHFcdRAv
-         k6sKTC03Ua5AWGm++Y/wGr9r7ImemrcvCjuEGe+qCJ1ItuYtdE2Tn/M81PnaCUZFK2uT
-         enMr1TYToti2/93cfb/c0n1UCm3gtZ3baiUzV7Gr9Y1Y2tYbvRaCUst6yrLNIDQDkg6i
-         RjgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795748109; x=1796352909;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v3hflK/w9trNoSZS5EWvDWp/lpUVGxr8L2pSGjpSId0=;
-        b=VbOKOzg0v/wlGYuPC/QfTVXmVMSWIiNhZztiQRwIcOB/l5r37Lcl5t5vnlLkxyIlZs
-         ge8b7XuxNl5Mvez3RdmA046ZqjOO73SAZuftKQo5mCJkOfpdYrEA2kRAsxBcECzjeqPC
-         M/c4BYX+7QHOqQwffECc5TgkcDq/ubFQgIBxtPQkKiwot5kSzLKkegSZmb/vk6bPz0NP
-         HfiRoisiasQ/B36Tq6n5ukx42phiHmQB9x2jg6gdS1YkBxyg0N5AcpDQP3+E6Sd/azwx
-         hcan+lhj38Y5/26Jfdz8H69lUJVD1+dqdF5LwKANLKVeNNDQ3FacGANWg5p1PwuNIiBD
-         Edlg==
-X-Gm-Message-State: APuU4Z++yXgn+kKKpLQQ21eLTb10ay1zLN92Ygl/8PaTnvAgSypjh5DK
-	FzAe2miVP8tk0GPXwd3lY090IEgXhlvQr5iPSdR2gBvnXETNkHYsmoz/OWMvNglE3vjY8p+xq2e
-	3YG48/r2De5te6zp4KNmLVUSSVJpyU8Y=
-X-Gm-Gg: AZFdTZe4groLi71hvHp68rf3JGJ17pLvDFweO9FAnQncTdmJlpDVXlMdvOkEmyEXCi3
-	NAMl9CfNU3jfcpOTP4HvpD0cp0agQ8TBdhmPlXc6EIftS8q4iW3QDrRFtTtOchhX2LHnBulY6CW
-	aVnr2EFMviB0Qi8xX3pMtu7FUk7cCP+7+4253MMzJYWfvSFqShsNdmK9PaL/muNgLc5RL9yEC/r
-	h7YjaYON0MYP7yKqs0QzKX0acfop2b83euQ59soThvIYO2vKWgn6ISKcaXy//neTjdyLUBcKOhK
-	cJtr6IU6quxUfJHa4/dO69eclCpZxUeFGtftL5QQSTQWPFfrGBTmRVXP9A063K9u6fFU+zeOWdo
-	1Bf9nl7LGplcOA/z5Z9zz8pq+LRFdP9IoM+7jd2ZIMrx81Ad8lF1Id84l+WBKtJ9JEZQTIw==
-X-Received: by 2002:aa7:d287:0:b0:6b8:818d:520c with SMTP id
- 4fb4d7f45d1cf-6ba37c7ba50mr12205368a12.5.1795748108667; Thu, 26 Nov 2026
- 18:55:08 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references;
+	bh=tg4qRfSFSCuwByGCIKkrRpncxEd/8U5VOu1pZIeOQpE=;
+	b=UFzsH9fJ9YrzV6pgWsXiKJu+7MtkE45aqLGx8WjxEBpLQsz9ECFwY4ChJLoE5suO10nTk8
+	fCyAtlZOOuyOBQmoyHLjOcEqQgekggroYXg1m44ZjvZecYdEJ+BfevyP1qV9TwjYf1F8Ir
+	kDPR8139CBQdUKorag6/pL2/H/IkBqA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+X-UUID: 465e87ceea0e11f19a56ed5b684f684d-20261127
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_TXT, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_MAILER_MTBG, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS
+	HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED
+	IP_UNFAMILIAR, SRC_UNFAMILIAR, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:fe400225-ab86-4ed8-86fc-c3217e05a7cc,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:fe400225-ab86-4ed8-86fc-c3217e05a7cc,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:afe9f5a28457039939e8bb79c194937f,BulkI
+	D:261127105729JSGRYN6M,BulkQuantity:0,SF:10|38|64|66|78|80|81|82|83|102|12
+	7|153|841|865|898,TC:nil,Content:0|15|52|99,EDM:-3,IP:-2,URL:0,File:nil,RT
+	:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP
+	:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 465e87ceea0e11f19a56ed5b684f684d-20261127
+X-User: lihongfu@kylinos.cn
+Received: from [192.168.43.7] [(114.246.238.190)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 2003433835; Fri, 27 Nov 2026 10:57:25 +0800
+Message-ID: <411be3f3-4b35-4bd2-bacc-af5596aa98b3@kylinos.cn>
+Date: Fri, 27 Nov 2026 10:57:20 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261101160427.85701-1-maxmuzaf@gmail.com> <179502478384.194898.8139869410612997037.streamfolio@tychen.cc>
- <av3vMMhFbiaop7zA@KASONG-MC4> <20261119082441.196139-1-hi@tychen.cc> <20261121205953.30737-1-maxmuzaf@gmail.com>
-In-Reply-To: <20261121205953.30737-1-maxmuzaf@gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 27 Nov 2026 10:54:31 +0800
-X-Gm-Features: Aa3M54oZAY7wIG0YhxI5gfZ4onlcVlgmd6HzWuctq8VM5P9-R9yNP-MHxvDvKrM
-Message-ID: <CAMgjq7DDUHrHEXiGDnPn6+keL6VxWWMabAr-BRrNM_bwsKPZnQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/1] mm/mglru: MADV_RANDOM page cache never ages and
- thrashes the oldest generation
-To: Maxim Muzafarov <maxmuzaf@gmail.com>
-Cc: linux-mm@kvack.org, Tianyi Chen <hi@tychen.cc>, 
-	Andrew Morton <akpm@linux-foundation.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Yu Zhao <yuzhao@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6A197A0012
-X-Stat-Signature: 7zngn19nk163aft8zxs8j116168bn85r
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/21] mm/hugetlb: free surplus folios of other nodes on
+ free
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jinmeng Zhou <jinmengzhou22@gmail.com>, Hongfu Li <lihongfu@kylinos.cn>,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dave Airlie
+ <airlied@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ Mel Gorman <mel@csn.ul.ie>, Dave McCracken <dave.mccracken@oracle.com>,
+ Andy Whitcroft <apw@shadowen.org>, Adam Litke <agl@us.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Lance Yang <lance.yang@linux.dev>, James Houghton <jthoughton@google.com>,
+ Yang Shi <shy828301@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Matthew Brost <matthew.brost@intel.com>, Byungchul Park <byungchul@sk.com>,
+ Alistair Popple <apopple@nvidia.com>, Wanpeng Li
+ <liwanp@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
+ Kenneth W Chen <kenneth.w.chen@intel.com>, Hugh Dickins <hugh@veritas.com>,
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
+ Joern Engel <joern@logfs.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Michal Hocko <mhocko@suse.cz>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+ KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Sasha Levin <sasha.levin@oracle.com>, Guillaume Morin
+ <guillaume@morinfr.org>, Wanpeng Li <liwp.linux@gmail.com>
+Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@osdl.org>, linux-doc@vger.kernel.org,
+ stable@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ Hongfu Li <hongfu.li@linux.dev>
+References: <20261125-hugetlb_fixes_2-v1-0-db27fd2f71a8@kernel.org>
+ <20261125-hugetlb_fixes_2-v1-5-db27fd2f71a8@kernel.org>
+From: Hongfu Li <lihongfu@kylinos.cn>
+In-Reply-To: <20261125-hugetlb_fixes_2-v1-5-db27fd2f71a8@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 947A81C0003
 X-Rspam-User:
-X-Spam-Status: No, score=-1.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795748110-546058
-X-HE-Meta: U2FsdGVkX1/S+hIVJtrr7fk/LCJjP9oph+RDsnSDvUHccbw7CdxfwRie2sy2OSsFazsObF1CVPCrMLaUd9MUbJNhW8wBF1jcStLAHeF/Wq4NimO2YTeszoyJzazZmtrXmjEV88lG1kVIZlTA/oHHi5Xfn/wbeiiXejjSQubF9jcWoZIZEuEiUB+Ur6rR/Re8Hm/rOPMixtW/BB1GT0KQRXjBMnZaOmr5ERjrwwPqjcbpsStDjCh6/2sHnpthhaP8g2H8iamlfFzz3JV1vujG581WkWv36SOCpY7hIm9G+kO0uTyiCSPWNUMF442qvXFJiwCTFvH4Joet30m9/NY/zK5EAauQRKwTS08JJ0QephQrNQwtKg5QN0l/UZu2KQq0iy+17QHi6qdRl8Ibet29kt0BaaxrxLDVthVN2xWPXKW2aXVU8wn2JXDD3MoDmO4jitGfJg6u6yefNYOlycPAxVOpq809TkfhARNsgixgMUFKYwcuUeE44ym7fCnsdLUADp5AHntIbsJAAeJY2n0HFWmgav8Qb1+7mpq7WFgHq+6XwUNpIPI/JVxZv1qfCPUaQdisCZO+iIqt0xI485zDvgT870ys8p+c/Q/83m9cnP+YNWMR7k9y10KBYsqK/71XzHwtWkOvIutxPqAgYm2zcAyLUtSdL2wV9uRiX0Ee8uh5ZVr195vhGE3fTdrvv+ghtddGKc/IS3Z+HpLZCOqBOp91rqd5vcB3HZeQQGF+OSu9IVnfq13e1IR1o4p5CcqLArE0f+pxZV2N3So6OjyB7Rs8bKhKaG0v8YjMv9/j8pXzvOY3/0wpQ7jlR4wy8tPGLsZhXFQSqIggP1V22fX9PXhBuJ4+58c0PI751+npSfG780URvPd5NlN60Ec4b/cYYnh77qDHG300Qezqn4u8OkJsTOC5BVVFXKNJdJlG1yROpLUUofgYBBxgP8gi+vfnpG8YUYcdPOqyxrRD0nO
- BfNT536+
- Vu/UGmIjpGq1WZY8Adh0quaQ5yS2tDjEaCl/q1Cwyo6hRxEqKM5uv8dzOZGtDaM3myPoZHiML1vwGNXqyf0WR2fGnaNGaoWxnBp7itEQvsg3oT4oWCcxELBqoIIqjnBtxZBq6JW/yQ36ViQOKwn25MiJDZ/i1nHhf7HbYXH4gJlVLH9SDkXUtxPx9uxXQGpL7dMQg6vFKDw2Ml9vDhoZycurKtscfmQ+uL1awLrVezrOlKPZdZDa5Ve8rAUWOuqShW1pRP5YT3WLUJ58o6lkSlg5z0dTfW8CJx7PNizM7eA4MBR/fNsqVX2c7w4SsK0pCjSA8xb6zSbeOKAszabadfB3vXaQyVRObSjyLNsq+p4CNlf0zg8uJZAj2k7H9dWn06NOAr7f4hvFz25mXZJe6ez7OaBBgjgdxcbgzjHp+oCDL+AKXXLYRkdNGnbOCBYeV1GobwPRRwBSW80K985+GK0RrzeNe+BgMRUPrnnoNSpDnXTgbVUH0jCzU5j2MkBEwobPbtBx8PceOy6Tp3JHkBecdzVBTaM8GdAv6CS/C5CQhIjoOWeng2D8GE3Fk9MuvNj7hwrdhJXA9AgY33uTgNEHRvdwQ5pvpnCJISgR9GeNYXOA0y7x5b1Cm54JQGR5s/euohH1nvVg/QszSRlhnl5vgS+srgwHhixNiw6I/WAvfSpXdlF28ZXFQLMWL5iB2Zh3j
+X-Stat-Signature: 7ierq3sqsr3mo53ozcwehzzqmapzyawo
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795748254-967606
+X-HE-Meta: U2FsdGVkX18TKNzVNAXrGpJHkxvg9bftCaYu7IJttzwHQcSuxUjnEiLtXvrWf8zez4kHlyOFrTmaGJKgRN9I4dEgC9aG6HGsL5W/j88ep13YvU30gtP7vOuW9jucfvKHOYcQrbL/7nVWALHvRjwJzMw1fdzjFje2mAP5VvG9y7pz40uFilTm8DuOB+t6DX3Pjqt12kLPJk2bruN/9Xn8gEjC6SutOZl4iibp2Iq/LULPCpEZVoJDwa8FTUeIpB0ur8+XILecWU7LWb5h1iNibbte2M7tpuwqrgkftZJaPwsXTHR3budA9bxKrzDKqT39MAqfYbI4xsdVCrEuFHZyb5GWb+zYc70i7EU9euQYKmELDeIYHPotQe3fgURsATkexAMpQ8dgmr7Ji/R+N40mYPOfcMT6quDqJbrRBo/P+TdtqWyj7LHV0fc25uD3S4HS+Bq39ll38M3jH58NN7bJqXz3tjav7uFfmGtdN6OllqzlEOAlgnWg22XJscxeLiUv1kbvOUXEiTEoBHzyOB8kedp6zNU5aAOFAwanQ6jdvC8wduvOYy+ZOIrrrr++Mw/88eyHfmDYX86lF+20pXHZW76kmHFif+1ZNBwOSpyjuMZ+i5xw17oojGq8QBKtEueMszrsod/iVz7x5d15vgXp8f/MNEgbA4l7RlgPnQ/nYWzsLlVwtCkRS2FpGQnwixDJ1+f2G7OZBX14LE02KtNLKRL2IysLiSG72iQbQ13ltg5lzw8xKPBfTzaDhgo4RgA5EOM7d4kjRABsNQE8A9jpelvzUPw0n5mrmT2z0EeqBNiZNYyO7fHStrqDZzlWwYTzqjjE3w3olSryABMpTH6Ax6ppZGUH2hndWT2fKQSZgB1hGrdwiupnGU7m9ZNzHNHy9Ys6NMHiOdOUgdynEJ2A76w4ww113bSgV/QydizksmnEffxL7IGB+c+mlbomLnaWqUzdYBCjN3y89NqcIA5
+ kjcxY1Qd
+ Shryw5ci9zJFeV3QGd9xei7mntAqXrQyNxexmyhwuQln/rkvFD+0e7YarKLp0wak9jC14u5SnNfnAElB3SUvqVzcNlXD7ZVec3I0OaK6G9717SyLuo1Kji8jB3Qu0kT6aV913zmc+TbUjVgTyBwqXh3gqNCbcUXYO2WDBa1qRexGK+1NFNMMT9SbvW1b2Gz007hVWGuTh/dzcLSzpKmWKf8FLMUjsoUaFaEaHQec3UjlkfsIFrslRvelUFpRK9z7KCio+jjGofCVwrpsasJgXvvsTSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,113 +149,130 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 22, 2026 at 5:00=E2=80=AFAM Maxim Muzafarov <maxmuzaf@gmail.com=
-> wrote:
+
+在 11/26/26 06:33, David Hildenbrand (Arm) 写道:
+> Surplus hugetlb folios are accounted per node, but reservations are
+> global. When free_huge_folio() frees a hugetlb folio whose node doesn't
+> have any surplus folios, we currently keep it as a free hugetlb folio.
 >
-> Hi Tianyi, Kairui,
+> However, we might then have surplus folios on other nodes that are no
+> longer required for the global reservations.
 >
-> Sorry for the late reply. There was a lot of new information for me
-> to digest.
+> This can be reproduced with two NUMA nodes, nr_hugepages=1 on node 0 and
+> nr_overcommit_hugepages=1:
 >
-> I've checked the reproducer you provided. It tests a slightly
-> different scenario from the one I mentioned in my first email.
-> However, I managed to adapt it [1] to my case and tested everything
-> with the same setup (x86-64 VM), and I also reproduced your results.
+>   (1) Allocate the single hugetlb folio on node 0 from the pool.
+>   (2) With MPOL_BIND to node 1, mmap(MAP_SHARED) a hugetlb memfd that
+>       needs a single folio. This will reserve + allocate a surplus folio
+>       on node 1.
+>   (3) Free the folio from (1).
+>   (4) With MPOL_BIND to node 0, fault in the folio of the memfd, which
+>       consumes the reservation and allocates node 0's free folio, and
+>       immediately punch a hole, freeing the folio without restoring the
+>       reservation. Node 0 has no surplus folios, so the folio is kept.
 >
-> The key difference [1] is that I added two new knobs:
-> - SCAN_PASSES (default 1, your value), how many times each scan page
->   is touched
-> - SCAN_MB (default 96, your value), the cold scan size in MiB
+> The pool ends up with a free surplus folio on node 1 that nobody
+> reserved:
 >
-> This is important because 300 MiB scan forces reclaim to reach the
-> pages during the first pass, which clears their accessed bits and
-> evicts some of them. The second pass then gives the scan pages a
-> second visible access. The reproducer from my first email also reads
-> the cold data twice (--loops=3D2).
+>    HugePages_Total:       2
+>    HugePages_Free:        2
+>    HugePages_Rsvd:        0
+>    HugePages_Surp:        1
 >
-> So the idea is to get the cold data promoted to newer generations
-> and watch whether the workload recovers while the oldest generation
-> is thrashing.
+> Let's fix it by freeing a surplus folio of another node when
+> free_huge_folio() keeps a folio whose node has no surplus folios, using
+> the same rule as for the folio's own node: the free folios cover all
+> reservations without it.
 >
-> With a 300 MiB scan and 2 passes, neither MGLRU nor MGLRU-FG5 can
-> recover. FG5 handles the 96 MiB scans and the 300 MiB single pass
-> scan.
+> With this fix, the surplus folio is already freed in (3), as the two
+> free folios then exceed the single reservation, and we correctly end up
+> with a single free folio on node 0 and no surplus folios.
 >
-> The Patch
-> ---------
+> Note that the freed surplus folio might have been required by a task
+> that was bound to that node. But we don't care about that: reservations
+> are inherently not NUMA aware, and anybody who needs guarantees on
+> specific nodes has to preallocate, like QEMU does, for example.
 >
-> Kairui,
-
-Hi Maxim, thanks for looking into this.
-
-I reproduced your cases on latest FG (7.4.0-rc3, 1 GiB
-memcg, x86-64). Base FG fails 4/5 seeds: early p50 280-344 ms,
-late p50 364-375 ms, .vec 9-19 MiB, scan 288 MiB resident.
-
-Refautl ditance below seems fix the problem just fine as we
-expected.
-
+> This has low urgency.
 >
-> On Mon, Nov 02, 2026 at 02:02:33AM +0800, Kairui Song wrote:
-> > This code snip:
-> > + /* Set refault as active. */
-> > + if (distance < total / 2) {
-> > + folio_set_active(folio);
-> [...]
-> > That way, even a random folio will be put to the head directly instead
-> > of keep thrasing on tail. And placing on head or newer gen will
-> > trigger aging.
+> Fixes: 7893d1d505d5 ("hugetlb: Try to grow hugetlb pool for MAP_PRIVATE mappings")
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Tested-by: Hongfu Li <lihongfu@kylinos.cn>
+Reviewed-by: Hongfu Li <lihongfu@kylinos.cn>
+
+> ---
+>   mm/hugetlb.c | 31 +++++++++++++++++++++++++------
+>   1 file changed, 25 insertions(+), 6 deletions(-)
 >
-> As I understand it, the refault distance series will break this loop
-> on tail. However, will the loop survive when the hot random set
-> is much bigger than half of memory? E.g. when its refault
-> distances exceed total / 2 and refaults land in the oldest
-> generation again? Should we in this case use the aging logic from
-> this patch as a fallback?
-
-Yes, that's expected when the hot random set is much larger than memory:
-`distance >=3D tail` keeps part of it in the oldest generation, and that is
-intentional (MRU-like). It's not part of your case, but it is a real future
-case.
-
-> Anyway I'd be happy to test the refault distance implementation as
-> part of this work when it's ready.
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index c67f9bc3fa3bc..0f3db932266d7 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -142,6 +142,8 @@ static void hugetlb_unmap_range(struct mmu_gather *tlb,
+>   				unsigned long end, struct folio *folio,
+>   				zap_flags_t zap_flags);
+>   static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+> +static struct folio *remove_pool_hugetlb_folio(struct hstate *h,
+> +		nodemask_t *nodes_allowed, bool acct_surplus);
+>   
+>   static inline bool subpool_is_free(struct hugepage_subpool *spool)
+>   {
+> @@ -1760,6 +1762,7 @@ void free_huge_folio(struct folio *folio)
+>   	struct hstate *h = folio_hstate(folio);
+>   	int nid = folio_nid(folio);
+>   	struct hugepage_subpool *spool = hugetlb_folio_subpool(folio);
+> +	struct folio *surplus_folio = NULL;
+>   	bool restore_reserve;
+>   	unsigned long flags;
+>   
+> @@ -1808,19 +1811,35 @@ void free_huge_folio(struct folio *folio)
+>   		folio_clear_hugetlb_temporary(folio);
+>   		spin_unlock_irqrestore(&hugetlb_lock, flags);
+>   		update_and_free_hugetlb_folio(h, folio, true);
+> +		return;
+>   	} else if (h->surplus_huge_pages_node[nid] &&
+>   		   h->free_huge_pages >= h->resv_huge_pages) {
+>   		/* Free this surplus folio that is not required globally. */
+>   		remove_hugetlb_folio(h, folio, true);
+>   		spin_unlock_irqrestore(&hugetlb_lock, flags);
+>   		update_and_free_hugetlb_folio(h, folio, true);
+> -	} else {
+> -		mod_node_page_state(folio_pgdat(folio), NR_HUGETLB,
+> -				    -(long)pages_per_huge_page(h));
+> -		arch_clear_hugetlb_flags(folio);
+> -		enqueue_hugetlb_folio(h, folio);
+> -		spin_unlock_irqrestore(&hugetlb_lock, flags);
+> +		return;
+>   	}
+> +
+> +	mod_node_page_state(folio_pgdat(folio), NR_HUGETLB,
+> +			    -(long)pages_per_huge_page(h));
+> +	arch_clear_hugetlb_flags(folio);
+> +	enqueue_hugetlb_folio(h, folio);
+> +
+> +	/*
+> +	 * This is not a surplus folio on this node, but we might have surplus
+> +	 * folios on other nodes that are no longer required, as reservations
+> +	 * are global and surplus folios are per node. So free another folio
+> +	 * instead.
+> +	 */
+> +	if (h->surplus_huge_pages &&
+> +	    h->free_huge_pages > h->resv_huge_pages)
+> +		surplus_folio = remove_pool_hugetlb_folio(h, &node_states[N_MEMORY],
+> +							  /* acct_surplus= */ true);
+> +	spin_unlock_irqrestore(&hugetlb_lock, flags);
+> +	/* We might be in atomic context, but freeing might need vmemmap pages. */
+> +	if (surplus_folio)
+> +		update_and_free_hugetlb_folio(h, surplus_folio, true);
+>   }
+>   
+>   /*
 >
-> I also rebased the patch onto mm-new (25fee5b1762b) [2] and on top
-> of the MGLRU-FG5 branch [3]. The patch applies unchanged to both.
->
-> Please, let me know if I need to send v2 of the patch to this thread.
+-- 
+Best regards,
+Hongfu
 
-Let's wait a bit: the per-generation counter could trigger unnecessary agin=
-g.
-If the active working set is well protected in the newer generations,
-constant eviction of rarely used folios should not trigger aging; otherwise
-it may push the working set out of memory and cause a regression.
-
-> The full results are in the gist [5].
-
-Thanks! I also tested the refault distance design below, and it looks good:
-
-    distance =3D lru_distance(lruvec, token, LRU_GEN_EVICT_BITS,
-                lru_gen_bucket_order[type]);
-    tail =3D lru_gen_tail_size(lruvec, type);    /* oldest MIN_NR_GENS */
-
-    if (distance < tail) {
-        /* It would still be resident if it had been kept. */
-        folio_set_active(folio);
-        __folio_set_lru_refs(folio, min(refs, LRU_REFS_PROTECTED));
-    }
-
-I also swept the promotion threshold: tail, total/2, and total/4 all fix
-this case; gating on refs does not (refs are 0 for MADV_RANDOM).
-
-Results (300 MiB / 2 passes, 1 GiB memcg; base/RD 5 seeds, aging patch 2):
-
-                          early p50    late p50    .vec late
-Base FG                   280-344 ms   364-375 ms  9-19 MiB
-FG + RD                   5.1-5.4 ms   2.7-2.9 ms  117.2 MiB
-Your patch                7-51 ms      2.9-4.3 ms  117.2 MiB
-
-And your tests covered the other parts too, so I think FG + RD is the right
-approach. I'll keep this case covered and Cc you on update.
 
