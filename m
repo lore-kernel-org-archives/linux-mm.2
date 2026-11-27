@@ -1,97 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D50606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Nov 2026 23:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F05D606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 00:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F+wBtb0Q
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AbAp4Ibh
 Received: by kanga.kvack.org (Postfix)
-	id 60C9B6B05B0; Thu, 26 Nov 2026 18:32:25 -0500 (EST)
+	id 9423D6B05B0; Thu, 26 Nov 2026 19:14:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BE1D6B05B1; Thu, 26 Nov 2026 18:32:25 -0500 (EST)
+	id 8DAA06B05B1; Thu, 26 Nov 2026 19:14:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 485AA6B05B2; Thu, 26 Nov 2026 18:32:25 -0500 (EST)
+	id 7CBD46B05B2; Thu, 26 Nov 2026 19:14:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D9BF16B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:32:24 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5132AC0124
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 23:32:24 +0000 (UTC)
-X-FDA: 85478871408.18.575CDB6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9387B40004
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 23:32:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F+wBtb0Q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795735942;
-	b=UelIAUN+Vdpt9mYmxTDNN1K9YoLSXuAaECIeY5S8Fa7UEytXVg12H4iiDs3R5yekdTxP9H
-	iBNqi8npCmgNLGqdq/IqWy79XRz/wBlI6C1dX/xLIKklM6j4JBOokeH4d1qd+gCRirSjxk
-	oR4nxPhuf/l/1ZyVA861uazxCe25I7w=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795735942;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 429B16B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 19:14:13 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E61C14018E
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 00:14:12 +0000 (UTC)
+X-FDA: 85478976744.10.FA206CD
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9D96E18000B
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 00:14:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=AbAp4Ibh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of zcliangcn@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=zcliangcn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795738450;
+	b=Gf612btaJd/wPw7Ns+DkGfzVIo20pm/ZKUIR6w29qLgPtQUlVB3CYLpJc/xMFSfgBkoIyB
+	O91qHjjckkPDi7iKqGm2ST/1fgE1pUFwaHQlLOpPe2+7s4i+VHgvYWbQ6XOXDtHwXdhq/w
+	Z8f1jEnTfY0v7ZQywf3arqzNqGpnjUw=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795738450;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FVpohG1VZmuUl18pFfPOZ4Do8lMHBffThJLIzZLJQY8=;
-	b=F4Zi9mHhJmM5QqFZahM3qFLIdP8PK6+e1ERLsPx/0Ik3RqUcFV+v7wQN0GTkvhYo4sHOzE
-	DfnC2rNbgcvrlXwL4SZDrYwxevFuAfxnIRzXg9FVBwN1ppWXcGYKGRR4XpBkpmF2dXv+eo
-	SewpA7NvMMqWCSpOCgkHYh3tum3vnZY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F+wBtb0Q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 076A0403A9;
-	Thu, 26 Nov 2026 23:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3FF1F000C1;
-	Thu, 26 Nov 2026 23:32:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795735940;
-	bh=FVpohG1VZmuUl18pFfPOZ4Do8lMHBffThJLIzZLJQY8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F+wBtb0QKwbvfQdbBFIofeI/wNEJN/mk0Z51SqixQW+2S6wlikO6XkUcjLoXwEAbN
-	 OrqF02ehLZ5i1zHzdCdzB0ofx48YOL8PocnBNUUrxelnIQcrRIX2XbkS4OMMDNKA5Y
-	 8zDPk4juSSd/gsRTsNgOXjfzMBEzsrPgdwax7XQ0xDSFcpF+LswaOaHm/qWy5Woo2C
-	 yP9hzSFVW+C2Gtr6LfebR+2NJj2tr2G15cdRb3nOAYyu1owzUNRX5/3RVp4R/mtXKi
-	 WB2lxdoKFDU4Ffnk7HnC8pDOcDqmWOtdBwYpbSn4oLEteB8svq+KBfTFvkzFyFeT0o
-	 J/Ok/ET9RqXxQ==
-Message-ID: <sashiko-outbox-236336@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 14/19] riscv: Synchronize instructions written to
- ESP32-P4 PSRAM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?VsOtdG9yIEh1Z28gU2lsdmE=?= <vitorhg20080@gmail.com>
-Cc: devicetree@vger.kernel.org, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Paul
- Walmsley" <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert
- Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>, "Jan
- Kara" <jack@suse.cz>, "Kees Cook" <kees@kernel.org>, "David Hildenbrand" <david@kernel.org>, linux-mm@kvack.org
-In-Reply-To: <20261125233020.1380594-15-vitorhg20080@gmail.com>
-References: <20261125233020.1380594-1-vitorhg20080@gmail.com>
- <20261125233020.1380594-15-vitorhg20080@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	bh=7W1ie3m2NPGIZiB/tNvKaLuy4Fpgr1mdDIko48ejOhw=;
+	b=xlRuNt/64JwS73rGkPCliQmZKXLTQkAMwdWyfv3F2T3HQ1nTyJ5dViNXJhZh5PySWqLIW0
+	3D7kGn2U5Yfl4s47n3O1wl4X4ejosajxEzLfA/BKIWyc2Hb5T9EKRvvPgQ8Qg6+VZaI2uO
+	wRl/+nyZ087clH1R7xILPZ9MIfAbDA8=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=AbAp4Ibh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of zcliangcn@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=zcliangcn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-3863db981d4so10534394eec.0
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 16:14:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795738449; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CCxYuoqaBu+hSB7tsChUJZmv6YPAR/H4K/kQGpvUx3KsYJO4WKJNFeSdza8k7/h+TK
+         ps+MJgtO0hjh0gcynfp4URhPz9Lqk60n/ao4e3pVAtWikAmx5L1h+QfTvk5IATVENg/l
+         PwKCVkWCcQwAHAEvDMebaskrcniiU+aQePy2Vwy6ik2YxQ8b8lUkkffoKNWbI1Y6zWDV
+         n1fiXmkuoOBwjP5i9QYBOsyJiYRZnoflcP+1j4PW2q/QI33SmxVA6JV4lDRQ1dex53ZT
+         I+U+X+SMxZkeHElncJcOVU9SuH879wUdAiGzzEtIa7HjgEjr97YTVelu8BU4EBATUJYT
+         0kiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7W1ie3m2NPGIZiB/tNvKaLuy4Fpgr1mdDIko48ejOhw=;
+        fh=F9Q3AT8wZHhOuEfZ4EbtcuxTybDAvhf+6ZdaGWuZwSU=;
+        b=Kd7RYyhW3lJq74OB2eewxjn7UO+dM06jl8w8QsnKACUl9AVdnqgOHSee8rH+qhCTuc
+         bVmCzTd4X0anCLws/o4wG+hYLe47MWihHQQB7kdWd2fmpSwJe9Yo7FpP+G1jtBdz/nwO
+         29DnS8S+b8WIBholpe1FWL+3ZiKWZcITN96U46K43rdnv868ByB+sI3DBHmqXd7+Uxyu
+         ebfOlQwjdaXG8ad6whdZm7Gugz5ug66TBINHDixRd6lrp0o0q3LWj21k45EgSWITa1o5
+         UB9BamXDFreRanRx3WFP2gwH3ai56CoMSNF6Ja0pEVrow/BKfUB/ziuscJfiBBG1H5+C
+         dZHg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795738449; x=1796343249; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7W1ie3m2NPGIZiB/tNvKaLuy4Fpgr1mdDIko48ejOhw=;
+        b=AbAp4IbhomhCcgmjr4MYbI0xEagOveO2R8JSoYF1so9+JCJHKK8vCvVTxlCr76mOwX
+         /adm7Hftsx5jb0sseNhabNdCR0Jq0zrNwBNqtEnj8jeKL8ybcy42jzR2oSOU0Kz0LNhb
+         NyFd90QPcqepbgSTHiAyGEPqdUSeX9gJ99bK4HOoo59ZjRSuwjMIYBi2RQowZVoGpoX9
+         HYuNKK6y8agTqOIYGzJ0eEKsSMUN12LHkvRzw3rG4qv6YSvfOa4g4Hw6Q91z+DgeOy5/
+         Q3jPoyYFziSps76dTLMYfpEeDS+fCb+gqwZ8FP2leWSKGb8hoYBd6rmh+D3YTomr/0Ko
+         BeIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795738449; x=1796343249;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7W1ie3m2NPGIZiB/tNvKaLuy4Fpgr1mdDIko48ejOhw=;
+        b=LniF++u6a0627gMgajUNfdAXwD4S8JHFxppGO+f9FgexXG1SoxCCKvDOOyF6s6cnyG
+         Ktnj7wWyOXrc8N6g96SikZI/3/Jht0OQG0Nm/3tXTziftz4tBvAK31PO8R6bFUJF9z//
+         WdbR2tAmoVo7jceKcSnJ5dVJQo0w/XMOtx927oxQ2+2jVRf/NMGYe6i3uRbAdzwdy4ar
+         nR2Zf5vPMSX9nknY7cpXnSKmlmqW26YWbvIU3DmGdBYxYxC9aFz8/iixmUckxrG5PKlb
+         WTXvoVdJ4Ul0tweIT4eOnjtaTWg6gcQnSyv7jR+6DKcHwcypqrSYqk/FAYgspe5DI68p
+         3AWw==
+X-Forwarded-Encrypted: i=1; AL+hErGu3jXm7MCVGbxIihVKGVdD+5PrLRKK5Ar0T8rqp6KD3jVLYi0UVvmo9i+2c1F7ggM0GsUMXZOmfA==@kvack.org
+X-Gm-Message-State: APuU4Z8/d0dbB9QFy6/EAAYyZya6FST0Kg6KrYSz4Q7Y7nnLp+5+1K23
+	knbMJIxGRwnDqEn90Vp6Xc02PgdOa5tWVy6HIliAT/aB9F3bVOXMYz43s/ZQRkRGiGNKg1mFmff
+	4SLjV/HONoy7eua+T57OC4NtYtVD2Ctc=
+X-Gm-Gg: AZFdTZckhy0eOy3sAPaVgUq6dz6i0gRHIDL0HWrxDLPZf4hkmE0go9Akfr9BkmSwRY6
+	v3BNwHv7D7Osl9uSuKk8JDT7MOh1AZzxCFAhJMzsXgU+44VLmjSQLRhluhcc5pHNfxYsIYf0zdN
+	L1ayHzrwxeANzFAiLK6/FZxMWUCrWago4XMAuvyuK/JFtgDg/rGeCeBcdAOvuUUVZNYniQgNd2A
+	23R6GXE9qOzXztp0GmdOwdYXsCZygWxxh8p6JKPZdUG2e+7I6ud3924jWIplBDl01deXz1GN8m/
+	Q/8QsOokiCYgRdMz87KVZ2wq2UlpmtQFmFQAqQyntFj5cJI/OOoLM01V1gC3gSGnd5Aj7nxoLfK
+	zOusPdEKxakBxDSbOItxGkLpfYmtnETTRY07zoA4=
+X-Received: by 2002:a05:7301:6181:10b0:386:b2ac:1f17 with SMTP id
+ 5a478bee46e88-386b2ac2832mr13850733eec.7.1795738449192; Thu, 26 Nov 2026
+ 16:14:09 -0800 (PST)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+References: <9a97a64f7e7aabc668499c426a2417a77d13a2f4.1795587203.git.zcliangcn@gmail.com>
+ <4ffa6613-119b-4eae-abbf-26134bd60177@kernel.org> <CAOny8psx408zqVv1xt7DHN8yYkQksjKZFDQCJ+AGFB-CDN9SmA@mail.gmail.com>
+ <3ee0f274-0089-4450-9888-7be659af9d63@kernel.org>
+In-Reply-To: <3ee0f274-0089-4450-9888-7be659af9d63@kernel.org>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
+Date: Thu, 26 Nov 2026 16:13:58 -0800
+X-Gm-Features: Aa3M54oNeJXp-qLCgoFIGjayWZczBL3897rPIbXQX6titnmlYvM4Yq43L2upceM
+Message-ID: <CAOny8puwHRsnFabwkMMfgkRVHBFbXFYC3ANweN5Odr2wFdvrxQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/hugetlb: stop hashing address_space pointers for fault mutexes
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Davidlohr Bueso <davidlohr@hp.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 26 Nov 2026 23:32:19 +0000
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9387B40004
+X-Rspamd-Queue-Id: 9D96E18000B
 X-Rspam-User:
-X-Stat-Signature: iiwxu5fmcyyo6r6f53wuemp7azzdzuow
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795735942-6203
-X-HE-Meta: U2FsdGVkX1/Nsh8pBNVm247EImQyepbBURZV7qKaTZlTtLt/i17457DrgZE87xROHlmcWU9hVdE90xmuVS4O2X1ZcLjXP15rgI/HgADYQ+dqWoM8TT7ao3CFCwH1WScrwXTQ4iqNa9En+rHpAjcP3OMSn4Gtz3xyXPLtk2sy6HGHsEVQsCmLZfAVNAeVYyRQB0WpMx3qt33Yo5AWtS7oW42s0W9BktyJb9cfDWbigCtnjb+uwLYlG7UQ/IJqo/xKB7K6gUmVhgmttCWYyjtr2PmZGRRW7Qe/4Qml2cAbvVWAljMlKfiRs7YT1QKMRkgjr+JnxKqota+ZBivj66vdEBgwifc2I5jght40FvIH4KskidA3iB/vth7tkYo/TqWo5muK7TEAmwbPZu1YUgiI5Gvo6T6B1VavD06Q/2XDG17UQJ26iJrL6vHcwd+jEVxofSlMrJEO4nNO6TPg+lTRZHynaHc4NuIgYANudKF3lrq9bvssyRTcHQcV4t5RzAtAt9RkhR+gYBxhAzrHqPqdOJKPEuYGTrjqKt9OEIX5YI7Di9WNi93pPjaPdrBQxOeKYpnqe7dgpc8YJ2bBx9LMr2MjoQxyk7oiB60eHYsiNJ99de1DpBsKAGYkdTYDamcVvLP/XaoHV4laD6BvjMFf8oypNV1M+mri6r0Jd0o2+LG4uGHfK3n/6MLWfkECth5oqtYDp6Kg/Ogee11YZIgtp1wQlLPgD31z0h+0/oTmJTTCxt5K5A+aIau7rkFQJIzlheQ2gVaXfTSuJgf++lPNoOyUdJqzyrZRe4wwlwsTcuB/ZPjs1uDc8KrqiVcOcIl1gYor2AG3pp2pwS1k0diJTU48ey78dseaKniz0BkJCUqdrkeLaqIZs7yJqYuEGNaOomNcORrJ/YKY8qKb5OtCtMVMsb5uBWV3MrtdYTed2VDOuvnEf77A7G9e+Ex4srMx//MJv9B5WkzvByRnh2N
- 5YLYDeQG
- TPpxuP0c0yBwuZ8UgS3XeKAggXVikkBm2gFb+IJtId3+AAgk12WbXmxF/XQR11koAexoPh8vAv0ObyZHgLXgsQ5i82QMGyhO14WAPJ5QbVkTKakbQEU47Xe7m0vQRQS00wWzVsCAKPXnSE2+rf0dhUcKGUVI5Cftvixlk0aFA3jPJOdBn4kRuJCw9e30RE3Jue62u4VgBzeHOqGkdYr2U/clqF7QJOhxPQMWd34xpFhKEsInA09M3ELRM6HmvhvRaisvVcQEG2ORgMst8XVrU1wD14EWJ4bivm9YcytcEZ9Yh9QakkG6vRqjOYxq/Hj5RKtpg0+lcT0kc+PBqMurplwrgElu5G2f/GvBRG7fQekbnFMGsDz4PKCrdScO/cv+tKDQ6XeiQEi6vebuOeywFbW5BB1WMAoweWxXGS6sJ6dgjzPhQ6Sqpjbc8ex6xnBvFmgrK+4RXYnoj6lgjVWly0vVsilOCeJ9t4aPRuTzt+ff1SVUt2J8eq4MQGCnCrZ6X3NfSHPZD2IlLZBXxWFwe+nKgGDFFszsJQRmPCb8Srh0C2tm/QYdAfwd9PScUhcPMB1CI616TGyPGGM9NRNfTReH7k0lc/CiJT+SiGLmn+KVbplJqiu337301Wu2MpDwljjnbEp0E2kHozWX0bLL80NBrj97btp5omdLk621KIV4+0068z81RLk0O7yZpIfpC3AzmPIrLbha+2/2XSbFytzIbOZjngaXka2D431s8YxGDQN/DJD+/a26lVsBmGPWpvxg8SoQngVWpPYmy6NpkhJgCGpSJpsUGOwuQt2kbY5BTDPxUzkSyDlreYkwBTBpuom2MKQxkMDqCA2dDApMJ6bO7jQTNBrNYkXbrVzByBlZZqq6KQG+sS0Cq8r5ycHs5gmTsGS1RDqROEsrz+AP2//Zg85gY+Dt/QYmuPaHUFK+dqaBwV2CqY5GowmV+Lyyrcdb1pVTec7o4XWURgETcPKZ2zOu1
- ljrExlQn
- BrIKheSGdeitw6mH/bs/L5aZ+mguf7n2
+X-Stat-Signature: y3isy9njgyggeno1tnn6f7yryja3qiig
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795738450-78751
+X-HE-Meta: U2FsdGVkX1/9VV6LYJzI5b1RrbEQqTr+EvA2eeof4qs5VJCIeSq0x72136C3+FHC2ScJpuDJDlCO1Isq7je4o/xi1gp7pPsX4OCH5Mcn7ib4XPch+T3sPLJ4ahO39l0yWaaXXrHFATBiMPB1Gbx1e3M7FuVFH4LTp4ZvcrV/0h0BIw/v6LrZsLnz7R3lfqYhylOPm9pII06P1rQhrCvJIX/5uxD396YlM9gAWhe03nFWNJqnlbiDvJrRDuxCz6sKOcL0z2tfw7rMMrnnMlE5lYqF9+aUueexPIFuAty342qt6/IW1BQrd6XZyweTzGYR1SrmgH/0Bm9aq4hXJoHEk/KERsztGeq0bVZ7g3WAL+ppxqOLGN8WACzsjS9exzYuTxlLC1HSgNn2XCiGfPe6OePF4yitiTS/Q/voOwux36OKg7KL4BQt0Z2ICtOC5sxugtRYT9M7wkOdmX16LeaKPdhUmYcgMGhyX/Nnqwl5Y07JwgpoLmd4OaeBx76kwjnBAkhV1VTZodcOJ3K1I+UH21NG2H3fk4U3dchnwBvbOx/gmW31mI8nshmcxO4YePXFj/sTnS2n4th9Ju38IfOPyd1l5XXaJImCH3u6093TmOK55M9+lOC+VqkiPuMIgnEUt3I+oDXB+5H/5h0ikDCEmhjOb64qSiRHR6Ys8ECBUpaC5iW5b7Gc+VyIonRF5AMSzMAunC1pCVzGCR3IJnd0npZItF0BrspcO/Hk5GxNjQHSMXI0XZU6ASmNFyeiBmvfrBoqiW3U1Jexqwp5xH87HYJYVzD7lWbauYM/oREm+t/Z+zRU0gzfyr+q7C4Dmrddvj5du0MKJAh3qFWsaxAVACwLHwinK4xJMYh64OPPJpvmiaFiGjHc98cM3iGR5sy9gsi0+btYBeKHvH6IBpjEz2rEdSqYsihb2G+jSXJcOj6jVc/wvkmsnXp0T4fClDUHLtROAJjl1EvFv9iM6X4
+ NhWWj1Al
+ y9tVa4RI9jUt3nsomHS/T4wKRekuyfLX2YoiqUAlfzJDHMbxiukZvNGfcApJjCuQ56BDw6xYz4oqMz+W1DFcLFLQH/zuT6YJVuzhCMacKwGNDWq4R33uK7Bv2TG2agBB1Qv00nmXV+1b9IabrzH70FuWnTBwd6F179PJvIZFwSodKaBVkrwHAzcqBEiUUegqFphiQezf47Js2T8ObQIytynCUZLX3FJr5OMi1v73qnOHEMAHomQN8FCh4dRtpGSJBnyiPwRv65u7Kv0NME2T4pO3DQAtASsZfPqyK1MrypfKwLbIr0uhEnLy9ySmfi3Jd1bxAT4jnpFua9lU/aL/wjUe8D1dLplEBt06atTxAcfRq3Tdk42auzVP8rMTBj4hxQUwne2mZeXYEae2IzyZRevpeBayoRv3CzTL2lTFzbmx1bpNgGP0tAPd9GKV6gnWur7X35EVm3bpEOADwjYLEvxyvA0vbP5yebGqZZBJ6x9nS9NSC/rgurZ+HILkbq7IrheXW7xxmKvLPXsnceMe5FsgRb7++gdCapQLBfwiSkV56aJUyuIxqnV5bLMhWkxxpGpdf4uDMJ+2Apv36IAcXwOoR80RA7hDejBSI1EIMRm/WPFAnVyC5HjKddY6X9S0tE7zejfoE5cOb3nz+Jl/536jwGGbviiqkA0+QXmTqh32trqvTd0rLQc8P9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,170 +145,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [Medium] riscv: missing ESP32-P4 icache sync in NOMMU mmap/brk and
-  flush syscall
-- [Medium] riscv: missing esp32p4_sync_text() in NOMMU
-  __patch_insn_set()
-- [Medium] riscv: missing NOKPROBE_SYMBOL() on ESP32-P4 text sync
-  helpers
---
+On Thu, Nov 26, 2026 at 3:17=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+> > KernelSnitch (NDSS 2025) demonstrated why the address of an
+> > attacker-created object can be useful. It recovered an mm_struct addres=
+s,
+> > freed all objects in the corresponding slab, reclaimed the slab pages
+> > with msg_msg objects, and thereby learned the addresses of those
+> > replacement objects. Here an attacker can similarly allocate and releas=
+e
+> > hugetlbfs_inode_cache objects by creating and closing HugeTLB memfds. I
+> > have not demonstrated full-slab reclamation or cross-cache reuse for th=
+is
+> > case.
+>
+> Right. Do we have any gut feeling how exploitable this is?
 
-commit 7842ba5a926e273d15f8232bcb20b17ab7d9d227
-Author: V=C3=ADtor Hugo Silva <vitorhg20080@gmail.com>
+Thanks. I tested the cross-cache reuse step. An unprivileged process can
+release the relevant hugetlbfs_inode_cache slab and reclaim the exact page
+with msg_msg allocations containing attacker-controlled data.
 
-riscv: Synchronize instructions written to ESP32-P4 PSRAM
+Thus, the recovered address can identify live replacement objects after
+the inode is freed. This is not a corruption primitive by itself, but it
+provides a concrete heap-layout primitive for a subsequent attack.
 
-This commit adds ESP32-P4 PSRAM L1D/L2 writeback and L1I invalidation
-helpers and wires them into NOMMU kernel instruction patching, executable
-loading, and signal frame setup.
-
-Link: https://docs.espressif.com/projects/esp-idf/en/stable/esp32p4/api-ref=
-erence/system/mm_sync.html
-
-> diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm=
-/cacheflush.h
-> index c2b0a2928f067..a5c20d7d1c9d8 100644
-> --- a/arch/riscv/include/asm/cacheflush.h
-> +++ b/arch/riscv/include/asm/cacheflush.h
-> @@ -85,6 +85,12 @@ static inline void flush_icache_range(unsigned long st=
-art, unsigned long end)
->  	flush_icache_all();
->  }
-> =20
-> +#ifdef CONFIG_RISCV_ESP32P4_CLIC
-> +int esp32p4_sync_user_text(unsigned long start, unsigned long end);
-> +
-> +#define flush_icache_user_range_checked esp32p4_sync_user_text
-> +#endif
-> +
->  extern unsigned int riscv_cbom_block_size;
->  extern unsigned int riscv_cboz_block_size;
->  extern unsigned int riscv_cbop_block_size;
-
-[Severity: Medium]
-Does leaving flush_icache_user_range() as a plain fence.i miss executable
-NOMMU mappings created via do_mmap()?
-
-In mm/nommu.c, do_mmap_private() populates private mappings in PSRAM with
-kernel_read() and do_mmap() then flushes them via
-flush_icache_user_range():
-
-mm/nommu.c:do_mmap() {
-    ...
-	if (vma->vm_flags & VM_EXEC && !region->vm_icache_flushed) {
-		flush_icache_user_range(region->vm_start, region->vm_end);
-		region->vm_icache_flushed =3D true;
-	}
-    ...
-}
-
-When an ELF FDPIC binary is loaded via elf_fdpic_map_file_by_direct_mmap()
-or userspace creates a PROT_EXEC mapping, instruction fetch can still
-observe stale PSRAM instructions because L1D/L2 are not written back and
-L1_I0 is not invalidated.  The NOMMU brk() path in mm/nommu.c and
-sys_riscv_flush_icache() also still only execute fence.i without
-synchronizing the ESP32-P4 caches.
-
-> diff --git a/arch/riscv/kernel/patch.c b/arch/riscv/kernel/patch.c
-> index 2b5adf01c5502..e0687c943358e 100644
-> --- a/arch/riscv/kernel/patch.c
-> +++ b/arch/riscv/kernel/patch.c
-
-[ ... ]
-
-> @@ -173,9 +180,132 @@ static int __patch_insn_set(void *addr, u8 c, size_=
-t len)
->  }
->  NOKPROBE_SYMBOL(__patch_insn_set);
-> =20
-> +#ifdef CONFIG_RISCV_ESP32P4_CLIC
-
-[ ... ]
-
-> +static int esp32p4_cache_sync(u32 map, u32 start, u32 size, u32 op,
-> +			       unsigned int count)
-> +{
-
-[ ... ]
-
-> +}
-> +
-> +static int esp32p4_cache_writeback(u32 start, u32 size)
-> +{
-> +	int ret;
-> +
-> +	/* Repeat writeback to avoid losing a sync with conflicting writes. */
-> +	ret =3D esp32p4_cache_sync(ESP32P4_CACHE_L1_D, start, size, ESP32P4_CAC=
-HE_WRITEBACK, 2);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return esp32p4_cache_sync(ESP32P4_CACHE_L2, start, size, ESP32P4_CACHE_=
-WRITEBACK, 2);
-> +}
-> +
-> +static int esp32p4_sync_text(void *addr, size_t len, bool fatal)
-> +{
-
-[ ... ]
-
-> +}
-
-[Severity: Medium]
-Should esp32p4_sync_text(), esp32p4_cache_writeback(), and
-esp32p4_cache_sync() be marked with NOKPROBE_SYMBOL()?
-
-__patch_insn_write() is marked NOKPROBE_SYMBOL() and is called when arming
-or disarming kprobes and preparing single-step slots.  If a kprobe is
-placed on any of these three helpers, patching kernel text for kprobes
-will recursively trap into the kprobe handler while reprogramming the
-cache controller.
-
-[ ... ]
-
-> +int esp32p4_sync_user_text(unsigned long start, unsigned long end)
-> +{
-> +	int ret;
-> +
-> +	if (end > start) {
-> +		ret =3D esp32p4_sync_text((void *)start, end - start, false);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	flush_icache_range(start, end);
-> +	return 0;
-> +}
-> +#endif
-> +
->  static int __patch_insn_write(void *addr, const void *insn, size_t len)
->  {
-> -	return copy_to_kernel_nofault(addr, insn, len);
-> +	int ret =3D copy_to_kernel_nofault(addr, insn, len);
-> +
-> +#ifdef CONFIG_RISCV_ESP32P4_CLIC
-> +	if (!ret)
-> +		esp32p4_sync_text(addr, len, true);
-> +#endif
-> +	return ret;
->  }
->  NOKPROBE_SYMBOL(__patch_insn_write);
->  #endif /* CONFIG_MMU */
-
-[Severity: Medium]
-Should the !CONFIG_MMU implementation of __patch_insn_set() also call
-esp32p4_sync_text(addr, len, true)?
-
-__patch_insn_set() modifies kernel text with memset(addr, c, len), and its
-caller patch_text_set_nosync() only calls flush_icache_range(), which
-issues fence.i without writing back L1D/L2 or invalidating L1_I0 on
-ESP32-P4.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125233020.1380=
-594-1-vitorhg20080@gmail.com?part=3D14
+Best,
+Zhengchuan
 
