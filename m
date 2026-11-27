@@ -1,93 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3889606A702
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 14:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36DE606A324
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 14:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=V18JV07i;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=V3WqNeUg;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=V18JV07i;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=V3WqNeUg
 Received: by kanga.kvack.org (Postfix)
-	id 4C28D6B05B0; Fri, 27 Nov 2026 09:31:01 -0500 (EST)
+	id B1B756B05B0; Fri, 27 Nov 2026 09:41:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44BFC6B05B1; Fri, 27 Nov 2026 09:31:01 -0500 (EST)
+	id ACBAA6B05B1; Fri, 27 Nov 2026 09:41:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 313C86B05B2; Fri, 27 Nov 2026 09:31:01 -0500 (EST)
+	id 9932D6B05B2; Fri, 27 Nov 2026 09:41:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1259D6B05B0
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:31:01 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC4C8A7A2C
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:24:06 +0000 (UTC)
-X-FDA: 85481118492.03.D9727EE
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1A380180009
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:24:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=ghiti.fr;
-	spf=pass (imf16.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.193 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 145656B05B0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:41:22 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DC35A03CE
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:41:21 +0000 (UTC)
+X-FDA: 85481161962.17.46F7A3D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 53F3520007
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:41:19 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V18JV07i;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V3WqNeUg;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V18JV07i;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V3WqNeUg;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795789445;
-	b=AgtajYUe2xU2Mx0wEV47B/luOhjPxWU0fp9OwjQKhrI/dzXa1245GWwyJ2jc1lkmczm7WT
-	uojC4t/J5NOLyctbbj4D+B4Eeh61wCMzpISFDyx0k5QGhMbgvTVeZLzZ+nfn9oUmY0vODX
-	t9P+lolXx9PraHP9W7rfpwn28ITiXWg=
+	t=1795790479;
+	b=DyuPlTAT4gZSlnYe8vNtzrbq3IElfdZPdIKescCtx2r+Wgdqj3mqZm1QKR4dkcYfiMweIH
+	iM/Up9SEbQoavoVWChfI0rLDoqyYKa/5l2l4iQRXQ3JqBc4gDc7AKxMLkbLZVxik5JyObE
+	88dBJLp0G9ix7sFJnFyMwJjzX1QPPuY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795789445;
+	s=arc-20220608; t=1795790479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=EbhWdjlDqYXGPoxN5kboRvS2+NtSfKGLkriYPAqd7sI=;
-	b=CImYCGWE2OMrll4Qyg/NWZgZkw+A95RaUZuG5UQIZSglug9iPgGUbbn7puPuCP0MjHGN+n
-	dL5EKPCWTzMLwuc5tglzd8gQR/pYwp8yf8EHNkUv8yrucBUSDIXG0DUc/Yi5GCRyti1Rsc
-	0tlpU7HuwR53pudNlyVrn1DHykeR6gg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5OiMqB0HFqHTXQ26F6nnKmMgWEH3gjayAZHzMcMj1aU=;
+	b=eHd5+xIOtSLFwVESUrXqqKMaY2JJjeKu8pBfTo24OHXQWGKbcdl5HxLTd5PBjg1WxTelTi
+	MY++wEDK4jo3mplRlR+VesLUmC4veqFDCfb2wKgiFc3+GBGfarXMcbo2nYJzGKVG0birSA
+	azFqmhYwkvOGoTVvrUyn1V4hNZXhs04=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=ghiti.fr;
-	spf=pass (imf16.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.193 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 045223EF55;
-	Fri, 27 Nov 2026 14:23:58 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Barry Song <baohua@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v2] mm: free the swap slot of a dirty swapin folio
-Date: Fri, 27 Nov 2026 15:23:27 +0100
-Message-ID: <20261127142357.1112193-1-alex@ghiti.fr>
-X-Mailer: git-send-email 2.56.1
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V18JV07i;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V3WqNeUg;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V18JV07i;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V3WqNeUg;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id ABDEB22936;
+	Fri, 27 Nov 2026 14:41:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1795790477; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5OiMqB0HFqHTXQ26F6nnKmMgWEH3gjayAZHzMcMj1aU=;
+	b=V18JV07iazluiBay10fP/4fd0aBvpx12c6oF3mwpxHXAz2019+WnkVqDSmKZaSvTDlMhPF
+	+XNcC7x/9xS53FynRM9dvfhEdVgtRrrJQHH2ACw69rokKv+FHXTcm7PNCnE8tEKcZQmeJF
+	hnt16LEz+mQWdpgZEpYRwU0z+1jzExc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1795790477;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5OiMqB0HFqHTXQ26F6nnKmMgWEH3gjayAZHzMcMj1aU=;
+	b=V3WqNeUgkgQSxLbxSxJo8uXWKoVfkUXxcp5ohyGehBBEEMBEjZJ+8bwnYcECcgLBCveJmp
+	KHVJE0UjiSqIGoCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1795790477; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5OiMqB0HFqHTXQ26F6nnKmMgWEH3gjayAZHzMcMj1aU=;
+	b=V18JV07iazluiBay10fP/4fd0aBvpx12c6oF3mwpxHXAz2019+WnkVqDSmKZaSvTDlMhPF
+	+XNcC7x/9xS53FynRM9dvfhEdVgtRrrJQHH2ACw69rokKv+FHXTcm7PNCnE8tEKcZQmeJF
+	hnt16LEz+mQWdpgZEpYRwU0z+1jzExc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1795790477;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5OiMqB0HFqHTXQ26F6nnKmMgWEH3gjayAZHzMcMj1aU=;
+	b=V3WqNeUgkgQSxLbxSxJo8uXWKoVfkUXxcp5ohyGehBBEEMBEjZJ+8bwnYcECcgLBCveJmp
+	KHVJE0UjiSqIGoCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7ECF013432;
+	Fri, 27 Nov 2026 14:41:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id w90gF42WCWvcXwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 27 Nov 2026 14:41:17 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 13DF251056; Fri, 27 Nov 2026 15:41:13 +0100 (CET)
+Date: Fri, 27 Nov 2026 15:41:13 +0100
+From: Jan Kara <jack@suse.cz>
+To: Zhao Gongyi <zhaogongyi@bytedance.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>, 
+	Jinchao Wang <wangjinchao600@gmail.com>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/readahead: read folio order limits under the
+ invalidate lock
+Message-ID: <pmv77fehocb557wy6vtcu2fank4uf54k42n22owpyuxxzxfgkj@46pvovh3r7jg>
+References: <20261127072340.73758-1-zhaogongyi@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: -100
-X-GND-Cause: dmFkZTEp5Qx77guntm23T5dTKYs6zkxQfzo1XvkyZUuFFcykeWCOrH8Kr5kze8R7wZ4fIySIZ7IaYrQqejOU8Q3gMGl/ur5wdNsXrK4obk5i+24FUC/oaWJbOZB0ZvsGKfHSUgTDWvGYRvx6eL62wYTFiSkXjs9RLMOfNgdl3wPI0j1zPyzRK1oFemF0MptHDZQoZqtLbOrBHs28EK8PNzlU1lO8jGwJ4uJ7raKwyryg9CCodI5re44qBd2PJcoAU91yzOtviL7FgpxyVH0sQXjowh+Vi2H6AiEE59NLAaMVoNbloNtcYruRSdUMaR0Bb4OxEYA4PThK2/BhF36PnhYlk1/IdClqEivDoy6xjeL+aGavMlwHHPey4DKmyN/mRht1Moldcl/GUPau2W0dyVroWcFcnA+mdy2A/Q7B4zix2q/lQyLth2OGbpTYZBA875yiBdFcRYva19K6JbryjtEZyRo9jNOEEcPiWJTNXMBNmkh/YHJefFJnwN1Ixwqjb3pi+nHWI+PU4giv5FXRnJdXv8LK2lVVrF4XT/8zw3FGHLPbnfXLkyaqhdSt4baJoSOXyULRoHDKqRE4GKV4e5mB7XTVt3l6K/gLrxgbrHy+Jh4M04PlGMgoeUMyLHMeRQGfuAi5a+7eoshqRfkOJiDywE02GWrheKnNpfLig2Mj22SOrA
-X-GND-State: clean
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1A380180009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261127072340.73758-1-zhaogongyi@bytedance.com>
+X-Spam-Level: 
+X-Spam-Score: -12.80
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 53F3520007
+X-Stat-Signature: 3cw3zexusxy4mcoh7i3x996hxs1pdf7m
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 79xxt91xdkksq64aichhnts1f7hgmfiq
-X-HE-Tag: 1795789444-47349
-X-HE-Meta: U2FsdGVkX19xAXcWh9Aj/xU2DllkPYfXas+WGqnHH5ojHqmc3KwvJSqhVrQzZvFpvJRa4+RhlvxUHOH0G9IVQJLjtJQMpRlGv+tYxY1zWo+Kx2lGXdSADDN3EpthlDPm/Cn9KAc//0SecpA7i6PQOC7kaYg8DZDihG60hterPgqBvV3oGHqiQL5oxUtOm3uOBwLblSXEaXGdrCK7zp/X60QIcrqMRcy4Ru1CKItSd2ySzJRnr8yoU4JOYcCNVlqjEYuid71xL+v1QUPcBtWX0IQI3lpg1HnJrPYptgSRFvDDc4n3nOShYbHBVoXFJXZ0fhbIqh1+VOQcqyFu58q2kf2dYfuyeBUuAtzo1C3M3mBbyjKL9BVPEPEHIUsN25jfR29pGvH2AtLAVSkAvwk+QUyQNOilofiAI3pl/hFxfLRVYnbCOA/B2I/6iTfOSROnOtFE5UKcE1l+qWLhgCC/LEJ6nFFRZgX+YiNeX6OHFCBPDjrPIK3zmtuc8rLKrho1wgfCRzCOb93nXORdSJiOdTkMXjnclA+5zW+jzAYLOe7H1CZTLjNnD2VfXHL+HZv3oI4vfghqIGTjHVgLV7V/gI0nQMZ/71KN7eRiuHje/O647hlVgwUFNqmvx63iAMXRwUtbV48b0ip2+dhVlYRexqEbf1iz+jlyZS0GQGwDz5ungVyY9KlZUhtOvgWesf+KJ6/MXfYRBk7DTftj3CLZTUtop59uHxdsQX0fmojx2Va8jTRjAWfj7NV4HrMpt3jh+pqbI1X1KMC6HOPFqhXqYo5WW9CP87h3ZA7+wu1ZXU8Nvmk9zupiAaN19P/bhcGpoxRYbePuRrx5Xvz8MlB7obK/W7s1fIVWZzBgXY7W3xdFldDcUSMxRFNNSk6ab1crJgmviT1W+2drCfnZ/mzlPUAvambwxo/P1vLF80Xh7rytviD9vDIVGUGS0J7ib8PrX3FHDPkkDH1Hy7SngTg
- BsPzfbtP
- 4cKeJoUSnGF/QrGix1ydt87sdYg6LgIFsE0UhU9YJLgfGd/irNTfcYJZKqn/EFMURDbToeklzzPnpEhOM5SH1QuvXftTyjw7iGHx5H2YzfV6hK8JMLaRjN4FYLp2wMAxALqyki6pVKQLmdANuszpbEdJ0P4TpeLY5R2Z28PuJSwMFpjbGzgEaDp8j9A==
+X-HE-Tag: 1795790479-632840
+X-HE-Meta: U2FsdGVkX1+IxJGfnDiIb/2VuJ8YNdI7b2947TUM11sBxNBaj059XkojPta9Ee+djP+ZthePRhevpD24FLmKvxsD4Y+G7GCtC6mNV4Kvzwf91cjOmrzHpWv7B9b6ASxwF5IEy5FQGOgJxDAA8ixk1A+VCA2YTH1ryfjfkf91X3zOlVuyTP8o4NLwj6/5dBfW3SUQYR04K5nIiciFLGhKOL+gc0HA4DCkXorIZ0xiD7hTHH50mKsvaV3w0GCeKUs+jTtNQGQgqk8bcP8+8p1YuNFCGSislzNAUlG4fm4XRTDTn/SUKQ73cxg/y1wbFCZln0uKY7HCuWgYCGKLo7FjbaqFj0Ngquh7dJaUzeRZ9PYKXoHOSDRoxqioEmrt8JpRfauzXDHOmKQ84dds447pX5tsis+zdnAyhhdG5y0DoJNy/osTI4aS/cWaWZGFheWzeTUWiQ/93OuPet3U3SJpFkmiCJdM5yP+3k2w1zRCV4velZNKLTi4dExczkyWfPur/PVZUFn3mxPUg3TsUUGJ/W5vHU3ES5a4eI8MHjQdlweiz2V6dSY9wYfvkjLabcmLoCNW9DJlRQwyf9LjTKLokRrThAhpLpCh0uVxKhTNpfFg7OIUVe12KJEXZZA651fYdhxY2gfUJBzCnUIf+qxAyE13qSfuCT0gJzIcOpj1Ks4NFj/K8vgy6WFPxJUotnoWJY23xj2tPQP14I4LhUPQEuA8uxJsDCoxLh3eW2wUzMMkIl6r6lyKz3Sbxl2dnSq/30M/5Wc7xKirC7ZY50cJZRfZRblxdJsrmSCtsIenIY/ZG+JFxtMawkJYP6Q8rEEOCbqq8cF4ZTSsvuK5tQ2wrv0IOgRp0iZsi8gz0E6sDPKh+r0HTlvigHTVMCpGQ2yXtzMcygGa3dM2bkeI0LCnU4tkEnvYuJsKRlHs5kfzr6xV9V2eXRBNad4BiYwUVBxyG66m2rgJ5bEFjCqeCFm
+ E0HM14GW
+ WUm+RjXX/CwheWXFYHkacF+2FiBPI+/LsRw+4oe2DdFiYJyl2Ts4L2oFzcXehSc33KfeBQdEleJeZDb1W2a/4amy5uKgKYq3iV0htAFjLsWEIUC4noEPC+pzEsbmnpCqf+U+a1qZ5ZRuaMosOvuprgzLOMrl5USSJAmqMp0R3TQDxmnSLh7N0LdUtvdf++vao39dtmr9fDH4JHDy/d7OTU6aYG2XS2jb/WAOYbyLT7PwpJ2Zh3QqmETvkNkcEaWhMS6VVeLoAapD/YR89MplPTPwhOuAj2He3jjGv6SziJhy0AWw65BSx/T7pf5CuvWLzPf9Yr4L6BulNr9BDDKAeJKtDJ1pcaBr0gwRmHEku8vOxWUHTlDFhtyWD1pewSoMc2SgTy/aOdTzN5iTQBzMCN4b3c3BLDfZ/PqSNnMdrjH8d/RB8FrSws05kD6aFS1/XYQeKooJqXnqx42jeM3tsXfnV6snBTcYpY6Ey0LG80TaYBbHHWadeqW6Uz5x/koxIv+t98gfwvr6sAfwqcqP3KbmaDrdeE1lB+JERKoabkJ2oRZpOG8iNBUPVP9PvZs/DgGWUKOytEGlDTL1uimkDu+8Ag1AO0BpcJxZyKAZyUZZs7e8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,88 +142,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-do_swap_page() frees the swap cache of an exclusive folio on a write
-fault only. But when the folio is already dirty, the copy in its swap
-slot is stale: the slot only reserves swap space until the folio is
-reclaimed again or its owner exits, and the folio has to be written out
-again anyway.
+On Fri 27-11-26 15:23:40, Zhao Gongyi wrote:
+> Block device mmap readahead can race with set_blocksize(), which updates
+> the block size and minimum folio order under the exclusive invalidate
+> lock. page_cache_ra_order() reads the minimum before taking the shared
+> lock and can allocate a folio smaller than the new block size. On the
+> buffer-head path this can cause a NULL dereference in guard_bio_eod().
+> 
+> Take the existing shared invalidate lock before computing the folio order
+> limits so they stay valid through allocation and I/O submission.
+> 
+> Fixes: 47dd67532303 ("block/bdev: lift block size restrictions to 64k")
+> Cc: stable@vger.kernel.org # 7.3+
+> Signed-off-by: Zhao Gongyi <zhaogongyi@bytedance.com>
 
-The common case is zswap: zswap_load() drops its compressed copy and
-dirties the folio, so every zswap read fault leaves such a folio behind.
-Without zswap, it only happens when reclaim bailed out after adding the
-folio to the swap cache but before writing it out, or when the swap
-write failed.
+Ups, this is hairy. The fix looks good. Feel free to add:
 
-Such folios add up, and they are expensive to free at exit: on a large
-production workload, the exit time doubled when zswap was enabled. A
-third of the increase comes from the folios left in the swap cache,
-each costing about 3x a resident page to tear down; the rest comes from
-freeing the zswap entries.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-So free the swap cache of a dirty folio as well: folio_free_swap() only
-releases the slot once no other page table references it. The only cost
-is a new slot allocation on the folio's next reclaim, which write faults
-already pay.
+								Honza
 
-On the production workload, this patch removed that third: the exit time
-decreased by about 15%. On a simple microbenchmark, 4 GiB of anonymous
-memory in a memcg pushed to swap, read back, then SIGKILLed in a QEMU
-guest (mean +- stddev of 9 runs):
-
-                     base            patched
-  exit time    989 +- 24 ms       502 +- 28 ms   (-49%)
-
-The cost is paid by folios that keep cycling between zswap and memory:
-each reclaim allocates a new slot and adds the folio to the swap cache
-again. On a kernel build in a 600 MiB memcg (-j4, defconfig), this is
-not measurable (mean +- stddev of 5 runs on bare metal):
-
-                       base            patched
-  time (s)        592.4 +- 1.1      592.4 +- 0.9    (+0.0%)
-  sys (s)         256.6 +- 1.5      257.5 +- 1.4    (+0.3%)
-
-In the worst case, random reads over 4 GiB of anonymous memory in a
-3 GiB memcg, so that about half the reads are zswap read faults and the
-task spends all its time in the kernel, throughput drops by 1.1-1.4%
-(mean +- stddev of 5 runs on bare metal):
-
-                       base            patched
-  reads/s, 1 thread   37310 +- 182     36889 +- 77     (-1.1%)
-  reads/s, 8 threads 291937 +- 802    287954 +- 373    (-1.4%)
-
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
----
-
-Changes in v2:
-    - Free the swap cache of a dirty folio even when not exclusive (David)
-    - Make the comment and the changelog generic, zswap being the common
-      case (David, Nhat)
-    
-v1: https://lore.kernel.org/all/20261126094318.244973-1-alex@ghiti.fr/
-
- mm/memory.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index d477a4f986bc..c83c67cb759b 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4711,9 +4711,12 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
- 		return true;
- 
- 	/*
--	 * Free the swapcache only if we are the exclusive user and
--	 * this is a write fault.
-+	 * Free the swapcache if the folio is already dirty, or if we will dirty it
-+	 * immediately afterwards by writing to it.
- 	 */
-+	if (folio_test_dirty(folio))
-+		return true;
-+
- 	return (fault_flags & FAULT_FLAG_WRITE) && exclusive;
- }
- 
+> ---
+> Earlier proposals:
+>   https://lkml.iu.edu/hypermail/linux/kernel/2511.3/04090.html
+>   https://lore.kernel.org/r/aUN9BFdxHQj8ThMS@ndev
+> 
+> The earlier syzbot retest hit a bug in the fallback path. Since
+> b244c89a70b3, the caller holds invalidate_lock before the fallback reads
+> min_nrpages. This patch covers the remaining mmap readahead path.
+> 
+> A/B testing on arm64/QEMU at the declared base commit gave 10/10
+> baseline hits via madvise and 6/10 via MAP_POPULATE. Both paths had
+> 0/10 hits with this patch. The 20 patched serial logs showed no kernel
+> warnings or crashes.
+> 
+>  mm/readahead.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/readahead.c b/mm/readahead.c
+> index 6e5563290..80f3e141d 100644
+> --- a/mm/readahead.c
+> +++ b/mm/readahead.c
+> @@ -484,7 +484,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
+>  	struct address_space *mapping = ractl->mapping;
+>  	pgoff_t start = readahead_index(ractl);
+>  	pgoff_t index = start;
+> -	unsigned int min_order = mapping_min_folio_order(mapping);
+> +	unsigned int min_order;
+>  	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
+>  	pgoff_t mark;
+>  	unsigned int nofs;
+> @@ -506,15 +506,17 @@ void page_cache_ra_order(struct readahead_control *ractl,
+>  		mark = ULONG_MAX;
+>  	}
+>  
+> +	/* See comment in page_cache_ra_unbounded() */
+> +	nofs = memalloc_nofs_save();
+> +	filemap_invalidate_lock_shared(mapping);
+> +
+> +	/* Serialize with set_blocksize() updating the minimum folio order. */
+> +	min_order = mapping_min_folio_order(mapping);
+>  	new_order = min(mapping_max_folio_order(mapping), new_order);
+>  	new_order = min_t(unsigned int, new_order, ilog2(ra->size));
+>  	new_order = max(new_order, min_order);
+> -
+>  	ra->order = new_order;
+>  
+> -	/* See comment in page_cache_ra_unbounded() */
+> -	nofs = memalloc_nofs_save();
+> -	filemap_invalidate_lock_shared(mapping);
+>  	/*
+>  	 * If the new_order is greater than min_order and index is
+>  	 * already aligned to new_order, then this will be noop as index
+> 
+> base-commit: 29378f5cd79a27718ead9717fe7b094b651a8e1e
+> -- 
+> 2.39.5 (Apple Git-154)
 -- 
-2.53.1-Meta
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
