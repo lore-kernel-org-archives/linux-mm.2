@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B941606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 19:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634A1606A327
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 19:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NEU0kyU8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lg7sNeNI
 Received: by kanga.kvack.org (Postfix)
-	id 965D56B05B5; Fri, 27 Nov 2026 14:46:12 -0500 (EST)
+	id 854C06B05B7; Fri, 27 Nov 2026 14:46:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9376E6B05B6; Fri, 27 Nov 2026 14:46:12 -0500 (EST)
+	id 8046F6B05B8; Fri, 27 Nov 2026 14:46:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 852A06B05B7; Fri, 27 Nov 2026 14:46:12 -0500 (EST)
+	id 6CCCE6B05B9; Fri, 27 Nov 2026 14:46:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 63A536B05B5
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:46:12 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D83601C3C76
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:46:11 +0000 (UTC)
-X-FDA: 85481930142.14.DD0820F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 05343140004
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:46:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NEU0kyU8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 264796B05B7
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:46:19 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7ECBC04BE
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:46:18 +0000 (UTC)
+X-FDA: 85481930436.15.FB7D64D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DF5832000C
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:46:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lg7sNeNI;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795808770;
-	b=vjdrA+YEo+TQOQ3jzD9w4/zr9mHk6UqkU8Ljq0DMi706hiFGc8hEXbLR71roFBzXuYjxGA
-	GXFb6A7+hfdDjohbDk5MpHZUFpjntCcqUYyCVcb2Imnap/PmI/7mEcE+UEhUcQEXxLkFxw
-	1l8GoaFdfz3bQ3kdYXPYi71onWQX0p4=
+	t=1795808777;
+	b=zwF0wwgQ3JaE3SExzhTcV6v+UER5QUsNPtgKAmB7DAkijXvg0pd4uAka0O8f1/1mfw5i8N
+	KeoZn4POIrvHtJx9dKp3E6zkFxhULv5MiRo1t4io3oeV24epX8awXoinNGCUVYPE8Or8Zr
+	qSp1zU6JU6GptNcy5VTyvXKmyl4hvss=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795808770;
+	s=arc-20220608; t=1795808777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Hwpku+LaQUx6JE9I+VbAYIc8Bnjhvc4+sIsQUi+qxE=;
-	b=rt54mDSosjf4Wh+bnp16fsiFoHb0J04IOQql2Nb6YLxwuv8JJQ+nJsrehDvXxku6ESl7NF
-	Q0IilOq/F5LjYfxOr61TlaCQ5rUQ8h6wTXfgJP1IfMQ+NOy5LeBq2eCfAE8imesOqBpfrS
-	PeFHt3/EUWmvxqTFsowfWXOV9k4HQDk=
+	bh=NovJGN266ut6F/KwSsg/fm2bkFyGHYseOOEgSUk+sW4=;
+	b=kbvULW1KkFbBd91lQIHAT7OnjGY4OHS68kXP+8gw1w7efsmeNaCO+zQLWlWPPgH7LlQXKa
+	1KCd2h4txS0jGgqSUSnyslPudiFjqNeFi9++6nVmKFca3uDFcX0cDe1Td98p8nX+54RADV
+	Bt/n4ZqyBXX/EH9A7gDMdSrWopU/aEo=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NEU0kyU8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lg7sNeNI;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DF77743ADA;
-	Fri, 27 Nov 2026 19:46:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAEB1F0092B;
-	Fri, 27 Nov 2026 19:46:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7AE5E62061;
+	Fri, 27 Nov 2026 19:46:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F3E1F0092A;
+	Fri, 27 Nov 2026 19:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795808768;
-	bh=3Hwpku+LaQUx6JE9I+VbAYIc8Bnjhvc4+sIsQUi+qxE=;
+	s=k20260515; t=1795808776;
+	bh=NovJGN266ut6F/KwSsg/fm2bkFyGHYseOOEgSUk+sW4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=NEU0kyU8trWrBW/upvnTB8ftnM4V+QLSmk44qqfny0x+HmBIQycOEoHCCScJkm9o8
-	 0dYU9BRIKPet10jCO8AlBcRws0tNdzEO+ZtXzzFR3XJYyD0VSd5DCrraS/Twsk9+bI
-	 7J2BZmBI19JHNQHLLYA7sd9+MgdGD7qziZC+sc1UICkB+X8zYI2U0IAB61BSGXJ8o9
-	 gHzHcykr5voC5QkziAx3FZGYvNVROZgmT53h8I6gOfYi1xgIKEkz44DOdGJG52jUso
-	 h91n7RrWkLTU/5Vdd7vS/3qDuu4aCgLLR38qfeSQz3QQZBNLND7E+Ecbl8nMkvmyZ1
-	 zvD9eTHcGeMFA==
+	b=lg7sNeNIUPTLyrjv0EQC1PBspEKQpD6mwCDWSe0TIl8OUTaKxrQvTa9oZn8m0lEPt
+	 LG7WqcGDK7P76nO6qXoIpjrAV9Wu8GQD9UOzldNpMNdbQgvnhiL/D9vsQ4KOxJU4VO
+	 sdjsmG9WORMUEVCJmPdXPr5PYReDHbOeZxsdHZqYJ0VdrnY3fabVPkHuD5vbsT///r
+	 NIQUxNbxj0aW36HlFkBkXp0ehzOYK7F3HVaDu1VYXQ6QQszr4GLlktKdl2AFALoL/l
+	 GJPoG6h1d1ImoSzzaBOpvl5bPS53BnGEfQMMgQw7W15ijNUqU/Fnh042AV0kWlVHUE
+	 3kpW9Ym3iSoUw==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 27 Nov 2026 19:45:41 +0000
-Subject: [PATCH 2/4] mm/madvise: don't declare OOM for MADV_WILLNEED swapin
+Date: Fri, 27 Nov 2026 19:45:42 +0000
+Subject: [PATCH 3/4] mm/mprotect: fix unpaired notifier start at address 0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-mlock-madvise-mprotect-ai-fixes-v1-2-e46b2b1eb435@kernel.org>
+Message-Id: <20261127-mlock-madvise-mprotect-ai-fixes-v1-3-e46b2b1eb435@kernel.org>
 References: <20261127-mlock-madvise-mprotect-ai-fixes-v1-0-e46b2b1eb435@kernel.org>
 In-Reply-To: <20261127-mlock-madvise-mprotect-ai-fixes-v1-0-e46b2b1eb435@kernel.org>
 To: Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
@@ -90,26 +90,26 @@ Cc: codalist@coda.cs.cmu.edu, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2951; i=ljs@kernel.org;
- h=from:subject:message-id; bh=zISF9slmgFgn0hlNBHComrSnoxHsfcZ4I7sJ6aGObbk=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI5777MnK0etsLl5Pe7T4syZTuvvZJeuKpK6rn/RffPP
- z9lrf6xqqOUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQATyeBh+GeVyDXl2PWz0/kn
- fxErfXJWcLvIzgDFK8leCk+anjJufujL8D8/UEn2a1l9r+vhz8peBTtZO7OVdK8wh9z/9/Vdae2
- LfUwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1583; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=hFazDhUle6ZFh0ivxxT92eZdFw5uAZSRMAka/e6BWSg=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI57758919GLy626I2RXH9E5e29tXOMJRsnuL3coLEl6
+ +qUWSZfOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRtNMM/2uy/9Tt3HfOrNvH
+ XCOF437Wm9SnbhqfI3nTtde1XhH7sIThn74pb+xRjcsX9oVf5NhvmvrgzMEVbvOXz9iwi1Pi+5u
+ iNAYA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: 1bwoida3uwwpgk7rf6qkydaugddq3eup
-X-Rspamd-Queue-Id: 05343140004
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DF5832000C
 X-Rspam-User:
+X-Stat-Signature: 46otd8mjr6qa4gxcaxnitiintyxwq8xg
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795808769-210083
-X-HE-Meta: U2FsdGVkX1/eSXkEllM5/m6kfqxPo4zTTfPu5hhZg0SPSOS8/P8j4HjE2Oai+5zqpWYJaYMpGViEqJWNSMwyVup1iMrwuZoQNAkhWn8GZSLBG0VAPzKHQH4+wjgF8wsxE3W25himKalXgwRVP2ZsnNVqbXP2y7KC1UUcQjmEY82Ott+I48JwuyTus3vWZnmxN6zFF3HACeZAMdBtxGF6MUU1PvZD7NuLV8/24zg9NmpzLj0/2MdyGJ2z+E01tEO7Q1R6eL+exA1awKBFwnNKOSQEsNTgEFEXPbz1PcwH807CKFIfulKm9vZXUDoSISIpVeP2mE8GVhVCxj93NJukOmFtYRwbmiefNRo1asORS2Wkl9bn5rjU+oKQv+XmbJOuInFtQGOandj+mznKxV/mXzcdTBw3fKqCcgOmsQmzR53V8QTukIcQSgIaS1twP55AoPg6QCdZJjUMfEJYeqNflecfEeIRf/4Dayfb2Bb2v7x0rhEk1jb25103Z2JFGZgKgExFSxP2e8dek0tDfJw29vE1W5fBA/b4z+AwHK9+KKBFA1hpWiqhSPi56arSh8XQpcNII2XariJuJIlE+GdFi5VWtvsIc4wAI949bxM+0ihtoeEJV7obH07jc4PvW5yjs1OW3MkBWXcZuYo3ZygY1MQqPIXcGjbItVgq0X5RGVrLV3DPtoWoi3Yh2iN7pZtYtOhup/YE+ibkbp7i6EdIYHq5pOP39u2gcCQ6ZONwFB6HYyuV481fjnEmIe1Eew730sD2/cqf8Gd82tlwuS0fNrC6cTd5FptcZeSVbnU5ox8qhCIhbWMZspRxGyyltBHEHes+IgcDVdeGeK3clWJ9FbSCrENcZw1zw019HQIKxQpA1vOfFi9Ms37sx+JNYJsecUDkXP9NrHg45M9UGgci2NDCl1GetOHC3Aiv+tljE3DwKVHdVdPhk8t1YYEM3FoYZSDAIl/BYck5Euaz9IU
- U+PsNbmo
- 5BGliVkgXmL5RyyQpv6F8q6AT/g3QKuIWCMz9kHz+fcFsIOM3xWDlYYHad3R73+7aKA+pGsWob8mIiuNPJfPh11GajDPCTxz9FA0i4VoqRVpF8oF+aM867cGg612gOfrGHGVifJ5FDICIDzKEaxOUNOKoyaIsb803LqtCqmRwVpsk7Q3vGOBuBG1o/l6tgN/8Tu2RZrI7AE43A0KyDkEFx800pDRwivl9mTeGTm1+AQt6ueUwUaHzR9TyKoYbb6vH0YzjHyfHZeTqP4vBQhUdmbNeMgP4bELmzCZy9W18x/VYP+kGDmJXdJAgoU/kqV0MjOAQ43ab1Oqiv7arvbWrVM/nbSGnh7bRAhMtpvpqf2H7krnUdpgC9HJiJCMw6r6VNpY013TtMJMv1Yaa3wWWS8ZNIgBwEJwyo/tDsjMTJr0FJUhbg2SapHx2Wy15lKLg/0VNVOcAyOMKl66qRlKdvV/vKn7/SLx7xsfAdYIygT+DOQXNQUiU5hNw4PDXi14KatQgmTRsrfj8MGM=
+X-HE-Tag: 1795808776-435126
+X-HE-Meta: U2FsdGVkX1/1Z+zkT6G1g26bly8fE3LMpi1ah3F5JGGpHAobUj54FvHYEtOWenO1bvI7TlV6NAVF7m7pz/vqplCXNLjjAHM2x9l95fkXznMPHFnCnkzmTj9M8AOkkJQq9+e+UlJ/q4FsT/YQURj6qv4N9Yt4LUPhZFtu/It48rd+Udpp9N0BDdB08/1AM1HEV3FQN0cv/jK3UTHOeEk+/fZFuA37stq9T/Lm3d8xU6DhJtgQRExXIkgO+JJzao269ENSFwkUwUhDul4UINu0Z+a7WHAcKku/Uw0q3KEfJ44KJ/RgPFJFbttgsuD5cvgqiXhu1c6oC8faUIqZ4x2PGTLqA2mJCymqUwVNGYa156UCZYxUdSdCRL943R8rLko9W3w2nhLrBzIg3pfIAYesA5wpuDBtiFDar1fvbgAmy5s4OaPzmQhmKtJyYM8uWg2rzOou+1/KIiuiQ7/tT4NtCIoN+FPdO8ML/DXJ99M8oeeUywSutznZBAQ9vm3YL+GMQz1Gxl0QkISrnUcT6CJDrqYAdZSSXNZF7IZzctmvgNyfH2xMT+crJhAiG8LPpVYaV0B1MrS/wfZF7Bjwq0DlnIswFIkEAhJHDhpEB0dDVYfti3FzF7spgPwaureNaGTZUe7VT6bO8DdVQpGvUVcem6lTJoVPPBxRANHPJ1DpT6hW2rV8cK4F9hoSwebLyfLyWbn8jXxAocezOBFVln47I8ASjH8MDwSkOD1PGrm1sgT/+0SDHlWzZRP7c1/AOw2avRQw/jkch2ztjj64KvGs0ufFOzSXrMJHBDK4g/EcseX975oq+YM/Oz4CYL6lQR7/q6Pb30AlPa3apIHxVhDVvnD3pjK95Nt+sBhu3CEmXucZKnLOV6nXgS+qVQbusb2YN8RbgZnQxv3Jy4MVNm6aBUFMGjkdLMXtfAWaql0wLRhc6y2wujxZTpQgYXsJA1vInrkpkQmd++qe29z5Di9
+ jH8j/4rx
+ T6FQRKkIFczUoa2jBO/XUQahdLCXyPFu875yElRiGkZZE1+O7cpZAYjgagMxFnuLvgzrYrYcNaSbSh9578kYfVGpMlczfSJyQ//kVX/UN5jUCCgOyGA1frLYqCw2am2awVEy8k1x1BZNiTx2yBbMKUJ7pAjMtSJy8xiaLBH24VWyC2tK/Azpl5LQiaUEKlAG9TouqBEtWoqxD/S7KxJkaJ9UsWegIOAUM0Ort5fxDY7mv/3NVuogHUCouLord4lyAX07IJBPZciz0A52tCcE0v8jmL39YcTQx52ha/dN0ME8TBtwd3SNdjOHsb+BceDelrLoITJuREMCnPwXRpePetLNfRzeDOzrZoqigngDaVYufR9XqIDS6cwwlRbV1hXQMTY7IulsCWHJEYPMkUoRCjlfaZQozNsj9s+wS4AxWYM0ZvxLRNYqde3rr+BhcepNiKShh1bacEdMB31KjuWwMWKac/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,85 +120,56 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Chris Mason <mason@kernel.org>
 
-MADV_WILLNEED on memory in swap can OOM kill a task when the memcg that
-the swap entries are charged to is at its limit.
+A protection change on a VMA that starts at address 0 can leave an MMU
+notifier invalidation open forever.
 
-The hint is only a prefetch, so it has to give up on a page when memory
-is short. But swapin_walk_pmd_entry() and shmem_swapin_range() call
-read_swap_cache_async() with GFP_HIGHUSER_MOVABLE and with the gfp mask
-of the mapping, so the allocation and the memcg charge can both go as
-far as the OOM killer.
+Waiters for its end, such as kvm_swap_active_memslots() and
+mmu_interval_read_begin(), then sleep uninterruptibly and never wake up.
 
-The charge goes to the memcg of the swap entry, which need not be the
-caller's.
+Fix by using a boolean value to track this instead of the start address of
+the range.
 
-The fix used here is to allocate with the gfp mask of readahead, and to
-flush the block plug when a page fails. madvise_do_behavior() plugs the
-whole walk, so the swap writes of reclaim can sit in that plug. Their
-folios stay under writeback, and with no retries the rest of the range
-can fail as well.
-
-The hint can now skip pages when memory is short, whether in a memcg at
-its limit or on the system as a whole, since neither the allocation nor
-the memcg charge is retried any longer.
-
-This applies in particular where reclaim has to write to swap to make
-room. Skipped pages stay in swap until a fault reads them.
-
-Fixes: 4c6355b25e8b ("mm: memcontrol: charge swapin pages on instantiation")
+Fixes: a5338093bfb4 ("mm: move mmu notifier call from change_protection to change_pmd_range")
 Signed-off-by: Chris Mason <mason@kernel.org>
-[ ljs: commit message tweak ]
+[ ljs: commit msg tweak ]
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/madvise.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ mm/mprotect.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index ebb4ce7daf6c..8b56f7aea935 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -196,6 +196,8 @@ static int madvise_update_vma(vm_flags_t new_flags,
- static int swapin_walk_pmd_entry(pmd_t *pmd, unsigned long start,
- 		unsigned long end, struct mm_walk *walk)
- {
-+	/* Only a prefetch, as in readahead_gfp_mask() */
-+	const gfp_t gfp = GFP_HIGHUSER_MOVABLE | __GFP_NORETRY | __GFP_NOWARN;
- 	struct vm_area_struct *vma = walk->private;
- 	struct swap_io_ctx ctx = {};
- 	pte_t *ptep = NULL;
-@@ -221,10 +223,13 @@ static int swapin_walk_pmd_entry(pmd_t *pmd, unsigned long start,
- 		pte_unmap_unlock(ptep, ptl);
- 		ptep = NULL;
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index e18d4e12fc34..0f94b0287895 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -579,8 +579,7 @@ static inline long change_pud_range(struct mmu_gather *tlb,
+ 	pud_t *pudp, pud;
+ 	unsigned long next;
+ 	long pages = 0, ret;
+-
+-	range.start = 0;
++	bool notified = false;
  
--		folio = read_swap_cache_async(&ctx, entry, GFP_HIGHUSER_MOVABLE,
--					vma, addr);
--		if (folio)
-+		folio = read_swap_cache_async(&ctx, entry, gfp, vma, addr);
-+		if (folio) {
- 			folio_put(folio);
-+		} else {
-+			/* Reclaim queues its swap writes in our plug */
-+			blk_flush_plug(current->plug, false);
-+		}
- 	}
+ 	pudp = pud_offset(p4d, addr);
+ 	do {
+@@ -596,7 +595,8 @@ static inline long change_pud_range(struct mmu_gather *tlb,
+ 		if (pud_none(pud))
+ 			continue;
  
- 	if (ptep)
-@@ -267,9 +272,13 @@ static void shmem_swapin_range(struct vm_area_struct *vma,
- 		rcu_read_unlock();
+-		if (!range.start) {
++		if (!notified) {
++			notified = true;
+ 			mmu_notifier_range_init(&range,
+ 						MMU_NOTIFY_PROTECTION_VMA, 0,
+ 						vma->vm_mm, addr, end);
+@@ -624,7 +624,7 @@ static inline long change_pud_range(struct mmu_gather *tlb,
+ 					  cp_flags);
+ 	} while (pudp++, addr = next, addr != end);
  
- 		folio = read_swap_cache_async(&ctx, entry,
--				mapping_gfp_mask(mapping), vma, addr);
--		if (folio)
-+				readahead_gfp_mask(mapping), vma, addr);
-+		if (folio) {
- 			folio_put(folio);
-+		} else {
-+			/* Reclaim queues its swap writes in our plug */
-+			blk_flush_plug(current->plug, false);
-+		}
+-	if (range.start)
++	if (notified)
+ 		mmu_notifier_invalidate_range_end(&range);
  
- 		rcu_read_lock();
- 	}
+ 	return pages;
 
 -- 
 2.56.1
