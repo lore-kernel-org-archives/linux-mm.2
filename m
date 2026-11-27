@@ -1,63 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D39606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 08:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C31606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 08:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=L1aw4Yxh
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=MH3wMfsr
 Received: by kanga.kvack.org (Postfix)
-	id E47376B05B9; Fri, 27 Nov 2026 03:28:18 -0500 (EST)
+	id 965D96B05BC; Fri, 27 Nov 2026 03:28:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1F6C6B05BA; Fri, 27 Nov 2026 03:28:18 -0500 (EST)
+	id 93D876B05BD; Fri, 27 Nov 2026 03:28:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D34996B05BB; Fri, 27 Nov 2026 03:28:18 -0500 (EST)
+	id 82CA16B05BE; Fri, 27 Nov 2026 03:28:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A4C4C6B05B9
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:28:18 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E693EA7699
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:17 +0000 (UTC)
-X-FDA: 85480221834.02.0A48B26
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C155B80004
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b=L1aw4Yxh;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 64B8A6B05BC
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:28:36 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E3F3E1A023A
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:35 +0000 (UTC)
+X-FDA: 85480222590.27.5C4DB06
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0388B40008
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:32 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=126.com header.s=s110527 header.b=MH3wMfsr;
 	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine);
-	spf=pass (imf02.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.9 as permitted sender) smtp.mailfrom=nzzhao@126.com
+	spf=pass (imf17.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.8 as permitted sender) smtp.mailfrom=nzzhao@126.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795768096;
-	b=xcmhhNA2qHfYN39Lv2ZiyICkMbrENU9Un07SPmz1+z4TlMm7hlF98AteX+j1OVIcBeiP4B
-	h3DfBEaEivWxBNIJ63vadAxfnFetATSUGtRfZMMSu4uC82MHyHBUqwbV5TyOKaskz8MVG4
-	0YWBGGK5gP4iddjFNzP7oLTRckPEiUU=
+	t=1795768113;
+	b=H045L2P0cH9kEx8FbA+tfqdzqsO3r+wI+M9fEFTpYTu09eGYNBQhqrlV7FpPgvy94DTa1R
+	zU2MdglduI5lnA332G90oFCzB/U1zh1T0rckcXXmYcGYhktW4veD1gT+kv8wuGRbwnXxBR
+	bcYGDUzLk3Oe8Af8lvBBgYecJLaVj1c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795768096;
+	s=arc-20220608; t=1795768113;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mc1AjUFz08l5NWa5nSsq48XQe3osLZopmAouGxSLMYs=;
-	b=kn2XudMXKtP2zrcmZcVkN0PkpIKI1AKXRKz0kZvnIE9xYi0A9efAc8Q6UKW4WOn9yOMN6g
-	3wgfOpteZqcpJWox5a+id3MoyJzsK97krh9yqQnwo1zLnp0aL/RBBL9EzuLNBXO0C5Lyy1
-	4FuxVbC4BkVSvU6UDf8tGxLFnLHZexs=
+	bh=FelsLGm3OIsJMRghgdPAN/WSMG0jTZ6UF/BA+N/J5Dw=;
+	b=wlSxFWhHdMlPlbeiN22X6U4E5jPC/zntCJiMxBihpUtDhMAvNXOa5kNNdlS5ymib7sEWJm
+	L7m6jmT3kuTe5htemXWRQjsG42TMEnMvLLL93laiqSVKt4i7pm9XyEnbiQ4F4AbK+DSmdC
+	t8J3pbJi7DT1SzTjilnt5ffNfCb7pUM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b=L1aw4Yxh;
+	imf17.hostedemail.com;
+	dkim=pass header.d=126.com header.s=s110527 header.b=MH3wMfsr;
 	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine);
-	spf=pass (imf02.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.9 as permitted sender) smtp.mailfrom=nzzhao@126.com
+	spf=pass (imf17.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.8 as permitted sender) smtp.mailfrom=nzzhao@126.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=mc
-	1AjUFz08l5NWa5nSsq48XQe3osLZopmAouGxSLMYs=; b=L1aw4Yxh705ARFxiJM
-	L3FHnFN2FHrn27dS0jGDazV8PaUiFx5OtOhnnG5BB2E+/TzSRwcRMhVkhBAtAbjD
-	4ENm/cSy7u4dmNR/MaXDoUIvTj0jaobtFbxcbYGdGA2CRDeJnHMlMQjtHmLj+QhQ
-	rB9k+5nzhmPsp7nNTmOwCYb5M=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Fe
+	lsLGm3OIsJMRghgdPAN/WSMG0jTZ6UF/BA+N/J5Dw=; b=MH3wMfsr+91tP98ioa
+	WxBSin2xEDbztiQxdRz/prROR1Dw4i8vM7x1NWXqssBG+jWcgbtAp5MFkkBGw5Nx
+	KCRFeSdcA9i3apbeBtoofVHU+OH/i9JcmQwWWL4hNrpKyEvRBDM0XvGUnag2c6TP
+	R8WSLPQjsndIKo3PDLI3JcyW4=
 Received: from nzzhao-ThinkCentre-M760t.mioffice.cn (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3n8ToPglrpDfcDA--.16205S2;
-	Fri, 27 Nov 2026 16:27:21 +0800 (CST)
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3V+v5Pglr3S9kEA--.12822S2;
+	Fri, 27 Nov 2026 16:27:38 +0800 (CST)
 From: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
 To: sashiko-bot@kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Tangquan Zheng <zhengtangquan@oppo.com>,
 	linux-mm@kvack.org,
 	linux-block@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -80,39 +79,40 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Bala Seshasayee <bala.seshasayee@linux.intel.com>,
 	Nick Terrell <terrelln@fb.com>,
 	Barry Song <baohua@kernel.org>,
+	Tangquan Zheng <zhengtangquan@oppo.com>,
 	Bo Zhang <zhangbo56@xiaomi.com>,
 	sashiko-reviews@lists.linux.dev
-Subject: Re: [RFC PATCH v4 2/4] zram: support compression at the granularity of multi-pages
-Date: Fri, 27 Nov 2026 16:27:17 +0800
-Message-ID: <20261127082719.3624596-1-zhaonanzhe@xiaomi.com>
+Subject: Re: [RFC PATCH v4 4/4] mm: swap: allow direct reclaim for synchronous multi-page swapin
+Date: Fri, 27 Nov 2026 16:27:36 +0800
+Message-ID: <20261127082737.3625032-1-zhaonanzhe@xiaomi.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <sashiko-outbox-216089@kernel.org>
-References: <20261115024455.1465726-1-zhaonanzhe@xiaomi.com> <20261115024455.1465726-3-zhaonanzhe@xiaomi.com> <sashiko-outbox-216089@kernel.org>
+In-Reply-To: <sashiko-outbox-216091@kernel.org>
+References: <20261115024455.1465726-1-zhaonanzhe@xiaomi.com> <20261115024455.1465726-5-zhaonanzhe@xiaomi.com> <sashiko-outbox-216091@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n8ToPglrpDfcDA--.16205S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr1ftry3tr43Wr4DZw18Zrb_yoW8KF4xpF
-	WrKayFyFykJry5urn2va18Zryjk3yxGay7ZryrtryxWF1rJFy2qFy2ya1rZa4UArs7ZrZI
-	qa1Fy3y8A3yqv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UkGYLUUUUU=
-X-CM-SenderInfo: xq22xtbr6rjloofrz/xtbBsQnmtmsJPulG7gAA31
-X-Rspam-User:
-X-Stat-Signature: fyjjdj4oz4hihd3qdo8bztznwhsh7oqs
-X-Rspamd-Queue-Id: C155B80004
+X-CM-TRANSID:_____wD3V+v5Pglr3S9kEA--.12822S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CrW5WF48Aw4DtFy7trW5Jrb_yoW8GF4rpF
+	yxWFW3KFs5Xr10yFZ7ua1kGFZ8Ca93XayfGry3Wry8u345Za48ZFZ0kr1Uu3WDCwn3tanY
+	qrsIkFW7X3WqvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UkfHUUUUUU=
+X-CM-SenderInfo: xq22xtbr6rjloofrz/xtbBoxvqumsJPvvtvwAA3d
+X-Rspamd-Queue-Id: 0388B40008
 X-Rspamd-Pre-Result: action=add header;
 	module=dmarc;
 	Action set by DMARC
-X-Rspamd-Server: rspam10
+X-Stat-Signature: rourn13krsadyasbjzpgrafbwpmxd5fq
+X-Rspam-User:
 X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=no
 	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam04
 X-Rspam: Yes
-X-HE-Tag: 1795768094-339458
-X-HE-Meta: U2FsdGVkX1/wr29y9No93Gr+CUuika0ekQZbLEjgP2SwkkGP5wd0OQDF+KQZBnljNUyGRd1HZg8DubhLSLYHK+eBgLRwLLVVfiMCzvapgXJpyQwKv78J6G04btZHeVyODcpuoyONlPKyCIa3KOB6KEGXaLnav6XUXpJdmdgEwyAMOHjTmYrhKgLu5pufe5hTPs320/R9kFoyzsfaciUV7SXCmGKhOKbwJbNvs9N92hZ39lfPwdG5T/1z248isgOIHC+HwgpNJcDT+g+bmo2cJCV79pjPgcV3KlJv3P8YmLg1bT4th+J2WHfqJVUezVgqF32Vp5DU2HQETqc7KzxZWvV6S56ZpE3jeodNVbSUZFbdr3UiGF5ZeWtFbGwoCUZXR5g66fDYe5wJXBbQeLEMkGg9VlNP7E9Hcq9xd7T4x4RoMCerD6ZTZSSYrrN/hEbquKOglh8Fc5ufJvraFvHUTHN2/pB4gTdEwD6ZezQ8wID0NX7o+uIITHEagm8UnuQFL2u9HHAgo0PMooqtpeUZvW5h+PruFl3q+v+1wTTePyItPmxvcdYel2Mrc7Abh383nmd8uyayA/bRs4zdJQQM5093lbpRon8rggR+uJ8tGOZi1uIs9uFBhXWfbGcBRRjheuuJCw3oltph6ucdXMFopNuUynn26YK5dRn1awKG5o2G84UsD+mX8xuwknvVwpiwUq5094ZN9fDygSp0kM6A73a94t5zIrbgVrLtTCLB6JWsUu1eUiGqoZS+H++R4s+D0lTDy72mQRUxee6dnlRX0AtGeTxh19IHJTOFWocxAy3VBQnYAG7PCmy1yxI0ci/mp9LFnoijKh2qnSHBeYA1QHkcVC+HpaZduRJJlZm90TQSLndQVriT7BJE7MNLPbjjy2gQBVtkfsuTgp1jGo+vKFAsj5ye8J88SM5kTTRUtD4g6OnT022qIby/cykgpn5Crr0OG22geRkqkkoJxJm
- skUgqI7X
- 7o4sVSOYH/+L/LtpnGPBcYc97qvXN9hhmmTvRTV0bHH4JtRunbu6sYluafEb5eH8Y9LvB7ajitm+Zn39plIZvmRr91ZDCvqRErUMIXwhYzX52gc+vpta7bi9Lmh0fruXWBhk/CvDkRGHxsyTA0eIQdkWrJNwKMHQK/LE5ziZQRrddhBWdaokpRz/RffTg10NYdbJJYq9Efsb8NxnfbnuazJmqD6/r8y5Y84c7hrJuPl9bAcloPpcPBx9TXb9mTwyN6xZxqXsNmSBuZ9NQcE6K50Lj9f5IOeKSMGRve6fuaoW3e/AQX3/656jddrqkH+gy1zrkNGV0SZpwDJuewTYXwGNJUu8Yrkc7tmgRYX7Jak0MfG3pVb4vEQ3izOaHxx6Y6CQSlXdVxPEmFK+g6o53QNNmC9vvasa2jz93CW9RtqJob+2i+VF32A+1JWk3VBY/jn67R3mqHmIVuxIHhoZngXSBRTXP2ECE7Uz5n4bo0G29icM=
+X-HE-Tag: 1795768112-197966
+X-HE-Meta: U2FsdGVkX1/NSgUaW29SloTHnn5l80VQJ6jAhumBdgwFJK4XufRpCOKPJDp9I3IkScXijCCNh8SFWH4a5UyDnMlUdScpQzMvbhLJ+PoP0f4tq5khFPC2Jt5xCmv+qo1qUZYgrYt7bPq7/iYhtP/MVR/zAzUGlGYqD4aVBoGyPOXsV1GoKHr4tH9HMW/0IwSQDAZuzQaCqNV+BsIcFiq85qFPuv+ORK7biJOEmBiv3Hrf6/8w+5SAxpilWzuzIhsDwtPCPNxbc/KCHyCN/qDwL45iMuK5R2f5unv12oG5VkKpFXP9fstLWrg52mayRezAzxd6GS/1PNJzRjsOs2ShDwAns0Ww3WB6tR/ZLszV8/kl0GOKMIB5Bq4NdQIyGzUYEAJx5YuQEVJy1bbu15MzWrfK5vrg26dUmF8aPjPHy6YYc7XdaW5ZiWRBdZFz9rZm2DGu0RbfUN7G+Rkwo+KB7neL9xvywmAH12lzOhWK/0Sn7NkoU9Jt7J4kl1ed9OQpPkGGwgLbLjaBsoBPu+OFrNKbpnBCRNlsE5H7E8081poBX/r39fO3KfmPaayQyZBp33zqDm/sim5p7EsLmOzQI3EsNj4Rg7KnJSaNPff5hSXU6ct2jJLAxddiENEJWoCFN7fE3Ot4eC/sg5npiRcke07ZeyE6nxdvz8hIS2PI17ZfuNaTz7iU6Awrs4cJ//EszehYGIvsXtyHgqFC6l3Ktj/sZczG0M0SebBIjOJl+MlwXojFwtDayhqwBLEJJ5C0uYk0W0MuDbnhZ4s1kKuJtubhavIYPHbzg0uNcF38MGYHxGgSTMv/FCeS1w7emUY1W+angDX+bWuZqmJWy+9/RQ815eo6y3gCjwcXz+KncrX+yOtfpGCGX4oX098QkviHkUvJwXkpF6rKOADtEeffosPhcsv+hEIS1TSWkmUv4D8KmRCokNKlKLQjMXTISgrsir6pFEGXeWygnHT1Z9F
+ hELDyx6D
+ h1rM4OGx1mMrQh52ifJ1bihvF5j4gNq3ofbwzH1fCy3/LlkbZf4Sgs67bWMEfXeaVm8SOo/4HnDPhl5IiaDM0ncHBAffQ/OWdLG5mo+R7kjvv6hrO5BBy5gHcbr3lEiq22LZBNGgURzcRZB6YFG49fdN+9QyCrrVzkAJznx8wq3HmX7cG7eTOcWgluqoqY+rMgfSve5uYrzAbIKECExMC7OMD+vvhWyQMz0+iDB2FmS6FSFNgoVUPSD1+UBTPxYIH8R+WZzeH0tyGfhnIi0oAhanLjZ0xmIic1Hh3HwjdK50VQLrChaUok3QN7TcCFFCaBlKviiWpHsebYbpJHeWBN+ACrs2kiEBlBg9j6tFjfEPIiKOGCc3KHS8fErznVw0YoCLbURoO8fdBk4t+ceBze+S2oknfIHb4jbISzCOOgcT0XpsleVZT6TurDvufQ/LlJrLlSnhX+AgMyd6BgRF/n8dXq22KfjyOh/1USOWrAWKXZPQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,53 +122,33 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 > [Severity: High]
-> Can concurrent zram_slot_free_notify() calls on sibling sub-slots leak the
-> multi-page object?
+> Can setting __GFP_RECLAIM without __GFP_NORETRY or __GFP_RETRY_MAYFAIL
+> trigger premature OOM kills on order-2 swapin faults instead of falling
+> back to order 0?
+
+Agreed.
+
+> [Severity: Medium]
+> Should __swap_cache_alloc() unconditionally override the GFP mask for
+> order 2 here?
 >
-> __test_multi_pages_comp() counts ZRAM_COMP_MULTI_PAGES across the group
-> while only holding slot_trylock(zram, index) on the current sub-slot:
-> ...
-> In addition, when comp_count == 1, clearing ZRAM_COMP_MULTI_PAGES and
-> unlocking index before slot_trylock(zram, head) means that if
-> slot_trylock(zram, head) fails, the last ZRAM_COMP_MULTI_PAGES flag has
-> already been cleared, and another CPU can also reallocate and write to
-> head in the unlocked window before slot_trylock(zram, head) runs.
+> __swap_cache_alloc() is shared by all swap devices even when zram or
+> CONFIG_ZRAM_MULTI_PAGES is not used, and when multi-page compression is
+> enabled its order is configured via CONFIG_ZSMALLOC_MULTI_PAGES_ORDER
+> (1..9) rather than hardcoded to 2.  Or'ing __GFP_RECLAIM after
+> thp_shmem_limit_gfp_mask(vma_thp_gfp_mask(vma), gfp) also overrides
+> defrag=never/defer and caller GFP restrictions, and placing it only in the
+> else branch leaves out the mpol path while causing shmem_fault() swapins
+> to behave differently between CONFIG_NUMA=y (where
+> shmem_get_pgoff_policy() returns a non-NULL policy) and CONFIG_NUMA=n
+> (where it returns NULL).
 
-These are valid issues. The locking and lifecycle model for compound slots in
-v4 had inconsistent semantics between slot_free() and slot_free_notify(), and
-lacked a unified locking boundary across sub-slots. I will redesign the
-concurrency model for multi-page slots in the next RFC version.
+This patch was an RFC-stage exploration specifically targeting synchronous
+in-memory swap devices (zram) at order 2 (16 KiB mTHP, the primary
+compression granularity), to evaluate whether allowing direct reclaim could
+avoid the partial read caused by order-0 fallback.
 
-> [Severity: High]
-> Does setting ZRAM_COMP_MULTI_PAGES on index + 1 .. index + nr_pages - 1
-> without locking or freeing those tail slots corrupt the slot bit-lock and
-> leak existing objects?
->
-> zram_write_page(), write_same_filled_page(), and
-> write_incompressible_page() only lock and call slot_free() on the head
-> slot index:
->
-> 1. Because table[index + i].attr.flags aliases table[index + i].__lock,
->    the unlocked non-atomic |= in set_slot_flag(zram, index + i, ...) races
->    with concurrent slot_lock() / slot_unlock() on tail slots and can
->    corrupt ZRAM_ENTRY_LOCK_BIT, hanging waiters in wait_on_bit_lock().
-> 2. Any single-page zsmalloc handles already stored in the tail slots are
->    never freed before ZRAM_COMP_MULTI_PAGES is set on them, leaking those
->    objects.
-
-Same here.
-
-> [Severity: High]
-> Can two concurrent partial writes to different sub-slots in the same
-> multi-page group overwrite each other?
->
-> zram_read_page_size() unlocks slot_lock(zram, index) after reading the
-> multi-page into the temporary page, and zram_write_page() only re-acquires
-> slot_lock(zram, index) after compressing the updated buffer.  If two CPUs
-> concurrently perform partial writes to different offsets of the same head
-> index, both read the old multi-page before either writes back, so the
-> second writer overwrites the first writer's sub-page with stale data.
-
-Same here.
+I wanted to raise this point for discussion first in the RFC, and will explore
+more generic approaches going forward.
 
 
