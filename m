@@ -1,135 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CA0606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 09:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3A9606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 09:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=FykKSO4D
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UDO58cDw
 Received: by kanga.kvack.org (Postfix)
-	id CD0BC6B05D5; Fri, 27 Nov 2026 04:26:44 -0500 (EST)
+	id 03BAF6B05CE; Fri, 27 Nov 2026 04:37:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA7A86B05D7; Fri, 27 Nov 2026 04:26:44 -0500 (EST)
+	id F2EF56B05D0; Fri, 27 Nov 2026 04:37:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC2A66B05D8; Fri, 27 Nov 2026 04:26:44 -0500 (EST)
+	id E1D286B05D2; Fri, 27 Nov 2026 04:37:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99EB66B05D5
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:26:44 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 161D9A74BC
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:26:41 +0000 (UTC)
-X-FDA: 85480369002.03.3CEF740
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 11B1E1C0004
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:26:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FykKSO4D;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC6CD6B05CE
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:37:38 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A5F4A1A0275
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:37:37 +0000 (UTC)
+X-FDA: 85480396554.01.96D8374
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id AA6C5140003
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:37:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=UDO58cDw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795771599;
-	b=qCSfmLFir6RuZB+Yt17MvpdMHIUJJ5rVR7Ho+OjbxEqQb2V6eDqIBdYj6ntJpEkL2hUS/l
-	tliZzsuqeK9sGSkzgXJ22xA1IQSa4qXNXlVBDyY5aaeezNpFe1theRyri8mYETfl6cUpvs
-	XOzi4fWWN5VW3IrwEco+JUF4kukeVn0=
+	t=1795772255;
+	b=xLX96j8FirKbO5P4MGiwXd3MkGaD3CfYnmFUWdrv3d8/2pAwCnUYHmWfWbH+bFb5TBt5Tl
+	0RKJRJQgH2v1qiTcFAtLjxScUt5eGdiUnkLyaEMGMoDX/DrDT1FWUKj/lh6m0mhICkOs9C
+	7oeZOPpEU8JsaoirL22ZfVK/8EJPOzE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795771599;
+	s=arc-20220608; t=1795772255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hoxVon0gybDyq4RET65wbSko4AYZRSn5g8mIkbvH3EY=;
-	b=lMm2e9mN9rzqlJ0A1eoIV66kVOM32516hKr1d7aCwCb315cRXF8FOZR/q7CdYQzjw4KRR1
-	vix4LbU2A5zqWmuRx2KtLNlMIP3vsrGwvl5soh/LbICKLu+m8suDlKs8i98/UZaElCqr7K
-	kdzgkdjeoyuZcFZHSsC2ojCB1tXfeak=
+	bh=mycMiyzXx6bIeUm7MdqzGyNDFpDgTu4MeaLSplHBqT0=;
+	b=HjZocymVpYAe2BoiCFNIF8PusF+ZfAuyNPf6aUzeHA5vBckySw1YDfA+zc+UYHsH2IiYji
+	9A20rn1ooEzUgNNchOr0E2Z8ypMR0fBwcqgfmCENfIjtujsgDw7uF0wRvvOC5gI3OlN5Qd
+	aoZep2B4NTGWYh1RPT3wheGoPFTOBGQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FykKSO4D;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4bb606491faso41516805e9.3
-        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:26:38 -0800 (PST)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=UDO58cDw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4bb61185057so50484825e9.1
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:37:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1795771598; x=1796376398; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hoxVon0gybDyq4RET65wbSko4AYZRSn5g8mIkbvH3EY=;
-        b=FykKSO4D68nMRw1MJjaauAMsPHraO62GbzsTUG+uqQizzWMDB7lk9UYbwlWdw0pBt3
-         EliaR49TEfrI/DP4lhNMlAxWDsvCt/MZ/Tbp8MJnYq5RS2I19Ir75nHeogg8SsTyxsr0
-         zxgrYCoT/hwPz7+Bd48bptW2GTYkBPGmAQQyh3HfqIuoM03Qh3ESpxGpjW+M5hJaSyh2
-         bt4FpdAT7wOzoW/O6QHLyCLMnVVx2Kbp6UsBiCeO/iUfGqUmPS5vJhJ2QjX8a0URucus
-         trO6UHiuRvbrB54j6gyTpLH0yG9HueUNQZysBTk2+zKfGWI2knh0K126sFsGu9C1KSiB
-         IhdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795771598; x=1796376398;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1795772254; x=1796377054; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hoxVon0gybDyq4RET65wbSko4AYZRSn5g8mIkbvH3EY=;
-        b=b2mbY4nTbg/pkNJ9OMysrOUyIgRTi9J5VPM/QTihmbHN5DwMfPUVvAKC2SwE41NfCk
-         kWFRzQypcK8LVTavNmvQNywfvJmyZJVg0pGt/VBGCINM5p2wLXnOZHy7YXw+h9K5NmPj
-         w2nCsk3fttovRZLKmG/Ds3osG/IoObgaUvL7/nKb2JffxaaZq0aMxgIOlukY21dW/UCO
-         HIKQ6VyyggcJctYkBuZ0bWa4tTgNroUZR+GdpDcrfpAmOQXE20CW0oZ9jUIyI+dfAB+I
-         Qbwf08ayk6DTJpawwLFyVUrIZTZ2baauqOmV8vyhdfVeOuBqYdNV5CbTJwx19BUrcQ6P
-         CzQg==
-X-Forwarded-Encrypted: i=1; AL+hErFk0InqLWjTDs+pA+DqQEcMf8hRP9Xnnckvsr/mC30UTqvxK8uFuihrpsqvw86PstfH0FtUI3zLiA==@kvack.org
-X-Gm-Message-State: APuU4Z+zr2hlCRkZW1PEtYEU57enuHd/+iAkopO39NzBe5NNLuuk9Adz
-	SP4JtyOkhJq08WAHdyDO4rPshfy/Ebo1R70c16Gmb4uOAzjkWG7e1Si83YhWNxZHPDc=
-X-Gm-Gg: AZFdTZcz7eoZa6K4pWE94UhRkugXakMDFTLNALfoA+VXh3L/b4Rr/4qM4bJZnYDQzIM
-	Z4z4+pHJ3hJmWceHFRLuXxNwLURLbV7lNxziq9Q7e0ZsNBqfEHOYQFldpOePUtXV/Y+77wqnZa1
-	wEm2IAWmk+YlzkEZybBFt45nNfo4WnJeGosrLAONI7kM/PltLmFr0/ngEQL0ciJeuTzB6MpOYs0
-	9AdliQv5Rt+oaJHxtaL3nnlfnoyrvs/gczGNOj4mvV+mpskas8WVJEljbjHTAaK9xB70ofM5LpR
-	01+yqVAxRh9SkZmZV2zx9WiYGKeBu7tlObfJp+JDvSqR74QmqvFuq939+CrVSF8yvsfDE3uyMRk
-	PLrAOmO0vGfeThzBz81zzv/dda0barPyXhzr9S7XZfbX2faaWFReCvCJlC5B/6daeNTWV/1DwFV
-	XXV1V0v8dQlHgtKGWWlgayx4HgNQvuCmpar91tMtj2pXQYla+LYC5JAUwy4AUC9lS1m5vpPr4F9
-	2C0RCPCxlOp1kW9jyJINtBGls/+sudqyxDHUHptP/EQyEU8uDXY3tnFTWU9OKEpIbx2Ohb/7lJK
-	XmK93tzmup0U6ibkDco5FyDoQDl615GEl+pXBfI7
-X-Received: by 2002:a05:600c:3ba5:b0:4b0:a307:46f8 with SMTP id 5b1f17b1804b1-4bb8880f29bmr537393335e9.10.1795771597616;
-        Fri, 27 Nov 2026 01:26:37 -0800 (PST)
-Received: from localhost (109-81-21-11.rct.o2.cz. [109.81.21.11])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab658e2e6dsm44430440f8f.6.2026.11.27.01.26.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 01:26:37 -0800 (PST)
-Date: Fri, 27 Nov 2026 10:26:36 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-	Greg Thelen <gthelen@google.com>, Greg KH <greg@kroah.com>,
-	Ming Lei <tom.leiming@gmail.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND] mm/vmscan: Fix legacy memcg reclaim deadlock
- against filesystem freeze
-Message-ID: <awlMzHMo6_Vj7gmq@tiehlicka>
-References: <17d0d1395c0237d201a1abb2473d51f5@kernel.org>
- <f188775aea9580f9ab2b477788503434@kernel.org>
- <20261126180228.9b672a945d480e3d3f301985@linux-foundation.org>
+        bh=mycMiyzXx6bIeUm7MdqzGyNDFpDgTu4MeaLSplHBqT0=;
+        b=UDO58cDwI3FUKOKk3qd2lsEMXCvkvJrFUny8SY6b5xsm6yS5MEngr+7/+mL1EJ7QQi
+         KEuS18qYuX3wymLwjOwTPDRp0McsKhR7g5AA1ms9AyN0t+VzznHTg8XzmwtLm7qqvZTr
+         +4HTRaIYxuN8Uj1LhhD2rm9csFRzBKbaBFwl/OKg5ZUG7ktQl1sSUV5JF+rVVNiaik/b
+         0V70MNUSHGMpcEbnq4T9AhtYq8pPDbCYJRGZVX7oyUk1HWmtf2b8b+KCKUQ+ATN0jS8I
+         2Rq2Z5vgm5UPVYy7wDhVI05J4jRifd6aUa6xKpYSEkQLrfFzNxLfpjGPaIpSZWNe2L0b
+         S1Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795772254; x=1796377054;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mycMiyzXx6bIeUm7MdqzGyNDFpDgTu4MeaLSplHBqT0=;
+        b=w/7U7mByQ/zWiaIEDlLOYYWeZaQERwfov4OU7I4ehnPC/QNoS80Bx7TLWyAz9ZlVAZ
+         L0nxglAaDlmU5dibH8vs8sqRTBXn3fZX4i4qmSFql4g+r3B7He7mcbLj9s3tSM7Z3B/A
+         w6Lj0HqkA/O4YyVwPcF0tB0mkNXHNLe0jxgjGezXK7kfjqtFOurp5HCXCCvPESnKzJqr
+         EcPAn+R32c0K0WSqCxYl8fcgwNxlhidcmvkWPQigYjYZUlu2NfiRleZ4LBy6Ax1CaRBX
+         2iZ3wlBvAuswMtK+G/y7fw2W3KucLegDZDxJcmv1W1z3IhapXqDfeB3ZRNvwBRDRf7Kg
+         30HA==
+X-Forwarded-Encrypted: i=1; AL+hErG38TmeUYzyJZA2t/f7QHTdj/EFDvkZEhQzTIjEvLW54zluUXSq7jnqmmWINRcj57m4DUdw/MbOgw==@kvack.org
+X-Gm-Message-State: APuU4Z/M9Tfv5w5TzM0HShswQqapU+S/P1plEjiOKDeZzXg8ALXuf1ae
+	w+NREeiRyH84+iZ5s44Vdzk+3odUOqA1+KSuFW4pN7VyE3jgkBOXeeOs
+X-Gm-Gg: AZFdTZfbS7NQr2j5OIr5jD3ExMLo088BZafPaVKcBUI+0+/0JZJNlH2uNTJXvGKJrRn
+	MiN2ENV6Dq7Nsb0WcQa7bcRTf5l95u6vyzvKovMw2L4Ysyosuuat/Fd0CTS4MslBAfB7jrKhlSI
+	FdclTCjhxnEuzjFEdmO6trmUrrZi1T6Slm/C1naapyn7BemB+6bfPiz9+g58N4CGSVlTYgPwRAJ
+	+Gsb1YkrGNlgG6YZPq5XVOgmuYwsBiX8GLz1iWgKeYC8ygb+SmMi9SWgAbvRJbSNKQHMlYMYU8J
+	68mW0MYrtw4u1B6T7kw2VKiP4NCX19llSn0Njn8kRByxmPOxazAVgdMj5X5wQFEX8ED0BEkkoht
+	ImC34FYLOOHukuLLxlIKBXbmpscXg5X3FVecH/PX/qZ25OIpzbA++JPENPOS3RW86zEV50o9NPq
+	IkDnW8hBGEvH2cQHEmPkStchm3SedSBORaoqQo0UTV145jrXJlLyhtap//6e4TZqzcrDI13/IGp
+	y126evS0bjF5ZUFfmveGR6i3S0uWYp8iHrGFZrWwgLWBuV9a8d2Rt1SIWN6h19b8zlzpRx6SG5y
+	r03InvxeEOdn2Qj10OefjtZ/v3Y9TXQoHGSohNhV/p9xqg==
+X-Received: by 2002:a05:600c:5306:b0:4bb:6ac0:6dc1 with SMTP id 5b1f17b1804b1-4bb887c994cmr473012775e9.2.1795772254179;
+        Fri, 27 Nov 2026 01:37:34 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm663915205e9.1.2026.11.27.01.37.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Nov 2026 01:37:33 -0800 (PST)
+Message-ID: <efee4fa3-b49e-445d-b1db-624ea589efdb@gmail.com>
+Date: Fri, 27 Nov 2026 10:37:32 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261126180228.9b672a945d480e3d3f301985@linux-foundation.org>
-X-Stat-Signature: 9c4geq9ioia7aazkoopmtt98i47kxzc6
-X-Rspamd-Queue-Id: 11B1E1C0004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hugetlb: serialize subpool release with folio reserve
+ restoration
+To: Aveline Noir <jm5905938@gmail.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org
+References: <20261125-hugetlb-subpool-release-v1-1-7398c24d09b0@gmail.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261125-hugetlb-subpool-release-v1-1-7398c24d09b0@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: u4ebwz8shoj3o7b7ooftudfqzmcj9zw1
+X-Rspamd-Queue-Id: AA6C5140003
 X-Rspam-User:
 X-Rspamd-Server: rspam03
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795771598-951421
-X-HE-Meta: U2FsdGVkX1+VJKHqH2xjtUIL/DmhOSf12doKHRr5iBYdnAJN5PPTIU5tohCRBh5pZWBmS/6blEOovT561owSPOHusDM9SNRpHnUUPIU2rigWu9BaTVeXEJuX32ORdmkxMUM+fJlA0bJiqOBLWFkIoeqksdkt+VGb6hTAZT8V9a/+vT2uElBHWvhLbt8wuUP6G2rbxT7Vq1MnFtNCxMHBEeodn2j4MfA/Z0nkBN1+rFl4wp2RtA+lUayycqDeemk9HhzQE+dhN4cla5lpZ1u432Y6HQ3EqJKrCzJ0v8ev0RjlQucNBZrYQn4faLFAh6LbIrJfN1gJz7qowmBTutY3WcIj2ajH0L9OdNrPWrtJlitqTQ/au0tmH8vUJKu6SczUkT7WO0WXWbO7P43puNdpoF9oLWLUQqSgk1PttD0XYrsHBIUbcS1haxEcEre/6h0KI99mNkjDZel98MLuWgZhnOk37w8hMhjR6Q0llDrAc3PGIcFNPKyZE5ttqt3lKp0hPqVb2oHBGLguPbZyPNplIpXxsm5qH52jemQPIPNAXnhdHS9KEc7YePsxUUJ7rWuwH1y1FsHTmuye4DXqKaoPxs2l51r3gYl+zzs+KQgXHI9McdPQ/AgzgBOx7PkGSucS63m96ElvHR1l6x+rb0tBskAmDmqsERYHFN5HqiIGLhAzCep4kbv3kURu+33VWjb1cnHhu6Oa7vyNp42voQijL6kCimAFvPBDkfqpJJuSRUBdDJYVngR2Y8Jww8Z73WympS6s7XEGbVOR2paZ9NjMBhePosJiaXWq9+LOW+e8KKC9/2kFFttxqN6mbx0lsmSKpck+cMAZA0f6KsDTwLzAUYri6md4Ec6igjEA2zmdo4B9hm5/ZwW6wBCPjj+mu0+dsO5rJl05IbidHj27p7gEXgOsbYSjpgIxLnRr2lkGQO1wuIXFI5v08R1iXBEPo44KtF+mnB52NF1qa0nMb6E
- 5GD/JlcN
- kJY3E7vo7EKjeTzLZnocGBYcLTUXanGM0plOCYUncLtAe0mv1RfMOoXfDzEzLkSP9cv9o0SzHVBN8wJwQmOJ136l34pezgnPka29GKTfCAhkflSL6cULYIFtNiqXKIftIp4x1dinsaACW/mf6W7htDF9REirHGVZElY83N7eSZTK5HRylikx55YSf14OrRlNoa7VdcXOm5WKPGQVN+0j8h5OhBi88aqR2oS40Ftf+Utn5iFKDLLRJJsFxi41eFzzvs+jRMKz23J+hitM/aI1+t2ToxlO1KgF3XBUP4g/vn0okGnuXxDvklfhHlFHvm1mhiWd70xu8p6YCHzSnh9PF0cUPq06Jsx+yRA7V9BtMQmC1F59Y6D6tyO2fGz8Ky2M4OCC6mdERlls+PMKshFMi8q5mU6E7lEoY1PvhFKUMvYQtgb6jn+jfBGYByFBdiS11vePUiFLZYy+aXdt19XJa/XNIIAgpYHOZuMQqufY8J+fWkCHgjSbg28KlECAk6ZLj5j5VYkKawMU9wX76LC/cZlnWteTvIvxj+inPd5kjoBjn/rBL/P8vsQEeWkABfDckD0MKGB3F+endaDzqhqzFT0UugdoTckH0T6gknCE1T2bvixoP7MHZuUSrtsHLeS2tqsGUwYVN835ThoqSPyDK0WXj7bUynQlTec73sUekeNwZIik=
+X-HE-Tag: 1795772255-332329
+X-HE-Meta: U2FsdGVkX18lLNqgFgncDU8ra42zjWpbvpJDE3qLaBa/RotSSeHTaDEc4SeAYNkZBlcu77KEvehBVMSJ053PPopV7KPGAyTYAbnWWFyIGmpfqH2HJp3UfqSv//pbcy7fJvjuhKcsmBmENtOsWG7+FEiPgdKweVqgc3pn5jdH4xP24HCzSa1OVyzGH82rwYNBjDb7DleKuR02Nm3lgUiFmfkIOir4MofLGmNRO+qY8SqjSz3VMs5PUeVIQbZ8ay/DYtZaM8PQ96JzT8p1UxkO2AnmS5EP8SyWEge6kYV/Cphxo4XCtQyC3LB72qzTRdSnS3ZvBVrS/JGWGBnYEA+v/q+XjWXscqI8owsRlY83u7YsQjLrGEsJQT8kcfNWIWoS0dgKuXpfR33ickE75WmBZyT0hp6gV7/kBTs3FY4E2wbIcnzA0ptkgOoWmGDBF7lGLdDU+xp3EYrK4qknBc2FR1kwcknKIvvq6313+K9UEmVvc/A4JjjKjZi6GUCN+WpC/yTgxyLlJX6phKLDaSorf2u8ESixv/UsArpLKpfI67QypDF1i6vYaUx4OEHPAaOFzdpWfLT47zDhzvTxotHYuP3X/AFroBEtZwP9/OAl4WHyy1HfQ4oIBROxf7bzi9NQd+6yUUlZXNzsYz05HB1pLcPduggc3ZnRbR+kmUHPDkPvn7a+qmc8I9FII4+dA+qSadk7Z8f2aLsrCG+PpGvfaZfrV0HHeiw8jLMMYZtM5sDSwczANsKQWS9Or1zk2e11i+E18iKK54jwe9qNe7N6SgKi8Lx+5dko5Fbb/sxl1FRqrQqRDiCZjUb6lk21ZL5fJiFW0TD5DNDKiIIHIVgP2vSqQUnsaeQV7CxBMZWWX0P5z4/YGFRjPipIk8CM7OeHmsygHF65Mbsby3K5z9y7MQITqeYktYzWXip2EFkjoA4oiOv1Qc4meXZgPE+HoY/MKU9rZAkFhuYBC8BRgCm
+ 3YVgpNy+
+ 6w6FKgGSBRgzziKAadSHwwAWQt29mKGRd8WLMRgPqgmp+6O9FYK/4je/+HjQqP0qWXa8DnlGRbNI6+V0GbtAtyHCeoW0gs1jKryZuUA39OxGsBmKasM8EBPbcKTLEDOJf6g8Kb80vIHhlC9r+sqOjFKf0kINgoBvV/CUxPVehkbYb0/rWdIt02Y7SspTwsDxd/WSDcqJCKK90qTakhMK69rFVTJjj84vBU0sAiWBUZVeZofKoEYpJM8ocvyFYpxAzc1Q6TqFi2fOzTjw2wLhH89f8kd4Nq+5Kw/hgM97wKeTMIU6ZgR7CRNpcYPjDGSR+09sX79XEsBNcTdNMBGkPjhZe7E+0/A9W+S9WBbb5wQoHr8X5Kg4FEXb/X2E3zfdwJNFSvMkoCFIp9DHdqTpbeXahvNFGhrLjhEZFOJ/EeHO8oS8t/yXraeW/wSEo/5EMpKkN+iYWxueRjHzp6KmXD1eho86sxXKPNMQfjIg6rKzF0okXm+3p9a8GhPmMNDfpq8PxSctN96EO8ZNf4LLS8rFmPYo8oJJqSgmEzfq4TPrT+ob4lg42uLwsQ01jjnMijl0scHoUY7Y4pyt1WvTYAIYKuuaBwyJqkPhqbViiIBtL09hlpewUG8oeSANKRm2AnqPZKzYCxrT9r6iQFO1S8v7ihgqHA0PG7BalYoMxhKNheJhvo5SwHmv3+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,26 +130,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu 26-11-26 18:02:28, Andrew Morton wrote:
-> On Thu, 26 Nov 2026 02:17:38 -1000 Tejun Heo <tj@kernel.org> wrote:
+On 11/25/26 9:28 AM, Aveline Noir wrote:
+> Freeing the last folio of an unmounted min_size subpool can invoke
+> hugetlb_acct_memory() from atomic folio_put() context, where its IRQ
+> and bulk-freeing paths may enable interrupts, reschedule, or allocate
+> vmemmap pages.
 > 
-> > Hello, Andrew.
-> > 
-> > Your follow-up, "mm/vmscan: scope freeze writeback skip to the reclaim
-> > target", applies on top of this patch and tests fine here.
+> In addition, the subpool minimum is released before the folio's
+> reservation is restored, transiently underflowing resv_huge_pages. A
+> concurrent allocation can consume the refilled subpool reservation, or
+> unmount can release it, before the global counter is restored. Under the
+> available_huge_pages() clamp, this underflow also prevents collecting
+> unused surplus folios.
 > 
-> Cool, thanks.  I'd forgotten about that ;) It was a hastily slop-coded
-> "maybe you'd like to include something like this in your patch" thing.
+> For positive minima, take hugetlb_lock before dropping spool->lock and
+> restore the folio reservation, release the minimum, and collect surplus
+> folios in a single transaction. Keep subpool accounting outside
+> hugetlb_lock, leave size-only and zero-minimum puts unnested, free
+> collected folios outside the locks via the atomic-safe path (which
+> defers HVO work), and skip zero-sized minimum releases that need no
+> global accounting.
 > 
-> Can people please take a look and suggest whether it should be a
-> standalone patch, or just fold it into this patch, "mm/vmscan: Fix
-> legacy memcg reclaim deadlock against filesystem freeze"?
 
-standalone patch. And quite honestly I am not convinced we need this.
-Let's see what other memcg maintainers think but I would keep the global
-thing as this is a global situation.
+makes sense to me.
+
+> The ordering came from 1c5ecae3a93f; the commit below made it reachable
+> by enabling min_size and releasing its reservation on subpool teardown.
+> 
+> Fixes: 7ca02d0ae586 ("hugetlbfs: accept subpool min_size mount option and setup accordingly")
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+
+LGTM so:
+
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
 -- 
-Michal Hocko
-SUSE Labs
+cheers,
+jose a. p-a
 
