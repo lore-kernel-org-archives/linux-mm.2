@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA82D606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 22:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04E1606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 22:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PHVgZtVZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N97Ok2bp
 Received: by kanga.kvack.org (Postfix)
-	id E32B66B05B0; Fri, 27 Nov 2026 17:33:36 -0500 (EST)
+	id 118806B05B2; Fri, 27 Nov 2026 17:35:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0A626B05B1; Fri, 27 Nov 2026 17:33:36 -0500 (EST)
+	id 0CA366B05B3; Fri, 27 Nov 2026 17:35:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4ABE6B05B2; Fri, 27 Nov 2026 17:33:36 -0500 (EST)
+	id F21A66B05B5; Fri, 27 Nov 2026 17:35:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B07256B05B0
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:33:36 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2FF6B1A051D
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:33:36 +0000 (UTC)
-X-FDA: 85482352032.30.4030953
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9315240009
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:33:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PHVgZtVZ;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D056C6B05B2
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:35:57 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6DA2F160514
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:35:57 +0000 (UTC)
+X-FDA: 85482357954.18.FEB5941
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C2CE22000A
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:35:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N97Ok2bp;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795818814;
-	b=cdG953fAwTZ5rQxj4br5h0Z1SKFxKT/YAiIef53FA57EcL1N3C+5AJ2K2heTlPRp5WozJt
-	i46/j6VsY5sSBb8X2EnTL6ueROSyhdT6n0/rg12D3LKY0SU3HtNm9AmE8HTTvNbroRhExm
-	RL2Sr7RRjkuYR1Ay5MrOVaGJjGtnE5E=
+	t=1795818955;
+	b=rjv6GMbhM8m8yr+fHQ469DJjEpeYbQJgCLbikqE8SZKypPoyRFhMeMWxhLY3B6TECnLUw3
+	PBKdSYoUKdk95WXqQV4oDCohn2H9+LyIbJD9jaWhnwHJGvfgfxIIRkU60/VeDxKnLR25xj
+	7v1/9LqsHead08B+ZyzFZKCg0VTW4t0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795818814;
+	s=arc-20220608; t=1795818955;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IVmY0pCpM6LntaMWmUr3NRIGkIMDmQmHgaKoV3DNWuM=;
-	b=TldNcGChiMpWc6MZBFBm+5n/v3tAR+/++nWl9BHCwZNkeYObCVrZGlTKhRmGvZLN3fZ32Z
-	+oVYoc2wFQQBeCfkITIWSJCxnCmGag580HoziVzfA+HOZLvNniIbnHbEs9R6Y38Fpv1BGj
-	1T8FQ2bqHS3zMsr74qNAs+4Ix4LpFSo=
+	bh=dzF317K6KqDBv+rHBv9bV3+7O0cBP4sxEFIupvQMWVA=;
+	b=YH/rFJrTV2P7hHMmudZcqU+1VWGg+mjNgdfVOR4BnibUaNtpLe0VoHiHgz3qhH8uEbHyqd
+	eSfrnVen6ps/rGDZR+dUn5jluh4u+2owyRj3oRXuNNac3vjKwNRBcolcZ8DMcYxLIXhtH+
+	kJhEmWSLL//lRKuTHepoXUnRRNZjaMk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PHVgZtVZ;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N97Ok2bp;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C9B4044274;
-	Fri, 27 Nov 2026 22:33:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824311F000C1;
-	Fri, 27 Nov 2026 22:33:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CA03C60CFB;
+	Fri, 27 Nov 2026 22:35:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563EA1F000C1;
+	Fri, 27 Nov 2026 22:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795818813;
-	bh=IVmY0pCpM6LntaMWmUr3NRIGkIMDmQmHgaKoV3DNWuM=;
+	s=k20260515; t=1795818954;
+	bh=dzF317K6KqDBv+rHBv9bV3+7O0cBP4sxEFIupvQMWVA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PHVgZtVZXHuord/NHnQH7Ls7JKGChInZ5aFM2i1Dv6Gjslb0wreWcmFAMHixFmiYL
-	 l2rCt5+dbyOmrJF1HcI7EmDvoh3lBNDCfiZo4UtLba5tUE5VGFe9bC7U/FKU57GNDr
-	 43mgfjxujA5Hm1tMG4xFt/q/8lIAUeU4X+On5d/kV/91YK+R4C6WtlJRFAb3mYZZ20
-	 e8Hg9pjM4dPZ6JRq+xen7GrYUf9C48R+NLNPsxYTP05lESlg1ovsE+/8q3UUCgrmP0
-	 vv1BOO0htKfdqNkJJhgpcp6Hm22PfrgyskbIHfua2Gvm5M7tzIWgWOBG9di4LmF0+h
-	 t1+72JqgEhshg==
-Message-ID: <sashiko-outbox-238332@kernel.org>
+	b=N97Ok2bpSbtbpvw8SFOg8pmPmUYycOcIkyqzhFPD9FnA4BQ/FrNBQYgVuziSteeNH
+	 /9zRQF3nsTNx2bAFiGakWnyixf8X3884ZaY4Xc5L4tkwvcgOCXKjO4RkxEmEooWMj5
+	 wKOu4bRbdBOZU2WATujGqJw/eGHXnfG98kC8f3hqKjUWjV9DXBinpHXUCnkiL2H1XZ
+	 tQKGektu9F1BJlf4KzPtn6bhF8covbfwMsPhlMFInKLrpcanbTra7rEPgeHS39WO6x
+	 GBb5DfI9rye+KgWc8LGtCcj0+uWSt1SygCdXQvdGxBeFLMcHxeRFASf5qHawLf85RR
+	 f1cDs+OkN61oQ==
+Message-ID: <sashiko-outbox-238334@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 2/7] mm/damon/vaddr: use damos->last_applied for
- migrate action
+Subject: Re: [RFC PATCH v3 3/7] mm/damon/vaddr: implement sz_filter_passed
+ for migrate_{hot,cold} action
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "SJ Park" <sj@kernel.org>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
-In-Reply-To: <20261127222719.105510-3-sj@kernel.org>
+In-Reply-To: <20261127222719.105510-4-sj@kernel.org>
 References: <20261127222719.105510-1-sj@kernel.org>
- <20261127222719.105510-3-sj@kernel.org>
+ <20261127222719.105510-4-sj@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Nov 2026 22:33:33 +0000
+Date: Fri, 27 Nov 2026 22:35:53 +0000
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9315240009
+X-Rspamd-Queue-Id: C2CE22000A
 X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: 8ns4gzibteuksmbsf5g5ycj35bsys89e
-X-HE-Tag: 1795818814-200215
-X-HE-Meta: U2FsdGVkX1+U2BC71NlLt9MpXM9gnww3zMMLrOyvza5OB1GiqNXjFdUUau4LcoWrylp/meqeH5XStcLWo4r0RvpgA6+ONd9VLODHuucXPyLol0/bo8wlXGwXKmBiKMfHRmaZroWgW88RBw3OzKS8T0/Uh5BKWqeXx9ojcFqgrQvx9l/lop47D6e7sqQlNOefVhMQmb/b/oU+x1ug6l4nYVDlj42uT+875x4Gjnwz/SV9+Fb//x+PTjBR9uHHTyCpYlPO/CZ20hYc31cf7YPrqPxusvndBP3QlzjHtNloUsvTwHuX2m1o0Qy/UQNe+V0CWpIu0JTUH0pNm31qzb1g7VSnj5jsnlqhU0yASRq2GHOs0jKhVZR9hmcmMl/GTk90kev7oHT5ceadnU8qQZKt5v7o8rK1tatdUfL0lvAu+xvrjhrSa+wUli2iTw5rxgWSgxVQtA6g+fluOyFZR+TZpSp8ZOBqc6QIK140qVWZyVfb3R8ERr9MG5nhleALOKuCQaBzQgFMIE0GeDsQv0rGWZhMTb5NiLeQq1bO5/CNdpJ9V1GRguhsAGUNANrTvLpEbP9aDQ2UXFagqsHgeisRJjmqSY9l8F3dMQFEg1CucX3MR+nYuR0lifnx/8IEnFLA0TfrhGWj/ZQmWaz1+ZPvY5IE8m/4eFn69nDM+aBj4ogkgui1GlfkFS68hvIFh9HiZh9XmdgIoHv5/0emKQmj+9TWrxuDQlHGABSMHhUeKsClbENLX8xBOEJ0P9mUcB0PYxkNjHw8mOqRjPIhiBNQpDr+8EUQ2r+3xkYq9luxY16jc/xxbR/5Scs9e7ANqHA2gtRDidHTdwcUyv/+1nsz5hUNKTQ/TgdSlkzRJWrGNwrIHP+WN592W+DcuAk0uhhHCm9WaSKnC8k8mxgfZc+dyVKdF2nH/0jb3Kx64TELKdUAIy1FFmU6uZMyOwlqRU8CJDW+wKsTd7VfaE6ENJI
- zccYf52p
- QM3AFfopA2ng6rndlmV5/o8DtfZynLJ9VItKK8Kx6iA3mj3oUue2ZyiFkHLwm6kFxIJ/GrIKw9/U/9HxpaLDV4+9EtWmw5B09Q63IoIJyVlR2ss1sMIugFmQyL5TdUqOyaBKFPtf90WXsc1yIRegrwm384E9CWYI60mSl5Xobjs6y+usTtVsfgvbS3s+MZwERHVJ40Znl6fxnXPJGFsWicHpBtKWDJgHuocHuQ87Q3w0OVW/QRfXrQM3x81E8ayYaKVdTA5lyTO93XWHeEpJiChSoLzroVL6G3pnGDygRhqLSZgO3v8zZmIMUtOzJaac3zOXXOCkmYlVcidUni771SsaongxgNRHnrJ5ccEwDG1VurEipaaZgbIbtDkEQE5+iP+OyAb0vWxr5rC7jSZQyqGk2qg+Caulpi0TF467wR/GqTgNA6UIIfUwHo46bmPvHMKP9XR2dHefKoRz4s+webFbWRTMXfUrTpsgimtN+YN9L+vkamA3X6JJalviweaoLtmf3LlGSMBLiWC8lMu5ptFO63uiKi7J8qo1sWYz+EBkelSAnNbdTqb0Y59EKdVaKJqC2RXHdgoSHOTSFZSlnTN5fwWpE48XJU+ysYiH2U16mobdkgdxe6cY0wHc2rgox7KnZ7fIwEqofloWeVeVu6S0D0dqe+jhRXAwuJUTjoBfo9EycUCQbSSETEyWKtQ/1eIoiC46EgSfVFWrNoIX7quioI7X31HSjrDEI6fSDINloRt6eVuIohmmenH/uxQ3XxMVxsBe9WMO9rdK0dnDWEyOCdt4yCb+zgRuG/vZip3t8hoNvXNF7ftIOS/pfB5HPRx+XjO+fhJ22WgEmdEc8rkPhBMdJq1tiRJtn4C1Z5yKm+iY=
+X-Stat-Signature: co6to45mrj1x9398ntfh5nbapmxjnzzs
+X-HE-Tag: 1795818955-691460
+X-HE-Meta: U2FsdGVkX1/4s9XoqrAqDR5Wen8gZr2rWsXli+GGemg9Rps0rqAO4hGdZG67jwjZS+l340M1XQ0Dgl3bRAfACSjjF3aoPoVe67Zu37tFJu2qJDabPxcnpJ7alaqc7CO01LdBsFbqxXv7G4+Voj1WsPX1ddsOPE9dBPALIgOK/ZQhRRAP23yMLBLY6H/NbtfOrauGY2F80pH6Zk1OE6OTYvQbNXZDp624KBdX8M/sMRfm+LJQpuInLcd4+3w4Qo5jLM2yKUHnXsIaZuFjS0Mhfpk8zEY/tsFOKUUA0PcFsO3bbEhFCE2+TqZSqgUgepZxzUr55Lu4xP4MQjle7GQGq/Df+KWdn6U8RHBuWX9uzT2AdEsSsnxYTR1yHeG7XsCIqUiDJIWYFa3MC9QZ3QBfUF8LFEmvF0wL0WUU9fy2ZD7av5U6RV4ECs/NHQwWLYE6g3hEjbN7rorvQQqG/4xa5EejmhRso8TWNaPluIirvo7/OJfOQiX/mSh7v95gJh2OrrBxX4+5P/1XHHliKmuggjyiReOTGjjLQSbD88JVrsyWUAU9oiK3DFGU/dvDpIJYxw+v4aLh1OwwEWNHrk3cEBz2FioGYeS74dHC9w2VvbEZAa6oHg3xibd+eMc3ko42lgar0w1Xs2NyIFN+HkwklxOpmeiqhY7TpCGb0FQdCVEBLzXDye3nl53ved9GiR9H4Yi1Rrp0igVbjKQm/pM0lPuMC4BayTRPgBbOpvbKQFYMkzUf14vm3tGQjX+vZiUuk247JaKr0Z2Qcv//wI0yyHIRl+1mrlGgx0bXg91Z9iqztz/3qvovfxhZv1MW55H0ejbebcRwYWwda2Ma/hobgMPZKCSg2C8NraCDYkaOzcvuN8hB37OSzu0FTv+f1Muag3yjUOwVpvagdplOifrSN4Q0KF2lvYL97PsC5iruWM2LkBGxrIe8tPFcHJ/RKFEmQbWd/tCKo0Q8XfHmVar
+ p/bjL5Rp
+ SrNb/8pAhKFAEFpIYAISx0ULm06PnmbhYeiN8WSYpd6xIbyn7w5Xxf7FZTme7owtPZic2Sz1OYiXGeSX7NmPn5iQKn273diHP12/S5kuw/lC41wJsMxPqvajmjd0TWOrLo6mXZkwlYPAErGsVhYa+HeAeHuktuW7H4sirApj7dwdFpUfYIZm6m3/IMFoSyGG0XAU0xhMFM6JP+mnY1Cw6mguS3zD7AQb5euv7u5MRfrPVUmmNZR+CPtvKZva2DhMMwjBT78luFPdvYNncE0+/3usmvpwsfNUKBX9Uio6puKFalDpQNHTCYUtlJt4kylrM3RHreXCvqsLL4VqBU9BB+rujKXLMLbyxTGI+KdxbXJn6STnQ8GmipfozX2yKf0p9lfPIQXLuNPZdOAuVw1ouPUOsKCNgitADe49RG2+EG3KLA424KJfSoErRMnYcJChRZ0AJzhsmQD8rWKurkkx9XCvizqdkyIzGkV0n2BFuJBNHYfyILCPo/eDr2QcdAMM8XIwAx/qaUEXjH6MXkjDl0ctJzc6BSb4S4P3kP6QOv0d+DTc+o4vpz5NVsiXmMp8faWFpY+3x+Wy7UDclPhk1+Vw2AZzq6Ej4xJibrOhCBqLQDrkhf3NaRZDmIhTw5QdHctbJDET9dbdTugdFEn0d40D1GgWjDh/LfmANFdL2NEvCcxRU3ixBS97xMSgvNyCYXCuUNmUTjZ4s09UecFocKCeyGHGuI3AJ2UoTwOx4gFPpGPhWomRl4aM9LT+LoPfRhEK8tPCgeQnZ55jE0VKGwu3KP2pCTdwFkNrJh55DPOS3nJNsScZmjvIgsOC4EckJ0IqT+dRn0gKwfZT+hJqTVVfCx8BVvSfdauCyVtjd1VzujmI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,41 +100,55 @@ issue to consider:
   damos_va_migrate_pmd_entry()
 --
 
-commit 28e5ee87b052dd198d574f424c2cf49c18aacf24
+commit 446fe1a8fb2f01d2025ab8ed2dd156f643ec9800
 Author: SJ Park <sj@kernel.org>
 
-mm/damon/vaddr: use damos->last_applied for migrate action
+mm/damon/vaddr: implement sz_filter_passed for migrate_{hot,cold} action
 
-This commit updates damos_va_migrate_pmd_entry() to track and skip the last
-applied folio via damos->last_applied using damos_va_invalid_folio().
+This commit threads sz_filter_passed through damos_va_migrate() and
+damos_va_migrate_pmd_entry() to accumulate the size of folios that pass
+DAMOS ops filters during migrate_{hot,cold} actions.
 
 > diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index ca7ce9bd96e7d..c8f93a19c840e 100644
+> index c8f93a19c840e..721a23856ee16 100644
 > --- a/mm/damon/vaddr.c
 > +++ b/mm/damon/vaddr.c
-
 [ ... ]
-
-> @@ -881,10 +888,11 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, u=
-nsigned long addr,
->  		if (pte_none(ptent) || !pte_present(ptent))
+> @@ -895,6 +898,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, uns=
+igned long addr,
+>  		s->last_applied =3D folio;
+>  		if (damos_va_filter_out(s, folio, walk->vma, addr, pte, NULL))
 >  			continue;
->  		folio =3D vm_normal_folio(walk->vma, addr, ptent);
-> -		if (!folio)
-> -			continue;
->  		page_idx =3D folio_page_idx(folio, pte_page(ptent));
->  		nr =3D folio_nr_pages(folio) - page_idx;
-> +		if (damos_va_invalid_folio(folio, s))
-> +			continue;
+> +		*sz_filter_passed +=3D folio_size(folio);
+>  		damos_va_migrate_dests_add(folio, walk->vma, addr, s,
+>  				migration_lists);
+>  	}
 
 [Severity: High]
-Can this dereference a NULL folio when vm_normal_folio() returns NULL, such
-as for the shared zero page or a special PFN mapping?  Removing the !folio
-check before folio_page_idx() and folio_nr_pages() passes NULL into
-folio_nr_pages() -> folio_test_large() before damos_va_invalid_folio() is
-reached.
+Can the PTE loop in damos_va_migrate_pmd_entry() dereference a NULL folio
+when vm_normal_folio() returns NULL (for example, on the shared zero page
+or a special mapping)?
+
+Earlier in this series, commit "mm/damon/vaddr: use damos->last_applied
+for migrate action" placed damos_va_invalid_folio() (which checks !folio)
+after folio_page_idx() and folio_nr_pages():
+
+mm/damon/vaddr.c:damos_va_migrate_pmd_entry() {
+	...
+		folio =3D vm_normal_folio(walk->vma, addr, ptent);
+		page_idx =3D folio_page_idx(folio, pte_page(ptent));
+		nr =3D folio_nr_pages(folio) - page_idx;
+		if (damos_va_invalid_folio(folio, s))
+			continue;
+	...
+}
+
+When folio is NULL, folio_nr_pages() dereferences NULL while holding the
+page table lock.  Checking !folio (or calling damos_va_invalid_folio() or
+checking !folio before computing page_idx and nr, as in
+damos_va_stat_pmd_entry()) avoids the NULL pointer dereference.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127222719.1055=
-10-1-sj@kernel.org?part=3D2
+10-1-sj@kernel.org?part=3D3
 
