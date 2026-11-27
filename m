@@ -1,128 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75157606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 20:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFF9606A337
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 20:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Q4rI4c0n
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7tmKPga
 Received: by kanga.kvack.org (Postfix)
-	id 5AF706B05CA; Fri, 27 Nov 2026 15:14:41 -0500 (EST)
+	id 33BCC6B05CB; Fri, 27 Nov 2026 15:14:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55F1C6B05CB; Fri, 27 Nov 2026 15:14:41 -0500 (EST)
+	id 22B676B05CC; Fri, 27 Nov 2026 15:14:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 400796B05CC; Fri, 27 Nov 2026 15:14:41 -0500 (EST)
+	id 0F3256B05CD; Fri, 27 Nov 2026 15:14:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 08F136B05CA
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:14:40 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F0131404B2
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:14:35 +0000 (UTC)
-X-FDA: 85482001710.20.2BCEE1C
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9227B14000E
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:14:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Q4rI4c0n;
-	spf=pass (imf26.hostedemail.com: domain of takano32@gmail.com designates 74.125.82.176 as permitted sender) smtp.mailfrom=takano32@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B50396B05CB
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:14:43 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16B94C04CB
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:14:43 +0000 (UTC)
+X-FDA: 85482002046.30.FF2971D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E7DA1A0005
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:14:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=K7tmKPga;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795810473;
-	b=5P91A1hjJnupEluYvRB2OGTc/cl9jZPXFQ/qA2nBjoxIXqRf6az4YaFTXKPZPBIQKaRu25
-	ScZQa08qYCpjks1RUscP8g6O/UAPfnkaaDuYNJd+iHu/F0gcvoUE7z8c2TxhqL2AmnDd3w
-	Vwc2YtSkEgxzeySyUuLRV7mgf1hau/g=
+	t=1795810481;
+	b=x8TueA+0ncpRjJGtQjTxqz86jPlwjg+IaeH7TuSURYinWptDzWS+3M0Ygj7qyt3V1WcJeW
+	s5xELuuzvh9ybCjTrl1SSI7DbuXPBQzVymx/aEOLMYNMo3bBR7JOdXTXxA8snJV09ZhM1l
+	mkHPIWhE8xlOa4Vsj3inEW43JfQYL/0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795810473;
+	s=arc-20220608; t=1795810481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2tL8owTw2PwzoEHxqPksYuP4hbl3MRd9EfCtfzCRkZU=;
-	b=ouP5rYr7uOjSofJvtz60oo6KbHIECwmkaHQkg1j+o1niIQOK9B57UfISoKO+oGsCieTWk7
-	q65np+/QkYdKlNz05DSd++BeXZ0uPMkWxik1Z0GzYe1qaDPALSUT1HiNX0aR4U1ZAmPEy5
-	ErWvxQbQXulc6NcbWxbrLqXnwzUwe2k=
+	bh=UAs3m0+hmOGS9KUATaDf0cRtbK0/lffklyzWvZCuBu4=;
+	b=EH+ZHrLPYCI2FN016f+v7c3XAsFYMGTP2zMn4Mdi2iwOBY/tBYrLO/MzkgFU9eqyqTVTTA
+	H629K8fomJdmGNM5mCCQhUO0sWwqcifmuVO6KiczanXYiYby4nXyg9lpTCpvAur51cXSOT
+	kFKI/fzOyEKmZCqk0VCFeCDwzq6qb6Q=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Q4rI4c0n;
-	spf=pass (imf26.hostedemail.com: domain of takano32@gmail.com designates 74.125.82.176 as permitted sender) smtp.mailfrom=takano32@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-386c336eab8so4921850eec.0
-        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:14:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795810472; x=1796415272; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2tL8owTw2PwzoEHxqPksYuP4hbl3MRd9EfCtfzCRkZU=;
-        b=Q4rI4c0n5WEIiLYMsmDjgrhYI90BOlqH3l9e8aLDLHcuc/GmUPVIT2/JEa70rQzfyv
-         f/Oji4+PqT6v2xTLJNQyPa0SkjyLh7XPq3qVdLc2w/2bsBqHirlP1sj/3CKfTfQAmuoM
-         JOI+sAnOLHOTpCeI21Q7R1ZwcJToXYYhmjulddEyG4oxCjDR3yBkos3KLVAcSGrkJgeb
-         IhUjWkUcXtNejYjAWVlm4BspYd8h9ZakpYysj9SduuDE7RyJobthzEErd5FwyzYtxEmF
-         4VBY+J4XLlIwo02En7IEU5EvkR0yFuj7Hh+2t6o5fQe+DCgOx56zn5zzRjDQ5t1pbDuG
-         rajw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795810472; x=1796415272;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2tL8owTw2PwzoEHxqPksYuP4hbl3MRd9EfCtfzCRkZU=;
-        b=FfRuRW66ruD0BJ/VZl+c8u3n1BgVbvZuGNYlRIABi56negYEhVVPmRNetgexHSvCTH
-         ydq1iTt5scCd4DURZdSW4XOpYFbuafED6/SZNABAlgNpKiPV23Bi/TXhy7K86Cjj886B
-         UpdPKhzXhEeui0O7/g/aC0oHzriD7OsJe+NOL67NWEkYlFpl2Z0W3mHzeMQ5iJ8XRT2u
-         TkeyNlc+Uq/fg29UWq+2A2mGy+vaGt7rd6v+OHw9I7ac1ysk32G5WtcUziRfsYFkU3cL
-         qA7VLZ5dfhSpsXRVoLSB3xNXpchEAXjanQVqX6L9eoCyJR0QSny0M6leBUX4E1zqfBa3
-         V6EQ==
-X-Forwarded-Encrypted: i=1; AL+hErHop7vLbrKlypuQE0bX2KpYwr+y9xWGaiSsvjkP5VvbOd+EMoPjcUW7W4io3B0fUUuE+b3DLrvAFA==@kvack.org
-X-Gm-Message-State: APuU4Z/QPzBaxoX64MnPB/cFizyPgNVoQ3qLSbWWaXHU1NGmVb+DRhsO
-	vvZ9MVi4HPUsOZnIsY2J1E8jraR1ybgalps0ex+jT2mIn87MrN/xZ3wy
-X-Gm-Gg: AZFdTZci6TczGLiboy4olYhZBK7x6cfVVc+s6MhHCBdstjpGRyYB0V0aF+Jw8U/cTA/
-	1YN/9aKlmZi+6noW0PMMNSRvuSYQyYXPvdOCt3+UVvbQ/UUeaPk+zy4HpyzXBuV9n+yj/cC0ThM
-	JcRX2LiTW/DwYOrA8ukQ791e7T2tiTs/IkJ3jx3GtwAI2HkMZv9JZasmkZK32WcB/G57w55aFYM
-	hYVDk0+2b9mlMQn0f+3Yc/GhKyCoOEYeZ0o8Q+k98pRmhvexkWepQkFrohDIEDW+luhNuip1w2J
-	B8T+nHDpbm0n6Ff8or5mIHW89myppUbCcev9P1e0ZIOxGodMUHngnwPONIZ80zLkD1VEyT0jw29
-	jBtDpiQRKYdFyS6AT74zoB9PP/xmE2YhWP3OC4L0PctbPEhT9XbiBwg31AHEwtE72A10hw7qyB5
-	B0Z8NMzT6PNMiPMPtcCy/TtizI+12n/yWicaAgk4YzuxWT3R22JVuT5myW+L4NWdzWOJHWe5Lf2
-	TAHMuKQmc8w8a59t9At7lpzbOudDS35VC3nfkrpPk4psT8uPggENjoh6yEwBYb3OmQ0ms8kv+3R
-	JnIdiO/zArqCXCLAAL4/fsQSxp7AaRdLo0JMWf77IA==
-X-Received: by 2002:a05:7301:d804:b0:386:b076:a940 with SMTP id 5a478bee46e88-386b076a9e4mr16325542eec.26.1795810472092;
-        Fri, 27 Nov 2026 12:14:32 -0800 (PST)
-Received: from a1-free ([2603:c021:8021:f000:0:1865:8c38:18fc])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385f68bc0adsm70396821eec.13.2026.11.27.12.14.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 12:14:31 -0800 (PST)
-From: TAKANO Mitsuhiro <takano32@gmail.com>
-To: Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Dan Williams <djbw@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=K7tmKPga;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795810480;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UAs3m0+hmOGS9KUATaDf0cRtbK0/lffklyzWvZCuBu4=;
+	b=K7tmKPga+sKLkSWxeKhmAISZiHN4mnS+KiTpbysgSX7nWl3orJ3f67mVgQAJy+IrmtbPVh
+	7ixTxZlDNV1jWbFtIcULMfz2XQPhqM8jFbY+HRKPZ2+4+Pj86wTQLLirRMfuylvsi578Z7
+	erLmjRfgUIBJ1X/G5wT/4rV65xKWn1g=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-MpJrS3IPM6OR1U2olx6NDQ-1; Fri,
+ 27 Nov 2026 20:14:36 +0000
+X-MC-Unique: MpJrS3IPM6OR1U2olx6NDQ-1
+X-Mimecast-MFC-AGG-ID: MpJrS3IPM6OR1U2olx6NDQ_1795810472
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 417D81800361;
+	Fri, 27 Nov 2026 20:14:32 +0000 (UTC)
+Received: from vschneid-thinkpadt14sgen2i.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6C08D5B1;
+	Fri, 27 Nov 2026 20:14:22 +0000 (UTC)
+From: Valentin Schneider <vschneid@redhat.com>
+To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	TAKANO Mitsuhiro <takano32@gmail.com>
-Subject: [PATCH v3] docs: Name the memory hotplug online type configs that exist
-Date: Fri, 27 Nov 2026 20:14:28 +0000
-Message-ID: <20261127201428.293257-1-takano32@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261127190207.245175-1-takano32@gmail.com>
-References: <20261127190207.245175-1-takano32@gmail.com>
+	x86@kernel.org
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Han Shen <shenhan@google.com>,
+	Rik van Riel <riel@surriel.com>,
+	Jann Horn <jannh@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	Yair Podemsky <ypodemsk@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel Wagner <dwagner@suse.de>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Dan Beimborn <Dan.Beimborn@qube-rt.com>,
+	"Pak Hung Vincent Chiu" <pak-hung.chiu@qube-rt.com>
+Subject: [PATCH v10 10/10] context_tracking,x86: Quiesce kernel text patching IPIs when tracking CR3 switches
+Date: Fri, 27 Nov 2026 21:12:21 +0100
+Message-ID: <20261127201221.434876-11-vschneid@redhat.com>
+In-Reply-To: <20261127201221.434876-1-vschneid@redhat.com>
+References: <20261127201221.434876-1-vschneid@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: ofFls5w1FMQhtgjN520odlIkHHemlVNvCGUO-0aeVas_1795810472
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9227B14000E
-X-Stat-Signature: poc8npmjg4h71qbgzt3scymognwif4fa
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795810473-712808
-X-HE-Meta: U2FsdGVkX1/ObSeD8p9RY2lthm5dVJOdzXuZEAk3BTkjuug+SIeS/81GQfnTJgtGT9y1JAxZ6S1kLpJeT5+UHpm5k+DS/j1gJB6crgFjzxUM9AshU4wVgXby3oebIGaDn2ACoxSTT0/VRJB9IoYxQztjQriMECD3MBx17SwaZu3FpBmUL1Dj3JjJ0A1guYb/u0ZGa1/cNsKqKYPZho5Xz76f4oG+sJv0eRCGsEAavsCzKQgbBTZhSf+PhjO7eXB1qlp3C4vYIidBqeZkKaaCDZjsRJjfMOwWm5Sz1GCUiyeQbTQQBTjiJ7UWtYInalXSuYzVs73bgAnOc+i9Su/m4oHA1nlzkQ1CwTs4Rg0PKiuLylaWLQebgE1yWILpeqxmh14ASzoKWK484VwBb0/LNzx+JGCjkV0dn6RTxlUaqfqX00YcqjEHUAvNEc+E9gmuOrSGjf1rMc1R/p9cd3Iu+plLjfjkWIU2pSEBoNGBlMLTwZQi7uP2FbK9AoqkvKF7h4JrAbMlt+XbA4+6+sZYBwykEUnV967EeQr0d0zumSXT7YyOYSRrikOqE+C8qK7E11STf8nUuXpL5vIASLLd0STiKwz2qk+izDw2dElldCOoiD8TNS0ANKkNw2AjRm1Akv+JUDnMz0S2anX2h5mLHtcUUGYwsmdAJG5oKD8233pjE50cIF5Bmz8t+LJ0hIrKRwmA7glVk2MSUrDQFIqDkz3B/sDaeqfJw93AC5s40FfT2pkk9l7qKq7B7Ctfpb0yK4aWe8jRSO7d5DuYP6oUaFfmp5oqYXrKpaPwrT+PCbXqwt7tZfLqXqWA4U2lUAk090jooTSEZ5k6BqKvTKSqLirOpbyQ3bUIQskznaJEoMJaC3LuK4DO9rLAEqiq7SFupwLAyWMjql+tW6SqgPYBKt+9Vhr8UxtAmN76BEx8f8k75MeGZhq/6Dp4jihXhsn+8hLVc8/L4DnP7JSDFhC
- IhcYrZv/
- Ej3V6Kk7hMFWAnP0GGzD3OSVcmgIvRr3EsIIkAcedQhaoyKfdAQuDjN144P63VhxbqkJZeSabT/tjtbCmCa5svGXcEmTR347mPpi+2j28ez1kkUvnBYm7iEiPz+SQze8fx8iz3bNjAbZX9vSXKZikaxk3WtfPZdOAUb7lKWLKGAt00CXDLcWwfe9B5qEJm8zXGAeXHFXqz2a/LncAfA8rKiom++zPukBocxQobFBiFIAxQf0CTtZ0nE9NiNmuHYuhEJyKOWcInjy/0a1rTzH4MAp+7lnA4ZBK/eZ+Ugpl8xsSW13JUcrMuF5CWOpoLJtFe5P1IQ2Su/2HALrybGlmbNUbWOHkIeNnpXfgT8dmO4i7j9+zqg5uha+1HfWWvnCRrxUW/LFSFRM6SWt4khOxVyT3DyLJ2vYUzGRqkKhO/9d66ZxDYwMicKynFXYskbMbDG90Hma4RDWpFQfT0Ze095CvSlcoSarA7JUkH30CvoPZ/0s7ItGL9MnQToZsKmPqNx3ZdvLUCpA4uDoDPEh3ybjeEUzr3fH5wn0sIExJulegMha8hTCyRHCoZ3nGmbx87cIBdAvxxYWWh9XmsW4ZZs373syDULg3QsfgbXlgUENlxTbWD7OaWTVNiO2zO1LdWIwy
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E7DA1A0005
+X-Stat-Signature: 9gr4zyzh6mkz38o8mmezt5rucyzgm1mg
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795810480-661725
+X-HE-Meta: U2FsdGVkX1/1K9aw95450fYRc1bKwvGYnoPsRMAkhvjMJ5eaESxnRVBDscnLTWXGhkAhjI1+50EY0X5B7mJ2Cn0t/zmoU++15EeUSO1Q+6R3Jj3E2cRCBkmBCR8GdpHjYprqoLVOVtiyv3lruWWeh1oQMukTZuWYMKxGqXrYT6qp+VP1g+WUKDWQFX1pgNgTPTehBg9ZCjURW//S81NnKvsLKEgZ6HRP32yeNK/OHGPt7bDvCdc391CGqm4NAEYJRzCW1WMhdRztZX0Geyn6Qc8tJBw0pqL/BY0+AUMlN2tEFNvx+9iAuqPUrSyXljFySPHh0TEqxkIjD5S5pUYRuMhZB7GwU8GrCJUiRT9RxGhWsNu05hVGD74lnHuYXaPCdlZaiIndAj/fU68LTEoDy5omOT6oH1HJPPJwmthSDzi48qUphHVpO+nxQtIkUcg4s+BER65GHp4qK7P1kv9QAXS/6DBfK7tI6pIcRlEAplqiYQe1VzvsWjWnFotUdjNpsUnAK0Aie35/1oYsB5nfmyyOM4MKgs9shckIHyurg2OxL36EOpuXTcxvsJ7NiskOT5syzgzCB/NDKDPgYEzmeho780sDzvDhxddxK+5LTYRVRtNlbpmI3Qwjh+JqqaLavCH7+SUnwgCJotfsTjM14I8eVoFncBc07116/slSjr/U4AeCTAjd4vatn+UifSKR4a+FizdMuzy0gM2tn+Y02LtzZ9ZLg2Ig8CTkPQXd6tH9fSiYGS8czz2/1D28RADrvigL99WfVU54DaEnJyqriV4Mz9Cf9/uxOKRUypy3HEobo2TO+lOPRon+ActlC/6MGvgRjQ3BTkEhyRSphMA7Qjafi1x3UPk1yQW/SjkhiLUH0EU/HW3O4lQ6DBmJYLt6jLVuhGiT5iX937hc7f+i8feDZdITmNEY6flhbssTSgN+WsyOA/4g5izMbOgTjC8x5m5ErBWMkBcSpUSlKna
+ Rikso9yF
+ 3ZAFkrLYyjHiI+JMJ2ubMnq5OMy0oi3bzkpUypwSfOrfEzfYria/8F4s2iOaq4++n/43GboFDLjV1aU2didE52z1BzGsCi41n/B7CcP24iFE8sIEI9sKcanibT9icZIJ9Z5U9fpZr/l0NQEy726qVSxAA0eauIXDuihNYWEC2qsUtSauC3nu94X+TBcqAO84UHt2MGG7u33tbe4zUHlaEu4t4F5LKhXxTttrumIBtzMTQ/kmdySeP6qunrJB6NSBGlQoOlQjPNSLq2+mfdlTA/OzVQhaGX85NHJhowKL3lD2LtH9F5g5CLwRZmQHc9FR8jDbDu/lLTY1crqbFWbud8nOYEHHlrihCBN7AL4ewm9TRkw+PRS9sqdJY8m043TtiqG9Um5WLMlJH7ByynA8SWrFJYInv65qPL97+G7TP2ShbyVuHabBr1iVjDlzR/sWWJEEinLIuGgvXAYD5MGL/o6+GgH3IdQCM9FUNk9SwKDxV9HTdkFER6A94cqCh1/BjwtBkl+V9/sXtbvOG4IViFgJFF199UlpQ4J1JBkcNpEpMSZwvu11Z0MS4qVBKqfekPZjI6jwSmqLcIX0WEGRBmEo4RlYm+Qx1NsAOqrM1ryi6MRAF6RjPsOY3NvDaTO0Tu82Z6KzA9HmAMTJbV9YUvN46MR/hRylXMKyImKu28rOfRPUDcgRNafNktxFu4Sbpv88ULWc7HyvsRIaKl0KRXxevXQmo19qqHeZjYbqs2/Uk8uv5/4yOlhkQ+3SCndwBoRaflexZ1CyawZ2NjjmSEyPzkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,131 +151,271 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The default online type is a Kconfig choice, so the symbols it defines are
-CONFIG_MHP_DEFAULT_ONLINE_TYPE_OFFLINE, _ONLINE_AUTO, _ONLINE_KERNEL and
-_ONLINE_MOVABLE.  There is no CONFIG_MHP_DEFAULT_ONLINE_TYPE symbol, but
-five files name one.
+text_poke_bp_batch() sends IPIs to all online CPUs to synchronize
+them vs the newly patched instruction. CPUs that are executing in userspace
+do not need this synchronization to happen immediately, and this is
+actually harmful interference for NOHZ_FULL CPUs.
 
-Where a file lists the config, name the family with a trailing _*.  Where
-it names a choice value, spell the whole symbol out: early-boot.rst gave
-the zone choices as _NORMAL and _MOVABLE, which are not suffixes, and it
-left _ONLINE_AUTO out of the list of values.
+As the synchronization IPIs are sent using a blocking call, returning from
+text_poke_bp_batch() implies all CPUs will observe the patched
+instruction(s), and this should be preserved even if the IPI is quiesced.
+In other words, to safely postpone this synchronization, any kernel
+instruction leading to the execution of the postponed instruction
+sync must *not* be mutable (patchable) at runtime.
 
-Verification: a build of the tree defines
-CONFIG_MHP_DEFAULT_ONLINE_TYPE_OFFLINE and no bare
-CONFIG_MHP_DEFAULT_ONLINE_TYPE in include/generated/autoconf.h, and grep
-finds no reference to the bare symbol under Documentation/ afterwards.
+This means we must pay attention to mutable instructions in the early entry
+code:
+- alternatives
+- static keys
+- static calls
+- all sorts of probes (kprobes/ftrace/bpf/???)
 
-Signed-off-by: TAKANO Mitsuhiro <takano32@gmail.com>
+The early entry code is noinstr, which gets rid of the probes.
+
+Alternatives are safe, because it's boot-time patching (before SMP is
+even brought up) which is before any IPI quiescing can happen.
+
+This leaves us with static keys and static calls. Any static key used in
+early entry code should be only forever-enabled at boot time, IOW
+__ro_after_init (pretty much like alternatives). Exceptions to that will
+now be caught by objtool.
+
+The postponed instruction sync is the CR3 RMW done as part of
+kPTI when switching to the kernel page table:
+
+  SDM vol2 chapter 4.3 - Move to/from control registers:
+  ```
+  MOV CR* instructions, except for MOV CR8, are serializing instructions.
+  ```
+
+Leverage the new kernel_cr3_loaded signal and the kPTI CR3 RMW to quiesce
+sync_core() IPIs targeting NOHZ_FULL CPUs.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
+Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
-v3: Add CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_AUTO, which v2 dropped when it
-    spelled the values out, and write the kernel zone as "a zone that can
-    hold kernel data (usually ZONE_NORMAL)" since the choice can land in
-    ZONE_DMA or ZONE_DMA32.
+ arch/x86/include/asm/text-patching.h |  5 +++
+ arch/x86/kernel/alternative.c        | 59 +++++++++++++++++++++++++---
+ arch/x86/kernel/kprobes/core.c       |  4 +-
+ arch/x86/kernel/kprobes/opt.c        |  4 +-
+ arch/x86/kernel/module.c             |  2 +-
+ include/asm-generic/sections.h       | 14 +++++++
+ 6 files changed, 77 insertions(+), 11 deletions(-)
 
-v2: Spell the full config names in early-boot.rst.  David Hildenbrand pointed
-    out that CONFIG_MHP_DEFAULT_ONLINE_TYPE_* with _ONLINE_KERNEL appended
-    does not parse.  The other four files keep the _* form because they list
-    the config, not one of its values.
-
-    Written with Hermes Agent, an LLM assistant; the author reviewed the
-    wording and the diff.
-
- Documentation/admin-guide/kernel-parameters.txt   |  2 +-
- Documentation/admin-guide/mm/memory-hotplug.rst   |  2 +-
- Documentation/driver-api/cxl/linux/early-boot.rst | 15 ++++++++++-----
- .../driver-api/cxl/linux/memory-hotplug.rst       |  2 +-
- Documentation/driver-api/cxl/linux/overview.rst   |  2 +-
- 5 files changed, 14 insertions(+), 9 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 176648941aec..8580099b98c1 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3948,7 +3948,7 @@ Kernel parameters
- 			[KNL] Set the initial state for the memory hotplug
- 			onlining policy. If not specified, the default value is
- 			set according to the
--			CONFIG_MHP_DEFAULT_ONLINE_TYPE kernel config
-+			CONFIG_MHP_DEFAULT_ONLINE_TYPE_* kernel config
- 			options.
- 			See Documentation/admin-guide/mm/memory-hotplug.rst.
+diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
+index ea09381070e82..25dc52f423cc0 100644
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -33,6 +33,11 @@ extern void text_poke_apply_relocation(u8 *buf, const u8 * const instr, size_t i
+  */
+ extern void *text_poke(void *addr, const void *opcode, size_t len);
+ extern void smp_text_poke_sync_each_cpu(void);
++#ifdef CONFIG_TRACK_CR3
++extern void smp_text_poke_sync_each_cpu_quiescable(void);
++#else
++#define smp_text_poke_sync_each_cpu_quiescable smp_text_poke_sync_each_cpu
++#endif
+ extern void *text_poke_kgdb(void *addr, const void *opcode, size_t len);
+ extern void *text_poke_copy(void *addr, const void *opcode, size_t len);
+ #define text_poke_copy text_poke_copy
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 582c6d8307d15..283c94394c0b9 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -9,6 +9,7 @@
+ #include <linux/cleanup.h>
+ #include <linux/kgdb.h>
+ #include <linux/mmap_lock.h>
++#include <linux/sched/isolation.h>
  
-diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
-index 0207f8725142..c7de458a962f 100644
---- a/Documentation/admin-guide/mm/memory-hotplug.rst
-+++ b/Documentation/admin-guide/mm/memory-hotplug.rst
-@@ -280,7 +280,7 @@ The following files are currently defined:
- 		       blocks; configure auto-onlining.
+ #include <asm/text-patching.h>
+ #include <asm/insn.h>
+@@ -16,6 +17,7 @@
+ #include <asm/ibt.h>
+ #include <asm/set_memory.h>
+ #include <asm/nmi.h>
++#include <asm/tlbflush.h>
  
- 		       The default value depends on the
--		       CONFIG_MHP_DEFAULT_ONLINE_TYPE kernel configuration
-+		       CONFIG_MHP_DEFAULT_ONLINE_TYPE_* kernel configuration
- 		       options.
+ int __read_mostly alternatives_patched;
  
- 		       See the ``state`` property of memory blocks for details.
-diff --git a/Documentation/driver-api/cxl/linux/early-boot.rst b/Documentation/driver-api/cxl/linux/early-boot.rst
-index 414481f33819..7118f3372596 100644
---- a/Documentation/driver-api/cxl/linux/early-boot.rst
-+++ b/Documentation/driver-api/cxl/linux/early-boot.rst
-@@ -34,7 +34,7 @@ which dictate how memory will be managed by Linux during early boot.
-   * Linux Build config option that dictates whether the kernel supports
-     Specific Purpose memory.
+@@ -2636,11 +2638,46 @@ static void do_sync_core(void *info)
+ 	sync_core();
+ }
  
--* CONFIG_MHP_DEFAULT_ONLINE_TYPE
-+* CONFIG_MHP_DEFAULT_ONLINE_TYPE_*
++static void __smp_text_poke_sync_each_cpu(smp_cond_func_t cond_func)
++{
++	on_each_cpu_cond(cond_func, do_sync_core, NULL, 1);
++}
++
+ void smp_text_poke_sync_each_cpu(void)
+ {
+-	on_each_cpu(do_sync_core, NULL, 1);
++	__smp_text_poke_sync_each_cpu(NULL);
+ }
  
-   * Linux Build config that dictates whether and how Specific Purpose memory
-     converted to a dax device should be managed (left as DAX or onlined as
-@@ -58,10 +58,15 @@ SystemRAM.  This will expose the memory to the kernel page allocator in
- :code:`ZONE_NORMAL`, making it available for use for most allocations (including
- :code:`struct page` and page tables).
++#ifdef CONFIG_TRACK_CR3
++/*
++ * This returns true if the IPI must be sent to @cpu;
++ *
++ * do that if @cpu is a housekeeping CPU, or if it is already executing
++ * in kernelspace.
++ */
++static bool kernel_cr3_poke_quiesce_cond(int cpu, void *info)
++{
++	if (housekeeping_cpu(cpu, HK_TYPE_KERNEL_NOISE))
++		return true;
++
++	return atomic_read(&per_cpu(kernel_cr3_loaded, cpu)) & KERNEL_CR3_IN_KERNEL;
++}
++
++void smp_text_poke_sync_each_cpu_quiescable(void)
++{
++	/*
++	 * Pairs with the MOV CR3 serializing instruction in SWITCH_TO_KERNEL_CR3
++	 *
++	 * Ensures any previous operations are visible on a remote CPU
++	 * entering the kernel and updating CR3, if this one decides to quiesce
++	 * the IPI.
++	 */
++	smp_mb();
++
++	__smp_text_poke_sync_each_cpu(kernel_cr3_poke_quiesce_cond);
++}
++#endif
++
+ /*
+  * NOTE: crazy scheme to allow patching Jcc.d32 but not increase the size of
+  * this thing. When len == 6 everything is prefixed with 0x0f and we map
+@@ -2808,6 +2845,7 @@ noinstr int smp_text_poke_int3_handler(struct pt_regs *regs)
+  */
+ void smp_text_poke_batch_finish(void)
+ {
++	void (*sync_fn)(void) = smp_text_poke_sync_each_cpu_quiescable;
+ 	unsigned char int3 = INT3_INSN_OPCODE;
+ 	unsigned int i;
+ 	int do_sync;
+@@ -2844,11 +2882,20 @@ void smp_text_poke_batch_finish(void)
+ 	 * First step: add a INT3 trap to the address that will be patched.
+ 	 */
+ 	for (i = 0; i < text_poke_array.nr_entries; i++) {
+-		text_poke_array.vec[i].old = *(u8 *)text_poke_addr(&text_poke_array.vec[i]);
+-		text_poke(text_poke_addr(&text_poke_array.vec[i]), &int3, INT3_INSN_SIZE);
++		void *addr = text_poke_addr(&text_poke_array.vec[i]);
++
++		/*
++		 * There's no safe way to defer IPIs for patching text in
++		 * entry, record whether there is at least one such poke.
++		 */
++		if (is_kernel_entrytext((unsigned long)addr))
++			sync_fn = smp_text_poke_sync_each_cpu;
++
++		text_poke_array.vec[i].old = *((u8 *)addr);
++		text_poke(addr, &int3, INT3_INSN_SIZE);
+ 	}
  
--If `Specific Purpose` is set and supported, :code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_*`
--dictates whether the memory is onlined by default (:code:`_OFFLINE` or
--:code:`_ONLINE_*`), and if online which zone to online this memory to by default
--(:code:`_NORMAL` or :code:`_MOVABLE`).
-+If `Specific Purpose` is set and supported, the default online type decides
-+what happens to the memory:
-+:code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_OFFLINE` leaves it offline,
-+:code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_AUTO` onlines it to whichever zone
-+the kernel picks,
-+:code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_KERNEL` onlines it to a zone that
-+can hold kernel data (usually :code:`ZONE_NORMAL`), and
-+:code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE` onlines it to
-+:code:`ZONE_MOVABLE`.
+-	smp_text_poke_sync_each_cpu();
++	sync_fn();
  
- If placed in :code:`ZONE_MOVABLE`, the memory will not be available for most
- kernel allocations (such as :code:`struct page` or page tables).  This may
-diff --git a/Documentation/driver-api/cxl/linux/memory-hotplug.rst b/Documentation/driver-api/cxl/linux/memory-hotplug.rst
-index af368c2bc9cf..df27520b193f 100644
---- a/Documentation/driver-api/cxl/linux/memory-hotplug.rst
-+++ b/Documentation/driver-api/cxl/linux/memory-hotplug.rst
-@@ -19,7 +19,7 @@ Default Online Behavior
- The default-online behavior of hotplug memory is dictated by the following,
- in order of precedence:
+ 	/*
+ 	 * Second step: update all but the first byte of the patched range.
+@@ -2910,7 +2957,7 @@ void smp_text_poke_batch_finish(void)
+ 		 * not necessary and we'd be safe even without it. But
+ 		 * better safe than sorry (plus there's not only Intel).
+ 		 */
+-		smp_text_poke_sync_each_cpu();
++		sync_fn();
+ 	}
  
--- :code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE` Build Configuration
-+- :code:`CONFIG_MHP_DEFAULT_ONLINE_TYPE_*` Build Configuration
- - :code:`memhp_default_state` Boot parameter
- - :code:`/sys/devices/system/memory/auto_online_blocks` value
+ 	/*
+@@ -2931,7 +2978,7 @@ void smp_text_poke_batch_finish(void)
+ 	}
  
-diff --git a/Documentation/driver-api/cxl/linux/overview.rst b/Documentation/driver-api/cxl/linux/overview.rst
-index 648beb2c8c83..d567353e1dab 100644
---- a/Documentation/driver-api/cxl/linux/overview.rst
-+++ b/Documentation/driver-api/cxl/linux/overview.rst
-@@ -17,7 +17,7 @@ are generated.
+ 	if (do_sync)
+-		smp_text_poke_sync_each_cpu();
++		sync_fn();
  
-     i) EFI_MEMORY_SP
-     ii) CONFIG_EFI_SOFT_RESERVE
--    iii) CONFIG_MHP_DEFAULT_ONLINE_TYPE
-+    iii) CONFIG_MHP_DEFAULT_ONLINE_TYPE_*
-     iv) nosoftreserve
+ 	/*
+ 	 * Remove and wait for refs to be zero.
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index 133ff20caccd4..84cbc92853259 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -785,7 +785,7 @@ void arch_arm_kprobe(struct kprobe *p)
+ 	u8 int3 = INT3_INSN_OPCODE;
  
-   b) Memory Map Creation
-
-base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
+ 	text_poke(p->addr, &int3, 1);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_quiescable();
+ 	perf_event_text_poke(p->addr, &p->opcode, 1, &int3, 1);
+ }
+ 
+@@ -795,7 +795,7 @@ void arch_disarm_kprobe(struct kprobe *p)
+ 
+ 	perf_event_text_poke(p->addr, &int3, 1, &p->opcode, 1);
+ 	text_poke(p->addr, &p->opcode, 1);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_quiescable();
+ }
+ 
+ void arch_remove_kprobe(struct kprobe *p)
+diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
+index 3f8fea52619f9..87979b93e1dd0 100644
+--- a/arch/x86/kernel/kprobes/opt.c
++++ b/arch/x86/kernel/kprobes/opt.c
+@@ -508,11 +508,11 @@ void arch_unoptimize_kprobe(struct optimized_kprobe *op)
+ 	       JMP32_INSN_SIZE - INT3_INSN_SIZE);
+ 
+ 	text_poke(addr, new, INT3_INSN_SIZE);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_quiescable();
+ 	text_poke(addr + INT3_INSN_SIZE,
+ 		  new + INT3_INSN_SIZE,
+ 		  JMP32_INSN_SIZE - INT3_INSN_SIZE);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_quiescable();
+ 
+ 	perf_event_text_poke(op->kp.addr, old, JMP32_INSN_SIZE, new, JMP32_INSN_SIZE);
+ }
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index 33080ad889b71..ce8acafc932ed 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -194,7 +194,7 @@ static int write_relocate_add(Elf64_Shdr *sechdrs,
+ 				   write, apply);
+ 
+ 	if (!early) {
+-		smp_text_poke_sync_each_cpu();
++		smp_text_poke_sync_each_cpu_quiescable();
+ 		mutex_unlock(&text_mutex);
+ 	}
+ 
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index 0755bc39b0d80..7496d26a85a4c 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -199,6 +199,20 @@ static inline bool is_kernel_inittext(unsigned long addr)
+ 	       addr < (unsigned long)_einittext;
+ }
+ 
++/**
++ * is_kernel_entrytext - checks if the pointer address is located in the
++ *                      .entry.text section
++ *
++ * @addr: address to check
++ *
++ * Returns: true if the address is located in .entry.text, false otherwise.
++ */
++static inline bool is_kernel_entrytext(unsigned long addr)
++{
++	return addr >= (unsigned long)__entry_text_start &&
++	       addr < (unsigned long)__entry_text_end;
++}
++
+ /**
+  * __is_kernel_text - checks if the pointer address is located in the
+  *                    .text section
 -- 
-2.53.0
+2.56.1
 
 
