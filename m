@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC07606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 12:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB3E606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 12:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LW6u8bF2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H0IIX6t+
 Received: by kanga.kvack.org (Postfix)
-	id C12BC6B05B7; Fri, 27 Nov 2026 07:26:04 -0500 (EST)
+	id 730FA6B05B9; Fri, 27 Nov 2026 07:26:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC4716B05B8; Fri, 27 Nov 2026 07:26:04 -0500 (EST)
+	id 708F96B05BA; Fri, 27 Nov 2026 07:26:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB2E76B05B9; Fri, 27 Nov 2026 07:26:04 -0500 (EST)
+	id 61F0C6B05BB; Fri, 27 Nov 2026 07:26:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 83F786B05B7
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 07:26:04 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1DB71602F8
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:26:03 +0000 (UTC)
-X-FDA: 85480821006.01.F9D6D68
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 559CB40004
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:26:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LW6u8bF2;
+	by kanga.kvack.org (Postfix) with ESMTP id 3C6696B05B9
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 07:26:08 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C29E11C3568
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:26:07 +0000 (UTC)
+X-FDA: 85480821174.16.DDDB415
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2C6AE18000A
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:26:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0IIX6t+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795782362;
-	b=DIZQA9kSmj+9WG51+4xSuxXsU8mgbI5ArRrglkh9PQJU4KQ4n5KlDaorSfQ/VurzT9YjWQ
-	6wvMPX3c0mhkA2zy6STaeeGFbt6JA1cvVFp+RZpbByvvC2DxyURyzDnKvTqj3SAptSFTga
-	WroLQvfgsXR0uqRWCa3nMRiZiZ6Xe7s=
+	t=1795782366;
+	b=Y0+oh5fQPUTeB4ZvZyxrmP5BSEr8htueCLAQqcqwp6hrpSy6Xe04Rb7amwxjpnHJjzwkEV
+	y4rG+9Cy72FHwdUCGpMJAXFKGV5gbmT9bEf0/dnP3XOLLfO2jEf0Yj59U+wihbMxtqoZd+
+	HBghXvAKCeZ5VMOxGzYPIDe78oWe/5A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795782362;
+	s=arc-20220608; t=1795782366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wO/IOEvgfeJp88G3JhgG/noxUD2JKBD20IHHFxKJYuc=;
-	b=dSRRQwV6Tg2sypw/0bxoxX/gV0FBPkQq5yVg9t7slwUi6u5y3n7N/xy0BguQskdscuga9Y
-	D4SbQWhpQpwtir0TKvirsiZ2CXBh0UJ0CfO7Rim+A7cVqAYdT5+15bwkPrJs37tviNEQBJ
-	aRLGYV9gGXIx0d4+cj+3MxqI2/FSZVM=
+	bh=bg93s8E2qpiOXI1yg+RWP0SFq8cNRtNnpPDwdNib6R8=;
+	b=feNtsPWMoSBtp+EijEiTjWqzKca8JTzjdWyGMfczmB7gDYnlz63dmSDcvt3Xqm57rwdSkf
+	RjdufFemhUAsVz+v/ZH0Ttb39K+t2BKs2DD1fWLZR7fX6JZenye7ZK3x6Bg4EURRGtt4ig
+	HtxLUrnnZMjQQxQ54wfHsM9I6Cu6tBI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LW6u8bF2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0IIX6t+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE077417BE;
-	Fri, 27 Nov 2026 12:26:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49071F00A02;
-	Fri, 27 Nov 2026 12:25:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BAC81629CE;
+	Fri, 27 Nov 2026 12:26:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1371F00893;
+	Fri, 27 Nov 2026 12:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795782361;
-	bh=wO/IOEvgfeJp88G3JhgG/noxUD2JKBD20IHHFxKJYuc=;
+	s=k20260515; t=1795782365;
+	bh=bg93s8E2qpiOXI1yg+RWP0SFq8cNRtNnpPDwdNib6R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LW6u8bF2kVNmuWmelsSivsj/jA5wffvdi1FVsMa7rCrDRU+cLnvmXnjGR0S3F8lPO
-	 LOrTRj6a/JAKn+Gq3xSuQO7JUVjDJwaouUu7nd4dAS8GKHcBKYF930PNt8ZwwHF0AW
-	 nKqXWh71uaU/BVIfWWajGCudQT9HMdSkeb3oFplARqAvV1SonkUm65FWTfaYQWbFjS
-	 5jIZ98K93cxNnS4JzZKAv6rChjYiqXdfsDEquIKozcQgejaSHF6uCRo3emRX8gTPdO
-	 lVwAZkwlLtUOft+qQqhQ+wchhSggb3UE+b3EVp3rL98D4TXA4i3uupInAHV3TaDw6M
-	 bNy8IM7TEipew==
+	b=H0IIX6t+zutMiF55Susal3PFvq6aiLSRkmxkwqPipXuMFrZ93zliUC5V2CKvPwfdQ
+	 krRhxyZjzHgjMJXE6FWBLzxTw73NHDgXMGmglqeselfTCPTNx30Xv6xv59vp2KWumb
+	 eM9M6RX5iSa+q1vc1gt8I7WY71fPqlxMbqOTJ/J8WRgvaoRzE/tlkNOEj9+3vZFA36
+	 KhmaJZedzie2/kNbRDe7B+NTJheXmcpOqX6JOTPLBUoafGU8IErF1ucWcpBjtArpiz
+	 Roq3DD1iyJaiquku45grPzzBTugp3kwhQ6cgusx6rE/XoMzx54PyZBvaOvBRuNXMvi
+	 ePpFfD2N+Q1BA==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -75,28 +75,28 @@ Cc: kexec@lists.infradead.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org
-Subject: [PATCH 4/6] kho: use unsigned long for kho_preserve_pages() and co when KHO=n
-Date: Fri, 27 Nov 2026 12:25:30 +0000
-Message-ID: <20261127122536.3708770-5-pratyush@kernel.org>
+Subject: [PATCH 5/6] kho: fix kernel-doc return for kho_alloc_preserve()
+Date: Fri, 27 Nov 2026 12:25:31 +0000
+Message-ID: <20261127122536.3708770-6-pratyush@kernel.org>
 X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
 In-Reply-To: <20261127122536.3708770-1-pratyush@kernel.org>
 References: <20261127122536.3708770-1-pratyush@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3udegryek8h7xk3jk3cqysap616jwdik
-X-Rspamd-Queue-Id: 559CB40004
+X-Rspamd-Queue-Id: 2C6AE18000A
+X-Stat-Signature: np8763gdr5taarz8ghjm5km8u55t51sb
 X-Rspam-User:
-X-Rspamd-Server: rspam03
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795782362-892391
-X-HE-Meta: U2FsdGVkX18dr6u0O8zkKiLch5TGuxtOeErL5P/InvWK2HLYmb5rszs8TScgrVMzbyD4WYErZ2gEvMKxTWVS85zxsYmtz5SSx63ps35RS2FlQm2o8kmkkG6KF94R2EebQw17tTthWLyN0aLxe9XFyuEA8TacRNIW0FRgmOciwZr86ha5ZRUigE8qAfTySlzwdJPYYeF7JOrDu6yCMeiqZF70rbMB7aUvq5PU+MzRH6W7OumheWdyKfd0gle3sR/a9wV6aMhqqn+WHKKSOl6BhDKXo9pPriVUCrOsDJs+z+jnGl/voVlmNTp7wKtjyLtXfHXG7mVRuDTG0/UyUFHxCBS4sFOI30RQRv3Q+Dqnmoolpi7E64gh5gJqN0hGpIJ18jz16VdMFRTaD26rWepNj2wBoQanI/Jyfv7MCElsrMyanXI3LPhnU166zcZ01UeZwsxP5wevzFzINzwrA3y/orD6/R2LACJ2px0Jj2wxSGqvL4marWwSHtB483H9I4KQqSSS+la7eEC/WyqIJJ2sJxhQXo6FjQw0nVomsou5tXSZ4D1ynWG+y2z+oMPhpikrT5F5PtqzyEmk4cNA7phUnoZuaXIvbS/i0zGw1djUU/0/PXfn8Jj+AkKIzVSAM+0qNamvxNgx4eJEu06i3AU85ofZg8Dba0bN4CuTW5gP2rq2E9401/4DaHS2qR6yqF71V64csH6Dur5y2QdhaBz21G4qRuQ60KVfLi91Z4nJ2cBwwSrnI92wOWN6Ik/r9K6d+blfRsdmbdIp/Y949sWPMckwf7mVJOa9Oo2CQAJG4Yxb2rL1pUJSrrMTXWHEMnm2bf0X5tUqZLtX4fpLniv00mwldkhMDkFwtjphXClS5L4WDXNz5/upn8/5qtOIaDc2VVk07OQtND4M6IJLhxC5JoEsvhesUdyjAMyjPeqMd9RaABmnQ758n3NuHSNMqsq9Lc+zHKpdC/N5pgrK6VF
- rNltdlam
- i9TOavMSyGBZ2wtYA9GnvpnJzFbMAVDmxiNLo7qZhdcPMl+6UKtYxOp0w0g4yg/zN5JYZZsokJeGgrM8AcxCEacMV+b+KnZZEXWcKKTmSd/2iMez3jmuT4ucVsg7+W75Aeut6EHeovj8ZbnD5gpPfgJUNORDXzJGeDa8bN2EhbVdXphRxbjxAv8TGLJIs06xaDEnVQ85O5NOOW1/0/GNr1Je2iOUE7V8z8f5ft4JOEPOslBIzgmKmI8xjHiQ5ssVvkkbmSAdmNDdLMlA4y18/bDlfiB/+UANUGXoVBm6l46dkWGHlU8xmZbE0wgmQn45VDKSdtJrEUfz4qrs7s2Lj6vKL6naYiyEOXvhMBZbGHGTlowDUjg/FcQKpzPSVHiGckMi9rTmOJZM07C7zeiWdaaGPs4jljVACPAa5Wh6zY+YqWrjheGgME02qgVQGBoZQgpUn02TtOGe/CsebfdQw5yXHMjQVeFuQ9RWcPnMsMqWdInPn5+mRsxvrKAaUe7VQEMRy
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795782366-800081
+X-HE-Meta: U2FsdGVkX1/Foo7Tb5j2PLHWWngGMCa7tXSzdbHEPhIPwUXvySkpFtP6zw0tA96Y4/KIlWhff5OGn3UvV+wwLk8g0flHwB4sLIkoES3GZJLVuxrFjUoNSwjsKUvanDGDCe9s5hwmygHUubxgo8wBGGDCz1Jlb5AabsK06jYEt3efFLhIgZmuc8NPxQIPNxJ9aGnVBhz+m9AJ5g8l/el2N0Aoy1VgFWgw7AZvSLDeXU5EOUjvpLw1q1vSuOaitfzeJkEZEbAz20A6FZtWPZz8ZZXCRFiARIlDJ5r1W8UsBfOx2/GqVaILV1e3TZJjiqI7/lmEHrSSjieBiANhz0Zl/2r+AnO0FhwX4OlpeVI6ZVlpg/7ESkMFrCEI+Hub1+sN8+p7AC3gXw8Dkg4g/cXR7AD5PTZeYgYW7gxVYq7Oag85CFkY0strxA21gtxUKZXDokfq0bNlcDtA/5MlSVGoCu+3K5PqNWZDQyZMSHHNhdNKBsD7mL0gKHdI8SpPRMI/4XnPZAWpsiju5KbbWO4Y9leXrsonpuS437/ULmQhZvQA2cUtfSDFlFW7IzxKBDDqfe0jlBCfacVLAC3Hu2nxbBmj9THN1FmOxbIhqMSZd5ctXyZqlUBoNOOnaNjxGRcmP3gBVNCY6v5zr+DY4acW1gLxid+a9WDcc984Edlx+dW04wdddVgQzDMGPrUfLBAgwxO4ch1dHdxatUQGlVvDOlFY4YR4Djucfsvmk7BEDtmRyyPN+QSR0ZIo9hnlnx04J6RKT00u53/EmJEDKbCwb12phYmBie8/sfKsnyqK+tGcqMo9SZOXyBuxu2bHYuX5aG/Hwf557fmuG+ccpqdSS0dmnPq30IUvszlgC3BpTBe4z6vucqKk98f++ptcJro1h3ifR/pZKqWUZocdyQOMbnvTVoZos9m/EYjFBdhfwhsbBnTEF/VAIszG84JU9nmCgbyT52AAJxkvabSYX/G
+ p6z9HfjR
+ vTPlXdW0trGYAHd0HRSlufCrwC0aRZSHxJFMOJtup48dLgW4WRhGwbAT7h9HudFCk8nqkUgx3YdVEkmUKkQUILByOfoevSy0kSnoB1A6GWkLMATpy9kkei4AJb2I4r2gklebfDjGQ8vd3SA8Pc8kCC8ttsUYtk+y1AZqn393cYDYIzQYbZ7uXxsj/wr7ALGJFJQO2PcvwCIfCvtfMz7FBJAwAQZo3RIqYqkAOjrvV1amjLeTe3//kSt9wgxzgBTYLs2reHyYPUzYAWV3qGusuRm7FOaZ4ElW4ZWfCNVSu25YqDNh8JA0NqMpjHkLuPSfYuCQ55o65fX4XdtTMUFbilyG1DYUyqotwK6m72/EHNaIxj3l1sUKsOWdXxBwU57pu58g1ysl0cx220Cxezvn5k90qYmQllva84Xg/ivGfeSoktyeAmM/3rmNF2DiS7VRUNqbOSALgGCY/RPV+8/nKHy8Rdr4m29+zBB2mzWeJuD4h+DDFPdwPMVmCqWQAHbrW5RJr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,49 +107,30 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Commit 840fe43d371f ("kho: use unsigned long for nr_pages") changed
-nr_pages to unsigned long, but it forgot to update the KEXEC_HANDOVER=n
-stubs.
+kernel-doc complains:
 
-Fixes: 840fe43d371f ("kho: use unsigned long for nr_pages")
+  No description found for return value of 'kho_alloc_preserve'
+
+It does not recognize '@return'. Use 'Return' instead.
+
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-
 ---
+ kernel/liveupdate/kho_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I don't think this is stable material since there is no problem in
-practice.
----
- include/linux/kexec_handover.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index ef2b188c8ed0..a20456b8da20 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -66,12 +66,12 @@ static inline int kho_preserve_folio(struct folio *folio)
- 
- static inline void kho_unpreserve_folio(struct folio *folio) { }
- 
--static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
-+static inline int kho_preserve_pages(struct page *page, unsigned long nr_pages)
- {
- 	return -EOPNOTSUPP;
- }
- 
--static inline void kho_unpreserve_pages(struct page *page, unsigned int nr_pages) { }
-+static inline void kho_unpreserve_pages(struct page *page, unsigned long nr_pages) { }
- 
- static inline int kho_preserve_vmalloc(void *ptr,
- 				       struct kho_vmalloc *preservation)
-@@ -95,7 +95,7 @@ static inline struct folio *kho_restore_folio(phys_addr_t phys)
- }
- 
- static inline struct page *kho_restore_pages(phys_addr_t phys,
--					     unsigned int nr_pages)
-+					     unsigned long nr_pages)
- {
- 	return NULL;
- }
+diff --git a/kernel/liveupdate/kho_core.c b/kernel/liveupdate/kho_core.c
+index 3f9d408b9d29..580cdb3ea070 100644
+--- a/kernel/liveupdate/kho_core.c
++++ b/kernel/liveupdate/kho_core.c
+@@ -1584,7 +1584,7 @@ EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+  * Note: The actual allocated size will be rounded up to the nearest
+  * power-of-two page boundary.
+  *
+- * @return A virtual pointer to the allocated and preserved memory on success,
++ * Return: A virtual pointer to the allocated and preserved memory on success,
+  * or an ERR_PTR() encoded error on failure.
+  */
+ void *kho_alloc_preserve(size_t size)
 -- 
 2.56.1.839.g22a8290db9-goog
 
