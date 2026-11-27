@@ -1,118 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58E9606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 08:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F1A606A6AC
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 08:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=Na11z4Rd
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XBCn6ndr
 Received: by kanga.kvack.org (Postfix)
-	id 4AAA16B05BD; Fri, 27 Nov 2026 03:28:39 -0500 (EST)
+	id 96D396B05BE; Fri, 27 Nov 2026 03:49:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45B246B05BE; Fri, 27 Nov 2026 03:28:39 -0500 (EST)
+	id 91DD76B05BF; Fri, 27 Nov 2026 03:49:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34A776B05BF; Fri, 27 Nov 2026 03:28:39 -0500 (EST)
+	id 80DD86B05C0; Fri, 27 Nov 2026 03:49:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE4D16B05BD
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:28:38 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B1C580263
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:38 +0000 (UTC)
-X-FDA: 85480222716.01.C71BF2D
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AF29B4000D
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b=Na11z4Rd;
-	spf=pass (imf01.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.9 as permitted sender) smtp.mailfrom=nzzhao@126.com;
-	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine)
+	by kanga.kvack.org (Postfix) with ESMTP id 55D4D6B05BE
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:49:03 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D13D5A79BC
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:49:02 +0000 (UTC)
+X-FDA: 85480274124.19.9533164
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EB0C8180005
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:49:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=XBCn6ndr;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=qwjhust@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795768116;
-	b=GC2qn7XQiWxWTTHhIlWnWidVP6OLGi8lzlGg31/Y9+zkn0FQAytPVugHQ+fYw+MyfKmOu8
-	X5OcWS387RrwJJe2TlkMl3Mzy3MOv8OZ2IbfUa4Qtt2tAPzYZQmfAEkj3EXbjAHt5l+6Tq
-	6vKhiStv9WDnzdUiZF63ujcCJXzs/zA=
+	t=1795769341;
+	b=zh/IzoyPsmVbWZw9+/ttEdxj5VvnVGtQa5rg/+RLCz9YkS0pVxrI7fx3MjqdpOOgMw18Wd
+	ZyA2mYoxAtPIyFewo2UChzjc8Dr++Nxpao/abtvGxVvehYad2x7s2vom+/wecPE46ijdlP
+	8lqyQhUemG+FmQ5LU4VA9etXp3Taw10=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795768116;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1795769341;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MNESWvGb/p8QvPX1KB368WqOrHE4U6ua3L78fMFioCY=;
-	b=1GqbPYLY4X6P+sf9ii3XUqHpRW1md90Y+F5VWOn91VLm7L5nSa/yV2bpACr9nrByQY9n7w
-	KRMH0mqG5ngzbWR5bcjGDQ8aFmGOoHMT2795P/M5zFkVECDQA+TUpkrdTRQm2pSJegjVfj
-	D4QBwFd2reWppRq4QPwSho1UUlkWqx4=
+	bh=aSulb1ZKSxB82Q0DHVFpLluzjXlQ4n39cXbO7GHm4Hg=;
+	b=eE9MenfUGOQDnry3mceQ24J1LpEEEPvn1+epBp4kHjoCsaLC0qM/LNf5TGtv5MFMVDt4RE
+	lnadLLNyvhA4Q7gq4KEp6nt9Zy1lPWiu8Ssm1Q7+zidOVIf8c+fatEva4fcO59jDk/REoG
+	RJZULO+ABFDAItR6pL5q/F6PRAwDTUc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b=Na11z4Rd;
-	spf=pass (imf01.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.9 as permitted sender) smtp.mailfrom=nzzhao@126.com;
-	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=MN
-	ESWvGb/p8QvPX1KB368WqOrHE4U6ua3L78fMFioCY=; b=Na11z4Rdnwl9QXmS8e
-	1efoGbbFTVPBgBQqTT0lkwpM1iGTYD4q+1EhGH/sDKeWu/5lk65gh/cM/mTFTgzY
-	ADuhw8PHciWuclvVQbMoHGPMju7QM0XeIWJpCsjyYtHJRZuuWZM806OTX0ZOnFRX
-	IS54+HJgxDhLUUS23gFSrfJkY=
-Received: from nzzhao-ThinkCentre-M760t.mioffice.cn (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3F9_xPglrbhBtEA--.48132S2;
-	Fri, 27 Nov 2026 16:27:30 +0800 (CST)
-From: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
-To: sashiko-bot@kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Tangquan Zheng <zhengtangquan@oppo.com>,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=XBCn6ndr;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=qwjhust@gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2f046b0adc0so44898115ad.1
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 00:49:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795769340; x=1796374140; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aSulb1ZKSxB82Q0DHVFpLluzjXlQ4n39cXbO7GHm4Hg=;
+        b=XBCn6ndrMJ5uCjqPrN0ONw8qOxooLkjYAtMEl//hW1PvyZkwJfepIsx7j8+35IMpXd
+         1TMRklVFgP0FeP7EENfaepMK/3Mvu1Ml6O2lAq++mmB6WxuHiL/PNWY5F6m6YuJ6pY2Z
+         Y4ymZ6ZsQJmsTPABI+nXyf77/0ffkNxJctKv7Slkti1BLKpLOk6syNfkZ1E6iF6aYSEr
+         Hb65k4nEy3GZs7RChHRYUXE0lo4wcO53qbGLeZEFs46ENx5LBzDvh0toUKy//44CGd6O
+         yHwRVTSmcnx2uKdFKfO103nskYjlfENLV7Pbmgu+bJud++2ZD5PXozPfWLBEXT+c5z83
+         nc3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795769340; x=1796374140;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aSulb1ZKSxB82Q0DHVFpLluzjXlQ4n39cXbO7GHm4Hg=;
+        b=IQnUGHDvybR0W4qdVqA7U9R6r+wJukbyj9eFdWjy1wLMiJMrsT6g0/k9o5FF4CPcb+
+         M1oL1zZnLfVCyy56x3PQiiGrwIgpDqUj/NW2ZLf2HrksZsbx0krHdo778JyApxDtVyP2
+         kjdINxjJm4YUFH8QRWBu41xQIUqosw8p0Jznga8CRG2sPjnk914QI3Jp7BHfB8Frp4Lv
+         xxe0MRdBOLkGCiCy+W4HlW5ef3cIR9lnrOhVublMC71VVAiBOxUT6IqBR6Rplu82JM0m
+         u5N616EcZapVbYsgIuSWz70TVu/+l2F+AAn5VBcKJpBoVkQ8A6Cy0fM/957CTB1xDdSw
+         DsPQ==
+X-Forwarded-Encrypted: i=1; AL+hErG7KESH5t15kWr9KDuwSRWl4G4VEEkcoTBQn9meKxMHsaailqoF7wsl/iwBC7G1zFy+EjM9j6LHBg==@kvack.org
+X-Gm-Message-State: APuU4Z9QVKAFLL72HRmsAfexwB1KhPcZdWatyOZqTivHl91x7UbtUypx
+	Oj5ipX4mgLiF9t8GD6Gro1E0Z+QaeQBEnS50iSGuiOcu/xEcok+RrwzU
+X-Gm-Gg: AZFdTZc3iPjHNZFO7roRIm6/66NUDVv6fIbcPqRlwoEW0riiQ0ry0l3YGt7QuJdz9HR
+	4uvWzXSNjGgl49FmCvjH02HF7TrzzVwT3Nmdgr64KPIEo4o3MJsVkXLnK+EpiV8QWvsaiizxH8T
+	X36h3m2n604nW95ZK0oiGogT4JZiEBdJJA5+ip3k3I1PM9KX37afguVygaGPdQWnV0SyJinieTS
+	cSUm5K2odZxzGAJCG8faZGw+vGfwNsaxDi8tB9zazAYLtv4hj+m/HYwyr6K267/UrDPDmGzcJyE
+	Eom6fJZ2k8LAYEyUSYh4i4wtTA6QiULC9ywhHmEr4e0CSFyq4m+tLQQaXEGRWlsYitTdZu6c6hy
+	QCHFcNwgfXRK2p5FxJJZoJzTU5wkta7JEKhlAA0DNQtoEb6ngY14Dl/uXKG8HYBefup3gzNWcPd
+	FRVJEEMv6TeaIruHvgm7slaIcA0Nkp2n7H8rG6ojznzL/JS8Ua1VPTNFvu5rD377ycZQfYB49mn
+	zzheSnmIOVxUKgL66VaSgudjEZpeP+IsO9RjR2afqh+oGz3Jux7tcUCGSDo3l4WmHEHy03pcS27
+	YgxmPnEVQ/H2tqcbtVtyCx9YzvDVIVgWeBrcyU77K/aVgGt7QJ5kqjEkvz/2vbqJEA==
+X-Received: by 2002:a17:903:22c8:b0:2ef:e563:d2a2 with SMTP id d9443c01a7336-2f11414c317mr10473615ad.57.1795769339572;
+        Fri, 27 Nov 2026 00:48:59 -0800 (PST)
+Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde6d0818c1sm12289058a12.30.2026.11.27.00.48.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 00:48:59 -0800 (PST)
+From: Wenjie Qi <qwjhust@gmail.com>
+X-Google-Original-From: Wenjie Qi <qiwenjie@xiaomi.com>
+To: jaegeuk@kernel.org,
+	chao@kernel.org
+Cc: linux-f2fs-devel@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Chris Li <chrisl@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Ying Huang <ying.huang@intel.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Kanchana P Sridhar <kanchana.p.sridhar@intel.com>,
-	Wajdi K Feghali <wajdi.k.feghali@intel.com>,
-	Bala Seshasayee <bala.seshasayee@linux.intel.com>,
-	Nick Terrell <terrelln@fb.com>,
-	Barry Song <baohua@kernel.org>,
-	Bo Zhang <zhangbo56@xiaomi.com>,
-	sashiko-reviews@lists.linux.dev
-Subject: Re: [RFC PATCH v4 2/4] zram: support compression at the granularity of multi-pages
-Date: Fri, 27 Nov 2026 16:27:27 +0800
-Message-ID: <20261127082728.3624874-1-zhaonanzhe@xiaomi.com>
+	hch@lst.de,
+	jack@suse.cz,
+	axboe@kernel.dk,
+	tz2294@columbia.edu,
+	baohua@kernel.org,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	qiwenjie@xiaomi.com,
+	qwjhust@gmail.com
+Subject: [PATCH v6 1/2] f2fs: complete dropbehind write bios in task context
+Date: Fri, 27 Nov 2026 16:48:44 +0800
+Message-ID: <323235fbdeb5131f83569541c602ddc88f412b18.1795746008.git.qiwenjie@xiaomi.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <sashiko-outbox-216089@kernel.org>
-References: <20261115024455.1465726-1-zhaonanzhe@xiaomi.com> <20261115024455.1465726-3-zhaonanzhe@xiaomi.com> <sashiko-outbox-216089@kernel.org>
+In-Reply-To: <cover.1795746008.git.qiwenjie@xiaomi.com>
+References: <cover.1788438786.git.qiwenjie@xiaomi.com> <cover.1788795700.git.qiwenjie@xiaomi.com> <cover.1795746008.git.qiwenjie@xiaomi.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3F9_xPglrbhBtEA--.48132S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtFykAr1ftw4rtrW8KFWkCrg_yoWxJr4DpF
-	48Cay2kr48XFyUZr4UZws3ur1Dta1fuFWjqryFkw1F9FWfAr93ZFyUtryfXay2gryxCa9a
-	qrs0qrZ5JF1UZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UkGYLUUUUU=
-X-CM-SenderInfo: xq22xtbr6rjloofrz/xtbBsRLouGsJPvJHQAAA3a
 X-Rspam-User:
-X-Rspamd-Queue-Id: AF29B4000D
-X-Rspamd-Server: rspam12
-X-Stat-Signature: rc3ypy3n41x85hnc8uwcc8g7mm4gxn8o
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Pre-Result: action=add header;
-	module=dmarc;
-	Action set by DMARC
-X-Rspam: Yes
-X-HE-Tag: 1795768115-403637
-X-HE-Meta: U2FsdGVkX19thUVk7OjQumJt+mqRHrj55W85CN0X/tg1lBfpwQY3HQEQdmEms3bbzKnEI67t6bCJPwPFE/BfcjUmh4jaEizOOroKLowh6ngadqiDz15KL26bNxAb8ZTMDjCituARZTnw7yzjg9xfDDwEeLK10dXpFpu+cDMIZ8XGY+qiFmFFLFgLdfNCQn0LULwipGmBZ6uULBbMWxWhcrweMKtcats13CADp2tkqCH10XzRstSEZdSTkdMzkCfiOqVaXTVYn1zxr0UHvctKBLshLsyRFZtcj6UpBlB8BsN/KitpABrq3OjYaoFVve4d2PgahtiINBrcH+PZz1A0HhNS5Va+ao+yREZLlRKtLSoYjnT6nuOqvLw9r4/ZzeLio0at4ocdFCn1BuFD6JPmIlWqX4W9HdGjvd872ibHGKw8QxZUkZj/Pehq8Fff4+Eui5rB5bIBHuiVtqk8hG5yHbfnmMrmOSXgRi7yT6oDJUpPVzhOB2M55iuzxFdl/ONtETVTG67thY8VywH8r4GsPm8tv0sTFbZHtUIzX0nQs8hTPjyIGfe/MPR2pQoXLtiePgWZKUGIj8Sk/IBAdYDCvP9GR50sVBkES61PLBywN8Bb/75J+wdzj8NEwgGZ1OkBNF6aCwpJerbbIKjorbEHK/D+xAINpyL+SI54xDQel/y34iWlI9xgqWi9QR7qhtsJKi6OXeyrY9XMHEFoFMNRfxgjHMZedmj+V7LN9+5nAS3NonucRloSq6xem7HRuUqcw25NcTXYqcMUgBo17dtr1ePHRabE6qgJ0SbovVih3ROc5dW45VVNbh4PYwQXdQZ7bPwNYMOtSyTmpggvs8vSU93rPDNSvWGfhqN4IY3Pu/2+AO9+wt4UrZj2MY8Gpcjft3m4waOMNx10Wv6kWRhOSHJcYjvNJ0MzL9QUu4oVg07IvaMQNxED7A/sDY08y2PVw/Q5TlSrH2s5LA7pWYQ
- yQmHDifd
- VVk3jkWzao8zAVWdoYUgYn0r1TSQFt88AUCxbtGCT1ufmE8dyPKrCAJX4oRL9NKV5u/QfEZIbnyIkORS3W+3p5Gt+EnR7tGn4Ftxz0M6fs8D3OBe/xxNXpOxecDTofzQGaM4AFwNPH1F6mNZQDDyhNnLe35gICtwmu0jWU2WLNbywhc0QYJEzaieTU3O/jGuRkHn++RRZ7j6nrooR5WawK57LInCfh4dKbXsrSt7RPmSltxBlvh4D/3tmgEuOuFfe9HZL5BDT+NZMvid853vm1eIjYN46RxMVznH0HwAjDogvmvkrXCgfqv1aGIViv478lhMgeG2Ictba2cj42Mu5vSljOD0pkQYF7Hwtptu0mrDgZKua8mV4cLo7dEqgvR386rI8MdAHdtDCB9U4oAPmCmrUyuRXxhHOYjy5x6iwt44AsT0UeHlSo6pZ6Ccg+1em3dymSTHCavBuZB/VcclLXKMQlHJyM/N6m2ZNqtbnvwSzka4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EB0C8180005
+X-Stat-Signature: cj8fmg67g3f3wmnofry1x1pjfwbojmky
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795769340-187872
+X-HE-Meta: U2FsdGVkX19LZ+I8F5yNLU3FeMktnY1V+zHFUUlF1nPbQE8K09ytKzpl36ZQ40QkT2MAuGo0Fco1Dk591bleSg4w+BrSVDtbe9gbPIr/jXcE34Z2tPHA3tfQgwPb9UNUCcM9g/W3Oop6GuhsdDHkldEiOq1ORwvdHNl0opqHwsNm2B5sKUhnc8/ParXmfeIl/ueCUYHzma1Z1OGQrJIKliTJ1U31SwuR2wek53VLcYUgJSrRMuVw7M6LKyoROPgj5k/YFlFpOLONriV6PH3E1lfHUH/KRzAmOe/ZcPmphyxHCJVNxPcW0Kiq+UOKXpiEKfJ90RtvJEmNrhDpD1/i52oej5aQVpMIGWK9oDGl9E16K0mVe1PjQzj8HzWREbBbx/sntAsQYUb37eqBS3n0cTxxXVLLMEJG8vx4rHYe2R9p2ctz8V9ECo59CaevlqJZTpfPdPUto3oJXyMK4AM35mDCTkTf7wZ7aQiCkE/8YTAwdSwszufEjlGreC4J9cdw/2K9qoFta3YrksuHwXlKuFRYJ/gTh+c0KODBYb2bLJ+dVX8wOviu/PmmzYuHeSDYbhdY1GURa7IzKQsejylcGCO1BmIMllXKhiX/e6PJhLm2mRlDtdEvwzSYefLIBrrHql7HhTV3rzvsspNoncbWlOYL383P/4hmRKInfdscCDyj9RssqRgDcefBRBbPHFgIEi6hocTPy3G6MSlfrS1+ACjSHK8JKwvEW+Bs9pzNd5R4lTDk9GI+JVjBbo4GeZ80ypf7ADqZpz8Kmqzu7TBUKZyQo0Sx6GtLjIp41JSXZsGpMNMIzVpBVoVPar8fNWECarf/j7LjphB5XsGwmXLNXikPNW6rNoyFU9AZlDc4HEMgRpCA8mXoFCE3U8UOySmLN5ga+nsxMxyk4xqRsDdFQBLVbbpyaifnJzLXUBPG3myc+bJmpMqAgFr9zOjtNJq3niuW+KF9l7RFHxS+dqo
+ aPGGScdH
+ BCp1wrZ4T7CtY7AMqTXNZ/LmbgReo02DeugIQnwKElV0GOTku3nFoJ6ophdhnvQcsoq09J7uIOG1UL1KCadLtL7aJTjiE6EXTs2S6w79oGaoUMYA6gjXylxMtp0PFMGYb9GSczgz6FxpwbR9GCr+aUY4O7vg/X5MqxyMOHxX3wuPYvGmil2bEZPl/e0UTyx/0w+tDqeorQgz7WBgAMlLggQJ+der3yaKt0Oan6DBhfnEWw75nHICYjuq8lt94SWAFe53t+yGtX9vCSpwx2d8mgWQ+mQLXDq7Jmypqip8LV9u0rOKgs6LZFq7hDUv+Cz1D29sxdvMLFQBkYRb+CG6AAMiilXYoY2HMLbCnjlduXPHndJapTL42MrHRd4C4sG3QjlXuNxsMpGg8MNJ3uEbRiJtP1Ta+fNVaXmcs4w5T3NfCsO4F2hG4PMd2aNgNiuEpI6SeU7lZ1XGPVTTJWcn/enEfv1aTTxuAGQaVW8UCmK0ViBJcnDg+emBaBUy4Wi5ND/tmB8FTndqWBziFQTCvauwGh3gtcQWzvCgqzRZcHGOBX9Z0T4uJC/By878V0Ch08fzu7xf4CBj0Xx3MYQwIlRb+dA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,150 +135,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> [Severity: Medium]
-> Can zstrm->excl_lock and zstrm->buf_lock be acquired in opposite orders?
->
-> In zram_read_partial_from_zspool(), an exclusive decompression backend
-> (ZCOMP_DSTRM_EXCLUSIVE) takes zstrm->excl_lock inside zcomp_dstrm_get()
-> and then locks zstrm->buf_lock.  A shared decompression backend
-> (ZCOMP_DSTRM_SHARED) locks zstrm->buf_lock first and then calls
-> zcomp_decompress(), which locks zstrm->excl_lock when a two-page object
-> falls back to zstrm->local_copy:
->
-> CPU0                              CPU1
-> ----                              ----
-> lock(&zstrm->excl_lock)
->                                   lock(&zstrm->buf_lock)
-> lock(&zstrm->buf_lock)
->                                   lock(&zstrm->excl_lock)
->
->  *** DEADLOCK ***
+Mark dropbehind write bios BIO_COMPLETE_IN_TASK so the block layer can
+defer their completion to task context before folio invalidation.
 
-This is a valid issue. I think I can eliminate the lock inversion by
-dropping buf_lock entirely and letting partial reads always acquire the
-stream in ZCOMP_DSTRM_EXCLUSIVE mode, where decomp_buf is already
-serialized under excl_lock.
+Allow normal and dropbehind folios to share IPU and OPU bios. Set the
+flag after a dropbehind folio is successfully added, checking the original
+page-cache folio rather than an encrypted or compressed replacement.
 
-With patch 4 (allowing direct reclaim for synchronous multi-page swapin
-in do_swap_page()), I found partial reads are quite rare. So using
-exclusive mode here will not cause heavy lock contention.
+Exclude metadata-cache I/O, which may not have a file-data folio. Leave
+the existing large-ATC completion path unchanged.
 
---- a/drivers/block/zram/zcomp.h
-+++ b/drivers/block/zram/zcomp.h
-@@ -79,7 +79,6 @@ struct zcomp_dstrm {
- 	void *local_copy;
- #ifdef CONFIG_ZRAM_MULTI_PAGES
- 	void *decomp_buf;
--	struct mutex buf_lock;
- #endif
- };
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+---
+Changes since v5:
 
---- a/drivers/block/zram/zcomp.c
-+++ b/drivers/block/zram/zcomp.c
-@@ -120,7 +120,6 @@ static int zcomp_dstrm_init(struct zcomp *comp, struct zcomp_dstrm *zstrm)
- 		zcomp_dstrm_free(comp, zstrm);
- 		return -ENOMEM;
+- Rebase onto dev, preserving the updated bio_len/bio_offset merge paths.
+- Skip metadata-cache I/O before testing the original folio's hint.
+
+ fs/f2fs/data.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index cdc9e6e8633c..37d74afc8b26 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -624,6 +624,9 @@ static struct bio *__bio_alloc(struct f2fs_io_info *fio, int npages)
+ 	bio = bio_alloc_bioset(bdev, npages,
+ 				fio->op | fio->op_flags | f2fs_io_flags(fio),
+ 				GFP_NOIO, &f2fs_bioset);
++	if (!is_read_io(fio->op) && !fio->is_cache &&
++	    folio_test_dropbehind(fio->folio))
++		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
+ 	bio->bi_iter.bi_sector = sector;
+ 	F2FS_BIO(bio)->entry = NULL;
+ 	bio->bi_private = NULL;
+@@ -1077,6 +1080,8 @@ static int add_ipu_page(struct f2fs_io_info *fio, struct bio **bio,
+ 					fio_folio->mapping->host,
+ 					fio_lblk, fio) &&
+ 			    bio_add_folio(*bio, folio, bio_len, bio_offset)) {
++				if (folio_test_dropbehind(fio->folio))
++					bio_set_flag(*bio, BIO_COMPLETE_IN_TASK);
+ 				ret = 0;
+ 				break;
+ 			}
+@@ -1359,6 +1364,8 @@ void f2fs_submit_page_write(struct f2fs_io_info *fio)
+ 		__submit_merged_bio(io);
+ 		goto alloc_new;
  	}
--	mutex_init(&zstrm->buf_lock);
- #endif
- 	return 0;
- }
-
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2907,17 +2907,13 @@ static int zram_read_partial_from_zspool(struct zram *zram, struct page *page,
- 		prio = get_slot_comp_priority(zram, index);
--		mode = ZCOMP_DSTRM_EXCLUSIVE;
--		if (zcomp_shared_decomp(zram->comps[prio]))
--			mode = ZCOMP_DSTRM_SHARED;
--
--		zstrm = zcomp_dstrm_get(zram->comps[prio], mode);
--		mutex_lock(&zstrm->buf_lock);
-+		zstrm = zcomp_dstrm_get(zram->comps[prio], ZCOMP_DSTRM_EXCLUSIVE);
- 		ret = zcomp_decompress(zram->comps[prio], zstrm, sg, size,
- 				       zstrm->decomp_buf, page_size);
- 		if (!ret) {
- 			dst = kmap_local_page(page);
- 			memcpy(dst, zstrm->decomp_buf + offset, PAGE_SIZE);
- 			kunmap_local(dst);
- 		}
--		mutex_unlock(&zstrm->buf_lock);
--		zcomp_dstrm_put(zram->comps[prio], zstrm, mode);
-+		zcomp_dstrm_put(zram->comps[prio], zstrm, ZCOMP_DSTRM_EXCLUSIVE);
- 	}
-
-> [Severity: Medium]
-> Can __test_multi_pages_comp() access past the end of zram->table when
-> disksize is not a multiple of ZCOMP_MULTI_PAGES_SIZE?
->
-> disksize_store() only aligns disksize with PAGE_ALIGN(disksize).  When
-> num_pages is not a multiple of ZCOMP_MULTI_PAGES_NR, an access to the
-> final slots has head + i >= num_pages, so __test_multi_pages_comp() and
-> the set_slot_flag() loops in the multi-page write path read and write past
-> the end of zram->table.
-
-This is a valid issue (and was also caught by syzbot KASAN). I will align
-disksize to ZCOMP_MULTI_PAGES_SIZE in disksize_store() so that multi-page
-groups never cross the end of zram->table.
-
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -3298,7 +3298,7 @@ static ssize_t disksize_store(struct device *dev, struct device_attribute *attr,
- 	if (init_done(zram)) {
- 		pr_info("Cannot change disksize for initialized device\n");
- 		return -EBUSY;
- 	}
-
--	disksize = PAGE_ALIGN(disksize);
-+	disksize = ALIGN(disksize, ZCOMP_MULTI_PAGES_SIZE);
- 	num_pages = disksize >> PAGE_SHIFT;
-
-> [Severity: Medium]
-> Does ZRAM_FLAG_SHIFT overflow the 32-bit attr.flags field when
-> PAGE_SHIFT + CONFIG_ZSMALLOC_MULTI_PAGES_ORDER > 21?
->
-> CONFIG_ZSMALLOC_MULTI_PAGES_ORDER allows values up to 9, and enum
-> zram_pageflags defines 10 flag bits above ZRAM_FLAG_SHIFT.  On 16K or 64K
-> page configurations with larger orders (for example, PAGE_SHIFT == 16 with
-> order >= 6), __NR_ZRAM_PAGEFLAGS exceeds 32 and triggers
-> BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > sizeof(zram_te.attr.flags) * 8) in
-> zram_init().
-
-This is valid. While configurations exceeding the 32-bit limit are already
-rejected at build time, I will replace BUILD_BUG_ON() with an informative
-static_assert() and add comments documenting the bit budget (PAGE_SHIFT +
-ZSMALLOC_MULTI_PAGES_ORDER <= 21).
-
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -3680,2 +3680,3 @@ static int __init zram_init(void)
--	BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > sizeof(zram_te.attr.flags) * 8);
-+	static_assert(__NR_ZRAM_PAGEFLAGS <= sizeof(zram_te.attr.flags) * 8,
-+		      "zram pageflags overflow: PAGE_SHIFT + ZSMALLOC_MULTI_PAGES_ORDER must be <= 21");
-
-> [Severity: Low]
-> Should this find_alloced_obj() change be folded into the preceding commit
-> "mm: zsmalloc: support objects compressed based on multiple pages" so the
-> series stays bisectable?
->
-> Also, the commit message ends with "The following data illustrates the
-> time and compressed data for typical anonymous pages gathered from Android
-> phones." without including the data table, and multi_pages_debug_stat_show()
-> is missing a colon or space before "%8llu" on the failed and partial count
-> lines.
-
-Agreed. I will fold the find_alloced_obj() change into patch 1, drop the
-sentence that promises a data table which is not included, and fix the
-missing delimiter in multi_pages_debug_stat_show:
-
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2011,3 +2011,3 @@ static ssize_t multi_pages_debug_stat_show(struct device *dev,
--			"multi_pages_failed_writes%8llu\n"
--			"zram_bio_write_multi_pages_partial_count%8llu\n"
--			"zram_bio_read_multi_pages_partial_count%8llu\n"
-+			"multi_pages_failed_writes: %8llu\n"
-+			"zram_bio_write_multi_pages_partial_count: %8llu\n"
-+			"zram_bio_read_multi_pages_partial_count: %8llu\n"
++	if (folio_test_dropbehind(fio->folio))
++		bio_set_flag(io->bio, BIO_COMPLETE_IN_TASK);
+ 
+ 	F2FS_BIO(io->bio)->entry_cnt++;
+ 
+-- 
+2.43.0
 
 
