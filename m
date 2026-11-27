@@ -1,148 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78478606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 17:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1838606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 17:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=mSGioadF;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CFUQc+7b;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=mSGioadF;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CFUQc+7b
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Q45v8UTn;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=YYqSy+wZ;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Q45v8UTn;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=YYqSy+wZ
 Received: by kanga.kvack.org (Postfix)
-	id 5192E6B05B0; Fri, 27 Nov 2026 12:43:45 -0500 (EST)
+	id 89C886B05B2; Fri, 27 Nov 2026 12:44:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C9AD6B05B1; Fri, 27 Nov 2026 12:43:45 -0500 (EST)
+	id 84CB66B05B3; Fri, 27 Nov 2026 12:44:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B8EA6B05B2; Fri, 27 Nov 2026 12:43:45 -0500 (EST)
+	id 763146B05B4; Fri, 27 Nov 2026 12:44:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AEF76B05B0
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:43:45 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C6A71403DD
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:43:44 +0000 (UTC)
-X-FDA: 85481621568.13.7AFA405
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4A15A160007
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:43:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mSGioadF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CFUQc+7b;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mSGioadF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CFUQc+7b;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A18B6B05B2
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:44:12 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A900D1C399B
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:44:11 +0000 (UTC)
+X-FDA: 85481622702.10.8774B83
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5EB32120006
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:44:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Q45v8UTn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YYqSy+wZ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Q45v8UTn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YYqSy+wZ;
 	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of jbohac@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jbohac@suse.cz
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795801422;
-	b=lW7YvV49MKbqutnu7muIORnb8xpQLoKeKKF7uB+pPnasAVLqyDmLMSVb4QiXeLEScahrDT
-	WM05teXPqHO/zJ/oe1h+BwiY4YiiMLNwfyx73IikRgirJC89YQlJcHayfoo+iSSn9mtDCc
-	MSRAmlLVf1ao2CJ0ZRzoJvurz/LNyeE=
+	t=1795801449;
+	b=Wg0qOEefmlTe/IjB00MwKbNUSLSko5RIoYNIY6vjISTbUg+3FttIP0HK/i0zkfuZ/Qnoe2
+	vFwfB1GN3yKlppe9U5r41HzFVwybrZjt7fSIA1RnmweH5JO50gCM3IKrdPLAKAY0y24MpO
+	cyDEFSbdltyR93GJAuc8Nvly1Gtc52s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795801422;
+	s=arc-20220608; t=1795801449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4//c1y7R5iOay/1qB05dRfh80LMu6MjdD1lnRgqu534=;
-	b=5F4lcsQEGCeMQeMw6Yvm0IAtXGf43LL7vU6VMBJGt85OWdAEaLDiu4+Jjg7gHyHNckPeBO
-	c/1BACe6KgUCZlZXH+t7/dQXwPl+aZOrE2/btkjYANVQK1CD4P/v527MX/L1d4b8yg36gc
-	SHWrJ4QGuI/k9kDRVeUpNxp3Pb8qBlc=
+	bh=7Egyy1vePPhNOEn0FzYth/QHCU9MBJzPS/xb+Rlwtu4=;
+	b=z9NVNbiFkRasqgiDyWOBuchT3Oux4z59nbwhMme4yR1Rb21Te3kx/x8hNEWfGdn44uOuHF
+	ZVnMPgbNEY6MFomKLXD1H/Wss0OeQT1WKrWP5ukN5SDyRWAwWHTi7WXryKaQJefCmNRDXT
+	nImUGW2lVZ+B36Exb0uKZ5YOqS79J8U=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mSGioadF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CFUQc+7b;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mSGioadF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CFUQc+7b;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Q45v8UTn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YYqSy+wZ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Q45v8UTn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YYqSy+wZ;
 	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of jbohac@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jbohac@suse.cz
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F22D01F7F2;
-	Fri, 27 Nov 2026 17:43:40 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 32A96229B5;
+	Fri, 27 Nov 2026 17:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795801421; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1795801448; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4//c1y7R5iOay/1qB05dRfh80LMu6MjdD1lnRgqu534=;
-	b=mSGioadFgU4HHFtRiF7iKYor+d4NLBHh6LqlX5JJCk+ry6KRDZAw+V+GNj2B7aKWTJ//KG
-	6o28tanc1pGxfauhC1xZ14SQcWAcf45nG9SRJCP2G4Evog/tc0WKSksKX+7/BoBJ1mj87o
-	nYK4MhBvR78SIoeEOF3PUYlHJufmlCI=
+	bh=7Egyy1vePPhNOEn0FzYth/QHCU9MBJzPS/xb+Rlwtu4=;
+	b=Q45v8UTn/pqG57nIwZvWRw7wFUKaevlaeLwlJTvg6Y2kKjyy9CwrpGpoO6ATQhmN6LUXif
+	IqmvRsgbSwwGn/IT8xbeGanHnHFgjoi2B9tn6lTlSEWGbKKB1YVLoviKKLPnyjSLwqb3BB
+	P4VbDkmtsF49MOSsKRWsw+hAVZ+adVo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795801421;
+	s=susede2_ed25519; t=1795801448;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4//c1y7R5iOay/1qB05dRfh80LMu6MjdD1lnRgqu534=;
-	b=CFUQc+7bZAUwCAsOWXF0HebaP0jlbgM+a6julN35p2Pd+Zj3B9I26kWH6mAD5WNM86adCS
-	42QW15I9Oha5ZUDQ==
+	bh=7Egyy1vePPhNOEn0FzYth/QHCU9MBJzPS/xb+Rlwtu4=;
+	b=YYqSy+wZkDUX+WWvdhqlrP5WaBEaNIYgupecNZmlFe5pBjV4rnfKHFKFFW3STL+yYYtCyf
+	Q9X296hyctV9bACQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795801421; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1795801448; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4//c1y7R5iOay/1qB05dRfh80LMu6MjdD1lnRgqu534=;
-	b=mSGioadFgU4HHFtRiF7iKYor+d4NLBHh6LqlX5JJCk+ry6KRDZAw+V+GNj2B7aKWTJ//KG
-	6o28tanc1pGxfauhC1xZ14SQcWAcf45nG9SRJCP2G4Evog/tc0WKSksKX+7/BoBJ1mj87o
-	nYK4MhBvR78SIoeEOF3PUYlHJufmlCI=
+	bh=7Egyy1vePPhNOEn0FzYth/QHCU9MBJzPS/xb+Rlwtu4=;
+	b=Q45v8UTn/pqG57nIwZvWRw7wFUKaevlaeLwlJTvg6Y2kKjyy9CwrpGpoO6ATQhmN6LUXif
+	IqmvRsgbSwwGn/IT8xbeGanHnHFgjoi2B9tn6lTlSEWGbKKB1YVLoviKKLPnyjSLwqb3BB
+	P4VbDkmtsF49MOSsKRWsw+hAVZ+adVo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795801421;
+	s=susede2_ed25519; t=1795801448;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4//c1y7R5iOay/1qB05dRfh80LMu6MjdD1lnRgqu534=;
-	b=CFUQc+7bZAUwCAsOWXF0HebaP0jlbgM+a6julN35p2Pd+Zj3B9I26kWH6mAD5WNM86adCS
-	42QW15I9Oha5ZUDQ==
+	bh=7Egyy1vePPhNOEn0FzYth/QHCU9MBJzPS/xb+Rlwtu4=;
+	b=YYqSy+wZkDUX+WWvdhqlrP5WaBEaNIYgupecNZmlFe5pBjV4rnfKHFKFFW3STL+yYYtCyf
+	Q9X296hyctV9bACQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C8338134E8;
-	Fri, 27 Nov 2026 17:43:40 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0938C134E8;
+	Fri, 27 Nov 2026 17:44:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 13myKEzBCWsfHAAAD6G6ig
-	(envelope-from <jbohac@suse.cz>); Fri, 27 Nov 2026 17:43:40 +0000
-Date: Fri, 27 Nov 2026 18:43:40 +0100
-From: Jiri Bohac <jbohac@suse.cz>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Frank van der Linden <fvdl@google.com>,
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org
-Subject: Re: [PATCH] mm/cma: reject long-term pins of HugeTLB folios
- overlapping crashkernel CMA
-Message-ID: <awnBTG3budAQqfSq@dwarf.suse.cz>
-References: <20261125155108.24098-1-ekffu200098@gmail.com>
- <f79014e3-3c81-4b2b-87f6-df0c2d946357@kernel.org>
+	id VA8PNmfBCWu0HAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 27 Nov 2026 17:44:08 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 8A7A5510C7; Fri, 27 Nov 2026 18:44:03 +0100 (CET)
+Date: Fri, 27 Nov 2026 18:44:03 +0100
+From: Jan Kara <jack@suse.cz>
+To: sashiko-reviews@lists.linux.dev
+Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
+	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org, Mikhail Rudenko <xyzzy@yandex-team.ru>, 
+	Andreas Gruenbacher <agruenba@redhat.com>
+Subject: Re: [PATCH v2 6/8] fs: Add throttling to deferred inode reclaim
+Message-ID: <a3zxiwdovphr2vywf3kficx5hgz22log5xdbl3lupqinkzozd4@ggvcd7ux3vro>
+References: <20261124113450.3451-1-jack@suse.cz>
+ <20261124115850.3512-14-jack@suse.cz>
+ <sashiko-outbox-233315@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f79014e3-3c81-4b2b-87f6-df0c2d946357@kernel.org>
+In-Reply-To: <sashiko-outbox-233315@kernel.org>
 X-Spam-Level: 
-X-Spam-Score: -13.30
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4A15A160007
+X-Spam-Score: -12.80
 X-Rspam-User:
+X-Stat-Signature: cxd7x8f9zpcb6aha1xizxas4x758b17z
+X-Rspamd-Queue-Id: 5EB32120006
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3xuahaisf4uirrb9o3zreesdgt6fuzjh
-X-HE-Tag: 1795801422-609988
-X-HE-Meta: U2FsdGVkX18G7wfv98IJcfH3VhJCduxF6t1qlfoO+i0aIeVzJXNapJcKoBuKVMC4IC/GId88yHCx2ggf+ISUOaPCq3Gdm8aIvlQNsKq7OQbQH4KUquKava2i8fdsxIYmbMtc0narO3/ojQCi+dmm7W0lwio7JM5Qq6jp1Xvur1oo31/U2logYd6Ugb/wopqhU7/9ZUXom1Cq6Lzm0NzVyEbBWGtmYjKeqBCzeVBD3hkU2eZ45vAkZpYkB2f67XDhxdabjRHaNd6Kq7Vq0qK1JjKv+5Q8zuFHGUuMV+Fgp9ovY12pwPI6EV8xCXG1Kadvxw2es5FXg3jVySpozncVrk3CKL5ElX1EoYHpyK5CtNDlWZHQUTk3KU4/8rN1pZU/E6jPYK3P5KFWBTRUKG8RnSaaHcLHy+r5VydYVUTQvStvHXbTIAgGD39WaSvRXk4BrbwXyXifZsdoRzyV/pk6zvxJbdiXI32Va5dCLxxzswHp6/XxyImZhO9Jx3w09LUCUW32vEj0KYmTYlLI4hZ+zTIzy6/VQrnhixujp3M9LvRWuaHlDg8h4wwOOVgoXV44r24lsAlYVJk9kaScXelKHD8ffnQWZWQJCWegsq5DHZI6QHPk3vSzmx6mmD2h3V3Oewu4OHEt7Nk5wwfPc3oH6kVJczjnBdVBvClsK1yUz6nU7n2sgbJloW+aeNYgUdn3dSrds+OeG8Iy1NArgQBgVGlKqpKfByXZPDf10wD9zFeTRjPULr3IqHhT+TNYnyJkATlaXvAAytUYp1w/psn0LxMCESG006O5C0skgGCuuiKpn3lG/c+AWBUM0PcsU2FMWe7f9THcAZxoObvizoY7lthztzxAP9EuKm+CMX//GQrSd0sj/4VpHWlJCMkTE+I45oRqRGxZpLlfJpIaDaTRnH9KmwlCuZuYUNnsn3FnWmj9CQ6A3gDCjFmY9LoBNuepaR2v/z2iKiC+OSdVKZg
- aH2tkWIe
- kAbThtyf2lG4KKkoj7gmYSE1Ybv3o9RN19pHg3+y2rZpi9ZbgLmHv94uE9nEivfCiO713se2FQiozpHh44oox7SEC1RH2ol+1/qWx3yKGw1hEwRmvXV+cGhvh1uUPgzhseeL3cJiiPoHdTyqF67ql+P9IRNecs6c2Ag/G5xbGgAGBcagmtTVTvpPS29G1Lj1rp1VvjfKvYvQSEE1Gt/oI2W383uTDPZiyjZ8JIn2eKvBB48SPwaZVt2+6Xzx5GvkqpkESAt4d0FoUP8wRoAPJXrhLU89DOAyWyfGX1qc9MkjxD9m/zkic3FitBIBGeNgTbxj+qIwIhUJY8bvog5j7sC/5ZZr4cK3rUOnONGuQ90CnUa0Na0jdDoGkcFe4qbySCSpKLqXW/JabP8jEbXOhJT14Cd1qH+absY8YuoaXaFMdHJwrPqYRgSk6KsXbKWCeRxRFrIuufHTuCPwRN23T+pqyZiBZevZ+kNxty49AXWhlBizglcsuEvNviA==
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795801449-389919
+X-HE-Meta: U2FsdGVkX19cU7iS/UQNBLmwD5qYfsgqjDzPKbdJ8nud3OOLqz4QkaseKhHT530SLVS7HLAP1cvbjqjumdufWg4uLezOMmeHhbJsPfDFzXRHws/UtYRZtpxvuGuP12xiWfojxPaHTYfENhmoeSjtEZZq0HMDBl1oOu/8R5Sf5ePxpJmgspktF430HCk9JH/OzD6H1Dm2Hb39ys4u4zomU0UB/xfjLO1WoPDsqXKzIbe2GVyX31Kr62svjM7Y15ZgKKonvLClErsCbEHW/26xKiarn5HIDo6faw8xQctFj44v4DCsMde36QurBHc1hq5ptZNO24l4MulWW5UZRdJ+CCKJhuYew/EN+/LG1KHk4kYaPz74QVTmeVbEOjQgGHY8UKLp59wAhLczaeH9IIuS1y4VqBgEbAfnopVh3/qXGPEB3tCe6X6aRAQ2hI0DAvvICLLPgK9ONX2Oyzqti3yOSNsrhqdHVPM8sl1qOOv9VethYrOenk5agkqtLtxFZkkzl6M3a9CDJ/UpqLLPY23p7hu90f8JsFjsTBTYT2DbOyc2Z0BHDKekXBH9UH+Wdxzcq0XqWquPxPSYHAn6NMIIadXYU9scEipU9o1LL6PSQ0cbsgtkL0QDn+xZ9u9h+URUYY6E/EJeJb4blqFOml/nnZqZQm1ytr9LjVvWNOj3QOKM3C8/q0ZZSe60TZSuIbw7dExyY7pUKSs98jEjCOcz6tcM84Id7wToq+vwMgUGfhhACHw6CFNGwbN8vfYhzdMGkVvhbx17nnyEtHpuXmzA5pLAZEfJ3WcKUJkCaAdV1eprXTI8yUmmIwnU/MIS47TIC2TIjnvuPljmc3FxqyzGfaygNBo1iPsKmq691ctIkfQVCftwNszhBFEK0ygnaTZei8kLDOvSx1w2kQW/TdK+wYphZvTGdQTvqCcBVhUhLjK9RZhKRDv0nR7FCQZyV0JAvTcJ//SDWLL/z0OoV9t
+ OXormYgX
+ D4T+sG90aBj6wfYyYiWIgAixrmL1A5COn3rte6LwInMxumIhgoNQYBbd/tn8l7YpKQRYdtlOXB/MmfsgAbSITG/JO0in31Zr4JWscbuEd6OHkjLtMGD0TqmL2yYQ45KXBFUAlREc04jB/w+EcEKztZVFoiSOZmCJsJ50IiRbFZftdln1sQJrqrhWy3UKcA7l892BxZQB/EgHUiFHTUBBU7hZbt9p94SF68luacIX5LuCN1OmXkwyxP2w4j77eLp/JinnjokstW2rkyD8tRe+wesU42O9UgO1H2KaZxBH+eq5RNFLMEyryDwYnwzIre3sTJg8TtPl1JIImnaENeLHEmNhne6B3aVsWozg2PX0swv0j5L6qY1LTyepqyVoI7J8OHtDfQ7Ap1xS6YAIlxDv06jXI3i+ju0FQ9c2BCh0elzD4F6SX5ky4Oq1M8CqIzuwXgf366KAqTDnwSW0pfe/xHeVj+aZ7Gp+WpsYlS6FZPWy9HxrP7nNioAklrkgX6XtNKcuD7UXclRO2hFWWI+iq15NXeM4Vtc0ybQlC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,50 +142,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 25, 2026 at 11:43:40PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/25/26 16:51, Sang-Heon Jeon wrote:
-> > crashkernel=size,cma uses existing hugetlb_cma memory, so
-> > crashk_cma_ranges[] may contain HugeTLB folios. HugeTLB folios allocated
-> > from hugetlb_cma can be long-term pinned without being migrated.
-> > 
-> > After a crash, the crash kernel uses the memory in crashk_cma_ranges[],
-> > but a device can still write to a long-term pinned folio.
-> > 
-> > So reject long-term pins of HugeTLB folios overlapping
-> > crashk_cma_ranges[].
-> > 
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > ---
-> > The above scenario is only possible with the two patches below applied.
-> > Currently only linux-next, which is targeting v7.5, has both of them.
-> > 
-> >   "mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory" (kexec-next)
+On Wed 25-11-26 12:00:05, sashiko-bot@kernel.org wrote:
+> > +	len = atomic_read(&sb->s_deferred_reclaim_count);
+> > +	if (len > INODE_DEFERRED_RECLAIM_LIMIT) {
+> > +		u64 delay = READ_ONCE(sb->s_deferred_reclaim_delay);
+> > +		struct deferred_reclaim_delay *dd;
+> > +
+> > +		if (!delay)
+> > +			return;
+> > +
+> > +		dd = kmalloc_obj(*dd, GFP_NOFS | __GFP_NORETRY);
+> > +		/*
+> > +		 * If the allocation failed, don't bother. Throttling is
+> > +		 * approximate anyway and next time we'll throttle more.
+> > +		 */
+> > +		if (!dd)
+> > +			return;
 > 
-> I think that's a real problem with this thing.
+> [Severity: Low]
+> Since allocation failure is intentionally ignored here, should this include
+> __GFP_NOWARN so a failed slab expansion under memory pressure does not trigger
+> warn_alloc() and slab_out_of_memory() splats in dmesg?  Also, MM guidelines
+> prefer scoped memalloc_nofs_save()/memalloc_nofs_restore() (or
+> GFP_NOWAIT | __GFP_NOWARN) over passing GFP_NOFS directly.
+
+Not really, I think we want a warning here if allocation fails.
+
+> > +
+> > +		/*
+> > +		 * Scale the delay based on how much we exceed the limit. Wait
+> > +		 * at most 4x as long as estimated time to reclaim the inode.
+> > +		 */
+> > +		len = min(len, 5 * INODE_DEFERRED_RECLAIM_LIMIT);
+> > +		delay = div_u64(delay * (len - INODE_DEFERRED_RECLAIM_LIMIT),
+> > +				INODE_DEFERRED_RECLAIM_LIMIT);
 > 
-> The solution is not to disallow long-term pinning. :/
+> [Severity: Medium]
+> Does passing nsecs_to_jiffies(dd->delay) to schedule_timeout_killable() stall
+> tasks for a full jiffy whenever the scaled nanosecond delay is sub-jiffy or 0?
+> 
+> throttle_inode_deferred_reclaim() checks !delay and allocates dd before
+> scaling delay down by (len - 8192) / 8192, so a small s_deferred_reclaim_delay
+> near the limit scales to 0 ns and still queues deferred_delay_work().
+> Even when the scaled delay is non-zero, any sub-jiffy value is truncated to
+> 0 jiffies by nsecs_to_jiffies(), and schedule_timeout(0) does not return
+> immediately: it arms a timer for jiffies + 1 and sleeps until the next timer
+> tick (1 to 10 ms depending on HZ), defeating the proportional ramp-up.
+> 
+> Scaling delay before checking !delay and allocating dd, and sleeping with
+> schedule_hrtimeout() in deferred_delay_work(), would avoid queuing 0-ns waits
+> and preserve sub-jiffy delays.
 
-This patch does not disallow or break the long-term pinning. It just makes
-sure the pages are migrated away from the CMA before get_user_pages pins them.
+Yes, I'll move the condition to avoid pointless schedule().
 
-As has always been the case prior to 
-  "mm: gup: allow long-term pins of CMA-allocated HugeTLB folios"
-(in mm-unstable), which introduces an exception for hugetlb CMA
-and allows the pinning without migration.
+> > diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+> > index c2a5b492a71a5..d371d1112843f 100644
+> > --- a/include/trace/events/writeback.h
+> > +++ b/include/trace/events/writeback.h
+> [ ... ]
+> > +TRACE_EVENT(mark_inode_reclaim_deferred_throttle,
+> > +	TP_PROTO(struct inode *inode, unsigned int len, u64 delay),
+> > +	TP_ARGS(inode, len, delay),
+> 
+> [Severity: Low]
+> This isn't a bug, but tracepoint names normally follow the subsystem_event
+> convention (such as inode_reclaim_throttle, matching inode_reclaim_update_stat
+> above) rather than starting with the verb mark_.
 
-And this exception breaks the assumption that CMA does not
-contain long-term pinned pages. The short delay prior to kexec
-when CMA is used for crashkernel is there to wait for pending DMA
-into short-term pinned pages, not long-term pinned ones.
+No. The trace point is named after the function where it is.
 
-Including 
-  "mm: gup: allow long-term pins of CMA-allocated HugeTLB folios"
-without this followup breaks this assumption, which we discussed
-during the merge of the crashkernel CMA patchset.
-
-
+								Honza
 -- 
-Jiri Bohac <jbohac@suse.cz>
-SUSE Labs, Prague, Czechia
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
