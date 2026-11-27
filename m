@@ -1,91 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1D3606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 02:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D51606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 02:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PrZ0fgys
 Received: by kanga.kvack.org (Postfix)
-	id 160986B05B1; Thu, 26 Nov 2026 21:31:28 -0500 (EST)
+	id C97B26B05B0; Thu, 26 Nov 2026 21:40:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 138616B05B2; Thu, 26 Nov 2026 21:31:28 -0500 (EST)
+	id C47C36B05B1; Thu, 26 Nov 2026 21:40:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0777F6B05B3; Thu, 26 Nov 2026 21:31:28 -0500 (EST)
+	id B5D6B6B05B2; Thu, 26 Nov 2026 21:40:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D46246B05B1
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:31:27 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4378F8013E
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:31:27 +0000 (UTC)
-X-FDA: 85479322614.13.63B4E17
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C27BE40007
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:31:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of jonaszhou-oc@zhaoxin.com designates 210.0.225.12 as permitted sender) smtp.mailfrom=jonaszhou-oc@zhaoxin.com;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 811326B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:40:00 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFF35A7536
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:39:59 +0000 (UTC)
+X-FDA: 85479344118.26.D5C66D1
+Received: from mta0.migadu.com (out-17.mta0.migadu.com [91.218.175.17])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A6098C0003
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:39:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PrZ0fgys;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of enze.li@linux.dev designates 91.218.175.17 as permitted sender) smtp.mailfrom=enze.li@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795746685;
-	b=t78CIEPb09Mr+AfSn46adbkIEZNUKSYvonskIesuvs8X6AYNhgsb/xfrOxn9gL1+JEQ70w
-	o0lgCCKi52Evr5XoVUNB7kfwMkTuoDxFdtxtiFfQ/dTkJdpRAyVps5x2AcTo7YR7vMnWUR
-	gtR72VD2iRjXtV5xy9yz5Qvkw6crrVQ=
+	t=1795747198;
+	b=hOfsswDbtLtEGRot1EthpZXXOhYVQSIXtaPeyJeXOlceE1hNWhi3NM5b9tIhuvHcXs8cBU
+	aIztoeLRApKKutTUWBAwVlL8CwBOa5uujeDry5rVzmKrWjnrIK+9EyGMA3qRE2KPPfuqkQ
+	RJXCNWjE8XpScZjrAvn3eV5QW3qnXOk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795746685;
+	s=arc-20220608; t=1795747198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dA87UcbQhmaj2fqLijX+wxuez2/12e/CLRHVZbI7N7w=;
-	b=IofvYtygzCPFrjvcHDkFCPCNpktyoYpBgp9BBfUTmYLaXjJ2KQPMuKw5gkuUd/AiCDpg+F
-	LQa2FH1q5ugKvPLRAsd7ZMHSrVD4ya2B5UJ7WGyRodXDMeBMPd6xYtwNG2BD4ajP7PnXP+
-	13JXeWhKzZOUJyVjZTqijYP0eEofQec=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bsNI4Fukd37GtbVgvbYgtrSl9ji0CbnwHNz5uiG/joc=;
+	b=xfNhfpqVGU/a5ilCJ/GvVuh4UIJ8S6UZAUQR3T6gzMZUifZ5TYpHIjvacGKVRS3PN1l2sr
+	haKriAs1MIWXFCNoL4oy+aoNb5QlhirYlgzdFC+Jv3UcyMKwoFzVlqzM7WVWLPA0vGRfpN
+	H4pYok8ilkKozCZ9i0f6Hs3w/VZ0/UU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of jonaszhou-oc@zhaoxin.com designates 210.0.225.12 as permitted sender) smtp.mailfrom=jonaszhou-oc@zhaoxin.com;
-	dmarc=none
-Received: from zhaoxin.com (unknown [127.0.0.1])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4jbHTw60QbzbKS9L;
-	Fri, 27 Nov 2026 10:31:16 +0800 (CST)
-Received: from zhaoxin.com (unknown [10.28.140.201])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4jbHTt5PwvzbKS9L;
-	Fri, 27 Nov 2026 10:31:14 +0800 (CST)
-Received: from zjh-os.zhaoxin.com (zjh-os.zhaoxin.com [10.28.44.129])
-	by zhaoxin.com (8.30) with ESMTP4db20fd4ad44ca33462eecd045475130
-	Fri, 27 Nov 2026 10:31:15 +0800
-X-Eyou-Smtpauth: jonaszhou-oc@zhaoxin.com
-X-Eyou-EnvelopeSender: jonaszhou-oc@zhaoxin.com
-X-Eyou-From: jonaszhou-oc@zhaoxin.com
-From: "=?UTF-8?B?Sm9uYXNaaG91LW9j?=" <jonaszhou-oc@zhaoxin.com>
-To: anshuman.khandual@arm.com
-Cc: jonaszhou-oc@zhaoxin.com,
-	akpm@linux-foundation.org,
-	urezki@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	jianhuizzzzz@gmail.com
-Subject: Re: [PATCH] mm/vmalloc: avoid false sharing with drain_vmap_work
-Date: Fri, 27 Nov 2026 10:31:03 +0800
-Message-ID: <20261127023103.1833448-1-jonaszhou-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <gdy3cvqeppwda5zydfl3cq37gmihrbizbnio5bnandkl2brnt4@vw5s5wcbejoq>
-References: <20260825104659.100134-1-jonaszhou-oc@zhaoxin.com> <gdy3cvqeppwda5zydfl3cq37gmihrbizbnio5bnandkl2brnt4@vw5s5wcbejoq>
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PrZ0fgys;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of enze.li@linux.dev designates 91.218.175.17 as permitted sender) smtp.mailfrom=enze.li@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=TxihfaPAvNj2FoJou+qWNwzbBmmnVRhOZntcNwYjNNM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795747196; v=1; x=1796351996;
+ b=PrZ0fgys4yaE0E+vS8yA8a1stTPQr8LOaKK7fK9PGWAOzGW/tmtXBy/EwaMB1WEqVrF7bse2
+ Iqwp+HPAi1V5IunSUIvdZPOHkcFA3+DA9EYDlMnhQtx5cRHcaToYZP8gKqwBs+Z9BCwS/XjXDDG
+ TBmBm2VKVAzjpMR1hvscV++o=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 08b58659fc6e016c;
+	Fri, 27 Nov 2026 02:39:56 +0000
+X-Mizu-Trace-ID: 08b58659fc6e016c
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <25499f99-52c0-45b3-9198-53c3bd752c53@linux.dev>
+Date: Fri, 27 Nov 2026 10:39:50 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
-X-Eyou-Sender: <jonaszhou-oc@zhaoxin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/27] mm/damon/sysfs: implement report producer type
+ and state files
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org,
+ Aveline Noir <jm5905938@gmail.com>, Lian Wang <lianux.mm@gmail.com>
+References: <20261124153636.91854-1-sj@kernel.org>
+ <20261124153636.91854-9-sj@kernel.org>
+Content-Language: en-US
+From: Enze Li <enze.li@linux.dev>
+In-Reply-To: <20261124153636.91854-9-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A6098C0003
 X-Rspam-User:
-X-Rspamd-Queue-Id: C27BE40007
-X-Stat-Signature: xkysxoept6dw73k9qfjxbfwg9mju57ry
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,FROM_EXCESS_BASE64,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795746684-176117
-X-HE-Meta: U2FsdGVkX19jXouYwXaaktrh0APtFEIj24YEZ0aB509opHDQ9Voz6T1Whaw0S/nTcwR31+TxutGkCPVx/Qfi0HDF9SK7nhXIcbztnIyCMmTTPoEWYs7Njf/lq9PFSMmbFXI9NXWgiGaSt0Xmzac8yOomF9/xshIL5zSbb2UuMhTY4L5FFWXIkbQLpYCsdalJRgOzoCPgxS6hUFgZDXLuVD55RfnBTrITbaJc2+aRJlId6BzlTim1COYIaYp5f9lJKfLu21H1Zlpa8nOJ5UVOl+dVNDNCPnQAkwE9egwsma51S0aSAYao8g+9BRbrB+gdOVkR3X3Vn1xqfpAnNFEATF+id+bclNrDAay3cfyG2G7sXxoKBQfKi/pe3IWwwPQdTrfIJgsI+WjfGlDr/5UpbV6ss6RyFHru4eMWGwjjxbTjBYnNAl75GUU3mRqOjn6z9bkanHWnKhKeSZPOlHmuMVzJhQtLQmHdwzcQbt3vB5HsQXebBFO2QccYQd6wlufWInajEtlzug7bYtPCnzoy6934yexDyB/4GkzzlkxcqByxCoaQVszDjo3sem2xQHZDcsWQS47n3QWBQExoxjpWsFpKlmzd+g0eL0ox0EO5rbyxmTgbNBqNzERyakW/tT/j6XrnPBiTgr/8QWQVffLNm4wjSCCST/IXvo/fuQW+moIL4XXQvfFXKAQowBUMr4IxBAROAwh76m5nIaPAK6xKTu2Lzlr90nRrbRPWxdy53W/Z5c+J0CdbBpEPn9SJ53I2IRsabcFNGVrGZechlPZuWmJWDH16UYfooXzwAQkekO9HYX/TwDae/uxsWCtcmv1TEWoqnOwi7tX/BJrdmBcAXH1/wwe76i176GBT576znzxu1grjizHsyo0+isHCVkmgzojfbwXkOLmvFmEGa/BCNSsqPEsiFN1kKHi43HEDqKVLOJrejgyR7r5CaLUYBl0ILULdPdKi0dHEZmvBBKJ
- 2VaZYepO
- 7gIq5NBNxzztNcRx8kzUsHXAahf0q0+QNZg5kAMgeaw1/uOJfrUBBQ791tIseiOSOGpX9rVaSyLfvadoO0c+5VWgMLePVseI1zegIKMZiDUog/tlu3006jtSFT7V35SuiKaWbkyTd4XJ6pqba+5PMhDAqRozLw0Pc1A++viHosMrNCSh4g/fr7fg/Fw==
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: pspgoxm7z87coipdskn3e4dytgwkc3bw
+X-HE-Tag: 1795747197-547813
+X-HE-Meta: U2FsdGVkX18G7UAQ0uXpuAF6+pEtB6P6iciYC500GAM33ycFnCuoxRoJsgfdiyVbh+/m8BuxdvQgaTxlZJjH8Drqp78vSW45O8dgfjBP/CW7hIzaHzQcK8blDA3QuBalvleXOJitzsJaECbjRP8Q/tCm+eWvrCyW79z0k9FNiovffh4bYcr1/dGwQu5+8ffBapggdZFxgOAn8EhAsmQc3YG4CH5IiNTCiD+JWJY/KNDu0cqPVx+MUK1CAfGELRLXOqcod/Vd9N2+nDSRdAP/VLIIaRoeOMyLb9cDXp76EADWSJ9sFqmaBRiCrtx+faAkeXMA55xEMzmdDQa3YstvHC2XxcseUJOUTllLA531c/RHcl7KP0zK1eL7cBJ1xwkRMZhmKcjyIh2ER8lzLiXFdSAz046Mm4epDoYpu9BL8Pv6DVwxKLlY1TdHMR4Kv/NW0mDggPUSAAN2eUfo3jEaqzxaMJzlDR0aFZRsbnnl/Z8Tl8NIKoF3vup0xOOpK3Wyy5cAkcSwIYTYkJIDb1q5J5MpYrP2JyltsaK7SgOz9Cv3CG4zAaxnIZ3EOJA/hVajoYVkzazzwUF/s/iQxY/XaG4G3ri57l9NQ2T+/ubNKixYHAIPJcTqVxNRLJ3nywKUHt6e+WeSVzyTTpkaST3sr0z2SAG0NGN3g8K5i/QJMZsrdwsiqzlgosgtLXt8QIwePHKRQhlN9rwXKq6U/b4Ctoxl3fHwTOvJWXYakNGKXNbKi7b+1Fg4FSuGK83pSpeoAqyStNEjXX3FdT9k7zgMTi71+HBPE3CKeoO/kQOBUy0JlSfhTLlY38zmar2P8iQf/WnyiMAK+wor2BsAeijDOKI3WD7bV/OXQa8mYpqD5f1612LkYUMpfYjw2rvCHE818F59ZP60zkwD47DSkt/1uCochdForupVorxp5K+GDdUn0OGd84jO2IAR1Sb8hVCd9qDK7BEmU/OFOaddJ0y
+ 9oHUhCGh
+ f8TRwvE9iR9FDu02sDKF8yxs4qrVqsZ/H24oVrIKVvTt3OUlZ/UZyfz2YaBjJBqSr126qL5q/Y6vw2qlkN+6h7S+vWKMLWvuTaJg4rDfugaW9TMTsV2iF/rVDe1IZHMP6Izrbq67ApxyH4wdpOpbcVIViYgFqLVmhYynzRBLy3LwxhppO9rejjdLje8FPsITFrnn4+yb+IPgt3JhOqhnw9kDFd20aHjnWZbkYEg1X/FUlpgVXSad3YKrR4G/ngYeRtFly2qatDRwZNpImSFQ264Z24suAoDykNhsKAeVhQrALZZLw1cRLuFUu0dKFRP7eA5JLX3btAzowbpmZ26l5Y9EEpSmaWLehU7pzaXOJRyU5z4g6rmR84utjQKLmdfC1PrkT3SXb9XGqTp9s+skyH5BdWaGnCWp/7JowhEb9ux3wyJ1Qlb+f7jbizpXWDck9gRsKtxFsPSMVORhETgDEe7areNt8v0heecc+cFwlmmomIbyBHOZIcePspXAEYxb2ADMYrU6Temuv/q973yG6+JinuqT4ehEFpkradZOE16SvDLsBCaL4q085xnAI4F86HBI2H29IC8zUibCXMySJX9UGGSFZPeHeEH7Xi/tjyNScc9w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,33 +96,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Should the test be performed again on latest RC kernel ?
+On 11/24/26 23:36, SJ Park wrote:
+> Implement report_type and producer_state files under the report producer
+> directory.  The type file receives the type of the reports that the
+> producer will generate and submit to DAMON.  The producer_state file
+> enables and disables the producer.
+> 
+> Reviewed-by: Aveline Noir <jm5905938@gmail.com>
+> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+> Signed-off-by: SJ Park <sj@kernel.org>
 
-Yes. I retested on v7.4-rc4 (b6a9fa34ce41) on the same dual-socket
-Xeon Silver 4208. In the unpatched x86-64 builds I tested, GCC placed
-the two variables next to each other, with 32-byte alignment for
-drain_vmap_work and 8-byte alignment for the vmap_nodes pointer.
-Whether they share a 64-byte cache line depends on the kernel config.
-After I set CONFIG_RSEQ=n, drain_vmap_work and vmap_nodes shared the
-same cache line.
+LGTM, thank you.
 
-With 16 workers, SMT off and the CPUs fixed at 2.0 GHz, the mean
-worker times over 10 runs were:
+Reviewed-by: Enze Li <lienze@kylinos.cn>
 
-  test                  unpatched    patched    reduction
-  fix_align_alloc_test    6.129 s    5.365 s       12.47%
-  fix_size_alloc_test     4.836 s    3.850 s       20.39%
-  no_block_alloc_test     4.840 s    3.882 s       19.79%
-
-> s/away/cacheline away/ instead ?
-
-Agreed. I'd make the cache-line separation and the reason for it
-explicit in the comment:
-
-  /*
-   * Keep drain_vmap_work and vmap_nodes on separate cache lines.
-   * CPUs queuing the work write its pending bit, while CPUs allocating
-   * or freeing vmap areas read vmap_nodes.
-   */
-
+Thanks,
+Enze
 
