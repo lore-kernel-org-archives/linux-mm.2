@@ -1,104 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53A9606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 10:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67685606A685
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 10:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IjkX6dWg
+	dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=SvDGtaoJ
 Received: by kanga.kvack.org (Postfix)
-	id 09CB56B05EB; Fri, 27 Nov 2026 05:04:41 -0500 (EST)
+	id 30F676B05ED; Fri, 27 Nov 2026 05:05:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 025FA6B05EC; Fri, 27 Nov 2026 05:04:40 -0500 (EST)
+	id 2BF006B05EE; Fri, 27 Nov 2026 05:05:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E575F6B05ED; Fri, 27 Nov 2026 05:04:40 -0500 (EST)
+	id 187136B05EF; Fri, 27 Nov 2026 05:05:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7802A6B05EB
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 05:04:40 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D091140291
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:04:40 +0000 (UTC)
-X-FDA: 85480464720.30.957C051
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2509D4000F
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:04:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjkX6dWg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DF6426B05ED
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 05:05:05 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3DE43140271
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:05:05 +0000 (UTC)
+X-FDA: 85480465770.13.CE38866
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 514352000E
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:05:03 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=cs.unc.edu header.s=google header.b=SvDGtaoJ;
+	spf=pass (imf31.hostedemail.com: domain of hengyul@cs.unc.edu designates 209.85.128.179 as permitted sender) smtp.mailfrom=hengyul@cs.unc.edu;
+	dmarc=pass (policy=quarantine) header.from=cs.unc.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795773878;
-	b=VOi79iwGbzjCDoao09bUFeKvViwX4DbQKI+3nYPZeUiFHY50UTcF6+tbaUQUqx9vH5M6b9
-	+c6flmpu8KrxqZgMV3EXB1whu3bqvaEiMtv/LWnWxa7e2nnk+hYvagX6gprTlZMS2X6e56
-	bd3pVoCnhDhWDxi8Twt7On5Ha/Iz1BA=
+	t=1795773903;
+	b=ul4okLKOXzvj3XCUQP1HEfWRSrYXhnL2gPfyRoVWuJ/NJwNeYdx4g+ySSK3FCQEMSV90Df
+	15vkDcluAFHn/7HuEjKVvrygk0dwRiZDDUjxpVAIgUagzRCx0CyWPLLNVR5qwgDychDAnK
+	AgbZcFWGsNXuavSbivI6eB3Z7QGGg7o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795773878;
+	s=arc-20220608; t=1795773903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=k4XoDR1GKascgjeA34cEeTWWMXYxiv8rCHJZtJu+drM=;
-	b=YamHFcTgAdMqeQakNVPYRZ9lgY2L2UDTw2dsUxcYIX47jajJ9DJ8B8T1VAd2T0HB3cCpV/
-	Wtfb51SIEKAIGXDFU8qwKsur8NaskYIe2mjozwnnA7VwrJ+Y3iUBLpgjPWIOF1kOMa/dqq
-	jw9nRThTbAjqKpHi/qPIogzQDE3JfUk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6LNt6LCYfisU+3PUtDqGPrc6AXpiMExriMvsMZPkWPo=;
+	b=jffqUJCyZxQRrHxSF06v/jh9dIAgqz8VBA/ALtOpyr0C5+b4Q20wLL1QcRcd/Vwk9RVcdA
+	Ym4mwb84pvqKVmnkAJ6TGDnm7Wdj8/hcZXiqqmbpPcaLZme2xJ4xYFyA+Et1+woERw2ekA
+	G4wK+rc8adXiyrls9NMwv/f9TsDO+uE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjkX6dWg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 916D26124C;
-	Fri, 27 Nov 2026 10:04:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2A01F00926;
-	Fri, 27 Nov 2026 10:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795773877;
-	bh=k4XoDR1GKascgjeA34cEeTWWMXYxiv8rCHJZtJu+drM=;
-	h=From:Date:Subject:To:Cc;
-	b=IjkX6dWgjGwegOmdnF0EAWCS19T0N7IxLN/TQJtMnmCDP/eP4ZY8xLydQzT19L/s5
-	 PaN27FNtwgK0maoJqNNiuOh7wpOQqaHugibzz7rQ3YHelTIi7P2i2ZY3gcXGnm905l
-	 Hytgb+FdNlBBB2FVwNzm2KikCosGjYGtfXn2pyMFCgQYxoxDmVMUWRdFYk6MpKvSIz
-	 FjNXEBTNAblR9UzXANEay8xmD7xXIQI5DyCIu2fI6qmR1Q5u/x6/5nTvJ9aMjVp2P6
-	 L6T1lbN52q4QaBxtqbY0RDN+xrkEEAwNyL8xYwb65VBgL8tKTomezptTK7nKWDTEhA
-	 QQEhIFsov63/Q==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 27 Nov 2026 11:04:22 +0100
-Subject: [PATCH] kfence: use a nofault store to zero the guard page
+	imf31.hostedemail.com;
+	dkim=pass header.d=cs.unc.edu header.s=google header.b=SvDGtaoJ;
+	spf=pass (imf31.hostedemail.com: domain of hengyul@cs.unc.edu designates 209.85.128.179 as permitted sender) smtp.mailfrom=hengyul@cs.unc.edu;
+	dmarc=pass (policy=quarantine) header.from=cs.unc.edu
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-8b503e2a87bso80727877b3.3
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:05:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cs.unc.edu; s=google; t=1795773902; x=1796378702; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6LNt6LCYfisU+3PUtDqGPrc6AXpiMExriMvsMZPkWPo=;
+        b=SvDGtaoJVPXzUFCwfC2qLy7V/9f4qDJSk78RmZt+00GWxzLnZAQxaLQa/TXdsrLkdh
+         +FhAhkVU0+fdMpiwRUTeLlNMiElliqYz7eI0hlz8E86MvBT8TgXBTorA5QYkWrck6xlw
+         7Ag6hZOeR1y8QM5AZk9AbED/od2J4ydOn73AhVfJjmjSyb8DeD0PIXq28+1xmUywb/M9
+         XEgHSHD2qx++0Q1QLTppuvJMheRBmbdUdlHDN0jdHmaAOj0Bo+g2XQeh5bnmY9pf7PWt
+         zMFrk90STD+ZhFGtnwdJL/kg2TC9m9TM3qKy29AQgNxpBUOvY7jHLfbPSrNTZkg+/OoG
+         UFyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795773902; x=1796378702;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6LNt6LCYfisU+3PUtDqGPrc6AXpiMExriMvsMZPkWPo=;
+        b=SUhAAxYqAAsyhHqPEbdNrRmjp0w1LBNHD5QtgCGTk159w1wS+XDvckLy+25CTutjGI
+         6NDI0ZQ+q+qBrklWrdzREIUF5xKJqJm4XzuN4XPbKQ6OOVxBcQ1eS/gLIgut9HPF1m78
+         YrUqT3yH0NldyDocDb7aefFQE2L4nG1EPtPthxQ+wpFf8JabXG5P98SQxxacjiRQrbdE
+         nMYZbOQR8lMEigLm2F83pDTPqgQjEeyH4ybfwOQ6KaIaCQdoLi6TmM/Y/dqsSEpdMpZh
+         ApotfZQ1tf1KDrR/9jHRZxuPGStFNanHaUX+UJlt8eFv4hL5qHcDwvO6f3jzqktqpDiX
+         GrNQ==
+X-Forwarded-Encrypted: i=1; AL+hErFiFT3SDeitXAj0WH5wGAFga16i9zb4K6VyaEGHcvFNHI8MhizIwhm+M61lMXX3nUk07jQmnGxAsg==@kvack.org
+X-Gm-Message-State: APuU4Z8NpaiD3JHieMLkcjg8gMkztObOG9GWffw/tfSedyzZQ72gKfmL
+	SB/lK/mykv0YPYZGMuD7qyseEf97csgEHM5U6en7I5YZryzkiZFdNlBhbev+NB0NNA==
+X-Gm-Gg: AZFdTZdXKnFy7kBtw+geIQ43kr+SiIOCj3VAAqRp8nPTiHtcER5tCfLOIGc+yPArzrU
+	Vky0VHGcVeLsDnixaSwHDY0xZa6dkI3vEwib0eip9431azKKdV6NxA7to/4pEgiTiEEROn6H+lW
+	ZzlzVfPdoniT8AB2GYCM8yEh8NbdamOQK5qTUw3PnpLgBDIZPusKG5EmU0URJ6ftyEJeRP/TVLy
+	gGTUED20LaXGTPTV2F5fIHtsKQVHQIP344Z7iz3PpIVVy2Li9kS/fbjjFbF/knnYnTEf0Exb6yO
+	isiwyTy7QbH6nwf+6Ni6pDZXWP8Qu5LgvvjdkE/eZ7zP91enBM1EvqpPzgosM0I6TXAeJMlE3gb
+	Rsy/9t4aWPoXVY7TvFyb9VoWWbORTysOR1zdqpb37ES5v214rWoTiY7HxGLkAV9g0fCB/KJufBM
+	2sPWKEjpeWlJRWYjaODVlYVh8NWf0vsUn7o890Evvdm4kSVHIPQjR/fAvieucBFo3PXmHK3GVHF
+	+OIVOqa0vpe6qJvO01vu1y9J+EVQ9J4u9AklMMTvUZZhphDKAPUKhiRFLBSGQ8JHfE9stxJAVqo
+	GfGoLYiZ2wyNUwNSqfMuAEo5zFnhty+Esxb7OT/MtIVDjQIMIT/J4A1IEo9uZ55Tehjq8aj28w=
+	=
+X-Received: by 2002:a05:690c:45c5:b0:8b4:d882:49d6 with SMTP id 00721157ae682-8b5201f68edmr98152497b3.0.1795773902358;
+        Fri, 27 Nov 2026 02:05:02 -0800 (PST)
+Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b52028c802sm94799507b3.11.2026.11.27.02.05.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 02:05:01 -0800 (PST)
+From: Hengyu Liang <hengyul@cs.unc.edu>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/gup: fault in ranges that start at address 0
+Date: Fri, 27 Nov 2026 05:04:57 -0500
+Message-ID: <20261127100457.1388226-1-hengyul@cs.unc.edu>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <f5ff8f43-c75c-4b19-b683-fdff0c6dd7ae@kernel.org>
+References: <20261125173202.3636133-1-hengyul@cs.unc.edu> <f5ff8f43-c75c-4b19-b683-fdff0c6dd7ae@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-kfence_guard_zero-v1-1-cb33d3ee653b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXMQQrCMBAF0KsMf92AiVI1V5FS0mRSRyGViRVp6
- d1FXb7NW1FZhSs8rVB+SZWpwJNtCPEayshGEjzB7VxrrTuae+YSuR/noKlfWCeTU2iTs+f9KRz
- QEB7KWd6/89L9XefhxvH5jbBtHyjoI9d1AAAA
-X-Change-ID: 20261127-kfence_guard_zero-fda6d21938a4
-To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
- Dmitry Vyukov <dvyukov@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, 
- Chris Mason <mason@kernel.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3475; i=david@kernel.org;
- h=from:subject:message-id; bh=FA1KnORt5pghKYxVih2NaXekTNZEkyBRBzqY7zjO5C0=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI5Q5dv+Lz3CyOnjytf2kcdx3NLr3+1YfOY5OK+M5Wh8
- ZPgRFaljlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbyVJKR4W+Y7p3vL4Sz3/93
- +5+9WfT7++SOo/cl3R5o/eh1+lwaysjI0MeQN+noqZVp5yRkF00/LjRr0W3zpU87HDx/xlxOzi3
- qZgQA
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2509D4000F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 514352000E
 X-Rspam-User:
-X-Stat-Signature: rgzsy6n1if1q1qaftzd6uzarkc6z1miu
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795773877-473202
-X-HE-Meta: U2FsdGVkX1+o1Y5u3s8gMuyqehCjZsLRo8ETNPD4szeNMCd2XhZwrCuk1DwcO29SL4vvJm3FJr9tVQJnIn0NFgcNCHiIMR6dwO6xWgAg46HytCzwEhLYrvH61JAO8f4/2UYtXNpa28hJ2FfUSIe+2ANq3N6MAWg+GKDIiHz9d/Qy1a8WtODvKvTaK18LaIGDxAmVlR8wfAV7nuA8fAbaurMa9qbpV6VTJu2oVoU6Nf6PIuY/2JgLTZjLI5PgR3edVQuxW5D9OW+KhSzGXj9v/NqHWKSzUoE733OPoFLNUcgyzgthEztjnOxsHHEpk5Mi+7Bpb6MnjT/oUj2+WpxcwQDsU2+1ciSbfBKXfZ+Sk/ePRDr7MesDNp+8Qvj4HEvf4rR9Qz2HRmr0o6THuG7QQMxio4kX6f5vUGSpnkTDpxbV1Uao9iom8O0/YzZM8GdYlAmDrTtaXL2fxhMvnfWxWv6+QRVQXvb2wQdcv6YRvBxyyz0CnLsRUPrn4CgPGiXOXEBDIW274e3+tK88U7hmx2nhEOJoiGv4gymIrGpqVtXT7GUCFosY6F8NkXtjDI3g94yfP78u+GiO/6OGt3qVkTCv9FKfTy+92u6WP5urE+Bw0ROZZ5kC9y21RvrBqDNHNUa0Gk3ZrkVFUxxTpxsiTq1VWJCFmIiP1B4+JdYxfu/Yoiam6AXmpaPmIwvHv7j4H0jkJdpmRatCRKTlse0+rXL9I/90tmosNm7BYblS3yaFr+3NXE7ABrZH65Vf8plnZV0FSUiUQrTund0oAG/XaOvJOjlKa3mib4lIDlsOYBVjZYtPDuqeSuxEkIHpS7Jj3PaC1TE9ZhWcyf3shDROWZK8d33MymZE1wnbPYfBJ0FSb4Im1FbV/PErEPeXUejaHUJ9tynICBTswI2FF8fhYrdSufJ6qrb1ZnAw+PX9CUge8gpmLYLj80wMGcYumDhZRUyCWSYwQh6Kxx+v6JS
- 5BoTmJrr
- jQLukWo3rO3LFum2C8+deLq7Z6JqtFYgAZfTXMmlHvoeKZORAjsuM4QExQYcYp+Yb4Hv0uBvwmMfiISZRf4+ZpCqzQbiCaFWhPMQfS0RUGoq5B5i+o24QASDRxz7+4iEStHru+p82FkBsMHTExH3sPDL0zH+68/i0nY2HPvSFYmajhvOYjYIjBKtuhXd+CDPdYRsr1gL/5SDZDJqpLmgkLjTxVNXhwmDKk6BVcNcwbr0qEgK2qWNGhFtJupkDQfuhrmbgXSd+3Qey6EIBJIkDahl8r9wvBpeEg5ASiMj4VP1FohTRHIw0ap0GI6rp0Ek4SdFZ+bnpe8UbV4IIBZH1ZkRRbGnEG0C2V2NkZ1uE2ExLJoyEZTcMaj2kQ0R4dSrl4HWx+JAiUwusbfWEeUV7/+fffFlvzTd48xUSvdZ0sp2Z8YHek+cVLwGwzSA8XNxW6HQsEGlsFeV9+XFAEXle+g0jr/dAbyfF981CKUS7Q1KW6HS6p6PetKXYcw==
+X-Stat-Signature: mw3o48a4uo8fop4eks9mcbirjj1jxx5u
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795773903-616109
+X-HE-Meta: U2FsdGVkX1/2e/6YpKRqbXmBgpNmjPXay+cYfU9YnPfvPiQpXttfgfYkw3QDhSvIHsF3m5xYFn6gh7R9tpg9MVpwzs2Sk5wuHdZiEjnRtcv8Umh8eqnKjJsfDwg4kekyWgyOH/FcZkz5Sl+AW1744hZuuBE3XSjVDJQ3wQfh2/+28BYTz5YGXXwodWkgeIytaua1eN6vtVkqSMaE5uFfaGPizB7H2OaHov9ossv294vsRuazG0SAW9vdDzwRvCcxeYlZqLlC+YIfRRq+Frf/1E4Vjot2oeC7iILIMMLIQBGjEaItcR5q8MOqb37p1URXxh48K0uWsmgnHXz9zivU7DOsemtB//852xG0HGVApQ1b0Xk3DLnnt5W6etUZZKh8Bv5huOGarW7HD9klWVuqLCQ0wy7YHpWuT+Hw2RM+hkKLM8wgcu+5KDkRkuAwTBZV58npy94KJoGpRbVpVYy+II4+p8eUOqdf98s3ElTLln14Gz4IghQoGZNacIlcY6711l4ZKkE1wGt2jOYfO2FcsARHrbasA6wzihtLrVgcldP0ZekHzB/EOkiJvXe7XSJwD8TWFMe1ZEk/Owou3piOw4zcmCHFhmQZAIfJ3J3CHzG9oFJtzf7QBezXjo1NSV8RspbnJ0nLbQ2kxpKseKgZc+Gxr6/IOlf4sUpsjoQChgCftJiahUGsG5A7b9rFm9ZkMuqvLKfNhDGpXN4jaP6oT/pgiSW72YrIzselnY3m5M0WHROCNG+LnMWldZ4nLPWvDTHrkqT8yGFCuC1kiAJ+arJKDsHjRLkC+6NZYD9c59CRaCjCj8Jm6V4pDk+UBwMaovNnjr8aCJbY/nCXCwrIZ6ycSNlyOuComdTVqRqTxXNZ5l+I05YoCZIcxTtScvKfNqw/uKfm+P3iDCe55AHWHCil9diacT7QCL83VG7iEJThHX48vQnJlmYPOxapD0aSLJXu3FUJyA1oxy+Dayh
+ CxX2oMng
+ O5DOW8NiTHeTjRaeEThCI6LZIQ+l7f7u+85x1x4GKDY+lg6n0uYSWYZq5We2hzI+GBji0GTMwr8uQXA0JPXddCoD7vjZOUAmfARntq+ZIN1ZNDZNWf8dMZpNdNaUUyaSO6MjO3wIv6kMV/lub1C75sRDREr+AfaEVR15mgpgJgk96ByrDzVHLVT5AvNMD0+izAikZdwZJfc0q8pX2At92CvbGbHG6Q4rr+UzKfEPuokj+IZ9aavH+3PLuEvfpzyFdDEDza/NJcHbskVDRyqP9+Fk24Mv1e4vYyWIXUqTvm1gmGXqxTBh3FnA9Qhuz4Oekc2THB3bpFv20yUftZeIDVHZbiURwcOkfDXwszU5tdA+1zVuiDFeJSQX3SndJHf+7R7lZoYGvpaKUb2uFB4AOrNistNG5IakgjvWbZnSIYmEazO5UViMzAouUiG98gGXXc7Yx+oOo3Hxqc+QZ/4mvIM4zVc/BiIqwRKfp9mg88PE11U9upERuetAIIitAI3x3MBXWGry2PpSDqSU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,94 +129,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Chris Mason <mason@kernel.org>
+Hi David,
 
-After an out-of-bounds report, freeing the reported object can deadlock
-on its own meta->lock with interrupts disabled, or trigger a false
-out-of-bounds report on a neighbouring object.
+On Wed, 25 Nov 2026 at 23:51, David Hildenbrand (Arm) <david@kernel.org> wrote:
+> Okay, but you did not actually run into this yourself, right?
 
-With kfence.fault=oops, this can happen more reliably, without races.
+No. I found it while comparing the behavior of different kernel
+versions, and I don't know of an application that hits it.
 
-kfence_guarded_free() zeroes the guard page that meta->unprotected_page
-points at while holding meta->lock, assuming that the page is
-unprotected. However, the page might still be protected:
+> Likely this is "nobody cares" and we don't need CC stable.
 
- - kfence_handle_page_fault() calls kfence_unprotect() only after
-   dropping the lock, so a concurrent free is possible.
+Agreed, I will drop the stable Cc.
 
- - With kfence.fault=oops, kfence_handle_fault() calls BUG(), so we
-   never get to kfence_unprotect().
+>  	/* Stop once we overflow to 0. */
+> These comments are not really correct anymore. We don't stop once we overflow to
+> 0 anymore.
+>
+> Likely we want to be more careful when calcualting+handling end instead.
 
- - If both neighbours of a guard page recorded it, freeing the first one
-   protects it again.
+Something like this, in all three functions?
 
-The store then faults, and kfence_handle_page_fault() either tries to
-take the meta->lock we are holding, or reports a bogus out-of-bounds
-access on the other neighbour.
+	unsigned long end, cur;
+	...
+	/* Page-aligned end of the range, 0 if it reaches the top. */
+	if (check_add_overflow(start, size, &end))
+		end = 0;
+	else
+		end = PAGE_ALIGN(end);
 
-Let's fix it by zeroing the page with copy_to_kernel_nofault(), so that
-a store to a protected page simply fails. All architectures that
-support KFENCE try exception fixups before they call
-kfence_handle_page_fault().
+	for (cur = start; cur != end; cur = PAGE_ALIGN_DOWN(cur + PAGE_SIZE))
+		...
 
-Skipping the zeroing is fine: either the other neighbour zeroed the page
-before protecting it, or it was never unprotected.
+A range at address 0 is then handled like any other, and the loop
+still stops at the top of the address space. This is close to what
+the code did before a7797e74bd39.
 
-This is a quick fix: nothing serializes the protection of a guard page
-against the fault handler, so after a racing free the page can stay
-unprotected and we will not report later out-of-bounds accesses to it.
-Add a TODO as a reminder to sort that out properly.
+If that is what you had in mind, I will send a v2 like this.
 
-Fixes: 94868a1e127b ("kfence: zero guard page after out-of-bounds access")
-Fixes: da735962d05c ("kfence: add kfence.fault parameter")
-Signed-off-by: Chris Mason <mason@kernel.org>
-[ david: adjust comment and description ]
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-I think the underlying problem should be fixed at some point. If this
-quick fix here is not acceptable, kfence people please take over and
-fix it properly right away :)
----
- mm/kfence/core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index bae787fd9baf7..02a07676ac7aa 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -33,6 +33,7 @@
- #include <linux/slab.h>
- #include <linux/spinlock.h>
- #include <linux/string.h>
-+#include <linux/uaccess.h>
- 
- #include <asm/kfence.h>
- 
-@@ -553,7 +554,16 @@ static void kfence_guarded_free(void *addr, struct kfence_metadata *meta, bool z
- 
- 	/* Restore page protection if there was an OOB access. */
- 	if (meta->unprotected_page) {
--		memzero_explicit((void *)ALIGN_DOWN(meta->unprotected_page, PAGE_SIZE), PAGE_SIZE);
-+		/*
-+		 * The fault handler may not have unprotected the page, or
-+		 * freeing a neighbouring object may have re-protected it. Don't
-+		 * fault, otherwise we can deadlock on meta->lock.
-+		 *
-+		 * TODO: Serialize the protection of guard pages against the
-+		 * fault handler, so that we always find the page unprotected.
-+		 */
-+		copy_to_kernel_nofault((void *)ALIGN_DOWN(meta->unprotected_page, PAGE_SIZE),
-+				       page_address(ZERO_PAGE(0)), PAGE_SIZE);
- 		kfence_protect(meta->unprotected_page);
- 		meta->unprotected_page = 0;
- 	}
-
----
-base-commit: 739e2d979b66be560b608a38c4ff86150ec090be
-change-id: 20261127-kfence_guard_zero-fda6d21938a4
-
-Best regards,
---  
-David Hildenbrand (Arm) <david@kernel.org>
-
+Thanks,
+Hengyu
 
