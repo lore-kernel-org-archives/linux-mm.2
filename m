@@ -1,201 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316D7606A331
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 23:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7426D606A332
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 23:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=foI8rJbi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EcQaKITO
 Received: by kanga.kvack.org (Postfix)
-	id A79776B05C6; Fri, 27 Nov 2026 18:02:12 -0500 (EST)
+	id 565566B05C2; Fri, 27 Nov 2026 18:15:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A036E6B05C7; Fri, 27 Nov 2026 18:02:12 -0500 (EST)
+	id 53C826B05C4; Fri, 27 Nov 2026 18:15:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A5626B05C8; Fri, 27 Nov 2026 18:02:12 -0500 (EST)
+	id 479936B05C5; Fri, 27 Nov 2026 18:15:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 595D26B05C6
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 18:02:12 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5DA31C3D15
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 23:02:11 +0000 (UTC)
-X-FDA: 85482424062.23.49611EF
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011044.outbound.protection.outlook.com [52.101.57.44])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D40DD8000B
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 23:02:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=foI8rJbi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf02.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.57.44 as permitted sender) smtp.mailfrom=ynorov@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795820529;
-	b=oVhWGudRjJhkhmAW32qVIwwWAsoSLmfS3vBMLbFJWXEMdYt3g3eGcCUK91HFZxUpV6Ijga
-	EoEcm1uCH/+c4X0/CMR290t8iYaoSs4MVd+FY6gFAm1Ly24ohmL9CdsL9FGFuZ8MKFxoYy
-	Vr0Wqzm/ZsCMdkdo2VCoGvNsCRm41Os=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795820529;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 21A9F6B05C2
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 18:15:10 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73410A0575
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 23:15:08 +0000 (UTC)
+X-FDA: 85482456696.03.0A69182
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A3D6CA0010
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 23:15:06 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EcQaKITO;
+	spf=pass (imf25.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795821306;
+	b=GJ8jXia4bTZ2j/cGAeNdkowt/wy5KY+zjjCI2rqY35AsKbTIariOt0nc4jyBq+Tb3AO5fP
+	3gUQwvqckilbTY9xFVkYRp0Fd4gQaet0wzL6zk3yAWtIMW0+CeQtlYUZcWKZx5bCPIdtU8
+	1rc9YHdg8pcegO/imsfCTDV2P7B9Kq0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795821306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XsH1WKtrnwQZjeA+vFe7DopHLw0EI5pezzqohdo1lck=;
-	b=PMj2eLQh/1Rim+sBYJ/s0ahieyFk3tRQPY+/nOtAZD04UxmT+Pf9z6187zGapVFls0Tm4K
-	oCLDJcZk04Lmj7ypRElGzsyGvsYeym4CfAJCthrtfEQ42tSK15ZsGb+yYf4rF98enc9Nee
-	QwCqGiA6QqfkdMuYAM7jiG8UP9l98xg=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=foI8rJbi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf02.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.57.44 as permitted sender) smtp.mailfrom=ynorov@nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RxMYXKpWkQFvYIEOaGp/oV6dvQ8SCW/UqtTtHQrHjesF5eiPtAxYrrZVmEKjye+lHuC4Z2OcMwOZ4jsp+ty+zCcNDesl+ovvWimiE/PA8txBcg5qTnQ42DXn8rOE6U+qaoamDncpy6zAaW58OrJ/le6R9yK7AA8SNomF/UbA060D3P53trTzQj5lQ6IGz2fTlf1HVQWIq6AN8fkB4HIVMDiURuOCoHzxIcbGLHMsCWhrODCdYnhlsC2i83c/nzt8o73WYhcGy9t4dh/c7xmxez5haRlm6i63E9kDJ81WXqhLUctvaDVwnN5M+u0QAV+QAkB04tMmYV5YvFbSVXImxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XsH1WKtrnwQZjeA+vFe7DopHLw0EI5pezzqohdo1lck=;
- b=SMWMQYPVqxpl9XnEMEFIFXH52ANOPfB65XZoBJ68d+ByO4UAvL0OSYnj8t/FP4As6qBGxNRe80klYxYiHjOUyrOAYWicumaYBuyUQmUZVLbzmzyqBcA1rQOT2azaXf9oPHLStmgZ0BgLtB+o6AkTPYxWWVEsGChdu3mQjv50e/LBnnrTBSkhtOT/1iVW0fyEJCA4lpnI+McfZCUyyOiKB3z2R4wmRuOpQWNbiCZSd+ay1a+tAckVQTmaVqv9r7iRp7EaCKrcRTLGTbmp+GN1A/v8krNqU8GZQTn7caRZw9m4tJMPHU3g8yk1sE4pRI9s/wxH9gp+G0dPHCLqmcnV5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XsH1WKtrnwQZjeA+vFe7DopHLw0EI5pezzqohdo1lck=;
- b=foI8rJbipfTxjhOsX0P+HYJ5zyb7Zzg+eVRGPLb/te1ZxF08uJ87d4YX+Bx0tBKTb96XjTK6Bsq7hVYPednqiudgmUdvanmYnmQh0VAg0Sqf9A1B73f3Y7OCXH3Q7FjAs0szjANLWuNxWA/LQi/5o8lFh4+GUP3yryI3hGl8kJC8oGKbvj3FjHQJYqF7Irp+FrwrPIPAs8nBgssVJXS3gZZo94Q2HqtjK0MTHtU+hUMWrSYLR9kbv5PTz6FUNzKS42SjvvXhtk2qZGbC7kt1oXbZn4YpvM+1AxxZYUINabGp+Mt7WUxPY+CqvPu3fXx1F20Itts6dwm/hCmzLegrXw==
-Received: from SN6PR12MB2814.namprd12.prod.outlook.com (2603:10b6:805:72::33)
- by IA0PR12MB7505.namprd12.prod.outlook.com (2603:10b6:208:443::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.11; Fri, 27 Nov
- 2026 23:01:54 +0000
-Received: from SN6PR12MB2814.namprd12.prod.outlook.com
- ([fe80::9a18:413c:9702:8f59]) by SN6PR12MB2814.namprd12.prod.outlook.com
- ([fe80::9a18:413c:9702:8f59%6]) with mapi id 15.21.0662.004; Fri, 27 Nov 2026
- 23:01:54 +0000
-From: Yury Norov <ynorov@nvidia.com>
-To: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
-	Zi Yan <ziy@nvidia.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Kairui Song <kasong@tencent.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mel Gorman <mgorman@suse.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-mips@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: Yury Norov <ynorov@nvidia.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Wei Xu <weixugc@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yury Norov <yury.norov@gmail.com>
-Subject: [PATCH 11/11] nodemask: add cpumask-style operation size bounds
-Date: Fri, 27 Nov 2026 18:01:28 -0500
-Message-ID: <20261127230128.111933-12-ynorov@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261127230128.111933-1-ynorov@nvidia.com>
-References: <20261127230128.111933-1-ynorov@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BN9PR03CA0698.namprd03.prod.outlook.com
- (2603:10b6:408:ef::13) To SN6PR12MB2814.namprd12.prod.outlook.com
- (2603:10b6:805:72::33)
+	bh=IrDS4A11tKAewGc5ik+OaYkecvMF57R7fCAe0JmkaBc=;
+	b=l7A7KS5Z7mimmx+pNjx8DjkSETNCgIKOgg0d4wh8fSt4nVOSAPYJhWkRfdXTp6DWGDYrtu
+	2es00L/Ev/OHb/zDR0H2JgaCkfX0S0l+Y+FsELqJyi5BYd5gqvwRgMdeNw38ivosmGLEoN
+	N0Qqo2TzKTMwBpP0rAxsvyiuV3gk9lE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EcQaKITO;
+	spf=pass (imf25.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 0AE106124F;
+	Fri, 27 Nov 2026 23:15:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0FA1D1F000C1;
+	Fri, 27 Nov 2026 23:15:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795821305;
+	bh=IrDS4A11tKAewGc5ik+OaYkecvMF57R7fCAe0JmkaBc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EcQaKITOrl9V263dyfVjJdRqu7KemR4FxN4hFjrTHw+2KzO3Qa+MByOpOjIhMqFmV
+	 qCT+jPAFEuySBDSXaWluhEjpN3uxqXzgWRq0njWLczKgZ8oCZVwpsLnlBs2YpNlzDT
+	 6JqU5uXjurbdb7FHb3cEAd69Aq8R00ULrBKfvdxNHM8SdS8qBiOd5QCdI9SSVvtDVh
+	 gOTGLLnz2XfqY6CjGmNkP/lR9OOP1eTnCzUL7dudMCQbsYed+ylVDuFvMN49yFUckG
+	 puAtcdZCbt343YroteKV5W4L6rq6JNEyg4255jegM4RiST3htoJ/dwCChVDytRVczg
+	 YZ+0shkfiEW4w==
+Date: Sat, 28 Nov 2026 01:15:01 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: aleksa@amutable.com, alex@amutable.com, alexei.starovoitov@gmail.com,
+	arnd@arndb.de, bpf@vger.kernel.org, brauner@kernel.org,
+	containers@lists.linux.dev, corbet@lwn.net, dhowells@redhat.com,
+	ebiggers@kernel.org, giuseppe@scrivano.org, hughd@google.com,
+	jack@suse.cz, jlayton@kernel.org, josef@toxicpanda.com,
+	kees@kernel.org, kpsingh@kernel.org, lennart@poettering.net,
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	luto@amacapital.net, neal@gompa.dev, oleg@redhat.com,
+	paul@paul-moore.com, ptikhomirov@virtuozzo.com, sergeh@kernel.org,
+	skhan@linuxfoundation.org, viro@zeniv.linux.org.uk,
+	zygmunt.krynicki@canonical.com
+Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
+Message-ID: <awoO9R7YF_5_6dHA@kernel.org>
+References: <awOQDOel_72Xwjm7@kernel.org>
+ <20261127214103.542291-1-safinaskar@gmail.com>
+ <awn-ioAuksHNV-Rc@kernel.org>
+ <awn_Y7oI4ckfsjSv@kernel.org>
+ <awoHex4LVst2JwkO@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2814:EE_|IA0PR12MB7505:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f5f7e50-0df7-4416-6d2c-08df4cda6e23
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|23010399003|1800799024|376014|7416014|921020|10067099003|56012099006|261026140227099003|261026121527099003|261028144727099003|261021121427099003|261022105027099003|261021123027099003|261102123227099003|261009223027099003|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	yrdn2LVXZ7jitEY/hB+EFcnScIs8CbW4nrqsXmFuoTzglBvnsRbWiZVt2HpmwDqaptK+Dj4e6ijqEW03xCa/6vgIWKC/93MBF6t56kqoJTDWoEOCFZIhNNdydSgrCNCOkFQtIWVZW4kbglMRDPtM2HlCAPlLxBB28NUIJiYk+jFpE12MVA5QhVKituU7jPsD2VlxMF4aJ77WSNMMLisEO0NkUYVeWAGOUTmVqryi/2nVyDVghuFgbJG0vus1SvphIpIoUB9Ji8qfRgWEU/nDySQE3nEK64EgPpEfisMJ4tGHazC3iobNU7R5TC6tUDa+MgqgooMIdInxqOHr8WvH8qvgwh6kOHNpvI1R7934L1keH04goxc93YRdF37GAlbKqk1lht4/UsDF9Oti2Nlh1cm0Z7OS3KAP2bAL6MmCvS7jrrnM22QYinwQ3Edn3qBBTAkjNfUUoji7nK8PVnESsKrQ8154BZ/aEYwjST6cbWIypSO1uboNjpt+yRmwaIFHonuVCbbM/eQxtQEUYv0GtNGDd8mQbPNhcPFtRRcmqT2Si2Be345jQA0xlVLqGltBrTCk//L+Tc8m+3DdK4l29KnvS2oGugE+FCy+/gEzmizkJy4BhZiuDPIclsbKv1vRxidBrd9ICqThj3j7QLEktOniVSGpbHVDErxoOATnmx3PSt6jWxKdBpjTWGEvHPQIa/T3EuA8dikhk4o6/fpqfg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2814.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(10067099003)(56012099006)(261026140227099003)(261026121527099003)(261028144727099003)(261021121427099003)(261022105027099003)(261021123027099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5t5z9GTy3uCe0LSX9OT/dZ3DDrVcMVerCzL0ll2/RoEJwsZkiTcDBWB5o0dg?=
- =?us-ascii?Q?RnKdRzmlUBOk7XG2VVSASC9wcULpAgXrYSsYbx74/avfE63HKVqs6xsMsDCC?=
- =?us-ascii?Q?/t2aYREoDH+UQdUqv/GIjWbJhDE1sanKHtmClJNkcuz+c6Isw8OPxQfIavko?=
- =?us-ascii?Q?9SHlMSm9/O8Sn/O7CL867dkP/XNwTAydEZBzrA0GP8xJBn6bu7KcOLj5bohC?=
- =?us-ascii?Q?V0IKtmWiNoGi4YVeoDSmYOKlaRJVeXHgz0WxBIpLTRPq4icCBF8SjCz7iR28?=
- =?us-ascii?Q?nnRERKI0W3Fzy24mtS2rlpLXImOdwoGq0CQyrysnoYZF42kCEtrvJCVkM8qw?=
- =?us-ascii?Q?Nd2sJujnrzTB3MGArM0/oDwRAVepBeahsDjPQKzAcfLPGMPVtef5sQfbCW5J?=
- =?us-ascii?Q?9i+mC0zcfSvGlUJ40zwotAtdxt9rspuMLJF9FiSdDETpPPf5juu8Fsmf16lj?=
- =?us-ascii?Q?JFv+NgbKE3S6T4+negwt5XmNifu7yykEuypHYgDXCiW7FtwoXA+Nq6ta9HDP?=
- =?us-ascii?Q?g42Y59DHn7u8vtk7O9csJvK7WguFNZgwD5dm19bCvNuLZL7SAQc9ADa7DEKY?=
- =?us-ascii?Q?8tNaEToJAtZf2F5CgaCBfr1T+nafNnhMjUhsrzFu+GeuVOiHB21F/FGN8kkM?=
- =?us-ascii?Q?QWEmbVrOOiX4fTxxBHfMIpb3gG2O99WNvayBB/OGeIhlAmFSWeyuHi0UNyOu?=
- =?us-ascii?Q?8Si5Ls/B/gmDLZZ1fX4wSi52xP3v+2y/FiU+PVI6U5+ctYxu8/sF6EcTRSab?=
- =?us-ascii?Q?gWEEYb6eeLhFzXB3D2bvqatkKgnBtzCmW6mO4NuutNqXmU5MKld7MNlZ9WlN?=
- =?us-ascii?Q?FmvCWoU1oGf9OSyK1Cy3kPyykwYcpAYeaVCk9SAsg4qZNUgcpzVD5JHsFOIh?=
- =?us-ascii?Q?PP+4D7U8EVcdea0nyTaS5aVdNw9IYMJbr5ZKjyAY2lUiz5IwrhesaoDHXgac?=
- =?us-ascii?Q?8OzXgs4j5wZZXEfHRAErB/CQiyctmzb1N3YGWLVe6fvRWdirETGA8xkS6TmL?=
- =?us-ascii?Q?CmquwqE6/wUbbzgUR1TBrlowAHGkFOY4Y5UofthHJzziVDEiUQwuUn46QiId?=
- =?us-ascii?Q?xwMNc/jz7rqHBHL08fAyVqNJsxjsoA9ipf71569cAbIrzH+9SttMdrC+mH7h?=
- =?us-ascii?Q?HnxxGlz86T8Gj8baTXvd2o5SgPSJTFAyQzVvOkKAuWhir7MA7Z5y9nqMCUmC?=
- =?us-ascii?Q?K4C/iC9HFoWi6ysdd/I73X/u46ttUuUa4S60FuKP0j52H6k8lM4tuXahbO5z?=
- =?us-ascii?Q?JBTx8MiM1pWZbJA7wrc12PuxJRAcbOkZjHmFe9pNLqh1YCkLnml5X9D+RIVX?=
- =?us-ascii?Q?uYpikucxDW4W/e+IRLFzVgSeWtEqu3m+DEFWP4AnQL7AxqEQIqL7M6LRm30/?=
- =?us-ascii?Q?Vu+ezQV1cITAav6mXBlN7067czGJY4W2ihqx9m4bMYhho6q/0AdolLoshJuM?=
- =?us-ascii?Q?HFdu++n1f7iRpj3/rCbGYMnrjg8tf1zNwHWlwtDExECPcgOoahpnHR1dS5DE?=
- =?us-ascii?Q?K6CoreJ7re7imuLKXgOx2opizUw+yY2a7d787wi6q+aFJngZtAI65RoVXbFr?=
- =?us-ascii?Q?6PqMMGKudtVl2hq8Jo9VgI4OgOaw68dY8Gv6CmIZfGaTt6FemucW2izJy48C?=
- =?us-ascii?Q?AzXDSfuk1Q0+IpXm10knRrFGZa+XSuPCkleYO0PP/7m5mjPGBUugFLtSQiIF?=
- =?us-ascii?Q?Ix+FubuFQltVH7yRjyhUkY4pJOa43QhMM2Iit2bASXWVbkWKcZf7S43fLS3B?=
- =?us-ascii?Q?XnKbAgrvqzKxAAoSs7ns4f70PVMDosmK4wnJsYEl9UsKA+fmMydD?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f5f7e50-0df7-4416-6d2c-08df4cda6e23
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2814.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2026 23:01:54.7849
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D/l9wJgYmr748efETGzCySesCAvBF22ZH1VpkNYTTsjQdlu6x6kOOCXfgbsnUZjxjNSQ+XHgkXB0cqZsqfGunA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7505
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D40DD8000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awoHex4LVst2JwkO@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A3D6CA0010
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: rw7qpwu69mqk914g33qixzcyyo8ficzb
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: c7tsq1jkc9nixncrt4d6dzuceotbqb8p
-X-HE-Tag: 1795820528-18489
-X-HE-Meta: U2FsdGVkX19wkg77xUAMjN//P0yn23/an+HRD+LRUmddzo7HQ0/w/QOoDRk1ZOPBSl3+yuyfW2QzlNQeDKK/pRbOTAIG1Mk6T0bZw6CXHicdumB1MXrDm8S6hkGg7ca9Lf/UjSOxeLDsJIHytS1kptnBP7LvBeZbm3r5vSB1P6O6jEvltpBiNgUtHN+tIQI8hp6mR1Px5+GZFX5JCkGo20OmLopblH/dcy62MLsHtQDO3JYU1y8ADCVUFmOncYPB7/Hj5JlpSBsyvMW8EX6M9EmSjEfvNSH6Abxh6iLsODR/KbO4BBwbD4TXM3xBD5dtMKQ5Qzi3ZoFLZqWcuhoRyNdCCfoMrlTKpc7k5fSBWpkk26PXTwNkirPwzyhb7Zl6Ld6CVgaGKpf/f0DZnYpDcV7xkYQ1nPbx0bkTBvpAJ3amtQmTgNBEF3Dq0Hb6EVgc0qDGII449L/MOfsbeB+cGC28VYsHm4mNzLnBVPp/DkN9t3VM02i9hCRFBNT8JBzMXvzOiXbipBt21EHOENTB3Kwxq8ugofRjzcaD4nS84y9/8ioudFX7dxMUtWe+IdCDRyy5bkZgCdXo8mVenAIxmmhkxPSB6GAePlU1aKa2oEXMPHfH+ERh9X4WLUBDttcg6f86R5LU4JkzA+rLQU6WOzC/D7/1ivp6GkATw9yJiHmCANLbenXzeS/SRI7rq/vOuf02HeyCWCUXjKF4OUf7mX91E6Y2EaKjUgj87ZH8slmJhf51yovtCQBCtX5/zhH/304NL2TPoCR5/Fou3oyuAkbgF8EuZwj3fpHCAvN68ULjRy3tXrteGFzxYExwV51lr55NEWyP9xL1ia3Mx6W0kZ4Mp/jdojcv5/KNH1gvBG6HzZ8LAWtJbP+BNobCO3ZhS0IHvfPJGTHSQ9D5nvGwczQpfhEgylr02kt+KxZD3KBBLpwyDS7SWgPsI7YQnQRJOmC18d35urMttyyTJIR
- Q11GcugU
- uysOlfVS+H4WzNMPMfJhEoz2ygLBaN1AQdHc+e1USHkeBQPjAoyNago6LaVyh2KR4zTR66EYorAlrlwpEwqOUUYqjOIbSScSiXyUuR74aM+7F9JxwqoKWvOm9umShAHZ3F/ARiOasg9eGRjtHbEMP51QNVOpdl2jn9R/ePr/MPLyM8SS+ciLUkvofvhyTxFIEikXANqsXr3Nsi2nr7v1GSYd0C19dfxdgsca79livfbpk+br+GhggfW58DceAjb7v8+3+W6AV89MXJN32agnNDIIbtxOPd4awzeh26UrJSteImTTC5Pyff3EQAt55OyzsgaVL1bew518VeePhZWdLep8fNFiwjPp/62CYoiseVpj/5fB8S3QIGZQrSR2TS8+LND+CTp0g4ntJGXHqyBW3XCaPfG2sEsbS82ckVhdvIkoqoN+EFTHZRbya0cl0M6MFNcemMgfgBbROEvGp5cBJMqyBiJeCIZf7jAMzrKifIsOnMSTp96fUUsZ31/KYEU+DkQw3SReeoFRBS+52RZfAwfL4gCMek8u2j80Tw5CNJQRV9YXeG/7+k5XR872UJ8AU9N9Jdqscr6ZJ3yseChI1WjbM45g0OhavrQBGsLN40IGXAqzHFluuO3A4K1kruP+uimzTXQBfkx+xpW9QIMDhSsWinA0mYT4PDnD9fX57SzBIKqk7CkT/nyS1ZdovZ2zIRRaOXpOlTlGVBtact1T1GR4vgLGVjAO6B+xZHFYWodpJzVtwJEPzZXPUdkPOWqCY8dP+rslNI0SCuxVuMFWhJP3CcQ==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795821306-109920
+X-HE-Meta: U2FsdGVkX18Oh18oE3bns4tlFg+y8TEDU6V3ypSfoWaP4z8N1OiNUVE6hwIBCiAO9yLON7zkb1db66l1U5ehtRR8arGNwwx2eMsVd6IU8V1HM1bZ6u0Lty/AbcCjMVbJHCLYY77iq5DBiCYD30xr1ny5ptlndeQfdPdBcryTqhAubeos1WiK/WuBQ4MVyB/dHlrBDmLOU416KXTJyq+2ubOSZakmwj/DMJTrweiB2xvg3QEhShHmU0rTdwjvR8fVmX5yjNLw6J9781StUbyCUaeff/zvmkRqTcsHm3ZoQ8xQaiUpRdZSM3Qr2ZXCxazzNVeEkbhaO51SOfO3T0Wg93bqh4gL07m9fPnUr3wKTDXp+bxVCpYIAYG9KIX24YINz4gG3tw0Hi+yoEA2zBE2sg874X9Wf0v2MqKoI/NA0TKM+is8fJ/WTHkn7ql8DwLOOOENqnlRRtwioV9NwX3ayDRRJyPctQz/RgDAKSawI2lpTv2KXuBT36xL+2SmgJRKHpMHtzRQ387NBv/hJHVTtb8ngj6nGSawPzoJyeB5X6ZvwolZgjG0LwqpUa2jhvpXsiEJADcMPZxKdYbBY6clMcA4x7aXAwHiRAeUZ1PvKbL9t+kGcc1PGRDzvkvW/JCDVKqnndHOZ1moCwn1FSOAX/5O4ea9UakiZYG8mETJ31Q+lV9OFMoeVJVhgKESaCEmd5tukH+aXNmFvM5Jhrd5YMqDSqkkrRggghQnH7zf1FImaiYMG3AFQesKHAJALodV7aipX4okl/VNAasNn5tfMAzfB4DD+WQEcBBMzrXRpvBSGFWJ6Ryse18NKLeW17IxBv1Yc1raLsZCBlGlRyMCNTp5lMPqtwsv7Zh+RM2pgUahpP9OmDiFAD/E+NtxHBSDGAXObsj688vmnNH/xElK7VMm+ztmX14sam2Rk8Cqb+9koh5kVM/lhlbqwrPNCI505J+ixsGMZDz22JlD4Nz
+ iMo+kYAg
+ +X0uVB/InS1+/ykMUOGQTwktkR33K/970aylOVOdywdrxFDjBJSp7yhoLrqRT/7I75aTsDII1J9cEHjLOBIXE2hznLS5sURhskyO/IA7Z1r87HtUq3t0vn6mh3JM9LS5SuA9eEFCTAACDiIwm9NJey7Iwcde4ZnuHoJsEtX6r55lG7ztrYKdglbrtT/Y788twgrX2yhHG9OWi6M9buxsitRxbfhI64lSpIf1a+9Ye1Aki7vNnvlJqCwc0o2OPLhpqYaHcB2DuX/H3n/b3Bp1n7MB+VqnK5ZLTmoe/6MUPGmjmAurXN49PK1dAhStBOVQ1LXdThbWro3yugdxgdkAVZllxQYJ/VgrePC1DQRGF/5mmglDYRsVdLOkOoIRnqHKcFkfncZNan0rRhVr8q9+uGFBgnVx+h6mi9AVZtMI7Eah1kVJh4jpMFU4fVcpRhEeU+dhmm25i6KyCfeFW9rZvpPjZNlS5vyIJCl8Cc+NF8exVVpAymcLIdPDlcnwTz7qx7Q4RbgnAWwkjYgELnNBy9+t/iW4Xvyf6pTb1daAnHc/sEsMzogWcEtDMDkk+l4iC0r1t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -204,301 +109,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Nodemasks have a compile-time capacity of MAX_NUMNODES, and
-nr_node_ids describes the runtime node ID usage.
+On Sat, Nov 28, 2026 at 12:43:12AM +0200, Jarkko Sakkinen wrote:
+> On Sat, Nov 28, 2026 at 12:08:38AM +0200, Jarkko Sakkinen wrote:
+> > On Sat, Nov 28, 2026 at 12:05:03AM +0200, Jarkko Sakkinen wrote:
+> > > On Sat, Nov 28, 2026 at 12:41:03AM +0300, Askar Safin wrote:
+> > > > Jarkko Sakkinen <jarkko@kernel.org>:
+> > > > > I personally think that "getting in" should not be a goal in the first
+> > > > > place. I care more about that whaever gets in has a high bar of
+> > > > > quality enough. It can be something different than this but
+> > > > > when I read the LWN article about Cells I was alarmed enough
+> > > > > so that I had to do this and prove my point.
+> > > > 
+> > > > I think that Bacik's patchset has better chances than yours.
+> > > > I think so, because (as Bacik said) it was tested in Anthropic, and also
+> > > > because Brauner reacted positively:
+> > > > https://lore.kernel.org/all/20261021-zeitig-niemals-clubmitglieder-b3973fcebd38@brauner/ .
+> > > > 
+> > > > So I suggest reading Bacik's patchset and say what you don't like about it.
+> > > > You will have chance to influence Bacik's proposal before it will be merged.
+> > > 
+> > > I've read it through and the way I'm seeing it is that it is overdoing,
+> > > and has somewhat complicated life-cycle model tbh. I don't like it.
+> > > 
+> > > This could be of course wrong way to see things and I did this just
+> > > to demonstrate that similar goals can be achieved with a relatively
+> > > lightweight core. And this is also demonstrated with a Python daemon
+> > > emulating Cells style containers (and alos relatively trivial SystemD
+> > > wiring).
+> > > 
+> > > There's no reason to continue this for the time being as it
+> > > demonstrates already how I see the world i.e., "I showed the
+> > > code". It's up to whoever decides these what they do.
+> > 
+> > And even if Cells is the ultimate solution since I had thought about the
+> > whole problem 1.5 years (mainly for my own entertainment but still) this
+> > was the best way to unpurge all of that. Regardless, world became a
+> > better place... New information arrived.
+> 
+> When it comes to containers and namespaces I even don't want to have
+> any opinions tbh, because it is so opionated area to begin with. Thus,
+> I pushed back sending anything using this approach for a year.
+> 
+> Despite the patch set tsunami (sorry about that, shit started to 
+> unpurge as I went on), I was not too hesitate to send this in the
+> first place, or have no motivation to compete with any solution.
+> 
+> I did all this really for the sake of rightful concerns about the
+> complexity of the mainstream approach; and in that sense I'm happy about
+> myself.
 
-Modern distros like Ubuntu default MAX_NUMNODES to 1024, while the
-actual number of nodes is typically smaller. All nodemask operations
-currently refer to the MAX_NUMNODES, which adds a substantial overhead
-on every traversing operation.
+When I was thinking about the whole problem (for mostly fun) I was
+thinking more sequencing than data structures. I.e. I have a game where
+I need to end up to process creation without embryonic state, and add
+just enough weight to kernel to support that outcome, and that leads
+to ~2K'ish LOC of extra kernel complexity.
 
-Simple switch to the runtime nr_node_ids might hurt users configuring
-their MAX_NUMNODES to reasonable small values because the runtime value
-breaks compile-time optimizations in the underlying bitmap API.
+The type of staging that SGX driver uses seems to work really well here,
+and allows to create the container state easily in non-running 
+state.
 
-Thus, switch to using small_nodemask_bits, large_nodemask_bits, or
-the precise nr_node_ids, as appropriate.
-
-Bloat-o-meter reports 1-8KB decrease of .text, depending on NR_CPUS
-and MAX_NUMNODES. With nr_node_ids == 2 and MAX_NUMNODES == 1024, basic
-operations like nodes_copy() are ~4x faster
-
-Signed-off-by: Yury Norov <ynorov@nvidia.com>
----
- include/linux/nodemask.h | 80 +++++++++++++++++++++-------------------
- 1 file changed, 42 insertions(+), 38 deletions(-)
-
-diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-index 4ef6ca642054..67ad972b8942 100644
---- a/include/linux/nodemask.h
-+++ b/include/linux/nodemask.h
-@@ -40,12 +40,12 @@
-  * bool nodes_full(mask)		Is mask full (all bits sets)?
-  * int nodes_weight(mask)		Hamming weight - number of set bits
-  *
-- * unsigned int first_node(mask)	Number lowest set bit, or MAX_NUMNODES
-- * unsigned int next_node(node, mask)	Next node past 'node', or MAX_NUMNODES
-+ * unsigned int first_node(mask)	Number lowest set bit, or >= nr_node_ids
-+ * unsigned int next_node(node, mask)	Next node past 'node', or >= nr_node_ids
-  * unsigned int next_node_in(node, mask) Next node past 'node', or wrap to first,
-- *					or MAX_NUMNODES
-+ *					or >= nr_node_ids
-  * unsigned int first_unset_node(mask)	First node not set in mask, or
-- *					MAX_NUMNODES
-+ *					>= nr_node_ids
-  *
-  * nodemask_t nodemask_of_node(node)	Return nodemask with bit 'node' set
-  * NODE_MASK_ALL			Initializer - all bits set
-@@ -90,7 +90,6 @@
- 
- #include <linux/threads.h>
- #include <linux/bitmap.h>
--#include <linux/minmax.h>
- #include <linux/nodemask_types.h>
- #include <linux/random.h>
- 
-@@ -158,13 +157,17 @@ static __always_inline void __node_clear(int node, volatile nodemask_t *dstp)
- 	clear_bit(node, dstp->bits);
- }
- 
--#define nodes_setall(dst) __nodes_setall(&(dst), MAX_NUMNODES)
-+#define nodes_setall(dst) __nodes_setall(&(dst), nr_node_ids)
- static __always_inline void __nodes_setall(nodemask_t *dstp, unsigned int nbits)
- {
-+	if (small_const_nbits(small_nodemask_bits)) {
-+		dstp->bits[0] = BITMAP_LAST_WORD_MASK(nbits);
-+		return;
-+	}
- 	bitmap_fill(dstp->bits, nbits);
- }
- 
--#define nodes_clear(dst) __nodes_clear(&(dst), MAX_NUMNODES)
-+#define nodes_clear(dst) __nodes_clear(&(dst), large_nodemask_bits)
- static __always_inline void __nodes_clear(nodemask_t *dstp, unsigned int nbits)
- {
- 	bitmap_zero(dstp->bits, nbits);
-@@ -181,7 +184,7 @@ static __always_inline bool __node_test_and_set(int node, nodemask_t *addr)
- }
- 
- #define nodes_and(dst, src1, src2) \
--			__nodes_and(&(dst), &(src1), &(src2), MAX_NUMNODES)
-+			__nodes_and(&(dst), &(src1), &(src2), small_nodemask_bits)
- static __always_inline bool __nodes_and(nodemask_t *dstp, const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
-@@ -189,7 +192,7 @@ static __always_inline bool __nodes_and(nodemask_t *dstp, const nodemask_t *src1
- }
- 
- #define nodes_or(dst, src1, src2) \
--			__nodes_or(&(dst), &(src1), &(src2), MAX_NUMNODES)
-+			__nodes_or(&(dst), &(src1), &(src2), small_nodemask_bits)
- static __always_inline void __nodes_or(nodemask_t *dstp, const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
-@@ -197,7 +200,7 @@ static __always_inline void __nodes_or(nodemask_t *dstp, const nodemask_t *src1p
- }
- 
- #define nodes_xor(dst, src1, src2) \
--			__nodes_xor(&(dst), &(src1), &(src2), MAX_NUMNODES)
-+			__nodes_xor(&(dst), &(src1), &(src2), small_nodemask_bits)
- static __always_inline void __nodes_xor(nodemask_t *dstp, const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
-@@ -205,14 +208,14 @@ static __always_inline void __nodes_xor(nodemask_t *dstp, const nodemask_t *src1
- }
- 
- #define nodes_andnot(dst, src1, src2) \
--			__nodes_andnot(&(dst), &(src1), &(src2), MAX_NUMNODES)
-+			__nodes_andnot(&(dst), &(src1), &(src2), small_nodemask_bits)
- static __always_inline bool __nodes_andnot(nodemask_t *dstp, const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
- 	return bitmap_andnot(dstp->bits, src1p->bits, src2p->bits, nbits);
- }
- 
--#define nodes_copy(dst, src) __nodes_copy(&(dst), &(src), MAX_NUMNODES)
-+#define nodes_copy(dst, src) __nodes_copy(&(dst), &(src), large_nodemask_bits)
- static __always_inline void __nodes_copy(nodemask_t *dstp,
- 					const nodemask_t *srcp, unsigned int nbits)
- {
-@@ -230,15 +233,19 @@ static __always_inline void __nodes_copy_and_extend(nodemask_t *dstp,
- }
- 
- #define nodes_complement(dst, src) \
--			__nodes_complement(&(dst), &(src), MAX_NUMNODES)
-+			__nodes_complement(&(dst), &(src), nr_node_ids)
- static __always_inline void __nodes_complement(nodemask_t *dstp,
- 					const nodemask_t *srcp, unsigned int nbits)
- {
-+	if (small_const_nbits(small_nodemask_bits)) {
-+		dstp->bits[0] = ~srcp->bits[0] & BITMAP_LAST_WORD_MASK(nbits);
-+		return;
-+	}
- 	bitmap_complement(dstp->bits, srcp->bits, nbits);
- }
- 
- #define nodes_equal(src1, src2) \
--			__nodes_equal(&(src1), &(src2), MAX_NUMNODES)
-+			__nodes_equal(&(src1), &(src2), small_nodemask_bits)
- static __always_inline bool __nodes_equal(const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
-@@ -246,7 +253,7 @@ static __always_inline bool __nodes_equal(const nodemask_t *src1p,
- }
- 
- #define nodes_intersects(src1, src2) \
--			__nodes_intersects(&(src1), &(src2), MAX_NUMNODES)
-+			__nodes_intersects(&(src1), &(src2), small_nodemask_bits)
- static __always_inline bool __nodes_intersects(const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
-@@ -254,53 +261,50 @@ static __always_inline bool __nodes_intersects(const nodemask_t *src1p,
- }
- 
- #define nodes_subset(src1, src2) \
--			__nodes_subset(&(src1), &(src2), MAX_NUMNODES)
-+			__nodes_subset(&(src1), &(src2), small_nodemask_bits)
- static __always_inline bool __nodes_subset(const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
- 	return bitmap_subset(src1p->bits, src2p->bits, nbits);
- }
- 
--#define nodes_empty(src) __nodes_empty(&(src), MAX_NUMNODES)
-+#define nodes_empty(src) __nodes_empty(&(src), small_nodemask_bits)
- static __always_inline bool __nodes_empty(const nodemask_t *srcp, unsigned int nbits)
- {
- 	return bitmap_empty(srcp->bits, nbits);
- }
- 
--#define nodes_full(nodemask) __nodes_full(&(nodemask), MAX_NUMNODES)
-+#define nodes_full(nodemask) __nodes_full(&(nodemask), nr_node_ids)
- static __always_inline bool __nodes_full(const nodemask_t *srcp, unsigned int nbits)
- {
- 	return bitmap_full(srcp->bits, nbits);
- }
- 
--#define nodes_weight(nodemask) __nodes_weight(&(nodemask), MAX_NUMNODES)
-+#define nodes_weight(nodemask) __nodes_weight(&(nodemask), small_nodemask_bits)
- static __always_inline int __nodes_weight(const nodemask_t *srcp, unsigned int nbits)
- {
- 	return bitmap_weight(srcp->bits, nbits);
- }
- 
--/* FIXME: better would be to fix all architectures to never return
--          > MAX_NUMNODES, then the silly min()s could be dropped. */
--
--#define first_node(src) __first_node(&(src), MAX_NUMNODES)
-+#define first_node(src) __first_node(&(src), small_nodemask_bits)
- static __always_inline unsigned int __first_node(const nodemask_t *srcp,
- 						unsigned int nbits)
- {
--	return min(nbits, find_first_bit(srcp->bits, nbits));
-+	return find_first_bit(srcp->bits, nbits);
- }
- 
--#define next_node(n, src) __next_node((n), &(src), MAX_NUMNODES)
-+#define next_node(n, src) __next_node((n), &(src), small_nodemask_bits)
- static __always_inline unsigned int __next_node(int n, const nodemask_t *srcp,
- 					       unsigned int nbits)
- {
--	return min(nbits, find_next_bit(srcp->bits, nbits, n + 1));
-+	return find_next_bit(srcp->bits, nbits, n + 1);
- }
- 
- /*
-  * Find the next present node in src, starting after node n, wrapping around to
-- * the first node in src if needed.  Returns MAX_NUMNODES if src is empty.
-+ * the first node in src if needed.  Returns >= nr_node_ids if src is empty.
-  */
--#define next_node_in(n, src) __next_node_in((n), &(src), MAX_NUMNODES)
-+#define next_node_in(n, src) __next_node_in((n), &(src), small_nodemask_bits)
- static __always_inline unsigned int __next_node_in(int node, const nodemask_t *srcp,
- 						  unsigned int nbits)
- {
-@@ -331,7 +335,7 @@ static __always_inline void init_nodemask_of_node(nodemask_t *mask, int node)
- #define first_unset_node(mask) __first_unset_node(&(mask))
- static __always_inline unsigned int __first_unset_node(const nodemask_t *maskp)
- {
--	return min(MAX_NUMNODES, find_first_zero_bit(maskp->bits, MAX_NUMNODES));
-+	return find_first_zero_bit(maskp->bits, small_nodemask_bits);
- }
- 
- #define NODE_MASK_LAST_WORD BITMAP_LAST_WORD_MASK(MAX_NUMNODES)
-@@ -361,21 +365,21 @@ static __always_inline unsigned int __first_unset_node(const nodemask_t *maskp)
- #define nodes_addr(src) ((src).bits)
- 
- #define nodemask_parse_user(ubuf, ulen, dst) \
--		__nodemask_parse_user((ubuf), (ulen), &(dst), MAX_NUMNODES)
-+		__nodemask_parse_user((ubuf), (ulen), &(dst), nr_node_ids)
- static __always_inline int __nodemask_parse_user(const char __user *buf, int len,
- 					nodemask_t *dstp, int nbits)
- {
- 	return bitmap_parse_user(buf, len, dstp->bits, nbits);
- }
- 
--#define nodelist_parse(buf, dst) __nodelist_parse((buf), &(dst), MAX_NUMNODES)
-+#define nodelist_parse(buf, dst) __nodelist_parse((buf), &(dst), nr_node_ids)
- static __always_inline int __nodelist_parse(const char *buf, nodemask_t *dstp, int nbits)
- {
- 	return bitmap_parselist(buf, dstp->bits, nbits);
- }
- 
- #define node_remap(oldbit, old, new) \
--		__node_remap((oldbit), &(old), &(new), MAX_NUMNODES)
-+		__node_remap((oldbit), &(old), &(new), nr_node_ids)
- static __always_inline int __node_remap(int oldbit,
- 		const nodemask_t *oldp, const nodemask_t *newp, int nbits)
- {
-@@ -383,7 +387,7 @@ static __always_inline int __node_remap(int oldbit,
- }
- 
- #define nodes_remap(dst, src, old, new) \
--		__nodes_remap(&(dst), &(src), &(old), &(new), MAX_NUMNODES)
-+		__nodes_remap(&(dst), &(src), &(old), &(new), nr_node_ids)
- static __always_inline void __nodes_remap(nodemask_t *dstp, const nodemask_t *srcp,
- 		const nodemask_t *oldp, const nodemask_t *newp, int nbits)
- {
-@@ -391,7 +395,7 @@ static __always_inline void __nodes_remap(nodemask_t *dstp, const nodemask_t *sr
- }
- 
- #define nodes_onto(dst, orig, relmap) \
--		__nodes_onto(&(dst), &(orig), &(relmap), MAX_NUMNODES)
-+		__nodes_onto(&(dst), &(orig), &(relmap), nr_node_ids)
- static __always_inline void __nodes_onto(nodemask_t *dstp, const nodemask_t *origp,
- 		const nodemask_t *relmapp, int nbits)
- {
-@@ -399,7 +403,7 @@ static __always_inline void __nodes_onto(nodemask_t *dstp, const nodemask_t *ori
- }
- 
- #define nodes_fold(dst, orig, sz) \
--		__nodes_fold(&(dst), &(orig), sz, MAX_NUMNODES)
-+		__nodes_fold(&(dst), &(orig), sz, nr_node_ids)
- static __always_inline void __nodes_fold(nodemask_t *dstp, const nodemask_t *origp,
- 		int sz, int nbits)
- {
-@@ -409,7 +413,7 @@ static __always_inline void __nodes_fold(nodemask_t *dstp, const nodemask_t *ori
- #if MAX_NUMNODES > 1
- #define for_each_node_mask(node, mask)				    \
- 	for ((node) = first_node(mask);				    \
--	     (node) < MAX_NUMNODES;				    \
-+	     (node) < small_nodemask_bits;			    \
- 	     (node) = next_node((node), (mask)))
- #else /* MAX_NUMNODES == 1 */
- #define for_each_node_mask(node, mask)                                  \
-@@ -524,9 +528,9 @@ static __always_inline int num_node_state(enum node_states state)
- static __always_inline int node_random(const nodemask_t *maskp)
- {
- #if defined(CONFIG_NUMA) && (MAX_NUMNODES > 1)
--	int node = find_random_bit(maskp->bits, MAX_NUMNODES);
-+	int node = find_random_bit(maskp->bits, nr_node_ids);
- 
--	return node < MAX_NUMNODES ? node : NUMA_NO_NODE;
-+	return node < nr_node_ids ? node : NUMA_NO_NODE;
- #else
- 	return 0;
- #endif
--- 
-2.53.0
-
+Br, Jarkko
 
