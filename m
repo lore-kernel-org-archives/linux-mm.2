@@ -1,222 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F9A606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 04:05:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=omijfA5C
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9201606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 04:33:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 652306B05B0; Thu, 26 Nov 2026 23:05:44 -0500 (EST)
+	id 8B41A6B05B0; Thu, 26 Nov 2026 23:33:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6025A6B05B1; Thu, 26 Nov 2026 23:05:44 -0500 (EST)
+	id 865736B05B1; Thu, 26 Nov 2026 23:33:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 518236B05B2; Thu, 26 Nov 2026 23:05:44 -0500 (EST)
+	id 77B316B05B2; Thu, 26 Nov 2026 23:33:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 269336B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 23:05:44 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8852BA761A
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:05:43 +0000 (UTC)
-X-FDA: 85479560166.24.AFE09F3
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B14CD80004
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:05:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=omijfA5C;
-	spf=pass (imf02.hostedemail.com: domain of namjain@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=namjain@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+	by kanga.kvack.org (Postfix) with ESMTP id 50BEF6B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 23:33:34 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DA00EA75A2
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:33:33 +0000 (UTC)
+X-FDA: 85479630306.29.D763068
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 440FC180005
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:33:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=appspotmail.com (policy=none);
+	spf=pass (imf06.hostedemail.com: domain of 3GwgJawkbAK4gmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3GwgJawkbAK4gmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795752341;
-	b=w7Xaxy+rThQkr7LcYEIFFa3a5FydUaqWiK+w9t5AM/UaYtz3yYorvUc9g1TJ1Q0JDKsz6d
-	0BfN65ljygPt05d+VG+mL1VLzdsaQ32Hr+OL4S97zoeLQzW+jwg2AxCiGghzbedEr1eltU
-	i+0UAyUoHYhcGy0ckSEEJnAdxlwR760=
+	t=1795754012;
+	b=Z5WnwG7mvuCFGpc1w2YO0crYpXBYKk0YDdWPz47Wv1s+utl97sexZfoWA3X+ZK52cNqqbu
+	hlJrfpbnmEa/yhDunzTdJXdeiS21UJ5Ydfy4cWvHMlLtau47gq+JJTukaYX0dPDnUwFBvn
+	7ykSJgtWZ639J7353tjCHPcco2QHNBc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795752341;
+	s=arc-20220608; t=1795754012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ma+f5p80haJszFPPAIIEC1l3WLdFdBqpV7MIoNSrF48=;
-	b=clPWtVoZlX2LoGhFAtG1Pna7Mw43eFMShmRDjXE695Rrk2NA2sVJw0m6PMh/fs0tCYFPM6
-	ESjy85T8J0Q903a338nzmJkqrwE+IUOj429Okm5Ul/dTUQIRwj07SxSkh/9h7I7UXUGWSN
-	mauHeikqqsm0jpSGCIiltoP0qYTQS5M=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=RtCl9bLKvCJGn7zLPcTxsOwpUTUjtSTIamyZWGlNDQI=;
+	b=TsIO/Ld64ir5HDgaL8KJ/7p/gqOiMlzD+RLik7sxCHljVDW3tSNCIP7iuntP7ELG5xKje9
+	y83eQwtC1pm2/IzY4xhcMZOtpJUeIHwXFz9Yoqhz8x2HPZlOlM29RY9eWjh+0Jp+07Otqx
+	DXUV6uUAmmlZNnvmSsyr1ijQnxT/UiA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=omijfA5C;
-	spf=pass (imf02.hostedemail.com: domain of namjain@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=namjain@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-Received: from [192.168.1.70] (unknown [52.172.102.222])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B8EB620B7166;
-	Thu, 26 Nov 2026 20:05:30 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B8EB620B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1795752334;
-	bh=Ma+f5p80haJszFPPAIIEC1l3WLdFdBqpV7MIoNSrF48=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=omijfA5Cc+HumzTDcN5RSmmeizr3nKcpgIVYDhAvwS//fyO3Q0ZVB9vJcRC2PgeEF
-	 wHmv+J2D80WDkMAfjOng7PYGhhK8l6++MR12DNtgPLS4XD/KyuXdoc345KtLyBkKrL
-	 aqpWukiJnUHIJRehA/GrQzwhk3naYp9gHsqHHn9Y=
-Message-ID: <74edd490-26bd-41a4-81ee-cd18b9f28154@linux.microsoft.com>
-Date: Fri, 27 Nov 2026 09:35:34 +0530
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=appspotmail.com (policy=none);
+	spf=pass (imf06.hostedemail.com: domain of 3GwgJawkbAK4gmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3GwgJawkbAK4gmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-57ce46ad0c1so6017843b6e.2
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:33:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795754011; x=1796358811;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RtCl9bLKvCJGn7zLPcTxsOwpUTUjtSTIamyZWGlNDQI=;
+        b=1X96g/3LIfBfB99soBbpoVhmUw7d7LCn0eu+JFUsRVGUl1HPMzNb27sPxqJ1EViIUl
+         3PLaHVgwP/4L+AcVBAhO3hk9hGcC+YG/M4zyRTPRx0dnSyiVo0BhbNlAXl81En3TzybG
+         ZwokHQ0bdStGC4Iuc4V7Xh5WBV4VUaPhYdRyV49KXQovNqMRcERo7ZkI5CoonJnh0iHj
+         eM7szGKjRRWldoOp4/Cgi4+TIgqRNHeDYHLB5b50Y6gEgbO2fPfebHuPhALa8o8bNH8X
+         nkOhd/bSP9YIDZN60CmrZSWKg0TOI89tMQdi25xTawDNb5jEXFGVmJXkhaNNo/HYct++
+         0cHA==
+X-Forwarded-Encrypted: i=1; AL+hErFOqu0cuhvPYu1UU691nc9wUGjM41+8bIjnuqBBAUZRRzaHTkVQeiyUhSCQZ52xAn8/pUSu9J8E7g==@kvack.org
+X-Gm-Message-State: APuU4Z8fTBickp4Z8He9HIkQioOFlTw+ND7J7pZZq3XJ4grKtDNaEmT1
+	6GFRh7PTkW7gs2vAYJnpGhXuoUwlLvJFr4hEU/qb5rrHXFtSC55CRCcpuYjr9M53DD1sZjycexZ
+	/iVGZBvkAAy66b6CW+FhehJ2nsjfXjtILRmOH2XOBdR6GL1mM7ciUq184T0M=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iov_iter: Fix direct I/O across compatible device pgmaps
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
- Andrew Morton <akpm@linux-foundation.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Oscar Salvador <osalvador@suse.de>, Logan Gunthorpe
- <logang@deltatee.com>, Leon Romanovsky <leon@kernel.org>,
- Keith Busch <kbusch@kernel.org>, linux-block@vger.kernel.org,
- linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20261126053433.88531-1-namjain@linux.microsoft.com>
- <5cc60faa-002c-4c96-97e3-46d3002718c9@kernel.org>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <5cc60faa-002c-4c96-97e3-46d3002718c9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
-	aws-us-west-2-korg-listserv-alma10-1
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B14CD80004
+X-Received: by 2002:a05:6808:23c7:b0:4f8:716d:793e with SMTP id
+ 5614622812f47-57a0bb86478mr22640780b6e.46.1795754011369; Thu, 26 Nov 2026
+ 20:33:31 -0800 (PST)
+Date: Thu, 26 Nov 2026 20:33:31 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6b09081b.904258e1.78503.002d.GAE@google.com>
+Subject: [syzbot] Monthly mm report (Nov 2026)
+From: syzbot <syzbot+liste51eef8f5d72764a3f34@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 440FC180005
+X-Stat-Signature: yibxwmsdzrkr5oxakig6c3uoboaf6jwf
+X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Stat-Signature: zqyymz688thocy6rgazw9c3wx6f6dtx7
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795752341-820441
-X-HE-Meta: U2FsdGVkX1971faZODPgo8I1NtIbksaOSSmWQyjL5h6vdu7RUpRqF8VloceM1lGACWlx+u/9fGzOzPRyWKM83TT5rA/ILj90Mb75TGDdmOmV5yJdxkMgFxmiqssB7NB94uCgs/LIggh/2j4jyXGLmKgUOfNT4vyXfHeNmiIu07G9KrZw6DCzL158fvkgyoENkAE2C6wz03nJUERqZRsgO3TCdMsTkbh69RmI2B6UIuhQ6cVF28iuKIXV6k2gkW1sn2DBWp+j8Wn3iOyT3Ey1rADesF+bO7ruVVvnaliBKEdMjF+gZC8no6LzWn6CMIAugsjdJOrQL6NW43sqs6979UH/LOLxq6hys9LdmxSkbL1hB/jiwqe5cA/wjYbOsWlbmIAgrZ6GPbQp9O5V/9QyC2DNcUJWdzgIRNQHs1SSgpLQIpdXeE6g+OS5N2TaGWB9e94ZYbLlKZbZLk/kjR2Zh0rBB1pdl9SRiZ5Z+4cY6af3zibBPlhGQzG48KpUyI4KLz1n6Uazm9tps4xaIes6dgxQJUypwsQWseug/wBHEWZA/nuKsm3VRd9fGABf30jN/Day7gUSXYJ5373gmgTpNDRNiOrw/BAhEAlgwykCtEi1Ije+cdJTjdT0HrBUkUA4vzUUP7ka3qyAWNm+XND/hsuk6GOr7RmTnCuDPz7qhp2KyIbfLSxzvBuzpsDUSDgb85/hhfIBxfCLRZE9oKb7XqMoZvSqrCeMGqg6F8wae7eleSGKJo0XTOATNmKHw+8bZVGs5AdRtbAjF3UHTYKjmmsOCKexDYxqv0G+D/b3MLWeIlGlx2Bn/96YYuX55H5K04aHg79XxsgcbjmCxCHg61q/CWrR/LsdpTy8/Mby+ccb6JTMaZlfMo4eUgXjnswY084+n827atxoiL1WvrNNnk/uI8LKusl+K7Xsqld9wsi8L3WFLpi7NRmg9Tw0b0Cj5/E+X0c47OY3Ub+Bhgm
- cHLj9/sL
- xdvcZAzsvJa0L1hhVrk0rm4lUgPwtNnnbNH+tZd05ySFyEz0AptZBxMubhufIYG457ZIT+dJ1QE9j2tfvEQ5wNTdctu14u+nAYbBvFDoiOu2bmkOnsG8jIPzniIvaXeDSRqdSUBvISeBK3MIs0p3zIMqmStyBXdRR2+SF6+nCYjKF4LfW4+M46+MmykiKfmM47dQHtDeif0u3jJQI8FZ1HhEZ1k0bHRGlRsBO2V9bFfPgfNJx1f7Ua25Vcy2kNbQvYVTnl75/QRSzmScS34qgixOy/jDvraMexToR1JwGux/E/t8/i6PKM5GAgR1L28zRNHaouZK50wUz+W6/z8CF4NkE8WZkGZnnAFUYtngZtjUT+sN9BFUewGPa1fn1+reqbXoU2+frK4cCktLghsu6Z4F9KVxE9844tfm0rN6QekKg43t+5FrKLlhFU6sJaO7QSe+BYlS8jrGc5QNAggWk1ujQie0lnmLBrpowYDWLDZ4cxb5wiHJivvP63hHHMaTBZMhEFgVio7VlgT4cIRoFgUOH/4HLn8ozsmQAmVC4A+3OuI4OoUabyF5LCQ==
+X-HE-Tag: 1795754012-284486
+X-HE-Meta: U2FsdGVkX19s0bBDrF20SNq0OGfVwplIF9KIymhCzoN6XQTAktcaT4XpY/1X6hYD310ZNEaGWlWg02T7XGF4EiJEfegLKDsS64+xPReEb8c22pYGSCFYIqLHaS0Funy+uJw5jri7IBF6EHlddbuFpqalG9EVWLwS4apRioRGghBjfz7LIMAt1YDq38/2LkOa/GS5wqbjEwKFEKW5gzywmDg3AGkF/6FRpxayaFQAcoDW0rp1npXreLLc7OnzBYpr3TN8oH5ZBGpuVEfihgcneg8epcD4eDcIlU9HP8ms4HxgTkb+R9plgzfEbzjNC1C6SJ2z2vU4jeKocGJMOqyjZQpXU5gVuCfCfqF/EzwMdsQj1Je/Wb3lNv05Oesc586uiRyuEviuIEb+ZIuB9uZCiO8jOr27NALTkwCD0/Dwy9yVgL+by+1w+toZTGK73gWMq+s3eskg6tr5UHdioi8eaB2PAuZuzJNUbHJwuauz1ixTUJQqY1FSxEhWz3q1KoiMBacHeqtFJEmYq/LSEeJOiCMwRHbg8mUR1ohJ0R39ORFxY9/WBQ/UQjppCZOHjRvMZth7lyNsQb6MHJ07CCGBrvb+Ew0SH/t9eIoeWAsttKmglQix7q+WVPqXmNIP79uzuebKcea1iOS+hwHSo140VdHrBUzDDmv1ls7C0hxSJ68fGE8aXXT+jH7eWEbiPtC0Pdh3ZdFERcIhESr+aB/Lcgvw/IJiucMA/6vNV2W18WHyg9RGgTVKWnzTggsCmGlRQOT5aVPshVZ3cu9UXVtAIvbJGqkav9aMIMrZycD7WtzAk3+PJQ9HwufVHR5exj7st/YVTfxoeiWBUvUiniSbMrewQuweoLKkebLbezXB+KIz9UzrtdxHjnnHi3sA8CY5lVo5H3jdKu83dZ6z1q5cMcfrrcwpJ0RIjeka91PVLTkaRuCavZEA+YZLjLDyXvZgzraaI4+JV5bJVfztiZ4
+ 50fq8aya
+ EV7MdUnNYIU0ZIR6VN1UBuFxidTUpkDfesDgOqhY8sL5FsZMut/bOSSg1xbmtSvnaGs0NDB35QmJJa6lROchPDQBLpLYUPJ0CNNRxw2oCN3/bcbXZZaRk+sH74hGkGj2hm0qtNFiyuZkV63nIzCCsfvMEYv1hI/U3qPl2t9/Kk80vb0nW5WtMf8sS542uvuwROx+XlZZqPIV0YCiZ2w4m+ZctKqEAf892mRiYOBqbW5VvbndD6etZZyjcCGURUdXd9KCViJVOjN9HQ0PxjhtmH0uPi59Dz7aZQatuQzt/G6dVTNzjiNOSZNrsE3BrqfxeeUmvjNMdAxvBSEmRBNDXevv1tkThbpPX9LUw63gVdZBZlrNxGKEb3o77kQ/8CjHD/E1kxYN5Ialz3Cr+QEo2wOO9tL3w+UsxbwDrEN2K9PFzZlZmJkTxZtGxWBgJ1SHlpirk+SnbQwKHXWUOjdt1wbgyVSXfw91n2rpne02GBeubRfcfatjEVPYSf0xhrUxTkvGD+oOFgeNsbbb8Lcj3IyBqAc3yCZc2Xj0MtfPRBlO59cQ+aI00uomHk02vUCZ5EmhHgzOpyndy2XQ99kGEkoIPv+EKzY3A4uCCxv0OBgre4VXEVDuT5NSf9OT/HDgr+7BWzx3HJdjFmy1wCVlehSVrXocRPJT0bDYCOI9WfdUvwIUiDrANwQGvWd9ceyBOPKhZnCkKUZuvmjatlRjzhP9Bc+0JurGFxi9IEd5R8roJtQ69OFKtWH/W5DkpWMnCXN/Er0rnk55zSujCoyQTng1JoPk066VeE7agq4HlzfreNHxgpnnWeUXD41TE5yES8J+HVimH3sLB6twu0DzXDu9HicKdEQ0zIm4gKq+6MhJoQkG2geiS+m7hwKAa+3Rc7itVIkdEIW40iXWUjk9qXpZ5dKOms4w0HI6Q9DHIELEi393cCp9e+MJzGR4A93J1IEjzb+QUZ3y1yxUqCUXm1FMSIHXu
+ o+A+SEKx
+ jO5jxzaUCTU9LAWuqhsrOhvM+yp00RDnAMAMDU2zBm/jhQqs2laLuNj0LWnEW4te8Ixp38LA1cJmKSFV+C/OCulvi+uCefU3DrFMLpTrG5gvQgg0VrHbiio0mag54Bufi1n4Fv/4aCMbq4fghlq1+ChNWQ8wLrVb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
+	aws-us-west-2-korg-listserv-alma10-1
 
+Hello mm maintainers/developers,
 
+This is a 31-day syzbot report for the mm subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/mm
 
-On 11/26/2026 6:42 PM, David Hildenbrand (Arm) wrote:
-> On 11/26/26 06:34, Naman Jain wrote:
->> Commit 38446014648c ("block: don't merge different kinds of P2P transfers
->> in a single bio") made bio_add_page() reject pages from different
->> dev_pagemaps. This was needed for PCI P2PDMA, but also rejected pages
->> with compatible DMA mapping requirements.
->>
->> Commit 41c665aae2b5 ("block: relax pgmap check in bio_add_page for
->> compatible zone device pages") allows these pages in separate bvecs.
->> Commit 13920e4b7b784 ("block: add pgmap check to biovec_phys_mergeable")
->> prevents physically contiguous bvecs from different pgmaps from being
->> merged into one segment.
->>
->> But direct I/O now fills a bio using iov_iter_extract_bvecs(), which
->> retained the original restriction and bypasses bio_add_page().
->> For a non-atomic request handled by a single bio, only the data before
->> the pgmap boundary is submitted. The rest is not transferred, and the
->> request completes with fewer bytes than requested.
->>
->> Fix this by moving zone_device_pages_compatible() from blk.h to
->> memremap.h and using it in iov_iter_extract_bvecs(). This allows
->> compatible pages to be added as separate bvecs without relaxing the
->> same-pgmap requirement for PCI P2PDMA.
->>
->> Fixes: 38446014648c ("block: don't merge different kinds of P2P transfers in a single bio")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
->> ---
->>   block/blk.h              | 19 -------------------
->>   include/linux/memremap.h | 19 +++++++++++++++++++
->>   lib/iov_iter.c           |  3 ++-
->>   3 files changed, 21 insertions(+), 20 deletions(-)
->>
->> diff --git a/block/blk.h b/block/blk.h
->> index 50abfd9328861..460c064f1d1b0 100644
->> --- a/block/blk.h
->> +++ b/block/blk.h
->> @@ -142,25 +142,6 @@ static inline bool biovec_phys_mergeable(struct request_queue *q,
->>   	return true;
->>   }
->>   
->> -/*
->> - * Check if two pages from potentially different zone device pgmaps can
->> - * coexist as separate bvec entries in the same bio.
->> - *
->> - * The block DMA iterator (blk_dma_map_iter_start) caches the P2PDMA mapping
->> - * state from the first segment and applies it to all subsequent segments, so
->> - * P2PDMA pages from different pgmaps must not be mixed in the same bio.
->> - *
->> - * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys() path
->> - * as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
->> - */
->> -static inline bool zone_device_pages_compatible(const struct page *a,
->> -						const struct page *b)
->> -{
->> -	if (is_pci_p2pdma_page(a) || is_pci_p2pdma_page(b))
->> -		return zone_device_pages_have_same_pgmap(a, b);
->> -	return true;
->> -}
->> -
->>   static inline bool __bvec_gap_to_prev(const struct queue_limits *lim,
->>   		struct bio_vec *bprv, unsigned int offset)
->>   {
->> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
->> index c8a4979d4c780..a1d447a847990 100644
->> --- a/include/linux/memremap.h
->> +++ b/include/linux/memremap.h
->> @@ -202,6 +202,25 @@ static inline bool is_pci_p2pdma_page(const struct page *page)
->>   		folio_is_pci_p2pdma(page_folio(page));
->>   }
->>   
->> +/*
->> + * Check if two pages from potentially different zone device pgmaps can
->> + * coexist as separate bvec entries in the same bio.
->> + *
->> + * The block DMA iterator (blk_dma_map_iter_start) caches the P2PDMA mapping
->> + * state from the first segment and applies it to all subsequent segments, so
->> + * P2PDMA pages from different pgmaps must not be mixed in the same bio.
->> + *
->> + * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys() path
->> + * as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
->> + */
->>
-> 
-> Can you convert this to proper kernel doc while at it?
-> 
-> Also this should all be working on folios instead of pages. But that will need a
-> zone_device_folios_have_same_pgmap() so we can defer it, not suitable for this fix.
-> 
+During the period, 1 new issues were detected and 4 were fixed.
+In total, 73 issues are still open and 387 have already been fixed.
+There are also 38 low-priority issues.
 
-IIUC, you want me to change this comment to kernel doc, something like this.
+Some of the still happening issues:
 
-/**
-  * zone_device_pages_compatible() - Check if pages can share a bio
-  * @a: First page
-  * @b: Second page
-  *
-  * Check if two pages from potentially different zone device pgmaps can
-  * coexist as separate bvec entries in the same bio.
-  *
-  * The block DMA iterator (blk_dma_map_iter_start()) caches the P2PDMA
-  * mapping state from the first segment and applies it to all subsequent
-  * segments, so P2PDMA pages from different pgmaps must not be mixed in
-  * the same bio.
-  *
-  * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys()
-  * path as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
-  *
-  * Return: %true if the pages can coexist as separate bvec entries in the
-  * same bio, otherwise %false.
-  */
+Ref  Crashes Repro Title
+<1>  50019   Yes   KASAN: use-after-free Read in copy_folio_from_iter_atomic (2)
+                   https://syzkaller.appspot.com/bug?extid=6cc93ec9a4035badb85f
+<2>  9208    Yes   WARNING in trace_suspend_resume
+                   https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
+<3>  752     Yes   WARNING in ext4_mb_load_buddy_gfp
+                   https://syzkaller.appspot.com/bug?extid=fd3f70a4509fca8c265d
+<4>  380     Yes   kernel panic: System is deadlocked on memory (2)
+                   https://syzkaller.appspot.com/bug?extid=c61d6962d0b7e698439e
+<5>  313     No    INFO: task hung in migrate_pages_batch (4)
+                   https://syzkaller.appspot.com/bug?extid=f523acb98cd782b4872e
+<6>  197     Yes   INFO: rcu detected stall in sys_unshare (9)
+                   https://syzkaller.appspot.com/bug?extid=872bccd9a68c6ba47718
+<7>  155     Yes   INFO: rcu detected stall in kthreadd (2)
+                   https://syzkaller.appspot.com/bug?extid=bb0c3b50c40032b58091
+<8>  152     Yes   INFO: rcu detected stall in dentry_kill
+                   https://syzkaller.appspot.com/bug?extid=0635dc2e2c3c21a6aa04
+<9>  152     Yes   INFO: rcu detected stall in sys_sendmmsg (7)
+                   https://syzkaller.appspot.com/bug?extid=53e660acb94e444b9d63
+<10> 134     Yes   INFO: rcu detected stall in sys_setsockopt (4)
+                   https://syzkaller.appspot.com/bug?extid=6e61d59e9d2150c8492b
 
-I can do that in next version. Thanks.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Regards,
-Naman
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
 
