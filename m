@@ -1,123 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04389606A31F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 15:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9C1606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 15:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z/knOI+2
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cJOpl0D5
 Received: by kanga.kvack.org (Postfix)
-	id E5BB66B05B0; Fri, 27 Nov 2026 10:38:24 -0500 (EST)
+	id 894E56B05B2; Fri, 27 Nov 2026 10:41:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E32FE6B05B1; Fri, 27 Nov 2026 10:38:24 -0500 (EST)
+	id 845506B05B3; Fri, 27 Nov 2026 10:41:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6FBA6B05B2; Fri, 27 Nov 2026 10:38:24 -0500 (EST)
+	id 75B1C6B05B4; Fri, 27 Nov 2026 10:41:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 666686B05B0
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:38:24 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C635A40400
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:38:23 +0000 (UTC)
-X-FDA: 85481305686.11.4598A7B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8BA5940010
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:38:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Z/knOI+2";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of harpatil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=harpatil@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E9356B05B2
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:41:06 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C95081403E5
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:41:05 +0000 (UTC)
+X-FDA: 85481312490.12.3B22558
+Received: from mta1.migadu.com (out-55.mta1.migadu.com [95.215.58.55])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B08CAC0003
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:41:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cJOpl0D5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795793901;
-	b=i0p9XGnvCvh8LJ9jGqcSbWGOzhtaDCRI8mS7uV+SCR6CXxncqHHjS6aWCUeHOAnLENC82h
-	F9Rhhe0uk3TMTje+lyotCuY1YxI+j15LCCngWrPtnEE+Hqx4WmVKrRjXleseZKzl6vc8XO
-	uepQTEX9wDLlDotqWwYpBgde8lFrmJc=
+	t=1795794064;
+	b=Pv/x39la94/gtHNaQbg3vwImiohVukUf/Uc/Hf47gk06LTO3xIrE8/OlZu/asJ/YN2XLnw
+	o+LzttMcpCwil7eOWsg7TSHNeEykrUoS0z9s74zrPGpS71OeNsrRPRZEuOku81CIFS7xgO
+	6RDUUDdZ/9Gwcgh09k6y9MYrYgEyTeQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795793901;
+	s=arc-20220608; t=1795794064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sjCiUNNZRLhGGd+Th5mIM28JPSgV5FgdpXN9TP7Fv+E=;
-	b=upQuBd3HMZVjDbm8KF435Jn0XZ/X8QwQS9WHcqlU4X5tDIFHuHHWH4CchIQdUsIwwSQLyM
-	swn+OkWzSJbWOAZybtYtYECQYeEr5IOCJhZNkEbiizHQi7r7yn4Y4g+f9qoN33IsZhtOmq
-	ByU3+Et4UrmRSflgBlgUVLCTsDDn5Gw=
+	bh=zTeGEeYubIuGfiie/NnBel4Xijl6Dj7t6gEULam6Lc8=;
+	b=62IM4z5TaNjy27mY4/ZHfWoyJYVBaJ6IMO/mCJePkLA0/KwVpcT2RoLd27BfxyOin13m4q
+	K1FyjZioYaUqj2ntWvy+b+dAgcZhbn0gvbyDksa4R3kQHBddApiEMaIhK3uSy2xsLSft51
+	bqm/q4yxNhXHrAMZOEeH0YtQU6zJ0BQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Z/knOI+2";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of harpatil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=harpatil@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795793901;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sjCiUNNZRLhGGd+Th5mIM28JPSgV5FgdpXN9TP7Fv+E=;
-	b=Z/knOI+2qGQvkx0A2sJxhrzBhcvDZrlSffofJFr+iZJkmRZM+GXt3q7BM2vJeOtQukt4oE
-	LLBK3c32VjljwKLRxJvHYFry2Z888ZwR72iH6/HoEzJbdJoTxNNvvtBJU4Mn2kTItC8IV6
-	Ibfer+YtAQnX76Lk+ZAdcivKlYl49OE=
-X-MC-Rep: binary re single
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-225-GM0yy5oLMpmLSgNp7tRWSw-1; Fri,
- 27 Nov 2026 15:38:17 +0000
-X-MC-Unique: GM0yy5oLMpmLSgNp7tRWSw-1
-X-Mimecast-MFC-AGG-ID: GM0yy5oLMpmLSgNp7tRWSw_1795793895
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21E541944D3E;
-	Fri, 27 Nov 2026 15:38:14 +0000 (UTC)
-Received: from harpatil-mac.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 77D3B30001BE;
-	Fri, 27 Nov 2026 15:38:09 +0000 (UTC)
-From: Harshal Patil <harpatil@redhat.com>
-To: sashiko-bot@kernel.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm: memcontrol: let a cgroup opt out of HugeTLB accounting
-Date: Fri, 27 Nov 2026 10:38:01 -0500
-Message-ID: <20261127153801.50171-1-harpatil@redhat.com>
-In-Reply-To: <sashiko-outbox-232294@kernel.org>
-References: <sashiko-outbox-232294@kernel.org>
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cJOpl0D5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=D7LzFkhrlPQer8Lrs7O6LLemqF5OXFeGJoFOpPJ4gPo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795794062; v=1; x=1796398862;
+ b=cJOpl0D5OSfcQqez6bcfCZyocvBCdviNPMu7xXzrW3rxCi7bGixjVd73vMe5JMKb3B+H+luq
+ W5mo8RtX8Cg6oQ5YDJre4nAUcjgffv4gqoHS+0UQAqQd3i1s594vnGrVvLROCT//DI3K3N6MCGM
+ 3zX7oZhRG9SWzVc7yRHgi3kQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 944c59f8ed2ff705;
+	Fri, 27 Nov 2026 15:41:01 +0000
+X-Mizu-Trace-ID: 944c59f8ed2ff705
+X-Migadu-Flow: FLOW_OUT
+From: George Guo <dongtai.guo@linux.dev>
+To: mpilaniy@redhat.com
+Cc: rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	chenhuacai@kernel.org,
+	ardb@kernel.org,
+	shuah@kernel.org,
+	ilias.apalodimas@linaro.org,
+	akpm@linux-foundation.org,
+	baoquan.he@linux.dev,
+	ruirui.yang@linux.dev,
+	guodongtai@kylinos.cn,
+	kernel@xen0n.name,
+	graf@amazon.com,
+	liukexin@kylinos.cn,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH v6 1/8] efi: Pass KHO state to the next kernel in a configuration table
+Date: Fri, 27 Nov 2026 07:40:54 -0800
+Message-ID: <20261127154054.43755-1-dongtai.guo@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <99670aa8-a33c-4a36-b8dd-66b02c6b6159@redhat.com>
+References: <99670aa8-a33c-4a36-b8dd-66b02c6b6159@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wA_tzyxHgOHeY8YU7f_nJUsFUc0JNECwyhrSozdsqRY_1795793895
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Stat-Signature: m8eennd4rfgg1d8zcg68mg9db8xbeida
+X-Rspamd-Queue-Id: B08CAC0003
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Stat-Signature: pgkr9g1z45hqb8rqy11q16oyer9no661
-X-Rspamd-Queue-Id: 8BA5940010
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795793901-426491
-X-HE-Meta: U2FsdGVkX18ovjQHOZA5mWMlj6RKYeZFCUKrdT7YwCx3yNLECLsWdQN6rTTKG92+YJVFMPn6u9MDR90D+Z/+vTMSxx6XtX45tnu7c7kJJxsMTHbdlRmuVP7IiZ1NB5DpfPSPOqGnII+NsBg5fzwVT1gLU4nuz2GlKh+6BkCMQ4ymIHp8GYW74MCInz2m2hMAjrLLWAgFAtPwgXj5iJo8hIktLLyU+dlivWVVlNGVV3MHFPUX/hdQOfdVQEYB40cSew1tt3N4Ns+5UAfVf7YRQg1+vXIFFpuNaVKpIoKHNiazBuz1cTOsaU98VK+HP7joCdWLE1reoWIInpF7cpsDANZujuhY3lwcU/V41+wJtC8ZbzLmS3efiaTSHRkWfqrNC2wHa+bcelWsMQIvnMIgKeas/1ahLrZ7OHwqfQqfrZp+nbGJdKysHdeCkFzMAHQ8JqPXCw4Qtej6kwjw/evpRoJ/l4auIZNZ/kWjcyfaRWzyhDNxjxg+iYQHBxlaCkxGK6JkZrChwbY4PZI+0Lg4tiDskDoI5CckKNjdqjoWCPd8eFw1lZyEg6PU9tBpe+RZnw3qZKVpgP32GtP4VccHFJh5CAmn+6gDtLc3w8LeyDUCLAs/lz16woWCfj7vQxlwSxecZV4b+LWwYGDOKxZ7EVJHTLE8FkiR279jeau4AWMtvJ/KXACdJE9fGaC2QFPeRH5TS43zdQRQFNBRrj81rSnm6RKbdq3+uYoPlDE65QupsSKUi9yohU2PBkcdzeNLmephvMpFnC+rHw1leAXz1lYq4pGmi1usxmnyGGUrnCLYHyI2Tl9bRoZ/hcqtfjXB0lvM4YnAbsy2d+Ozifeb8HafLGCIpL/fbTLRjcJlrc0BH7eLED+B287v0q4YPi4fgD3HRSCvZn28iPmETbG7CLbJ1RHb54b6yf3bqWFtJ6EZB7/OZjhiVYSVP0cKDUGTRh75/H8v7CBDyPtbYxr
- zRd9LuTb
- tc1owhbaBoH6u2HbczWYIJpnThJ2MnWP39ENmmuDyNFOL8CzOe71o9FCCz2H8bKcHZ+yJkspH8J1DP/YHKl9CXiULJw8XhKSa7bdzNOIOY5c8xWT8uvVJXzXSHlE+reKmcIZLF0VCatrQdbkhR8nK67GlvCaGp8woWm360di8dw1ZYIdeAs1J4diNR/K5N6yEkxY4C7HPmlEM4gUc4MQwy1rKQZSDaMY862LprcblI9y/ldP3ztvBEAJlRCw1QwNcYigfgp0irR4uAT8fu9ibgi9Y3ZoP6KC/9urz7GeauxXlh+ZTjklmJ3jYCPcpDoUjCObb0Q2d7k7DO+wyb5eLpcdY5R677G66n1HZsB7Rr/D4J6SOZTRHN2qeqbkg/OrfcSu/BlqmPQgV4wACXvTk0aYWlNNwNEQpzo/DfT4wloJGlndUfZ+ZDysmgQHfhqG/T0zEqIIVCm6CW7qmWypvX6RmaEJkDW9iCZH3ZsdovuRGNjQ6EgmgKgvtNjXbg+dHJ8Vc/F9I8wtTEOvsBF35qXGYr9X/mSrl2PMaJ87Oszy5UnQ=
+X-HE-Tag: 1795794063-193164
+X-HE-Meta: U2FsdGVkX18UhtUDBgeSnj/TFApxaAUkEUEuxu9g1qKnlTtpMhAiJUVQm+XfWfKZMWYPMGKSEXhmKnQyEyCeRtgfIWt2rQaTm4X2G/c1QbWZ22E4oOvss48ohuyndQvnwCqIO236dV57oFNKdBY71a0gG77xpAB7SxIW5vJ2qOQUGLulp1SH8AlWmI22HKvy+w/u9OKmUpPZMjtYoaE3+qQf65LhuwWJCQUFJpq8vW/kDjhpZEdjQAHZGfYf7Tp97d81Q+6b6HgXTZFCdl28TcW/+zdF6jSSRymGAD3h2SNstuxxdXMtC0U6kTfuvIOkSiNn2wE5HE2k57D/w6wxyluRHgBE6KpaH83c19wuoG+q3svfBzBkrN2D2nOXMPr1r13O82gxkELTTHiLWeCUM/v0mZQxll8ZYcy4rtOwvXDTxv6xsuMS75Jtti5YPGKB2i0G2cMUfUG8I4Lm04At+Q3NQIgNW5ODsMiy5SRk631akutTbCTNcRe3DrNoO5VuuZQDeTveKFcWX3xnlenXq3/dwsUsP1mb+ERlpdFD0QxMb0ppNIPXs9qI6tV4lUkpah/4xCPXWGbnGcE1CdNAm//lwRedllYfNdwxa65DaW2fw5rMU9vR+glJcPNoWZkWGu7VmOziR/FyGeVQkAJqklRxCRtCJ1CxirDAdAt5ddULeCJO9D1iez51sRmzGU1rtYwfgBSPyFBKGMLoTDy7zuyt6tv5vGBkmm9j85gSAmnlvZ83hM6C5qt60ednn/T4RTdjreUWpfgVnghgJp22H3JV+5Iy9P+yKDQxKkC7DzA82Qd3pobZrOWfuKDaaU6RamLiav9uU7B2WNHagYUy4HkLtBg8cMLx+NUUx9pcHMDLNi5DC9dSxQfFABUelmt/ajyf1hnC4EryfvpFzLQUUTUIUMyhm42ytHb4y/E6cGXquqJHkZWUb32AN7OqVNyTxZTFuMTAjDXcgQpYAAh
+ hUilGBij
+ 3bn3RVTiKdqPMyVPWCT0XiE+inA3XFoTVNVwChZ1PN1oRnYQwnQDY2ggXR7kD4PP65m0fGcphqPPmADpvVCOB8+GxDxxDUIg6+PIMvdbvZ2Jfq5HF75knKxTsJTQpTbGiaKAN9uY9KPNgRWI2Db5rXBJzz3n+M8vTnOPRNOD7ztJmzsz9wGQS9emntSU6oG0OAiDI8pF/FNa8qoYtaNVHIWJovkMRqw+xaQ6KGuX/qRacdSUFIA1wbgxdczFB/txtOL1EpqhOv3seZ/vCtYhXaDAMavR3n0fzb+TAkBx6glN5NaneTwbJCbPdokB8Q66FkkGCc5bWbzw2rNxJGSj2vGP0/gEy+ZzheI6Rw+hr0zezulNnzPYCRa52yCiw3eIyFEQi93bM+7WEUqN6jubUk3gFUl+R7rssNuoR+BF34WyBlN+idSBy5X6Nc2Uodx31kHhVF9f4bkm3o/CHhqI2JGU5kw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,19 +109,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Thanks, both of these are right.
+Hi Mukesh,
 
-I could reproduce the first one on my 10 CPU VM by mapping one huge page
-instead of four. That is small enough that a read of memory.stat does not
-flush, and then the test fails most of the time. I have a fix that queues
-enough stat updates before each read of the root's memory.stat, the same
-way test_memcg_sock() does, and it also checks that the root goes back
-down after the unmap. The skip gets a message too.
+Thanks for the review, and sorry for the slow reply.
 
-I will keep these for v2 and send them together with whatever comes out
-of the review of the interface itself.
+On 2026/11/4 20:24, Mukesh Pilaniya wrote:
+>> +			pr_warn("Could not map UEFI KHO table!\n");
+> This is a Linux EFI configuration table, not a __UEFI KHO table__, so
+> IMHO; UEFI wording is wrong here.
+
+Agreed. v7 changes it to:
+
+	pr_warn("Could not map KHO config table!\n");
+
+>> +	if (status != EFI_SUCCESS)
+>> +		efi_err("Failed to install KHO config table!\n");
+> When install_configuration_table fails, the pool allocation made
+> just above using efi_bs_callis never freed, so a page of
+> EFI_LOADER_DATA is leaked until ExitBootServices, This is a minor leak
+> so mentioned here for review completeness.
+
+Will fix in v7. The pool is freed when the install fails:
+
+	if (status != EFI_SUCCESS) {
+		efi_err("Failed to install KHO config table!\n");
+		efi_bs_call(free_pool, kho);
+	}
+
+>> + * The EFI stub installs this table zeroed on a cold boot. It stays
+>> + * in place across kexec; the running kernel rewrites it just before
+>> + * each kexec, and the next kernel reads it during early boot.
+> This statement is only true for the LoongArch and on arm64/riscv/x86 no
+> table exists, so the comment describes a kernel-wide invariant that does
+> not hold.
+
+Right. I don't want to name only LoongArch here, because x86 is
+expected to use the same table in a follow-up series. v7 rewords it
+as:
+
+ * Only installed by the EFI stub of architectures that pass KHO state
+ * this way (currently LoongArch); elsewhere the table does not exist.
+ * The stub installs it zeroed on a cold boot. It stays in place across
+ * kexec; the running kernel rewrites it just before each kexec, and the
+ * next kernel reads it during early boot.
 
 Thanks,
-Harshal
-
+George
 
