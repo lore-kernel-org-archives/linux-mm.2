@@ -1,102 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56FD606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 01:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A73606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 01:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sJrXa7wo
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e+zYDn0c
 Received: by kanga.kvack.org (Postfix)
-	id 046546B05B3; Thu, 26 Nov 2026 20:52:07 -0500 (EST)
+	id A8DEB6B05B0; Thu, 26 Nov 2026 20:58:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F39576B05B4; Thu, 26 Nov 2026 20:52:06 -0500 (EST)
+	id A64836B05B1; Thu, 26 Nov 2026 20:58:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4FB86B05B5; Thu, 26 Nov 2026 20:52:06 -0500 (EST)
+	id 97B666B05B2; Thu, 26 Nov 2026 20:58:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4C0E6B05B3
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:52:06 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 956ED401F8
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:52:05 +0000 (UTC)
-X-FDA: 85479223410.07.D3B2262
-Received: from mta0.migadu.com (out-139.mta0.migadu.com [91.218.175.139])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 64B451A000A
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:52:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sJrXa7wo;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 27A706B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 20:58:10 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B02011C2689
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:58:09 +0000 (UTC)
+X-FDA: 85479238698.18.3E933CC
+Received: from mta1.migadu.com (out-236.mta1.migadu.com [95.215.58.236])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9E352180003
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:58:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=e+zYDn0c;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.139 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.236 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795744323;
-	b=r1r1qp98vY0wr4ApXc+0ZZlWpZYYjsLslzOJDVf9827lYTyMd0vWIfUJSWDaOJ0JVCOMr3
-	mW68t7bbpw5ckS4+VdUzeJ2vwHQn8jSEJCxgh0gORPbwGhFdHg+dJ7qW1hTLURIPOVmjux
-	mOqklNmWeGPsRiXemuV1FpYzfvo5JDE=
+	t=1795744688;
+	b=rVY0MYGDsgm7QX/9LxwEtHlHotJWLZgh0+QeiAoWlgjt4aDIipB2Cu++2wq0PSuoWk19QG
+	/na1d/g6cvSNrc/QjVgtvxdZJ+g3xXIl7tKeymukjvUFtKUHeMJc6d76F6Th3Dq1wu4taQ
+	d2/rtAXI0/Bq0nSpjcEXkzzAoB4FuPg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795744323;
+	s=arc-20220608; t=1795744688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M38Po1F2mWwwG6SiyHEY6m3oa8J7m1vdN8oTJmnxVxw=;
-	b=TgYk3rZwtJ3RRbTfJHdBjWZRnrk+fiM2wV5Q3DD+BHh8oxrlQlA3YnKHcUaZD3TQeGqVq3
-	cN1clCQhCGN/+cHwBul9QWNGs/TGNXZvc4SKX4ES7ehnDTABIAu+m8jehhUjirggRTPF6Z
-	V/DLiVpMJsgQlWcG2W9M0oU4vXU/7Ig=
+	bh=quOpidQ65ertMcQcQVEDfa++3yyN2utCqBeIGYCv1ks=;
+	b=vlbAkVtrLDsOynJH2UFxhKeITP+IgQcOxcSzq3HWD+DjB8h1Vwa1+9D7iCKoWA3iaU6yyb
+	CMtkFEurNJCt7t+DH8KsVjzxa6prercjfhS/+VvlAq/4H2VYg/yco8CM/U8dKVRUrY4h4T
+	gVCMSWTWlc0WlqGsczKMsnREA5UDgho=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sJrXa7wo;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=e+zYDn0c;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.139 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.236 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=TTx/GFml7WIrvNctKrEWZFXnmABfvlFSa0Kd3jOAqTU=;
+DKIM-Signature: a=rsa-sha256; bh=9hlSR5VAEGqnYObJ1uVH8pENVu6NTSK1bKdnIjboNOk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795744321; v=1; x=1796349121;
- b=sJrXa7wod3YzYj41Zp4LrpoAsRC4xiD/G1lytsyTcz0QIJS0vjOYNe/S4ARJX4SMFNyG4p33
- fP5IBLsTi8pQ1sXb5GWarHmqpp8RpzYbolE2B3HluoySwqr24TGyYtsuZ3+HrNpqWZCjbE8Wrdh
- S48v87EGxc2QYcWsTSwGNPH4=
+ t=1795744686; v=1; x=1796349486;
+ b=e+zYDn0cdynntZCO1CbkKm5jtjyjn6T1bu3vb4oTDAzaob16Ui/Xef0J/cTg55KxpIeb7cEo
+ +PaCnmcgUs3Xeafq2H4jgstj39CwqI6V/rdcrVvBKowRay9V/m/+9Jjd2GTmZ/4c13Jcwg6cHwy
+ 8TX4blr4L0ziUMQFWmVzpIuc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ce53f10fbcd95bb8;
-	Fri, 27 Nov 2026 01:52:01 +0000
-X-Mizu-Trace-ID: ce53f10fbcd95bb8
+Received: by smtp.migadu.com with ESMTPS id 46990cf407084ce6;
+	Fri, 27 Nov 2026 01:58:06 +0000
+X-Mizu-Trace-ID: 46990cf407084ce6
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <cfc18f34-327e-4bd2-ba82-70a50d9541ed@linux.dev>
-Date: Fri, 27 Nov 2026 09:51:54 +0800
+Message-ID: <7976acea-9e05-46e8-b0e4-31aa27af6e98@linux.dev>
+Date: Fri, 27 Nov 2026 09:57:57 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] mm/mglru: pass a seq range to lru_gen_add_folio()
-To: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>,
- Johannes Weiner <hannes@cmpxchg.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Yu Zhao <yuzhao@google.com>,
- linux-mm@kvack.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20261125094056.3973331-1-ridong.chen@linux.dev>
- <20261125094056.3973331-2-ridong.chen@linux.dev>
- <CAGsJ_4x1k+-HtNU7zCPcsKwYyYfiW95+Jxrd-SvCWZm8Sq6B0A@mail.gmail.com>
- <d61f15b0-6546-4a11-a749-3c27d743df00@linux.dev>
- <CAGsJ_4wu7dXwcW3dyrqgugXR6uY86oaieprQq0RuDt+=1g55Cw@mail.gmail.com>
+Subject: Re: [PATCH v9 07/16] mm/mglru: balance anon and file scan budget by
+ refault rate
+To: Kairui Song <ryncsn@gmail.com>
+Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
+ baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev,
+ kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org,
+ lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
+ liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org,
+ mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org,
+ shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com,
+ weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
+ zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+References: <20261114200803.23129-1-baohua@kernel.org>
+ <20261114200803.23129-8-baohua@kernel.org>
+ <5238e574-ed22-4781-aac2-b91a6b2d911e@linux.dev>
+ <awf7WGiaC4LVLYhA@KASONG-MC4>
 From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4wu7dXwcW3dyrqgugXR6uY86oaieprQq0RuDt+=1g55Cw@mail.gmail.com>
+In-Reply-To: <awf7WGiaC4LVLYhA@KASONG-MC4>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64B451A000A
-X-Stat-Signature: pb61moe6t4ywwumaprksbhyds59bzhay
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: aiyu9z8d6nys9i3ggs8yk3pfg4zr6cp1
+X-Rspamd-Queue-Id: 9E352180003
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795744323-285410
-X-HE-Meta: U2FsdGVkX1+W1OisXgQo37hNdP1+ss2wyL8zxuXQxe79yCQXGtyEi3M14WcTeW89cZU07pHsUYHPpCrSgv6URdE+FZEpUJEqH2dsHqXnaQjNm/WLVNRafRM6TMWfce3xwQy3NyUGXfHtJ23ofOw9x6Ix3D6zHOPCPEQ3jL7Z1eWoVbB6Jyw5RUjYyb4BDBm2c943MYFKOjJCeetJb8atWQtlalyrCuYk/VlVK6ruTE6kOkxLEC2AiI1rqxinc/pLqdtSiTPXQ9wNVW6ae8meBGUwlxisnfKVKLcl/OlIkvX8k1G5TMYdfGqp0aoNZjqlM3Wh9z+PYRiuoyw8bGDQiJbFafnAHO1GHrHrLfZMV1Eg/OXN7lyiaD86s4P/WTOa7TsilZc9h5+8tdUqoHjUnGpBOImClssMnate0jUarc2TphHvjcqCHDzC8OFQCwtOHU5hS37PNt5gT2buvYZEscSHo01I/gQ+MNneXH0lb6JGjmF/fW40Q2cuEBI1mx0qwTo6jKoveVu+GWZU2jcnjZtBRMe7yJYgLQxuvsuz4Z9BkyJlmoGnMIkaZvSmldPxCnAC/chIOlu2I9bAUZcdX8Ysvp/Tkzqc00+WZ7atHEwBZ0bF05UDQKjQ2hxgcBNq8tzRyzRxFqnCsp8JOfEJbqa4ARL57NZUOUB7rb0BxZDtgxZZKOBsTpdw+jnQfJ+V7xwUMlrHSZmx21ZTneLgWvNJ96doFzFV86KAkrU8vVYg5skVOSPd2eCF0emqO7qnVBerkCeMXvYOGiJWTDC+2/b3leLLYAyF1oa1GGnwPrbo68sVZsVHIJuAdPJtRWDSxtNvDdp/XBZVWy/D9ydHiqGu+PRqLv+wSFgc8m89QR+ysFRFeiL65NgYpXTLlH71h3J5g5rVGYGSz12ci2x9UL4N11sodUcMLOMK/TUl+YxLpr2UZ1hCAZKiuOKhwDV0xhEbrddj8CYs6shLKZ5
- Et7mGs88
- OQZq0Raw6OIyBAyRITcvWcxzfZRjeKn6mm45iCP+L5UFnQikIKxQRWfO7/8aSHyM/eS11MmttleZdmu/Vj9zd2zq0zDDPf092jYHcPRGxmUPikx0r6WfA/IPqMzT20Xjd0uB93jP5/dKnyTK7rQ7n6lZj3gOyCzHP6yIr/zPYvBc25YZ29lNuOXlg2fN4MQEue58otbaorXABrg88XjFtB8fnG/DY55JJXbDDazOm5q3Tjox+p0DUYSdvLfe+9kihYoxVKjKiaeLkPOnIGbcZ6tRfdk0sIBj4IAOo42520SZm1LaQAAe4go/FH8LA7/w4y4mE4E1mlvr18otmEWg5kYsL//cei7kczt4qvHNq0XGd9g8Tx2VKGgWFP8jO2ZAd55d/OdXnaTLrJAv1AGQVX5KX6AvZ2SUjgwk8incOWJragoEYQJ4ZxpcdHR9oWmXnViz5/7zfSRvTamutN4PEkSUNXXwDq3a7J73++8towJ8KmvAZ2io6pHmnf2SEdH2gZWXmXo2wz1y/GxtaGyPGApoD3rZQx70HUoGPrJVWLOH74O2/OtwqSza3LO4qeFr2/ucX93qP1XJCRy0=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795744687-880273
+X-HE-Meta: U2FsdGVkX18/hROnaKPFpFv6ZAt2X8uX6CXjaJaDKDJMxMhQhGFU/BXvWhqPiCcSxhneVyYgGXzri9NDRDqFsUX5nYIO21XZpsBQ3itoe9fIh74JjuS2BVt4f6/VNJmGKsK2PPIvO/rNuZYZEJiWoI3MALoypRnZdOnW4GLdaQJ94MupWZx352LWykT3AoJRya6MnPLB8J6XFU0bEIK3f/poTOelwAo1nlD9E0xUojvpKUCNxLlqeh/BGnSo5JLd/LN9ySZMWB4YZxzVM1FHzSBGhtsteA62UhK1V+ejq7K9QKRL+XNoAa2Sl5X50LYdVPppLWMA69NM3fkx++0Y5vBStacFME1mCSiqygTrzcZHVEaBNFZV6bSOSQLOayzS4++ielT1gdqb1Men0hHXMAVE+K8jpY1LTAt+PsJ7iELy+YCO3QzLKFpfzkZa6G1AQVFfchVchk6ic3AR5J9N7M4BBsaE6Rq8Htfvw8zizCUbEkY3GVkp5jXSG2wyo9l1+uujbSdbDtGaLHGuBIxIE4J4KGyYJXIjjIE1Sp5H+ZfGBx0POZILL7zuK/ZpDdATDw/top1E0tucFViQIbzZMY81Qofsn0ishp5TXPW4WVX87lc8+kPo1HXNbfK5kHaRwzd5/ZDQcIVPOP/Fp7d8wJLwvBnITqNcf9ahHjwSSTXxr2Gk38g5/Y8cy0QVTaheHD7b0kQ1odpHwwwkknjtO68Np7C5T3PPcc+bJkXhixYj9Ul7aQMjsIGDWOy00xX9oTkohW1yViP4stRAEY+Bg2FOmohku8CfUMs1H6IWp9ebCnjgOg7vIOpuzq91dFc6oE5HP8udVDeMimRQmFe8upUiuvl91PcJr3YUzbr6HVvQcD8p70HzexoxuAZhn4ixXLCaJdcZLirPJdhDCiJYAvV6jb0KH7fezG8eGPmVjS/YQN/h0Gf3B6KIr34E3tYHh4avDO5dfw/7nsmn72z
+ sbDLqJWi
+ WDqI2TZ6DeZkXrJQcBya1TTj2dTPfQc38HoLhs494EhzF66oKQM607Vq6GlnGF0C7Hvs1y+1Lpsqw95Ju5xCht8ub91tYMePjnaENRNhc+auD9hqVFyqOWIGmdHVZ7+vij5Geuf5/j21OOLw2ZSHnIPWHoHR2zYtEJsmanhthDpub9EW0g8+7imPFy5Xj0XdmJntRDQr9xY/zI8hGL93c/6y9Uh9oelQPk/A5kkqoYgqZ54f4u9W7xWCrxVq4u4j59PcZ7psen6gtjl4cf8yYr1/+FvK9WhfpUEl1U6ShKq44TSmRD0pnkFK+vz6S1mPxRghsL66mORmteafDxnq5O8E/U+b5WETMdNRlzIIPhxX0AirQT+Im8ZXdDR5Tzd3o1joxxumSowoHya4IFzcLtOaPf7aLE0JfAKSErPAr6Pf/wDzKqH6NpY737+pacmN/UtTksXA4vi215TCcPG5Optn+nTL8MxQQVUvC4D1FvZ4xk9ACrkJPaqPAFtqVS1mPckvGiU0maGdzHIzSLzHTCCsT86hWj2Lus09Sox5N+eN4eVMpwG95q1RE55mS6BKrBZ8bLVfSsIerA0yTuTxDuPNSdYYeegVHwhqUcgFjZ6esifO1lQPz5gwmC7mwCdrG+n+p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,80 +108,250 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/26/2026 8:47 PM, Barry Song wrote:
-> On Thu, Nov 26, 2026 at 10:16 AM Ridong Chen <ridong.chen@linux.dev> wrote:
+On 11/26/2026 6:37 PM, Kairui Song wrote:
+> On Thu, Nov 19, 2026 at 05:48:38PM +0800, Ridong Chen wrote:
 >>
 >>
->>
->> On 11/26/2026 7:57 AM, Barry Song wrote:
->>>> +/*
->>>> + * Cap the seq to [min_seq, max_seq], see MIN_SEQ_UNBOUNDED and
->>>> + * MAX_SEQ_UNBOUNDED for no limit. With no limit and tail set, the folio is
->>>> + * added to the tail of the oldest gen.
->>>> + */
+>> On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
+>>> From: Kairui Song <kasong@tencent.com>
 >>>
->>> Another option is to make tail and gen orthogonal, so that tail
->>> isn't necessarily tied to the oldest gen. This would be similar
->>> to the deactivate path, except that we would only need to set
->>> tail here without changing gen.
+>>> Replace get_type_to_scan() and isolate_folios(), which selected one
+>>> type per batch, with a proportional split of the scan budget between
+>>> anon and file, and scan both types each round.
 >>>
->>> Would that approach work as well?
+>>> lru_gen_balance_scan() splits the total by
 >>>
+>>>           anon : file = swappiness * r_file * w_anon :
+>>>                         (MAX_SWAPPINESS - swappiness) * r_anon * w_file
+>>>
+>>> where r_anon and r_file are the per-type refault rates scaled by
+>>> 4096, clamped to [1, 4096]; a rate at the 4096 ceiling means the type
+>>> refaults at least as often as it is evicted. The w factors bias the
+>>> split toward the LRU sizes at mild swappiness and follow the IO cost
+>>> ratio at the extremes. Both rate accumulators start at MIN_LRU_BATCH,
+>>> so a type without eviction history reads as 100% until evictions
+>>> accumulate, and the floor of 1 keeps a type that never refaults from
+>>> zeroing out the other type's share. Swappiness 0 and
+>>> SWAPPINESS_ANON_ONLY keep their single-type behavior; at swappiness ==
+>>> MAX_SWAPPINESS the file factor is zero, so anon gets the whole budget,
+>>> as in the classical LRU; swappiness 1 no longer forces file-only
+>>> scanning as the old code did.
+>>>
+>>> The proportional protection and priority reduction are applied to the
+>>> total once, before the split, and each budget is capped at its type's
+>>> evictable size. Regular reclaim derives the total from the evictable
+>>> sizes, so the budgets sum to it. The proactive path re-splits the
+>>> remaining target each round, so eviction keeps working while either
+>>> type makes progress, until the target is met or no progress is
+>>> possible. The debugfs scan_control gets .priority = DEF_PRIORITY so
+>>> eviction starts from the oldest gen and reports the default priority
+>>> in the tracepoints.
+>>>
+>>> Note that we are already lenient with the debugfs proactive
+>>> reclaim interface. We may reclaim one generation ahead even
+>>> at `DEF_PRIORITY`, and with extreme swappiness values such
+>>> as 1 and 200, we may not fall back to the other type.
+>>>
+>>> To address these cases and preserve the behavior of the
+>>> previous model before scan-budget-based reclaim, we would
+>>> need to add another flag to `scan_control`. However, this
+>>> may not be worthwhile for a debugfs interface that is likely
+>>> to be rarely used, especially given that we already have
+>>> memory-level and node-level proactive reclaim interfaces.
+>>>
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> Co-developed-by: Gaofei Lyu <lyugaofei@xiaomi.com>
+>>> Signed-off-by: Gaofei Lyu <lyugaofei@xiaomi.com>
+>>> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+>>> ---
+>>>    mm/vmscan.c | 219 +++++++++++++++++++++++++++++++++-------------------
+>>>    1 file changed, 138 insertions(+), 81 deletions(-)
+>>>
+>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>> index f7fbe91fedf3..18cf1c084e78 100644
+>>> --- a/mm/vmscan.c
+>>> +++ b/mm/vmscan.c
+>>> @@ -4863,79 +4863,110 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+>>>    	return tier - 1;
+>>>    }
+>>> -static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+>>> +/*
+>>> + * Balance the anon vs file scan budget using MGLRU's per-type refault
+>>> + * rates, where swappiness is the relative IO cost of anon vs file (see
+>>> + * Documentation/admin-guide/sysctl/vm.rst).
+>>> + *
+>>> + * On entry, nr[] holds the evictable size of each type, on return it
+>>> + * holds each type's scan budget, bounded by its evictable size.
+>>> + *
+>>> + * LRU lock not needed: a stale snapshot merely skews the split for one pass,
+>>> + * and MGLRU aging averages the fault rate so we can simply read it, no need
+>>> + * to do any extra work here. If reclaim is blocked by unfair type hotness or
+>>> + * stall aging, the priority will raise and a raised priority drives the
+>>> + * aging.
+>>> + *
+>>> + * Calculation is basically based on following formula with a LRU size bias:
+>>> + *
+>>> + * anon : file = swappiness * r_file * w_anon :
+>>> + *               (MAX_SWAPPINESS - swappiness) * r_anon * w_file
+>>> + *
+>>> + * r_file / r_anon: refault rate for file / anon.
+>>> + * w_file / w_anon: LRU size weight of file / anon.
+>>> + *
+>>> + * We don't calculate the scan cost. MGLRU uses lazy promotion, which will
+>>> + * cancel the scan budget naturally.
+>>> + */
+>>> +static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
+>>> +		unsigned long total_scan, unsigned long nr[])
+>>>    {
+>>> -	struct ctrl_pos sp, pv;
+>>> +	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+>>> +	u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
+>>> +	u64 anon_scan, file_scan, total;
+>>> +	u64 anon_weight, file_weight;
+>>> +	int size_bias;
+>>> -	if (swappiness <= MIN_SWAPPINESS + 1)
+>>> -		return LRU_GEN_FILE;
+>>> +	total = nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE];
+>>> +	if (!total)
+>>> +		return;
+>>> -	if (swappiness >= MAX_SWAPPINESS)
+>>> -		return LRU_GEN_ANON;
+>>> -	/*
+>>> -	 * Compare the sum of all tiers of anon with that of file to determine
+>>> -	 * which type to scan.
+>>> -	 */
+>>> -	read_ctrl_pos(lruvec, LRU_GEN_ANON, LRU_TIER_MIN, LRU_TIER_MAX,
+>>> -		      swappiness, &sp);
+>>> -	read_ctrl_pos(lruvec, LRU_GEN_FILE, LRU_TIER_MIN, LRU_TIER_MAX,
+>>> -		      MAX_SWAPPINESS - swappiness, &pv);
+>>> +	if (swappiness <= MIN_SWAPPINESS) {
+>>> +		nr[LRU_GEN_ANON] = 0;
+>>> +		nr[LRU_GEN_FILE] = min_t(u64, total_scan, nr[LRU_GEN_FILE]);
+>>> +		return;
+>>> +	}
+>>> -	return positive_ctrl_err(&sp, &pv);
+>>> -}
+>>> +	if (swappiness == SWAPPINESS_ANON_ONLY) {
+>>> +		nr[LRU_GEN_FILE] = 0;
+>>> +		nr[LRU_GEN_ANON] = min_t(u64, total_scan, nr[LRU_GEN_ANON]);
+>>> +		return;
+>>> +	}
+>>> -static inline bool is_single_type_reclaim(int swappiness)
+>>> -{
+>>> -	return swappiness == MIN_SWAPPINESS ||
+>>> -	       swappiness == SWAPPINESS_ANON_ONLY;
+>>> -}
+>>> +	for (int type = LRU_GEN_ANON; type <= LRU_GEN_FILE; type++) {
+>>> +		int hist = lru_hist_from_seq(READ_ONCE(lrugen->min_seq[type]));
+>>> +		/* start at MIN_LRU_BATCH to smooth the rate on gen start */
+>>> +		u64 refaulted = MIN_LRU_BATCH, evicted = MIN_LRU_BATCH;
+>>> -static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>>> -			  struct scan_control *sc, int swappiness,
+>>> -			  struct list_head *list, int *isolated,
+>>> -			  int *isolate_type, int *isolate_scanned)
+>>> -{
+>>> -	bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
+>>> -	int type = get_type_to_scan(lruvec, swappiness);
+>>> -	int total_scanned = 0, scanned, tier;
+>>> -	bool tried = false;
+>>> +		for (int tier = 0; tier < MAX_NR_TIERS; tier++) {
+>>> +			refaulted += READ_ONCE(lrugen->avg_refaulted[type][tier]);
+>>> +			refaulted += atomic_long_read(&lrugen->refaulted[hist][type][tier]);
+>>> -retry:
+>>> -	tier = get_tier_idx(lruvec, type);
+>>> -	scanned = scan_folios(nr_to_scan, lruvec, sc,
+>>> -			      type, tier, list, isolated);
+>>> +			evicted += READ_ONCE(lrugen->avg_total[type][tier]);
+>>> +			evicted += atomic_long_read(&lrugen->evicted[hist][type][tier]);
+>>> +		}
+>>> -	total_scanned += scanned;
+>>> -	if (*isolated) {
+>>> -		*isolate_type = type;
+>>> -		*isolate_scanned = scanned;
+>>> -		return total_scanned;
+>>> +		/*
+>>> +		 * The rate scaled by 4096 to survive integer division, clamped
+>>> +		 * to [1, 4096] (~0% - 100%), the floor of 1 keeps a type that
+>>> +		 * never refaults from zeroing out the other type's share.
+>>> +		 */
+>>> +		refault_rate[type] = mul_u64_u64_div_u64(refaulted, 4096, evicted);
+>>> +		refault_rate[type] = clamp_t(u64, refault_rate[type], 1, 4096);
+>>>    	}
+>>>    	/*
+>>> -	 * We are running out of the current reclaim type. Fall back to
+>>> -	 * the other type if allowed.
+>>> +	 * The more extreme the swappiness, the wider the IO cost gap between
+>>> +	 * anon and file, so the split should follow the IO cost ratio rather
+>>> +	 * than the sizes. With a mild swappiness, balance the scan by the
+>>> +	 * actual LRU size more.
+>>>    	 */
+>>> -	if (!scanned && !tried && type_fallback_allowed) {
+>>> -		type = !type;
+>>> -		tried = true;
+>>> -		type_fallback_allowed = false;
+>>> -		goto retry;
+>>> -	}
 >>
->> Yes, that works for me, and it is cleaner. tail will only pick the
->> list end, and the two callers that pass tail=true will pass
->> min_seq[type] as max_seq to keep the folio in the oldest gen, like
->> the deactivate path in patch 2. lru_gen_folio_seq() never returns a
->> seq below min_seq[type], so this gives the same result as before.
+>> Hi Kairui, Barry,
 >>
->> The changes on top of v3 would be something like:
+>> A question about the size weight:
 >>
->> lru_gen_add_folio() drops the if/else:
+>>> +	size_bias = max(1, min(swappiness, MAX_SWAPPINESS - swappiness));
+>>> +	anon_weight = nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE] / size_bias;
+>>> +	file_weight = nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
+>>> +
 >>
->>            seq = lru_gen_folio_seq(lruvec, folio);
->>            seq = max(seq, min(min_seq, lrugen->max_seq));
->>            seq = min(seq, max_seq);
->>
->> lruvec_add_folio_tail() is outside CONFIG_LRU_GEN, so it reads
->> lrugen under the #ifdef:
->>
->> ```
->> #ifdef CONFIG_LRU_GEN
->>            int type = folio_is_file_lru(folio);
->>            unsigned long seq = READ_ONCE(lruvec->lrugen.min_seq[type]);
->>
->>            if (lru_gen_add_folio(lruvec, folio, MIN_SEQ_UNBOUNDED, seq,true))
->>                  return;
->> #endif
->> ```
->>
->> fill_evictable() caps only the inactive folios:
->>
->> ```
->>            max_seq = active ? MAX_SEQ_UNBOUNDED :
->>                               READ_ONCE(lruvec->lrugen.min_seq[type]);
->>            success = lru_gen_add_folio(lruvec, folio, MIN_SEQ_UNBOUNDED,
->>                                          max_seq, !active);
->> ```
->> Patch 2 stays the same.
->>
->> Does this look good to you? If so, I will send v4 with it.
+>> In the classic LRU, get_scan_count() weights each type by its own size
+>> only.
 > 
-> Sounds good to me, thanks! I guess we can gradually move more code from
-> include/linux/mm_inline.h into mm/vmscan.h such as lruvec_add_folio,
-> lruvec_add_folio_tail etc.
+> Hi Ridong
 > 
-Agreed. I would prefer to keep it out of this series though, since
-patch 2 is a fix with a Fixes: tag, and moving these helpers is a
-cleanup that touches more callers (mm/folio.c, mm/mlock.c and
-mm/vmscan.c).
+>>
+>> Here each weight also includes the other type's size / size_bias. So
+>> around swappiness 100 the split follows the sizes like the classic LRU,
+>> but near swappiness 1 or 199 the sizes cancel out and the split follows
+>> swappiness only.
+>>
+>> For example, anon 3G, file 100M, same refault rate, anon share of the
+>> scan budget:
+>>
+>> 	  swappiness   classic   this patch
+>> 		 100         97%        96%
+>> 		  10         62%        28%
+>> 		   1         13%       0.5%
+>>
+>> Having two behaviors in one formula is a bit confusing. What is the
+>> reason for this blending, and is there data behind it? Would weighting
+>> each type only by its own size, like get_scan_count(), work as well?
+> 
+> Your numbers are right, but get_scan_count() isn't just balancing by size:
+> swappiness goes through calculate_pressure_balance(), and the cost there is
+> refault IO plus rotation cost, size turns that pressure into a page count.
+> 
+> With w = own size we'd match your classic column exactly, the bias is the
+> only difference. And the bias is there on purpose: 0 and 201 are single-type
+> and never reach the formula, while 1/200 are their counterparts, which is what
+> get_type_to_scan() used to hard-code. If the user asks for an extreme setting
+> then we respect it, and 15/16 and 16/16 make those ends exact. And this also
+> matches the other parts:
+> 
+> We don't use classic's cost accounting here. The rotation part is gone
+> with lazy promotion: a young folio stays in its gen instead of being rotated,
+> so the budget is bounded by the evictable size automatically. And the refault
+> part is already kept per type and tier by MGLRU PID, and aging averages it
+> so we can read it locklessly, a stale snapshot only skews one pass.
+> 
+> So that's the whole model, it is a bit different but works well.
+> Barry posted a lot of test data through v1 to v9, the swappiness sweeps
+> (1/60/100/150/200, with per-type pgscan and refault) show the balance moving
+> as described, including the ends.
+> 
+> There could be some pitfall with PID's ineffective protection for
+> high swappiness so with high swappiness you may observe a worse
+> refault after this, however it is not caused by this, same problem
+> exists for file heavy workloads, and will be solved with MGLRU-FG.
 
-David also asked for the MGLRU helpers to move out of mm_inline.h in
-the MGLRU-FG v6 thread [1], so it may be better done there or on top
-of it as a separate cleanup.
-
-[1] 
-https://lore.kernel.org/linux-mm/e85a2666-9722-420b-9a60-9d4251fc3d4c@kernel.org/
+Thanks for the explanation, that makes sense.
 
 -- 
 Best regards
