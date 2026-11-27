@@ -1,90 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4004606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 20:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E2B606A31F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 20:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j7dnWdgd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R7H03EBC
 Received: by kanga.kvack.org (Postfix)
-	id C10626B05B0; Fri, 27 Nov 2026 15:31:28 -0500 (EST)
+	id 0D9AA6B05B0; Fri, 27 Nov 2026 15:39:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC1256B05B1; Fri, 27 Nov 2026 15:31:28 -0500 (EST)
+	id 08A2C6B05B1; Fri, 27 Nov 2026 15:39:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD6116B05B2; Fri, 27 Nov 2026 15:31:28 -0500 (EST)
+	id E6FBC6B05B2; Fri, 27 Nov 2026 15:39:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2503C6B05B0
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:31:28 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84E6A1A0493
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:31:27 +0000 (UTC)
-X-FDA: 85482044214.15.D9618A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E869A4000A
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:31:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7dnWdgd;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FFCE6B05B0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:39:48 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 072C1C04D9
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:39:48 +0000 (UTC)
+X-FDA: 85482065256.07.9118DCA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 85C5F1C0008
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:39:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R7H03EBC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795811486;
-	b=i7oTjyIecV0IKmeBC2CZzb8WNIrUqvZxOe4ezRI0HmZwpIGnZ8UWVU+ozqixCjWuPld1Ou
-	7VRRhYu6KTThsTYvIBYR2F/ef7xxv8b0h2qzj7w0zARol4jBPJBN29sAzjJn5q/hbixDnI
-	ktmpqYiX87BCGkrkUD5QF7yoaKjGVJE=
+	t=1795811986;
+	b=wg1uur3L/5hFb906jdJOHcYDMknd6Y9CKIoIqpD20bH9GXnbFUnYw9bJA+PwGUSNBH/Xeo
+	7oFxj2JCTxXGCZ5dy6n7Lz/kt9vOesLIVVAm4MxUHwIWbILy/xIb54hhRbDPBDP9dJcEYy
+	eS7cntUO3yJgOmoMfQUzqKpxUPAa1UE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795811486;
+	s=arc-20220608; t=1795811986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=VpkQKOzSD2hgUO4KXQobYy7a0rOKz3nk4brF7xC2xAQ=;
-	b=smVl4lVazYEGP9cpXRDjyZ/dBr2/hiS2fQj3JxvultjFWQRadyOuK+emHE9rysOy9KUsw0
-	5aLolAs1dpq+HcPJzSTxk8jzriv7JY64/tATcSIDmQSU3qJt7SmoUDuvXL5o1HmQAvtfRx
-	4Vptsdo8wGFdQ9FgCXSMFa5Sf8fOxKw=
+	bh=vmt/h+98quVGznsKJZsY/ImK2ypo6iML2/iEdcnVAoo=;
+	b=UJmgqYncqNCNS4DBf8xPFSjRJbP7MXHtvNAyMgiahE+Ch3ydhTtVcVVIul9GaKf4AfyBNc
+	LeAXUQGAZd66i0bgIUXRsY4yfpIRtjDJ2zahiDD8kPN3Gckzl1M3CAmXQCtDPqg4YpzqE4
+	N9vIMwzzbbJZDfTwIF2p5gM51MKlYug=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7dnWdgd;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R7H03EBC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A71B0408BF;
-	Fri, 27 Nov 2026 20:31:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560001F0089A;
-	Fri, 27 Nov 2026 20:31:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 068BB60052;
+	Fri, 27 Nov 2026 20:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB391F000C1;
+	Fri, 27 Nov 2026 20:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795811484;
-	bh=VpkQKOzSD2hgUO4KXQobYy7a0rOKz3nk4brF7xC2xAQ=;
+	s=k20260515; t=1795811985;
+	bh=vmt/h+98quVGznsKJZsY/ImK2ypo6iML2/iEdcnVAoo=;
 	h=From:To:Cc:Subject:Date;
-	b=j7dnWdgd1Bl978lwebtZPQyWWpCjWe4dn2z5kOXLbAhoYwmWar4ixKKTe4jexlLAh
-	 QyQyRF2UZZc92Ec9XmcuYf2aDQeZhDr5HuD7CewMKoqOKep4sRwhzmmHvMd0jcdiKv
-	 JJPXAq+vqNcyB8Z2m7K98KF6swgJH3Fy+jK6eozFp9pWsaFmDWy7bWYWEPXwE7UrPN
-	 sENk991PPEwDFDmRbbdRJOM1LzfJ+JSNDCYShqsbjJ8xbH1cXp8oxzezQ3k6f6nODJ
-	 ZdYSVRcqw7eos0aZbERE8b5icph7/rEHXo/Md+QANDZv7br4Vb2DG9d0M9RzrdCmTq
-	 YIeJ7EYdNUlaw==
+	b=R7H03EBChbVbrwQSrjrNCNuD0itWNBGvyWIwRLe9eT+DnCDFEY66kmlzxqkdjtSj+
+	 PojwkufUvwEy/87dRB+S+r8W1vu1vu1DshpmMhsI30PVaFWFd+pFdJUpxn8nITVj8k
+	 ZoSP12+W1hjKk0IcRhuFZn4jEPP/WsW9J374RCTuLf8d/YgjzP3du7rcp5fzk5dEPu
+	 j4YOEoLqXyBgLHIZmBnDtwHKmTDcTcVzztV/cKd2xA2peEH+rivsdZtgVUdm9GW2B4
+	 FILvjCStLES3qEmtjUTAXr2E1nx+pN3WK14IZXvnKuf8T/Q4uZIPtkU0qSrDRhoeJV
+	 Orm1VsZvAYJlg==
 From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: 
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: [PATCH mm-hotfixes-unstable] mm/damon/core: cleanup damos->walk_completed in damos_walk_cancel()
-Date: Fri, 27 Nov 2026 12:31:15 -0800
-Message-ID: <20261127203116.92895-1-sj@kernel.org>
+Subject: [RFC PATCH mm-hotfixes-unstable] mm/damon/core: do not update stat for core filter rejecting region
+Date: Fri, 27 Nov 2026 12:39:37 -0800
+Message-ID: <20261127203938.94339-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E869A4000A
-X-Stat-Signature: cn47o9jzozm13fr8113sfs6qncffxah7
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 85C5F1C0008
+X-Rspam-User:
+X-Stat-Signature: efh111xs48mrzh6fnm9eiaipqn6r3unc
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795811485-51336
-X-HE-Meta: U2FsdGVkX1//PnXhtC3gnUsZsivCzfFDY2esa/igOxMRcgn6n+DwAXT1Yuh8+aJYbDrm14CTKnSncYudxzmnbcJFdTLdFOz/org9j02XdBib8L2AxeFWExw+9TCmoNem95ffcVthuNSjTBPUGX7pPiHeRY2TTfyFaax37C/+kBiKoH6SIsvNUiORXJvL2bJabof5dHrrvV/5lGgafOaDmLL48jZlApjwLM1ova+ZnXgjkXpB/BFjItkOhy3L/8Yf6exfTnZbpr5CT6YvT27i+BwL17DzdTT7ZP20WLhkf8Tw/fo8f7563Bskn9waf+Cn2aKo+dregAmfRKq53JFU9vTgXcfIzip8AEE6DG0bZeb/jtdyDAl+v0TuPKM/51Bq5Hi98ooml4NkUQ1QwuX1UdmuSgZp/IcxATVsu+/UmXhJ3HBingxNgqyqQE4HWQ/Lf7feUC3HgmIzO5eN591eiQBCQwXuHyyO/bekdgvTdg+3Q1mrpNDQ21ZVDR8ZSQYz0xlsKE07KhVWqnwN/MDWf9gUSnAeJbKQQWdENnKllq/skzQvEMMVkv/CVWBf2GzUrD9u+g4tmuJ8TlYokoB1owTemGoIh4r4c0J8d8V+WUcbaT4ZE1npX8ROfAbrvw/ul0iHVqlfsO0sMLkg2hv+Om3os6BsOaUIryod2UBgRmjadEChTOUNCrPMhRRl7Xp18UpaTtATqomtY6lLt2o5x6AH4EWRhOvBfamdxwfMi4Ha+nZyTwYtWTUKKkWGsKE47cN7S8CUyKEA8A7N+RKV27GYV4xdMdyuJ9g7Xrvfrd21qnSbAEQHhKGcFJTGamN2r2CjEE0sdBJXW4MGOX+1rsvyHZhzugi60z4NEa++WgASNacpW4UXYYw+0OzOGDqlchejgJ/hEdXsceaHY6WkXl9lAZHHyqFznp1qOim8U0HpZ5WDKZpgeTdnRk4JcL9j31hh7SEhOaXg4sbQbfc
- tnQBZA1R
- FDLfOGuE5aEv58kd4DMlCGeq3L11lJax4dhA0t0gdIdPONkRvQ3uLGCpdPGJXBt8H8MmFxkltw9jLSrUf+Ih4++Ql3K0VlgNiaGc/NevBuu8wBqP3MlihFggU3sNV/JrReErcaMbsRuNkJRPvhpOPreYzmUVsPHARVWB8WGMe4xPLF1W/nXfmOff2N7V0BnCptrahsilN5+kwNCPAU2EKisk+P88l2jc6xPY8W7D1kIm3cbq9u/mat0BBq3wPtpXJXGfd1IqQcCxkgbSWAb9LfOZFB/EstHM++QYdGx95ZrGAH/+2aG0VyQM+wPWCY9dOP/LGMKZYevWVb+SvwPhPb7Llsjq5kpYAbK695zkXFCy3ELAuugR+Mqcc2dSY6c/qORj0p0eaSrcc0v7R3tr2tNsZvsFOqMU77s3mLssp683zYqxdGuPYYGIQyf07e94M74FkQ/XVmLfcBZA47M5juyDQ4UG/EEWCFQyOH6q1Q7VY6dgEiuDTBR9s/m2H5cB2cCnjhC/VC8kOm/9D7wVNLqfPoc931nRCVVrcvnXVrBaA3W2JEt/Wn+A17g==
+X-HE-Tag: 1795811986-937613
+X-HE-Meta: U2FsdGVkX18gOIpL/v/6nWm47om6fYMlKaWgV/HheQT4G3oa0ixbkfbkRrHL3MxHeVuyB/KfTk0lfd/1xB+2wCR94msLxPSZTX3i63BKaIs5hjIuesdi6aN7WhKVrpgf0U7s0+5hP4sczP0/K8SRrl36zAJoSiWRmZCLro84cDwprf3nI7RjOtNCx2s/dwDMvtYmjB0OTI2QTEKUZfQXyORg5tyoRx0uzzXKSxMyBjS4j2n6N9ocz/L9u3KuiVJYyxFCjIdOw29eirvJinQRopEfCJZ+ZU8VyGIsye9R/uVDFNGbbejy5oEgnPy6yyxfAg+7LHAJw/sz6jPG4BRUi7ElasiNXkIUA8SDz91UXUKaVleWl15bg4uaPn662MBTuIltu1i3dMa9QF/l1AdKWLjOIWfzq2mhABdAxMKoV1bGxvB29AiBCS2wXwx6BAuQIl4qjS/O4NJuSqHBNqutOvBdX/cT2bwpJ5CRMzeUqqkKBxyhLk7hpJTPsZNFBdshDXPfyiB7wBtKiXUY+1YQ/IdWR3Z+HE/NRS335bDua6aGGjwiA4Mr6r9IYUSmu6qKr89jaJQsfhpnlTPwcp70DZe0U97IRGrvRi01/ZoI6iu1ZswH+lKEFIxVKu0MeXTkymMSG1AKQPQ1zTHKlev9JlxNkGEWNiZNwvykHmtcodEOmrHnLUbOH+a74dHsr6gPW+JebH8j81iWCSyX3ZPRLgV2Dtyup2rObM15D/6oYY8zt5+nHcLMMJHkfwN6d2SQMJk77pesHFZ918CvOw7YSZtp75tCRP+bUvhk7iTkhdEf9zZM1DQuo5UuIJZPoc5n90SS0dYuy4xgtCTFbUhA3mueU9STvHRsXO7IY/DokGAo5iG56Wt5PZozGu8mbKB3Kw6Hr+g8ojYWxS+kzAMkzyzBtMDD4xy8ZHO5kDaQnX/gwvd07MJev5nBaLmFevTLJBM0Yhp8I86j7fIp8k+
+ pZCm1TkZ
+ d0twOaE72jATneED1ETDG8qNfYkpr4W3ODQSNc5Zo4RK0Zx3/me1ImAOpFjt25t1Eo2M8C/a03tRnQlAvZ8Qn3+bjQ5hwrgmoFgNq4yoE/BHjN5nTi7ZVvJJctsVn78gNppZY97RhjZ2zJ5tCU7l0iVJtTSFtSX7YlHfwfiGhj5yIf/aKerD6XCu6CKBSd9ZC51CYi5DQG+j5VaAOoNjxyaSvKga+Pk59E+OG579dPLhdjKtbnxb5mcJbSbiGCETrfR9z2Tn2J8sZoeVKlRO8SKMJCbp9MTyaOnc5hQ5GDqcx6uQEIp1l+bmOVicXe4ZIkFDn6EWrngL0edtpfs1N5xwq5Z5XMldgB/EKOtARPFaR7G8jrAxGvIF02f2ohKJCPsklHwSfiW5wj/gmtyxXgUFWz9j4WCvYGFywh7drp31nMGnBtQK/OiOAnJMYXzg/UD9ToUgJJXfUKq/WslCNF6c0Q1Kwpidy9Lh76sG7Ditxzz06IzFdUy3N1qnC1TVLk8Ye
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,72 +94,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-DAMOS walk could be unexpectedly only partially performed.  It can
-happen when there are multiple schemes and the walk is requested after
-the previous walk is canceled.
+damos_apply_scheme() update stats for regions that were unable to apply
+the scheme due to the quota.  Those are counted as tried and failed.  It
+doesn't update stats for regions that were rejected by DAMOS core
+filters.  Those are counted as not tried at all.
 
-The expectation of DAMOS walk for a setup that has multiple schemes is
-that it will walk for one snapshot for all schemes.  To know if the walk
-for the one snapshot of a given scheme is done, each damos struct has
-the walk_completed field.  It is set when the walk for the given scheme
-is completed.  The walk skips schemes having the field set.  It is reset
-for all schemes when all the schemes get it set.
+However, the DAMOS quota-driven failure is handled before DAMOS core
+filters.  Regions that would be rejected by the core filter can, hence,
+be accounted as tried and failed.  As a result, users could show
+confusing stat changes.
 
-damos_walk_cancel() cancels all existing walks.  But it does not reset
-the walk_completed field.  damos_walk_cancel() can be called at any
-kdamond loop iteration.  For example, due to DAMON context pause or
-DAMOS watermarks-caused deactivation.  It means that the function can be
-called while only some of the schemes completed their walks.  And users
-could request another walk after the canceled walk.  In the case,
-because some of the schemes still have walk_completed fields set, the
-walk for them is skipped.  As a result, DAMOS walk based user operations
-such as update_schemes_tried_bytes kdamond command could show incomplete
-output.
+Fix by handling core filters before quotas.
 
-Fix by unsetting the fields of all schemes in damos_walk_cancel().
+The user impact is not critical.  No crash or leak happens.  Only the
+DAMOS stat could occasionally move in an unexpected way.
 
-The user impact is not critical.  No crash or leak happens.  Only DAMOS
-based monitoring results retrieval could work unexpectedly, under the
-certain setup and the race.  Given the best effort nature of DAMON, such
-occasional monitoring quality degradation would be not critical.
-
-The issue has found from the Sashiko bug database.
-
-Closes: https://sashiko.dev/#/bug/linux-228a4c52-0545-4c1f-90ce-41114d8272e9
-Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
-Cc: <stable@vger.kernel.org> # 6.14.x
+Fixes: ab9bda001b68 ("mm/damon/core: introduce address range type damos filter")
+Cc: <stable@vger.kernel.org> # 6.6.x
+closes: https://sashiko.dev/#/bug/linux-9c51890e-a25c-4534-afab-ef33f22a9557
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Changes from RFC
-- RFC: https://lore.kernel.org/20261122224054.79767-1-sj@kernel.org
-- Rebase to the latest mm-new.
-- Drop RFC tag.
-
- mm/damon/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/damon/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 0e6b361f97ea..a6aac382f296 100644
+index 0e6b361f97ea..e0ea93de100d 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2702,6 +2702,7 @@ static void damos_walk_complete(struct damon_ctx *ctx, struct damos *s)
- static void damos_walk_cancel(struct damon_ctx *ctx)
- {
- 	struct damos_walk_control *control;
-+	struct damos *s;
+@@ -2785,6 +2785,8 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 	}
  
- 	mutex_lock(&ctx->walk_control_lock);
- 	control = ctx->walk_control;
-@@ -2709,6 +2710,9 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
- 
- 	if (!control)
- 		return;
-+
-+	damon_for_each_scheme(s, ctx)
-+		s->walk_completed = false;
- 	control->canceled = true;
- 	complete(&control->completion);
- 	mutex_lock(&ctx->walk_control_lock);
+ 	if (c->ops.apply_scheme) {
++		if (damos_core_filter_out(c, t, r, s))
++			return;
+ 		if (damos_quota_is_set(quota) &&
+ 				quota->charged_sz + sz > quota->esz) {
+ 			sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
+@@ -2794,8 +2796,6 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 			if (damon_split_region_at(t, r, sz))
+ 				goto update_stat;
+ 		}
+-		if (damos_core_filter_out(c, t, r, s))
+-			return;
+ 		sz = damon_sz_region(r);
+ 		ktime_get_coarse_ts64(&begin);
+ 		trace_damos_before_apply(cidx, sidx, tidx, r, nr_accesses,
 
 base-commit: daba53bdc1a54c453c2f4ced54a1cd52416c3f87
 -- 
