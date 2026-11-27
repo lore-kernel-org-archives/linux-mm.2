@@ -1,165 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB42606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 02:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DC6606A329
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 02:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c0rclIWE
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=DwP8tvtq
 Received: by kanga.kvack.org (Postfix)
-	id DF0B36B05B6; Thu, 26 Nov 2026 21:02:13 -0500 (EST)
+	id 789D26B05B7; Thu, 26 Nov 2026 21:02:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC94B6B05B7; Thu, 26 Nov 2026 21:02:13 -0500 (EST)
+	id 73A3A6B05B8; Thu, 26 Nov 2026 21:02:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB7D26B05B8; Thu, 26 Nov 2026 21:02:13 -0500 (EST)
+	id 677AF6B05B9; Thu, 26 Nov 2026 21:02:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B6396B05B6
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:02:13 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15D38A54C2
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:02:13 +0000 (UTC)
-X-FDA: 85479248946.05.D104E91
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 130D82000A
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:02:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=c0rclIWE;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795744931;
-	b=rLwt5HsaS80nk2PpeN775x1Kzhj5Uqj8R62DBPmf/ryujt2pAy2mmtJuLugeNr45xU9JsD
-	9wdPlBU4TueDjZCm/1rqMvihl/kLQqdt8Zv74hMIwb9ybvvmbkxjfc3eIVVnsYQabOX9XG
-	S6KrwLgNo7Y07QCsTkhpP8eOSsasEyc=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795744931;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 38DE76B05B7
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:02:34 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21E57A01BA
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:02:33 +0000 (UTC)
+X-FDA: 85479249786.10.EBF6322
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 49D47160008
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:02:31 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DwP8tvtq;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795744951;
+	b=QwTr6MXNhObzSfJLtsnctqRXN6jHmq3/OgPf0Ez5VcSm5rL8l+q2Gk9hvRQGAauySTUW59
+	9meSuidPQvvihyA8VEHAm6XNJgkest0l6Yr4GvERVtxbOm16lmrPtax9v8WS3sF9ihM2Gn
+	W6U0v9eMcDSg5+9HyRx4b2CbXCLPLJs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795744951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CD6edFGqmU8n4mTR3UtP0gostgp/pYDUUVhaESpICv4=;
-	b=kJWdkV5THEdvobif0Gjn8G5sDhtbBkwlgQwW4K/41CtEE1LSi0S8qKj/r5Z0toyqArNKuS
-	qTuLYtFpJjT9Q7LvzOV7wt8hSXB7fFFXzyxUfBe240Tl5QVLM31bDDPnRgZ/BAU0Q5Qg4T
-	l+DetdhidhZvMBcf6c0qH/vMmv2p27Y=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=c0rclIWE;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c51a14bd405so354019066b.2
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:02:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795744929; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Y4VeZZ4v4UGbHEP8qStNYzJtZJxhX1JR8NidpQbAosahgKvj3olJQUIAhjBqIcKRDv
-         3aZWVZn0XgeD4ih0vUMNnOCtOmy2q4z3pACrYWQL1bpzD97fRJtPH4MQZQ2r4GGl5nRG
-         xN+BJYA1QhfJyoV7qJrb5GcKySfeSr2P/rr5uUJOX1EjI606cbOtzxha3kfI2IF0vzg8
-         wZkLAmla+J2egiCLlVgXeZEWhxsbUUXHnFXV0r5MCDq8nLjRfds6Qcpnxl7bzMLIbBOr
-         /LJkOdDTiR45ilLx7ji6J6GV3kIESvX5qFfD4vh24Zcqm3UujecrR9x5X12yJDLDHDiK
-         KTNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CD6edFGqmU8n4mTR3UtP0gostgp/pYDUUVhaESpICv4=;
-        fh=SF8KK4ZdQYCQpEEpwptJJUbIGoKHkDvcyMLTSJMR9TY=;
-        b=gaIPJtGcgED/Y3G2OKcargC+CZXXf+Bpu8XdlFJ9t7YjUJIEduR/2YGuK0EoyUKEZJ
-         ArSu0KZwYDEsfTSk7NqkfPKBBK6DX9HAW05xwowfvG6tjL97+ZOVkKmB337nIMURAGhL
-         IAgIIK9Lz1QyigbGxS1Maa4k+A4o2MzAzWNHNLZXdlcKkzWqOw8dlTjlS7aZUzhLPaYA
-         7bvHy7+j2Ao9kSMfSB2lo9QzkytfhQ2HvKay9bVC316WBhj8WxsndNTNdQ82t9pb+rU/
-         PVika6cFgczF9x7aliSYMlZkQWZukxKgF/pl9PHot90b3YCi2OmgXaGitwwEHlZBAlq8
-         v+wQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=4HqrvdCaoRLWQfr32Eh+EaYearFMhIXj3DWUunR1Bq4=;
+	b=MpBKUQoQli+LsVPT9NWZL75+H/vS8c+GI3VHaKQm8cfBG3PocenG1Ab+OkHeiGqOLnBggj
+	PMZHxWkn5ZjQTtQcIpWgpXPn90P352zerkdIWemzOT3X4ZWwZS+VNUrAWeEtNsRKaYN9MV
+	GjkGTkTy7HkWwRtIs+Fy4IHuH8xp2Vc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DwP8tvtq;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E415612ED;
+	Fri, 27 Nov 2026 02:02:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281741F00899;
+	Fri, 27 Nov 2026 02:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795744929; x=1796349729; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CD6edFGqmU8n4mTR3UtP0gostgp/pYDUUVhaESpICv4=;
-        b=c0rclIWEcEIJ+2EjF4VTRFWXap20AxoJDC3Bj87A/9bUKzz64T+mbBRUyLylFsayXQ
-         iRCT7+fKNdLNVaM1XxMCZmwi2SxBcOEC5Q/d4SDuGoPO2yOXjvwUXOQJA7YhrTHilZs7
-         W+CzBGLKD8ilNkm7DeYaAFgNwmoltwmNYD9CvESS63DM7oMnU9BYmclrAXjJ/sMFwQow
-         lI7PTA2JPML6x9zEu/ZuuIfrsno3tYpO/wY4d8zHl0Lm6BVi0oloQhfzZ4Komef9V6CD
-         dgU/9UDIUFyC2VSs4qhCJhuT5oVL9upRdGio9mdLf5v81WYBBp64LK743ZZqZc4wjAUn
-         PQUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795744929; x=1796349729;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CD6edFGqmU8n4mTR3UtP0gostgp/pYDUUVhaESpICv4=;
-        b=SxiWMoyUhovWbSG5Fg9S2T+tibWL0qKZX6ac6qAXqxIT0zQKktT1WrjHwwGkHqWe3O
-         e324fcvGLbM2fn+PEaWCUUUV+3Wy8nBrjiEcOJeGIyUTB6xrUrdjIhFlfjdazFne/FQX
-         RhyPshZpBC2wCtNYOfRH1sScjzk30tgPkAwOucNwS5KYKNJ9j1prf64AYsu4XzWhSlWf
-         8gNVfVri1TN1rW1obITUdKGTsIyQCrRd+wISvvhxUBxqyMhdgMhV31ndf60ImZQVOhtq
-         0QccUWrg1RpnQQCX/Jwv+AK+P4kJ+avfUWlZoacp5eR1/IVOh3aA8oOtop1ddrPrXz5M
-         ksvQ==
-X-Forwarded-Encrypted: i=1; AL+hErEASVZ8mo6kHsr6A1XxEQrOhRRebM936mY1halm1wexWA+4F/rdvlHYlvc4TQW0UAESTYoCkRzreQ==@kvack.org
-X-Gm-Message-State: APuU4Z/A9XtqxKxY6cGeSKvRFrYWvS3h7EIE39EF04xyBIBUIHG/dqHM
-	a0zHL5o3loRu6jhJ64DfrI1EBHUCx00dYjxR3W66lSEJ7HcQT6jqI2A5jQsi5zkXVBHSzyNh8Ls
-	SVJwrf4tklgrpZ0i8SblHagOP1N1jTDU=
-X-Gm-Gg: AZFdTZe9nIH+kDjjLjeL2IoRjXh54Zz0lOOBAEyeLe95NgqP8ILkLwNPIn6Mj3mtpBr
-	FQBW22HaM8sX8OZi7FmHZ1rYmhQsUUBb2fODKtHmaTWY5nGYN9sz/69NYOeIy8jDbGCf3ikhQeR
-	ygBBDGaZ5bqdVzaQ/fTbgGdKga524adoIGw/iEMCx+aubJD5hIrkaPOhiqbctzA6Fzl/RE/lRE5
-	Xwx8/ru2A5McZ7IXJ3TrnaJL17W16z6Q0L49DiuBhQSgxfM1z4o05r/1TZE3zaRAAqOGrAHFfk4
-	8a3EB0dMFirP2qkrRRcFt6oqBgmvUZbrGgcbz+M5mOxx2DnpmvjqD9rNAXp8ouz1NWupYwCe/5N
-	NGndRu9j+R2AeYeYkDB5JVWlkzj1HBzH/O1tp9bWsAeV7AFpSCwOXEGi9aHZRoaeXipypdg==
-X-Received: by 2002:a17:906:ad1:b0:c2d:d408:5d9c with SMTP id
- a640c23a62f3a-c513ac9c0d9mr1294611566b.48.1795744929390; Thu, 26 Nov 2026
- 18:02:09 -0800 (PST)
+	d=linux-foundation.org; s=korg; t=1795744949;
+	bh=4HqrvdCaoRLWQfr32Eh+EaYearFMhIXj3DWUunR1Bq4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=DwP8tvtqN9/NfnynhYi9TNTQ7JpsRb3uLgBeM7RjC9RvUdUGjAwVqZxiZzAovza84
+	 PfmJlad3Eu1JV4b7jDvr2yUDFCoYWsuZ014SJvZHMmryyh8rgBlQe0nMgj0+mJX3C5
+	 /4ZhtPZULIphwef5B+qmUtWgogyOIGuGFhv34/JQ=
+Date: Thu, 26 Nov 2026 18:02:28 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Tejun Heo <tj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, David
+ Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@lst.de>, Greg Thelen <gthelen@google.com>, Greg KH
+ <greg@kroah.com>, Ming Lei <tom.leiming@gmail.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] mm/vmscan: Fix legacy memcg reclaim deadlock
+ against filesystem freeze
+Message-Id: <20261126180228.9b672a945d480e3d3f301985@linux-foundation.org>
+In-Reply-To: <f188775aea9580f9ab2b477788503434@kernel.org>
+References: <17d0d1395c0237d201a1abb2473d51f5@kernel.org>
+	<f188775aea9580f9ab2b477788503434@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-8-8ffea39934a6@tencent.com> <e85a2666-9722-420b-9a60-9d4251fc3d4c@kernel.org>
- <awa30hwg6x82REoo@KASONG-MC4> <8ec3f3e2-5d3a-4bed-a571-88f7ba473b00@linux.dev>
-In-Reply-To: <8ec3f3e2-5d3a-4bed-a571-88f7ba473b00@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 27 Nov 2026 10:01:32 +0800
-X-Gm-Features: Aa3M54rPWlNF1ipPnICVor68aKhcFmTtxDUbh6IGLENPtyVP2_2XjRG7xOmJZ1o
-Message-ID: <CAMgjq7Ayu9H85wurRAUdmXEPWYi9BdLJW13BhK+LMYoBX_7fuw@mail.gmail.com>
-Subject: Re: [PATCH v6 08/18] mm/mglru: make folio lru referenced times count
- a generic API
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
-	Tal Zussman <tz2294@columbia.edu>, Xiang Liu <liuxiang.277@bytedance.com>, 
-	Ehab Ababneh <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, 
-	Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>, 
-	Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>, 
-	Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	damon@lists.linux.dev, linux-doc@vger.kernel.org, Tianyi Chen <hi@tychen.cc>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 49D47160008
+X-Stat-Signature: af43a5x5feho6jppzbaa6esoxduto8jw
 X-Rspam-User:
-X-Rspamd-Queue-Id: 130D82000A
-X-Stat-Signature: 5xzjkbtac6opdsijk5s5qn6rch5ur6ff
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795744930-383313
-X-HE-Meta: U2FsdGVkX1+lT9IBPHNCyeElwo9JzzoA6Tq6hHj351gb0mTzTAZ8ACmAI5zX1uZ2wHYiNAPcv/KKDU64cFLGtdJJIfWeb4DleKZ2gNpGmgwyTTmaFnwPP0JX1huZvCUhDExIqjgD6GQ/6+wzpLX+MRKIv+AIAtGenxrtVOtSjv1KfukymyE3cN8tGzsSdUU+ngpkKA/WhX9YTXpkPUnWaKOSqz7IsHJIDvn8fy9GOagArv1dm0o60xSfVY7H/jMxmORV5Ph+4dWeDCR6qxxUeYl6t1VPxQGuf1/R7giHKg48ooI6VTQAGhe0C82qKdBj9NNR/ONO1U+IvEe1SBFstVUhF7+MaXaQ78N3ojf8X6cdvV/mtW2OOx2y0TwPNn4XmRj/LOaU+05nKeDByyIR4xsYsCHM6PH1wDg9KZcBp3+qCZPQtPC73Gp1NBgnVEYn06bA7E0d0KXz/Ku2OhF3Q6mAeOHjmMIze0EPpOpRXV+BQCJO7oinYUU7SCCELaSW0dz/CkRvSTJG67hXFBZ/nLVRgaKH9Bg5CE6d49C7GNZv9xqPd/evZDqq/cQ6djOfYP7jNgrkEbY+rHTyIcQTNlFKlUwOJqf7sVhfERfVNQnMAZ55UnzipgDFegO71CgyYcfpDAGDWz8J6gJmRhy4neCxEUrDrFV2BNuTem6Z7R2QCC/HI6/OcF6tDuDEn6szBzoxnXcpDIOy0OTz1lwvbe4DCzjAGWhnSalk3R7HGMFNTSVQLqDSORs/4ni5yKpm4jHTdYy0igkHd755syPiPINo/qzVE/XARB+Zjuo6dqpeyAr7FzBd6ePyCS4xBgcEQcopQZCC0CzSJej1e+4UFEx/1AwFZNev777a+Phm8Q/R+cxw0l+wWdRvZS6IyesBVnm5b2gmBFT8X/fmz/Qc5oLmpLfsOQmBQilmQVp1dsOr1BczMQWIOh7vu/2DebRqjiYXRG+ggx8716f/BbH
- 18uf66iX
- ryYtfcmp5HRxzvsmNtbQGkVgS4tafp3/gBjJMYA0fjh2PXZsubsW6LQGbTw1jsCZzaea17CiRnBMY/ig9r5dNkmnjygOAs0VhwSxOQxr8brrHgSsRK8qupvCGt/WiZjQVBBK7tpZItq0G0pEr2wUqrrghaEFa2Gli6rbuvO4GI0ntVv/yRgLXiqGJzebGATNQ/bjrgoBr81ogaOMrIYxr5PAIVHDPUKKrcpToGzIqC6gyewqZyi6SRbtprPryD58uHJ29Oas06fWOd9TBqOn51KmKQG/14kjJbmJX7ZmpKJRvwSQFRF1gv+so3BVmJfLmGAFeOBFT9aedvpiKVtGPQVk0LXJ9vmfnk9+sBoP30NF1ARkZanoTBbyIXtBLGnBB42waWVfF37zAMCTInFYrGdoWqtsGJmebQwjjYT+6RNimWH1DWZXe7EsxaEBs6ERxloA0d9pSsBtHu0YGnqhH7KHKYx1fTvJ5vNcRL7DpRK3OK74/aXKqAWT0lkk3P5cprIvtvvt6gsfXPlpS69eRLNIfK3BkBT3s+sJ7QwETCuKnmsKOE01yYoxJsilLHMOviX2YVzURmcy/jjt/wupQNDjp06TIeoHt0qCxLY9CWsKui4KSW7SxUe40+8gG5pLQYitsmqLjJtMWnkcLfnqeOgG1/tHizdxwQaJNwU7YTPLq9nfODuLq8aGQZvwmgtUOsPsAQd8coFWxVcMLzsBBs7JgdEh58L28A8k6XiwJIjgwxbG6FPkBp1bfyVtEXsPy2Odf2d6nmIGtTDOyd7BTcrCKc1oTMI7G0PW/+TcGvKY1hk2bqqkhEPf94tbuzfRxJrGvGQGB0/G3cp73x2Ch6by54iG22tbRIK3Tc7zFf45Qhfk=
+X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795744951-159819
+X-HE-Meta: U2FsdGVkX19zG7I5TEYI3U6IV9r3QuNk67tbcyKBfTtAOFqx5JWPoLxfpd0Kt6nwUU+PrcHj7TTbmY2ObtsSA8AGACWclotf8xrkBEEvF4Z9g7igb6Pwvud5gmqrsBnAE9AZQ0K0Lg+RurVPbze9rdx1pRph0oUHGcwBrUn7SHNOLROQkwyjvA+jMDDkzAAVz/N23gDj8WSxF9luYKF8re0YcOWJCXn3dWEmehk8oUnsNq4tebreLceuaRzb/zUWsfH/wyudsFPa4l/218XNNmaQQhUTf+YG0nc84aDQlnkYGkH9v3fUwJSbfqnI/E0KlTK8TnbexED563QtK1OG2F5l2BqaCoVKhaSgHacENT23pyMPyexCT7EfqZmHIdZlQPP6wdLOORD9/Kmomln2TPYKXCWGR+CxaJrLCq8K0L9hnfvTMEzXPpSYo9C4aMsPJ0xqTpsWC1hroqUyC/SglAeZ/u656VguY5xBwxv1I92mJQ817HrfzO+qOGJdXEW5qLC7z9qqJdNoM1hajE9j0Ek+gLjffsdZV8hbZGQFYMcLwv8q2AsOmrjgVukrU69aHseT17mxvpIJtwNYZ1ECo4KNDJGLtfvXOgmz1s6B3kJ1Ur3eqF+wcK70He04PXK7O3PaGT8wR+gnD/2xzbJX5Aipgbt+iwRJi6Mk7lTE7BwlOxgD56Q9gUBj5Di5WMDfVbyJ6oRGLiC0lK4yuJ6e++8p1Kwwmp7L+S+7BIjFYkKol53CvyOeaXWp5KoRZrx+VbmTex1NHW27X8L58V0ydLPGdHaCLiIYAKalIa4o/g8KLXK/NPPUA6Vo3az3AycTa7UgiE9KUTOTavgd5zOuPy36UwUVNgAcjRYSFqxwHckWJuApasyzesbJS+VZKKSzU3HxfwRX1mVeq9N7hGYRxqS3rsBnTADeHhxjipt+lk0956JEMwTSvWhiJTHVa+WWj/hCvTRRByIq0svbsQb
+ FrGWqUDw
+ +NZC4P46xoUixv3BJ5fj687ZW1b7XVpwe/usFhkuGaYgPk69mWqaPlURj15KU8SBlrNSSu6HmZZucVy08ASBOvnD6VlEz57ZgpBmFJtp4qC8k+CWwSe1rXvCPxbpE0+9Bo2/rFRohH7ze541dVzVACBE3eyATgHqO6o6wrmzNHZnaY4mPS69CtAGe3IVMjViNs22169+M2CMIkgYJTyxBj070V1EELF93+EVpUuX0i3TIC/jLSiShyKii6n4xzPyqBP2TmHc6NaeDbXFD19Nfhoay+sbBmLvpES2zxN3KzJHYHAZoe3lRdDvYBcS7AX1Xd4/vdnpprSi4YEWYqwmoE/2I4S8/1GbKI0bKSXFH2tJHhV2UOmlr1jRPEa7osSgLZD9y6tulVkglfZ7BCRuRPAYaVf+4bWX7arCXFL3ZQSczi5u8Ml/o0VmJSJ0FQmmzGtnbwpyigijup82C50NafhkzJ7s+OUJmpO65WrVbOnH7KcwwzuR8f+1N0z7GN8rkzl4OQN15msLDA9OoHfPtNmTCBzSML+UsvhLeEqBKdGracm7xtqlWCk6sfHrpx0SbzLFLFr0d+no0AK4fx/2NeogjAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,107 +103,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 27, 2026 at 9:48=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
->
->
-> On 11/25/2026 8:36 PM, Kairui Song wrote:
-> >> On 11/23/26 19:53, Kairui Song via B4 Relay wrote:
-> >>> From: Kairui Song<kasong@tencent.com>
-> >>>
-> >>> Pure code shuffle, no behavior change.
-> >>>
-> >>> Make the folio LRU refs helpers available regardless of CONFIG_LRU_GE=
-N.
-> >>> Without MGLRU the extra bits are never set, so they are inert. Move t=
-he
-> >>> lru_gen_* helpers into the CONFIG_LRU_GEN section.  This prepares for
-> >>> unifying the API for checking folio referenced and workingset status.
-> >>>
-> >>> folio_migrate_lru_refs() now migrates the complete refs count,
-> >>> including PG_workingset (bit 1 of the encoding), bitwise identical to
-> >>> the direct copy dropped from folio_migrate_flags().
-> >>>
-> >>> lru_set_refs_flags() skips the nonexistent mask bits when
-> >>> LRU_REFS_WIDTH collapses to 0, preserving the two independent flags f=
-or
-> >>> !CONFIG_LRU_GEN builds.
-> >>>
-> >>> Tested-by: Zhao Zhenzhuo<zhaozhengzhuo@uniontech.com>
-> >>> Reviewed-by: Kunwu Chan<kunwu.chan@gmail.com>
-> >>> Tested-by: Andrew Morton<akpm@linux-foundation.org>
-> >>> Signed-off-by: Kairui Song<kasong@tencent.com>
-> >>> ---
-> >>>   include/linux/mm_inline.h | 55 ++++++++++++++++++++++++------------=
------------
-> >> I'm starting to feel like all of these mglru/reclaim thingies should g=
-o into a
-> >> dedicated helper.
-> > Hi David
-> >
-> > I saw your comment on other patches too, about the header mm_inline.h,
-> > about ~690 / 860 lines of code in it is for MGLRU / CLRU only. The
-> > rest ~200 are for VMA / TLB / MMU.
-> >
-> >> Can you do that as a prio cleanup in this series, so we don't have to =
-mess with
-> >> mm_inline.h in later patches anymore?
-> > Perhaps we can instead move the non LRU helpers in it?
-> > These helpers:
-> >
-> >    - anon_vma_name_get
-> >    - anon_vma_name_put
-> >    - anon_vma_name_reuse
-> >    - dup_anon_vma_name
-> >    - free_anon_vma_name
-> >    - anon_vma_name_eq
-> >    - pfnmap_track_ctx_release
-> >    - init_tlb_flush_pending
-> >    - inc_tlb_flush_pending
-> >    - dec_tlb_flush_pending
-> >    - mm_tlb_flush_pending
-> >    - mm_tlb_flush_nested
-> >    - copy_pte_marker
-> >    - num_pages_contiguous
-> >
-> > All other helper in mm_inline.h are for LRU. So we rename mm_inline.h
-> > to mm_lru.h?
->
-> Moving the VMA/TLB helpers out looks good to me as a first step.
->
-> For the LRU part, there is already mm/vmscan.h, added by "mm/vmscan:
-> move struct scan_control to a dedicated header" in mm-new. Most LRU
-> helpers are only used inside mm/, e.g. lruvec_add_folio(),
-> lruvec_add_folio_tail(), lru_gen_add_folio() and the refs encoding
-> helpers, so they could move there instead of staying in a public
-> header. Barry also suggested moving lruvec_add_folio() and friends
-> to mm/vmscan.h in another thread.
->
-> A few are used outside mm/ and need to stay public:
-> folio_lru_list() in include/trace/events/pagemap.h, and
-> folio_test_workingset() in fs/btrfs and fs/erofs after patch 16. So
-> maybe keep a small public header for those, and move the rest to
-> mm/vmscan.h, or to a separate mm/mglru.h if it gets too large, as
-> David mentioned.
->
-> I can help with the mm/vmscan.h part if that works for you.
+On Thu, 26 Nov 2026 02:17:38 -1000 Tejun Heo <tj@kernel.org> wrote:
 
-Good idea! Maybe you can send a series to do that which I'll rebase on
-top of. Feel free to take the first renaming patch too since they
-should all be zero-feature-change :-D
+> Hello, Andrew.
+> 
+> Your follow-up, "mm/vmscan: scope freeze writeback skip to the reclaim
+> target", applies on top of this patch and tests fine here.
 
-But please help keep some helpers in a public helper so when we are
-able to get rid of folio_*_referenced and folio_*_workingset, there
-wron't be some strange header inclusion issues. FS users quite often
-need to call them, especially the folio refs related ones.
+Cool, thanks.  I'd forgotten about that ;) It was a hastily slop-coded
+"maybe you'd like to include something like this in your patch" thing.
 
-Meanwhile I hope we won't take too long to get FG merged because users
-with swappiness 200 could experience serious regressions with the
-recent swappiness change, and there are already several long standing
-/ recent regression that are waiting to be solved by FG :/
+Can people please take a look and suggest whether it should be a
+standalone patch, or just fold it into this patch, "mm/vmscan: Fix
+legacy memcg reclaim deadlock against filesystem freeze"?
 
-(Considering MGLRU even used to try to completely ignore anon reclaim
-at swappiness 200 about a year ago, maybe that isn't too much of a
-problem, but it's still a problem).
+
+(That's mem_cgroup's fifth bool - maybe scrunch them all into an
+atomic_t and do atomic bitops on it?)
+
+(I am told that moving wb_wait_skip to just after oom_group would avoid
+increasing sizeof(mem_cgroup), but that puts wb_wait_skip into the
+read-mostly section. wdyt?) 
+
+
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm/vmscan: scope freeze writeback skip to the reclaim target
+Date: Tue, 17 Nov 2026 14:04:43 -0800
+
+The freeze workaround sets memcg_wb_wait_skip globally when a memcg's
+writeback wait times out.  While any superblock freeze is pending, this
+makes reclaimers in unrelated memcgs bypass their writeback waits and can
+drive an otherwise recoverable cgroup to OOM.
+
+Store the flag in the reclaim target memcg instead.  Use
+sc->target_mem_cgroup, not the folio's memcg: reclaim against a parent
+limit scans descendants.  This also keeps the skip across successive
+try_to_free_mem_cgroup_pages() calls in try_charge_memcg(), each of which
+creates a new scan_control.  Reclaim against a different target must first
+time out on its own writeback.
+
+Reclaimers sharing the target can still OOM early during a freeze.
+
+Reclaimers of the same target can run concurrently, without a lock
+protecting this flag.  Keep READ_ONCE() and WRITE_ONCE() for its lockless
+loads and stores.  The flag does not publish any other data.  As with the
+global flag, a clear racing with a new timeout may cost another 15-second
+wait; the timeout path can set the flag again.
+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tejun Heo <tj@kernel.org>
+
+ include/linux/memcontrol.h |    2 +
+ mm/vmscan.c                |   52 ++++++++++++++++++++---------------
+ 2 files changed, 33 insertions(+), 21 deletions(-)
+
+--- a/include/linux/memcontrol.h~mm-vmscan-scope-freeze-writeback-skip-to-the-reclaim-target
++++ a/include/linux/memcontrol.h
+@@ -248,6 +248,8 @@ struct mem_cgroup {
+ 	struct list_head memory_peaks;
+ 	struct list_head swap_peaks;
+ 	spinlock_t	 peaks_lock;
++	/* Legacy writeback wait timed out during a filesystem freeze. */
++	bool wb_wait_skip;
+ 
+ 	/* memory.events and memory.events.local */
+ 	struct cgroup_file events_file;
+--- a/mm/vmscan.c~mm-vmscan-scope-freeze-writeback-skip-to-the-reclaim-target
++++ a/mm/vmscan.c
+@@ -1171,39 +1171,49 @@ static bool may_enter_fs(struct folio *f
+  *
+  * Reclaim can't tell which filesystem a writeback depends on. As a crude
+  * workaround, memcg_wait_writeback() times out and, if any filesystem is being
+- * frozen at that point, sets memcg_wb_wait_skip. While it is set, legacy memcg
+- * reclaim neither waits for nor throttles on writeback, so that the task a
+- * freeze may be waiting for isn't held up in reclaim and can drop its freeze
+- * protection. This can cause premature memcg OOM kills.
++ * frozen at that point, sets a skip flag on the reclaim target memcg. While
++ * it is set, reclaim against that target neither waits for nor throttles on
++ * writeback, so that the task a freeze may be waiting for isn't held up in
++ * reclaim and can drop its freeze protection. This can cause premature memcg
++ * OOM kills in that reclaim target.
+  */
+-static bool memcg_wb_wait_skip;
+-
+-/*
+- * Test memcg_wb_wait_skip. It takes effect only while a filesystem is being
+- * frozen and is cleared here once none is. A freeze that starts before it is
+- * cleared inherits the skip.
+- */
+-static bool memcg_skip_wb_wait(void)
++#ifdef CONFIG_MEMCG
++/* Retain the skip across separate reclaim attempts against the same limit. */
++static bool memcg_skip_wb_wait(struct scan_control *sc)
+ {
+-	if (!READ_ONCE(memcg_wb_wait_skip))
++	struct mem_cgroup *memcg = sc->target_mem_cgroup;
++
++	if (!memcg || !READ_ONCE(memcg->wb_wait_skip))
+ 		return false;
+ 	if (atomic_read(&sb_nr_freezing))
+ 		return true;
+-	WRITE_ONCE(memcg_wb_wait_skip, false);
++	WRITE_ONCE(memcg->wb_wait_skip, false);
+ 	return false;
+ }
+ 
+-/* wait for writeback of @folio, see memcg_wb_wait_skip for the timeout */
+-static void memcg_wait_writeback(struct folio *folio)
++/* Wait for writeback, unless a freeze stalls this reclaim target. */
++static void memcg_wait_writeback(struct folio *folio, struct scan_control *sc)
+ {
+ 	while (!folio_wait_bit_timeout(folio, PG_writeback, 15 * HZ)) {
+ 		if (atomic_read(&sb_nr_freezing)) {
+-			WRITE_ONCE(memcg_wb_wait_skip, true);
+-			pr_warn("memcg1 writeback wait timed out during fs freeze, skipping waits, may OOM early\n");
++			WRITE_ONCE(sc->target_mem_cgroup->wb_wait_skip, true);
++			pr_warn("memcg writeback wait timed out during fs freeze; "
++				"skipping waits for reclaim target, may OOM early\n");
+ 			return;
+ 		}
+ 	}
+ }
++#else
++static bool memcg_skip_wb_wait(struct scan_control *sc)
++{
++	return false;
++}
++
++static void memcg_wait_writeback(struct folio *folio, struct scan_control *sc)
++{
++	folio_wait_writeback(folio);
++}
++#endif
+ 
+ /*
+  * shrink_folio_list() returns the number of reclaimed pages
+@@ -1351,7 +1361,7 @@ retry:
+ 
+ 			/* Case 2 above */
+ 			} else if (writeback_throttling_sane(sc) ||
+-			    memcg_skip_wb_wait() ||
++			    memcg_skip_wb_wait(sc) ||
+ 			    !folio_test_reclaim(folio) ||
+ 			    !may_enter_fs(folio, sc->gfp_mask) ||
+ 			    (mapping &&
+@@ -1377,7 +1387,7 @@ retry:
+ 			/* Case 3 above */
+ 			} else {
+ 				folio_unlock(folio);
+-				memcg_wait_writeback(folio);
++				memcg_wait_writeback(folio, sc);
+ 				/* then go back and try same folio again */
+ 				list_add_tail(&folio->lru, folio_list);
+ 				continue;
+@@ -2138,7 +2148,7 @@ static void handle_reclaim_writeback(uns
+ 		 * enough for cgroupv1 writeback throttling to work
+ 		 * on a large system.
+ 		 */
+-		if (!writeback_throttling_sane(sc) && !memcg_skip_wb_wait())
++		if (!writeback_throttling_sane(sc) && !memcg_skip_wb_wait(sc))
+ 			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
+ 	}
+ 
+_
+
 
