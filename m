@@ -1,105 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77E9606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 03:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73532606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 03:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BExcfFO8
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=bwdlVs0V
 Received: by kanga.kvack.org (Postfix)
-	id D9ED16B05B6; Thu, 26 Nov 2026 22:11:43 -0500 (EST)
+	id 4A9F06B05B8; Thu, 26 Nov 2026 22:17:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D76766B05B7; Thu, 26 Nov 2026 22:11:43 -0500 (EST)
+	id 45A9C6B05B9; Thu, 26 Nov 2026 22:17:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB3686B05B8; Thu, 26 Nov 2026 22:11:43 -0500 (EST)
+	id 3706C6B05BA; Thu, 26 Nov 2026 22:17:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AAB2C6B05B6
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 22:11:43 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 15323801D1
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:11:43 +0000 (UTC)
-X-FDA: 85479424086.16.5E570C4
-Received: from mta0.migadu.com (out-249.mta0.migadu.com [91.218.175.249])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1944320003
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:11:40 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BExcfFO8;
-	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 15EBD6B05B8
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 22:17:08 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9988C1601B4
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:17:07 +0000 (UTC)
+X-FDA: 85479437694.17.F3EA80A
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D0A2E40007
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:17:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=bwdlVs0V;
+	spf=pass (imf11.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795749101;
-	b=lohEA9cQqzI7e1uiVCUoGtDZTAwjz2cqiNLmkFhvuqaE+DiJgnmZCQJ1Drfde155dNB4rl
-	OqdR9cq+cvbJfBvEpgwAQWmSREAmUN6FqMpj7UR2e9QYp6JMe9XR5hqmMRVdiQUVq1P+E2
-	zpx5ThWXmqATbBi9nNXLkTsSB6v/cHA=
+	t=1795749426;
+	b=tbuIB2CZIlJ+zOUReAnrgYEkDVURDgHkWJtjCx+GZtNaYagG+T349I/vACYJ0nDKp/xdtK
+	i+Sk9mnlOoHWbszLzSFhp+9DBin+FgBodIqB0MVTnXqK0uZwVud2ytQh+638j6ge9cUQTA
+	3ihoyr9r2uHqAT9fjL5w4Ozm+5xG900=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795749101;
+	s=arc-20220608; t=1795749426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eLy6s88hGK5j+du3i+X25eyagHoKD/bXlCSYcnJCXqI=;
-	b=4MpJyR1HDl2EcumKTp0Zuf892MT+liVMGrI1PcQdvDFroxdXYigWKMpPRpw5JgMkRQqLgn
-	WHkkcow6vDQzs4B5ac2gecm4yM0WMLQa6DW8P46PX3fydvT4YI41700aDrrhol0eaX2kam
-	+2J2CNQKrcUNfmgRJZuMmVm7S3wvUkE=
+	 in-reply-to:references:dkim-signature;
+	bh=zYwGFrVXRtVQNbh2j9jq0UMXN8rATCr949DIEhCXwno=;
+	b=gAtISEXPFg51jMnh1KB/3iA1BDIdEYXp9I/6GB+hgXGyWN69G5UCG4f5nRa/lI0Ddyww8p
+	BkYVVRqhi38rUYCGf5PB9Hn6gUEiVh/aWL8uGFEvyKuG0Lhi7v4IE0UgWaoFOe+BZ7erZr
+	x+RyGx/lWT/I1aKFKqJhfWBqT8Q58ug=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BExcfFO8;
-	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=mwS129j2bdDA3TvDqt7nnA97HmeJ5XYFT/Xya3Wg+Os=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795749099; v=1; x=1796353899;
- b=BExcfFO8uBzHBa/cr2F6b8Hl1DFSV5UobaekrlFF/HEeL4a601ZM9q69nwBEu1rj18kBPR8B
- 3beaSgBnWNHA5pJo/ZiHOfzOpYMIVSFBlpflroDyROvr5lnJ5HquekdD9Yr5Xmv6S3YNrU+KWno
- KmzKfBqBBnWOIMbBymianwZk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 455ca9e0193e9786;
-	Fri, 27 Nov 2026 03:11:39 +0000
-X-Mizu-Trace-ID: 455ca9e0193e9786
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Barry Song <baohua@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Yu Zhao <yuzhao@google.com>,
+	imf11.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=bwdlVs0V;
+	spf=pass (imf11.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a07078200fso4036688b3a.2
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 19:17:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1795749424; x=1796354224; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zYwGFrVXRtVQNbh2j9jq0UMXN8rATCr949DIEhCXwno=;
+        b=bwdlVs0VsWRDprlz6L5Y/g2y90af1NqxI8Zlm1uc3HIJJc95T1blXMG3fDQDdSGYs/
+         td5R/0QIoUuMwto/AuIMUv0zCJ+Ki+DoUgnpD6c8yOChFPmPa6O1Y+iAZ18dSdZBp2g9
+         hlnoJKY36fDgg9r3dVXAC+P60bzslgOFZ2/sQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795749424; x=1796354224;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zYwGFrVXRtVQNbh2j9jq0UMXN8rATCr949DIEhCXwno=;
+        b=Xcqbqa+DwuQ0wu1pjkVFxBTwM8hQp2B+FIq2+QxHHiMbwLJxPZHvjspTCyVkDbPZIr
+         dmGqGISf6P30TOu3DO2QPc5TYrTCO2oNHq8FdeypN9VcRCR34zdaG8qQAzkY9jWYLUqA
+         oMxz8iSZAoRLCbTzsSJkK5GqcyCiRuNZyBYuxV+hTb+/0qw9L3ozD1HceRpLWmgysiFE
+         1GH6CoO818W5fkM4eCFfBrG3+qiVFvUrYO8AKvhwh4o/EPm+ZWX98L7qYF/eRWEX0BuF
+         /h4BQ6MYwlyPYkHM/dTT+3llF6IhmvJVPsj6hPbfZqb9HEcOn1RfzF8CiOP4ttZ4YQS8
+         J+qQ==
+X-Forwarded-Encrypted: i=1; AL+hErErHyyhkfu9dLVLLmfd3/G7oNYSdwQvO5FYyEQ+C4xklZcVX1k6CpDGvlYUnwGbwWjVqCyHGPK1cw==@kvack.org
+X-Gm-Message-State: APuU4Z9TuJxFRxzkWrLTHNUiLH8VwHVZKq/Np10SOxpzPC1gbDALqqHg
+	AsJ2Tjc05kfXXP13uT6MHzC22xWB+3BMrx14/v7p+13j0NAxLHzL8fjIEECOA8sbbQ==
+X-Gm-Gg: AZFdTZcQfpzWh+FJdnQRMjF3YE/xv+Na0atqFEQDHj0w6IQMbI5VoROJVCSN9raR8SZ
+	6mJdRAKAMGAWupcvvuarKU7BebsRdiQVVRNXpodUXB5vOn5vXE2gwRMmT0IRbnM/LJ4Wjf0mpv5
+	YrKxJ5F7ee3AhUYmYJYQVT7zrXQqZxMbTt5TnOrr3C1245ZM1eagzjYscH43lzak5ZOOUfVoBof
+	Sn9ou6/WEkwwNFMkwbH73wVuw9+6UmsMnS0Ux7jslWLroLWFSXcMRhRzH7ZU8eVv/K8wXe4JWhx
+	0p6wwBLt2oshZVuq49vD6RN+Q8Lt1E9wRZcwRdJ3Ul+vgZU3BPpX9k08/qFWkknuPaL5TAXGE6j
+	67dhchFca3RtPXauXvssQY3ddDQI5UudLWPQtdp2mReGMLuJiJazkain1SyT6+AScH4aZFuWheh
+	Z/SNiqi0vJcw+QQpKbf8huyQxCIyBsD4NVCqX6HnCoqlLsm2r5QCZBeiCliMQeVH+7qpfDwhyA1
+	SjTR6NN0MZg/tfNO8q+57+REI5rt0RPuvIk9BPVLEeU2toMInvVJfPFvcjigQH9yTJrA869r2FY
+	kv8a2MVzLdNYS77LsWZFFKK/8ADcemVDsG1TRhIlMGMgJEewZlRY1A5dIOSWV9+TT0dIVie0nO9
+	cO3FLJxWsTL6DyYEgNw==
+X-Received: by 2002:a05:6a00:419b:b0:89a:5:92b9 with SMTP id d2e1a72fcca58-8c87cf2ace1mr19349814b3a.44.1795749424469;
+        Thu, 26 Nov 2026 19:17:04 -0800 (PST)
+Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:5bf8:984e:5bb:e51d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c872e4d7basm11333567b3a.21.2026.11.26.19.17.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2026 19:17:04 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v4 2/2] mm/mglru: deactivate anon folios into the oldest generation
-Date: Fri, 27 Nov 2026 11:11:10 +0800
-Message-Id: <20261127031110.1034854-3-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261127031110.1034854-1-ridong.chen@linux.dev>
-References: <20261127031110.1034854-1-ridong.chen@linux.dev>
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH] MAINTAINERS: add mm and block lists to zram entry
+Date: Fri, 27 Nov 2026 12:16:38 +0900
+Message-ID: <20261127031658.2049871-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D0A2E40007
 X-Rspam-User:
-X-Rspamd-Queue-Id: 1944320003
-X-Stat-Signature: ej3qt6d55edrbqebrpxcw3mtjc76kmyr
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Stat-Signature: enyo7t8ihsqea9gmxxppdqhan849k4ei
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795749100-873897
-X-HE-Meta: U2FsdGVkX1/kdMUVZYbtGi6L5bFcOMzkRX7NxPYJcGPmnlTkLU0dor7PLLb1R+jEPOrtQosYkVIIioF17BKHN+7xuRWWZcatR2V8YD3HMGvdcWPSObckzBBdddofV0JTd4EccXh2mIoSana0uzcjvjeY9z9BPe8lmWM3DsULCBgNr55p0Ly2sP/qFhQUHSM8/YD4Ov47sBRWB9teFzB/BcUbQzKwYo9aBCzyAsMm5yzTPwTE03SveTghJgFC+wyaK+lrJGJ978u1xMbC30lTFphQOrl+psFMfJsmON+KX5G/zjvSHWj01rNI2J7L6aBa3y6pH6OmOhtcb3RYRKzegsTT4klpLrFVOSSODOaM7OE0SQiPqis7M3vS+TdEM/pByJIRWWZ1gtwKuN/K65UBfg1fxI+jcrQSWpgiOGU6xpLxFJXDfKAuCgAGQW3ike0lZjbUsOKLKyYIt5QSVLbv5xX0XIX4ElnvVb2BsZ+fqr++vt1Y3ukq3tuUZUHeVRThQZiDEPdlAAuR850wFjVXBRsN3JLf4yTNn0dmqM15EasaIsM/ia7X4ThxlPLfz5HrU87VqMBajSLBxRO0wD2dXVfhf7IGXSdUFjz4jdQ90xuYef5mtaTzi0hlDXzPPSRjR81TLOElJLmvAGfV+OGX9rt0QLPJVhECgqfXRAOuqwlFhb6NlfQvsAsEjmx9FiK1KDtrKni/Nbi4n04SJhUyO4dvapxzhezLSet4qCpbz6s1y1JvbwEnHN0nm+8RUh1+5tS9iVejpEMQprkFiRlcrzUvsPC+DdYzojU+GApIr9sf18wjZOFUCSyfd/hZrh3oU9AHTpqypT0beX/U+TpbT4OP4ZWlOrE1Ao/RZPW0C6qY0b7/erxwVMvWm0QG5JLj9eciTzvmg0gbi3QZxxn3TP0/eXs7S1wrklELup8WISgWq/3QM8WhC3zgt8fzPqs0As9CfwgD8LEqGB7Ndgy
- CvMsLZaP
- 1yF23+EXNSn/m8wZrZ7djKdsod8YKhiTdZQq74Mg/o3QGcrrAWJs4Dcj6RnY57WAHtTxwG2zKIB38CpwZBzKdfFgN4YH/5S/X0Cn3t2ZMtUCQXJMc2cUEhFHgD2V6uQfM5cpZCANs5b9rMSTq8fu2oOPOwTXW/dUa+1+Uj/cVQmD08SGu38XfXj/7Z0P/EYhE457Iuy6nr1jX3YmMPy/wcrgMJVBqce7AU85BHjgtXqOK6Y/EHH1DIeVVZAmVB4c+gm8ydCc4iA9TqvbT+7UkxPaj9TeO4ESlMjRkw96HAuIwqCGjznxXjbAmfhnEJ9X88dYE7SHhpQeJLjnnr4cV2o0Lq6MhP8fduzjj3L+tyQqE6AvyQW0nntNa6yGbAR7TIoWoLb4dGnAUyjGKyKFJv35BA0ov2WjlRykNQiY6xYGvAC2eUHPxq6A65Uv/yh+0UsW1o8vu1Dus+GZfhjvchM8pcRoAEvgT/DTLffA39P1FXzY=
+X-HE-Tag: 1795749425-75147
+X-HE-Meta: U2FsdGVkX18fSoe24fE6oUoctTjUtk6yjZ6pTsGB87qvHGSUaLknvBIlbtXAOZINlSoMqSiUT1ortrFEvLCqAQCBqjK+vHu3kX58NVnS9HAbtZYE3UmioQ0PgzdLxrTZjvSuHfYLvX4VySx3fL5Y5A156jLAKFdOQzsBpw784J5tda0hWfWqGLWoEn0sHZlKvKva802tVVSMdWjztWtGMADfMccatqMsQmCp0cU+rGbmdNiFvFc5FpHHPvcKLMDP6x8iC0tOowq3tj/St5MxfHrpdcySRgWm6zzkiP9sTyX2Me9FkgVF5QrV5yDzEYDjLBbp1lxmnGU0YcGOMqe9Lyjjzjt+u2uR/MDc1Qso40Majqa6sh/BrMTrMDGVpQOX1zs5odCuInoanNV3gBQImDwtz1+EIgZZUlxWyVGJCHTNDpkGsfKlgUx5G/BiYgqJzREFjluSyXjDr2Uxf9ndzas5mGVjPXubZSezq3YVyHEHqNpHE75876u+x9KWkQtSJdjl1xONjgM/ulpyCjSlbjKwxtxFqjwdKLBeT1kNZRqgqhbH1w4mU6wlDUA9Yy0n1SuGkN+i6yOC+PVf6bCjVygu19t+0In75HgeHHTsIAp40uPYGnzR67N6lXCPVkMHfX6SMMn5UvUwB/4KETE5vX1/FsaQPE1PDu4YfZdV/fCH5fgBBCu90JUxId/UAg/s940/0prhaI1y4JTay3B3lF9yiB0VfUeeYEpdLkteSxcfiecNSA+0CTdEJRit5Vg9cn6ZJFRA38E7JQra6zvUPzYE1xru+dKCP9Lfw7F22TyZLSK5EcO0ygFYpNaTWB4P7iaedoZvShjtNguMl6P46lDNdeE0uZPvQG5BNW9jsk9Y9v+Xs+OvsNYLoCJ4hwOjUNpG7SMFEgOo+xTdJjeS2oTtIGoXSFY/z+V4CvZBE3oqB4N3LzKMK13akVDK6oWC3qaf5jEaG9sH0YNcYte
+ GR75EAxV
+ lsHNJcx69ot40IncLbVLn1dh1cC1fHVyEucAtXDX4UCZCUbpyJYuSVtEIEvyKwWoQjH9Mc/iuuIFBqouwybLRlYWBShZCkGl0AAQhoGvSBhC8bMeZc1u8xNSHZZk2ClJL0BoVwXQ5aieCe3N1Np+04D42WCciVSdIL+tI930+m+BxLkU3OqGsW0bd+CUnhKYxjdhe/Q8mmY+d2D5G7Ac1a+uiuihx+wV1VNeUgmjnqxpkfv/lwWf4/CPisIReOgIk/BF6kqoCeHJbD69yyTzPVRK8ZHh5ulRwWON1ueth2tyliFFN+YAQ7KQv8pZGlDgVPIi7fvlqnkaoP2d7l1iER3DlkbKob+h7EEwQYP/w40qyAfYsR1B9sqKwhPNmGcM5gh/PSuYs/6D7K0wRmHcD4Fc+PcRmrUwVM+hZLJB687wD3l7dfH0mi9Oyzu0/JlR3eTMp0qlUpj1yEalvGMu41/0dpyEo2A4gMcnOJfTk/ZZH3EWQXjoXkLNkRy1qMnQn3Xtx4lfqOHUf4dsv2B0dvBkkNSZAj6w8LwyzaK8COrIF+PVmrkdI7MwwDH+zRUFFiFLa+1L3BzOCQ2Q9rNtHtoHYhsUnUpJzi4j+xpbq2FMhAie+KvI5HAzuMLIXM3EQbubzR+Tll7jwgHOV+ZKMWZ+NlhT664avRWhm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,96 +120,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Ridong Chen <chenridong@xiaomi.com>
+Route zram patches via linux-mm and linux-block lists,
+rather than through the generic linux-kernel.
 
-folio_deactivate() is used by MADV_COLD and DAMOS_LRU_DEPRIO to move a
-folio towards eviction. lru_deactivate() does that by deleting the folio
-from its LRU list, clearing PG_active and PG_referenced, and adding it
-back with lruvec_add_folio().
+While at it, fix a DRVIER typo.
 
-With MGLRU, lru_gen_folio_seq() places a swap-backed folio that is not
-in the swap cache, i.e. an anon or shmem folio, into max_seq - 1,
-regardless of its refs. So a folio that has aged into an older
-generation, e.g. min_seq + 1, is moved to a younger generation instead,
-while PGDEACTIVATE is still counted. Other folios go to an older
-generation with their refs cleared: the oldest one, or the second
-oldest if PG_workingset is set. The ones that have PG_reclaim set and
-are dirty or under writeback also go to max_seq - 1.
-
-As a result, MADV_COLD can make anon memory less likely to be reclaimed.
-It can be reproduced with a single process in a memcg with swap enabled:
-
-  1) map two 64MB anon regions A and B, and fault in A;
-  2) age the memcg once through /sys/kernel/debug/lru_gen, then fault
-     in B, so that B is one generation younger than A;
-  3) apply MADV_COLD to B only, A is the control;
-  4) reclaim the size of one region from anon only:
-     echo "64M swappiness=max" > memory.reclaim;
-  5) count the swapped out pages of A and B from /proc/self/pagemap.
-
-B is expected to be swapped out instead of A. Before this patch, B stays
-in its generation after MADV_COLD, so A is swapped out instead. After
-it, B is moved to min_seq. Three runs on mm-new with this patch:
-
-  A swapped out        B (MADV_COLD) swapped out
-  0 ~ 190 pages        16384 pages
-
-Cap the generation to min_seq[type] for MGLRU, so that the folio is
-added to the head of the oldest generation. This matches the classic
-LRU, which adds a deactivated folio to the head of the inactive list,
-and is where most file folios already go. Folios that have PG_reclaim
-set and are dirty or under writeback are now placed there too, as the
-classic LRU puts them on the inactive list. min_seq only advances under
-the LRU lock, which is held here.
-
-Fixes: 081488051d28 ("mm/mglru: fix underprotected page cache")
-Suggested-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 ---
- mm/folio.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ MAINTAINERS | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/mm/folio.c b/mm/folio.c
-index 7a3394e7c5dc..789875095f13 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -599,6 +599,25 @@ static void lru_deactivate_file(struct lruvec *lruvec, struct folio *folio)
- 	}
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 68811a0b7916..3f10a5772b31 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -31316,10 +31316,11 @@ Q:	https://patchwork.linuxtv.org/project/linux-media/list/
+ F:	Documentation/driver-api/media/drivers/zoran.rst
+ F:	drivers/media/pci/zoran/
  
-+#ifdef CONFIG_LRU_GEN
-+/* with MGLRU, add the folio to the head of the oldest generation */
-+static inline void lruvec_add_deactivated_folio(struct lruvec *lruvec,
-+						struct folio *folio)
-+{
-+	int type = folio_is_file_lru(folio);
-+	unsigned long seq = lruvec->lrugen.min_seq[type];
-+
-+	if (!lru_gen_add_folio(lruvec, folio, MIN_SEQ_UNBOUNDED, seq, false))
-+		lruvec_add_folio(lruvec, folio);
-+}
-+#else
-+static inline void lruvec_add_deactivated_folio(struct lruvec *lruvec,
-+						struct folio *folio)
-+{
-+	lruvec_add_folio(lruvec, folio);
-+}
-+#endif
-+
- static void lru_deactivate(struct lruvec *lruvec, struct folio *folio)
- {
- 	long nr_pages = folio_nr_pages(folio);
-@@ -609,7 +628,7 @@ static void lru_deactivate(struct lruvec *lruvec, struct folio *folio)
- 	lruvec_del_folio(lruvec, folio);
- 	folio_clear_active(folio);
- 	folio_clear_referenced(folio);
--	lruvec_add_folio(lruvec, folio);
-+	lruvec_add_deactivated_folio(lruvec, folio);
- 
- 	__count_vm_events(PGDEACTIVATE, nr_pages);
- 	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_pages);
+-ZRAM COMPRESSED RAM BLOCK DEVICE DRVIER
++ZRAM COMPRESSED RAM BLOCK DEVICE DRIVER
+ M:	Minchan Kim <minchan@kernel.org>
+ M:	Sergey Senozhatsky <senozhatsky@chromium.org>
+-L:	linux-kernel@vger.kernel.org
++L:	linux-mm@kvack.org
++L:	linux-block@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/ABI/testing/sysfs-block-zram
+ F:	Documentation/ABI/testing/sysfs-class-zram
 -- 
-2.34.1
+2.56.1.839.g22a8290db9-goog
 
 
