@@ -1,93 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01B8606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 08:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFCE606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 09:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AYhGSRjx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ROSRa8VJ
 Received: by kanga.kvack.org (Postfix)
-	id CB9EE6B05B1; Fri, 27 Nov 2026 03:59:37 -0500 (EST)
+	id 82F016B05B2; Fri, 27 Nov 2026 04:03:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6AE16B05B5; Fri, 27 Nov 2026 03:59:37 -0500 (EST)
+	id 806B36B05C5; Fri, 27 Nov 2026 04:03:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B81396B05C5; Fri, 27 Nov 2026 03:59:37 -0500 (EST)
+	id 744246B05C6; Fri, 27 Nov 2026 04:03:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98B156B05B1
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:59:37 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2109516026F
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:59:37 +0000 (UTC)
-X-FDA: 85480300794.26.3A1F933
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 555596B05B2
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:03:18 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D861BA6AC0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:03:17 +0000 (UTC)
+X-FDA: 85480310034.02.F95DDC6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 786DF4000B
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:59:35 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYhGSRjx;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id D672CC000D
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:03:15 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ROSRa8VJ;
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795769975;
-	b=hujtUHnskgtn5CZZon4ZIAmbKwNSN1FxWh7cIwSFwr9a2WQcCrnmpFiSqprJ5nAQDjrfaZ
-	jQ3HU7UWG5wMZIvow9c4W9r0nd9+XVsHPWP26I5SPm4lvod7FNvPqV4frfjWRWj/Of3nz/
-	/S8fuwuYFctFNe8xU0A5/QSxq+sLKXI=
+	t=1795770196;
+	b=zkOQw46AjVXIXgLR8Loktr3iWvmiKCN1RFFp/bhDk+VHp/MGSXMk/jEMDItliiVFXAgn8K
+	B2e4i6JNrBIO7jg0exT23KVp1zcgXDBC4cXRt2xq7jDF/y7wuBXREPSUdkVVLjXq80JbQN
+	0dGsQF7HtNv7CIJHBZCsblgCpDfWFas=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795769975;
+	s=arc-20220608; t=1795770196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7a5V8uJNEtSJUfbxlsSU81OveDHYXfQs+t4Z/0WLw0Q=;
-	b=l28ZYE4N1EQhaozB0tfHi2U+T58iRyilrC/SLZR7a9i8zKRifFRSQ5L8M6RlFJ4mFL5gdJ
-	d/JXigrf/ODenqlq1BSRa7gXif9rbXQNSApYVLjbGx770eEapU1S6J7ebklM07QDSEyWpO
-	rnn/t9eK9UEJ09Mt0yNePBiDuT8JwRs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eruxf2h1leWPsvtTT8j+qcRw7QHI8KPu2OHo39+Umn8=;
+	b=ZwLjYcF0bGu1AHzKpgdcTM9SwZKi3XxRTjn/PKrBcgMtwVi0P1MqEphjTq2k8VhLO/0eTx
+	StX3TDU781O7FG5IEkj5b4p/IZBifmvkF+9AOripOwSkiDWVxH4lMrz2xeI941ivBmcAkQ
+	MbdxneaZHIFYNmCYAnwR+B6nNblxiE4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYhGSRjx;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ROSRa8VJ;
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA83744660;
-	Fri, 27 Nov 2026 08:59:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61E11F00897;
-	Fri, 27 Nov 2026 08:59:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D95045483
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:03:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C425A1F00899
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795769974;
-	bh=7a5V8uJNEtSJUfbxlsSU81OveDHYXfQs+t4Z/0WLw0Q=;
-	h=From:To:Cc:Subject:Date;
-	b=AYhGSRjxzoKEEqtT32tZm1a+8a42yP26NUpFjur0TnXe167qHDP6zH3IskrtTZ9cI
-	 +HUM1GLIboc42+X2HH8g1rhP0KKkQQrX4Ezs0C9uHd+XZu/n1Pndhut2v/irjlyDtb
-	 fJpYDeUeiwIMqmhRlQu/8ICbKZX2IOgeg8UJxcLL103MCpOZEE52Ua3ifNUAsiOiJ6
-	 DO6dYyv6HdlxSii6rKf4JRD4jKrEOU1CqCG6FE1BK1/ZkFDZ+xD12uYX5IgklfFM+L
-	 R4ZADKUaux7vzAH/rJhf58OIJEor97X9IJoNjVlEjVxrMpylWzYmzPJdv2A+k8AcpN
-	 T1nubdwKcwCBg==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [GIT PULL] Core MM fixes for 7.4-rc5
-Date: Fri, 27 Nov 2026 09:59:25 +0100
-Message-ID: <20261127085928.3630-1-david@kernel.org>
-X-Mailer: git-send-email 2.56.1
+	s=k20260515; t=1795770194;
+	bh=eruxf2h1leWPsvtTT8j+qcRw7QHI8KPu2OHo39+Umn8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ROSRa8VJRmhvHn8D0K8LraZdlKvHZqxSQI/qWdIn8ha7HMVG20HhYeZRh8jL6toec
+	 4THvEea+2rwP1KyC9wK1uSDuoENQpVAHPYeKwajOweBzBwuVXJ+nHbjyzqgPBlzTYa
+	 NXdLLTHI02ZZ5nNncjHsurjYdJ6aH9NLna+q4mlRQWxkUn2oHB6R/2Doy58JrFuLJy
+	 s/SrKeEsCgnDWlXF+/xRdt9CQIGchZbYCVVUTY55QjdDS+eqE5gRPgvkKnwwVn6zk7
+	 kvnMPKfEQgdDQ+6Tt1U4moNl5/5JTQbPG1Zjhk2Clcvui9/n6+NVXcZNspgpiMPUYa
+	 95cZD81hYnYpQ==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-94958650b09so749884985a.1
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:03:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGtNWdfdclkWojKS0xd6T4/fmWE69SwSBmQlMQ8extgClsnVMoqLGpSmdX4cl8chQriBEgNPdkxOg==@kvack.org
+X-Gm-Message-State: APuU4Z+iimSkImUssLOLsm1OwQv3RtyQ6fEjZFgAe82tZ6l/LOKvepZ+
+	zuersMehY7nerrWlpHMDIW59SQmk0Q7L9SYGb2GS55NoxHH/BnpuVP8spvMgPLDNe2P75r6SWze
+	TWmLH2CjeXi7h8oG/qkH8FXrqx4FBAss=
+X-Received: by 2002:a05:620a:448e:b0:949:696f:c997 with SMTP id
+ af79cd13be357-949bab480dcmr3968194285a.80.1795770194103; Fri, 27 Nov 2026
+ 01:03:14 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261127031110.1034854-1-ridong.chen@linux.dev> <20261127031110.1034854-2-ridong.chen@linux.dev>
+In-Reply-To: <20261127031110.1034854-2-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 27 Nov 2026 17:03:02 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zW7UtFmBckdA0L7sgs=X-c-w31FzY1JZJG9sTPm+6sCg@mail.gmail.com>
+X-Gm-Features: Aa3M54oa0WdjzJtA4q7rcWJyPM1Mj2DUJNx3pL3SpCXSWAOiWYUe4Jcul3-RYl0
+Message-ID: <CAGsJ_4zW7UtFmBckdA0L7sgs=X-c-w31FzY1JZJG9sTPm+6sCg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] mm/mglru: pass a seq range to lru_gen_add_folio()
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <kasong@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Yu Zhao <yuzhao@google.com>, linux-mm@kvack.org, Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User:
-X-Rspamd-Queue-Id: 786DF4000B
-X-Stat-Signature: d83xjmawbwhe97se34uqzpfs454u9w8z
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-28.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D672CC000D
+X-Stat-Signature: 9jzf8y7kg4tz11jir5pmkgkuaa998i9s
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,INCLUDES_PULL_REQUEST,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795769975-604000
-X-HE-Meta: U2FsdGVkX1+5mm9ubkCrXsNE3dnfaNMyXapkHEfv5RjuC9EoZsSfpUCIzagk+l3qdKVl3wc4GeWEc6TJn0oGXHAfCQ2dOUFPeIcvWC/4dlmjRYZ6lmFXwZMLr+Nj/TyBfEcZSDtY4wYoQUeHg7rwlcdc7muzZccTjG2Lxq83zmtjmbZKHnNruqt1ntCWi/OqZir+VV3+Ysl5TA31ykh3v9sj0rGUGg1uyK5IFNfr17VFJ3iT2XyX1yuevuUe6+uvvUNl2VTBdSqPJnlmELPdMjLOmUJ16tmS4OTr4VRT0L72hoqc7GWhMgOqVS/8AsFsfxhxYTTU2oA6BdCbxasIwb45F4RmCdOcGkxNWY5CREg6FqAy60vAO3blvlkZajw4gkots6aZK+lqFzdggE+ztMyc9BBK/oa7BcA40vWa04B5RPl1KafToYqV74OADyBxeJgEop7QUWQj0poJhYP7fedGeHlJPoYE8r9xvK16XTVkILHfHh1/SIwHmCeYiFXdnNyMHeS/QGfG1W88BW77YGs991o7y4Y74aGlBSmwqLGdxJuwK20W0JNay0BFCy1yRJyKgoeQtlsi4kCyuGq71KUN2XqTeKsep5O6CQxNXp7gae7+ONYldHjHUs+oZBMBR09kwlhFssYEfvBGchTKghtlcWojLwjOfCZ5hl7ZH+3L22ZjCuVm6HbFo/KqpKkT+h/xhnjSkXZ+GfFrAWuqM2E/6+qaX8lkwjMCHrgQw+A643jaNVZXo7Zq6OM1MQ4uggJFtrIhruF/B/RdU8ucLXO8/yvH0y4VHB6mwnQwK/qLflhGGUL0zOXCSY1Y42TJd7MmzLjIy23mw/++kDzN51y/ZSE1wvghpm6rwMYpNl3IeSPaJG/lOEHyC0umSLBbJ56xMCs4GmgzDJnQNN7P+GWB3PxdUySxcwumpbedYEPGXXYA33T0HFaqlJd7AHr5ms1KcRPt1s8jngrxNDf
- YrkPzV3j
- oEGttO1LuMLLeDtKMu8W8sGV1Vhk7eBSfZ6dgm94JaWpIBnI1gwD/LBInO8Z0XdfbqejbLrzjtYDb42qF0xsEhuZnQbT9cEzu0hEnVjQ224Ye3UM3Dwwatxpva1faUejOGdz71LYqsQlOzQStArrUR+rAf2f+3edK76t/OY8V5MDTtCsr91gcN/RtfqVhL8prD4v0LnPxH0MW0xsHS5rFL5lvUsGnzYeHjADvSnvgDN1PkUvP9IRxb4m71+jH96d5ufTtsSTih0CUtiIa8lna97/n/ht+tDlMFjOGK3lBD6feULfWx6dRJu0ohQAYJ/K3qmB8nX2myB/+Xe0T/Iexkp4FjRlms6/fWvlikf75DvWRZbapVwNr1TGdh5ARrfpSz4QUe7GCPsWe3R60V1IUj8y6s7HoVPN4DE6DSuyBBB5eyxuKy1M4vLQdRiOJxOBOf6+yU/f6VHMXVJo=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795770195-756835
+X-HE-Meta: U2FsdGVkX1+BR/y2a1mZ2ZVj1XxmPf/AfwPX5imyFyajQWbc91KaAVNJ2vHsv6iyEim41uRYrggM+AEYg+MuefhHMXykOHMQjCxvhk3YVcoze3DTYkQsPSTXJBrWuRnWAH+Sk2q08DXfFQiT9xFbKQDR/pWBqbQIEFpE6kPicr3qndGaoDPsvlRsZEGoLIbT5xmXxxQhzumzISIVs/g64aLeP7k9Z2x1KnjxgS9zgZYwdCj4Yyj6AeJShxIZzTf4ymbmo9wV9bm2FNil7mNn6iaOYIzqQAi+7pIKGWKn2U90+JljS5+SYTURGAkcQDEVPpnVus49G+pwUT4s5TeGDWKOzBuFde15fb87Z25d1XM+Fc4capmZntM+8P3MbFdeudrVOOcTxzRvSvoZzI7dS79Ez7xrbyP8TCSQlygvJsfYcXsmpU6GLOLUbXXp5E5MKUvPPjWyvNJ/SuFsX56x/Xyc+id2oReR+6SFf1tdFgZxhvSWQZkc76ycdYZ5EsmUxO7fdOvmCMgA7aJ+0iGhR4Cau7YuiyoVCjHvoDLEb6m/vO6h2fIe0PvJLFiOqEhI04YdNUoU0j3JfmSIX/BiukG46t1aWfbpxWVeoOpPmYMEDWwsuNVqdEsoh3zgPtZ6fs+ji0fxEfN9AKr+ZifjQBe+07wyHTG3fhv7/2cXODFScJFBg57mruZtH8r8nigJ/dNCbT/m4vNkbuR/uW/qAogsUSxEInbq5GGn1xMYqIobh42fZsVz2vwdza1zOWYjWriCEu+/ncVVGRNqp/1GG9qSEV79qugG29zg7oE/OtAtm8jIiLuh4wQL3bzJ3CLL16eefamD9hvNg2tjVvNNXbQ2FIN0G/5j7hwDSuaI4SR7IK/EKVxgwqnKFO5t2fhoQf4+on3G3z1SXUpPtLhbHTeDXHRssxfHYJnQw/OrLX2jZ+wmyJxQN+YtYoyIRvRieyg8PJ5FUvS+0Pb6Nin
+ FB9fsQ11
+ yKjlqYWx23i42e+NsYVZ9eBD5AyxXDSb2eg+MTmfGEN5p9xMFkdDiWpkyst6ULpSUVQHDvwVG3webS5uic6PbeGR4aHu46BnEjkKw0HTxiMP53z5o6kzJpFAzLoRLXiZywmYMRFAFlnGd+cbDohBh6KGu7Lmh7AbO+a8CaxWGgt/CLL8n9vRbdDpHY3KwzXm+8TMy+mZ48c5eMDvrj6axVBTOtuD9ANiz6IEp631+IeBBetdYkisSAZuk1VBHfGCLp3kz5LJbMxKLc5lwo1hoErxXIKvAzolkNH48evlMS2162dLN1x5T1GaAfinNPi03ZcMsbp252OJLPyXZrmFkvtR8TI8sZlc3zQA2gPTXYhTVangJvSqDOuAgTcB0va5tDXmCjzmievbhQz8fL1ABgEJevYzBKOIa28LGwrv6/xZT5NVvwaYlLrQHUKvaYYEQ1ZeCPz3J/8wME4UFOAGBQpSVYt7vdCYMKeQKkYOM3tdT1/ZjDuadC4Bgqzza+lK+dLFH4TM1f+cO8Xpto2vxfJ0OGzwnjVAY8zFJa1jdv+MPNsL8cB6lKmFVVONWPqSlPVaOKN30O0CB5MYPVtgfUy6+z07LfiTG5jVp+NVIDTUJtpf+CXwNE8LfksD4f++yj0YY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,110 +111,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Linus,
+On Fri, Nov 27, 2026 at 11:11=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev=
+> wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> lru_gen_add_folio() and lru_gen_add_rejected_folio() are wrappers around
+> __lru_gen_add_folio(), which can only raise the generation picked by
+> lru_gen_folio_seq(), through scanned_seq. There is no way for a caller
+> to lower it, e.g. to put a folio into the oldest generation without
+> also adding it to the tail.
+>
+> Let lru_gen_add_folio() take a range [min_seq, max_seq] that the target
+> generation is capped to, and drop the two wrappers. MIN_SEQ_UNBOUNDED (0)
+> and MAX_SEQ_UNBOUNDED (ULONG_MAX) mean no limit on that side. They leave
+> the seq unchanged when capped to, so no special case is needed for them.
+> move_folios_to_lru() passes scanned_seq + 1 as min_seq for rejected
+> folios, as before.
+>
+> Also rename "reclaiming" to "tail", and make it only pick which end of
+> the list the folio is added to. The generation is now only decided by
+> lru_gen_folio_seq() and the range, so lru_gen_folio_seq() no longer
+> needs the argument. The two callers that add to the tail of the oldest
+> generation, lruvec_add_folio_tail() and fill_evictable() for inactive
+> folios, pass min_seq[type] as max_seq instead.
+>
+> This does not change behavior. lru_gen_folio_seq() never returns a seq
+> below min_seq[type], so capping it to min_seq[type] gives min_seq[type],
+> which is what the old reclaiming branch resulted in. That branch was
+> only skipped for active folios, and none of the callers that pass true
+> add an active folio.
+>
+> No functional change intended.
+>
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
 
-please pull these core-MM fixes for 7.4-rc5.
-
-Two hotfixes and a bunch of fixes for other nasty issues we found that
-I want to have fixed sooner rather than later. All got a couple of days
-in -next after proper review, which is why I am rather late this week.
-
-Cheers,
-
-David
-
-----------------------------------------------------------------
-
-The following changes since commit b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f:
-
-  Linux 7.4-rc4 (2026-11-22 14:57:40 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git tags/mm-core-7.4-rc5
-
-for you to fetch changes up to 450bf6e1e7ece7ea8c0253886a01c663ea7bcc1b:
-
-  Merge patch series "mm: fix deadlock on the folio lock when migrating and splitting folios" (2026-11-24 08:58:32 +0100)
-
-----------------------------------------------------------------
-Core memory management fixes for 7.4-rc5
-
-This includes fixes to:
-
- - THP (Transparent Huge Pages)
- - MIGRATION
- - SHARED MEMORY
- - MADVISE
- - RECLAIM
- - Core MM
-
-The main changes are:
-
- - Fix deadlocks on the folio lock when splitting folios and when
-   migrating folios, triggerable by unprivileged users.
-
- - Fix lost writes and stale reads due to stale TLB entries with delayed
-   rmap handling on UP, when zapping dirty file PMDs, when installing
-   CoW'ed folios, and when reclaim does not write back a dirty folio.
-
- - Fix various MADV_FREE issues that can lead to data loss or exposure
-   of stale swap content.
-
- - Fix various issues with device memory migration, including
-   use-after-free of the anon rmap, out-of-bounds array accesses and
-   oopses after migrating KSM folios.
-
- - Fix a use-after-free of the mm when copy_process() fails.
-
- - Fix a NULL pointer dereference in the shmem huge shrinker and data
-   loss with failed swap writes in shmem.
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-----------------------------------------------------------------
-Chris Mason (3):
-      fork: clear p->mm when copy_process() fails
-      mm/migrate_device: fix ksmd oops on a migrated KSM page
-      mm/shmem: don't use the memcg of an uncharged folio
-
-Daniel Wade (1):
-      mm/memory: mark unshare copies dirty to fix MADV_FREE data loss
-
-David Hildenbrand (Arm) (9):
-      mm/mmu_gather: delay rmap removal on UP as well
-      mm/huge_memory: flush dirty file PMDs before removing rmap
-      mm/khugepaged: mark ptes dirty and soft-dirty on mTHP collapse
-      mm: flush stale TLB entries before installing a CoW'ed folio
-      mm/vmscan: flush deferred writable TLB entries before unlocking the folio
-      mm/madvise: fix MADV_FREE handling for PMD-mapped THPs
-      mm/huge_memory: use NOFS when allocating while splitting folios
-      mm/migrate: allocate destination folios before locking a batch
-      Merge patch series "mm: fix deadlock on the folio lock when migrating and splitting folios"
-
-Josef Bacik (4):
-      mm/migrate_device: allocate THP deferred split heads
-      mm/migrate_device: don't collect a range twice
-      mm/migrate_device: don't let go of the fault page
-      mm/migrate_device: look up fault folio after a split
-
-Lorenzo Stoakes (ARM) (1):
-      mm/migrate_device: fix use-after-free of the anon rmap
-
-Mani Tofigh (1):
-      mm/shmem: don't drop a folio whose swap write failed
-
- include/asm-generic/tlb.h |  16 ++----
- include/linux/migrate.h   |   1 +
- kernel/fork.c             |  15 +++++-
- mm/huge_memory.c          |  68 ++++++++++++++++--------
- mm/internal.h             |   1 +
- mm/madvise.c              |  65 +++++++++++-----------
- mm/memory.c               |  14 +++--
- mm/migrate.c              | 133 +++++++++++++++++++++++++++++++++-------------
- mm/migrate_device.c       | 105 ++++++++++++++++++++++++------------
- mm/mmu_gather.c           |   4 +-
- mm/shmem.c                |  45 ++++++++++++----
- mm/vmscan.c               |  12 ++---
- 12 files changed, 321 insertions(+), 158 deletions(-)
+Reviewed-by: Barry Song <baohua@kernel.org>
 
