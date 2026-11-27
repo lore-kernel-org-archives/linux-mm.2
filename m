@@ -1,120 +1,167 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B3C606A33B
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 02:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA3D606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 02:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=AdoBzAfV
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=maLX34fv
 Received: by kanga.kvack.org (Postfix)
-	id 2612F6B05B3; Thu, 26 Nov 2026 21:06:26 -0500 (EST)
+	id BF7CA6B05B0; Thu, 26 Nov 2026 21:21:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 212436B05B4; Thu, 26 Nov 2026 21:06:26 -0500 (EST)
+	id BA8F16B05B1; Thu, 26 Nov 2026 21:21:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 128A06B05B8; Thu, 26 Nov 2026 21:06:26 -0500 (EST)
+	id A743D6B05B2; Thu, 26 Nov 2026 21:21:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E78D96B05B3
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:06:25 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 81A246B05B0
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 21:21:27 -0500 (EST)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5AA6C8013E
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:06:25 +0000 (UTC)
-X-FDA: 85479259530.25.124050A
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 57517A000E
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:06:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AdoBzAfV;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf25.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795745183;
-	b=P5J3rcQUDAFClpXqvGeBeKMfE88+n/+l+f193zsCDl84FABAhlOq3dfQxv4wPp6yuYacJy
-	V4MXmAbGikrq5R/Mv18QpmV3kKK8O/0+/POdbUVRIM6pjIGQ8yBWsxhDrBcnPJnccQr6SH
-	C9PITqzLEdi6r6S1lN6IE8U7QD7qeqI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795745183;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60469C0178
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:21:25 +0000 (UTC)
+X-FDA: 85479297330.25.6228F1B
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 59C8780008
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 02:21:23 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=maLX34fv;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795746083;
+	b=dG3yOv2egAGAgH9tHYZkl5GKBiaFXJ9PYWGmNmAxRgffTAAjrQFgTKu89NImqd4J5Yi6gm
+	gkxXtLWAo+WBbXmjeMFGoU9TpMv3lKoMWCIGKpaKDDll0Bvz+KWQaHM8x8zDjhIW1ePH6D
+	R8oxVO4QAF4+yILqvz0LqPUsrwS9T78=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795746083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gi8i700zgzoGE4wii+o6F4mqGWTqx4rmov+vyFiH2zk=;
-	b=LW5HAqVa992D/nFyfeOcxLTfTEkX1IxCp8GV7VoDKHeYeuVpZCJIYb0K5zbCEh4FmTLH6p
-	6W4THE/pjFXNVgfm4Dv7sky3Yn/48kQVmjOoVYTO/ScNhJZkYdpAx3O20BoBguSqimJvri
-	q45FJwkuFBKm3CnZFe0LGyLhbO6XAls=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AdoBzAfV;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf25.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc147d86bebso4649941a12.0
-        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:06:23 -0800 (PST)
+	bh=q9O/QDigxPlmqtrzg+lI27H9LnqU5X97nUid93qpMQw=;
+	b=3wSQbKa2PcOwA7EGs19ZgTga27p1mZ68mDY0Kzf8yM8K2UMeHl8Mvzozz3qkPV8lQYk6Z9
+	FMtZusx4Qf8r+JR6fshcsIEdFGPWZ27HF4bOl9zKcWgc2+mVCuVF2PkDjFKIW9ZVPkv7Zs
+	bc3mBPSpuiDv9jSYZrFxn2djQMq6rK8=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=maLX34fv;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4cac7a7d3cso1128095366b.3
+        for <linux-mm@kvack.org>; Thu, 26 Nov 2026 18:21:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795746082; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KS4/OXkwsRcpsRRYYrw24ui20qJ3xULdWCVPRpfCxkdmHjwjj7uHj42IT0aDK3hGpE
+         /Ydw0uSnHp5IrHhmewd3tfPfJy58JhbO3JSHJN997vMKodbM3kwfrQXOxT4AApHuIGuX
+         UYuyrcu3NiGJjot2DpPwv4n+9LowlrFW5JXHm2KqswEEGF7iRzph+cPktkzKivKg6e9X
+         jpihwXaTW9ouK8DW2DcXZ3kuMpL4P40I33G7VdelRRrzVl1mFQ9fYnaUL1Iax+RBcFGA
+         Wh6K1k/I7PVSCfi5K2uDr1AJQGDSkENDejojvRlAcBKuUtClWAzXP2HrvG3kwbPVkLlm
+         J8ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=q9O/QDigxPlmqtrzg+lI27H9LnqU5X97nUid93qpMQw=;
+        fh=nBYEKBPnraJVXgQRgqDKPhactnTahqFYfUxr7d2/rcI=;
+        b=FeiF/wGK5i1pRlicTTi9j7UyAYavUrqH+IZlAv1Sd8h3VZx/h4z1J3TH0DPjJJjymL
+         BlJz5ARZHcjpUUA+P4cJxwhz2u2iNXZUBKCHOh+NXHOvTG+TEW09oTrxssM+NDsHisYT
+         qHmysvf/Khaq+aW5h4Og2s0D+g1zIFoMvwKSUU7yHpdjDLAV9OzErBCsgRB79POL4m/H
+         4xfYle6LhKrun2hk681aaCf0hUUb6nO7d36MyQNaF5YBN4gFmDTakGBsxWEhWm9K9S6b
+         gLSosY25NThVhfQcYVd3D0hWFhocDCGdTfHIgbizMWXwDQaJyt8NjRVsaPybWVSFDYvF
+         UlxQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795745182; x=1796349982; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1795746082; x=1796350882; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gi8i700zgzoGE4wii+o6F4mqGWTqx4rmov+vyFiH2zk=;
-        b=AdoBzAfV3lj+TOo9lcZNVlFPTkr+ni6NhnQULeIGG8DER5o+ZPBZjaMXDswBC914Qd
-         KuC5j+V61fPp+962zTZoJYXTBsGj1VtzT2EAZf4MZ1G/e3NBVIVPqvwy13/CexYKayFt
-         o7s5YEM5vZFyKQcoVEsOWwUmHqk1l+5MV6uus=
+        bh=q9O/QDigxPlmqtrzg+lI27H9LnqU5X97nUid93qpMQw=;
+        b=maLX34fvMZVPH5SDMoqtPpgxxwZ7j+F0Ojr/Wud31buciuFeG6F+flCYzdfACDmoL0
+         xYKj+5Ebo8ObejhpE5J602xo7zmDmuVuSTxfQfsTd+nvghh9oRFm6bJfrCAnbESTHkAE
+         kgbNTK0ONpwxA+8Sv+hKQsSgeuykHBqAtcRWCCSYqwz4GnklijnDduuYVWPF4Qv8NVkc
+         wUA1ypm7j9C3LQm4+6wjzT6wXXInvF4p2rGOmodfz2MIglRpoOjUWuFBn+lwz6enSjRM
+         D4putJC8IJByZvEJxZuIHhhirQrPzOsqZqAVnKib3JzjLCln+kjbJa1ahr+8thtPX2gX
+         iGcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795745182; x=1796349982;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1795746082; x=1796350882;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gi8i700zgzoGE4wii+o6F4mqGWTqx4rmov+vyFiH2zk=;
-        b=DOVYiKYsUNges5eHq/IGAmY+X0otg528l54lWZgbnKMGqRPq/DSMPJyxhAV8Lv6xl+
-         J955F91zBVcqXFMSTmk9FwdXIYCN7U2qn493yLCtKjUv7N6U6ws8dsYZ/mQ/HOhX2Mq0
-         aupPTcMow9R1yRHZEAkJAgfSB4Sd60e2LE77iScqs07Tg1bWOj8ZgYHCm8x4jNyH4r+S
-         doXsLCvpttGTybivmmtBbXKY6gbRQOrA/sK2NfUebTqVc8jjsx+YayBUFYfj3BnZzD3/
-         6zM7xLmSTjHK3aNLky5iDY9+/gb1CnnX9wU7AxtyBYbvN3J+o77FK4xZzAbgng8AHVbU
-         2iWA==
-X-Forwarded-Encrypted: i=1; AL+hErEvgEnukoGzbUMXvDy/xGHNIuA+8tP51VNHaT0woTjqq4fRJa0nYfL1pbMxWk0dWDmZtPDtrD+LOg==@kvack.org
-X-Gm-Message-State: APuU4Z/AncnVsPWAhaooIr9n9julwvXSkZ+/+m0xQFHH/QzsdMgLr4VA
-	DWI+JQ0A+z2b+PAakp386WjLbyCCFGpz4+2P1Ekq3F8Z2DDO8m2UUp+2KGuto3Apxw==
-X-Gm-Gg: AZFdTZe0EuK6pBeldOUzSCnfW6hORufVyntahQqsTIbCcfVGuQ1UIvInYZvqL6BQz4L
-	35qYOqPCd/GtzVO0oTMSB87cYPgesEscWIflqxENsiL16t9ekPZSnBosHynHqm8bRVajVmVasMF
-	z1BvjY1TURyyQpGWI71MtK9n66k/ykt1BuM36pLprMC8Dg0sBkwvF8mVSIr67uw7GLdJuymfFDG
-	Cqok6EZUFw9GNKUONqjda/prZT2pdDFlvrKE2Pbm2ZCF+jpAfUiIrLDPhHxjScIWs+TqO9LlGCJ
-	Y+eJpggczNMrSWG20MMoRmUJC36gZGevpF1EX7wzw4rioFFqwrYMAqs+EQwI7JVmdWd4EnM3Ujz
-	h7R9Jkl0E3wKYhzX31uXxyaEMLYMicQfhJL/Ue9FiBWanYJu4u2bkEwII5vV273NRIepvB1QVqv
-	eLERzNZX2QR5mgZKj6SQB4UWHCs/5RBUECj4vU3cnYQ8ll7LuTICQT0hU3Vs3jAQuaEJnX1HH47
-	b/HSDu4vC9ybVD+l2ihK73PuG1Rfu2u9JrNe5eCTSXuxUa0TmK/rjOytvCIcacrvUDmstz3xkY/
-	wiqWmXNKb22LYgLa2RGTC7rgVZGsxcFtBc2QG7k32d06NZH23U3ZL1eefkug3f/LLR76N1zeeAJ
-	UYEbsNBf7wlHg+A==
-X-Received: by 2002:a17:90b:5407:b0:3ac:9ad9:6afe with SMTP id 98e67ed59e1d1-3b41c961ed9mr14310208a91.39.1795745181825;
-        Thu, 26 Nov 2026 18:06:21 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:5bf8:984e:5bb:e51d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad0b52dsm38236079a91.5.2026.11.26.18.06.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 18:06:21 -0800 (PST)
-Date: Fri, 27 Nov 2026 11:06:17 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	Alejandro Colomar <alx@kernel.org>
-Subject: Re: [PATCH] zram: do not modify cont sysfs store buffers
-Message-ID: <awjlWfhrLyoHcy_Y@google.com>
-References: <20261126014518.1318583-1-senozhatsky@chromium.org>
- <sashiko-outbox-236427@kernel.org>
+        bh=q9O/QDigxPlmqtrzg+lI27H9LnqU5X97nUid93qpMQw=;
+        b=NMAXAJdZL1CF75ar6a1RNmw6hPwmTUnc2hnEr1b6UnXxRT7w9Qzgoh1Z8Y5AOJ9jWF
+         BqGbYjQB7V1KMnwPIm8VckGOvaPK5DMBqBK7iex0bXYnZ0CR6EUIzlRr2r45Upo5tgnU
+         7A16rR6paXVYZv8v9Zm4ycjEY58E5scTR3EH0QOrWjaXzIPOIt42yHu3HYxGg+qO4/Yd
+         Sui5xYLttCIfsbtIs9XnItLN61ioZER/vvf1DR4svyrckmKh3lcH59uVyaYHqnaBHubA
+         t4rFX7pzH6EoLGRTCDma9k10LxPL9I+7vRAW2aCTbswJi0AkhEMC5HxG0uih0Pul2CeE
+         pzYA==
+X-Forwarded-Encrypted: i=1; AL+hErFah0XYMqUh0NGKf64ZhsJdyiKCoskehTeRx2vQXKrW4IvQWGVQw1W2Yd0KC+8/PQuTVm1+SF/iYA==@kvack.org
+X-Gm-Message-State: APuU4Z+Rsw1VqD1TlIWtg5kSbseDtHU3dy3+xrMRZdlEM8eLgy3PZFTQ
+	6nB7nbFTUxGdommC6Zg7UetCL+DmwRZ2qvv1WC64H/uxCnyv3NiMNeYFBgWNfOK4Q2RswW7n2cp
+	rnwc6KmktHSNs9+sKxpeg1vGXv00VPoU=
+X-Gm-Gg: AZFdTZcG9XLJI3e2qGe90ZeptFhExPFVSfIZGh83m0qxJNgV78jdCoOsdTEoZ7zdO2T
+	e+1Sl75N+X9fXMU9YhMrS7AYS77131pYeMfggifK3Mi34iuGMR5W7enSO9EBdZ2YY1cF60EAj/S
+	jUx74agKUCPVIZCd+lEWyxDtk2PEJKq4OE+bd0IBynC/mWedm2Rb0u5Dj7OosF7TwvyvvwQbXga
+	uKxRhEYkkxVbn26nJTr6rU1Wkwv8FEFB9mdGER75FIVWOP4dd9aQ9H+Jn6eo2q6qkawK3lGpESh
+	3NrXPreAYnmlJeUeaxpejDwK2VGfIy0TvxgxrjPylWdhN61gTyme+k0+TelctpnHDKeCsS5kbWh
+	CJLsY8HpPPkP+IG2VTdN+XxpMOVhFIfCWAcZP6X8sELcR1fO20p/9LXV5/PT/LGtmvNwFE2V1PW
+	Ay3qzSwIBXxvPwO4o=
+X-Received: by 2002:a17:907:9693:b0:c4c:ddd1:d006 with SMTP id
+ a640c23a62f3a-c513ab47f40mr1740039266b.38.1795746081722; Thu, 26 Nov 2026
+ 18:21:21 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-236427@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 57517A000E
+References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
+ <20261124-mglru-fg-v6-8-8ffea39934a6@tencent.com> <e85a2666-9722-420b-9a60-9d4251fc3d4c@kernel.org>
+ <awa30hwg6x82REoo@KASONG-MC4> <8ec3f3e2-5d3a-4bed-a571-88f7ba473b00@linux.dev>
+ <CAMgjq7Ayu9H85wurRAUdmXEPWYi9BdLJW13BhK+LMYoBX_7fuw@mail.gmail.com>
+In-Reply-To: <CAMgjq7Ayu9H85wurRAUdmXEPWYi9BdLJW13BhK+LMYoBX_7fuw@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 27 Nov 2026 10:20:45 +0800
+X-Gm-Features: Aa3M54ocIHnij2wxU5gTqMYt2uMcyjdRvBBfxBalbs5FgV17e07SNTVEtRtEE6E
+Message-ID: <CAMgjq7DwCNbke2G25Bxfj3bi5aRp3_qkGeYmCTGVGv+Y5XzKTw@mail.gmail.com>
+Subject: Re: [PATCH v6 08/18] mm/mglru: make folio lru referenced times count
+ a generic API
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Tal Zussman <tz2294@columbia.edu>, Xiang Liu <liuxiang.277@bytedance.com>, 
+	Ehab Ababneh <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, 
+	Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>, 
+	Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>, 
+	Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev, linux-doc@vger.kernel.org, Tianyi Chen <hi@tychen.cc>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 59C8780008
+X-Stat-Signature: 1576dnka6szj6i1kdptahcbqkxqo4frm
 X-Rspam-User:
-X-Stat-Signature: zmnnqz9nr1x6qzn6r3tpeydjkniiaxjm
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795745183-71281
-X-HE-Meta: U2FsdGVkX19HGsAt5tco0JKdTVvrWqAluhOfGUH77BY3XJQFfSTsJ2eJcl81RABUHl0ruJQcWyw32r7IwHqSkr8Y86d01Qx+ZUkCTEoku/qNUieVI52LxRWVjG7zVC2koaske6TCGMZ1IIf+xKYjbbFtEwPNcCocX2SDt2Xa50a9uniUsnULE8uF1CavdW8SND2njX8rykWJQgKGAHsUUeL5Y/ofZtmQPOwH2FnegkdmoFNabnrkMhlfuN/+nBR8bC+IMp1Aln2Y6ddk4i0hhxLPCFM2D34brQGXgEJHA6zBEIKQKJ4lpcirgFHmyGZEROjGbxppmWPvq9pkQFsnItWKzCHY5382ZVqe1uBYeV8Yk9GWVCEGYgwVDM3J+CU1xoIM7ic9QOhsLMJiYcmxZhu84LT8Rm2EuK2NuY6G7J+EWt30MahWWVT8Tu3KWl2EWrVe4G5lHtN1TcWWBZXnRG/I8UF62jO6eNM3a6u5/CrIvT2XjTUrfAGLfh+l60T3ObApx0neTqJXYIYhsLAgqljawbRnab8Vmk01wsQowF8TZ+tRNFkWDlUcl+LVp6BAsGFetZS7Aa/7Iw3TGVZr1KXyZihX6tXsPhwOl1SP4VOp5Y25LJfvM/vPMz7WrlmkEGjMBTKtJhWuQhRJMYBY/4/2eR3r01m2TnqPlQK3GIttEseveyo+FtKHlo/w2RCre9MiihGKmZ4QadgNKz2QlvqVC76qQffaq0asc0T0UVFl+goCvkcRlMiyWASfHMYbjoAtPXCe583g4+z74sTsLV+8O7LfcCf9F/U9OK2NuS61jzZfB3Lej+tObcWEQqJy1QIrNvb2YYpsa/0S+m4dUG5ttRRV3JsraVG1cLXcrDcnat32nAc2BAbcjjJDap8citPfEeybqE6FV00FIj+zmJ93YdQwg5vw7/qqRbNcQSAjcTLUrUuVjU2jFTplbmuGxO6Qg+2GlamMXr+W2Da
- N2KfVzsr
- W5sBaA40dS6hgwGcLVVQGTDtZu4dG6gxjVOasqWTkeOkrGu/fATIAhJVrs0iorl7hG6jXbW1LrjNR0pTlS8W8bdbcpNZ7JR881pef6Mk6gfRkyGlLmNHtDBbfhdvx2ffMZh7snOvrbELTpCioNxTcU8TX3KC4Fx93f/Bo1PITgWuwZ1uBGCaTFqJniYvPrpOFtCZyAqdUiILDzEImHp1cJPYFAo2d25AnLKQZGwk2sBA/xb3afPuv3qACbi7n0tQFo29LfFmTjXMhlyg7Hhc9LljgEvs1y0gmkXWfvFp2XICjIwLJXQGB5/bE8FRtFP3i3EZECy70ToWyphRefExXXs1JV+CzFoZRrPK5VV9E/hQBUJaE651rCq/23kpj3mqwVQNtqgYvYsXgDViuPhvllqzf1RCQuw5+7BHw2/FyRygnX90xhz67xitFE7roqhzxPOEiVCa134EBFu7OTLpLsHSWGR2pucoGF8TjAHmKVMazogL6w/GbI1V0tXvmwPRfJG1onLJro28olh3yRyDDAgQ045dmlDxqGnxKmz2cltFpY5EEdUZMVBXB3pliOkj8odHeVSSqNqEtteqqS3mfPoMTVSy2m6xgeLSS
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795746083-81894
+X-HE-Meta: U2FsdGVkX192+sFUaLn2+b4wp/lUKFXz5wjOvneq7mN8DnIbn1DI88ecxdmCIccssw1FDTPQ8pbcYPqG4N5zHA+gV+4+yLJNLGUojoE1sbuzdroFMWtMdxstcNr25cF1jQ+0U+ctbihHnybULszdiA53ETiM/3t56DJHKebVr0gcQwBduR/peJWIMXnjxrPEyRTGrqPth7uKx047rzoyxF1zl7F++ZI1IT8NeV5tihi+XuKfVKlZynMo2ZsOPdo/1dtj+o9iqqjp7g7kTd0bszMXnl3qd8owvsQ3eSUXvGE6h8rqx36ff4Fr0RLMJIjk/9EBPP0uB62fZS0LHJtAumYEWjj1sgWs4X7hCZ/0spIAr5F8f70fOBuKLPAQt7tK/sdOq9uqYgNJlfwvPK0+RF7XgxRaWMChqHdvUY2/Vjm2QEjgePoaUwjoYGqHvMRFv3xqnh1kn0Wksc5PiDliIzWh8WdZ+D0g2dpilVVPoUFtqXeg3wtCOl86led9Bpg7aM1aBHjqq4X93w/RlABd+j4hXT19hpg0zhsvFAkf7X3VZQHvVDaihL4fHbX0FCQUQ/8atAmcbi0RbvUNOqXmwdEzeeeY3giszqovjy6tqzdG+5YUAg+cCyXMbRZRmv+25q+Wt6JFC9LN6z491LZGbYlQOKWJe1SLNHW8ga0BcmKGmqacmhsKZ77OB8YHKSuEymtDveWUOApe/MivgLB3t2ZKNCwbKvLsVVWPBWkv/nNMKxdCn+alztPcRpD8LWS7ywONrGFdn0aOuNXWXkdFbwvw2lRepwJSb5fJoARHRwojZftvtEI1XoBzrrp0QxTM2Cf+E80MFK7tcJ1GLQdWbxJTzjIEciRLo8WuCa90ADlKDurlKBQYM3NmpZOrC3QMyMmfab+uClLJO9i9hqRa5D9aP6zQtHZ91XLR3D83W/Y7qF/S7TiG9nGpF8/f4Ie0AdDg9IaDGVUoRToxobo
+ cjOqru4C
+ tI1R2mpXSgl1EssrzNuD8hwnE7ifJHGkMAUDYglxpE8e4s+orvhWhTO/TMVd+/aZ64MBEI5T5+SqBv18jDXkqQD2COBkt8FBrPAf33HZnQyf4BBbN81px6EUIihRtbSnGmgOlDUhTv9KLJX5g8HZqpP1KNWuYITOmFlHaeUkrZk0V46sdS1vaenyGEp5hZqWvNu9SWVVqGNeUiLZFvWrAuMZCBAV4K99mNK3SZDKx+wX9zGQ0OmEukkXYdE9jincgkaYRAz1Qcp1qMnc62gDbyCQP3p6hLesTLtTKE7KsPYY7mIQVUiNC2AnDQuwPWRlU911hMIrwDrFiFjZr03V02ZoN33Xj5b9JaBEQ8mW0tba0C8JRNtR+23RdVxfexfT+wHis2ns1mxRupRkyxl1UzH5Hz+ez+iXbEWnLGEOFrzABGIhNqvVcGOwJdj3HSRZBLnUJdcJvtG2lpMHPlC5Yyq6gww1O8YV2KiIwPDHDsNGcALQTCWSvXek9yJXMUVL3w/ZPi3/ise/wtoniaJAtgU29kRYup3cUyGcn97gfjRpJLXifClpIffMDNgDAovjfaAljUyosov2avSQIFTqVcPwDQPmKf21jp/HzEye7TZVGfJLTLD4Dxq2kijytI0Zqk8LZfHIm7BbnC4/5i6UvVZbfxp3gIssEq63geZ4JKIP5MqykTnaLMACb99hr7pN2hir9THa5NnPb2scpGAdwA5OsdzS8h0GRWV+3xQK0fVl+p6hXkcNOoCm0Ku36FtJZKzOZKWYf5owdvB+TsZw4DctYt3EZFIESafrXU8z7PhfUxiz76ycmULwcYHaOZEDarqyEoie87E0wLZCq8vOSISZTd8Bm7wIu87JMuELAHsPHy3U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,12 +170,109 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/27 01:59), sashiko-bot@kernel.org wrote:
-> [Severity: Low]
-> This isn't a bug, but include/linux/cleanup.h recommends defining and
-> initializing __free() variables in a single statement rather than declaring
-> them "= NULL" at the top of the function and assigning them later.
+On Fri, Nov 27, 2026 at 10:01=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> On Fri, Nov 27, 2026 at 9:48=E2=80=AFAM Ridong Chen <ridong.chen@linux.de=
+v> wrote:
+> >
+> > On 11/25/2026 8:36 PM, Kairui Song wrote:
+> > >> On 11/23/26 19:53, Kairui Song via B4 Relay wrote:
+> > >>> From: Kairui Song<kasong@tencent.com>
+> > >>>
+> > >>> Pure code shuffle, no behavior change.
+> > >>>
+> > >>> Make the folio LRU refs helpers available regardless of CONFIG_LRU_=
+GEN.
+> > >>> Without MGLRU the extra bits are never set, so they are inert. Move=
+ the
+> > >>> lru_gen_* helpers into the CONFIG_LRU_GEN section.  This prepares f=
+or
+> > >>> unifying the API for checking folio referenced and workingset statu=
+s.
+> > >>>
+> > >>> folio_migrate_lru_refs() now migrates the complete refs count,
+> > >>> including PG_workingset (bit 1 of the encoding), bitwise identical =
+to
+> > >>> the direct copy dropped from folio_migrate_flags().
+> > >>>
+> > >>> lru_set_refs_flags() skips the nonexistent mask bits when
+> > >>> LRU_REFS_WIDTH collapses to 0, preserving the two independent flags=
+ for
+> > >>> !CONFIG_LRU_GEN builds.
+> > >>>
+> > >>> Tested-by: Zhao Zhenzhuo<zhaozhengzhuo@uniontech.com>
+> > >>> Reviewed-by: Kunwu Chan<kunwu.chan@gmail.com>
+> > >>> Tested-by: Andrew Morton<akpm@linux-foundation.org>
+> > >>> Signed-off-by: Kairui Song<kasong@tencent.com>
+> > >>> ---
+> > >>>   include/linux/mm_inline.h | 55 ++++++++++++++++++++++++----------=
+-------------
+> > >> I'm starting to feel like all of these mglru/reclaim thingies should=
+ go into a
+> > >> dedicated helper.
+> > > Hi David
+> > >
+> > > I saw your comment on other patches too, about the header mm_inline.h=
+,
+> > > about ~690 / 860 lines of code in it is for MGLRU / CLRU only. The
+> > > rest ~200 are for VMA / TLB / MMU.
+> > >
+> > >> Can you do that as a prio cleanup in this series, so we don't have t=
+o mess with
+> > >> mm_inline.h in later patches anymore?
+> > > Perhaps we can instead move the non LRU helpers in it?
+> > > These helpers:
+> > >
+> > >    - anon_vma_name_get
+> > >    - anon_vma_name_put
+> > >    - anon_vma_name_reuse
+> > >    - dup_anon_vma_name
+> > >    - free_anon_vma_name
+> > >    - anon_vma_name_eq
+> > >    - pfnmap_track_ctx_release
+> > >    - init_tlb_flush_pending
+> > >    - inc_tlb_flush_pending
+> > >    - dec_tlb_flush_pending
+> > >    - mm_tlb_flush_pending
+> > >    - mm_tlb_flush_nested
+> > >    - copy_pte_marker
+> > >    - num_pages_contiguous
+> > >
+> > > All other helper in mm_inline.h are for LRU. So we rename mm_inline.h
+> > > to mm_lru.h?
+> >
+> > Moving the VMA/TLB helpers out looks good to me as a first step.
+> >
+> > For the LRU part, there is already mm/vmscan.h, added by "mm/vmscan:
+> > move struct scan_control to a dedicated header" in mm-new. Most LRU
+> > helpers are only used inside mm/, e.g. lruvec_add_folio(),
+> > lruvec_add_folio_tail(), lru_gen_add_folio() and the refs encoding
+> > helpers, so they could move there instead of staying in a public
+> > header. Barry also suggested moving lruvec_add_folio() and friends
+> > to mm/vmscan.h in another thread.
+> >
+> > A few are used outside mm/ and need to stay public:
+> > folio_lru_list() in include/trace/events/pagemap.h, and
+> > folio_test_workingset() in fs/btrfs and fs/erofs after patch 16. So
+> > maybe keep a small public header for those, and move the rest to
+> > mm/vmscan.h, or to a separate mm/mglru.h if it gets too large, as
+> > David mentioned.
+> >
+> > I can help with the mm/vmscan.h part if that works for you.
+>
+> Good idea! Maybe you can send a series to do that which I'll rebase on
+> top of. Feel free to take the first renaming patch too since they
+> should all be zero-feature-change :-D
+>
+> But please help keep some helpers in a public helper so when we are
+> able to get rid of folio_*_referenced and folio_*_workingset, there
+> wron't be some strange header inclusion issues. FS users quite often
+> need to call them, especially the folio refs related ones.
+>
+> (Considering MGLRU even used to try to completely ignore anon reclaim
+> at swappiness 200 about a year ago, maybe that isn't too much of a
+> problem, but it's still a problem).
 
-Yes, that's a recommendation.  I decided to follow the existing zram
-code flow/style.  Like you said, this isn't a bug.
+Sorry my mistake, I meant file reclaim, got it wrong in the opposite way :P
 
