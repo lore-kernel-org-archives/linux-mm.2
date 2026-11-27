@@ -1,102 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF69606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 12:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A3A606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 12:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T8QpTmvZ
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GghFJPnB
 Received: by kanga.kvack.org (Postfix)
-	id DE7CD6B05BB; Fri, 27 Nov 2026 07:26:12 -0500 (EST)
+	id 7FB386B05B0; Fri, 27 Nov 2026 07:27:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D70B16B05BC; Fri, 27 Nov 2026 07:26:12 -0500 (EST)
+	id 7CE916B05B2; Fri, 27 Nov 2026 07:27:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C11A86B05BD; Fri, 27 Nov 2026 07:26:12 -0500 (EST)
+	id 6E4FD6B05C0; Fri, 27 Nov 2026 07:27:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 94F766B05BB
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 07:26:12 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B7FF0160294
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:26:11 +0000 (UTC)
-X-FDA: 85480821342.04.4B7B82D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E2B6B180014
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:26:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T8QpTmvZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C19836B05B0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 07:27:20 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E05FF1A01C4
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:27:19 +0000 (UTC)
+X-FDA: 85480824198.15.A26D55C
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1173340009
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:27:17 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=GghFJPnB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795782370;
-	b=aS4Cv7A4rzm8RNX7L7DVt81BRnrhGuyl+8HvQmyjePLegSa+yNqe8bFFw8rzMHQ0uel9b5
-	hQ1CYzR3QOySpDfqAuJ9YFprhnzO7QpOZaZBcQLjRseQuDqRthThHhusUx7Yi66TUCul3p
-	P4XglJ9Xbdh1jXpam/iBmbEfX0SE7Ig=
+	t=1795782438;
+	b=qEgoJiVSIVrAIDBXNU0yH/Flx8FCugvIN0liwKl/tOVN3jiBzom+GA2auJDZViRxqc34R4
+	nJK7EtT8hitlq3s5T1JUzcjWQNply86iUNa5BhXZrgP3L419qOVjcqWCxvu0NuLPho5N+Y
+	H70pfBDWeFUi3zhxgbIOVEMIH1eGqpc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795782370;
+	s=arc-20220608; t=1795782438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=75kKPzvsdMlgmlPcHulcGoHaZEGP7r10gYVkY3tBkZo=;
-	b=egAUWCqjfvcDB+Fk72ETx10uNvBuY5EbHHcJmXPwqY0vL4COf6fMscvIBiWoU/jtfW4ogy
-	u+EYq6Vwjlx4mNrK0MKs+U+xfbnMgbdSJT8xCvQ4h9J5WR8tceFZYJ5/MpdRwKCqzmn8MF
-	eDzQ8BEwBWu5ahS61PL/cA2OyfEAthA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xP3AX9z/qSFgWuu0g11r9oN9g4Vo2+Ez77ENP8nsuB4=;
+	b=IH+j9N9SJaQTN4L5LAh1XU7zIcHrocOpXyMS07xPYdFGCEf6NsOp0uSmMKEQZu6XkdCSPT
+	OMRPTtbJgfR55vAQG3BY7MVeB1Yec2DDxdTR8AKlifNMOqozVOJFwLRrQo4EPufOJyJgOc
+	WXzzCjzOO0254iKesSQVgZrLs87YHas=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T8QpTmvZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3ED89432EF;
-	Fri, 27 Nov 2026 12:26:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136911F0089A;
-	Fri, 27 Nov 2026 12:26:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795782368;
-	bh=75kKPzvsdMlgmlPcHulcGoHaZEGP7r10gYVkY3tBkZo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T8QpTmvZiK0wxgukaP82PoaUJV9KSkEPe8hR9/n0t45x0yoja6sGvUlEKdXYd94H9
-	 cBYtfJaP7iOIcee8+9eETlZ/Gmqj9ijRoN1j9/PE5Xx5OoqT+SHNtmcDpz6+meH1qx
-	 JXfxFtV6NcGPCT38HRmFKBnny+8kTBGa2ce+0AszmskMfLGqt/r+mdtmfnbkINb1Xh
-	 WC5b3ykpU6M8mNrY+veveaaOqPJFnlt2bWyEWGej+lBoEyxQMZrSmpL8HXyLt5ApzA
-	 gnmEecpZ4JThgjK1qM6II+l7qeNwwBoyIVBrw3nDZXXsJS08LvqwF3RjLmRTz9rz+U
-	 QYAYHjfLIafEA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	David Matlack <dmatlack@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH 6/6] kho: don't reference subtree blobs as FDTs
-Date: Fri, 27 Nov 2026 12:25:32 +0000
-Message-ID: <20261127122536.3708770-7-pratyush@kernel.org>
-X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
-In-Reply-To: <20261127122536.3708770-1-pratyush@kernel.org>
-References: <20261127122536.3708770-1-pratyush@kernel.org>
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=GghFJPnB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cd8b2b817fdso353583a12.3
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:27:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795782437; x=1796387237; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=xP3AX9z/qSFgWuu0g11r9oN9g4Vo2+Ez77ENP8nsuB4=;
+        b=GghFJPnB/d1+XSB5BFnEDmuQH0bX+Q7uVNr4yz9WWfeOMevIzEe/XSKGs8uP/X0ZYt
+         YQVj/yfQyxqWqNYjSzXdnNiMvag8zyWzeEwyh+S9dtqF6djxsv5PZNqjDLvbUGfHi+Oo
+         3HswR1BRMPSs7npfxCHhe8rhZo8b/ifu7pTJUt5H6eXDcH3PvFTgtlEm/T8wdskjZ6HR
+         wwoXGdluBRy8uuqu00MOmvYFrOEvDbU95ER2vFJ2DzOdECqWEEM0gF57bu+fsBN4i+ya
+         jbPtiCE1tyUbiw83o+LYz4BsdAEkgS9rrIzUNxzx5RyfyCij2+iFL0qu6BKeiIA7hvhS
+         kI2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795782437; x=1796387237;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=xP3AX9z/qSFgWuu0g11r9oN9g4Vo2+Ez77ENP8nsuB4=;
+        b=y/u9lWdTqN2zbogOHF3Cp0wt+PvcOOo4h/ng3aquCsx8BKhgt4WzXnibAsT7LYRFIF
+         jiffeYIEnF13ovVkYnzlU6aLRrYp1gkgH/ftCMIjQVfbshBvEpcdSNaO5wgD9jxd9wuf
+         GeLBMZud0Jg6NH7Wbin5kqWCiIs477hPLZECPLfvH2t2bCKHluXJBKndnid4qwmiBntu
+         AvbJ8xYnVcsdVr2GVkLKX4akTnQ0oenBA5L4xnZ2t/77fmiDovJVYDwIm5SWb/Pxqpbf
+         jT253bbOMn38LbboEz93kgmPNIg/ks/VaQoIKlfT07RxjjAXEFSMps+NXeB+gRj3HmKW
+         QfWQ==
+X-Forwarded-Encrypted: i=1; AL+hErE6eOgyPcaGfpP1tU0ydcVR2O2M3LYK67kfKPiC/Zbb5scJAZjv3KaodfPftWP/8ly6q6TMkgRLFA==@kvack.org
+X-Gm-Message-State: APuU4Z86gsoy8bnuJGm0a/5C/4khwWTbQ7ZQLKUL/UdmffQEOdqwUJBQ
+	eOas1DAr3VmVOXJMPu0L/Xkf865IllYvuA7Uk5vXUV1gFGyyPPIxE+1W
+X-Gm-Gg: AZFdTZdihAiXtPr5vyUaTdZy8LyIGQ7qKzfUa/k7/s7opu+12vUCmh6Qa5HqB9ShGUz
+	0sKvwzOYL6pbJFH0Ll7cn+rF7tZeZyKXB6ISeqLGdHoRfohni7HMAUTS++0+bu0ZemD5y3vBOeu
+	l/GIVidy3B/GC8O7mjHgODEXTGufFuPVsQQQkSdO613Pb3N3AUz1bk1PvomXOXecYkIAHn+8L7i
+	+zxRs3/9yTF38F28fiwI1Oz6grv6LY8shoHGgF4JEquqm7ICNyC5tN7lS3nC7Q3X6CX5lGp8+xa
+	eQbPt4vtmyF27eh+EtYnZ9MxqRhCsaRQP9LXpSjS38bGOHNBnY3FueGZz+XnFVbp0PS2ojL+asH
+	fRFK5pKk7tg7LRMih1fJxaOhgDEyIBIhz7sDFogJxs86G9KCqsxzvNUSo4HpjcaZG1EcI6Ypqtk
+	WqZA6secO0NGYvhmQoR2qqTdMKB70hDzIB1MzIKg06zVSov2iEOdxzNGEngBw9hrq6pyTXGsoSu
+	HmGtX4Ao6yhkqhHtLoz38gVA6UsxS2GfeuuCnV3yoV9ZI7QAbtcPdrG5mS2QgviRu7Jjcxo/z7g
+	az2AjNdWY1WmOX7i4jUXDQ+RC43sbDpgwzsE5tRqLXvM1Yc59T83osh1vDopTRz4RxU=
+X-Received: by 2002:aa7:9e43:0:b0:8a0:92ec:5f1c with SMTP id d2e1a72fcca58-8c87654841bmr25686023b3a.0.1795782436179;
+        Fri, 27 Nov 2026 04:27:16 -0800 (PST)
+Received: from o6.lan ([2602:fce1:44f:115e::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87334890csm12600941b3a.33.2026.11.27.04.27.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 04:27:15 -0800 (PST)
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Date: Fri, 27 Nov 2026 20:27:02 +0800
+Subject: [PATCH] mm/vmpressure: exclude costly-order reclaim from socket
+ pressure accounting
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261127-socket_pressure-v1-1-1d3a60c1dbb7@gmail.com>
+X-B4-Tracking: v=1; b=H4sIABV3CWsC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDQyNz3eL85OzUkviCotTi4tKiVF0jS+Mki5TU5DQD0xQloC6gRFpmBdj
+ E6FgIv7g0KSs1uQRkjFJtLQC60CNacwAAAA==
+X-Change-ID: 20261127-socket_pressure-293b8decf05d
+To: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Barry Song <baohua@kernel.org>, "JP Kobryn (Meta)" <jp.kobryn@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Rik van Riel <riel@surriel.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Xueyuan Chen <xueyuan.chen21@gmail.com>
+X-Mailer: b4 0.16.0
 X-Rspam-User:
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E2B6B180014
-X-Stat-Signature: kow41oyz48gxtakpsumc8ec5y4cj6s7e
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Queue-Id: 1173340009
+X-Stat-Signature: bwisr45tda3nkkner3rc33ucptb73thu
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795782369-45211
-X-HE-Meta: U2FsdGVkX18In6R2tlndJe7tq3nL67JEcbtbSVFmrSnWpDR1bGyn2Fli/eBt/+oJzE+ZKMJI6tmFov1J04bQ5G4WbCjVkhcgDr9DgHYWyXSJoXsQfH6fqZ7xYg6SQsa0I8+/ORnTcGZC9xvsye7puVKE7j4IIWuJW3QVqkKJ+FKM67vhJgsgKjD/ZprMggAK6lQ85UFdomwxVyMQOaeR+zZcRjDl63VVZLsX30YD80ObyYc2bP6eviv/+Cd8WkCGp4M3bfjJXdXJjmQW4Sx3gvoL0JfNbtkuVyAs41Ur4Mpzy592kTcHEDM8EsFXONMS9aGvfG/vRbwLBCVTvLIie1VdC4J7b2lB3oCm4jBs43tEldqFOx1Gf4pr+0BdQZ0A2kg9k0zUfZ8Jopfbtqs7u2hoR7d+pPuMLXqMZUdarQGCPEIZBS6qdwQsg8snl2CScouXtbqcR3/b2uusCe6XGw7bWUPwOdS9vNvRuFXwHSSL4rVsBj8mC/Fk81sj07kmyJnUXnKszqC6D7QHat8d9209qoTdes3yQlPIGU3QVoQk/ICZ6uBqzoIXKleSWEy33DUzoJwgJVX6IRADel746NhH6Ma9vChkZa5MVL3pLdsS4MaeBmXj0dTP3KJVnnn9BNvY4VLTR9i4cnyFL7+npX1833ClcC84CSyA8JXQW/oIqVIpAG3fW6az61DTidfbg4mmtd8CbPiOetwDPbDQ+owYzKLv8x54Ms45tMgAKZXeEDnKDy0/vWa1W+dfpDAIYyReRMcRK632na2O6OaGQFPqZiCzS1EOhyIqKuQEJoaWRb9/cR2GhhXXe6R+NjDNcA6XrR2Mq4V0oucsyrc+i51D3RmuyuSEsi7zF+y4yi8fd45E/IrIBpBE3xlRvSQV59wDxIGVQrCgDZtBXfVtPrp3jEiRyqXNQ62pdfvF5yeOxKuaz4yANn6zjt1n595KmOQdJs7N3iDymGE86AO
- HS0t31RZ
- 7cJMev/TcZPIATgznvWDHD8oDT+QQAZeHr2GhzrYKQCBQFWojwrIK7nsLhinQePtwfg4EIpTgNn0cOXG9OCiHa+UgXn6s04Fe2u1lLRdJTY4SWLyZaE4F53oy8DLje0F5c6eICNnn9cJxZOMAnT3wQPf5TcEKL3DsAOEb1ApDdWOvfg3Qy3IeO7UxVAJs+8U+cwVjpYcBBOQsGri8Hq+dyhuA1xidqNuQE/F8kBBmv+JFKOVR2D79YRb4uAMoLx7RrR31+YKyWr5lExUtH1wzyhJBra47PqcFvHHIWY4q77P4K3vM6vYIUo59ppOgWAo7MX4PkgEu6J1A7TSaZ3QUJUtqaA1wbQWmTAno28fYVAWF/umk3BIfJ+ITxmHNyf83knZvWSZKytt6KO6QnsmEA551eql5N+GO884ZYuhu+ISxBeSEVM0mkCV6sPF0EY1LlB1wViQcHmGswxAEkMsn7J5AZg==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795782437-830079
+X-HE-Meta: U2FsdGVkX1/4aEnI4NQMnyF7CErBGwQy9vZK2A7PU+M/9fwIWM06H+YwcUrvMWifj/k5ywZyrD/5PSKRZ/vuxz+2sjuUerv8O/5DvTBFWAdrBZ1Xl4+VDU5PKqgj/F+dfTKaNQnI5I6i/HAOhor8fQmyLWVlGQdny8OgqlM/5GZfI2rE9wxoigrKJL0INg8UEu2jU2L0hcu4wROsHt3aRLOhFapAX8tOZcEmIdR09++/nhvVT/us00fUqm+nX3w4ZqmWsjWFp9N1D72EU3E1vxvl00eeKGNjj85HhgjNLR981bCyLRiRxVTjDHCL9wTjrjnYwzhzblApb4TGf0lZ4F5Bv8IOofifDzpuPPA7kT6eI3jxLL3xtXQ8cBZiWfk9IrOs3eqK7P3whrBkSysaN0ny9jdbMdoCBgbM5/pO3qFyuifIIePPwx30/sRC9TE3knInga12TcoTUwAXuW831wumXYmilETNUw21XAg1qGS/t6iHDZ1Bm7Hsg5cQAeOy8TO4trOJPlvZexHctqvxBLr43sh+rWV/z6Q624aZmQeYW8ugl+hhl3hm0PxfBJPgytt8TU1mkFr1SSm9j2KgtOmZGCdOhYijWIaydkjZGiqlrLrnBSuoc3JLiKpCq0XWmS59+u1nWILJa+Bu7zRO1I9xnoT7gOnYm1uAosgk6DpIFgYmop6aNDeaL6x9C0P4kgGxuR/VH4py0WfG+oTBFoO50XyRc/luF33wOExqjnvkP1FPZwlffM3bf0XLZRB+VyS4css8kQ5r7kD1NtQnjUlYY1UJa0ZZkLyg4UYvSip8U/ev9dArw5TVnxjMjGzTVpXE7dKd0SJ/NyfrNn3EPrW0RRDV/2nMwWxB9Vaz+SVDrl35+ygcQXjRoevE4uFGuCy91+glXEBIWjelcsYSxO7sCUldWqh6deJ3lhKRzesd97WGZ0x8Ap+ORxKFro4O9YCSZKhRpzVKhKDRxYm
+ uaS9rbpP
+ 33QR5rC3vRk+ZoQUPW5gvbq58CdgwtMb1p7KE3g94r7g9Kit5CnFiR37pg4YAr1Y3WA/FcucEpJ0nvaNFJC6SylaujOQCjwd+knunq2xMcG8Vqp+g7Fmja9yP33+q51A67+RV+roMP0Gk8NAHPwHDY64zb9vsGGhpf9rgbRDeO+v1z58UyuPi8E/N3mBU0ZsyQWs91I+deif6MhJOCfwOLHV9ODxGP6yM3etoXiqFOcuauERHTxkL63i740QRfVXs31pLY2SY/+snBoazYQWuQtemcLoz0xOYPZixk5uQddCryCi8yZvlnGWaeyCtp1z6uLxoRJsgxY7+G8B+1cMgLJQcXKwBqKHNWQwz0SUbY4tlzX6hVdGfDBLXMb5pV18SQrPW9Kk6naaPK3vPObY25HrUqreUz36h9+FwjwJ9aguEaJs02XD+E6XgT5kMIl2jRUIpWW1d17L59YqvER0X13MmOD8bKquNWvt94TAgz1MwoFlnMOeTZa9GeJXoN8+Z1wtO3e1HhvZ98NaO3dxsxxiI1MJq/GQw5nmAac9u63IV8dYvFS8MFKrxJqdIVUnbq6PsgTeApuAB0asS6lrdQvWLKfuHhV2lxDQ9WCBREDWvMkIW9bZDSuBiw9/E4oSIFtNKX4shUSDe5HI9U41jTPEhOvZwr47McL0eadfF0ZVDY8rvIqHoQh0m83AWyterx4y+IPhqPilsfTgUQN/v4zIBe0kR0HNripLd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,171 +133,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+vmpressure() accumulates reclaim statistics but only checks the order
+of the last sample when closing a window. As a result, costly-order
+reclaim can still trigger socket pressure indirectly or discard
+accumulated low-order reclaim statistics.
 
-KHO started out with using FDT for all subtrees. This is why debugfs
-used "sub_fdts" as the directory name and in the code. Since then, KHO
-subtrees started also using raw C structs for serialization. Commit
-4916ae386760 ("kho: rename fdt parameter to blob in
-kho_add/remove_subtree()") updated some of the code to match this
-reality.
+Skip costly-order reclaim before updating the counters.
 
-Still, references to sub FDTs were left around. The data structure to
-track the blobs is still called fdt_debugfs, the list of blobs is called
-"fdt_list", and most importantly, the subdirectory holding them in
-debugfs is called "sub_fdts".
-
-Update all this to use blob in the naming.
-
-The only functional change is the rename of the debugfs subdirectory
-from "sub_fdts" to "sub_blobs". Everything else is a pure rename.
-
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Fixes: f2a950170f7a ("mm/vmpressure: skip socket pressure for costly order reclaim")
+Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 ---
- kernel/liveupdate/kho_debugfs.c  | 50 ++++++++++++++++----------------
- kernel/liveupdate/kho_internal.h |  4 +--
- 2 files changed, 27 insertions(+), 27 deletions(-)
+ mm/vmpressure.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/liveupdate/kho_debugfs.c b/kernel/liveupdate/kho_debugfs.c
-index 8d04368c1978..1580e1a27566 100644
---- a/kernel/liveupdate/kho_debugfs.c
-+++ b/kernel/liveupdate/kho_debugfs.c
-@@ -17,7 +17,7 @@
+diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+index 3de99fef3928..9828a67206ef 100644
+--- a/mm/vmpressure.c
++++ b/mm/vmpressure.c
+@@ -156,6 +156,14 @@ void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg, bool tree,
+ 		if (!memcg || mem_cgroup_is_root(memcg))
+ 			return;
  
- static struct dentry *debugfs_root;
++		/*
++		 * Costly-order reclaim relies on compaction, so its efficiency
++		 * is a poor signal for socket pressure. Exclude these samples
++		 * before they can affect the window.
++		 */
++		if (order > PAGE_ALLOC_COSTLY_ORDER)
++			return;
++
+ 		spin_lock(&vmpr->sr_lock);
+ 		scanned = vmpr->scanned += scanned;
+ 		reclaimed = vmpr->reclaimed += reclaimed;
+@@ -168,15 +176,7 @@ void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg, bool tree,
  
--struct fdt_debugfs {
-+struct kho_debugfs_blob {
- 	struct list_head list;
- 	struct debugfs_blob_wrapper wrapper;
- 	struct dentry *file;
-@@ -27,24 +27,24 @@ static int __kho_debugfs_blob_add(struct list_head *list, struct dentry *dir,
- 				  const char *name, const void *blob,
- 				  size_t size)
- {
--	struct fdt_debugfs *f;
-+	struct kho_debugfs_blob *b;
- 	struct dentry *file;
+ 		level = vmpressure_calc_level(scanned, reclaimed);
  
--	f = kmalloc_obj(*f);
--	if (!f)
-+	b = kmalloc_obj(*b);
-+	if (!b)
- 		return -ENOMEM;
- 
--	f->wrapper.data = (void *)blob;
--	f->wrapper.size = size;
-+	b->wrapper.data = (void *)blob;
-+	b->wrapper.size = size;
- 
--	file = debugfs_create_blob(name, 0400, dir, &f->wrapper);
-+	file = debugfs_create_blob(name, 0400, dir, &b->wrapper);
- 	if (IS_ERR(file)) {
--		kfree(f);
-+		kfree(b);
- 		return PTR_ERR(file);
- 	}
- 
--	f->file = file;
--	list_add(&f->list, list);
-+	b->file = file;
-+	list_add(&b->list, list);
- 
- 	return 0;
- }
-@@ -57,20 +57,20 @@ int kho_debugfs_blob_add(struct kho_debugfs *dbg, const char *name,
- 	if (root)
- 		dir = dbg->dir;
- 	else
--		dir = dbg->sub_fdt_dir;
-+		dir = dbg->sub_blob_dir;
- 
--	return __kho_debugfs_blob_add(&dbg->fdt_list, dir, name, blob, size);
-+	return __kho_debugfs_blob_add(&dbg->blob_list, dir, name, blob, size);
- }
- 
- void kho_debugfs_blob_remove(struct kho_debugfs *dbg, void *blob)
- {
--	struct fdt_debugfs *ff;
-+	struct kho_debugfs_blob *b;
- 
--	list_for_each_entry(ff, &dbg->fdt_list, list) {
--		if (ff->wrapper.data == blob) {
--			debugfs_remove(ff->file);
--			list_del(&ff->list);
--			kfree(ff);
-+	list_for_each_entry(b, &dbg->blob_list, list) {
-+		if (b->wrapper.data == blob) {
-+			debugfs_remove(b->file);
-+			list_del(&b->list);
-+			kfree(b);
- 			break;
- 		}
- 	}
-@@ -99,7 +99,7 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
- 	struct dentry *dir;
- 	int err;
- 
--	INIT_LIST_HEAD(&dbg->fdt_list);
-+	INIT_LIST_HEAD(&dbg->blob_list);
- 
- 	dir = debugfs_create_dir("in", debugfs_root);
- 	if (IS_ERR(dir)) {
-@@ -107,7 +107,7 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
- 		goto err_out;
- 	}
- 
--	err = __kho_debugfs_blob_add(&dbg->fdt_list, dir, "fdt", fdt,
-+	err = __kho_debugfs_blob_add(&dbg->blob_list, dir, "fdt", fdt,
- 				     fdt_totalsize(fdt));
- 	if (err)
- 		goto err_rmdir;
-@@ -131,16 +131,16 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
- 
- __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
- {
--	struct dentry *dir, *f, *sub_fdt_dir;
-+	struct dentry *dir, *f, *sub_blob_dir;
- 
--	INIT_LIST_HEAD(&dbg->fdt_list);
-+	INIT_LIST_HEAD(&dbg->blob_list);
- 
- 	dir = debugfs_create_dir("out", debugfs_root);
- 	if (IS_ERR(dir))
- 		return -ENOMEM;
- 
--	sub_fdt_dir = debugfs_create_dir("sub_fdts", dir);
--	if (IS_ERR(sub_fdt_dir))
-+	sub_blob_dir = debugfs_create_dir("sub_blobs", dir);
-+	if (IS_ERR(sub_blob_dir))
- 		goto err_rmdir;
- 
- 	f = debugfs_create_file("bootmem_phys", 0400, dir, NULL,
-@@ -154,7 +154,7 @@ __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
- 		goto err_rmdir;
- 
- 	dbg->dir = dir;
--	dbg->sub_fdt_dir = sub_fdt_dir;
-+	dbg->sub_blob_dir = sub_blob_dir;
- 	return 0;
- 
- err_rmdir:
-diff --git a/kernel/liveupdate/kho_internal.h b/kernel/liveupdate/kho_internal.h
-index 5b349f451cf6..22950fe3bcc8 100644
---- a/kernel/liveupdate/kho_internal.h
-+++ b/kernel/liveupdate/kho_internal.h
-@@ -11,8 +11,8 @@
- 
- struct kho_debugfs {
- 	struct dentry *dir;
--	struct dentry *sub_fdt_dir;
--	struct list_head fdt_list;
-+	struct dentry *sub_blob_dir;
-+	struct list_head blob_list;
- };
- 
- #else
--- 
-2.56.1.839.g22a8290db9-goog
+-		/*
+-		 * Once we go above COSTLY_ORDER, reclaim relies heavily on
+-		 * compaction to make progress. Reclaim efficiency was never a
+-		 * great proxy for pressure to begin with, but it's outright
+-		 * misleading with these high orders. Don't throttle sockets
+-		 * because somebody is attempting something crazy like an order-7
+-		 * and predictably struggling.
+-		 */
+-		if (level > VMPRESSURE_LOW && order <= PAGE_ALLOC_COSTLY_ORDER) {
++		if (level > VMPRESSURE_LOW) {
+ 			/*
+ 			 * Let the socket buffer allocator know that
+ 			 * we are having trouble reclaiming LRU pages.
+
+---
+base-commit: b95f8bb86713c860ce8536d22a988b949b884d5f
+
+--  
+Best regards,
+Xueyuan
 
 
