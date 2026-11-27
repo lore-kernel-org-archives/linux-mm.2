@@ -1,96 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267C0606A32E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 22:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34A9606A6AF
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 22:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qZ+xl9lW
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ofSOttNU
 Received: by kanga.kvack.org (Postfix)
-	id ECC496B05B4; Fri, 27 Nov 2026 17:50:12 -0500 (EST)
+	id 5CC936B05B6; Fri, 27 Nov 2026 17:50:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA4656B05B6; Fri, 27 Nov 2026 17:50:12 -0500 (EST)
+	id 5A2E96B05B8; Fri, 27 Nov 2026 17:50:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB9656B05B8; Fri, 27 Nov 2026 17:50:12 -0500 (EST)
+	id 491C46B05BA; Fri, 27 Nov 2026 17:50:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 86BCB6B05B4
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 082536B05B6
 	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:50:12 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0EBDAA7FB1
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DC6B120536
 	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:50:12 +0000 (UTC)
-X-FDA: 85482393864.11.69E5F94
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011055.outbound.protection.outlook.com [40.93.194.55])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 08F1440005
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:50:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=qZ+xl9lW;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+X-FDA: 85482393864.01.B71B949
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012004.outbound.protection.outlook.com [52.101.43.4])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 39C31C000B
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:50:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=ofSOttNU;
+	spf=pass (imf28.hostedemail.com: domain of xinmengs@nvidia.com designates 52.101.43.4 as permitted sender) smtp.mailfrom=xinmengs@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf07.hostedemail.com: domain of xinmengs@nvidia.com designates 40.93.194.55 as permitted sender) smtp.mailfrom=xinmengs@nvidia.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1795819809;
-	b=HzB7CQis5n7uXUQLrcN0rUgcPhb9eCk94Rov7Wg6pqb3G08V/LRgD3KTw3NdGD88Lruzhg
-	ds2wfoRMw2BKQ8Q0GYYjiil2dT0xe5yuU5o/q00Z1fGM57axUUzfT9LlixTjFOISb9jIro
-	E9Ed1f9+FHzB3L4p2mkrN4/AT7szYxQ=
+	b=cU0F+OtCqlTP5NI8xGvq87/eDm6w6lVZcOtiB7OD8xX3qQdpbY+r1Py4mgV9IJMLvMP3ii
+	Z4nE8JfURQVNzaNiOxehe6/Wjs0XBF70jElFxOfMKFDhQwbZgo3vacUvVs/Ln/0Hy8hKjk
+	CmeOX4Pfw+iWtqcsZf5PjtHbAGCLvVk=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795819809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=EkzZBW8NCYV5+Fkff5Sd6e6XoFoE2qC/1bNAaz8mr3w=;
-	b=EVYRWV0DlEFL1PKF+s+932QphfArYZgalnPGn9UZ/G+tTTlcxNX2rg6wfZuKVuAkvD9JPR
-	HyRYpEDDWPG3krCvmpqzKzLUjR3MYVXHSjq+XRAwbKw39auHmvb/FNjt3vVcFFIs4I8xO1
-	Q7C3nyHG/raTOxJA6O7WpIXXxeuu0GU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uEXwla9JBQd8AD+nWvIbirME+iAZxIOXjbsu8IKRpHY=;
+	b=QU9zFGfrQoPwTLF39mt2wnpcx9SEzL4+EaN402GY3n+Ye1uT6nfBfsUbasNtJaCZ4C5CCO
+	JdAZnU/F9gUo7ixoRQERwHwWHCxXFsumE0+uoBH5XVcMyrBp+YQgfmguXKgS59NcA9xeGH
+	N63y7+TFAtiXUGc2lPm5dkeCh+GEjdU=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=qZ+xl9lW;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	imf28.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=ofSOttNU;
+	spf=pass (imf28.hostedemail.com: domain of xinmengs@nvidia.com designates 52.101.43.4 as permitted sender) smtp.mailfrom=xinmengs@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf07.hostedemail.com: domain of xinmengs@nvidia.com designates 40.93.194.55 as permitted sender) smtp.mailfrom=xinmengs@nvidia.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dMAXdpgQrGkTk4HBAvMMnD+/xESe9LCA5fnEzAac87Nma2lOItu3O+tMNg7DI/BOqPKE1/hKwZhyE8WBqtL+XhpZ6kog1z6hvskIn4BSoC3P/U6k3LXHTx5pD0qvc1oDwAAPZowQ/2d/eKyh7MYkV152qg5wNNVUyAcdflYLlEtIHHVQT9sAUK6ZlXwsmT3NPV2gD9+3HfpjTywwxXRTgSHboDcPVPxxBf31r8J7QyvjWVv0EJeUXTu9EjsYEGk5VdvfRElKbN5AAb8aarGJD10cFDFk4Jrk1PRKtg1dT3Pa9GJVZ+nvfAwwSXHQdjXNjKyW3BzcgfIZYaBwjteqpg==
+ b=rkd8s2fQHgdi15ILnktZAMXVoyoS7nJWSqe9WZFjwoH2kO6OV6n1BZMS3XvgVBvATkqsupCphVLpBLqHLibUPJ3pZmb3JI7QocOCG/B2IxdgudIFdQJRhDRLZfkM7dApU5UZQtJanne9HW3ud+Pq9NYly4snhXEH7jYkLTWlE5pBCA8SYupzsf1Rq9GCsrzCjG9kGVuaeyWAB7pYO7z9Pxbms/xLfbO3MuVdPIZWl1VlsYK/0780K1zXIAwmdokOWN7/uTsUPqIsxcNpZx4zqC5aP8Z6uMJaf+bANSyzKL72M+7+qJC1N8yHbJV5sFP00wpsnqFNYqem4s4dg033Fw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EkzZBW8NCYV5+Fkff5Sd6e6XoFoE2qC/1bNAaz8mr3w=;
- b=C9HvUqRd5xsH4Fg9DxaVtZVT7MWOXLyRu+1zTHBVYnFluQNUgrmos+JKp1BfEO58foONZGgP4CmShfEHsNcHTWyVD6qalosvQi5FgFXat/6Ou1qsWn7u76BYMzWpABE9s3Fd2YElpkZ+LCQLc3Li5tMGUppD9rpgQuCg+7T9lWl/YOVQgb2+mahaWozOsnLzqWpE2tFpwRQkvCNKEJjkI6YFsLlkM9bdyrtbGGz8n6+Axili6HOyCkxfhxwDUFYLE0g1bq9GqbZqUs4GghOafiDIO8g4odmUEO4U766gRZIdHc5ab4rmIQGiFEpKXt7yA6QVtDYapsqHCiCuNQnalg==
+ bh=uEXwla9JBQd8AD+nWvIbirME+iAZxIOXjbsu8IKRpHY=;
+ b=YF7Lm2vrhs/2w+u1c9LxJjdJAeIAecHJbQs2eZKxd1jkqJfJgBJ84zN9P/vDBSGG2d7lIY7mRYuyJ3dAeWlj9FCijl0l/53Ihjf/o6cDmmlG0ZL9RyurYGUG/iIwPMT1xGJXyNG5MjyZetN8Hw0rn2oxgN840pPfpIKtCCU9F4B3bTyHE7Llvalvhk35MuVqGbgVoRjPzguQUEmxeXn1AWppG0u/5jy0Kqh5wZjA/atVp+RWM1sICdOdMVQzD5y/bqRQfTRVFA+qSYAzCvxbTJkPP72xRchFr8+lCFuWvpprBLv8X7kGqCSWMb8MnvNavHZker3jUAFGbQFn1jwZ8w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EkzZBW8NCYV5+Fkff5Sd6e6XoFoE2qC/1bNAaz8mr3w=;
- b=qZ+xl9lWVpgrmg8VfTeD1kfB/noq33z3nl6Ho/q4FXPAhxmwEGiyYSjLQGtr/RWm+DetptUuwCEbTvHNGxyLvXSAHifVsZlKKfWpuk7mpl3YTnsj+yDQJjrqTlovSrMogpxrVI9Lj1xbPKIxvOdqGe97hKiG+C13Dw8NXp7MtD+KtfEd0cg8LOcGJIYFXwRg7bFODwbE42Opo1IrLBDABNnX/R3aAG8tU8Ph62L3Ggc/r81Il5sPJJ8qI/+Linnh3lRnEPpZ/BzXrgIGm/07fC3dvSUjasKnJrAEemqHj/RG8urjbWsvdT6xgtjGe7MAAdEHh6CR1DrTUa9zPKyTeQ==
-Received: from BN9PR03CA0478.namprd03.prod.outlook.com (2603:10b6:408:139::33)
- by DM4PR12MB7504.namprd12.prod.outlook.com (2603:10b6:8:110::6) with
+ bh=uEXwla9JBQd8AD+nWvIbirME+iAZxIOXjbsu8IKRpHY=;
+ b=ofSOttNUBnBD2j1AuewKoBnviHH5XyxKR86NrV7GoG7HuFxHdZ+mo8itbYQjRgL8DImy8a3jd3PwWUDoIJahIB+U07k9o58TrPnWo/AnT390vGSUPfRO1NpcO/+77ge9R7vK3OXYZUZ/vbS2uSpAtTAbrjfvSYwRYmrrUlIQ2fTXBO3Ncv7nioYsbEY21/eoi1NeVh7NQ4IcpxVIGTtmCxvk3xiOe/IdwWbx7hP2dlH5cObJczqo1cdlsdmWZUDG1gLLxUv2iTv7+p4HkooymIH3SsOAG+e40TT4BFMcXlLBNW2PakGvyIZjs8ddiwDVKAlhdvCbd0dNVXxGlHMDng==
+Received: from PH8P221CA0038.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:346::9)
+ by MN0PR12MB6318.namprd12.prod.outlook.com (2603:10b6:208:3c1::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.10; Fri, 27 Nov
- 2026 22:50:00 +0000
-Received: from BN7PEPF00000092.namprd03.prod.outlook.com
- (2603:10b6:408:139:cafe::85) by BN9PR03CA0478.outlook.office365.com
- (2603:10b6:408:139::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.10 via Frontend Transport; Fri,
- 27 Nov 2026 22:49:59 +0000
+ 2026 22:50:01 +0000
+Received: from BY1PEPF000264B0.namprd02.prod.outlook.com
+ (2603:10b6:510:346:cafe::41) by PH8P221CA0038.outlook.office365.com
+ (2603:10b6:510:346::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.11 via Frontend Transport; Fri,
+ 27 Nov 2026 22:50:01 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN7PEPF00000092.mail.protection.outlook.com (10.167.245.70) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BY1PEPF000264B0.mail.protection.outlook.com (10.167.242.119) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.688.5 via Frontend Transport; Fri, 27 Nov 2026 22:49:59 +0000
+ 15.21.662.3 via Frontend Transport; Fri, 27 Nov 2026 22:50:01 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Fri, 27 Nov
- 2026 14:49:49 -0800
+ 2026 14:49:53 -0800
 Received: from xinmengs-dev-vm-linux.nvidia.com (10.126.231.37) by
  rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57; Fri, 27 Nov 2026 14:49:47 -0800
+ 15.2.2562.57; Fri, 27 Nov 2026 14:49:51 -0800
 From: Simon Song <xinmengs@nvidia.com>
 To: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
 	<rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
@@ -110,10 +111,12 @@ CC: Simon Song <xinmengs@nvidia.com>, <alex@shazbot.org>, <jgg@nvidia.com>,
 	<kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
 	<peter@colberg.org>, "Liam R. Howlett" <liam@infradead.org>,
 	<linux-mm@kvack.org>, Lorenzo Stoakes <ljs@kernel.org>
-Subject: [PATCH v4 0/5] Rust VFIO PCI support and NVIDIA vGPU driver
-Date: Fri, 27 Nov 2026 14:49:12 -0800
-Message-ID: <20261127224928.1511382-1-xinmengs@nvidia.com>
+Subject: [PATCH v4 2/5] rust: mm: add VmaRef::size() and VmaRef::pgoff()
+Date: Fri, 27 Nov 2026 14:49:14 -0800
+Message-ID: <20261127224928.1511382-3-xinmengs@nvidia.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261127224928.1511382-1-xinmengs@nvidia.com>
+References: <20261127224928.1511382-1-xinmengs@nvidia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -122,42 +125,42 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PEPF00000092:EE_|DM4PR12MB7504:EE_
-X-MS-Office365-Filtering-Correlation-Id: 480e2d1b-e352-4823-d87d-08df4cd8c442
+X-MS-TrafficTypeDiagnostic: BY1PEPF000264B0:EE_|MN0PR12MB6318:EE_
+X-MS-Office365-Filtering-Correlation-Id: bd61a0e0-3aa8-4fa0-7820-08df4cd8c50d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|7416014|82310400026|23010399003|1800799024|11063799006|6133799003|5023799004|261009223027099003|18002099003|3023799007|13003099007|10067099003|56012099006|261102130727099003|261026140227099003|261102123227099003|261021135927099003|261022115727099003|261022105027099003|261028144727099003|261022113327099003|261022075727099003|261026121527099003|261026130827099003|261021123027099003|261021121427099003|261021130227099003;
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700016|23010399003|22082099003|18002099003|6133799003|261102123227099003|261021121427099003|11063799006|56012099006|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	EG6S/P8ZU2ToHLcsBgpAYmRoKjYi1Bw6xzHix/WTU0X7xD3Sa15C3FDang+HTfo1C6q/WtdqJ3cVyqjdqs8HS2YP8jvxhtmbE8syLRwLLooiHRofE9e+s/kBMimOSZOmesssiZvF9CtnHJqBQ9xyHc6pPIUV0whM0rF/UdtVTM/W+2Eg1nyX2aUa0QZ6vNPm1/KYCwnNwyznPmg9GYxV03uCvcYm7YNsrqClRNwNrC6pWfjhLnUaRZCtZJBpmgY5e/lSjHe1E3/uXgPeWaUIK6XPF2VRW+IlOOhmMvQgwVSOmgpSA+jbrszXlzxWu0wrtisP5engVBB8QxdMdQxqciDWFul+7hNF7P0OoXleDACGrAD8+SdUVSCHwRdRqsm1naOJuP4wfpKf3N173Qo5uhrlWcpfmvFx6Mb/OpVkbwtD4FEpUVHE0vIhEKep+tnLj4xlxicrsKbmNlD7eK8KIVqRHv5V08eaSc1Q9GGjc2SRCKE+mr5AyxrqcvmDhYuauLoUvDfRUG9qErrEApZCEIuyEUB/vaYXepdXn4FwBzL9HB/RWtbFzvZwsHFpcK8bzCiUaHOGZtcENLnH2cUfN2UnYm9gYMzrgSYUmIFu8aUV4kcKqJHUm067S61xC7GxPiShXycLIb1MvW9KmeQQllJJRW16/XOscwOlVzhIPwXHlpkcvSTDaXYE4GmW/sQqkfiiaUNF7XgT3QVbaY0jTg==
+	2JVJur91vtq36VIPD0mL+LUTFtFSoblao8CZaa3job7mOAYWRsrp17dqpmPJgXEro/iEICOHcjxO0wMlGdTKcU+5BCdqYmC2oyfoBlvtsBZ0SmrDghfGW0JS8a/8nlvYsYNwZPh4Pcep+aibV6ClVEKNxAK5wvBS/eepSFs1fOG+IK/rdbmQWPhwecSC6Ylx7xMMile6YNRYUX8VRmAPERamrdsvEDH/yNUAVhvRa+NFdQMrVXBK508PvXqL64iF/Obp+GQCi9r3eArGQa6KWAdGyxjzunGOjRjW4qiwqg54zp05d6A8Cik7S9EzEzi0kaWL/roP9IB8B1JCqklMC59LTpDL6XDY3u5Ut9WtL9yrJfUdjH8zealn1E1ffNXLSONUCuuffCd/bZkK8biY84K1Ar25mOrRPsgdrj/6m6f4FM9BgO0AYur+s/HAtAOOHGBYkTzkwdqBEiwBdBucWZcl0m641sTOq2H6OSt3wTsRAkJ+HZbIMZu9nYCQ+/LlnQbUgpDxFy1e9Qn16QWzxS7muePROo68g9zl/F8a0e2Nb4gySGZQhmB4kxFtHxgoPsjZY7Ej77Q3v+3JEiJHMwg3FQXNHS8NuiOR+pV1jT6OgqrfbeXoCj7ZZatijTDDw/ahMpVxhPydQWZ4oUmxeAyfHSb9psCS9lOxyyD2RWD+RUXnY7n6UozkOqoWwrE5kLUvyMZVHQnRBYv/tsorMA==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(82310400026)(23010399003)(1800799024)(11063799006)(6133799003)(5023799004)(261009223027099003)(18002099003)(3023799007)(13003099007)(10067099003)(56012099006)(261102130727099003)(261026140227099003)(261102123227099003)(261021135927099003)(261022115727099003)(261022105027099003)(261028144727099003)(261022113327099003)(261022075727099003)(261026121527099003)(261026130827099003)(261021123027099003)(261021121427099003)(261021130227099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700016)(23010399003)(22082099003)(18002099003)(6133799003)(261102123227099003)(261021121427099003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	wNa4NidzxyLdQmG8sfJIqO0Fjw1ErSQivSu22d+nU9sYXZsa2npMWY5T6W3j0xPNHy2qB0NPTdgBVtwjgEzBDV+tSuCOokvpFc0ozZwpiTiI+L5Rs2hKegwvTKCjmaarXO/tKXALBf9FjmEfcr5CF1ujX/J7yi/VQS8NWZHaF7qREcU2/qZFUafm/H/lSBbLtZScflQkC3K5Visd6+EqaF7i8SPCDJQ8Rbkny3varQi1O4WXqnVpYOgM3PRqjPbINqXMT7PQySZyDQwKJckmRMZHHXeelORAp8p5h4ixXPo+D8vqTygc+BzYx+cgqh3JvWDuiKP2IUPoarShlZO+EXb/hVmPuVM276e+lNJ0H1CJLcFyrpgPixjGFKx/cCkINW/hd/LlJkpGhIq3U5LLQlgXheCTTLjrisloJ7ycJdP3444fxH0SVsW0Hi+GKasM
+	Lu+MbUX7QHTlakqoJrN5e/gphICptdJLkuj5+Iltblq/cTZRsX4ZJddI8mJAA3VTREiRwgFuuauMN7aN6avNlA59aMDeKkgq4oL4BLqj3BAdc9vxjAKsRAzCaziRPFw0CNf5aZiJp06Jzp4cSJOJ0O0y8MWPDrku3KpH6TWpQKgcJPFoHhBLhsDZh0xHHbj1ZeAeg0EkMpZfrg5wiAvvJgUj40WFgrydH3vkHnijVmzwntcjFydcTGOTThJR85rD3I8F/58/w0WiXPtGWnPPoGGm+7I1wVJh6QnOl6X2gRPFrTGVeAPsgRfzX8vWmSFcpRjO12ydCJtIEjrYFXooNi4d56Mqg01+S3K8OuERM1hI+9iMNPNHqQ5WnNaMKOQieQ7SWMN2lt0FOD7bgNoeUpaWxn/dr92zk6+FUShw6R5XHMHvIGsjyhz5Fujt+PXb
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2026 22:49:59.7899
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2026 22:50:01.2294
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 480e2d1b-e352-4823-d87d-08df4cd8c442
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd61a0e0-3aa8-4fa0-7820-08df4cd8c50d
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN7PEPF00000092.namprd03.prod.outlook.com
+	BY1PEPF000264B0.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7504
-X-Rspamd-Queue-Id: 08F1440005
-X-Stat-Signature: yieoyi3x9r4e5picy7xiweexwr4te649
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6318
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 39C31C000B
+X-Stat-Signature: 8scm7kwu47ah4x5x5usoc35x31gmjieg
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795819808-17591
-X-HE-Meta: U2FsdGVkX1+SjX0p5WYVPYMvtGAzu+xvZ0q4lPqD2BkRIcdBMMXOEIAhjXqbTKhdZ59ZK9k8ZjgdTAu1AomtPE+UiHbcT7ot8lpKKXG7CbJzIziECcln8Za5VPf1RC67s7Cr2ADwkVaXXr5d/KEoaeZiXz5CrF1sz5CbkKGeAVObpfPsp3EAxeg3cRafHG7hSsY7j8DjVRq2tTk25YyVduDAr+WnRepIVX68xP+D01rilHD/zd+gnKkwWFpUUyTtOE2ZTYIOmvAnpg1//YCAiECdX9MBdsjIn+d1wlJx1N87/fn5tK8+b5n3TKu/zrRxfhCes/mpKTlS81kvZ2xrJiXlsVB8dK3xKmEtv0H31FDEQa0qaLK36LJanAij6BJU+Ih1ze3DUgXwu58f9KtbP2Nc2HI/GB4f7i3gBW05rqDszGV5yOxoUtHP8fpA8x4KhS0TDVe8JLLo4JmLTPggjjwlMcYmymFipW93H73j/ZAqXk06fKRi+m061x2f4k84HGiudNSYY2G+1DtrhT6UDM0fgSvtBq/tHVg3y0HzeKbvVQe2qDDD9Q9tKghDC7GaIZb0eMeOEFvBb0sQqftLhILreVCi3XH1y0UuiqIrQWlKU3Oo4ZNJJlvsngdHG+FfdTO8gul2xNv7T9SG1DaHmjVd/nWleH75Z+P8TQOda/bGqyVFl+ujRCit3NU0uW2lTmCiVsZKIs/XG2FO2330/aa8rmDwyIXxr2J4AB1Fmf4piCVeVyZziSDQRlS7KL1Gdarn0UykHsLUiEFj/5ZkiIhCAn080KZw1+2q1AkSV4ztKdl5baXI8WpGCt9DZh4Lbg8KIA/HGbb0Yb9RfYJgW1MBNu96XSdtX4Yno7Jo/pP5l0LeP1w3dyE5Cem8kAUDhPr147Px3NboQj64gXI5w9RgEXA3Vo69UPGaEnbXRWETCS4r37dVJi6zP0cw8XDdi162AO0xhGOfa/kxaG4
- AopD6h6m
- k2h0Zic3+PfEUA7UwN5uooym1jEUI0J02sRxZ+xoXRLucGpn9k8Dv/b8CaF+ZB1ykif9nSmwNMknNoWTwQvzCTvBOGJBhN1IDh4pDB9G+1fVng8E03N6mv6zaLFnIGV1wyV030wYMng9RX6EOfSwu4vty6sQE0LBlp71DmTnl22EpWtn7QXSY51LNdHFOSubOlxkeBQkFkHFWTd/G0l6X0tl0UbUNov4/G4+nGeUQIPQqpU3GEFOGByu1DkCjUT5wttTfLOabuMg7dPMG8VGdItfT2TYTFTbswGLBJsxVFM/sshEHzzt5nTsmz2XQwpJJbalw3E+RmIYhWSNMbSQxXOdyfZonlcLYEIl4fysz+H3CibsJQ77SAT0oojC7YkSv36y81opZJ32O1N31aIPDh8VTzUd0XrxW1igVoPd1iID+pGbOLBAyy8iWzC41WfkADfKufHt3loB9IHcN+Hyes8WhbEvYsPRC1b9aPySFVOWWNG+Lvvj9GdD+kL/JEv/MymSmkUcNWNBxmfF87LKgD/zsmA4MVKtjPLuEWipVRzGauaIrm1zuwSb+G+vReWrTDf/Wyjp8l4VrZRwJXD7+wW5sL9vNZKcJtUxBDDWMCmDu90g5+JYpW5m6dJaFzVBj0w9Et8u316nbbfZW+O1Bi+F3wo0JhKBd48b0e1b9Pk81Miv1ZZ2KdGVSIk9zx+BcZz2m97ZSw9d7CrPDOfXxCMvWXerf5VgBhQp/rX44JnDoZs0WM1UBKWG8P0ZAqwm0W4vKnpyyt5FxNfeT6NXq5EwREPfTZIZnC0/RmY656qDtLQzuYxqj3L8usHzZoHYJj6ejHymg9sSVS4o4j9u1W6o7kigK6jkKYba/6p26hjYgOF9pvKHN7dU1dNB46P31gwk4qcogjhat1fPRGoC4M5jjrbPIRay8BP7P
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795819809-333041
+X-HE-Meta: U2FsdGVkX192YUK2u3Pb5y5SoibIB9wk3f6WAg3Yy3I9+vAln7cn3rhV6KU6WR67fBQKZWuU1ddo7cud8UFTMrY+58QBlTX76Afy5RMgmLN4LQPcObrTxBParcgSPD7Dlj1F1rMPvZU6gzWP0bgRBSkZBwkTqAivxQ0qAwHKF2qv8yaGM4ZbqgmQRaVNhpJkXbb9jTNv7hjO/iXOrwYz3wc+MplbnU33pcPZenN+GvULV1ueTdsthlhIeBNndYvz3n9YGrusHKmDbyu7SinE1+TQH2AF1agy2ey+Lqm/VcZXoYtb0zm20gITsfU3Gi1em7osuvjEivjy3kjAR+jbYgfK8sbcPb2Ap8tfw3vAsDltVmyY4qLJ75cxuDLwZ3ezbZEICpYrL+IJjCZWLtTbSjZ7Nt9bHW8dlZGr+7B+tiuinpPn4QbZyI1zz6GUkOlkgZ/774yMGl9v8MEyN9AMpmCgAlA8dO95X1CErjFhLKI8O8U+6cKvRs2pm60xQpxCB9nMx/LaG8tBF0iY4uj/nRS271ZJa3bKqlqKxKUC0H4pTIGsC6DPmqzN4BFBZ23dYfrfyfg3eBHijhLAUCREHiNzPKxope7q+DBC75TPEj4HQ1i7WrUhV2oTtlRDleGL4vqTQnxyWrYRTxvFntblOKIHXd+k5yBQjcbRYqJbBUuuCDJbCmYuA2yzw5s1vjf3mQwFAfN0gJFlEhT+0/h/WnJsfXz1oStq7Uj1TXE16o9cQ+H715eMMQNrSYiimwZErmWpmJCZCkXW5w/eB5upvu1fgNmIqt8p4Ges/AjLZgyz7pVwKIxJZBsu1fRPqbuILJIRrHZRFZlmAIG7yT2NTkTqEGyi9xEb1SAofmlQSlCobHS/pIIWLiGCmiR6GMV2teIMoIC/Td+3bdtd3R8tLP3PvwRqeDHuzuHNv55M6ZWi8qioDJ0nYCUJeeuwiLu7Tuw5Z20XnB0ScdYWz9V
+ aHe+JvlA
+ b90ocdSZYPFrZvvrhmgrXXiUdL8gOZaZT9wqybvleiTGazhJuVt/eL8fCw4T2wZUmJPfd+/2K7dTBJeg7j+0fdXXjNX9ueASgktxGlFStKctkxyJS66w8XMzN7V38uspOaMbcU4SFMItUrK0TXVrDvH35S4+up4uar0cJ88OKmJc3qFzg1Cl7X0WMxuCC9dDBTVFjMfgpbpf5OHIS/vnH+t0kFam5wiHakBPhq/psjCFQ/DV1ADEoIsiqr5YNCfXsitw0BxBLzsT0uEzMUesH4y6DW5TkjAPSAHVnVHgmDc0qYXvwdUtbzIs27INmnrR710PXjeQlQJEm6/58FHe1wLgHO5INO0GUcG3VgIH9rkKaCZls1Yrv7BQ7oAPFO/GxBxGrPO5sjkPLA/vhiKBBKwxr0CVUzOouh1mRE6Qh46vaR7hUoR9T+NlkKyX98sBbORDODkWxOZVuKsaGI5fyhhUlYLKm7OhGcYxMYD9sTdHKLArPptazor6xM899eow5K3uSexL2s//0zbPsL8EpwAnHa53eHA45Po+TZ50FL8JgC584rXvBul4kN0EQK+uKPobgc9GSDS/+CtTG3LL8pain57l64Ut6dmVQkas+G8KUeUJSgSgRRPultTKnX8T4UWABvcvjjFTtzwf1YbqLWuPvL5xCay5x0TbAb3BHCsUXGv3200wXIZCfSTC6Oilpf5l0ArmTQEGSNHHDU9jUTnM71MisnwiBdZWj0STyELga+7+4yBERDMTZK13GnMJEf7qG6aN8wuEwfWoeNtd6VxlvpvbCFu4WOZ+HFZ8x03OjIyonauhvvgj0054sb1AX3PelgMAQKB1AHlxHNvHYmtljt4hfEzn1Liy+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,115 +169,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This is v4 of the Rust VFIO PCI abstractions and the NVIDIA VFIO variant
-driver [1]. The driver uses nova-core's typed SR-IOV PF interface to
-create, reset and release vGPU instances while VFIO provides userspace
-access to the PCI device.
+The forthcoming VFIO PCI abstraction needs VMA page offsets and byte
+lengths for mapping bounds checks. Keeping these queries on VmaRef
+confines unsafe field access to the MM abstraction and avoids repeated
+length calculations in callers.
 
-Patches 1-5 of v3 were applied to driver-core-next, so this version
-carries the remaining patches. Patch 1 adds the VFIO device handling
-common to all buses. Patch 2 adds two VmaRef accessors for patch 3, the
-VFIO PCI abstractions. Patch 4 publishes the typed Nova PF interface,
-and patch 5 adds the NVIDIA VFIO variant driver.
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Simon Song <xinmengs@nvidia.com>
+---
+ rust/kernel/mm/virt.rs | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-This series is based on driver-core-next. Patches 1-3 need nothing else.
-Patches 4 and 5 also depend on v5 of Alok's vGPU manager series [2] and
-can follow once it has landed.
-
-Runtime PM is still not part of this series. It will follow once the
-generic Rust runtime PM support [3] and the PCI bus handling for it are
-available. Until then, vfio::pci::Registration keeps the device runtime
-active while it is registered.
-
-Changes since v3:
-- Drop v3 patches 1-5, which were applied (Danilo).
-- New patch 2: add VmaRef::size() and VmaRef::pgoff(), split out of the
-  VFIO PCI abstractions (Danilo).
-- Patches 1 and 3: build the abstractions only if VFIO and the VFIO PCI
-  core are built in, until the new build system is available (Danilo).
-- Patch 1 (v3 patch 6):
-  - Remove RawDevice and make the layout a type invariant of DeviceBase
-    (Danilo).
-  - Add vfio::Operations with the RegistrationData and OpenData types,
-    and drop the R and O parameters of DeviceBase (Danilo).
-  - Use Option<NonNull<_>> for the open data, expect() instead of
-    unwrap_unchecked(), KBox::pin_init(), and one unsafe block per
-    operation (Danilo).
-  - Reword the type invariants, justify them with INVARIANT comments,
-    and hide DeviceBase from the documentation (Danilo).
-- Patch 3 (v3 patch 7):
-  - Let vfio::pci::Operations extend vfio::Operations, and name the
-    lifetimes 'reg and 'open (Danilo).
-  - Make the I/O callbacks optional with #[vtable]. An unimplemented
-    callback leaves the VFIO hook unset (Danilo).
-  - Use the VmaRef accessors of patch 2 (Danilo), and let Mapping wrap a
-    VmaNew (Alice).
-  - Use from_result() in the callbacks and const_assert!() in
-    Registration::new() (Danilo).
-  - Remove RuntimeActive and call the runtime PM functions from
-    Registration (Danilo).
-  - Add the optional dmabuf_len() callback, which lets a driver limit
-    how much of a region can be exported as a DMA buffer, and remove
-    Device::new_passthrough() (Alex).
-- Patch 4 (v3 patch 8): rebase onto v5 of the vGPU manager series [2].
-- Patch 5 (v3 patch 9):
-  - Match the two supported device IDs instead of every NVIDIA device
-    (Alex).
-  - Reject a BAR1 size that is not a power of two, and report the
-    virtual BAR1 size when the BAR is sized through config space
-    (Alex).
-  - Clear a reset error at the next reset, and do not treat hot reset
-    specially (Alex).
-  - Reset the vGPU instance in reset_done(), after the PCI reset,
-    instead of in reset_prepare() (Alex).
-  - Support DMA buffer export, limited to the BAR1 aperture of the vGPU.
-    The VFIO PCI core revokes the exports at the last close, after the
-    driver has destroyed the instance (Alex).
-  - Do no vGPU setup for a passthrough device, do not signal the VFIO
-    error eventfd from reset_done(), and name the module authors
-    (Alex).
-  - Depend on VFIO_PCI_CORE=y, following patch 3.
-
-v3 patches 6, 7, 8 and 9 are now patches 1, 3, 4 and 5.
-
-Link: https://lore.kernel.org/nova-gpu/20261119215046.2892839-1-xinmengs@nvidia.com/ [1]
-Link: https://lore.kernel.org/nova-gpu/20261124135937.18583-1-alkumar@nvidia.com/ [2]
-Link: https://lore.kernel.org/all/20261124113555.2480381-1-beata.michalska@arm.com/ [3]
-
-Danilo Krummrich (2):
-  rust: vfio: add PCI variant driver abstractions
-  vfio/nova-vgpu: add the Rust VFIO variant driver
-
-Simon Song (1):
-  rust: mm: add VmaRef::size() and VmaRef::pgoff()
-
-Zhi Wang (2):
-  rust: vfio: add common VFIO device handling
-  gpu: nova-core: publish typed SR-IOV PF APIs
-
- drivers/gpu/Makefile                    |  15 +-
- drivers/gpu/nova-core/driver.rs         |  34 +-
- drivers/gpu/nova-core/nova_core.rs      |   3 +-
- drivers/gpu/nova-core/vgpu.rs           |   1 -
- drivers/gpu/nova-core/vgpu/vgpu_api.rs  | 171 +++--
- drivers/vfio/pci/Kconfig                |   2 +
- drivers/vfio/pci/Makefile               |   2 +
- drivers/vfio/pci/nova-vgpu/Kconfig      |  20 +
- drivers/vfio/pci/nova-vgpu/Makefile     |   3 +
- drivers/vfio/pci/nova-vgpu/nova_vgpu.rs | 418 ++++++++++++
- rust/bindings/bindings_helper.h         |   4 +
- rust/kernel/lib.rs                      |   2 +
- rust/kernel/mm/virt.rs                  |  14 +
- rust/kernel/pci.rs                      |  12 +
- rust/kernel/vfio.rs                     | 462 ++++++++++++++
- rust/kernel/vfio/pci.rs                 | 812 ++++++++++++++++++++++++
- 16 files changed, 1930 insertions(+), 45 deletions(-)
- create mode 100644 drivers/vfio/pci/nova-vgpu/Kconfig
- create mode 100644 drivers/vfio/pci/nova-vgpu/Makefile
- create mode 100644 drivers/vfio/pci/nova-vgpu/nova_vgpu.rs
- create mode 100644 rust/kernel/vfio.rs
- create mode 100644 rust/kernel/vfio/pci.rs
-
+diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+index 63eb730b0b055..b0210869b757a 100644
+--- a/rust/kernel/mm/virt.rs
++++ b/rust/kernel/mm/virt.rs
+@@ -92,6 +92,20 @@ pub fn end(&self) -> usize {
+         unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm_end }
+     }
+ 
++    /// Returns the size of the virtual memory area in bytes.
++    #[inline]
++    pub fn size(&self) -> usize {
++        self.end() - self.start()
++    }
++
++    /// Returns the VMA's page offset (`vm_pgoff`).
++    #[inline]
++    pub fn pgoff(&self) -> usize {
++        // SAFETY: By `VmaRef`'s invariants, the VMA is valid and the mmap/VMA read lock prevents
++        // concurrent modification.
++        unsafe { (*self.as_ptr()).vm_pgoff }
++    }
++
+     /// Zap pages in the given page range.
+     ///
+     /// This clears page table mappings for the range at the leaf level, leaving all other page
 -- 
 2.43.7
 
