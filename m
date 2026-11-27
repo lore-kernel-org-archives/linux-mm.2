@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF0A606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 06:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BE8606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 06:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hxdjMDDZ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kDd9bNSQ
 Received: by kanga.kvack.org (Postfix)
-	id 3D3B36B05B0; Fri, 27 Nov 2026 01:03:38 -0500 (EST)
+	id 1FF916B05B1; Fri, 27 Nov 2026 01:03:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 386C26B05B1; Fri, 27 Nov 2026 01:03:38 -0500 (EST)
+	id 1D71C6B05B2; Fri, 27 Nov 2026 01:03:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2729F6B05B2; Fri, 27 Nov 2026 01:03:38 -0500 (EST)
+	id 113BD6B05B3; Fri, 27 Nov 2026 01:03:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A9016B05B0
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:03:38 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DBB180218
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 06:03:37 +0000 (UTC)
-X-FDA: 85479857274.24.4484107
-Received: from mta1.migadu.com (out-141.mta1.migadu.com [95.215.58.141])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3BD4940004
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 06:03:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hxdjMDDZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.141 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id DBC396B05B1
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:03:47 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 418A1A7885
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 06:03:47 +0000 (UTC)
+X-FDA: 85479857694.20.5809899
+Received: from mta0.migadu.com (out-145.mta0.migadu.com [91.218.175.145])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4975C1C0004
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 06:03:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kDd9bNSQ;
+	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795759415;
-	b=DvZbWGoi0H73apIqkB+hjuT5mFXGuZTpCfO2rqc9IoSr8TEXnsJ0hPgko9Aqdckx5vCMAx
-	q6Nes/MFRLpd6N5L8N4sNIZdtyHeDqaGUDNTP69Dv4btapInZr17ybrRYFoSfECsVTWrKg
-	ifERtaeUuo3zzC9+iyzH7URE/kHUCGo=
+	t=1795759425;
+	b=30y3vhOVZk+91AA6MQGQleVBpoV86LdvzlGiotH88dUq2Yo9llt8QT+4B+Ff+7dtq1utGU
+	8Wg7AGE6m2cDfavXl5g2ggAYknwNGKa6vcaR95ZqXD4rcDmEyfSk6kMgIPlAZsFSZi39WL
+	XI43dootj/FiZtlMPpv8wm4bxJPiILI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795759415;
+	s=arc-20220608; t=1795759425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=rhj0D1zFI9ZYfUFht5UxzRtsJ7JBg0GVYmpcdFiTnZo=;
-	b=j061+80cFm0+H2Z8GWO6Ju9dsTqLuoD63Qizb5mP2WA8i7OBsUb61wOxgErwH2R2vb4GzE
-	DFJniiaV0za3/VACDPIuhNbjDtIQ7QFOelS0tXKdHFmlEdKGe60JOOpM2dbtckgDsCdWH6
-	AsWzPIu9PHEZaJ26GJji3eA/U6gRGVQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QUb1wYeUzm2isYrJI+K7ablDm0oYIR9zSdI+pFNNdUA=;
+	b=bk3ujIx4bulxxXD9OxeTTeVbrhbo3/8RuDauSha2EYeOydMoHurjTx0xB4rldZjO3YvxxQ
+	nGWF9BJ0i5re+dBsMCY9aTJIdWdDVOf0fYZ/T+BPQfqrcKany6XH4zKQz9aHV9yzmiTJY2
+	e1Rn0M35YOrSAxOyhIq9Ep7yk3VlQak=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hxdjMDDZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.141 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kDd9bNSQ;
+	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=f2hZ5CxawqEEqnkSG2LQnBvDDLs0cjDfbWjcS5X1j6M=;
+DKIM-Signature: a=rsa-sha256; bh=EKVxzkN5Y+NIAoY6s7UvJOfqQHCdOFwe8OiFVoEq+Dk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795759413; v=1; x=1796364213;
- b=hxdjMDDZcoWuStXwdACsby8378oWcuait82i9tBrdl6bn1FdiXEBkztnm+mWKWUsAD0M8GIb
- 1tn00KvONDv/n1I+WX1Cs60w5nVnH4yOHi9SD54qVlKi6XHwGNJQHeDYEEoLa5FkAynsNA7z+7G
- heP5VgeU/cIZqdZZ1xehgE7I=
+ t=1795759423; v=1; x=1796364223;
+ b=kDd9bNSQgth7dX+rCzqv23CODYxCfZ1js3Jx++wvGqwAIIaG+ndGc6qvbcBCDmLjxiYql9ZM
+ Tsuoe3LMGmNAfvtJQB9oZwTy08ePJjx4T2HVYjh3eHkm2ZZ6s26R1f6OioiBx3WpVfihn6SmFGG
+ A/UQ+4PGKVyfuMqtFdSEM1ss=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f5b985bd771a9249;
-	Fri, 27 Nov 2026 06:03:33 +0000
-X-Mizu-Trace-ID: f5b985bd771a9249
+Received: by smtp.migadu.com with ESMTPS id abe9cbcac2f57245;
+	Fri, 27 Nov 2026 06:03:43 +0000
+X-Mizu-Trace-ID: abe9cbcac2f57245
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -78,25 +78,27 @@ Cc: Barry Song <baohua@kernel.org>,
 	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)),
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [RFC PATCH 0/2] mm/mglru: shorten the lru_lock hold time in scan_folios()
-Date: Fri, 27 Nov 2026 14:03:13 +0800
-Message-Id: <20261127060315.1119672-1-ridong.chen@linux.dev>
+Subject: [RFC PATCH 1/2] mm/mglru: update LRU sizes once per zone when isolating folios
+Date: Fri, 27 Nov 2026 14:03:14 +0800
+Message-Id: <20261127060315.1119672-2-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261127060315.1119672-1-ridong.chen@linux.dev>
+References: <20261127060315.1119672-1-ridong.chen@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: p7w8t5a398uqzsa3ibt339fjpu7jypjs
-X-Rspamd-Queue-Id: 3BD4940004
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795759415-512869
-X-HE-Meta: U2FsdGVkX1/1fQ5oKOaLcNEvaODIbhZlnDv50mQMkvt5l5K3vCcpTEEi0iJYssVAS3VryM3jcrlhMXeJj7FlmcPMnI6LIkXLXpAmxubOk+tADTErba/GWadrNjag2gcsfNaFGi/Otua4El3pAVqhgFKmqS5InbIW6xqt74M8o486nAZ3BTefRMKKDT4bcswGv19KqNjOB6ONz4SVasPZsvhf2unfdNYR4ObImzTwL/rZa6lyKdWUKISnMJGcjA8o4WIdsrLkMtzwbUHz/dOyphBZ6ytfNDEgBGQvp7FCYn/kpL/xnsWDKnXkwQWsYjQnxh0x1KIWh/nK59v/AFbCC32LlJy2UWGATTbQhzsLpN79zBiIShp/G618yFdwsjLn8oKtPye0v7Ufn5kcvPagZJjfVUD0iV4DfysJEgABSk5wnCQxB7o5pxclz7ZBXzyTSJGJHudYn8h1m3TU6EpeDonR3D3EiPqKzpfX3jIGC0cAesRb2vPs5N40Z/e3pp3Ua4tLZILkrOftKkMupr0yY6PvEer0yGutC6++sDixZ8p9h/98cI3Q5FTzWLrS0mxB4AdbO2K4Oy/u0eZrmtrvQ4YrR3TxfD+r/bRVwBXnMuXCEVQH7Ia4jDyBv1rXLE2N41sci3KZ/R8g/L4NmnKDPmAKhLowSj5GSxXWK1tiVoFKrAV4qA6w+HEtT57+iRAw++L4fLFMV2Wkg1Ti86tjFcdqUs+PRLRtg+C3NO96guxkpzMS1eL0vU/qBMN9Owz3tnciNBgnoNW7g7j1MJsX5+0Clcn4lvVBu4VVXV7vzQ8v+2jAJ0siZup03ik4P9SbpJOd0/Lxf2R4KwJwt2ynKa9c7a/fGB5UMmBs7Q81X/gk0rLZhfZcatgV/qEHggNYh6aqL/+V36Eyqug+FJ5RYGOEAiAK40z4EpxucWg04lxH1Yp0wyUWkkKGOP68yM6yZ3sMs4yq4Tid5uEjNsn
- g57+boYi
- ileQBMrrxHBASMc9S3GUujdpp/1v3pseUtUL+b5f4thZfedGPbrEhs/YQVdZ8GNZJ2SyZztIB/BET07XF5FL5l1O/Tnr+PJWImulwEnHUYAT6xNq17A6PfkOqGt7kEqAfXcJmzvWVvIhl2VyA6FBtMFRP8/XboHlDT2YTng2bsieXkHpVeSZ6pMyeTxCfCkqdy1TuD+WO2Sxoz1lyZPTcWE1QlCJklEmQy8BxKGp4C9Qs9p/aC4285DSj5WS7tTdEd/9UTrReUh+tLJzu+WfyfzlinLQ+PD3GV+k14KTzet+f0xCSyTUkZ+OmaJs/2qV7MJoTg/3SI/vrdi5KCXFIk2gPZR/TOqBILkP8VsuNm8qWfphhgHj4uGBLmCDNPpjsGhTXENsq08MMUgsS+my/bp/OYyd69ab2KGCcXm79RkpcG3SrbId4W29iZpDXqIbLBrPxc6vbgb2yBHjs0zA/Ty1IFJUV4C7Mfi6kAQkOGtjCB/vYWJzyHpZhoUVQa5e8XaZ8
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4975C1C0004
+X-Stat-Signature: am3dxeua73c8tfwkbsty6u775d5rq3hx
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795759425-995140
+X-HE-Meta: U2FsdGVkX1+BKIpKAZHclc4KUAL5pd3cq2UHZQb1cv+zYdN5Di1aGi8w/XctD2CXEyv5FYvIVyI/T8pca/qvL6OiVP1sQvfNcoWyVQ5yxH5ooKo6HtU6xnhsQO6WJm0BgVUkV6kQU666gviHC6zFoEIz9Wg85FcWvp2vkebp2X21XeIGaObirSIJdsVdzxqmlYZvWYCxsYbvqHfuqVWKzgVD3RmgSM5JOas4xA68euiffqrAi9HAggew25nqrKgzltPbqr1cEK5kqx8FVBmfCwtifGllmaoVu8UmM9stL2F0/K6FSf9JkTrAUhyY/YaggeSnnQOTEbx34laMiS5Gdlul0wrpW4FfSxVZi5WVAhQ/UwOukhed8oQXvMwt5uKKable2dycQ5nlOJVMJKxw7wXPQWCi6FCV6lEFeUklEagAVh4s0Zj46BPAx/4oggQ1waAucNZzG0KAmbqgVBjmVOnzkVtxf/BKybLv7pg5XkdhDPmoo50yIPqhKVDy0f+q5q33h1N4SIP0YlckPldLzoby4eEWunJReM/Rgx6NWROikACgb1OTJq+5hlJ0vXJUWnbMBgMuiSeBuddhXa+6eaJgY7VGRfeil/wlToW87ak6uJZBDI9aRP6qvmjWUozevdKKwVP9wLSya3dk9jo0QN0g2wXtIuAj8PC+wxardXhbULLAQkaMI3dBl7UNetqcMMh0qnD6LXd8mg7hHAVCtcxj9wlaXpkd6aMSJyxqwQz7Jyzzplqw/7a4Ox23zhLvJNMRS52/j/IExC10evZ/cjHRlw3Wk0DrJLxFbpdTe4FDjnF48FcxAB9F3Bnwtnk45xDBweguntCRrkJ2ue5aQg5/8fKcnTl92+OHpz7Jm02I/Nyn2eGFx5ZSxytOruJVmCp/GiageITwo9Gsoz1j4bMpj4tvXFjX+9Xmr9nLMvcDNqFXb6EcJAqp71gdUPOfZBdxaGDbVtj97Pd+RdG
+ HkHLlI5g
+ Upf2dYZ446bwnZRwBq3B4A0rEOFqvE46hvyDoZ3igaAzxiZFmnHW8F47bGznD90ovw9lRIfHLR8tHYzpO8oj1gEk3AEAfAyLSJH+llDXSACMctFIzw8EpOp7YRt7fMkixR+XAP88kf5uL1Hqqb3+KHQ4TSak7n0qETeZgbtXNYqvGU0qlhGknTm8qF2lwo/KHxlEwpJW97UYeD22Spq4/7QlurUsdXtZLu4TETo/moj+RS1lWsPrnSHyrpYTK4F2zKUBHmputKBbKe1TqgiB7iI3kSm01pxMFYyVTRhRLU8awWrbgVuVZ1OD1fSB/CPH6Uxkfyr4C+iSJto/c7jxr3cavT8XYJUE7hAONnys2rEb++whWP1eaeJuUD9F8ihRdaJ6i0cw3Bp6J09dZYI+lXv8k7ZbbfKwgdSx2isapEN+flTm7UMtHtKDUR2hZ3ORdvp+FSaJMeQyGlqlkUK/GDp+SIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,50 +109,150 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-When many CPUs reclaim from the same lruvec, they spend most of their
-time spinning on lru_lock, and the time scan_folios() holds the lock
-limits reclaim throughput. With 24 threads refaulting file pages in one
-memcg, about 40% of all cycles went to waiting for lru_lock here.
+scan_folios() isolates up to MIN_LRU_BATCH folios under lru_lock, and
+lru_gen_del_folio() updates the LRU sizes for each of them. Each update
+is a mod_lruvec_state() for the node and memcg counters plus a zone
+counter, so a batch makes up to 64 such calls while other CPUs spin on
+the lock. isolate_lru_folios() avoids that for the classical LRU by
+counting the isolated pages per zone in nr_zone_taken[] and calling
+update_lru_sizes() once at the end.
 
-This series takes per-folio work out of that critical section, along
-the lines of what isolate_lru_folios() already does for the classical
-LRU:
+Do the same for MGLRU: let isolate_folio() add the pages it isolates to
+a per-zone count, split by whether their gen is active, and update the
+LRU sizes once per zone after the scan. lrugen->nr_pages is still
+updated per folio, for the gen each folio was taken off. The active
+split can't change during the scan because max_seq only advances under
+lru_lock, which scan_folios() holds.
 
-1. Update the node, memcg and zone LRU sizes once per zone instead of
-   once per isolated folio.
+Tested on an i7-13700HX (8P+8E cores, 24 threads), turbo off and the
+performance governor. 24 files of 128MiB on ext4 on brd, all threads in
+one memcg with memory.max=1G, random 4K pread(), so nearly every read
+refaults and every thread ends up in direct reclaim. Reads per second
+per CPU, mean of 2 runs, with and without this change in one kernel and
+the runs interleaved:
 
-2. Prefetch the previous folio, so the cache miss on its flags and list
-   pointers is not taken while holding the lock.
+  CPUs      base   patched
+     1    426681    424975   -0.4%
+     2    387442    390272   +0.7%
+     4    360312    363840   +1.0%
+     8    314549    322322   +2.5%
+    12    235058    242638   +3.2%
+    16    184086    201351   +9.4%
+    24    124478    143734  +15.5%
 
-Tested on an i7-13700HX (8P+8E, 24 threads), turbo off and the
-performance governor. 24 files of 128MiB on ext4 on brd, all threads
-in one memcg with memory.max=1G, random 4K pread(), so nearly every
-read refaults and every thread ends up in direct reclaim. Reads per
-second per CPU, mean of 2 runs, with and without each patch in one
-kernel and the runs interleaved:
+The gain comes from the time lru_lock is held, so it only shows when
+many CPUs reclaim from the same lruvec.
 
-  CPUs      base    patch 1   patch 2   both
-     1    426681     -0.4%     -0.2%    +0.3%
-     2    387442     +0.7%     +1.2%    +1.4%
-     4    360312     +1.0%     +1.5%    +2.1%
-     8    314549     +2.5%     +2.5%    +3.3%
-    12    235058     +3.2%     +4.3%    +5.6%
-    16    184086     +9.4%     +9.2%   +11.2%
-    24    124478    +15.5%    +16.5%   +21.6%
-
-The gain grows with the number of CPUs reclaiming from one lruvec;
-with a few CPUs there is little contention and no measurable change.
-
-Ridong Chen (2):
-  mm/mglru: update LRU sizes once per zone when isolating folios
-  mm/mglru: prefetch the previous folio in scan_folios()
-
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+---
  include/linux/mm_inline.h | 26 ++++++++++++++++++++++++--
- mm/vmscan.c               | 18 +++++++++++++++---
- 2 files changed, 39 insertions(+), 5 deletions(-)
+ mm/vmscan.c               | 16 +++++++++++++---
+ 2 files changed, 37 insertions(+), 5 deletions(-)
 
-
-base-commit: 3d27e49eb905a5119e78fbe3d3890f376d15c728
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index 0a055a3fe210..84a1abee3728 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -376,7 +376,13 @@ static inline bool lru_gen_add_rejected_folio(struct lruvec *lruvec, struct foli
+ 	return __lru_gen_add_folio(lruvec, folio, scanned_seq, false);
+ }
+ 
+-static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio, bool reclaiming)
++/*
++ * If @nr_taken is not NULL, the caller updates the node, memcg and zone LRU
++ * sizes for the folios it isolates: this updates lrugen->nr_pages and adds
++ * @folio's pages to @nr_taken[], indexed by whether its gen is active.
++ */
++static inline bool __lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
++				       bool reclaiming, long *nr_taken)
+ {
+ 	unsigned long flags;
+ 	int gen = folio_lru_gen(folio);
+@@ -392,12 +398,28 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+ 	flags = set_mask_bits(folio_flags(folio, 0), LRU_GEN_MASK, flags);
+ 	gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+ 
+-	lru_gen_update_size(lruvec, folio, gen, -1);
++	if (nr_taken) {
++		struct lru_gen_folio *lrugen = &lruvec->lrugen;
++		int type = folio_is_file_lru(folio);
++		int zone = folio_zonenum(folio);
++		int delta = folio_nr_pages(folio);
++
++		WRITE_ONCE(lrugen->nr_pages[gen][type][zone],
++			   lrugen->nr_pages[gen][type][zone] - delta);
++		nr_taken[lru_gen_is_active(lruvec, gen)] += delta;
++	} else {
++		lru_gen_update_size(lruvec, folio, gen, -1);
++	}
+ 	list_del(&folio->lru);
+ 
+ 	return true;
+ }
+ 
++static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio, bool reclaiming)
++{
++	return __lru_gen_del_folio(lruvec, folio, reclaiming, NULL);
++}
++
+ /**
+  * folio_migrate_lru_refs - copy the reference state to a new folio
+  * @new: the destination folio
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 621214442f14..9dbdcda04f13 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4732,7 +4732,8 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+ 	return false;
+ }
+ 
+-static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc)
++static bool isolate_folio(struct lruvec *lruvec, struct folio *folio,
++			  struct scan_control *sc, long *nr_taken)
+ {
+ 	bool success;
+ 
+@@ -4750,7 +4751,7 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+ 	if (!folio_test_referenced(folio))
+ 		folio_set_lru_refs(folio, 0);
+ 
+-	success = lru_gen_del_folio(lruvec, folio, true);
++	success = __lru_gen_del_folio(lruvec, folio, true, nr_taken);
+ 	VM_WARN_ON_ONCE_FOLIO(!success, folio);
+ 
+ 	return true;
+@@ -4801,6 +4802,8 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	for (zone_idx = sc->reclaim_idx; zone_idx >= 0; zone_idx--) {
+ 		LIST_HEAD(moved);
+ 		int skipped_zone = 0;
++		/* isolated pages, indexed by lru_gen_is_active() */
++		long nr_taken[2] = {};
+ 		struct zone *zone = &pgdat->node_zones[zone_idx];
+ 		struct list_head *head = &lrugen->folios[gen][type][zone_idx];
+ 
+@@ -4819,7 +4822,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 			scanned += delta;
+ 			if (sort_folio(lruvec, folio, sc, gen, max_gen, tier))
+ 				sorted += delta;
+-			else if (isolate_folio(lruvec, folio, sc)) {
++			else if (isolate_folio(lruvec, folio, sc, nr_taken)) {
+ 				list_add(&folio->lru, list);
+ 				isolated += delta;
+ 			} else {
+@@ -4831,6 +4834,13 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 				break;
+ 		}
+ 
++		/* Like update_lru_sizes(), once per zone instead of per folio */
++		if (nr_taken[0])
++			__update_lru_size(lruvec, type * LRU_FILE, zone_idx, -nr_taken[0]);
++		if (nr_taken[1])
++			__update_lru_size(lruvec, type * LRU_FILE + LRU_ACTIVE, zone_idx,
++					  -nr_taken[1]);
++
+ 		if (skipped_zone) {
+ 			list_splice(&moved, head);
+ 			__count_zid_vm_events(PGSCAN_SKIP, zone_idx, skipped_zone);
 -- 
 2.34.1
 
