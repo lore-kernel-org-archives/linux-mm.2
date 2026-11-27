@@ -1,101 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A89606A32F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 20:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06866606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 20:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AtlNuFsS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MmqyPwPB
 Received: by kanga.kvack.org (Postfix)
-	id 1D9D66B05B2; Fri, 27 Nov 2026 15:12:46 -0500 (EST)
+	id 7A72E6B05B4; Fri, 27 Nov 2026 15:12:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 113076B05B3; Fri, 27 Nov 2026 15:12:46 -0500 (EST)
+	id 708B56B05B5; Fri, 27 Nov 2026 15:12:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F20D26B05B4; Fri, 27 Nov 2026 15:12:45 -0500 (EST)
+	id 5D1036B05B6; Fri, 27 Nov 2026 15:12:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C3FDD6B05B2
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:12:45 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04E01C04D5
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:12:42 +0000 (UTC)
-X-FDA: 85481997006.10.DADB9D7
-Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 060361C000A
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:12:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795810361;
-	b=0W7YqkjQMbonRUNovplrXdv8XqCa0jzIKLyxT60nDben7Q57FBp6GRDsYhT3ATYJLo0qvg
-	NSVpcvz+/ln03jSLTjtypLUHLNAu+uTkb3Zg0hFaZjLXDqxva54MRWFl7KMBVXF+k2BhJR
-	FH4aDUbv68k7TM6OIs0Xyw9xDRxWyiI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795810361;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yxAv8m4xlT0NV0P+L6VwGoxOklVbBhq/IGLIKJdDPJ0=;
-	b=ZyZQ9LIt71rhQbIRuGJ3ksNkEblSDJz8L94noRpNuYxKq+2hMWFTXCgiwQsUa3NoH71MMu
-	rDOojfj4tvQg3Al7eHiLEhizIpTrCCwHNyy5NRJdoM5VofRVh082pybgKBW0ECRHSRADSp
-	24J086WjQPXUGRMxkzl+u+xAqDZb6YM=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 908211C3C43
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:12:40 +0000 (UTC)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63D8D1C3BED
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:12:40 +0000 (UTC)
-X-FDA: 85481996880.07.B9D75BC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 328576B05B4
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:12:48 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 22C0F804D0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:12:47 +0000 (UTC)
+X-FDA: 85481997174.13.EF50A46
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BFCD840002
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:12:38 +0000 (UTC)
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5BAB24000F
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:12:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MmqyPwPB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795810358;
-	b=oetmiM8Wh0Nk4IrH+Uq3vztm7/4Ec7bL/RVCRQ//LpX2lvcrMC2BYM9EHtCeKQQJRlttk7
-	7eAKaoJlC0ccaKThMOflj+0IAG3FOnSdq3n/+2H/rqOERktTBZGM7Fv5qRj3NZXmYZ3ymv
-	CnW1gfhdBdkBRhYJ4dtPvTuiOIfJ+wg=
+	t=1795810365;
+	b=liW8LIrOwNoUGR0nhKuJ+ynKK8bfge92sDnsZy09IPTtOszW7xAAmc98R6zAzvvUX4CzXn
+	u+FYxCMxD7K0x9ubtMC9T5mQdsZcBy/IkxNGJak7Db7qwGOFfFlAljVQmaLGrUObH938HM
+	ZB/fSjw7703tXE08AMqYniFAyj80uZo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795810358;
+	s=arc-20220608; t=1795810365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yxAv8m4xlT0NV0P+L6VwGoxOklVbBhq/IGLIKJdDPJ0=;
-	b=d4TRBQjW9V1FUW5t4SGG2UWDuX+Rt/7lcbamkcpJlHaxglY7NPJAkuD2a3Sl7519KGNnIY
-	kMSdvX2UAmhg74acgf2R4vHIsqDeScMJZzo5F6a2HF76VCTK4i+pEOfDahltRP9KZz94Uh
-	QrpsjKVvSN+JDqYINRpRPrrQ9xlQP3s=
+	bh=iWHH1eS1AYYU4zFf0vBwy2i6v/2UwahO8vVO1074qDo=;
+	b=rhlVRB5asq9KrnvzFye0sE4mOdWaMv9kJuQ7NydByG7E/WvtwlTmk3TjF5aaTHPHsP67UM
+	JETbeo+WpKTuYxmCjv7QeJVpV7M5ICKG8+3YxYjcTIdysKn6T7LmWtjohycItfdL3W96oa
+	FppO6vzUZRBKAbNBDfKiuYcpnOJeL3g=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtlNuFsS;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MmqyPwPB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E37461DA3;
-	Fri, 27 Nov 2026 20:12:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5BB1F00919;
-	Fri, 27 Nov 2026 20:12:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F0ECE620B4;
+	Fri, 27 Nov 2026 20:12:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605921F00898;
+	Fri, 27 Nov 2026 20:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795810358;
-	bh=yxAv8m4xlT0NV0P+L6VwGoxOklVbBhq/IGLIKJdDPJ0=;
+	s=k20260515; t=1795810364;
+	bh=iWHH1eS1AYYU4zFf0vBwy2i6v/2UwahO8vVO1074qDo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=AtlNuFsS+61hcU8iYFLe5x5yo8BAekU0rhq6ges+SlGqz6I7AxpETp93XrLMwwpRM
-	 xre/dOMdGTHaX8/2Hb+3vt2KaO3XGnHeRzYmBDggVMNLYNtsgXt9t9tLdahJyTByFp
-	 dfN6wUWhUBw2Zlz6XeHN/LYYAGAAqBDFI/bjhsNw9shM0jVBtK3ivRNzT/YwCBxAYf
-	 NUsy5g6AEuknhjAiobzKLIV8ZducAdjsw+v6iufQMYmekSVqY3826Y/W2c527TerO3
-	 /uFrlGyalDVMtA/9NdiHtIc2NrBnX7svVGGL8AB455mC1YsFBoXE9lHfqcgh5GPPwA
-	 szKUatzk0EYiQ==
+	b=MmqyPwPBxuH4KFetP3KoUyJuRlpPpebr9NLFx05QU6dle19QXSZcfpDL1G86i4Nfz
+	 2L/EDXoNvqIr6I6jMeS5ouhbF9whO5td4SXMbJWdM8PTpbmRXNfWlYqmE3Ecp07jWb
+	 mhRctWegQr8NpojL3RaS4AMp6aYf4l3T2EMFLPM+vcp422YVMttQiK8kH+6YtgvwLM
+	 0qqroaqE1kPzwBv5X9/Wn1DdI4yDLAFiYhXvavvUX9r+CbVUTbu6HdtzfDLFPlycS/
+	 bcOV1Jd57dvsLhqd7P5gHG7NegsJVPcLRx6eGQaqKKVvajg9GdD1YK2lCc5z85GgrQ
+	 TtVhRBxq8UdTQ==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Fri, 27 Nov 2026 21:12:30 +0100
-Subject: [PATCH 1/4] mm/slab: drop __GFP_NOFAIL when refilling sheaves
+Date: Fri, 27 Nov 2026 21:12:32 +0100
+Subject: [PATCH 3/4] mm/slab: keep caches that drop debug flags unmergeable
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-slab-ai-fixes-v1-1-cf13b6be6692@kernel.org>
+Message-Id: <20261127-slab-ai-fixes-v1-3-cf13b6be6692@kernel.org>
 References: <20261127-slab-ai-fixes-v1-0-cf13b6be6692@kernel.org>
 In-Reply-To: <20261127-slab-ai-fixes-v1-0-cf13b6be6692@kernel.org>
 To: Harry Yoo <harry@kernel.org>
@@ -106,22 +79,18 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
  Chris Mason <mason@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-HE-Meta: U2FsdGVkX19oFaikatgMl7xeIADC/CEtRPB0SxnvU0kOWyLsS4XB/fnXDaSq3qB9m2bSh5QIpS5+v+Qq4/1E0DpKne/nuBmigLzbkG+0z8vVNKaqrTrVppspXV0LXsBG2gYI9QkxQ2SkNYidRL+eYSxX5U2gJUm/3gTkCznGgNSwrcOg/ybYUNGMlp8spg1O3lUcWwREX+UEODU2qF28LemqL8PJWCj8xWvZZV/onvyHnRPjtiIQyfWovqqk788euQQEnbqvW0QKG0V7UibqNO1qb7U4M+EXZNXG6MTfQTWXAq+Fkb+A3NXdNK93B/nsP9eTJpx9oYibuO+hPlw/lH95/BmdeAfBoVjJiA3y/6LNysWvnSyddQMHqCZKlIAHYl95VfywQmho01OF1OEO65m3YsI/kEGpzYPdvZEFTXmNdt5WU5pbWeOeB/3zsWAIYJAlHSOyRvcVofgWvhHo+sZGAjV+XLqVtviGF7kRj6o6zoAYjl3HjrWzo/82nukvbueyEr6QRbBmKM65VEds7zkfEhfZIslkkfcZM6lYty/abRF7qb5i29OI8xPTKqJ8kUO71RfRLbr/Gw7YOoCY4fUlG0ilgQctmdIljsqQhsr4Q+45YJc5VJsHQTcj1XciyGsOGFpt8BJ5m2U8d8HveSQe8DtEbFkKfEsf8sIw4PAwSGvKAfbwYE8ImhI6U+1MidQ2d6ET3YpPAJjwbAeZyc/hkrDL6Eb+uMAiuoXIyes+Q9JWtCFA5U1tH17NIIiqH8lWiOkm4iSuSBJL3QfQTz2xmWZP4/bWUtf4wEvbfOxWlubIY7mEWzu6hinVTZlDV19YBflFhRlzwuJ8o7NSjyRnEI4EP0tt8NoT/ksprApD2sJWhGKUG8snirvg2h8WuOGzVwkWFnZJyrEFpmsgaWAQ/PaAl5cmXgbwmja6M/QGsBswApo+lM5hbl3tiEJpWcnQNyn9K2Z7+oNhfX8
- CSURSMHE
- ALI7MQ7q5p+urBsq+V6y21mtT9fyeZfN/Y1GcZYdgHUFOXKpoDSNdPGdCgeOZ35f+lwrA3V1KpH2gAukZxAfRuNYTXahayE/mnzCTLGAdtb4jltBGuR1F2rA6QhfsBaKBhwJOTTeCV4KKLWPYJR1KsDlFLW9Ys4KbbvD5sdzM8gJcb1KsfTnHdk2+kmysbqzfZqR9WDrfRtK/+OSx2hKdjS5Fn9vtw3hLcsz1TsQJgxy/RW559RQ/fMkwv3haP9DNvUFMWO8RAmjnYhOHiurkFfL8PHbxPpmVdMTdiXrYTiMFXMMfeiRI0/itM7cLIH4FnRg0sUqrBlbt9DH5KAhN6lOyTtj9hJsvpPVQbiRQkRW6oE/6pap0HTZMQKwafaBSh+7jy0r+kzajrohvyKATHS/THPkTXJQATMyiDEc3DJlb+CyynVKA6SyVnhFbkVM5hY7+gUSzVWn23HahRsb7BEhmRu5Hwk5WSgdUBPkbtqiLqdJTijCQZ5LaoYIyahlAA47GaIoOHM1Q0yI=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5BAB24000F
+X-Stat-Signature: kg63y3bwppmfxd9e85kbntndo79jpmb4
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 060361C000A
 X-Rspam-User:
-X-Stat-Signature: 7aoq3mgtzb9onen4etawfeq5aez5m4kb
-X-HE-Tag-Orig: 1795810358-499402
-X-HE-Tag: 1795810360-748433
-X-HE-Meta: U2FsdGVkX1/w31C0R6yYHq62VyOSoqk6cysQB+tusDvElMQphhHKuVTQWr+zkz9+C410nbKamOZuqJCGNhkFdXv05lAZku4sxKS7L1Aq7o0U2kC85Tr2T0cYOVL1UVrLCr3mZD1fLRY0YWeQj8attMSSLH5clEHup4McEp9oM2GVbjnmvJon3SxWH7kj8BkGwPqdbCf2dc+HWVU6egiN7g3fFhav01ep95UMYDIW2LgiRk7H3Qmcbo1UtFd22vVlos6+1hMtqpqB1Q2Wg3XI3fLEOGwbQ6VNx8uQt/RAQqK7sEGt8/8fI23/L5U/Mnxxc+ufunv/44zTA5Brzu4ln1e6nSNP4/TiATrZ1Wnvbbh9Cxy3vFYiKAiT2KTfK5Kz1Tx6FRlTCWrWW2mTqWlwcTTNEQhg8vPRZe50NmHj4quSFCsksmaTrPdsJA1L7dtAS4fYmWAUhL0Njw4cuuHo4KzTmcPtHSUrpZ2gDoHp5PODNu4FeFvple6izVWPMi+kkC+JzhIzzWluOe6DrWnn02b8coDTDNBy5j6FqEiQj7tl0AlXW0kBa13XxRmzzqJ5uqqfiuLj2INjS/fwRp6mm5KJeNN1eUTdjCpRFH7Be/rLZXBTtAAQE8N5dujFdqixHyIoqVcbDHppNeouNmh++nJRp7441y4q6k1NqNmz10nuq2YQZ088WIDwnQsg694wVR8O9109m3tnKVh5oAlFCLf4/gSz6iHZzFHBggfJQGQZktJ63/JKPjuIYDnsJ/pQnf7dBOrTe+rGkoMlcr5z0FxU+zpiXyNw/eCBRcv9vHRIJdMJL64HDOsRVEdpJj/Ef/uXNQM3/hYOS3MP1P3CAsjphejnWe0T5gl6vLeZwk3W+4m+Z3sjW+c7F8iBTFcMMtJ7AStbUe7ix6EIOc52mGuWq+9u9tcA/tOz6uxb6gl7KQfTQouTzcxr+/YF5vtBjpmYMdIFFNAS0wg/yKa
- Cs7w3P4A
- gm+IVs1TEsAuZyWnu3hSmRUCkAK1WCYdnn2TXjnyYSINFkgOhGKLVpJG5T6QF0b50dE8lpmtbIbevh+zw5v7HEzPo9DQfIUFVQy5a2X6aba8/ghkCelnTJ+ze5N2pEXRF3OPMXHAtm6wIWjCFbqdHCwgxHFr8ibj8nTSPw73O7HAdLj9qZHBjGScawRcJ/NTblFLjosdAOc5rWKyDLw0mIXYnH55DBguGoCe2o9aZDH8ASQV4k3Tu8kgDiN2tTZ3tQ+nAAOMIU0CI7gbJ00ukRmUcAm8lORaJx0qh/KfxtJNmgt2676tc+ZERV6GeB737NqZVeHUTm0fMzlmOjpPIYCQvW+kXCNJdpeG8
+X-HE-Tag: 1795810365-793598
+X-HE-Meta: U2FsdGVkX1+abnNdi6cbEOiSRccLE49BwweV+gcS3PZdd1o8T3Jrz0rIPAeLC8mdfSlTXN7DPmJZCTLd7ZHAkA4PiVqE0Y82VIQ8YA8Y+krpm7RJOCuzsKyDsZthZmCzyNbMGosTEDkIQPY0Rzc+Zihm+j64tYRw4yj6ewffGVgdOy3oG96xENGTlTKMynOhw1T3/RugaIEihY1iNCJ3ACSsKy365x24PLmAojLMlMIe7iYiADc+5vGuwHoR6NhlwkvvOt+9Hj66UQh6KmHz8GCVmQSz6pRY7Lou3L/QFQTzXx79MuThjqJpnWiX+KtlD8HJntDcyJNrzO4GMZy6xq0WwH+XSbd3xNSWTzaqhxQk2vuMsJ4IVnGuvMLXUpsJs3IrcmiyAfnQGR1ykJh5HS+q2RINc/Wv61aJ4JCKKiX4RlDDFs+YxYvkSW8c3NwSyybPylUS1u4l2+hOaOKALZxzh8zPME4YS7Lq/cL/N7mRIoyVr0JcUed8OvMEpUpJ8RSq1ty9WlIlVq867Je32rrQpQpuBRfUc+7pQk05I0GvTjpXPmfZmoIvhajouBaWLIBR8Q2vT7re5CbTzl0teuCkPN/F8kRBeP4VigGOd8MqX7PqSOnWinMsNZQvxe1h0rD7lb0hL7+7scykxYou3U6+K/qsnvgsB1pqWiFIoDZH4axjUVaRMS2QirH6iFASKer0cAQFlCz10bvT/h1YhB6ZDi8C3+dQs/3g9octoTfXL6rKavWUsbHsIn8YJCENRxWz1kPYjfICb+piSAeHnwpNaCErz+5TlMzhyHbJb4CoFznw9Bz6pBc9pmkRUDZ5l8kDqx+uZAutyRT50bQJDQG+HV8P0pFu3/lOdNNKlIIBQPkuL8dsjCsuYPMgqYlzmk7T8tfwULHrYiLaSfF9OFe0aq+2uEU4q3QC62UmYehPNU2mLEQTMNMKK6u5jAmdklNC+GmwTSAK3HN4t1M
+ OHhNDF9H
+ bg3PyOuNXdRBsjmPk/p9aJlY4AaQ9tGuyUXbqaYAwG9cn6z1BIR4I2m+DuYTXXCaQoQavyrWxMEDFM0YPTM6bNXXF643LH4BBgGysOeepJQIwlQ7hFAMvFtX/V8UQXDL2b4sfBBFVR0s7jaNm8cz14SLcghli+OSOZMoZeM3OOpKchhhWnTVIGVVnZuetmHn22fld+gQsp4ekQCSU15gt4W/dE2wEsMBKSN1iKKz4b4hmnUp5GvKIhGf6e4WOAKfvP93FW/YwqPLmxDXsOEmiU0p5QmTNvVqFdV4xq9qi1n4+Vo1rikccMFoaKnvfW+O5G1lNtdNOgFnARR0ce23KyQSnCJuxL7zCKkYnpQqaVntbUmxQq95uRgVaXyVUfC7u2V3XpJko3SZ9rKyOv2lFNHONoFMWVOR41bu33xmv5hKmZrhA8LR31LCaTca4sNjoPGIqC6zA852JM7C7kgvW+ne4I7ZxZ+sWDsny7BY13SJSlzlQYjYvYzlkVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,85 +99,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A __GFP_NOFAIL slab allocation in a low memory situation may end up
-refilling a whole sheaf from slabs (possibly newly allocated), passing
-the __GFP_NOFAIL to all underlying allocations. This can make the low
-memory condition worse and it's unnecessary, given there's a fallback.
+From: Chris Mason <mason@kernel.org>
 
-Given how we use __GFP_MEMALLOC for the refill, there are also some
-undesirable corner cases, as reported by Chris Mason. If the allocation
-happens in a PF_MEMALLOC task (which it should not in the first place,
-but there's no guarantee), the following can occur:
+When slab_debug boot parameter contains the O flag and a list of caches,
+two caches can get the same id in /sys/kernel/slab, so sysfs warns about
+a duplicate filename and one of them is missing there as a result.
 
-    refill_sheaf(gfp | __GFP_NOMEMALLOC)
-      __alloc_pages_slowpath()
-	WARN_ON_ONCE(nofail && PF_MEMALLOC)
-        retry:
-        reserve_flags = 0           /* __GFP_NOMEMALLOC */
-        goto nopage                 /* PF_MEMALLOC */
-        goto retry                  /* __GFP_NOFAIL */
+create_unique_id() builds the id of a mergeable cache from its size and
+flags, so caches that are mergeable and result in the same unique id
+must get merged - otherwise a duplicate id would try to be created.
 
-The allocation will loop without reclaim and no access to memory
-reserves.
+But find_mergeable() doesn't merge a new cache that has (at that point)
+debug flags, and with O do_kmem_cache_create() later drops the flags
+that store metadata if they raise the minimum slab order, and the cache
+can become mergeable again, but too late. An example with the id:
 
-Additionally the slab page may be marked pfmemalloc, which the sheaf
-refill does not expect and handle:
+    slab_debug=OU,sgpool-128
 
-    refill_objects()              __GFP_NOFAIL | __GFP_NOMEMALLOC
-      new_slab()
-        __alloc_pages_may_oom()
-          if (gfp_mask & __GFP_NOFAIL)
-            ALLOC_NO_WATERMARKS   the slab is then pfmemalloc
-      alloc_from_new_slab()       its objects go into the sheaf
+    biovec-max   mergeable                              :0004096
+    sgpool-128   has U, so not merged into biovec-max
+                 later U dropped, so mergeable          :0004096
 
-Improve or prevent all of the above by dropping __GFP_NOFAIL for the
-sheaf refill. Also perform all adjustments before potentially calling
-alloc_empty_sheaf(). While that one already clears __GFP_NOFAIL, it
-should also get the __GFP_NOMEMALLOC | __GFP_NOWARN flags, since a
-fallback exists.
+sysfs_slab_add() has a check for such caches since commit 11066386efa6
+("slub: fix sysfs duplicate filename creation when slub_debug=O") but it
+tests only the global slub_debug, and flags given for a list of caches
+don't end up there.
 
-One consequence is that the WARN_ON_ONCE(nofail && PF_MEMALLOC) in the
-page allocator will now only be reachable from the fallback and thus in
-case such a caller is introduced, might lurk undetected for a while. If
-people think it's an issue, we can duplicate the warning here as well.
+The fix used here is to mark the cache unmergeable when its debug flags
+are dropped. With that, we can also effectively revert commit
+11066386efa6 since the global slub_debug is covered by this fix too.
 
-Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 1ce20c28eafd ("slab: handle pfmemalloc slabs properly with sheaves")
+Ideally we would evaluate mergeability with the O flag precisely
+(dropping the U soon enough to merge) but that would be a more involved
+change and probably not worth the effort.
+
+[vbabka: revert 11066386efa6, tweak commit message]
+
+Fixes: e17f1dfba37b ("mm, slub: extend slub_debug syntax for multiple blocks")
 Cc: <stable@vger.kernel.org>
+Signed-off-by: Chris Mason <mason@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Co-developed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slub.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ mm/slub.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 145a32c334cb..5fd148f11efd 100644
+index 20570e4f1795..9bb031f9a41f 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -4807,13 +4807,20 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 	if (!allow_spin)
- 		return NULL;
- 
-+	/*
-+	 * We don't want refills to rely on __GFP_NOFAIL or memalloc reserves to
-+	 * succeed, nor to warn on failure. Leave that to the fallback.
-+	 */
-+	gfp &= ~__GFP_NOFAIL;
-+	gfp |= __GFP_NOMEMALLOC | __GFP_NOWARN;
-+
- 	if (!empty) {
- 		empty = alloc_empty_sheaf(s, gfp, alloc_flags);
- 		if (!empty)
- 			return NULL;
+@@ -8864,6 +8864,8 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+ 			s->offset = 0;
+ 			if (!calculate_sizes(args, s))
+ 				goto out;
++			/* Created as unmergeable, so it has to stay so */
++			s->flags |= SLAB_NO_MERGE;
+ 		}
  	}
  
--	if (refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
-+	if (refill_sheaf(s, empty, gfp)) {
+@@ -9825,10 +9827,6 @@ static int sysfs_slab_add(struct kmem_cache *s)
+ 	struct kset *kset = cache_kset(s);
+ 	int unmergeable = slab_unmergeable(s);
+ 
+-	if (!unmergeable && disable_higher_order_debug &&
+-			(slub_debug & DEBUG_METADATA_FLAGS))
+-		unmergeable = 1;
+-
+ 	if (unmergeable) {
  		/*
- 		 * we must be very low on memory so don't bother
- 		 * with the barn
+ 		 * Slabcache can never be merged so we can use the name proper.
 
 -- 
 2.56.1
-
 
 
