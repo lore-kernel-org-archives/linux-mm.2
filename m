@@ -1,149 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23992606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 22:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A6C606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 22:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FdFtfkSb;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+bjHVmkS;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=pwz7GrgD;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hPl4tkYc
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gZ80EMhd
 Received: by kanga.kvack.org (Postfix)
-	id 0D9666B05B1; Fri, 27 Nov 2026 17:24:55 -0500 (EST)
+	id AA3596B05B4; Fri, 27 Nov 2026 17:27:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B1636B05B3; Fri, 27 Nov 2026 17:24:55 -0500 (EST)
+	id A2D266B05B6; Fri, 27 Nov 2026 17:27:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E94CE6B05B4; Fri, 27 Nov 2026 17:24:54 -0500 (EST)
+	id 91AE56B05B7; Fri, 27 Nov 2026 17:27:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B23C16B05B1
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:24:54 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 08A7D1C3D00
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:24:53 +0000 (UTC)
-X-FDA: 85482330066.17.7251533
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf09.hostedemail.com (Postfix) with ESMTP id BAA4A140006
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:24:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FdFtfkSb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+bjHVmkS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pwz7GrgD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hPl4tkYc;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D0936B05B4
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:27:30 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1DBB14050F
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:27:29 +0000 (UTC)
+X-FDA: 85482336618.18.9CEC019
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 72623180011
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:27:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZ80EMhd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795818291;
-	b=IO9Fhglc7MjKa8HYiPl+QOzZjvY5gBW840hG8m52HcZRX/aOtXN1TJYdPXFl76s/z5Y4B8
-	xvuTxspbMi16INx2ipMqgcWhss+bTZz1Ks4m5eVu0g9A/QFnLv23GxUgkGaZOq1vrxqgt0
-	XENe2XMigOcFE4gwCcBqWAOZSAft+VE=
+	t=1795818448;
+	b=vIfuECoZNhHj/Qy4o0qXNSR8O8saxXKEwx41ZsSxANc3tS8rZ3EMZU+va0sTPkrdmhPlOS
+	5XhmVDAxW9j2qXat96USXhAA5/qFH8vz5oMaFsWRNl7vCh9G0fIqr88iT+BuI82L1ZN4Bz
+	KBXlDOf3O+H25xuvoi10JLNBNBOyOT8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795818291;
+	s=arc-20220608; t=1795818448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/LM70W0+E00PJvFbuomtZnd06N8Z64xKhm/h17DW5xM=;
-	b=8jtlxcIVZ16fAqNrfH9PsEC+jN5HfGpiY/PEWOuseftA+EME+QSPKxYbaHJsQ8fxQAdntP
-	yF3crMh7t5MPgW91+3nl5pad/tbvhdU7e9V6K5IHpQL2urS7DOVWnlpmYeMYmd5cDaRNGI
-	27PYr4jEWKotSCBmhbhrF9OoBOj/FDw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6lBdhfWXWDM1BJfgF8wRgQ9FWT8DwEuH6a0DOJBJBFA=;
+	b=icNXvMplSba5sy/m7ekuap+G4lZJtOPmhiraGn1cwP/eoGy6mjLrEIGDfe6B8pxEbDp/cY
+	r8FeVCglZD4mmKSAHqRfL6Lt76w2vkXOE4TUnexdVuMEoc6XljdwaD2S5o3VeoJC5pk0yZ
+	En+CSAlYumUYYvuNaD1PBwR8g+KLXo0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FdFtfkSb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+bjHVmkS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pwz7GrgD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hPl4tkYc;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 23DF122A3E;
-	Fri, 27 Nov 2026 22:24:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795818289; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/LM70W0+E00PJvFbuomtZnd06N8Z64xKhm/h17DW5xM=;
-	b=FdFtfkSbtBosM74bFNgxrkmsApewsLnO8XVPKHI1/HAYFEgKgCweUKsN0r8xrT7MMIgWLU
-	/djTEv95ekACF/0Y1oHOdB6pEUWVp/LtT7YIeb8+WW1cwzXPSzT5udmmawAi9nzliRe0iG
-	e5Xy/gCJ6otEsVlgPoeBxX8ramJjmyU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795818289;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/LM70W0+E00PJvFbuomtZnd06N8Z64xKhm/h17DW5xM=;
-	b=+bjHVmkStyVnkOMIhm/BT2fRcer2YSDsh47F4My/gtsZWtbMytzruRf02/SCRIyaSuEHlH
-	PYWtm8O2LW3OJiDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795818288; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/LM70W0+E00PJvFbuomtZnd06N8Z64xKhm/h17DW5xM=;
-	b=pwz7GrgDo6MpCMUFsOzOvHxqFoJ4Ri0bhf4ifa2AVOu58CcCIieGl+Z749jlSKQUunU4hy
-	W3Dv2urGVToG++U5+6M4dj2Hk7Zkt5J4tE3TZmcGISBZh8E+W6Cd1x2m+fS54FMHXKkPqF
-	k3rYYiiqFDtyD1zH8HG7VEb6GuyR4GA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795818288;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/LM70W0+E00PJvFbuomtZnd06N8Z64xKhm/h17DW5xM=;
-	b=hPl4tkYcdjq7eMml5h8L+E3NChYlNSCQNMhlSwaYTJvoQB4ZHlJDQQv6MBWItqZJdUNoym
-	4TISQT+utv5fklBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D5D3134E8;
-	Fri, 27 Nov 2026 22:24:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dLGLMi0DCmtNNAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 27 Nov 2026 22:24:45 +0000
-Date: Fri, 27 Nov 2026 22:24:44 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
-	Andrew Morton <akpm@linux-foundation.org>, David Rheinsberg <david@readahead.eu>, 
-	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Jann Horn <jannh@google.com>, Alex Shi <alexs@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Rientjes <rientjes@google.com>, 
-	Rik van Riel <riel@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, Arnd Bergmann <arnd@arndb.de>, 
-	Stephen Rothwell <sfr@canb.auug.org.au>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
-	codalist@coda.cs.cmu.edu, linux-mm@kvack.org, Andrei Vagin <avagin@gmail.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH 4/4] fs/proc/task_mmu: write-protect only with ptrace
- attach
-Message-ID: <awoC1CV9gBKm6wSi@pedro-suse.tail5790ac.ts.net>
-References: <20261127-mlock-madvise-mprotect-ai-fixes-v1-0-e46b2b1eb435@kernel.org>
- <20261127-mlock-madvise-mprotect-ai-fixes-v1-4-e46b2b1eb435@kernel.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZ80EMhd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9AA7860CFB;
+	Fri, 27 Nov 2026 22:27:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223291F000C1;
+	Fri, 27 Nov 2026 22:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795818447;
+	bh=6lBdhfWXWDM1BJfgF8wRgQ9FWT8DwEuH6a0DOJBJBFA=;
+	h=From:To:Cc:Subject:Date;
+	b=gZ80EMhdqxW1hW8lBfnxIryIkYqgywZ1EP4YBcNbDCWjeea6eG9LwyjKIu0SH0s1J
+	 n8idgbfIiH8aBJTLQNtScDkmSPiO4AYW684Iuq+4vLxrPmjGDCq90hx7nCoM3S3+Q8
+	 wb1FnpmoHd3NeoCzyuiKo3f/X7fahMop2kkl4bImRiq2k5AkrJcWZeNRsVJcfJK4xV
+	 Ra+aHOdTLxWP6ir6thvCigW42pOSEBRUbn589Rcpe6p4apFaS3yKlr+Mdb9SfBGZn8
+	 e4J4BV128rGxc+AQJzL716yobxLrDijbnlgBdl+lExwLdZEBJqgQIZAOrdsZCDyrBN
+	 jjXYzAuO9LH5w==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v3 0/7] mm/damon: various improvements/cleanups for code, tests and comments
+Date: Fri, 27 Nov 2026 14:27:11 -0800
+Message-ID: <20261127222719.105510-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261127-mlock-madvise-mprotect-ai-fixes-v1-4-e46b2b1eb435@kernel.org>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -13.51
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BAA4A140006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ecxc65pa8ne8adtjs81w9ijhfg8fxgtu
+X-Rspamd-Queue-Id: 72623180011
 X-Rspam-User:
-X-Stat-Signature: eizm5owp36ocjubwo1jf9i3t7er9i5p4
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795818290-796808
-X-HE-Meta: U2FsdGVkX1/Xc22i0vM3bmt5JMM97vQ94E4ZFKehw/cqfIHWgz9iWW9xmR911HtVFJIfm1a0cdaiCCMlPWiniWawu4iwWkJ5ymov9EAsyB0HSzYaNOn3QFoNeuPiuvO7QHA+WBk7Ddab5YQ3evB1ozMiF/a4yLJ0AoRJBASFtTU7y0UeaG3SJALoXYRylG3sv2XS3GQsEN8Hl9DsLLeEUutZbr0V5pZYnKiQoXzqth3YcpuFJXQqzWoIp/pfaXfSiUFzvNh6wmGlxSaDHM5kCBcsnun94VMIvyE+tbHNSDQd0+CnZE8sKYk2+7c8Ltw0a2u/oe43S7z1BGfYc3rEdYSMzkoYb/C/fQmtuFARbIikbc8PkQO3NnrlYHcYiXGFQBUF2XVj9wJp1tchoUTkrXgxhrtcO+lNNfzJkyi3cMczMDSYA9D1tylVzsfuMn/04vbpfOyRPB/9OF1bzkhyH4OuVhqYqNuCQuZSDtuoK/0MFpgGIg8/bHHer7OMCZGr5EZVuHyxpVjSH4crZxgqogXBtVM1TV/ZhaHmMi9Yy5f6ox5TYBduD01hwBYfRCWIYW88sumZrVVfRAsrgIWgaxr98Mfcwr/VPWufB2nxKmwAnxIQWw/HVdzqnqru7cfQPGccQlc1Qf8fDJX6dFPlAwYRNe6xc7of/99NqX2tH30aK+7cfNsMulF1Qr37vlg/It7lEgPdKw8s32cSIEG0dyM5lAfuXhZamLnl4m8lxAc8jW2DJGXb1CCSR3wL4HwECeFPBf8lZB3Xe9Zd37LytaDpNx0KWLwKWIcAfqOYJQiuXWKPAHQdPspRhrIvHJok++SsRcPKV5Z0+Juc5CbhJfB4aiqgQqLie7GkN9f0aRnCrqMrdXmllKag8ScwDLBZnd/BoL5DFFMVWqcZvLIS8aRAUOhAuv7enne0jwCGGOGDFXz63ZBriQ3sbZnSsejJWW1sR5ilxf6tnxEp4mz
- yFDlt8PT
- 7YTdW/6t+Z5rU1V32HZwp/v0wzaI719Pc67Gge5Uxz/rFFNB5LeI/mvKj+xz8D8xgLJ1W7Wp+KJvtmiOuWLZ122pEUvc7Gq6xkotmGYDnQOgY3ClsGEF8/Z1dvS43VNpWXPIZ2AWFcoPa8JLCez823kgA5NnyR0Sf6liaojqPNcPzZQ0dKqHmfoHxMg4CE97Wk4LyDRyXBR5Wwmj+ojNohlZ3sE+nTN6He181yWFOUqAaMsa0jcKPRTj01oS8YCN5NXLHSWyn2NGVBw7UToCR60tkquLzU/gLn4lc4U5g12g/Ki9CyM9dSF8tAr/EIKL9mZLGpZ9uIIrCOllE0ZUvMeXT+jlEoRdkAAqtBOrbkr9FSuhxZbnlM4CCWvz0LeaB5fROAeXru+tzatTzfUVfZGx8QDFsHHS1FmI9/5SQ2FG+PPJqens4GJN/S8+240o0d6Dgv6zTkjNXSnp2f6jYouxVtO148T7uMThqDjTqW0q1Ps5TqwBLIRw5C8R0V409Y12P6vARefDbx+Hj+shqzf38vbFGei7kJEMyC7McAW8eB96gYVdpye0lNA==
+X-Rspamd-Server: rspam03
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795818448-748161
+X-HE-Meta: U2FsdGVkX1+0h9FU6rGYQoyu0vKo8TMcvaLbQ3rbhda59tqzuJ7Rb6I6lzf+HeeCRPdrEdQhhDNNjqPsRTgDmvts6tcNMbvg0KLvPOaSHOs8vHUfX37n8+wQ1DB7WkWL9oamID/mEqcpkP3mI/XT9NYMxXUdz6rKZw0GWYp5sfbG4AixcCYmzGBX1+TfdFDWmdSVfUqo+af0cc788hUv932o0C7nxpxoYtwCSQX1lhTtgi0ElyxFUOUZ2NVvTd1Bw7g0n9TwWLyl9ONX78FuAMLyLmG2e6mmbESR+BnQ2R5DYD8J+SBEQGDPvCLHdXOWAWYl9hsoQ9C5fr9RHM+xq+G3I8BkNw6dGrBXfpxDAQjXiFLBmxA08Bzjt69K9DeVidKJbHUukH/wKzS2o6QUFzbKMwmFnqkWEDkQ4am4NrlfWelAqMtrMrwjUUEj1vb6xrgQeRi0CCeKYf0/7g/88IuzLvK6PXlwiQT9QYHA7iyP55PQkECKLUdA3rbNO7DiO0TiII08Td7JBTjGm8rnu/c8VX9za6QyUmELrlQqAnLYOjieogHpzXntqoGjW77r1Fpjy2+LXp4cbogz8m+Lk7JYWXeZ1CCzU1+9MaAIa46vEUm1c93OQ0JAYQF6MLgYcvvOs7PVoQr6Criv3l1Xisx4Y6l86q+W6HJ2ku5Btj/SADhxvv9UqYTQBcHX6t/lyspvOa3biaWbdVi3qiLkr5beZGjKLd+16viVNu8OMy0u8LTGzAx6zeUJUBoiyGeoENO7CfOI/5rJ5dajjjvwFCPW6Km/UXE5v5CeP7c9c8ByjcLK3GJ3UuL9t1GwkrRWBDiUjL4buflqoCjk8F0PSSpZsoJOO5dogd78QhKsA7Sp/lCdOtTMFWUvCVeGvlDOTfzbIz3JATFB0C3nDBBcoO0wP8XXM8dBaQoSJVrZCaVnhaAE79CR5sMg6oQN99xkijC/vQ8IpmOECb6WDz6
+ DAV6Ft/m
+ anuC9YSAQOypUmnTt4x50vYd1q44lOb3aJhJwQ0liKrhV6O25xVwacaHUoPJm5AoB1cxYBA5/vuwjQYGL+3qvWJbIW8EwK+0K/Tj/tNU+4KHizByFJBrMTOoLBChNqGmQWiyvaLEd/jHm2Ww3/oO9oB2ZLYIaa/gRWxa5+42kP9wmaSXlbJS5WaVXplydibF5r7gUvla0nsYA1peYKOPEe6ymZwCw1XvuVtagYzFC2qRmVDtCygELqWywXnd+L0osU2d6lYLwdu5jJtC1MSTBDWVE378ELpd6j85jkou4RsRYBbMXlIof06KB/piFB8GOAMS2RJIbrewKoydkL0GAZKoZMPm3zX50TahHFJ7BnzjXxXKyjdmwuE2nYzQKX2FfJW5dkO2xGjVEjngPFKYrlIQjOIkQ/Q2OEChiZeGzmpsa/gm7QrNs1SkjiB6e0AwPc1SPzqnF+DGi8yQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,36 +95,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 27, 2026 at 07:45:43PM +0000, Lorenzo Stoakes (ARM) wrote:
-> The abomination known as PM_SCAN_WP_MATCHING, which makes PAGEMAP_SCAN not
-> scan but mutate for eldritch uffd-wp purposes, also lacks a permission
-> check when scanning the mm of another process.
-> 
-> It defaults to PTRACE_MODE_READ, which is insufficient for this accursed
-> operation.
-> 
-> Therefore actually check for permissions correctly, and also make sure the
-> mm is as expected when doing so.
-> 
-> As it stands, a task may currently manipulate page tables of the remote
-> process, write-protecting uffd-wp marked pages, allocating page tables and
-> splitting THP, and invoking MMU notifiers as needed.
-> 
-> The check is made at the time of the ioctl against its caller, as
-> lock_trace() does for other /proc files, rather than at open.
-> 
-> A tracker which passes READ but not ATTACH on another process now gets
-> EACCES for PM_SCAN_WP_MATCHING, whether it opened the pagemap file itself
-> or was handed the descriptor.
-> 
-> Also update the pagemap documentation to reflect the change.
-> 
-> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-> Reported-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Refactor code, optimize code speed, add missing feature supports, and
+update comments on various areas of DAMON.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Optimize the efficiency of vaddr damos_migrate action under filter
+failures with patch 1.  Use damos->last_applied on damos_migrate action
+in vaddr and support sz_filter_passed for damos_migrate action in vaddr,
+respectively with patch 2 and 3.  Drop a redundant and racy quota goal
+target value validation in sysfs, in favor of that in the core layer,
+with patch 4.  Drop unused variables and imports from selftests with
+patch 5 and 6.  Update source file intro comments to call DAMON just
+DAMON, via patch 7.
 
+Issues for patches 1 and 3 were found by Sashiko.  Those are
+mild inefficiency and unsupported features, though.  Hence not Cc-ing
+stable.
+
+Changes from RFC v2
+- RFC v2: https://lore.kernel.org/20261101171630.81477-1-sj@kernel.org
+- Set last_applied regardless of damos-filtering.
+- Advance entire folio for invalid folio.
+- update subject for unused imports removal.
+- Add source file intro comments update patch.
+- Rebase to the latest mm-new.
+Changes from RFC
+- RFC: https://lore.kernel.org/20261031202614.96036-1-sj@kernel.org
+- Drop charge_target_from fixup consolidation.
+- Add a patch for using last_applied on vaddr migrate action.
+- Add missed damos_va_migrate_private->sz_filter_passed setup.
+- Fix wrong commit message for unused imports removal.
+
+SJ Park (7):
+  mm/damon/vaddr: advance migration attempt in folio level for filter
+    out
+  mm/damon/vaddr: use damos->last_applied for migrate action
+  mm/damon/vaddr: implement sz_filter_passed for migrate_{hot,cold}
+    action
+  mm/damon/sysfs-schemes: drop redundant and racy zero target_value
+    check
+  selftests/damon/damos_apply_interval: remove unused variables
+  selftests/damon: remove unused imports of sys and time modules
+  mm/damon: update file intro comments to call DAMON just DAMON
+
+ mm/damon/core.c                               |  2 +-
+ mm/damon/ops-common.c                         |  2 +-
+ mm/damon/ops-common.h                         |  2 +-
+ mm/damon/sysfs-schemes.c                      |  3 ---
+ mm/damon/tests/core-kunit.h                   |  2 +-
+ mm/damon/tests/paddr-kunit.h                  |  2 +-
+ mm/damon/tests/sysfs-kunit.h                  |  2 +-
+ mm/damon/tests/vaddr-kunit.h                  |  2 +-
+ mm/damon/vaddr.c                              | 27 ++++++++++++-------
+ .../selftests/damon/damos_apply_interval.py   |  2 --
+ .../damon/sysfs_no_op_commit_break.py         |  1 -
+ ...sysfs_update_schemes_tried_regions_hang.py |  1 -
+ 12 files changed, 24 insertions(+), 24 deletions(-)
+
+
+base-commit: f3e166bac17470d6c215e1b4c2af36f5ac5ee75c
 -- 
-Pedro
+2.47.3
 
