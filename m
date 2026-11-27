@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169F5606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 21:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5D9606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 21:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CGIVhXWq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lq+qp7R7
 Received: by kanga.kvack.org (Postfix)
-	id 2176F6B05B0; Fri, 27 Nov 2026 16:16:03 -0500 (EST)
+	id 2DAE96B05B1; Fri, 27 Nov 2026 16:16:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EF756B05B1; Fri, 27 Nov 2026 16:16:03 -0500 (EST)
+	id 28C5A6B05B2; Fri, 27 Nov 2026 16:16:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12C6C6B05B2; Fri, 27 Nov 2026 16:16:03 -0500 (EST)
+	id 17A706B05B3; Fri, 27 Nov 2026 16:16:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E23AA6B05B0
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 16:16:02 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6299A1C3CB4
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:16:02 +0000 (UTC)
-X-FDA: 85482156564.20.5C891E6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B4231C0003
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:16:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CGIVhXWq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E70A26B05B1
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 16:16:03 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F68D1A04E4
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:16:03 +0000 (UTC)
+X-FDA: 85482156606.09.A1E33D1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 79CF0C0005
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:16:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lq+qp7R7;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795814160;
-	b=NUxtAgYbNBYKf9pjQrgHfSYWip/esVV66GAmYb6DZjEFQ+yt9yzeA2yKfgeuG/EpgIXT6p
-	okMpBffg/a+pRyTEyszz2t5dSaYRW77Y5tw5vmQMTENovExd/gJ01EzbnEOU3vxJGdOp25
-	Ztdu1jLHL8KMhx/k+N9huEkdY3I+O/c=
+	t=1795814161;
+	b=6ChFLYqWoxyfepnfpJ9LR3ZrSLD+RNrX6HSyJSjnoGJDw0V8hZaSc3Hp07x2GNVfff8dLT
+	XpKV2xCqp2y+V14kC9qs8qXhVXJGX0WCClElzWsWHH3ljie/uNAdFR+k0FUGIj6O6le9KU
+	rfjIVLFKXM+XpLhwzY73vWo/8kF8rjg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795814160;
+	s=arc-20220608; t=1795814161;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UjkHrUpeAV74kiQoBGdvPVmIUfl/g4nDGIK8+/Y3xdI=;
-	b=uBtbwN5KCKQKe7znAqoKqTTfJ3QwAGufG3JmvFrvqvTmo+ozwuy9nMxK1fHy/ANdPJ03x4
-	S/A/8tLZGGjEuGHhvBrb3PPV1VpLI8teGkDELT80lSSz7+ItPKz/77utterP/i5MiWXRlP
-	+jfQlOXwFEaGhTHuKuwQyJJUDBbl/so=
+	bh=sfwWIfLM5eBAp9zz0UUR4VAbCLqVdDlycZTm0DH5/vc=;
+	b=iC1SH6KBvuCJfKXKZQD1G+WWrm8K5ah3EmRS/QlQ3chPJQgogFiI9pCSkojUpiV9z808RU
+	4eIBh1OTt0xfQ9CpVn2AaoS2o6XG/swVLycpT2aR/YeVl7wBh0gC3D+oBBcUvkER32HWmZ
+	demhl63spHv38xZ8vfUF0jSqVqx6PDw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CGIVhXWq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lq+qp7R7;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2E7F741A9A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 95A8F61B39;
+	Fri, 27 Nov 2026 21:16:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD141F000C1;
 	Fri, 27 Nov 2026 21:15:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D871F000C1;
-	Fri, 27 Nov 2026 21:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795814158;
-	bh=UjkHrUpeAV74kiQoBGdvPVmIUfl/g4nDGIK8+/Y3xdI=;
+	s=k20260515; t=1795814160;
+	bh=sfwWIfLM5eBAp9zz0UUR4VAbCLqVdDlycZTm0DH5/vc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CGIVhXWq+NOcg27X6TB1+/mUrMxk9/uDMHJ5Lq/G3lxPDEZJvegIq45WKqE6p2RhO
-	 LAf13uLh+YXIq0PGn5zQgjmitwVWb6w8zzJP3MpwFdqu/apx3b8P1DacaNgtPLWasB
-	 rLAf9YS+Py03LKs1kZJeuzm6L1K/K3KWhlzBDm8EuAz/mKRXqN5rN1lNCHJX81JugE
-	 /hGJUtY3NRWsGFA6xH+SuVMCVjPdJcWVNPy7Ai2uAaV5MMeILd5LYGe8l+kmlwJcQc
-	 S2buzkxpw09Ii/572sduAmLvsalqikXLRgC8Bz8zsAmvK1DiarDUgER4SfzSaebHgh
-	 SnkGNslqgjE0w==
-Message-ID: <sashiko-outbox-238285@kernel.org>
+	b=lq+qp7R7ZMrsq8pzYA3yCv7Zdnyv6N4L4h2tzTwKmZiXjSc8zYH8FyONG8xLliGRx
+	 7+3wGtdhcTp3nY7WMPmhvLp3G6vDvB1EmzWf3CAjbXatNmGxjUItb7/LVknn+3WIHp
+	 vOeSRR+2pshSGrtNUkDOgnJAWhlpUTrqQVFLs6qS3zrSsCo1QhHEDw3GbR5VCe1Qy7
+	 XPD1Dfe0EwrzQJ8mlLHG+0K8qIDk5mCAcTiYNHL6fiFdPRuD71yrccA4RiFJ5jzkJQ
+	 kJKosXamQhhgxT/L1qCXzU8kk+WLDWPRDhdCAe7mACgrlJwURqZ/ghcSdFomnCEKV9
+	 vBajCiXchPuuw==
+Message-ID: <sashiko-outbox-238286@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] mm/slab: handle __GFP_NOFAIL better with prefilled
- sheaves
+Subject: Re: [PATCH 3/4] mm/slab: keep caches that drop debug flags
+ unmergeable
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?Vmxhc3RpbWlsIEJhYmthIChTVVNFKQ==?= <vbabka@kernel.org>, "Harry
  Yoo" <harry@kernel.org>
@@ -71,24 +71,24 @@ Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
  Rientjes" <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>,
  =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQgKEFybSk=?= <david@kernel.org>, linux-mm@kvack.org, "Chris
  Mason" <mason@kernel.org>
-In-Reply-To: <20261127-slab-ai-fixes-v1-2-cf13b6be6692@kernel.org>
+In-Reply-To: <20261127-slab-ai-fixes-v1-3-cf13b6be6692@kernel.org>
 References: <20261127-slab-ai-fixes-v1-0-cf13b6be6692@kernel.org>
- <20261127-slab-ai-fixes-v1-2-cf13b6be6692@kernel.org>
+ <20261127-slab-ai-fixes-v1-3-cf13b6be6692@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Nov 2026 21:15:57 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B4231C0003
+Date: Fri, 27 Nov 2026 21:15:59 +0000
 X-Rspam-User:
+X-Rspamd-Queue-Id: 79CF0C0005
+X-Stat-Signature: aoig6aofgd3t17k1ts5qb3xgh1rhgsa4
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: zktnjz8mdintbcb3jcq7befnokcj5zdi
-X-HE-Tag: 1795814160-472667
-X-HE-Meta: U2FsdGVkX1+0cvbEIWRBrYesXEfwUy0byLzrfiInD0Ww5hgpo1Y+YGSr+5MieHp4/It23UYDlV6KNZO5cRcSu9GBTRzTu6mamVW5/hGJemkQogkc8Ex+3ChiXkzu24nnL2p2vcBxobrODcS+8hsv+h6edgoZAdVVTiCjtqoTBF7dfw0NeMuTGksr3rdi9MPr1d7sJ0jzPaPv5FME0Y7CrRCXCkDaSaI1D0E68zzQc229aK9IU31SgsBfU9Wmw5Vgm6wBT72qOxNSMJA6KXcUULnKOtZCT4Xc/E2oTymzi594FLn2wVL5RzFniHSCGIi6vQz79UoX6bg2zMBTcFPlZ2joJeav4XRRRO4hzbwFbpeSWEbVjr+cVxKJ503u5Co+LYDMBNTr0GCDNNvsl7uz3TcR3bkXy9R96bSnjC6U/JTNj/wKVSdWn+igUTkV1vdZFMX1IJdSfS7RIfEP7kmxQRFagIZ0NXApzW6hKai0hxw2p37tjFvgIow2tslqwp/l5IzHTIzP4a7OGQ9lROeMz0g1NRuATVUCyIaYOuKm8ZNIZ2Z1nhp7djIDhVw6Shff+UpsGXFQZsMJJhTf9tbCC4F6BF69pp+x19weCjbPqsKxW43DwJVeJZ45yUNLCU/DDZ7QJdnUC6WhtH9Wg1tzX3CCyNwT6/nMgDVpXoyNfViRxig98jEHnKCBLSpo4L0ZIkiIcufW+BbbScWuQlcY6pd70h+vgJ4gABQIA7H2bgj4Z/A6XNS38q0hq1Aog1R6bFYmc8hag7qneBm1JZQvEdtPbeubfBsf/1xtL9maDpfSqQNuLqpf6GfLLbczJrXBzUBsce+0uZ2Bj2YytHNQO2SvvTaQeMqHqdkX0k8n9sMPECs0YnBjmowAx+hYoVXuwDLY+8OdPq+qyaN90oMOlHht/AbAzymP8HPjJ7okhzqYs4F+b/I3mowRJ+4wS36jYrmrXbxde2VIuzVaR9P
- so7Okw6o
- 9+Eh2HyW2f2bi2GwLcL7c3ZQ6rB8Ipmz6TDGujTCikFFEKr9VdwlhC/zhgF1Goxy0GJct2ta80mpjk8tyaMk/mzau//rq18H4+4JKNNfrRZwyFX3IZ3+uUL+SYcr6PQi/iX8yVBczm/SV8V6D7uc6pNPgKeHaunjKLGTf5WimD8/q5aMWchPKb8pikA0GF1mGgonLmd1EDxGBGH8WC6B03o4OOPdJD73yULyJ3LaWJqbhkZD2DPpkfTb3GFe9zUD33mkjCib+CEfe5ayUU3YS3/QqV7tgPj7JosdIfx4zjPwhYUS87MAs9gWhFhGaexlaC/7DR6wPkc0Xt9KNj3TKi5qqi6wWP+QBMaQRgsIZL2wtLM9E290LbODXtdEkpj3GdHBPZ5UGAj/UjR6lGMMA/2EU/CN2AV2q5Nl5w2MKm1WV8lHudFLQpu5iUMeaV09/IKJ4oLZNRnV40Xu2G2Dkha+fjqwT2JJuH5IUvnKWz4PVb/sox/3CfvmlY68tsCf1MvQ3wi4KyVnE4d24r6a0mHAAUC1f9I5DnDlHOMK0XkgiRqva20NkY/Q08cDaY8ZR9MnCTP0wuCv7Xa+lTjjmS17TQTR2dBgcQlhGCTqJFmPVYXbMKH0ZwmOC/Cd1794+TC+1TTh27gdQ14igSKfZFrZIhyHjdgjGa32IIc53Oh3wDx7IhfcBzF21nr0Wevdv//5xAA2AvzOSXQ/MsgI1UeLlmxwVRxdOh44UZzkm9ESCDLW4ajmaoJfv/NnSDSJa4xMFBIrn9I3SD/F0g3mksZaKhEHCEBBNewgU0EWCNTYJAsilM6go7eOqo4aoSqc7Z0GR8I2HJaAglKvsE/AECsPgIT8mRuNlvJF1AXf+/siRGW+VvgMNC1tzg57TggXUNN1c4HD1JHetlGQUfb0cLodWmF31KtCnePjxyrZlI2pAi1+w7N8M3t4puQ==
+X-HE-Tag: 1795814161-440080
+X-HE-Meta: U2FsdGVkX1+skWF0mFRDeqTi9r45Yy26PnoSO78+amyTaoSSiGIuEYC8oAwEEjhPUsP+hBJx20oFJkEBbrjyLHdyCjXJDrYPgerAEhmtEN4VJMwJIu4u8XRObMChcYImw08LtoyR+5rYvXmufDky0lXR/CbF0gj/Muu/Zdg8GEDNtoQYj9aLTGjgzYm9j4DqU9Yl77St/ZaukIZ1n/GcQet/NTE4MCvAPI2R3hWOyAGFj2ua8fKbuXil6oPB+vAJnHViDQgEsFwgo0kIfYNb4sPKMLRdX48zZc4a15pxFVM95RvQYGf/gzO+YpYRCMmQ9QuwWOBPUGxPS2AIX/+hvILNVRezs9+V4c7tJTNLI41PXSM5GGN6FnU12x2SL5kxTM73H/doTPLXIwmoyxqQP7rgEfL1kVJtXngJiKEu9pvDhU8sWZkXbrYvDyBwjJpIW6EXYK1Tqdd8Gjq5hx77VZityZM+ZvDO6/zPHqSjwmtQHpHsCNid3Mpe68YScjlGwwVwBma62mp8UF6/icXAw/MUoSeAhsl9iuxQyvPY7Wer0qZ6Y4U9fq5BjxSGWb0BbaMQT9eODEN9aJpOY5FYHdi4M4vnsJJi/4oEKwHUTOUx4T4Vy1Rpqx3CjH/B2YqpSd9CbjUhKKeXDXRHZY9ZMC2E7wJRkZIKBvScNRsgeEtsZ3/9hQNYww/1c00xlC4rzlKtUizABD87j9jZ7KcOY506cXPoCv9CElLxwHrYx5LId+bkFacO/DYqzQQReoVh2/55MvHMZabX6qDYzYjhG6+T3+IdMZA+A+zr5EWxvYQj8oda81Hl5nB+iVThjB8igfUPr8ZXIYOjyaJ6V3iO2vCpx7Uz39ZGGDcApDotfmTndWEfDtuDvKkHmsVdqLelsdbyuS0Td3BfoAyAFtdHc2ErAWp5hnZwIm4QdZGqsqsE9xjmZ3W70jSCmofUPKSt2KTiAC58RqBlrYgl/Mh
+ hlULEEnc
+ e2hY+PqWbms+5+p8ACrf8i6MYHBTDmWo41U1p5+dfZgbMGk+QFf3lDsF21Lv1/MBr04IQCfY3Ro3fDMJC+zRiU0t4xlvPQMMijOPk9GYVvL9rBUoG8TdSTDkJFj8KHFQaZ4EkHcWBftUOkwrsjArkqhFepC8Zq5z92jz3zmz2xtxEuFfFiM+xZx/91i63CJsUWnEdVkX9w41hQSt5ZIy+1Js6tEg3EDZU6ZtqGYcxb+ytHgp+oOO7tO7svGwIimbjMNhT3aT59aUjFImWuzZCUEN2WArUT8fbBTailzZKz6ScEO2RMAc1QosxNz27kI1n7uwPfMqY7pKPBZPv2EsQ/x3XFTej3DKC6CdG6oszzLaQjt3vCtR2dq2nndnBy3zfto/wEu0WTsYjbd4CY6XSr3ydPPEhj5dLAUXTMCu/PEDVBK/AdzmPaDeU0YsYWg6b/9iDguF4/FvQimTPm+ZR+2tuzfPTSpEfMgmzqdAtbj4FWKrF7TKosUrKbPZzt9GUV/tfQfSFFAWu3TTl4xebQiSchOMYrfGQzOI04zoOpq9U02turTJp+3jl+cXTCtVvoZ+xiuLMjS0F8UrrtkvQ1UujactEc2pjhoASkyVpkKDwp7/t2Z3wxKOk7ZTNIYh0eB5W8cfov+hO6FIzGTCRmJWCRJ0V6ik2YSbeMgSUwWIFGK8f9KtZ1vGS3nc3EeKsEj1/tbJpz+znUMaeu4UIciRSuPEWe+UZzjq6GioGE0T7bq2OIyc9gN6QE15ksRj2mgHWOu/WUK6BWGiQ8DZ1/DnLwFgW9sAzstIwUPBBxKgWHgE7lctiyFRqZvAxRdY623FM08ftSovpNhRhnqK4J/tueegYxItZcA7F9IJw1saot6ibcI4QAC5VGkcfp1hGZfUM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,68 +100,56 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm/slub: __prefill_sheaf_pfmemalloc() misses __GFP_NOFAIL
-  without pfmemalloc
+- [Low] mm/slub: SLAB_NO_MERGE set after second calculate_sizes() in
+  do_kmem_cache_create()
 --
 
-commit 7b605e7e1980fd6063399368212254f7119ec46c
-Author: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+commit d25c80897a858b81158f0edaa6a941c6407fc597
+Author: Chris Mason <mason@kernel.org>
 
-mm/slab: handle __GFP_NOFAIL better with prefilled sheaves
+mm/slab: keep caches that drop debug flags unmergeable
 
-This commit strips __GFP_NOFAIL from the initial __GFP_NOMEMALLOC sheaf
-refill attempt in __prefill_sheaf_pfmemalloc() when pfmemalloc is allowed,
-and also clears __GFP_NOFAIL and adds __GFP_NORETRY in
-kmem_cache_return_sheaf().
+This commit sets SLAB_NO_MERGE on slab caches that drop debug metadata flags
+due to disable_higher_order_debug, and removes the global slub_debug check
+from sysfs_slab_add().
 
 > diff --git a/mm/slub.c b/mm/slub.c
-> index 5fd148f11efd1..20570e4f1795e 100644
+> index 20570e4f1795e..9bb031f9a41fd 100644
 > --- a/mm/slub.c
 > +++ b/mm/slub.c
-> @@ -5204,8 +5204,10 @@ static int __prefill_sheaf_pfmemalloc(struct kmem_=
-cache *s,
->  		return 0;
-> =20
->  	gfp_nomemalloc =3D gfp | __GFP_NOMEMALLOC;
-> -	if (gfp_pfmemalloc_allowed(gfp))
-> +	if (gfp_pfmemalloc_allowed(gfp)) {
-> +		gfp_nomemalloc &=3D ~__GFP_NOFAIL;
->  		gfp_nomemalloc |=3D __GFP_NOWARN;
-> +	}
-> =20
->  	ret =3D refill_sheaf(s, sheaf, gfp_nomemalloc);
+> @@ -8864,6 +8864,8 @@ int do_kmem_cache_create(struct kmem_cache *s, cons=
+t char *name,
+>  			s->offset =3D 0;
+>  			if (!calculate_sizes(args, s))
+>  				goto out;
+> +			/* Created as unmergeable, so it has to stay so */
+> +			s->flags |=3D SLAB_NO_MERGE;
+>  		}
+>  	}
 
-[Severity: Medium]
-Can a __GFP_NOFAIL refill still allocate a pfmemalloc slab without marking
-sheaf->pfmemalloc when gfp_pfmemalloc_allowed(gfp) is false?
+[Severity: Low]
+Should SLAB_NO_MERGE be set before calling calculate_sizes() a second time?
 
-Callers such as mas_nomem_nofail() -> mas_alloc_nodes() pass
-GFP_KERNEL | __GFP_NOFAIL in normal process context, where
-gfp_pfmemalloc_allowed(gfp) returns false because __gfp_pfmemalloc_flags()
-only checks __GFP_MEMALLOC, PF_MEMALLOC and oom_reserves_allowed(current).
+calculate_sizes() checks slab_args_unmergeable(args, s->flags) when deciding
+whether to set SLAB_OBJ_EXT_IN_OBJ:
 
-In that case __GFP_NOFAIL remains set in gfp_nomemalloc.  If direct
-reclaim fails, __alloc_pages_may_oom() grants ALLOC_NO_WATERMARKS to
-__GFP_NOFAIL regardless of __GFP_NOMEMALLOC:
-
-mm/page_alloc.c:__alloc_pages_may_oom() {
-	...
-		if (gfp_mask & __GFP_NOFAIL)
-			page =3D __alloc_pages_cpuset_fallback(gfp_mask, order,
-					ac->alloc_flags|ALLOC_NO_WATERMARKS, ac);
-	...
+mm/slub.c:calculate_sizes() {
+    ...
+	aligned_size =3D ALIGN(size, s->align);
+#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+	if (slab_args_unmergeable(args, s->flags) &&
+			(aligned_size - size >=3D cache_obj_ext_size(s)))
+		s->flags |=3D SLAB_OBJ_EXT_IN_OBJ;
+#endif
+    ...
 }
 
-The resulting slab is marked pfmemalloc, but refill_sheaf() succeeds on the
-first attempt and returns with sheaf->pfmemalloc left false, allowing
-kmem_cache_return_sheaf() to place pfmemalloc objects into pcs->spare or
-the node barn.  Even if __GFP_NOFAIL is stripped unconditionally from
-gfp_nomemalloc, the fallback condition (!ret || !gfp_pfmemalloc_allowed(gfp=
-))
-below would still return -ENOMEM without retrying unless it also checks for
-gfp & __GFP_NOFAIL.
+When DEBUG_METADATA_FLAGS are cleared before the second calculate_sizes()
+call, a cache that was unmergeable only because of those debug flags will
+appear mergeable to slab_args_unmergeable() during that recalculation and
+miss setting SLAB_OBJ_EXT_IN_OBJ when alignment padding is large enough.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127-slab-ai-fi=
-xes-v1-0-cf13b6be6692@kernel.org?part=3D2
+xes-v1-0-cf13b6be6692@kernel.org?part=3D3
 
