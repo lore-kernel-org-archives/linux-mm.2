@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931FB606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 12:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4710606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 12:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aIZ2PgCC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dtt1283S
 Received: by kanga.kvack.org (Postfix)
-	id A72ED6B05B4; Fri, 27 Nov 2026 07:14:57 -0500 (EST)
+	id 9FD656B05B5; Fri, 27 Nov 2026 07:15:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4A696B05B5; Fri, 27 Nov 2026 07:14:57 -0500 (EST)
+	id 9D5186B05B6; Fri, 27 Nov 2026 07:15:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9874F6B05B6; Fri, 27 Nov 2026 07:14:57 -0500 (EST)
+	id 9128C6B05B7; Fri, 27 Nov 2026 07:15:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 68AD66B05B4
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 07:14:57 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E963A160291
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:14:56 +0000 (UTC)
-X-FDA: 85480792992.25.74A014B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2F4711A000A
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:14:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIZ2PgCC;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 334846B05B5
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 07:15:07 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A8CD8A7BCF
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:15:06 +0000 (UTC)
+X-FDA: 85480793412.03.6D29AF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DD6BAC0007
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 12:15:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dtt1283S;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sumit.garg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of sumit.garg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795781695;
-	b=XmXv1OlYHwzfm6g57ZrqmDbhx48O5Dxff+1D6GD1nBPUvDJ2FtoFXyVgIgFVKV9U4JGy8G
-	Xo+9yimtb3aheWVZIXocd89Kd5fEc8k2Lk5qbaaOIUz6PiI/fxPzJim6oOtXuHdx+qCRMU
-	c6b3h+FPx92TmAHGYG5aaOE6r22EpQc=
+	t=1795781705;
+	b=VQ5BUGRcJTNawBKh+Ht1NhEZs4U/Z58B2jU9UeuiMINK8Tj0lRlk6g5+dLb2OvvjOx8cyI
+	18j7yQEcy6lAIQmECBHrtZq0ZObnp/MIOtsyTTZJnfZs/8zIWyVXF/O+nBgUNGFlbyinA0
+	zmiy+NEtXLWWWbcLKLVBJHZi/a0alxg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795781695;
+	s=arc-20220608; t=1795781705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tM8SXc9WGf6iPLFbf68oH/I2l2oZdLX38iKCsqiqJkY=;
-	b=XrZ5maVzN3efGsmsAyerbovIzdnXP1L42j9rfitKHkBxOyGdQnGNy7b4jqGWlubAB0Iyva
-	jjpVlEMUsXyX+1aWxPPrEtvSDv45xhLvrZ7ctpbMx7W97DQmV+Qm3NbHaWGc33uQdFbKmO
-	i07D3nawT0+hTuc1MmrIHLxQcj/l8+Q=
+	bh=iM54K9orOriSVeFYm8Tg3Py4IYE5anR7lg79PbJmHes=;
+	b=WTffHNBpwjMzd7THuacnQuzJTSDAFFp6HQKgpTUsv4XbbBQGPNDvCH7CWCi5mB/FW20qhD
+	TNHg59ecMREY7ffA+8/jC/ZBET3nTFvISnUwKbJ+Nx2e44FjCs1a0kEcTV4aU9floFKWlU
+	q9StE+/F4r/6xvRZ9UY8iEg2d/1w9b8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIZ2PgCC;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dtt1283S;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sumit.garg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of sumit.garg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 858874049B;
-	Fri, 27 Nov 2026 12:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEA71F000C1;
-	Fri, 27 Nov 2026 12:14:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 893F76254E;
+	Fri, 27 Nov 2026 12:15:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B0A1F00919;
+	Fri, 27 Nov 2026 12:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795781694;
-	bh=tM8SXc9WGf6iPLFbf68oH/I2l2oZdLX38iKCsqiqJkY=;
+	s=k20260515; t=1795781703;
+	bh=iM54K9orOriSVeFYm8Tg3Py4IYE5anR7lg79PbJmHes=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=aIZ2PgCCSdBh7XmzcJDpf7YgWkZ8/PzA4YV/zcGM11or/4gPkPdmyzwzeb9vzZBJU
-	 2zInaHrgLawwRJSVDG3/2z8/A/J4ua/wchlgufVddjLb2qXuTzOsHq19DMrOjjlYGo
-	 y/d6vI+nO6hHY28DEzoq5C0Ugv4xhzLEPQkjO/3kYBlbt4wFZbQtZtG6pM2qMSnsNm
-	 mqIcvp7NHajVYr5/7FUdPyuZAGi6I9T5LKUUwGzQz13mMpGOZSC6LPs/5t84y60w3O
-	 uVvR8ajJcLWMClOKml8jHc6pnzWmLQNzRta+n958LFQOaxkvMwk82yGQjzF3k9H3W1
-	 hhLpTPbUqqsGA==
+	b=dtt1283SmVlMJDALB8+fBXMf9DpoJ/7duRnkVxmjg9BRCMUmL36GBysLxMuEUnc6L
+	 NW05HR0AteyNXiALdjX0kNEoQS1iGQV3dNU2074CQ6xn5Qy/KAuuQKK7ZgL/v0zglo
+	 aQnlcYatWQ/16jLUmzBmCzBq16QBDXkb07IHKc9bPo48Pmn5HEWsuSw3yDu8lDQh15
+	 4vVAQNpU+4801ZTfCfRhqVwKEc6VoUKRlrZfCLY1/mdxwi5sjFq5uqSTfpq/rI+j2h
+	 t1BrO1KSr6StxWy2CHoeWL3nUFdig+6cQvltOqpUS/feBqaZmViFLklXQ+sMzB/znc
+	 Ti308wFpeHxyQ==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 5/8] dma-mapping: Introduce lendable-dma-pool
+Subject: Re: [PATCH v3 8/8] optee: Add support for lendable-dma-pool
 From: Sumit Garg <sumit.garg@kernel.org>
 To: Vincent Donnefort <vdonnefort@google.com>
 Cc: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org, 
@@ -77,32 +77,32 @@ Cc: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org,
  danielmentz@google.com, linux-arm-kernel@lists.infradead.org, 
  linux-mm@kvack.org, iommu@lists.linux.dev, op-tee@lists.trustedfirmware.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261111110738.872947-6-vdonnefort@google.com>
+In-Reply-To: <20261111110738.872947-9-vdonnefort@google.com>
 References: <20261111110738.872947-1-vdonnefort@google.com>
- <20261111110738.872947-6-vdonnefort@google.com>
+ <20261111110738.872947-9-vdonnefort@google.com>
 Date: Fri, 27 Nov 2026 17:44:23 +0530
-Message-Id: <179578166371.172025.2529658384273765570.b4-review@b4>
+Message-Id: <179578166371.172025.1170602724631713692.b4-review@b4>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=974; i=sumit.garg@kernel.org;
- h=from:subject:message-id; bh=Sx4ywZBhiyullZrUtgY82SttR0yq7G5O52iMdmFQsBE=;
- b=owGbwMvMwCV2RWpxpe9rmzmMp9WSGLI5S3Q33F0lUXiz/xDP3tOl0RxvDeZkfjTJm7Dr88pGL
- puQ1PbbHaUsDGJcDLJiiiypX79N2yb0rzbU6gQPzBxWJpAhDFycAjCRZAZGhm7vDu0tNkxffpat
- f6wmaad/knepippM+rqdy3k+Zk3OU2H4X/fAReDjgWa2WUuZ9tT9XZR/OTpDcP3+JQtvMH1bE16
- pygYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=469; i=sumit.garg@kernel.org;
+ h=from:subject:message-id; bh=Y+fnpb+6sgyx/TICAWkXBLbJdNddcf3dmWbm5GHNfSA=;
+ b=owGbwMvMwCV2RWpxpe9rmzmMp9WSGLI5S3Stv366/n7plf8Ot9/EukWzz7haXJDOvVWsU4v9/
+ t/qn+eWdZSyMIhxMciKKbKkfv02bZvQv9pQqxM8MHNYmUCGMHBxCsBENjcy/JWrfuZ8cN60h88P
+ 3OLZJalc9e5m+ebZ/w/xd75snDkhw3oaw1/RFY9W6+5S/7WJ+YNH/jKlWJfFzIsSbMtevzAJ+Ln
+ f1o8ZAA==
 X-Developer-Key: i=sumit.garg@kernel.org; a=openpgp;
  fpr=65F5F696B612FE7D553AC80CD41AA3794DEB3C9C
-X-Rspamd-Queue-Id: 2F4711A000A
-X-Stat-Signature: cxsuobm4i4fmb99x3z1aux7w8b9w8io5
 X-Rspam-User:
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DD6BAC0007
+X-Stat-Signature: hfgw4ixwuijir1jb5iw1he73yuy8pt37
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1795781695-561598
-X-HE-Meta: U2FsdGVkX1+l2Wk1Mo5XtmJcBHZZjoNIcoEXmypcBgRwCnnK/BRA4oEVDWI9dcVVphbm1WetRpXMda9GJZB+SMtAP1BSUGjpBmUH7NL7vSBmzyARqL8WCyaD2CphTkgga4fDpaNXaEUICa3Ga8E/YIHC+tn6tfR1smU6oMdXKYiO+/XLBQCYSZksJAYtVxhw2PFJagnsNwqwLPgXBF5EurrVIndD5kfrEOacEKm15ukzi+7dly6NHxzXSV0cRNgt3gQIDgacBbWcEvx4Zbl2qEowHjQea5GvBeBZsWVxqzoyQWMLU3KNUmOhW0ZXWxNNPfV7DcIH9v6WxUe33KffIfREt+vJ807XvfTE7H1GCUN6YRkkL0q7asnLvAIyDNGFPcqRIsmGMZ9whejQtZePKZrX+ER8vezJ4lQuRzgcSzpE72750vWJziCPb8hjDkyiFArdVWzLaVzlE8bzootY+k6yCmY9f2f3p2RwJbIdKs/vKWojgaERnjIz6CwoP4kuKoh/2NqPHBvvNkGLTmqDnFuv+0yMZu9QLvc5D7QQJPKdxGZFG/2/Cs4X0Va8kg43Rn31m94wc1dagJYSw8Vqbm/4cT7RooZ71amnCgDBV3vlIsTO00QjBGswnE+LJ5PO2Io3YUeQd8MjJfR8vLvJdV3kNpiZdo4+epjVSXEDvawj5YelLeLW8uciFJFgNl205wc5BcJX4SI9XgGvB1+I5s8c8+HBdXt9mboxOznZT9uHaYZ8/mkxHgQrifk2zIVfR9UBPwyzMgnESroc6cFgz/tZNUdXjpG8S8F1/1bcHRA+BTxGfo2c5wwEMLxxa9cZNJ5xnynp1VrhvOaoqDh3b+lrJsnqNWqCkW9JjtjX2hqAJHloLO3LWOO43xdJc8QOEPj4OUxqemFxCmheQ5Kfd8NAGF+GinnMPgVEMpIP09oIcx6XtHoRDWMyeCwaWe/7mfiE1dZInrwtGdirvgl
- Gm2xYHSG
- bV0OzyuzpALDZxQqbaZyJbU0gDdcEhT8CyPBhPp+ekZtbm7wKPVorb/7EdXUXZSV+mXpHr4mZVcOMW6iDW9uNxIF4j10Q7CZwAsxgYySoLR0Zn6BS4aM1KRdNNL72lfiVrXOE2tDaiqrdnnAhGWttRd5faFeZ+d7Ssws9bMhTkdc9ECk7XvTgHteQZp+y91iRb4e25/jgaguVK+afnarqM1wCocYobUpIbQ6c84YysQk5zKDQq5KqCEATtBRs/VcnEHBnKE1L2HlGj0PHQE70PHR8AO/S9Gh/TWvQ8YrvZsosd/ZUrU5WTnnVxkj8nLqdYXdsXiuJelSGLLGa/RWjSTArvGFaAKyn+c8T9L7ebnMsoi5V+tiSStFNX/48dMN1KCugBP91YUSoHqZrfj0NMhInslmn8x10bjKOahQLpKJsJ9Gnb+Ge5PhMsJqn6p1hA1gG5GOf92DCK9Ik1WTsGwQTVrP38Ga7OUnWEUXs+6DICE85E3nQMFMUuRjvYXvEqzlCHKReMDaZdmUpDqwk06lTm8gLmukUQD7Ep0tP0+m5BUGnKeEp+coySrPAP4bWkFBWGC6Mr7qo0yTWNurVN9XT9uUl2cEMJLCv4WvNx7PjXQv5HlOev53ZOA==
+X-HE-Tag: 1795781704-642718
+X-HE-Meta: U2FsdGVkX1/hVVNvCtyLEkeRZnULD8vKhRrxeTfT2pUslaAKZq1Nnk0MdveXOhOmKf3Sf6Gbqc5kY3c4E7guIHN1OQliU/sIEBmebCfCldPCR2kBRRyfceKobDQVSouXJWMfNcWEQEF/KSMa7ZrF46l9S7QZxz0Ph/n/TqdAb2yHNNVq+X9lCjWXpx0H6arwMhL1ERjCsXMFDtNb7pDu9+JaxLJ5cN5eG8uE6BfWdd8V/s+uFzYxXNEaM5NInJ5r0ryMV+Bf8EnaFZhyG5YRGSyL0gglb9uX0+RtGgqYnIbt69O72f2tZhzSg610sKiSrKk3XZVRB2ugtxMqo3L1HC5vgA08FVVubmBL1d434TSPdvItqxCDOI/KZi3z3L7e4cYisk0mwKYYbEN3aejqMJ8vBkXJgFym0kP2AiN1xqo3C5aPPq95UZW/X0NSNFovODVNIjlhpbhQKVJnw7apC/lH2YC3lYLxGn/ncFMOcOjqDa3lLX1LvzBUoREZ5r9y8IphO6lobvVlXt6WySCTIE3shhqJ83oiSRmUM+V+XA0/ezwKKlf0suIwyrP4/bJ5bNqwof2zUUwH52Ba5XEe14R0e/ACMXen8V3sHOFAvMZoBfumdnzVnZ2FmghlKDrBhgIukInYPuoV0e8wItSEqrdOyH/B568SgT8+pibP/fkXfczxWMIVPpTfi/T8cRcpH9UngXEzCKjGJpXLpE/jcQvmjcv2ZrFHPM1Ecq+EEjkUjpYlHWuqb3mxlvZY5atCSsXC/W14KS3ILHVolprewneaY+qqQCORjZpCwmy9Fu76oOLgGMyl9F+Am6a2xiHR7T4Wwrhs5x5TX9pSS8FOJmuHT0kXpV7rLYiBWNiC2OXNBEU6mHlm7zj2EDRQl8tqp3Y54QQA/IANCffA1XUUFjmWbb2R0cpAScf9g3QmzIWF/yVkWcfGBkw4DITAXY6U2t/stJ7OiC5nW4YHSkO
+ oF9uBGuN
+ FNq19t6VPPgLx2EYCq0mQzjG8U9lYTJVtVMwbAzro0pAK7lE46ktEe5IiWlmiBOpzaT3TSYH9lSyZvVYzYYDe6vCm7eXRZecxAQOGvdq8I0J3qZ99Vo5dtAz9hs5ah33otWdhB9eenrR5k2ClYPaofe0/lLvR7DIMei8Otu5svhdzd7xXD/lo4QAhk2y60ixR9Uv25KLYUKEGjQu7kxhQzMgRVeTwZ2+8QyPoIBTtCiQddr3BMoZ3Xry+CN1l7ns3WYffPciQllpZl1yoUGFkbyh+CBGhF+kKIUoPt8Vt440ga+8vyUco370jjDNHf0XtfrEjY/dWQh/I+f+XmmHq0N5EUKCK40O8AsOx5wZnUbwKrLagmKYhobsvnmaXBELQswbuzObVMczpZCysHUOlsmCB5Uq2y8ZJKDNrjuvEVzpVyA1QLFRrNCgtsly535nmi5FDZc6BzJg0jE79mqooFyBQD10vHW8ewMkhmZ8c6Qfpn4R7sGuGSAAvfvOCpeoFMmcazlJFGiT63ampO68EJCV/dr5na3XiyZ3Yq9pwugaTy5vk6vvP0bABNIVHEw+gISZNiIWKo63BNcwheLeo0NANzRFGUiY7nzH+HuAe+B1kzqy3fM6Oq94FBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,32 +111,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> On arm64, when memory is lent to secure world (e.g. via Arm FF-A), fatal
-> CPU speculative reads can still occur while it retains a cacheable
-> direct mapping. Introduce the "lendable-dma-pool" reserved-memory CMA
-> driver with dma_zap_direct_map() and dma_restore_direct_map() to unmap
-> pages before lending and restore them upon reclaim. Devices use the pool
-> via "memory-region" or "linux,cma-default":
-> 
->   reserved-memory {
->       #address-cells = <0x2>;
->       #size-cells = <0x2>;
->       ranges;
-> 
->       linux,cma {
->           compatible = "lendable-dma-pool";
->           reusable;
->           linux,cma-default;
->           size = <0x0 0x4000000>;
->       };
->   };
-> 
-> If no lendable-dma-pool node is provided, the API falls back to
-> can_set_direct_map().
+> When memory is lent to secure world, fatal CPU speculative reads can
+> still occur while it retains a cacheable mapping. Use the
+> lendable-dma-pool API to unmap pages before lending and restore them
+> upon reclaim.
 > 
 > Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
 
-Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Thanks for all the rework, the OP-TEE changes looks good to me. FWIW:
+
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
 
 -Sumit
 
