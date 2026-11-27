@@ -1,106 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9C1606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 15:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC769606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 15:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cJOpl0D5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JB1zssfY
 Received: by kanga.kvack.org (Postfix)
-	id 894E56B05B2; Fri, 27 Nov 2026 10:41:06 -0500 (EST)
+	id 9FDFA6B05B4; Fri, 27 Nov 2026 10:45:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 845506B05B3; Fri, 27 Nov 2026 10:41:06 -0500 (EST)
+	id 9AEFD6B05B5; Fri, 27 Nov 2026 10:45:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75B1C6B05B4; Fri, 27 Nov 2026 10:41:06 -0500 (EST)
+	id 8C4B56B05B6; Fri, 27 Nov 2026 10:45:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E9356B05B2
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:41:06 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C95081403E5
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:41:05 +0000 (UTC)
-X-FDA: 85481312490.12.3B22558
-Received: from mta1.migadu.com (out-55.mta1.migadu.com [95.215.58.55])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B08CAC0003
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:41:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cJOpl0D5;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 29A1A6B05B4
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:45:23 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABF86C040E
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:45:22 +0000 (UTC)
+X-FDA: 85481323284.16.D4B47DD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9001A4000B
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:45:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JB1zssfY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795794064;
-	b=Pv/x39la94/gtHNaQbg3vwImiohVukUf/Uc/Hf47gk06LTO3xIrE8/OlZu/asJ/YN2XLnw
-	o+LzttMcpCwil7eOWsg7TSHNeEykrUoS0z9s74zrPGpS71OeNsrRPRZEuOku81CIFS7xgO
-	6RDUUDdZ/9Gwcgh09k6y9MYrYgEyTeQ=
+	t=1795794320;
+	b=zfjDiq4XrXB2iWBwS8oOhMgT0euD7oIkNlDgwU5+AAIpxTQEk+NfYogrve8YWTs6+qGmbj
+	MRFNtQSBFEvrNpthi3aLHSWffQGRR2Mmldn4Dp6wzFcd7dIg/mOLFYQ53GL1XLE3l17GcR
+	B35TEeCdyD/OZsph8fKfreUaqWlg0eM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795794064;
+	s=arc-20220608; t=1795794320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zTeGEeYubIuGfiie/NnBel4Xijl6Dj7t6gEULam6Lc8=;
-	b=62IM4z5TaNjy27mY4/ZHfWoyJYVBaJ6IMO/mCJePkLA0/KwVpcT2RoLd27BfxyOin13m4q
-	K1FyjZioYaUqj2ntWvy+b+dAgcZhbn0gvbyDksa4R3kQHBddApiEMaIhK3uSy2xsLSft51
-	bqm/q4yxNhXHrAMZOEeH0YtQU6zJ0BQ=
+	bh=gnDEMS0iHt15gL5KaJ+Nn57X9otTzk+I58v16QdRYcc=;
+	b=0YIsK5eKAgStbfqELPQ9qyPHjrCToJW+oCmGg0TeD0h+GF7lb/0jEq5y/Af2axDvfjG1RH
+	9OoTMMLeTZxqb+FgylEVT6vYRfBYTb17rBlVdQOWR53W8typtrS7rzQOmVO2ueP/4BRIBa
+	9wPCkutkgaGrH3X7wiGwHq+Rp4i12e8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cJOpl0D5;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=D7LzFkhrlPQer8Lrs7O6LLemqF5OXFeGJoFOpPJ4gPo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795794062; v=1; x=1796398862;
- b=cJOpl0D5OSfcQqez6bcfCZyocvBCdviNPMu7xXzrW3rxCi7bGixjVd73vMe5JMKb3B+H+luq
- W5mo8RtX8Cg6oQ5YDJre4nAUcjgffv4gqoHS+0UQAqQd3i1s594vnGrVvLROCT//DI3K3N6MCGM
- 3zX7oZhRG9SWzVc7yRHgi3kQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 944c59f8ed2ff705;
-	Fri, 27 Nov 2026 15:41:01 +0000
-X-Mizu-Trace-ID: 944c59f8ed2ff705
-X-Migadu-Flow: FLOW_OUT
-From: George Guo <dongtai.guo@linux.dev>
-To: mpilaniy@redhat.com
-Cc: rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	chenhuacai@kernel.org,
-	ardb@kernel.org,
-	shuah@kernel.org,
-	ilias.apalodimas@linaro.org,
-	akpm@linux-foundation.org,
-	baoquan.he@linux.dev,
-	ruirui.yang@linux.dev,
-	guodongtai@kylinos.cn,
-	kernel@xen0n.name,
-	graf@amazon.com,
-	liukexin@kylinos.cn,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v6 1/8] efi: Pass KHO state to the next kernel in a configuration table
-Date: Fri, 27 Nov 2026 07:40:54 -0800
-Message-ID: <20261127154054.43755-1-dongtai.guo@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <99670aa8-a33c-4a36-b8dd-66b02c6b6159@redhat.com>
-References: <99670aa8-a33c-4a36-b8dd-66b02c6b6159@redhat.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JB1zssfY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A42DB61F8B;
+	Fri, 27 Nov 2026 15:45:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0664F1F00898;
+	Fri, 27 Nov 2026 15:45:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795794319;
+	bh=gnDEMS0iHt15gL5KaJ+Nn57X9otTzk+I58v16QdRYcc=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=JB1zssfYw+imHpGzqwtC5bxeRAT3TilT/4N6aggkc/2aQrIFfSKYPjPnNGrDnNuCD
+	 i6Q3iaDTFqGIsVtaIEed0I+jvbQmNjOGY0hNBmtE6voI8JTkFcYDjmfcF92t2aRQN+
+	 ENcGwC6L1Hmee6FlpOuUsmYvSvvIMUcYf885vMlscaWmV719ZBNjtMUuQus6NE4q+1
+	 GuDMExlzxK9s0A0z0wzpLqi6uXoEDtouKh3pCKrlizfJO+Peo0U2usbiuYYHnWVCuf
+	 b3Wmdnn8kJMsf1oSSjL+Rjjv+3RkqB2T8knDrwlRloS6lt1DluS9/MFbEx3LpgZ2JN
+	 Xe/yFxDspXKbg==
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 3DDC4198003A;
+	Fri, 27 Nov 2026 10:45:16 -0500 (EST)
+Received: from ams-imap-11 ([10.64.2.31])
+  by ams-compute-02.internal (MEProxy); Fri, 27 Nov 2026 10:45:16 -0500
+X-ME-Sender: <xms:iKUJa5AkdJxnKccLXcMCurc131x9BzxkyDtyblVcz7UTk0qCfK6l8Q>
+    <xme:iKUJayXFm2YhzIgi9SPInDUX-UJiV53UZOU4RVdrD_eqdQDtpoqTcX_P3iLfD7CKv
+    TjTZCJ83aqifQrHscXBVAfYTsDfYsa4nS7m01fyEiM889CWl_Fv8CmX>
+X-ME-Proxy-Cause: dmFkZTFMcXaa74Ww3Kiq0njNmC6WTjACVv1LMbtEsqeSpRVSFbR/Ii5MZNWGX9Zt0PDC4H
+    QxR9lt1bmXDfrRIrCorv6+5mFL40Wh4Sb/IbRj/BEfQvKKf2rrQS9jZJs2KpQ++T3wSoLD
+    HNqyZ0pThIqEcsGyNXKeRbGfLfgvIjr5ltrRA4kRQMAh57Sv/vW40wLB5ugCQoAwYP+yDn
+    mqcN6PXz8tAquh0HX0rjDTsI5AoO0CDjNZ9dJZhAXhuICxzq9EfL7Fytc6bGOS0h+qgiFD
+    r4m02mBJrAEFL2pn0rfl2R8X7FfezgjnyIqIWsi8BdeUbjGCeYNUokspCipztY5uB13oL4
+    YuyWH8KtSnS4uQoxE7PMGHY1LlmlFxxm1KE3zJprK9tqrPEVmOck569OEc4Z34p1jVo+q2
+    3ivF3fonc3VfONZur+ttGBJiQPDOFX7bO7YbRRwS90s8oKkKqrAOSAp+bDHExf7PFpN9/2
+    MYSpyRRZaH5knqwf1zivHKPr3PkJ8A/L4rbGoWpOAQEudRzQJbmBkT/2j4k+aBm4BxMI8/
+    7ie4vqieF2IT3VtbrVvRPx/II5OdY1AE31VoMtNRQFbUR9Jq9KMDKqtqe5GqBnHYYI6KCZ
+    Osa26CLih0vjr119q8j7LlNbXu+EoLzZC+4Ve+yd15O4D/joKlh0TnVomAvg
+X-ME-Proxy: <xmx:jKUJa_qdFYIe-J18cgVIcEIWWYMT9YX8BlOTTPoAY2dY5zm3U0iWFg>
+    <xmx:jKUJawt29v05zGj1N-U8j50ppQcmBWYQ0-C0cQ6JoAXHx8VrtcezgA>
+    <xmx:jKUJaz5G7PV1fTi4fQ5s08qRx5AGl_yw_XHl41HZSDv4ismPsQ3SZw>
+    <xmx:jKUJa5RQ7EvBTiz9Kx9a6LpxkswJ6z8kJ7JlqwouQwm3fnLCCmpRLg>
+    <xmx:jKUJa7lULcOKouAxtdiZ0dgPwmK6qX1xlLeMs44QyW3EBqEInflytp2p>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 5658AF80093; Fri, 27 Nov 2026 10:45:12 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m8eennd4rfgg1d8zcg68mg9db8xbeida
-X-Rspamd-Queue-Id: B08CAC0003
-X-Rspamd-Server: rspam06
+Date: Fri, 27 Nov 2026 16:44:51 +0100
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "George Guo" <dongtai.guo@linux.dev>,
+ "Huacai Chen" <chenhuacai@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>
+Cc: "Mike Rapoport" <rppt@kernel.org>,
+ "Pasha Tatashin" <pasha.tatashin@soleen.com>, shuah@kernel.org,
+ "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, baoquan.he@linux.dev,
+ ruirui.yang@linux.dev, guodongtai@kylinos.cn,
+ "WANG Xuerui" <kernel@xen0n.name>, "Alexander Graf" <graf@amazon.com>,
+ liukexin@kylinos.cn, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org
+Message-Id: <976f1220-a259-4bad-9eb4-ae1cc78a79a7@app.fastmail.com>
+In-Reply-To: <20261119082252.9120-1-dongtai.guo@linux.dev>
+References: 
+ <CAAhV-H5Vse=pKC3Beqhqxa7fqadiGVNqkSy_06HZ3Luw2Pmj5Q@mail.gmail.com>
+ <20261119082252.9120-1-dongtai.guo@linux.dev>
+Subject: Re: [PATCH v6 1/8] efi: Pass KHO state to the next kernel in a configuration
+ table
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9001A4000B
+X-Stat-Signature: n6n4695kjmsb18ktdwn33jofm9epxn49
 X-Rspam-User:
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795794063-193164
-X-HE-Meta: U2FsdGVkX18UhtUDBgeSnj/TFApxaAUkEUEuxu9g1qKnlTtpMhAiJUVQm+XfWfKZMWYPMGKSEXhmKnQyEyCeRtgfIWt2rQaTm4X2G/c1QbWZ22E4oOvss48ohuyndQvnwCqIO236dV57oFNKdBY71a0gG77xpAB7SxIW5vJ2qOQUGLulp1SH8AlWmI22HKvy+w/u9OKmUpPZMjtYoaE3+qQf65LhuwWJCQUFJpq8vW/kDjhpZEdjQAHZGfYf7Tp97d81Q+6b6HgXTZFCdl28TcW/+zdF6jSSRymGAD3h2SNstuxxdXMtC0U6kTfuvIOkSiNn2wE5HE2k57D/w6wxyluRHgBE6KpaH83c19wuoG+q3svfBzBkrN2D2nOXMPr1r13O82gxkELTTHiLWeCUM/v0mZQxll8ZYcy4rtOwvXDTxv6xsuMS75Jtti5YPGKB2i0G2cMUfUG8I4Lm04At+Q3NQIgNW5ODsMiy5SRk631akutTbCTNcRe3DrNoO5VuuZQDeTveKFcWX3xnlenXq3/dwsUsP1mb+ERlpdFD0QxMb0ppNIPXs9qI6tV4lUkpah/4xCPXWGbnGcE1CdNAm//lwRedllYfNdwxa65DaW2fw5rMU9vR+glJcPNoWZkWGu7VmOziR/FyGeVQkAJqklRxCRtCJ1CxirDAdAt5ddULeCJO9D1iez51sRmzGU1rtYwfgBSPyFBKGMLoTDy7zuyt6tv5vGBkmm9j85gSAmnlvZ83hM6C5qt60ednn/T4RTdjreUWpfgVnghgJp22H3JV+5Iy9P+yKDQxKkC7DzA82Qd3pobZrOWfuKDaaU6RamLiav9uU7B2WNHagYUy4HkLtBg8cMLx+NUUx9pcHMDLNi5DC9dSxQfFABUelmt/ajyf1hnC4EryfvpFzLQUUTUIUMyhm42ytHb4y/E6cGXquqJHkZWUb32AN7OqVNyTxZTFuMTAjDXcgQpYAAh
- hUilGBij
- 3bn3RVTiKdqPMyVPWCT0XiE+inA3XFoTVNVwChZ1PN1oRnYQwnQDY2ggXR7kD4PP65m0fGcphqPPmADpvVCOB8+GxDxxDUIg6+PIMvdbvZ2Jfq5HF75knKxTsJTQpTbGiaKAN9uY9KPNgRWI2Db5rXBJzz3n+M8vTnOPRNOD7ztJmzsz9wGQS9emntSU6oG0OAiDI8pF/FNa8qoYtaNVHIWJovkMRqw+xaQ6KGuX/qRacdSUFIA1wbgxdczFB/txtOL1EpqhOv3seZ/vCtYhXaDAMavR3n0fzb+TAkBx6glN5NaneTwbJCbPdokB8Q66FkkGCc5bWbzw2rNxJGSj2vGP0/gEy+ZzheI6Rw+hr0zezulNnzPYCRa52yCiw3eIyFEQi93bM+7WEUqN6jubUk3gFUl+R7rssNuoR+BF34WyBlN+idSBy5X6Nc2Uodx31kHhVF9f4bkm3o/CHhqI2JGU5kw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1795794320-884967
+X-HE-Meta: U2FsdGVkX1+GS1bof09ZmH/GOSO8wtxmOZi4hFjCW5iTXGhPUM1JLVR0eMRkr+jzWz6QkIyXyuisyflDaXDX+3WqKb9hdIUduSKcYHWu2ID5Fhy1W1pulNWGMfQgvVE9QflHGmlSTlVmaHW9zIrtTouPMNR53EpOk39Q1hnV0vpu4P5W7wRJ7KNSo4+2x9AK4re5xRt7MkI67WY+LnqLaIaNb4YpALa1vkJewlgrKUBgX3mi3A1RJ/ApsdGIeF+yYhNYxush3oGIaYcXao2Pex8qEtxCIhPBjKy/I2CdM38Cf5W5RkqgpFOf5FsHa2MD3fWWGW7hbqPOt+KSKIVuR41QgX7Paqk70/YJ3+w8DAZvWRliVoGADyd8SKf4FEN5dP6wEc2matBTPv6aHCNibP8wSKnCdLyk4yKUJWwWKNGLoBbAdmmWzU82P4WYTRJ+PRV8umJD1ghooy+NGk+ZC1NNPh7nozKkm6+WrVEs6juDtPPE9V77BNrKnSZMhlIZ8BCjczD51LPqsmvhkAK8Ek3wiizFKPHwEQaIOSPQaPnX6TDYArEcapcnh8UNXnqRPPwbq2L7XkDNJQ/uMjeFRrMqqLJrsUjw3prMnuf1LVFR5qEZ8oe7TbglGV6qV6ckohOphpKeKLL4tIww6CwsP4OgM9ZBYZbJULb+L9Zu9eVhpkSLlyV29KPY8M+Rda/96zw7upNGFKcjav8IghZ7DKJE4KDUi1y1GDHB70nmO90e+7yYpWYtc+5trtSoFMGMF7OZU106L/bqgdpi/b2wKPXK8ZYNZy6sdPDoSnQlTe1NKJclL3nsy0Le9cdEPxBi0ORoccoj7r+Pd5oNpFnrSRIxTd2hpvOpKdNz7XuVGmna6LD7dESHX0NCUqYTcN1Hg+DMZeN4xk3yxahVGiXb23IJYlm7y8zbgAlhufdd7o0amjFlIJmF4WJS2XelKcb8vldozK6rz7fbE+JGMei
+ QCQ8LUHB
+ 9vHTac7ob+e2l0SphwWXN45ZmfdEs749o+Ie4lJ+eu5YRs3xWUiyS4TfiSF+yo/sJYkRyqbTH+I2rDcfxUBMza8a2ynD91GvNfvjJdB+Uxqw8R8pvbUHFKdIXl00UIS7ddwu1ml0dgUn0fsPdfiej3ENRasHZlm5vxxNNZ7/macfv5ENsJPEnYuxFz0pt8rXfmQue91xLN07GOMU7p+/nDK6DxWL62wJjpCSym2tDQCivnIRKNVQigxkn6RQYikpHTw5KRcsnQUo787wjYk0BB/m/bX9JHqc+f8TW6i7kmOgNQxpHBQROEkyuGq0Uq5htVjdVghm+3fly0yhs169RCMvLFB503ME1qXXbYkNm+xUYek+JIfCSf1TBLRdFSlT9Nqb0BBsjTlQcIreeHcAry28luHKDrBJNCe5jJdorp+rQXjtSFVEl4523IoQTGak9gBWdLTH4B05hCGQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,50 +132,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mukesh,
 
-Thanks for the review, and sorry for the slow reply.
 
-On 2026/11/4 20:24, Mukesh Pilaniya wrote:
->> +			pr_warn("Could not map UEFI KHO table!\n");
-> This is a Linux EFI configuration table, not a __UEFI KHO table__, so
-> IMHO; UEFI wording is wrong here.
+On Thu, 19 Nov 2026, at 09:22, George Guo wrote:
+> Hi Huacai, Ard, Pratyush,
+>
+> On Wed, Nov 04 2026, Huacai Chen wrote:
+>> I prefer to keep it in LoongArch until a second architecture, and I
+>> think Ard is the same. But this is not a strong objection to Pratyush.
+>
+> Kexin Liu and I have tried x86 as the second user, to see whether the
+> common table holds up. It needed only small changes:
+>
+> - The x86 EFI stub installs the table, as the LoongArch stub does.
+>   install_kho_table() moves from efi-stub.c to efi-stub-helper.c so
+>   that the x86 stub can call it.
+>
+> - kexec_file_load() skips the SETUP_KEXEC_KHO record when the table
+>   exists and the next kernel will get efi_info. Otherwise, for example
+>   on a legacy BIOS boot or with noefi, it falls back to setup_data.
+>
+> - When there is no SETUP_KEXEC_KHO record, the decompressor's KASLR
+>   code looks up the KHO bootmem areas in the table, so the kernel is
+>   not decompressed onto preserved memory.
+>
+> The table layout did not change. The only change to the common code is
+> that efi_kho_table_found() is no longer __init, since x86 calls it at
+> kexec load time.
+>
+> Tested in QEMU on x86_64. With OVMF, the KHO vmtest and
+> luo_kexec_simple pass, and the second kernel finds the KHO state
+> through the table. With SeaBIOS, the KHO vmtest passes through
+> setup_data.
+>
+> So I would like to keep the table common in v7.
 
-Agreed. v7 changes it to:
+Fair enough.
 
-	pr_warn("Could not map KHO config table!\n");
+> Would you prefer the
+> x86 patches in the same series, so that the generic code comes with a
+> second user, or as a separate series on top?
+>
 
->> +	if (status != EFI_SUCCESS)
->> +		efi_err("Failed to install KHO config table!\n");
-> When install_configuration_table fails, the pool allocation made
-> just above using efi_bs_callis never freed, so a page of
-> EFI_LOADER_DATA is leaked until ExitBootServices, This is a minor leak
-> so mentioned here for review completeness.
-
-Will fix in v7. The pool is freed when the install fails:
-
-	if (status != EFI_SUCCESS) {
-		efi_err("Failed to install KHO config table!\n");
-		efi_bs_call(free_pool, kho);
-	}
-
->> + * The EFI stub installs this table zeroed on a cold boot. It stays
->> + * in place across kexec; the running kernel rewrites it just before
->> + * each kexec, and the next kernel reads it during early boot.
-> This statement is only true for the LoongArch and on arm64/riscv/x86 no
-> table exists, so the comment describes a kernel-wide invariant that does
-> not hold.
-
-Right. I don't want to name only LoongArch here, because x86 is
-expected to use the same table in a follow-up series. v7 rewords it
-as:
-
- * Only installed by the EFI stub of architectures that pass KHO state
- * this way (currently LoongArch); elsewhere the table does not exist.
- * The stub installs it zeroed on a cold boot. It stays in place across
- * kexec; the running kernel rewrites it just before each kexec, and the
- * next kernel reads it during early boot.
-
-Thanks,
-George
+I'd like to see both tbh, but only if it is not too much of a hassle.
 
