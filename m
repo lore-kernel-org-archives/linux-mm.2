@@ -1,130 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D409606A32D
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 09:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53A9606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 10:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tgmZOCzA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IjkX6dWg
 Received: by kanga.kvack.org (Postfix)
-	id 6ECCF6B05B3; Fri, 27 Nov 2026 04:53:00 -0500 (EST)
+	id 09CB56B05EB; Fri, 27 Nov 2026 05:04:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CA0E6B05CA; Fri, 27 Nov 2026 04:53:00 -0500 (EST)
+	id 025FA6B05EC; Fri, 27 Nov 2026 05:04:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D9F96B05D0; Fri, 27 Nov 2026 04:53:00 -0500 (EST)
+	id E575F6B05ED; Fri, 27 Nov 2026 05:04:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38B416B05B3
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:53:00 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5C2F140280
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:52:59 +0000 (UTC)
-X-FDA: 85480435278.25.1A1CDB7
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DA16B20002
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:52:57 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=tgmZOCzA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7802A6B05EB
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 05:04:40 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D091140291
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:04:40 +0000 (UTC)
+X-FDA: 85480464720.30.957C051
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2509D4000F
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 10:04:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjkX6dWg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795773178;
-	b=He1GwG+Jk6C6koRw/351atod/Lzm/CS/25YSxdPRQvDxjWUv2b1liiSia1mhbqk4hGSJMh
-	YWBiyemUZ0FpsF1EwZL6iYPG3lunmuRN/9uvrGJBaJs+BNHNsV3ysyFSxaER3T4c8uUDh+
-	mJ77q50p8wFas1ON/sSksWZ0J4NeVBw=
+	t=1795773878;
+	b=VOi79iwGbzjCDoao09bUFeKvViwX4DbQKI+3nYPZeUiFHY50UTcF6+tbaUQUqx9vH5M6b9
+	+c6flmpu8KrxqZgMV3EXB1whu3bqvaEiMtv/LWnWxa7e2nnk+hYvagX6gprTlZMS2X6e56
+	bd3pVoCnhDhWDxi8Twt7On5Ha/Iz1BA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795773178;
+	s=arc-20220608; t=1795773878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q5pXxomQGUshAFoqI6uHcYdcJvzpozshg0czLPfcxkM=;
-	b=MUz9RLkd1fUYthgkUuGUYDnjnShycl2kPontXIdcRNid3QND4OUyEb8tb2wevhXNt4FKfd
-	YCECyls1YjP1m9AicPZwXYcWCf/NEe4jGxzFUh+alU2W6Uv0wNbSCTRJ2Pu5swrFUrfcII
-	YJHvms17mNIKG3+8DAtEMR2KYR/BzzQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=k4XoDR1GKascgjeA34cEeTWWMXYxiv8rCHJZtJu+drM=;
+	b=YamHFcTgAdMqeQakNVPYRZ9lgY2L2UDTw2dsUxcYIX47jajJ9DJ8B8T1VAd2T0HB3cCpV/
+	Wtfb51SIEKAIGXDFU8qwKsur8NaskYIe2mjozwnnA7VwrJ+Y3iUBLpgjPWIOF1kOMa/dqq
+	jw9nRThTbAjqKpHi/qPIogzQDE3JfUk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=tgmZOCzA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4a32576da88so4563553f8f.3
-        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:52:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795773176; x=1796377976; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q5pXxomQGUshAFoqI6uHcYdcJvzpozshg0czLPfcxkM=;
-        b=tgmZOCzAScVdS/bRsepg690BLGzGmoPnSk+xytIn6P0hOriZe8iJGltcikJlJIueJS
-         n/reIviiSYkGbr3H7Jek+Us9SG+rOV5X1CX4ZOtO48nicMmlRDce8Ti3iSrscJl60uya
-         Eo2zqqjBrdnwizdkN+Sji29pnxUkQ2rWSw+SNupxjFiQZFvruGF06LvW+CAzkM6U4ME/
-         j5l7dJu8K/cjCDwPx/SAOLv74tnCuipAIpGg6vI26S1C/DCHAoOF2FDFUbwxKFqQu5gM
-         n4uE/CtKm3yZwmAuqShQ41qZHMHNHWYlYSCZ25fJ29vix26if8GsIYQr9TjM8KhcSxzc
-         eKTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795773176; x=1796377976;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=q5pXxomQGUshAFoqI6uHcYdcJvzpozshg0czLPfcxkM=;
-        b=YneHzJP/bSEh0cekE1uXNJBTzYHE2BMwgKv12la6FMILy7DBbC0yILRyh11msgYf/u
-         UGokSrvYBtbpH6lLZJbnyXwc9yZBaIKkOtuLNeIS/JqjW8xXNNK8aw3gy8ZdAH93H8u9
-         oOaywmNEP632mlveRA56y0JZGqQ6CjlIwe++n0YnQEpcrEhQ7PP2GCHjBa0/CcgNf4E6
-         yt/+jzx9oY5pu6RtSWjWmhwVg3T4bfqH6f23A0HBoIFNlvGotHtx9ur0tP4sMtn7yCLZ
-         qFWhRSlxX61UDomheCO941Nwevj1jYibzx5FIa+wdevT6c1lnIwWrpZgfZebJLsHwoYa
-         bzpg==
-X-Forwarded-Encrypted: i=1; AL+hErFcbizYThEFh4qFMeuNAzTz5X79tftz6cPXylzj6qNEKze2iiYoi3cDSTu/v8Az4L6DguxBW7nzhw==@kvack.org
-X-Gm-Message-State: APuU4Z9ALM3Uke4sHB4Q4ajf3fzQAgQObgFs7S/AOxcLZP49H6wkWQBd
-	UOmPZIPGTPeamOOQKH2lUgDXXNjJfynts9saaZ3neEbXbsCqbmYrFLcI
-X-Gm-Gg: AZFdTZedCiiug+8QkYkKzlwiVmYYqoh/t1eYhyj2Nkc54pcGWIpcpHIGuk80/YSv71t
-	GgLCAOsY3XHU5fNRhm1j57hrIEMjXz6Jv9sm3GGCgb1jhYnk4xyF0+AJmdftx+h+64DOmqd0T0u
-	LMICI6XTpw8OIJywvMSv54+Cj78AKgznriQoM18ZlPcOKn8WBZHJ8M/8OmNZiSvapyMgj44fEPM
-	ou+/Obo73gw3yHvQ23MjGPa/lyPTqrLlgZ59MLQ/GNcPgfp3yXDNOiailKC/btseYAwLUsFzJLo
-	4Zdc8F0xhioUS2rvJhHgsjbg7LxMKM6xuvtVi0TVBMHxuYKC+Ycy9KY0SUCsF5Qs44Qv6JazZ6B
-	HDnDJaR0E6OmVV5pdgMFutd7VQjOdLmQ7SHYoT9IvNMoAo1Gr50dJ7RTfGr57xoUAPqkoqFnrJQ
-	QQ8lFIq9mckBZxWsJ3JzGUm6ZmbxmoE0sn2nWjC6BXLbwiEbF7W70Y/7okLz0OokMPL/h1U1ZDx
-	KtMyEzHCf7E7UicNse7ekRHxh6VA+QNM27mVdCQiawvczx9QLhTtNHE4Jw0UebokwOmkUmYaACM
-	Q9CDWdFfvxP2Hx7G71po0PYg
-X-Received: by 2002:a05:600c:154f:b0:4bb:6842:66ef with SMTP id 5b1f17b1804b1-4bb8893a963mr457766045e9.30.1795773176243;
-        Fri, 27 Nov 2026 01:52:56 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b8b7888sm46119266f8f.42.2026.11.27.01.52.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Nov 2026 01:52:55 -0800 (PST)
-Message-ID: <c2e176c0-1ca9-4624-9a25-7ae0d66710f9@gmail.com>
-Date: Fri, 27 Nov 2026 10:52:54 +0100
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjkX6dWg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 916D26124C;
+	Fri, 27 Nov 2026 10:04:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2A01F00926;
+	Fri, 27 Nov 2026 10:04:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795773877;
+	bh=k4XoDR1GKascgjeA34cEeTWWMXYxiv8rCHJZtJu+drM=;
+	h=From:Date:Subject:To:Cc;
+	b=IjkX6dWgjGwegOmdnF0EAWCS19T0N7IxLN/TQJtMnmCDP/eP4ZY8xLydQzT19L/s5
+	 PaN27FNtwgK0maoJqNNiuOh7wpOQqaHugibzz7rQ3YHelTIi7P2i2ZY3gcXGnm905l
+	 Hytgb+FdNlBBB2FVwNzm2KikCosGjYGtfXn2pyMFCgQYxoxDmVMUWRdFYk6MpKvSIz
+	 FjNXEBTNAblR9UzXANEay8xmD7xXIQI5DyCIu2fI6qmR1Q5u/x6/5nTvJ9aMjVp2P6
+	 L6T1lbN52q4QaBxtqbY0RDN+xrkEEAwNyL8xYwb65VBgL8tKTomezptTK7nKWDTEhA
+	 QQEhIFsov63/Q==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Fri, 27 Nov 2026 11:04:22 +0100
+Subject: [PATCH] kfence: use a nofault store to zero the guard page
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: track pending subpool requests separately
- from used_hpages
-To: Aveline Noir <jm5905938@gmail.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Usama Arif <usama.arif@linux.dev>,
- Karl Mehltretter <kmehltretter@gmail.com>,
- Ackerley Tng <ackerleytng@google.com>, Zhao Li <enderaoelyther@gmail.com>,
- Jinmeng Zhou <zhoujinmeng@bytedance.com>, linux-mm@kvack.org
-References: <20261126-hugetlb-subpool-pending-v1-1-e1831a48f19c@gmail.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261126-hugetlb-subpool-pending-v1-1-e1831a48f19c@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DA16B20002
+Message-Id: <20261127-kfence_guard_zero-v1-1-cb33d3ee653b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXMQQrCMBAF0KsMf92AiVI1V5FS0mRSRyGViRVp6
+ d1FXb7NW1FZhSs8rVB+SZWpwJNtCPEayshGEjzB7VxrrTuae+YSuR/noKlfWCeTU2iTs+f9KRz
+ QEB7KWd6/89L9XefhxvH5jbBtHyjoI9d1AAAA
+X-Change-ID: 20261127-kfence_guard_zero-fda6d21938a4
+To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+ Dmitry Vyukov <dvyukov@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+ Chris Mason <mason@kernel.org>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3475; i=david@kernel.org;
+ h=from:subject:message-id; bh=FA1KnORt5pghKYxVih2NaXekTNZEkyBRBzqY7zjO5C0=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI5Q5dv+Lz3CyOnjytf2kcdx3NLr3+1YfOY5OK+M5Wh8
+ ZPgRFaljlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbyVJKR4W+Y7p3vL4Sz3/93
+ +5+9WfT7++SOo/cl3R5o/eh1+lwaysjI0MeQN+noqZVp5yRkF00/LjRr0W3zpU87HDx/xlxOzi3
+ qZgQA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2509D4000F
 X-Rspam-User:
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 6xt76iq3tk1go7ka3tx4fu4ufgc8j38o
-X-HE-Tag: 1795773177-655354
-X-HE-Meta: U2FsdGVkX1+EuU/mGWLmInXTRBSAnaAXHvLrazuvkGO1/v5rtwhlVVFoGNkc5RBFrICa8aZwvKGoF0nOvVXTIPiy53tZr2YYix3vjpx/yWLWGVdw9yTh8ZqqJt6IdIIvfJdEHFYRg5TchmuyS13QeGk2ZwNEwJDS0w0oXIlwCsZuojh9X538yAe2p93rOQJJWR3KOz2HO4+ASFt5yqrzAdDUPilzrd9tqVZ/aKeglRpLm6nQjJaksWnxvNY/4LCZNp1XsOW34NiN7zoI0Sd7aATxq4RCQUMhGx1RAV2MraEh9ah6Sh/2yxhxXJ5Nb1tP1J/iuvRqp2BwbRd4k6/PHo3huzFXS7zjKG6q3O6QM0DiaQxiPFdPfeYSzJZnIGxxNR5dXmxQAzS+oabvWI+26ZZ/LVgsQt11lMAsfGwrTacdv066Uz696aQSHO0wAknEUiK2wwJEKNtk8Idl9PjQ58SWFR98dN22OhSCUJQv2AQYo1l+IHqX6oJwPmv6AK3BDWGU/ncm/imTMWARZbkvapt1vbSo0hJLb+NocbUb8+f/r8+xRS82dk3LX1QPoMg7rVli27SYDjL3rdgPQFjRrwGMsY2EysrzLSmGGG+w0jE+h0yvGy3Q+LlqTVGzgs1SFQy5tFihZTJzgTNpCtqwa8xWd7lWFrx/qgVJgjrgSYZM2emuhRAzKuSvp+pVfJgaMv8UNu+0C8p4Cesc7JdSkvu/FtF2hkaZLYAH0y12LItnq0uSRcOySpPMDgzLB1qz+zySKJuZaGvVLpV5Zknef2vx6X6gaW28UGHjRLYdiAjE9lK1YbvQUJ+bXw33FyvKCN5xYjPznHCSS7lCt2BXLad7QXit6MEisyD3vSbFQQwnHMJ3XuKTwCC0jIi7TFe/EaYOQIR56y/p7OEvwigLhAiEimdni+GRClXBfDcxZRF/Wb08yWhIsIkmdopc670uvc23hMvdNRqDZZ0FdMR
- sgKL6Foa
- Oznf0P8dNq1a19OsdsJXAOXe585Iske7/oFQ6Nk5p5YdAAUdX/JZxCG2rjTG7pPmCC83YYozgwmky3ETcCJyOvX7AAcW668W5gr7aqKsVYNyw8iFIrS3ftjL5+6Y3uJkzirLfACMMeHFIyMkNPTMYOl7bY8qQmBq3iNVhMeHfitC1gzaBd2akeg4AN5G7jIxsAQykkSoeXICOidMn+zEIptgjoR6Wuw9p4yzwR88tYS1jpPMjcIXAAm48tNXe8ApHuqEaW9UTeGVdbQlLuYJfuP83C4hzBzVJII4pfZY7t478EqJzGVOAloHHoMW3JJWsMlXq5fhLvdTC5+qbO+4CUBr3a1DSULXeyWmHGLXnUhtq6aS2Gmu2rkxfsjnrKikInUGf+0U6wDBD9HZGzjkBvO3D2+nNHraLF8LOoIJ9qeVNPnCRhMq43AHhaK57E4jIxh/ODqskGINcMUyNhLhfu2oii30H9EqP773B15yeH70PyF2NlUHUSObCmuLK7gQrKtBzm+163OM7aFohOlnkMM5b/VyLychiq8ysjHhf9O1M3m7Edn8ewPfaNLq3x+/hg3fy8nFSiNLCkNQKG2mONVSAnHpNjq1Lor7s9GYhX4KtPG19N7MvBSdKlaAbefzkYff8Uk2fho7x/rPW4cSd7jzpjR8OLpWxbZHW5LAv7DjuK3tfCJ3L29jK4mHt1JV/8O8Xgfczr3+7Oo5kJMFCaQPxRm1JYjoSNUoxT8Gjvm/9exkUED2kJIWEvIr+VLsFo3o5APmwB5BsN3nn66fmZrDkI6gkfF+JZClekW0x4DOit/o15fOlPkbo01cOa7zPTcqxqN83PghXpoY=
+X-Stat-Signature: rgzsy6n1if1q1qaftzd6uzarkc6z1miu
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795773877-473202
+X-HE-Meta: U2FsdGVkX1+o1Y5u3s8gMuyqehCjZsLRo8ETNPD4szeNMCd2XhZwrCuk1DwcO29SL4vvJm3FJr9tVQJnIn0NFgcNCHiIMR6dwO6xWgAg46HytCzwEhLYrvH61JAO8f4/2UYtXNpa28hJ2FfUSIe+2ANq3N6MAWg+GKDIiHz9d/Qy1a8WtODvKvTaK18LaIGDxAmVlR8wfAV7nuA8fAbaurMa9qbpV6VTJu2oVoU6Nf6PIuY/2JgLTZjLI5PgR3edVQuxW5D9OW+KhSzGXj9v/NqHWKSzUoE733OPoFLNUcgyzgthEztjnOxsHHEpk5Mi+7Bpb6MnjT/oUj2+WpxcwQDsU2+1ciSbfBKXfZ+Sk/ePRDr7MesDNp+8Qvj4HEvf4rR9Qz2HRmr0o6THuG7QQMxio4kX6f5vUGSpnkTDpxbV1Uao9iom8O0/YzZM8GdYlAmDrTtaXL2fxhMvnfWxWv6+QRVQXvb2wQdcv6YRvBxyyz0CnLsRUPrn4CgPGiXOXEBDIW274e3+tK88U7hmx2nhEOJoiGv4gymIrGpqVtXT7GUCFosY6F8NkXtjDI3g94yfP78u+GiO/6OGt3qVkTCv9FKfTy+92u6WP5urE+Bw0ROZZ5kC9y21RvrBqDNHNUa0Gk3ZrkVFUxxTpxsiTq1VWJCFmIiP1B4+JdYxfu/Yoiam6AXmpaPmIwvHv7j4H0jkJdpmRatCRKTlse0+rXL9I/90tmosNm7BYblS3yaFr+3NXE7ABrZH65Vf8plnZV0FSUiUQrTund0oAG/XaOvJOjlKa3mib4lIDlsOYBVjZYtPDuqeSuxEkIHpS7Jj3PaC1TE9ZhWcyf3shDROWZK8d33MymZE1wnbPYfBJ0FSb4Im1FbV/PErEPeXUejaHUJ9tynICBTswI2FF8fhYrdSufJ6qrb1ZnAw+PX9CUge8gpmLYLj80wMGcYumDhZRUyCWSYwQh6Kxx+v6JS
+ 5BoTmJrr
+ jQLukWo3rO3LFum2C8+deLq7Z6JqtFYgAZfTXMmlHvoeKZORAjsuM4QExQYcYp+Yb4Hv0uBvwmMfiISZRf4+ZpCqzQbiCaFWhPMQfS0RUGoq5B5i+o24QASDRxz7+4iEStHru+p82FkBsMHTExH3sPDL0zH+68/i0nY2HPvSFYmajhvOYjYIjBKtuhXd+CDPdYRsr1gL/5SDZDJqpLmgkLjTxVNXhwmDKk6BVcNcwbr0qEgK2qWNGhFtJupkDQfuhrmbgXSd+3Qey6EIBJIkDahl8r9wvBpeEg5ASiMj4VP1FohTRHIw0ap0GI6rp0Ek4SdFZ+bnpe8UbV4IIBZH1ZkRRbGnEG0C2V2NkZ1uE2ExLJoyEZTcMaj2kQ0R4dSrl4HWx+JAiUwusbfWEeUV7/+fffFlvzTd48xUSvdZ0sp2Z8YHek+cVLwGwzSA8XNxW6HQsEGlsFeV9+XFAEXle+g0jr/dAbyfF981CKUS7Q1KW6HS6p6PetKXYcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,53 +107,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/25/26 3:10 PM, Aveline Noir wrote:
-> On a hugetlbfs mount with both size= and a positive min_size=, a
-> reservation that fails global accounting while another task releases
-> pages on the same mount can leave the subpool short of its minimum
-> reservations. On unmount the subpool then drops all min_hpages global
-> reservations, more than it still holds, so HugePages_Rsvd underflows or
-> another mapping silently loses its reservation.
-> 
-> hugepage_subpool_get_pages() adds the whole request to
-> spool->used_hpages before the caller has obtained global reservations or
-> a folio. A concurrent hugepage_subpool_put_pages() compares this
-> inflated used_hpages with min_hpages, skips refilling spool->rsv_hpages,
-> and drops a global reservation instead. When the request then fails,
-> hugetlb_reserve_pages() only subtracts the failed global portion from
-> used_hpages, so the refill that should have happened is lost.
-> 
-> When both max_hpages and a positive min_hpages are set, keep the portion
-> of a request that still needs global backing in a new
-> spool->pending_hpages counter until the caller commits or aborts it, as
-> Karl Mehltretter suggested on the out_put_pages thread [1].
-> hugepage_subpool_commit_pages() moves it to used_hpages once global
-> accounting or folio allocation succeeds; if a concurrent put refilled
-> rsv_hpages meanwhile, commit trims rsv_hpages to what the minimum still
-> needs and returns the excess for the caller to drop from the global
-> pool. On failure, hugetlb_reserve_pages() drops the pending count
-> without touching rsv_hpages, avoiding any positive global adjustment on
-> rollback. A request that overlaps such a release now fails if the global
-> pool has no free page, as if it had run before the release. Mounts
-> without both max_hpages and a positive min_hpages leave pending_hpages
-> unused and return 0 from hugepage_subpool_commit_pages() without taking
-> spool->lock.
-> 
-> hugetlb_fix_reserve_counts() commits its page as well; if
-> hugetlb_acct_memory() fails there but commit trimmed a refilled
-> reservation, one trimmed reservation covers the dangling reserve map
-> entry. The max_hpages check, hugetlbfs_statfs(), and subpool_is_free()
-> count both used_hpages and pending_hpages, while minimum accounting in
-> __hugepage_subpool_put_pages() only considers committed pages.
-> 
-> Fixes: 1d3f9bb4c8af ("mm/hugetlb: restore failed global reservations to subpool")
-> Link: https://lore.kernel.org/20260927170103.2381-1-kmehltretter@gmail.com [1]
-> Suggested-by: Karl Mehltretter <kmehltretter@gmail.com>
-> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+From: Chris Mason <mason@kernel.org>
 
-is it possible to do this with less churn?
+After an out-of-bounds report, freeing the reported object can deadlock
+on its own meta->lock with interrupts disabled, or trigger a false
+out-of-bounds report on a neighbouring object.
 
--- 
-cheers,
-jose a. p-a
+With kfence.fault=oops, this can happen more reliably, without races.
+
+kfence_guarded_free() zeroes the guard page that meta->unprotected_page
+points at while holding meta->lock, assuming that the page is
+unprotected. However, the page might still be protected:
+
+ - kfence_handle_page_fault() calls kfence_unprotect() only after
+   dropping the lock, so a concurrent free is possible.
+
+ - With kfence.fault=oops, kfence_handle_fault() calls BUG(), so we
+   never get to kfence_unprotect().
+
+ - If both neighbours of a guard page recorded it, freeing the first one
+   protects it again.
+
+The store then faults, and kfence_handle_page_fault() either tries to
+take the meta->lock we are holding, or reports a bogus out-of-bounds
+access on the other neighbour.
+
+Let's fix it by zeroing the page with copy_to_kernel_nofault(), so that
+a store to a protected page simply fails. All architectures that
+support KFENCE try exception fixups before they call
+kfence_handle_page_fault().
+
+Skipping the zeroing is fine: either the other neighbour zeroed the page
+before protecting it, or it was never unprotected.
+
+This is a quick fix: nothing serializes the protection of a guard page
+against the fault handler, so after a racing free the page can stay
+unprotected and we will not report later out-of-bounds accesses to it.
+Add a TODO as a reminder to sort that out properly.
+
+Fixes: 94868a1e127b ("kfence: zero guard page after out-of-bounds access")
+Fixes: da735962d05c ("kfence: add kfence.fault parameter")
+Signed-off-by: Chris Mason <mason@kernel.org>
+[ david: adjust comment and description ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+I think the underlying problem should be fixed at some point. If this
+quick fix here is not acceptable, kfence people please take over and
+fix it properly right away :)
+---
+ mm/kfence/core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index bae787fd9baf7..02a07676ac7aa 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -33,6 +33,7 @@
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/string.h>
++#include <linux/uaccess.h>
+ 
+ #include <asm/kfence.h>
+ 
+@@ -553,7 +554,16 @@ static void kfence_guarded_free(void *addr, struct kfence_metadata *meta, bool z
+ 
+ 	/* Restore page protection if there was an OOB access. */
+ 	if (meta->unprotected_page) {
+-		memzero_explicit((void *)ALIGN_DOWN(meta->unprotected_page, PAGE_SIZE), PAGE_SIZE);
++		/*
++		 * The fault handler may not have unprotected the page, or
++		 * freeing a neighbouring object may have re-protected it. Don't
++		 * fault, otherwise we can deadlock on meta->lock.
++		 *
++		 * TODO: Serialize the protection of guard pages against the
++		 * fault handler, so that we always find the page unprotected.
++		 */
++		copy_to_kernel_nofault((void *)ALIGN_DOWN(meta->unprotected_page, PAGE_SIZE),
++				       page_address(ZERO_PAGE(0)), PAGE_SIZE);
+ 		kfence_protect(meta->unprotected_page);
+ 		meta->unprotected_page = 0;
+ 	}
+
+---
+base-commit: 739e2d979b66be560b608a38c4ff86150ec090be
+change-id: 20261127-kfence_guard_zero-fda6d21938a4
+
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
+
 
