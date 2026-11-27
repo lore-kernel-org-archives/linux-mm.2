@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC589606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB513606A31E
 	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 09:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oJiVjcfZ
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CifmJGNs
 Received: by kanga.kvack.org (Postfix)
-	id 8C40D6B05DA; Fri, 27 Nov 2026 04:14:04 -0500 (EST)
+	id A6A916B05BB; Fri, 27 Nov 2026 04:14:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86E9D6B05DE; Fri, 27 Nov 2026 04:14:04 -0500 (EST)
+	id 9F3546B05DA; Fri, 27 Nov 2026 04:14:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7205B6B05DF; Fri, 27 Nov 2026 04:14:04 -0500 (EST)
+	id 893F46B05DD; Fri, 27 Nov 2026 04:14:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 39BB26B05DA
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:14:04 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C239A1201D4
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:14:03 +0000 (UTC)
-X-FDA: 85480337166.07.B07A906
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E53CF2000C
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:14:01 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oJiVjcfZ;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 571F76B05BB
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 04:14:00 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C9B89C028E
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:13:59 +0000 (UTC)
+X-FDA: 85480336998.02.8CBAC70
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 021E618000E
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 09:13:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=CifmJGNs;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of azpijr@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	spf=pass (imf06.hostedemail.com: domain of azpijr@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795770842;
-	b=O7wXAB7Edv4Juf3172ZouwmkhUUydI7qWhUYlZupk4sOzmr6mDYQ05LvTebBbsEsjqIewb
-	nux1cc4CWiA/jCO4Cj41nYMY/q0j5Lgd8kXFzedUV8JsMF8ZLXIEnwLqWhJ496z/nnfueQ
-	5FymZzk5/Iig0E86sIPVysCF0YU4ti4=
+	t=1795770838;
+	b=1u5y3FFViVFr8pE9HJ05FSRHer4j6skfRbpuuwVCPfqhegAQcbm0tDFBQbh1HUiCH9ZGBw
+	sD6eG0AUFcps398bqMVgL7BoEiPU2TFu4F5LZzQBjVStcV8H3sBwWai7Jr/p/rVnTdFW0T
+	nm57wf39u/YtkZwGTFXHp8b5PCIsZmk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795770842;
+	s=arc-20220608; t=1795770838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2kjuxamo+ARDPfXgOKJZvTzyyERo8tzr4IQwkyrTwCo=;
-	b=0mBae+HcBHRAc35HkFr4M3H3tcqaWG9hrQ+nc7uiNGmvt20cn0JmJX86EtiRTrHwzyqxJF
-	/dmD6FzG0YEQvVI+j3lPhznq+HZbiCYHwC4ofVKfqLMadORv5Kfb6aYio7qexLhAirCbbQ
-	1RYtfzCbIEEkkQE6lDZRaM8Lbz+Cw8Y=
+	bh=PbpBQncRyADmzwyT+DIGCOcxAB+kyUykQ1z1tEvlyxs=;
+	b=JFHlqhSTG2TTabq58FOcvPexRTuIAwfti79dtPtsnnwwhhzkc4XeInKnIac9wz1dMHvIoP
+	+Xi513gnrPEogc6unJEbaFasS1GIa4OH/r3EEkcOQNGdIwgKgpMlcQyFr78uny8Txcu1n3
+	yE+nnjqA2krVu3/IEGMfSN8BwitHTOA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oJiVjcfZ;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=CifmJGNs;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of azpijr@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b88d143160so9371212a12.1
-        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:14:01 -0800 (PST)
+	spf=pass (imf06.hostedemail.com: domain of azpijr@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b8a1f59d5eso10387068a12.3
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 01:13:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795770840; x=1796375640; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795770837; x=1796375637; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2kjuxamo+ARDPfXgOKJZvTzyyERo8tzr4IQwkyrTwCo=;
-        b=oJiVjcfZpULXhDi9zhjpIGf5q6ZKMyo0SWKYQCBeOD2DWbfimop+GJ9R0KMqxr+5Fv
-         D65EgN2YLxwpDCyX7TxjiitIrqjI5C9SH1otdQ/jRhFQ964B5bIePDayaK4L70734SUg
-         bX4gbRQXXt7JSvPNF1d2CaOSeM18FvcTm2epQaxRDiAl/zUzWEiXZOA7UmesGp5d1U8X
-         5FMMciBFNTwdZ41izn6c082sRgU3qAAKUMQkQrOqrRklO6sdV/efwTr5BHluhUSb5IJR
-         hF/zgXSttfq52PaXLW7q5sH3eV0x57UIP2YMIFs895CxzHpNiNPXtic5/deJP2mE5nsc
-         REbQ==
+        bh=PbpBQncRyADmzwyT+DIGCOcxAB+kyUykQ1z1tEvlyxs=;
+        b=CifmJGNsj1/jdLau39hPDmeaXM4u7rvEQbycNXE0l3w8UAoqTHWaHaAWFyHBqEHSkV
+         qSdCJAD2q2xIGRybq0LrFWI+YoEzoAGAuheoCH+DPx1CGcMH0aYefKT82oLQJOkpONFd
+         S+LXfYoPmGTcfothiqs2LWUlhMsU+CwxY29g7NN4Zn6jyZeiY8TX/OYcpb6ZHLksiyZ5
+         TmLxf4iC5zpeEsdmeRmJVaNsdN2O+ERUrtHlNMzZV1x4m0WiwC6Fip2td6GuoqiNOK9n
+         NsdCM3t+k1mlIfFyZKQp6VxEz9QELsyTGy6DCjESLQSyresc8azX+6g01gWJ6o654pWA
+         HRPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795770840; x=1796375640;
+        d=1e100.net; s=20260707; t=1795770837; x=1796375637;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2kjuxamo+ARDPfXgOKJZvTzyyERo8tzr4IQwkyrTwCo=;
-        b=qduJMgrLLElfTsu5NMKqeubUcVmXgu+9QUHQAprZIWNw/Ytdv/XcpNX3AB5Im+qEMh
-         6lKZHciYKzsZryhD1fsVriruCEJxBBMCHKWz49EdwvZYDw3y9u0FMCw4gRzTNcvTneKc
-         d7rXya2A301cP9KGith7DRk61w9HB54cWh4j2dgZy6o40t0B+o5WKABupAujdO9P/XPM
-         R8G4oVQnNT1ZEP3Xp0xl7xNIhhkUbQ0MJVobUPENEZHF/gBKqqy4PLXYTj7ihCzTXaZD
-         2YN/A6F+Bc0lb81vJVofyBRnDu3YkZpfY4tQkN2IL/ppHi/Wrs821Y924DHs4M7jUETN
-         D8gg==
-X-Forwarded-Encrypted: i=1; AL+hErEgWjgdYGpXEkaFq3fbaaIifWVBJ/7LzvTfcCO1RlY59pfUBWqtIS+jMRLDRc4uHPa5m1iWbDHHGA==@kvack.org
-X-Gm-Message-State: APuU4Z+DORjIkaOsO0K1z4s6NzkLkAhUHO5u+vOib2+164d3e6ncBZwt
-	RVsyK5gQi38/JxpKOXyqgiiC0TYaTFTPt+avIjG/r+ZaWc3a2hSQfN3W
-X-Gm-Gg: AZFdTZcofIMej2bavA0wwBB+tF/ISIBJrThbCLed3WA/vSafjq7CiMGAZVgHonXFkoz
-	qYRHmqjQMP+DZjOCIf8GTnsAicDH8bR+2lQJPiIPMiQuryV7nRf6Ho/VOo//I3EHYvRtHhuuFmy
-	4rUgVOfNJZmdM3atJysYrN8LbRzZL3BxJbVtnLswB0X+MqMV6VVoNsI0RArgD1Gf2LWJikaXeZ6
-	SIy5Q+AzvRTI9vsXUI6xvGjKQPN7DorNdtTkAxuPed8x2n/7+QEWDADOp7VrAtXOuBnHFSEc7q9
-	fj6VSrVddKNLgNg1AhoFpbsvDUxsIQ/jxVDBrOeCAiQFqGszpa8pmwNdIMUuk1dxFkF8fCV4Nt1
-	WhjzP1frNFyYBE3D0u48MJSGOU2s+WFOx8xsSaqPkplJFIytjuhZuOav3X0EgKDYZSTG73pAKyn
-	Y3P+UoT7HRWXMB7qq3aYGTD0NNmIZ0IChJL5IDIOuHQy0jpattnalEslKwTP90EvIZvbQdfiYHq
-	U5aq7gkHXoILKAha9EAEs9M25dxeBrzvnjQXmsKyKTt7xkdxSHMwAYrgnWf1yJT+u5b8J5V5Q0K
-	5/2ApdCX1j8E3A==
-X-Received: by 2002:a17:906:f5a5:b0:c36:7579:fe6d with SMTP id a640c23a62f3a-c513a88a87cmr2056869566b.11.1795770840460;
-        Fri, 27 Nov 2026 01:14:00 -0800 (PST)
+        bh=PbpBQncRyADmzwyT+DIGCOcxAB+kyUykQ1z1tEvlyxs=;
+        b=M0IMIVRBBJTWJanq99iWFNRqbclG1JCIZZ1+AD2KqecxjiuOMAz/JS7hvnHVZU1c0d
+         b25/b11+yD7EvFHE6fd1WwYQygtIjDTIPuOoEehMxQ2sjdH3sOThKgqZNLvgpwtjONVh
+         6Vk+I5ffVM/dzFXbGVIQh/bok1sSIzwSGrt8zIuHwasyCXzCvoURV3LygtMBRSBN0pK/
+         LC/nluJQx36+552MM++DcIlCn39iVqKHhI9TOLq3n4gT+egykdJGQCyWrIxI+P+RS1sX
+         DgzBrWsGH4fLaA4g4MzMiQx0P0JXjmf4snlkEL9kaExJ0sFCy82TtUyErIub+AjprJJZ
+         aQhQ==
+X-Forwarded-Encrypted: i=1; AL+hErEv2HMZKlGWWH6WOIjiLnDVf2tZTaOZHvTxCdY7sd4mO9fES4VrTZWwSRgSmzzQE8bxGdYEFvEwuQ==@kvack.org
+X-Gm-Message-State: APuU4Z/PVEJETOZs5htUsUh4DHGtKoA05VTjNAcZAWNvTi3YgL2pCCM7
+	OGc58Kfc/4W6T7mKnUxnOGD13STKcyE7Y21u5NvUn/XjhMCJzod4XbLZ
+X-Gm-Gg: AZFdTZePNjEro2zdtj/RsiqAs+SrZnyhgSxmOqAlG84Tno2xGFBdvWXvG+AgVsKGhB6
+	6u3rvc46vUrdYvwi2O1Ujj6FgEHiw0WVpmRhxOxaxYdxWm231lDp4M/a/YYX95ZQT7F+Aj/y1Ta
+	VxMSO7NryoPvUJPipAeNyHr9hp3h0XU6Iiyh6hcPHuWZ7ljMOTtDDpJHt1pOE2Jaz93yQPYqBYf
+	trPZ0QRN/ut77a5TFo5Sl3eK47vGDebw3ZlKAPSgywfOpPDCsYyq/qq26OtZvSg5bLCRxjYvekM
+	HmEbnSi8Jvd1dxUJQ/+caw81OyDB0ieqFihyEMwRu8YiWT99zRZrTq2bAcTnJOz47mRxo9Yi8VV
+	wwhnGHXmt2trK/mNCZGJDTxaBYP9ONkYKYOhe1k/djwgwoG3g1am505Pa+IEmdIUHaMFDF0Pf06
+	/ybbvnNbGj4ZjRTukwPzpAcdLUAZutwMJnlEXyNniln9XGgT7BM+swXlh62lsoHdDsn0/nTWE4M
+	a4/zZodv5EgTfW4Rs6FHjCmScT0mZ34+TtwNOFDYnDrsvZ/pwnJhe+dS0Ii1r3BPMk7VmiNw8/d
+	b6hVsNvjpVX1YYyzeL/v73b74nZu2ICmiKc=
+X-Received: by 2002:a05:6402:2744:b0:6ba:4ca9:86b7 with SMTP id 4fb4d7f45d1cf-6ba4ca994e3mr17362328a12.21.1795770836265;
+        Fri, 27 Nov 2026 01:13:56 -0800 (PST)
 Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4b1ed8b6a05sm26067087f8f.43.2026.11.27.01.13.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4b1ed8b6a05sm26067087f8f.43.2026.11.27.01.13.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 01:14:00 -0800 (PST)
+        Fri, 27 Nov 2026 01:13:55 -0800 (PST)
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
 To: David Hildenbrand <david@kernel.org>,
 	Zi Yan <ziy@nvidia.com>,
@@ -117,28 +117,28 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
 	linux-fsdevel@vger.kernel.org,
 	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] mm/memory: don't allocate in finish_fault() with the folio locked
-Date: Fri, 27 Nov 2026 10:12:16 +0100
-Message-ID: <20261127091344.113688-4-azpijr@gmail.com>
+Subject: [PATCH v2 2/3] mm/khugepaged: allocate page tables with NOFS in set_huge_pmd()
+Date: Fri, 27 Nov 2026 10:12:15 +0100
+Message-ID: <20261127091344.113688-3-azpijr@gmail.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261127091344.113688-1-azpijr@gmail.com>
 References: <20261127091344.113688-1-azpijr@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User:
-X-Stat-Signature: zh1jnc4tsmwehuywiww8c7c1mskj5jyk
-X-Rspamd-Queue-Id: E53CF2000C
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 021E618000E
+X-Stat-Signature: eoj7mha6gji33m4qzwmuattb58sjeyip
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795770841-748299
-X-HE-Meta: U2FsdGVkX19hmhu7G+zn3oZ3o2/hawQ3ox5GU+aY63BMCayt6B3U7bORZFxGysL24Dk5bosfZhAV15bq1/UBR4wQLw4AjJAoub1pDCkxPEPpamT1LHlVWC2KbTWTb2VobgusBDqKYJRIxcWRlRRtnp0jZqFDpv24iU7Bpbc984xPhb3GZ+gkTdZsc65Ko9uJAvSYnhWZ5cEjRo9qwhLE8CzQx3Yu95ZYvMxFCMi269OicIkGYZyNWmfB5y+6jw2XwTPo82KAuckawKYNBqF+yRIY9p7IWLOYNtxDKmGGG8B0xl5zSQFeGnDUsY6WFs6NR/9XEFZpykhF7OEl5h8QC63qFtDL/lKAGgBpzq94yoa8cWGlyhp2NIDgrynlG3c1Wg9NdkWDFi6dbhCkk0bFgMU0HIN5eLq3wb4v1Gx6Kcd65keXrkZ3LSMRiyCV3oNkbAPGU/6VglBdVhY2wKWqTsANmAxd2tiUJlFYruSp94WsP5cb8EWvwkbiI+0ACCcaXSdSC1DRk/7P8QX0eQITxqCAgpW5ur3oVFEhX7bbODSL7lYTM0RcCYrmOmvTl0eIa0MRvm8a/A0XQy3qMhHM8T+KnBIGpA26Ibg6tUGxnID7rIiZfuj1CRMMrDDHs3wyYYXClXt4YLadxD1bhuL54gV1KZ+IruUecFKLnABe8Ctl7KUl2tYkGLnuTVKLeG5a2vHm016GqUO8xH63o8oe8RxnDrUDbwfOmRfBFxe/HQ8l5bq6FzGGZMihnpf8AHEqzgZdtBsJUdxblngmTRGA4fjqQZVLOY946ULHb9jiCIuwE52EL8a0D5tLpNPDfolqKfCoH7oRkJwb4g5ul+GwQ1rrIiNXzrgJBtfegLvd84zUN9x0GMgjCXCPOJtVa7AfxPMkx4Exor8k/XkcyP13qEo8d6NyQacy9Ldut6WAjxIXgtsxLptG6zXc9ecV2PtD5vss+WXFp2HPLxqsO53
- 0nPBBtDG
- kuqjtOkLwdnclGKB0BntPwzKhCYwBzERItKZCF5EIQISQPlGnUA+QCDVh1gpwKGySn36l64f1Taa5CD8KEMctAvVs45vkPtQ6RfvlhSRR31AIQZJaOO/l2uA+XjhSShx3UMW9yMpJH0j84Hwbt61ETix82waPbZBjpnunGSKhRQIgsdsLeuT0erJlQzNIH7ojkYq66PXJ1JruLRkSScHjDfZw0YMNOUVkUVg164aKViejSiHmW/Qg/cdt6R0OTeLpJeaZebI58dJmTZ7mJcQpsrlRxxDRR/tPHf/6nTuspnZN8ZTUlNhLkU9eDzUdVtq8VDGKgq0b/phK7OkkQP6crBuQ82WG+FbHoesnewDlLUr5iO8nhf2UdNwhNQysP6ERm5Ql/vp8U/4cdXBg+w0DBIauIORwApAwAnS10DT4dNVjURVso5Q2gMX6UzsZ0upt0PsQQ6VT1g8MrLTz2VZ+dLxSKPCEnAbrQaNm1RcxjNrsHRG/XPDGfsdbV5PBhm25sR1UprziMIkE1LkP90KOOati3+yMM1rIWfrLaHLqtI/LjBmBDTt/pVp9+J1Pe5NK+YhZ2os1mO5iY7cPypBYdLe5UtKvKHO9tXVzYQ6nlukZvrPy7+VnXJw4ZrG2yf1u5veBYWwxd5iz5ftPBcV/o80OmtBb3+fWeQQZlM/WxoWdgGFnamYQk5yvzLW+xjKAL0Ju+LA2E8KTruM=
+X-Rspam-User:
+X-HE-Tag: 1795770837-132664
+X-HE-Meta: U2FsdGVkX1+evftC62mFTExMmrNgo5XQ3WDMEi8R3jQtKe94zsSGtStSE3grWTyIIJk4COQZnGA9WkVu8VAo27Uu5BdvBr860Z0jE2Nha3ySg/1SZ3aov9e+77bu/EpvDtVb9n7GhZR1WwUyuNtReD7vT1vLO7Y+m3aZv/tWEE1PL8VxmPQN9i/wwDkTJK+479IfttS9jSolnLEf3tzTyQ9CXyKVrEo1gpLaYLhetuMBO8TjzowRxnkLBh94WHQFqHqpZBnvu3SnndGWVSYRej2jJ3lb1QrRbyVRRYVyv0fuziz0gdBn0kRQf4UOL3n8IG/WYHcPRd9LrpGC3RWn0Z2CNs26Q2VhvQVOLVBtiwlj7rKkovRi1pjqgFNMhzTQhs1Iy9JGklAyoJ/pVfBocjtrbxzhHjGk2a/JGiPjhMhsRl3OD+6rZGVvXPa6GywyVW1fewNMBNT1+/JJiAsiTwDsfl+AfOCh79FFGpOG0KuOP04shIHtAE205ZF37jjk5TpNGiTpz5v9VqSx5R7lw3WpgP3HMTJaosHnHAwncQXidm0wj7+B7YRBFysxv4Xh2nvy4KsvdqCig+2KqaKekTOJ2oqPn2GO9P1de8UD8wFqCklcSZ5G9K/2X2RffAmQV/E0JsXN2ByRRxkvtaHyzsTN5GDYEc5A9S3l5KdyQfm6N7Eso8lJjzkmTs7IMGXVar6nz58HWXN9ekP2CWY7EUU/KnDgHYViUw59aXgPUNhcG4gxEliulQbo+5+LSRH1YqlvrXjI/d1tF1WktePlSU3Fw2xE5hWxzNFK5cYTq7Ead4D+kFZOKDpPx6RnnDNoidfH8RGPpcMwwWBCWEibpkHxjP2BV47UqcLyZNA4Hl/gIFEI3dl1CxSxhMAXC7R7iY++DhPeHd+yIrQviAu+sKijO2r34ycl6TxlAOUXfforHFEMoBLLizehVm5qUO0DAp0yukUJ15jw+we/rTX
+ VSseHn2g
+ DoQBKWOoY6KAGJgGF7SpVtLuLH16FYapHcpOpRyjPyMp/JjMO1EXE/+owu8XVTEKnHbmeclm7ySy11SdGXJYyPhi68wD6zqGozz6uJ/HKIpQcAci6WB3eM5seRyLLv7aX/8uhK2oFbmfkEICpRckxBQXkNxk+gerXcjfq/Pk+fhkhdqerl3F/7JldCsz2/YMEtP1uG6s8JaBuvpgEeCClHUVq+FtL6XchU/3ZJyf+j5KEZFmq/AdoQFQiz+N3eTstT9/lTKmrqIe7hl3jW1kbdmJvtvOCQOxsyI2GAWOzYZouhJAaFqPFKBD4bneEHO0dRnFXtomx0lKR3fju+lkEXitCSmcpA+EA06LsPA1QmPZ+pIhqQFZi6LBdQ//pVK63m7JuRtPc8vndGMXpNDjXDu9TphaoXPEZt+1DcBVsLWX7eKcEG8NhvNUf5CyV4JZz9j1HLXNpPRqhD4RiELYEYZMZki+F64VQbjnawjo4jmmOAE7OBbYVOVzGFlLShD6lN2hKHxgR/H7lEb0yr+LrFMBbBnzBrzj4Er5ZNdI+Vtqf1q5guW3muzw/YFe7xrJ6Jfa2tWt3TkNheWdTDTVleKyeubF6X+nn+pEm0vxxOMHZihke8z5CSLK1f5qK2UnMkEXCezTCH4HCqvRQ0KmYdMr5J6mjUKkXUS8RocMlQicXgFJCOkv5Mm9vCJcH2ZQ6sGezYhWYofXgN1w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,59 +147,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__do_fault() preallocates a page table only when the PMD is empty, so
-that finish_fault() does not have to allocate one with the folio locked.
-
-Since retract_page_tables() no longer takes the mmap and VMA locks, the
-page table can be removed while the fault waits in ->fault().
-finish_fault() then finds an empty PMD without a preallocated table, and
-calls pte_alloc() with the folio locked.
+try_collapse_pte_mapped_thp() calls set_huge_pmd() with the folio
+locked. When there is no PMD table, set_huge_pmd() allocates the
+missing p4d/pud/pmd tables there.
 
 Allocating with __GFP_FS while holding a folio lock can deadlock in
-reclaim, for example the memcg reclaim deadlock on cgroup v1 described
-in commit 63f3655f9501 ("mm, memcg: fix reclaim deadlock with
-writeback").
+reclaim. For example, memcg reclaim on cgroup v1 waits for writeback
+that may be waiting for the folio lock we hold.
 
-If the folio can't be mapped with a PMD, return VM_FAULT_NOPAGE instead,
-as we already do when pte_offset_map_lock() fails. The retried fault
-preallocates the page table before locking the folio.
+Allocate these page tables in a NOFS scope.
 
-Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
+Fixes: f8a01513f574 ("mm/khugepaged: do not fail collapse_pte_mapped_thp() on SCAN_PMD_NULL")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 ---
 Changes in v2:
-- return VM_FAULT_NOPAGE after trying do_set_pmd() (David)
-- drop the ppc64 sentence, do_set_pmd() is handled on its own now
+- allocate in a NOFS scope instead of before locking the folio (David)
+- the deposit table is handled in do_set_pmd() now
+- new subject, was "mm/khugepaged: allocate page tables before locking
+  the folio"
 
-v1: https://lore.kernel.org/20261125100058.15200-3-azpijr@gmail.com
+v1: https://lore.kernel.org/20261125100058.15200-2-azpijr@gmail.com
 
- mm/memory.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ mm/khugepaged.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 05d03b32ce52..dd0cb09ba7ef 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6000,10 +6000,14 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 				return ret;
- 		}
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 93d4a6f159e8..2ac8b5621db0 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1839,14 +1839,18 @@ static enum scan_result set_huge_pmd(struct vm_area_struct *vma, unsigned long a
+ 	mmap_assert_locked(vma->vm_mm);
  
--		if (vmf->prealloc_pte)
--			pmd_install(vma->vm_mm, vmf->pmd, &vmf->prealloc_pte);
--		else if (unlikely(pte_alloc(vma->vm_mm, vmf->pmd)))
--			return VM_FAULT_OOM;
+ 	if (!pmdp) {
++		unsigned int nofs_flags;
++
 +		/*
-+		 * The page table was removed after __do_fault() found it, so
-+		 * nothing was preallocated. Allocating with the folio locked
-+		 * can deadlock in reclaim, so retry the fault instead.
++		 * The folio is locked, and reclaim or compaction with __GFP_FS
++		 * could deadlock on it.
 +		 */
-+		if (!vmf->prealloc_pte)
-+			return VM_FAULT_NOPAGE;
-+		pmd_install(vma->vm_mm, vmf->pmd, &vmf->prealloc_pte);
++		nofs_flags = memalloc_nofs_save();
+ 		pgdp = pgd_offset(mm, addr);
+ 		p4dp = p4d_alloc(mm, pgdp, addr);
+-		if (!p4dp)
+-			return SCAN_FAIL;
+-		pudp = pud_alloc(mm, p4dp, addr);
+-		if (!pudp)
+-			return SCAN_FAIL;
+-		pmdp = pmd_alloc(mm, pudp, addr);
++		pudp = p4dp ? pud_alloc(mm, p4dp, addr) : NULL;
++		pmdp = pudp ? pmd_alloc(mm, pudp, addr) : NULL;
++		memalloc_nofs_restore(nofs_flags);
+ 		if (!pmdp)
+ 			return SCAN_FAIL;
  	}
- 
- 	nr_pages = folio_nr_pages(folio);
 -- 
 2.56.1
 
