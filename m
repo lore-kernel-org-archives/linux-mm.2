@@ -1,125 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23EC606A33C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 03:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308EF606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 03:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EPxw2AhN
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Hn0vhtFS
 Received: by kanga.kvack.org (Postfix)
-	id 0D5756B05B0; Thu, 26 Nov 2026 22:33:17 -0500 (EST)
+	id 528E96B05B2; Thu, 26 Nov 2026 22:39:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05F706B05B1; Thu, 26 Nov 2026 22:33:16 -0500 (EST)
+	id 4DAE86B05B3; Thu, 26 Nov 2026 22:39:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E68D76B05B2; Thu, 26 Nov 2026 22:33:16 -0500 (EST)
+	id 3F0E16B05B4; Thu, 26 Nov 2026 22:39:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 777E86B05B0
-	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 22:33:16 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F41FF1201B6
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:33:14 +0000 (UTC)
-X-FDA: 85479478308.25.96CFD2F
-Received: from mta0.migadu.com (out-8.mta0.migadu.com [91.218.175.8])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EA847C0007
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:33:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EPxw2AhN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.8 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA2E86B05B2
+	for <linux-mm@kvack.org>; Thu, 26 Nov 2026 22:39:33 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 48A561A01AD
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:39:33 +0000 (UTC)
+X-FDA: 85479494226.06.BF7EA82
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 23BAC180005
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:39:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Hn0vhtFS;
+	spf=pass (imf24.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795750393;
-	b=vWTvQLuw/sTrWH/A4w+qjBKYNpyiPYRP0/i3SSx1XAKO8KQ8/YhJZry8ajxFTV4jZdma0k
-	nJsfrr43qmFe7ZeYPfjtgb7YnFtyXdsClViQg6TY22eAr5rlKyuLkjhuINnu1LZIpjWTmR
-	XETxVz5qqEem8Qf4F62RLopoHBW7yWo=
+	t=1795750771;
+	b=YxxlyC+mU73AfxnLm5zV9hqeUbLdqEV6MlWP1or0ZU0el2AdcgtotdLu3K24ECpVj8YCeQ
+	rhMlBHiBz8Hi0jj5bbsDl1sN3bR+BEyOHa+EadL5Fxnx0sF/CiCUG2SZvONqn8iCnDIpAE
+	qFxst/oa3vDga/k+LooJuYoBQ4atSRI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795750393;
+	s=arc-20220608; t=1795750771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IvS6PwiM0MwyaI9Q71Y3huXKWpS6mVFDFJuvxq1GyR4=;
-	b=re4YvmoNJRkB0R1gKJHJckb2i2qdABB5txBl5sVS3ne24q5F2JXV3uoOiSll8R4oDALswj
-	peMsZAM3X+0Lc1hsW3UXrJn/iNajPnGJiEyFEsTa+6iyq9r67fvHgYxk+xWWCcHklgHYOC
-	FaoEfJRzxxfsVHCZEhrlKDkbFtGfD7U=
+	bh=IHm+FzKE36SnVI1ZswFKXcG12/LjELz3/7Uez7uAtfw=;
+	b=fvJSXgAwUqsW78ci82/gMaHMXaev9OXaRJw+flI1/AtmDcy4Mns8BbmTp3/P9J34rzIjHf
+	LjD/U0m2A0kL6Ip8XMP2UD4R1qfo/4+Q/40VlGNEZHXD9sxZnr+sXi3kcl3NrgQHOzTpui
+	wu8nSdx1q8Z8i68rUTZqqHyjazrbkvA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EPxw2AhN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.8 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QgYTOSCJMTPUU6uzHqdiUg0E/5P+/jUuCCDzWFkkxHg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795750391; v=1; x=1796355191;
- b=EPxw2AhNdbJIC+8feQPq8mhUICuksjI4V0dBiwPN7x1IbnPSR7+Hj5/utFFhJ7FLnY22X1B+
- azJdB37bgmsa0VNTm905Ix9WUPS9TPeBkEEnbJ2DUPGJI46z2T3XuZmye/KVUF462rdMS5Nao9E
- RjvzdiYxCf2zl2ClE4U1NlTc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 83cf2f4b8b8eda50;
-	Fri, 27 Nov 2026 03:33:11 +0000
-X-Mizu-Trace-ID: 83cf2f4b8b8eda50
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <60e890bf-d5c4-44db-9f90-ae7970b5de32@linux.dev>
-Date: Fri, 27 Nov 2026 11:32:57 +0800
+	imf24.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Hn0vhtFS;
+	spf=pass (imf24.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=IHm+FzKE36SnVI1ZswFKXcG12/LjELz3/7Uez7uAtfw=;
+	b=Hn0vhtFSl58AK7IVHA/YiEIzohLqbCLCGUmSwjcbzQy2l2GmeVkpwjZIyIAR4RzvvNyUb3BWB
+	Gc+l5mOP5/i2dfAGiSxUkFrHLW25kC2TE/l9+bZ/MaPNKH0ZtFnZBMes/LQRuyrebWgfrhZbUxu
+	+LCKQ/Kw8BIhUy0nwOjinzU=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4jbK0B5kz2z1prMP;
+	Fri, 27 Nov 2026 11:39:06 +0800 (CST)
+Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id D12D540575;
+	Fri, 27 Nov 2026 11:39:24 +0800 (CST)
+Received: from [10.173.98.163] (10.173.98.163) by
+ whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Fri, 27 Nov 2026 11:39:23 +0800
+Subject: Re: [PATCH v2] mm/memory_hotplug: don't offline a hwpoisoned page
+ still in the page cache
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>, "David Hildenbrand (Arm)"
+	<david@kernel.org>
+CC: Mani Tofigh <mt4022@columbia.edu>, Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Vlastimil Babka <vbabka@kernel.org>, Gregory Price
+	<gourry@gourry.net>, <linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tz2294@columbia.edu>,
+	<stable@vger.kernel.org>
+References: <20261105-memhp-hwpoison-pagecache-v2-1-029d35634d42@columbia.edu>
+ <d4812513-6cfb-4865-8636-b83dd92c23a0@kernel.org>
+ <2e11ba52-b5c6-463e-a5ea-c165ba935704@columbia.edu>
+ <89037847-8875-4d8b-a8f3-d77a59aaddea@kernel.org>
+ <awf6RghUETgb41pr@localhost.localdomain>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <0b947b66-81d8-e921-ec57-76bad1ae1202@huawei.com>
+Date: Fri, 27 Nov 2026 11:39:22 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/18] mm/mglru: make folio lru referenced times count
- a generic API
-To: Kairui Song <ryncsn@gmail.com>, "David Hildenbrand (Arm)"
- <david@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
- Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>,
- Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
- Gregory Price <gourry@gourry.net>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
- SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>,
- Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>,
- Zicheng Wang <wangzicheng@honor.com>, Tal Zussman <tz2294@columbia.edu>,
- Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh
- <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>,
- Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>,
- Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
- Maxim Muzafarov <maxmuzaf@gmail.com>, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org,
- Tianyi Chen <hi@tychen.cc>
-References: <20261124-mglru-fg-v6-0-8ffea39934a6@tencent.com>
- <20261124-mglru-fg-v6-8-8ffea39934a6@tencent.com>
- <e85a2666-9722-420b-9a60-9d4251fc3d4c@kernel.org>
- <awa30hwg6x82REoo@KASONG-MC4>
- <8ec3f3e2-5d3a-4bed-a571-88f7ba473b00@linux.dev>
- <CAMgjq7Ayu9H85wurRAUdmXEPWYi9BdLJW13BhK+LMYoBX_7fuw@mail.gmail.com>
- <CAMgjq7DwCNbke2G25Bxfj3bi5aRp3_qkGeYmCTGVGv+Y5XzKTw@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAMgjq7DwCNbke2G25Bxfj3bi5aRp3_qkGeYmCTGVGv+Y5XzKTw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EA847C0007
-X-Stat-Signature: nryuwoyreua9su6bo1z1e3jtdhnjjicb
+In-Reply-To: <awf6RghUETgb41pr@localhost.localdomain>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ whupemk100004.china.huawei.com (7.152.185.74)
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 23BAC180005
+X-Stat-Signature: jua8wusw648zzq8sxc9in6iri9c38c1e
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795750392-607980
-X-HE-Meta: U2FsdGVkX1/NmZVgOqlQgHbSh2c8nkxCQSmqFVw4c5OxQD54gA0E3PkODG+lM9tGToO0+in1Vgq2ghjk68Qu440GYeBSiDfAm+OD7OKKnuvbJUJvCArVWRBpXJbrTejvSjgeTwc/IX7tfs5LjHNy5/6F0NTQaD+yDB31N7MjG39/ZS2P85wrLM9uU4Zt+QqNW/6ywgkEH87Fi1t498ZYW05iVREdS73L6VyXECtpXCXmLJyMNFfPITlLWOb248Dd/egNL1HvUNSMY1LXP33L4DUlMbnJYiPK/GfVQdEc7BmyB394yEAJEiqY8yETF53iKNUZLauy5JfC7m4ebQrZ+5VhacsLR4QQ+yGz+j4QgKcIaF2Zd3iHsvxt7QxKXvDv5r1r9EO6p3knDgrJaBoN8+9Zvedi3VdFxiSjpb5GX0hbbhf4otXs2B/CXLhDAgDDhvGzzP4A7PoKdXcSEeIevFPoLgVKdOyc5jM1BZNOcU/ZjjvrIDNVS7dMu08isos96CUu+fvof7rK6NSvC5hQ35yMp+87sG1a9VJ2kwsRk55qYoMd0g8nHKaAOdoa+4NaFFS66ER6j77Ie/Hwze6y9ugiZ/VZvofHvW5HIb+58TJ87fhqRMTB3lbgBdyamCzMjtqY9ced6VT4UlCi+r0/9Ejgd+h1cAeNMP1m6rSgdibtD0YFZ+mnjCIGdbch669gIP+ZQNlZCdN/wvjgZkSPVHovm+l9Xfk9etfLYRCYyPvttt/ATEomnngZAoZm8gx1e4PXJMpGFoZ9S2dXxH/T9EdN7hl2UGERVYwiLfRsGu4mw8qmQ73MF9g5mVTq1N8XaNPNQDaordtCzJJkjivvKRIcltkIVYqFolW+ZgnIpmfF/P3WhIDFpCcoHJPzyr/4VBEc6fzvuGQFIXN7RRkIkeR5FvHRta3y3YG/1J4PEGESp/TfhL8HtmvRS29baJG9iM2Ooyx8UmAqR/LzOus
- M9COGYDb
- R/g7nSDUHQTnYtYwmSfrITl7IhRj6lczxXLzSoaucd9aA2duWqIzABkVniyaaxDKrXBRuNJwzbyyGly42qmw8EaIuUZFDYaaWnR7H4fPOcG83a9EDNfI6BdPdf4URlE/T8x73yEvCFj4/7q7tJwoYq+8hzTyN7jZy1AukdFpVfmZJLIJiQL3xx1geRWfnFoQJ0Og+6cKBtv/aJR/np4ShAqxHnyf8IsBKXxgVOY6dyg41LFOwnx9Sg83zhjeaGT4WT3LqGNAl3yqG9OOA209C52LFn8ihBepQD3mJWwddcMYdfnyNINFBx94jYvObarJDwP+L0qSbkxKSL1brTrW1TptWJnCQno4G2cOC+h2/wOihs2g36m0HKLpg+DCmtdccBDtE00IYSZMvmuBLWAAr8QB6CB/Q07CsfWv+cHfGJXX9yhyXtgyVscgfq+4dO7Ygzw3JsdOlKKmOkrEKW+2j+lh1FeWbZFzi1pVBpqBcPjhYavBkutRLnWafzHm1dLDFHHfz5aDEyKhroWX30sseFOMiEHm9Vdc77mM0hmGEpze4957s8D52XvX9eAH804orPB4p9ivIaPcme8j8YGJLt2Jr/wVm8uJ2Niat2xNKCeq34SIRd67Dzpud4As96UYkIyoVuNSzLm6w/4Q+x5GyOdKJ3SNKD+9iUlgiqBCcVgMeFEvpGGa0aoZ7Ix2k5BolJPL/1uoKgoEYfXs4jXiX6mM8gAXy1DOHEGR/DPQvKoIXAakEOcCQ03M2qQ==
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795750770-60251
+X-HE-Meta: U2FsdGVkX191Fjy5dEvZnkH0MEQh+dnAXa2nW9YSIVTGRWOmyDf/i2Np8QMdrECjkEtp5MjbND4DW0o+B4jNhdDx5uLo2X0C8xSz8dXYNTamcj/+pE7w5zP0IgYolVqIDxaRa9Z/TXzN/dVYJzJ5Mchy8wfFpw52E+58wDWkMfb4AT0QI6FGG+ps/X34FcnFU/ofOOkyEKs3bozfHupB8Syu4K6p2712cpqeDwt0asYujwlWbtB4c+DZEejvGJQNrSxykfMUwSmtGJgoaRYgT5k8ErycXYxINVb7HwaKV5QPAooP0SC4JYwZEU+xyx+eLzkIzTB9d2zALseg6YODXXmsHTdn8z12GCVxQq3Fkr7jpPzvpZm0ooZll5n40/BAMngp7qmaP74jnA/T+7PgkuD9ZYl6CT4ka3ylfuaJMeTqJ1rWhAfCnitljIDxmDyu5EIvj8EB112VuRE6y1oiEGJDU167d/XKVvvolKHDCsHil+YPdC9xA5ZGuVThzCBqkq+Vn6mWjK5M9uXz0DG8aTt+mUxFGzIx8VBE2N8PElwOBegBP/1esJpjh/JldT++C5mXbzXtj94CjgmbQ1+fedBCA9gVJNUqYSey1XwW1l5P+Spqnl/MogEZFIOCGdDBjmh+KmvoH/ZjXYpCvX/bumiynFjjEAPAmNbHDE12rUhjFX13NiC+Rxe1zUfn2FULT6TVfzHLl+aVi2INVLVTdX4Tul8vpzobWnAnnIppBxPECkvAhhuEEh75W0ylclziH3Q3Gg5zk5UdGKa2zZ/WxBGpbecGD4SXNzdeLxlvXyHibQ3H5NNl3MeQHmWZPEjAOXXO4TBTPa1xuS5hVcmfnPFsVPfsnv+/iKQh0WAw2prb3Uw7D14ex5s3jgbXo36T/H4iWonseT8xqusnEhie6cRJCcmp4Fx3EfqlnMJMSjNd1uzZQVWlBJjUUYo+PZxm6dZvTrW83SK8giA2ZG2
+ E8hawfR9
+ mbAvOaSd6oKN7jjKSNKOcRGFlyLnZMxtoXxuew+lf5GL2TZ0VLas95pIBUsGx/cr/8RpevrNHabVAM/BZ3KsQR09BK1myhfiL36nREKAFXvyFGjzzqmWXwllNDTnDE4jhANyirivP/9g4+FZYRrFfDZFLcIEIvp0AVYwroN78Dinp3x89DCc+RoHE1hVf0Gk9/eKw1omlIDVSK8/hKYnDcMqjuONK4p/y1wn+KdBmKznrnjV9YYOjeH4wkeo9JKBp6MrA4OluUBOKWQtA5VmldRoHbEyl7E8IS0q7SGo4KvMCjVLZnB6OqKiQatPGSaj/yqg1ywGPgoT+GhsC2olYj7tuoAQ7kBsX+eSGSqMOiPDy36UgtxGXbL+na+R5GX7qQmUZWagljvU4BF+9PkTB3x9nsnTV7wV88Rjy882QrlPcqD9g2MYIoYOvfDx6YJcpVszNHN/9XRagLwSVPCKtDZ2ymIl5pm/TcvTuIpbLYcXkV9L9H1qVLLaQ9Ov4uDOUPCGzWx2gJVv0H2eABCzyHpW8lEO2DdtOhh6hoXAZafcaiNErmoDx0ZCe8QzdtnUBmsB7PhLrP2RfecvE/5eOtalvvsbBwauHA1vP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,118 +111,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 2026/11/26 17:22, Oscar Salvador (SUSE) wrote:
+> On Mon, Nov 23, 2026 at 08:45:37PM +0100, David Hildenbrand (Arm) wrote:
+>> We'll have to find a way to make that reliable. Everything else is just hacking
+>> around it.
+>>
+>> Why can we block concurrent offlining through get_online_mems/put_online_mems?
 
+I once tried to fix the race between memory_failure and memory offlining [1],
+but ultimately failed.
 
-On 11/27/2026 10:20 AM, Kairui Song wrote:
-> On Fri, Nov 27, 2026 at 10:01 AM Kairui Song <ryncsn@gmail.com> wrote:
+>> But I hate these functions.
 >>
->> On Fri, Nov 27, 2026 at 9:48 AM Ridong Chen <ridong.chen@linux.dev> wrote:
->>>
->>> On 11/25/2026 8:36 PM, Kairui Song wrote:
->>>>> On 11/23/26 19:53, Kairui Song via B4 Relay wrote:
->>>>>> From: Kairui Song<kasong@tencent.com>
->>>>>>
->>>>>> Pure code shuffle, no behavior change.
->>>>>>
->>>>>> Make the folio LRU refs helpers available regardless of CONFIG_LRU_GEN.
->>>>>> Without MGLRU the extra bits are never set, so they are inert. Move the
->>>>>> lru_gen_* helpers into the CONFIG_LRU_GEN section.  This prepares for
->>>>>> unifying the API for checking folio referenced and workingset status.
->>>>>>
->>>>>> folio_migrate_lru_refs() now migrates the complete refs count,
->>>>>> including PG_workingset (bit 1 of the encoding), bitwise identical to
->>>>>> the direct copy dropped from folio_migrate_flags().
->>>>>>
->>>>>> lru_set_refs_flags() skips the nonexistent mask bits when
->>>>>> LRU_REFS_WIDTH collapses to 0, preserving the two independent flags for
->>>>>> !CONFIG_LRU_GEN builds.
->>>>>>
->>>>>> Tested-by: Zhao Zhenzhuo<zhaozhengzhuo@uniontech.com>
->>>>>> Reviewed-by: Kunwu Chan<kunwu.chan@gmail.com>
->>>>>> Tested-by: Andrew Morton<akpm@linux-foundation.org>
->>>>>> Signed-off-by: Kairui Song<kasong@tencent.com>
->>>>>> ---
->>>>>>    include/linux/mm_inline.h | 55 ++++++++++++++++++++++++-----------------------
->>>>> I'm starting to feel like all of these mglru/reclaim thingies should go into a
->>>>> dedicated helper.
->>>> Hi David
->>>>
->>>> I saw your comment on other patches too, about the header mm_inline.h,
->>>> about ~690 / 860 lines of code in it is for MGLRU / CLRU only. The
->>>> rest ~200 are for VMA / TLB / MMU.
->>>>
->>>>> Can you do that as a prio cleanup in this series, so we don't have to mess with
->>>>> mm_inline.h in later patches anymore?
->>>> Perhaps we can instead move the non LRU helpers in it?
->>>> These helpers:
->>>>
->>>>     - anon_vma_name_get
->>>>     - anon_vma_name_put
->>>>     - anon_vma_name_reuse
->>>>     - dup_anon_vma_name
->>>>     - free_anon_vma_name
->>>>     - anon_vma_name_eq
->>>>     - pfnmap_track_ctx_release
->>>>     - init_tlb_flush_pending
->>>>     - inc_tlb_flush_pending
->>>>     - dec_tlb_flush_pending
->>>>     - mm_tlb_flush_pending
->>>>     - mm_tlb_flush_nested
->>>>     - copy_pte_marker
->>>>     - num_pages_contiguous
->>>>
->>>> All other helper in mm_inline.h are for LRU. So we rename mm_inline.h
->>>> to mm_lru.h?
->>>
->>> Moving the VMA/TLB helpers out looks good to me as a first step.
->>>
->>> For the LRU part, there is already mm/vmscan.h, added by "mm/vmscan:
->>> move struct scan_control to a dedicated header" in mm-new. Most LRU
->>> helpers are only used inside mm/, e.g. lruvec_add_folio(),
->>> lruvec_add_folio_tail(), lru_gen_add_folio() and the refs encoding
->>> helpers, so they could move there instead of staying in a public
->>> header. Barry also suggested moving lruvec_add_folio() and friends
->>> to mm/vmscan.h in another thread.
->>>
->>> A few are used outside mm/ and need to stay public:
->>> folio_lru_list() in include/trace/events/pagemap.h, and
->>> folio_test_workingset() in fs/btrfs and fs/erofs after patch 16. So
->>> maybe keep a small public header for those, and move the rest to
->>> mm/vmscan.h, or to a separate mm/mglru.h if it gets too large, as
->>> David mentioned.
->>>
->>> I can help with the mm/vmscan.h part if that works for you.
->>
->> Good idea! Maybe you can send a series to do that which I'll rebase on
->> top of. Feel free to take the first renaming patch too since they
->> should all be zero-feature-change :-D
->>
->> But please help keep some helpers in a public helper so when we are
->> able to get rid of folio_*_referenced and folio_*_workingset, there
->> wron't be some strange header inclusion issues. FS users quite often
->> need to call them, especially the folio refs related ones.
->>
->> (Considering MGLRU even used to try to completely ignore anon reclaim
->> at swappiness 200 about a year ago, maybe that isn't too much of a
->> problem, but it's still a problem).
+>> Or alternatively (better?), have a memory notifier that block concurrent
+>> memory_failure() by grabbing the mf_mutex when MEM_GOING_OFFLINE and releasing
+>> it when MEM_CANCEL_OFFLINE/MEM_OFFLINE.
 > 
-> Sorry my mistake, I meant file reclaim, got it wrong in the opposite way :P
+> I think this is the way to go.
+> memory-failure is a shaky operation and over the years we have seen how challenging
+> was to interact with other parts of the kernel without crashing.
 
-Thinking about it more, the header move is not urgent, while this
-series has been iterated for a long time and fixes real problems, e.g.
-the swappiness 200 regression you mentioned. Making it depend on a
-code shuffle would only delay it.
+I'd also prefer making memory_failure() and memory offlining mutually
+exclusive instead of adding more ad-hoc synchronization or spreading
+get_online_mems()/put_online_mems() into another path.
 
-So if David doesn't object, I would suggest landing MGLRU-FG first,
-and doing the mm_inline.h split as a follow-up on top of it. That also
-avoids rebasing this large series onto a moving header. I am happy to
-work on the follow-up then, keeping the folio refs helpers in a public
-header for the fs users as you said.
+> 
+> IMHO, we can try to be clever and try to workaround those issues
+> (memhotplug vs memfailure) or just make the two exclusive.
+> 
+> @Miaohe: Thoughts?
 
-David, would that work for you?
+We've already run into quite a few race conditions, and there will likely be
+more in the future. memory_failure and memory offlining happen very infrequently,
+so it's not really worth adding all sorts of code just for them. Therefore, I feel
+that making the two mutually exclusive is a better, more permanent fix.
 
--- 
-Best regards
-Ridong
+[1] https://lore.kernel.org/all/20220226094034.23938-1-linmiaohe@huawei.com/
 
+Thanks.
+.
 
