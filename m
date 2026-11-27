@@ -1,94 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3EB9606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 21:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9F8606A687
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 21:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=COu2OITN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hRXebOuc
 Received: by kanga.kvack.org (Postfix)
-	id A55966B05B2; Fri, 27 Nov 2026 16:16:04 -0500 (EST)
+	id 5A78E6B05B1; Fri, 27 Nov 2026 16:21:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2D0A6B05B3; Fri, 27 Nov 2026 16:16:04 -0500 (EST)
+	id 5598E6B05B5; Fri, 27 Nov 2026 16:21:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 969366B05B4; Fri, 27 Nov 2026 16:16:04 -0500 (EST)
+	id 46D9D6B05B6; Fri, 27 Nov 2026 16:21:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 75C346B05B2
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 16:16:04 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D417DC0509
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:16:03 +0000 (UTC)
-X-FDA: 85482156606.23.457D682
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 217A86B05B1
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 16:21:53 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9772B1C3CBE
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:21:52 +0000 (UTC)
+X-FDA: 85482171264.06.C841504
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 39B824000E
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:16:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=COu2OITN;
+	by imf25.hostedemail.com (Postfix) with ESMTP id E599BA000B
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 21:21:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hRXebOuc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795814162;
-	b=EKagVLYB2CE8fHVZWtRQM9c3RRRPogDVSbKLoiDEQVHg/b9SVKvv7trP0EvwpJkLkSHiw4
-	w/LdqyjJ3j8RhiKn80go3Qnmm8Z7ZAc5jr9yA63XNGEC1UONRnaRDi3ecQ1W6TF+Tc8a1c
-	V2JFrzcNl2TbjDPmqoWVo8Cx/DCz2+o=
+	t=1795814511;
+	b=VkkdmYa18Yq5TOQqqYx8Z/jQrEaBCt3RtO6vOcP2XVGC7QllaMGAkEF9fcF8injaM2XXws
+	jXz2l+N1K5Wyr02fLUvAJfUS52jcH5fNgCM17TjzQQV5rp9JAVQu5YYLE66lSCBE3MjZLV
+	k3CpeQt5F0eHwXq24YZKKw5JCr9qHwA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795814162;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1795814511;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iVFnf5dpR8Dt2DSzqq9t15Qf8T7sRysbntYiM2GJ364=;
-	b=O1ZKt5iAzDAaMkxV1Qjo3nltgYKFM5wePEG7sPTne2fk8WwjTpVFAYqm8o4YYSpNUWu2Sq
-	SVJZqoQdnTFlRqSGF1y/Kt+rSmZoSDrzewAYFZso5LGrGVdbkm/rxGWJ8H3TRQPWWt+EjZ
-	ogDW4hZTRtkLL/rw4ngabSgOpRe3FNM=
+	bh=wctQaa4+oug07SAylojzJ054zlJWMzb1RewZ5KzRtMM=;
+	b=1zBjiczS2sEJ3bfLYBvRAlHlKHnBfgXI1PdA+TCKw4eG4wPUd3lcFYOYjPyagF5Cvx7zuI
+	EFnsh8qKPQmJGtAggNjBJx4z++HEi80FWv/m2ak/VwrG8YwM0b1QzXY2XapO6Np8ghiaXw
+	40WY4sFpW19HWaSQW342F2xVfH1WUMM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=COu2OITN;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hRXebOuc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CCD206203B;
-	Fri, 27 Nov 2026 21:16:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C441A1F000C1;
-	Fri, 27 Nov 2026 21:16:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 708F561239;
+	Fri, 27 Nov 2026 21:21:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C866E1F000C1;
+	Fri, 27 Nov 2026 21:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795814161;
-	bh=iVFnf5dpR8Dt2DSzqq9t15Qf8T7sRysbntYiM2GJ364=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=COu2OITN+ekP19XcUUH83dFh0zMFmWbjPdl+qcJjSY9IxBJVD2jzLRTtpJ3h9R9ct
-	 Xi5Lc7FJQeW7aulxbYVAUk/ytFhcfDTRPQuQPyuZ7PJ6YieGXpZ7038OO52WrGoEjK
-	 jDZ96//ILK/LfpNRSyOiX1rIDsuP6KSC1wcZp3six36gQLhtWygefQ3qD9KjlZ0EXK
-	 Ci2kR8/O0wl2lRlNoqbI0Sg6d9KiGn+GokTPNkyU/YfR2flw1z2Y5Sq6++5j88WmHw
-	 NLsJzY/8lwqv/UjBxNRuP2x1GQRxE9mGFobhZdzvvTBvm7pKekgGwELg+ICbFKnXzG
-	 k/PqccmuoCAPw==
-Message-ID: <sashiko-outbox-238287@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/4] mm/slab: clear stale layout values in
- calculate_sizes()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?Vmxhc3RpbWlsIEJhYmthIChTVVNFKQ==?= <vbabka@kernel.org>, "Harry
- Yoo" <harry@kernel.org>
-Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>,
- =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQgKEFybSk=?= <david@kernel.org>, linux-mm@kvack.org, "Chris
- Mason" <mason@kernel.org>
-In-Reply-To: <20261127-slab-ai-fixes-v1-4-cf13b6be6692@kernel.org>
-References: <20261127-slab-ai-fixes-v1-0-cf13b6be6692@kernel.org>
- <20261127-slab-ai-fixes-v1-4-cf13b6be6692@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Nov 2026 21:16:00 +0000
-X-Rspamd-Queue-Id: 39B824000E
-X-Stat-Signature: 6nkuobtfo5zbutnp5taqwao9hekfazn5
+	s=k20260515; t=1795814510;
+	bh=wctQaa4+oug07SAylojzJ054zlJWMzb1RewZ5KzRtMM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=hRXebOucKI08nPo50le2NMBN0BGP0AOzDoAaNNdAVq/25QRPg/rw23aHbEoViCREm
+	 /NZCQ3uhllGjJK+ZRwnDUjC/ZtK9mMiih/hHP5rRAOzgkgmkhFg3T/EC5lVCo8Qo0W
+	 pq630FIjzLNkW2UHfHSC6rFXS8cmRUtgYXJU5Yehn0kLMV7MuZjmpr78JT6ZHJvSDp
+	 o0FXXLVX9qDdZ6neEI4fd/tDmEMuQ7NTkJb2D0BIxO56sKN8QZB0/ECB0C1+LRI8MC
+	 zU5zv1o103+rmQt5IHgcE7paB8sUha2P4oLZiLf5h06eDI/pfATOxWHJGVgC2U3fvD
+	 0OWuxDUgrGFiA==
+Subject: Re: [PATCH net v2 1/4] net: skbuff: limit folio refcount when copying
+ skb frag references
+From: netdev-bot+sashiko@kernel.org
+To: david@kernel.org
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, sdf.kernel@gmail.com, willemb@google.com, horms@kernel.org,
+ akpm@linux-foundation.org, kas@kernel.org, songliubraving@fb.com,
+ hannes@cmpxchg.org, riel@surriel.com, willy@infradead.org,
+ ncardwell@google.com, kuniyu@google.com, pfalcato@suse.de, cel@kernel.org,
+ jlayton@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+Date: Fri, 27 Nov 2026 21:21:48 +0000
+Message-ID: <179581450836.3135.326843222571201832@kernel.org>
+In-Reply-To: <20261126-skb_refcount_overflow-v2-1-a6f600a5634a@kernel.org>
+References: <20261126-skb_refcount_overflow-v2-1-a6f600a5634a@kernel.org>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-Stat-Signature: d1pjjixgtc9ud96azcgh7e9r7bqtbnwu
+X-Rspamd-Queue-Id: E599BA000B
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1795814162-927324
-X-HE-Meta: U2FsdGVkX1+gWxqsdAYCIKNo3ICbF2Uy4Hq3lOGUdWAUwCWJqFw1LHdO17XiTcd21KTKl7ebH+HNM7yhM+562UTRTdcJsry3HKE+ubHFVnT4rUhxyNSlJmL1zR2a9RUhaNNNKGir5Shv8ilnkj6VoYBTpEdDosnjjnA6L9esRrFjQHzpAttUXVzZzKqQ4xFJVq4jqx6RyF3rPJW7RirIyd+7FyGT7uI14k0f91llNAhJ1IHV2Dozb8/6W/AdIWD5zFE0JVz0hD1yBP3BEBbBZkWE4/8tMdRJ2mvKdI1pEofdIjfmnilvAi2y7h/1j9mtdLPi1Qd/p9dP2HGGxAlURBktUqe3LUSC4VB7v0tfWFzaRvxFSP/1X8+7EsPBtwLwlZAlmrXyGBozV8wtmYDSFTL65EwB84fjqydzXqcxpfDmt4sJnhcq6uWIO62VGYCgFQAV4SDoMXAbi5ag9NXkOyHGo2aVmSfPihLtOHIWuA4JD8adntlqyR2YuLWjMVQlob//oLn57ioNOHTK6tQkfdvmNhDQi9vDuk4feDRCnlqRz4DLliRKim1AMgDtVWbFo4IulFHRFuDG+BL9DWno66vriRjoGEJ7ij6jKYO9kYK1o8gQ1u2ypgtin2IwfO9zOP27woEUkzIEb14al+gcXRx74Rfofy9ZKeUx4MtZ9EESGf5sQ3vfs9Lik0BcOnpy6rYEbBTxR6UmxCt52ToPb1cmRwqrw73fvtR3QBhIizRg4kl+kO+0YHuzlSQ7e0XCO2zrE51i3Nb/oh3yUw2Xuagh5DD+DepBwu+XD1pZ7BXPNNe1dhm2z59aN0q1LxLD2lZBSyWADBSgaSWcGmeIVOXACbpc5ZWcOJmHOydWiDz6KsgE+3hVfDjB7UK1Tq5rVjhPQUvdm+IkH9fHiGuCGE6+iPUtuVeBALxRYpW1z5qplj+taPV4m7uBfePusN+KmGU9HJ5FmQeqIjOp2lH
- qKFGutY4
- FM2R8H0QFjWju/l0K0j9GkNhx00lpqzeZ0ZXF8DhHmiUJqhcplaJxNiShmtC9ISm7CA8dXcXbhUCvLiE2GrJ/kCYqTwUbz3rAON2h3VE7yZudVrXFHMgGtN325PUgXUDgHSzX4ELSWP7SgrcqMC5+088EEND8UmwW3+o3yoI68GtpVe/5J9STHlZvqf+IBnb+x0JuNOJLcEecFOUH0Ke18/5fB966mzOhMMgOjdxP47Wok1K4V8BpLIEX56e6jaFhNb/6Yqc+BtKUwpv6YFXK4QG3Gj90vKKSv2zrILffUnWWLujDz/8Fh9LOZsvZT87Tuo7cimHl5zZIyFy2HCjQQFLKg0hlKSM56WgHkmAvtiQob5HemG7r6sY21VKci6z0xYfw5DLAYIWvxghEJe+dodpZJc3glAG4Nwnzr8OY+SwJO/bTSFP8Mhgfv+WYBu0zGmc31vG0dSlVyeXxNDWLGcMLtAX8+V6Gh+zro4Fbt1LfaB9lyBczuJJnD3waeGpdr1Z8UU4m0aecKUd9mIz/Uj0Yz3Ou9sH/Ev//lPkW0YgNFzvwF5QAWUL6cPPg6G9luC3/wnErZZ/UF0UEsqlL3+M9pDf8wYHRMaWCCg10xdx4SqNyb27OYRqTDN3LxckICyzdRlljIpzQjXlbQMYjvaGCHbh1Lq0VB3uBPKiMS3C4rcOVA7VwvUj33x1MsDUHPWcf1IV9vXUTSK/SsOjVs51Gf26o1XoOxKkMzWHOG53umsFwIwOfL92nNw87cQGFaoXdrxhr4+HuVGi+kw27YBJ/DABVuZUZYiXEz+sqDP2vEzly1dpMWRYmSnj0LzsHdT+vKzGO4uizqwTwTBNWkjtfxNcEEr8Yc1UWzTYiqY6M3NJzl/pr7LBLu6p3oVBO7BovbIiAG78typyoZkhxhTbFpKhIn67ZG33i8ARDlS0moOpqPMp32rIKnA==
+X-HE-Tag: 1795814510-152226
+X-HE-Meta: U2FsdGVkX1+HVslzH/1VR5xE8iIIDKHDCYuDEHCmCrIMQKAqc3PTc0GRrUqtAbSTHRrjazd/OrYTb5TfzwymzhiqK4ZI/NHnTLVw7ymBTcMpK0Eik0f2L3oBdWRzey1mB+YpctENUNjYidxZvnoBSHRFzkWsAk3Q3nOJqlsLt0S4RiQCRttLQi677bAyyT5YVLNEnE/uHo4fsPaddRO6t5FwG/gPYtkcZdxEA6OkBXw+EaVTanhDbKORJlKCHAUTla0X0ELV6DYje3aU8oAL3DNSd9NluiAUK2T1acNsUB6SdUYSAGA3XypBGnnLIoJonsoaaeNzG8YYjgsjGFYjwdALhaRyh/g75iYYQ+P8FBFkxQt+/TDCNQZRmmrbCZvjyVuMHkniiQF0jOHMVER3mesnKN4ogvDaN43+t5B9LiOu2JREZuDr0vckVvz3TfnbQD/vPbUeRAnSZ8FNOrTN/JfdGRzmkiwlVA9KLOZHeA89AwzAczXCE07YtKquT+FWvqzjnT4uct+ljaUIOrYQg+lCX40WEg1u7yT/qrt7WmyLdHW2GQVMIlFcMCR3wFqay6UKUZYiznmftORmN7d/6xwmr+847unlSckBmU+7DIfwJ2B5E53I9BI+dYWHpLt3bB0/0shmcxDps0V0Cpj5m5cmCd9KPmhOmNRo2J05rfdfyr4qbeMI5xbtLbF+lApr2H7xe+FfkyBTo2jcGdG3hHLfCSahGZYUKTCmv7aCxe5WU7cwwtby5xiJODXZ1f3HyC4LuuduItiMedbIIcBRWA+ijbuZpPmY0DN6glbxSi2041fc3Yvpx7Mar6ABdz4PL44HStpVC1GiWitePzn07VbrjjxXFjwf0Na1p/hvZ+NhXAvAz4wOURlXRo+m/7NWQbsy3VJ1N/0BNamGSbeHladdpzNgn+22k5Mp2jJRGww2BK+dgiJKa4E9kzzBvWeVvWBy6Jm9ebsdDYcoueN
+ xX6VNdBM
+ PNDfQxuTJnnUyv3XM7sFvBIlXOzCcxzgTEzURoppemnV8moTMo6x8e9E3ThTO3TtRPOq7turZIIdEx+wlltKVqiqTvL/M2gxhw5GEGmGKKg78/HGQsDx8SopoUr2VcvUzArrnwGi1gWkN9PkPHF6wghos838WaiLSzUuksMpbppVwL2blIQBeN4d9Ogs8zZOxbVNiiDP4Ll4lJ4HlTVh0dJqze4BGVLvKu8mCgQxYMVM6dRZklAXdtxmnCMhI6+D1GAiP93LPS4w4Z3S9nSA7n9ZEq80kzX8r7+UIHOUlITGxtwB+s2Y2X2E4QV1xcgyil+dGUe41CLu2sBqkStO7SapOLdS3fBCA5L7BYnM58ipSsxDovRzNcg6zFDZzaSHQJ+yGczFADh1rNX3EKTJt66iYhsNT1DpdvPNi1lXNnSRf8zuP4EFt68oSvNddLzmMacf8GaQzkY2EozPsvQFx3JePBxtmlN0U9QkPqVVIutjfnyG3DFfK1hnUuFxbNj6zZx8dZUogvngYPfmKBmOO/wx/kkqCT+D/iJJ1dX/+JqhRuKDmCwDe9/h5AO02rheiaTxiKj/pI29MkZmQVJisAdjqn+eSgTe95E7Ev3xOCltPC7WGb8Uzn78nQWk6fNlT6zeK7Spc2QsumSoPrCfzOZUEZcTdhCA5qWHU/S06nnwn1TubeNLFZETNIMHKDnwZgdpO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,69 +100,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mm/slab: late SLAB_NO_MERGE in do_kmem_cache_create() skips
-  obj_ext in object
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
+
+Low priority / nit picks for your consideration:
+
+- [Low] Concern: this commit converts only pskb_expand_head(),
+  __pskb_copy_fclone(), skb_zerocopy() and pskb_carve_inside_*() to the…
+
 --
 
-commit e36d70bf4b2fe1e8cc089823e91c1a5b0b9817ea
-Author: Chris Mason <mason@kernel.org>
+net: skbuff: limit folio refcount when copying skb frag references
 
-mm/slab: clear stale layout values in calculate_sizes()
+This commit adds skb_frag_try_ref() and skb_frags_try_ref(). Both take
+frag page references with try_get_page(), so they refuse a new reference
+when the folio refcount is at its limit. The commit converts
+pskb_expand_head(), __pskb_copy_fclone(), skb_zerocopy() and
+pskb_carve_inside_*() to these helpers, and those functions now fail when
+a reference can't be taken.
 
-This commit resets SLAB_OBJ_EXT_IN_OBJ and s->red_left_pad in
-do_kmem_cache_create() before recalculating cache sizes when debug metadata
-flags are dropped due to an increased minimum slab order.
-
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 9bb031f9a41fd..003023b6f8dc6 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -8860,8 +8860,16 @@ int do_kmem_cache_create(struct kmem_cache *s, con=
-st char *name,
->  		 * order increased.
->  		 */
->  		if (get_order(s->size) > get_order(s->object_size)) {
-> +
->  			s->flags &=3D ~DEBUG_METADATA_FLAGS;
-> +			/*
-> +			 * Reset fields that the previous run may have set and
-> +			 * now might be different.
-> +			 */
-> +			s->flags &=3D ~SLAB_OBJ_EXT_IN_OBJ;
->  			s->offset =3D 0;
-> +			s->red_left_pad =3D 0;
-> +
->  			if (!calculate_sizes(args, s))
->  				goto out;
->  			/* Created as unmergeable, so it has to stay so */
+> Let's introduce skb_frag_try_ref() and skb_frags_try_ref(), which use
+> try_get_page(), and use them in pskb_expand_head(), __pskb_copy_fclone(),
+> skb_zerocopy() and pskb_carve_inside_*(). All of these can already fail,
+> and their callers handle that.
 
 [Severity: Low]
-Should SLAB_NO_MERGE be set on s->flags before the second calculate_sizes()
-call rather than after it?
+This isn't a bug, but could the commit message mention the frag reference
+sites that still use plain skb_frag_ref() at this point in the series?
 
-calculate_sizes() only sets SLAB_OBJ_EXT_IN_OBJ when the cache is
-unmergeable:
+In net/core/skbuff.c, these still take unchecked references:
 
-mm/slub.c:calculate_sizes() {
-    ...
-	if (slab_args_unmergeable(args, s->flags) &&
-			(aligned_size - size >=3D cache_obj_ext_size(s)))
-		s->flags |=3D SLAB_OBJ_EXT_IN_OBJ;
-    ...
-}
+skb_segment():
+    skb_frag_ref(nskb, skb_shinfo(nskb)->nr_frags);
 
-For a cache that was only unmergeable because of DEBUG_METADATA_FLAGS,
-clearing DEBUG_METADATA_FLAGS and SLAB_OBJ_EXT_IN_OBJ before setting
-SLAB_NO_MERGE makes slab_args_unmergeable(args, s->flags) return false
-during the second calculate_sizes() call.  Even when the non-debug object
-layout still has enough alignment padding, SLAB_OBJ_EXT_IN_OBJ is not
-re-enabled and slab allocations fall back to separate slabobj_ext arrays.
+skb_try_coalesce():
+    skb_frag_ref(from, i);
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127-slab-ai-fi=
-xes-v1-0-cf13b6be6692@kernel.org?part=3D4
+skb_shift():
+    skb_frag_ref(tgt, to);
+
+skb_split_no_header():
+    skb_frag_ref(skb1, k);
+
+Outside skbuff.c, the same applies to tcp_clone_payload() in
+net/ipv4/tcp_output.c, and to iptfs_skb_add_frags() and
+iptfs_consume_frags() in net/xfrm/xfrm_iptfs.c.
+
+The next patch in the series, "net: skbuff: limit folio refcount when
+rearranging skb frags", converts skb_segment(), skb_try_coalesce(),
+skb_shift() and tcp_clone_payload().
+
+That patch also explains why skb_split() is left unchanged. Each split
+allocates a new skb that is charged to the socket, and the references are
+dropped once the data is acked.
+
+The cover letter (merge 25f5c92e1ac0) leaves IP-TFS reassembly out on
+purpose, because it needs one new inner skb per additional reference.
+
+Would a short note saying that the remaining callers are converted, or
+skipped on purpose, in the follow-up patch be worth adding here?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261126-skb_refcount_overflow-v2-0-a6f600a5634a%40kernel.org
 
