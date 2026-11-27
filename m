@@ -1,83 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9640606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 20:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC44C606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 20:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f8Gzj0lN
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gwoOsDwo
 Received: by kanga.kvack.org (Postfix)
-	id BC7B96B05BC; Fri, 27 Nov 2026 15:13:25 -0500 (EST)
+	id 1405F6B05BE; Fri, 27 Nov 2026 15:13:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B77846B05BD; Fri, 27 Nov 2026 15:13:25 -0500 (EST)
+	id 0F0EE6B05BF; Fri, 27 Nov 2026 15:13:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3F5D6B05BE; Fri, 27 Nov 2026 15:13:25 -0500 (EST)
+	id EFAC66B05C0; Fri, 27 Nov 2026 15:13:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F8A16B05BC
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:13:25 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5CB1A1C3C87
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:13:24 +0000 (UTC)
-X-FDA: 85481998728.05.C955550
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 61525A0007
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:13:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=f8Gzj0lN;
+	by kanga.kvack.org (Postfix) with ESMTP id CDBD86B05BE
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 15:13:34 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 611BB1C3C86
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:13:34 +0000 (UTC)
+X-FDA: 85481999148.28.BD6F9C0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 760F1140003
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:13:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gwoOsDwo;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+	spf=pass (imf23.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795810402;
-	b=A9n5yu4fzXZG1OzZnUUXq0DljCtA+vHcZgeC5LpHJrPcHD9OAUs5yB+rxcaycGx+wfnody
-	O8xP9hkYTip0ezqFL1OL4MbhEKBav4i+Om0VQv8cWv0LZukWGHnpaj3To1DdNhZrvvq5UO
-	5Q5se0GqZZF74E+G4/mOiU+1EWOwCZ4=
+	t=1795810412;
+	b=f7Dobx1K7EOCIZveYw6/pHMhOGz0IXvfRQBFbgky1bgm1lx0E96jMAczlz5uL6uSvAjXfK
+	CI8vHKIYbkbFhytaqK6mbu8KrkGaaOggGpSxGdYRNU29w/tggd448o8/L9PpCYzWpQIvJy
+	JnKSuxmLTtgRSa3eUi9dWIsTjKNwvCA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795810402;
+	s=arc-20220608; t=1795810412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IbLJwRpo4tVdePRmorBlbPTABtleKIaMIw6lipyS324=;
-	b=SIx+/iDB/VawYysh6BqGAHPK5l+9amWUwKYjwTYnk2+A5p5mEN8zLGwkSVvNMGZW4pJ+qX
-	QXB8pActgBH7zKkcmgDZh2PWAlQpn2qWQ7hnnjsod6LDybzammEhdL3S3UpGb3fQU7inyf
-	2g2AkcDkQbEkwfvgrAB4usCJ3Nu9D6M=
+	bh=wQ4Ea92LuSsjCfPccEyJNxbltDfTgYAS7193tyu/dr8=;
+	b=l3/siZXJm8YpO9HFPPhXjRcnRoWZNwqOvq1LDdM5Gqgs7RrJTjemkOz9MZqeg5V/kBC/+/
+	B0An7Kp/nXUrtJQfFhIGiqBboj4MJwItFiDjKcQjok5eLD0qNru4EDFSCjkEUk0ohJj+FQ
+	XNE/gypCj2tNsF21Qp7rA0OA9BnyV90=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=f8Gzj0lN;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gwoOsDwo;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+	spf=pass (imf23.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795810401;
+	s=mimecast20190719; t=1795810411;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IbLJwRpo4tVdePRmorBlbPTABtleKIaMIw6lipyS324=;
-	b=f8Gzj0lNO+hwOoCy2l6bNIXv4CzrxE8NlrNrzdiTxT+1R1HF4Ujy7/qnU+zNaElsr41ESo
-	o4/uH3TXj6SDObo2r+jvvClkmreEUY6iJaFw+aN+cGRnp7b9FNpJmasoXpOXZ/f/OqY6+m
-	GAHVXfO5IywPTJaDFNC0IXGilJCrSPI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=wQ4Ea92LuSsjCfPccEyJNxbltDfTgYAS7193tyu/dr8=;
+	b=gwoOsDwot5eMwlpANnSVokyIl4n7bOkxCH8zyl8lfoSXKlmLZTARl2jjceznCN5ZA3UY3F
+	Btp8vMRTpVo7E67bt4cEkjfGYfmxHiEeitrlozyMrLg1HH76GtMq5Vzg5H8XsvWm+4mGd5
+	+zwzNpoH4Iw92V7D+wclP+YOlmsjcOc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-290-dCe7YsCHPKWZpfgzsI8yKg-1; Fri,
- 27 Nov 2026 20:13:17 +0000
-X-MC-Unique: dCe7YsCHPKWZpfgzsI8yKg-1
-X-Mimecast-MFC-AGG-ID: dCe7YsCHPKWZpfgzsI8yKg_1795810393
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-477-TakUJ4rLMbCsJqdj2AhIzw-1; Fri,
+ 27 Nov 2026 20:13:27 +0000
+X-MC-Unique: TakUJ4rLMbCsJqdj2AhIzw-1
+X-Mimecast-MFC-AGG-ID: TakUJ4rLMbCsJqdj2AhIzw_1795810403
 Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 788AB1944AAF;
-	Fri, 27 Nov 2026 20:13:12 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6BDB218002F5;
+	Fri, 27 Nov 2026 20:13:22 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CB5A436;
-	Fri, 27 Nov 2026 20:13:01 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BC5075B1;
+	Fri, 27 Nov 2026 20:13:12 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -85,6 +84,7 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Frederic Weisbecker <frederic@kernel.org>,
@@ -118,30 +118,30 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>,
 	Dan Beimborn <Dan.Beimborn@qube-rt.com>,
 	"Pak Hung Vincent Chiu" <pak-hung.chiu@qube-rt.com>
-Subject: [PATCH v10 02/10] objtool: Flesh out warning related to pv_ops[] calls
-Date: Fri, 27 Nov 2026 21:12:13 +0100
-Message-ID: <20261127201221.434876-3-vschneid@redhat.com>
+Subject: [PATCH v10 03/10] objtool: Always pass a section to validate_unwind_hints()
+Date: Fri, 27 Nov 2026 21:12:14 +0100
+Message-ID: <20261127201221.434876-4-vschneid@redhat.com>
 In-Reply-To: <20261127201221.434876-1-vschneid@redhat.com>
 References: <20261127201221.434876-1-vschneid@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: lj_1aqbIAgdk8R9eS_KwVNlkfEady9UDwGpcnLVOiAo_1795810393
+X-Mimecast-MFC-PROC-ID: 6mi-hKjM4H54mY0R_-e11Aa0tW4XBjoxU0Jcn_plwZw_1795810403
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 61525A0007
-X-Stat-Signature: y1stxijt9yu6qm757sa4sekp5otkhm46
+X-Rspamd-Queue-Id: 760F1140003
+X-Stat-Signature: p8hsybk46isjnaibmkwahiaqj7goskwj
+X-Rspam-User:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795810402-834122
-X-HE-Meta: U2FsdGVkX1+b1PIvv/ys3HEpqidtGFxIWfrT8Ve5hUjPsBMhNibaWTBX6JGxxFwCLFvm7gtskEKhcvi1Z3jpt9W6WdztjtcMhaINnGGFs50yuMJhz9HT8ED1zow3Qatj5Ua6ZjtV/6V0hvmPPuBpBlaHc31AssBsD3rrlwjWUna30WjyIYdMzQle2nbmq5HOhCJFzW1GD+6vLdscNYG4gqTKD0D+tV7T8gSdTcuonIyh3ZzFxPEKkRFJWR5cYqmH5ptNszZ1MwETQ/ozh/neer50kda9WC36NwNphh/i10OVD9g0OJrBB+ZF8AN6ebYW94r01pAmDJT8MPp/hmx4+8bnlDixfum/VLBCpPrd6YCq5vT1P2L7/8ukawXESCHSI7psOFk8sUONtB7QtbyI+z7FOADiLsmbcbCm61DGYnbAciN1sjUR+WDFRrwsZQdI30X6MdLrhUgv8W+T+l4MioCl9MuWvN5xXxlYa4A9LyFkkob6DZv7KNQ6N6M39tToHLUN3g217nyhYTbNCsQ4YLZZ43E0lOWSBzptRrN4h3ry3EDxc9qZyS67rZmUqP/Q2oAM7fD/59qRTnitfgOvczTB/1EtO6U0Ep/ggF+DXGwSo8Ii03MnPFt8fLSHDe44PAGDQ2PZ8UWcipvJ8XV8bp55YVC6w+d2jxisD2XHM3cQ5ZRjk/QhY0IbIwlykS7NwyWrHSUUMG60H4t9IKMEV0LSQ7wqlWFp/vDKX7+eneOvB0u/89PhTdrYXRM0hCWF8uvTCb3QLB6rQ0xEtxusRDfjFccAJ7aVZrigBDehnKccEJb6it1jyva0q0SG5mipBqt0UhISc9n1Y91bLfGEhO6T8kqde/wZMDrvNO2l5LZSCBwONuCuPAFE8fJgD7V7v8KtgAE8d43dHhYlbP46ZUs03KfoPJ/MqL2kGY0mL9G6W0a5MIu31bgwGM5zmF14lmByKItgtLKL0rPBsXU
- vnWaWros
- pTushNJiO6HgvMRazcEse8+a77ePwEc/ZxWgwo6h7x9IiM4y95mvULtcckBzFBCiFWRmn/Oxfi7ULdshHaLQbhOLVvJyeZo0bhzNcMbeJkVhjqQiV71TSBhUC2nhCcvjmjGkiEbOJfXpauagMkIvZk6oEF8MKqmZWhOKXK4zXT//LpYCDA8mr8rwqNzSbd+ytGPpwxkgluGZSCeod9QayOlrPBdlvEajwG+pO+q9FiAmThIdyWBDqKJ5yEuteoWMZATFnLAnS1CmKRNsr1/4zWAFa13bRQGaou8v680uL48YNCnR1istAhMkLlOYOlZ9gdu5seuYOmCDl1tcskXOnxobNTEyG+ZHpvee+Qh0efc2XDO6/pd7uqvy3mUHcdtTQu0JrfNf+a4ho5Ag/ZqqhaOo0hqp5QJU9z9KCNhtSOrbU/ObxrxUBcj5wCNaiOoA6joisJc/tJ3hLIAP4d77JT9NBQeAhXjIOGDQVLVHBCSPzrgYch1jBtaFsS3Vdmzzguv9mWseijORw56Xr5YXlynn8wSWuQJ2Zs/41fmI+ArhyMxwAgqpPW64JUcyJBvG3suAs+C7hGCZUuM4YcOYcF/xjRgFtyhZZ5srQB9T3M3KihlnH/l/gKqRFcB1+goKw0u6AsAbxrX5EsiplRrigXt1IpWtFJ2RoiWWEr0zqYjePgwTKFQN9zZjqzD6hI7ugtC3XLDbNkdbpETDme0HmTckbvclWBxb5+OZhn5FXn5EXXco=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795810412-481188
+X-HE-Meta: U2FsdGVkX1+Ek2y23zTwFILGRuSmeeXg3RI6SqA1sTeuxEWKijfN0YfejyFP9I4RZWkSMMQEwNvXk7gxQk4uVpwZh2da61G/EgZ4Xp6mvIKwfM2lU4HkN3OcL+HQ8oKHR5uVZBlHkQuRfEl5xRfVXzGKQgxPSuSLLm1rTTWv5t+Bca/jwKnuVqVwtZBsJp7ggtN3nZLMRyGKEp/MD9sHEGDG1FepzXJf6GpmnPDQQh2qtdA5D799hWY/aFryrdzS1MFPTWkI30UhfATMPMdtJflWggXmiRXa8ZSteqDjItI4jeVZuAvz68P6knVH8X9ih3tIgcTW+n2BQJ4JGTILK3kwYGzw8TIKvRrDHmU44lIXeUmxoFrDLJDRpoKhG5gwEtha/vb+kzRNVTkk7r7Ti7DbeTG5v87pP6W2IPvGLkIKRx494ffL8WvDMuGOeFdH5RBXjJtmTusohI5RY8BARAxnRvANOXg56GGLnH32v/w6fTXXXpPjl1y8ZCAwMrNopRIe6EaGnpOgJOLEWD/hEpiD7veqoONP5YfGrQ+9pZGPikpKG0FP3VijU+OIWLKKzq+6cdjbjQnYtp1M90aVTDDGTXaGmY+SZ9pNmdRcHF6ciAykSgyFjqOU7ns/hEaRVUHotJ9dbL4xDpCf0BBWGLlVGEiv+tXOyHuOFmv1YADt0eDQ9DnE6Ea3YVVl/oR6xFJUaWJC/X+4FzcXWs2HWYstuORZqYtAdtAHGkj9YMA3nicx9RHCU1yEL6KvBzK1yyw9VWM/lJPzIVHLh6NYheNqt/2ojLnADndfJoA+X8pzZseeA1FQ9LVtnSNHOU+9DMAQSzofLtOEqCvF2gTpBSqrTaUkNkKQv5gi8zHbwFuLfAEpnqfNYTQpmRH6tg1oF7zhcSZEEK7c5OO2Vc2fVuB70VRM0wfSebMFmWSdU++1Ut4LjOGXNv/pXJmC+RkIhkTPLn4NJ0TmHEHjqN5
+ kDQukFP1
+ rlh6xXOVOjEs6nHBadkIAeDvcvfCav3XbFnNhWTdmHx5jqJBRgq3vfO+qLy/OJzLlq0TNLZcCHWTzMkh1C1lYz5QFpWruf3bwBGgROxL97Bl69Rz7w+lFJVkAxq2G4h4AhRORN7BCCgd07q63WHtZTfZy9FtAPgSCtkN4lgYadhTxHauIMvSMMdJWzUFTLvAvcvfh331i6iKUBKRC7YNjXjuvjvynhKK1eYy92FrppEFt9avQiwRE15Q5iW28nxTeD1rTenJFP4BIisBVQZVgkBBtuuDphYXHzf5viAWxwkO6KoWvVq7HR+5+cqeHH8Ce4e87+OuEKUpRKKpmuWiEZJ64R7ZMrd9uE+JZLZw6LVAUdCgbI48d89WEsq8jC8WTVNHO5be1TlAdCWHuiJKq0EQwCrzCDAHBST3OMpJffeOmUd5nxBOZMv2E9O2c9j5uBVIc2jHO6FXpj1irEiOKO6AzYpyXydkTXSFChYn5652O0S2rxtnaPuUaASGp46MAbOw62j3Av/6KaYGEJV31UMOE6iBrDu+hHKCG8MNfp9EqOneojHQY615xl3Ao8jaUPbhRPCD4D9qzcKjz9GOKWDHRHFUmXd6IdDRfNVYHTDgzWDMNRRzFLhEXKG3ir7qCNkr4L2rcdwW6vSuyVuu2xev68y4yIUXqvSk4z+AHiTnFiCJHIyJK2769Pht7zro1mI2LcNxl1UNOSCunnFjQfri+eA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,28 +150,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-I had to look into objtool itself to understand what this warning was
-about; make it more explicit.
+When passing a NULL @sec to validate_unwind_hints(), it is unable to
+properly initialize the insn_state->noinstr passed down during
+validation. This means we lose noinstr validation of the hints.
+
+That validation currently happens when 'opts.noinstr' is true but
+'validate_branch_enabled()' isn't.
+In other words, this will run noinstr validation of hints:
+  $ objtool --noinstr --link [...]
+but this won't:
+  $ objtool --noinstr --link --uaccess [...]
+
+Always pass a valid section to validate_unwind_hints(), so that noinstr
+validation of hints happens regardless of the value of
+validate_branch_enabled().
 
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/objtool/check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 7d68f8df9a848..6b1d0e2af00c9 100644
+index 6b1d0e2af00c9..1b6fab9334566 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -3461,7 +3461,7 @@ static bool pv_call_dest(struct objtool_file *file, struct instruction *insn)
+@@ -4011,13 +4011,8 @@ static int validate_unwind_hints(struct objtool_file *file, struct section *sec)
  
- 	list_for_each_entry(target, &file->pv_ops[idx].targets, pv_target) {
- 		if (!target->sec->noinstr) {
--			WARN("pv_ops[%d]: %s", idx, target->name);
-+			WARN("pv_ops[%d]: indirect call to %s() leaves .noinstr.text section", idx, target->name);
- 			file->pv_ops[idx].clean = false;
- 		}
- 	}
+ 	init_insn_state(file, &state, sec);
+ 
+-	if (sec) {
+-		sec_for_each_insn(file, sec, insn)
+-			warnings += validate_unwind_hint(file, insn, &state);
+-	} else {
+-		for_each_insn(file, insn)
+-			warnings += validate_unwind_hint(file, insn, &state);
+-	}
++	sec_for_each_insn(file, sec, insn)
++		warnings += validate_unwind_hint(file, insn, &state);
+ 
+ 	return warnings;
+ }
+@@ -4460,6 +4455,21 @@ static int validate_functions(struct objtool_file *file)
+ 	return warnings;
+ }
+ 
++static int validate_file_unwind_hints(struct objtool_file *file)
++{
++	struct section *sec;
++	int warnings = 0;
++
++	for_each_sec(file->elf, sec) {
++		if (!is_text_sec(sec))
++			continue;
++
++		warnings += validate_unwind_hints(file, sec);
++	}
++
++	return warnings;
++}
++
+ static void mark_endbr_used(struct instruction *insn)
+ {
+ 	if (!list_empty(&insn->call_node))
+@@ -4849,7 +4859,8 @@ int check(struct objtool_file *file)
+ 		int w = 0;
+ 
+ 		w += validate_functions(file);
+-		w += validate_unwind_hints(file, NULL);
++		w += validate_file_unwind_hints(file);
++
+ 		if (!w)
+ 			w += validate_reachable_instructions(file);
+ 
 -- 
 2.56.1
 
