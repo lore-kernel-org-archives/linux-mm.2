@@ -1,59 +1,59 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10831606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 08:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D39606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 08:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=AHFaJuEh
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=L1aw4Yxh
 Received: by kanga.kvack.org (Postfix)
-	id B12636B05B8; Fri, 27 Nov 2026 03:28:15 -0500 (EST)
+	id E47376B05B9; Fri, 27 Nov 2026 03:28:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEA2E6B05B9; Fri, 27 Nov 2026 03:28:15 -0500 (EST)
+	id E1F6C6B05BA; Fri, 27 Nov 2026 03:28:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DAAD6B05BA; Fri, 27 Nov 2026 03:28:15 -0500 (EST)
+	id D34996B05BB; Fri, 27 Nov 2026 03:28:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 07D046B05B8
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:28:14 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53E5EC0279
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A4C4C6B05B9
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 03:28:18 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E693EA7699
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:17 +0000 (UTC)
+X-FDA: 85480221834.02.0A48B26
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C155B80004
 	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:14 +0000 (UTC)
-X-FDA: 85480221708.08.EF38A0E
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 563391C0004
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 08:28:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b=AHFaJuEh;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=126.com header.s=s110527 header.b=L1aw4Yxh;
 	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine);
-	spf=pass (imf20.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.6 as permitted sender) smtp.mailfrom=nzzhao@126.com
+	spf=pass (imf02.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.9 as permitted sender) smtp.mailfrom=nzzhao@126.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795768092;
-	b=o25fdqnFxIyhX4gLG+CcW6wBVL7hWY4BoIu3FmP1mZx4RKOPdcsigGZpanHf9ytLM6TJlu
-	emNrMnZOsMWfzBhUzOwxqMfq12TUeTnijWzTvaigQnlGgoARbIonwdcRL9ED0jb34xBz2A
-	laLzLhjITNrLmy36RP+2UBLKcN1Nhso=
+	t=1795768096;
+	b=xcmhhNA2qHfYN39Lv2ZiyICkMbrENU9Un07SPmz1+z4TlMm7hlF98AteX+j1OVIcBeiP4B
+	h3DfBEaEivWxBNIJ63vadAxfnFetATSUGtRfZMMSu4uC82MHyHBUqwbV5TyOKaskz8MVG4
+	0YWBGGK5gP4iddjFNzP7oLTRckPEiUU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795768092;
+	s=arc-20220608; t=1795768096;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1sIJUe4O4CsWbtMbQNi4aeXjMyQYal1HiWg977wjesI=;
-	b=8I/02FHmzGW4fgPTQS3EndbpkIWts6WEOo/IYz59Vn/4WFHYwG/OWEFhRBpx07/eqRqD0f
-	EKeAdZh1UXHdaQnD2q1gd7sNEP+gqs2Z2/AuNaflwsvhittPXrF5dDPFPrYMqZO92rwIjZ
-	Hn7+lNHEIKvPtBxtkAHLyis2St8rQCE=
+	bh=mc1AjUFz08l5NWa5nSsq48XQe3osLZopmAouGxSLMYs=;
+	b=kn2XudMXKtP2zrcmZcVkN0PkpIKI1AKXRKz0kZvnIE9xYi0A9efAc8Q6UKW4WOn9yOMN6g
+	3wgfOpteZqcpJWox5a+id3MoyJzsK97krh9yqQnwo1zLnp0aL/RBBL9EzuLNBXO0C5Lyy1
+	4FuxVbC4BkVSvU6UDf8tGxLFnLHZexs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b=AHFaJuEh;
+	imf02.hostedemail.com;
+	dkim=pass header.d=126.com header.s=s110527 header.b=L1aw4Yxh;
 	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine);
-	spf=pass (imf20.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.6 as permitted sender) smtp.mailfrom=nzzhao@126.com
+	spf=pass (imf02.hostedemail.com: domain of nzzhao@126.com designates 220.197.31.9 as permitted sender) smtp.mailfrom=nzzhao@126.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=1s
-	IJUe4O4CsWbtMbQNi4aeXjMyQYal1HiWg977wjesI=; b=AHFaJuEh0EIkAkyo2c
-	ZVBqUZ9yupduHxWzUtjdjRTae0SDHFnaZIZf1Cj8HuqZGfghrCYnrxiuplKwyjLP
-	kJJ9i4K8NXTV3yo5ESq/c2u3G1GsZ1QOUjIoY6Wfh1KN2jHQ0jDCNjFtfWmRwUw5
-	dOeKubTHbfksoYyH1iOaTPaQo=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=mc
+	1AjUFz08l5NWa5nSsq48XQe3osLZopmAouGxSLMYs=; b=L1aw4Yxh705ARFxiJM
+	L3FHnFN2FHrn27dS0jGDazV8PaUiFx5OtOhnnG5BB2E+/TzSRwcRMhVkhBAtAbjD
+	4ENm/cSy7u4dmNR/MaXDoUIvTj0jaobtFbxcbYGdGA2CRDeJnHMlMQjtHmLj+QhQ
+	rB9k+5nzhmPsp7nNTmOwCYb5M=
 Received: from nzzhao-ThinkCentre-M760t.mioffice.cn (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PikvCgDnz+_cPglrqen2EA--.50878S2;
-	Fri, 27 Nov 2026 16:27:09 +0800 (CST)
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3n8ToPglrpDfcDA--.16205S2;
+	Fri, 27 Nov 2026 16:27:21 +0800 (CST)
 From: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
 To: sashiko-bot@kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -83,36 +83,36 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Bo Zhang <zhangbo56@xiaomi.com>,
 	sashiko-reviews@lists.linux.dev
 Subject: Re: [RFC PATCH v4 2/4] zram: support compression at the granularity of multi-pages
-Date: Fri, 27 Nov 2026 16:27:06 +0800
-Message-ID: <20261127082707.3624358-1-zhaonanzhe@xiaomi.com>
+Date: Fri, 27 Nov 2026 16:27:17 +0800
+Message-ID: <20261127082719.3624596-1-zhaonanzhe@xiaomi.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <sashiko-outbox-216089@kernel.org>
 References: <20261115024455.1465726-1-zhaonanzhe@xiaomi.com> <20261115024455.1465726-3-zhaonanzhe@xiaomi.com> <sashiko-outbox-216089@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PikvCgDnz+_cPglrqen2EA--.50878S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJF1DAFWrCryxWry5KryUKFg_yoW5Xr4UpF
-	y7Ga42yr4kJF1IqFsrCFZ7u3s2yr4S9ay8Gry8tr47Wa4rX34qqFWqgwnYka1UCrWfW39I
-	gws5ArZ5J3WUZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UvksDUUUUU=
-X-CM-SenderInfo: xq22xtbr6rjloofrz/xtbBsR3js2sJPt1GbgAA3V
+X-CM-TRANSID:_____wD3n8ToPglrpDfcDA--.16205S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr1ftry3tr43Wr4DZw18Zrb_yoW8KF4xpF
+	WrKayFyFykJry5urn2va18Zryjk3yxGay7ZryrtryxWF1rJFy2qFy2ya1rZa4UArs7ZrZI
+	qa1Fy3y8A3yqv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UkGYLUUUUU=
+X-CM-SenderInfo: xq22xtbr6rjloofrz/xtbBsQnmtmsJPulG7gAA31
+X-Rspam-User:
+X-Stat-Signature: fyjjdj4oz4hihd3qdo8bztznwhsh7oqs
+X-Rspamd-Queue-Id: C155B80004
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 563391C0004
-X-Rspam-User:
-X-Rspamd-Pre-Result: action=add header;
-	module=dmarc;
-	Action set by DMARC
-X-Stat-Signature: mkr543z19y18qzdtwk1u8upyyrfsp4s6
 X-Rspam: Yes
-X-HE-Tag: 1795768090-415451
-X-HE-Meta: U2FsdGVkX1/CaAOhkFoxbjjK52LRrGrDHRiAD5WP5vCzgC3kqF47ffBlhDGurvFfYweWuYTfJX+Lm+LzmcNNSwcaANNzIM/ORPUeASE6PzHvQWSn3HgNBJP7SIuF0tB18Cqb6ErxtlavNIrlpIFCJ+IVr+mY0frEglKGeeJVw+U0LBciVPWN+5jPSqUf2QfldavOTII204tG9w8BupscqJcR63Rwat6Qwojqt+L9hXisKthbFnoSq9AzyjH0jt+7j9MKI42OMrnM5tb7q3X2TpD0rpdH3itJf1+FLYQIvzOUwhStHGbfyBruyfoy3Ybx3zuSK5yBL/ODPqObfU9eEdhTOyGzVTyA1BFjUyEXxd9bLVd2P2XNvEXtdRnHX0VwxrMUQ7TK7rtkTVeBtigAh/+nGfxvIOt+VzViuvB5bFre2K+avmoja6Jd2FfsAFcQZCOVrGo4P1I783hY2daFmXeD2w6mxhd22BWGfz9Svh8b999rMsRnz9zreyMKziqHgG9iU7h8ORsK8sjjLzdIfqFABe98xTfGSW/XYyaVAQDvIEmxOPxWVaQIFgWkvsrGo7I+XManiisCDA8+lSRDTjMYXlt/BRdMxQvHZtQZQlugjAndGBhOgfPRH/1oRy9KTHQ3gNvMAWbKHuWGQ0+5vhbpZeuC8bKlygas0MTkshS9O9wPBD/4O44xi12rfrD447ltzjQraSnkIe7cxcDf/Nzjx0BHcLIzf3Z04fnDqgOTiPzLP1+5ZvS7sczY139YVcV70bKew938nDRBiemmuDkmRNZtA7KxGEud3lK8SgR4QeCBNP1/QTioqq83g3Uex0wuvuSK2BNgRqA7U6ulLUXJVk45ZDW5w0ChP45cUGHYVxBZz8Yb6QxJbzDwtLjJtAlHmOayXADt3GekDxMl0AyPgFZJO/vN21rl6VjEXWVQtkQeoIA3PwjIASTNUzHcq2/Nb1WnYuJVIQdT8w4
- wV7ShkKu
- IMDhaQQwe05CE1c2uKpkf+IntI2JRgXwz7WRfMTVUDzm5NRpJMcuV+U6vgKd6uROk6PkwdaKngds+iqZCA+MsFNKXLqutBTH3WhFguVHWu4+JnLsmOtA+/HeN57L8GXVkodHc3qMiHOa8LZuOWflUHo8QUXT5XOZt/NaL/cjOZNGJUi3a48m+HkQzurgGAnjD8ohHzve9dO3MAi/rBMyn5x7TMEbemEi36HlOhVKPyRvDZiRHFFeD1aAB9ukopSSxm/+REyPokeInMjON6OylSJ49l7xMr57FbXwyHfjmpyTrYg0LK4hQqIx7bYJD+Hz6Xlq8xiO1GR4difWk3V+EqphJhcraNyykqXeSj6hiLKPHKhj52GF1dHATSUwEa0VzojZ24BmZmLHzUQXw+pFAD+PkWxiwMMZuHGolY7zV946iBbjWN/RDECIvcrjfNTnKnRe1Ywvj8lQUe+qkPyhvM2E4x5YBn7RD5UpVFarOSggrbtI=
+X-HE-Tag: 1795768094-339458
+X-HE-Meta: U2FsdGVkX1/wr29y9No93Gr+CUuika0ekQZbLEjgP2SwkkGP5wd0OQDF+KQZBnljNUyGRd1HZg8DubhLSLYHK+eBgLRwLLVVfiMCzvapgXJpyQwKv78J6G04btZHeVyODcpuoyONlPKyCIa3KOB6KEGXaLnav6XUXpJdmdgEwyAMOHjTmYrhKgLu5pufe5hTPs320/R9kFoyzsfaciUV7SXCmGKhOKbwJbNvs9N92hZ39lfPwdG5T/1z248isgOIHC+HwgpNJcDT+g+bmo2cJCV79pjPgcV3KlJv3P8YmLg1bT4th+J2WHfqJVUezVgqF32Vp5DU2HQETqc7KzxZWvV6S56ZpE3jeodNVbSUZFbdr3UiGF5ZeWtFbGwoCUZXR5g66fDYe5wJXBbQeLEMkGg9VlNP7E9Hcq9xd7T4x4RoMCerD6ZTZSSYrrN/hEbquKOglh8Fc5ufJvraFvHUTHN2/pB4gTdEwD6ZezQ8wID0NX7o+uIITHEagm8UnuQFL2u9HHAgo0PMooqtpeUZvW5h+PruFl3q+v+1wTTePyItPmxvcdYel2Mrc7Abh383nmd8uyayA/bRs4zdJQQM5093lbpRon8rggR+uJ8tGOZi1uIs9uFBhXWfbGcBRRjheuuJCw3oltph6ucdXMFopNuUynn26YK5dRn1awKG5o2G84UsD+mX8xuwknvVwpiwUq5094ZN9fDygSp0kM6A73a94t5zIrbgVrLtTCLB6JWsUu1eUiGqoZS+H++R4s+D0lTDy72mQRUxee6dnlRX0AtGeTxh19IHJTOFWocxAy3VBQnYAG7PCmy1yxI0ci/mp9LFnoijKh2qnSHBeYA1QHkcVC+HpaZduRJJlZm90TQSLndQVriT7BJE7MNLPbjjy2gQBVtkfsuTgp1jGo+vKFAsj5ye8J88SM5kTTRUtD4g6OnT022qIby/cykgpn5Crr0OG22geRkqkkoJxJm
+ skUgqI7X
+ 7o4sVSOYH/+L/LtpnGPBcYc97qvXN9hhmmTvRTV0bHH4JtRunbu6sYluafEb5eH8Y9LvB7ajitm+Zn39plIZvmRr91ZDCvqRErUMIXwhYzX52gc+vpta7bi9Lmh0fruXWBhk/CvDkRGHxsyTA0eIQdkWrJNwKMHQK/LE5ziZQRrddhBWdaokpRz/RffTg10NYdbJJYq9Efsb8NxnfbnuazJmqD6/r8y5Y84c7hrJuPl9bAcloPpcPBx9TXb9mTwyN6xZxqXsNmSBuZ9NQcE6K50Lj9f5IOeKSMGRve6fuaoW3e/AQX3/656jddrqkH+gy1zrkNGV0SZpwDJuewTYXwGNJUu8Yrkc7tmgRYX7Jak0MfG3pVb4vEQ3izOaHxx6Y6CQSlXdVxPEmFK+g6o53QNNmC9vvasa2jz93CW9RtqJob+2i+VF32A+1JWk3VBY/jn67R3mqHmIVuxIHhoZngXSBRTXP2ECE7Uz5n4bo0G29icM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,59 +122,53 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 > [Severity: High]
-> Does passing bio as parent to zram_read_page_size() cause a use-after-free
-> of page when ZRAM_WB is set?
+> Can concurrent zram_slot_free_notify() calls on sibling sub-slots leak the
+> multi-page object?
 >
-> When test_slot_flag(zram, index, ZRAM_WB) is true, zram_read_page_size()
-> calls read_from_bdev(zram, page, index, blk_idx, parent) with a non-NULL
-> parent bio:
+> __test_multi_pages_comp() counts ZRAM_COMP_MULTI_PAGES across the group
+> while only holding slot_trylock(zram, index) on the current sub-slot:
 > ...
-> read_from_bdev_async() submits an asynchronous child bio referencing page
-> (inheriting REQ_OP_WRITE from the write bio) and returns 0 immediately,
-> after which zram_bvec_write_multi_pages_partial() frees page via
-> __free_pages() while the backing-device I/O and completion work are still
-> using it.
+> In addition, when comp_count == 1, clearing ZRAM_COMP_MULTI_PAGES and
+> unlocking index before slot_trylock(zram, head) means that if
+> slot_trylock(zram, head) fails, the last ZRAM_COMP_MULTI_PAGES flag has
+> already been cleared, and another CPU can also reallocate and write to
+> head in the unlocked window before slot_trylock(zram, head) runs.
 
-Both writeback and recompression currently assume that each slot holds a
-single PAGE_SIZE object, which conflicts with multi-page slots, so I plan
-to temporarily make CONFIG_ZRAM_MULTI_PAGES mutually exclusive with
-CONFIG_ZRAM_WRITEBACK and CONFIG_ZRAM_MULTI_COMP via Kconfig.
+These are valid issues. The locking and lifecycle model for compound slots in
+v4 had inconsistent semantics between slot_free() and slot_free_notify(), and
+lacked a unified locking boundary across sub-slots. I will redesign the
+concurrency model for multi-page slots in the next RFC version.
 
 > [Severity: High]
-> Can post-processing a multi-page slot overflow ctl->pp_buckets[] and
-> req->page?
+> Does setting ZRAM_COMP_MULTI_PAGES on index + 1 .. index + nr_pages - 1
+> without locking or freeing those tail slots corrupt the slot bit-lock and
+> leak existing objects?
 >
-> Neither scan_slots_for_writeback() nor scan_slots_for_recompress() skips
-> ZRAM_COMP_MULTI_PAGES slots, where get_slot_size() can be up to
-> ZCOMP_MULTI_PAGES_SIZE.  In place_pp_slot(), NUM_PP_BUCKETS is sized for
-> PAGE_SIZE:
-> ...
-> When a multi-page slot's compressed size exceeds PAGE_SIZE, bid exceeds
-> NUM_PP_BUCKETS and corrupts memory past struct zram_pp_ctl.  In
-> zram_writeback_slots(), req->page is a single PAGE_SIZE page, so
-> read_from_zspool_raw() also overflows req->page and wraps PAGE_SIZE - size
-> in memzero_page(), while uncompressed writeback and recompress_slot() pass
-> PAGE_SIZE for a multi-page object.
+> zram_write_page(), write_same_filled_page(), and
+> write_incompressible_page() only lock and call slot_free() on the head
+> slot index:
+>
+> 1. Because table[index + i].attr.flags aliases table[index + i].__lock,
+>    the unlocked non-atomic |= in set_slot_flag(zram, index + i, ...) races
+>    with concurrent slot_lock() / slot_unlock() on tail slots and can
+>    corrupt ZRAM_ENTRY_LOCK_BIT, hanging waiters in wait_on_bit_lock().
+> 2. Any single-page zsmalloc handles already stored in the tail slots are
+>    never freed before ZRAM_COMP_MULTI_PAGES is set on them, leaking those
+>    objects.
 
-Same here. With writeback and recompression disabled under
-CONFIG_ZRAM_MULTI_PAGES, scan_slots_for_writeback(),
-scan_slots_for_recompress(), and place_pp_slot() will not be built or
-called on multi-page slots.
-
-Also regarding the related zs_rebind_handle() issue from the patch 1 review:
+Same here.
 
 > [Severity: High]
-> Does zs_rebind_handle() also need to mask the object offset with
-> page_size - 1 instead of offset_in_page()?
+> Can two concurrent partial writes to different sub-slots in the same
+> multi-page group overwrite each other?
 >
-> When a non-huge multi-page object sits at an offset >= PAGE_SIZE within its
-> zpdesc, zs_rebind_handle() overwrites 8 bytes in the first subpage and leaves
-> the object's own header pointing to the old src handle, so later compaction
-> updates src instead of dst.
+> zram_read_page_size() unlocks slot_lock(zram, index) after reading the
+> multi-page into the temporary page, and zram_write_page() only re-acquires
+> slot_lock(zram, index) after compressing the updated buffer.  If two CPUs
+> concurrently perform partial writes to different offsets of the same head
+> index, both read the old multi-page before either writes back, so the
+> second writer overwrites the first writer's sub-page with stale data.
 
-This is tied to the same recompression issue: zs_rebind_handle() is only
-called by zram's recompress_slot(). With CONFIG_ZRAM_MULTI_COMP and
-CONFIG_ZRAM_MULTI_PAGES mutually exclusive via Kconfig, multi-page objects
-will never reach zs_rebind_handle().
+Same here.
 
 
