@@ -1,78 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669C5606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 19:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDD7606A334
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 19:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U1IJVo42
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HTgAYAyW
 Received: by kanga.kvack.org (Postfix)
-	id 100D66B05B2; Fri, 27 Nov 2026 14:45:57 -0500 (EST)
+	id A9E876B05B4; Fri, 27 Nov 2026 14:46:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08B3F6B05B3; Fri, 27 Nov 2026 14:45:57 -0500 (EST)
+	id A75F56B05B5; Fri, 27 Nov 2026 14:46:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE26D6B05B4; Fri, 27 Nov 2026 14:45:56 -0500 (EST)
+	id 9B2FE6B05B6; Fri, 27 Nov 2026 14:46:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE20E6B05B2
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:45:56 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 124AD1404B1
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:45:56 +0000 (UTC)
-X-FDA: 85481929512.13.BB3E34B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 762B76B05B4
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:46:07 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D1DD404AA
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:46:03 +0000 (UTC)
+X-FDA: 85481929806.06.5635DA1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2B2E440010
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:45:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1IJVo42;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 735A44000C
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 19:46:01 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HTgAYAyW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795808754;
-	b=aS+iSwQYH7jYXqxcltdzv8K5xayKesPss9sSJhvBy0YAZYChGKEnIIBDo8pNEB+G4fNGAS
-	7+yzdYclI4ni/8GBMEicu6+4zhXDXVaxur2TnP/0sDtiHVmk8ozwapTPP9HtEero75ADHS
-	PL4LUXn7oeGGev6w2FVMp59wF2ZZtxA=
+	t=1795808761;
+	b=aShF4Of5lyioMTrqkX265xqpXLu7tlHQlmUYSqvU+BtYpY+tPORffcEbHB6TwFve342Za3
+	9AtBWV/XKv4756EEhqaoLnvxpOq1Ubsz5fkz0Q/0ufg33EjEhfzy83eo0rER90VNrUbSKY
+	aNlXs+6Fce902eKJCkhArvS7uZCjD2Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795808754;
+	s=arc-20220608; t=1795808761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Ccqqo8bkY7xL+HYcO0JWuLLFtKCJUhxP0ky2YEXw5Wc=;
-	b=l9NsfYsvrafyXDfxGHSaDnDs1DAgljbh1NLBmPiRBAhDlbAwSVengsq5p1x8apjV1tP591
-	/emCRvCGyuuGMdR4dgJRqWrrpQAZvbZkLLowAiosXhKBLrRqyd9lWAMMvdZpSKCRYeyARD
-	3Jc0BI7QNGrCcjCJp6uf2sABJjE5Eus=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kcerf0Wz9rGhyM09///5+pAbtctI2kJUca9cu+C4P4w=;
+	b=xS2E+B59zZSK2AHqp6pwAGRGoMnv1S5UKqj2FzQ9i+f8azko2ajHA6oJ4uckgmW1zmYBFx
+	C94xn3gkiC8Kc/5XhoV/5hAkoKMB6kBu1H/r6CA0VK1AyV5nUCT8oxmt2W24vdpnZyb14M
+	IJLh7Dhy/yvTql0LuiT6H1d0d3/MmmE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1IJVo42;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HTgAYAyW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8B0B8611D7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 07A9661F53;
+	Fri, 27 Nov 2026 19:46:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE111F00929;
 	Fri, 27 Nov 2026 19:45:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E441F00898;
-	Fri, 27 Nov 2026 19:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795808752;
-	bh=Ccqqo8bkY7xL+HYcO0JWuLLFtKCJUhxP0ky2YEXw5Wc=;
-	h=From:Subject:Date:To:Cc;
-	b=U1IJVo42+yjUoLPOMPFgOCbISQ+dYclpD5Wc8wo+oDtr3dO/WJ0X5NJGF6QfhT5zC
-	 afVN8BrYB2sSCkOLwhh6NVXWXeNFW9uj8RepxTvndcHK+8bTDEAB5hEIKKjE/lVW0D
-	 NfoV6+saJtZsP/ssWkugYBjUH6nmTB2iXjgZzJIF/m295J0HQ+vwvUxOI/xifuNzsT
-	 YRkRvKMFg004fYOQNepBRYO0icOTiiJyimCc6Sbl5zqFATngKBNAoObE6KKxCRZW8X
-	 UAxa9ZacZGlg4NI2y18B/hYfUEL0eUCMIJe0J+Ln5SN1X3aSHIfMLdUXaP48MDKir/
-	 z9IOtQ4GVGyFA==
+	s=k20260515; t=1795808760;
+	bh=kcerf0Wz9rGhyM09///5+pAbtctI2kJUca9cu+C4P4w=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=HTgAYAyW3IajlcDL8qw1eFE1wl5vm/PzjZDHxWlJjufp1QLj16mSEPhQK9WYrz9MF
+	 rT0VJiqS0FOdTVTaVa88eay+IjxG08jhYC6tqhhDfB7DvaPrbXdavJRFsuvMvxNtFg
+	 Yn1O2tBwXIMVeQeliX/2ygQAQIr50/F5La5TLMd9PPDN2GjEPsYKs/v7Pu/9hLnxhP
+	 ntTZOU+KwsNEyO5EuOmYORVTXaDRsOI2LEqGH2JKd21PmoW/wD9zUo3/1PSVTepzEg
+	 iNae8zT+l4JvwzYkjMfKp2GaalCHALsAcDUVuvD0vgTX/xZDMAyJ2Z1LbNCh4I+46A
+	 cheTThDHMrtlg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH 0/4] mm: AI-generated fixes for coda, madvise, mprotect and
- PAGEMAP_SCAN
-Date: Fri, 27 Nov 2026 19:45:39 +0000
-Message-Id: <20261127-mlock-madvise-mprotect-ai-fixes-v1-0-e46b2b1eb435@kernel.org>
+Date: Fri, 27 Nov 2026 19:45:40 +0000
+Subject: [PATCH 1/4] coda: never point a file's f_mapping at a container's
+ mapping
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/x3JQQqDMBAF0KsMs3agyaLFXKV0kcSfOtgYyYgUx
- LsX+rbvZENXGAc6ueNQ07ZyIDcQ5zmub4hOHIj9zd+d8w+pn5YXqXE61CB1621H3iWqFP3CBAU
- plZgwjpkH4q3jHxzo+bquHzj3+N9xAAAA
-X-Change-ID: 20261127-mlock-madvise-mprotect-ai-fixes-efebbfabe99c
+Message-Id: <20261127-mlock-madvise-mprotect-ai-fixes-v1-1-e46b2b1eb435@kernel.org>
+References: <20261127-mlock-madvise-mprotect-ai-fixes-v1-0-e46b2b1eb435@kernel.org>
+In-Reply-To: <20261127-mlock-madvise-mprotect-ai-fixes-v1-0-e46b2b1eb435@kernel.org>
 To: Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
  Andrew Morton <akpm@linux-foundation.org>, 
  David Rheinsberg <david@readahead.eu>, Hugh Dickins <hughd@google.com>, 
@@ -93,26 +92,26 @@ Cc: codalist@coda.cs.cmu.edu, linux-mm@kvack.org,
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Chris Mason <mason@kernel.org>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1860; i=ljs@kernel.org;
- h=from:subject:message-id; bh=aeycByJuRD6O/7hAo/Q3yNzTpVZuppfVH7qRNkz4Ftk=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI5777YO2/KyWkxJqtOXjlWKXDuh/yZT2k1C7boac97V
- as+89ftjR2lLAxiXAyyYoosz7+I7w8SCZvXecHfDWYOKxPIEAYuTgGYSPAsRoYHQa4OVmuFvZn0
- /19aL/LFm2f2mwfX2xfJzV+3apHTozV7Gf6nt08vEvR/eG1pxdxnq7SsRVZEabRkrzRtifyakB0
- TacAOAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4327; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=QVu7fb0kBPNVCyTuJn+VTrXPJuL+aUkLVFY1Ydjy6Xw=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI577707/3+rru83v/RwiMc3hITPB3nRWid2nnsXnH9w
+ 0W1Lc+mdJSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiAr2MDO8r79aIsLUfPfH/
+ eR1X/12eXR8kzL3Dayum+m5Xv/k6w4/hf5765ufqr64apv4sEH5wwutwRqu24qJWGZs3TAdqv+/
+ 8zQUA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2B2E440010
-X-Stat-Signature: gmxexurqx9mjforufutjdwxxkm9xnufk
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 735A44000C
+X-Stat-Signature: sd6fznrhr3zbgxw7jsrnf7siffiup36u
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795808754-464193
-X-HE-Meta: U2FsdGVkX18wJvhd+nlF3SLnUmpLgqMIMccNdOsolShihQ5lbIFksAsrfF1qUtnh+YjCMj43dyWOuTK5kbuL3E8U3yfZpvzNw+c02yIxkefJEREb8DxyFrPK4l/rqdre/HNt/3HaMIh4dBb1e7p9DlQ3vMD8dnUuSkT9N68MYKk1eiVIfKQNoFOdjjMToGT8ljFlYsWSFIrONFarJUcq1KLhU1r/ZZ/CPCxi2pLZ1RSyILQOgZtcDLLts3dIZJX6Qclpap6fop+TMpYAE3bpm+VWxKlIRx+qbGu1aMBky/PDFMhV7uwwA1AtIhRfzmWmmcJMhdsZSTbNnttBdukOcmnjXXGSCV71Zqu5K6I46vl/RLEGuOmBrr5+5wNpPhojRH8X7eTW8vAQw8BiIhWVy4/bMkRiFhEuUG2BzBYaJCD+/FIt6QbiRXj8fsW9yeW1IMCySnbciega/bSbrLq5897+0W71Xll0ZymKohozpxxkHHZpP4O3H9s5zWBcSQLjSsSHYUQ7axcjQIvwdJ4x90qvnY80ROOV0c85wlYpZy0GE0D4o/RZcZTJX8uZFrrJDe+jEDWfmvW1CuHvrMVubLOhENbVG4g6/14LVqbuzoiHLcbW5U5CKGxRFUiln8k1od8Pyr/txSII1LPTFyYN9GeJBqo2dtxPnDJnXT12WrOKLaO1iEl6D6bnkeupwaVp0Yr9/hqPEeeLx59S6PrN5nDVQdjZODpWEkNnrWQ1NaKeroab0nB1BSOJbDFGB77+RjtaslzkacCT6OJ++2uw2pNehCh/zMm4n5B5zU5vL0C2YqeDo2HF0GlviyHnwaLk28i/zU/jLfoMUKP/SF+iShvXD4evEMCRXzBDteZVTAqp0p4YOHE7ztyuwawsmX4uXs1LyeH8l7wyP/G5i4o+PnAc4OQT5kdr0Z5QyUVmq8DKHWwMF53ZTvMTa0BdA/K4kWtzrWagPg0RUNf9ZZp
- 4ByOB+qy
- wyeKxNcQxZykrLl7/IrwHAVbCdl2bYIupEffyjYmMTAzXwGmGPB4tmQ8BBhs1TDaHt/e7Re24q3u4cjSz06gRj6q5iy4K0Tv6PeTOrjsdautbrvoWtfivyS6hgVmyqdT8OIUFBAcbGy2mC5MzgSja79tZskw9t9Nw2W+5R3sQJs/Y0unZgqUeivsm9Wjnq1WRqmiDgjMqiUlcnSvcvrkE3Ju2NUe2D2RmubE2TSyhEMAFfeaMczAZZcp3p1yarmBve/mSxy9nS64DBnTuLWs/EMR232K3qbSMZbpAv8i8P1c3o7yqq3tKumx2kKTc+pdRX58XjOtYv7fL3I7C9EMXvFvgF1g72T1VsttyiEgSzJsVJwx+MXYcwCZTWDPJQqpAME6se3tCwg7M8XblFqrM6/CwgdmoPQ6yQbNJ6x5CacUsbqgdv7Uc5CkJdb3D/zcaRWaNTWz3kv0fOcwcowhaBNKy54Z1PUdQC+qGUqWTOfM7Gf9XtRx2bUdcbzLig2mQ0rebprhiC68fXI4=
+X-Rspam-User:
+X-HE-Tag: 1795808761-665326
+X-HE-Meta: U2FsdGVkX1/R/9yOE7DWRsY8mkA+yTaS7D92YmXg8Em5ThDwpP4Wzek7b5EJ+qQAXqzO40IL00nM5+SYxAOsrw4qH0U47E/X18SUl0MtMctgW2UtS5YKEhHqJPNjPK9DDIdMiHUmlIGGkWY+iNz/bpJCeKI4KwoTZktXzBUal4THkm5yBOKDV7z/XrcIbCW/ARWpxkr6dAwQ04UGGLzZiXjtyOIkp7jNAUErdypen+BCb5jQcxGUWIj8DYofbXuGVD16hg3Vq2VONcKNT1s14ovEC+EXlx7hizXpddprDpCyCqMlwazj9p6ZAhp8CHR715xZxSXVL8kYkwE2sGGahxDjvSa8kB7SSyQR3JL5dxXSuLy5hPJlpSw1oiXH06XH2C3RzX92gF6pPCf0m4cbXRTePnKIsrhEMn5yhdU1Bqo4MMFpdegBJ+BOET5WlC+nWrhXdmctEfAewXHT5rKa/MeNMfGYnY8U2iO9CSDzzHT9odY9sAYSFlPPrByJEc6CF0jEvp5CaudQhEjQd7rFlnUwEB3r/lwJbfbXcB6khn9pfUZOZqJ+VvRAhQAwxvSlyERfp7LvmORvApACW+n/Yo0W0yT2AMy85WuGwDgqeov6G9Drv/Pyo0/PnHXcRlxqzbLuT/0YSZevgiHTk0DLZEt/zMiRkHV3bkmzJ8xZBKjAey/uWCd8zdggwurDE2znwqzuj0ZtF8j9jV3Orjf663mSyaA8M9VPdNEOSQi0qFUqX3M4QEZOTRuJSdVgCwDWDW5kPmc2W5YgZbSkAN95xiYSuwJ/9mnP2DGDhYv0ExAKT0FLZfUVCwteYhmchPx6NlSGL9QjCJ+qeJ30zda48pRphz2ZeGWQplh68gxd4Lz1DPDdMFTWR/c4X/Aq+CkAHoFNkWi7EaXerVcXmHMRhaUTlrdXzr/XmTedqLARjw3r6MMyvRC5+kK4BaV0wmOux9K7RQh6621Hmi1OkZ1
+ eCTaIYN/
+ sBL1NzCZlZObk/L2xJg59EOJTLEz6uL379Deffw0WzPwpxlaJtMBtqZ1qZJ3//dkbbBmkt1r7W2pSeZWKo0lHrNU2s88lrZfCKQBJZUVEei7AUHWnwql6HJOzS5dQ80c4IGD2weOnDkOdABsKLgax7VCbCR0cg/MFHnE9tICFMXfdx2RsCqhiSn7/Nfi0cqDJ6y/IfX2rWn0onaUDyeN1nAOxi4gRLZu3ISZSctVDGhFw3Ib52HcrIX+k3KCJiyUEr6XkfMRaa8bbNjTtFCyAaItYEY6U4kG12b69fJEN5tNIB6ZT6WigaQ7i5zBsnd8VWuLE81zI84PUX5YbmGesCFkxvr+YLZQRNq14/fPnwHTnnshoNq4uThn70GdTq/BTSjM2K+jNnCCwQG/ZCHNpsu91UjsRWdJ5qheJbS19aOSY6VrmYtjHlBQNYoeJ5kwEocK9AKLPGJz8s0RZUnRTL8TcMsWDUyWUU2BDoorAsnhNX/Pai+TZ+gfPNSCgOe13DAM5Lor0SrK6U4w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,52 +120,112 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The usual stuff - glorious gifts of AI goodness transmuted into a smoother
-form by your's truly.
+Coda file systems stack differently from other stacked file systems.
 
-Please check for any insanity. OK wait, let me clarify - in the patches.
+On mmap(), coda_file_mmap() switches both the Coda inode's i_mapping and
+the Coda file's f_mapping for the mapping of the container file. This
+causes two problems.
 
-The only one that needs a backport is the first coda fixup, whereupon, in
-the unlikely scenario of a container manager doing something rather silly,
-we might end up with a dangling pointer.
+Firstly, the container file may not remain pinned, at which point this may
+result in a dangling reference in coda_file->f_mapping, and so a
+use-after-free in mmap() or lseek().
 
-Whilst unlikely, that one might be worth sending out sooner rather than
-later.
+This can happen when you open the same inode across two files, mmap()'ing
+in one, which assigns the i_mapping, and open()'ing another, which assigns
+that i_mapping to the file's f_mapping, if the cache manager gave the two
+files different containers. Each file pins only its own container.
 
-The rest are the usual edge case stuff, one involving the truly cursed
-'guess what it's possible to map at address 0 if you're crazy enough!' type
-thing.
+Consider (A, B = separate open files of the same inode):
 
-I shan't talk about the evils contained in the last patch. PAGEMAP_SCAN
-deep inside your soul ye masses to find salvation from PM_SCAN_WP_MATCHING!
+    A, with container C1            B, with container C2
+    ====================            ====================
+    mmap()
+      coda_file_mmap()
+        i_mapping = C1's mapping
+                                    open()
+                                      do_dentry_open()
+                                        f_mapping = i_mapping
+                                        coda_open()
+                                          cfi_container = C2
+    munmap()
+    close()
+      coda_release()
+        i_mapping = &i_data
+        fput(C1), the last one
+                                    mmap()
+                                      mmap_region()
+                                        mapping_map_writable(f_mapping)
 
-Anyway, as usual, please review! Thanks.
+Secondly, mmap_region() takes a temporary i_mmap_writable count on
+file->f_mapping ahead of the mmap hook, and drops it on file->f_mapping
+afterwards. As the hook changes f_mapping in between, the count is dropped
+on the container's mapping rather than on the mapping it was taken on:
 
-(Also note that a lack of Cc: stable is not a mistake, rather it means that
- I think the fix doesn't warrant any back port shenanigans.)
+    i_mmap_writable of                          Coda  container
+    mmap_region()
+      mapping_map_writable(file->f_mapping)       1       0
+      __mmap_region()
+        coda_file_mmap()
+          coda_file->f_mapping = host_file->f_mapping
+          vma->vm_file = get_file(host_file)
+        vma_link_file()
+          mapping_allow_writable()                1       1
+      mapping_unmap_writable(file->f_mapping)     1       0
+    munmap()
+      mapping_unmap_writable()                    1      -1
 
+The container's count is negative after munmap(), so the next shared
+mapping of that Coda file, if it is open for writing, fails with -EPERM.
+
+Fix both issues by no longer updating coda_file->f_mapping in
+coda_file_mmap(), and by having coda_open() always assign the canonical
+mapping of the inode, as do_dentry_open() may have propagated an i_mapping
+which coda_file_mmap() redirected.
+
+Reported-by: Chris Mason <mason@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 4bb5f5d9395b ("mm: allow drivers to prevent new writable mappings")
+Fixes: 5de195060b2e ("mm: resolve faulty mmap_region() error path behaviour")
+Cc: <stable@vger.kernel.org> # 5.3.x
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
-Chris Mason (2):
-      mm/madvise: don't declare OOM for MADV_WILLNEED swapin
-      mm/mprotect: fix unpaired notifier start at address 0
+ fs/coda/file.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-Lorenzo Stoakes (ARM) (2):
-      coda: never point a file's f_mapping at a container's mapping
-      fs/proc/task_mmu: write-protect only with ptrace attach
+diff --git a/fs/coda/file.c b/fs/coda/file.c
+index c9fba41f7cea..64f05f2fc4b3 100644
+--- a/fs/coda/file.c
++++ b/fs/coda/file.c
+@@ -182,7 +182,6 @@ coda_file_mmap(struct file *coda_file, struct vm_area_struct *vma)
+ 
+ 	cii = ITOC(coda_inode);
+ 	spin_lock(&cii->c_lock);
+-	coda_file->f_mapping = host_file->f_mapping;
+ 	if (coda_inode->i_mapping == &coda_inode->i_data)
+ 		coda_inode->i_mapping = host_inode->i_mapping;
+ 
+@@ -248,6 +247,19 @@ int coda_open(struct inode *coda_inode, struct file *coda_file)
+ 
+ 	host_file->f_flags |= coda_file->f_flags & (O_APPEND | O_SYNC);
+ 
++	/*
++	 * On mmap coda_inode->i_mapping is updated to point at the mapping of
++	 * the mmap()'d file's container, and do_dentry_open() propagates that
++	 * to coda_file->f_mapping.
++	 *
++	 * However coda_file's container may differ, in which case the lifetime
++	 * of that mapping may not match that of coda_file.
++	 *
++	 * To avoid a dangling pointer, reassign the mapping to the canonical
++	 * one.
++	 */
++	coda_file->f_mapping = &coda_inode->i_data;
++
+ 	cfi->cfi_magic = CODA_MAGIC;
+ 	cfi->cfi_mapcount = 0;
+ 	cfi->cfi_container = host_file;
 
- Documentation/admin-guide/mm/pagemap.rst |  4 ++-
- fs/coda/file.c                           | 14 +++++++++-
- fs/proc/task_mmu.c                       | 47 ++++++++++++++++++++++++++++----
- mm/madvise.c                             | 19 +++++++++----
- mm/mprotect.c                            |  8 +++---
- 5 files changed, 75 insertions(+), 17 deletions(-)
----
-base-commit: c6f53520f32302ea64cbcfd7cc25a31081e34548
-change-id: 20261127-mlock-madvise-mprotect-ai-fixes-efebbfabe99c
-
-Cheers,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.56.1
 
 
