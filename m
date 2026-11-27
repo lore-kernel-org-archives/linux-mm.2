@@ -1,135 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3B6606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 22:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51F606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Nov 2026 22:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PS8HWMwM
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YIQYFrkd
 Received: by kanga.kvack.org (Postfix)
-	id 55A5B6B05BA; Fri, 27 Nov 2026 17:15:59 -0500 (EST)
+	id 42CDA6B05B0; Fri, 27 Nov 2026 17:21:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50B716B05BB; Fri, 27 Nov 2026 17:15:59 -0500 (EST)
+	id 404CF6B05B2; Fri, 27 Nov 2026 17:21:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 420AE6B05BC; Fri, 27 Nov 2026 17:15:59 -0500 (EST)
+	id 2F33B6B05B3; Fri, 27 Nov 2026 17:21:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F27AF6B05BA
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:15:58 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 48F2D140516
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:15:58 +0000 (UTC)
-X-FDA: 85482307596.06.413AD21
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 742A920009
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:15:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PS8HWMwM;
+	by kanga.kvack.org (Postfix) with ESMTP id B924D6B05B0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:21:16 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3CF36A7FF2
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:21:16 +0000 (UTC)
+X-FDA: 85482320952.11.764C1D1
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3F3E4A0007
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 22:21:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=YIQYFrkd;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of vitorhg20080@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=vitorhg20080@gmail.com
+	spf=pass (imf25.hostedemail.com: domain of heyheyco@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=heyheyco@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795817756;
-	b=5oTaZ8W7rDrCDTsgVv7/eg8xlJaYXAX+lOoHjOWRYzvajAXKE1TwE4p1GB1zLCgtXLFEFo
-	RMnrpHqMaGMawrjoVIQndMHqZSUPJU78cc/TgIdddXmqhP77Ob3TmFuyhkuCJ3yrf9cXvc
-	cSij2idg8dIOgp+DdrcxB0VabDUCEG4=
+	t=1795818074;
+	b=HjJWhtGQFs6X+dRa3bDH4lAeCiiVQPw5CFP8X1BumS5nXbhlWKr2zM7BC9bEwYbrRoCiei
+	H6buGD/EEkBIL4/nOwkiAcB6ulbs+6+ly9LS9TphzmVGsd7ws0xYW2YWtmnaJgRBKfUmsk
+	STBn8ImCzKtTUADoDRXzoRqshpaKZdk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795817756;
+	s=arc-20220608; t=1795818074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OerVEdIvJXdeIvWP8SxxgV/sDV2JyFJEP6u72p5i/Oo=;
-	b=lVPB/cVByl9DJMwqN53+QtHqWJ2vzljgtI+Bx0zKVDSRkVjpHtyIeqgbLlkT6eZEFmD6Sf
-	B61EXX4UAmd2jfdMHqSnoD1kWAD7Hu2Xbb5qSJWZjLJA4R622AkZTgrBLofmamV3GtnqKt
-	h5wDuFkhXA+wMGXb5aWbT/Lg9O+IC1E=
+	bh=6Ad9yIn1xRY7zD6+qEAblcHr91kNMMVHlVCdY6zTmPc=;
+	b=4SxtwX5jON2lNKV7yn6DjhoadZoGHE0pShd2+fI3eB61w2O3daQlZ8v8GCAWia0oRBz6Xb
+	qO4ihgUupqJ3FzP8pIxoHypLcHmgKu0nT7m0KpdkiRphHC3VSbuTVMQ9IThPx9yxrPzAmL
+	8Sra7mpXifVDe1pHkWtlsat+HkhG4r8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PS8HWMwM;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=YIQYFrkd;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of vitorhg20080@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=vitorhg20080@gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4bb606491faso45218355e9.3
-        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:15:56 -0800 (PST)
+	spf=pass (imf25.hostedemail.com: domain of heyheyco@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=heyheyco@gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-380c28f9e35so9375042eec.1
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 14:21:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795817755; x=1796422555; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OerVEdIvJXdeIvWP8SxxgV/sDV2JyFJEP6u72p5i/Oo=;
-        b=PS8HWMwM3/SIrDDS12nxf0VFAhf1kJBhdk1IYYSTWeyel1qTfyI6OJKEKLafqCsFmg
-         mbZ9ztRoF6RKSTNvwGsgkooFamu2Wo/pRkbWb8pyCeOp655E4B26tmdHpbkn0+c3JRuJ
-         2L1wx+H8xu1DKmOyOFCbmuhLy2897EtWs6ruzsoEMlZ5AbbLv6x0/QfS/l3Uv136qvdl
-         N6LDnHLESqOJDayGTMKORXgovAIu9lR5DC+1iYQNltZ6tP+X607B1U0psXm13A4LLVjk
-         g54+yVYImgRSrwK4pPx62/AWcqwS/UDRZ3nLdqzHkXhygxbkg1e7YUhyB15Urv0LScQY
-         OL2g==
+        d=gmail.com; s=20260707; t=1795818073; x=1796422873; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6Ad9yIn1xRY7zD6+qEAblcHr91kNMMVHlVCdY6zTmPc=;
+        b=YIQYFrkdxcTUGuNVgbM8KUw/gOR4luvexU29zrVJkpKRJxBY1zNuMuC8e4M5SwFESi
+         +nWyv6OElYiW/5WhqdqnH0ZGZKDH9ErYeIQzjHCpSo0drtEfkvijLewdr8U9/5o9NNhu
+         28OMYLN6HCjMeUkK36OWXVJM8MfUmexTa4f9wFBBP75fCfYBpgv5jwVCVzR1l4FcF/Y0
+         0LRARLWnwANo2l5hqrtnrmrG/idRqNPNS7icw4mcbcSOKSQ4/ts0QxB38TanurA4TSzk
+         v/7UeqXrATtn1hXB1X9ye39K2CbFKF7VmZfZSWEtXge9pBCtq49pCfcW7XxcSzR8Jl2I
+         HSUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795817755; x=1796422555;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OerVEdIvJXdeIvWP8SxxgV/sDV2JyFJEP6u72p5i/Oo=;
-        b=OG7xben55ZSkWop21EvcExCRA3ZOhNRv9Ut2fBKTrIl/tQ3aL19k+dTTuUJu6pH7r/
-         WBIjVU34MB3796mk9ECSoXaGmc7SIF5IBvMOPyHXECZvkeFMplXFvUR70vIO0QuZOgYF
-         fC2PTl6Go2NUiIM8/5aIdEWkpf5MzVccQFosIVozVM2zPFsF+JBDHXReZVCU2Qxa0fZ3
-         sz5XLBx8BqR8Tj8V7rlqE6O1yKP9OiPs/8b4hl3/OIO43Y6u+FhSZL6rlxSxMFKJkj4+
-         p8Qc4YchrhQIbc6g6vYS9V4STxhy67lkIh29ygJRBvV8FEoybKzjZKfBzbAgH49/pwlE
-         j9cA==
-X-Gm-Message-State: APuU4Z8b1KY5bThV0ZnWEC6hOfWaq+dO8agTNnPv6ag67kXoC8W7OjgX
-	RXHn5PW9/rH9/WAxo4cr8dI67FbjGWTpTqGLbpMBtCZFTqtL9hntSoZW
-X-Gm-Gg: AZFdTZeMFEwfb6hUlbBIan6lwW/hMzb0/NXFZFXcioyqAqvVhiIkXcfKGt53WmO4sS1
-	9V376ld1UZbJtwTCnn15bszryiKpilPemJLtUWPIMJbBKx9DxBQQ46de9LS5ip9vJnPlzPBOvLj
-	BiaPechrYwdRkLBlC7EvjEKi7CBhcHePjSLoKXBbRtqPNPyO18OA2H/7jphvirrl1v5EHJf9RDX
-	3nclkimA5nFmn6NFrXxMVXLB3G2siLhPeiSrSE2oXXLW7Y2RHZcJTHuadMbAo0oFKPxvaQcRmRq
-	dMOPLr04qYUdqfvw87e6JAs0MggDUZdklZuUgr0S05W9zsIh/SQm89B8mapYFpJYn6XMCr3HVdq
-	zswU7l4a4qkaZJO7sqg2UH5gR9EpxSYgyAtbvXRHvaMvUJksIN7uCETByBGN1UOUkEm9Cg23MbN
-	zS5Z0RwCrMzxHI/l4K8w9oq2MgkUgSvvc0YVfKNWUhITEWho8Wbal/fnHOzEFAU46TjIeYXrTMz
-	wja2H5o8iZGfI0JxAW+Vz0pwv0rCecRdcH0bdUpDT+cpgeIC8Iyo0JJ9obnrxXKoNBksG+zG5bh
-	MTXo/4vyeiAxI5cUpD7kt7Xee0YbFsCru7VzuhqsD/8t0cPAGKhF5BXQTnPju6kixjeIvKKqrtc
-	vS24X4/k=
-X-Received: by 2002:a05:600c:a085:b0:4a5:26b8:4507 with SMTP id 5b1f17b1804b1-4bb8881e6c6mr508013085e9.21.1795817754689;
-        Fri, 27 Nov 2026 14:15:54 -0800 (PST)
-Received: from localhost (bl20-90-91.dsl.telepac.pt. [2.81.90.91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4b70c05b9desm25203563f8f.54.2026.11.27.14.15.54
+        d=1e100.net; s=20260707; t=1795818073; x=1796422873;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6Ad9yIn1xRY7zD6+qEAblcHr91kNMMVHlVCdY6zTmPc=;
+        b=GD1sTZvGMv2loUzP/wp4Fr25bjHg1i66aDkahPf9hTsFWlyYCyncOY1CJf52GamgZt
+         QKZrBiRIZoDNfkqsMLGVZ+XdzphwlIxqVIljWtAzV/g25UOjPCVVUiFXlfzBeH3VCjiL
+         fY8xq/FntFC67ri7tQMD/9RmS0xykedRR+6KvpJ7BP7GszrQEFhpxWwLGJFBlfLKqW43
+         swIVHqVfvC06F29kBmvq8FRygw60ajzLQRVEf36qOfORPVGVX785nHD9SptUiYddG0J3
+         YCjQUFc6fXRz0JyYCDTatGnPMN2uABBexhon7pZJ7c/AWA2LzOPRNCjbPDjeEtIP3O7U
+         ophQ==
+X-Forwarded-Encrypted: i=1; AL+hErGU3QO7XqMR3mk2pB5g6DAkA1AaRG4bp4N4Mka9/sp3BrdAMYLTNhPH93rmIjT4PFbwKmUFIbkNoA==@kvack.org
+X-Gm-Message-State: APuU4Z95/z48hUf8nFI0U4FwCrZUmK9P7t92mPBZ5dsw5pGkc0adR6mr
+	0NzT6vzXEGMxmHL8Oy2w9S8R/q2TWghuNTpftAdq+RBAUbLhcNuhWhWv
+X-Gm-Gg: AZFdTZeWU6xG/mmWYkyAbFWUEq2RZ9ZUjUuRjPBsqUYyCX2CukyhmKyVgig0+ODTNnx
+	1OE3p60FS8sZ4eBWyHuXKhhUz+Nqzvpx7bJbr0g++5mNaxQ3aVQYc4kXEwBk2DwS1j1UevLVdMz
+	wxIPPwG8HFcEnUqSFLPpaTGQdxzvYp1RBWYLD0Gev0TKtXSBVCzcim7KGUpEfBDPCnCyjz+NoA5
+	2vvdsyEcI21VrUd/mO9N3jmrfmqo2sT5fdbjd+XhHSZl7gVaFldsHhBVXpROemBLw63TunKcgn5
+	0FmRad2G1oCslPaHYN6vI9h09JsKZtGG833Bz7f3Fofnqe/fJlbkqWhfplXwqchX3zxT5gJHym5
+	dczwxqyAQQPj80maLGG0thOfkjVjysWXEb076opa6AuAPicz6YWiiuNyYNYmU6RMqzynXKEIksN
+	9uaxUrb0Tcx/iMDHoDFv43TPEt4bCdYkYQxEgef7n43dZpySxmXu5ZYF4WPhr/T5+RedPPJfj5C
+	gRzEsd0QPWn/+ZlCjd7WzaTywbSlkZrhqb3UyHP1roXV8e8Q77aB9aihjl5Yh+rLgAMEHcWhyDb
+	4Wy3ZtBU0p73rhk2pKbxrw1CCeUZUw1TSi8L04MmLB9PhpbOjNmkAHfn3gV6QP6JnW5Is7arLVl
+	vEUWrNqDLz88=
+X-Received: by 2002:a05:7301:a0b:b0:386:a416:6c91 with SMTP id 5a478bee46e88-386a4166fdemr19591656eec.20.1795818072796;
+        Fri, 27 Nov 2026 14:21:12 -0800 (PST)
+Received: from dev-oss-0.tail8d7c7c.ts.net (c-73-70-201-200.hsd1.ca.comcast.net. [73.70.201.200])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385672c6f31sm74080760eec.15.2026.11.27.14.21.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 14:15:54 -0800 (PST)
-From: =?UTF-8?q?V=C3=ADtor=20Hugo=20Silva?= <vitorhg20080@gmail.com>
-To: linux-riscv@lists.infradead.org
-Cc: linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
+        Fri, 27 Nov 2026 14:21:12 -0800 (PST)
+From: Qian Xiao <heyheyco@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	kees@kernel.org,
-	david@kernel.org,
-	sashiko-reviews@lists.linux.dev,
-	=?UTF-8?q?V=C3=ADtor=20Hugo=20Silva?= <vitorhg20080@gmail.com>
-Subject: [PATCH RFC v2] riscv: Synchronize instructions written to ESP32-P4 PSRAM
-Date: Fri, 27 Nov 2026 22:13:45 +0000
-Message-ID: <20261127221346.197911-1-vitorhg20080@gmail.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261125233020.1380594-15-vitorhg20080@gmail.com>
-References: <20261125233020.1380594-15-vitorhg20080@gmail.com>
+	Krystian Kaniewski <krystianmkaniewski@gmail.com>,
+	Qian Xiao <heyheyco@gmail.com>
+Subject: [PATCH v3] xarray: fix index jumping backwards in xas_find_marked()
+Date: Fri, 27 Nov 2026 14:21:09 -0800
+Message-ID: <20261127222110.3755894-1-heyheyco@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261126190847.3064508-1-heyheyco@gmail.com>
+References: <20261126190847.3064508-1-heyheyco@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 742A920009
-X-Stat-Signature: kygm76e9oemsww1and5axkxinzeqh4iu
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3F3E4A0007
 X-Rspam-User:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795817756-676703
-X-HE-Meta: U2FsdGVkX1+BVmHaCQDAhL259rf1ilw/XFr15KNEq3yp5Pc/L0nxS3kMVjkSLmA/17QSxmICnAwRrIZZPElnTFd0GXx2bucEMBMM69kOj8TwSHvz+Xrky/yizBOSsduXLQeX7LtRMeKIXlk8W6eVhcX2g51ALl3PbhuIJ0ccTAGpv6dBtk1ie5TJHUjRmIGvP4/6SuTsjEnOxd98JGC7gt54h6Dv3AAmwCbMP5Lx0jskKhA2mrv27UlMu1Hv6vMcT94EZItxrYLDchH/BjtyBA1AB8TaLbWPUsmsiSgqv92lbwTJtp/0QdmyHQvf5W6agyESQXi+T7cEN+02ZUHpv7MXS0MjR0YDMCXX2/PRJs+L0xNUpZcKxtUt21qce9krVXBCGey2WH45d6i0GGE4rT+XCHrv+7QgSkk2glRlOHHq+0rszfnIb9qkQvn80Q2h5rE2YkKM8C1Ktxsh5aDekEo9FnxshgETzvgWkRDo9c99TQvc6XxCrlucylvzZQJ8SYoKchh4Kw6qgRy2nYt/Hxty3hjQrBOBxQkqUUdPXVdQrf0pGRyitd70syaHEMGfdkP5brYyCyfQHeWh2fZlwXLSXh8YL8xjjpeZp4opsh327AHpOL2KTMFfD1+vM9AW/rpFVDEhKUXvpWc7qvqXhzxgr98SjkE9WHcpcufBCJr7UyiP+qcpa17cKJWVai0zSW179ONWvGGvbL7bnkQjHwxsBUKAZ7NBf4BrzJN3Y1BywEYwHl3J6GIPL9yJNgLRQXD9BlnZXWFZBE18QVUkC1MHn+/wqawDa04NQnXYa0YbYptwn913QZkQLDn7KnKMGvrjtrhi0lGtq+AIuSmLXzNR5zh2QAFTtC6a4YjJThMObTZGJyIPsnS6Y5V958BbkQnEcHqNwVsrMoez/V//7NmFvNXXgXgma8HiW77yfVI/jLIB9qDS9esiITx4b+Lsa/jUEb3MhWVSoAxjkRC
- z9yjdhgn
- GOb3eJOlRGqGoHag3h5AEwrwTLkoOs+P4CPbqiYpcU75/QJbr5oCwcHByksMHbSTdGmLwUzJXQTtR4VMBB6ywexktVCKwcRGwi9DqKJ//5AegWPgAzxc+tvQ443mZUEGLL0uqGUZOZ1kWMS96OABAYDKy9uEnhZVOdrhSDusPwq/1rKidm/9dGF2XUq9HYKWmaC2v2cg474nLPdYG43K8o+dpN0MFcLZCBMUBJFuLq3rAlFcweNOGPJsnfXthRHTgyN7XicyTFpIByU5kFxXadElWG1mZzSjVfFAArNdCT++eN29oCOkNngNd0XHBFC081DMc2/WNKSKMpRPXt7fk/m/M2EpTMhN01g7i+arrEx3zvJFtwnabDVWb375ESAtIsa29474YVWaQMfee24zHTk1j7ZWMSnWKev5vWGOEEgslv9AnjSZAkkyyQF/V5lbFYgP2tzKclLYjlmA2AVm4CoLnmfGDmp06664L4GuezjaAn9caxyuLDt1seIw020KBsjNCfo46nXCojZpeFXyNpk+WyNsz8OcAexIfRMGbfyD8sSNmQ/PXzV483GcsYMAdw1Fs/GAJez8YyfWMSNAimFwV0yc29c7oZMAbPHv1g2R8qfdLFdTvqC+kRD/u/MkhP3oO1pXdgKMkcCHWXbVoMdyWGB59BldIEJ/LLBHR1XOI7SXc0a8alvkFCrL7UyE0bSStY+LCrwo1RJOieVGo3Y9Oj+UibH1JsMpLDEMB9kN6/MqmRTo6B1jmF6XkqJ6vkC4h7iFHR6qesj0dKrPIHJt8GbDqBRZt5rF6sk6ny/DsrEk29Syaqrmd1+NGY83+G1HDsDijqu6Yblhwq6TNMDLelr61kANBiFRcNibrKlZf5Xg=
+X-Stat-Signature: qgszupci4maj4z1emet9585i9ute3ebe
+X-HE-Tag: 1795818074-525411
+X-HE-Meta: U2FsdGVkX19rt/99CVibj5GDdQKuQ7LGAxi33pzz8UP6/RrAGOVQJvyLHpapFmGEDRZM/uWZ6uMXfox+18eFPsFU5cZS3Qri9vS2uSNtgHKhQFX9npo9YVMRw1TE8R+U+sMESxslZhoynkkZUSFdop9Ky97jqwTbcmxZIHXyLRF2pJ/NCdgszrskzKNiX5d4nP83XmHfjoj2DXGxRzSLhsAcz5ZBQC5NHJCvo9soho37TKz+olYlzTKjEhmiwZwfV6q8qteHMzoxn7iFsZMzXXwfC7vvdTuOlwkhPv54ddL4lEiCIn/3qyXF2905auyBLFFe6RmOkjzxMbE5jY0p4m8uP7eVydCMLZ3Xy7bYpE/Cfmd2aEH3nMLBqJzlBi7Zw4Y2IwZfLXpP7N1pzfEfMZireZ0yHd+lWvm2d/mzLpdx2XX1kB5zE97YCryKk96hVljNaPorvL4TGbtU//dm6UXwgHaTEt8DiAhFFqwdmEuRALCCERnXZGzNJiDPlIxabhvxPaYdsLs59dJypewW0iN9ij1/JqB+Zs23uy32stupyPxM8NSc6qSmAGZCIxY4fwxTKwz2TTK5sE49wnivITjOnuZfxWoCOdu4X27yThOuPGvhel+YX5Y3w2JDPy8rHl9RPz/QfE9n9VsosNpcXN/d31RnIU7mM2Aip+LrcDlx3R7mBVrRPgHo4FmgNbeResqyszDQxB0aGd0zs0FqAqTgIzch+MVGTnO6c1MHWY2M6RUkew9SA95Ep3dHxU06fC03XD4TEbgrvrM+DRWOEPkGufYDaxjJAq53Z6le1HCrVuQCzALvTbsav1DjeTua1keuVD+oo+FSvFNc23quUpeGCxBTGAUgZo3DGNTpoGOyeQgxF8T/MqtS3JuEf4FfLy6MCl6akeJS0JtVXFPtP8ak3k2UO2o+rkvn9Kvvp+nziaAoIlO+ykQr5cWqRB/gQACHXz010Ux19B1sJYk
+ mKBeaVQZ
+ PJv/kqtHFOLKsqCQY7F9RTNVothIPHYazgzphJd7bHRPdvVXBSdhGRZ3Rvk1Z7pZAksFHujvl/Db0nAObmMIA0OA7E30Msxu0l1vT7S6SRQidOQg0IzvqosEtCMSNtHYZCbWVr98eH3EzJ27x/KNzoEkwwSe8GY78KAcYllHXGqMld7YhTu+bSdrnUUBqkb2l+OR2284P/NeqNcuM4CPjsfiE44q7o4DSq70QMCNGh1zgQIf0ISzI2iSEencXDjeESGvrv9Qh7Qn44x2W9XVdYxcPz0g9TxKA/Lmp6KxFAK7h4tc4A99/psYtGfmWzipurXU6WeeJCBNWevLqaiTdpZ8WQkJeeXvJWc1dy8usGZzyQM1ucJ7+bbpIVfp2D+1so8+tbH2fhuHcEUgTmDN4mAcsefIzwgfXT6Ih0rTcXQRBV/ArMpdJLyxT01vvKDVXCm+GSOHMjsmnfIR129Xf8PGH5m0p60wfDG7kh1Qj1ZirNH5FL012r3zcoFMHUNpXWR9HPVewky/be56Hag0mG6p6fdGIIRfwMVnSWn2sXbw/5l6a0TDQQjRLzo/fqNzKKrESThf/kgqGcS9Xe7L67T9GdXzlza+Q9Wf33rbBlOodUe4FxMjENDW0RnjxV1uetcfja71i3gD/OfhT/ZD/pAZIoo1Ni5x1obPuZRxTVJ5YapbUozfuQieNvZxkpPvtVuG4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,514 +128,327 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On ESP32-P4, loads can observe updated instruction bytes in the data
-cache while instruction fetch still sees stale bytes. During boot,
-runtime constant patching can then use an invalid address.
+xas_find() keeps xa_index when a lookup starts inside a multi-index
+entry stored in a non-leaf node, and aligns xa_offset with that index
+before advancing. xas_find_marked() still does neither.
 
-Write back L1D and L2 for the affected PSRAM range, invalidate L1I
-and issue fence.i. Use 32 KiB chunks so interrupts can run between
-chunks. Bound polling per command and stop issuing commands after a
-timeout. Treat failure to synchronize patched kernel text as fatal
-and exclude the synchronization helpers from kprobes.
+Walking from a sibling slot to the canonical slot calls
+xas_move_index(), so a start index such as 127 becomes 0. After the
+cursor has been walked, xa_offset can also stay on the canonical slot
+while xa_index is inside a later slot of the same entry. The next
+xas_find_marked() then recomputes xa_index from the stale offset. If
+the entry is split, the call returns a marked entry below the index
+already reached. xas_find() returns the following entry in the same
+situation.
 
-Use checked synchronization for executable loading, signal return
-trampolines, the first executable NOMMU mapping of a region and
-growth of the NOMMU program break. A failed mmap synchronization
-discards the new mapping. A failed brk synchronization returns the
-current break.
+Resolve the sibling without moving xa_index. Before advancing a cursor
+that has already been walked, set xa_offset from xa_index the same way
+xas_find() does. xas_next_marked() uses that path when the offset and
+index disagree, as xas_next_entry() already does. xas_pause() aligns
+xa_offset before its existing calculation, so the resume index stays at
+the end of the entry.
 
-On ESP32-P4, honor nonempty intervals in riscv_flush_icache(). Check
-that the requested interval is covered by the calling process's
-mappings under mmap_lock. Return -EINVAL for reversed intervals and
--EFAULT for gaps. Propagate cache synchronization errors. Keep the
-existing whole-cache flush for empty intervals.
+If the tree changes while a sibling is being resolved, do not descend
+into a node that does not contain xa_index, and do not move xa_index
+backwards. Compare the next marked slot with get_offset() instead of
+recomputing xa_index with a 32-bit shift. Return XA_RETRY_ENTRY.
+xa_find_after() handles that retry before xas_sibling(), so a rewind
+that then retries restarts the walk. Callers that use xas_retry()
+restart from the same index.
 
-An earlier board test reproduced stale instructions after fence.i
-alone. On the Waveshare ESP32-P4-Module-DEV-KIT, a userspace probe
-received SIGILL at the first instruction written to an executable
-mapping with the published v1 patch. With v2, the same probe executes
-modified instructions after riscv_flush_icache() with flags 0 and
-LOCAL. It also checks return values for unmapped, reversed and empty
-ranges and invalid flags. The board boots to a shell, runs bFLT
-programs and delivers SIGUSR1 to the shell.
+The userspace XArray test suite passed. The kernel was not built.
 
-The syscall also builds with ESP32-P4 support disabled in an RV32
-NOMMU configuration.
-
-AI assisted with the cache paths and the test preparation.
-
-Link: https://docs.espressif.com/projects/esp-idf/en/stable/esp32p4/api-reference/system/mm_sync.html
-Signed-off-by: Vítor Hugo Silva <vitorhg20080@gmail.com>
+Fixes: b803b42823d0 ("xarray: Add XArray iterators")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Qian Xiao <heyheyco@gmail.com>
 ---
-Changes in v2:
-- Synchronize after filling kernel text and exclude cache helpers from
-  kprobes.
-- Propagate synchronization errors in NOMMU mmap and brk.
-- Validate and synchronize the userspace range in riscv_flush_icache
-  on ESP32-P4.
+v3:
+- Compare the next marked slot with get_offset() instead of shifting
+  in 32-bit arithmetic.
+- Handle XA_RETRY_ENTRY in xa_find_after() before xas_sibling().
 
-This replaces patch 14/19 and applies after patch 13/19 of the RFC.
-v1: https://lore.kernel.org/all/20261125233020.1380594-15-vitorhg20080@gmail.com/
+v2:
+- Use the slow path in xas_next_marked() when the offset and index disagree.
+- Align xa_offset in xas_pause() so the resume index stays at the end of
+  the entry.
+- Return XA_RETRY_ENTRY when a concurrent change would descend into the
+  wrong node or decrease xa_index.
 
- arch/riscv/include/asm/cacheflush.h |   6 ++
- arch/riscv/kernel/patch.c           | 146 +++++++++++++++++++++++++++-
- arch/riscv/kernel/signal.c          |   6 +-
- arch/riscv/kernel/sys_riscv.c       |  41 +++++++-
- fs/binfmt_flat.c                    |   6 +-
- fs/exec.c                           |  10 +-
- include/linux/cacheflush.h          |   7 ++
- mm/nommu.c                          |  31 +++---
- 8 files changed, 228 insertions(+), 25 deletions(-)
+ include/linux/xarray.h |   3 +-
+ lib/test_xarray.c      | 165 +++++++++++++++++++++++++++++++++++++++++
+ lib/xarray.c           |  24 ++++--
+ 3 files changed, 186 insertions(+), 6 deletions(-)
 
-diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
-index c2b0a29..a5c20d7 100644
---- a/arch/riscv/include/asm/cacheflush.h
-+++ b/arch/riscv/include/asm/cacheflush.h
-@@ -85,6 +85,12 @@ static inline void flush_icache_range(unsigned long start, unsigned long end)
- 	flush_icache_all();
- }
+diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+index be850174e802..8c42d899d94c 100644
+--- a/include/linux/xarray.h
++++ b/include/linux/xarray.h
+@@ -1778,7 +1778,8 @@ static inline void *xas_next_marked(struct xa_state *xas, unsigned long max,
+ 	void *entry;
+ 	unsigned int offset;
  
-+#ifdef CONFIG_RISCV_ESP32P4_CLIC
-+int esp32p4_sync_user_text(unsigned long start, unsigned long end);
-+
-+#define flush_icache_user_range_checked esp32p4_sync_user_text
-+#endif
-+
- extern unsigned int riscv_cbom_block_size;
- extern unsigned int riscv_cboz_block_size;
- extern unsigned int riscv_cbop_block_size;
-diff --git a/arch/riscv/kernel/patch.c b/arch/riscv/kernel/patch.c
-index 2b5adf0..7ef5565 100644
---- a/arch/riscv/kernel/patch.c
-+++ b/arch/riscv/kernel/patch.c
-@@ -3,6 +3,13 @@
-  * Copyright (C) 2020 SiFive
-  */
- 
-+#ifdef CONFIG_RISCV_ESP32P4_CLIC
-+#include <linux/align.h>
-+#include <linux/io.h>
-+#include <linux/irqflags.h>
-+#include <linux/panic.h>
-+#include <linux/sizes.h>
-+#endif
- #include <linux/spinlock.h>
- #include <linux/mm.h>
- #include <linux/memory.h>
-@@ -173,9 +180,136 @@ static int __patch_insn_set(void *addr, u8 c, size_t len)
- }
- NOKPROBE_SYMBOL(__patch_insn_set);
- 
-+#ifdef CONFIG_RISCV_ESP32P4_CLIC
-+#define ESP32P4_CACHE_BASE		0x3ff10000
-+#define ESP32P4_CACHE_SYNC_CTRL		0x98
-+#define ESP32P4_CACHE_SYNC_MAP		0x9c
-+#define ESP32P4_CACHE_SYNC_ADDR		0xa0
-+#define ESP32P4_CACHE_SYNC_SIZE		0xa4
-+
-+#define ESP32P4_CACHE_INVALIDATE	BIT(0)
-+#define ESP32P4_CACHE_WRITEBACK		BIT(2)
-+#define ESP32P4_CACHE_SYNC_DONE		BIT(4)
-+#define ESP32P4_CACHE_SYNC_MAX_POLLS	1000000
-+
-+#define ESP32P4_CACHE_L1_I0		BIT(0)
-+#define ESP32P4_CACHE_L1_D		BIT(4)
-+#define ESP32P4_CACHE_L2		BIT(5)
-+
-+#define ESP32P4_PSRAM_START		0x48000000UL
-+#define ESP32P4_PSRAM_END		0x4c000000UL
-+#define ESP32P4_CACHE_MAX_LINE		128
-+
-+static int esp32p4_cache_sync(u32 map, u32 start, u32 size, u32 op,
-+			       unsigned int count)
-+{
-+	/* The caller holds local IRQs disabled on the single supported hart. */
-+	static bool sync_failed;
-+	void __iomem *base = (void __iomem *)ESP32P4_CACHE_BASE;
-+	unsigned int polls;
-+
-+	if (sync_failed)
-+		return -EIO;
-+
-+	writel(map, base + ESP32P4_CACHE_SYNC_MAP);
-+	writel(start, base + ESP32P4_CACHE_SYNC_ADDR);
-+	writel(size, base + ESP32P4_CACHE_SYNC_SIZE);
-+
-+	while (count--) {
-+		writel(op, base + ESP32P4_CACHE_SYNC_CTRL);
-+		/* Order the sync command before reading its completion status. */
-+		mb();
-+		for (polls = 0; polls < ESP32P4_CACHE_SYNC_MAX_POLLS; polls++) {
-+			if (readl(base + ESP32P4_CACHE_SYNC_CTRL) & ESP32P4_CACHE_SYNC_DONE)
-+				break;
-+			cpu_relax();
-+		}
-+		if (polls == ESP32P4_CACHE_SYNC_MAX_POLLS) {
-+			sync_failed = true;
-+			return -ETIMEDOUT;
-+		}
-+	}
-+
-+	return 0;
-+}
-+NOKPROBE_SYMBOL(esp32p4_cache_sync);
-+
-+static int esp32p4_cache_writeback(u32 start, u32 size)
-+{
-+	int ret;
-+
-+	/* Repeat writeback to avoid losing a sync with conflicting writes. */
-+	ret = esp32p4_cache_sync(ESP32P4_CACHE_L1_D, start, size, ESP32P4_CACHE_WRITEBACK, 2);
-+	if (ret)
-+		return ret;
-+
-+	return esp32p4_cache_sync(ESP32P4_CACHE_L2, start, size, ESP32P4_CACHE_WRITEBACK, 2);
-+}
-+NOKPROBE_SYMBOL(esp32p4_cache_writeback);
-+
-+static int esp32p4_sync_text(void *addr, size_t len, bool fatal)
-+{
-+	unsigned long start = (unsigned long)addr;
-+	unsigned long first, end, flags;
-+
-+	if (start < ESP32P4_PSRAM_START || start >= ESP32P4_PSRAM_END ||
-+	    !len || len > ESP32P4_PSRAM_END - start)
-+		return 0;
-+
-+	first = ALIGN_DOWN(start, ESP32P4_CACHE_MAX_LINE);
-+	end = ALIGN(start + len, ESP32P4_CACHE_MAX_LINE);
-+
-+	/* Allow interrupts between chunks if they were enabled on entry. */
-+	while (first < end) {
-+		u32 size = min_t(u32, end - first, SZ_32K);
-+		int ret;
-+
-+		local_irq_save(flags);
-+		ret = esp32p4_cache_writeback(first, size);
-+		if (!ret)
-+			ret = esp32p4_cache_sync(ESP32P4_CACHE_L1_I0, first, size,
-+						 ESP32P4_CACHE_INVALIDATE, 1);
-+		if (ret) {
-+			if (fatal)
-+				panic("ESP32-P4 text cache sync failed: %d\n", ret);
-+			local_irq_restore(flags);
-+			return ret;
-+		}
-+
-+		local_flush_icache_all();
-+		local_irq_restore(flags);
-+		first += size;
-+	}
-+
-+	return 0;
-+}
-+NOKPROBE_SYMBOL(esp32p4_sync_text);
-+
-+int esp32p4_sync_user_text(unsigned long start, unsigned long end)
-+{
-+	int ret;
-+
-+	if (end > start) {
-+		ret = esp32p4_sync_text((void *)start, end - start, false);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	flush_icache_range(start, end);
-+	return 0;
-+}
-+NOKPROBE_SYMBOL(esp32p4_sync_user_text);
-+#endif
-+
- static int __patch_insn_write(void *addr, const void *insn, size_t len)
- {
--	return copy_to_kernel_nofault(addr, insn, len);
-+	int ret = copy_to_kernel_nofault(addr, insn, len);
-+
-+#ifdef CONFIG_RISCV_ESP32P4_CLIC
-+	if (!ret)
-+		esp32p4_sync_text(addr, len, true);
-+#endif
-+	return ret;
- }
- NOKPROBE_SYMBOL(__patch_insn_write);
- #endif /* CONFIG_MMU */
-@@ -208,10 +342,14 @@ int patch_text_set_nosync(void *addr, u8 c, size_t len)
- 	int ret;
- 
- 	ret = patch_insn_set(addr, c, len);
--	if (!ret)
--		flush_icache_range((uintptr_t)addr, (uintptr_t)addr + len);
-+	if (ret)
-+		return ret;
- 
--	return ret;
-+#ifdef CONFIG_RISCV_ESP32P4_CLIC
-+	esp32p4_sync_text(addr, len, true);
-+#endif
-+	flush_icache_range((uintptr_t)addr, (uintptr_t)addr + len);
-+	return 0;
- }
- NOKPROBE_SYMBOL(patch_text_set_nosync);
- 
-diff --git a/arch/riscv/kernel/signal.c b/arch/riscv/kernel/signal.c
-index 59784dc..05266d7 100644
---- a/arch/riscv/kernel/signal.c
-+++ b/arch/riscv/kernel/signal.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/compat.h>
-+#include <linux/cacheflush.h>
- #include <linux/signal.h>
- #include <linux/uaccess.h>
- #include <linux/syscalls.h>
-@@ -21,7 +22,6 @@
- #include <asm/switch_to.h>
- #include <asm/vector.h>
- #include <asm/csr.h>
--#include <asm/cacheflush.h>
- #include <asm/usercfi.h>
- 
- unsigned long signal_minsigstksz __ro_after_init;
-@@ -453,7 +453,9 @@ static int setup_rt_frame(struct ksignal *ksig, sigset_t *set,
- 
- 	addr = (unsigned long)&frame->sigreturn_code;
- 	/* Make sure the two instructions are pushed to icache. */
--	flush_icache_range(addr, addr + sizeof(frame->sigreturn_code));
-+	err = flush_icache_user_range_checked(addr, addr + sizeof(frame->sigreturn_code));
-+	if (err)
-+		return err;
- 
- 	regs->ra = addr;
- #endif /* CONFIG_MMU */
-diff --git a/arch/riscv/kernel/sys_riscv.c b/arch/riscv/kernel/sys_riscv.c
-index 22fc9b3..04c6883 100644
---- a/arch/riscv/kernel/sys_riscv.c
-+++ b/arch/riscv/kernel/sys_riscv.c
-@@ -5,8 +5,9 @@
-  * Copyright (C) 2017 SiFive
-  */
- 
-+#include <linux/cacheflush.h>
-+#include <linux/mm.h>
- #include <linux/syscalls.h>
--#include <asm/cacheflush.h>
- #include <asm-generic/mman-common.h>
- 
- static long riscv_sys_mmap(unsigned long addr, unsigned long len,
-@@ -52,6 +53,33 @@ SYSCALL_DEFINE6(mmap2, unsigned long, addr, unsigned long, len,
- }
+-	if (unlikely(xas_not_node(node) || node->shift))
++	if (unlikely(xas_not_node(node) || node->shift ||
++			xas->xa_offset != (xas->xa_index & XA_CHUNK_MASK)))
+ 		return xas_find_marked(xas, max, mark);
+ 	offset = xas_find_chunk(xas, true, mark);
+ 	xas->xa_offset = offset;
+diff --git a/lib/test_xarray.c b/lib/test_xarray.c
+index 615f7730a5bd..02e6843d0227 100644
+--- a/lib/test_xarray.c
++++ b/lib/test_xarray.c
+@@ -1316,6 +1316,170 @@ static noinline void check_multi_find_4(struct xarray *xa)
  #endif
+ }
  
-+#ifdef CONFIG_RISCV_ESP32P4_CLIC
-+static int esp32p4_flush_icache_mapped_range(unsigned long start,
-+					   unsigned long end)
++static noinline void check_multi_find_marked_nonleaf(struct xarray *xa)
 +{
-+	struct mm_struct *mm = current->mm;
-+	struct vm_area_struct *vma;
-+	unsigned long covered = start;
-+	int ret = -EFAULT;
++#ifdef CONFIG_XARRAY_MULTI
++	unsigned int order = XA_CHUNK_SHIFT + 1;
++	unsigned long next = 1UL << order;
++	unsigned long start = next - 1;
++	XA_STATE(xas, xa, start);
++	XA_STATE_ORDER(split, xa, 0, 0);
++	void *entry;
++	unsigned long i;
 +
-+	VMA_ITERATOR(vmi, mm, start);
++	/* Multi-index entry in two slots of a non-leaf node, both marked. */
++	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
++	xa_set_mark(xa, 0, XA_MARK_0);
++	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
++	xa_set_mark(xa, next, XA_MARK_0);
 +
-+	mmap_read_lock(mm);
-+	for_each_vma_range(vmi, vma, end) {
-+		if (vma->vm_start > covered)
-+			break;
-+		covered = vma->vm_end;
-+		if (covered >= end) {
-+			ret = flush_icache_user_range_checked(start, end);
-+			break;
++	rcu_read_lock();
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != xa_mk_index(0));
++	XA_BUG_ON(xa, xas.xa_index != start);
++
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != xa_mk_index(next));
++	XA_BUG_ON(xa, xas.xa_index != next);
++
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != NULL);
++	rcu_read_unlock();
++
++	xa_destroy(xa);
++	XA_BUG_ON(xa, !xa_empty(xa));
++
++	/* Split the multi-index entry after a lookup begins inside it. */
++	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
++	xa_set_mark(xa, 0, XA_MARK_0);
++	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
++	xa_set_mark(xa, next, XA_MARK_0);
++
++	xas_set(&xas, start);
++	rcu_read_lock();
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != xa_mk_index(0));
++	XA_BUG_ON(xa, xas.xa_index != start);
++	rcu_read_unlock();
++
++	xas_split_alloc(&split, xa_mk_index(0), order, GFP_KERNEL);
++	if (xas_error(&split)) {
++		XA_BUG_ON(xa, true);
++		goto out;
++	}
++	xas_lock(&split);
++	xas_split(&split, xa_mk_index(0), order);
++	for (i = 0; i < next; i++)
++		__xa_store(xa, i, xa_mk_index(i), 0);
++	xas_unlock(&split);
++
++	rcu_read_lock();
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != xa_mk_index(next));
++	XA_BUG_ON(xa, xas.xa_index != next);
++
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != NULL);
++	rcu_read_unlock();
++
++	xa_destroy(xa);
++
++	/* Nothing marked past the index already walked. */
++	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
++	xa_set_mark(xa, 0, XA_MARK_0);
++	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
++
++	xas_set(&xas, start);
++	rcu_read_lock();
++	entry = xas_load(&xas);
++	XA_BUG_ON(xa, entry != xa_mk_index(0));
++	XA_BUG_ON(xa, xas.xa_index != start);
++	rcu_read_unlock();
++
++	xas_set(&split, 0);
++	xas_split_alloc(&split, xa_mk_index(0), order, GFP_KERNEL);
++	if (xas_error(&split)) {
++		XA_BUG_ON(xa, true);
++		goto out;
++	}
++	xas_lock(&split);
++	xas_split(&split, xa_mk_index(0), order);
++	for (i = 0; i < next; i++)
++		__xa_store(xa, i, xa_mk_index(i), 0);
++	xas_unlock(&split);
++
++	rcu_read_lock();
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != NULL);
++	rcu_read_unlock();
++
++	xa_destroy(xa);
++
++	/* Pausing resumes at the next marked entry, without repeating. */
++	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
++	xa_set_mark(xa, 0, XA_MARK_0);
++	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
++	xa_set_mark(xa, next, XA_MARK_0);
++	xas_set(&xas, start);
++	rcu_read_lock();
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != xa_mk_index(0));
++	XA_BUG_ON(xa, xas.xa_index != start);
++	xas_pause(&xas);
++	XA_BUG_ON(xa, xas.xa_index != next);
++	entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++	XA_BUG_ON(xa, entry != xa_mk_index(next));
++	XA_BUG_ON(xa, xas.xa_index != next);
++	rcu_read_unlock();
++
++	xa_destroy(xa);
++
++	/*
++	 * A leaf multi-index entry.  The next step must not use a canonical
++	 * slot left behind by the first lookup.
++	 */
++	if (XA_CHUNK_SHIFT > 2) {
++		unsigned int leaf_order = 2;
++		unsigned long leaf_next = 1UL << leaf_order;
++		unsigned long leaf_start = leaf_next - 1;
++
++		xa_store_order(xa, 0, leaf_order, xa_mk_index(0), GFP_KERNEL);
++		xa_set_mark(xa, 0, XA_MARK_0);
++		XA_BUG_ON(xa, xa_store_index(xa, leaf_next, GFP_KERNEL) != NULL);
++		xa_set_mark(xa, leaf_next, XA_MARK_0);
++
++		xas_set(&xas, leaf_start);
++		rcu_read_lock();
++		entry = xas_find_marked(&xas, ULONG_MAX, XA_MARK_0);
++		XA_BUG_ON(xa, entry != xa_mk_index(0));
++		XA_BUG_ON(xa, xas.xa_index != leaf_start);
++		rcu_read_unlock();
++
++		xas_set(&split, 0);
++		xas_split_alloc(&split, xa_mk_index(0), leaf_order, GFP_KERNEL);
++		if (xas_error(&split)) {
++			XA_BUG_ON(xa, true);
++			goto out;
 +		}
-+	}
-+	mmap_read_unlock(mm);
++		xas_lock(&split);
++		xas_split(&split, xa_mk_index(0), leaf_order);
++		for (i = 0; i < leaf_next; i++)
++			__xa_store(xa, i, xa_mk_index(i), 0);
++		xas_unlock(&split);
 +
-+	return ret;
++		rcu_read_lock();
++		entry = xas_next_marked(&xas, ULONG_MAX, XA_MARK_0);
++		XA_BUG_ON(xa, entry != xa_mk_index(leaf_next));
++		XA_BUG_ON(xa, xas.xa_index != leaf_next);
++		rcu_read_unlock();
++	}
++
++out:
++	xa_destroy(xa);
++	XA_BUG_ON(xa, !xa_empty(xa));
++#endif
 +}
-+#endif
 +
- /*
-  * Allows the instruction cache to be flushed from userspace.  Despite RISC-V
-  * having a direct 'fence.i' instruction available to userspace (which we
-@@ -63,8 +91,8 @@ SYSCALL_DEFINE6(mmap2, unsigned long, addr, unsigned long, len,
-  *
-  * sys_riscv_flush_icache() is defined to flush the instruction cache over an
-  * address range, with the flush applying to either all threads or just the
-- * caller.  We don't currently do anything with the address range, that's just
-- * in there for forwards compatibility.
-+ * caller. The generic implementation uses a whole-cache flush. ESP32-P4
-+ * also synchronizes mapped PSRAM in the requested range.
-  */
- SYSCALL_DEFINE3(riscv_flush_icache, uintptr_t, start, uintptr_t, end,
- 	uintptr_t, flags)
-@@ -73,6 +101,13 @@ SYSCALL_DEFINE3(riscv_flush_icache, uintptr_t, start, uintptr_t, end,
- 	if (unlikely(flags & ~SYS_RISCV_FLUSH_ICACHE_ALL))
- 		return -EINVAL;
- 
-+#ifdef CONFIG_RISCV_ESP32P4_CLIC
-+	if (end < start)
-+		return -EINVAL;
-+	if (end > start)
-+		return esp32p4_flush_icache_mapped_range(start, end);
-+#endif
-+
- 	flush_icache_mm(current->mm, flags & SYS_RISCV_FLUSH_ICACHE_LOCAL);
- 
- 	return 0;
-diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
-index b5b5ca1..890a81d 100644
---- a/fs/binfmt_flat.c
-+++ b/fs/binfmt_flat.c
-@@ -32,6 +32,7 @@
- #include <linux/user.h>
- #include <linux/slab.h>
- #include <linux/binfmts.h>
-+#include <linux/cacheflush.h>
- #include <linux/personality.h>
- #include <linux/init.h>
- #include <linux/flat.h>
-@@ -40,7 +41,6 @@
- 
- #include <asm/byteorder.h>
- #include <linux/unaligned.h>
--#include <asm/cacheflush.h>
- #include <asm/page.h>
- #include <asm/flat.h>
- 
-@@ -830,7 +830,9 @@ static int load_flat_file(struct linux_binprm *bprm,
- #endif /* CONFIG_BINFMT_FLAT_OLD */
- 	}
- 
--	flush_icache_user_range(start_code, end_code);
-+	ret = flush_icache_user_range_checked(start_code, end_code);
-+	if (ret)
-+		return ret;
- 
- 	/* zero the BSS,  BRK and stack areas */
- 	if (clear_user((void __user *)(datapos + data_len), bss_len +
-diff --git a/fs/exec.c b/fs/exec.c
-index 8d2b14e..9066d2b 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -23,6 +23,7 @@
-  * formats.
-  */
- 
-+#include <linux/cacheflush.h>
- #include <linux/kernel_read_file.h>
- #include <linux/slab.h>
- #include <linux/file.h>
-@@ -827,8 +828,13 @@ EXPORT_SYMBOL(open_exec);
- ssize_t read_code(struct file *file, unsigned long addr, loff_t pos, size_t len)
+ static noinline void check_find_1(struct xarray *xa)
  {
- 	ssize_t res = vfs_read(file, (void __user *)addr, len, &pos);
--	if (res > 0)
--		flush_icache_user_range(addr, addr + len);
-+
-+	if (res > 0) {
-+		int ret = flush_icache_user_range_checked(addr, addr + len);
-+
-+		if (ret)
-+			return ret;
-+	}
- 	return res;
+ 	unsigned long i, j, k;
+@@ -1440,6 +1604,7 @@ static noinline void check_find(struct xarray *xa)
+ 	check_multi_find_2(xa);
+ 	check_multi_find_3(xa);
+ 	check_multi_find_4(xa);
++	check_multi_find_marked_nonleaf(xa);
  }
- EXPORT_SYMBOL(read_code);
-diff --git a/include/linux/cacheflush.h b/include/linux/cacheflush.h
-index 55f297b..6a7d6f4 100644
---- a/include/linux/cacheflush.h
-+++ b/include/linux/cacheflush.h
-@@ -26,4 +26,11 @@ static inline void flush_icache_pages(struct vm_area_struct *vma,
  
- #define flush_icache_page(vma, page)	flush_icache_pages(vma, page, 1)
+ /* See find_swap_entry() in mm/shmem.c */
+diff --git a/lib/xarray.c b/lib/xarray.c
+index 48f440d114e1..9f29a064849f 100644
+--- a/lib/xarray.c
++++ b/lib/xarray.c
+@@ -1283,6 +1283,9 @@ void xas_pause(struct xa_state *xas)
+ 	if (xas_invalid(xas))
+ 		return;
  
-+#ifndef flush_icache_user_range_checked
-+#define flush_icache_user_range_checked(start, end) ({	\
-+	flush_icache_user_range((start), (end));		\
-+	0;						\
-+})
-+#endif
++	if (node && xas->xa_offset != get_offset(xas->xa_index, node))
++		xas->xa_offset = get_offset(xas->xa_index, node);
 +
- #endif /* _LINUX_CACHEFLUSH_H */
-diff --git a/mm/nommu.c b/mm/nommu.c
-index 6c6f953..f310d1e 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -16,6 +16,7 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/cacheflush.h>
- #include <linux/export.h>
- #include <linux/mm.h>
- #include <linux/sched/mm.h>
-@@ -395,10 +396,9 @@ SYSCALL_DEFINE1(brk, unsigned long, brk)
- 		return brk;
+ 	xas->xa_node = XAS_RESTART;
+ 	if (node) {
+ 		unsigned long offset = xas->xa_offset;
+@@ -1495,6 +1498,14 @@ void *xas_find_marked(struct xa_state *xas, unsigned long max, xa_mark_t mark)
+ 		xas->xa_offset = xas->xa_index >> xas->xa_node->shift;
  	}
  
--	/*
--	 * Ok, looks good - let it rip.
--	 */
--	flush_icache_user_range(mm->brk, brk);
-+	if (flush_icache_user_range_checked(mm->brk, brk))
-+		return mm->brk;
-+
- 	return mm->brk = brk;
- }
- 
-@@ -1193,7 +1193,7 @@ unsigned long do_mmap(struct file *file,
- 	/* okay... we have a mapping; now we have to register it */
- 	result = vma->vm_start;
- 
--	current->mm->total_vm += len >> PAGE_SHIFT;
-+
- 
- share:
- 	BUG_ON(!vma->vm_region);
-@@ -1201,6 +1201,19 @@ share:
- 	if (vma_iter_prealloc(&vmi, vma))
- 		goto error_vma_iter_prealloc;
- 
-+	/* Flush the region before publishing its first executable mapping. */
-+	if (vma->vm_flags & VM_EXEC && !region->vm_icache_flushed) {
-+		ret = flush_icache_user_range_checked(region->vm_start,
-+						      region->vm_end);
-+		if (ret)
-+			goto error_free_mapped;
-+
-+		region->vm_icache_flushed = true;
++	if (advance &&
++	    xas->xa_offset != get_offset(xas->xa_index, xas->xa_node)) {
++		if (!xas->xa_node->shift)
++			xas->xa_offset = ((xas->xa_index - 1) & XA_CHUNK_MASK) + 1;
++		else
++			xas->xa_offset = get_offset(xas->xa_index, xas->xa_node);
 +	}
 +
-+	if (region->vm_usage == 1)
-+		current->mm->total_vm += len >> PAGE_SHIFT;
-+
- 	add_nommu_region(region);
+ 	while (xas->xa_index <= max) {
+ 		if (unlikely(xas->xa_offset == XA_CHUNK_SIZE)) {
+ 			xas->xa_offset = xas->xa_node->offset + 1;
+@@ -1507,14 +1518,14 @@ void *xas_find_marked(struct xa_state *xas, unsigned long max, xa_mark_t mark)
  
- 	setup_vma_to_mm(vma, current->mm);
-@@ -1208,13 +1221,6 @@ share:
- 	/* add the VMA to the tree */
- 	vma_iter_store_new(&vmi, vma);
+ 		if (!advance) {
+ 			entry = xa_entry(xas->xa, xas->xa_node, xas->xa_offset);
+-			if (xa_is_sibling(entry)) {
++			if (xa_is_sibling(entry))
+ 				xas->xa_offset = xa_to_sibling(entry);
+-				xas_move_index(xas, xas->xa_offset);
+-			}
+ 		}
  
--	/* we flush the region from the icache only when the first executable
--	 * mapping of it is made  */
--	if (vma->vm_flags & VM_EXEC && !region->vm_icache_flushed) {
--		flush_icache_user_range(region->vm_start, region->vm_end);
--		region->vm_icache_flushed = true;
--	}
--
- 	up_write(&nommu_region_sem);
+ 		offset = xas_find_chunk(xas, advance, mark);
+ 		if (offset > xas->xa_offset) {
++			if (offset <= get_offset(xas->xa_index, xas->xa_node))
++				return XA_RETRY_ENTRY;
+ 			advance = false;
+ 			xas_move_index(xas, offset);
+ 			/* Mind the wrap */
+@@ -1532,6 +1543,8 @@ void *xas_find_marked(struct xa_state *xas, unsigned long max, xa_mark_t mark)
+ 			continue;
+ 		if (!xa_is_node(entry))
+ 			return entry;
++		if (xas->xa_offset != get_offset(xas->xa_index, xas->xa_node))
++			return XA_RETRY_ENTRY;
+ 		xas->xa_node = xa_to_node(entry);
+ 		xas_set_offset(xas);
+ 	}
+@@ -2258,12 +2271,13 @@ void *xa_find_after(struct xarray *xa, unsigned long *indexp,
+ 		else
+ 			entry = xas_find(&xas, max);
  
- 	return result;
-@@ -1250,6 +1256,7 @@ error_vma_iter_prealloc:
- 	show_mem();
- 	ret = -ENOMEM;
++		if (xas_retry(&xas, entry))
++			continue;
+ 		if (xas_invalid(&xas))
+ 			break;
+ 		if (xas_sibling(&xas))
+ 			continue;
+-		if (!xas_retry(&xas, entry))
+-			break;
++		break;
+ 	}
+ 	rcu_read_unlock();
  
-+error_free_mapped:
- 	/* in case that the region is allocated via do_mmap_private() */
- 	if ((region->vm_usage == 1) && (region->vm_flags & VM_MAPPED_COPY))
- 		free_page_series(region->vm_start, region->vm_top);
 -- 
-2.56.1
+2.53.0
 
 
