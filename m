@@ -1,62 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE779606A326
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 06:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360BB606A334
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 06:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=tOktkm0z
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=IbDeRHmI
 Received: by kanga.kvack.org (Postfix)
-	id 4B21D6B05B2; Sat, 28 Nov 2026 01:52:01 -0500 (EST)
+	id B68476B05B3; Sat, 28 Nov 2026 01:52:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 462046B05B3; Sat, 28 Nov 2026 01:52:01 -0500 (EST)
+	id B3F8E6B05B5; Sat, 28 Nov 2026 01:52:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3515E6B05B4; Sat, 28 Nov 2026 01:52:01 -0500 (EST)
+	id A35806B05B3; Sat, 28 Nov 2026 01:52:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0498E6B05B2
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:52:00 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47B95160186
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:51:59 +0000 (UTC)
-X-FDA: 85483607958.30.3742F18
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A9FD6B05B3
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:52:02 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D555FA7711
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:52:01 +0000 (UTC)
+X-FDA: 85483608042.19.728641B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C1BAB20004
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:51:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tOktkm0z;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 566A5180007
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:52:00 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IbDeRHmI;
 	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795848718;
-	b=6q8+cScHupQW27b+7Snw4NmXXCJlzWLdeiX69PDCATMpCBn18VrmwAolqwsYPBcnNaroI1
-	nnNi+fl9q9bPlqFrMBOWlNcpjYY2HGSZDqPKge0yJ/AjWb41hwDqt4NqVM4FVj1aN0b3p5
-	s7Y8vyv2k8/mxY97JkgzrzS9gDL6JTo=
+	t=1795848720;
+	b=KrzzerqEzTt6VcCL7FJwhPErYX7UujpjCr/bdBs/XvtPpnYf2ipilCmDcuoe5BzxzkfM0V
+	ew2zTFyztq0f2CPAZG4hDbDSCGcHncy0Yi79ayEIBqKA1Mvkdjjrl+OFEKp8gcWuQuO8zB
+	6y6V7944yCj8sV6nLuL9k7X/YpwvdZg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795848718;
+	s=arc-20220608; t=1795848720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=WcLWvYb3QXJ4yKM0gPpmep5gEOh7j1U3DkXAEa56+KI=;
-	b=6cFC7ETlVOgYgF1kILIDH9JBLCXY2nex6Vi2EsEf5blWk5UBnpzMzzeMc0OpsoXhYtqWpI
-	mHSoULI4g2PCQLMyfIMTO6ks36u56Ra9mB46wSi8xFrm514il56l+o/XWqdu6mvl4wU0ik
-	IpvjNv8FMsSJaGoZ5fmmO3nQgLEAzlc=
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=ghntZnsDIyms+oiIJtxtJvdLipGkHjf4T7iuzfBNPDE=;
+	b=GXlZtRvoyh1qf56qW3X/R4pqBNoqNwFBzCERFqDopL4ndE3b9Z6ts7my5tb2PD4IVUGJNg
+	XqdT80Y7ernl+IQYNS+WGoVsSn6HxR6YddVuuD+1AfSSMwSK8ne5QzGGcr8C+TZIp2Zqkr
+	YN+7j4Q+4lpE4gDK7Cgk/Ums4p1c/eY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tOktkm0z;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IbDeRHmI;
 	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 086F6448E9;
-	Sat, 28 Nov 2026 06:51:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BFD1F00893;
-	Sat, 28 Nov 2026 06:51:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B27B442BC;
+	Sat, 28 Nov 2026 06:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E7F1F00893;
+	Sat, 28 Nov 2026 06:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795848716;
-	bh=WcLWvYb3QXJ4yKM0gPpmep5gEOh7j1U3DkXAEa56+KI=;
-	h=Date:To:Cc:From:Subject;
-	b=tOktkm0zvUHLApMO4YHsst6hhGxaxOYwyxgGOPXF0U+Yb/rrMBW0PqfObLHagn5Uo
-	 orJ6NdDbc8fb/m90o3SuD58ehtD4oNH+8FnxE2t3+Iqdtg93NTPZJjp38W20SCcHNp
-	 Rpy3EtgkAyd2NspTyx/LxvB13ScHXO3WuG8lpul4=
-Date: Fri, 27 Nov 2026 22:51:56 -0800
+	d=linux-foundation.org; s=korg; t=1795848719;
+	bh=ghntZnsDIyms+oiIJtxtJvdLipGkHjf4T7iuzfBNPDE=;
+	h=Date:To:Cc:From:In-Reply-To:References:Subject;
+	b=IbDeRHmIP3P+XskkS0TtBEnDXxkLaxX6NleAq/RGHIg5mynO6mBwZa4WnXAjzdSTo
+	 SXLgGXjSafx4klX6h21aGdwEBdhTzvIiMq6sK4Iz70ZackwtYa6gSX4vIjQNLkqqM8
+	 N7XwVEjg4ZCNAzNwu1O3/oDsPRvQW4Mn1thYOJvI=
+Date: Fri, 27 Nov 2026 22:51:59 -0800
 To: Kurt Lin <lylin1023@gmail.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
@@ -64,27 +65,29 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
  Muhammad Usama Anjum <usama.anjum@arm.com>,
- Amir Goldstein <amir73il@gmail.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>,
  Eugenio =?utf-8?q?P=C3=A9rez?= <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
+ German Maglione <gmaglione@redhat.com>,
  Ryusuke Konishi <konishi.ryusuke@gmail.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Vivek Goyal <vgoyal@redhat.com>
 From: Andrew Morton <akpm@linux-foundation.org>
-Message-Id: <1c93b263b19d4465899bb81efd62bcb3.1@linux-foundation.org>
-Subject: [PATCH 1/9] selftests/mm/memory-failure: check that fsync() reports hard-poisoned dirty page-cache
-X-Rspamd-Queue-Id: C1BAB20004
-X-Stat-Signature: q7huncgtsz1ycar4wq9z7nouxqn6iiqc
+Message-Id: <1c93b263b19d4465899bb81efd62bcb3.2@linux-foundation.org>
+In-Reply-To: <1c93b263b19d4465899bb81efd62bcb3.1@linux-foundation.org>
+References: <1c93b263b19d4465899bb81efd62bcb3.1@linux-foundation.org>
+Subject: [PATCH 2/9] selftests/mm/memory-failure: truncate poisoned FUSE page-cache before teardown
 X-Rspam-User:
+X-Stat-Signature: b77zizi71dd9em9bq9fu1wzxdan8qyzr
+X-Rspamd-Queue-Id: 566A5180007
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-15.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	PP_MIME_FAKE_ASCII_TEXT,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1795848717-75058
-X-HE-Meta: U2FsdGVkX19wgDecGlhlp73YXuuAZLajwMqgsCDiEXPg420IiR8qrYXQaKNp8NIVQrzTlTReXjE/RLi/1lhLBdqh4P6CejMlUIsGUvMhTM6XyFZLp0a3ZpYJvdJ+RgKXJ56ZY3V5dEbXgAswXDzM/k2WvdJKlE4SCBZ7XMRSuS8FPW9Dh4pFIPZKIHv0WPXbKwVW/j+DYim9TQOBZoM/WxzjZ9AFwexjmkwlWybECkxgv6dz7qI9gXvoSg8xCvKAHACi+HT0/Fyc8BiPhTo+aVGmH/gpaUHNLfhgeHcnu6/upOF9SiM+Z3WWyRRt+SKAq16cmmafmXWdqMlNd7MkAOAX7r37xDLTztYhPROCS25s9E2WtpVna6Zszojz1ywJwBSu18PfPZtWp36m+6evZ7c0ytFac2P1r4jz4iNMLVrttW58mreNzjkniz7XiEBG/JOVvNM2L1jBqlBe70mZUu+hu4l2P2wyJl+H32LmK5D+K6HOKWmp3/PtMStg/lc0j79W+/+E2sSc7s4UNxGB/8HJhUPuuAPW+GqX1FWdN7FIqyIDoX3tnDCq9Jvs4tmvchjUK4DMLkvjFLeBkyyPMNFGLrmBowgIq+TzvANAb+h0PuwrYUwZMlBF5P5Hv4hN7+lrZYcs+0zMrQv8BM+y6VHriSDG+3UgxvqYbEOb4MQWiBixZJZQ2g0ZIaKrUXYiytakr+48At6nzjGqgDDS5bqDkWdq1fYQKpDQC0yKBy9WiX+5QILxMbAsvdOFZxJDoXH/dhcFoz9Z+ZKZu8fZrfcDeRzp9M4SbxqW1GENoM3Yso8dsWBsqEMZ67OMHrAWdpguEYClYz3koBD0LemqTeEHUNUs7WPsvZh/eIx3Wfz1ucWqsgMPZj42z5nGgzaNs0jq/9cblKrwZq3MH+pLsOO7CTD9JElPFT9oqpXrjmgQk3agQ/mcYSsfpOq/bcnAvrrU/4c5gWSzWjQWK5O
- cgtAOyP1
- KMfg0WWu4B1ZbU0zfNsVfCjIpfmoPd2MoLrNvjsHE5hN0ic7oXdmG8NNCbPrLDc0iIKTt0NaXRQ9CXxGlSzpxVB7zqOnF26QzaXU0+WksCWO4K8fpvKMgMZP5GHwC9dZMa1ptPq+xKboHYecQmv2dRRKhMWPWnhJAp1dCtwLxU5jkO6LNMz/EORJpm099bFE2KKg45uEsxDBHG95vQf0Ja6hngP6dI8b3hN5yL/39JBOdHutxVg1bOKV7bZuLF3KK0LWZcEEjZCbjvz9xAniYr3ZnU0uBZtA5T6Cm9tydLXDy+XbhmAExRxI0Y+AQEsI76uZo52+5nyKsAni5zQwtJ0+S+xjYeQxXTo+K7G7fxp1kzlJXQqCKHK7XzbytOYZNBphGw0Obe5xzv3yi7EhFovBgsQzNwFDTvLesOYLjYXDy0z7RrsBEfckCEi8SGsXj1YK3eeJ49hsltOnGUIDRnBy18hZiIqjQZcp/IMjKOxVvH4vWtDJyMu6OBx+CZGOyVNDw+D8npOtuLKggCw/kQ9dpcdSVH4MYKDfZkO/XoLxjMoyJXd1wGQ5W2eR8dp70o96GTcXocN8l1KDB4pCdPVTPPNEQ86M8qPGddA+MUwuMm6oeflRclfyl1nOwucgqkt9R1AVqT0rlul72NXmdQH2rfYlhxt+U3d9tb7+bmnAz8AAlZRDtFsCELxVuUFpcLuQqFug19KC9uH/X14gh7Yg8arvgugUKV0/kF8epaduhw552ylfCfZy1AlTCYlUox9zZitx/FZ5+ZzcS4OarC3MGWix9qN0Ee0IaCexkADnlEq3neKqx95jmFlCKyFF6nRY8w9JP8gOaWR2zfjWSJ2R1WUeGCjH/gGjwQIk5G25j9RSHES+o2bg1YvE5ctBqixpRDMVD+3DFFyrh0EyaDzWfOQ==
+X-HE-Tag: 1795848720-130513
+X-HE-Meta: U2FsdGVkX192J21AW2UH4xHPyZ+GB9dt8y1l5OGllaqKGk1XXUaAcLsvHmqYY8uvRV0Q5YSAl68YacLBvvmV2fpk1MoOSGKORoxcP53Gby9l+bcIvJcMTJn5tG70f3VsMBNY/QItrcpXz5tIoLWkRJq73KWEtLR3vZrR4Ft5kvu2FGalIhOa6VDCOxTF2SZbj+OWk935iMlflu+Bmruj0CHABy0YN0Y3zrjUP8z+oiCZxBvCHLlXfYl9dZdxaUQgt3V09ZCWWMVKUF9xN06tvY+pNR/2PKj4rDkbRyOxtJ0jbsYaq6lsW5WOU7mAhmYsxoDubR4SdN6QlWDjC2Cu4ShD6OtGCbb7EZdiRSOgnBksTnNdfRUHvbW+DNQEn8HHjYmiT/hqQ9F5IENBJ7NBxyOBT72ZNstIAtDTjIi/ScJH7cce7Zq4enyiWOQ+5kobnU+olF9Vt0MYOBdSDuuhUiPHz0FixihnYxfLphO3oxeKg/iUwS6P0Vefa5cF9jEXpB98T8Fdlra5nOxvvqtXBgV7lz0i5XyTjffqSk5ebH3V7m6krnpm0bMPptYwBnENCfTUcxPIRgJk9ZmyCrrVNeP2+ogmdHIzUVnDRBWTM/cGPEK0gySHOyxxu9YeMYtYVou681YvmLThOo9huEeNctqiK3iD+nkF+zTbn0LvHZL/QVv+J5nF4xUFVpQC137gnbyL12oCXU3t6hX4TvzLPuHFHy1Ou0qdpxt/9QOut3oG5sp8rSl9Pc3F7ZkbhmhyQLTGTngK6nZazlo0wheMkbgcOenKv9UAgpJAqS5tSBFgOSyMIX3A7mepwkVce1DyIv6PbgN49nMGRO1tdKU+sXCF89fXJx74llGKlCXLxg94wTA2m2Fte4PrzsMgDn7FZNkHYk/ttDxUds408w4l9shs3Z5RWjKts53rzjjkRoEon0WaTFDORsf4BBGLErPwa0jzilANNwGPKHQtkGP
+ Nilw3p5O
+ Xo8b3FXSY+WXcamURTuXleVCLGW1qcVHYsIMaYdb8i7WUNdQVT/RdBpF6nGVilhoymgf0g9p/8pGhw9RKMOFp5FMYiIbL13Qt00SZhS8lwQKE56gPaKg3xBdfL/BDV8jgD6EtM+Hv9Jkxe9XJhGV4AcZP+6u/W0eWFYcKuAfKeUVb6CdZRYlJF5YAgWorgNWZDeNIqvKodetvF+RkNa2Fk+k0iPQEjj0fXI/vJ1lyEFIshzk5P6XcWYxhwacoldjsemvdA8cxiz5shAbu3DcG58z4QrvVzarC+FxEwk7xu+K43IORDbejQq/5XQIHGh4bpzAuTKKbZdt/BzbigVST/VVlqITwAe/k/xnx9wnmK0BbSXxlr44bkM0Kx1jePwGaxpfCmuD2iSqm3tx3MtXws+IjQjkhCw5+utllmVTezvYOhEIf0mhxrW414jTE9FnmgqGaUwN7IKa1X8kyGQQ9K6NEgLtVQ5lweLwfnOlgGGkqSMyiAy4bdum5SmaXqL2C2e/hSIyqcNvvO/kVsyJ8ELOBbqHV2nQKuHXSyHJUikdzJ5AcV1lsst95nPs5z8Zyonc+npmOjdZBP8cbErld2f4dndaK4Yjheg5wc9BxBBUkXzFta5N+gBeuV5URRs56dlzZBkDY45E20o7rl3U2Yf1x1xsiqalqtTepUl6s/zHNTt8gohYfqDUQh4s4D9qZdeafcwBKpUwssRChlO5ZyRdFPlgqrIQJC/1IY7WTo9L9pcDrOivuqhif0H8iW10nP0nNyJU+1ajIqN10a6aFac/pGaS3tENQSX5/f48JftivfmMoCeH9pJPaot5507TDQkzAqJUqzhjQwdoiY2e51WYOtW5FISRaSzBhzIXeVEy295yY5h11Eij4TgK9pJ12UTbgwa2wOIVM/xaIueaCirikhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,27 +98,19 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 X-Archived-By: <archiver.kernel.org>
 
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: selftests/mm/memory-failure: check that fsync() reports hard-poisoned dirty page-cache
+Subject: selftests/mm/memory-failure: truncate poisoned FUSE page-cache before teardown
 Date: Mon, 23 Nov 2026 23:18:44 -0800
 
-MADV_HWPOISON on a dirty page-cache page records -EIO in the mapping.  The
-test currently requires close() to succeed but never checks whether the
-error was reported.  Filesystems with ->flush() may return EIO from
-close(), while those without it can leave the error unnoticed.
+FUSE has no ->error_remove_folio(), so memory_failure() cannot evict a
+poisoned dirty page-cache page.  The folio may remain after close() and
+unpoison_memory() can then return -EBUSY during selftest teardown.  In
+tests with a minimal FUSE server, this happened in 6 of 40 runs.
 
-Require fsync() to return EIO after hard poisoning.  It consumes the
-mapping error before close(), allowing the NFS skip to go.  The clean and
-dirty page-cache cases also skip tmpfs, ramfs and hugetlbfs because they
-have no backing store from which to reread a poisoned clean page.
+After checking that fsync() reports EIO, truncate the file so teardown can
+unpoison the page.  Remove this cleanup when FUSE can evict the poisoned
+folio.
 
-With the complete selftest patch stack under x86_64 QEMU, ext4, FUSE and
-NFSv4.2 reported 10 passes; NILFS2 reported 9 passes and 1 skip.  The FUSE
-server used for this test was a minimal server, not virtiofs.
-
-Fixes: d51b5076c746 ("selftests/mm: add memory failure dirty pagecache test")
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: Kurt Lin <lylin1023@gmail.com>
-Closes: https://lore.kernel.org/20261123-memory-failure-fuse-skip-v1-1-19dcbda6e2e8@gmail.com
 Cc: Miaohe Lin <linmiaohe@huawei.com>
 Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
 Cc: David Hildenbrand <david@kernel.org>
@@ -125,84 +120,33 @@ Cc: Mike Rapoport <rppt@kernel.org>
 Cc: Michal Hocko <mhocko@suse.com>
 Cc: Shuah Khan <shuah@kernel.org>
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
 Cc: Amir Goldstein <amir73il@gmail.com>
 Cc: Eugenio Pérez <eperezma@redhat.com>
 Cc: German Maglione <gmaglione@redhat.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Kurt Lin <lylin1023@gmail.com>
 Cc: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: Stefan Hajnoczi <stefanha@redhat.com>
 Cc: Vivek Goyal <vgoyal@redhat.com>
 
- tools/testing/selftests/mm/memory-failure.c |   38 ++++++++++++++----
- 1 file changed, 30 insertions(+), 8 deletions(-)
+ tools/testing/selftests/mm/memory-failure.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/tools/testing/selftests/mm/memory-failure.c~selftests-mm-check-that-fsync-reports-hard-poisoned-dirty-page-cache
+--- a/tools/testing/selftests/mm/memory-failure.c~selftests-mm-check-that-fsync-reports-hard-poisoned-dirty-page-cache-fix-0
 +++ a/tools/testing/selftests/mm/memory-failure.c
-@@ -300,6 +300,29 @@ static int get_fs_type(int fd)
- 	return ret ? 0 : (int)fs.f_type;
- }
- 
-+/*
-+ * The page-cache tests need a filesystem which keeps its data on backing
-+ * store.  When a clean page is poisoned the kernel drops it and the data is
-+ * read back in.  When a dirty page is poisoned the data is lost, and the
-+ * kernel records -EIO in the mapping for fsync() to report.
-+ *
-+ * tmpfs and ramfs keep their data only in the page cache.  The poisoned
-+ * page cannot be dropped and read back, and their fsync() does nothing, so
-+ * neither expectation holds.  hugetlbfs is the same, and it also poisons a
-+ * whole huge page.  shmem has its own tests below.
-+ */
-+static bool fs_has_backing_store(int fs_type)
-+{
-+	switch ((unsigned int)fs_type) {
-+	case 0:
-+	case TMPFS_MAGIC:
-+	case RAMFS_MAGIC:
-+	case HUGETLBFS_MAGIC:
-+		return false;
-+	}
-+	return true;
-+}
-+
- TEST_F(memory_failure, clean_pagecache)
- {
- 	int fd;
-@@ -311,7 +334,7 @@ TEST_F(memory_failure, clean_pagecache)
- 	if (fd < 0)
- 		SKIP(return, "failed to open test file.\n");
- 	fs_type = get_fs_type(fd);
--	if (!fs_type || fs_type == TMPFS_MAGIC) {
-+	if (!fs_has_backing_store(fs_type)) {
- 		close(fd);
- 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
+@@ -406,6 +406,13 @@ TEST_F(memory_failure, dirty_pagecache)
+ 	if (variant->type == MADV_HARD) {
+ 		ASSERT_EQ(fsync(fd), -1);
+ 		ASSERT_EQ(errno, EIO);
++		/*
++		 * A filesystem which could not remove the poisoned page from
++		 * its page cache (FUSE, for one) keeps it until the inode is
++		 * evicted, which can be after close() returns.  Remove it now
++		 * so that teardown can unpoison the page.
++		 */
++		ASSERT_EQ(ftruncate(fd, 0), 0);
  	}
-@@ -353,13 +376,7 @@ TEST_F(memory_failure, dirty_pagecache)
- 	if (fd < 0)
- 		SKIP(return, "failed to open test file.\n");
- 	fs_type = get_fs_type(fd);
--	/*
--	 * MADV_HARD poisoning of dirty page-cache data records an expected
--	 * -EIO in the file mapping. NFS reports this error on close(), so
--	 * skip this variant.
--	 */
--	if (!fs_type || fs_type == TMPFS_MAGIC ||
--	    (fs_type == NFS_SUPER_MAGIC && variant->type == MADV_HARD)) {
-+	if (!fs_has_backing_store(fs_type)) {
- 		close(fd);
- 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
- 	}
-@@ -386,6 +403,11 @@ TEST_F(memory_failure, dirty_pagecache)
  
- 	ASSERT_EQ(munmap(addr, self->page_size), 0);
- 
-+	if (variant->type == MADV_HARD) {
-+		ASSERT_EQ(fsync(fd), -1);
-+		ASSERT_EQ(errno, EIO);
-+	}
-+
  	ASSERT_EQ(close(fd), 0);
- }
- 
 _
 
