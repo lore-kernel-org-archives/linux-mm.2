@@ -1,93 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93802606A338
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 06:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB58F606A327
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 07:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=YSZb+wzx
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=SQJC7cRS
 Received: by kanga.kvack.org (Postfix)
-	id 03B666B05BD; Sat, 28 Nov 2026 01:52:21 -0500 (EST)
+	id A31A26B05B0; Sat, 28 Nov 2026 02:27:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEAA56B05BE; Sat, 28 Nov 2026 01:52:20 -0500 (EST)
+	id 9E1C96B05B1; Sat, 28 Nov 2026 02:27:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB24E6B05BF; Sat, 28 Nov 2026 01:52:20 -0500 (EST)
+	id 91FA76B05B2; Sat, 28 Nov 2026 02:27:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A697B6B05BD
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:52:20 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2087112042D
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:52:20 +0000 (UTC)
-X-FDA: 85483608840.08.1938FBD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9D00E180005
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:52:18 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YSZb+wzx;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 709386B05B0
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 02:27:30 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06C86A818C
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 07:27:30 +0000 (UTC)
+X-FDA: 85483697460.23.E674F1E
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 662D380009
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 07:27:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=SQJC7cRS;
+	spf=pass (imf02.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=longwei27@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795848738;
-	b=O+XdxUYcC1znDvhbUU53Y/6kEGPxqsEKmBvjwNjGsW/SEIfMpYu1k/mz8KwIyefWMWt+8Z
-	VdK+gyLc1WsEEHRjArVV+DRx1LO3pACDo5VUOavHL9AXe0ugv2+ebeedCmrtfmxxkn74Yt
-	kELmEVM7CgZziPlSSsUZdkLyKaW6zkA=
+	t=1795850847;
+	b=vu9hq+5x45YD3q3yzA3vtQFRU5pWmeAnarV/jw14FOBUjA12FRa/uSRgO84K5fGPsQpK/T
+	3d6zpvlolIkFafQzqIWyH+8B0ebI0LuDomJmUZYh+Sy+fK/cWtQsT3Mxp532/4WIsjM3DK
+	NnEED9Q5oP+xgzP+pbk+U/IQv+PPJIg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795848738;
+	s=arc-20220608; t=1795850847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=CuO5qfRmQn+iLmaatT72GZlf+KktppVECqOS7ecTo0c=;
-	b=j5PWcG5paDsJa7aZTLCbmcyA1/+X3WrFS1SIDuFjpBQbBD1qdSZ5nfeDABYgLQZB3m8np5
-	B6OeL/kJFRllLG1Zmqy1NVpAcSy9S4tke3BWq2dx9Ar3YfBNtjuAvSb4R36yhJ8Kvd+RM+
-	/sH3ZZFbfjImC9favyGKmiKsyFs5YVk=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uXPgXvBJT57DR1S+V3IBkpL9Dt6mi6Z/uuu7CuFzrb8=;
+	b=RuvPN5Hy/ZtJHeoC4lQ1ov8HaG79C93yeRgXmxZP2fNWCeSItrKE4DxbtEMG1u5FDNoXrj
+	/slDCXuX1MMgH7mZXr+m237PWwcIcKEB07ez0vMNlXhig5KKe1kO89vzmnarBqkwUabI+o
+	9uqvqhuAr9GCeeaew+BzxiZJY9pKqVw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YSZb+wzx;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D4F1609F7;
-	Sat, 28 Nov 2026 06:52:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA97F1F00893;
-	Sat, 28 Nov 2026 06:52:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795848737;
-	bh=CuO5qfRmQn+iLmaatT72GZlf+KktppVECqOS7ecTo0c=;
-	h=Date:To:Cc:From:In-Reply-To:References:Subject;
-	b=YSZb+wzxpQpCCLRfEaBR5nrn3v/e5OS4Bbbjof9tPfumZizlTCx1xMyl/eQlI1RO7
-	 kSPI4UiHCId2kFvu0aDxBekJ4vK3r9SIbRcDxPWJRPPUNatzAWmZYsDIHZ+h0Ynm+d
-	 PQvt82Ijuvoioezk0Pa4TzzLcSIDBhwUZ1W6CVR0=
-Date: Fri, 27 Nov 2026 22:52:17 -0800
-To: Kurt Lin <lylin1023@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>,
- German Maglione <gmaglione@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Eugenio =?utf-8?q?P=C3=A9rez?= <eperezma@redhat.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>,
- Ryusuke Konishi <konishi.ryusuke@gmail.com>
-From: Andrew Morton <akpm@linux-foundation.org>
-Message-Id: <1c93b263b19d4465899bb81efd62bcb3.9@linux-foundation.org>
-In-Reply-To: <1c93b263b19d4465899bb81efd62bcb3.1@linux-foundation.org>
-References: <1c93b263b19d4465899bb81efd62bcb3.1@linux-foundation.org>
-Subject: [PATCH 9/9] selftests/mm/memory-failure: accept EIO from close after poisoning dirty data
+	imf02.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=SQJC7cRS;
+	spf=pass (imf02.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=longwei27@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=uXPgXvBJT57DR1S+V3IBkpL9Dt6mi6Z/uuu7CuFzrb8=;
+	b=SQJC7cRSWEjLbpHqVRB+BqMMel7rrly3hil4T6/9JLroEsRPJ7J9axzhBt/AYqMCverJa6To+
+	QQ51V35MLf4A36Vab01XTQM1VnVkLvh4PzsAyivPZ0/YlnEt0SJ2jsw8YAngiu3b+uGKW7Ew8JY
+	jZJzF/KYZUPKeMGBczEfZCo=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4jc20Y6V9FzmV6J;
+	Sat, 28 Nov 2026 15:26:53 +0800 (CST)
+Received: from kwepemo200009.china.huawei.com (unknown [7.202.195.26])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7C12D40586;
+	Sat, 28 Nov 2026 15:27:19 +0800 (CST)
+Received: from localhost.localdomain (10.50.159.234) by
+ kwepemo200009.china.huawei.com (7.202.195.26) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Sat, 28 Nov 2026 15:27:18 +0800
+From: Long Wei <longwei27@huawei.com>
+To: <rppt@kernel.org>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>
+CC: <shuah@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <hewenliang4@huawei.com>, Long Wei
+	<longwei27@huawei.com>
+Subject: [PATCH 0/2] mm: memfd_luo: pick up seals added after preserve at freeze
+Date: Sat, 28 Nov 2026 15:24:42 +0800
+Message-ID: <20261128072444.1114964-1-longwei27@huawei.com>
+X-Mailer: git-send-email 2.43.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemo200009.china.huawei.com (7.202.195.26)
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 662D380009
 X-Rspam-User:
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9D00E180005
-X-Stat-Signature: rshieucmygryydz4fdhhsyzab6egzoky
-X-Spam-Status: No, score=-15.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	PP_MIME_FAKE_ASCII_TEXT,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Stat-Signature: skc1icthckaphabta7esjkw4aosa6bbf
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795848738-422680
-X-HE-Meta: U2FsdGVkX18XALFA2WmOvqob7OfSPSadL8LFJmiHQf27B2xFieOohwervbuWdyXyO/awJ8Dr1XL1aPDeVRAlZryY7usFedld94VcEoXSk/DpUq11W4WRRRRZWAtYR8HBOZxgeoBvWrbeXDO9s/BZP819v7SAIPLEQ58Nus6BcCuXg9036Xk4dyH0gBIN4YE0emfpNJSfm9gEvVd9WX8y4iS9Zvd83hSyLh8jGEqWDcDrrkDWUFtJVMm2F2Pj/mhcS6Xz56uGA730FTiclXoF4Txbh0m/AYe0H+zLlkA7dqKCbjRxYPO6S2QB9U71iKPsctN/IPneZ4oi7gL8NNqKXm1H437zT5z0WJA+fqWjMO5GRE7gZLLjKhudPW7q7sft5FvLYcaDGOZZH6At5fluc8WimwVxvMnaoVWaANctVfSlrlz0pAr3CTh1nmdRWG1xtAbDUkOsMaeNJi3tpy6Jwc0xWBB0vg8G7G8WxTOd+saHUMzoztvJoChwN65V83+picklT10R722URgAsEa/vVeiSjhp1i7sdbKfCIbJL8IgzHMmUASkxBvRrAzeNQpTmxpSd+e3AJvVhSSo9IyMmMlx5PTAhL+Wr+z9fWAtkbLvTv/qQduBStcgf0Im4QVO1bB83VX+5EOrwZUOxxo3TteF5lgI1s8E5hWHpBXKWiS/04j+hVCvRy6S7o4mmBXQIPWZfO3ev9NCKMr17tzDVy66WZ3W45XkKrq8ArtZ2AgH6GF538v+rjG4FX4sgDy9y/SB1EhOODuiTBEo6QOK40c9OnlGCJhUt3TlSK5+pk0E6BHCn2wE0U2Tb6VAPBSn09IlAT7phxGlsLvsDYATOEn6/G4L5jt2ii9RqkoIdhy49WFaoyh5oAa5WVh43M0xvif5LDXVNOfH7GpEzVFVE0slEDcCGWCRtPer+MHvQjqgrv1oBWTKdVKPGmwokyKsPJmMyuRS7U58cKQJ/cNv
- VzD5i0MA
- x7QX3xPRWh3gYEP8y8qyXUIJF3Trked4ed6smcKfBc2LsT8ZrPOzz3WqwChmQIMGcFbprkzAfqul/zTkf94hLqLTWZMThXOiZs1yUD9VbY/aZLabnRKcPWCcNbh4KcBsUhYQODXID+I4keDMNrxPE1cvdD69DL0sGh/EEcMHaTYNrXttmm6UzoWW8XVvuBjyB40yPHf1ILWIn6EajTuVIV3VuEedTO17DShPoFSbr2gSKF7P5Ifn3M71TuLcowxFubAz6xu3q/pnhp5RXPdRXGYpZ5+3rYIBf4JrMXDujcmW8r/W3uQKMXg0q69+xpabtXn++lM86Uxu4bv6Zv2e370WT/3h3sAjwQmsnI/FFFST1Vb6GOqm70Nu1SRHweheSeBVIdLaDKp8rffQZ4uUbdiFySZxVyjnHRhMMgvkqzKFO8RH3IhX906QZlPi6f//VrBna8R/fBb0Z9UkplIlH7+QRgbk85I0N2iSRoN2wVyw3qzEDFBUohyDcVTfMqeTXuz6sjG3OQNA2QKFua+/J1XFggpfz06SH8g/j2frERO5VPyAqUritFGfmBJxPYjTIF2e5xEml6QcNjR4ZlxTvf3BcPAWiNO8Oi/Qw5tWhB7U4VFib1ExSO6IdU7J6oW7k77v6NbTmOApEy23aipfqaf8fdo1myUk/Fbb0yUKJBi6wd3t0drn0Z3tRA/kkQj4WWqj2pL1AXDh9XOM3aTS+8V8xaTkcIrKmrIk+pm+yHBlgKTNf1ouVZPdfLRH3iQTppHtRCzaWzjui+WMLhpt/F972jFMD270SflgTmlMHwxam/XtvL7jE3RKQalTMT8qKYkUdlcnd6z3PsXKDSZ92PfS0mU4xN7+fkrR63hYRCLghguun/7j8ZFxw2h+4ZWL30q63gpl+LaYmZlme0pUYeu5tvQ==
+X-HE-Tag: 1795850845-58554
+X-HE-Meta: U2FsdGVkX1/NxPNnI4rRro+pUi9rE4ky3mErgC7V+dK625ow88dcPAD7H4k2W3tTi2x6LdVL3YtmN6ydW3smR3tYnDXOogZ61FEORR8sm6fl91b7erTeayRng7r8BIxGOa8RTB3SwhHyQBlPE6iuDKMyPETptaUHza+Yvi8CyiMmBtJroOoQfkZ7vgeV9nD378+Lo74N26aF2KsOHvC45LLmjTPBhg69IJeZq602CdY9x8cbr9EtJ3wXEVH7vDbx0CuIpKVgZ0L2loHbVxbUk8qjM3WhMbmTSbJvwUR7dEs9vUB7qMu3ccc8YA5XeckNJjJqKOmuXDthQFpk8HpocpzynWbZe3VclrAmQZDQSZSWVfpbEmvv+2ueNzgRBe9kkBXPj0ZG+oBS6RIbqxp7UQzjeWe3lVaGj1ccir4ybjzBHdnTb3tW77SmigiDfI4CcahAy+eQwmpovFSCbEB+apf8uWJDx69gNwfgXF14S7GUFPmAXZV37orkWIrDmvdLLx1dyD/TkHRWdUHpOSrCSITzrs+spFuPWTw1Pf73APkPArIszZSP8SftGkqyMyU9IRGUpxYLdK0Sbmhca0dXsrXYPs1LprJBxwAfhTdMvtFP049NIkZ/XWXMhQEbLiRVz8Ap3fhV90R/0spPxZJBQLcpLdKwwnsoWEdslalioEkZvzi0yI7mDmSky+WwjPEcDTE8DPoYaBoF2EwPljsASfOfcSVRDHjaBGTvaPDfBvUdykHJRkbX1c2Q8LFjvb5CSZwfXf88FPf69WLG5zP01zBlWdMraH858mSvNW5uAbrCeOs9C4EdUKqXLxli8ZCYasm/8nhV0UAByjAchODpHfwusabnaz2ctSDg5Fmh+U1bP5br2A1PuHA95FzMaXFejgqXGhZJjeJpfp0XC7jl1RbcEzoEj5Ffwq0lP9wE5tWYRJgdjJEypHIKbnb9DA8VCrnSogzWMyeI8g5aKzK
+ vDj7dqwb
+ IzWwPT7FZ3Tc7ibu8wZ2fuiaLkw5/yMgxru0m3pMH58GEKrauJacmIliVxrASkOUPUkX3Rhg4jp4o2V+iRzmztXzj1SZ5yqDhdKsjRApBXxXB/3lQDeVDdt7SaRtWc05uD0Zj6yWEpZ3L7+HSANvZEIpBiAQaeH0r5oTOqGhE6P053RZI2qPForPIEOf6xdEGcEz+Mtnbt/LCt6e7a+PG188v2bKMWCQXz9Tqsjwbddnm/Yb1j3XTdiRqEkkVvCD6KfSPO341AkF32sipVyFi7uRY1G6E9da1IEIz6yOb2AwCFpEV/jp17hfB91KifwCWR6OulCS7UjPbI0bnZfPTKJKt22kdqssr94/vY9t6FwXs6cAfT0Knw5fXjUM+1srZhUUcf9t93dD6MbVfBwluzRh/dYdpJitvczk5OEy9VCKKt5uTpl5925lvIAl3eiqT1g2wzrLRpmeKNDyCdZwqzjpVXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,61 +97,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: selftests/mm/memory-failure: accept EIO from close after poisoning dirty data
-Date: Mon, 23 Nov 2026 19:38:37 -0800
+A seal added to a memfd after the memfd was preserved with a liveupdate
+session is accepted without any error, but the seal is silently gone once
+the kexec handover is over: the retrieved memfd no longer has it.
 
-On overlayfs with a virtiofs upper, poisoning a dirty page makes fsync()
-return -EIO as expected. close() can return -EIO again after ftruncate()
-removes the poisoned page. The selftest currently fails because it requires
-close() to return zero after fsync() has reported the error.
+memfd_luo_preserve() snapshots the file seals, but userspace may keep
+operating on the memfd until the handover, so the preserve-time snapshot
+is naturally incomplete.  memfd_luo_freeze() never re-read the seals and
+memfd_luo_retrieve() replays the stale snapshot, so seals added in the
+window between preserve() and kexec were dropped without any notice.
 
-Accept a second -EIO from close() only in the hard-poison dirty-page test,
-where fsync() has already been checked for -EIO. Continue to reject other
-close() errors. With the virtiofs export owned by the daemon's UID and GID,
-all ten overlayfs tests pass with no skips; before this change the dirty
-hard-poison case failed at close().
+Patch 1 re-reads the seals at freeze time, mirroring the file position
+handling: freeze is the last snapshot point before kexec and the only
+place where the final value can still be sampled and, when it diverged
+from the preserve-time snapshot, validated while the live update can
+still be aborted.
 
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: German Maglione <gmaglione@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Eugenio Pérez <eperezma@redhat.com>
-Cc: Kurt Lin <lylin1023@gmail.com>
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Patch 2 adds a kexec round-trip selftest that adds F_SEAL_GROW after
+preserve and asserts that the seal survives the handover.
 
- tools/testing/selftests/mm/memory-failure.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+Tested on arm64 and x86_64 with two consecutive kexec handovers each:
+with the fix the seal survives and dmesg stays free of new warnings.
 
---- a/tools/testing/selftests/mm/memory-failure.c~selftests-mm-check-that-fsync-reports-hard-poisoned-dirty-page-cache-fix-7
-+++ a/tools/testing/selftests/mm/memory-failure.c
-@@ -468,8 +468,14 @@ TEST_F(memory_failure, dirty_pagecache)
- 	 * fails. Close while the file is still linked. Remove the name
- 	 * before checking the result so a failed close cannot leave a file
- 	 * for the next test.
-+	 *
-+	 * With a virtiofs upper, overlayfs can also report -EIO from close()
-+	 * after fsync() has reported the poisoned dirty page. Accept this
-+	 * second error only for the hard-poison test and only if it is -EIO.
- 	 */
- 	ret = close(fd);
-+	if (ret < 0 && variant->type == MADV_HARD)
-+		ret = errno == EIO ? 0 : ret;
- 	unlink(fname);
- 	ASSERT_EQ(ret, 0);
- }
-_
+This series applies on the current next branch of liveupdate.git,
+where the file is still named memfd_luo.c. I am aware of the
+pending "mm: Rename memfd_luo to shmem_luo" series. If that series
+lands first, a trivial s/memfd_luo/shmem_luo/ rebase will be needed,
+which I am happy to provide.
+
+
+Long Wei (2):
+  mm: memfd_luo: pick up seals added after preserve at freeze
+  selftests/liveupdate: add seal-after-preserve kexec test
+
+ mm/memfd_luo.c                                |  27 ++-
+ tools/testing/selftests/liveupdate/Makefile   |   1 +
+ .../liveupdate/luo_seal_after_preserve.c      | 170 ++++++++++++++++++
+ .../selftests/liveupdate/run-vmtests.sh       |   1 +
+ 4 files changed, 197 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/liveupdate/luo_seal_after_preserve.c
+
+-- 
+2.43.0
+
 
