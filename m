@@ -1,101 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEC1606A31C
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 01:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCC6606A321
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 01:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XH0k4BS5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m7iLJfrH
 Received: by kanga.kvack.org (Postfix)
-	id E19E36B05B8; Fri, 27 Nov 2026 20:00:21 -0500 (EST)
+	id 9E7596B05B1; Fri, 27 Nov 2026 20:09:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF0716B05B9; Fri, 27 Nov 2026 20:00:21 -0500 (EST)
+	id 970D46B05B3; Fri, 27 Nov 2026 20:09:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2DBE6B05BA; Fri, 27 Nov 2026 20:00:21 -0500 (EST)
+	id 85F8D6B05BA; Fri, 27 Nov 2026 20:09:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A60236B05B8
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:00:21 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A2DC280590
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:00:20 +0000 (UTC)
-X-FDA: 85482721800.18.60E3F1C
-Received: from mta1.migadu.com (out-31.mta1.migadu.com [95.215.58.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 586BF14000C
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:00:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XH0k4BS5;
-	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DA076B05B1
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:09:00 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E44C3160555
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:08:59 +0000 (UTC)
+X-FDA: 85482743598.01.5D8EB54
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 529BF18000E
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:08:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m7iLJfrH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795827618;
-	b=RoGct/+RL+AGmJSOwkS2iz/c99P2WDWnIK/dk2G0csiEz9Q5tkxP6wDf8lOzvoCcyapkx/
-	U3eMvhdcN5W8uPZTqkd/4ZI/tYfrwWz57/yF+/zzdey3G9WG7iM3n4H8JshlON5Mr+0bAR
-	sBcaBSc5wTEC9/bzqzfEVbPHN+jr1y0=
+	t=1795828138;
+	b=0duHCOXyRAN1Aw82qP16I4HEZP2La6UhfB/TnzEa2KpyFev4AfdxlndT/JzAMAJ2fhhvtb
+	yCLHJjclqmQ/5tPlEO6BDCaPcoMw3+qcfGsTODjNzraBUAjpTvBkmZt11cLB7QDoR8boCG
+	CcqEbZzFFaLClMtXjacGttIxAIj62Sw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795827618;
+	s=arc-20220608; t=1795828138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mqx3dGzZDtWqr5igOUi74Egvf7mE8f1iQgIUJSdsnkE=;
-	b=ydZYQJD4aoaOsAk+3GP+qU9y8orhAJ0UV8ayM9ARs8lA6mSIe6+K4z4BrKe9K+v4duDxLq
-	gDpjJ28qbHiHboVYrMB4jEKj4czCpfnlphnPqC/2iB8nIuqy1bTnHjQsZOdHWSJWiznBFf
-	Ay77gV6teUv+6jWbHaxcrTbRx1sY18Y=
+	bh=BiX6ZyljcdQPQcS9kGO9WzZ1LmpsTkhRSgDRiHn9c1o=;
+	b=42a/LUCsGrvWJfnNStf2wC5KiwUUlxGsFjK7MImOR1PjcIGktZ7q4j4SnQk6Z+5mW1MLmJ
+	hlwALPTRyOCCGFx4nER7XlGqebHZH/RLfqtTPlEN+pAQTV0OuTDHmrIkDHDsn/xxWDyiv0
+	fCrOrSB5Fcdn7keY2NilTw7jlvtC+9M=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XH0k4BS5;
-	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RKnRcOIcGyS7Q4fYmPPx3vmwgt3xMD+hw2zryeREoW8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795827614; v=1; x=1796432414;
- b=XH0k4BS56q72ELa8Ps5FckyqvAuqzJ7Krc7PUMdFV3zPi5m72OtQTV/x6s2i7DmJ6xGBaddT
- iDbmyDcOfE/YqozMEqZQ1FYLiHjm0Rj3EAMpMJcQ3keyOyrBQTpRsOoGZYohCNEhJ80w76YRybw
- kvwbqlI5U8Dl1CkiAcPKzyP4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b2ab50d9f812f444;
-	Sat, 28 Nov 2026 01:00:11 +0000
-X-Mizu-Trace-ID: b2ab50d9f812f444
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <42195463-c50b-4f80-ad2c-ecc106e4c2ae@linux.dev>
-Date: Sat, 28 Nov 2026 09:00:03 +0800
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m7iLJfrH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 709A6442FA;
+	Sat, 28 Nov 2026 01:08:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 91B211F00893;
+	Sat, 28 Nov 2026 01:08:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795828136;
+	bh=BiX6ZyljcdQPQcS9kGO9WzZ1LmpsTkhRSgDRiHn9c1o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=m7iLJfrHpA8eePZ6FYzysI93EHHYYCIo2ytcOQKp7ORyyDMSYxAtkEvF/yx09Cg4R
+	 iJpoHjXY0fVAvXCIvIs1NJ/9w+qIsCt6RlwL4ajRU1yO+cHTh7Kqs9xPXT70wa2ztz
+	 w9aAxfd4oLS/lkq6tKivYGYmqxvSr9+PmXk6sL5aSxkY+3hL8PAK3/XCPEqMlKxIz+
+	 HQtEFMtzRMrzi4vfR0aKtXsT0Hn90k3NcrBuaz2Pdcy1JZLE49YB2Eq7UcGR+3pIPL
+	 0oJTU3Xa3CDhp1P5hE3sz1DkIOuyxJP2Em7qSR+Y9YvoBlBS1Ske2Iz2DgAlZ38EGJ
+	 V6CXPjiHUEcjA==
+Date: Sat, 28 Nov 2026 03:08:52 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: aleksa@amutable.com, alex@amutable.com, arnd@arndb.de,
+	bpf@vger.kernel.org, brauner@kernel.org, containers@lists.linux.dev,
+	corbet@lwn.net, dhowells@redhat.com, ebiggers@kernel.org,
+	giuseppe@scrivano.org, hughd@google.com, jack@suse.cz,
+	jlayton@kernel.org, josef@toxicpanda.com, kees@kernel.org,
+	kpsingh@kernel.org, lennart@poettering.net,
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	luto@amacapital.net, neal@gompa.dev, oleg@redhat.com,
+	paul@paul-moore.com, ptikhomirov@virtuozzo.com, sergeh@kernel.org,
+	skhan@linuxfoundation.org, viro@zeniv.linux.org.uk,
+	zygmunt.krynicki@canonical.com
+Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
+Message-ID: <awoppInSWN0XVPz-@kernel.org>
+References: <20261122193539.3334213-1-jarkko@kernel.org>
+ <20261128005541.873229-1-safinaskar@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] mm/mglru: shorten the lru_lock hold time in
- scan_folios()
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, David Hildenbrand <david@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Barry Song <baohua@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20261127060315.1119672-1-ridong.chen@linux.dev>
- <awnYv_mxag0b6Dny@KASONG-MC4>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <awnYv_mxag0b6Dny@KASONG-MC4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 586BF14000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261128005541.873229-1-safinaskar@gmail.com>
 X-Rspam-User:
-X-Stat-Signature: 9nexbkbphieuqeq5d8eexhrs34i5rrgp
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795827618-204566
-X-HE-Meta: U2FsdGVkX1+/3z6kB7D1N54SaWlzLBxFJ4P3+LSxet31DsajVD2LgztcK4emJSOSeCd0I+WhJ5np8aZgLE4hice8FVWprXL2p/QTqnnLiE6qAVHDwCKD5mngI4HB2NZr5+0IfE7JlbrO2xrUUy2gi+SZGrun4EM9FuX3PtZBkha63SQjlRZkuoFduTU99oP/NFLbnVr9015d0cmfLTn96sFfYcJRfF5ySAVErpINaEXRhm+oDVll/FkHZOVkO3NnTy68XdCOWkH25oyzbnfZpOm45apjT6BAQwg6KJIHeNfkdMx94aNb2wuvG2vzJ8moOPk4MpbTWD+LFr6g4seoEUJfj/SRK1yXCgGLIz7GFU2QKcxRtFFpXkke6OJJMdTf0enViZJwsKJHL2GoluEXxUzgRGYs5HbeYDVan/LIanTOpkQ7JIaY6GKRQnbX1zJ2FsQGuq9ENVeWFdlXvk3fwGhoNGb63lHLl6V+t4F0J9UhIr6w5AznNb81Zc//DHO7MEBOhIbAmuXAu3NwHee/BUPe808nydPI3XVa7DaMS448RmtiIkO09O0kFLfqHqDJqeiHrikHQYdWLksE5y9HQ6XnR2o7f/zKat6OwLGn8gjXVKuXuDM19f5SjqolSpw4PMgBSYgvOkZxF98jpdfiDvYw4MGDUqFtHMzH1q5KyYDClPnT/uEqHxvVtGmznk5X8HlvG+nnOYmems2V2t8iST3y47HyhTSHehLZjIz5LIK2ORrzGmRfmviOuyyNFCWYSU9qvad5FrcRqZrywg6/fmllbYZMjW202xqvzFUIyS1gmPoipHfpbQeNB/oFqXTl6yfTo/n4gNstNqZcxtJ793iSX1pKDgeV5pRfbQ4oi6TNwmp1NKD/4mfzpkixokaFcNuR2+Il5SXdDwXyqblyD1OxdaUCTMGsRu53kXxBbBq80Pv7TS26oiXMKfCAoIDnF2djsftsagP6ygC/j5o
- CZQMlcEo
- SXFRrE5X6gHhZEvSlJpVvFjdOrX7ykmM79DasqC/70fJ+mctjJfR5Zvpg8Pt3n2MNzNEzDH+18Cu0Lbgd/O7ls4SE5SGEgvjd0044Sj5fKyh6wOKbP4ZJAuhPrUZZEPtmPFg3MwVjBLcmdUj9YGLVICWnxtz0M9HmvJVTDsLkqRoFyGMhBL21pIVItfTBdCKmCLV1WJ6jRTXHrS0R/8CADtbqNA53jaXVW/+4xGLWtGSiMRrLsp/3rHiEIoLDGau8+VAM/h5V1yrzuC/Zb34uVJFyt002icE9LRHO3iFzKpd7B97ro1/F7PhMA7reYjKTJIYIGbreF9bo2yJ7KUemkxMFQ2svaA0J00UuxliSAgee5940lc1cE99h/OfFg0NwsVAdnThiWWe1E1oI49u/HIKxZU7yXrRKvygSQQOngoN6vs0VWVWlZYvPekjtTssJTAoLMoksnuCPXUWJd5kLxAzMbbv5Qtd9PD77G0BPzEs70+l1PaT+wZ8sNMLbSv/Fu9OkhjVNNkbHiGrKjpIa/eaF1r25N5n+0Ee9dRUUnYvDbYHyjr+FDtpmd47z4E2q/Zufsl0R9nYEirCKk9lsLmyxhTs9WofO1tPcsFYBSxq2msXJnXnGm19kHA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 529BF18000E
+X-Stat-Signature: qwxh8dhfbfak9t5n6zx4wp3wcs4k9935
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795828138-978447
+X-HE-Meta: U2FsdGVkX19xZ9Pyy8QkkK6yf8GeXQKl2LVDzLOTQD0eAWUESx+G3X67DWcanxVfOGj4QNnmwL/IpeeyMcR+W++Y9nz+0clB0h9NrQezipDE1k2+G53ZTWk1bNISQIK7RYv3sjOZ8xmxoIiAjM06cbAWgcYM6Z6Rf9gVDbSuil5dSyCH1KnJQHFUcgnZmoLqCfj9Hy8rbKjkDHER21XAQZfd2epbKz2l2I8G79SUFnNRiIc+Bvt9hbynZCtbBvoB9RC/+H0qOozNMGEZ7ozFC59dA4x8nOCD74N630QDP9FfyM1JK2FaoBDASRVCkirrU9v73ZLHk8wM8y1aG0zTL+Qu5iRrwPda8VkbXtYO5YqRnkjG6/OA0Q3LxFC7al6YdIWgTsYDeSENBDQ+BDvELJ8VsSFCOqcsXDzxxYhn44Zykcy0gl5z/CQu5v0Jd6JEOTo7nHf03S/Ougg1j4xuquIExnFCgq4ZxCuLDy+PKDN2kkCPoXTPBVkP7kS1ZqGz/fw4CCVtqOMIgWz+gNEiL+AVe6AbNNoaCFZn068tSg1D2a/Re0cca7UKyn+S3NDvrPFujweWJE29Oi23wWlNWE4F/c8IZSMBQi0rV44FhhcUpEq4zMbxzLROaEL5fGcupWFFdREaLVbVZZlGDJbwV8LAVC3Otebm7Tx4dlzf5QylsTZGWfeJyJ5EdkWC2jupgkU/epkeLF6XE6AXrR0a/c032WViF34TzNV0HYbS3Rx5G8u1rtx4dyLjWnbDLM1cmHsMOc4yLJNTjvr/TbnAhYh6v0hZpukMzcCZpm08g1uzNowCD2hnrujNs/+vvs1uKAyf9v2gujgzGfbOq0aT1Inm62Z3QEtgRz7HkmDmIp5JNmlLTsW0JhVstiNVNzXmesa1fleabGsXknYSRGvWvCvMG2MJ3QNJRwjzVRVwpHedq1Xszk1Vr7egU0OtLD8h/oYA/CsPpPIIR1fLmF8
+ 7JTXbBcs
+ b+brnIMiY++y8KeqtMyORjhKCzdBx5WFr6nUDG7dkDCdr+ze1zkim6A7eVQqjSO4xCiqyhf2uQBjvMChASv/IG7mrn4FHizmFWhatjaMPzxny6tZM+Nxoi8c07JBg+bbfzDgD8tnUjwmed0SI2m2+UBes76vQXSIBzvNBBJvWS265jHy6W2y+K1V6y3CJiUop+FMGHkKliUxyYrL32sxkFZ3rHzX0c3Ek07gifCFXqlwD9UqnZD2JEf11Rr4ORWgu+j5L/18/IiC7jFhKck3h+JipMkLW/0MEHRLhLvZqsioAFdKhT9ZPU12uIAo/GxWOHfkB4iu+sL1+p8OqOuEV9D4rlU8ftlJ91BKuhesfHSWs5qR2NOBJEKVV24fVNmnWX/60zo1y0VbIzvBGqN1FSEw8sRiCa6itwcJgsQ8YVjd+UrPMzlKto6xM6ZsmQU4IeoWt6f3yVHV29t0CdAHyQHR4vuj7nEd62dhQcAuWjKnd9p6kWqsq7awxGwtwne8+bb+iT66JfwBQWAJRVOI5xjWiZamqM300/TtNz9rmeS/dWBZ5uOunmH0asnXHA1wutK80rGan/2mUWMU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,94 +106,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 11/28/2026 3:34 AM, Kairui Song wrote:
-> On Fri, Nov 27, 2026 at 02:03:13PM +0800, Ridong Chen wrote:
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> When many CPUs reclaim from the same lruvec, they spend most of their
->> time spinning on lru_lock, and the time scan_folios() holds the lock
->> limits reclaim throughput. With 24 threads refaulting file pages in one
->> memcg, about 40% of all cycles went to waiting for lru_lock here.
->>
->> This series takes per-folio work out of that critical section, along
->> the lines of what isolate_lru_folios() already does for the classical
->> LRU:
->>
->> 1. Update the node, memcg and zone LRU sizes once per zone instead of
->>     once per isolated folio.
->>
->> 2. Prefetch the previous folio, so the cache miss on its flags and list
->>     pointers is not taken while holding the lock.
->>
->> Tested on an i7-13700HX (8P+8E, 24 threads), turbo off and the
->> performance governor. 24 files of 128MiB on ext4 on brd, all threads
->> in one memcg with memory.max=1G, random 4K pread(), so nearly every
->> read refaults and every thread ends up in direct reclaim. Reads per
->> second per CPU, mean of 2 runs, with and without each patch in one
->> kernel and the runs interleaved:
->>
->>    CPUs      base    patch 1   patch 2   both
->>       1    426681     -0.4%     -0.2%    +0.3%
->>       2    387442     +0.7%     +1.2%    +1.4%
->>       4    360312     +1.0%     +1.5%    +2.1%
->>       8    314549     +2.5%     +2.5%    +3.3%
->>      12    235058     +3.2%     +4.3%    +5.6%
->>      16    184086     +9.4%     +9.2%   +11.2%
->>      24    124478    +15.5%    +16.5%   +21.6%
->>
->> The gain grows with the number of CPUs reclaiming from one lruvec;
->> with a few CPUs there is little contention and no measurable change.
->>
->> Ridong Chen (2):
->>    mm/mglru: update LRU sizes once per zone when isolating folios
->>    mm/mglru: prefetch the previous folio in scan_folios()
->>
->>   include/linux/mm_inline.h | 26 ++++++++++++++++++++++++--
->>   mm/vmscan.c               | 18 +++++++++++++++---
->>   2 files changed, 39 insertions(+), 5 deletions(-)
+On Sat, Nov 28, 2026 at 03:55:41AM +0300, Askar Safin wrote:
+> Jarkko Sakkinen <jarkko@kernel.org>:
+> > Work on this feature started in 2025 after reviewing David Howells'
+> > container object patch set [1], whose underlying mechanics made sense to
 > 
-> Hi Ridong
+> > [1] https://lore.kernel.org/all/155059610368.17079.2220554006494174417.stgit@warthog.procyon.org.uk/
+> > [2] https://lwn.net/Articles/1102593/
 > 
-> I have a different approach proposed about two years ago:
+> You put wrong link in "[1]". This is not Howells' container patchset. This
+> is Howells' fsopen/fsmount patchset.
 > 
-> https://lore.kernel.org/all/20240123184552.59758-1-ryncsn@gmail.com/
-> 
-> I hesitated to push that as the end to end gain was not
-> that large (5-10%) fio and it makes the code too complex.
-> But I think that one may work very well for microbench.
-> 
-> I tried to resurrect that 2 weeks ago, but realized it's not
-> the best time at the moment, there are too many things in flight
-> for MGLRU:
-> 
-> https://github.com/ryncsn/linux/commits/b4/mglru-isolation/
-> 
-> Perhaps we can discuss and see if using a "batch struct" could
-> fit better later? It should also unify the aging batch too.
+> Link "[2]" seems to be wrong, too. It is not something "earlier", this is
+> very recent LWN article.
 
-Hi Kairui,
+Thanks for pointing that out: https://lwn.net/Articles/780364/
 
-Thanks for the pointers.
-
-I'm fine with handling the batching together with your batch struct
-work later, and happy to fold the nr_taken[] part of patch 1 into it
-when the time comes.
-
-Patch 2 (prefetch) is independent of that, though. It is the
-one-liner Chris suggested for your v3 1/3, which he said he would ack
-if resent on its own [1]; the inc_min_seq() half of it has since been
-done by commit 5d3664f070f0 ("mm/mglru: move folios from oldest gen to
-second-oldest gen from head to tail"). It is a no-op on archs without
-prefetch, the same thing isolate_lru_folios() already does for the
-classical LRU, and it gave +16.5% alone with 24 CPUs in my test.
-
-Would you be OK with taking the prefetch patch now, with batching left
-for later? I can resend it as a standalone patch.
-
--- 
-Best regards
-Ridong
-
+Br, Jarkko
 
