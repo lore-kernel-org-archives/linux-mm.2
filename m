@@ -1,164 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04C1606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 01:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0737C606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 01:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.cmu.edu header.i=@cs.cmu.edu header.a=rsa-sha256 header.s=google-2021 header.b=dxZ4mcO6
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EFKnG+3R
 Received: by kanga.kvack.org (Postfix)
-	id CA9E16B05B2; Fri, 27 Nov 2026 20:10:26 -0500 (EST)
+	id 5D7D26B05B0; Fri, 27 Nov 2026 20:51:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5A186B05B5; Fri, 27 Nov 2026 20:10:26 -0500 (EST)
+	id 588D46B05B1; Fri, 27 Nov 2026 20:51:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFBB76B05B8; Fri, 27 Nov 2026 20:10:26 -0500 (EST)
+	id 4779D6B05B2; Fri, 27 Nov 2026 20:51:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D5A86B05B2
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:10:26 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E35AE140241
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:10:25 +0000 (UTC)
-X-FDA: 85482747210.17.9D5FD87
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CC72DA0011
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:10:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=cs.cmu.edu header.s=google-2021 header.b=dxZ4mcO6;
-	spf=pass (imf25.hostedemail.com: domain of jaharkes@andrew.cmu.edu designates 209.85.160.181 as permitted sender) smtp.mailfrom=jaharkes@andrew.cmu.edu;
-	dmarc=pass (policy=none) header.from=cs.cmu.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795828224;
-	b=LnvKSLlJJwsdianIQ0GiHe+Y58eEtDoaf2Gzd5k3vbkASUpOLKOLf2IBu4rGzEUw5V9iPA
-	TmDU2tTI5G96Y7+qDQ6iyVFTYFbS83ZU+8zGgETZI8hBSeuJUchtpELuV9bgWmliwG1j6p
-	OPYxSH5i1lmpMCV76fWTPlIUwIfBArQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795828224;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 18C426B05B0
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:51:23 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 637C21C3D9A
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:51:22 +0000 (UTC)
+X-FDA: 85482850404.04.C66B8FE
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6DAA2160003
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:51:20 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=EFKnG+3R;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795830680;
+	b=668gzb+PhpXliVOvVRsA3zWrZ9VbH5ZrbvxwLJRMNczVYr4mQoysHED17Ke5hVeyNsrD/Z
+	T/QMggRTckNvbZD9wYmCKbQ5AvGCubEzf/sr+wyjUxc/+vvCPoQ5XNGmLdyr4gm5jgKe2e
+	fC/dm1xjYzAVMI56nLB7lu/6HuNw81M=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795830680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LCoNBWE3kmGZQJ1kgw8zMrA5EDN0aulmwFxsRmULwsM=;
-	b=TqNUlGc+9fl/ucCANzAQScQa/YPLDRPgik3CfD8nNJfNWg1Oz4F54olaem78UJNSp/bnqO
-	A8VNVyW3pNNmXOHWXWVVQA6tjE3VU1RX5QlQ1J+dQ5p2kq43/xLR0fi5f9PEYOiWyiHXSJ
-	KtyWO1+ToIx1iDrZkAgoWtIl/Q5UQ/k=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=cs.cmu.edu header.s=google-2021 header.b=dxZ4mcO6;
-	spf=pass (imf25.hostedemail.com: domain of jaharkes@andrew.cmu.edu designates 209.85.160.181 as permitted sender) smtp.mailfrom=jaharkes@andrew.cmu.edu;
-	dmarc=pass (policy=none) header.from=cs.cmu.edu
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5366ae57896so86569961cf.3
-        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:10:23 -0800 (PST)
+	bh=M+kv6M/MroHXNub3A7PdHe23Ap2KXe5JLqM78W2xjvU=;
+	b=xOhtCn4UdXnnsdjZtFw45lX9SbPqGBD7xL9Is+Y1re8DMwrftIEd5jxhgjpMDi4F88NmlD
+	kENMM165AhC4Odmj00oVgfE7fFuxKkJsAp9cJ45BFa7lWxpM1ywx2s5deFAi0ykm5IkRpj
+	47f0pvfpndnbv1NCuJ3/oLXCMyR2N9A=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=EFKnG+3R;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c5198302d38so704099366b.0
+        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:51:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795830679; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hV3G055+FAvfyZU0nfO8PT4nlNFxPG5JN+1RF2Jr7iRFs1SjexufoDS10FGu6Vp1qY
+         jLNiSSmpTDvJE3G6hiiQVLds5jYWRWOPj4Y2gj2wj0OVDtXNiX7dHRWhPjv2pexvNp+o
+         Z4xI9dEXjNMmzXqVDDmV5K84fO9GYrkpzrZD8XogvbA8DJC2k4mPGLLL//1Qq1hXWyHd
+         LpHPwG6jwbeGAOKFY7jzfb9kxrmX9BxAbOdYO0UYJIHrXFtKk57vfP6diYRoX+k1gvBj
+         XOEL47PHr/hQ9Rge6eQu8ELDWwAl3xazuVViJuIIVWxbWKRZLniiwSOcvEaTr5iipx2d
+         QFag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=M+kv6M/MroHXNub3A7PdHe23Ap2KXe5JLqM78W2xjvU=;
+        fh=ZKO1RyjmnZpDX1IA74TbEoUNWqczLVBrk/Q4nX5vr1c=;
+        b=S82kPy3Kzu1fH6JbNcb4iqz607Omx2Md+/ULpHQZuIY/G8K4przIiQP/V+XnnMaV29
+         V0H173SAiD0/JdHHYLCG3+7xHNcviHxfQswVOKPN0hfck5oxXwVwMKXDC0cV7YeV8sWm
+         3o9P4qwTy2TYpS5CizfHamNXxLyyzGRCi9RMGM4HewtMXMFXYKynVz22tJRe0IYNHRgf
+         mDZIXc4tRPLpe+W+XJiW+gHu0wGhEpXdWgiphQzHLaGCS22DYlT12YjOiJKkXMW21/Pn
+         bAe4tYbb4UEgGypVj3aSaUyMRrrGieXOZbo+rwzsNAy2flqDgsQdjU4k90ihIrUIVZkn
+         OOtQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cs.cmu.edu; s=google-2021; t=1795828223; x=1796433023; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LCoNBWE3kmGZQJ1kgw8zMrA5EDN0aulmwFxsRmULwsM=;
-        b=dxZ4mcO6ztruFboZcW1+Ai1rZnLd8Raa/7wKLl1nrOgxXlSoXQzhkrG8CKVAsybVAl
-         AOkKinVCCNpmncvI0oEDgs5dOa8wipXUIXH3BsuWtgH1YaPQ7jjpXXaCUXkT7DYEz0Ve
-         +izxCgGjW6MUGnKprXrDxZ9hz9FdKjfxM15Xf1sppL+go1GKj9MpY7rogxjrG9kN+W5D
-         S8S0hIPgxxXGdvpu2YW1NFQP8/M0sefxZk4xhi7+QKnFe5Wpfjk9T24o2BWiyyLA6lB1
-         eLmtUNybVVNh8XwLUufFa6XY1B6KCb14z+218GgRglEHEXLtJLZ5bhm1PByUKpYpoDSr
-         62SQ==
+        d=gmail.com; s=20260707; t=1795830679; x=1796435479; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=M+kv6M/MroHXNub3A7PdHe23Ap2KXe5JLqM78W2xjvU=;
+        b=EFKnG+3Re1mZjMMAq6GVF2cWXWOLp9vRwCijHvoMdgooBc5NX6KFg/EzTB4bzJ45//
+         3kvNHI3Ek1BtGSfH/LIBzKMWOI9Uctl5NNJABPvU1T6Kwm1vATBSUnc8l/DSQ73cADlb
+         xm03UsmoRfpZu4P0YJy2UHz3YurAlbUXPqgvi9pl7gKNF+ZU6ISpZ3sOWb+gHeWpbonE
+         iD9cfrY6CZTzzJT119eQ5WUfhHXy0+21mg/TrSY4/dFZPhZhBdecnKMLQaHuO+qG1WBU
+         LJn6JqwQwkU9+pzQ5r/yYDlVD/CiNTUMqDQ1KEe70bw1gRIDME3PXQVioPrS4qVQY0Qj
+         DWIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795828223; x=1796433023;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=LCoNBWE3kmGZQJ1kgw8zMrA5EDN0aulmwFxsRmULwsM=;
-        b=WwZhhRLC5VKlR6LDN/8uxe0NDlkgnnbAcKwCTViRr+jy9aR/m+Zku0zWanzTfzJdiQ
-         e3SrXHDAh0vDX7OqCAWWlvo0PMgeyj70ii0jJAQhcypmS4uigleWJvU9Cnrw8h0qKMAj
-         HhbIHihGccgpcrqiO7qaQXPPUNHkpkm5nqAl54+SDWDwzbDPIWEgzsONHlvV1in1JBjZ
-         9/Kp3zU8ot5JvnZcdQBHQwKBj6j4lfEFDGZi9gwzPlbLBr534UpTTHSvfY0ey5TIQJTH
-         JiQE2cS5QnayWRcj3wiNtWRY62ymzINwuPdHSfxlT4f+ffmvTfIjegRG8qsum5ACtTWr
-         brnQ==
-X-Forwarded-Encrypted: i=1; AL+hErErlXEfaNIyCRn61cfTTyAmBBAlo/m5XnMV1bSpAjxLWakdvELfszyo3lVbWVUjbnQySKhWnfHJ/g==@kvack.org
-X-Gm-Message-State: APuU4Z9R1HHvfjzFGog52U7Pp1g3IgCwJ1KoMnu2a6SHeqBaRZC2ArRo
-	up5JaFUdpD3j150OSJYUudY9Uud/YBKGv/CIREZqYpuVjT9fYjY1Pi1vL9+NFKCVuA==
-X-Gm-Gg: AZFdTZcL9+v+PeyDmgaoaJ7XMVg5v2eVzSmN0iGgA6zsQfKImPoqEt8PAk26t+nG1LD
-	vW8BhlCX+46vSwH/2XxtAZEVyhnec2qK+ZnAne2ltqPDb+fU4gk5OjIibuDRAruLqRGtQACud7r
-	s6XVm67rTVdenp/Ov/oM+cphMdFjdKpOgldhnGFgrPnqvGvoP9WcMA3Z/8XejgEMSWOh4SfFUvD
-	dFqMpS9+ECniIiLa4qcvDoCtwzdjdOiHH0U3Qt9GbamqAPKiGZVQQAr8IzSG2OafQzOvmfuKfVx
-	c0KRmsLWnorr9GFs6oFbkt2Ni3+Uj9joZ7RFXAQm4IYse5vaIN33zBlb7Q+Stlf9lV55NOaM9ID
-	3WGVIPOF6/W+W0l7uiABLw7P8rq0AHPe7Gorvbol+v7XI57StpfKUEaM0fFUCiDrB5O8Rc6xVu1
-	R+7TJw3tyGE0xwwfHNjbL27whHGkr5tyTwqA/NHoBUix8H3rFTJY8g1SQH7/y4n3sDSMC1tw+AT
-	qcaQqqu3uNszlDMgGxFYE0dzxbGCep/dWhsqTJcv50O5wR3wJL6IavJkZYs28+m2249+03qMXun
-	xxEM62p6Gdw2fd50IiO3GDpJEeO94CCu9AOW1y7kroFBP6Hyug==
-X-Received: by 2002:a05:622a:428a:b0:535:f92d:5c00 with SMTP id d75a77b69052e-55d76af8921mr488959251cf.76.1795828223013;
-        Fri, 27 Nov 2026 17:10:23 -0800 (PST)
-Received: from cs.cmu.edu (tempest.elijah.cs.cmu.edu. [128.2.210.10])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921349b3a0csm229263356d6.14.2026.11.27.17.10.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 17:10:22 -0800 (PST)
-Date: Fri, 27 Nov 2026 20:10:13 -0500
-From: Jan Harkes <jaharkes@cs.cmu.edu>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	David Rheinsberg <david@readahead.eu>,
-	Hugh Dickins <hughd@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>,
-	Alex Shi <alexs@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Rientjes <rientjes@google.com>,
-	Rik van Riel <riel@redhat.com>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
-	Andrei Vagin <avagin@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] coda: never point a file's f_mapping at a
- container's mapping
-Message-ID: <20261128010821.irhzl7qcqahz6onx@cs.cmu.edu>
-Mail-Followup-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	David Rheinsberg <david@readahead.eu>,
-	Hugh Dickins <hughd@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>,
-	Alex Shi <alexs@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Rientjes <rientjes@google.com>,
-	Rik van Riel <riel@redhat.com>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
-	Andrei Vagin <avagin@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-References: <20261127-mlock-madvise-mprotect-ai-fixes-v1-0-e46b2b1eb435@kernel.org>
- <20261127-mlock-madvise-mprotect-ai-fixes-v1-1-e46b2b1eb435@kernel.org>
- <20261127124428.f1f66c6244d3e5c2811f56de@linux-foundation.org>
+        d=1e100.net; s=20260707; t=1795830679; x=1796435479;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=M+kv6M/MroHXNub3A7PdHe23Ap2KXe5JLqM78W2xjvU=;
+        b=MoZUColPbwGcVjtxHP+I/dbwfgZ36vrewKLaHbOtWpyzd+Qnu0/xcvetrmQEAGfuYw
+         4HeNC6ANIGHUTEUxkAddtadgDeOJa/TddVJ5y89s5N5LgoVt05PBSdNTD8J0KrzbngE6
+         Q6HryPMnl4qIiPKBHf4oF89z65MNeSYmgyOnOM7iUe8T3NlWvURXW59dau6yqfN2NC85
+         leBOF5iQUti9XkixXn62HnVH9H4VTKDyNwEva5lzCeELAmHY0oKc0u9f38jT6SA1LmED
+         S42TlxBJwUwArj2CRqaYTENz17jnD7FrmHMvHWN1Ct6fTf9Sv5be/p6tRj0ABTu5oQya
+         d6Tw==
+X-Forwarded-Encrypted: i=1; AL+hErHRfEi8KGtNQoOVGyZZz+3Y9n4HPw2cdH7dG/uCnT9678JoJTvEJQcw+diYef4rmWN3prXMYv6W0A==@kvack.org
+X-Gm-Message-State: APuU4Z/3ITLjwae89792woT84r7o+kLT7rpdAEZP/hvSGLCx2OeFxsb7
+	YFmdh4hmmiEtqV0mzu+MgL1YmA7IJf1/RrGDaAZCcSd9wYzp7yRr0be86LgmQY8Mg2f96b+1CqA
+	URypxa3dh9eL2weX8CXIwozyRZLTl/t4=
+X-Gm-Gg: AZFdTZfO4rRtN7TetdoAFS4PJhOjaEqfX2zu5yKkAP7NvLvxpFlYTctvyEkuJVIiUaf
+	cogqyBWmEGsvZeaynXj5xH9/Nlu/t/Lyj21WOwv+Zu+AiHCDsIyEKzSWCWIfDdkACA5VjqnOyY7
+	0oSYYtBssP0FCEqN/28exObyX7kpOmzTCh6ZTb93hupw8P9QZJasg21+RVuCTNoKmCM+2ZqqsjI
+	xcWC66vxA8f3Pg3T/zV2bFNWb2cEkdiAh2pCcgYBgf9FM5GECiQDnMN9G9VeVmjYHEhz7pAMlim
+	ubxwTxT/mX+3J3ygfh/Qtot8IC0w4U4cykriuJwR9+sumKfoCkAjJVBEZKBTgoyzy2kR55qxxLB
+	TdeEon8Y31D2J3kxeNlFF/t5E2rUVs0eD4YMR
+X-Received: by 2002:a17:906:fa82:b0:c50:4b6e:329 with SMTP id
+ a640c23a62f3a-c513a5eaea2mr1724212966b.15.1795830678877; Fri, 27 Nov 2026
+ 17:51:18 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261127124428.f1f66c6244d3e5c2811f56de@linux-foundation.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CC72DA0011
+References: <awOQDOel_72Xwjm7@kernel.org> <20261127214103.542291-1-safinaskar@gmail.com>
+ <awn-ioAuksHNV-Rc@kernel.org> <awn_Y7oI4ckfsjSv@kernel.org>
+ <awoHex4LVst2JwkO@kernel.org> <awoO9R7YF_5_6dHA@kernel.org>
+In-Reply-To: <awoO9R7YF_5_6dHA@kernel.org>
+From: Askar Safin <safinaskar@gmail.com>
+Date: Sat, 28 Nov 2026 04:50:42 +0300
+X-Gm-Features: Aa3M54pCi2p8qLdocdLXd3OCMkn8g_j_UUSVEEax8LAEOxwj1oFmxFAoHI8_4lc
+Message-ID: <CAPnZJGBnFyrmr88OsYkMwtLiR93z4g0NAuoMurcnhcYFXz51jg@mail.gmail.com>
+Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: aleksa@amutable.com, alex@amutable.com, alexei.starovoitov@gmail.com, 
+	arnd@arndb.de, bpf@vger.kernel.org, brauner@kernel.org, 
+	containers@lists.linux.dev, corbet@lwn.net, dhowells@redhat.com, 
+	ebiggers@kernel.org, giuseppe@scrivano.org, hughd@google.com, jack@suse.cz, 
+	jlayton@kernel.org, josef@toxicpanda.com, kees@kernel.org, kpsingh@kernel.org, 
+	lennart@poettering.net, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
+	luto@amacapital.net, neal@gompa.dev, oleg@redhat.com, paul@paul-moore.com, 
+	ptikhomirov@virtuozzo.com, sergeh@kernel.org, skhan@linuxfoundation.org, 
+	viro@zeniv.linux.org.uk, zygmunt.krynicki@canonical.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6DAA2160003
+X-Stat-Signature: 5ox1ze9x6y15csaddysyqy3uuf7nkpzi
 X-Rspam-User:
-X-Stat-Signature: o3rurxr7whctzyakdw4ntu9efy64kkuo
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795828223-743086
-X-HE-Meta: U2FsdGVkX18aqR7t9U/QztZlhrsGC9Q/E0ofES2LIlO/iaERC8Wh+HH4WYCc6FKo97GUQTn5KCuyALMVp8Sr3nFml/Je1VgfWj3XsEd8sBCxn2Kb/Fq/zFohSy308s1F/0GgYSn/2UyOtrBCHG530xQ+NnvX5RRvi1vr5cSCbNIWa3YVt8tr2Igsg2XiJD21/xopyXJv5DlsiNHfSUZJTjqYd7cdIsJklZbOv7j5hzG7uwnfsYN+h1a/Dya5V1pL3UskhB8PJuQQvSBz6y8DBSQbjH7GPN/On+PJpKehOg89r8qRBY6zUVYYR3/Mc2r8nt1KLrCYnWZvlJsvDrg35dJVHMswUW9HXppBx93sxD14n7xhRSsst+ik9QJHWe9RP39vRLc3/AqutUpPBOOBEIRWgWxJTVfqUTKe+9DlDX87I+DkRiW7RbDD3QK4fIfomIZMPrSkYXHKIxALBGFCHJGXcrV6hlrFJjrjbxIQ/bvlbC2IpSxHWU3Bnn9Y5b+JNqkvmc4jleDyqLY2ISnqe8lHQiK9zvbgzgRHnJgdriAQ5U2W7PIE1HErvDMo/yNbl/dXAhmhpXTejPTia940KU34eb4VW8VtTry02ApLC2SwJeRgumiD2dYIlHrvgFtdR7WE5SJOVwgCBENw18yy5nUt1x4a97P5OZ/z3YLXxVWTi5YmCYJhrXgFpl93ZBdVBxNilJ0D8WgsPg5jGwEtD5fvHwUtIj1wI0BBN4BV128Zgh1aYxcdx99OET7GDl2juEtCnm3lv1r+Kqj/zgtMj+lcX8B5ZtCgM8UhFoRUNvf/FGUevvdYbDDTQFOglab4BwAFBb4ro3vOXzEA8EVhsIg2MAJND/Z+OdTMlDFl2+X2m1mImAzhUXzNM2gPPv8THa9Vkyws3q31CH1bbb5IYutQmqUvuE1DGfODvbK/rO4u7BmsSHQuTnsYh/+M2GxK5//2WmED1C+eChAVqGV
- jjSVZptt
- G5Uf9TUh3tvXrUTtHj+3Dil9I7zrK/a8/FqgjClQw8NOiTXj3YmzOGumf9zj+rDMp4vRuiBjNOjpFqkYOkXktyxzEKGmufr6qU49DFMf1Ni5R9tyFcvS0BHBjw59tFRMeLN5PabZsXc+ZdEr336MURHfTf1aUI1L6ePYOsbxBgQdRw50z3N1rtFJgpz5XBNWftg82LSS2gOIAeQdp6lKFpZNPIE0xykJ1zeO8G1mbUyjY5vZgBtoDc9rGkTSk2qBT2BpH/5cbyLNLAIGPS4HKsptj3mCLVdX8qAijm6EGAREsWjSkwXyH113MaDu2OUsS8XdLeH058uIlgL2nW+B3q1aEn+x464M7jmYwGsR5VtRLI9TWNVwXuP8YRsFZ3pVgPHgeHAYWx34zQuRyIPhS2xtEx+Qy0bmfgyakgcy6L4dGtkak2zb6oDjXsgAPNLMSamU1LsP+rfUQhTHXenij3qWkAJOE6UZHVFnSxobCmRMmsCuqO5byS/tBejvkgSxgP6IbsaFsjm5XHKk++mviSN3k644tmICODYHYfe/EGCDliZtJm1oY8hG5tY30Kd78x8Co6M3qw3EMgVvkeDqLKhzoBL05S0yYKdO4VerNfSd+xUCFvHCwl4s77JqQ0b1PQvMTQsdEQC0mZKNWtHBFc2bWQQAT2KP1bUoqk3w+swnTJTjvp/9vtJCuHHG4s2w9aGYMwVMy0awDUCmmM7GLzRLd3N+6+nHsW8vCOPYx/HnSbXPouBIc3T6eq7dV9duUBx/T
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795830680-116304
+X-HE-Meta: U2FsdGVkX18ae9nJYp8dSjTvhIIyugK3hib1nEX9o5eAjwdwbjBHckd9tRnYyYH42TUX7aRr46XKiBH7bsd10aDnpusUzR35zHauWFo9/MFmtMGJ274pxuBesh3tzTc+b9n8wSH5epMgdS0Z0i2niHn71HdHpyyyxLyrRmREBNAOcMvPiUdrSgxalDPUheKqHQ8rg0R7XOkKY9rrbUd/NXICKc3OyWx1s0rkmHaEJf27eNSM5KcytlNtbe/BzV2PEhN9sRgoY9HIDzhyhyLasMx3Wfo75xF51i31DhUGnpwWZbV1THQs/yABqmH8LwbIYWIwGR453uaSkMgl9uZ5kjp4gC9DyxwnenbkWRtPKo2B6lu5Dh1dJ00PDFmgFtT4611VYGqaqVE08gducGQi8v6L2L2d9v5prGSRkri0q/GPPj3+nE0H7Xll54eAvhDDgg3yDuFIqkvhGhGu8XP8AgS5SGnHH2PRTJWe606ztfLBVFnAiGr9un+/tdUcM6DCj36uQgzL0SthqF95xMImsq7suYbyjBaCgDrTCPUgwB/5iA6BvFXWvEXycq5/Gdru38Zt/MnDV/APf/7PNvKrZhMTqqfWwRQqu9UiOy3Zjrr00MSgOmOCWiWG37XnOZXDx8FwnGQji8r+mHX5Y7M3X7/GL4oqUCFve7OzjBaDGMjvb8QgK0T/YRd5LmlZxdkJPsfq2neojbY0e2pD5BnrjvRKBxqfRvuHtAVRDVvWjzbPR2dR+onKzdeOf/oXR16oZQcapEgx+W5Y8Sc9s3IDRBRRATl21bA9vPXCn9yy8okkJhk0lK0Myo4vZ0y+wbz/gtQ2kaCdJLN4IKI5+4IlOolosma3P727hqul/+MU7+euKdLSjG7BHPT8KmNB/AbPK/GowxnP5jJDCuGNDZKyBWrO1UJHeZKjjPaYl/EVe46Xe0CIMXnuVvAWi0hpnHmB+ln+6TuGfEibF3XXU7u
+ OOEU9unu
+ yA4xOpupmcUD7o/jtTqApHJj6grOXkxIy+1rLFjBQjXxgVWvBYXKWfCWur4mY84aYj/lO1zV8gqTy/fkeFaUjV3VD/pr5EmhNoRk1Xsy/q3hz/lLT5hHw75k7NXlUoeAWhx9zsHvu8U06R8TM1v3op9NuHWaB82bTgcOwyWUtGCsDKXhGKU6wgEm55aOT06GkGeFxodl2qlZXoWRL5rvi+OejIL4KhGg2TAdb+01yUd/bOMe87NqqhOj3p7n9ZBIwPYNHGTGojo9F2sUsCSkwaI0TMrxY6aJ45f8nKCuRUfeDFkntlmgH8ipI3tria7c2fcYbIHctrLyTOpS4Z1JSdjI1Xk7pcI43WHnfFOfsTpThV4/pmomEj9844IIFbYoLXNNr+0wB0y1kg5FGjYijRDZLrYf5FyB7eASbBvjJ5xtECcr+6qsNkSxStQOboP0hO7DAubbIuPSiY7pCGSW0kBamBvnP25wBERg+jsaXUM5f0O7ZSUHRujEiiLXrB/KFBEnQZ29QugA6kTZhCAP3ceTlQpKs5NQgDhV5o4yzZCkBUbb0KobXP2YFagqcZFlJ2I6DPjHmKCPu9KrdSg+cQvdAg2NwJJfGaMEUwbmkqLZHsz1CgEIF77/g3GiXvl5NWLbq7B+7tRsjwRsrlW4r6Pojo7W3miURJB1KsO25kRgt9RqFEf+MHVkebNeIx6wk9xZt3SPpmTGKmOJxf8UWC6VhpoRRl1pxXrkVOxWxut5IPhtZAEAVve/Ihw08Q6Yq7U/qw8nQoZ3JvN3Illu82kw+kri1VeAiAcQITJvmm1UIf0Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,38 +155,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 27, 2026 at 12:44:28PM -0800, Andrew Morton wrote:
-> On Fri, 27 Nov 2026 19:45:40 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-> 
-> > Coda file systems stack differently from other stacked file systems.
-> > 
-> > On mmap(), coda_file_mmap() switches both the Coda inode's i_mapping and
-> > the Coda file's f_mapping for the mapping of the container file. This
-> > causes two problems.
-> > 
-> > Firstly, the container file may not remain pinned, at which point this may
-> > result in a dangling reference in coda_file->f_mapping, and so a
-> > use-after-free in mmap() or lseek().
-> > 
-> > This can happen when you open the same inode across two files, mmap()'ing
-> > in one, which assigns the i_mapping, and open()'ing another, which assigns
-> > that i_mapping to the file's f_mapping, if the cache manager gave the two
-> > files different containers. Each file pins only its own container.
+On Sat, Nov 28, 2026 at 2:15=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.org>=
+ wrote:
+> thinking more sequencing than data structures. I.e. I have a game where
+> I need to end up to process creation without embryonic state, and add
+> just enough weight to kernel to support that outcome, and that leads
+> to ~2K'ish LOC of extra kernel complexity.
 
-Coda uses open-close consistency, so between the first open and the last
-close the cache manager does not make any changes to the cached copy, so
-every open is guaranteed to get the exact same container file.
+So you don't have embryonic state? I don't like this.
 
-Now that happens to be the Coda cache manager, I guess changes that
-would enforce this at the kernel module level can be useful, but
-dropping f_mapping, I think will break mmap for us.
+Let's assume the following situation. Userland's PID 1 is already running.
+Our container manager attempts to spawn yet another process into userland.
+As well as I understand, it should do clone3 with CLONE_INTO_USERLAND,
+and then execve.
+This creates time hole when there is process, which already runs inside
+userland (i. e. its PID namespace and other namespaces), but runs
+container manager's binary and have container manager's mm.
+This invites for bugs. Other processes, which already run inside userland,
+may somehow take advantage of this.
+For example, see section "CVE-2019-5736 Is a Very Very Very Bad
+Privilege Escalation to Host Root"
+of https://brauner.io/2019/02/12/privileged-containers.html .
+So, here I like embryos.
 
-> Yeah, I hit this while getting
-> tools/testing/selftests/mm/memory-failure.c to work on all Linux
-> filesystems.
-
-Did you test this without the actual Coda userspace? What was the
-cache consistency model your userspace was using?
-
-Jan
+--=20
+Askar Safin
 
