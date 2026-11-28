@@ -1,136 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D96606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 09:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BC2606A31F
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 09:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Axay4iNP
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bQaEGDjV
 Received: by kanga.kvack.org (Postfix)
-	id AFC2C6B05B0; Sat, 28 Nov 2026 04:14:41 -0500 (EST)
+	id DE6036B05B2; Sat, 28 Nov 2026 04:15:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD48E6B05B1; Sat, 28 Nov 2026 04:14:41 -0500 (EST)
+	id DBCEC6B05B3; Sat, 28 Nov 2026 04:15:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EA6D6B05B2; Sat, 28 Nov 2026 04:14:41 -0500 (EST)
+	id CF93F6B05B4; Sat, 28 Nov 2026 04:15:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2626C6B05B0
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 04:14:41 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99B1DA046C
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 09:14:40 +0000 (UTC)
-X-FDA: 85483967520.15.9BA9B85
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 776961A0009
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 09:14:38 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Axay4iNP;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A9CF96B05B2
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 04:15:36 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 434201A0602
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 09:15:36 +0000 (UTC)
+X-FDA: 85483969872.17.CEF8462
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A9CAC10000C
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 09:15:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bQaEGDjV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of devnull+dickson.wu.certik.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+dickson.wu.certik.com@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795857278;
-	b=6Z25iw9+ELS4ITm8Xgs0zT5HGQ6w2DjgVnnrWNBs4IPTeQiH3OoeIqk947s7C0gnHH7Cus
-	AjI0F1/bN53qQD+MGjE9zLqwlMJdvv6hKjHqLtOHefyiss7sZxUmjCc6mcm5hYqiPgl5M0
-	hhi+RqPzM4GROEHY5f3P5tfKntD7hUc=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795857278;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795857334;
+	b=uVN8xI/Zer5uJeYR8ftrzPviAkf67PLr+jBsLGD+0+irPcliIeKY5WYvli/3ho3QFG+ZVI
+	YLO3cfZl8MYL0ZeQijaqRJ2q+C6iqiNcDhGXb1jMrGrayzY0507hxFz/gsPowTLjztsQX3
+	2s82yRobYBf7Ky42S5F/uGBjUMdvwbg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795857334;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VsKb42s+5bHM1ZoiF6LkiA4s6kGoq5BsrJdery40LXw=;
-	b=SuSN6viRONOy4+WYqx6Q8RiACS+ELLNWkurDS27BEO7NxO/S30BTAJaCKpyGzR1G8mO2Tm
-	At50tM1YnGOK4zRcYBFw+t1GzjLxeu98rEKMxDiWGNMUDhjuFlywaothZ1Yn1YOUA4ikbY
-	AlTLsx+d2v7/lglzhALe8rUZSsFxZ+Q=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Axay4iNP;
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2LkjI5OfW/AcnfuRn8Nh+CH9bv/zi8GddO0OWp2WwlM=;
+	b=ktH9WI4LcbBu3TD7aXIOnFjUhaxecV7STPb9D3PvqusmSNlYWOI/qz+GDj0By5zg6k+Ikj
+	ft4OSQjfBfsFRIojILU7qqirL5YugY19gQa45jKuahrikIHXaM8Ea3p046i3/5tNwtGlz2
+	TY5mxsAxQgHyyW6jYskx+WQ+uUxJ+ZQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bQaEGDjV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of devnull+dickson.wu.certik.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+dickson.wu.certik.com@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CB3741FD1;
-	Sat, 28 Nov 2026 09:14:37 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795857277;
-	b=qaOXyFuJPZuXjaVYk/Uu+QkFbQxY8Q3n9yTQMW3yOw1ig0bMwwlPPK0srj59pcHd+Jfg
-	 Yf84Q2sTUDmu4J5et0ChV9hKYVOCj4m9GbxE5742jxYCu0reua3aXIdf8e++olpy3Fey8
-	 JgVFi0/QIw3MXTS1eHgbv0OIQCe13fxh8bDygGLngpiMvx3rdZj/1ElWb3HmRvZRym6+Y
-	 d1ZtSEeGwJWCXJ53trKpN7zefZZ7h4ghABIFSzZSm12pOzo3+wHfCg4LXEK7Ey2iwuJOY
-	 pldiCUm5xRIi2EQs4z8iPIqJQsqR7TUF77lEVa+iiIK2k+Qgun+dNPoRFvOqa5FflJg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795857277;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=VsKb42s+5bHM1ZoiF6LkiA4s6kGoq5BsrJdery40LXw=;
-	b=G2TY0fJfx4hJbj+j7ejAWjNi+i5oJvbMHyS0JoLWZEesyXLX2C4E+Fx+bpFyFrYzwkSY
-	 HNokMVXgbyOU/K+6VHIPKLBktRF3a71IckXpubuHgDaTWD2qq/DVwIoML5sP3ectNB7Xd
-	 7zxoJ0wWPxBqLZEvi2iHM3muPXpgWb42m85zfC8pkhyat1EgS0cLof5TXowSStiVkBV21
-	 pQpqpr1gKpMVl2D8yvmggZ6+DzAm8wtEiwdld3t8zi/CeW2q5dyq771QorqzLzzhSEt4C
-	 d4dkDdFe7nOlOi+tufkTIXLfEEEv8MP4GX/IRujdsOpwuO0ims6C630HtJrxuAP3A/Q==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B55D41F00893;
-	Sat, 28 Nov 2026 09:14:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D19C60CF9;
+	Sat, 28 Nov 2026 09:15:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96751F000C1;
+	Sat, 28 Nov 2026 09:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795857277;
-	bh=VsKb42s+5bHM1ZoiF6LkiA4s6kGoq5BsrJdery40LXw=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=Axay4iNPeNa7xU3OrkMFrTVQlSehKSYj7jNKxVjy/uyhb3UiHHEnLIPTp7QFIo3s0
-	 3ryPMFUTk7JrItr4tkQdU3QbNjjQ5ULQO7x4u0Wh7BUeaK7DX1GovKxBf5OPl5DlJK
-	 J6vV8FNMZxIkv49hRct56Yz8rBPuyba04+1E9pzOE308oih+9ggVEwVMlzxkMKtSsg
-	 QmG3irvH9V4HryLjsCq6Ph4LyMyz4UYEjZ3Tlk2cEndNsGG16dyeAnh6+qCUOp3aio
-	 LVhR3oHKNNJsLIuJUa4bOEZo2lTK4j8hAk8xdjRoeqEiWwHeTKAuHUX0Dch0l9WK7H
-	 gJKWVxj8Ynwcg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 4AA184E05B;
-	Sat, 28 Nov 2026 09:14:36 +0000 (UTC)
-From: Dickson Wu via B4 Relay <devnull+dickson.wu.certik.com@kernel.org>
-Date: Sat, 28 Nov 2026 09:12:21 +0000
-Subject: [PATCH 6.6.y] mm: list_lru: fix UAF for memory cgroup
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261128-listlru-66b-v1-1-38119b440740@certik.com>
-X-B4-Tracking: v=1; b=H4sIAPSaCmsC/02NwQ7CIBBEf6XZs1uFCDH+ivEAdLEYAoalRtP03
- wW9eJyXmTcrMJVADOdhhULPwCGnFsRuADebdCMMU8sgD1ILIU8YA9dYFtTa4tEraaVSznmCtng
- U8uH1tV1Aj3p8w/WHebF3crWbetEaJrTFJDd3xJSmmnPEzvd/D7BtH2+euYmiAAAA
-X-Change-ID: 20261128-listlru-66b-4f52b255ccfe
-To: stable@vger.kernel.org
-Cc: Muchun Song <muchun.song@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka <vbabka@suse.cz>, 
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795857140; l=3786;
- i=dickson.wu@certik.com; s=dickson-b4; h=from:subject:message-id;
- bh=POu2beyDobF+0phd+hiYwzwZCt9DRStto5gd3AQtySg=;
- b=mlGUL6TzOy4lzlVmeugaep9HuL/M5Krv56k/4wQTf+FCHY77yp8viURAqToN7Ofyk8c7+RRov
- gtF7vaL5er6CAsoxmGSYZAbH2VtVd/aWo8uOSXe6A5g6EJkzWLWiy4D
-X-Developer-Key: i=dickson.wu@certik.com; a=ed25519;
- pk=fxH7FS4FdojeJSGLJzgKdfO51Rvr4EW30yinj2mc1vg=
-X-Endpoint-Received: by B4 Relay for dickson.wu@certik.com/dickson-b4 with
- auth_id=1647
-X-Original-From: Dickson Wu <dickson.wu@certik.com>
-Reply-To: dickson.wu@certik.com
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 776961A0009
+	s=k20260515; t=1795857333;
+	bh=2LkjI5OfW/AcnfuRn8Nh+CH9bv/zi8GddO0OWp2WwlM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bQaEGDjVXgLY77DJDFcKNY6FEKrR1bVERqqddKt7HtsuA4KC/iCBZvMyUWzVqlFPL
+	 vfnd/Et8FVdpHlL2oQO7cinUfOl5L9dQPaAjT7zP9bThjrYQO3FLRt1+LchiSZamNa
+	 FxK7GCV+JKe6gc2ZU7pmL6kr1TbX+mPiLcuYWH4ojcBqWej50iKuGTZe0bsdKpqRQN
+	 41cDsYuYo0hQOXc7hGcX3WP6lEpk+0zyclz6CQaAMH5keye+rK8ydGRo2VkbsG81Sp
+	 E9jF0eLCex2SJhAdYaoPBwzt88y/eUkIQBabnflUwnQLi+Xm52O1/kYd25ln8ImdMb
+	 vAuni7F5jYosg==
+Message-ID: <sashiko-outbox-238578@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v10 7/8] of: reserved_mem: mark /reserved-memory entries
+ with MEMBLOCK_NODUMP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Wandun Chen" <chenwandun1@gmail.com>, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, robh@kernel.org, baoquan.he@linux.dev, rppt@kernel.org, m.szyprowski@samsung.com
+Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, chenhuacai@kernel.org, kernel@xen0n.name, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, saravanak@kernel.org, akpm@linux-foundation.org, pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev, robin.murphy@arm.com, ruanjinjie@huawei.com, devicetree@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, conor+dt@kernel.org
+In-Reply-To: <20261127090723.741253-8-chenwandun1@gmail.com>
+References: <20261127090723.741253-1-chenwandun1@gmail.com>
+ <20261127090723.741253-8-chenwandun1@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 28 Nov 2026 09:15:31 +0000
+X-Stat-Signature: iprdg6rq4ykpzs3dftnindiicyf35mg6
+X-Rspamd-Queue-Id: A9CAC10000C
+X-Rspamd-Server: rspam06
 X-Rspam-User:
-X-Stat-Signature: wrkhx33e4pjk1rj7xo18u14b6r7sykup
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795857278-816369
-X-HE-Meta: U2FsdGVkX18w1Vi5KR76V92HqJUYnbcGhRz/lCeal1/QN5bJp+BPJUUw5QduOCXHyEZQ0D1e4j4Yg3bMlWp4jYVPfyOtSjVmMHDGG1rfBiCGPQZ1JlUnOXC5TtFj/mvknpsRAeNxaIZX9H8GyMdmYm2+UZlXdTqyOoJs2QkKS+sTrNt9xmR5PDH31ojKwf62KAmkv8qzgms7oxNLNdVaRXURvC+/i4zhwGTbCx19gJUnHahCd2rxCfPbZDSTRDCT2DBn8ktb/XDhH7D03OHuH6OWTVw0qqI2/d9GuZGsJKXZOGvtJtAyMvfFZSbEdgzpysTctzgihHgzAbKpy24whcMSJMwivf3efpNYBglNWbTM5bm89E75gV36fHmboqLQZa4+Fj1zVCdi9eER2l6/L5/5WuZAZsYRI3tew4HuNdnUIqyK6Dwo1TNwecLKeoqxkdGBbJMF2+EZXN+c7FCcbLQ0qFLcyMHVNVvuFpiVAheT4l9s7vUjg1G2/N1W9vCFO6uQsJ9U1e/63WE0dVRxQjF6+qq+Mgalu7g8W6s/Fq6qyFaIAu0jrn93SidQsRttYPJ4ASjMBIlwt4n8mJGM+iwK65U9GHkdSfzylLzjp6Zoc/q2eQ7m3MIVFPY5VG3QhnFhVflii9Snm3/lXt8F9RwrDzKlieysIeDf55yCTRE65lgDJIof7as4J5RlUBgNa7uKUlGbvOgyFY+RB69iHYuaQXZFAFCYBZN1LjbA41l/MQ0vHMyCvILrXjmmdP2WNDxBWU034aJpXYJflAxcDzrOuwvSi6wcY2qrzdCVjAYmw9W14xyWH/j01zTXuxtw0nFry1kP7EEddPBdrMw7CNasU2wIqNf1BsWBBEwJ1mwddfRRrLR+HVjRzkc9NMtROoQGSM5Ww/QysuJyqTNunoc9k/Seiqn5oytIMSUxtTRJnIENRGVo/FsYSVARCXrrqVo4saAeKa3dO0HQboi
- 6bzUaQea
- qvPhBL4dilbVYkdZfjhI7SaUrSOhfMMrJptQ9dlC5TOG6s+F930qckM6JCVoPlqHQxcTHUROqHaaLAVFsK28jPjiAZ+VJsko4MOt4E+7sOYvmOlgDkOITqZAwhYtLSrWmampxmVdFpkJXStlUY34uFsrlhvclQ89yB9n8CZcCdJ1VklbHaphX/U5/fZ6XeuQKpx20k5wPiZNwoxn/lV+Xu55QWKe57Yfy8zYDz+CVOdGtoMAh6q4L9Q18guszqOvauYMFj1T4U35K8PvSezQMXGx1/QsuDnf4xnwEh5wpo2r6wCh1CqU6jyXWRbx1jO/NbiCAhZ6bif29WxJmZ32icpO6+ps1YLPJVqKPtHFsKDgawKkpe8Sk3j842DcgY38eOxPj8/ntDpDc+MKNdAX9FdC9YLMow+mlVEW2/xCfKmkTdJ8boD1ur2oBhcTJeZrt+pGqG70oxJ/5or7i0ooyOqX+YB/zQbUOPTkNnPwIxgqcyWyHcv0tKIg29XH4WXNMJuVD0OKOyOonC+AOTFRgRLmvbGYZ/b6dlZUeUwS109THCr7k2bwsNpPOhoN5VFcSojxMRwHiXTxJOgjsNsUZg4Gsa8iBBw1r4hW8PjkGLm5Y2FxRbu41ZxwjmZL6h+cFl2PAduUWI97ks/i1txB0LieTHBdHarslQ5uuLgM5MfmKM9yevAbj7RJdjbPspV2FgEuDEldR6zUsscmt/M7yVurA1wPKGgE6D+dqoplaVaTWu+QeHzMA8q5jKG92TSiFXzWLa8M4YIiFkL2V0+sRELWs/q38/Md8mGu9k2SetGMiSh8uCKtE90H8HyJ5CTHYNgAuJx6EEWyBcxfI4SFDw9Y8MhM2FPYCnXcRwLMm1Vh9AIO67pBaoPVAbkmwyIfO7Ii9KcJIO1RRLO8D2yMTFF7VJoRSjrEpHN+OB+F9tifyxhr1StMBDztO9/xEtDK4YcIeEJKL6VYqJab3iyocaw5X9UBM
- mxHKFLuj
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1795857334-28464
+X-HE-Meta: U2FsdGVkX18FJeyZ/qmMxC0M+UOzAMXoSj6IFm03Ptyw+4Q+BgrLEZrujMUvyJIxZQw1Axc5uQciQwUT+iBSL6PEn8z8aTx4oTmJUUOHwD2scxfxAR+7uDw2GF4GrsfXOaPlxfWXqn3X8NKAdvqd+n3fqI0k5+s0M07vaAnzXiIggay+V/2vAgNBQJHomc84rFFGWwtH6dgg0ug0v1w6yjQq1oQO6d05iCWZN1kBcNXrpMZJmc9nAkUsAskVCtI17pj1zOxY177BEN+3KjbSKE6eBHSKWaPWfQ6/IcVBpkRL8/8KVT9NThnaF8NidTnH2ndlJxC9tqXs9Bh6GQOKewQcOWhc1s2117OC/ZwZiKGkLvuUWXkVE/J6RcBCD9oJW8CQE/IYd/YAmip95/tZZressuTVLuons4Or+XM1iwDbolHsWOm1LFIT11JnAxyvNEa6En/bcx5VED0RaJJ1Fm36vSoooVjBYS+pcinIHjJo9NgkAfHZsAk+04S39FmEvdHMLwbtjqPZFRPOV6mTEObIIY4ptrDtMsS6sCFKMJN2lLoiW6R/3ZcnGkyaeyDtRj/j31jwjyOVtWpQ9cyJ/Eue46m08y8evgKywmaSHXH+cuwipdzHJEBOgUY95uOnsmZiKC4qLQZWvNH88/NE7ZWe9SF8TwqmSqycpMLTqmaGPTZoMnOpiQ3KbHVhBp9mITW2BCTVt5yuO+OK4aVvc/p8/7hoNbMDq8GSdQgWXEmVQh2sgIAzY9o8ZPPBzqZKVKQb6deUaVOT5kynhJmOk08ULVVhpGuhUqB21u361fLvjpS/A4IOcQJYarVk+Y8Bx2AtQGJcH8LdMBnBkAh9iQyZgAd5/C999WvzwniTlaqsIEZR3cASb4ESzimwELm5rF/fHchdVoPITr6nh3AwU87FtgHo4msnmhEYUgnYrtwk5lvUP4qOTKcf8gUedRkTM0tGtzCBh8O43vys/o8
+ UuW0y1fQ
+ isr2VfJaNf0fa/npN//x5ULxNs2ZjD6fGi3dCjulVjJicujuL9dDvRFZcENqs5M7s9rQ7J5fYBJyxqyC/EuqkjGjBW3wyaDxiftib/mDB/0DRMLyT68ET4ctlG4JRSP2HBIAoSNVAfT1Hg6KUN+zms2Tfb6TbZGuQviWB+YVc+OXyatRdTYWPG64F31RqZ6m9J9UThOhvQcVWl0tag8xfNYWp+A0aa8UA0FIbsfOii3qvCruntINVI9tu3TaQ0r8efOju0CrFNErDbewuxyL+UFydwJTUZFSjSw6DbzMgbv/vf6Tw1h8WOGC+8cB46dA5V22jlEicFrZWu5tyQfTnQOq37KhjSObh/FcspwZdfrqIzkOt0gdrv351nwK6ofn1fjtRi8CyCoLzaGend43G0MHXoCe/7Pmy+gERzxfOhG1ibTp4Y5q4Jv30E888Ka8//43O47MhdBUSbJr3stpogUUH67otZm+BCClc7LhUwUDlLZIuOHot510PQzEpqdWEM/EqGdubgCnsx/ObXJ8SGyOGkOK0xww0znkIH9f49f78ep7zkB8LmJh1AmP4HSF6qGAKQDpuvO668E7yF5rUe9jWBrrxC6jkr0Wje3Uwk53RdnKRFximCFeJSwC3pdbhM45Yx5PqSQx6FYUrgtPGfLJ4PTK9Zgh7r5sedKFIPB3Cx2HUx3t86DzHKt676D/djSAxuvXNzqM3gQLsdoCUvb8uw4LY16TlEW0E7paidKgXMjU7MsDmvq6vOC2gTHTYZ7K94UkpErGVp1412OWAALWwDLUd2YNCgMdZ+7jRdVRJgSwxY1bqA/W4qg+ZKd55ZzrUdf0tOwBz6Lp8UsUFDEeA0CHM0890ANmpfLnM5pyNneWGeACgSyTvzly4umIZEcU4eFdKEuqWoBgO1SJ24IX5IhB5fNRbsTH1zqJcI+4OOKXALlKMVsDoiv2Qr0KTGLmnHnqQrmZw89pQuG6LlXBXwVXK
+ /GVOZe9E
+ BVsgOXS/S/DiiU5YlCTGFgF1BPoviFrNExUTrAb0h45BGrFhL9RNmTcRAeJl7bkvWv1L0EIOWMA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,116 +94,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: Muchun Song <songmuchun@bytedance.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] of: reserved_mem: sub-page memblock split in
+  fdt_mark_reserve_mem_nodump()
+- [Medium] of: reserved_mem: early nodump split in
+  unflatten_device_tree() before kasan
+--
 
-commit 5161b48712dcd08ec427c450399d4d1483e21dea upstream.
+commit 47a5a6000f1f57782ed8a71e5ff4a13ee231c6bd
+Author: Wandun Chen <chenwandun@lixiang.com>
 
-The mem_cgroup_from_slab_obj() is supposed to be called under rcu lock or
-cgroup_mutex or others which could prevent returned memcg from being
-freed.  Fix it by adding missing rcu read lock.
+of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
 
-Found by code inspection.
+This commit adds fdt_mark_reserve_mem_nodump() and calls it from
+unflatten_device_tree() to mark page-clamped non-dumpable
+/reserved-memory regions with MEMBLOCK_NODUMP.
 
-[songmuchun@bytedance.com: only grab rcu lock when necessary, per Vlastimil]
-  Link: https://lkml.kernel.org/r/20240801024603.1865-1-songmuchun@bytedance.com
-Link: https://lkml.kernel.org/r/20240718083607.42068-1-songmuchun@bytedance.com
-Fixes: 0a97c01cd20b ("list_lru: allow explicit memcg and NUMA node selection")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Dickson Wu <dickson.wu@certik.com>
----
-6.6.y picked up the code this fixes later than the other branches:
-0a97c01cd20b came to 6.6.y as 32d7120a499d in 6.6.160, but this
-follow-up didn't come with it, so 6.6 has the unprotected
-mem_cgroup_from_slab_obj() calls in list_lru_add_obj() and
-list_lru_del_obj(). It applies cleanly.
+Link: https://sashiko.dev/#/message/sashiko-outbox-181183@kernel.org [1]
 
-Tested on 6.6.163: allmodconfig W=1 build of mm/list_lru.o, base vs
-patched, no new warnings. Both kernels booted under QEMU from an ext4
-root and passed all six cgroup test_kmem selftests, including the
-memcg deletion case. I didn't hit the race itself.
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index a58efdcbac7f1..f3a766310d119 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -1283,6 +1283,8 @@ void __init unflatten_device_tree(void)
+>  {
+>  	void *fdt =3D initial_boot_params;
+> =20
+> +	fdt_mark_reserve_mem_nodump();
+> +
+>  	/* Populate an empty root node when bootloader doesn't provide one */
+>  	if (!fdt) {
+>  		fdt =3D (void *) __dtb_empty_root_begin;
 
-The backport and the test runs were prepared with AI coding tools
-(OpenAI Codex agents, with review by Claude). I went over the result
-before signing off.
----
- mm/list_lru.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+[Severity: Medium]
+Does calling fdt_mark_reserve_mem_nodump() in unflatten_device_tree()
+split memblock.memory too early for kasan_init() and kvm_hyp_reserve()?
 
-diff --git a/mm/list_lru.c b/mm/list_lru.c
-index fcca67ac26ec..e362a956bf8f 100644
---- a/mm/list_lru.c
-+++ b/mm/list_lru.c
-@@ -116,6 +116,7 @@ list_lru_from_kmem(struct list_lru *lru, int nid, void *ptr,
- }
- #endif /* CONFIG_MEMCG_KMEM */
- 
-+/* The caller must ensure the memcg lifetime. */
- bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
- 		    struct mem_cgroup *memcg)
- {
-@@ -140,14 +141,22 @@ EXPORT_SYMBOL_GPL(list_lru_add);
- 
- bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
- {
-+	bool ret;
- 	int nid = page_to_nid(virt_to_page(item));
--	struct mem_cgroup *memcg = list_lru_memcg_aware(lru) ?
--		mem_cgroup_from_slab_obj(item) : NULL;
- 
--	return list_lru_add(lru, item, nid, memcg);
-+	if (list_lru_memcg_aware(lru)) {
-+		rcu_read_lock();
-+		ret = list_lru_add(lru, item, nid, mem_cgroup_from_slab_obj(item));
-+		rcu_read_unlock();
-+	} else {
-+		ret = list_lru_add(lru, item, nid, NULL);
-+	}
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(list_lru_add_obj);
- 
-+/* The caller must ensure the memcg lifetime. */
- bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
- 		    struct mem_cgroup *memcg)
- {
-@@ -170,11 +179,18 @@ EXPORT_SYMBOL_GPL(list_lru_del);
- 
- bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
- {
-+	bool ret;
- 	int nid = page_to_nid(virt_to_page(item));
--	struct mem_cgroup *memcg = list_lru_memcg_aware(lru) ?
--		mem_cgroup_from_slab_obj(item) : NULL;
- 
--	return list_lru_del(lru, item, nid, memcg);
-+	if (list_lru_memcg_aware(lru)) {
-+		rcu_read_lock();
-+		ret = list_lru_del(lru, item, nid, mem_cgroup_from_slab_obj(item));
-+		rcu_read_unlock();
-+	} else {
-+		ret = list_lru_del(lru, item, nid, NULL);
-+	}
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(list_lru_del_obj);
- 
+Mapped (!no-map) reserved-memory regions were previously only recorded in
+memblock.reserved, keeping memblock.memory contiguous.  Splitting
+memblock.memory with MEMBLOCK_NODUMP at PAGE_SIZE boundaries before the
+rest of setup_arch() causes for_each_mem_range() and
+for_each_mem_region() to iterate over the split ranges separately.
 
----
-base-commit: e2bb30811e063ce0db964484357973b855b06572
-change-id: 20261128-listlru-66b-4f52b255ccfe
+On arm64 and loongarch, when a mapped non-dumpable region boundary is
+PAGE_SIZE-aligned but not aligned to PAGE_SIZE << KASAN_SHADOW_SCALE_SHIFT
+(e.g. 32 KiB or 64 KiB on 4 KiB pages), the two adjacent regions share a
+KASAN shadow page.  Because kasan_pte_populate() checks pte_none() only in
+its do-while loop condition after the first iteration, the second region
+allocates a duplicate shadow page, overwrites the PTE, and leaks the first
+page:
 
-Best regards,
---  
-Dickson Wu <dickson.wu@certik.com>
+arch/arm64/mm/kasan_init.c:kasan_pte_populate() {
+    ...
+	do {
+		phys_addr_t page_phys =3D early ?
+				__pa_symbol(kasan_early_shadow_page)
+					: kasan_alloc_raw_page(node);
+		if (!early)
+			memset(__va(page_phys), KASAN_SHADOW_INIT, PAGE_SIZE);
+		next =3D addr + PAGE_SIZE;
+		__set_pte(ptep, pfn_pte(__phys_to_pfn(page_phys), PAGE_KERNEL));
+	} while (ptep++, addr =3D next, addr !=3D end && pte_none(__ptep_get(ptep)=
+));
+}
 
+On riscv, splitting 16 MiB physical ranges before kasan_init() prevents
+kasan_populate_pmd() from mapping a full 2 MiB shadow PMD, falling back to
+4 KiB PTEs.  On arm64 with pKVM, splitting memblock.memory before
+bootmem_init() -> kvm_hyp_reserve() consumes extra slots in the fixed
+128-entry hyp_memory[] array and increases per-region hypervisor
+page-table and vmemmap reservations.
 
+[ ... ]
+
+> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+> index a5cd8c2fffc35..cef444d4c1a38 100644
+> --- a/drivers/of/of_reserved_mem.c
+> +++ b/drivers/of/of_reserved_mem.c
+> @@ -610,6 +610,36 @@ static void __init fdt_init_reserved_mem_node(unsign=
+ed long node, const char *un
+>  	reserved_mem_count++;
+>  }
+> =20
+> +void __init fdt_mark_reserve_mem_nodump(void)
+> +{
+> +	struct reserved_mem *rmem;
+> +	int i;
+> +
+> +	if (!IS_ENABLED(CONFIG_CRASH_DUMP))
+> +		return;
+> +
+> +	if (!IS_ENABLED(CONFIG_KEXEC_FILE) && !IS_ENABLED(CONFIG_CRASH_HOTPLUG))
+> +		return;
+> +
+> +	if (reserved_mem_reserve_failed)
+> +		return;
+> +
+> +	for (i =3D 0; i < reserved_mem_count; i++) {
+> +		phys_addr_t base, end;
+> +
+> +		rmem =3D &reserved_mem[i];
+> +		if (!rmem->size || rmem->dumpable)
+> +			continue;
+> +
+> +		base =3D round_up(rmem->base, PAGE_SIZE);
+> +		end =3D round_down(rmem->base + rmem->size, PAGE_SIZE);
+> +		if (base >=3D end)
+> +			continue;
+> +
+> +		memblock_mark_nodump(base, end - base);
+> +	}
+> +}
+
+[Severity: High]
+Can clamping each region to PAGE_SIZE here leave sub-page fragments in
+memblock.memory when a no-map region or an adjacent region is not
+page-aligned?
+
+During fdt_scan_reserved_mem(), no-map regions are marked with
+MEMBLOCK_NOMAP in memblock.memory at byte granularity (for example,
+cont_splash_mem in arch/arm64/boot/dts/exynos/exynos2200-g0s.dts has size
+0x9a3f80, and 4 KiB-aligned no-map regions are unaligned under 16 KiB or
+64 KiB PAGE_SIZE).  Because fdt_mark_reserve_mem_nodump() does not skip
+MEMBLOCK_NOMAP regions, calling memblock_mark_nodump(base, end - base) on
+the page-clamped interior range gives [base, end) flags
+MEMBLOCK_NOMAP | MEMBLOCK_NODUMP while leaving the unaligned head
+[rmem->base, base) and tail [end, rmem->base + rmem->size) as sub-page
+regions with only MEMBLOCK_NOMAP.
+
+Similarly, if a mapped non-dumpable region abuts an unaligned no-map
+region, clamping inward to PAGE_SIZE leaves a sub-page MEMBLOCK_NONE
+fragment between the two regions; and if two adjacent non-dumpable regions
+meet at a sub-page boundary, clamping each entry before coalescing leaves
+their shared page unmarked.
+
+On riscv, init_resources() converts every memblock.memory region
+(including MEMBLOCK_NOMAP) using PFN_UP for start and PFN_DOWN - 1 for
+end:
+
+arch/riscv/kernel/setup.c:init_resources() {
+    ...
+	for_each_mem_region(region) {
+		res =3D &mem_res[res_idx--];
+		non_resv_res++;
+
+		if (unlikely(memblock_is_nomap(region))) {
+			res->name =3D "Reserved";
+			res->flags =3D IORESOURCE_MEM | IORESOURCE_EXCLUSIVE;
+		} else {
+			res->name =3D "System RAM";
+			res->flags =3D IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
+		}
+
+		res->start =3D __pfn_to_phys(memblock_region_memory_base_pfn(region));
+		res->end =3D __pfn_to_phys(memblock_region_memory_end_pfn(region)) - 1;
+
+		ret =3D add_resource(&iomem_resource, res);
+		if (ret < 0)
+			goto error;
+	}
+    ...
+}
+
+Any sub-page fragment produces res->start > res->end, which fails
+add_resource() and tears down iomem_resource.  On arm64 and loongarch, a
+sub-page MEMBLOCK_NONE fragment likewise produces res->start > res->end in
+request_standard_resources() / resource_init(), and an unaligned no-map
+region split by MEMBLOCK_NODUMP is broken into multiple reserved entries
+in /proc/iomem.
+
+Since crash_should_skip_region() already skips MEMBLOCK_NOMAP regions,
+skipping no-map entries and coalescing adjacent non-dumpable ranges before
+clamping to page boundaries would avoid creating sub-page MEMBLOCK_NOMAP
+splits and unmarked shared pages.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127090723.7412=
+53-1-chenwandun1@gmail.com?part=3D7
 
