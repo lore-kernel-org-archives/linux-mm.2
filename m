@@ -1,112 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4C8606A334
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 11:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CEA606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 12:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dX/0MpPr
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Vtft9r7o
 Received: by kanga.kvack.org (Postfix)
-	id CE7566B05B0; Sat, 28 Nov 2026 06:26:17 -0500 (EST)
+	id A3CC36B05B0; Sat, 28 Nov 2026 07:09:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C983A6B05B1; Sat, 28 Nov 2026 06:26:17 -0500 (EST)
+	id 9EE6C6B05B1; Sat, 28 Nov 2026 07:09:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAD666B05B2; Sat, 28 Nov 2026 06:26:17 -0500 (EST)
+	id 8B6616B05B2; Sat, 28 Nov 2026 07:09:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 477B86B05B0
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:26:17 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86F21140625
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 11:26:16 +0000 (UTC)
-X-FDA: 85484299152.22.0DBAF33
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E5DE820008
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 11:26:14 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dX/0MpPr";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5D0F06B05B0
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 07:09:34 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2877A8250
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 12:09:33 +0000 (UTC)
+X-FDA: 85484408226.17.614B79C
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3C45918000C
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 12:09:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Vtft9r7o;
+	spf=pass (imf24.hostedemail.com: domain of pocj8ur4in@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=pocj8ur4in@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795865175;
-	b=X0u8hUqXCHN3+Fqrqjoan6fnX08WSzNxRrQZoaDHPhcJgLMsyV9n5GXpBORNJO2QO7FN7A
-	OnG4TVGA9lDBhqjuuQf52aDPdUZcsvEQ5c6rXH++iJe/3nvEAOkibT1ZCnEL7hy2NhMQRO
-	5kRMW1Hdr165eb29e+UZADgNHcu9uNU=
+	t=1795867772;
+	b=4sXj9rEKmJ6ARK54/tMG35ngDq7NbGtAakThoOFwbr/AFmKLrQEdq41GZrAKgSaYJbXO0l
+	mhxXd58iC+Ed9ys3zDizUoTPdi+A2iNUT2JjmiIhR4qtNnkpk4y1oSzckVjK5zj5utHZuc
+	gztMISVi//T2zUQEqkK3/I8soVqbMdk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795865175;
+	s=arc-20220608; t=1795867772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KleLQMep/ikw4l22dunyzk0OW7JrxNRSqCmyhew0bn8=;
-	b=Kw+e+sYDiX2BVyW1wHEcw7cAyZFGyRT9VrD9rW2CCL0PSOKHQcUQIjqLuU+yaqSwIa512Q
-	iHP/LV1h0jPDm1fjBTZTd/LmRxTuNUHs2BAD8VvDiCb1t56ZPMxmd1n5QvJMb4s9cNSR5E
-	E49k6N/RA85oY072LGl/IIFBS6ZtFh0=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=8Jiv9ZXJd4/e6+6mw3fXtRxAM/JyvESKbOC/jJ1aZtE=;
+	b=uVbTnwagnjtq1U6TZH7dJWfFDV/iEqipANX/ckdR+hu/9ERpQKs6tu35CW4EkrFd9iYaDY
+	+sNa6RGdz4DaQZBHfmqlnwVi+N4FPgXZ2YkbfzzLnaHIW7hFimLL9OlaTvmD+Jbkc0/6v6
+	M4VvMUQFkHvgQ+6R8Irehm35CRuXGWc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dX/0MpPr";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id A56426128D;
-	Sat, 28 Nov 2026 11:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A14C91F00919;
-	Sat, 28 Nov 2026 11:26:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795865173;
-	bh=KleLQMep/ikw4l22dunyzk0OW7JrxNRSqCmyhew0bn8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dX/0MpPrnSdz78o1T/PxNhqtu2r3DoNwoRBz44tLf+5obQ2HIKuWyBogTE8yATYqf
-	 PvZtAEUPlcWWrh2QsYKHgbBNx6hLM+Hh5XJj0jv4NrO9VatW2715WZ/uJn/UtDk9nL
-	 cvKzyN4a+Zurt0NbdZAmGX76PtVIJ8SpBplJixw5SgRT3Wb2qrH1bB4aam3uvF1Ci6
-	 lV4+C1VUq/6GLaxJqQNibuoOTI+GbCeEz1fkXsauRv6zUnfa0tQODeQbqJ47LyziJf
-	 PACLGJbeUdbkeO02ICL/RvuHPM1bJuGKz59wWd1d7YEBiCg5aHftwtHeolG7KBnl1O
-	 +66cHW3diWvDQ==
-Date: Sat, 28 Nov 2026 13:26:09 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Askar Safin <safinaskar@gmail.com>
-Cc: aleksa@amutable.com, alex@amutable.com, alexei.starovoitov@gmail.com,
-	arnd@arndb.de, bpf@vger.kernel.org, brauner@kernel.org,
-	containers@lists.linux.dev, corbet@lwn.net, dhowells@redhat.com,
-	ebiggers@kernel.org, giuseppe@scrivano.org, hughd@google.com,
-	jack@suse.cz, jlayton@kernel.org, josef@toxicpanda.com,
-	kees@kernel.org, kpsingh@kernel.org, lennart@poettering.net,
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	luto@amacapital.net, neal@gompa.dev, oleg@redhat.com,
-	paul@paul-moore.com, ptikhomirov@virtuozzo.com, sergeh@kernel.org,
-	skhan@linuxfoundation.org, viro@zeniv.linux.org.uk,
-	zygmunt.krynicki@canonical.com
-Subject: Re: [RFC PATCH v7 00/26] userland: Userland containers
-Message-ID: <awq6UXILgmgWY3Fn@kernel.org>
-References: <awOQDOel_72Xwjm7@kernel.org>
- <20261127214103.542291-1-safinaskar@gmail.com>
- <awn-ioAuksHNV-Rc@kernel.org>
- <awn_Y7oI4ckfsjSv@kernel.org>
- <awoHex4LVst2JwkO@kernel.org>
- <awoO9R7YF_5_6dHA@kernel.org>
- <CAPnZJGBnFyrmr88OsYkMwtLiR93z4g0NAuoMurcnhcYFXz51jg@mail.gmail.com>
- <awqkft-e6Tbj7dbJ@kernel.org>
- <awqut63HdrL97iu3@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <awqut63HdrL97iu3@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E5DE820008
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Vtft9r7o;
+	spf=pass (imf24.hostedemail.com: domain of pocj8ur4in@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=pocj8ur4in@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1b3a05f8b5bso12328845c88.1
+        for <linux-mm@kvack.org>; Sat, 28 Nov 2026 04:09:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795867771; x=1796472571; darn=kvack.org;
+        h=subject:cc:to:from:message-id:date:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8Jiv9ZXJd4/e6+6mw3fXtRxAM/JyvESKbOC/jJ1aZtE=;
+        b=Vtft9r7ouvjGw03EO4lfJWb/4S/uWCuTPlJbaSbXucM3XXgF5i8K5IpT9YNW36TK42
+         aDzMB8OAJt8XBocIaZkGCgvLJ3NGEoSKJLrleyQKcwoyzZFOMAKF6G293hII/GkZVxsD
+         8so3Ew6VAq0QPIaWhxwNn7sIV+z1j1YUc7Z5vHt64gcujyArObiCyi1gGzEcSgMeAfg9
+         qVc+uD2UfZd+juwR5rITEekoXMU8vrMNqmPT5acGtRz5WhAQK82Ft2QMFul96ZpB9VBF
+         jZwOYQV/wukjL2uGXXF4A3UzndNzsKkjcwLfl3ZkAZi4We8gqKSXJZ9C7yqFTJBjbTBk
+         1lJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795867771; x=1796472571;
+        h=subject:cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8Jiv9ZXJd4/e6+6mw3fXtRxAM/JyvESKbOC/jJ1aZtE=;
+        b=Ui05XT6oLFDsKIc6KfLNzL9g+FVgdWSugAgW4EmCFGVIpzY0VTwP3Ign0SJ7Uf60sH
+         yRH2nvK5Rr1pFAzKoeIn6mRDNXnttsvXseDEH0p+qaBJXVCBEJiqX92Zh9eAaNF35JLS
+         DbwSqJFGGM6imnU7oMe96tgsZq887McdSeHuQxRuhVBA8xTNcsrxonSgFiE8TDZMsAoa
+         tJ8ACg/hMsccL47HbyagpsHcYfHBJTyN3No6S6XamhQarO4/E27PDmEH+3kcbZ5208rJ
+         z5Q5fiY9TFhnPlD51tZm21greVtbsUVZ0RMhWaR6lyNvuYvK++YJk9++0RO9PKlyclUA
+         INBA==
+X-Forwarded-Encrypted: i=1; AL+hErFKIrzEp0p24bIB2715H42YLcsk7R5CErVz+vcnNfCecGFKqONVF6OAztv6QPFrT//XW0FLeCZk0w==@kvack.org
+X-Gm-Message-State: APuU4Z9FHJmlAOEKBTQCla0z6i8nukO/Tz4aJ5VNRN5ZlxEqRxvnpAiU
+	MI5DTnZzJFrsn0PPRcQGPYGKDlo0oViMcE4ZI457PWnyvjVFBnAjKfkd
+X-Gm-Gg: AZFdTZcSyjrbEJN/20WM6UNmbNIl90unKSqaV7dGHmVshRHaopptLgpgrTCl4AzvkPy
+	e/FZ9AMsmLj2wcTOEqnf0hCEKsVmkWmwrObT5gXPSgTk8dmw/J3t6DbynkkPCAaIBC1rCIz9kho
+	ZysTJw/2wp3QLWJ8JU+ichRNPfESS1l7h/NQmazdIX6KsA5CunDdnnmHkKssAjxUkOwIAfXfodQ
+	DwZM7ZGajIna0sJCw6qyWx1VCORlfIca3RpEK5rzyXIwNeTthNxA6TozU8l2jcG+e48az+MIDSL
+	DTuzT9Oq2QYqbLv9HPFJG6bnZufV+wG+OMZFYL2eaYeXvU8Dhnui0dXjGhDwVypbvZMsHBwdpXh
+	wX5x1ysZczP7fCGIgUJ2iy7q52LDYZdxseCFW8HKneRsf5gDiYNfgyPDz4nU9af1H8K5S+I1EX9
+	fkgIjA9IewAtZv3Nf3RKdfayUC1NYX/VMu38f6GPJBYWRwPqPXDpF1+abeg6S/pB8nz8rxti01L
+	nKVPAcLfvcwpCgsfm694ieGUssmvxrqSN9T7AtbmacPkCazBz3E5bQKIBEY3JuC16OE6ARNjjGl
+	2Hipk+fUxfyr/lQ+l6g4pThqfYdjOazLJsE=
+X-Received: by 2002:a05:701b:2901:b0:1b5:5fe5:78d1 with SMTP id a92af1059eb24-1b55fe57b02mr24641685c88.11.1795867770728;
+        Sat, 28 Nov 2026 04:09:30 -0800 (PST)
+Received: from [192.168.45.62] ([218.48.198.193])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b55684c85fsm96587180c88.14.2026.11.28.04.09.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Nov 2026 04:09:30 -0800 (PST)
+Date: Sat, 28 Nov 2026 21:09:28 +0900
+Message-ID: <179586776810.146060.16432032400935006500.c113-v3@gmail.com>
+From: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] mm/secretmem: Keep locked memory accounting until inode eviction
 X-Rspam-User:
-X-Stat-Signature: picphciri3p1g67nn678qubqsdzq95o5
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Rspamd-Queue-Id: 3C45918000C
+X-Stat-Signature: cutxcymm7o9y8ajh34zq963d8rnahscr
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795865174-420234
-X-HE-Meta: U2FsdGVkX18tmjyu2vVAupN5GIlTIMde/yqYJBIGN3rTbGMHy9FD46SqdViSVyTy+PfTtwTH6XaHRAWsiOofDn2q4vf/lCKeM4O/6KydNQck79IySTTTnDsk+JeUBXlxx8RgCDrbAelugRkN8Ow87D7CfNhbTuVhdb7dMFFlcs13vBkdlpd6E4b+6yiAZutcdpn3o35VaWJvgPg1mhxPw6euCc9DkOltbMNIwMwbc47x3fPvKMCz8n50rvvravBsB0DS8QuOqwp1CODAKUK4t8WNxEfwDCp9C1cgIE/3TrOX/of3CAVNnvUWRGI6vZMM2tc+0H9X2p/oL3AL/J/w99Ep6TRzfVBT8tYm6EmW4vWd8cTNzcPOP7N4t96+KAjLbLtFrB4OgZpElI1Slyo9eLNNMUfpEzLjmFqMQnpk2D3LlGbi2qLyCO0JiiF65NODILRb9AMGNTmSVjKZjSYUEQaXbAhdgLYpLBeQa3f8CXSsBwC7FMyCIR5fG/cHBAh42+W0+RblEdHMaArtM2Ei+FlLi6YGtZ5KBVkdLfAMaZ3aEBeEEXfhqL0ZQPXedmmTfR85/9s+RcsCGV7xAPq/nt0qLzmuzy7C2exM/KDSY5dctQ/nXfJTccKEhvdjCAAzEcUUEBo0wDod8CxC1DQ/cYJ3zfU7hc0dwEADRa3zHM6jGxvOU836HSeX3CXcS6L+qhXy+qcyP0HOds8hI0nZl3YsBIZewoHxkJn74JXQXNLFPQnnCA/5pBgViDizbsuAu9EEtuNNGyAHkJ7SoHlndch36wGClsft4BFfD0FfaEeakzsHdpSQ6E9wHC+2poF31t3I9wgJl/qHA93w5+1pU0/IRV/DVhcRbR/DEZC3gzCNP835UqVMAWY2IBFHDIawtOqvzUBrgsWUmggCB0rzATQovxzxVmlo6DVX1JlRBpb/sxDGlIEgyZuUyrd7S9v34+SlMZ+PKEswCqJn0TC
- cA5z3va9
- ZMW5vibm2QCliwdRrHlv2cLY3wSoxrq3WFssQ94osKhdYKswGtUVfEklP6imXLtlqyQPZwJt45xWFIEvUMO9D8Veva6VLmg9Gl/nAWXVbI2xvJ86z7u/YUDZIQ/XTv4rdzUrqPZvtykWWmYaP0KKgi4VIXYwMjxqIqRT4CD57kxpVGdV2w4aYJaRpC97eZ6o2xzI/Q8mXbZrVfSjlJM1Leon4BFpLO2xMKyC9mOu77eAK+ZkX4Mg354KZTpSNHgtprHVUWwfmELFl6DOv9x1YmhQRdJ2CfaiDBoC0CR9sXIV+r57ONg4acG5/pmdyyYTfKg43USl3W8Tj2Qks4BVS5svADptNGeGuBFkLSFUYRmR4qD0G99wjMne1rW4VosSF9TroC0A3VQHlgCrmu+xm7hmzUUlWe7cytMM3r0nV07mDOZhuvtQUKIQ/EwKL+hdc8tAL+OOWCOgBdSg9Q3bIIjFf+DPUUZo9kgRk2AALuxS92aWey4az6IJVEOKW/Ir41RUB/CAvbGvL0gobBW/CmBOaTEVTBD+GDU9AkoPfAH1xRO4C+Qb8Zi8gmFsD0mXkEPd4lainRrWZYDkGW2BULFDWPgXX60DjlMqt9kljH3uLzfjwciCrOQgxrdEN9V0nVhimx/DXGziW784=
+X-HE-Tag: 1795867772-551549
+X-HE-Meta: U2FsdGVkX18UD8uMQevoWn7WmFhIo8NaWqxkMaLhb3Wc9kUTTd2Vu8+btYFsM8MPzXVqQ4RqnPyI+OJFQOZkd9JalkEg43zVbySaHTVvjl4lZOx4u/SFvR58U1H1W2TgJP9EqoWLyS96ccHEcohM346BHh7sNBMlMLUDDudTF9oIzR5hxPWgTU57HQRuAE9w+yVgp47CNe3krqP0pwdGAonOY73fU1Zv8wYgOiJ3BUJEvxpIqqNpzOkq3EuWJ/lNrXRpuuIufXekQ4qQ8x/v7x8+OfRWOd1CJ8isQASeKA2pj8RL3TK9ov1f+EVOIr0XEpKoWZVm2XauHT4gQsD9DIBhuN4UalwJlTBejUHcvNxwOXmtw1SjWVIvU8+ho/I/qOU5H9vmbCnOWImWx5HWVRQ8aKxdjVs1DP9c+zR2TMSWxYVhmEGHGqtTBK2+l5yh70GI8ivXggwACT4u8J4amVW135iN2mxF/ISj9tlyXcqQvC7BQyO7pMbty89IFRZVWcxw4fVigZMk41otDGkVfLHeu1/1W/BxeTWKlT7eJFwg7CZpFMmuFmVkxasOw1lr9+s+cexwq9QXX2UskndZYDEHG7jeqBtNipzqxmel/ycBFyHcUTKjS20+8eJALkOyF7WOwsqTPcNFKoyPzPRoC/b512T4Ig2F3Ng1qF9ZWesloRxiProtV6rwhU2fSIq+TBxZhaZ5g2aagzZNebq0TZHfywqiVVtBbLEEjQf29qEdL2cqZtdg/evBoNmv0OjdwZ8AMHuqDmrz63vOPZnQjwB8rGdi1TdD1yTAT/evJ2gMs6VroiW8FodqSXZQ8Wa8ulzzFveLVeXGFhBE56LX465UsT9zEx1S6qoYNesjakv+jiKEX0fZCx/WWPEvjCyU3NfjtfHO/Z+h4ylmvpwCrzrKrXqab48RL5jlNorNiFfCSid3bXINxsfjG1OxKRcRaW47nqR+Ef82d2FR4CY
+ zoJ8Jiwa
+ DmETZkksQa7qHLH0IrCq2C6h4OfCatQD5u+TjogvAuLsTjYEMgM2ExOhtPyV7i76XRvmmEVrgv5hW2VVelUMFCG0mccralNc7WX8eWKlRtRcIuUAoUimPa3CGxVcmbATqDe99J3Mf7SEym/Vt1eZyRLz/bxkMW4SaSyhmKO9E1MsAtT3WZPu1k5+Fya08KESRrTYIpPrKZ2pur5UYEtwplfF75HYsar8JqfULsuSkWtQbFssdCNnRiK++gxeDxjyPV0t5h/SDS1eYW5lSdWBsJRxUsTU6sOJJK0g0fTPvr85t5rASWPhY824kEiaaso0OOb9ju067NLlZwgflkXo5x4nyX64b5zhTPfsU1B0GXNM3Urzfvh2WlOwT1NuZP3Z6rIWXphpIiGm7BdGq32fPYI0uVoBEelIeXI3dxvfM9RKsSjw0vpdGyUpSzROO2LBFPB71zPRf+Jbo7U66kTSLwOEs8Sua4xjrJSdWr8Vfn+K3wMDa8PtYYYqmlsAYGZU/uhQ47iwax14i4yqyGtKLv3smiEBZAInac7dAo2fumWQ3q6xlHNNKePx/tXM0PNLl/IEFhxwbGQ/LikioJ8h/+9ig9PgbUHJ+b6lYo53m6neYwTDxjCu0N/JN58yh6gxLhoSKDT59KBLAHoTbF9gXxjUhI4mzq3io0W76qs+P9dVqgnJ1dyoZNhevEKVQpKAZQAdE8qrl35sZKFlXvFb1Qem1Zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,55 +117,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Sat, Nov 28, 2026 at 12:36:43PM +0200, Jarkko Sakkinen wrote:
-> On Sat, Nov 28, 2026 at 11:53:06AM +0200, Jarkko Sakkinen wrote:
-> > On Sat, Nov 28, 2026 at 04:50:42AM +0300, Askar Safin wrote:
-> > > On Sat, Nov 28, 2026 at 2:15 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > > > thinking more sequencing than data structures. I.e. I have a game where
-> > > > I need to end up to process creation without embryonic state, and add
-> > > > just enough weight to kernel to support that outcome, and that leads
-> > > > to ~2K'ish LOC of extra kernel complexity.
-> > > 
-> > > So you don't have embryonic state? I don't like this.
-> > > 
-> > > Let's assume the following situation. Userland's PID 1 is already running.
-> > > Our container manager attempts to spawn yet another process into userland.
-> > > As well as I understand, it should do clone3 with CLONE_INTO_USERLAND,
-> > > and then execve.
-> > > This creates time hole when there is process, which already runs inside
-> > > userland (i. e. its PID namespace and other namespaces), but runs
-> > > container manager's binary and have container manager's mm.
-> > > This invites for bugs. Other processes, which already run inside userland,
-> > > may somehow take advantage of this.
-> > > For example, see section "CVE-2019-5736 Is a Very Very Very Bad
-> > > Privilege Escalation to Host Root"
-> > > of https://brauner.io/2019/02/12/privileged-containers.html .
-> > > So, here I like embryos.
-> > 
-> > We all have things that I like but let's talk about facts instead.
-> > 
-> > CVE-2019-5736 was also not a sibling process racing the pre-execve
-> > window: it happened inside execve() itself via binfmt_script resolving
-> > container-controlled #!/proc/self/exe.
-> > 
-> > CLONE_INTO_USERLAND rejects CLONE_VM, CLONE_FILES, CLONE_FS, and
-> > CLONE_SIGHAND, keeps exec_state->user_ns in the caller's outer user
-> > namespace, and resets exec_state->dumpable to suid_dumpable (0) when
-> > installing userland->user_ns. Until execve(), ptrace_may_access() checks
-> > CAP_SYS_PTRACE against the outer user_ns, so processes inside the
-> > userland cannot ptrace the child or access /proc/<pid>/{exe,mem,fd}.
-> 
-> The build phase on struct userland (USERLAND_INIT, before any task
-> exists) lets clone3(CLONE_INTO_USERLAND) stay an atomic copy_process()
-> step and execve() stay as it is.
-> 
-> It fully lives in the *pre-existing syscall paths*".
+A secretmem inode can outlive its original file. An O_PATH descriptor
+opened through /proc/self/fd keeps the inode and its unevictable folios
+alive after the mapping and original descriptor are closed. The file
+release path nevertheless drops the locked-memory charge, allowing the
+same user to reuse RLIMIT_MEMLOCK while those folios remain allocated.
 
-Noteworthy addition: this is also optimal for pre-existing LSM
-infrastructure, as less you diverge better the pre-existing policies
-can protect (and less there's need for change in e.g., SELinux
-policies).
+Move private-state and locked-memory accounting cleanup to inode eviction,
+after truncating the page cache. Keep secretmem_users active over the same
+lifetime so that the hibernation guard covers retained secret pages.
 
-Br, Jarkko
+Allocate private state before inode creation. If the secure-inode helper
+fails, release that unattached state and its user reference at a dedicated
+error label. Once attached, an alloc_file_pseudo() failure drops the inode
+with iput(); secretmem_evict_inode() then frees the state and user
+reference.
+An LSM denial inside the helper can evict an inode before i_private is set,
+so eviction skips private cleanup for such inodes.
+
+In an arm64 QEMU/KVM guest with an 8 KiB RLIMIT_MEMLOCK, the
+baseline allowed an additional 4 KiB secretmem fault while O_PATH
+retained two pages. With this change, that fault raises SIGBUS until
+the last O_PATH reference closes.
+
+Fixes: 97d34aa65c29 ("mm/secretmem: properly account locked pages")
+Signed-off-by: Baek Kyu, Kim <pocj8ur4in@gmail.com>
+---
+Changes in v3:
+  - Move cleanup of state allocated before inode creation to a goto label.
+
+Link to v2: https://lore-kernel.gnuweeb.org/linux-mm/20261121164020.1465498-1-pocj8ur4in@gmail.com/
+
+If alloc_path_pseudo() fails, the caller keeps its inode reference. If
+alloc_file() fails after d_instantiate(), alloc_file_pseudo() takes
+another inode reference with ihold(inode) before path_put() releases the
+dentry. In both cases, the caller's iput(inode) drops the remaining
+reference. On eviction, secretmem_evict_inode() calls
+secretmem_destroy_inode_priv() to release state->user. Calling that
+destructor after iput() could dereference a freed inode.
+
+Tests in v3:
+  - On arm64 QEMU/KVM, the baseline allowed an extra fault while O_PATH
+    retained two secretmem pages. V2 and v3 rejected it until the last
+    O_PATH close, then allowed it.
+  - Injected secure-inode helper failure returned EACCES after
+    NULL-state eviction and err_free_state cleanup. Injected file
+    allocation failure returned ENOMEM; inode eviction ran free_uid().
+  - In the product Image, /sys/power/state listed "disk" before
+    secretmem use, omitted it while O_PATH alone retained a populated
+    inode, and listed it again after the last O_PATH close.
+  - The product Image built and booted after removing the test hooks.
+    W=1 used KCFLAGS=-Wno-error for unrelated GCC 16 warnings;
+    mm/secretmem.c had none. checkpatch.pl --strict reported no issues.
+  - KASAN, lockdep, a full hibernation cycle and long-running
+    concurrency were not tested.
+
+
+ mm/secretmem.c | 63 +++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 32 insertions(+), 31 deletions(-)
+
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index b3f79ad56790..433d31392379 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -189,14 +189,7 @@ static void secretmem_destroy_inode_priv(struct inode *inode)
+ 	free_uid(state->user);
+ 	kfree(state);
+ 	inode->i_private = NULL;
+-}
+-
+-static int secretmem_release(struct inode *inode, struct file *file)
+-{
+ 	atomic_dec(&secretmem_users);
+-	secretmem_destroy_inode_priv(inode);
+-
+-	return 0;
+ }
+ 
+ static int secretmem_mmap_prepare(struct vm_area_desc *desc)
+@@ -216,7 +209,6 @@ bool vma_is_secretmem(struct vm_area_struct *vma)
+ }
+ 
+ static const struct file_operations secretmem_fops = {
+-	.release	= secretmem_release,
+ 	.mmap_prepare	= secretmem_mmap_prepare,
+ };
+ 
+@@ -264,39 +256,33 @@ static const struct inode_operations secretmem_iops = {
+ 
+ static struct vfsmount *secretmem_mnt;
+ 
+-static int secretmem_init_inode_priv(struct inode *inode)
+-{
+-	struct secretmem_inode_state *state;
+-
+-	state = kzalloc_obj(*state);
+-	if (!state)
+-		return -ENOMEM;
+-
+-	state->user = get_uid(current_user());
+-	inode->i_private = state;
+-	return 0;
+-}
+-
+ static struct file *secretmem_file_create(unsigned long flags)
+ {
++	struct secretmem_inode_state *state;
+ 	struct file *file;
+ 	struct inode *inode;
+ 	const char *anon_name = "[secretmem]";
+ 	int err;
+ 
++	state = kzalloc_obj(*state);
++	if (!state)
++		return ERR_PTR(-ENOMEM);
++	state->user = get_uid(current_user());
++
+ 	inode = anon_inode_make_secure_inode(secretmem_mnt->mnt_sb, anon_name, NULL);
+-	if (IS_ERR(inode))
+-		return ERR_CAST(inode);
++	if (IS_ERR(inode)) {
++		err = PTR_ERR(inode);
++		goto err_free_state;
++	}
+ 
+-	err = secretmem_init_inode_priv(inode);
+-	if (err)
+-		goto err_free_inode;
++	inode->i_private = state;
++	atomic_inc(&secretmem_users);
+ 
+ 	file = alloc_file_pseudo(inode, secretmem_mnt, "secretmem",
+ 				 O_RDWR | O_LARGEFILE, &secretmem_fops);
+ 	if (IS_ERR(file)) {
+ 		err = PTR_ERR(file);
+-		goto err_free_priv;
++		goto err_free_inode;
+ 	}
+ 
+ 	mapping_set_gfp_mask(inode->i_mapping, GFP_USER);
+@@ -309,14 +295,14 @@ static struct file *secretmem_file_create(unsigned long flags)
+ 	inode->i_mode |= S_IFREG;
+ 	inode->i_size = 0;
+ 
+-	atomic_inc(&secretmem_users);
+-
+ 	return file;
+-err_free_priv:
+-	secretmem_destroy_inode_priv(inode);
+ err_free_inode:
+ 	iput(inode);
+ 	return ERR_PTR(err);
++err_free_state:
++	free_uid(state->user);
++	kfree(state);
++	return ERR_PTR(err);
+ }
+ 
+ SYSCALL_DEFINE1(memfd_secret, unsigned int, flags)
+@@ -335,6 +321,20 @@ SYSCALL_DEFINE1(memfd_secret, unsigned int, flags)
+ 	return FD_ADD(flags & O_CLOEXEC, secretmem_file_create(flags));
+ }
+ 
++static void secretmem_evict_inode(struct inode *inode)
++{
++	truncate_inode_pages_final(&inode->i_data);
++	clear_inode(inode);
++	/* The filesystem root and failed secure inodes have no private state. */
++	if (inode->i_private)
++		secretmem_destroy_inode_priv(inode);
++}
++
++static const struct super_operations secretmem_super_ops = {
++	.statfs		= simple_statfs,
++	.evict_inode	= secretmem_evict_inode,
++};
++
+ static int secretmem_init_fs_context(struct fs_context *fc)
+ {
+ 	struct pseudo_fs_context *ctx;
+@@ -342,6 +342,7 @@ static int secretmem_init_fs_context(struct fs_context *fc)
+ 	ctx = init_pseudo(fc, SECRETMEM_MAGIC);
+ 	if (!ctx)
+ 		return -ENOMEM;
++	ctx->ops = &secretmem_super_ops;
+ 
+ 	return 0;
+ }
+-- 
+2.55.0
+
 
