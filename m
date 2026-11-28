@@ -1,91 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FFB606A31C
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 06:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3549E606A68E
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 06:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=pbe93rMo
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=2OFUQRoK
 Received: by kanga.kvack.org (Postfix)
-	id A81736B05B0; Sat, 28 Nov 2026 01:36:29 -0500 (EST)
+	id 264CF6B05B0; Sat, 28 Nov 2026 01:50:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A326A6B05B1; Sat, 28 Nov 2026 01:36:29 -0500 (EST)
+	id 1EE696B05B1; Sat, 28 Nov 2026 01:50:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 948086B05B2; Sat, 28 Nov 2026 01:36:29 -0500 (EST)
+	id 0DE626B05B2; Sat, 28 Nov 2026 01:50:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E66B6B05B0
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:36:29 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 611BDA060E
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:36:27 +0000 (UTC)
-X-FDA: 85483568814.28.5E8A927
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 869C4140006
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:36:24 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=pbe93rMo;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf09.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A21886B05B0
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:50:46 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 961051C3DCC
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:50:45 +0000 (UTC)
+X-FDA: 85483604850.11.2345177
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B9FA3100007
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:50:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2OFUQRoK;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795847785;
-	b=1gmJOqenvW7hWxaPxaD9Xdy/eIxRF9KQk62jKHXH//47ZgWATzxZ/pQXWyPLq1tkwO45/K
-	JTRC8LYwJqb5wpWdB4Zf37WuuT8Exc06wIK8TD3G9ocXmKF7/KsaJ0/3Z11l4TxZnpU0QE
-	LFDnO0LfofQi0bksoHWnbCNMast/Syw=
+	t=1795848644;
+	b=cOu8QdaE94tng+C6vWVPuJGzv0p7EE0V7TgnSpiWFFPtfzZessz6qgdnOXoqdTenCD54Lp
+	ac6buDtpjNOLZ0E9qwYi6NjCKBAYUrM6cvgkPsuQMsouNiliT/QRhQEpRRGhsw6VIyjiif
+	kFf8WSs4vM4gQr/+Kjuye0pqgXaF3iw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795847785;
+	s=arc-20220608; t=1795848644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=n9roixnfIFYGSNY3LMoNE58r2H0x9JeIG09TUUKABSI=;
-	b=6iGOLY0fh9fEPThbPQuJP6cPa6kv+HkVRliTaPWH4i+bxJ/Sx67c+zG4j1MGHTznAVozIV
-	xH+nMl8uLV8GCcBaVlYRKm0LJPC209e61l1fWxOOgVWxpVZHbYngxHS1nJx0dh1nqYAgcV
-	ITs0ryJc1wmJaVgaT03bBX+Diqwdw4Q=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kOlVHY/wyAKwfQn6ewbvx7N2qcH8FDvBchLks/jIQ24=;
+	b=DyiHvpHeb2pSGfujVL3KER0bPu0XLHeytWATOKQFRFlQ0cmfFewRm5U7yNtQIMu0dMMfFR
+	2Tn7jDcGiAufaeBBw+mSSqPTn0kkHH0NiUab8M/t/EiTKp4UjxzX+khuTQpHz7p9Ayrydk
+	mXR0hHE/QIirDRz6KsBC/MqAdzUnrR4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=pbe93rMo;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf09.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=n9
-	roixnfIFYGSNY3LMoNE58r2H0x9JeIG09TUUKABSI=; b=pbe93rMoYYlHSA8n9S
-	uee3LDCMVLphX9GkzTuTdf2zQxWKHNqJS580d+bSgYplBXEYbBaDU/0De+OSSUXJ
-	qbaetvBx9+TW7cGdGU6Gw67/jOCT8GpWMR3pTABvzYdu7HMTjI9wzXCW1HgCKEbU
-	+Pq4Q+INwbumpBLf3FKGz5b2g=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3X_Bjdgpr7k+nLg--.44267S2;
-	Sat, 28 Nov 2026 14:36:20 +0800 (CST)
-From: Xuewen Wang <wangxuewen_ky@163.com>
-To: akpm@linux-foundation.org,
-	urezki@gmail.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH] lib/test_vmalloc: check vrealloc page counts and data ranges
-Date: Sat, 28 Nov 2026 14:36:08 +0800
-Message-Id: <20261128063608.3434982-1-wangxuewen_ky@163.com>
-X-Mailer: git-send-email 2.25.1
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2OFUQRoK;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9AAF643B17;
+	Sat, 28 Nov 2026 06:50:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EBB1F000C1;
+	Sat, 28 Nov 2026 06:50:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1795848642;
+	bh=kOlVHY/wyAKwfQn6ewbvx7N2qcH8FDvBchLks/jIQ24=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=2OFUQRoKI6wxHO5tDUu5d6QoZnR9uVTzbm81K+82RSRNJnkiTI0ok8i7sh3WvPGsb
+	 pNc/QOesP1xluqeoPN1BLIpfaYLOw4bJkAJeq1PpNia+j57AZ+iSK46F5BvZhpa2Z9
+	 6fLxplM035rDtgQuscWsEplqf8kat7r42dm92X84=
+Date: Fri, 27 Nov 2026 22:50:41 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kurt Lin <lylin1023@gmail.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, David Hildenbrand <david@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko
+ <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>
+Subject: Re: [PATCH] selftests/mm: skip hard dirty page-cache test on FUSE
+Message-Id: <20261127225041.504dba5029c3519b9ca8b6f2@linux-foundation.org>
+In-Reply-To: <20261123-memory-failure-fuse-skip-v1-1-19dcbda6e2e8@gmail.com>
+References: <20261123-memory-failure-fuse-skip-v1-1-19dcbda6e2e8@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3X_Bjdgpr7k+nLg--.44267S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3GrWkXw1UGr18try7JrWUurg_yoWxJFWfpF
-	W3Jw1vyFWrJr1xXFZ3Krs2yw4akw4kKayUGrW3W34Ivw15JrnIkF93KFyFvryIyrWkuF1j
-	9r4qqF45Cw4DZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jeoGQUUUUU=
-X-CM-SenderInfo: pzdqw5pxhzv0xbn1qiywtou0bp/xtbCzQQU-GsKdmTzFgAA33
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: xfeqij9a4rw8zipcemensdj1nbjekjxd
+X-Rspamd-Queue-Id: B9FA3100007
 X-Rspam-User:
-X-Stat-Signature: 58hy4xp3a5e4ppzq1wd5b7rf3ynmodcs
-X-Rspamd-Queue-Id: 869C4140006
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795847784-677116
-X-HE-Meta: U2FsdGVkX1/+H2HbGwUrCr3F/ndg8VqDLAcX67I0TjGTiyxCg1FlOSwLQ98MJi8+CPp0OvUiaPibOuz8TFXAgJRKZ+nBXIGi1t3GKa3Q5QlVwffLLQRq0B90U92BlSpVxqvQP9F2FJAuuXDxcdB5fPo9yQHSILL2PmikLCPOimqHQ+lKbhC46Pc4BYiAugHxkHYkg99lcQUgAvZQ8o67nfLCMrFJgEEKLzdsomlsq8RBxyNLiJ2sVVl9xhyMX9OspLXUvOAgcyYcQbW/1Ff8Ph5mAKuimCFIsHBdekP9hQOQVlK/ap8U/Yr1F2HtoIPQ/LRuYccdHMVNEerOFS67MHmkl2iNpSpVHa5X5ZRk8220izjs8d0ZTffDWlmflZNIiW11aql0XfSjJ1diLBUGpwAcgby/Jso14Em4ZvFxlVf1Peafsy8PDXjbcqW847dpIDM9M84AI9sdkvlh3cFLXw1GFbqRuPd7Dutt0Qg1AfrdiHtSTkYnvHOTbMyZ2YpGnIx0zWkqILm387t5j/OZkv5GwU91QcW62nNBAVY7t3QWDQ8HWjahdbkKQGhGr3mA2ookKREB4TxKb3loi1KGQfebQho6gi+jyrhyHL47wXnXSs7P/zga0wBjRAMaYmZVBdQisSp0CB2Wjg0P/xEWK/0Cy5wzyDyeYzLxayGJc1a/+4AWEJC/Hqwjh1D7QFDu5zR/+UP2HWSScvQUdTUQ/cd157JGKGTuzSEaw5L5JQv4P/FJ1RosJW+yiRZkTifhHfruy1UgafUY4S5K/8crb9oprbd/g4UoCK/l0QpCaYmG1AbOlyGLDdH+BFZ4z5EiUCHFqfz9gacs+dBHV7p6Wij3lJrOfOAitn21dns5MUQ3Usl526K2Qat9BDcV84oNnfFmOBx8x5KIlKBx21njKQ86hooGPb+2cpjXXuWzcJb79aw03isucZgTmIpt2FR0Gw8i4QdZhdGQumnm0/H
- oXB0hOy7
- Khf5KA5PwzBd9/+cwlJ1AVVLkzMbT6V/nUai53K3GB6s8Wbe1jyCxOIv6iTxKftf3uW4DSkSkWbfsWPrLNIxil35A/jbLCTd35E3Xv40Yix4bBM4+IkJZZ8hBX8mO3FdpCAY7Uy9Uj+YacqWmRtIKytT8Sp8lCAWOjHUxqU7PN9bShxNdotUoEsyPkkdvFmGM0GXginpQ7plwC7X7U+UGxDA+27AJbGVZ73Mq1boE+bhQpi2g1SLaIZk4swSzaTaEEr5UsuGnoIzCkz4tt8M6VYv+0c47cqy8/SyV0xk8GJX/k3RAjdS453R97uy6PQDsbrdxiAeDWOvgl+qGPiN6vkxe3DAsJzIfcBDofi8wuiwJC8GKwCZZ5myu/L2aXf6tf6iB1Q+JeOfpJPwhgkRnhUYYXxL3TZWpWJyALjDQS8k7OA54knHsWFwZdo8agbtguodp7D3QiZDemoDdvRhmprY0cq1c5B9kd12eWbnnHU/xkV1R6/aDXsPM7Hga6wL/9R/7
+X-Rspamd-Server: rspam03
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795848643-585040
+X-HE-Meta: U2FsdGVkX1/M8TZ2DWLzgGDFcbrV210N+nXAJq/vCy6+y6tyXgga0HVWotMwlXNQg7tZPV81JYe4VFfY3KkG31fW+DtTg2Ag2bXrLBOaN7p4//4BXUOfbF3CB0mB8NBY2DDYKMTD8iWl4xL2QOs6xDjIg9bvKecwv4BGMdmQnR9xgoEFp/r4yvsDKxEVWHQN4S3brFEVmRu7vJbIcO0/Pnq1xPChT67QlQYbdtVazyZIYg2EHY/85mQ4jth2XawDpDt22bZiPtCAPdPLzfotEzURApi1tbfr+kz2bvq6EBPe8yFbJ9aaLLJ278+ioDehQLdV8hjVSolkOEQV+oZnQbXFMnm4J21jQV2XK9uEotS58f/hGQkmu5zgA4w9ofst06S+3pdH8eGR5WSa+NPNCCjglNsr88XItUGBQYwwXqn/71VxyhnamODqC6GTCxURImGP5djJIPjO309gjLsXG2IyG5VmBqQcPlA6YcxbopohYWYxFgLhs43e/G1j02pQEJVGlkKvloVZPr9AH1yI89VldqPZc1MKmxL1XKdiSB34HirlW3ctdolW8WCwG2a9PzaabINiZY80JNQRMxFMGV6VE5CTtCtfEV/H3WLQDFqhYIHAWYaN7lIc0vDXcHN6JH/GC0XVTQ6K4V2nZhGjzKra1iRoj0aKC8YSWFEYxN6pYVyNNTTZjS/7J+aEaXrOzRGzP6Qg5dixT7XPCsJOK2JYM3il71swNj9ux8xhp3dXZ77c4mS1FIJAuqChXlvZTenvsfcJh5DyIwdmAqI3ktYwaUd0eVKOz2aK0t4hLf4pMWpbWRhA5sJW1OoMucNM8uvJJ0zdtnUQApn7yJ6PqI0TDvPa0OckyePqcvQzpbAuZA6ORpsw4MUwYldvtiG+aHEP/kkfkmVHlWSnrWTLz/452jUbczIQj+AMG5WYgAhyhKCMKDqevNDNU6No48TA7gTKmsERSILjGLjHL86
+ 229hQAo8
+ RtMcDE20F6EjVw0AuTohuWkAAvpdBracY4jzFhXrycCrlAKbzzSNPgkoziIzhchY5jAcYxNLEKy7c6yrjV5fkOptl4aC7YwS/zYvRBwa7Zr1rYsfuQkcJoOjNwlZgIWHYbT4BuvyS8/60ZZSR7Y1dP81EmNCgwAGY90J9+gEvqCtXqVXKtwKT4D7oGs+L4SOJ45gesX4wa1BH2rZ+eYSAj1krU4FyXbs8PbnY2HyZdPcrNGNTSZdi7H9pOrZ6BAM9Y7FOWiCj+nTB2XT6i8Av1WaEqGD5nSPu7WZWZcMlPhCovC3JSbIXo7op97P/QRC7ZPu11VMxneKMzySvVq08z6lmCLUaYnhK/HEoW5hJnVzLkxGYrD0GVLIIhT/6teKmTYk8jJ6uOm3xGPaEK5nbZ7mgxOmp7cwsS7qME6t1s4yRuou0ALxDWfP19pJsWzebG9CLACZFD/s3A/ya89tpb0Qd5NyEDBETDd5i3Mb9+klhuBNH4T7MGTMh77Cdde+7HxRSx7ev4Oiz06GyDm0Jwp+34A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,205 +96,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Xuewen Wang <wangxuewen@kylinos.cn>
+On Mon, 23 Nov 2026 01:58:43 +0800 Kurt Lin <lylin1023@gmail.com> wrote:
 
-The vrealloc test currently checks only the first byte after each resize.
-It can pass even if shrinking retains all tail pages or a later byte in the
-preserved prefix is corrupted.
+> Like NFS, FUSE reports on close() the -EIO that MADV_HWPOISON records
+> in the mapping of a dirty page-cache page, as fuse_flush() calls
+> filemap_check_errors(). Run from a virtiofs directory, e.g. in a
+> virtme-ng guest, the hard dirty_pagecache variant fails on its final
+> close():
+> 
+>   memory-failure.c:389:dirty_pagecache:Expected close(fd) (-1) == 0 (0)
+> 
+> Skip it on FUSE, as commit e14e52a7ce02 ("selftests/mm: skip hard dirty
+> page-cache test on NFS") does for NFS.
+> 
 
-Check the backing page count for the ordinary order-0 allocation path and
-validate the entire preserved prefix with an offset-dependent pattern. Add
-a non-page-aligned shrink and a grow beyond the pages retained after
-shrink.
+That test is broken :(
 
-Run the sequence both with GFP_KERNEL and with __GFP_ZERO used consistently
-from the initial allocation. In the latter case, also check that each newly
-exposed range is zero, including when growing within a retained page.
+> --- a/tools/testing/selftests/mm/memory-failure.c
+> +++ b/tools/testing/selftests/mm/memory-failure.c
+> @@ -355,11 +355,12 @@ TEST_F(memory_failure, dirty_pagecache)
+>  	fs_type = get_fs_type(fd);
+>  	/*
+>  	 * MADV_HARD poisoning of dirty page-cache data records an expected
+> -	 * -EIO in the file mapping. NFS reports this error on close(), so
+> -	 * skip this variant.
+> +	 * -EIO in the file mapping. NFS and FUSE report this error on
+> +	 * close(), so skip this variant.
+>  	 */
+>  	if (!fs_type || fs_type == TMPFS_MAGIC ||
+> -	    (fs_type == NFS_SUPER_MAGIC && variant->type == MADV_HARD)) {
+> +	    ((fs_type == NFS_SUPER_MAGIC || fs_type == FUSE_SUPER_MAGIC) &&
+> +	     variant->type == MADV_HARD)) {
+>  		close(fd);
+>  		SKIP(return, "unsupported filesystem :%x\n", fs_type);
+>  	}
 
-Export find_vm_area() under the existing CONFIG_TEST_VMALLOC_MODULE guard
-so the test can inspect backing page counts in modular builds as well.
+I invented that store-errors-in-the-mapping thing about a million years
+ago.  It was never intended that close() report errors - that's silly
+because the file might still have gigs of unwritten dirty pagecache.
 
-The additional resize operations and full-range data checks increase the
-work per iteration, so timings are not directly comparable with those
-from the original test. When running vrealloc_test alone, use a smaller
-test_loop_count, such as 32, to keep correctness runs short instead of
-using the default million iterations.
+If a filesystem is checking mapping->AS_foo at close() then that's
+quite misguided - it presumably works for O_[D]SYNC-opened files which
+were dirtied only by write(), but still no good if the pagecache was
+dirtied via MAP_SHARED.
 
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
----
-Validation:
-- x86-64, 4 KiB pages: built-in one/two workers and module two workers 
-  passed, with three repeats of 32 loops per worker. Every loop runs
-  both GFP_KERNEL and consistently used __GFP_ZERO sequences.      
-- Private x86-64 mutants suppressed tail-page freeing, corrupted the
-  final copied byte, or skipped shrink-time zeroing. The enhanced test
-  rejected all three; the original first-byte-only test passed all three.
-  These were artificial defects, not discovered allocator bugs.    
-- arm64, 64 KiB pages: built-in one/two workers and module two workers
-  passed with the same repeats/loops. Guest userspace checked the actual
-  page size.
-- The same arm64 matrix passed with KASAN_GENERIC and KASAN_VMALLOC
-  enabled. test_vmalloc.o contained __asan_load/store references; full
-  serial logs contained no KASAN reports or kernel warnings/oopses.
-- With TEST_VMALLOC=n, find_vm_area has no export in vmalloc.o.
+The way for userspace to check for errors is to run msync() if needed
+then fsync() and check its return value and that's what we should
+(self)test for.  And after fsync() has read and cleared the mapping's
+AS_foo, a close() should return 0, so we can selftest for that also.
 
- lib/test_vmalloc.c | 104 ++++++++++++++++++++++++++++-----------------
- mm/vmalloc.c       |   1 +
- 2 files changed, 67 insertions(+), 38 deletions(-)
+And boy you sent me down a Sunday (then Monday) rathole with this one.
 
-diff --git a/lib/test_vmalloc.c b/lib/test_vmalloc.c
-index b23f85e8f8ca..420b4bd5bf2f 100644
---- a/lib/test_vmalloc.c
-+++ b/lib/test_vmalloc.c
-@@ -17,6 +17,7 @@
- #include <linux/rcupdate.h>
- #include <linux/srcu.h>
- #include <linux/slab.h>
-+#include <linux/string.h>
- 
- #define __param(type, name, init, msg)		\
- 	static type name = init;				\
-@@ -422,55 +423,71 @@ vm_map_ram_test(void)
- 	return nr_allocated != map_nr_pages;
- }
- 
--static int vrealloc_test(void)
-+static void vrealloc_fill(u8 *ptr, size_t size)
- {
--	void *ptr, *tmp;
--	int i;
--
--	for (i = 0; i < test_loop_count; i++) {
--		int err = -1;
-+	for (size_t i = 0; i < size; i++)
-+		ptr[i] = i % 251 + 1;
-+}
- 
--		ptr = vrealloc(NULL, PAGE_SIZE, GFP_KERNEL);
--		if (!ptr)
--			return -1;
-+static int vrealloc_check(const u8 *ptr, size_t size, size_t preserved,
-+			  gfp_t flags)
-+{
-+	struct vm_struct *vm = find_vm_area(ptr);
- 
--		*((__u8 *)ptr) = 'a';
-+	/* vrealloc() allocates order-0 pages, allowing tail pages to be freed. */
-+	if (!vm || vm->nr_pages != DIV_ROUND_UP(size, PAGE_SIZE)) {
-+		pr_err("vrealloc: unexpected page count for size %zu\n", size);
-+		return -1;
-+	}
- 
--		/* Grow: beyond allocated pages, triggers full realloc. */
--		tmp = vrealloc(ptr, 4 * PAGE_SIZE, GFP_KERNEL);
--		if (!tmp)
--			goto error;
--		ptr = tmp;
-+	for (size_t i = 0; i < preserved; i++) {
-+		if (ptr[i] != i % 251 + 1) {
-+			pr_err("vrealloc: data mismatch at offset %zu\n", i);
-+			return -1;
-+		}
-+	}
- 
--		if (*((__u8 *)ptr) != 'a')
--			goto error;
-+	if ((flags & __GFP_ZERO) &&
-+	    memchr_inv(ptr + preserved, 0, size - preserved)) {
-+		pr_err("vrealloc: nonzero bytes in newly exposed range\n");
-+		return -1;
-+	}
- 
--		/* Shrink: crosses page boundary, frees tail pages. */
--		tmp = vrealloc(ptr, PAGE_SIZE, GFP_KERNEL);
--		if (!tmp)
--			goto error;
--		ptr = tmp;
-+	return 0;
-+}
- 
--		if (*((__u8 *)ptr) != 'a')
--			goto error;
-+static int vrealloc_test_flags(gfp_t flags)
-+{
-+	static const size_t sizes[] = {
-+		PAGE_SIZE,
-+		4 * PAGE_SIZE, /* Grow beyond allocated pages. */
-+		PAGE_SIZE + 17, /* Shrink to a partial final page. */
-+		PAGE_SIZE, /* Free the remaining tail page. */
-+		PAGE_SIZE / 2, /* Shrink within the same page. */
-+		PAGE_SIZE, /* Grow within the allocated page. */
-+		4 * PAGE_SIZE, /* Grow beyond pages retained after shrink. */
-+	};
-+	int i;
- 
--		/* Shrink: within same page, no page freeing. */
--		tmp = vrealloc(ptr, PAGE_SIZE / 2, GFP_KERNEL);
--		if (!tmp)
--			goto error;
--		ptr = tmp;
-+	for (i = 0; i < test_loop_count; i++) {
-+		void *ptr = NULL, *tmp;
-+		size_t old_size = 0;
-+		int err = -1;
- 
--		if (*((__u8 *)ptr) != 'a')
--			goto error;
-+		for (size_t j = 0; j < ARRAY_SIZE(sizes); j++) {
-+			/* __GFP_ZERO must be used consistently, including at allocation. */
-+			tmp = vrealloc(ptr, sizes[j], flags);
-+			if (!tmp)
-+				goto error;
-+			ptr = tmp;
- 
--		/* Grow: within allocated page, in-place, no realloc. */
--		tmp = vrealloc(ptr, PAGE_SIZE, GFP_KERNEL);
--		if (!tmp)
--			goto error;
--		ptr = tmp;
-+			if (vrealloc_check(ptr, sizes[j], min(old_size, sizes[j]),
-+					   flags))
-+				goto error;
- 
--		if (*((__u8 *)ptr) != 'a')
--			goto error;
-+			vrealloc_fill(ptr, sizes[j]);
-+			old_size = sizes[j];
-+		}
- 
- 		err = 0;
- error:
-@@ -482,6 +499,17 @@ static int vrealloc_test(void)
- 	return 0;
- }
- 
-+static int vrealloc_test(void)
-+{
-+	int ret;
-+
-+	ret = vrealloc_test_flags(GFP_KERNEL);
-+	if (ret)
-+		return ret;
-+
-+	return vrealloc_test_flags(GFP_KERNEL | __GFP_ZERO);
-+}
-+
- struct test_case_desc {
- 	const char *test_name;
- 	int (*test_func)(void);
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index f7aa4686fe5b..a0ee9dc742de 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4220,6 +4220,7 @@ void *__vmalloc_node_noprof(unsigned long size, unsigned long align,
-  */
- #ifdef CONFIG_TEST_VMALLOC_MODULE
- EXPORT_SYMBOL_GPL(__vmalloc_node_noprof);
-+EXPORT_SYMBOL_GPL(find_vm_area);
- #endif
- 
- void *__vmalloc_noprof(unsigned long size, gfp_t gfp_mask)
--- 
-2.25.1
+I ended up with one nice clean patch for memory-failure.c which makes
+it work for all well-behaved filesystems.  Then eight patches which
+pile in hacks and workarounds for all the weird/broken fs behavior I
+hit.  The end result is that this poor little selftest gets "pass" or
+"skip" for all Linux flesystems.
+
+I have fixes for a few filesystems here so if maintainers merge them we
+can remove some of memory-failure's hacks and workarounds.
+
+I'll hose all these patches out in a sec.  Probably it'll be best to
+fold them all into a single patch.
+
+
+
+There's some really bad behavior in there!  Responsible and careful
+userspace which cares about its data should do:
+
+	write(fd);
+	err = fsync(fd);
+	if (err)
+		/* eeek, we lost data */
+
+But in some cases, the kernel is lying to userspace.  If data was lost
+due to dirty pagecache memory-failures or even to plain old device
+-EIO, the kernel will report "all safely written back" when in fact
+userspace just lost its data.  This is a fundamental data integrity
+flaw.
 
 
