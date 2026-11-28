@@ -1,63 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C03606A331
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 06:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46398606A33A
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 06:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=lWhMgMPO
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=CYB7cesV
 Received: by kanga.kvack.org (Postfix)
-	id 6116C6B05BA; Sat, 28 Nov 2026 01:52:17 -0500 (EST)
+	id AF35D6B05BB; Sat, 28 Nov 2026 01:52:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59B6C6B05BB; Sat, 28 Nov 2026 01:52:17 -0500 (EST)
+	id A7CF56B05BC; Sat, 28 Nov 2026 01:52:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B0FE6B05BC; Sat, 28 Nov 2026 01:52:17 -0500 (EST)
+	id 9930C6B05BD; Sat, 28 Nov 2026 01:52:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 25DE36B05BA
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:52:17 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F54F80428
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:52:12 +0000 (UTC)
-X-FDA: 85483608504.11.7D5C926
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 648CE6B05BB
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:52:18 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9150A0613
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:52:17 +0000 (UTC)
+X-FDA: 85483608714.19.A096220
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C516F1A0009
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:52:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lWhMgMPO;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2289214000B
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 06:52:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CYB7cesV;
 	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795848731;
-	b=zYqgMJ4x5IW7KfoRKOJPGLSssjFXzd+pTvq5u5/bpnoca88WTid5M4R2VgTslJ8lCATrxK
-	IwpGZoD3BFJlc+Ij8sHpDPyZ8RstD0vcNzyxVMYZ/oTkfYNEEArztfGAKJkJiVgCKToAfU
-	dcIj53M7AKiI6InxRDchgcn5xvRcfUQ=
+	t=1795848736;
+	b=HN6rJUnshK47D/ELbfQOGXwwd+0+gA5HD2L4nbYUpBVSJIdyDWEXWcDW21L4qnpL/hw85m
+	03BL7uTKN1BB3PpXHjvr4TclCBN0HSWRSNsTIXgLiVGpOTbzfYwO5p9UNBU1x5r8Sanb6R
+	R6HTxvBuAt5JHj5TpTFlnNZ4KapXE/M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795848731;
+	s=arc-20220608; t=1795848736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=buuistPcvf2rI/NcPLvcq64Hu+UpmeFVKjzAJKbY2EQ=;
-	b=NMifC9tQM5weD5r6iCxFS/lbrxTD3bro/Npc/YhHZDklfro4InuXLIGSpMnpipdbbyrAnb
-	ntdLwlKlVUie6dWyR5FRGYACR63TTb5iZ6xyI5I4KQ98L3dojO72PePqZoqjdaCA+B5ZV6
-	ZB3ust3cQ5cRxOc17DpaxXqNkVdhGtU=
+	bh=a+0qJ0ki6I38K0Pp1ZZMYoWTUSwwIpZRuywtK0CzQQM=;
+	b=V54rSs8KKBjyw0q2QnsasjXmRCG4vQcQTmF3HdTtVESMo9tJyVCnyz+xQIK+ckxZNDdstO
+	quWecljeMD6VvtYnr4Rn9RMbYRniZScVJxUnx/pMWBEpqtMUQUcHzXYTA4TSussEVVKwFz
+	Z/TEQRzFgracQbEuP8AW8E17p4VY2YA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lWhMgMPO;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CYB7cesV;
 	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2673E42E19;
-	Sat, 28 Nov 2026 06:52:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E9F1F00893;
-	Sat, 28 Nov 2026 06:52:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6BFB644305;
+	Sat, 28 Nov 2026 06:52:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD561F000C1;
+	Sat, 28 Nov 2026 06:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795848730;
-	bh=buuistPcvf2rI/NcPLvcq64Hu+UpmeFVKjzAJKbY2EQ=;
+	d=linux-foundation.org; s=korg; t=1795848735;
+	bh=a+0qJ0ki6I38K0Pp1ZZMYoWTUSwwIpZRuywtK0CzQQM=;
 	h=Date:To:Cc:From:In-Reply-To:References:Subject;
-	b=lWhMgMPO1UMoRsHw8fqnw0zDhoq1+p5YMYmcdt9SVu9WM+M5F7tU23I7nPsaA2MM/
-	 Niown9sdCLDrmvFUOOF8TgCROsBhYhx5fzQwP5ZtVMYGZjWd9/8xIK45tPLZXYzgMb
-	 P6Yp1Tm5yYBx9kIRJaggaRv4LtN/V7FNOHUpG2Cg=
-Date: Fri, 27 Nov 2026 22:52:09 -0800
+	b=CYB7cesVfofR5YSlJLhbtgBluyZvWvRkNbxZD5qIq3Cah4cg8LWBk/iXQvbAzAsUt
+	 TkddmWmVMh+dFBQ5IAEnm7axNS/p8YcmyzHFxSxt2RTk99CRmxKmoSxvTEh+MS+zBs
+	 Impta2Lf+cfkvm6YWUNq6npKEIbMsWgL7Di2Wb0g=
+Date: Fri, 27 Nov 2026 22:52:14 -0800
 To: Kurt Lin <lylin1023@gmail.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  Amir Goldstein <amir73il@gmail.com>, David Hildenbrand <david@kernel.org>,
@@ -72,23 +72,23 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  Stefan Hajnoczi <stefanha@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
  Vlastimil Babka <vbabka@kernel.org>
 From: Andrew Morton <akpm@linux-foundation.org>
-Message-Id: <1c93b263b19d4465899bb81efd62bcb3.6@linux-foundation.org>
+Message-Id: <1c93b263b19d4465899bb81efd62bcb3.8@linux-foundation.org>
 In-Reply-To: <1c93b263b19d4465899bb81efd62bcb3.1@linux-foundation.org>
 References: <1c93b263b19d4465899bb81efd62bcb3.1@linux-foundation.org>
-Subject: [PATCH 6/9] selftests/mm/memory-failure: close dirty page-cache files before unlinking them
+Subject: [PATCH 8/9] selftests/mm/memory-failure: write the whole page-cache test file for OMFS
 X-Rspam-User:
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C516F1A0009
-X-Stat-Signature: k4k6e3k1wg6eaknckzj9rdh39caayo1n
+X-Rspamd-Queue-Id: 2289214000B
+X-Stat-Signature: niz65apzf3fw7iz8ifb4c1ah3o79t3hd
 X-Spam-Status: No, score=-15.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	PP_MIME_FAKE_ASCII_TEXT,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795848730-438313
-X-HE-Meta: U2FsdGVkX1+OWRXpTwlxLfRWoZ+YYKeiXWiIEGQRm0uW6sJaIUZLPq9HB0Skp4QnXzZKgRImrcpYnk0lT/nVEsnsiCj4qSuMTe6EaKe2nybrbKEnavYG/3aoamMDb/Ut2RbBjoxWlfhB2cmgjMJcSp5gq+D24uNbqV08+MHLvCWWGMyX6+hg8KUtK0qRIcehmujy95/DPl+H/FljN9ll/yInF4LIvvJVFC/onP38Y9SW2ubnYFgwx89wSr72q08NnqlAe92QkfX8uKDGgNi57dOWpaSXEhxWAKXO7GHbGX8JO2RWoBWCvEkE3P3wdk58LwRmA4JmY5wpQPVcaQPJm2WkZ3PwqTMg3VdY4v9p5dtA6P6N/r1h1VzRT8O+bw19Mxk3bFObikOOzBJeYQYnsQFn9gQr1XqLW0ngXCSnzvMJIcwSDKp1jQ41WSIb2S++aHq4fAhohMoch/j3vBjv7gZTfibkA5Y3ziu/YJT/7eAJotYxTZLWak3ezp/cq6u42yuki1+8Kf/Ds63zpLGh70XbiO09P3XjYABVOhqk2Y9OAAh0rqDnU/GfpXtO6ERrZV9/bgMMN2zl2DmJ5w6Rxow7cGBLX8xLmlD4wJVd5ISmZkct7QFOd3WMBgfiZKVyBfCkGy++8bH3ELULyBTo6iSCUj8u8CF5p/v/PPOwVYbX5/GjMrRcBfNxspRE++6oycdT2ymxzD0XsSHpYALtEB3hzDVXsxnLcpBLJop1mLqMNHn9KLwBDR8wlR0OQ0a3u9jS0iVeeSwUJErjNJ1UWc/mE7ZKes5sr6gPXueqsp1LyU02AqheVIaoIZ1dSmglCF0k/8gcEyQIrJV2MgL7vQlaUB4CQI6UXgiC6c2dPmWP21af498fPzRmBz/6h6SQpQ57DevzQhZJBBzJ17Y0tNS4aSsbAgLhVxpmBIOSqJJHWc4hJ8t8Cm9Xg2Hg+52M6wOfsIxzAHhejJ0Y55W
- uOkT7HSA
- 7pv+Ev7FYP58c3nwVFueT7qzbGthQLozJcHL/UsA+nB9or3iWFSrydsXklcLOI7CuCe9rPws8n5fE5Za632ZQ5TEPDyKL6Kn5EOkO+JMKbG+GCmMIpp7/oLjJYoUAS6nQYeS8CXqPajVZHJj8ZwR+SwKfmOSC+GnVZa2WHyfjAyGUcNbM3Wd//4ymBO9ZINRrVetUx93YUX9ixS53GLi+xCbnJpVbUHDgnaKhd60aFwbICcTv4AgXcvqYS/AwotoOzmcRBUZJy5pwGR/nJEetVrd77Gh3kwu+1guVSkro5GjU2CoI1YxJVa66XS+mzH8EvNC1RyS5pE+DTa3nNU9Ne4iAbytmX0j1skzdXgvYPt9+vjEMPuMBAbG3nH6NyVRQnvqxw1gLB8elDOqfUpcnepCxfJ1Sf/hSlMh0sgo5s91hV+stOhOynFr/3CMjGeH0jHf49dG0Ez96woGQ6m0sPC3ducKdtnuEgU3GMoqIPT87iI4cJ9wTJKhfiJMPYGQQ6gDeGVYkoiLMtatLdSpSy6z1rL0ehRkXUaZhZ4CypzN6dJdRLqhvOCC2W+LKO4p7fCcTdUUwJLgpjetsb/DnINRDIF+G7ZYpwHDHzoK3u7qxJRaBVqDmh6lndlEwErPBVZmHKaf2mtnTmSlI1nD/5WZxyU8/mkkj8s3sXvIn22WSFTIpixCaN7mTYOM+JmieqRe0sKKUjxy6EVf179I0ro89EApgGffiqaVKSgVqjgE3huuv5gF97Z4DvzJwLyr1m8jNsVdL6rs/DmfJLSV3ZadQZUvaBLo6HGHP3tcPqvO3NuwsPePTkBqswyRph+WSSCVZxh3zagzKgUPMhv6Ad3PpLjurUsYtOJowA1AdzO9F5YoOqHUFWn96hwR8t9tSuYGzEjI65JzfjvlTJcwUPMYk8g==
+X-HE-Tag: 1795848735-870247
+X-HE-Meta: U2FsdGVkX1+x3GhaBrhNZt+bWwUk0cMrPP5+8Zy2dKdtnyGuvhWQP8qc8Zvmw0ZaKlK9vnzmqCOlE3GdcUMESwZTGFKPW07G31snr+lWrWLy4R8Q4VymDnVmHUcMChn69BFiVA+QKjaThfs5tBxtgPqpK4OMLKhDD7FbQbd5ihEDkKAksIgouAZhX3ld+snNo136wZtFCMDs+Ir1A+6NACquGYkUDxLJShsJbeEn6QgkF5UOf0AYPl7pGUf/TFTQ9SEsSlFHS7+/nFXveLHAPDGWFEsfqxjk+9nYG/Kx+HO3WPM8oGCgf1HGpkTrwps3IVKWURKYNZDhao4fRJSK3OTNW0hL3qwlYVvqJ7taZKxEQDnSp/6PIWHoZFB5mFfW5rowloY6Gu7MjgCD8gsBYc2cYYInZw9jECDXZjIkZx2ySIczbpL5wbVDchoTBwmdjLXGMgo1zJXS4GQVmVAOdf+B956vzL4es9zM4w2GyUQQzg9wwmsFGCVjdt7ggDNF7VsulTcfDzYL18EJbw6rkfturhoCQ7ipqbXQeaP0aQglLZCgCXbEN5gYVe+6ad1jHb2n8ZBJ3NbTif/FJsT3XKsnnJKLD+s+b/of5KzZBIIO9yZkkVIT6TSJN47wY/z+Uq8xsU2Ek0dpPDbTuD9XLgNfA6S9BDbduQ+wjmXmm9FO8psbtTsMnbTaJjF4aM882x0tUxtJDjPrCVAlUM8x5voJ4Hshg3OOAMNm2qwCupPI8aGp2aqCD9g5l/Rychjmw8m6LvHhtHZXWaHuKxsJvfxCDM0lrHuoqLt5CZ+MYdHXpFxp5Ko45mp8GzkRAzAWEiUBEh0KLrOTIE3OlYZ8g4wGg7GpBIB2ThwoumwIMOK1ZfCJ60uY/CfipgCvWEGVqIeJ8JLsxoTPdxzdQwi4x1XKeMx2XwbdgkcpS26Qpe30TjmR3y/OGfquZPATM3IGJi5MUIeCMEnbUj77GPk
+ I5oyermI
+ cEawwu0sWjmFTKMDN2fhXw1thrKL5CSpDoLBgrXfis1KHwThMOQ/PKyJyI06qI8vOGWiCEm7Rm4+J8TO2Yt44QmP9N272eVmMfg+fOfEtoduVz7caOk/sK+9Z2/+L+z+GAAlgDidmZ6iGQzV4XZ7C8bpS2ZYy24jd7Sw/jyKzoQ1whzG8cMpW+o+k954XEY+x4O0k8k6AN8kJuqmCwVx6uelcCP9/mbbBUHBFKJ3S0lCP+WYcSq07vBigSgItLwxzUBK/297YHOAk+E1TANGlchIFaxfJElL0rpH7DwSBCVP3ja+D5Cc8UOoOShVZjU1QPrXEuUE4EGMBdySDjyUooRdxJ2P7Mco+pnv0pG+v0FF+JECukyKRbMVrptSBPiKFw/1wVuE9FWp6gx93WmE3vSs2z4EjVbJGvMAXDC0lJ1mhnaVgrpvYuACOsYSOdp19DQMS+P9xshBtZFgQrle+nwaF5xCQ/WKctGHskzTU07iBxURQx/MBVxY4T2+yzWcXObm4kzogDYP4QoajeT119/yQ3wbCvE2884pEDfxsDi5bnAb63OgZKbrJ5JyJPvxwr9auKqL8TewqcPm8pCiAA0Uaf+tIf2cwmzvkYKz2mNhz8VTXa8UI+Y2A2TZ0IlG+26W2y6hFMY/IIm5kbANG3FwIRQx+LPiam0s/O+gzKs2TmKtDYADwBQhtEqF5WO4e3iQ35s7jF7mwIQuMQxfaE3dr9zQ7BVSmXFdqipmhfdFuF99LsJJJ/HMxyLdBbOmRvWl7RuKFUKekjozMpv94s0fauPmfUQwvAcr6gu3A9QKRW21QpjOn0/WDJHwMTnPbzA2rM185hMGsmXuuu66KKpa5ElRVw6NeBDUPOHv5f4WYeF6tSVxnuqhA0Q5/2U889i7Wq8AEom7PLc15heggeB1szQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,18 +99,22 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 X-Archived-By: <archiver.kernel.org>
 
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: selftests/mm/memory-failure: close dirty page-cache files before unlinking them
-Date: Mon, 23 Nov 2026 08:50:00 -0800
+Subject: selftests/mm/memory-failure: write the whole page-cache test file for OMFS
+Date: Mon, 23 Nov 2026 10:46:15 -0800
 
-OrangeFS writes dirty page-cache data from close(). In the soft-offline
-case, unlinking the file first removes its server-side handle. Writeback
-then returns -ENOENT, which makes close() fail even though soft offlining
-itself succeeded. The hard-poison case avoids this because it truncates
-the file before closing it.
+"selftests/mm/memory-failure: extend page-cache test files with pwrite()"
+grows the page-cache test file by writing one byte at the end.  That works
+on HPFS, but leaves a hole on OMFS, whose extent allocation does not
+support holes.  After a mapped write and fsync(), the file still has the
+expected contents in cache.  On remount, 2048 of its 4096 bytes have
+changed, so the hard-clean-page test fails when poisoning drops the cached
+page and rereads the file.
 
-Close the file while it is still linked. Save the close() return value
-and unlink before asserting so a failed close does not leave the file
-behind for the next test.
+Write a full page of zeroes from offset zero. This still grows the file
+on HPFS and allocates all its blocks on OMFS before the test maps it.
+Check the write and clean up on failure as before. In a diagnostic OMFS
+guest, the test passed 9 of 10 cases with fix-5 and 10 of 10 with the
+full-page write.
 
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Cc: Amir Goldstein <amir73il@gmail.com>
@@ -131,28 +135,55 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>
 Cc: Vivek Goyal <vgoyal@redhat.com>
 Cc: Vlastimil Babka <vbabka@kernel.org>
 
- tools/testing/selftests/mm/memory-failure.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tools/testing/selftests/mm/memory-failure.c |   25 +++++++++++++-----
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/tools/testing/selftests/mm/memory-failure.c~selftests-mm-check-that-fsync-reports-hard-poisoned-dirty-page-cache-fix-4
+--- a/tools/testing/selftests/mm/memory-failure.c~selftests-mm-check-that-fsync-reports-hard-poisoned-dirty-page-cache-fix-6
 +++ a/tools/testing/selftests/mm/memory-failure.c
-@@ -442,8 +442,16 @@ TEST_F(memory_failure, dirty_pagecache)
- 		ASSERT_EQ(ftruncate(fd, 0), 0);
- 	}
+@@ -17,6 +17,7 @@
+ #include <sys/vfs.h>
+ #include <linux/magic.h>
+ #include <errno.h>
++#include <stdlib.h>
  
+ #include "vm_util.h"
+ 
+@@ -264,18 +265,30 @@ TEST_F(memory_failure, anon)
+ static int prepare_file(const char *fname, unsigned long size)
+ {
+ 	int fd;
++	char *zeros;
++	ssize_t written;
+ 
+ 	fd = open(fname, O_RDWR | O_CREAT | O_TRUNC, 0664);
+ 	if (fd < 0)
+ 		return fd;
+ 
+-	/* HPFS cannot grow files with ftruncate(). */
+-	if (pwrite(fd, "\0", 1, size - 1) != 1) {
+-		close(fd);
+-		unlink(fname);
+-		return -1;
+-	}
 +	/*
-+	 * OrangeFS writes dirty pages from close(). Unlinking first removes
-+	 * the server's file handle, so writeback returns -ENOENT and close()
-+	 * fails. Close while the file is still linked. Remove the name
-+	 * before checking the result so a failed close cannot leave a file
-+	 * for the next test.
++	 * HPFS cannot grow files with ftruncate(), and OMFS does not support
++	 * holes. Write the whole page so OMFS allocates its blocks before
++	 * mmap(). A write of only the last byte loses data after eviction.
 +	 */
-+	ret = close(fd);
- 	unlink(fname);
--	ASSERT_EQ(close(fd), 0);
-+	ASSERT_EQ(ret, 0);
++	zeros = calloc(size, 1);
++	if (!zeros)
++		goto failed;
++	written = pwrite(fd, zeros, size, 0);
++	free(zeros);
++	if (written != (ssize_t)size)
++		goto failed;
+ 	return fd;
++failed:
++	close(fd);
++	unlink(fname);
++	return -1;
  }
  
- TEST_F(memory_failure, dirty_shmem)
+ static int prepare_shmem(const char *fname, unsigned long size)
 _
 
