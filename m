@@ -1,127 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABCC606A31F
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 01:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEC1606A31C
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 01:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=kZMIZUK0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XH0k4BS5
 Received: by kanga.kvack.org (Postfix)
-	id 0AAE36B05B6; Fri, 27 Nov 2026 20:00:05 -0500 (EST)
+	id E19E36B05B8; Fri, 27 Nov 2026 20:00:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 062136B05B7; Fri, 27 Nov 2026 20:00:05 -0500 (EST)
+	id DF0716B05B9; Fri, 27 Nov 2026 20:00:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB3846B05B8; Fri, 27 Nov 2026 20:00:04 -0500 (EST)
+	id D2DBE6B05BA; Fri, 27 Nov 2026 20:00:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 79CFF6B05B6
-	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:00:04 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DEF21C058E
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:00:03 +0000 (UTC)
-X-FDA: 85482721086.24.6DDCE2A
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0076EA0005
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:00:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=kZMIZUK0;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf15.hostedemail.com: domain of chris@chrisdown.name designates 209.85.128.175 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A60236B05B8
+	for <linux-mm@kvack.org>; Fri, 27 Nov 2026 20:00:21 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A2DC280590
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:00:20 +0000 (UTC)
+X-FDA: 85482721800.18.60E3F1C
+Received: from mta1.migadu.com (out-31.mta1.migadu.com [95.215.58.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 586BF14000C
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 01:00:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XH0k4BS5;
+	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795827602;
-	b=6Pw9G7EvnugJ7xp7lWV7bILIDq5LsPql4rcjFmqEOvi59cn1CcPN913PJrVuymNdbGyDgk
-	dXJFUk9EZHtURVSvgYbHedSu9cHXghgKuMq6ekcbxxK6aOQDwf1ReGj8k/ymcaqCEV/zrE
-	jqJA6usMWH6aXyuDGyxX2r0NCkfDnpo=
+	t=1795827618;
+	b=RoGct/+RL+AGmJSOwkS2iz/c99P2WDWnIK/dk2G0csiEz9Q5tkxP6wDf8lOzvoCcyapkx/
+	U3eMvhdcN5W8uPZTqkd/4ZI/tYfrwWz57/yF+/zzdey3G9WG7iM3n4H8JshlON5Mr+0bAR
+	sBcaBSc5wTEC9/bzqzfEVbPHN+jr1y0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795827602;
+	s=arc-20220608; t=1795827618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r4Hzxb3NGCSSYFn+Gm/a38nZ3OBSGBwiKOcgfEfvzmI=;
-	b=6/q11qwTl+vmq5G1sI6RzfwabolG05p9FCNLH9ewr0/KBr4eWMGrBd5+Ns8t2FqJTdqFzF
-	fBGogZwwsLPVGb4uY1llPnD72Q6ivazm+zDn9N07wNXF0vbWQ1t3GPRIwTJTWcFA+MVwnN
-	OA8SmLm4jhya9oplhm+YrPtydAyovGU=
+	bh=Mqx3dGzZDtWqr5igOUi74Egvf7mE8f1iQgIUJSdsnkE=;
+	b=ydZYQJD4aoaOsAk+3GP+qU9y8orhAJ0UV8ayM9ARs8lA6mSIe6+K4z4BrKe9K+v4duDxLq
+	gDpjJ28qbHiHboVYrMB4jEKj4czCpfnlphnPqC/2iB8nIuqy1bTnHjQsZOdHWSJWiznBFf
+	Ay77gV6teUv+6jWbHaxcrTbRx1sY18Y=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=kZMIZUK0;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf15.hostedemail.com: domain of chris@chrisdown.name designates 209.85.128.175 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8b4cd576f2aso62868707b3.0
-        for <linux-mm@kvack.org>; Fri, 27 Nov 2026 17:00:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1795827601; x=1796432401; darn=kvack.org;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=r4Hzxb3NGCSSYFn+Gm/a38nZ3OBSGBwiKOcgfEfvzmI=;
-        b=kZMIZUK05MF+x3d84rtDSOPCgHn3vKbLaJYJYuG9V2nSCvKmO/SnICHIacxQyyh4wx
-         793UUcjYCbVyWhlXFgB09zUW/hGhEWpDMUYhRxt8tfQn69HM3ypBQkhwFb4+7cLdcIbv
-         3gLd4v7cnzxmFfvXAlvbZD43uGl9b7YsxbhFo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795827601; x=1796432401;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=r4Hzxb3NGCSSYFn+Gm/a38nZ3OBSGBwiKOcgfEfvzmI=;
-        b=WDizIhIkNLB2/tUT+H3zflFbkUUb6+SZsC9r2Dz24tgdm450q0eJSrNcn8Iw76hXMj
-         5irC2q35fzBBF4UMcr3WWCBCjUbOMnn9ajJ4t6juIkXLY8GCwNlCMszEmdwvB6qkiPjd
-         XRTlk4UF3R3QqBHE0jhjeGPdvhcdUJ349Y7zHmWqJxmGuNjtYUkwK1XAwwoVer/brjcs
-         XRx2VyYiQB2WWjDIIYUFd6Q1ilfSZcJJJTfSUY1d197jOI8x7FZtk0USPBd2wv/6gJ6p
-         ENZcidnUg5mKIyfG0zIHrh2XuJz8yx8UNvFe83fjpHut5gvCLFPus3YxQLUxyaQN76Zg
-         5IhA==
-X-Forwarded-Encrypted: i=1; AL+hErHmOa11JSmkJiuPL2Xz5156fJGPmSxV0cDcpNfG6qMzHqb3HVSBgmEIortKNkISyWVhv1141Fq7jw==@kvack.org
-X-Gm-Message-State: APuU4Z8qOlTcqSH3mU5B19FMGY4nuEW7g6MyUeI3ZuISGgJnenzc3UIf
-	V5XrEHDPh+ZoazkS3U7HrVaflOS6PWW8r5KDoF15cbpX7YAuB3aAjdhjvY+JcnjjVhI=
-X-Gm-Gg: AZFdTZenGg88YrxkEx9u+XPh2aFfdlS9+IGJr0F+l3B+JQhLTLcFjivcr3Mhn9tuxtn
-	6DXInKpqk4LShMTZi5W5ahpehdk9FqHB7nJOiBw7VIFSSzwKAlWTI+c/ED9O6/1v/yI9cH2AGGY
-	5yMKnevxMKevFkVHuM8geT0E9KQMEfRuXHjw/daIJSPl/pfF0p3di709eaGptzX7Mp7FtHMlDhw
-	lzE55h/IUiU0iu65wcwmb3DZzWv2ECc/PdHVsdWpdc6ThvFEwTiWCPis3Gn3exG5ZQIh6ESdtHs
-	k/J9fjXNIYE0zckkwzPtA7ZbSCs0St3ztyeFp5fy/0BuNMG1PaSs5r/q6CDIIMcrJ3n8Jql35cH
-	Fgfe+i8FSLLxYGd2qyKrTkUPxJHumXZlo8q0ilmYauzCbRSfysDcq3Ptz2zbXE0fGUxGL1pgade
-	ssPj/1Q1bRrSm/9dabBbTjPdamGKd/kLXnFlHwUmN0MMomXa3vb5MMLt1k8EfAq5diWqArAYGtP
-	UaAMShZzNSmkxDKVrK+0iUJHSi79mpdrG2eUiAVDPebyYG8yFcT/dQ7Rb9WhUjpS4LuW2XvGttY
-	YyuMKwBE90fT/og9Kz3G7O59rDTtjg/6q6zD7TyKlrLf4Bf6HwojtOVxNQE8XqDMsJKuoSjzkGZ
-	iKpAcYTy19RJxLoh6SVE8heu8WGDKBzIQZAv7aZa/sVSnoZOsS8SYEg7vC9RLWbg0lUQHAa5G23
-	mJqDnmk73SWKc9ZpwqdJ42bYkRRP3dWL4RLQBcNh68QelGbc/gNhcdVA8k2A/OSqewZlQM/cftL
-	3DIvfxtmedLoG2UnyLsk2Q=
-X-Received: by 2002:a05:690c:b86:b0:8b3:4911:2dc1 with SMTP id 00721157ae682-8b5204ae0e7mr116512127b3.39.1795827601141;
-        Fri, 27 Nov 2026 17:00:01 -0800 (PST)
-Received: from [172.20.0.2] (c-73-207-185-9.hsd1.ga.comcast.net. [73.207.185.9])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b5202bf474sm101002207b3.21.2026.11.27.16.59.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 17:00:00 -0800 (PST)
-Date: Fri, 27 Nov 2026 16:59:58 -0800
-From: Chris Down <chris@chrisdown.name>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, David Matlack <dmatlack@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH 6/6] kho: don't reference subtree blobs as FDTs
-In-Reply-To: <20261127122536.3708770-7-pratyush@kernel.org>
-References: <20261127122536.3708770-1-pratyush@kernel.org>
-	<20261127122536.3708770-7-pratyush@kernel.org>
-Message-ID: <awonjgkHO4wSeAGO@chrisdown.name>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XH0k4BS5;
+	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=RKnRcOIcGyS7Q4fYmPPx3vmwgt3xMD+hw2zryeREoW8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795827614; v=1; x=1796432414;
+ b=XH0k4BS56q72ELa8Ps5FckyqvAuqzJ7Krc7PUMdFV3zPi5m72OtQTV/x6s2i7DmJ6xGBaddT
+ iDbmyDcOfE/YqozMEqZQ1FYLiHjm0Rj3EAMpMJcQ3keyOyrBQTpRsOoGZYohCNEhJ80w76YRybw
+ kvwbqlI5U8Dl1CkiAcPKzyP4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b2ab50d9f812f444;
+	Sat, 28 Nov 2026 01:00:11 +0000
+X-Mizu-Trace-ID: b2ab50d9f812f444
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <42195463-c50b-4f80-ad2c-ecc106e4c2ae@linux.dev>
+Date: Sat, 28 Nov 2026 09:00:03 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
-X-Stat-Signature: baxw317jm8makx47dx6rodtp6g1rfu45
-X-Rspamd-Queue-Id: 0076EA0005
-X-Rspamd-Server: rspam06
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] mm/mglru: shorten the lru_lock hold time in
+ scan_folios()
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, David Hildenbrand <david@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Barry Song <baohua@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20261127060315.1119672-1-ridong.chen@linux.dev>
+ <awnYv_mxag0b6Dny@KASONG-MC4>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <awnYv_mxag0b6Dny@KASONG-MC4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 586BF14000C
 X-Rspam-User:
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795827601-604395
-X-HE-Meta: U2FsdGVkX1/m7MqvXPjQEd7ix+Sw2hyaTK9SupC7jUpHqcDDd2aWQ84sstAXmpQjI6KbZsbI4uyxGkI/nSZQssH+KHTOFKwOJm5MaQnbRBcqfZasOT2VuNWcFgiE6zyRMsKD8WR/+E/qOJKjYE1wVUWGn+ODvNFlcTXReBaP+p2sAKJ1m/jYivfjN9h/mozfOCdOE17L3nZ62ediZEOaSkH0KzaRa/4l7JLqAbudJw0dD1oEetYJugvX+6CJEritUtj6KyiQEMBwTSM45ZETk9663CvLNCLjQ7buoPnOn0BYKph2vTNYAg3RIlhjyUDVXBdeLXcgltTHXiSnUD1qelGNUspHJrYRgxHXxbA5j1QHcQA9Tia6hE4/WbC1wRtcEZCja5cV0ViReMpszTpxiuTUMVfRmqIxFoeBpMfOZBB8hTzt2cq1RJMShXLIL6lvFa9E69qxXrYnroOYOWT/VV7vYYVnfo4TMd+Dog4ouylZdaBU1F6esycRVEwmKmAbfz07zWFMCBSc9ETlbZOpCT/HnuSNM15f1qdrYQjppqEQUFE8kF+6gKx5ijUGzavYE5pZOo1GWCj3EbDMzUPIgfcX4Gm7Onicktx19LrOdl5DuXyCewBw/1DR8SVzel/Sy9lVybMBo9Q+AK//kj/++FdAUTbNAfMf9tlHYUHRbNgqc9ghmzuyPzW1m7HhvXjuO7D5uuigybubZlrn0LH6q8R1q9agl/NenxD/B4jFIdSVf7bsR5QsvMmKdZUXxgPxZlBXivwetXPiLrAi1yNSicamXs1d5+bhSLGJss6WY/RMDPhuCmrWcpNNOuP7zQ+zqVbn9R2OaergJRd+ykQGFKgIyaEPt/5DOyo36nv+ZJKOhXqU8pHOLMXnup342gHDMdYuHvqw/3ZPiCY0otqHyxUYdHyXRRTNnZjVOrrmjZUq2s0B6okDjnYL8v6wRSVlzUwE69OrgYYDzNUZwYX
- ZWUxguBH
- ZoTCuMdU6yqG20MPHuB6/tllJd0ewqEDfS3GDGSTsDNK8DN3hSYHaikNaDTHUGiEIMYPKwcu30aIBVZTh91HKzC9sKb5UndUwu8rqw1fw3l+aq3cN23Aan5QiVZUKLdmBrxEMcaxRWEIVykx4ZBRl5gk9Gq+1nIwrVtCjmz9SZ3l8bF8q5IgeyeprQ8ZINVBz3Vp03JxzH4UiNNc97JnChsdzg4pcQPw7pfc8S+Dz+pJstqpcYLOmeMSccytbzqPQ1t2UakzUAZj3VOBVMfTyh4SSad2sIfuu2dzePUQYoC63KcZzxWECOdir9WfrQiowyiw3at+ZydZUgiClCUbApT7TR0TeXf7YaAqYVby6CkwSnYS+vD/oM78U0BFUn9zgB9DdTJz5ELLvqWHdT8nKq/cQPxksDNMiC920lpsDpkBuihf3NJvfK35knTVM2XfgiQJVGV6pAEMq7xMWRe9MXtUyn08mSwxRuj8h51/xF2pFug9kAab3RTUYCmQ2pZj7LGbGGMOclsfTcddxXGnMZ9WP6iD6ovZRCHo2qeisEluJS+dbbePwgJ+/q8SUiGwPJsS0KJ1TlsOgqtsi8t0snBgYApp853vwBJLyjT+jfyzK1L/bnNIfZCWXsGNA57KTJ1h02cV9IL6ORmU=
+X-Stat-Signature: 9nexbkbphieuqeq5d8eexhrs34i5rrgp
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795827618-204566
+X-HE-Meta: U2FsdGVkX1+/3z6kB7D1N54SaWlzLBxFJ4P3+LSxet31DsajVD2LgztcK4emJSOSeCd0I+WhJ5np8aZgLE4hice8FVWprXL2p/QTqnnLiE6qAVHDwCKD5mngI4HB2NZr5+0IfE7JlbrO2xrUUy2gi+SZGrun4EM9FuX3PtZBkha63SQjlRZkuoFduTU99oP/NFLbnVr9015d0cmfLTn96sFfYcJRfF5ySAVErpINaEXRhm+oDVll/FkHZOVkO3NnTy68XdCOWkH25oyzbnfZpOm45apjT6BAQwg6KJIHeNfkdMx94aNb2wuvG2vzJ8moOPk4MpbTWD+LFr6g4seoEUJfj/SRK1yXCgGLIz7GFU2QKcxRtFFpXkke6OJJMdTf0enViZJwsKJHL2GoluEXxUzgRGYs5HbeYDVan/LIanTOpkQ7JIaY6GKRQnbX1zJ2FsQGuq9ENVeWFdlXvk3fwGhoNGb63lHLl6V+t4F0J9UhIr6w5AznNb81Zc//DHO7MEBOhIbAmuXAu3NwHee/BUPe808nydPI3XVa7DaMS448RmtiIkO09O0kFLfqHqDJqeiHrikHQYdWLksE5y9HQ6XnR2o7f/zKat6OwLGn8gjXVKuXuDM19f5SjqolSpw4PMgBSYgvOkZxF98jpdfiDvYw4MGDUqFtHMzH1q5KyYDClPnT/uEqHxvVtGmznk5X8HlvG+nnOYmems2V2t8iST3y47HyhTSHehLZjIz5LIK2ORrzGmRfmviOuyyNFCWYSU9qvad5FrcRqZrywg6/fmllbYZMjW202xqvzFUIyS1gmPoipHfpbQeNB/oFqXTl6yfTo/n4gNstNqZcxtJ793iSX1pKDgeV5pRfbQ4oi6TNwmp1NKD/4mfzpkixokaFcNuR2+Il5SXdDwXyqblyD1OxdaUCTMGsRu53kXxBbBq80Pv7TS26oiXMKfCAoIDnF2djsftsagP6ygC/j5o
+ CZQMlcEo
+ SXFRrE5X6gHhZEvSlJpVvFjdOrX7ykmM79DasqC/70fJ+mctjJfR5Zvpg8Pt3n2MNzNEzDH+18Cu0Lbgd/O7ls4SE5SGEgvjd0044Sj5fKyh6wOKbP4ZJAuhPrUZZEPtmPFg3MwVjBLcmdUj9YGLVICWnxtz0M9HmvJVTDsLkqRoFyGMhBL21pIVItfTBdCKmCLV1WJ6jRTXHrS0R/8CADtbqNA53jaXVW/+4xGLWtGSiMRrLsp/3rHiEIoLDGau8+VAM/h5V1yrzuC/Zb34uVJFyt002icE9LRHO3iFzKpd7B97ro1/F7PhMA7reYjKTJIYIGbreF9bo2yJ7KUemkxMFQ2svaA0J00UuxliSAgee5940lc1cE99h/OfFg0NwsVAdnThiWWe1E1oI49u/HIKxZU7yXrRKvygSQQOngoN6vs0VWVWlZYvPekjtTssJTAoLMoksnuCPXUWJd5kLxAzMbbv5Qtd9PD77G0BPzEs70+l1PaT+wZ8sNMLbSv/Fu9OkhjVNNkbHiGrKjpIa/eaF1r25N5n+0Ee9dRUUnYvDbYHyjr+FDtpmd47z4E2q/Zufsl0R9nYEirCKk9lsLmyxhTs9WofO1tPcsFYBSxq2msXJnXnGm19kHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,12 +104,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Pratyush Yadav writes:
->The only functional change is the rename of the debugfs subdirectory
->from "sub_fdts" to "sub_blobs". Everything else is a pure rename.
 
-It looks like two places still refer to the old directory name:
 
-    Documentation/admin-guide/mm/kho.rst:110:``/sys/kernel/debug/kho/out/sub_fdts/``
-    kernel/liveupdate/kho_core.c:1099:``/sys/kernel/debug/kho/out/sub_fdts/@name`` when kernel is configured with
+On 11/28/2026 3:34 AM, Kairui Song wrote:
+> On Fri, Nov 27, 2026 at 02:03:13PM +0800, Ridong Chen wrote:
+>> From: Ridong Chen <chenridong@xiaomi.com>
+>>
+>> When many CPUs reclaim from the same lruvec, they spend most of their
+>> time spinning on lru_lock, and the time scan_folios() holds the lock
+>> limits reclaim throughput. With 24 threads refaulting file pages in one
+>> memcg, about 40% of all cycles went to waiting for lru_lock here.
+>>
+>> This series takes per-folio work out of that critical section, along
+>> the lines of what isolate_lru_folios() already does for the classical
+>> LRU:
+>>
+>> 1. Update the node, memcg and zone LRU sizes once per zone instead of
+>>     once per isolated folio.
+>>
+>> 2. Prefetch the previous folio, so the cache miss on its flags and list
+>>     pointers is not taken while holding the lock.
+>>
+>> Tested on an i7-13700HX (8P+8E, 24 threads), turbo off and the
+>> performance governor. 24 files of 128MiB on ext4 on brd, all threads
+>> in one memcg with memory.max=1G, random 4K pread(), so nearly every
+>> read refaults and every thread ends up in direct reclaim. Reads per
+>> second per CPU, mean of 2 runs, with and without each patch in one
+>> kernel and the runs interleaved:
+>>
+>>    CPUs      base    patch 1   patch 2   both
+>>       1    426681     -0.4%     -0.2%    +0.3%
+>>       2    387442     +0.7%     +1.2%    +1.4%
+>>       4    360312     +1.0%     +1.5%    +2.1%
+>>       8    314549     +2.5%     +2.5%    +3.3%
+>>      12    235058     +3.2%     +4.3%    +5.6%
+>>      16    184086     +9.4%     +9.2%   +11.2%
+>>      24    124478    +15.5%    +16.5%   +21.6%
+>>
+>> The gain grows with the number of CPUs reclaiming from one lruvec;
+>> with a few CPUs there is little contention and no measurable change.
+>>
+>> Ridong Chen (2):
+>>    mm/mglru: update LRU sizes once per zone when isolating folios
+>>    mm/mglru: prefetch the previous folio in scan_folios()
+>>
+>>   include/linux/mm_inline.h | 26 ++++++++++++++++++++++++--
+>>   mm/vmscan.c               | 18 +++++++++++++++---
+>>   2 files changed, 39 insertions(+), 5 deletions(-)
+> 
+> Hi Ridong
+> 
+> I have a different approach proposed about two years ago:
+> 
+> https://lore.kernel.org/all/20240123184552.59758-1-ryncsn@gmail.com/
+> 
+> I hesitated to push that as the end to end gain was not
+> that large (5-10%) fio and it makes the code too complex.
+> But I think that one may work very well for microbench.
+> 
+> I tried to resurrect that 2 weeks ago, but realized it's not
+> the best time at the moment, there are too many things in flight
+> for MGLRU:
+> 
+> https://github.com/ryncsn/linux/commits/b4/mglru-isolation/
+> 
+> Perhaps we can discuss and see if using a "batch struct" could
+> fit better later? It should also unify the aging batch too.
+
+Hi Kairui,
+
+Thanks for the pointers.
+
+I'm fine with handling the batching together with your batch struct
+work later, and happy to fold the nr_taken[] part of patch 1 into it
+when the time comes.
+
+Patch 2 (prefetch) is independent of that, though. It is the
+one-liner Chris suggested for your v3 1/3, which he said he would ack
+if resent on its own [1]; the inc_min_seq() half of it has since been
+done by commit 5d3664f070f0 ("mm/mglru: move folios from oldest gen to
+second-oldest gen from head to tail"). It is a no-op on archs without
+prefetch, the same thing isolate_lru_folios() already does for the
+classical LRU, and it gave +16.5% alone with 24 CPUs in my test.
+
+Would you be OK with taking the prefetch patch now, with batching left
+for later? I can resend it as a standalone patch.
+
+-- 
+Best regards
+Ridong
+
 
