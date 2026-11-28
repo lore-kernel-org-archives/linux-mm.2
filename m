@@ -1,77 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92760606A31C
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 07:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD97F606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 07:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=FoP+S/Zu
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=ZT8lgopD
 Received: by kanga.kvack.org (Postfix)
-	id 502136B05B1; Sat, 28 Nov 2026 02:27:32 -0500 (EST)
+	id E297E6B05B3; Sat, 28 Nov 2026 02:27:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D8E56B05B2; Sat, 28 Nov 2026 02:27:32 -0500 (EST)
+	id E01586B05B4; Sat, 28 Nov 2026 02:27:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A08C6B05B3; Sat, 28 Nov 2026 02:27:32 -0500 (EST)
+	id C7AF36B05B5; Sat, 28 Nov 2026 02:27:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C0986B05B1
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 02:27:31 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 897A76B05B3
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 02:27:38 -0500 (EST)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BF320A818C
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 07:27:30 +0000 (UTC)
-X-FDA: 85483697460.19.B4E02C8
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 557AB40006
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 07:27:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="FoP+S/Zu";
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DED71A05C7
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 07:27:37 +0000 (UTC)
+X-FDA: 85483697754.19.BBC30C5
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5DCAE1C0004
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 07:27:35 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ZT8lgopD;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf11.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=longwei27@huawei.com
+	spf=pass (imf18.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=longwei27@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795850849;
-	b=hfh6kD2bN26Sh2w0minIylQGwAtvSAGs1wtCSzFl/e4lJAz21jRfEQGYr2mkgmk4odyW35
-	unDnHlN3yf23znEUfUusP2tr6Zy2kq7qig2KdK1DPzm1RCAm8i6gw5cqu1KUktczoMrvK/
-	gY7gR8IEHL6xyAfYHLTrJKcNkZLMv9U=
+	t=1795850855;
+	b=TB4ZxPrmjqLFamx/tN83FDf+J5APPYlpKMzhd4wsgGk7y+h3ZzvK0R/vWudGJiEY7UdDeq
+	JkwxNsxHyzyoT+x4Bs0xgE6y+IuJCoATlvBRc1k+iG+k0kxk7hHoeVuPtGDXi8tA6YPC/d
+	fDAeOQbeehC8QU13ifwhucCJ6wWekcs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795850849;
+	s=arc-20220608; t=1795850855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S2+GAWJu093KmsSX+p7Xa5DYqGY04zbqmyhRiBRhNQA=;
-	b=J50tVtK6dNG7aR8gDJ9MKAUoGF2aIbBPn9xr7gqdbw7FsxOi7erOz9du3BLAfd/QZl7M7r
-	LNkmG0pVa5CJ8QzbWdq6De72X5Cr2iIvs60wjbbf6rT5F8jjgWrTwLlOO5MPWdLzc0ZbNs
-	XjILFrVtdRWIJ4WIwLazs9YAGY8bE34=
+	bh=iKGjH6wS2a4sHmXZLlgO25XKxI/4g/tKHlpp0EC0Hlg=;
+	b=PiRrapoxd0nJjNORMBP20r/75bHccsSt94uo1naZR8VddZDLpFSDUgh6yLN3dVXt4RAc6/
+	J7Fqq8ZOzqZOui/iF6hnvQMyPYYy+uc02c0+DXz990aBetqLJZUHxOz9MUnLSDB0NcC0w6
+	oZIZJnpJDbN4qqz7k96gzceTavUvG88=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="FoP+S/Zu";
+	imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ZT8lgopD;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf11.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=longwei27@huawei.com
+	spf=pass (imf18.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=longwei27@huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=S2+GAWJu093KmsSX+p7Xa5DYqGY04zbqmyhRiBRhNQA=;
-	b=FoP+S/ZuUgZhkugJDKfGpPKJdLiOb7/sLhugz8VzW0r5yZvf1zD2eUrmRcL1Ggxbu1nf5oSNo
-	oN+tNaSB5x1PKoeODmysqEG3iDjqciVhzCGBPrGyusX/zt47k4k4N53kn/6G6ymsH00DcYKpOxs
-	EIUqKWzwMUGNTecHH4ZlqLc=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jc20C06Vqz12LFT;
-	Sat, 28 Nov 2026 15:26:35 +0800 (CST)
+	bh=iKGjH6wS2a4sHmXZLlgO25XKxI/4g/tKHlpp0EC0Hlg=;
+	b=ZT8lgopD9VuauBsAONcI6THMkpuSRbLWx/lHGseaVInjt0vU+TYa9M67rPEzfr2AHVy02PU71
+	WIqUznSiO4MdmCDXN87x/RXDnIML/yddpzAI65Y1u4k+J7xA62G699h8p4xSbTZ4XiW6VxHiZyE
+	8+X57tS/edSZrkQV77DHGuI=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4jc2056Mdsz1T4Fx;
+	Sat, 28 Nov 2026 15:26:29 +0800 (CST)
 Received: from kwepemo200009.china.huawei.com (unknown [7.202.195.26])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7A2C64057D;
-	Sat, 28 Nov 2026 15:27:21 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id B6DC040561;
+	Sat, 28 Nov 2026 15:27:23 +0800 (CST)
 Received: from localhost.localdomain (10.50.159.234) by
  kwepemo200009.china.huawei.com (7.202.195.26) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sat, 28 Nov 2026 15:27:20 +0800
+ 15.2.2562.45; Sat, 28 Nov 2026 15:27:22 +0800
 From: Long Wei <longwei27@huawei.com>
 To: <rppt@kernel.org>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>
 CC: <shuah@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
 	<kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
 	<linux-kselftest@vger.kernel.org>, <hewenliang4@huawei.com>, Long Wei
 	<longwei27@huawei.com>
-Subject: [PATCH 1/2] mm: memfd_luo: pick up seals added after preserve at freeze
-Date: Sat, 28 Nov 2026 15:24:43 +0800
-Message-ID: <20261128072444.1114964-2-longwei27@huawei.com>
+Subject: [PATCH 2/2] selftests/liveupdate: add seal-after-preserve kexec test
+Date: Sat, 28 Nov 2026 15:24:44 +0800
+Message-ID: <20261128072444.1114964-3-longwei27@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261128072444.1114964-1-longwei27@huawei.com>
 References: <20261128072444.1114964-1-longwei27@huawei.com>
@@ -81,18 +81,19 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemo200009.china.huawei.com (7.202.195.26)
-X-Stat-Signature: zujb6n4ygtew7ig4d7z31f1cizbwsqh4
-X-Rspamd-Queue-Id: 557AB40006
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5DCAE1C0004
 X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795850847-206171
-X-HE-Meta: U2FsdGVkX1/TuZJh+kiki2Kx7jMbF+q1M01fubYBkPZddF5yZAdsQoFx5NCydPwlilChPzQBZCqcWQHtLDgJJ4pgrA7Prd0pwdkoqErXP/0tdJV9xZd2hURBvgddPKV8h6II4szl9z8ZTAbNBojYr4eCb+CeNBmymFqOfl+I0vWTK7DaAMIHXGELoYvrhNpC85sgF62rZi72EVx9tQs8MjtiYFM+SgOunUZ6pW2fJW/qyvF611wjAPgXu0+ClPCTmwy/K580cppmiIcnMsuHNM4GHQtUo2AZC9qrqmLsOWw1rL5y+VqzJ3CSMvyOGzkYkkDQdOJkNpnzotEwY166buV2G7MeCNL1J7tgDkAOKkSThBTJOZ4AY4jA+N7fRAbjs9G0uIBvahvbON0zzWXZ8hokgV+4aANk55sQWBSOTeDqHdOOm8Ufau5Y9Woxs3HheUcrZOPZRwRuaBq/vHhnj09t9hGZ8H14eYYqmPDIdIoYmc3afoNYBelWfFs7c39OlJRjDplRDPmnXlGUWho0ALdY1iXJm08qcsDrgpO8DTt1VztCqpG661DJ6p3K50SCinyAmnMGHYTUclyosPtD+UwOGCQNlZM++TkC993ctV5jO44FxqVdg1sbcX+FKzqrkKluEaul6WGKPmA5gKFwLgXVsrcKcE4k7MD5Y18+ONzHsbtJsUmTDxYqID7fYCmOWEAj33MeNwmVLifpPfaEZbasSKkiFn/lE7IuxlLiUkWO7epfZMAZf0pBmpHypc4wgef2hBUew2Ki5/UaPRpQ9/A1THG/7Ky4i6Elmo8zkQ93sPMt8277FsyQhpoTW8oAKlsq9WULwJ5Tg0KsNekaTdWRvYcX57gxwRhSVErlBiF+AszSNny2QEKxtWJhWOfbwf1Ygpp1NmGnhRl/1rae6tXHTKxOZHSJ/2977z3Z8cklpYst2KK5XnTKQ/rd8HBFAAispsy9qCvQYd94RgD
- E2cUAZaP
- pCbFlpAwQqlmRNisHxfOWZU+5iFjZSXFLx4qg+hYLpcbIcSZZVm3BW0kIQhVpzjsQGqV5c6VQNZ89Fz0vxfWjv2dVpYI152o9vsJhb6PPWeekyzQIeFzgEB2YV2pzRT5vtj1f+qKeGtCsmPAIgjRwEWefmoaXrhPf+akSXn5t9KK3HtfFVTCTOPbTcdba9A93eUipmDPpaoj9qx9Nk2k0omXW+Hi9I8sFOdAfbRVea5ONxSbwv3lfSa3+PqKCyIetnkvu8sdyoSGK/567ZCCVdqfDMcCi0u/oZQmddhP4cXQkUKNsBCFtolLzzMaMOwINKxbDfGMChlWdFr87WlyMgATfmuDz3rGrAbMCf1qaL0xIa+NAgw0yEZbrohziJ5k4DNjGUBXK0n3yZjFkCCb1c+g2aQGwCC7AnxugwHoUS3Ik1W+Nyz38PRpBzDcLy/aIAnfGspgDu1huTcTuGKGuNuKl3e6yq1Ebu0BYtcYTTS16uyc=
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: zyq7oj4666m1xqoafoqtowxdmtjy197r
+X-HE-Tag: 1795850855-835519
+X-HE-Meta: U2FsdGVkX19BUIp2loc6tocXAHCXUftuPuFUm4ewWQVJbBKPUi81XtisMcMxUmWTe+VbWTjivw2KCKfXPY9CNjUbCw256EY1WvFlILD6lPsOpZ4ej8LbAhgY2okk9BMRjFypt7XgMh0EF6vuWep2uEz8PcwRiZISGsmwQLWm2Urjat3uvlCN5b2zb/aYkGw4ZQxMlB2aUKg6euPe+4BOFlJZt6LkfRWs6jF1UUGxC/xgki5CzLf12GWmMF8eeIc84KEJd9rqhGMpHgVsIlPtmXBPaMD0OPp9BfPJhqpZCx62zV1KgVbD6SK+ma0/OVHNzsVjdqCsWNQM8Vsq2jPLKALcPL/8la7eBrGzGhtKHzQ5/+D+vT4LrQusFEk0POKdnQBDaEOvkg+I2G9jc2coNvra7Rzb/cSGVIxo3lELCZn6M/x3NEo4TVz68yN2KwI6duOZ3hh+As+3wfRlj60xlfBqqijZ3FNew/05f/pMdz46IXxksUKYiJo4XmYI0gZ0BFPhuskPRa+F+c+reh6mSWEteWiB6VBOL0KF6r8DpDkir0dS8H2z2lp2ZOq64NjiDrEVJiGy4l9O27LTWu0SeW50G38xN/odZxqhRKTkXp+GXs7XIVv4MZNR+3vWAFPLTWWL3ix78HLxbX9b9EbWW//OuxoLpulbUOjk4eW9/TAHuqsCYkyEws7LgeIcFajHQkgKirfViJrESU+clOI0xC8zs8Bq0InKk6tQzADqJl/kUCWJ9R1PtOhSWJRPwM4CuQDiikqg+QOw5UEOX0O9KtYABU/WufwvQ9tT/igvR2HyulXC8ORGPc2+x2sU+tdK99eubHBV/lS4iYhhCZAvo5M+RTx6JzBVm7dDe5QIj2l7yZI5hPh3/NUsodCYeZ2sR3jlbjC/rr8cMyywR8Dx9Ba71Gaz6n+TUc+chq1r+9Q2EHVMpVA9Or8H+NJsyxQwqdljlIz8FzlQpiYbJg0
+ rTXlMSdo
+ Wruwyl5cKSspmdB/YZO9MlToL/Rpsyo+h1XWeNIjlQNz8GF7hHNwSZOH7254VcaQqGAnSrPeQ5l+CcZYLtyPKYDYYtcaiUJTZjfR/DQ2jwnhsxGjEUe4Ie9dxIVeQElVFh/U/lvYtzuwb/V3x0MWYsS/3j1OGN8UYAQOrnllwAMjNB71OeeXucNnI/cwkez3MDva4T/KFMnbrGI8e8P0yhL8MNt6Ewyc3/ZdddZcFtG7j/d88Ja248I+XXxv5EzReefZP4gkTvNYJVsJNzfHnK/udytzxOa/B2ryOJXUwslmRwmtIAdWfSo+DNJldl+RHvE5tQC0q5875KP+d04DHkKRXC5Ag5zNTo2+Ub3TOYYwu+hw/Oh6R1S+HP7epdhKqo4YU4S+Ros1EPrwfhNB2Ko8Qv+fCUty3x2wdF+1ZZ7vRfDneEuXbak4Klu1IRI6zOIyefkELp1iCapM9odCDIBwFNg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,90 +102,225 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A seal added to a memfd after the memfd was preserved with a
-liveupdate session is accepted without any error, but once the kexec
-handover is over the retrieved memfd no longer has it: the change
-silently disappears instead of being rejected.
+Add luo_seal_after_preserve, a kexec test that preserves an unsealed
+memfd, adds F_SEAL_GROW *after* the preserve (which used to be silently
+lost across the handover), and verifies after the kexec reboot that
+both the data and the seal survived.
 
-memfd_luo_preserve() snapshots the file seals into the serialized
-state, but userspace may keep operating on the memfd until the
-handover, by design, so the preserve-time snapshot is naturally
-incomplete: a seal can be added at any point in the window between
-preserve() and kexec.  memfd_luo_freeze() only re-read the file
-position and retrieve() replays the frozen snapshot, so those window
-changes were never picked up.  Freeze is the last point before kexec
-where they can still be sampled; there is no second chance after it.
+The test creates its own memfd instead of using the
+create_and_preserve_memfd() helper because the helper creates the memfd
+without MFD_ALLOW_SEALING, which makes it unsealable forever.  It is
+registered in TEST_GEN_PROGS_EXTENDED and TEST_NAMES so it runs in the
+vmtest CI.
 
-Re-read the seals at freeze time, mirroring the file position
-handling: freeze is the final snapshot point and changes made after
-it are not preserved.  The new seal set is only revalidated when it
-actually diverged from the preserve-time snapshot, and the validation
-must fail here rather than at retrieve(): while the old kernel is
-still in control the live update can still be aborted, but after the
-handover a seal that memfd_luo_retrieve() cannot replay would already
-be past the point of no return.
-
-Fixes: 8a552d68a86e ("mm: memfd_luo: preserve file seals")
 Signed-off-by: Long Wei <longwei27@huawei.com>
 ---
- mm/memfd_luo.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ tools/testing/selftests/liveupdate/Makefile   |   1 +
+ .../liveupdate/luo_seal_after_preserve.c      | 170 ++++++++++++++++++
+ .../selftests/liveupdate/run-vmtests.sh       |   1 +
+ 3 files changed, 172 insertions(+)
+ create mode 100644 tools/testing/selftests/liveupdate/luo_seal_after_preserve.c
 
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 6b68220275eb..08524125475e 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -54,6 +54,9 @@
-  *   File seals set on the memfd are preserved and re-applied on restore.
-  *   Only seals known to this LUO version (see ``MEMFD_LUO_ALL_SEALS``) may
-  *   be present; preservation fails with ``-EOPNOTSUPP`` otherwise.
-+ *   Seals added after preserve are picked up when the file is frozen for
-+ *   kexec. Freeze is the final snapshot point: like the file position,
-+ *   changes made after it are not preserved.
-  *
-  * Restrictions
-  * ============
-@@ -322,7 +325,9 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
+index 634211c66652..03bb09bb9867 100644
+--- a/tools/testing/selftests/liveupdate/Makefile
++++ b/tools/testing/selftests/liveupdate/Makefile
+@@ -6,6 +6,7 @@ TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
+ TEST_GEN_PROGS_EXTENDED += luo_multi_session
+ TEST_GEN_PROGS_EXTENDED += luo_stress_sessions
+ TEST_GEN_PROGS_EXTENDED += luo_stress_files
++TEST_GEN_PROGS_EXTENDED += luo_seal_after_preserve
  
- static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
- {
-+	struct inode *inode = file_inode(args->file);
- 	struct memfd_luo_ser *ser;
-+	int seals;
+ TEST_FILES += do_kexec.sh
  
- 	if (WARN_ON_ONCE(!args->serialized_data))
- 		return -EINVAL;
-@@ -330,10 +335,28 @@ static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
- 	ser = phys_to_virt(args->serialized_data);
- 
- 	/*
--	 * The pos might have changed since prepare. Everything else stays the
--	 * same.
-+	 * F_ADD_SEALS takes inode_lock, so sample the seals under the same
-+	 * lock to get a consistent final value.  f_pos is sampled here under
-+	 * the same inode_lock as preserve did; freeze is the last snapshot
-+	 * point for both.
- 	 */
-+	inode_lock(inode);
-+	seals = memfd_get_seals(args->file);
-+	if (seals < 0) {
-+		inode_unlock(inode);
-+		return seals;
+diff --git a/tools/testing/selftests/liveupdate/luo_seal_after_preserve.c b/tools/testing/selftests/liveupdate/luo_seal_after_preserve.c
+new file mode 100644
+index 000000000000..12e6731c9235
+--- /dev/null
++++ b/tools/testing/selftests/liveupdate/luo_seal_after_preserve.c
+@@ -0,0 +1,170 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/*
++ * Copyright (c) 2026, Huawei.
++ * Long Wei <longwei27@huawei.com>
++ *
++ * A selftest to validate that a seal added to a memfd with F_ADD_SEALS
++ * after the memfd is preserved is transferred across a kexec reboot.
++ *
++ * Note: the create_and_preserve_memfd() helper cannot be used here because
++ * it creates the memfd without MFD_ALLOW_SEALING, which makes the memfd
++ * unsealable forever.
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <string.h>
++#include <sys/mman.h>
++#include <sys/syscall.h>
++#include <unistd.h>
++
++#include <libliveupdate.h>
++
++#ifndef F_ADD_SEALS
++#define F_ADD_SEALS 1033
++#endif
++#ifndef F_GET_SEALS
++#define F_GET_SEALS 1034
++#endif
++#ifndef F_SEAL_GROW
++#define F_SEAL_GROW 0x0004
++#endif
++#ifndef MFD_ALLOW_SEALING
++#define MFD_ALLOW_SEALING 0x0002U
++#endif
++
++/*
++ * Prefer SYS_fcntl when the libc defines it (glibc, musl); fall back to
++ * __NR_fcntl which is the only name nolibc provides.
++ */
++#ifdef SYS_fcntl
++#define LUO_FCNTL_NR SYS_fcntl
++#else
++#define LUO_FCNTL_NR __NR_fcntl
++#endif
++
++#define STATE_SESSION_NAME "seal_after_preserve_state"
++#define STATE_MEMFD_TOKEN  0x1000
++
++#define TEST_SESSION_NAME  "seal_after_preserve_session"
++#define TEST_MEMFD_DATA    "seal-after-preserve"
++#define TEST_MEMFD_TOKEN   0x1001
++
++/* Unsealed, non-empty memfd open for sealing. */
++static int create_sealable_memfd(void)
++{
++	long page_size = getpagesize();
++	void *map = MAP_FAILED;
++	int mfd = -1, ret = -1;
++
++	mfd = memfd_create("seal_test", MFD_ALLOW_SEALING);
++	if (mfd < 0)
++		return -errno;
++
++	if (ftruncate(mfd, page_size)) {
++		ret = -errno;
++		close(mfd);
++		return ret;
 +	}
 +
-+	if (seals != ser->seals) {
-+		if (seals & ~MEMFD_LUO_ALL_SEALS) {
-+			inode_unlock(inode);
-+			return -EOPNOTSUPP;
-+		}
-+		ser->seals = seals;
++	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, mfd, 0);
++	if (map == MAP_FAILED) {
++		ret = -errno;
++		close(mfd);
++		return ret;
 +	}
++	snprintf(map, page_size, "%s", TEST_MEMFD_DATA);
++	munmap(map, page_size);
 +
- 	ser->pos = args->file->f_pos;
-+	inode_unlock(inode);
++	return mfd;
++}
++
++/* Stage 1: Executed before the kexec reboot. */
++static void run_stage_1(int luo_fd)
++{
++	int session_fd, mfd, seals;
++
++	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
++	create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
++
++	ksft_print_msg("[STAGE 1] Creating test session '%s'...\n",
++		       TEST_SESSION_NAME);
++	session_fd = luo_create_session(luo_fd, TEST_SESSION_NAME);
++	if (session_fd < 0)
++		fail_exit("luo_create_session");
++
++	ksft_print_msg("[STAGE 1] Preserving unsealed test memfd...\n");
++	mfd = create_sealable_memfd();
++	if (mfd < 0)
++		fail_exit("create unsealed sealable memfd");
++
++	if (luo_session_preserve_fd(session_fd, mfd, TEST_MEMFD_TOKEN))
++		fail_exit("preserve unsealed memfd");
++
++	if (syscall(LUO_FCNTL_NR, mfd, F_ADD_SEALS, F_SEAL_GROW) < 0)
++		fail_exit("F_ADD_SEALS(F_SEAL_GROW) after preserve");
++
++	seals = syscall(LUO_FCNTL_NR, mfd, F_GET_SEALS, 0);
++	if (seals < 0)
++		fail_exit("F_GET_SEALS");
++	if (!(seals & F_SEAL_GROW))
++		fail_exit("F_SEAL_GROW missing (F_GET_SEALS=0x%x)", seals);
++
++	ksft_print_msg("[STAGE 1] F_SEAL_GROW added after preserve (seals=0x%x).\n", seals);
++
++	close(luo_fd);
++	daemonize_and_wait();
++}
++
++/* Stage 2: Executed after the kexec reboot. */
++static void run_stage_2(int luo_fd, int state_session_fd)
++{
++	int session_fd, mfd, seals, stage;
++
++	ksft_print_msg("[STAGE 2] Starting post-kexec verification...\n");
++
++	restore_and_read_stage(state_session_fd, STATE_MEMFD_TOKEN, &stage);
++	if (stage != 2)
++		fail_exit("Expected stage 2, but state file contains %d", stage);
++
++	session_fd = luo_retrieve_session(luo_fd, TEST_SESSION_NAME);
++	if (session_fd < 0)
++		fail_exit("luo_retrieve_session");
++
++	ksft_print_msg("[STAGE 2] Restoring and verifying test memfd (token=%d)...\n",
++		       TEST_MEMFD_TOKEN);
++	mfd = restore_and_verify_memfd(session_fd, TEST_MEMFD_TOKEN,
++				       TEST_MEMFD_DATA);
++	if (mfd < 0)
++		fail_exit("restore_and_verify_memfd for test memfd");
++
++	seals = syscall(LUO_FCNTL_NR, mfd, F_GET_SEALS, 0);
++	if (seals < 0)
++		fail_exit("F_GET_SEALS");
++	if (!(seals & F_SEAL_GROW))
++		fail_exit("F_SEAL_GROW silently lost across kexec (seals=0x%x, expected 0x%x)",
++			  seals, F_SEAL_GROW);
++
++	ksft_print_msg("[STAGE 2] F_SEAL_GROW survived the kexec (seals=0x%x).\n", seals);
++
++	close(mfd);
++
++	if (luo_session_finish(session_fd) < 0)
++		fail_exit("luo_session_finish for test session");
++	close(session_fd);
++
++	ksft_print_msg("[STAGE 2] Finalizing state session...\n");
++	if (luo_session_finish(state_session_fd) < 0)
++		fail_exit("luo_session_finish for state session");
++	close(state_session_fd);
++
++	ksft_print_msg("\n--- SEAL-AFTER-PRESERVE KEXEC TEST PASSED ---\n");
++}
++
++int main(int argc, char *argv[])
++{
++	return luo_test(argc, argv, STATE_SESSION_NAME,
++			run_stage_1, run_stage_2);
++}
+diff --git a/tools/testing/selftests/liveupdate/run-vmtests.sh b/tools/testing/selftests/liveupdate/run-vmtests.sh
+index c3d828cfd63b..fbc853d981db 100755
+--- a/tools/testing/selftests/liveupdate/run-vmtests.sh
++++ b/tools/testing/selftests/liveupdate/run-vmtests.sh
+@@ -20,6 +20,7 @@ TEST_NAMES=(
+ 	"luo_multi_session"
+ 	"luo_stress_files"
+ 	"luo_stress_sessions"
++	"luo_seal_after_preserve"
+ )
  
- 	return 0;
- }
+ function usage() {
 -- 
 2.43.0
 
