@@ -1,92 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC7C606A337
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 08:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA3D606A336
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Nov 2026 08:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fRiSjGxD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hm+95tWO
 Received: by kanga.kvack.org (Postfix)
-	id CBCCA6B05B0; Sat, 28 Nov 2026 03:49:21 -0500 (EST)
+	id 67C6E6B05B1; Sat, 28 Nov 2026 03:49:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6E3D6B05B1; Sat, 28 Nov 2026 03:49:21 -0500 (EST)
+	id 652B86B05B2; Sat, 28 Nov 2026 03:49:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B83086B05B2; Sat, 28 Nov 2026 03:49:21 -0500 (EST)
+	id 51A416B05B3; Sat, 28 Nov 2026 03:49:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5786B05B0
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E97EE6B05B1
 	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 03:49:21 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C31E5A800A
-	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 08:49:20 +0000 (UTC)
-X-FDA: 85483903680.11.3D2F03D
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C1FEC0602
+	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 08:49:21 +0000 (UTC)
+X-FDA: 85483903722.06.C82745D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 27C6FA000B
+	by imf01.hostedemail.com (Postfix) with ESMTP id AE24B40007
 	for <linux-mm@kvack.org>; Sat, 28 Nov 2026 08:49:19 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fRiSjGxD;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hm+95tWO;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795855759;
-	b=VR31wwvWNBGNPhE9Qkh3Y3HWIrhrv80PFmNi8YBdulhaA5iC46pMn+rpo6DrN26spTCB3Z
-	pBJJjM0hdaqiLMmZV+ovEW1XlUBzxrbdS6L5V/JANffH4aywnsyADeLP/aJr2Xpd/3XSV3
-	b+zKOIWBTWMhPW1fZzp/cM8SwoRSI2Y=
+	b=5yOrb/SiBT3QZtxg7ktkoeeeARo3KUXFN90gxOIE8TSFoluGhqWWk2szgzQ6nOq/jYYWpb
+	9D5vzNmJAskgXCMBQo/MFdTsgYV/YSYXSMf10eSSCYqHDdmKywU5x8xY5LKCBHb96grAhk
+	k4ePMJ3fDBGBy1SlULt/+yW0O9MthR4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795855759;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9EUy6bu/c2hFeqm2ZEGubMXbqcfKYdYE9PnZab6Bhvw=;
-	b=Dfs7T0PKWGApkTZEBx89/LvWqX2B7kImN6R4PZRzRN3eCRkaest+bxyXNfpW6s4jPUfo+r
-	pk2RK+4mP4E4TvlF0yCMTwf6I8I7nZyy3yUCRf8r5wK7jt1wEsi/FzHRHE+75m4UZ9tUkj
-	/LWyZnuUu/CYgkx9RxYmH6ijqKke0Iw=
+	bh=q+21YVgeXQXRrM6JQU5o844vwDVBFtZuPkBB+5g1Lbo=;
+	b=oBAaLBGbMloJ72yc95phcvzptM3wsj6V0AV610Jz8pU+LNc0pOlh5nUfznULrF2d8IitOU
+	F60BRMt89ajqXRYXraKtBu9FQ1qfwS3mR9fRozo93yirLP89dDCaFVr17qB1yzL06NcqIX
+	yjTw2x8WG0LbGNI3QbjLbkf0iRdqt3s=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fRiSjGxD;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hm+95tWO;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E7AC6022E;
+	by tor.source.kernel.org (Postfix) with ESMTP id 457D760A4E;
+	Sat, 28 Nov 2026 08:49:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CACE1F00898;
 	Sat, 28 Nov 2026 08:49:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807941F00893;
-	Sat, 28 Nov 2026 08:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795855758;
-	bh=9EUy6bu/c2hFeqm2ZEGubMXbqcfKYdYE9PnZab6Bhvw=;
+	s=k20260515; t=1795855759;
+	bh=q+21YVgeXQXRrM6JQU5o844vwDVBFtZuPkBB+5g1Lbo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fRiSjGxDzt5xO9Kg830stj8bEL8F8pTUCzSAB6pKZqYed0sSIUVJ1n6WpeeGj72p2
-	 ktnu0cybQOzwIgdI5epQf/Ss+Wpr+5eESep0WiJSkWN/5j94+nuTGaKwK3X1JHFpnP
-	 fj9uZXaGYgbvvE4UeYA57zQq4bvNJEuTvjpoQ8i5opW3OG/KoqA73FsZ4K7E8KYhjs
-	 ABjPcXa9phwda4RvCfLdM/aHhDhGKIwQ2RzoWuBj3x89EFOOmxn0IhuJlh8PDmq9o2
-	 YW2+1X68tE9aVc4b+09+kmfPHic7EAfTZVN914zwjjh3PKlbwDaB55Z/EsxoYUb+zp
-	 MYT70r4NK2P2g==
-Message-ID: <sashiko-outbox-238562@kernel.org>
+	b=hm+95tWOcNNrTp7zIy9IYNmhCSzB7PjesxjnC720sk27GwlknMh+AJQjWTGTeqKwq
+	 snVjFrHwN1wUbEnCmOx32vzmleYLpPq061GpWQI8xSXBHc1xMAaO28gGE+TavHjo+8
+	 siyKyCPD5sb+uqJoSwZMXdsnttOOGssKO1uMwocDKdvLCRBnGzPKaHmh9mQS3KFVOT
+	 kYiOOAeJFi9QDJhcySfsZNXsBXirgCFXM0iBlWFzS2vYi9AasuXidHd+jcwLdCdC0a
+	 7aKKQ/mUOc9t/lux+bLn75bz9Eeb+l9V7TgQhOrUHcp6gAlmyDWAr/yMUuPsANRlCH
+	 lnj0E38tMEiWg==
+Message-ID: <sashiko-outbox-238563@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/2] f2fs: complete dropbehind write bios in task
- context
+Subject: Re: [PATCH v6 2/2] f2fs: enable buffered RWF_DONTCACHE
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wenjie Qi" <qwjhust@gmail.com>, jaegeuk@kernel.org, chao@kernel.org
-Cc: hch@lst.de, jack@suse.cz, axboe@kernel.dk, tz2294@columbia.edu, baohua@kernel.org, linux-mm@kvack.org, qiwenjie@xiaomi.com
-In-Reply-To: <323235fbdeb5131f83569541c602ddc88f412b18.1795746008.git.qiwenjie@xiaomi.com>
+Cc: hch@lst.de, jack@suse.cz, axboe@kernel.dk, tz2294@columbia.edu, baohua@kernel.org, linux-mm@kvack.org, qiwenjie@xiaomi.com, syzbot+cid5582b8164122eda@syzkaller.appspotmail.com
+In-Reply-To: <cfdfaea72b21b8abf58cb250495150d92e73beda.1795746008.git.qiwenjie@xiaomi.com>
 References: <cover.1788438786.git.qiwenjie@xiaomi.com>
  <cover.1788795700.git.qiwenjie@xiaomi.com>
  <cover.1795746008.git.qiwenjie@xiaomi.com>
- <323235fbdeb5131f83569541c602ddc88f412b18.1795746008.git.qiwenjie@xiaomi.com>
+ <cfdfaea72b21b8abf58cb250495150d92e73beda.1795746008.git.qiwenjie@xiaomi.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 28 Nov 2026 08:49:17 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 27C6FA000B
-X-Rspam-User:
+Date: Sat, 28 Nov 2026 08:49:18 +0000
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AE24B40007
+X-Stat-Signature: nrjkdxouzrxdex439sgbiz3zj58s678s
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: m7s38516w7e6kt3cxnq3xhpqqcw94ehn
-X-HE-Tag: 1795855759-572470
-X-HE-Meta: U2FsdGVkX18DhDsgwZNlOMxZvZvIWoGDxfKwuIZOEuiiviLEROJ7/ZVdAZh4iSI9sCn+DBIqkufgOlCsN9WRW4vYbJzf6NkbQ74weDTKKJdku1X12xSZRkBX1pqgZzeavT1qFwQ8d0zHtmxa/QvhKGT4eW8vIwZrdWPDthSeT/p0VXvuSM/aglnZqH/uYjp94BDrx31WPqYBAFM1cb2bCgOl3YwrrGIj2kBso6S9R74A7+2mOEsgRVOrA/W0mAr9+DufUN5TGK4615JIhD7uShwmxTYhd8CLgsm2DjPE8enIaBuHcDes8QLFw7zjJq4Dps+VKYmSHiyigxeryWLgUQLihgSq7FBaeIrDF+zT7rqC4o7yTqUU4sc5ZN1FR63RqvbwNRZp9nzieLsaxkI98VZTAk9qQnTaab3YHmRqYLkxQqehvwUBMDxSr4Z1Wa+RcHra8mZudL3D3SE1rg5XxRVNgjA/tdCwbxW/Y4670T1KMIzYY+bCJOc6IQxIJJDYxlN8/ykjPn/0BUS6V2He+0v/muPPuOyijOt51p+0bsnKsiNiQQWZQpvnD7AJLd7wS8A5PZeGBpZopqZhabDNlcOYEsUs9WcMIOwmeag8a9htSzuF9amLklIpm2BueHt9n4ooATBr7DrE1HaImgjxdPyacHMZ6gida6vQ6uOSbAycaW1haeDtB+FckuGKjImzGXNI5WygXzz17njs8QEZUuovlHOL3oXqz9Peydf4C+7JUrIlfJhxnY/z8frQ4sOHgbckwLgQEgEbd8nmZxiAUe9iMwvus5L3fDgdUDVsAwuCddiK/cvbfVUxanuquuEObg+ljcwWO5yodxAJY9N2JeukV1bZTTbDhxfXha0Keb8sBuqm4ktDLOWnfFr3OeWv5ctPDR25C9PjTIOknQZOiNKr4jiSWw5tXdIaOF33pjPRklqyHNSfmhEGoXd9YXmfHySUc9FfQEUhesADZFh
- a0LhmzZd
- DtBLzVBGurumY/ardh91vPNHw1rj3xLKl+rNGWqCtmtx7M8VxERJJ/jHs/RqQfp7JUqTEsXFko//fBVjUQO6MgY0Mi8RDsEqR6jhjzI+HHF0SrkEfJ19Jp60oLNQ9uRY/K/5Am6fpkrWDdBim+DWM736ewGaETVZKpgCShtjaOHytqygCEhiMyTMuXE2yKwaXikwduJPdmZd0z1J8cMySqg4R+XL78V2NFXYU0k7uy1vMLGVTOPbgCEUhcTI8fvHUfB1r8T0jUeExN1iHPqrH5ZOESPForVypdEIqFMLqk5XYVv3gi1hb93CXDVbhP7QEfQRY/h6oXGJE0JLIDM9YqU9AL7MSjZu9xkRHYRqNTPEGdTv1MH0dpEFTNd4tiWsTvyL7xDcmEaoSZTS1TluNilxqmo+YA2L2MkmlNFU/WcapmF0B39dtxhvY5RFRyTF7+GVXilDaRTL7k9Q3obmqFh56ZKJPLR7sU/rl6z4rVG4CiEDACzUWsP5vFNl8IltRtMa7KduDZINm6CcTtQsasEaIP3WsvSqzzrF+QF7oDuGN5Vxz3MnRS/+o+RnqAqiJrMTwlTNpPLBX7JuRCN0qRLmAxSH2r+AcUs3rCqkQn+hSndRdGENEy7O6tgQFrf+kpA2vOJoisjkaoYGEksyihCQ9iK+bIlowwmr7GDzTdbK8sEq9QKxNjyvVgFYj/07ColwXKoOHoOJwAykcVMZRQJSTTLy+mud0DODpOPrk8aXNrpmz+d1f9HInFXvWVFaucacM3SqoQB98XHzLoafeKeg8kiBnGUbna4gqlQfHscIoh48XxJvVS0YbGHPaP26LGbK/4NFy5akMSp4=
+X-Rspam-User:
+X-HE-Tag: 1795855759-284452
+X-HE-Meta: U2FsdGVkX197P5beVsoFMKg7DW5GlYUfvQci3nhz/uymFLp0IMh6b3EZcQE3dzeJT+nOoAew+98L0vL9GLBm36pKdvwYr5sClg3l+kCBikaRozw7BnzpT1TC7iR9GzUQIhc0tYRmoa31OOGGg8ecOVMT7EgYvi5ZPXYpksJM98mHowBUT8SkUD+UrRBIwsMU3BknjmV0VSSHHJwHYwhcE/4C/G10wzCxlmZC4M6YT6UfXVsRiAjsMyEKWfZCxOAEwTP4wvSv/l5ZKlxTA8+cvhY/URgZ/WULrFNV+YnOck/kL9jTlHn/R/8Em4QAvnviMNHhKObWyRuXT5xH74gUEJPuN0F2OlMnslojG6YGPVHOw4UVnCU8lI3HfwfMWsBSs/IpQgyW+8070bNMEZ94BTo9qQR7s1NHRASB3o9Pyh3latQtF9He3crXaW4GLcPtU2DPt72TO0Nb3MUZxtIv9RVKgiDF4b07y8f/2O2v4cG2ETLZw3mCgDFHkaiLVewMdZX3WdfoxrhZSD+rLc9zBG2u7X4Q/e2y8bEjwMJKpEo3eFRJS6BjYfKSbPsM2xEAJnTST2vTENqdK4pkMa7lWeqs3nZfaPFWjj4p3rd8T8sPu9u3XUPP/kOt+3k5VYfHASQBD4siepOgwrdVhnt5OxMQYmi7xmrAXQnadXV+7xbP/7qpJwcIKLh3jndTUUMU5KQj2LgvcgCR5SmiEn2CSd5nrE041KJiGID7LDeWGO1ACeqIkp4eCevPekQ0wAaSLxkYZm+vuSXhMKiqaAQ5xf1ZQJF4PFoXGv5Z8JB3toWGfIOZE9+8hVlnbK1klfrFlhJ0OnesQXQNH3H+HhfWTpgo53x5wsTYV6lPvSgV0moMdHl7NXMpxeYLXTlAEdi5iTOIXbqvawBzRczkmFqvv+HCLB6sA0CNrYEscCWHh1cD1hfX9stXYZ1CieQHXolaFmtzrJqpkSWP1kddmUG
+ 4IUocRmC
+ FphC+E3RRYiFnCQRjptl7Iap29eGlaPW/9xpnUmrYxTRoQsXuyMevBumZm3Iz9qoweJ2zYgrQPDyggZamQAfWC4mZVDTW1+DyxhagKvkBgWwXLX+TV5gw2QBJ4Pljs6KmagaMv1MfmKusRY5cIo1GoeiPeFEBWaqmyANMxPknoDmMNeytRx0ocGt1MLs3NloxP1dezk4v7HvjbMWJKV+WHmAqU8rHiALP+fSp+xW0ql/LINEnvH8ygg8e6fzNVKi2xmz5mvOXjvpxu3z3gRgCGMNo70KUC0yD+pJGpNnVU5k2L1ukPB5Jcd5vfMZazpLPJggCHDp6OFtnp2dyV62fDBtS+LTOKJK5pA9k6eC50EWR1gJ9B6WCtO3Fz/YisPPiqnGj+dTTWP1uO1nbt6XWuFcnHzH1sOt+PdZs9ewVRjB7pNfssjpvOp4yZaPi4DK+Dy8jMcZtzajhGnfHd6JNQiZQ36GldHm+h6/piLzTlP+rRmgCt/KJw3ra40v2FVdkj3Zz1MahGa7opPcLNZocpOiHOkcHZDu8VtnwO/35WHHQ9DPLD6j9fuHrzAN/cLbeN4lSjfyHMKFAYsqws/WsDrN+1w63L9iYoSYqX4F61dm0m4bZTarLP2PgHGmmDKsa/pd+UQO0gwm7BE3gNuHLX5xk87Z6RdjWAlYo8/c8cJ0oV6PfnTbk6851VNOLZ/IPNhD85cwGHktkJaac+WwuYPtSP+PQf7Qss/mVi2gjaajQ8fsMgOUsjKh7DQSIuscjVK+FJ72G5nvePQQdIXHmBVUkcOyQO4tSw6XXnjovS7a1zSCYkzW8kDzlAr+Fx4bVXQKazxtT7aikqM0XM8Uw4lKkEDPBq3MtvFo76J+Da7FQ3a+wpl1W6mdqXo0oPd0tGEFKtoMHcQ4fag4xLS6/Xe51oilajUAj8+s8Zwp43Utyc6vII/GWjBQrJfuv1r4jNE6I9y2gCouJOJ2lR7z/mKzIy4JG
+ 2gDvdJUz
+ diolORORdFY3zzSa8OHwkEqCkxEo4cRR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,82 +99,64 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] f2fs: missed BIO_COMPLETE_IN_TASK for compressed writes in
-  __bio_alloc()
+- [Medium] f2fs: lost dropbehind state on compressed writes in
+  f2fs_write_begin()
 --
 
-commit eb035ab3b21d7c6d735daa2773a956fd37b6e545
+commit 2b2066d5ccd0493ea51e9dc20f74af55a2621a50
 Author: Wenjie Qi <qwjhust@gmail.com>
 
-f2fs: complete dropbehind write bios in task context
+f2fs: enable buffered RWF_DONTCACHE
 
-This commit sets BIO_COMPLETE_IN_TASK on write bios containing dropbehind
-folios so that bio completion is deferred to task context where the folios
-can be invalidated.
+This commit adds buffered RWF_DONTCACHE support to f2fs by passing
+FGP_DONTCACHE to f2fs_filemap_get_folio() in f2fs_write_begin() and
+advertising FOP_DONTCACHE in f2fs_file_operations.
 
 > diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-> index cdc9e6e8633c8..37d74afc8b26a 100644
+> index 37d74afc8b26a..f3559c27d44cb 100644
 > --- a/fs/f2fs/data.c
 > +++ b/fs/f2fs/data.c
-> @@ -624,6 +624,9 @@ static struct bio *__bio_alloc(struct f2fs_io_info *f=
-io, int npages)
->  	bio =3D bio_alloc_bioset(bdev, npages,
->  				fio->op | fio->op_flags | f2fs_io_flags(fio),
->  				GFP_NOIO, &f2fs_bioset);
-> +	if (!is_read_io(fio->op) && !fio->is_cache &&
-> +	    folio_test_dropbehind(fio->folio))
-> +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
->  	bio->bi_iter.bi_sector =3D sector;
->  	F2FS_BIO(bio)->entry =3D NULL;
->  	bio->bi_private =3D NULL;
-
-[ ... ]
-
-> @@ -1359,6 +1364,8 @@ void f2fs_submit_page_write(struct f2fs_io_info *fi=
-o)
->  		__submit_merged_bio(io);
->  		goto alloc_new;
->  	}
-> +	if (folio_test_dropbehind(fio->folio))
-> +		bio_set_flag(io->bio, BIO_COMPLETE_IN_TASK);
+> @@ -5622,6 +5622,9 @@ static int f2fs_write_begin(const struct kiocb *ioc=
+b,
+>  	unsigned int blen;
+>  	int err =3D 0;
 > =20
->  	F2FS_BIO(io->bio)->entry_cnt++;
+> +	if (iocb && iocb->ki_flags & IOCB_DONTCACHE)
+> +		fgp |=3D FGP_DONTCACHE;
+> +
+>  	trace_f2fs_write_begin(inode, pos, len);
+> =20
+>  	if (!f2fs_is_checkpoint_ready(sbi)) {
 
 [Severity: Medium]
-Can compressed cluster write bios miss BIO_COMPLETE_IN_TASK when only
-fio->folio is checked?
+Does an RWF_DONTCACHE write to a compressed file lose its dropbehind
+state on cluster folios?
 
-In f2fs_write_compressed_pages(), the cluster submission loop skips
-f2fs_outplace_write_data() for the cluster header (i =3D=3D 0) and any block
-index past cc->valid_nr_cblocks:
+When f2fs_write_begin() takes the f2fs_prepare_compress_overwrite() path
+and returns early, prepare_compress_overwrite() looks up and relocks
+cluster folios with hardcoded FGP_LOCK | FGP_WRITE | FGP_CREAT and
+filemap_lock_folio() without FGP_DONTCACHE:
 
-fs/f2fs/compress.c:f2fs_write_compressed_pages() {
+fs/f2fs/compress.c:prepare_compress_overwrite() {
 	...
-		if (i =3D=3D 0) {
-			...
-			goto unlock_continue;
-		}
-		...
-		if (i > cc->valid_nr_cblocks) {
-			...
-			goto unlock_continue;
-		}
+	fgf_t fgp_flag =3D FGP_LOCK | FGP_WRITE | FGP_CREAT;
 	...
+		folio =3D f2fs_filemap_get_folio(mapping, f_index,
+				fgp_flag, GFP_NOFS);
+	...
+		folio =3D filemap_lock_folio(mapping, f_index);
 }
 
-As a result, cc->rpages[0] and trailing raw folios in cc->rpages[] beyond
-cc->valid_nr_cblocks are never passed as fio->folio to
-f2fs_submit_page_write() or __bio_alloc().  On completion,
-f2fs_compress_write_end_io() calls folio_end_writeback() on all raw folios
-in cic->rpages[] when the last compressed block in cic->pending_blocks
-finishes.
-
-If PG_dropbehind is set on one of those unsubmitted raw folios (or if a
-compressed cluster spans multiple bios and the last bio to complete was not
-marked), f2fs_compress_write_end_io() runs in atomic context and
-folio_end_dropbehind() skips invalidating the cluster's dropbehind folios.
+New cluster folios are never marked dropbehind, and existing ones have
+PG_dropbehind cleared by __filemap_get_folio_mpol().  During writeback,
+f2fs_write_compressed_pages() also skips f2fs_outplace_write_data() for
+i =3D=3D 0 and i > cc->valid_nr_cblocks, so BIO_COMPLETE_IN_TASK is not set
+from all folios in cc->rpages[] even though f2fs_compress_write_end_io()
+calls folio_end_writeback() on all cic->nr_rpages folios when the last
+compressed block finishes I/O.  As a result, compressed cluster folios
+written with RWF_DONTCACHE remain in the page cache after writeback.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1795746008.gi=
-t.qiwenjie@xiaomi.com?part=3D1
+t.qiwenjie@xiaomi.com?part=3D2
 
